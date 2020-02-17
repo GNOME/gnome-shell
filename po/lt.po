@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2020-02-06 19:01+0000\n"
-"PO-Revision-Date: 2020-02-08 14:25+0200\n"
+"POT-Creation-Date: 2020-02-17 11:08+0000\n"
+"PO-Revision-Date: 2020-02-17 22:38+0200\n"
 "Last-Translator: Aurimas Černius <aurisc4@gmail.com>\n"
 "Language-Team: Lietuvių <gnome-lt@lists.akl.lt>\n"
 "Language: lt\n"
@@ -410,11 +410,11 @@ msgstr ""
 "Jei pašalinsite plėtinį, reikės grįžti prie jo atsisiuntimo, jei norėsite jį "
 "vėl įjungti"
 
-#: js/extensionPrefs/main.js:144 js/gdm/authPrompt.js:170
-#: js/ui/audioDeviceSelection.js:57 js/ui/components/networkAgent.js:107
-#: js/ui/components/polkitAgent.js:139 js/ui/endSessionDialog.js:374
-#: js/ui/extensionDownloader.js:166 js/ui/shellMountOperation.js:376
-#: js/ui/shellMountOperation.js:386 js/ui/status/network.js:910
+#: js/extensionPrefs/main.js:144 js/ui/audioDeviceSelection.js:57
+#: js/ui/components/networkAgent.js:107 js/ui/components/polkitAgent.js:139
+#: js/ui/endSessionDialog.js:374 js/ui/extensionDownloader.js:166
+#: js/ui/shellMountOperation.js:376 js/ui/shellMountOperation.js:386
+#: js/ui/status/network.js:910
 msgid "Cancel"
 msgstr "Atsisakyti"
 
@@ -542,35 +542,30 @@ msgstr ""
 "esate prisijungęs prie GNOME ir bandykite vėl."
 
 #: js/extensionPrefs/ui/extensions-window.ui:287
-#| msgid "Log Out"
 msgid "Log Out…"
 msgstr "Atsijungti…"
 
-#: js/gdm/authPrompt.js:184 js/gdm/authPrompt.js:237 js/gdm/authPrompt.js:468
-msgid "Next"
-msgstr "Kitas"
+#. Cisco LEAP
+#: js/gdm/authPrompt.js:235 js/ui/components/networkAgent.js:202
+#: js/ui/components/networkAgent.js:214 js/ui/components/networkAgent.js:238
+#: js/ui/components/networkAgent.js:259 js/ui/components/networkAgent.js:279
+#: js/ui/components/networkAgent.js:289 js/ui/components/polkitAgent.js:277
+#: js/ui/shellMountOperation.js:326
+#| msgid "Password:"
+msgid "Password"
+msgstr "Slaptažodis"
 
-#: js/gdm/authPrompt.js:233 js/ui/shellMountOperation.js:380
-#: js/ui/unlockDialog.js:44
-msgid "Unlock"
-msgstr "Atrakinti"
-
-#: js/gdm/authPrompt.js:235
-msgctxt "button"
-msgid "Sign In"
-msgstr "Prisijungti"
-
-#: js/gdm/loginDialog.js:319
+#: js/gdm/loginDialog.js:318
 msgid "Choose Session"
 msgstr "Pasirinkite seansą"
 
-#: js/gdm/loginDialog.js:461
+#: js/gdm/loginDialog.js:457
 msgid "Not listed?"
 msgstr "Nėra sąraše?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: js/gdm/loginDialog.js:895
+#: js/gdm/loginDialog.js:912
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(pvz., naudotojas arba %s)"
@@ -578,12 +573,13 @@ msgstr "(pvz., naudotojas arba %s)"
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: js/gdm/loginDialog.js:899 js/ui/components/networkAgent.js:234
+#: js/gdm/loginDialog.js:917 js/ui/components/networkAgent.js:234
 #: js/ui/components/networkAgent.js:257 js/ui/components/networkAgent.js:275
-msgid "Username: "
-msgstr "Naudotojo vardas: "
+#| msgid "Username: "
+msgid "Username"
+msgstr "Naudotojo vardas"
 
-#: js/gdm/loginDialog.js:1230
+#: js/gdm/loginDialog.js:1253
 msgid "Login Window"
 msgstr "Prisijungimo langas"
 
@@ -1102,29 +1098,26 @@ msgstr ""
 msgid "Connect"
 msgstr "Prisijungti"
 
-#. Cisco LEAP
-#: js/ui/components/networkAgent.js:202 js/ui/components/networkAgent.js:214
-#: js/ui/components/networkAgent.js:238 js/ui/components/networkAgent.js:259
-#: js/ui/components/networkAgent.js:279 js/ui/components/networkAgent.js:289
-msgid "Password: "
-msgstr "Slaptažodis: "
-
 #. static WEP
 #: js/ui/components/networkAgent.js:207
-msgid "Key: "
-msgstr "Raktas: "
+#| msgid "Key: "
+msgid "Key"
+msgstr "Raktas"
 
 #: js/ui/components/networkAgent.js:242 js/ui/components/networkAgent.js:265
-msgid "Private key password: "
-msgstr "Privataus rakto slaptažodis: "
+#| msgid "Private key password: "
+msgid "Private key password"
+msgstr "Privataus rakto slaptažodis"
 
 #: js/ui/components/networkAgent.js:263
-msgid "Identity: "
-msgstr "Tapatybė: "
+#| msgid "Identity: "
+msgid "Identity"
+msgstr "Tapatybė"
 
 #: js/ui/components/networkAgent.js:277
-msgid "Service: "
-msgstr "Tarnyba: "
+#| msgid "Service: "
+msgid "Service"
+msgstr "Tarnyba"
 
 #: js/ui/components/networkAgent.js:306 js/ui/components/networkAgent.js:334
 #: js/ui/components/networkAgent.js:681 js/ui/components/networkAgent.js:702
@@ -1145,8 +1138,9 @@ msgid "Wired 802.1X authentication"
 msgstr "Laidinis 802.1X tapatybės patvirtinimas"
 
 #: js/ui/components/networkAgent.js:313
-msgid "Network name: "
-msgstr "Tinklo vardas: "
+#| msgid "Network name: "
+msgid "Network name"
+msgstr "Tinklo vardas"
 
 #: js/ui/components/networkAgent.js:318 js/ui/components/networkAgent.js:690
 msgid "DSL authentication"
@@ -1161,8 +1155,9 @@ msgid "PIN code is needed for the mobile broadband device"
 msgstr "Reikalingas PIN kodas mobiliajam plačiajuosčiam įrenginiui"
 
 #: js/ui/components/networkAgent.js:327
-msgid "PIN: "
-msgstr "PIN: "
+#| msgid "PIN: "
+msgid "PIN"
+msgstr "PIN"
 
 #: js/ui/components/networkAgent.js:335 js/ui/components/networkAgent.js:687
 #: js/ui/components/networkAgent.js:691 js/ui/components/networkAgent.js:703
@@ -1198,10 +1193,6 @@ msgstr "Patvirtinti tapatybę"
 #: js/ui/components/polkitAgent.js:254 js/ui/shellMountOperation.js:402
 msgid "Sorry, that didn’t work. Please try again."
 msgstr "Atsiprašome, tai nesuveikė. Bandykite dar kartą."
-
-#: js/ui/components/polkitAgent.js:277 js/ui/shellMountOperation.js:326
-msgid "Enter Password…"
-msgstr "Įveskite slaptažodį…"
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
@@ -1634,8 +1625,9 @@ msgstr "Apžvalga"
 #. active; it should not exceed ~30
 #. characters.
 #: js/ui/overview.js:107
-msgid "Type to search…"
-msgstr "Rašykite, ko ieškote…"
+#| msgid "Type to search…"
+msgid "Type to search"
+msgstr "Rašykite, ko ieškote"
 
 #: js/ui/padOsd.js:95
 msgid "New shortcut…"
@@ -1716,33 +1708,7 @@ msgstr "Perleisti Wayland aplinkoje negalima"
 msgid "Restarting…"
 msgstr "Perleidžiama…"
 
-#. Translators: This is a time format for a date in
-#. long format
-#: js/ui/screenShield.js:82
-msgid "%A, %B %d"
-msgstr "%A, %B %d d."
-
-#: js/ui/screenShield.js:139
-#, javascript-format
-msgid "%d new message"
-msgid_plural "%d new messages"
-msgstr[0] "%d naujas pranešimas"
-msgstr[1] "%d nauji pranešimai"
-msgstr[2] "%d naujų pranešimų"
-
-#: js/ui/screenShield.js:141
-#, javascript-format
-msgid "%d new notification"
-msgid_plural "%d new notifications"
-msgstr[0] "%d naujas pranešimas"
-msgstr[1] "%d nauji pranešimai"
-msgstr[2] "%d naujų pranešimų"
-
-#: js/ui/screenShield.js:454 js/ui/status/system.js:103
-msgid "Lock"
-msgstr "Užrakinti"
-
-#: js/ui/screenShield.js:717
+#: js/ui/screenShield.js:203
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME aplinkai reikia užrakinti ekraną"
 
@@ -1753,11 +1719,11 @@ msgstr "GNOME aplinkai reikia užrakinti ekraną"
 #.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
-#: js/ui/screenShield.js:830 js/ui/screenShield.js:1301
+#: js/ui/screenShield.js:244 js/ui/screenShield.js:602
 msgid "Unable to lock"
 msgstr "Nepavyksta užrakinti"
 
-#: js/ui/screenShield.js:831 js/ui/screenShield.js:1302
+#: js/ui/screenShield.js:245 js/ui/screenShield.js:603
 msgid "Lock was blocked by an application"
 msgstr "Programa užblokavo užrakinimą"
 
@@ -1819,12 +1785,17 @@ msgstr ""
 "įrankį."
 
 #: js/ui/shellMountOperation.js:306
-msgid "Enter PIM Number…"
-msgstr "Įveskite PIM numerį…"
+#| msgid "Enter PIM Number…"
+msgid "PIM Number"
+msgstr "PIM numeris"
 
 #: js/ui/shellMountOperation.js:365
 msgid "Remember Password"
 msgstr "Atsiminti slaptažodį"
+
+#: js/ui/shellMountOperation.js:380
+msgid "Unlock"
+msgstr "Atrakinti"
 
 #. Translators: %s is the Disks application
 #: js/ui/shellMountOperation.js:391
@@ -2261,6 +2232,10 @@ msgstr "Išjungti"
 msgid "Airplane Mode On"
 msgstr "Skrydžio veiksena įjungta"
 
+#: js/ui/status/system.js:103
+msgid "Lock"
+msgstr "Užrakinti"
+
 #: js/ui/status/system.js:116
 msgid "Power Off / Log Out"
 msgstr "Išjungti / Atsijungti"
@@ -2351,11 +2326,7 @@ msgstr "Tik išorinis"
 msgid "Built-in Only"
 msgstr "Tik vidinis"
 
-#: js/ui/unlockDialog.js:52
-msgid "Log in as another user"
-msgstr "Prisijungti kitu naudotoju"
-
-#: js/ui/unlockDialog.js:67
+#: js/ui/unlockDialog.js:552
 msgid "Unlock Window"
 msgstr "Atrakinimo langas"
 
@@ -2580,7 +2551,7 @@ msgid "Create a new extension"
 msgstr "Sukurti naują plėtinį"
 
 #: subprojects/extensions-tool/src/command-create.c:280
-#: subprojects/extensions-tool/src/command-list.c:158
+#: subprojects/extensions-tool/src/command-list.c:168
 msgid "Unknown arguments"
 msgstr "Nežinomi argumentai"
 
@@ -2638,31 +2609,36 @@ msgstr "Nenurodytas plėtinio ryšulys"
 msgid "More than one extension bundle specified"
 msgstr "Nurodytas daugiau nei vienas plėtinio ryšulys"
 
-#: subprojects/extensions-tool/src/command-list.c:118
+#: subprojects/extensions-tool/src/command-list.c:125
 msgid "Show user-installed extensions"
 msgstr "Rodyti naudotojo įdiegtus plėtinius"
 
-#: subprojects/extensions-tool/src/command-list.c:121
+#: subprojects/extensions-tool/src/command-list.c:128
 msgid "Show system-installed extensions"
 msgstr "Rodyti sistemoje įdiegtus plėtinius"
 
-#: subprojects/extensions-tool/src/command-list.c:124
+#: subprojects/extensions-tool/src/command-list.c:131
 msgid "Show enabled extensions"
 msgstr "Rodyti įjungtus plėtinius"
 
-#: subprojects/extensions-tool/src/command-list.c:127
+#: subprojects/extensions-tool/src/command-list.c:134
 msgid "Show disabled extensions"
 msgstr "Rodyti išjungtus plėtinius"
 
-#: subprojects/extensions-tool/src/command-list.c:130
+#: subprojects/extensions-tool/src/command-list.c:137
 msgid "Show extensions with preferences"
 msgstr "Rodyti plėtinius su nuostatomis"
 
-#: subprojects/extensions-tool/src/command-list.c:133
+#: subprojects/extensions-tool/src/command-list.c:140
+#| msgid "Show extensions with preferences"
+msgid "Show extensions with updates"
+msgstr "Rodyti plėtinius su atnaujinimais"
+
+#: subprojects/extensions-tool/src/command-list.c:143
 msgid "Print extension details"
 msgstr "Atspausdinti plėtinio informaciją"
 
-#: subprojects/extensions-tool/src/command-list.c:141
+#: subprojects/extensions-tool/src/command-list.c:151
 msgid "List installed extensions"
 msgstr "Išvardinti įdiegtus plėtinius"
 
@@ -2847,6 +2823,37 @@ msgstr[2] "%u įvesčių"
 msgid "System Sounds"
 msgstr "Sistemos garsai"
 
+#~ msgid "Next"
+#~ msgstr "Kitas"
+
+#~ msgctxt "button"
+#~ msgid "Sign In"
+#~ msgstr "Prisijungti"
+
+#~ msgid "Password: "
+#~ msgstr "Slaptažodis: "
+
+#~ msgid "Enter Password…"
+#~ msgstr "Įveskite slaptažodį…"
+
+#~ msgid "%A, %B %d"
+#~ msgstr "%A, %B %d d."
+
+#~ msgid "%d new message"
+#~ msgid_plural "%d new messages"
+#~ msgstr[0] "%d naujas pranešimas"
+#~ msgstr[1] "%d nauji pranešimai"
+#~ msgstr[2] "%d naujų pranešimų"
+
+#~ msgid "%d new notification"
+#~ msgid_plural "%d new notifications"
+#~ msgstr[0] "%d naujas pranešimas"
+#~ msgstr[1] "%d nauji pranešimai"
+#~ msgstr[2] "%d naujų pranešimų"
+
+#~ msgid "Log in as another user"
+#~ msgstr "Prisijungti kitu naudotoju"
+
 #~ msgid "Logout…"
 #~ msgstr "Atsijungti…"
 
@@ -2856,9 +2863,6 @@ msgstr "Sistemos garsai"
 #~| msgid "Username: "
 #~ msgid "Rename"
 #~ msgstr "Pervadinti"
-
-#~ msgid "Password:"
-#~ msgstr "Slaptažodis:"
 
 #~ msgid "Type again:"
 #~ msgstr "Įveskite dar kartą:"
