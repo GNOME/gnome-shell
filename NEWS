@@ -1,3 +1,29 @@
+3.35.91
+=======
+* Improve magnifier [Carlos; !984]
+* Only enable OSK automatically if touch-mode is enabled [Carlos; #872]
+* Merge screen shield and unlock dialog to new lock screen [Georges; !872]
+* Improve ShellBlur effect [Jonas; !991]
+* Adapt user avatar for new lock screen [Umang, Georges; !922]
+* Animate prompt transition on lock screen [Florian; !972]
+* Reduce font-size in dialog titles if text doesn't fit [Jonas; !1012]
+* Various lock screen improvements and bug fixes [Jakub, Florian, Georges;
+  !996, !997, !999, #2212, !998, !1006, #2215, #2213]
+* Misc. bug fixes and cleanups [Daniel, Florian, Jakub, nana-4, Jonas; #2170,
+  #2167, !936, !988, #2187, !994, !995, !938, #2194, #2203, !1004, !977, !1014]
+
+Contributors:
+  Jonas Dreßler, Carlos Garnacho, Umang Jain, Daniel Mustieles, Florian Müllner,
+  Georges Basile Stavracas Neto, Jakub Steiner, Daniel van Vugt, nana-4
+
+Translators:
+  Daniel Mustieles [es, pt_BR], Rafael Fontenelle [pt_BR], Danial Behzadi [fa],
+  Anders Jonsson [sv], Asier Sarasua Garmendia [eu], Aurimas Černius [lt],
+  Bruce Cowan [en_GB], sicklylife [ja], Fran Dieguez [gl], Kukuh Syafaat [id],
+  Emin Tufan Çetin [tr], Jiri Grönroos [fi], Jordi Mas [ca], Claude Paroz [fr],
+  Ask Hjorth Larsen [da], Марко Костић [sr], Piotr Drąg [pl],
+  Charles Monzat [fr], Balázs Úr [hu]
+
 3.35.90
 =======
 * Update default favorite apps [Michael; !907]
