@@ -23,7 +23,7 @@ class Indicator extends PanelMenu.SystemIndicator {
         super._init();
 
         this._desktopSettings = new Gio.Settings({ schema_id: 'org.gnome.desktop.interface' });
-        this._desktopSettings.connect(`changed::${SHOW_BATTERY_PERCENTAGE}`,
+        this._desktopSettings.connect('changed::%s'.format(SHOW_BATTERY_PERCENTAGE),
                                       this._sync.bind(this));
 
         this._indicator = this._addIndicator();
@@ -117,7 +117,7 @@ class Indicator extends PanelMenu.SystemIndicator {
             fillLevel === 100)
             icon = 'battery-level-100-charged-symbolic';
         else
-            icon = `battery-level-${fillLevel}${chargingState}-symbolic`;
+            icon = 'battery-level-%d%s-symbolic'.format(fillLevel, chargingState);
 
         // Make sure we fall back to fallback-icon-name and not GThemedIcon's
         // default fallbacks

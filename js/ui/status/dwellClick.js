@@ -45,8 +45,8 @@ class DwellClickIndicator extends PanelMenu.Button {
         this.add_child(this._hbox);
 
         this._a11ySettings = new Gio.Settings({ schema_id: MOUSE_A11Y_SCHEMA });
-        this._a11ySettings.connect(`changed::${KEY_DWELL_CLICK_ENABLED}`, this._syncMenuVisibility.bind(this));
-        this._a11ySettings.connect(`changed::${KEY_DWELL_MODE}`, this._syncMenuVisibility.bind(this));
+        this._a11ySettings.connect('changed::%s'.format(KEY_DWELL_CLICK_ENABLED), this._syncMenuVisibility.bind(this));
+        this._a11ySettings.connect('changed::%s'.format(KEY_DWELL_MODE), this._syncMenuVisibility.bind(this));
 
         this._seat = Clutter.get_default_backend().get_default_seat();
         this._seat.connect('ptr-a11y-dwell-click-type-changed', this._updateClickType.bind(this));

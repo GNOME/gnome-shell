@@ -277,10 +277,10 @@ var ExtensionsWindow = GObject.registerClass({
         });
         box.add(expander);
 
-        let errortext = `${exc}\n\nStack trace:\n${
-            // Indent stack trace.
-            exc.stack.split('\n').map(line => `  ${line}`).join('\n')
-        }`;
+        let errortext = '%s\n\nStack trace:\n'.format(exc);
+        // Indent stack trace.
+        errortext +=
+            exc.stack.split('\n').map(line => '  %s'.format(line)).join('\n');
 
         let buffer = new Gtk.TextBuffer({ text: errortext });
         let textview = new Gtk.TextView({
@@ -315,9 +315,9 @@ var ExtensionsWindow = GObject.registerClass({
             let clipboard = Gtk.Clipboard.get_default(w.get_display());
             // markdown for pasting in gitlab issues
             let lines = [
-                `The settings of extension ${row.uuid} had an error:`,
+                'The settings of extension %s had an error:'.format(row.uuid),
                 '```', // '`' (xgettext throws up on odd number of backticks)
-                `${exc}`,
+                exc.toString(),
                 '```', // '`'
                 '',
                 'Stack trace:',
@@ -403,7 +403,7 @@ var ExtensionsWindow = GObject.registerClass({
         this._shellProxy.ListExtensionsRemote(([extensionsMap], e) => {
             if (e) {
                 if (e instanceof Gio.DBusError) {
-                    log(`Failed to connect to shell proxy: ${e}`);
+                    log('Failed to connect to shell proxy: %s'.format(e.toString()));
                     this._mainStack.visible_child_name = 'noshell';
                 } else {
                     throw e;
@@ -703,10 +703,10 @@ var ExtensionRow = GObject.registerClass({
 
         this._updatesIcon.visible = this.hasUpdate;
 
-        this._versionLabel.label = `${this.version}`;
+        this._versionLabel.label = this.version;
         this._versionLabel.visible = this.version !== '';
 
-        this._authorLabel.label = `${this.creator}`;
+        this._authorLabel.label = this.creator;
         this._authorLabel.visible = this.creator !== '';
     }
 
@@ -747,7 +747,7 @@ function initEnvironment() {
         },
 
         logError(s) {
-            log(`ERROR: ${s}`);
+            log('ERROR: %s'.format(s));
         },
 
         userdatadir: GLib.build_filenamev([GLib.get_user_data_dir(), 'gnome-shell']),

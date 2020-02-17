@@ -174,7 +174,7 @@ Signals.addSignalMethods(NMConnectionItem.prototype);
 var NMConnectionSection = class NMConnectionSection {
     constructor(client) {
         if (this.constructor === NMConnectionSection)
-            throw new TypeError(`Cannot instantiate abstract type ${this.constructor.name}`);
+            throw new TypeError('Cannot instantiate abstract type %s'.format(this.constructor.name));
 
         this._client = client;
 
@@ -306,7 +306,7 @@ var NMConnectionDevice = class NMConnectionDevice extends NMConnectionSection {
         super(client);
 
         if (this.constructor === NMConnectionDevice)
-            throw new TypeError(`Cannot instantiate abstract type ${this.constructor.name}`);
+            throw new TypeError('Cannot instantiate abstract type %s'.format(this.constructor.name));
 
         this._device = device;
         this._description = '';
@@ -579,7 +579,8 @@ var NMDeviceModem = class extends NMConnectionDevice {
     }
 
     _getSignalIcon() {
-        return `network-cellular-signal-${signalToIcon(this._mobileDevice.signal_quality)}-symbolic`;
+        return 'network-cellular-signal-%s-symbolic'.format(
+            signalToIcon(this._mobileDevice.signal_quality));
     }
 };
 
@@ -682,10 +683,12 @@ var NMWirelessDialogItem = GObject.registerClass({
     }
 
     _getSignalIcon() {
-        if (this._ap.mode == NM80211Mode.ADHOC)
+        if (this._ap.mode == NM80211Mode.ADHOC) {
             return 'network-workgroup-symbolic';
-        else
-            return `network-wireless-signal-${signalToIcon(this._ap.strength)}-symbolic`;
+        } else {
+            return 'network-wireless-signal-%s-symbolic'.format(
+                signalToIcon(this._ap.strength));
+        }
     }
 });
 
@@ -1369,7 +1372,7 @@ var NMDeviceWireless = class {
         }
 
         if (this._canReachInternet())
-            return `network-wireless-signal-${signalToIcon(ap.strength)}-symbolic`;
+            return 'network-wireless-signal-%s-symbolic'.format(signalToIcon(ap.strength));
         else
             return 'network-wireless-no-route-symbolic';
     }
@@ -1700,7 +1703,7 @@ class Indicator extends PanelMenu.SystemIndicator {
             try {
                 this._deviceAdded(this._client, devices[i], true);
             } catch (e) {
-                log(`Failed to add device ${devices[i]}: ${e}`);
+                log('Failed to add device %s: %s'.format(devices[i], e.toString()));
             }
         }
         this._syncDeviceNames();
@@ -1998,7 +2001,7 @@ class Indicator extends PanelMenu.SystemIndicator {
                 } catch (e) { }
             });
         } else {
-            log(`Invalid result from portal helper: ${result}`);
+            log('Invalid result from portal helper: %s'.format(result));
         }
     }
 
@@ -2033,7 +2036,7 @@ class Indicator extends PanelMenu.SystemIndicator {
             new PortalHelperProxy(Gio.DBus.session, 'org.gnome.Shell.PortalHelper',
                                   '/org/gnome/Shell/PortalHelper', (proxy, error) => {
                                       if (error) {
-                                          log(`Error launching the portal helper: ${error}`);
+                                          log('Error launching the portal helper: %s'.format(error));
                                           return;
                                       }
 

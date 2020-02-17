@@ -257,7 +257,7 @@ function _initializeUI() {
         if (sessionMode.currentMode != 'gdm' &&
             sessionMode.currentMode != 'initial-setup') {
             GLib.log_structured(LOG_DOMAIN, GLib.LogLevelFlags.LEVEL_MESSAGE, {
-                'MESSAGE': `GNOME Shell started at ${_startDate}`,
+                'MESSAGE': 'GNOME Shell started at %s'.format(_startDate),
                 'MESSAGE_ID': GNOMESHELL_STARTED_MESSAGE_ID,
             });
         }
@@ -280,7 +280,7 @@ function _initializeUI() {
         let perfModuleName = GLib.getenv("SHELL_PERF_MODULE");
         if (perfModuleName) {
             let perfOutput = GLib.getenv("SHELL_PERF_OUTPUT");
-            let module = eval(`imports.perf.${perfModuleName};`);
+            let module = eval('imports.perf.%s;'.format(perfModuleName));
             Scripting.runPerfScript(module, perfOutput);
         }
     });
@@ -289,7 +289,7 @@ function _initializeUI() {
 function _getStylesheet(name) {
     let stylesheet;
 
-    stylesheet = Gio.File.new_for_uri(`resource:///org/gnome/shell/theme/${name}`);
+    stylesheet = Gio.File.new_for_uri('resource:///org/gnome/shell/theme/%s'.format(name));
     if (stylesheet.query_exists(null))
         return stylesheet;
 
@@ -301,7 +301,7 @@ function _getStylesheet(name) {
             return stylesheet;
     }
 
-    stylesheet = Gio.File.new_for_path(`${global.datadir}/theme/${name}`);
+    stylesheet = Gio.File.new_for_path('%s/theme/%s'.format(global.datadir, name));
     if (stylesheet.query_exists(null))
         return stylesheet;
 
@@ -359,12 +359,12 @@ function reloadThemeResource() {
     if (_themeResource)
         _themeResource._unregister();
 
-    _themeResource = Gio.Resource.load(`${global.datadir}/gnome-shell-theme.gresource`);
+    _themeResource = Gio.Resource.load('%s/gnome-shell-theme.gresource'.format(global.datadir));
     _themeResource._register();
 }
 
 function _loadOskLayouts() {
-    _oskResource = Gio.Resource.load(`${global.datadir}/gnome-shell-osk-layouts.gresource`);
+    _oskResource = Gio.Resource.load('%s/gnome-shell-osk-layouts.gresource'.format(global.datadir));
     _oskResource._register();
 }
 
@@ -418,9 +418,9 @@ function notify(msg, details) {
 function notifyError(msg, details) {
     // Also print to stderr so it's logged somewhere
     if (details)
-        log(`error: ${msg}: ${details}`);
+        log('error: %s: %s'.format(msg, details));
     else
-        log(`error: ${msg}`);
+        log('error: %s'.format(msg));
 
     notify(msg, details);
 }
@@ -687,7 +687,7 @@ function _queueBeforeRedraw(workId) {
  */
 function initializeDeferredWork(actor, callback) {
     // Turn into a string so we can use as an object property
-    let workId = `${++_deferredWorkSequence}`;
+    let workId = (++_deferredWorkSequence).toString();
     _deferredWorkData[workId] = { actor,
                                   callback };
     actor.connect('notify::mapped', () => {

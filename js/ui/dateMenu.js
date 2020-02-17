@@ -230,7 +230,7 @@ class WorldClocksSection extends St.Button {
 
     _onProxyReady(proxy, error) {
         if (error) {
-            log(`Failed to create GNOME Clocks proxy: ${error}`);
+            log('Failed to create GNOME Clocks proxy: %s'.format(error));
             return;
         }
 

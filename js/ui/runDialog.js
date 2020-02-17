@@ -194,7 +194,7 @@ class RunDialog extends ModalDialog.ModalDialog {
                 if (inTerminal) {
                     let exec = this._terminalSettings.get_string(EXEC_KEY);
                     let execArg = this._terminalSettings.get_string(EXEC_ARG_KEY);
-                    command = `${exec} ${execArg} ${input}`;
+                    command = '%s %s %s'.format(exec, execArg, input);
                 }
                 Util.trySpawnCommandLine(command);
             } catch (e) {
@@ -205,7 +205,7 @@ class RunDialog extends ModalDialog.ModalDialog {
                 } else {
                     if (input.charAt(0) == '~')
                         input = input.slice(1);
-                    path = `${GLib.get_home_dir()}/${input}`;
+                    path = '%s/%s'.format(GLib.get_home_dir(), input);
                 }
 
                 if (GLib.file_test(path, GLib.FileTest.EXISTS)) {
