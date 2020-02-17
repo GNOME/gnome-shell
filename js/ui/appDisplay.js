@@ -1324,8 +1324,18 @@ class FolderView extends BaseAppView {
         action.connect('pan', this._onPan.bind(this));
         this._scrollView.add_action(action);
 
-        this._folder.connect('changed', this._redisplay.bind(this));
+        this.connect('destroy', this._onDestroy.bind(this));
+
+        this._folderChangedId = this._folder.connect(
+            'changed', this._redisplay.bind(this));
         this._redisplay();
+    }
+
+    _onDestroy() {
+        if (this._folderChangedId) {
+            this._folder.disconnect(this._folderChangedId);
+            delete this._folderChangedId;
+        }
     }
 
     _childFocused(actor) {
@@ -1515,7 +1525,8 @@ var FolderIcon = GObject.registerClass({
 
         this.connect('destroy', this._onDestroy.bind(this));
 
-        this._folder.connect('changed', this._sync.bind(this));
+        this._folderChangedId = this._folder.connect(
+            'changed', this._sync.bind(this));
         this._sync();
     }
 
@@ -1525,9 +1536,9 @@ var FolderIcon = GObject.registerClass({
 
         this.view.destroy();
 
-        if (this._spaceReadySignalId) {
-            this._parentView.disconnect(this._spaceReadySignalId);
-            this._spaceReadySignalId = 0;
+        if (this._folderChangedId) {
+            this._folder.disconnect(this._folderChangedId);
+            delete this._folderChangedId;
         }
 
         if (this._dialog)
