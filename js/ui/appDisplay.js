@@ -1429,6 +1429,22 @@ class FolderView extends BaseAppView {
         return apps;
     }
 
+    addApp(app) {
+        let folderApps = this._folder.get_strv('apps');
+        folderApps.push(app.id);
+
+        this._folder.set_strv('apps', folderApps);
+
+        // Also remove from 'excluded-apps' if the app id is listed
+        // there. This is only possible on categories-based folders.
+        let excludedApps = this._folder.get_strv('excluded-apps');
+        let index = excludedApps.indexOf(app.id);
+        if (index >= 0) {
+            excludedApps.splice(index, 1);
+            this._folder.set_strv('excluded-apps', excludedApps);
+        }
+    }
+
     removeApp(app) {
         let folderApps = this._folder.get_strv('apps');
         let index = folderApps.indexOf(app.id);
@@ -1459,8 +1475,6 @@ class FolderView extends BaseAppView {
         } else {
             this._folder.set_strv('apps', folderApps);
         }
-
-        return true;
     }
 });
 
@@ -1589,20 +1603,7 @@ var FolderIcon = GObject.registerClass({
         if (!this._canAccept(source))
             return false;
 
-        let app = source.app;
-        let folderApps = this._folder.get_strv('apps');
-        folderApps.push(app.id);
-
-        this._folder.set_strv('apps', folderApps);
-
-        // Also remove from 'excluded-apps' if the app id is listed
-        // there. This is only possible on categories-based folders.
-        let excludedApps = this._folder.get_strv('excluded-apps');
-        let index = excludedApps.indexOf(app.id);
-        if (index >= 0) {
-            excludedApps.splice(index, 1);
-            this._folder.set_strv('excluded-apps', excludedApps);
-        }
+        this.view.addApp(source.app);
 
         return true;
     }
