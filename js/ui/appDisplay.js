@@ -1911,6 +1911,8 @@ var AppFolderDialog = GObject.registerClass({
             contentBox.get_width(),
             contentBox.get_height() - entryBoxHeight - spacing);
 
+        this._view._grid.topPadding = 0;
+
         super.vfunc_allocate(box, flags);
 
         // We can only start zooming after receiving an allocation
