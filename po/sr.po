@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2020-02-12 19:34+0000\n"
-"PO-Revision-Date: 2020-02-14 13:00+0100\n"
+"POT-Creation-Date: 2020-02-17 11:08+0000\n"
+"PO-Revision-Date: 2020-02-17 21:02+0100\n"
 "Last-Translator: Марко М. Костић <marko.m.kostic@gmail.com>\n"
 "Language-Team: српски <gnome-sr@googlegroups.org>\n"
 "Language: sr\n"
@@ -27,7 +27,7 @@ msgstr ""
 
 #: data/50-gnome-shell-system.xml:6
 msgid "System"
-msgstr "Систем"
+msgstr "Упишите тражено"
 
 #: data/50-gnome-shell-system.xml:9
 msgid "Show the notification list"
@@ -552,6 +552,15 @@ msgstr ""
 msgid "Log Out…"
 msgstr "Одјава…"
 
+#. Cisco LEAP
+#: js/gdm/authPrompt.js:235 js/ui/components/networkAgent.js:202
+#: js/ui/components/networkAgent.js:214 js/ui/components/networkAgent.js:238
+#: js/ui/components/networkAgent.js:259 js/ui/components/networkAgent.js:279
+#: js/ui/components/networkAgent.js:289 js/ui/components/polkitAgent.js:277
+#: js/ui/shellMountOperation.js:326
+msgid "Password"
+msgstr "Лозинка"
+
 #: js/gdm/loginDialog.js:318
 msgid "Choose Session"
 msgstr "Изабери сесију"
@@ -567,11 +576,15 @@ msgstr "Није на списку?"
 msgid "(e.g., user or %s)"
 msgstr "(нпр., корисник или %s)"
 
-#: js/gdm/loginDialog.js:917
-msgid "Username…"
-msgstr "Корисник…"
+#. TTLS and PEAP are actually much more complicated, but this complication
+#. is not visible here since we only care about phase2 authentication
+#. (and don't even care of which one)
+#: js/gdm/loginDialog.js:917 js/ui/components/networkAgent.js:234
+#: js/ui/components/networkAgent.js:257 js/ui/components/networkAgent.js:275
+msgid "Username"
+msgstr "Корисник"
 
-#: js/gdm/loginDialog.js:1252
+#: js/gdm/loginDialog.js:1253
 msgid "Login Window"
 msgstr "Прозор за пријављивање"
 
@@ -1106,37 +1119,22 @@ msgstr "Или можете повезати притиском на дугме 
 msgid "Connect"
 msgstr "Повежи се"
 
-#. Cisco LEAP
-#: js/ui/components/networkAgent.js:202 js/ui/components/networkAgent.js:214
-#: js/ui/components/networkAgent.js:238 js/ui/components/networkAgent.js:259
-#: js/ui/components/networkAgent.js:279 js/ui/components/networkAgent.js:289
-msgid "Password: "
-msgstr "Лозинка: "
-
 #. static WEP
 #: js/ui/components/networkAgent.js:207
-msgid "Key: "
-msgstr "Кључ: "
-
-#. TTLS and PEAP are actually much more complicated, but this complication
-#. is not visible here since we only care about phase2 authentication
-#. (and don't even care of which one)
-#: js/ui/components/networkAgent.js:234 js/ui/components/networkAgent.js:257
-#: js/ui/components/networkAgent.js:275
-msgid "Username: "
-msgstr "Корисник: "
+msgid "Key"
+msgstr "Кључ"
 
 #: js/ui/components/networkAgent.js:242 js/ui/components/networkAgent.js:265
-msgid "Private key password: "
-msgstr "Лозинка приватног кључа: "
+msgid "Private key password"
+msgstr "Лозинка приватног кључа:"
 
 #: js/ui/components/networkAgent.js:263
-msgid "Identity: "
-msgstr "Идентитет: "
+msgid "Identity"
+msgstr "Идентитет"
 
 #: js/ui/components/networkAgent.js:277
-msgid "Service: "
-msgstr "Услуга: "
+msgid "Service"
+msgstr "Услуга"
 
 #: js/ui/components/networkAgent.js:306 js/ui/components/networkAgent.js:334
 #: js/ui/components/networkAgent.js:681 js/ui/components/networkAgent.js:702
@@ -1156,8 +1154,8 @@ msgid "Wired 802.1X authentication"
 msgstr "Потврђивање идентитета за жичану 802.1X везу"
 
 #: js/ui/components/networkAgent.js:313
-msgid "Network name: "
-msgstr "Назив мреже: "
+msgid "Network name"
+msgstr "Назив мреже"
 
 #: js/ui/components/networkAgent.js:318 js/ui/components/networkAgent.js:690
 msgid "DSL authentication"
@@ -1172,8 +1170,8 @@ msgid "PIN code is needed for the mobile broadband device"
 msgstr "Потребан је ПИН код за повезивање мобилног широкопојасног уређаја"
 
 #: js/ui/components/networkAgent.js:327
-msgid "PIN: "
-msgstr "ПИН: "
+msgid "PIN"
+msgstr "ПИН"
 
 #: js/ui/components/networkAgent.js:335 js/ui/components/networkAgent.js:687
 #: js/ui/components/networkAgent.js:691 js/ui/components/networkAgent.js:703
@@ -1209,10 +1207,6 @@ msgstr "Потврди идентитет"
 #: js/ui/components/polkitAgent.js:254 js/ui/shellMountOperation.js:402
 msgid "Sorry, that didn’t work. Please try again."
 msgstr "Погрешили сте! Покушајте поново."
-
-#: js/ui/components/polkitAgent.js:277 js/ui/shellMountOperation.js:326
-msgid "Enter Password…"
-msgstr "Унеси лозинку…"
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
@@ -1649,8 +1643,8 @@ msgstr "Преглед"
 #. active; it should not exceed ~30
 #. characters.
 #: js/ui/overview.js:107
-msgid "Type to search…"
-msgstr "Упишите текст за претрагу…"
+msgid "Type to search"
+msgstr "Упишите жељено"
 
 #: js/ui/padOsd.js:95
 msgid "New shortcut…"
@@ -1809,8 +1803,8 @@ msgstr ""
 "%s</i>."
 
 #: js/ui/shellMountOperation.js:306
-msgid "Enter PIM Number…"
-msgstr "Унеси ЛИЧ (PIM) број…"
+msgid "PIM Number"
+msgstr "ЛИЧ (PIM) број"
 
 #: js/ui/shellMountOperation.js:365
 msgid "Remember Password"
@@ -2357,7 +2351,7 @@ msgstr "Само спољни"
 msgid "Built-in Only"
 msgstr "Само уграђени"
 
-#: js/ui/unlockDialog.js:459
+#: js/ui/unlockDialog.js:552
 msgid "Unlock Window"
 msgstr "Откључај прозор"
 
@@ -2856,6 +2850,15 @@ msgstr[3] "%u улаз"
 msgid "System Sounds"
 msgstr "Системски звуци"
 
+#~ msgid "Username…"
+#~ msgstr "Корисник…"
+
+#~ msgid "Password: "
+#~ msgstr "Лозинка: "
+
+#~ msgid "Enter Password…"
+#~ msgstr "Унеси лозинку…"
+
 #~ msgid "Browse in Software"
 #~ msgstr "Прегледај у Програмима"
 
@@ -2868,9 +2871,6 @@ msgstr "Системски звуци"
 
 #~ msgid "Rename"
 #~ msgstr "Преименуј"
-
-#~ msgid "Password:"
-#~ msgstr "Лозинка:"
 
 #~ msgid "Type again:"
 #~ msgstr "Упишите поново:"
