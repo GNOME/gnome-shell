@@ -21,8 +21,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master fr\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2020-02-12 19:34+0000\n"
-"PO-Revision-Date: 2020-02-13 16:08+0100\n"
+"POT-Creation-Date: 2020-02-17 11:08+0000\n"
+"PO-Revision-Date: 2020-02-17 18:39+0100\n"
 "Last-Translator: Claude Paroz <claude@2xlibre.net>\n"
 "Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
 "Language: fr\n"
@@ -586,6 +586,16 @@ msgstr ""
 msgid "Log Out…"
 msgstr "Fermer la session…"
 
+#. Cisco LEAP
+#: js/gdm/authPrompt.js:235 js/ui/components/networkAgent.js:202
+#: js/ui/components/networkAgent.js:214 js/ui/components/networkAgent.js:238
+#: js/ui/components/networkAgent.js:259 js/ui/components/networkAgent.js:279
+#: js/ui/components/networkAgent.js:289 js/ui/components/polkitAgent.js:277
+#: js/ui/shellMountOperation.js:326
+#| msgid "Password:"
+msgid "Password"
+msgstr "Mot de passe"
+
 #: js/gdm/loginDialog.js:318
 msgid "Choose Session"
 msgstr "Choisir une session"
@@ -601,12 +611,16 @@ msgstr "Absent de la liste ?"
 msgid "(e.g., user or %s)"
 msgstr "(par ex. utilisateur ou %s)"
 
-#: js/gdm/loginDialog.js:917
+#. TTLS and PEAP are actually much more complicated, but this complication
+#. is not visible here since we only care about phase2 authentication
+#. (and don't even care of which one)
+#: js/gdm/loginDialog.js:917 js/ui/components/networkAgent.js:234
+#: js/ui/components/networkAgent.js:257 js/ui/components/networkAgent.js:275
 #| msgid "Username: "
-msgid "Username…"
-msgstr "Nom d’utilisateur…"
+msgid "Username"
+msgstr "Nom d’utilisateur"
 
-#: js/gdm/loginDialog.js:1252
+#: js/gdm/loginDialog.js:1253
 msgid "Login Window"
 msgstr "Fenêtre de connexion"
 
@@ -1136,37 +1150,26 @@ msgstr ""
 msgid "Connect"
 msgstr "Se connecter"
 
-#. Cisco LEAP
-#: js/ui/components/networkAgent.js:202 js/ui/components/networkAgent.js:214
-#: js/ui/components/networkAgent.js:238 js/ui/components/networkAgent.js:259
-#: js/ui/components/networkAgent.js:279 js/ui/components/networkAgent.js:289
-msgid "Password: "
-msgstr "Mot de passe : "
-
 #. static WEP
 #: js/ui/components/networkAgent.js:207
-msgid "Key: "
-msgstr "Clé : "
-
-#. TTLS and PEAP are actually much more complicated, but this complication
-#. is not visible here since we only care about phase2 authentication
-#. (and don't even care of which one)
-#: js/ui/components/networkAgent.js:234 js/ui/components/networkAgent.js:257
-#: js/ui/components/networkAgent.js:275
-msgid "Username: "
-msgstr "Nom d’utilisateur : "
+#| msgid "Key: "
+msgid "Key"
+msgstr "Clé"
 
 #: js/ui/components/networkAgent.js:242 js/ui/components/networkAgent.js:265
-msgid "Private key password: "
-msgstr "Mot de passe de la clé privée : "
+#| msgid "Private key password: "
+msgid "Private key password"
+msgstr "Mot de passe de la clé privée"
 
 #: js/ui/components/networkAgent.js:263
-msgid "Identity: "
-msgstr "Identité : "
+#| msgid "Identity: "
+msgid "Identity"
+msgstr "Identité"
 
 #: js/ui/components/networkAgent.js:277
-msgid "Service: "
-msgstr "Service : "
+#| msgid "Service: "
+msgid "Service"
+msgstr "Service"
 
 #: js/ui/components/networkAgent.js:306 js/ui/components/networkAgent.js:334
 #: js/ui/components/networkAgent.js:681 js/ui/components/networkAgent.js:702
@@ -1187,8 +1190,9 @@ msgid "Wired 802.1X authentication"
 msgstr "Authentification filaire 802.1X"
 
 #: js/ui/components/networkAgent.js:313
-msgid "Network name: "
-msgstr "Nom du réseau : "
+#| msgid "Network name: "
+msgid "Network name"
+msgstr "Nom du réseau"
 
 #: js/ui/components/networkAgent.js:318 js/ui/components/networkAgent.js:690
 msgid "DSL authentication"
@@ -1203,8 +1207,9 @@ msgid "PIN code is needed for the mobile broadband device"
 msgstr "Un code PIN est nécessaire pour les connexions mobiles"
 
 #: js/ui/components/networkAgent.js:327
-msgid "PIN: "
-msgstr "PIN : "
+#| msgid "PIN: "
+msgid "PIN"
+msgstr "PIN"
 
 #: js/ui/components/networkAgent.js:335 js/ui/components/networkAgent.js:687
 #: js/ui/components/networkAgent.js:691 js/ui/components/networkAgent.js:703
@@ -1240,10 +1245,6 @@ msgstr "S’authentifier"
 #: js/ui/components/polkitAgent.js:254 js/ui/shellMountOperation.js:402
 msgid "Sorry, that didn’t work. Please try again."
 msgstr "Échec de l’authentification. Essayez à nouveau."
-
-#: js/ui/components/polkitAgent.js:277 js/ui/shellMountOperation.js:326
-msgid "Enter Password…"
-msgstr "Saisissez un mot de passe…"
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
@@ -1685,8 +1686,9 @@ msgstr "Vue d’ensemble"
 #. active; it should not exceed ~30
 #. characters.
 #: js/ui/overview.js:107
-msgid "Type to search…"
-msgstr "Rechercher…"
+#| msgid "Type to search…"
+msgid "Type to search"
+msgstr "Saisissez votre recherche"
 
 #: js/ui/padOsd.js:95
 msgid "New shortcut…"
@@ -1843,8 +1845,9 @@ msgstr ""
 "plutôt l’utilitaire <i>%s</i>."
 
 #: js/ui/shellMountOperation.js:306
-msgid "Enter PIM Number…"
-msgstr "Saisissez le numéro PIM…"
+#| msgid "Enter PIM Number…"
+msgid "PIM Number"
+msgstr "Numéro PIM"
 
 #: js/ui/shellMountOperation.js:365
 msgid "Remember Password"
@@ -2383,7 +2386,7 @@ msgstr "Externe seulement"
 msgid "Built-in Only"
 msgstr "Intégré seulement"
 
-#: js/ui/unlockDialog.js:459
+#: js/ui/unlockDialog.js:552
 msgid "Unlock Window"
 msgstr "Fenêtre de déverrouillage"
 
@@ -2689,7 +2692,6 @@ msgid "Show extensions with preferences"
 msgstr "Afficher les extensions avec des préférences"
 
 #: subprojects/extensions-tool/src/command-list.c:140
-#| msgid "Show extensions with preferences"
 msgid "Show extensions with updates"
 msgstr "Afficher les extensions avec des mises à jour"
 
@@ -2880,6 +2882,16 @@ msgstr[1] "%u entrées"
 msgid "System Sounds"
 msgstr "Sons système"
 
+#~| msgid "Username: "
+#~ msgid "Username…"
+#~ msgstr "Nom d’utilisateur…"
+
+#~ msgid "Password: "
+#~ msgstr "Mot de passe : "
+
+#~ msgid "Enter Password…"
+#~ msgstr "Saisissez un mot de passe…"
+
 #~ msgid "Next"
 #~ msgstr "Suivant"
 
@@ -2905,9 +2917,6 @@ msgstr "Sons système"
 
 #~ msgid "Rename"
 #~ msgstr "Renommer"
-
-#~ msgid "Password:"
-#~ msgstr "Mot de passe :"
 
 #~ msgid "Type again:"
 #~ msgstr "Saisissez à nouveau :"
