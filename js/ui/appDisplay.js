@@ -431,6 +431,10 @@ var AllView = GObject.registerClass({
 
     _redisplay() {
         super._redisplay();
+
+        this._folderIcons.forEach(icon => {
+            icon.view._redisplay();
+        });
         this._refilterApps();
     }
 
@@ -1324,18 +1328,7 @@ class FolderView extends BaseAppView {
         action.connect('pan', this._onPan.bind(this));
         this._scrollView.add_action(action);
 
-        this.connect('destroy', this._onDestroy.bind(this));
-
-        this._folderChangedId = this._folder.connect(
-            'changed', this._redisplay.bind(this));
         this._redisplay();
-    }
-
-    _onDestroy() {
-        if (this._folderChangedId) {
-            this._folder.disconnect(this._folderChangedId);
-            delete this._folderChangedId;
-        }
     }
 
     _childFocused(actor) {
@@ -1630,10 +1623,10 @@ var FolderIcon = GObject.registerClass({
     }
 
     _sync() {
+        this.emit('apps-changed');
         this._updateName();
         this.visible = this.view.getAllItems().length > 0;
         this.icon.update();
-        this.emit('apps-changed');
     }
 
     _createIcon(iconSize) {
