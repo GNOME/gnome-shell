@@ -1501,8 +1501,8 @@ var FolderIcon = GObject.registerClass({
 
         this.connect('destroy', this._onDestroy.bind(this));
 
-        this._folder.connect('changed', this._redisplay.bind(this));
-        this._redisplay();
+        this._folder.connect('changed', this._sync.bind(this));
+        this._sync();
     }
 
     _onDestroy() {
@@ -1617,7 +1617,7 @@ var FolderIcon = GObject.registerClass({
         this.emit('name-changed');
     }
 
-    _redisplay() {
+    _sync() {
         this._updateName();
         this.visible = this.view.getAllItems().length > 0;
         this.icon.update();
@@ -2440,7 +2440,7 @@ var AppIconMenu = class AppIconMenu extends PopupMenu.PopupMenu {
         Main.uiGroup.add_actor(this.actor);
     }
 
-    _redisplay() {
+    _rebuildMenu() {
         this.removeAll();
 
         let windows = this._source.app.get_windows().filter(
@@ -2557,7 +2557,7 @@ var AppIconMenu = class AppIconMenu extends PopupMenu.PopupMenu {
     }
 
     popup(_activatingButton) {
-        this._redisplay();
+        this._rebuildMenu();
         this.open();
     }
 };
