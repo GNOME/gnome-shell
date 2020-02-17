@@ -1,7 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported Dialog, MessageDialogContent, ListSection, ListSectionItem */
 
-const { Clutter, GObject, Pango, St } = imports.gi;
+const { Clutter, GObject, Meta, Pango, St } = imports.gi;
 
 function _setLabel(label, value) {
     label.set({
@@ -179,8 +179,18 @@ var MessageDialogContent = GObject.registerClass({
         };
         super._init(Object.assign(defaultParams, params));
 
+        this.connect('notify::size', this._updateTitleStyle.bind(this));
+        this.connect('destroy', this._onDestroy.bind(this));
+
         this.add_child(this._title);
         this.add_child(this._description);
+    }
+
+    _onDestroy() {
+        if (this._updateTitleStyleLater) {
+            Meta.later_remove(this._updateTitleStyleLater);
+            delete this._updateTitleStyleLater;
+        }
     }
 
     get title() {
@@ -191,8 +201,32 @@ var MessageDialogContent = GObject.registerClass({
         return this._description.text;
     }
 
+    _updateTitleStyle() {
+        if (!this._title.mapped)
+            return;
+
+        this._title.ensure_style();
+        const [, titleNatWidth] = this._title.get_preferred_width(-1);
+
+        if (titleNatWidth > this.width) {
+            if (this._updateTitleStyleLater)
+                return;
+
+            this._updateTitleStyleLater = Meta.later_add(Meta.LaterType.BEFORE_REDRAW, () => {
+                this._updateTitleStyleLater = 0;
+                this._title.add_style_class_name('leightweight');
+                return false;
+            });
+        }
+
+    }
+
     set title(title) {
         _setLabel(this._title, title);
+
+        this._title.remove_style_class_name('leightweight');
+        this._updateTitleStyle();
+
         this.notify('title');
     }
 

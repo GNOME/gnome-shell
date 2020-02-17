@@ -42,6 +42,11 @@
     text-align: center;
     font-size: 18pt;
     font-weight: 800;
+
+    &.leightweight {
+      font-size: 13pt;
+      font-weight: 800;
+    }
   }
   .message-dialog-description { text-align: center; }
 }
