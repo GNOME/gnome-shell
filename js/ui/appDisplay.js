@@ -1902,6 +1902,7 @@ var AppFolderDialog = GObject.registerClass({
 
     vfunc_allocate(box, flags) {
         let contentBox = this.get_theme_node().get_content_box(box);
+        contentBox = this._viewBox.get_theme_node().get_content_box(contentBox);
 
         let [, entryBoxHeight] = this._entryBox.get_size();
         let spacing = this._viewBox.layout_manager.spacing;
