@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2020-02-12 19:34+0000\n"
-"PO-Revision-Date: 2020-02-13 01:12+0000\n"
+"POT-Creation-Date: 2020-02-17 22:27+0000\n"
+"PO-Revision-Date: 2020-02-18 07:22+0000\n"
 "Last-Translator: Danial Behzadi <dani.behzi@ubuntu.com>\n"
 "Language-Team: Persian <>\n"
 "Language: fa\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
 "X-Poedit-SourceCharset: utf-8\n"
-"X-Generator: Poedit 2.3\n"
+"X-Generator: Poedit 2.2.4\n"
 
 #: data/50-gnome-shell-system.xml:6
 msgid "System"
@@ -388,9 +388,9 @@ msgstr "اگر افزونه را بردارید، باید برای به کار 
 
 #: js/extensionPrefs/main.js:144 js/ui/audioDeviceSelection.js:57
 #: js/ui/components/networkAgent.js:107 js/ui/components/polkitAgent.js:139
-#: js/ui/endSessionDialog.js:374 js/ui/extensionDownloader.js:166
+#: js/ui/endSessionDialog.js:374 js/ui/extensionDownloader.js:165
 #: js/ui/shellMountOperation.js:376 js/ui/shellMountOperation.js:386
-#: js/ui/status/network.js:910
+#: js/ui/status/network.js:913
 msgid "Cancel"
 msgstr "لغو"
 
@@ -517,6 +517,15 @@ msgstr ""
 msgid "Log Out…"
 msgstr "خروج…"
 
+#. Cisco LEAP
+#: js/gdm/authPrompt.js:235 js/ui/components/networkAgent.js:202
+#: js/ui/components/networkAgent.js:218 js/ui/components/networkAgent.js:242
+#: js/ui/components/networkAgent.js:263 js/ui/components/networkAgent.js:283
+#: js/ui/components/networkAgent.js:293 js/ui/components/polkitAgent.js:277
+#: js/ui/shellMountOperation.js:326
+msgid "Password"
+msgstr "گذرواژه"
+
 #: js/gdm/loginDialog.js:318
 msgid "Choose Session"
 msgstr "انتخاب نشست"
@@ -532,11 +541,15 @@ msgstr "فهرست نشده؟"
 msgid "(e.g., user or %s)"
 msgstr "(برای مثال, کاربر یا %s)"
 
-#: js/gdm/loginDialog.js:917
-msgid "Username…"
-msgstr "نام‌کاربری…"
+#. TTLS and PEAP are actually much more complicated, but this complication
+#. is not visible here since we only care about phase2 authentication
+#. (and don't even care of which one)
+#: js/gdm/loginDialog.js:917 js/ui/components/networkAgent.js:238
+#: js/ui/components/networkAgent.js:261 js/ui/components/networkAgent.js:279
+msgid "Username"
+msgstr "نام‌کاربری"
 
-#: js/gdm/loginDialog.js:1252
+#: js/gdm/loginDialog.js:1253
 msgid "Login Window"
 msgstr "پنجرهٔ ورود به سامانه"
 
@@ -761,11 +774,11 @@ msgid "%B %-d %Y, %l∶%M %p"
 msgstr "%-Od %OB %OY، %Ol:%OM %p"
 
 #. TRANSLATORS: this is the title of the wifi captive portal login window
-#: js/portalHelper/main.js:42
+#: js/portalHelper/main.js:41
 msgid "Hotspot Login"
 msgstr "ورود نقطهٔ داغ"
 
-#: js/portalHelper/main.js:88
+#: js/portalHelper/main.js:87
 msgid ""
 "Your connection to this hotspot login is not secure. Passwords or other "
 "information you enter on this page can be viewed by people nearby."
@@ -880,31 +893,31 @@ msgstr "5"
 #: js/ui/calendar.js:70
 msgctxt "grid sunday"
 msgid "S"
-msgstr "۱ش"
+msgstr "ی"
 
 #. Translators: Calendar grid abbreviation for Monday
 #: js/ui/calendar.js:72
 msgctxt "grid monday"
 msgid "M"
-msgstr "۲ش"
+msgstr "د"
 
 #. Translators: Calendar grid abbreviation for Tuesday
 #: js/ui/calendar.js:74
 msgctxt "grid tuesday"
 msgid "T"
-msgstr "۳ش"
+msgstr "س"
 
 #. Translators: Calendar grid abbreviation for Wednesday
 #: js/ui/calendar.js:76
 msgctxt "grid wednesday"
 msgid "W"
-msgstr "۴ش"
+msgstr "چ"
 
 #. Translators: Calendar grid abbreviation for Thursday
 #: js/ui/calendar.js:78
 msgctxt "grid thursday"
 msgid "T"
-msgstr "۵ش"
+msgstr "پ"
 
 #. Translators: Calendar grid abbreviation for Friday
 #: js/ui/calendar.js:80
@@ -1043,89 +1056,73 @@ msgid "Alternatively you can connect by pushing the “WPS” button on your rou
 msgstr "به عنوان جایگزین می‌توانید با فشردن دکمهٔ WPS روی مسیریابتان، وصل شوید."
 
 #: js/ui/components/networkAgent.js:101 js/ui/status/network.js:223
-#: js/ui/status/network.js:314 js/ui/status/network.js:913
+#: js/ui/status/network.js:314 js/ui/status/network.js:916
 msgid "Connect"
 msgstr "اتّصال"
 
-#. Cisco LEAP
-#: js/ui/components/networkAgent.js:202 js/ui/components/networkAgent.js:214
-#: js/ui/components/networkAgent.js:238 js/ui/components/networkAgent.js:259
-#: js/ui/components/networkAgent.js:279 js/ui/components/networkAgent.js:289
-msgid "Password: "
-msgstr "گذرواژه: "
+#: js/ui/components/networkAgent.js:208
+msgid "Key"
+msgstr "کلید"
 
-#. static WEP
-#: js/ui/components/networkAgent.js:207
-msgid "Key: "
-msgstr "کلید: "
+#: js/ui/components/networkAgent.js:246 js/ui/components/networkAgent.js:269
+msgid "Private key password"
+msgstr "گذرواژهٔ کلید خصوصی"
 
-#. TTLS and PEAP are actually much more complicated, but this complication
-#. is not visible here since we only care about phase2 authentication
-#. (and don't even care of which one)
-#: js/ui/components/networkAgent.js:234 js/ui/components/networkAgent.js:257
-#: js/ui/components/networkAgent.js:275
-msgid "Username: "
-msgstr "نام‌کاربری: "
+#: js/ui/components/networkAgent.js:267
+msgid "Identity"
+msgstr "شناسه"
 
-#: js/ui/components/networkAgent.js:242 js/ui/components/networkAgent.js:265
-msgid "Private key password: "
-msgstr "گذرواژهٔ کلید خصوصی: "
+#: js/ui/components/networkAgent.js:281
+msgid "Service"
+msgstr "خدمت"
 
-#: js/ui/components/networkAgent.js:263
-msgid "Identity: "
-msgstr "شناسه: "
-
-#: js/ui/components/networkAgent.js:277
-msgid "Service: "
-msgstr "خدمت: "
-
-#: js/ui/components/networkAgent.js:306 js/ui/components/networkAgent.js:334
-#: js/ui/components/networkAgent.js:681 js/ui/components/networkAgent.js:702
+#: js/ui/components/networkAgent.js:310 js/ui/components/networkAgent.js:338
+#: js/ui/components/networkAgent.js:685 js/ui/components/networkAgent.js:706
 msgid "Authentication required"
 msgstr "نیاز به تأیید هویت است"
 
-#: js/ui/components/networkAgent.js:307 js/ui/components/networkAgent.js:682
+#: js/ui/components/networkAgent.js:311 js/ui/components/networkAgent.js:686
 #, javascript-format
 msgid ""
 "Passwords or encryption keys are required to access the wireless network “%s”."
 msgstr "برای دسترسی به شبکهٔ وای‌فای «%s» نیاز به گذرواژه یا کلیدهای رمزنگاری است."
 
-#: js/ui/components/networkAgent.js:311 js/ui/components/networkAgent.js:686
+#: js/ui/components/networkAgent.js:315 js/ui/components/networkAgent.js:690
 msgid "Wired 802.1X authentication"
 msgstr "تایید هویت 802.1X سیمی"
 
-#: js/ui/components/networkAgent.js:313
-msgid "Network name: "
-msgstr "نام شبکه: "
+#: js/ui/components/networkAgent.js:317
+msgid "Network name"
+msgstr "نام شبکه"
 
-#: js/ui/components/networkAgent.js:318 js/ui/components/networkAgent.js:690
+#: js/ui/components/networkAgent.js:322 js/ui/components/networkAgent.js:694
 msgid "DSL authentication"
 msgstr "تایید هویت DSL"
 
-#: js/ui/components/networkAgent.js:325 js/ui/components/networkAgent.js:695
+#: js/ui/components/networkAgent.js:329 js/ui/components/networkAgent.js:699
 msgid "PIN code required"
 msgstr "رمز پین لازم است"
 
-#: js/ui/components/networkAgent.js:326 js/ui/components/networkAgent.js:696
+#: js/ui/components/networkAgent.js:330 js/ui/components/networkAgent.js:700
 msgid "PIN code is needed for the mobile broadband device"
 msgstr "رمز پین برای دستگاه پهن‌باند همراه لازم است"
 
-#: js/ui/components/networkAgent.js:327
-msgid "PIN: "
-msgstr "پین: "
+#: js/ui/components/networkAgent.js:331
+msgid "PIN"
+msgstr "پین"
 
-#: js/ui/components/networkAgent.js:335 js/ui/components/networkAgent.js:687
-#: js/ui/components/networkAgent.js:691 js/ui/components/networkAgent.js:703
-#: js/ui/components/networkAgent.js:707
+#: js/ui/components/networkAgent.js:339 js/ui/components/networkAgent.js:691
+#: js/ui/components/networkAgent.js:695 js/ui/components/networkAgent.js:707
+#: js/ui/components/networkAgent.js:711
 #, javascript-format
 msgid "A password is required to connect to “%s”."
 msgstr "برای اتصال به «%s» گذرواژه لازم است."
 
-#: js/ui/components/networkAgent.js:670 js/ui/status/network.js:1688
+#: js/ui/components/networkAgent.js:674 js/ui/status/network.js:1691
 msgid "Network Manager"
 msgstr "مدیر شبکه"
 
-#: js/ui/components/networkAgent.js:706
+#: js/ui/components/networkAgent.js:710
 msgid "VPN password"
 msgstr "گذرواژهٔ وی‌پی‌ان"
 
@@ -1148,10 +1145,6 @@ msgstr "تأیید هویت"
 #: js/ui/components/polkitAgent.js:254 js/ui/shellMountOperation.js:402
 msgid "Sorry, that didn’t work. Please try again."
 msgstr "متاسفانه اثری نداشت! لطفاً دوباره تلاش کنید."
-
-#: js/ui/components/polkitAgent.js:277 js/ui/shellMountOperation.js:326
-msgid "Enter Password…"
-msgstr "ورود گذرواژه…"
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
@@ -1323,7 +1316,7 @@ msgstr "نصب و خاموش کردن"
 #: js/ui/endSessionDialog.js:99
 msgctxt "checkbox"
 msgid "Power off after updates are installed"
-msgstr "خاموش کردن بعد از نصب به‌روز رسانی‌ها"
+msgstr "خاموش کردن پس از نصب به‌روز رسانی‌ها"
 
 #: js/ui/endSessionDialog.js:106
 msgctxt "title"
@@ -1366,15 +1359,15 @@ msgstr "%s (دوردست)"
 msgid "%s (console)"
 msgstr "%s (پایانه)"
 
-#: js/ui/extensionDownloader.js:170
+#: js/ui/extensionDownloader.js:169
 msgid "Install"
 msgstr "نصب"
 
-#: js/ui/extensionDownloader.js:176
+#: js/ui/extensionDownloader.js:175
 msgid "Install Extension"
 msgstr "نصب افزونه"
 
-#: js/ui/extensionDownloader.js:177
+#: js/ui/extensionDownloader.js:176
 #, javascript-format
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "بارگیری و نصب «%s» از extensions.gnome.org؟"
@@ -1460,13 +1453,13 @@ msgid "Leave On"
 msgstr "روشن گذاشتن"
 
 #: js/ui/kbdA11yDialog.js:55 js/ui/status/bluetooth.js:135
-#: js/ui/status/network.js:1285
+#: js/ui/status/network.js:1288
 msgid "Turn On"
 msgstr "روشن کردن"
 
 #: js/ui/kbdA11yDialog.js:63 js/ui/status/bluetooth.js:135
 #: js/ui/status/network.js:131 js/ui/status/network.js:315
-#: js/ui/status/network.js:1285 js/ui/status/network.js:1397
+#: js/ui/status/network.js:1288 js/ui/status/network.js:1400
 #: js/ui/status/nightLight.js:41 js/ui/status/rfkill.js:81
 #: js/ui/status/rfkill.js:108
 msgid "Turn Off"
@@ -1548,7 +1541,7 @@ msgstr "قفل صفحه از کار افتاده"
 msgid "Screen Locking requires the GNOME display manager."
 msgstr "قفل صفحه نیاز به مدیر نمایش گنوم دارد."
 
-#: js/ui/messageTray.js:1552
+#: js/ui/messageTray.js:1554
 msgid "System Information"
 msgstr "اطلاعات سامانه"
 
@@ -1575,8 +1568,8 @@ msgstr "نمای‌کلی"
 #. active; it should not exceed ~30
 #. characters.
 #: js/ui/overview.js:107
-msgid "Type to search…"
-msgstr "برای جست‌وجو بنویسید…"
+msgid "Type to search"
+msgstr "نوشتن برای جست‌وجو"
 
 #: js/ui/padOsd.js:95
 msgid "New shortcut…"
@@ -1602,23 +1595,23 @@ msgstr "تخصیص دنبالهٔ کلید"
 msgid "Done"
 msgstr "انجام شد"
 
-#: js/ui/padOsd.js:747
+#: js/ui/padOsd.js:745
 msgid "Edit…"
 msgstr "ویرایش…"
 
-#: js/ui/padOsd.js:789 js/ui/padOsd.js:912
+#: js/ui/padOsd.js:787 js/ui/padOsd.js:910
 msgid "None"
 msgstr "هیچ‌کدام"
 
-#: js/ui/padOsd.js:865
+#: js/ui/padOsd.js:863
 msgid "Press a button to configure"
 msgstr "برای پیکربندی، کلیدی را بزنید"
 
-#: js/ui/padOsd.js:866
+#: js/ui/padOsd.js:864
 msgid "Press Esc to exit"
 msgstr "برای خروج esc را بزنید"
 
-#: js/ui/padOsd.js:869
+#: js/ui/padOsd.js:867
 msgid "Press any key to exit"
 msgstr "برای خروج، هر کلیدی را بزنید"
 
@@ -1668,11 +1661,11 @@ msgstr "لازم است گنوم صفحه را قفل کند"
 #.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
-#: js/ui/screenShield.js:244 js/ui/screenShield.js:602
+#: js/ui/screenShield.js:244 js/ui/screenShield.js:598
 msgid "Unable to lock"
 msgstr "نمی‌توان قفل کرد"
 
-#: js/ui/screenShield.js:245 js/ui/screenShield.js:603
+#: js/ui/screenShield.js:245 js/ui/screenShield.js:599
 msgid "Lock was blocked by an application"
 msgstr "قفل توسط یک برنامه مسدود شده بود"
 
@@ -1732,8 +1725,8 @@ msgstr ""
 "کنید."
 
 #: js/ui/shellMountOperation.js:306
-msgid "Enter PIM Number…"
-msgstr "ورود شمارهٔ PIM…"
+msgid "PIM Number"
+msgstr "شمارهٔ PIM"
 
 #: js/ui/shellMountOperation.js:365
 msgid "Remember Password"
@@ -1813,7 +1806,7 @@ msgstr "متن درشت"
 msgid "Bluetooth"
 msgstr "بلوتوث"
 
-#: js/ui/status/bluetooth.js:49 js/ui/status/network.js:590
+#: js/ui/status/bluetooth.js:49 js/ui/status/network.js:591
 msgid "Bluetooth Settings"
 msgstr "تنظیمات بلوتوث"
 
@@ -1908,7 +1901,7 @@ msgid "<unknown>"
 msgstr "<ناشناخته>"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:420 js/ui/status/network.js:1314
+#: js/ui/status/network.js:420 js/ui/status/network.js:1317
 #, javascript-format
 msgid "%s Off"
 msgstr "%s خاموش است"
@@ -1934,7 +1927,7 @@ msgid "%s Disconnecting"
 msgstr "درحال قطع ارتباط %s"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:438 js/ui/status/network.js:1306
+#: js/ui/status/network.js:438 js/ui/status/network.js:1309
 #, javascript-format
 msgid "%s Connecting"
 msgstr "درحال اتصال %s"
@@ -1974,7 +1967,7 @@ msgid "Mobile Broadband Settings"
 msgstr "تنظیمات پهن‌باند همراه"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:558 js/ui/status/network.js:1311
+#: js/ui/status/network.js:558 js/ui/status/network.js:1314
 #, javascript-format
 msgid "%s Hardware Disabled"
 msgstr "سخت‌افزار %s از کار افتاده"
@@ -1986,125 +1979,125 @@ msgstr "سخت‌افزار %s از کار افتاده"
 msgid "%s Disabled"
 msgstr "%s از کار افتاده"
 
-#: js/ui/status/network.js:602
+#: js/ui/status/network.js:603
 msgid "Connect to Internet"
 msgstr "وصل شدن به اینترنت"
 
-#: js/ui/status/network.js:805
+#: js/ui/status/network.js:808
 msgid "Airplane Mode is On"
 msgstr "حالت هواپیمایی روشن است"
 
-#: js/ui/status/network.js:806
+#: js/ui/status/network.js:809
 msgid "Wi-Fi is disabled when airplane mode is on."
 msgstr "در زمان روشن بودن حالت هواپیمایی، وای‌فای از کار می‌افتد."
 
-#: js/ui/status/network.js:807
+#: js/ui/status/network.js:810
 msgid "Turn Off Airplane Mode"
 msgstr "خاموش کردن حالت هواپیمایی"
 
-#: js/ui/status/network.js:816
+#: js/ui/status/network.js:819
 msgid "Wi-Fi is Off"
 msgstr "وای‌فای خاموش است"
 
-#: js/ui/status/network.js:817
+#: js/ui/status/network.js:820
 msgid "Wi-Fi needs to be turned on in order to connect to a network."
 msgstr "برای وصل شدن به شبکه باید وای‌فای روشن شود."
 
-#: js/ui/status/network.js:818
+#: js/ui/status/network.js:821
 msgid "Turn On Wi-Fi"
 msgstr "روشن کردن وای‌فای"
 
-#: js/ui/status/network.js:843
+#: js/ui/status/network.js:846
 msgid "Wi-Fi Networks"
 msgstr "شبکه‌های وای‌فای"
 
-#: js/ui/status/network.js:845
+#: js/ui/status/network.js:848
 msgid "Select a network"
 msgstr "شبکه‌ای برگزینید"
 
-#: js/ui/status/network.js:877
+#: js/ui/status/network.js:880
 msgid "No Networks"
 msgstr "هیچ شبکه‌ای نیست"
 
-#: js/ui/status/network.js:898 js/ui/status/rfkill.js:106
+#: js/ui/status/network.js:901 js/ui/status/rfkill.js:106
 msgid "Use hardware switch to turn off"
 msgstr "برای خاموش کردن از کلید سخت‌افزاری استفاده کنید"
 
-#: js/ui/status/network.js:1175
+#: js/ui/status/network.js:1178
 msgid "Select Network"
 msgstr "انتخاب شبکه"
 
-#: js/ui/status/network.js:1181
+#: js/ui/status/network.js:1184
 msgid "Wi-Fi Settings"
 msgstr "تنظیمات وای‌فای"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1302
+#: js/ui/status/network.js:1305
 #, javascript-format
 msgid "%s Hotspot Active"
 msgstr "%s نقطهٔ داغ فعال"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1317
+#: js/ui/status/network.js:1320
 #, javascript-format
 msgid "%s Not Connected"
 msgstr "%s متصل نشد"
 
-#: js/ui/status/network.js:1414
+#: js/ui/status/network.js:1417
 msgid "connecting…"
 msgstr "درحال اتّصال…"
 
 #. Translators: this is for network connections that require some kind of key or password
-#: js/ui/status/network.js:1417
+#: js/ui/status/network.js:1420
 msgid "authentication required"
 msgstr "تایید هویت لازم است"
 
-#: js/ui/status/network.js:1419
+#: js/ui/status/network.js:1422
 msgid "connection failed"
 msgstr "اتصال شکست خورد"
 
-#: js/ui/status/network.js:1470
+#: js/ui/status/network.js:1473
 msgid "VPN Settings"
 msgstr "تنظیمات وی‌پی‌ان"
 
-#: js/ui/status/network.js:1487
+#: js/ui/status/network.js:1490
 msgid "VPN"
 msgstr "وی‌پی‌ان"
 
-#: js/ui/status/network.js:1497
+#: js/ui/status/network.js:1500
 msgid "VPN Off"
 msgstr "وی‌پی‌ان خاموش است"
 
-#: js/ui/status/network.js:1558 js/ui/status/rfkill.js:84
+#: js/ui/status/network.js:1561 js/ui/status/rfkill.js:84
 msgid "Network Settings"
 msgstr "تنظیمات شبکه"
 
-#: js/ui/status/network.js:1587
+#: js/ui/status/network.js:1590
 #, javascript-format
 msgid "%s Wired Connection"
 msgid_plural "%s Wired Connections"
 msgstr[0] "اتّصال سیمی %s"
 msgstr[1] "اتّصال سیمی %s"
 
-#: js/ui/status/network.js:1591
+#: js/ui/status/network.js:1594
 #, javascript-format
 msgid "%s Wi-Fi Connection"
 msgid_plural "%s Wi-Fi Connections"
 msgstr[0] "اتّصال وای‌فای %s"
 msgstr[1] "اتّصال وای‌فای %s"
 
-#: js/ui/status/network.js:1595
+#: js/ui/status/network.js:1598
 #, javascript-format
 msgid "%s Modem Connection"
 msgid_plural "%s Modem Connections"
 msgstr[0] "اتّصال مودم %s"
 msgstr[1] "اتّصال مودم %s"
 
-#: js/ui/status/network.js:1729
+#: js/ui/status/network.js:1732
 msgid "Connection failed"
 msgstr "اتصال شکست خورد"
 
-#: js/ui/status/network.js:1730
+#: js/ui/status/network.js:1733
 msgid "Activation of network connection failed"
 msgstr "فعاّل‌سازی اتّصال شبکه شکست خورد"
 
@@ -2202,11 +2195,11 @@ msgstr "خاموش کردن…"
 msgid "Thunderbolt"
 msgstr "تاندربولت"
 
-#: js/ui/status/thunderbolt.js:324
+#: js/ui/status/thunderbolt.js:325
 msgid "Unknown Thunderbolt device"
 msgstr "افزارهٔ تاندربولت ناشناخته"
 
-#: js/ui/status/thunderbolt.js:325
+#: js/ui/status/thunderbolt.js:326
 msgid ""
 "New device has been detected while you were away. Please disconnect and reconnect "
 "the device to start using it."
@@ -2214,19 +2207,19 @@ msgstr ""
 "هنگام نبودنتان، افزارهٔ جدید شناسایی شد. لطفاً برای شروع به استفاده از آن، قطعش "
 "کرده و دوباره وصل کنید."
 
-#: js/ui/status/thunderbolt.js:328
+#: js/ui/status/thunderbolt.js:329
 msgid "Unauthorized Thunderbolt device"
 msgstr "افزارهٔ تاندربولت تأییدنشده"
 
-#: js/ui/status/thunderbolt.js:329
+#: js/ui/status/thunderbolt.js:330
 msgid "New device has been detected and needs to be authorized by an administrator."
 msgstr "افزارهٔ جدیدی شناسایی شده و نیازه به تأیید هویت توسّط یک مدیر دارد."
 
-#: js/ui/status/thunderbolt.js:335
+#: js/ui/status/thunderbolt.js:336
 msgid "Thunderbolt authorization error"
 msgstr "خطای تأیید هویت تاندربولت"
 
-#: js/ui/status/thunderbolt.js:336
+#: js/ui/status/thunderbolt.js:337
 #, javascript-format
 msgid "Could not authorize the Thunderbolt device: %s"
 msgstr "نمی‌توان افزارهٔ تاندربولت را تأیید هویت کرد: %s"
@@ -2267,7 +2260,21 @@ msgstr "فقط خارجی"
 msgid "Built-in Only"
 msgstr "فقط داخلی"
 
-#: js/ui/unlockDialog.js:459
+#. Translators: This is a time format for a date in
+#. long format
+#: js/ui/unlockDialog.js:372
+msgid "%A %B %-d"
+msgstr "%A %-Od %OB"
+
+#: js/ui/unlockDialog.js:378
+msgid "Swipe up to unlock"
+msgstr "برای قفل‌گشایی، بالا بکشید"
+
+#: js/ui/unlockDialog.js:379
+msgid "Click or press a key to unlock"
+msgstr "برای قفل‌گشایی، کلیک کرده یا دکمه‌ای را بزنید"
+
+#: js/ui/unlockDialog.js:552
 msgid "Unlock Window"
 msgstr "گشودن قفل پنجره"
 
@@ -2309,7 +2316,7 @@ msgstr[1] "تغییرات تنظیمات در %Id ثانیه بازنشانی م
 
 #. Translators: This represents the size of a window. The first number is
 #. * the width of the window and the second is the height.
-#: js/ui/windowManager.js:542
+#: js/ui/windowManager.js:544
 #, javascript-format
 msgid "%d × %d"
 msgstr "%Id × %Id"
@@ -2760,6 +2767,15 @@ msgstr[1] "%Iu ورودی"
 msgid "System Sounds"
 msgstr "صداهای سامانه"
 
+#~ msgid "Username…"
+#~ msgstr "نام‌کاربری…"
+
+#~ msgid "Password: "
+#~ msgstr "گذرواژه: "
+
+#~ msgid "Enter Password…"
+#~ msgstr "ورود گذرواژه…"
+
 #~ msgid "Next"
 #~ msgstr "بعدی"
 
@@ -2788,9 +2804,6 @@ msgstr "صداهای سامانه"
 
 #~ msgid "Rename"
 #~ msgstr "تغییر نام"
-
-#~ msgid "Password:"
-#~ msgstr "گذرواژه:"
 
 #~ msgid "Type again:"
 #~ msgstr "تلاش دوباره:"
