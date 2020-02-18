@@ -17,7 +17,7 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
 "POT-Creation-Date: 2020-02-17 22:27+0000\n"
-"PO-Revision-Date: 2020-02-15 00:00+0900\n"
+"PO-Revision-Date: 2020-02-19 01:00+0900\n"
 "Last-Translator: sicklylife <translation@sicklylife.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
 "Language: ja\n"
@@ -583,10 +583,8 @@ msgstr "(たとえば、user あるいは %s)"
 #. (and don't even care of which one)
 #: js/gdm/loginDialog.js:917 js/ui/components/networkAgent.js:238
 #: js/ui/components/networkAgent.js:261 js/ui/components/networkAgent.js:279
-#, fuzzy
-#| msgid "Username: "
 msgid "Username"
-msgstr "ユーザー名: "
+msgstr "ユーザー名"
 
 #: js/gdm/loginDialog.js:1253
 msgid "Login Window"
@@ -1097,33 +1095,25 @@ msgid "Connect"
 msgstr "接続"
 
 #: js/ui/components/networkAgent.js:208
-#, fuzzy
-#| msgid "Key: "
 msgid "Key"
-msgstr "キー: "
+msgstr "キー"
 
 #: js/ui/components/networkAgent.js:246 js/ui/components/networkAgent.js:269
-#, fuzzy
-#| msgid "Private key password: "
 msgid "Private key password"
-msgstr "プライベートキーパスワード: "
+msgstr "プライベートキーパスワード"
 
 #: js/ui/components/networkAgent.js:267
-#, fuzzy
-#| msgid "Identity: "
 msgid "Identity"
-msgstr "識別子: "
+msgstr "識別子"
 
 #: js/ui/components/networkAgent.js:281
-#, fuzzy
-#| msgid "Service: "
 msgid "Service"
-msgstr "サービス: "
+msgstr "サービス"
 
 #: js/ui/components/networkAgent.js:310 js/ui/components/networkAgent.js:338
 #: js/ui/components/networkAgent.js:685 js/ui/components/networkAgent.js:706
 msgid "Authentication required"
-msgstr "認証の要求"
+msgstr "認証が要求されました"
 
 #: js/ui/components/networkAgent.js:311 js/ui/components/networkAgent.js:686
 #, javascript-format
@@ -1138,10 +1128,8 @@ msgid "Wired 802.1X authentication"
 msgstr "有線 802.1X の認証"
 
 #: js/ui/components/networkAgent.js:317
-#, fuzzy
-#| msgid "Network name: "
 msgid "Network name"
-msgstr "ネットワーク名: "
+msgstr "ネットワーク名"
 
 #: js/ui/components/networkAgent.js:322 js/ui/components/networkAgent.js:694
 msgid "DSL authentication"
@@ -1156,10 +1144,8 @@ msgid "PIN code is needed for the mobile broadband device"
 msgstr "モバイルブロードバンドデバイスには PIN コードが必要です"
 
 #: js/ui/components/networkAgent.js:331
-#, fuzzy
-#| msgid "PIN: "
 msgid "PIN"
-msgstr "PIN 番号: "
+msgstr "PIN"
 
 #: js/ui/components/networkAgent.js:339 js/ui/components/networkAgent.js:691
 #: js/ui/components/networkAgent.js:695 js/ui/components/networkAgent.js:707
@@ -1612,8 +1598,6 @@ msgstr "アクティビティ画面"
 #. active; it should not exceed ~30
 #. characters.
 #: js/ui/overview.js:107
-#, fuzzy
-#| msgid "Type to search…"
 msgid "Type to search"
 msgstr "検索ワードを入力…"
 
@@ -1771,10 +1755,8 @@ msgstr ""
 "用します。"
 
 #: js/ui/shellMountOperation.js:306
-#, fuzzy
-#| msgid "Enter PIM Number…"
 msgid "PIM Number"
-msgstr "PIM 数値を入力…"
+msgstr "PIM 数値"
 
 #: js/ui/shellMountOperation.js:365
 msgid "Remember Password"
@@ -2309,19 +2291,16 @@ msgstr "組み込みのみ"
 #. Translators: This is a time format for a date in
 #. long format
 #: js/ui/unlockDialog.js:372
-#, fuzzy
-#| msgctxt "calendar heading"
-#| msgid "%A, %B %-d"
 msgid "%A %B %-d"
 msgstr "%B%-e日 (%a)"
 
 #: js/ui/unlockDialog.js:378
 msgid "Swipe up to unlock"
-msgstr ""
+msgstr "ロック解除は上にスワイプしてください"
 
 #: js/ui/unlockDialog.js:379
 msgid "Click or press a key to unlock"
-msgstr ""
+msgstr "ロック解除はキーを押すかクリックしてください"
 
 #: js/ui/unlockDialog.js:552
 msgid "Unlock Window"
@@ -2731,7 +2710,7 @@ msgstr ""
 
 #: subprojects/extensions-tool/src/main.c:245
 msgid "[ARGS…]"
-msgstr ""
+msgstr "[引数…]"
 
 #: subprojects/extensions-tool/src/main.c:247
 msgid "Commands:"
