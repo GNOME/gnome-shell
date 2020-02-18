@@ -1255,11 +1255,7 @@ class Keyboard extends St.BoxLayout {
 
         this._clearShowIdle();
 
-        this._keyboardController = null;
-        this._suggestions = null;
-        this._aspectContainer = null;
-        this._emojiSelection = null;
-        this._keypad = null;
+        this._keyboardController.destroy();
 
         Main.layoutManager.untrackChrome(this);
         Main.layoutManager.keyboardBox.remove_actor(this);
@@ -1844,13 +1840,20 @@ var KeyboardController = class {
                                                                    this._onSourcesModified.bind(this));
         this._currentSource = this._inputSourceManager.currentSource;
 
-        Main.inputMethod.connect('notify::content-purpose',
-                                 this._onContentPurposeHintsChanged.bind(this));
-        Main.inputMethod.connect('notify::content-hints',
-                                 this._onContentPurposeHintsChanged.bind(this));
-        Main.inputMethod.connect('input-panel-state', (o, state) => {
-            this.emit('panel-state', state);
-        });
+        this._notifyContentPurposeId = Main.inputMethod.connect(
+            'notify::content-purpose', this._onContentPurposeHintsChanged.bind(this));
+        this._notifyContentHintsId = Main.inputMethod.connect(
+            'notify::content-hints', this._onContentPurposeHintsChanged.bind(this));
+        this._notifyInputPanelStateId = Main.inputMethod.connect(
+            'input-panel-state', (o, state) => this.emit('panel-state', state));
+    }
+
+    destroy() {
+        this._inputSourceManager.disconnect(this._sourceChangedId);
+        this._inputSourceManager.disconnect(this._sourcesModifiedId);
+        Main.inputMethod.disconnect(this._notifyContentPurposeId);
+        Main.inputMethod.disconnect(this._notifyContentHintsId);
+        Main.inputMethod.disconnect(this._notifyInputPanelStateId);
     }
 
     _onSourcesModified() {
