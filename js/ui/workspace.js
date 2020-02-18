@@ -603,6 +603,7 @@ var WindowOverlay = class {
         let prevTitleWidth = title.width;
         title.set_width(-1);
 
+        title.ensure_style();
         let [titleMinWidth, titleNatWidth] = title.get_preferred_width(-1);
         let titleWidth = Math.max(titleMinWidth,
                                   Math.min(titleNatWidth, this._maxTitleWidth));
