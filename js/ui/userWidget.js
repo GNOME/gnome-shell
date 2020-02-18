@@ -7,7 +7,6 @@ const { Clutter, GLib, GObject, St } = imports.gi;
 
 const Params = imports.misc.params;
 
-const UNKNOWN_AVATAR_ICON_SIZE = -1;
 var AVATAR_ICON_SIZE = 64;
 
 // Adapted from gdm/gui/user-switch-applet/applet.c
@@ -22,7 +21,7 @@ class Avatar extends St.Bin {
         params = Params.parse(params, {
             styleClass: 'user-icon',
             reactive: false,
-            iconSize: UNKNOWN_AVATAR_ICON_SIZE,
+            iconSize: AVATAR_ICON_SIZE,
         });
 
         super._init({
@@ -72,20 +71,11 @@ class Avatar extends St.Bin {
         }
     }
 
-    _getIconSize() {
-        if (this._iconSize !== UNKNOWN_AVATAR_ICON_SIZE)
-            return this._iconSize;
-        else
-            return AVATAR_ICON_SIZE;
-    }
-
     setSensitive(sensitive) {
         this.reactive = sensitive;
     }
 
     update() {
-        let iconSize = this._getIconSize();
-
         let iconFile = null;
         if (this._user) {
             iconFile = this._user.get_icon_file();
@@ -93,13 +83,13 @@ class Avatar extends St.Bin {
                 iconFile = null;
         }
 
+        let { scaleFactor } = St.ThemeContext.get_for_stage(global.stage);
+        this.set_size(
+            this._iconSize * scaleFactor,
+            this._iconSize * scaleFactor);
+
         if (iconFile) {
             this.child = null;
-
-            let { scaleFactor } = St.ThemeContext.get_for_stage(global.stage);
-            this.set_size(
-                iconSize * scaleFactor,
-                iconSize * scaleFactor);
             this.style = `
                 background-image: url("${iconFile}");
                 background-size: cover;`;
@@ -107,7 +97,7 @@ class Avatar extends St.Bin {
             this.style = null;
             this.child = new St.Icon({
                 icon_name: 'avatar-default-symbolic',
-                icon_size: iconSize,
+                icon_size: this._iconSize,
             });
         }
     }
