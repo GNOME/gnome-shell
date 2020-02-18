@@ -81,7 +81,7 @@ var AuthPrompt = GObject.registerClass({
         });
         this.add_child(this._userWell);
 
-        this._hasCancelButton = this._mode === AuthPromptStatus.UNLOCK_OR_LOG_IN;
+        this._hasCancelButton = this._mode === AuthPromptMode.UNLOCK_OR_LOG_IN;
 
         this._initEntryRow();
 
