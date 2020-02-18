@@ -601,8 +601,9 @@ var WindowOverlay = class {
         // We also need to save and restore the current width, otherwise the
         // animation starts from the wrong point.
         let prevTitleWidth = title.width;
-        title.set_width(-1);
+        title.width = -1;
 
+        title.ensure_style();
         let [titleMinWidth, titleNatWidth] = title.get_preferred_width(-1);
         let titleWidth = Math.max(titleMinWidth,
                                   Math.min(titleNatWidth, this._maxTitleWidth));
