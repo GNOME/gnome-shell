@@ -46,6 +46,13 @@ eslint:
             - reports
         when: always
 
+potfile_check:
+    image: registry.gitlab.gnome.org/gnome/gnome-shell/extension-ci:v1
+    stage: review
+    script:
+        - ./.gitlab-ci/check-potfiles.sh
+    <<: *only_default
+
 build:
     image: registry.gitlab.gnome.org/gnome/mutter/master:v3
     stage: build
