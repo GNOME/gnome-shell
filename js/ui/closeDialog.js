@@ -192,7 +192,8 @@ var CloseDialog = GObject.registerClass({
         this._dialog = null;
         this._removeWindowEffect();
 
-        dialog._dialog.ease({
+        dialog.makeInactive();
+        dialog.ease({
             scale_y: 0,
             mode: Clutter.AnimationMode.LINEAR,
             duration: DIALOG_TRANSITION_TIME,
