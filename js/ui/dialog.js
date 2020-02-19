@@ -58,10 +58,22 @@ class Dialog extends St.Widget {
         this._dialog.add_child(this.buttonLayout);
     }
 
-    _onDestroy() {
+    _makeInactiveRecursive(actor) {
+        actor.set_reactive(false);
+        actor.get_children().forEach(
+            (child) => this._makeInactiveRecursive(child));
+    }
+
+    makeInactive() {
         if (this._eventId != 0)
             this._parentActor.disconnect(this._eventId);
         this._eventId = 0;
+
+        this._makeInactiveRecursive(this);
+    }
+
+    _onDestroy() {
+        this.makeInactive();
     }
 
     _modalEventHandler(actor, event) {
