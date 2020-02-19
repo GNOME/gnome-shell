@@ -353,7 +353,7 @@ var Dash = GObject.registerClass({
                                        clip_to_allocation: true });
         this._box._delegate = this;
         this._container.add_actor(this._box);
-        this._container.set_offscreen_redirect(Clutter.OffscreenRedirect.ALWAYS);
+        this._container.set_offscreen_redirect(Clutter.OffscreenRedirect.AUTOMATIC_FOR_PERFORMANCE);
 
         this._showAppsIcon = new ShowAppsIcon();
         this._showAppsIcon.show(false);

@@ -788,7 +788,7 @@ class Panel extends St.Widget {
         super._init({ name: 'panel',
                       reactive: true });
 
-        this.set_offscreen_redirect(Clutter.OffscreenRedirect.ALWAYS);
+        this.set_offscreen_redirect(Clutter.OffscreenRedirect.AUTOMATIC_FOR_PERFORMANCE);
 
         this._sessionStyle = null;
 
