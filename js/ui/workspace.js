@@ -578,6 +578,8 @@ var WindowOverlay = class {
         border.remove_all_transitions();
         title.remove_all_transitions();
 
+        title.ensure_style();
+
         let [cloneX, cloneY, cloneWidth, cloneHeight] = this._windowClone.slot;
 
         let layout = Meta.prefs_get_button_layout();
