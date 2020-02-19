@@ -1657,10 +1657,6 @@ var AppFolderDialog = GObject.registerClass({
             x_align: Clutter.ActorAlign.CENTER,
             y_align: Clutter.ActorAlign.CENTER,
         });
-        this.add_constraint(new Clutter.BindConstraint({
-            source: Main.overview.viewSelector,
-            coordinate: Clutter.BindCoordinate.ALL,
-        }));
 
         this._source = source;
         this._folder = folder;
