@@ -170,6 +170,8 @@ shell_stack_navigate_focus (StWidget         *widget,
     }
 
   top_actor = clutter_actor_get_last_child (CLUTTER_ACTOR (widget));
+  while (top_actor && !clutter_actor_is_visible (top_actor))
+    top_actor = clutter_actor_get_previous_sibling (top_actor);
   if (ST_IS_WIDGET (top_actor))
     return st_widget_navigate_focus (ST_WIDGET (top_actor), from, direction, FALSE);
   else
