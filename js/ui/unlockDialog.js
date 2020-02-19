@@ -556,12 +556,13 @@ var UnlockDialog = GObject.registerClass({
         this._otherUserButton = new St.Button({
             style_class: 'modal-dialog-button button switch-user-button',
             accessible_name: _('Log in as another user'),
-            can_focus: true,
-            reactive: true,
+            reactive: false,
+            opacity: 0,
             x_align: Clutter.ActorAlign.END,
             y_align: Clutter.ActorAlign.END,
             child: new St.Icon({ icon_name: 'system-users-symbolic' }),
         });
+        this._otherUserButton.set_pivot_point(0.5, 0.5);
         this._otherUserButton.connect('clicked', this._otherUserClicked.bind(this));
 
         let screenSaverSettings = new Gio.Settings({ schema_id: 'org.gnome.desktop.screensaver' });
@@ -713,6 +714,11 @@ var UnlockDialog = GObject.registerClass({
         this._promptBox.visible = progress > 0;
         this._clock.visible = progress < 1;
 
+        this._otherUserButton.set({
+            reactive: progress > 0,
+            can_focus: progress > 0,
+        });
+
         const { scaleFactor } = St.ThemeContext.get_for_stage(global.stage);
 
         this._promptBox.set({
@@ -727,6 +733,12 @@ var UnlockDialog = GObject.registerClass({
             scale_x: FADE_OUT_SCALE + (1 - FADE_OUT_SCALE) * (1 - progress),
             scale_y: FADE_OUT_SCALE + (1 - FADE_OUT_SCALE) * (1 - progress),
             translation_y: -FADE_OUT_TRANSLATION * progress * scaleFactor,
+        });
+
+        this._otherUserButton.set({
+            opacity: 255 * progress,
+            scale_x: FADE_OUT_SCALE + (1 - FADE_OUT_SCALE) * progress,
+            scale_y: FADE_OUT_SCALE + (1 - FADE_OUT_SCALE) * progress,
         });
     }
 
