@@ -666,7 +666,7 @@ var UnlockDialog = GObject.registerClass({
         this._promptBox.add_child(this._authPrompt);
 
         this._authPrompt.reset();
-        this._updateSensitivity(true);
+        this._authPrompt.updateSensitivity(true);
     }
 
     _maybeDestroyAuthPrompt() {
@@ -680,13 +680,6 @@ var UnlockDialog = GObject.registerClass({
             this._authPrompt.destroy();
             this._authPrompt = null;
         }
-    }
-
-    _updateSensitivity(sensitive) {
-        this._authPrompt.updateSensitivity(sensitive);
-
-        this._otherUserButton.reactive = sensitive;
-        this._otherUserButton.can_focus = sensitive;
     }
 
     _showClock() {
