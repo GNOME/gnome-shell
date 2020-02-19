@@ -51,10 +51,16 @@ class Dialog extends St.Widget {
                            y_align: St.Align.START });
     }
 
-    _onDestroy() {
+    makeInactive() {
         if (this._eventId != 0)
             this._parentActor.disconnect(this._eventId);
         this._eventId = 0;
+
+        this.buttonLayout.get_children().forEach(c => c.set_reactive(false));
+    }
+
+    _onDestroy() {
+        this.makeInactive();
     }
 
     _modalEventHandler(actor, event) {
