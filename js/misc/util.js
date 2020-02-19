@@ -1,7 +1,8 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported findUrls, spawn, spawnCommandLine, spawnApp, trySpawnCommandLine,
             formatTime, formatTimeSpan, createTimeLabel, insertSorted,
-            makeCloseButton, ensureActorVisibleInScrollView, wiggle */
+            makeCloseButton, ensureActorVisibleInScrollView, wiggle,
+            SizeConstraint */
 
 const { Clutter, Gio, GLib, GObject, Shell, St, GnomeDesktop } = imports.gi;
 const Gettext = imports.gettext;
@@ -477,3 +478,29 @@ function wiggle(actor, params) {
         },
     });
 }
+
+var SizeConstraint = GObject.registerClass(
+class SizeConstraint extends Clutter.BindConstraint {
+    vfunc_update_preferred_size(actor, direction, forSize, minSize, natSize) {
+        if (!this.source)
+            return [minSize, natSize];
+
+        if (direction === Clutter.Orientation.HORIZONTAL) {
+            switch (this.coordinate) {
+            case Clutter.BindCoordinate.WIDTH:
+            case Clutter.BindCoordinate.SIZE:
+            case Clutter.BindCoordinate.ALL:
+                return this.source.get_preferred_width(forSize);
+            }
+        } else {
+            switch (this.coordinate) {
+            case Clutter.BindCoordinate.HEIGHT:
+            case Clutter.BindCoordinate.SIZE:
+            case Clutter.BindCoordinate.ALL:
+                return this.source.get_preferred_height(forSize);
+            }
+        }
+
+        return [minSize, natSize];
+    }
+});
