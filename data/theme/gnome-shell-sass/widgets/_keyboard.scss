@@ -2,15 +2,13 @@
 
 $key_size: 1.2em;
 $key_border_radius: $base_border_radius + 3px;
-$key_bg_color:  $bg_color;
-// $default_key_bg_color: darken($key_bg_color, 4%);
-$default_key_bg_color: if($variant=='light', darken($osd_bg_color, 11%), lighten($osd_bg_color, 2%));
+$key_bg_color: if(variant=='light', $bg_color, darken($bg_color, 3%));
+$default_key_bg_color: $key_bg_color;
 
 
 // draw keys using button function
 #keyboard {
-  background-color: transparentize(if($variant=='light', darken($bg_color, 5%), darken($bg_color, 8%)), 0.1);
-  box-shadow: inset 0 1px 0 0 $osd_outer_borders_color;
+  background-color: if($variant=='light', transparentize(darken($bg_color, 5%), 0.1), $base_color);
 
   .page-indicator {
     padding: $base_padding;
@@ -71,20 +69,24 @@ $default_key_bg_color: if($variant=='light', darken($osd_bg_color, 11%), lighten
   }
 
   // key assets
-  &.shift-key-lowercase {background-image: url("resource:///org/gnome/shell/theme/key-shift.svg");}
-  &.shift-key-uppercase {background-image: url("resource:///org/gnome/shell/theme/key-shift-uppercase.svg");}
-  &.shift-key-uppercase:latched {background-image: url("resource:///org/gnome/shell/theme/key-shift-latched-uppercase.svg");}
-  &.hide-key {background-image: url("resource:///org/gnome/shell/theme/key-hide.svg");}
-  &.layout-key {background-image: url("resource:///org/gnome/shell/theme/key-layout.svg");}
+  &.shift-key-lowercase { background-image: if($variant == 'light',  url("resource:///org/gnome/shell/theme/key-shift.svg"), url("resource:///org/gnome/shell/theme/key-shift-dark.svg")); }
+  &.shift-key-uppercase { background-image: url("resource:///org/gnome/shell/theme/key-shift-uppercase.svg"); }
+  &.shift-key-uppercase:latched { background-image: url("resource:///org/gnome/shell/theme/key-shift-latched-uppercase.svg"); }
+  &.hide-key { background-image: if($variant == 'light', url("resource:///org/gnome/shell/theme/key-hide.svg"), url("resource:///org/gnome/shell/theme/key-hide-dark.svg")); }
+  &.layout-key {background-image: if($variant == 'light', url("resource:///org/gnome/shell/theme/key-layout.svg"), url("resource:///org/gnome/shell/theme/key-layout-dark.svg")); }
+  
+  // This is needed to prevent the box-shadow to span over the whole image,
+  // which makes rough edges bleed out of the rounded corners
+  &, &.default-key, &.enter-key { &, &:hover, &:checked, &:active { box-shadow: none !important; } }
 }
 
 // long press on a key popup
 .keyboard-subkeys {
   color: $osd_fg_color;
   -arrow-border-radius: $modal_radius;
-  -arrow-background-color: $osd_bg_color;
+  -arrow-background-color: transparentize(if($variant=='light', darken($bg_color, 5%), darken($bg_color, 8%)), 0.1);
   -arrow-border-width: 1px;
-  -arrow-border-color: lighten($osd_bg_color, 9%);
+  -arrow-border-color: $borders_color;
   -arrow-base: 20px;
   -arrow-rise: 10px;
   -boxpointer-gap: $base_spacing;
