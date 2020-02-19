@@ -570,7 +570,7 @@ var UnlockDialog = GObject.registerClass({
             this._otherUserButton, 'visible', Gio.SettingsBindFlags.GET);
 
         // Main Box
-        let mainBox = new Clutter.Actor();
+        let mainBox = new St.Widget();
         mainBox.add_constraint(new Layout.MonitorConstraint({ primary: true }));
         mainBox.add_child(this._stack);
         mainBox.add_child(this._notificationsBox);
