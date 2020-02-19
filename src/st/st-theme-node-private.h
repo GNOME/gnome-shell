@@ -45,6 +45,14 @@ typedef struct {
   double left;
 } StSides;
 
+/* Note that this matches the order in StSide */
+typedef struct {
+  int top;
+  int right;
+  int bottom;
+  int left;
+} StIntSides;
+
 /* Keep this in sync with stylish/src/corners.rs:StCorners */
 /* Note that this matches the order in StCorner */
 typedef struct {
@@ -80,7 +88,7 @@ struct _StThemeNode {
 
   StOutline outline;
 
-  int border_width[4];
+  StIntSides border_width;
   StCorners border_radius;
   StSides padding;
   StSides margin;

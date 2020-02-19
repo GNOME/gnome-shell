@@ -99,6 +99,18 @@ stage {
     border-radius: 1px 2px 3px 4px;
 }
 
+#border_shorthand1 {
+    border: 1px;
+}
+
+#border_longhands {
+    border: 1px;
+    border-top: 2px;
+    border-right: 3px;
+    border-bottom: 4px;
+    border-left: 5px;
+}
+
 .special-text {
     font-size: 24pt;
     font-style: italic;
