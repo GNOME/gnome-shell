@@ -488,26 +488,6 @@ class MessagesIndicator extends St.Icon {
     }
 });
 
-var IndicatorPad = GObject.registerClass(
-class IndicatorPad extends St.Widget {
-    _init(actor) {
-        this._source = actor;
-        this._source.connect('notify::size', () => this.queue_relayout());
-        super._init();
-        this._source.bind_property('visible',
-            this, 'visible',
-            GObject.BindingFlags.SYNC_CREATE);
-    }
-
-    vfunc_get_preferred_width(forHeight) {
-        return this._source.get_preferred_width(forHeight);
-    }
-
-    vfunc_get_preferred_height(forWidth) {
-        return this._source.get_preferred_height(forWidth);
-    }
-});
-
 var FreezableBinLayout = GObject.registerClass(
 class FreezableBinLayout extends Clutter.BinLayout {
     _init() {
@@ -576,8 +556,17 @@ class DateMenuButton extends PanelMenu.Button {
         this._clockDisplay = new St.Label({ y_align: Clutter.ActorAlign.CENTER });
         this._indicator = new MessagesIndicator();
 
+        const indicatorPad = new St.Widget();
+        this._indicator.bind_property('visible',
+            indicatorPad, 'visible',
+            GObject.BindingFlags.SYNC_CREATE);
+        indicatorPad.add_constraint(new Util.SizeConstraint({
+            source: this._indicator,
+            coordinate: Clutter.BindCoordinate.SIZE,
+        }));
+
         let box = new St.BoxLayout({ style_class: 'clock-display-box' });
-        box.add_actor(new IndicatorPad(this._indicator));
+        box.add_actor(indicatorPad);
         box.add_actor(this._clockDisplay);
         box.add_actor(this._indicator);
 
