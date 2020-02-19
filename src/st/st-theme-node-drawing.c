@@ -323,27 +323,27 @@ st_theme_node_get_corner_border_widths (StThemeNode *node,
     {
       case ST_CORNER_TOPLEFT:
         if (border_width_1)
-            *border_width_1 = node->border_width[ST_SIDE_TOP];
+            *border_width_1 = node->border_width.top;
         if (border_width_2)
-            *border_width_2 = node->border_width[ST_SIDE_LEFT];
+            *border_width_2 = node->border_width.left;
         break;
       case ST_CORNER_TOPRIGHT:
         if (border_width_1)
-            *border_width_1 = node->border_width[ST_SIDE_TOP];
+            *border_width_1 = node->border_width.top;
         if (border_width_2)
-            *border_width_2 = node->border_width[ST_SIDE_RIGHT];
+            *border_width_2 = node->border_width.right;
         break;
       case ST_CORNER_BOTTOMRIGHT:
         if (border_width_1)
-            *border_width_1 = node->border_width[ST_SIDE_BOTTOM];
+            *border_width_1 = node->border_width.bottom;
         if (border_width_2)
-            *border_width_2 = node->border_width[ST_SIDE_RIGHT];
+            *border_width_2 = node->border_width.right;
         break;
       case ST_CORNER_BOTTOMLEFT:
         if (border_width_1)
-            *border_width_1 = node->border_width[ST_SIDE_BOTTOM];
+            *border_width_1 = node->border_width.bottom;
         if (border_width_2)
-            *border_width_2 = node->border_width[ST_SIDE_LEFT];
+            *border_width_2 = node->border_width.left;
         break;
       default:
         g_assert_not_reached();
@@ -576,10 +576,10 @@ st_theme_node_has_visible_outline (StThemeNode *node)
       node->border_radius.bottom_right > 0)
     return TRUE;
 
-  if (node->border_width[ST_SIDE_TOP] > 0 ||
-      node->border_width[ST_SIDE_LEFT] > 0 ||
-      node->border_width[ST_SIDE_RIGHT] > 0 ||
-      node->border_width[ST_SIDE_BOTTOM] > 0)
+  if (node->border_width.top > 0 ||
+      node->border_width.right > 0 ||
+      node->border_width.bottom > 0 ||
+      node->border_width.left > 0)
     return TRUE;
 
   return FALSE;
@@ -1497,10 +1497,10 @@ st_theme_node_render_resources (StThemeNodePaintState *state,
   box_shadow_spec = st_theme_node_get_box_shadow (node);
   has_inset_box_shadow = box_shadow_spec && box_shadow_spec->inset;
 
-  if (node->border_width[ST_SIDE_TOP] > 0 ||
-      node->border_width[ST_SIDE_LEFT] > 0 ||
-      node->border_width[ST_SIDE_RIGHT] > 0 ||
-      node->border_width[ST_SIDE_BOTTOM] > 0)
+  if (node->border_width.top > 0 ||
+      node->border_width.right > 0 ||
+      node->border_width.bottom > 0 ||
+      node->border_width.left > 0)
     has_border = TRUE;
   else
     has_border = FALSE;

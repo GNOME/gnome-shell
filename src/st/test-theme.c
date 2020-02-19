@@ -53,6 +53,8 @@ static StThemeNode *border_radius_shorthand1;
 static StThemeNode *border_radius_shorthand2;
 static StThemeNode *border_radius_shorthand3;
 static StThemeNode *border_radius_shorthand4;
+static StThemeNode *border_shorthand1;
+static StThemeNode *border_longhands;
 static gboolean fail;
 
 static const char *test;
@@ -524,6 +526,36 @@ test_border (void)
 }
 
 static void
+test_border_shorthand (void)
+{
+  test = "border_shorthand";
+
+  assert_length ("border_shorthand1", "border-top-width", 1.,
+		 st_theme_node_get_border_width (border_shorthand1, ST_SIDE_TOP));
+  assert_length ("border_shorthand1", "border-right-width", 1.,
+		 st_theme_node_get_border_width (border_shorthand1, ST_SIDE_RIGHT));
+  assert_length ("border_shorthand1", "border-bottom-width", 1.,
+		 st_theme_node_get_border_width (border_shorthand1, ST_SIDE_BOTTOM));
+  assert_length ("border_shorthand1", "border-left-width", 1.,
+		 st_theme_node_get_border_width (border_shorthand1, ST_SIDE_LEFT));
+}
+
+static void
+test_border_longhands (void)
+{
+  test = "border_longhands";
+
+  assert_length ("border_longhands", "border-top-width", 2.,
+		 st_theme_node_get_border_width (border_longhands, ST_SIDE_TOP));
+  assert_length ("border_longhands", "border-right-width", 3.,
+		 st_theme_node_get_border_width (border_longhands, ST_SIDE_RIGHT));
+  assert_length ("border_longhands", "border-bottom-width", 4.,
+		 st_theme_node_get_border_width (border_longhands, ST_SIDE_BOTTOM));
+  assert_length ("border_longhands", "border-left-width", 5.,
+		 st_theme_node_get_border_width (border_longhands, ST_SIDE_LEFT));
+}
+
+static void
 test_outline (void)
 {
   test = "outline";
@@ -759,6 +791,14 @@ main (int argc, char **argv)
                                                 CLUTTER_TYPE_ACTOR, "border_radius_shorthand4",
                                                 NULL, NULL, NULL);
 
+  border_shorthand1 = st_theme_node_new (context, root, NULL,
+                                         CLUTTER_TYPE_ACTOR, "border_shorthand1",
+                                         NULL, NULL, NULL);
+
+  border_longhands = st_theme_node_new (context, root, NULL,
+                                        CLUTTER_TYPE_ACTOR, "border_longhands",
+                                        NULL, NULL, NULL);
+
   test_defaults ();
   test_double ();
   test_time ();
@@ -773,6 +813,8 @@ main (int argc, char **argv)
   test_margin_shorthand ();
   test_border_radius_shorthand ();
   test_border ();
+  test_border_shorthand();
+  test_border_longhands();
   test_outline ();
   test_background ();
   test_font ();
