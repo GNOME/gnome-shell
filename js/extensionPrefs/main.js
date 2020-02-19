@@ -703,10 +703,10 @@ var ExtensionRow = GObject.registerClass({
 
         this._updatesIcon.visible = this.hasUpdate;
 
-        this._versionLabel.label = this.version;
+        this._versionLabel.label = this.version.toString();
         this._versionLabel.visible = this.version !== '';
 
-        this._authorLabel.label = this.creator;
+        this._authorLabel.label = this.creator.toString();
         this._authorLabel.visible = this.creator !== '';
     }
 
