@@ -180,7 +180,7 @@ var AuthPrompt = GObject.registerClass({
             x_align: Clutter.ActorAlign.END,
             y_align: Clutter.ActorAlign.CENTER,
         });
-        this._defaultButtonWell.add_constraint(new Clutter.BindConstraint({
+        this._defaultButtonWell.add_constraint(new Util.SizeConstraint({
             source: this.cancelButton,
             coordinate: Clutter.BindCoordinate.SIZE,
         }));
