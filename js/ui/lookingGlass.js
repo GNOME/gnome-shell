@@ -244,7 +244,7 @@ function objectToString(o) {
         // special case this since the default is way, way too verbose
         return '<js function>';
     } else {
-        return o.toString();
+        return o !== undefined ? o.toString() : 'undefined';
     }
 }
 
