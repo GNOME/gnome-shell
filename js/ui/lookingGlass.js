@@ -244,7 +244,13 @@ function objectToString(o) {
         // special case this since the default is way, way too verbose
         return '<js function>';
     } else {
-        return o !== undefined ? o.toString() : 'undefined';
+        if (o === undefined)
+            return 'undefined';
+
+        if (o === null)
+            return 'null';
+
+        return o.toString();
     }
 }
 
