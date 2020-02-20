@@ -1149,18 +1149,20 @@ class CalendarMessageList extends St.Widget {
         let hbox = new St.BoxLayout({ style_class: 'message-list-controls' });
         box.add_child(hbox);
 
-        hbox.add_child(new St.Label({
-            text: _('Do Not Disturb'),
-            y_align: Clutter.ActorAlign.CENTER,
-        }));
+        if (!Main.sessionMode.isGreeter) {
+            hbox.add_child(new St.Label({
+                text: _('Do Not Disturb'),
+                y_align: Clutter.ActorAlign.CENTER,
+            }));
 
-        this._dndSwitch = new DoNotDisturbSwitch();
-        this._dndButton = new St.Button({
-            can_focus: true,
-            child: this._dndSwitch,
-        });
-        this._dndButton.connect('clicked', () => this._dndSwitch.toggle());
-        hbox.add_child(this._dndButton);
+            this._dndSwitch = new DoNotDisturbSwitch();
+            this._dndButton = new St.Button({
+                can_focus: true,
+                child: this._dndSwitch,
+            });
+            this._dndButton.connect('clicked', () => this._dndSwitch.toggle());
+            hbox.add_child(this._dndButton);
+        }
 
         this._clearButton = new St.Button({
             style_class: 'message-list-clear-button button',
