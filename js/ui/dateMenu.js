@@ -545,12 +545,11 @@ class CalendarColumnLayout extends Clutter.BoxLayout {
 var DateMenuButton = GObject.registerClass(
 class DateMenuButton extends PanelMenu.Button {
     _init() {
+        const rtl = Clutter.get_default_text_direction() === Clutter.TextDirection.RTL;
         let hbox;
         let vbox;
 
-        let menuAlignment = 0.5;
-        if (Clutter.get_default_text_direction() == Clutter.TextDirection.RTL)
-            menuAlignment = 1.0 - menuAlignment;
+        const menuAlignment = 0.5;
         super._init(menuAlignment);
 
         this._clockDisplay = new St.Label({ y_align: Clutter.ActorAlign.CENTER });
