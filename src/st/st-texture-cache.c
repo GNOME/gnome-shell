@@ -183,7 +183,8 @@ st_texture_cache_init (StTextureCache *self)
                                                            g_str_equal,
                                                            g_free,
                                                            (GDestroyNotify) cairo_surface_destroy);
-  self->priv->used_scales = g_hash_table_new (g_double_hash, g_double_equal);
+  self->priv->used_scales = g_hash_table_new_full (g_double_hash, g_double_equal,
+                                                   g_free, NULL);
   self->priv->outstanding_requests = g_hash_table_new_full (g_str_hash, g_str_equal,
                                                             g_free, NULL);
   self->priv->file_monitors = g_hash_table_new_full (g_file_hash, (GEqualFunc) g_file_equal,
@@ -1083,6 +1084,21 @@ hash_table_remove_with_scales (GHashTable *hash,
 }
 
 static void
+hash_table_insert_scale (GHashTable *hash,
+                         double      scale)
+{
+  double *saved_scale;
+
+  if (g_hash_table_contains (hash, &scale))
+    return;
+
+  saved_scale = g_new (double, 1);
+  *saved_scale = scale;
+
+  g_hash_table_add (hash, saved_scale);
+}
+
+static void
 file_changed_cb (GFileMonitor      *monitor,
                  GFile             *file,
                  GFile             *other,
@@ -1443,9 +1459,8 @@ st_texture_cache_load_file_sync_to_cogl_texture (StTextureCache *cache,
 
       if (policy == ST_TEXTURE_CACHE_POLICY_FOREVER)
         {
-          double resource_scale_double = resource_scale;
           g_hash_table_insert (cache->priv->keyed_cache, g_strdup (key), image);
-          g_hash_table_insert (cache->priv->used_scales, &resource_scale_double, &resource_scale_double);
+          hash_table_insert_scale (cache->priv->used_scales, (double)resource_scale);
         }
     }
 
@@ -1492,11 +1507,10 @@ st_texture_cache_load_file_sync_to_cairo_surface (StTextureCache        *cache,
 
       if (policy == ST_TEXTURE_CACHE_POLICY_FOREVER)
         {
-          double resource_scale_double = resource_scale;
           cairo_surface_reference (surface);
           g_hash_table_insert (cache->priv->keyed_surface_cache,
                                g_strdup (key), surface);
-          g_hash_table_insert (cache->priv->used_scales, &resource_scale_double, &resource_scale_double);
+          hash_table_insert_scale (cache->priv->used_scales, (double)resource_scale);
         }
     }
   else
