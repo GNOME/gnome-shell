@@ -454,6 +454,8 @@ class MessagesIndicator extends St.Icon {
         let sources = Main.messageTray.getSources();
         sources.forEach(source => this._onSourceAdded(null, source));
 
+        this._sync();
+
         this.connect('destroy', () => {
             this._settings.run_dispose();
             this._settings = null;
