@@ -55,6 +55,7 @@ var AuthPrompt = GObject.registerClass({
 
         this._gdmClient = gdmClient;
         this._mode = mode;
+        this._defaultButtonWellActor = null;
 
         let reauthenticationOnly;
         if (this._mode == AuthPromptMode.UNLOCK_ONLY)
