@@ -715,7 +715,8 @@ var InputSourceManager = class {
         if (!window)
             return;
 
-        if (window._inputSources != this._inputSources) {
+        if (!window._inputSources ||
+            window._inputSources !== this._inputSources) {
             window._inputSources = this._inputSources;
             window._currentSource = this._getNewInputSource(window._currentSource);
         }
