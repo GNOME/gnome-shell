@@ -554,6 +554,11 @@ class DateMenuButton extends PanelMenu.Button {
         super._init(menuAlignment);
 
         this._clockDisplay = new St.Label({ y_align: Clutter.ActorAlign.CENTER });
+        const clockDisplayBin = new St.Bin({
+            style_class: 'clock-bin',
+            child: this._clockDisplay,
+        });
+
         this._indicator = new MessagesIndicator();
 
         const indicatorPad = new St.Widget();
@@ -567,7 +572,7 @@ class DateMenuButton extends PanelMenu.Button {
 
         let box = new St.BoxLayout({ style_class: 'clock-display-box' });
         box.add_actor(indicatorPad);
-        box.add_actor(this._clockDisplay);
+        box.add_actor(clockDisplayBin);
         box.add_actor(this._indicator);
 
         this.label_actor = this._clockDisplay;
