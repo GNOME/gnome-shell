@@ -738,7 +738,7 @@ var LayoutManager = GObject.registerClass({
     showKeyboard() {
         this.keyboardBox.show();
         this.keyboardBox.ease({
-            anchor_y: this.keyboardBox.height,
+            translation_y: -this.keyboardBox.height,
             opacity: 255,
             duration: KEYBOARD_ANIMATION_TIME,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
@@ -755,7 +755,7 @@ var LayoutManager = GObject.registerClass({
         this._updateRegions();
 
         this._keyboardHeightNotifyId = this.keyboardBox.connect('notify::height', () => {
-            this.keyboardBox.anchor_y = this.keyboardBox.height;
+            this.keyboardBox.translation_y = -this.keyboardBox.height;
         });
     }
 
@@ -765,7 +765,7 @@ var LayoutManager = GObject.registerClass({
             this._keyboardHeightNotifyId = 0;
         }
         this.keyboardBox.ease({
-            anchor_y: 0,
+            translation_y: this.keyboardBox.height,
             opacity: 0,
             duration: immediate ? 0 : KEYBOARD_ANIMATION_TIME,
             mode: Clutter.AnimationMode.EASE_IN_QUAD,
