@@ -548,10 +548,7 @@ class DateMenuButton extends PanelMenu.Button {
         let hbox;
         let vbox;
 
-        let menuAlignment = 0.5;
-        if (Clutter.get_default_text_direction() == Clutter.TextDirection.RTL)
-            menuAlignment = 1.0 - menuAlignment;
-        super._init(menuAlignment);
+        super._init(0.5);
 
         this._clockDisplay = new St.Label({ style_class: 'clock' });
         this._clockDisplay.clutter_text.y_align = Clutter.ActorAlign.CENTER;
