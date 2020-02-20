@@ -1,6 +1,27 @@
 /* Date/Time Menu */
 
-.clock-display-box { spacing: $base_spacing; }
+.clock-display {
+  &:active, &:overview, &:focus, &:checked {
+    box-shadow: none !important;
+  }
+
+  .clock-display-box {
+    spacing: $base_spacing / 2;
+
+    .clock {
+      // Trick due to St limitations. It needs a background to draw a box-shadow
+      background-color: rgba(0, 0, 0, 0.01);
+      padding-left: $base_padding;
+      padding-right: $base_padding;
+    }
+  }
+
+  &:active, &:overview, &:focus, &:checked {
+    .clock {
+      box-shadow: inset 0 -2px 0 0 lighten($selected_bg_color,5%);
+    }
+  }
+}
 
 // overall menu
 #calendarArea {

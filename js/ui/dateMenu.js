@@ -553,7 +553,9 @@ class DateMenuButton extends PanelMenu.Button {
             menuAlignment = 1.0 - menuAlignment;
         super._init(menuAlignment);
 
-        this._clockDisplay = new St.Label({ y_align: Clutter.ActorAlign.CENTER });
+        this._clockDisplay = new St.Label({ style_class: 'clock' });
+        this._clockDisplay.clutter_text.y_align = Clutter.ActorAlign.CENTER;
+
         this._indicator = new MessagesIndicator();
 
         const indicatorPad = new St.Widget();
