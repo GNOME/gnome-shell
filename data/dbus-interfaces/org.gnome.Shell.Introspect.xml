@@ -57,5 +57,19 @@
     <method name="GetWindows">
       <arg name="windows" direction="out" type="a{ta{sv}}" />
     </method>
+
+    <!--
+       AnimationsEnabled:
+       @short_description: Whether the shell animations are enabled
+
+       By default determined by the org.gnome.desktop.interface enable-animations
+       gsetting, but may be overridden, e.g. if there is an active screen cast or
+       remote desktop session that asked for animations to be disabled.
+
+       Since: 2
+    -->
+    <property name="AnimationsEnabled" type="b" access="read"/>
+
+    <property name="version" type="u" access="read"/>
   </interface>
 </node>

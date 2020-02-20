@@ -1,9 +1,11 @@
 /* exported IntrospectService */
-const { Gio, GLib, Meta, Shell } = imports.gi;
+const { Gio, GLib, Meta, Shell, St } = imports.gi;
 
 const INTROSPECT_SCHEMA = 'org.gnome.shell';
 const INTROSPECT_KEY = 'introspect';
 const APP_WHITELIST = ['org.freedesktop.impl.portal.desktop.gtk'];
+
+const INTROSPECT_DBUS_API_VERSION = 2;
 
 const { loadInterfaceXML } = imports.misc.fileUtils;
 
@@ -22,6 +24,7 @@ var IntrospectService = class {
         this._runningApplicationsDirty = true;
         this._activeApplication = null;
         this._activeApplicationDirty = true;
+        this._animationsEnabled = true;
 
         this._appSystem = Shell.AppSystem.get_default();
         this._appSystem.connect('app-state-changed',
@@ -30,7 +33,9 @@ var IntrospectService = class {
                                     this._syncRunningApplications();
                                 });
 
-        this._settings = new Gio.Settings({ schema_id: INTROSPECT_SCHEMA });
+        this._introspectSettings = new Gio.Settings({
+            schema_id: INTROSPECT_SCHEMA,
+        });
 
         let tracker = Shell.WindowTracker.get_default();
         tracker.connect('notify::focus-app',
@@ -49,6 +54,11 @@ var IntrospectService = class {
                 (conn, name, owner) => this._whitelistMap.set(name, owner),
                 (conn, name) => this._whitelistMap.delete(name));
         });
+
+        this._settings = St.Settings.get();
+        this._settings.connect('notify::enable-animations',
+            this._syncAnimationsEnabled.bind(this));
+        this._syncAnimationsEnabled();
     }
 
     _isStandaloneApp(app) {
@@ -56,7 +66,7 @@ var IntrospectService = class {
     }
 
     _isIntrospectEnabled() {
-        return this._settings.get_boolean(INTROSPECT_KEY);
+        return this._introspectSettings.get_boolean(INTROSPECT_KEY);
     }
 
     _isSenderWhitelisted(sender) {
@@ -119,9 +129,18 @@ var IntrospectService = class {
                 type == Meta.WindowType.UTILITY;
     }
 
+    _isInvocationAllowed(invocation) {
+        if (this._isIntrospectEnabled())
+            return true;
+
+        if (this._isSenderWhitelisted(invocation.get_sender()))
+            return true;
+
+        return false;
+    }
+
     GetRunningApplicationsAsync(params, invocation) {
-        if (!this._isIntrospectEnabled() &&
-            !this._isSenderWhitelisted(invocation.get_sender())) {
+        if (!this._isInvocationAllowed(invocation)) {
             invocation.return_error_literal(Gio.DBusError,
                                             Gio.DBusError.ACCESS_DENIED,
                                             'App introspection not allowed');
@@ -136,8 +155,7 @@ var IntrospectService = class {
         let apps = this._appSystem.get_running();
         let windowsList = {};
 
-        if (!this._isIntrospectEnabled() &&
-            !this._isSenderWhitelisted(invocation.get_sender())) {
+        if (!this._isInvocationAllowed(invocation)) {
             invocation.return_error_literal(Gio.DBusError,
                                             Gio.DBusError.ACCESS_DENIED,
                                             'App introspection not allowed');
@@ -180,5 +198,22 @@ var IntrospectService = class {
             }
         }
         invocation.return_value(new GLib.Variant('(a{ta{sv}})', [windowsList]));
+    }
+
+    _syncAnimationsEnabled() {
+        let wasAnimationsEnabled = this._animationsEnabled;
+        this._animationsEnabled = this._settings.enable_animations;
+        if (wasAnimationsEnabled !== this._animationsEnabled) {
+            let variant = new GLib.Variant('b', this._animationsEnabled);
+            this._dbusImpl.emit_property_changed('AnimationsEnabled', variant);
+        }
+    }
+
+    get AnimationsEnabled() {
+        return this._animationsEnabled;
+    }
+
+    get version() {
+        return INTROSPECT_DBUS_API_VERSION;
     }
 };

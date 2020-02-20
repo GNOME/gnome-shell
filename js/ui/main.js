@@ -161,6 +161,8 @@ function _initializeUI() {
     _loadOskLayouts();
     _loadDefaultStylesheet();
 
+    new AnimationsSettings();
+
     // Setup the stage hierarchy early
     layoutManager = new Layout.LayoutManager();
 
@@ -758,3 +760,46 @@ function showRestartMessage(message) {
     let restartMessage = new RestartMessage(message);
     restartMessage.open();
 }
+
+var AnimationsSettings = class {
+    constructor() {
+        let backend = Meta.get_backend();
+        if (!backend.is_rendering_hardware_accelerated()) {
+            St.Settings.get().inhibit_animations();
+            return;
+        }
+
+        let isXvnc = Shell.util_has_x11_display_extension(
+            global.display, 'VNC-EXTENSION');
+        if (isXvnc) {
+            St.Settings.get().inhibit_animations();
+            return;
+        }
+
+        let remoteAccessController = backend.get_remote_access_controller();
+        if (!remoteAccessController)
+            return;
+
+        this._handles = new Set();
+        remoteAccessController.connect('new-handle',
+            (_, handle) => this._onNewRemoteAccessHandle(handle));
+    }
+
+    _onRemoteAccessHandleStopped(handle) {
+        let settings = St.Settings.get();
+
+        settings.uninhibit_animations();
+        this._handles.delete(handle);
+    }
+
+    _onNewRemoteAccessHandle(handle) {
+        if (!handle.get_disable_animations())
+            return;
+
+        let settings = St.Settings.get();
+
+        settings.inhibit_animations();
+        this._handles.add(handle);
+        handle.connect('stopped', this._onRemoteAccessHandleStopped.bind(this));
+    }
+};
