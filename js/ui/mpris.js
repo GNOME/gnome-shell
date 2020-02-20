@@ -251,6 +251,10 @@ class MediaSection extends MessageList.MessageListSection {
         return !this.empty && Calendar.isToday(this._date);
     }
 
+    get allowed() {
+        return !Main.sessionMode.isGreeter;
+    }
+
     _addPlayer(busName) {
         if (this._players.get(busName))
             return;
