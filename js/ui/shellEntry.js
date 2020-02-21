@@ -191,9 +191,10 @@ class CapsLockWarning extends St.Label {
 
         this.remove_all_transitions();
 
+        const { naturalHeightSet } = this;
         this.natural_height_set = false;
         let [, height] = this.get_preferred_height(-1);
-        this.natural_height_set = true;
+        this.natural_height_set = naturalHeightSet;
 
         this.ease({
             height: capsLockOn ? height : 0,
