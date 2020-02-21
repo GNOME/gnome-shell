@@ -43,7 +43,9 @@ var Slider = GObject.registerClass({
         let [hasHandleColor, handleBorderColor] =
             themeNode.lookup_color('-slider-handle-border-color', false);
 
-        let handleX = handleRadius + (width - 2 * handleRadius) * this._value / this._maxValue;
+        let wholeHandleRadius = Math.ceil(handleRadius);
+        let handleX = wholeHandleRadius +
+            (width - 2 * wholeHandleRadius) * this._value / this._maxValue;
         let handleY = height / 2;
 
         let color = themeNode.get_foreground_color();
