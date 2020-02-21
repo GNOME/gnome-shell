@@ -16,8 +16,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2020-02-21 09:52+0000\n"
-"PO-Revision-Date: 2020-02-22 01:00+0900\n"
+"POT-Creation-Date: 2020-02-21 17:52+0000\n"
+"PO-Revision-Date: 2020-02-22 07:00+0900\n"
 "Last-Translator: sicklylife <translation@sicklylife.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
 "Language: ja\n"
@@ -44,7 +44,7 @@ msgstr "アクティビティ画面を表示する"
 
 #: data/50-gnome-shell-system.xml:18
 msgid "Show all applications"
-msgstr "すべてのアプリケーションを表示"
+msgstr "すべてのアプリケーションを表示する"
 
 #: data/50-gnome-shell-system.xml:21
 msgid "Open the application menu"
@@ -2293,19 +2293,19 @@ msgstr "組み込みのみ"
 
 #. Translators: This is a time format for a date in
 #. long format
-#: js/ui/unlockDialog.js:372
+#: js/ui/unlockDialog.js:370
 msgid "%A %B %-d"
 msgstr "%B%-e日 (%a)"
 
-#: js/ui/unlockDialog.js:378
+#: js/ui/unlockDialog.js:376
 msgid "Swipe up to unlock"
 msgstr "ロック解除は上にスワイプしてください"
 
-#: js/ui/unlockDialog.js:379
+#: js/ui/unlockDialog.js:377
 msgid "Click or press a key to unlock"
 msgstr "ロック解除はキーを押すかクリックしてください"
 
-#: js/ui/unlockDialog.js:552
+#: js/ui/unlockDialog.js:550
 msgid "Unlock Window"
 msgstr "ロック解除"
 
