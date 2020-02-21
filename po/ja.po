@@ -17,7 +17,7 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
 "POT-Creation-Date: 2020-02-21 09:52+0000\n"
-"PO-Revision-Date: 2020-02-21 02:00+0900\n"
+"PO-Revision-Date: 2020-02-22 01:00+0900\n"
 "Last-Translator: sicklylife <translation@sicklylife.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
 "Language: ja\n"
@@ -527,8 +527,8 @@ msgid ""
 "extensions."
 msgstr ""
 "拡張機能は、システムに何らかの問題 (パフォーマンスへの影響を含む) を引き起こ"
-"す可能性があります。システムに問題が発生した場合、すべての拡張機能を無効にす"
-"ることをお勧めします。"
+"す可能性があります。システムに問題が発生した場合は、すべての拡張機能を無効に"
+"することをお勧めします。"
 
 #: js/extensionPrefs/ui/extensions-window.ui:133
 msgid "Manually Installed"
@@ -1037,7 +1037,7 @@ msgstr "イベントなし"
 
 #: js/ui/calendar.js:1153
 msgid "Do Not Disturb"
-msgstr "通知ポップアップ"
+msgstr "通知をポップアップしない"
 
 #: js/ui/calendar.js:1167
 msgid "Clear"
@@ -1102,11 +1102,11 @@ msgstr "キー"
 
 #: js/ui/components/networkAgent.js:246 js/ui/components/networkAgent.js:269
 msgid "Private key password"
-msgstr "プライベートキーパスワード"
+msgstr "秘密鍵のパスワード"
 
 #: js/ui/components/networkAgent.js:267
 msgid "Identity"
-msgstr "識別子"
+msgstr "Identity"
 
 #: js/ui/components/networkAgent.js:281
 msgid "Service"
@@ -1602,7 +1602,7 @@ msgstr "アクティビティ画面"
 #. characters.
 #: js/ui/overview.js:107
 msgid "Type to search"
-msgstr "検索ワードを入力…"
+msgstr "検索ワードを入力"
 
 #: js/ui/padOsd.js:95
 msgid "New shortcut…"
