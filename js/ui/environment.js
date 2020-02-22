@@ -111,6 +111,9 @@ function _easeActor(actor, params) {
         autoReverse = params.autoReverse;
     delete params.autoReverse;
 
+    // whether the transition should finish where it started
+    const isReversed = autoReverse && repeatCount % 2 === 1;
+
     if (params.mode != undefined)
         actor.set_easing_mode(params.mode);
     delete params.mode;
@@ -122,7 +125,8 @@ function _easeActor(actor, params) {
     let animatedProps = Object.keys(params).map(p => p.replace('_', '-', 'g'));
     animatedProps.forEach(p => actor.remove_transition(p));
 
-    actor.set(params);
+    if (actor.get_easing_duration() > 0 || !isReversed)
+        actor.set(params);
     actor.restore_easing_state();
 
     let transition = animatedProps.map(p => actor.get_transition(p))
@@ -161,6 +165,9 @@ function _easeActorProperty(actor, propName, target, params) {
         autoReverse = params.autoReverse;
     delete params.autoReverse;
 
+    // whether the transition should finish where it started
+    const isReversed = autoReverse && repeatCount % 2 === 1;
+
     // Copy Clutter's behavior for implicit animations, see
     // should_skip_implicit_transition()
     if (actor instanceof Clutter.Actor && !actor.mapped)
@@ -174,7 +181,9 @@ function _easeActorProperty(actor, propName, target, params) {
 
     if (duration == 0) {
         let [obj, prop] = _getPropertyTarget(actor, propName);
-        obj[prop] = target;
+
+        if (!isReversed)
+            obj[prop] = target;
 
         Meta.disable_unredirect_for_display(global.display);
         callback(true);
