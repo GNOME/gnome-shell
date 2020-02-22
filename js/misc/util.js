@@ -445,6 +445,9 @@ function ensureActorVisibleInScrollView(scrollView, actor) {
 }
 
 function wiggle(actor, params) {
+    if (!St.Settings.get().enable_animations)
+        return;
+
     params = Params.parse(params, {
         offset: WIGGLE_OFFSET,
         duration: WIGGLE_DURATION,
