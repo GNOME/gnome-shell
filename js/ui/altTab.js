@@ -78,28 +78,28 @@ class AppSwitcherPopup extends SwitcherPopup.SwitcherPopup {
             let childBox = this._switcherList.get_allocation_box();
             let primary = Main.layoutManager.primaryMonitor;
 
-            let leftPadding = this.get_theme_node().get_padding(St.Side.LEFT);
-            let rightPadding = this.get_theme_node().get_padding(St.Side.RIGHT);
-            let bottomPadding = this.get_theme_node().get_padding(St.Side.BOTTOM);
-            let hPadding = leftPadding + rightPadding;
+            let themeNode = this.get_theme_node();
+            let leftPadding = themeNode.get_padding(St.Side.LEFT);
+            let rightPadding = themeNode.get_padding(St.Side.RIGHT);
+            let bottomPadding = themeNode.get_padding(St.Side.BOTTOM);
+            let spacing = themeNode.get_length('spacing');
 
             let icon = this._items[this._selectedIndex];
             let [posX] = icon.get_transformed_position();
             let thumbnailCenter = posX + icon.width / 2;
+
             let [, childNaturalWidth] = this._thumbnails.get_preferred_width(-1);
             childBox.x1 = Math.max(primary.x + leftPadding, Math.floor(thumbnailCenter - childNaturalWidth / 2));
-            if (childBox.x1 + childNaturalWidth > primary.x + primary.width - hPadding) {
-                let offset = childBox.x1 + childNaturalWidth - primary.width + hPadding;
-                childBox.x1 = Math.max(primary.x + leftPadding, childBox.x1 - offset - hPadding);
-            }
+            let rightLimit = primary.x + primary.width - rightPadding;
+            if (childBox.x1 + childNaturalWidth > rightLimit)
+                childBox.x1 = Math.max(primary.x + leftPadding, rightLimit - childNaturalWidth);
 
-            let spacing = this.get_theme_node().get_length('spacing');
-
-            childBox.x2 = childBox.x1 +  childNaturalWidth;
-            if (childBox.x2 > primary.x + primary.width - rightPadding)
-                childBox.x2 = primary.x + primary.width - rightPadding;
+            childBox.x2 = Math.min(childBox.x1 + childNaturalWidth, rightLimit);
             childBox.y1 = this._switcherList.allocation.y2 + spacing;
-            this._thumbnails.addClones(primary.y + primary.height - bottomPadding - childBox.y1);
+
+            let maxSwitcherListHeight = primary.y + primary.height - bottomPadding - childBox.y1;
+            this._thumbnails.addClones(maxSwitcherListHeight);
+
             let [, childNaturalHeight] = this._thumbnails.get_preferred_height(-1);
             childBox.y2 = childBox.y1 + childNaturalHeight;
             this._thumbnails.allocate(childBox, flags);
@@ -263,9 +263,26 @@ class AppSwitcherPopup extends SwitcherPopup.SwitcherPopup {
         if (!appIcon)
             return;
 
-        if (appIcon.cachedWindows.length > 0) {
-            let newIndex = Math.min(n, appIcon.cachedWindows.length - 1);
-            this._select(this._selectedIndex, newIndex);
+        // Only select new thumbnail if a thumbnail was selected before
+        if (this._thumbnailsFocused) {
+            // If only one window is left, move the selection to the parent,
+            // this also destroys the thumbnails
+            if (appIcon.cachedWindows.length == 1) {
+                this._select(this._selectedIndex);
+            } else {
+                let newIndex = appIcon.cachedWindows.length - 1;
+
+                if (n < this._currentWindow)
+                    newIndex = this._currentWindow - 1;
+                else if (n == this._currentWindow && n != appIcon.cachedWindows.length)
+                    newIndex = this._currentWindow;
+                else if (n > this._currentWindow)
+                    return; // No need to select something new in this case
+
+                this._select(this._selectedIndex, newIndex);
+            }
+        } else if (appIcon.cachedWindows.length == 1) {
+            this._destroyThumbnails();
         }
     }
 
@@ -354,17 +371,18 @@ class AppSwitcherPopup extends SwitcherPopup.SwitcherPopup {
     }
 
     _destroyThumbnails() {
-        let thumbnailsActor = this._thumbnails;
-        this._thumbnails.ease({
+        let thumbnails = this._thumbnails;
+        this._thumbnails = null;
+        this.thumbnailsVisible = false;
+        this._thumbnailsFocused = false;
+
+        thumbnails.ease({
             opacity: 0,
             duration: THUMBNAIL_FADE_TIME,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            onComplete: () => {
-                thumbnailsActor.destroy();
-                this.thumbnailsVisible = false;
-            },
+            onComplete: () => thumbnails.destroy(),
         });
-        this._thumbnails = null;
+
         if (this._switcherList._items[this._selectedIndex])
             this._switcherList._items[this._selectedIndex].remove_accessible_state(Atk.StateType.EXPANDED);
     }
@@ -374,10 +392,6 @@ class AppSwitcherPopup extends SwitcherPopup.SwitcherPopup {
         this._thumbnails.connect('item-activated', this._windowActivated.bind(this));
         this._thumbnails.connect('item-entered', this._windowEntered.bind(this));
         this._thumbnails.connect('item-removed', this._windowRemoved.bind(this));
-        this._thumbnails.connect('destroy', () => {
-            this._thumbnails = null;
-            this._thumbnailsFocused = false;
-        });
 
         this.add_actor(this._thumbnails);
 
@@ -390,11 +404,9 @@ class AppSwitcherPopup extends SwitcherPopup.SwitcherPopup {
             opacity: 255,
             duration: THUMBNAIL_FADE_TIME,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            onComplete: () => {
-                this.thumbnailsVisible = true;
-            },
         });
 
+        this.thumbnailsVisible = true;
         this._switcherList._items[this._selectedIndex].add_accessible_state(Atk.StateType.EXPANDED);
     }
 });
@@ -864,7 +876,6 @@ class ThumbnailSwitcher extends SwitcherPopup.SwitcherList {
     _init(windows) {
         super._init(false);
 
-        this._labels = [];
         this._thumbnailBins = [];
         this._clones = [];
         this._windows = windows;
@@ -885,7 +896,7 @@ class ThumbnailSwitcher extends SwitcherPopup.SwitcherList {
                     // St.Label doesn't support text-align
                     x_align: Clutter.ActorAlign.CENTER,
                 });
-                this._labels.push(name);
+                this._lastLabel = name;
                 box.add_actor(name);
 
                 this.addItem(box, name);
@@ -903,7 +914,7 @@ class ThumbnailSwitcher extends SwitcherPopup.SwitcherList {
             return;
         let totalPadding = this._items[0].get_theme_node().get_horizontal_padding() + this._items[0].get_theme_node().get_vertical_padding();
         totalPadding += this.get_theme_node().get_horizontal_padding() + this.get_theme_node().get_vertical_padding();
-        let [, labelNaturalHeight] = this._labels[0].get_preferred_height(-1);
+        let [, labelNaturalHeight] = this._lastLabel.get_preferred_height(-1);
         let spacing = this._items[0].child.get_theme_node().get_length('spacing');
         let scaleFactor = St.ThemeContext.get_for_stage(global.stage).scale_factor;
         let thumbnailSize = THUMBNAIL_DEFAULT_SIZE * scaleFactor;
@@ -938,12 +949,9 @@ class ThumbnailSwitcher extends SwitcherPopup.SwitcherList {
 
         this._clones.splice(index, 1);
         this._windows.splice(index, 1);
-        this._labels.splice(index, 1);
         this.removeItem(index);
 
-        if (this._clones.length > 0)
-            this.highlight(SwitcherPopup.mod(index, this._clones.length));
-        else
+        if (this._clones.length == 0)
             this.destroy();
     }
 
