@@ -141,6 +141,7 @@ static gboolean st_widget_real_navigate_focus (StWidget         *widget,
                                                StDirectionType   direction);
 
 static AtkObject * st_widget_get_accessible (ClutterActor *actor);
+static gboolean    st_widget_has_accessible (ClutterActor *actor);
 
 static void
 st_widget_set_property (GObject      *gobject,
@@ -846,6 +847,7 @@ st_widget_class_init (StWidgetClass *klass)
   actor_class->key_press_event = st_widget_key_press_event;
 
   actor_class->get_accessible = st_widget_get_accessible;
+  actor_class->has_accessible = st_widget_has_accessible;
 
   klass->style_changed = st_widget_real_style_changed;
   klass->navigate_focus = st_widget_real_navigate_focus;
@@ -2649,6 +2651,20 @@ struct _StWidgetAccessiblePrivate
 };
 
 G_DEFINE_TYPE_WITH_PRIVATE (StWidgetAccessible, st_widget_accessible, CALLY_TYPE_ACTOR)
+
+static gboolean
+st_widget_has_accessible (ClutterActor *actor)
+{
+  StWidget *widget;
+  StWidgetPrivate *priv;
+
+  g_return_val_if_fail (ST_IS_WIDGET (actor), FALSE);
+
+  widget = ST_WIDGET (actor);
+  priv = st_widget_get_instance_private (widget);
+
+  return priv->accessible != NULL;
+}
 
 static AtkObject *
 st_widget_get_accessible (ClutterActor *actor)
