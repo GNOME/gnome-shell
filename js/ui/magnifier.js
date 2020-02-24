@@ -127,6 +127,10 @@ var Magnifier = class Magnifier {
      * Show the system mouse pointer.
      */
     showSystemCursor() {
+        const seat = Clutter.get_default_backend().get_default_seat();
+
+        if (seat.is_unfocus_inhibited())
+            seat.uninhibit_unfocus();
         this._cursorTracker.set_pointer_visible(true);
     }
 
@@ -135,6 +139,10 @@ var Magnifier = class Magnifier {
      * Hide the system mouse pointer.
      */
     hideSystemCursor() {
+        const seat = Clutter.get_default_backend().get_default_seat();
+
+        if (!seat.is_unfocus_inhibited())
+            seat.inhibit_unfocus();
         this._cursorTracker.set_pointer_visible(false);
     }
 
@@ -169,7 +177,7 @@ var Magnifier = class Magnifier {
         // Make sure system mouse pointer is shown when all zoom regions are
         // invisible.
         if (!activate)
-            this._cursorTracker.set_pointer_visible(true);
+            this.showSystemCursor();
 
         // Notify interested parties of this change
         this.emit('active-changed', activate);
