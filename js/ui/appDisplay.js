@@ -2437,6 +2437,11 @@ var AppIconMenu = class AppIconMenu extends PopupMenu.PopupMenu {
         Main.uiGroup.add_actor(this.actor);
     }
 
+    // disable parent's handler
+    _onKeyPress(actor, event) {
+        return Clutter.EVENT_PROPAGATE;
+    },
+
     _redisplay() {
         this.removeAll();
 
