@@ -476,7 +476,6 @@ var UnlockDialog = GObject.registerClass({
             accessible_role: Atk.Role.WINDOW,
             style_class: 'login-dialog',
             visible: false,
-            can_focus: true,
             reactive: true,
         });
 
@@ -556,6 +555,7 @@ var UnlockDialog = GObject.registerClass({
         // Switch User button
         this._otherUserButton = new St.Button({
             style_class: 'modal-dialog-button button switch-user-button',
+            accessible_name: _('Log in as another user'),
             can_focus: true,
             reactive: true,
             x_align: Clutter.ActorAlign.END,
@@ -569,7 +569,7 @@ var UnlockDialog = GObject.registerClass({
             this._otherUserButton, 'visible', Gio.SettingsBindFlags.GET);
 
         // Main Box
-        let mainBox = new Clutter.Actor();
+        let mainBox = new St.Widget();
         mainBox.add_constraint(new Layout.MonitorConstraint({ primary: true }));
         mainBox.add_child(this._stack);
         mainBox.add_child(this._notificationsBox);
