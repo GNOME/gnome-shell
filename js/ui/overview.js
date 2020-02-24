@@ -270,7 +270,11 @@ var Overview = class {
     }
 
     _sessionUpdated() {
-        this.isDummy = !Main.sessionMode.hasOverview;
+        const hasNoOverview = !Main.sessionMode.hasOverview;
+        if (hasNoOverview)
+            this.hide();
+
+        this.isDummy = hasNoOverview;
         this._createOverview();
     }
 
