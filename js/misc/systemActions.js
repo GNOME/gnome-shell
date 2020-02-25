@@ -417,6 +417,8 @@ const SystemActions = GObject.registerClass({
         if (!this._actions.get(SWITCH_USER_ACTION_ID).available)
             throw new Error('The switch-user action is not available!');
 
+        Main.overview.hide();
+
         if (Main.screenShield)
             Main.screenShield.lock(false);
 
