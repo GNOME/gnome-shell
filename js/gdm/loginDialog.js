@@ -456,7 +456,6 @@ var LoginDialog = GObject.registerClass({
         let notListedLabel = new St.Label({
             text: _("Not listed?"),
             style_class: 'login-dialog-not-listed-label',
-            x_align: Clutter.ActorAlign.START,
         });
         this._notListedButton = new St.Button({
             style_class: 'login-dialog-not-listed-button',
@@ -464,6 +463,7 @@ var LoginDialog = GObject.registerClass({
             can_focus: true,
             child: notListedLabel,
             reactive: true,
+            x_align: Clutter.ActorAlign.START,
         });
 
         this._notListedButton.connect('clicked', this._hideUserListAskForUsernameAndBeginVerification.bind(this));
