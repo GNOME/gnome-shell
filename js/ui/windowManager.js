@@ -1256,7 +1256,7 @@ var WindowManager = class {
         // while actor updates are frozen.
         let actorContent = Shell.util_get_content_for_window_actor(actor, oldFrameRect);
         let actorClone = new St.Widget({ content: actorContent });
-        actorClone.set_offscreen_redirect(Clutter.OffscreenRedirect.ON_IDLE);
+        actorClone.set_offscreen_redirect(Clutter.OffscreenRedirect.ALWAYS);
         actorClone.set_position(oldFrameRect.x, oldFrameRect.y);
         actorClone.set_size(oldFrameRect.width, oldFrameRect.height);
         Main.uiGroup.add_actor(actorClone);
