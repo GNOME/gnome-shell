@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: HEAD\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2020-02-17 22:27+0000\n"
+"POT-Creation-Date: 2020-02-25 23:44+0000\n"
 "PO-Revision-Date: 2020-02-18 20:44+0100\n"
 "Last-Translator: Robert Antoni Buj Gelonch <rbuj@fedoraproject.org>\n"
 "Language-Team: Catalan <tradgnome@softcatala.org>\n"
@@ -428,11 +428,11 @@ msgstr ""
 "Si suprimiu una extensió, us cal tornar-la a baixar si voleu habilitar-la de "
 "nou."
 
-#: js/extensionPrefs/main.js:144 js/ui/audioDeviceSelection.js:57
-#: js/ui/components/networkAgent.js:107 js/ui/components/polkitAgent.js:139
-#: js/ui/endSessionDialog.js:374 js/ui/extensionDownloader.js:165
-#: js/ui/shellMountOperation.js:376 js/ui/shellMountOperation.js:386
-#: js/ui/status/network.js:913
+#: js/extensionPrefs/main.js:144 js/gdm/authPrompt.js:135
+#: js/ui/audioDeviceSelection.js:57 js/ui/components/networkAgent.js:107
+#: js/ui/components/polkitAgent.js:139 js/ui/endSessionDialog.js:374
+#: js/ui/extensionDownloader.js:165 js/ui/shellMountOperation.js:376
+#: js/ui/shellMountOperation.js:386 js/ui/status/network.js:913
 msgid "Cancel"
 msgstr "Cancel·la"
 
@@ -566,7 +566,7 @@ msgid "Log Out…"
 msgstr "Surt…"
 
 #. Cisco LEAP
-#: js/gdm/authPrompt.js:235 js/ui/components/networkAgent.js:202
+#: js/gdm/authPrompt.js:237 js/ui/components/networkAgent.js:202
 #: js/ui/components/networkAgent.js:218 js/ui/components/networkAgent.js:242
 #: js/ui/components/networkAgent.js:263 js/ui/components/networkAgent.js:283
 #: js/ui/components/networkAgent.js:293 js/ui/components/polkitAgent.js:277
@@ -862,27 +862,27 @@ msgid "All"
 msgstr "Totes"
 
 #. Translators: This is the heading of a list of open windows
-#: js/ui/appDisplay.js:2454 js/ui/panel.js:75
+#: js/ui/appDisplay.js:2450 js/ui/panel.js:75
 msgid "Open Windows"
 msgstr "Obre finestres"
 
-#: js/ui/appDisplay.js:2474 js/ui/panel.js:82
+#: js/ui/appDisplay.js:2470 js/ui/panel.js:82
 msgid "New Window"
 msgstr "Finestra nova"
 
-#: js/ui/appDisplay.js:2485
+#: js/ui/appDisplay.js:2481
 msgid "Launch using Dedicated Graphics Card"
 msgstr "Inicia usant una targeta gràfica dedicada"
 
-#: js/ui/appDisplay.js:2513 js/ui/dash.js:239
+#: js/ui/appDisplay.js:2509 js/ui/dash.js:239
 msgid "Remove from Favorites"
 msgstr "Suprimeix dels preferits"
 
-#: js/ui/appDisplay.js:2519
+#: js/ui/appDisplay.js:2515
 msgid "Add to Favorites"
 msgstr "Afegeix als preferits"
 
-#: js/ui/appDisplay.js:2529 js/ui/panel.js:93
+#: js/ui/appDisplay.js:2525 js/ui/panel.js:93
 msgid "Show Details"
 msgstr "Mostra els detalls"
 
@@ -1538,59 +1538,59 @@ msgstr "Deixa-ho desactivat"
 msgid "Region & Language Settings"
 msgstr "Configuració de regió i idioma"
 
-#: js/ui/lookingGlass.js:659
+#: js/ui/lookingGlass.js:665
 msgid "No extensions installed"
 msgstr "No hi ha cap extensió instal·lada"
 
 #. Translators: argument is an extension UUID.
-#: js/ui/lookingGlass.js:714
+#: js/ui/lookingGlass.js:720
 #, javascript-format
 msgid "%s has not emitted any errors."
 msgstr "%s no ha emès cap error."
 
-#: js/ui/lookingGlass.js:720
+#: js/ui/lookingGlass.js:726
 msgid "Hide Errors"
 msgstr "Amaga els errors"
 
-#: js/ui/lookingGlass.js:724 js/ui/lookingGlass.js:789
+#: js/ui/lookingGlass.js:730 js/ui/lookingGlass.js:795
 msgid "Show Errors"
 msgstr "Mostra els errors"
 
-#: js/ui/lookingGlass.js:733
+#: js/ui/lookingGlass.js:739
 msgid "Enabled"
 msgstr "Habilitat"
 
 #. translators:
 #. * The device has been disabled
-#: js/ui/lookingGlass.js:736 subprojects/gvc/gvc-mixer-control.c:1892
+#: js/ui/lookingGlass.js:742 subprojects/gvc/gvc-mixer-control.c:1892
 msgid "Disabled"
 msgstr "Inhabilitat"
 
-#: js/ui/lookingGlass.js:738
+#: js/ui/lookingGlass.js:744
 msgid "Error"
 msgstr "Error"
 
-#: js/ui/lookingGlass.js:740
+#: js/ui/lookingGlass.js:746
 msgid "Out of date"
 msgstr "Fora d'hora"
 
-#: js/ui/lookingGlass.js:742
+#: js/ui/lookingGlass.js:748
 msgid "Downloading"
 msgstr "S'està baixant"
 
-#: js/ui/lookingGlass.js:771
+#: js/ui/lookingGlass.js:777
 msgid "View Source"
 msgstr "Mostra el codi font"
 
-#: js/ui/lookingGlass.js:780
+#: js/ui/lookingGlass.js:786
 msgid "Web Page"
 msgstr "Pàgina web"
 
-#: js/ui/main.js:267
+#: js/ui/main.js:269
 msgid "Logged in as a privileged user"
 msgstr "Sessió iniciada com a usuari privilegiat"
 
-#: js/ui/main.js:268
+#: js/ui/main.js:270
 msgid ""
 "Running a session as a privileged user should be avoided for security "
 "reasons. If possible, you should log in as a normal user."
@@ -1598,11 +1598,11 @@ msgstr ""
 "Cal evitar iniciar sessions com a usuari privilegiat per raons de seguretat. "
 "Si és possible, entreu com a un usuari normal."
 
-#: js/ui/main.js:274
+#: js/ui/main.js:276
 msgid "Screen Lock disabled"
 msgstr "La pantalla de bloqueig està inhabilitada"
 
-#: js/ui/main.js:275
+#: js/ui/main.js:277
 msgid "Screen Locking requires the GNOME display manager."
 msgstr "El bloqueig de pantalla requereix el gestor de pantalla del GNOME."
 
@@ -1690,12 +1690,12 @@ msgstr "Surt"
 msgid "Activities"
 msgstr "Activitats"
 
-#: js/ui/panel.js:707
+#: js/ui/panel.js:713
 msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "Sistema"
 
-#: js/ui/panel.js:820
+#: js/ui/panel.js:826
 msgid "Top Bar"
 msgstr "Barra superior"
 
@@ -1915,11 +1915,11 @@ msgstr "Clic secundari"
 msgid "Dwell Click"
 msgstr "Clic en passar per sobre"
 
-#: js/ui/status/keyboard.js:825
+#: js/ui/status/keyboard.js:826
 msgid "Keyboard"
 msgstr "Teclat"
 
-#: js/ui/status/keyboard.js:847
+#: js/ui/status/keyboard.js:848
 msgid "Show Keyboard Layout"
 msgstr "Mostra la disposició del teclat"
 
@@ -2333,21 +2333,25 @@ msgstr "Només l'integrat"
 
 #. Translators: This is a time format for a date in
 #. long format
-#: js/ui/unlockDialog.js:372
+#: js/ui/unlockDialog.js:370
 msgid "%A %B %-d"
 msgstr "%A %-d %B"
 
-#: js/ui/unlockDialog.js:378
+#: js/ui/unlockDialog.js:376
 msgid "Swipe up to unlock"
 msgstr "Llisqueu amunt per desbloquejar"
 
-#: js/ui/unlockDialog.js:379
+#: js/ui/unlockDialog.js:377
 msgid "Click or press a key to unlock"
 msgstr "Feu clic o premeu una tecla per desbloquejar"
 
-#: js/ui/unlockDialog.js:552
+#: js/ui/unlockDialog.js:549
 msgid "Unlock Window"
 msgstr "Desbloqueja la finestra"
+
+#: js/ui/unlockDialog.js:558
+msgid "Log in as another user"
+msgstr "Entra amb un altre usuari"
 
 #: js/ui/viewSelector.js:181
 msgid "Applications"
@@ -2850,9 +2854,6 @@ msgstr "Sons del sistema"
 
 #~ msgid "Enter Password…"
 #~ msgstr "Introduïu la contrasenya…"
-
-#~ msgid "Log in as another user"
-#~ msgstr "Entra amb un altre usuari"
 
 #~ msgid "Browse in Software"
 #~ msgstr "Navega al Programari"
