@@ -1681,6 +1681,92 @@ replace_variant_cb (GObject      *object,
   g_hash_table_remove (global->save_ops, object);
 }
 
+typedef struct
+{
+  GBytes *bytes;
+  gchar *etag;
+  gchar *new_etag;
+  GFileCreateFlags flags;
+  guint make_backup : 1;
+} ReplaceContents;
+
+static void
+replace_contents_free (ReplaceContents *rc)
+{
+  g_clear_pointer (&rc->bytes, g_bytes_unref);
+  g_clear_pointer (&rc->etag, g_free);
+  g_clear_pointer (&rc->new_etag, g_free);
+  g_slice_free (ReplaceContents, rc);
+}
+
+static void
+replace_contents_worker (GTask        *task,
+                         gpointer      source_object,
+                         gpointer      task_data,
+                         GCancellable *cancellable)
+{
+  GFile *file = source_object;
+  ReplaceContents *rc = task_data;
+  GError *error = NULL;
+  const gchar *data;
+  gsize len;
+
+  data = g_bytes_get_data (rc->bytes, &len);
+
+  if (!g_file_replace_contents (file, data, len,
+                                rc->etag, rc->make_backup, rc->flags,
+                                &rc->new_etag, cancellable, &error))
+    g_task_return_error (task, g_steal_pointer (&error));
+  else
+    g_task_return_boolean (task, TRUE);
+}
+
+static void
+replace_contents_async (GFile               *path,
+                        GBytes              *bytes,
+                        const gchar         *etag,
+                        gboolean             make_backup,
+                        GFileCreateFlags     flags,
+                        GCancellable        *cancellable,
+                        GAsyncReadyCallback  callback,
+                        gpointer             user_data)
+{
+  ReplaceContents *rc;
+  GTask *task;
+
+  g_assert (G_IS_FILE (path));
+  g_assert (bytes != NULL);
+  g_assert (!cancellable || G_IS_CANCELLABLE (cancellable));
+
+  rc = g_slice_new0 (ReplaceContents);
+  rc->bytes = g_bytes_ref (bytes);
+  rc->etag = g_strdup (etag);
+  rc->make_backup = !!make_backup;
+  rc->flags = flags;
+
+  task = g_task_new (path, cancellable, callback, user_data);
+  g_task_set_source_tag (task, replace_contents_async);
+  g_task_set_task_data (task, rc, (GDestroyNotify)replace_contents_free);
+  g_task_run_in_thread (task, replace_contents_worker);
+
+  g_object_unref (task);
+}
+
+static gboolean
+replace_contents_finish (GFile         *file,
+                         GAsyncResult  *result,
+                         gchar        **new_etag,
+                         GError       **error)
+{
+  ReplaceContents *rc = g_task_get_task_data (G_TASK (result));
+  gboolean ret = g_task_propagate_boolean (G_TASK (result), error);
+
+  if (new_etag != NULL)
+    *new_etag = ret ? g_steal_pointer (&rc->new_etag) : NULL;
+
+  return ret;
+}
+
 static void
 save_variant (ShellGlobal *global,
               GFile       *dir,
@@ -1703,12 +1789,20 @@ save_variant (ShellGlobal *global,
     }
   else
     {
-      g_file_replace_contents_async (path,
-                                     g_variant_get_data (variant),
-                                     g_variant_get_size (variant),
-                                     NULL, FALSE,
-                                     G_FILE_CREATE_REPLACE_DESTINATION,
-                                     cancellable, replace_variant_cb, global);
+      GBytes *bytes = g_bytes_new_with_free_func (g_variant_get_data (variant),
+                                                  g_variant_get_size (variant),
+                                                  (GDestroyNotify)g_variant_unref,
+                                                  g_variant_ref (variant));
+      /* g_file_replace_contents_async() can potentially fsync() from the
+       * calling thread when completing the asynchronous task. Instead, we
+       * want to force that fsync() to a thread to avoid blocking the
+       * compository main loop. Using our own replace_contents_async()
+       * simply executes the operation synchronously from a thread.
+       */
+      replace_contents_async (path, bytes, NULL, FALSE,
+                              G_FILE_CREATE_REPLACE_DESTINATION,
+                              cancellable, replace_variant_cb, global);
+      g_bytes_unref (bytes);
     }
 
   g_object_unref (path);
