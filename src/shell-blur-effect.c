@@ -713,17 +713,8 @@ update_framebuffers (ShellBlurEffect     *self,
 
 static void
 paint_actor_offscreen (ShellBlurEffect         *self,
-                       ClutterPaintContext     *paint_context,
-                       ClutterEffectPaintFlags  flags)
+                       ClutterPaintContext     *paint_context)
 {
-  gboolean actor_dirty;
-
-  actor_dirty = (flags & CLUTTER_EFFECT_PAINT_ACTOR_DIRTY) != 0;
-
-  /* The actor offscreen framebuffer is updated already */
-  if (!actor_dirty && (self->cache_flags & ACTOR_PAINTED))
-    return;
-
   self->old_opacity_override = clutter_actor_get_opacity_override (self->actor);
   clutter_actor_set_opacity_override (self->actor, 0xff);
 
@@ -753,18 +744,18 @@ static gboolean
 needs_repaint (ShellBlurEffect         *self,
                ClutterEffectPaintFlags  flags)
 {
-  gboolean actor_cached;
-  gboolean blur_cached;
-  gboolean actor_dirty;
+  gboolean blur_cached, actor_cached;
 
-  actor_dirty = (flags & CLUTTER_EFFECT_PAINT_ACTOR_DIRTY) != 0;
+  if ((flags & CLUTTER_EFFECT_PAINT_ACTOR_DIRTY) != 0)
+    self->cache_flags &= ~ACTOR_PAINTED;
+
   blur_cached = (self->cache_flags & BLUR_APPLIED) != 0;
   actor_cached = (self->cache_flags & ACTOR_PAINTED) != 0;
 
   switch (self->mode)
     {
     case SHELL_BLUR_MODE_ACTOR:
-      return actor_dirty || !blur_cached || !actor_cached;
+      return !blur_cached || !actor_cached;
 
     case SHELL_BLUR_MODE_BACKGROUND:
       return TRUE;
@@ -804,7 +795,7 @@ shell_blur_effect_paint (ClutterEffect           *effect,
             case SHELL_BLUR_MODE_ACTOR:
               paint_opacity = clutter_actor_get_paint_opacity (self->actor);
 
-              paint_actor_offscreen (self, paint_context, flags);
+              paint_actor_offscreen (self, paint_context);
               apply_blur (self, paint_context, &self->actor_fb, paint_opacity);
               break;
 
