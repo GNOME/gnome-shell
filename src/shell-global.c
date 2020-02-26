@@ -1660,6 +1660,55 @@ delete_variant_cb (GObject      *object,
 }
 
 static void
+replace_contents_worker (GTask        *task,
+                         gpointer      source_object,
+                         gpointer      task_data,
+                         GCancellable *cancellable)
+{
+  GFile *file = source_object;
+  GBytes *bytes = task_data;
+  GError *error = NULL;
+  const gchar *data;
+  gsize len;
+
+  data = g_bytes_get_data (bytes, &len);
+
+  if (!g_file_replace_contents (file, data, len, NULL, FALSE,
+                                G_FILE_CREATE_REPLACE_DESTINATION,
+                                NULL, cancellable, &error))
+    g_task_return_error (task, g_steal_pointer (&error));
+  else
+    g_task_return_boolean (task, TRUE);
+}
+
+static void
+replace_contents_async (GFile               *path,
+                        GBytes              *bytes,
+                        GCancellable        *cancellable,
+                        GAsyncReadyCallback  callback,
+                        gpointer             user_data)
+{
+  g_autoptr(GTask) task = NULL;
+
+  g_assert (G_IS_FILE (path));
+  g_assert (bytes != NULL);
+  g_assert (!cancellable || G_IS_CANCELLABLE (cancellable));
+
+  task = g_task_new (path, cancellable, callback, user_data);
+  g_task_set_source_tag (task, replace_contents_async);
+  g_task_set_task_data (task, g_bytes_ref (bytes), (GDestroyNotify)g_bytes_unref);
+  g_task_run_in_thread (task, replace_contents_worker);
+}
+
+static gboolean
+replace_contents_finish (GFile         *file,
+                         GAsyncResult  *result,
+                         GError       **error)
+{
+  return g_task_propagate_boolean (G_TASK (result), error);
+}
+
+static void
 replace_variant_cb (GObject      *object,
                     GAsyncResult *result,
                     gpointer      user_data)
@@ -1667,7 +1716,7 @@ replace_variant_cb (GObject      *object,
   ShellGlobal *global = user_data;
   GError *error = NULL;
 
-  if (!g_file_replace_contents_finish (G_FILE (object), result, NULL, &error))
+  if (!replace_contents_finish (G_FILE (object), result, &error))
     {
       if (!g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
         {
@@ -1703,12 +1752,19 @@ save_variant (ShellGlobal *global,
     }
   else
     {
-      g_file_replace_contents_async (path,
-                                     g_variant_get_data (variant),
-                                     g_variant_get_size (variant),
-                                     NULL, FALSE,
-                                     G_FILE_CREATE_REPLACE_DESTINATION,
-                                     cancellable, replace_variant_cb, global);
+      g_autoptr(GBytes) bytes = NULL;
+
+      bytes = g_bytes_new_with_free_func (g_variant_get_data (variant),
+                                          g_variant_get_size (variant),
+                                          (GDestroyNotify)g_variant_unref,
+                                          g_variant_ref (variant));
+      /* g_file_replace_contents_async() can potentially fsync() from the
+       * calling thread when completing the asynchronous task. Instead, we
+       * want to force that fsync() to a thread to avoid blocking the
+       * compository main loop. Using our own replace_contents_async()
+       * simply executes the operation synchronously from a thread.
+       */
+      replace_contents_async (path, bytes, cancellable, replace_variant_cb, global);
     }
 
   g_object_unref (path);
