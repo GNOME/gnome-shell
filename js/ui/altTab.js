@@ -280,12 +280,10 @@ class AppSwitcherPopup extends SwitcherPopup.SwitcherPopup {
     }
 
     _onDestroy() {
-        super._onDestroy();
-
-        if (this._thumbnails)
-            this._destroyThumbnails();
         if (this._thumbnailTimeoutId != 0)
             GLib.source_remove(this._thumbnailTimeoutId);
+
+        super._onDestroy();
     }
 
     /**
@@ -365,8 +363,7 @@ class AppSwitcherPopup extends SwitcherPopup.SwitcherPopup {
             },
         });
         this._thumbnails = null;
-        if (this._switcherList._items[this._selectedIndex])
-            this._switcherList._items[this._selectedIndex].remove_accessible_state(Atk.StateType.EXPANDED);
+        this._switcherList.removeAccessibleState(this._selectedIndex, Atk.StateType.EXPANDED);
     }
 
     _createThumbnails() {
@@ -395,7 +392,7 @@ class AppSwitcherPopup extends SwitcherPopup.SwitcherPopup {
             },
         });
 
-        this._switcherList._items[this._selectedIndex].add_accessible_state(Atk.StateType.EXPANDED);
+        this._switcherList.addAccessibleState(this._selectedIndex, Atk.StateType.EXPANDED);
     }
 });
 
@@ -776,7 +773,9 @@ class AppSwitcher extends SwitcherPopup.SwitcherList {
 
     // We override SwitcherList's _onItemEnter method to delay
     // activation when the thumbnail list is open
-    _onItemEnter(index) {
+    _onItemEnter(item) {
+        const index = this._items.indexOf(item);
+
         if (this._mouseTimeOutId != 0)
             GLib.source_remove(this._mouseTimeOutId);
         if (this._altTabPopup.thumbnailsVisible) {

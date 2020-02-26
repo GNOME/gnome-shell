@@ -130,7 +130,7 @@ var SwitcherPopup = GObject.registerClass({
             let [x_, y_, mods] = global.get_pointer();
             if (!(mods & this._modifierMask)) {
                 this._finish(global.get_current_time());
-                return false;
+                return true;
             }
         } else {
             this._resetNoModsTimeout();
@@ -228,7 +228,9 @@ var SwitcherPopup = GObject.registerClass({
     }
 
     vfunc_scroll_event(scrollEvent) {
-        this._scrollHandler(scrollEvent.scroll_direction);
+        this._disableHover();
+
+        this._scrollHandler(scrollEvent.direction);
         return Clutter.EVENT_PROPAGATE;
     }
 
@@ -253,7 +255,15 @@ var SwitcherPopup = GObject.registerClass({
 
     _itemRemovedHandler(n) {
         if (this._items.length > 0) {
-            let newIndex = Math.min(n, this._items.length - 1);
+            let newIndex;
+
+            if (n < this._selectedIndex)
+                newIndex = this._selectedIndex - 1;
+            else if (n === this._selectedIndex)
+                newIndex = Math.min(n, this._items.length - 1);
+            else if (n > this._selectedIndex)
+                return; // No need to select something new in this case
+
             this._select(newIndex);
         } else {
             this.fadeAndDestroy();
@@ -417,9 +427,8 @@ var SwitcherList = GObject.registerClass({
         bbox.set_child(item);
         this._list.add_actor(bbox);
 
-        let n = this._items.length;
-        bbox.connect('clicked', () => this._onItemClicked(n));
-        bbox.connect('motion-event', () => this._onItemEnter(n));
+        bbox.connect('clicked', () => this._onItemClicked(bbox));
+        bbox.connect('motion-event', () => this._onItemEnter(bbox));
 
         bbox.label_actor = label;
 
@@ -434,16 +443,23 @@ var SwitcherList = GObject.registerClass({
         this.emit('item-removed', index);
     }
 
-    _onItemClicked(index) {
-        this._itemActivated(index);
+    addAccessibleState(index, state) {
+        this._items[index].add_accessible_state(state);
     }
 
-    _onItemEnter(index) {
+    removeAccessibleState(index, state) {
+        this._items[index].remove_accessible_state(state);
+    }
+
+    _onItemClicked(item) {
+        this._itemActivated(this._items.indexOf(item));
+    }
+
+    _onItemEnter(item) {
         // Avoid reentrancy
-        if (index != this._currentItemEntered) {
-            this._currentItemEntered = index;
-            this._itemEntered(index);
-        }
+        if (item !== this._items[this._highlighted])
+            this._itemEntered(this._items.indexOf(item));
+
         return Clutter.EVENT_PROPAGATE;
     }
 
@@ -468,40 +484,40 @@ var SwitcherList = GObject.registerClass({
         let [result_, posX, posY_] = this.transform_stage_point(absItemX, 0);
         let [containerWidth] = this.get_transformed_size();
         if (posX + this._items[index].get_width() > containerWidth)
-            this._scrollToRight();
+            this._scrollToRight(index);
         else if (this._items[index].allocation.x1 - value < 0)
-            this._scrollToLeft();
+            this._scrollToLeft(index);
 
     }
 
-    _scrollToLeft() {
+    _scrollToLeft(index) {
         let adjustment = this._scrollView.hscroll.adjustment;
         let [value, lower_, upper, stepIncrement_, pageIncrement_, pageSize] = adjustment.get_values();
 
-        let item = this._items[this._highlighted];
+        let item = this._items[index];
 
         if (item.allocation.x1 < value)
-            value = Math.min(0, item.allocation.x1);
+            value = Math.max(0, item.allocation.x1);
         else if (item.allocation.x2 > value + pageSize)
-            value = Math.max(upper, item.allocation.x2 - pageSize);
+            value = Math.min(upper, item.allocation.x2 - pageSize);
 
         this._scrollableRight = true;
         adjustment.ease(value, {
             progress_mode: Clutter.AnimationMode.EASE_OUT_QUAD,
             duration: POPUP_SCROLL_TIME,
             onComplete: () => {
-                if (this._highlighted == 0)
+                if (index === 0)
                     this._scrollableLeft = false;
                 this.queue_relayout();
             },
         });
     }
 
-    _scrollToRight() {
+    _scrollToRight(index) {
         let adjustment = this._scrollView.hscroll.adjustment;
         let [value, lower_, upper, stepIncrement_, pageIncrement_, pageSize] = adjustment.get_values();
 
-        let item = this._items[this._highlighted];
+        let item = this._items[index];
 
         if (item.allocation.x1 < value)
             value = Math.max(0, item.allocation.x1);
@@ -513,7 +529,7 @@ var SwitcherList = GObject.registerClass({
             progress_mode: Clutter.AnimationMode.EASE_OUT_QUAD,
             duration: POPUP_SCROLL_TIME,
             onComplete: () => {
-                if (this._highlighted == this._items.length - 1)
+                if (index === this._items.length - 1)
                     this._scrollableRight = false;
                 this.queue_relayout();
             },
