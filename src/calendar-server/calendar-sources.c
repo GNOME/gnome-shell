@@ -36,14 +36,6 @@ G_GNUC_END_IGNORE_DEPRECATIONS
 #undef CALENDAR_ENABLE_DEBUG
 #include "calendar-debug.h"
 
-#ifndef _
-#define _(x) gettext(x)
-#endif
-
-#ifndef N_
-#define N_(x) x
-#endif
-
 typedef struct _ClientData ClientData;
 typedef struct _CalendarSourceData CalendarSourceData;
 
