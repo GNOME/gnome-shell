@@ -573,6 +573,9 @@ var DateMenuButton = new Lang.Class({
         // https://bugzilla.gnome.org/show_bug.cgi?id=678507
         System.clearDateCaches();
 
+        // shell-utils also caches the current timezone to reduce overhead
+        Shell.util_clear_timezone_cache();
+
         this._calendar.updateTimeZone();
     },
 

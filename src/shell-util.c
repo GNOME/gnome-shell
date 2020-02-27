@@ -20,6 +20,8 @@
 #include <langinfo.h>
 #endif
 
+static GTimeZone *local_tz;
+
 static void
 stop_pick (ClutterActor       *actor,
            const ClutterColor *color)
@@ -152,6 +154,24 @@ shell_util_format_date (const char *format,
 
   g_date_time_unref (datetime);
   return result;
+}
+
+char *
+shell_util_format_now (const char *format)
+{
+  GDateTime *datetime;
+  char *ret;
+
+  if (local_tz == NULL)
+    local_tz = g_time_zone_new_local ();
+
+  datetime = g_date_time_new_now (local_tz);
+  if (!datetime)
+    return g_strdup ("");
+
+  ret = g_date_time_format (datetime, format);
+  g_date_time_unref (datetime);
+  return ret;
 }
 
 /**
@@ -513,4 +533,10 @@ shell_util_composite_capture_images (ClutterCapture  *captures,
   cairo_destroy (cr);
 
   return image;
+}
+
+void
+shell_util_clear_timezone_cache (void)
+{
+  g_clear_pointer (&local_tz, g_time_zone_unref);
 }
