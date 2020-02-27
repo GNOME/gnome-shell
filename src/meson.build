@@ -103,7 +103,6 @@ libshell_menu_dep = declare_dependency(link_with: libshell_menu)
 
 libshell_public_headers = [
   'shell-app.h',
-  'shell-app-cache.h',
   'shell-app-system.h',
   'shell-app-usage.h',
   'shell-embedded-window.h',
@@ -139,7 +138,6 @@ libshell_private_headers = [
 libshell_sources = [
   'gnome-shell-plugin.c',
   'shell-app.c',
-  'shell-app-cache.c',
   'shell-app-system.c',
   'shell-app-usage.c',
   'shell-embedded-window.c',
