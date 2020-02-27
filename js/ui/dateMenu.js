@@ -573,11 +573,6 @@ var DateMenuButton = new Lang.Class({
         // https://bugzilla.gnome.org/show_bug.cgi?id=678507
         System.clearDateCaches();
 
-        // To reduce the number of times that Shell opens /etc/localtime on
-        // the main thread to parse timezone info, we cache the result. That
-        // needs to be cleared when we change timezones.
-        Shell.util_clear_timezone_cache();
-
         this._calendar.updateTimeZone();
     },
 
