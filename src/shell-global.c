@@ -1761,7 +1761,7 @@ save_variant (ShellGlobal *global,
       /* g_file_replace_contents_async() can potentially fsync() from the
        * calling thread when completing the asynchronous task. Instead, we
        * want to force that fsync() to a thread to avoid blocking the
-       * compository main loop. Using our own replace_contents_async()
+       * compositor main loop. Using our own replace_contents_async()
        * simply executes the operation synchronously from a thread.
        */
       replace_contents_async (path, bytes, cancellable, replace_variant_cb, global);
