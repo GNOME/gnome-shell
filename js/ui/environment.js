@@ -17,6 +17,9 @@ const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 const Shell = imports.gi.Shell;
 const St = imports.gi.St;
+const System = imports.system;
+
+let _localTimeZone = null;
 
 // We can't import shell JS modules yet, because they may have
 // variable initializations, etc, that depend on init() already having
@@ -116,9 +119,26 @@ function init() {
         }
     };
 
+    // Override to clear our own timezone cache as well
+    const origClearDateCaches = System.clearDateCaches;
+    System.clearDateCaches = function () {
+        _localTimeZone = null;
+        origClearDateCaches();
+    };
+
     // Work around https://bugzilla.mozilla.org/show_bug.cgi?id=508783
     Date.prototype.toLocaleFormat = function(format) {
-        return Shell.util_format_date(format, this.getTime());
+        if (_localTimeZone === null)
+            _localTimeZone = GLib.TimeZone.new_local();
+
+        let dt = GLib.DateTime.new(_localTimeZone,
+            this.getYear(),
+            this.getMonth() + 1,
+            this.getDate(),
+            this.getHours(),
+            this.getMinutes(),
+            this.getSeconds());
+        return dt ? dt.format(format) : '';
     };
 
     let slowdownEnv = GLib.getenv('GNOME_SHELL_SLOWDOWN_FACTOR');
