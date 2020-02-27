@@ -491,7 +491,7 @@ var AllView = new Lang.Class({
     },
 
     _loadApps() {
-        let apps = Gio.AppInfo.get_all().filter(appInfo => {
+        let apps = Shell.AppCache.get_default().get_all().filter(appInfo => {
             try {
                 let id = appInfo.get_id(); // catch invalid file encodings
             } catch(e) {
@@ -1321,7 +1321,7 @@ var FolderIcon = new Lang.Class({
         folderApps.forEach(addAppId);
 
         let folderCategories = this._folder.get_strv('categories');
-        Gio.AppInfo.get_all().forEach(appInfo => {
+        Shell.AppCache.get_default().get_all().forEach(appInfo => {
             let appCategories = _getCategories(appInfo);
             if (!_listsIntersect(folderCategories, appCategories))
                 return;
