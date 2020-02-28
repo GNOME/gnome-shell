@@ -8,6 +8,7 @@
 #include <GL/gl.h>
 #include <cogl/cogl.h>
 
+#include "shell-app-cache-private.h"
 #include "shell-util.h"
 #include <glib/gi18n-lib.h>
 #include <gtk/gtk.h>
@@ -513,4 +514,19 @@ shell_util_composite_capture_images (ClutterCapture  *captures,
   cairo_destroy (cr);
 
   return image;
+}
+
+/**
+ * shell_util_get_translated_folder_name:
+ * @name: the untranslated folder name
+ *
+ * Attempts to translate the folder @name using translations provided
+ * by .directory files.
+ *
+ * Returns: (nullable): a translated string or %NULL
+ */
+char *
+shell_util_get_translated_folder_name (const char *name)
+{
+  return shell_app_cache_translate_folder (shell_app_cache_get_default (), name);
 }

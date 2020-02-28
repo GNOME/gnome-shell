@@ -129,6 +129,7 @@ endif
 
 libshell_private_headers = [
   'shell-app-private.h',
+  'shell-app-cache-private.h',
   'shell-app-system-private.h',
   'shell-global-private.h',
   'shell-window-tracker-private.h',
@@ -170,7 +171,9 @@ if have_networkmanager
   libshell_sources += 'shell-network-agent.c'
 endif
 
-libshell_private_sources = []
+libshell_private_sources = [
+  'shell-app-cache.c',
+]
 
 if enable_recorder
     libshell_sources += ['shell-recorder.c']

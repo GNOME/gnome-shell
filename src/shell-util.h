@@ -60,6 +60,8 @@ cairo_surface_t * shell_util_composite_capture_images (ClutterCapture  *captures
                                                        int              width,
                                                        int              height);
 
+char *shell_util_get_translated_folder_name (const char *name);
+
 G_END_DECLS
 
 #endif /* __SHELL_UTIL_H__ */
