@@ -11,15 +11,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2020-02-06 19:01+0000\n"
-"PO-Revision-Date: 2020-02-07 13:32+0700\n"
+"POT-Creation-Date: 2020-02-24 12:37+0000\n"
+"PO-Revision-Date: 2020-02-25 17:40+0700\n"
 "Last-Translator: Kukuh Syafaat <kukuhsyafaat@gnome.org>\n"
 "Language-Team: Indonesian <gnome-l10n-id@googlegroups.com>\n"
 "Language: id\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: ‪nplurals=2; plural= n!=1;\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Poedit 2.3\n"
 "X-DamnedLies-Scope: partial\n"
 "X-Poedit-SourceCharset: UTF-8\n"
@@ -184,8 +184,8 @@ msgstr ""
 msgid ""
 "Whether to remember password for mounting encrypted or remote filesystems"
 msgstr ""
-"Apakah mengingat sandi untuk mengait sistem berkas terenkripsi atau jarak "
-"jauh"
+"Apakah mengingat kata sandi untuk mengait sistem berkas terenkripsi atau "
+"jarak jauh"
 
 #: data/org.gnome.shell.gschema.xml.in:87
 msgid ""
@@ -194,7 +194,7 @@ msgid ""
 "“Remember Password” checkbox will be present. This key sets the default "
 "state of the checkbox."
 msgstr ""
-"Shell akan meminta suatu sandi ketika suatu perangkat terenkripsi atau "
+"Shell akan meminta suatu kata sandi ketika suatu perangkat terenkripsi atau "
 "sistem berkas jarak jauh dikaitkan. Bila sandi dapat disimpan untuk dipakai "
 "dimasa depan, suatu kotak contreng 'Ingat Sandi' akan tampil. Kunci ini "
 "menata keadaan baku dari kotak contreng."
@@ -418,11 +418,11 @@ msgstr ""
 "Jika Anda menghapus ekstensi, Anda harus kembali untuk mengunduhnya jika "
 "Anda ingin mengaktifkannya lagi"
 
-#: js/extensionPrefs/main.js:144 js/gdm/authPrompt.js:170
+#: js/extensionPrefs/main.js:144 js/gdm/authPrompt.js:135
 #: js/ui/audioDeviceSelection.js:57 js/ui/components/networkAgent.js:107
 #: js/ui/components/polkitAgent.js:139 js/ui/endSessionDialog.js:374
-#: js/ui/extensionDownloader.js:166 js/ui/shellMountOperation.js:376
-#: js/ui/shellMountOperation.js:386 js/ui/status/network.js:910
+#: js/ui/extensionDownloader.js:165 js/ui/shellMountOperation.js:376
+#: js/ui/shellMountOperation.js:386 js/ui/status/network.js:913
 msgid "Cancel"
 msgstr "Batal"
 
@@ -557,31 +557,26 @@ msgstr ""
 msgid "Log Out…"
 msgstr "Keluar…"
 
-#: js/gdm/authPrompt.js:184 js/gdm/authPrompt.js:237 js/gdm/authPrompt.js:468
-msgid "Next"
-msgstr "Selanjutnya"
+#. Cisco LEAP
+#: js/gdm/authPrompt.js:237 js/ui/components/networkAgent.js:202
+#: js/ui/components/networkAgent.js:218 js/ui/components/networkAgent.js:242
+#: js/ui/components/networkAgent.js:263 js/ui/components/networkAgent.js:283
+#: js/ui/components/networkAgent.js:293 js/ui/components/polkitAgent.js:277
+#: js/ui/shellMountOperation.js:326
+msgid "Password"
+msgstr "Kata Sandi"
 
-#: js/gdm/authPrompt.js:233 js/ui/shellMountOperation.js:380
-#: js/ui/unlockDialog.js:44
-msgid "Unlock"
-msgstr "Buka Kunci"
-
-#: js/gdm/authPrompt.js:235
-msgctxt "button"
-msgid "Sign In"
-msgstr "Masuk"
-
-#: js/gdm/loginDialog.js:319
+#: js/gdm/loginDialog.js:318
 msgid "Choose Session"
 msgstr "Pilih Sesi"
 
-#: js/gdm/loginDialog.js:461
+#: js/gdm/loginDialog.js:457
 msgid "Not listed?"
 msgstr "Tak masuk daftar?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: js/gdm/loginDialog.js:895
+#: js/gdm/loginDialog.js:912
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(cth., pengguna dari %s)"
@@ -589,12 +584,12 @@ msgstr "(cth., pengguna dari %s)"
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: js/gdm/loginDialog.js:899 js/ui/components/networkAgent.js:234
-#: js/ui/components/networkAgent.js:257 js/ui/components/networkAgent.js:275
-msgid "Username: "
-msgstr "Nama pengguna: "
+#: js/gdm/loginDialog.js:917 js/ui/components/networkAgent.js:238
+#: js/ui/components/networkAgent.js:261 js/ui/components/networkAgent.js:279
+msgid "Username"
+msgstr "Nama pengguna"
 
-#: js/gdm/loginDialog.js:1230
+#: js/gdm/loginDialog.js:1253
 msgid "Login Window"
 msgstr "Jendela Log Masuk"
 
@@ -819,16 +814,16 @@ msgid "%B %-d %Y, %l∶%M %p"
 msgstr "%d %B %Y, %l∶%M %p"
 
 #. TRANSLATORS: this is the title of the wifi captive portal login window
-#: js/portalHelper/main.js:42
+#: js/portalHelper/main.js:41
 msgid "Hotspot Login"
 msgstr "Log Masuk Area Bersinyal (hotspot)"
 
-#: js/portalHelper/main.js:88
+#: js/portalHelper/main.js:87
 msgid ""
 "Your connection to this hotspot login is not secure. Passwords or other "
 "information you enter on this page can be viewed by people nearby."
 msgstr ""
-"Koneksi Anda ke log masuk area bersinyal (hotspot) ini tidak aman. Kata "
+"Koneksi Anda ke log masuk area bersinyal (hotspot) ini tidak aman. Kata kata "
 "sandi atau informasi lain yang Anda masukkan pada halaman ini dapat dilihat "
 "oleh orang-orang di sekitar."
 
@@ -859,27 +854,27 @@ msgid "All"
 msgstr "Semua"
 
 #. Translators: This is the heading of a list of open windows
-#: js/ui/appDisplay.js:2454 js/ui/panel.js:75
+#: js/ui/appDisplay.js:2450 js/ui/panel.js:75
 msgid "Open Windows"
 msgstr "Buka Jendela"
 
-#: js/ui/appDisplay.js:2474 js/ui/panel.js:82
+#: js/ui/appDisplay.js:2470 js/ui/panel.js:82
 msgid "New Window"
 msgstr "Jendela Baru"
 
-#: js/ui/appDisplay.js:2485
+#: js/ui/appDisplay.js:2481
 msgid "Launch using Dedicated Graphics Card"
 msgstr "Luncurkan menggunakan Kartu Grafis Terdedikasi"
 
-#: js/ui/appDisplay.js:2513 js/ui/dash.js:239
+#: js/ui/appDisplay.js:2509 js/ui/dash.js:239
 msgid "Remove from Favorites"
 msgstr "Hapus dari Favorit"
 
-#: js/ui/appDisplay.js:2519
+#: js/ui/appDisplay.js:2515
 msgid "Add to Favorites"
 msgstr "Tambah ke Favorit"
 
-#: js/ui/appDisplay.js:2529 js/ui/panel.js:93
+#: js/ui/appDisplay.js:2525 js/ui/panel.js:93
 msgid "Show Details"
 msgstr "Tampilkan Rincian"
 
@@ -1105,86 +1100,78 @@ msgstr ""
 "router Anda."
 
 #: js/ui/components/networkAgent.js:101 js/ui/status/network.js:223
-#: js/ui/status/network.js:314 js/ui/status/network.js:913
+#: js/ui/status/network.js:314 js/ui/status/network.js:916
 msgid "Connect"
 msgstr "Sambung"
 
-#. Cisco LEAP
-#: js/ui/components/networkAgent.js:202 js/ui/components/networkAgent.js:214
-#: js/ui/components/networkAgent.js:238 js/ui/components/networkAgent.js:259
-#: js/ui/components/networkAgent.js:279 js/ui/components/networkAgent.js:289
-msgid "Password: "
-msgstr "Sandi: "
+#: js/ui/components/networkAgent.js:208
+msgid "Key"
+msgstr "Kunci"
 
-#. static WEP
-#: js/ui/components/networkAgent.js:207
-msgid "Key: "
-msgstr "Tombol: "
+#: js/ui/components/networkAgent.js:246 js/ui/components/networkAgent.js:269
+msgid "Private key password"
+msgstr "Kata sandi kunci privat"
 
-#: js/ui/components/networkAgent.js:242 js/ui/components/networkAgent.js:265
-msgid "Private key password: "
-msgstr "Sandi kunci privat: "
+#: js/ui/components/networkAgent.js:267
+msgid "Identity"
+msgstr "Identitas"
 
-#: js/ui/components/networkAgent.js:263
-msgid "Identity: "
-msgstr "Identitas: "
+#: js/ui/components/networkAgent.js:281
+msgid "Service"
+msgstr "Layanan"
 
-#: js/ui/components/networkAgent.js:277
-msgid "Service: "
-msgstr "Layanan: "
-
-#: js/ui/components/networkAgent.js:306 js/ui/components/networkAgent.js:334
-#: js/ui/components/networkAgent.js:681 js/ui/components/networkAgent.js:702
+#: js/ui/components/networkAgent.js:310 js/ui/components/networkAgent.js:338
+#: js/ui/components/networkAgent.js:685 js/ui/components/networkAgent.js:706
 msgid "Authentication required"
 msgstr "Diperlukan autentikasi"
 
-#: js/ui/components/networkAgent.js:307 js/ui/components/networkAgent.js:682
+#: js/ui/components/networkAgent.js:311 js/ui/components/networkAgent.js:686
 #, javascript-format
 msgid ""
 "Passwords or encryption keys are required to access the wireless network "
 "“%s”."
 msgstr ""
-"Sandi atau kunci enkripsi diperlukan untuk mengakses jaringan nirkabel \"%s"
-"\"."
+"Kata sandi atau kunci enkripsi diperlukan untuk mengakses jaringan nirkabel "
+"\"%s\"."
 
-#: js/ui/components/networkAgent.js:311 js/ui/components/networkAgent.js:686
+#: js/ui/components/networkAgent.js:315 js/ui/components/networkAgent.js:690
 msgid "Wired 802.1X authentication"
 msgstr "Autentikasi 802.1X kabel"
 
-#: js/ui/components/networkAgent.js:313
-msgid "Network name: "
-msgstr "Nama jaringan: "
+#: js/ui/components/networkAgent.js:317
+msgid "Network name"
+msgstr "Nama jaringan"
 
-#: js/ui/components/networkAgent.js:318 js/ui/components/networkAgent.js:690
+#: js/ui/components/networkAgent.js:322 js/ui/components/networkAgent.js:694
 msgid "DSL authentication"
 msgstr "Autentikasi DSL"
 
-#: js/ui/components/networkAgent.js:325 js/ui/components/networkAgent.js:695
+#: js/ui/components/networkAgent.js:329 js/ui/components/networkAgent.js:699
 msgid "PIN code required"
 msgstr "Perlu kode PIN"
 
-#: js/ui/components/networkAgent.js:326 js/ui/components/networkAgent.js:696
+#: js/ui/components/networkAgent.js:330 js/ui/components/networkAgent.js:700
 msgid "PIN code is needed for the mobile broadband device"
 msgstr "Kode PIN diperlukan untuk perangkat data seluler"
 
-#: js/ui/components/networkAgent.js:327
-msgid "PIN: "
-msgstr "PIN: "
+#: js/ui/components/networkAgent.js:331
+msgid "PIN"
+msgstr "PIN"
 
-#: js/ui/components/networkAgent.js:335 js/ui/components/networkAgent.js:687
-#: js/ui/components/networkAgent.js:691 js/ui/components/networkAgent.js:703
-#: js/ui/components/networkAgent.js:707
+#: js/ui/components/networkAgent.js:339 js/ui/components/networkAgent.js:691
+#: js/ui/components/networkAgent.js:695 js/ui/components/networkAgent.js:707
+#: js/ui/components/networkAgent.js:711
 #, javascript-format
 msgid "A password is required to connect to “%s”."
-msgstr "Perlu suatu sandi untuk menyambung ke \"%s\"."
+msgstr "Perlu suatu kata sandi untuk menyambung ke \"%s\"."
 
-#: js/ui/components/networkAgent.js:670 js/ui/status/network.js:1688
+#: js/ui/components/networkAgent.js:674 js/ui/status/network.js:1691
 msgid "Network Manager"
 msgstr "Manajer Jaringan"
 
-#: js/ui/components/networkAgent.js:706
+#: js/ui/components/networkAgent.js:710
 msgid "VPN password"
-msgstr "Sandi VPN"
+msgstr "Kata Sandi VPN"
 
 #: js/ui/components/polkitAgent.js:39
 msgid "Authentication Required"
@@ -1205,10 +1192,6 @@ msgstr "Autentikasi"
 #: js/ui/components/polkitAgent.js:254 js/ui/shellMountOperation.js:402
 msgid "Sorry, that didn’t work. Please try again."
 msgstr "Maaf, tidak berhasil. Silakan coba lagi."
-
-#: js/ui/components/polkitAgent.js:277 js/ui/shellMountOperation.js:326
-msgid "Enter Password…"
-msgstr "Masukkan Kata Sandi…"
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
@@ -1425,15 +1408,15 @@ msgstr "%s (jarak jauh)"
 msgid "%s (console)"
 msgstr "%s (konsol)"
 
-#: js/ui/extensionDownloader.js:170
+#: js/ui/extensionDownloader.js:169
 msgid "Install"
 msgstr "Pasang"
 
-#: js/ui/extensionDownloader.js:176
+#: js/ui/extensionDownloader.js:175
 msgid "Install Extension"
 msgstr "Pasang Ekstensi"
 
-#: js/ui/extensionDownloader.js:177
+#: js/ui/extensionDownloader.js:176
 #, javascript-format
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "Unduh dan pasang \"%s\" dari extensions.gnome.org?"
@@ -1521,13 +1504,13 @@ msgid "Leave On"
 msgstr "Biarkan Menyala"
 
 #: js/ui/kbdA11yDialog.js:55 js/ui/status/bluetooth.js:135
-#: js/ui/status/network.js:1285
+#: js/ui/status/network.js:1288
 msgid "Turn On"
 msgstr "Nyalakan"
 
 #: js/ui/kbdA11yDialog.js:63 js/ui/status/bluetooth.js:135
 #: js/ui/status/network.js:131 js/ui/status/network.js:315
-#: js/ui/status/network.js:1285 js/ui/status/network.js:1397
+#: js/ui/status/network.js:1288 js/ui/status/network.js:1400
 #: js/ui/status/nightLight.js:41 js/ui/status/rfkill.js:81
 #: js/ui/status/rfkill.js:108
 msgid "Turn Off"
@@ -1541,59 +1524,59 @@ msgstr "Biarkan Mati"
 msgid "Region & Language Settings"
 msgstr "Pengaturan Wilayah & Bahasa"
 
-#: js/ui/lookingGlass.js:659
+#: js/ui/lookingGlass.js:665
 msgid "No extensions installed"
 msgstr "Tak ada ekstensi terpasang"
 
 #. Translators: argument is an extension UUID.
-#: js/ui/lookingGlass.js:714
+#: js/ui/lookingGlass.js:720
 #, javascript-format
 msgid "%s has not emitted any errors."
 msgstr "%s tidak menampilkan galat apa pun."
 
-#: js/ui/lookingGlass.js:720
+#: js/ui/lookingGlass.js:726
 msgid "Hide Errors"
 msgstr "Sembunyikan Galat"
 
-#: js/ui/lookingGlass.js:724 js/ui/lookingGlass.js:789
+#: js/ui/lookingGlass.js:730 js/ui/lookingGlass.js:795
 msgid "Show Errors"
 msgstr "Tampilkan Galat"
 
-#: js/ui/lookingGlass.js:733
+#: js/ui/lookingGlass.js:739
 msgid "Enabled"
 msgstr "Diaktifkan"
 
 #. translators:
 #. * The device has been disabled
-#: js/ui/lookingGlass.js:736 subprojects/gvc/gvc-mixer-control.c:1892
+#: js/ui/lookingGlass.js:742 subprojects/gvc/gvc-mixer-control.c:1892
 msgid "Disabled"
 msgstr "Dinonaktifkan"
 
-#: js/ui/lookingGlass.js:738
+#: js/ui/lookingGlass.js:744
 msgid "Error"
 msgstr "Galat"
 
-#: js/ui/lookingGlass.js:740
+#: js/ui/lookingGlass.js:746
 msgid "Out of date"
 msgstr "Kadaluarsa"
 
-#: js/ui/lookingGlass.js:742
+#: js/ui/lookingGlass.js:748
 msgid "Downloading"
 msgstr "Mengunduh"
 
-#: js/ui/lookingGlass.js:771
+#: js/ui/lookingGlass.js:777
 msgid "View Source"
 msgstr "Tilik Sumber"
 
-#: js/ui/lookingGlass.js:780
+#: js/ui/lookingGlass.js:786
 msgid "Web Page"
 msgstr "Halaman Web"
 
-#: js/ui/main.js:267
+#: js/ui/main.js:269
 msgid "Logged in as a privileged user"
 msgstr "Masuk sebagai pengguna istimewa"
 
-#: js/ui/main.js:268
+#: js/ui/main.js:270
 msgid ""
 "Running a session as a privileged user should be avoided for security "
 "reasons. If possible, you should log in as a normal user."
@@ -1601,15 +1584,15 @@ msgstr ""
 "Menjalankan sesi sebagai pengguna istimewa harus dihindari untuk alasan "
 "keamanan. Jika memungkinkan, Anda harus masuk sebagai pengguna biasa."
 
-#: js/ui/main.js:274
+#: js/ui/main.js:276
 msgid "Screen Lock disabled"
 msgstr "Kunci Layar dinonaktifkan"
 
-#: js/ui/main.js:275
+#: js/ui/main.js:277
 msgid "Screen Locking requires the GNOME display manager."
 msgstr "Penguncian Layar memerlukan manajer tampilan GNOME."
 
-#: js/ui/messageTray.js:1552
+#: js/ui/messageTray.js:1554
 msgid "System Information"
 msgstr "Informasi Sistem"
 
@@ -1636,8 +1619,8 @@ msgstr "Gambaran"
 #. active; it should not exceed ~30
 #. characters.
 #: js/ui/overview.js:107
-msgid "Type to search…"
-msgstr "Ketik untuk mencari…"
+msgid "Type to search"
+msgstr "Ketik untuk mencari"
 
 #: js/ui/padOsd.js:95
 msgid "New shortcut…"
@@ -1663,23 +1646,23 @@ msgstr "Tetapkan keystroke"
 msgid "Done"
 msgstr "Selesai"
 
-#: js/ui/padOsd.js:747
+#: js/ui/padOsd.js:745
 msgid "Edit…"
 msgstr "Sunting…"
 
-#: js/ui/padOsd.js:789 js/ui/padOsd.js:912
+#: js/ui/padOsd.js:787 js/ui/padOsd.js:910
 msgid "None"
 msgstr "Nihil"
 
-#: js/ui/padOsd.js:865
+#: js/ui/padOsd.js:863
 msgid "Press a button to configure"
 msgstr "Tekan tombol untuk mengkonfigurasi"
 
-#: js/ui/padOsd.js:866
+#: js/ui/padOsd.js:864
 msgid "Press Esc to exit"
 msgstr "Tekan Esc untuk keluar"
 
-#: js/ui/padOsd.js:869
+#: js/ui/padOsd.js:867
 msgid "Press any key to exit"
 msgstr "Tekan tombol apa saja untuk keluar"
 
@@ -1718,31 +1701,7 @@ msgstr "Memulai ulang tidak tersedia di Wayland"
 msgid "Restarting…"
 msgstr "Memulai ulang…"
 
-#. Translators: This is a time format for a date in
-#. long format
-#: js/ui/screenShield.js:82
-msgid "%A, %B %d"
-msgstr "%A, %d %B"
-
-#: js/ui/screenShield.js:139
-#, javascript-format
-msgid "%d new message"
-msgid_plural "%d new messages"
-msgstr[0] "%d pesan baru"
-msgstr[1] "%d pesan baru"
-
-#: js/ui/screenShield.js:141
-#, javascript-format
-msgid "%d new notification"
-msgid_plural "%d new notifications"
-msgstr[0] "%d pemberitahuan baru"
-msgstr[1] "%d pemberitahuan baru"
-
-#: js/ui/screenShield.js:454 js/ui/status/system.js:103
-msgid "Lock"
-msgstr "Kunci"
-
-#: js/ui/screenShield.js:717
+#: js/ui/screenShield.js:203
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME perlu mengunci layar"
 
@@ -1753,11 +1712,11 @@ msgstr "GNOME perlu mengunci layar"
 #.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
-#: js/ui/screenShield.js:830 js/ui/screenShield.js:1301
+#: js/ui/screenShield.js:244 js/ui/screenShield.js:598
 msgid "Unable to lock"
 msgstr "Tak bisa mengunci"
 
-#: js/ui/screenShield.js:831 js/ui/screenShield.js:1302
+#: js/ui/screenShield.js:245 js/ui/screenShield.js:599
 msgid "Lock was blocked by an application"
 msgstr "Kunci diblokir oleh suatu aplikasi"
 
@@ -1818,12 +1777,16 @@ msgstr ""
 "<i>%s</i>."
 
 #: js/ui/shellMountOperation.js:306
-msgid "Enter PIM Number…"
-msgstr "Masukkan Nomor PIM…"
+msgid "PIM Number"
+msgstr "Nomor PIM"
 
 #: js/ui/shellMountOperation.js:365
 msgid "Remember Password"
-msgstr "Ingat Sandi"
+msgstr "Ingat Kata Sandi"
+
+#: js/ui/shellMountOperation.js:380
+msgid "Unlock"
+msgstr "Buka Kunci"
 
 #. Translators: %s is the Disks application
 #: js/ui/shellMountOperation.js:391
@@ -1895,7 +1858,7 @@ msgstr "Teks Besar"
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: js/ui/status/bluetooth.js:49 js/ui/status/network.js:590
+#: js/ui/status/bluetooth.js:49 js/ui/status/network.js:591
 msgid "Bluetooth Settings"
 msgstr "Pengaturan Bluetooth"
 
@@ -1939,11 +1902,11 @@ msgstr "Klik Sekunder"
 msgid "Dwell Click"
 msgstr "Klik Menetap"
 
-#: js/ui/status/keyboard.js:825
+#: js/ui/status/keyboard.js:826
 msgid "Keyboard"
 msgstr "Papan Ketik"
 
-#: js/ui/status/keyboard.js:847
+#: js/ui/status/keyboard.js:848
 msgid "Show Keyboard Layout"
 msgstr "Tampilkan Tata Letak Papan Tik"
 
@@ -1990,7 +1953,7 @@ msgid "<unknown>"
 msgstr "<tak dikenal>"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:420 js/ui/status/network.js:1314
+#: js/ui/status/network.js:420 js/ui/status/network.js:1317
 #, javascript-format
 msgid "%s Off"
 msgstr "%s Mati"
@@ -2016,7 +1979,7 @@ msgid "%s Disconnecting"
 msgstr "%s Memutus"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:438 js/ui/status/network.js:1306
+#: js/ui/status/network.js:438 js/ui/status/network.js:1309
 #, javascript-format
 msgid "%s Connecting"
 msgstr "%s Menyambung"
@@ -2056,7 +2019,7 @@ msgid "Mobile Broadband Settings"
 msgstr "Pengaturan Data Seluler"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:558 js/ui/status/network.js:1311
+#: js/ui/status/network.js:558 js/ui/status/network.js:1314
 #, javascript-format
 msgid "%s Hardware Disabled"
 msgstr "%s Perangkat Keras Dinonaktifkan"
@@ -2068,125 +2031,125 @@ msgstr "%s Perangkat Keras Dinonaktifkan"
 msgid "%s Disabled"
 msgstr "%s Dinonaktifkan"
 
-#: js/ui/status/network.js:602
+#: js/ui/status/network.js:603
 msgid "Connect to Internet"
 msgstr "Sambungkan ke Internet"
 
-#: js/ui/status/network.js:805
+#: js/ui/status/network.js:808
 msgid "Airplane Mode is On"
 msgstr "Mode Pesawat Terbang Menyala"
 
-#: js/ui/status/network.js:806
+#: js/ui/status/network.js:809
 msgid "Wi-Fi is disabled when airplane mode is on."
 msgstr "Wi-Fi dinonaktifkan ketika mode pesawat terbang menyala."
 
-#: js/ui/status/network.js:807
+#: js/ui/status/network.js:810
 msgid "Turn Off Airplane Mode"
 msgstr "Matikan Mode Pesawat Terbang"
 
-#: js/ui/status/network.js:816
+#: js/ui/status/network.js:819
 msgid "Wi-Fi is Off"
 msgstr "Wi-Fi Mati"
 
-#: js/ui/status/network.js:817
+#: js/ui/status/network.js:820
 msgid "Wi-Fi needs to be turned on in order to connect to a network."
 msgstr "Wi-Fi perlu dinyalakan untuk menyambung ke suatu jaringan."
 
-#: js/ui/status/network.js:818
+#: js/ui/status/network.js:821
 msgid "Turn On Wi-Fi"
 msgstr "Nyalakan Wi-Fi"
 
-#: js/ui/status/network.js:843
+#: js/ui/status/network.js:846
 msgid "Wi-Fi Networks"
 msgstr "Jaringan Wi-Fi"
 
-#: js/ui/status/network.js:845
+#: js/ui/status/network.js:848
 msgid "Select a network"
 msgstr "Pilih jaringan"
 
-#: js/ui/status/network.js:877
+#: js/ui/status/network.js:880
 msgid "No Networks"
 msgstr "Tiada Jaringan"
 
-#: js/ui/status/network.js:898 js/ui/status/rfkill.js:106
+#: js/ui/status/network.js:901 js/ui/status/rfkill.js:106
 msgid "Use hardware switch to turn off"
 msgstr "Pakai saklar perangkat keras untuk mematikan"
 
-#: js/ui/status/network.js:1175
+#: js/ui/status/network.js:1178
 msgid "Select Network"
 msgstr "Pilih Jaringan"
 
-#: js/ui/status/network.js:1181
+#: js/ui/status/network.js:1184
 msgid "Wi-Fi Settings"
 msgstr "Pengaturan Wi-Fi"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1302
+#: js/ui/status/network.js:1305
 #, javascript-format
 msgid "%s Hotspot Active"
 msgstr "%s Hotspot Aktif"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1317
+#: js/ui/status/network.js:1320
 #, javascript-format
 msgid "%s Not Connected"
 msgstr "%s Tak Tersambung"
 
-#: js/ui/status/network.js:1414
+#: js/ui/status/network.js:1417
 msgid "connecting…"
 msgstr "menyambung…"
 
 #. Translators: this is for network connections that require some kind of key or password
-#: js/ui/status/network.js:1417
+#: js/ui/status/network.js:1420
 msgid "authentication required"
 msgstr "diperlukan autentikasi"
 
-#: js/ui/status/network.js:1419
+#: js/ui/status/network.js:1422
 msgid "connection failed"
 msgstr "koneksi gagal"
 
-#: js/ui/status/network.js:1470
+#: js/ui/status/network.js:1473
 msgid "VPN Settings"
 msgstr "Pengaturan VPN"
 
-#: js/ui/status/network.js:1487
+#: js/ui/status/network.js:1490
 msgid "VPN"
 msgstr "VPN"
 
-#: js/ui/status/network.js:1497
+#: js/ui/status/network.js:1500
 msgid "VPN Off"
 msgstr "VPN Mati"
 
-#: js/ui/status/network.js:1558 js/ui/status/rfkill.js:84
+#: js/ui/status/network.js:1561 js/ui/status/rfkill.js:84
 msgid "Network Settings"
 msgstr "Pengaturan Jaringan"
 
-#: js/ui/status/network.js:1587
+#: js/ui/status/network.js:1590
 #, javascript-format
 msgid "%s Wired Connection"
 msgid_plural "%s Wired Connections"
 msgstr[0] "%s Koneksi Kabel"
 msgstr[1] "%s Koneksi Kabel"
 
-#: js/ui/status/network.js:1591
+#: js/ui/status/network.js:1594
 #, javascript-format
 msgid "%s Wi-Fi Connection"
 msgid_plural "%s Wi-Fi Connections"
 msgstr[0] "%s Koneksi Wi-Fi"
 msgstr[1] "%s Koneksi Wi-Fi"
 
-#: js/ui/status/network.js:1595
+#: js/ui/status/network.js:1598
 #, javascript-format
 msgid "%s Modem Connection"
 msgid_plural "%s Modem Connections"
 msgstr[0] "%s Koneksi Modem"
 msgstr[1] "%s Koneksi Modem"
 
-#: js/ui/status/network.js:1729
+#: js/ui/status/network.js:1732
 msgid "Connection failed"
 msgstr "Koneksi gagal"
 
-#: js/ui/status/network.js:1730
+#: js/ui/status/network.js:1733
 msgid "Activation of network connection failed"
 msgstr "Aktivasi koneksi jaringan gagal"
 
@@ -2256,6 +2219,10 @@ msgstr "Matikan"
 msgid "Airplane Mode On"
 msgstr "Mode Pesawat Terbang Aktif"
 
+#: js/ui/status/system.js:103
+msgid "Lock"
+msgstr "Kunci"
+
 #: js/ui/status/system.js:116
 msgid "Power Off / Log Out"
 msgstr "Matikan / Log Keluar"
@@ -2280,11 +2247,11 @@ msgstr "Matikan…"
 msgid "Thunderbolt"
 msgstr "Thunderbolt"
 
-#: js/ui/status/thunderbolt.js:324
+#: js/ui/status/thunderbolt.js:325
 msgid "Unknown Thunderbolt device"
 msgstr "Perangkat Thunderbolt tak dikenal"
 
-#: js/ui/status/thunderbolt.js:325
+#: js/ui/status/thunderbolt.js:326
 msgid ""
 "New device has been detected while you were away. Please disconnect and "
 "reconnect the device to start using it."
@@ -2292,21 +2259,21 @@ msgstr ""
 "Perangkat baru telah terdeteksi saat Anda pergi. Harap lepaskan dan "
 "sambungkan kembali perangkat untuk mulai menggunakannya."
 
-#: js/ui/status/thunderbolt.js:328
+#: js/ui/status/thunderbolt.js:329
 msgid "Unauthorized Thunderbolt device"
 msgstr "Perangkat Thunderbolt tak dikenal"
 
-#: js/ui/status/thunderbolt.js:329
+#: js/ui/status/thunderbolt.js:330
 msgid ""
 "New device has been detected and needs to be authorized by an administrator."
 msgstr ""
 "Perangkat baru telah terdeteksi dan perlu diautorisasi oleh administrator."
 
-#: js/ui/status/thunderbolt.js:335
+#: js/ui/status/thunderbolt.js:336
 msgid "Thunderbolt authorization error"
 msgstr "Autorisasi Thunderbolt galat"
 
-#: js/ui/status/thunderbolt.js:336
+#: js/ui/status/thunderbolt.js:337
 #, javascript-format
 msgid "Could not authorize the Thunderbolt device: %s"
 msgstr "Tidak dapat mengautorisasi perangkat Thunderbolt: %s"
@@ -2347,13 +2314,33 @@ msgstr "Hanya Eksternal"
 msgid "Built-in Only"
 msgstr "Hanya Bawaan"
 
-#: js/ui/unlockDialog.js:52
-msgid "Log in as another user"
-msgstr "Masuk sebagai pengguna lain"
+# %A: Full weekday name
+# %A: Minggu
+# %B: Full month name
+# %B: Januari
+# %d: Day of month as decimal number (01-31)
+# %d: 1
+#. Translators: This is a time format for a date in
+#. long format
+#: js/ui/unlockDialog.js:370
+msgid "%A %B %-d"
+msgstr "%A, %d %B"
 
-#: js/ui/unlockDialog.js:67
+#: js/ui/unlockDialog.js:376
+msgid "Swipe up to unlock"
+msgstr "Gesek ke atas untuk membuka kunci"
+
+#: js/ui/unlockDialog.js:377
+msgid "Click or press a key to unlock"
+msgstr "Klik atau tekan tombol untuk membuka kunci"
+
+#: js/ui/unlockDialog.js:549
 msgid "Unlock Window"
 msgstr "Buka Kunci Jendela"
+
+#: js/ui/unlockDialog.js:558
+msgid "Log in as another user"
+msgstr "Masuk sebagai pengguna lain"
 
 #: js/ui/viewSelector.js:181
 msgid "Applications"
@@ -2393,7 +2380,7 @@ msgstr[1] "Perubahan tatanan akan dikembalikan dalam %d detik"
 
 #. Translators: This represents the size of a window. The first number is
 #. * the width of the window and the second is the height.
-#: js/ui/windowManager.js:542
+#: js/ui/windowManager.js:544
 #, javascript-format
 msgid "%d × %d"
 msgstr "%d × %d"
@@ -2498,11 +2485,11 @@ msgstr "Gagal meluncurkan \"%s\""
 
 #: src/shell-keyring-prompt.c:731
 msgid "Passwords do not match."
-msgstr "Sandi tidak cocok."
+msgstr "Kata sandi tidak cocok."
 
 #: src/shell-keyring-prompt.c:739
 msgid "Password cannot be blank"
-msgstr "Sandi tidak boleh kosong"
+msgstr "Kata sandi tidak boleh kosong"
 
 #: src/shell-polkit-authentication-agent.c:344
 msgid "Authentication dialog was dismissed by the user"
@@ -2576,7 +2563,7 @@ msgid "Create a new extension"
 msgstr "Buat ekstensi baru"
 
 #: subprojects/extensions-tool/src/command-create.c:280
-#: subprojects/extensions-tool/src/command-list.c:158
+#: subprojects/extensions-tool/src/command-list.c:168
 msgid "Unknown arguments"
 msgstr "Argumen tak dikenal"
 
@@ -2634,31 +2621,35 @@ msgstr "Tidak ada bundel ekstensi yang ditentukan"
 msgid "More than one extension bundle specified"
 msgstr "Lebih dari satu bundel ekstensi ditentukan"
 
-#: subprojects/extensions-tool/src/command-list.c:118
+#: subprojects/extensions-tool/src/command-list.c:125
 msgid "Show user-installed extensions"
 msgstr "Tampilkan ekstensi yang dipasang pengguna"
 
-#: subprojects/extensions-tool/src/command-list.c:121
+#: subprojects/extensions-tool/src/command-list.c:128
 msgid "Show system-installed extensions"
 msgstr "Tampilkan ekstensi yang dipasang sistem"
 
-#: subprojects/extensions-tool/src/command-list.c:124
+#: subprojects/extensions-tool/src/command-list.c:131
 msgid "Show enabled extensions"
 msgstr "Tampilkan ekstensi yang diaktifkan"
 
-#: subprojects/extensions-tool/src/command-list.c:127
+#: subprojects/extensions-tool/src/command-list.c:134
 msgid "Show disabled extensions"
 msgstr "Tampilkan ekstensi yang dinonaktifkan"
 
-#: subprojects/extensions-tool/src/command-list.c:130
+#: subprojects/extensions-tool/src/command-list.c:137
 msgid "Show extensions with preferences"
 msgstr "Tampilkan ekstensi dengan preferensi"
 
-#: subprojects/extensions-tool/src/command-list.c:133
+#: subprojects/extensions-tool/src/command-list.c:140
+msgid "Show extensions with updates"
+msgstr "Tampilkan ekstensi dengan pemutakhiran"
+
+#: subprojects/extensions-tool/src/command-list.c:143
 msgid "Print extension details"
 msgstr "Cetak detail ekstensi"
 
-#: subprojects/extensions-tool/src/command-list.c:141
+#: subprojects/extensions-tool/src/command-list.c:151
 msgid "List installed extensions"
 msgstr "Daftar ekstensi yang dipasang"
 
@@ -2841,6 +2832,35 @@ msgstr[1] "%u Masukan"
 msgid "System Sounds"
 msgstr "Suara Sistem"
 
+#~ msgid "Username…"
+#~ msgstr "Nama pengguna…"
+
+#~ msgid "Password: "
+#~ msgstr "Sandi: "
+
+#~ msgid "Enter Password…"
+#~ msgstr "Masukkan Kata Sandi…"
+
+#~ msgid "Next"
+#~ msgstr "Selanjutnya"
+
+#~ msgctxt "button"
+#~ msgid "Sign In"
+#~ msgstr "Masuk"
+
+#~ msgid "%A, %B %d"
+#~ msgstr "%A, %d %B"
+
+#~ msgid "%d new message"
+#~ msgid_plural "%d new messages"
+#~ msgstr[0] "%d pesan baru"
+#~ msgstr[1] "%d pesan baru"
+
+#~ msgid "%d new notification"
+#~ msgid_plural "%d new notifications"
+#~ msgstr[0] "%d pemberitahuan baru"
+#~ msgstr[1] "%d pemberitahuan baru"
+
 #~ msgid "org.gnome.Extensions"
 #~ msgstr "org.gnome.Extensions"
 
@@ -2865,9 +2885,6 @@ msgstr "Suara Sistem"
 
 #~ msgid "Mobile broadband network password"
 #~ msgstr "Sandi jaringan data seluler"
-
-#~ msgid "Password"
-#~ msgstr "Sandi"
 
 #~ msgid "Rename"
 #~ msgstr "Ubah Nama"
