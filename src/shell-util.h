@@ -69,6 +69,8 @@ void shell_util_sd_notify (void);
 gboolean shell_util_has_x11_display_extension (MetaDisplay *display,
                                                const char  *extension);
 
+char *shell_util_get_translated_folder_name (const char *name);
+
 G_END_DECLS
 
 #endif /* __SHELL_UTIL_H__ */
