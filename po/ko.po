@@ -20,8 +20,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2020-02-22 10:46+0000\n"
-"PO-Revision-Date: 2020-02-24 20:50+0900\n"
+"POT-Creation-Date: 2020-02-28 07:20+0000\n"
+"PO-Revision-Date: 2020-02-28 17:34+0900\n"
 "Last-Translator: Changwoo Ryu <cwryu@debian.org>\n"
 "Language-Team: GNOME Korea <gnome-kr@googlegroups.com>\n"
 "Language: ko\n"
@@ -402,11 +402,11 @@ msgid ""
 "to enable it again"
 msgstr "확장을 제거한 다음 다시 사용하려면 다시 다운로드해야 합니다"
 
-#: js/extensionPrefs/main.js:144 js/ui/audioDeviceSelection.js:57
-#: js/ui/components/networkAgent.js:107 js/ui/components/polkitAgent.js:139
-#: js/ui/endSessionDialog.js:374 js/ui/extensionDownloader.js:165
-#: js/ui/shellMountOperation.js:376 js/ui/shellMountOperation.js:386
-#: js/ui/status/network.js:913
+#: js/extensionPrefs/main.js:144 js/gdm/authPrompt.js:135
+#: js/ui/audioDeviceSelection.js:57 js/ui/components/networkAgent.js:107
+#: js/ui/components/polkitAgent.js:139 js/ui/endSessionDialog.js:374
+#: js/ui/extensionDownloader.js:165 js/ui/shellMountOperation.js:376
+#: js/ui/shellMountOperation.js:386 js/ui/status/network.js:913
 msgid "Cancel"
 msgstr "취소"
 
@@ -538,7 +538,7 @@ msgid "Log Out…"
 msgstr "로그아웃…"
 
 #. Cisco LEAP
-#: js/gdm/authPrompt.js:236 js/ui/components/networkAgent.js:202
+#: js/gdm/authPrompt.js:237 js/ui/components/networkAgent.js:202
 #: js/ui/components/networkAgent.js:218 js/ui/components/networkAgent.js:242
 #: js/ui/components/networkAgent.js:263 js/ui/components/networkAgent.js:283
 #: js/ui/components/networkAgent.js:293 js/ui/components/polkitAgent.js:277
@@ -1640,12 +1640,12 @@ msgstr "끝내기"
 msgid "Activities"
 msgstr "현재 활동"
 
-#: js/ui/panel.js:707
+#: js/ui/panel.js:713
 msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "시스템"
 
-#: js/ui/panel.js:820
+#: js/ui/panel.js:826
 msgid "Top Bar"
 msgstr "위 막대"
 
@@ -2289,9 +2289,13 @@ msgstr "잠금을 풀려면 위로 살짝 미십시오"
 msgid "Click or press a key to unlock"
 msgstr "잠금을 풀려면 마우스 단추 또는 키를 누르십시오"
 
-#: js/ui/unlockDialog.js:550
+#: js/ui/unlockDialog.js:549
 msgid "Unlock Window"
 msgstr "창 잠금 풀기"
+
+#: js/ui/unlockDialog.js:558
+msgid "Log in as another user"
+msgstr "다른 사용자로 로그인"
 
 #: js/ui/viewSelector.js:181
 msgid "Applications"
