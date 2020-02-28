@@ -9,6 +9,7 @@
 #include <gio/gio.h>
 #include <glib/gi18n.h>
 
+#include "shell-app-cache.h"
 #include "shell-app-private.h"
 #include "shell-window-tracker-private.h"
 #include "shell-app-system-private.h"
@@ -82,12 +83,14 @@ static void
 scan_startup_wm_class_to_id (ShellAppSystem *self)
 {
   ShellAppSystemPrivate *priv = self->priv;
-  GList *apps, *l;
+  g_autolist(GAppInfo) all = NULL;
+  const GList *l;
 
   g_hash_table_remove_all (priv->startup_wm_class_to_id);
 
-  apps = g_app_info_get_all ();
-  for (l = apps; l != NULL; l = l->next)
+  all = shell_app_cache_get_all (NULL);
+
+  for (l = all; l != NULL; l = l->next)
     {
       GAppInfo *info = l->data;
       const char *startup_wm_class, *id, *old_id;
@@ -105,8 +108,6 @@ scan_startup_wm_class_to_id (ShellAppSystem *self)
         g_hash_table_insert (priv->startup_wm_class_to_id,
                              g_strdup (startup_wm_class), g_strdup (id));
     }
-
-  g_list_free_full (apps, g_object_unref);
 }
 
 static gboolean
@@ -119,7 +120,7 @@ app_is_stale (ShellApp *app)
   if (shell_app_is_window_backed (app))
     return FALSE;
 
-  info = g_desktop_app_info_new (shell_app_get_id (app));
+  info = shell_app_cache_get_info (NULL, shell_app_get_id (app));
   if (!info)
     return TRUE;
 
@@ -157,11 +158,10 @@ stale_app_remove_func (gpointer key,
 }
 
 static void
-installed_changed (GAppInfoMonitor *monitor,
-                   gpointer         user_data)
+installed_changed (ShellAppCache  *cache,
+                   ShellAppSystem *self)
 {
-  ShellAppSystem *self = user_data;
-
+  rescan_icon_theme (self);
   scan_startup_wm_class_to_id (self);
 
   g_hash_table_foreach_remove (self->priv->id_to_app, stale_app_remove_func, NULL);
@@ -173,7 +173,7 @@ static void
 shell_app_system_init (ShellAppSystem *self)
 {
   ShellAppSystemPrivate *priv;
-  GAppInfoMonitor *monitor;
+  ShellAppCache *cache;
 
   self->priv = priv = shell_app_system_get_instance_private (self);
 
@@ -184,9 +184,9 @@ shell_app_system_init (ShellAppSystem *self)
 
   priv->startup_wm_class_to_id = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, g_free);
 
-  monitor = g_app_info_monitor_get ();
-  g_signal_connect (monitor, "changed", G_CALLBACK (installed_changed), self);
-  installed_changed (monitor, self);
+  cache = shell_app_cache_get_default ();
+  g_signal_connect (cache, "changed", G_CALLBACK (installed_changed), self);
+  installed_changed (cache, self);
 }
 
 static void
@@ -237,7 +237,7 @@ shell_app_system_lookup_app (ShellAppSystem   *self,
   if (app)
     return app;
 
-  info = g_desktop_app_info_new (id);
+  info = shell_app_cache_get_info (NULL, id);
   if (!info)
     return NULL;
 
