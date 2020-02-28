@@ -54,6 +54,8 @@ struct _StIconPrivate
   ClutterActor    *pending_texture;
   gulong           opacity_handler_id;
 
+  gboolean         use_fallback_icon;
+
   GIcon           *gicon;
   gint             prop_icon_size;  /* icon size set as property */
   gint             theme_icon_size; /* icon size from theme node */
@@ -300,6 +302,7 @@ st_icon_init (StIcon *self)
 
   self->priv->icon_size = DEFAULT_ICON_SIZE;
   self->priv->prop_icon_size = -1;
+  self->priv->use_fallback_icon = TRUE;
 
   self->priv->shadow_pipeline = NULL;
 }
@@ -404,6 +407,7 @@ st_icon_update (StIcon *icon)
   ClutterActor *stage;
   StThemeContext *context;
   float resource_scale;
+  GIcon *gicon;
 
   if (priv->pending_texture)
     {
@@ -426,21 +430,44 @@ st_icon_update (StIcon *icon)
 
   cache = st_texture_cache_get_default ();
 
-  if (priv->gicon != NULL)
-    priv->pending_texture = st_texture_cache_load_gicon (cache,
-                                                         theme_node,
-                                                         priv->gicon,
-                                                         priv->icon_size,
-                                                         paint_scale,
-                                                         resource_scale);
+  if (priv->use_fallback_icon)
+    {
+      gicon = priv->fallback_gicon;
 
-  if (priv->pending_texture == NULL && priv->fallback_gicon != NULL)
-    priv->pending_texture = st_texture_cache_load_gicon (cache,
-                                                         theme_node,
-                                                         priv->fallback_gicon,
-                                                         priv->icon_size,
-                                                         paint_scale,
-                                                         resource_scale);
+      if (gicon == NULL)
+        {
+          if (priv->icon_texture)
+            {
+              clutter_actor_destroy (priv->icon_texture);
+              priv->icon_texture = NULL;
+            }
+          return;
+        }
+    }
+  else
+    {
+      gicon = priv->gicon;
+
+      /* If priv->gicon is NULL, we must always show the fallback icon,
+       * see documentation of st_icon_set_gicon() */
+      g_assert (gicon != NULL);
+    }
+
+
+  priv->pending_texture = st_texture_cache_load_gicon (cache,
+                                                       theme_node,
+                                                       gicon,
+                                                       priv->icon_size,
+                                                       paint_scale,
+                                                       resource_scale);
+
+  if (priv->pending_texture == NULL && !priv->use_fallback_icon)
+    {
+      priv->use_fallback_icon = TRUE;
+      st_icon_update (icon);
+      return;
+    }
+
 
   if (priv->pending_texture)
     {
@@ -599,6 +626,14 @@ st_icon_set_gicon (StIcon *icon, GIcon *gicon)
 
   g_set_object (&icon->priv->gicon, gicon);
   g_object_notify_by_pspec (G_OBJECT (icon), props[PROP_GICON]);
+
+  if (gicon == NULL)
+    /* Implement the documented behavior and switch to the fallback icon
+     * if gicon == NULL */
+    icon->priv->use_fallback_icon = TRUE;
+  else
+    /* Otherwise try showing the new icon */
+    icon->priv->use_fallback_icon = FALSE;
 
   st_icon_update (icon);
 }
