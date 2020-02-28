@@ -71,15 +71,7 @@ function _getFolderName(folder) {
     let name = folder.get_string('name');
 
     if (folder.get_boolean('translate')) {
-        let keyfile = new GLib.KeyFile();
-        let path = 'desktop-directories/%s'.format(name);
-
-        try {
-            keyfile.load_from_data_dirs(path, GLib.KeyFileFlags.NONE);
-            name = keyfile.get_locale_string('Desktop Entry', 'Name', null);
-        } catch (e) {
-            return name;
-        }
+        return Shell.AppCache.get_default().translate_folder(name);
     }
 
     return name;
