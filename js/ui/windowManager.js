@@ -1259,7 +1259,6 @@ var WindowManager = class {
         actorClone.set_offscreen_redirect(Clutter.OffscreenRedirect.ALWAYS);
         actorClone.set_position(oldFrameRect.x, oldFrameRect.y);
         actorClone.set_size(oldFrameRect.width, oldFrameRect.height);
-        Main.uiGroup.add_actor(actorClone);
 
         if (this._clearAnimationInfo(actor))
             this._shellwm.completed_size_change(actor);
@@ -1289,6 +1288,8 @@ var WindowManager = class {
 
         this._resizePending.delete(actor);
         this._resizing.add(actor);
+
+        Main.uiGroup.add_child(actorClone);
 
         // Now scale and fade out the clone
         actorClone.ease({
