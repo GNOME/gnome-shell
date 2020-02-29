@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2020-02-21 17:52+0000\n"
+"POT-Creation-Date: 2020-02-27 21:57+0000\n"
 "PO-Revision-Date: 2020-02-22 07:00+0900\n"
 "Last-Translator: sicklylife <translation@sicklylife.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
@@ -412,11 +412,11 @@ msgid ""
 msgstr ""
 "拡張機能を削除した場合、再度有効にするにはダウンロードし直す必要があります"
 
-#: js/extensionPrefs/main.js:144 js/ui/audioDeviceSelection.js:57
-#: js/ui/components/networkAgent.js:107 js/ui/components/polkitAgent.js:139
-#: js/ui/endSessionDialog.js:374 js/ui/extensionDownloader.js:165
-#: js/ui/shellMountOperation.js:376 js/ui/shellMountOperation.js:386
-#: js/ui/status/network.js:913
+#: js/extensionPrefs/main.js:144 js/gdm/authPrompt.js:135
+#: js/ui/audioDeviceSelection.js:57 js/ui/components/networkAgent.js:107
+#: js/ui/components/polkitAgent.js:139 js/ui/endSessionDialog.js:374
+#: js/ui/extensionDownloader.js:165 js/ui/shellMountOperation.js:376
+#: js/ui/shellMountOperation.js:386 js/ui/status/network.js:913
 msgid "Cancel"
 msgstr "キャンセル"
 
@@ -555,7 +555,7 @@ msgid "Log Out…"
 msgstr "ログアウト…"
 
 #. Cisco LEAP
-#: js/gdm/authPrompt.js:236 js/ui/components/networkAgent.js:202
+#: js/gdm/authPrompt.js:237 js/ui/components/networkAgent.js:202
 #: js/ui/components/networkAgent.js:218 js/ui/components/networkAgent.js:242
 #: js/ui/components/networkAgent.js:263 js/ui/components/networkAgent.js:283
 #: js/ui/components/networkAgent.js:293 js/ui/components/polkitAgent.js:277
@@ -1658,12 +1658,12 @@ msgstr "終了"
 msgid "Activities"
 msgstr "アクティビティ"
 
-#: js/ui/panel.js:707
+#: js/ui/panel.js:713
 msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "システム"
 
-#: js/ui/panel.js:820
+#: js/ui/panel.js:826
 msgid "Top Bar"
 msgstr "トップバー"
 
@@ -2305,9 +2305,15 @@ msgstr "ロック解除は上にスワイプしてください"
 msgid "Click or press a key to unlock"
 msgstr "ロック解除はキーを押すかクリックしてください"
 
-#: js/ui/unlockDialog.js:550
+#: js/ui/unlockDialog.js:549
 msgid "Unlock Window"
 msgstr "ロック解除"
+
+#: js/ui/unlockDialog.js:558
+#, fuzzy
+#| msgid "Logged in as a privileged user"
+msgid "Log in as another user"
+msgstr "特権ユーザーでログインしました"
 
 #: js/ui/viewSelector.js:181
 msgid "Applications"
