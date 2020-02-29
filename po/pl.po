@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2020-02-17 22:27+0000\n"
-"PO-Revision-Date: 2020-02-18 19:10+0100\n"
+"POT-Creation-Date: 2020-02-27 21:57+0000\n"
+"PO-Revision-Date: 2020-02-29 13:09+0100\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <community-poland@mozilla.org>\n"
 "Language: pl\n"
@@ -416,11 +416,11 @@ msgstr ""
 "Po usunięciu rozszerzenia jego ponowne włączenie będzie wymagało pobrania od "
 "nowa"
 
-#: js/extensionPrefs/main.js:144 js/ui/audioDeviceSelection.js:57
-#: js/ui/components/networkAgent.js:107 js/ui/components/polkitAgent.js:139
-#: js/ui/endSessionDialog.js:374 js/ui/extensionDownloader.js:165
-#: js/ui/shellMountOperation.js:376 js/ui/shellMountOperation.js:386
-#: js/ui/status/network.js:913
+#: js/extensionPrefs/main.js:144 js/gdm/authPrompt.js:135
+#: js/ui/audioDeviceSelection.js:57 js/ui/components/networkAgent.js:107
+#: js/ui/components/polkitAgent.js:139 js/ui/endSessionDialog.js:374
+#: js/ui/extensionDownloader.js:165 js/ui/shellMountOperation.js:376
+#: js/ui/shellMountOperation.js:386 js/ui/status/network.js:913
 msgid "Cancel"
 msgstr "Anuluj"
 
@@ -555,7 +555,7 @@ msgid "Log Out…"
 msgstr "Wyloguj się…"
 
 #. Cisco LEAP
-#: js/gdm/authPrompt.js:235 js/ui/components/networkAgent.js:202
+#: js/gdm/authPrompt.js:237 js/ui/components/networkAgent.js:202
 #: js/ui/components/networkAgent.js:218 js/ui/components/networkAgent.js:242
 #: js/ui/components/networkAgent.js:263 js/ui/components/networkAgent.js:283
 #: js/ui/components/networkAgent.js:293 js/ui/components/polkitAgent.js:277
@@ -863,27 +863,27 @@ msgid "All"
 msgstr "Wszystkie"
 
 #. Translators: This is the heading of a list of open windows
-#: js/ui/appDisplay.js:2454 js/ui/panel.js:75
+#: js/ui/appDisplay.js:2450 js/ui/panel.js:75
 msgid "Open Windows"
 msgstr "Otwarte okna"
 
-#: js/ui/appDisplay.js:2474 js/ui/panel.js:82
+#: js/ui/appDisplay.js:2470 js/ui/panel.js:82
 msgid "New Window"
 msgstr "Nowe okno"
 
-#: js/ui/appDisplay.js:2485
+#: js/ui/appDisplay.js:2481
 msgid "Launch using Dedicated Graphics Card"
 msgstr "Uruchom za pomocą dedykowanej karty graficznej"
 
-#: js/ui/appDisplay.js:2513 js/ui/dash.js:239
+#: js/ui/appDisplay.js:2509 js/ui/dash.js:239
 msgid "Remove from Favorites"
 msgstr "Usuń z ulubionych"
 
-#: js/ui/appDisplay.js:2519
+#: js/ui/appDisplay.js:2515
 msgid "Add to Favorites"
 msgstr "Dodaj do ulubionych"
 
-#: js/ui/appDisplay.js:2529 js/ui/panel.js:93
+#: js/ui/appDisplay.js:2525 js/ui/panel.js:93
 msgid "Show Details"
 msgstr "Wyświetl szczegóły"
 
@@ -1538,59 +1538,59 @@ msgstr "Pozostaw wyłączone"
 msgid "Region & Language Settings"
 msgstr "Ustawienia regionu i języka"
 
-#: js/ui/lookingGlass.js:659
+#: js/ui/lookingGlass.js:665
 msgid "No extensions installed"
 msgstr "Nie zainstalowano rozszerzeń"
 
 #. Translators: argument is an extension UUID.
-#: js/ui/lookingGlass.js:714
+#: js/ui/lookingGlass.js:720
 #, javascript-format
 msgid "%s has not emitted any errors."
 msgstr "Rozszerzenie „%s” nie wysłało żadnych błędów."
 
-#: js/ui/lookingGlass.js:720
+#: js/ui/lookingGlass.js:726
 msgid "Hide Errors"
 msgstr "Ukryj błędy"
 
-#: js/ui/lookingGlass.js:724 js/ui/lookingGlass.js:789
+#: js/ui/lookingGlass.js:730 js/ui/lookingGlass.js:795
 msgid "Show Errors"
 msgstr "Wyświetl błędy"
 
-#: js/ui/lookingGlass.js:733
+#: js/ui/lookingGlass.js:739
 msgid "Enabled"
 msgstr "Włączone"
 
 #. translators:
 #. * The device has been disabled
-#: js/ui/lookingGlass.js:736 subprojects/gvc/gvc-mixer-control.c:1892
+#: js/ui/lookingGlass.js:742 subprojects/gvc/gvc-mixer-control.c:1892
 msgid "Disabled"
 msgstr "Wyłączone"
 
-#: js/ui/lookingGlass.js:738
+#: js/ui/lookingGlass.js:744
 msgid "Error"
 msgstr "Błąd"
 
-#: js/ui/lookingGlass.js:740
+#: js/ui/lookingGlass.js:746
 msgid "Out of date"
 msgstr "Nieaktualne"
 
-#: js/ui/lookingGlass.js:742
+#: js/ui/lookingGlass.js:748
 msgid "Downloading"
 msgstr "Pobieranie"
 
-#: js/ui/lookingGlass.js:771
+#: js/ui/lookingGlass.js:777
 msgid "View Source"
 msgstr "Wyświetl źródło"
 
-#: js/ui/lookingGlass.js:780
+#: js/ui/lookingGlass.js:786
 msgid "Web Page"
 msgstr "Strona WWW"
 
-#: js/ui/main.js:267
+#: js/ui/main.js:269
 msgid "Logged in as a privileged user"
 msgstr "Zalogowano jako uprawniony użytkownik"
 
-#: js/ui/main.js:268
+#: js/ui/main.js:270
 msgid ""
 "Running a session as a privileged user should be avoided for security "
 "reasons. If possible, you should log in as a normal user."
@@ -1598,11 +1598,11 @@ msgstr ""
 "Należy unikać działania jako uprawniony użytkownik z powodów bezpieczeństwa. "
 "Jeśli to możliwe, należy zalogować się jako zwykły użytkownik."
 
-#: js/ui/main.js:274
+#: js/ui/main.js:276
 msgid "Screen Lock disabled"
 msgstr "Blokada ekranu jest wyłączona"
 
-#: js/ui/main.js:275
+#: js/ui/main.js:277
 msgid "Screen Locking requires the GNOME display manager."
 msgstr "Blokowanie ekranu wymaga menedżera wyświetlania GNOME."
 
@@ -1690,12 +1690,12 @@ msgstr "Zakończ"
 msgid "Activities"
 msgstr "Podgląd"
 
-#: js/ui/panel.js:707
+#: js/ui/panel.js:713
 msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "Menu systemowe"
 
-#: js/ui/panel.js:820
+#: js/ui/panel.js:826
 msgid "Top Bar"
 msgstr "Górny pasek"
 
@@ -1918,11 +1918,11 @@ msgstr "Kliknięcie pomocnicze"
 msgid "Dwell Click"
 msgstr "Kliknięcie spoczynkowe"
 
-#: js/ui/status/keyboard.js:825
+#: js/ui/status/keyboard.js:826
 msgid "Keyboard"
 msgstr "Klawiatura"
 
-#: js/ui/status/keyboard.js:847
+#: js/ui/status/keyboard.js:848
 msgid "Show Keyboard Layout"
 msgstr "Wyświetl układ klawiatury"
 
@@ -2336,21 +2336,25 @@ msgstr "Tylko wbudowany"
 
 #. Translators: This is a time format for a date in
 #. long format
-#: js/ui/unlockDialog.js:372
+#: js/ui/unlockDialog.js:370
 msgid "%A %B %-d"
 msgstr "%A, %-d %B"
 
-#: js/ui/unlockDialog.js:378
+#: js/ui/unlockDialog.js:376
 msgid "Swipe up to unlock"
 msgstr "Przeciągnięcie w górę odblokuje"
 
-#: js/ui/unlockDialog.js:379
+#: js/ui/unlockDialog.js:377
 msgid "Click or press a key to unlock"
 msgstr "Kliknięcie lub naciśnięcie klawisza odblokuje"
 
-#: js/ui/unlockDialog.js:552
+#: js/ui/unlockDialog.js:549
 msgid "Unlock Window"
 msgstr "Okno odblokowania"
+
+#: js/ui/unlockDialog.js:558
+msgid "Log in as another user"
+msgstr "Zaloguj jako inny użytkownik"
 
 #: js/ui/viewSelector.js:181
 msgid "Applications"
