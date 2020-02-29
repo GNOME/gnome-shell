@@ -922,10 +922,9 @@ var WindowManager = class {
                 null);
             return true;
         });
-        global.display.connect('shutdown-xserver', (display, task) => {
+        global.display.connect('x11-display-closing', () => {
             Shell.util_stop_systemd_unit('gsd-xsettings.target', 'fail');
             IBusManager.getIBusManager().restartDaemon();
-            task.return_boolean(true);
         });
 
         Main.overview.connect('showing', () => {
