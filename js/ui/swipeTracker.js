@@ -58,7 +58,7 @@ const TouchpadSwipeGesture = GObject.registerClass({
         this._orientation = Clutter.Orientation.VERTICAL;
         this._enabled = true;
 
-        global.stage.connect('captured-event', this._handleEvent.bind(this));
+        global.stage.connect('captured-event::touchpad', this._handleEvent.bind(this));
     }
 
     get enabled() {
