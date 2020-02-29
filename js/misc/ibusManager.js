@@ -61,7 +61,10 @@ var IBusManager = class {
     _spawn(extraArgs = []) {
         try {
             let cmdLine = ['ibus-daemon', '--panel', 'disable', ...extraArgs];
-            Gio.Subprocess.new(cmdLine, Gio.SubprocessFlags.NONE);
+            let launcher = Gio.SubprocessLauncher.new(Gio.SubprocessFlags.NONE);
+            // Forward the right X11 Display for ibus-x11
+            launcher.setenv('DISPLAY', GLib.getenv('GNOME_SETUP_DISPLAY'), true);
+            launcher.launch(cmdLine);
         } catch (e) {
             log(`Failed to launch ibus-daemon: ${e.message}`);
         }
