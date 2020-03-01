@@ -586,7 +586,7 @@ st_icon_get_gicon (StIcon *icon)
  * @gicon: (nullable): a #GIcon
  *
  * Sets a #GIcon to show for the icon. If @gicon is %NULL or fails to load,
- * the fallback icon set using st_icon_set_fallback_icon() will be shown.
+ * the fallback icon will be shown.
  */
 void
 st_icon_set_gicon (StIcon *icon, GIcon *gicon)
