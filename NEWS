@@ -1,3 +1,49 @@
+3.35.92
+=======
+* Plug a memory leak [Jonas D.; !1015]
+* Fix missing "back" button on login screen [Florian; #2228]
+* Fix width of window preview titles in overview [Jonas D.; #58]
+* Fix looking glass text with light style variant [Feichtmeier; !1023]
+* Center unlock entry [Florian; !1021]
+* Hide overlay scrollbars in notification popup [Jonas D.; !1013]
+* Work around add_actor() slowness in icon spring animation [Daniel; !1002]
+* Add disable-animations heuristics [Jonas Å.; !757]
+* Fix visual glitches in on-screen keyboard [Carlos; #2214]
+* Fix clearing changed textures from cache [Florian; #2244]
+* Fix visual glitch in sliders [Daniel; #1569]
+* Stop using dedicated lock screen background [Florian; !1001]
+* Fix entries disappearing after authentication errors [Florian; #2236]
+* Fix crash when animations are disabled [Florian; #2255]
+* Fix passing pointer events to clients when magnified [Jonas D.; !993]
+* Fix keynav on new lock screen [Florian; #2210]
+* Avoid short-lived allocations on actor removal [Christian; #2263]
+* Fix super-sized default avatars in user list [Florian, Sam; #2242]
+* Leave overview when locking the screen [Jonas D.; !1043]
+* Hide message list on login screen [Florian; #2241]
+* Avoid IO on the main thread [Christian, Florian; !1050, !1051]
+* Fix window animations getting stuck when client doesn't respond [Jonas; !1055]
+* Only subscribe to touchpad events for touchpad gestures [Daniel; !925]
+* Start X11 session services before Xwayland clients [Carlos; !836, !1056]
+* Only show switch-user button with unlock prompt [Florian; !1029]
+* Misc. bug fixes and cleanups [Jonas D., Florian, Georges, Jonas Å., Daniel,
+  Jakub, Philippe; !1018, !1020, !1024, !1027, !1026, !1022, !1031, !1035,
+  !1032, !1025, !1039, #2157, !1037, !1042, !1047, !1048, #2270, !1046,
+  !167, !1016]
+
+Contributors:
+  Jonas Dreßler, Feichtmeier, Carlos Garnacho, Christian Hergert, Sam Hewitt,
+  Florian Müllner, Georges Basile Stavracas Neto, Jakub Steiner, Philippe Troin,
+  Daniel van Vugt, Jonas Ådahl
+
+Translators:
+  Danial Behzadi [fa], Efstathios Iosifidis [el], Daniel Mustieles [es],
+  Sabri Ünal [tr], sicklylife [ja], Piotr Drąg [pl], Jordi Mas [ca],
+  Anders Jonsson [sv], Chao-Hsiung Liao [zh_TW], Asier Sarasua Garmendia [eu],
+  Rafael Fontenelle [pt_BR], Марко Костић [sr], Changwoo Ryu [ko],
+  Charles Monzat [fr], Jiri Grönroos [fi], Jor Teron [mjw], Bruce Cowan [en_GB],
+  Emin Tufan Çetin [tr], Alan Mortensen [da], Balázs Úr [hu], Fran Dieguez [gl],
+  Kukuh Syafaat [id]
+
 3.35.91
 =======
 * Improve magnifier [Carlos; !984]
