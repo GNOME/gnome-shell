@@ -691,7 +691,7 @@ var ExtensionRow = GObject.registerClass({
     }
 
     get version() {
-        return this._extension.metadata.version || '';
+        return this._extension.metadata.version.toString() || '';
     }
 
     _updateState() {
@@ -703,7 +703,7 @@ var ExtensionRow = GObject.registerClass({
 
         this._updatesIcon.visible = this.hasUpdate;
 
-        this._versionLabel.label = this.version.toString();
+        this._versionLabel.label = this.version;
         this._versionLabel.visible = this.version !== '';
 
         this._authorLabel.label = this.creator.toString();
