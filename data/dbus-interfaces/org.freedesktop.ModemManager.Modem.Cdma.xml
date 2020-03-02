@@ -1,0 +1,13 @@
+<node>
+  <interface name="org.freedesktop.ModemManager.Modem.Cdma">
+    <method name="GetSignalQuality">
+      <arg type="u" direction="out"/>
+    </method>
+    <method name="GetServingSystem">
+      <arg type="(usu)" direction="out"/>
+    </method>
+    <signal name="SignalQuality">
+      <arg type="u" direction="out"/>
+    </signal>
+  </interface>
+</node>

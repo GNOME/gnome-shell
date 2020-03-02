@@ -1,0 +1,2885 @@
+# GNOME kesta eesti keele tõlge.
+# Estonian translation for gnome-shell.
+#
+# Copyright (C) 2010, 2011 The Gnome Project
+#
+# This file is distributed under the same license as the gnome-shell package.
+#
+# Ivar Smolin <okul linux ee>, 2011.
+# Mattias Põldaru <mahfiaz@gmail.com>, 2010, 2011, 2012, 2013.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: gnome-shell MASTER\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
+"POT-Creation-Date: 2019-03-02 10:57+0000\n"
+"PO-Revision-Date: 2019-03-10 18:49+0200\n"
+"Last-Translator: Mart Raudsepp <leio@gentoo.org>\n"
+"Language-Team: Estonian <>\n"
+"Language: et\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\n"
+"X-Generator: Poedit 2.2\n"
+"X-DamnedLies-Scope: partial\n"
+
+#: data/50-gnome-shell-system.xml:6
+msgid "System"
+msgstr "Arvuti"
+
+#: data/50-gnome-shell-system.xml:9
+msgid "Show the notification list"
+msgstr "Teadete nimekirja kuvamine"
+
+#: data/50-gnome-shell-system.xml:12
+msgid "Focus the active notification"
+msgstr "Aktiivse teate fookustamine"
+
+#: data/50-gnome-shell-system.xml:15
+msgid "Show the overview"
+msgstr "Ülevaate näitamine"
+
+#: data/50-gnome-shell-system.xml:18
+msgid "Show all applications"
+msgstr "Kõigi rakenduste kuvamine"
+
+#: data/50-gnome-shell-system.xml:21
+msgid "Open the application menu"
+msgstr "Rakenduste menüü avamine"
+
+#: data/gnome-shell-extension-prefs.desktop.in.in:4
+#: js/extensionPrefs/main.js:216
+msgid "Shell Extensions"
+msgstr "Shelli laiendused"
+
+#: data/gnome-shell-extension-prefs.desktop.in.in:5
+msgid "Configure GNOME Shell Extensions"
+msgstr "GNOME Shelli laienduste seadistamine"
+
+#: data/org.gnome.Shell.desktop.in.in:4
+msgid "GNOME Shell"
+msgstr "GNOME Shell"
+
+#: data/org.gnome.Shell.desktop.in.in:5
+msgid "Window management and application launching"
+msgstr "Aknahaldur ja rakenduste käivitaja"
+
+#: data/org.gnome.shell.gschema.xml.in:6
+msgid "Enable internal tools useful for developers and testers from Alt-F2"
+msgstr ""
+"Arendajate ja testijate jaoks sisemiste tööriistade lubamine Alt-F2 alt"
+
+#: data/org.gnome.shell.gschema.xml.in:9
+msgid ""
+"Allows access to internal debugging and monitoring tools using the Alt-F2 "
+"dialog."
+msgstr ""
+"Lubab ligipääsu sisemistele silumise ja monitoorimise tööriistadele Alt-F2 "
+"dialoogi kaudu."
+
+#: data/org.gnome.shell.gschema.xml.in:16
+msgid "UUIDs of extensions to enable"
+msgstr "Lubatavate laienduste UUID-d"
+
+#: data/org.gnome.shell.gschema.xml.in:17
+msgid ""
+"GNOME Shell extensions have a UUID property; this key lists extensions which "
+"should be loaded. Any extension that wants to be loaded needs to be in this "
+"list. You can also manipulate this list with the EnableExtension and "
+"DisableExtension D-Bus methods on org.gnome.Shell."
+msgstr ""
+"GNOME Shelli laiendustel on UUID omadus; selles võtmes loetletud laiendused "
+"tuleks laadida. Seda loendit saab muuta kasutades EnableExtension ja "
+"DisableExtension DBus-i meetodit kohas org.gnome.Shell."
+
+#: data/org.gnome.shell.gschema.xml.in:26
+msgid "Disable user extensions"
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:27
+msgid ""
+"Disable all extensions the user has enabled without affecting the “enabled-"
+"extension” setting."
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:34
+msgid "Disables the validation of extension version compatibility"
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:35
+msgid ""
+"GNOME Shell will only load extensions that claim to support the current "
+"running version. Enabling this option will disable this check and try to "
+"load all extensions regardless of the versions they claim to support."
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:43
+msgid "List of desktop file IDs for favorite applications"
+msgstr "Lemmikrakenduste töölauafailide ID-de loend"
+
+#: data/org.gnome.shell.gschema.xml.in:44
+msgid ""
+"The applications corresponding to these identifiers will be displayed in the "
+"favorites area."
+msgstr "Nendele tunnustele vastavaid rakendusi kuvatakse lemmikutes."
+
+#: data/org.gnome.shell.gschema.xml.in:51
+msgid "App Picker View"
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:52
+msgid "Index of the currently selected view in the application picker."
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:58
+msgid "History for command (Alt-F2) dialog"
+msgstr "Käsudialoogi (Alt-F2) ajalugu"
+
+# suurendusklaasidialoog? miks ka mitte :)
+#. Translators: looking glass is a debugger and inspector tool, see https://wiki.gnome.org/Projects/GnomeShell/LookingGlass
+#: data/org.gnome.shell.gschema.xml.in:63
+msgid "History for the looking glass dialog"
+msgstr "Otsingudialoogi ajalugu"
+
+#: data/org.gnome.shell.gschema.xml.in:67
+msgid "Always show the “Log out” menu item in the user menu."
+msgstr "Kasutajamenüüs näidatakse alati „Logi välja“ menüükirjet."
+
+#: data/org.gnome.shell.gschema.xml.in:68
+msgid ""
+"This key overrides the automatic hiding of the “Log out” menu item in single-"
+"user, single-session situations."
+msgstr ""
+"See võti keelab automaatse „Logi välja“ menüükirje peitmise, kui arvutis on "
+"üks kasutaja ning avatud üks seanss."
+
+#: data/org.gnome.shell.gschema.xml.in:75
+msgid ""
+"Whether to remember password for mounting encrypted or remote filesystems"
+msgstr ""
+"Kas pidada meeles krüpteeritud või kaugfailisüsteemide haakimise paroole"
+
+#: data/org.gnome.shell.gschema.xml.in:76
+msgid ""
+"The shell will request a password when an encrypted device or a remote "
+"filesystem is mounted. If the password can be saved for future use a "
+"“Remember Password” checkbox will be present. This key sets the default "
+"state of the checkbox."
+msgstr ""
+"Shell küsib parooli, kui haagitakse krüpteeritud seade või kaugfailisüsteem. "
+"Kui parooli on võimalik salvestada edaspidiseks kasutuseks, näidatakse "
+"„Salvesta parool“ märkeruutu. See võti määrab selle märkeruudu vaikimisi "
+"oleku."
+
+#: data/org.gnome.shell.gschema.xml.in:85
+msgid ""
+"Whether the default Bluetooth adapter had set up devices associated to it"
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:86
+msgid ""
+"The shell will only show a Bluetooth menu item if a Bluetooth adapter is "
+"powered, or if there were devices set up associated with the default "
+"adapter. This will be reset if the default adapter is ever seen not to have "
+"devices associated to it."
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:95
+msgid "Enable introspection API"
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:96
+msgid ""
+"Enables a D-Bus API that allows to introspect the application state of the "
+"shell."
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:109
+msgid "Keybinding to open the application menu"
+msgstr "Rakenduste menüü avamise kiirklahv"
+
+#: data/org.gnome.shell.gschema.xml.in:110
+msgid "Keybinding to open the application menu."
+msgstr "Kiirklahv rakenduste menüü avamiseks."
+
+#: data/org.gnome.shell.gschema.xml.in:116
+msgid "Keybinding to open the “Show Applications” view"
+msgstr "„Rakenduste kuvamise“ kiirklahv"
+
+#: data/org.gnome.shell.gschema.xml.in:117
+msgid ""
+"Keybinding to open the “Show Applications” view of the Activities Overview."
+msgstr "„Rakenduste kuvamise“ kiirklahv tegevuste ülevaates."
+
+#: data/org.gnome.shell.gschema.xml.in:124
+msgid "Keybinding to open the overview"
+msgstr "Ülevaate avamise kiirklahv"
+
+#: data/org.gnome.shell.gschema.xml.in:125
+msgid "Keybinding to open the Activities Overview."
+msgstr "Tegevuste ülevaate avamise kiirklahv."
+
+#: data/org.gnome.shell.gschema.xml.in:131
+msgid "Keybinding to toggle the visibility of the notification list"
+msgstr "Teadete loendi nähtavuse muutmise kiirklahv"
+
+#: data/org.gnome.shell.gschema.xml.in:132
+msgid "Keybinding to toggle the visibility of the notification list."
+msgstr "Kiirklahv teadete loendi nähtavuse muutmiseks."
+
+#: data/org.gnome.shell.gschema.xml.in:138
+msgid "Keybinding to focus the active notification"
+msgstr "Aktiivse teate fookustamise kiirklahv"
+
+#: data/org.gnome.shell.gschema.xml.in:139
+msgid "Keybinding to focus the active notification."
+msgstr "Aktiivse teate fookustamise kiirklahv."
+
+#: data/org.gnome.shell.gschema.xml.in:145
+msgid ""
+"Keybinding that pauses and resumes all running tweens, for debugging purposes"
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:150
+msgid "Switch to application 1"
+msgstr "Liikumine 1. rakendusele"
+
+#: data/org.gnome.shell.gschema.xml.in:154
+msgid "Switch to application 2"
+msgstr "Liikumine 2. rakendusele"
+
+#: data/org.gnome.shell.gschema.xml.in:158
+msgid "Switch to application 3"
+msgstr "Liikumine 3. rakendusele"
+
+#: data/org.gnome.shell.gschema.xml.in:162
+msgid "Switch to application 4"
+msgstr "Liikumine 4. rakendusele"
+
+#: data/org.gnome.shell.gschema.xml.in:166
+msgid "Switch to application 5"
+msgstr "Liikumine 5. rakendusele"
+
+#: data/org.gnome.shell.gschema.xml.in:170
+msgid "Switch to application 6"
+msgstr "Liikumine 6. rakendusele"
+
+#: data/org.gnome.shell.gschema.xml.in:174
+msgid "Switch to application 7"
+msgstr "Liikumine 7. rakendusele"
+
+#: data/org.gnome.shell.gschema.xml.in:178
+msgid "Switch to application 8"
+msgstr "Liikumine 8. rakendusele"
+
+#: data/org.gnome.shell.gschema.xml.in:182
+msgid "Switch to application 9"
+msgstr "Liikumine 9. rakendusele"
+
+#: data/org.gnome.shell.gschema.xml.in:190
+msgid "Which keyboard to use"
+msgstr "Millist klaviatuuri kasutada"
+
+#: data/org.gnome.shell.gschema.xml.in:191
+msgid "The type of keyboard to use."
+msgstr "Kasutatava klaviatuuri liik."
+
+#: data/org.gnome.shell.gschema.xml.in:202
+#: data/org.gnome.shell.gschema.xml.in:229
+msgid "Limit switcher to current workspace."
+msgstr "Piira aknavahetaja käesolevale tööalale."
+
+#: data/org.gnome.shell.gschema.xml.in:203
+msgid ""
+"If true, only applications that have windows on the current workspace are "
+"shown in the switcher. Otherwise, all applications are included."
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:220
+msgid "The application icon mode."
+msgstr "Rakenduste ikooni režiim."
+
+#: data/org.gnome.shell.gschema.xml.in:221
+msgid ""
+"Configures how the windows are shown in the switcher. Valid possibilities "
+"are “thumbnail-only” (shows a thumbnail of the window), “app-icon-"
+"only” (shows only the application icon) or “both”."
+msgstr ""
+"Seadistab, kuidas aknaid aknavahetajas kuvatakse. Sobivad väärtused on "
+"„thumbnail-only“ (näidatakse ainult akna pisipilti), „app-icon-"
+"only“ (näidatakse ainult akna ikooni) või „both“ (mõlemad)."
+
+#: data/org.gnome.shell.gschema.xml.in:230
+msgid ""
+"If true, only windows from the current workspace are shown in the switcher. "
+"Otherwise, all windows are included."
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:242
+msgid "Attach modal dialog to the parent window"
+msgstr "Modaaldialoog kuulub vanemakna juurde"
+
+#: data/org.gnome.shell.gschema.xml.in:243
+#: data/org.gnome.shell.gschema.xml.in:252
+#: data/org.gnome.shell.gschema.xml.in:260
+#: data/org.gnome.shell.gschema.xml.in:268
+#: data/org.gnome.shell.gschema.xml.in:276
+msgid ""
+"This key overrides the key in org.gnome.mutter when running GNOME Shell."
+msgstr ""
+"See võti on ülimuslik võtme org.gnome.mutter suhtes, kui kasutatakse GNOME "
+"Shelli."
+
+#: data/org.gnome.shell.gschema.xml.in:251
+msgid "Enable edge tiling when dropping windows on screen edges"
+msgstr "Akende lohistamisel ekraani serva lubatakse serva paigutamine"
+
+#: data/org.gnome.shell.gschema.xml.in:259
+msgid "Workspaces are managed dynamically"
+msgstr "Tööalasid hallatakse dünaamiliselt"
+
+#: data/org.gnome.shell.gschema.xml.in:267
+msgid "Workspaces only on primary monitor"
+msgstr "Tööalad peamisel monitoril"
+
+#: data/org.gnome.shell.gschema.xml.in:275
+msgid "Delay focus changes in mouse mode until the pointer stops moving"
+msgstr "Hiire all asuv aken saab fookuse alles hiire peatumisel"
+
+#: data/org.gnome.Shell.PortalHelper.desktop.in.in:3
+msgid "Network Login"
+msgstr "Võrku sisselogimine"
+
+#. Translators: Do NOT translate or transliterate this text (this is an icon file name)!
+#: data/org.gnome.Shell.PortalHelper.desktop.in.in:9
+msgid "network-workgroup"
+msgstr "network-workgroup"
+
+#: js/extensionPrefs/main.js:116
+msgid "Something’s gone wrong"
+msgstr "Midagi läks nihu"
+
+#: js/extensionPrefs/main.js:123
+msgid ""
+"We’re very sorry, but there’s been a problem: the settings for this "
+"extension can’t be displayed. We recommend that you report the issue to the "
+"extension authors."
+msgstr ""
+
+#: js/extensionPrefs/main.js:130
+msgid "Technical Details"
+msgstr "Tehnilised üksikasjad"
+
+#: js/extensionPrefs/main.js:165
+msgid "Copy Error"
+msgstr "Kopeeri veateade"
+
+#: js/extensionPrefs/main.js:185
+msgid "Homepage"
+msgstr "Koduleht"
+
+#: js/extensionPrefs/main.js:186
+msgid "Visit extension homepage"
+msgstr "Külasta laienduse kodulehte"
+
+#: js/extensionPrefs/main.js:449
+msgid "No Extensions Installed"
+msgstr "Ühtegi laiendust pole paigaldatud"
+
+#: js/extensionPrefs/main.js:459
+msgid ""
+"Extensions can be installed through Software or <a href=\"https://extensions."
+"gnome.org\">extensions.gnome.org</a>."
+msgstr ""
+
+#: js/extensionPrefs/main.js:474
+msgid "Browse in Software"
+msgstr ""
+
+#: js/gdm/authPrompt.js:140 js/ui/audioDeviceSelection.js:55
+#: js/ui/components/networkAgent.js:117 js/ui/components/polkitAgent.js:136
+#: js/ui/endSessionDialog.js:430 js/ui/extensionDownloader.js:188
+#: js/ui/shellMountOperation.js:325 js/ui/status/network.js:888
+msgid "Cancel"
+msgstr "Katkesta"
+
+#: js/gdm/authPrompt.js:159 js/gdm/authPrompt.js:202 js/gdm/authPrompt.js:434
+msgid "Next"
+msgstr "Järgmine"
+
+#: js/gdm/authPrompt.js:198 js/ui/shellMountOperation.js:329
+#: js/ui/unlockDialog.js:41
+msgid "Unlock"
+msgstr "Võta lukust lahti"
+
+#: js/gdm/authPrompt.js:200
+msgctxt "button"
+msgid "Sign In"
+msgstr "Logi sisse"
+
+#: js/gdm/loginDialog.js:302
+msgid "Choose Session"
+msgstr "Seansi valimine"
+
+#. translators: this message is shown below the user list on the
+#. login screen. It can be activated to reveal an entry for
+#. manually entering the username.
+#: js/gdm/loginDialog.js:446
+msgid "Not listed?"
+msgstr "Pole loendis?"
+
+#. Translators: this message is shown below the username entry field
+#. to clue the user in on how to login to the local network realm
+#: js/gdm/loginDialog.js:884
+#, javascript-format
+msgid "(e.g., user or %s)"
+msgstr "(nt 'user' või %s)"
+
+#. TTLS and PEAP are actually much more complicated, but this complication
+#. is not visible here since we only care about phase2 authentication
+#. (and don't even care of which one)
+#: js/gdm/loginDialog.js:889 js/ui/components/networkAgent.js:243
+#: js/ui/components/networkAgent.js:263 js/ui/components/networkAgent.js:281
+msgid "Username: "
+msgstr "Kasutajanimi: "
+
+#: js/gdm/loginDialog.js:1227
+msgid "Login Window"
+msgstr "Sisselogimisaken"
+
+#: js/gdm/util.js:337
+msgid "Authentication error"
+msgstr "Viga autentimisel"
+
+#. We don't show fingerprint messages directly since it's
+#. not the main auth service. Instead we use the messages
+#. as a cue to display our own message.
+#. Translators: this message is shown below the password entry field
+#. to indicate the user can swipe their finger instead
+#: js/gdm/util.js:477
+msgid "(or swipe finger)"
+msgstr "(või libista näpp üle lugeja)"
+
+#. Translators: The name of the power-off action in search
+#: js/misc/systemActions.js:88
+msgctxt "search-result"
+msgid "Power Off"
+msgstr "Lülita välja"
+
+#. Translators: A list of keywords that match the power-off action, separated by semicolons
+#: js/misc/systemActions.js:91
+msgid "power off;shutdown;reboot;restart"
+msgstr ""
+"power off;shutdown;reboot;restart;lülita välja;taaskäivitamine;"
+"väljalülitamine"
+
+#. Translators: The name of the lock screen action in search
+#: js/misc/systemActions.js:95
+msgctxt "search-result"
+msgid "Lock Screen"
+msgstr "Lukusta ekraan"
+
+#. Translators: A list of keywords that match the lock screen action, separated by semicolons
+#: js/misc/systemActions.js:98
+msgid "lock screen"
+msgstr "lock screen;lukusta ekraan;ekraanilukk;ekraani lukustamine"
+
+#. Translators: The name of the logout action in search
+#: js/misc/systemActions.js:102
+msgctxt "search-result"
+msgid "Log Out"
+msgstr "Logi välja"
+
+#. Translators: A list of keywords that match the logout action, separated by semicolons
+#: js/misc/systemActions.js:105
+msgid "logout;sign off"
+msgstr "logout;sign off;logi välja;väljalogimine"
+
+#. Translators: The name of the suspend action in search
+#: js/misc/systemActions.js:109
+msgctxt "search-result"
+msgid "Suspend"
+msgstr "Uinak"
+
+#. Translators: A list of keywords that match the suspend action, separated by semicolons
+#: js/misc/systemActions.js:112
+msgid "suspend;sleep"
+msgstr "suspend;sleep;uinak;unerežiim"
+
+#. Translators: The name of the switch user action in search
+#: js/misc/systemActions.js:116
+msgctxt "search-result"
+msgid "Switch User"
+msgstr "Vaheta kasutajat"
+
+#. Translators: A list of keywords that match the switch user action, separated by semicolons
+#: js/misc/systemActions.js:119
+msgid "switch user"
+msgstr "switch user;vaheta kasutajat;kasutajavahetus"
+
+#. Translators: The name of the lock orientation action in search
+#: js/misc/systemActions.js:123
+msgctxt "search-result"
+msgid "Lock Orientation"
+msgstr "Lukusta asend"
+
+#. Translators: A list of keywords that match the lock orientation action, separated by semicolons
+#: js/misc/systemActions.js:126
+msgid "lock orientation;screen;rotation"
+msgstr ""
+"lock orientation;screen;rotation;asendilukk;lukusta asend;kuvar;pööre;"
+"pööramine"
+
+#: js/misc/util.js:117
+msgid "Command not found"
+msgstr "Käsku ei leitud"
+
+#. Replace "Error invoking GLib.shell_parse_argv: " with
+#. something nicer
+#: js/misc/util.js:150
+msgid "Could not parse command:"
+msgstr "Käsku pole võimalik analüüsida:"
+
+#: js/misc/util.js:158
+#, javascript-format
+msgid "Execution of “%s” failed:"
+msgstr "„%s“ käivitamine nurjus:"
+
+#: js/misc/util.js:175
+msgid "Just now"
+msgstr "Praegu"
+
+#: js/misc/util.js:177
+#, javascript-format
+msgid "%d minute ago"
+msgid_plural "%d minutes ago"
+msgstr[0] "%d minut tagasi"
+msgstr[1] "%d minutit tagasi"
+
+#: js/misc/util.js:180
+#, javascript-format
+msgid "%d hour ago"
+msgid_plural "%d hours ago"
+msgstr[0] "%d tund tagasi"
+msgstr[1] "%d tundi tagasi"
+
+#: js/misc/util.js:183
+msgid "Yesterday"
+msgstr "Eile"
+
+#: js/misc/util.js:185
+#, javascript-format
+msgid "%d day ago"
+msgid_plural "%d days ago"
+msgstr[0] "%d päev tagasi"
+msgstr[1] "%d päeva tagasi"
+
+#: js/misc/util.js:188
+#, javascript-format
+msgid "%d week ago"
+msgid_plural "%d weeks ago"
+msgstr[0] "%d nädal tagasi"
+msgstr[1] "%d nädalat tagasi"
+
+#: js/misc/util.js:191
+#, javascript-format
+msgid "%d month ago"
+msgid_plural "%d months ago"
+msgstr[0] "%d kuu tagasi"
+msgstr[1] "%d kuud tagasi"
+
+#: js/misc/util.js:193
+#, javascript-format
+msgid "%d year ago"
+msgid_plural "%d years ago"
+msgstr[0] "%d aasta tagasi"
+msgstr[1] "%d aastat tagasi"
+
+#. Translators: Time in 24h format
+#: js/misc/util.js:223
+msgid "%H∶%M"
+msgstr "%H∶%M"
+
+#. Translators: this is the word "Yesterday" followed by a
+#. time string in 24h format. i.e. "Yesterday, 14:30"
+#: js/misc/util.js:229
+#, no-c-format
+msgid "Yesterday, %H∶%M"
+msgstr "Eile %H∶%M"
+
+#. Translators: this is the week day name followed by a time
+#. string in 24h format. i.e. "Monday, 14:30"
+#: js/misc/util.js:235
+#, no-c-format
+msgid "%A, %H∶%M"
+msgstr "%A, %H∶%M"
+
+#. Translators: this is the month name and day number
+#. followed by a time string in 24h format.
+#. i.e. "May 25, 14:30"
+#: js/misc/util.js:241
+#, no-c-format
+msgid "%B %-d, %H∶%M"
+msgstr "%-d. %B, %H∶%M"
+
+#. Translators: this is the month name, day number, year
+#. number followed by a time string in 24h format.
+#. i.e. "May 25 2012, 14:30"
+#: js/misc/util.js:247
+#, no-c-format
+msgid "%B %-d %Y, %H∶%M"
+msgstr "%-d. %B %Y, %H∶%M"
+
+#. Translators: Time in 12h format
+#: js/misc/util.js:252
+msgid "%l∶%M %p"
+msgstr "%l∶%M %p"
+
+#. Translators: this is the word "Yesterday" followed by a
+#. time string in 12h format. i.e. "Yesterday, 2:30 pm"
+#: js/misc/util.js:258
+#, no-c-format
+msgid "Yesterday, %l∶%M %p"
+msgstr "Eile %l∶%M %p"
+
+#. Translators: this is the week day name followed by a time
+#. string in 12h format. i.e. "Monday, 2:30 pm"
+#: js/misc/util.js:264
+#, no-c-format
+msgid "%A, %l∶%M %p"
+msgstr "%A, %l∶%M %p"
+
+#. Translators: this is the month name and day number
+#. followed by a time string in 12h format.
+#. i.e. "May 25, 2:30 pm"
+#: js/misc/util.js:270
+#, no-c-format
+msgid "%B %-d, %l∶%M %p"
+msgstr "%-d. %B, %l∶%M %p"
+
+#. Translators: this is the month name, day number, year
+#. number followed by a time string in 12h format.
+#. i.e. "May 25 2012, 2:30 pm"
+#: js/misc/util.js:276
+#, no-c-format
+msgid "%B %-d %Y, %l∶%M %p"
+msgstr "%-d. %B %Y, %l∶%M %p"
+
+#. TRANSLATORS: this is the title of the wifi captive portal login window
+#: js/portalHelper/main.js:40
+msgid "Hotspot Login"
+msgstr "Kuumkoha sisselogimine"
+
+#: js/portalHelper/main.js:86
+msgid ""
+"Your connection to this hotspot login is not secure. Passwords or other "
+"information you enter on this page can be viewed by people nearby."
+msgstr ""
+"Sinu ühendus selle kuumkoha sisselogimisse pole turvaline. Paroolid või muu "
+"info, mille sisestad sellele lehele on vaadatavad lähedalasuvate inimeste "
+"poolt."
+
+#. No support for non-modal system dialogs, so ignore the option
+#. let modal = options['modal'] || true;
+#: js/ui/accessDialog.js:37 js/ui/status/location.js:360
+msgid "Deny Access"
+msgstr "Keela juurdepääs"
+
+#: js/ui/accessDialog.js:38 js/ui/status/location.js:363
+msgid "Grant Access"
+msgstr "Anna ligipääs"
+
+#: js/ui/appDisplay.js:660
+msgid "Frequently used applications will appear here"
+msgstr "Siia ilmuvad tihti kasutatud rakendused"
+
+#: js/ui/appDisplay.js:775
+msgid "Frequent"
+msgstr "Tihti"
+
+#: js/ui/appDisplay.js:782
+msgid "All"
+msgstr "Kõik"
+
+#: js/ui/appDisplay.js:1737 js/ui/panel.js:83
+msgid "New Window"
+msgstr "Uus aken"
+
+#: js/ui/appDisplay.js:1751
+msgid "Launch using Dedicated Graphics Card"
+msgstr "Käivita eraldiseisva graafikakaardiga"
+
+#: js/ui/appDisplay.js:1778 js/ui/dash.js:239
+msgid "Remove from Favorites"
+msgstr "Eemalda lemmikutest"
+
+#: js/ui/appDisplay.js:1784
+msgid "Add to Favorites"
+msgstr "Lisa lemmikutesse"
+
+#: js/ui/appDisplay.js:1794 js/ui/panel.js:94
+msgid "Show Details"
+msgstr "Kuva üksikasju"
+
+#: js/ui/appFavorites.js:141
+#, javascript-format
+msgid "%s has been added to your favorites."
+msgstr "%s lisati lemmikutesse."
+
+#: js/ui/appFavorites.js:175
+#, javascript-format
+msgid "%s has been removed from your favorites."
+msgstr "%s eemaldati lemmikutest."
+
+#: js/ui/audioDeviceSelection.js:42
+msgid "Select Audio Device"
+msgstr "Vali heliseade"
+
+#: js/ui/audioDeviceSelection.js:53
+msgid "Sound Settings"
+msgstr "Helisätted"
+
+#: js/ui/audioDeviceSelection.js:62
+msgid "Headphones"
+msgstr "Kõrvaklapid"
+
+#: js/ui/audioDeviceSelection.js:64
+msgid "Headset"
+msgstr "Peakomplekt"
+
+#: js/ui/audioDeviceSelection.js:66 js/ui/status/volume.js:247
+msgid "Microphone"
+msgstr "Mikrofon"
+
+#: js/ui/backgroundMenu.js:13
+msgid "Change Background…"
+msgstr "Muuda tausta…"
+
+#: js/ui/backgroundMenu.js:15 js/ui/status/nightLight.js:43
+msgid "Display Settings"
+msgstr "Kuvari sätted"
+
+#: js/ui/backgroundMenu.js:16
+msgid "Settings"
+msgstr "Sätted"
+
+#. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday).
+#: js/ui/calendar.js:40
+msgctxt "calendar-no-work"
+msgid "06"
+msgstr "60"
+
+#. Translators: Calendar grid abbreviation for Sunday.
+#. *
+#. * NOTE: These grid abbreviations are always shown together
+#. * and in order, e.g. "S M T W T F S".
+#.
+#: js/ui/calendar.js:69
+msgctxt "grid sunday"
+msgid "S"
+msgstr "P"
+
+#. Translators: Calendar grid abbreviation for Monday
+#: js/ui/calendar.js:71
+msgctxt "grid monday"
+msgid "M"
+msgstr "E"
+
+#. Translators: Calendar grid abbreviation for Tuesday
+#: js/ui/calendar.js:73
+msgctxt "grid tuesday"
+msgid "T"
+msgstr "T"
+
+#. Translators: Calendar grid abbreviation for Wednesday
+#: js/ui/calendar.js:75
+msgctxt "grid wednesday"
+msgid "W"
+msgstr "K"
+
+#. Translators: Calendar grid abbreviation for Thursday
+#: js/ui/calendar.js:77
+msgctxt "grid thursday"
+msgid "T"
+msgstr "N"
+
+#. Translators: Calendar grid abbreviation for Friday
+#: js/ui/calendar.js:79
+msgctxt "grid friday"
+msgid "F"
+msgstr "R"
+
+#. Translators: Calendar grid abbreviation for Saturday
+#: js/ui/calendar.js:81
+msgctxt "grid saturday"
+msgid "S"
+msgstr "L"
+
+#. *
+#. * Translators: The header displaying just the month name
+#. * standalone, when this is a month of the current year.
+#. * "%OB" is the new format specifier introduced in glibc 2.27,
+#. * in most cases you should not change it.
+#.
+#: js/ui/calendar.js:332
+msgid "%OB"
+msgstr "%OB"
+
+#. *
+#. * Translators: The header displaying the month name and the year
+#. * number, when this is a month of a different year.  You can
+#. * reorder the format specifiers or add other modifications
+#. * according to the requirements of your language.
+#. * "%OB" is the new format specifier introduced in glibc 2.27,
+#. * in most cases you should not use the old "%B" here unless you
+#. * absolutely know what you are doing.
+#.
+#: js/ui/calendar.js:342
+msgid "%OB %Y"
+msgstr "%OB %Y"
+
+#: js/ui/calendar.js:399
+msgid "Previous month"
+msgstr "Eelmine kuu"
+
+#: js/ui/calendar.js:410
+msgid "Next month"
+msgstr "Järgmine kuu"
+
+#: js/ui/calendar.js:564
+#, no-javascript-format
+msgctxt "date day number format"
+msgid "%d"
+msgstr "%d"
+
+#: js/ui/calendar.js:619
+msgid "Week %V"
+msgstr "%V. nädal"
+
+#. Translators: Shown in calendar event list for all day events
+#. * Keep it short, best if you can use less then 10 characters
+#.
+#: js/ui/calendar.js:687
+msgctxt "event list time"
+msgid "All Day"
+msgstr "Kogu päev"
+
+#: js/ui/calendar.js:819
+msgctxt "calendar heading"
+msgid "%A, %B %-d"
+msgstr "%A, %-d. %B"
+
+#: js/ui/calendar.js:823
+msgctxt "calendar heading"
+msgid "%A, %B %-d, %Y"
+msgstr "%A, %-d. %B %Y"
+
+#: js/ui/calendar.js:1046
+msgid "No Notifications"
+msgstr "Teateid pole"
+
+#: js/ui/calendar.js:1049
+msgid "No Events"
+msgstr "Sündmusi pole"
+
+#: js/ui/calendar.js:1075
+msgid "Clear"
+msgstr "Tühjenda"
+
+#. Translators: %s is an application name
+#: js/ui/closeDialog.js:42
+#, javascript-format
+msgid "“%s” is not responding."
+msgstr "„%s“ ei vasta."
+
+#: js/ui/closeDialog.js:43
+msgid ""
+"You may choose to wait a short while for it to continue or force the "
+"application to quit entirely."
+msgstr ""
+"Võid veidi oodata, et see jätkaks tööd, või sundida rakenduse täielikult "
+"sulguma."
+
+#: js/ui/closeDialog.js:59
+msgid "Force Quit"
+msgstr "Sundsulge"
+
+#: js/ui/closeDialog.js:62
+msgid "Wait"
+msgstr "Oota"
+
+#: js/ui/components/automountManager.js:86
+msgid "External drive connected"
+msgstr "Väline ketas ühendati"
+
+#: js/ui/components/automountManager.js:98
+msgid "External drive disconnected"
+msgstr "Väline ketas eemaldati"
+
+#: js/ui/components/autorunManager.js:334
+#, javascript-format
+msgid "Open with %s"
+msgstr "Ava programmiga %s"
+
+#: js/ui/components/keyring.js:77 js/ui/components/polkitAgent.js:255
+msgid "Password:"
+msgstr "Parool:"
+
+#: js/ui/components/keyring.js:108
+msgid "Type again:"
+msgstr "Sisesta uuesti:"
+
+#: js/ui/components/networkAgent.js:102
+msgid ""
+"Alternatively you can connect by pushing the “WPS” button on your router."
+msgstr ""
+
+#: js/ui/components/networkAgent.js:112 js/ui/status/network.js:219
+#: js/ui/status/network.js:309 js/ui/status/network.js:891
+msgid "Connect"
+msgstr "Ühendu"
+
+#. Cisco LEAP
+#: js/ui/components/networkAgent.js:211 js/ui/components/networkAgent.js:223
+#: js/ui/components/networkAgent.js:246 js/ui/components/networkAgent.js:265
+#: js/ui/components/networkAgent.js:285 js/ui/components/networkAgent.js:295
+msgid "Password: "
+msgstr "Parool: "
+
+#. static WEP
+#: js/ui/components/networkAgent.js:216
+msgid "Key: "
+msgstr "Võti: "
+
+#: js/ui/components/networkAgent.js:249 js/ui/components/networkAgent.js:271
+msgid "Private key password: "
+msgstr "Privaatvõtme parool: "
+
+#: js/ui/components/networkAgent.js:269
+msgid "Identity: "
+msgstr "Identiteet: "
+
+#: js/ui/components/networkAgent.js:283
+msgid "Service: "
+msgstr "Teenus: "
+
+#: js/ui/components/networkAgent.js:312 js/ui/components/networkAgent.js:685
+msgid "Authentication required by wireless network"
+msgstr "Juhtmeta võrgu jaoks on vajalik autentimine"
+
+#: js/ui/components/networkAgent.js:313 js/ui/components/networkAgent.js:686
+#, javascript-format
+msgid ""
+"Passwords or encryption keys are required to access the wireless network "
+"“%s”."
+msgstr ""
+"Juhtmeta võrguga „%s“ ühendumiseks on vajalik parool või krüptimisvõti."
+
+#: js/ui/components/networkAgent.js:317 js/ui/components/networkAgent.js:689
+msgid "Wired 802.1X authentication"
+msgstr "Juhtmega ühenduse 802.1X autentimine"
+
+#: js/ui/components/networkAgent.js:319
+msgid "Network name: "
+msgstr "Võrgu nimi: "
+
+#: js/ui/components/networkAgent.js:324 js/ui/components/networkAgent.js:693
+msgid "DSL authentication"
+msgstr "DSL autentimine"
+
+#: js/ui/components/networkAgent.js:331 js/ui/components/networkAgent.js:699
+msgid "PIN code required"
+msgstr "Vajalik on PIN-kood"
+
+#: js/ui/components/networkAgent.js:332 js/ui/components/networkAgent.js:700
+msgid "PIN code is needed for the mobile broadband device"
+msgstr "Mobiiliühenduse loomiseks on vaja PIN-koodi"
+
+#: js/ui/components/networkAgent.js:333
+msgid "PIN: "
+msgstr "PIN: "
+
+#: js/ui/components/networkAgent.js:340 js/ui/components/networkAgent.js:706
+msgid "Mobile broadband network password"
+msgstr "Mobiiliühenduse võrgu parool"
+
+#: js/ui/components/networkAgent.js:341 js/ui/components/networkAgent.js:690
+#: js/ui/components/networkAgent.js:694 js/ui/components/networkAgent.js:707
+#, javascript-format
+msgid "A password is required to connect to “%s”."
+msgstr "„%s“-ga ühenduse loomiseks on vaja parooli."
+
+#: js/ui/components/networkAgent.js:674 js/ui/status/network.js:1665
+msgid "Network Manager"
+msgstr "Võrguhaldur"
+
+#: js/ui/components/polkitAgent.js:34
+msgid "Authentication Required"
+msgstr "Vajalik on autentimine"
+
+#: js/ui/components/polkitAgent.js:62
+msgid "Administrator"
+msgstr "Administraator"
+
+#: js/ui/components/polkitAgent.js:139
+msgid "Authenticate"
+msgstr "Autendi"
+
+#. Translators: "that didn't work" refers to the fact that the
+#. * requested authentication was not gained; this can happen
+#. * because of an authentication error (like invalid password),
+#. * for instance.
+#: js/ui/components/polkitAgent.js:241 js/ui/shellMountOperation.js:309
+msgid "Sorry, that didn’t work. Please try again."
+msgstr "Kahjuks see ei sobinud. Palun proovi uuesti."
+
+#. Translators: this is the other person changing their old IM name to their new
+#. IM name.
+#: js/ui/components/telepathyClient.js:778
+#, javascript-format
+msgid "%s is now known as %s"
+msgstr "%s nimi on nüüd %s"
+
+#: js/ui/ctrlAltTab.js:21 js/ui/viewSelector.js:169
+msgid "Windows"
+msgstr "Aknad"
+
+#: js/ui/dash.js:200 js/ui/dash.js:241
+msgid "Show Applications"
+msgstr "Rakenduste kuvamine"
+
+#. Translators: this is the name of the dock/favorites area on
+#. the left of the overview
+#: js/ui/dash.js:390
+msgid "Dash"
+msgstr "Dokk"
+
+#. Translators: This is the date format to use when the calendar popup is
+#. * shown - it is shown just below the time in the top bar (e.g.,
+#. * "Tue 9:29 AM").  The string itself should become a full date, e.g.,
+#. * "February 17 2015".
+#.
+#: js/ui/dateMenu.js:62
+msgid "%B %-d %Y"
+msgstr "%-d. %B %Y"
+
+#. Translators: This is the accessible name of the date button shown
+#. * below the time in the shell; it should combine the weekday and the
+#. * date, e.g. "Tuesday February 17 2015".
+#.
+#: js/ui/dateMenu.js:69
+msgid "%A %B %e %Y"
+msgstr "%A, %e. %B %Y"
+
+#: js/ui/dateMenu.js:131
+msgid "Add world clocks…"
+msgstr "Lisa maailmakellasid…"
+
+#: js/ui/dateMenu.js:132
+msgid "World Clocks"
+msgstr "Maailmakellad"
+
+#: js/ui/dateMenu.js:222
+msgid "Weather"
+msgstr "Ilm"
+
+#: js/ui/dateMenu.js:305
+msgid "Select a location…"
+msgstr "Vali asukoht…"
+
+#: js/ui/dateMenu.js:313
+msgid "Loading…"
+msgstr "Laadimine…"
+
+#: js/ui/dateMenu.js:323
+msgid "Go online for weather information"
+msgstr "Ilmateate nägemiseks ühendu võrku"
+
+#: js/ui/dateMenu.js:325
+msgid "Weather information is currently unavailable"
+msgstr "Ilmateade pole hetkel saadaval"
+
+#: js/ui/endSessionDialog.js:42
+#, javascript-format
+msgctxt "title"
+msgid "Log Out %s"
+msgstr "%s väljalogimine"
+
+#: js/ui/endSessionDialog.js:43
+msgctxt "title"
+msgid "Log Out"
+msgstr "Väljalogimine"
+
+#: js/ui/endSessionDialog.js:45
+#, javascript-format
+msgid "%s will be logged out automatically in %d second."
+msgid_plural "%s will be logged out automatically in %d seconds."
+msgstr[0] "%s logitakse %d sekundi pärast automaatselt välja."
+msgstr[1] "%s logitakse %d sekundi pärast automaatselt välja."
+
+#: js/ui/endSessionDialog.js:50
+#, javascript-format
+msgid "You will be logged out automatically in %d second."
+msgid_plural "You will be logged out automatically in %d seconds."
+msgstr[0] "Sind logitakse %d sekundi pärast automaatselt välja."
+msgstr[1] "Sind logitakse %d sekundi pärast automaatselt välja."
+
+#: js/ui/endSessionDialog.js:56
+msgctxt "button"
+msgid "Log Out"
+msgstr "Logi välja"
+
+#: js/ui/endSessionDialog.js:62
+msgctxt "title"
+msgid "Power Off"
+msgstr "Väljalülitamine"
+
+#: js/ui/endSessionDialog.js:63
+msgctxt "title"
+msgid "Install Updates & Power Off"
+msgstr "Paigalda uuendused ja lülita välja"
+
+#: js/ui/endSessionDialog.js:65
+#, javascript-format
+msgid "The system will power off automatically in %d second."
+msgid_plural "The system will power off automatically in %d seconds."
+msgstr[0] "%d sekundi pärast lülitub süsteem automaatselt välja."
+msgstr[1] "%d sekundi pärast lülitub süsteem automaatselt välja."
+
+#: js/ui/endSessionDialog.js:69
+msgctxt "checkbox"
+msgid "Install pending software updates"
+msgstr "Paigalda ootel tarkvarauuendused"
+
+#: js/ui/endSessionDialog.js:72 js/ui/endSessionDialog.js:89
+msgctxt "button"
+msgid "Restart"
+msgstr "Taaskäivita"
+
+#: js/ui/endSessionDialog.js:74
+msgctxt "button"
+msgid "Power Off"
+msgstr "Lülita välja"
+
+#: js/ui/endSessionDialog.js:81
+msgctxt "title"
+msgid "Restart"
+msgstr "Taaskäivitamine"
+
+#: js/ui/endSessionDialog.js:83
+#, javascript-format
+msgid "The system will restart automatically in %d second."
+msgid_plural "The system will restart automatically in %d seconds."
+msgstr[0] "Süsteem taaskäivitub automaatselt %d sekundi pärast."
+msgstr[1] "Süsteem taaskäivitub automaatselt %d sekundi pärast."
+
+#: js/ui/endSessionDialog.js:97
+msgctxt "title"
+msgid "Restart & Install Updates"
+msgstr "Taaskäivitamine ja uuenduste paigaldamine"
+
+#: js/ui/endSessionDialog.js:99
+#, javascript-format
+msgid "The system will automatically restart and install updates in %d second."
+msgid_plural ""
+"The system will automatically restart and install updates in %d seconds."
+msgstr[0] "Süsteem taaskäivitub ja paigaldab uuendused %d sekundi pärast."
+msgstr[1] "Süsteem taaskäivitub ja paigaldab uuendused %d sekundi pärast."
+
+#: js/ui/endSessionDialog.js:105 js/ui/endSessionDialog.js:125
+msgctxt "button"
+msgid "Restart &amp; Install"
+msgstr "Taaskäivita ja paigalda"
+
+#: js/ui/endSessionDialog.js:106
+msgctxt "button"
+msgid "Install &amp; Power Off"
+msgstr "Paigalda ja lülita välja"
+
+#: js/ui/endSessionDialog.js:107
+msgctxt "checkbox"
+msgid "Power off after updates are installed"
+msgstr "Lülita välja pärast uuenduste paigaldamist"
+
+#: js/ui/endSessionDialog.js:115
+msgctxt "title"
+msgid "Restart & Install Upgrade"
+msgstr "Taaskäivita ja paigalda täiendus"
+
+#. Translators: This is the text displayed for system upgrades in the
+#. shut down dialog. First %s gets replaced with the distro name and
+#. second %s with the distro version to upgrade to
+#: js/ui/endSessionDialog.js:120
+#, javascript-format
+msgid ""
+"%s %s will be installed after restart. Upgrade installation can take a long "
+"time: ensure that you have backed up and that the computer is plugged in."
+msgstr ""
+"%s %s paigaldatakse pärast taaskäivitust. Täienduse paigaldamine võib võtta "
+"kaua aega: veendu, et su andmed on varundatud ning arvuti on vooluvõrku "
+"ühendatud."
+
+#: js/ui/endSessionDialog.js:309
+msgid "Running on battery power: please plug in before installing updates."
+msgstr ""
+"Töötad aku peal: palun ühenda arvuti vooluvõrku enne uuenduste paigaldamist."
+
+#: js/ui/endSessionDialog.js:326
+msgid "Some applications are busy or have unsaved work."
+msgstr "Mõned rakendused on tegevuses või on neis salvestamata asju."
+
+#: js/ui/endSessionDialog.js:333
+msgid "Other users are logged in."
+msgstr "Teised kasutajad on sisse logitud."
+
+#. Translators: Remote here refers to a remote session, like a ssh login
+#: js/ui/endSessionDialog.js:614
+#, javascript-format
+msgid "%s (remote)"
+msgstr "%s (kaugühendus)"
+
+#. Translators: Console here refers to a tty like a VT console
+#: js/ui/endSessionDialog.js:617
+#, javascript-format
+msgid "%s (console)"
+msgstr "%s (konsool)"
+
+#: js/ui/extensionDownloader.js:192
+msgid "Install"
+msgstr "Paigalda"
+
+#: js/ui/extensionDownloader.js:197
+#, javascript-format
+msgid "Download and install “%s” from extensions.gnome.org?"
+msgstr "Kas laadida alla ja paigaldada „%s“ aadressilt extensions.gnome.org?"
+
+#. Translators: %s is an application name like "Settings"
+#: js/ui/inhibitShortcutsDialog.js:50
+#, javascript-format
+msgid "%s wants to inhibit shortcuts"
+msgstr "%s soovib kiirklahve üle võtta"
+
+#: js/ui/inhibitShortcutsDialog.js:51
+msgid "Application wants to inhibit shortcuts"
+msgstr "Rakendus soovib kiirklahve üle võtta"
+
+#. Translators: %s is a keyboard shortcut like "Super+x"
+#: js/ui/inhibitShortcutsDialog.js:60
+#, javascript-format
+msgid "You can restore shortcuts by pressing %s."
+msgstr "Kiirklahve saad taastada, vajutades %s."
+
+#: js/ui/inhibitShortcutsDialog.js:65
+msgid "Deny"
+msgstr "Keela"
+
+#: js/ui/inhibitShortcutsDialog.js:71
+msgid "Allow"
+msgstr "Luba"
+
+#: js/ui/kbdA11yDialog.js:31
+msgid "Slow Keys Turned On"
+msgstr "Aeglased klahvid sisselülitatud"
+
+#: js/ui/kbdA11yDialog.js:32
+msgid "Slow Keys Turned Off"
+msgstr "Aeglased klahvid väljalülitatud"
+
+#: js/ui/kbdA11yDialog.js:33
+msgid ""
+"You just held down the Shift key for 8 seconds. This is the shortcut for the "
+"Slow Keys feature, which affects the way your keyboard works."
+msgstr ""
+"Sa hoidsid tõstuklahvi all 8 sekundit. See on otsetee aeglaste klahvide "
+"funktsioonile, mis muudab sinu klaviatuuri tööviisi."
+
+#: js/ui/kbdA11yDialog.js:40
+msgid "Sticky Keys Turned On"
+msgstr "Kleepuvad klahvid sisselülitatud"
+
+#: js/ui/kbdA11yDialog.js:41
+msgid "Sticky Keys Turned Off"
+msgstr "Kleepuvad klahvid väljalülitatud"
+
+#: js/ui/kbdA11yDialog.js:43
+msgid ""
+"You just pressed the Shift key 5 times in a row. This is the shortcut for "
+"the Sticky Keys feature, which affects the way your keyboard works."
+msgstr ""
+"Sa vajutasid tõstuklahvi 5 korda järjest. See on otsetee kleepuvate klahvide "
+"funktsioonile, mis muudab sinu klaviatuuri tööviisi."
+
+#: js/ui/kbdA11yDialog.js:45
+msgid ""
+"You just pressed two keys at once, or pressed the Shift key 5 times in a "
+"row. This turns off the Sticky Keys feature, which affects the way your "
+"keyboard works."
+msgstr ""
+"Sa vajutasid kahte klahvi korraga või vajutasid tõstuklahvi 5 korda järjest. "
+"See lülitab välja kleepuvate klahvide funktsiooni, mis muudab sinu "
+"klaviatuuri tööviisi."
+
+#: js/ui/kbdA11yDialog.js:57
+msgid "Leave On"
+msgstr "Jäta sisse"
+
+#: js/ui/kbdA11yDialog.js:57 js/ui/status/bluetooth.js:133
+#: js/ui/status/network.js:1264
+msgid "Turn On"
+msgstr "Lülita sisse"
+
+#: js/ui/kbdA11yDialog.js:65 js/ui/status/bluetooth.js:133
+#: js/ui/status/network.js:128 js/ui/status/network.js:310
+#: js/ui/status/network.js:1264 js/ui/status/network.js:1376
+#: js/ui/status/nightLight.js:39 js/ui/status/rfkill.js:79
+#: js/ui/status/rfkill.js:106
+msgid "Turn Off"
+msgstr "Lülita välja"
+
+#: js/ui/kbdA11yDialog.js:65
+msgid "Leave Off"
+msgstr "Jäta välja"
+
+#: js/ui/keyboard.js:203
+msgid "Region & Language Settings"
+msgstr "Asukoha ja keele sätted"
+
+#: js/ui/lookingGlass.js:615
+msgid "No extensions installed"
+msgstr "Ühtegi laiendust pole paigaldatud"
+
+#. Translators: argument is an extension UUID.
+#: js/ui/lookingGlass.js:669
+#, javascript-format
+msgid "%s has not emitted any errors."
+msgstr "%s ei ole väljastanud ühtegi veateadet."
+
+#: js/ui/lookingGlass.js:675
+msgid "Hide Errors"
+msgstr "Peida vead"
+
+#: js/ui/lookingGlass.js:679 js/ui/lookingGlass.js:739
+msgid "Show Errors"
+msgstr "Näita vigu"
+
+#: js/ui/lookingGlass.js:688
+msgid "Enabled"
+msgstr "Lubatud"
+
+#. translators:
+#. * The device has been disabled
+#: js/ui/lookingGlass.js:691 subprojects/gvc/gvc-mixer-control.c:1864
+msgid "Disabled"
+msgstr "Keelatud"
+
+#: js/ui/lookingGlass.js:693
+msgid "Error"
+msgstr "Viga"
+
+#: js/ui/lookingGlass.js:695
+msgid "Out of date"
+msgstr "Pole värske"
+
+#: js/ui/lookingGlass.js:697
+msgid "Downloading"
+msgstr "Allalaadimine"
+
+#: js/ui/lookingGlass.js:721
+msgid "View Source"
+msgstr "Kuva lähtekoodi"
+
+#: js/ui/lookingGlass.js:730
+msgid "Web Page"
+msgstr "Veebileht"
+
+#: js/ui/messageTray.js:1474
+msgid "System Information"
+msgstr "Süsteemi andmed"
+
+#: js/ui/mpris.js:177
+msgid "Unknown artist"
+msgstr "Tundmatu esitaja"
+
+#: js/ui/mpris.js:178
+msgid "Unknown title"
+msgstr "Tundmatu pealkiri"
+
+#: js/ui/osdWindow.js:22 js/ui/status/volume.js:199
+msgid "Volume"
+msgstr "Helivaljus"
+
+#: js/ui/overview.js:73
+msgid "Undo"
+msgstr "Võta tagasi"
+
+#. Translators: This is the main view to select
+#. activities. See also note for "Activities" string.
+#: js/ui/overview.js:100
+msgid "Overview"
+msgstr "Ülevaade"
+
+#. Translators: this is the text displayed
+#. in the search entry when no search is
+#. active; it should not exceed ~30
+#. characters.
+#: js/ui/overview.js:226
+msgid "Type to search…"
+msgstr "Otsing…"
+
+#: js/ui/padOsd.js:92
+msgid "New shortcut…"
+msgstr "Uus kiirklahv…"
+
+#: js/ui/padOsd.js:141
+msgid "Application defined"
+msgstr "Rakenduse määratud"
+
+#: js/ui/padOsd.js:142
+msgid "Show on-screen help"
+msgstr "Kuva ekraaniabi"
+
+#: js/ui/padOsd.js:143
+msgid "Switch monitor"
+msgstr "Vaheta ekraani"
+
+#: js/ui/padOsd.js:144
+msgid "Assign keystroke"
+msgstr "Omista klahvivajutus"
+
+#: js/ui/padOsd.js:209
+msgid "Done"
+msgstr "Valmis"
+
+#: js/ui/padOsd.js:721
+msgid "Edit…"
+msgstr "Muuda…"
+
+#: js/ui/padOsd.js:763 js/ui/padOsd.js:868
+msgid "None"
+msgstr "Puudub"
+
+#: js/ui/padOsd.js:822
+msgid "Press a button to configure"
+msgstr "Vajuta seadistamiseks klahvi"
+
+#: js/ui/padOsd.js:823
+msgid "Press Esc to exit"
+msgstr "Väljumiseks vajuta Esc"
+
+#: js/ui/padOsd.js:826
+msgid "Press any key to exit"
+msgstr "Väljumiseks vajuta mistahes klahvi"
+
+#: js/ui/panel.js:108
+msgid "Quit"
+msgstr "Sulge"
+
+#. Translators: If there is no suitable word for "Activities"
+#. in your language, you can use the word for "Overview".
+#: js/ui/panel.js:466
+msgid "Activities"
+msgstr "Tegevused"
+
+#: js/ui/panel.js:741
+msgctxt "System menu in the top bar"
+msgid "System"
+msgstr "Süsteem"
+
+#: js/ui/panel.js:861
+msgid "Top Bar"
+msgstr "Ülemine riba"
+
+#. Translators: this MUST be either "toggle-switch-us"
+#. (for toggle switches containing the English words
+#. "ON" and "OFF") or "toggle-switch-intl" (for toggle
+#. switches containing "◯" and "|"). Other values will
+#. simply result in invisible toggle switches.
+#: js/ui/popupMenu.js:285
+msgid "toggle-switch-us"
+msgstr "toggle-switch-intl"
+
+#: js/ui/runDialog.js:64
+msgid "Enter a Command"
+msgstr "Palun sisesta käsk"
+
+#: js/ui/runDialog.js:104 js/ui/windowMenu.js:166
+msgid "Close"
+msgstr "Sulge"
+
+#: js/ui/runDialog.js:266
+msgid "Restart is not available on Wayland"
+msgstr "Taaskäivitus ei ole Waylandis saadaval"
+
+#: js/ui/runDialog.js:271
+msgid "Restarting…"
+msgstr "Taaskäivitamine…"
+
+#. Translators: This is a time format for a date in
+#. long format
+#: js/ui/screenShield.js:77
+msgid "%A, %B %d"
+msgstr "%A, %d. %B"
+
+#: js/ui/screenShield.js:133
+#, javascript-format
+msgid "%d new message"
+msgid_plural "%d new messages"
+msgstr[0] "%d uus sõnum"
+msgstr[1] "%d uut sõnumit"
+
+#: js/ui/screenShield.js:135
+#, javascript-format
+msgid "%d new notification"
+msgid_plural "%d new notifications"
+msgstr[0] "%d uus teade"
+msgstr[1] "%d uut teadet"
+
+#: js/ui/screenShield.js:449 js/ui/status/system.js:270
+msgid "Lock"
+msgstr "Lukusta"
+
+#: js/ui/screenShield.js:713
+msgid "GNOME needs to lock the screen"
+msgstr "GNOME peab ekraani lukustama"
+
+#. We could not become modal, so we can't activate the
+#. screenshield. The user is probably very upset at this
+#. point, but any application using global grabs is broken
+#. Just tell him to stop using this app
+#.
+#. XXX: another option is to kick the user into the gdm login
+#. screen, where we're not affected by grabs
+#: js/ui/screenShield.js:834 js/ui/screenShield.js:1307
+msgid "Unable to lock"
+msgstr "Pole võimalik lukustada"
+
+#: js/ui/screenShield.js:835 js/ui/screenShield.js:1308
+msgid "Lock was blocked by an application"
+msgstr "Rakendus blokeeris lukustamise"
+
+#: js/ui/search.js:635
+msgid "Searching…"
+msgstr "Otsing…"
+
+#: js/ui/search.js:637
+msgid "No results."
+msgstr "Tulemused puuduvad."
+
+#: js/ui/search.js:761
+#, javascript-format
+msgid "%d more"
+msgid_plural "%d more"
+msgstr[0] "%d veel"
+msgstr[1] "%d veel"
+
+#: js/ui/shellEntry.js:19
+msgid "Copy"
+msgstr "Kopeeri"
+
+#: js/ui/shellEntry.js:24
+msgid "Paste"
+msgstr "Aseta"
+
+#: js/ui/shellEntry.js:90
+msgid "Show Text"
+msgstr "Teksti näidatakse"
+
+#: js/ui/shellEntry.js:92
+msgid "Hide Text"
+msgstr "Tekst on peidetud"
+
+#: js/ui/shellMountOperation.js:296
+msgid "Password"
+msgstr "Parool"
+
+#: js/ui/shellMountOperation.js:317
+msgid "Remember Password"
+msgstr "Parooli meelespidamine"
+
+#: js/ui/status/accessibility.js:35
+msgid "Accessibility"
+msgstr "Kasutaja abivahendid"
+
+#: js/ui/status/accessibility.js:50
+msgid "Zoom"
+msgstr "Suurendus"
+
+#: js/ui/status/accessibility.js:57
+msgid "Screen Reader"
+msgstr "Ekraanilugeja"
+
+#: js/ui/status/accessibility.js:61
+msgid "Screen Keyboard"
+msgstr "Ekraaniklaviatuur"
+
+#: js/ui/status/accessibility.js:65
+msgid "Visual Alerts"
+msgstr "Visuaalsed märguanded"
+
+#: js/ui/status/accessibility.js:68
+msgid "Sticky Keys"
+msgstr "Kleepuvad klahvid"
+
+#: js/ui/status/accessibility.js:71
+msgid "Slow Keys"
+msgstr "Aeglased klahvid"
+
+#: js/ui/status/accessibility.js:74
+msgid "Bounce Keys"
+msgstr "Põrkeklahvid"
+
+#: js/ui/status/accessibility.js:77
+msgid "Mouse Keys"
+msgstr "Hiireklahvid"
+
+#: js/ui/status/accessibility.js:151
+msgid "High Contrast"
+msgstr "Kõrgkontrastne"
+
+#: js/ui/status/accessibility.js:182
+msgid "Large Text"
+msgstr "Suur tekst"
+
+#: js/ui/status/bluetooth.js:38
+msgid "Bluetooth"
+msgstr "Bluetooth"
+
+#: js/ui/status/bluetooth.js:47 js/ui/status/network.js:585
+msgid "Bluetooth Settings"
+msgstr "Bluetoothi sätted"
+
+#. Translators: this is the number of connected bluetooth devices
+#: js/ui/status/bluetooth.js:127
+#, javascript-format
+msgid "%d Connected"
+msgid_plural "%d Connected"
+msgstr[0] "%d ühendatud"
+msgstr[1] "%d ühendatud"
+
+#: js/ui/status/bluetooth.js:129
+msgid "Off"
+msgstr "Väljas"
+
+#: js/ui/status/bluetooth.js:131
+msgid "On"
+msgstr "Sees"
+
+#: js/ui/status/brightness.js:36
+msgid "Brightness"
+msgstr "Heledus"
+
+#: js/ui/status/keyboard.js:812
+msgid "Keyboard"
+msgstr "Klaviatuur"
+
+#: js/ui/status/keyboard.js:834
+msgid "Show Keyboard Layout"
+msgstr "Klaviatuuripaigutuse kuvamine"
+
+#: js/ui/status/location.js:64 js/ui/status/location.js:172
+msgid "Location Enabled"
+msgstr "Asukoha jagamine lubatud"
+
+#: js/ui/status/location.js:65 js/ui/status/location.js:173
+msgid "Disable"
+msgstr "Keela"
+
+#: js/ui/status/location.js:66
+msgid "Privacy Settings"
+msgstr "Privaatsussätted"
+
+#: js/ui/status/location.js:171
+msgid "Location In Use"
+msgstr "Asukoha jagamine sees"
+
+#: js/ui/status/location.js:175
+msgid "Location Disabled"
+msgstr "Asukoha jagamine väljas"
+
+#: js/ui/status/location.js:176
+msgid "Enable"
+msgstr "Luba"
+
+#. Translators: %s is an application name
+#: js/ui/status/location.js:353
+#, javascript-format
+msgid "Give %s access to your location?"
+msgstr "Kas jagad rakendusele %s juurdepääsu oma asukohale?"
+
+#: js/ui/status/location.js:354
+msgid "Location access can be changed at any time from the privacy settings."
+msgstr "Asukoha ligipääse saab igal ajal privaatsussätetest muuta."
+
+#: js/ui/status/network.js:66
+msgid "<unknown>"
+msgstr "<tundmatu>"
+
+#. Translators: %s is a network identifier
+#: js/ui/status/network.js:416 js/ui/status/network.js:1293
+#, javascript-format
+msgid "%s Off"
+msgstr "%s väljas"
+
+#. Translators: %s is a network identifier
+#: js/ui/status/network.js:419
+#, javascript-format
+msgid "%s Connected"
+msgstr "%s ühendatud"
+
+#. Translators: this is for network devices that are physically present but are not
+#. under NetworkManager's control (and thus cannot be used in the menu);
+#. %s is a network identifier
+#: js/ui/status/network.js:424
+#, javascript-format
+msgid "%s Unmanaged"
+msgstr "%s pole hallatud"
+
+#. Translators: %s is a network identifier
+#: js/ui/status/network.js:427
+#, javascript-format
+msgid "%s Disconnecting"
+msgstr "%s ühenduse katkestamine"
+
+#. Translators: %s is a network identifier
+#: js/ui/status/network.js:434 js/ui/status/network.js:1285
+#, javascript-format
+msgid "%s Connecting"
+msgstr "%s ühendamine"
+
+#. Translators: this is for network connections that require some kind of key or password; %s is a network identifier
+#: js/ui/status/network.js:437
+#, javascript-format
+msgid "%s Requires Authentication"
+msgstr "%s vajab autentimist"
+
+#. Translators: this is for devices that require some kind of firmware or kernel
+#. module, which is missing; %s is a network identifier
+#: js/ui/status/network.js:445
+#, javascript-format
+msgid "Firmware Missing For %s"
+msgstr "%s püsivara puudub"
+
+#. Translators: this is for a network device that cannot be activated (for example it
+#. is disabled by rfkill, or it has no coverage; %s is a network identifier
+#: js/ui/status/network.js:449
+#, javascript-format
+msgid "%s Unavailable"
+msgstr "%s pole saadaval"
+
+#. Translators: %s is a network identifier
+#: js/ui/status/network.js:452
+#, javascript-format
+msgid "%s Connection Failed"
+msgstr "%s ühendus nurjus"
+
+#: js/ui/status/network.js:464
+msgid "Wired Settings"
+msgstr "Juhtmeühenduse sätted"
+
+#: js/ui/status/network.js:506
+msgid "Mobile Broadband Settings"
+msgstr "Mobiiliühenduse sätted"
+
+#. Translators: %s is a network identifier
+#: js/ui/status/network.js:553 js/ui/status/network.js:1290
+#, javascript-format
+msgid "%s Hardware Disabled"
+msgstr "%s riistvaraliselt keelatud"
+
+#. Translators: this is for a network device that cannot be activated
+#. because it's disabled by rfkill (airplane mode); %s is a network identifier
+#: js/ui/status/network.js:557
+#, javascript-format
+msgid "%s Disabled"
+msgstr "%s keelatud"
+
+#: js/ui/status/network.js:597
+msgid "Connect to Internet"
+msgstr "Ühendu Internetiga"
+
+#: js/ui/status/network.js:786
+msgid "Airplane Mode is On"
+msgstr "Lennurežiim sees"
+
+#: js/ui/status/network.js:787
+msgid "Wi-Fi is disabled when airplane mode is on."
+msgstr "Wi-Fi on keelatud, kui lennurežiim on sees."
+
+#: js/ui/status/network.js:788
+msgid "Turn Off Airplane Mode"
+msgstr "Lülita lennurežiim välja"
+
+#: js/ui/status/network.js:797
+msgid "Wi-Fi is Off"
+msgstr "Wi-Fi väljas"
+
+#: js/ui/status/network.js:798
+msgid "Wi-Fi needs to be turned on in order to connect to a network."
+msgstr "Wi-Fi tuleb sisse lülitada, et võrku ühenduda."
+
+#: js/ui/status/network.js:799
+msgid "Turn On Wi-Fi"
+msgstr "Lülita Wi-Fi sisse"
+
+#: js/ui/status/network.js:824
+msgid "Wi-Fi Networks"
+msgstr "Wi-Fi võrgud"
+
+#: js/ui/status/network.js:826
+msgid "Select a network"
+msgstr "Vali võrk"
+
+#: js/ui/status/network.js:855
+msgid "No Networks"
+msgstr "Võrke pole"
+
+#: js/ui/status/network.js:876 js/ui/status/rfkill.js:104
+msgid "Use hardware switch to turn off"
+msgstr "Kasuta riistvaralist lülitit väljalülitamiseks"
+
+#: js/ui/status/network.js:1152
+msgid "Select Network"
+msgstr "Võrgu valimine"
+
+#: js/ui/status/network.js:1158
+msgid "Wi-Fi Settings"
+msgstr "Wi-Fi sätted"
+
+#. Translators: %s is a network identifier
+#: js/ui/status/network.js:1281
+#, javascript-format
+msgid "%s Hotspot Active"
+msgstr "%s kuumkoht sees"
+
+#. Translators: %s is a network identifier
+#: js/ui/status/network.js:1296
+#, javascript-format
+msgid "%s Not Connected"
+msgstr "%s pole ühendatud"
+
+#: js/ui/status/network.js:1393
+msgid "connecting…"
+msgstr "ühendumine…"
+
+#. Translators: this is for network connections that require some kind of key or password
+#: js/ui/status/network.js:1396
+msgid "authentication required"
+msgstr "vajalik on autentimine"
+
+#: js/ui/status/network.js:1398
+msgid "connection failed"
+msgstr "ühendumine nurjus"
+
+#: js/ui/status/network.js:1448
+msgid "VPN Settings"
+msgstr "VPN-i sätted"
+
+#: js/ui/status/network.js:1465
+msgid "VPN"
+msgstr "VPN"
+
+#: js/ui/status/network.js:1475
+msgid "VPN Off"
+msgstr "VPN väljas"
+
+#: js/ui/status/network.js:1536 js/ui/status/rfkill.js:82
+msgid "Network Settings"
+msgstr "Võrgusätted"
+
+#: js/ui/status/network.js:1565
+#, javascript-format
+msgid "%s Wired Connection"
+msgid_plural "%s Wired Connections"
+msgstr[0] "%s juhtmega ühendus"
+msgstr[1] "%s juhtmega ühendust"
+
+#: js/ui/status/network.js:1569
+#, javascript-format
+msgid "%s Wi-Fi Connection"
+msgid_plural "%s Wi-Fi Connections"
+msgstr[0] "%s Wi-Fi ühendus"
+msgstr[1] "%s Wi-Fi ühendust"
+
+#: js/ui/status/network.js:1573
+#, javascript-format
+msgid "%s Modem Connection"
+msgid_plural "%s Modem Connections"
+msgstr[0] "%s modemi ühendus"
+msgstr[1] "%s modemi ühendust"
+
+#: js/ui/status/network.js:1702
+msgid "Connection failed"
+msgstr "Ühendus nurjus"
+
+#: js/ui/status/network.js:1703
+msgid "Activation of network connection failed"
+msgstr "Võrguühenduse aktiveerimine nurjus"
+
+#: js/ui/status/nightLight.js:60
+msgid "Night Light Disabled"
+msgstr "Öövalgustus keelatud"
+
+#: js/ui/status/nightLight.js:61
+msgid "Night Light On"
+msgstr "Öövalgustus sees"
+
+#: js/ui/status/nightLight.js:62
+msgid "Resume"
+msgstr "Jätka"
+
+#: js/ui/status/nightLight.js:63
+msgid "Disable Until Tomorrow"
+msgstr "Keela homseni"
+
+#: js/ui/status/power.js:45
+msgid "Power Settings"
+msgstr "Toitesätted"
+
+#: js/ui/status/power.js:61
+msgid "Fully Charged"
+msgstr "Täiesti täis"
+
+#: js/ui/status/power.js:67
+msgid "Not Charging"
+msgstr "Ei lae"
+
+#. 0 is reported when UPower does not have enough data
+#. to estimate battery life
+#: js/ui/status/power.js:70 js/ui/status/power.js:76
+msgid "Estimating…"
+msgstr "Andmete kogumine…"
+
+#. Translators: this is <hours>:<minutes> Remaining (<percentage>)
+#: js/ui/status/power.js:84
+#, javascript-format
+msgid "%d∶%02d Remaining (%d %%)"
+msgstr "Jäänud %d∶%02d (%d %%)"
+
+#. Translators: this is <hours>:<minutes> Until Full (<percentage>)
+#: js/ui/status/power.js:89
+#, javascript-format
+msgid "%d∶%02d Until Full (%d %%)"
+msgstr "Täitumiseni %d∶%02d (%d %%)"
+
+#: js/ui/status/power.js:117 js/ui/status/power.js:119
+#, javascript-format
+msgid "%d %%"
+msgstr "%d %%"
+
+#: js/ui/status/remoteAccess.js:42
+msgid "Screen is Being Shared"
+msgstr "Ekraani jagatakse"
+
+#: js/ui/status/remoteAccess.js:44
+msgid "Turn off"
+msgstr "Lülita välja"
+
+#. The menu only appears when airplane mode is on, so just
+#. statically build it as if it was on, rather than dynamically
+#. changing the menu contents.
+#: js/ui/status/rfkill.js:77
+msgid "Airplane Mode On"
+msgstr "Lennurežiim"
+
+#: js/ui/status/system.js:203
+msgid "Switch User"
+msgstr "Vaheta kasutajat"
+
+#: js/ui/status/system.js:215
+msgid "Log Out"
+msgstr "Logi välja"
+
+#: js/ui/status/system.js:227
+msgid "Account Settings"
+msgstr "Kasutaja sätted"
+
+#: js/ui/status/system.js:255
+msgid "Orientation Lock"
+msgstr "Asendilukk"
+
+#: js/ui/status/system.js:281
+msgid "Suspend"
+msgstr "Uinak"
+
+#: js/ui/status/system.js:291
+msgid "Power Off"
+msgstr "Lülita välja"
+
+#: js/ui/status/thunderbolt.js:261
+msgid "Thunderbolt"
+msgstr "Thunderbolt"
+
+#: js/ui/status/thunderbolt.js:322
+msgid "Unknown Thunderbolt device"
+msgstr "Tundmatu Thunderbolt-seade"
+
+#: js/ui/status/thunderbolt.js:323
+msgid ""
+"New device has been detected while you were away. Please disconnect and "
+"reconnect the device to start using it."
+msgstr ""
+"Sinu äraolekul tuvastati uus seade. Palun ühenda see seade lahti ja tagasi, "
+"et selle kasutamist alustada."
+
+#: js/ui/status/thunderbolt.js:326
+msgid "Unauthorized Thunderbolt device"
+msgstr "Autoriseerimata Thunderbolt-seade"
+
+#: js/ui/status/thunderbolt.js:327
+msgid ""
+"New device has been detected and needs to be authorized by an administrator."
+msgstr ""
+
+#: js/ui/status/thunderbolt.js:333
+msgid "Thunderbolt authorization error"
+msgstr "Thunderbolti autoriseerimise viga"
+
+#: js/ui/status/thunderbolt.js:334
+#, javascript-format
+msgid "Could not authorize the Thunderbolt device: %s"
+msgstr "Thunderbolti seadet ei saanud autoriseerida: %s"
+
+#: js/ui/status/volume.js:133
+msgid "Volume changed"
+msgstr "Helivaljus muutus"
+
+#. Translators: this is for display mirroring i.e. cloning.
+#. * Try to keep it under around 15 characters.
+#.
+#: js/ui/switchMonitor.js:16
+msgid "Mirror"
+msgstr "Peegelda"
+
+#. Translators: this is for the desktop spanning displays.
+#. * Try to keep it under around 15 characters.
+#.
+#: js/ui/switchMonitor.js:21
+msgid "Join Displays"
+msgstr "Ühenda kuvarid"
+
+#. Translators: this is for using only an external display.
+#. * Try to keep it under around 15 characters.
+#.
+#: js/ui/switchMonitor.js:26
+msgid "External Only"
+msgstr "Ainult väline"
+
+#. Translators: this is for using only the laptop display.
+#. * Try to keep it under around 15 characters.
+#.
+#: js/ui/switchMonitor.js:31
+msgid "Built-in Only"
+msgstr "Ainult sisemine"
+
+#: js/ui/unlockDialog.js:49
+msgid "Log in as another user"
+msgstr "Logi sisse teise kasutajana"
+
+#: js/ui/unlockDialog.js:66
+msgid "Unlock Window"
+msgstr "Võta aken lukust lahti"
+
+#: js/ui/viewSelector.js:173
+msgid "Applications"
+msgstr "Rakendused"
+
+#: js/ui/viewSelector.js:177
+msgid "Search"
+msgstr "Otsing"
+
+#: js/ui/windowAttentionHandler.js:19
+#, javascript-format
+msgid "“%s” is ready"
+msgstr "„%s“ on valmis"
+
+#: js/ui/windowManager.js:53
+msgid "Do you want to keep these display settings?"
+msgstr "Kas tahad säilitada need kuvasätted?"
+
+#. Translators: this and the following message should be limited in lenght,
+#. to avoid ellipsizing the labels.
+#.
+#: js/ui/windowManager.js:65
+msgid "Revert Settings"
+msgstr "Taasta sätted"
+
+#: js/ui/windowManager.js:68
+msgid "Keep Changes"
+msgstr "Säilita muudatused"
+
+#: js/ui/windowManager.js:86
+#, javascript-format
+msgid "Settings changes will revert in %d second"
+msgid_plural "Settings changes will revert in %d seconds"
+msgstr[0] "Sätete muudatused ennistatakse %d sekundi pärast"
+msgstr[1] "Sätete muudatused ennistatakse %d sekundi pärast"
+
+#. Translators: This represents the size of a window. The first number is
+#. * the width of the window and the second is the height.
+#: js/ui/windowManager.js:662
+#, javascript-format
+msgid "%d × %d"
+msgstr "%d × %d"
+
+#: js/ui/windowMenu.js:26
+msgid "Minimize"
+msgstr "Minimeeri"
+
+#: js/ui/windowMenu.js:33
+msgid "Unmaximize"
+msgstr "Tühista maksimeerimine"
+
+#: js/ui/windowMenu.js:37
+msgid "Maximize"
+msgstr "Maksimeeri"
+
+#: js/ui/windowMenu.js:44
+msgid "Move"
+msgstr "Liiguta"
+
+#: js/ui/windowMenu.js:50
+msgid "Resize"
+msgstr "Muuda suurust"
+
+#: js/ui/windowMenu.js:57
+msgid "Move Titlebar Onscreen"
+msgstr "Liiguta tiitliriba ekraanile"
+
+#: js/ui/windowMenu.js:62
+msgid "Always on Top"
+msgstr "Alati pealmine"
+
+#: js/ui/windowMenu.js:81
+msgid "Always on Visible Workspace"
+msgstr "Alati kuvataval töölaual"
+
+#: js/ui/windowMenu.js:95
+msgid "Move to Workspace Left"
+msgstr "Liiguta vasakpoolsele töölauale"
+
+#: js/ui/windowMenu.js:101
+msgid "Move to Workspace Right"
+msgstr "Liiguta parempoolsele töölauale"
+
+#: js/ui/windowMenu.js:107
+msgid "Move to Workspace Up"
+msgstr "Liiguta ülemisele töölauale"
+
+#: js/ui/windowMenu.js:113
+msgid "Move to Workspace Down"
+msgstr "Liiguta alumisele töölauale"
+
+#: js/ui/windowMenu.js:131
+msgid "Move to Monitor Up"
+msgstr "Liiguta ülemisele kuvarile"
+
+#: js/ui/windowMenu.js:140
+msgid "Move to Monitor Down"
+msgstr "Liiguta alumisele kuvarile"
+
+#: js/ui/windowMenu.js:149
+msgid "Move to Monitor Left"
+msgstr "Liiguta vasakpoolsele kuvarile"
+
+#: js/ui/windowMenu.js:158
+msgid "Move to Monitor Right"
+msgstr "Liiguta parempoolsele kuvarile"
+
+#: src/calendar-server/evolution-calendar.desktop.in:3
+msgid "Evolution Calendar"
+msgstr "Evolutioni kalender"
+
+#. Translators: Do NOT translate or transliterate this text (this is an icon file name)!
+#: src/calendar-server/evolution-calendar.desktop.in:6
+msgid "evolution"
+msgstr "evolution"
+
+#: src/main.c:408
+msgid "Print version"
+msgstr "Versiooniteabe kuvamine"
+
+#: src/main.c:414
+msgid "Mode used by GDM for login screen"
+msgstr "Sisselogimise kuval kasutatav GDM-i režiim"
+
+#: src/main.c:420
+msgid "Use a specific mode, e.g. “gdm” for login screen"
+msgstr "Erirežiimi kasutamine, nt sisselogimisakna jaoks „gdm“"
+
+#: src/main.c:426
+msgid "List possible modes"
+msgstr "Võimalike režiimide loetelu"
+
+#: src/shell-app.c:260
+msgctxt "program"
+msgid "Unknown"
+msgstr "Tundmatu"
+
+#: src/shell-app.c:511
+#, c-format
+msgid "Failed to launch “%s”"
+msgstr "„%s“ käivitamine nurjus"
+
+#: src/shell-keyring-prompt.c:730
+msgid "Passwords do not match."
+msgstr "Paroolid ei kattu."
+
+#: src/shell-keyring-prompt.c:738
+msgid "Password cannot be blank"
+msgstr "Parool ei saa olla tühi"
+
+#: src/shell-polkit-authentication-agent.c:348
+msgid "Authentication dialog was dismissed by the user"
+msgstr "Kasutaja katkestas autentimisdialoogi"
+
+#. translators:
+#. * The number of sound outputs on a particular device
+#: subprojects/gvc/gvc-mixer-control.c:1871
+#, c-format
+msgid "%u Output"
+msgid_plural "%u Outputs"
+msgstr[0] "%u väljund"
+msgstr[1] "%u väljundit"
+
+#. translators:
+#. * The number of sound inputs on a particular device
+#: subprojects/gvc/gvc-mixer-control.c:1881
+#, c-format
+msgid "%u Input"
+msgid_plural "%u Inputs"
+msgstr[0] "%u sisend"
+msgstr[1] "%u sisendit"
+
+#: subprojects/gvc/gvc-mixer-control.c:2736
+msgid "System Sounds"
+msgstr "Süsteemi helid"
+
+#~ msgid "There was an error loading the preferences dialog for %s:"
+#~ msgstr "%s jaoks eelistuste dialoogi laadimisel esines viga:"
+
+#~ msgid "%s all day."
+#~ msgstr "%s terve päeva."
+
+#~ msgid "%s, then %s later."
+#~ msgstr "%s, hiljem %s."
+
+#~ msgid "%s, then %s, followed by %s later."
+#~ msgstr "%s, siis %s, hiljem %s."
+
+#~ msgid "Feels like %s."
+#~ msgstr "Tundub nagu %s."
+
+#~ msgid "Show the message tray"
+#~ msgstr "Teateala näitamine"
+
+#~ msgid "GNOME Shell Extension Preferences"
+#~ msgstr "GNOME Shelli laienduste eelistused"
+
+#~ msgid "GNOME Shell (wayland compositor)"
+#~ msgstr "GNOME Shell (waylandi komposiitor)"
+
+#~ msgid "List of categories that should be displayed as folders"
+#~ msgstr "Kategooriad, mida tuleb kuvada kaustadena"
+
+#~ msgid ""
+#~ "Each category name in this list will be represented as folder in the "
+#~ "application view, rather than being displayed inline in the main view."
+#~ msgstr ""
+#~ "Kõiki selles loetelus olevaid kategooriaid kuvatakse rakenduste vaates "
+#~ "kaustadena, mitte peavaates teistega koos."
+
+#~ msgid "Show the week date in the calendar"
+#~ msgstr "Kalendris näidatakse kuupäeva nädalavormingus"
+
+#~ msgid "If true, display the ISO week date in the calendar."
+#~ msgstr "Kui määratud, kuvatakse kalendris kuupäeva ISO nädalavormingus."
+
+#~ msgid "Arrangement of buttons on the titlebar"
+#~ msgstr "Nuppude järjekord tiitliribal"
+
+#~ msgid ""
+#~ "This key overrides the key in org.gnome.desktop.wm.preferences when "
+#~ "running GNOME Shell."
+#~ msgstr ""
+#~ "See võti on ülimuslik võtme org.gnome.desktop.wm.preferences suhtes, kui "
+#~ "kasutatakse GNOME Shelli."
+
+#~ msgid "Select an extension to configure using the combobox above."
+#~ msgstr "Vali seadistatav laiendus kasutades ülemist valikukasti."
+
+#~ msgid "Nothing Scheduled"
+#~ msgstr "Ühtegi sündmust pole plaanitud"
+
+#~ msgid "Today"
+#~ msgstr "Täna"
+
+#~ msgid "Tomorrow"
+#~ msgstr "Homme"
+
+#~ msgid "This week"
+#~ msgstr "Käesolev nädal"
+
+#~ msgid "Next week"
+#~ msgstr "Järgmine nädal"
+
+#~ msgid "Removable Devices"
+#~ msgstr "Eemaldatavad seadmed"
+
+#~ msgid "Eject"
+#~ msgstr "Väljasta"
+
+#~ msgid "Invitation"
+#~ msgstr "Kutse"
+
+#~ msgid "Call"
+#~ msgstr "Helista"
+
+#~ msgid "File Transfer"
+#~ msgstr "Failiülekanne"
+
+#~ msgid "Chat"
+#~ msgstr "Vestlus"
+
+#~ msgid "Unmute"
+#~ msgstr "Heli peale"
+
+#~ msgid "Mute"
+#~ msgstr "Heli maha"
+
+#~ msgid "<b>%A</b>, <b>%H:%M</b>"
+#~ msgstr "<b>%A</b>, <b>%H:%M</b>"
+
+#~ msgid "<b>%B</b> <b>%d</b>, <b>%H:%M</b>"
+#~ msgstr "<b>%d. %B</b>, <b>%H:%M</b>"
+
+#~ msgid "<b>%B</b> <b>%d</b> <b>%Y</b>, <b>%H:%M</b> "
+#~ msgstr "<b>%d. %B %Y</b>, <b>%H:%M</b>"
+
+#~ msgid "Invitation to %s"
+#~ msgstr "Kutse: %s"
+
+#~ msgid "%s is inviting you to join %s"
+#~ msgstr "%s kutsub sind liituma: %s"
+
+#~ msgid "Decline"
+#~ msgstr "Keeldu"
+
+#~ msgid "Accept"
+#~ msgstr "Nõustu"
+
+#~ msgid "Video call from %s"
+#~ msgstr "%s tahab alustada videokõnet"
+
+#~ msgid "Call from %s"
+#~ msgstr "%s helistab"
+
+#~ msgid "Answer"
+#~ msgstr "Vasta"
+
+#~ msgid "%s is sending you %s"
+#~ msgstr "%s saadab sulle %s"
+
+#~ msgid "%s would like permission to see when you are online"
+#~ msgstr "%s palub sinu luba, et näha, kui sa oled võrgus"
+
+#~ msgid "Authentication failed"
+#~ msgstr "Autentimine nurjus"
+
+#~ msgid "Encryption error"
+#~ msgstr "Krüptimise viga"
+
+#~ msgid "Certificate not provided"
+#~ msgstr "Sertifikaati pole"
+
+#~ msgid "Certificate untrusted"
+#~ msgstr "Sertifikaat pole usaldusväärne"
+
+#~ msgid "Certificate expired"
+#~ msgstr "Sertifikaat on aegunud"
+
+#~ msgid "Certificate not activated"
+#~ msgstr "Sertifikaat pole aktiivne"
+
+#~ msgid "Certificate hostname mismatch"
+#~ msgstr "Sertifikaadi hostinimi ei klapi"
+
+#~ msgid "Certificate fingerprint mismatch"
+#~ msgstr "Sertifikaadi sõrmejälg ei klapi"
+
+#~ msgid "Certificate self-signed"
+#~ msgstr "Sertifikaat on ise-allkirjastatud"
+
+#~ msgid "Status is set to offline"
+#~ msgstr "Oled nüüd ühenduseta olekus"
+
+#~ msgid "Certificate is invalid"
+#~ msgstr "Sertifikaat on vigane"
+
+#~ msgid "Connection has been refused"
+#~ msgstr "Ühendusest keelduti"
+
+#~ msgid "Connection can't be established"
+#~ msgstr "Ühendust pole võimalik luua"
+
+#~ msgid "Connection has been lost"
+#~ msgstr "Ühendus katkes"
+
+#~ msgid "This account is already connected to the server"
+#~ msgstr "Selle kontoga on juba serverisse ühendutud"
+
+#~ msgid ""
+#~ "Connection has been replaced by a new connection using the same resource"
+#~ msgstr "Ühendus on asendatud sama kontot kasutades uue ühendusega"
+
+#~ msgid "The account already exists on the server"
+#~ msgstr "See konto on serveris juba olemas"
+
+#~ msgid "Server is currently too busy to handle the connection"
+#~ msgstr "Server on praegu ühendusega toimetulekuks liiga hõivatud"
+
+#~ msgid "Certificate has been revoked"
+#~ msgstr "Sertifikaat on tühistatud"
+
+#~ msgid ""
+#~ "Certificate uses an insecure cipher algorithm or is cryptographically weak"
+#~ msgstr ""
+#~ "Sertifikaat kasutab ebaturvalist šifrialgoritmini ning on nõrgalt "
+#~ "krüptitud"
+
+#~ msgid ""
+#~ "The length of the server certificate, or the depth of the server "
+#~ "certificate chain, exceed the limits imposed by the cryptography library"
+#~ msgstr ""
+#~ "Serveri sertifikaadi pikkus ehk sertifikaatide keti sügavus ületab "
+#~ "krüptograafiateegi määratud piiri"
+
+#~ msgid "Internal error"
+#~ msgstr "Sisemine viga"
+
+#~ msgid "Unable to connect to %s"
+#~ msgstr "Pole võimalik ühenduda võrguga %s"
+
+#~ msgid "View account"
+#~ msgstr "Konto kuvamine"
+
+#~ msgid "Open Calendar"
+#~ msgstr "Ava kalender"
+
+#~ msgid "Date & Time Settings"
+#~ msgstr "Kuupäeva ja kella sätted"
+
+#~ msgid "Open"
+#~ msgstr "Ava"
+
+#~ msgid "Remove"
+#~ msgstr "Eemalda"
+
+#~ msgid "Clear Messages"
+#~ msgstr "Kustuta teated"
+
+#~ msgid "Notification Settings"
+#~ msgstr "Märguannete sätted"
+
+#~ msgid "Tray Menu"
+#~ msgstr "Paneelimenüü"
+
+#~ msgid "No Messages"
+#~ msgstr "Teateid pole"
+
+#~ msgid "Message Tray"
+#~ msgstr "Teateala"
+
+#~ msgid "%d Connected Device"
+#~ msgid_plural "%d Connected Devices"
+#~ msgstr[0] "%d ühendatud seade"
+#~ msgstr[1] "%d ühendatud seadet"
+
+#~ msgid "UPS"
+#~ msgstr "UPS"
+
+#~ msgid "Battery"
+#~ msgstr "Aku"
+
+#~ msgid "Authorization request from %s"
+#~ msgstr "Autoriseerimise päring seadmelt %s"
+
+#~ msgid "Device %s wants to pair with this computer"
+#~ msgstr "Seade '%s' tahab selle arvutiga paarduda"
+
+#~ msgid "Device %s wants access to the service '%s'"
+#~ msgstr "Seade %s soovib ligipääsu teenusele '%s'"
+
+#~ msgid "Grant this time only"
+#~ msgstr "Luba ainult seekord"
+
+#~ msgid "Reject"
+#~ msgstr "Lükka tagasi"
+
+#~ msgid "Pairing confirmation for %s"
+#~ msgstr "Paardumise kinnitus seadmele %s"
+
+#~ msgid ""
+#~ "Please confirm whether the Passkey '%06d' matches the one on the device."
+#~ msgstr "Palun kontrolli, kas parool '%06d' kattub seadme parooliga."
+
+#~ msgid "Matches"
+#~ msgstr "Kattub"
+
+#~ msgid "Does not match"
+#~ msgstr "Ei kattu"
+
+#~ msgid "Pairing request for %s"
+#~ msgstr "Seadmega %s paardumise päring"
+
+#~ msgid "Please enter the PIN mentioned on the device."
+#~ msgstr "Palun sisesta seadme poolt öeldav PIN-kood."
+
+#~ msgid "OK"
+#~ msgstr "Olgu"
+
+#~ msgid ""
+#~ "Sorry, no wisdom for you today:\n"
+#~ "%s"
+#~ msgstr ""
+#~ "Vabandust, tänaseks tarkuseteri pole:\n"
+#~ "%s"
+
+#~ msgid "%s the Oracle says"
+#~ msgstr "Oraakel %s ütleb"
+
+#~ msgctxt "event list time"
+#~ msgid "%H\\u2236%M"
+#~ msgstr "%H\\u2236%M"
+
+#~ msgctxt "event list time"
+#~ msgid "%l\\u2236%M\\u2009%p"
+#~ msgstr "%l\\u2236%M\\u2009%p"
+
+#~ msgid "Settings Menu"
+#~ msgstr "Sätete menüü"
+
+#~ msgid "Screenshots"
+#~ msgstr "Ekraanipildid"
+
+#~ msgid "Record a screencast"
+#~ msgstr "Ekraanivideo salvestamine"
+
+#~ msgid "Whether to collect stats about applications usage"
+#~ msgstr "Kas rakenduste kasutuse kohta kogutakse andmeid"
+
+#~ msgid ""
+#~ "The shell normally monitors active applications in order to present the "
+#~ "most used ones (e.g. in launchers). While this data will be kept private, "
+#~ "you may want to disable this for privacy reasons. Please note that doing "
+#~ "so won't remove already saved data."
+#~ msgstr ""
+#~ "Shell tavaliselt seirab aktiivseid rakendusi, et näidata enamkasutatavaid "
+#~ "(näiteks käivitajaid). Kuigi neid andmeid hoitakse privaatselt, võid "
+#~ "privaatsuse suurendamiseks selle keelata. Selle keelamine siiski ei "
+#~ "eemalda juba salvestatud andmeid."
+
+#~ msgid ""
+#~ "Internally used to store the last IM presence explicitly set by the user. "
+#~ "The value here is from the TpConnectionPresenceType enumeration."
+#~ msgstr ""
+#~ "Kasutatakse kasutaja poolt viimati vahetult määratud kiirsuhtluse oleku "
+#~ "salvestamiseks. See väärtus pärineb TpConnectionPresenceType nummerdusest."
+
+#~ msgid ""
+#~ "Internally used to store the last session presence status for the user. "
+#~ "The value here is from the GsmPresenceStatus enumeration."
+#~ msgstr ""
+#~ "Kasutatakse kasutaja poolt viimati vahetult määratud kiirsuhtluse oleku "
+#~ "salvestamiseks. See väärtus pärineb GsmPresenceStatus nummerdusest."
+
+#~ msgid "Keybinding to toggle the screen recorder"
+#~ msgstr "Erkaanilindistaja lülitamise kiirklahv"
+
+#~ msgid "Keybinding to start/stop the builtin screen recorder."
+#~ msgstr "Kiirklahv erkaanilindistaja käivitamiseks/peatamiseks."
+
+#~ msgid "Framerate used for recording screencasts."
+#~ msgstr "Ekraanivideo lindistamisel kasutatav kaadrikiirus."
+
+#~ msgid ""
+#~ "The framerate of the resulting screencast recordered by GNOME Shell's "
+#~ "screencast recorder in frames-per-second."
+#~ msgstr ""
+#~ "GNOME Shelli lindistatava ekraanivideo kaadrisagedus (kaadrit sekundis)."
+
+#~ msgid "The gstreamer pipeline used to encode the screencast"
+#~ msgstr "GStreameri toru, mida ekraanivideo kodeerimiseks kasutatakse"
+
+#~ msgid ""
+#~ "Sets the GStreamer pipeline used to encode recordings. It follows the "
+#~ "syntax used for gst-launch. The pipeline should have an unconnected sink "
+#~ "pad where the recorded video is recorded. It will normally have a "
+#~ "unconnected source pad; output from that pad will be written into the "
+#~ "output file. However the pipeline can also take care of its own output - "
+#~ "this might be used to send the output to an icecast server via shout2send "
+#~ "or similar. When unset or set to an empty value, the default pipeline "
+#~ "will be used. This is currently 'vp8enc min_quantizer=13 max_quantizer=13 "
+#~ "cpu-used=5 deadline=1000000 threads=%T ! queue ! webmmux' and records to "
+#~ "WEBM using the VP8 codec. %T is used as a placeholder for a guess at the "
+#~ "optimal thread count on the system."
+#~ msgstr ""
+#~ "Määrab GStreameri toru, mida kasutatakse lindistuste kodeerimiseks. See "
+#~ "peab vastama gst-launch'i süntaksile. Torul peaks olema vaba plokk (sink "
+#~ "pad), kuhu lindistatav video salvestatakse. Tavaliselt on vaba plokk "
+#~ "olemas; selle ploki väljund kirjutatakse väljundfaili. Toru võib "
+#~ "hoolitseda ka enda väljundi eest - seda võib kasutada väljundi saatmiseks "
+#~ "icecast serverisse shout2send või sarnase tehnoloogia abil. Kui see on "
+#~ "määramata või väärtus on tühi, kasutatakse vaikimisi toru. See on praegu "
+#~ "'vp8enc min_quantizer=13 max_quantizer=13 cpu-used=5 deadline=1000000 "
+#~ "threads=%T ! queue ! webmmux' ning lindistab WEBM vormingusse VP8 "
+#~ "koodekiga. %T asendatakse süsteemi oletatava optimaalseima lõimede "
+#~ "(thread) arvuga."
+
+#~ msgid "File extension used for storing the screencast"
+#~ msgstr "Ekraanivideo salvestamisel kasutatav faililaiend"
+
+#~ msgid ""
+#~ "The filename for recorded screencasts will be a unique filename based on "
+#~ "the current date, and use this extension. It should be changed when "
+#~ "recording to a different container format."
+#~ msgstr ""
+#~ "Ekraanivideo jaoks kasutatav failinimi on unikaalne, see sisaldab "
+#~ "salvestamise kuupäeva ja ka käesoleva võtmega määratud laiendit. Mõnda "
+#~ "teise konteinervormingusse salvestades tuleks ka sellele vormingule "
+#~ "vastav laiend määrata."
+
+#~ msgid "Session…"
+#~ msgstr "Seanss…"
+
+#~ msgid "Power"
+#~ msgstr "Vool"
+
+#~ msgid "Restart"
+#~ msgstr "Taaskäivita"
+
+#~ msgid "Screencast from %d %t"
+#~ msgstr "Ekraanivideo %d %t"
+
+#~ msgid "Click Log Out to quit these applications and log out of the system."
+#~ msgstr ""
+#~ "Nende rakenduste sulgemiseks ja süsteemist väljalogimiseks klõpsa nupule "
+#~ "Logi välja."
+
+#~ msgid "Logging out of the system."
+#~ msgstr "Süsteemist väljalogimine"
+
+#~ msgid "Click Power Off to quit these applications and power off the system."
+#~ msgstr ""
+#~ "Nende rakenduste sulgemiseks ja süsteemi väljalülitamiseks klõpsa nupule "
+#~ "Lülita välja."
+
+#~ msgid "Powering off the system."
+#~ msgstr "Süsteemi väljalülitamine."
+
+#~ msgid "Click Restart to quit these applications and restart the system."
+#~ msgstr ""
+#~ "Nende rakenduste sulgemiseks ja süsteemi taaskäivitamiseks klõpsa "
+#~ "\"Taaskäivita\"."
+
+#~ msgid "Restarting the system."
+#~ msgstr "Süsteemi taaskäivitamine."
+
+#~ msgid "Universal Access Settings"
+#~ msgstr "Universaalse ligipääsu sätted"
+
+#~ msgid "Visibility"
+#~ msgstr "Nähtavus"
+
+#~ msgid "Set Up a New Device…"
+#~ msgstr "Uue seadme häälestamine…"
+
+#~ msgid "Send Files…"
+#~ msgstr "Failide saatmine…"
+
+#~ msgid "Keyboard Settings"
+#~ msgstr "Klaviatuurisätted"
+
+#~ msgid "Mouse Settings"
+#~ msgstr "Hiiresätted"
+
+#~ msgid "Volume, network, battery"
+#~ msgstr "Helivaljus, võrk, aku"
+
+#~ msgid "disabled"
+#~ msgstr "keelatud"
+
+#~ msgid "cable unplugged"
+#~ msgstr "juhe eemaldatud"
+
+#~ msgid "More…"
+#~ msgstr "Veel…"
+
+#~ msgid "Wired"
+#~ msgstr "Juhtmega"
+
+#~ msgid "Auto Ethernet"
+#~ msgstr "Automaatne ethernet"
+
+#~ msgid "Auto broadband"
+#~ msgstr "Automaatne lairibaühendus"
+
+#~ msgid "Auto dial-up"
+#~ msgstr "Automaatne sissehelistamine"
+
+#~ msgid "Auto %s"
+#~ msgstr "Automaatne %s"
+
+#~ msgid "Auto bluetooth"
+#~ msgstr "Automaatne bluetooth"
+
+#~ msgid "Auto wireless"
+#~ msgstr "Automaatne juhtmeta ühendus"
+
+#~ msgid "%d %s %d %s remaining"
+#~ msgstr "jäänud %d %s ja %d %s"
+
+#~ msgid "AC Adapter"
+#~ msgstr "Laadija"
+
+#~ msgid "Laptop Battery"
+#~ msgstr "Sülearvuti aku"
+
+#~ msgid "Mouse"
+#~ msgstr "Hiir"
+
+#~ msgid "PDA"
+#~ msgstr "Elektronmärkmik"
+
+#~ msgid "Cell Phone"
+#~ msgstr "Mobiiltelefon"
+
+#~ msgid "Media Player"
+#~ msgstr "Meediaesitaja"
+
+#~ msgid "Tablet"
+#~ msgstr "Graafikalaud"
+
+#~ msgid "Computer"
+#~ msgstr "Arvuti"
+
+#~ msgctxt "device"
+#~ msgid "Unknown"
+#~ msgstr "Tundmatu"
+
+#~ msgid "Available"
+#~ msgstr "Saadaval"
+
+#~ msgid "Busy"
+#~ msgstr "Hõivatud"
+
+#~ msgid "Invisible"
+#~ msgstr "Nähtamatu"
+
+#~ msgid "Away"
+#~ msgstr "Eemal"
+
+#~ msgid "Idle"
+#~ msgstr "Jõude"
+
+#~ msgid "Your chat status will be set to busy"
+#~ msgstr "Sinu vestluse olekuks määratakse hõivatud"
+
+#~ msgid ""
+#~ "Notifications are now disabled, including chat messages. Your online "
+#~ "status has been adjusted to let others know that you might not see their "
+#~ "messages."
+#~ msgstr ""
+#~ "Märguanded on nüüd keelatud, sealhulgas vestlusteated. Sinu netiolekut "
+#~ "muudeti, et teised teaksid, et sa ei pruugi nende teateid näha."
+
+#~ msgid "Shutting down might cause them to lose unsaved work."
+#~ msgstr "Väljalülitamine võib põhjustada salvestamata töö kaotsimineku."
+
+#~ msgid "Show full name in the user menu"
+#~ msgstr "Kasutajamenüüs näidatakse kasutaja tervet nime"
+
+#~ msgid "Whether the users full name is shown in the user menu or not."
+#~ msgstr "Kas kasutajamenüüs näidatakse kasutaja kogu nime või mitte."
+
+#~ msgctxt "title"
+#~ msgid "Sign In"
+#~ msgstr "Sisselogimine"
+
+#~ msgid "APPLICATIONS"
+#~ msgstr "RAKENDUSED"
+
+#~ msgid "SETTINGS"
+#~ msgstr "SEADED"
+
+#~ msgid "tray"
+#~ msgstr "salv"
+
+#~ msgid "Your favorite Easter Egg"
+#~ msgstr "Sinu lemmiküllatusmuna"
+
+#~ msgid "United Kingdom"
+#~ msgstr "Suurbritannia"
+
+#~ msgid "Default"
+#~ msgstr "Vaikimisi"
+
+#~ msgid "Subscription request"
+#~ msgstr "Tellimuse päring"
+
+#~ msgid "<b>%H:%M</b> on Yesterday"
+#~ msgstr "Eile <b>%H:%M</b>"
+
+#~ msgid "Connection to %s failed"
+#~ msgstr "Ühendus %s nurjus"
+
+#~ msgid "Reconnect"
+#~ msgstr "Ühendu uuesti"
+
+#~ msgid "Wireless"
+#~ msgstr "Juhtmeta"
+
+#~ msgid "disabled OpenSearch providers"
+#~ msgstr "keelatud OpenSearch pakkujad"
+
+#~ msgid "Show time with seconds"
+#~ msgstr "Kellaaega näidatakse sekunditega"
+
+#~ msgid "If true, display seconds in time."
+#~ msgstr "Kui määratud, siis kuvatakse aja juures ka sekundeid."
+
+#~ msgid "Show date in clock"
+#~ msgstr "Kell näitab kuupäeva"
+
+#~ msgid "If true, display date in the clock, in addition to time."
+#~ msgstr "Kui määratud, siis kuvatakse kellaaja kõrval ka kuupäeva."
+
+#~ msgid "CONTACTS"
+#~ msgstr "KONTAKTID"
+
+#~ msgid "Failed to unmount '%s'"
+#~ msgstr "'%s' lahtihaakimine nurjus"
+
+#~ msgid "Retry"
+#~ msgstr "Proovi uuesti"
+
+#~ msgid "Connect to..."
+#~ msgstr "Ühendumine..."
+
+#~ msgid "PLACES & DEVICES"
+#~ msgstr "ASUKOHAD JA SEADMED"
+
+#~ msgid "Wrong password, please try again"
+#~ msgstr "Vale parool, palun proovi uuesti"
+
+#~ msgid "%s is busy."
+#~ msgstr "%s on hõivatud."
+
+#~ msgid "Hidden"
+#~ msgstr "Nähtamatu"
+
+#~ msgid "Power Off..."
+#~ msgstr "Lülita välja..."
+
+#~ msgid "Online Accounts"
+#~ msgstr "Netikontod"

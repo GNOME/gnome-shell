@@ -1,0 +1,13 @@
+<node>
+  <interface name="org.freedesktop.realmd.Provider">
+    <property name="Name" type="s" access="read"/>
+    <property name="Version" type="s" access="read"/>
+    <property name="Realms" type="ao" access="read"/>
+    <method name="Discover">
+      <arg name="string" type="s" direction="in"/>
+      <arg name="options" type="a{sv}" direction="in"/>
+      <arg name="relevance" type="i" direction="out"/>
+      <arg name="realm" type="ao" direction="out"/>
+    </method>
+  </interface>
+</node>

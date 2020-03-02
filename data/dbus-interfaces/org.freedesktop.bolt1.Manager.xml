@@ -1,0 +1,15 @@
+<node>
+  <interface name="org.freedesktop.bolt1.Manager">
+    <property name="Probing" type="b" access="read"></property>
+    <property name="AuthMode" type="s" access="readwrite"></property>
+    <method name="EnrollDevice">
+      <arg type="s" name="uid" direction="in"/>
+      <arg type="s" name="policy" direction="in"/>
+      <arg type="s" name="flags" direction="in"/>
+      <arg name="device" direction="out" type="o"/>
+    </method>
+    <signal name="DeviceAdded">
+      <arg name="device" type="o"/>
+    </signal>
+  </interface>
+</node>

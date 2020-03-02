@@ -1,0 +1,13 @@
+<node>
+<interface name="org.gnome.SettingsDaemon.Wacom">
+  <method name="SetGroupModeLED">
+    <arg name="device_path" direction="in" type="s"/>
+    <arg name="group" direction="in" type="u"/>
+    <arg name="mode" direction="in" type="u"/>
+  </method>
+  <method name="SetOLEDLabels">
+    <arg name="device_path" direction="in" type="s"/>
+    <arg name="labels" direction="in" type="as"/>
+  </method>
+  </interface>
+</node>

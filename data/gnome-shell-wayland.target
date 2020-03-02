@@ -1,0 +1,10 @@
+[Unit]
+Description=GNOME Shell on Wayland
+DefaultDependencies=no
+
+Requisite=gnome-session-initialized.target
+PartOf=gnome-session-initialized.target
+Before=gnome-session-initialized.target
+
+Requires=gnome-shell-wayland.service
+After=gnome-shell-wayland.service

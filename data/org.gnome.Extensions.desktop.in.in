@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=Extensions
+# Translators: Do NOT translate or transliterate this text (this is an icon file name)!
+Icon=org.gnome.Extensions
+Comment=Configure GNOME Shell Extensions
+Exec=@bindir@/gnome-shell-extension-prefs %u
+Categories=GNOME;GTK;
+OnlyShowIn=GNOME;

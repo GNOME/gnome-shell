@@ -1,0 +1,2064 @@
+# Uzbek (Cyrillic) translation for gnome-shell.
+# Copyright (C) 2014 gnome-shell's COPYRIGHT HOLDER
+# This file is distributed under the same license as the gnome-shell package.
+# Bahodir Mansurov <6ahodir@gmail.com>, 2014.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: gnome-shell master\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
+"shell&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2016-09-07 09:41+0000\n"
+"PO-Revision-Date: 2016-09-25 09:14-0400\n"
+"Last-Translator: Bahodir Mansurov <6ahodir@gmail.com>\n"
+"Language-Team: Uzbek (Cyrillic) <>\n"
+"Language: uz@cyrillic\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-DamnedLies-Scope: partial\n"
+"X-Generator: Poedit 1.8.9\n"
+
+#: data/50-gnome-shell-system.xml:6
+msgid "System"
+msgstr "Система"
+
+#: data/50-gnome-shell-system.xml:9
+msgid "Show the notification list"
+msgstr "Хабарнома рўйхатини кўрсатиш"
+
+#: data/50-gnome-shell-system.xml:12
+msgid "Focus the active notification"
+msgstr "Фаол хабарномага диққат қилиш"
+
+#: data/50-gnome-shell-system.xml:15
+msgid "Show the overview"
+msgstr "Обзорни кўрсатиш"
+
+#: data/50-gnome-shell-system.xml:18
+msgid "Show all applications"
+msgstr "Барча дастурларни кўрсатиш"
+
+#: data/50-gnome-shell-system.xml:21
+msgid "Open the application menu"
+msgstr "Дастур менюсини очиш"
+
+#: data/gnome-shell-extension-prefs.desktop.in.in:4
+msgid "GNOME Shell Extension Preferences"
+msgstr "GNOME Shell кенгайтма мосламалари"
+
+#: data/gnome-shell-extension-prefs.desktop.in.in:5
+msgid "Configure GNOME Shell Extensions"
+msgstr "GNOME Shell кенгайтмаларини созлаш"
+
+#: data/org.gnome.Shell.desktop.in.in:4
+msgid "GNOME Shell"
+msgstr "GNOME Shell"
+
+#: data/org.gnome.Shell.desktop.in.in:5
+msgid "Window management and application launching"
+msgstr "Ойналарни бошқариш ва дастурларни очиш"
+
+#: data/org.gnome.shell.gschema.xml.in:6
+msgid "Enable internal tools useful for developers and testers from Alt-F2"
+msgstr ""
+"Alt-F2дан тузувчилар ва текширувчилар учун фойдали ички асбобларни ёқиш"
+
+#: data/org.gnome.shell.gschema.xml.in:9
+msgid ""
+"Allows access to internal debugging and monitoring tools using the Alt-F2 "
+"dialog."
+msgstr ""
+"Alt-F2 диалог ойнаси орқали ички созлаш ва кузатиш асбобларига рухсат бериш"
+
+#: data/org.gnome.shell.gschema.xml.in:16
+msgid "UUIDs of extensions to enable"
+msgstr "Ёқиладиган кенгайтма UUIDлари"
+
+#: data/org.gnome.shell.gschema.xml.in:17
+msgid ""
+"GNOME Shell extensions have a UUID property; this key lists extensions which "
+"should be loaded. Any extension that wants to be loaded needs to be in this "
+"list. You can also manipulate this list with the EnableExtension and "
+"DisableExtension D-Bus methods on org.gnome.Shell."
+msgstr ""
+"GNOME Shell кенгайтмаларининг UUID хоссаси бор; бу калит юкланиши керак "
+"бўлган кенгайтмаларни рўйхатда кўрсатади. Юкланишни истайдиган кенгайтма "
+"ушбу рўйхатда бўлиши керак. Сиз бу рўйхатни  org.gnome.Shellдаги D-Busнинг "
+"EnableExtension ва DisableExtension функциялари орақли ҳам бошқаришингиз "
+"мумкин."
+
+#: data/org.gnome.shell.gschema.xml.in:26
+msgid "Disables the validation of extension version compatibility"
+msgstr "Кенгайтма версияси мослигини текширишни ўчириб қўяди"
+
+#: data/org.gnome.shell.gschema.xml.in:27
+msgid ""
+"GNOME Shell will only load extensions that claim to support the current "
+"running version. Enabling this option will disable this check and try to "
+"load all extensions regardless of the versions they claim to support."
+msgstr ""
+"GNOME Shell ушбу ишлаётган версияни қўллашини билдирган кенгайтмаларнигина "
+"юклайди. Ушбу танловни белгиласангиз бу текширув ўчириб қўйилади ва, қайси "
+"версияни қўллашидан қатъий назар, барча кенгайтмалар юкланади."
+
+#: data/org.gnome.shell.gschema.xml.in:35
+msgid "List of desktop file IDs for favorite applications"
+msgstr "Танланган дастурлар учун иш столи файл IDлари рўйхати"
+
+#: data/org.gnome.shell.gschema.xml.in:36
+msgid ""
+"The applications corresponding to these identifiers will be displayed in the "
+"favorites area."
+msgstr ""
+"Ушбу идентификаторга мос келувчи дастурлар танланганлар майдонида "
+"кўрсатилади."
+
+#: data/org.gnome.shell.gschema.xml.in:43
+msgid "App Picker View"
+msgstr "Дастур танлагич кўриниши"
+
+#: data/org.gnome.shell.gschema.xml.in:44
+msgid "Index of the currently selected view in the application picker."
+msgstr "Дастур танлагичдаги белгиланган кўриниш индекси."
+
+#: data/org.gnome.shell.gschema.xml.in:50
+msgid "History for command (Alt-F2) dialog"
+msgstr "(Alt-F2) диалог ойначаси буйруқлар тарихи"
+
+#. Translators: looking glass is a debugger and inspector tool, see https://wiki.gnome.org/Projects/GnomeShell/LookingGlass
+#: data/org.gnome.shell.gschema.xml.in:55
+msgid "History for the looking glass dialog"
+msgstr "Шаффоф диалог ойнаси кўришлар тарихи"
+
+#: data/org.gnome.shell.gschema.xml.in:59
+msgid "Always show the 'Log out' menu item in the user menu."
+msgstr "Фойдаланувчи менюсида \"Сеансни якунлаш\" менюсини ҳар доим кўрсатиш."
+
+#: data/org.gnome.shell.gschema.xml.in:60
+msgid ""
+"This key overrides the automatic hiding of the 'Log out' menu item in single-"
+"user, single-session situations."
+msgstr ""
+"Ушбу калит битта фойдаланувчили системада \"Сеансни якунлаш\" менюсини "
+"автоматик яширишни белгилаб беради."
+
+#: data/org.gnome.shell.gschema.xml.in:67
+msgid ""
+"Whether to remember password for mounting encrypted or remote filesystems"
+msgstr ""
+"Шифрланган ёки масофавий файл системаларини улаганда махфий сўзни эслаб "
+"қолиш ёки йўқлиги"
+
+#: data/org.gnome.shell.gschema.xml.in:68
+msgid ""
+"The shell will request a password when an encrypted device or a remote "
+"filesystem is mounted. If the password can be saved for future use a "
+"'Remember Password' checkbox will be present. This key sets the default "
+"state of the checkbox."
+msgstr ""
+"GNOME Shell шифрланган ёки масофавий файл системаларини улаганда махфий "
+"сўзни сўрайди. Агар махфий сўз келажакда ишлатиш учун сақлаб бўлинса "
+"\"Махфий сўзни эслаб қолиш\" белгилаш катакчаси кўрсатилади. Ушбу калит ўша "
+"белгилаш катакчасининг сукут ҳолатини ўрнатади."
+
+#: data/org.gnome.shell.gschema.xml.in:77
+msgid ""
+"Whether the default Bluetooth adapter had set up devices associated to it"
+msgstr "Bluetooth адаптери сукут бўйича бирор ускунага уланганми"
+
+#: data/org.gnome.shell.gschema.xml.in:78
+msgid ""
+"The shell will only show a Bluetooth menu item if a Bluetooth adapter is "
+"powered, or if there were devices set up associated with the default "
+"adapter. This will be reset if the default adapter is ever seen not to have "
+"devices associated to it."
+msgstr ""
+"Bluetooth адаптери ёниқ ёки унга ускуналар боғлаб қўйилган бўлса Bluetooth "
+"менюси кўринади. Агар сукут бўйича адаптерга уланган ускуналар бўлмаса, ушбу "
+"параметр ташлаб юборилади."
+
+#: data/org.gnome.shell.gschema.xml.in:93
+msgid "Keybinding to open the application menu"
+msgstr "Дастур менюсини очиш учун клавишалар бирикмаси"
+
+#: data/org.gnome.shell.gschema.xml.in:94
+msgid "Keybinding to open the application menu."
+msgstr "Дастур менюсини очиш учун клавишалар бирикмаси."
+
+#: data/org.gnome.shell.gschema.xml.in:100
+msgid "Keybinding to open the \"Show Applications\" view"
+msgstr "\"Дастурларни кўрсатиш\" кўринишини очиш учун клавишалар бирикмаси"
+
+#: data/org.gnome.shell.gschema.xml.in:101
+msgid ""
+"Keybinding to open the \"Show Applications\" view of the Activities Overview."
+msgstr ""
+"Фаолиятлар обзорида \"Дастурларни кўрсатиш\"кўриниши учун клавишалар "
+"бирикмаси"
+
+#: data/org.gnome.shell.gschema.xml.in:108
+msgid "Keybinding to open the overview"
+msgstr "Обзорни очиш учун клавишалар бирикмаси"
+
+#: data/org.gnome.shell.gschema.xml.in:109
+msgid "Keybinding to open the Activities Overview."
+msgstr "Фаолиятлар обзорини очиш учун клавишалар бирикмаси"
+
+#: data/org.gnome.shell.gschema.xml.in:115
+msgid "Keybinding to toggle the visibility of the notification list"
+msgstr "Хабарнома рўйхати очиб-ёпиш учун клавишалар бирикмаси"
+
+#: data/org.gnome.shell.gschema.xml.in:116
+msgid "Keybinding to toggle the visibility of the notification list."
+msgstr "Хабарнома рўйхати очиб-ёпиш учун клавишалар бирикмаси"
+
+#: data/org.gnome.shell.gschema.xml.in:122
+msgid "Keybinding to focus the active notification"
+msgstr "Фаол хабарномага диққат қилиш учун клавишалар бирикмаси"
+
+#: data/org.gnome.shell.gschema.xml.in:123
+msgid "Keybinding to focus the active notification."
+msgstr "Фаол хабарномага диққат қилиш учун клавишалар бирикмаси."
+
+#: data/org.gnome.shell.gschema.xml.in:129
+msgid ""
+"Keybinding that pauses and resumes all running tweens, for debugging purposes"
+msgstr ""
+"Барча ишлаб турган анимацияларни тўхтатиб туриш ёки давом эттириш учун "
+"клавишалар бирикмаси (созлаш мақсадиди)"
+
+#: data/org.gnome.shell.gschema.xml.in:138
+msgid "Which keyboard to use"
+msgstr "Қайси клавиатурани ишлатиш"
+
+#: data/org.gnome.shell.gschema.xml.in:139
+msgid "The type of keyboard to use."
+msgstr "Ишлатиладиган клавиатура тури."
+
+#: data/org.gnome.shell.gschema.xml.in:150
+#: data/org.gnome.shell.gschema.xml.in:177
+msgid "Limit switcher to current workspace."
+msgstr "Переключателни фақат шу иш жойи билан чегаралаш."
+
+#: data/org.gnome.shell.gschema.xml.in:151
+msgid ""
+"If true, only applications that have windows on the current workspace are "
+"shown in the switcher. Otherwise, all applications are included."
+msgstr ""
+"Агар белгиланса, ушбу иш жойида ойнаси бор барча дастурлар ўзгартирувчи "
+"тугмачада кўринади. Акс ҳолда, барча дастурлар ҳисобга олинади."
+
+#: data/org.gnome.shell.gschema.xml.in:168
+msgid "The application icon mode."
+msgstr "Дастур нишончаси режими."
+
+#: data/org.gnome.shell.gschema.xml.in:169
+msgid ""
+"Configures how the windows are shown in the switcher. Valid possibilities "
+"are 'thumbnail-only' (shows a thumbnail of the window), 'app-icon-"
+"only' (shows only the application icon) or 'both'."
+msgstr ""
+"Ўзгартирувчи тугмачада ойналар қандай кўринишини мослайди. Мавжуд қийматлар: "
+"\"thumbnail-only\" (ойнанинг миниатурасини кўрсатади), \"app-icon-only"
+"\" (фақтгини дастур нишончасини кўрсатади)."
+
+#: data/org.gnome.shell.gschema.xml.in:178
+msgid ""
+"If true, only windows from the current workspace are shown in the switcher. "
+"Otherwise, all windows are included."
+msgstr ""
+"Агар белгиланса, фақатгина ушбу иш жойидаги ойналар переключателда "
+"кўрсатилади. Акс ҳолда,барча ойналар ҳисобга олинади."
+
+#: data/org.gnome.shell.gschema.xml.in:189
+msgid "Attach modal dialog to the parent window"
+msgstr "Модал диалог ойнани бош ойнасига маҳкамлаш"
+
+#: data/org.gnome.shell.gschema.xml.in:190
+#: data/org.gnome.shell.gschema.xml.in:199
+#: data/org.gnome.shell.gschema.xml.in:207
+#: data/org.gnome.shell.gschema.xml.in:215
+#: data/org.gnome.shell.gschema.xml.in:223
+msgid ""
+"This key overrides the key in org.gnome.mutter when running GNOME Shell."
+msgstr ""
+"GNOME Shell ишга тушганида ушбу калит org.gnome.mutterдаги калитни бошқадан "
+"белгилайди."
+
+#: data/org.gnome.shell.gschema.xml.in:198
+msgid "Enable edge tiling when dropping windows on screen edges"
+msgstr ""
+"Ойналар экран четларига олиб борилганда уларнинг ўлчамларини автоматик "
+"равишда ўзгартириш"
+
+#: data/org.gnome.shell.gschema.xml.in:206
+msgid "Workspaces are managed dynamically"
+msgstr "Иш жойлари фаол равишда бошқарилади"
+
+#: data/org.gnome.shell.gschema.xml.in:214
+msgid "Workspaces only on primary monitor"
+msgstr "Иш жойлари фақат асосий мониторда"
+
+#: data/org.gnome.shell.gschema.xml.in:222
+msgid "Delay focus changes in mouse mode until the pointer stops moving"
+msgstr ""
+"Кўрсаткич юришдан тўхтамагунча сичқонча режимида диққатни ўзгратирмаслик"
+
+#: data/org.gnome.Shell.PortalHelper.desktop.in.in:3
+msgid "Network Login"
+msgstr "Тармоққа кириш"
+
+#. Translators: Do NOT translate or transliterate this text (this is an icon file name)!
+#: data/org.gnome.Shell.PortalHelper.desktop.in.in:9
+msgid "network-workgroup"
+msgstr "network-workgroup"
+
+#: js/extensionPrefs/main.js:117
+#, javascript-format
+msgid "There was an error loading the preferences dialog for %s:"
+msgstr "%s учун параметрлар диалог ойнасини юклашда хатолик содир бўлди:"
+
+#: js/extensionPrefs/main.js:149
+msgid "GNOME Shell Extensions"
+msgstr "GNOME Shell кенгайтмалари"
+
+#: js/gdm/authPrompt.js:147 js/ui/audioDeviceSelection.js:71
+#: js/ui/components/networkAgent.js:145 js/ui/components/polkitAgent.js:179
+#: js/ui/endSessionDialog.js:483 js/ui/extensionDownloader.js:195
+#: js/ui/shellMountOperation.js:399 js/ui/status/network.js:916
+msgid "Cancel"
+msgstr "Бекор қилиш"
+
+#: js/gdm/authPrompt.js:169 js/gdm/authPrompt.js:216 js/gdm/authPrompt.js:448
+msgid "Next"
+msgstr "Кейинги"
+
+#: js/gdm/authPrompt.js:212 js/ui/shellMountOperation.js:403
+#: js/ui/unlockDialog.js:59
+msgid "Unlock"
+msgstr "Қулфни ечиш"
+
+#: js/gdm/authPrompt.js:214
+msgctxt "button"
+msgid "Sign In"
+msgstr "Кириш"
+
+#: js/gdm/loginDialog.js:285
+msgid "Choose Session"
+msgstr "Сеансни танлаш"
+
+#. translators: this message is shown below the user list on the
+#. login screen. It can be activated to reveal an entry for
+#. manually entering the username.
+#: js/gdm/loginDialog.js:435
+msgid "Not listed?"
+msgstr "Рўйхатда йўқми?"
+
+#. Translators: this message is shown below the username entry field
+#. to clue the user in on how to login to the local network realm
+#: js/gdm/loginDialog.js:854
+#, javascript-format
+msgid "(e.g., user or %s)"
+msgstr "(мас. фойдаланувчи ёки %s)"
+
+#. TTLS and PEAP are actually much more complicated, but this complication
+#. is not visible here since we only care about phase2 authentication
+#. (and don't even care of which one)
+#: js/gdm/loginDialog.js:859 js/ui/components/networkAgent.js:271
+#: js/ui/components/networkAgent.js:289
+msgid "Username: "
+msgstr "Фойдаланувчи:"
+
+#: js/gdm/loginDialog.js:1196
+msgid "Login Window"
+msgstr "Кириш Ойнаси"
+
+#: js/gdm/util.js:341
+msgid "Authentication error"
+msgstr "Хақиқийлигини текширишда хатолик"
+
+#. We don't show fingerprint messages directly since it's
+#. not the main auth service. Instead we use the messages
+#. as a cue to display our own message.
+#. Translators: this message is shown below the password entry field
+#. to indicate the user can swipe their finger instead
+#: js/gdm/util.js:473
+msgid "(or swipe finger)"
+msgstr "(ёки ушбу мослама юзасида бармоғингизни юритинг)"
+
+#: js/misc/util.js:119
+msgid "Command not found"
+msgstr "Буйруқ топилмади"
+
+#. Replace "Error invoking GLib.shell_parse_argv: " with
+#. something nicer
+#: js/misc/util.js:152
+msgid "Could not parse command:"
+msgstr "Буйруқни таҳлил қилиб бўлмади:"
+
+#: js/misc/util.js:160
+#, javascript-format
+msgid "Execution of “%s” failed:"
+msgstr "\"%s\"ни бажариб бўлмади:"
+
+#. Translators: Time in 24h format
+#: js/misc/util.js:191
+msgid "%H∶%M"
+msgstr "%H∶%M"
+
+#. Translators: this is the word "Yesterday" followed by a
+#. time string in 24h format. i.e. "Yesterday, 14:30"
+#: js/misc/util.js:197
+#, no-c-format
+msgid "Yesterday, %H∶%M"
+msgstr "Кеча, %H∶%M"
+
+#. Translators: this is the week day name followed by a time
+#. string in 24h format. i.e. "Monday, 14:30"
+#: js/misc/util.js:203
+#, no-c-format
+msgid "%A, %H∶%M"
+msgstr "%A, %H∶%M"
+
+#. Translators: this is the month name and day number
+#. followed by a time string in 24h format.
+#. i.e. "May 25, 14:30"
+#: js/misc/util.js:209
+#, no-c-format
+msgid "%B %d, %H∶%M"
+msgstr "%B %d, %H∶%M"
+
+#. Translators: this is the month name, day number, year
+#. number followed by a time string in 24h format.
+#. i.e. "May 25 2012, 14:30"
+#: js/misc/util.js:215
+#, no-c-format
+msgid "%B %d %Y, %H∶%M"
+msgstr "%B %d %Y, %H∶%M"
+
+#. Translators: Time in 12h format
+#: js/misc/util.js:220
+msgid "%l∶%M %p"
+msgstr "%l∶%M %p"
+
+#. Translators: this is the word "Yesterday" followed by a
+#. time string in 12h format. i.e. "Yesterday, 2:30 pm"
+#: js/misc/util.js:226
+#, no-c-format
+msgid "Yesterday, %l∶%M %p"
+msgstr "Кеча, %l∶%M %p"
+
+#. Translators: this is the week day name followed by a time
+#. string in 12h format. i.e. "Monday, 2:30 pm"
+#: js/misc/util.js:232
+#, no-c-format
+msgid "%A, %l∶%M %p"
+msgstr "%A, %l∶%M %p"
+
+#. Translators: this is the month name and day number
+#. followed by a time string in 12h format.
+#. i.e. "May 25, 2:30 pm"
+#: js/misc/util.js:238
+#, no-c-format
+msgid "%B %d, %l∶%M %p"
+msgstr "%B %d, %l∶%M %p"
+
+#. Translators: this is the month name, day number, year
+#. number followed by a time string in 12h format.
+#. i.e. "May 25 2012, 2:30 pm"
+#: js/misc/util.js:244
+#, no-c-format
+msgid "%B %d %Y, %l∶%M %p"
+msgstr "%B %d %Y, %l∶%M %p"
+
+#. TRANSLATORS: this is the title of the wifi captive portal login
+#. * window, until we know the title of the actual login page
+#: js/portalHelper/main.js:85
+msgid "Web Authentication Redirect"
+msgstr "Ҳақиқийлигини текшириш учун қайта жўнатиш"
+
+#. No support for non-modal system dialogs, so ignore the option
+#. let modal = options['modal'] || true;
+#: js/ui/accessDialog.js:62 js/ui/status/location.js:426
+msgid "Deny Access"
+msgstr "Рухсат бермаслик"
+
+#: js/ui/accessDialog.js:63 js/ui/status/location.js:429
+msgid "Grant Access"
+msgstr "Рухсат бериш"
+
+#: js/ui/appDisplay.js:794
+msgid "Frequently used applications will appear here"
+msgstr "Тез-тез ишлатиладиган дастурлар шу ерда пайдо бўлади"
+
+#: js/ui/appDisplay.js:914
+msgid "Frequent"
+msgstr "Тез-тез ишлатиладиган"
+
+#: js/ui/appDisplay.js:921
+msgid "All"
+msgstr "Барча"
+
+#: js/ui/appDisplay.js:1853
+msgid "New Window"
+msgstr "Янги ойна"
+
+#: js/ui/appDisplay.js:1881 js/ui/dash.js:289
+msgid "Remove from Favorites"
+msgstr "Ёқтирганлар рўйхатидан ўчириш"
+
+#: js/ui/appDisplay.js:1887
+msgid "Add to Favorites"
+msgstr "Ёқтирганлар рўйхатига қўшиш"
+
+#: js/ui/appDisplay.js:1897
+msgid "Show Details"
+msgstr "Тафсилотларни кўрсатиш"
+
+#: js/ui/appFavorites.js:134
+#, javascript-format
+msgid "%s has been added to your favorites."
+msgstr "\"%s\" танланганлар рўйхатига қўшилди."
+
+#: js/ui/appFavorites.js:168
+#, javascript-format
+msgid "%s has been removed from your favorites."
+msgstr "\"%s\" танланганлар рўйхатидан олиб ташланди."
+
+#: js/ui/audioDeviceSelection.js:59
+msgid "Select Audio Device"
+msgstr "Аудио ускунани танлаш"
+
+#: js/ui/audioDeviceSelection.js:69
+msgid "Sound Settings"
+msgstr "Товуш мосламалари"
+
+#: js/ui/audioDeviceSelection.js:78
+msgid "Headphones"
+msgstr "Наушниклар"
+
+#: js/ui/audioDeviceSelection.js:80
+msgid "Headset"
+msgstr "Наушник"
+
+#: js/ui/audioDeviceSelection.js:82 js/ui/status/volume.js:213
+msgid "Microphone"
+msgstr "Микрофон"
+
+#: js/ui/backgroundMenu.js:19
+msgid "Change Background…"
+msgstr "Фонни ўзгартириш..."
+
+#: js/ui/backgroundMenu.js:21
+msgid "Display Settings"
+msgstr "Дисплей мосламалари"
+
+#: js/ui/backgroundMenu.js:22 js/ui/status/system.js:374
+msgid "Settings"
+msgstr "Мосламалар"
+
+#. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday).
+#: js/ui/calendar.js:47
+msgctxt "calendar-no-work"
+msgid "06"
+msgstr "06"
+
+#. Translators: Calendar grid abbreviation for Sunday.
+#. *
+#. * NOTE: These grid abbreviations are always shown together
+#. * and in order, e.g. "S M T W T F S".
+#.
+#: js/ui/calendar.js:76
+msgctxt "grid sunday"
+msgid "S"
+msgstr "Я"
+
+#. Translators: Calendar grid abbreviation for Monday
+#: js/ui/calendar.js:78
+msgctxt "grid monday"
+msgid "M"
+msgstr "Д"
+
+#. Translators: Calendar grid abbreviation for Tuesday
+#: js/ui/calendar.js:80
+msgctxt "grid tuesday"
+msgid "T"
+msgstr "С"
+
+#. Translators: Calendar grid abbreviation for Wednesday
+#: js/ui/calendar.js:82
+msgctxt "grid wednesday"
+msgid "W"
+msgstr "Ч"
+
+#. Translators: Calendar grid abbreviation for Thursday
+#: js/ui/calendar.js:84
+msgctxt "grid thursday"
+msgid "T"
+msgstr "П"
+
+#. Translators: Calendar grid abbreviation for Friday
+#: js/ui/calendar.js:86
+msgctxt "grid friday"
+msgid "F"
+msgstr "Ж"
+
+#. Translators: Calendar grid abbreviation for Saturday
+#: js/ui/calendar.js:88
+msgctxt "grid saturday"
+msgid "S"
+msgstr "Ш"
+
+#: js/ui/calendar.js:442
+msgid "Previous month"
+msgstr "Ўтган ой"
+
+#: js/ui/calendar.js:452
+msgid "Next month"
+msgstr "Келаси ой"
+
+#: js/ui/calendar.js:605
+#, no-javascript-format
+msgctxt "date day number format"
+msgid "%d"
+msgstr "%d"
+
+#: js/ui/calendar.js:660
+msgid "Week %V"
+msgstr "Ҳафта %V"
+
+#. Translators: Shown in calendar event list for all day events
+#. * Keep it short, best if you can use less then 10 characters
+#.
+#: js/ui/calendar.js:721
+msgctxt "event list time"
+msgid "All Day"
+msgstr "Куни бўйи"
+
+#: js/ui/calendar.js:836
+msgid "Events"
+msgstr "Тадбирлар"
+
+#: js/ui/calendar.js:845
+msgctxt "calendar heading"
+msgid "%A, %B %d"
+msgstr "%A, %B %d"
+
+#: js/ui/calendar.js:849
+msgctxt "calendar heading"
+msgid "%A, %B %d, %Y"
+msgstr "%A, %B %d, %Y"
+
+#: js/ui/calendar.js:931
+msgid "Notifications"
+msgstr "Хабарнома"
+
+#: js/ui/calendar.js:1082
+msgid "No Notifications"
+msgstr "Хабарлар йўқ"
+
+#: js/ui/calendar.js:1085
+msgid "No Events"
+msgstr "Тадбир йўқ"
+
+#: js/ui/components/automountManager.js:91
+msgid "External drive connected"
+msgstr "Ташқи диск уланган"
+
+#: js/ui/components/automountManager.js:102
+msgid "External drive disconnected"
+msgstr "Ташқи диск узилган"
+
+#: js/ui/components/autorunManager.js:355
+#, javascript-format
+msgid "Open with %s"
+msgstr "%s билан очиш"
+
+#: js/ui/components/keyring.js:120 js/ui/components/polkitAgent.js:315
+msgid "Password:"
+msgstr "Махфий сўз:"
+
+#: js/ui/components/keyring.js:153
+msgid "Type again:"
+msgstr "Яна ёзинг:"
+
+#: js/ui/components/networkAgent.js:140 js/ui/status/network.js:269
+#: js/ui/status/network.js:352 js/ui/status/network.js:919
+msgid "Connect"
+msgstr "Уланиш"
+
+#. Cisco LEAP
+#: js/ui/components/networkAgent.js:233 js/ui/components/networkAgent.js:245
+#: js/ui/components/networkAgent.js:273 js/ui/components/networkAgent.js:293
+#: js/ui/components/networkAgent.js:303
+msgid "Password: "
+msgstr "Махфий сўз:"
+
+#. static WEP
+#: js/ui/components/networkAgent.js:238
+msgid "Key: "
+msgstr "Калит:"
+
+#: js/ui/components/networkAgent.js:277
+msgid "Identity: "
+msgstr "Шахсият:"
+
+#: js/ui/components/networkAgent.js:279
+msgid "Private key password: "
+msgstr "Шахсий калитнинг махфий сўзи:"
+
+#: js/ui/components/networkAgent.js:291
+msgid "Service: "
+msgstr "Хизмат:"
+
+#: js/ui/components/networkAgent.js:320 js/ui/components/networkAgent.js:658
+msgid "Authentication required by wireless network"
+msgstr "Симсиз тармоқ ҳақиқийликни текширишни талаб қиляпти"
+
+#: js/ui/components/networkAgent.js:321 js/ui/components/networkAgent.js:659
+#, javascript-format
+msgid ""
+"Passwords or encryption keys are required to access the wireless network "
+"“%s”."
+msgstr ""
+"Симсиз \"%s\" тармоққа уланиш учун махфий сўзлар ёки шифрлаш калитлари талаб "
+"қилинади."
+
+#: js/ui/components/networkAgent.js:325 js/ui/components/networkAgent.js:662
+msgid "Wired 802.1X authentication"
+msgstr "Симли 802.1X алоқанинг ҳақиқийлигини текшириш"
+
+#: js/ui/components/networkAgent.js:327
+msgid "Network name: "
+msgstr "Тармоқ номи:"
+
+#: js/ui/components/networkAgent.js:332 js/ui/components/networkAgent.js:666
+msgid "DSL authentication"
+msgstr "DSL ҳақиқийлигини текшириш"
+
+#: js/ui/components/networkAgent.js:339 js/ui/components/networkAgent.js:672
+msgid "PIN code required"
+msgstr "PIN код талаб қилинади"
+
+#: js/ui/components/networkAgent.js:340 js/ui/components/networkAgent.js:673
+msgid "PIN code is needed for the mobile broadband device"
+msgstr "Катта йўлли мобил алоқа ускунаси уччун PIN код керак бўлади"
+
+#: js/ui/components/networkAgent.js:341
+msgid "PIN: "
+msgstr "PIN:"
+
+#: js/ui/components/networkAgent.js:348 js/ui/components/networkAgent.js:679
+msgid "Mobile broadband network password"
+msgstr "Кенг йўлли мобил алоқа учун махфий сўз"
+
+#: js/ui/components/networkAgent.js:349 js/ui/components/networkAgent.js:663
+#: js/ui/components/networkAgent.js:667 js/ui/components/networkAgent.js:680
+#, javascript-format
+msgid "A password is required to connect to “%s”."
+msgstr "\"%s\"га уланиш учун махфий сўз талаб қилинади."
+
+#: js/ui/components/networkAgent.js:647 js/ui/status/network.js:1658
+msgid "Network Manager"
+msgstr "Тармоқ бошқарувчиси"
+
+#: js/ui/components/polkitAgent.js:60
+msgid "Authentication Required"
+msgstr "Ҳақиқийлигини текшириш талаб қилинади"
+
+#: js/ui/components/polkitAgent.js:102
+msgid "Administrator"
+msgstr "Маъмур"
+
+#: js/ui/components/polkitAgent.js:182
+msgid "Authenticate"
+msgstr "Ҳақиқийлигини текшириш"
+
+#. Translators: "that didn't work" refers to the fact that the
+#. * requested authentication was not gained; this can happen
+#. * because of an authentication error (like invalid password),
+#. * for instance.
+#: js/ui/components/polkitAgent.js:301 js/ui/shellMountOperation.js:383
+msgid "Sorry, that didn't work. Please try again."
+msgstr "Узр, ишламади. Яна ҳаракат қилиб кўринг."
+
+#. Translators: this is the other person changing their old IM name to their new
+#. IM name.
+#: js/ui/components/telepathyClient.js:760
+#, javascript-format
+msgid "%s is now known as %s"
+msgstr "%s энди %s сифатида маълум"
+
+#: js/ui/ctrlAltTab.js:29 js/ui/viewSelector.js:155
+msgid "Windows"
+msgstr "Ойналар"
+
+#: js/ui/dash.js:250 js/ui/dash.js:291
+msgid "Show Applications"
+msgstr "Дастурларни кўрсатиш"
+
+#. Translators: this is the name of the dock/favorites area on
+#. the left of the overview
+#: js/ui/dash.js:449
+msgid "Dash"
+msgstr "Дастурлар панели"
+
+#. Translators: This is the date format to use when the calendar popup is
+#. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
+#.
+#: js/ui/dateMenu.js:73
+msgid "%B %e %Y"
+msgstr "%B %e %Y"
+
+#. Translators: This is the accessible name of the date button shown
+#. * below the time in the shell; it should combine the weekday and the
+#. * date, e.g. "Tuesday February 17 2015".
+#.
+#: js/ui/dateMenu.js:80
+msgid "%A %B %e %Y"
+msgstr "%A, %B %e, %Y"
+
+#: js/ui/dateMenu.js:160
+msgid "Add world clocks…"
+msgstr "Дунё соатларини қўшиш..."
+
+#: js/ui/dateMenu.js:161
+msgid "World Clocks"
+msgstr "Дунё соатлари"
+
+#: js/ui/endSessionDialog.js:64
+#, javascript-format
+msgctxt "title"
+msgid "Log Out %s"
+msgstr "%s фойдаланувчи сеансини якунлаш"
+
+#: js/ui/endSessionDialog.js:65
+msgctxt "title"
+msgid "Log Out"
+msgstr "Сеансни якунлаш"
+
+#: js/ui/endSessionDialog.js:67
+#, javascript-format
+msgid "%s will be logged out automatically in %d second."
+msgid_plural "%s will be logged out automatically in %d seconds."
+msgstr[0] "%sнинг сеанси %d сониядан сўнг автоматик равишда тугатилади."
+
+#: js/ui/endSessionDialog.js:72
+#, javascript-format
+msgid "You will be logged out automatically in %d second."
+msgid_plural "You will be logged out automatically in %d seconds."
+msgstr[0] "Сизнинг сеансинги %d сониядан сўнг автоматик равишда тугатилади."
+
+#: js/ui/endSessionDialog.js:78
+msgctxt "button"
+msgid "Log Out"
+msgstr "Сеансни якунлаш"
+
+#: js/ui/endSessionDialog.js:84
+msgctxt "title"
+msgid "Power Off"
+msgstr "Ўчириш"
+
+#: js/ui/endSessionDialog.js:85
+msgctxt "title"
+msgid "Install Updates & Power Off"
+msgstr "Янгиликларни ўрнатиш ва компьютерни ўчириш"
+
+#: js/ui/endSessionDialog.js:87
+#, javascript-format
+msgid "The system will power off automatically in %d second."
+msgid_plural "The system will power off automatically in %d seconds."
+msgstr[0] "Система %d сониядан сўнг автоматик равишда ўчади."
+
+#: js/ui/endSessionDialog.js:91
+msgctxt "checkbox"
+msgid "Install pending software updates"
+msgstr "Навбатдаги дастурий таъминот янгиликларини ўрнатиш"
+
+#: js/ui/endSessionDialog.js:94 js/ui/endSessionDialog.js:111
+msgctxt "button"
+msgid "Restart"
+msgstr "Ўчириб ёқиш"
+
+#: js/ui/endSessionDialog.js:96
+msgctxt "button"
+msgid "Power Off"
+msgstr "Ўчириш"
+
+#: js/ui/endSessionDialog.js:103
+msgctxt "title"
+msgid "Restart"
+msgstr "Ўчириб ёқиш"
+
+#: js/ui/endSessionDialog.js:105
+#, javascript-format
+msgid "The system will restart automatically in %d second."
+msgid_plural "The system will restart automatically in %d seconds."
+msgstr[0] "Система %d сониядан сўнг автоматик равишда ўчиб ёнади."
+
+#: js/ui/endSessionDialog.js:119
+msgctxt "title"
+msgid "Restart & Install Updates"
+msgstr "Ўчириб ёқиш ва янгиликларни ўрнатиш"
+
+#: js/ui/endSessionDialog.js:121
+#, javascript-format
+msgid "The system will automatically restart and install updates in %d second."
+msgid_plural ""
+"The system will automatically restart and install updates in %d seconds."
+msgstr[0] ""
+"Система %d сониядан сўнг автоматик равишда ўчиб ёнади ва янгиликларни "
+"ўрнатади."
+
+#: js/ui/endSessionDialog.js:127 js/ui/endSessionDialog.js:147
+msgctxt "button"
+msgid "Restart &amp; Install"
+msgstr "Ўчириб ёқиш ва ўрнатиш"
+
+#: js/ui/endSessionDialog.js:128
+msgctxt "button"
+msgid "Install &amp; Power Off"
+msgstr "Ўрнатиш ва компьютерни ўчириш"
+
+#: js/ui/endSessionDialog.js:129
+msgctxt "checkbox"
+msgid "Power off after updates are installed"
+msgstr "Янгиликлар ўрнатилгандан кейин компьютерни ўчириш"
+
+#: js/ui/endSessionDialog.js:137
+msgctxt "title"
+msgid "Restart & Install Upgrade"
+msgstr "Ўчириб ёқиш ва янгиликларни ўрнатиш"
+
+#. Translators: This is the text displayed for system upgrades in the
+#. shut down dialog. First %s gets replaced with the distro name and
+#. second %s with the distro version to upgrade to
+#: js/ui/endSessionDialog.js:142
+#, javascript-format
+msgid ""
+"%s %s will be installed after restart. Upgrade installation can take a long "
+"time: ensure that you have backed up and that the computer is plugged in."
+msgstr ""
+"Система қайта ишга тушганидан сўнг %s %s ўрнатилади. Янгилаш кўп вақт талаб "
+"қилиши мумкин: захира нусхаси борлиги ва компьютер тармоққа уланганлигига "
+"ишонч ҳосил қилинг."
+
+#: js/ui/endSessionDialog.js:361
+msgid "Running on battery power: please plug in before installing updates."
+msgstr ""
+"Компьютер батарея қувватида ишлаяпти: илтимос янгиликларни ўрнатишдан олдин "
+"заряд ускунасини уланг."
+
+#: js/ui/endSessionDialog.js:378
+msgid "Some applications are busy or have unsaved work."
+msgstr "Баъзи дастурлар банд ёки уларнинг сақланмаган ишлари бор."
+
+#: js/ui/endSessionDialog.js:385
+msgid "Other users are logged in."
+msgstr "Системада бошқа фойдаланувчиларнинг фаол сеанслари мавжуд."
+
+#. Translators: Remote here refers to a remote session, like a ssh login
+#: js/ui/endSessionDialog.js:671
+#, javascript-format
+msgid "%s (remote)"
+msgstr "%s (масофавий)"
+
+#. Translators: Console here refers to a tty like a VT console
+#: js/ui/endSessionDialog.js:674
+#, javascript-format
+msgid "%s (console)"
+msgstr "%s (терминал)"
+
+#: js/ui/extensionDownloader.js:199
+msgid "Install"
+msgstr "Ўрнатиш"
+
+#: js/ui/extensionDownloader.js:204
+#, javascript-format
+msgid "Download and install “%s” from extensions.gnome.org?"
+msgstr "\"%s\" ни extensions.gnome.org сайтидан юклаб олиб ўрнатасизми?"
+
+#: js/ui/keyboard.js:742 js/ui/status/keyboard.js:782
+msgid "Keyboard"
+msgstr "Клавиатура"
+
+#. translators: 'Hide' is a verb
+#: js/ui/legacyTray.js:65
+msgid "Hide tray"
+msgstr "Лаълини яшириш"
+
+#: js/ui/legacyTray.js:106
+msgid "Status Icons"
+msgstr "Ҳолат нишончалари"
+
+#: js/ui/lookingGlass.js:643
+msgid "No extensions installed"
+msgstr "Бирорта кенгайтма ўрнатилмаган"
+
+#. Translators: argument is an extension UUID.
+#: js/ui/lookingGlass.js:697
+#, javascript-format
+msgid "%s has not emitted any errors."
+msgstr "%s бирор хато чиқармади."
+
+#: js/ui/lookingGlass.js:703
+msgid "Hide Errors"
+msgstr "Хатоларни яшириш"
+
+#: js/ui/lookingGlass.js:707 js/ui/lookingGlass.js:767
+msgid "Show Errors"
+msgstr "Хатоларни кўрсатиш"
+
+#: js/ui/lookingGlass.js:716
+msgid "Enabled"
+msgstr "Ёниқ"
+
+#. translators:
+#. * The device has been disabled
+#: js/ui/lookingGlass.js:719 src/gvc/gvc-mixer-control.c:1866
+msgid "Disabled"
+msgstr "Ўчиқ"
+
+#: js/ui/lookingGlass.js:721
+msgid "Error"
+msgstr "Хато"
+
+#: js/ui/lookingGlass.js:723
+msgid "Out of date"
+msgstr "Эски"
+
+#: js/ui/lookingGlass.js:725
+msgid "Downloading"
+msgstr "Юкланяпти"
+
+#: js/ui/lookingGlass.js:749
+msgid "View Source"
+msgstr "Манбани кўриш"
+
+#: js/ui/lookingGlass.js:758
+msgid "Web Page"
+msgstr "Веб саҳифа"
+
+#: js/ui/messageList.js:543
+msgid "Clear section"
+msgstr "Бўлимни тозалаш"
+
+#: js/ui/messageTray.js:1486
+msgid "System Information"
+msgstr "Система ҳақида ахборот"
+
+#: js/ui/mpris.js:194
+msgid "Unknown artist"
+msgstr "Номаълум артист"
+
+#: js/ui/mpris.js:195
+msgid "Unknown title"
+msgstr "Номаълум сарлавҳа"
+
+#: js/ui/mpris.js:217
+msgid "Media"
+msgstr "Ахборот воситалари"
+
+#: js/ui/overview.js:84
+msgid "Undo"
+msgstr "Ўз ҳолига қайтариш"
+
+#: js/ui/overview.js:113
+msgid "Overview"
+msgstr "Тепадан кўриниш"
+
+#. Translators: this is the text displayed
+#. in the search entry when no search is
+#. active; it should not exceed ~30
+#. characters.
+#: js/ui/overview.js:240
+msgid "Type to search…"
+msgstr "Қидириш учун ёзинг..."
+
+#: js/ui/panel.js:358
+msgid "Quit"
+msgstr "Чиқиш"
+
+#. Translators: If there is no suitable word for "Activities"
+#. in your language, you can use the word for "Overview".
+#: js/ui/panel.js:414
+msgid "Activities"
+msgstr "Фаолият"
+
+#: js/ui/panel.js:695
+msgctxt "System menu in the top bar"
+msgid "System"
+msgstr "Система"
+
+#: js/ui/panel.js:807
+msgid "Top Bar"
+msgstr "Тепа панели"
+
+#. Translators: this MUST be either "toggle-switch-us"
+#. (for toggle switches containing the English words
+#. "ON" and "OFF") or "toggle-switch-intl" (for toggle
+#. switches containing "◯" and "|"). Other values will
+#. simply result in invisible toggle switches.
+#: js/ui/popupMenu.js:289
+msgid "toggle-switch-us"
+msgstr "toggle-switch-us"
+
+#: js/ui/runDialog.js:71
+msgid "Enter a Command"
+msgstr "Буйруқни киритинг"
+
+#: js/ui/runDialog.js:111 js/ui/windowMenu.js:162
+msgid "Close"
+msgstr "Ёпиш"
+
+#: js/ui/runDialog.js:282
+msgid "Restarting…"
+msgstr "Ўчириб ёқиляпти..."
+
+#. Translators: This is a time format for a date in
+#. long format
+#: js/ui/screenShield.js:85
+msgid "%A, %B %d"
+msgstr "%A, %B %d"
+
+#: js/ui/screenShield.js:144
+#, javascript-format
+msgid "%d new message"
+msgid_plural "%d new messages"
+msgstr[0] "%dта янги хат"
+
+#: js/ui/screenShield.js:146
+#, javascript-format
+msgid "%d new notification"
+msgid_plural "%d new notifications"
+msgstr[0] "%dта янги хабарномалар"
+
+#: js/ui/screenShield.js:449 js/ui/status/system.js:382
+msgid "Lock"
+msgstr "Қулфлаш"
+
+#: js/ui/screenShield.js:704
+msgid "GNOME needs to lock the screen"
+msgstr "GNOME экранни қулфлаши керак"
+
+#. We could not become modal, so we can't activate the
+#. screenshield. The user is probably very upset at this
+#. point, but any application using global grabs is broken
+#. Just tell him to stop using this app
+#.
+#. XXX: another option is to kick the user into the gdm login
+#. screen, where we're not affected by grabs
+#: js/ui/screenShield.js:825 js/ui/screenShield.js:1291
+msgid "Unable to lock"
+msgstr "Қулфлаб бўлмади"
+
+#: js/ui/screenShield.js:826 js/ui/screenShield.js:1292
+msgid "Lock was blocked by an application"
+msgstr "Қайсидир дастур томонидан қулфлаш бекор қилинди"
+
+#: js/ui/search.js:617
+msgid "Searching…"
+msgstr "Қидириляпти..."
+
+#: js/ui/search.js:619
+msgid "No results."
+msgstr "Натижа йўқ."
+
+#: js/ui/shellEntry.js:25
+msgid "Copy"
+msgstr "Кўчириш"
+
+#: js/ui/shellEntry.js:30
+msgid "Paste"
+msgstr "Қўйиш"
+
+#: js/ui/shellEntry.js:97
+msgid "Show Text"
+msgstr "Матнни кўрсатиш"
+
+#: js/ui/shellEntry.js:99
+msgid "Hide Text"
+msgstr "Матнни яшириш"
+
+#: js/ui/shellMountOperation.js:370
+msgid "Password"
+msgstr "Махфий сўз"
+
+#: js/ui/shellMountOperation.js:391
+msgid "Remember Password"
+msgstr "Махфий сўзни эслаб қолиш"
+
+#: js/ui/status/accessibility.js:42
+msgid "Accessibility"
+msgstr "Махсус имкониятлар"
+
+#: js/ui/status/accessibility.js:57
+msgid "Zoom"
+msgstr "Миқиёс"
+
+#: js/ui/status/accessibility.js:64
+msgid "Screen Reader"
+msgstr "Экран ўқувчи"
+
+#: js/ui/status/accessibility.js:68
+msgid "Screen Keyboard"
+msgstr "Экран клавиатураси"
+
+#: js/ui/status/accessibility.js:72
+msgid "Visual Alerts"
+msgstr "Кўргазмали огоҳлантиришлар"
+
+#: js/ui/status/accessibility.js:75
+msgid "Sticky Keys"
+msgstr "Ёпишқоқ клавишалар"
+
+#: js/ui/status/accessibility.js:78
+msgid "Slow Keys"
+msgstr "Секин клавишалар"
+
+#: js/ui/status/accessibility.js:81
+msgid "Bounce Keys"
+msgstr "Сакраб турувчи клавиша"
+
+#: js/ui/status/accessibility.js:84
+msgid "Mouse Keys"
+msgstr "Сичқонча тугмалари"
+
+#: js/ui/status/accessibility.js:167
+msgid "High Contrast"
+msgstr "Юқори контрастли"
+
+#: js/ui/status/accessibility.js:202
+msgid "Large Text"
+msgstr "Катта матн"
+
+#: js/ui/status/bluetooth.js:47
+msgid "Bluetooth"
+msgstr "Bluetooth"
+
+#: js/ui/status/bluetooth.js:56 js/ui/status/network.js:624
+msgid "Bluetooth Settings"
+msgstr "Bluetooth мосламалари"
+
+#. Translators: this is the number of connected bluetooth devices
+#: js/ui/status/bluetooth.js:136
+#, javascript-format
+msgid "%d Connected"
+msgid_plural "%d Connected"
+msgstr[0] "%dта уланган"
+
+#: js/ui/status/bluetooth.js:138
+msgid "Off"
+msgstr "Ўчган"
+
+#: js/ui/status/bluetooth.js:140
+msgid "Not In Use"
+msgstr "Ишлатилмаяпти"
+
+#: js/ui/status/bluetooth.js:142 js/ui/status/network.js:1279
+msgid "Turn On"
+msgstr "Ёқиш"
+
+#: js/ui/status/bluetooth.js:142 js/ui/status/network.js:178
+#: js/ui/status/network.js:353 js/ui/status/network.js:1279
+#: js/ui/status/network.js:1394 js/ui/status/rfkill.js:90
+#: js/ui/status/rfkill.js:117
+msgid "Turn Off"
+msgstr "Ўчириш"
+
+#: js/ui/status/brightness.js:44
+msgid "Brightness"
+msgstr "Ёруғлик"
+
+#: js/ui/status/keyboard.js:805
+msgid "Show Keyboard Layout"
+msgstr "Клавиатура жойлашувини кўрсатиш"
+
+#: js/ui/status/location.js:107 js/ui/status/location.js:215
+msgid "Location Enabled"
+msgstr "Манзил ёқилган"
+
+#: js/ui/status/location.js:108 js/ui/status/location.js:216
+msgid "Disable"
+msgstr "Ўчириш"
+
+#: js/ui/status/location.js:109
+msgid "Privacy Settings"
+msgstr "Шахсий маълумот мосламалари"
+
+#: js/ui/status/location.js:214
+msgid "Location In Use"
+msgstr "Манзил ишлатиляпти"
+
+#: js/ui/status/location.js:218
+msgid "Location Disabled"
+msgstr "Манзил ўчирилган"
+
+#: js/ui/status/location.js:219
+msgid "Enable"
+msgstr "Ёқиш"
+
+#. Translators: %s is an application name
+#: js/ui/status/location.js:435
+#, javascript-format
+msgid "Give %s access to your location?"
+msgstr "%s манзилингизни билишига рухсат берасизми?"
+
+#: js/ui/status/location.js:437
+msgid "Location access can be changed at any time from the privacy settings."
+msgstr "Манзилга рухсатни махфийлик мосламаларида ўзгартириш мумкин"
+
+#: js/ui/status/network.js:101
+msgid "<unknown>"
+msgstr "<номаълум>"
+
+#. Translators: %s is a network identifier
+#: js/ui/status/network.js:451 js/ui/status/network.js:1308
+#, javascript-format
+msgid "%s Off"
+msgstr "%s ўчган"
+
+#. Translators: %s is a network identifier
+#: js/ui/status/network.js:454
+#, javascript-format
+msgid "%s Connected"
+msgstr "%s уланган"
+
+#. Translators: this is for network devices that are physically present but are not
+#. under NetworkManager's control (and thus cannot be used in the menu);
+#. %s is a network identifier
+#: js/ui/status/network.js:459
+#, javascript-format
+msgid "%s Unmanaged"
+msgstr "%s бошқарувда эмас"
+
+#. Translators: %s is a network identifier
+#: js/ui/status/network.js:462
+#, javascript-format
+msgid "%s Disconnecting"
+msgstr "%s узиляпти"
+
+#. Translators: %s is a network identifier
+#: js/ui/status/network.js:469 js/ui/status/network.js:1300
+#, javascript-format
+msgid "%s Connecting"
+msgstr "%s уланяпти"
+
+#. Translators: this is for network connections that require some kind of key or password; %s is a network identifier
+#: js/ui/status/network.js:472
+#, javascript-format
+msgid "%s Requires Authentication"
+msgstr "%s аутентификацияни талаб қилади"
+
+#. Translators: this is for devices that require some kind of firmware or kernel
+#. module, which is missing; %s is a network identifier
+#: js/ui/status/network.js:480
+#, javascript-format
+msgid "Firmware Missing For %s"
+msgstr "%sнинг чоки йўқ"
+
+#. Translators: this is for a network device that cannot be activated (for example it
+#. is disabled by rfkill, or it has no coverage; %s is a network identifier
+#: js/ui/status/network.js:484
+#, javascript-format
+msgid "%s Unavailable"
+msgstr "%s мавжуд эмас"
+
+#. Translators: %s is a network identifier
+#: js/ui/status/network.js:487
+#, javascript-format
+msgid "%s Connection Failed"
+msgstr "%s алоқа қила олмади"
+
+#: js/ui/status/network.js:503
+msgid "Wired Settings"
+msgstr "Симли алоқа мосламалари"
+
+#: js/ui/status/network.js:545
+msgid "Mobile Broadband Settings"
+msgstr "Кенг йўлли мобил алоқа мосламалари"
+
+#. Translators: %s is a network identifier
+#: js/ui/status/network.js:588 js/ui/status/network.js:1305
+#, javascript-format
+msgid "%s Hardware Disabled"
+msgstr "%s ускунаси ўчирилган"
+
+#. Translators: this is for a network device that cannot be activated
+#. because it's disabled by rfkill (airplane mode); %s is a network identifier
+#: js/ui/status/network.js:592
+#, javascript-format
+msgid "%s Disabled"
+msgstr "%s ўчиқ"
+
+#: js/ui/status/network.js:632
+msgid "Connect to Internet"
+msgstr "Интернетга уланиш"
+
+#: js/ui/status/network.js:813
+msgid "Airplane Mode is On"
+msgstr "Самолёт режими ёнган"
+
+#: js/ui/status/network.js:814
+msgid "Wi-Fi is disabled when airplane mode is on."
+msgstr "Самолёт режими ёниқ бўлганда Wi-Fi ўчган бўлади."
+
+#: js/ui/status/network.js:815
+msgid "Turn Off Airplane Mode"
+msgstr "Самолёт режимини ўчириш"
+
+#: js/ui/status/network.js:824
+msgid "Wi-Fi is Off"
+msgstr "Wi-Fi ўчган"
+
+#: js/ui/status/network.js:825
+msgid "Wi-Fi needs to be turned on in order to connect to a network."
+msgstr "Тармоққа уланиш учун Wi-Fi ёнган бўлиши керак."
+
+#: js/ui/status/network.js:826
+msgid "Turn On Wi-Fi"
+msgstr "Wi-Fiни ёқиш"
+
+#: js/ui/status/network.js:851
+msgid "Wi-Fi Networks"
+msgstr "Wi-Fi тармоқлар"
+
+#: js/ui/status/network.js:853
+msgid "Select a network"
+msgstr "Тармоқни танлаш"
+
+#: js/ui/status/network.js:883
+msgid "No Networks"
+msgstr "Бирорта тармоқ мавжуд эмас"
+
+#: js/ui/status/network.js:904 js/ui/status/rfkill.js:115
+msgid "Use hardware switch to turn off"
+msgstr "Ўчириш учун ускуна тугмасини ишлатиш"
+
+#: js/ui/status/network.js:1171
+msgid "Select Network"
+msgstr "Тармоқни танлаш"
+
+#: js/ui/status/network.js:1177
+msgid "Wi-Fi Settings"
+msgstr "Wi-Fi Мосламалари"
+
+#. Translators: %s is a network identifier
+#: js/ui/status/network.js:1296
+#, javascript-format
+msgid "%s Hotspot Active"
+msgstr "%s уланиш нуқтаси фаол"
+
+#. Translators: %s is a network identifier
+#: js/ui/status/network.js:1311
+#, javascript-format
+msgid "%s Not Connected"
+msgstr "%s уланмаган"
+
+#: js/ui/status/network.js:1411
+msgid "connecting..."
+msgstr "уланяпти..."
+
+#. Translators: this is for network connections that require some kind of key or password
+#: js/ui/status/network.js:1414
+msgid "authentication required"
+msgstr "ҳақиқийлигини аниқлаш талаб қилинади"
+
+#: js/ui/status/network.js:1416
+msgid "connection failed"
+msgstr "алоқа қилиб бўлмади"
+
+#: js/ui/status/network.js:1482 js/ui/status/rfkill.js:93
+msgid "Network Settings"
+msgstr "Тармоқ мосламалари"
+
+#: js/ui/status/network.js:1484
+msgid "VPN Settings"
+msgstr "VPN мосламалари"
+
+#: js/ui/status/network.js:1503
+msgid "VPN"
+msgstr "VPN"
+
+#: js/ui/status/network.js:1513
+msgid "VPN Off"
+msgstr "VPN Ўчган"
+
+#: js/ui/status/network.js:1697
+msgid "Connection failed"
+msgstr "Алоқа қилиб бўлмади"
+
+#: js/ui/status/network.js:1698
+msgid "Activation of network connection failed"
+msgstr "Тармоқ алоқасини фаоллаштириб бўлмади"
+
+#: js/ui/status/power.js:61
+msgid "Power Settings"
+msgstr "Қувват мосламалари"
+
+#: js/ui/status/power.js:77
+msgid "Fully Charged"
+msgstr "Тўлиқ зарядланди"
+
+#. 0 is reported when UPower does not have enough data
+#. to estimate battery life
+#: js/ui/status/power.js:84 js/ui/status/power.js:90
+msgid "Estimating…"
+msgstr "Баҳоланяпти..."
+
+#. Translators: this is <hours>:<minutes> Remaining (<percentage>)
+#: js/ui/status/power.js:98
+#, javascript-format
+msgid "%d∶%02d Remaining (%d %%)"
+msgstr "%d∶%02d қолди (%d%%)"
+
+#. Translators: this is <hours>:<minutes> Until Full (<percentage>)
+#: js/ui/status/power.js:103
+#, javascript-format
+msgid "%d∶%02d Until Full (%d %%)"
+msgstr "Тўлишига %d∶%02d қолди (%d%%)"
+
+#: js/ui/status/power.js:131 js/ui/status/power.js:133
+#, javascript-format
+msgid "%d %%"
+msgstr "%d %%"
+
+#. The menu only appears when airplane mode is on, so just
+#. statically build it as if it was on, rather than dynamically
+#. changing the menu contents.
+#: js/ui/status/rfkill.js:88
+msgid "Airplane Mode On"
+msgstr "Самолёт режими ёнган"
+
+#: js/ui/status/system.js:351
+msgid "Switch User"
+msgstr "Фойдаланувчини алмаштириш"
+
+#: js/ui/status/system.js:356
+msgid "Log Out"
+msgstr "Сеансни якунлаш"
+
+#: js/ui/status/system.js:361
+msgid "Account Settings"
+msgstr "Профил созламалари"
+
+#: js/ui/status/system.js:378
+msgid "Orientation Lock"
+msgstr "Ориентацияни қулфлаш"
+
+#: js/ui/status/system.js:386
+msgid "Suspend"
+msgstr "Тўхтатиб қўймоқ"
+
+#: js/ui/status/system.js:389
+msgid "Power Off"
+msgstr "Ўчган"
+
+#: js/ui/status/volume.js:127
+msgid "Volume changed"
+msgstr "Овоз баландлиги ўзгарди"
+
+#: js/ui/status/volume.js:162
+msgid "Volume"
+msgstr "Товуш"
+
+#: js/ui/unlockDialog.js:67
+msgid "Log in as another user"
+msgstr "Бошқа фойдаланувчи сифатида кириш"
+
+#: js/ui/unlockDialog.js:84
+msgid "Unlock Window"
+msgstr "Ойнани қулфини очиш"
+
+#: js/ui/viewSelector.js:159
+msgid "Applications"
+msgstr "Дастурлар"
+
+#: js/ui/viewSelector.js:163
+msgid "Search"
+msgstr "Қидириш"
+
+#: js/ui/windowAttentionHandler.js:20
+#, javascript-format
+msgid "“%s” is ready"
+msgstr "\"%s\" тайёр"
+
+#: js/ui/windowManager.js:63
+msgid "Do you want to keep these display settings?"
+msgstr "Ушбу экран мосламаларини сақламоқчимисиз?"
+
+#. Translators: this and the following message should be limited in lenght,
+#. to avoid ellipsizing the labels.
+#.
+#: js/ui/windowManager.js:82
+msgid "Revert Settings"
+msgstr "Мосламаларни ўз ҳолига қайтариш"
+
+#: js/ui/windowManager.js:85
+msgid "Keep Changes"
+msgstr "Ўзгаришларни сақлаш"
+
+#: js/ui/windowManager.js:103
+#, javascript-format
+msgid "Settings changes will revert in %d second"
+msgid_plural "Settings changes will revert in %d seconds"
+msgstr[0] "Мослама ўзгаришлари %d сониядан кейин ўз ҳолига қайтади"
+
+#. Translators: This represents the size of a window. The first number is
+#. * the width of the window and the second is the height.
+#: js/ui/windowManager.js:658
+#, javascript-format
+msgid "%d x %d"
+msgstr "%d x %d"
+
+#: js/ui/windowMenu.js:34
+msgid "Minimize"
+msgstr "Йиғиш"
+
+#: js/ui/windowMenu.js:41
+msgid "Unmaximize"
+msgstr "Олдинги ўлчамига қайтариш"
+
+#: js/ui/windowMenu.js:45
+msgid "Maximize"
+msgstr "Катталаштирмоқ"
+
+#: js/ui/windowMenu.js:52
+msgid "Move"
+msgstr "Кўчириш"
+
+#: js/ui/windowMenu.js:58
+msgid "Resize"
+msgstr "Ўлчамини ўзгартириш"
+
+#: js/ui/windowMenu.js:65
+msgid "Move Titlebar Onscreen"
+msgstr "Сарлавҳа панелини экранга кўчириш"
+
+#: js/ui/windowMenu.js:70
+msgid "Always on Top"
+msgstr "Доим тепада"
+
+#: js/ui/windowMenu.js:89
+msgid "Always on Visible Workspace"
+msgstr "Доим кўриниб турган иш жойига"
+
+#: js/ui/windowMenu.js:105
+msgid "Move to Workspace Left"
+msgstr "Чапдаги иш жойига кўчириш"
+
+#: js/ui/windowMenu.js:110
+msgid "Move to Workspace Right"
+msgstr "Ўнгдаги иш жойига кўчириш"
+
+#: js/ui/windowMenu.js:115
+msgid "Move to Workspace Up"
+msgstr "Тепадаги иш жойига кўчириш"
+
+#: js/ui/windowMenu.js:120
+msgid "Move to Workspace Down"
+msgstr "Пастдаги иш жойига кўчириш"
+
+#: js/ui/windowMenu.js:136
+msgid "Move to Monitor Up"
+msgstr "Тепадаги мониторга кўчириш"
+
+#: js/ui/windowMenu.js:142
+msgid "Move to Monitor Down"
+msgstr "Пастдаги мониторга кўчириш"
+
+#: js/ui/windowMenu.js:148
+msgid "Move to Monitor Left"
+msgstr "Чапдаги мониторга кўчириш"
+
+#: js/ui/windowMenu.js:154
+msgid "Move to Monitor Right"
+msgstr "Ўнгдаги мониторга кўчириш"
+
+#: src/calendar-server/evolution-calendar.desktop.in:3
+msgid "Evolution Calendar"
+msgstr "Evolution тақвими"
+
+#. Translators: Do NOT translate or transliterate this text (this is an icon file name)!
+#: src/calendar-server/evolution-calendar.desktop.in:6
+msgid "evolution"
+msgstr "evolution"
+
+#. translators:
+#. * The number of sound outputs on a particular device
+#: src/gvc/gvc-mixer-control.c:1873
+#, c-format
+msgid "%u Output"
+msgid_plural "%u Outputs"
+msgstr[0] "%uта товуш чиқиш йўллари"
+
+#. translators:
+#. * The number of sound inputs on a particular device
+#: src/gvc/gvc-mixer-control.c:1883
+#, c-format
+msgid "%u Input"
+msgid_plural "%u Inputs"
+msgstr[0] "%uта товуш кириш йўллари"
+
+#: src/gvc/gvc-mixer-control.c:2738
+msgid "System Sounds"
+msgstr "Система товушлари"
+
+#: src/main.c:381
+msgid "Print version"
+msgstr "Босма учун версия"
+
+#: src/main.c:387
+msgid "Mode used by GDM for login screen"
+msgstr "Сеансга кириш ойнаси учун GDM ишлатадиган режим"
+
+#: src/main.c:393
+msgid "Use a specific mode, e.g. \"gdm\" for login screen"
+msgstr "Аниқ бир режимни, масалан кириш экрани учун \"gdm\"ни, ишлатиш"
+
+#: src/main.c:399
+msgid "List possible modes"
+msgstr "Мавжуд режимлар рўйхати"
+
+#: src/shell-app.c:270
+msgctxt "program"
+msgid "Unknown"
+msgstr "Номаълум"
+
+#: src/shell-app.c:511
+#, c-format
+msgid "Failed to launch “%s”"
+msgstr "\"%s\"ни ишга тушириб бўлмади"
+
+#: src/shell-keyring-prompt.c:730
+msgid "Passwords do not match."
+msgstr "Махфий сўзлар мос келмади."
+
+#: src/shell-keyring-prompt.c:738
+msgid "Password cannot be blank"
+msgstr "Махфий сўз бўш бўлмаслиги керак"
+
+#: src/shell-polkit-authentication-agent.c:353
+msgid "Authentication dialog was dismissed by the user"
+msgstr "Ҳақиқийлигини аниқловчи диалог ойна фойдаланувчи томонидан ёпилди"
+
+#~ msgid "Show the message tray"
+#~ msgstr "Хабарлар панелини кўрсатиш"
+
+#~ msgid "GNOME Shell (wayland compositor)"
+#~ msgstr "GNOME Shell (wayland улагичи)"
+
+#~ msgid "Show the week date in the calendar"
+#~ msgstr "Тақвимда ҳафта тартибини кўрсатиш"
+
+#~ msgid "If true, display the ISO week date in the calendar."
+#~ msgstr "Агар белгиланса, тақвимда ISO ҳафта тартибини кўрсатилади."
+
+#~ msgid "Captive Portal"
+#~ msgstr "Captive Portal"
+
+#~ msgctxt "event list time"
+#~ msgid "%H∶%M"
+#~ msgstr "%H∶%M"
+
+#~ msgctxt "event list time"
+#~ msgid "%l∶%M %p"
+#~ msgstr "%l∶%M %p"
+
+#~ msgctxt "list sunday"
+#~ msgid "Su"
+#~ msgstr "Як"
+
+#~ msgctxt "list monday"
+#~ msgid "M"
+#~ msgstr "Д"
+
+#~ msgctxt "list tuesday"
+#~ msgid "T"
+#~ msgstr "С"
+
+#~ msgctxt "list wednesday"
+#~ msgid "W"
+#~ msgstr "Ч"
+
+#~ msgctxt "list thursday"
+#~ msgid "Th"
+#~ msgstr "П"
+
+#~ msgctxt "list friday"
+#~ msgid "F"
+#~ msgstr "Ж"
+
+#~ msgctxt "list saturday"
+#~ msgid "S"
+#~ msgstr "Ш"
+
+#~ msgid "Nothing Scheduled"
+#~ msgstr "Ҳеч нарса режалаштирилмаган"
+
+#~ msgid "Today"
+#~ msgstr "Бугун"
+
+#~ msgid "Tomorrow"
+#~ msgstr "Эртага"
+
+#~ msgid "This week"
+#~ msgstr "Шу ҳафта"
+
+#~ msgid "Next week"
+#~ msgstr "Келаси ҳафта"
+
+#~ msgid "Removable Devices"
+#~ msgstr "Олинадиган ускуналар"
+
+#~ msgid "Eject"
+#~ msgstr "Чиқариш"
+
+#~ msgid "Invitation"
+#~ msgstr "Таклифнома"
+
+#~ msgid "Call"
+#~ msgstr "Телефон қилиш"
+
+#~ msgid "File Transfer"
+#~ msgstr "Файлни кўчириш"
+
+#~ msgid "Chat"
+#~ msgstr "Чатлашиш"
+
+#~ msgid "Unmute"
+#~ msgstr "Овозини чиқариш"
+
+#~ msgid "Mute"
+#~ msgstr "Овозини ўчириш"
+
+#~ msgid "Invitation to %s"
+#~ msgstr "%sга таклифнома"
+
+#~ msgid "%s is inviting you to join %s"
+#~ msgstr "%s сизни %sга қўшилишга таклиф қиляпти"
+
+#~ msgid "Decline"
+#~ msgstr "Рад этмоқ"
+
+#~ msgid "Accept"
+#~ msgstr "Қабул қилмоқ"
+
+#~ msgid "Video call from %s"
+#~ msgstr "%sдан видео қўнғироқ"
+
+#~ msgid "Call from %s"
+#~ msgstr " %sдан қўнғироқ"
+
+#~ msgid "Answer"
+#~ msgstr "Жавоб"
+
+#~ msgid "%s is sending you %s"
+#~ msgstr "%s сизга %sни жўнатяпти"
+
+#~ msgid "%s would like permission to see when you are online"
+#~ msgstr "%s синзни онлайн бўлганингизда кўриш учун рухсат сўраяпти"
+
+#~ msgid "Authentication failed"
+#~ msgstr "Ҳақиқийлигини текшириб бўлмади"
+
+#~ msgid "Encryption error"
+#~ msgstr "Шифрлашда хатолик"
+
+#~ msgid "Certificate not provided"
+#~ msgstr "Гувоҳнома берилмаган"
+
+#~ msgid "Certificate untrusted"
+#~ msgstr "Гувоҳнома ишонарсиз"
+
+#~ msgid "Certificate expired"
+#~ msgstr "Гувоҳнома эскирган"
+
+#~ msgid "Certificate not activated"
+#~ msgstr "Гувоҳнома фаоллаштирилмаган"
+
+#~ msgid "Certificate hostname mismatch"
+#~ msgstr "Гувоҳнома тугунининг номи мос келмади"
+
+#~ msgid "Certificate fingerprint mismatch"
+#~ msgstr "Гувоҳнома тамғаси мос келмади"
+
+#~ msgid "Certificate self-signed"
+#~ msgstr "Ўзи имзоланган гувоҳнома"
+
+#~ msgid "Status is set to offline"
+#~ msgstr "Статусингиз офлайн қилинди"
+
+#~ msgid "Encryption is not available"
+#~ msgstr "Шифрлаш мавжуд эмас"
+
+#~ msgid "Certificate is invalid"
+#~ msgstr "Хато гувоҳнома"
+
+#~ msgid "Connection has been refused"
+#~ msgstr "Алоқа рад жавобини олди"
+
+#~ msgid "Connection can't be established"
+#~ msgstr "Алоқа қилиб бўлмади"
+
+#~ msgid "Connection has been lost"
+#~ msgstr "Алоқа йўқотилди"
+
+#~ msgid "This account is already connected to the server"
+#~ msgstr "Бу ҳисоб аллақачон серверга уланган"
+
+#~ msgid ""
+#~ "Connection has been replaced by a new connection using the same resource"
+#~ msgstr "Алоқа олдинги манбани ишлатган ҳолда янгиси билан алмаштирилди"
+
+#~ msgid "The account already exists on the server"
+#~ msgstr "Бу ҳисоб аллақачон серверда бор"
+
+#~ msgid "Server is currently too busy to handle the connection"
+#~ msgstr "Сервер жуда бандлиги туфайли алоқани ушлаб туролмайди"
+
+#~ msgid "Certificate has been revoked"
+#~ msgstr "Гувоҳнома бекор қилинган"
+
+#~ msgid ""
+#~ "Certificate uses an insecure cipher algorithm or is cryptographically weak"
+#~ msgstr ""
+#~ "Гувоҳнома хавфсиз бўлмаган шифрлаш алгоритмини ишлатади ёки у "
+#~ "криптографик кучсиз"
+
+#~ msgid ""
+#~ "The length of the server certificate, or the depth of the server "
+#~ "certificate chain, exceed the limits imposed by the cryptography library"
+#~ msgstr ""
+#~ "Сервер гувоҳномасининг узунлиги ёки сервер гувоҳнома занжирининг "
+#~ "чуқурлиги криптография кутубхонаси қўйган чегарадан ошиб кетган"
+
+#~ msgid "Internal error"
+#~ msgstr "Ички хато"
+
+#~ msgid "Unable to connect to %s"
+#~ msgstr "%sга уланиб бўлмади"
+
+#~ msgid "View account"
+#~ msgstr "Ҳисобни кўриш"
+
+#~ msgid "Open Calendar"
+#~ msgstr "Calendarни очиш"
+
+#~ msgid "Date & Time Settings"
+#~ msgstr "Сана ҳамда Вақт Мосламалари"
+
+#~ msgid "Open"
+#~ msgstr "Очиш"
+
+#~ msgid "Remove"
+#~ msgstr "Олиб ташлаш"
+
+#~ msgid "Clear Messages"
+#~ msgstr "Хатларни тозалаш"
+
+#~ msgid "Notification Settings"
+#~ msgstr "Хабарнома мосламалари"
+
+#~ msgid "Tray Menu"
+#~ msgstr "Панел менюси"
+
+#~ msgid "No Messages"
+#~ msgstr "Бирорта хат йўқ"
+
+#~ msgid "Message Tray"
+#~ msgstr "Хатлар панели"
+
+#~ msgid "%d Connected Device"
+#~ msgid_plural "%d Connected Devices"
+#~ msgstr[0] "%dта уланган ускуналар"
+
+#~ msgid "Authentication required"
+#~ msgstr "ҳақиқийлигини аниқлаш талаб қилинади"
+
+#~ msgid "Use as Internet connection"
+#~ msgstr "Интернет алоқаси сифатида ишлатиш"
+
+#~ msgid "UPS"
+#~ msgstr "UPS"
+
+#~ msgid "Battery"
+#~ msgstr "Батарея"
+
+#~ msgid "Airplane Mode"
+#~ msgstr "Самолёт режими"
+
+#~ msgid "On"
+#~ msgstr "Ёнган"
+
+#~ msgid "Select an extension to configure using the combobox above."
+#~ msgstr ""
+#~ "Тепадаги очилувчи рўйхатдан фойдаланиб созламоқчи бўлган кенгайтмангизни "
+#~ "танланг."
+
+#~ msgid "calendar:MY"
+#~ msgstr "Тақвим:MY"
+
+#~ msgid "<b>%A</b>, <b>%H:%M</b>"
+#~ msgstr "<b>%A</b>, <b>%H:%M</b>"
+
+#~ msgid "<b>%B</b> <b>%d</b>, <b>%H:%M</b>"
+#~ msgstr "<b>%B</b> <b>%d</b>, <b>%H:%M</b>"
+
+#~ msgid "<b>%B</b> <b>%d</b> <b>%Y</b>, <b>%H:%M</b> "
+#~ msgstr "<b>%B</b> <b>%d</b> <b>%Y</b>, <b>%H:%M</b> "
+
+#~ msgid "Authorization request from %s"
+#~ msgstr "%sдан ҳақиқийлигини текширишга ижозат"
+
+#~ msgid "Device %s wants to pair with this computer"
+#~ msgstr "%s ускунаси ушбу компьютер билан жуфтлашмоқчи"
+
+#~ msgid "Allow"
+#~ msgstr "Рухсат бериш"
+
+#~ msgid "Deny"
+#~ msgstr "Рад этиш"
+
+#~ msgid "Device %s wants access to the service '%s'"
+#~ msgstr "\"%s\" ускуна \"%s\" хизматдан фойдаланмоқчи"
+
+#~ msgid "Grant this time only"
+#~ msgstr "Фақат шу сафар рухсат бериш"
+
+#~ msgid "Reject"
+#~ msgstr "Рад этиш"
+
+#~ msgid "Pairing confirmation for %s"
+#~ msgstr "%s учун жуфтлаш тасдиғи"
+
+#~ msgid ""
+#~ "Please confirm whether the Passkey '%06d' matches the one on the device."
+#~ msgstr "Илтимос \"%06d\" калити ускунадагига мос келишини тасдиқланг."
+
+#~ msgid "Matches"
+#~ msgstr "Мос келади"
+
+#~ msgid "Does not match"
+#~ msgstr "Мос келмайди"
+
+#~ msgid "Pairing request for %s"
+#~ msgstr "%s учун жуфтлашга ижозат"
+
+#~ msgid "Please enter the PIN mentioned on the device."
+#~ msgstr "Илтимос ускунадаги PINни киритинг."
+
+#~ msgid "OK"
+#~ msgstr "Хўп"
+
+#~ msgid ""
+#~ "Sorry, no wisdom for you today:\n"
+#~ "%s"
+#~ msgstr ""
+#~ "Узр, бугун сиз учун донолик йўқ:\n"
+#~ "%s"
+
+#~ msgid "%s the Oracle says"
+#~ msgstr "\"%s\" дейди пайғамбар"

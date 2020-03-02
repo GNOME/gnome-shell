@@ -1,0 +1,19 @@
+<node>
+  <interface name="org.freedesktop.ModemManager.Modem.Gsm.Network">
+    <method name="GetRegistrationInfo">
+      <arg type="(uss)" direction="out"/>
+    </method>
+    <method name="GetSignalQuality">
+      <arg type="u" direction="out"/>
+    </method>
+    <property name="AccessTechnology" type="u" access="read"/>
+    <signal name="SignalQuality">
+      <arg type="u" direction="out"/>
+    </signal>
+    <signal name="RegistrationInfo">
+      <arg type="u" direction="out"/>
+      <arg type="s" direction="out"/>
+      <arg type="s" direction="out"/>
+    </signal>
+  </interface>
+</node>

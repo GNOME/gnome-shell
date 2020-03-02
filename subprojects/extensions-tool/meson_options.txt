@@ -1,0 +1,11 @@
+option('man',
+  type: 'boolean',
+  value: true,
+  description: 'Generate man pages'
+)
+
+option('package_name',
+  type: 'string',
+  value: 'gnome-extensions-tool',
+  description: 'The gettext domain name'
+)

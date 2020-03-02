@@ -1,0 +1,2087 @@
+# Tamil translation for gnome-shell.
+# Copyright (C) 2010 gnome-shell's COPYRIGHT HOLDER
+# This file is distributed under the same license as the gnome-shell package.
+#
+# Dr.T.Vasudevan <agnihot3@gmail.com>, 2010, 2011, 2012.
+# Shantha kumar <shkumar@redhat.com>, 2013, 2014.
+msgid ""
+msgstr ""
+"Project-Id-Version: gnome-shell master\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
+"shell&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2014-09-13 16:02+0000\n"
+"PO-Revision-Date: 2014-09-13 21:39+0630\n"
+"Last-Translator: Shantha kumar <shkumar@redhat.com>\n"
+"Language-Team: American English <kde-i18n-doc@kde.org>\n"
+"Language: ta\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Lokalize 1.5\n"
+"X-Poedit-Language: தமிழ்\n"
+"X-Poedit-Country: இந்தியா\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+#: ../data/50-gnome-shell-system.xml.in.h:1
+msgid "System"
+msgstr "கணினி"
+
+#: ../data/50-gnome-shell-system.xml.in.h:2
+msgid "Show the message tray"
+msgstr "அறிவிப்பு பலகத்தை காட்டுக"
+
+#: ../data/50-gnome-shell-system.xml.in.h:3
+msgid "Focus the active notification"
+msgstr "இயங்கு செய்தி அறிவிப்பை குவி"
+
+#: ../data/50-gnome-shell-system.xml.in.h:4
+msgid "Show the overview"
+msgstr "கண்ணோட்டத்தை காட்டு"
+
+#: ../data/50-gnome-shell-system.xml.in.h:5
+msgid "Show all applications"
+msgstr "எல்லா செயலிகளையும் காட்டு"
+
+#: ../data/50-gnome-shell-system.xml.in.h:6
+msgid "Open the application menu"
+msgstr "செயலிகள் பட்டியை திறக்க விசைபிணைப்பு"
+
+#: ../data/gnome-shell.desktop.in.in.h:1
+msgid "GNOME Shell"
+msgstr "க்னோம் ஷெல்"
+
+#: ../data/gnome-shell.desktop.in.in.h:2
+#: ../data/gnome-shell-wayland.desktop.in.in.h:2
+msgid "Window management and application launching"
+msgstr "சாளர மேலாண்மை மற்றும் பயன்பாடு துவக்கம்"
+
+#: ../data/gnome-shell-extension-prefs.desktop.in.in.h:1
+msgid "GNOME Shell Extension Preferences"
+msgstr "க்னோம் ஷெல் நீட்சி விருப்பங்கள்"
+
+#: ../data/gnome-shell-extension-prefs.desktop.in.in.h:2
+msgid "Configure GNOME Shell Extensions"
+msgstr "க்னோம் ஷெல் நீட்சிகளை வடிவமை"
+
+#: ../data/gnome-shell-wayland.desktop.in.in.h:1
+msgid "GNOME Shell (wayland compositor)"
+msgstr "GNOME ஷெல் (வேலேன்ட் கம்ப்போசிட்டர்)"
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:1
+msgid "Enable internal tools useful for developers and testers from Alt-F2"
+msgstr ""
+"உருவாக்குவோர் மற்றூம் சோதிப்போருக்கு பயன்படுமாறு Alt-F2 வழியாக உள்ளமை "
+"கருவிகளை "
+"செயலாக்கு"
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:2
+msgid ""
+"Allows access to internal debugging and monitoring tools using the Alt-F2 "
+"dialog."
+msgstr ""
+"உள்ளமை வழி நீக்கம் மற்றும் Alt-F2 உரையாடல் மூலம் கருவிகள் கண்காணிப்பு "
+"ஆகியவற்றை அணுக "
+"உதவும்."
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:3
+msgid "UUIDs of extensions to enable"
+msgstr "செயல்படுத்த வேண்டிய நீட்சிகளின் UUIDகள்"
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:4
+msgid ""
+"GNOME Shell extensions have a UUID property; this key lists extensions which "
+"should be loaded. Any extension that wants to be loaded needs to be in this "
+"list. You can also manipulate this list with the EnableExtension and "
+"DisableExtension D-Bus methods on org.gnome.Shell."
+msgstr ""
+"க்னோம் ஷெல் நீட்சிகளுக்கு ஒரு யூயூஐடி பண்பு உண்டு. இந்த விசை எந்த நீட்சிகள் "
+"ஏற்றப்பட வேண்டும் "
+"என பட்டியலிடுகிறது. ஏற்றப்பட வேண்டிய எந்த நீட்சியும் இந்த பட்டியலில் இருந்தே "
+"ஆகவேண்டும். "
+"org.gnome.Shell. இல் உள்ள EnableExtension மற்றும் DisableExtension DBus "
+"முறைகளில் "
+"இந்த பட்டியலை நீங்கள் திருத்தலாம்."
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:5
+msgid "Disables the validation of extension version compatibility"
+msgstr "நீட்சிப் பதிப்பு இணக்கத்தன்மை செல்லுபடியாக்கத்தை முடக்கும்"
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:6
+msgid ""
+"GNOME Shell will only load extensions that claim to support the current "
+"running version. Enabling this option will disable this check and try to "
+"load all extensions regardless of the versions they claim to support."
+msgstr ""
+"GNOME ஷெல் நடப்பு இயக்கப் பதிப்பை ஆதரிப்பதாகக் கூறும் நீட்சிகளை மட்டுமே "
+"ஏற்றும். இந்த "
+"விருப்பத்தைச் செயல்படுத்தினால் இந்த சோதனை முடக்கப்படும், பிறகு நீட்சிகள் "
+"எந்தப் பதிப்புகளை "
+"ஆதரிப்பதாகக் கூறுகின்றன என்பதைப் பொருட்படுத்தாமல் எல்லா நீட்சிகளையும் ஏற்ற "
+"முயற்சி "
+"செய்யப்படும்."
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:7
+msgid "List of desktop file IDs for favorite applications"
+msgstr "விருப்ப பயன்பாடுகளுக்கு மேல்மேசை கோப்பு அடையாளங்கள்"
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:8
+msgid ""
+"The applications corresponding to these identifiers will be displayed in the "
+"favorites area."
+msgstr ""
+"இந்த அடையாளங் காட்டிகளுக்கு பொருத்தமான பயன்பாடுகள் விருப்ப இடத்தில் "
+"காட்டப்படும்."
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:9
+msgid "App Picker View"
+msgstr "ஆப் பிக்கர் காட்சி"
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:10
+msgid "Index of the currently selected view in the application picker."
+msgstr ""
+"பயன்பாட்டுத் தேர்வியில் தற்போது தேர்ந்தெடுக்கப்பட்டுள்ள காட்சியின் அட்டவணை."
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:11
+msgid "History for command (Alt-F2) dialog"
+msgstr "(Alt-F2) கட்டளை உரையாடல் க்கு வரலாறு"
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:12
+msgid "History for the looking glass dialog"
+msgstr "லுக்கிங் க்ளாஸ் உரையாடலுக்கு வரலாறு"
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:13
+msgid "Always show the 'Log out' menu item in the user menu."
+msgstr "எப்போதும் பயனர் மெனுவில் 'வெளியேறு' மெனு உருப்படியைக் காண்பி."
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:14
+msgid ""
+"This key overrides the automatic hiding of the 'Log out' menu item in single-"
+"user, single-session situations."
+msgstr ""
+"இந்த விசையானது ஒற்றை பயனர், ஒற்றை அமர்வு சூழ்நிலைகளில் 'வெளியேறு' மெனு "
+"உருப்படி "
+"தானாக மறைதலை கட்டுப்படுத்தி இயங்கும்."
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:15
+msgid ""
+"Whether to remember password for mounting encrypted or remote filesystems"
+msgstr ""
+"குறியாக்கம் செய்யப்பட்ட அல்லது தொலைநிலை கோப்புமுறைமைகளை மவுன்ட் செய்வதற்கான "
+"கடவுச்சொல்லை "
+"நினைவில் வைத்திருக்க வேண்டுமா"
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:16
+msgid ""
+"The shell will request a password when an encrypted device or a remote "
+"filesystem is mounted. If the password can be saved for future use a "
+"'Remember Password' checkbox will be present. This key sets the default "
+"state of the checkbox."
+msgstr ""
+"ஒரு குறியாக்கம் செய்யப்பட்ட சாதனம் அல்லது தொலைநிலை கோப்புமுறைமையை மவுன்ட் "
+"செய்யும் போது "
+"ஷெல்லானது ஒரு கடவுச்சொல்லைக் கேட்கும். எதிர்காலப் பயன்பாட்டுக்கு கடவுச்சொல் "
+"சேமிக்கப்பட "
+"முடியும் எனில், 'கடவுச்சொல்லை நினைவில் வைத்திரு' என ஒரு தேர்வுப் பெட்டி "
+"இடம்பெறும். இந்த "
+"விசையே இந்த தேர்வுப் பெட்டியின் முன்னிருப்பு நிலையை அமைக்கிறது."
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:17
+msgid "Show the week date in the calendar"
+msgstr "நாட்காட்டியில் வார நாளை காட்டவும்"
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:18
+msgid "If true, display the ISO week date in the calendar."
+msgstr "உண்மையானால் நாட்காட்டியில் ஐஎஸ்ஓ வார எண்களை காட்டவும்."
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:19
+msgid "Keybinding to open the application menu"
+msgstr "பயன்பாட்டு பட்டியை திறக்க விசைபிணைப்பு"
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:20
+msgid "Keybinding to open the application menu."
+msgstr "பயன்பாட்டு பட்டியை திறக்க விசைபிணைப்பு."
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:21
+msgid "Keybinding to open the \"Show Applications\" view"
+msgstr " \"செயலிகளைக்காட்டு\" பார்வையை திறக்க விசைபிணைப்பு"
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:22
+msgid ""
+"Keybinding to open the \"Show Applications\" view of the Activities Overview."
+msgstr ""
+"செயல்பாடுகள் மேல்பார்வையின் \"செயலிகளைக்காட்டு\" பார்வையை திறக்க விசைபிணைப்பு."
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:23
+msgid "Keybinding to open the overview"
+msgstr "மேற்பார்வையை திறக்கும் விசைபிணைப்பு"
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:24
+msgid "Keybinding to open the Activities Overview."
+msgstr "செயலிகளின் மேற்பார்வையை திறக்கும் விசைபிணைப்பு."
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:25
+msgid "Keybinding to toggle the visibility of the message tray"
+msgstr "அறிவிப்பு பலகத்தின் காட்சியை நிலை மாற்ற விசைபிணைப்பு"
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:26
+msgid "Keybinding to toggle the visibility of the message tray."
+msgstr "அறிவிப்பு பலகத்தின் காட்சியை நிலை மாற்ற விசைபிணைப்பு."
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:27
+msgid "Keybinding to focus the active notification"
+msgstr "இயங்கு செய்தி அறிவிப்பை குவிக்க விசைபிணைப்பு"
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:28
+msgid "Keybinding to focus the active notification."
+msgstr "இயங்கு செய்தி அறிவிப்பை குவிக்க விசைபிணைப்பு."
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:29
+msgid ""
+"Keybinding that pauses and resumes all running tweens, for debugging purposes"
+msgstr ""
+"இயக்கத்திலிருக்கும் ட்வீன்கள் அனைத்தையும் இடைநிறுத்தி மீண்டும் துவக்கும் "
+"விசைப்பிணைப்பாக்கம், வழுநீக்கத் தேவைகளுக்கானது."
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:30
+msgid "Which keyboard to use"
+msgstr "எந்த விசைப்பலகையை பயன்படுத்த வேண்டும்?"
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:31
+msgid "The type of keyboard to use."
+msgstr "பயன்படுத்த வேண்டிய விசைப்பலகை வகை"
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:32
+msgid "Limit switcher to current workspace."
+msgstr "மாற்றியை நடப்பு பணியிடத்திற்கு மட்டும் எனக் கட்டுப்படுத்து."
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:33
+msgid ""
+"If true, only applications that have windows on the current workspace are "
+"shown in the switcher. Otherwise, all applications are included."
+msgstr ""
+"ஆம் என அமைக்கப்பட்டால், நடப்புப் பணியிடத்தில் சாளரங்களைக் கொண்டுள்ள "
+"பயன்பாடுகள் மட்டுமே மாற்றியில் காண்பிக்கப்படும். இல்லாவிட்டால் அனைத்துப் "
+"பயன்பாடுகளும் இருக்கும்."
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:34
+msgid "The application icon mode."
+msgstr "பயன்பாடு படவுரு பயன்முறை."
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:35
+msgid ""
+"Configures how the windows are shown in the switcher. Valid possibilities "
+"are 'thumbnail-only' (shows a thumbnail of the window), 'app-icon-"
+"only' (shows only the application icon) or 'both'."
+msgstr ""
+"ஸ்விட்ச்சரில் சாளரங்கள் எப்படிக் காண்பிக்கப்படும் என்பதை அமைவாக்கம் "
+"செய்கிறது.  'சிறுதோற்றம்-"
+"மட்டும்' (சாளரத்தின் சிறுதோற்றத்தைக் காண்பிக்கும்), "
+"'பயன்பாட்டு-படவுரு-மட்டும்' (பயன்பாட்டின் "
+"படவுருவை மட்டும் காண்பிக்கும்) அல்லது 'இரன்டும்' ஆகிய சாத்தியங்கள் உள்ளன."
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:36
+msgid ""
+"If true, only windows from the current workspace are shown in the switcher. "
+"Otherwise, all windows are included."
+msgstr ""
+"ஆம் என அமைக்கப்பட்டால், நடப்புப் பணியிடத்தில் உள்ள சாளரங்கள் மட்டுமே "
+"மாற்றியில் காண்பிக்கப்படும். இல்லாவிட்டால் அனைத்து சாளரங்களும் இருக்கும்."
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:37
+msgid "Attach modal dialog to the parent window"
+msgstr "தாய் சாளரத்துக்கு மாதிரி உரையாடலை இணை"
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:38
+msgid ""
+"This key overrides the key in org.gnome.mutter when running GNOME Shell."
+msgstr ""
+"இந்த விசை org.gnome.mutter இல் உள்ள விசையை க்னோம் ஷெல்லை இயக்கும்போது "
+"வன்மீறல் செய்கிறது."
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:39
+msgid "Enable edge tiling when dropping windows on screen edges"
+msgstr "திரை விளிம்புகளில் சாளரங்களை இடும்போது விளிம்பு சாய்தலை செயலாக்கு"
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:40
+msgid "Workspaces are managed dynamically"
+msgstr "பணிக்களங்கள் இயங்கு நிலையில் மேலாளப்படுகின்றன"
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:41
+msgid "Workspaces only on primary monitor"
+msgstr "பணிக்களங்கள் முதன்மை திரையில் மட்டும் "
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:42
+msgid "Delay focus changes in mouse mode until the pointer stops moving"
+msgstr ""
+"சொடுக்கி பயன்முறையில் சுட்டி நகர்வது நிற்கும் வரை கவனப் பகுதி மாறுவதைத் "
+"தாமதிக்கவும்"
+
+#: ../data/org.gnome.Shell.PortalHelper.desktop.in.h:1
+msgid "Captive Portal"
+msgstr "கட்டுப்படுத்தப்பட்ட வலைவாசல்"
+
+#: ../js/extensionPrefs/main.js:123
+#, javascript-format
+msgid "There was an error loading the preferences dialog for %s:"
+msgstr "%s க்கு விருப்பங்கள் உரையாடலை ஏற்றுகையில் பிழை நேர்ந்தது:"
+
+#: ../js/extensionPrefs/main.js:155
+#| msgid "Configure GNOME Shell Extensions"
+msgid "GNOME Shell Extensions"
+msgstr "GNOME ஷெல் நீட்சிகள்"
+
+#: ../js/gdm/authPrompt.js:147 ../js/ui/components/networkAgent.js:143
+#: ../js/ui/components/polkitAgent.js:166 ../js/ui/endSessionDialog.js:452
+#: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
+#: ../js/ui/status/network.js:915
+msgid "Cancel"
+msgstr "ரத்துசெய்க"
+
+#: ../js/gdm/authPrompt.js:169 ../js/gdm/authPrompt.js:217
+msgid "Next"
+msgstr "அடுத்தது"
+
+#: ../js/gdm/authPrompt.js:213 ../js/ui/shellMountOperation.js:403
+#: ../js/ui/unlockDialog.js:59
+msgid "Unlock"
+msgstr "பூட்டை திற"
+
+#: ../js/gdm/authPrompt.js:215
+msgctxt "button"
+msgid "Sign In"
+msgstr "உள்நுழை"
+
+#: ../js/gdm/loginDialog.js:269
+msgid "Choose Session"
+msgstr "அமர்வை தேர்ந்தெடு"
+
+#: ../js/gdm/loginDialog.js:429
+msgid "Not listed?"
+msgstr "பட்டியலில் இல்லை?"
+
+#: ../js/gdm/loginDialog.js:614
+#, javascript-format
+msgid "(e.g., user or %s)"
+msgstr "(எ.கா., பயனர் அல்லது %s)"
+
+#: ../js/gdm/loginDialog.js:619 ../js/ui/components/networkAgent.js:269
+#: ../js/ui/components/networkAgent.js:287
+msgid "Username: "
+msgstr "பயனர்பெயர்: "
+
+#: ../js/gdm/loginDialog.js:922
+msgid "Login Window"
+msgstr "உள்புகு சாளரம்"
+
+#: ../js/gdm/util.js:323
+msgid "Authentication error"
+msgstr "உறுதிப்படுத்தல் பிழை"
+
+#: ../js/gdm/util.js:453
+msgid "(or swipe finger)"
+msgstr "(அல்லது விரல் தீய்ப்பு)"
+
+#: ../js/misc/util.js:115
+msgid "Command not found"
+msgstr "கட்டளை காணப்படவில்லை"
+
+#: ../js/misc/util.js:148
+msgid "Could not parse command:"
+msgstr "கட்டளையை அலகிட முடியவில்லை"
+
+#: ../js/misc/util.js:156
+#, javascript-format
+#| msgid "Execution of '%s' failed:"
+msgid "Execution of “%s” failed:"
+msgstr "“%s” செயல்படுத்தல் தோல்வியடைந்தது:"
+
+#: ../js/portalHelper/main.js:85
+#| msgid "Authentication Required"
+msgid "Web Authentication Redirect"
+msgstr "இணைய அங்கீகரிப்பு திருப்பிவிடல்"
+
+#: ../js/ui/appDisplay.js:772
+msgid "Frequently used applications will appear here"
+msgstr "அதிகம் பயன்படுத்தப்படும் பயன்பாடுகள் இங்கு காண்பிக்கப்படும்"
+
+#: ../js/ui/appDisplay.js:883
+msgid "Frequent"
+msgstr "அடிக்கடி"
+
+#: ../js/ui/appDisplay.js:890
+msgid "All"
+msgstr "எல்லா"
+
+#: ../js/ui/appDisplay.js:1789
+msgid "New Window"
+msgstr "புதிய சாளரம்"
+
+#: ../js/ui/appDisplay.js:1815 ../js/ui/dash.js:285
+msgid "Remove from Favorites"
+msgstr "விருப்பத்தில் இருந்து நீக்கு"
+
+#: ../js/ui/appDisplay.js:1821
+msgid "Add to Favorites"
+msgstr "விருப்பங்களுக்கு சேர்"
+
+#: ../js/ui/appDisplay.js:1830
+#| msgid "Show Text"
+msgid "Show Details"
+msgstr "விவரங்களைக் காட்டு"
+
+#: ../js/ui/appFavorites.js:124
+#, javascript-format
+msgid "%s has been added to your favorites."
+msgstr "%s உங்கள் விருப்பங்களில் சேர்க்கப்பட்டது"
+
+#: ../js/ui/appFavorites.js:158
+#, javascript-format
+msgid "%s has been removed from your favorites."
+msgstr "%s உங்கள் விருப்பங்களில் இருந்து நீக்கப்பட்டது"
+
+#: ../js/ui/backgroundMenu.js:19 ../js/ui/panel.js:813
+#: ../js/ui/status/system.js:337
+msgid "Settings"
+msgstr "அமைப்புகள்"
+
+#: ../js/ui/backgroundMenu.js:21
+msgid "Change Background…"
+msgstr "பின்புலத்தை மாற்று…"
+
+#. Translators: Shown in calendar event list for all day events
+#. * Keep it short, best if you can use less then 10 characters
+#. */
+#: ../js/ui/calendar.js:67
+msgctxt "event list time"
+msgid "All Day"
+msgstr "முழு நாள்"
+
+#. Translators: Shown in calendar event list, if 24h format,
+#. \u2236 is a ratio character, similar to : */
+#: ../js/ui/calendar.js:73
+msgctxt "event list time"
+msgid "%H∶%M"
+msgstr "%H∶%M"
+
+#. Translators: Shown in calendar event list, if 12h format,
+#. \u2236 is a ratio character, similar to : and \u2009 is
+#. a thin space */
+#: ../js/ui/calendar.js:82
+msgctxt "event list time"
+msgid "%l∶%M %p"
+msgstr "%l∶%M %p"
+
+#. Translators: Calendar grid abbreviation for Sunday.
+#. *
+#. * NOTE: These grid abbreviations are always shown together
+#. * and in order, e.g. "S M T W T F S".
+#. */
+#: ../js/ui/calendar.js:113
+msgctxt "grid sunday"
+msgid "S"
+msgstr "ஞா"
+
+#. Translators: Calendar grid abbreviation for Monday */
+#: ../js/ui/calendar.js:115
+msgctxt "grid monday"
+msgid "M"
+msgstr "தி"
+
+#. Translators: Calendar grid abbreviation for Tuesday */
+#: ../js/ui/calendar.js:117
+msgctxt "grid tuesday"
+msgid "T"
+msgstr "செ"
+
+#. Translators: Calendar grid abbreviation for Wednesday */
+#: ../js/ui/calendar.js:119
+msgctxt "grid wednesday"
+msgid "W"
+msgstr "பு"
+
+#. Translators: Calendar grid abbreviation for Thursday */
+#: ../js/ui/calendar.js:121
+msgctxt "grid thursday"
+msgid "T"
+msgstr "வி"
+
+#. Translators: Calendar grid abbreviation for Friday */
+#: ../js/ui/calendar.js:123
+msgctxt "grid friday"
+msgid "F"
+msgstr "வெ"
+
+#. Translators: Calendar grid abbreviation for Saturday */
+#: ../js/ui/calendar.js:125
+msgctxt "grid saturday"
+msgid "S"
+msgstr "ச"
+
+#. Translators: Event list abbreviation for Sunday.
+#. *
+#. * NOTE: These list abbreviations are normally not shown together
+#. * so they need to be unique (e.g. Tuesday and Thursday cannot
+#. * both be 'T').
+#. */
+#: ../js/ui/calendar.js:138
+msgctxt "list sunday"
+msgid "Su"
+msgstr "ஞா"
+
+#. Translators: Event list abbreviation for Monday */
+#: ../js/ui/calendar.js:140
+msgctxt "list monday"
+msgid "M"
+msgstr "தி"
+
+#. Translators: Event list abbreviation for Tuesday */
+#: ../js/ui/calendar.js:142
+msgctxt "list tuesday"
+msgid "T"
+msgstr "செ"
+
+#. Translators: Event list abbreviation for Wednesday */
+#: ../js/ui/calendar.js:144
+msgctxt "list wednesday"
+msgid "W"
+msgstr "பு"
+
+#. Translators: Event list abbreviation for Thursday */
+#: ../js/ui/calendar.js:146
+msgctxt "list thursday"
+msgid "Th"
+msgstr "வியா"
+
+#. Translators: Event list abbreviation for Friday */
+#: ../js/ui/calendar.js:148
+msgctxt "list friday"
+msgid "F"
+msgstr "வெ"
+
+#. Translators: Event list abbreviation for Saturday */
+#: ../js/ui/calendar.js:150
+msgctxt "list saturday"
+msgid "S"
+msgstr "ச"
+
+#: ../js/ui/calendar.js:453
+msgid "Previous month"
+msgstr "முந்தைய மாதம்"
+
+#: ../js/ui/calendar.js:463
+msgid "Next month"
+msgstr "அடுத்த மாதம்"
+
+#. Translators: Text to show if there are no events */
+#: ../js/ui/calendar.js:781
+msgid "Nothing Scheduled"
+msgstr "திட்டம் எதுவுமில்லை"
+
+#. Translators: Shown on calendar heading when selected day occurs on current year */
+#: ../js/ui/calendar.js:799
+msgctxt "calendar heading"
+msgid "%A, %B %d"
+msgstr "%A, %B %d"
+
+#. Translators: Shown on calendar heading when selected day occurs on different year */
+#: ../js/ui/calendar.js:802
+msgctxt "calendar heading"
+msgid "%A, %B %d, %Y"
+msgstr "%A, %B %d, %Y"
+
+#: ../js/ui/calendar.js:813
+msgid "Today"
+msgstr "இன்று"
+
+#: ../js/ui/calendar.js:817
+msgid "Tomorrow"
+msgstr "நாளை"
+
+#: ../js/ui/calendar.js:828
+msgid "This week"
+msgstr "இந்த வாரம்"
+
+#: ../js/ui/calendar.js:836
+msgid "Next week"
+msgstr "அடுத்த வாரம்"
+
+#: ../js/ui/components/automountManager.js:91
+msgid "External drive connected"
+msgstr "வெளிப்புற இயக்கி இணைக்கப்பட்டது"
+
+#: ../js/ui/components/automountManager.js:102
+msgid "External drive disconnected"
+msgstr "வெளிப்புற இயக்கி இணைப்பு நீக்கப்பட்டது"
+
+#: ../js/ui/components/autorunManager.js:296
+msgid "Removable Devices"
+msgstr "நீக்கப்படக்கூடிய சாதனங்கள் "
+
+#: ../js/ui/components/autorunManager.js:596
+#, javascript-format
+msgid "Open with %s"
+msgstr "%s ஆல் திற"
+
+#: ../js/ui/components/autorunManager.js:622
+msgid "Eject"
+msgstr "வெளியேற்று"
+
+#: ../js/ui/components/keyring.js:94 ../js/ui/components/polkitAgent.js:285
+msgid "Password:"
+msgstr "கடவுச்சொல்:"
+
+#: ../js/ui/components/keyring.js:120
+msgid "Type again:"
+msgstr "மீண்டும் உள்ளிடவும்:"
+
+#: ../js/ui/components/networkAgent.js:138 ../js/ui/status/network.js:277
+#: ../js/ui/status/network.js:359 ../js/ui/status/network.js:918
+msgid "Connect"
+msgstr "இணை"
+
+#: ../js/ui/components/networkAgent.js:231
+#: ../js/ui/components/networkAgent.js:243
+#: ../js/ui/components/networkAgent.js:271
+#: ../js/ui/components/networkAgent.js:291
+#: ../js/ui/components/networkAgent.js:301
+msgid "Password: "
+msgstr "கடவுச்சொல்:"
+
+#: ../js/ui/components/networkAgent.js:236
+msgid "Key: "
+msgstr "விசை: "
+
+#: ../js/ui/components/networkAgent.js:275
+msgid "Identity: "
+msgstr "அடையாளம்: "
+
+#: ../js/ui/components/networkAgent.js:277
+msgid "Private key password: "
+msgstr "அந்தரங்க முதன்மை கடவுச்சொல்: "
+
+#: ../js/ui/components/networkAgent.js:289
+msgid "Service: "
+msgstr "சேவை:"
+
+#: ../js/ui/components/networkAgent.js:318
+msgid "Authentication required by wireless network"
+msgstr "கம்பியில்லா வலைப்பின்னலுக்கு உறுதிப்படுத்துதல் தேவை"
+
+#: ../js/ui/components/networkAgent.js:319
+#, javascript-format
+#| msgid ""
+#| "Passwords or encryption keys are required to access the wireless network "
+#| "'%s'."
+msgid ""
+"Passwords or encryption keys are required to access the wireless network "
+"“%s”."
+msgstr ""
+"வயர்லெஸ் பிணையம் \"%s\" ஐ அணுக கடவுச்சொற்கள் அல்லது மறைகுறியாகக் விசைகள் "
+"தேவைப்படுகிறது."
+
+#: ../js/ui/components/networkAgent.js:323
+msgid "Wired 802.1X authentication"
+msgstr "கம்பியுள்ள 802.1X அங்கீகாரம்"
+
+#: ../js/ui/components/networkAgent.js:325
+msgid "Network name: "
+msgstr "வலைப்பின்னல் பெயர்:"
+
+#: ../js/ui/components/networkAgent.js:330
+msgid "DSL authentication"
+msgstr "டிஎஸ்எல் உறுதிப்படுத்துதல் "
+
+#: ../js/ui/components/networkAgent.js:337
+msgid "PIN code required"
+msgstr "பின் கோட் தேவைப்படுகிறது"
+
+#: ../js/ui/components/networkAgent.js:338
+msgid "PIN code is needed for the mobile broadband device"
+msgstr "அலை அகலப்பட்டை சாதனத்துக்கு பின் கோட் தேவை"
+
+#: ../js/ui/components/networkAgent.js:339
+msgid "PIN: "
+msgstr "PIN: "
+
+#: ../js/ui/components/networkAgent.js:345
+msgid "Mobile broadband network password"
+msgstr "அலை அகலப்பட்டைக்கு வலைப்பின்னல் கடவுச்சொல்"
+
+#: ../js/ui/components/networkAgent.js:346
+#, javascript-format
+#| msgid "A password is required to connect to '%s'."
+msgid "A password is required to connect to “%s”."
+msgstr "\"%s\" உடன் இணைப்பதற்கு கடவுச்சொல் தேவைப்படுகிறது."
+
+#: ../js/ui/components/polkitAgent.js:54
+msgid "Authentication Required"
+msgstr "உறுதிப்படுத்தல் தேவை"
+
+#: ../js/ui/components/polkitAgent.js:96
+msgid "Administrator"
+msgstr "நிர்வாகி"
+
+#: ../js/ui/components/polkitAgent.js:175
+msgid "Authenticate"
+msgstr "உறுதிப்படுத்து"
+
+#. Translators: "that didn't work" refers to the fact that the
+#. * requested authentication was not gained; this can happen
+#. * because of an authentication error (like invalid password),
+#. * for instance. */
+#: ../js/ui/components/polkitAgent.js:271 ../js/ui/shellMountOperation.js:383
+msgid "Sorry, that didn't work. Please try again."
+msgstr "மன்னிக்க, அது வேலை செய்யவில்லை. மீண்டு முயற்சி செய்க."
+
+#: ../js/ui/components/telepathyClient.js:240
+msgid "Invitation"
+msgstr "அழைப்பு"
+
+#: ../js/ui/components/telepathyClient.js:300
+msgid "Call"
+msgstr "அழை"
+
+#: ../js/ui/components/telepathyClient.js:316
+msgid "File Transfer"
+msgstr "கோப்பு பறிமாற்றம் "
+
+#: ../js/ui/components/telepathyClient.js:420
+msgid "Chat"
+msgstr "அரட்டை"
+
+#: ../js/ui/components/telepathyClient.js:483
+msgid "Unmute"
+msgstr "ஒலி நிறுத்தம் நீக்கு"
+
+#: ../js/ui/components/telepathyClient.js:483
+msgid "Mute"
+msgstr "ஒலி நிறுத்தம்"
+
+#. Translators: Time in 24h format */
+#: ../js/ui/components/telepathyClient.js:953
+msgid "%H∶%M"
+msgstr "%H∶%M"
+
+#. Translators: this is the word "Yesterday" followed by a
+#. time string in 24h format. i.e. "Yesterday, 14:30" */
+#: ../js/ui/components/telepathyClient.js:960
+msgid "Yesterday, %H∶%M"
+msgstr "நேற்று, %H∶%M"
+
+#. Translators: this is the week day name followed by a time
+#. string in 24h format. i.e. "Monday, 14:30" */
+#: ../js/ui/components/telepathyClient.js:967
+msgid "%A, %H∶%M"
+msgstr "%A, %H∶%M"
+
+#. Translators: this is the month name and day number
+#. followed by a time string in 24h format.
+#. i.e. "May 25, 14:30" */
+#: ../js/ui/components/telepathyClient.js:974
+msgid "%B %d, %H∶%M"
+msgstr "%B %d, %H∶%M"
+
+#. Translators: this is the month name, day number, year
+#. number followed by a time string in 24h format.
+#. i.e. "May 25 2012, 14:30" */
+#: ../js/ui/components/telepathyClient.js:980
+msgid "%B %d %Y, %H∶%M"
+msgstr "%B %d %Y, %H∶%M"
+
+#. Translators: Time in 24h format */
+#: ../js/ui/components/telepathyClient.js:986
+msgid "%l∶%M %p"
+msgstr "%l∶%M %p"
+
+#. Translators: this is the word "Yesterday" followed by a
+#. time string in 12h format. i.e. "Yesterday, 2:30 pm" */
+#: ../js/ui/components/telepathyClient.js:993
+msgid "Yesterday, %l∶%M %p"
+msgstr "நேற்று, %l∶%M %p"
+
+#. Translators: this is the week day name followed by a time
+#. string in 12h format. i.e. "Monday, 2:30 pm" */
+#: ../js/ui/components/telepathyClient.js:1000
+msgid "%A, %l∶%M %p"
+msgstr "%A, %l∶%M %p"
+
+#. Translators: this is the month name and day number
+#. followed by a time string in 12h format.
+#. i.e. "May 25, 2:30 pm" */
+#: ../js/ui/components/telepathyClient.js:1007
+msgid "%B %d, %l∶%M %p"
+msgstr "%B %d, %l∶%M %p"
+
+#. Translators: this is the month name, day number, year
+#. number followed by a time string in 12h format.
+#. i.e. "May 25 2012, 2:30 pm"*/
+#: ../js/ui/components/telepathyClient.js:1013
+msgid "%B %d %Y, %l∶%M %p"
+msgstr "%B %d %Y, %l∶%M %p"
+
+#. Translators: this is the other person changing their old IM name to their new
+#. IM name. */
+#: ../js/ui/components/telepathyClient.js:1045
+#, javascript-format
+msgid "%s is now known as %s"
+msgstr "%s இப்போது %s ஆனார்"
+
+#. translators: argument is a room name like
+#. * room@jabber.org for example. */
+#: ../js/ui/components/telepathyClient.js:1149
+#, javascript-format
+msgid "Invitation to %s"
+msgstr "%s க்கு அழைப்பு"
+
+#. translators: first argument is the name of a contact and the second
+#. * one the name of a room. "Alice is inviting you to join room@jabber.org
+#. * for example. */
+#: ../js/ui/components/telepathyClient.js:1157
+#, javascript-format
+msgid "%s is inviting you to join %s"
+msgstr "%s உங்களை %s உடன் சேர அழைக்கிறார்."
+
+#: ../js/ui/components/telepathyClient.js:1159
+#: ../js/ui/components/telepathyClient.js:1194
+#: ../js/ui/components/telepathyClient.js:1228
+#: ../js/ui/components/telepathyClient.js:1286
+msgid "Decline"
+msgstr "நிராகரி"
+
+#: ../js/ui/components/telepathyClient.js:1165
+#: ../js/ui/components/telepathyClient.js:1234
+#: ../js/ui/components/telepathyClient.js:1291
+msgid "Accept"
+msgstr "ஏற்றுக்கொள்"
+
+#. translators: argument is a contact name like Alice for example. */
+#: ../js/ui/components/telepathyClient.js:1184
+#, javascript-format
+msgid "Video call from %s"
+msgstr "%s இடமிருந்து விடியோ அழைப்பு"
+
+#. translators: argument is a contact name like Alice for example. */
+#: ../js/ui/components/telepathyClient.js:1187
+#, javascript-format
+msgid "Call from %s"
+msgstr "%s இடமிருந்து அழைப்பு"
+
+#. translators: this is a button label (verb), not a noun */
+#: ../js/ui/components/telepathyClient.js:1201
+msgid "Answer"
+msgstr "பதிலளி"
+
+#. To translators: The first parameter is
+#. * the contact's alias and the second one is the
+#. * file name. The string will be something
+#. * like: "Alice is sending you test.ogg"
+#. */
+#: ../js/ui/components/telepathyClient.js:1222
+#, javascript-format
+msgid "%s is sending you %s"
+msgstr "%s உங்களுக்கு %s அனுப்புகிறார்"
+
+#. To translators: The parameter is the contact's alias */
+#: ../js/ui/components/telepathyClient.js:1251
+#, javascript-format
+msgid "%s would like permission to see when you are online"
+msgstr "%s நீங்கள் இணைப்பில் இருக்கும் போது காண அனுமதி வேண்டுகிறார். "
+
+#: ../js/ui/components/telepathyClient.js:1337
+msgid "Network error"
+msgstr "வலையமைப்பு பிழை"
+
+#: ../js/ui/components/telepathyClient.js:1339
+msgid "Authentication failed"
+msgstr "உறுதி செய்தல் தோல்வி"
+
+#: ../js/ui/components/telepathyClient.js:1341
+msgid "Encryption error"
+msgstr "மறையாக்க பிழை"
+
+#: ../js/ui/components/telepathyClient.js:1343
+msgid "Certificate not provided"
+msgstr "சான்றிதழ் தரப்படவில்லை"
+
+#: ../js/ui/components/telepathyClient.js:1345
+msgid "Certificate untrusted"
+msgstr "சான்றிதழில் நம்பக தன்மை இல்லை"
+
+#: ../js/ui/components/telepathyClient.js:1347
+msgid "Certificate expired"
+msgstr "சான்றிதழ் காலாவதியானது"
+
+#: ../js/ui/components/telepathyClient.js:1349
+msgid "Certificate not activated"
+msgstr "சான்றிதழ் செயல்படுத்தப்படவில்லை"
+
+#: ../js/ui/components/telepathyClient.js:1351
+msgid "Certificate hostname mismatch"
+msgstr "சான்றிதழ் புரவலன் பெயர் ஒத்திசையவில்லை"
+
+#: ../js/ui/components/telepathyClient.js:1353
+msgid "Certificate fingerprint mismatch"
+msgstr "சான்றிதழ் அடையாளம் ஒத்திசையவில்லை"
+
+#: ../js/ui/components/telepathyClient.js:1355
+msgid "Certificate self-signed"
+msgstr "சான்றிதழ் தானே கையெழுத்திட்டது"
+
+#: ../js/ui/components/telepathyClient.js:1357
+msgid "Status is set to offline"
+msgstr "நிலை இப்போது இணைப்பு விலகி "
+
+#: ../js/ui/components/telepathyClient.js:1359
+msgid "Encryption is not available"
+msgstr "குறீயீட்டுமுறை கிடைப்பில் இல்லை"
+
+#: ../js/ui/components/telepathyClient.js:1361
+msgid "Certificate is invalid"
+msgstr "சான்றிதழ் செல்லுபடியாகாது"
+
+#: ../js/ui/components/telepathyClient.js:1363
+msgid "Connection has been refused"
+msgstr "இணைப்பு மறுக்கப்பட்டது"
+
+#: ../js/ui/components/telepathyClient.js:1365
+msgid "Connection can't be established"
+msgstr "இணைக்க முடியவில்லை"
+
+#: ../js/ui/components/telepathyClient.js:1367
+msgid "Connection has been lost"
+msgstr "இணைப்பு அற்றுப்போயிற்று"
+
+#: ../js/ui/components/telepathyClient.js:1369
+msgid "This account is already connected to the server"
+msgstr "இந்த கணக்கு ஏற்கனவே சேவையகத்துக்கு இணைக்கப்பட்டது"
+
+#: ../js/ui/components/telepathyClient.js:1371
+msgid ""
+"Connection has been replaced by a new connection using the same resource"
+msgstr "இணைப்பு அதே முலத்துடன் புதிய இணைப்பால் மாற்றப்பட்டது."
+
+#: ../js/ui/components/telepathyClient.js:1373
+msgid "The account already exists on the server"
+msgstr "இந்த கணக்கு ஏற்கனவே சேவையகத்தில் உள்ளது"
+
+#: ../js/ui/components/telepathyClient.js:1375
+msgid "Server is currently too busy to handle the connection"
+msgstr "இணைப்பை கையாள சேவையகம் இப்போது மிகவும் வேலை பளுவில் உள்ளது."
+
+#: ../js/ui/components/telepathyClient.js:1377
+msgid "Certificate has been revoked"
+msgstr "சான்றிதழ் ரத்து செய்யப்பட்டது"
+
+#: ../js/ui/components/telepathyClient.js:1379
+msgid ""
+"Certificate uses an insecure cipher algorithm or is cryptographically weak"
+msgstr ""
+"சான்றிதழ் பாதுகாப்பில்லாத சைபர் அல்கோரிதத்தை பயன்படுத்துகிறது. இது "
+"மறையாக்கத்தில் "
+"பலகீனமானது."
+
+#: ../js/ui/components/telepathyClient.js:1381
+msgid ""
+"The length of the server certificate, or the depth of the server certificate "
+"chain, exceed the limits imposed by the cryptography library"
+msgstr ""
+"சேவயகத்தின் சான்றிதழின் நீளம் அல்லது சங்கிலியின் ஆழம் மறையாக்க நூலகம் "
+"வரயறுத்த மதிப்பை "
+"தாண்டியது."
+
+#: ../js/ui/components/telepathyClient.js:1383
+msgid "Internal error"
+msgstr "உள்ளார்ந்த பிழை"
+
+#. translators: argument is the account name, like
+#. * name@jabber.org for example. */
+#: ../js/ui/components/telepathyClient.js:1393
+#, javascript-format
+msgid "Unable to connect to %s"
+msgstr "%s க்கு இணைக்க முடியவில்லை"
+
+#: ../js/ui/components/telepathyClient.js:1398
+msgid "View account"
+msgstr "கணக்கை காட்டவும்"
+
+#: ../js/ui/components/telepathyClient.js:1435
+msgid "Unknown reason"
+msgstr "தெரியாத காரணம்"
+
+#: ../js/ui/ctrlAltTab.js:29 ../js/ui/viewSelector.js:154
+msgid "Windows"
+msgstr "சாளரங்கள்"
+
+#: ../js/ui/dash.js:249 ../js/ui/dash.js:287
+msgid "Show Applications"
+msgstr "பயன்பாடுகளை காட்டு"
+
+#: ../js/ui/dash.js:445
+msgid "Dash"
+msgstr "டேஷ்போர்ட்"
+
+#: ../js/ui/dateMenu.js:96
+msgid "Open Calendar"
+msgstr "நாள்காட்டியை திற"
+
+#: ../js/ui/dateMenu.js:100
+msgid "Open Clocks"
+msgstr "கடிகாரங்களைத் திற"
+
+#: ../js/ui/dateMenu.js:107
+msgid "Date & Time Settings"
+msgstr "தேதி நேரம் அமைப்புகள்"
+
+#. Translators: This is the date format to use when the calendar popup is
+#. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
+#. */
+#: ../js/ui/dateMenu.js:204
+msgid "%A %B %e, %Y"
+msgstr "%A %B %e, %Y"
+
+#: ../js/ui/endSessionDialog.js:64
+#, javascript-format
+msgctxt "title"
+msgid "Log Out %s"
+msgstr "%s யிலிருந்து வெளியேறு"
+
+#: ../js/ui/endSessionDialog.js:65
+msgctxt "title"
+msgid "Log Out"
+msgstr "வெளியேறு"
+
+#: ../js/ui/endSessionDialog.js:67
+#, javascript-format
+msgid "%s will be logged out automatically in %d second."
+msgid_plural "%s will be logged out automatically in %d seconds."
+msgstr[0] "%s தானியங்கியாக %d வினாடியில் வெளியேறும்"
+msgstr[1] "%s தானியங்கியாக %d வினாடிகளில் வெளியேறும்"
+
+#: ../js/ui/endSessionDialog.js:72
+#, javascript-format
+msgid "You will be logged out automatically in %d second."
+msgid_plural "You will be logged out automatically in %d seconds."
+msgstr[0] "நீங்கள்  தானியங்கியாக %d வினாடியில் வெளியேற்றப்படுவீர்கள் "
+msgstr[1] "நீங்கள்  தானியங்கியாக %d வினாடிகளில் வெளியேற்றப்படுவீர்கள் "
+
+#: ../js/ui/endSessionDialog.js:78
+msgctxt "button"
+msgid "Log Out"
+msgstr "வெளியேறு"
+
+#: ../js/ui/endSessionDialog.js:84
+msgctxt "title"
+msgid "Power Off"
+msgstr "மின்சக்தி நிறுத்தம்"
+
+#: ../js/ui/endSessionDialog.js:85
+msgctxt "title"
+msgid "Install Updates & Power Off"
+msgstr "புதுப்பிப்புகளை நிறுவு & இயக்கம் நிறுத்து"
+
+#: ../js/ui/endSessionDialog.js:87
+#, javascript-format
+msgid "The system will power off automatically in %d second."
+msgid_plural "The system will power off automatically in %d seconds."
+msgstr[0] "கணினி தானியங்கியாக %d வினாடியில் மின் நிறுத்தப்படும்"
+msgstr[1] "கணினி தானியங்கியாக %d வினாடிகளில் மின் நிறுத்தப்படும்"
+
+#: ../js/ui/endSessionDialog.js:91
+msgctxt "checkbox"
+msgid "Install pending software updates"
+msgstr "நிலுவையிலுள்ள மென்பொருள் புதுப்பிப்புகளை நிறுவு"
+
+#: ../js/ui/endSessionDialog.js:94 ../js/ui/endSessionDialog.js:111
+msgctxt "button"
+msgid "Restart"
+msgstr "மறு துவக்கம்"
+
+#: ../js/ui/endSessionDialog.js:96
+msgctxt "button"
+msgid "Power Off"
+msgstr "மின்சக்தி நிறுத்தம்"
+
+#: ../js/ui/endSessionDialog.js:103
+msgctxt "title"
+msgid "Restart"
+msgstr "மறு துவக்கம்"
+
+#: ../js/ui/endSessionDialog.js:105
+#, javascript-format
+msgid "The system will restart automatically in %d second."
+msgid_plural "The system will restart automatically in %d seconds."
+msgstr[0] "கணினி தானியங்கியாக %d வினாடியில் மீள் துவக்கம்  செய்யப்படும்."
+msgstr[1] "கணினி தானியங்கியாக %d வினாடிகளில் மீள் துவக்கம்  செய்யப்படும்."
+
+#: ../js/ui/endSessionDialog.js:119
+msgctxt "title"
+msgid "Restart & Install Updates"
+msgstr "மறுதுவக்கு & புதுப்பிப்புகளை நிறுவு"
+
+#: ../js/ui/endSessionDialog.js:121
+#, javascript-format
+msgid "The system will automatically restart and install updates in %d second."
+msgid_plural ""
+"The system will automatically restart and install updates in %d seconds."
+msgstr[0] "%d வினாடியில் கணினி தானாக மறுதுவக்கமாகி புதுப்பிப்புகளை நிறுவும்."
+msgstr[1] "%d வினாடிகளில் கணினி தானாக மறுதுவக்கமாகி புதுப்பிப்புகளை நிறுவும்."
+
+#: ../js/ui/endSessionDialog.js:127
+msgctxt "button"
+msgid "Restart &amp; Install"
+msgstr "மறுதுவக்கு &amp; நிறுவு"
+
+#: ../js/ui/endSessionDialog.js:128
+msgctxt "button"
+msgid "Install &amp; Power Off"
+msgstr "நிறுவு &amp; இயக்கம் நிறுத்து"
+
+#: ../js/ui/endSessionDialog.js:129
+msgctxt "checkbox"
+msgid "Power off after updates are installed"
+msgstr "புதுப்பிப்புகள் நிறுவப்பட்ட பிறகு இயக்கம் நிறுத்து"
+
+#: ../js/ui/endSessionDialog.js:338
+msgid "Running on battery power: please plug in before installing updates."
+msgstr ""
+"மின்கல சக்தியில் இயங்குகிறது: புதுப்பிப்புகளை நிறுவும் முன்பு மின் இணைப்பு "
+"கொடுக்கவும்."
+
+#: ../js/ui/endSessionDialog.js:355
+msgid "Some applications are busy or have unsaved work."
+msgstr ""
+"சில பயன்பாடுகள் பணிமிகுதியாக உள்ளன அல்லது சேமிக்காத வேலையைக் கொண்டுள்ளன."
+
+#: ../js/ui/endSessionDialog.js:362
+msgid "Other users are logged in."
+msgstr "மற்ற பயனர்கள் புகுபதிவு செய்துள்ளனர்."
+
+#. Translators: Remote here refers to a remote session, like a ssh login */
+#: ../js/ui/endSessionDialog.js:640
+#, javascript-format
+msgid "%s (remote)"
+msgstr "%s (தொலைநிலை)"
+
+#. Translators: Console here refers to a tty like a VT console */
+#: ../js/ui/endSessionDialog.js:643
+#, javascript-format
+msgid "%s (console)"
+msgstr "%s (கன்சோல்)"
+
+#: ../js/ui/extensionDownloader.js:199
+msgid "Install"
+msgstr "நிறுவு"
+
+#: ../js/ui/extensionDownloader.js:204
+#, javascript-format
+msgid "Download and install “%s” from extensions.gnome.org?"
+msgstr "extensions.gnome.org இல் இருந்து '%s' ஐ தரவிறக்கி நிறுவவா?"
+
+#: ../js/ui/keyboard.js:692 ../js/ui/status/keyboard.js:523
+msgid "Keyboard"
+msgstr "விசைப்பலகை"
+
+#: ../js/ui/lookingGlass.js:643
+msgid "No extensions installed"
+msgstr "நீட்சிகள் ஏதும் நிறுவப்படவில்லை"
+
+#. Translators: argument is an extension UUID. */
+#: ../js/ui/lookingGlass.js:697
+#, javascript-format
+msgid "%s has not emitted any errors."
+msgstr "%s எந்த பிழையையும் வெளியிடவில்லை"
+
+#: ../js/ui/lookingGlass.js:703
+msgid "Hide Errors"
+msgstr "பிழைகளை மறை"
+
+#: ../js/ui/lookingGlass.js:707 ../js/ui/lookingGlass.js:767
+msgid "Show Errors"
+msgstr "பிழைகளை காட்டுக"
+
+#: ../js/ui/lookingGlass.js:716 ../js/ui/status/location.js:71
+#: ../js/ui/status/location.js:176
+msgid "Enabled"
+msgstr "செயலாக்கப்பட்டது"
+
+#. Translators: this is for a network device that cannot be activated
+#. because it's disabled by rfkill (airplane mode) */
+#. translators:
+#. * The device has been disabled
+#: ../js/ui/lookingGlass.js:719 ../js/ui/status/location.js:179
+#: ../js/ui/status/network.js:592 ../src/gvc/gvc-mixer-control.c:1830
+msgid "Disabled"
+msgstr "செயல்நீக்கப்பட்டது"
+
+#: ../js/ui/lookingGlass.js:721
+msgid "Error"
+msgstr "பிழை"
+
+#: ../js/ui/lookingGlass.js:723
+msgid "Out of date"
+msgstr "காலாவதியானது"
+
+#: ../js/ui/lookingGlass.js:725
+msgid "Downloading"
+msgstr "பதிவிறக்குகிறது"
+
+#: ../js/ui/lookingGlass.js:749
+msgid "View Source"
+msgstr "மூலத்தை பார்க்க"
+
+#: ../js/ui/lookingGlass.js:758
+msgid "Web Page"
+msgstr "இணைய பக்கம்"
+
+#: ../js/ui/messageTray.js:1326
+msgid "Open"
+msgstr "திற"
+
+#: ../js/ui/messageTray.js:1333
+msgid "Remove"
+msgstr "நீக்கு"
+
+#: ../js/ui/messageTray.js:1630
+msgid "Notifications"
+msgstr "அறிவிப்புகள்"
+
+#: ../js/ui/messageTray.js:1637
+msgid "Clear Messages"
+msgstr "செய்திகளை அழி"
+
+#: ../js/ui/messageTray.js:1656
+msgid "Notification Settings"
+msgstr "அறிவிப்பு அமைப்புகள்"
+
+#: ../js/ui/messageTray.js:1709
+msgid "Tray Menu"
+msgstr "தட்டில் பட்டி"
+
+#: ../js/ui/messageTray.js:1926
+msgid "No Messages"
+msgstr "செய்திகள் இல்லை"
+
+#: ../js/ui/messageTray.js:1968
+msgid "Message Tray"
+msgstr "அறிவிப்பு பலகம்"
+
+#: ../js/ui/messageTray.js:2971
+msgid "System Information"
+msgstr "கணினி தகவல்கள்"
+
+#: ../js/ui/notificationDaemon.js:513 ../src/shell-app.c:425
+msgctxt "program"
+msgid "Unknown"
+msgstr "தெரியாத"
+
+#: ../js/ui/overviewControls.js:482 ../js/ui/screenShield.js:151
+#, javascript-format
+msgid "%d new message"
+msgid_plural "%d new messages"
+msgstr[0] "%d புதிய செய்தி"
+msgstr[1] "%d புதிய செய்திகள்"
+
+#: ../js/ui/overview.js:84
+msgid "Undo"
+msgstr "மறை"
+
+#: ../js/ui/overview.js:124
+msgid "Overview"
+msgstr "மேலோட்டம்"
+
+#. Translators: this is the text displayed
+#. in the search entry when no search is
+#. active; it should not exceed ~30
+#. characters. */
+#: ../js/ui/overview.js:246
+msgid "Type to search…"
+msgstr "தேட தட்டச்சு செய்யவும்..."
+
+#: ../js/ui/panel.js:515
+msgid "Quit"
+msgstr "வெளியேறு"
+
+#. Translators: If there is no suitable word for "Activities"
+#. in your language, you can use the word for "Overview". */
+#: ../js/ui/panel.js:567
+msgid "Activities"
+msgstr "செயல்பாடுகள்"
+
+#: ../js/ui/panel.js:918
+msgid "Top Bar"
+msgstr "மேல் பட்டை"
+
+#: ../js/ui/popupMenu.js:269
+msgid "toggle-switch-us"
+msgstr "toggle-switch-intl"
+
+#: ../js/ui/runDialog.js:70
+msgid "Enter a Command"
+msgstr "ஒரு கட்டளையை உள்ளிடுக"
+
+#: ../js/ui/runDialog.js:110 ../js/ui/windowMenu.js:120
+msgid "Close"
+msgstr "மூடுக"
+
+#: ../js/ui/runDialog.js:277
+msgid "Restarting…"
+msgstr "மறுதுவக்குகிறது…"
+
+#. Translators: This is a time format for a date in
+#. long format */
+#: ../js/ui/screenShield.js:88
+msgid "%A, %B %d"
+msgstr "%A, %B %d"
+
+#: ../js/ui/screenShield.js:153
+#, javascript-format
+msgid "%d new notification"
+msgid_plural "%d new notifications"
+msgstr[0] "%d புதிய அறிவிப்பு"
+msgstr[1] "%d புதிய அறிவிப்புகள்"
+
+#: ../js/ui/screenShield.js:472 ../js/ui/status/system.js:345
+msgid "Lock"
+msgstr "பூட்டு"
+
+#: ../js/ui/screenShield.js:706
+msgid "GNOME needs to lock the screen"
+msgstr "GNOME திரையைப் பூட்ட வேண்டுகிறது"
+
+#: ../js/ui/screenShield.js:833 ../js/ui/screenShield.js:1304
+msgid "Unable to lock"
+msgstr "பூட்ட முடியவில்லை"
+
+#: ../js/ui/screenShield.js:834 ../js/ui/screenShield.js:1305
+msgid "Lock was blocked by an application"
+msgstr "ஒரு பயன்பாடு பூட்டுதலை முடக்கியுள்ளது"
+
+#: ../js/ui/search.js:594
+msgid "Searching…"
+msgstr "தேடுகிறது..."
+
+#: ../js/ui/search.js:596
+msgid "No results."
+msgstr "விடைகள் இல்லை."
+
+#: ../js/ui/shellEntry.js:25
+msgid "Copy"
+msgstr "நகலெடு"
+
+#: ../js/ui/shellEntry.js:30
+msgid "Paste"
+msgstr "ஒட்டு"
+
+#: ../js/ui/shellEntry.js:97
+msgid "Show Text"
+msgstr "உரையை காட்டுக"
+
+#: ../js/ui/shellEntry.js:99
+msgid "Hide Text"
+msgstr "உரையை மறை"
+
+#: ../js/ui/shellMountOperation.js:370
+msgid "Password"
+msgstr "கடவுச்சொல்"
+
+#: ../js/ui/shellMountOperation.js:391
+msgid "Remember Password"
+msgstr "கடவுச்சொல்லை நினைவு கொள்ளவும்"
+
+#: ../js/ui/status/accessibility.js:42
+msgid "Accessibility"
+msgstr "அணுகல்"
+
+#: ../js/ui/status/accessibility.js:57
+msgid "Zoom"
+msgstr "பெரிதாக்கு"
+
+#: ../js/ui/status/accessibility.js:64
+msgid "Screen Reader"
+msgstr "திரைபடிப்பான்"
+
+#: ../js/ui/status/accessibility.js:68
+msgid "Screen Keyboard"
+msgstr "திரை விசைப்பலகை"
+
+#: ../js/ui/status/accessibility.js:72
+msgid "Visual Alerts"
+msgstr "காட்சி எச்சரிக்கைகள்"
+
+#: ../js/ui/status/accessibility.js:75
+msgid "Sticky Keys"
+msgstr "ஒட்டு விசைகள்"
+
+#: ../js/ui/status/accessibility.js:78
+msgid "Slow Keys"
+msgstr "மெது விசைகள்"
+
+#: ../js/ui/status/accessibility.js:81
+msgid "Bounce Keys"
+msgstr "எதிரொலிப்பு விசைகள்"
+
+#: ../js/ui/status/accessibility.js:84
+msgid "Mouse Keys"
+msgstr "சொடுக்கி விசைகள்"
+
+#: ../js/ui/status/accessibility.js:144
+msgid "High Contrast"
+msgstr "அதிக முறண்"
+
+#: ../js/ui/status/accessibility.js:193
+msgid "Large Text"
+msgstr "பெரிய உரை"
+
+#: ../js/ui/status/bluetooth.js:49
+msgid "Bluetooth"
+msgstr "ப்ளூடூத்"
+
+#: ../js/ui/status/bluetooth.js:51 ../js/ui/status/network.js:178
+#: ../js/ui/status/network.js:360 ../js/ui/status/network.js:1281
+#: ../js/ui/status/network.js:1392 ../js/ui/status/rfkill.js:86
+#: ../js/ui/status/rfkill.js:114
+msgid "Turn Off"
+msgstr "முடக்கு"
+
+#: ../js/ui/status/bluetooth.js:54
+msgid "Bluetooth Settings"
+msgstr "ப்ளூடூத் அமைப்புகள்"
+
+#: ../js/ui/status/bluetooth.js:104
+#, javascript-format
+msgid "%d Connected Device"
+msgid_plural "%d Connected Devices"
+msgstr[0] "இணைக்கப்பட்ட சாதனம் %d"
+msgstr[1] "இணைக்கப்பட்ட சாதனங்கள் %d"
+
+#: ../js/ui/status/bluetooth.js:106 ../js/ui/status/network.js:1309
+msgid "Not Connected"
+msgstr "இணைக்கப்படவில்லை"
+
+#: ../js/ui/status/brightness.js:44
+msgid "Brightness"
+msgstr "வெளிச்சம்"
+
+#: ../js/ui/status/keyboard.js:547
+msgid "Show Keyboard Layout"
+msgstr "விசைப்பலகை இடவமைவை காட்டுக"
+
+#: ../js/ui/status/location.js:65
+msgid "Location"
+msgstr "இருப்பிடம்"
+
+#: ../js/ui/status/location.js:72 ../js/ui/status/location.js:177
+msgid "Disable"
+msgstr "முடக்கு"
+
+#: ../js/ui/status/location.js:73
+msgid "Privacy Settings"
+msgstr "தனியுரிமை அமைவுகள்"
+
+#: ../js/ui/status/location.js:176
+msgid "In Use"
+msgstr "பயனில் உள்ளது"
+
+#: ../js/ui/status/location.js:180
+msgid "Enable"
+msgstr "செயல்படுத்து"
+
+#: ../js/ui/status/network.js:101
+msgid "<unknown>"
+msgstr "<தெரியாத>"
+
+#: ../js/ui/status/network.js:457 ../js/ui/status/network.js:1307
+#: ../js/ui/status/network.js:1511
+msgid "Off"
+msgstr "முடக்கு"
+
+#: ../js/ui/status/network.js:459
+msgid "Connected"
+msgstr "இணைக்கப்பட்டது"
+
+#. Translators: this is for network devices that are physically present but are not
+#. under NetworkManager's control (and thus cannot be used in the menu) */
+#: ../js/ui/status/network.js:463
+msgid "Unmanaged"
+msgstr "நிர்வகிக்கப்படாதது"
+
+#: ../js/ui/status/network.js:465
+msgid "Disconnecting"
+msgstr "துண்டிக்கப்படுகிறது"
+
+#: ../js/ui/status/network.js:471 ../js/ui/status/network.js:1301
+msgid "Connecting"
+msgstr "இணைக்கிறது"
+
+#. Translators: this is for network connections that require some kind of key or password */
+#: ../js/ui/status/network.js:474
+msgid "Authentication required"
+msgstr "அங்கீகரிப்பு தேவை"
+
+#. Translators: this is for devices that require some kind of firmware or kernel
+#. module, which is missing */
+#: ../js/ui/status/network.js:482
+msgid "Firmware missing"
+msgstr "சாதன நிரல் இல்லை"
+
+#. Translators: this is for a network device that cannot be activated (for example it
+#. is disabled by rfkill, or it has no coverage */
+#: ../js/ui/status/network.js:486
+msgid "Unavailable"
+msgstr "கிடைக்கவில்லை"
+
+#: ../js/ui/status/network.js:488 ../js/ui/status/network.js:1695
+msgid "Connection failed"
+msgstr "இணைப்பு தோல்வியுற்றது"
+
+#: ../js/ui/status/network.js:504
+msgid "Wired Settings"
+msgstr "வயர்டு அமைவுகள்"
+
+#: ../js/ui/status/network.js:546 ../js/ui/status/network.js:624
+msgid "Mobile Broadband Settings"
+msgstr "மொபைல் பிராட்பேண்டு அமைவுகள்"
+
+#: ../js/ui/status/network.js:588 ../js/ui/status/network.js:1305
+msgid "Hardware Disabled"
+msgstr "வன்பொருள் முடக்கப்பட்டது"
+
+#: ../js/ui/status/network.js:632
+msgid "Use as Internet connection"
+msgstr "இணைய இணைப்பாகப் பயன்படுத்து"
+
+#: ../js/ui/status/network.js:813
+msgid "Airplane Mode is On"
+msgstr "விமான பயன்முறை இயக்கத்தில்"
+
+#: ../js/ui/status/network.js:814
+msgid "Wi-Fi is disabled when airplane mode is on."
+msgstr "விமானப் பயன்முறை இயக்கத்தில் இருக்கும் போது Wi-Fi முடக்கப்படும்."
+
+#: ../js/ui/status/network.js:815
+msgid "Turn Off Airplane Mode"
+msgstr "விமான பயன்முறையை அணைக்கவும்"
+
+#: ../js/ui/status/network.js:824
+msgid "Wi-Fi is Off"
+msgstr "Wi-Fi அணைக்கப்பட்டுள்ளது"
+
+#: ../js/ui/status/network.js:825
+msgid "Wi-Fi needs to be turned on in order to connect to a network."
+msgstr "பிணையத்திற்கு இணைக்க வேண்டுமானால் Wi-Fi ஐ இயக்க வேண்டும்."
+
+#: ../js/ui/status/network.js:826
+msgid "Turn On Wi-Fi"
+msgstr "Wi-Fi ஐ இயக்கு"
+
+#: ../js/ui/status/network.js:851
+msgid "Wi-Fi Networks"
+msgstr "கம்பியில்லா பிணையங்கள்"
+
+#: ../js/ui/status/network.js:853
+msgid "Select a network"
+msgstr "ஒரு பிணையத்தை தெரிவுச்செய்"
+
+#: ../js/ui/status/network.js:882
+msgid "No Networks"
+msgstr "பிணையங்கள் இல்லை"
+
+#: ../js/ui/status/network.js:903 ../js/ui/status/rfkill.js:112
+msgid "Use hardware switch to turn off"
+msgstr "அணைக்க, வன்பொருள் பொத்தானைப் பயன்படுத்தவும்"
+
+#: ../js/ui/status/network.js:1173
+msgid "Select Network"
+msgstr "பிணையத்தை தெரிவுச்செய்"
+
+#: ../js/ui/status/network.js:1179
+msgid "Wi-Fi Settings"
+msgstr "Wi-Fi அமைவுகள்"
+
+#: ../js/ui/status/network.js:1281
+msgid "Turn On"
+msgstr "செயற்படுத்து"
+
+#: ../js/ui/status/network.js:1298
+msgid "Hotspot Active"
+msgstr "ஹாட்ஸ்பாட் செயலில் உள்ளது"
+
+#: ../js/ui/status/network.js:1409
+msgid "connecting..."
+msgstr "இணைக்கிறது..."
+
+#. Translators: this is for network connections that require some kind of key or password */
+#: ../js/ui/status/network.js:1412
+msgid "authentication required"
+msgstr "உறுதிப்படுத்துதல் தேவை"
+
+#: ../js/ui/status/network.js:1414
+msgid "connection failed"
+msgstr "இணைப்பு தோல்வி அடைந்தது"
+
+#: ../js/ui/status/network.js:1480 ../js/ui/status/rfkill.js:89
+msgid "Network Settings"
+msgstr "வலைப்பின்னல் அமைப்புகள்"
+
+#: ../js/ui/status/network.js:1482
+msgid "VPN Settings"
+msgstr "VPN அமைவுகள்"
+
+#: ../js/ui/status/network.js:1501
+msgid "VPN"
+msgstr "விபிஎன் - VPN"
+
+#: ../js/ui/status/network.js:1656
+msgid "Network Manager"
+msgstr "வலைப்பின்னல் மேலாளர்"
+
+#: ../js/ui/status/network.js:1696
+msgid "Activation of network connection failed"
+msgstr "வலைப்பின்னல் இணைப்பு செயலாக்கம் தோல்வி அடைந்தது"
+
+#: ../js/ui/status/power.js:49
+msgid "Power Settings"
+msgstr "மின்சக்தி அமைப்புகள்"
+
+#: ../js/ui/status/power.js:65
+msgid "Fully Charged"
+msgstr "முழுமையாக மின்னூட்டப்பட்டது"
+
+#: ../js/ui/status/power.js:72 ../js/ui/status/power.js:78
+msgid "Estimating…"
+msgstr "கணிக்கிறது…"
+
+#: ../js/ui/status/power.js:86
+#, javascript-format
+msgid "%d∶%02d Remaining (%d%%)"
+msgstr "%d∶%02d மீதமுள்ளது (%d%%)"
+
+#: ../js/ui/status/power.js:91
+#, javascript-format
+msgid "%d∶%02d Until Full (%d%%)"
+msgstr "%d∶%02d முழுமையாகும் வரை (%d%%)"
+
+#: ../js/ui/status/power.js:119
+msgid "UPS"
+msgstr "UPS"
+
+#: ../js/ui/status/power.js:121
+msgid "Battery"
+msgstr "மின்கலம்"
+
+#: ../js/ui/status/rfkill.js:83
+msgid "Airplane Mode"
+msgstr "விமான பயன்முறை"
+
+#: ../js/ui/status/rfkill.js:85
+msgid "On"
+msgstr "மீது\t"
+
+#: ../js/ui/status/system.js:317
+msgid "Switch User"
+msgstr "பயனர் மாற்று"
+
+#: ../js/ui/status/system.js:322
+msgid "Log Out"
+msgstr "வெளியேறு"
+
+#: ../js/ui/status/system.js:341
+msgid "Orientation Lock"
+msgstr "சார்பு பூட்டு"
+
+#: ../js/ui/status/system.js:349
+msgid "Suspend"
+msgstr "இடைநிறுத்தம்."
+
+#: ../js/ui/status/system.js:352
+msgid "Power Off"
+msgstr "மின்சக்தி நிறுத்தம்"
+
+#: ../js/ui/status/volume.js:127
+msgid "Volume changed"
+msgstr "ஒலியளவு மாற்றப்பட்டது"
+
+#: ../js/ui/status/volume.js:162
+msgid "Volume"
+msgstr "ஒலியளவு"
+
+#: ../js/ui/status/volume.js:213
+msgid "Microphone"
+msgstr "மைக்ரோஃபோன்"
+
+#: ../js/ui/unlockDialog.js:67
+msgid "Log in as another user"
+msgstr "வேறு பயனராக உள்நுழைக"
+
+#: ../js/ui/unlockDialog.js:84
+msgid "Unlock Window"
+msgstr "சாளர பூட்டு திறக்கவும்"
+
+#: ../js/ui/viewSelector.js:158
+msgid "Applications"
+msgstr "பயன்பாடுகள்"
+
+#: ../js/ui/viewSelector.js:162
+msgid "Search"
+msgstr "தேடு"
+
+#: ../js/ui/windowAttentionHandler.js:19
+#, javascript-format
+msgid "“%s” is ready"
+msgstr "“%s” தயாராக உள்ளது"
+
+#: ../js/ui/windowManager.js:65
+msgid "Do you want to keep these display settings?"
+msgstr "இந்தக் காட்சி அமைவுகளை வைத்திருக்க வேண்டுமா?"
+
+#. Translators: this and the following message should be limited in lenght,
+#. to avoid ellipsizing the labels.
+#. */
+#: ../js/ui/windowManager.js:84
+msgid "Revert Settings"
+msgstr "அமைவுகளை மீட்டமை"
+
+#: ../js/ui/windowManager.js:88
+msgid "Keep Changes"
+msgstr "மாற்றங்களைச் செயல்படுத்து"
+
+#: ../js/ui/windowManager.js:107
+#, javascript-format
+msgid "Settings changes will revert in %d second"
+msgid_plural "Settings changes will revert in %d seconds"
+msgstr[0] "அமைவுகளின் மாற்றங்கள் %d வினாடியில் மீட்டமைக்கப்படும்"
+msgstr[1] "அமைவுகளின் மாற்றங்கள் %d வினாடிகளில் மீட்டமைக்கப்படும்"
+
+#: ../js/ui/windowMenu.js:34
+msgid "Minimize"
+msgstr "சிறிதாக்கு"
+
+#: ../js/ui/windowMenu.js:41
+msgid "Unmaximize"
+msgstr "பெரிதாக்க வேண்டாம்"
+
+#: ../js/ui/windowMenu.js:45
+msgid "Maximize"
+msgstr "பெரிதாக்கு"
+
+#: ../js/ui/windowMenu.js:52
+msgid "Move"
+msgstr "நகர்த்து"
+
+#: ../js/ui/windowMenu.js:58
+msgid "Resize"
+msgstr "மறுஅளவிடு"
+
+#: ../js/ui/windowMenu.js:65
+msgid "Move Titlebar Onscreen"
+msgstr "தலைப்புப்பட்டையை திரைக்கு நகர்த்தவும்"
+
+#: ../js/ui/windowMenu.js:70
+msgid "Always on Top"
+msgstr "எப்போதும் மேலே"
+
+#: ../js/ui/windowMenu.js:89
+msgid "Always on Visible Workspace"
+msgstr "எப்போதும் புலனாகும் வேலையிடத்தில்"
+
+#: ../js/ui/windowMenu.js:106
+msgid "Move to Workspace Up"
+msgstr "மேலே உள்ள வேலையிடத்திற்கு நகர்த்தவும்"
+
+#: ../js/ui/windowMenu.js:111
+msgid "Move to Workspace Down"
+msgstr "கீழே உள்ள வேலையிடத்திற்கு நகர்த்தவும்"
+
+#: ../src/calendar-server/evolution-calendar.desktop.in.in.h:1
+msgid "Evolution Calendar"
+msgstr "எவல்யூஷன் நாள்காட்டி"
+
+#. translators:
+#. * The number of sound outputs on a particular device
+#: ../src/gvc/gvc-mixer-control.c:1837
+#, c-format
+msgid "%u Output"
+msgid_plural "%u Outputs"
+msgstr[0] "%u வெளிப்பாடு"
+msgstr[1] "%u வெளிப்பாடுகள்"
+
+#. translators:
+#. * The number of sound inputs on a particular device
+#: ../src/gvc/gvc-mixer-control.c:1847
+#, c-format
+msgid "%u Input"
+msgid_plural "%u Inputs"
+msgstr[0] "%u உள்ளீடு"
+msgstr[1] "%u உள்ளீடுகள்"
+
+#: ../src/gvc/gvc-mixer-control.c:2373
+msgid "System Sounds"
+msgstr "கணினி ஒலிகள்"
+
+#: ../src/main.c:373
+msgid "Print version"
+msgstr "அச்சுப் பதிப்பு"
+
+#: ../src/main.c:379
+msgid "Mode used by GDM for login screen"
+msgstr "ஜிடிஎம் உள்நுழைவு திரைக்கு பயன்படுத்தும் பாங்கு"
+
+#: ../src/main.c:385
+msgid "Use a specific mode, e.g. \"gdm\" for login screen"
+msgstr "உள்நுழைவு திரைக்கு குறிப்பிட்ட பாங்கை, எ.கா. \"gdm\" பயன்படுத்துக"
+
+#: ../src/main.c:391
+msgid "List possible modes"
+msgstr "இயன்ற பாங்குகளின் பட்டியல்"
+
+#: ../src/shell-app.c:666
+#, c-format
+msgid "Failed to launch “%s”"
+msgstr "\"%s\" ஐத் தொடங்குதல் தோல்வியடைந்தது"
+
+#: ../src/shell-keyring-prompt.c:714
+msgid "Passwords do not match."
+msgstr "கடவுச்சொற்கள் பொருந்தவில்லை"
+
+#: ../src/shell-keyring-prompt.c:722
+msgid "Password cannot be blank"
+msgstr "கடவுச்சொல் வெறுமையாக இருக்க முடியாது"
+
+#: ../src/shell-polkit-authentication-agent.c:346
+msgid "Authentication dialog was dismissed by the user"
+msgstr "பயனர் உறுதிப்படுத்தல் உரையாடலை வெளியனுப்பினார்."
+
+#~ msgid "List of categories that should be displayed as folders"
+#~ msgstr "கோப்புறைகளாகக் காண்பிக்க வேண்டிய பகுப்புகளின் பட்டியல்"
+
+#~ msgid ""
+#~ "Each category name in this list will be represented as folder in the "
+#~ "application view, rather than being displayed inline in the main view."
+#~ msgstr ""
+#~ "இந்தப் பட்டியலில் காண்பிக்கப்படும் ஒவ்வொரு பகுப்பும், பிரதானப் பார்வையில் உள்ளே "
+#~ "காண்பிக்கப்படுவதற்கு மாறாக பயன்பாட்டுப் பார்வையில் கோப்புறையாகக் காண்பிக்கப்படும்."
+
+#~ msgid ""
+#~ "Internally used to store the last IM presence explicitly set by the user. "
+#~ "The value here is from the TpConnectionPresenceType enumeration."
+#~ msgstr ""
+#~ "பயனர் குறிப்பாக அமைத்த கடைசி ஐஎம் இருப்பு நிலையை சேமிக்க உள்ளே பயனாகும். இங்குள்ள "
+#~ "மதிப்பு TpConnectionPresenceType கணக்கிடுதலில் இருந்து."
+
+#~ msgid ""
+#~ "Internally used to store the last session presence status for the user. "
+#~ "The value here is from the GsmPresenceStatus enumeration."
+#~ msgstr ""
+#~ "பயனருக்கு கடைசி அமர்வின் இருப்பு நிலையை சேமிக்க உள்ளே பயனாகும். இங்குள்ள மதிப்பு "
+#~ "GsmPresenceStatus கணக்கிடுதலில் இருந்து."
+
+#~ msgid "Arrangement of buttons on the titlebar"
+#~ msgstr "தலைப்புப்பட்டியில் பொத்தான்களின் அமைப்பு"
+
+#~ msgid ""
+#~ "This key overrides the key in org.gnome.desktop.wm.preferences when "
+#~ "running GNOME Shell."
+#~ msgstr ""
+#~ "இந்த விசை org.gnome.desktop.wm.preferences ஐ க்னோம் ஷெல்லை இயக்கும்போது வன்மீறல் "
+#~ "செய்கிறது."
+
+#~ msgid "Extension"
+#~ msgstr "நீட்சி"
+
+#~ msgid "Select an extension to configure using the combobox above."
+#~ msgstr "மேலுள்ள கூட்டுப்பெட்டியை பயன்படுத்தி வடிவமைக்க ஒரு நீட்சியை தேர்ந்தெடுக்கவும்"
+
+#~| msgid "Session…"
+#~ msgid "Session"
+#~ msgstr "அமர்வு"
+
+#~ msgctxt "event list time"
+#~ msgid "%H\\u2236%M"
+#~ msgstr "%H\\u2236%M"
+
+#~ msgctxt "event list time"
+#~ msgid "%l\\u2236%M\\u2009%p"
+#~ msgstr "%l\\u2236%M\\u2009%p"
+
+#~ msgid "<b>%A</b>, <b>%H:%M</b>"
+#~ msgstr "<b>%A</b>, <b>%H:%M</b>"
+
+#~ msgid "<b>%B</b> <b>%d</b>, <b>%H:%M</b>"
+#~ msgstr "<b>%B</b> <b>%d</b>, <b>%H:%M</b>"
+
+#~ msgid "<b>%B</b> <b>%d</b> <b>%Y</b>, <b>%H:%M</b> "
+#~ msgstr "<b>%B</b> <b>%d</b> <b>%Y</b>, <b>%H:%M</b> "
+
+#~ msgid "Click Log Out to quit these applications and log out of the system."
+#~ msgstr "இந்த பயன்பாடுகளை மூடி கணினியில் இருந்து வெளியேற வெளியேறு ஐ சொடுக்கவும்"
+
+#~ msgid "Logging out of the system."
+#~ msgstr "கணினியில் இருந்து வெளியேறுகிறது"
+
+#~ msgid "Click Power Off to quit these applications and power off the system."
+#~ msgstr "இந்த பயன்பாடுகளை மூடி கணினி மின் நிறுத்தம் செய்ய மின் நிறுத்தம் ஐ சொடுக்கவும்"
+
+#~ msgid "Powering off the system."
+#~ msgstr "கணினி மின் நிறுத்தப்படுகிறது"
+
+#~ msgid "Click Restart to quit these applications and restart the system."
+#~ msgstr "இந்த பயன்பாடுகளை மூடி கணினி மீள் துவக்கம் செய்ய செய்ய மீள் துவக்கம் ஐ சொடுக்கவும்"
+
+#~ msgid "Restarting the system."
+#~ msgstr "கணினி மறு துவக்கம் செய்யப்படுகிறது"
+
+#~| msgid "Settings"
+#~ msgid "Settings Menu"
+#~ msgstr "பட்டி அமைப்புகள்"
+
+#~ msgid "Authorization request from %s"
+#~ msgstr "%s இடமிருந்து உறுதிப்படுத்தல் வேண்டுதல்"
+
+#~ msgid "Device %s wants to pair with this computer"
+#~ msgstr "சாதனம்  %s இந்த கணினியுடன் இணைக்க விரும்புகிறது"
+
+#~ msgid "Allow"
+#~ msgstr "அனுமதி"
+
+#~ msgid "Deny"
+#~ msgstr "மறுப்பு"
+
+#~ msgid "Device %s wants access to the service '%s'"
+#~ msgstr "சாதனம் %s  ' சேவை %s' க்கு அணுகல் வேண்டுகிறது"
+
+#~ msgid "Always grant access"
+#~ msgstr "எப்போதும் அணுகலை அளி"
+
+#~ msgid "Grant this time only"
+#~ msgstr "இம்முறை மட்டும் அணுகலை அளி"
+
+#~ msgid "Reject"
+#~ msgstr "மறு"
+
+#~ msgid "Pairing confirmation for %s"
+#~ msgstr "%s க்கு இணை சேர்த்த உறுதிப்படுத்தல்"
+
+#~| msgid ""
+#~| "Please confirm whether the PIN '%06d' matches the one on the device."
+#~ msgid ""
+#~ "Please confirm whether the Passkey '%06d' matches the one on the device."
+#~ msgstr ""
+#~ "கடவு எண்ணானது '%06d'  சாதனத்தில் உள்ள ஒன்றுடன் பொருந்துகிறதா என உறுதி செய்யவும்."
+
+#~ msgid "Matches"
+#~ msgstr "பொருந்துகிறது"
+
+#~ msgid "Does not match"
+#~ msgstr "பொருந்தவில்லை"
+
+#~ msgid "Pairing request for %s"
+#~ msgstr "%s க்கு இணைக்க வேண்டுதல்"
+
+#~ msgid "Please enter the PIN mentioned on the device."
+#~ msgstr "சாதனத்தின் சொல்லும் பின் ஐ உள்ளீடு செய்க"
+
+#~ msgid "OK"
+#~ msgstr "சரி"
+
+#~ msgid "Shutting down might cause them to lose unsaved work."
+#~ msgstr "இயக்க நிறுத்தம் செய்தால், அவர்களது சேமிக்கப்படாத பணிகள் இழக்கப்படலாம்."
+
+#~ msgid ""
+#~ "Sorry, no wisdom for you today:\n"
+#~ "%s"
+#~ msgstr ""
+#~ "மன்னிக்க இன்றூ உங்களுக்கு பொன்மொழி இல்லை:\n"
+#~ "%s"
+
+#~ msgid "%s the Oracle says"
+#~ msgstr "%s அசரீரி சொல்லுகிறது"
+
+#~ msgid "Screenshots"
+#~ msgstr "திரைவெட்டுகள்"
+
+#~ msgid "Record a screencast"
+#~ msgstr "ஒரு திரைவெட்டை பதிவெடு."
+
+#~ msgid "Whether to collect stats about applications usage"
+#~ msgstr "நிரல்களின் பயன்பாடு குறித்த புள்ளிவிவரம் சேகரிக்க வேண்டுமா"
+
+#~ msgid ""
+#~ "The shell normally monitors active applications in order to present the "
+#~ "most used ones (e.g. in launchers). While this data will be kept private, "
+#~ "you may want to disable this for privacy reasons. Please note that doing "
+#~ "so won't remove already saved data."
+#~ msgstr ""
+#~ "ஷெல் சாதாரணமாக செயலிலுள்ள நிரல்களை மேற்பார்வை இடுகிறது. அதனால் அடிக்கடி பயனாகும் "
+#~ "நிரல்கள் (எ-டு: துவக்கிகள்) முன் வைக்கப்படும். இந்த தரவு அந்தரங்கமாக வைக்கப்பட்டாலும் "
+#~ "நீங்கள் இதை நீக்க விரும்பலாம். அப்படிச் செய்வது முன்னே சேகரித்த தரவை நீக்காஅது என் "
+#~ "அறியவும்."
+
+#~ msgid "Keybinding to toggle the screen recorder"
+#~ msgstr "உள்ளமை திரை பதிவியை நிலை மாற்ற விசைபிணைப்பு"
+
+#~ msgid "Keybinding to start/stop the builtin screen recorder."
+#~ msgstr "உள்ளமை திரை பதிவியை துவக்க, நிறுத்த விசைபிணைப்பு"
+
+#~ msgid "Framerate used for recording screencasts."
+#~ msgstr "திரைநிகழ்வை பதிவு செய்ய சட்டவிகிதம் ."
+
+#~ msgid ""
+#~ "The framerate of the resulting screencast recordered by GNOME Shell's "
+#~ "screencast recorder in frames-per-second."
+#~ msgstr ""
+#~ "க்னோம்ஷெல் இன் ஸ்க்ரீன்காஸ்ட் பதிவரில் ஸ்க்ரீன்காட் ஐ பதிகையில் வினாடிக்கு சட்டங்களின் விகிதம்."
+
+#~ msgid "The gstreamer pipeline used to encode the screencast"
+#~ msgstr "ஸ்க்ரீன்காஸ்டை குறியாக்க பயனாகும் ஜிஸ்ட்ரீமர் குழாய்."
+
+#~ msgid ""
+#~ "Sets the GStreamer pipeline used to encode recordings. It follows the "
+#~ "syntax used for gst-launch. The pipeline should have an unconnected sink "
+#~ "pad where the recorded video is recorded. It will normally have a "
+#~ "unconnected source pad; output from that pad will be written into the "
+#~ "output file. However the pipeline can also take care of its own output - "
+#~ "this might be used to send the output to an icecast server via shout2send "
+#~ "or similar. When unset or set to an empty value, the default pipeline "
+#~ "will be used. This is currently 'vp8enc min_quantizer=13 max_quantizer=13 "
+#~ "cpu-used=5 deadline=1000000 threads=%T ! queue ! webmmux' and records to "
+#~ "WEBM using the VP8 codec. %T is used as a placeholder for a guess at the "
+#~ "optimal thread count on the system."
+#~ msgstr ""
+#~ "பதிவுகளை குறியாக்க ஜிஸ்ட்ரீமர் குழாயை அமைக்கிறது. ஜிஎஸ்டி லான்ஸ் க்கு பயன்படும் அதே "
+#~ "இலக்கணத்தை பின் பற்றும். குழாய்க்கு இணைப்பில்லா பதிவுக்குழி இருத்தல் வேண்டும். இதில் "
+#~ "விடியோ பதிவாகும். சாதாரணமாக இதில் இணைக்காத ஒரு மூல பதிவேடு இருக்கும்; இதன் "
+#~ "வெளியீடு வெளியீட்டு கோப்பாக பதிவாகும். எனினும் குழாய் தன் வெளியீட்டை தானே "
+#~ "கவனித்துக்கொள்ள இயலும். இது வெளியீட்டை ஐஸ்காஸ்ட் அல்லது ஷௌட்2சென்ட் போன்றவற்றுக்கு "
+#~ "நேரடியாக அனுப்ப இயலும். அமைப்பை அன்செட் செய்தாலல்லது காலி மதிப்புக்கு அமைத்தாலும் "
+#~ "முன்னிருப்பு குழாய் பயன்படுத்தப்படும். நடப்பில் இது 'vp8enc min_quantizer=13 "
+#~ "max_quantizer=13 cpu-used=5 deadline=1000000 threads=%T ! queue ! "
+#~ "webmmux'  ஆகும்; இதுVP8 கோடக் ஐ பயன்படுத்தி WEBM க்கு பதிவுசெய்யும். கணினியில் "
+#~ "பொருத்தமான இழை கணக்குக்கு ஊகம் செய்வதற்கு %T இடப்பிடிப்பானாக வேலை செய்யும்."
+
+#~ msgid "File extension used for storing the screencast"
+#~ msgstr "திரைவெட்டை சேமிக்க கோப்பு பின்னொட்டு."
+
+#~ msgid ""
+#~ "The filename for recorded screencasts will be a unique filename based on "
+#~ "the current date, and use this extension. It should be changed when "
+#~ "recording to a different container format."
+#~ msgstr ""
+#~ "ஸ்க்ரீன்காஸ்ட் இல் பதிவாவனக்கான கோப்புப்பெயர் தனித்தன்மை வாய்ந்தது. இது நடப்பு தேதியை "
+#~ "அடிப்படையாக கொண்டது; இந்த பின்னொட்டை பயன்படுத்தும். பதிவதை வேறு கொள்கலத்தின் ஒழுங்கில் "
+#~ "மாற்றுகையில் இதையும் மாற்ற வேண்டும்."
+
+#~ msgid "Power"
+#~ msgstr "மின்சக்தி"
+
+#~ msgid "Restart"
+#~ msgstr "மறு துவக்கம்"
+
+#~ msgid "Screencast from %d %t"
+#~ msgstr "%d %t இலிருந்து ஸ்க்ரீண்காஸ்ட்"
+
+#~ msgid "Universal Access Settings"
+#~ msgstr "உலகளாவிய அணுகல் அமைப்பு"
+
+#~ msgid "Visibility"
+#~ msgstr "காணல்"

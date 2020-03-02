@@ -1,0 +1,13 @@
+<node>
+  <interface name="org.gtk.Notifications">
+    <method name="AddNotification">
+      <arg type="s" direction="in"/>
+      <arg type="s" direction="in"/>
+      <arg type="a{sv}" direction="in"/>
+    </method>
+    <method name="RemoveNotification">
+      <arg type="s" direction="in"/>
+      <arg type="s" direction="in"/>
+    </method>
+  </interface>
+</node>

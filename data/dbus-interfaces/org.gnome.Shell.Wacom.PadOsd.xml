@@ -1,0 +1,8 @@
+<node>
+  <interface name="org.gnome.Shell.Wacom.PadOsd">
+    <method name="Show">
+      <arg name="device_node" direction="in" type="o"/>
+      <arg name="edition_mode" direction="in" type="b"/>
+    </method>
+  </interface>
+</node>

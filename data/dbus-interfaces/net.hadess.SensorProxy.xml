@@ -1,0 +1,5 @@
+<node>
+  <interface name="net.hadess.SensorProxy">
+    <property name="HasAccelerometer" type="b" access="read"/>
+  </interface>
+</node>

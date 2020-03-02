@@ -1,0 +1,29 @@
+option('extensions_tool',
+  type: 'boolean',
+  value: true,
+  description: 'Build gnome-extensions CLI tool'
+)
+
+option('gtk_doc',
+  type: 'boolean',
+  value: false,
+  description: 'Build API reference'
+)
+
+option('man',
+  type: 'boolean',
+  value: true,
+  description: 'Generate man pages'
+)
+
+option('networkmanager',
+  type: 'boolean',
+  value: true,
+  description: 'Enable NetworkManager support'
+)
+
+option('systemd',
+  type: 'boolean',
+  value: true,
+  description: 'Enable systemd integration'
+)

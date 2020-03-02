@@ -1,0 +1,15 @@
+<node>
+  <interface name="org.freedesktop.realmd.Service">
+    <method name="Cancel">
+      <arg name="operation" type="s" direction="in"/>
+    </method>
+    <method name="Release"/>
+    <method name="SetLocale">
+      <arg name="locale" type="s" direction="in"/>
+    </method>
+    <signal name="Diagnostics">
+      <arg name="data" type="s"/>
+      <arg name="operation" type="s"/>
+    </signal>
+  </interface>
+</node>

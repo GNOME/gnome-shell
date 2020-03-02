@@ -1,0 +1,2987 @@
+# Swedish translation for gnome-shell.
+# Copyright © 2009-2020 Free Software Foundation, Inc.
+# This file is distributed under the same license as the gnome-shell package.
+# Daniel Nylander <po@danielnylander.se>, 2009, 2010, 2011, 2012.
+# Marcus Lundblad <ml@update.uu.se>, 2014.
+# Åke Engelbrektson <eson57@gmail.com>, 2014.
+# Anders Jonsson <anders.jonsson@norsjovallen.se>, 2015, 2016, 2017, 2018, 2019, 2020.
+# Sebastian Rasmussen <sebras@gmail.com>, 2015, 2016.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: gnome-shell\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
+"POT-Creation-Date: 2020-02-17 22:27+0000\n"
+"PO-Revision-Date: 2020-02-18 22:00+0100\n"
+"Last-Translator: Anders Jonsson <anders.jonsson@norsjovallen.se>\n"
+"Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
+"Language: sv\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 2.3\n"
+
+#: data/50-gnome-shell-system.xml:6
+msgid "System"
+msgstr "System"
+
+#: data/50-gnome-shell-system.xml:9
+msgid "Show the notification list"
+msgstr "Visa aviseringslistan"
+
+#: data/50-gnome-shell-system.xml:12
+msgid "Focus the active notification"
+msgstr "Fokusera den aktiva aviseringen"
+
+#: data/50-gnome-shell-system.xml:15
+msgid "Show the overview"
+msgstr "Visa översiktsvyn"
+
+#: data/50-gnome-shell-system.xml:18
+msgid "Show all applications"
+msgstr "Visa alla program"
+
+#: data/50-gnome-shell-system.xml:21
+msgid "Open the application menu"
+msgstr "Öppna programmenyn"
+
+#: data/org.gnome.Extensions.desktop.in.in:4 js/extensionPrefs/main.js:218
+#: js/extensionPrefs/ui/extensions-window.ui:61
+msgid "Extensions"
+msgstr "Tillägg"
+
+#: data/org.gnome.Extensions.desktop.in.in:7
+msgid "Configure GNOME Shell Extensions"
+msgstr "Konfigurera tillägg för GNOME-skal"
+
+#: data/org.gnome.Shell.desktop.in.in:4
+msgid "GNOME Shell"
+msgstr "GNOME-skal"
+
+#: data/org.gnome.Shell.desktop.in.in:5
+msgid "Window management and application launching"
+msgstr "Fönsterhantering och uppstart av program"
+
+#: data/org.gnome.shell.gschema.xml.in:6
+msgid "Enable internal tools useful for developers and testers from Alt-F2"
+msgstr ""
+"Aktivera interna verktyg användbara för utvecklare och testare från Alt-F2"
+
+#: data/org.gnome.shell.gschema.xml.in:9
+msgid ""
+"Allows access to internal debugging and monitoring tools using the Alt-F2 "
+"dialog."
+msgstr ""
+"Tillåter åtkomst till interna verktyg för felsökning och övervakning med "
+"dialogen Alt-F2."
+
+#: data/org.gnome.shell.gschema.xml.in:16
+msgid "UUIDs of extensions to enable"
+msgstr "UUID:n för tillägg att aktivera"
+
+#: data/org.gnome.shell.gschema.xml.in:17
+msgid ""
+"GNOME Shell extensions have a UUID property; this key lists extensions which "
+"should be loaded. Any extension that wants to be loaded needs to be in this "
+"list. You can also manipulate this list with the EnableExtension and "
+"DisableExtension D-Bus methods on org.gnome.Shell."
+msgstr ""
+"Tillägg för GNOME-skal har en UUID-egenskap; denna nyckel listar tillägg som "
+"ska läsas in. De tillägg som vill bli inlästa måste finnas i denna lista. Du "
+"kan även ändra denna lista med D-Bus-metoderna EnableExtension och "
+"DisableExtension på org.gnome.Shell."
+
+#: data/org.gnome.shell.gschema.xml.in:26
+msgid "UUIDs of extensions to force disabling"
+msgstr "UUID:n för tillägg att tvinga att inaktiveras"
+
+#: data/org.gnome.shell.gschema.xml.in:27
+msgid ""
+"GNOME Shell extensions have a UUID property; this key lists extensions which "
+"should be disabled, even if loaded as part of the current mode. You can also "
+"manipulate this list with the EnableExtension and DisableExtension D-Bus "
+"methods on org.gnome.Shell. This key takes precedence over the “enabled-"
+"extensions” setting."
+msgstr ""
+"Tillägg för GNOME-skal har en UUID-egenskap; denna nyckel listar tillägg som "
+"ska inaktiveras, även om de lästs in som del av det aktuella läget. Du kan "
+"även ändra denna lista med D-Bus-metoderna EnableExtension och "
+"DisableExtension på org.gnome.Shell. Denna nyckel har företräde över "
+"inställningen ”enabled-extensions”."
+
+#: data/org.gnome.shell.gschema.xml.in:37
+msgid "Disable user extensions"
+msgstr "Inaktivera användartillägg"
+
+#: data/org.gnome.shell.gschema.xml.in:38
+msgid ""
+"Disable all extensions the user has enabled without affecting the “enabled-"
+"extension” setting."
+msgstr ""
+"Inaktivera alla tillägg som användaren har aktiverat, utan att påverka "
+"inställningen ”enabled-extension”."
+
+#: data/org.gnome.shell.gschema.xml.in:45
+msgid "Disables the validation of extension version compatibility"
+msgstr "Slår av valideringen av versionskompatibilitet för tillägg"
+
+#: data/org.gnome.shell.gschema.xml.in:46
+msgid ""
+"GNOME Shell will only load extensions that claim to support the current "
+"running version. Enabling this option will disable this check and try to "
+"load all extensions regardless of the versions they claim to support."
+msgstr ""
+"GNOME-skalet kommer endast att läsa in tillägg som säger sig stödja den "
+"nuvarande körande versionen. Att slå på denna inställning medför att den "
+"kontrollen slås av och alla tillägg kommer att försöka läsas in, oavsett "
+"vilken version de säger sig stödja."
+
+#: data/org.gnome.shell.gschema.xml.in:54
+msgid "List of desktop file IDs for favorite applications"
+msgstr "Lista över skrivbordsfil-id för favoritprogram"
+
+#: data/org.gnome.shell.gschema.xml.in:55
+msgid ""
+"The applications corresponding to these identifiers will be displayed in the "
+"favorites area."
+msgstr ""
+"Programmen som motsvarar dessa identifierare kommer att visas i "
+"favoritområdet."
+
+#: data/org.gnome.shell.gschema.xml.in:62
+msgid "App Picker View"
+msgstr "Programväljarvy"
+
+#: data/org.gnome.shell.gschema.xml.in:63
+msgid "Index of the currently selected view in the application picker."
+msgstr "Index för den valda vyn i applikationsväljaren."
+
+#: data/org.gnome.shell.gschema.xml.in:69
+msgid "History for command (Alt-F2) dialog"
+msgstr "Historik för kommandodialog (Alt-F2)"
+
+#. Translators: looking glass is a debugger and inspector tool, see https://wiki.gnome.org/Projects/GnomeShell/LookingGlass
+#: data/org.gnome.shell.gschema.xml.in:74
+msgid "History for the looking glass dialog"
+msgstr "Historik för spegeldialogen"
+
+#: data/org.gnome.shell.gschema.xml.in:78
+msgid "Always show the “Log out” menu item in the user menu."
+msgstr "Visa alltid menyalternativet ”Logga ut” i användarmenyn."
+
+#: data/org.gnome.shell.gschema.xml.in:79
+msgid ""
+"This key overrides the automatic hiding of the “Log out” menu item in single-"
+"user, single-session situations."
+msgstr ""
+"Denna nyckel åsidosätter det automatiska gömmandet av menyalternativet "
+"”Logga ut” i situationer med endast en användare och en session."
+
+#: data/org.gnome.shell.gschema.xml.in:86
+msgid ""
+"Whether to remember password for mounting encrypted or remote filesystems"
+msgstr ""
+"Huruvida lösenord för krypterade enheter och fjärrenheter skall memoreras"
+
+#: data/org.gnome.shell.gschema.xml.in:87
+msgid ""
+"The shell will request a password when an encrypted device or a remote "
+"filesystem is mounted. If the password can be saved for future use a "
+"“Remember Password” checkbox will be present. This key sets the default "
+"state of the checkbox."
+msgstr ""
+"Skalet kommer att fråga efter ett lösenord när en krypterad enhet eller en "
+"fjärrenhet monteras. Om lösenordet kan sparas för framtida bruk kommer en "
+"”Kom ihåg lösenord”-kryssruta att visas. Denna nyckel sätter standardvärdet "
+"för kryssrutan."
+
+#: data/org.gnome.shell.gschema.xml.in:96
+msgid ""
+"Whether the default Bluetooth adapter had set up devices associated to it"
+msgstr ""
+"Huruvida standardadaptern för Bluetooth har enheter associerade med sig"
+
+#: data/org.gnome.shell.gschema.xml.in:97
+msgid ""
+"The shell will only show a Bluetooth menu item if a Bluetooth adapter is "
+"powered, or if there were devices set up associated with the default "
+"adapter. This will be reset if the default adapter is ever seen not to have "
+"devices associated to it."
+msgstr ""
+"Skalet kommer bara att visa ett Bluetooth-menyalternativ om en Bluetooth-"
+"adapter är strömsatt, eller om enheter ställts in som associerats med "
+"standardadaptern. Detta kommer att återställas om standardadaptern någonsin "
+"ses utan att ha enheter associerade med sig."
+
+#: data/org.gnome.shell.gschema.xml.in:106
+msgid "Enable introspection API"
+msgstr "Aktivera introspektions-API"
+
+#: data/org.gnome.shell.gschema.xml.in:107
+msgid ""
+"Enables a D-Bus API that allows to introspect the application state of the "
+"shell."
+msgstr ""
+"Aktiverar ett D-Bus-API som tillåter introspektion av programtillståndet för "
+"skalet."
+
+#: data/org.gnome.shell.gschema.xml.in:119
+msgid "Keybinding to open the application menu"
+msgstr "Snabbtangent för att öppna programmenyn"
+
+#: data/org.gnome.shell.gschema.xml.in:120
+msgid "Keybinding to open the application menu."
+msgstr "Snabbtangent för att öppna programmenyn."
+
+#: data/org.gnome.shell.gschema.xml.in:126
+msgid "Keybinding to open the “Show Applications” view"
+msgstr "Snabbtangent för att öppna ”Visa program”-vyn"
+
+#: data/org.gnome.shell.gschema.xml.in:127
+msgid ""
+"Keybinding to open the “Show Applications” view of the Activities Overview."
+msgstr "Snabbtangent för att öppna ”Visa program”-vyn i översiktsvyn."
+
+#: data/org.gnome.shell.gschema.xml.in:134
+msgid "Keybinding to open the overview"
+msgstr "Snabbtangent för att öppna översiktsvyn"
+
+#: data/org.gnome.shell.gschema.xml.in:135
+msgid "Keybinding to open the Activities Overview."
+msgstr "Snabbtangent för att öppna översiktsvyn."
+
+#: data/org.gnome.shell.gschema.xml.in:141
+msgid "Keybinding to toggle the visibility of the notification list"
+msgstr "Snabbtangent för att växla synligheten för aviseringslistan"
+
+#: data/org.gnome.shell.gschema.xml.in:142
+msgid "Keybinding to toggle the visibility of the notification list."
+msgstr "Snabbtangent för att växla synligheten för aviseringslistan."
+
+#: data/org.gnome.shell.gschema.xml.in:148
+msgid "Keybinding to focus the active notification"
+msgstr "Snabbtangent för att fokusera på den aktiva aviseringen"
+
+#: data/org.gnome.shell.gschema.xml.in:149
+msgid "Keybinding to focus the active notification."
+msgstr "Snabbtangent för att fokusera på den aktiva aviseringen."
+
+#: data/org.gnome.shell.gschema.xml.in:155
+msgid "Switch to application 1"
+msgstr "Växla till program 1"
+
+#: data/org.gnome.shell.gschema.xml.in:159
+msgid "Switch to application 2"
+msgstr "Växla till program 2"
+
+#: data/org.gnome.shell.gschema.xml.in:163
+msgid "Switch to application 3"
+msgstr "Växla till program 3"
+
+#: data/org.gnome.shell.gschema.xml.in:167
+msgid "Switch to application 4"
+msgstr "Växla till program 4"
+
+#: data/org.gnome.shell.gschema.xml.in:171
+msgid "Switch to application 5"
+msgstr "Växla till program 5"
+
+#: data/org.gnome.shell.gschema.xml.in:175
+msgid "Switch to application 6"
+msgstr "Växla till program 6"
+
+#: data/org.gnome.shell.gschema.xml.in:179
+msgid "Switch to application 7"
+msgstr "Växla till program 7"
+
+#: data/org.gnome.shell.gschema.xml.in:183
+msgid "Switch to application 8"
+msgstr "Växla till program 8"
+
+#: data/org.gnome.shell.gschema.xml.in:187
+msgid "Switch to application 9"
+msgstr "Växla till program 9"
+
+#: data/org.gnome.shell.gschema.xml.in:196
+#: data/org.gnome.shell.gschema.xml.in:223
+msgid "Limit switcher to current workspace."
+msgstr "Begränsa väljare till aktuell arbetsyta."
+
+#: data/org.gnome.shell.gschema.xml.in:197
+msgid ""
+"If true, only applications that have windows on the current workspace are "
+"shown in the switcher. Otherwise, all applications are included."
+msgstr ""
+"Om satt till true (sant), visas endast program som har fönster på den "
+"aktuella arbetsytan i väljaren. I annat fall inkluderas alla program."
+
+#: data/org.gnome.shell.gschema.xml.in:214
+msgid "The application icon mode."
+msgstr "Programikonsläget."
+
+#: data/org.gnome.shell.gschema.xml.in:215
+msgid ""
+"Configures how the windows are shown in the switcher. Valid possibilities "
+"are “thumbnail-only” (shows a thumbnail of the window), “app-icon-"
+"only” (shows only the application icon) or “both”."
+msgstr ""
+"Ställer in hur fönster visas i väljaren. Giltiga alternativ är ”thumbnail-"
+"only” (visar en miniatyrbild av fönstret), ”app-icon-only” (visar endast "
+"programikonen) eller ”both” (visar båda)."
+
+#: data/org.gnome.shell.gschema.xml.in:224
+msgid ""
+"If true, only windows from the current workspace are shown in the switcher. "
+"Otherwise, all windows are included."
+msgstr ""
+"Om satt till \"true\", visas endast fönster från den aktuella arbetsytan i "
+"väljaren. I annat fall inkluderas alla fönster."
+
+#: data/org.gnome.shell.gschema.xml.in:234
+msgid "Locations"
+msgstr "Platser"
+
+#: data/org.gnome.shell.gschema.xml.in:235
+msgid "The locations to show in world clocks"
+msgstr "Platserna att visa i världsklockor"
+
+#: data/org.gnome.shell.gschema.xml.in:245
+msgid "Automatic location"
+msgstr "Automatisk plats"
+
+#: data/org.gnome.shell.gschema.xml.in:246
+msgid "Whether to fetch the current location or not"
+msgstr "Huruvida den aktuella platsen ska hämtas eller ej"
+
+#: data/org.gnome.shell.gschema.xml.in:253
+msgid "Location"
+msgstr "Plats"
+
+#: data/org.gnome.shell.gschema.xml.in:254
+msgid "The location for which to show a forecast"
+msgstr "Platsen för vilken en väderprognos ska visas"
+
+#: data/org.gnome.shell.gschema.xml.in:266
+msgid "Attach modal dialog to the parent window"
+msgstr "Fäst modal dialog till föräldrafönstret"
+
+#: data/org.gnome.shell.gschema.xml.in:267
+#: data/org.gnome.shell.gschema.xml.in:276
+#: data/org.gnome.shell.gschema.xml.in:284
+#: data/org.gnome.shell.gschema.xml.in:292
+#: data/org.gnome.shell.gschema.xml.in:300
+msgid ""
+"This key overrides the key in org.gnome.mutter when running GNOME Shell."
+msgstr ""
+"Denna nyckel åsidosätter nyckeln i org.gnome.mutter när GNOME-skalet körs."
+
+#: data/org.gnome.shell.gschema.xml.in:275
+msgid "Enable edge tiling when dropping windows on screen edges"
+msgstr "Slå på kantdockning när fönster släpps på skärmkanter"
+
+#: data/org.gnome.shell.gschema.xml.in:283
+msgid "Workspaces are managed dynamically"
+msgstr "Arbetsytor hanteras dynamiskt"
+
+#: data/org.gnome.shell.gschema.xml.in:291
+msgid "Workspaces only on primary monitor"
+msgstr "Arbetsytor endast på primär skärm"
+
+#: data/org.gnome.shell.gschema.xml.in:299
+msgid "Delay focus changes in mouse mode until the pointer stops moving"
+msgstr "Fördröj fokusändringar i musläge tills pekare slutar röra sig"
+
+#: data/org.gnome.Shell.PortalHelper.desktop.in.in:3
+msgid "Network Login"
+msgstr "Nätverksinloggning"
+
+#: js/extensionPrefs/main.js:140
+#, javascript-format
+msgid "Remove “%s”?"
+msgstr "Ta bort ”%s”?"
+
+#: js/extensionPrefs/main.js:141
+msgid ""
+"If you remove the extension, you need to return to download it if you want "
+"to enable it again"
+msgstr ""
+"Om du tar bort tillägget kommer du att behöva återvända för att hämta det om "
+"du vill aktivera det igen"
+
+#: js/extensionPrefs/main.js:144 js/ui/audioDeviceSelection.js:57
+#: js/ui/components/networkAgent.js:107 js/ui/components/polkitAgent.js:139
+#: js/ui/endSessionDialog.js:374 js/ui/extensionDownloader.js:165
+#: js/ui/shellMountOperation.js:376 js/ui/shellMountOperation.js:386
+#: js/ui/status/network.js:913
+msgid "Cancel"
+msgstr "Avbryt"
+
+#: js/extensionPrefs/main.js:145
+msgid "Remove"
+msgstr "Ta bort"
+
+#: js/extensionPrefs/main.js:217
+msgid "translator-credits"
+msgstr ""
+"Anders Jonsson <anders.jonsson@norsjovallen.se>\n"
+"\n"
+"Skicka synpunkter på översättningen till\n"
+"<tp-sv@listor.tp-sv.se>."
+
+#: js/extensionPrefs/main.js:219
+msgid "Manage your GNOME Extensions"
+msgstr "Hantera dina GNOME-tillägg"
+
+#: js/extensionPrefs/main.js:261 js/extensionPrefs/ui/extensions-window.ui:222
+msgid "Something’s gone wrong"
+msgstr "Något har gått fel"
+
+#: js/extensionPrefs/main.js:268
+msgid ""
+"We’re very sorry, but there’s been a problem: the settings for this "
+"extension can’t be displayed. We recommend that you report the issue to the "
+"extension authors."
+msgstr ""
+"Vi är ledsna, men ett problem har uppstått: inställningarna för detta "
+"tillägg kan inte visas. Vi rekommenderar att du rapporterar problemet till "
+"tilläggets skapare."
+
+#: js/extensionPrefs/main.js:275
+msgid "Technical Details"
+msgstr "Tekniska detaljer"
+
+#: js/extensionPrefs/main.js:310
+msgid "Copy Error"
+msgstr "Kopiera fel"
+
+#: js/extensionPrefs/main.js:337
+msgid "Homepage"
+msgstr "Webbsida"
+
+#: js/extensionPrefs/main.js:338
+msgid "Visit extension homepage"
+msgstr "Besök webbsida för tillägg"
+
+#: js/extensionPrefs/main.js:449
+#, javascript-format
+msgid "%d extension will be updated on next login."
+msgid_plural "%d extensions will be updated on next login."
+msgstr[0] "%d inlägg kommer att uppdateras vid nästa inloggning."
+msgstr[1] "%d inlägg kommer att uppdateras vid nästa inloggning."
+
+#: js/extensionPrefs/ui/extension-row.ui:100
+#: subprojects/extensions-tool/src/command-create.c:211
+#: subprojects/extensions-tool/src/main.c:173
+msgid "Description"
+msgstr "Beskrivning"
+
+#: js/extensionPrefs/ui/extension-row.ui:123
+#: subprojects/extensions-tool/src/main.c:185
+msgid "Version"
+msgstr "Version"
+
+#: js/extensionPrefs/ui/extension-row.ui:151
+msgid "Author"
+msgstr "Upphovsman"
+
+#: js/extensionPrefs/ui/extension-row.ui:175
+msgid "Website"
+msgstr "Webbplats"
+
+#: js/extensionPrefs/ui/extension-row.ui:192
+msgid "Remove…"
+msgstr "Ta bort…"
+
+#: js/extensionPrefs/ui/extensions-window.ui:8
+msgid "Help"
+msgstr "Hjälp"
+
+#: js/extensionPrefs/ui/extensions-window.ui:12
+msgid "About Extensions"
+msgstr "Om tillägg"
+
+#: js/extensionPrefs/ui/extensions-window.ui:27
+msgid ""
+"To find and add extensions, visit <a href=\"https://extensions.gnome.org"
+"\">extensions.gnome.org</a>."
+msgstr ""
+"För att hitta och lägga till tillägg, besök <a href=\"https://extensions."
+"gnome.org\">extensions.gnome.org</a>."
+
+#: js/extensionPrefs/ui/extensions-window.ui:35
+msgid "Warning"
+msgstr "Varning"
+
+#: js/extensionPrefs/ui/extensions-window.ui:46
+msgid ""
+"Extensions can cause system issues, including performance problems. If you "
+"encounter problems with your system, it is recommended to disable all "
+"extensions."
+msgstr ""
+"Tillägg kan orsaka systemproblem, även prestandaproblem. Om du stöter på "
+"problem med ditt system så rekommenderas du att inaktivera alla tillägg."
+
+#: js/extensionPrefs/ui/extensions-window.ui:133
+msgid "Manually Installed"
+msgstr "Manuellt installerade"
+
+#: js/extensionPrefs/ui/extensions-window.ui:157
+msgid "Built-In"
+msgstr "Inbyggda"
+
+#: js/extensionPrefs/ui/extensions-window.ui:198
+msgid "No Installed Extensions"
+msgstr "Inga installerade tillägg"
+
+#: js/extensionPrefs/ui/extensions-window.ui:234
+msgid ""
+"We’re very sorry, but it was not possible to get the list of installed "
+"extensions. Make sure you are logged into GNOME and try again."
+msgstr ""
+"Vi är ledsna, men det var inte möjligt att erhålla listan över installerade "
+"tillägg. Säkerställ att du är inloggad i GNOME och försök igen."
+
+#: js/extensionPrefs/ui/extensions-window.ui:287
+msgid "Log Out…"
+msgstr "Logga ut…"
+
+#. Cisco LEAP
+#: js/gdm/authPrompt.js:235 js/ui/components/networkAgent.js:202
+#: js/ui/components/networkAgent.js:218 js/ui/components/networkAgent.js:242
+#: js/ui/components/networkAgent.js:263 js/ui/components/networkAgent.js:283
+#: js/ui/components/networkAgent.js:293 js/ui/components/polkitAgent.js:277
+#: js/ui/shellMountOperation.js:326
+msgid "Password"
+msgstr "Lösenord"
+
+#: js/gdm/loginDialog.js:318
+msgid "Choose Session"
+msgstr "Välj session"
+
+#: js/gdm/loginDialog.js:457
+msgid "Not listed?"
+msgstr "Inte listad?"
+
+#. Translators: this message is shown below the username entry field
+#. to clue the user in on how to login to the local network realm
+#: js/gdm/loginDialog.js:912
+#, javascript-format
+msgid "(e.g., user or %s)"
+msgstr "(till exempel användare eller %s)"
+
+#. TTLS and PEAP are actually much more complicated, but this complication
+#. is not visible here since we only care about phase2 authentication
+#. (and don't even care of which one)
+#: js/gdm/loginDialog.js:917 js/ui/components/networkAgent.js:238
+#: js/ui/components/networkAgent.js:261 js/ui/components/networkAgent.js:279
+msgid "Username"
+msgstr "Användarnamn"
+
+#: js/gdm/loginDialog.js:1253
+msgid "Login Window"
+msgstr "Inloggningsfönster"
+
+#: js/gdm/util.js:338
+msgid "Authentication error"
+msgstr "Autentiseringsfel"
+
+#. We don't show fingerprint messages directly since it's
+#. not the main auth service. Instead we use the messages
+#. as a cue to display our own message.
+#. Translators: this message is shown below the password entry field
+#. to indicate the user can swipe their finger instead
+#: js/gdm/util.js:473
+msgid "(or swipe finger)"
+msgstr "(eller dra fingret)"
+
+#. Translators: The name of the power-off action in search
+#: js/misc/systemActions.js:89
+msgctxt "search-result"
+msgid "Power Off"
+msgstr "Stäng av"
+
+#. Translators: A list of keywords that match the power-off action, separated by semicolons
+#: js/misc/systemActions.js:92
+msgid "power off;shutdown;reboot;restart;halt;stop"
+msgstr "stäng av;stäng ner;stäng;starta om;omstart;halt;stopp"
+
+#. Translators: The name of the lock screen action in search
+#: js/misc/systemActions.js:97
+msgctxt "search-result"
+msgid "Lock Screen"
+msgstr "Lås skärm"
+
+#. Translators: A list of keywords that match the lock screen action, separated by semicolons
+#: js/misc/systemActions.js:100
+msgid "lock screen"
+msgstr "lås skärm"
+
+#. Translators: The name of the logout action in search
+#: js/misc/systemActions.js:105
+msgctxt "search-result"
+msgid "Log Out"
+msgstr "Logga ut"
+
+#. Translators: A list of keywords that match the logout action, separated by semicolons
+#: js/misc/systemActions.js:108
+msgid "logout;log out;sign off"
+msgstr "utloggning;logga ut"
+
+#. Translators: The name of the suspend action in search
+#: js/misc/systemActions.js:113
+msgctxt "search-result"
+msgid "Suspend"
+msgstr "Vänteläge"
+
+#. Translators: A list of keywords that match the suspend action, separated by semicolons
+#: js/misc/systemActions.js:116
+msgid "suspend;sleep"
+msgstr "vänteläge;vila"
+
+#. Translators: The name of the switch user action in search
+#: js/misc/systemActions.js:121
+msgctxt "search-result"
+msgid "Switch User"
+msgstr "Växla användare"
+
+#. Translators: A list of keywords that match the switch user action, separated by semicolons
+#: js/misc/systemActions.js:124
+msgid "switch user"
+msgstr "växla användare"
+
+#. Translators: A list of keywords that match the lock orientation action, separated by semicolons
+#: js/misc/systemActions.js:131
+msgid "lock orientation;unlock orientation;screen;rotation"
+msgstr ""
+"lås orientering;lås riktning;lås upp orientering;lås upp riktning;skärm;"
+"rotation"
+
+#: js/misc/systemActions.js:251
+msgctxt "search-result"
+msgid "Unlock Screen Rotation"
+msgstr "Lås upp skärmrotation"
+
+#: js/misc/systemActions.js:252
+msgctxt "search-result"
+msgid "Lock Screen Rotation"
+msgstr "Lås skärmrotation"
+
+#: js/misc/util.js:120
+msgid "Command not found"
+msgstr "Kommandot hittades inte"
+
+#. Replace "Error invoking GLib.shell_parse_argv: " with
+#. something nicer
+#: js/misc/util.js:156
+msgid "Could not parse command:"
+msgstr "Kunde inte tolka kommando:"
+
+#: js/misc/util.js:164
+#, javascript-format
+msgid "Execution of “%s” failed:"
+msgstr "Körning av ”%s” misslyckades:"
+
+#: js/misc/util.js:181
+msgid "Just now"
+msgstr "Just nu"
+
+#: js/misc/util.js:183
+#, javascript-format
+msgid "%d minute ago"
+msgid_plural "%d minutes ago"
+msgstr[0] "%d minut sedan"
+msgstr[1] "%d minuter sedan"
+
+#: js/misc/util.js:187
+#, javascript-format
+msgid "%d hour ago"
+msgid_plural "%d hours ago"
+msgstr[0] "%d timme sedan"
+msgstr[1] "%d timmar sedan"
+
+#: js/misc/util.js:191
+msgid "Yesterday"
+msgstr "Igår"
+
+#: js/misc/util.js:193
+#, javascript-format
+msgid "%d day ago"
+msgid_plural "%d days ago"
+msgstr[0] "%d dag sedan"
+msgstr[1] "%d dagar sedan"
+
+#: js/misc/util.js:197
+#, javascript-format
+msgid "%d week ago"
+msgid_plural "%d weeks ago"
+msgstr[0] "%d vecka sedan"
+msgstr[1] "%d veckor sedan"
+
+#: js/misc/util.js:201
+#, javascript-format
+msgid "%d month ago"
+msgid_plural "%d months ago"
+msgstr[0] "%d månad sedan"
+msgstr[1] "%d månader sedan"
+
+#: js/misc/util.js:204
+#, javascript-format
+msgid "%d year ago"
+msgid_plural "%d years ago"
+msgstr[0] "%d år sedan"
+msgstr[1] "%d år sedan"
+
+#. Translators: Time in 24h format
+#: js/misc/util.js:237
+msgid "%H∶%M"
+msgstr "%H∶%M"
+
+#. Translators: this is the word "Yesterday" followed by a
+#. time string in 24h format. i.e. "Yesterday, 14:30"
+#: js/misc/util.js:243
+#, no-c-format
+msgid "Yesterday, %H∶%M"
+msgstr "Igår, %H∶%M"
+
+#. Translators: this is the week day name followed by a time
+#. string in 24h format. i.e. "Monday, 14:30"
+#: js/misc/util.js:249
+#, no-c-format
+msgid "%A, %H∶%M"
+msgstr "%A, %H∶%M"
+
+#. Translators: this is the month name and day number
+#. followed by a time string in 24h format.
+#. i.e. "May 25, 14:30"
+#: js/misc/util.js:255
+#, no-c-format
+msgid "%B %-d, %H∶%M"
+msgstr "%-d %B, %H∶%M"
+
+#. Translators: this is the month name, day number, year
+#. number followed by a time string in 24h format.
+#. i.e. "May 25 2012, 14:30"
+#: js/misc/util.js:261
+#, no-c-format
+msgid "%B %-d %Y, %H∶%M"
+msgstr "%-d %B %Y, %H∶%M"
+
+#. Show only the time if date is on today
+#. eslint-disable-line no-lonely-if
+#. Translators: Time in 12h format
+#: js/misc/util.js:266
+msgid "%l∶%M %p"
+msgstr "%l∶%M %p"
+
+#. Translators: this is the word "Yesterday" followed by a
+#. time string in 12h format. i.e. "Yesterday, 2:30 pm"
+#: js/misc/util.js:272
+#, no-c-format
+msgid "Yesterday, %l∶%M %p"
+msgstr "Igår, %l∶%M %p"
+
+#. Translators: this is the week day name followed by a time
+#. string in 12h format. i.e. "Monday, 2:30 pm"
+#: js/misc/util.js:278
+#, no-c-format
+msgid "%A, %l∶%M %p"
+msgstr "%A, %I∶%M %p"
+
+#. Translators: this is the month name and day number
+#. followed by a time string in 12h format.
+#. i.e. "May 25, 2:30 pm"
+#: js/misc/util.js:284
+#, no-c-format
+msgid "%B %-d, %l∶%M %p"
+msgstr "%-d %B, %l∶%M %p"
+
+#. Translators: this is the month name, day number, year
+#. number followed by a time string in 12h format.
+#. i.e. "May 25 2012, 2:30 pm"
+#: js/misc/util.js:290
+#, no-c-format
+msgid "%B %-d %Y, %l∶%M %p"
+msgstr "%-d %B %Y, %l∶%M %p"
+
+#. TRANSLATORS: this is the title of the wifi captive portal login window
+#: js/portalHelper/main.js:41
+msgid "Hotspot Login"
+msgstr "Surfzonsinloggning"
+
+#: js/portalHelper/main.js:87
+msgid ""
+"Your connection to this hotspot login is not secure. Passwords or other "
+"information you enter on this page can be viewed by people nearby."
+msgstr ""
+"Din anslutning till denna surfzonsinloggning är inte säker. Lösenord eller "
+"annan information som du matar in på denna sida kan visas av andra personer "
+"i närheten."
+
+#. No support for non-modal system dialogs, so ignore the option
+#. let modal = options['modal'] || true;
+#: js/ui/accessDialog.js:39 js/ui/status/location.js:374
+msgid "Deny Access"
+msgstr "Neka åtkomst"
+
+#: js/ui/accessDialog.js:40 js/ui/status/location.js:377
+msgid "Grant Access"
+msgstr "Bevilja åtkomst"
+
+#: js/ui/appDisplay.js:906
+msgid "Unnamed Folder"
+msgstr "Namnlös mapp"
+
+#: js/ui/appDisplay.js:929
+msgid "Frequently used applications will appear here"
+msgstr "Ofta använda program kommer visas här"
+
+#: js/ui/appDisplay.js:1064
+msgid "Frequent"
+msgstr "Ofta använda"
+
+#: js/ui/appDisplay.js:1071
+msgid "All"
+msgstr "Alla"
+
+#. Translators: This is the heading of a list of open windows
+#: js/ui/appDisplay.js:2454 js/ui/panel.js:75
+msgid "Open Windows"
+msgstr "Öppna fönster"
+
+#: js/ui/appDisplay.js:2474 js/ui/panel.js:82
+msgid "New Window"
+msgstr "Nytt fönster"
+
+#: js/ui/appDisplay.js:2485
+msgid "Launch using Dedicated Graphics Card"
+msgstr "Kör med diskret grafikkort"
+
+#: js/ui/appDisplay.js:2513 js/ui/dash.js:239
+msgid "Remove from Favorites"
+msgstr "Ta bort från favoriter"
+
+#: js/ui/appDisplay.js:2519
+msgid "Add to Favorites"
+msgstr "Lägg till som favorit"
+
+#: js/ui/appDisplay.js:2529 js/ui/panel.js:93
+msgid "Show Details"
+msgstr "Visa detaljer"
+
+#: js/ui/appFavorites.js:152
+#, javascript-format
+msgid "%s has been added to your favorites."
+msgstr "%s har lagts till i dina favoriter."
+
+#: js/ui/appFavorites.js:185
+#, javascript-format
+msgid "%s has been removed from your favorites."
+msgstr "%s har tagits bort från dina favoriter."
+
+#: js/ui/audioDeviceSelection.js:41
+msgid "Select Audio Device"
+msgstr "Välj ljudenhet"
+
+#: js/ui/audioDeviceSelection.js:54
+msgid "Sound Settings"
+msgstr "Ljudinställningar"
+
+#: js/ui/audioDeviceSelection.js:64
+msgid "Headphones"
+msgstr "Hörlurar"
+
+#: js/ui/audioDeviceSelection.js:66
+msgid "Headset"
+msgstr "Mikrofonlur"
+
+#: js/ui/audioDeviceSelection.js:68 js/ui/status/volume.js:269
+msgid "Microphone"
+msgstr "Mikrofon"
+
+#: js/ui/backgroundMenu.js:14
+msgid "Change Background…"
+msgstr "Ändra bakgrund…"
+
+#: js/ui/backgroundMenu.js:16 js/ui/status/nightLight.js:45
+msgid "Display Settings"
+msgstr "Skärminställningar"
+
+#: js/ui/backgroundMenu.js:17
+msgid "Settings"
+msgstr "Inställningar"
+
+#. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday).
+#: js/ui/calendar.js:41
+msgctxt "calendar-no-work"
+msgid "06"
+msgstr "06"
+
+#. Translators: Calendar grid abbreviation for Sunday.
+#. *
+#. * NOTE: These grid abbreviations are always shown together
+#. * and in order, e.g. "S M T W T F S".
+#.
+#: js/ui/calendar.js:70
+msgctxt "grid sunday"
+msgid "S"
+msgstr "S"
+
+#. Translators: Calendar grid abbreviation for Monday
+#: js/ui/calendar.js:72
+msgctxt "grid monday"
+msgid "M"
+msgstr "M"
+
+#. Translators: Calendar grid abbreviation for Tuesday
+#: js/ui/calendar.js:74
+msgctxt "grid tuesday"
+msgid "T"
+msgstr "T"
+
+#. Translators: Calendar grid abbreviation for Wednesday
+#: js/ui/calendar.js:76
+msgctxt "grid wednesday"
+msgid "W"
+msgstr "O"
+
+#. Translators: Calendar grid abbreviation for Thursday
+#: js/ui/calendar.js:78
+msgctxt "grid thursday"
+msgid "T"
+msgstr "T"
+
+#. Translators: Calendar grid abbreviation for Friday
+#: js/ui/calendar.js:80
+msgctxt "grid friday"
+msgid "F"
+msgstr "F"
+
+#. Translators: Calendar grid abbreviation for Saturday
+#: js/ui/calendar.js:82
+msgctxt "grid saturday"
+msgid "S"
+msgstr "L"
+
+#. *
+#. * Translators: The header displaying just the month name
+#. * standalone, when this is a month of the current year.
+#. * "%OB" is the new format specifier introduced in glibc 2.27,
+#. * in most cases you should not change it.
+#.
+#: js/ui/calendar.js:371
+msgid "%OB"
+msgstr "%OB"
+
+#. *
+#. * Translators: The header displaying the month name and the year
+#. * number, when this is a month of a different year.  You can
+#. * reorder the format specifiers or add other modifications
+#. * according to the requirements of your language.
+#. * "%OB" is the new format specifier introduced in glibc 2.27,
+#. * in most cases you should not use the old "%B" here unless you
+#. * absolutely know what you are doing.
+#.
+#: js/ui/calendar.js:381
+msgid "%OB %Y"
+msgstr "%OB %Y"
+
+#: js/ui/calendar.js:440
+msgid "Previous month"
+msgstr "Föregående månad"
+
+#: js/ui/calendar.js:455
+msgid "Next month"
+msgstr "Nästa månad"
+
+#: js/ui/calendar.js:605
+#, no-javascript-format
+msgctxt "date day number format"
+msgid "%d"
+msgstr "%d"
+
+#: js/ui/calendar.js:661
+msgid "Week %V"
+msgstr "Vecka %V"
+
+#. Translators: Shown in calendar event list for all day events
+#. * Keep it short, best if you can use less then 10 characters
+#.
+#: js/ui/calendar.js:730
+msgctxt "event list time"
+msgid "All Day"
+msgstr "Hela dagen"
+
+#. Translators: Shown on calendar heading when selected day occurs on current year
+#: js/ui/calendar.js:867
+msgctxt "calendar heading"
+msgid "%A, %B %-d"
+msgstr "%A, %-d %B"
+
+#. Translators: Shown on calendar heading when selected day occurs on different year
+#: js/ui/calendar.js:870
+msgctxt "calendar heading"
+msgid "%A, %B %-d, %Y"
+msgstr "%A, %-d %B, %Y"
+
+#: js/ui/calendar.js:1096
+msgid "No Notifications"
+msgstr "Inga aviseringar"
+
+#: js/ui/calendar.js:1099
+msgid "No Events"
+msgstr "Inga händelser"
+
+#: js/ui/calendar.js:1153
+msgid "Do Not Disturb"
+msgstr "Stör ej"
+
+#: js/ui/calendar.js:1167
+msgid "Clear"
+msgstr "Töm"
+
+#. Translators: %s is an application name
+#: js/ui/closeDialog.js:42
+#, javascript-format
+msgid "“%s” is not responding."
+msgstr "”%s” svarar inte."
+
+#: js/ui/closeDialog.js:43
+msgid ""
+"You may choose to wait a short while for it to continue or force the "
+"application to quit entirely."
+msgstr ""
+"Du kan välja att vänta en kort stund på att det ska fortsätta eller tvinga "
+"programmet att helt avslutas."
+
+#: js/ui/closeDialog.js:70
+msgid "Force Quit"
+msgstr "Tvinga avslut"
+
+#: js/ui/closeDialog.js:73
+msgid "Wait"
+msgstr "Vänta"
+
+#: js/ui/components/automountManager.js:86
+msgid "External drive connected"
+msgstr "Extern disk ansluten"
+
+#: js/ui/components/automountManager.js:98
+msgid "External drive disconnected"
+msgstr "Extern disk frånkopplad"
+
+#: js/ui/components/automountManager.js:208
+msgid "Unable to unlock volume"
+msgstr "Kunde inte låsa upp volym"
+
+#: js/ui/components/automountManager.js:209
+msgid "The installed udisks version does not support the PIM setting"
+msgstr "Den installerade udisks-versionen stöder inte PIM-inställningen"
+
+#: js/ui/components/autorunManager.js:333
+#, javascript-format
+msgid "Open with %s"
+msgstr "Öppna med %s"
+
+#: js/ui/components/networkAgent.js:89
+msgid ""
+"Alternatively you can connect by pushing the “WPS” button on your router."
+msgstr ""
+"Alternativt kan du ansluta genom att trycka på ”WPS”-knappen på din router."
+
+#: js/ui/components/networkAgent.js:101 js/ui/status/network.js:223
+#: js/ui/status/network.js:314 js/ui/status/network.js:916
+msgid "Connect"
+msgstr "Anslut"
+
+#: js/ui/components/networkAgent.js:208
+msgid "Key"
+msgstr "Nyckel"
+
+#: js/ui/components/networkAgent.js:246 js/ui/components/networkAgent.js:269
+msgid "Private key password"
+msgstr "Lösenord för privat nyckel"
+
+#: js/ui/components/networkAgent.js:267
+msgid "Identity"
+msgstr "Identitet"
+
+#: js/ui/components/networkAgent.js:281
+msgid "Service"
+msgstr "Tjänst"
+
+#: js/ui/components/networkAgent.js:310 js/ui/components/networkAgent.js:338
+#: js/ui/components/networkAgent.js:685 js/ui/components/networkAgent.js:706
+msgid "Authentication required"
+msgstr "Autentisering krävs"
+
+#: js/ui/components/networkAgent.js:311 js/ui/components/networkAgent.js:686
+#, javascript-format
+msgid ""
+"Passwords or encryption keys are required to access the wireless network "
+"“%s”."
+msgstr ""
+"Lösenord eller krypteringsnycklar krävs för att komma åt det trådlösa "
+"nätverket ”%s”."
+
+#: js/ui/components/networkAgent.js:315 js/ui/components/networkAgent.js:690
+msgid "Wired 802.1X authentication"
+msgstr "Trådbunden 802.1X-autentisering"
+
+#: js/ui/components/networkAgent.js:317
+msgid "Network name"
+msgstr "Nätverksnamn"
+
+#: js/ui/components/networkAgent.js:322 js/ui/components/networkAgent.js:694
+msgid "DSL authentication"
+msgstr "DSL-autentisering"
+
+#: js/ui/components/networkAgent.js:329 js/ui/components/networkAgent.js:699
+msgid "PIN code required"
+msgstr "PIN-kod krävs"
+
+#: js/ui/components/networkAgent.js:330 js/ui/components/networkAgent.js:700
+msgid "PIN code is needed for the mobile broadband device"
+msgstr "PIN-koden krävs för den mobila bredbandsenheten"
+
+#: js/ui/components/networkAgent.js:331
+msgid "PIN"
+msgstr "PIN"
+
+#: js/ui/components/networkAgent.js:339 js/ui/components/networkAgent.js:691
+#: js/ui/components/networkAgent.js:695 js/ui/components/networkAgent.js:707
+#: js/ui/components/networkAgent.js:711
+#, javascript-format
+msgid "A password is required to connect to “%s”."
+msgstr "Ett lösenord krävs för att ansluta till ”%s”."
+
+#: js/ui/components/networkAgent.js:674 js/ui/status/network.js:1691
+msgid "Network Manager"
+msgstr "Nätverkshanterare"
+
+#: js/ui/components/networkAgent.js:710
+msgid "VPN password"
+msgstr "VPN-lösenord"
+
+#: js/ui/components/polkitAgent.js:39
+msgid "Authentication Required"
+msgstr "Autentisering krävs"
+
+#: js/ui/components/polkitAgent.js:80
+msgid "Administrator"
+msgstr "Administratör"
+
+#: js/ui/components/polkitAgent.js:142
+msgid "Authenticate"
+msgstr "Autentisera"
+
+#. Translators: "that didn't work" refers to the fact that the
+#. * requested authentication was not gained; this can happen
+#. * because of an authentication error (like invalid password),
+#. * for instance.
+#: js/ui/components/polkitAgent.js:254 js/ui/shellMountOperation.js:402
+msgid "Sorry, that didn’t work. Please try again."
+msgstr "Tyvärr, det fungerade inte. Försök igen."
+
+#. Translators: this is the other person changing their old IM name to their new
+#. IM name.
+#: js/ui/components/telepathyClient.js:787
+#, javascript-format
+msgid "%s is now known as %s"
+msgstr "%s är nu känd som %s"
+
+#: js/ui/ctrlAltTab.js:21 js/ui/viewSelector.js:177
+msgid "Windows"
+msgstr "Fönster"
+
+#: js/ui/dash.js:200 js/ui/dash.js:241
+msgid "Show Applications"
+msgstr "Visa program"
+
+#. Translators: this is the name of the dock/favorites area on
+#. the left of the overview
+#: js/ui/dash.js:394
+msgid "Dash"
+msgstr "Snabbstartspanel"
+
+#. Translators: This is the date format to use when the calendar popup is
+#. * shown - it is shown just below the time in the top bar (e.g.,
+#. * "Tue 9:29 AM").  The string itself should become a full date, e.g.,
+#. * "February 17 2015".
+#.
+#: js/ui/dateMenu.js:75
+msgid "%B %-d %Y"
+msgstr "%-d %B %Y"
+
+#. Translators: This is the accessible name of the date button shown
+#. * below the time in the shell; it should combine the weekday and the
+#. * date, e.g. "Tuesday February 17 2015".
+#.
+#: js/ui/dateMenu.js:82
+msgid "%A %B %e %Y"
+msgstr "%A %e %B %Y"
+
+#: js/ui/dateMenu.js:161
+msgid "Add world clocks…"
+msgstr "Lägg till världsklockor…"
+
+#: js/ui/dateMenu.js:162
+msgid "World Clocks"
+msgstr "Världsklockor"
+
+#: js/ui/dateMenu.js:276
+msgid "Weather"
+msgstr "Väder"
+
+#: js/ui/dateMenu.js:391
+msgid "Select a location…"
+msgstr "Välj en plats…"
+
+#: js/ui/dateMenu.js:404
+msgid "Loading…"
+msgstr "Läser in…"
+
+#: js/ui/dateMenu.js:414
+msgid "Go online for weather information"
+msgstr "Anslut till nätet för väderinformation"
+
+#: js/ui/dateMenu.js:416
+msgid "Weather information is currently unavailable"
+msgstr "Väderinformation är för närvarande inte tillgänglig"
+
+#: js/ui/endSessionDialog.js:37
+#, javascript-format
+msgctxt "title"
+msgid "Log Out %s"
+msgstr "Logga ut %s"
+
+#: js/ui/endSessionDialog.js:38
+msgctxt "title"
+msgid "Log Out"
+msgstr "Logga ut"
+
+#: js/ui/endSessionDialog.js:40
+#, javascript-format
+msgid "%s will be logged out automatically in %d second."
+msgid_plural "%s will be logged out automatically in %d seconds."
+msgstr[0] "%s kommer att loggas ut automatiskt om %d sekund."
+msgstr[1] "%s kommer att loggas ut automatiskt om %d sekunder."
+
+#: js/ui/endSessionDialog.js:45
+#, javascript-format
+msgid "You will be logged out automatically in %d second."
+msgid_plural "You will be logged out automatically in %d seconds."
+msgstr[0] "Du kommer att loggas ut automatiskt om %d sekund."
+msgstr[1] "Du kommer att loggas ut automatiskt om %d sekunder."
+
+#: js/ui/endSessionDialog.js:51
+msgctxt "button"
+msgid "Log Out"
+msgstr "Logga ut"
+
+#: js/ui/endSessionDialog.js:56
+msgctxt "title"
+msgid "Power Off"
+msgstr "Stäng av"
+
+#: js/ui/endSessionDialog.js:57
+msgctxt "title"
+msgid "Install Updates & Power Off"
+msgstr "Installera uppdateringar & Stäng av"
+
+#: js/ui/endSessionDialog.js:59
+#, javascript-format
+msgid "The system will power off automatically in %d second."
+msgid_plural "The system will power off automatically in %d seconds."
+msgstr[0] "Systemet kommer att stängas av automatiskt om %d sekund."
+msgstr[1] "Systemet kommer att stängas av automatiskt om %d sekunder."
+
+#: js/ui/endSessionDialog.js:63
+msgctxt "checkbox"
+msgid "Install pending software updates"
+msgstr "Installera väntande programvaruuppdateringar"
+
+#: js/ui/endSessionDialog.js:66 js/ui/endSessionDialog.js:82
+msgctxt "button"
+msgid "Restart"
+msgstr "Starta om"
+
+#: js/ui/endSessionDialog.js:68
+msgctxt "button"
+msgid "Power Off"
+msgstr "Stäng av"
+
+#: js/ui/endSessionDialog.js:74
+msgctxt "title"
+msgid "Restart"
+msgstr "Starta om"
+
+#: js/ui/endSessionDialog.js:76
+#, javascript-format
+msgid "The system will restart automatically in %d second."
+msgid_plural "The system will restart automatically in %d seconds."
+msgstr[0] "Systemet kommer att startas om automatiskt om %d sekund."
+msgstr[1] "Systemet kommer att startas om automatiskt om %d sekunder."
+
+#: js/ui/endSessionDialog.js:89
+msgctxt "title"
+msgid "Restart & Install Updates"
+msgstr "Starta om och installera uppdateringar"
+
+#: js/ui/endSessionDialog.js:91
+#, javascript-format
+msgid "The system will automatically restart and install updates in %d second."
+msgid_plural ""
+"The system will automatically restart and install updates in %d seconds."
+msgstr[0] ""
+"Systemet kommer att startas om automatiskt och installera uppdateringar om "
+"%d sekund."
+msgstr[1] ""
+"Systemet kommer att startas om automatiskt och installera uppdateringar om "
+"%d sekunder."
+
+#: js/ui/endSessionDialog.js:97 js/ui/endSessionDialog.js:116
+msgctxt "button"
+msgid "Restart &amp; Install"
+msgstr "Starta om &amp; Installera"
+
+#: js/ui/endSessionDialog.js:98
+msgctxt "button"
+msgid "Install &amp; Power Off"
+msgstr "Installera &amp; Stäng av"
+
+#: js/ui/endSessionDialog.js:99
+msgctxt "checkbox"
+msgid "Power off after updates are installed"
+msgstr "Stäng av efter att uppdateringarna har installerats"
+
+#: js/ui/endSessionDialog.js:106
+msgctxt "title"
+msgid "Restart & Install Upgrade"
+msgstr "Starta om och installera uppgradering"
+
+#. Translators: This is the text displayed for system upgrades in the
+#. shut down dialog. First %s gets replaced with the distro name and
+#. second %s with the distro version to upgrade to
+#: js/ui/endSessionDialog.js:111
+#, javascript-format
+msgid ""
+"%s %s will be installed after restart. Upgrade installation can take a long "
+"time: ensure that you have backed up and that the computer is plugged in."
+msgstr ""
+"%s %s kommer att installeras efter omstart. En uppgraderingsinstallation kan "
+"ta lång tid: försäkra dig om att du gjort säkerhetskopior och att datorn är "
+"ikopplad."
+
+#: js/ui/endSessionDialog.js:259
+msgid "Running on battery power: Please plug in before installing updates."
+msgstr ""
+"Kör på batteri: anslut till en fast strömkälla innan uppdateringar "
+"installeras."
+
+#: js/ui/endSessionDialog.js:268
+msgid "Some applications are busy or have unsaved work"
+msgstr "Några program är upptagna eller innehåller icke sparat arbete"
+
+#: js/ui/endSessionDialog.js:273
+msgid "Other users are logged in"
+msgstr "Andra användare är inloggade"
+
+#. Translators: Remote here refers to a remote session, like a ssh login
+#: js/ui/endSessionDialog.js:588
+#, javascript-format
+msgid "%s (remote)"
+msgstr "%s (fjärransluten)"
+
+#. Translators: Console here refers to a tty like a VT console
+#: js/ui/endSessionDialog.js:591
+#, javascript-format
+msgid "%s (console)"
+msgstr "%s (konsol)"
+
+#: js/ui/extensionDownloader.js:169
+msgid "Install"
+msgstr "Installera"
+
+#: js/ui/extensionDownloader.js:175
+msgid "Install Extension"
+msgstr "Installera tillägg"
+
+#: js/ui/extensionDownloader.js:176
+#, javascript-format
+msgid "Download and install “%s” from extensions.gnome.org?"
+msgstr "Hämta och installera ”%s” från extensions.gnome.org?"
+
+#: js/ui/extensionSystem.js:228
+msgid "Extension Updates Available"
+msgstr "Uppdateringar för tillägg finns tillgängliga"
+
+#: js/ui/extensionSystem.js:229
+msgid "Extension updates are ready to be installed."
+msgstr "Uppdateringar för tillägg är redo att installeras."
+
+#: js/ui/inhibitShortcutsDialog.js:79
+msgid "Allow inhibiting shortcuts"
+msgstr "Tillåt förhindrande av kortkommandon"
+
+#. Translators: %s is an application name like "Settings"
+#: js/ui/inhibitShortcutsDialog.js:82
+#, javascript-format
+msgid "The application %s wants to inhibit shortcuts"
+msgstr "Programmet %s vill förhindra kortkommandon"
+
+#: js/ui/inhibitShortcutsDialog.js:83
+msgid "An application wants to inhibit shortcuts"
+msgstr "Ett program vill förhindra kortkommandon"
+
+#. Translators: %s is a keyboard shortcut like "Super+x"
+#: js/ui/inhibitShortcutsDialog.js:90
+#, javascript-format
+msgid "You can restore shortcuts by pressing %s."
+msgstr "Du kan återställa kortkommandon genom att trycka %s."
+
+#: js/ui/inhibitShortcutsDialog.js:98
+msgid "Deny"
+msgstr "Neka"
+
+#: js/ui/inhibitShortcutsDialog.js:105
+msgid "Allow"
+msgstr "Tillåt"
+
+#: js/ui/kbdA11yDialog.js:32
+msgid "Slow Keys Turned On"
+msgstr "Tröga tangenter aktiverade"
+
+#: js/ui/kbdA11yDialog.js:33
+msgid "Slow Keys Turned Off"
+msgstr "Tröga tangenter inaktiverade"
+
+#: js/ui/kbdA11yDialog.js:34
+msgid ""
+"You just held down the Shift key for 8 seconds. This is the shortcut for the "
+"Slow Keys feature, which affects the way your keyboard works."
+msgstr ""
+"Du höll precis ned skifttangenten under 8 sekunder. Detta är kortkommandot "
+"för funktionen tröga tangenter, som påverkar hur ditt tangentbord fungerar."
+
+#: js/ui/kbdA11yDialog.js:41
+msgid "Sticky Keys Turned On"
+msgstr "Klistriga tangenter aktiverade"
+
+#: js/ui/kbdA11yDialog.js:42
+msgid "Sticky Keys Turned Off"
+msgstr "Klistriga tangenter inaktiverade"
+
+#: js/ui/kbdA11yDialog.js:44
+msgid ""
+"You just pressed the Shift key 5 times in a row. This is the shortcut for "
+"the Sticky Keys feature, which affects the way your keyboard works."
+msgstr ""
+"Du tryckte precis ned skifttangenten 5 gånger i följd. Detta är "
+"kortkommandot för funktionen klistriga tangenter, som påverkar hur ditt "
+"tangentbord fungerar."
+
+#: js/ui/kbdA11yDialog.js:46
+msgid ""
+"You just pressed two keys at once, or pressed the Shift key 5 times in a "
+"row. This turns off the Sticky Keys feature, which affects the way your "
+"keyboard works."
+msgstr ""
+"Du tryckte precis ned två tangenter samtidigt, eller tryckte ned "
+"skifttangenten 5 gånger i följd. Detta stänger av funktionen klistriga "
+"tangenter vilket påverkar hur ditt tangentbord fungerar."
+
+#: js/ui/kbdA11yDialog.js:55
+msgid "Leave On"
+msgstr "Lämna påslagen"
+
+#: js/ui/kbdA11yDialog.js:55 js/ui/status/bluetooth.js:135
+#: js/ui/status/network.js:1288
+msgid "Turn On"
+msgstr "Slå på"
+
+#: js/ui/kbdA11yDialog.js:63 js/ui/status/bluetooth.js:135
+#: js/ui/status/network.js:131 js/ui/status/network.js:315
+#: js/ui/status/network.js:1288 js/ui/status/network.js:1400
+#: js/ui/status/nightLight.js:41 js/ui/status/rfkill.js:81
+#: js/ui/status/rfkill.js:108
+msgid "Turn Off"
+msgstr "Stäng av"
+
+#: js/ui/kbdA11yDialog.js:63
+msgid "Leave Off"
+msgstr "Lämna avstängd"
+
+#: js/ui/keyboard.js:207
+msgid "Region & Language Settings"
+msgstr "Re­gion- & språkinställningar"
+
+#: js/ui/lookingGlass.js:659
+msgid "No extensions installed"
+msgstr "Inga tillägg installerade"
+
+#. Translators: argument is an extension UUID.
+#: js/ui/lookingGlass.js:714
+#, javascript-format
+msgid "%s has not emitted any errors."
+msgstr "%s har inte skickat ut några fel."
+
+#: js/ui/lookingGlass.js:720
+msgid "Hide Errors"
+msgstr "Dölj fel"
+
+#: js/ui/lookingGlass.js:724 js/ui/lookingGlass.js:789
+msgid "Show Errors"
+msgstr "Visa fel"
+
+#: js/ui/lookingGlass.js:733
+msgid "Enabled"
+msgstr "Aktiverad"
+
+#. translators:
+#. * The device has been disabled
+#: js/ui/lookingGlass.js:736 subprojects/gvc/gvc-mixer-control.c:1892
+msgid "Disabled"
+msgstr "Inaktiverad"
+
+#: js/ui/lookingGlass.js:738
+msgid "Error"
+msgstr "Fel"
+
+#: js/ui/lookingGlass.js:740
+msgid "Out of date"
+msgstr "Utanför datumintervallet"
+
+#: js/ui/lookingGlass.js:742
+msgid "Downloading"
+msgstr "Hämtar"
+
+#: js/ui/lookingGlass.js:771
+msgid "View Source"
+msgstr "Visa källa"
+
+#: js/ui/lookingGlass.js:780
+msgid "Web Page"
+msgstr "Webbsida"
+
+#: js/ui/main.js:267
+msgid "Logged in as a privileged user"
+msgstr "Inloggad som en privilegierad användare"
+
+#: js/ui/main.js:268
+msgid ""
+"Running a session as a privileged user should be avoided for security "
+"reasons. If possible, you should log in as a normal user."
+msgstr ""
+"Att köra en session som en privilegierad användare bör undvikas av "
+"säkerhetsskäl. Om möjligt bör du logga in som en normal användare."
+
+#: js/ui/main.js:274
+msgid "Screen Lock disabled"
+msgstr "Skärmlås inaktiverat"
+
+#: js/ui/main.js:275
+msgid "Screen Locking requires the GNOME display manager."
+msgstr "Skärmlås kräver GNOME:s displayhanterare."
+
+#: js/ui/messageTray.js:1554
+msgid "System Information"
+msgstr "Systeminformation"
+
+#: js/ui/mpris.js:199
+msgid "Unknown artist"
+msgstr "Okänd artist"
+
+#: js/ui/mpris.js:209
+msgid "Unknown title"
+msgstr "Okänd titel"
+
+#: js/ui/overview.js:73
+msgid "Undo"
+msgstr "Ångra"
+
+#. Translators: This is the main view to select
+#. activities. See also note for "Activities" string.
+#: js/ui/overview.js:86
+msgid "Overview"
+msgstr "Översikt"
+
+#. Translators: this is the text displayed
+#. in the search entry when no search is
+#. active; it should not exceed ~30
+#. characters.
+#: js/ui/overview.js:107
+msgid "Type to search"
+msgstr "Skriv för att söka"
+
+#: js/ui/padOsd.js:95
+msgid "New shortcut…"
+msgstr "Nytt kortkommando…"
+
+#: js/ui/padOsd.js:142
+msgid "Application defined"
+msgstr "Programdefinierad"
+
+#: js/ui/padOsd.js:143
+msgid "Show on-screen help"
+msgstr "Visa hjälp på skärmen"
+
+#: js/ui/padOsd.js:144
+msgid "Switch monitor"
+msgstr "Växla skärm"
+
+#: js/ui/padOsd.js:145
+msgid "Assign keystroke"
+msgstr "Tilldela tangenttryckning"
+
+#: js/ui/padOsd.js:211
+msgid "Done"
+msgstr "Färdig"
+
+#: js/ui/padOsd.js:745
+msgid "Edit…"
+msgstr "Redigera…"
+
+#: js/ui/padOsd.js:787 js/ui/padOsd.js:910
+msgid "None"
+msgstr "Ingen"
+
+#: js/ui/padOsd.js:863
+msgid "Press a button to configure"
+msgstr "Tryck på en knapp för att konfigurera"
+
+#: js/ui/padOsd.js:864
+msgid "Press Esc to exit"
+msgstr "Tryck Esc för att avsluta"
+
+#: js/ui/padOsd.js:867
+msgid "Press any key to exit"
+msgstr "Tryck på valfri tangent för att avsluta"
+
+#: js/ui/panel.js:109
+msgid "Quit"
+msgstr "Avsluta"
+
+#. Translators: If there is no suitable word for "Activities"
+#. in your language, you can use the word for "Overview".
+#: js/ui/panel.js:434
+msgid "Activities"
+msgstr "Aktiviteter"
+
+#: js/ui/panel.js:707
+msgctxt "System menu in the top bar"
+msgid "System"
+msgstr "System"
+
+#: js/ui/panel.js:820
+msgid "Top Bar"
+msgstr "Systemrad"
+
+#: js/ui/runDialog.js:58
+msgid "Run a Command"
+msgstr "Kör ett kommando"
+
+#: js/ui/runDialog.js:73
+msgid "Press ESC to close"
+msgstr "Tryck Esc för att stänga"
+
+#: js/ui/runDialog.js:238
+msgid "Restart is not available on Wayland"
+msgstr "Omstart är inte tillgänglig i Wayland"
+
+#: js/ui/runDialog.js:243
+msgid "Restarting…"
+msgstr "Startar om…"
+
+#: js/ui/screenShield.js:203
+msgid "GNOME needs to lock the screen"
+msgstr "GNOME behöver låsa skärmen"
+
+#. We could not become modal, so we can't activate the
+#. screenshield. The user is probably very upset at this
+#. point, but any application using global grabs is broken
+#. Just tell him to stop using this app
+#.
+#. XXX: another option is to kick the user into the gdm login
+#. screen, where we're not affected by grabs
+#: js/ui/screenShield.js:244 js/ui/screenShield.js:598
+msgid "Unable to lock"
+msgstr "Kunde inte låsa"
+
+#: js/ui/screenShield.js:245 js/ui/screenShield.js:599
+msgid "Lock was blocked by an application"
+msgstr "Låsning hindrades av ett program"
+
+#: js/ui/search.js:694
+msgid "Searching…"
+msgstr "Söker…"
+
+#: js/ui/search.js:696
+msgid "No results."
+msgstr "Inga sökträffar."
+
+#: js/ui/search.js:822
+#, javascript-format
+msgid "%d more"
+msgid_plural "%d more"
+msgstr[0] "%d till"
+msgstr[1] "%d till"
+
+#: js/ui/shellEntry.js:20
+msgid "Copy"
+msgstr "Kopiera"
+
+#: js/ui/shellEntry.js:25
+msgid "Paste"
+msgstr "Klistra in"
+
+#: js/ui/shellEntry.js:73
+msgid "Show Text"
+msgstr "Visa text"
+
+#: js/ui/shellEntry.js:75
+msgid "Hide Text"
+msgstr "Dölj text"
+
+#: js/ui/shellEntry.js:162
+msgid "Caps lock is on."
+msgstr "Caps lock är på."
+
+#: js/ui/shellMountOperation.js:285
+msgid "Hidden Volume"
+msgstr "Dold volym"
+
+#: js/ui/shellMountOperation.js:288
+msgid "Windows System Volume"
+msgstr "Windows-systemvolym"
+
+#: js/ui/shellMountOperation.js:291
+msgid "Uses Keyfiles"
+msgstr "Använder nyckelfiler"
+
+#. Translators: %s is the Disks application
+#: js/ui/shellMountOperation.js:298
+#, javascript-format
+msgid ""
+"To unlock a volume that uses keyfiles, use the <i>%s</i> utility instead."
+msgstr ""
+"För att låsa upp en volym som använder nyckelfiler, använd verktyget <i>%s</"
+"i> istället."
+
+#: js/ui/shellMountOperation.js:306
+msgid "PIM Number"
+msgstr "PIM-nummer"
+
+#: js/ui/shellMountOperation.js:365
+msgid "Remember Password"
+msgstr "Kom ihåg lösenord"
+
+#: js/ui/shellMountOperation.js:380
+msgid "Unlock"
+msgstr "Lås upp"
+
+#. Translators: %s is the Disks application
+#: js/ui/shellMountOperation.js:391
+#, javascript-format
+msgid "Open %s"
+msgstr "Öppna %s"
+
+#: js/ui/shellMountOperation.js:423
+msgid "The PIM must be a number or empty."
+msgstr "PIM måste vara ett tal eller tomt."
+
+#. Translators: %s is the Disks application
+#: js/ui/shellMountOperation.js:469
+#, javascript-format
+msgid "Unable to start %s"
+msgstr "Kunde inte starta %s"
+
+#. Translators: %s is the Disks application
+#: js/ui/shellMountOperation.js:471
+#, javascript-format
+msgid "Couldn’t find the %s application"
+msgstr "Kunde inte hitta programmet %s"
+
+#: js/ui/status/accessibility.js:35
+msgid "Accessibility"
+msgstr "Hjälpmedel"
+
+#: js/ui/status/accessibility.js:50
+msgid "Zoom"
+msgstr "Zooma"
+
+#: js/ui/status/accessibility.js:57
+msgid "Screen Reader"
+msgstr "Skärmläsare"
+
+#: js/ui/status/accessibility.js:61
+msgid "Screen Keyboard"
+msgstr "Skärmtangentbord"
+
+#: js/ui/status/accessibility.js:65
+msgid "Visual Alerts"
+msgstr "Visuella larm"
+
+#: js/ui/status/accessibility.js:68
+msgid "Sticky Keys"
+msgstr "Klistriga tangenter"
+
+#: js/ui/status/accessibility.js:71
+msgid "Slow Keys"
+msgstr "Tröga tangenter"
+
+#: js/ui/status/accessibility.js:74
+msgid "Bounce Keys"
+msgstr "Studsande tangenter"
+
+#: js/ui/status/accessibility.js:77
+msgid "Mouse Keys"
+msgstr "Mustangenter"
+
+#: js/ui/status/accessibility.js:136
+msgid "High Contrast"
+msgstr "Hög kontrast"
+
+#: js/ui/status/accessibility.js:178
+msgid "Large Text"
+msgstr "Stor text"
+
+#: js/ui/status/bluetooth.js:40
+msgid "Bluetooth"
+msgstr "Bluetooth"
+
+#: js/ui/status/bluetooth.js:49 js/ui/status/network.js:591
+msgid "Bluetooth Settings"
+msgstr "Inställningar för Bluetooth"
+
+#. Translators: this is the number of connected bluetooth devices
+#: js/ui/status/bluetooth.js:129
+#, javascript-format
+msgid "%d Connected"
+msgid_plural "%d Connected"
+msgstr[0] "%d ansluten"
+msgstr[1] "%d anslutna"
+
+#: js/ui/status/bluetooth.js:131
+msgid "Off"
+msgstr "Frånkopplad"
+
+#: js/ui/status/bluetooth.js:133
+msgid "On"
+msgstr "På"
+
+#: js/ui/status/brightness.js:39
+msgid "Brightness"
+msgstr "Ljusstyrka"
+
+#: js/ui/status/dwellClick.js:13
+msgid "Single Click"
+msgstr "Enkelklick"
+
+#: js/ui/status/dwellClick.js:18
+msgid "Double Click"
+msgstr "Dubbelklick"
+
+#: js/ui/status/dwellClick.js:23
+msgid "Drag"
+msgstr "Dragning"
+
+#: js/ui/status/dwellClick.js:28
+msgid "Secondary Click"
+msgstr "Sekundärklick"
+
+#: js/ui/status/dwellClick.js:37
+msgid "Dwell Click"
+msgstr "Uppehållsklick"
+
+#: js/ui/status/keyboard.js:825
+msgid "Keyboard"
+msgstr "Tangentbord"
+
+#: js/ui/status/keyboard.js:847
+msgid "Show Keyboard Layout"
+msgstr "Visa tangentbordslayout"
+
+#: js/ui/status/location.js:65 js/ui/status/location.js:174
+msgid "Location Enabled"
+msgstr "Plats aktiverad"
+
+#: js/ui/status/location.js:66 js/ui/status/location.js:175
+msgid "Disable"
+msgstr "Inaktivera"
+
+#: js/ui/status/location.js:67
+msgid "Privacy Settings"
+msgstr "Sekretessinställningar"
+
+#: js/ui/status/location.js:173
+msgid "Location In Use"
+msgstr "Plats används"
+
+#: js/ui/status/location.js:177
+msgid "Location Disabled"
+msgstr "Plats inaktiverad"
+
+#: js/ui/status/location.js:178
+msgid "Enable"
+msgstr "Aktivera"
+
+#: js/ui/status/location.js:355
+msgid "Allow location access"
+msgstr "Tillåt platsåtkomst"
+
+#. Translators: %s is an application name
+#: js/ui/status/location.js:357
+#, javascript-format
+msgid "The app %s wants to access your location"
+msgstr "Programmet %s vill ha tillgång till din plats"
+
+#: js/ui/status/location.js:367
+msgid "Location access can be changed at any time from the privacy settings."
+msgstr "Platsåtkomst kan ändras när som helst från sekretessinställningarna."
+
+#: js/ui/status/network.js:66
+msgid "<unknown>"
+msgstr "<okänd>"
+
+#. Translators: %s is a network identifier
+#: js/ui/status/network.js:420 js/ui/status/network.js:1317
+#, javascript-format
+msgid "%s Off"
+msgstr "%s avslagen"
+
+#. Translators: %s is a network identifier
+#: js/ui/status/network.js:423
+#, javascript-format
+msgid "%s Connected"
+msgstr "%s ansluten"
+
+#. Translators: this is for network devices that are physically present but are not
+#. under NetworkManager's control (and thus cannot be used in the menu);
+#. %s is a network identifier
+#: js/ui/status/network.js:428
+#, javascript-format
+msgid "%s Unmanaged"
+msgstr "%s ohanterad"
+
+#. Translators: %s is a network identifier
+#: js/ui/status/network.js:431
+#, javascript-format
+msgid "%s Disconnecting"
+msgstr "%s kopplar från"
+
+#. Translators: %s is a network identifier
+#: js/ui/status/network.js:438 js/ui/status/network.js:1309
+#, javascript-format
+msgid "%s Connecting"
+msgstr "%s ansluter"
+
+#. Translators: this is for network connections that require some kind of key or password; %s is a network identifier
+#: js/ui/status/network.js:441
+#, javascript-format
+msgid "%s Requires Authentication"
+msgstr "%s kräver autentisering"
+
+#. Translators: this is for devices that require some kind of firmware or kernel
+#. module, which is missing; %s is a network identifier
+#: js/ui/status/network.js:449
+#, javascript-format
+msgid "Firmware Missing For %s"
+msgstr "Fast programvara saknas för %s"
+
+#. Translators: this is for a network device that cannot be activated (for example it
+#. is disabled by rfkill, or it has no coverage; %s is a network identifier
+#: js/ui/status/network.js:453
+#, javascript-format
+msgid "%s Unavailable"
+msgstr "%s ej tillgänglig"
+
+#. Translators: %s is a network identifier
+#: js/ui/status/network.js:456
+#, javascript-format
+msgid "%s Connection Failed"
+msgstr "Anslutning till %s misslyckades"
+
+#: js/ui/status/network.js:468
+msgid "Wired Settings"
+msgstr "Trådbundna inställningar"
+
+#: js/ui/status/network.js:511
+msgid "Mobile Broadband Settings"
+msgstr "Inställningar för mobilt bredband"
+
+#. Translators: %s is a network identifier
+#: js/ui/status/network.js:558 js/ui/status/network.js:1314
+#, javascript-format
+msgid "%s Hardware Disabled"
+msgstr "Hårdvara för %s inaktiverad"
+
+#. Translators: this is for a network device that cannot be activated
+#. because it's disabled by rfkill (airplane mode); %s is a network identifier
+#: js/ui/status/network.js:562
+#, javascript-format
+msgid "%s Disabled"
+msgstr "%s inaktiverad"
+
+#: js/ui/status/network.js:603
+msgid "Connect to Internet"
+msgstr "Anslut till internet"
+
+#: js/ui/status/network.js:808
+msgid "Airplane Mode is On"
+msgstr "Flygplansläge är på"
+
+#: js/ui/status/network.js:809
+msgid "Wi-Fi is disabled when airplane mode is on."
+msgstr "Trådlöst nätverk är avslaget när flygplansläge är på."
+
+#: js/ui/status/network.js:810
+msgid "Turn Off Airplane Mode"
+msgstr "Slå av flygplansläge"
+
+#: js/ui/status/network.js:819
+msgid "Wi-Fi is Off"
+msgstr "Trådlöst nätverk är av"
+
+#: js/ui/status/network.js:820
+msgid "Wi-Fi needs to be turned on in order to connect to a network."
+msgstr ""
+"Trådlöst nätverk behöver slås på för att kunna ansluta till ett nätverk."
+
+#: js/ui/status/network.js:821
+msgid "Turn On Wi-Fi"
+msgstr "Slå på trådlöst nätverk"
+
+#: js/ui/status/network.js:846
+msgid "Wi-Fi Networks"
+msgstr "Trådlösa nätverk"
+
+#: js/ui/status/network.js:848
+msgid "Select a network"
+msgstr "Välj ett nätverk"
+
+#: js/ui/status/network.js:880
+msgid "No Networks"
+msgstr "Inga nätverk"
+
+#: js/ui/status/network.js:901 js/ui/status/rfkill.js:106
+msgid "Use hardware switch to turn off"
+msgstr "Använd hårdvarubrytare för att slå av"
+
+#: js/ui/status/network.js:1178
+msgid "Select Network"
+msgstr "Välj nätverk"
+
+#: js/ui/status/network.js:1184
+msgid "Wi-Fi Settings"
+msgstr "Inställningar för trådlösa nätverk"
+
+#. Translators: %s is a network identifier
+#: js/ui/status/network.js:1305
+#, javascript-format
+msgid "%s Hotspot Active"
+msgstr "Surfzon för %s aktiv"
+
+#. Translators: %s is a network identifier
+#: js/ui/status/network.js:1320
+#, javascript-format
+msgid "%s Not Connected"
+msgstr "%s ej ansluten"
+
+#: js/ui/status/network.js:1417
+msgid "connecting…"
+msgstr "ansluter…"
+
+#. Translators: this is for network connections that require some kind of key or password
+#: js/ui/status/network.js:1420
+msgid "authentication required"
+msgstr "autentisering krävs"
+
+#: js/ui/status/network.js:1422
+msgid "connection failed"
+msgstr "anslutningen misslyckades"
+
+#: js/ui/status/network.js:1473
+msgid "VPN Settings"
+msgstr "VPN-inställningar"
+
+#: js/ui/status/network.js:1490
+msgid "VPN"
+msgstr "VPN"
+
+#: js/ui/status/network.js:1500
+msgid "VPN Off"
+msgstr "VPN avslaget"
+
+#: js/ui/status/network.js:1561 js/ui/status/rfkill.js:84
+msgid "Network Settings"
+msgstr "Nätverksinställningar"
+
+#: js/ui/status/network.js:1590
+#, javascript-format
+msgid "%s Wired Connection"
+msgid_plural "%s Wired Connections"
+msgstr[0] "%s trådbunden anslutning"
+msgstr[1] "%s trådbundna anslutningar"
+
+#: js/ui/status/network.js:1594
+#, javascript-format
+msgid "%s Wi-Fi Connection"
+msgid_plural "%s Wi-Fi Connections"
+msgstr[0] "%s trådlös anslutning"
+msgstr[1] "%s trådlösa anslutningar"
+
+#: js/ui/status/network.js:1598
+#, javascript-format
+msgid "%s Modem Connection"
+msgid_plural "%s Modem Connections"
+msgstr[0] "%s modemanslutning"
+msgstr[1] "%s modemanslutningar"
+
+#: js/ui/status/network.js:1732
+msgid "Connection failed"
+msgstr "Anslutningen misslyckades"
+
+#: js/ui/status/network.js:1733
+msgid "Activation of network connection failed"
+msgstr "Aktivering av nätverksanslutning misslyckades"
+
+#: js/ui/status/nightLight.js:63
+msgid "Night Light Disabled"
+msgstr "Nattbelysning inaktiverad"
+
+#: js/ui/status/nightLight.js:64
+msgid "Night Light On"
+msgstr "Nattbelysning på"
+
+#: js/ui/status/nightLight.js:66
+msgid "Resume"
+msgstr "Återuppta"
+
+#: js/ui/status/nightLight.js:67
+msgid "Disable Until Tomorrow"
+msgstr "Inaktivera till imorgon"
+
+#: js/ui/status/power.js:47
+msgid "Power Settings"
+msgstr "Ströminställningar"
+
+#: js/ui/status/power.js:63
+msgid "Fully Charged"
+msgstr "Fulladdad"
+
+#: js/ui/status/power.js:69
+msgid "Not Charging"
+msgstr "Laddar inte"
+
+#. 0 is reported when UPower does not have enough data
+#. to estimate battery life
+#: js/ui/status/power.js:72 js/ui/status/power.js:78
+msgid "Estimating…"
+msgstr "Beräknar…"
+
+#. Translators: this is <hours>:<minutes> Remaining (<percentage>)
+#: js/ui/status/power.js:86
+#, javascript-format
+msgid "%d∶%02d Remaining (%d %%)"
+msgstr "%d∶%02d återstår (%d %%)"
+
+#. Translators: this is <hours>:<minutes> Until Full (<percentage>)
+#: js/ui/status/power.js:91
+#, javascript-format
+msgid "%d∶%02d Until Full (%d %%)"
+msgstr "%d∶%02d tills fulladdad (%d %%)"
+
+#: js/ui/status/power.js:139 js/ui/status/power.js:141
+#, javascript-format
+msgid "%d %%"
+msgstr "%d %%"
+
+#: js/ui/status/remoteAccess.js:44
+msgid "Screen is Being Shared"
+msgstr "Skärmen delas"
+
+#: js/ui/status/remoteAccess.js:46
+msgid "Turn off"
+msgstr "Stäng av"
+
+#. The menu only appears when airplane mode is on, so just
+#. statically build it as if it was on, rather than dynamically
+#. changing the menu contents.
+#: js/ui/status/rfkill.js:79
+msgid "Airplane Mode On"
+msgstr "Flygplansläge påslaget"
+
+#: js/ui/status/system.js:103
+msgid "Lock"
+msgstr "Lås"
+
+#: js/ui/status/system.js:116
+msgid "Power Off / Log Out"
+msgstr "Stäng av / Logga ut"
+
+#: js/ui/status/system.js:119
+msgid "Log Out"
+msgstr "Logga ut"
+
+#: js/ui/status/system.js:131
+msgid "Switch User…"
+msgstr "Växla användare…"
+
+#: js/ui/status/system.js:145
+msgid "Suspend"
+msgstr "Vänteläge"
+
+#: js/ui/status/system.js:157
+msgid "Power Off…"
+msgstr "Stäng av…"
+
+#: js/ui/status/thunderbolt.js:263
+msgid "Thunderbolt"
+msgstr "Thunderbolt"
+
+#: js/ui/status/thunderbolt.js:325
+msgid "Unknown Thunderbolt device"
+msgstr "Okänd Thunderbolt-enhet"
+
+#: js/ui/status/thunderbolt.js:326
+msgid ""
+"New device has been detected while you were away. Please disconnect and "
+"reconnect the device to start using it."
+msgstr ""
+"En ny enhet har upptäckts medan du var borta. Koppla från och anslut enheten "
+"igen för att börja använda den."
+
+#: js/ui/status/thunderbolt.js:329
+msgid "Unauthorized Thunderbolt device"
+msgstr "Ej auktoriserad Thunderbolt-enhet"
+
+#: js/ui/status/thunderbolt.js:330
+msgid ""
+"New device has been detected and needs to be authorized by an administrator."
+msgstr ""
+"En ny enhet har upptäckts och behöver auktoriseras av en administratör."
+
+#: js/ui/status/thunderbolt.js:336
+msgid "Thunderbolt authorization error"
+msgstr "Thunderbolt-auktoriseringsfel"
+
+#: js/ui/status/thunderbolt.js:337
+#, javascript-format
+msgid "Could not authorize the Thunderbolt device: %s"
+msgstr "Kunde inte auktorisera Thunderbolt-enheten: %s"
+
+#: js/ui/status/volume.js:150
+msgid "Volume changed"
+msgstr "Volymen ändrades"
+
+#: js/ui/status/volume.js:221
+msgid "Volume"
+msgstr "Volym"
+
+#. Translators: this is for display mirroring i.e. cloning.
+#. * Try to keep it under around 15 characters.
+#.
+#: js/ui/switchMonitor.js:17
+msgid "Mirror"
+msgstr "Spegla"
+
+#. Translators: this is for the desktop spanning displays.
+#. * Try to keep it under around 15 characters.
+#.
+#: js/ui/switchMonitor.js:22
+msgid "Join Displays"
+msgstr "Slå ihop skärmar"
+
+#. Translators: this is for using only an external display.
+#. * Try to keep it under around 15 characters.
+#.
+#: js/ui/switchMonitor.js:27
+msgid "External Only"
+msgstr "Extern skärm"
+
+#. Translators: this is for using only the laptop display.
+#. * Try to keep it under around 15 characters.
+#.
+#: js/ui/switchMonitor.js:32
+msgid "Built-in Only"
+msgstr "Inbyggd skärm"
+
+#. Translators: This is a time format for a date in
+#. long format
+#: js/ui/unlockDialog.js:372
+msgid "%A %B %-d"
+msgstr "%A %-d %B"
+
+#: js/ui/unlockDialog.js:378
+msgid "Swipe up to unlock"
+msgstr "Svep uppåt för att låsa upp"
+
+#: js/ui/unlockDialog.js:379
+msgid "Click or press a key to unlock"
+msgstr "Klicka eller tryck på en tangent för att låsa upp"
+
+#: js/ui/unlockDialog.js:552
+msgid "Unlock Window"
+msgstr "Lås upp fönster"
+
+#: js/ui/viewSelector.js:181
+msgid "Applications"
+msgstr "Program"
+
+#: js/ui/viewSelector.js:185
+msgid "Search"
+msgstr "Sök"
+
+#: js/ui/windowAttentionHandler.js:20
+#, javascript-format
+msgid "“%s” is ready"
+msgstr "”%s” är redo"
+
+#. Translators: This string should be shorter than 30 characters
+#: js/ui/windowManager.js:55
+msgid "Keep these display settings?"
+msgstr "Behåll dessa inställningar?"
+
+#. Translators: this and the following message should be limited in length,
+#. to avoid ellipsizing the labels.
+#.
+#: js/ui/windowManager.js:64
+msgid "Revert Settings"
+msgstr "Återställ inställningar"
+
+#: js/ui/windowManager.js:67
+msgid "Keep Changes"
+msgstr "Behåll ändringar"
+
+#: js/ui/windowManager.js:85
+#, javascript-format
+msgid "Settings changes will revert in %d second"
+msgid_plural "Settings changes will revert in %d seconds"
+msgstr[0] "Inställningarna kommer återställas om %d sekund"
+msgstr[1] "Inställningarna kommer återställas om %d sekunder"
+
+#. Translators: This represents the size of a window. The first number is
+#. * the width of the window and the second is the height.
+#: js/ui/windowManager.js:544
+#, javascript-format
+msgid "%d × %d"
+msgstr "%d × %d"
+
+#: js/ui/windowMenu.js:27
+msgid "Minimize"
+msgstr "Minimera"
+
+#: js/ui/windowMenu.js:34
+msgid "Unmaximize"
+msgstr "Avmaximera"
+
+#: js/ui/windowMenu.js:38
+msgid "Maximize"
+msgstr "Maximera"
+
+#: js/ui/windowMenu.js:45
+msgid "Move"
+msgstr "Flytta"
+
+#: js/ui/windowMenu.js:51
+msgid "Resize"
+msgstr "Ändra storlek"
+
+#: js/ui/windowMenu.js:58
+msgid "Move Titlebar Onscreen"
+msgstr "Flytta namnlist på skärm"
+
+#: js/ui/windowMenu.js:63
+msgid "Always on Top"
+msgstr "Alltid överst"
+
+#: js/ui/windowMenu.js:82
+msgid "Always on Visible Workspace"
+msgstr "Alltid på synlig arbetsyta"
+
+#: js/ui/windowMenu.js:96
+msgid "Move to Workspace Left"
+msgstr "Flytta till arbetsyta åt vänster"
+
+#: js/ui/windowMenu.js:102
+msgid "Move to Workspace Right"
+msgstr "Flytta till arbetsyta åt höger"
+
+#: js/ui/windowMenu.js:108
+msgid "Move to Workspace Up"
+msgstr "Flytta till arbetsyta ovan"
+
+#: js/ui/windowMenu.js:114
+msgid "Move to Workspace Down"
+msgstr "Flytta till arbetsyta nedan"
+
+#: js/ui/windowMenu.js:132
+msgid "Move to Monitor Up"
+msgstr "Flytta till skärm uppåt"
+
+#: js/ui/windowMenu.js:141
+msgid "Move to Monitor Down"
+msgstr "Flytta till skärm nedåt"
+
+#: js/ui/windowMenu.js:150
+msgid "Move to Monitor Left"
+msgstr "Flytta till skärm åt vänster"
+
+#: js/ui/windowMenu.js:159
+msgid "Move to Monitor Right"
+msgstr "Flytta till skärm åt höger"
+
+#: js/ui/windowMenu.js:167
+msgid "Close"
+msgstr "Stäng"
+
+#: src/calendar-server/evolution-calendar.desktop.in:3
+msgid "Evolution Calendar"
+msgstr "Evolution-kalender"
+
+#: src/main.c:460 subprojects/extensions-tool/src/main.c:249
+msgid "Print version"
+msgstr "Skriv ut version"
+
+#: src/main.c:466
+msgid "Mode used by GDM for login screen"
+msgstr "Läge som används av GDM för inloggningsskärmen"
+
+#: src/main.c:472
+msgid "Use a specific mode, e.g. “gdm” for login screen"
+msgstr "Använd ett specifikt läge, t.ex. ”gdm” för inloggningsskärm"
+
+#: src/main.c:478
+msgid "List possible modes"
+msgstr "Lista möjliga lägen"
+
+#: src/shell-app.c:279
+msgctxt "program"
+msgid "Unknown"
+msgstr "Okänt"
+
+#: src/shell-app.c:530
+#, c-format
+msgid "Failed to launch “%s”"
+msgstr "Misslyckades med att starta ”%s”"
+
+#: src/shell-keyring-prompt.c:731
+msgid "Passwords do not match."
+msgstr "Lösenorden stämmer inte överens."
+
+#: src/shell-keyring-prompt.c:739
+msgid "Password cannot be blank"
+msgstr "Lösenordet får inte vara blankt"
+
+#: src/shell-polkit-authentication-agent.c:344
+msgid "Authentication dialog was dismissed by the user"
+msgstr "Autentiseringsdialogen stängdes av användaren"
+
+#. Translators: a file path to an extension directory
+#: subprojects/extensions-tool/src/command-create.c:125
+#, c-format
+msgid "The new extension was successfully created in %s.\n"
+msgstr "Det nya tillägget skapades i %s.\n"
+
+#: subprojects/extensions-tool/src/command-create.c:194
+#, c-format
+msgid ""
+"Name should be a very short (ideally descriptive) string.\n"
+"Examples are: %s"
+msgstr ""
+"Namn bör vara en väldigt kort (helst beskrivande) sträng.\n"
+"Exempel: %s"
+
+#: subprojects/extensions-tool/src/command-create.c:197
+#: subprojects/extensions-tool/src/main.c:170
+msgid "Name"
+msgstr "Namn"
+
+#: subprojects/extensions-tool/src/command-create.c:208
+#, c-format
+msgid ""
+"Description is a single-sentence explanation of what your extension does.\n"
+"Examples are: %s"
+msgstr ""
+"Beskrivning är en ensam mening som förklarar vad ditt tillägg gör.\n"
+"Exempel: %s"
+
+#: subprojects/extensions-tool/src/command-create.c:222
+msgid ""
+"UUID is a globally-unique identifier for your extension.\n"
+"This should be in the format of an email address (clicktofocus@janedoe."
+"example.com)\n"
+msgstr ""
+"UUID är en globalt unik identifierare för ditt tillägg.\n"
+"Detta ska vara i formatet av en e-postadress\n"
+"(clicktofocus@janedoe.example.com)\n"
+
+#: subprojects/extensions-tool/src/command-create.c:244
+msgid "The unique identifier of the new extension"
+msgstr "Det nya tilläggets unika identifierare"
+
+#: subprojects/extensions-tool/src/command-create.c:247
+msgid "NAME"
+msgstr "NAMN"
+
+#: subprojects/extensions-tool/src/command-create.c:248
+msgid "The user-visible name of the new extension"
+msgstr "Det användarsynliga namnet på det nya tillägget"
+
+#: subprojects/extensions-tool/src/command-create.c:250
+msgid "DESCRIPTION"
+msgstr "BESKRIVNING"
+
+#: subprojects/extensions-tool/src/command-create.c:252
+msgid "A short description of what the extension does"
+msgstr "En kort beskrivning av vad tillägget gör"
+
+#: subprojects/extensions-tool/src/command-create.c:255
+msgid "Enter extension information interactively"
+msgstr "Ange tilläggsinformation interaktivt"
+
+#: subprojects/extensions-tool/src/command-create.c:263
+msgid "Create a new extension"
+msgstr "Skapa ett nytt tillägg"
+
+#: subprojects/extensions-tool/src/command-create.c:280
+#: subprojects/extensions-tool/src/command-list.c:168
+msgid "Unknown arguments"
+msgstr "Okända argument"
+
+#: subprojects/extensions-tool/src/command-create.c:289
+msgid "UUID, name and description are required"
+msgstr "UUID, namn och beskrivning krävs"
+
+#: subprojects/extensions-tool/src/command-disable.c:57
+msgid "Disable an extension"
+msgstr "Inaktivera ett tillägg"
+
+#: subprojects/extensions-tool/src/command-disable.c:74
+#: subprojects/extensions-tool/src/command-enable.c:74
+#: subprojects/extensions-tool/src/command-info.c:96
+#: subprojects/extensions-tool/src/command-prefs.c:107
+#: subprojects/extensions-tool/src/command-reset.c:74
+#: subprojects/extensions-tool/src/command-uninstall.c:89
+msgid "No UUID given"
+msgstr "Inget UUID angivet"
+
+#: subprojects/extensions-tool/src/command-disable.c:79
+#: subprojects/extensions-tool/src/command-enable.c:79
+#: subprojects/extensions-tool/src/command-info.c:101
+#: subprojects/extensions-tool/src/command-prefs.c:112
+#: subprojects/extensions-tool/src/command-reset.c:79
+#: subprojects/extensions-tool/src/command-uninstall.c:94
+msgid "More than one UUID given"
+msgstr "Mer än ett UUID angivet"
+
+#: subprojects/extensions-tool/src/command-enable.c:57
+msgid "Enable an extension"
+msgstr "Aktivera ett tillägg"
+
+#: subprojects/extensions-tool/src/command-info.c:79
+msgid "Show extensions info"
+msgstr "Visa info för tillägg"
+
+#: subprojects/extensions-tool/src/command-install.c:173
+msgid "Overwrite an existing extension"
+msgstr "Skriv över ett befintligt tillägg"
+
+#: subprojects/extensions-tool/src/command-install.c:175
+msgid "EXTENSION_BUNDLE"
+msgstr "TILLÄGGSBUNT"
+
+#: subprojects/extensions-tool/src/command-install.c:184
+msgid "Install an extension bundle"
+msgstr "Installera en tilläggsbunt"
+
+#: subprojects/extensions-tool/src/command-install.c:201
+msgid "No extension bundle specified"
+msgstr "Ingen tilläggsbunt angiven"
+
+#: subprojects/extensions-tool/src/command-install.c:207
+msgid "More than one extension bundle specified"
+msgstr "Mer än en tilläggsbunt angiven"
+
+#: subprojects/extensions-tool/src/command-list.c:125
+msgid "Show user-installed extensions"
+msgstr "Visa användarinstallerade tillägg"
+
+#: subprojects/extensions-tool/src/command-list.c:128
+msgid "Show system-installed extensions"
+msgstr "Visa systeminstallerade tillägg"
+
+#: subprojects/extensions-tool/src/command-list.c:131
+msgid "Show enabled extensions"
+msgstr "Visa aktiverade tillägg"
+
+#: subprojects/extensions-tool/src/command-list.c:134
+msgid "Show disabled extensions"
+msgstr "Visa inaktiverade tillägg"
+
+#: subprojects/extensions-tool/src/command-list.c:137
+msgid "Show extensions with preferences"
+msgstr "Visa tillägg med inställningar"
+
+#: subprojects/extensions-tool/src/command-list.c:140
+msgid "Show extensions with updates"
+msgstr "Visa tillägg med uppdateringar"
+
+#: subprojects/extensions-tool/src/command-list.c:143
+msgid "Print extension details"
+msgstr "Skriv ut detaljer för tillägg"
+
+#: subprojects/extensions-tool/src/command-list.c:151
+msgid "List installed extensions"
+msgstr "Lista installerade tillägg"
+
+#: subprojects/extensions-tool/src/command-pack.c:450
+msgid "FILE"
+msgstr "FIL"
+
+#: subprojects/extensions-tool/src/command-pack.c:451
+msgid "Additional source to include in the bundle"
+msgstr "Ytterligare källa att inkludera i bunten"
+
+#: subprojects/extensions-tool/src/command-pack.c:454
+msgid "SCHEMA"
+msgstr "SCHEMA"
+
+#: subprojects/extensions-tool/src/command-pack.c:455
+msgid "A GSettings schema that should be included"
+msgstr "Ett GSettings-schema som ska inkluderas"
+
+#: subprojects/extensions-tool/src/command-pack.c:457
+#: subprojects/extensions-tool/src/command-pack.c:468
+msgid "DIRECTORY"
+msgstr "KATALOG"
+
+#: subprojects/extensions-tool/src/command-pack.c:459
+msgid "The directory where translations are found"
+msgstr "Katalogen där översättningar hittas"
+
+#: subprojects/extensions-tool/src/command-pack.c:461
+msgid "DOMAIN"
+msgstr "DOMÄN"
+
+#: subprojects/extensions-tool/src/command-pack.c:463
+msgid "The gettext domain to use for translations"
+msgstr "Gettext-domänen att använda för översättningar"
+
+#: subprojects/extensions-tool/src/command-pack.c:466
+msgid "Overwrite an existing pack"
+msgstr "Skriv över ett befintligt paket"
+
+#: subprojects/extensions-tool/src/command-pack.c:470
+msgid "The directory where the pack should be created"
+msgstr "Katalogen där paketet ska skapas"
+
+#: subprojects/extensions-tool/src/command-pack.c:472
+msgid "SOURCE_DIRECTORY"
+msgstr "KÄLLKATALOG"
+
+#: subprojects/extensions-tool/src/command-pack.c:481
+msgid "Create an extension bundle"
+msgstr "Skapa en tilläggsbunt"
+
+#: subprojects/extensions-tool/src/command-pack.c:500
+msgid "More than one source directory specified"
+msgstr "Mer än en källkatalog angiven"
+
+#: subprojects/extensions-tool/src/command-prefs.c:90
+msgid "Opens extension preferences"
+msgstr "Öppnar inställningar för tillägg"
+
+#: subprojects/extensions-tool/src/command-reset.c:57
+msgid "Reset an extension"
+msgstr "Återställ ett tillägg"
+
+#: subprojects/extensions-tool/src/command-uninstall.c:72
+msgid "Uninstall an extension"
+msgstr "Avinstallera ett tillägg"
+
+#: subprojects/extensions-tool/src/main.c:176
+msgid "Path"
+msgstr "Sökväg"
+
+#: subprojects/extensions-tool/src/main.c:179
+msgid "URL"
+msgstr "URL"
+
+#: subprojects/extensions-tool/src/main.c:182
+msgid "Original author"
+msgstr "Ursprunglig upphovsman"
+
+#: subprojects/extensions-tool/src/main.c:188
+msgid "State"
+msgstr "Tillstånd"
+
+#: subprojects/extensions-tool/src/main.c:222
+msgid "“version” takes no arguments"
+msgstr "”version” tar inga argument"
+
+#: subprojects/extensions-tool/src/main.c:224
+#: subprojects/extensions-tool/src/main.c:244
+msgid "Usage:"
+msgstr "Användning:"
+
+#: subprojects/extensions-tool/src/main.c:227
+msgid "Print version information and exit."
+msgstr "Skriv ut versionsinformation och avsluta."
+
+#: subprojects/extensions-tool/src/main.c:242
+#: subprojects/extensions-tool/src/main.c:245
+msgid "COMMAND"
+msgstr "KOMMANDO"
+
+#: subprojects/extensions-tool/src/main.c:245
+msgid "[ARGS…]"
+msgstr "[ARGUMENT…]"
+
+#: subprojects/extensions-tool/src/main.c:247
+msgid "Commands:"
+msgstr "Kommandon:"
+
+#: subprojects/extensions-tool/src/main.c:248
+msgid "Print help"
+msgstr "Skriv ut hjälp"
+
+#: subprojects/extensions-tool/src/main.c:250
+msgid "Enable extension"
+msgstr "Aktivera tillägg"
+
+#: subprojects/extensions-tool/src/main.c:251
+msgid "Disable extension"
+msgstr "Inaktivera tillägg"
+
+#: subprojects/extensions-tool/src/main.c:252
+msgid "Reset extension"
+msgstr "Återställ tillägg"
+
+#: subprojects/extensions-tool/src/main.c:253
+msgid "Uninstall extension"
+msgstr "Avinstallera tillägg"
+
+#: subprojects/extensions-tool/src/main.c:254
+msgid "List extensions"
+msgstr "Lista tillägg"
+
+#: subprojects/extensions-tool/src/main.c:255
+#: subprojects/extensions-tool/src/main.c:256
+msgid "Show extension info"
+msgstr "Visa info för tillägg"
+
+#: subprojects/extensions-tool/src/main.c:257
+msgid "Open extension preferences"
+msgstr "Öppna inställningar för tillägg"
+
+#: subprojects/extensions-tool/src/main.c:258
+msgid "Create extension"
+msgstr "Skapa tillägg"
+
+#: subprojects/extensions-tool/src/main.c:259
+msgid "Package extension"
+msgstr "Paketera tillägg"
+
+#: subprojects/extensions-tool/src/main.c:260
+msgid "Install extension bundle"
+msgstr "Installera tilläggsbunt"
+
+#: subprojects/extensions-tool/src/main.c:262
+#, c-format
+msgid "Use “%s” to get detailed help.\n"
+msgstr "Använd ”%s” för att få detaljerad hjälp.\n"
+
+#. translators:
+#. * The number of sound outputs on a particular device
+#: subprojects/gvc/gvc-mixer-control.c:1899
+#, c-format
+msgid "%u Output"
+msgid_plural "%u Outputs"
+msgstr[0] "%u utgång"
+msgstr[1] "%u utgångar"
+
+#. translators:
+#. * The number of sound inputs on a particular device
+#: subprojects/gvc/gvc-mixer-control.c:1909
+#, c-format
+msgid "%u Input"
+msgid_plural "%u Inputs"
+msgstr[0] "%u ingång"
+msgstr[1] "%u ingångar"
+
+#: subprojects/gvc/gvc-mixer-control.c:2766
+msgid "System Sounds"
+msgstr "Systemljud"
+
+#~ msgid "Username…"
+#~ msgstr "Användarnamn…"
+
+#~ msgid "Password: "
+#~ msgstr "Lösenord: "
+
+#~ msgid "Enter Password…"
+#~ msgstr "Ange lösenord…"
+
+#~ msgid "Next"
+#~ msgstr "Nästa"
+
+#~ msgctxt "button"
+#~ msgid "Sign In"
+#~ msgstr "Logga in"
+
+#~ msgid "%A, %B %d"
+#~ msgstr "%A, %d %B"
+
+#~ msgid "%d new message"
+#~ msgid_plural "%d new messages"
+#~ msgstr[0] "%d nytt meddelande"
+#~ msgstr[1] "%d nya meddelanden"
+
+#~ msgid "%d new notification"
+#~ msgid_plural "%d new notifications"
+#~ msgstr[0] "%d ny avisering"
+#~ msgstr[1] "%d nya aviseringar"
+
+#~ msgid "Log in as another user"
+#~ msgstr "Logga in som en annan användare"
+
+#~ msgid "org.gnome.Extensions"
+#~ msgstr "org.gnome.Extensions"
+
+#~ msgid "Logout…"
+#~ msgstr "Logga ut…"
+
+#~ msgid "Browse in Software"
+#~ msgstr "Bläddra i Programvara"
+
+#~ msgctxt "search-result"
+#~ msgid "Lock Orientation"
+#~ msgstr "Skärmrotation"
+
+#~ msgid "Password:"
+#~ msgstr "Lösenord:"
+
+#~ msgid "Type again:"
+#~ msgstr "Skriv igen:"
+
+#~ msgid "Authentication required by wireless network"
+#~ msgstr "Autentisering krävs av trådlöst nätverk"
+
+#~ msgid "Mobile broadband network password"
+#~ msgstr "Lösenord för mobilt bredbandsnätverk"
+
+#~ msgid "Rename"
+#~ msgstr "Byt namn"
+
+#~ msgid "Account Settings"
+#~ msgstr "Kontoinställningar"
+
+#~ msgid "Orientation Lock"
+#~ msgstr "Skärmrotation"
+
+#~ msgid ""
+#~ "Keybinding that pauses and resumes all running tweens, for debugging "
+#~ "purposes"
+#~ msgstr ""
+#~ "Snabbtangent som pausar och återupptar alla aktiva animeringar (tweens), "
+#~ "i felsökningssyfte"
+
+#~ msgid "Which keyboard to use"
+#~ msgstr "Vilket tangentbord att använda"
+
+#~ msgid "The type of keyboard to use."
+#~ msgstr "Typen av tangentbord att använda."
+
+#~ msgid "network-workgroup"
+#~ msgstr "network-workgroup"
+
+#~ msgid "toggle-switch-us"
+#~ msgstr "toggle-switch-intl"
+
+#~ msgid "evolution"
+#~ msgstr "evolution"
+
+#~ msgid "There was an error loading the preferences dialog for %s:"
+#~ msgstr "Det uppstod ett fel vid inläsning av inställningsdialogen för %s:"
+
+#~ msgid "%s all day."
+#~ msgstr "%s hela dagen."
+
+#~ msgid "%s, then %s later."
+#~ msgstr "%s, sedan %s senare."
+
+#~ msgid "%s, then %s, followed by %s later."
+#~ msgstr "%s, sedan %s, följt av %s senare."
+
+#~ msgid "Feels like %s."
+#~ msgstr "Känns som %s."
+
+#~ msgctxt "search-result"
+#~ msgid "Power off"
+#~ msgstr "Stäng av"
+
+#~ msgctxt "search-result"
+#~ msgid "Log out"
+#~ msgstr "Logga ut"
+
+#~ msgctxt "search-result"
+#~ msgid "Switch user"
+#~ msgstr "Växla användare"
+
+#~ msgid "Hide tray"
+#~ msgstr "Dölj aktivitetsfält"
+
+#~ msgid "Status Icons"
+#~ msgstr "Statusikoner"
+
+#~ msgid "Events"
+#~ msgstr "Händelser"
+
+#~ msgid "Notifications"
+#~ msgstr "Aviseringar"
+
+#~ msgid "Clear section"
+#~ msgstr "Töm avsnitt"
+
+#~ msgid "Media"
+#~ msgstr "Media"
+
+#~ msgid "%d x %d"
+#~ msgstr "%d x %d"
+
+#~ msgid "Web Authentication Redirect"
+#~ msgstr "Omdirigering för webbautentisering"
+
+#~ msgid "Not In Use"
+#~ msgstr "Används inte"
+
+#~ msgid "Show the week date in the calendar"
+#~ msgstr "Visa veckonummer i kalendern"
+
+#~ msgid "If true, display the ISO week date in the calendar."
+#~ msgstr "Om satt till \"true\", visa veckonummer enligt ISO i kalendern."
+
+#~ msgid "Use as Internet connection"
+#~ msgstr "Använd som internetanslutning"
+
+#~ msgid "%s is requesting access to your location."
+#~ msgstr "%s begär åtkomst till din plats."
+
+#~ msgid "GNOME Shell (wayland compositor)"
+#~ msgstr "GNOME-skal (wayland-compositor)"
+
+#~ msgid "%d Connected Device"
+#~ msgid_plural "%d Connected Devices"
+#~ msgstr[0] "%d ansluten enhet"
+#~ msgstr[1] "%d anslutna enheter"
+
+#~ msgid "UPS"
+#~ msgstr "Avbrottsfri kraftförsörjning (UPS)"
+
+#~ msgid "Battery"
+#~ msgstr "Batteri"
+
+#~ msgid "Airplane Mode"
+#~ msgstr "Flygplansläge"

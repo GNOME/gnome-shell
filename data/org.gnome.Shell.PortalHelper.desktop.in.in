@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Network Login
+Type=Application
+Exec=gapplication launch org.gnome.Shell.PortalHelper
+DBusActivatable=true
+NoDisplay=true
+# Translators: Do NOT translate or transliterate this text (this is an icon file name)!
+Icon=network-workgroup
+StartupNotify=true
+OnlyShowIn=GNOME;

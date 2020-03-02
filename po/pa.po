@@ -1,0 +1,4006 @@
+# Punjabi translation for gnome-shell.
+# Copyright (C) 2009 gnome-shell's COPYRIGHT HOLDER
+# This file is distributed under the same license as the gnome-shell package.
+# A S Alam <aalam@users.sf.net>, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020.
+msgid ""
+msgstr ""
+"Project-Id-Version: gnome-shell master\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
+"POT-Creation-Date: 2020-02-27 21:57+0000\n"
+"PO-Revision-Date: 2020-03-01 01:16-0800\n"
+"Last-Translator: A S Alam <aalam@users.sf.net>\n"
+"Language-Team: Punjabi <punjabi-users@list.sf.net>\n"
+"Language: pa\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Lokalize 19.04.3\n"
+
+#: data/50-gnome-shell-system.xml:6
+msgid "System"
+msgstr "ਸਿਸਟਮ"
+
+#: data/50-gnome-shell-system.xml:9
+msgid "Show the notification list"
+msgstr "ਨੋਟੀਫਿਕੇਸ਼ਨ ਸੂਚੀ ਵੇਖਾਓ"
+
+#: data/50-gnome-shell-system.xml:12
+msgid "Focus the active notification"
+msgstr "ਸਰਗਰਮ ਸੂਚਨਾ ਉੱਤੇ ਫੋਕਸ"
+
+#: data/50-gnome-shell-system.xml:15
+msgid "Show the overview"
+msgstr "ਸੰਖੇਪ ਵੇਖਾਓ"
+
+#: data/50-gnome-shell-system.xml:18
+msgid "Show all applications"
+msgstr "ਸਭ ਐਪਲੀਕੇਸ਼ਨ ਵੇਖੋ"
+
+#: data/50-gnome-shell-system.xml:21
+msgid "Open the application menu"
+msgstr "ਐਪਲੀਕੇਸ਼ਨ ਮੇਨੂ ਖੋਲ੍ਹੋ"
+
+#: data/org.gnome.Extensions.desktop.in.in:4 js/extensionPrefs/main.js:218
+#: js/extensionPrefs/ui/extensions-window.ui:61
+#| msgid "Shell Extensions"
+msgid "Extensions"
+msgstr "ਇਕਸਟੈਸ਼ਨ"
+
+#: data/org.gnome.Extensions.desktop.in.in:7
+msgid "Configure GNOME Shell Extensions"
+msgstr "ਗਨੋਮ ਸ਼ੈਲ ਇਕਸਟੈਸ਼ਨ ਸੰਰਚਨਾ"
+
+#: data/org.gnome.Shell.desktop.in.in:4
+msgid "GNOME Shell"
+msgstr "ਗਨੋਮ ਸ਼ੈਲ"
+
+#: data/org.gnome.Shell.desktop.in.in:5
+msgid "Window management and application launching"
+msgstr "ਵਿੰਡੋ ਇੰਤਜ਼ਾਮ ਅਤੇ ਐਪਲੀਕੇਸ਼ਨ ਚਲਾਉਣਾ"
+
+#: data/org.gnome.shell.gschema.xml.in:6
+msgid "Enable internal tools useful for developers and testers from Alt-F2"
+msgstr "Alt-F2 ਤੋਂ ਡਿਵੈਲਪਰਾਂ ਤੇ ਟੈਸਟਰਾਂ ਲਈ ਫਾਇਦੇਮੰਦ ਅੰਦਰੂਨੀ ਟੂਲ ਚਾਲੂ ਕਰਦਾ ਹੈ"
+
+#: data/org.gnome.shell.gschema.xml.in:9
+msgid ""
+"Allows access to internal debugging and monitoring tools using the Alt-F2 "
+"dialog."
+msgstr ""
+"Alt-F2 ਡਾਈਲਾਗ ਦੀ ਵਰਤੋਂ ਕਰਕੇ ਅੰਦਰੂਨੀ ਡੀਬੱਗਿਗ ਤੇ ਮਾਨੀਟਰਿੰਗ ਟੂਲ ਵਰਤੋਂ ਕਰਨ ਲਈ"
+" ਸਹਾਇਕ ਹੈ"
+
+#: data/org.gnome.shell.gschema.xml.in:16
+msgid "UUIDs of extensions to enable"
+msgstr "ਚਾਲੂ ਕਰਨ ਲਈ ਇਕਟੈਨਸ਼ਨ ਦੀ UUID"
+
+#: data/org.gnome.shell.gschema.xml.in:17
+msgid ""
+"GNOME Shell extensions have a UUID property; this key lists extensions which "
+"should be loaded. Any extension that wants to be loaded needs to be in this "
+"list. You can also manipulate this list with the EnableExtension and "
+"DisableExtension D-Bus methods on org.gnome.Shell."
+msgstr ""
+"ਗਨੋਮ ਸ਼ੈਲ ਇਕਸਟੈਨਸ਼ਨ ਲਈ ਇੱਕ UUID ਵਿਸ਼ੇਸ਼ਤਾ ਹੈ; ਇਹ ਕੁੰਜੀ ਇਕਸਟੈਨਸ਼ਨ ਦਰਸਾਉਂਦੀ ਹੈ,"
+" ਜੋ ਲੋਡ ਹੋਣੀ "
+"ਚਾਹੀਦੀ ਹੈ। ਕੋਈ ਵੀ ਇਕਸਟੈਸ਼ਨ, ਜੋ ਲੋਡ ਹੋਣਾ ਚਾਹੁੰਦੀ ਹੈ, ਨੂੰ ਇਹ ਸੂਚੀ ਵਿੱਚ ਹੋਣਾ"
+" ਚਾਹੀਦਾ ਹੈ। ਤੁਸੀਂ ਵੀ "
+"ਇਹ ਸੂਚੀ ਨੂੰ org.gnome.shell ਉੱਤੇ EnableExtension ਅਤੇ DisableExtension D-Bus"
+" ਢੰਗ ਨਾਲ "
+"ਬਦਲ ਸਕਦੇ ਹੋ।"
+
+#: data/org.gnome.shell.gschema.xml.in:26
+msgid "UUIDs of extensions to force disabling"
+msgstr "ਧੱਕੇ ਨਾਲ ਅਸਮਰੱਥ ਕਰਨ ਲਈ ਇਕਟੈਨਸ਼ਨਾਂ ਦੀ UUID"
+
+#: data/org.gnome.shell.gschema.xml.in:27
+msgid ""
+"GNOME Shell extensions have a UUID property; this key lists extensions which "
+"should be disabled, even if loaded as part of the current mode. You can also "
+"manipulate this list with the EnableExtension and DisableExtension D-Bus "
+"methods on org.gnome.Shell. This key takes precedence over the “enabled-"
+"extensions” setting."
+msgstr ""
+"ਗਨੋਮ ਸ਼ੈਲ ਇਕਸਟੈਨਸ਼ਨ ਲਈ ਇੱਕ UUID ਵਿਸ਼ੇਸ਼ਤਾ ਹੈ; ਇਹ ਕੁੰਜੀ ਇਕਸਟੈਨਸ਼ਨ ਦਰਸਾਉਂਦੀ ਹੈ,"
+" ਜੋ ਸਮਰੱਥ ਹੋਣੀ "
+"ਚਾਹੀਦੀ ਹੈ, ਭਾਵੇੇਂ ਕਿ ਉਹ ਮੌਜੂਦਾ ਮੋਡ ਦੇ ਹਿੱਸੇ ਵਜੋਂ ਲੋਡ ਹੁੰਦੀ ਹੈ। ਤੁਸੀਂ ਇਹ ਸੂਚੀ"
+" ਨੂੰ org.gnome.shell "
+"ਉੱਤੇ EnableExtension ਅਤੇ DisableExtension D-Bus ਢੰਗ ਨਾਲ ਬਦਲ ਸਕਦੇ ਹੋ। ਇਹ ਕੁੰਜੀ"
+" ਦੀ "
+"“enabled-extensions” ਤੋਂ ਵੱਧ ਤਰਜੀਹ ਹੁੰਦੀ ਹੈ।"
+
+#: data/org.gnome.shell.gschema.xml.in:37
+msgid "Disable user extensions"
+msgstr "ਵਰਤੋਂਕਾਰ ਇਕਸਟੈਨਸ਼ਨਾਂ ਨੂੰ ਅਸਮਰੱਥ ਕਰੋ"
+
+#: data/org.gnome.shell.gschema.xml.in:38
+msgid ""
+"Disable all extensions the user has enabled without affecting the “enabled-"
+"extension” setting."
+msgstr ""
+"“enabled-extension” ਸੈਟਿੰਗ ਨੂੰ ਪ੍ਰਭਾਵਿਤ ਕੀਤੇ ਬਿਨਾਂ ਵਰਤੋਂਕਾਰ ਵਲੋਂ ਸਮਰੱਥ ਕੀਤੀਆਂ"
+" ਸਾਰੀਆਂ "
+"ਇਕਸਟੈਨਸ਼ਨਾਂ ਨੂੰ ਅਸਮਰੱਥ ਕਰੋ।"
+
+#: data/org.gnome.shell.gschema.xml.in:45
+msgid "Disables the validation of extension version compatibility"
+msgstr "ਇਕਸਟੈਨਸ਼ਨ ਵਰਜਨ ਅਨੁਕੂਲਤਾ ਦੀ ਵੈਧਤਾ ਨੂੰ ਬੰਦ ਕਰੋ"
+
+#: data/org.gnome.shell.gschema.xml.in:46
+msgid ""
+"GNOME Shell will only load extensions that claim to support the current "
+"running version. Enabling this option will disable this check and try to "
+"load all extensions regardless of the versions they claim to support."
+msgstr ""
+"ਗਨੋਮ ਸ਼ੈਲ ਕੇਵਲ ਉਹਨਾਂ ਹੀ ਇਕਸਟੈਨਸ਼ਨਾਂ ਨੂੰ ਲੋਡ ਕਰਦੀ ਹੈ, ਜੋ ਕਿ ਮੌਜੂਦਾ ਚਾਲੂ ਵਰਜਨ ਨਾਲ"
+" ਸਹਾਇਤਾ ਦਾ "
+"ਦਾਅਵਾ ਕਰਦੀਆਂ ਹਨ। ਇਹ ਚੋਣ ਕਰਨ ਨਾਲ ਇਹ ਜਾਂਚ ਬੰਦ ਹੋ  ਜਾਵੇਗੀ ਅਤੇ ਸਭ ਇਕਸਟੈਨਸ਼ਨਾਂ ਨੂੰ"
+" ਲੋਡ ਕਰਨ ਦੀ "
+"ਕੋਸ਼ਿਸ਼ ਕਰੇਗਾ, ਭਾਵੇਂ ਕਿ ਉਹ ਵਰਜਨ ਲਈ ਸਹਾਇਤਾ ਬਾਰੇ ਕੁਝ ਵੀ ਦਾਆਵਾ ਕਰਨ।"
+
+#: data/org.gnome.shell.gschema.xml.in:54
+msgid "List of desktop file IDs for favorite applications"
+msgstr "ਪਸੰਦੀਦਾ ਐਪਲੀਕੇਸ਼ਨ ਲਈ ਡੈਸਕਟਾਪ ਫਾਇਲ ID ਦੀ ਲਿਸਟ ਹੈ"
+
+#: data/org.gnome.shell.gschema.xml.in:55
+msgid ""
+"The applications corresponding to these identifiers will be displayed in the "
+"favorites area."
+msgstr ""
+"ਇਹਨਾਂ ਐਂਡਟਟੀਫਾਇਰ ਨਾਲ ਸਬੰਧਿਤ ਐਪਲੀਕੇਸ਼ਨ ਨੂੰ ਪਸੰਦੀਦਾ ਖੇਤਰ 'ਚ ਵੇਖਾਇਆ ਜਾਵੇਗਾ।"
+
+#: data/org.gnome.shell.gschema.xml.in:62
+msgid "App Picker View"
+msgstr "ਐਪ ਚੁਣਨ ਝਲਕ"
+
+#: data/org.gnome.shell.gschema.xml.in:63
+msgid "Index of the currently selected view in the application picker."
+msgstr "ਐਪਲੀਕੇਸ਼ਨ ਚੋਣਕਾਰ ਵਿੱਚ ਮੌਜੂਦਾ ਚੁਣੀ ਝਲਕ ਦਾ ਇੰਡੈਕਸ।"
+
+#: data/org.gnome.shell.gschema.xml.in:69
+msgid "History for command (Alt-F2) dialog"
+msgstr "ਕਮਾਂਡ (Alt-F2) ਡਾਈਲਾਗ ਲਈ ਅਤੀਤ"
+
+#. Translators: looking glass is a debugger and inspector tool, see https://wiki.gnome.org/Projects/GnomeShell/LookingGlass
+#: data/org.gnome.shell.gschema.xml.in:74
+msgid "History for the looking glass dialog"
+msgstr "ਗਲਾਸ ਡਾਈਲਾਗ ਖੋਜ ਲਈ ਅਤੀਤ"
+
+#: data/org.gnome.shell.gschema.xml.in:78
+msgid "Always show the “Log out” menu item in the user menu."
+msgstr "ਵਰਤੋਂਕਾਰ ਮੇਨੂ ਵਿੱਚ “ਲਾਗ ਆਉਟ “ ਮੇਨੂ ਆਈਟਮ ਹਮੇਸ਼ਾ ਵੇਖਾਉ।"
+
+#: data/org.gnome.shell.gschema.xml.in:79
+msgid ""
+"This key overrides the automatic hiding of the “Log out” menu item in single-"
+"user, single-session situations."
+msgstr ""
+"ਇਹ ਕੁੰਜੀ ਇੱਕਲੇ ਵਰਤੋਂਕਾਰ, ਸਿੰਗਲ-ਸ਼ੈਸ਼ਨ ਸਥਿਤੀ ਵਿੱਚ “ਲਾਗ ਆਉਟ“ ਮੇਨੂ-ਆਈਟਮ ਨੂੰ"
+" ਆਪਣੇ-ਆਪ ਓਹਲੇ ਕਰਨ ਨੂੰ "
+"ਅਣਡਿੱਠਾ ਕਰਦੀ ਹੈ।"
+
+#: data/org.gnome.shell.gschema.xml.in:86
+msgid ""
+"Whether to remember password for mounting encrypted or remote filesystems"
+msgstr "ਕੀ ਇੰਕ੍ਰਿਪਟ ਜਾਂ ਰਿਮੋਟ ਫਾਇਲ-ਸਿਸਟਮਾਂ ਲਈ ਪਾਸਵਰਡ ਯਾਦ ਰੱਖਣਾ ਹੈ"
+
+#: data/org.gnome.shell.gschema.xml.in:87
+msgid ""
+"The shell will request a password when an encrypted device or a remote "
+"filesystem is mounted. If the password can be saved for future use a "
+"“Remember Password” checkbox will be present. This key sets the default "
+"state of the checkbox."
+msgstr ""
+"ਸੈੱਲ ਨੂੰ ਇਹ ਪਾਸਵਰਡ ਚਾਹੀਦਾ ਹੋਵੇਗਾ, ਜਦੋਂ ਇੰਕ੍ਰਿਪਟ ਕੀਤਾ ਜੰਤਰ ਜਾਂ ਰਿਮੋਟ ਫਾਇਲ"
+" ਸਿਸਟਮ ਮਾਊਂਟ ਕੀਤਾ "
+"ਜਾਂਦਾ ਹੈ। ਜੇ ਇਹ ਪਾਸਵਰਡ ਭਵਿੱਖ ਵਿੱਚ ਵਰਤਣ ਸੰਭਾਲਿਆ ਜਾ ਸਕਦਾ ਹੋਇਆ ਤਾਂ “ਪਾਸਵਰਡ ਯਾਦ"
+" ਰੱਖੋ“ ਬਾਕਸ "
+"ਦਿੱਤਾ ਜਾਵੇਗਾ। ਇਹ ਕੁੰਜੀ ਚੋਣ-ਬਾਕਸ ਦੀ ਸਥਿਤੀ ਨੂੰ ਡਿਫਾਲਟ ਲਈ ਸੈੱਟ ਕਰਦੀ ਹੈ।"
+
+#: data/org.gnome.shell.gschema.xml.in:96
+msgid ""
+"Whether the default Bluetooth adapter had set up devices associated to it"
+msgstr "ਕੀ ਡਿਫਾਲਟ ਬਲੂਟੁੱਥ ਅਡੈਪਟਰ ਇਸ ਨਾਲ ਸਬੰਧਿਤ ਡਿਵਾਈਸਾਂ ਲਈ ਸੈੱਟ ਅੱਪ ਕੀਤਾ ਹੈ"
+
+#: data/org.gnome.shell.gschema.xml.in:97
+msgid ""
+"The shell will only show a Bluetooth menu item if a Bluetooth adapter is "
+"powered, or if there were devices set up associated with the default "
+"adapter. This will be reset if the default adapter is ever seen not to have "
+"devices associated to it."
+msgstr ""
+"ਸ਼ੈੱਲ ਬਲੂਟੁੱਥ ਮੇਨੂ ਆਈਟਮ ਨੂੰ ਕੇਵਲ ਤਾਂ ਹੀ ਦਿਖਾਏਗੀ, ਜੇ ਬਲੂਟੁੱਥ ਅਡੈਪਟਰ ਚਾਲੂ ਹੈ ਜਾਂ"
+" ਡਿਫਾਲਟ ਅਡੈਪਟਰ ਨਾਲ "
+"ਸੰਬੰਧਿਤ ਡਿਵਾਈਸ ਸੈਟਅੱਪ ਮੌਜੂਦ ਹੈ। ਇਸ ਨੂੰ ਮੁੜ-ਸੈੱਟ ਕੀਤਾ ਜਾਵੇਗਾ, ਜੇ ਡਿਫਾਲਟ ਅਡੈਪਟਰ"
+" ਨੂੰ ਇਸ ਨਾਲ "
+"ਸੰਬੰਧਿਤ ਕੀਤਾ ਡਿਵਾਈਸ ਨਾ ਮਿਲਿਆ।"
+
+#: data/org.gnome.shell.gschema.xml.in:106
+msgid "Enable introspection API"
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:107
+msgid ""
+"Enables a D-Bus API that allows to introspect the application state of the "
+"shell."
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:119
+msgid "Keybinding to open the application menu"
+msgstr "ਐਪਲੀਕੇਸ਼ਨ ਮੇਨੂ ਖੋਲ੍ਹਣ ਲਈ ਕੀਬਾਈਡਿੰਗ ਹੈ"
+
+#: data/org.gnome.shell.gschema.xml.in:120
+msgid "Keybinding to open the application menu."
+msgstr "ਐਪਲੀਕੇਸ਼ਨ ਮੇਨੂ ਖੋਲ੍ਹਣ ਲਈ ਕੀਬਾਈਡਿੰਗ ਹੈ।"
+
+#: data/org.gnome.shell.gschema.xml.in:126
+msgid "Keybinding to open the “Show Applications” view"
+msgstr "“ਐਪਲੀਕੇਸ਼ਨ ਵੇਖੋ“ ਮੇਨੂ ਖੋਲ੍ਹਣ ਲਈ ਕੀਬਾਈਡਿੰਗ ਹੈ"
+
+#: data/org.gnome.shell.gschema.xml.in:127
+msgid ""
+"Keybinding to open the “Show Applications” view of the Activities Overview."
+msgstr "ਸਰਗਰਮੀ ਝਲਕ ਵਿੱਚ “ਐਪਲੀਕੇਸ਼ਨ ਵੇਖੋ“ ਮੇਨੂ ਖੋਲ੍ਹਣ ਲਈ ਕੀਬਾਈਡਿੰਗ ਹੈ।"
+
+#: data/org.gnome.shell.gschema.xml.in:134
+msgid "Keybinding to open the overview"
+msgstr "ਸੰਖੇਪ ਖੋਲ੍ਹਣ ਲਈ ਕੀਬਾਈਡਿੰਗ"
+
+#: data/org.gnome.shell.gschema.xml.in:135
+msgid "Keybinding to open the Activities Overview."
+msgstr "ਸਰਗਰਮੀ ਸੰਖੇਪ ਖੋਲ੍ਹਣ ਲਈ ਕੀਬਾਈਡਿੰਗ"
+
+#: data/org.gnome.shell.gschema.xml.in:141
+msgid "Keybinding to toggle the visibility of the notification list"
+msgstr "ਨੋਟੀਫਿਕੇਸ਼ਨ ਸੂਚੀ ਦੀ ਦਿੱਖਣ ਨੂੰ ਬਦਲਣ ਲਈ ਕੀਬਾਈਡਿੰਗ"
+
+#: data/org.gnome.shell.gschema.xml.in:142
+msgid "Keybinding to toggle the visibility of the notification list."
+msgstr "ਨੋਟੀਫਿਕੇਸ਼ਨ ਸੂਚੀ ਦੀ ਦਿੱਖਣ ਨੂੰ ਬਦਲਣ ਲਈ ਕੀਬਾਈਡਿੰਗ ਹੈ।"
+
+#: data/org.gnome.shell.gschema.xml.in:148
+msgid "Keybinding to focus the active notification"
+msgstr "ਸਰਗਰਮ ਸੂਚਨਾ ਉੱਤੇ ਫੋਕਸ ਲਈ ਕੀਬਾਈਡਿੰਗ ਹੈ"
+
+#: data/org.gnome.shell.gschema.xml.in:149
+msgid "Keybinding to focus the active notification."
+msgstr "ਸਰਗਰਮ ਸੂਚਨਾ ਉੱਤੇ ਫੋਕਸ ਲਈ ਕੀਬਾਈਡਿੰਗ ਹੈ।"
+
+#: data/org.gnome.shell.gschema.xml.in:155
+msgid "Switch to application 1"
+msgstr "ਐਪਲੀਕੇਸ਼ਨ 1 ਲਈ ਬਦਲੋ"
+
+#: data/org.gnome.shell.gschema.xml.in:159
+msgid "Switch to application 2"
+msgstr "ਐਪਲੀਕੇਸ਼ਨ 2 ਲਈ ਬਦਲੋ"
+
+#: data/org.gnome.shell.gschema.xml.in:163
+msgid "Switch to application 3"
+msgstr "ਐਪਲੀਕੇਸ਼ਨ 3 ਲਈ ਬਦਲੋ"
+
+#: data/org.gnome.shell.gschema.xml.in:167
+msgid "Switch to application 4"
+msgstr "ਐਪਲੀਕੇਸ਼ਨ 4 ਲਈ ਬਦਲੋ"
+
+#: data/org.gnome.shell.gschema.xml.in:171
+msgid "Switch to application 5"
+msgstr "ਐਪਲੀਕੇਸ਼ਨ 5 ਲਈ ਬਦਲੋ"
+
+#: data/org.gnome.shell.gschema.xml.in:175
+msgid "Switch to application 6"
+msgstr "ਐਪਲੀਕੇਸ਼ਨ 6 ਲਈ ਬਦਲੋ"
+
+#: data/org.gnome.shell.gschema.xml.in:179
+msgid "Switch to application 7"
+msgstr "ਐਪਲੀਕੇਸ਼ਨ 7 ਲਈ ਬਦਲੋ"
+
+#: data/org.gnome.shell.gschema.xml.in:183
+msgid "Switch to application 8"
+msgstr "ਐਪਲੀਕੇਸ਼ਨ 8 ਲਈ ਬਦਲੋ"
+
+#: data/org.gnome.shell.gschema.xml.in:187
+msgid "Switch to application 9"
+msgstr "ਐਪਲੀਕੇਸ਼ਨ 9 ਲਈ ਬਦਲੋ"
+
+#: data/org.gnome.shell.gschema.xml.in:196
+#: data/org.gnome.shell.gschema.xml.in:223
+msgid "Limit switcher to current workspace."
+msgstr "ਸਵਿੱਚਰ ਨੂੰ ਮੌਜੂਦਾ ਵਰਕਸਪੇਸ ਤੱਕ ਸੀਮਿਤ ਕਰੋ।"
+
+#: data/org.gnome.shell.gschema.xml.in:197
+msgid ""
+"If true, only applications that have windows on the current workspace are "
+"shown in the switcher. Otherwise, all applications are included."
+msgstr ""
+"ਜੇ ਠੀਕ ਹੈ ਤਾਂ ਕੇਵਲ ਐਪਲੀਕੇਸ਼ਨ ਜਿਹਨਾਂ ਲਈ ਵਿੰਡੋ ਮੌਜੂਦਾ ਵਰਕਸਪੇਸ ਵਿੱਚ ਹਨ ਨੂੰ ਹੀ"
+" ਸਵਿੱਚਰ ਵਿੱਚ ਵਿਖਾਇਆ "
+"ਜਾਂਦਾ ਹੈ, ਨਹੀਂ ਤਾਂ ਸਭ ਐਪਲੀਕੇਸ਼ਨਾਂ ਸ਼ਾਮਿਲ ਹੁੰਦੀਆਂ ਹਨ।"
+
+#: data/org.gnome.shell.gschema.xml.in:214
+msgid "The application icon mode."
+msgstr "ਐਪਲੀਕੇਸ਼ਨ ਆਈਕਾਨ ਮੋਡ।"
+
+#: data/org.gnome.shell.gschema.xml.in:215
+msgid ""
+"Configures how the windows are shown in the switcher. Valid possibilities "
+"are “thumbnail-only” (shows a thumbnail of the window), “app-icon-"
+"only” (shows only the application icon) or “both”."
+msgstr ""
+"ਸੰਰਚਨਾ ਕਰੋ ਕਿ ਸਵਿੱਚਰ ਵਿੱਚ ਵਿੰਡੋਜ਼ ਕਿਵੇਂ ਵੇਖਾਈਆਂ ਜਾਣ। ਸੰਭਵ ਚੋਣਾਂ ਹਨ ਕੇਵਲ ਥੰਮਨੇਲ"
+" (“thumbnail-"
+"only“) (ਵਿੰਡੋ ਦਾ ਥੰਮਨੇਲ ਵੇਖਾਇਆ ਜਾਵੇਗਾ), ਕੇਵਲ ਐਪਸ ਆਈਕਾਨ (“app-icon-only“)"
+" (ਕੇਵਲ "
+"ਐਪਲੀਕੇਸ਼ਨ ਆਈਕਾਨ ਵੇਖਾਇਆ ਜਾਵੇਗਾ) ਜਾਂ ਦੋਵੇਂ (“both“)"
+
+#: data/org.gnome.shell.gschema.xml.in:224
+msgid ""
+"If true, only windows from the current workspace are shown in the switcher. "
+"Otherwise, all windows are included."
+msgstr ""
+"ਜੇ ਠੀਕ ਹੈ ਤਾਂ ਕੇਵਲ ਮੌਜੂਦਾ ਵਰਕਸਪੇਸ ਤੋਂ ਵਿੰਡੋ ਨੂੰ ਹੀ ਸਵਿੱਚਰ ਵਿੱਚ ਵਿਖਾਇਆ ਜਾਂਦਾ"
+" ਹੈ, ਨਹੀਂ ਤਾਂ ਸਭ ਵਿੰਡੋ "
+"ਸ਼ਾਮਿਲ ਹੁੰਦੀਆਂ ਹਨ।"
+
+#: data/org.gnome.shell.gschema.xml.in:234
+msgid "Locations"
+msgstr "ਟਿਕਾਣੇ"
+
+#: data/org.gnome.shell.gschema.xml.in:235
+msgid "The locations to show in world clocks"
+msgstr "ਸੰਸਾਰ ਘੜੀ ਵਿੱਚ ਵੇਖਾਉਣ ਲਈ ਟਿਕਾਣੇ"
+
+#: data/org.gnome.shell.gschema.xml.in:245
+msgid "Automatic location"
+msgstr "ਆਪਣੇ-ਆਪ ਟਿਕਾਣਾ ਲਵੋ"
+
+#: data/org.gnome.shell.gschema.xml.in:246
+msgid "Whether to fetch the current location or not"
+msgstr "ਕੀ ਮੌਜੂਦਾ ਟਿਕਾਣਾ ਪ੍ਰਾਪਤ ਕਰਨਾ ਹੈ ਜਾਂ ਨਹੀਂ"
+
+#: data/org.gnome.shell.gschema.xml.in:253
+msgid "Location"
+msgstr "ਟਿਕਾਣਾ"
+
+#: data/org.gnome.shell.gschema.xml.in:254
+msgid "The location for which to show a forecast"
+msgstr "ਭਵਿੱਖਬਾਣੀ ਵੇਖਾਏ ਜਾਣ ਵਾਲਾ ਟਿਕਾਣਾ"
+
+#: data/org.gnome.shell.gschema.xml.in:266
+msgid "Attach modal dialog to the parent window"
+msgstr "ਮੂਲ ਵਿੰਡੋ ਵਿੱਚ ਮਾਡਲ ਡਾਈਲਾਗ ਜੋੜੋ"
+
+#: data/org.gnome.shell.gschema.xml.in:267
+#: data/org.gnome.shell.gschema.xml.in:276
+#: data/org.gnome.shell.gschema.xml.in:284
+#: data/org.gnome.shell.gschema.xml.in:292
+#: data/org.gnome.shell.gschema.xml.in:300
+msgid ""
+"This key overrides the key in org.gnome.mutter when running GNOME Shell."
+msgstr ""
+"ਇਹ ਕੁੰਜੀ ਗਨੋਮ ਸ਼ੈੱਲ ਚੱਲਣ ਦੇ ਦੌਰਾਨ  org.gnome.mutter ਕੁੰਜੀ ਨੂੰ ਅਣਡਿੱਠਾ ਕਰਦੀ ਹੈ।"
+
+#: data/org.gnome.shell.gschema.xml.in:275
+msgid "Enable edge tiling when dropping windows on screen edges"
+msgstr "ਕੋਨਾ ਟਿੱਲ ਨੂੰ ਚਾਲੂ ਕਰੋ, ਜਦੋਂ ਵਿੰਡੋ ਸਕਰੀਨ ਕੋਨਿਆਂ ਤੋਂ ਹਿਲਦੀ ਹੈ"
+
+#: data/org.gnome.shell.gschema.xml.in:283
+msgid "Workspaces are managed dynamically"
+msgstr "ਵਰਕਸਪੇਸ ਚੱਲਦੇ ਰੂਪ ਵਿੱਚ ਰੱਖੇ ਜਾਂਦੇ ਹਨ"
+
+#: data/org.gnome.shell.gschema.xml.in:291
+msgid "Workspaces only on primary monitor"
+msgstr "ਪ੍ਰਾਈਮਰੀ ਮਾਨੀਟਰ ਉੱਤੇ ਕੇਵਲ ਵਰਕਸਪੇਸ"
+
+#: data/org.gnome.shell.gschema.xml.in:299
+msgid "Delay focus changes in mouse mode until the pointer stops moving"
+msgstr "ਪੁਆਇੰਟਰ ਦੇ ਹਿਲਣ ਤੋਂ ਰੁਕਣ ਤੱਕ ਮਾਊਸ ਮੋਡ ਵਿੱਚ ਫੋਕਸ ਬਦਲਾਅ ਵਿੱਚ ਦੇਰੀ"
+
+#: data/org.gnome.Shell.PortalHelper.desktop.in.in:3
+msgid "Network Login"
+msgstr "ਨੈੱਟਵਰਕ ਲਾਗਇਨ"
+
+#: js/extensionPrefs/main.js:140
+#, javascript-format
+msgid "Remove “%s”?"
+msgstr "“%s” ਨੂੰ ਹਟਾਉਣਾ ਹੈ?"
+
+#: js/extensionPrefs/main.js:141
+msgid ""
+"If you remove the extension, you need to return to download it if you want "
+"to enable it again"
+msgstr ""
+"ਜੇ ਤੁਸੀਂ ਇਕਟੈਨਸ਼ਨ ਹਟਾਈ ਤਾਂ ਜੇ ਤੁਹਾਨੂੰ ਮੁੜ ਇਹ ਸਮਰੱਥ ਕਰਨਾ ਦੀ ਲੋੜ ਹੋਈ ਤਾਂ ਤੁਹਾਨੂੰ"
+" ਇਹ ਦੁਬਾਰਾ ਡਾਊਨਲੋਡ ਕਰਨ "
+"ਦੀ ਲੋੜ ਹੁੰਦੀ ਹੈ"
+
+#: js/extensionPrefs/main.js:144 js/gdm/authPrompt.js:135
+#: js/ui/audioDeviceSelection.js:57 js/ui/components/networkAgent.js:107
+#: js/ui/components/polkitAgent.js:139 js/ui/endSessionDialog.js:374
+#: js/ui/extensionDownloader.js:165 js/ui/shellMountOperation.js:376
+#: js/ui/shellMountOperation.js:386 js/ui/status/network.js:913
+msgid "Cancel"
+msgstr "ਰੱਦ ਕਰੋ"
+
+#: js/extensionPrefs/main.js:145
+msgid "Remove"
+msgstr "ਹਟਾਓ"
+
+#: js/extensionPrefs/main.js:217
+msgid "translator-credits"
+msgstr ""
+"ਅਮਨਪਰੀਤ ਸਿੰਘ ਆਲਮ (A S Alam) ੨੦੦੪-੨੦੨੦\n"
+"Punjabi OpenSource Team (POST)"
+
+#: js/extensionPrefs/main.js:219
+#| msgid "Configure GNOME Shell Extensions"
+msgid "Manage your GNOME Extensions"
+msgstr "ਗਨੋਮ ਇਕਸਟੈਸ਼ਨਾਂ ਦਾ ਇੰਤਜ਼ਾਮ ਕਰੋ"
+
+#: js/extensionPrefs/main.js:261 js/extensionPrefs/ui/extensions-window.ui:222
+msgid "Something’s gone wrong"
+msgstr "ਕੁਝ ਗਲਤ ਵਾਪਰਿਆ"
+
+#: js/extensionPrefs/main.js:268
+msgid ""
+"We’re very sorry, but there’s been a problem: the settings for this "
+"extension can’t be displayed. We recommend that you report the issue to the "
+"extension authors."
+msgstr ""
+
+#: js/extensionPrefs/main.js:275
+msgid "Technical Details"
+msgstr "ਤਕਨੀਕੀ ਵੇਰਵੇ"
+
+#: js/extensionPrefs/main.js:310
+msgid "Copy Error"
+msgstr "ਗਲਤੀ ਕਾਪੀ ਕਰੋ"
+
+#: js/extensionPrefs/main.js:337
+msgid "Homepage"
+msgstr "ਮੁੱਖ ਸਫ਼ਾ"
+
+#: js/extensionPrefs/main.js:338
+msgid "Visit extension homepage"
+msgstr "ਇਕਟੈਨਸ਼ਨ ਦੇ ਮੁੱਖ ਸਫ਼ੇ ਨੂੰ ਵੇਖੋ"
+
+#: js/extensionPrefs/main.js:449
+#, javascript-format
+msgid "%d extension will be updated on next login."
+msgid_plural "%d extensions will be updated on next login."
+msgstr[0] "%d ਇਕਟੈਨਸ਼ਨ ਨੂੰ ਅਗਲੇ ਲਾਗਇਨ ਉੱਤੇ ਅੱਪਡੇਟ ਕੀਤਾ ਜਾਵੇਗਾ।"
+msgstr[1] "%d ਇਕਟੈਨਸ਼ਨਾਂ ਨੂੰ ਅਗਲੇ ਲਾਗਇਨ ਉੱਤੇ ਅੱਪਡੇਟ ਕੀਤਾ ਜਾਵੇਗਾ।"
+
+#: js/extensionPrefs/ui/extension-row.ui:100
+#: subprojects/extensions-tool/src/command-create.c:211
+#: subprojects/extensions-tool/src/main.c:173
+msgid "Description"
+msgstr "ਵਰਣਨ"
+
+#: js/extensionPrefs/ui/extension-row.ui:123
+#: subprojects/extensions-tool/src/main.c:185
+msgid "Version"
+msgstr "ਵਰਜ਼ਨ"
+
+#: js/extensionPrefs/ui/extension-row.ui:151
+msgid "Author"
+msgstr "ਲੇਖਕ"
+
+#: js/extensionPrefs/ui/extension-row.ui:175
+msgid "Website"
+msgstr "ਵੈੱਬਸਾਈਟ"
+
+#: js/extensionPrefs/ui/extension-row.ui:192
+#| msgid "Remove"
+msgid "Remove…"
+msgstr "...ਨੂੰ ਹਟਾਓ"
+
+#: js/extensionPrefs/ui/extensions-window.ui:8
+msgid "Help"
+msgstr "ਮਦਦ"
+
+#: js/extensionPrefs/ui/extensions-window.ui:12
+#| msgid "List extensions"
+msgid "About Extensions"
+msgstr "ਇਕਸਟੈਨਸ਼ਨਾਂ ਬਾਰੇ"
+
+#: js/extensionPrefs/ui/extensions-window.ui:27
+msgid ""
+"To find and add extensions, visit <a href=\"https://extensions.gnome.org"
+"\">extensions.gnome.org</a>."
+msgstr ""
+"ਇਕਸਟੈਂਸ਼ਨ ਲੱਭਣ ਅਤੇ ਜੋੜਨ ਲਈ <a href=\"https://extensions.gnome.org\""
+">extensions.gnome.org</a> "
+"ਨੂੰ ਵੇਖੋ।"
+
+#: js/extensionPrefs/ui/extensions-window.ui:35
+msgid "Warning"
+msgstr "ਚੇਤਾਵਨੀ"
+
+#: js/extensionPrefs/ui/extensions-window.ui:46
+msgid ""
+"Extensions can cause system issues, including performance problems. If you "
+"encounter problems with your system, it is recommended to disable all "
+"extensions."
+msgstr ""
+
+#: js/extensionPrefs/ui/extensions-window.ui:133
+msgid "Manually Installed"
+msgstr "ਖੁਦ ਇੰਸਟਾਲ ਕੀਤੇ"
+
+#: js/extensionPrefs/ui/extensions-window.ui:157
+#| msgid "Built-in Only"
+msgid "Built-In"
+msgstr "ਬਿਲਟ-ਇਨ"
+
+#: js/extensionPrefs/ui/extensions-window.ui:198
+#| msgid "List installed extensions"
+msgid "No Installed Extensions"
+msgstr "ਕੋਈ ਇੰਸਟਾਲ ਕੀਤੀ ਇਕਟੈਨਸ਼ਨ ਨਹੀਂ ਹੈ"
+
+#: js/extensionPrefs/ui/extensions-window.ui:234
+msgid ""
+"We’re very sorry, but it was not possible to get the list of installed "
+"extensions. Make sure you are logged into GNOME and try again."
+msgstr ""
+
+#: js/extensionPrefs/ui/extensions-window.ui:287
+#| msgid "Log Out"
+msgid "Log Out…"
+msgstr "ਲਾਗ ਆਉਟ…"
+
+#. Cisco LEAP
+#: js/gdm/authPrompt.js:237 js/ui/components/networkAgent.js:202
+#: js/ui/components/networkAgent.js:218 js/ui/components/networkAgent.js:242
+#: js/ui/components/networkAgent.js:263 js/ui/components/networkAgent.js:283
+#: js/ui/components/networkAgent.js:293 js/ui/components/polkitAgent.js:277
+#: js/ui/shellMountOperation.js:326
+msgid "Password"
+msgstr "ਪਾਸਵਰਡ"
+
+#: js/gdm/loginDialog.js:318
+msgid "Choose Session"
+msgstr "ਸ਼ੈਸ਼ਨ ਚੁਣੋ"
+
+#: js/gdm/loginDialog.js:457
+msgid "Not listed?"
+msgstr "ਲਿਸਟ ਵਿੱਚ ਨਹੀਂ ਹੈ?"
+
+#. Translators: this message is shown below the username entry field
+#. to clue the user in on how to login to the local network realm
+#: js/gdm/loginDialog.js:912
+#, javascript-format
+msgid "(e.g., user or %s)"
+msgstr "(ਜਿਵੇਂ ਕਿ ਵਰਤੋਂਕਾਰ ਜਾਂ %s)"
+
+#. TTLS and PEAP are actually much more complicated, but this complication
+#. is not visible here since we only care about phase2 authentication
+#. (and don't even care of which one)
+#: js/gdm/loginDialog.js:917 js/ui/components/networkAgent.js:238
+#: js/ui/components/networkAgent.js:261 js/ui/components/networkAgent.js:279
+#| msgid "Username: "
+msgid "Username"
+msgstr "ਵਰਤੋਂਂਕਾਰ ਨਾਂ"
+
+#: js/gdm/loginDialog.js:1253
+msgid "Login Window"
+msgstr "ਲਾਗਇਨ ਵਿੰਡੋ"
+
+#: js/gdm/util.js:338
+msgid "Authentication error"
+msgstr "ਪਰਮਾਣਕਿਤਾ ਗਲਤੀ"
+
+#. We don't show fingerprint messages directly since it's
+#. not the main auth service. Instead we use the messages
+#. as a cue to display our own message.
+#. Translators: this message is shown below the password entry field
+#. to indicate the user can swipe their finger instead
+#: js/gdm/util.js:473
+msgid "(or swipe finger)"
+msgstr "(ਜਾਂ ਉਂਗਲ ਰੱਖੋ)"
+
+#. Translators: The name of the power-off action in search
+#: js/misc/systemActions.js:89
+msgctxt "search-result"
+msgid "Power Off"
+msgstr "ਬੰਦ ਕਰੋ"
+
+#. Translators: A list of keywords that match the power-off action, separated by semicolons
+#: js/misc/systemActions.js:92
+#| msgid "power off;shutdown;reboot;restart"
+msgid "power off;shutdown;reboot;restart;halt;stop"
+msgstr "ਬੰਦ ਕਰੋ;ਪਾਵਰ ਆਫ਼;ਮੁੜ-ਚਾਲੂ ਕਰੋ;ਮੁੜ ਸ਼ੁਰੂ ਕਰੋ;ਰੀਸਟਾਰਟ;ਰੋਕੋ;ਅਟਕਾਓ"
+
+#. Translators: The name of the lock screen action in search
+#: js/misc/systemActions.js:97
+msgctxt "search-result"
+msgid "Lock Screen"
+msgstr "ਸਕਰੀਨ ਲਾਕ ਕਰੋ"
+
+#. Translators: A list of keywords that match the lock screen action, separated by semicolons
+#: js/misc/systemActions.js:100
+msgid "lock screen"
+msgstr "ਸਕਰੀਨ ਲਾਕ"
+
+#. Translators: The name of the logout action in search
+#: js/misc/systemActions.js:105
+msgctxt "search-result"
+msgid "Log Out"
+msgstr "ਲਾਗ ਆਉਟ"
+
+#. Translators: A list of keywords that match the logout action, separated by semicolons
+#: js/misc/systemActions.js:108
+msgid "logout;log out;sign off"
+msgstr "ਲਾਗਆਉਟ;ਸਾਈਨ ਆਫ਼;ਲਾਗ-ਆਉਟ"
+
+#. Translators: The name of the suspend action in search
+#: js/misc/systemActions.js:113
+msgctxt "search-result"
+msgid "Suspend"
+msgstr "ਸਸਪੈਂਡ ਕਰੋ"
+
+#. Translators: A list of keywords that match the suspend action, separated by semicolons
+#: js/misc/systemActions.js:116
+msgid "suspend;sleep"
+msgstr "ਸਸਪੈਂਡ;ਸਲੀਪ"
+
+#. Translators: The name of the switch user action in search
+#: js/misc/systemActions.js:121
+msgctxt "search-result"
+msgid "Switch User"
+msgstr "ਵਰਤੋਂਂਕਾਰ ਬਦਲੋ"
+
+#. Translators: A list of keywords that match the switch user action, separated by semicolons
+#: js/misc/systemActions.js:124
+msgid "switch user"
+msgstr "ਵਰਤੋਂਕਾਰ ਬਦਲੋ"
+
+#. Translators: A list of keywords that match the lock orientation action, separated by semicolons
+#: js/misc/systemActions.js:131
+#| msgid "lock orientation;screen;rotation"
+msgid "lock orientation;unlock orientation;screen;rotation"
+msgstr "ਸਥਿਤੀ ਲਾਕ ਕਰੋ;ਸਥਿਤੀ ਅਣ-ਲਾਕ ਕਰੋ;ਸਕਰੀਨ;ਘੁੰਮਾਉਣਾ;ਘੁੰਮਾਓ"
+
+#: js/misc/systemActions.js:251
+#| msgctxt "search-result"
+#| msgid "Lock Orientation"
+msgctxt "search-result"
+msgid "Unlock Screen Rotation"
+msgstr "ਸਕਰੀਨ ਘੁੰਮਾਉਣਾ ਅਣ-ਲਾਕ ਕਰੋ"
+
+#: js/misc/systemActions.js:252
+#| msgctxt "search-result"
+#| msgid "Lock Orientation"
+msgctxt "search-result"
+msgid "Lock Screen Rotation"
+msgstr "ਸਕਰੀਨ ਘੁੰਮਾਉਣਾ ਲਾਕ ਹੈ"
+
+#: js/misc/util.js:120
+msgid "Command not found"
+msgstr "ਕਮਾਂਡ ਨਹੀਂ ਲੱਭੀ"
+
+#. Replace "Error invoking GLib.shell_parse_argv: " with
+#. something nicer
+#: js/misc/util.js:156
+msgid "Could not parse command:"
+msgstr "ਕਮਾਂਡ ਪਾਰਸ ਨਹੀਂ ਕੀਤੀ ਜਾ ਸਕੀ:"
+
+#: js/misc/util.js:164
+#, javascript-format
+msgid "Execution of “%s” failed:"
+msgstr "“%s” ਚਲਾਉਣ ਲਈ ਫੇਲ੍ਹ:"
+
+#: js/misc/util.js:181
+msgid "Just now"
+msgstr "ਹੁਣੇ ਹੀ"
+
+#: js/misc/util.js:183
+#, javascript-format
+msgid "%d minute ago"
+msgid_plural "%d minutes ago"
+msgstr[0] "%d ਮਿੰਟ ਪਹਿਲਾਂ"
+msgstr[1] "%d ਮਿੰਟ ਪਹਿਲਾਂ"
+
+#: js/misc/util.js:187
+#, javascript-format
+msgid "%d hour ago"
+msgid_plural "%d hours ago"
+msgstr[0] "%d ਘੰਟਾ ਪਹਿਲਾਂ"
+msgstr[1] "%d ਘੰਟੇ ਪਹਿਲਾਂ"
+
+#: js/misc/util.js:191
+msgid "Yesterday"
+msgstr "ਕੱਲ੍ਹ"
+
+#: js/misc/util.js:193
+#, javascript-format
+msgid "%d day ago"
+msgid_plural "%d days ago"
+msgstr[0] "%d ਦਿਨ ਪਹਿਲਾਂ"
+msgstr[1] "%d ਦਿਨ ਪਹਿਲਾਂ"
+
+#: js/misc/util.js:197
+#, javascript-format
+msgid "%d week ago"
+msgid_plural "%d weeks ago"
+msgstr[0] "%d ਹਫ਼ਤਾ ਪਹਿਲਾਂ"
+msgstr[1] "%d ਹਫ਼ਤੇ ਪਹਿਲਾਂ"
+
+#: js/misc/util.js:201
+#, javascript-format
+msgid "%d month ago"
+msgid_plural "%d months ago"
+msgstr[0] "%d ਮਹੀਨਾ ਪਹਿਲਾਂ"
+msgstr[1] "%d ਮਹੀਨੇ ਪਹਿਲਾਂ"
+
+#: js/misc/util.js:204
+#, javascript-format
+msgid "%d year ago"
+msgid_plural "%d years ago"
+msgstr[0] "%d ਸਾਲ ਪਹਿਲਾਂ"
+msgstr[1] "%d ਸਾਲ ਪਹਿਲਾਂ"
+
+#. Translators: Time in 24h format
+#: js/misc/util.js:237
+msgid "%H∶%M"
+msgstr "%H∶%M"
+
+#. Translators: this is the word "Yesterday" followed by a
+#. time string in 24h format. i.e. "Yesterday, 14:30"
+#: js/misc/util.js:243
+#, no-c-format
+msgid "Yesterday, %H∶%M"
+msgstr "ਕੱਲ੍ਹ, %H∶%M"
+
+#. Translators: this is the week day name followed by a time
+#. string in 24h format. i.e. "Monday, 14:30"
+#: js/misc/util.js:249
+#, no-c-format
+msgid "%A, %H∶%M"
+msgstr "%A, %H∶%M"
+
+#. Translators: this is the month name and day number
+#. followed by a time string in 24h format.
+#. i.e. "May 25, 14:30"
+#: js/misc/util.js:255
+#, no-c-format
+msgid "%B %-d, %H∶%M"
+msgstr "%-d %B %H∶%M"
+
+#. Translators: this is the month name, day number, year
+#. number followed by a time string in 24h format.
+#. i.e. "May 25 2012, 14:30"
+#: js/misc/util.js:261
+#, no-c-format
+msgid "%B %-d %Y, %H∶%M"
+msgstr "%-d %B %Y, %H∶%M"
+
+#. Show only the time if date is on today
+#. eslint-disable-line no-lonely-if
+#. Translators: Time in 12h format
+#: js/misc/util.js:266
+msgid "%l∶%M %p"
+msgstr "%l∶%M %p"
+
+#. Translators: this is the word "Yesterday" followed by a
+#. time string in 12h format. i.e. "Yesterday, 2:30 pm"
+#: js/misc/util.js:272
+#, no-c-format
+msgid "Yesterday, %l∶%M %p"
+msgstr "ਕੱਲ੍ਹ, %l∶%M %p"
+
+#. Translators: this is the week day name followed by a time
+#. string in 12h format. i.e. "Monday, 2:30 pm"
+#: js/misc/util.js:278
+#, no-c-format
+msgid "%A, %l∶%M %p"
+msgstr "%A, %l∶%M %p"
+
+#. Translators: this is the month name and day number
+#. followed by a time string in 12h format.
+#. i.e. "May 25, 2:30 pm"
+#: js/misc/util.js:284
+#, no-c-format
+msgid "%B %-d, %l∶%M %p"
+msgstr "%-d %B %l∶%M %p"
+
+#. Translators: this is the month name, day number, year
+#. number followed by a time string in 12h format.
+#. i.e. "May 25 2012, 2:30 pm"
+#: js/misc/util.js:290
+#, no-c-format
+msgid "%B %-d %Y, %l∶%M %p"
+msgstr "%-d %B %Y, %l∶%M %p"
+
+#. TRANSLATORS: this is the title of the wifi captive portal login window
+#: js/portalHelper/main.js:41
+msgid "Hotspot Login"
+msgstr "ਹਾਟਸਪਾਟ ਲਾਗਇਨ"
+
+#: js/portalHelper/main.js:87
+msgid ""
+"Your connection to this hotspot login is not secure. Passwords or other "
+"information you enter on this page can be viewed by people nearby."
+msgstr ""
+"ਇਸ ਹਾਟਸਪਾਟ ਨਾਲ ਤੁਹਾਡਾ ਕਨੈਕਸ਼ਨ ਸੁਰੱਖਿਅਤ ਨਹੀਂ ਹੈ। ਇਸ ਸਫ਼ੇ ਉੱਤੇ ਤੁਹਾਡੇ ਵਲੋਂ ਭਰੇ ਗਏ"
+" ਪਾਸਵਰਡ ਜਾਂ "
+"ਦਿੱਤੀ ਹੋਰ ਜਾਣਾਕਰੀ ਨੂੰ ਨੇੜਲੇ ਲੋਕਾਂ ਵਲੋਂ ਵੇਖਿਆ ਜਾ ਸਕਦਾ ਹੈ।"
+
+#. No support for non-modal system dialogs, so ignore the option
+#. let modal = options['modal'] || true;
+#: js/ui/accessDialog.js:39 js/ui/status/location.js:374
+msgid "Deny Access"
+msgstr "ਪਹੁੰਚ ਉੱਤ ਪਾਬੰਦੀ"
+
+#: js/ui/accessDialog.js:40 js/ui/status/location.js:377
+msgid "Grant Access"
+msgstr "ਪਹੁੰਚ ਲਈ ਮਨਜ਼ੂਰੀ"
+
+#: js/ui/appDisplay.js:906
+msgid "Unnamed Folder"
+msgstr "ਬੇਨਾਮ ਫੋਲਡਰ"
+
+#: js/ui/appDisplay.js:929
+msgid "Frequently used applications will appear here"
+msgstr "ਆਮ ਵਰਤੀਆਂ ਐਪਲੀਕੇਸ਼ਨ ਇੱਥੇ ਵਿਖਾਈ ਦੇਣਗੀਆਂ"
+
+#: js/ui/appDisplay.js:1064
+msgid "Frequent"
+msgstr "ਅਕਸਰ"
+
+#: js/ui/appDisplay.js:1071
+msgid "All"
+msgstr "ਸਭ"
+
+#. Translators: This is the heading of a list of open windows
+#: js/ui/appDisplay.js:2450 js/ui/panel.js:75
+msgid "Open Windows"
+msgstr "ਵਿੰਡੋਆਂ ਖੋਲ੍ਹੋ"
+
+#: js/ui/appDisplay.js:2470 js/ui/panel.js:82
+msgid "New Window"
+msgstr "ਨਵੀਂ ਵਿੰਡੋ"
+
+#: js/ui/appDisplay.js:2481
+msgid "Launch using Dedicated Graphics Card"
+msgstr "ਵੱਖਰੇ ਗਰਾਫ਼ਿਕਸ ਕਾਰਡ ਦੀ ਵਰਤੋਂ ਕਰਕੇ ਚਲਾਓ"
+
+#: js/ui/appDisplay.js:2509 js/ui/dash.js:239
+msgid "Remove from Favorites"
+msgstr "ਪਸੰਦ ਵਿੱਚੋਂ ਹਟਾਓ"
+
+#: js/ui/appDisplay.js:2515
+msgid "Add to Favorites"
+msgstr "ਪਸੰਦ 'ਚ ਸ਼ਾਮਲ ਕਰੋ"
+
+#: js/ui/appDisplay.js:2525 js/ui/panel.js:93
+msgid "Show Details"
+msgstr "ਵੇਰਵਾ ਵੇਖੋ"
+
+#: js/ui/appFavorites.js:152
+#, javascript-format
+msgid "%s has been added to your favorites."
+msgstr "%s ਨੂੰ ਤੁਹਾਡੀ ਪਸੰਦ ਵਿੱਚ ਸ਼ਾਮਲ ਕੀਤਾ ਗਿਆ।"
+
+#: js/ui/appFavorites.js:185
+#, javascript-format
+msgid "%s has been removed from your favorites."
+msgstr "%s ਨੂੰ ਤੁਹਾਡੀ ਪਸੰਦ ਤੋਂ ਹਟਾਇਆ ਜਾ ਚੁੱਕਿਆ ਹੈ।"
+
+#: js/ui/audioDeviceSelection.js:41
+msgid "Select Audio Device"
+msgstr "ਆਡੀਓ ਜੰਤਰ ਨੂੰ ਚੁਣੋ"
+
+#: js/ui/audioDeviceSelection.js:54
+msgid "Sound Settings"
+msgstr "ਸਾਊਂਡ ਸੈਟਿੰਗਾਂ"
+
+#: js/ui/audioDeviceSelection.js:64
+msgid "Headphones"
+msgstr "ਹੈੱਡਫ਼ੋਨ"
+
+#: js/ui/audioDeviceSelection.js:66
+msgid "Headset"
+msgstr "ਹੈੱਡਸੈੱਟ"
+
+#: js/ui/audioDeviceSelection.js:68 js/ui/status/volume.js:269
+msgid "Microphone"
+msgstr "ਮਾਈਕਰੋਫੋਨ"
+
+#: js/ui/backgroundMenu.js:14
+msgid "Change Background…"
+msgstr "…ਬੈਕਗਰਾਊਂਡ ਬਦਲੋ"
+
+#: js/ui/backgroundMenu.js:16 js/ui/status/nightLight.js:45
+msgid "Display Settings"
+msgstr "ਡਿਸਪਲੇਅ ਸੈਟਿੰਗਾਂ"
+
+#: js/ui/backgroundMenu.js:17
+msgid "Settings"
+msgstr "ਸੈਟਿੰਗਾਂ"
+
+#. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday).
+#: js/ui/calendar.js:41
+msgctxt "calendar-no-work"
+msgid "06"
+msgstr "06"
+
+#. Translators: Calendar grid abbreviation for Sunday.
+#. *
+#. * NOTE: These grid abbreviations are always shown together
+#. * and in order, e.g. "S M T W T F S".
+#.
+#: js/ui/calendar.js:70
+msgctxt "grid sunday"
+msgid "S"
+msgstr "ਐ"
+
+#. Translators: Calendar grid abbreviation for Monday
+#: js/ui/calendar.js:72
+msgctxt "grid monday"
+msgid "M"
+msgstr "ਸੋ"
+
+#. Translators: Calendar grid abbreviation for Tuesday
+#: js/ui/calendar.js:74
+msgctxt "grid tuesday"
+msgid "T"
+msgstr "ਮੰ"
+
+#. Translators: Calendar grid abbreviation for Wednesday
+#: js/ui/calendar.js:76
+msgctxt "grid wednesday"
+msgid "W"
+msgstr "ਬੁੱ"
+
+#. Translators: Calendar grid abbreviation for Thursday
+#: js/ui/calendar.js:78
+msgctxt "grid thursday"
+msgid "T"
+msgstr "ਵੀ"
+
+#. Translators: Calendar grid abbreviation for Friday
+#: js/ui/calendar.js:80
+msgctxt "grid friday"
+msgid "F"
+msgstr "ਸ਼ੁੱ"
+
+#. Translators: Calendar grid abbreviation for Saturday
+#: js/ui/calendar.js:82
+msgctxt "grid saturday"
+msgid "S"
+msgstr "ਸ਼"
+
+#. *
+#. * Translators: The header displaying just the month name
+#. * standalone, when this is a month of the current year.
+#. * "%OB" is the new format specifier introduced in glibc 2.27,
+#. * in most cases you should not change it.
+#.
+#: js/ui/calendar.js:371
+msgid "%OB"
+msgstr "%OB"
+
+#. *
+#. * Translators: The header displaying the month name and the year
+#. * number, when this is a month of a different year.  You can
+#. * reorder the format specifiers or add other modifications
+#. * according to the requirements of your language.
+#. * "%OB" is the new format specifier introduced in glibc 2.27,
+#. * in most cases you should not use the old "%B" here unless you
+#. * absolutely know what you are doing.
+#.
+#: js/ui/calendar.js:381
+msgid "%OB %Y"
+msgstr "%OB %Y"
+
+#: js/ui/calendar.js:440
+msgid "Previous month"
+msgstr "ਪਿੱਛੇ ਮਹੀਨੇ"
+
+#: js/ui/calendar.js:455
+msgid "Next month"
+msgstr "ਅਗਲੇ ਮਹੀਨੇ"
+
+#: js/ui/calendar.js:605
+#, no-javascript-format
+msgctxt "date day number format"
+msgid "%d"
+msgstr "%d"
+
+#: js/ui/calendar.js:661
+msgid "Week %V"
+msgstr "ਹਫ਼ਤਾ %V"
+
+#. Translators: Shown in calendar event list for all day events
+#. * Keep it short, best if you can use less then 10 characters
+#.
+#: js/ui/calendar.js:730
+msgctxt "event list time"
+msgid "All Day"
+msgstr "ਸਭ ਦਿਨ"
+
+#. Translators: Shown on calendar heading when selected day occurs on current year
+#: js/ui/calendar.js:867
+msgctxt "calendar heading"
+msgid "%A, %B %-d"
+msgstr "%A, %-d %B"
+
+#. Translators: Shown on calendar heading when selected day occurs on different year
+#: js/ui/calendar.js:870
+msgctxt "calendar heading"
+msgid "%A, %B %-d, %Y"
+msgstr "%A, %-d %B %Y"
+
+#: js/ui/calendar.js:1096
+msgid "No Notifications"
+msgstr "ਕੋਈ ਨੋਟੀਫਿਕੇਸ਼ਨ"
+
+#: js/ui/calendar.js:1099
+msgid "No Events"
+msgstr "ਕੋਈ ਘਟਨਾ ਨਹੀਂ"
+
+#: js/ui/calendar.js:1153
+msgid "Do Not Disturb"
+msgstr "ਤੰਗ ਨਾ ਕਰੋ"
+
+#: js/ui/calendar.js:1167
+msgid "Clear"
+msgstr "ਸਾਫ਼ ਕਰੋ"
+
+#. Translators: %s is an application name
+#: js/ui/closeDialog.js:42
+#, javascript-format
+msgid "“%s” is not responding."
+msgstr "“%s” ਜਵਾਬ ਨਹੀਂ ਦਿੰਦਾ ਹੈ।"
+
+#: js/ui/closeDialog.js:43
+msgid ""
+"You may choose to wait a short while for it to continue or force the "
+"application to quit entirely."
+msgstr ""
+"ਤੁਸੀਂ ਇਸ ਲਈ ਕੁਝ ਸਮੇਂ ਵਾਸਤੇ ਉਡੀਕ ਕਰ ਸਕਦੇ ਹੋ ਜਾਂ ਕਾਰਜ ਨੂੰ ਧੱਕੇ ਨਾਲ ਬੰਦ ਕਰ ਸਕਦੇ"
+" ਹੋ।"
+
+#: js/ui/closeDialog.js:70
+msgid "Force Quit"
+msgstr "ਧੱਕੇ ਨਾਲ ਬੰਦ ਕਰੋ"
+
+#: js/ui/closeDialog.js:73
+msgid "Wait"
+msgstr "ਉਡੀਕੋ"
+
+#: js/ui/components/automountManager.js:86
+msgid "External drive connected"
+msgstr "ਬਾਹਰੀ ਡਰਾਇਵ ਕਨੈਕਟ ਹੋਈ"
+
+#: js/ui/components/automountManager.js:98
+msgid "External drive disconnected"
+msgstr "ਬਾਹਰੀ ਡਰਾਇਵ ਡਿਸ-ਕਨੈਕਟ ਹੈ"
+
+#: js/ui/components/automountManager.js:208
+msgid "Unable to unlock volume"
+msgstr "ਵਾਲੀਅਮ ਨੂੰ ਅਣਲਾਕ ਕਰਨ ਲਈ ਅਸਮਰੱਥ"
+
+#: js/ui/components/automountManager.js:209
+msgid "The installed udisks version does not support the PIM setting"
+msgstr ""
+
+#: js/ui/components/autorunManager.js:333
+#, javascript-format
+msgid "Open with %s"
+msgstr "%s ਨਾਲ ਖੋਲ੍ਹੋ"
+
+#: js/ui/components/networkAgent.js:89
+msgid ""
+"Alternatively you can connect by pushing the “WPS” button on your router."
+msgstr ""
+"ਬਦਲੇ ਰੂਪ ਵਿੱਚ ਤੁਸੀਂ ਆਪਣੇ ਰਾਊਂਟਰ ਉੱਤੇ \"WPS\" ਬਟਨ ਨੂੰ ਦਬਾ ਕੇ ਕਨੈਕਟ ਕਰ ਸਕਦੇ ਹੋ।"
+
+#: js/ui/components/networkAgent.js:101 js/ui/status/network.js:223
+#: js/ui/status/network.js:314 js/ui/status/network.js:916
+msgid "Connect"
+msgstr "ਕਨੈਕਟ ਕਰੋ"
+
+#: js/ui/components/networkAgent.js:208
+#| msgid "Key: "
+msgid "Key"
+msgstr "ਸਵਿੱਚ"
+
+#: js/ui/components/networkAgent.js:246 js/ui/components/networkAgent.js:269
+#| msgid "Private key password: "
+msgid "Private key password"
+msgstr "ਪ੍ਰਾਈਵੇਟ ਕੁੰਜੀ ਪਾਸਵਰਡ"
+
+#: js/ui/components/networkAgent.js:267
+#| msgid "Identity: "
+msgid "Identity"
+msgstr "ਪਛਾਣ"
+
+#: js/ui/components/networkAgent.js:281
+#| msgid "Service: "
+msgid "Service"
+msgstr "ਸਰਵਿਸ"
+
+#: js/ui/components/networkAgent.js:310 js/ui/components/networkAgent.js:338
+#: js/ui/components/networkAgent.js:685 js/ui/components/networkAgent.js:706
+msgid "Authentication required"
+msgstr "ਪਰਮਾਣਕਿਤਾ ਚਾਹੀਦੀ ਹੈ"
+
+#: js/ui/components/networkAgent.js:311 js/ui/components/networkAgent.js:686
+#, javascript-format
+msgid ""
+"Passwords or encryption keys are required to access the wireless network "
+"“%s”."
+msgstr "ਬੇਤਾਰ ਨੈੱਟਵਰਕ “%s” ਵਰਤਣ ਲਈ ਪਾਸਵਰਡ ਜਾਂ ਇੰਕ੍ਰਿਪਸ਼ਨ ਕੁੰਜੀਆਂ ਦੀ ਲੋੜ ਹੈ।"
+
+#: js/ui/components/networkAgent.js:315 js/ui/components/networkAgent.js:690
+msgid "Wired 802.1X authentication"
+msgstr "ਤਾਰ 802.1X ਪਰਮਾਣਕਿਤਾ"
+
+#: js/ui/components/networkAgent.js:317
+#| msgid "Network name: "
+msgid "Network name"
+msgstr "ਨੈੱਟਵਰਕ ਨਾਂ"
+
+#: js/ui/components/networkAgent.js:322 js/ui/components/networkAgent.js:694
+msgid "DSL authentication"
+msgstr "DSL ਪਰਮਾਣਕਿਤਾ"
+
+#: js/ui/components/networkAgent.js:329 js/ui/components/networkAgent.js:699
+msgid "PIN code required"
+msgstr "PIN ਕੋਡ ਲੋੜੀਦਾ ਹੈ"
+
+#: js/ui/components/networkAgent.js:330 js/ui/components/networkAgent.js:700
+msgid "PIN code is needed for the mobile broadband device"
+msgstr "ਮੋਬਾਇਲ ਬਰਾਡਬੈਂਡ ਜੰਤਰ ਲਈ ਪਿੰਨ ਕੋਡ ਚਾਹੀਦਾ ਹੈ"
+
+#: js/ui/components/networkAgent.js:331
+#| msgid "PIN: "
+msgid "PIN"
+msgstr "ਪਿੰਨ"
+
+#: js/ui/components/networkAgent.js:339 js/ui/components/networkAgent.js:691
+#: js/ui/components/networkAgent.js:695 js/ui/components/networkAgent.js:707
+#: js/ui/components/networkAgent.js:711
+#, javascript-format
+msgid "A password is required to connect to “%s”."
+msgstr "“%s” ਨਾਲ ਕੁਨੈਕਟ ਹੋਣ ਲਈ ਪਾਸਵਰਡ ਦੀ ਲੋੜ ਹੈ। "
+
+#: js/ui/components/networkAgent.js:674 js/ui/status/network.js:1691
+msgid "Network Manager"
+msgstr "ਨੈੱਟਵਰਕ ਮੈਨੇਜਰ"
+
+#: js/ui/components/networkAgent.js:710
+#| msgid "Password"
+msgid "VPN password"
+msgstr "VPN ਪਾਸਵਰਡ"
+
+#: js/ui/components/polkitAgent.js:39
+msgid "Authentication Required"
+msgstr "ਪਰਮਾਣਕਿਤਾ ਚਾਹੀਦੀ ਹੈ"
+
+#: js/ui/components/polkitAgent.js:80
+msgid "Administrator"
+msgstr "ਪਰਸ਼ਾਸ਼ਕ"
+
+#: js/ui/components/polkitAgent.js:142
+msgid "Authenticate"
+msgstr "ਪਰਮਾਣਿਤ"
+
+#. Translators: "that didn't work" refers to the fact that the
+#. * requested authentication was not gained; this can happen
+#. * because of an authentication error (like invalid password),
+#. * for instance.
+#: js/ui/components/polkitAgent.js:254 js/ui/shellMountOperation.js:402
+msgid "Sorry, that didn’t work. Please try again."
+msgstr "ਅਫਸੋਸ, ਉਹ ਕੰਮ ਨਹੀਂ ਕਰਦਾ। ਫੇਰ ਕੋਸ਼ਿਸ਼ ਕਰੋ ਜੀ।"
+
+#. Translators: this is the other person changing their old IM name to their new
+#. IM name.
+#: js/ui/components/telepathyClient.js:787
+#, javascript-format
+msgid "%s is now known as %s"
+msgstr "%s ਨੂੰ ਹੁਣ %s ਵਜੋਂ ਜਾਣਿਆ ਜਾਵੇਗਾ"
+
+#: js/ui/ctrlAltTab.js:21 js/ui/viewSelector.js:177
+msgid "Windows"
+msgstr "ਵਿੰਡੋ"
+
+#: js/ui/dash.js:200 js/ui/dash.js:241
+msgid "Show Applications"
+msgstr "ਐਪਲੀਕੇਸ਼ਨਾਂ ਵੇਖੋ"
+
+#. Translators: this is the name of the dock/favorites area on
+#. the left of the overview
+#: js/ui/dash.js:394
+msgid "Dash"
+msgstr "ਡੈਸ਼"
+
+#. Translators: This is the date format to use when the calendar popup is
+#. * shown - it is shown just below the time in the top bar (e.g.,
+#. * "Tue 9:29 AM").  The string itself should become a full date, e.g.,
+#. * "February 17 2015".
+#.
+#: js/ui/dateMenu.js:75
+msgid "%B %-d %Y"
+msgstr "%-d %B %Y"
+
+#. Translators: This is the accessible name of the date button shown
+#. * below the time in the shell; it should combine the weekday and the
+#. * date, e.g. "Tuesday February 17 2015".
+#.
+#: js/ui/dateMenu.js:82
+msgid "%A %B %e %Y"
+msgstr "%A, %e %B %Y"
+
+#: js/ui/dateMenu.js:161
+msgid "Add world clocks…"
+msgstr "...ਸੰਸਾਰ ਘੜੀਆਂ ਜੋੜੋ"
+
+#: js/ui/dateMenu.js:162
+msgid "World Clocks"
+msgstr "ਸੰਸਾਰ ਘੜੀਆਂ"
+
+#: js/ui/dateMenu.js:276
+msgid "Weather"
+msgstr "ਮੌਸਮ"
+
+#: js/ui/dateMenu.js:391
+msgid "Select a location…"
+msgstr "…ਟਿਕਾਣਾ ਚੁਣੋ"
+
+#: js/ui/dateMenu.js:404
+msgid "Loading…"
+msgstr "…ਲੋਡ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ"
+
+#: js/ui/dateMenu.js:414
+msgid "Go online for weather information"
+msgstr "ਮੌਸਮ ਦੀ ਜਾਣਕਾਰੀ ਲਈ ਆਨਲਾਈਨ ਜਾਓ"
+
+#: js/ui/dateMenu.js:416
+msgid "Weather information is currently unavailable"
+msgstr "ਮੌਸਮ ਦੀ ਜਾਣਕਾਰੀ ਇਸ ਵੇਲੇ ਉਪਲਬਧ ਨਹੀਂ ਹੈ"
+
+#: js/ui/endSessionDialog.js:37
+#, javascript-format
+msgctxt "title"
+msgid "Log Out %s"
+msgstr "%s ਲਾਗਆਉਟ"
+
+#: js/ui/endSessionDialog.js:38
+msgctxt "title"
+msgid "Log Out"
+msgstr "ਲਾਗਆਉਟ"
+
+#: js/ui/endSessionDialog.js:40
+#, javascript-format
+msgid "%s will be logged out automatically in %d second."
+msgid_plural "%s will be logged out automatically in %d seconds."
+msgstr[0] "%s ਨੂੰ %d ਸਕਿੰਟ ਵਿੱਚ ਆਪਣੇ-ਆਪ ਹੀ ਲਾਗ ਆਉਟ ਕੀਤਾ ਜਾਵੇਗਾ।"
+msgstr[1] "%s ਨੂੰ %d ਸਕਿੰਟਾਂ ਵਿੱਚ ਆਪਣੇ-ਆਪ ਹੀ ਲਾਗ ਆਉਟ ਕੀਤਾ ਜਾਵੇਗਾ।"
+
+#: js/ui/endSessionDialog.js:45
+#, javascript-format
+msgid "You will be logged out automatically in %d second."
+msgid_plural "You will be logged out automatically in %d seconds."
+msgstr[0] "ਤੁਹਾਨੂੰ %d ਸਕਿੰਟ ਵਿੱਚ ਆਪਣੇ-ਆਪ ਹੀ ਲਾਗਆਉਟ ਕਰ ਦਿੱਤਾ ਜਾਵੇਗਾ।"
+msgstr[1] "ਤੁਹਾਨੂੰ %d ਸਕਿੰਟਾਂ ਵਿੱਚ ਆਪਣੇ-ਆਪ ਹੀ ਲਾਗਆਉਟ ਕਰ ਦਿੱਤਾ ਜਾਵੇਗਾ।"
+
+#: js/ui/endSessionDialog.js:51
+msgctxt "button"
+msgid "Log Out"
+msgstr "ਲਾਗਆਉਟ"
+
+#: js/ui/endSessionDialog.js:56
+msgctxt "title"
+msgid "Power Off"
+msgstr "ਬੰਦ ਕਰੋ"
+
+#: js/ui/endSessionDialog.js:57
+msgctxt "title"
+msgid "Install Updates & Power Off"
+msgstr "ਅੱਪਡੇਟ ਇੰਸਟਾਲ ਕਰੋ ਤੇ ਬੰਦ ਕਰੋ"
+
+#: js/ui/endSessionDialog.js:59
+#, javascript-format
+msgid "The system will power off automatically in %d second."
+msgid_plural "The system will power off automatically in %d seconds."
+msgstr[0] "ਸਿਸਟਮ ਨੂੰ ਆਪਣੇ-ਆਪ ਹੀ %d ਸਕਿੰਟ ਵਿੱਚ ਬੰਦ ਕੀਤਾ ਜਾਵੇਗਾ।"
+msgstr[1] "ਸਿਸਟਮ ਨੂੰ ਆਪਣੇ-ਆਪ ਹੀ %d ਸਕਿੰਟਾਂ ਵਿੱਚ ਬੰਦ ਕੀਤਾ ਜਾਵੇਗਾ।"
+
+#: js/ui/endSessionDialog.js:63
+msgctxt "checkbox"
+msgid "Install pending software updates"
+msgstr "ਬਾਕੀ ਰਹਿੰਦੇ ਸਾਫਟਵੇਅਰ ਅੱਪਡੇਟ ਇੰਸਟਾਲ ਕਰੋ"
+
+#: js/ui/endSessionDialog.js:66 js/ui/endSessionDialog.js:82
+msgctxt "button"
+msgid "Restart"
+msgstr "ਮੁੜ-ਚਾਲੂ ਕਰੋ"
+
+#: js/ui/endSessionDialog.js:68
+msgctxt "button"
+msgid "Power Off"
+msgstr "ਬੰਦ ਕਰੋ"
+
+#: js/ui/endSessionDialog.js:74
+msgctxt "title"
+msgid "Restart"
+msgstr "ਮੁੜ-ਚਾਲੂ ਕਰੋ"
+
+#: js/ui/endSessionDialog.js:76
+#, javascript-format
+msgid "The system will restart automatically in %d second."
+msgid_plural "The system will restart automatically in %d seconds."
+msgstr[0] "ਸਿਸਟਮ ਨੂੰ ਆਪਣੇ-ਆਪ ਹੀ %d ਸਕਿੰਟ ਵਿੱਚ ਮੁੜ-ਚਾਲੂ ਕੀਤਾ ਜਾਵੇਗਾ।"
+msgstr[1] "ਸਿਸਟਮ ਨੂੰ ਆਪਣੇ-ਆਪ ਹੀ %d ਸਕਿੰਟਾਂ ਵਿੱਚ ਮੁੜ-ਚਾਲੂ ਕੀਤਾ ਜਾਵੇਗਾ।"
+
+#: js/ui/endSessionDialog.js:89
+msgctxt "title"
+msgid "Restart & Install Updates"
+msgstr "ਮੁੜ-ਚਾਲੂ ਕਰੋ ਤੇ ਅੱਪਡੇਟ ਇੰਸਟਾਲ ਕਰੋ"
+
+#: js/ui/endSessionDialog.js:91
+#, javascript-format
+msgid "The system will automatically restart and install updates in %d second."
+msgid_plural ""
+"The system will automatically restart and install updates in %d seconds."
+msgstr[0] ""
+"ਸਿਸਟਮ ਨੂੰ ਆਪਣੇ-ਆਪ ਹੀ %d ਸਕਿੰਟ ਵਿੱਚ ਮੁੜ-ਚਾਲੂ ਅਤੇ ਅੱਪਡੇਟ ਇੰਸਟਾਲ ਕੀਤੇ ਜਾਣਗੇ।"
+msgstr[1] ""
+"ਸਿਸਟਮ ਨੂੰ ਆਪਣੇ-ਆਪ ਹੀ %d ਸਕਿੰਟਾਂ ਵਿੱਚ ਮੁੜ-ਚਾਲੂ ਅਤੇ ਅੱਪਡੇਟ ਇੰਸਟਾਲ ਕੀਤੇ ਜਾਣਗੇ।"
+
+#: js/ui/endSessionDialog.js:97 js/ui/endSessionDialog.js:116
+msgctxt "button"
+msgid "Restart &amp; Install"
+msgstr "ਮੁੜ-ਚਾਲੂ ਕਰੋ ਅਤੇ ਇੰਸਟਾਲ ਕਰੋ"
+
+#: js/ui/endSessionDialog.js:98
+msgctxt "button"
+msgid "Install &amp; Power Off"
+msgstr "ਇੰਸਟਾਲ ਕਰੋ ਅਤੇ ਬੰਦ ਕਰੋ"
+
+#: js/ui/endSessionDialog.js:99
+msgctxt "checkbox"
+msgid "Power off after updates are installed"
+msgstr "ਅੱਪਡੇਟ ਇੰਸਟਾਲ ਕਰਨ ਦੇ ਬਾਅਦ ਬੰਦ ਕਰੋ"
+
+#: js/ui/endSessionDialog.js:106
+msgctxt "title"
+msgid "Restart & Install Upgrade"
+msgstr "ਮੁੜ-ਚਾਲੂ ਕਰੋ ਤੇ ਅੱਪਗਰੇਡ ਇੰਸਟਾਲ ਕਰੋ"
+
+#. Translators: This is the text displayed for system upgrades in the
+#. shut down dialog. First %s gets replaced with the distro name and
+#. second %s with the distro version to upgrade to
+#: js/ui/endSessionDialog.js:111
+#, javascript-format
+msgid ""
+"%s %s will be installed after restart. Upgrade installation can take a long "
+"time: ensure that you have backed up and that the computer is plugged in."
+msgstr ""
+"ਮੁੜ-ਚਾਲੂ ਹੋਣ ਦੇ ਬਾਅਦ %s %s ਨੂੰ ਇੰਸਟਾਲ ਕੀਤਾ ਜਾਵੇਗਾ। ਅੱਪਗਰੇਡ ਇੰਸਟਾਲੇਸ਼ਨ ਨੂੰ ਲੰਮਾ"
+" ਸਮਾਂ ਲੱਗ ਸਕਦਾ "
+"ਹੈ: ਪੱਕਾ ਕਰੋ ਕਿ ਤੁਸੀਂ ਬੈਕਅੱਪ ਲੈ ਲਿਆ ਹੈ ਅਤੇ ਕੰਪਿਊਟਰ ਦਾ ਪਲੱਗ ਲੱਗਾ ਹੈ।"
+
+#: js/ui/endSessionDialog.js:259
+#| msgid "Running on battery power: please plug in before installing updates."
+msgid "Running on battery power: Please plug in before installing updates."
+msgstr "ਬੈਟਰੀ ਉੱਤੇ ਚੱਲ ਰਿਹਾ ਹੈ: ਅੱਪਡੇਟ ਇੰਸਟਾਲ ਕਰਨ ਤੋਂ ਪਹਿਲਾਂ ਪਲੱਗ ਲਗਾਉ ਜੀ।"
+
+#: js/ui/endSessionDialog.js:268
+#| msgid "Some applications are busy or have unsaved work."
+msgid "Some applications are busy or have unsaved work"
+msgstr "ਕੁਝ ਐਪਲੀਕੇਸ਼ਨ ਰੁੱਝੀਆਂ ਹਨ ਜਾਂ ਕੁਝ ਨਾ-ਸੰਭਾਲਿਆ ਕੰਮ ਪਿਆ ਹੈ"
+
+#: js/ui/endSessionDialog.js:273
+#| msgid "Other users are logged in."
+msgid "Other users are logged in"
+msgstr "ਹੋਰ ਵਰਤੋਂਕਾਰ ਲਾਗਇਨ ਹਨ"
+
+#. Translators: Remote here refers to a remote session, like a ssh login
+#: js/ui/endSessionDialog.js:588
+#, javascript-format
+msgid "%s (remote)"
+msgstr "%s (ਰਿਮੋਟ)"
+
+#. Translators: Console here refers to a tty like a VT console
+#: js/ui/endSessionDialog.js:591
+#, javascript-format
+msgid "%s (console)"
+msgstr "%s (ਕਨਸੋਲ)"
+
+#: js/ui/extensionDownloader.js:169
+msgid "Install"
+msgstr "ਇੰਸਟਾਲ ਕਰੋ"
+
+#: js/ui/extensionDownloader.js:175
+#| msgid "Uninstall extension"
+msgid "Install Extension"
+msgstr "ਇਕਸਟੈਨਸ਼ਨ ਇੰਸਟਾਲ ਕਰੋ"
+
+#: js/ui/extensionDownloader.js:176
+#, javascript-format
+msgid "Download and install “%s” from extensions.gnome.org?"
+msgstr "ਕੀ extensions.gnome.org ਤੋਂ “%s” ਡਾਊਨਲੋਡ ਅਤੇ ਇੰਸਟਾਲ ਕਰਨੀ ਹੈ?"
+
+#: js/ui/extensionSystem.js:228
+#| msgid "No Extensions Installed"
+msgid "Extension Updates Available"
+msgstr "ਇਕਸਟੈਨਸ਼ਨ ਅੱਪਡੇਟ ਉਪਲਬਧ ਹਨ"
+
+#: js/ui/extensionSystem.js:229
+msgid "Extension updates are ready to be installed."
+msgstr "ਇਕਸਟੈਨਸ਼ਨ ਅੱਪਡੇਟ ਇੰਸਟਾਲ ਕਰਨ ਲਈ ਤਿਆਰ ਹਨ।"
+
+#: js/ui/inhibitShortcutsDialog.js:79
+#| msgid "%s wants to inhibit shortcuts"
+msgid "Allow inhibiting shortcuts"
+msgstr "ਸ਼ਾਰਟਕੱਟਾਂ ਲਈ ਰੁਕਾਵਟ ਪਾਉਣ ਲਈ ਸਹਿਮਤੀ ਦਿਓ"
+
+#. Translators: %s is an application name like "Settings"
+#: js/ui/inhibitShortcutsDialog.js:82
+#, javascript-format
+#| msgid "Application wants to inhibit shortcuts"
+msgid "The application %s wants to inhibit shortcuts"
+msgstr "%s ਐਪਲੀਕੇਸ਼ਨ ਸ਼ਾਰਟਕੱਟਾਂ ਲਈ ਰੁਕਾਵਟ ਚਾਹੁੰਦੀ ਹੈ"
+
+#: js/ui/inhibitShortcutsDialog.js:83
+#| msgid "Application wants to inhibit shortcuts"
+msgid "An application wants to inhibit shortcuts"
+msgstr "ਐਪਲੀਕੇਸ਼ਨ ਸ਼ਾਰਟਕੱਟਾਂ ਲਈ ਰੁਕਾਵਟ ਚਾਹੁੰਦੀ ਹੈ"
+
+#. Translators: %s is a keyboard shortcut like "Super+x"
+#: js/ui/inhibitShortcutsDialog.js:90
+#, javascript-format
+msgid "You can restore shortcuts by pressing %s."
+msgstr "ਤੁਸੀਂ ਸ਼ਾਰਟਕੱਟਾਂ ਨੂੰ %s ਦਬਾ ਕੇ ਬਹਾਲ ਕਰ ਸਕਦੇ ਹੋ।"
+
+#: js/ui/inhibitShortcutsDialog.js:98
+msgid "Deny"
+msgstr "ਇਨਕਾਰ"
+
+#: js/ui/inhibitShortcutsDialog.js:105
+msgid "Allow"
+msgstr "ਮਨਜ਼ੂਰ"
+
+#: js/ui/kbdA11yDialog.js:32
+msgid "Slow Keys Turned On"
+msgstr "ਹੌਲੀ ਸਵਿੱਚਾਂ ਚਾਲੂ ਕੀਤੀਆਂ"
+
+#: js/ui/kbdA11yDialog.js:33
+msgid "Slow Keys Turned Off"
+msgstr "ਹੌਲੀ ਸਵਿੱਚਾਂ ਬੰਦ ਕੀਤੀਆਂ"
+
+#: js/ui/kbdA11yDialog.js:34
+msgid ""
+"You just held down the Shift key for 8 seconds. This is the shortcut for the "
+"Slow Keys feature, which affects the way your keyboard works."
+msgstr ""
+"ਤੁਸੀ ਸਿਫਟ (Shift) ਸਵਿੱਚ ਨੂੰ ਸਿਰਫ 8 ਸਕਿੰਟਾਂ ਲਈ ਦਬਾਉਣਾ ਹੈ। ਇਹ ਹੌਲੀ-ਸਵਿੱਚ ਫੀਚਰ"
+" ਦਾ ਸ਼ਾਰਟਕੱਟ "
+"ਹੈ, ਜੋ ਕਿ ਤੁਹਾਡੇ ਕੀ-ਬੋਰਡ ਦੇ ਕੰਮ ਕਰਨ ਦੇ ਢੰਗ ਨੂੰ ਪ੍ਰਭਾਵਿਤ ਕਰੇਗਾ।"
+
+#: js/ui/kbdA11yDialog.js:41
+msgid "Sticky Keys Turned On"
+msgstr "ਸਟਿੱਕੀ ਸਵਿੱਚਾਂ ਚਾਲੂ ਕੀਤੀਆਂ"
+
+#: js/ui/kbdA11yDialog.js:42
+msgid "Sticky Keys Turned Off"
+msgstr "ਸਟਿੱਕੀ ਸਵਿੱਚਾਂ ਬੰਦ ਕੀਤੀਆਂ"
+
+#: js/ui/kbdA11yDialog.js:44
+msgid ""
+"You just pressed the Shift key 5 times in a row. This is the shortcut for "
+"the Sticky Keys feature, which affects the way your keyboard works."
+msgstr ""
+"ਤੁਸੀ ਸਿਫਟ (Shift) ਸਵਿੱਚ ਨੂੰ ਸਿਰਫ 5 ਵਾਰ ਦਬਾਉਣਾ ਹੈ। ਇਹ ਸਟਿੱਕੀ-ਸਵਿੱਚ ਫੀਚਰ ਦਾ"
+" ਸ਼ਾਰਟਕੱਟ ਹੈ, "
+"ਜੋ ਕਿ ਤੁਹਾਡੇ ਕੀ-ਬੋਰਡ ਦੇ ਕੰਮ ਕਰਨ ਦੇ ਢੰਗ ਨੂੰ ਪ੍ਰਭਾਵਿਤ ਕਰੇਗਾ।"
+
+#: js/ui/kbdA11yDialog.js:46
+msgid ""
+"You just pressed two keys at once, or pressed the Shift key 5 times in a "
+"row. This turns off the Sticky Keys feature, which affects the way your "
+"keyboard works."
+msgstr ""
+"ਤੁਸੀ ਲਗਾਤਾਰ ਦੋ ਕੀ ਇੱਕ ਵਾਰ ਦਬਾ ਸਕਦੇ ਹੋ ਜਾਂ ਸਿਫਟ (Shift) ਸਵਿੱਚ ਨੂੰ 5 ਵਾਰ ਇਹ"
+" ਸਟਿੱਕੀ ਸਵਿੱਚ "
+"ਫੀਚਰ ਨੂੰ ਚਾਲੂ ਕਰ ਸਕਦੇ ਹੋ, ਜੋ ਕਿ ਤੁਹਾਡਾ ਕੀ-ਬੋਰਡ ਤੇ ਕੰਮ ਕਰਨ ਦੇ ਢੰਗ ਨੂੰ ਤਬਦੀਲ"
+" ਕਰਦਾ ਹੈ।"
+
+#: js/ui/kbdA11yDialog.js:55
+msgid "Leave On"
+msgstr "ਚਾਲੂ ਛੱਡੋ"
+
+#: js/ui/kbdA11yDialog.js:55 js/ui/status/bluetooth.js:135
+#: js/ui/status/network.js:1288
+msgid "Turn On"
+msgstr "ਚਾਲੂ ਕਰੋ"
+
+#: js/ui/kbdA11yDialog.js:63 js/ui/status/bluetooth.js:135
+#: js/ui/status/network.js:131 js/ui/status/network.js:315
+#: js/ui/status/network.js:1288 js/ui/status/network.js:1400
+#: js/ui/status/nightLight.js:41 js/ui/status/rfkill.js:81
+#: js/ui/status/rfkill.js:108
+msgid "Turn Off"
+msgstr "ਬੰਦ ਕਰੋ"
+
+#: js/ui/kbdA11yDialog.js:63
+msgid "Leave Off"
+msgstr "ਬੰਦ ਰਹਿਣ ਦਿਓ"
+
+#: js/ui/keyboard.js:207
+msgid "Region & Language Settings"
+msgstr "ਖੇਤਰ ਅਤੇ ਭਾਸ਼ਾ ਸੈਟਿੰਗਾਂ"
+
+#: js/ui/lookingGlass.js:665
+msgid "No extensions installed"
+msgstr "ਕੋਈ ਇਕਸਟੈਨਸ਼ਨ ਇੰਸਟਾਲ ਨਹੀਂ ਹੈ"
+
+#. Translators: argument is an extension UUID.
+#: js/ui/lookingGlass.js:720
+#, javascript-format
+msgid "%s has not emitted any errors."
+msgstr "%s ਨੇ ਕੋਈ ਗਲਤੀ ਨਹੀਂ ਦਿੱਤੀ।"
+
+#: js/ui/lookingGlass.js:726
+msgid "Hide Errors"
+msgstr "ਗਲਤੀਆਂ ਓਹਲੇ ਕਰੋ"
+
+#: js/ui/lookingGlass.js:730 js/ui/lookingGlass.js:795
+msgid "Show Errors"
+msgstr "ਗਲਤੀਆਂ ਵੇਖਾਓ"
+
+#: js/ui/lookingGlass.js:739
+msgid "Enabled"
+msgstr "ਚਾਲੂ ਹੈ"
+
+#. translators:
+#. * The device has been disabled
+#: js/ui/lookingGlass.js:742 subprojects/gvc/gvc-mixer-control.c:1892
+msgid "Disabled"
+msgstr "ਬੰਦ ਹੈ"
+
+#: js/ui/lookingGlass.js:744
+msgid "Error"
+msgstr "ਗਲਤੀ"
+
+#: js/ui/lookingGlass.js:746
+msgid "Out of date"
+msgstr "ਪੁਰਾਣਾ"
+
+#: js/ui/lookingGlass.js:748
+msgid "Downloading"
+msgstr "ਡਾਊਨਲੋਡ ਕੀਤੀ ਜਾ ਰਹੀ ਹੈ"
+
+#: js/ui/lookingGlass.js:777
+msgid "View Source"
+msgstr "ਸਰੋਤ ਵੇਖੋ"
+
+#: js/ui/lookingGlass.js:786
+msgid "Web Page"
+msgstr "ਵੈੱਬ ਪੇਜ਼"
+
+#: js/ui/main.js:269
+#| msgid "Log in as another user"
+msgid "Logged in as a privileged user"
+msgstr "ਅਧਿਕਾਰ ਪ੍ਰਾਪਤ ਵਰਤੋਂਕਾਰ ਵਜੋਂ ਲਾਗਇਨ ਕੀਤਾ"
+
+#: js/ui/main.js:270
+msgid ""
+"Running a session as a privileged user should be avoided for security "
+"reasons. If possible, you should log in as a normal user."
+msgstr ""
+"ਅਧਿਕਾਰ ਪ੍ਰਾਪਤ ਵਰਤੋਂ ਵਜੋਂ ਸ਼ੈਸ਼ਨ ਚਲਾਉਣਾ ਸੁਰੱਖਿਆ ਕਾਰਨਾਂ ਕਾਰਕੇ ਬਚਣਾ ਚਾਹੀਦਾ ਹੈ। ਜੇ"
+" ਸੰਭਵ ਹੋਵੇ ਤਾਂ ਤੁਹਾਨੂੰ "
+"ਸਧਾਰਨ ਵਰਤੋਂਕਾਰ ਵਜੋਂ ਲਾਗਇਨ ਕਰਨਾ ਚਾਹੀਦਾ ਹੈ।"
+
+#: js/ui/main.js:276
+msgid "Screen Lock disabled"
+msgstr "ਸਕਰੀਨ ਲਾਕ ਅਸਮਰੱਥ ਹੈ"
+
+#: js/ui/main.js:277
+msgid "Screen Locking requires the GNOME display manager."
+msgstr "ਸਕਰੀਨ ਲਾਕ ਕਰਨ ਲਈ ਗਨੋਮ ਡਿਸਪਲੇਅ ਮੈਨੇਜਰ ਚਾਹੀਦਾ ਹੈ।"
+
+#: js/ui/messageTray.js:1554
+msgid "System Information"
+msgstr "ਸਿਸਟਮ ਜਾਣਕਾਰੀ"
+
+#: js/ui/mpris.js:199
+msgid "Unknown artist"
+msgstr "ਅਣਪਛਾਤਾ ਕਲਾਕਾਰ"
+
+#: js/ui/mpris.js:209
+msgid "Unknown title"
+msgstr "ਅਣਪਛਾਤਾ ਟਾਈਟਲ"
+
+#: js/ui/overview.js:73
+msgid "Undo"
+msgstr "ਵਾਪਸ"
+
+#. Translators: This is the main view to select
+#. activities. See also note for "Activities" string.
+#: js/ui/overview.js:86
+msgid "Overview"
+msgstr "ਸੰਖੇਪ"
+
+#. Translators: this is the text displayed
+#. in the search entry when no search is
+#. active; it should not exceed ~30
+#. characters.
+#: js/ui/overview.js:107
+#| msgid "Type to search…"
+msgid "Type to search"
+msgstr "ਲੱਭਣ ਲਈ ਲਿਖੋ"
+
+#: js/ui/padOsd.js:95
+msgid "New shortcut…"
+msgstr "...ਨਵਾਂ ਸ਼ਾਰਟਕੱਟ"
+
+#: js/ui/padOsd.js:142
+msgid "Application defined"
+msgstr "ਨਿਰਧਾਰਿਤ ਕੀਤੀ ਐਪਲੀਕੇਸ਼ਨ"
+
+#: js/ui/padOsd.js:143
+msgid "Show on-screen help"
+msgstr "ਆਨ-ਸਕਰੀਨ ਮਦਦ ਵੇਖਾਓ"
+
+#: js/ui/padOsd.js:144
+msgid "Switch monitor"
+msgstr "ਮਾਨੀਟਰ ਨੂੰ ਬਦਲੋ"
+
+#: js/ui/padOsd.js:145
+msgid "Assign keystroke"
+msgstr "ਕੀ-ਸਟਰੋਕ ਦਿਓ"
+
+#: js/ui/padOsd.js:211
+msgid "Done"
+msgstr "ਮੁਕੰਮਲ"
+
+#: js/ui/padOsd.js:745
+msgid "Edit…"
+msgstr "…ਸੋਧੋ"
+
+#: js/ui/padOsd.js:787 js/ui/padOsd.js:910
+msgid "None"
+msgstr "ਕੋਈ ਨਹੀਂ"
+
+#: js/ui/padOsd.js:863
+msgid "Press a button to configure"
+msgstr "ਸੰਰਚਨਾ ਲਈ ਬਟਨ ਨੂੰ ਦੱਬੋ"
+
+#: js/ui/padOsd.js:864
+msgid "Press Esc to exit"
+msgstr "ਬਾਹਰ ਜਾਣ ਲਈ ਕੋਈ ਵੀ Esc ਦੱਬੋ"
+
+#: js/ui/padOsd.js:867
+msgid "Press any key to exit"
+msgstr "ਬਾਹਰ ਜਾਣ ਲਈ ਕੋਈ ਵੀ ਸਵਿੱਚ ਦੱਬੋ"
+
+#: js/ui/panel.js:109
+msgid "Quit"
+msgstr "ਬਾਹਰ"
+
+#. Translators: If there is no suitable word for "Activities"
+#. in your language, you can use the word for "Overview".
+#: js/ui/panel.js:434
+msgid "Activities"
+msgstr "ਸਰਗਰਮੀਆਂ"
+
+#: js/ui/panel.js:713
+msgctxt "System menu in the top bar"
+msgid "System"
+msgstr "ਸਿਸਟਮ"
+
+#: js/ui/panel.js:826
+msgid "Top Bar"
+msgstr "ਉੱਤਲੀ ਪੱਟੀ"
+
+#: js/ui/runDialog.js:58
+#| msgid "Enter a Command"
+msgid "Run a Command"
+msgstr "ਕਮਾਂਡ ਚਲਾਓ"
+
+#: js/ui/runDialog.js:73
+#| msgid "Press Esc to exit"
+msgid "Press ESC to close"
+msgstr "ਬੰਦ ਕਰਨ ਲਈ Esc ਦੱਬੋ"
+
+#: js/ui/runDialog.js:238
+msgid "Restart is not available on Wayland"
+msgstr "ਵੇਅਲੈਂਡ ਉੱਤੇ ਮੁੜ-ਚਾਲੂ ਕਰੋ ਉਪਲਬਧ ਨਹੀਂ"
+
+#: js/ui/runDialog.js:243
+msgid "Restarting…"
+msgstr "...ਮੁੜ-ਚਾਲੂ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ"
+
+#: js/ui/screenShield.js:203
+msgid "GNOME needs to lock the screen"
+msgstr "ਗਨੋਮ ਨੂੰ ਸਕਰੀਨ ਲਾਕ ਕਰਨ ਦੀ ਲੋੜ ਹੈ"
+
+#. We could not become modal, so we can't activate the
+#. screenshield. The user is probably very upset at this
+#. point, but any application using global grabs is broken
+#. Just tell him to stop using this app
+#.
+#. XXX: another option is to kick the user into the gdm login
+#. screen, where we're not affected by grabs
+#: js/ui/screenShield.js:244 js/ui/screenShield.js:598
+msgid "Unable to lock"
+msgstr "ਅਣਲਾਕ ਕਰਨ ਲਈ ਅਸਮਰੱਥ"
+
+#: js/ui/screenShield.js:245 js/ui/screenShield.js:599
+msgid "Lock was blocked by an application"
+msgstr "ਲਾਕ ਨੂੰ ਐਪਲੀਕੇਸ਼ਨ ਵਲੋਂ ਪਾਬੰਦੀ ਲਗਾਈ"
+
+#: js/ui/search.js:694
+msgid "Searching…"
+msgstr "…ਖੋਜ ਜਾਰੀ ਹੈ"
+
+#: js/ui/search.js:696
+msgid "No results."
+msgstr "ਕੋਈ ਨਤੀਜਾ ਨਹੀਂ।"
+
+#: js/ui/search.js:822
+#, javascript-format
+msgid "%d more"
+msgid_plural "%d more"
+msgstr[0] "%d ਹੋਰ"
+msgstr[1] "%d ਹੋਰ"
+
+#: js/ui/shellEntry.js:20
+msgid "Copy"
+msgstr "ਕਾਪੀ ਕਰੋ"
+
+#: js/ui/shellEntry.js:25
+msgid "Paste"
+msgstr "ਚੇਪੋ"
+
+#: js/ui/shellEntry.js:73
+msgid "Show Text"
+msgstr "ਟੈਕਸਟ ਵੇਖੋ"
+
+#: js/ui/shellEntry.js:75
+msgid "Hide Text"
+msgstr "ਟੈਕਸਟ ਓਹਲੇ"
+
+#: js/ui/shellEntry.js:162
+msgid "Caps lock is on."
+msgstr "ਕੈਪਸ ਲਾਕ ਚਾਲੂ ਹੈ।"
+
+#: js/ui/shellMountOperation.js:285
+msgid "Hidden Volume"
+msgstr "ਵਾਲੀਅਮ ਲੁਕਾਓ"
+
+#: js/ui/shellMountOperation.js:288
+msgid "Windows System Volume"
+msgstr "ਵਿੰਡੋਜ਼ ਸਿਸਟਮ ਵਾਲੀਅਮ"
+
+#: js/ui/shellMountOperation.js:291
+msgid "Uses Keyfiles"
+msgstr "ਕੁੰਜੀ-ਫਾਇਲਾਂ ਵਰਤਦਾ ਹੈ"
+
+#. Translators: %s is the Disks application
+#: js/ui/shellMountOperation.js:298
+#, javascript-format
+msgid ""
+"To unlock a volume that uses keyfiles, use the <i>%s</i> utility instead."
+msgstr ""
+
+#: js/ui/shellMountOperation.js:306
+msgid "PIM Number"
+msgstr "PIM ਨੰਬਰ"
+
+#: js/ui/shellMountOperation.js:365
+msgid "Remember Password"
+msgstr "ਪਾਸਵਰਡ ਯਾਦ ਰੱਖੋ"
+
+#: js/ui/shellMountOperation.js:380
+msgid "Unlock"
+msgstr "ਅਣ-ਲਾਕ"
+
+#. Translators: %s is the Disks application
+#: js/ui/shellMountOperation.js:391
+#, javascript-format
+msgid "Open %s"
+msgstr "%s ਨੂੰ ਖੋਲ੍ਹੋ"
+
+#: js/ui/shellMountOperation.js:423
+msgid "The PIM must be a number or empty."
+msgstr "PIM ਨੰਬਰ ਹੋਣਾ ਚਾਹੀਦਾ ਹੈ ਜਾਂ ਖਾਲੀ ਨਹੀਂ ਹੈ।"
+
+#. Translators: %s is the Disks application
+#: js/ui/shellMountOperation.js:469
+#, javascript-format
+msgid "Unable to start %s"
+msgstr "%s ਸ਼ੁਰੂ ਕਰਨ ਲਈ ਅਸਮਰੱਥ"
+
+#. Translators: %s is the Disks application
+#: js/ui/shellMountOperation.js:471
+#, javascript-format
+msgid "Couldn’t find the %s application"
+msgstr "%s ਐਪਲੀਕੇਸ਼ਨ ਲੱਭੀ ਨਹੀਂ ਜਾ ਸਕੀ"
+
+#: js/ui/status/accessibility.js:35
+msgid "Accessibility"
+msgstr "ਅਸੈੱਸਬਿਲਟੀ"
+
+#: js/ui/status/accessibility.js:50
+msgid "Zoom"
+msgstr "ਜ਼ੂਮ"
+
+#: js/ui/status/accessibility.js:57
+msgid "Screen Reader"
+msgstr "ਸਕਰੀਨ ਰੀਡਰ"
+
+#: js/ui/status/accessibility.js:61
+msgid "Screen Keyboard"
+msgstr "ਸਕਰੀਨ ਕੀਬੋਰਡ"
+
+#: js/ui/status/accessibility.js:65
+msgid "Visual Alerts"
+msgstr "ਦਿੱਖ ਚੇਤਾਵਨੀ"
+
+#: js/ui/status/accessibility.js:68
+msgid "Sticky Keys"
+msgstr "ਸਟਿੱਕੀ ਸਵਿੱਚਾਂ"
+
+#: js/ui/status/accessibility.js:71
+msgid "Slow Keys"
+msgstr "ਹੌਲੀ ਸਵਿੱਚਾਂ"
+
+#: js/ui/status/accessibility.js:74
+msgid "Bounce Keys"
+msgstr "ਬਾਊਂਸ ਸਵਿੱਚਾਂ"
+
+#: js/ui/status/accessibility.js:77
+msgid "Mouse Keys"
+msgstr "ਮਾਊਸ ਸਵਿੱਚਾਂ"
+
+#: js/ui/status/accessibility.js:136
+msgid "High Contrast"
+msgstr "ਵੱਧ ਕਨਟਰਾਸਟ"
+
+#: js/ui/status/accessibility.js:178
+msgid "Large Text"
+msgstr "ਵੱਡੇ ਅੱਖਰ"
+
+#: js/ui/status/bluetooth.js:40
+msgid "Bluetooth"
+msgstr "ਬਲੂਟੁੱਥ"
+
+#: js/ui/status/bluetooth.js:49 js/ui/status/network.js:591
+msgid "Bluetooth Settings"
+msgstr "ਬਲੂਟੁੱਥ ਸੈਟਿੰਗਾਂ"
+
+#. Translators: this is the number of connected bluetooth devices
+#: js/ui/status/bluetooth.js:129
+#, javascript-format
+msgid "%d Connected"
+msgid_plural "%d Connected"
+msgstr[0] "%d ਕਨੈਕਟ ਹੈ"
+msgstr[1] "%d ਕਨੈਕਟ ਹੈ"
+
+#: js/ui/status/bluetooth.js:131
+msgid "Off"
+msgstr "ਬੰਦ"
+
+#: js/ui/status/bluetooth.js:133
+msgid "On"
+msgstr "ਚਾਲੂ"
+
+#: js/ui/status/brightness.js:39
+msgid "Brightness"
+msgstr "ਚਮਕ"
+
+#: js/ui/status/dwellClick.js:13
+msgid "Single Click"
+msgstr "ਇੱਕ ਵਾਰ ਕਲਿੱਕ"
+
+#: js/ui/status/dwellClick.js:18
+msgid "Double Click"
+msgstr "ਡਬਲ ਕਲਿੱਕੱ"
+
+#: js/ui/status/dwellClick.js:23
+msgid "Drag"
+msgstr "ਖਿੱਚੋ"
+
+#: js/ui/status/dwellClick.js:28
+msgid "Secondary Click"
+msgstr "ਸੈਕੰਡਰੀ ਦੇਰੀ"
+
+#: js/ui/status/dwellClick.js:37
+msgid "Dwell Click"
+msgstr "ਡੀਵੈੱਲ ਕਲਿੱਕ"
+
+#: js/ui/status/keyboard.js:826
+msgid "Keyboard"
+msgstr "ਕੀਬੋਰਡ"
+
+#: js/ui/status/keyboard.js:848
+msgid "Show Keyboard Layout"
+msgstr "ਕੀਬੋਰਡ ਲੇਆਉਟ ਵੇਖਾਓ"
+
+#: js/ui/status/location.js:65 js/ui/status/location.js:174
+msgid "Location Enabled"
+msgstr "ਟਿਕਾਣਾ ਸਮਰੱਥ ਹੈ"
+
+#: js/ui/status/location.js:66 js/ui/status/location.js:175
+msgid "Disable"
+msgstr "ਬੰਦ"
+
+#: js/ui/status/location.js:67
+msgid "Privacy Settings"
+msgstr "ਪਰਦੇਦਾਰੀ ਸੈਟਿੰਗਾਂ"
+
+#: js/ui/status/location.js:173
+msgid "Location In Use"
+msgstr "ਟਿਕਾਣਾ ਵਰਤੋਂ ਵਿੱਚ ਹੈ"
+
+#: js/ui/status/location.js:177
+msgid "Location Disabled"
+msgstr "ਟਿਕਾਣਾ ਅਸਮਰੱਥ ਹੈ"
+
+#: js/ui/status/location.js:178
+msgid "Enable"
+msgstr "ਚਾਲੂ"
+
+#: js/ui/status/location.js:355
+msgid "Allow location access"
+msgstr "ਟਿਕਾਣੇ ਲਈ ਪਹੁੰਚ ਲਈ ਸਹਿਮਤੀ ਦਿਓ"
+
+#. Translators: %s is an application name
+#: js/ui/status/location.js:357
+#, javascript-format
+#| msgid "Give %s access to your location?"
+msgid "The app %s wants to access your location"
+msgstr "ਐਪ %s ਨੂੰ ਆਪਣੇ ਟਿਕਾਣੇ ਲਈ ਪਹੁੰਚ ਚਾਹੁੰਦੀ ਹੈ"
+
+#: js/ui/status/location.js:367
+msgid "Location access can be changed at any time from the privacy settings."
+msgstr ""
+"ਟਿਕਾਣਾ ਪਹੁੰਚ ਨੂੰ ਪਰਦੇਦਾਰੀ ਸੈਟਿੰਗਾਂ ਵਿੱਚੋਂ ਕਿਸੇ ਵੀ ਸਮੇਂ ਬਦਲਿਆ ਜਾ ਸਕਦਾ ਹੈ।"
+
+#: js/ui/status/network.js:66
+msgid "<unknown>"
+msgstr "<ਅਣਪਛਾਤਾ>"
+
+#. Translators: %s is a network identifier
+#: js/ui/status/network.js:420 js/ui/status/network.js:1317
+#, javascript-format
+msgid "%s Off"
+msgstr "%s ਬੰਦ ਹੈ"
+
+#. Translators: %s is a network identifier
+#: js/ui/status/network.js:423
+#, javascript-format
+msgid "%s Connected"
+msgstr "%s ਕਨੈਕਟ ਹੈ"
+
+#. Translators: this is for network devices that are physically present but are not
+#. under NetworkManager's control (and thus cannot be used in the menu);
+#. %s is a network identifier
+#: js/ui/status/network.js:428
+#, javascript-format
+msgid "%s Unmanaged"
+msgstr "%s ਬਿਨ-ਇੰਤਜ਼ਾਮ"
+
+#. Translators: %s is a network identifier
+#: js/ui/status/network.js:431
+#, javascript-format
+msgid "%s Disconnecting"
+msgstr "%s ਡਿਸ-ਕੁਨੈਕਟ ਕਰ ਰਿਹਾ ਹੈ"
+
+#. Translators: %s is a network identifier
+#: js/ui/status/network.js:438 js/ui/status/network.js:1309
+#, javascript-format
+msgid "%s Connecting"
+msgstr "%s ਕਨੈਕਟ ਕਰ ਰਿਹਾ ਹੈ"
+
+#. Translators: this is for network connections that require some kind of key or password; %s is a network identifier
+#: js/ui/status/network.js:441
+#, javascript-format
+msgid "%s Requires Authentication"
+msgstr "%s ਪਰਮਾਣਕਿਤਾ ਚਾਹੀਦੀ ਹੈ"
+
+#. Translators: this is for devices that require some kind of firmware or kernel
+#. module, which is missing; %s is a network identifier
+#: js/ui/status/network.js:449
+#, javascript-format
+msgid "Firmware Missing For %s"
+msgstr "%s ਲਈ ਫਿਰਮਵੇਅਰ ਮੌਜੂਦ ਨਹੀਂ ਹੈ"
+
+#. Translators: this is for a network device that cannot be activated (for example it
+#. is disabled by rfkill, or it has no coverage; %s is a network identifier
+#: js/ui/status/network.js:453
+#, javascript-format
+msgid "%s Unavailable"
+msgstr "%s ਨਾ-ਮੌਜੂਦ"
+
+#. Translators: %s is a network identifier
+#: js/ui/status/network.js:456
+#, javascript-format
+msgid "%s Connection Failed"
+msgstr "%s ਕਨੈਕਸ਼ਨ ਫੇਲ੍ਹ ਹੈ"
+
+#: js/ui/status/network.js:468
+msgid "Wired Settings"
+msgstr "ਤਾਰ ਸੈਟਿੰਗਾਂ"
+
+#: js/ui/status/network.js:511
+msgid "Mobile Broadband Settings"
+msgstr "ਮੋਬਾਇਲ ਬਰਾਡਬੈਂਡ ਸੈਟਿੰਗਾਂ"
+
+#. Translators: %s is a network identifier
+#: js/ui/status/network.js:558 js/ui/status/network.js:1314
+#, javascript-format
+msgid "%s Hardware Disabled"
+msgstr "%s ਹਾਰਡਵੇਅਰ ਅਸਮਰੱਥ ਹੈ"
+
+#. Translators: this is for a network device that cannot be activated
+#. because it's disabled by rfkill (airplane mode); %s is a network identifier
+#: js/ui/status/network.js:562
+#, javascript-format
+msgid "%s Disabled"
+msgstr "%s ਅਸਮਰੱਥ ਹੈ"
+
+#: js/ui/status/network.js:603
+msgid "Connect to Internet"
+msgstr "ਇੰਟਰਨੈੱਟ ਨਾਲ ਕਨੈਕਟ ਕਰੋ"
+
+#: js/ui/status/network.js:808
+msgid "Airplane Mode is On"
+msgstr "ਏਅਰਪਲੇਨ ਮੋਡ ਚਾਲੂ ਹੈ"
+
+#: js/ui/status/network.js:809
+msgid "Wi-Fi is disabled when airplane mode is on."
+msgstr "ਜਦੋਂ ਏਅਰ-ਪਲੇਨ ਮੋਡ ਚਾਲੂ ਹੁੰਦਾ ਹੈ ਤਾਂ ਵਾਈ-ਫਾਈ ਬੰਦ ਹੁੰਦਾ ਹੈ"
+
+#: js/ui/status/network.js:810
+msgid "Turn Off Airplane Mode"
+msgstr "ਏਅਰਪਲੇਨ ਮੋਡ ਬੰਦ ਕਰੋ"
+
+#: js/ui/status/network.js:819
+msgid "Wi-Fi is Off"
+msgstr "ਵਾਈ-ਫਾਈ ਬੰਦ ਹੈ"
+
+#: js/ui/status/network.js:820
+msgid "Wi-Fi needs to be turned on in order to connect to a network."
+msgstr "ਨੈੱਟਵਰਕ ਨਾਲ ਕੁਨੈਕਟ ਕਰਨ ਲਈ ਵਾਈ-ਫਾਈ ਨੂੰ ਚਾਲੂ ਕਰਨ ਦੀ ਲੋੜ ਹੈ"
+
+#: js/ui/status/network.js:821
+msgid "Turn On Wi-Fi"
+msgstr "ਵਾਈ-ਫਾਈ ਚਾਲੂ"
+
+#: js/ui/status/network.js:846
+msgid "Wi-Fi Networks"
+msgstr "ਵਾਈ-ਫਾਈ ਨੈੱਟਵਰਕ"
+
+#: js/ui/status/network.js:848
+msgid "Select a network"
+msgstr "ਨੈੱਟਵਰਕ ਚੁਣੋ"
+
+#: js/ui/status/network.js:880
+msgid "No Networks"
+msgstr "ਕੋਈ ਨੈੱਟਵਰਕ ਨਹੀਂ"
+
+#: js/ui/status/network.js:901 js/ui/status/rfkill.js:106
+msgid "Use hardware switch to turn off"
+msgstr "ਬੰਦ ਕਰਨ ਲਈ ਹਾਰਡਵੇਅਰ ਸਵਿੱਚ ਵਰਤੋਂ"
+
+#: js/ui/status/network.js:1178
+msgid "Select Network"
+msgstr "ਨੈੱਟਵਰਕ ਚੁਣੋ"
+
+#: js/ui/status/network.js:1184
+msgid "Wi-Fi Settings"
+msgstr "ਵਾਈ-ਫਾਈ ਸੈਟਿੰਗਾਂ"
+
+#. Translators: %s is a network identifier
+#: js/ui/status/network.js:1305
+#, javascript-format
+msgid "%s Hotspot Active"
+msgstr "%s ਹਾਟਸਪਾਟ ਸਰਗਰਮ"
+
+#. Translators: %s is a network identifier
+#: js/ui/status/network.js:1320
+#, javascript-format
+msgid "%s Not Connected"
+msgstr "%s ਕੁਨੈਕਟ ਨਹੀਂ ਹੈ"
+
+#: js/ui/status/network.js:1417
+msgid "connecting…"
+msgstr "…ਕਨੈਕਟ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ"
+
+#. Translators: this is for network connections that require some kind of key or password
+#: js/ui/status/network.js:1420
+msgid "authentication required"
+msgstr "ਪਰਮਾਣਕਿਤਾ ਚਾਹੀਦੀ ਹੈ"
+
+#: js/ui/status/network.js:1422
+msgid "connection failed"
+msgstr "ਕਨੈਕਸ਼ਨ ਫੇਲ੍ਹ ਹੈ"
+
+#: js/ui/status/network.js:1473
+msgid "VPN Settings"
+msgstr "VPN ਸੈਟਿੰਗਾਂ"
+
+#: js/ui/status/network.js:1490
+msgid "VPN"
+msgstr "VPN"
+
+#: js/ui/status/network.js:1500
+msgid "VPN Off"
+msgstr "VPN ਬੰਦ ਹੈ"
+
+#: js/ui/status/network.js:1561 js/ui/status/rfkill.js:84
+msgid "Network Settings"
+msgstr "ਨੈੱਟਵਰਕ ਸੈਟਿੰਗਾਂ"
+
+#: js/ui/status/network.js:1590
+#, javascript-format
+msgid "%s Wired Connection"
+msgid_plural "%s Wired Connections"
+msgstr[0] "%s ਤਾਰ ਵਾਲਾ ਕਨੈਕਸ਼ਨ"
+msgstr[1] "%s ਤਾਰ ਵਾਲੇ ਕਨੈਕਸ਼ਨ"
+
+#: js/ui/status/network.js:1594
+#, javascript-format
+msgid "%s Wi-Fi Connection"
+msgid_plural "%s Wi-Fi Connections"
+msgstr[0] "%s Wi-Fi ਕਨੈਕਸ਼ਨ"
+msgstr[1] "%s Wi-Fi ਕਨੈਕਸ਼ਨ"
+
+#: js/ui/status/network.js:1598
+#, javascript-format
+msgid "%s Modem Connection"
+msgid_plural "%s Modem Connections"
+msgstr[0] "%s ਮਾਡਮ ਕਨੈਕਸ਼ਨ"
+msgstr[1] "%s ਮਾਡਮ ਕਨੈਕਸ਼ਨ"
+
+#: js/ui/status/network.js:1732
+msgid "Connection failed"
+msgstr "ਕਨੈਕਸ਼ਨ ਫੇਲ੍ਹ ਹੈ"
+
+#: js/ui/status/network.js:1733
+msgid "Activation of network connection failed"
+msgstr "ਨੈੱਟਵਰਕ ਕਨੈਕਸ਼ਨ ਦੀ ਐਕਟੀਵੇਸ਼ਨ ਫੇਲ੍ਹ ਹੋਈ"
+
+#: js/ui/status/nightLight.js:63
+msgid "Night Light Disabled"
+msgstr "ਰਾਤ ਦੀ ਰੌਸ਼ਨੀ ਅਸਮਰੱਥ ਹੈ"
+
+#: js/ui/status/nightLight.js:64
+msgid "Night Light On"
+msgstr "ਰਾਤ ਦੀ ਰੋਸ਼ਨੀ ਚਾਲੂ ਹੈ"
+
+#: js/ui/status/nightLight.js:66
+msgid "Resume"
+msgstr "ਮੁੜ-ਪ੍ਰਾਪਤ ਕਰੋ"
+
+#: js/ui/status/nightLight.js:67
+msgid "Disable Until Tomorrow"
+msgstr "ਭਲਕੇ ਤੱਕ ਅਸਮਰੱਥ ਕਰੋ"
+
+#: js/ui/status/power.js:47
+msgid "Power Settings"
+msgstr "ਪਾਵਰ ਸੈਟਿੰਗਾਂ"
+
+#: js/ui/status/power.js:63
+msgid "Fully Charged"
+msgstr "ਪੂਰੀ ਚਾਰਜ"
+
+#: js/ui/status/power.js:69
+msgid "Not Charging"
+msgstr "ਚਾਰਜ ਨਹੀਂ ਹੋ ਰਹੀ"
+
+#. 0 is reported when UPower does not have enough data
+#. to estimate battery life
+#: js/ui/status/power.js:72 js/ui/status/power.js:78
+msgid "Estimating…"
+msgstr "…ਅੰਦਾਜ਼ਾ ਲਾਇਆ ਜਾ ਰਿਹਾ ਹੈ"
+
+#. Translators: this is <hours>:<minutes> Remaining (<percentage>)
+#: js/ui/status/power.js:86
+#, javascript-format
+msgid "%d∶%02d Remaining (%d %%)"
+msgstr "%d∶%02d ਬਾਕੀ (%d %%)"
+
+#. Translators: this is <hours>:<minutes> Until Full (<percentage>)
+#: js/ui/status/power.js:91
+#, javascript-format
+msgid "%d∶%02d Until Full (%d %%)"
+msgstr "%d∶%02d ਪੂਰਾ ਹੋਣ ਲਈ (%d %%)"
+
+#: js/ui/status/power.js:139 js/ui/status/power.js:141
+#, javascript-format
+msgid "%d %%"
+msgstr "%d %%"
+
+#: js/ui/status/remoteAccess.js:44
+msgid "Screen is Being Shared"
+msgstr "ਸਕਰੀਨ ਸਾਂਝੀ ਕੀਤੀ ਜਾ ਰਹੀ ਹੈ"
+
+#: js/ui/status/remoteAccess.js:46
+msgid "Turn off"
+msgstr "ਬੰਦ ਕਰੋ"
+
+#. The menu only appears when airplane mode is on, so just
+#. statically build it as if it was on, rather than dynamically
+#. changing the menu contents.
+#: js/ui/status/rfkill.js:79
+msgid "Airplane Mode On"
+msgstr "ਏਅਰਪਲੇਨ ਮੋਡ ਚਾਲੂ ਹੈ"
+
+#: js/ui/status/system.js:103
+msgid "Lock"
+msgstr "ਲਾਕ"
+
+#: js/ui/status/system.js:116
+#| msgid "Power Off"
+msgid "Power Off / Log Out"
+msgstr "ਬੰਦ ਕਰੋ  / ਲਾਗ ਆਉਟ"
+
+#: js/ui/status/system.js:119
+msgid "Log Out"
+msgstr "ਲਾਗ ਆਉਟ"
+
+#: js/ui/status/system.js:131
+#| msgid "Switch User"
+msgid "Switch User…"
+msgstr "…ਵਰਤੋਂਂਕਾਰ ਬਦਲੋ"
+
+#: js/ui/status/system.js:145
+msgid "Suspend"
+msgstr "ਸਸਪੈਂਡ"
+
+#: js/ui/status/system.js:157
+#| msgid "Power Off"
+msgid "Power Off…"
+msgstr "…ਬੰਦ ਕਰੋ"
+
+#: js/ui/status/thunderbolt.js:263
+msgid "Thunderbolt"
+msgstr "ਥੰਡਰਬੋਲਟ"
+
+#: js/ui/status/thunderbolt.js:325
+msgid "Unknown Thunderbolt device"
+msgstr "ਅਣਪਛਾਤਾ ਥੰਡਰਬੋਲਟ ਡਿਵਾਈਸ"
+
+#: js/ui/status/thunderbolt.js:326
+msgid ""
+"New device has been detected while you were away. Please disconnect and "
+"reconnect the device to start using it."
+msgstr ""
+"ਜਦੋਂ ਤੁਸੀਂ ਦੂਰ ਸੀ ਤਾਂ ਨਵਾਂ ਡਿਵਾਈਸ ਖੋਜਿਆ ਗਿਆ ਹੈ। ਡਿਵਾਈਸ ਨੂੰ ਵਰਤਣਾ ਸ਼ੁਰੂ ਕਰਨ ਲਈ"
+" ਇਸ ਨੂੰ ਡਿਸ-"
+"ਕਨੈਕਟ ਕਰਕੇ ਮੁੜ ਕਨੈਕਟ ਕਰੋ।"
+
+#: js/ui/status/thunderbolt.js:329
+msgid "Unauthorized Thunderbolt device"
+msgstr "ਨਾ-ਪ੍ਰਮਾਣਿਤ ਕੀਤਾ ਥੰਡਰਬੋਲਟ ਯੰਤਰ"
+
+#: js/ui/status/thunderbolt.js:330
+msgid ""
+"New device has been detected and needs to be authorized by an administrator."
+msgstr ""
+"ਨਵਾਂ ਡਿਵਾਈਸ ਖੋਜਿਆ ਜਾ ਚੁੱਕਿਆ ਗਿਆ ਹੈ ਅਤੇ ਪਰਸ਼ਾਸ਼ਕ ਵਲੋਂ ਪਰਮਾਣਿਤ ਕਰਨ ਦੀ ਲੋੜ ਹੁੰਦੀ"
+" ਹੈ।"
+
+#: js/ui/status/thunderbolt.js:336
+msgid "Thunderbolt authorization error"
+msgstr "ਥੰਡਰਬੋਲਟ ਪਰਮਾਣਕਿਤਾ ਗ਼ਲਤੀ"
+
+#: js/ui/status/thunderbolt.js:337
+#, javascript-format
+msgid "Could not authorize the Thunderbolt device: %s"
+msgstr "ਥੰਡਰਬੋਲਟ ਡਿਵਾਈਸ ਨੂੰ ਪਰਮਾਣਿਤ ਨਹੀਂ ਕੀਤਾ ਜਾ ਸਕਿਆ: %s"
+
+#: js/ui/status/volume.js:150
+msgid "Volume changed"
+msgstr "ਵਾਲੀਅਮ ਬਦਲਿਆ ਗਿਆ"
+
+#: js/ui/status/volume.js:221
+msgid "Volume"
+msgstr "ਵਾਲੀਅਮ"
+
+#. Translators: this is for display mirroring i.e. cloning.
+#. * Try to keep it under around 15 characters.
+#.
+#: js/ui/switchMonitor.js:17
+msgid "Mirror"
+msgstr "ਮਿੱਰਰ"
+
+#. Translators: this is for the desktop spanning displays.
+#. * Try to keep it under around 15 characters.
+#.
+#: js/ui/switchMonitor.js:22
+msgid "Join Displays"
+msgstr "ਡਿਸਪਲੇਅ ਨੂੰ ਜੋੜੋ"
+
+#. Translators: this is for using only an external display.
+#. * Try to keep it under around 15 characters.
+#.
+#: js/ui/switchMonitor.js:27
+msgid "External Only"
+msgstr "ਕੇਵਲ ਬਾਹਰੀ"
+
+#. Translators: this is for using only the laptop display.
+#. * Try to keep it under around 15 characters.
+#.
+#: js/ui/switchMonitor.js:32
+msgid "Built-in Only"
+msgstr "ਕੇਵਲ ਬਿਲਟ-ਇਨ"
+
+#. Translators: This is a time format for a date in
+#. long format
+#: js/ui/unlockDialog.js:370
+#| msgctxt "calendar heading"
+#| msgid "%A, %B %-d"
+msgid "%A %B %-d"
+msgstr "%A, %-d %B"
+
+#: js/ui/unlockDialog.js:376
+msgid "Swipe up to unlock"
+msgstr "ਅਣ-ਲਾਕ ਕਰਨ ਲਈ ਉੱਤੇ ਵੱਲ ਸਰਕਾਓ"
+
+#: js/ui/unlockDialog.js:377
+msgid "Click or press a key to unlock"
+msgstr "ਅਣ-ਲਾਕ ਕਰਨ ਲਈ ਸਵਿੱਚ ਕਲਿੱਕ ਕਰੋ ਜਾਂ ਦਬਾਓ"
+
+#: js/ui/unlockDialog.js:549
+msgid "Unlock Window"
+msgstr "ਵਿੰਡੋ ਨੂੰ ਅਣਲਾਕ ਕਰੋ"
+
+#: js/ui/unlockDialog.js:558
+msgid "Log in as another user"
+msgstr "ਹੋਰ ਵਰਤੋਂਕਾਰ ਵਜੋਂ ਲਾਗਇਨ"
+
+#: js/ui/viewSelector.js:181
+msgid "Applications"
+msgstr "ਐਪਲੀਕੇਸ਼ਨ"
+
+#: js/ui/viewSelector.js:185
+msgid "Search"
+msgstr "ਖੋਜ"
+
+#: js/ui/windowAttentionHandler.js:20
+#, javascript-format
+msgid "“%s” is ready"
+msgstr "“%s” ਤਿਆਰ ਹੈ"
+
+#. Translators: This string should be shorter than 30 characters
+#: js/ui/windowManager.js:55
+#| msgid "Do you want to keep these display settings?"
+msgid "Keep these display settings?"
+msgstr "ਇਹ ਡਿਸਪਲੇਅ ਸੈਟਿੰਗਾਂ ਰੱਖਣੀਆਂ ਚਾਹੁੰਦੇ ਹੋ?"
+
+#. Translators: this and the following message should be limited in length,
+#. to avoid ellipsizing the labels.
+#.
+#: js/ui/windowManager.js:64
+msgid "Revert Settings"
+msgstr "ਸੈਟਿੰਗਾਂ ਵਾਪਿਸ ਲਵੋ"
+
+#: js/ui/windowManager.js:67
+msgid "Keep Changes"
+msgstr "ਬਦਲਾਅ ਲਾਗੂ ਰੱਖੋ"
+
+#: js/ui/windowManager.js:85
+#, javascript-format
+msgid "Settings changes will revert in %d second"
+msgid_plural "Settings changes will revert in %d seconds"
+msgstr[0] "ਸੈਟਿੰਗਾਂ ਬਦਲਾਅ ਨੂੰ %d ਸਕਿੰਟ ਵਿੱਚ ਵਾਪਿਸ ਕੀਤਾ ਜਾਵੇਗਾ"
+msgstr[1] "ਸੈਟਿੰਗਾਂ ਬਦਲਾਅ ਨੂੰ %d ਸਕਿੰਟਾਂ ਵਿੱਚ ਵਾਪਿਸ ਕੀਤਾ ਜਾਵੇਗਾ"
+
+#. Translators: This represents the size of a window. The first number is
+#. * the width of the window and the second is the height.
+#: js/ui/windowManager.js:544
+#, javascript-format
+msgid "%d × %d"
+msgstr "%d × %d"
+
+#: js/ui/windowMenu.js:27
+msgid "Minimize"
+msgstr "ਘੱਟੋ-ਘੱਟ"
+
+#: js/ui/windowMenu.js:34
+msgid "Unmaximize"
+msgstr "ਅਣ-ਵੱਧੋ-ਵੱਧ"
+
+#: js/ui/windowMenu.js:38
+msgid "Maximize"
+msgstr "ਵੱਧੋ-ਵੱਧ"
+
+#: js/ui/windowMenu.js:45
+msgid "Move"
+msgstr "ਭੇਜੋ"
+
+#: js/ui/windowMenu.js:51
+msgid "Resize"
+msgstr "ਮੁੜ-ਆਕਾਰ"
+
+#: js/ui/windowMenu.js:58
+msgid "Move Titlebar Onscreen"
+msgstr "ਟਾਈਟਲ-ਪੱਟੀ ਆਨ-ਸਕਰੀਨ ਹਿਲਾਓ"
+
+#: js/ui/windowMenu.js:63
+msgid "Always on Top"
+msgstr "ਹਮੇਸ਼ਾ ਉੱਤੇ ਰੱਖੋ"
+
+#: js/ui/windowMenu.js:82
+msgid "Always on Visible Workspace"
+msgstr "ਹਮੇਸ਼ਾ ਵਿਖਾਈ ਦਿੰਦੇ ਵਰਕਸਪੇਸ ਉੱਤੇ"
+
+#: js/ui/windowMenu.js:96
+msgid "Move to Workspace Left"
+msgstr "ਖੱਬੇ ਵਰਕਸਪੇਸ ਵਿੱਚ ਭੇਜੋ"
+
+#: js/ui/windowMenu.js:102
+msgid "Move to Workspace Right"
+msgstr "ਸੱਜੇ ਵਰਕਸਪੇਸ ਵਿੱਚ ਭੇਜੋ"
+
+#: js/ui/windowMenu.js:108
+msgid "Move to Workspace Up"
+msgstr "ਉੱਤਲੇ ਵਰਕਸਪੇਸ ਵਿੱਚ ਭੇਜੋ"
+
+#: js/ui/windowMenu.js:114
+msgid "Move to Workspace Down"
+msgstr "ਹੇਠਲੇ ਵਰਕਸਪੇਸ ਵਿੱਚ ਭੇਜੋ"
+
+#: js/ui/windowMenu.js:132
+msgid "Move to Monitor Up"
+msgstr "ਉੱਤਲੇ ਮਾਨੀਟਰ ਵਿੱਚ ਭੇਜੋ"
+
+#: js/ui/windowMenu.js:141
+msgid "Move to Monitor Down"
+msgstr "ਹੇਠਲੇ ਮਾਨੀਟਰ ਵਿੱਚ ਭੇਜੋ"
+
+#: js/ui/windowMenu.js:150
+msgid "Move to Monitor Left"
+msgstr "ਖੱਬੇ ਮਾਨੀਟਰ ਵਿੱਚ ਭੇਜੋ"
+
+#: js/ui/windowMenu.js:159
+msgid "Move to Monitor Right"
+msgstr "ਸੱਜੇ ਮਾਨੀਟਰ ਵਿੱਚ ਭੇਜੋ"
+
+#: js/ui/windowMenu.js:167
+msgid "Close"
+msgstr "ਬੰਦ ਕਰੋ"
+
+#: src/calendar-server/evolution-calendar.desktop.in:3
+msgid "Evolution Calendar"
+msgstr "ਈਵੇਲੂਸ਼ਨ ਕੈਲੰਡਰ"
+
+#: src/main.c:460 subprojects/extensions-tool/src/main.c:249
+msgid "Print version"
+msgstr "ਵਰਜ਼ਨ ਛਾਪੋ"
+
+#: src/main.c:466
+msgid "Mode used by GDM for login screen"
+msgstr "ਲਾਗਇਨ ਸਕਰੀਨ ਲਈ GDM ਵਲੋਂ ਵਰਤਿਆ ਮੋਡ"
+
+#: src/main.c:472
+msgid "Use a specific mode, e.g. “gdm” for login screen"
+msgstr "ਲਾਗਇਨ ਸਕਰੀਨ ਉੱਤੇ ਖਾਸ ਮੋਡ ਜਿਵੇਂ ਕਿ “gdm“ ਵਰਤੋਂ"
+
+#: src/main.c:478
+msgid "List possible modes"
+msgstr "ਸੰਭਵ ਮੋਡ ਵੇਖਾਓ"
+
+#: src/shell-app.c:279
+msgctxt "program"
+msgid "Unknown"
+msgstr "ਅਣਪਛਾਤਾ"
+
+#: src/shell-app.c:530
+#, c-format
+msgid "Failed to launch “%s”"
+msgstr "“%s” ਚਲਾਉਣ ਲਈ ਫੇਲ੍ਹ"
+
+#: src/shell-keyring-prompt.c:731
+msgid "Passwords do not match."
+msgstr "ਪਾਸਵਰਡ ਮਿਲਦੇ ਨਹੀਂ ਹਨ।"
+
+#: src/shell-keyring-prompt.c:739
+msgid "Password cannot be blank"
+msgstr "ਪਾਸਵਰਡ ਖਾਲੀ ਨਹੀਂ ਹੋ ਸਕਦਾ ਹੈ"
+
+#: src/shell-polkit-authentication-agent.c:344
+msgid "Authentication dialog was dismissed by the user"
+msgstr "ਪਰਮਾਣਕਿਤਾ ਡਾਈਲਾਗ ਵਰਤੋਂਂਕਾਰ ਵਲੋਂ ਰੱਦ ਕੀਤਾ"
+
+#. Translators: a file path to an extension directory
+#: subprojects/extensions-tool/src/command-create.c:125
+#, c-format
+msgid "The new extension was successfully created in %s.\n"
+msgstr "ਨਵੀਂ ਇਕਸਟੈਨਸ਼ਨ %s ਵਿੱਚ ਕਾਮਯਾਬੀ ਨਾਲ ਬਣਾਈ ਗਈ ਸੀ।\n"
+
+#: subprojects/extensions-tool/src/command-create.c:194
+#, c-format
+msgid ""
+"Name should be a very short (ideally descriptive) string.\n"
+"Examples are: %s"
+msgstr ""
+
+#: subprojects/extensions-tool/src/command-create.c:197
+#: subprojects/extensions-tool/src/main.c:170
+msgid "Name"
+msgstr "ਨਾਂ"
+
+#: subprojects/extensions-tool/src/command-create.c:208
+#, c-format
+msgid ""
+"Description is a single-sentence explanation of what your extension does.\n"
+"Examples are: %s"
+msgstr ""
+
+#: subprojects/extensions-tool/src/command-create.c:222
+msgid ""
+"UUID is a globally-unique identifier for your extension.\n"
+"This should be in the format of an email address (clicktofocus@janedoe."
+"example.com)\n"
+msgstr ""
+
+#: subprojects/extensions-tool/src/command-create.c:244
+msgid "The unique identifier of the new extension"
+msgstr ""
+
+#: subprojects/extensions-tool/src/command-create.c:247
+msgid "NAME"
+msgstr "ਨਾਂ"
+
+#: subprojects/extensions-tool/src/command-create.c:248
+msgid "The user-visible name of the new extension"
+msgstr "ਨਵੀਂ ਇਕਟੈਨਸ਼ਨ ਦਾ ਵਰਤੋਂਕਾਰ ਨੂੰ ਦਿਸਣ ਵਾਲਾ ਨਾਂ"
+
+#: subprojects/extensions-tool/src/command-create.c:250
+msgid "DESCRIPTION"
+msgstr "ਵਰਣਨ"
+
+#: subprojects/extensions-tool/src/command-create.c:252
+msgid "A short description of what the extension does"
+msgstr "ਛੋਟਾ ਵਰਣਨ ਕਿ ਇਕਸਟੈਨਸ਼ਨ ਕੀ ਕਰਦੀ ਹੈ"
+
+#: subprojects/extensions-tool/src/command-create.c:255
+msgid "Enter extension information interactively"
+msgstr ""
+
+#: subprojects/extensions-tool/src/command-create.c:263
+msgid "Create a new extension"
+msgstr "ਨਵੀਂ ਇਕਸਟੈਨਸ਼ਨ ਬਣਾਓ"
+
+#: subprojects/extensions-tool/src/command-create.c:280
+#: subprojects/extensions-tool/src/command-list.c:168
+msgid "Unknown arguments"
+msgstr "ਅਣਪਛਾਤਾ ਆਰਗੂਮੈਂਟ"
+
+#: subprojects/extensions-tool/src/command-create.c:289
+msgid "UUID, name and description are required"
+msgstr "UUID, ਨਾਂ ਅਤੇ ਵਰਣਨ ਚਾਹੀਦਾ ਹੈ"
+
+#: subprojects/extensions-tool/src/command-disable.c:57
+msgid "Disable an extension"
+msgstr "ਇਕਸਟੈਨਸ਼ਨ ਅਸਮਰੱਥ ਕਰੋ"
+
+#: subprojects/extensions-tool/src/command-disable.c:74
+#: subprojects/extensions-tool/src/command-enable.c:74
+#: subprojects/extensions-tool/src/command-info.c:96
+#: subprojects/extensions-tool/src/command-prefs.c:107
+#: subprojects/extensions-tool/src/command-reset.c:74
+#: subprojects/extensions-tool/src/command-uninstall.c:89
+msgid "No UUID given"
+msgstr "ਕੋਈ UUID ਨਹੀਂ ਦਿੱਤਾ"
+
+#: subprojects/extensions-tool/src/command-disable.c:79
+#: subprojects/extensions-tool/src/command-enable.c:79
+#: subprojects/extensions-tool/src/command-info.c:101
+#: subprojects/extensions-tool/src/command-prefs.c:112
+#: subprojects/extensions-tool/src/command-reset.c:79
+#: subprojects/extensions-tool/src/command-uninstall.c:94
+msgid "More than one UUID given"
+msgstr "ਇੱਕ ਤੋਂ ਵੱਧ UUID ਦਿੱਤਾ"
+
+#: subprojects/extensions-tool/src/command-enable.c:57
+msgid "Enable an extension"
+msgstr "ਇਕਸਟੈਨਸ਼ਨ ਸਮਰੱਥ ਕਰੋ"
+
+#: subprojects/extensions-tool/src/command-info.c:79
+msgid "Show extensions info"
+msgstr "ਇਕਸਟੈਨਸ਼ਨ ਜਾਣਕਾਰੀ ਵੇਖਾਓ"
+
+#: subprojects/extensions-tool/src/command-install.c:173
+msgid "Overwrite an existing extension"
+msgstr "ਮੌਜੂਦਾ ਇਕਟੈਨਸ਼ਨ ਉੱਤੇ ਲਿਖੋ"
+
+#: subprojects/extensions-tool/src/command-install.c:175
+msgid "EXTENSION_BUNDLE"
+msgstr "EXTENSION_BUNDLE"
+
+#: subprojects/extensions-tool/src/command-install.c:184
+msgid "Install an extension bundle"
+msgstr "ਇਕਟੈਨਸ਼ਨ ਬੰਡਲ ਇੰਸਟਾਲ ਕਰੋ"
+
+#: subprojects/extensions-tool/src/command-install.c:201
+msgid "No extension bundle specified"
+msgstr "ਕੋਈ ਇਕਟੈਨਸ਼ਨ ਬੰਡਲ ਨਹੀਂ ਦਿੱਤਾ"
+
+#: subprojects/extensions-tool/src/command-install.c:207
+msgid "More than one extension bundle specified"
+msgstr ""
+
+#: subprojects/extensions-tool/src/command-list.c:125
+msgid "Show user-installed extensions"
+msgstr "ਵਰਤੋਂਕਾਰ ਵਲੋਂ ਇੰਸਟਾਲ ਕੀਤੀਆਂ ਇਕਸਟੈਨਸ਼ਨਾਂ ਵੇਖਾਓ"
+
+#: subprojects/extensions-tool/src/command-list.c:128
+msgid "Show system-installed extensions"
+msgstr "ਸਿਸਟਮ ਵਲੋਂ ਇੰਸਟਾਲ ਕੀਤੀਆਂ ਇਕਸਟੈਨਸ਼ਨਾਂ ਵੇਖਾਓ"
+
+#: subprojects/extensions-tool/src/command-list.c:131
+msgid "Show enabled extensions"
+msgstr "ਸਮਰੱਥ ਕੀਤੀਆਂ ਇਕਸਟੈਨਸ਼ਨਾਂ ਵੇਖਾਓ"
+
+#: subprojects/extensions-tool/src/command-list.c:134
+msgid "Show disabled extensions"
+msgstr "ਅਸਮਰੱਥ ਕੀਤੀਆਂ ਇਕਸਟੈਨਸ਼ਨਾਂ ਵੇਖਾਓ"
+
+#: subprojects/extensions-tool/src/command-list.c:137
+msgid "Show extensions with preferences"
+msgstr "ਪਸੰਦਾਂ ਨਾਲ ਇਕਸਟੈਨਸ਼ਨਾਂ ਵੇਖਾਓ"
+
+#: subprojects/extensions-tool/src/command-list.c:140
+#| msgid "Show extensions with preferences"
+msgid "Show extensions with updates"
+msgstr "ਇਕਸਟੈਨਸ਼ਨਾਂ ਨਾਲ ਇਕਸਟੈਨਸ਼ਨਾਂ ਵੇਖਾਓ"
+
+#: subprojects/extensions-tool/src/command-list.c:143
+msgid "Print extension details"
+msgstr "ਇਕਸਟੈਨਸ਼ਨ ਵੇਰਵੇ ਛਾਪੋ"
+
+#: subprojects/extensions-tool/src/command-list.c:151
+msgid "List installed extensions"
+msgstr "ਇੰਸਟਾਲ ਕੀਤੀਆਂ ਇਕਸਟੈਨਸ਼ਨਾਂ ਦੀ ਸੂਚੀ"
+
+#: subprojects/extensions-tool/src/command-pack.c:450
+msgid "FILE"
+msgstr "ਫਾਇਲ"
+
+#: subprojects/extensions-tool/src/command-pack.c:451
+msgid "Additional source to include in the bundle"
+msgstr ""
+
+#: subprojects/extensions-tool/src/command-pack.c:454
+msgid "SCHEMA"
+msgstr "ਸਕੀਮਾ"
+
+#: subprojects/extensions-tool/src/command-pack.c:455
+msgid "A GSettings schema that should be included"
+msgstr ""
+
+#: subprojects/extensions-tool/src/command-pack.c:457
+#: subprojects/extensions-tool/src/command-pack.c:468
+msgid "DIRECTORY"
+msgstr "ਡਾਇਰੈਕਟਰੀ"
+
+#: subprojects/extensions-tool/src/command-pack.c:459
+msgid "The directory where translations are found"
+msgstr "ਡਾਇਰੈਕਟਰੀ, ਜਿੱਥੇ ਉਲੱਥੇ ਲੱਭੇ ਜਾਂਦੇ ਹਨ"
+
+#: subprojects/extensions-tool/src/command-pack.c:461
+msgid "DOMAIN"
+msgstr "ਡੋਮੇਨ"
+
+#: subprojects/extensions-tool/src/command-pack.c:463
+msgid "The gettext domain to use for translations"
+msgstr "ਉਲੱਥੇ ਲਈ ਵਰਤਣ ਲਈ gettext ਡੋਮੇਨ"
+
+#: subprojects/extensions-tool/src/command-pack.c:466
+msgid "Overwrite an existing pack"
+msgstr "ਮੌਜੂਦਾ ਪੈਕ ਉੱਤੇ ਲਿਖੋ"
+
+#: subprojects/extensions-tool/src/command-pack.c:470
+msgid "The directory where the pack should be created"
+msgstr "ਡਾਇਰੈਕਟਰੀ, ਜਿੱਥੇ ਪੈਕ ਬਣਾਏ ਜਾਣੇ ਚਾਹੀਦੇ ਹਨ"
+
+#: subprojects/extensions-tool/src/command-pack.c:472
+msgid "SOURCE_DIRECTORY"
+msgstr "ਸਰੋਤ_ਡਾਇਰੈਕਟਰੀ"
+
+#: subprojects/extensions-tool/src/command-pack.c:481
+msgid "Create an extension bundle"
+msgstr "ਇਕਟੈਨਸ਼ਨ ਬੰਡਲ ਬਣਾਓ"
+
+#: subprojects/extensions-tool/src/command-pack.c:500
+msgid "More than one source directory specified"
+msgstr "ਇੱਕ ਤੋਂ ਵੱਧ ਸਰੋਤ ਡਾਇਰੈਕਟਰੀ ਦਿੱਤੀ ਗਈ ਸੀ"
+
+#: subprojects/extensions-tool/src/command-prefs.c:90
+msgid "Opens extension preferences"
+msgstr "ਇਕਸਟੈਨਸ਼ਨ ਪਸੰਦਾਂ ਨੂੰ ਖੋਲ੍ਹੋ"
+
+#: subprojects/extensions-tool/src/command-reset.c:57
+msgid "Reset an extension"
+msgstr "ਇਕਸਟੈਨਸ਼ਨ ਨੂੰ ਮੁੜ-ਸੈੱਟ ਕਰੋ"
+
+#: subprojects/extensions-tool/src/command-uninstall.c:72
+msgid "Uninstall an extension"
+msgstr "ਇਕਸਟੈਨਸ਼ਨ ਅਣ-ਇੰਸਟਾਲ ਕਰੋ"
+
+#: subprojects/extensions-tool/src/main.c:176
+msgid "Path"
+msgstr "ਮਾਰਗ"
+
+#: subprojects/extensions-tool/src/main.c:179
+msgid "URL"
+msgstr "URL"
+
+#: subprojects/extensions-tool/src/main.c:182
+msgid "Original author"
+msgstr "ਅਸਲੀ ਲੇਖਕ"
+
+#: subprojects/extensions-tool/src/main.c:188
+msgid "State"
+msgstr "ਹਾਲਤ"
+
+#: subprojects/extensions-tool/src/main.c:222
+msgid "“version” takes no arguments"
+msgstr "“version” ਲਈ ਕੋਈ ਆਰਗੂਮੈਂਟ ਨਹੀਂ ਹੁੰਦਾ"
+
+#: subprojects/extensions-tool/src/main.c:224
+#: subprojects/extensions-tool/src/main.c:244
+msgid "Usage:"
+msgstr "ਵਰਤੋ:"
+
+#: subprojects/extensions-tool/src/main.c:227
+msgid "Print version information and exit."
+msgstr "ਵਰਜ਼ਨ ਜਾਣਕਾਰੀ ਛਾਪੋ ਅਤੇ ਬੰਦ ਕਰੋ।"
+
+#: subprojects/extensions-tool/src/main.c:242
+#: subprojects/extensions-tool/src/main.c:245
+msgid "COMMAND"
+msgstr "ਕਮਾਂਡ"
+
+#: subprojects/extensions-tool/src/main.c:245
+msgid "[ARGS…]"
+msgstr "[ARGS…]"
+
+#: subprojects/extensions-tool/src/main.c:247
+msgid "Commands:"
+msgstr "ਕਮਾਂਡਾਂ:"
+
+#: subprojects/extensions-tool/src/main.c:248
+msgid "Print help"
+msgstr "ਮਦਦ ਛਾਪੋ"
+
+#: subprojects/extensions-tool/src/main.c:250
+msgid "Enable extension"
+msgstr "ਇਕਸਟੈਨਸ਼ਨ ਸਮਰੱਥ ਕਰੋ"
+
+#: subprojects/extensions-tool/src/main.c:251
+msgid "Disable extension"
+msgstr "ਇਕਸਟੈਨਸ਼ਨ ਅਸਮਰੱਥ ਕਰੋ"
+
+#: subprojects/extensions-tool/src/main.c:252
+msgid "Reset extension"
+msgstr "ਇਕਸਟੈਨਸ਼ਨ ਨੂੰ ਮੁੜ-ਸੈੱਟ ਕਰੋ"
+
+#: subprojects/extensions-tool/src/main.c:253
+msgid "Uninstall extension"
+msgstr "ਇਕਸਟੈਨਸ਼ਨ ਅਣ-ਇੰਸਟਾਲ ਕਰੋ"
+
+#: subprojects/extensions-tool/src/main.c:254
+msgid "List extensions"
+msgstr "ਇਕਸਟੈਨਸ਼ਨਾਂ ਦੀ ਸੂਚੀ"
+
+#: subprojects/extensions-tool/src/main.c:255
+#: subprojects/extensions-tool/src/main.c:256
+msgid "Show extension info"
+msgstr "ਇਕਸਟੈਨਸ਼ਨ ਜਾਣਕਾਰੀ ਵੇਖਾਓ"
+
+#: subprojects/extensions-tool/src/main.c:257
+msgid "Open extension preferences"
+msgstr "ਇਕਸਟੈਨਸ਼ਨ ਪਸੰਦਾਂ ਨੂੰ ਖੋਲ੍ਹੋ"
+
+#: subprojects/extensions-tool/src/main.c:258
+msgid "Create extension"
+msgstr "ਇਕਸਟੈਨਸ਼ਨ ਬਣਾਓ"
+
+#: subprojects/extensions-tool/src/main.c:259
+msgid "Package extension"
+msgstr "ਇਕਸਟੈਨਸ਼ਨ ਪੈਕੇਜ ਬਣਾਓ"
+
+#: subprojects/extensions-tool/src/main.c:260
+msgid "Install extension bundle"
+msgstr "ਇਕਟੈਨਸ਼ਨ ਬੰਡਲ ਇੰਸਟਾਲ ਕਰੋ"
+
+#: subprojects/extensions-tool/src/main.c:262
+#, c-format
+#| msgid "Use %s to get detailed help.\n"
+msgid "Use “%s” to get detailed help.\n"
+msgstr "ਵੇਰਵੇ ਸਮੇਤ ਮਦਦ ਲੈਣ ਲਈ “%s“ ਵਰਤੋ।\n"
+
+#. translators:
+#. * The number of sound outputs on a particular device
+#: subprojects/gvc/gvc-mixer-control.c:1899
+#, c-format
+msgid "%u Output"
+msgid_plural "%u Outputs"
+msgstr[0] "%u ਆਉਟਪੁੱਟ"
+msgstr[1] "%u ਆਉਟਪੁੱਟ"
+
+#. translators:
+#. * The number of sound inputs on a particular device
+#: subprojects/gvc/gvc-mixer-control.c:1909
+#, c-format
+msgid "%u Input"
+msgid_plural "%u Inputs"
+msgstr[0] "%u ਇੰਪੁੱਟ"
+msgstr[1] "%u ਇੰਪੁੱਟ"
+
+#: subprojects/gvc/gvc-mixer-control.c:2766
+msgid "System Sounds"
+msgstr "ਸਿਸਟਮ ਸਾਊਂਡ"
+
+#~ msgid "Browse in Software"
+#~ msgstr "ਸਾਫਟਵੇਅਰ ਵਿੱਚ ਵੇਖੋ"
+
+#~ msgid "Next"
+#~ msgstr "ਅੱਗੇ"
+
+#~ msgctxt "button"
+#~ msgid "Sign In"
+#~ msgstr "ਸਾਇਨ ਇਨ"
+
+#~ msgid "Password:"
+#~ msgstr "ਪਾਸਵਰਡ:"
+
+#~ msgid "Type again:"
+#~ msgstr "ਮੁੜ-ਕੋਸ਼ਿਸ਼:"
+
+#~ msgid "Password: "
+#~ msgstr "ਪਾਸਵਰਡ: "
+
+#~ msgid "Authentication required by wireless network"
+#~ msgstr "ਬੇਤਾਰ ਨੈੱਟਵਰਕ ਲਈ ਪਰਮਾਣਕਿਤਾ ਚਾਹੀਦੀ ਹੈ"
+
+#~ msgid "Mobile broadband network password"
+#~ msgstr "ਮੋਬਾਇਲ ਬਰਾਡਬੈਂਡ ਨੈੱਟਵਰਕ ਪਾਸਵਰਡ"
+
+#~ msgid "%A, %B %d"
+#~ msgstr "%A, %d %B"
+
+#~ msgid "%d new message"
+#~ msgid_plural "%d new messages"
+#~ msgstr[0] "%d ਨਵਾਂ ਸੁਨੇਹਾ"
+#~ msgstr[1] "%d ਨਵੇਂ ਸੁਨੇਹੇ"
+
+#~ msgid "%d new notification"
+#~ msgid_plural "%d new notifications"
+#~ msgstr[0] "%d ਨਵਾਂ ਸੂਚਨਾ"
+#~ msgstr[1] "%d ਨਵੀਆਂ ਸੂਚਨਾਵਾਂ"
+
+#~ msgid "Account Settings"
+#~ msgstr "ਖਾਤਾ ਸੈਟਿੰਗਾਂ"
+
+#~ msgid "Orientation Lock"
+#~ msgstr "ਸਥਿਤੀ ਲਾਕ"
+
+#~ msgid ""
+#~ "Keybinding that pauses and resumes all running tweens, for debugging "
+#~ "purposes"
+#~ msgstr "ਕੀਬਾਈਡਿੰਗ, ਜੋ ਕਿ ਡੀਬੱਗ ਕਰਨ ਵਾਸਤੇ ਸਭ ਚੱਲ ਰਹੀਆਂ ਟਵੀਨਸ ਨੂੰ ਰੌਕਦੀ ਅਤੇ ਚਲਾਉਂਦੀ ਹੈ"
+
+#~ msgid "Which keyboard to use"
+#~ msgstr "ਕਿਹੜਾ ਕੀਬੋਰਡ ਵਰਤਣਾ ਹੈ"
+
+#~ msgid "The type of keyboard to use."
+#~ msgstr "ਵਰਤਣ ਲਈ ਕੀਬੋਰਡ ਦੀ ਕਿਸਮ ਹੈ।"
+
+#~ msgid "network-workgroup"
+#~ msgstr "network-workgroup"
+
+#~ msgid "There was an error loading the preferences dialog for %s:"
+#~ msgstr "%s ਲਈ ਪਸੰਦ ਡਾਈਲਾਗ ਨੂੰ ਲੋਡ ਕਰਨ ਦੌਰਾਨ ਸਮੱਸਿਆ:"
+
+#~ msgid "%s all day."
+#~ msgstr "ਸਾਰਾ ਦਿਨ %s।"
+
+#~ msgid "%s, then %s later."
+#~ msgstr "%s, ਤਦ ਬਾਅਦ ਵਿੱਚ %s।"
+
+#~ msgid "%s, then %s, followed by %s later."
+#~ msgstr "%s, ਤਦ %s, ਉਸ ਤੋਂ ਬਾਅਦ %s।"
+
+#~ msgid "Feels like %s."
+#~ msgstr "%s ਵਾਂਗੂੰ ਮਹਿਸੂਸ ਹੁੰਦਾ ਹੈ।"
+
+#~ msgid "toggle-switch-us"
+#~ msgstr "toggle-switch-us"
+
+#~ msgid "evolution"
+#~ msgstr "evolution"
+
+#~| msgid "Power Off"
+#~ msgctxt "search-result"
+#~ msgid "Power off"
+#~ msgstr "ਬੰਦ ਕਰੋ"
+
+#~| msgid "Log Out"
+#~ msgctxt "search-result"
+#~ msgid "Log out"
+#~ msgstr "ਲਾਗ ਆਉਟ"
+
+#~| msgid "Switch User"
+#~ msgctxt "search-result"
+#~ msgid "Switch user"
+#~ msgstr "ਵਰਤੋਂਕਾਰ ਨੂੰ ਬਦਲੋ"
+
+#~ msgid "Hide tray"
+#~ msgstr "ਟਰੇ ਓਹਲੇ ਕਰੋ"
+
+#~ msgid "Status Icons"
+#~ msgstr "ਹਾਲਤ ਆਈਕਾਨ"
+
+#~ msgid "Web Authentication Redirect"
+#~ msgstr "ਵੈੱਬ ਪਰਮਾਣਕਿਤਾ ਰੀ-ਡਾਇਰੈਕਟ"
+
+#~ msgid "Events"
+#~ msgstr "ਘਟਨਾਵਾਂ"
+
+#~ msgid "Notifications"
+#~ msgstr "ਨੋਟੀਫਿਕੇਸ਼ਨ"
+
+#~ msgid "Clear section"
+#~ msgstr "ਭਾਗ ਖਾਲੀ ਕਰੋ"
+
+#~ msgid "Media"
+#~ msgstr "ਮੀਡੀਆ"
+
+#~ msgid "%d x %d"
+#~ msgstr "%d x %d"
+
+#~ msgid "Not In Use"
+#~ msgstr "ਵਰਤੋਂ ਵਿੱਚ ਨਹੀਂ"
+
+#~ msgid "Show the week date in the calendar"
+#~ msgstr "ਕੈਲੰਡਰ ਵਿੱਚ ਹਫ਼ਤਾ ਮਿਤੀ ਵੇਖੋ"
+
+#~ msgid "If true, display the ISO week date in the calendar."
+#~ msgstr "ਜੇ ਚੋਣ ਕੀਤੀ ਤਾਂ ਕੈਲੰਡਰ ਵਿੱਚ ISO ਹਫਤਾ ਮਿਤੀ ਵੇਖਾਈ ਜਾਵੇਗੀ।"
+
+#~ msgid "%s is requesting access to your location."
+#~ msgstr "%s ਵਲੋਂ ਤੁਹਾਡੇ ਟਿਕਾਣੇ ਲਈ ਬੇਨਤੀ ਕੀਤੀ ਜਾ ਰਹੀ ਹੈ।"
+
+#~ msgid "Use as Internet connection"
+#~ msgstr "ਇੰਟਰਨੈੱਟ ਕੁਨੈਕਸ਼ਨ ਵਜੋਂ ਵਰਤੋਂ"
+
+#~ msgid "GNOME Shell (wayland compositor)"
+#~ msgstr "ਗਨੋਮ ਸ਼ੈਲ (ਵੇਲੈਂਡ ਨਿਰਮਾਤਾ)"
+
+#~ msgid "%d Connected Device"
+#~ msgid_plural "%d Connected Devices"
+#~ msgstr[0] "%d ਕੁਨੈਕਟ ਹੋਇਆ ਜੰਤਰ"
+#~ msgstr[1] "%d ਕੁਨੈਕਟ ਹੋਏ ਜੰਤਰ"
+
+#~ msgid "UPS"
+#~ msgstr "UPS"
+
+#~ msgid "Battery"
+#~ msgstr "ਬੈਟਰੀ"
+
+#~ msgid "Airplane Mode"
+#~ msgstr "ਏਅਰਪਲੇਨ ਮੋਡ"
+
+#~ msgid "Show the message tray"
+#~ msgstr "ਸੁਨੇਹਾ ਟਰੇ ਵੇਖਾਓ"
+
+#~ msgid "Captive Portal"
+#~ msgstr "ਕੈਪਟਿਵ ਪੋਰਟਲ"
+
+#~ msgctxt "event list time"
+#~ msgid "%H∶%M"
+#~ msgstr "%H∶%M"
+
+#~ msgctxt "event list time"
+#~ msgid "%l∶%M %p"
+#~ msgstr "%l∶%M %p"
+
+#~ msgctxt "list sunday"
+#~ msgid "Su"
+#~ msgstr "ਐ"
+
+#~ msgctxt "list monday"
+#~ msgid "M"
+#~ msgstr "ਸੋ"
+
+#~ msgctxt "list tuesday"
+#~ msgid "T"
+#~ msgstr "ਮੰ"
+
+#~ msgctxt "list wednesday"
+#~ msgid "W"
+#~ msgstr "ਬੁੱ"
+
+#~ msgctxt "list thursday"
+#~ msgid "Th"
+#~ msgstr "ਵੀ"
+
+#~ msgctxt "list friday"
+#~ msgid "F"
+#~ msgstr "ਸ਼ੁੱ"
+
+#~ msgctxt "list saturday"
+#~ msgid "S"
+#~ msgstr "ਸ਼"
+
+#~ msgid "Nothing Scheduled"
+#~ msgstr "ਕੋਈ ਵੀ ਸੈਡਿਊਲ ਨਹੀਂ ਹੈ"
+
+#~ msgid "Today"
+#~ msgstr "ਅੱਜ"
+
+#~ msgid "Tomorrow"
+#~ msgstr "ਭਲਕ"
+
+#~ msgid "This week"
+#~ msgstr "ਇਹ ਹਫ਼ਤਾ"
+
+#~ msgid "Next week"
+#~ msgstr "ਹਫ਼ਤਾ ਅੱਗੇ"
+
+#~ msgid "Removable Devices"
+#~ msgstr "ਹਟਾਉਣਯੋਗ ਜੰਤਰ"
+
+#~ msgid "Eject"
+#~ msgstr "ਬਾਹਰ ਕੱਢੋ"
+
+#~ msgid "Invitation"
+#~ msgstr "ਸੱਦਾ"
+
+#~ msgid "Call"
+#~ msgstr "ਕਾਲ ਕਰੋ"
+
+#~ msgid "File Transfer"
+#~ msgstr "ਫਾਇਲ ਟਰਾਂਸਫਰ"
+
+#~ msgid "Chat"
+#~ msgstr "ਗੱਲਬਾਤ"
+
+#~ msgid "Unmute"
+#~ msgstr "ਸੁਣਾਓ"
+
+#~ msgid "Mute"
+#~ msgstr "ਚੁੱਪ"
+
+#~ msgid "Invitation to %s"
+#~ msgstr "%s ਲਈ ਸੱਦਾ"
+
+#~ msgid "%s is inviting you to join %s"
+#~ msgstr "%s ਤੁਹਾਨੂੰ %s ਜੁਆਇੰਨ ਕਰਨ ਲਈ ਸੱਦ ਰਿਹਾ ਹੈ"
+
+#~ msgid "Decline"
+#~ msgstr "ਇਨਕਾਰ"
+
+#~ msgid "Accept"
+#~ msgstr "ਮਨਜ਼ੂਰ"
+
+#~ msgid "Video call from %s"
+#~ msgstr "%s ਵਲੋਂ ਵਿਡੀਓ ਕਾਲ"
+
+#~ msgid "Call from %s"
+#~ msgstr "%s ਵਲੋਂ ਕਾਲ"
+
+#~ msgid "Answer"
+#~ msgstr "ਜਵਾਬ ਦਿਓ"
+
+#~ msgid "%s is sending you %s"
+#~ msgstr "%s ਤੁਹਾਨੂੰ %s ਭੇਜ ਰਿਹਾ/ਰਹੀ ਹੈ"
+
+#~ msgid "%s would like permission to see when you are online"
+#~ msgstr "%s ਤੁਹਾਨੂੰ ਵੇਖਣ ਦਾ ਅਧਿਕਾਰ ਚਾਹੁੰਦਾ/ਚਾਹੁੰਦੀ ਹੈ, ਜਦੋਂ ਵੀ ਤੁਸੀਂ ਆਨਲਾਈਨ ਹੋਵੋ"
+
+#~ msgid "Authentication failed"
+#~ msgstr "ਪਰਮਾਣਕਿਤਾ ਫੇਲ੍ਹ ਹੋਈ"
+
+#~ msgid "Encryption error"
+#~ msgstr "ਇੰਕ੍ਰਿਪਸ਼ਨ ਗਲਤੀ"
+
+#~ msgid "Certificate not provided"
+#~ msgstr "ਸਰਟੀਫਿਕੇਟ ਨਹੀਂ ਦਿੱਤਾ"
+
+#~ msgid "Certificate untrusted"
+#~ msgstr "ਸਰਟੀਫਿਕੇਟ ਬੇਭਰੋਸੇਯੋਗ"
+
+#~ msgid "Certificate expired"
+#~ msgstr "ਸਰਟੀਫਿਕੇਟ ਦੀ ਮਿਆਦ ਪੁੱਗੀ"
+
+#~ msgid "Certificate not activated"
+#~ msgstr "ਸਰਟੀਫਿਕੇਟ ਸਰਗਰਮ ਨਹੀਂ ਹੈ"
+
+#~ msgid "Certificate hostname mismatch"
+#~ msgstr "ਸਰਟੀਫਿਕੇਟ ਹੋਸਟ-ਨਾਂ ਨਹੀਂ ਮਿਲਦਾ"
+
+#~ msgid "Certificate fingerprint mismatch"
+#~ msgstr "ਸਰਟੀਫਿਕੇਟ ਫਿੰਗਰ-ਪਰਿੰਟ ਮਿਲਦਾ ਨਹੀਂ"
+
+#~ msgid "Certificate self-signed"
+#~ msgstr "ਸਰਟੀਫਿਕੇਟ ਖੁਦ-ਦਸਤਖਤੀ ਹੈ"
+
+#~ msgid "Status is set to offline"
+#~ msgstr "ਹਾਲਤ ਆਫਲਾਈਨ ਸੈੱਟ ਕੀਤੀ ਗਈ ਹੈ"
+
+#~ msgid "Certificate is invalid"
+#~ msgstr "ਸਰਟੀਫਿਕੇਟ ਗਲਤ ਹੈ"
+
+#~ msgid "Connection has been refused"
+#~ msgstr "ਕੁਨੈਕਸ਼ਨ ਤੋਂ ਇਨਕਾਰ ਕੀਤਾ ਗਿਆ"
+
+#~ msgid "Connection can't be established"
+#~ msgstr "ਕੁਨੈਕਸ਼ਨ ਬਣਾਇਆ ਨਹੀਂ ਜਾ ਸਕਦਾ"
+
+#~ msgid "Connection has been lost"
+#~ msgstr "ਕੁਨੈਕਸ਼ਨ ਖਤਮ ਹੋ ਗਿਆ"
+
+#~ msgid "This account is already connected to the server"
+#~ msgstr "ਇਹ ਅਕਾਊਂਟ ਪਹਿਲਾਂ ਹੀ ਸਰਵਰ ਨਾਲ ਕੁਨੈਕਟ ਹੈ"
+
+#~ msgid ""
+#~ "Connection has been replaced by a new connection using the same resource"
+#~ msgstr "ਉਸੇ ਸਰੋਤ ਦੀ ਵਰਤੋਂ ਕਰਕੇ ਕੁਨੈਕਸ਼ਨ ਨੂੰ ਨਵੇਂ ਕੁਨੈਕਸ਼ਨ ਨਾਲ ਬਦਲ ਦਿੱਤਾ ਗਿਆ ਹੈ"
+
+#~ msgid "The account already exists on the server"
+#~ msgstr "ਅਕਾਊਂਟ ਸਰਵਰ ਉੱਤੇ ਪਹਿਲਾਂ ਹੀ ਮੌਜੂਦ ਹੈ"
+
+#~ msgid "Server is currently too busy to handle the connection"
+#~ msgstr "ਸਰਵਰ ਇਸ ਵੇਲੇ ਐਨਾ ਰੁੱਝਿਆ ਹੋਇਆ ਹੈ ਕਿ ਕੁਨੈਕਸ਼ਨ ਸੰਭਾਲ ਨਹੀਂ ਸਕਦਾ"
+
+#~ msgid "Certificate has been revoked"
+#~ msgstr "ਸਰਟੀਫਿਕੇਟ ਮਨਸੂਖ ਕੀਤਾ ਜਾ ਚੁੱਕਾ ਹੈ"
+
+#~ msgid ""
+#~ "Certificate uses an insecure cipher algorithm or is cryptographically weak"
+#~ msgstr "ਸਰਟੀਫਿਕੇਟ ਅਸੁਰੱਖਿਅਤ ਸੀਫ਼ਰ ਐਲਗੋਰਿਥਮ ਵਰਤਦਾ ਹੈ ਜਾਂ ਕਮਜ਼ੋਰ ਕ੍ਰਿਪਟੋਗਰਾਫਿਕਲ ਵਰਤਦਾ ਹੈ"
+
+#~ msgid ""
+#~ "The length of the server certificate, or the depth of the server "
+#~ "certificate chain, exceed the limits imposed by the cryptography library"
+#~ msgstr ""
+#~ "ਸਰਵਰ ਸਰਟੀਫਿਕੇਟ ਦੀ ਲੰਬਾਈ ਜਾਂ ਸਰਵਰ ਸਰਟੀਫਿਕੇਟ ਚੇਨ ਦੀ ਡੂੰਘਾਈ ਕ੍ਰਿਪਟੂਗਰਾਫ਼ੀ ਲਾਇਬਰੇਰੀ ਵਲੋਂ "
+#~ "ਰੱਖੀ ਗਈ ਲਿਮਟ ਤੋਂ ਵੱਧ ਗਈ ਹੈ।"
+
+#~ msgid "Internal error"
+#~ msgstr "ਅੰਦਰੂਨੀ ਗਲਤੀ"
+
+#~ msgid "View account"
+#~ msgstr "ਅਕਾਊਂਟ ਵੇਖੋ"
+
+#~ msgid "Open Calendar"
+#~ msgstr "ਕੈਲੰਡਰ ਖੋਲ੍ਹੋ"
+
+#~ msgid "Date & Time Settings"
+#~ msgstr "ਮਿਤੀ ਤੇ ਸਮਾਂ ਸੈਟਿੰਗ"
+
+#~ msgid "Open"
+#~ msgstr "ਖੋਲ੍ਹੋ"
+
+#~ msgid "Clear Messages"
+#~ msgstr "ਸੁਨੇਹੇ ਸਾਫ਼ ਕਰੋ"
+
+#~ msgid "Notification Settings"
+#~ msgstr "ਸੂਚਨਾ ਸੈਟਿੰਗ"
+
+#~ msgid "Tray Menu"
+#~ msgstr "ਟਰੇ ਮੇਨੂ"
+
+#~ msgid "No Messages"
+#~ msgstr "ਕੋਈ ਸੁਨੇਹਾ ਨਹੀਂ"
+
+#~ msgid "Message Tray"
+#~ msgstr "ਸੁਨੇਹਾ ਟਰੇ"
+
+#~ msgid "The maximum accuracy level of location."
+#~ msgstr "ਟਿਕਾਣੇ ਦੀ ਵੱਧ ਤੋਂ ਵੱਧ ਸ਼ੁੱਧਤਾ ਦਾ ਪੱਧਰ।"
+
+#~ msgid ""
+#~ "Configures the maximum level of location accuracy applications are "
+#~ "allowed to see. Valid options are 'off' (disable location tracking), "
+#~ "'country', 'city', 'neighborhood', 'street', and 'exact' (typically "
+#~ "requires GPS receiver). Please keep in mind that this only controls what "
+#~ "GeoClue will allow applications to see and they can find user's location "
+#~ "on their own using network resources (albeit with street-level accuracy "
+#~ "at best)."
+#~ msgstr ""
+#~ "ਟਿਕਾਣੇ ਦੀ ਵੱਧ ਤੋਂ ਵੱਧ ਸ਼ੁੱਧਤਾ ਦਰਸਾਉਣ ਦੀ ਸੰਰਚਨਾ ਕਰੋ, ਜੋ ਕਿ ਐਪਲੀਕੇਸ਼ਨ ਨੂੰ ਵੇਖਣ ਦੀ ਮਨਜ਼ੂਰੀ ਹੈ। "
+#~ "ਢੁੱਕਵੀਆਂ ਚੋਣਾਂ ਵਿੱਚ ਹਨ 'ਬੰਦ' (ਟਿਕਾਣਾ ਸਾਂਝਾ ਕਰਨਾ ਬੰਦ), 'ਦੇਸ਼', 'ਸ਼ਹਿਰ', 'ਆਂਢ-ਗੁਆਂਢ', "
+#~ "'ਗਲੀ' ਅਤੇ 'ਠੀਕ' (ਅਕਸਰ ਜੀਪੀਐਸ ਰਸੀਵਰ ਚਾਹੀਦਾ ਹੈ)। ਕਿਰਪਾ ਕਰਕੇ ਧਿਆਨ ਵਿੱਚ ਰੱਖੋ ਕਿ ਇਹ "
+#~ "ਕੇਵਲ GeoClue ਰਾਹੀਂ ਐਪਲੀਕੇਸ਼ਨ ਨੂੰ ਵਿਖਾਏ ਜਾਣ ਵਾਲੇ ਨੂੰ ਕੰਟਰੋਲ ਕਰਦਾ ਹੈ ਅਟੇ ਉਹ ਆਪਣੇ ਨੈੱਟਵਰਕ "
+#~ "ਸਰੋਤਾਂ ਦੀ ਵਰਤੋਂ ਕਰਕੇ ਯੂਜ਼ਰ ਦਾ ਟਿਕਾਣਾ ਲੱਭ ਸਕਦੇ ਹਨ (ਹਾਲਾਂਕਿ ਸ਼ੁੱਧ ਰੂਪ ਵਿੱਚ ਵੱਧ ਤੋਂ ਵੱਧ ਕੇਵਲ ਗਲੀ-"
+#~ "ਪੱਧਰ ਤੱਕ ਹੀ)।"
+
+#~ msgid "Arrangement of buttons on the titlebar"
+#~ msgstr "ਟਾਈਟਲ-ਪੱਟੀ ਵਿੱਚ ਬਟਨਾਂ ਦਾ ਪ੍ਰਬੰਧ"
+
+#~ msgid ""
+#~ "This key overrides the key in org.gnome.desktop.wm.preferences when "
+#~ "running GNOME Shell."
+#~ msgstr ""
+#~ "ਇਹ ਕੁੰਜੀ ਗਨੋਮ ਸ਼ੈੱਲ ਚੱਲਣ ਦੇ ਦੌਰਾਨ  org.gnome.desktop.wm.preference ਕੁੰਜੀ ਨੂੰ ਅਣਡਿੱਠਾ "
+#~ "ਕਰਦੀ ਹੈ।"
+
+#~ msgid "Select an extension to configure using the combobox above."
+#~ msgstr "ਉੱਤੇ ਦਿੱਤੇ ਕੰਬੋਬਾਕਸ ਦੀ ਵਰਤੋਂ ਕਰਕੇ ਇਕਸਟੈਸ਼ਨ ਦੀ ਸੰਰਚਨਾ ਕਰਨ ਲਈ ਚੋਣ ਕਰੋ।"
+
+#~ msgid "calendar:MY"
+#~ msgstr "calendar:MY"
+
+#~ msgid "unavailable"
+#~ msgstr "ਨਾ-ਉਪਲੱਬਧ"
+
+#~ msgid "List of categories that should be displayed as folders"
+#~ msgstr "ਕੈਟਾਗਰੀਆਂ ਦੀ ਸੂਚੀ, ਜੋ ਕਿ ਫੋਲਡਰ ਵਜੋਂ ਵੇਖਾਈਆਂ ਜਾਣੀਆਂ ਚਾਹੀਦੀਆਂ ਹਨ"
+
+#~ msgid ""
+#~ "Each category name in this list will be represented as folder in the "
+#~ "application view, rather than being displayed inline in the main view."
+#~ msgstr ""
+#~ "ਇਹ ਸੂਚੀ ਵਿੱਚ ਹਰੇਕ ਕੈਟਾਗਰੀ ਨਾਂ ਨੂੰ ਐਪਲੀਕੇਸ਼ਨ ਝਲਕ ਵਿੱਚ ਫੋਲਡਰ ਵਜੋਂ ਵੇਖਾਇਆ ਜਾਵੇਗਾ, ਨਾ ਕਿ ਮੁੱਖ "
+#~ "ਝਲਕ ਵਿੱਚ ਲਾਈਨ ਵਿੱਚ ਵੇਖਾਇਆ।"
+
+#~ msgid "<b>%A</b>, <b>%H:%M</b>"
+#~ msgstr "<b>%A</b>, <b>%H:%M</b>"
+
+#~ msgid "<b>%B</b> <b>%d</b>, <b>%H:%M</b>"
+#~ msgstr "<b>%d</b> <b>%B</b>,<b>%H:%M</b>"
+
+#~ msgid "<b>%B</b> <b>%d</b> <b>%Y</b>, <b>%H:%M</b> "
+#~ msgstr "<b>%d</b> <b>%B</b> <b>%Y</b>, <b>%H:%M</b> "
+
+#~ msgid "Authorization request from %s"
+#~ msgstr "'%s' ਤੋਂ ਪਰਮਾਣਕਿਤਾ ਮੰਗ"
+
+#~ msgid "Device %s wants to pair with this computer"
+#~ msgstr "ਜੰਤਰ %s ਇਸ ਕੰਪਿਊਟਰ ਨਾਲ ਪੇਅਰ ਹੋਣਾ ਚਾਹੁੰਦਾ ਹੈ"
+
+#~ msgid "Device %s wants access to the service '%s'"
+#~ msgstr "ਜੰਤਰ %s ਸਰਵਿਸ '%s' ਨੂੰ ਵਰਤਣੀ ਚਾਹੁੰਦਾ ਹੈ।"
+
+#~ msgid "Grant this time only"
+#~ msgstr "ਕੇਵਲ ਇਸ ਸਮੇਂ ਹੀ ਮਨਜ਼ੂਰ"
+
+#~ msgid "Reject"
+#~ msgstr "ਨਾ-ਮਨਜ਼ੂਰ"
+
+#~ msgid "Pairing confirmation for %s"
+#~ msgstr "%s ਲਈ ਪੇਅਰ ਕਰਨ ਦੀ ਪੁਸ਼ਟੀ"
+
+#~ msgid ""
+#~ "Please confirm whether the Passkey '%06d' matches the one on the device."
+#~ msgstr "ਪੁਸ਼ਟੀ ਕਰੋ ਜੀ ਕਿ ਪਾਸ-ਕੀ '%06d' ਜੰਤਰ ਉੱਤੇ ਮੌਜੂਦ ਪਿੰਨ ਨਾਲ ਮਿਲਦਾ ਹੈ।"
+
+#~ msgid "Matches"
+#~ msgstr "ਮਿਲਦਾ ਹੈ"
+
+#~ msgid "Does not match"
+#~ msgstr "ਮਿਲਦਾ ਨਹੀਂ ਹੈ"
+
+#~ msgid "Pairing request for %s"
+#~ msgstr "%s ਲਈ ਪੇਅਰ ਕਰਨ ਦੀ ਮੰਗ"
+
+#~ msgid "Please enter the PIN mentioned on the device."
+#~ msgstr "ਜੰਤਰ ਉੱਤੇ ਦਿੱਤਾ ਗਿਆ ਪਿੰਨ ਦਿਉ ਜੀ।"
+
+#~ msgid "OK"
+#~ msgstr "ਠੀਕ ਹੈ"
+
+#~ msgid ""
+#~ "Sorry, no wisdom for you today:\n"
+#~ "%s"
+#~ msgstr ""
+#~ "ਅਫਸੋਸ, ਅੱਜ ਤੁਹਾਡੇ ਲਈ ਕੋਈ ਨਸੀਹਤ ਨਹੀਂ:\n"
+#~ "%s "
+
+#~ msgid "%s the Oracle says"
+#~ msgstr "%s ਓਰੇਕਲ ਨੇ ਕਿਹਾ"
+
+#~ msgctxt "event list time"
+#~ msgid "%H\\u2236%M"
+#~ msgstr "%H\\u2236%M"
+
+#~ msgctxt "event list time"
+#~ msgid "%l\\u2236%M\\u2009%p"
+#~ msgstr "%l\\u2236%M\\u2009%p"
+
+#~ msgid "Settings Menu"
+#~ msgstr "ਸੈਟਿੰਗ ਮੇਨੂ"
+
+#~ msgid ""
+#~ "Internally used to store the last IM presence explicitly set by the user. "
+#~ "The value here is from the TpConnectionPresenceType enumeration."
+#~ msgstr ""
+#~ "ਯੂਜ਼ਰ ਵਲੋਂ ਆਖਰੀ IM ਵਿੱਚ ਮੌਜੂਦਗੀ ਸਥਿਤੀ ਸਟੋਰ ਕਰਨ ਲਈ ਅੰਦਰੂਨੀ ਵਰਤਿਆ ਜਾਂਦਾ ਹੈ। "
+#~ "TpConnectionPresenceType ਤੋਂ ਇੱਥੇ ਮੁੱਲ।"
+
+#~ msgid ""
+#~ "Internally used to store the last session presence status for the user. "
+#~ "The value here is from the GsmPresenceStatus enumeration."
+#~ msgstr ""
+#~ "ਯੂਜ਼ਰ ਵਲੋਂ ਆਖਰੀ ਸ਼ੈਸ਼ਨ ਵਿੱਚ ਮੌਜੂਦਗੀ ਸਥਿਤੀ ਸਟੋਰ ਕਰਨ ਲਈ ਅੰਦਰੂਨੀ ਵਰਤਿਆ ਜਾਂਦਾ ਹੈ। "
+#~ "GsmPresenceStatus ਤੋਂ ਇੱਥੇ ਮੁੱਲ।"
+
+#~ msgid "Click Log Out to quit these applications and log out of the system."
+#~ msgstr "ਇਹ ਐਪਲੀਕੇਸ਼ਨ ਬੰਦ ਕਰਨ ਤੇ ਸਿਸਟਮ ਨੂੰ ਲਾਗਆਉਟ ਕਰਨ ਲਈ ਲਾਗਆਉਟ ਕਰੋ ਨੂੰ ਕਲਿੱਕ ਕਰੋ।"
+
+#~ msgid "Logging out of the system."
+#~ msgstr "ਸਿਸਟਮ ਲਾਗ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ।"
+
+#~ msgid "Click Power Off to quit these applications and power off the system."
+#~ msgstr "ਇਹ ਐਪਲੀਕੇਸ਼ਨਾਂ ਬੰਦ ਕਰਨ ਅਤੇ ਸਿਸਟਮ ਨੂੰ ਬੰਦ ਕਰਨ ਲਈ ਬੰਦ ਕਰੋ ਨੂੰ ਕਲਿੱਕ ਕਰੋ।"
+
+#~ msgid "Powering off the system."
+#~ msgstr "ਸਿਸਟਮ ਬੰਦ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ।"
+
+#~ msgid "Click Restart to quit these applications and restart the system."
+#~ msgstr "ਇਹ ਐਪਲੀਕੇਸ਼ਨ ਬੰਦ ਕਰਨ ਤੇ ਸਿਸਟਮ ਨੂੰ ਮੁੜ-ਚਾਲੂ ਕਰਨ ਲਈ ਮੁੜ-ਚਾਲੂ ਕਰੋ ਨੂੰ ਕਲਿੱਕ ਕਰੋ।"
+
+#~ msgid "Restarting the system."
+#~ msgstr "ਸਿਸਟਮ ਮੁੜ-ਚਾਲੂ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ।"
+
+#~ msgid "Shutting down might cause them to lose unsaved work."
+#~ msgstr "ਬੰਦ ਕਰਨ ਨਾਲ ਉਹਨਾਂ ਵਲੋਂ ਨਾ-ਸੰਭਾਲਿਆ ਕੰਮ ਖਰਾਬ ਹੋ ਸਕਦਾ ਹੈ।"
+
+#~ msgid "Screenshots"
+#~ msgstr "ਸਕਰੀਨਸ਼ਾਟ"
+
+#~ msgid "Record a screencast"
+#~ msgstr "ਸਕਰੀਨਕਾਸਟ ਰਿਕਾਰਡ ਕਰੋ"
+
+#~ msgid "Whether to collect stats about applications usage"
+#~ msgstr "ਐਪਲੀਕੇਸ਼ਨ ਵਰਤੋਂ ਬਾਰੇ ਅੰਕੜੇ ਇੱਕਠੇ ਕਰਨੇ ਹਨ"
+
+#~ msgid ""
+#~ "The shell normally monitors active applications in order to present the "
+#~ "most used ones (e.g. in launchers). While this data will be kept private, "
+#~ "you may want to disable this for privacy reasons. Please note that doing "
+#~ "so won't remove already saved data."
+#~ msgstr ""
+#~ "ਸ਼ੈੱਲ ਲਗਾਤਾਰ ਸਰਗਰਮ ਐਪਲੀਕੇਸ਼ਨ ਦੀ ਨਿਗਰਾਨੀ ਕਰਦੀ ਰਹਿੰਦੀ ਹੈ ਤਾਂ ਕਿ ਸਭ ਤੋਂ ਵੱਧ ਵਰਤੀਆਂ "
+#~ "ਐਪਲੀਕੇਸ਼ਨਾਂ ਨੂੰ ਵੇਖਾਇਆ ਜਾ ਸਕੇ (ਜਿਵੇਂ ਕਿ ਲਾਂਚਰ ਵਿੱਚ)। ਹਾਲਾਂਕਿ ਇਹ ਡਾਟਾ ਪ੍ਰਾਈਵੇਟ ਹੀ ਰੱਖਿਆ "
+#~ "ਜਾਵੇਗਾ, ਤਾਂ ਵੀ ਜੇ ਤੁਸੀਂ ਚਾਹੋ ਤਾਂ ਇਸ ਨੂੰ ਸੁਰੱਖਿਆ ਕਾਰਨਾਂ ਕਰਕੇ ਬੰਦ ਕਰ ਸਕਦੇ ਹੋ। ਯਾਦ ਰੱਖੋ ਕਿ ਇੰਝ "
+#~ "ਕਰਨ ਨਾਲ ਪਹਿਲਾਂ ਸੰਭਾਲਿਆ ਗਿਆ ਡਾਟਾ ਹਟਾਇਆ ਨਹੀਂ ਜਾਵੇਗਾ।"
+
+#~ msgid "Keybinding to toggle the screen recorder"
+#~ msgstr "ਸਕਰੀਨ ਰਿਕਾਡਰ ਨੂੰ ਬਦਲਣ ਲਈ ਕੀਬਾਈਡਿੰਗ"
+
+#~ msgid "Keybinding to start/stop the builtin screen recorder."
+#~ msgstr "ਬਿਲਟ-ਇਨ ਸਕਰੀਨ ਰਿਕਾਰਡ ਨੂੰ ਸ਼ੁਰੂ ਕਰਨ/ਰੋਕਣ ਲਈ ਕੀਬਾਈਡਿੰਗ"
+
+#~ msgid "Framerate used for recording screencasts."
+#~ msgstr "ਸਕਰੀਨਕਾਸਟ ਰਿਕਾਰਡ ਕਰਨ ਲਈ ਫਰੇਮਰੇਟ ਹੈ।"
+
+#~ msgid ""
+#~ "The framerate of the resulting screencast recordered by GNOME Shell's "
+#~ "screencast recorder in frames-per-second."
+#~ msgstr ""
+#~ "ਗਨੋਮ ਸ਼ੈੱਲ ਦੇ ਸਕਰੀਨਕਾਸਟ ਰਿਕਾਰਡਰ ਵਲੋਂ ਰਿਕਾਰਡ ਕਰਕੇ ਬਣਾਈ ਗਈ ਸਕਰੀਨਕਾਸਟ ਦਾ ਫਰੇਮਰੇਟ ਫਰੇਮ "
+#~ "ਪ੍ਰਤੀ ਸਕਿੰਟ 'ਚ ਹੈ।"
+
+#~ msgid "The gstreamer pipeline used to encode the screencast"
+#~ msgstr "ਸਕਰੀਨਕਾਸਟ ਇੰਕੋਡ ਕਰਨ ਲਈ ਵਰਤਣ ਵਾਸਤੇ ਜੀਸਟਰੀਮਰ ਪਾਇਪਲਾਇਨ"
+
+#~ msgid ""
+#~ "Sets the GStreamer pipeline used to encode recordings. It follows the "
+#~ "syntax used for gst-launch. The pipeline should have an unconnected sink "
+#~ "pad where the recorded video is recorded. It will normally have a "
+#~ "unconnected source pad; output from that pad will be written into the "
+#~ "output file. However the pipeline can also take care of its own output - "
+#~ "this might be used to send the output to an icecast server via shout2send "
+#~ "or similar. When unset or set to an empty value, the default pipeline "
+#~ "will be used. This is currently 'vp8enc min_quantizer=13 max_quantizer=13 "
+#~ "cpu-used=5 deadline=1000000 threads=%T ! queue ! webmmux' and records to "
+#~ "WEBM using the VP8 codec. %T is used as a placeholder for a guess at the "
+#~ "optimal thread count on the system."
+#~ msgstr ""
+#~ "ਰਿਕਾਰਡਿੰਗ ਇੰਕੋਡ ਕਰਨ ਲਈ ਜੀਸਟੀਮਰ ਪਾਇਪਲਾਈਨ ਸੈੱਟ ਕਰੋ। ਇਹ gst-launch ਲਈ ਵਰਤਿਆ ਜਾਂਦਾ "
+#~ "ਸੰਟੈਕਸ ਵਰਤਦਾ ਹੈ। ਪਾਇਪਲਾਈਨ ਲਈ ਸਿੰਕ ਪੈਡ ਲਈ ਕੁਨੈਕਟ ਨਹੀਂ ਹੋਣਾ ਚਾਹੀਦਾ ਹੈ, ਜਿੱਥੇ ਰਿਕਾਰਡ ਹੋਣ "
+#~ "ਵਾਲੀ ਵਿਡੀਓ ਰਿਕਾਰਡ ਕੀਤੀ ਜਾ ਰਹੀ ਹੈ। ਇਹ ਆਮ ਤੌਰ ਉੱਤੇ ਨਾ-ਕੁਨੈਕਟ ਕੀਤਾ ਸਰੋਤ ਪੈਡ ਹੋਵੇਗਾ, ਉਸ "
+#~ "ਪੈਡ ਤੋਂ ਆਉਟਪੁੱਟ ਨੂੰ ਆਉਟਪੁੱਟ ਫਾਇਲ ਵਿੱਚ ਲਿਖਿਆ ਜਾਵੇਗਾ। ਪਰ ਪਾਈਪਲਾਈਨ ਖੁਦ ਦੀ ਆਉਟਪੁੱਟ ਦਾ ਧਿਆਨ "
+#~ "ਵੀ ਰੱਖ ਸਕਦੀ ਹੈ - ਇਸ ਨਾਲ ਆਉਟਪੁੱਟ ਨੂੰ icecast ਸਰਵਰ ਉੱਤੇ shout2send ਜਾਂ ਕਿਸੇ ਹੋਰ ਰਾਹੀਂ "
+#~ "ਵੀ ਭੇਜਿਆ ਜਾ ਸਕਦਾ ਹੈ। ਜਦੋਂ ਅਣ-ਸੈੱਟ ਕੀਤਾ ਜਾਂ ਖਾਲੀ ਮੁੱਲ ਨਾਲ ਸੈੱਟ ਕੀਤਾ ਤਾਂ, ਡਿਫਾਲਟ "
+#~ "ਪਾਈਪਲਾਈਨ ਵਰਤਿਆ ਜਾਂਦਾ ਹੈ। ਇਸ ਇਸ ਵੇਲੇ 'vp8enc min_quantizer=13 max_quantizer=13 "
+#~ "cpu-used=5 deadline=1000000 threads=%T ! queue ! webmmux'  ਹੈ ਅਤੇ VP8 codec "
+#~ "ਦੀ ਵਰਤੋਂ ਕਰਕੇ WEBM ਨਾਲ ਰਿਕਾਰਡ ਕੀਤਾ ਜਾਂਦਾ ਹੈ। %T ਸਿਸਟਮ ਉੱਤੇ ਢੁੱਕਵੀ ਥਰਿੱਡ ਗਿਣਤੀ ਦਾ "
+#~ "ਅੰਦਾਜ਼ਾ ਲਗਾਉਣ ਲਈ ਵਰਤਿਆ ਜਾਂਦਾ ਹੈ।"
+
+#~ msgid "File extension used for storing the screencast"
+#~ msgstr "ਸਕਰੀਨਕਾਸਟ ਸੰਭਾਲਣ ਲਈ ਵਰਤਣ ਵਾਸਤੇ ਫਾਇਲ ਇਕਟੈਨਸ਼ਨ"
+
+#~ msgid ""
+#~ "The filename for recorded screencasts will be a unique filename based on "
+#~ "the current date, and use this extension. It should be changed when "
+#~ "recording to a different container format."
+#~ msgstr ""
+#~ "ਰਿਕਾਰਡ ਕੀਤੇ ਸਕਰੀਨਕਾਸਟ ਲਈ ਫਾਇਲ ਨਾਂ ਮੌਜੂਦਾ ਮਿਤੀ ਦੇ ਮੁਤਾਬਕ ਵਿਲੱਖਣ ਫਾਇਲ ਨਾਂ ਹੋਵੇਗਾ ਅਤੇ "
+#~ "ਇਹ ਇਕਸਟੈਨਸ਼ਨ ਵਰਤੀ ਜਾਵੇਗੀ। ਇਸ ਨੂੰ ਬਦਲਿਆ ਜਾਵੇਗਾ, ਜਦੋਂ ਵੱਖਰੇ ਕੰਨਟੇਨਰ ਫਾਰਮੈਟ ਵਿੱਚ ਰਿਕਾਰਡ "
+#~ "ਕੀਤਾ ਜਾਵੇਗਾ।"
+
+#~ msgid "Power"
+#~ msgstr "ਪਾਵਰ"
+
+#~ msgid "Restart"
+#~ msgstr "ਮੁੜ-ਚਾਲੂ ਕਰੋ"
+
+#~ msgid "Screencast from %d %t"
+#~ msgstr "%d %t ਤੋਂ ਸਕਰੀਨਕਾਸਟ"
+
+#~ msgid "Universal Access Settings"
+#~ msgstr "ਯੂਨੀਵਰਸਲ ਅਸੈੱਸ ਸੈਟਿੰਗ"
+
+#~ msgid "Visibility"
+#~ msgstr "ਦਿੱਖ"
+
+#~| msgid "Set Up a New Device..."
+#~ msgid "Set Up a New Device…"
+#~ msgstr "…ਨਵਾਂ ਜੰਤਰ ਸੈਟਅੱਪ ਕਰੋ"
+
+#~| msgid "Send Files..."
+#~ msgid "Send Files…"
+#~ msgstr "…ਫਾਇਲਾਂ ਭੇਜੋ"
+
+#~ msgid "Keyboard Settings"
+#~ msgstr "ਕੀਬੋਰਡ ਸੈਟਿੰਗ"
+
+#~ msgid "Mouse Settings"
+#~ msgstr "ਮਾਊਸ ਸੈਟਿੰਗ"
+
+#~ msgid "Volume, network, battery"
+#~ msgstr "ਵਾਲੀਅਮ, ਨੈੱਟਵਰਕ, ਬੈਟਰੀ"
+
+#~ msgid "disabled"
+#~ msgstr "ਬੰਦ ਹੈ"
+
+#~ msgid "cable unplugged"
+#~ msgstr "ਕੇਬਲ ਕੱਢੀ ਹੋਈ ਹੈ"
+
+#~ msgid "More…"
+#~ msgstr "…ਹੋਰ"
+
+#~ msgid "Wired"
+#~ msgstr "ਤਾਰ"
+
+#~ msgid "Auto Ethernet"
+#~ msgstr "ਆਟੋ ਈਥਰਨੈੱਟ"
+
+#~ msgid "Auto broadband"
+#~ msgstr "ਆਟੋ ਬਰਾਡਬੈਂਡ"
+
+#~ msgid "Auto dial-up"
+#~ msgstr "ਆਟੋ ਡਾਇਲ-ਅੱਪ"
+
+#~ msgid "Auto %s"
+#~ msgstr "ਆਟੋ %s"
+
+#~ msgid "Auto bluetooth"
+#~ msgstr "ਆਟੋ ਬਲਿਊਟੁੱਥ"
+
+#~ msgid "Auto wireless"
+#~ msgstr "ਆਟੋ ਬੇਤਾਰ"
+
+#~ msgid "Wi-Fi"
+#~ msgstr "ਵਾਈ-ਫਾਈ"
+
+#~ msgid "%d hour remaining"
+#~ msgid_plural "%d hours remaining"
+#~ msgstr[0] "%d ਘੰਟਾ ਬਾਕੀ"
+#~ msgstr[1] "%d ਘੰਟੇ ਬਾਕੀ"
+
+#~ msgid "%d %s %d %s remaining"
+#~ msgstr "%d %s %d %s ਬਾਕੀ"
+
+#~ msgid "hour"
+#~ msgid_plural "hours"
+#~ msgstr[0] "ਘੰਟਾ"
+#~ msgstr[1] "ਘੰਟੇ"
+
+#~ msgid "minute"
+#~ msgid_plural "minutes"
+#~ msgstr[0] "ਮਿੰਟ"
+#~ msgstr[1] "ਮਿੰਟ"
+
+#~ msgid "%d minute remaining"
+#~ msgid_plural "%d minutes remaining"
+#~ msgstr[0] "%d ਮਿੰਟ ਬਾਕੀ"
+#~ msgstr[1] "%d ਮਿੰਟ ਬਾਕੀ"
+
+#~ msgid "AC Adapter"
+#~ msgstr "AC ਐਡਪਟਰ"
+
+#~ msgid "Laptop Battery"
+#~ msgstr "ਲੈਪਟਾਪ ਬੈਟਰੀ"
+
+#~ msgid "Monitor"
+#~ msgstr "ਮਾਨੀਟਰ"
+
+#~ msgid "Mouse"
+#~ msgstr "ਮਾਊਸ"
+
+#~ msgid "PDA"
+#~ msgstr "PDA"
+
+#~ msgid "Cell Phone"
+#~ msgstr "ਸੈੱਲ ਫੋਨ"
+
+#~ msgid "Media Player"
+#~ msgstr "ਮੀਡਿਆ ਪਲੇਅਰ"
+
+#~ msgid "Tablet"
+#~ msgstr "ਟੇਬਲੇਟ"
+
+#~ msgid "Computer"
+#~ msgstr "ਕੰਪਿਊਟਰ"
+
+#~ msgctxt "device"
+#~ msgid "Unknown"
+#~ msgstr "ਅਣਜਾਣ"
+
+#~ msgid "Available"
+#~ msgstr "ਉਪਲੱਬਧ"
+
+#~ msgid "Busy"
+#~ msgstr "ਰੁਝਿਆ"
+
+#~ msgid "Invisible"
+#~ msgstr "ਅਦਿੱਖ"
+
+#~ msgid "Away"
+#~ msgstr "ਦੂਰ"
+
+#~ msgid "Idle"
+#~ msgstr "ਵੇਹਲਾ"
+
+#~ msgid "Your chat status will be set to busy"
+#~ msgstr "ਤੁਹਾਡੀ ਚੈਟ ਹਾਲਤ ਰੁੱਝੇ ਵਜੋਂ ਸੈੱਟ ਕੀਤੀ ਜਾਵੇਗੀ"
+
+#~ msgid ""
+#~ "Notifications are now disabled, including chat messages. Your online "
+#~ "status has been adjusted to let others know that you might not see their "
+#~ "messages."
+#~ msgstr ""
+#~ "ਨੋਟੀਫਿਕੇਸ਼ਨ ਹੁਣ ਬੰਦ ਕੀਤੇ ਹੋਏ ਹਨ, ਜਿਸ ਵਿੱਚ ਗੱਲਬਾਤ (ਚੈਟ) ਸੁਨੇਹੇ ਵੀ ਹਨ। ਤੁਹਾਡੇ ਆਨਲਾਈਨ ਹਾਲਤ "
+#~ "ਨੂੰ ਵੀ ਅਡਜੱਸਟ ਕੀਤਾ ਜਾਵੇਗਾ ਤਾਂ ਕਿ ਹੋਰਾਂ ਨੂੰ ਇਹ ਪਤਾ ਲੱਗ ਸਕੇ ਕਿ ਤੁਸੀਂ ਉਹਨਾਂ ਦੇ ਸੁਨੇਹੇ ਸ਼ਾਇਦ ਨਾ "
+#~ "ਵੇਖੋਗੇ।"
+
+#~ msgctxt "title"
+#~ msgid "Sign In"
+#~ msgstr "ਸਾਇਨ ਇਨ"
+
+#~ msgid "tray"
+#~ msgstr "ਟਰੇ"
+
+#~ msgid "More..."
+#~ msgstr "ਹੋਰ..."
+
+#~ msgctxt "event list time"
+#~ msgid "%H:%M"
+#~ msgstr "%H:%M"
+
+#~ msgctxt "event list time"
+#~ msgid "%l:%M %p"
+#~ msgstr "%l:%M %p"
+
+#~ msgid "United Kingdom"
+#~ msgstr "ਬਰਤਾਨੀਆ"
+
+#~ msgid "Default"
+#~ msgstr "ਡਿਫਾਲਟ"
+
+#~ msgid "Show full name in the user menu"
+#~ msgstr "ਯੂਜ਼ਰ ਮੇਨੂ ਵਿੱਚ ਪੂਰਾ ਨਾਂ ਵੇਖਾਓ"
+
+#~ msgid "Whether the users full name is shown in the user menu or not."
+#~ msgstr "ਕੀ ਯੂਜ਼ਰ ਮੇਨੂ ਵਿੱਚ ਪੂਰਾ ਯੂਜ਼ਰ ਨਾਂ ਵੇਖਾਉਣਾ ਹੈ ਜਾਂ ਨਹੀਂ।"
+
+#~ msgid "APPLICATIONS"
+#~ msgstr "ਐਪਲੀਕੇਸ਼ਨ"
+
+#~ msgid "SETTINGS"
+#~ msgstr "ਸੈਟਿੰਗ"
+
+#~ msgid "Your favorite Easter Egg"
+#~ msgstr "ਤੁਹਾਡਾ ਪਸੰਦੀਦਾ ਈਸਟਰ ਅੰਡਾ"
+
+#~ msgid "Subscription request"
+#~ msgstr "ਮੈਂਬਰੀ ਦੀ ਮੰਗ"
+
+#~ msgid "Sent at <b>%X</b> on <b>%A</b>"
+#~ msgstr "<b>%2$A</b> ਨੂੰ <b>%1$X</b> ਵਜੇ ਭੇਜਿਆ"
+
+#~ msgid "Sent on <b>%A</b>, <b>%B %d</b>, %Y"
+#~ msgstr "<b>%A</b> <b>%B %d</b>, %Y ਨੂੰ ਭੇਜਿਆ"
+
+#~ msgid "Connection to %s failed"
+#~ msgstr "%s ਲਈ ਕੁਨੈਕਸ਼ਨ ਫੇਲ੍ਹ ਹੈ"
+
+#~ msgid "Reconnect"
+#~ msgstr "ਮੁੜ-ਕੁਨੈਕਟ ਕਰੋ"
+
+#~ msgid "Browse Files..."
+#~ msgstr "...ਫਾਇਲਾਂ ਦੀ ਝਲਕ"
+
+#~ msgid "Error browsing device"
+#~ msgstr "ਜੰਤਰ ਬਰਾਊਜ਼ ਕਰਨ ਲਈ ਗਲਤੀ"
+
+#~ msgid "The requested device cannot be browsed, error is '%s'"
+#~ msgstr "ਮੰਗ ਕੀਤੇ ਗਏ ਜੰਤਰ ਨੂੰ ਬਰਾਊਜ਼ ਨਹੀਂ ਕੀਤਾ ਜਾ ਸਕਦਾ, ਗਲਤੀ ਸੀ '%s'"
+
+#~ msgid "Wireless"
+#~ msgstr "ਬੇਤਾਰ"
+
+#~ msgid "VPN Connections"
+#~ msgstr "VPN ਕੁਨੈਕਸ਼ਨ"
+
+#~ msgid "System Settings"
+#~ msgstr "ਸਿਸਟਮ ਸੈਟਿੰਗ"
+
+#~ msgid "disabled OpenSearch providers"
+#~ msgstr "ਓਪਨਸਰਚ ਉਪਲੱਬਧ ਕਰਵਾਉਣ ਵਾਲੇ ਬੰਦ ਹਨ"
+
+#~ msgid "Failed to unmount '%s'"
+#~ msgstr "'%s' ਅਣ-ਮਾਊਂਟ ਕਰਨ ਲਈ ਫੇਲ੍ਹ"
+
+#~ msgid "Retry"
+#~ msgstr "ਮੁੜ-ਕੋਸ਼ਿਸ਼"
+
+#~ msgid "PLACES & DEVICES"
+#~ msgstr "ਥਾਵਾਂ ਅਤੇ ਜੰਤਰ"
+
+#~ msgid "%1$s: %2$s"
+#~ msgstr "%1$s: %2$s"
+
+#~ msgid "Connect to..."
+#~ msgstr "...ਨਾਲ ਕੁਨੈਕਟ ਕਰੋ"
+
+#~ msgid "Passphrase"
+#~ msgstr "ਵਾਕ"
+
+#~| msgid "Unknown"
+#~ msgctxt "contact"
+#~ msgid "Unknown"
+#~ msgstr "ਅਣਜਾਣ"
+
+#~ msgid "CONTACTS"
+#~ msgstr "ਸੰਪਰਕ"
+
+#~ msgid "%s is online."
+#~ msgstr "%s ਆਨਲਾਈਨ ਹੈ।"
+
+#~ msgid "%s is offline."
+#~ msgstr "%s ਆਫਲਾਈਨ ਹੈ।"
+
+#~ msgid "%s is away."
+#~ msgstr "%s ਦੂਰ ਹੈ।"
+
+#~ msgid "%s is busy."
+#~ msgstr "%s ਰੁੱਝਿਆ/ਰੁੱਝੀ ਹੈ।"
+
+#~ msgid "Show time with seconds"
+#~ msgstr "ਸਮਾਂ ਵਿੱਚ ਸਕਿੰਟ ਵੇਖੋ"
+
+#~ msgid "If true, display seconds in time."
+#~ msgstr "ਜੇ ਸੱਚ ਹੈ ਤਾਂ ਸਮਾਂ ਵਿੱਚ ਸਕਿੰਟ ਵੀ ਵੇਖਾਏ ਜਾਣਗੇ।"
+
+#~ msgid "Show date in clock"
+#~ msgstr "ਘੜੀ ਵਿੱਚ ਮਿਤੀ ਵੇਖੋ"
+
+#~ msgid "If true, display date in the clock, in addition to time."
+#~ msgstr "ਜੇ ਸੱਚ ਹੈ ਤਾਂ, ਘੜੀ ਵਿਚ ਸਮਾਂ ਨਾਲ ਮਿਤੀ ਵੀ ਵੇਖਾਈ ਜਾਵੇਗੀ।"
+
+#~ msgid "%a %b %e, %R:%S"
+#~ msgstr "%a, %e %b %R:%S"
+
+#~ msgid "%a %b %e, %R"
+#~ msgstr "%a %e %b, %R"
+
+#~ msgid "%a %R:%S"
+#~ msgstr "%a %R:%S"
+
+#~ msgid "%a %R"
+#~ msgstr "%a %R"
+
+#~ msgid "%a %b %e, %l:%M:%S %p"
+#~ msgstr "%a %e %b, %l:%M:%S %p"
+
+#~ msgid "%a %l:%M:%S %p"
+#~ msgstr "%a %l:%M:%S %p"
+
+#~ msgid "Wrong password, please try again"
+#~ msgstr "ਗਲਤ ਪਾਸਵਰਡ; ਮੁੜ ਕੋਸ਼ਿਸ਼ ਕਰੋ ਜੀ"
+
+#~ msgid "Hidden"
+#~ msgstr "ਲੁਕਵਾਂ"
+
+#~ msgid "Power Off..."
+#~ msgstr "...ਬੰਦ ਕਰੋ"
+
+#~ msgid "Online Accounts"
+#~ msgstr "ਆਨਲਾਈਨ ਅਕਾਊਂਟ"
+
+#~ msgid "Log Out..."
+#~ msgstr "...ਲਾਗਆਉਟ"
+
+#~ msgid ""
+#~ "GNOME Shell extensions have a uuid property; this key lists extensions "
+#~ "which should be loaded. disabled-extensions overrides this setting for "
+#~ "extensions that appear in both lists."
+#~ msgstr ""
+#~ "ਗਨੋਮ ਸ਼ੈਲ ਇਕਸਟੈਨਸ਼ਨ ਲਈ ਇੱਕ uuid ਵਿਸ਼ੇਸ਼ਤਾ ਹੈ; ਇਹ ਕੁੰਜੀ ਇਕਸਟੈਨਸ਼ਨ ਦਰਸਾਉਂਦੀ ਹੈ, ਜੋ ਲੋਡ ਹਨ। "
+#~ "disabled-extensions ਇਹ ਸੈਟਿੰਗ ਉਹਨਾਂ ਇਕਸਟੈਨਸ਼ਨਾਂ ਨੂੰ ਅਣਡਿੱਠਾ ਕਰਦੀ ਹੈ, ਜੋ ਦੋਵੇਂ ਲਿਸਟਾਂ ਵਿੱਚ "
+#~ "ਹੁੰਦੀਆਂ ਹਨ।"
+
+#~ msgid "RECENT ITEMS"
+#~ msgstr "ਤਾਜ਼ਾ ਆਈਟਮਾਂ"
+
+#~ msgid "Show password"
+#~ msgstr "ਪਾਸਵਰਡ ਵੇਖਾਓ"
+
+#~ msgid "%s has finished starting"
+#~ msgstr "%s ਸ਼ੁਰੂ ਹੋਣਾ ਖਤਮ ਹੋਇਆ"
+
+#~ msgid "If true, display onscreen keyboard."
+#~ msgstr "ਜੇ ਚੋਣ ਕੀਤੀ ਤਾਂ ਆਨਸਕਰੀਨ ਕੀਬੋਰਡ ਵੇਖਾਇਆ ਜਾਵੇਗਾ।"
+
+#~ msgid "Connectivity lost"
+#~ msgstr "ਕੁਨੈਕਸ਼ਨ ਟੁੱਟ ਗਿਆ"
+
+#~| msgid "You're no longer connected to the network"
+#~ msgid "You are no longer connected to the network"
+#~ msgstr "ਹੁਣ ਤੁਸੀਂ ਨੈੱਟਵਰਕ ਨਾਲ ਕੁਨਕੈਟ ਨਹੀਂ ਰਹੇ ਹੋ"
+
+#~ msgid "calendar:week_start:0"
+#~ msgstr "calendar:week_start:1"
+
+#~ msgid "Uuids of extensions to disable"
+#~ msgstr "ਇਕਟੈਨਸ਼ਨ ਦੀ Uuids ਬੰਦ ਹੈ"
+
+#~ msgid "You're now connected to mobile broadband connection '%s'"
+#~ msgstr "ਹੁਣ ਤੁਸੀਂ ਮੋਬਾਇਲ ਬਰਾਡਬੈਂਡ ਨੈੱਟਵਰਕ '%s' ਨਾਲ ਕੁਨੈਕਟ ਹੋ ਗਏ ਹੋ"
+
+#~ msgid "You're now connected to wireless network '%s'"
+#~ msgstr "ਹੁਣ ਤੁਸੀਂ ਬੇਤਾਰ ਨੈੱਟਵਰਕ '%s' ਨਾਲ ਕੁਨੈਕਟ ਹੋ ਗਏ ਹੋ"
+
+#~ msgid "You're now connected to VPN network '%s'"
+#~ msgstr "ਤੁਸੀਂ ਹੁਣ VPN ਨੈੱਟਵਰਕ '%s' ਨਾਲ ਕੁਨੈਕਟ ਹੋ ਚੁੱਕੇ ਹੋ"
+
+#~ msgid "Localization Settings"
+#~ msgstr "ਲੋਕਲਾਈਜ਼ੇਸ਼ਨ ਸੈਟਿੰਗ"
+
+#~ msgid "Less than a minute ago"
+#~ msgstr "ਇੱਕ ਮਿੰਟ ਤੋਂ ਘੱਟ ਚਿਰ ਪਹਿਲਾਂ"
+
+#~ msgid "Shut Down"
+#~ msgstr "ਬੰਦ ਕਰੋ"
+
+#~ msgid "Click Shut Down to quit these applications and shut down the system."
+#~ msgstr "ਇਹ ਐਪਲੀਕੇਸ਼ਨ ਬੰਦ ਕਰਕੇ ਸਿਸਟਮ ਨੂੰ ਬੰਦ ਕਰਨ ਲਈ ਬੰਦ ਕਰੋ ਨੂੰ ਕਲਿੱਕ ਕਰੋ।"
+
+#~ msgid "The system will shut down automatically in %d seconds."
+#~ msgstr "ਸਿਸਟਮ ਨੂੰ ਆਟੋਮੈਟਿਕ ਹੀ %d ਸਕਿੰਟਾਂ ਵਿੱਚ ਬੰਦ ਕੀਤਾ ਜਾਵੇਗਾ।"
+
+#~ msgid "Shutting down the system."
+#~ msgstr "ਸਿਸਟਮ ਬੰਦ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ।"
+
+#~ msgid "Confirm"
+#~ msgstr "ਪੁਸ਼ਟੀ"
+
+#~ msgid "PREFERENCES"
+#~ msgstr "ਪਸੰਦ"
+
+#~ msgid "Clip the crosshairs at the center"
+#~ msgstr "ਸੈਂਟਰ ਉੱਤੇ ਕਰਾਂਸਹੇਅਰ ਕਲਿੱਪ ਕਰੋ"
+
+#~ msgid "Color of the crosshairs"
+#~ msgstr "ਕਰਾਂਸਹੇਅਰ ਦਾ ਰੰਗ"
+
+#~ msgid ""
+#~ "Determines the length of the vertical and horizontal lines that make up "
+#~ "the crosshairs."
+#~ msgstr "ਵਰਟੀਕਲ ਤੇ ਹਰੀਜੱਟਲ ਲਾਈਨਾਂ ਦੀ ਲੰਬਾਈ ਦੱਸੋ, ਜੋ ਕਿ ਕਰਾਂਸਹੇਅਰ ਬਣਾਉਂਦੀਆਂ ਹਨ।"
+
+#~ msgid ""
+#~ "Determines the transparency of the crosshairs, from fully opaque to fully "
+#~ "transparent."
+#~ msgstr "ਕਰਾਂਸਹੇਅਰ ਦੀ ਟਰਾਂਸਪਰੇਸੀ ਤਹਿ ਕਰੋ, ਪੂਰੀ ਤਰ੍ਹਾਂ ਧੁੰਦਲੇ ਤੋਂ ਪਾਰਦਰਸ਼ੀ ਹੀ।"
+
+#~ msgid "Enable lens mode"
+#~ msgstr "ਲੈਨਜ਼ ਮੋਡ ਚਾਲੂ"
+
+#~ msgid ""
+#~ "Enables/disables display of crosshairs centered on the magnified mouse "
+#~ "sprite."
+#~ msgstr "ਵੱਡਦਰਸ਼ੀ ਮਾਊਸ ਸਪਰਿਟ ਉੱਤੇ ਸੈਂਟਰ ਕੀਤੇ ਕਰਾਂਸਹੇਅਰ ਵੇਖਾਉਣਾ ਚਾਲੂ ਜਾਂ ਬੰਦ ਕਰੋ।"
+
+#~ msgid ""
+#~ "For centered mouse tracking, when the system pointer is at or near the "
+#~ "edge of the screen, the magnified contents continue to scroll such that "
+#~ "the screen edge moves into the magnified view."
+#~ msgstr ""
+#~ "ਸੈਂਟਰਡ ਮਾਊਸ ਟਰੈਕ ਕਰਨ ਲਈ, ਜਦੋਂ ਸਿਸਟਮ ਪੁਆਇੰਟਰ ਸਕਰੀਨ ਦੇ ਕਿਸੇ ਕੋਨੇ ਕੋਲ ਜਾਂਦਾ ਹੈ ਤਾਂ ਵੱਡੇ ਰੂਪ "
+#~ "ਵਿੱਚ ਵੇਖਾਈ ਜਾਂਦੀ ਸਮੱਗਰੀ ਇੰਝ ਸਕਰੋਲ ਕੀਤੀ ਜਾਂਦੀ ਹੈ ਤਾਂ ਕਿ ਸਕਰੀਨ ਕੋਨੇ ਵੱਡਦਰਸ਼ ਝਲਕ ਦੇ ਰੂਪ ਵਿੱਚ "
+#~ "ਵੇਖਾਈ ਜਾਂਦੇ ਰਹਿੰਦੇ ਹਨ।"
+
+#~ msgid "Length of the crosshairs"
+#~ msgstr "ਕਰਾਂਸਹੇਅਰ ਦੀ ਲੰਬਾਈ"
+
+#~ msgid "Magnification factor"
+#~ msgstr "ਵੱਡਦਰਸ਼ੀ ਗੁਣਾਂਕ"
+
+#~ msgid "Mouse Tracking Mode"
+#~ msgstr "ਮਾਊਸ ਟਰੈਕਿੰਗ ਮੋਡ"
+
+#~ msgid "Opacity of the crosshairs"
+#~ msgstr "ਕਰਾਂਸਹੇਅਰ ਦਾ ਧੁੰਦਲਾਪਨ"
+
+#~ msgid "Scroll magnified contents beyond the edges of the desktop"
+#~ msgstr "ਡੈਸਕਟਾਪ ਦੇ ਕੋਨਿਆਂ ਤੋਂ ਪਾਰ ਵੱਡਦਰਸ਼ੀ ਸਮੱਗਰੀ ਸਕਰੋਲ ਕਰੋ"
+
+#~ msgid "Show or hide crosshairs"
+#~ msgstr "ਕਰਾਂਸਹੇਅਰ ਵੇਖੋ ਜਾਂ ਓਹਲੇ ਕਰੋ"
+
+#~ msgid "Show or hide the magnifier"
+#~ msgstr "ਵੱਡਦਰਸ਼ੀ ਵੇਖੋ ਜਾਂ ਓਹਲੇ ਕਰੋ"
+
+#~ msgid "Show or hide the magnifier and all of its zoom regions."
+#~ msgstr "ਵੱਡਦਰਸ਼ੀ ਵੇਖੋ ਜਾਂ ਓਹਲੇ ਕਰੋ ਤੇ ਇਸ ਦੇ ਸਭ ਖੇਤਰਾਂ ਨੂੰ ਜ਼ੂਮ ਕਰੋ।"
+
+#~ msgid ""
+#~ "The color of the the vertical and horizontal lines that make up the "
+#~ "crosshairs."
+#~ msgstr "ਵਰਟੀਕਲ ਤੇ ਹਰੀਜੱਟਲ ਲਾਈਨਾਂ ਦਾ ਰੰਗ, ਜੋ ਕਿ ਕਰਾਂਸਹੇਅਰ ਬਣਾਉਂਦੀਆਂ ਹਨ"
+
+#~ msgid ""
+#~ "The magnified view either fills the entire screen, or occupies the top-"
+#~ "half, bottom-half, left-half, or right-half of the screen."
+#~ msgstr ""
+#~ "ਵੱਡਦਰਸ਼ੀ ਝਲਕ ਪੂਰੀ ਸਕਰੀਨ ਨੂੰ ਭਰ ਸਕਦਾ ਹੈ ਜਾਂ ਅੱਧਾ-ਉੱਤੇ, ਅੱਧਾ ਹੇਠਾਂ, ਅੱਧਾ ਖੱਬੇ ਜਾਂ ਅੱਧਾ-ਸੱਜੇ ਭਾਗ "
+#~ "ਨੂੰ ਭਰ ਸਕਦਾ ਹੈ।"
+
+#~ msgid ""
+#~ "The power of the magnification. A value of 1.0 means no magnification. A "
+#~ "value of 2.0 doubles the size."
+#~ msgstr ""
+#~ "ਵੱਡਦਰਸ਼ੀ ਦੀ ਤਾਕਤ ਹੈ। ੧.੦ ਦਾ ਮਤਲਬ ਹੈ ਕਿ ਕੋਈ ਵੀ ਨਹੀਂ। ੨.੦ ਦਾ ਮਤਲਬ ਹੈ ਆਕਾਰ ਦਾ ਦੋ ਗੁਣਾ।"
+
+#~ msgid "Thickness of the crosshairs"
+#~ msgstr "ਕਰਾਂਸਹੇਅਰ ਦੀ ਮੋਟਾਈ"
+
+#~ msgid ""
+#~ "Whether the magnified view should be centered over the location of the "
+#~ "system mouse and move with it."
+#~ msgstr "ਕੀ ਵੱਡਦਰਸ਼ੀ ਝਲਕ ਦੀ ਸਥਿਤੀ ਸਿਸਟਮ ਮਾਊਂਸ ਦੁਆਲੇ ਕੇਂਦਰਤ ਰਹੇ ਅਤੇ ਉਸ ਨਾਲ ਹੀ ਹਿੱਲੇ।"
+
+#~ msgid ""
+#~ "Width of the vertical and horizontal lines that make up the crosshairs."
+#~ msgstr "ਵਰਟੀਕਲ ਤੇ ਹਰੀਜੱਟਲ ਲਾਈਨਾਂ ਦੀ ਚੌੜਾਈ, ਜੋ ਕਿ ਕਰਾਂਸਹੇਅਰ ਬਣਾਉਂਦੀਆਂ ਹਨ"
+
+#~ msgid "Shut Down..."
+#~ msgstr "ਬੰਦ ਕਰੋ..."
+
+#~ msgid "Bluetooth Agent"
+#~ msgstr "ਬਲਿਊਟੁੱਥ ਏਜੰਟ"
+
+#~ msgid "Search your computer"
+#~ msgstr "ਆਪਣੇ ਕੰਪਿਊਟਰ ਉੱਤੇ ਲੱਭੋ"
+
+#~ msgid ""
+#~ "Can't add a new workspace because maximum workspaces limit has been "
+#~ "reached."
+#~ msgstr ""
+#~ "ਨਵਾਂ ਵਰਕਸਪੇਸ ਜੋੜਿਆ ਨਹੀਂ ਜਾ ਸਕਦਾ, ਕਿਉਂਕਿ ਵਰਕਸਪੇਸਾਂ ਦੀ ਵੱਧੋ-ਵੱਧ ਗਿਣਤੀ ਪੂਰੀ ਹੋ ਚੁੱਕੀ ਹੈ।"
+
+#~ msgid "Can't remove the first workspace."
+#~ msgstr "ਪਹਿਲਾਂ ਵਰਕਸਪੇਸ ਨਹੀਂ ਹਟਾਇਆ ਜਾ ਸਕਦਾ।"
+
+#~ msgid "Customize the panel clock"
+#~ msgstr "ਪੈਨਲ ਘੜੀ ਕਸਟਮਾਈਜ਼ ਕਰੋ"
+
+#~ msgid "Custom format of the clock"
+#~ msgstr "ਘੜੀ ਲਈ ਪਸੰਦੀਦਾ ਫਾਰਮੈਟ"
+
+#~ msgid "Hour format"
+#~ msgstr "ਘੰਟਾ ਫਾਰਮੈਟ"
+
+#~ msgid ""
+#~ "If true and format is either \"12-hour\" or \"24-hour\", display seconds "
+#~ "in time."
+#~ msgstr "ਜੇ ਚੋਣ ਕੀਤੀ ਤਾਂ ਸਮੇਂ ਵਿੱਚ \"12-hour\" ਜਾਂ \" 24-hour\" ਸਕਿੰਟ ਵੇਖਾਏ ਜਾਣਗੇ।"
+
+#~ msgid ""
+#~ "This key specifies the format used by the panel clock when the format key "
+#~ "is set to \"custom\". You can use conversion specifiers understood by "
+#~ "strftime() to obtain a specific format. See the strftime() manual for "
+#~ "more information."
+#~ msgstr ""
+#~ "ਇਹ ਕੁੰਜੀ ਪੈਨਲ ਘੜੀ ਲਈ ਵਰਤਣ ਵਾਸਤੇ ਫਾਰਮੈਟ ਦਿੰਦੀ ਹੈ, ਜਦੋਂ ਕਿ ਫਾਰਮੈਟ ਕੁੰਜੀ \"ਕਸਟਮ\" ਸੈੱਟ "
+#~ "ਕੀਤੀ ਹੋਵੇ। ਤੁਸੀਂ ਖਾਸ ਫਾਰਮੈਟ ਦੇਣ ਲਈ ਹਦਾਇਤਾਂ ਵਾਸਤੇ  strftime () ਨੂੰ ਵਰਤ ਸਕਦੇ ਹੋ। ਹੋਰ "
+#~ "ਜਾਣਕਾਰੀ ਲਈ  strftime () ਦਸਤਾਵੇਜ਼ ਵੇਖੋ।"
+
+#~ msgid ""
+#~ "This key specifies the hour format used by the panel clock. Possible "
+#~ "values are \"12-hour\", \"24-hour\", \"unix\" and \"custom\". If set to "
+#~ "\"unix\", the clock will display time in seconds since Epoch, i.e. "
+#~ "1970-01-01. If set to \"custom\", the clock will display time according "
+#~ "to the format specified in the custom_format key. Note that if set to "
+#~ "either \"unix\" or \"custom\", the show_date and show_seconds keys are "
+#~ "ignored."
+#~ msgstr ""
+#~ "ਇਹ ਕੁੰਜੀ ਤਹਿ ਕਰਦੀ ਹੈ ਕਿ ਕਿਹੜਾ ਪੈਨਲ ਘੜੀ ਵਿੱਚ ਘੰਟਾ ਫਾਰਮੈਟ ਵਰਤਿਆ ਜਾਵੇ। ਸੰਭਵ ਮੁੱਲ ਹਨ "
+#~ "\"12-hour\"(੧੨-ਘੰਟੇ), \"24-hour\" (੨੪-ਘੰਟੇ), \"unix\" (ਯੂਨੈਕਸ) ਅਤੇ \"custom"
+#~ "\" (ਪਸੰਦੀਦਾ)। ਜੇ \"ਯੂਨੈਕਸ\" ਸੈੱਟ ਕੀਤਾ ਗਿਆ ਤਾਂ ਘੜੀ ਨੂੰ ਈਪੋਚ (੦੧-ਜਨਵਰੀ-੧੯੭੦) ਤੋਂ ਵੇਖਾਇਆ\n"
+#~ "ਜਾਵੇਗਾ। ਜੇ \"ਪਸੰਦੀਦਾ\" ਲਈ ਸੈੱਟ ਕੀਤਾ ਗਿਆ ਤਾਂ, ਘੜੀ ਨੂੰ custom_format ਕੁੰਜੀ ਵਿੱਚ ਦਿੱਤੇ "
+#~ "ਫਾਰਮੈਟ ਮੁਤਾਬਕ ਵੇਖਾਇਆ ਜਾਵੇਗਾ। ਯਾਦ ਰੱਖੋ ਕਿ ਜੇ \"ਯੂਨੈਕਸ\" ਜਾਂ \"ਪਸੰਦੀਦਾ\" ਸੈੱਟ ਕੀਤਾ ਤਾਂ "
+#~ "ਅੱਪਗਰੇਡ ਮਿਤੀ ਵੇਖਾਓ ਤੇ ਸਕਿੰਟ ਵੇਖਾਓ ਨੂੰ ਅਣਡਿੱਠਾ ਕੀਤਾ ਜਾਵੇਗਾ।"
+
+#~ msgid "Clock Preferences"
+#~ msgstr "ਘੜੀ ਪਸੰਦ"
+
+#~ msgid "Show seco_nds"
+#~ msgstr "ਸਕਿੰਟ ਵੇਖੋ(_n)"
+
+#~ msgid "_12 hour format"
+#~ msgstr "_੧੨ ਘੰਟੇ ਫਾਰਮੈਟ"
+
+#~ msgid "_24 hour format"
+#~ msgstr "_੨੪ ਘੰਟੇ ਫਾਰਮੈਟ"
+
+#~ msgid "Preferences"
+#~ msgstr "ਮੇਰੀ ਪਸੰਦ"
+
+#~ msgid "Overview workspace view mode"
+#~ msgstr "ਵਰਕਸਪੇਸ ਝਲਕ ਮੋਡ ਦੀ ਝਲਕ"
+
+#~ msgid ""
+#~ "The selected workspace view mode in the overview. Supported values are "
+#~ "\"single\" and \"grid\"."
+#~ msgstr ""
+#~ "ਸੰਖੇਪ ਵਿੱਚ ਚੁਣੇ ਵਰਕਸਪੇਸ ਝਲਕ ਮੋਡ ਹੈ। ਸਹਾਇਕ ਮੁੱਲ ਹਨ \"single\"(ਇੱਕਲਾ) ਜਾਂ \"grid"
+#~ "\" (ਗਰਿੱਡ)।"
+
+#~ msgid "Drag here to add favorites"
+#~ msgstr "ਪਸੰਦ ਵਿੱਚ ਜੋੜਨ ਲਈ ਇੱਥੇ ਸੁੱਟੋ"
+
+#~ msgid "Find"
+#~ msgstr "ਖੋਜ"
+
+#~| msgid "Preferences"
+#~ msgid "System Preferences..."
+#~ msgstr "ਸਿਸਟਮ ਪਸੰਦ..."
+
+#~ msgid "Sidebar"
+#~ msgstr "ਬਾਹੀ"
+
+#~ msgid "Recent Documents"
+#~ msgstr "ਤਾਜ਼ਾ ਡੌਕੂਮੈਂਟ"
+
+#~ msgid "(see all)"
+#~ msgstr "(ਸਭ ਵੇਖੋ)"
+
+#~ msgid "PLACES"
+#~ msgstr "ਥਾਵਾਂ"
+
+#~ msgid "SEARCH RESULTS"
+#~ msgstr "ਖੋਜ ਨਤੀਜੇ"
+
+#~ msgid "Can't lock screen: %s"
+#~ msgstr "ਸਕਰੀਨ ਲਾਕ ਨਹੀਂ ਹੋ ਸਕਦੀ: %s"
+
+#~ msgid "Can't temporarily set screensaver to blank screen: %s"
+#~ msgstr "ਸਕਰੀਨ ਬੰਦ ਕਰਨ ਲਈ ਆਰਜ਼ੀ ਰੂਪ ਵਿੱਚ ਸਕਰੀਨ-ਸੇਵਰ ਨਹੀਂ ਸੈੱਟ ਕੀਤਾ ਜਾ ਸਕਦਾ: %s"
+
+#~ msgid "Can't logout: %s"
+#~ msgstr "ਲਾਗਆਉਟ ਨਹੀਂ ਕੀਤਾ ਜਾ ਸਕਦਾ: %s"
+
+#~ msgid "Browse"
+#~ msgstr "ਝਲਕ"

@@ -1,0 +1,19 @@
+<node>
+  <interface name="org.gnome.Shell.PortalHelper">
+    <method name="Authenticate">
+      <arg name="connection" type="o" direction="in"/>
+      <arg name="url" type="s" direction="in"/>
+      <arg name="timestamp" type="u" direction="in"/>
+    </method>
+    <method name="Close">
+      <arg name="connection" type="o" direction="in"/>
+    </method>
+    <method name="Refresh">
+      <arg name="connection" type="o" direction="in"/>
+    </method>
+    <signal name="Done">
+      <arg type="o" name="connection"/>
+      <arg type="u" name="result"/>
+    </signal>
+  </interface>
+</node>

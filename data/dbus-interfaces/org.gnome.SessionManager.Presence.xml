@@ -1,0 +1,11 @@
+<node>
+  <interface name="org.gnome.SessionManager.Presence">
+    <method name="SetStatus">
+      <arg type="u" direction="in"/>
+    </method>
+    <property name="status" type="u" access="readwrite"/>
+    <signal name="StatusChanged">
+      <arg type="u" direction="out"/>
+    </signal>
+  </interface>
+</node>

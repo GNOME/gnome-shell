@@ -1,0 +1,11 @@
+.details-button image {
+  transition: 250ms;
+}
+.details-button.expanded:dir(ltr) image {
+  -gtk-icon-transform: rotate(0.25turn);
+}
+.details-button.expanded:dir(rtl) image {
+  -gtk-icon-transform: rotate(-0.25turn);
+}
+
+image.warning { color: @warning_color; }

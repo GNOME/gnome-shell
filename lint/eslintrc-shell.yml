@@ -1,0 +1,27 @@
+rules:
+  camelcase:
+    - error
+    - properties: never
+      allow: [^vfunc_, ^on_]
+  consistent-return: error
+  key-spacing:
+    - error
+    - mode: minimum
+      beforeColon: false
+      afterColon: true
+  object-curly-spacing:
+    - error
+    - always
+  prefer-arrow-callback: error
+
+overrides:
+  - files: js/**
+    excludedFiles:
+      - js/extensionPrefs/*
+      - js/portalHelper/*
+    globals:
+      global: readonly
+      _: readonly
+      C_: readonly
+      N_: readonly
+      ngettext: readonly

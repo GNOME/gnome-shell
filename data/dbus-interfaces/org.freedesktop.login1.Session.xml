@@ -1,0 +1,15 @@
+<node>
+  <interface name="org.freedesktop.login1.Session">
+    <signal name="Lock"/>
+    <signal name="Unlock"/>
+    <property name="Active" type="b" access="read"/>
+    <property name="Class" type="s" access="read"/>
+    <property name="Id" type="s" access="read"/>
+    <property name="Remote" type="b" access="read"/>
+    <property name="Type" type="s" access="read"/>
+    <property name="State" type="s" access="read"/>
+    <method name="SetLockedHint">
+      <arg type="b" direction="in"/>
+    </method>
+  </interface>
+</node>

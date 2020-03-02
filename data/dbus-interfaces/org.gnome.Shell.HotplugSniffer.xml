@@ -1,0 +1,8 @@
+<node>
+  <interface name="org.gnome.Shell.HotplugSniffer">
+    <method name="SniffURI">
+      <arg type="s" direction="in"/>
+      <arg type="as" direction="out"/>
+    </method>
+  </interface>
+</node>

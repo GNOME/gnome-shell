@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<KeyListEntries schema="org.gnome.shell.keybindings"
+                group="system"
+                name="System"
+                wm_name="GNOME Shell"
+                package="gnome-shell">
+
+	<KeyListEntry name="toggle-message-tray"
+                      description="Show the notification list"/>
+
+	<KeyListEntry name="focus-active-notification"
+                      description="Focus the active notification"/>
+
+	<KeyListEntry name="toggle-overview"
+                      description="Show the overview"/>
+
+	<KeyListEntry name="toggle-application-view"
+                      description="Show all applications"/>
+
+	<KeyListEntry name="open-application-menu"
+                      description="Open the application menu"/>
+
+</KeyListEntries>
+

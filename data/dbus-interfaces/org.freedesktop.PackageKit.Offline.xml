@@ -1,0 +1,13 @@
+<node>
+  <interface name="org.freedesktop.PackageKit.Offline">
+    <property name="UpdatePrepared" type="b" access="read"/>
+    <property name="UpdateTriggered" type="b" access="read"/>
+    <property name="UpgradePrepared" type="b" access="read"/>
+    <property name="UpgradeTriggered" type="b" access="read"/>
+    <property name="PreparedUpgrade" type="a{sv}" access="read"/>
+    <method name="Trigger">
+      <arg type="s" name="action" direction="in"/>
+    </method>
+    <method name="Cancel"/>
+  </interface>
+</node>

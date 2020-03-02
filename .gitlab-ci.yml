@@ -1,0 +1,112 @@
+stages:
+ - review
+ - build
+ - test
+
+variables:
+    JS_LOG: "js-report.txt"
+    POT_LOG: "pot-update.txt"
+
+.only_default: &only_default
+    only:
+        - branches
+        - tags
+        - merge_requests
+
+check_commit_log:
+    image: registry.gitlab.gnome.org/gnome/mutter/master:v3
+    stage: review
+    variables:
+        GIT_DEPTH: "100"
+    script:
+        - ./.gitlab-ci/check-commit-log.sh
+    only:
+        - merge_requests
+
+js_check:
+    image: registry.gitlab.gnome.org/gnome/gnome-shell/extension-ci:v1
+    stage: review
+    script:
+        - find js -name '*.js' -exec js60 -c -s '{}' ';' 2>&1 | tee $JS_LOG
+        - (! grep -q . $JS_LOG)
+    <<: *only_default
+    artifacts:
+        paths:
+            - ${JS_LOG}
+        when: on_failure
+
+eslint:
+    image: registry.gitlab.gnome.org/gnome/gnome-shell/extension-ci:v1
+    stage: review
+    script:
+        - ./.gitlab-ci/run-eslint.sh
+    <<: *only_default
+    artifacts:
+        paths:
+            - reports
+        when: always
+
+potfile_check:
+    image: registry.gitlab.gnome.org/gnome/gnome-shell/extension-ci:v1
+    stage: review
+    script:
+        - ./.gitlab-ci/check-potfiles.sh
+    <<: *only_default
+
+no_template_check:
+    image: registry.gitlab.gnome.org/gnome/gnome-shell/extension-ci:v1
+    stage: review
+    script:
+        - ./.gitlab-ci/check-template-strings.sh
+    <<: *only_default
+
+build:
+    image: registry.gitlab.gnome.org/gnome/mutter/master:v3
+    stage: build
+    before_script:
+        - .gitlab-ci/checkout-mutter.sh
+        - meson mutter mutter/build --prefix=/usr -Dtests=false
+        - ninja -C mutter/build install
+    script:
+        - meson . build -Dbuiltype=debugoptimized -Dman=false --werror
+        - ninja -C build
+        - ninja -C build install
+    <<: *only_default
+    artifacts:
+        expire_in: 1 day
+        paths:
+            - mutter
+            - build
+
+test:
+    image: registry.gitlab.gnome.org/gnome/mutter/master:v3
+    stage: test
+    variables:
+        XDG_RUNTIME_DIR: "$CI_PROJECT_DIR/runtime-dir"
+        NO_AT_BRIDGE: "1"
+    before_script:
+        - ninja -C mutter/build install
+    script:
+        - dbus-run-session -- xvfb-run meson test -C build --no-rebuild
+    <<: *only_default
+    artifacts:
+        expire_in: 1 day
+        paths:
+            - build/meson-logs/testlog.txt
+        when: on_failure
+
+test-pot:
+    image: registry.gitlab.gnome.org/gnome/mutter/master:v3
+    stage: test
+    before_script:
+        - ninja -C mutter/build install
+    script:
+        # Check that pot files are generated correctly:
+        # https://savannah.gnu.org/bugs/?50920#comment5
+        - ninja -C build gnome-shell-pot 2>&1 | awk '
+            BEGIN { start=0; }
+            start==1 { print $0; }
+            /gnome-shell-pot/ { start=1; }
+          ' | tee $POT_LOG
+        - (! grep -q . $POT_LOG)
+    <<: *only_default

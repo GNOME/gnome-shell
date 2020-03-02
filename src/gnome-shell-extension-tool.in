@@ -1,0 +1,59 @@
+#!@PYTHON@
+# -*- mode: Python; indent-tabs-mode: nil; -*-
+
+import subprocess
+import sys
+import optparse
+
+def extension_command(args):
+    print("gnome-shell-extension-tool is deprecated, use gnome-extensions instead",
+          file=sys.stderr)
+    subprocess.run(["@bindir@/gnome-extensions"] + args)
+
+def create_extension():
+    extension_command(["create", "--interactive"])
+
+def enable_extension(uuid):
+    extension_command(["enable", uuid])
+
+def disable_extension(uuid):
+    extension_command(["disable", uuid])
+
+def reload_extension(uuid):
+    print("Reloading extensions does not work correctly and is no longer supported",
+          file=sys.stderr)
+
+def main():
+    parser = optparse.OptionParser()
+    parser.add_option("-d", "--disable-extension", dest="disable",
+                      help="Disable a GNOME Shell extension")
+    parser.add_option("-e", "--enable-extension", dest="enable",
+                      help="Enable a GNOME Shell extension")
+    parser.add_option("-c", "--create-extension", dest="create", action="store_true",
+                      help="Create a new GNOME Shell extension")
+    parser.add_option("-r", "--reload-extension", dest="reload",
+                      help="Reload a GNOME Shell extension")
+    options, args = parser.parse_args()
+
+    if args:
+        parser.print_usage()
+        sys.exit(1)
+
+    if options.disable:
+        disable_extension(options.disable)
+
+    elif options.enable:
+        enable_extension(options.enable)
+
+    elif options.create:
+        create_extension()
+
+    elif options.reload:
+        reload_extension(options.reload)
+
+    else:
+        parser.print_usage()
+        sys.exit(1)
+
+if __name__ == "__main__":
+    main()

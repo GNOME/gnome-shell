@@ -1,0 +1,9 @@
+<node>
+  <interface name="org.freedesktop.GeoClue2.Manager">
+    <property name="InUse" type="b" access="read"/>
+    <property name="AvailableAccuracyLevel" type="u" access="read"/>
+    <method name="AddAgent">
+      <arg name="id" type="s" direction="in"/>
+    </method>
+  </interface>
+</node>

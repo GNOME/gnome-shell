@@ -1,0 +1,54 @@
+<node>
+  <interface name="org.gnome.Magnifier">
+    <method name="setActive">
+      <arg type="b" direction="in"/>
+    </method>
+    <method name="isActive">
+      <arg type="b" direction="out"/>
+    </method>
+    <method name="showCursor"/>
+    <method name="hideCursor"/>
+    <method name="createZoomRegion">
+      <arg type="d" direction="in"/>
+      <arg type="d" direction="in"/>
+      <arg type="ai" direction="in"/>
+      <arg type="ai" direction="in"/>
+      <arg type="o" direction="out"/>
+    </method>
+    <method name="addZoomRegion">
+      <arg type="o" direction="in"/>
+      <arg type="b" direction="out"/>
+    </method>
+    <method name="getZoomRegions">
+      <arg type="ao" direction="out"/>
+    </method>
+    <method name="clearAllZoomRegions"/>
+    <method name="fullScreenCapable">
+      <arg type="b" direction="out"/>
+    </method>
+    <method name="setCrosswireSize">
+      <arg type="i" direction="in"/>
+    </method>
+    <method name="getCrosswireSize">
+      <arg type="i" direction="out"/>
+    </method>
+    <method name="setCrosswireLength">
+      <arg type="i" direction="in"/>
+    </method>
+    <method name="getCrosswireLength">
+      <arg type="i" direction="out"/>
+    </method>
+    <method name="setCrosswireClip">
+      <arg type="b" direction="in"/>
+    </method>
+    <method name="getCrosswireClip">
+      <arg type="b" direction="out"/>
+    </method>
+    <method name="setCrosswireColor">
+      <arg type="u" direction="in"/>
+    </method>
+    <method name="getCrosswireColor">
+      <arg type="u" direction="out"/>
+    </method>
+  </interface>
+</node>

@@ -1,0 +1,145 @@
+<!DOCTYPE node PUBLIC
+'-//freedesktop//DTD D-BUS Object Introspection 1.0//EN'
+'http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd'>
+<node>
+
+  <!--
+      org.gnome.Shell.Screenshot:
+      @short_description: Screenshot interface
+
+      The interface used to capture pictures of the screen contents.
+  -->
+  <interface name="org.gnome.Shell.Screenshot">
+
+    <!--
+        Screenshot:
+        @filename: The filename for the screenshot
+        @include_cursor: Whether to include the cursor image or not
+        @flash: Whether to flash the screen or not
+        @success: whether the screenshot was captured
+        @filename_used: the file where the screenshot was saved
+
+        Takes a screenshot of the whole screen and saves it
+        in @filename as png image, it returns a boolean
+        indicating whether the operation was successful or not.
+        @filename can either be an absolute path or a basename, in
+        which case the screenshot will be saved in the $XDG_PICTURES_DIR
+        or the home directory if it doesn't exist. The filename used
+        to save the screenshot will be returned in @filename_used.
+    -->
+    <method name="Screenshot">
+      <arg type="b" direction="in" name="include_cursor"/>
+      <arg type="b" direction="in" name="flash"/>
+      <arg type="s" direction="in" name="filename"/>
+      <arg type="b" direction="out" name="success"/>
+      <arg type="s" direction="out" name="filename_used"/>
+    </method>
+
+    <!--
+        ScreenshotWindow:
+        @include_frame: Whether to include the frame or not
+        @include_cursor: Whether to include the cursor image or not
+        @flash: Whether to flash the window area or not
+        @filename: The filename for the screenshot
+        @success: whether the screenshot was captured
+        @filename_used: the file where the screenshot was saved
+
+        Takes a screenshot of the focused window (optionally omitting the frame)
+        and saves it in @filename as png image, it returns a boolean
+        indicating whether the operation was successful or not.
+        @filename can either be an absolute path or a basename, in
+        which case the screenshot will be saved in the $XDG_PICTURES_DIR
+        or the home directory if it doesn't exist. The filename used
+        to save the screenshot will be returned in @filename_used.
+    -->
+    <method name="ScreenshotWindow">
+      <arg type="b" direction="in" name="include_frame"/>
+      <arg type="b" direction="in" name="include_cursor"/>
+      <arg type="b" direction="in" name="flash"/>
+      <arg type="s" direction="in" name="filename"/>
+      <arg type="b" direction="out" name="success"/>
+      <arg type="s" direction="out" name="filename_used"/>
+    </method>
+
+    <!--
+        ScreenshotArea:
+        @x: the X coordinate of the area to capture
+        @y: the Y coordinate of the area to capture
+        @width: the width of the area to capture
+        @height: the height of the area to capture
+        @flash: whether to flash the area or not
+        @filename: the filename for the screenshot
+        @success: whether the screenshot was captured
+        @filename_used: the file where the screenshot was saved
+
+        Takes a screenshot of the passed in area and saves it
+        in @filename as png image, it returns a boolean
+        indicating whether the operation was successful or not.
+        @filename can either be an absolute path or a basename, in
+        which case the screenshot will be saved in the $XDG_PICTURES_DIR
+        or the home directory if it doesn't exist. The filename used
+        to save the screenshot will be returned in @filename_used.
+    -->
+    <method name="ScreenshotArea">
+      <arg type="i" direction="in" name="x"/>
+      <arg type="i" direction="in" name="y"/>
+      <arg type="i" direction="in" name="width"/>
+      <arg type="i" direction="in" name="height"/>
+      <arg type="b" direction="in" name="flash"/>
+      <arg type="s" direction="in" name="filename"/>
+      <arg type="b" direction="out" name="success"/>
+      <arg type="s" direction="out" name="filename_used"/>
+    </method>
+
+    <!--
+        PickColor:
+
+        Picks a color and returns the result.
+
+        The @result vardict contains:
+        <variablelist>
+          <varlistentry>
+            <term>color (ddd)</term>
+            <listitem><para>The color, RGB values in the range [0,1].</para></listitem>
+          </varlistentry>
+        </variablelist>
+    -->
+    <method name="PickColor">
+      <arg type="a{sv}" direction="out" name="result"/>
+    </method>
+
+    <!--
+        FlashArea:
+        @x: the X coordinate of the area to flash
+        @y: the Y coordinate of the area to flash
+        @width: the width of the area to flash
+        @height: the height of the area to flash
+
+        Renders a flash spot effect in the specified rectangle of the screen.
+    -->
+    <method name="FlashArea">
+      <arg type="i" direction="in" name="x"/>
+      <arg type="i" direction="in" name="y"/>
+      <arg type="i" direction="in" name="width"/>
+      <arg type="i" direction="in" name="height"/>
+    </method>
+
+    <!--
+        SelectArea:
+        @x: the X coordinate of the selected area
+        @y: the Y coordinate of the selected area
+        @width: the width of the selected area
+        @height: the height of the selected area
+
+        Interactively allows the user to select a rectangular area of
+        the screen, and returns its coordinates.
+    -->
+    <method name="SelectArea">
+      <arg type="i" direction="out" name="x"/>
+      <arg type="i" direction="out" name="y"/>
+      <arg type="i" direction="out" name="width"/>
+      <arg type="i" direction="out" name="height"/>
+    </method>
+
+  </interface>
+</node>

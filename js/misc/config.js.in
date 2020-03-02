@@ -1,0 +1,20 @@
+// -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
+
+/* The name of this package (not localized) */
+var PACKAGE_NAME = '@PACKAGE_NAME@';
+/* The version of this package */
+var PACKAGE_VERSION = '@PACKAGE_VERSION@';
+/* 1 if gnome-bluetooth is available, 0 otherwise */
+var HAVE_BLUETOOTH = @HAVE_BLUETOOTH@;
+/* 1 if networkmanager is available, 0 otherwise */
+var HAVE_NETWORKMANAGER = @HAVE_NETWORKMANAGER@;
+/* gettext package */
+var GETTEXT_PACKAGE = '@GETTEXT_PACKAGE@';
+/* locale dir */
+var LOCALEDIR = '@datadir@/locale';
+/* other standard directories */
+var LIBEXECDIR = '@libexecdir@';
+var PKGDATADIR = '@datadir@/@PACKAGE_NAME@';
+var VPNDIR = '@vpndir@';
+/* g-i package versions */
+var LIBMUTTER_API_VERSION = '@LIBMUTTER_API_VERSION@'

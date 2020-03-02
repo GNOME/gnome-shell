@@ -1,0 +1,76 @@
+<Project xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+         xmlns:foaf="http://xmlns.com/foaf/0.1/"
+         xmlns:gnome="http://api.gnome.org/doap-extensions#"
+         xmlns="http://usefulinc.com/ns/doap#">
+
+  <name xml:lang="en">GNOME Shell</name>
+  <shortdesc xml:lang="en">Next generation GNOME desktop shell</shortdesc>
+  <description>GNOME Shell provides core user interface functions for the GNOME 3
+desktop, like switching to windows and launching applications.
+GNOME Shell takes advantage of the capabilities of modern graphics
+hardware and introduces innovative user interface concepts to
+provide a visually attractive and easy to use experience.
+
+Tarball releases are provided largely for distributions to build
+packages. If you are interested in building GNOME Shell from source,
+we would recommend building from version control using the build
+script described at:
+
+ https://wiki.gnome.org/Projects/GnomeShell
+
+Not only will that give you the very latest version of this rapidly
+changing project, it will be much easier than get GNOME Shell and
+its dependencies to build from tarballs.</description>
+  <homepage rdf:resource="https://wiki.gnome.org/Projects/GnomeShell" />
+  <mailing-list rdf:resource="http://mail.gnome.org/mailman/listinfo/gnome-shell-list" />
+  <download-page rdf:resource="http://download.gnome.org/sources/gnome-shell/" />
+  <bug-database rdf:resource="https://gitlab.gnome.org/GNOME/gnome-shell/issues/" />
+
+  <category rdf:resource="http://api.gnome.org/doap-extensions#core" />
+  <programming-language>JavaScript</programming-language>
+  <programming-language>C</programming-language>
+
+  <author>
+    <foaf:Person>
+      <foaf:name>William Jon McCann</foaf:name>
+      <foaf:mbox rdf:resource="mailto:jmccann@redhat.com" />
+      <gnome:userid>mccann</gnome:userid>
+    </foaf:Person>
+  </author>
+  <author>
+    <foaf:Person>
+      <foaf:name>Owen Taylor</foaf:name>
+      <foaf:mbox rdf:resource="mailto:otaylor@redhat.com" />
+      <gnome:userid>otaylor</gnome:userid>
+    </foaf:Person>
+  </author>
+  <author>
+    <foaf:Person>
+      <foaf:name>Colin Walters</foaf:name>
+      <foaf:mbox rdf:resource="mailto:walters@verbum.org" />
+      <gnome:userid>walters</gnome:userid>
+    </foaf:Person>
+  </author>
+  <author>
+    <foaf:Person>
+      <foaf:name>Marina Zhurakhinskaya</foaf:name>
+      <foaf:mbox rdf:resource="mailto:marinaz@redhat.com" />
+      <gnome:userid>marinaz</gnome:userid>
+    </foaf:Person>
+  </author>
+  <maintainer>
+    <foaf:Person>
+      <foaf:name>Florian Müllner</foaf:name>
+      <foaf:mbox rdf:resource="mailto:fmuellner@gnome.org" />
+      <gnome:userid>fmuellner</gnome:userid>
+    </foaf:Person>
+  </maintainer>
+  <maintainer>
+    <foaf:Person>
+      <foaf:name>Georges Basile Stavracas Neto</foaf:name>
+      <foaf:mbox rdf:resource="mailto:gbsneto@gnome.org" />
+      <gnome:userid>gbsneto</gnome:userid>
+    </foaf:Person>
+  </maintainer>
+</Project>

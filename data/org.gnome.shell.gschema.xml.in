@@ -1,0 +1,305 @@
+<schemalist>
+  <schema id="org.gnome.shell" path="/org/gnome/shell/"
+          gettext-domain="@GETTEXT_PACKAGE@">
+    <key name="development-tools" type="b">
+      <default>true</default>
+      <summary>
+        Enable internal tools useful for developers and testers from Alt-F2
+      </summary>
+      <description>
+        Allows access to internal debugging and monitoring tools
+        using the Alt-F2 dialog.
+      </description>
+    </key>
+    <key name="enabled-extensions" type="as">
+      <default>[]</default>
+      <summary>UUIDs of extensions to enable</summary>
+      <description>
+        GNOME Shell extensions have a UUID property; this key lists extensions
+        which should be loaded. Any extension that wants to be loaded needs
+        to be in this list. You can also manipulate this list with the
+        EnableExtension and DisableExtension D-Bus methods on org.gnome.Shell.
+      </description>
+    </key>
+    <key name="disabled-extensions" type="as">
+      <default>[]</default>
+      <summary>UUIDs of extensions to force disabling</summary>
+      <description>
+        GNOME Shell extensions have a UUID property; this key lists extensions
+        which should be disabled, even if loaded as part of the current mode.
+        You can also manipulate this list with the EnableExtension and
+        DisableExtension D-Bus methods on org.gnome.Shell.
+        This key takes precedence over the “enabled-extensions” setting.
+      </description>
+    </key>
+    <key name="disable-user-extensions" type="b">
+      <default>false</default>
+      <summary>Disable user extensions</summary>
+      <description>
+        Disable all extensions the user has enabled without affecting
+        the “enabled-extension” setting.
+      </description>
+    </key>
+    <key name="disable-extension-version-validation" type="b">
+      <default>true</default>
+      <summary>Disables the validation of extension version compatibility</summary>
+      <description>
+        GNOME Shell will only load extensions that claim to support the current
+        running version. Enabling this option will disable this check and try to
+        load all extensions regardless of the versions they claim to support.
+      </description>
+    </key>
+    <key name="favorite-apps" type="as">
+      <default>[ 'org.gnome.Epiphany.desktop', 'org.gnome.Geary.desktop', 'org.gnome.Calendar.desktop', 'org.gnome.Music.desktop', 'org.gnome.Photos.desktop', 'org.gnome.Nautilus.desktop', 'org.gnome.Software.desktop' ]</default>
+      <summary>List of desktop file IDs for favorite applications</summary>
+      <description>
+        The applications corresponding to these identifiers
+        will be displayed in the favorites area.
+      </description>
+    </key>
+    <key name="app-picker-view" type="u">
+      <default>0</default>
+      <summary>App Picker View</summary>
+      <description>
+        Index of the currently selected view in the application picker.
+      </description>
+    </key>
+    <key name="command-history" type="as">
+      <default>[]</default>
+      <summary>History for command (Alt-F2) dialog</summary>
+    </key>
+    <key name="looking-glass-history" type="as">
+      <default>[]</default>
+      <!-- Translators: looking glass is a debugger and inspector tool, see https://wiki.gnome.org/Projects/GnomeShell/LookingGlass -->
+      <summary>History for the looking glass dialog</summary>
+    </key>
+    <key name="always-show-log-out" type="b">
+      <default>false</default>
+      <summary>Always show the “Log out” menu item in the user menu.</summary>
+      <description>
+        This key overrides the automatic hiding of the “Log out”
+        menu item in single-user, single-session situations.
+      </description>
+    </key>
+    <key name="remember-mount-password" type="b">
+      <default>false</default>
+      <summary>Whether to remember password for mounting encrypted or remote filesystems</summary>
+      <description>
+        The shell will request a password when an encrypted device or a
+        remote filesystem is mounted.  If the password can be saved for
+        future use a “Remember Password” checkbox will be present.
+        This key sets the default state of the checkbox.
+      </description>
+    </key>
+    <key name="had-bluetooth-devices-setup" type="b">
+      <default>false</default>
+      <summary>Whether the default Bluetooth adapter had set up devices associated to it</summary>
+      <description>
+        The shell will only show a Bluetooth menu item if a Bluetooth
+        adapter is powered, or if there were devices set up associated
+        with the default adapter. This will be reset if the default
+        adapter is ever seen not to have devices associated to it.
+      </description>
+    </key>
+    <key name="introspect" type="b">
+      <default>false</default>
+      <summary>Enable introspection API</summary>
+      <description>
+        Enables a D-Bus API that allows to introspect the application state of
+        the shell.
+      </description>
+    </key>
+    <child name="keybindings" schema="org.gnome.shell.keybindings"/>
+  </schema>
+
+  <schema id="org.gnome.shell.keybindings" path="/org/gnome/shell/keybindings/"
+          gettext-domain="@GETTEXT_PACKAGE@">
+    <key name="open-application-menu" type="as">
+      <default>["&lt;Super&gt;F10"]</default>
+      <summary>Keybinding to open the application menu</summary>
+      <description>
+        Keybinding to open the application menu.
+      </description>
+    </key>
+    <key name="toggle-application-view" type="as">
+      <default>["&lt;Super&gt;a"]</default>
+      <summary>Keybinding to open the “Show Applications” view</summary>
+      <description>
+        Keybinding to open the “Show Applications” view of the Activities
+        Overview.
+      </description>
+    </key>
+    <key name="toggle-overview" type="as">
+      <default>["&lt;Super&gt;s"]</default>
+      <summary>Keybinding to open the overview</summary>
+      <description>
+        Keybinding to open the Activities Overview.
+      </description>
+    </key>
+    <key name="toggle-message-tray" type="as">
+      <default>["&lt;Super&gt;v","&lt;Super&gt;m"]</default>
+      <summary>Keybinding to toggle the visibility of the notification list</summary>
+      <description>
+        Keybinding to toggle the visibility of the notification list.
+      </description>
+    </key>
+    <key name="focus-active-notification" type="as">
+      <default>["&lt;Super&gt;n"]</default>
+      <summary>Keybinding to focus the active notification</summary>
+      <description>
+        Keybinding to focus the active notification.
+      </description>
+    </key>
+    <key name="switch-to-application-1" type="as">
+      <default>["&lt;Super&gt;1"]</default>
+      <summary>Switch to application 1</summary>
+    </key>
+    <key name="switch-to-application-2" type="as">
+      <default>["&lt;Super&gt;2"]</default>
+      <summary>Switch to application 2</summary>
+    </key>
+    <key name="switch-to-application-3" type="as">
+      <default>["&lt;Super&gt;3"]</default>
+      <summary>Switch to application 3</summary>
+    </key>
+    <key name="switch-to-application-4" type="as">
+      <default>["&lt;Super&gt;4"]</default>
+      <summary>Switch to application 4</summary>
+    </key>
+    <key name="switch-to-application-5" type="as">
+      <default>["&lt;Super&gt;5"]</default>
+      <summary>Switch to application 5</summary>
+    </key>
+    <key name="switch-to-application-6" type="as">
+      <default>["&lt;Super&gt;6"]</default>
+      <summary>Switch to application 6</summary>
+    </key>
+    <key name="switch-to-application-7" type="as">
+      <default>["&lt;Super&gt;7"]</default>
+      <summary>Switch to application 7</summary>
+    </key>
+    <key name="switch-to-application-8" type="as">
+      <default>["&lt;Super&gt;8"]</default>
+      <summary>Switch to application 8</summary>
+    </key>
+    <key name="switch-to-application-9" type="as">
+      <default>["&lt;Super&gt;9"]</default>
+      <summary>Switch to application 9</summary>
+    </key>
+  </schema>
+
+  <schema id="org.gnome.shell.app-switcher"
+          path="/org/gnome/shell/app-switcher/"
+          gettext-domain="@GETTEXT_PACKAGE@">
+    <key type="b" name="current-workspace-only">
+      <default>false</default>
+      <summary>Limit switcher to current workspace.</summary>
+      <description>
+	If true, only applications that have windows on the current workspace are shown in the switcher.
+	Otherwise, all applications are included.
+      </description>
+    </key>
+  </schema>
+
+  <enum id="org.gnome.shell.window-switcher.AppIconMode">
+    <value value="1" nick="thumbnail-only"/>
+    <value value="2" nick="app-icon-only"/>
+    <value value="3" nick="both"/>
+  </enum>
+  <schema id="org.gnome.shell.window-switcher"
+          path="/org/gnome/shell/window-switcher/"
+          gettext-domain="@GETTEXT_PACKAGE@">
+    <key name="app-icon-mode" enum="org.gnome.shell.window-switcher.AppIconMode">
+      <default>'both'</default>
+      <summary>The application icon mode.</summary>
+      <description>
+	Configures how the windows are shown in the switcher. Valid possibilities
+	are “thumbnail-only” (shows a thumbnail of the window), “app-icon-only”
+	(shows only the application icon) or “both”.
+      </description>
+    </key>
+    <key type="b" name="current-workspace-only">
+      <default>true</default>
+      <summary>Limit switcher to current workspace.</summary>
+      <description>
+	If true, only windows from the current workspace are shown in the switcher.
+	Otherwise, all windows are included.
+      </description>
+    </key>
+  </schema>
+
+  <schema id="org.gnome.shell.world-clocks" path="/org/gnome/shell/world-clocks/"
+          gettext-domain="@GETTEXT_PACKAGE@">
+    <key name="locations" type="av">
+      <summary>Locations</summary>
+      <description>
+        The locations to show in world clocks
+      </description>
+      <default>[]</default>
+    </key>
+  </schema>
+
+  <schema id="org.gnome.shell.weather" path="/org/gnome/shell/weather/"
+          gettext-domain="@GETTEXT_PACKAGE@">
+    <key name="automatic-location" type="b">
+      <summary>Automatic location</summary>
+      <description>
+        Whether to fetch the current location or not
+      </description>
+      <default>false</default>
+    </key>
+
+    <key name="locations" type="av">
+      <summary>Location</summary>
+      <description>
+        The location for which to show a forecast
+      </description>
+      <default>[]</default>
+    </key>
+  </schema>
+
+  <!-- unused, change 00_org.gnome.shell.gschema.override instead -->
+  <schema id="org.gnome.shell.overrides" path="/org/gnome/shell/overrides/"
+	  gettext-domain="@GETTEXT_PACKAGE@">
+    <key name="attach-modal-dialogs" type="b">
+      <default>true</default>
+      <summary>Attach modal dialog to the parent window</summary>
+      <description>
+        This key overrides the key in org.gnome.mutter when running
+        GNOME Shell.
+      </description>
+    </key>
+
+    <key name="edge-tiling" type="b">
+      <default>true</default>
+      <summary>Enable edge tiling when dropping windows on screen edges</summary>
+      <description>
+        This key overrides the key in org.gnome.mutter when running GNOME Shell.
+      </description>
+    </key>
+
+    <key name="dynamic-workspaces" type="b">
+      <default>true</default>
+      <summary>Workspaces are managed dynamically</summary>
+      <description>
+        This key overrides the key in org.gnome.mutter when running GNOME Shell.
+      </description>
+    </key>
+
+    <key name="workspaces-only-on-primary" type="b">
+      <default>true</default>
+      <summary>Workspaces only on primary monitor</summary>
+      <description>
+        This key overrides the key in org.gnome.mutter when running GNOME Shell.
+      </description>
+    </key>
+
+    <key name="focus-change-on-pointer-rest" type="b">
+      <default>true</default>
+      <summary>Delay focus changes in mouse mode until the pointer stops moving</summary>
+      <description>
+        This key overrides the key in org.gnome.mutter when running GNOME Shell.
+      </description>
+    </key>
+  </schema>
+</schemalist>

@@ -1,0 +1,46 @@
+<!DOCTYPE node PUBLIC "-//freedesktop//DTD D-BUS Object Introspection 1.0//EN"
+"http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd">
+
+<node>
+
+  <!--
+      net.hadess.SwitcherooControl:
+      @short_description: D-Bus proxy to access dual-GPU controls.
+
+      After checking the availability of two switchable GPUs in the machine,
+      check the value of net.hadess.SwitcherooControl.HasDualGpu to see
+      if running applications on the discrete GPU should be offered.
+
+      The object path will be "/net/hadess/SwitcherooControl".
+  -->
+  <interface name="net.hadess.SwitcherooControl">
+    <!--
+        HasDualGpu:
+
+        Whether two switchable GPUs are present on the system. This property
+        has been obsoleted in favour of the "NumGPUs" property.
+    -->
+    <property name="HasDualGpu" type="b" access="read"/>
+
+    <!--
+        NumGPUs:
+
+        The number of GPUs available on the system. Note that while having no
+        GPUs is unlikely, consumers of this API should probably not throw errors
+        if that were the case.
+    -->
+    <property name="NumGPUs" type="u" access="read"/>
+
+    <!--
+        GPUs:
+
+        An array of key-pair values representing each GPU. The key named "Name" (s)
+        will contain a user-facing name for the GPU, the "Environment" (as) key will
+        contain an array of even number of strings, each being an environment
+        variable to set to use the GPU, followed by its value, the "Default" (b) key
+        will tag the default (usually integrated) GPU.
+    -->
+    <property name="GPUs" type="aa{sv}" access="read"/>
+
+  </interface>
+</node>

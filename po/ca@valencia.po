@@ -1,0 +1,2395 @@
+# Catalan gnome-shell translation.
+# Copyright (C) 2009 Siegfried-Angel Gevatter Pujals <rainct@ubuntu.com>
+# This file is distributed under the same license as the gnome-shell package.
+# Siegfried-Angel Gevatter Pujals <rainct@ubuntu.com>, 2009.
+# Jordi Serratosa <jordis@softcatala.cat>, 2012, 2017.
+# Gil Forcada <gilforcada@guifi.net>, 2010, 2011, 2013, 2014, 2016.
+# Jordi Mas i Hernàndez <jmas@softcatala.org>, 2017
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: HEAD\n"
+"Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
+"shell&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2017-09-10 06:17+0000\n"
+"PO-Revision-Date: 2017-08-23 09:48+0200\n"
+"Last-Translator: Xavi Ivars <xavi.ivars@gmail.com>\n"
+"Language-Team: Catalan <tradgnome@softcatala.org>\n"
+"Language: ca-valencia\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Poedit 2.0.1\n"
+
+#: data/50-gnome-shell-system.xml:6
+msgid "System"
+msgstr "Sistema"
+
+#: data/50-gnome-shell-system.xml:9
+msgid "Show the notification list"
+msgstr "Mostra la llista de notificacions"
+
+#: data/50-gnome-shell-system.xml:12
+msgid "Focus the active notification"
+msgstr "Posa el focus en la notificació activa"
+
+#: data/50-gnome-shell-system.xml:15
+msgid "Show the overview"
+msgstr "Mostra la vista general"
+
+#: data/50-gnome-shell-system.xml:18
+msgid "Show all applications"
+msgstr "Mostra totes les aplicacions"
+
+#: data/50-gnome-shell-system.xml:21
+msgid "Open the application menu"
+msgstr "Obri el menú d'aplicació"
+
+#: data/gnome-shell-extension-prefs.desktop.in.in:4
+#: js/extensionPrefs/main.js:152
+msgid "Shell Extensions"
+msgstr "Extensions del Shell"
+
+#: data/gnome-shell-extension-prefs.desktop.in.in:5
+msgid "Configure GNOME Shell Extensions"
+msgstr "Configureu les extensions del GNOME Shell"
+
+#: data/org.gnome.Shell.desktop.in.in:4
+msgid "GNOME Shell"
+msgstr "GNOME Shell"
+
+#: data/org.gnome.Shell.desktop.in.in:5
+msgid "Window management and application launching"
+msgstr "Gestor de finestres i llançador d'aplicacions"
+
+#: data/org.gnome.shell.gschema.xml.in:6
+msgid "Enable internal tools useful for developers and testers from Alt-F2"
+msgstr ""
+"Habilita les eines internes en el diàleg de l'Alt+F2 que són útils per als "
+"desenvolupadors i provadors"
+
+#: data/org.gnome.shell.gschema.xml.in:9
+msgid ""
+"Allows access to internal debugging and monitoring tools using the Alt-F2 "
+"dialog."
+msgstr ""
+"Permet l'accés a les eines de depuració i de seguiment internes a través del "
+"diàleg de l'Alt+F2."
+
+#: data/org.gnome.shell.gschema.xml.in:16
+msgid "UUIDs of extensions to enable"
+msgstr ""
+"Identificadors universals únics de les extensions que s'han d'habilitar"
+
+#: data/org.gnome.shell.gschema.xml.in:17
+msgid ""
+"GNOME Shell extensions have a UUID property; this key lists extensions which "
+"should be loaded. Any extension that wants to be loaded needs to be in this "
+"list. You can also manipulate this list with the EnableExtension and "
+"DisableExtension D-Bus methods on org.gnome.Shell."
+msgstr ""
+"Les extensions del GNOME Shell tenen un identificador universal. Esta "
+"clau conté una llista de les extensions que s'han de carregar. Qualsevol "
+"extensió que s'haja de carregar ha de ser a la llista. Podeu modificar "
+"esta llista amb els mètodes de D-Bus «EnableExtension» (activa una "
+"extensió) i «DisableExtension» (desactiva una extensió) a org.gnome.Shell."
+
+#: data/org.gnome.shell.gschema.xml.in:26
+msgid "Disable user extensions"
+msgstr "Inhabilita les extensions d'usuari"
+
+#: data/org.gnome.shell.gschema.xml.in:27
+msgid ""
+"Disable all extensions the user has enabled without affecting the “enabled-"
+"extension” setting."
+msgstr ""
+"Inhabilita totes les extensions que l'usuari ha habilitat sense afectar el "
+"paràmetre «enabled-extension»."
+
+#: data/org.gnome.shell.gschema.xml.in:34
+msgid "Disables the validation of extension version compatibility"
+msgstr "Desactiva la validació de la compatibilitat de versió d'extensions"
+
+#: data/org.gnome.shell.gschema.xml.in:35
+msgid ""
+"GNOME Shell will only load extensions that claim to support the current "
+"running version. Enabling this option will disable this check and try to "
+"load all extensions regardless of the versions they claim to support."
+msgstr ""
+"El GNOME Shell només carregarà extensions que afirmin ser compatibles amb la "
+"versió en execució. Si s'activa esta opció, es desactivarà la comprovació "
+"i es provarà de carregar totes les extensions sense tindre en compte les "
+"versions amb què afirmin ser compatibles."
+
+#: data/org.gnome.shell.gschema.xml.in:43
+msgid "List of desktop file IDs for favorite applications"
+msgstr ""
+"Llista d'identificadors de fitxers d'escriptori de les aplicacions preferides"
+
+#: data/org.gnome.shell.gschema.xml.in:44
+msgid ""
+"The applications corresponding to these identifiers will be displayed in the "
+"favorites area."
+msgstr ""
+"Es mostraran, a l'àrea de preferits, les aplicacions que corresponguin a "
+"estos identificadors."
+
+#: data/org.gnome.shell.gschema.xml.in:51
+msgid "App Picker View"
+msgstr "Vista del seleccionador d'aplicacions"
+
+#: data/org.gnome.shell.gschema.xml.in:52
+msgid "Index of the currently selected view in the application picker."
+msgstr ""
+"Índex de la vista seleccionada actualment en el seleccionador d'aplicacions."
+
+#: data/org.gnome.shell.gschema.xml.in:58
+msgid "History for command (Alt-F2) dialog"
+msgstr "Historial de les ordes utilitzades en el diàleg de l'Alt+F2"
+
+#. Translators: looking glass is a debugger and inspector tool, see https://wiki.gnome.org/Projects/GnomeShell/LookingGlass
+#: data/org.gnome.shell.gschema.xml.in:63
+msgid "History for the looking glass dialog"
+msgstr "Historial del depurador del GNOME Shell"
+
+#: data/org.gnome.shell.gschema.xml.in:67
+msgid "Always show the “Log out” menu item in the user menu."
+msgstr "Mostra sempre l'element de menú «Ix» al menú d'usuari."
+
+#: data/org.gnome.shell.gschema.xml.in:68
+msgid ""
+"This key overrides the automatic hiding of the “Log out” menu item in single-"
+"user, single-session situations."
+msgstr ""
+"Esta clau sobreescriu l'ocultació automàtica de l'element de menú «Ix» "
+"quan només hi ha un usuari i un sol tipus de sessió."
+
+#: data/org.gnome.shell.gschema.xml.in:75
+msgid ""
+"Whether to remember password for mounting encrypted or remote filesystems"
+msgstr ""
+"Si s'han de recordar les contrasenyes dels punts de muntatge encriptats o "
+"els sistemes de fitxers remots"
+
+#: data/org.gnome.shell.gschema.xml.in:76
+msgid ""
+"The shell will request a password when an encrypted device or a remote "
+"filesystem is mounted. If the password can be saved for future use a "
+"“Remember Password” checkbox will be present. This key sets the default "
+"state of the checkbox."
+msgstr ""
+"El GNOME Shell vos demanarà la contrasenya quan es munti un dispositiu "
+"encriptat o un sistema de fitxers remot. Si es pot guardar la contrasenya per "
+"utilitzar-lo en el futur, es mostrarà la casella de verificació «Recorda la "
+"contrasenya». Esta clau estableix el valor per defecte d'esta casella "
+"de verificació."
+
+#: data/org.gnome.shell.gschema.xml.in:85
+msgid ""
+"Whether the default Bluetooth adapter had set up devices associated to it"
+msgstr ""
+"Si l'adaptador de Bluetooth predeterminat té dispositius configurats "
+"associats"
+
+#: data/org.gnome.shell.gschema.xml.in:86
+msgid ""
+"The shell will only show a Bluetooth menu item if a Bluetooth adapter is "
+"powered, or if there were devices set up associated with the default "
+"adapter. This will be reset if the default adapter is ever seen not to have "
+"devices associated to it."
+msgstr ""
+"El Shell només mostrà una entrada de menú Bluetooth si un adaptador "
+"Bluetooth està engegat, o si hi ha dispositius configurats associats a "
+"l'adaptador predeterminat. Això es reiniciarà si l'adaptador predeterminat "
+"té dispositius associats."
+
+#: data/org.gnome.shell.gschema.xml.in:101
+msgid "Keybinding to open the application menu"
+msgstr "Vinculació per obrir el menú d'aplicació"
+
+#: data/org.gnome.shell.gschema.xml.in:102
+msgid "Keybinding to open the application menu."
+msgstr "La vinculació per obrir el menú d'aplicació."
+
+#: data/org.gnome.shell.gschema.xml.in:108
+msgid "Keybinding to open the “Show Applications” view"
+msgstr "Vinculació de tecles per obrir la vista «Mostra les aplicacions»"
+
+#: data/org.gnome.shell.gschema.xml.in:109
+msgid ""
+"Keybinding to open the “Show Applications” view of the Activities Overview."
+msgstr ""
+"Vinculació de tecles per obrir la vista «Mostra les aplicacions» de les "
+"activitats de la vista general."
+
+#: data/org.gnome.shell.gschema.xml.in:116
+msgid "Keybinding to open the overview"
+msgstr "Vinculació per obrir la vista general"
+
+#: data/org.gnome.shell.gschema.xml.in:117
+msgid "Keybinding to open the Activities Overview."
+msgstr "Vinculació per obrir la vista general d'activitats."
+
+#: data/org.gnome.shell.gschema.xml.in:123
+msgid "Keybinding to toggle the visibility of the notification list"
+msgstr ""
+"La vinculació per commutar la visibilitat de la llista de notificacions"
+
+#: data/org.gnome.shell.gschema.xml.in:124
+msgid "Keybinding to toggle the visibility of the notification list."
+msgstr ""
+"La vinculació per commutar la visibilitat de la llista de notificacions."
+
+#: data/org.gnome.shell.gschema.xml.in:130
+msgid "Keybinding to focus the active notification"
+msgstr "Vinculació per posar el focus a la notificació activa"
+
+#: data/org.gnome.shell.gschema.xml.in:131
+msgid "Keybinding to focus the active notification."
+msgstr "Vinculació per posar el focus a la notificació activa."
+
+#: data/org.gnome.shell.gschema.xml.in:137
+msgid ""
+"Keybinding that pauses and resumes all running tweens, for debugging purposes"
+msgstr ""
+"Vinculació que fa una pausa i continua tots els «tweens» en execució, per "
+"motius de depuració"
+
+#: data/org.gnome.shell.gschema.xml.in:146
+msgid "Which keyboard to use"
+msgstr "Quin tipus de teclat s'ha d'utilitzar"
+
+#: data/org.gnome.shell.gschema.xml.in:147
+msgid "The type of keyboard to use."
+msgstr "El tipus de teclat que s'utilitzarà."
+
+#: data/org.gnome.shell.gschema.xml.in:158
+#: data/org.gnome.shell.gschema.xml.in:185
+msgid "Limit switcher to current workspace."
+msgstr "Limita el canviador a l'espai de treball actual."
+
+#: data/org.gnome.shell.gschema.xml.in:159
+msgid ""
+"If true, only applications that have windows on the current workspace are "
+"shown in the switcher. Otherwise, all applications are included."
+msgstr ""
+"Si és «true» (cert), només les aplicacions que tinguen finestres en l'espai "
+"de treball actual es mostren en el canviador. En cas contrari es mostren "
+"totes les aplicacions."
+
+#: data/org.gnome.shell.gschema.xml.in:176
+msgid "The application icon mode."
+msgstr "El mode d'icona de les aplicacions."
+
+#: data/org.gnome.shell.gschema.xml.in:177
+msgid ""
+"Configures how the windows are shown in the switcher. Valid possibilities "
+"are “thumbnail-only” (shows a thumbnail of the window), “app-icon-"
+"only” (shows only the application icon) or “both”."
+msgstr ""
+"Configureu com es mostren les finestres en l'intercanviador. Els valors "
+"possibles són: «thumbnail-only» (mostra una miniatura de la finestra), «app-"
+"icon-only» (mostra la icona de l'aplicació) o «both» (ambdues coses)."
+
+#: data/org.gnome.shell.gschema.xml.in:186
+msgid ""
+"If true, only windows from the current workspace are shown in the switcher. "
+"Otherwise, all windows are included."
+msgstr ""
+"Si és «true» (cert), només les finestres de l'espai de treball actual es "
+"mostren en el canviador. En cas contrari, es mostren totes les finestres."
+
+#: data/org.gnome.shell.gschema.xml.in:197
+msgid "Attach modal dialog to the parent window"
+msgstr "Adjunta el diàleg modal a la finestra pare"
+
+#: data/org.gnome.shell.gschema.xml.in:198
+#: data/org.gnome.shell.gschema.xml.in:207
+#: data/org.gnome.shell.gschema.xml.in:215
+#: data/org.gnome.shell.gschema.xml.in:223
+#: data/org.gnome.shell.gschema.xml.in:231
+msgid ""
+"This key overrides the key in org.gnome.mutter when running GNOME Shell."
+msgstr ""
+"Si s'executa el GNOME Shell, esta clau sobreescriu la clau «org.gnome."
+"mutter»."
+
+#: data/org.gnome.shell.gschema.xml.in:206
+msgid "Enable edge tiling when dropping windows on screen edges"
+msgstr ""
+"Habilita la tessel·lització a les vores en deixar anar les finestres a les "
+"vores de la pantalla"
+
+#: data/org.gnome.shell.gschema.xml.in:214
+msgid "Workspaces are managed dynamically"
+msgstr "Els espais de treball es gestionen dinàmicament"
+
+#: data/org.gnome.shell.gschema.xml.in:222
+msgid "Workspaces only on primary monitor"
+msgstr "Només en el monitor principal hi ha espais de treball"
+
+#: data/org.gnome.shell.gschema.xml.in:230
+msgid "Delay focus changes in mouse mode until the pointer stops moving"
+msgstr ""
+"Retarda el canvi del focus, quan s'està en mode ratolí, fins que el punter "
+"no estiga quiet"
+
+#: data/org.gnome.Shell.PortalHelper.desktop.in.in:3
+msgid "Network Login"
+msgstr "Inici de sessió de xarxa"
+
+#. Translators: Do NOT translate or transliterate this text (this is an icon file name)!
+#: data/org.gnome.Shell.PortalHelper.desktop.in.in:9
+msgid "network-workgroup"
+msgstr "network-workgroup"
+
+#: js/extensionPrefs/main.js:120
+#, javascript-format
+msgid "There was an error loading the preferences dialog for %s:"
+msgstr "S'ha produït un error en carregar el diàleg de preferències de %s:"
+
+#: js/gdm/authPrompt.js:149 js/ui/audioDeviceSelection.js:71
+#: js/ui/components/networkAgent.js:117 js/ui/components/polkitAgent.js:148
+#: js/ui/endSessionDialog.js:482 js/ui/extensionDownloader.js:197
+#: js/ui/shellMountOperation.js:344 js/ui/status/network.js:936
+msgid "Cancel"
+msgstr "Cancel·la"
+
+#: js/gdm/authPrompt.js:171 js/gdm/authPrompt.js:218 js/gdm/authPrompt.js:450
+msgid "Next"
+msgstr "Següent"
+
+#: js/gdm/authPrompt.js:214 js/ui/shellMountOperation.js:348
+#: js/ui/unlockDialog.js:59
+msgid "Unlock"
+msgstr "Desbloqueja"
+
+#: js/gdm/authPrompt.js:216
+msgctxt "button"
+msgid "Sign In"
+msgstr "Entra"
+
+#: js/gdm/loginDialog.js:308
+msgid "Choose Session"
+msgstr "Trieu la sessió"
+
+#. translators: this message is shown below the user list on the
+#. login screen. It can be activated to reveal an entry for
+#. manually entering the username.
+#: js/gdm/loginDialog.js:458
+msgid "Not listed?"
+msgstr "No esteu llistat?"
+
+#. Translators: this message is shown below the username entry field
+#. to clue the user in on how to login to the local network realm
+#: js/gdm/loginDialog.js:888
+#, javascript-format
+msgid "(e.g., user or %s)"
+msgstr "(p. ex. l'usuari o %s)"
+
+#. TTLS and PEAP are actually much more complicated, but this complication
+#. is not visible here since we only care about phase2 authentication
+#. (and don't even care of which one)
+#: js/gdm/loginDialog.js:893 js/ui/components/networkAgent.js:243
+#: js/ui/components/networkAgent.js:261
+msgid "Username: "
+msgstr "Nom d'usuari:"
+
+#: js/gdm/loginDialog.js:1236
+msgid "Login Window"
+msgstr "Finestra d'entrada"
+
+#: js/gdm/util.js:346
+msgid "Authentication error"
+msgstr "Error d'autenticació"
+
+#. We don't show fingerprint messages directly since it's
+#. not the main auth service. Instead we use the messages
+#. as a cue to display our own message.
+#. Translators: this message is shown below the password entry field
+#. to indicate the user can swipe their finger instead
+#: js/gdm/util.js:478
+msgid "(or swipe finger)"
+msgstr "(o passeu el dit)"
+
+#. Translators: The name of the power-off action in search
+#: js/misc/systemActions.js:99
+msgctxt "search-result"
+msgid "Power off"
+msgstr "Apaga"
+
+#. Translators: A list of keywords that match the power-off action, separated by semicolons
+#: js/misc/systemActions.js:102
+msgid "power off;shutdown"
+msgstr "apaga;atura"
+
+#. Translators: The name of the lock screen action in search
+#: js/misc/systemActions.js:106
+msgctxt "search-result"
+msgid "Lock screen"
+msgstr "Bloqueja la pantalla"
+
+#. Translators: A list of keywords that match the lock screen action, separated by semicolons
+#: js/misc/systemActions.js:109
+msgid "lock screen"
+msgstr "bloca la pantalla"
+
+#. Translators: The name of the logout action in search
+#: js/misc/systemActions.js:113
+msgctxt "search-result"
+msgid "Log out"
+msgstr "Desconnecta"
+
+#. Translators: A list of keywords that match the logout action, separated by semicolons
+#: js/misc/systemActions.js:116
+msgid "logout;sign off"
+msgstr "desconnecta;eixida"
+
+#. Translators: The name of the suspend action in search
+#: js/misc/systemActions.js:120
+msgctxt "search-result"
+msgid "Suspend"
+msgstr "Atura temporalment"
+
+#. Translators: A list of keywords that match the suspend action, separated by semicolons
+#: js/misc/systemActions.js:123
+msgid "suspend;sleep"
+msgstr "atura temporalment;dorm"
+
+#. Translators: The name of the switch user action in search
+#: js/misc/systemActions.js:127
+msgctxt "search-result"
+msgid "Switch user"
+msgstr "Canvia d'usuari"
+
+#. Translators: A list of keywords that match the switch user action, separated by semicolons
+#: js/misc/systemActions.js:130
+msgid "switch user"
+msgstr "canvia d'usuari"
+
+#. Translators: The name of the lock orientation action in search
+#: js/misc/systemActions.js:134
+msgctxt "search-result"
+msgid "Lock orientation"
+msgstr "Bloqueja l'orientació"
+
+#. Translators: A list of keywords that match the lock orientation action, separated by semicolons
+#: js/misc/systemActions.js:137
+msgid "lock orientation"
+msgstr "bloqueja l'orientació"
+
+#: js/misc/util.js:122
+msgid "Command not found"
+msgstr "No s'ha trobat l'orde"
+
+#. Replace "Error invoking GLib.shell_parse_argv: " with
+#. something nicer
+#: js/misc/util.js:155
+msgid "Could not parse command:"
+msgstr "No s'ha pogut analitzar l'orde:"
+
+#: js/misc/util.js:163
+#, javascript-format
+msgid "Execution of “%s” failed:"
+msgstr "No s'ha pogut executar «%s»:"
+
+#: js/misc/util.js:180
+msgid "Just now"
+msgstr "Ara mateix"
+
+#: js/misc/util.js:182
+#, javascript-format
+msgid "%d minute ago"
+msgid_plural "%d minutes ago"
+msgstr[0] "fa %d minut"
+msgstr[1] "fa %d minuts"
+
+#: js/misc/util.js:185
+#, javascript-format
+msgid "%d hour ago"
+msgid_plural "%d hours ago"
+msgstr[0] "fa %d hora"
+msgstr[1] "fa %d hores"
+
+#: js/misc/util.js:188
+msgid "Yesterday"
+msgstr "Ahir"
+
+#: js/misc/util.js:190
+#, javascript-format
+msgid "%d day ago"
+msgid_plural "%d days ago"
+msgstr[0] "fa %d dia"
+msgstr[1] "fa %d dies"
+
+#: js/misc/util.js:193
+#, javascript-format
+msgid "%d week ago"
+msgid_plural "%d weeks ago"
+msgstr[0] "fa %d setmana"
+msgstr[1] "fa %d setmanes"
+
+#: js/misc/util.js:196
+#, javascript-format
+msgid "%d month ago"
+msgid_plural "%d months ago"
+msgstr[0] "fa %d mes"
+msgstr[1] "fa %d mesos"
+
+#: js/misc/util.js:198
+#, javascript-format
+msgid "%d year ago"
+msgid_plural "%d years ago"
+msgstr[0] "fa %d any"
+msgstr[1] "fa %d anys"
+
+#. Translators: Time in 24h format
+#: js/misc/util.js:228
+msgid "%H∶%M"
+msgstr "%H∶%M"
+
+#. Translators: this is the word "Yesterday" followed by a
+#. time string in 24h format. i.e. "Yesterday, 14:30"
+#: js/misc/util.js:234
+#, no-c-format
+msgid "Yesterday, %H∶%M"
+msgstr "Ahir, a les %H:%M"
+
+#. Translators: this is the week day name followed by a time
+#. string in 24h format. i.e. "Monday, 14:30"
+#: js/misc/util.js:240
+#, no-c-format
+msgid "%A, %H∶%M"
+msgstr "%A a les %H∶%M"
+
+#. Translators: this is the month name and day number
+#. followed by a time string in 24h format.
+#. i.e. "May 25, 14:30"
+#: js/misc/util.js:246
+#, no-c-format
+msgid "%B %d, %H∶%M"
+msgstr " %d de %B, a les %H∶%M"
+
+#. Translators: this is the month name, day number, year
+#. number followed by a time string in 24h format.
+#. i.e. "May 25 2012, 14:30"
+#: js/misc/util.js:252
+#, no-c-format
+msgid "%B %d %Y, %H∶%M"
+msgstr "%d de %B de %Y, a les %H∶%M"
+
+#. Translators: Time in 12h format
+#: js/misc/util.js:257
+msgid "%l∶%M %p"
+msgstr "%l∶%M %p"
+
+#. Translators: this is the word "Yesterday" followed by a
+#. time string in 12h format. i.e. "Yesterday, 2:30 pm"
+#: js/misc/util.js:263
+#, no-c-format
+msgid "Yesterday, %l∶%M %p"
+msgstr "Ahir, a les %l∶%M %p"
+
+#. Translators: this is the week day name followed by a time
+#. string in 12h format. i.e. "Monday, 2:30 pm"
+#: js/misc/util.js:269
+#, no-c-format
+msgid "%A, %l∶%M %p"
+msgstr "%A, a les %l∶%M %p"
+
+#. Translators: this is the month name and day number
+#. followed by a time string in 12h format.
+#. i.e. "May 25, 2:30 pm"
+#: js/misc/util.js:275
+#, no-c-format
+msgid "%B %d, %l∶%M %p"
+msgstr "%d de %B, a les %l∶%M %p"
+
+#. Translators: this is the month name, day number, year
+#. number followed by a time string in 12h format.
+#. i.e. "May 25 2012, 2:30 pm"
+#: js/misc/util.js:281
+#, no-c-format
+msgid "%B %d %Y, %l∶%M %p"
+msgstr "%d de %B de %Y, a les %l∶%M %p"
+
+#. TRANSLATORS: this is the title of the wifi captive portal login window
+#: js/portalHelper/main.js:66
+msgid "Hotspot Login"
+msgstr "Inici de sessió al punt d'accés Wi-Fi"
+
+#: js/portalHelper/main.js:112
+msgid ""
+"Your connection to this hotspot login is not secure. Passwords or other "
+"information you enter on this page can be viewed by people nearby."
+msgstr ""
+"La connexió a este punt d'accés no és segura. Contrasenyes o altra "
+"informació que introduïu en esta pàgina pot ser vista per persones "
+"properes."
+
+#. No support for non-modal system dialogs, so ignore the option
+#. let modal = options['modal'] || true;
+#: js/ui/accessDialog.js:63 js/ui/status/location.js:395
+msgid "Deny Access"
+msgstr "Denega l'accés"
+
+#: js/ui/accessDialog.js:64 js/ui/status/location.js:398
+msgid "Grant Access"
+msgstr "Permet l'accés"
+
+#: js/ui/appDisplay.js:809
+msgid "Frequently used applications will appear here"
+msgstr "Les aplicacions utilitzades freqüentment apareixeran ací"
+
+#: js/ui/appDisplay.js:930
+msgid "Frequent"
+msgstr "Freqüent"
+
+#: js/ui/appDisplay.js:937
+msgid "All"
+msgstr "Totes"
+
+#: js/ui/appDisplay.js:1915
+msgid "New Window"
+msgstr "Finestra nova"
+
+#: js/ui/appDisplay.js:1929
+msgid "Launch using Dedicated Graphics Card"
+msgstr "Inicia usant una targeta gràfica dedicada"
+
+#: js/ui/appDisplay.js:1956 js/ui/dash.js:289
+msgid "Remove from Favorites"
+msgstr "Suprimeix dels preferits"
+
+#: js/ui/appDisplay.js:1962
+msgid "Add to Favorites"
+msgstr "Afig als preferits"
+
+#: js/ui/appDisplay.js:1972
+msgid "Show Details"
+msgstr "Mostra els detalls"
+
+#: js/ui/appFavorites.js:141
+#, javascript-format
+msgid "%s has been added to your favorites."
+msgstr "S'ha afegit %s als preferits."
+
+#: js/ui/appFavorites.js:175
+#, javascript-format
+msgid "%s has been removed from your favorites."
+msgstr "S'ha suprimit %s dels preferits."
+
+#: js/ui/audioDeviceSelection.js:59
+msgid "Select Audio Device"
+msgstr "Seleccioneu dispositiu d'àudio"
+
+#: js/ui/audioDeviceSelection.js:69
+msgid "Sound Settings"
+msgstr "Paràmetres del so"
+
+#: js/ui/audioDeviceSelection.js:78
+msgid "Headphones"
+msgstr "Auriculars"
+
+#: js/ui/audioDeviceSelection.js:80
+msgid "Headset"
+msgstr "Auriculars amb micròfon"
+
+#: js/ui/audioDeviceSelection.js:82 js/ui/status/volume.js:221
+msgid "Microphone"
+msgstr "Micròfon"
+
+#: js/ui/backgroundMenu.js:19
+msgid "Change Background…"
+msgstr "Canvia el fons de l'escriptori…"
+
+#: js/ui/backgroundMenu.js:21 js/ui/status/nightLight.js:51
+msgid "Display Settings"
+msgstr "Paràmetres de la pantalla"
+
+#: js/ui/backgroundMenu.js:22 js/ui/status/system.js:265
+msgid "Settings"
+msgstr "Paràmetres"
+
+#. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday).
+#: js/ui/calendar.js:47
+msgctxt "calendar-no-work"
+msgid "06"
+msgstr "06"
+
+#. Translators: Calendar grid abbreviation for Sunday.
+#. *
+#. * NOTE: These grid abbreviations are always shown together
+#. * and in order, e.g. "S M T W T F S".
+#.
+#: js/ui/calendar.js:76
+msgctxt "grid sunday"
+msgid "S"
+msgstr "Dg"
+
+#. Translators: Calendar grid abbreviation for Monday
+#: js/ui/calendar.js:78
+msgctxt "grid monday"
+msgid "M"
+msgstr "Dl"
+
+#. Translators: Calendar grid abbreviation for Tuesday
+#: js/ui/calendar.js:80
+msgctxt "grid tuesday"
+msgid "T"
+msgstr "Dt"
+
+#. Translators: Calendar grid abbreviation for Wednesday
+#: js/ui/calendar.js:82
+msgctxt "grid wednesday"
+msgid "W"
+msgstr "Dc"
+
+#. Translators: Calendar grid abbreviation for Thursday
+#: js/ui/calendar.js:84
+msgctxt "grid thursday"
+msgid "T"
+msgstr "Dj"
+
+#. Translators: Calendar grid abbreviation for Friday
+#: js/ui/calendar.js:86
+msgctxt "grid friday"
+msgid "F"
+msgstr "Dv"
+
+#. Translators: Calendar grid abbreviation for Saturday
+#: js/ui/calendar.js:88
+msgctxt "grid saturday"
+msgid "S"
+msgstr "Ds"
+
+#: js/ui/calendar.js:442
+msgid "Previous month"
+msgstr "Mes anterior"
+
+#: js/ui/calendar.js:452
+msgid "Next month"
+msgstr "Mes següent"
+
+#: js/ui/calendar.js:605
+#, no-javascript-format
+msgctxt "date day number format"
+msgid "%d"
+msgstr "%d"
+
+#: js/ui/calendar.js:660
+msgid "Week %V"
+msgstr "Setmana %V"
+
+#. Translators: Shown in calendar event list for all day events
+#. * Keep it short, best if you can use less then 10 characters
+#.
+#: js/ui/calendar.js:729
+msgctxt "event list time"
+msgid "All Day"
+msgstr "Tot el dia"
+
+#: js/ui/calendar.js:862
+msgctxt "calendar heading"
+msgid "%A, %B %d"
+msgstr "%A %d de %B"
+
+#: js/ui/calendar.js:866
+msgctxt "calendar heading"
+msgid "%A, %B %d, %Y"
+msgstr "%A %d de %B de %Y"
+
+#: js/ui/calendar.js:1086
+msgid "No Notifications"
+msgstr "Cap notificació"
+
+#: js/ui/calendar.js:1089
+msgid "No Events"
+msgstr "Cap cita"
+
+#: js/ui/calendar.js:1117
+msgid "Clear All"
+msgstr "Neteja-ho tot"
+
+#. Translators: %s is an application name
+#: js/ui/closeDialog.js:44
+#, javascript-format
+msgid "“%s” is not responding."
+msgstr "«%s» no està responent."
+
+#: js/ui/closeDialog.js:45
+msgid ""
+"You may choose to wait a short while for it to continue or force the "
+"application to quit entirely."
+msgstr ""
+"Podeu esperar un moment perquè continue o podeu forçar-ne l'eixida "
+"completa."
+
+#: js/ui/closeDialog.js:61
+msgid "Force Quit"
+msgstr "Força l'eixida"
+
+#: js/ui/closeDialog.js:64
+msgid "Wait"
+msgstr "Espera"
+
+#: js/ui/components/automountManager.js:91
+msgid "External drive connected"
+msgstr "S'ha connectat un dispositiu extern"
+
+#: js/ui/components/automountManager.js:102
+msgid "External drive disconnected"
+msgstr "S'ha desconnectat un dispositiu extern"
+
+#: js/ui/components/autorunManager.js:354
+#, javascript-format
+msgid "Open with %s"
+msgstr "Obri amb %s"
+
+#: js/ui/components/keyring.js:107 js/ui/components/polkitAgent.js:284
+msgid "Password:"
+msgstr "Contrasenya:"
+
+#: js/ui/components/keyring.js:140
+msgid "Type again:"
+msgstr "Torneu a escriure-la:"
+
+#: js/ui/components/networkAgent.js:112 js/ui/status/network.js:261
+#: js/ui/status/network.js:355 js/ui/status/network.js:939
+msgid "Connect"
+msgstr "Connecta"
+
+#. Cisco LEAP
+#: js/ui/components/networkAgent.js:205 js/ui/components/networkAgent.js:217
+#: js/ui/components/networkAgent.js:245 js/ui/components/networkAgent.js:265
+#: js/ui/components/networkAgent.js:275
+msgid "Password: "
+msgstr "Contrasenya:"
+
+#. static WEP
+#: js/ui/components/networkAgent.js:210
+msgid "Key: "
+msgstr "Clau:"
+
+#: js/ui/components/networkAgent.js:249
+msgid "Identity: "
+msgstr "Identitat:"
+
+#: js/ui/components/networkAgent.js:251
+msgid "Private key password: "
+msgstr "Contrasenya de la clau privada:"
+
+#: js/ui/components/networkAgent.js:263
+msgid "Service: "
+msgstr "Servei:"
+
+#: js/ui/components/networkAgent.js:292 js/ui/components/networkAgent.js:638
+msgid "Authentication required by wireless network"
+msgstr "La xarxa sense fil requereix autenticació"
+
+#: js/ui/components/networkAgent.js:293 js/ui/components/networkAgent.js:639
+#, javascript-format
+msgid ""
+"Passwords or encryption keys are required to access the wireless network "
+"“%s”."
+msgstr ""
+"Per accedir a la xarxa sense fil «%s» calen les contrasenyes o les claus "
+"d'encriptació."
+
+#: js/ui/components/networkAgent.js:297 js/ui/components/networkAgent.js:642
+msgid "Wired 802.1X authentication"
+msgstr "Autenticació 802.1X amb fil"
+
+#: js/ui/components/networkAgent.js:299
+msgid "Network name: "
+msgstr "Nom de la xarxa: "
+
+#: js/ui/components/networkAgent.js:304 js/ui/components/networkAgent.js:646
+msgid "DSL authentication"
+msgstr "Autenticació DSL"
+
+#: js/ui/components/networkAgent.js:311 js/ui/components/networkAgent.js:652
+msgid "PIN code required"
+msgstr "Cal que introduïu el codi PIN"
+
+#: js/ui/components/networkAgent.js:312 js/ui/components/networkAgent.js:653
+msgid "PIN code is needed for the mobile broadband device"
+msgstr "Cal que introduïu el codi PIN del dispositiu de banda ampla mòbil"
+
+#: js/ui/components/networkAgent.js:313
+msgid "PIN: "
+msgstr "PIN: "
+
+#: js/ui/components/networkAgent.js:320 js/ui/components/networkAgent.js:659
+msgid "Mobile broadband network password"
+msgstr "Contrasenya de la xarxa de banda ampla mòbil"
+
+#: js/ui/components/networkAgent.js:321 js/ui/components/networkAgent.js:643
+#: js/ui/components/networkAgent.js:647 js/ui/components/networkAgent.js:660
+#, javascript-format
+msgid "A password is required to connect to “%s”."
+msgstr "Cal introduir una contrasenya per connectar-vos a «%s»."
+
+#: js/ui/components/networkAgent.js:627 js/ui/status/network.js:1720
+msgid "Network Manager"
+msgstr "Gestor de connexions de xarxa"
+
+#: js/ui/components/polkitAgent.js:43
+msgid "Authentication Required"
+msgstr "Cal autenticació"
+
+#: js/ui/components/polkitAgent.js:71
+msgid "Administrator"
+msgstr "Administrador"
+
+#: js/ui/components/polkitAgent.js:151
+msgid "Authenticate"
+msgstr "Autentica"
+
+#. Translators: "that didn't work" refers to the fact that the
+#. * requested authentication was not gained; this can happen
+#. * because of an authentication error (like invalid password),
+#. * for instance.
+#: js/ui/components/polkitAgent.js:270 js/ui/shellMountOperation.js:328
+msgid "Sorry, that didn’t work. Please try again."
+msgstr "No ha funcionat. Torneu-ho a provar."
+
+#. Translators: this is the other person changing their old IM name to their new
+#. IM name.
+#: js/ui/components/telepathyClient.js:799
+#, javascript-format
+msgid "%s is now known as %s"
+msgstr "En/na %s ara es diu %s"
+
+#: js/ui/ctrlAltTab.js:29 js/ui/viewSelector.js:186
+msgid "Windows"
+msgstr "Finestres"
+
+#: js/ui/dash.js:250 js/ui/dash.js:291
+msgid "Show Applications"
+msgstr "Mostra les aplicacions"
+
+#. Translators: this is the name of the dock/favorites area on
+#. the left of the overview
+#: js/ui/dash.js:449
+msgid "Dash"
+msgstr "Quadre d'aplicacions"
+
+#. Translators: This is the date format to use when the calendar popup is
+#. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
+#.
+#: js/ui/dateMenu.js:75
+msgid "%B %e %Y"
+msgstr "%e de %B de %Y"
+
+#. Translators: This is the accessible name of the date button shown
+#. * below the time in the shell; it should combine the weekday and the
+#. * date, e.g. "Tuesday February 17 2015".
+#.
+#: js/ui/dateMenu.js:82
+msgid "%A %B %e %Y"
+msgstr "%A, %e de %B de %Y"
+
+#: js/ui/dateMenu.js:144
+msgid "Add world clocks…"
+msgstr "Afig rellotges del món…"
+
+#: js/ui/dateMenu.js:145
+msgid "World Clocks"
+msgstr "Rellotges del món"
+
+#: js/ui/dateMenu.js:224
+msgid "Weather"
+msgstr "El temps"
+
+#. Translators: %s is a weather condition like "Clear sky"; see
+#. libgweather for the possible condition strings. If at all
+#. possible, the sentence should match the grammatical case etc. of
+#. the inserted conditions.
+#: js/ui/dateMenu.js:286
+#, javascript-format
+msgid "%s all day."
+msgstr "%s tot el dia."
+
+#. Translators: %s is a weather condition like "Clear sky"; see
+#. libgweather for the possible condition strings. If at all
+#. possible, the sentence should match the grammatical case etc. of
+#. the inserted conditions.
+#: js/ui/dateMenu.js:292
+#, javascript-format
+msgid "%s, then %s later."
+msgstr "%s, llavors %s més tard."
+
+#. Translators: %s is a weather condition like "Clear sky"; see
+#. libgweather for the possible condition strings. If at all
+#. possible, the sentence should match the grammatical case etc. of
+#. the inserted conditions.
+#: js/ui/dateMenu.js:298
+#, javascript-format
+msgid "%s, then %s, followed by %s later."
+msgstr "%s, llavors %s, seguit per %s més tard."
+
+#: js/ui/dateMenu.js:309
+msgid "Select a location…"
+msgstr "Trieu una ubicació…"
+
+#: js/ui/dateMenu.js:312
+msgid "Loading…"
+msgstr "S'està carregant…"
+
+#. Translators: %s is a temperature with unit, e.g. "23℃"
+#: js/ui/dateMenu.js:318
+#, javascript-format
+msgid "Feels like %s."
+msgstr "Sensació tèrmica de %s."
+
+#: js/ui/dateMenu.js:321
+msgid "Go online for weather information"
+msgstr "Vés en línia per a informació sobre el temps"
+
+#: js/ui/dateMenu.js:323
+msgid "Weather information is currently unavailable"
+msgstr "La informació sobre el temps no està disponible"
+
+#: js/ui/endSessionDialog.js:64
+#, javascript-format
+msgctxt "title"
+msgid "Log Out %s"
+msgstr "Eixida %s"
+
+#: js/ui/endSessionDialog.js:65
+msgctxt "title"
+msgid "Log Out"
+msgstr "Eixida"
+
+#: js/ui/endSessionDialog.js:67
+#, javascript-format
+msgid "%s will be logged out automatically in %d second."
+msgid_plural "%s will be logged out automatically in %d seconds."
+msgstr[0] "%s eixirà de la sessió automàticament d'ací %d segon."
+msgstr[1] "%s eixirà de la sessió automàticament d'ací %d segons."
+
+#: js/ui/endSessionDialog.js:72
+#, javascript-format
+msgid "You will be logged out automatically in %d second."
+msgid_plural "You will be logged out automatically in %d seconds."
+msgstr[0] "Eixireu automàticament d'ací %d segon."
+msgstr[1] "Eixireu automàticament d'ací %d segons."
+
+#: js/ui/endSessionDialog.js:78
+msgctxt "button"
+msgid "Log Out"
+msgstr "Ix"
+
+#: js/ui/endSessionDialog.js:84
+msgctxt "title"
+msgid "Power Off"
+msgstr "Apagada"
+
+#: js/ui/endSessionDialog.js:85
+msgctxt "title"
+msgid "Install Updates & Power Off"
+msgstr "Instal·la les actualitzacions i apaga"
+
+#: js/ui/endSessionDialog.js:87
+#, javascript-format
+msgid "The system will power off automatically in %d second."
+msgid_plural "The system will power off automatically in %d seconds."
+msgstr[0] "S'apagarà l'ordinador automàticament d'ací %d segon."
+msgstr[1] "S'apagarà l'ordinador automàticament d'ací %d segons."
+
+#: js/ui/endSessionDialog.js:91
+msgctxt "checkbox"
+msgid "Install pending software updates"
+msgstr "Instal·la les actualitzacions pendents"
+
+#: js/ui/endSessionDialog.js:94 js/ui/endSessionDialog.js:111
+msgctxt "button"
+msgid "Restart"
+msgstr "Reinicia"
+
+#: js/ui/endSessionDialog.js:96
+msgctxt "button"
+msgid "Power Off"
+msgstr "Apaga"
+
+#: js/ui/endSessionDialog.js:103
+msgctxt "title"
+msgid "Restart"
+msgstr "Reinici"
+
+#: js/ui/endSessionDialog.js:105
+#, javascript-format
+msgid "The system will restart automatically in %d second."
+msgid_plural "The system will restart automatically in %d seconds."
+msgstr[0] "Es reiniciarà l'ordinador automàticament d'ací %d segon."
+msgstr[1] "Es reiniciarà l'ordinador automàticament d'ací %d segons."
+
+#: js/ui/endSessionDialog.js:119
+msgctxt "title"
+msgid "Restart & Install Updates"
+msgstr "Reinicia i instal·la les actualitzacions"
+
+#: js/ui/endSessionDialog.js:121
+#, javascript-format
+msgid "The system will automatically restart and install updates in %d second."
+msgid_plural ""
+"The system will automatically restart and install updates in %d seconds."
+msgstr[0] ""
+"Es reiniciarà l'ordinador automàticament i s'instal·laran les "
+"actualitzacions d'ací %d segon."
+msgstr[1] ""
+"Es reiniciarà l'ordinador automàticament i s'instal·laran les "
+"actualitzacions d'ací %d segons."
+
+#: js/ui/endSessionDialog.js:127 js/ui/endSessionDialog.js:147
+msgctxt "button"
+msgid "Restart &amp; Install"
+msgstr "Reinicia i instal·la"
+
+#: js/ui/endSessionDialog.js:128
+msgctxt "button"
+msgid "Install &amp; Power Off"
+msgstr "Instal·la i apaga"
+
+#: js/ui/endSessionDialog.js:129
+msgctxt "checkbox"
+msgid "Power off after updates are installed"
+msgstr "Apaga després d'instal·lar les actualitzacions"
+
+#: js/ui/endSessionDialog.js:137
+msgctxt "title"
+msgid "Restart & Install Upgrade"
+msgstr "Reinicia i instal·la l'actualització"
+
+#. Translators: This is the text displayed for system upgrades in the
+#. shut down dialog. First %s gets replaced with the distro name and
+#. second %s with the distro version to upgrade to
+#: js/ui/endSessionDialog.js:142
+#, javascript-format
+msgid ""
+"%s %s will be installed after restart. Upgrade installation can take a long "
+"time: ensure that you have backed up and that the computer is plugged in."
+msgstr ""
+"%s %s s'instal·larà després del reinici. Una actualització de la "
+"instal·lació pot trigar força temps. Assegureu-vos que heu fet còpia de "
+"seguretat i que l'ordinador està connectat al corrent."
+
+#: js/ui/endSessionDialog.js:361
+msgid "Running on battery power: please plug in before installing updates."
+msgstr ""
+"S'està utilitzant la bateria: connecteu l'ordinador a la xarxa elèctrica "
+"abans d'instal·lar les actualitzacions."
+
+#: js/ui/endSessionDialog.js:378
+msgid "Some applications are busy or have unsaved work."
+msgstr ""
+"Hi ha algunes aplicacions que estan ocupades o que tenen documents sense "
+"guardar."
+
+#: js/ui/endSessionDialog.js:385
+msgid "Other users are logged in."
+msgstr "Altres usuaris tenen la sessió oberta."
+
+#. Translators: Remote here refers to a remote session, like a ssh login
+#: js/ui/endSessionDialog.js:670
+#, javascript-format
+msgid "%s (remote)"
+msgstr "%s (remot)"
+
+#. Translators: Console here refers to a tty like a VT console
+#: js/ui/endSessionDialog.js:673
+#, javascript-format
+msgid "%s (console)"
+msgstr "%s (consola)"
+
+#: js/ui/extensionDownloader.js:201
+msgid "Install"
+msgstr "Instal·la"
+
+#: js/ui/extensionDownloader.js:206
+#, javascript-format
+msgid "Download and install “%s” from extensions.gnome.org?"
+msgstr "Voleu baixar i instal·lar «%s» d'extensions.gnome.org?"
+
+#. Translators: %s is an application name like "Settings"
+#: js/ui/inhibitShortcutsDialog.js:59
+#, javascript-format
+msgid "%s wants to inhibit shortcuts"
+msgstr "%s vol inhabilitar les dreceres"
+
+#: js/ui/inhibitShortcutsDialog.js:60
+msgid "Application wants to inhibit shortcuts"
+msgstr "L'aplicació vol inhabilitar les dreceres"
+
+#. Translators: %s is a keyboard shortcut like "Super+x"
+#: js/ui/inhibitShortcutsDialog.js:69
+#, javascript-format
+msgid "You can restore shortcuts by pressing %s."
+msgstr "Podeu restaurar les dreceres si premeu %s."
+
+#: js/ui/inhibitShortcutsDialog.js:74
+msgid "Deny"
+msgstr "Denega"
+
+#: js/ui/inhibitShortcutsDialog.js:80
+msgid "Allow"
+msgstr "Permet"
+
+#: js/ui/keyboard.js:738 js/ui/status/keyboard.js:782
+msgid "Keyboard"
+msgstr "Teclat"
+
+#: js/ui/lookingGlass.js:642
+msgid "No extensions installed"
+msgstr "No hi ha cap extensió instal·lada"
+
+#. Translators: argument is an extension UUID.
+#: js/ui/lookingGlass.js:696
+#, javascript-format
+msgid "%s has not emitted any errors."
+msgstr "%s no ha emés cap error."
+
+#: js/ui/lookingGlass.js:702
+msgid "Hide Errors"
+msgstr "Amaga els errors"
+
+#: js/ui/lookingGlass.js:706 js/ui/lookingGlass.js:766
+msgid "Show Errors"
+msgstr "Mostra els errors"
+
+#: js/ui/lookingGlass.js:715
+msgid "Enabled"
+msgstr "Habilitat"
+
+#. translators:
+#. * The device has been disabled
+#: js/ui/lookingGlass.js:718 subprojects/gvc/gvc-mixer-control.c:1866
+msgid "Disabled"
+msgstr "Inhabilitat"
+
+#: js/ui/lookingGlass.js:720
+msgid "Error"
+msgstr "Error"
+
+#: js/ui/lookingGlass.js:722
+msgid "Out of date"
+msgstr "Fora d'hora"
+
+#: js/ui/lookingGlass.js:724
+msgid "Downloading"
+msgstr "S'està baixant"
+
+#: js/ui/lookingGlass.js:748
+msgid "View Source"
+msgstr "Mostra el codi font"
+
+#: js/ui/lookingGlass.js:757
+msgid "Web Page"
+msgstr "Pàgina web"
+
+#: js/ui/messageTray.js:1493
+msgid "System Information"
+msgstr "Informació de l'ordinador"
+
+#: js/ui/mpris.js:211
+msgid "Unknown artist"
+msgstr "Artista desconegut"
+
+#: js/ui/mpris.js:212
+msgid "Unknown title"
+msgstr "Títol desconegut"
+
+#: js/ui/overview.js:84
+msgid "Undo"
+msgstr "Desfés"
+
+#. Translators: This is the main view to select
+#. activities. See also note for "Activities" string.
+#: js/ui/overview.js:113
+msgid "Overview"
+msgstr "Vista general"
+
+#. Translators: this is the text displayed
+#. in the search entry when no search is
+#. active; it should not exceed ~30
+#. characters.
+#: js/ui/overview.js:240
+msgid "Type to search…"
+msgstr "Teclegeu per buscar…"
+
+#: js/ui/padOsd.js:103
+msgid "New shortcut…"
+msgstr "Drecera de teclat nova…"
+
+#: js/ui/padOsd.js:152
+msgid "Application defined"
+msgstr "Definit per l'aplicació"
+
+#: js/ui/padOsd.js:153
+msgid "Show on-screen help"
+msgstr "Mostra l'ajuda en pantalla"
+
+#: js/ui/padOsd.js:154
+msgid "Switch monitor"
+msgstr "Commuta el monitor "
+
+#: js/ui/padOsd.js:155
+msgid "Assign keystroke"
+msgstr "Assigna la pulsació de tecla"
+
+#: js/ui/padOsd.js:220
+msgid "Done"
+msgstr "Fet"
+
+#: js/ui/padOsd.js:734
+msgid "Edit…"
+msgstr "Edita…"
+
+#: js/ui/padOsd.js:774 js/ui/padOsd.js:879
+msgid "None"
+msgstr "Cap"
+
+#: js/ui/padOsd.js:833
+msgid "Press a button to configure"
+msgstr "Premeu un botó per a configurar"
+
+#: js/ui/padOsd.js:834
+msgid "Press Esc to exit"
+msgstr "Premeu Esc per eixir"
+
+#: js/ui/padOsd.js:837
+msgid "Press any key to exit"
+msgstr "Premeu qualsevol tecla per eixir"
+
+#: js/ui/panel.js:358
+msgid "Quit"
+msgstr "Ix"
+
+#. Translators: If there is no suitable word for "Activities"
+#. in your language, you can use the word for "Overview".
+#: js/ui/panel.js:414
+msgid "Activities"
+msgstr "Activitats"
+
+#: js/ui/panel.js:695
+msgctxt "System menu in the top bar"
+msgid "System"
+msgstr "Sistema"
+
+#: js/ui/panel.js:812
+msgid "Top Bar"
+msgstr "Barra superior"
+
+#. Translators: this MUST be either "toggle-switch-us"
+#. (for toggle switches containing the English words
+#. "ON" and "OFF") or "toggle-switch-intl" (for toggle
+#. switches containing "◯" and "|"). Other values will
+#. simply result in invisible toggle switches.
+#: js/ui/popupMenu.js:291
+msgid "toggle-switch-us"
+msgstr "toggle-switch-intl"
+
+#: js/ui/runDialog.js:71
+msgid "Enter a Command"
+msgstr "Introduïu una orde"
+
+#: js/ui/runDialog.js:111 js/ui/windowMenu.js:160
+msgid "Close"
+msgstr "Tanca"
+
+#: js/ui/runDialog.js:277
+msgid "Restart is not available on Wayland"
+msgstr "El reinici no està disponible en Wayland"
+
+#: js/ui/runDialog.js:282
+msgid "Restarting…"
+msgstr "S'està reiniciant…"
+
+#. Translators: This is a time format for a date in
+#. long format
+#: js/ui/screenShield.js:88
+msgid "%A, %B %d"
+msgstr "%A %d de %B"
+
+#: js/ui/screenShield.js:147
+#, javascript-format
+msgid "%d new message"
+msgid_plural "%d new messages"
+msgstr[0] "%d missatge nou"
+msgstr[1] "%d missatges nous"
+
+#: js/ui/screenShield.js:149
+#, javascript-format
+msgid "%d new notification"
+msgid_plural "%d new notifications"
+msgstr[0] "%d notificació nova"
+msgstr[1] "%d notificacions noves"
+
+#: js/ui/screenShield.js:452 js/ui/status/system.js:284
+msgid "Lock"
+msgstr "Bloqueja"
+
+#: js/ui/screenShield.js:715
+msgid "GNOME needs to lock the screen"
+msgstr "El GNOME necessita bloquejar la pantalla"
+
+#. We could not become modal, so we can't activate the
+#. screenshield. The user is probably very upset at this
+#. point, but any application using global grabs is broken
+#. Just tell him to stop using this app
+#.
+#. XXX: another option is to kick the user into the gdm login
+#. screen, where we're not affected by grabs
+#: js/ui/screenShield.js:836 js/ui/screenShield.js:1308
+msgid "Unable to lock"
+msgstr "No es pot blocar"
+
+#: js/ui/screenShield.js:837 js/ui/screenShield.js:1309
+msgid "Lock was blocked by an application"
+msgstr "Una aplicació està bloquejant el bloqueig"
+
+#: js/ui/search.js:651
+msgid "Searching…"
+msgstr "S'està cercant…"
+
+#: js/ui/search.js:653
+msgid "No results."
+msgstr "No s'ha trobat cap resultat."
+
+#: js/ui/search.js:777
+#, javascript-format
+msgid "%d more"
+msgid_plural "%d more"
+msgstr[0] "%d més"
+msgstr[1] "%d més"
+
+#: js/ui/shellEntry.js:25
+msgid "Copy"
+msgstr "Copia"
+
+#: js/ui/shellEntry.js:30
+msgid "Paste"
+msgstr "Enganxa"
+
+#: js/ui/shellEntry.js:97
+msgid "Show Text"
+msgstr "Mostra el text"
+
+#: js/ui/shellEntry.js:99
+msgid "Hide Text"
+msgstr "Oculta el text"
+
+#: js/ui/shellMountOperation.js:315
+msgid "Password"
+msgstr "Contrasenya"
+
+#: js/ui/shellMountOperation.js:336
+msgid "Remember Password"
+msgstr "Recorda la contrasenya"
+
+#: js/ui/status/accessibility.js:42
+msgid "Accessibility"
+msgstr "Accessibilitat"
+
+#: js/ui/status/accessibility.js:57
+msgid "Zoom"
+msgstr "Amplia"
+
+#: js/ui/status/accessibility.js:64
+msgid "Screen Reader"
+msgstr "Lector de pantalla"
+
+#: js/ui/status/accessibility.js:68
+msgid "Screen Keyboard"
+msgstr "Teclat en pantalla"
+
+#: js/ui/status/accessibility.js:72
+msgid "Visual Alerts"
+msgstr "Avisos visuals"
+
+#: js/ui/status/accessibility.js:75
+msgid "Sticky Keys"
+msgstr "Tecles enganxoses"
+
+#: js/ui/status/accessibility.js:78
+msgid "Slow Keys"
+msgstr "Tecles lentes"
+
+#: js/ui/status/accessibility.js:81
+msgid "Bounce Keys"
+msgstr "Tecles de salt"
+
+#: js/ui/status/accessibility.js:84
+msgid "Mouse Keys"
+msgstr "Tecles del ratolí"
+
+#: js/ui/status/accessibility.js:167
+msgid "High Contrast"
+msgstr "Alt contrast"
+
+#: js/ui/status/accessibility.js:202
+msgid "Large Text"
+msgstr "Text gran"
+
+#: js/ui/status/bluetooth.js:47
+msgid "Bluetooth"
+msgstr "Bluetooth"
+
+#: js/ui/status/bluetooth.js:56 js/ui/status/network.js:627
+msgid "Bluetooth Settings"
+msgstr "Paràmetres del Bluetooth"
+
+#. Translators: this is the number of connected bluetooth devices
+#: js/ui/status/bluetooth.js:136
+#, javascript-format
+msgid "%d Connected"
+msgid_plural "%d Connected"
+msgstr[0] "%d connectat"
+msgstr[1] "%d connectats"
+
+#: js/ui/status/bluetooth.js:138
+msgid "Off"
+msgstr "Desactivat"
+
+#: js/ui/status/bluetooth.js:140
+msgid "On"
+msgstr "Activat"
+
+#: js/ui/status/bluetooth.js:142 js/ui/status/network.js:1299
+msgid "Turn On"
+msgstr "Activa"
+
+#: js/ui/status/bluetooth.js:142 js/ui/status/network.js:170
+#: js/ui/status/network.js:356 js/ui/status/network.js:1299
+#: js/ui/status/network.js:1418 js/ui/status/nightLight.js:47
+#: js/ui/status/rfkill.js:90 js/ui/status/rfkill.js:117
+msgid "Turn Off"
+msgstr "Desactiva"
+
+#: js/ui/status/brightness.js:44
+msgid "Brightness"
+msgstr "Brillantor"
+
+#: js/ui/status/keyboard.js:805
+msgid "Show Keyboard Layout"
+msgstr "Mostra la disposició del teclat"
+
+#: js/ui/status/location.js:89 js/ui/status/location.js:197
+msgid "Location Enabled"
+msgstr "Ubicació habilitada"
+
+#: js/ui/status/location.js:90 js/ui/status/location.js:198
+msgid "Disable"
+msgstr "Inhabilita"
+
+#: js/ui/status/location.js:91
+msgid "Privacy Settings"
+msgstr "Paràmetres de privacitat"
+
+#: js/ui/status/location.js:196
+msgid "Location In Use"
+msgstr "Ubicació en ús"
+
+#: js/ui/status/location.js:200
+msgid "Location Disabled"
+msgstr "Ubicació inhabilitada"
+
+#: js/ui/status/location.js:201
+msgid "Enable"
+msgstr "Habilita"
+
+#. Translators: %s is an application name
+#: js/ui/status/location.js:388
+#, javascript-format
+msgid "Give %s access to your location?"
+msgstr "Voleu donar a %s accés a la vostra ubicació?"
+
+#: js/ui/status/location.js:389
+msgid "Location access can be changed at any time from the privacy settings."
+msgstr ""
+"Podeu canviar la configuració de l'accés a la ubicació sempre que vulgueu "
+"des de la configuració de la privacitat."
+
+#: js/ui/status/network.js:104
+msgid "<unknown>"
+msgstr "<desconegut>"
+
+#. Translators: %s is a network identifier
+#: js/ui/status/network.js:454 js/ui/status/network.js:1328
+#, javascript-format
+msgid "%s Off"
+msgstr "%s apagat"
+
+# N.T.: p. ex. Connectat amb fil
+#. Translators: %s is a network identifier
+#: js/ui/status/network.js:457
+#, javascript-format
+msgid "%s Connected"
+msgstr "Connectat %s"
+
+#. Translators: this is for network devices that are physically present but are not
+#. under NetworkManager's control (and thus cannot be used in the menu);
+#. %s is a network identifier
+#: js/ui/status/network.js:462
+#, javascript-format
+msgid "%s Unmanaged"
+msgstr "%s no gestionat"
+
+#. Translators: %s is a network identifier
+#: js/ui/status/network.js:465
+#, javascript-format
+msgid "%s Disconnecting"
+msgstr "%s s'està desconnectant"
+
+#. Translators: %s is a network identifier
+#: js/ui/status/network.js:472 js/ui/status/network.js:1320
+#, javascript-format
+msgid "%s Connecting"
+msgstr "%s s'està connectant"
+
+#. Translators: this is for network connections that require some kind of key or password; %s is a network identifier
+#: js/ui/status/network.js:475
+#, javascript-format
+msgid "%s Requires Authentication"
+msgstr "%s requereix autenticació"
+
+#. Translators: this is for devices that require some kind of firmware or kernel
+#. module, which is missing; %s is a network identifier
+#: js/ui/status/network.js:483
+#, javascript-format
+msgid "Firmware Missing For %s"
+msgstr "Falta el microprogramari per %s"
+
+#. Translators: this is for a network device that cannot be activated (for example it
+#. is disabled by rfkill, or it has no coverage; %s is a network identifier
+#: js/ui/status/network.js:487
+#, javascript-format
+msgid "%s Unavailable"
+msgstr "%s no disponible"
+
+#. Translators: %s is a network identifier
+#: js/ui/status/network.js:490
+#, javascript-format
+msgid "%s Connection Failed"
+msgstr "%s ha fallat la connexió"
+
+#: js/ui/status/network.js:506
+msgid "Wired Settings"
+msgstr "Paràmetres de la xarxa amb fil"
+
+#: js/ui/status/network.js:548
+msgid "Mobile Broadband Settings"
+msgstr "Configuració de la xarxa de banda ampla mòbil"
+
+#. Translators: %s is a network identifier
+#: js/ui/status/network.js:591 js/ui/status/network.js:1325
+#, javascript-format
+msgid "%s Hardware Disabled"
+msgstr "%s maquinari inhabilitat"
+
+#. Translators: this is for a network device that cannot be activated
+#. because it's disabled by rfkill (airplane mode); %s is a network identifier
+#: js/ui/status/network.js:595
+#, javascript-format
+msgid "%s Disabled"
+msgstr "%s Inhabilitat"
+
+#: js/ui/status/network.js:635
+msgid "Connect to Internet"
+msgstr "Connecta a Internet"
+
+#: js/ui/status/network.js:833
+msgid "Airplane Mode is On"
+msgstr "El mode d'avió és actiu"
+
+#: js/ui/status/network.js:834
+msgid "Wi-Fi is disabled when airplane mode is on."
+msgstr "Quan el mode d'avió és actiu es desactiva la xarxa sense fil."
+
+#: js/ui/status/network.js:835
+msgid "Turn Off Airplane Mode"
+msgstr "Desactiva el mode d'avió"
+
+#: js/ui/status/network.js:844
+msgid "Wi-Fi is Off"
+msgstr "La xarxa sense fil està desactivada"
+
+#: js/ui/status/network.js:845
+msgid "Wi-Fi needs to be turned on in order to connect to a network."
+msgstr "S'ha d'activar la xarxa sense fil per poder-se connectar a una xarxa."
+
+#: js/ui/status/network.js:846
+msgid "Turn On Wi-Fi"
+msgstr "Activa la xarxa sense fil"
+
+#: js/ui/status/network.js:871
+msgid "Wi-Fi Networks"
+msgstr "Xarxes sense fil"
+
+#: js/ui/status/network.js:873
+msgid "Select a network"
+msgstr "Trieu una xarxa"
+
+#: js/ui/status/network.js:903
+msgid "No Networks"
+msgstr "Cap xarxa"
+
+#: js/ui/status/network.js:924 js/ui/status/rfkill.js:115
+msgid "Use hardware switch to turn off"
+msgstr "Utilitza l'interruptor de maquinari per desactivar-la"
+
+#: js/ui/status/network.js:1191
+msgid "Select Network"
+msgstr "Trieu una xarxa"
+
+#: js/ui/status/network.js:1197
+msgid "Wi-Fi Settings"
+msgstr "Paràmetres de la xarxa sense fil"
+
+#. Translators: %s is a network identifier
+#: js/ui/status/network.js:1316
+#, javascript-format
+msgid "%s Hotspot Active"
+msgstr "Hostpot %s actiu"
+
+#. Translators: %s is a network identifier
+#: js/ui/status/network.js:1331
+#, javascript-format
+msgid "%s Not Connected"
+msgstr "%s no està connectat"
+
+#: js/ui/status/network.js:1435
+msgid "connecting…"
+msgstr "s'està connectant..."
+
+#. Translators: this is for network connections that require some kind of key or password
+#: js/ui/status/network.js:1438
+msgid "authentication required"
+msgstr "cal autenticació"
+
+#: js/ui/status/network.js:1440
+msgid "connection failed"
+msgstr "ha fallat la connexió"
+
+#: js/ui/status/network.js:1494
+msgid "VPN Settings"
+msgstr "Paràmetres de la VPN"
+
+#: js/ui/status/network.js:1498
+msgid "VPN"
+msgstr "VPN"
+
+#: js/ui/status/network.js:1508
+msgid "VPN Off"
+msgstr "VPN apagada"
+
+#: js/ui/status/network.js:1572 js/ui/status/rfkill.js:93
+msgid "Network Settings"
+msgstr "Paràmetres de xarxa"
+
+#: js/ui/status/network.js:1603
+#, javascript-format
+msgid "%s Wired Connection"
+msgid_plural "%s Wired Connections"
+msgstr[0] "%s connexió amb fil"
+msgstr[1] "%s connexions amb fil"
+
+#: js/ui/status/network.js:1607
+#, javascript-format
+msgid "%s Wi-Fi Connection"
+msgid_plural "%s Wi-Fi Connections"
+msgstr[0] "%s connexió Wifi"
+msgstr[1] "%s connexions Wifi"
+
+#: js/ui/status/network.js:1611
+#, javascript-format
+msgid "%s Modem Connection"
+msgid_plural "%s Modem Connections"
+msgstr[0] "%s connexió mòdem"
+msgstr[1] "%s connexions mòdem"
+
+#: js/ui/status/network.js:1759
+msgid "Connection failed"
+msgstr "Ha fallat la connexió"
+
+#: js/ui/status/network.js:1760
+msgid "Activation of network connection failed"
+msgstr "Ha fallat l'activació de la connexió de xarxa"
+
+#: js/ui/status/nightLight.js:68
+msgid "Night Light Disabled"
+msgstr "Llum nocturna inhabilitada"
+
+#: js/ui/status/nightLight.js:69
+msgid "Night Light On"
+msgstr "Llum nocturna habilitada"
+
+#: js/ui/status/nightLight.js:70
+msgid "Resume"
+msgstr "Reprén"
+
+#: js/ui/status/nightLight.js:71
+msgid "Disable Until Tomorrow"
+msgstr "Inhabilita fins demà"
+
+#: js/ui/status/power.js:61
+msgid "Power Settings"
+msgstr "Paràmetres d'energia"
+
+#: js/ui/status/power.js:77
+msgid "Fully Charged"
+msgstr "Totalment carregada"
+
+#. 0 is reported when UPower does not have enough data
+#. to estimate battery life
+#: js/ui/status/power.js:84 js/ui/status/power.js:90
+msgid "Estimating…"
+msgstr "S'està estimant la duració…"
+
+#. Translators: this is <hours>:<minutes> Remaining (<percentage>)
+#: js/ui/status/power.js:98
+#, javascript-format
+msgid "%d∶%02d Remaining (%d %%)"
+msgstr "Queden %d∶%02d (%d %%)"
+
+#. Translators: this is <hours>:<minutes> Until Full (<percentage>)
+#: js/ui/status/power.js:103
+#, javascript-format
+msgid "%d∶%02d Until Full (%d %%)"
+msgstr "%d∶%02d per completar la càrrega (%d %%)"
+
+#: js/ui/status/power.js:131 js/ui/status/power.js:133
+#, javascript-format
+msgid "%d %%"
+msgstr "%d %%"
+
+#. The menu only appears when airplane mode is on, so just
+#. statically build it as if it was on, rather than dynamically
+#. changing the menu contents.
+#: js/ui/status/rfkill.js:88
+msgid "Airplane Mode On"
+msgstr "El mode d'avió és actiu"
+
+#: js/ui/status/system.js:228
+msgid "Switch User"
+msgstr "Canvia d'usuari"
+
+#: js/ui/status/system.js:240
+msgid "Log Out"
+msgstr "Ix"
+
+#: js/ui/status/system.js:252
+msgid "Account Settings"
+msgstr "Paràmetres del compte"
+
+#: js/ui/status/system.js:269
+msgid "Orientation Lock"
+msgstr "Bloqueja l'orientació"
+
+#: js/ui/status/system.js:295
+msgid "Suspend"
+msgstr "Atura temporalment"
+
+#: js/ui/status/system.js:305
+msgid "Power Off"
+msgstr "Apaga"
+
+#: js/ui/status/volume.js:128
+msgid "Volume changed"
+msgstr "S'ha canviat el volum"
+
+#: js/ui/status/volume.js:170
+msgid "Volume"
+msgstr "Volum"
+
+#. Translators: this is for display mirroring i.e. cloning.
+#. * Try to keep it under around 15 characters.
+#.
+#: js/ui/switchMonitor.js:21
+msgid "Mirror"
+msgstr "Mirall"
+
+#. Translators: this is for the desktop spanning displays.
+#. * Try to keep it under around 15 characters.
+#.
+#: js/ui/switchMonitor.js:26
+msgid "Join Displays"
+msgstr "Uneix pantalles"
+
+#. Translators: this is for using only an external display.
+#. * Try to keep it under around 15 characters.
+#.
+#: js/ui/switchMonitor.js:31
+msgid "External Only"
+msgstr "Només extern"
+
+#. Translators: this is for using only the laptop display.
+#. * Try to keep it under around 15 characters.
+#.
+#: js/ui/switchMonitor.js:36
+msgid "Built-in Only"
+msgstr "Només l'integrat"
+
+#: js/ui/unlockDialog.js:67
+msgid "Log in as another user"
+msgstr "Entra amb un altre usuari"
+
+#: js/ui/unlockDialog.js:84
+msgid "Unlock Window"
+msgstr "Desbloqueja la finestra"
+
+#: js/ui/viewSelector.js:190
+msgid "Applications"
+msgstr "Aplicacions"
+
+#: js/ui/viewSelector.js:194
+msgid "Search"
+msgstr "Busca"
+
+#: js/ui/windowAttentionHandler.js:20
+#, javascript-format
+msgid "“%s” is ready"
+msgstr "«%s» ja està a punt"
+
+#: js/ui/windowManager.js:72
+msgid "Do you want to keep these display settings?"
+msgstr "Voleu mantindre esta configuració de la pantalla?"
+
+#. Translators: this and the following message should be limited in lenght,
+#. to avoid ellipsizing the labels.
+#.
+#: js/ui/windowManager.js:84
+msgid "Revert Settings"
+msgstr "Descarta els canvis"
+
+#: js/ui/windowManager.js:87
+msgid "Keep Changes"
+msgstr "Mantén els canvis"
+
+#: js/ui/windowManager.js:105
+#, javascript-format
+msgid "Settings changes will revert in %d second"
+msgid_plural "Settings changes will revert in %d seconds"
+msgstr[0] "Es descartaran els canvis d'ací %d segon"
+msgstr[1] "Es descartaran els canvis d'ací %d segons"
+
+#. Translators: This represents the size of a window. The first number is
+#. * the width of the window and the second is the height.
+#: js/ui/windowManager.js:660
+#, javascript-format
+msgid "%d × %d"
+msgstr "%d × %d"
+
+#: js/ui/windowMenu.js:34
+msgid "Minimize"
+msgstr "Minimitza"
+
+#: js/ui/windowMenu.js:41
+msgid "Unmaximize"
+msgstr "Desmaximitza"
+
+#: js/ui/windowMenu.js:45
+msgid "Maximize"
+msgstr "Maximitza"
+
+#: js/ui/windowMenu.js:52
+msgid "Move"
+msgstr "Mou"
+
+#: js/ui/windowMenu.js:58
+msgid "Resize"
+msgstr "Reajusta"
+
+#: js/ui/windowMenu.js:65
+msgid "Move Titlebar Onscreen"
+msgstr "Mou la barra de títol a la pantalla"
+
+#: js/ui/windowMenu.js:70
+msgid "Always on Top"
+msgstr "Sempre per damunt"
+
+#: js/ui/windowMenu.js:89
+msgid "Always on Visible Workspace"
+msgstr "Sempre a l'espai de treball visible"
+
+#: js/ui/windowMenu.js:103
+msgid "Move to Workspace Left"
+msgstr "Mou a l'espai de treball esquerre"
+
+#: js/ui/windowMenu.js:108
+msgid "Move to Workspace Right"
+msgstr "Mou a l'espai de treball dret"
+
+#: js/ui/windowMenu.js:113
+msgid "Move to Workspace Up"
+msgstr "Mou a l'espai de treball superior"
+
+#: js/ui/windowMenu.js:118
+msgid "Move to Workspace Down"
+msgstr "Mou a l'espai de treball inferior"
+
+#: js/ui/windowMenu.js:134
+msgid "Move to Monitor Up"
+msgstr "Mou a la pantalla de dalt"
+
+#: js/ui/windowMenu.js:140
+msgid "Move to Monitor Down"
+msgstr "Mou a la pantalla de baix"
+
+#: js/ui/windowMenu.js:146
+msgid "Move to Monitor Left"
+msgstr "Mou a la pantalla de l'esquerra"
+
+#: js/ui/windowMenu.js:152
+msgid "Move to Monitor Right"
+msgstr "Mou a la pantalla de la dreta"
+
+#: src/calendar-server/evolution-calendar.desktop.in:3
+msgid "Evolution Calendar"
+msgstr "Calendari de l'Evolution"
+
+#. Translators: Do NOT translate or transliterate this text (this is an icon file name)!
+#: src/calendar-server/evolution-calendar.desktop.in:6
+msgid "evolution"
+msgstr "evolution"
+
+#: src/main.c:380
+msgid "Print version"
+msgstr "Mostra la versió"
+
+#: src/main.c:386
+msgid "Mode used by GDM for login screen"
+msgstr "El mode que utilitzarà el GDM per a la pantalla d'entrada"
+
+#: src/main.c:392
+msgid "Use a specific mode, e.g. “gdm” for login screen"
+msgstr "Utilitza un mode específic, p. ex. «gdm» per la pantalla d'entrada"
+
+#: src/main.c:398
+msgid "List possible modes"
+msgstr "Llista els modes possibles"
+
+#: src/shell-app.c:270
+msgctxt "program"
+msgid "Unknown"
+msgstr "Desconegut"
+
+#: src/shell-app.c:511
+#, c-format
+msgid "Failed to launch “%s”"
+msgstr "No s'ha pogut iniciar «%s»"
+
+#: src/shell-keyring-prompt.c:730
+msgid "Passwords do not match."
+msgstr "Les contrasenyes no coincideixen."
+
+#: src/shell-keyring-prompt.c:738
+msgid "Password cannot be blank"
+msgstr "La contrasenya no pot ser buida"
+
+#: src/shell-polkit-authentication-agent.c:353
+msgid "Authentication dialog was dismissed by the user"
+msgstr "L'usuari ha descartat el diàleg d'autenticació"
+
+#. translators:
+#. * The number of sound outputs on a particular device
+#: subprojects/gvc/gvc-mixer-control.c:1873
+#, c-format
+msgid "%u Output"
+msgid_plural "%u Outputs"
+msgstr[0] "%u eixida"
+msgstr[1] "%u eixides"
+
+#. translators:
+#. * The number of sound inputs on a particular device
+#: subprojects/gvc/gvc-mixer-control.c:1883
+#, c-format
+msgid "%u Input"
+msgid_plural "%u Inputs"
+msgstr[0] "%u entrada"
+msgstr[1] "%u entrades"
+
+#: subprojects/gvc/gvc-mixer-control.c:2738
+msgid "System Sounds"
+msgstr "Sons del sistema"
+
+#~ msgid "Hide tray"
+#~ msgstr "Oculta la Safata"
+
+#~ msgid "Status Icons"
+#~ msgstr "Icones d'estat"
+
+#~ msgid "Events"
+#~ msgstr "Cites"
+
+#~ msgid "Notifications"
+#~ msgstr "Notificacions"
+
+#~ msgid "Clear section"
+#~ msgstr "Neteja la secció"
+
+#~ msgid "Media"
+#~ msgstr "Multimèdia"
+
+#~ msgid "Web Authentication Redirect"
+#~ msgstr "Redirecció per l'autenticació web"
+
+#~ msgid "%d x %d"
+#~ msgstr "%d x %d"
+
+#~ msgid "Not In Use"
+#~ msgstr "No s'usa"
+
+#~ msgid "GNOME Shell Extension Preferences"
+#~ msgstr "Preferències de les extensions del GNOME Shell"
+
+#~ msgid "Show the week date in the calendar"
+#~ msgstr "Mostra el número de la setmana al calendari"
+
+#~ msgid "If true, display the ISO week date in the calendar."
+#~ msgstr "Si és «true» (cert) es mostra el número de la setmana al calendari."
+
+#~ msgid "Use as Internet connection"
+#~ msgstr "Utilitza com a connexió a Internet"
+
+#~ msgid "%s is requesting access to your location."
+#~ msgstr "%s està demanant accés a la vostra ubicació."
+
+#~ msgid "GNOME Shell (wayland compositor)"
+#~ msgstr "GNOME Shell (composició mitjançant Wayland)"
+
+#~ msgid "%d Connected Device"
+#~ msgid_plural "%d Connected Devices"
+#~ msgstr[0] "%d dispositiu connectat"
+#~ msgstr[1] "%d dispositius connectats"
+
+#~ msgid "Authentication required"
+#~ msgstr "Cal autenticació"
+
+#~ msgid "UPS"
+#~ msgstr "UPS"
+
+#~ msgid "Battery"
+#~ msgstr "Bateria"
+
+#~ msgid "Airplane Mode"
+#~ msgstr "Mode d'avió"
+
+#~ msgid "Show the message tray"
+#~ msgstr "Mostra la safata de missatges"
+
+#~ msgid "Captive Portal"
+#~ msgstr "Portal captiu"
+
+#~ msgctxt "event list time"
+#~ msgid "%H∶%M"
+#~ msgstr "%H∶%M"
+
+#~ msgctxt "event list time"
+#~ msgid "%l∶%M %p"
+#~ msgstr "%l∶%M %p"
+
+#~ msgctxt "list sunday"
+#~ msgid "Su"
+#~ msgstr "Dg."
+
+#~ msgctxt "list monday"
+#~ msgid "M"
+#~ msgstr "Dl."
+
+#~ msgctxt "list tuesday"
+#~ msgid "T"
+#~ msgstr "Dt."
+
+#~ msgctxt "list wednesday"
+#~ msgid "W"
+#~ msgstr "Dc."
+
+#~ msgctxt "list thursday"
+#~ msgid "Th"
+#~ msgstr "Dj."
+
+#~ msgctxt "list friday"
+#~ msgid "F"
+#~ msgstr "Dv."
+
+#~ msgctxt "list saturday"
+#~ msgid "S"
+#~ msgstr "Ds."
+
+#~ msgid "Nothing Scheduled"
+#~ msgstr "No hi ha res apuntat"
+
+#~ msgid "Today"
+#~ msgstr "Avui"
+
+#~ msgid "Tomorrow"
+#~ msgstr "Demà"
+
+#~ msgid "This week"
+#~ msgstr "Aquesta setmana"
+
+#~ msgid "Next week"
+#~ msgstr "La setmana que ve"
+
+#~ msgid "Removable Devices"
+#~ msgstr "Dispositius extraïbles"
+
+#~ msgid "Eject"
+#~ msgstr "Expulsa"
+
+#~ msgid "Invitation"
+#~ msgstr "Invitació"
+
+#~ msgid "Call"
+#~ msgstr "Trucada"
+
+#~ msgid "File Transfer"
+#~ msgstr "Transferència de fitxers"
+
+#~ msgid "Chat"
+#~ msgstr "Xat"
+
+#~ msgid "Unmute"
+#~ msgstr "Amb so"
+
+#~ msgid "Mute"
+#~ msgstr "Silencia"
+
+#~ msgid "Invitation to %s"
+#~ msgstr "Us han convidat a entrar a %s"
+
+#~ msgid "%s is inviting you to join %s"
+#~ msgstr "En/na %s us convida a entrar a %s"
+
+#~ msgid "Decline"
+#~ msgstr "Declina"
+
+#~ msgid "Accept"
+#~ msgstr "Accepta"
+
+#~ msgid "Video call from %s"
+#~ msgstr "Videotrucada de %s"
+
+#~ msgid "Call from %s"
+#~ msgstr "Trucada de %s"
+
+#~ msgid "Answer"
+#~ msgstr "Contesta"
+
+#~ msgid "%s is sending you %s"
+#~ msgstr "En/na %s us envia %s"
+
+#~ msgid "%s would like permission to see when you are online"
+#~ msgstr "%s vol poder saber quan esteu en línia"
+
+#~ msgid "Authentication failed"
+#~ msgstr "Ha fallat l'autenticació"
+
+#~ msgid "Encryption error"
+#~ msgstr "Error d'encriptació"
+
+#~ msgid "Certificate not provided"
+#~ msgstr "No s'ha proporcionat el certificat"
+
+#~ msgid "Certificate untrusted"
+#~ msgstr "El certificat no és de confiança"
+
+#~ msgid "Certificate expired"
+#~ msgstr "El certificat ha vençut"
+
+#~ msgid "Certificate not activated"
+#~ msgstr "El certificat no està activat"
+
+#~ msgid "Certificate hostname mismatch"
+#~ msgstr "No coincideix el nom de la màquina del certificat"
+
+#~ msgid "Certificate fingerprint mismatch"
+#~ msgstr "No coincideix l'empremta digital del certificat"
+
+#~ msgid "Certificate self-signed"
+#~ msgstr "Certificat signat per un mateix"
+
+#~ msgid "Status is set to offline"
+#~ msgstr "S'ha establert l'estat a fora de línia"
+
+#~ msgid "Certificate is invalid"
+#~ msgstr "El certificat no és vàlid"
+
+#~ msgid "Connection has been refused"
+#~ msgstr "S'ha rebutjat la connexió"
+
+#~ msgid "Connection can't be established"
+#~ msgstr "No es pot establir la connexió"
+
+#~ msgid "Connection has been lost"
+#~ msgstr "S'ha perdut la connexió"
+
+#~ msgid "This account is already connected to the server"
+#~ msgstr "Aquest compte ja està connectat al servidor"
+
+#~ msgid ""
+#~ "Connection has been replaced by a new connection using the same resource"
+#~ msgstr ""
+#~ "S'ha reemplaçat la connexió per una altra de nova fent servir el mateix "
+#~ "recurs"
+
+#~ msgid "The account already exists on the server"
+#~ msgstr "Ja existeix aquest compte al servidor"
+
+#~ msgid "Server is currently too busy to handle the connection"
+#~ msgstr "El servidor està massa ocupat per gestionar la connexió"
+
+#~ msgid "Certificate has been revoked"
+#~ msgstr "S'ha revocat el certificat"
+
+#~ msgid ""
+#~ "Certificate uses an insecure cipher algorithm or is cryptographically weak"
+#~ msgstr ""
+#~ "El certificat utilitza un algorisme criptogràfic no segur o la seva "
+#~ "fortalesa criptogràfica és feble"
+
+#~ msgid ""
+#~ "The length of the server certificate, or the depth of the server "
+#~ "certificate chain, exceed the limits imposed by the cryptography library"
+#~ msgstr ""
+#~ "La llargada del certificat del servidor o la profunditat de la cadena de "
+#~ "certificació excedeix els límits de la biblioteca criptogràfica"
+
+#~ msgid "Internal error"
+#~ msgstr "S'ha produït un error intern"
+
+#~ msgid "Unable to connect to %s"
+#~ msgstr "No es pot connectar a %s"
+
+#~ msgid "View account"
+#~ msgstr "Mostra el compte"
+
+#~ msgid "Open Calendar"
+#~ msgstr "Obre el calendari"
+
+#~ msgid "Date & Time Settings"
+#~ msgstr "Configuració de la data i de l'hora"
+
+#~ msgid "Open"
+#~ msgstr "Obre"
+
+#~ msgid "Remove"
+#~ msgstr "Suprimeix"
+
+#~ msgid "Clear Messages"
+#~ msgstr "Neteja els missatges"
+
+#~ msgid "Notification Settings"
+#~ msgstr "Configuració de les notificacions"
+
+#~ msgid "Tray Menu"
+#~ msgstr "Menú de la safata"
+
+#~ msgid "No Messages"
+#~ msgstr "No hi ha cap missatge"
+
+#~ msgid "Message Tray"
+#~ msgstr "Safata de missatges"

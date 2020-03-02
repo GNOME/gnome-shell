@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Evolution Calendar
+Exec=evolution -c calendar
+# Translators: Do NOT translate or transliterate this text (this is an icon file name)!
+Icon=evolution
+NoDisplay=true
+Type=Application
+StartupNotify=true

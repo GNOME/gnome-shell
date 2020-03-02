@@ -1,0 +1,31 @@
+<!-- With an animated background, performance will differ depending on whether
+     one layer or two layers are being blended together. This messes up our
+     benchmarks. We could just benchmark a single image, but since blended
+     images are present for much of the day with the GNOME default background,
+     we want to make sure that also performs well; for that reason we ship
+     an "animated" background that animates super-slowly to use during
+     performance tests; it will be in the blended state until 2030. -->
+<background>
+  <starttime>
+    <year>1990</year>
+    <month>1</month>
+    <day>1</day>
+    <hour>0</hour>
+    <minute>00</minute>
+    <second>00</second>
+  </starttime>
+
+<!-- One transition that takes 40 years -->
+<transition type="overlay">
+<duration>1261440000.0</duration>
+<from>@datadir@/backgrounds/gnome/adwaita-morning.jpg</from>
+<to>@datadir@/backgrounds/gnome/adwaita-day.jpg</to>
+</transition>
+
+<!-- A single slide doesn't work, so another slide for 1 minute after 40 years -->
+<static>
+<duration>60</duration>
+<file>/usr/share/backgrounds/gnome/Sandstone.jpg</file>
+</static>
+
+</background>

@@ -1,0 +1,18 @@
+# -*- mode: python -*-
+
+# The username for repositories can be overridden.
+#
+#repos["git.gnome.org"] = "ssh://myusername@git.gnome.org/git/"
+
+# Directory where to check sources out
+#
+#checkoutroot = '/opt/gnome-shell/source'
+
+# Directory where to install
+#
+#prefix = '/opt/gnome-shell/install'
+
+# Work around http://bugzilla.gnome.org/show_bug.cgi?id=571240 if
+# your 'install' program is somewhere other than /usr/bin/install
+# (affects: Arch Linux)
+#installprog = 'bin/install'

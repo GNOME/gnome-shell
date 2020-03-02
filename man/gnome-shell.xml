@@ -1,0 +1,165 @@
+<?xml version='1.0'?>
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN"
+        "http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd">
+
+<refentry id="gnome-shell">
+
+        <refentryinfo>
+                <title>gnome-shell</title>
+                <productname>gnome-shell</productname>
+
+                <authorgroup>
+                        <author>
+                                <contrib>wrote the original gnome-shell man page</contrib>
+                                <firstname>Marcelo Jorge</firstname>
+                                <surname>Vieira</surname>
+                                <email>metal@alucinados.com</email>
+                        </author>
+                </authorgroup>
+
+        </refentryinfo>
+
+        <refmeta>
+                <refentrytitle>gnome-shell</refentrytitle>
+                <manvolnum>1</manvolnum>
+        </refmeta>
+
+        <refnamediv>
+                <refname>gnome-shell</refname>
+                <refpurpose>Graphical shell for the GNOME desktop</refpurpose>
+        </refnamediv>
+
+        <refsynopsisdiv>
+                <cmdsynopsis>
+                        <command>gnome-shell <arg choice="opt" rep="repeat">OPTION</arg></command>
+                </cmdsynopsis>
+        </refsynopsisdiv>
+
+        <refsect1>
+                <title>Description</title>
+
+                <para>GNOME shell provides core user
+                interface functions for the GNOME 3 desktop, like switching
+                to windows and launching applications. GNOME shell takes
+                advantage of the capabilities of modern graphics hardware
+                and introduces innovative user interface concepts to provide
+                a visually attractive and easy to use experience.</para>
+
+                <para>gnome-shell is a required component of
+                the GNOME desktop, i.e. it is listed in the
+                RequiredComponents field of
+                <filename>/usr/share/gnome-session/sessions/gnome.session</filename>.
+                It is started in the window manager phase of the session.
+                </para>
+
+        </refsect1>
+
+        <refsect1>
+                <title>Options</title>
+
+                <variablelist>
+
+                        <varlistentry>
+                                <term><option>-r</option>, <option>--replace</option></term>
+
+                                <listitem><para>Replace the running window manager</para></listitem>
+                        </varlistentry>
+
+                        <varlistentry>
+                                <term><option>--sm-disable</option></term>
+
+                                <listitem><para>Disable connection to the session manager</para></listitem>
+                        </varlistentry>
+
+                        <varlistentry>
+                                <term><option>--sm-client-id=<replaceable>ID</replaceable></option></term>
+
+                                <listitem><para>Specify session management <replaceable>ID</replaceable></para></listitem>
+                        </varlistentry>
+
+                        <varlistentry>
+                                <term><option>--sm-save-file=<replaceable>FILE</replaceable></option></term>
+
+                                <listitem><para>Initialize session from <replaceable>FILE</replaceable></para></listitem>
+                        </varlistentry>
+
+                        <varlistentry>
+                                <term><option>--screen=<replaceable>SCREEN</replaceable></option></term>
+
+                                <listitem><para>X screen to use</para></listitem>
+                        </varlistentry>
+
+                        <varlistentry>
+                                <term><option>-d</option>, <option>--display=<replaceable>DISPLAY</replaceable></option></term>
+
+                                <listitem><para>X Display to use</para></listitem>
+                        </varlistentry>
+
+                        <varlistentry>
+                                <term><option>--sync</option></term>
+
+                                <listitem><para>Make X calls synchronous</para></listitem>
+                        </varlistentry>
+
+                        <varlistentry>
+                                <term><option>--version</option></term>
+
+                                <listitem><para>Print version and exit</para></listitem>
+                        </varlistentry>
+
+                        <varlistentry>
+                                <term><option>--help</option></term>
+
+                                <listitem><para>Display help and exit</para></listitem>
+                        </varlistentry>
+
+                        <varlistentry>
+                                <term><option>--mode=<replaceable>MODE</replaceable></option></term>
+
+                                <listitem><para>Use a specific mode, e.g. "gdm" for login screen</para></listitem>
+                        </varlistentry>
+
+                        <varlistentry>
+                                <term><option>--list-modes</option></term>
+
+                                <listitem><para>List possible modes and exit</para></listitem>
+                        </varlistentry>
+
+                        <varlistentry>
+                                <term><option>--clutter-display=<replaceable>DISPLAY</replaceable></option></term>
+
+                                <listitem><para>Clutter the option display (otherwise ignored)</para></listitem>
+                        </varlistentry>
+
+                </variablelist>
+
+        </refsect1>
+
+        <refsect1>
+                <title>Files</title>
+
+                <para>
+                        <filename>/usr/share/gnome-session/sessions/gnome.session</filename>,
+                        <filename>/usr/share/applications/org.gnome.Shell.desktop</filename>.</para>
+        </refsect1>
+
+        <refsect1>
+                <title>Bugs</title>
+
+                <para>The bug tracker can be reached by visiting the
+                website <ulink url="https://bugzilla.gnome.org/buglist.cgi?product=gnome-shell">https://bugzilla.gnome.org/buglist.cgi?product=gnome-shell</ulink>.
+                Before sending a bug report, please verify that you have
+                the latest version of gnome-shell. Many bugs (major and
+                minor) are fixed at each release, and if yours is out of
+                date, the problem may already have been solved.</para>
+
+        </refsect1>
+
+        <refsect1>
+                <title>Additional Information</title>
+
+                <para>For further information, visit the website
+                <ulink url="https://wiki.gnome.org/Projects/GnomeShell">https://wiki.gnome.org/Projects/GnomeShell</ulink>.</para>
+        </refsect1>
+
+</refentry>

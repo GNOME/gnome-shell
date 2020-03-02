@@ -1,0 +1,4 @@
+[org.gnome.shell.overrides]
+attach-modal-dialogs = /desktop/gnome/shell/windows/attach_modal_dialogs
+edge-tiling = /desktop/gnome/shell/windows/edge_tiling
+workspaces-only-on-primary = /desktop/gnome/shell/windows/workspaces_only_on_primary

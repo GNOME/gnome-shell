@@ -1,0 +1,28 @@
+<!DOCTYPE node PUBLIC
+'-//freedesktop//DTD D-BUS Object Introspection 1.0//EN'
+'http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd'>
+<node>
+
+  <!--
+      org.gnome.Shell.PadOSD:
+      @short_description: Pad OSD interface
+
+      The interface used to show button map OSD on pad devices.
+  -->
+  <interface name='org.gnome.Shell.Wacom.PadOsd'>
+
+    <!--
+        Show:
+        @device_node: device node file, usually in /dev/input/...
+        @edition_mode: whether toggling edition mode on when showing
+
+        Shows the pad button map OSD for the requested device, the OSD
+	will be shown according the current device settings (output
+	mapping, left handed mode, ...)
+    -->
+    <method name='Show'>
+      <arg name='device_node' direction='in' type='o'/>
+      <arg name='edition_mode' direction='in' type='b'/>
+    </method>
+  </interface>
+</node>

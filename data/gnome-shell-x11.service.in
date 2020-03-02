@@ -1,0 +1,33 @@
+[Unit]
+Description=GNOME Shell on X11
+# On X11, try to show the GNOME Session Failed screen
+OnFailure=gnome-shell-disable-extensions.service gnome-session-failed.target
+OnFailureJobMode=replace
+CollectMode=inactive-or-failed
+RefuseManualStart=on
+RefuseManualStop=on
+
+After=gnome-session-manager.target
+
+Requisite=gnome-session-initialized.target
+PartOf=gnome-session-initialized.target
+Before=gnome-session-initialized.target
+
+# The units already conflict because they use the same BusName
+#Conflicts=gnome-shell-wayland.service
+
+# Limit startup frequency more than the default
+StartLimitIntervalSec=15s
+StartLimitBurst=3
+
+[Service]
+Type=notify
+ExecStart=@bindir@/gnome-shell
+# Exit code 1 means we are probably *not* dealing with an extension failure
+SuccessExitStatus=1
+# On X11 we want to restart on-success (Alt+F2 + r) and on-failure.
+Restart=always
+# Do not wait before restarting the shell
+RestartSec=0ms
+# Kill any stubborn child processes after this long
+TimeoutStopSec=5

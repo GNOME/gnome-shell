@@ -1,0 +1,112 @@
+@import url("resource:///org/gnome/shell/theme/gnome-shell.css");
+
+stage {
+    font: 16pt serif;
+    color: black;
+}
+
+.red {
+    background-color: red;
+}
+
+.green {
+    background-color: green;
+}
+
+.blue {
+    background-color: blue;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.italic {
+    font-style: italic;
+}
+
+.big {
+    font-size: 150%;
+}
+
+.monospace {
+    font-family: monospace;
+}
+
+.border-image {
+    border: 15px;
+    border-image: url('border-image.png') 16;
+}
+
+.background-image-200-200 {
+    background-image: url('200-200.svg');
+}
+
+.background-image-100-200 {
+    background-image: url('100-200.svg');
+}
+
+.background-image-200-100 {
+    background-image: url('200-100.svg');
+}
+
+.background-gradient {
+    background-gradient-start: rgba(127, 255, 127, .6);
+    background-gradient-end: rgba(127, 127, 255, .6);
+}
+
+.border-image-with-background-gradient {
+    border: 15px black solid;
+    border-image: url('border-image.png') 16;
+    background-gradient-start: #88ff88;
+    background-gradient-end: #8888ff;
+}
+
+.background-image {
+    background-image: url('face-plain.png');
+    background-color: white;
+}
+
+.background-repeat {
+    background-repeat: repeat;
+}
+
+.push-button {
+    background: #eeddbb;
+    border: 1px solid black;
+    border-radius: 8px;
+    padding: 5px;
+}
+
+.push-button:hover {
+    background: #ffeecc;
+}
+
+.push-button:active {
+    background: #ccbb99;
+}
+
+.vfade {
+    -st-fade-offset: 68px;
+}
+
+#transition-container .transition-label {
+    color: white;
+    width: 1em;
+    height: 1em;
+    padding: 1em;
+    background-color: #333;
+    border: 2px solid black;
+    border-radius: 8px;
+    transition-duration: 1s;
+}
+
+#transition-container:hover .transition-label {
+    background-color: blue;
+    border: 2px solid red;
+}
+
+#transition-container .transition-label:hover {
+    background-color: green;
+    border: 2px solid blue;
+}
