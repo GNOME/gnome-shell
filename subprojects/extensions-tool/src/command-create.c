@@ -89,7 +89,7 @@ create_metadata (GFile       *target_dir,
 static gboolean
 copy_extension_template (GFile *target_dir, GError **error)
 {
-  g_auto (GStrv) templates;
+  g_auto (GStrv) templates = NULL;
   char **s;
 
   templates = g_resources_enumerate_children (TEMPLATE_PATH, 0, NULL);

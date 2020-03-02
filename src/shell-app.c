@@ -1295,7 +1295,7 @@ apply_discrete_gpu_env (GAppLaunchContext *context,
   num_children = g_variant_n_children (variant);
   for (i = 0; i < num_children; i++)
     {
-      g_autoptr(GVariant) gpu;
+      g_autoptr(GVariant) gpu = NULL;
       g_autoptr(GVariant) env = NULL;
       g_autoptr(GVariant) default_variant = NULL;
       g_autofree const char **env_s = NULL;
