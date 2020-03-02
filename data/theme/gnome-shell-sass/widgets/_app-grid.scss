@@ -60,7 +60,7 @@ $app_grid_fg_color: #fff;
     & .folder-name-entry { width: 300px }
 
     /* FIXME: this is to keep the label in sync with the entry */
-    & .folder-name-label { padding: 5px 7px }
+    & .folder-name-label { padding: 5px 7px; color: $osdf_fg_color; }
 
     & .edit-folder-button {
       @extend %button;
@@ -159,6 +159,7 @@ $app_grid_fg_color: #fff;
   &, &:hover, &:checked {
     @include button(undecorated);
     color: darken($osd_fg_color, 25%);
+    background-color: transparent !important;
   }
 
   &:hover {
