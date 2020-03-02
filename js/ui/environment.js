@@ -320,7 +320,7 @@ function init() {
             _localTimeZone = GLib.TimeZone.new_local();
 
         let dt = GLib.DateTime.new(_localTimeZone,
-            this.getYear(),
+            this.getFullYear(),
             this.getMonth() + 1,
             this.getDate(),
             this.getHours(),
