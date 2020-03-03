@@ -312,15 +312,16 @@ class DBusEventSource extends EventSourceBase {
     }
 
     _onClientDisappeared(dbusProxy, nameOwner, argArray) {
-        let source_uid = argArray[0] || "";
+        let sourceUid = argArray[0] || "";
         let changed = false;
         let idsIter = this._events.keys();
 
-        source_uid = source_uid + '\n';
+        sourceUid += '\n';
+
         for (let item = idsIter.next(); !item.done; item = idsIter.next()) {
             let id = item.value;
 
-            if (id.startsWith(source_uid) &&
+            if (id.startsWith(sourceUid) &&
                 this._events.delete(id))
                 changed = true;
         }
@@ -360,7 +361,7 @@ class DBusEventSource extends EventSourceBase {
         let result = [];
         let eventsIter = this._events.values();
 
-        for(let item = eventsIter.next(); !item.done; item = eventsIter.next()) {
+        for (let item = eventsIter.next(); !item.done; item = eventsIter.next()) {
             let event = item.value;
 
             if (_dateIntervalsOverlap(event.date, event.end, begin, end)) {
@@ -922,7 +923,6 @@ class EventsSection extends MessageList.MessageListSection {
         let periodEnd = _getEndOfDay(this._date);
         let events = this._eventSource.getEvents(periodBegin, periodEnd);
 
-        let ids = events.map(e => e.id);
         this._messageById.forEach((message, id) => {
             this._messageById.delete(id);
             this.removeMessage(message);
