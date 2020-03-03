@@ -903,7 +903,8 @@ var WindowManager = class {
             /* Leave this watchdog timeout so don't block indefinitely here */
             let timeoutId = GLib.timeout_add_seconds(GLib.PRIORITY_DEFAULT, 5, () => {
                 Gio.DBus.session.unwatch_name(watchId);
-                task.return_boolean(false);
+                log('Warning: Failed to start gsd-xsettings');
+                task.return_boolean(true);
                 timeoutId = 0;
                 return GLib.SOURCE_REMOVE;
             });
