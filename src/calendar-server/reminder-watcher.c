@@ -234,6 +234,9 @@ reminder_watcher_notify_display (ReminderWatcher *rw,
     }
 #endif
 
+  g_notification_add_button_with_target (notification, _("Dismiss"), "app.dismiss-reminder", "s", notif_id);
+  g_notification_set_default_action_and_target (notification, "app.dismiss-reminder", "s", notif_id);
+
   g_application_send_notification (rw->priv->application, notif_id, notification);
 
   g_object_unref (notification);
@@ -703,4 +706,62 @@ reminder_watcher_new (GApplication *application,
   rw->priv->application = application;
 
   return E_REMINDER_WATCHER (rw);
+}
+
+static void
+reminder_watcher_dismiss_done_cb (GObject *source_object,
+                                  GAsyncResult *result,
+                                  gpointer user_data)
+{
+  GError *error = NULL;
+
+  if (!e_reminder_watcher_dismiss_finish (E_REMINDER_WATCHER (source_object), result, &error))
+    {
+      if (!g_error_matches (error, E_CLIENT_ERROR, E_CLIENT_ERROR_NOT_SUPPORTED))
+        print_debug ("Dismiss: Failed with error: %s", error ? error->message : "Unknown error");
+
+      g_clear_error (&error);
+    }
+}
+
+void
+reminder_watcher_dismiss_by_id (EReminderWatcher *reminder_watcher,
+                                const gchar *id)
+{
+  ReminderWatcher *rw;
+  GSList *past, *link;
+
+  g_return_if_fail (IS_REMINDER_WATCHER (reminder_watcher));
+  g_return_if_fail (id && *id);
+
+  rw = REMINDER_WATCHER (reminder_watcher);
+  past = e_reminder_watcher_dup_past (reminder_watcher);
+
+  for (link = past; link; link = g_slist_next (link))
+    {
+      EReminderData *rd = link->data;
+      gchar *rd_id;
+
+      rd_id = reminder_watcher_build_notif_id (rd);
+
+      if (g_strcmp0 (rd_id, id) == 0)
+        {
+          print_debug ("Dismiss: Going to dismiss '%s'", reminder_watcher_get_rd_summary (rd));
+
+          g_application_withdraw_notification (rw->priv->application, id);
+
+          e_reminder_watcher_dismiss (reminder_watcher, rd, NULL,
+                                      reminder_watcher_dismiss_done_cb, NULL);
+
+          g_free (rd_id);
+          break;
+        }
+
+      g_free (rd_id);
+    }
+
+  if (!link)
+    print_debug ("Dismiss: Cannot find reminder '%s'", id);
+
+  g_slist_free_full (past, e_reminder_data_free);
 }

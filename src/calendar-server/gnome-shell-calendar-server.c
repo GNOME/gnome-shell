@@ -71,11 +71,6 @@ static GDBusNodeInfo *introspection_data = NULL;
 struct _App;
 typedef struct _App App;
 
-static gboolean      opt_replace = FALSE;
-static GOptionEntry  opt_entries[] = {
-  {"replace", 0, 0, G_OPTION_ARG_NONE, &opt_replace, "Replace existing daemon", NULL},
-  {NULL }
-};
 static App *_global_app = NULL;
 
 /* ---------------------------------------------------------------------------------------------------- */
@@ -1104,10 +1099,30 @@ stdin_channel_io_func (GIOChannel *source,
   return FALSE; /* remove source */
 }
 
+static void
+app_dismiss_reminder_cb (GSimpleAction *action,
+                         GVariant *parameter,
+                         gpointer user_data)
+{
+  App *app = _global_app;
+
+  g_return_if_fail (app != NULL);
+
+  reminder_watcher_dismiss_by_id (app->reminder_watcher, g_variant_get_string (parameter, NULL));
+}
+
 int
 main (int    argc,
       char **argv)
 {
+  gboolean      opt_replace = FALSE;
+  GOptionEntry  opt_entries[] = {
+    {"replace", 0, 0, G_OPTION_ARG_NONE, &opt_replace, "Replace existing daemon", NULL},
+    {NULL }
+  };
+  const GActionEntry action_entries[] = {
+    { "dismiss-reminder", app_dismiss_reminder_cb, "s" }
+  };
   GApplication *application;
   GError *error;
   GOptionContext *opt_context;
@@ -1136,6 +1151,8 @@ main (int    argc,
     }
 
   application = g_application_new (BUS_NAME, G_APPLICATION_NON_UNIQUE);
+
+  g_action_map_add_action_entries (G_ACTION_MAP (application), action_entries, G_N_ELEMENTS (action_entries), NULL);
 
   g_signal_connect (application, "activate",
                     G_CALLBACK (g_application_hold), NULL);

@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=Clock Applet
+Icon=appointment-soon
+Exec=@libexecdir@/gnome-shell-calendar-server
+Terminal=false
+Categories=
+OnlyShowIn=GNOME
+NoDisplay=true
