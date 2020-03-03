@@ -633,8 +633,7 @@ var ExtensionRow = GObject.registerClass({
         });
         this._actionGroup.add_action(action);
 
-        let name = GLib.markup_escape_text(this.name, -1);
-        this._nameLabel.label = name;
+        this._nameLabel.label = this.name;
 
         let desc = this._extension.metadata.description.split('\n')[0];
         this._descriptionLabel.label = desc;
