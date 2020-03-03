@@ -361,7 +361,8 @@ function reloadThemeResource() {
     if (_themeResource)
         _themeResource._unregister();
 
-    _themeResource = Gio.Resource.load('%s/gnome-shell-theme.gresource'.format(global.datadir));
+    _themeResource = Gio.Resource.load('%s/%s'.format(global.datadir,
+        sessionMode.themeResourceName));
     _themeResource._register();
 }
 
