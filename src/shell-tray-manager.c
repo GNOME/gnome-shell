@@ -212,7 +212,19 @@ void
 shell_tray_manager_manage_screen (ShellTrayManager *manager,
                                   StWidget         *theme_widget)
 {
-  na_tray_manager_manage_screen (manager->priv->na_manager);
+  MetaDisplay *display = shell_global_get_display (shell_global_get ());
+
+  if (meta_display_get_x11_display (display) != NULL)
+    {
+      na_tray_manager_manage_screen (manager->priv->na_manager);
+    }
+  else
+    {
+      g_signal_connect_object (display, "x11-display-setup",
+                               G_CALLBACK (na_tray_manager_manage_screen),
+                               manager->priv->na_manager,
+                               G_CONNECT_SWAPPED);
+    }
 
   g_signal_connect_object (theme_widget, "style-changed",
                            G_CALLBACK (shell_tray_manager_style_changed),
