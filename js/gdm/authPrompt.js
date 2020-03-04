@@ -316,7 +316,7 @@ var AuthPrompt = GObject.registerClass({
         else
             isSpinner = false;
 
-        if (this._defaultButtonWellActor != actor && oldActor) {
+        if (oldActor && this._defaultButtonWellActor != actor) {
             if (!animate) {
                 oldActor.opacity = 0;
 
