@@ -1,7 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported GnomeShell, ScreenSaverDBus */
 
-const { Gio, GLib, Meta, Shell } = imports.gi;
+const { Gio, GLib, Meta } = imports.gi;
 
 const Config = imports.misc.config;
 const ExtensionDownloader = imports.ui.extensionDownloader;
@@ -315,13 +315,18 @@ var GnomeShellExtensions = class {
         this.OpenExtensionPrefs(uuid, '', {});
     }
 
-    OpenExtensionPrefs(uuid, _parentWindow, _options) {
-        let appSys = Shell.AppSystem.get_default();
-        let app = appSys.lookup_app('org.gnome.Extensions.desktop');
-        let info = app.get_app_info();
-        let timestamp = global.display.get_current_time_roundtrip();
-        info.launch_uris([`extension:///${uuid}`],
-                         global.create_app_launch_context(timestamp, -1));
+    OpenExtensionPrefs(uuid, parentWindow, options) {
+        Gio.DBus.session.call(
+            'org.gnome.Shell.Extensions',
+            '/org/gnome/Shell/Extensions',
+            'org.gnome.Shell.Extensions',
+            'OpenExtensionPrefs',
+            new GLib.Variant('(ssa{sv})', [uuid, parentWindow, options]),
+            null,
+            Gio.DBusCallFlags.NONE,
+            -1,
+            null,
+            (conn, res) => conn.call_finish(res));
     }
 
     ReloadExtension(uuid) {
