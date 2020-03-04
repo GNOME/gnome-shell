@@ -85,7 +85,6 @@ var ExtensionsWindow = GObject.registerClass({
     _init(params) {
         super._init(params);
 
-        this._prefsDialog = null;
         this._updatesCheckId = 0;
 
         this._mainBox.set_focus_vadjustment(this._scrolledWindow.vadjustment);
@@ -152,16 +151,9 @@ var ExtensionsWindow = GObject.registerClass({
     }
 
     openPrefs(uuid) {
-        if (this._prefsDialog)
-            return;
-
-        let row = this._findExtensionRow(uuid);
-        this._prefsDialog = new ExtensionPrefsDialog(row);
-        this._prefsDialog.set({ transient_for: this, modal: true });
-
-        this._prefsDialog.connect('destroy', () => (this._prefsDialog = null));
-
-        this._prefsDialog.show();
+        this._shellProxy.OpenExtensionPrefsRemote(uuid,
+            '',
+            { modal: new GLib.Variant('b', true) });
     }
 
     _showAbout() {
@@ -466,119 +458,6 @@ var ExtensionRow = GObject.registerClass({
 
     _canToggle() {
         return this._extension.canChange;
-    }
-
-    get prefsModule() {
-        // give extension prefs access to their own extension object
-        ExtensionUtils.getCurrentExtension = () => this._extension;
-
-        if (!this._prefsModule) {
-            ExtensionUtils.installImporter(this._extension);
-
-            this._prefsModule = this._extension.imports.prefs;
-            this._prefsModule.init(this._extension.metadata);
-        }
-
-        return this._prefsModule;
-    }
-});
-
-var ExtensionPrefsDialog = GObject.registerClass({
-    GTypeName: 'ExtensionPrefsDialog',
-    Template: 'resource:///org/gnome/Extensions/ui/extension-prefs-dialog.ui',
-    InternalChildren: [
-        'headerBar',
-        'stack',
-        'expander',
-        'expanderArrow',
-        'revealer',
-        'errorView',
-    ],
-}, class ExtensionPrefsDialog extends Gtk.Window {
-    _init(extension) {
-        super._init();
-
-        this._uuid = extension.uuid;
-        this._url = extension.url;
-
-        this._headerBar.title = extension.name;
-
-        this._actionGroup = new Gio.SimpleActionGroup();
-        this.insert_action_group('win', this._actionGroup);
-
-        this._initActions();
-
-        this._gesture = new Gtk.GestureMultiPress({
-            widget: this._expander,
-            button: 0,
-            exclusive: true,
-        });
-
-        this._gesture.connect('released', (gesture, nPress) => {
-            if (nPress === 1)
-                this._revealer.reveal_child = !this._revealer.reveal_child;
-        });
-
-        this._revealer.connect('notify::reveal-child', () => {
-            this._expanderArrow.icon_name = this._revealer.reveal_child
-                ? 'pan-down-symbolic'
-                : 'pan-end-symbolic';
-        });
-
-        try {
-            const widget = extension.prefsModule.buildPrefsWidget();
-            this._stack.add(widget);
-            this._stack.visible_child = widget;
-        } catch (e) {
-            this._setError(e);
-        }
-    }
-
-    _setError(exc) {
-        this._errorView.buffer.text = '%s\n\nStack trace:\n'.format(exc);
-        // Indent stack trace.
-        this._errorView.buffer.text +=
-            exc.stack.split('\n').map(line => '  %s'.format(line)).join('\n');
-
-        // markdown for pasting in gitlab issues
-        let lines = [
-            'The settings of extension %s had an error:'.format(this._uuid),
-            '```', // '`' (xgettext throws up on odd number of backticks)
-            exc.toString(),
-            '```', // '`'
-            '',
-            'Stack trace:',
-            '```', // '`'
-            exc.stack.replace(/\n$/, ''), // stack without trailing newline
-            '```', // '`'
-            '',
-        ];
-        this._errorMarkdown = lines.join('\n');
-        this._actionGroup.lookup('copy-error').enabled = true;
-    }
-
-    _initActions() {
-        let action;
-
-        action = new Gio.SimpleAction({
-            name: 'copy-error',
-            enabled: false,
-        });
-        action.connect('activate', () => {
-            const clipboard = Gtk.Clipboard.get_default(this.get_display());
-            clipboard.set_text(this._errorMarkdown, -1);
-        });
-        this._actionGroup.add_action(action);
-
-        action = new Gio.SimpleAction({
-            name: 'show-url',
-            enabled: this._url !== '',
-        });
-        action.connect('activate', () => {
-            Gio.AppInfo.launch_default_for_uri(this._url,
-                this.get_display().get_app_launch_context());
-        });
-        this._actionGroup.add_action(action);
     }
 });
 
