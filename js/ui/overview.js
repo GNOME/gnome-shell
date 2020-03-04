@@ -244,6 +244,10 @@ var Overview = class {
     _unshadeBackgrounds() {
         let backgrounds = this._backgroundGroup.get_children();
         for (let i = 0; i < backgrounds.length; i++) {
+            backgrounds[i].ease_property('opacity', 0, {
+                duration: SHADE_ANIMATION_TIME,
+                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            });
             backgrounds[i].ease_property('brightness', 1.0, {
                 duration: SHADE_ANIMATION_TIME,
                 mode: Clutter.AnimationMode.EASE_OUT_QUAD,
@@ -258,6 +262,11 @@ var Overview = class {
     _shadeBackgrounds() {
         let backgrounds = this._backgroundGroup.get_children();
         for (let i = 0; i < backgrounds.length; i++) {
+            backgrounds[i].set_opacity(0);
+            backgrounds[i].ease_property('opacity', 255, {
+                duration: SHADE_ANIMATION_TIME,
+                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            });
             backgrounds[i].ease_property('brightness', Lightbox.VIGNETTE_BRIGHTNESS, {
                 duration: SHADE_ANIMATION_TIME,
                 mode: Clutter.AnimationMode.EASE_OUT_QUAD,
