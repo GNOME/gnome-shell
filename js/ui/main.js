@@ -142,6 +142,9 @@ function start() {
     shellDBusService = new ShellDBus.GnomeShell();
     shellMountOpDBusService = new ShellMountOperation.GnomeShellMountOpHandler();
 
+    Gio.DBus.session.watch_name('org.gnome.Shell.Notifications',
+        Gio.BusNameWatcherFlags.AUTO_START, null, null);
+
     _sessionUpdated();
 }
 
