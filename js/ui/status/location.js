@@ -64,7 +64,7 @@ class Indicator extends PanelMenu.SystemIndicator {
 
         this._item.label.text = _("Location Enabled");
         this._onOffAction = this._item.menu.addAction(_("Disable"), this._onOnOffAction.bind(this));
-        this._item.menu.addSettingsAction(_("Privacy Settings"), 'gnome-privacy-panel.desktop');
+        this._item.menu.addSettingsAction(_("Privacy Settings"), 'gnome-location-panel.desktop');
 
         this.menu.addMenuItem(this._item);
 
