@@ -314,20 +314,24 @@ var LayoutManager = GObject.registerClass({
         Main.sessionMode.connect('updated', this._sessionUpdated.bind(this));
 
         this._loadBackground();
+
+        this._overviewShownId = Main.overview.connect('shown', () => {
+            this._inOverview = true;
+            this._updateVisibility();
+        });
+
+        this._overviewHidingId = Main.overview.connect('hiding', () => {
+            this._inOverview = false;
+            this._updateVisibility();
+        });
     }
 
     showOverview() {
         this.overviewGroup.show();
-
-        this._inOverview = true;
-        this._updateVisibility();
     }
 
     hideOverview() {
         this.overviewGroup.hide();
-
-        this._inOverview = false;
-        this._updateVisibility();
     }
 
     _sessionUpdated() {
@@ -1222,6 +1226,16 @@ class HotCorner extends Clutter.Actor {
         this._pressureBarrier = null;
 
         this._ripples.destroy();
+
+        if (this._overviewShownId) {
+            Main.overview.disconnect(this._overviewShownId);
+            this._overviewShownId = 0;
+        }
+
+        if (this._overviewHidingId) {
+            Main.overview.disconnect(this._overviewHidingId);
+            this._overviewHidingId = 0;
+        }
     }
 
     _toggleOverview() {
