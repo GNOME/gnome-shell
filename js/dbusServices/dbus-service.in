@@ -1,0 +1,5 @@
+imports.package.start({
+    name: '@PACKAGE_NAME@',
+    prefix: '@prefix@',
+    libdir: '@libdir@',
+});
