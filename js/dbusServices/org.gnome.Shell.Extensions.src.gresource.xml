@@ -6,6 +6,12 @@
     <file>dbusService.js</file>
 
     <file>misc/config.js</file>
+    <file>misc/extensionUtils.js</file>
     <file>misc/fileUtils.js</file>
+  </gresource>
+
+  <gresource prefix="/org/gnome/Shell/Extensions">
+    <file>css/application.css</file>
+    <file>ui/extension-prefs-dialog.ui</file>
   </gresource>
 </gresources>
