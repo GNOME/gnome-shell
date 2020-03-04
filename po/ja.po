@@ -16,8 +16,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2020-02-27 21:57+0000\n"
-"PO-Revision-Date: 2020-02-29 20:28+0900\n"
+"POT-Creation-Date: 2020-02-29 16:06+0000\n"
+"PO-Revision-Date: 2020-03-05 06:30+0900\n"
 "Last-Translator: sicklylife <translation@sicklylife.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
 "Language: ja\n"
@@ -1037,7 +1037,7 @@ msgstr "イベントなし"
 
 #: js/ui/calendar.js:1153
 msgid "Do Not Disturb"
-msgstr "通知をポップアップしない"
+msgstr "通知ポップアップを表示しない"
 
 #: js/ui/calendar.js:1167
 msgid "Clear"
