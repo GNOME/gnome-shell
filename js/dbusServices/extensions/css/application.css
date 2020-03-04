@@ -1,0 +1,2 @@
+.expander-frame > * { border-top-width: 0; }
+.expander-toolbar { border: 0 solid @borders; border-top-width: 1px; }
