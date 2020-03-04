@@ -64,7 +64,9 @@ class Application extends Gtk.Application {
             provider,
             Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
 
-        this._shellProxy = new GnomeShellProxy(Gio.DBus.session, 'org.gnome.Shell', '/org/gnome/Shell');
+        this._shellProxy = new GnomeShellProxy(Gio.DBus.session,
+            'org.gnome.Shell.Extensions', '/org/gnome/Shell/Extensions');
+
         this._window = new ExtensionsWindow({ application: this });
     }
 });
