@@ -5,7 +5,6 @@
 
     <file>dbus-interfaces/org.gnome.Shell.Extensions.xml</file>
 
-    <file>ui/extension-prefs-dialog.ui</file>
     <file>ui/extension-row.ui</file>
     <file>ui/extensions-window.ui</file>
   </gresource>
