@@ -29,6 +29,7 @@ struct _ShellTrayManagerPrivate {
   ClutterColor bg_color;
 
   GHashTable *icons;
+  StWidget *theme_widget;
 };
 
 typedef struct {
@@ -228,6 +229,8 @@ void
 shell_tray_manager_manage_screen (ShellTrayManager *manager,
                                   StWidget         *theme_widget)
 {
+  g_set_weak_pointer (&manager->priv->theme_widget, theme_widget);
+
   shell_tray_manager_ensure_resources (manager);
 
   na_tray_manager_manage_screen (manager->priv->na_manager);
@@ -236,6 +239,20 @@ shell_tray_manager_manage_screen (ShellTrayManager *manager,
                            G_CALLBACK (shell_tray_manager_style_changed),
                            manager, 0);
   shell_tray_manager_style_changed (theme_widget, manager);
+}
+
+void
+shell_tray_manager_unmanage_screen (ShellTrayManager *manager)
+{
+  if (manager->priv->theme_widget != NULL)
+    {
+      g_signal_handlers_disconnect_by_func (manager->priv->theme_widget,
+                                            G_CALLBACK (shell_tray_manager_style_changed),
+                                            manager);
+    }
+  g_set_weak_pointer (&manager->priv->theme_widget, NULL);
+
+  shell_tray_manager_release_resources (manager);
 }
 
 static void
