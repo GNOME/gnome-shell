@@ -218,6 +218,9 @@ shell_tray_manager_style_changed (StWidget *theme_widget,
   StThemeNode *theme_node;
   StIconColors *icon_colors;
 
+  if (manager->priv->na_manager == NULL)
+    return;
+
   theme_node = st_widget_get_theme_node (theme_widget);
   icon_colors = st_theme_node_get_icon_colors (theme_node);
   na_tray_manager_set_colors (manager->priv->na_manager,
@@ -225,15 +228,30 @@ shell_tray_manager_style_changed (StWidget *theme_widget,
                               &icon_colors->error, &icon_colors->success);
 }
 
+static void
+shell_tray_manager_manage_screen_internal (ShellTrayManager *manager)
+{
+  shell_tray_manager_ensure_resources (manager);
+  na_tray_manager_manage_screen (manager->priv->na_manager);
+}
+
 void
 shell_tray_manager_manage_screen (ShellTrayManager *manager,
                                   StWidget         *theme_widget)
 {
+  MetaDisplay *display = shell_global_get_display (shell_global_get ());
+
   g_set_weak_pointer (&manager->priv->theme_widget, theme_widget);
 
-  shell_tray_manager_ensure_resources (manager);
+  if (meta_display_get_x11_display (display) != NULL)
+    shell_tray_manager_manage_screen_internal (manager);
 
-  na_tray_manager_manage_screen (manager->priv->na_manager);
+  g_signal_connect_object (display, "x11-display-setup",
+                           G_CALLBACK (shell_tray_manager_manage_screen_internal),
+                           manager, G_CONNECT_SWAPPED);
+  g_signal_connect_object (display, "x11-display-closing",
+                           G_CALLBACK (shell_tray_manager_release_resources),
+                           manager, G_CONNECT_SWAPPED);
 
   g_signal_connect_object (theme_widget, "style-changed",
                            G_CALLBACK (shell_tray_manager_style_changed),
@@ -244,6 +262,10 @@ shell_tray_manager_manage_screen (ShellTrayManager *manager,
 void
 shell_tray_manager_unmanage_screen (ShellTrayManager *manager)
 {
+  MetaDisplay *display = shell_global_get_display (shell_global_get ());
+
+  g_signal_handlers_disconnect_by_data (display, manager);
+
   if (manager->priv->theme_widget != NULL)
     {
       g_signal_handlers_disconnect_by_func (manager->priv->theme_widget,
