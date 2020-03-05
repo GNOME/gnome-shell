@@ -1,7 +1,8 @@
 option('man',
   type: 'boolean',
   value: true,
-  description: 'Generate man pages'
+  description: 'Generate man pages',
+  yield: true,
 )
 
 option('package_name',
