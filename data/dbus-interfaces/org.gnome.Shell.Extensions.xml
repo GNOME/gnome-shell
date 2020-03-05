@@ -234,5 +234,11 @@
     -->
     <property name="ShellVersion" type="s" access="read"/>
 
+    <!--
+        UserExtensionsEnabled:
+        Whether user extensions are enabled
+    -->
+    <property name="UserExtensionsEnabled" type="b" access="readwrite"/>
+
   </interface>
 </node>

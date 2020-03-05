@@ -255,6 +255,17 @@ var GnomeShellExtensions = class {
     constructor() {
         this._dbusImpl = Gio.DBusExportedObject.wrapJSObject(GnomeShellExtensionsIface, this);
         this._dbusImpl.export(Gio.DBus.session, '/org/gnome/Shell');
+
+        this._userExtensionsEnabled = this.UserExtensionsEnabled;
+        global.settings.connect('changed::disable-user-extensions', () => {
+            if (this._userExtensionsEnabled === this.UserExtensionsEnabled)
+                return;
+
+            this._userExtensionsEnabled = this.UserExtensionsEnabled;
+            this._dbusImpl.emit_property_changed('UserExtensionsEnabled',
+                new GLib.Variant('b', this._userExtensionsEnabled));
+        });
+
         Main.extensionManager.connect('extension-state-changed',
                                       this._extensionStateChanged.bind(this));
     }
@@ -323,6 +334,14 @@ var GnomeShellExtensions = class {
 
     get ShellVersion() {
         return Config.PACKAGE_VERSION;
+    }
+
+    get UserExtensionsEnabled() {
+        return !global.settings.get_boolean('disable-user-extensions');
+    }
+
+    set UserExtensionsEnabled(enable) {
+        global.settings.set_boolean('disable-user-extensions', !enable);
     }
 
     _extensionStateChanged(_, newState) {
