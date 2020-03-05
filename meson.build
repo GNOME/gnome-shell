@@ -247,7 +247,6 @@ libgvc_gir = libgvc.get_variable('libgvc_gir')
 if get_option('extensions_tool')
   subproject('extensions-tool',
     default_options: [
-      'man=@0@'.format(get_option('man')),
       'package_name=@0@'.format(meson.project_name()),
     ]
   )
