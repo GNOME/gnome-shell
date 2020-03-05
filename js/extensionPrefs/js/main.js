@@ -4,7 +4,7 @@ imports.gi.versions.Gtk = '3.0';
 
 const Gettext = imports.gettext;
 const Package = imports.package;
-const { Gdk, GLib, Gio, GObject, Gtk } = imports.gi;
+const { Gdk, GLib, Gio, GObject, Gtk, Shew } = imports.gi;
 
 Package.initFormat();
 
@@ -14,6 +14,8 @@ const { ExtensionState, ExtensionType } = ExtensionUtils;
 
 const GnomeShellIface = loadInterfaceXML('org.gnome.Shell.Extensions');
 const GnomeShellProxy = Gio.DBusProxy.makeProxyWrapper(GnomeShellIface);
+
+Gio._promisify(Shew.WindowExporter.prototype, 'export', 'export_finish');
 
 function loadInterfaceXML(iface) {
     const uri = 'resource:///org/gnome/Extensions/dbus-interfaces/%s.xml'.format(iface);
@@ -89,6 +91,9 @@ var ExtensionsWindow = GObject.registerClass({
 
         this._updatesCheckId = 0;
 
+        this._exporter = new Shew.WindowExporter({ window: this });
+        this._exportedHandle = '';
+
         this._mainBox.set_focus_vadjustment(this._scrolledWindow.vadjustment);
 
         let action;
@@ -152,9 +157,17 @@ var ExtensionsWindow = GObject.registerClass({
         dialog.present();
     }
 
-    openPrefs(uuid) {
+    async openPrefs(uuid) {
+        if (!this._exportedHandle) {
+            try {
+                this._exportedHandle = await this._exporter.export();
+            } catch (e) {
+                log('Failed to export window: %s'.format(e.message));
+            }
+        }
+
         this._shellProxy.OpenExtensionPrefsRemote(uuid,
-            '',
+            this._exportedHandle,
             { modal: new GLib.Variant('b', true) });
     }
 
