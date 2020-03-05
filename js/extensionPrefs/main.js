@@ -8,7 +8,6 @@ const Format = imports.format;
 
 const _ = Gettext.gettext;
 
-const Config = imports.misc.config;
 const ExtensionUtils = imports.misc.extensionUtils;
 const { loadInterfaceXML } = imports.misc.fileUtils;
 
@@ -46,7 +45,7 @@ class Application extends Gtk.Application {
         super.vfunc_startup();
 
         let provider = new Gtk.CssProvider();
-        let uri = 'resource:///org/gnome/shell/css/application.css';
+        let uri = 'resource:///org/gnome/Extensions/css/application.css';
         try {
             provider.load_from_file(Gio.File.new_for_uri(uri));
         } catch (e) {
@@ -61,11 +60,9 @@ class Application extends Gtk.Application {
     }
 
     vfunc_command_line(commandLine) {
-        let args = commandLine.get_arguments();
+        let [, uuid] = commandLine.get_arguments();
 
-        if (args.length) {
-            let uuid = args[0];
-
+        if (uuid) {
             // Strip off "extension:///" prefix which fakes a URI, if it exists
             uuid = stripPrefix(uuid, 'extension:///');
 
@@ -79,7 +76,7 @@ class Application extends Gtk.Application {
 
 var ExtensionsWindow = GObject.registerClass({
     GTypeName: 'ExtensionsWindow',
-    Template: 'resource:///org/gnome/shell/ui/extensions-window.ui',
+    Template: 'resource:///org/gnome/Extensions/ui/extensions-window.ui',
     InternalChildren: [
         'userList',
         'systemList',
@@ -219,7 +216,7 @@ var ExtensionsWindow = GObject.registerClass({
             comments: _('Manage your GNOME Extensions'),
             license_type: Gtk.License.GPL_2_0,
             logo_icon_name: 'org.gnome.Extensions',
-            version: Config.PACKAGE_VERSION,
+            version: imports.package.version,
 
             transient_for: this,
             modal: true,
@@ -571,7 +568,7 @@ var Expander = GObject.registerClass({
 
 var ExtensionRow = GObject.registerClass({
     GTypeName: 'ExtensionRow',
-    Template: 'resource:///org/gnome/shell/ui/extension-row.ui',
+    Template: 'resource:///org/gnome/Extensions/ui/extension-row.ui',
     InternalChildren: [
         'nameLabel',
         'descriptionLabel',
