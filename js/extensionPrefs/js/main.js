@@ -37,6 +37,11 @@ function stripPrefix(string, prefix) {
     return string;
 }
 
+function toggleState(action) {
+    let state = action.get_state();
+    action.change_state(new GLib.Variant('b', !state.get_boolean()));
+}
+
 var Application = GObject.registerClass(
 class Application extends Gtk.Application {
     _init() {
@@ -95,7 +100,6 @@ var ExtensionsWindow = GObject.registerClass({
     InternalChildren: [
         'userList',
         'systemList',
-        'killSwitch',
         'mainBox',
         'mainStack',
         'scrolledWindow',
@@ -122,10 +126,15 @@ var ExtensionsWindow = GObject.registerClass({
         action.connect('activate', this._logout.bind(this));
         this.add_action(action);
 
-        this._settings = new Gio.Settings({ schema_id: 'org.gnome.shell' });
-        this._settings.bind('disable-user-extensions',
-            this._killSwitch, 'active',
-            Gio.SettingsBindFlags.DEFAULT | Gio.SettingsBindFlags.INVERT_BOOLEAN);
+        action = new Gio.SimpleAction({
+            name: 'user-extensions-enabled',
+            state: new GLib.Variant('b', false),
+        });
+        action.connect('activate', toggleState);
+        action.connect('change-state', (a, state) => {
+            this._shellProxy.UserExtensionsEnabled = state.get_boolean();
+        });
+        this.add_action(action);
 
         this._userList.set_sort_func(this._sortList.bind(this));
         this._userList.set_header_func(this._updateHeader.bind(this));
@@ -135,6 +144,10 @@ var ExtensionsWindow = GObject.registerClass({
 
         this._shellProxy.connectSignal('ExtensionStateChanged',
             this._onExtensionStateChanged.bind(this));
+
+        this._shellProxy.connect('g-properties-changed',
+            this._onUserExtensionsEnabledChanged.bind(this));
+        this._onUserExtensionsEnabledChanged();
 
         this._scanExtensions();
     }
@@ -389,6 +402,12 @@ var ExtensionsWindow = GObject.registerClass({
         ].find(c => c.uuid === uuid);
     }
 
+    _onUserExtensionsEnabledChanged() {
+        let action = this.lookup_action('user-extensions-enabled');
+        action.set_state(
+            new GLib.Variant('b', this._shellProxy.UserExtensionsEnabled));
+    }
+
     _onExtensionStateChanged(proxy, senderName, [uuid, newState]) {
         let extension = ExtensionUtils.deserializeExtension(newState);
         let row = this._findExtensionRow(uuid);
@@ -633,10 +652,7 @@ var ExtensionRow = GObject.registerClass({
             name: 'enabled',
             state: new GLib.Variant('b', false),
         });
-        action.connect('activate', () => {
-            let state = action.get_state();
-            action.change_state(new GLib.Variant('b', !state.get_boolean()));
-        });
+        action.connect('activate', toggleState);
         action.connect('change-state', (a, state) => {
             if (state.get_boolean())
                 this._app.shellProxy.EnableExtensionRemote(this.uuid);
