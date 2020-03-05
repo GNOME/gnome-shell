@@ -90,8 +90,9 @@
           </packing>
         </child>
         <child>
-          <object class="GtkSwitch" id="killSwitch">
+          <object class="GtkSwitch">
             <property name="visible">True</property>
+            <property name="action-name">win.user-extensions-enabled</property>
           </object>
           <packing>
             <property name="pack_type">end</property>
