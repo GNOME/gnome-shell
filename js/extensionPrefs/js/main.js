@@ -29,12 +29,6 @@ function loadInterfaceXML(iface) {
     return null;
 }
 
-function stripPrefix(string, prefix) {
-    if (string.slice(0, prefix.length) == prefix)
-        return string.slice(prefix.length);
-    return string;
-}
-
 function toggleState(action) {
     let state = action.get_state();
     action.change_state(new GLib.Variant('b', !state.get_boolean()));
@@ -44,10 +38,7 @@ var Application = GObject.registerClass(
 class Application extends Gtk.Application {
     _init() {
         GLib.set_prgname('gnome-shell-extension-prefs');
-        super._init({
-            application_id: 'org.gnome.Extensions',
-            flags: Gio.ApplicationFlags.HANDLES_COMMAND_LINE,
-        });
+        super._init({ application_id: 'org.gnome.Extensions' });
     }
 
     get shellProxy() {
@@ -76,20 +67,6 @@ class Application extends Gtk.Application {
         this._shellProxy = new GnomeShellProxy(Gio.DBus.session, 'org.gnome.Shell', '/org/gnome/Shell');
         this._window = new ExtensionsWindow({ application: this });
     }
-
-    vfunc_command_line(commandLine) {
-        let [prgName_, uuid] = commandLine.get_arguments();
-
-        if (uuid) {
-            // Strip off "extension:///" prefix which fakes a URI, if it exists
-            uuid = stripPrefix(uuid, 'extension:///');
-
-            this._window.openPrefs(uuid);
-        } else {
-            this.activate();
-        }
-        return 0;
-    }
 });
 
 var ExtensionsWindow = GObject.registerClass({
@@ -108,8 +85,6 @@ var ExtensionsWindow = GObject.registerClass({
     _init(params) {
         super._init(params);
 
-        this._startupUuid = null;
-        this._loaded = false;
         this._prefsDialog = null;
         this._updatesCheckId = 0;
 
@@ -177,35 +152,16 @@ var ExtensionsWindow = GObject.registerClass({
     }
 
     openPrefs(uuid) {
-        if (!this._loaded)
-            this._startupUuid = uuid;
-        else if (!this._showPrefs(uuid))
-            this.present();
-    }
-
-    _showPrefs(uuid) {
         if (this._prefsDialog)
-            return false;
+            return;
 
         let row = this._findExtensionRow(uuid);
-        if (!row || !row.hasPrefs)
-            return false;
-
         this._prefsDialog = new ExtensionPrefsDialog(row);
+        this._prefsDialog.set({ transient_for: this, modal: true });
 
-        if (this.visible)
-            this._prefsDialog.set({ transient_for: this, modal: true });
-
-        this._prefsDialog.connect('destroy', () => {
-            this._prefsDialog = null;
-
-            if (!this.visible)
-                this.destroy();
-        });
+        this._prefsDialog.connect('destroy', () => (this._prefsDialog = null));
 
         this._prefsDialog.show();
-
-        return true;
     }
 
     _showAbout() {
@@ -354,11 +310,6 @@ var ExtensionsWindow = GObject.registerClass({
             this._mainStack.visible_child_name = 'placeholder';
 
         this._checkUpdates();
-
-        if (this._startupUuid)
-            this._showPrefs(this._startupUuid);
-        this._startupUuid = null;
-        this._loaded = true;
     }
 });
 
