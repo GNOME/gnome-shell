@@ -199,12 +199,35 @@
 
     <!--
         LaunchExtensionPrefs:
-        @uuid: The UUID of the extension
-
-        Launch preferences of an extension.
+        Deprecated for OpenExtensionPrefs
     -->
     <method name="LaunchExtensionPrefs">
       <arg type="s" direction="in" name="uuid"/>
+    </method>
+
+    <!--
+        OpenExtensionPrefs:
+        @uuid: The UUID of the extension
+        @parent_window: Identifier for the application window
+        @options: Vardict with further options
+
+        Opens the prefs dialog of extension @uuid.
+
+        The following @options are recognized:
+
+        <variablelist>
+          <varlistentry>
+            <term>modal b</term>
+            <listitem>
+              <para>Wether the prefs window should be modal, default: false</para>
+            </listitem>
+          </varlistentry>
+        </variablelist>
+    -->
+    <method name="OpenExtensionPrefs">
+      <arg type="s" direction="in" name="uuid"/>
+      <arg type="s" direction="in" name="parent_window"/>
+      <arg type="a{sv}" direction="in" name="options"/>
     </method>
 
     <!--
