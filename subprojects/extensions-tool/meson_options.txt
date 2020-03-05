@@ -5,6 +5,12 @@ option('man',
   yield: true,
 )
 
+option('bash_completion',
+  type: 'feature',
+  value: 'auto',
+  description: 'Install bash completion support',
+)
+
 option('package_name',
   type: 'string',
   description: 'The gettext domain name when used as a subproject'
