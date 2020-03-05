@@ -50,4 +50,30 @@ endif
 
 if not meson.is_subproject()
   subdir('po')
+
+  summary_dirs = {
+    'prefix': get_option('prefix'),
+    'bindir': get_option('bindir'),
+    'datadir': get_option('datadir'),
+  }
+
+  if get_option('man')
+    summary_dirs += { 'mandir': get_option('mandir') }
+  endif
+
+  summary_build = {
+    'buildtype': get_option('buildtype'),
+    'debug': get_option('debug'),
+  }
+
+  summary_options = {
+    'man': get_option('man'),
+    'bash_completion': bash_completion.found(),
+  }
+
+  if meson.version().version_compare('>= 0.53.0')
+    summary(summary_dirs, section: 'Directories')
+    summary(summary_build, section: 'Build Configuration')
+    summary(summary_options, section: 'Build Options')
+  endif
 endif
