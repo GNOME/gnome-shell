@@ -1,6 +1,6 @@
 project('gnome-shell', 'c',
   version: '3.37.0',
-  meson_version: '>= 0.47.0',
+  meson_version: '>= 0.53.0',
   license: 'GPLv2+'
 )
 
@@ -321,8 +321,6 @@ if get_option('man')
   summary_dirs += { 'mandir': get_option('mandir') }
 endif
 
-if meson.version().version_compare('>= 0.53.0')
-  summary(summary_dirs, section: 'Directories')
-  summary(summary_build, section: 'Build Configuration')
-  summary(summary_options, section: 'Build Options')
-endif
+summary(summary_dirs, section: 'Directories')
+summary(summary_build, section: 'Build Configuration')
+summary(summary_options, section: 'Build Options')

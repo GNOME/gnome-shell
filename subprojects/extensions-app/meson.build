@@ -1,6 +1,6 @@
 project('gnome-extensions-app',
   version: '3.37.0',
-  meson_version: '>= 0.47.0',
+  meson_version: '>= 0.53.0',
   license: 'GPLv2+'
 )
 
@@ -65,8 +65,6 @@ if not meson.is_subproject()
     'debug': get_option('debug'),
   }
 
-  if meson.version().version_compare('>= 0.53.0')
-    summary(summary_dirs, section: 'Directories')
-    summary(summary_build, section: 'Build Configuration')
-  endif
+  summary(summary_dirs, section: 'Directories')
+  summary(summary_build, section: 'Build Configuration')
 endif
