@@ -935,11 +935,19 @@ var LayoutManager = GObject.registerClass({
                                     monitor.inFullscreen);
     }
 
+    _setWindowsVisible(group, visible) {
+        for (let c = group.get_first_child(); c; c = c.get_next_sibling()) {
+            // We want to skip BackgroundActors which are also children...
+            if (c instanceof Meta.WindowActor)
+                c.visible = visible;
+        }
+    }
+
     _updateVisibility() {
         let windowsVisible = Main.sessionMode.hasWindows && !this._inOverview;
 
-        global.window_group.visible = windowsVisible;
-        global.top_window_group.visible = windowsVisible;
+        this._setWindowsVisible(global.window_group, windowsVisible);
+        this._setWindowsVisible(global.top_window_group, windowsVisible);
 
         this._trackedActors.forEach(this._updateActorVisibility.bind(this));
     }
