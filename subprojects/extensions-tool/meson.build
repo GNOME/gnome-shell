@@ -9,7 +9,14 @@ gio_req = '>= 2.56.0'
 gnome = import('gnome')
 i18n  = import('i18n')
 
-package_name = get_option('package_name')
+if meson.is_subproject()
+  package_name = get_option('package_name')
+  assert(package_name != '',
+    'package_name must be specified for subproject builds')
+else
+  package_name = meson.project_name()
+endif
+
 package_version = meson.project_version()
 prefix = get_option('prefix')
 
