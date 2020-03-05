@@ -1,7 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported ExtensionsService */
 
-const { Gdk, Gio, GLib, GObject, Gtk } = imports.gi;
+const { Gdk, Gio, GLib, GObject, Gtk, Shew } = imports.gi;
 
 const ExtensionUtils = imports.misc.extensionUtils;
 
@@ -110,7 +110,7 @@ var ExtensionsService = class extends ServiceImplementation {
     }
 
     OpenExtensionPrefsAsync(params, invocation) {
-        const [uuid, parentWindow_, options] = params;
+        const [uuid, parentWindow, options] = params;
 
         this._proxy.GetExtensionInfoRemote(uuid, (res, error) => {
             if (this._handleError(invocation, error))
@@ -120,6 +120,15 @@ var ExtensionsService = class extends ServiceImplementation {
             const extension = ExtensionUtils.deserializeExtension(serialized);
 
             const window = new ExtensionPrefsDialog(extension);
+            window.realize();
+
+            let externalWindow = null;
+
+            if (parentWindow)
+                externalWindow = Shew.ExternalWindow.new_from_handle(parentWindow);
+
+            if (externalWindow)
+                externalWindow.set_parent_of(window.window);
 
             if (options.modal)
                 window.modal = options.modal.get_boolean();
