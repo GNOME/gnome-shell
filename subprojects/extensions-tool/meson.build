@@ -32,7 +32,7 @@ json_dep = dependency('json-glib-1.0')
 
 cc = meson.get_compiler('c')
 
-bash_completion = dependency('bash-completion', required: false)
+bash_completion = dependency('bash-completion', required: get_option('bash_completion'))
 
 subdir('src')
 
