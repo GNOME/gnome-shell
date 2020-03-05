@@ -312,6 +312,10 @@ var GnomeShellExtensions = class {
     }
 
     LaunchExtensionPrefs(uuid) {
+        this.OpenExtensionPrefs(uuid, '', {});
+    }
+
+    OpenExtensionPrefs(uuid, _parentWindow, _options) {
         let appSys = Shell.AppSystem.get_default();
         let app = appSys.lookup_app('org.gnome.Extensions.desktop');
         let info = app.get_app_info();
