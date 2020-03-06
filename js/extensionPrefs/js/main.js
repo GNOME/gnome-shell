@@ -192,31 +192,10 @@ var ExtensionsWindow = GObject.registerClass({
         if (!row || !row.hasPrefs)
             return false;
 
-        let widget;
-
-        try {
-            widget = row.prefsModule.buildPrefsWidget();
-        } catch (e) {
-            widget = this._buildErrorUI(row, e);
-        }
-
-        this._prefsDialog = new Gtk.Window({
-            application: this.application,
-            default_width: 600,
-            default_height: 400,
-            modal: this.visible,
-            type_hint: Gdk.WindowTypeHint.DIALOG,
-            window_position: Gtk.WindowPosition.CENTER,
-        });
-
-        this._prefsDialog.set_titlebar(new Gtk.HeaderBar({
-            show_close_button: true,
-            title: row.name,
-            visible: true,
-        }));
+        this._prefsDialog = new ExtensionPrefsDialog(row);
 
         if (this.visible)
-            this._prefsDialog.transient_for = this;
+            this._prefsDialog.set({ transient_for: this, modal: true });
 
         this._prefsDialog.connect('destroy', () => {
             this._prefsDialog = null;
@@ -225,7 +204,6 @@ var ExtensionsWindow = GObject.registerClass({
                 this.destroy();
         });
 
-        this._prefsDialog.add(widget);
         this._prefsDialog.show();
 
         return true;
@@ -265,121 +243,6 @@ var ExtensionsWindow = GObject.registerClass({
             (o, res) => {
                 o.call_finish(res);
             });
-    }
-
-    _buildErrorUI(row, exc) {
-        let scroll = new Gtk.ScrolledWindow({
-            hscrollbar_policy: Gtk.PolicyType.NEVER,
-            propagate_natural_height: true,
-        });
-
-        let box = new Gtk.Box({
-            orientation: Gtk.Orientation.VERTICAL,
-            spacing: 12,
-            margin: 100,
-            margin_bottom: 60,
-        });
-        scroll.add(box);
-
-        let label = new Gtk.Label({
-            label: '<span size="x-large">%s</span>'.format(_("Something’s gone wrong")),
-            use_markup: true,
-        });
-        label.get_style_context().add_class(Gtk.STYLE_CLASS_DIM_LABEL);
-        box.add(label);
-
-        label = new Gtk.Label({
-            label: _("We’re very sorry, but there’s been a problem: the settings for this extension can’t be displayed. We recommend that you report the issue to the extension authors."),
-            justify: Gtk.Justification.CENTER,
-            wrap: true,
-        });
-        box.add(label);
-
-        let expander = new Expander({
-            label: _("Technical Details"),
-            margin_top: 12,
-        });
-        box.add(expander);
-
-        let errortext = '%s\n\nStack trace:\n'.format(exc);
-        // Indent stack trace.
-        errortext +=
-            exc.stack.split('\n').map(line => '  %s'.format(line)).join('\n');
-
-        let buffer = new Gtk.TextBuffer({ text: errortext });
-        let textview = new Gtk.TextView({
-            buffer,
-            wrap_mode: Gtk.WrapMode.WORD,
-            monospace: true,
-            editable: false,
-            top_margin: 12,
-            bottom_margin: 12,
-            left_margin: 12,
-            right_margin: 12,
-        });
-
-        let toolbar = new Gtk.Toolbar();
-        let provider = new Gtk.CssProvider();
-        provider.load_from_data(`* {
-            border: 0 solid @borders;
-            border-top-width: 1px;
-        }`);
-        toolbar.get_style_context().add_provider(
-            provider,
-            Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
-        );
-
-        let copyButton = new Gtk.ToolButton({
-            icon_name: 'edit-copy-symbolic',
-            tooltip_text: _("Copy Error"),
-        });
-        toolbar.add(copyButton);
-
-        copyButton.connect('clicked', w => {
-            let clipboard = Gtk.Clipboard.get_default(w.get_display());
-            // markdown for pasting in gitlab issues
-            let lines = [
-                'The settings of extension %s had an error:'.format(row.uuid),
-                '```', // '`' (xgettext throws up on odd number of backticks)
-                exc.toString(),
-                '```', // '`'
-                '',
-                'Stack trace:',
-                '```', // '`'
-                exc.stack.replace(/\n$/, ''), // stack without trailing newline
-                '```', // '`'
-                '',
-            ];
-            clipboard.set_text(lines.join('\n'), -1);
-        });
-
-        let spacing = new Gtk.SeparatorToolItem({ draw: false });
-        toolbar.add(spacing);
-        toolbar.child_set_property(spacing, "expand", true);
-
-        let urlButton = new Gtk.ToolButton({
-            label: _("Homepage"),
-            tooltip_text: _("Visit extension homepage"),
-            no_show_all: true,
-            visible: row.url !== '',
-        });
-        toolbar.add(urlButton);
-
-        urlButton.connect('clicked', w => {
-            let context = w.get_display().get_app_launch_context();
-            Gio.AppInfo.launch_default_for_uri(row.url, context);
-        });
-
-        let expandedBox = new Gtk.Box({
-            orientation: Gtk.Orientation.VERTICAL,
-        });
-        expandedBox.add(textview);
-        expandedBox.add(toolbar);
-
-        expander.add(expandedBox);
-
-        scroll.show_all();
-        return scroll;
     }
 
     _sortList(row1, row2) {
@@ -497,105 +360,6 @@ var ExtensionsWindow = GObject.registerClass({
             this._showPrefs(this._startupUuid);
         this._startupUuid = null;
         this._loaded = true;
-    }
-});
-
-var Expander = GObject.registerClass({
-    Properties: {
-        'label': GObject.ParamSpec.string(
-            'label', 'label', 'label',
-            GObject.ParamFlags.READWRITE,
-            null
-        ),
-    },
-}, class Expander extends Gtk.Box {
-    _init(params = {}) {
-        this._labelText = null;
-
-        super._init(Object.assign(params, {
-            orientation: Gtk.Orientation.VERTICAL,
-            spacing: 0,
-        }));
-
-        this._frame = new Gtk.Frame({
-            shadow_type: Gtk.ShadowType.IN,
-            hexpand: true,
-        });
-
-        let eventBox = new Gtk.EventBox();
-        this._frame.add(eventBox);
-
-        let hbox = new Gtk.Box({
-            spacing: 6,
-            margin: 12,
-        });
-        eventBox.add(hbox);
-
-        this._arrow = new Gtk.Image({
-            icon_name: 'pan-end-symbolic',
-        });
-        hbox.add(this._arrow);
-
-        this._label = new Gtk.Label({ label: this._labelText });
-        hbox.add(this._label);
-
-        this._revealer = new Gtk.Revealer();
-
-        this._childBin = new Gtk.Frame({
-            shadow_type: Gtk.ShadowType.IN,
-        });
-        this._revealer.add(this._childBin);
-
-        // Directly chain up to parent for internal children
-        super.add(this._frame);
-        super.add(this._revealer);
-
-        let provider = new Gtk.CssProvider();
-        provider.load_from_data('* { border-top-width: 0; }');
-        this._childBin.get_style_context().add_provider(
-            provider,
-            Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
-        );
-
-        this._gesture = new Gtk.GestureMultiPress({
-            widget: this._frame,
-            button: 0,
-            exclusive: true,
-        });
-        this._gesture.connect('released', (gesture, nPress) => {
-            if (nPress == 1)
-                this._revealer.reveal_child = !this._revealer.reveal_child;
-        });
-        this._revealer.connect('notify::reveal-child', () => {
-            if (this._revealer.reveal_child)
-                this._arrow.icon_name = 'pan-down-symbolic';
-            else
-                this._arrow.icon_name = 'pan-end-symbolic';
-        });
-    }
-
-    get label() {
-        return this._labelText;
-    }
-
-    set label(text) {
-        if (this._labelText == text)
-            return;
-
-        if (this._label)
-            this._label.label = text;
-        this._labelText = text;
-        this.notify('label');
-    }
-
-    add(child) {
-        // set expanded child
-        this._childBin.get_children().forEach(c => {
-            this._childBin.remove(c);
-        });
-
-        if (child)
-            this._childBin.add(child);
     }
 });
 
@@ -761,6 +525,105 @@ var ExtensionRow = GObject.registerClass({
         }
 
         return this._prefsModule;
+    }
+});
+
+var ExtensionPrefsDialog = GObject.registerClass({
+    GTypeName: 'ExtensionPrefsDialog',
+    Template: 'resource:///org/gnome/Extensions/ui/extension-prefs-dialog.ui',
+    InternalChildren: [
+        'headerBar',
+        'stack',
+        'expander',
+        'expanderArrow',
+        'revealer',
+        'errorView',
+    ],
+}, class ExtensionPrefsDialog extends Gtk.Window {
+    _init(extension) {
+        super._init();
+
+        this._uuid = extension.uuid;
+        this._url = extension.url;
+
+        this._headerBar.title = extension.name;
+
+        this._actionGroup = new Gio.SimpleActionGroup();
+        this.insert_action_group('win', this._actionGroup);
+
+        this._initActions();
+
+        this._gesture = new Gtk.GestureMultiPress({
+            widget: this._expander,
+            button: 0,
+            exclusive: true,
+        });
+
+        this._gesture.connect('released', (gesture, nPress) => {
+            if (nPress === 1)
+                this._revealer.reveal_child = !this._revealer.reveal_child;
+        });
+
+        this._revealer.connect('notify::reveal-child', () => {
+            this._expanderArrow.icon_name = this._revealer.reveal_child
+                ? 'pan-down-symbolic'
+                : 'pan-end-symbolic';
+        });
+
+        try {
+            const widget = extension.prefsModule.buildPrefsWidget();
+            this._stack.add(widget);
+            this._stack.visible_child = widget;
+        } catch (e) {
+            this._setError(e);
+        }
+    }
+
+    _setError(exc) {
+        this._errorView.buffer.text = '%s\n\nStack trace:\n'.format(exc);
+        // Indent stack trace.
+        this._errorView.buffer.text +=
+            exc.stack.split('\n').map(line => '  %s'.format(line)).join('\n');
+
+        // markdown for pasting in gitlab issues
+        let lines = [
+            'The settings of extension %s had an error:'.format(this._uuid),
+            '```', // '`' (xgettext throws up on odd number of backticks)
+            exc.toString(),
+            '```', // '`'
+            '',
+            'Stack trace:',
+            '```', // '`'
+            exc.stack.replace(/\n$/, ''), // stack without trailing newline
+            '```', // '`'
+            '',
+        ];
+        this._errorMarkdown = lines.join('\n');
+        this._actionGroup.lookup('copy-error').enabled = true;
+    }
+
+    _initActions() {
+        let action;
+
+        action = new Gio.SimpleAction({
+            name: 'copy-error',
+            enabled: false,
+        });
+        action.connect('activate', () => {
+            const clipboard = Gtk.Clipboard.get_default(this.get_display());
+            clipboard.set_text(this._errorMarkdown, -1);
+        });
+        this._actionGroup.add_action(action);
+
+        action = new Gio.SimpleAction({
+            name: 'show-url',
+            enabled: this._url !== '',
+        });
+        action.connect('activate', () => {
+            Gio.AppInfo.launch_default_for_uri(this._url,
+                this.get_display().get_app_launch_context());
+        });
+        this._actionGroup.add_action(action);
     }
 });
 
