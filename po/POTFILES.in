@@ -7,6 +7,7 @@ data/org.gnome.Shell.PortalHelper.desktop.in.in
 js/extensionPrefs/data/metainfo/org.gnome.Extensions.metainfo.xml.in
 js/extensionPrefs/data/org.gnome.Extensions.desktop.in.in
 js/extensionPrefs/js/main.js
+js/extensionPrefs/data/ui/extension-prefs-dialog.ui
 js/extensionPrefs/data/ui/extension-row.ui
 js/extensionPrefs/data/ui/extensions-window.ui
 js/gdm/authPrompt.js

@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.22.1 -->
+<interface>
+  <requires lib="gtk+" version="3.20"/>
+  <template class="ExtensionPrefsDialog" parent="GtkWindow">
+    <property name="default_width">600</property>
+    <property name="default_height">400</property>
+    <child type="titlebar">
+      <object class="GtkHeaderBar" id="headerBar">
+        <property name="visible">True</property>
+        <property name="show_close_button">True</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkStack" id="stack">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <child>
+          <object class="GtkScrolledWindow">
+            <property name="visible">True</property>
+            <property name="hscrollbar_policy">never</property>
+            <property name="propagate_natural_height">True</property>
+            <child>
+              <object class="GtkViewport">
+                <property name="visible">True</property>
+                <child>
+                  <object class="GtkBox">
+                    <property name="visible">True</property>
+                    <property name="orientation">vertical</property>
+                    <property name="margin">100</property>
+                    <property name="margin_bottom">60</property>
+                    <property name="spacing">12</property>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes">Something’s gone wrong</property>
+                        <attributes>
+                          <attribute name="scale" value="1.44"/> <!-- x-large -->
+                        </attributes>
+                        <style>
+                          <class name="dim-label"/>
+                        </style>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes">We’re very sorry, but there’s been a problem: the settings for this extension can’t be displayed. We recommend that you report the issue to the extension authors.</property>
+                        <property name="justify">center</property>
+                        <property name="wrap">True</property>
+                        <property name="xalign">0.5</property>
+                        <property name="yalign">0.5</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkBox">
+                        <property name="visible">True</property>
+                        <property name="orientation">vertical</property>
+                        <property name="margin_top">12</property>
+                        <child>
+                          <object class="GtkFrame" id="expander">
+                            <property name="visible">True</property>
+                            <property name="hexpand">True</property>
+                            <property name="shadow_type">in</property>
+                            <child>
+                              <object class="GtkEventBox">
+                                <property name="visible">True</property>
+                                <child>
+                                  <object class="GtkBox">
+                                    <property name="visible">True</property>
+                                    <property name="margin">12</property>
+                                    <property name="spacing">6</property>
+                                    <child>
+                                      <object class="GtkImage" id="expanderArrow">
+                                        <property name="visible">True</property>
+                                        <property name="icon_name">pan-end-symbolic</property>
+                                      </object>
+                                    </child>
+                                    <child>
+                                      <object class="GtkLabel">
+                                        <property name="visible">True</property>
+                                        <property name="label" translatable="yes">Technical Details</property>
+                                      </object>
+                                    </child>
+                                  </object>
+                                </child>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkRevealer" id="revealer">
+                            <property name="visible">True</property>
+                            <child>
+                              <object class="GtkFrame">
+                                <property name="visible">True</property>
+                                <property name="shadow_type">in</property>
+                                <style>
+                                  <class name="expander-frame"/>
+                                </style>
+                                <child>
+                                  <object class="GtkBox">
+                                    <property name="visible">True</property>
+                                    <property name="orientation">vertical</property>
+                                    <child>
+                                      <object class="GtkTextView" id="errorView">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">True</property>
+                                        <property name="monospace">True</property>
+                                        <property name="editable">False</property>
+                                        <property name="wrap_mode">word</property>
+                                        <property name="left_margin">12</property>
+                                        <property name="right_margin">12</property>
+                                        <property name="top_margin">12</property>
+                                        <property name="bottom_margin">12</property>
+                                      </object>
+                                    </child>
+                                    <child>
+                                      <object class="GtkToolbar">
+                                        <property name="visible">True</property>
+                                        <style>
+                                          <class name="expander-toolbar"/>
+                                        </style>
+                                        <child>
+                                          <object class="GtkToolItem">
+                                            <property name="visible">True</property>
+                                            <child>
+                                              <object class="GtkButton">
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">True</property>
+                                                <property name="receives_default">True</property>
+                                                <property name="action_name">win.copy-error</property>
+                                                <style>
+                                                  <class name="flat"/>
+                                                  <class name="image-button"/>
+                                                </style>
+                                                <child>
+                                                  <object class="GtkImage">
+                                                    <property name="visible">True</property>
+                                                    <property name="icon_name">edit-copy-symbolic</property>
+                                                  </object>
+                                                </child>
+                                              </object>
+                                            </child>
+                                          </object>
+                                        </child>
+                                        <child>
+                                          <object class="GtkSeparatorToolItem">
+                                            <property name="visible">True</property>
+                                            <property name="draw">False</property>
+                                          </object>
+                                          <packing>
+                                            <property name="expand">True</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <object class="GtkToolItem">
+                                            <property name="visible">True</property>
+                                            <child>
+                                              <object class="GtkButton" id="homeButton">
+                                                <property name="visible"
+                                                          bind-source="homeButton"
+                                                          bind-property="sensitive"
+                                                          bind-flags="sync-create"/>
+                                                <property name="label" translatable="yes">Homepage</property>
+                                                <property name="tooltip_text" translatable="yes">Visit extension homepage</property>
+                                                <property name="can_focus">True</property>
+                                                <property name="receives_default">True</property>
+                                                <property name="no_show_all">True</property>
+                                                <property name="action_name">win.show-url</property>
+                                                <style>
+                                                  <class name="flat"/>
+                                                </style>
+                                              </object>
+                                            </child>
+                                          </object>
+                                        </child>
+                                      </object>
+                                    </child>
+                                  </object>
+                                </child>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+  </template>
+</interface>
