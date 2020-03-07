@@ -1,3 +1,24 @@
+3.36.0
+======
+* Fix off-by-1900 error in date conversions [Florian; !1061]
+* Fix crash on startup with topIcons* extension enabled [Florian; #2308]
+* Don't require gsd-xsettings for X11 support on wayland [Olivier; !1065]
+* Fix ibus support in Xorg session [Carlos; #1690]
+* Improve Extensions D-Bus API [Florian; !1074]
+* Allow session modes to specify alternative resource name [Marco; !1063]
+* Fix link to location settings in aggregate menu [Sebastian; #2316]
+* Fix illegible app folder titles with light theme [ub; !1059]
+* Really fix visual glitch in sliders [Jonas; #1569]
+
+Contributors:
+  Marco Trevisan (Treviño), Jonas Dreßler, Olivier Fourdan, Carlos Garnacho,
+  Sebastian Keller, Florian Müllner, ub
+
+Translators:
+  Aman Alam [pa], Goran Vidović [hr], Aurimas Černius [lt],
+  Milo Casagrande [it], Daniel Korostil [uk], sicklylife [ja],
+  Marek Černocký [cs], Nathan Follens [nl]
+
 3.35.92
 =======
 * Plug a memory leak [Jonas D.; !1015]
