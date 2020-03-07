@@ -11,12 +11,25 @@ const _ = Gettext.gettext;
 
 const Config = imports.misc.config;
 const ExtensionUtils = imports.misc.extensionUtils;
-const { loadInterfaceXML } = imports.misc.fileUtils;
 
 const { ExtensionState, ExtensionType } = ExtensionUtils;
 
 const GnomeShellIface = loadInterfaceXML('org.gnome.Shell.Extensions');
 const GnomeShellProxy = Gio.DBusProxy.makeProxyWrapper(GnomeShellIface);
+
+function loadInterfaceXML(iface) {
+    const uri = 'resource:///org/gnome/Extensions/dbus-interfaces/%s.xml'.format(iface);
+    const f = Gio.File.new_for_uri(uri);
+
+    try {
+        let [ok_, bytes] = f.load_contents(null);
+        return imports.byteArray.toString(bytes);
+    } catch (e) {
+        log('Failed to load D-Bus interface %s'.format(iface));
+    }
+
+    return null;
+}
 
 function stripPrefix(string, prefix) {
     if (string.slice(0, prefix.length) == prefix)
