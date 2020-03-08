@@ -4,7 +4,7 @@
     <file>main.js</file>
 
     <file alias="misc/config.js">../misc/config.js</file>
-    <file alias="misc/extensionUtils.js">../misc/extensionUtils.js</file>
-    <file alias="misc/fileUtils.js">../misc/fileUtils.js</file>
+    <file alias="misc/extensionUtils.js">../../misc/extensionUtils.js</file>
+    <file alias="misc/fileUtils.js">../../misc/fileUtils.js</file>
   </gresource>
 </gresources>
