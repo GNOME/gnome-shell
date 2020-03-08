@@ -431,6 +431,10 @@ var AllView = GObject.registerClass({
 
     _redisplay() {
         super._redisplay();
+
+        this._folderIcons.forEach(icon => {
+            icon.view._redisplay();
+        });
         this._refilterApps();
     }
 
@@ -1308,7 +1312,7 @@ class FolderView extends BaseAppView {
             x_expand: true,
             y_expand: true,
         });
-        this._scrollView.set_policy(St.PolicyType.NEVER, St.PolicyType.AUTOMATIC);
+        this._scrollView.set_policy(St.PolicyType.NEVER, St.PolicyType.EXTERNAL);
         this.add_actor(this._scrollView);
 
         let scrollableContainer = new St.BoxLayout({
@@ -1324,7 +1328,6 @@ class FolderView extends BaseAppView {
         action.connect('pan', this._onPan.bind(this));
         this._scrollView.add_action(action);
 
-        this._folder.connect('changed', this._redisplay.bind(this));
         this._redisplay();
     }
 
@@ -1429,6 +1432,22 @@ class FolderView extends BaseAppView {
         return apps;
     }
 
+    addApp(app) {
+        let folderApps = this._folder.get_strv('apps');
+        folderApps.push(app.id);
+
+        this._folder.set_strv('apps', folderApps);
+
+        // Also remove from 'excluded-apps' if the app id is listed
+        // there. This is only possible on categories-based folders.
+        let excludedApps = this._folder.get_strv('excluded-apps');
+        let index = excludedApps.indexOf(app.id);
+        if (index >= 0) {
+            excludedApps.splice(index, 1);
+            this._folder.set_strv('excluded-apps', excludedApps);
+        }
+    }
+
     removeApp(app) {
         let folderApps = this._folder.get_strv('apps');
         let index = folderApps.indexOf(app.id);
@@ -1459,8 +1478,6 @@ class FolderView extends BaseAppView {
         } else {
             this._folder.set_strv('apps', folderApps);
         }
-
-        return true;
     }
 });
 
@@ -1501,8 +1518,9 @@ var FolderIcon = GObject.registerClass({
 
         this.connect('destroy', this._onDestroy.bind(this));
 
-        this._folder.connect('changed', this._redisplay.bind(this));
-        this._redisplay();
+        this._folderChangedId = this._folder.connect(
+            'changed', this._sync.bind(this));
+        this._sync();
     }
 
     _onDestroy() {
@@ -1511,9 +1529,9 @@ var FolderIcon = GObject.registerClass({
 
         this.view.destroy();
 
-        if (this._spaceReadySignalId) {
-            this._parentView.disconnect(this._spaceReadySignalId);
-            this._spaceReadySignalId = 0;
+        if (this._folderChangedId) {
+            this._folder.disconnect(this._folderChangedId);
+            delete this._folderChangedId;
         }
 
         if (this._dialog)
@@ -1589,20 +1607,7 @@ var FolderIcon = GObject.registerClass({
         if (!this._canAccept(source))
             return false;
 
-        let app = source.app;
-        let folderApps = this._folder.get_strv('apps');
-        folderApps.push(app.id);
-
-        this._folder.set_strv('apps', folderApps);
-
-        // Also remove from 'excluded-apps' if the app id is listed
-        // there. This is only possible on categories-based folders.
-        let excludedApps = this._folder.get_strv('excluded-apps');
-        let index = excludedApps.indexOf(app.id);
-        if (index >= 0) {
-            excludedApps.splice(index, 1);
-            this._folder.set_strv('excluded-apps', excludedApps);
-        }
+        this.view.addApp(source.app);
 
         return true;
     }
@@ -1617,11 +1622,11 @@ var FolderIcon = GObject.registerClass({
         this.emit('name-changed');
     }
 
-    _redisplay() {
+    _sync() {
+        this.emit('apps-changed');
         this._updateName();
         this.visible = this.view.getAllItems().length > 0;
         this.icon.update();
-        this.emit('apps-changed');
     }
 
     _createIcon(iconSize) {
@@ -1902,6 +1907,7 @@ var AppFolderDialog = GObject.registerClass({
 
     vfunc_allocate(box, flags) {
         let contentBox = this.get_theme_node().get_content_box(box);
+        contentBox = this._viewBox.get_theme_node().get_content_box(contentBox);
 
         let [, entryBoxHeight] = this._entryBox.get_size();
         let spacing = this._viewBox.layout_manager.spacing;
@@ -1909,6 +1915,8 @@ var AppFolderDialog = GObject.registerClass({
         this._view.adaptToSize(
             contentBox.get_width(),
             contentBox.get_height() - entryBoxHeight - spacing);
+
+        this._view._grid.topPadding = 0;
 
         super.vfunc_allocate(box, flags);
 
@@ -2437,7 +2445,7 @@ var AppIconMenu = class AppIconMenu extends PopupMenu.PopupMenu {
         Main.uiGroup.add_actor(this.actor);
     }
 
-    _redisplay() {
+    _rebuildMenu() {
         this.removeAll();
 
         let windows = this._source.app.get_windows().filter(
@@ -2554,7 +2562,7 @@ var AppIconMenu = class AppIconMenu extends PopupMenu.PopupMenu {
     }
 
     popup(_activatingButton) {
-        this._redisplay();
+        this._rebuildMenu();
         this.open();
     }
 };
