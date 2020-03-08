@@ -26,5 +26,13 @@ i18n.merge_file('desktop',
   type: 'desktop'
 )
 
+configure_file(
+  input: app_id + '.service.in',
+  output: app_id + '.service',
+  configuration: desktopconf,
+  install: true,
+  install_dir: servicedir,
+)
+
 subdir('icons')
 subdir('metainfo')
