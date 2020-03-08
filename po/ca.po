@@ -199,8 +199,8 @@ msgid ""
 "state of the checkbox."
 msgstr ""
 "El GNOME Shell us demanarà la contrasenya quan es munti un dispositiu "
-"encriptat o un sistema de fitxers remot. Si es pot desar la contrasenya per "
-"utilitzar-lo en el futur, es mostrarà la casella de selecció «Recorda la "
+"encriptat o un sistema de fitxers remot. Si es pot desar la contrasenya per a "
+"utilitzar-la en el futur, es mostrarà la casella de selecció «Recorda la "
 "contrasenya». Aquesta clau estableix el valor per defecte d'aquesta casella "
 "de selecció."
 
@@ -426,7 +426,7 @@ msgid ""
 "to enable it again"
 msgstr ""
 "Si suprimiu una extensió, us cal tornar-la a baixar si voleu habilitar-la de "
-"nou."
+"nou"
 
 #: js/extensionPrefs/main.js:144 js/gdm/authPrompt.js:135
 #: js/ui/audioDeviceSelection.js:57 js/ui/components/networkAgent.js:107
@@ -1634,7 +1634,7 @@ msgstr "Vista general"
 #. characters.
 #: js/ui/overview.js:107
 msgid "Type to search"
-msgstr "Teclegeu per començar la cerca"
+msgstr "Teclegeu per a començar la cerca"
 
 #: js/ui/padOsd.js:95
 msgid "New shortcut…"
