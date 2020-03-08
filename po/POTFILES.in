@@ -1,10 +1,10 @@
 # List of source files containing translatable strings.
 # Please keep this file sorted alphabetically.
 data/50-gnome-shell-system.xml
-data/org.gnome.Extensions.desktop.in.in
 data/org.gnome.Shell.desktop.in.in
 data/org.gnome.shell.gschema.xml.in
 data/org.gnome.Shell.PortalHelper.desktop.in.in
+js/extensionPrefs/data/org.gnome.Extensions.desktop.in.in
 js/extensionPrefs/js/main.js
 js/extensionPrefs/data/ui/extension-row.ui
 js/extensionPrefs/data/ui/extensions-window.ui
