@@ -142,7 +142,7 @@ on_icon_theme_changed (StSettings     *settings,
                        GParamSpec     *pspec,
                        StTextureCache *cache)
 {
-  g_autofree gchar *theme;
+  g_autofree gchar *theme = NULL;
 
   st_texture_cache_evict_icons (cache);
 
