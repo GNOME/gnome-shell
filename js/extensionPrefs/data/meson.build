@@ -6,3 +6,25 @@ gnome.compile_resources(
   install: true,
   install_dir: pkgdatadir
 )
+
+desktopconf = configuration_data()
+# We substitute in bindir so it works as an autostart
+# file when built in a non-system prefix
+desktopconf.set('bindir', bindir)
+desktopconf.set('app_id', app_id)
+desktopconf.set('prgname', prgname)
+
+i18n.merge_file('desktop',
+  input: configure_file(
+    input: app_id + '.desktop.in.in',
+    output: app_id + '.desktop.in',
+    configuration: desktopconf
+  ),
+  output: app_id + '.desktop',
+  po_dir: po_dir,
+  install: true,
+  install_dir: desktopdir,
+  type: 'desktop'
+)
+
+subdir('icons')
