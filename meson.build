@@ -245,12 +245,16 @@ libgvc = subproject('gvc',
 libgvc_gir = libgvc.get_variable('libgvc_gir')
 
 if get_option('extensions_tool')
-  subproject('extensions-tool',
+  extension_tool = subproject('extensions-tool',
     default_options: [
       'man=@0@'.format(get_option('man')),
       'package_name=@0@'.format(meson.project_name()),
     ]
   )
+
+  # Make sure the subproject version is increased as well when doing a release
+  extension_tool_version = extension_tool.get_variable('package_version')
+  assert(extension_tool_version == meson.project_version())
 endif
 
 

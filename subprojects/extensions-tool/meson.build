@@ -10,6 +10,7 @@ gnome = import('gnome')
 i18n  = import('i18n')
 
 package_name = get_option('package_name')
+package_version = meson.project_version()
 prefix = get_option('prefix')
 
 bindir = join_paths(prefix, get_option('bindir'))
