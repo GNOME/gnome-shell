@@ -112,6 +112,16 @@ st_password_entry_set_property (GObject      *gobject,
 }
 
 static void
+st_password_entry_dispose (GObject *gobject)
+{
+  StPasswordEntryPrivate *priv = ST_PASSWORD_ENTRY_PRIV (gobject);
+
+  g_clear_object (&priv->peek_password_icon);
+
+  G_OBJECT_CLASS(st_password_entry_parent_class)->dispose (gobject);
+}
+
+static void
 st_password_entry_class_init (StPasswordEntryClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
@@ -119,6 +129,7 @@ st_password_entry_class_init (StPasswordEntryClass *klass)
 
   gobject_class->get_property = st_password_entry_get_property;
   gobject_class->set_property = st_password_entry_set_property;
+  gobject_class->dispose = st_password_entry_dispose;
 
   st_entry_class->secondary_icon_clicked = st_password_entry_secondary_icon_clicked;
 
