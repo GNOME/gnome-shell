@@ -489,9 +489,14 @@ var ExtensionManager = class {
             let extensionDir = Gio.File.new_for_path(
                 GLib.build_filenamev([global.userdatadir, 'extensions', uuid]));
 
-            FileUtils.recursivelyDeleteDir(extensionDir, false);
-            FileUtils.recursivelyMoveDir(dir, extensionDir);
-            FileUtils.recursivelyDeleteDir(dir, true);
+            try {
+                FileUtils.recursivelyDeleteDir(extensionDir, false);
+                FileUtils.recursivelyMoveDir(dir, extensionDir);
+            } catch (e) {
+                log('Failed to install extension updates for %s'.format(uuid));
+            } finally {
+                FileUtils.recursivelyDeleteDir(dir, true);
+            }
         });
     }
 
