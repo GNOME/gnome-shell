@@ -661,7 +661,7 @@ msgstr ""
 "otočení;zamknutí orientace;uzamknutí otočení;uzamknutí orientace;zamčení "
 "otočení;zamčení orientace;uzamčení otočení;uzamčení orientace;odemknout "
 "otočení;odemknout orientaci;odemčít otočení;odemčít orientaci;odemknutí "
-"otočení;odemknutí orientace;odemčení otočení; odemčení orientace;obrazovka;"
+"otočení;odemknutí orientace;odemčení otočení;odemčení orientace;obrazovka;"
 "otočení;orientace;"
 
 #: js/misc/systemActions.js:251
@@ -1115,7 +1115,7 @@ msgstr "Heslo soukromého klíče"
 
 #: js/ui/components/networkAgent.js:267
 msgid "Identity"
-msgstr "Indentita"
+msgstr "Identita"
 
 #: js/ui/components/networkAgent.js:281
 msgid "Service"
@@ -1424,7 +1424,7 @@ msgstr "Nainstalovat"
 
 #: js/ui/extensionDownloader.js:175
 msgid "Install Extension"
-msgstr "Nainstalace rozšíření"
+msgstr "Instalace rozšíření"
 
 #: js/ui/extensionDownloader.js:176
 #, javascript-format
@@ -1437,7 +1437,7 @@ msgstr "Jsou dostupné aktualizace rozšíření"
 
 #: js/ui/extensionSystem.js:229
 msgid "Extension updates are ready to be installed."
-msgstr "Aktualizace rošíření jsou připravené k instalaci."
+msgstr "Aktualizace rozšíření jsou připravené k instalaci."
 
 #: js/ui/inhibitShortcutsDialog.js:79
 msgid "Allow inhibiting shortcuts"
@@ -1586,7 +1586,7 @@ msgstr "Webová stránka"
 
 #: js/ui/main.js:269
 msgid "Logged in as a privileged user"
-msgstr "Přihlášen jako privilegovaný uživatel"
+msgstr "Přihlášeno jako privilegovaný uživatel"
 
 #: js/ui/main.js:270
 msgid ""
@@ -2480,7 +2480,7 @@ msgstr "Režim použitý GDM pro přihlašovací obrazovku"
 
 #: src/main.c:472
 msgid "Use a specific mode, e.g. “gdm” for login screen"
-msgstr "Použít pro přihlašovací obrazovku zadaný režim, např. „gdm“."
+msgstr "Použít pro přihlašovací obrazovku zadaný režim, např. „gdm“"
 
 #: src/main.c:478
 msgid "List possible modes"
