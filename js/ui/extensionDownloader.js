@@ -56,6 +56,15 @@ function uninstallExtension(uuid) {
         return false;
 
     FileUtils.recursivelyDeleteDir(extension.dir, true);
+
+    try {
+        const updatesDir = Gio.File.new_for_path(GLib.build_filenamev(
+            [global.userdatadir, 'extension-updates', extension.uuid]));
+        FileUtils.recursivelyDeleteDir(updatesDir, true);
+    } catch (e) {
+        // not an error
+    }
+
     return true;
 }
 
