@@ -22,13 +22,10 @@ configure_file(
   install_dir: pkgdatadir,
 )
 
-config_dir = '@0@/../..'.format(meson.current_build_dir())
-
 gnome.compile_resources(
   app_id + '.src',
   app_id + '.src.gresource.xml',
-  dependencies: [config_js],
-  source_dir: ['.', '../..', config_dir],
+  source_dir: ['.', '../..'],
   gresource_bundle: true,
   install: true,
   install_dir: pkgdatadir
