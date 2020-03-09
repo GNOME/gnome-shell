@@ -66,7 +66,7 @@ var IBusManager = class {
             let display = GLib.getenv('GNOME_SETUP_DISPLAY');
             if (display)
                 launcher.setenv('DISPLAY', display, true);
-            launcher.launch(cmdLine);
+            launcher.spawnv(cmdLine);
         } catch (e) {
             log(`Failed to launch ibus-daemon: ${e.message}`);
         }
