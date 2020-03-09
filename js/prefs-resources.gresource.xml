@@ -6,7 +6,6 @@
     <file>misc/config.js</file>
     <file>misc/extensionUtils.js</file>
     <file>misc/fileUtils.js</file>
-    <file>misc/params.js</file>
 
     <file alias="css/application.css">extensionPrefs/css/application.css</file>
 

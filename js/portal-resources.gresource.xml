@@ -5,6 +5,5 @@
 
     <file>misc/config.js</file>
     <file>misc/fileUtils.js</file>
-    <file>misc/params.js</file>
   </gresource>
 </gresources>
