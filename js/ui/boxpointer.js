@@ -197,6 +197,11 @@ var BoxPointer = GObject.registerClass({
     }
 
     vfunc_allocate(box, flags) {
+        if (this._sourceActor && this._sourceActor.mapped) {
+            this._reposition(box);
+            this._updateFlip(box);
+        }
+
         this.set_allocation(box, flags);
 
         let themeNode = this.get_theme_node();
@@ -230,12 +235,6 @@ var BoxPointer = GObject.registerClass({
             break;
         }
         this.bin.allocate(childBox, flags);
-
-        if (this._sourceActor && this._sourceActor.mapped) {
-            this._reposition(box);
-            this._updateFlip(box);
-            this.set_allocation(box, flags);
-        }
     }
 
     _drawBorder(area) {
