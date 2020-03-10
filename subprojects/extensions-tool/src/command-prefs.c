@@ -60,8 +60,8 @@ launch_extension_prefs (const char *uuid)
     return FALSE;
 
   g_dbus_proxy_call_sync (proxy,
-                          "LaunchExtensionPrefs",
-                          g_variant_new ("(s)", uuid),
+                          "OpenExtensionPrefs",
+                          g_variant_new ("(ssa{sv})", uuid, "", NULL),
                           0,
                           -1,
                           NULL,
