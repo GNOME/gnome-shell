@@ -924,6 +924,8 @@ var WindowManager = class {
             return true;
         });
         global.display.connect('x11-display-closing', () => {
+            if (!Meta.is_wayland_compositor())
+                return;
             Shell.util_stop_systemd_unit('gsd-xsettings.target', 'fail');
             IBusManager.getIBusManager().restartDaemon();
         });
