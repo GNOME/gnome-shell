@@ -99,6 +99,9 @@ function gotExtensionZipFile(session, message, uuid, dir, callback, errback) {
 }
 
 function downloadExtensionUpdate(uuid) {
+    if (!Main.extensionManager.updatesSupported)
+        return;
+
     let dir = Gio.File.new_for_path(
         GLib.build_filenamev([global.userdatadir, 'extension-updates', uuid]));
 
@@ -117,6 +120,9 @@ function downloadExtensionUpdate(uuid) {
 }
 
 function checkForUpdates() {
+    if (!Main.extensionManager.updatesSupported)
+        return;
+
     let metadatas = {};
     Main.extensionManager.getUuids().forEach(uuid => {
         let extension = Main.extensionManager.lookup(uuid);

@@ -60,6 +60,11 @@ var ExtensionManager = class {
         ExtensionDownloader.checkForUpdates();
     }
 
+    get updatesSupported() {
+        const appSys = Shell.AppSystem.get_default();
+        return appSys.lookup_app('org.gnome.Extensions.desktop') !== null;
+    }
+
     lookup(uuid) {
         return this._extensions.get(uuid);
     }
@@ -481,6 +486,9 @@ var ExtensionManager = class {
     }
 
     _installExtensionUpdates() {
+        if (!this.updatesSupported)
+            return;
+
         FileUtils.collectFromDatadirs('extension-updates', true, (dir, info) => {
             let fileType = info.get_file_type();
             if (fileType !== Gio.FileType.DIRECTORY)
