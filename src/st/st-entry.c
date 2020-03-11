@@ -232,6 +232,7 @@ st_entry_update_hint_visibility (StEntry *self)
   StEntryPrivate *priv = ST_ENTRY_PRIV (self);
   gboolean hint_visible =
     priv->hint_actor != NULL &&
+    !clutter_text_has_preedit (CLUTTER_TEXT (priv->entry)) &&
     strcmp (clutter_text_get_text (CLUTTER_TEXT (priv->entry)), "") == 0;
 
   if (priv->hint_actor)
@@ -528,6 +529,13 @@ clutter_text_focus_out_cb (ClutterText  *text,
 {
   st_widget_remove_style_pseudo_class (ST_WIDGET (actor), "focus");
   clutter_text_set_cursor_visible (text, FALSE);
+}
+
+static void
+clutter_text_cursor_changed (ClutterText *text,
+                             StEntry     *entry)
+{
+  st_entry_update_hint_visibility (entry);
 }
 
 static void
@@ -979,6 +987,9 @@ st_entry_init (StEntry *entry)
 
   g_signal_connect (priv->entry, "button-press-event",
                     G_CALLBACK (clutter_text_button_press_event), entry);
+
+  g_signal_connect (priv->entry, "cursor-changed",
+                    G_CALLBACK (clutter_text_cursor_changed), entry);
 
   g_signal_connect (priv->entry, "notify::text",
                     G_CALLBACK (clutter_text_changed_cb), entry);
