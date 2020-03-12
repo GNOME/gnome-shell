@@ -27,3 +27,4 @@ i18n.merge_file('desktop',
 )
 
 subdir('icons')
+subdir('metainfo')
