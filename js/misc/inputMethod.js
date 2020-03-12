@@ -10,6 +10,13 @@ var InputMethod = GObject.registerClass(
 class InputMethod extends Clutter.InputMethod {
     _init() {
         super._init();
+
+        // Initialize IBus and set display before any IBus.Bus.new_async
+        IBus.init();
+        let display = GLib.getenv('GNOME_SETUP_DISPLAY');
+        if (display)
+            IBus.set_display(display);
+
         this._hints = 0;
         this._purpose = 0;
         this._currentFocus = null;

@@ -31,8 +31,6 @@ function getIBusManager() {
 
 var IBusManager = class {
     constructor() {
-        IBus.init();
-
         // This is the longest we'll keep the keyboard frozen until an input
         // source is active.
         this._MAX_INPUT_SOURCE_ACTIVATION_TIME = 4000; // ms
