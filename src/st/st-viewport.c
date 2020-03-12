@@ -78,6 +78,7 @@ adjustment_value_notify_cb (StAdjustment *adjustment,
                             GParamSpec   *pspec,
                             StViewport   *viewport)
 {
+  clutter_actor_invalidate_transform (CLUTTER_ACTOR (viewport));
   clutter_actor_queue_relayout (CLUTTER_ACTOR (viewport));
 }
 
