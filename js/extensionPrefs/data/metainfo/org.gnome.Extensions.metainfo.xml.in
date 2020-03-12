@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>org.gnome.Extensions</id>
+
+  <name>GNOME Extensions</name>
+  <summary>Configure GNOME Shell Extensions</summary>
+
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>GPL-2.0-or-later</project_license>
+
+  <url type="homepage">https://gitlab.gnome.org/GNOME/gnome-shell</url>
+  <url type="bugtracker">https://gitlab.gnome.org/GNOME/gnome-shell/issues/new</url>
+  <url type="donation">http://www.gnome.org/friends/</url>
+  <url type="translate">https://wiki.gnome.org/TranslationProject</url>
+
+  <project_group>GNOME</project_group>
+
+  <launchable type="desktop-id">org.gnome.Extensions.desktop</launchable>
+
+  <kudos>
+    <kudo>HiDpiIcon</kudo>
+    <kudo>HighContrast</kudo>
+    <kudo>ModernToolkit</kudo>
+  </kudos>
+
+  <recommends>
+    <control>pointing</control>
+    <control>keyboard</control>
+    <control>touch</control>
+  </recommends>
+
+  <content_rating type="oars-1.0"/>
+
+  <description>
+    <p>
+      GNOME Extensions handles updating extensions, configuring extension preferences and removing or disabling unwanted extensions.
+    </p>
+  </description>
+
+  <releases>
+    <release version="3.36.0" date="2020-03-07"/>
+  </releases>
+
+  <screenshots>
+    <screenshot type="default">
+      <image>https://gitlab.gnome.org/GNOME/gnome-shell/raw/master/js/extensionPrefs/data/metainfo/extensions-main.png</image>
+    </screenshot>
+    <screenshot>
+      <image>https://gitlab.gnome.org/GNOME/gnome-shell/raw/master/js/extensionPrefs/data/metainfo/extensions-update.png</image>
+    </screenshot>
+    <screenshot>
+      <image>https://gitlab.gnome.org/GNOME/gnome-shell/raw/master/js/extensionPrefs/data/metainfo/extensions-remove.png</image>
+    </screenshot>
+  </screenshots>
+</component>
