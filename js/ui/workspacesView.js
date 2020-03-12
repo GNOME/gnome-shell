@@ -681,14 +681,9 @@ class WorkspacesDisplay extends St.Widget {
             else
                 view = new WorkspacesView(i, this._scrollAdjustment);
 
-            // HACK: Avoid spurious allocation changes while updating views
-            view.hide();
-
             this._workspacesViews.push(view);
             Main.layoutManager.overviewGroup.add_actor(view);
         }
-
-        this._workspacesViews.forEach(v => v.show());
 
         this._updateWorkspacesFullGeometry();
         this._updateWorkspacesActualGeometry();
