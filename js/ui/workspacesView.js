@@ -560,8 +560,9 @@ class WorkspacesDisplay extends St.Widget {
             this._workspacesViews[i].startTouchGesture();
 
         let monitors = Main.layoutManager.monitors;
+        const fullGeometry = this._fullGeometry || monitors[monitor];
         let geometry = monitor === this._primaryIndex
-            ? this._fullGeometry : monitors[monitor];
+            ? fullGeometry : monitors[monitor];
         let distance = global.workspace_manager.layout_rows === -1
             ? geometry.height : geometry.width;
 
@@ -751,7 +752,10 @@ class WorkspacesDisplay extends St.Widget {
 
         let monitors = Main.layoutManager.monitors;
         for (let i = 0; i < monitors.length; i++) {
-            let geometry = i == this._primaryIndex ? this._fullGeometry : monitors[i];
+            const fullGeometry = this._fullGeometry || monitors[i];
+            const geometry = i === this._primaryIndex
+                ? fullGeometry : monitors[i];
+
             this._workspacesViews[i].setFullGeometry(geometry);
         }
     }
