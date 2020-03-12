@@ -1060,25 +1060,25 @@ class WindowSwitcher extends SwitcherPopup.SwitcherList {
     vfunc_allocate(box, flags) {
         let themeNode = this.get_theme_node();
         let contentBox = themeNode.get_content_box(box);
+        const labelHeight = this._label.height;
+        const totalLabelHeight =
+            labelHeight + themeNode.get_padding(St.Side.BOTTOM);
 
-        let childBox = new Clutter.ActorBox();
-        childBox.x1 = contentBox.x1;
-        childBox.x2 = contentBox.x2;
-        childBox.y2 = contentBox.y2;
-        childBox.y1 = childBox.y2 - this._label.height;
-        this._label.allocate(childBox, flags);
-
-        let totalLabelHeight = this._label.height + themeNode.get_padding(St.Side.BOTTOM);
-        childBox.x1 = box.x1;
-        childBox.x2 = box.x2;
-        childBox.y1 = box.y1;
-        childBox.y2 = box.y2 - totalLabelHeight;
-        super.vfunc_allocate(childBox, flags);
+        box.y2 -= totalLabelHeight;
+        super.vfunc_allocate(box, flags);
 
         // Hooking up the parent vfunc will call this.set_allocation() with
         // the height without the label height, so call it again with the
         // correct size here.
+        box.y2 += totalLabelHeight;
         this.set_allocation(box, flags);
+
+        const childBox = new Clutter.ActorBox();
+        childBox.x1 = contentBox.x1;
+        childBox.x2 = contentBox.x2;
+        childBox.y2 = contentBox.y2;
+        childBox.y1 = childBox.y2 - labelHeight;
+        this._label.allocate(childBox, flags);
     }
 
     highlight(index, justOutline) {
