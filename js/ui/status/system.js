@@ -38,13 +38,6 @@ class Indicator extends PanelMenu.SystemIndicator {
             this._systemActions.forceUpdate();
         });
         this._updateSessionSubMenu();
-
-        Main.sessionMode.connect('updated', this._sessionUpdated.bind(this));
-        this._sessionUpdated();
-    }
-
-    _sessionUpdated() {
-        this._settingsItem.visible = Main.sessionMode.allowSettings;
     }
 
     _updateSessionSubMenu() {
@@ -80,25 +73,6 @@ class Indicator extends PanelMenu.SystemIndicator {
             this._orientationLockItem.setIcon(iconName);
             this._orientationLockItem.label.text = labelText;
         });
-
-        let app = this._settingsApp = Shell.AppSystem.get_default().lookup_app(
-            'gnome-control-center.desktop'
-        );
-        if (app) {
-            let [icon, name] = [app.app_info.get_icon().names[0],
-                                app.get_name()];
-            item = new PopupMenu.PopupImageMenuItem(name, icon);
-            item.connect('activate', () => {
-                this.menu.itemActivated(BoxPointer.PopupAnimation.NONE);
-                Main.overview.hide();
-                this._settingsApp.activate();
-            });
-            this.menu.addMenuItem(item);
-            this._settingsItem = item;
-        } else {
-            log('Missing required core component Settings, expect trouble…');
-            this._settingsItem = new St.Widget();
-        }
 
         item = new PopupMenu.PopupImageMenuItem(_('Lock'), 'changes-prevent-symbolic');
         item.connect('activate', () => {
