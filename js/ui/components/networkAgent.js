@@ -622,14 +622,6 @@ var NetworkAgent = class {
         this._vpnRequests = { };
         this._notifications = { };
 
-        this._pluginDir = Gio.file_new_for_path(Config.VPNDIR);
-        try {
-            let monitor = this._pluginDir.monitor(Gio.FileMonitorFlags.NONE, null);
-            monitor.connect('changed', () => (this._vpnCacheBuilt = false));
-        } catch (e) {
-            log(`Failed to create monitor for VPN plugin dir: ${e.message}`);
-        }
-
         this._native.connect('new-request', this._newRequest.bind(this));
         this._native.connect('cancel-request', this._cancelRequest.bind(this));
 
@@ -773,9 +765,7 @@ var NetworkAgent = class {
         let vpnSetting = connection.get_setting_vpn();
         let serviceType = vpnSetting.service_type;
 
-        this._buildVPNServiceCache();
-
-        let binary = this._vpnBinaries[serviceType];
+        let binary = this._findAuthBinary(serviceType);
         if (!binary) {
             log('Invalid VPN service type (cannot find authentication binary)');
 
@@ -791,36 +781,26 @@ var NetworkAgent = class {
         this._vpnRequests[requestId] = vpnRequest;
     }
 
-    _buildVPNServiceCache() {
-        if (this._vpnCacheBuilt)
-            return;
+    _findAuthBinary(serviceType) {
+        const plugin = NM.VpnPluginInfo.new_search_file(null, serviceType);
 
-        this._vpnCacheBuilt = true;
-        this._vpnBinaries = { };
+        if (plugin === null)
+            return null;
 
-        NM.VpnPluginInfo.list_load().forEach(plugin => {
-            let service = plugin.get_service();
-            let fileName = plugin.get_auth_dialog();
-            let supportsHints = plugin.supports_hints();
-            let externalUIMode = false;
+        const fileName = plugin.get_auth_dialog();
+        if (!GLib.file_test(fileName, GLib.FileTest.IS_EXECUTABLE)) {
+            log('VPN plugin at %s is not executable'.format(fileName));
+            return null;
+        }
 
-            let prop = plugin.lookup_property('GNOME', 'supports-external-ui-mode');
-            if (prop) {
-                prop = prop.trim().toLowerCase();
-                externalUIMode = ['true', 'yes', 'on', '1'].includes(prop);
-            }
+        const prop = plugin.lookup_property('GNOME', 'supports-external-ui-mode');
+        const trimmedProp = prop ? prop.trim().toLowerCase() : '';
 
-            if (GLib.file_test(fileName, GLib.FileTest.IS_EXECUTABLE)) {
-                let binary = { fileName, externalUIMode, supportsHints };
-                this._vpnBinaries[service] = binary;
-
-                plugin.get_aliases().forEach(alias => {
-                    this._vpnBinaries[alias] = binary;
-                });
-            } else {
-                log('VPN plugin at %s is not executable'.format(fileName));
-            }
-        });
+        return {
+            fileName,
+            supportsHints: plugin.supports_hints(),
+            externalUIMode: ['true', 'yes', 'on', '1'].includes(trimmedProp),
+        };
     }
 };
 var Component = NetworkAgent;
