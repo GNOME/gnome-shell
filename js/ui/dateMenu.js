@@ -189,6 +189,9 @@ class WorldClocksSection extends St.Button {
                                     x_align: Clutter.ActorAlign.END,
                                     y_align: Clutter.ActorAlign.CENTER });
 
+            time.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
+            tz.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
+
             if (this._grid.text_direction == Clutter.TextDirection.RTL) {
                 layout.attach(tz, 0, i + 1, 1, 1);
                 layout.attach(time, 1, i + 1, 1, 1);
