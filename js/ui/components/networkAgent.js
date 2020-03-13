@@ -615,13 +615,23 @@ var NetworkAgent = class {
         this._vpnRequests = { };
         this._notifications = { };
 
-        this._pluginDir = Gio.file_new_for_path(Config.VPNDIR);
-        try {
-            let monitor = this._pluginDir.monitor(Gio.FileMonitorFlags.NONE, null);
-            monitor.connect('changed', () => (this._vpnCacheBuilt = false));
-        } catch (e) {
-            log('Failed to create monitor for VPN plugin dir: %s'.format(e.message));
-        }
+        let pluginDirs = [Config.VPNDIR];
+
+        const envPluginDir = GLib.getenv('NM_VPN_PLUGIN_DIR');
+        if (envPluginDir)
+            pluginDirs.push(envPluginDir);
+
+        pluginDirs.forEach(path => {
+            const dir = Gio.File.new_for_path(path);
+
+            try {
+                const monitor = dir.monitor(Gio.FileMonitorFlags.NONE, null);
+                monitor.connect('changed', () => (this._vpnCacheBuilt = false));
+            } catch (e) {
+                log('Failed to create monitor for VPN plugin dir %s: %s'
+                    .format(path, e.message));
+            }
+        });
 
         this._native.connect('new-request', this._newRequest.bind(this));
         this._native.connect('cancel-request', this._cancelRequest.bind(this));
