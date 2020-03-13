@@ -106,6 +106,10 @@ var StreamSlider = class {
         return this._slider.scroll(event);
     }
 
+    _setMuted(_muted) {
+        throw new GObject.NotImplementedError();
+    }
+
     _sliderChanged() {
         if (!this._stream)
             return;
@@ -117,11 +121,11 @@ var StreamSlider = class {
         if (volume < 1) {
             this._stream.volume = 0;
             if (!prevMuted)
-                this._stream.change_is_muted(true);
+                this._setMuted(true);
         } else {
             this._stream.volume = volume;
             if (prevMuted)
-                this._stream.change_is_muted(false);
+                this._setMuted(false);
         }
         this._stream.push_volume();
 
@@ -227,6 +231,10 @@ var OutputStreamSlider = class extends StreamSlider {
         this._portChanged();
     }
 
+    _setMuted(muted) {
+        this._control.get_sinks().forEach(s => s.change_is_muted(muted));
+    }
+
     _findHeadphones(sink) {
         // This only works for external headphones (e.g. bluetooth)
         if (sink.get_form_factor() == 'headset' ||
@@ -275,6 +283,10 @@ var InputStreamSlider = class extends StreamSlider {
     _connectStream(stream) {
         super._connectStream(stream);
         this._maybeShowInput();
+    }
+
+    _setMuted(muted) {
+        this._control.get_sources().forEach(s => s.change_is_muted(muted));
     }
 
     _maybeShowInput() {
