@@ -60,7 +60,10 @@ list_extensions (ListFilterFlags filter, DisplayFormat format)
                                      NULL,
                                      &error);
   if (response == NULL)
-    return FALSE;
+    {
+      g_printerr (_("Failed to connect to GNOME Shell\n"));
+      return FALSE;
+    }
 
   extensions = g_variant_get_child_value (response, 0);
 
