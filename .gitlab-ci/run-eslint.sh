@@ -18,12 +18,13 @@ run_eslint() {
   local extra_args=ARGS_$1
   local output_var=OUTPUT_$1
   local output=${!output_var}
+  local cache=.eslintcache-${1,,}
 
   # ensure output exists even if eslint doesn't report any errors
   mkdir -p $(dirname $output)
   touch $output
 
-  eslint -f unix ${!extra_args} -o $output js
+  eslint -f unix --cache --cache-location $cache ${!extra_args} -o $output js
 }
 
 list_commit_range_additions() {
