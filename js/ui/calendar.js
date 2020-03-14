@@ -834,8 +834,9 @@ var EventsSection = new Lang.Class({
         this._title.connect('clicked', this._onTitleClicked.bind(this));
         this._title.connect('key-focus-in', this._onKeyFocusIn.bind(this));
 
-        Shell.AppSystem.get_default().connect('installed-changed',
-                                              this._appInstalledChanged.bind(this));
+        this._appSys = Shell.AppSystem.get_default();
+        this._appSys.connect('installed-changed',
+            this._appInstalledChanged.bind(this));
         this._appInstalledChanged();
     },
 
@@ -933,10 +934,13 @@ var EventsSection = new Lang.Class({
         Main.overview.hide();
         Main.panel.closeCalendar();
 
-        let app = this._getCalendarApp();
-        if (app.get_id() == 'evolution.desktop')
-            app = Gio.DesktopAppInfo.new('evolution-calendar.desktop');
-        app.launch([], global.create_app_launch_context(0, -1));
+        let appInfo = this._getCalendarApp();
+        if (app.get_id() == 'evolution.desktop') {
+            let app = this._appSys.lookup_app('evolution-calendar.desktop');
+            if (app)
+                appInfo = app.app_info;
+        }
+        appInfo.launch([], global.create_app_launch_context(0, -1));
     },
 
     setDate(date) {

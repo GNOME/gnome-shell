@@ -1111,8 +1111,8 @@ var AppSearchProvider = new Lang.Class({
         let results = [];
         groups.forEach(group => {
             group = group.filter(appID => {
-                let app = Gio.DesktopAppInfo.new(appID);
-                return app && app.should_show();
+                const app = this._appSys.lookup_app(appID);
+                return app && app.app_info.should_show();
             });
             results = results.concat(group.sort(
                 (a, b) => usage.compare('', a, b)
