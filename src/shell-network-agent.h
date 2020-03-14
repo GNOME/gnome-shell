@@ -51,6 +51,14 @@ void               shell_network_agent_respond      (ShellNetworkAgent *self,
                                                      gchar             *request_id,
                                                      ShellNetworkAgentResponse response);
 
+void               shell_network_agent_search_vpn_plugin (ShellNetworkAgent   *self,
+                                                          const char          *service,
+                                                          GAsyncReadyCallback  callback,
+                                                          gpointer             user_data);
+NMVpnPluginInfo   *shell_network_agent_search_vpn_plugin_finish (ShellNetworkAgent  *self,
+                                                                 GAsyncResult       *result,
+                                                                 GError            **error);
+
 /* If these are kept in sync with nm-applet, secrets will be shared */
 #define SHELL_KEYRING_UUID_TAG "connection-uuid"
 #define SHELL_KEYRING_SN_TAG "setting-name"

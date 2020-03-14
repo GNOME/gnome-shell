@@ -479,6 +479,63 @@ shell_network_agent_respond (ShellNetworkAgent         *self,
 }
 
 static void
+search_vpn_plugin (GTask        *task,
+                   gpointer      object,
+                   gpointer      task_data,
+                   GCancellable *cancellable)
+{
+  NMVpnPluginInfo *info = NULL;
+  char *service = task_data;
+
+  info = nm_vpn_plugin_info_new_search_file (NULL, service);
+
+  if (info)
+    {
+      g_task_return_pointer (task, info, g_object_unref);
+    }
+  else
+    {
+      g_task_return_new_error (task,
+                               G_IO_ERROR, G_IO_ERROR_NOT_FOUND,
+                               "No plugin for %s", service);
+    }
+}
+
+void
+shell_network_agent_search_vpn_plugin (ShellNetworkAgent   *self,
+                                       const char          *service,
+                                       GAsyncReadyCallback  callback,
+                                       gpointer             user_data)
+{
+  g_autoptr(GTask) task = NULL;
+
+  g_return_if_fail (SHELL_IS_NETWORK_AGENT (self));
+  g_return_if_fail (service != NULL);
+
+  task = g_task_new (self, NULL, callback, user_data);
+  g_task_set_source_tag (task, shell_network_agent_search_vpn_plugin);
+  g_task_set_task_data (task, g_strdup (service), g_free);
+
+  g_task_run_in_thread (task, search_vpn_plugin);
+}
+
+/**
+ * shell_network_agent_search_vpn_plugin_finish:
+ *
+ * Returns: (nullable) (transfer full): The found plugin or %NULL
+ */
+NMVpnPluginInfo *
+shell_network_agent_search_vpn_plugin_finish (ShellNetworkAgent  *self,
+                                              GAsyncResult       *result,
+                                              GError            **error)
+{
+  g_return_val_if_fail (SHELL_IS_NETWORK_AGENT (self), NULL);
+  g_return_val_if_fail (G_IS_TASK (result), NULL);
+
+  return g_task_propagate_pointer (G_TASK (result), error);
+}
+
+static void
 shell_network_agent_cancel_get_secrets (NMSecretAgentOld *agent,
                                         const gchar      *connection_path,
                                         const gchar      *setting_name)
