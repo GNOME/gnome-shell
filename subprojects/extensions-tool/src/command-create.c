@@ -262,6 +262,7 @@ handle_create (int argc, char *argv[], gboolean do_help)
   g_option_context_set_help_enabled (context, FALSE);
   g_option_context_set_summary (context, _("Create a new extension"));
   g_option_context_add_main_entries (context, entries, GETTEXT_PACKAGE);
+  g_option_context_add_group (context, get_option_group ());
 
   if (do_help)
     {
