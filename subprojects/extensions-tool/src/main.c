@@ -124,6 +124,41 @@ get_shell_settings (void)
   return g_settings_new_full (schema, NULL, NULL);
 }
 
+GVariant *
+get_extension_property (GDBusProxy *proxy,
+                        const char *uuid,
+                        const char *property)
+{
+  g_autoptr (GVariant) response = NULL;
+  g_autoptr (GVariant) asv = NULL;
+  g_autoptr (GVariantDict) info = NULL;
+  g_autoptr (GError) error = NULL;
+
+  response = g_dbus_proxy_call_sync (proxy,
+                                     "GetExtensionInfo",
+                                     g_variant_new ("(s)", uuid),
+                                     0,
+                                     -1,
+                                     NULL,
+                                     &error);
+  if (response == NULL)
+    {
+      g_printerr (_("Failed to connect to GNOME Shell"));
+      return NULL;
+    }
+
+  asv = g_variant_get_child_value (response, 0);
+  info = g_variant_dict_new (asv);
+
+  if (!g_variant_dict_contains (info, "uuid"))
+    {
+      g_printerr (_("Extension “%s” doesn't exist\n"), uuid);
+      return NULL;
+    }
+
+  return g_variant_dict_lookup_value (info, property, NULL);
+}
+
 gboolean
 settings_list_add (GSettings  *settings,
                    const char *key,

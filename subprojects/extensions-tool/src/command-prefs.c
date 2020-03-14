@@ -29,9 +29,7 @@ static gboolean
 launch_extension_prefs (const char *uuid)
 {
   g_autoptr (GDBusProxy) proxy = NULL;
-  g_autoptr (GVariant) response = NULL;
-  g_autoptr (GVariant) asv = NULL;
-  g_autoptr (GVariantDict) info = NULL;
+  g_autoptr (GVariant) info = NULL;
   g_autoptr (GError) error = NULL;
   gboolean has_prefs;
 
@@ -39,29 +37,11 @@ launch_extension_prefs (const char *uuid)
   if (proxy == NULL)
     return FALSE;
 
-  response = g_dbus_proxy_call_sync (proxy,
-                                     "GetExtensionInfo",
-                                     g_variant_new ("(s)", uuid),
-                                     0,
-                                     -1,
-                                     NULL,
-                                     &error);
-  if (response == NULL)
-    {
-      g_printerr (_("Failed to connect to GNOME Shell"));
-      return FALSE;
-    }
+  info = get_extension_property (proxy, uuid, "hasPrefs");
+  if (info == NULL)
+    return FALSE;
 
-  asv = g_variant_get_child_value (response, 0);
-  info = g_variant_dict_new (asv);
-
-  if (!g_variant_dict_contains (info, "uuid"))
-    {
-      g_printerr (_("Extension “%s” doesn't exist\n"), uuid);
-      return FALSE;
-    }
-
-  g_variant_dict_lookup (info, "hasPrefs", "b", &has_prefs);
+  has_prefs = g_variant_get_boolean (info);
   if (!has_prefs)
     {
       g_printerr (_("Extension “%s” doesn't have preferences\n"), uuid);
