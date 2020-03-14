@@ -29,13 +29,26 @@ static gboolean
 uninstall_extension (const char *uuid)
 {
   g_autoptr (GDBusProxy) proxy = NULL;
+  g_autoptr (GVariant) info = NULL;
   g_autoptr (GVariant) response = NULL;
   g_autoptr (GError) error = NULL;
   gboolean success = FALSE;
+  double type;
 
   proxy = get_shell_proxy (&error);
   if (proxy == NULL)
     return FALSE;
+
+  info = get_extension_property (proxy, uuid, "type");
+  if (info == NULL)
+    return FALSE;
+
+  type = g_variant_get_double (info);
+  if (type == TYPE_SYSTEM)
+    {
+      g_printerr ("Cannot uninstall system extensions\n");
+      return FALSE;
+    }
 
   response = g_dbus_proxy_call_sync (proxy,
                                      "UninstallExtension",
@@ -44,11 +57,6 @@ uninstall_extension (const char *uuid)
                                      -1,
                                      NULL,
                                      &error);
-  if (response == NULL)
-    {
-      g_printerr (_("Failed to connect to GNOME Shell"));
-      return FALSE;
-    }
 
   g_variant_get (response, "(b)", &success);
 
