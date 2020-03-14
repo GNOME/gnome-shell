@@ -45,6 +45,8 @@ typedef enum {
   DISPLAY_DETAILED
 } DisplayFormat;
 
+GOptionGroup *get_option_group (void);
+
 void show_help (GOptionContext *context,
                 const char     *message);
 
