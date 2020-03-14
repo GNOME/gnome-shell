@@ -931,10 +931,13 @@ class EventsSection extends MessageList.MessageListSection {
         Main.overview.hide();
         Main.panel.closeCalendar();
 
-        let app = this._getCalendarApp();
-        if (app.get_id() == 'evolution.desktop')
-            app = Gio.DesktopAppInfo.new('evolution-calendar.desktop');
-        app.launch([], global.create_app_launch_context(0, -1));
+        let appInfo = this._getCalendarApp();
+        if (appInfo.get_id() === 'org.gnome.Evolution.desktop') {
+            let app = Gio.DesktopAppInfo.new('evolution-calendar.desktop');
+            if (app)
+                appInfo = app;
+        }
+        appInfo.launch([], global.create_app_launch_context(0, -1));
     }
 
     setDate(date) {
