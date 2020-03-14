@@ -837,8 +837,9 @@ class EventsSection extends MessageList.MessageListSection {
         this._title.connect('clicked', this._onTitleClicked.bind(this));
         this._title.connect('key-focus-in', this._onKeyFocusIn.bind(this));
 
-        Shell.AppSystem.get_default().connect('installed-changed',
-                                              this._appInstalledChanged.bind(this));
+        this._appSys = Shell.AppSystem.get_default();
+        this._appSys.connect('installed-changed',
+            this._appInstalledChanged.bind(this));
         this._appInstalledChanged();
     }
 
@@ -934,8 +935,8 @@ class EventsSection extends MessageList.MessageListSection {
         let appInfo = this._getCalendarApp();
         let app;
         if (appInfo.get_id() === 'org.gnome.Evolution.desktop' &&
-            (app = Gio.DesktopAppInfo.new('evolution-calendar.desktop')) !== null)
-            appInfo = app;
+            (app = this._appSys.lookup_app('evolution-calendar.desktop')) !== null)
+            appInfo = app.app_info;
         appInfo.launch([], global.create_app_launch_context(0, -1));
     }
 
