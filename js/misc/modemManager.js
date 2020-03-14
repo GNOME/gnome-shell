@@ -249,7 +249,7 @@ var BroadbandModem = GObject.registerClass({
     }
 
     _reloadSignalQuality() {
-        let [quality, recent_] = this.SignalQuality;
+        let [quality, recent_] = this._proxy.SignalQuality;
         this._setSignalQuality(quality);
     }
 
