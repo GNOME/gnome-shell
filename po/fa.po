@@ -3615,7 +3615,7 @@ msgstr "صداهای سامانه"
 #~ msgstr "‏%s مشغول است."
 
 #~ msgid "Hidden"
-#~ msgstr "نامرئی"
+#~ msgstr "مخفی"
 
 #~ msgid "Power Off..."
 #~ msgstr "خاموش کردن..."
