@@ -45,9 +45,15 @@ uninstall_extension (const char *uuid)
                                      NULL,
                                      &error);
   if (response == NULL)
-    return FALSE;
+    {
+      g_printerr (_("Failed to connect to GNOME Shell"));
+      return FALSE;
+    }
 
   g_variant_get (response, "(b)", &success);
+
+  if (!success)
+    g_printerr (_("Failed to uninstall “%s”\n"), uuid);
 
   return success;
 }
