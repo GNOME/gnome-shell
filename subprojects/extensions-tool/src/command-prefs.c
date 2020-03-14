@@ -47,17 +47,26 @@ launch_extension_prefs (const char *uuid)
                                      NULL,
                                      &error);
   if (response == NULL)
-    return FALSE;
+    {
+      g_printerr (_("Failed to connect to GNOME Shell"));
+      return FALSE;
+    }
 
   asv = g_variant_get_child_value (response, 0);
   info = g_variant_dict_new (asv);
 
   if (!g_variant_dict_contains (info, "uuid"))
-    return FALSE;
+    {
+      g_printerr (_("Extension “%s” doesn't exist\n"), uuid);
+      return FALSE;
+    }
 
   g_variant_dict_lookup (info, "hasPrefs", "b", &has_prefs);
   if (!has_prefs)
-    return FALSE;
+    {
+      g_printerr (_("Extension “%s” doesn't have preferences\n"), uuid);
+      return FALSE;
+    }
 
   g_dbus_proxy_call_sync (proxy,
                           "LaunchExtensionPrefs",
