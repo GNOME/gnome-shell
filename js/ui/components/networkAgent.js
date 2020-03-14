@@ -4,12 +4,14 @@
 const { Clutter, Gio, GLib, GObject, NM, Pango, Shell, St } = imports.gi;
 const Signals = imports.signals;
 
-const Config = imports.misc.config;
 const Dialog = imports.ui.dialog;
 const Main = imports.ui.main;
 const MessageTray = imports.ui.messageTray;
 const ModalDialog = imports.ui.modalDialog;
 const ShellEntry = imports.ui.shellEntry;
+
+Gio._promisify(Shell.NetworkAgent.prototype,
+    'search_vpn_plugin', 'search_vpn_plugin_finish');
 
 const VPN_UI_GROUP = 'VPN Plugin UI';
 
@@ -758,11 +760,11 @@ var NetworkAgent = class {
         }
     }
 
-    _vpnRequest(requestId, connection, hints, flags) {
+    async _vpnRequest(requestId, connection, hints, flags) {
         let vpnSetting = connection.get_setting_vpn();
         let serviceType = vpnSetting.service_type;
 
-        let binary = this._findAuthBinary(serviceType);
+        let binary = await this._findAuthBinary(serviceType);
         if (!binary) {
             log('Invalid VPN service type (cannot find authentication binary)');
 
@@ -778,11 +780,15 @@ var NetworkAgent = class {
         this._vpnRequests[requestId] = vpnRequest;
     }
 
-    _findAuthBinary(serviceType) {
-        const plugin = NM.VpnPluginInfo.new_search_file(null, serviceType);
+    async _findAuthBinary(serviceType) {
+        let plugin;
 
-        if (plugin === null)
+        try {
+            plugin = await this._native.search_vpn_plugin(serviceType);
+        } catch (e) {
+            logError(e);
             return null;
+        }
 
         const fileName = plugin.get_auth_dialog();
         if (!GLib.file_test(fileName, GLib.FileTest.IS_EXECUTABLE)) {
