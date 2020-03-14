@@ -42,6 +42,13 @@ DESCRIPTION
 *gnome-extensions* is a utility that makes some common GNOME extensions
 operations available on the command line.
 
+COMMON OPTIONS
+--------------
+All commands except for *help* and *version* handle the following options:
+
+*--quiet*, *-q*::
+Do not print error messages
+
 COMMANDS
 --------
 *help* ['COMMAND']::
