@@ -135,21 +135,25 @@ function checkForUpdates() {
         disable_version_validation: versionCheck.toString(),
     };
 
-    let url = REPOSITORY_URL_UPDATE;
-    let message = Soup.form_request_new_from_hash('GET', url, params);
-    _httpSession.queue_message(message, () => {
-        if (message.status_code != Soup.KnownStatusCode.OK)
-            return;
+    let updateCheck = global.settings.get_boolean(
+        'enable-extension-updates');
+    if (updateCheck) {
+        let url = REPOSITORY_URL_UPDATE;
+        let message = Soup.form_request_new_from_hash('GET', url, params);
+        _httpSession.queue_message(message, () => {
+            if (message.status_code != Soup.KnownStatusCode.OK)
+                return;
 
-        let operations = JSON.parse(message.response_body.data);
-        for (let uuid in operations) {
-            let operation = operations[uuid];
-            if (operation == 'blacklist')
-                uninstallExtension(uuid);
-            else if (operation == 'upgrade' || operation == 'downgrade')
-                downloadExtensionUpdate(uuid);
-        }
-    });
+            let operations = JSON.parse(message.response_body.data);
+            for (let uuid in operations) {
+                let operation = operations[uuid];
+                if (operation == 'blacklist')
+                    uninstallExtension(uuid);
+                else if (operation == 'upgrade' || operation == 'downgrade')
+                    downloadExtensionUpdate(uuid);
+            }
+        });
+    }
 }
 
 var InstallExtensionDialog = GObject.registerClass(
