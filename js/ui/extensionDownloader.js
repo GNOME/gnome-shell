@@ -127,6 +127,9 @@ function checkForUpdates() {
         metadatas[uuid] = extension.metadata;
     });
 
+    if (Object.keys(metadatas).length === 0)
+        return; // nothing to update
+
     let versionCheck = global.settings.get_boolean(
         'disable-extension-version-validation');
     let params = {
