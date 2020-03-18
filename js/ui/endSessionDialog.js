@@ -29,6 +29,8 @@ const UserWidget = imports.ui.userWidget;
 
 const { loadInterfaceXML } = imports.misc.fileUtils;
 
+Gio._promisify(Gio.DBusConnection.prototype, 'call', 'call_finish');
+
 const _ITEM_ICON_SIZE = 64;
 
 const EndSessionDialogIface = loadInterfaceXML('org.gnome.SessionManager.EndSessionDialog');
@@ -346,10 +348,8 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
 
         // Use a different description when we are installing a system upgrade
         // if the PackageKit proxy is available (i.e. PackageKit is available).
-        if (this._pkOfflineProxy && dialogContent.upgradeDescription) {
-            let name = this._pkOfflineProxy.PreparedUpgrade['name'].deep_unpack();
-            let version = this._pkOfflineProxy.PreparedUpgrade['version'].deep_unpack();
-
+        if (dialogContent.upgradeDescription) {
+            const { name, version } = this._updateInfo.PreparedUpgrade;
             if (name != null && version != null)
                 description = dialogContent.upgradeDescription(name, version);
         }
@@ -608,16 +608,46 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
         });
     }
 
-    OpenAsync(parameters, invocation) {
+    async _getUpdateInfo() {
+        const connection = this._pkOfflineProxy.get_connection();
+        const reply = await connection.call(
+            this._pkOfflineProxy.g_name,
+            this._pkOfflineProxy.g_object_path,
+            'org.freedesktop.DBus.Properties',
+            'GetAll',
+            new GLib.Variant('(s)', [this._pkOfflineProxy.g_interface_name]),
+            null,
+            Gio.DBusCallFlags.NONE,
+            -1,
+            null);
+        const [info] = reply.recursiveUnpack();
+        return info;
+    }
+
+    async OpenAsync(parameters, invocation) {
         let [type, timestamp, totalSecondsToStayOpen, inhibitorObjectPaths] = parameters;
         this._totalSecondsToStayOpen = totalSecondsToStayOpen;
         this._type = type;
 
+        try {
+            this._updateInfo = await this._getUpdateInfo();
+        } catch (e) {
+            if (this._pkOfflineProxy !== null)
+                log('Failed to get update info from PackageKit: %s'.format(e.message));
+
+            this._updateInfo = {
+                UpdateTriggered: false,
+                UpdatePrepared: false,
+                UpgradeTriggered: false,
+                PreparedUpgrade: {},
+            };
+        }
+
         // Only consider updates and upgrades if PackageKit is available.
         if (this._pkOfflineProxy && this._type == DialogType.RESTART) {
-            if (this._pkOfflineProxy.UpdateTriggered)
+            if (this._updateInfo.UpdateTriggered)
                 this._type = DialogType.UPDATE_RESTART;
-            else if (this._pkOfflineProxy.UpgradeTriggered)
+            else if (this._updateInfo.UpgradeTriggered)
                 this._type = DialogType.UPGRADE_RESTART;
         }
 
@@ -646,9 +676,8 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
         if (dialogContent.showOtherSessions)
             this._loadSessions();
 
-        // Only consider updates and upgrades if PackageKit is available.
-        let updateTriggered = this._pkOfflineProxy ? this._pkOfflineProxy.UpdateTriggered : false;
-        let updatePrepared = this._pkOfflineProxy ? this._pkOfflineProxy.UpdatePrepared : false;
+        let updateTriggered = this._updateInfo.UpdateTriggered;
+        let updatePrepared = this._updateInfo.UpdatePrepared;
         let updatesAllowed = this._updatesPermission && this._updatesPermission.allowed;
 
         _setCheckBoxLabel(this._checkBox, dialogContent.checkBoxText || '');
