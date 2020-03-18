@@ -608,10 +608,63 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
         });
     }
 
-    OpenAsync(parameters, invocation) {
+    _ensurePkOfflineProperties() {
+        return new Promise((resolve, reject) => {
+            // If PackageKit is not installed, or if it is running, we're done.
+            if (this._pkOfflineProxy == null || this._pkOfflineProxy.g_name_owner != null) {
+                resolve();
+                return;
+            }
+
+            // PackageKit is installed, but not running. We need to launch it
+            // before we can safely examine the properties of our D-Bus proxy. A
+            // simple ping will do. The 200ms timeout is arbitrary.
+            const pkLaunchTimeout = 200;
+
+            let conn = this._pkOfflineProxy.get_connection();
+            conn.call('org.freedesktop.PackageKit',
+                '/org/freedesktop/PackageKit',
+                'org.freedesktop.DBus.Peer',
+                'Ping',
+                null, null, Gio.DBusCallFlags.NONE,
+                pkLaunchTimeout, null,
+                (source, res) => {
+                    try {
+                        conn.call_finish(res);
+
+                        let propertiesChangedID = 0;
+                        let timeoutID = GLib.timeout_add(GLib.PRIORITY_DEFAULT,
+                            pkLaunchTimeout,
+                            () => {
+                                this._pkOfflineProxy.disconnect(propertiesChangedID);
+                                reject(new Error('Timed out waiting for PackageKit daemon'));
+                                return GLib.SOURCE_REMOVE;
+                            });
+
+                        propertiesChangedID = this._pkOfflineProxy.connect(
+                            'g-properties-changed',
+                            (unusedChanged, unusedInvalidated) => {
+                                this._pkOfflineProxy.disconnect(propertiesChangedID);
+                                GLib.Source.remove(timeoutID);
+                                resolve();
+                            });
+                    } catch (e) {
+                        reject(new Error('Failed to ping PackageKit daemon: %s'.format(e.toString())));
+                    }
+                });
+        });
+    }
+
+    async OpenAsync(parameters, invocation) {
         let [type, timestamp, totalSecondsToStayOpen, inhibitorObjectPaths] = parameters;
         this._totalSecondsToStayOpen = totalSecondsToStayOpen;
         this._type = type;
+
+        try {
+            await this._ensurePkOfflineProperties();
+        } catch (e) {
+            log('Failed to ensure PackageKit proxy, offline updates will not work: %s'.format(e.toString()));
+        }
 
         // Only consider updates and upgrades if PackageKit is available.
         if (this._pkOfflineProxy && this._type == DialogType.RESTART) {
