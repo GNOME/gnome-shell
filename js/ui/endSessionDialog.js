@@ -608,7 +608,7 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
         });
     }
 
-    OpenAsync(parameters, invocation) {
+    _continueOpenAsync(parameters, invocation) {
         let [type, timestamp, totalSecondsToStayOpen, inhibitorObjectPaths] = parameters;
         this._totalSecondsToStayOpen = totalSecondsToStayOpen;
         this._type = type;
@@ -678,6 +678,55 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
             invocation.return_value(null);
             this.disconnect(signalId);
         });
+    }
+
+    OpenAsync(parameters, invocation) {
+        if (this._pkOfflineProxy && this._pkOfflineProxy.g_name_owner == null) {
+            // PackageKit exists but has quit. We need to launch it again before
+            // we can use its properties. A simple ping will do. We can't wait
+            // long, though, because we don't want to delay showing the dialog,
+            // so only give it 200ms (arbitrary).
+            const pkLaunchTimeout = 200;
+            let propertiesChangedID = 0;
+            let timeoutID = GLib.timeout_add(GLib.PRIORITY_DEFAULT,
+                pkLaunchTimeout,
+                () => {
+                    log('Timed out waiting for PackageKit daemon to refresh properties');
+                    this._pkOfflineProxy.disconnect(propertiesChangedID);
+                    this._continueOpenAsync(parameters, invocation);
+                    return GLib.SOURCE_REMOVE;
+                });
+            propertiesChangedID = this._pkOfflineProxy.connect(
+                'g-properties-changed',
+                (changed, invalidated) => {
+                    // FIXME: check changed for the properties we use.
+                    this._pkOfflineProxy.disconnect(propertiesChangedID);
+                    GLib.Source.remove(timeoutID);
+                    this._continueOpenAsync(parameters, invocation);
+                });
+
+            // FIXME: Is it safe to pass null for the cancellable? Probably not?
+            // This would be a serious mistake if this were C.
+            let conn = this._pkOfflineProxy.get_connection();
+            conn.call('org.freedesktop.PackageKit',
+                      '/org/freedesktop/PackageKit',
+                      'org.freedesktop.DBus.Peer',
+                      'Ping',
+                      null, null, Gio.DBusCallFlags.NONE,
+                      pkLaunchTimeout, null,
+                      (source, res) => {
+                          try {
+                              conn.call_finish(res);
+                          } catch (e) {
+                              log('Failed to ping PackageKit daemon: %s'.format(e.toString()));
+                              GLib.Source.remove(timeoutID);
+                              this._pkOfflineProxy.disconnect(propertiesChangedID);
+                              this._continueOpenAsync(parameters, invocation);
+                          }
+                      });
+        } else {
+            this._continueOpenAsync(parameters, invocation);
+        }
     }
 
     Close(_parameters, _invocation) {
