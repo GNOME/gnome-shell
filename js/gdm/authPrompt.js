@@ -425,7 +425,6 @@ var AuthPrompt = GObject.registerClass({
 
     updateSensitivity(sensitive) {
         this._entry.reactive = sensitive;
-        this._entry.clutter_text.editable = sensitive;
     }
 
     vfunc_hide() {
