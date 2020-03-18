@@ -977,6 +977,10 @@ st_entry_init (StEntry *entry)
                               "single-line-mode", TRUE,
                               NULL);
 
+  g_object_bind_property (G_OBJECT (entry), "reactive",
+                          priv->entry, "reactive",
+                          G_BINDING_DEFAULT);
+
   g_signal_connect (priv->entry, "key-focus-in",
                     G_CALLBACK (clutter_text_focus_in_cb), entry);
 
