@@ -1345,9 +1345,9 @@ msgstr "Inštalácia aktualizácií a vypnutie"
 #, javascript-format
 msgid "The system will power off automatically in %d second."
 msgid_plural "The system will power off automatically in %d seconds."
-msgstr[0] "Systém sa automaticky vypne o %d sekundu."
-msgstr[1] "Systém sa automaticky vypne o %d sekundy."
-msgstr[2] "Systém sa automaticky vypne o %d sekúnd."
+msgstr[0] "Systém sa automaticky vypne o %d sekúnd."
+msgstr[1] "Systém sa automaticky vypne o %d sekundu."
+msgstr[2] "Systém sa automaticky vypne o %d sekundy."
 
 #: js/ui/endSessionDialog.js:63
 msgctxt "checkbox"
