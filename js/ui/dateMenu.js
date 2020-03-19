@@ -182,14 +182,19 @@ class WorldClocksSection extends St.Button {
 
             const utcOffset = this._getTimeAtLocation(l).get_utc_offset();
             const offsetCurrentTz = utcOffset - localOffset;
-            const offsetHours = offsetCurrentTz / GLib.TIME_SPAN_HOUR;
+            const offsetHours = Math.abs(offsetCurrentTz) / GLib.TIME_SPAN_HOUR;
+            const offsetMinutes =
+                (Math.abs(offsetCurrentTz) % GLib.TIME_SPAN_HOUR) /
+                GLib.TIME_SPAN_MINUTE;
 
-            const fmt = Math.trunc(offsetHours) == offsetHours ? '%s%.0f' : '%s%.1f';
             const prefix = offsetCurrentTz >= 0 ? '+' : '-';
+            const text = offsetMinutes === 0
+                ? '%s%d'.format(prefix, offsetHours)
+                : '%s%d\u2236%d'.format(prefix, offsetHours, offsetMinutes);
 
             const tz = new St.Label({
                 style_class: 'world-clocks-timezone',
-                text: fmt.format(prefix, Math.abs(offsetHours)),
+                text,
                 x_align: Clutter.ActorAlign.END,
                 y_align: Clutter.ActorAlign.CENTER,
             });
