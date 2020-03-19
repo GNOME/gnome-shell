@@ -17,7 +17,6 @@ rules:
 overrides:
   - files: js/**
     excludedFiles:
-      - js/extensionPrefs/**
       - js/portalHelper/*
     globals:
       global: readonly
