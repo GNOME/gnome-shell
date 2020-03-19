@@ -180,14 +180,23 @@ class WorldClocksSection extends St.Button {
 
             let time = new St.Label({ style_class: 'world-clocks-time' });
 
-            let otherOffset = this._getTimeAtLocation(l).get_utc_offset();
-            let offset = (otherOffset - localOffset) / GLib.TIME_SPAN_HOUR;
-            let fmt = Math.trunc(offset) == offset ? '%s%.0f' : '%s%.1f';
-            let prefix = offset >= 0 ? '+' : '-';
-            let tz = new St.Label({ style_class: 'world-clocks-timezone',
-                                    text: fmt.format(prefix, Math.abs(offset)),
-                                    x_align: Clutter.ActorAlign.END,
-                                    y_align: Clutter.ActorAlign.CENTER });
+            const utcOffset = this._getTimeAtLocation(l).get_utc_offset();
+            const offsetCurrentTz = utcOffset - localOffset;
+            const offsetHours = Math.abs(offsetCurrentTz) / GLib.TIME_SPAN_HOUR;
+            const offsetMinutes = (Math.abs(offsetCurrentTz) % GLib.TIME_SPAN_HOUR)
+                / GLib.TIME_SPAN_MINUTE;
+
+            const prefix = offsetCurrentTz >= 0 ? '+' : '-';
+            const text = offsetMinutes === 0
+                ? '%s%d'.format(prefix, offsetHours)
+                : '%s%d:%d'.format(prefix, offsetHours, offsetMinutes);
+
+            let tz = new St.Label({
+                style_class: 'world-clocks-timezone',
+                text,
+                x_align: Clutter.ActorAlign.END,
+                y_align: Clutter.ActorAlign.CENTER,
+            });
 
             if (this._grid.text_direction == Clutter.TextDirection.RTL) {
                 layout.attach(tz, 0, i + 1, 1, 1);
