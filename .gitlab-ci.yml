@@ -1,9 +1,13 @@
+include: 'https://gitlab.gnome.org/GNOME/citemplates/raw/master/flatpak/flatpak_ci_initiative.yml'
+
 stages:
  - review
  - build
  - test
+ - deploy
 
 variables:
+    BUNDLE: "extensions-git.flatpak"
     JS_LOG: "js-report.txt"
     POT_LOG: "pot-update.txt"
 
@@ -110,3 +114,25 @@ test-pot:
           ' | tee $POT_LOG
         - (! grep -q . $POT_LOG)
     <<: *only_default
+
+flatpak:
+    stage: build
+    variables:
+        # Your manifest path
+        MANIFEST_PATH: "build-aux/flatpak/org.gnome.Extensions.json"
+        RUNTIME_REPO: "https://nightly.gnome.org/gnome-nightly.flatpakrepo"
+        FLATPAK_MODULE: "gnome-extensions-app"
+        APP_ID: "org.gnome.Extensions"
+        MESON_ARGS: "subprojects/extensions-app"
+    extends: .flatpak
+    before_script:
+        - cd subprojects/extensions-app
+        - flatpak run --command=./generate-translations.sh \
+                      --filesystem=home org.gnome.Sdk//master
+        - cd -
+    <<: *only_default
+
+nightly:
+  extends: '.publish_nightly'
+  variables:
+    BUNDLES: '$BUNDLE'
