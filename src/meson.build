@@ -249,15 +249,6 @@ executable('gnome-shell', 'main.c',
   install: true
 )
 
-executable('gnome-shell-extension-prefs',
-  'gnome-shell-extension-prefs.c', prefs_resources,
-  c_args: tools_cflags,
-  dependencies: tools_deps,
-  include_directories: [conf_inc],
-  install: true
-)
-
-
 if have_networkmanager
   executable('gnome-shell-portal-helper',
     'gnome-shell-portal-helper.c', portal_resources,

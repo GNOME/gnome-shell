@@ -2,25 +2,43 @@
 imports.gi.versions.Gdk = '3.0';
 imports.gi.versions.Gtk = '3.0';
 
+imports.package.initFormat();
+
 const Gettext = imports.gettext;
 const { Gdk, GLib, Gio, GObject, Gtk } = imports.gi;
-const Format = imports.format;
 
 const _ = Gettext.gettext;
 
-const Config = imports.misc.config;
 const ExtensionUtils = imports.misc.extensionUtils;
-const { loadInterfaceXML } = imports.misc.fileUtils;
 
 const { ExtensionState, ExtensionType } = ExtensionUtils;
 
 const GnomeShellIface = loadInterfaceXML('org.gnome.Shell.Extensions');
 const GnomeShellProxy = Gio.DBusProxy.makeProxyWrapper(GnomeShellIface);
 
+function loadInterfaceXML(iface) {
+    const uri = 'resource:///org/gnome/Extensions/dbus-interfaces/%s.xml'.format(iface);
+    const f = Gio.File.new_for_uri(uri);
+
+    try {
+        let [ok_, bytes] = f.load_contents(null);
+        return imports.byteArray.toString(bytes);
+    } catch (e) {
+        log('Failed to load D-Bus interface %s'.format(iface));
+    }
+
+    return null;
+}
+
 function stripPrefix(string, prefix) {
     if (string.slice(0, prefix.length) == prefix)
         return string.slice(prefix.length);
     return string;
+}
+
+function toggleState(action) {
+    let state = action.get_state();
+    action.change_state(new GLib.Variant('b', !state.get_boolean()));
 }
 
 var Application = GObject.registerClass(
@@ -46,7 +64,7 @@ class Application extends Gtk.Application {
         super.vfunc_startup();
 
         let provider = new Gtk.CssProvider();
-        let uri = 'resource:///org/gnome/shell/css/application.css';
+        let uri = 'resource:///org/gnome/Extensions/css/application.css';
         try {
             provider.load_from_file(Gio.File.new_for_uri(uri));
         } catch (e) {
@@ -61,11 +79,9 @@ class Application extends Gtk.Application {
     }
 
     vfunc_command_line(commandLine) {
-        let args = commandLine.get_arguments();
+        let [prgName_, uuid] = commandLine.get_arguments();
 
-        if (args.length) {
-            let uuid = args[0];
-
+        if (uuid) {
             // Strip off "extension:///" prefix which fakes a URI, if it exists
             uuid = stripPrefix(uuid, 'extension:///');
 
@@ -79,11 +95,10 @@ class Application extends Gtk.Application {
 
 var ExtensionsWindow = GObject.registerClass({
     GTypeName: 'ExtensionsWindow',
-    Template: 'resource:///org/gnome/shell/ui/extensions-window.ui',
+    Template: 'resource:///org/gnome/Extensions/ui/extensions-window.ui',
     InternalChildren: [
         'userList',
         'systemList',
-        'killSwitch',
         'mainBox',
         'mainStack',
         'scrolledWindow',
@@ -110,10 +125,15 @@ var ExtensionsWindow = GObject.registerClass({
         action.connect('activate', this._logout.bind(this));
         this.add_action(action);
 
-        this._settings = new Gio.Settings({ schema_id: 'org.gnome.shell' });
-        this._settings.bind('disable-user-extensions',
-            this._killSwitch, 'active',
-            Gio.SettingsBindFlags.DEFAULT | Gio.SettingsBindFlags.INVERT_BOOLEAN);
+        action = new Gio.SimpleAction({
+            name: 'user-extensions-enabled',
+            state: new GLib.Variant('b', false),
+        });
+        action.connect('activate', toggleState);
+        action.connect('change-state', (a, state) => {
+            this._shellProxy.UserExtensionsEnabled = state.get_boolean();
+        });
+        this.add_action(action);
 
         this._userList.set_sort_func(this._sortList.bind(this));
         this._userList.set_header_func(this._updateHeader.bind(this));
@@ -123,6 +143,10 @@ var ExtensionsWindow = GObject.registerClass({
 
         this._shellProxy.connectSignal('ExtensionStateChanged',
             this._onExtensionStateChanged.bind(this));
+
+        this._shellProxy.connect('g-properties-changed',
+            this._onUserExtensionsEnabledChanged.bind(this));
+        this._onUserExtensionsEnabledChanged();
 
         this._scanExtensions();
     }
@@ -219,7 +243,7 @@ var ExtensionsWindow = GObject.registerClass({
             comments: _('Manage your GNOME Extensions'),
             license_type: Gtk.License.GPL_2_0,
             logo_icon_name: 'org.gnome.Extensions',
-            version: Config.PACKAGE_VERSION,
+            version: imports.package.version,
 
             transient_for: this,
             modal: true,
@@ -375,6 +399,12 @@ var ExtensionsWindow = GObject.registerClass({
             ...this._userList.get_children(),
             ...this._systemList.get_children(),
         ].find(c => c.uuid === uuid);
+    }
+
+    _onUserExtensionsEnabledChanged() {
+        let action = this.lookup_action('user-extensions-enabled');
+        action.set_state(
+            new GLib.Variant('b', this._shellProxy.UserExtensionsEnabled));
     }
 
     _onExtensionStateChanged(proxy, senderName, [uuid, newState]) {
@@ -571,7 +601,7 @@ var Expander = GObject.registerClass({
 
 var ExtensionRow = GObject.registerClass({
     GTypeName: 'ExtensionRow',
-    Template: 'resource:///org/gnome/shell/ui/extension-row.ui',
+    Template: 'resource:///org/gnome/Extensions/ui/extension-row.ui',
     InternalChildren: [
         'nameLabel',
         'descriptionLabel',
@@ -621,10 +651,7 @@ var ExtensionRow = GObject.registerClass({
             name: 'enabled',
             state: new GLib.Variant('b', false),
         });
-        action.connect('activate', () => {
-            let state = action.get_state();
-            action.change_state(new GLib.Variant('b', !state.get_boolean()));
-        });
+        action.connect('activate', toggleState);
         action.connect('change-state', (a, state) => {
             if (state.get_boolean())
                 this._app.shellProxy.EnableExtensionRemote(this.uuid);
@@ -751,8 +778,6 @@ function initEnvironment() {
 
         userdatadir: GLib.build_filenamev([GLib.get_user_data_dir(), 'gnome-shell']),
     };
-
-    String.prototype.format = Format.format;
 }
 
 function main(argv) {

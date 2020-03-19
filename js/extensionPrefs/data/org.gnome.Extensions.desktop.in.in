@@ -2,8 +2,9 @@
 Type=Application
 Name=Extensions
 # Translators: Do NOT translate or transliterate this text (this is an icon file name)!
-Icon=org.gnome.Extensions
+Icon=@app_id@
 Comment=Configure GNOME Shell Extensions
-Exec=@bindir@/gnome-shell-extension-prefs %u
+Exec=@bindir@/@prgname@ %u
+DBusActivatable=true
 Categories=GNOME;GTK;
 OnlyShowIn=GNOME;
