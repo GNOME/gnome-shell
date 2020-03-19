@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2020-02-17 22:27+0000\n"
-"PO-Revision-Date: 2020-02-18 22:00+0100\n"
+"POT-Creation-Date: 2020-03-19 14:34+0000\n"
+"PO-Revision-Date: 2020-03-19 21:39+0100\n"
 "Last-Translator: Anders Jonsson <anders.jonsson@norsjovallen.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "Language: sv\n"
@@ -45,15 +45,6 @@ msgstr "Visa alla program"
 #: data/50-gnome-shell-system.xml:21
 msgid "Open the application menu"
 msgstr "Öppna programmenyn"
-
-#: data/org.gnome.Extensions.desktop.in.in:4 js/extensionPrefs/main.js:218
-#: js/extensionPrefs/ui/extensions-window.ui:61
-msgid "Extensions"
-msgstr "Tillägg"
-
-#: data/org.gnome.Extensions.desktop.in.in:7
-msgid "Configure GNOME Shell Extensions"
-msgstr "Konfigurera tillägg för GNOME-skal"
 
 #: data/org.gnome.Shell.desktop.in.in:4
 msgid "GNOME Shell"
@@ -396,12 +387,36 @@ msgstr "Fördröj fokusändringar i musläge tills pekare slutar röra sig"
 msgid "Network Login"
 msgstr "Nätverksinloggning"
 
-#: js/extensionPrefs/main.js:140
+#: js/extensionPrefs/data/metainfo/org.gnome.Extensions.metainfo.xml.in:5
+#: js/extensionPrefs/data/org.gnome.Extensions.desktop.in.in:4
+#: js/extensionPrefs/js/main.js:242
+#: js/extensionPrefs/data/ui/extensions-window.ui:61
+msgid "Extensions"
+msgstr "Tillägg"
+
+#: js/extensionPrefs/data/metainfo/org.gnome.Extensions.metainfo.xml.in:6
+#: js/extensionPrefs/js/main.js:243
+msgid "Manage your GNOME Extensions"
+msgstr "Hantera dina GNOME-tillägg"
+
+#: js/extensionPrefs/data/metainfo/org.gnome.Extensions.metainfo.xml.in:35
+msgid ""
+"GNOME Extensions handles updating extensions, configuring extension "
+"preferences and removing or disabling unwanted extensions."
+msgstr ""
+"GNOME Tillägg hanterar uppdatering av tillägg, konfiguration av "
+"inställningar för tillägg samt att ta bort eller inaktivera oönskade tillägg."
+
+#: js/extensionPrefs/data/org.gnome.Extensions.desktop.in.in:7
+msgid "Configure GNOME Shell Extensions"
+msgstr "Konfigurera tillägg för GNOME-skal"
+
+#: js/extensionPrefs/js/main.js:164
 #, javascript-format
 msgid "Remove “%s”?"
 msgstr "Ta bort ”%s”?"
 
-#: js/extensionPrefs/main.js:141
+#: js/extensionPrefs/js/main.js:165
 msgid ""
 "If you remove the extension, you need to return to download it if you want "
 "to enable it again"
@@ -409,19 +424,19 @@ msgstr ""
 "Om du tar bort tillägget kommer du att behöva återvända för att hämta det om "
 "du vill aktivera det igen"
 
-#: js/extensionPrefs/main.js:144 js/ui/audioDeviceSelection.js:57
-#: js/ui/components/networkAgent.js:107 js/ui/components/polkitAgent.js:139
-#: js/ui/endSessionDialog.js:374 js/ui/extensionDownloader.js:165
-#: js/ui/shellMountOperation.js:376 js/ui/shellMountOperation.js:386
-#: js/ui/status/network.js:913
+#: js/extensionPrefs/js/main.js:168 js/gdm/authPrompt.js:135
+#: js/ui/audioDeviceSelection.js:57 js/ui/components/networkAgent.js:109
+#: js/ui/components/polkitAgent.js:139 js/ui/endSessionDialog.js:374
+#: js/ui/extensionDownloader.js:177 js/ui/shellMountOperation.js:376
+#: js/ui/shellMountOperation.js:386 js/ui/status/network.js:913
 msgid "Cancel"
 msgstr "Avbryt"
 
-#: js/extensionPrefs/main.js:145
+#: js/extensionPrefs/js/main.js:169
 msgid "Remove"
 msgstr "Ta bort"
 
-#: js/extensionPrefs/main.js:217
+#: js/extensionPrefs/js/main.js:241
 msgid "translator-credits"
 msgstr ""
 "Anders Jonsson <anders.jonsson@norsjovallen.se>\n"
@@ -429,15 +444,12 @@ msgstr ""
 "Skicka synpunkter på översättningen till\n"
 "<tp-sv@listor.tp-sv.se>."
 
-#: js/extensionPrefs/main.js:219
-msgid "Manage your GNOME Extensions"
-msgstr "Hantera dina GNOME-tillägg"
-
-#: js/extensionPrefs/main.js:261 js/extensionPrefs/ui/extensions-window.ui:222
+#: js/extensionPrefs/js/main.js:285
+#: js/extensionPrefs/data/ui/extensions-window.ui:223
 msgid "Something’s gone wrong"
 msgstr "Något har gått fel"
 
-#: js/extensionPrefs/main.js:268
+#: js/extensionPrefs/js/main.js:292
 msgid ""
 "We’re very sorry, but there’s been a problem: the settings for this "
 "extension can’t be displayed. We recommend that you report the issue to the "
@@ -447,61 +459,61 @@ msgstr ""
 "tillägg kan inte visas. Vi rekommenderar att du rapporterar problemet till "
 "tilläggets skapare."
 
-#: js/extensionPrefs/main.js:275
+#: js/extensionPrefs/js/main.js:299
 msgid "Technical Details"
 msgstr "Tekniska detaljer"
 
-#: js/extensionPrefs/main.js:310
+#: js/extensionPrefs/js/main.js:334
 msgid "Copy Error"
 msgstr "Kopiera fel"
 
-#: js/extensionPrefs/main.js:337
+#: js/extensionPrefs/js/main.js:361
 msgid "Homepage"
 msgstr "Webbsida"
 
-#: js/extensionPrefs/main.js:338
+#: js/extensionPrefs/js/main.js:362
 msgid "Visit extension homepage"
 msgstr "Besök webbsida för tillägg"
 
-#: js/extensionPrefs/main.js:449
+#: js/extensionPrefs/js/main.js:479
 #, javascript-format
 msgid "%d extension will be updated on next login."
 msgid_plural "%d extensions will be updated on next login."
 msgstr[0] "%d inlägg kommer att uppdateras vid nästa inloggning."
 msgstr[1] "%d inlägg kommer att uppdateras vid nästa inloggning."
 
-#: js/extensionPrefs/ui/extension-row.ui:100
+#: js/extensionPrefs/data/ui/extension-row.ui:100
 #: subprojects/extensions-tool/src/command-create.c:211
 #: subprojects/extensions-tool/src/main.c:173
 msgid "Description"
 msgstr "Beskrivning"
 
-#: js/extensionPrefs/ui/extension-row.ui:123
+#: js/extensionPrefs/data/ui/extension-row.ui:123
 #: subprojects/extensions-tool/src/main.c:185
 msgid "Version"
 msgstr "Version"
 
-#: js/extensionPrefs/ui/extension-row.ui:151
+#: js/extensionPrefs/data/ui/extension-row.ui:151
 msgid "Author"
 msgstr "Upphovsman"
 
-#: js/extensionPrefs/ui/extension-row.ui:175
+#: js/extensionPrefs/data/ui/extension-row.ui:175
 msgid "Website"
 msgstr "Webbplats"
 
-#: js/extensionPrefs/ui/extension-row.ui:192
+#: js/extensionPrefs/data/ui/extension-row.ui:192
 msgid "Remove…"
 msgstr "Ta bort…"
 
-#: js/extensionPrefs/ui/extensions-window.ui:8
+#: js/extensionPrefs/data/ui/extensions-window.ui:8
 msgid "Help"
 msgstr "Hjälp"
 
-#: js/extensionPrefs/ui/extensions-window.ui:12
+#: js/extensionPrefs/data/ui/extensions-window.ui:12
 msgid "About Extensions"
 msgstr "Om tillägg"
 
-#: js/extensionPrefs/ui/extensions-window.ui:27
+#: js/extensionPrefs/data/ui/extensions-window.ui:27
 msgid ""
 "To find and add extensions, visit <a href=\"https://extensions.gnome.org"
 "\">extensions.gnome.org</a>."
@@ -509,11 +521,11 @@ msgstr ""
 "För att hitta och lägga till tillägg, besök <a href=\"https://extensions."
 "gnome.org\">extensions.gnome.org</a>."
 
-#: js/extensionPrefs/ui/extensions-window.ui:35
+#: js/extensionPrefs/data/ui/extensions-window.ui:35
 msgid "Warning"
 msgstr "Varning"
 
-#: js/extensionPrefs/ui/extensions-window.ui:46
+#: js/extensionPrefs/data/ui/extensions-window.ui:46
 msgid ""
 "Extensions can cause system issues, including performance problems. If you "
 "encounter problems with your system, it is recommended to disable all "
@@ -522,19 +534,19 @@ msgstr ""
 "Tillägg kan orsaka systemproblem, även prestandaproblem. Om du stöter på "
 "problem med ditt system så rekommenderas du att inaktivera alla tillägg."
 
-#: js/extensionPrefs/ui/extensions-window.ui:133
+#: js/extensionPrefs/data/ui/extensions-window.ui:134
 msgid "Manually Installed"
 msgstr "Manuellt installerade"
 
-#: js/extensionPrefs/ui/extensions-window.ui:157
+#: js/extensionPrefs/data/ui/extensions-window.ui:158
 msgid "Built-In"
 msgstr "Inbyggda"
 
-#: js/extensionPrefs/ui/extensions-window.ui:198
+#: js/extensionPrefs/data/ui/extensions-window.ui:199
 msgid "No Installed Extensions"
 msgstr "Inga installerade tillägg"
 
-#: js/extensionPrefs/ui/extensions-window.ui:234
+#: js/extensionPrefs/data/ui/extensions-window.ui:235
 msgid ""
 "We’re very sorry, but it was not possible to get the list of installed "
 "extensions. Make sure you are logged into GNOME and try again."
@@ -542,15 +554,15 @@ msgstr ""
 "Vi är ledsna, men det var inte möjligt att erhålla listan över installerade "
 "tillägg. Säkerställ att du är inloggad i GNOME och försök igen."
 
-#: js/extensionPrefs/ui/extensions-window.ui:287
+#: js/extensionPrefs/data/ui/extensions-window.ui:288
 msgid "Log Out…"
 msgstr "Logga ut…"
 
 #. Cisco LEAP
-#: js/gdm/authPrompt.js:235 js/ui/components/networkAgent.js:202
-#: js/ui/components/networkAgent.js:218 js/ui/components/networkAgent.js:242
-#: js/ui/components/networkAgent.js:263 js/ui/components/networkAgent.js:283
-#: js/ui/components/networkAgent.js:293 js/ui/components/polkitAgent.js:277
+#: js/gdm/authPrompt.js:237 js/ui/components/networkAgent.js:204
+#: js/ui/components/networkAgent.js:220 js/ui/components/networkAgent.js:244
+#: js/ui/components/networkAgent.js:265 js/ui/components/networkAgent.js:285
+#: js/ui/components/networkAgent.js:295 js/ui/components/polkitAgent.js:277
 #: js/ui/shellMountOperation.js:326
 msgid "Password"
 msgstr "Lösenord"
@@ -573,8 +585,8 @@ msgstr "(till exempel användare eller %s)"
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: js/gdm/loginDialog.js:917 js/ui/components/networkAgent.js:238
-#: js/ui/components/networkAgent.js:261 js/ui/components/networkAgent.js:279
+#: js/gdm/loginDialog.js:917 js/ui/components/networkAgent.js:240
+#: js/ui/components/networkAgent.js:263 js/ui/components/networkAgent.js:281
 msgid "Username"
 msgstr "Användarnamn"
 
@@ -828,44 +840,44 @@ msgstr "Neka åtkomst"
 msgid "Grant Access"
 msgstr "Bevilja åtkomst"
 
-#: js/ui/appDisplay.js:906
+#: js/ui/appDisplay.js:898
 msgid "Unnamed Folder"
 msgstr "Namnlös mapp"
 
-#: js/ui/appDisplay.js:929
+#: js/ui/appDisplay.js:921
 msgid "Frequently used applications will appear here"
 msgstr "Ofta använda program kommer visas här"
 
-#: js/ui/appDisplay.js:1064
+#: js/ui/appDisplay.js:1056
 msgid "Frequent"
 msgstr "Ofta använda"
 
-#: js/ui/appDisplay.js:1071
+#: js/ui/appDisplay.js:1063
 msgid "All"
 msgstr "Alla"
 
 #. Translators: This is the heading of a list of open windows
-#: js/ui/appDisplay.js:2454 js/ui/panel.js:75
+#: js/ui/appDisplay.js:2446 js/ui/panel.js:75
 msgid "Open Windows"
 msgstr "Öppna fönster"
 
-#: js/ui/appDisplay.js:2474 js/ui/panel.js:82
+#: js/ui/appDisplay.js:2466 js/ui/panel.js:82
 msgid "New Window"
 msgstr "Nytt fönster"
 
-#: js/ui/appDisplay.js:2485
+#: js/ui/appDisplay.js:2477
 msgid "Launch using Dedicated Graphics Card"
 msgstr "Kör med diskret grafikkort"
 
-#: js/ui/appDisplay.js:2513 js/ui/dash.js:239
+#: js/ui/appDisplay.js:2505 js/ui/dash.js:239
 msgid "Remove from Favorites"
 msgstr "Ta bort från favoriter"
 
-#: js/ui/appDisplay.js:2519
+#: js/ui/appDisplay.js:2511
 msgid "Add to Favorites"
 msgstr "Lägg till som favorit"
 
-#: js/ui/appDisplay.js:2529 js/ui/panel.js:93
+#: js/ui/appDisplay.js:2521 js/ui/panel.js:93
 msgid "Show Details"
 msgstr "Visa detaljer"
 
@@ -1013,30 +1025,30 @@ msgid "All Day"
 msgstr "Hela dagen"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year
-#: js/ui/calendar.js:867
+#: js/ui/calendar.js:868
 msgctxt "calendar heading"
 msgid "%A, %B %-d"
 msgstr "%A, %-d %B"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year
-#: js/ui/calendar.js:870
+#: js/ui/calendar.js:871
 msgctxt "calendar heading"
 msgid "%A, %B %-d, %Y"
 msgstr "%A, %-d %B, %Y"
 
-#: js/ui/calendar.js:1096
+#: js/ui/calendar.js:1100
 msgid "No Notifications"
 msgstr "Inga aviseringar"
 
-#: js/ui/calendar.js:1099
+#: js/ui/calendar.js:1103
 msgid "No Events"
 msgstr "Inga händelser"
 
-#: js/ui/calendar.js:1153
+#: js/ui/calendar.js:1157
 msgid "Do Not Disturb"
 msgstr "Stör ej"
 
-#: js/ui/calendar.js:1167
+#: js/ui/calendar.js:1171
 msgid "Clear"
 msgstr "Töm"
 
@@ -1083,39 +1095,39 @@ msgstr "Den installerade udisks-versionen stöder inte PIM-inställningen"
 msgid "Open with %s"
 msgstr "Öppna med %s"
 
-#: js/ui/components/networkAgent.js:89
+#: js/ui/components/networkAgent.js:91
 msgid ""
 "Alternatively you can connect by pushing the “WPS” button on your router."
 msgstr ""
 "Alternativt kan du ansluta genom att trycka på ”WPS”-knappen på din router."
 
-#: js/ui/components/networkAgent.js:101 js/ui/status/network.js:223
+#: js/ui/components/networkAgent.js:103 js/ui/status/network.js:223
 #: js/ui/status/network.js:314 js/ui/status/network.js:916
 msgid "Connect"
 msgstr "Anslut"
 
-#: js/ui/components/networkAgent.js:208
+#: js/ui/components/networkAgent.js:210
 msgid "Key"
 msgstr "Nyckel"
 
-#: js/ui/components/networkAgent.js:246 js/ui/components/networkAgent.js:269
+#: js/ui/components/networkAgent.js:248 js/ui/components/networkAgent.js:271
 msgid "Private key password"
 msgstr "Lösenord för privat nyckel"
 
-#: js/ui/components/networkAgent.js:267
+#: js/ui/components/networkAgent.js:269
 msgid "Identity"
 msgstr "Identitet"
 
-#: js/ui/components/networkAgent.js:281
+#: js/ui/components/networkAgent.js:283
 msgid "Service"
 msgstr "Tjänst"
 
-#: js/ui/components/networkAgent.js:310 js/ui/components/networkAgent.js:338
-#: js/ui/components/networkAgent.js:685 js/ui/components/networkAgent.js:706
+#: js/ui/components/networkAgent.js:312 js/ui/components/networkAgent.js:340
+#: js/ui/components/networkAgent.js:679 js/ui/components/networkAgent.js:700
 msgid "Authentication required"
 msgstr "Autentisering krävs"
 
-#: js/ui/components/networkAgent.js:311 js/ui/components/networkAgent.js:686
+#: js/ui/components/networkAgent.js:313 js/ui/components/networkAgent.js:680
 #, javascript-format
 msgid ""
 "Passwords or encryption keys are required to access the wireless network "
@@ -1124,42 +1136,42 @@ msgstr ""
 "Lösenord eller krypteringsnycklar krävs för att komma åt det trådlösa "
 "nätverket ”%s”."
 
-#: js/ui/components/networkAgent.js:315 js/ui/components/networkAgent.js:690
+#: js/ui/components/networkAgent.js:317 js/ui/components/networkAgent.js:684
 msgid "Wired 802.1X authentication"
 msgstr "Trådbunden 802.1X-autentisering"
 
-#: js/ui/components/networkAgent.js:317
+#: js/ui/components/networkAgent.js:319
 msgid "Network name"
 msgstr "Nätverksnamn"
 
-#: js/ui/components/networkAgent.js:322 js/ui/components/networkAgent.js:694
+#: js/ui/components/networkAgent.js:324 js/ui/components/networkAgent.js:688
 msgid "DSL authentication"
 msgstr "DSL-autentisering"
 
-#: js/ui/components/networkAgent.js:329 js/ui/components/networkAgent.js:699
+#: js/ui/components/networkAgent.js:331 js/ui/components/networkAgent.js:693
 msgid "PIN code required"
 msgstr "PIN-kod krävs"
 
-#: js/ui/components/networkAgent.js:330 js/ui/components/networkAgent.js:700
+#: js/ui/components/networkAgent.js:332 js/ui/components/networkAgent.js:694
 msgid "PIN code is needed for the mobile broadband device"
 msgstr "PIN-koden krävs för den mobila bredbandsenheten"
 
-#: js/ui/components/networkAgent.js:331
+#: js/ui/components/networkAgent.js:333
 msgid "PIN"
 msgstr "PIN"
 
-#: js/ui/components/networkAgent.js:339 js/ui/components/networkAgent.js:691
-#: js/ui/components/networkAgent.js:695 js/ui/components/networkAgent.js:707
-#: js/ui/components/networkAgent.js:711
+#: js/ui/components/networkAgent.js:341 js/ui/components/networkAgent.js:685
+#: js/ui/components/networkAgent.js:689 js/ui/components/networkAgent.js:701
+#: js/ui/components/networkAgent.js:705
 #, javascript-format
 msgid "A password is required to connect to “%s”."
 msgstr "Ett lösenord krävs för att ansluta till ”%s”."
 
-#: js/ui/components/networkAgent.js:674 js/ui/status/network.js:1691
+#: js/ui/components/networkAgent.js:668 js/ui/status/network.js:1691
 msgid "Network Manager"
 msgstr "Nätverkshanterare"
 
-#: js/ui/components/networkAgent.js:710
+#: js/ui/components/networkAgent.js:704
 msgid "VPN password"
 msgstr "VPN-lösenord"
 
@@ -1229,23 +1241,23 @@ msgstr "Lägg till världsklockor…"
 msgid "World Clocks"
 msgstr "Världsklockor"
 
-#: js/ui/dateMenu.js:276
+#: js/ui/dateMenu.js:279
 msgid "Weather"
 msgstr "Väder"
 
-#: js/ui/dateMenu.js:391
+#: js/ui/dateMenu.js:394
 msgid "Select a location…"
 msgstr "Välj en plats…"
 
-#: js/ui/dateMenu.js:404
+#: js/ui/dateMenu.js:407
 msgid "Loading…"
 msgstr "Läser in…"
 
-#: js/ui/dateMenu.js:414
+#: js/ui/dateMenu.js:417
 msgid "Go online for weather information"
 msgstr "Anslut till nätet för väderinformation"
 
-#: js/ui/dateMenu.js:416
+#: js/ui/dateMenu.js:419
 msgid "Weather information is currently unavailable"
 msgstr "Väderinformation är för närvarande inte tillgänglig"
 
@@ -1399,15 +1411,15 @@ msgstr "%s (fjärransluten)"
 msgid "%s (console)"
 msgstr "%s (konsol)"
 
-#: js/ui/extensionDownloader.js:169
+#: js/ui/extensionDownloader.js:181
 msgid "Install"
 msgstr "Installera"
 
-#: js/ui/extensionDownloader.js:175
+#: js/ui/extensionDownloader.js:187
 msgid "Install Extension"
 msgstr "Installera tillägg"
 
-#: js/ui/extensionDownloader.js:176
+#: js/ui/extensionDownloader.js:188
 #, javascript-format
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "Hämta och installera ”%s” från extensions.gnome.org?"
@@ -1516,59 +1528,59 @@ msgstr "Lämna avstängd"
 msgid "Region & Language Settings"
 msgstr "Re­gion- & språkinställningar"
 
-#: js/ui/lookingGlass.js:659
+#: js/ui/lookingGlass.js:665
 msgid "No extensions installed"
 msgstr "Inga tillägg installerade"
 
 #. Translators: argument is an extension UUID.
-#: js/ui/lookingGlass.js:714
+#: js/ui/lookingGlass.js:720
 #, javascript-format
 msgid "%s has not emitted any errors."
 msgstr "%s har inte skickat ut några fel."
 
-#: js/ui/lookingGlass.js:720
+#: js/ui/lookingGlass.js:726
 msgid "Hide Errors"
 msgstr "Dölj fel"
 
-#: js/ui/lookingGlass.js:724 js/ui/lookingGlass.js:789
+#: js/ui/lookingGlass.js:730 js/ui/lookingGlass.js:795
 msgid "Show Errors"
 msgstr "Visa fel"
 
-#: js/ui/lookingGlass.js:733
+#: js/ui/lookingGlass.js:739
 msgid "Enabled"
 msgstr "Aktiverad"
 
 #. translators:
 #. * The device has been disabled
-#: js/ui/lookingGlass.js:736 subprojects/gvc/gvc-mixer-control.c:1892
+#: js/ui/lookingGlass.js:742 subprojects/gvc/gvc-mixer-control.c:1892
 msgid "Disabled"
 msgstr "Inaktiverad"
 
-#: js/ui/lookingGlass.js:738
+#: js/ui/lookingGlass.js:744
 msgid "Error"
 msgstr "Fel"
 
-#: js/ui/lookingGlass.js:740
+#: js/ui/lookingGlass.js:746
 msgid "Out of date"
 msgstr "Utanför datumintervallet"
 
-#: js/ui/lookingGlass.js:742
+#: js/ui/lookingGlass.js:748
 msgid "Downloading"
 msgstr "Hämtar"
 
-#: js/ui/lookingGlass.js:771
+#: js/ui/lookingGlass.js:777
 msgid "View Source"
 msgstr "Visa källa"
 
-#: js/ui/lookingGlass.js:780
+#: js/ui/lookingGlass.js:786
 msgid "Web Page"
 msgstr "Webbsida"
 
-#: js/ui/main.js:267
+#: js/ui/main.js:274
 msgid "Logged in as a privileged user"
 msgstr "Inloggad som en privilegierad användare"
 
-#: js/ui/main.js:268
+#: js/ui/main.js:275
 msgid ""
 "Running a session as a privileged user should be avoided for security "
 "reasons. If possible, you should log in as a normal user."
@@ -1576,11 +1588,11 @@ msgstr ""
 "Att köra en session som en privilegierad användare bör undvikas av "
 "säkerhetsskäl. Om möjligt bör du logga in som en normal användare."
 
-#: js/ui/main.js:274
+#: js/ui/main.js:281
 msgid "Screen Lock disabled"
 msgstr "Skärmlås inaktiverat"
 
-#: js/ui/main.js:275
+#: js/ui/main.js:282
 msgid "Screen Locking requires the GNOME display manager."
 msgstr "Skärmlås kräver GNOME:s displayhanterare."
 
@@ -1668,12 +1680,12 @@ msgstr "Avsluta"
 msgid "Activities"
 msgstr "Aktiviteter"
 
-#: js/ui/panel.js:707
+#: js/ui/panel.js:713
 msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "System"
 
-#: js/ui/panel.js:820
+#: js/ui/panel.js:826
 msgid "Top Bar"
 msgstr "Systemrad"
 
@@ -1894,11 +1906,11 @@ msgstr "Sekundärklick"
 msgid "Dwell Click"
 msgstr "Uppehållsklick"
 
-#: js/ui/status/keyboard.js:825
+#: js/ui/status/keyboard.js:826
 msgid "Keyboard"
 msgstr "Tangentbord"
 
-#: js/ui/status/keyboard.js:847
+#: js/ui/status/keyboard.js:848
 msgid "Show Keyboard Layout"
 msgstr "Visa tangentbordslayout"
 
@@ -2309,21 +2321,25 @@ msgstr "Inbyggd skärm"
 
 #. Translators: This is a time format for a date in
 #. long format
-#: js/ui/unlockDialog.js:372
+#: js/ui/unlockDialog.js:370
 msgid "%A %B %-d"
 msgstr "%A %-d %B"
 
-#: js/ui/unlockDialog.js:378
+#: js/ui/unlockDialog.js:376
 msgid "Swipe up to unlock"
 msgstr "Svep uppåt för att låsa upp"
 
-#: js/ui/unlockDialog.js:379
+#: js/ui/unlockDialog.js:377
 msgid "Click or press a key to unlock"
 msgstr "Klicka eller tryck på en tangent för att låsa upp"
 
-#: js/ui/unlockDialog.js:552
+#: js/ui/unlockDialog.js:549
 msgid "Unlock Window"
 msgstr "Lås upp fönster"
+
+#: js/ui/unlockDialog.js:558
+msgid "Log in as another user"
+msgstr "Logga in som en annan användare"
 
 #: js/ui/viewSelector.js:181
 msgid "Applications"
@@ -2440,19 +2456,19 @@ msgstr "Stäng"
 msgid "Evolution Calendar"
 msgstr "Evolution-kalender"
 
-#: src/main.c:460 subprojects/extensions-tool/src/main.c:249
+#: src/main.c:458 subprojects/extensions-tool/src/main.c:249
 msgid "Print version"
 msgstr "Skriv ut version"
 
-#: src/main.c:466
+#: src/main.c:464
 msgid "Mode used by GDM for login screen"
 msgstr "Läge som används av GDM för inloggningsskärmen"
 
-#: src/main.c:472
+#: src/main.c:470
 msgid "Use a specific mode, e.g. “gdm” for login screen"
 msgstr "Använd ett specifikt läge, t.ex. ”gdm” för inloggningsskärm"
 
-#: src/main.c:478
+#: src/main.c:476
 msgid "List possible modes"
 msgstr "Lista möjliga lägen"
 
@@ -2843,9 +2859,6 @@ msgstr "Systemljud"
 #~ msgid_plural "%d new notifications"
 #~ msgstr[0] "%d ny avisering"
 #~ msgstr[1] "%d nya aviseringar"
-
-#~ msgid "Log in as another user"
-#~ msgstr "Logga in som en annan användare"
 
 #~ msgid "org.gnome.Extensions"
 #~ msgstr "org.gnome.Extensions"
