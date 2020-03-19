@@ -2,12 +2,11 @@
 imports.gi.versions.Gdk = '3.0';
 imports.gi.versions.Gtk = '3.0';
 
-imports.package.initFormat();
-
 const Gettext = imports.gettext;
+const Package = imports.package;
 const { Gdk, GLib, Gio, GObject, Gtk } = imports.gi;
 
-const _ = Gettext.gettext;
+Package.initFormat();
 
 const ExtensionUtils = imports.misc.extensionUtils;
 
@@ -782,6 +781,7 @@ function initEnvironment() {
 
 function main(argv) {
     initEnvironment();
+    Package.initGettext();
 
     new Application().run(argv);
 }
