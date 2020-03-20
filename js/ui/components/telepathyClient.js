@@ -2,7 +2,6 @@
 /* exported Component */
 
 const { Clutter, Gio, GLib, GObject, St } = imports.gi;
-const Lang = imports.lang;
 
 var Tpl = null;
 var Tp = null;
@@ -630,11 +629,21 @@ class ChatSource extends MessageTray.Source {
     }
 }) : null;
 
+const ChatNotificationMessage = HAVE_TP ? GObject.registerClass(
+class ChatNotificationMessage extends GObject.Object {
+    _init(props = {}) {
+        super._init();
+
+        Object.assign(this, props);
+        delete this.noTimestamp;
+    }
+}) : null;
+
 var ChatNotification = HAVE_TP ? GObject.registerClass({
     Signals: {
-        'message-removed': { param_types: [Tp.Message.$gtype] },
-        'message-added': { param_types: [Tp.Message.$gtype] },
-        'timestamp-changed': { param_types: [Tp.Message.$gtype] },
+        'message-removed': { param_types: [ChatNotificationMessage.$gtype] },
+        'message-added': { param_types: [ChatNotificationMessage.$gtype] },
+        'timestamp-changed': { param_types: [ChatNotificationMessage.$gtype] },
     },
 }, class ChatNotification extends MessageTray.Notification {
     _init(source) {
@@ -741,10 +750,10 @@ var ChatNotification = HAVE_TP ? GObject.registerClass({
             GLib.source_remove(this._timestampTimeoutId);
         this._timestampTimeoutId = 0;
 
-        let message = { realMessage: props.group != 'meta',
-                        showTimestamp: false };
-        Lang.copyProperties(props, message);
-        delete message.noTimestamp;
+        let message = new ChatNotificationMessage(Object.assign({
+            realMessage: props.group != 'meta',
+            showTimestamp: false,
+        }, props));
 
         this.messages.unshift(message);
         this.emit('message-added', message);
