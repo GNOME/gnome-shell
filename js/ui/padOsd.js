@@ -89,7 +89,7 @@ var PadChooser = GObject.registerClass({
 });
 
 var KeybindingEntry = GObject.registerClass({
-    Signals: { 'keybinding-edited': {} },
+    Signals: { 'keybinding-edited': { param_types: [GObject.TYPE_STRING] } },
 }, class KeybindingEntry extends St.Entry {
     _init() {
         super._init({ hint_text: _("New shortcut…"), style: 'width: 10em' });
