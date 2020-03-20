@@ -39,35 +39,58 @@ var NotificationDirection = {
     RECEIVED: 'chat-received',
 };
 
-function makeMessageFromTpMessage(tpMessage, direction) {
-    let [text, flags_] = tpMessage.to_text();
+const ChatMessage = HAVE_TP ? GObject.registerClass({
+    Properties: {
+        'message-type': GObject.ParamSpec.int(
+            'message-type', 'message-type', 'message-type',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            Math.min(...Object.values(Tp.ChannelTextMessageType)),
+            Math.max(...Object.values(Tp.ChannelTextMessageType)),
+            Tp.ChannelTextMessageType.NORMAL),
+        'text': GObject.ParamSpec.string(
+            'text', 'text', 'text',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            null),
+        'sender': GObject.ParamSpec.string(
+            'sender', 'sender', 'sender',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            null),
+        'timestamp': GObject.ParamSpec.int64(
+            'timestamp', 'timestamp', 'timestamp',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            0, Number.MAX_SAFE_INTEGER, 0),
+        'direction': GObject.ParamSpec.string(
+            'direction', 'direction', 'direction',
+            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+            null),
+    },
+}, class ChatMessageClass extends GObject.Object {
+    static newFromTpMessage(tpMessage, direction) {
+        return new ChatMessage({
+            'message-type': tpMessage.get_message_type(),
+            'text': tpMessage.to_text()[0],
+            'sender': tpMessage.sender.alias,
+            'timestamp': direction === NotificationDirection.RECEIVED
+                ? tpMessage.get_received_timestamp() : tpMessage.get_sent_timestamp(),
+            direction,
+        });
+    }
 
-    let timestamp = tpMessage.get_sent_timestamp();
-    if (timestamp == 0)
-        timestamp = tpMessage.get_received_timestamp();
+    static newFromTplTextEvent(tplTextEvent) {
+        let direction =
+            tplTextEvent.get_sender().get_entity_type() === Tpl.EntityType.SELF
+                ? NotificationDirection.SENT : NotificationDirection.RECEIVED;
 
-    return {
-        messageType: tpMessage.get_message_type(),
-        text,
-        sender: tpMessage.sender.alias,
-        timestamp,
-        direction,
-    };
-}
+        return new ChatMessage({
+            'message-type': tplTextEvent.get_message_type(),
+            'text': tplTextEvent.get_message(),
+            'sender': tplTextEvent.get_sender().get_alias(),
+            'timestamp': tplTextEvent.get_timestamp(),
+            direction,
+        });
+    }
+}) : null;
 
-
-function makeMessageFromTplEvent(event) {
-    let sent = event.get_sender().get_entity_type() == Tpl.EntityType.SELF;
-    let direction = sent ? NotificationDirection.SENT : NotificationDirection.RECEIVED;
-
-    return {
-        messageType: event.get_message_type(),
-        text: event.get_message(),
-        sender: event.get_sender().get_alias(),
-        timestamp: event.get_timestamp(),
-        direction,
-    };
-}
 
 var TelepathyComponent = class {
     constructor() {
@@ -430,7 +453,7 @@ class ChatSource extends MessageTray.Source {
     _displayPendingMessages(logManager, result) {
         let [success_, events] = logManager.get_filtered_events_finish(result);
 
-        let logMessages = events.map(makeMessageFromTplEvent);
+        let logMessages = events.map(e => ChatMessage.newFromTplTextEvent(e));
         this._ensureNotification();
 
         let pendingTpMessages = this._channel.get_pending_messages();
@@ -442,7 +465,8 @@ class ChatSource extends MessageTray.Source {
             if (message.get_message_type() == Tp.ChannelTextMessageType.DELIVERY_REPORT)
                 continue;
 
-            pendingMessages.push(makeMessageFromTpMessage(message, NotificationDirection.RECEIVED));
+            pendingMessages.push(ChatMessage.newFromTpMessage(message,
+                NotificationDirection.RECEIVED));
 
             this._pendingMessages.push(message);
         }
@@ -540,7 +564,8 @@ class ChatSource extends MessageTray.Source {
         this._pendingMessages.push(message);
         this.countUpdated();
 
-        message = makeMessageFromTpMessage(message, NotificationDirection.RECEIVED);
+        message = ChatMessage.newFromTpMessage(message,
+            NotificationDirection.RECEIVED);
         this._notification.appendMessage(message);
 
         // Wait a bit before notifying for the received message, a handler
@@ -565,7 +590,8 @@ class ChatSource extends MessageTray.Source {
     // our client and other clients as well.
     _messageSent(channel, message, _flags, _token) {
         this._ensureNotification();
-        message = makeMessageFromTpMessage(message, NotificationDirection.SENT);
+        message = ChatMessage.newFromTpMessage(message,
+            NotificationDirection.SENT);
         this._notification.appendMessage(message);
     }
 
