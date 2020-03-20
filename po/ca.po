@@ -237,48 +237,48 @@ msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:119
 msgid "Keybinding to open the application menu"
-msgstr "Vinculació per obrir el menú d'aplicació"
+msgstr "Vinculació per a obrir el menú d'aplicació"
 
 #: data/org.gnome.shell.gschema.xml.in:120
 msgid "Keybinding to open the application menu."
-msgstr "La vinculació per obrir el menú d'aplicació."
+msgstr "La vinculació per a obrir el menú d'aplicació."
 
 #: data/org.gnome.shell.gschema.xml.in:126
 msgid "Keybinding to open the “Show Applications” view"
-msgstr "Vinculació de tecles per obrir la vista «Mostra les aplicacions»"
+msgstr "Vinculació de tecles per a obrir la vista «Mostra les aplicacions»"
 
 #: data/org.gnome.shell.gschema.xml.in:127
 msgid ""
 "Keybinding to open the “Show Applications” view of the Activities Overview."
 msgstr ""
-"Vinculació de tecles per obrir la vista «Mostra les aplicacions» de les "
+"Vinculació de tecles per a obrir la vista «Mostra les aplicacions» de les "
 "activitats de la vista general."
 
 #: data/org.gnome.shell.gschema.xml.in:134
 msgid "Keybinding to open the overview"
-msgstr "Vinculació per obrir la vista general"
+msgstr "Vinculació per a obrir la vista general"
 
 #: data/org.gnome.shell.gschema.xml.in:135
 msgid "Keybinding to open the Activities Overview."
-msgstr "Vinculació per obrir la vista general d'activitats."
+msgstr "Vinculació per a obrir la vista general d'activitats."
 
 #: data/org.gnome.shell.gschema.xml.in:141
 msgid "Keybinding to toggle the visibility of the notification list"
 msgstr ""
-"La vinculació per commutar la visibilitat de la llista de notificacions"
+"La vinculació per a commutar la visibilitat de la llista de notificacions"
 
 #: data/org.gnome.shell.gschema.xml.in:142
 msgid "Keybinding to toggle the visibility of the notification list."
 msgstr ""
-"La vinculació per commutar la visibilitat de la llista de notificacions."
+"La vinculació per a commutar la visibilitat de la llista de notificacions."
 
 #: data/org.gnome.shell.gschema.xml.in:148
 msgid "Keybinding to focus the active notification"
-msgstr "Vinculació per posar el focus a la notificació activa"
+msgstr "Vinculació per a posar el focus a la notificació activa"
 
 #: data/org.gnome.shell.gschema.xml.in:149
 msgid "Keybinding to focus the active notification."
-msgstr "Vinculació per posar el focus a la notificació activa."
+msgstr "Vinculació per a posar el focus a la notificació activa."
 
 #: data/org.gnome.shell.gschema.xml.in:155
 msgid "Switch to application 1"
@@ -1634,7 +1634,7 @@ msgstr "Vista general"
 #. characters.
 #: js/ui/overview.js:107
 msgid "Type to search"
-msgstr "Teclegeu per a començar la cerca"
+msgstr "Teclegeu per a cercar"
 
 #: js/ui/padOsd.js:95
 msgid "New shortcut…"
@@ -1674,11 +1674,11 @@ msgstr "Premeu un botó per a configurar"
 
 #: js/ui/padOsd.js:864
 msgid "Press Esc to exit"
-msgstr "Premeu Esc per sortir"
+msgstr "Premeu Esc per a sortir"
 
 #: js/ui/padOsd.js:867
 msgid "Press any key to exit"
-msgstr "Premeu qualsevol tecla per sortir"
+msgstr "Premeu qualsevol tecla per a sortir"
 
 #: js/ui/panel.js:109
 msgid "Quit"
@@ -2339,11 +2339,11 @@ msgstr "%A %-d %B"
 
 #: js/ui/unlockDialog.js:376
 msgid "Swipe up to unlock"
-msgstr "Llisqueu amunt per desbloquejar"
+msgstr "Llisqueu amunt per a desbloquejar"
 
 #: js/ui/unlockDialog.js:377
 msgid "Click or press a key to unlock"
-msgstr "Feu clic o premeu una tecla per desbloquejar"
+msgstr "Feu clic o premeu una tecla per a desbloquejar"
 
 #: js/ui/unlockDialog.js:549
 msgid "Unlock Window"
@@ -2818,7 +2818,7 @@ msgstr "Instal·la un paquet d'extensió"
 #: subprojects/extensions-tool/src/main.c:262
 #, c-format
 msgid "Use “%s” to get detailed help.\n"
-msgstr "Feu servir «%s» per obtenir ajuda detallada.\n"
+msgstr "Feu servir «%s» per a obtenir ajuda detallada.\n"
 
 #. translators:
 #. * The number of sound outputs on a particular device
