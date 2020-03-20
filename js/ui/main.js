@@ -93,6 +93,9 @@ let _a11ySettings = null;
 let _themeResource = null;
 let _oskResource = null;
 
+Gio._promisify(Gio._LocalFilePrototype, 'delete_async', 'delete_finish');
+Gio._promisify(Gio._LocalFilePrototype, 'touch_async', 'touch_finish');
+
 function _sessionUpdated() {
     if (sessionMode.isPrimary)
         _loadDefaultStylesheet();
@@ -276,11 +279,8 @@ function _initializeUI() {
         }
 
         if (sessionMode.currentMode !== 'gdm' &&
-            sessionMode.currentMode !== 'initial-setup' &&
-            screenShield === null) {
-            notify(_('Screen Lock disabled'),
-                   _('Screen Locking requires the GNOME display manager.'));
-        }
+            sessionMode.currentMode !== 'initial-setup')
+            _handleLockScreenWarning();
 
         LoginManager.registerSessionWithGDM();
 
@@ -291,6 +291,32 @@ function _initializeUI() {
             Scripting.runPerfScript(module, perfOutput);
         }
     });
+}
+
+async function _handleLockScreenWarning() {
+    const path = '%s/lock-warning-shown'.format(global.userdatadir);
+    const file = Gio.File.new_for_path(path);
+
+    const hasLockScreen = screenShield !== null;
+    if (hasLockScreen) {
+        try {
+            await file.delete_async(0, null);
+        } catch (e) {
+            if (!e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.NOT_FOUND))
+                logError(e);
+        }
+    } else {
+        try {
+            if (!await file.touch_async())
+                return;
+        } catch (e) {
+            logError(e);
+        }
+
+        notify(
+            _('Screen Lock disabled'),
+            _('Screen Locking requires the GNOME display manager.'));
+    }
 }
 
 function _getStylesheet(name) {
