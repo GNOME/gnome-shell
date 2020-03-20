@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2020-02-27 21:57+0000\n"
-"PO-Revision-Date: 2020-02-29 02:21+0000\n"
+"POT-Creation-Date: 2020-03-19 14:34+0000\n"
+"PO-Revision-Date: 2020-03-20 23:31+0000\n"
 "Last-Translator: Danial Behzadi <dani.behzi@ubuntu.com>\n"
 "Language-Team: Persian <>\n"
 "Language: fa\n"
@@ -44,15 +44,6 @@ msgstr "نمایش همهٔ برنامه‌ها"
 #: data/50-gnome-shell-system.xml:21
 msgid "Open the application menu"
 msgstr "گشودن فهرست برنامه"
-
-#: data/org.gnome.Extensions.desktop.in.in:4 js/extensionPrefs/main.js:218
-#: js/extensionPrefs/ui/extensions-window.ui:61
-msgid "Extensions"
-msgstr "افزونه‌ها"
-
-#: data/org.gnome.Extensions.desktop.in.in:7
-msgid "Configure GNOME Shell Extensions"
-msgstr "پیکربندی افزونه‌های پوستهٔ گنوم"
 
 #: data/org.gnome.Shell.desktop.in.in:4
 msgid "GNOME Shell"
@@ -373,44 +364,65 @@ msgstr ""
 
 #: data/org.gnome.Shell.PortalHelper.desktop.in.in:3
 msgid "Network Login"
-msgstr "ورود با شبکه"
+msgstr "ورود شبکه‌ای"
 
-#: js/extensionPrefs/main.js:140
+#: js/extensionPrefs/data/metainfo/org.gnome.Extensions.metainfo.xml.in:5
+#: js/extensionPrefs/data/org.gnome.Extensions.desktop.in.in:4
+#: js/extensionPrefs/js/main.js:242
+#: js/extensionPrefs/data/ui/extensions-window.ui:61
+msgid "Extensions"
+msgstr "افزونه‌ها"
+
+#: js/extensionPrefs/data/metainfo/org.gnome.Extensions.metainfo.xml.in:6
+#: js/extensionPrefs/js/main.js:243
+msgid "Manage your GNOME Extensions"
+msgstr "مدیریت افزونه‌های پوستهٔ گنوم"
+
+#: js/extensionPrefs/data/metainfo/org.gnome.Extensions.metainfo.xml.in:35
+msgid ""
+"GNOME Extensions handles updating extensions, configuring extension preferences "
+"and removing or disabling unwanted extensions."
+msgstr ""
+"افزونه‌های گنوم به‌روز رسانی، پیکربندی، برداشتن یا از کار انداختن افزونه‌ها را "
+"مدیریت می‌کند."
+
+#: js/extensionPrefs/data/org.gnome.Extensions.desktop.in.in:7
+msgid "Configure GNOME Shell Extensions"
+msgstr "پیکربندی افزونه‌های پوستهٔ گنوم"
+
+#: js/extensionPrefs/js/main.js:164
 #, javascript-format
 msgid "Remove “%s”?"
 msgstr "برداشتن «%s»؟"
 
-#: js/extensionPrefs/main.js:141
+#: js/extensionPrefs/js/main.js:165
 msgid ""
 "If you remove the extension, you need to return to download it if you want to "
 "enable it again"
 msgstr "اگر افزونه را بردارید، باید برای به کار انداختن دوباره‌اش، بارگیریش کنید"
 
-#: js/extensionPrefs/main.js:144 js/gdm/authPrompt.js:135
-#: js/ui/audioDeviceSelection.js:57 js/ui/components/networkAgent.js:107
+#: js/extensionPrefs/js/main.js:168 js/gdm/authPrompt.js:135
+#: js/ui/audioDeviceSelection.js:57 js/ui/components/networkAgent.js:109
 #: js/ui/components/polkitAgent.js:139 js/ui/endSessionDialog.js:374
-#: js/ui/extensionDownloader.js:165 js/ui/shellMountOperation.js:376
+#: js/ui/extensionDownloader.js:177 js/ui/shellMountOperation.js:376
 #: js/ui/shellMountOperation.js:386 js/ui/status/network.js:913
 msgid "Cancel"
 msgstr "لغو"
 
-#: js/extensionPrefs/main.js:145
+#: js/extensionPrefs/js/main.js:169
 msgid "Remove"
 msgstr "حذف"
 
-#: js/extensionPrefs/main.js:217
+#: js/extensionPrefs/js/main.js:241
 msgid "translator-credits"
 msgstr "دانیال بهزادی <dani.behzi@ubuntu.com>"
 
-#: js/extensionPrefs/main.js:219
-msgid "Manage your GNOME Extensions"
-msgstr "مدیریت افزونه‌های پوستهٔ گنوم"
-
-#: js/extensionPrefs/main.js:261 js/extensionPrefs/ui/extensions-window.ui:222
+#: js/extensionPrefs/js/main.js:285
+#: js/extensionPrefs/data/ui/extensions-window.ui:223
 msgid "Something’s gone wrong"
 msgstr "اشتباهی صورت گرفت"
 
-#: js/extensionPrefs/main.js:268
+#: js/extensionPrefs/js/main.js:292
 msgid ""
 "We’re very sorry, but there’s been a problem: the settings for this extension "
 "can’t be displayed. We recommend that you report the issue to the extension "
@@ -419,61 +431,61 @@ msgstr ""
 "متأسّفیم، ولی مشکلی وجود داشت: تنظیمات این افزونه نمی‌تواند نشان داده شوند. توصیه "
 "می‌کنیم مشکل را به نگارندهٔ افزونه گزارش دهید."
 
-#: js/extensionPrefs/main.js:275
+#: js/extensionPrefs/js/main.js:299
 msgid "Technical Details"
 msgstr "جزییات فنّی"
 
-#: js/extensionPrefs/main.js:310
+#: js/extensionPrefs/js/main.js:334
 msgid "Copy Error"
 msgstr "رونوشت از خطا"
 
-#: js/extensionPrefs/main.js:337
+#: js/extensionPrefs/js/main.js:361
 msgid "Homepage"
 msgstr "صفحهٔ خانگی"
 
-#: js/extensionPrefs/main.js:338
+#: js/extensionPrefs/js/main.js:362
 msgid "Visit extension homepage"
 msgstr "مشاهدهٔ صفحهٔ خانگی افزونه"
 
-#: js/extensionPrefs/main.js:449
+#: js/extensionPrefs/js/main.js:479
 #, javascript-format
 msgid "%d extension will be updated on next login."
 msgid_plural "%d extensions will be updated on next login."
 msgstr[0] "تعداد %Id افزونه در ورود بعدی به‌روز خواهد شد."
 msgstr[1] "تعداد %Id افزونه در ورود بعدی به‌روز خواهند شد."
 
-#: js/extensionPrefs/ui/extension-row.ui:100
+#: js/extensionPrefs/data/ui/extension-row.ui:100
 #: subprojects/extensions-tool/src/command-create.c:211
 #: subprojects/extensions-tool/src/main.c:173
 msgid "Description"
 msgstr "شرح"
 
-#: js/extensionPrefs/ui/extension-row.ui:123
+#: js/extensionPrefs/data/ui/extension-row.ui:123
 #: subprojects/extensions-tool/src/main.c:185
 msgid "Version"
 msgstr "نگارش"
 
-#: js/extensionPrefs/ui/extension-row.ui:151
+#: js/extensionPrefs/data/ui/extension-row.ui:151
 msgid "Author"
 msgstr "نگارنده"
 
-#: js/extensionPrefs/ui/extension-row.ui:175
+#: js/extensionPrefs/data/ui/extension-row.ui:175
 msgid "Website"
 msgstr "پایگاه وب"
 
-#: js/extensionPrefs/ui/extension-row.ui:192
+#: js/extensionPrefs/data/ui/extension-row.ui:192
 msgid "Remove…"
 msgstr "برداشتن…"
 
-#: js/extensionPrefs/ui/extensions-window.ui:8
+#: js/extensionPrefs/data/ui/extensions-window.ui:8
 msgid "Help"
 msgstr "راهنما"
 
-#: js/extensionPrefs/ui/extensions-window.ui:12
+#: js/extensionPrefs/data/ui/extensions-window.ui:12
 msgid "About Extensions"
 msgstr "دربارهٔ افزونه‌ها"
 
-#: js/extensionPrefs/ui/extensions-window.ui:27
+#: js/extensionPrefs/data/ui/extensions-window.ui:27
 msgid ""
 "To find and add extensions, visit <a href=\"https://extensions.gnome.org"
 "\">extensions.gnome.org</a>."
@@ -481,11 +493,11 @@ msgstr ""
 "برای یافتن و افزودن افزونه‌ها، <a href=\"https://extensions.gnome.org\">پایگاه "
 "افزونه‌های گنوم</a> را ببینید."
 
-#: js/extensionPrefs/ui/extensions-window.ui:35
+#: js/extensionPrefs/data/ui/extensions-window.ui:35
 msgid "Warning"
 msgstr "هشدار"
 
-#: js/extensionPrefs/ui/extensions-window.ui:46
+#: js/extensionPrefs/data/ui/extensions-window.ui:46
 msgid ""
 "Extensions can cause system issues, including performance problems. If you "
 "encounter problems with your system, it is recommended to disable all extensions."
@@ -493,19 +505,19 @@ msgstr ""
 "افزونه‌ها می‌توانند موجب اشکال‌های سامانه‌ای مانند مشکلات اجرایی شوند. اگر با مشکلاتی "
 "روی سامانه‌تان مواجه شدید، پیشنهاد مي‌شود تمام افزونه‌ها را از کار بندازید."
 
-#: js/extensionPrefs/ui/extensions-window.ui:133
+#: js/extensionPrefs/data/ui/extensions-window.ui:134
 msgid "Manually Installed"
 msgstr "نصب‌شده به صورت دستی"
 
-#: js/extensionPrefs/ui/extensions-window.ui:157
+#: js/extensionPrefs/data/ui/extensions-window.ui:158
 msgid "Built-In"
 msgstr "توکار"
 
-#: js/extensionPrefs/ui/extensions-window.ui:198
+#: js/extensionPrefs/data/ui/extensions-window.ui:199
 msgid "No Installed Extensions"
 msgstr "هیچ افزونه‌ای نصب نشده"
 
-#: js/extensionPrefs/ui/extensions-window.ui:234
+#: js/extensionPrefs/data/ui/extensions-window.ui:235
 msgid ""
 "We’re very sorry, but it was not possible to get the list of installed "
 "extensions. Make sure you are logged into GNOME and try again."
@@ -513,15 +525,15 @@ msgstr ""
 "متأسّفیم، ولی امکان گرفتن فهرست افزونه‌های نصب‌شده نبود. مطمئن شوید که به گنوم وارد "
 "شده‌اید و دوباره تلاش کنید."
 
-#: js/extensionPrefs/ui/extensions-window.ui:287
+#: js/extensionPrefs/data/ui/extensions-window.ui:288
 msgid "Log Out…"
 msgstr "خروج…"
 
 #. Cisco LEAP
-#: js/gdm/authPrompt.js:237 js/ui/components/networkAgent.js:202
-#: js/ui/components/networkAgent.js:218 js/ui/components/networkAgent.js:242
-#: js/ui/components/networkAgent.js:263 js/ui/components/networkAgent.js:283
-#: js/ui/components/networkAgent.js:293 js/ui/components/polkitAgent.js:277
+#: js/gdm/authPrompt.js:237 js/ui/components/networkAgent.js:204
+#: js/ui/components/networkAgent.js:220 js/ui/components/networkAgent.js:244
+#: js/ui/components/networkAgent.js:265 js/ui/components/networkAgent.js:285
+#: js/ui/components/networkAgent.js:295 js/ui/components/polkitAgent.js:277
 #: js/ui/shellMountOperation.js:326
 msgid "Password"
 msgstr "گذرواژه"
@@ -544,8 +556,8 @@ msgstr "(برای مثال, کاربر یا %s)"
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: js/gdm/loginDialog.js:917 js/ui/components/networkAgent.js:238
-#: js/ui/components/networkAgent.js:261 js/ui/components/networkAgent.js:279
+#: js/gdm/loginDialog.js:917 js/ui/components/networkAgent.js:240
+#: js/ui/components/networkAgent.js:263 js/ui/components/networkAgent.js:281
 msgid "Username"
 msgstr "نام‌کاربری"
 
@@ -796,44 +808,44 @@ msgstr "رد دسترسی"
 msgid "Grant Access"
 msgstr "پذیرفتن دسترسی"
 
-#: js/ui/appDisplay.js:906
+#: js/ui/appDisplay.js:898
 msgid "Unnamed Folder"
 msgstr "پوشهٔ بی‌نام"
 
-#: js/ui/appDisplay.js:929
+#: js/ui/appDisplay.js:921
 msgid "Frequently used applications will appear here"
 msgstr "برنامه‌های بیشتر استفاده شده در اینجا نمایش داده می‌شود"
 
-#: js/ui/appDisplay.js:1064
+#: js/ui/appDisplay.js:1056
 msgid "Frequent"
 msgstr "پُر استفاده"
 
-#: js/ui/appDisplay.js:1071
+#: js/ui/appDisplay.js:1063
 msgid "All"
 msgstr "همه"
 
 #. Translators: This is the heading of a list of open windows
-#: js/ui/appDisplay.js:2450 js/ui/panel.js:75
+#: js/ui/appDisplay.js:2446 js/ui/panel.js:75
 msgid "Open Windows"
 msgstr "پنجره‌های باز"
 
-#: js/ui/appDisplay.js:2470 js/ui/panel.js:82
+#: js/ui/appDisplay.js:2466 js/ui/panel.js:82
 msgid "New Window"
 msgstr "پنجرهٔ جدید"
 
-#: js/ui/appDisplay.js:2481
+#: js/ui/appDisplay.js:2477
 msgid "Launch using Dedicated Graphics Card"
 msgstr "اجرا با کارت گرافیک اختصاصی"
 
-#: js/ui/appDisplay.js:2509 js/ui/dash.js:239
+#: js/ui/appDisplay.js:2505 js/ui/dash.js:239
 msgid "Remove from Favorites"
 msgstr "حذف از مورد پسندها"
 
-#: js/ui/appDisplay.js:2515
+#: js/ui/appDisplay.js:2511
 msgid "Add to Favorites"
 msgstr "افزودن به مورد پسندها"
 
-#: js/ui/appDisplay.js:2525 js/ui/panel.js:93
+#: js/ui/appDisplay.js:2521 js/ui/panel.js:93
 msgid "Show Details"
 msgstr "نمایش جزییات"
 
@@ -981,30 +993,30 @@ msgid "All Day"
 msgstr "تمام روز"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year
-#: js/ui/calendar.js:867
+#: js/ui/calendar.js:868
 msgctxt "calendar heading"
 msgid "%A, %B %-d"
 msgstr "%A %-Od %OB"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year
-#: js/ui/calendar.js:870
+#: js/ui/calendar.js:871
 msgctxt "calendar heading"
 msgid "%A, %B %-d, %Y"
 msgstr "%A %-Od %OB %Y"
 
-#: js/ui/calendar.js:1096
+#: js/ui/calendar.js:1100
 msgid "No Notifications"
 msgstr "بدون آگاهی"
 
-#: js/ui/calendar.js:1099
+#: js/ui/calendar.js:1103
 msgid "No Events"
 msgstr "بدون رویداد"
 
-#: js/ui/calendar.js:1153
+#: js/ui/calendar.js:1157
 msgid "Do Not Disturb"
 msgstr "مزاحم نشوید"
 
-#: js/ui/calendar.js:1167
+#: js/ui/calendar.js:1171
 msgid "Clear"
 msgstr "پاک‌سازی"
 
@@ -1051,78 +1063,78 @@ msgstr "نگارش نصب‌شدهٔ udisk از تنظیمات PIM پشتیبا�
 msgid "Open with %s"
 msgstr "گشودن با %s"
 
-#: js/ui/components/networkAgent.js:89
+#: js/ui/components/networkAgent.js:91
 msgid "Alternatively you can connect by pushing the “WPS” button on your router."
 msgstr "به عنوان جایگزین می‌توانید با فشردن دکمهٔ WPS روی مسیریابتان، وصل شوید."
 
-#: js/ui/components/networkAgent.js:101 js/ui/status/network.js:223
+#: js/ui/components/networkAgent.js:103 js/ui/status/network.js:223
 #: js/ui/status/network.js:314 js/ui/status/network.js:916
 msgid "Connect"
 msgstr "اتّصال"
 
-#: js/ui/components/networkAgent.js:208
+#: js/ui/components/networkAgent.js:210
 msgid "Key"
 msgstr "کلید"
 
-#: js/ui/components/networkAgent.js:246 js/ui/components/networkAgent.js:269
+#: js/ui/components/networkAgent.js:248 js/ui/components/networkAgent.js:271
 msgid "Private key password"
 msgstr "گذرواژهٔ کلید خصوصی"
 
-#: js/ui/components/networkAgent.js:267
+#: js/ui/components/networkAgent.js:269
 msgid "Identity"
 msgstr "شناسه"
 
-#: js/ui/components/networkAgent.js:281
+#: js/ui/components/networkAgent.js:283
 msgid "Service"
 msgstr "خدمت"
 
-#: js/ui/components/networkAgent.js:310 js/ui/components/networkAgent.js:338
-#: js/ui/components/networkAgent.js:685 js/ui/components/networkAgent.js:706
+#: js/ui/components/networkAgent.js:312 js/ui/components/networkAgent.js:340
+#: js/ui/components/networkAgent.js:679 js/ui/components/networkAgent.js:700
 msgid "Authentication required"
 msgstr "نیاز به تأیید هویت است"
 
-#: js/ui/components/networkAgent.js:311 js/ui/components/networkAgent.js:686
+#: js/ui/components/networkAgent.js:313 js/ui/components/networkAgent.js:680
 #, javascript-format
 msgid ""
 "Passwords or encryption keys are required to access the wireless network “%s”."
 msgstr "برای دسترسی به شبکهٔ وای‌فای «%s» نیاز به گذرواژه یا کلیدهای رمزنگاری است."
 
-#: js/ui/components/networkAgent.js:315 js/ui/components/networkAgent.js:690
+#: js/ui/components/networkAgent.js:317 js/ui/components/networkAgent.js:684
 msgid "Wired 802.1X authentication"
 msgstr "تایید هویت 802.1X سیمی"
 
-#: js/ui/components/networkAgent.js:317
+#: js/ui/components/networkAgent.js:319
 msgid "Network name"
 msgstr "نام شبکه"
 
-#: js/ui/components/networkAgent.js:322 js/ui/components/networkAgent.js:694
+#: js/ui/components/networkAgent.js:324 js/ui/components/networkAgent.js:688
 msgid "DSL authentication"
 msgstr "تایید هویت DSL"
 
-#: js/ui/components/networkAgent.js:329 js/ui/components/networkAgent.js:699
+#: js/ui/components/networkAgent.js:331 js/ui/components/networkAgent.js:693
 msgid "PIN code required"
 msgstr "رمز پین لازم است"
 
-#: js/ui/components/networkAgent.js:330 js/ui/components/networkAgent.js:700
+#: js/ui/components/networkAgent.js:332 js/ui/components/networkAgent.js:694
 msgid "PIN code is needed for the mobile broadband device"
 msgstr "رمز پین برای دستگاه پهن‌باند همراه لازم است"
 
-#: js/ui/components/networkAgent.js:331
+#: js/ui/components/networkAgent.js:333
 msgid "PIN"
 msgstr "پین"
 
-#: js/ui/components/networkAgent.js:339 js/ui/components/networkAgent.js:691
-#: js/ui/components/networkAgent.js:695 js/ui/components/networkAgent.js:707
-#: js/ui/components/networkAgent.js:711
+#: js/ui/components/networkAgent.js:341 js/ui/components/networkAgent.js:685
+#: js/ui/components/networkAgent.js:689 js/ui/components/networkAgent.js:701
+#: js/ui/components/networkAgent.js:705
 #, javascript-format
 msgid "A password is required to connect to “%s”."
 msgstr "برای اتصال به «%s» گذرواژه لازم است."
 
-#: js/ui/components/networkAgent.js:674 js/ui/status/network.js:1691
+#: js/ui/components/networkAgent.js:668 js/ui/status/network.js:1691
 msgid "Network Manager"
 msgstr "مدیر شبکه"
 
-#: js/ui/components/networkAgent.js:710
+#: js/ui/components/networkAgent.js:704
 msgid "VPN password"
 msgstr "گذرواژهٔ وی‌پی‌ان"
 
@@ -1192,23 +1204,23 @@ msgstr "اقزودن ساعت‌های جهانی…"
 msgid "World Clocks"
 msgstr "ساعت‌های جهانی"
 
-#: js/ui/dateMenu.js:276
+#: js/ui/dateMenu.js:279
 msgid "Weather"
 msgstr "آب‌وهوا"
 
-#: js/ui/dateMenu.js:391
+#: js/ui/dateMenu.js:394
 msgid "Select a location…"
 msgstr "موقعیتی را برگزینید…"
 
-#: js/ui/dateMenu.js:404
+#: js/ui/dateMenu.js:407
 msgid "Loading…"
 msgstr "در حال بار کردن…"
 
-#: js/ui/dateMenu.js:414
+#: js/ui/dateMenu.js:417
 msgid "Go online for weather information"
 msgstr "برای اطّلاعات آب‌وهوا برخط شوید"
 
-#: js/ui/dateMenu.js:416
+#: js/ui/dateMenu.js:419
 msgid "Weather information is currently unavailable"
 msgstr "اطّلاعات آب‌وهو در حال حاضر موجود نیست"
 
@@ -1359,15 +1371,15 @@ msgstr "%s (دوردست)"
 msgid "%s (console)"
 msgstr "%s (پایانه)"
 
-#: js/ui/extensionDownloader.js:169
+#: js/ui/extensionDownloader.js:181
 msgid "Install"
 msgstr "نصب"
 
-#: js/ui/extensionDownloader.js:175
+#: js/ui/extensionDownloader.js:187
 msgid "Install Extension"
 msgstr "نصب افزونه"
 
-#: js/ui/extensionDownloader.js:176
+#: js/ui/extensionDownloader.js:188
 #, javascript-format
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "بارگیری و نصب «%s» از extensions.gnome.org؟"
@@ -1521,11 +1533,11 @@ msgstr "نمایش منبع"
 msgid "Web Page"
 msgstr "صفحهٔ وب"
 
-#: js/ui/main.js:269
+#: js/ui/main.js:274
 msgid "Logged in as a privileged user"
 msgstr "واردشده به عنوان کاربری ممتاز"
 
-#: js/ui/main.js:270
+#: js/ui/main.js:275
 msgid ""
 "Running a session as a privileged user should be avoided for security reasons. If "
 "possible, you should log in as a normal user."
@@ -1533,11 +1545,11 @@ msgstr ""
 "به دلایل امنیتی باید از اجرای یک نشست به عنوان کاربری ممتاز خودداری کرد. در صورت "
 "امکان، با کاربری عادی وارد شوید."
 
-#: js/ui/main.js:276
+#: js/ui/main.js:281
 msgid "Screen Lock disabled"
 msgstr "قفل صفحه از کار افتاده"
 
-#: js/ui/main.js:277
+#: js/ui/main.js:282
 msgid "Screen Locking requires the GNOME display manager."
 msgstr "قفل صفحه نیاز به مدیر نمایش گنوم دارد."
 
@@ -1609,7 +1621,7 @@ msgstr "برای پیکربندی، کلیدی را بزنید"
 
 #: js/ui/padOsd.js:864
 msgid "Press Esc to exit"
-msgstr "برای خروج esc را بزنید"
+msgstr "برای خروج گریز را بزنید"
 
 #: js/ui/padOsd.js:867
 msgid "Press any key to exit"
@@ -1714,14 +1726,14 @@ msgstr "حجم سامانه‌ای ویندوز"
 
 #: js/ui/shellMountOperation.js:291
 msgid "Uses Keyfiles"
-msgstr "از پرونده‌ّای کلید استفاده می‌کند"
+msgstr "از پرونده‌های کلید استفاده می‌کند"
 
 #. Translators: %s is the Disks application
 #: js/ui/shellMountOperation.js:298
 #, javascript-format
 msgid "To unlock a volume that uses keyfiles, use the <i>%s</i> utility instead."
 msgstr ""
-"برای قل‌گشایی حجمی که از پرونده‌های کلید استفاده می‌کند، از ابزار <i>%s</i> استفاده "
+"برای قفل‌گشایی حجمی که از پرونده‌های کلید استفاده می‌کند، از ابزار <i>%s</i> استفاده "
 "کنید."
 
 #: js/ui/shellMountOperation.js:306
@@ -1734,7 +1746,7 @@ msgstr "به‌خاطر سپردن گذرواژه"
 
 #: js/ui/shellMountOperation.js:380
 msgid "Unlock"
-msgstr "گشودن قفل"
+msgstr "قفل‌گشایی"
 
 #. Translators: %s is the Disks application
 #: js/ui/shellMountOperation.js:391
@@ -1868,7 +1880,7 @@ msgstr "از کار انداختن"
 
 #: js/ui/status/location.js:67
 msgid "Privacy Settings"
-msgstr "تنظیمات حریم‌خصوصی"
+msgstr "تنظیمات محرمانگی"
 
 #: js/ui/status/location.js:173
 msgid "Location In Use"
@@ -1910,7 +1922,7 @@ msgstr "%s خاموش است"
 #: js/ui/status/network.js:423
 #, javascript-format
 msgid "%s Connected"
-msgstr "%s متصل شد"
+msgstr "%s وصل شده"
 
 #. Translators: this is for network devices that are physically present but are not
 #. under NetworkManager's control (and thus cannot be used in the menu);
@@ -2103,11 +2115,11 @@ msgstr "فعاّل‌سازی اتّصال شبکه شکست خورد"
 
 #: js/ui/status/nightLight.js:63
 msgid "Night Light Disabled"
-msgstr "نور شب از کار افتاد"
+msgstr "نور شب از کار افتاده است"
 
 #: js/ui/status/nightLight.js:64
 msgid "Night Light On"
-msgstr "نور شب روشن"
+msgstr "نور شب روشن است"
 
 #: js/ui/status/nightLight.js:66
 msgid "Resume"
@@ -2397,19 +2409,19 @@ msgstr "بستن"
 msgid "Evolution Calendar"
 msgstr "تقویم اوولوشن"
 
-#: src/main.c:460 subprojects/extensions-tool/src/main.c:249
+#: src/main.c:458 subprojects/extensions-tool/src/main.c:249
 msgid "Print version"
 msgstr "چاپ نگارش"
 
-#: src/main.c:466
+#: src/main.c:464
 msgid "Mode used by GDM for login screen"
 msgstr "حالت استفاده شده توسط GDM برای صفحهٔ ورود"
 
-#: src/main.c:472
+#: src/main.c:470
 msgid "Use a specific mode, e.g. “gdm” for login screen"
 msgstr "استفاده از یک حالت مشخص، مثلاً gdm برای صفحهٔ ورود"
 
-#: src/main.c:478
+#: src/main.c:476
 msgid "List possible modes"
 msgstr "فهرست کردن حالت‌های ممکن"
 
