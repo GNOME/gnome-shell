@@ -18,6 +18,7 @@ var ServiceImplementation = class {
         this._injectTracking('return_value_with_unix_fd_list');
 
         this._senders = new Map();
+        this._holdCount = 0;
 
         this._hasSignals = this._dbusImpl.get_info().signals.length > 0;
         this._shutdownTimeoutId = 0;
@@ -36,6 +37,22 @@ var ServiceImplementation = class {
 
     unexport() {
         this._dbusImpl.unexport();
+    }
+
+    hold() {
+        this._holdCount++;
+    }
+
+    release() {
+        if (this._holdCount === 0) {
+            logError(new Error('Unmatched call to release()'));
+            return;
+        }
+
+        this._holdCount--;
+
+        if (this._holdCount === 0)
+            this._queueShutdownCheck();
     }
 
     /**
@@ -69,7 +86,7 @@ var ServiceImplementation = class {
         if (!this._autoShutdown)
             return;
 
-        if (this._senders.size > 0)
+        if (this._holdCount > 0)
             return;
 
         this.emit('shutdown');
@@ -93,6 +110,7 @@ var ServiceImplementation = class {
         if (this._senders.has(sender))
             return;
 
+        this.hold();
         this._senders.set(sender,
             this._dbusImpl.get_connection().watch_name(
                 sender,
@@ -108,7 +126,7 @@ var ServiceImplementation = class {
             this._dbusImpl.get_connection().unwatch_name(id);
 
         if (this._senders.delete(sender))
-            this._queueShutdownCheck();
+            this.release();
     }
 
     _injectTracking(methodName) {
