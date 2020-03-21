@@ -188,6 +188,8 @@ var CloseDialog = GObject.registerClass({
         global.stage.disconnect(this._keyFocusChangedId);
         this._keyFocusChangedId = 0;
 
+        this._dialog.dialog.remove_all_transitions();
+
         let dialog = this._dialog;
         this._dialog = null;
         this._removeWindowEffect();
