@@ -396,17 +396,6 @@ scroll_bar_update_positions (StScrollBar *bar)
 }
 
 static void
-st_scroll_bar_style_changed (StWidget *widget)
-{
-  StScrollBarPrivate *priv = ST_SCROLL_BAR_PRIVATE (widget);
-
-  st_widget_style_changed (ST_WIDGET (priv->trough));
-  st_widget_style_changed (ST_WIDGET (priv->handle));
-
-  ST_WIDGET_CLASS (st_scroll_bar_parent_class)->style_changed (widget);
-}
-
-static void
 bar_reactive_notify_cb (GObject    *gobject,
                         GParamSpec *arg1,
                         gpointer    user_data)
@@ -504,7 +493,6 @@ st_scroll_bar_class_init (StScrollBarClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
-  StWidgetClass *widget_class = ST_WIDGET_CLASS (klass);
 
   object_class->get_property = st_scroll_bar_get_property;
   object_class->set_property = st_scroll_bar_set_property;
@@ -516,8 +504,6 @@ st_scroll_bar_class_init (StScrollBarClass *klass)
   actor_class->allocate       = st_scroll_bar_allocate;
   actor_class->scroll_event   = st_scroll_bar_scroll_event;
   actor_class->unmap          = st_scroll_bar_unmap;
-
-  widget_class->style_changed = st_scroll_bar_style_changed;
 
   props[PROP_ADJUSTMENT] =
     g_param_spec_object ("adjustment", "Adjustment", "The adjustment",

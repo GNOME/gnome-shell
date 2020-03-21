@@ -37,6 +37,8 @@ const _SCROLL_ANIMATION_TIME = 500;
 const _TIMED_LOGIN_IDLE_THRESHOLD = 5.0;
 const _LOGO_ICON_HEIGHT = 48;
 
+Gio._promisify(St.TextureCache.prototype, 'load_file_async', 'load_file_finish');
+
 var UserListItem = GObject.registerClass({
     Signals: { 'activate': {} },
 }, class UserListItem extends St.Button {
@@ -503,6 +505,10 @@ var LoginDialog = GObject.registerClass({
         this._logoBin.connect('resource-scale-changed', () => {
             this._updateLogoTexture(this._textureCache, this._logoFile);
         });
+        this._logoActor = new Clutter.Actor({
+            request_mode: Clutter.RequestMode.CONTENT_SIZE,
+        });
+        this._logoBin.add_child(this._logoActor);
         this.add_child(this._logoBin);
         this._updateLogo();
 
@@ -805,23 +811,19 @@ var LoginDialog = GObject.registerClass({
         this._bannerView.hide();
     }
 
-    _updateLogoTexture(cache, file) {
-        if (this._logoFile && !this._logoFile.equal(file))
+    async _updateLogoTexture(cache, file) {
+        if (!file || this._logoActor.resource_scale <= 0)
             return;
 
-        this._logoBin.destroy_all_children();
-        if (this._logoFile && this._logoBin.resource_scale > 0) {
-            let scaleFactor = St.ThemeContext.get_for_stage(global.stage).scale_factor;
-            this._logoBin.add_child(this._textureCache.load_file_async(this._logoFile,
-                                                                       -1, _LOGO_ICON_HEIGHT,
-                                                                       scaleFactor,
-                                                                       this._logoBin.resource_scale));
-        }
+        let scaleFactor = St.ThemeContext.get_for_stage(global.stage).scale_factor;
+        let logoContent = await cache.load_file_async(file, -1,
+            _LOGO_ICON_HEIGHT, scaleFactor, this._logoBin.resource_scale, null);
+
+        this._logoActor.content = logoContent;
     }
 
     _updateLogo() {
         let path = this._settings.get_string(GdmUtil.LOGO_KEY);
-
         this._logoFile = path ? Gio.file_new_for_path(path) : null;
         this._updateLogoTexture(this._textureCache, this._logoFile);
     }

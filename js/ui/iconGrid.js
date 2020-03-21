@@ -107,7 +107,6 @@ class BaseIcon extends St.Bin {
     }
 
     vfunc_style_changed() {
-        super.vfunc_style_changed();
         let node = this.get_theme_node();
 
         let size;
@@ -118,10 +117,10 @@ class BaseIcon extends St.Bin {
             size = found ? len : ICON_SIZE;
         }
 
-        if (this.iconSize == size && this._iconBin.child)
-            return;
+        if (this.iconSize != size || !this._iconBin.child)
+            this._createIconTexture(size);
 
-        this._createIconTexture(size);
+        super.vfunc_style_changed();
     }
 
     _onDestroy() {
@@ -700,9 +699,17 @@ var IconGrid = GObject.registerClass({
 
     _onStyleChanged() {
         let themeNode = this.get_theme_node();
-        this._spacing = themeNode.get_length('spacing');
-        this._hItemSize = themeNode.get_length('-shell-grid-horizontal-item-size') || ICON_SIZE;
-        this._vItemSize = themeNode.get_length('-shell-grid-vertical-item-size') || ICON_SIZE;
+        let spacing = themeNode.get_length('spacing');
+        let hItemSize = themeNode.get_length('-shell-grid-horizontal-item-size') || ICON_SIZE;
+        let vItemSize = themeNode.get_length('-shell-grid-vertical-item-size') || ICON_SIZE;
+
+        if (this._spacing == spacing && this._hItemSize == hItemSize &&
+            this._vItemSize == vItemSize)
+            return;
+
+        this._spacing = spacing;
+        this._hItemSize = hItemSize;
+        this._vItemSize = vItemSize;
         this.queue_relayout();
     }
 
