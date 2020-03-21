@@ -67,8 +67,8 @@ get_shell_proxy (GError **error)
   return g_dbus_proxy_new_for_bus_sync (G_BUS_TYPE_SESSION,
                                         G_DBUS_PROXY_FLAGS_NONE,
                                         NULL,
-                                        "org.gnome.Shell",
-                                        "/org/gnome/Shell",
+                                        "org.gnome.Shell.Extensions",
+                                        "/org/gnome/Shell/Extensions",
                                         "org.gnome.Shell.Extensions",
                                         NULL,
                                         error);
