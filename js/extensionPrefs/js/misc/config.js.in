@@ -1,2 +1,0 @@
-/* The version of this package */
-var PACKAGE_VERSION = '@PACKAGE_VERSION@';
