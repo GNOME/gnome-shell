@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2020-02-27 21:57+0000\n"
-"PO-Revision-Date: 2020-03-08 21:21+0100\n"
+"POT-Creation-Date: 2020-03-19 14:34+0000\n"
+"PO-Revision-Date: 2020-03-21 15:30+0100\n"
 "Last-Translator: Марко М. Костић <marko.m.kostic@gmail.com>\n"
 "Language-Team: српски <gnome-sr@googlegroups.org>\n"
 "Language: sr\n"
@@ -48,15 +48,6 @@ msgstr "Прикажи све програме"
 #: data/50-gnome-shell-system.xml:21
 msgid "Open the application menu"
 msgstr "Отворите изборник програма"
-
-#: data/org.gnome.Extensions.desktop.in.in:4 js/extensionPrefs/main.js:218
-#: js/extensionPrefs/ui/extensions-window.ui:61
-msgid "Extensions"
-msgstr "Проширења"
-
-#: data/org.gnome.Extensions.desktop.in.in:7
-msgid "Configure GNOME Shell Extensions"
-msgstr "Подесите проширења Гномове шкољке"
 
 #: data/org.gnome.Shell.desktop.in.in:4
 msgid "GNOME Shell"
@@ -398,12 +389,36 @@ msgstr "Застој првог плана се мења у режиму миш�
 msgid "Network Login"
 msgstr "Мрежна пријава"
 
-#: js/extensionPrefs/main.js:140
+#: js/extensionPrefs/data/metainfo/org.gnome.Extensions.metainfo.xml.in:5
+#: js/extensionPrefs/data/org.gnome.Extensions.desktop.in.in:4
+#: js/extensionPrefs/js/main.js:242
+#: js/extensionPrefs/data/ui/extensions-window.ui:61
+msgid "Extensions"
+msgstr "Проширења"
+
+#: js/extensionPrefs/data/metainfo/org.gnome.Extensions.metainfo.xml.in:6
+#: js/extensionPrefs/js/main.js:243
+msgid "Manage your GNOME Extensions"
+msgstr "Подесите проширења Гнома"
+
+#: js/extensionPrefs/data/metainfo/org.gnome.Extensions.metainfo.xml.in:35
+msgid ""
+"GNOME Extensions handles updating extensions, configuring extension "
+"preferences and removing or disabling unwanted extensions."
+msgstr ""
+"Гномова проширења руководе ажурирањем проширења, подешавањем поставки "
+"проширења и уклањањем или онемогућавањем проширења."
+
+#: js/extensionPrefs/data/org.gnome.Extensions.desktop.in.in:7
+msgid "Configure GNOME Shell Extensions"
+msgstr "Подесите проширења Гномове шкољке"
+
+#: js/extensionPrefs/js/main.js:164
 #, javascript-format
 msgid "Remove “%s”?"
 msgstr "Уклонити „%s“?"
 
-#: js/extensionPrefs/main.js:141
+#: js/extensionPrefs/js/main.js:165
 msgid ""
 "If you remove the extension, you need to return to download it if you want "
 "to enable it again"
@@ -411,19 +426,19 @@ msgstr ""
 "Уколико уклоните проширење, мораћете га поново преузети да бисте га поново "
 "омогућили"
 
-#: js/extensionPrefs/main.js:144 js/gdm/authPrompt.js:135
-#: js/ui/audioDeviceSelection.js:57 js/ui/components/networkAgent.js:107
+#: js/extensionPrefs/js/main.js:168 js/gdm/authPrompt.js:135
+#: js/ui/audioDeviceSelection.js:57 js/ui/components/networkAgent.js:109
 #: js/ui/components/polkitAgent.js:139 js/ui/endSessionDialog.js:374
-#: js/ui/extensionDownloader.js:165 js/ui/shellMountOperation.js:376
+#: js/ui/extensionDownloader.js:177 js/ui/shellMountOperation.js:376
 #: js/ui/shellMountOperation.js:386 js/ui/status/network.js:913
 msgid "Cancel"
 msgstr "Откажи"
 
-#: js/extensionPrefs/main.js:145
+#: js/extensionPrefs/js/main.js:169
 msgid "Remove"
 msgstr "Уклони"
 
-#: js/extensionPrefs/main.js:217
+#: js/extensionPrefs/js/main.js:241
 msgid "translator-credits"
 msgstr ""
 "Мирослав Николић <miroslavnikolic@rocketmail.com>\n"
@@ -433,15 +448,12 @@ msgstr ""
 "\n"
 "  https://гном.срб/ — превд пројекта Гном на српски језик"
 
-#: js/extensionPrefs/main.js:219
-msgid "Manage your GNOME Extensions"
-msgstr "Подесите проширења Гнома"
-
-#: js/extensionPrefs/main.js:261 js/extensionPrefs/ui/extensions-window.ui:222
+#: js/extensionPrefs/js/main.js:285
+#: js/extensionPrefs/data/ui/extensions-window.ui:223
 msgid "Something’s gone wrong"
 msgstr "Нешто је пошло наопако"
 
-#: js/extensionPrefs/main.js:268
+#: js/extensionPrefs/js/main.js:292
 msgid ""
 "We’re very sorry, but there’s been a problem: the settings for this "
 "extension can’t be displayed. We recommend that you report the issue to the "
@@ -450,23 +462,23 @@ msgstr ""
 "Веома нам је жао али се догодио проблем, не можемо приказати подешавања за "
 "ово проширење. Предлажемо вам да пријавите овај проблем творцима проширења."
 
-#: js/extensionPrefs/main.js:275
+#: js/extensionPrefs/js/main.js:299
 msgid "Technical Details"
 msgstr "Техничке појединости"
 
-#: js/extensionPrefs/main.js:310
+#: js/extensionPrefs/js/main.js:334
 msgid "Copy Error"
 msgstr "Грешка при копирању"
 
-#: js/extensionPrefs/main.js:337
+#: js/extensionPrefs/js/main.js:361
 msgid "Homepage"
 msgstr "Матична страна"
 
-#: js/extensionPrefs/main.js:338
+#: js/extensionPrefs/js/main.js:362
 msgid "Visit extension homepage"
 msgstr "Посети матичну страну проширењ"
 
-#: js/extensionPrefs/main.js:449
+#: js/extensionPrefs/js/main.js:479
 #, javascript-format
 msgid "%d extension will be updated on next login."
 msgid_plural "%d extensions will be updated on next login."
@@ -475,38 +487,38 @@ msgstr[1] "%d проширења биће ажурирана током след
 msgstr[2] "%d проширења биће ажурирана током следећег пријављивања."
 msgstr[3] "Једно проширење биће ажурирано током следећег пријављивања."
 
-#: js/extensionPrefs/ui/extension-row.ui:100
+#: js/extensionPrefs/data/ui/extension-row.ui:100
 #: subprojects/extensions-tool/src/command-create.c:211
 #: subprojects/extensions-tool/src/main.c:173
 msgid "Description"
 msgstr "Опис"
 
-#: js/extensionPrefs/ui/extension-row.ui:123
+#: js/extensionPrefs/data/ui/extension-row.ui:123
 #: subprojects/extensions-tool/src/main.c:185
 msgid "Version"
 msgstr "Издање"
 
-#: js/extensionPrefs/ui/extension-row.ui:151
+#: js/extensionPrefs/data/ui/extension-row.ui:151
 msgid "Author"
 msgstr "Творац"
 
-#: js/extensionPrefs/ui/extension-row.ui:175
+#: js/extensionPrefs/data/ui/extension-row.ui:175
 msgid "Website"
 msgstr "Веб страница"
 
-#: js/extensionPrefs/ui/extension-row.ui:192
+#: js/extensionPrefs/data/ui/extension-row.ui:192
 msgid "Remove…"
 msgstr "Уклони…"
 
-#: js/extensionPrefs/ui/extensions-window.ui:8
+#: js/extensionPrefs/data/ui/extensions-window.ui:8
 msgid "Help"
 msgstr "Помоћ"
 
-#: js/extensionPrefs/ui/extensions-window.ui:12
+#: js/extensionPrefs/data/ui/extensions-window.ui:12
 msgid "About Extensions"
 msgstr "О Проширењима"
 
-#: js/extensionPrefs/ui/extensions-window.ui:27
+#: js/extensionPrefs/data/ui/extensions-window.ui:27
 msgid ""
 "To find and add extensions, visit <a href=\"https://extensions.gnome.org"
 "\">extensions.gnome.org</a>."
@@ -514,11 +526,11 @@ msgstr ""
 "Да бисте пронашли и додали проширења, посетите страницу <a href=\"https://"
 "extensions.gnome.org\">extensions.gnome.org</a>."
 
-#: js/extensionPrefs/ui/extensions-window.ui:35
+#: js/extensionPrefs/data/ui/extensions-window.ui:35
 msgid "Warning"
 msgstr "Упозорење"
 
-#: js/extensionPrefs/ui/extensions-window.ui:46
+#: js/extensionPrefs/data/ui/extensions-window.ui:46
 msgid ""
 "Extensions can cause system issues, including performance problems. If you "
 "encounter problems with your system, it is recommended to disable all "
@@ -528,19 +540,19 @@ msgstr ""
 "Уколико приметите проблеме у раду, препоручујемо да онемогућите сва "
 "проширења."
 
-#: js/extensionPrefs/ui/extensions-window.ui:133
+#: js/extensionPrefs/data/ui/extensions-window.ui:134
 msgid "Manually Installed"
 msgstr "Ручно инсталирана"
 
-#: js/extensionPrefs/ui/extensions-window.ui:157
+#: js/extensionPrefs/data/ui/extensions-window.ui:158
 msgid "Built-In"
 msgstr "Уграђена"
 
-#: js/extensionPrefs/ui/extensions-window.ui:198
+#: js/extensionPrefs/data/ui/extensions-window.ui:199
 msgid "No Installed Extensions"
 msgstr "Неинсталирана проширења"
 
-#: js/extensionPrefs/ui/extensions-window.ui:234
+#: js/extensionPrefs/data/ui/extensions-window.ui:235
 msgid ""
 "We’re very sorry, but it was not possible to get the list of installed "
 "extensions. Make sure you are logged into GNOME and try again."
@@ -548,15 +560,15 @@ msgstr ""
 "Нажалост, није било могуће добавити списак инсталираних проширења. Проверите "
 "да ли сте пријављени у Гном и пробајте поново."
 
-#: js/extensionPrefs/ui/extensions-window.ui:287
+#: js/extensionPrefs/data/ui/extensions-window.ui:288
 msgid "Log Out…"
 msgstr "Одјава…"
 
 #. Cisco LEAP
-#: js/gdm/authPrompt.js:237 js/ui/components/networkAgent.js:202
-#: js/ui/components/networkAgent.js:218 js/ui/components/networkAgent.js:242
-#: js/ui/components/networkAgent.js:263 js/ui/components/networkAgent.js:283
-#: js/ui/components/networkAgent.js:293 js/ui/components/polkitAgent.js:277
+#: js/gdm/authPrompt.js:237 js/ui/components/networkAgent.js:204
+#: js/ui/components/networkAgent.js:220 js/ui/components/networkAgent.js:244
+#: js/ui/components/networkAgent.js:265 js/ui/components/networkAgent.js:285
+#: js/ui/components/networkAgent.js:295 js/ui/components/polkitAgent.js:277
 #: js/ui/shellMountOperation.js:326
 msgid "Password"
 msgstr "Лозинка"
@@ -579,8 +591,8 @@ msgstr "(нпр., корисник или %s)"
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: js/gdm/loginDialog.js:917 js/ui/components/networkAgent.js:238
-#: js/ui/components/networkAgent.js:261 js/ui/components/networkAgent.js:279
+#: js/gdm/loginDialog.js:917 js/ui/components/networkAgent.js:240
+#: js/ui/components/networkAgent.js:263 js/ui/components/networkAgent.js:281
 msgid "Username"
 msgstr "Корисник"
 
@@ -854,44 +866,44 @@ msgstr "Забрани приступ"
 msgid "Grant Access"
 msgstr "Дозволи приступ"
 
-#: js/ui/appDisplay.js:906
+#: js/ui/appDisplay.js:898
 msgid "Unnamed Folder"
 msgstr "Неименована фасцикла"
 
-#: js/ui/appDisplay.js:929
+#: js/ui/appDisplay.js:921
 msgid "Frequently used applications will appear here"
 msgstr "Често коришћени програми ће се појавити овде"
 
-#: js/ui/appDisplay.js:1064
+#: js/ui/appDisplay.js:1056
 msgid "Frequent"
 msgstr "Често"
 
-#: js/ui/appDisplay.js:1071
+#: js/ui/appDisplay.js:1063
 msgid "All"
 msgstr "Све"
 
 #. Translators: This is the heading of a list of open windows
-#: js/ui/appDisplay.js:2450 js/ui/panel.js:75
+#: js/ui/appDisplay.js:2446 js/ui/panel.js:75
 msgid "Open Windows"
 msgstr "Отвори прозоре"
 
-#: js/ui/appDisplay.js:2470 js/ui/panel.js:82
+#: js/ui/appDisplay.js:2466 js/ui/panel.js:82
 msgid "New Window"
 msgstr "Нови прозор"
 
-#: js/ui/appDisplay.js:2481
+#: js/ui/appDisplay.js:2477
 msgid "Launch using Dedicated Graphics Card"
 msgstr "Покрени са намењеном графичком картицом"
 
-#: js/ui/appDisplay.js:2509 js/ui/dash.js:239
+#: js/ui/appDisplay.js:2505 js/ui/dash.js:239
 msgid "Remove from Favorites"
 msgstr "Уклони из омиљених"
 
-#: js/ui/appDisplay.js:2515
+#: js/ui/appDisplay.js:2511
 msgid "Add to Favorites"
 msgstr "Додај у омиљене"
 
-#: js/ui/appDisplay.js:2525 js/ui/panel.js:93
+#: js/ui/appDisplay.js:2521 js/ui/panel.js:93
 msgid "Show Details"
 msgstr "Прикажи детаље"
 
@@ -1039,30 +1051,30 @@ msgid "All Day"
 msgstr "Цео дан"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year
-#: js/ui/calendar.js:867
+#: js/ui/calendar.js:868
 msgctxt "calendar heading"
 msgid "%A, %B %-d"
 msgstr "%A, %-d. %B"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year
-#: js/ui/calendar.js:870
+#: js/ui/calendar.js:871
 msgctxt "calendar heading"
 msgid "%A, %B %-d, %Y"
 msgstr "%A, %-d. %B %Y."
 
-#: js/ui/calendar.js:1096
+#: js/ui/calendar.js:1100
 msgid "No Notifications"
 msgstr "Без обавештења"
 
-#: js/ui/calendar.js:1099
+#: js/ui/calendar.js:1103
 msgid "No Events"
 msgstr "Без догађаја"
 
-#: js/ui/calendar.js:1153
+#: js/ui/calendar.js:1157
 msgid "Do Not Disturb"
 msgstr "Не узнемиравај"
 
-#: js/ui/calendar.js:1167
+#: js/ui/calendar.js:1171
 msgid "Clear"
 msgstr "Очисти"
 
@@ -1109,38 +1121,38 @@ msgstr "Инсталирано издање udisks-a не подржава ЛИ�
 msgid "Open with %s"
 msgstr "Отвори програмом %s"
 
-#: js/ui/components/networkAgent.js:89
+#: js/ui/components/networkAgent.js:91
 msgid ""
 "Alternatively you can connect by pushing the “WPS” button on your router."
 msgstr "Или можете повезати притиском на дугме „WPS“, на вашем рутеру."
 
-#: js/ui/components/networkAgent.js:101 js/ui/status/network.js:223
+#: js/ui/components/networkAgent.js:103 js/ui/status/network.js:223
 #: js/ui/status/network.js:314 js/ui/status/network.js:916
 msgid "Connect"
 msgstr "Повежи се"
 
-#: js/ui/components/networkAgent.js:208
+#: js/ui/components/networkAgent.js:210
 msgid "Key"
 msgstr "Кључ"
 
-#: js/ui/components/networkAgent.js:246 js/ui/components/networkAgent.js:269
+#: js/ui/components/networkAgent.js:248 js/ui/components/networkAgent.js:271
 msgid "Private key password"
 msgstr "Лозинка приватног кључа:"
 
-#: js/ui/components/networkAgent.js:267
+#: js/ui/components/networkAgent.js:269
 msgid "Identity"
 msgstr "Идентитет"
 
-#: js/ui/components/networkAgent.js:281
+#: js/ui/components/networkAgent.js:283
 msgid "Service"
 msgstr "Услуга"
 
-#: js/ui/components/networkAgent.js:310 js/ui/components/networkAgent.js:338
-#: js/ui/components/networkAgent.js:685 js/ui/components/networkAgent.js:706
+#: js/ui/components/networkAgent.js:312 js/ui/components/networkAgent.js:340
+#: js/ui/components/networkAgent.js:679 js/ui/components/networkAgent.js:700
 msgid "Authentication required"
 msgstr "Потребно је потврђивање идентитета"
 
-#: js/ui/components/networkAgent.js:311 js/ui/components/networkAgent.js:686
+#: js/ui/components/networkAgent.js:313 js/ui/components/networkAgent.js:680
 #, javascript-format
 msgid ""
 "Passwords or encryption keys are required to access the wireless network "
@@ -1148,42 +1160,42 @@ msgid ""
 msgstr ""
 "Потребне су лозинке или кључеви шифровања за приступ бежичној мрежи „%s“."
 
-#: js/ui/components/networkAgent.js:315 js/ui/components/networkAgent.js:690
+#: js/ui/components/networkAgent.js:317 js/ui/components/networkAgent.js:684
 msgid "Wired 802.1X authentication"
 msgstr "Потврђивање идентитета за жичану 802.1X везу"
 
-#: js/ui/components/networkAgent.js:317
+#: js/ui/components/networkAgent.js:319
 msgid "Network name"
 msgstr "Назив мреже"
 
-#: js/ui/components/networkAgent.js:322 js/ui/components/networkAgent.js:694
+#: js/ui/components/networkAgent.js:324 js/ui/components/networkAgent.js:688
 msgid "DSL authentication"
 msgstr "Потврђивање идентитета ДСЛ-а"
 
-#: js/ui/components/networkAgent.js:329 js/ui/components/networkAgent.js:699
+#: js/ui/components/networkAgent.js:331 js/ui/components/networkAgent.js:693
 msgid "PIN code required"
 msgstr "Потребан је ПИН кôд"
 
-#: js/ui/components/networkAgent.js:330 js/ui/components/networkAgent.js:700
+#: js/ui/components/networkAgent.js:332 js/ui/components/networkAgent.js:694
 msgid "PIN code is needed for the mobile broadband device"
 msgstr "Потребан је ПИН код за повезивање мобилног широкопојасног уређаја"
 
-#: js/ui/components/networkAgent.js:331
+#: js/ui/components/networkAgent.js:333
 msgid "PIN"
 msgstr "ПИН"
 
-#: js/ui/components/networkAgent.js:339 js/ui/components/networkAgent.js:691
-#: js/ui/components/networkAgent.js:695 js/ui/components/networkAgent.js:707
-#: js/ui/components/networkAgent.js:711
+#: js/ui/components/networkAgent.js:341 js/ui/components/networkAgent.js:685
+#: js/ui/components/networkAgent.js:689 js/ui/components/networkAgent.js:701
+#: js/ui/components/networkAgent.js:705
 #, javascript-format
 msgid "A password is required to connect to “%s”."
 msgstr "Потребна је лозинка за повезивање на „%s“."
 
-#: js/ui/components/networkAgent.js:674 js/ui/status/network.js:1691
+#: js/ui/components/networkAgent.js:668 js/ui/status/network.js:1691
 msgid "Network Manager"
 msgstr "Управник мреже"
 
-#: js/ui/components/networkAgent.js:710
+#: js/ui/components/networkAgent.js:704
 msgid "VPN password"
 msgstr "ВПН лозинка"
 
@@ -1253,23 +1265,23 @@ msgstr "Светски сатови…"
 msgid "World Clocks"
 msgstr "Светски сатови"
 
-#: js/ui/dateMenu.js:276
+#: js/ui/dateMenu.js:279
 msgid "Weather"
 msgstr "Временска прогноза"
 
-#: js/ui/dateMenu.js:391
+#: js/ui/dateMenu.js:394
 msgid "Select a location…"
 msgstr "Изаберите место…"
 
-#: js/ui/dateMenu.js:404
+#: js/ui/dateMenu.js:407
 msgid "Loading…"
 msgstr "Учитавам…"
 
-#: js/ui/dateMenu.js:414
+#: js/ui/dateMenu.js:417
 msgid "Go online for weather information"
 msgstr "Идите на мрежу за податке о временској прогнози."
 
-#: js/ui/dateMenu.js:416
+#: js/ui/dateMenu.js:419
 msgid "Weather information is currently unavailable"
 msgstr "Подаци о временској прогнози тренутно нису доступни."
 
@@ -1431,15 +1443,15 @@ msgstr "%s (удаљено)"
 msgid "%s (console)"
 msgstr "%s (љуска)"
 
-#: js/ui/extensionDownloader.js:169
+#: js/ui/extensionDownloader.js:181
 msgid "Install"
 msgstr "Инсталирај"
 
-#: js/ui/extensionDownloader.js:175
+#: js/ui/extensionDownloader.js:187
 msgid "Install Extension"
 msgstr "Инсталирај проширење"
 
-#: js/ui/extensionDownloader.js:176
+#: js/ui/extensionDownloader.js:188
 #, javascript-format
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "Да преузмем и да инсталирам „%s“ са „extensions.gnome.org“-а?"
@@ -1595,11 +1607,11 @@ msgstr "Прикажи код"
 msgid "Web Page"
 msgstr "Веб страница"
 
-#: js/ui/main.js:269
+#: js/ui/main.js:274
 msgid "Logged in as a privileged user"
 msgstr "Пријављен као повлашћен корисник"
 
-#: js/ui/main.js:270
+#: js/ui/main.js:275
 msgid ""
 "Running a session as a privileged user should be avoided for security "
 "reasons. If possible, you should log in as a normal user."
@@ -1607,11 +1619,11 @@ msgstr ""
 "Покретање сесије под повлашћеним корисничким налогом треба избегавати из "
 "безбедносних разлога. Ако је то могуће, пријавите се као обичан корисник."
 
-#: js/ui/main.js:276
+#: js/ui/main.js:281
 msgid "Screen Lock disabled"
 msgstr "Закључавање екрана онемогућено"
 
-#: js/ui/main.js:277
+#: js/ui/main.js:282
 msgid "Screen Locking requires the GNOME display manager."
 msgstr "Потребан је Гномов управник екрана за могућност закључавања екрана."
 
@@ -2489,19 +2501,19 @@ msgstr "Затвори"
 msgid "Evolution Calendar"
 msgstr "Календар Еволуције"
 
-#: src/main.c:460 subprojects/extensions-tool/src/main.c:249
+#: src/main.c:458 subprojects/extensions-tool/src/main.c:249
 msgid "Print version"
 msgstr "Исписује издање"
 
-#: src/main.c:466
+#: src/main.c:464
 msgid "Mode used by GDM for login screen"
 msgstr "Који режим користи ГДМ за екран пријављивања"
 
-#: src/main.c:472
+#: src/main.c:470
 msgid "Use a specific mode, e.g. “gdm” for login screen"
 msgstr "Користи нарочит режим, нпр. „gdm“ за екран пријављивања"
 
-#: src/main.c:478
+#: src/main.c:476
 msgid "List possible modes"
 msgstr "Исписује могуће режиме"
 
