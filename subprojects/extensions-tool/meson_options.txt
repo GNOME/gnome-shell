@@ -1,11 +1,17 @@
 option('man',
   type: 'boolean',
   value: true,
-  description: 'Generate man pages'
+  description: 'Generate man pages',
+  yield: true,
+)
+
+option('bash_completion',
+  type: 'feature',
+  value: 'auto',
+  description: 'Install bash completion support',
 )
 
 option('package_name',
   type: 'string',
-  value: 'gnome-extensions-tool',
-  description: 'The gettext domain name'
+  description: 'The gettext domain name when used as a subproject'
 )

@@ -246,7 +246,6 @@ libgvc_gir = libgvc.get_variable('libgvc_gir')
 if get_option('extensions_tool')
   extension_tool = subproject('extensions-tool',
     default_options: [
-      'man=@0@'.format(get_option('man')),
       'package_name=@0@'.format(meson.project_name()),
     ]
   )
@@ -272,3 +271,35 @@ if get_option('gtk_doc')
 endif
 
 meson.add_install_script('meson/postinstall.py')
+
+summary_options = {
+  'networkmanager': get_option('networkmanager'),
+  'systemd': get_option('systemd'),
+  'extensions_tool': get_option('extensions_tool'),
+  'man': get_option('man'),
+  'gtk_doc': get_option('gtk_doc'),
+}
+
+summary_build = {
+  'buildtype': get_option('buildtype'),
+  'debug': get_option('debug'),
+}
+
+summary_dirs = {
+  'prefix': get_option('prefix'),
+  'bindir': get_option('bindir'),
+  'libdir': get_option('libdir'),
+  'libexecdir': get_option('libexecdir'),
+  'datadir': get_option('datadir'),
+  'sysconfdir': get_option('sysconfdir'),
+}
+
+if get_option('man')
+  summary_dirs += { 'mandir': get_option('mandir') }
+endif
+
+if meson.version().version_compare('>= 0.53.0')
+  summary(summary_dirs, section: 'Directories')
+  summary(summary_build, section: 'Build Configuration')
+  summary(summary_options, section: 'Build Options')
+endif
