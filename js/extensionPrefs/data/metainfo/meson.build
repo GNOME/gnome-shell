@@ -13,4 +13,13 @@ if (appstream_util.found())
     args: ['validate', '--nonet', metainfo],
     workdir: meson.current_build_dir()
   )
+
+  r = run_command(appstream_util, '--help')
+  if (r.stdout().contains('validate-version'))
+    test('Checking release entry for @0@'.format(meson.project_version()),
+      appstream_util,
+      args: ['validate-version', metainfo, meson.project_version()],
+      workdir: meson.current_build_dir()
+    )
+  endif
 endif
