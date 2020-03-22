@@ -423,9 +423,11 @@ var ExtensionsWindow = GObject.registerClass({
         if (row) {
             if (extension.state === ExtensionState.UNINSTALLED)
                 row.destroy();
-            return; // we only deal with new and deleted extensions here
+        } else {
+            this._addExtensionRow(extension);
         }
-        this._addExtensionRow(extension);
+
+        this._syncListVisibility();
     }
 
     _scanExtensions() {
@@ -471,6 +473,16 @@ var ExtensionsWindow = GObject.registerClass({
             });
     }
 
+    _syncListVisibility() {
+        this._userList.visible = this._userList.get_children().length > 0;
+        this._systemList.visible = this._systemList.get_children().length > 0;
+
+        if (this._userList.visible || this._systemList.visible)
+            this._mainStack.visible_child_name = 'main';
+        else
+            this._mainStack.visible_child_name = 'placeholder';
+    }
+
     _checkUpdates() {
         let nUpdates = this._userList.get_children().filter(c => c.hasUpdate).length;
 
@@ -482,14 +494,7 @@ var ExtensionsWindow = GObject.registerClass({
     }
 
     _extensionsLoaded() {
-        this._userList.visible = this._userList.get_children().length > 0;
-        this._systemList.visible = this._systemList.get_children().length > 0;
-
-        if (this._userList.visible || this._systemList.visible)
-            this._mainStack.visible_child_name = 'main';
-        else
-            this._mainStack.visible_child_name = 'placeholder';
-
+        this._syncListVisibility();
         this._checkUpdates();
 
         if (this._startupUuid)
