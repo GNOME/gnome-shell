@@ -129,9 +129,10 @@ var NotificationsBox = GObject.registerClass({
 
             let body = '';
             if (n.bannerBodyText) {
+                const bodyText = n.bannerBodyText.replace(/\n/g, ' ');
                 body = n.bannerBodyMarkup
-                    ? n.bannerBodyText
-                    : GLib.markup_escape_text(n.bannerBodyText, -1);
+                    ? bodyText
+                    : GLib.markup_escape_text(bodyText, -1);
             }
 
             let label = new St.Label({ style_class: 'unlock-dialog-notification-count-text' });
