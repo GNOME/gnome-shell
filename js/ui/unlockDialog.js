@@ -115,7 +115,7 @@ var NotificationsBox = GObject.registerClass({
         box.add_child(textBox);
 
         let title = new St.Label({
-            text: source.title,
+            text: source.title.replace(/\n/g, ' '),
             style_class: 'unlock-dialog-notification-label',
         });
         textBox.add(title);
@@ -129,9 +129,10 @@ var NotificationsBox = GObject.registerClass({
 
             let body = '';
             if (n.bannerBodyText) {
+                const bodyText = n.bannerBodyText.replace(/\n/g, ' ');
                 body = n.bannerBodyMarkup
-                    ? n.bannerBodyText
-                    : GLib.markup_escape_text(n.bannerBodyText, -1);
+                    ? bodyText
+                    : GLib.markup_escape_text(bodyText, -1);
             }
 
             let label = new St.Label({ style_class: 'unlock-dialog-notification-count-text' });
