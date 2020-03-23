@@ -762,12 +762,10 @@ var Source = GObject.registerClass({
 
         this.notifications = [];
 
-        this._policy = null;
+        this._policy = this._createPolicy();
     }
 
     get policy() {
-        if (!this._policy)
-            this._policy = this._createPolicy();
         return this._policy;
     }
 

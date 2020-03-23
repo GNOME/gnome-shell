@@ -416,10 +416,10 @@ var FdoNotificationDaemon = class FdoNotificationDaemon {
 var FdoNotificationDaemonSource = GObject.registerClass(
 class FdoNotificationDaemonSource extends MessageTray.Source {
     _init(title, pid, sender, appId) {
-        super._init(title);
-
         this.pid = pid;
         this.app = this._getApp(appId);
+
+        super._init(title);
 
         this.initialTitle = title;
 
@@ -631,11 +631,11 @@ class GtkNotificationDaemonAppSource extends MessageTray.Source {
         if (!app)
             throw new InvalidAppError();
 
-        super._init(app.get_name());
-
         this._appId = appId;
         this._app = app;
         this._objectPath = objectPath;
+
+        super._init(app.get_name());
 
         this._notifications = {};
         this._notificationPending = false;
