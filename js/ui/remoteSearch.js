@@ -247,7 +247,7 @@ var RemoteSearchProvider = class {
             if (error.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
                 return;
 
-            log('Received error from DBus search provider %s: %s'.format(this.id, String(error)));
+            log('Received error from D-Bus search provider %s: %s'.format(this.id, String(error)));
             callback([]);
             return;
         }
@@ -274,7 +274,7 @@ var RemoteSearchProvider = class {
     _getResultMetasFinished(results, error, callback) {
         if (error) {
             if (!error.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
-                log('Received error from DBus search provider %s during GetResultMetas: %s'.format(this.id, String(error)));
+                log('Received error from D-Bus search provider %s during GetResultMetas: %s'.format(this.id, String(error)));
             callback([]);
             return;
         }
