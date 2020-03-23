@@ -10,7 +10,7 @@ imports.gi.versions.Gtk = '3.0';
 imports.gi.versions.TelepathyGLib = '0.12';
 imports.gi.versions.TelepathyLogger = '0.2';
 
-const { Clutter, GLib, GObject, Meta, Shell, St } = imports.gi;
+const { Clutter, Gio, GLib, GObject, Meta, Shell, St } = imports.gi;
 const Gettext = imports.gettext;
 const System = imports.system;
 
@@ -287,6 +287,13 @@ function init() {
             return this;
         },
     });
+
+    Gio._LocalFilePrototype.touch_async = function(callback) {
+        Shell.util_touch_file_async(this, callback);
+    };
+    Gio._LocalFilePrototype.touch_finish = function(result) {
+        return Shell.util_touch_file_finish(this, result);
+    };
 
     St.set_slow_down_factor = function (factor) {
         let { stack } = new Error();
