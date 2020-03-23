@@ -467,7 +467,7 @@ Signals.addSignalMethods(Key.prototype);
 var KeyboardModel = class {
     constructor(groupName) {
         let names = [groupName];
-        if (names.includes('+'))
+        if (groupName.includes('+'))
             names.push(groupName.replace(/\+.*/, ''));
         names.push('us');
 
