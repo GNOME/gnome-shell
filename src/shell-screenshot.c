@@ -87,11 +87,12 @@ write_screenshot_thread (GTask        *result,
                          gpointer      task_data,
                          GCancellable *cancellable)
 {
-  cairo_status_t status;
-  GOutputStream *stream;
   ShellScreenshot *screenshot = SHELL_SCREENSHOT (object);
   ShellScreenshotPrivate *priv;
-  char *creation_time;
+  g_autoptr (GOutputStream) stream = NULL;
+  g_autoptr(GdkPixbuf) pixbuf = NULL;
+  g_autofree char *creation_time = NULL;
+  GError *error = NULL;
 
   g_assert (screenshot != NULL);
 
@@ -99,37 +100,24 @@ write_screenshot_thread (GTask        *result,
 
   stream = g_object_ref (priv->stream);
 
-  if (stream == NULL)
-    status = CAIRO_STATUS_FILE_NOT_FOUND;
+  pixbuf = gdk_pixbuf_get_from_surface (priv->image,
+                                        0, 0,
+                                        cairo_image_surface_get_width (priv->image),
+                                        cairo_image_surface_get_height (priv->image));
+  creation_time = g_date_time_format (priv->datetime, "%c");
+
+  if (!creation_time)
+    creation_time = g_date_time_format (priv->datetime, "%FT%T%z");
+
+  gdk_pixbuf_save_to_stream (pixbuf, stream, "png", NULL, &error,
+                             "tEXt::Software", "gnome-screenshot",
+                             "tEXt::Creation Time", creation_time,
+                             NULL);
+
+  if (error)
+    g_task_return_error (result, error);
   else
-    {
-      GdkPixbuf *pixbuf;
-
-      pixbuf = gdk_pixbuf_get_from_surface (priv->image,
-                                            0, 0,
-                                            cairo_image_surface_get_width (priv->image),
-                                            cairo_image_surface_get_height (priv->image));
-      creation_time = g_date_time_format (priv->datetime, "%c");
-
-      if (!creation_time)
-        creation_time = g_date_time_format (priv->datetime, "%FT%T%z");
-
-      if (gdk_pixbuf_save_to_stream (pixbuf, stream, "png", NULL, NULL,
-                                     "tEXt::Software", "gnome-screenshot",
-                                     "tEXt::Creation Time", creation_time,
-                                     NULL))
-        status = CAIRO_STATUS_SUCCESS;
-      else
-        status = CAIRO_STATUS_WRITE_ERROR;
-
-      g_object_unref (pixbuf);
-      g_free (creation_time);
-    }
-
-
-  g_task_return_boolean (result, status == CAIRO_STATUS_SUCCESS);
-
-  g_clear_object (&stream);
+    g_task_return_boolean (result, TRUE);
 }
 
 static void
@@ -479,9 +467,14 @@ shell_screenshot_screenshot (ShellScreenshot     *screenshot,
                              gpointer             user_data)
 {
   ClutterActor *stage;
-  ShellScreenshotPrivate *priv = screenshot->priv;
+  ShellScreenshotPrivate *priv;
   gboolean use_paint_signal = FALSE;
   GTask *result;
+
+  g_return_if_fail (SHELL_IS_SCREENSHOT (screenshot));
+  g_return_if_fail (G_IS_OUTPUT_STREAM (stream));
+
+  priv = screenshot->priv;
 
   if (priv->stream != NULL) {
     if (callback)
@@ -549,6 +542,8 @@ shell_screenshot_screenshot_finish (ShellScreenshot        *screenshot,
                                     cairo_rectangle_int_t **area,
                                     GError                **error)
 {
+  g_return_val_if_fail (SHELL_IS_SCREENSHOT (screenshot), FALSE);
+  g_return_val_if_fail (G_IS_TASK (result), FALSE);
   g_return_val_if_fail (g_async_result_is_tagged (result,
                                                   shell_screenshot_screenshot),
                         FALSE);
@@ -582,8 +577,13 @@ shell_screenshot_screenshot_area (ShellScreenshot     *screenshot,
                                   gpointer             user_data)
 {
   ClutterActor *stage;
-  ShellScreenshotPrivate *priv = screenshot->priv;
+  ShellScreenshotPrivate *priv;
   GTask *result;
+
+  g_return_if_fail (SHELL_IS_SCREENSHOT (screenshot));
+  g_return_if_fail (G_IS_OUTPUT_STREAM (stream));
+
+  priv = screenshot->priv;
 
   if (priv->stream != NULL) {
     if (callback)
@@ -635,6 +635,8 @@ shell_screenshot_screenshot_area_finish (ShellScreenshot        *screenshot,
                                          cairo_rectangle_int_t **area,
                                          GError                **error)
 {
+  g_return_val_if_fail (SHELL_IS_SCREENSHOT (screenshot), FALSE);
+  g_return_val_if_fail (G_IS_TASK (result), FALSE);
   g_return_val_if_fail (g_async_result_is_tagged (result,
                                                   shell_screenshot_screenshot_area),
                         FALSE);
@@ -663,11 +665,18 @@ shell_screenshot_screenshot_window (ShellScreenshot     *screenshot,
                                     GAsyncReadyCallback  callback,
                                     gpointer             user_data)
 {
-  ShellScreenshotPrivate *priv = screenshot->priv;
-  MetaDisplay *display = shell_global_get_display (priv->global);
+  ShellScreenshotPrivate *priv;
+  MetaDisplay *display;
   ClutterActor *stage;
-  MetaWindow *window = meta_display_get_focus_window (display);
+  MetaWindow *window;
   GTask *result;
+
+  g_return_if_fail (SHELL_IS_SCREENSHOT (screenshot));
+  g_return_if_fail (G_IS_OUTPUT_STREAM (stream));
+
+  priv = screenshot->priv;
+  display = shell_global_get_display (priv->global);
+  window = meta_display_get_focus_window (display);
 
   if (priv->stream != NULL || !window) {
     if (callback)
@@ -718,6 +727,8 @@ shell_screenshot_screenshot_window_finish (ShellScreenshot        *screenshot,
                                            cairo_rectangle_int_t **area,
                                            GError                **error)
 {
+  g_return_val_if_fail (SHELL_IS_SCREENSHOT (screenshot), FALSE);
+  g_return_val_if_fail (G_IS_TASK (result), FALSE);
   g_return_val_if_fail (g_async_result_is_tagged (result,
                                                   shell_screenshot_screenshot_window),
                         FALSE);
@@ -742,19 +753,24 @@ shell_screenshot_pick_color (ShellScreenshot     *screenshot,
                              GAsyncReadyCallback  callback,
                              gpointer             user_data)
 {
-  ShellScreenshotPrivate *priv = screenshot->priv;
-  MetaDisplay *display = shell_global_get_display (priv->global);
+  ShellScreenshotPrivate *priv;
+  MetaDisplay *display;
   ClutterActor *stage;
   GTask *result;
 
+  g_return_if_fail (SHELL_IS_SCREENSHOT (screenshot));
+
   result = g_task_new (screenshot, NULL, callback, user_data);
   g_task_set_source_tag (result, shell_screenshot_pick_color);
+
+  priv = screenshot->priv;
 
   priv->screenshot_area.x = x;
   priv->screenshot_area.y = y;
   priv->screenshot_area.width = 1;
   priv->screenshot_area.height = 1;
 
+  display = shell_global_get_display (priv->global);
   stage = CLUTTER_ACTOR (shell_global_get_stage (priv->global));
 
   meta_disable_unredirect_for_display (display);
@@ -795,14 +811,19 @@ shell_screenshot_pick_color_finish (ShellScreenshot  *screenshot,
                                     ClutterColor     *color,
                                     GError          **error)
 {
-  ShellScreenshotPrivate *priv = screenshot->priv;
+  ShellScreenshotPrivate *priv;
 
+  g_return_val_if_fail (SHELL_IS_SCREENSHOT (screenshot), FALSE);
+  g_return_val_if_fail (G_IS_TASK (result), FALSE);
+  g_return_val_if_fail (color != NULL, FALSE);
   g_return_val_if_fail (g_async_result_is_tagged (result,
                                                   shell_screenshot_pick_color),
                         FALSE);
 
   if (!g_task_propagate_boolean (G_TASK (result), error))
     return FALSE;
+
+  priv = screenshot->priv;
 
   /* protect against mutter changing the format used for stage captures */
   g_assert (cairo_image_surface_get_format (priv->image) == CAIRO_FORMAT_ARGB32);
