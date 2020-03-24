@@ -113,16 +113,14 @@ var ScreenshotService = class {
         return [null, null];
     }
 
-    _onScreenshotComplete(result, area, stream, file, flash, invocation) {
-        if (result) {
-            if (flash) {
-                let flashspot = new Flashspot(area);
-                flashspot.fire(() => {
-                    this._removeShooterForSender(invocation.get_sender());
-                });
-            } else {
+    _onScreenshotComplete(area, stream, file, flash, invocation) {
+        if (flash) {
+            let flashspot = new Flashspot(area);
+            flashspot.fire(() => {
                 this._removeShooterForSender(invocation.get_sender());
-            }
+            });
+        } else {
+            this._removeShooterForSender(invocation.get_sender());
         }
 
         stream.close(null);
@@ -136,7 +134,7 @@ var ScreenshotService = class {
             clipboard.set_content(St.ClipboardType.CLIPBOARD, 'image/png', bytes);
         }
 
-        let retval = GLib.Variant.new('(bs)', [result, filenameUsed]);
+        let retval = GLib.Variant.new('(bs)', [true, filenameUsed]);
         invocation.return_value(retval);
     }
 
@@ -181,9 +179,10 @@ var ScreenshotService = class {
                     let [result, area] =
                         screenshot.screenshot_area_finish(res);
                     this._onScreenshotComplete(
-                        result, area, stream, file, flash, invocation);
+                        area, stream, file, flash, invocation);
                 } catch (e) {
-                    invocation.return_gerror(e);
+                    this._removeShooterForSender(invocation.get_sender());
+                    invocation.return_value(new GLib.Variant('(bs)', [false, '']));
                 }
             });
     }
@@ -204,9 +203,10 @@ var ScreenshotService = class {
                     let [result, area] =
                         screenshot.screenshot_window_finish(res);
                     this._onScreenshotComplete(
-                        result, area, stream, file, flash, invocation);
+                        area, stream, file, flash, invocation);
                 } catch (e) {
-                    invocation.return_gerror(e);
+                    this._removeShooterForSender(invocation.get_sender());
+                    invocation.return_value(new GLib.Variant('(bs)', [false, '']));
                 }
             });
     }
@@ -227,9 +227,10 @@ var ScreenshotService = class {
                     let [result, area] =
                         screenshot.screenshot_finish(res);
                     this._onScreenshotComplete(
-                        result, area, stream, file, flash, invocation);
+                        area, stream, file, flash, invocation);
                 } catch (e) {
-                    invocation.return_gerror(e);
+                    this._removeShooterForSender(invocation.get_sender());
+                    invocation.return_value(new GLib.Variant('(bs)', [false, '']));
                 }
             });
     }
