@@ -816,7 +816,8 @@ var ChatNotification = HAVE_TP ? GObject.registerClass({
 
         /* Translators: this is the other person changing their old IM name to their new
            IM name. */
-        let message = '<i>' + _("%s is now known as %s").format(oldAlias, newAlias) + '</i>';
+        const message = `<i>${
+            _('%s is now known as %s').format(oldAlias, newAlias)}</i>`;
 
         this._append({ body: message,
                        group: 'meta',

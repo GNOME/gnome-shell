@@ -10,13 +10,13 @@ const dbusInterface = 'org.vmware.viewagent.Credentials';
 
 var SERVICE_NAME = 'gdm-vmwcred';
 
-const VmwareCredentialsIface = '<node> \
-<interface name="' + dbusInterface + '"> \
-<signal name="UserAuthenticated"> \
-    <arg type="s" name="token"/> \
-</signal> \
-</interface> \
-</node>';
+const VmwareCredentialsIface = `<node>
+<interface name="${dbusInterface}">
+<signal name="UserAuthenticated">
+    <arg type="s" name="token"/>
+</signal>
+</interface>
+</node>`;
 
 
 const VmwareCredentialsInfo = Gio.DBusInterfaceInfo.new_for_xml(VmwareCredentialsIface);

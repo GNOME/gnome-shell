@@ -24,5 +24,4 @@ rules:
   object-curly-newline:
     - error
     - consistent: true
-  prefer-template: off
   quotes: off

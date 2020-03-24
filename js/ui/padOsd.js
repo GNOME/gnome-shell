@@ -359,9 +359,10 @@ var PadDiagram = GObject.registerClass({
     }
 
     _wrappingSvgFooter() {
-        return '</style>' +
-                '<xi:include href="' + this._imagePath + '" />' +
-                '</svg>';
+        return '%s%s%s'.format(
+            '</style>',
+            '<xi:include href="%s" />'.format(this._imagePath),
+            '</svg>');
     }
 
     _cssString() {
@@ -885,7 +886,7 @@ var PadOsd = GObject.registerClass({
         this._endActionEdition();
         this._editedAction = { type, number, dir, mode };
 
-        let settingsPath = this._settings.path + key + '/';
+        const settingsPath = `${this._settings.path}${key}/`;
         this._editedActionSettings = Gio.Settings.new_with_path('org.gnome.desktop.peripherals.tablet.pad-button',
                                                                 settingsPath);
         this._actionEditor.setSettings(this._editedActionSettings, type);

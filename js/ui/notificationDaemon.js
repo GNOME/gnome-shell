@@ -545,7 +545,7 @@ const FdoApplicationIface = loadInterfaceXML('org.freedesktop.Application');
 const FdoApplicationProxy = Gio.DBusProxy.makeProxyWrapper(FdoApplicationIface);
 
 function objectPathFromAppId(appId) {
-    return '/' + appId.replace(/\./g, '/').replace(/-/g, '_');
+    return `/${appId.replace(/\./g, '/').replace(/-/g, '_')}`;
 }
 
 function getPlatformData() {
