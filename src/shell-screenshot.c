@@ -88,10 +88,11 @@ write_screenshot_thread (GTask        *result,
                          GCancellable *cancellable)
 {
   cairo_status_t status;
-  GOutputStream *stream;
   ShellScreenshot *screenshot = SHELL_SCREENSHOT (object);
   ShellScreenshotPrivate *priv;
-  char *creation_time;
+  g_autoptr (GOutputStream) stream = NULL;
+  g_autoptr(GdkPixbuf) pixbuf = NULL;
+  g_autofree char *creation_time = NULL;
 
   g_assert (screenshot != NULL);
 
@@ -99,37 +100,24 @@ write_screenshot_thread (GTask        *result,
 
   stream = g_object_ref (priv->stream);
 
-  if (stream == NULL)
-    status = CAIRO_STATUS_FILE_NOT_FOUND;
+  pixbuf = gdk_pixbuf_get_from_surface (priv->image,
+                                        0, 0,
+                                        cairo_image_surface_get_width (priv->image),
+                                        cairo_image_surface_get_height (priv->image));
+  creation_time = g_date_time_format (priv->datetime, "%c");
+
+  if (!creation_time)
+    creation_time = g_date_time_format (priv->datetime, "%FT%T%z");
+
+  if (gdk_pixbuf_save_to_stream (pixbuf, stream, "png", NULL, NULL,
+                                 "tEXt::Software", "gnome-screenshot",
+                                 "tEXt::Creation Time", creation_time,
+                                 NULL))
+    status = CAIRO_STATUS_SUCCESS;
   else
-    {
-      GdkPixbuf *pixbuf;
-
-      pixbuf = gdk_pixbuf_get_from_surface (priv->image,
-                                            0, 0,
-                                            cairo_image_surface_get_width (priv->image),
-                                            cairo_image_surface_get_height (priv->image));
-      creation_time = g_date_time_format (priv->datetime, "%c");
-
-      if (!creation_time)
-        creation_time = g_date_time_format (priv->datetime, "%FT%T%z");
-
-      if (gdk_pixbuf_save_to_stream (pixbuf, stream, "png", NULL, NULL,
-                                     "tEXt::Software", "gnome-screenshot",
-                                     "tEXt::Creation Time", creation_time,
-                                     NULL))
-        status = CAIRO_STATUS_SUCCESS;
-      else
-        status = CAIRO_STATUS_WRITE_ERROR;
-
-      g_object_unref (pixbuf);
-      g_free (creation_time);
-    }
-
+    status = CAIRO_STATUS_WRITE_ERROR;
 
   g_task_return_boolean (result, status == CAIRO_STATUS_SUCCESS);
-
-  g_clear_object (&stream);
 }
 
 static void
