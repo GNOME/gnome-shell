@@ -127,56 +127,55 @@ var IBusManager = class {
     }
 
     _initPanelService(ibus, result) {
-        let success = false;
         try {
-            success = !!this._ibus.request_name_async_finish(result);
+            this._ibus.request_name_async_finish(result);
         } catch (e) {
-            if (e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
-                return;
-            logError(e);
-        }
-
-        if (success) {
-            this._panelService = new IBus.PanelService({ connection: this._ibus.get_connection(),
-                                                         object_path: IBus.PATH_PANEL });
-            this._candidatePopup.setPanelService(this._panelService);
-            this._panelService.connect('update-property', this._updateProperty.bind(this));
-            this._panelService.connect('set-cursor-location', (ps, x, y, w, h) => {
-                let cursorLocation = { x, y, width: w, height: h };
-                this.emit('set-cursor-location', cursorLocation);
-            });
-            this._panelService.connect('focus-in', (panel, path) => {
-                if (!GLib.str_has_suffix(path, '/InputContext_1'))
-                    this.emit('focus-in');
-            });
-            this._panelService.connect('focus-out', () => this.emit('focus-out'));
-
-            try {
-                // IBus versions older than 1.5.10 have a bug which
-                // causes spurious set-content-type emissions when
-                // switching input focus that temporarily lose purpose
-                // and hints defeating its intended semantics and
-                // confusing users. We thus don't use it in that case.
-                _checkIBusVersion(1, 5, 10);
-                this._panelService.connect('set-content-type', this._setContentType.bind(this));
-            } catch (e) {
+            if (!e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED)) {
+                logError(e);
+                this._clear();
             }
-            // If an engine is already active we need to get its properties
-            this._ibus.get_global_engine_async(-1, this._cancellable, (_bus, res) => {
-                let engine;
-                try {
-                    engine = this._ibus.get_global_engine_async_finish(res);
-                    if (!engine)
-                        return;
-                } catch (e) {
-                    return;
-                }
-                this._engineChanged(this._ibus, engine.get_name());
-            });
-            this._updateReadiness();
-        } else {
-            this._clear();
+            return;
         }
+
+        this._panelService = new IBus.PanelService({
+            connection: this._ibus.get_connection(),
+            object_path: IBus.PATH_PANEL,
+        });
+        this._candidatePopup.setPanelService(this._panelService);
+        this._panelService.connect('update-property', this._updateProperty.bind(this));
+        this._panelService.connect('set-cursor-location', (ps, x, y, w, h) => {
+            let cursorLocation = { x, y, width: w, height: h };
+            this.emit('set-cursor-location', cursorLocation);
+        });
+        this._panelService.connect('focus-in', (panel, path) => {
+            if (!GLib.str_has_suffix(path, '/InputContext_1'))
+                this.emit('focus-in');
+        });
+        this._panelService.connect('focus-out', () => this.emit('focus-out'));
+
+        try {
+            // IBus versions older than 1.5.10 have a bug which
+            // causes spurious set-content-type emissions when
+            // switching input focus that temporarily lose purpose
+            // and hints defeating its intended semantics and
+            // confusing users. We thus don't use it in that case.
+            _checkIBusVersion(1, 5, 10);
+            this._panelService.connect('set-content-type', this._setContentType.bind(this));
+        } catch (e) {
+        }
+        // If an engine is already active we need to get its properties
+        this._ibus.get_global_engine_async(-1, this._cancellable, (_bus, res) => {
+            let engine;
+            try {
+                engine = this._ibus.get_global_engine_async_finish(res);
+                if (!engine)
+                    return;
+            } catch (e) {
+                return;
+            }
+            this._engineChanged(this._ibus, engine.get_name());
+        });
+        this._updateReadiness();
     }
 
     _updateReadiness() {
