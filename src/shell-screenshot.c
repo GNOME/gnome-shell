@@ -87,12 +87,12 @@ write_screenshot_thread (GTask        *result,
                          gpointer      task_data,
                          GCancellable *cancellable)
 {
-  cairo_status_t status;
   ShellScreenshot *screenshot = SHELL_SCREENSHOT (object);
   ShellScreenshotPrivate *priv;
   g_autoptr (GOutputStream) stream = NULL;
   g_autoptr(GdkPixbuf) pixbuf = NULL;
   g_autofree char *creation_time = NULL;
+  GError *error = NULL;
 
   g_assert (screenshot != NULL);
 
@@ -109,15 +109,15 @@ write_screenshot_thread (GTask        *result,
   if (!creation_time)
     creation_time = g_date_time_format (priv->datetime, "%FT%T%z");
 
-  if (gdk_pixbuf_save_to_stream (pixbuf, stream, "png", NULL, NULL,
-                                 "tEXt::Software", "gnome-screenshot",
-                                 "tEXt::Creation Time", creation_time,
-                                 NULL))
-    status = CAIRO_STATUS_SUCCESS;
-  else
-    status = CAIRO_STATUS_WRITE_ERROR;
+  gdk_pixbuf_save_to_stream (pixbuf, stream, "png", NULL, &error,
+                             "tEXt::Software", "gnome-screenshot",
+                             "tEXt::Creation Time", creation_time,
+                             NULL);
 
-  g_task_return_boolean (result, status == CAIRO_STATUS_SUCCESS);
+  if (error)
+    g_task_return_error (result, error);
+  else
+    g_task_return_boolean (result, TRUE);
 }
 
 static void
