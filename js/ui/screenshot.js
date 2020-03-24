@@ -84,7 +84,7 @@ var ScreenshotService = class {
         }
     }
 
-    _createStream(filename) {
+    _createStream(filename, invocation) {
         if (filename == '')
             return [Gio.MemoryOutputStream.new_resizable(), null];
 
@@ -94,6 +94,7 @@ var ScreenshotService = class {
                 let stream = file.replace(null, false, Gio.FileCreateFlags.NONE, null);
                 return [stream, file];
             } catch (e) {
+                invocation.return_value(GLib.Variant.new('(bs)', [false, '']));
                 return [null, null];
             }
         }
@@ -104,10 +105,11 @@ var ScreenshotService = class {
                 return [stream, file];
             } catch (e) {
                 if (!e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.EXISTS))
-                    return [null, null];
+                    break;
             }
         }
 
+        invocation.return_value(GLib.Variant.new('(bs)', [false, '']));
         return [null, null];
     }
 
@@ -169,7 +171,9 @@ var ScreenshotService = class {
         if (!screenshot)
             return;
 
-        let [stream, file] = this._createStream(filename);
+        let [stream, file] = this._createStream(filename, invocation);
+        if (!stream)
+            return;
 
         screenshot.screenshot_area(x, y, width, height, stream,
             (o, res) => {
@@ -190,7 +194,9 @@ var ScreenshotService = class {
         if (!screenshot)
             return;
 
-        let [stream, file] = this._createStream(filename);
+        let [stream, file] = this._createStream(filename, invocation);
+        if (!stream)
+            return;
 
         screenshot.screenshot_window(includeFrame, includeCursor, stream,
             (o, res) => {
@@ -211,7 +217,9 @@ var ScreenshotService = class {
         if (!screenshot)
             return;
 
-        let [stream, file] = this._createStream(filename);
+        let [stream, file] = this._createStream(filename, invocation);
+        if (!stream)
+            return;
 
         screenshot.screenshot(includeCursor, stream,
             (o, res) => {
