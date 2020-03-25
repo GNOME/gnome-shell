@@ -176,8 +176,9 @@ var Overview = class {
         if (this.isDummy)
             return;
 
-        // The main Background actors are inside global.window_group which are
-        // hidden when displaying the overview, so we create a new
+        // The main Background actors may have children like icon extensions
+        // that we want to hide in the overview. Also the main background group
+        // may not have been created with vignette enabled, so we create a new
         // one. Instances of this class share a single CoglTexture behind the
         // scenes which allows us to show the background with different
         // rendering options without duplicating the texture data.

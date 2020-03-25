@@ -269,8 +269,9 @@ var LayoutManager = GObject.registerClass({
         this.uiGroup.add_actor(feedbackGroup);
 
         this._backgroundGroup = new Meta.BackgroundGroup();
-        global.window_group.add_child(this._backgroundGroup);
-        global.window_group.set_child_below_sibling(this._backgroundGroup, null);
+        this.uiGroup.add_actor(this._backgroundGroup);
+        this.uiGroup.set_child_below_sibling(this._backgroundGroup, null);
+
         this._bgManagers = [];
 
         this._interfaceSettings = new Gio.Settings({
