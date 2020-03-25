@@ -209,12 +209,13 @@ export const Lightbox = GObject.registerClass({
                 '@effects.radial.brightness', VIGNETTE_BRIGHTNESS, easeProps);
             this.ease_property(
                 '@effects.radial.sharpness', VIGNETTE_SHARPNESS,
-                Object.assign({onComplete}, easeProps));
+                {onComplete, ...easeProps});
         } else {
-            this.ease(Object.assign(easeProps, {
+            this.ease({
+                ...easeProps,
                 opacity: 255 * this._fadeFactor,
                 onComplete,
-            }));
+            });
         }
     }
 
@@ -235,9 +236,9 @@ export const Lightbox = GObject.registerClass({
             this.ease_property(
                 '@effects.radial.brightness', 1.0, easeProps);
             this.ease_property(
-                '@effects.radial.sharpness', 0.0, Object.assign({onComplete}, easeProps));
+                '@effects.radial.sharpness', 0.0, {onComplete, ...easeProps});
         } else {
-            this.ease(Object.assign(easeProps, {opacity: 0, onComplete}));
+            this.ease({...easeProps, opacity: 0, onComplete});
         }
     }
 

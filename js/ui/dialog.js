@@ -176,12 +176,12 @@ export const MessageDialogContent = GObject.registerClass({
         this._description.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
         this._description.clutter_text.line_wrap = true;
 
-        let defaultParams = {
+        super._init({
             style_class: 'message-dialog-content',
             x_expand: true,
             vertical: true,
-        };
-        super._init(Object.assign(defaultParams, params));
+            ...params,
+        });
 
         this.connect('notify::size', this._updateTitleStyle.bind(this));
         this.connect('destroy', this._onDestroy.bind(this));
@@ -269,12 +269,12 @@ export const ListSection = GObject.registerClass({
             child: this.list,
         });
 
-        let defaultParams = {
+        super._init({
             style_class: 'dialog-list',
             x_expand: true,
             vertical: true,
-        };
-        super._init(Object.assign(defaultParams, params));
+            ...params,
+        });
 
         this.label_actor = this._title;
         this.add_child(this._title);
@@ -327,8 +327,10 @@ export const ListSectionItem = GObject.registerClass({
         textLayout.add_child(this._title);
         textLayout.add_child(this._description);
 
-        let defaultParams = {style_class: 'dialog-list-item'};
-        super._init(Object.assign(defaultParams, params));
+        super._init({
+            style_class: 'dialog-list-item',
+            ...params,
+        });
 
         this.label_actor = this._title;
         this.add_child(this._iconActorBin);

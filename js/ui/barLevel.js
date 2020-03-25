@@ -38,11 +38,11 @@ export const BarLevel = GObject.registerClass({
         this._barLevelActiveBorderColor = null;
         this._barLevelOverdriveBorderColor = null;
 
-        let defaultParams = {
+        super._init({
             style_class: 'barlevel',
             accessible_role: Atk.Role.LEVEL_BAR,
-        };
-        super._init(Object.assign(defaultParams, params));
+            ...params,
+        });
         this.connect('notify::allocation', () => {
             this._barLevelWidth = this.allocation.get_width();
         });

@@ -211,13 +211,14 @@ function _easeActorProperty(actor, propName, target, params) {
     }
 
     let pspec = actor.find_property(propName);
-    let transition = new Clutter.PropertyTransition(Object.assign({
+    let transition = new Clutter.PropertyTransition({
         property_name: propName,
         interval: new Clutter.Interval({value_type: pspec.value_type}),
         remove_on_complete: true,
         repeat_count: repeatCount,
         auto_reverse: autoReverse,
-    }, params));
+        ...params,
+    });
     actor.add_transition(propName, transition);
 
     transition.set_to(target);

@@ -25,6 +25,5 @@ export function parse(params = {}, defaults, allowExtras) {
         }
     }
 
-    let defaultsCopy = Object.assign({}, defaults);
-    return Object.assign(defaultsCopy, params);
+    return {...defaults, ...params};
 }

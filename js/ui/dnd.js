@@ -795,13 +795,14 @@ class _Draggable extends Signals.EventEmitter {
         this._animationInProgress = true;
 
         // start the animation
-        this._dragActor.ease(Object.assign(params, {
+        this._dragActor.ease({
+            ...params,
             opacity: this._dragOrigOpacity,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
             onComplete: () => {
                 this._onAnimationComplete(this._dragActor, eventTime);
             },
-        }));
+        });
     }
 
     _finishAnimation() {
