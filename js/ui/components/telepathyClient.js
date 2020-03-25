@@ -750,10 +750,11 @@ var ChatNotification = HAVE_TP ? GObject.registerClass({
             GLib.source_remove(this._timestampTimeoutId);
         this._timestampTimeoutId = 0;
 
-        let message = new ChatNotificationMessage(Object.assign({
+        let message = new ChatNotificationMessage({
             realMessage: props.group !== 'meta',
             showTimestamp: false,
-        }, props));
+            ...props,
+        });
 
         this.messages.unshift(message);
         this.emit('message-added', message);
