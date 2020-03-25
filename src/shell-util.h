@@ -30,6 +30,13 @@ gboolean shell_write_string_to_stream          (GOutputStream    *stream,
 char    *shell_get_file_contents_utf8_sync     (const char       *path,
                                                 GError          **error);
 
+void     shell_util_touch_file_async           (GFile               *file,
+                                                GAsyncReadyCallback  callback,
+                                                gpointer             user_data);
+gboolean shell_util_touch_file_finish          (GFile               *file,
+                                                GAsyncResult        *res,
+                                                GError             **error);
+
 gboolean shell_util_wifexited                  (int               status,
                                                 int              *exit);
 
