@@ -880,8 +880,6 @@ var Source = GObject.registerClass({
     }
 
     destroy(reason) {
-        this.policy.destroy();
-
         let notifications = this.notifications;
         this.notifications = [];
 
@@ -890,6 +888,7 @@ var Source = GObject.registerClass({
 
         this.emit('destroy', reason);
 
+        this.policy.destroy();
         this.run_dispose();
     }
 
