@@ -19,6 +19,10 @@ Before=gnome-session-initialized.target
 [Service]
 Type=notify
 ExecStart=@bindir@/gnome-shell
+
+# unset some environment variables that were set by the shell and won't work now that the shell is gone
+ExecStartPost=-systemctl --user unset-environment GNOME_SETUP_DISPLAY WAYLAND_DISPLAY DISPLAY XAUTHORITY
+
 # Exit code 1 means we are probably *not* dealing with an extension failure
 SuccessExitStatus=1
 # On wayland we cannot restart
