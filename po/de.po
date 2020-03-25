@@ -10,7 +10,7 @@
 # Mario Klug <mario@klug.me>, 2010.
 # Jakob Kramer <jakob.kramer@gmx.de>, 2010.
 # Paul Seyfert <pseyfert@mathphys.fsk.uni-heidelberg.de>, 2010-2011.
-# Wolfgang Stöggl <c72578@yahoo.de>, 2012, 2014, 2017-2018.
+# Wolfgang Stöggl <c72578@yahoo.de>, 2012, 2014, 2017-2018, 2020.
 # Christian Kirbach <christian.kirbach@gmail.com>, 2009-2013.
 # Tobias Endrigkeit <tobiasendrigkeit@outlook.com>, 2012-2013.
 # Benjamin Steinwender <b@stbe.at>, 2013-2014.
@@ -22,9 +22,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2020-03-08 00:49+0000\n"
-"PO-Revision-Date: 2020-03-09 23:35+0100\n"
-"Last-Translator: Christian Kirbach <christian.kirbach@gmail.com>\n"
+"POT-Creation-Date: 2020-03-19 14:34+0000\n"
+"PO-Revision-Date: 2020-03-20 06:42+0100\n"
+"Last-Translator: Wolfgang Stoeggl <c72578@yahoo.de>\n"
 "Language-Team: Deutsch <gnome-de@gnome.org>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
@@ -56,15 +56,6 @@ msgstr "Alle Anwendungen anzeigen"
 #: data/50-gnome-shell-system.xml:21
 msgid "Open the application menu"
 msgstr "Das Anwendungsmenü öffnen"
-
-#: data/org.gnome.Extensions.desktop.in.in:4 js/extensionPrefs/main.js:218
-#: js/extensionPrefs/ui/extensions-window.ui:61
-msgid "Extensions"
-msgstr "Erweiterungen"
-
-#: data/org.gnome.Extensions.desktop.in.in:7
-msgid "Configure GNOME Shell Extensions"
-msgstr "GNOME-Shell-Erweiterungen einrichten"
 
 #: data/org.gnome.Shell.desktop.in.in:4
 msgid "GNOME Shell"
@@ -418,12 +409,37 @@ msgstr ""
 msgid "Network Login"
 msgstr "Netzwerkanmeldung"
 
-#: js/extensionPrefs/main.js:140
+#: js/extensionPrefs/data/metainfo/org.gnome.Extensions.metainfo.xml.in:5
+#: js/extensionPrefs/data/org.gnome.Extensions.desktop.in.in:4
+#: js/extensionPrefs/js/main.js:242
+#: js/extensionPrefs/data/ui/extensions-window.ui:61
+msgid "Extensions"
+msgstr "Erweiterungen"
+
+#: js/extensionPrefs/data/metainfo/org.gnome.Extensions.metainfo.xml.in:6
+#: js/extensionPrefs/js/main.js:243
+msgid "Manage your GNOME Extensions"
+msgstr "Ihre GNOME-Erweiterungen verwalten"
+
+#: js/extensionPrefs/data/metainfo/org.gnome.Extensions.metainfo.xml.in:35
+msgid ""
+"GNOME Extensions handles updating extensions, configuring extension "
+"preferences and removing or disabling unwanted extensions."
+msgstr ""
+"GNOME-Erweiterungen dient der Aktualisierung von Erweiterungen, dem "
+"Konfigurieren der Voreinstellungen von Erweiterungen und dem Entfernen oder "
+"Deaktivieren nicht gewünschter Erweiterungen."
+
+#: js/extensionPrefs/data/org.gnome.Extensions.desktop.in.in:7
+msgid "Configure GNOME Shell Extensions"
+msgstr "GNOME-Shell-Erweiterungen einrichten"
+
+#: js/extensionPrefs/js/main.js:164
 #, javascript-format
 msgid "Remove “%s”?"
 msgstr "»%s« entfernen?"
 
-#: js/extensionPrefs/main.js:141
+#: js/extensionPrefs/js/main.js:165
 msgid ""
 "If you remove the extension, you need to return to download it if you want "
 "to enable it again"
@@ -431,33 +447,30 @@ msgstr ""
 "Wenn Sie die Erweiterung entfernen, müssen Sie sie erneut herunterladen, um "
 "sie wieder zu aktivieren"
 
-#: js/extensionPrefs/main.js:144 js/gdm/authPrompt.js:135
-#: js/ui/audioDeviceSelection.js:57 js/ui/components/networkAgent.js:107
+#: js/extensionPrefs/js/main.js:168 js/gdm/authPrompt.js:135
+#: js/ui/audioDeviceSelection.js:57 js/ui/components/networkAgent.js:109
 #: js/ui/components/polkitAgent.js:139 js/ui/endSessionDialog.js:374
-#: js/ui/extensionDownloader.js:165 js/ui/shellMountOperation.js:376
+#: js/ui/extensionDownloader.js:177 js/ui/shellMountOperation.js:376
 #: js/ui/shellMountOperation.js:386 js/ui/status/network.js:913
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: js/extensionPrefs/main.js:145
+#: js/extensionPrefs/js/main.js:169
 msgid "Remove"
 msgstr "Entfernen"
 
-#: js/extensionPrefs/main.js:217
+#: js/extensionPrefs/js/main.js:241
 msgid "translator-credits"
 msgstr ""
 "Tim Sabsch <tim@sabsch.com>\n"
 "Christian Kirbach <christian.kirbach@gmail.com>, 2020"
 
-#: js/extensionPrefs/main.js:219
-msgid "Manage your GNOME Extensions"
-msgstr "Ihre GNOME-Erweiterungen verwalten"
-
-#: js/extensionPrefs/main.js:261 js/extensionPrefs/ui/extensions-window.ui:222
+#: js/extensionPrefs/js/main.js:285
+#: js/extensionPrefs/data/ui/extensions-window.ui:223
 msgid "Something’s gone wrong"
 msgstr "Etwas ist schiefgelaufen"
 
-#: js/extensionPrefs/main.js:268
+#: js/extensionPrefs/js/main.js:292
 msgid ""
 "We’re very sorry, but there’s been a problem: the settings for this "
 "extension can’t be displayed. We recommend that you report the issue to the "
@@ -467,61 +480,61 @@ msgstr ""
 "Erweiterung können nicht angezeigt werden. Wir empfehlen, dass Sie diesen "
 "Fehler den Autoren der Erweiterung melden."
 
-#: js/extensionPrefs/main.js:275
+#: js/extensionPrefs/js/main.js:299
 msgid "Technical Details"
 msgstr "Technische Details"
 
-#: js/extensionPrefs/main.js:310
+#: js/extensionPrefs/js/main.js:334
 msgid "Copy Error"
 msgstr "Kopierfehler"
 
-#: js/extensionPrefs/main.js:337
+#: js/extensionPrefs/js/main.js:361
 msgid "Homepage"
 msgstr "Homepage"
 
-#: js/extensionPrefs/main.js:338
+#: js/extensionPrefs/js/main.js:362
 msgid "Visit extension homepage"
 msgstr "Internetseite der Erweiterung besuchen"
 
-#: js/extensionPrefs/main.js:449
+#: js/extensionPrefs/js/main.js:479
 #, javascript-format
 msgid "%d extension will be updated on next login."
 msgid_plural "%d extensions will be updated on next login."
 msgstr[0] "%d Erweiterung wird bei der nächsten Anmeldung aktualisiert."
 msgstr[1] "%d Erweiterungen werden bei der nächsten Anmeldung aktualisiert."
 
-#: js/extensionPrefs/ui/extension-row.ui:100
+#: js/extensionPrefs/data/ui/extension-row.ui:100
 #: subprojects/extensions-tool/src/command-create.c:211
 #: subprojects/extensions-tool/src/main.c:173
 msgid "Description"
 msgstr "Beschreibung"
 
-#: js/extensionPrefs/ui/extension-row.ui:123
+#: js/extensionPrefs/data/ui/extension-row.ui:123
 #: subprojects/extensions-tool/src/main.c:185
 msgid "Version"
 msgstr "Version"
 
-#: js/extensionPrefs/ui/extension-row.ui:151
+#: js/extensionPrefs/data/ui/extension-row.ui:151
 msgid "Author"
 msgstr "Autor"
 
-#: js/extensionPrefs/ui/extension-row.ui:175
+#: js/extensionPrefs/data/ui/extension-row.ui:175
 msgid "Website"
 msgstr "Webseite"
 
-#: js/extensionPrefs/ui/extension-row.ui:192
+#: js/extensionPrefs/data/ui/extension-row.ui:192
 msgid "Remove…"
 msgstr "Entfernen …"
 
-#: js/extensionPrefs/ui/extensions-window.ui:8
+#: js/extensionPrefs/data/ui/extensions-window.ui:8
 msgid "Help"
 msgstr "Hilfe"
 
-#: js/extensionPrefs/ui/extensions-window.ui:12
+#: js/extensionPrefs/data/ui/extensions-window.ui:12
 msgid "About Extensions"
 msgstr "Info zu Erweiterungen"
 
-#: js/extensionPrefs/ui/extensions-window.ui:27
+#: js/extensionPrefs/data/ui/extensions-window.ui:27
 msgid ""
 "To find and add extensions, visit <a href=\"https://extensions.gnome.org"
 "\">extensions.gnome.org</a>."
@@ -529,11 +542,11 @@ msgstr ""
 "Besuchen Sie <a href=\"https://extensions.gnome.org\">extensions.gnome.org</"
 "a>, um Erweiterungen zu finden und hinzuzufügen."
 
-#: js/extensionPrefs/ui/extensions-window.ui:35
+#: js/extensionPrefs/data/ui/extensions-window.ui:35
 msgid "Warning"
 msgstr "Warnung"
 
-#: js/extensionPrefs/ui/extensions-window.ui:46
+#: js/extensionPrefs/data/ui/extensions-window.ui:46
 msgid ""
 "Extensions can cause system issues, including performance problems. If you "
 "encounter problems with your system, it is recommended to disable all "
@@ -543,36 +556,36 @@ msgstr ""
 "Leistungsprobleme. Sollten Sie auf Probleme mit Ihrem System stoßen, wird "
 "die Deaktivierung aller Erweiterungen empfohlen."
 
-#: js/extensionPrefs/ui/extensions-window.ui:133
+#: js/extensionPrefs/data/ui/extensions-window.ui:134
 msgid "Manually Installed"
 msgstr "Manuell installiert"
 
-#: js/extensionPrefs/ui/extensions-window.ui:157
+#: js/extensionPrefs/data/ui/extensions-window.ui:158
 msgid "Built-In"
 msgstr "Mitgeliefert"
 
-#: js/extensionPrefs/ui/extensions-window.ui:198
+#: js/extensionPrefs/data/ui/extensions-window.ui:199
 msgid "No Installed Extensions"
 msgstr "Keine installierten Erweiterungen"
 
-#: js/extensionPrefs/ui/extensions-window.ui:234
+#: js/extensionPrefs/data/ui/extensions-window.ui:235
 msgid ""
 "We’re very sorry, but it was not possible to get the list of installed "
 "extensions. Make sure you are logged into GNOME and try again."
 msgstr ""
-"Tut uns sehr Leid, wir konnten keine Liste der installierten Erweiterungen "
+"Tut uns sehr leid, wir konnten keine Liste der installierten Erweiterungen "
 "aufstellen. Stellen Sie sicher, dass Sie in GNOME angemeldet sind und "
 "versuchen Sie es dann erneut."
 
-#: js/extensionPrefs/ui/extensions-window.ui:287
+#: js/extensionPrefs/data/ui/extensions-window.ui:288
 msgid "Log Out…"
 msgstr "Abmelden …"
 
 #. Cisco LEAP
-#: js/gdm/authPrompt.js:237 js/ui/components/networkAgent.js:202
-#: js/ui/components/networkAgent.js:218 js/ui/components/networkAgent.js:242
-#: js/ui/components/networkAgent.js:263 js/ui/components/networkAgent.js:283
-#: js/ui/components/networkAgent.js:293 js/ui/components/polkitAgent.js:277
+#: js/gdm/authPrompt.js:237 js/ui/components/networkAgent.js:204
+#: js/ui/components/networkAgent.js:220 js/ui/components/networkAgent.js:244
+#: js/ui/components/networkAgent.js:265 js/ui/components/networkAgent.js:285
+#: js/ui/components/networkAgent.js:295 js/ui/components/polkitAgent.js:277
 #: js/ui/shellMountOperation.js:326
 msgid "Password"
 msgstr "Passwort"
@@ -595,8 +608,8 @@ msgstr "(z.B. Benutzer oder %s)"
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: js/gdm/loginDialog.js:917 js/ui/components/networkAgent.js:238
-#: js/ui/components/networkAgent.js:261 js/ui/components/networkAgent.js:279
+#: js/gdm/loginDialog.js:917 js/ui/components/networkAgent.js:240
+#: js/ui/components/networkAgent.js:263 js/ui/components/networkAgent.js:281
 msgid "Username"
 msgstr "Benutzername"
 
@@ -848,45 +861,45 @@ msgstr "Zugriff verhindern"
 msgid "Grant Access"
 msgstr "Zugriff gewähren"
 
-#: js/ui/appDisplay.js:910
+#: js/ui/appDisplay.js:898
 msgid "Unnamed Folder"
 msgstr "Unbenannter Ordner"
 
-#: js/ui/appDisplay.js:933
+#: js/ui/appDisplay.js:921
 msgid "Frequently used applications will appear here"
 msgstr "Häufig genutzte Anwendungen erscheinen hier"
 
-#: js/ui/appDisplay.js:1068
+#: js/ui/appDisplay.js:1056
 msgid "Frequent"
 msgstr "Häufig"
 
-#: js/ui/appDisplay.js:1075
+#: js/ui/appDisplay.js:1063
 msgid "All"
 msgstr "Alle"
 
 # Fensterüberschrift
 #. Translators: This is the heading of a list of open windows
-#: js/ui/appDisplay.js:2458 js/ui/panel.js:75
+#: js/ui/appDisplay.js:2446 js/ui/panel.js:75
 msgid "Open Windows"
 msgstr "Offene Fenster"
 
-#: js/ui/appDisplay.js:2478 js/ui/panel.js:82
+#: js/ui/appDisplay.js:2466 js/ui/panel.js:82
 msgid "New Window"
 msgstr "Neues Fenster"
 
-#: js/ui/appDisplay.js:2489
+#: js/ui/appDisplay.js:2477
 msgid "Launch using Dedicated Graphics Card"
 msgstr "Mit dedizierter Grafikkarte starten"
 
-#: js/ui/appDisplay.js:2517 js/ui/dash.js:239
+#: js/ui/appDisplay.js:2505 js/ui/dash.js:239
 msgid "Remove from Favorites"
 msgstr "Aus Favoriten entfernen"
 
-#: js/ui/appDisplay.js:2523
+#: js/ui/appDisplay.js:2511
 msgid "Add to Favorites"
 msgstr "Zu Favoriten hinzufügen"
 
-#: js/ui/appDisplay.js:2533 js/ui/panel.js:93
+#: js/ui/appDisplay.js:2521 js/ui/panel.js:93
 msgid "Show Details"
 msgstr "Details anzeigen"
 
@@ -1034,30 +1047,30 @@ msgid "All Day"
 msgstr "Ganztägig"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year
-#: js/ui/calendar.js:867
+#: js/ui/calendar.js:868
 msgctxt "calendar heading"
 msgid "%A, %B %-d"
 msgstr "%A, %d. %B"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year
-#: js/ui/calendar.js:870
+#: js/ui/calendar.js:871
 msgctxt "calendar heading"
 msgid "%A, %B %-d, %Y"
 msgstr "%A, %d. %B %Y"
 
-#: js/ui/calendar.js:1096
+#: js/ui/calendar.js:1100
 msgid "No Notifications"
 msgstr "Keine Benachrichtigungen"
 
-#: js/ui/calendar.js:1099
+#: js/ui/calendar.js:1103
 msgid "No Events"
 msgstr "Keine Termine"
 
-#: js/ui/calendar.js:1153
+#: js/ui/calendar.js:1157
 msgid "Do Not Disturb"
 msgstr "Nicht stören"
 
-#: js/ui/calendar.js:1167
+#: js/ui/calendar.js:1171
 msgid "Clear"
 msgstr "Leeren"
 
@@ -1106,40 +1119,40 @@ msgstr ""
 msgid "Open with %s"
 msgstr "Öffnen mit %s"
 
-#: js/ui/components/networkAgent.js:89
+#: js/ui/components/networkAgent.js:91
 msgid ""
 "Alternatively you can connect by pushing the “WPS” button on your router."
 msgstr ""
 "Alternativ können Sie sich verbinden, indem Sie den »WPS«-Knopf an Ihrem "
 "Router drücken."
 
-#: js/ui/components/networkAgent.js:101 js/ui/status/network.js:223
+#: js/ui/components/networkAgent.js:103 js/ui/status/network.js:223
 #: js/ui/status/network.js:314 js/ui/status/network.js:916
 msgid "Connect"
 msgstr "Verbinden"
 
-#: js/ui/components/networkAgent.js:208
+#: js/ui/components/networkAgent.js:210
 msgid "Key"
 msgstr "Schlüssel"
 
-#: js/ui/components/networkAgent.js:246 js/ui/components/networkAgent.js:269
+#: js/ui/components/networkAgent.js:248 js/ui/components/networkAgent.js:271
 msgid "Private key password"
 msgstr "Passwort für geheimen Schlüssel"
 
-#: js/ui/components/networkAgent.js:267
+#: js/ui/components/networkAgent.js:269
 msgid "Identity"
 msgstr "Identität"
 
-#: js/ui/components/networkAgent.js:281
+#: js/ui/components/networkAgent.js:283
 msgid "Service"
 msgstr "Dienst"
 
-#: js/ui/components/networkAgent.js:310 js/ui/components/networkAgent.js:338
-#: js/ui/components/networkAgent.js:685 js/ui/components/networkAgent.js:706
+#: js/ui/components/networkAgent.js:312 js/ui/components/networkAgent.js:340
+#: js/ui/components/networkAgent.js:679 js/ui/components/networkAgent.js:700
 msgid "Authentication required"
 msgstr "Anmeldung erforderlich"
 
-#: js/ui/components/networkAgent.js:311 js/ui/components/networkAgent.js:686
+#: js/ui/components/networkAgent.js:313 js/ui/components/networkAgent.js:680
 #, javascript-format
 msgid ""
 "Passwords or encryption keys are required to access the wireless network "
@@ -1148,42 +1161,42 @@ msgstr ""
 "Passwörter oder Schlüssel sind erforderlich, um auf das Drahtlosnetzwerk "
 "»%s« zuzugreifen."
 
-#: js/ui/components/networkAgent.js:315 js/ui/components/networkAgent.js:690
+#: js/ui/components/networkAgent.js:317 js/ui/components/networkAgent.js:684
 msgid "Wired 802.1X authentication"
 msgstr "Kabelgebundene 802.1X-Anmeldung"
 
-#: js/ui/components/networkAgent.js:317
+#: js/ui/components/networkAgent.js:319
 msgid "Network name"
 msgstr "Netzwerkname"
 
-#: js/ui/components/networkAgent.js:322 js/ui/components/networkAgent.js:694
+#: js/ui/components/networkAgent.js:324 js/ui/components/networkAgent.js:688
 msgid "DSL authentication"
 msgstr "DSL-Anmeldung"
 
-#: js/ui/components/networkAgent.js:329 js/ui/components/networkAgent.js:699
+#: js/ui/components/networkAgent.js:331 js/ui/components/networkAgent.js:693
 msgid "PIN code required"
 msgstr "PIN-Code ist erforderlich"
 
-#: js/ui/components/networkAgent.js:330 js/ui/components/networkAgent.js:700
+#: js/ui/components/networkAgent.js:332 js/ui/components/networkAgent.js:694
 msgid "PIN code is needed for the mobile broadband device"
 msgstr "Für das mobile Breitbandgerät wird ein PIN-Code benötigt"
 
-#: js/ui/components/networkAgent.js:331
+#: js/ui/components/networkAgent.js:333
 msgid "PIN"
 msgstr "PIN"
 
-#: js/ui/components/networkAgent.js:339 js/ui/components/networkAgent.js:691
-#: js/ui/components/networkAgent.js:695 js/ui/components/networkAgent.js:707
-#: js/ui/components/networkAgent.js:711
+#: js/ui/components/networkAgent.js:341 js/ui/components/networkAgent.js:685
+#: js/ui/components/networkAgent.js:689 js/ui/components/networkAgent.js:701
+#: js/ui/components/networkAgent.js:705
 #, javascript-format
 msgid "A password is required to connect to “%s”."
 msgstr "Es wird ein Passwort benötigt, um sich mit »%s« zu verbinden."
 
-#: js/ui/components/networkAgent.js:674 js/ui/status/network.js:1691
+#: js/ui/components/networkAgent.js:668 js/ui/status/network.js:1691
 msgid "Network Manager"
 msgstr "Netzwerk-Verwaltung"
 
-#: js/ui/components/networkAgent.js:710
+#: js/ui/components/networkAgent.js:704
 msgid "VPN password"
 msgstr "VPN-Passwort"
 
@@ -1255,23 +1268,23 @@ msgstr "Weltuhren hinzufügen …"
 msgid "World Clocks"
 msgstr "Weltuhren"
 
-#: js/ui/dateMenu.js:276
+#: js/ui/dateMenu.js:279
 msgid "Weather"
 msgstr "Wetter"
 
-#: js/ui/dateMenu.js:391
+#: js/ui/dateMenu.js:394
 msgid "Select a location…"
 msgstr "Ort auswählen …"
 
-#: js/ui/dateMenu.js:404
+#: js/ui/dateMenu.js:407
 msgid "Loading…"
 msgstr "Wird geladen …"
 
-#: js/ui/dateMenu.js:414
+#: js/ui/dateMenu.js:417
 msgid "Go online for weather information"
 msgstr "Gehen Sie Online, um Wetterinformationen beziehen zu können"
 
-#: js/ui/dateMenu.js:416
+#: js/ui/dateMenu.js:419
 msgid "Weather information is currently unavailable"
 msgstr "Wetterinformationen sind momentan nicht verfügbar"
 
@@ -1423,15 +1436,15 @@ msgstr "%s (Entfernt)"
 msgid "%s (console)"
 msgstr "%s (Konsole)"
 
-#: js/ui/extensionDownloader.js:169
+#: js/ui/extensionDownloader.js:181
 msgid "Install"
 msgstr "Installieren"
 
-#: js/ui/extensionDownloader.js:175
+#: js/ui/extensionDownloader.js:187
 msgid "Install Extension"
 msgstr "Erweiterung installieren"
 
-#: js/ui/extensionDownloader.js:176
+#: js/ui/extensionDownloader.js:188
 #, javascript-format
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "»%s« von extensions.gnome.org herunterladen und installieren?"
@@ -1589,11 +1602,11 @@ msgstr "Quelle zeigen"
 msgid "Web Page"
 msgstr "Webseite"
 
-#: js/ui/main.js:269
+#: js/ui/main.js:274
 msgid "Logged in as a privileged user"
 msgstr "Als privilegierter Benutzer angemeldet"
 
-#: js/ui/main.js:270
+#: js/ui/main.js:275
 msgid ""
 "Running a session as a privileged user should be avoided for security "
 "reasons. If possible, you should log in as a normal user."
@@ -1602,11 +1615,11 @@ msgstr ""
 "Sicherheitsgründen unterlassen werden. Falls möglich, melden Sie sich bitte "
 "als normaler Benutzer an."
 
-#: js/ui/main.js:276
+#: js/ui/main.js:281
 msgid "Screen Lock disabled"
 msgstr "Bildschirmsperre deaktiviert"
 
-#: js/ui/main.js:277
+#: js/ui/main.js:282
 msgid "Screen Locking requires the GNOME display manager."
 msgstr "Die Sperrung des Bildschirms erfordert den GNOME Display-Manager."
 
@@ -2481,21 +2494,21 @@ msgstr "Schließen"
 msgid "Evolution Calendar"
 msgstr "Evolution-Kalender"
 
-#: src/main.c:460 subprojects/extensions-tool/src/main.c:249
+#: src/main.c:458 subprojects/extensions-tool/src/main.c:249
 msgid "Print version"
 msgstr "Version ausgeben"
 
-#: src/main.c:466
+#: src/main.c:464
 msgid "Mode used by GDM for login screen"
 msgstr "Der durch GDM im Anmeldefenster verwendete Modus"
 
-#: src/main.c:472
+#: src/main.c:470
 msgid "Use a specific mode, e.g. “gdm” for login screen"
 msgstr ""
 "Verwenden Sie einen spezifischen Modus wie z.B. »gdm« für den "
 "Anmeldebildschirm"
 
-#: src/main.c:478
+#: src/main.c:476
 msgid "List possible modes"
 msgstr "Die möglichen Modi auflisten"
 
