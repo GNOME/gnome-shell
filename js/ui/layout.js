@@ -219,15 +219,21 @@ var LayoutManager = GObject.registerClass({
 
         global.stage.add_child(this.uiGroup);
 
+        // super_group is the group of groups to rule them all. It might not
+        // seem necessary but we create it to keep MetaCullable active between
+        // all WindowGroups and BackgroundGroups that support it. While
+        // uiGroup does not support MetaCullable.
         global.stage.remove_actor(global.window_group);
-        this.uiGroup.add_actor(global.window_group);
+        this.uiGroup.super_group = new Meta.WindowGroup();
+        this.uiGroup.super_group.add_actor(global.window_group);
+        this.uiGroup.add_actor(this.uiGroup.super_group);
 
         // Using addChrome() to add actors to uiGroup will position actors
         // underneath the top_window_group.
         // To insert actors at the top of uiGroup, we use addTopChrome() or
         // add the actor directly using uiGroup.add_actor().
         global.stage.remove_actor(global.top_window_group);
-        this.uiGroup.add_actor(global.top_window_group);
+        this.uiGroup.super_group.add_actor(global.top_window_group);
 
         this.overviewGroup = new St.Widget({ name: 'overviewGroup',
                                              visible: false,
@@ -269,8 +275,9 @@ var LayoutManager = GObject.registerClass({
         this.uiGroup.add_actor(feedbackGroup);
 
         this._backgroundGroup = new Meta.BackgroundGroup();
-        global.window_group.add_child(this._backgroundGroup);
-        global.window_group.set_child_below_sibling(this._backgroundGroup, null);
+        this.uiGroup.super_group.add_actor(this._backgroundGroup);
+        this.uiGroup.super_group.set_child_below_sibling(this._backgroundGroup, null);
+
         this._bgManagers = [];
 
         this._interfaceSettings = new Gio.Settings({
@@ -818,7 +825,7 @@ var LayoutManager = GObject.registerClass({
     // and shown otherwise)
     addChrome(actor, params) {
         this.uiGroup.add_actor(actor);
-        if (this.uiGroup.contains(global.top_window_group))
+        if (this.uiGroup.super_group.contains(global.top_window_group))
             this.uiGroup.set_child_below_sibling(actor, global.top_window_group);
         this._trackActor(actor, params);
     }
