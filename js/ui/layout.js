@@ -612,10 +612,20 @@ var LayoutManager = GObject.registerClass({
 
         let signalId = this._systemBackground.connect('loaded', () => {
             this._systemBackground.disconnect(signalId);
-            this._systemBackground.show();
-            global.stage.show();
 
-            this._prepareStartupAnimation();
+            // We're mostly prepared for the startup animation
+            // now, but since a lot is going on asynchronously
+            // during startup, let's defer the startup animation
+            // until the event loop is uncontended and idle.
+            // This helps to prevent us from running the animation
+            // when the system is bogged down
+            const id = GLib.idle_add(GLib.PRIORITY_LOW, () => {
+                this._systemBackground.show();
+                global.stage.show();
+                this._prepareStartupAnimation();
+                return GLib.SOURCE_REMOVE;
+            });
+            GLib.Source.set_name_by_id(id, '[gnome-shell] Startup Animation');
         });
     }
 
@@ -672,17 +682,7 @@ var LayoutManager = GObject.registerClass({
 
         this.emit('startup-prepared');
 
-        // We're mostly prepared for the startup animation
-        // now, but since a lot is going on asynchronously
-        // during startup, let's defer the startup animation
-        // until the event loop is uncontended and idle.
-        // This helps to prevent us from running the animation
-        // when the system is bogged down
-        let id = GLib.idle_add(GLib.PRIORITY_LOW, () => {
-            this._startupAnimation();
-            return GLib.SOURCE_REMOVE;
-        });
-        GLib.Source.set_name_by_id(id, '[gnome-shell] this._startupAnimation');
+        this._startupAnimation();
     }
 
     _startupAnimation() {
