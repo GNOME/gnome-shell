@@ -292,11 +292,11 @@ class TelepathyClient extends Tp.BaseClient {
 var ChatSource = HAVE_TP ? GObject.registerClass(
 class ChatSource extends MessageTray.Source {
     _init(account, conn, channel, contact, client) {
-        super._init(contact.get_alias());
-
         this._account = account;
         this._contact = contact;
         this._client = client;
+
+        super._init(contact.get_alias());
 
         this.isChat = true;
         this._pendingMessages = [];

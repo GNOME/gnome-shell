@@ -57,10 +57,10 @@ var WindowAttentionHandler = class {
 var WindowAttentionSource = GObject.registerClass(
 class WindowAttentionSource extends MessageTray.Source {
     _init(app, window) {
-        super._init(app.get_name());
-
         this._window = window;
         this._app = app;
+
+        super._init(app.get_name());
 
         this.signalIDs = [];
         this.signalIDs.push(this._window.connect('notify::demands-attention',
