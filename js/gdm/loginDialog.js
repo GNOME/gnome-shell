@@ -177,6 +177,7 @@ var UserList = GObject.registerClass({
     }
 
     vfunc_key_focus_in() {
+        super.vfunc_key_focus_in();
         this._moveFocusToItems();
     }
 

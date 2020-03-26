@@ -186,7 +186,7 @@ var Slider = GObject.registerClass({
             this.value = Math.max(0, Math.min(this._value + delta, this._maxValue));
             return Clutter.EVENT_STOP;
         }
-        return Clutter.EVENT_PROPAGATE;
+        return super.vfunc_key_press_event(keyPressEvent);
     }
 
     _moveHandle(absX, _absY) {

@@ -530,7 +530,7 @@ var Message = GObject.registerClass({
             this.close();
             return Clutter.EVENT_STOP;
         }
-        return Clutter.EVENT_PROPAGATE;
+        return super.vfunc_key_press_event(keyEvent);
     }
 });
 

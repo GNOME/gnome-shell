@@ -120,7 +120,7 @@ var AuthPrompt = GObject.registerClass({
     vfunc_key_press_event(keyPressEvent) {
         if (keyPressEvent.keyval == Clutter.KEY_Escape)
             this.cancel();
-        return Clutter.EVENT_PROPAGATE;
+        return super.vfunc_key_press_event(keyPressEvent);
     }
 
     _initEntryRow() {
