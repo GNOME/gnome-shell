@@ -349,8 +349,7 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
         // Use a different description when we are installing a system upgrade
         // if the PackageKit proxy is available (i.e. PackageKit is available).
         if (this._updateInfo && dialogContent.upgradeDescription) {
-            let name = this._updateInfo.PreparedUpgrade['name'].deep_unpack();
-            let version = this._updateInfo.PreparedUpgrade['version'].deep_unpack();
+            const { name, version } = this._updateInfo.PreparedUpgrade;
 
             if (name != null && version != null)
                 description = dialogContent.upgradeDescription(name, version);
