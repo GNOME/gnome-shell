@@ -1,6 +1,6 @@
 option('extensions_tool',
   type: 'boolean',
-  value: true,
+  value: false,
   description: 'Build gnome-extensions CLI tool'
 )
 
