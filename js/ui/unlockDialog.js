@@ -761,7 +761,7 @@ var UnlockDialog = GObject.registerClass({
     }
 
     _escape() {
-        if (this.allowCancel)
+        if (this._authPrompt && this.allowCancel)
             this._authPrompt.cancel();
     }
 
