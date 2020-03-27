@@ -681,12 +681,6 @@ update_framebuffers (ShellBlurEffect *self)
   float height = -1;
   float width = -1;
 
-  if (!clutter_actor_meta_get_enabled (CLUTTER_ACTOR_META (self)))
-    return FALSE;
-
-  if (!self->actor)
-    return FALSE;
-
   get_target_size (self, &width, &height);
   downscale_factor = calculate_downscale_factor (width, height, self->sigma);
 
@@ -775,6 +769,8 @@ shell_blur_effect_paint (ClutterEffect           *effect,
 {
   ShellBlurEffect *self = SHELL_BLUR_EFFECT (effect);
   uint8_t paint_opacity;
+
+  g_assert (self->actor != NULL);
 
   if (self->sigma > 0)
     {
