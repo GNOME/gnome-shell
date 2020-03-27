@@ -648,12 +648,22 @@ class AppIcon extends St.BoxLayout {
             x_align: Clutter.ActorAlign.CENTER,
         });
         this.add_child(this.label);
+
+        this._cachedWindows = [];
     }
 
     // eslint-disable-next-line camelcase
     set_size(size) {
         this.icon = this.app.create_icon_texture(size);
         this._iconBin.child = this.icon;
+    }
+
+    get cachedWindows() {
+        return this._cachedWindows;
+    }
+
+    set cachedWindows(windowList) {
+        this._cachedWindows = windowList;
     }
 });
 
