@@ -77,7 +77,7 @@ class ForceAppExitDialog extends ModalDialog.ModalDialog {
         this._cancelButton = this.addButton({
             action: this.close.bind(this),
             label: _('Cancel'),
-            key: Clutter.Escape,
+            key: Clutter.KEY_Escape,
         });
 
         let appSystem = Shell.AppSystem.get_default();
