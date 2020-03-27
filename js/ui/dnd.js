@@ -209,6 +209,8 @@ var _Draggable = class _Draggable {
             Main.popModal(_getEventHandlerActor());
             this._eventsGrabbed = false;
         }
+
+        global.sync_pointer();
     }
 
     _eventIsRelease(event) {
@@ -730,9 +732,6 @@ var _Draggable = class _Draggable {
     _dragComplete() {
         if (!this._actorDestroyed && this._dragActor)
             Shell.util_set_hidden_from_pick(this._dragActor, false);
-
-        this._ungrabEvents();
-        global.sync_pointer();
 
         if (this._updateHoverId) {
             GLib.source_remove(this._updateHoverId);
