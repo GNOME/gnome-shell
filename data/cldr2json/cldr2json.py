@@ -165,8 +165,12 @@ def convert_file(source_file, destination_path):
         return False
     destination_file = os.path.join(destination_path, xkb_name + ".json")
 
-    with open(destination_file, 'w', encoding="utf-8") as dest_fd:
-        json.dump(root, dest_fd, ensure_ascii=False, indent=2, sort_keys=True)
+    try:
+        with open(destination_file, 'x', encoding="utf-8") as dest_fd:
+            json.dump(root, dest_fd, ensure_ascii=False, indent=2, sort_keys=True)
+    except FileExistsError as e:
+        logging.info("File %s exists, not updating", destination_file)
+        return False
 
     logging.debug("written %s", destination_file)
 
