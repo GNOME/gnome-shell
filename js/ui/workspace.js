@@ -144,11 +144,17 @@ var WindowClone = GObject.registerClass({
             this._onMetaWindowSizeChanged.bind(this));
         this._windowClone._posChangedId = this.metaWindow.connect('position-changed',
             this._computeBoundingBox.bind(this));
+        this._windowClone._closeDialogVisisbleId = this.metaWindow.connect('close-dialog-visible', () => {
+            if (this._closeRequested)
+                this._activate();
+        });
+
         this._windowClone._destroyId =
             this.realWindow.connect('destroy', () => {
                 // First destroy the clone and then destroy everything
                 // This will ensure that we never see it in the
                 // _disconnectSignals loop
+
                 this._windowClone.destroy();
                 this.destroy();
             });
@@ -235,6 +241,10 @@ var WindowClone = GObject.registerClass({
             this._onMetaWindowSizeChanged.bind(this));
         clone._posChangedId = metaWin.connect('position-changed',
             this._onMetaWindowSizeChanged.bind(this));
+        clone._closeDialogVisisbleId = metaWin.connect('close-dialog-visible', () => {
+            if (this._closeRequested)
+                this._activate();
+        });
         clone._destroyId = realWin.connect('destroy', () => {
             clone.destroy();
 
@@ -345,6 +355,7 @@ var WindowClone = GObject.registerClass({
 
             realWindow.meta_window.disconnect(child._sizeChangedId);
             realWindow.meta_window.disconnect(child._posChangedId);
+            realWindow.meta_window.disconnect(child._closeDialogVisisbleId);
             realWindow.disconnect(child._destroyId);
         });
     }
@@ -659,6 +670,7 @@ var WindowOverlay = class {
 
     _windowCanClose() {
         return this._windowClone.metaWindow.can_close() &&
+               !this._windowClone.metaWindow.get_close_dialog_visible() &&
                !this._windowClone.hasAttachedDialogs();
     }
 
