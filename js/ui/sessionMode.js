@@ -11,6 +11,14 @@ const Config = imports.misc.config;
 
 const DEFAULT_MODE = 'restrictive';
 
+const USER_SESSION_COMPONENTS = [
+    'polkitAgent', 'telepathyClient', 'keyring',
+    'autorunManager', 'automountManager',
+];
+
+if (Config.HAVE_NETWORKMANAGER)
+    USER_SESSION_COMPONENTS.push('networkAgent');
+
 const _modes = {
     'restrictive': {
         parentMode: null,
@@ -82,12 +90,7 @@ const _modes = {
         isLocked: false,
         isPrimary: true,
         unlockDialog: imports.ui.unlockDialog.UnlockDialog,
-        components: Config.HAVE_NETWORKMANAGER
-            ? ['networkAgent', 'polkitAgent', 'telepathyClient',
-               'keyring', 'autorunManager', 'automountManager']
-            : ['polkitAgent', 'telepathyClient',
-               'keyring', 'autorunManager', 'automountManager'],
-
+        components: USER_SESSION_COMPONENTS,
         panel: {
             left: ['activities', 'appMenu'],
             center: ['dateMenu'],

@@ -8,14 +8,18 @@ const Main = imports.ui.main;
 
 var MAX_CANDIDATES_PER_PAGE = 16;
 
-var DEFAULT_INDEX_LABELS = ['1', '2', '3', '4', '5', '6', '7', '8',
-                            '9', '0', 'a', 'b', 'c', 'd', 'e', 'f'];
+var DEFAULT_INDEX_LABELS = [
+    '1', '2', '3', '4', '5', '6', '7', '8', '9', '0',
+    'a', 'b', 'c', 'd', 'e', 'f',
+];
 
 var CandidateArea = GObject.registerClass({
     Signals: {
-        'candidate-clicked': { param_types: [GObject.TYPE_UINT,
-                                             GObject.TYPE_UINT,
-                                             Clutter.ModifierType.$gtype] },
+        'candidate-clicked': {
+            param_types: [
+                GObject.TYPE_UINT, GObject.TYPE_UINT, Clutter.ModifierType.$gtype,
+            ],
+        },
         'cursor-down': {},
         'cursor-up': {},
         'next-page': {},

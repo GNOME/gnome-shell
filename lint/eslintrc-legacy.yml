@@ -7,7 +7,6 @@ rules:
       - 'CallExpression[callee.object.name=GObject][callee.property.name=registerClass] > ClassExpression:first-child'
       CallExpression:
         arguments: first
-      ArrayExpression: first
       ObjectExpression: first
       MemberExpression: off
   jsdoc/check-alignment: off

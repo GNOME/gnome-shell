@@ -73,12 +73,13 @@ function waitSignal(object, signal) {
 }
 
 function extractBootTimestamp() {
-    let sp = Gio.Subprocess.new(['journalctl', '-b',
-                                 'MESSAGE_ID=7d4958e842da4a758f6c1cdc7b36dcc5',
-                                 'UNIT=graphical.target',
-                                 '-o',
-                                 'json'],
-                                Gio.SubprocessFlags.STDOUT_PIPE);
+    const sp = Gio.Subprocess.new([
+        'journalctl', '-b',
+        'MESSAGE_ID=7d4958e842da4a758f6c1cdc7b36dcc5',
+        'UNIT=graphical.target',
+        '-o',
+        'json',
+    ], Gio.SubprocessFlags.STDOUT_PIPE);
     let result = null;
 
     let datastream = Gio.DataInputStream.new(sp.get_stdout_pipe());

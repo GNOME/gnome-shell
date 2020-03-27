@@ -192,16 +192,20 @@ class ScaleLayout extends Clutter.BinLayout {
         this._connectContainer(container);
 
         let [min, nat] = super.vfunc_get_preferred_width(container, forHeight);
-        return [Math.floor(min * container.scale_x),
-                Math.floor(nat * container.scale_x)];
+        return [
+            Math.floor(min * container.scale_x),
+            Math.floor(nat * container.scale_x),
+        ];
     }
 
     vfunc_get_preferred_height(container, forWidth) {
         this._connectContainer(container);
 
         let [min, nat] = super.vfunc_get_preferred_height(container, forWidth);
-        return [Math.floor(min * container.scale_y),
-                Math.floor(nat * container.scale_y)];
+        return [
+            Math.floor(min * container.scale_y),
+            Math.floor(nat * container.scale_y),
+        ];
     }
 });
 
@@ -275,10 +279,14 @@ var LabelExpanderLayout = GObject.registerClass({
 
         if (children[1]) {
             let [min2, nat2] = children[1].get_preferred_height(forWidth);
-            let [expMin, expNat] = [Math.min(min2, min * this._expandLines),
-                                    Math.min(nat2, nat * this._expandLines)];
-            [min, nat] = [min + this._expansion * (expMin - min),
-                          nat + this._expansion * (expNat - nat)];
+            const [expMin, expNat] = [
+                Math.min(min2, min * this._expandLines),
+                Math.min(nat2, nat * this._expandLines),
+            ];
+            [min, nat] = [
+                min + this._expansion * (expMin - min),
+                nat + this._expansion * (expNat - nat),
+            ];
         }
 
         return [min, nat];

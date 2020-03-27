@@ -802,8 +802,10 @@ var ZoomRegion = class ZoomRegion {
         }
 
         let scaleFactor = St.ThemeContext.get_for_stage(global.stage).scale_factor;
-        let [xFocus, yFocus] = [(extents.x + (extents.width / 2)) * scaleFactor,
-                                (extents.y + (extents.height / 2)) * scaleFactor];
+        const [xFocus, yFocus] = [
+            (extents.x + (extents.width / 2)) * scaleFactor,
+            (extents.y + (extents.height / 2)) * scaleFactor,
+        ];
 
         if (this._xFocus !== xFocus || this._yFocus !== yFocus) {
             [this._xFocus, this._yFocus] = [xFocus, yFocus];
@@ -997,9 +999,11 @@ var ZoomRegion = class ZoomRegion {
         let roiWidth = this._viewPortWidth / this._xMagFactor;
         let roiHeight = this._viewPortHeight / this._yMagFactor;
 
-        return [this._xCenter - roiWidth / 2,
-                this._yCenter - roiHeight / 2,
-                roiWidth, roiHeight];
+        return [
+            this._xCenter - roiWidth / 2,
+            this._yCenter - roiHeight / 2,
+            roiWidth, roiHeight,
+        ];
     }
 
     /**
@@ -1580,8 +1584,10 @@ var ZoomRegion = class ZoomRegion {
     _screenToViewPort(screenX, screenY) {
         // Converts coordinates relative to the (unmagnified) screen to coordinates
         // relative to the origin of this._magView
-        return [this._viewPortWidth / 2 + (screenX - this._xCenter) * this._xMagFactor,
-                this._viewPortHeight / 2 + (screenY - this._yCenter) * this._yMagFactor];
+        return [
+            this._viewPortWidth / 2 + (screenX - this._xCenter) * this._xMagFactor,
+            this._viewPortHeight / 2 + (screenY - this._yCenter) * this._yMagFactor,
+        ];
     }
 
     _updateMagViewGeometry() {

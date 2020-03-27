@@ -1192,8 +1192,10 @@ var LoginDialog = GObject.registerClass({
 
         this._updateCancelButton();
 
-        let batch = new Batch.ConcurrentBatch(this, [GdmUtil.cloneAndFadeOutActor(this._userSelectionBox),
-                                                     this._beginVerificationForItem(activatedItem)]);
+        const batch = new Batch.ConcurrentBatch(this, [
+            GdmUtil.cloneAndFadeOutActor(this._userSelectionBox),
+            this._beginVerificationForItem(activatedItem),
+        ]);
         batch.run();
     }
 

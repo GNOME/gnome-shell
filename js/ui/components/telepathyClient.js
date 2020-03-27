@@ -145,10 +145,12 @@ class TelepathyClient extends Tp.BaseClient {
         factory.add_account_features([Tp.Account.get_feature_quark_connection()]);
         factory.add_connection_features([Tp.Connection.get_feature_quark_contact_list()]);
         factory.add_channel_features([Tp.Channel.get_feature_quark_contacts()]);
-        factory.add_contact_features([Tp.ContactFeature.ALIAS,
-                                      Tp.ContactFeature.AVATAR_DATA,
-                                      Tp.ContactFeature.PRESENCE,
-                                      Tp.ContactFeature.SUBSCRIPTION_STATES]);
+        factory.add_contact_features([
+            Tp.ContactFeature.ALIAS,
+            Tp.ContactFeature.AVATAR_DATA,
+            Tp.ContactFeature.PRESENCE,
+            Tp.ContactFeature.SUBSCRIPTION_STATES,
+        ]);
 
         // Set up a SimpleObserver, which will call _observeChannels whenever a
         // channel matching its filters is detected.

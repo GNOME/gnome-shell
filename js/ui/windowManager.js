@@ -1135,9 +1135,11 @@ var WindowManager = class {
     }
 
     _minimizeWindow(shellwm, actor) {
-        let types = [Meta.WindowType.NORMAL,
-                     Meta.WindowType.MODAL_DIALOG,
-                     Meta.WindowType.DIALOG];
+        const types = [
+            Meta.WindowType.NORMAL,
+            Meta.WindowType.MODAL_DIALOG,
+            Meta.WindowType.DIALOG,
+        ];
         if (!this._shouldAnimateActor(actor, types)) {
             shellwm.completed_minimize(actor);
             return;
@@ -1200,9 +1202,11 @@ var WindowManager = class {
     }
 
     _unminimizeWindow(shellwm, actor) {
-        let types = [Meta.WindowType.NORMAL,
-                     Meta.WindowType.MODAL_DIALOG,
-                     Meta.WindowType.DIALOG];
+        const types = [
+            Meta.WindowType.NORMAL,
+            Meta.WindowType.MODAL_DIALOG,
+            Meta.WindowType.DIALOG,
+        ];
         if (!this._shouldAnimateActor(actor, types)) {
             shellwm.completed_unminimize(actor);
             return;
@@ -1467,9 +1471,11 @@ var WindowManager = class {
         if (actor.meta_window.is_attached_dialog())
             this._checkDimming(actor.get_meta_window().get_transient_for());
 
-        let types = [Meta.WindowType.NORMAL,
-                     Meta.WindowType.DIALOG,
-                     Meta.WindowType.MODAL_DIALOG];
+        const types = [
+            Meta.WindowType.NORMAL,
+            Meta.WindowType.DIALOG,
+            Meta.WindowType.MODAL_DIALOG,
+        ];
         if (!this._shouldAnimateActor(actor, types)) {
             shellwm.completed_map(actor);
             return;
@@ -1544,9 +1550,11 @@ var WindowManager = class {
         if (window.is_attached_dialog())
             this._checkDimming(window.get_transient_for());
 
-        let types = [Meta.WindowType.NORMAL,
-                     Meta.WindowType.DIALOG,
-                     Meta.WindowType.MODAL_DIALOG];
+        const types = [
+            Meta.WindowType.NORMAL,
+            Meta.WindowType.DIALOG,
+            Meta.WindowType.MODAL_DIALOG,
+        ];
         if (!this._shouldAnimateActor(actor, types)) {
             shellwm.completed_destroy(actor);
             return;

@@ -1752,9 +1752,11 @@ class Indicator extends PanelMenu.SystemIndicator {
         this._nmDevices = [];
         this._devices = { };
 
-        let categories = [NMConnectionCategory.WIRED,
-                          NMConnectionCategory.WIRELESS,
-                          NMConnectionCategory.WWAN];
+        const categories = [
+            NMConnectionCategory.WIRED,
+            NMConnectionCategory.WIRELESS,
+            NMConnectionCategory.WWAN,
+        ];
         for (let category of categories) {
             this._devices[category] = new DeviceCategory(category);
             this.menu.addMenuItem(this._devices[category]);

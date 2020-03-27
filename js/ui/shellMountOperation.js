@@ -254,12 +254,18 @@ var ShellMountQuestionDialog = GObject.registerClass({
 });
 
 var ShellMountPasswordDialog = GObject.registerClass({
-    Signals: { 'response': { param_types: [GObject.TYPE_INT,
-                                           GObject.TYPE_STRING,
-                                           GObject.TYPE_BOOLEAN,
-                                           GObject.TYPE_BOOLEAN,
-                                           GObject.TYPE_BOOLEAN,
-                                           GObject.TYPE_UINT] } },
+    Signals: {
+        'response': {
+            param_types: [
+                GObject.TYPE_INT,
+                GObject.TYPE_STRING,
+                GObject.TYPE_BOOLEAN,
+                GObject.TYPE_BOOLEAN,
+                GObject.TYPE_BOOLEAN,
+                GObject.TYPE_UINT,
+            ],
+        },
+    },
 }, class ShellMountPasswordDialog extends ModalDialog.ModalDialog {
     _init(message, flags) {
         let strings = message.split('\n');

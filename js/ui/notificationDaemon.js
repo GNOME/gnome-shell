@@ -43,8 +43,10 @@ var FdoNotificationDaemon = class FdoNotificationDaemon {
 
     _imageForNotificationData(hints) {
         if (hints['image-data']) {
-            let [width, height, rowStride, hasAlpha,
-                 bitsPerSample, nChannels_, data] = hints['image-data'];
+            const [
+                width, height, rowStride, hasAlpha,
+                bitsPerSample, nChannels_, data,
+            ] = hints['image-data'];
             return Shell.util_create_pixbuf_from_data(data, GdkPixbuf.Colorspace.RGB, hasAlpha,
                                                       bitsPerSample, width, height, rowStride);
         } else if (hints['image-path']) {
@@ -195,9 +197,8 @@ var FdoNotificationDaemon = class FdoNotificationDaemon {
     }
 
     _notifyForSource(source, ndata) {
-        let [id_, icon, summary, body, actions, hints, notification] =
-            [ndata.id, ndata.icon, ndata.summary, ndata.body,
-             ndata.actions, ndata.hints, ndata.notification];
+        const { icon, summary, body, actions, hints } = ndata;
+        let { notification } = ndata;
 
         if (notification == null) {
             notification = new MessageTray.Notification(source);

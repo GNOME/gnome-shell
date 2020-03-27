@@ -795,16 +795,20 @@ class InputSourceIndicatorContainer extends St.Widget {
         // for those we don't actually display.
         return this.get_children().reduce((maxWidth, child) => {
             let width = child.get_preferred_width(forHeight);
-            return [Math.max(maxWidth[0], width[0]),
-                    Math.max(maxWidth[1], width[1])];
+            return [
+                Math.max(maxWidth[0], width[0]),
+                Math.max(maxWidth[1], width[1]),
+            ];
         }, [0, 0]);
     }
 
     vfunc_get_preferred_height(forWidth) {
         return this.get_children().reduce((maxHeight, child) => {
             let height = child.get_preferred_height(forWidth);
-            return [Math.max(maxHeight[0], height[0]),
-                    Math.max(maxHeight[1], height[1])];
+            return [
+                Math.max(maxHeight[0], height[0]),
+                Math.max(maxHeight[1], height[1]),
+            ];
         }, [0, 0]);
     }
 
