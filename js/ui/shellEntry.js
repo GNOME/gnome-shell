@@ -237,7 +237,7 @@ var OverviewEntry = GObject.registerClass({
 
     _onKeyPress(entry, event) {
         let symbol = event.get_key_symbol();
-        if (symbol === Clutter.Escape && this._isActivated()) {
+        if (symbol === Clutter.KEY_Escape && this._isActivated()) {
             this.resetSearch();
             return true;
         }
@@ -247,21 +247,21 @@ var OverviewEntry = GObject.registerClass({
 
         let arrowNext, nextDirection;
         if (entry.get_text_direction() === Clutter.TextDirection.RTL) {
-            arrowNext = Clutter.Left;
+            arrowNext = Clutter.KEY_Left;
             nextDirection = Gtk.DirectionType.LEFT;
         } else {
-            arrowNext = Clutter.Right;
+            arrowNext = Clutter.KEY_Right;
             nextDirection = Gtk.DirectionType.RIGHT;
         }
 
-        if (symbol === Clutter.Down)
+        if (symbol === Clutter.KEY_Down)
             nextDirection = Gtk.DirectionType.DOWN;
 
         if ((symbol === arrowNext && this.clutter_text.position === -1) ||
-            (symbol === Clutter.Down)) {
+            (symbol === Clutter.KEY_Down)) {
             this.emit('search-navigate-focus', nextDirection);
             return true;
-        } else if (symbol === Clutter.Return || symbol === Clutter.KP_Enter) {
+        } else if (symbol === Clutter.KEY_Return || symbol === Clutter.KEY_KP_Enter) {
             this._activateSearch();
             return true;
         }
@@ -350,7 +350,7 @@ var OverviewEntry = GObject.registerClass({
     handleStageEvent(event) {
         let symbol = event.get_key_symbol();
 
-        if (symbol === Clutter.Escape && this.active) {
+        if (symbol === Clutter.KEY_Escape && this.active) {
             this.resetSearch();
             return true;
         }
