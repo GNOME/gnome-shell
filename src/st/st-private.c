@@ -132,6 +132,12 @@ _st_set_text_from_style (ClutterText *text,
                                           color.blue * 255);
   pango_attr_list_insert (attribs, foreground);
 
+  if (color.alpha != 255)
+    {
+      PangoAttribute *alpha = pango_attr_foreground_alpha_new (color.alpha * 255);
+      pango_attr_list_insert (attribs, alpha);
+    }
+
   decoration = st_theme_node_get_text_decoration (theme_node);
   if (decoration)
     {
