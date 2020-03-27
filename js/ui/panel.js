@@ -964,7 +964,7 @@ class Panel extends St.Widget {
             return Clutter.EVENT_STOP;
         }
 
-        return Clutter.EVENT_PROPAGATE;
+        return super.vfunc_key_press_event(keyEvent);
     }
 
     _toggleMenu(indicator) {

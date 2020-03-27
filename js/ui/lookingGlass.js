@@ -1127,7 +1127,7 @@ class LookingGlass extends St.BoxLayout {
             else if (symbol == Clutter.KEY_Page_Down)
                 this._notebook.nextTab();
         }
-        return Clutter.EVENT_PROPAGATE;
+        return super.vfunc_key_press_event(keyPressEvent);
     }
 
     open() {

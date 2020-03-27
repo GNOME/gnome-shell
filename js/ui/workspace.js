@@ -404,7 +404,7 @@ var WindowClone = GObject.registerClass({
             return true;
         }
 
-        return false;
+        return super.key_press_event(keyEvent);
     }
 
     _onClicked() {
