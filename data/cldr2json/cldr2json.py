@@ -161,7 +161,7 @@ def convert_file(source_file, destination_path):
     try:
         xkb_name = locale_to_xkb(root["locale"], root["name"])
     except KeyError as e:
-        logging.warn(e)
+        logging.warning(e)
         return False
     destination_file = os.path.join(destination_path, xkb_name + ".json")
 
