@@ -97,8 +97,8 @@ class InputMethod extends Clutter.InputMethod {
         this.commit(text.get_text());
     }
 
-    _onDeleteSurroundingText() {
-        this.delete_surrounding();
+    _onDeleteSurroundingText(_context, offset, nchars) {
+        this.delete_surrounding(offset, nchars);
     }
 
     _onUpdatePreeditText(_context, text, pos, visible) {
