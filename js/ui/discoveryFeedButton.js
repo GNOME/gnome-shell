@@ -52,14 +52,12 @@ class DiscoveryFeedButton extends St.BoxLayout {
 
         this._bar = new St.Button({
             name: 'discovery-feed-bar',
-            child: new St.Icon({ style_class: 'discovery-feed-bar-icon' }),
             style_class: 'discovery-feed-bar',
         });
         this.add_child(this._bar);
 
         this._tile = new St.Button({
             name: 'discovery-feed-tile',
-            child: new St.Icon({ style_class: 'discovery-feed-tile-icon' }),
             style_class: 'discovery-feed-tile',
             x_expand: true,
             x_align: Clutter.ActorAlign.CENTER,
@@ -83,11 +81,11 @@ class DiscoveryFeedButton extends St.BoxLayout {
 
     _onHoverChanged(actor) {
         if (actor.get_hover()) {
-            this._bar.child.add_style_pseudo_class('highlighted');
-            this._tile.child.add_style_pseudo_class('highlighted');
+            this._bar.add_style_pseudo_class('highlighted');
+            this._tile.add_style_pseudo_class('highlighted');
         } else {
-            this._bar.child.remove_style_pseudo_class('highlighted');
-            this._tile.child.remove_style_pseudo_class('highlighted');
+            this._bar.remove_style_pseudo_class('highlighted');
+            this._tile.remove_style_pseudo_class('highlighted');
         }
     }
 

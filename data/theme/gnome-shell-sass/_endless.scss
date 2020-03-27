@@ -368,7 +368,7 @@ popup-separator-menu-item {
 
 // Discovery Feed
 
-.discovery-feed-bar-icon {
+.discovery-feed-bar {
     background-image: url("resource:///org/gnome/shell/theme/discovery-feed-bar-normal.png");
     height: 18px;
     width: 1004px;
@@ -378,7 +378,7 @@ popup-separator-menu-item {
     }
 }
 
-.discovery-feed-tile-icon {
+.discovery-feed-tile {
     background-image: url("resource:///org/gnome/shell/theme/discovery-feed-tile-normal.png");
     height: 27px;
     width: 62px;
