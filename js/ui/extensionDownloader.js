@@ -156,9 +156,7 @@ function checkForUpdates() {
         let operations = JSON.parse(message.response_body.data);
         for (let uuid in operations) {
             let operation = operations[uuid];
-            if (operation == 'blacklist')
-                uninstallExtension(uuid);
-            else if (operation == 'upgrade' || operation == 'downgrade')
+            if (operation === 'upgrade' || operation === 'downgrade')
                 downloadExtensionUpdate(uuid);
         }
     });
