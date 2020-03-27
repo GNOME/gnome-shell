@@ -1,0 +1,4 @@
+option('package_name',
+  type: 'string',
+  description: 'The gettext domain name',
+)

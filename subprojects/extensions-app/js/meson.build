@@ -1,6 +1,6 @@
 launcherconf = configuration_data()
 launcherconf.set('app_id', app_id)
-launcherconf.set('PACKAGE_NAME', meson.project_name())
+launcherconf.set('PACKAGE_NAME', package_name)
 launcherconf.set('PACKAGE_VERSION', meson.project_version())
 launcherconf.set('prefix', prefix)
 launcherconf.set('libdir', libdir)
@@ -22,13 +22,10 @@ configure_file(
   install_dir: pkgdatadir,
 )
 
-config_dir = '@0@/../..'.format(meson.current_build_dir())
-
 gnome.compile_resources(
   app_id + '.src',
   app_id + '.src.gresource.xml',
-  dependencies: [config_js],
-  source_dir: ['.', '../..', config_dir],
+  source_dir: ['.', '../../../js'],
   gresource_bundle: true,
   install: true,
   install_dir: pkgdatadir

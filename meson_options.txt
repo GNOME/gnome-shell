@@ -4,6 +4,12 @@ option('extensions_tool',
   description: 'Build gnome-extensions CLI tool'
 )
 
+option('extensions_app',
+  type: 'boolean',
+  value: true,
+  description: 'Build gnome-extensions GUI application'
+)
+
 option('gtk_doc',
   type: 'boolean',
   value: false,

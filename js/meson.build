@@ -1,6 +1,5 @@
 subdir('misc')
 subdir('dbusServices')
-subdir('extensionPrefs')
 
 js_resources = gnome.compile_resources(
   'js-resources', 'js-resources.gresource.xml',

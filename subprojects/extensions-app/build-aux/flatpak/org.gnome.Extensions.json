@@ -1,0 +1,37 @@
+{
+  "app-id": "org.gnome.Extensions",
+  "runtime": "org.gnome.Platform",
+  "runtime-version": "master",
+  "sdk": "org.gnome.Sdk",
+  "command": "gnome-shell-extension-prefs",
+  "tags": ["nightly"],
+  "desktop-file-name-prefix": "(Nightly) ",
+  "finish-args": [
+    "--share=ipc", "--socket=fallback-x11",
+    "--socket=wayland",
+    "--talk-name=org.gnome.Shell.Extensions"
+  ],
+  "build-options": {
+      "cflags": "-O2 -g"
+  },
+  "modules": [
+    {
+      "name": "gnome-extensions-app",
+      "buildsystem": "meson",
+      "builddir": true,
+      "subdir": "subprojects/extensions-app",
+      "sources": [
+        {
+          "type": "git",
+          "url": "https://gitlab.gnome.org/GNOME/gnome-shell.git"
+        },
+        {
+          "type": "shell",
+          "commands": [
+              "subprojects/extensions-app/generate-translations.sh"
+          ]
+        }
+      ]
+    }
+  ]
+}
