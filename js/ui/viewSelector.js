@@ -846,7 +846,7 @@ var ViewSelector = GObject.registerClass({
 
         let symbol = event.get_key_symbol();
 
-        if (symbol == Clutter.Escape && this._activePage == this._workspacesPage) {
+        if (symbol == Clutter.KEY_Escape && this._activePage == this._workspacesPage) {
             Main.overview.toggleWindows();
             return Clutter.EVENT_STOP;
         }
