@@ -108,7 +108,7 @@ var InternetSearchProvider = class {
             if (uri)
                 results.push('uri:%s'.format(query));
             else
-                results.push('search:'.format(query));
+                results.push('search:%s'.format(query));
         }
 
         callback(results);
