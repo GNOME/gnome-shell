@@ -1,9 +1,8 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported ControlsManager */
+/* exported ControlsManager, DashSlider */
 
 const { Clutter, GObject, Meta, St } = imports.gi;
 
-const Dash = imports.ui.dash;
 const Dock = imports.ui.dock;
 const Main = imports.ui.main;
 const Params = imports.misc.params;
@@ -418,7 +417,7 @@ class ControlsManager extends St.Widget {
         });
 
         this.dock = new Dock.Dock({
-            monitorIndex: Main.layoutManager.primaryIndex
+            monitorIndex: Main.layoutManager.primaryIndex,
         });
         this._dashSpacer = new DashSpacer();
         this._dashSpacer.setDashActor(this.dock._slider);

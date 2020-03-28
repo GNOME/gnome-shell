@@ -396,9 +396,8 @@ var ViewSelector = GObject.registerClass({
 
     _onShowAppsButtonToggled() {
         if (this._showAppsButton.checked) {
-            if (!Main.overview.visibleTarget) {
+            if (!Main.overview.visibleTarget)
                 Main.overview.show();
-            }
 
             this._showPage(this._appsPage);
         } else {

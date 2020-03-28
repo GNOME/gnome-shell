@@ -1,3 +1,5 @@
+/* exported Dock, State, Mode */
+
 const { Clutter, Gio, GLib, GObject, Gtk, Meta, Shell, St } = imports.gi;
 
 const Main = imports.ui.main;
@@ -40,27 +42,27 @@ var Dock = GObject.registerClass({
         this._dockMode = this._dockSettings.get_enum('mode');
         // Update dock on settings changes
         this._bindSettingsChanges();
-        
+
         // Used to ignore hover events while auto-hiding
         this._ignoreHover = false;
         this._saveIgnoreHover = null;
-        
+
         // Initial dock state.
         this._dockState = State.HIDDEN;
-        
+
         // Get the monitor object for this dock.
         this._monitor = Main.layoutManager.monitors[this._monitorIndex];
-        
+
         // Pressure barrier state
         this._canUsePressure = false;
         this._pressureBarrier = null;
         this._barrier = null;
 
         this._removeBarrierTimeoutId = 0;
-        
+
         // Fallback autohide detection
         this._dockEdge = null;
-        
+
         // Get icon size settings.
         const fixedIconSize = this._dockSettings.get_boolean('fixed-icon-size');
         const iconSize = this._dockSettings.get_int('icon-size');
@@ -71,7 +73,7 @@ var Dock = GObject.registerClass({
             monitorIndex,
             fixedIconSize,
             iconSizes,
-            iconSize
+            iconSize,
         });
 
         super._init({
@@ -152,7 +154,7 @@ var Dock = GObject.registerClass({
                     const fixed = settings.get_boolean('fixed-icon-size');
                     const size = settings.get_int('icon-size');
                     this.dash.setIconSize(size, fixed);
-                }
+                },
             ));
 
         settings.connect('changed::icon-sizes',
@@ -189,21 +191,20 @@ var Dock = GObject.registerClass({
 
     _updateDashVisibility() {
         // Ignore if overview is visible.
-        if (Main.overview.visibleTarget) {
+        if (Main.overview.visibleTarget)
             return;
-        }
 
         // If auto-hiding check that the dash should still be visible
         if (this._dockMode === Mode.AUTOHIDE) {
             this._ignoreHover = false;
-            
+
             global.sync_pointer();
-            
-            if (this._box.hover) {
+
+            if (this._box.hover)
                 this._animateIn();
-            } else {
+            else
                 this._animateOut();
-            }
+
         } else if (this._dockMode === Mode.FIXED) {
             this._animateIn();
         } else {
@@ -224,19 +225,18 @@ var Dock = GObject.registerClass({
 
     _hoverChanged() {
         if (!this._ignoreHover && this._dockMode === Mode.AUTOHIDE) {
-            if (this._box.hover) {
+            if (this._box.hover)
                 this.slideIn();
-            } else {
+            else
                 this.slideOut();
-            }
+
         }
     }
 
     slideIn() {
         if (this._dockState === State.HIDDEN || this._dockState === State.HIDING) {
-            if (this._dockState === State.HIDING) {
+            if (this._dockState === State.HIDING)
                 this._removeTransitions();
-            }
 
             // Prevent 'double' animations which can cause visual quirks with autohide.
             if (this._dockState !== State.SHOWING) {
@@ -247,14 +247,13 @@ var Dock = GObject.registerClass({
     }
 
     slideOut() {
-        if (this._dockState == State.SHOWN || this._dockState == State.SHOWING) {
+        if (this._dockState === State.SHOWN || this._dockState === State.SHOWING) {
             let delay = DOCK_HIDE_DELAY;
-            
+
             // If the dock is already animating in, wait until it is finished.
-            if (this._dockState == State.SHOWING) {
+            if (this._dockState === State.SHOWING)
                 delay += DOCK_ANIMATION_DURATION;
-            }
-            
+
             this.emit('hiding');
             this._animateOut(delay);
         }
@@ -266,14 +265,12 @@ var Dock = GObject.registerClass({
         this._slider.slideIn(DOCK_ANIMATION_DURATION, delay, () => {
             this._dockState = State.SHOWN;
 
-            if (this._removeBarrierTimeoutId > 0) {
+            if (this._removeBarrierTimeoutId > 0)
                 GLib.source_remove(this._removeBarrierTimeoutId);
-            }
 
             // Only schedule a remove timeout if the barrier exists.
-            if (this._barrier) {
+            if (this._barrier)
                 this._removeBarrierTimeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, 100, this._removeBarrier.bind(this));
-            }
         });
     }
 
@@ -284,9 +281,9 @@ var Dock = GObject.registerClass({
             this._dockState = State.HIDDEN;
 
             // Remove queued barrier removal if any
-            if (this._removeBarrierTimeoutId > 0) {
+            if (this._removeBarrierTimeoutId > 0)
                 GLib.source_remove(this._removeBarrierTimeoutId);
-            }
+
             this._updateBarrier();
         });
     }
@@ -301,7 +298,7 @@ var Dock = GObject.registerClass({
 
         if (!this._canUsePressure) {
             log('Dock is using fallback edge detection.');
-            
+
             const workArea = Main.layoutManager.getWorkAreaForMonitor(this._monitorIndex);
             const height = workArea.height - 3;
             this._dockEdge = new Clutter.Actor({
@@ -311,30 +308,30 @@ var Dock = GObject.registerClass({
                 opacity: 0,
                 reactive: true,
             });
-            
+
             Main.layoutManager.addChrome(this._dockEdge);
-            
-            if (Clutter.get_default_text_direction() == Clutter.TextDirection.RTL) {
+
+            if (Clutter.get_default_text_direction() === Clutter.TextDirection.RTL) {
                 this._dockEdge.set_position(workArea.width - this._dockEdge.width, 0);
                 this.set_anchor_point_from_gravity(Clutter.Gravity.EAST);
             } else {
                 this._dockEdge.set_position(0, 1);
             }
-            
+
             this._dockEdge.connect('enter-event', () => {
                 if (!this._dockEntered) {
                     this._dockEntered = true;
-                    if (!this._monitor.inFullscreen) {
+                    if (!this._monitor.inFullscreen)
                         this._onPressureSensed();
-                    }
+
                 }
                 return Clutter.EVENT_PROPAGATE;
             });
 
             this._dockEdge.connect('leave-event', (_, event) => {
-                if (event.get_related() !== this._dockEdge) {
+                if (event.get_related() !== this._dockEdge)
                     this._dockEntered = false;
-                }
+
                 return Clutter.EVENT_STOP;
             });
         }
@@ -342,21 +339,21 @@ var Dock = GObject.registerClass({
 
     _updatePressureBarrier() {
         this._canUsePressure = global.display.supports_extended_barriers();
-        
+
         // Remove existing barriers
 
         if (this._pressureBarrier) {
             this._pressureBarrier.destroy();
             this._pressureBarrier = null;
         }
-        
+
         if (this._barrier) {
             this._barrier.destroy();
             this._barrier = null;
         }
 
         if (this._canUsePressure) {
-            this._pressureBarrier = new Layout.PressureBarrier(DOCK_PRESSURE_THRESHOLD, 1000 + DOCK_SHOW_DELAY * 1000, // 1 second plus the delay to show.
+            this._pressureBarrier = new Layout.PressureBarrier(DOCK_PRESSURE_THRESHOLD, DOCK_PRESSURE_TIMEOUT + DOCK_SHOW_DELAY * 1000, // 1 second plus the delay to show.
                 Shell.ActionMode.NORMAL | Shell.ActionMode.OVERVIEW);
             this._pressureBarrier.connect('trigger', () => {
                 if (this._monitor.inFullscreen)
@@ -374,13 +371,13 @@ var Dock = GObject.registerClass({
         // dock area.
         GLib.timeout_add(GLib.PRIORITY_DEFAULT, DOCK_ANIMATION_DURATION * 1000, () => {
             let [x, y] = global.get_pointer();
-            const computed_x = this.x + this._slider.x;
-            const computed_y = this._monitor.y + this._monitor.height;
+            const computedX = this.x + this._slider.x;
+            const computedY = this._monitor.y + this._monitor.height;
 
-            if (x > computed_x ||
+            if (x > computedX ||
                 x < this._monitor.x ||
                 y < this._monitor.y ||
-                y > computed_y) {
+                y > computedY) {
                 this._hoverChanged();
                 return GLib.SOURCE_REMOVE;
             } else {
@@ -393,9 +390,9 @@ var Dock = GObject.registerClass({
 
     _removeBarrier() {
         if (this._barrier) {
-            if (this._pressureBarrier) {
+            if (this._pressureBarrier)
                 this._pressureBarrier.removeBarrier(this._barrier);
-            }
+
             this._barrier.destroy();
             this._barrier = null;
         }
@@ -406,7 +403,7 @@ var Dock = GObject.registerClass({
     _updateBarrier() {
         // Remove existing barrier
         this._removeBarrier();
-        
+
         // The barrier should not be set in fullscreen.
         if (this._monitor.inFullscreen)
             return;
@@ -419,21 +416,21 @@ var Dock = GObject.registerClass({
 
         if (this._canUsePressure && this._dockMode === Mode.AUTOHIDE) {
             let workArea = Main.layoutManager.getWorkAreaForMonitor(this._monitor.index);
-            
+
             let x1 = this._monitor.x + 1;
             let x2 = x1;
             let y1 = workArea.y + 1;
             // Avoid conflicting with the hot corner by subtracting 1px;
             let y2 = workArea.y + workArea.height - 1;
             let direction = Meta.BarrierDirection.POSITIVE_X;
-            
-            if (this._pressureBarrier && this._dockState == State.HIDDEN) {
+
+            if (this._pressureBarrier && this._dockState === State.HIDDEN) {
                 this._barrier = new Meta.Barrier({
                     display: global.display,
-                    x1: x1,
-                    x2: x2,
-                    y1: y1,
-                    y2: y2,
+                    x1,
+                    x2,
+                    y1,
+                    y2,
                     directions: direction,
                 });
 
@@ -447,7 +444,7 @@ var Dock = GObject.registerClass({
         Main.layoutManager._untrackActor(this);
 
         if (this._dockMode === Mode.FIXED) {
-            // Setting trackFullscreen directly on the slider 
+            // Setting trackFullscreen directly on the slider
             // causes issues when full-screening some windows.
             Main.layoutManager._trackActor(this, {
                 affectsInputRegion: false,
@@ -468,9 +465,8 @@ var Dock = GObject.registerClass({
         let extendHeight = this._dockSettings.get_boolean('extend');
         let height = extendHeight ? 1 : this._dockSettings.get_double('height');
 
-        if (height < 0 || height > 1) {
+        if (height < 0 || height > 1)
             height = 0.95;
-        }
 
         this.height = Math.round(height * workArea.height);
         this.move_anchor_point_from_gravity(Clutter.Gravity.NORTH_WEST);
@@ -497,28 +493,27 @@ var Dock = GObject.registerClass({
     }
 
     _onDragEnd() {
-        if (this._saveIgnoreHover !== null) {
+        if (this._saveIgnoreHover !== null)
             this._ignoreHover = this._saveIgnoreHover;
-        }
 
         this._saveIgnoreHover = null;
         this._box.sync_hover();
 
-        if (Main.overview.slideInn) {
+        if (Main.overview.slideInn)
             this._pageChanged();
-        }
+
     }
 
     _pageChanged() {
         const activePage = Main.overview.viewSelector.getActivePage();
-        const showDash = activePage == ViewSelector.ViewPage.WINDOWS ||
-            activePage == ViewSelector.ViewPage.APPS;
+        const showDash = activePage === ViewSelector.ViewPage.WINDOWS ||
+            activePage === ViewSelector.ViewPage.APPS;
 
-        if (showDash) {
+        if (showDash)
             this._animateIn();
-        } else {
+        else
             this._animateOut();
-        }
+
     }
 
     _onAccessibilityFocus() {
