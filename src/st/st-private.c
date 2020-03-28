@@ -134,7 +134,16 @@ _st_set_text_from_style (ClutterText *text,
 
   if (color.alpha != 255)
     {
-      PangoAttribute *alpha = pango_attr_foreground_alpha_new (color.alpha * 255);
+      PangoAttribute *alpha;
+
+      /* An alpha value of 0 means "system inherited", so the
+       * minimum regular value is 1.
+       */
+      if (color.alpha == 0)
+        alpha = pango_attr_foreground_alpha_new (1);
+      else
+        alpha = pango_attr_foreground_alpha_new (color.alpha * 255);
+
       pango_attr_list_insert (attribs, alpha);
     }
 
