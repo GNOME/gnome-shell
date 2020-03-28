@@ -329,12 +329,11 @@ var GnomeShellExtensions = class {
             (conn, res) => conn.call_finish(res));
     }
 
-    ReloadExtension(uuid) {
-        let extension = Main.extensionManager.lookup(uuid);
-        if (!extension)
-            return;
-
-        Main.extensionManager.reloadExtension(extension);
+    ReloadExtensionAsync(params, invocation) {
+        invocation.return_error_literal(
+            Gio.DBusError,
+            Gio.DBusError.NOT_SUPPORTED,
+            'ReloadExtension is deprecated and does not work');
     }
 
     CheckForUpdates() {
