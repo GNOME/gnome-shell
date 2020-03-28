@@ -302,4 +302,42 @@
       </description>
     </key>
   </schema>
+
+  <enum id='org.gnome.shell.dock.dock-mode'>
+    <value value='0' nick='DEFAULT'/>
+    <value value='1' nick='AUTOHIDE'/>
+    <value value='2' nick='FIXED'/>
+  </enum>
+
+  <schema id="org.gnome.shell.dock"
+          path="/org/gnome/shell/dock/"
+          gettext-domain="@GETTEXT_PACKAGE@">
+    <key name="mode" enum="org.gnome.shell.dock.dock-mode">
+      <default>'AUTOHIDE'</default>
+      <summary>Dock display mode.</summary>
+      <description>Autohide, fixed, or overview only options.</description>
+    </key>
+    <key type="i" name="icon-size">
+      <default>48</default>
+      <summary>Dash icon size when fixed.</summary>
+      <description>When fixed-icon-size is true this size will be used by the dash.</description>
+    </key>
+    <key type="b" name="fixed-icon-size">
+      <default>false</default>
+      <summary>Fixed icon size</summary>
+      <description>Keep the icon size fixed by scrolling the dock.</description>
+    </key> 
+    <key type="d" name="height">
+      <default>0.90</default>
+      <summary>Dock height as a percentage of the desktop height.</summary>
+    </key>
+    <key type="b" name="extend">
+      <default>false</default>
+      <summary>Extend the dock to fill all the available height</summary>
+    </key>
+    <key type="ai" name="icon-sizes">
+      <default>[16, 22, 24, 32, 48, 64]</default>
+      <summary>Default icon sizes for dash.</summary>
+    </key>
+  </schema>
 </schemalist>
