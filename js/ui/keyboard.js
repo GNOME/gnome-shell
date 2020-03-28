@@ -1868,6 +1868,10 @@ var KeyboardController = class {
         Main.inputMethod.disconnect(this._notifyContentPurposeId);
         Main.inputMethod.disconnect(this._notifyContentHintsId);
         Main.inputMethod.disconnect(this._notifyInputPanelStateId);
+
+        // Make sure any buttons pressed by the virtual device are released
+        // immediately instead of waiting for the next GC cycle
+        this._virtualDevice.run_dispose();
     }
 
     _onSourcesModified() {
