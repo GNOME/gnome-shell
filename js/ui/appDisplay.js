@@ -624,6 +624,7 @@ class AppDisplay extends BaseAppView {
                         return;
                     }
                     icon = new FolderIcon(item, this);
+                    icon.connect('clicked', () => this._bgAction.release());
                 } else {
                     icon.update();
                 }
@@ -636,6 +637,7 @@ class AppDisplay extends BaseAppView {
                 icon = new AppIcon(app, {
                     isDraggable: favoritesWritable,
                 });
+                icon.connect('clicked', () => this._bgAction.release());
             }
 
             appIcons.push(icon);
