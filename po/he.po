@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
 "POT-Creation-Date: 2020-03-21 18:07+0000\n"
-"PO-Revision-Date: 2020-03-22 01:26+0200\n"
+"PO-Revision-Date: 2020-03-29 01:54+0300\n"
 "Last-Translator: Yosef Or Boczko <yoseforb@gmail.com>\n"
 "Language-Team: Hebrew <yoseforb@gmail.com>\n"
 "Language: he\n"
@@ -861,7 +861,7 @@ msgstr "%A, %l:%M %p"
 #, no-c-format
 #| msgid "%B %d, %l∶%M %p"
 msgid "%B %-d, %l∶%M %p"
-msgstr "%d ב%B, %l∶%M ‏%p"
+msgstr "%-d ב%B, %l:%M %p"
 
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 12h format.
@@ -870,7 +870,7 @@ msgstr "%d ב%B, %l∶%M ‏%p"
 #, no-c-format
 #| msgid "%B %d %Y, %l∶%M %p"
 msgid "%B %-d %Y, %l∶%M %p"
-msgstr "%d ב%B %Y, %l∶%M %p"
+msgstr "%-d ב%B %Y, %l:%M %p"
 
 #. TRANSLATORS: this is the title of the wifi captive portal login window
 #: js/portalHelper/main.js:41
@@ -1053,7 +1053,7 @@ msgstr "%OB"
 #.
 #: js/ui/calendar.js:381
 msgid "%OB %Y"
-msgstr "‏%OB %Y"
+msgstr "%OB %Y"
 
 #: js/ui/calendar.js:440
 msgid "Previous month"
@@ -1087,7 +1087,7 @@ msgstr "יום שלם"
 #| msgid "%A, %B %d"
 msgctxt "calendar heading"
 msgid "%A, %B %-d"
-msgstr "%A, ה־%d ב%B"
+msgstr "%A, ה־%-d ב%B"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year
 #: js/ui/calendar.js:871
@@ -1095,7 +1095,7 @@ msgstr "%A, ה־%d ב%B"
 #| msgid "%A, %B %d, %Y"
 msgctxt "calendar heading"
 msgid "%A, %B %-d, %Y"
-msgstr "%A, ה־%d ב%B, %Y"
+msgstr "%A, ה־%-d ב%B, %Y"
 
 #: js/ui/calendar.js:1100
 msgid "No Notifications"
@@ -1289,7 +1289,7 @@ msgstr "חלונית"
 #: js/ui/dateMenu.js:75
 #| msgid "%B %e %Y"
 msgid "%B %-d %Y"
-msgstr "%d ב%B %Y"
+msgstr "%-d ב%B %Y"
 
 #. Translators: This is the accessible name of the date button shown
 #. * below the time in the shell; it should combine the weekday and the
@@ -1454,7 +1454,7 @@ msgstr ""
 #: js/ui/endSessionDialog.js:259
 #| msgid "Running on battery power: please plug in before installing updates."
 msgid "Running on battery power: Please plug in before installing updates."
-msgstr "פועל על סוללה חלשה: נא לחבר לפני התקנת עדכונים."
+msgstr "פועל על סוללה: נא לחבר לחשמל לפני התקנת עדכונים"
 
 #: js/ui/endSessionDialog.js:268
 #| msgid "Some applications are busy or have unsaved work."
@@ -1510,7 +1510,7 @@ msgstr "לאפשר השבתת צירופי מקשים"
 #, javascript-format
 #| msgid "Application wants to inhibit shortcuts"
 msgid "The application %s wants to inhibit shortcuts"
-msgstr "היישום %s רוצה למנוע צירופי מקשים"
+msgstr "היישום %s הרוצה למנוע צירופי מקשים"
 
 #: js/ui/inhibitShortcutsDialog.js:83
 #| msgid "Application wants to inhibit shortcuts"
@@ -1546,8 +1546,8 @@ msgid ""
 "You just held down the Shift key for 8 seconds. This is the shortcut for the "
 "Slow Keys feature, which affects the way your keyboard works."
 msgstr ""
-"עליך רק להחזיק את המקש Shift לחוץ למשך 8 שניות. זהו הקיצור המפעיל את תכונת "
-"המקשים האטיים, המשפיעה על הדרך בה המקלדת שלך פועלת."
+"יש ללחוץ על מקש ה־Shift במשך 8 שניות. זה הקיצור לתכונת המקשים האטיים, "
+"המשפיעה על המקלדת שלך."
 
 #: js/ui/kbdA11yDialog.js:41
 #| msgid "Sticky Keys"
@@ -1564,8 +1564,8 @@ msgid ""
 "You just pressed the Shift key 5 times in a row. This is the shortcut for "
 "the Sticky Keys feature, which affects the way your keyboard works."
 msgstr ""
-"עליך רק ללחוץ על המקש Shift 5 פעמים בשורה. זהו הקיצור המפעיל את תכונת המקשים "
-"הדביקים, המשפיעה על הדרך בה המקלדת שלך פועלת."
+"יש ללחוץ 5 פעמים ברציפות על מקש ה־Shift. זה הקיצור לתכונת המקשים הדביקים, "
+"המשפיעה על המקלדת שלך."
 
 #: js/ui/kbdA11yDialog.js:46
 msgid ""
@@ -1573,8 +1573,8 @@ msgid ""
 "row. This turns off the Sticky Keys feature, which affects the way your "
 "keyboard works."
 msgstr ""
-"עליך רק ללחוץ על שני מקשים יחד, או ללחוץ על המקש Shift 5 פעמים בשורה. זהו "
-"הקיצור המכבה את תכונת המקשים הדביקים, המשפיעה על הדרך בה המקלדת שלך פועלת."
+"יש ללחוץ על שני מקשים בו־זמנית, או ללחוץ 5 פעמים ברציפות על מקש ה־Shift. זה "
+"יכבה את תכונת המקשים הדביקים, המשפיעה על המקלדת שלך."
 
 #: js/ui/kbdA11yDialog.js:55
 msgid "Leave On"
@@ -1840,7 +1840,7 @@ msgstr "מקש Caps Lock פועל."
 #: js/ui/shellMountOperation.js:285
 #| msgid "Volume"
 msgid "Hidden Volume"
-msgstr "כונן מוסתר"
+msgstr "כרך מוסתר"
 
 #: js/ui/shellMountOperation.js:288
 msgid "Windows System Volume"
@@ -1857,7 +1857,7 @@ msgstr "מקשי עכבר"
 #, javascript-format
 msgid ""
 "To unlock a volume that uses keyfiles, use the <i>%s</i> utility instead."
-msgstr "לשחרור הכונן המשתמש ב־keyfiles, יש להשתמש בכלי <i>%s</i> במקום."
+msgstr ""
 
 #: js/ui/shellMountOperation.js:306
 msgid "PIM Number"
@@ -1876,11 +1876,11 @@ msgstr "שחרור"
 #, javascript-format
 #| msgid "Open with %s"
 msgid "Open %s"
-msgstr "פתיחת %s"
+msgstr "פתיחה באמצעות %s"
 
 #: js/ui/shellMountOperation.js:423
 msgid "The PIM must be a number or empty."
-msgstr "ה־PIM חייב להיות מספר או להיות ריק."
+msgstr "ה־PIM חייב להיות ריק או מספר."
 
 #. Translators: %s is the Disks application
 #: js/ui/shellMountOperation.js:469
@@ -1941,11 +1941,11 @@ msgstr "טקסט גדול"
 
 #: js/ui/status/bluetooth.js:40
 msgid "Bluetooth"
-msgstr "Bluetooth"
+msgstr "בלוטות'"
 
 #: js/ui/status/bluetooth.js:49 js/ui/status/network.js:591
 msgid "Bluetooth Settings"
-msgstr "הגדרות Bluetooth"
+msgstr "הגדרות בלוטות'"
 
 #. Translators: this is the number of connected bluetooth devices
 #: js/ui/status/bluetooth.js:129
@@ -2043,13 +2043,13 @@ msgstr "<לא ידוע>"
 #: js/ui/status/network.js:420 js/ui/status/network.js:1317
 #, javascript-format
 msgid "%s Off"
-msgstr "%s כבוי"
+msgstr "‏%s כבוי"
 
 #. Translators: %s is a network identifier
 #: js/ui/status/network.js:423
 #, javascript-format
 msgid "%s Connected"
-msgstr "%s מחובר"
+msgstr "‏%s מחובר"
 
 #. Translators: this is for network devices that are physically present but are not
 #. under NetworkManager's control (and thus cannot be used in the menu);
@@ -2057,25 +2057,25 @@ msgstr "%s מחובר"
 #: js/ui/status/network.js:428
 #, javascript-format
 msgid "%s Unmanaged"
-msgstr "%s לא מנוהל"
+msgstr "‏%s לא מנוהל"
 
 #. Translators: %s is a network identifier
 #: js/ui/status/network.js:431
 #, javascript-format
 msgid "%s Disconnecting"
-msgstr "%s בהליכי ניתוק"
+msgstr "‏%s בהליכי ניתוק"
 
 #. Translators: %s is a network identifier
 #: js/ui/status/network.js:438 js/ui/status/network.js:1309
 #, javascript-format
 msgid "%s Connecting"
-msgstr "%s בהתחברות"
+msgstr "‏%s בהתחברות"
 
 #. Translators: this is for network connections that require some kind of key or password; %s is a network identifier
 #: js/ui/status/network.js:441
 #, javascript-format
 msgid "%s Requires Authentication"
-msgstr "%s דורש אימות"
+msgstr "‏%s דורש אימות"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing; %s is a network identifier
@@ -2089,7 +2089,7 @@ msgstr "חסרה קושחה עבור %s"
 #: js/ui/status/network.js:453
 #, javascript-format
 msgid "%s Unavailable"
-msgstr "%s לא זמין"
+msgstr "‏%s לא זמין"
 
 #. Translators: %s is a network identifier
 #: js/ui/status/network.js:456
@@ -2109,14 +2109,14 @@ msgstr "הגדרות פס־רחב נייד"
 #: js/ui/status/network.js:558 js/ui/status/network.js:1314
 #, javascript-format
 msgid "%s Hardware Disabled"
-msgstr "%s נמנוטרל חומרתית"
+msgstr "‏%s מושבת חומרתית"
 
 #. Translators: this is for a network device that cannot be activated
 #. because it's disabled by rfkill (airplane mode); %s is a network identifier
 #: js/ui/status/network.js:562
 #, javascript-format
 msgid "%s Disabled"
-msgstr "%s מושבת"
+msgstr "‏%s מושבת"
 
 #: js/ui/status/network.js:603
 msgid "Connect to Internet"
@@ -2231,9 +2231,9 @@ msgstr[2] "‏%s התחברויות אלחוטיות"
 #, javascript-format
 msgid "%s Modem Connection"
 msgid_plural "%s Modem Connections"
-msgstr[0] "התחברות מודם אחת"
-msgstr[1] "‏%s התחברויות מודם"
-msgstr[2] "‏%s התחברויות מודם"
+msgstr[0] "‏%s התחברות מודם"
+msgstr[1] "‏%s התחברויות מודמים"
+msgstr[2] "‏%s התחברויות מודמים"
 
 #: js/ui/status/network.js:1732
 msgid "Connection failed"
