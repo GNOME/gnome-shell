@@ -1149,9 +1149,9 @@ var KeyboardManager = class KeyBoardManager {
             this._keyboard = new Keyboard();
         } else if (!enabled && this._keyboard) {
             this._keyboard.setCursorLocation(null);
-            Main.layoutManager.hideKeyboard(true);
             this._keyboard.destroy();
             this._keyboard = null;
+            Main.layoutManager.hideKeyboard(true);
         }
     }
 
