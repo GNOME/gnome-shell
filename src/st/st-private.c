@@ -134,7 +134,9 @@ _st_set_text_from_style (ClutterText *text,
 
   if (color.alpha != 255)
     {
-      PangoAttribute *alpha = pango_attr_foreground_alpha_new (color.alpha * 255);
+      uint16_t value = MAX (1, (uint16_t) color.alpha * 255);
+      PangoAttribute *alpha = pango_attr_foreground_alpha_new (value);
+
       pango_attr_list_insert (attribs, alpha);
     }
 
