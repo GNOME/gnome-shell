@@ -765,7 +765,7 @@ var LayoutManager = GObject.registerClass({
             this._keyboardHeightNotifyId = 0;
         }
         this.keyboardBox.ease({
-            translation_y: this.keyboardBox.height,
+            translation_y: 0,
             opacity: 0,
             duration: immediate ? 0 : KEYBOARD_ANIMATION_TIME,
             mode: Clutter.AnimationMode.EASE_IN_QUAD,
