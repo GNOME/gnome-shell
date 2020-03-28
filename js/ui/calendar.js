@@ -1162,6 +1162,8 @@ class CalendarMessageList extends St.Widget {
         this._dndSwitch = new DoNotDisturbSwitch();
         this._dndButton = new St.Button({
             can_focus: true,
+            toggle_mode: true,
+            checked: this._dndSwitch.state,
             child: this._dndSwitch,
         });
         this._dndButton.connect('clicked', () => this._dndSwitch.toggle());
