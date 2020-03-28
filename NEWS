@@ -1,3 +1,61 @@
+3.36.1
+======
+* Improve app folders [Jonas D.; !1011]
+* Fix launching ibus daemon [Alynx; !1080]
+* Do not shutdown ibus/xsettings on X11 compositor restart [Carlos; #2329]
+* Hide hint text in entries when preedit is used [Carlos; !1084]
+* Do not load app infos on main thread [Christian; #2282]
+* Don't expose FDO Notifications interface on main bus name [Florian; !547]
+* Fix icon of mobile broadband connections [Cosimo, Reik; !1097, !1105]
+* Fix high-contrast/symbolic icon mix-up [Florian; #2414]
+* Don't ellipsize times in world clock [Florian; !1090]
+* Only check for extension updates if there are any extensions [Florian; !1100]
+* Fix crash when trying to update removed extensions [Florian; #2343]
+* Make Extensions app available as flatpak [Florian; !1081, !1106, !1087, !1133]
+* Display fractional timezones as hours:minutes [Jonas D.; #2438]
+* Fix assigning pad keybindings [Carlos; #2451]
+* Handle embedded newlines in lock screen notifications [Florian; #2463]
+* Fix OSK layout fallback for unsupported variants [Florian; #2471]
+* Do not apply text color to color glyphs (emojis) [Carlos; #850]
+* Check "Install pending software updates" by default [Michael; #2427]
+* Do not warn about missing GDM on each login [Florian; #2432]
+* Fix telepathy chat notifications [Marco; !1112]
+* Fix offline updates support in end session dialog [Michael; #2276]
+* Fix activating notifications by keyboard [Florian; #2319]
+* Remove handling of 'blacklisted' extensions [Florian; !1132]
+* Only update extensions if Extensions app is installed [Florian; #2346]
+* Improve Norwegian on-screen-keyboard layout [Bjørn; !1073]
+* Fix IM support for deleting surrounding text [Takao; !477]
+* Fix blur effect with fractional scaling [Jonas D.; !1000]
+* Use better location name in weather section [Florian; #2468]
+* Fix glitch in sound feedback on volume changes [Florian; !1147]
+* Fix on-screen keyboard regressions [Jonas D.; !1142]
+* Improve screen-reader support [Luke; #2508, #2517]
+* Fix password entry resize on login/lock screen [Florian; #2423]
+* Fix crash when opening app picker [Jonas Å.; !1154]
+* Misc. bug fixes and cleanups [Florian, Sebastian, Jan, Daniel, Philip, Mario,
+  Ray, Marco, Jonas D., Carlos, Georges; #2298, #2305, !1078, !1077, #2334,
+  #2381, !1093, !1098, #2386, !1108, !1109, !1114, !1076, !1072, !1115, !1088,
+  !1101, #2467, !1121, !1122, #2476, !1123, !1117, !1129, !1113, !1102, !1127,
+  #2238, !1131, !1135, !1136, !849, #2504, #2371, !1146, !1141, #2510, !1150]
+
+Contributors:
+  Marco Trevisan (Treviño), Michael Catanzaro, Cosimo Cecchi, Jonas Dreßler,
+  Takao Fujiwara, Carlos Garnacho, Christian Hergert, Sebastian Keller,
+  Reik Keutterling, Bjørn Lie, Florian Müllner, Jwtiyar Nariman,
+  Georges Basile Stavracas Neto, Mario Sanchez Prada, Ray Strode, Jan Tojnar,
+  Daniel van Vugt, Philip Withnall, Luke Yelavich, Alynx Zhou, Jonas Ådahl
+
+Translators:
+  Марко Костић [sr], Jordi Mas [ca], sicklylife [ja], Marek Černocký [cs],
+  Daniel Rusek [cs], Kjartan Maraas [nb], Tim Sabsch [de], Stas Solovey [ru],
+  Peter Mráz [sk], Rafael Fontenelle [pt_BR], Piotr Drąg [pl],
+  Milo Casagrande [it], Anders Jonsson [sv], Yuri Chornoivan [uk],
+  Kukuh Syafaat [id], Guillaume Bernard [fr], Daniel Mustieles [es],
+  Danial Behzadi [fa], Goran Vidović [hr], Yosef Or Boczko [he],
+  Emin Tufan Çetin [tr], Wolfgang Stöggl [de], Ibai Oihanguren Sala [eu],
+  Jwtiyar Nariman [ckb], Aurimas Černius [lt]
+
 3.36.0
 ======
 * Fix off-by-1900 error in date conversions [Florian; !1061]
