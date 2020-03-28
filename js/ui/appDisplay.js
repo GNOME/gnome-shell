@@ -837,7 +837,7 @@ class AppDisplay extends BaseAppView {
             Main.overview.searchEntry.clutter_text.reactive = !isOpen;
             Main.overview.searchEntry.clutter_text.editable = !isOpen;
 
-            this._displayingPopup = isOpen;
+            this._displayingDialog = isOpen;
         });
     }
 
