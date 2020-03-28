@@ -397,6 +397,20 @@ class WeatherSection extends St.Button {
         layout.attach(label, 0, 0, 1, 1);
     }
 
+    _findBestLocationName(loc) {
+        const locName = loc.get_name();
+
+        if (loc.get_level() === GWeather.LocationLevel.CITY ||
+            !loc.has_coords())
+            return locName;
+
+        const world = GWeather.Location.get_world();
+        const city = world.find_nearest_city(...loc.get_coords());
+        const cityName = city.get_name();
+
+        return locName.includes(cityName) ? cityName : locName;
+    }
+
     _updateForecasts() {
         this._forecastGrid.destroy_all_children();
 
@@ -405,13 +419,8 @@ class WeatherSection extends St.Button {
             return;
         }
 
-        let info = this._weatherClient.info;
-        let loc = info.get_location();
-        if (loc.get_level() !== GWeather.LocationLevel.CITY && loc.has_coords()) {
-            let world = GWeather.Location.get_world();
-            loc = world.find_nearest_city(...loc.get_coords());
-        }
-        this._titleLocation.text = loc.get_name();
+        const { info } = this._weatherClient;
+        this._titleLocation.text = this._findBestLocationName(info.location);
 
         if (this._weatherClient.loading) {
             this._setStatusLabel(_("Loading…"));
