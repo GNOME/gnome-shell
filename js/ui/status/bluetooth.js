@@ -90,6 +90,8 @@ class Indicator extends PanelMenu.SystemIndicator {
             deviceInfos.push({
                 connected: this._model.get_value(iter,
                     GnomeBluetooth.Column.CONNECTED),
+                name: this._model.get_value(iter,
+                    GnomeBluetooth.Column.ALIAS),
             });
 
             ret = this._model.iter_next(iter);
@@ -122,14 +124,16 @@ class Indicator extends PanelMenu.SystemIndicator {
         else
             this._item.visible = this._proxy.BluetoothHasAirplaneMode && !this._proxy.BluetoothAirplaneMode;
 
-        if (nConnectedDevices > 0)
+        if (nConnectedDevices > 1)
             /* Translators: this is the number of connected bluetooth devices */
-            this._item.label.text = ngettext("%d Connected", "%d Connected", nConnectedDevices).format(nConnectedDevices);
+            this._item.label.text = ngettext('%d Connected", "%d Connected', nConnectedDevices).format(nConnectedDevices);
+        else if (nConnectedDevices === 1)
+            this._item.label.text = connectedDevices[0].name;
         else if (adapter === null)
-            this._item.label.text = _("Off");
+            this._item.label.text = _('Bluetooth Off');
         else
-            this._item.label.text = _("On");
+            this._item.label.text = _('Bluetooth On');
 
-        this._toggleItem.label.text = this._proxy.BluetoothAirplaneMode ? _("Turn On") : _("Turn Off");
+        this._toggleItem.label.text = this._proxy.BluetoothAirplaneMode ? _('Turn On') : _('Turn Off');
     }
 });
