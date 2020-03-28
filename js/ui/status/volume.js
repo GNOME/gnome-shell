@@ -138,11 +138,11 @@ var StreamSlider = class {
     }
 
     _notifyVolumeChange() {
-        if (this._stream.state === Gvc.MixerStreamState.RUNNING)
-            return; // feedback not necessary while playing
-
         if (this._volumeCancellable)
             this._volumeCancellable.cancel();
+
+        if (this._stream.state === Gvc.MixerStreamState.RUNNING)
+            return; // feedback not necessary while playing
 
         this._volumeCancellable = new Gio.Cancellable();
         let player = global.display.get_sound_player();
