@@ -355,7 +355,7 @@ class DashSlider extends SlidingControl {
         this._visible = true;
         this._updateSlide(duration, delay, onComplete);
     }
-        
+
     slideOut(duration, delay = 0, onComplete = () => { }) {
         this._visible = false;
         this._updateSlide(duration, delay, onComplete);
