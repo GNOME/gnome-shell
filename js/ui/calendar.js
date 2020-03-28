@@ -1153,17 +1153,22 @@ class CalendarMessageList extends St.Widget {
         let hbox = new St.BoxLayout({ style_class: 'message-list-controls' });
         box.add_child(hbox);
 
-        hbox.add_child(new St.Label({
+        const dndLabel = new St.Label({
             text: _('Do Not Disturb'),
             y_align: Clutter.ActorAlign.CENTER,
-        }));
+        });
+        hbox.add_child(dndLabel);
 
         this._dndSwitch = new DoNotDisturbSwitch();
         this._dndButton = new St.Button({
             can_focus: true,
+            toggle_mode: true,
             child: this._dndSwitch,
+            label_actor: dndLabel,
         });
-        this._dndButton.connect('clicked', () => this._dndSwitch.toggle());
+        this._dndButton.bind_property('checked',
+            this._dndSwitch, 'state',
+            GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE);
         hbox.add_child(this._dndButton);
 
         this._clearButton = new St.Button({
