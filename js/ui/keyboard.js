@@ -1120,10 +1120,11 @@ var KeyboardManager = class KeyBoardManager {
 
         this._lastDevice = null;
         Meta.get_backend().connect('last-device-changed', (backend, device) => {
-            if (device.get_device_name().indexOf('XTEST') < 0) {
-                this._lastDevice = device;
-                this._syncEnabled();
-            }
+            if (device.device_type === Clutter.InputDeviceType.KEYBOARD_DEVICE)
+                return;
+
+            this._lastDevice = device;
+            this._syncEnabled();
         });
         this._syncEnabled();
     }
