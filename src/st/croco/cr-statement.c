@@ -622,13 +622,14 @@ cr_statement_ruleset_to_string (CRStatement const * a_this, glong a_indent)
                 g_string_append (stringue, "\n");
                 cr_utils_dump_n_chars2 (' ', stringue, a_indent);
         }
-        g_string_append (stringue, "}");
-        result = stringue->str;
-
         if (stringue) {
+                g_string_append (stringue, "}");
+                result = stringue->str;
+
                 g_string_free (stringue, FALSE);
                 stringue = NULL;
         }
+
         if (tmp_str) {
                 g_free (tmp_str);
                 tmp_str = NULL;
@@ -1630,8 +1631,7 @@ cr_statement_at_charset_rule_parse_from_buf (const guchar * a_buf,
 
         /*Now, invoke the parser to parse the "@charset production" */
         cr_parser_try_to_skip_spaces_and_comments (parser);
-        if (status != CR_OK)
-                goto cleanup;
+
         status = cr_parser_parse_charset (parser, &charset, NULL);
         if (status != CR_OK || !charset)
                 goto cleanup;
