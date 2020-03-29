@@ -23,8 +23,6 @@ SYNOPSIS
 
 *gnome-extensions* info 'UUID'
 
-*gnome-extensions* show 'UUID'
-
 *gnome-extensions* list ['OPTION'...]
 
 *gnome-extensions* prefs 'UUID'
@@ -73,9 +71,6 @@ like GNOME Classic.
 *info* 'UUID'::
 Show details of the extension identified by 'UUID', including name,
 description and state.
-
-*show* 'UUID'::
-Synonym of info.
 
 *list* ['OPTION'...]::
 Displays a list of installed extensions.
