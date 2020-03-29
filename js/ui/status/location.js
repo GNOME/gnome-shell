@@ -413,11 +413,15 @@ var GeolocationDialog = GObject.registerClass({
 
         this.contentLayout.add_child(content);
 
-        let button = this.addButton({ label: _("Deny Access"),
-                                      action: this._onDenyClicked.bind(this),
-                                      key: Clutter.KEY_Escape });
-        this.addButton({ label: _("Grant Access"),
-                         action: this._onGrantClicked.bind(this) });
+        const button = this.addButton({
+            label: _('Deny Access'),
+            action: this._onDenyClicked.bind(this),
+            key: Clutter.KEY_Escape,
+        });
+        this.addButton({
+            label: _('Grant Access'),
+            action: this._onGrantClicked.bind(this),
+        });
 
         this.setInitialKeyFocus(button);
     }

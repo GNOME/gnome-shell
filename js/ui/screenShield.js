@@ -1,7 +1,9 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
-const { AccountsService, Clutter, Gio,
-        GLib, Graphene, Meta, Shell, St } = imports.gi;
+const {
+    AccountsService, Clutter, Gio,
+    GLib, Graphene, Meta, Shell, St,
+} = imports.gi;
 const Signals = imports.signals;
 
 const GnomeSession = imports.misc.gnomeSession;
@@ -130,13 +132,15 @@ var ScreenShield = class {
         // The "long" lightbox is used for the longer (20 seconds) fade from session
         // to idle status, the "short" is used for quickly fading to black when locking
         // manually
-        this._longLightbox = new Lightbox.Lightbox(Main.uiGroup,
-                                                   { inhibitEvents: true,
-                                                     fadeFactor: 1 });
+        this._longLightbox = new Lightbox.Lightbox(Main.uiGroup, {
+            inhibitEvents: true,
+            fadeFactor: 1,
+        });
         this._longLightbox.connect('notify::active', this._onLongLightbox.bind(this));
-        this._shortLightbox = new Lightbox.Lightbox(Main.uiGroup,
-                                                    { inhibitEvents: true,
-                                                      fadeFactor: 1 });
+        this._shortLightbox = new Lightbox.Lightbox(Main.uiGroup, {
+            inhibitEvents: true,
+            fadeFactor: 1,
+        });
         this._shortLightbox.connect('notify::active', this._onShortLightbox.bind(this));
 
         this.idleMonitor = global.backend.get_core_idle_monitor();
@@ -440,8 +444,10 @@ var ScreenShield = class {
     }
 
     _onUnlockFailed() {
-        this._resetLockScreen({ animateLockScreen: true,
-                                fadeToBlack: false });
+        this._resetLockScreen({
+            animateLockScreen: true,
+            fadeToBlack: false,
+        });
     }
 
     _resetLockScreen(params) {
@@ -606,8 +612,10 @@ var ScreenShield = class {
                 Main.sessionMode.pushMode('unlock-dialog');
         }
 
-        this._resetLockScreen({ animateLockScreen: animate,
-                                fadeToBlack: true });
+        this._resetLockScreen({
+            animateLockScreen: animate,
+            fadeToBlack: true,
+        });
         // On wayland, a crash brings down the entire session, so we don't
         // need to defend against being restarted unlocked
         if (!Meta.is_wayland_compositor())

@@ -7,8 +7,6 @@ rules:
       - 'CallExpression[callee.object.name=GObject][callee.property.name=registerClass] > ClassExpression:first-child'
       CallExpression:
         arguments: first
-      ObjectExpression: first
-      MemberExpression: off
   jsdoc/check-alignment: off
   jsdoc/check-param-names: off
   jsdoc/check-tag-names: off
@@ -20,7 +18,4 @@ rules:
   jsdoc/require-param-description: off
   jsdoc/require-param-name: off
   jsdoc/require-param-type: off
-  object-curly-newline:
-    - error
-    - consistent: true
   quotes: off

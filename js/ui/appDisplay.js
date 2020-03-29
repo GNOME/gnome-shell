@@ -2352,8 +2352,10 @@ var FolderIcon = GObject.registerClass({
         this._name = '';
         this._parentView = parentView;
 
-        this._folder = new Gio.Settings({ schema_id: 'org.gnome.desktop.app-folders.folder',
-                                          path });
+        this._folder = new Gio.Settings({
+            schema_id: 'org.gnome.desktop.app-folders.folder',
+            path,
+        });
 
         this.icon = new IconGrid.BaseIcon('', {
             createIcon: this._createIcon.bind(this),
@@ -3023,8 +3025,11 @@ var AppIcon = GObject.registerClass({
         this._id = app.get_id();
         this._name = app.get_name();
 
-        this._iconContainer = new St.Widget({ layout_manager: new Clutter.BinLayout(),
-                                              x_expand: true, y_expand: true });
+        this._iconContainer = new St.Widget({
+            layout_manager: new Clutter.BinLayout(),
+            x_expand: true,
+            y_expand: true,
+        });
 
         this.set_child(this._iconContainer);
 
@@ -3221,8 +3226,10 @@ var AppIcon = GObject.registerClass({
         let { stack } = new Error();
         log(`shellWorkspaceLaunch is deprecated, use app.open_new_window() instead\n${stack}`);
 
-        params = Params.parse(params, { workspace: -1,
-                                        timestamp: 0 });
+        params = Params.parse(params, {
+            workspace: -1,
+            timestamp: 0,
+        });
 
         this.app.open_new_window(params.workspace);
     }

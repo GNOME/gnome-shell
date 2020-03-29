@@ -171,13 +171,15 @@ var FdoNotificationDaemon = class FdoNotificationDaemon {
                 hints['image-data'] = hints['icon_data'];
         }
 
-        let ndata = { appName,
-                      icon,
-                      summary,
-                      body,
-                      actions,
-                      hints,
-                      timeout };
+        const ndata = {
+            appName,
+            icon,
+            summary,
+            body,
+            actions,
+            hints,
+            timeout,
+        };
         if (replacesId != 0 && this._notifications[replacesId]) {
             ndata.id = id = replacesId;
             ndata.notification = this._notifications[replacesId].notification;
@@ -458,8 +460,10 @@ class FdoNotificationDaemonSource extends MessageTray.Source {
         if (this.app) {
             return this.app.create_icon_texture(size);
         } else if (this._gicon) {
-            return new St.Icon({ gicon: this._gicon,
-                                 icon_size: size });
+            return new St.Icon({
+                gicon: this._gicon,
+                icon_size: size,
+            });
         } else {
             return null;
         }
@@ -479,15 +483,17 @@ class GtkNotificationDaemonNotification extends MessageTray.Notification {
         super._init(source);
         this._serialized = GLib.Variant.new('a{sv}', notification);
 
-        let { title,
-              body,
-              icon: gicon,
-              urgent,
-              priority,
-              buttons,
-              "default-action": defaultAction,
-              "default-action-target": defaultActionTarget,
-              timestamp: time } = notification;
+        const {
+            title,
+            body,
+            icon: gicon,
+            urgent,
+            priority,
+            buttons,
+            'default-action': defaultAction,
+            'default-action-target': defaultActionTarget,
+            timestamp: time,
+        } = notification;
 
         if (priority) {
             let urgency = PRIORITY_URGENCY_MAP[priority.unpack()];
@@ -511,9 +517,12 @@ class GtkNotificationDaemonNotification extends MessageTray.Notification {
         this._defaultAction = defaultAction?.unpack();
         this._defaultActionTarget = defaultActionTarget;
 
-        this.update(title.unpack(), body?.unpack(),
-                    { gicon: gicon ? Gio.icon_deserialize(gicon) : null,
-                      datetime: time ? GLib.DateTime.new_from_unix_local(time.unpack()) : null });
+        this.update(title.unpack(), body?.unpack(), {
+            gicon: gicon
+                ? Gio.icon_deserialize(gicon) : null,
+            datetime: time
+                ? GLib.DateTime.new_from_unix_local(time.unpack()) : null,
+        });
     }
 
     _activateAction(namespacedActionId, target) {

@@ -112,8 +112,10 @@ function cloneAndFadeOutActor(actor) {
     // and reveals its sibling.
     actor.hide();
 
-    let clone = new Clutter.Clone({ source: actor,
-                                    reactive: false });
+    const clone = new Clutter.Clone({
+        source: actor,
+        reactive: false,
+    });
 
     Main.uiGroup.add_child(clone);
 

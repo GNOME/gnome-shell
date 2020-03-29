@@ -90,8 +90,10 @@ var AudioDeviceSelectionDialog = GObject.registerClass({
     }
 
     _addDevice(device) {
-        let box = new St.BoxLayout({ style_class: 'audio-selection-device-box',
-                                     vertical: true });
+        const box = new St.BoxLayout({
+            style_class: 'audio-selection-device-box',
+            vertical: true,
+        });
         box.connect('notify::height', () => {
             Meta.later_add(Meta.LaterType.BEFORE_REDRAW, () => {
                 box.width = box.height;
@@ -99,18 +101,24 @@ var AudioDeviceSelectionDialog = GObject.registerClass({
             });
         });
 
-        let icon = new St.Icon({ style_class: 'audio-selection-device-icon',
-                                 icon_name: this._getDeviceIcon(device) });
+        const icon = new St.Icon({
+            style_class: 'audio-selection-device-icon',
+            icon_name: this._getDeviceIcon(device),
+        });
         box.add(icon);
 
-        let label = new St.Label({ style_class: 'audio-selection-device-label',
-                                   text: this._getDeviceLabel(device),
-                                   x_align: Clutter.ActorAlign.CENTER });
+        const label = new St.Label({
+            style_class: 'audio-selection-device-label',
+            text: this._getDeviceLabel(device),
+            x_align: Clutter.ActorAlign.CENTER,
+        });
         box.add(label);
 
-        let button = new St.Button({ style_class: 'audio-selection-device',
-                                     can_focus: true,
-                                     child: box });
+        const button = new St.Button({
+            style_class: 'audio-selection-device',
+            can_focus: true,
+            child: box,
+        });
         this._selectionBox.add(button);
 
         button.connect('clicked', () => {

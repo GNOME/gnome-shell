@@ -34,9 +34,11 @@ var CandidateArea = GObject.registerClass({
         });
         this._candidateBoxes = [];
         for (let i = 0; i < MAX_CANDIDATES_PER_PAGE; ++i) {
-            let box = new St.BoxLayout({ style_class: 'candidate-box',
-                                         reactive: true,
-                                         track_hover: true });
+            const box = new St.BoxLayout({
+                style_class: 'candidate-box',
+                reactive: true,
+                track_hover: true,
+            });
             box._indexLabel = new St.Label({ style_class: 'candidate-index' });
             box._candidateLabel = new St.Label({ style_class: 'candidate-label' });
             box.add_child(box._indexLabel);
@@ -155,16 +157,22 @@ class IbusCandidatePopup extends BoxPointer.BoxPointer {
 
         Main.layoutManager.addChrome(this);
 
-        let box = new St.BoxLayout({ style_class: 'candidate-popup-content',
-                                     vertical: true });
+        const box = new St.BoxLayout({
+            style_class: 'candidate-popup-content',
+            vertical: true,
+        });
         this.bin.set_child(box);
 
-        this._preeditText = new St.Label({ style_class: 'candidate-popup-text',
-                                           visible: false });
+        this._preeditText = new St.Label({
+            style_class: 'candidate-popup-text',
+            visible: false,
+        });
         box.add(this._preeditText);
 
-        this._auxText = new St.Label({ style_class: 'candidate-popup-text',
-                                       visible: false });
+        this._auxText = new St.Label({
+            style_class: 'candidate-popup-text',
+            visible: false,
+        });
         box.add(this._auxText);
 
         this._candidateArea = new CandidateArea();

@@ -42,13 +42,15 @@ class WelcomeDialog extends ModalDialog.ModalDialog {
 
         this.contentLayout.add_child(content);
 
-        this.addButton({ label: _('No Thanks'),
-            action: () => {
-                this._sendResponse(DialogResponse.NO_THANKS);
-            },
-            key: Clutter.KEY_Escape });
-        this.addButton({ label: _('Take Tour'),
-            action: () => this._sendResponse(DialogResponse.TAKE_TOUR) });
+        this.addButton({
+            label: _('No Thanks'),
+            action: () => this._sendResponse(DialogResponse.NO_THANKS),
+            key: Clutter.KEY_Escape,
+        });
+        this.addButton({
+            label: _('Take Tour'),
+            action: () => this._sendResponse(DialogResponse.TAKE_TOUR),
+        });
     }
 
     _sendResponse(response) {

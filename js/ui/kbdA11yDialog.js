@@ -51,21 +51,25 @@ class KbdA11yDialog extends GObject.Object {
         let content = new Dialog.MessageDialogContent({ title, description });
         dialog.contentLayout.add_child(content);
 
-        dialog.addButton({ label: enabled ? _("Leave On") : _("Turn On"),
-                           action: () => {
-                               this._a11ySettings.set_boolean(key, true);
-                               dialog.close();
-                           },
-                           default: enabled,
-                           key: !enabled ? Clutter.KEY_Escape : null });
+        dialog.addButton({
+            label: enabled ? _('Leave On') : _('Turn On'),
+            action: () => {
+                this._a11ySettings.set_boolean(key, true);
+                dialog.close();
+            },
+            default: enabled,
+            key: !enabled ? Clutter.KEY_Escape : null,
+        });
 
-        dialog.addButton({ label: enabled ? _("Turn Off") : _("Leave Off"),
-                           action: () => {
-                               this._a11ySettings.set_boolean(key, false);
-                               dialog.close();
-                           },
-                           default: !enabled,
-                           key: enabled ? Clutter.KEY_Escape : null });
+        dialog.addButton({
+            label: enabled ? _('Turn Off') : _('Leave Off'),
+            action: () => {
+                this._a11ySettings.set_boolean(key, false);
+                dialog.close();
+            },
+            default: !enabled,
+            key: enabled ? Clutter.KEY_Escape : null,
+        });
 
         dialog.open();
     }

@@ -18,15 +18,20 @@ var SortGroup = {
 var CtrlAltTabManager = class CtrlAltTabManager {
     constructor() {
         this._items = [];
-        this.addGroup(global.window_group, _("Windows"),
-                      'focus-windows-symbolic', { sortGroup: SortGroup.TOP,
-                                                  focusCallback: this._focusWindows.bind(this) });
+        this.addGroup(global.window_group,
+            _('Windows'),
+            'focus-windows-symbolic', {
+                sortGroup: SortGroup.TOP,
+                focusCallback: this._focusWindows.bind(this),
+            });
     }
 
     addGroup(root, name, icon, params) {
-        let item = Params.parse(params, { sortGroup: SortGroup.MIDDLE,
-                                          proxy: root,
-                                          focusCallback: null });
+        const item = Params.parse(params, {
+            sortGroup: SortGroup.MIDDLE,
+            proxy: root,
+            focusCallback: null,
+        });
 
         item.root = root;
         item.name = name;
@@ -100,14 +105,16 @@ var CtrlAltTabManager = class CtrlAltTabManager {
                     }
                 }
 
-                items.push({ name: windows[i].title,
-                             proxy: windows[i].get_compositor_private(),
-                             focusCallback: timestamp => {
-                                 Main.activateWindow(windows[i], timestamp);
-                             },
-                             iconActor: icon,
-                             iconName,
-                             sortGroup: SortGroup.MIDDLE });
+                items.push({
+                    name: windows[i].title,
+                    proxy: windows[i].get_compositor_private(),
+                    focusCallback: timestamp => {
+                        Main.activateWindow(windows[i], timestamp);
+                    },
+                    iconActor: icon,
+                    iconName,
+                    sortGroup: SortGroup.MIDDLE,
+                });
             }
         }
 
@@ -171,13 +178,17 @@ class CtrlAltTabSwitcher extends SwitcherPopup.SwitcherList {
     }
 
     _addIcon(item) {
-        let box = new St.BoxLayout({ style_class: 'alt-tab-app',
-                                     vertical: true });
+        const box = new St.BoxLayout({
+            style_class: 'alt-tab-app',
+            vertical: true,
+        });
 
         let icon = item.iconActor;
         if (!icon) {
-            icon = new St.Icon({ icon_name: item.iconName,
-                                 icon_size: POPUP_APPICON_SIZE });
+            icon = new St.Icon({
+                icon_name: item.iconName,
+                icon_size: POPUP_APPICON_SIZE,
+            });
         }
         box.add_child(icon);
 

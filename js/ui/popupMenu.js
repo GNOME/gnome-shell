@@ -47,11 +47,13 @@ function arrowIcon(side) {
         break;
     }
 
-    let arrow = new St.Icon({ style_class: 'popup-menu-arrow',
-                              icon_name: iconName,
-                              accessible_role: Atk.Role.ARROW,
-                              y_expand: true,
-                              y_align: Clutter.ActorAlign.CENTER });
+    const arrow = new St.Icon({
+        style_class: 'popup-menu-arrow',
+        icon_name: iconName,
+        accessible_role: Atk.Role.ARROW,
+        y_expand: true,
+        y_align: Clutter.ActorAlign.CENTER,
+    });
 
     return arrow;
 }
@@ -77,11 +79,13 @@ var PopupBaseMenuItem = GObject.registerClass({
             style_class: null,
             can_focus: true,
         });
-        super._init({ style_class: 'popup-menu-item',
-                      reactive: params.reactive,
-                      track_hover: params.reactive,
-                      can_focus: params.can_focus,
-                      accessible_role: Atk.Role.MENU_ITEM });
+        super._init({
+            style_class: 'popup-menu-item',
+            reactive: params.reactive,
+            track_hover: params.reactive,
+            can_focus: params.can_focus,
+            accessible_role: Atk.Role.MENU_ITEM,
+        });
         this._delegate = this;
 
         this._ornament = Ornament.NONE;
@@ -451,8 +455,10 @@ class PopupImageMenuItem extends PopupBaseMenuItem {
     _init(text, icon, params) {
         super._init(params);
 
-        this._icon = new St.Icon({ style_class: 'popup-menu-icon',
-                                   x_align: Clutter.ActorAlign.END });
+        this._icon = new St.Icon({
+            style_class: 'popup-menu-icon',
+            x_align: Clutter.ActorAlign.END,
+        });
         this.add_child(this._icon);
         this.label = new St.Label({
             text,
@@ -1024,9 +1030,11 @@ var PopupSubMenu = class extends PopupMenuBase {
         // Since a function of a submenu might be to provide a "More.." expander
         // with long content, we make it scrollable - the scrollbar will only take
         // effect if a CSS max-height is set on the top menu.
-        this.actor = new St.ScrollView({ style_class: 'popup-sub-menu',
-                                         hscrollbar_policy: St.PolicyType.NEVER,
-                                         vscrollbar_policy: St.PolicyType.NEVER });
+        this.actor = new St.ScrollView({
+            style_class: 'popup-sub-menu',
+            hscrollbar_policy: St.PolicyType.NEVER,
+            vscrollbar_policy: St.PolicyType.NEVER,
+        });
 
         this.actor.add_actor(this.box);
         this.actor._delegate = this;
@@ -1194,9 +1202,11 @@ class PopupSubMenuMenuItem extends PopupBaseMenuItem {
             this.add_child(this.icon);
         }
 
-        this.label = new St.Label({ text,
-                                    y_expand: true,
-                                    y_align: Clutter.ActorAlign.CENTER });
+        this.label = new St.Label({
+            text,
+            y_expand: true,
+            y_align: Clutter.ActorAlign.CENTER,
+        });
         this.add_child(this.label);
         this.label_actor = this.label;
 
@@ -1209,8 +1219,10 @@ class PopupSubMenuMenuItem extends PopupBaseMenuItem {
         this._triangle = arrowIcon(St.Side.RIGHT);
         this._triangle.pivot_point = new Graphene.Point({ x: 0.5, y: 0.6 });
 
-        this._triangleBin = new St.Widget({ y_expand: true,
-                                            y_align: Clutter.ActorAlign.CENTER });
+        this._triangleBin = new St.Widget({
+            y_expand: true,
+            y_align: Clutter.ActorAlign.CENTER,
+        });
         this._triangleBin.add_child(this._triangle);
 
         this.add_child(this._triangleBin);

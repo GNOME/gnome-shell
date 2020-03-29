@@ -17,8 +17,10 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
-const { AccountsService, Clutter, Gio,
-        GLib, GObject, Pango, Polkit, Shell, St, UPowerGlib: UPower }  = imports.gi;
+const {
+    AccountsService, Clutter, Gio, GLib, GObject,
+    Pango, Polkit, Shell, St, UPowerGlib: UPower,
+} = imports.gi;
 
 const CheckBox = imports.ui.checkBox;
 const Dialog = imports.ui.dialog;
@@ -226,8 +228,10 @@ function init() {
 var EndSessionDialog = GObject.registerClass(
 class EndSessionDialog extends ModalDialog.ModalDialog {
     _init() {
-        super._init({ styleClass: 'end-session-dialog',
-                      destroyOnClose: false });
+        super._init({
+            styleClass: 'end-session-dialog',
+            destroyOnClose: false,
+        });
 
         this._loginManager = LoginManager.getLoginManager();
         this._loginManager.canRebootToBootLoaderMenu(
@@ -434,9 +438,11 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
     _updateButtons() {
         this.clearButtons();
 
-        this.addButton({ action: this.cancel.bind(this),
-                         label: _("Cancel"),
-                         key: Clutter.KEY_Escape });
+        this.addButton({
+            action: this.cancel.bind(this),
+            label: _('Cancel'),
+            key: Clutter.KEY_Escape,
+        });
 
         let dialogContent = DialogContent[this._type];
         for (let i = 0; i < dialogContent.confirmButtons.length; i++) {
@@ -669,10 +675,12 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
                 if (proxy.Id == sessionId)
                     continue;
 
-                let session = { user: this._userManager.get_user(userName),
-                                username: userName,
-                                type: proxy.Type,
-                                remote: proxy.Remote };
+                const session = {
+                    user: this._userManager.get_user(userName),
+                    username: userName,
+                    type: proxy.Type,
+                    remote: proxy.Remote,
+                };
                 this._sessions.push(session);
 
                 let userAvatar = new UserWidget.Avatar(session.user, { iconSize: _ITEM_ICON_SIZE });

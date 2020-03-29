@@ -2542,8 +2542,10 @@ class SelectArea extends St.Widget {
 
         this._grabHelper = new GrabHelper.GrabHelper(this);
 
-        let constraint = new Clutter.BindConstraint({ source: global.stage,
-                                                      coordinate: Clutter.BindCoordinate.ALL });
+        const constraint = new Clutter.BindConstraint({
+            source: global.stage,
+            coordinate: Clutter.BindCoordinate.ALL,
+        });
         this.add_constraint(constraint);
 
         this._rubberband = new St.Widget({
@@ -2768,8 +2770,10 @@ class PickPixel extends St.Widget {
 
         this._grabHelper = new GrabHelper.GrabHelper(this);
 
-        let constraint = new Clutter.BindConstraint({ source: global.stage,
-                                                      coordinate: Clutter.BindCoordinate.ALL });
+        const constraint = new Clutter.BindConstraint({
+            source: global.stage,
+            coordinate: Clutter.BindCoordinate.ALL,
+        });
         this.add_constraint(constraint);
 
         const action = new Clutter.ClickAction();

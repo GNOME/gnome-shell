@@ -28,14 +28,16 @@ var AppIconMode = {
 function _createWindowClone(window, size) {
     let [width, height] = window.get_size();
     let scale = Math.min(1.0, size / width, size / height);
-    return new Clutter.Clone({ source: window,
-                               width: width * scale,
-                               height: height * scale,
-                               x_align: Clutter.ActorAlign.CENTER,
-                               y_align: Clutter.ActorAlign.CENTER,
-                               // usual hack for the usual bug in ClutterBinLayout...
-                               x_expand: true,
-                               y_expand: true });
+    return new Clutter.Clone({
+        source: window,
+        width: width * scale,
+        height: height * scale,
+        x_align: Clutter.ActorAlign.CENTER,
+        y_align: Clutter.ActorAlign.CENTER,
+        // usual hack for the usual bug in ClutterBinLayout...
+        x_expand: true,
+        y_expand: true,
+    });
 }
 
 function getWindows(workspace) {
@@ -462,10 +464,12 @@ class CyclerHighlight extends St.Widget {
 // We don't show an actual popup, so just provide what SwitcherPopup
 // expects instead of inheriting from SwitcherList
 var CyclerList = GObject.registerClass({
-    Signals: { 'item-activated': { param_types: [GObject.TYPE_INT] },
-               'item-entered': { param_types: [GObject.TYPE_INT] },
-               'item-removed': { param_types: [GObject.TYPE_INT] },
-               'item-highlighted': { param_types: [GObject.TYPE_INT] } },
+    Signals: {
+        'item-activated': { param_types: [GObject.TYPE_INT] },
+        'item-entered': { param_types: [GObject.TYPE_INT] },
+        'item-removed': { param_types: [GObject.TYPE_INT] },
+        'item-highlighted': { param_types: [GObject.TYPE_INT] },
+    },
 }, class CyclerList extends St.Widget {
     highlight(index, _justOutline) {
         this.emit('item-highlighted', index);
@@ -653,8 +657,10 @@ class WindowCyclerPopup extends CyclerPopup {
 var AppIcon = GObject.registerClass(
 class AppIcon extends St.BoxLayout {
     _init(app) {
-        super._init({ style_class: 'alt-tab-app',
-                      vertical: true });
+        super._init({
+            style_class: 'alt-tab-app',
+            vertical: true,
+        });
 
         this.app = app;
         this.icon = null;
@@ -904,8 +910,10 @@ class ThumbnailSwitcher extends SwitcherPopup.SwitcherList {
         this._windows = windows;
 
         for (let i = 0; i < windows.length; i++) {
-            let box = new St.BoxLayout({ style_class: 'thumbnail-box',
-                                         vertical: true });
+            const box = new St.BoxLayout({
+                style_class: 'thumbnail-box',
+                vertical: true,
+            });
 
             let bin = new St.Bin({ style_class: 'thumbnail' });
 
@@ -991,8 +999,10 @@ class ThumbnailSwitcher extends SwitcherPopup.SwitcherList {
 var WindowIcon = GObject.registerClass(
 class WindowIcon extends St.BoxLayout {
     _init(window, mode) {
-        super._init({ style_class: 'alt-tab-app',
-                      vertical: true });
+        super._init({
+            style_class: 'alt-tab-app',
+            vertical: true,
+        });
 
         this.window = window;
 
@@ -1051,8 +1061,10 @@ class WindowSwitcher extends SwitcherPopup.SwitcherList {
     _init(windows, mode) {
         super._init(true);
 
-        this._label = new St.Label({ x_align: Clutter.ActorAlign.CENTER,
-                                     y_align: Clutter.ActorAlign.CENTER });
+        this._label = new St.Label({
+            x_align: Clutter.ActorAlign.CENTER,
+            y_align: Clutter.ActorAlign.CENTER,
+        });
         this.add_actor(this._label);
 
         this.windows = windows;

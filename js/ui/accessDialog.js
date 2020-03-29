@@ -64,15 +64,15 @@ class AccessDialog extends ModalDialog.ModalDialog {
         });
         content.add_child(bodyLabel);
 
-        this.addButton({ label: denyLabel,
-                         action: () => {
-                             this._sendResponse(DialogResponse.CANCEL);
-                         },
-                         key: Clutter.KEY_Escape });
-        this.addButton({ label: grantLabel,
-                         action: () => {
-                             this._sendResponse(DialogResponse.OK);
-                         } });
+        this.addButton({
+            label: denyLabel,
+            action: () => this._sendResponse(DialogResponse.CANCEL),
+            key: Clutter.KEY_Escape,
+        });
+        this.addButton({
+            label: grantLabel,
+            action: () => this._sendResponse(DialogResponse.OK),
+        });
     }
 
     open() {

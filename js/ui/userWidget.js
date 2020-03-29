@@ -111,12 +111,16 @@ class UserWidgetLabel extends St.Widget {
 
         this._user = user;
 
-        this._realNameLabel = new St.Label({ style_class: 'user-widget-label',
-                                             y_align: Clutter.ActorAlign.CENTER });
+        this._realNameLabel = new St.Label({
+            style_class: 'user-widget-label',
+            y_align: Clutter.ActorAlign.CENTER,
+        });
         this.add_child(this._realNameLabel);
 
-        this._userNameLabel = new St.Label({ style_class: 'user-widget-label',
-                                             y_align: Clutter.ActorAlign.CENTER });
+        this._userNameLabel = new St.Label({
+            style_class: 'user-widget-label',
+            y_align: Clutter.ActorAlign.CENTER,
+        });
         this.add_child(this._userNameLabel);
 
         this._currentLabel = null;

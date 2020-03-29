@@ -152,10 +152,12 @@ var UnalignedLayoutStrategy = class extends LayoutStrategy {
         //   meant to be scaled
         //
         // * neither height/fullHeight have any sort of spacing or padding
-        return { x: 0, y: 0,
-                 width: 0, height: 0,
-                 fullWidth: 0, fullHeight: 0,
-                 windows: [] };
+        return {
+            x: 0, y: 0,
+            width: 0, height: 0,
+            fullWidth: 0, fullHeight: 0,
+            windows: [],
+        };
     }
 
     // Computes and returns an individual scaling factor for @window,
@@ -1499,8 +1501,10 @@ class Workspace extends St.Widget {
         } else if (!source.app && source.shellWorkspaceLaunch) {
             // While unused in our own drag sources, shellWorkspaceLaunch allows
             // extensions to define custom actions for their drag sources.
-            source.shellWorkspaceLaunch({ workspace: workspaceIndex,
-                                          timestamp: time });
+            source.shellWorkspaceLaunch({
+                workspace: workspaceIndex,
+                timestamp: time,
+            });
             return true;
         }
 

@@ -1,8 +1,10 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported DateMenuButton */
 
-const { Clutter, Gio, GLib, GnomeDesktop,
-        GObject, GWeather, Pango, Shell, St } = imports.gi;
+const {
+    Clutter, Gio, GLib, GnomeDesktop,
+    GObject, GWeather, Pango, Shell, St,
+} = imports.gi;
 
 const Util = imports.misc.util;
 const Main = imports.ui.main;
@@ -49,8 +51,10 @@ class TodayButton extends St.Button {
         let hbox = new St.BoxLayout({ vertical: true });
         this.add_actor(hbox);
 
-        this._dayLabel = new St.Label({ style_class: 'day-label',
-                                        x_align: Clutter.ActorAlign.START });
+        this._dayLabel = new St.Label({
+            style_class: 'day-label',
+            x_align: Clutter.ActorAlign.START,
+        });
         hbox.add_actor(this._dayLabel);
 
         this._dateLabel = new St.Label({ style_class: 'date-label' });
@@ -323,9 +327,11 @@ class WorldClocksSection extends St.Button {
         this._locations = [];
 
         let layout = new Clutter.GridLayout({ orientation: Clutter.Orientation.VERTICAL });
-        this._grid = new St.Widget({ style_class: 'world-clocks-grid',
-                                     x_expand: true,
-                                     layout_manager: layout });
+        this._grid = new St.Widget({
+            style_class: 'world-clocks-grid',
+            x_expand: true,
+            layout_manager: layout,
+        });
         layout.hookup_style(this._grid);
 
         this.child = this._grid;
@@ -389,9 +395,11 @@ class WorldClocksSection extends St.Button {
         let title = this._locations.length == 0
             ? _("Add world clocks…")
             : _("World Clocks");
-        let header = new St.Label({ style_class: 'world-clocks-header',
-                                    x_align: Clutter.ActorAlign.START,
-                                    text: title });
+        const header = new St.Label({
+            style_class: 'world-clocks-header',
+            x_align: Clutter.ActorAlign.START,
+            text: title,
+        });
         layout.attach(header, 0, 0, 2, 1);
         this.label_actor = header;
 
@@ -399,11 +407,13 @@ class WorldClocksSection extends St.Button {
             let l = this._locations[i].location;
 
             let name = l.get_city_name() || l.get_name();
-            let label = new St.Label({ style_class: 'world-clocks-city',
-                                       text: name,
-                                       x_align: Clutter.ActorAlign.START,
-                                       y_align: Clutter.ActorAlign.CENTER,
-                                       x_expand: true });
+            const label = new St.Label({
+                style_class: 'world-clocks-city',
+                text: name,
+                x_align: Clutter.ActorAlign.START,
+                y_align: Clutter.ActorAlign.CENTER,
+                x_expand: true,
+            });
 
             let time = new St.Label({ style_class: 'world-clocks-time' });
 
@@ -821,7 +831,6 @@ var DateMenuButton = GObject.registerClass(
 class DateMenuButton extends PanelMenu.Button {
     _init() {
         let hbox;
-        let vbox;
 
         super._init(0.5);
 
@@ -882,23 +891,29 @@ class DateMenuButton extends PanelMenu.Button {
 
         // Fill up the second column
         const boxLayout = new CalendarColumnLayout([this._calendar, this._date]);
-        vbox = new St.Widget({ style_class: 'datemenu-calendar-column',
-                               layout_manager: boxLayout });
+        const vbox = new St.Widget({
+            style_class: 'datemenu-calendar-column',
+            layout_manager: boxLayout,
+        });
         boxLayout.hookup_style(vbox);
         hbox.add(vbox);
 
         vbox.add_actor(this._date);
         vbox.add_actor(this._calendar);
 
-        this._displaysSection = new St.ScrollView({ style_class: 'datemenu-displays-section vfade',
-                                                    x_expand: true,
-                                                    overlay_scrollbars: true });
+        this._displaysSection = new St.ScrollView({
+            style_class: 'datemenu-displays-section vfade',
+            x_expand: true,
+            overlay_scrollbars: true,
+        });
         this._displaysSection.set_policy(St.PolicyType.NEVER, St.PolicyType.EXTERNAL);
         vbox.add_actor(this._displaysSection);
 
-        let displaysBox = new St.BoxLayout({ vertical: true,
-                                             x_expand: true,
-                                             style_class: 'datemenu-displays-box' });
+        const displaysBox = new St.BoxLayout({
+            vertical: true,
+            x_expand: true,
+            style_class: 'datemenu-displays-box',
+        });
         this._displaysSection.add_actor(displaysBox);
 
         this._eventsItem = new EventsSection();

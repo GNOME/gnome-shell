@@ -76,10 +76,11 @@ var WindowClone = GObject.registerClass({
 
         this.connect('destroy', this._onDestroy.bind(this));
 
-        this._draggable = DND.makeDraggable(this,
-                                            { restoreOnSuccess: true,
-                                              dragActorMaxSize: Workspace.WINDOW_DND_SIZE,
-                                              dragActorOpacity: Workspace.DRAGGING_WINDOW_OPACITY });
+        this._draggable = DND.makeDraggable(this, {
+            restoreOnSuccess: true,
+            dragActorMaxSize: Workspace.WINDOW_DND_SIZE,
+            dragActorOpacity: Workspace.DRAGGING_WINDOW_OPACITY,
+        });
         this._draggable.connect('drag-begin', this._onDragBegin.bind(this));
         this._draggable.connect('drag-cancelled', this._onDragCancelled.bind(this));
         this._draggable.connect('drag-end', this._onDragEnd.bind(this));
@@ -593,8 +594,10 @@ var WorkspaceThumbnail = GObject.registerClass({
         } else if (!source.app && source.shellWorkspaceLaunch) {
             // While unused in our own drag sources, shellWorkspaceLaunch allows
             // extensions to define custom actions for their drag sources.
-            source.shellWorkspaceLaunch({ workspace: this.metaWorkspace.index(),
-                                          timestamp: time });
+            source.shellWorkspaceLaunch({
+                workspace: this.metaWorkspace.index(),
+                timestamp: time,
+            });
             return true;
         }
 
@@ -964,8 +967,10 @@ var ThumbnailsBox = GObject.registerClass({
             } else if (!source.app && source.shellWorkspaceLaunch) {
                 // While unused in our own drag sources, shellWorkspaceLaunch allows
                 // extensions to define custom actions for their drag sources.
-                source.shellWorkspaceLaunch({ workspace: newWorkspaceIndex,
-                                              timestamp: time });
+                source.shellWorkspaceLaunch({
+                    workspace: newWorkspaceIndex,
+                    timestamp: time,
+                });
             }
 
             if (source.app || (!source.app && source.shellWorkspaceLaunch)) {

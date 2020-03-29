@@ -159,8 +159,10 @@ var Overview = class {
         // During transitions, we raise this to the top to avoid having the overview
         // area be reactive; it causes too many issues such as double clicks on
         // Dash elements, or mouseover handlers in the workspaces.
-        this._coverPane = new Clutter.Actor({ opacity: 0,
-                                              reactive: true });
+        this._coverPane = new Clutter.Actor({
+            opacity: 0,
+            reactive: true,
+        });
         Main.layoutManager.overviewGroup.add_child(this._coverPane);
         this._coverPane.connect('event', (_actor, event) => {
             return event.type() === Clutter.EventType.ENTER ||
@@ -329,8 +331,11 @@ var Overview = class {
             return null;
 
         let window = windows[0];
-        let clone = new Clutter.Clone({ source: window,
-                                        x: window.x, y: window.y });
+        const clone = new Clutter.Clone({
+            source: window,
+            x: window.x,
+            y: window.y,
+        });
         clone.source.connect('destroy', () => {
             clone.destroy();
         });

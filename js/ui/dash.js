@@ -1,8 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported Dash */
 
-const { Clutter, GLib, GObject,
-        Graphene, Meta, Shell, St } = imports.gi;
+const { Clutter, GLib, GObject, Graphene, Meta, Shell, St } = imports.gi;
 
 const AppDisplay = imports.ui.appDisplay;
 const AppFavorites = imports.ui.appFavorites;
@@ -196,15 +195,18 @@ class ShowAppsIcon extends DashItemContainer {
     _init() {
         super._init();
 
-        this.toggleButton = new St.Button({ style_class: 'show-apps',
-                                            track_hover: true,
-                                            can_focus: true,
-                                            toggle_mode: true });
+        this.toggleButton = new St.Button({
+            style_class: 'show-apps',
+            track_hover: true,
+            can_focus: true,
+            toggle_mode: true,
+        });
         this._iconActor = null;
-        this.icon = new IconGrid.BaseIcon(_("Show Applications"),
-                                          { setSizeManually: true,
-                                            showLabel: false,
-                                            createIcon: this._createIcon.bind(this) });
+        this.icon = new IconGrid.BaseIcon(_('Show Applications'), {
+            setSizeManually: true,
+            showLabel: false,
+            createIcon: this._createIcon.bind(this),
+        });
         this.icon.y_align = Clutter.ActorAlign.CENTER;
 
         this.toggleButton.add_actor(this.icon);
@@ -215,10 +217,12 @@ class ShowAppsIcon extends DashItemContainer {
     }
 
     _createIcon(size) {
-        this._iconActor = new St.Icon({ icon_name: 'view-app-grid-symbolic',
-                                        icon_size: size,
-                                        style_class: 'show-apps-icon',
-                                        track_hover: true });
+        this._iconActor = new St.Icon({
+            icon_name: 'view-app-grid-symbolic',
+            icon_size: size,
+            style_class: 'show-apps-icon',
+            track_hover: true,
+        });
         return this._iconActor;
     }
 
@@ -738,9 +742,11 @@ var Dash = GObject.registerClass({
 
             // App added at newIndex
             if (newApp && !oldApps.includes(newApp)) {
-                addedItems.push({ app: newApp,
-                                  item: this._createAppItem(newApp),
-                                  pos: newIndex });
+                addedItems.push({
+                    app: newApp,
+                    item: this._createAppItem(newApp),
+                    pos: newIndex,
+                });
                 newIndex++;
                 continue;
             }
@@ -756,9 +762,11 @@ var Dash = GObject.registerClass({
 
             if (insertHere || alreadyRemoved) {
                 let newItem = this._createAppItem(newApp);
-                addedItems.push({ app: newApp,
-                                  item: newItem,
-                                  pos: newIndex + removedActors.length });
+                addedItems.push({
+                    app: newApp,
+                    item: newItem,
+                    pos: newIndex + removedActors.length,
+                });
                 newIndex++;
             } else {
                 removedActors.push(children[oldIndex]);

@@ -27,24 +27,28 @@ const ObjectManagerInfo = Gio.DBusInterfaceInfo.new_for_xml(ObjectManagerIface);
 
 var ObjectManager = class {
     constructor(params) {
-        params = Params.parse(params, { connection: null,
-                                        name: null,
-                                        objectPath: null,
-                                        knownInterfaces: null,
-                                        cancellable: null,
-                                        onLoaded: null });
+        params = Params.parse(params, {
+            connection: null,
+            name: null,
+            objectPath: null,
+            knownInterfaces: null,
+            cancellable: null,
+            onLoaded: null,
+        });
 
         this._connection = params.connection;
         this._serviceName = params.name;
         this._managerPath = params.objectPath;
         this._cancellable = params.cancellable;
 
-        this._managerProxy = new Gio.DBusProxy({ g_connection: this._connection,
-                                                 g_interface_name: ObjectManagerInfo.name,
-                                                 g_interface_info: ObjectManagerInfo,
-                                                 g_name: this._serviceName,
-                                                 g_object_path: this._managerPath,
-                                                 g_flags: Gio.DBusProxyFlags.DO_NOT_AUTO_START });
+        this._managerProxy = new Gio.DBusProxy({
+            g_connection: this._connection,
+            g_interface_name: ObjectManagerInfo.name,
+            g_interface_info: ObjectManagerInfo,
+            g_name: this._serviceName,
+            g_object_path: this._managerPath,
+            g_flags: Gio.DBusProxyFlags.DO_NOT_AUTO_START,
+        });
 
         this._interfaceInfos = {};
         this._objects = {};
@@ -80,12 +84,14 @@ var ObjectManager = class {
             return;
         }
 
-        let proxy = new Gio.DBusProxy({ g_connection: this._connection,
-                                        g_name: this._serviceName,
-                                        g_object_path: objectPath,
-                                        g_interface_name: interfaceName,
-                                        g_interface_info: info,
-                                        g_flags: Gio.DBusProxyFlags.DO_NOT_AUTO_START });
+        const proxy = new Gio.DBusProxy({
+            g_connection: this._connection,
+            g_name: this._serviceName,
+            g_object_path: objectPath,
+            g_interface_name: interfaceName,
+            g_interface_info: info,
+            g_flags: Gio.DBusProxyFlags.DO_NOT_AUTO_START,
+        });
 
         try {
             await proxy.init_async(GLib.PRIORITY_DEFAULT, this._cancellable);

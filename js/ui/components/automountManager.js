@@ -65,9 +65,11 @@ var AutomountManager = class {
     _startupMountAll() {
         let volumes = this._volumeMonitor.get_volumes();
         volumes.forEach(volume => {
-            this._checkAndMountVolume(volume, { checkSession: false,
-                                                useMountOp: false,
-                                                allowAutorun: false });
+            this._checkAndMountVolume(volume, {
+                checkSession: false,
+                useMountOp: false,
+                allowAutorun: false,
+            });
         });
 
         this._mountAllId = 0;
@@ -132,9 +134,11 @@ var AutomountManager = class {
     }
 
     _checkAndMountVolume(volume, params) {
-        params = Params.parse(params, { checkSession: true,
-                                        useMountOp: true,
-                                        allowAutorun: true });
+        params = Params.parse(params, {
+            checkSession: true,
+            useMountOp: true,
+            allowAutorun: true,
+        });
 
         if (params.checkSession) {
             // if we're not in the current ConsoleKit session,

@@ -117,11 +117,13 @@ var GnomeShell = class {
         for (let param in params)
             params[param] = params[param].deep_unpack();
 
-        let { connector,
-              label,
-              level,
-              max_level: maxLevel,
-              icon: serializedIcon } = params;
+        const {
+            connector,
+            label,
+            level,
+            max_level: maxLevel,
+            icon: serializedIcon,
+        } = params;
 
         let monitorIndex = -1;
         if (connector) {

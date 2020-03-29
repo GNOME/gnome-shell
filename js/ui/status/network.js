@@ -700,9 +700,11 @@ var NMWirelessDialogItem = GObject.registerClass({
         this._network = network;
         this._ap = network.accessPoints[0];
 
-        super._init({ style_class: 'nm-dialog-item',
-                      can_focus: true,
-                      reactive: true });
+        super._init({
+            style_class: 'nm-dialog-item',
+            can_focus: true,
+            reactive: true,
+        });
 
         let action = new Clutter.ClickAction();
         action.connect('clicked', () => this.grab_key_focus());
@@ -717,8 +719,10 @@ var NMWirelessDialogItem = GObject.registerClass({
         this.label_actor = this._label;
         this.add_child(this._label);
 
-        this._selectedIcon = new St.Icon({ style_class: 'nm-dialog-icon',
-                                           icon_name: 'object-select-symbolic' });
+        this._selectedIcon = new St.Icon({
+            style_class: 'nm-dialog-icon',
+            icon_name: 'object-select-symbolic',
+        });
         this.add(this._selectedIcon);
 
         this._icons = new St.BoxLayout({
@@ -913,14 +917,20 @@ class NMWirelessDialog extends ModalDialog.ModalDialog {
     _buildLayout() {
         let headline = new St.BoxLayout({ style_class: 'nm-dialog-header-hbox' });
 
-        let icon = new St.Icon({ style_class: 'nm-dialog-header-icon',
-                                 icon_name: 'network-wireless-signal-excellent-symbolic' });
+        const icon = new St.Icon({
+            style_class: 'nm-dialog-header-icon',
+            icon_name: 'network-wireless-signal-excellent-symbolic',
+        });
 
         let titleBox = new St.BoxLayout({ vertical: true });
-        let title = new St.Label({ style_class: 'nm-dialog-header',
-                                   text: _("Wi-Fi Networks") });
-        let subtitle = new St.Label({ style_class: 'nm-dialog-subheader',
-                                      text: _("Select a network") });
+        const title = new St.Label({
+            style_class: 'nm-dialog-header',
+            text: _('Wi-Fi Networks'),
+        });
+        const subtitle = new St.Label({
+            style_class: 'nm-dialog-subheader',
+            text: _('Select a network'),
+        });
         titleBox.add(title);
         titleBox.add(subtitle);
 
@@ -944,21 +954,27 @@ class NMWirelessDialog extends ModalDialog.ModalDialog {
         this._scrollView.add_actor(this._itemBox);
         this._stack.add_child(this._scrollView);
 
-        this._noNetworksBox = new St.BoxLayout({ vertical: true,
-                                                 style_class: 'no-networks-box',
-                                                 x_align: Clutter.ActorAlign.CENTER,
-                                                 y_align: Clutter.ActorAlign.CENTER });
+        this._noNetworksBox = new St.BoxLayout({
+            vertical: true,
+            style_class: 'no-networks-box',
+            x_align: Clutter.ActorAlign.CENTER,
+            y_align: Clutter.ActorAlign.CENTER,
+        });
 
         this._noNetworksSpinner = new Animation.Spinner(16);
         this._noNetworksBox.add_actor(this._noNetworksSpinner);
-        this._noNetworksBox.add_actor(new St.Label({ style_class: 'no-networks-label',
-                                                     text: _("No Networks") }));
+        this._noNetworksBox.add_actor(new St.Label({
+            style_class: 'no-networks-label',
+            text: _('No Networks'),
+        }));
         this._stack.add_child(this._noNetworksBox);
 
-        this._airplaneBox = new St.BoxLayout({ vertical: true,
-                                               style_class: 'nm-dialog-airplane-box',
-                                               x_align: Clutter.ActorAlign.CENTER,
-                                               y_align: Clutter.ActorAlign.CENTER });
+        this._airplaneBox = new St.BoxLayout({
+            vertical: true,
+            style_class: 'nm-dialog-airplane-box',
+            x_align: Clutter.ActorAlign.CENTER,
+            y_align: Clutter.ActorAlign.CENTER,
+        });
         this._airplaneIcon = new St.Icon({ icon_size: 48 });
         this._airplaneHeadline = new St.Label({ style_class: 'nm-dialog-airplane-headline headline' });
         this._airplaneText = new St.Label({ style_class: 'nm-dialog-airplane-text' });
@@ -972,8 +988,10 @@ class NMWirelessDialog extends ModalDialog.ModalDialog {
                 this._client.wireless_enabled = true;
         });
         airplaneSubStack.add_actor(this._airplaneButton);
-        this._airplaneInactive = new St.Label({ style_class: 'nm-dialog-airplane-text',
-                                                text: _("Use hardware switch to turn off") });
+        this._airplaneInactive = new St.Label({
+            style_class: 'nm-dialog-airplane-text',
+            text: _('Use hardware switch to turn off'),
+        });
         airplaneSubStack.add_actor(this._airplaneInactive);
 
         this._airplaneBox.add_child(this._airplaneIcon);
@@ -984,12 +1002,16 @@ class NMWirelessDialog extends ModalDialog.ModalDialog {
 
         this.contentLayout.add_child(this._stack);
 
-        this._disconnectButton = this.addButton({ action: () => this.close(),
-                                                  label: _("Cancel"),
-                                                  key: Clutter.KEY_Escape });
-        this._connectButton = this.addButton({ action: this._connect.bind(this),
-                                               label: _("Connect"),
-                                               key: Clutter.KEY_Return });
+        this._disconnectButton = this.addButton({
+            action: () => this.close(),
+            label: _('Cancel'),
+            key: Clutter.KEY_Escape,
+        });
+        this._connectButton = this.addButton({
+            action: this._connect.bind(this),
+            label: _('Connect'),
+            key: Clutter.KEY_Return,
+        });
     }
 
     _connect() {

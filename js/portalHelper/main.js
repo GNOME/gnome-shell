@@ -42,34 +42,44 @@ class PortalHeaderBar extends Gtk.HeaderBar {
         super._init({ show_close_button: true });
 
         // See ephy-title-box.c in epiphany for the layout
-        let vbox = new Gtk.Box({ orientation: Gtk.Orientation.VERTICAL,
-                                 spacing: 0 });
+        const vbox = new Gtk.Box({
+            orientation: Gtk.Orientation.VERTICAL,
+            spacing: 0,
+        });
         this.set_custom_title(vbox);
 
         /* TRANSLATORS: this is the title of the wifi captive portal login window */
-        let titleLabel = new Gtk.Label({ label: _("Hotspot Login"),
-                                         wrap: false,
-                                         single_line_mode: true,
-                                         ellipsize: Pango.EllipsizeMode.END });
+        const titleLabel = new Gtk.Label({
+            label: _('Hotspot Login'),
+            wrap: false,
+            single_line_mode: true,
+            ellipsize: Pango.EllipsizeMode.END,
+        });
         titleLabel.get_style_context().add_class('title');
         vbox.add(titleLabel);
 
-        let hbox = new Gtk.Box({ orientation: Gtk.Orientation.HORIZONTAL,
-                                 spacing: 4,
-                                 halign: Gtk.Align.CENTER,
-                                 valign: Gtk.Align.BASELINE });
+        const hbox = new Gtk.Box({
+            orientation: Gtk.Orientation.HORIZONTAL,
+            spacing: 4,
+            halign: Gtk.Align.CENTER,
+            valign: Gtk.Align.BASELINE,
+        });
         hbox.get_style_context().add_class('subtitle');
         vbox.add(hbox);
 
-        this._lockImage = new Gtk.Image({ icon_size: Gtk.IconSize.MENU,
-                                          valign: Gtk.Align.BASELINE });
+        this._lockImage = new Gtk.Image({
+            icon_size: Gtk.IconSize.MENU,
+            valign: Gtk.Align.BASELINE,
+        });
         hbox.add(this._lockImage);
 
-        this.subtitleLabel = new Gtk.Label({ wrap: false,
-                                             single_line_mode: true,
-                                             ellipsize: Pango.EllipsizeMode.END,
-                                             valign: Gtk.Align.BASELINE,
-                                             selectable: true });
+        this.subtitleLabel = new Gtk.Label({
+            wrap: false,
+            single_line_mode: true,
+            ellipsize: Pango.EllipsizeMode.END,
+            valign: Gtk.Align.BASELINE,
+            selectable: true,
+        });
         this.subtitleLabel.get_style_context().add_class('subtitle');
         hbox.add(this.subtitleLabel);
 
@@ -271,9 +281,11 @@ class PortalWindow extends Gtk.ApplicationWindow {
 var WebPortalHelper = GObject.registerClass(
 class WebPortalHelper extends Gtk.Application {
     _init() {
-        super._init({ application_id: 'org.gnome.Shell.PortalHelper',
-                      flags: Gio.ApplicationFlags.IS_SERVICE,
-                      inactivity_timeout: 30000 });
+        super._init({
+            application_id: 'org.gnome.Shell.PortalHelper',
+            flags: Gio.ApplicationFlags.IS_SERVICE,
+            inactivity_timeout: 30000,
+        });
 
         this._dbusImpl = Gio.DBusExportedObject.wrapJSObject(HelperDBusInterface, this);
         this._queue = [];

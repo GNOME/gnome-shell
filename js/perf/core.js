@@ -16,59 +16,86 @@ const Scripting = imports.ui.scripting;
 // on a particular system.
 
 var METRICS = {
-    overviewLatencyFirst:
-    { description: "Time to first frame after triggering overview, first time",
-      units: "us" },
-    overviewFpsFirst:
-    { description: "Frame rate when going to the overview, first time",
-      units: "frames / s" },
-    overviewLatencySubsequent:
-    { description: "Time to first frame after triggering overview, second time",
-      units: "us" },
-    overviewFpsSubsequent:
-    { description: "Frames rate when going to the overview, second time",
-      units: "frames / s" },
-    overviewFps5Windows:
-    { description: "Frames rate when going to the overview, 5 windows open",
-      units: "frames / s" },
-    overviewFps10Windows:
-    { description: "Frames rate when going to the overview, 10 windows open",
-      units: "frames / s" },
-    overviewFps5Maximized:
-    { description: "Frames rate when going to the overview, 5 maximized windows open",
-      units: "frames / s" },
-    overviewFps10Maximized:
-    { description: "Frames rate when going to the overview, 10 maximized windows open",
-      units: "frames / s" },
-    overviewFps5Alpha:
-    { description: "Frames rate when going to the overview, 5 alpha-transparent windows open",
-      units: "frames / s" },
-    overviewFps10Alpha:
-    { description: "Frames rate when going to the overview, 10 alpha-transparent windows open",
-      units: "frames / s" },
-    usedAfterOverview:
-    { description: "Malloc'ed bytes after the overview is shown once",
-      units: "B" },
-    leakedAfterOverview:
-    { description: "Additional malloc'ed bytes the second time the overview is shown",
-      units: "B" },
-    applicationsShowTimeFirst:
-    { description: "Time to switch to applications view, first time",
-      units: "us" },
-    applicationsShowTimeSubsequent:
-    { description: "Time to switch to applications view, second time",
-      units: "us" },
+    overviewLatencyFirst: {
+        description: 'Time to first frame after triggering overview, first time',
+        units: 'us',
+    },
+    overviewFpsFirst: {
+        description: 'Frame rate when going to the overview, first time',
+        units: 'frames / s',
+    },
+    overviewLatencySubsequent: {
+        description: 'Time to first frame after triggering overview, second time',
+        units: 'us',
+    },
+    overviewFpsSubsequent: {
+        description: 'Frames rate when going to the overview, second time',
+        units: 'frames / s',
+    },
+    overviewFps5Windows: {
+        description: 'Frames rate when going to the overview, 5 windows open',
+        units: 'frames / s',
+    },
+    overviewFps10Windows: {
+        description: 'Frames rate when going to the overview, 10 windows open',
+        units: 'frames / s',
+    },
+    overviewFps5Maximized: {
+        description: 'Frames rate when going to the overview, 5 maximized windows open',
+        units: 'frames / s',
+    },
+    overviewFps10Maximized: {
+        description: 'Frames rate when going to the overview, 10 maximized windows open',
+        units: 'frames / s',
+    },
+    overviewFps5Alpha: {
+        description: 'Frames rate when going to the overview, 5 alpha-transparent windows open',
+        units: 'frames / s',
+    },
+    overviewFps10Alpha: {
+        description: 'Frames rate when going to the overview, 10 alpha-transparent windows open',
+        units: 'frames / s',
+    },
+    usedAfterOverview: {
+        description: "Malloc'ed bytes after the overview is shown once",
+        units: 'B',
+    },
+    leakedAfterOverview: {
+        description: "Additional malloc'ed bytes the second time the overview is shown",
+        units: 'B',
+    },
+    applicationsShowTimeFirst: {
+        description: 'Time to switch to applications view, first time',
+        units: 'us',
+    },
+    applicationsShowTimeSubsequent: {
+        description: 'Time to switch to applications view, second time',
+        units: 'us',
+    },
 };
 
-let WINDOW_CONFIGS = [
-    { width: 640, height: 480, alpha: false, maximized: false, count: 1,  metric: 'overviewFpsSubsequent' },
-    { width: 640, height: 480, alpha: false, maximized: false, count: 5,  metric: 'overviewFps5Windows'  },
-    { width: 640, height: 480, alpha: false, maximized: false, count: 10, metric: 'overviewFps10Windows'  },
-    { width: 640, height: 480, alpha: false, maximized: true,  count: 5,  metric: 'overviewFps5Maximized' },
-    { width: 640, height: 480, alpha: false, maximized: true,  count: 10, metric: 'overviewFps10Maximized' },
-    { width: 640, height: 480, alpha: true,  maximized: false, count: 5,  metric: 'overviewFps5Alpha' },
-    { width: 640, height: 480, alpha: true,  maximized: false, count: 10, metric: 'overviewFps10Alpha' },
-];
+const WINDOW_CONFIGS = [{
+    width: 640, height: 480,
+    alpha: false, maximized: false, count: 1,  metric: 'overviewFpsSubsequent',
+}, {
+    width: 640, height: 480,
+    alpha: false, maximized: false, count: 5,  metric: 'overviewFps5Windows',
+}, {
+    width: 640, height: 480,
+    alpha: false, maximized: false, count: 10, metric: 'overviewFps10Windows',
+}, {
+    width: 640, height: 480,
+    alpha: false, maximized: true,  count: 5,  metric: 'overviewFps5Maximized',
+}, {
+    width: 640, height: 480,
+    alpha: false, maximized: true,  count: 10, metric: 'overviewFps10Maximized',
+}, {
+    width: 640, height: 480,
+    alpha: true,  maximized: false, count: 5,  metric: 'overviewFps5Alpha',
+}, {
+    width: 640, height: 480,
+    alpha: true,  maximized: false, count: 10, metric: 'overviewFps10Alpha',
+}];
 
 async function run() {
     /* eslint-disable no-await-in-loop */
@@ -96,10 +123,12 @@ async function run() {
             await Scripting.destroyTestWindows();
 
             for (let k = 0; k < config.count; k++) {
-                await Scripting.createTestWindow({ width: config.width,
-                                                   height: config.height,
-                                                   alpha: config.alpha,
-                                                   maximized: config.maximized });
+                await Scripting.createTestWindow({
+                    width: config.width,
+                    height: config.height,
+                    alpha: config.alpha,
+                    maximized: config.maximized,
+                });
             }
 
             await Scripting.waitTestWindows();

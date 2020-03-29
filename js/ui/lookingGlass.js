@@ -1,8 +1,9 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported LookingGlass */
 
-const { Clutter, Cogl, Gio, GLib, GObject,
-        Graphene, Meta, Pango, Shell, St } = imports.gi;
+const {
+    Clutter, Cogl, Gio, GLib, GObject, Graphene, Meta, Pango, Shell, St,
+} = imports.gi;
 const Signals = imports.signals;
 const System = imports.system;
 
@@ -94,13 +95,17 @@ var AutoComplete = class AutoComplete {
             let [completions, attrHead] = JsParse.getCompletions(text, commandHeader, AUTO_COMPLETE_GLOBAL_KEYWORDS);
             let currTime = global.get_current_time();
             if ((currTime - this._lastTabTime) < AUTO_COMPLETE_DOUBLE_TAB_DELAY) {
-                this._processCompletionRequest({ tabType: 'double',
-                                                 completions,
-                                                 attrHead });
+                this._processCompletionRequest({
+                    tabType: 'double',
+                    completions,
+                    attrHead,
+                });
             } else {
-                this._processCompletionRequest({ tabType: 'single',
-                                                 completions,
-                                                 attrHead });
+                this._processCompletionRequest({
+                    tabType: 'single',
+                    completions,
+                    attrHead,
+                });
             }
             this._lastTabTime = currTime;
         }
@@ -135,9 +140,11 @@ var Notebook = GObject.registerClass({
     }
 
     appendPage(name, child) {
-        let labelBox = new St.BoxLayout({ style_class: 'notebook-tab',
-                                          reactive: true,
-                                          track_hover: true });
+        const labelBox = new St.BoxLayout({
+            style_class: 'notebook-tab',
+            reactive: true,
+            track_hover: true,
+        });
         let label = new St.Button({ label: name });
         label.connect('clicked', () => {
             this.selectChild(child);
@@ -150,11 +157,13 @@ var Notebook = GObject.registerClass({
         scrollview.get_hscroll_bar().hide();
         scrollview.add_actor(child);
 
-        let tabData = { child,
-                        labelBox,
-                        label,
-                        scrollView: scrollview,
-                        _scrollToBottom: false };
+        const tabData = {
+            child,
+            labelBox,
+            label,
+            scrollView: scrollview,
+            _scrollToBottom: false,
+        };
         this._tabs.push(tabData);
         scrollview.hide();
         this.add_child(scrollview);
@@ -531,17 +540,21 @@ class RedBorderEffect extends Clutter.Effect {
 });
 
 var Inspector = GObject.registerClass({
-    Signals: { 'closed': {},
-               'target': { param_types: [Clutter.Actor.$gtype, GObject.TYPE_DOUBLE, GObject.TYPE_DOUBLE] } },
+    Signals: {
+        'closed': {},
+        'target': { param_types: [Clutter.Actor.$gtype, GObject.TYPE_DOUBLE, GObject.TYPE_DOUBLE] },
+    },
 }, class Inspector extends Clutter.Actor {
     _init(lookingGlass) {
         super._init({ width: 0, height: 0 });
 
         Main.uiGroup.add_actor(this);
 
-        let eventHandler = new St.BoxLayout({ name: 'LookingGlassDialog',
-                                              vertical: false,
-                                              reactive: true });
+        const eventHandler = new St.BoxLayout({
+            name: 'LookingGlassDialog',
+            vertical: false,
+            reactive: true,
+        });
         this._eventHandler = eventHandler;
         this.add_actor(eventHandler);
         this._displayText = new St.Label({ x_expand: true });
@@ -673,11 +686,15 @@ var Extensions = GObject.registerClass({
         super._init({ vertical: true, name: 'lookingGlassExtensions' });
 
         this._lookingGlass = lookingGlass;
-        this._noExtensions = new St.Label({ style_class: 'lg-extensions-none',
-                                            text: _("No extensions installed") });
+        this._noExtensions = new St.Label({
+            style_class: 'lg-extensions-none',
+            text: _('No extensions installed'),
+        });
         this._numExtensions = 0;
-        this._extensionsList = new St.BoxLayout({ vertical: true,
-                                                  style_class: 'lg-extensions-list' });
+        this._extensionsList = new St.BoxLayout({
+            vertical: true,
+            style_class: 'lg-extensions-list',
+        });
         this._extensionsList.add(this._noExtensions);
         this.add(this._extensionsList);
 
@@ -783,32 +800,40 @@ var Extensions = GObject.registerClass({
 
         let metaBox = new St.BoxLayout({ style_class: 'lg-extension-meta' });
         box.add(metaBox);
-        let state = new St.Label({ style_class: 'lg-extension-state',
-                                   text: this._stateToString(extension.state) });
+        const state = new St.Label({
+            style_class: 'lg-extension-state',
+            text: this._stateToString(extension.state),
+        });
         metaBox.add(state);
 
-        let viewsource = new St.Button({ reactive: true,
-                                         track_hover: true,
-                                         style_class: 'shell-link',
-                                         label: _("View Source") });
+        const viewsource = new St.Button({
+            reactive: true,
+            track_hover: true,
+            style_class: 'shell-link',
+            label: _('View Source'),
+        });
         viewsource._extension = extension;
         viewsource.connect('clicked', this._onViewSource.bind(this));
         metaBox.add(viewsource);
 
         if (extension.metadata.url) {
-            let webpage = new St.Button({ reactive: true,
-                                          track_hover: true,
-                                          style_class: 'shell-link',
-                                          label: _("Web Page") });
+            const webpage = new St.Button({
+                reactive: true,
+                track_hover: true,
+                style_class: 'shell-link',
+                label: _('Web Page'),
+            });
             webpage._extension = extension;
             webpage.connect('clicked', this._onWebPage.bind(this));
             metaBox.add(webpage);
         }
 
-        let viewerrors = new St.Button({ reactive: true,
-                                         track_hover: true,
-                                         style_class: 'shell-link',
-                                         label: _("Show Errors") });
+        const viewerrors = new St.Button({
+            reactive: true,
+            track_hover: true,
+            style_class: 'shell-link',
+            label: _('Show Errors'),
+        });
         viewerrors._extension = extension;
         viewerrors._parentBox = box;
         viewerrors._isShowing = false;
@@ -1358,8 +1383,10 @@ class LookingGlass extends St.BoxLayout {
             return true;
         });
 
-        this._history = new History.HistoryManager({ gsettingsKey: HISTORY_KEY,
-                                                     entry: this._entry.clutter_text });
+        this._history = new History.HistoryManager({
+            gsettingsKey: HISTORY_KEY,
+            entry: this._entry.clutter_text,
+        });
 
         this._autoComplete = new AutoComplete(this._entry);
         this._autoComplete.connect('suggest', (a, e) => {

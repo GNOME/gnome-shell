@@ -156,9 +156,11 @@ class TelepathyClient extends Tp.BaseClient {
         // channel matching its filters is detected.
         // The second argument, recover, means _observeChannels will be run
         // for any existing channel as well.
-        super._init({ name: 'GnomeShell',
-                      account_manager: this._accountManager,
-                      uniquify_name: true });
+        super._init({
+            name: 'GnomeShell',
+            account_manager: this._accountManager,
+            uniquify_name: true,
+        });
 
         // We only care about single-user text-based chats
         let filter = {};
@@ -255,16 +257,20 @@ class TelepathyClient extends Tp.BaseClient {
         let chanType = channel.get_channel_type();
 
         if (channel.get_invalidated()) {
-            context.fail(new Tp.Error({ code: Tp.Error.INVALID_ARGUMENT,
-                                        message: 'Channel is invalidated' }));
+            context.fail(new Tp.Error({
+                code: Tp.Error.INVALID_ARGUMENT,
+                message: 'Channel is invalidated',
+            }));
             return;
         }
 
         if (chanType == Tp.IFACE_CHANNEL_TYPE_TEXT) {
             this._approveTextChannel(account, conn, channel, dispatchOp, context);
         } else {
-            context.fail(new Tp.Error({ code: Tp.Error.INVALID_ARGUMENT,
-                                        message: 'Unsupported channel type' }));
+            context.fail(new Tp.Error({
+                code: Tp.Error.INVALID_ARGUMENT,
+                message: 'Unsupported channel type',
+            }));
         }
     }
 
@@ -272,8 +278,10 @@ class TelepathyClient extends Tp.BaseClient {
         let [targetHandle_, targetHandleType] = channel.get_handle();
 
         if (targetHandleType != Tp.HandleType.CONTACT) {
-            context.fail(new Tp.Error({ code: Tp.Error.INVALID_ARGUMENT,
-                                        message: 'Unsupported handle type' }));
+            context.fail(new Tp.Error({
+                code: Tp.Error.INVALID_ARGUMENT,
+                message: 'Unsupported handle type',
+            }));
             return;
         }
 
@@ -709,19 +717,22 @@ var ChatNotification = HAVE_TP ? GObject.registerClass({
         }
 
         if (message.direction == NotificationDirection.RECEIVED) {
-            this.update(this.source.title, messageBody,
-                        { datetime: GLib.DateTime.new_from_unix_local(message.timestamp),
-                          bannerMarkup: true });
+            this.update(this.source.title, messageBody, {
+                datetime: GLib.DateTime.new_from_unix_local(message.timestamp),
+                bannerMarkup: true,
+            });
         }
 
         let group = message.direction == NotificationDirection.RECEIVED
             ? 'received' : 'sent';
 
-        this._append({ body: messageBody,
-                       group,
-                       styles,
-                       timestamp: message.timestamp,
-                       noTimestamp });
+        this._append({
+            body: messageBody,
+            group,
+            styles,
+            timestamp: message.timestamp,
+            noTimestamp,
+        });
     }
 
     _filterMessages() {
@@ -761,11 +772,13 @@ var ChatNotification = HAVE_TP ? GObject.registerClass({
      */
     _append(props) {
         let currentTime = Date.now() / 1000;
-        props = Params.parse(props, { body: null,
-                                      group: null,
-                                      styles: [],
-                                      timestamp: currentTime,
-                                      noTimestamp: false });
+        props = Params.parse(props, {
+            body: null,
+            group: null,
+            styles: [],
+            timestamp: currentTime,
+            noTimestamp: false,
+        });
         const { noTimestamp } = props;
         delete props.noTimestamp;
 
@@ -821,9 +834,11 @@ var ChatNotification = HAVE_TP ? GObject.registerClass({
         const message = `<i>${
             _('%s is now known as %s').format(oldAlias, newAlias)}</i>`;
 
-        this._append({ body: message,
-                       group: 'meta',
-                       styles: ['chat-meta-message'] });
+        this._append({
+            body: message,
+            group: 'meta',
+            styles: ['chat-meta-message'],
+        });
 
         this._filterMessages();
     }
@@ -842,9 +857,11 @@ class ChatNotificationBanner extends MessageTray.NotificationBanner {
     _init(notification) {
         super._init(notification);
 
-        this._responseEntry = new St.Entry({ style_class: 'chat-response',
-                                             x_expand: true,
-                                             can_focus: true });
+        this._responseEntry = new St.Entry({
+            style_class: 'chat-response',
+            x_expand: true,
+            can_focus: true,
+        });
         this._responseEntry.clutter_text.connect('activate', this._onEntryActivated.bind(this));
         this._responseEntry.clutter_text.connect('text-changed', this._onEntryChanged.bind(this));
         this.setActionArea(this._responseEntry);
@@ -857,12 +874,16 @@ class ChatNotificationBanner extends MessageTray.NotificationBanner {
             this.emit('unfocused');
         });
 
-        this._scrollArea = new St.ScrollView({ style_class: 'chat-scrollview vfade',
-                                               vscrollbar_policy: St.PolicyType.AUTOMATIC,
-                                               hscrollbar_policy: St.PolicyType.NEVER,
-                                               visible: this.expanded });
-        this._contentArea = new St.BoxLayout({ style_class: 'chat-body',
-                                               vertical: true });
+        this._scrollArea = new St.ScrollView({
+            style_class: 'chat-scrollview vfade',
+            vscrollbar_policy: St.PolicyType.AUTOMATIC,
+            hscrollbar_policy: St.PolicyType.NEVER,
+            visible: this.expanded,
+        });
+        this._contentArea = new St.BoxLayout({
+            style_class: 'chat-body',
+            vertical: true,
+        });
         this._scrollArea.add_actor(this._contentArea);
 
         this.setExpandedBody(this._scrollArea);

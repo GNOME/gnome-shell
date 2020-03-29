@@ -127,9 +127,11 @@ class AspectContainer extends St.Widget {
 var KeyContainer = GObject.registerClass(
 class KeyContainer extends St.Widget {
     _init() {
-        let gridLayout = new Clutter.GridLayout({ orientation: Clutter.Orientation.HORIZONTAL,
-                                                  column_homogeneous: true,
-                                                  row_homogeneous: true });
+        const gridLayout = new Clutter.GridLayout({
+            orientation: Clutter.Orientation.HORIZONTAL,
+            column_homogeneous: true,
+            row_homogeneous: true,
+        });
         super._init({
             layout_manager: gridLayout,
             x_expand: true,
@@ -880,13 +882,17 @@ var EmojiPager = GObject.registerClass({
     }
 
     _generatePanel(nPage) {
-        let gridLayout = new Clutter.GridLayout({ orientation: Clutter.Orientation.HORIZONTAL,
-                                                  column_homogeneous: true,
-                                                  row_homogeneous: true });
-        let panel = new St.Widget({ layout_manager: gridLayout,
-                                    style_class: 'emoji-page',
-                                    x_expand: true,
-                                    y_expand: true });
+        const gridLayout = new Clutter.GridLayout({
+            orientation: Clutter.Orientation.HORIZONTAL,
+            column_homogeneous: true,
+            row_homogeneous: true,
+        });
+        const panel = new St.Widget({
+            layout_manager: gridLayout,
+            style_class: 'emoji-page',
+            x_expand: true,
+            y_expand: true,
+        });
 
         /* Set an expander actor so all proportions are right despite the panel
          * not having all rows/cols filled in.
@@ -1119,8 +1125,11 @@ var EmojiSelection = GObject.registerClass({
         row.appendKey(key);
         row.layoutButtons();
 
-        let actor = new AspectContainer({ layout_manager: new Clutter.BinLayout(),
-                                          x_expand: true, y_expand: true });
+        const actor = new AspectContainer({
+            layout_manager: new Clutter.BinLayout(),
+            x_expand: true,
+            y_expand: true,
+        });
         actor.add_child(row);
         /* Regular keyboard layouts are 11.5×4 grids, optimize for that
          * at the moment. Ideally this should be as wide as the current
@@ -1159,9 +1168,11 @@ var Keypad = GObject.registerClass({
             y_expand: true,
         });
 
-        let gridLayout = new Clutter.GridLayout({ orientation: Clutter.Orientation.HORIZONTAL,
-                                                  column_homogeneous: true,
-                                                  row_homogeneous: true });
+        const gridLayout = new Clutter.GridLayout({
+            orientation: Clutter.Orientation.HORIZONTAL,
+            column_homogeneous: true,
+            row_homogeneous: true,
+        });
         this._box = new St.Widget({ layout_manager: gridLayout, x_expand: true, y_expand: true });
         this.add_child(this._box);
 

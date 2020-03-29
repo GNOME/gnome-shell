@@ -1,8 +1,9 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported WindowPreview */
 
-const { Atk, Clutter, GLib, GObject,
-        Graphene, Meta, Pango, Shell, St } = imports.gi;
+const {
+    Atk, Clutter, GLib, GObject, Graphene, Meta, Pango, Shell, St,
+} = imports.gi;
 
 const DND = imports.ui.dnd;
 const OverviewControls = imports.ui.overviewControls;
@@ -104,11 +105,12 @@ var WindowPreview = GObject.registerClass({
         this.add_action(clickAction);
         this.connect('destroy', this._onDestroy.bind(this));
 
-        this._draggable = DND.makeDraggable(this,
-                                            { restoreOnSuccess: true,
-                                              manualMode: true,
-                                              dragActorMaxSize: WINDOW_DND_SIZE,
-                                              dragActorOpacity: DRAGGING_WINDOW_OPACITY });
+        this._draggable = DND.makeDraggable(this, {
+            restoreOnSuccess: true,
+            manualMode: true,
+            dragActorMaxSize: WINDOW_DND_SIZE,
+            dragActorOpacity: DRAGGING_WINDOW_OPACITY,
+        });
         this._draggable.connect('drag-begin', this._onDragBegin.bind(this));
         this._draggable.connect('drag-cancelled', this._onDragCancelled.bind(this));
         this._draggable.connect('drag-end', this._onDragEnd.bind(this));

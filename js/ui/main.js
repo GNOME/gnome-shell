@@ -555,9 +555,11 @@ function _findModal(grab) {
  * @returns {Clutter.Grab}: the grab handle created
  */
 function pushModal(actor, params) {
-    params = Params.parse(params, { timestamp: global.get_current_time(),
-                                    options: 0,
-                                    actionMode: Shell.ActionMode.NONE });
+    params = Params.parse(params, {
+        timestamp: global.get_current_time(),
+        options: 0,
+        actionMode: Shell.ActionMode.NONE,
+    });
 
     let grab = global.stage.grab(actor);
 
@@ -582,7 +584,8 @@ function pushModal(actor, params) {
                 modalActorFocusStack[index].prevFocus = null;
         });
     }
-    modalActorFocusStack.push({ actor,
+    modalActorFocusStack.push({
+        actor,
         grab,
         destroyId: actorDestroyId,
         prevFocus,
@@ -788,8 +791,10 @@ function _queueBeforeRedraw(workId) {
 function initializeDeferredWork(actor, callback) {
     // Turn into a string so we can use as an object property
     let workId = `${++_deferredWorkSequence}`;
-    _deferredWorkData[workId] = { actor,
-                                  callback };
+    _deferredWorkData[workId] = {
+        actor,
+        callback,
+    };
     actor.connect('notify::mapped', () => {
         if (!(actor.mapped && _deferredWorkQueue.includes(workId)))
             return;
@@ -838,10 +843,12 @@ function queueDeferredWork(workId) {
 var RestartMessage = GObject.registerClass(
 class RestartMessage extends ModalDialog.ModalDialog {
     _init(message) {
-        super._init({ shellReactive: true,
-                      styleClass: 'restart-message headline',
-                      shouldFadeIn: false,
-                      destroyOnClose: true });
+        super._init({
+            shellReactive: true,
+            styleClass: 'restart-message headline',
+            shouldFadeIn: false,
+            destroyOnClose: true,
+        });
 
         let label = new St.Label({
             text: message,

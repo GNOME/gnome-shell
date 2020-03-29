@@ -8,9 +8,11 @@ var DEFAULT_LIMIT = 512;
 
 var HistoryManager = class {
     constructor(params) {
-        params = Params.parse(params, { gsettingsKey: null,
-                                        limit: DEFAULT_LIMIT,
-                                        entry: null });
+        params = Params.parse(params, {
+            gsettingsKey: null,
+            limit: DEFAULT_LIMIT,
+            entry: null,
+        });
 
         this._key = params.gsettingsKey;
         this._limit = params.limit;

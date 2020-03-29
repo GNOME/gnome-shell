@@ -66,8 +66,10 @@ var AppMenuButton = GObject.registerClass({
             iconEffect.enabled = themeNode.get_icon_style() == St.IconStyle.SYMBOLIC;
         });
 
-        this._label = new St.Label({ y_expand: true,
-                                     y_align: Clutter.ActorAlign.CENTER });
+        this._label = new St.Label({
+            y_expand: true,
+            y_align: Clutter.ActorAlign.CENTER,
+        });
         this._container.add_actor(this._label);
 
         this._visible = !Main.overview.visible;
@@ -267,8 +269,10 @@ class ActivitiesButton extends PanelMenu.Button {
 
         /* Translators: If there is no suitable word for "Activities"
            in your language, you can use the word for "Overview". */
-        this._label = new St.Label({ text: _("Activities"),
-                                     y_align: Clutter.ActorAlign.CENTER });
+        this._label = new St.Label({
+            text: _('Activities'),
+            y_align: Clutter.ActorAlign.CENTER,
+        });
         this.add_actor(this._label);
 
         this.label_actor = this._label;
@@ -474,8 +478,10 @@ const PANEL_ITEM_IMPLEMENTATIONS = {
 var Panel = GObject.registerClass(
 class Panel extends St.Widget {
     _init() {
-        super._init({ name: 'panel',
-                      reactive: true });
+        super._init({
+            name: 'panel',
+            reactive: true,
+        });
 
         this.set_offscreen_redirect(Clutter.OffscreenRedirect.ALWAYS);
 

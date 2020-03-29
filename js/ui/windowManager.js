@@ -68,12 +68,16 @@ class DisplayChangeDialog extends ModalDialog.ModalDialog {
         /* Translators: this and the following message should be limited in length,
            to avoid ellipsizing the labels.
         */
-        this._cancelButton = this.addButton({ label: _("Revert Settings"),
-                                              action: this._onFailure.bind(this),
-                                              key: Clutter.KEY_Escape });
-        this._okButton = this.addButton({ label: _("Keep Changes"),
-                                          action: this._onSuccess.bind(this),
-                                          default: true });
+        this._cancelButton = this.addButton({
+            label: _('Revert Settings'),
+            action: this._onFailure.bind(this),
+            key: Clutter.KEY_Escape,
+        });
+        this._okButton = this.addButton({
+            label: _('Keep Changes'),
+            action: this._onSuccess.bind(this),
+            default: true,
+        });
 
         this._timeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, ONE_SECOND, this._tick.bind(this));
         GLib.Source.set_name_by_id(this._timeoutId, '[gnome-shell] this._tick');
@@ -413,10 +417,12 @@ class TilePreview extends St.Widget {
         this._updateStyle(monitor);
 
         if (!this._showing || changeMonitor) {
-            let monitorRect = new Meta.Rectangle({ x: monitor.x,
-                                                   y: monitor.y,
-                                                   width: monitor.width,
-                                                   height: monitor.height });
+            const monitorRect = new Meta.Rectangle({
+                x: monitor.x,
+                y: monitor.y,
+                width: monitor.width,
+                height: monitor.height,
+            });
             let [, rect] = window.get_frame_rect().intersect(monitorRect);
             this.set_size(rect.width, rect.height);
             this.set_position(rect.x, rect.y);
@@ -533,10 +539,13 @@ var ResizePopup = GObject.registerClass(
 class ResizePopup extends St.Widget {
     _init() {
         super._init({ layout_manager: new Clutter.BinLayout() });
-        this._label = new St.Label({ style_class: 'resize-popup',
-                                     x_align: Clutter.ActorAlign.CENTER,
-                                     y_align: Clutter.ActorAlign.CENTER,
-                                     x_expand: true, y_expand: true });
+        this._label = new St.Label({
+            style_class: 'resize-popup',
+            x_align: Clutter.ActorAlign.CENTER,
+            y_align: Clutter.ActorAlign.CENTER,
+            x_expand: true,
+            y_expand: true,
+        });
         this.add_child(this._label);
         Main.uiGroup.add_actor(this);
     }

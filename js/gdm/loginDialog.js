@@ -17,8 +17,10 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
-const { AccountsService, Atk, Clutter, Gdm, Gio,
-        GLib, GObject, Meta, Pango, Shell, St } = imports.gi;
+const {
+    AccountsService, Atk, Clutter, Gdm, Gio,
+    GLib, GObject, Meta, Pango, Shell, St,
+} = imports.gi;
 
 const AuthPrompt = imports.gdm.authPrompt;
 const Batch = imports.gdm.batch;
@@ -67,9 +69,11 @@ var UserListItem = GObject.registerClass({
         this._userWidget.bind_property('label-actor', this, 'label-actor',
                                        GObject.BindingFlags.SYNC_CREATE);
 
-        this._timedLoginIndicator = new St.Bin({ style_class: 'login-dialog-timed-login-indicator',
-                                                 scale_x: 0,
-                                                 visible: false });
+        this._timedLoginIndicator = new St.Bin({
+            style_class: 'login-dialog-timed-login-indicator',
+            scale_x: 0,
+            visible: false,
+        });
         layout.add(this._timedLoginIndicator);
 
         this._onUserChanged();
@@ -167,9 +171,11 @@ var UserList = GObject.registerClass({
         this.set_policy(St.PolicyType.NEVER,
                         St.PolicyType.AUTOMATIC);
 
-        this._box = new St.BoxLayout({ vertical: true,
-                                       style_class: 'login-dialog-user-list',
-                                       pseudo_class: 'expanded' });
+        this._box = new St.BoxLayout({
+            vertical: true,
+            style_class: 'login-dialog-user-list',
+            pseudo_class: 'expanded',
+        });
 
         this.add_actor(this._box);
         this._items = {};
@@ -438,11 +444,13 @@ var LoginDialog = GObject.registerClass({
         this._updateLogoTextureId = this._textureCache.connect('texture-file-changed',
                                                                this._updateLogoTexture.bind(this));
 
-        this._userSelectionBox = new St.BoxLayout({ style_class: 'login-dialog-user-selection-box',
-                                                    x_align: Clutter.ActorAlign.CENTER,
-                                                    y_align: Clutter.ActorAlign.CENTER,
-                                                    vertical: true,
-                                                    visible: false });
+        this._userSelectionBox = new St.BoxLayout({
+            style_class: 'login-dialog-user-selection-box',
+            x_align: Clutter.ActorAlign.CENTER,
+            y_align: Clutter.ActorAlign.CENTER,
+            vertical: true,
+            visible: false,
+        });
         this.add_child(this._userSelectionBox);
 
         this._userList = new UserList();
@@ -477,17 +485,21 @@ var LoginDialog = GObject.registerClass({
 
         this._userSelectionBox.add_child(this._notListedButton);
 
-        this._bannerView = new St.ScrollView({ style_class: 'login-dialog-banner-view',
-                                               opacity: 0,
-                                               vscrollbar_policy: St.PolicyType.AUTOMATIC,
-                                               hscrollbar_policy: St.PolicyType.NEVER });
+        this._bannerView = new St.ScrollView({
+            style_class: 'login-dialog-banner-view',
+            opacity: 0,
+            vscrollbar_policy: St.PolicyType.AUTOMATIC,
+            hscrollbar_policy: St.PolicyType.NEVER,
+        });
         this.add_child(this._bannerView);
 
         let bannerBox = new St.BoxLayout({ vertical: true });
 
         this._bannerView.add_actor(bannerBox);
-        this._bannerLabel = new St.Label({ style_class: 'login-dialog-banner',
-                                           text: '' });
+        this._bannerLabel = new St.Label({
+            style_class: 'login-dialog-banner',
+            text: '',
+        });
         this._bannerLabel.clutter_text.line_wrap = true;
         this._bannerLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
         bannerBox.add_child(this._bannerLabel);
@@ -502,9 +514,11 @@ var LoginDialog = GObject.registerClass({
         this._sessionMenuButton.show();
         this.add_child(this._sessionMenuButton);
 
-        this._logoBin = new St.Widget({ style_class: 'login-dialog-logo-bin',
-                                        x_align: Clutter.ActorAlign.CENTER,
-                                        y_align: Clutter.ActorAlign.END });
+        this._logoBin = new St.Widget({
+            style_class: 'login-dialog-logo-bin',
+            x_align: Clutter.ActorAlign.CENTER,
+            y_align: Clutter.ActorAlign.END,
+        });
         this._logoBin.connect('resource-scale-changed', () => {
             this._updateLogoTexture(this._textureCache, this._logoFile);
         });

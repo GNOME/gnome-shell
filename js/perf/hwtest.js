@@ -12,33 +12,40 @@ const Main = imports.ui.main;
 const Scripting = imports.ui.scripting;
 
 var METRICS = {
-    timeToDesktop:
-    { description: "Time from starting graphical.target to desktop showing",
-      units: "us" },
+    timeToDesktop: {
+        description: 'Time from starting graphical.target to desktop showing',
+        units: 'us',
+    },
 
-    overviewShowTime:
-    { description: "Time to switch to overview view, first time",
-      units: "us" },
+    overviewShowTime: {
+        description: 'Time to switch to overview view, first time',
+        units: 'us',
+    },
 
-    applicationsShowTime:
-    { description: "Time to switch to applications view, first time",
-      units: "us" },
+    applicationsShowTime: {
+        description: 'Time to switch to applications view, first time',
+        units: 'us',
+    },
 
-    mainViewRedrawTime:
-    { description: "Time to redraw the main view, full screen",
-      units: "us" },
+    mainViewRedrawTime: {
+        description: 'Time to redraw the main view, full screen',
+        units: 'us',
+    },
 
-    overviewRedrawTime:
-    { description: "Time to redraw the overview, full screen, 5 windows",
-      units: "us" },
+    overviewRedrawTime: {
+        description: 'Time to redraw the overview, full screen, 5 windows',
+        units: 'us',
+    },
 
-    applicationRedrawTime:
-    { description: "Time to redraw frame with a maximized application update",
-      units: "us" },
+    applicationRedrawTime: {
+        description: 'Time to redraw frame with a maximized application update',
+        units: 'us',
+    },
 
-    geditStartTime:
-    { description: "Time from gedit launch to window drawn",
-      units: "us" },
+    geditStartTime: {
+        description: 'Time from gedit launch to window drawn',
+        units: 'us',
+    },
 };
 
 function waitAndDraw(milliseconds) {
@@ -168,8 +175,10 @@ async function run() {
     await Scripting.destroyTestWindows();
     Main.overview.hide();
 
-    await Scripting.createTestWindow({ maximized: true,
-                                       redraws: true });
+    await Scripting.createTestWindow({
+        maximized: true,
+        redraws: true,
+    });
     await Scripting.waitTestWindows();
 
     await Scripting.sleep(1000);

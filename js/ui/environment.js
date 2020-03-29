@@ -327,8 +327,10 @@ function init() {
     // Miscellaneous monkeypatching
     _patchContainerClass(St.BoxLayout);
 
-    _patchLayoutClass(Clutter.GridLayout, { row_spacing: 'spacing-rows',
-                                            column_spacing: 'spacing-columns' });
+    _patchLayoutClass(Clutter.GridLayout, {
+        row_spacing: 'spacing-rows',
+        column_spacing: 'spacing-columns',
+    });
     _patchLayoutClass(Clutter.BoxLayout, { spacing: 'spacing' });
 
     let origSetEasingDuration = Clutter.Actor.prototype.set_easing_duration;

@@ -111,9 +111,11 @@ var GrabHelper = class GrabHelper {
     // use cases like menus, where we want to grab the menu actor, but keep
     // focus on the clicked on menu item.
     grab(params) {
-        params = Params.parse(params, { actor: null,
-                                        focus: null,
-                                        onUngrab: null });
+        params = Params.parse(params, {
+            actor: null,
+            focus: null,
+            onUngrab: null,
+        });
 
         let focus = global.stage.key_focus;
         let hadFocus = focus && this._isWithinGrabbedActor(focus);
@@ -202,8 +204,10 @@ var GrabHelper = class GrabHelper {
     // The onUngrab callback for every grab is called for every popped
     // grab with the parameter %false.
     ungrab(params) {
-        params = Params.parse(params, { actor: this.currentGrab.actor,
-                                        isUser: false });
+        params = Params.parse(params, {
+            actor: this.currentGrab.actor,
+            isUser: false,
+        });
 
         let grabStackIndex = this._findStackIndex(params.actor);
         if (grabStackIndex < 0)

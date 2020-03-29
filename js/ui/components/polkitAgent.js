@@ -1,8 +1,10 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported Component */
 
-const { AccountsService, Clutter, GLib,
-        GObject, Pango, PolkitAgent, Polkit, Shell, St } = imports.gi;
+const {
+    AccountsService, Clutter, GLib, GObject,
+    Pango, PolkitAgent, Polkit, Shell, St,
+} = imports.gi;
 
 const Dialog = imports.ui.dialog;
 const Main = imports.ui.main;
@@ -135,12 +137,16 @@ var AuthenticationDialog = GObject.registerClass({
         passwordBox.add_child(warningBox);
         bodyContent.add_child(passwordBox);
 
-        this._cancelButton = this.addButton({ label: _("Cancel"),
-                                              action: this.cancel.bind(this),
-                                              key: Clutter.KEY_Escape });
-        this._okButton = this.addButton({ label: _("Authenticate"),
-                                          action: this._onAuthenticateButtonPressed.bind(this),
-                                          reactive: false });
+        this._cancelButton = this.addButton({
+            label: _('Cancel'),
+            action: this.cancel.bind(this),
+            key: Clutter.KEY_Escape,
+        });
+        this._okButton = this.addButton({
+            label: _('Authenticate'),
+            action: this._onAuthenticateButtonPressed.bind(this),
+            reactive: false,
+        });
         this._okButton.bind_property('reactive',
             this._okButton, 'can-focus',
             GObject.BindingFlags.SYNC_CREATE);
@@ -168,8 +174,10 @@ var AuthenticationDialog = GObject.registerClass({
     _initiateSession() {
         this._destroySession(DELAYED_RESET_TIMEOUT);
 
-        this._session = new PolkitAgent.Session({ identity: this._identityToAuth,
-                                                  cookie: this._cookie });
+        this._session = new PolkitAgent.Session({
+            identity: this._identityToAuth,
+            cookie: this._cookie,
+        });
         this._sessionCompletedId = this._session.connect('completed', this._onSessionCompleted.bind(this));
         this._sessionRequestId = this._session.connect('request', this._onSessionRequest.bind(this));
         this._sessionShowErrorId = this._session.connect('show-error', this._onSessionShowError.bind(this));

@@ -598,9 +598,11 @@ var VPNRequestHandler = class {
             if (keyfile.get_integer(VPN_UI_GROUP, 'Version') != 2)
                 throw new Error('Invalid plugin keyfile version, is %d');
 
-            contentOverride = { title: keyfile.get_string(VPN_UI_GROUP, 'Title'),
-                                message: keyfile.get_string(VPN_UI_GROUP, 'Description'),
-                                secrets: [] };
+            contentOverride = {
+                title: keyfile.get_string(VPN_UI_GROUP, 'Title'),
+                message: keyfile.get_string(VPN_UI_GROUP, 'Description'),
+                secrets: [],
+            };
 
             let [groups, len_] = keyfile.get_groups();
             for (let i = 0; i < groups.length; i++) {

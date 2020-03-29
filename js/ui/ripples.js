@@ -12,25 +12,31 @@ var Ripples = class Ripples {
         this._px = px;
         this._py = py;
 
-        this._ripple1 = new St.BoxLayout({ style_class: styleClass,
-                                           opacity: 0,
-                                           can_focus: false,
-                                           reactive: false,
-                                           visible: false });
+        this._ripple1 = new St.BoxLayout({
+            style_class: styleClass,
+            opacity: 0,
+            can_focus: false,
+            reactive: false,
+            visible: false,
+        });
         this._ripple1.set_pivot_point(px, py);
 
-        this._ripple2 = new St.BoxLayout({ style_class: styleClass,
-                                           opacity: 0,
-                                           can_focus: false,
-                                           reactive: false,
-                                           visible: false });
+        this._ripple2 = new St.BoxLayout({
+            style_class: styleClass,
+            opacity: 0,
+            can_focus: false,
+            reactive: false,
+            visible: false,
+        });
         this._ripple2.set_pivot_point(px, py);
 
-        this._ripple3 = new St.BoxLayout({ style_class: styleClass,
-                                           opacity: 0,
-                                           can_focus: false,
-                                           reactive: false,
-                                           visible: false });
+        this._ripple3 = new St.BoxLayout({
+            style_class: styleClass,
+            opacity: 0,
+            can_focus: false,
+            reactive: false,
+            visible: false,
+        });
         this._ripple3.set_pivot_point(px, py);
     }
 

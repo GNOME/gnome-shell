@@ -912,19 +912,27 @@ class ProviderInfo extends St.Button {
             y_align: Clutter.ActorAlign.START,
         });
 
-        this._content = new St.BoxLayout({ vertical: false,
-                                           style_class: 'list-search-provider-content' });
+        this._content = new St.BoxLayout({
+            vertical: false,
+            style_class: 'list-search-provider-content',
+        });
         this.set_child(this._content);
 
-        let icon = new St.Icon({ icon_size: this.PROVIDER_ICON_SIZE,
-                                 gicon: provider.appInfo.get_icon() });
+        const icon = new St.Icon({
+            icon_size: this.PROVIDER_ICON_SIZE,
+            gicon: provider.appInfo.get_icon(),
+        });
 
-        let detailsBox = new St.BoxLayout({ style_class: 'list-search-provider-details',
-                                            vertical: true,
-                                            x_expand: true });
+        const detailsBox = new St.BoxLayout({
+            style_class: 'list-search-provider-details',
+            vertical: true,
+            x_expand: true,
+        });
 
-        let nameLabel = new St.Label({ text: provider.appInfo.get_name(),
-                                       x_align: Clutter.ActorAlign.START });
+        const nameLabel = new St.Label({
+            text: provider.appInfo.get_name(),
+            x_align: Clutter.ActorAlign.START,
+        });
 
         this._moreLabel = new St.Label({ x_align: Clutter.ActorAlign.START });
 

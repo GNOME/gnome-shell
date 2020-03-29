@@ -35,8 +35,10 @@ class DwellClickIndicator extends PanelMenu.Button {
     _init() {
         super._init(0.5, _("Dwell Click"));
 
-        this._icon = new St.Icon({ style_class: 'system-status-icon',
-                                   icon_name: 'pointer-primary-click-symbolic' });
+        this._icon = new St.Icon({
+            style_class: 'system-status-icon',
+            icon_name: 'pointer-primary-click-symbolic',
+        });
         this.add_child(this._icon);
 
         this._a11ySettings = new Gio.Settings({ schema_id: MOUSE_A11Y_SCHEMA });

@@ -653,8 +653,10 @@ var AuthPrompt = GObject.registerClass({
     }
 
     begin(params) {
-        params = Params.parse(params, { userName: null,
-                                        hold: null });
+        params = Params.parse(params, {
+            userName: null,
+            hold: null,
+        });
 
         this.updateSensitivity(false);
 

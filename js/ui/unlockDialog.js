@@ -1,8 +1,10 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported UnlockDialog */
 
-const { AccountsService, Atk, Clutter, Gdm, Gio,
-        GnomeDesktop, GLib, GObject, Meta, Shell, St } = imports.gi;
+const {
+    AccountsService, Atk, Clutter, Gdm, Gio,
+    GnomeDesktop, GLib, GObject, Meta, Shell, St,
+} = imports.gi;
 
 const Background = imports.ui.background;
 const Layout = imports.ui.layout;

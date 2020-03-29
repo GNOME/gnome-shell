@@ -1,8 +1,10 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported PadOsd, PadOsdService */
 
-const { Atk, Clutter, GDesktopEnums, Gio,
-        GLib, GObject, Gtk, Meta, Pango, Rsvg, St } = imports.gi;
+const {
+    Atk, Clutter, GDesktopEnums, Gio,
+    GLib, GObject, Gtk, Meta, Pango, Rsvg, St,
+} = imports.gi;
 const Signals = imports.signals;
 
 const Main = imports.ui.main;
@@ -116,19 +118,23 @@ var ActionComboBox = GObject.registerClass({
         super._init({ style_class: 'button' });
         this.set_toggle_mode(true);
 
-        let boxLayout = new Clutter.BoxLayout({ orientation: Clutter.Orientation.HORIZONTAL,
-                                                spacing: 6 });
+        const boxLayout = new Clutter.BoxLayout({
+            orientation: Clutter.Orientation.HORIZONTAL,
+            spacing: 6,
+        });
         let box = new St.Widget({ layout_manager: boxLayout });
         this.set_child(box);
 
         this._label = new St.Label({ style_class: 'combo-box-label' });
         box.add_child(this._label);
 
-        let arrow = new St.Icon({ style_class: 'popup-menu-arrow',
-                                  icon_name: 'pan-down-symbolic',
-                                  accessible_role: Atk.Role.ARROW,
-                                  y_expand: true,
-                                  y_align: Clutter.ActorAlign.CENTER });
+        const arrow = new St.Icon({
+            style_class: 'popup-menu-arrow',
+            icon_name: 'pan-down-symbolic',
+            accessible_role: Atk.Role.ARROW,
+            y_expand: true,
+            y_align: Clutter.ActorAlign.CENTER,
+        });
         box.add_child(arrow);
 
         this._editMenu = new PopupMenu.PopupMenu(this, 0, St.Side.TOP);
@@ -195,8 +201,10 @@ var ActionEditor = GObject.registerClass({
     Signals: { 'done': {} },
 }, class ActionEditor extends St.Widget {
     _init() {
-        let boxLayout = new Clutter.BoxLayout({ orientation: Clutter.Orientation.HORIZONTAL,
-                                                spacing: 12 });
+        const boxLayout = new Clutter.BoxLayout({
+            orientation: Clutter.Orientation.HORIZONTAL,
+            spacing: 12,
+        });
 
         super._init({ layout_manager: boxLayout });
 
@@ -208,9 +216,11 @@ var ActionEditor = GObject.registerClass({
         this._keybindingEdit.connect('keybinding-edited', this._onKeybindingEdited.bind(this));
         this.add_actor(this._keybindingEdit);
 
-        this._doneButton = new St.Button({ label: _("Done"),
-                                           style_class: 'button',
-                                           x_expand: false });
+        this._doneButton = new St.Button({
+            label: _('Done'),
+            style_class: 'button',
+            x_expand: false,
+        });
         this._doneButton.connect('clicked', this._onEditingDone.bind(this));
         this.add_actor(this._doneButton);
     }
@@ -675,18 +685,24 @@ var PadOsd = GObject.registerClass({
         let constraint = new Layout.MonitorConstraint({ index: monitorIndex });
         this.add_constraint(constraint);
 
-        this._titleBox = new St.BoxLayout({ style_class: 'pad-osd-title-box',
-                                            vertical: false,
-                                            x_expand: false,
-                                            x_align: Clutter.ActorAlign.CENTER });
+        this._titleBox = new St.BoxLayout({
+            style_class: 'pad-osd-title-box',
+            vertical: false,
+            x_expand: false,
+            x_align: Clutter.ActorAlign.CENTER,
+        });
         this.add_actor(this._titleBox);
 
-        let labelBox = new St.BoxLayout({ style_class: 'pad-osd-title-menu-box',
-                                          vertical: true });
+        const labelBox = new St.BoxLayout({
+            style_class: 'pad-osd-title-menu-box',
+            vertical: true,
+        });
         this._titleBox.add_actor(labelBox);
 
-        this._titleLabel = new St.Label({ style: 'font-side: larger; font-weight: bold;',
-                                          x_align: Clutter.ActorAlign.CENTER });
+        this._titleLabel = new St.Label({
+            style: 'font-side: larger; font-weight: bold;',
+            x_align: Clutter.ActorAlign.CENTER,
+        });
         this._titleLabel.clutter_text.set_ellipsize(Pango.EllipsizeMode.NONE);
         this._titleLabel.clutter_text.set_text(padDevice.get_device_name());
         labelBox.add_actor(this._titleLabel);
@@ -699,18 +715,22 @@ var PadOsd = GObject.registerClass({
         this._actionEditor = new ActionEditor();
         this._actionEditor.connect('done', this._endActionEdition.bind(this));
 
-        this._padDiagram = new PadDiagram({ image: this._imagePath,
-                                            left_handed: settings.get_boolean('left-handed'),
-                                            editor_actor: this._actionEditor,
-                                            x_expand: true,
-                                            y_expand: true });
+        this._padDiagram = new PadDiagram({
+            image: this._imagePath,
+            left_handed: settings.get_boolean('left-handed'),
+            editor_actor: this._actionEditor,
+            x_expand: true,
+            y_expand: true,
+        });
         this.add_actor(this._padDiagram);
         this._updateActionLabels();
 
-        let buttonBox = new St.Widget({ layout_manager: new Clutter.BinLayout(),
-                                        x_expand: true,
-                                        x_align: Clutter.ActorAlign.CENTER,
-                                        y_align: Clutter.ActorAlign.CENTER });
+        const buttonBox = new St.Widget({
+            layout_manager: new Clutter.BinLayout(),
+            x_expand: true,
+            x_align: Clutter.ActorAlign.CENTER,
+            y_align: Clutter.ActorAlign.CENTER,
+        });
         this.add_actor(buttonBox);
         this._editButton = new St.Button({
             label: _('Edit…'),

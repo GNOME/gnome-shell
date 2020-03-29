@@ -163,9 +163,11 @@ var BackgroundCache = class BackgroundCache {
     }
 
     getAnimation(params) {
-        params = Params.parse(params, { file: null,
-                                        settingsSchema: null,
-                                        onLoaded: null });
+        params = Params.parse(params, {
+            file: null,
+            settingsSchema: null,
+            onLoaded: null,
+        });
 
         let animation = this._animations[params.settingsSchema];
         if (animation && _fileEqual0(animation.file, params.file)) {

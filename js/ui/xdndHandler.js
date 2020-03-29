@@ -59,8 +59,10 @@ var XdndHandler = class {
             if (!cursorWindow.get_meta_window().is_override_redirect())
                 return;
 
-            let constraintPosition = new Clutter.BindConstraint({ coordinate: Clutter.BindCoordinate.POSITION,
-                                                                  source: cursorWindow });
+            const constraintPosition = new Clutter.BindConstraint({
+                coordinate: Clutter.BindCoordinate.POSITION,
+                source: cursorWindow,
+            });
 
             this._cursorWindowClone = new Clutter.Clone({ source: cursorWindow });
             Main.uiGroup.add_actor(this._cursorWindowClone);

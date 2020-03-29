@@ -112,11 +112,13 @@ function _callRemote(obj, method, ...args) {
  * until the window has been mapped and exposed, use waitTestWindows().
  */
 function createTestWindow(params) {
-    params = Params.parse(params, { width: 640,
-                                    height: 480,
-                                    alpha: false,
-                                    maximized: false,
-                                    redraws: false });
+    params = Params.parse(params, {
+        width: 640,
+        height: 480,
+        alpha: false,
+        maximized: false,
+        redraws: false,
+    });
 
     let perfHelper = _getPerfHelper();
     return _callRemote(perfHelper, perfHelper.CreateWindowRemote,

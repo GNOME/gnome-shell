@@ -21,12 +21,14 @@ const OVirtCredentialsInfo = Gio.DBusInterfaceInfo.new_for_xml(OVirtCredentialsI
 let _oVirtCredentialsManager = null;
 
 function OVirtCredentials() {
-    var self = new Gio.DBusProxy({ g_connection: Gio.DBus.system,
-                                   g_interface_name: OVirtCredentialsInfo.name,
-                                   g_interface_info: OVirtCredentialsInfo,
-                                   g_name: 'org.ovirt.vdsm.Credentials',
-                                   g_object_path: '/org/ovirt/vdsm/Credentials',
-                                   g_flags: Gio.DBusProxyFlags.DO_NOT_LOAD_PROPERTIES });
+    var self = new Gio.DBusProxy({
+        g_connection: Gio.DBus.system,
+        g_interface_name: OVirtCredentialsInfo.name,
+        g_interface_info: OVirtCredentialsInfo,
+        g_name: 'org.ovirt.vdsm.Credentials',
+        g_object_path: '/org/ovirt/vdsm/Credentials',
+        g_flags: Gio.DBusProxyFlags.DO_NOT_LOAD_PROPERTIES,
+    });
     self.init(null);
     return self;
 }

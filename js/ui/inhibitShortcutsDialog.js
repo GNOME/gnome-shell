@@ -97,19 +97,23 @@ var InhibitShortcutsDialog = GObject.registerClass({
 
         this._dialog.contentLayout.add_child(content);
 
-        this._dialog.addButton({ label: _("Deny"),
-                                 action: () => {
-                                     this._saveToPermissionStore(DENIED);
-                                     this._emitResponse(DialogResponse.DENY);
-                                 },
-                                 key: Clutter.KEY_Escape });
+        this._dialog.addButton({
+            label: _('Deny'),
+            action: () => {
+                this._saveToPermissionStore(DENIED);
+                this._emitResponse(DialogResponse.DENY);
+            },
+            key: Clutter.KEY_Escape,
+        });
 
-        this._dialog.addButton({ label: _("Allow"),
-                                 action: () => {
-                                     this._saveToPermissionStore(GRANTED);
-                                     this._emitResponse(DialogResponse.ALLOW);
-                                 },
-                                 default: true });
+        this._dialog.addButton({
+            label: _('Allow'),
+            action: () => {
+                this._saveToPermissionStore(GRANTED);
+                this._emitResponse(DialogResponse.ALLOW);
+            },
+            default: true,
+        });
     }
 
     _emitResponse(response) {

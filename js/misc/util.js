@@ -124,8 +124,10 @@ function trySpawn(argv) {
     } catch (err) {
         /* Rewrite the error in case of ENOENT */
         if (err.matches(GLib.SpawnError, GLib.SpawnError.NOENT)) {
-            throw new GLib.SpawnError({ code: GLib.SpawnError.NOENT,
-                                        message: _("Command not found") });
+            throw new GLib.SpawnError({
+                code: GLib.SpawnError.NOENT,
+                message: _('Command not found'),
+            });
         } else if (err instanceof GLib.Error) {
             // The exception from gjs contains an error string like:
             //   Error invoking GLib.spawn_command_line_async: Failed to

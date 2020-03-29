@@ -54,11 +54,13 @@ var PageIndicators = GObject.registerClass({
         if (diff > 0) {
             for (let i = 0; i < diff; i++) {
                 let pageIndex = this._nPages + i;
-                let indicator = new St.Button({ style_class: 'page-indicator',
-                                                button_mask: St.ButtonMask.ONE |
-                                                             St.ButtonMask.TWO |
-                                                             St.ButtonMask.THREE,
-                                                reactive: this._reactive });
+                const indicator = new St.Button({
+                    style_class: 'page-indicator',
+                    button_mask: St.ButtonMask.ONE |
+                                 St.ButtonMask.TWO |
+                                 St.ButtonMask.THREE,
+                    reactive: this._reactive,
+                });
                 indicator.child = new St.Widget({
                     style_class: 'page-indicator-icon',
                     pivot_point: new Graphene.Point({ x: 0.5, y: 0.5 }),
