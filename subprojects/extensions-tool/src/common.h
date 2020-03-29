@@ -53,10 +53,12 @@ void print_extension_info (GVariantDict  *info,
 
 GDBusProxy *get_shell_proxy (GError **error);
 GSettings  *get_shell_settings (void);
+gboolean extension_exist (const char *uuid);
 
 gboolean settings_list_add (GSettings  *settings,
                             const char *key,
                             const char *value);
+
 gboolean settings_list_remove (GSettings  *settings,
                                const char *key,
                                const char *value);

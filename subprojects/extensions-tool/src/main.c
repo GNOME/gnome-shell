@@ -92,6 +92,26 @@ get_shell_settings (void)
 }
 
 gboolean
+extension_exist (const char *uuid)
+{
+  g_auto(GStrv) list = NULL;
+  g_autoptr(GSettings) settings = get_shell_settings ();
+
+  if (settings == NULL)
+    return FALSE;
+
+  list = g_settings_get_strv (settings, "enabled-extensions");
+  if (g_strv_contains ((const char **)list, uuid))
+    return TRUE;
+
+  list = g_settings_get_strv (settings, "disabled-extensions");
+  if (g_strv_contains ((const char **)list, uuid))
+      return TRUE;
+
+  return FALSE;
+}
+
+gboolean
 settings_list_add (GSettings  *settings,
                    const char *key,
                    const char *value)

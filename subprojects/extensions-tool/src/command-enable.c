@@ -28,6 +28,11 @@
 static gboolean
 enable_extension (const char *uuid)
 {
+  if (!extension_exist(uuid)) {
+    g_printerr (_("This extension does not exist.\n"));
+    return FALSE;
+  }
+
   g_autoptr(GSettings) settings = get_shell_settings ();
 
   if (settings == NULL)
