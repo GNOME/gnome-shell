@@ -1,5 +1,5 @@
 /* exported CheckBox */
-const { Clutter, GObject, Pango, St } = imports.gi;
+const { Atk, Clutter, GObject, Pango, St } = imports.gi;
 
 var CheckBox = GObject.registerClass(
 class CheckBox extends St.Button {
@@ -15,6 +15,7 @@ class CheckBox extends St.Button {
             toggle_mode: true,
             can_focus: true,
         });
+        this.set_accessible_role(Atk.Role.CHECK_BOX);
 
         this._box = new St.Bin({ y_align: Clutter.ActorAlign.START });
         container.add_actor(this._box);
@@ -22,6 +23,7 @@ class CheckBox extends St.Button {
         this._label = new St.Label({ y_align: Clutter.ActorAlign.CENTER });
         this._label.clutter_text.set_line_wrap(true);
         this._label.clutter_text.set_ellipsize(Pango.EllipsizeMode.NONE);
+        this.set_label_actor(this._label);
         container.add_actor(this._label);
 
         if (label)
