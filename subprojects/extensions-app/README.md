@@ -1,5 +1,5 @@
-# gnome-extensions-app
-gnome-extensions-app is a small application for managing GNOME Shell
+# ![logo] GNOME Extensions
+GNOME Extensions is a small application for managing GNOME Shell
 extensions. It is usually built as part of gnome-shell, but can be
 used as a stand-alone project as well.
 
@@ -18,5 +18,6 @@ $ ./generate-translations.sh
 gnome-extensions-app is distributed under the terms of the GNU General Public
 License, version 2 or later. See the [COPYING][license] file for details.
 
+[logo]: logo.png
 [bug-tracker]: https://gitlab.gnome.org/GNOME/gnome-shell/issues
 [license]: COPYING
