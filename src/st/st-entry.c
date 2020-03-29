@@ -64,8 +64,6 @@
 
 #include "st-widget-accessible.h"
 
-#define HAS_FOCUS(actor) (clutter_actor_get_stage (actor) && clutter_stage_get_key_focus ((ClutterStage *) clutter_actor_get_stage (actor)) == actor)
-
 
 /* properties */
 enum
