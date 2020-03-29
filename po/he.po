@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2020-03-21 18:07+0000\n"
-"PO-Revision-Date: 2020-03-29 01:54+0300\n"
+"POT-Creation-Date: 2020-03-28 23:10+0000\n"
+"PO-Revision-Date: 2020-03-29 10:40+0300\n"
 "Last-Translator: Yosef Or Boczko <yoseforb@gmail.com>\n"
 "Language-Team: Hebrew <yoseforb@gmail.com>\n"
 "Language: he\n"
@@ -83,16 +83,10 @@ msgstr ""
 "DisableExtension D-Bus methods on org.gnome.Shell."
 
 #: data/org.gnome.shell.gschema.xml.in:26
-#| msgid "UUIDs of extensions to enable"
 msgid "UUIDs of extensions to force disabling"
 msgstr "UUIDs of extensions to force disabling"
 
 #: data/org.gnome.shell.gschema.xml.in:27
-#| msgid ""
-#| "GNOME Shell extensions have a UUID property; this key lists extensions "
-#| "which should be loaded. Any extension that wants to be loaded needs to be "
-#| "in this list. You can also manipulate this list with the EnableExtension "
-#| "and DisableExtension D-Bus methods on org.gnome.Shell."
 msgid ""
 "GNOME Shell extensions have a UUID property; this key lists extensions which "
 "should be disabled, even if loaded as part of the current mode. You can also "
@@ -162,14 +156,10 @@ msgid "History for the looking glass dialog"
 msgstr "History for the looking glass dialog"
 
 #: data/org.gnome.shell.gschema.xml.in:78
-#| msgid "Always show the 'Log out' menu item in the user menu."
 msgid "Always show the “Log out” menu item in the user menu."
 msgstr "Always show the “Log out” menu item in the user menu."
 
 #: data/org.gnome.shell.gschema.xml.in:79
-#| msgid ""
-#| "This key overrides the automatic hiding of the 'Log out' menu item in "
-#| "single-user, single-session situations."
 msgid ""
 "This key overrides the automatic hiding of the “Log out” menu item in single-"
 "user, single-session situations."
@@ -184,11 +174,6 @@ msgstr ""
 "Whether to remember password for mounting encrypted or remote filesystems"
 
 #: data/org.gnome.shell.gschema.xml.in:87
-#| msgid ""
-#| "The shell will request a password when an encrypted device or a remote "
-#| "filesystem is mounted. If the password can be saved for future use a "
-#| "'Remember Password' checkbox will be present. This key sets the default "
-#| "state of the checkbox."
 msgid ""
 "The shell will request a password when an encrypted device or a remote "
 "filesystem is mounted. If the password can be saved for future use a "
@@ -239,14 +224,10 @@ msgid "Keybinding to open the application menu."
 msgstr "Keybinding to open the application menu."
 
 #: data/org.gnome.shell.gschema.xml.in:126
-#| msgid "Keybinding to open the \"Show Applications\" view"
 msgid "Keybinding to open the “Show Applications” view"
 msgstr "Keybinding to open the “Show Applications” view"
 
 #: data/org.gnome.shell.gschema.xml.in:127
-#| msgid ""
-#| "Keybinding to open the \"Show Applications\" view of the Activities "
-#| "Overview."
 msgid ""
 "Keybinding to open the “Show Applications” view of the Activities Overview."
 msgstr ""
@@ -277,47 +258,38 @@ msgid "Keybinding to focus the active notification."
 msgstr "Keybinding to focus the active notification."
 
 #: data/org.gnome.shell.gschema.xml.in:155
-#| msgid "Show Applications"
 msgid "Switch to application 1"
 msgstr "Switch to application 1"
 
 #: data/org.gnome.shell.gschema.xml.in:159
-#| msgid "Show Applications"
 msgid "Switch to application 2"
 msgstr "Switch to application 2"
 
 #: data/org.gnome.shell.gschema.xml.in:163
-#| msgid "Show Applications"
 msgid "Switch to application 3"
 msgstr "Switch to application 3"
 
 #: data/org.gnome.shell.gschema.xml.in:167
-#| msgid "Show Applications"
 msgid "Switch to application 4"
 msgstr "Switch to application 4"
 
 #: data/org.gnome.shell.gschema.xml.in:171
-#| msgid "Show Applications"
 msgid "Switch to application 5"
 msgstr "Switch to application 5"
 
 #: data/org.gnome.shell.gschema.xml.in:175
-#| msgid "Show Applications"
 msgid "Switch to application 6"
 msgstr "Switch to application 6"
 
 #: data/org.gnome.shell.gschema.xml.in:179
-#| msgid "Show Applications"
 msgid "Switch to application 7"
 msgstr "Switch to application 7"
 
 #: data/org.gnome.shell.gschema.xml.in:183
-#| msgid "Show Applications"
 msgid "Switch to application 8"
 msgstr "Switch to application 8"
 
 #: data/org.gnome.shell.gschema.xml.in:187
-#| msgid "Show Applications"
 msgid "Switch to application 9"
 msgstr "Switch to application 9"
 
@@ -339,10 +311,6 @@ msgid "The application icon mode."
 msgstr "The application icon mode."
 
 #: data/org.gnome.shell.gschema.xml.in:215
-#| msgid ""
-#| "Configures how the windows are shown in the switcher. Valid possibilities "
-#| "are 'thumbnail-only' (shows a thumbnail of the window), 'app-icon-"
-#| "only' (shows only the application icon) or 'both'."
 msgid ""
 "Configures how the windows are shown in the switcher. Valid possibilities "
 "are “thumbnail-only” (shows a thumbnail of the window), “app-icon-"
@@ -361,7 +329,6 @@ msgstr ""
 "Otherwise, all windows are included."
 
 #: data/org.gnome.shell.gschema.xml.in:234
-#| msgid "Location In Use"
 msgid "Locations"
 msgstr "Locations"
 
@@ -378,7 +345,6 @@ msgid "Whether to fetch the current location or not"
 msgstr "Whether to fetch the current location or not"
 
 #: data/org.gnome.shell.gschema.xml.in:253
-#| msgid "Location In Use"
 msgid "Location"
 msgstr "Location"
 
@@ -417,69 +383,15 @@ msgid "Delay focus changes in mouse mode until the pointer stops moving"
 msgstr "Delay focus changes in mouse mode until the pointer stops moving"
 
 #: data/org.gnome.Shell.PortalHelper.desktop.in.in:3
-#| msgid "Network Settings"
 msgid "Network Login"
 msgstr "חיבורי רשת"
 
-#: js/extensionPrefs/data/metainfo/org.gnome.Extensions.metainfo.xml.in:5
-#: js/extensionPrefs/data/org.gnome.Extensions.desktop.in.in:4
-#: js/extensionPrefs/js/main.js:241
-#: js/extensionPrefs/data/ui/extensions-window.ui:61
-#| msgid "Extension"
-msgid "Extensions"
-msgstr "הרחבות"
-
-#: js/extensionPrefs/data/metainfo/org.gnome.Extensions.metainfo.xml.in:6
-#: js/extensionPrefs/js/main.js:242
-#| msgid "Configure GNOME Shell Extensions"
-msgid "Manage your GNOME Extensions"
-msgstr "ניהול הרחבות GNOME שלך"
-
-#: js/extensionPrefs/data/metainfo/org.gnome.Extensions.metainfo.xml.in:35
-msgid ""
-"GNOME Extensions handles updating extensions, configuring extension "
-"preferences and removing or disabling unwanted extensions."
-msgstr ""
-"הרחבות GNOME מטפל בעדכון הרחבות, הגדרת אפשרויות של כל הרחבה, הסרה והשבתת "
-"הרחבות לא רצויות."
-
-#: js/extensionPrefs/data/org.gnome.Extensions.desktop.in.in:7
-msgid "Configure GNOME Shell Extensions"
-msgstr "הגדרת הרחבות GNOME Shell"
-
-#: js/extensionPrefs/js/main.js:163
-#, javascript-format
-msgid "Remove “%s”?"
-msgstr "להסיר את „%s”?"
-
-#: js/extensionPrefs/js/main.js:164
-msgid ""
-"If you remove the extension, you need to return to download it if you want "
-"to enable it again"
-msgstr "אם ההרחבה תוסר, על מנת להפעיל אותה שוב עליך יהיה להוריד אותה שוב"
-
-#: js/extensionPrefs/js/main.js:167 js/gdm/authPrompt.js:135
-#: js/ui/audioDeviceSelection.js:57 js/ui/components/networkAgent.js:109
-#: js/ui/components/polkitAgent.js:139 js/ui/endSessionDialog.js:374
-#: js/ui/extensionDownloader.js:177 js/ui/shellMountOperation.js:376
-#: js/ui/shellMountOperation.js:386 js/ui/status/network.js:913
-msgid "Cancel"
-msgstr "ביטול"
-
-#: js/extensionPrefs/js/main.js:168
-msgid "Remove"
-msgstr "הסרה"
-
-#: js/extensionPrefs/js/main.js:240
-msgid "translator-credits"
-msgstr "יוסף אור בוצ׳קו <yoseforb@gmail.com>"
-
-#: js/extensionPrefs/js/main.js:284
-#: js/extensionPrefs/data/ui/extensions-window.ui:223
+#: js/dbusServices/extensions/ui/extension-prefs-dialog.ui:36
+#: subprojects/extensions-app/data/ui/extensions-window.ui:223
 msgid "Something’s gone wrong"
 msgstr "משהו השתבת"
 
-#: js/extensionPrefs/js/main.js:291
+#: js/dbusServices/extensions/ui/extension-prefs-dialog.ui:48
 msgid ""
 "We’re very sorry, but there’s been a problem: the settings for this "
 "extension can’t be displayed. We recommend that you report the issue to the "
@@ -488,115 +400,25 @@ msgstr ""
 "אנו מצטערים, אבל ישנה בעיה: לא ניתן להציג את הגדרות ההרחבה. אנו ממליצים "
 "לדווח על בעיה ליוצרי ההרחבה."
 
-#: js/extensionPrefs/js/main.js:298
-#| msgid "Show Details"
+#: js/dbusServices/extensions/ui/extension-prefs-dialog.ui:82
 msgid "Technical Details"
 msgstr "פרטים טכניים"
 
-#: js/extensionPrefs/js/main.js:333
-#| msgid "Show Errors"
-msgid "Copy Error"
-msgstr "שגיאת העתקה"
-
-#: js/extensionPrefs/js/main.js:360
-#| msgid "Home"
+#: js/dbusServices/extensions/ui/extension-prefs-dialog.ui:165
 msgid "Homepage"
 msgstr "עמוד הבית"
 
-#: js/extensionPrefs/js/main.js:361
-#| msgid "UUIDs of extensions to enable"
+#: js/dbusServices/extensions/ui/extension-prefs-dialog.ui:166
 msgid "Visit extension homepage"
 msgstr "לבקר באתר ההרחבה"
 
-#: js/extensionPrefs/js/main.js:478
-#, javascript-format
-msgid "%d extension will be updated on next login."
-msgid_plural "%d extensions will be updated on next login."
-msgstr[0] "הרחבה אחת תעודכן בהתחברות הבאה."
-msgstr[1] "‏%d הרחבות תעודכנה בהתחברות הבאה."
-msgstr[2] "‏%d הרחבות תעודכנה בהתחברות הבאה."
-
-#: js/extensionPrefs/data/ui/extension-row.ui:100
-#: subprojects/extensions-tool/src/command-create.c:211
-#: subprojects/extensions-tool/src/main.c:173
-msgid "Description"
-msgstr "תיאור"
-
-#: js/extensionPrefs/data/ui/extension-row.ui:123
-#: subprojects/extensions-tool/src/main.c:185
-#| msgid "Session"
-msgid "Version"
-msgstr "גרסה"
-
-#: js/extensionPrefs/data/ui/extension-row.ui:151
-msgid "Author"
-msgstr "מחבר"
-
-#: js/extensionPrefs/data/ui/extension-row.ui:175
-msgid "Website"
-msgstr "אתר אינטרנט"
-
-#: js/extensionPrefs/data/ui/extension-row.ui:192
-#| msgid "Remove"
-msgid "Remove…"
-msgstr "הסרה…"
-
-#: js/extensionPrefs/data/ui/extensions-window.ui:8
-msgid "Help"
-msgstr "עזרה"
-
-#: js/extensionPrefs/data/ui/extensions-window.ui:12
-#| msgid "Extension"
-msgid "About Extensions"
-msgstr "על אודות הרחבות"
-
-#: js/extensionPrefs/data/ui/extensions-window.ui:27
-msgid ""
-"To find and add extensions, visit <a href=\"https://extensions.gnome.org"
-"\">extensions.gnome.org</a>."
-msgstr ""
-"על מנת למצוא ולהוסיף הרחבות, יש לבקר באתר <a href=\"https://extensions.gnome."
-"org\">extensions.gnome.org</a>."
-
-#: js/extensionPrefs/data/ui/extensions-window.ui:35
-msgid "Warning"
-msgstr "אזהרה"
-
-#: js/extensionPrefs/data/ui/extensions-window.ui:46
-msgid ""
-"Extensions can cause system issues, including performance problems. If you "
-"encounter problems with your system, it is recommended to disable all "
-"extensions."
-msgstr ""
-"הרחבות עשויות לגרום לבעיות במערכת, לרבות בעיות ביצועים. אם מצאת בעיות במערכת "
-"שלך, מומלץ להשבית את כל ההרחבות."
-
-#: js/extensionPrefs/data/ui/extensions-window.ui:134
-msgid "Manually Installed"
-msgstr "הותקן ידנית"
-
-#: js/extensionPrefs/data/ui/extensions-window.ui:158
-#| msgid "Built-in Only"
-msgid "Built-In"
-msgstr "מובנה"
-
-#: js/extensionPrefs/data/ui/extensions-window.ui:199
-#| msgid "Shell Extensions"
-msgid "No Installed Extensions"
-msgstr "אין אף הרחבה מותקנת"
-
-#: js/extensionPrefs/data/ui/extensions-window.ui:235
-msgid ""
-"We’re very sorry, but it was not possible to get the list of installed "
-"extensions. Make sure you are logged into GNOME and try again."
-msgstr ""
-"אנו מצטערים, אך לא ניתן לקבל את רשימת ההרחבות המותקנות. יש לוודא שהתחברת "
-"לתוך GNOME ולנסות שוב."
-
-#: js/extensionPrefs/data/ui/extensions-window.ui:288
-#| msgid "Log Out"
-msgid "Log Out…"
-msgstr "יציאה…"
+#: js/gdm/authPrompt.js:135 js/ui/audioDeviceSelection.js:57
+#: js/ui/components/networkAgent.js:109 js/ui/components/polkitAgent.js:139
+#: js/ui/endSessionDialog.js:374 js/ui/extensionDownloader.js:181
+#: js/ui/shellMountOperation.js:376 js/ui/shellMountOperation.js:386
+#: js/ui/status/network.js:913 subprojects/extensions-app/js/main.js:148
+msgid "Cancel"
+msgstr "ביטול"
 
 #. Cisco LEAP
 #: js/gdm/authPrompt.js:237 js/ui/components/networkAgent.js:204
@@ -627,7 +449,6 @@ msgstr "(משתמש או %s לדוגמה)"
 #. (and don't even care of which one)
 #: js/gdm/loginDialog.js:917 js/ui/components/networkAgent.js:240
 #: js/ui/components/networkAgent.js:263 js/ui/components/networkAgent.js:281
-#| msgid "Username: "
 msgid "Username"
 msgstr "שם משתמש"
 
@@ -656,7 +477,6 @@ msgstr "כיבוי"
 
 #. Translators: A list of keywords that match the power-off action, separated by semicolons
 #: js/misc/systemActions.js:92
-#| msgid "power off;shutdown;reboot;restart"
 msgid "power off;shutdown;reboot;restart;halt;stop"
 msgstr "כיבוי;סגירה;יציאה;הפעלה מחדש;עצירה;הפסקה;"
 
@@ -679,7 +499,6 @@ msgstr "יציאה"
 
 #. Translators: A list of keywords that match the logout action, separated by semicolons
 #: js/misc/systemActions.js:108
-#| msgid "logout;sign off"
 msgid "logout;log out;sign off"
 msgstr "יציאה;התנתקות;התנתק;"
 
@@ -707,20 +526,15 @@ msgstr "החלפת משתמש"
 
 #. Translators: A list of keywords that match the lock orientation action, separated by semicolons
 #: js/misc/systemActions.js:131
-#| msgid "lock orientation;screen;rotation"
 msgid "lock orientation;unlock orientation;screen;rotation"
 msgstr "נעילת כיוון;שחרור נעילת כיוון;מסך;סיבוב;כיוון;"
 
 #: js/misc/systemActions.js:251
-#| msgctxt "search-result"
-#| msgid "Lock Orientation"
 msgctxt "search-result"
 msgid "Unlock Screen Rotation"
 msgstr "שחרור נעילת סיבוב מסך"
 
 #: js/misc/systemActions.js:252
-#| msgctxt "search-result"
-#| msgid "Lock Orientation"
 msgctxt "search-result"
 msgid "Lock Screen Rotation"
 msgstr "נעילת סיבוב מסך"
@@ -820,7 +634,6 @@ msgstr "%A, %H:%M"
 #. i.e. "May 25, 14:30"
 #: js/misc/util.js:255
 #, no-c-format
-#| msgid "%B %d, %H∶%M"
 msgid "%B %-d, %H∶%M"
 msgstr "%d ב%B, %H:%M"
 
@@ -829,7 +642,6 @@ msgstr "%d ב%B, %H:%M"
 #. i.e. "May 25 2012, 14:30"
 #: js/misc/util.js:261
 #, no-c-format
-#| msgid "%B %d %Y, %H∶%M"
 msgid "%B %-d %Y, %H∶%M"
 msgstr "%d ב%B %Y, %H:%M"
 
@@ -859,7 +671,6 @@ msgstr "%A, %l:%M %p"
 #. i.e. "May 25, 2:30 pm"
 #: js/misc/util.js:284
 #, no-c-format
-#| msgid "%B %d, %l∶%M %p"
 msgid "%B %-d, %l∶%M %p"
 msgstr "%-d ב%B, %l:%M %p"
 
@@ -868,7 +679,6 @@ msgstr "%-d ב%B, %l:%M %p"
 #. i.e. "May 25 2012, 2:30 pm"
 #: js/misc/util.js:290
 #, no-c-format
-#| msgid "%B %d %Y, %l∶%M %p"
 msgid "%B %-d %Y, %l∶%M %p"
 msgstr "%-d ב%B %Y, %l:%M %p"
 
@@ -896,7 +706,6 @@ msgid "Grant Access"
 msgstr "אפשור גישה"
 
 #: js/ui/appDisplay.js:898
-#| msgid "Home Folder"
 msgid "Unnamed Folder"
 msgstr "תיקייה ללא שם"
 
@@ -913,28 +722,27 @@ msgid "All"
 msgstr "הכול"
 
 #. Translators: This is the heading of a list of open windows
-#: js/ui/appDisplay.js:2446 js/ui/panel.js:75
-#| msgid "Windows"
+#: js/ui/appDisplay.js:2439 js/ui/panel.js:75
 msgid "Open Windows"
 msgstr "חלונות פתוחים"
 
-#: js/ui/appDisplay.js:2466 js/ui/panel.js:82
+#: js/ui/appDisplay.js:2459 js/ui/panel.js:82
 msgid "New Window"
 msgstr "חלון חדש"
 
-#: js/ui/appDisplay.js:2477
+#: js/ui/appDisplay.js:2470
 msgid "Launch using Dedicated Graphics Card"
 msgstr "הפעלה בשימוש כרטיס חזותי ייעוד"
 
-#: js/ui/appDisplay.js:2505 js/ui/dash.js:239
+#: js/ui/appDisplay.js:2498 js/ui/dash.js:239
 msgid "Remove from Favorites"
 msgstr "הסרה מהמועדפים"
 
-#: js/ui/appDisplay.js:2511
+#: js/ui/appDisplay.js:2504
 msgid "Add to Favorites"
 msgstr "הוספה למועדפים"
 
-#: js/ui/appDisplay.js:2521 js/ui/panel.js:93
+#: js/ui/appDisplay.js:2514 js/ui/panel.js:93
 msgid "Show Details"
 msgstr "הצגת פרטים"
 
@@ -964,7 +772,7 @@ msgstr "אזניות"
 msgid "Headset"
 msgstr "אזניות עם מיקרופון"
 
-#: js/ui/audioDeviceSelection.js:68 js/ui/status/volume.js:269
+#: js/ui/audioDeviceSelection.js:68 js/ui/status/volume.js:270
 msgid "Microphone"
 msgstr "מיקרופון"
 
@@ -1083,16 +891,12 @@ msgstr "יום שלם"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year
 #: js/ui/calendar.js:868
-#| msgctxt "calendar heading"
-#| msgid "%A, %B %d"
 msgctxt "calendar heading"
 msgid "%A, %B %-d"
 msgstr "%A, ה־%-d ב%B"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year
 #: js/ui/calendar.js:871
-#| msgctxt "calendar heading"
-#| msgid "%A, %B %d, %Y"
 msgctxt "calendar heading"
 msgid "%A, %B %-d, %Y"
 msgstr "%A, ה־%-d ב%B, %Y"
@@ -1110,7 +914,6 @@ msgid "Do Not Disturb"
 msgstr "נא לא להפריע"
 
 #: js/ui/calendar.js:1171
-#| msgid "Clear All"
 msgid "Clear"
 msgstr "ניקוי"
 
@@ -1143,7 +946,6 @@ msgid "External drive disconnected"
 msgstr "נותק כונן חיצוני"
 
 #: js/ui/components/automountManager.js:208
-#| msgid "Unable to lock"
 msgid "Unable to unlock volume"
 msgstr "לא ניתן לנעול את העצמה"
 
@@ -1167,22 +969,18 @@ msgid "Connect"
 msgstr "התחברות"
 
 #: js/ui/components/networkAgent.js:210
-#| msgid "Key: "
 msgid "Key"
 msgstr "מפתח"
 
 #: js/ui/components/networkAgent.js:248 js/ui/components/networkAgent.js:271
-#| msgid "Private key password: "
 msgid "Private key password"
 msgstr "ססמת מפתח פרטי"
 
 #: js/ui/components/networkAgent.js:269
-#| msgid "Identity: "
 msgid "Identity"
 msgstr "זהות"
 
 #: js/ui/components/networkAgent.js:283
-#| msgid "Service: "
 msgid "Service"
 msgstr "שירות"
 
@@ -1203,7 +1001,6 @@ msgid "Wired 802.1X authentication"
 msgstr "אימות Wired 802.1X"
 
 #: js/ui/components/networkAgent.js:319
-#| msgid "Network name: "
 msgid "Network name"
 msgstr "שם הרשת"
 
@@ -1220,7 +1017,6 @@ msgid "PIN code is needed for the mobile broadband device"
 msgstr "נדרש קוד PIN עבור התקן החיבור האלחוטי בפס רחב"
 
 #: js/ui/components/networkAgent.js:333
-#| msgid "PIN: "
 msgid "PIN"
 msgstr "PIN"
 
@@ -1236,7 +1032,6 @@ msgid "Network Manager"
 msgstr "מנהל הרשתות"
 
 #: js/ui/components/networkAgent.js:704
-#| msgid "Password"
 msgid "VPN password"
 msgstr "ססמת VPN"
 
@@ -1262,7 +1057,7 @@ msgstr "פעולה זו לא הצליחה, נא לנסות שוב. עמך הסל
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
-#: js/ui/components/telepathyClient.js:787
+#: js/ui/components/telepathyClient.js:823
 #, javascript-format
 msgid "%s is now known as %s"
 msgstr "השם של %s הוחלף ל־%s"
@@ -1287,7 +1082,6 @@ msgstr "חלונית"
 #. * "February 17 2015".
 #.
 #: js/ui/dateMenu.js:75
-#| msgid "%B %e %Y"
 msgid "%B %-d %Y"
 msgstr "%-d ב%B %Y"
 
@@ -1311,34 +1105,34 @@ msgstr "שעוני העולם"
 msgid "Weather"
 msgstr "מזג אוויר"
 
-#: js/ui/dateMenu.js:404
+#: js/ui/dateMenu.js:418
 msgid "Select a location…"
 msgstr "בחירת מיקום…"
 
-#: js/ui/dateMenu.js:417
+#: js/ui/dateMenu.js:426
 msgid "Loading…"
 msgstr "בטעינה…"
 
-#: js/ui/dateMenu.js:427
+#: js/ui/dateMenu.js:436
 msgid "Go online for weather information"
 msgstr "יש להתחבר בשביל מידע על מזג האוויר"
 
-#: js/ui/dateMenu.js:429
+#: js/ui/dateMenu.js:438
 msgid "Weather information is currently unavailable"
 msgstr "מידע על מזג האוויר לא זמין כרגע"
 
-#: js/ui/endSessionDialog.js:37
+#: js/ui/endSessionDialog.js:39
 #, javascript-format
 msgctxt "title"
 msgid "Log Out %s"
 msgstr "הוצאת %s"
 
-#: js/ui/endSessionDialog.js:38
+#: js/ui/endSessionDialog.js:40
 msgctxt "title"
 msgid "Log Out"
 msgstr "יציאה"
 
-#: js/ui/endSessionDialog.js:40
+#: js/ui/endSessionDialog.js:42
 #, javascript-format
 msgid "%s will be logged out automatically in %d second."
 msgid_plural "%s will be logged out automatically in %d seconds."
@@ -1346,7 +1140,7 @@ msgstr[0] "המשתמש %s ייצא אוטומטית בעוד שנייה."
 msgstr[1] "המשתמש %s ייצא אוטומטית בעוד %d שניות."
 msgstr[2] "המשתמש %s ייצא אוטומטית בעוד %d שניות."
 
-#: js/ui/endSessionDialog.js:45
+#: js/ui/endSessionDialog.js:47
 #, javascript-format
 msgid "You will be logged out automatically in %d second."
 msgid_plural "You will be logged out automatically in %d seconds."
@@ -1354,22 +1148,22 @@ msgstr[0] "אתה תצא אוטומטית בעוד שנייה."
 msgstr[1] "אתה תצא אוטומטית בעוד %d שניות."
 msgstr[2] "אתה תצא אוטומטית בעוד %d שניות."
 
-#: js/ui/endSessionDialog.js:51
+#: js/ui/endSessionDialog.js:53
 msgctxt "button"
 msgid "Log Out"
 msgstr "יציאה"
 
-#: js/ui/endSessionDialog.js:56
+#: js/ui/endSessionDialog.js:58
 msgctxt "title"
 msgid "Power Off"
 msgstr "כיבוי"
 
-#: js/ui/endSessionDialog.js:57
+#: js/ui/endSessionDialog.js:59
 msgctxt "title"
 msgid "Install Updates & Power Off"
 msgstr "התקנת עדכונים וכיבוי"
 
-#: js/ui/endSessionDialog.js:59
+#: js/ui/endSessionDialog.js:61
 #, javascript-format
 msgid "The system will power off automatically in %d second."
 msgid_plural "The system will power off automatically in %d seconds."
@@ -1377,27 +1171,27 @@ msgstr[0] "המערכת תכבה אוטומטית בעוד שנייה."
 msgstr[1] "המערכת תכבה אוטומטית בעוד %d שניות."
 msgstr[2] "המערכת תכבה אוטומטית בעוד %d שניות."
 
-#: js/ui/endSessionDialog.js:63
+#: js/ui/endSessionDialog.js:65
 msgctxt "checkbox"
 msgid "Install pending software updates"
 msgstr "התקנת עדכוני תכנה בהמתנה"
 
-#: js/ui/endSessionDialog.js:66 js/ui/endSessionDialog.js:82
+#: js/ui/endSessionDialog.js:68 js/ui/endSessionDialog.js:84
 msgctxt "button"
 msgid "Restart"
 msgstr "הפעלה מחדש"
 
-#: js/ui/endSessionDialog.js:68
+#: js/ui/endSessionDialog.js:70
 msgctxt "button"
 msgid "Power Off"
 msgstr "כיבוי"
 
-#: js/ui/endSessionDialog.js:74
+#: js/ui/endSessionDialog.js:76
 msgctxt "title"
 msgid "Restart"
 msgstr "הפעלה מחדש"
 
-#: js/ui/endSessionDialog.js:76
+#: js/ui/endSessionDialog.js:78
 #, javascript-format
 msgid "The system will restart automatically in %d second."
 msgid_plural "The system will restart automatically in %d seconds."
@@ -1405,12 +1199,12 @@ msgstr[0] "המערכת תופעל מחדש בעוד שנייה."
 msgstr[1] "המערכת תופעל מחדש בעוד %d שניות."
 msgstr[2] "המערכת תופעל מחדש בעוד %d שניות."
 
-#: js/ui/endSessionDialog.js:89
+#: js/ui/endSessionDialog.js:91
 msgctxt "title"
 msgid "Restart & Install Updates"
 msgstr "הפעלה מחדש והתקנת עדכונים"
 
-#: js/ui/endSessionDialog.js:91
+#: js/ui/endSessionDialog.js:93
 #, javascript-format
 msgid "The system will automatically restart and install updates in %d second."
 msgid_plural ""
@@ -1419,22 +1213,22 @@ msgstr[0] "המערכת תופעל מחדש ותתקין עדכונים בעוד
 msgstr[1] "המערכת תופעל מחדש ותקין עדכונים בעוד %d שניות."
 msgstr[2] "המערכת תופעל מחדש ותקין עדכונים בעוד %d שניות."
 
-#: js/ui/endSessionDialog.js:97 js/ui/endSessionDialog.js:116
+#: js/ui/endSessionDialog.js:99 js/ui/endSessionDialog.js:118
 msgctxt "button"
 msgid "Restart &amp; Install"
 msgstr "הפעלה מחדש והתקנה"
 
-#: js/ui/endSessionDialog.js:98
+#: js/ui/endSessionDialog.js:100
 msgctxt "button"
 msgid "Install &amp; Power Off"
 msgstr "התקנה וכיבוי"
 
-#: js/ui/endSessionDialog.js:99
+#: js/ui/endSessionDialog.js:101
 msgctxt "checkbox"
 msgid "Power off after updates are installed"
 msgstr "כיבוי לאחר התקנת עדכונים"
 
-#: js/ui/endSessionDialog.js:106
+#: js/ui/endSessionDialog.js:108
 msgctxt "title"
 msgid "Restart & Install Upgrade"
 msgstr "הפעלה מחדש ושדרוג התקנה"
@@ -1442,7 +1236,7 @@ msgstr "הפעלה מחדש ושדרוג התקנה"
 #. Translators: This is the text displayed for system upgrades in the
 #. shut down dialog. First %s gets replaced with the distro name and
 #. second %s with the distro version to upgrade to
-#: js/ui/endSessionDialog.js:111
+#: js/ui/endSessionDialog.js:113
 #, javascript-format
 msgid ""
 "%s %s will be installed after restart. Upgrade installation can take a long "
@@ -1451,18 +1245,15 @@ msgstr ""
 "%s %s יותקן לאחר הפעלה מחדש. שדרוג ההתקנה עשוי לקחת זמר רב: יש לוודאשגִבית "
 "ושהמחשב מחובר למקור חשמל."
 
-#: js/ui/endSessionDialog.js:259
-#| msgid "Running on battery power: please plug in before installing updates."
+#: js/ui/endSessionDialog.js:261
 msgid "Running on battery power: Please plug in before installing updates."
 msgstr "פועל על סוללה: נא לחבר לחשמל לפני התקנת עדכונים"
 
-#: js/ui/endSessionDialog.js:268
-#| msgid "Some applications are busy or have unsaved work."
+#: js/ui/endSessionDialog.js:270
 msgid "Some applications are busy or have unsaved work"
 msgstr "כמה יישומים עסוקים או שיש עבודה שלא נשמרה"
 
-#: js/ui/endSessionDialog.js:273
-#| msgid "Other users are logged in."
+#: js/ui/endSessionDialog.js:275
 msgid "Other users are logged in"
 msgstr "משתמשים נוספים מחוברים"
 
@@ -1478,42 +1269,38 @@ msgstr "%s (מרוחק)"
 msgid "%s (console)"
 msgstr "%s (מסוף)"
 
-#: js/ui/extensionDownloader.js:181
+#: js/ui/extensionDownloader.js:185
 msgid "Install"
 msgstr "התקנה"
 
-#: js/ui/extensionDownloader.js:187
-#| msgid "Shell Extensions"
+#: js/ui/extensionDownloader.js:191
 msgid "Install Extension"
 msgstr "התקנת הרחבות"
 
-#: js/ui/extensionDownloader.js:188
+#: js/ui/extensionDownloader.js:192
 #, javascript-format
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "הורדה והתקנה של „%s” מ־extensions.gnome.org?"
 
-#: js/ui/extensionSystem.js:228
+#: js/ui/extensionSystem.js:233
 msgid "Extension Updates Available"
 msgstr "עדכוני הרחבות זמינים"
 
-#: js/ui/extensionSystem.js:229
+#: js/ui/extensionSystem.js:234
 msgid "Extension updates are ready to be installed."
 msgstr "עדכוני הרחבות מוכנים להתקנה."
 
 #: js/ui/inhibitShortcutsDialog.js:79
-#| msgid "%s wants to inhibit shortcuts"
 msgid "Allow inhibiting shortcuts"
 msgstr "לאפשר השבתת צירופי מקשים"
 
 #. Translators: %s is an application name like "Settings"
 #: js/ui/inhibitShortcutsDialog.js:82
 #, javascript-format
-#| msgid "Application wants to inhibit shortcuts"
 msgid "The application %s wants to inhibit shortcuts"
 msgstr "היישום %s הרוצה למנוע צירופי מקשים"
 
 #: js/ui/inhibitShortcutsDialog.js:83
-#| msgid "Application wants to inhibit shortcuts"
 msgid "An application wants to inhibit shortcuts"
 msgstr "יישום הרוצה למנוע צירופי מקשים"
 
@@ -1532,12 +1319,10 @@ msgid "Allow"
 msgstr "לאפשר"
 
 #: js/ui/kbdA11yDialog.js:32
-#| msgid "Slow Keys"
 msgid "Slow Keys Turned On"
 msgstr "מצב מקשים אטיים פועל"
 
 #: js/ui/kbdA11yDialog.js:33
-#| msgid "Slow Keys"
 msgid "Slow Keys Turned Off"
 msgstr "מצב מקשים אטיים כבוי"
 
@@ -1550,12 +1335,10 @@ msgstr ""
 "המשפיעה על המקלדת שלך."
 
 #: js/ui/kbdA11yDialog.js:41
-#| msgid "Sticky Keys"
 msgid "Sticky Keys Turned On"
 msgstr "מצב מקשים דביקים פועל"
 
 #: js/ui/kbdA11yDialog.js:42
-#| msgid "Sticky Keys"
 msgid "Sticky Keys Turned Off"
 msgstr "מצב מקשים דביקים כבוי"
 
@@ -1649,12 +1432,11 @@ msgstr "צפייה במקור"
 msgid "Web Page"
 msgstr "דף אינטרנט"
 
-#: js/ui/main.js:274
-#| msgid "Log in as another user"
+#: js/ui/main.js:277
 msgid "Logged in as a privileged user"
 msgstr "מחובר כמשתמש בעל הרשאות מיוחדות"
 
-#: js/ui/main.js:275
+#: js/ui/main.js:278
 msgid ""
 "Running a session as a privileged user should be avoided for security "
 "reasons. If possible, you should log in as a normal user."
@@ -1662,15 +1444,15 @@ msgstr ""
 "יש להימנע מהרצת הפעלה כמשתמש בעל הרשאות מיוחדות מסיבות אבטחה. אם אפשרי, יש "
 "להתחבר כמשתמש רגיל."
 
-#: js/ui/main.js:281
+#: js/ui/main.js:317
 msgid "Screen Lock disabled"
 msgstr "מסך נעילה מושבת"
 
-#: js/ui/main.js:282
+#: js/ui/main.js:318
 msgid "Screen Locking requires the GNOME display manager."
 msgstr "מסך נעיל דורש הרצת מנהל תצוגה של GNOME."
 
-#: js/ui/messageTray.js:1554
+#: js/ui/messageTray.js:1551
 msgid "System Information"
 msgstr "פרטי המערכת"
 
@@ -1697,7 +1479,6 @@ msgstr "סקירה"
 #. active; it should not exceed ~30
 #. characters.
 #: js/ui/overview.js:107
-#| msgid "Type to search…"
 msgid "Type to search"
 msgstr "יש להקליד כדי לחפש"
 
@@ -1765,12 +1546,10 @@ msgid "Top Bar"
 msgstr "הסרגל העליון"
 
 #: js/ui/runDialog.js:58
-#| msgid "Enter a Command"
 msgid "Run a Command"
 msgstr "הרצת פקודה"
 
 #: js/ui/runDialog.js:73
-#| msgid "Press Esc to exit"
 msgid "Press ESC to close"
 msgstr "יש להקיש Esc לסגירה"
 
@@ -1838,7 +1617,6 @@ msgid "Caps lock is on."
 msgstr "מקש Caps Lock פועל."
 
 #: js/ui/shellMountOperation.js:285
-#| msgid "Volume"
 msgid "Hidden Volume"
 msgstr "כרך מוסתר"
 
@@ -1874,7 +1652,6 @@ msgstr "שחרור"
 #. Translators: %s is the Disks application
 #: js/ui/shellMountOperation.js:391
 #, javascript-format
-#| msgid "Open with %s"
 msgid "Open %s"
 msgstr "פתיחה באמצעות %s"
 
@@ -1885,7 +1662,6 @@ msgstr "ה־PIM חייב להיות ריק או מספר."
 #. Translators: %s is the Disks application
 #: js/ui/shellMountOperation.js:469
 #, javascript-format
-#| msgid "Unable to connect to %s"
 msgid "Unable to start %s"
 msgstr "לא ניתן להפעיל את %s"
 
@@ -2027,7 +1803,6 @@ msgstr "לאפשר גישה למיקום שלך"
 #. Translators: %s is an application name
 #: js/ui/status/location.js:357
 #, javascript-format
-#| msgid "Give %s access to your location?"
 msgid "The app %s wants to access your location"
 msgstr "היישום %s רוצה גישה למיקום שלך"
 
@@ -2299,7 +2074,6 @@ msgid "Screen is Being Shared"
 msgstr "המסך משותף"
 
 #: js/ui/status/remoteAccess.js:46
-#| msgid "Turn Off"
 msgid "Turn off"
 msgstr "כיבוי"
 
@@ -2315,7 +2089,6 @@ msgid "Lock"
 msgstr "נעילה"
 
 #: js/ui/status/system.js:116
-#| msgid "Power Off"
 msgid "Power Off / Log Out"
 msgstr "כיבוי / יציאה"
 
@@ -2324,7 +2097,6 @@ msgid "Log Out"
 msgstr "יציאה"
 
 #: js/ui/status/system.js:131
-#| msgid "Switch User"
 msgid "Switch User…"
 msgstr "החלפת משתמש…"
 
@@ -2333,7 +2105,6 @@ msgid "Suspend"
 msgstr "השהיה"
 
 #: js/ui/status/system.js:157
-#| msgid "Power Off"
 msgid "Power Off…"
 msgstr "כיבוי…"
 
@@ -2371,11 +2142,11 @@ msgstr "שיגאת אימות Thunderbolt"
 msgid "Could not authorize the Thunderbolt device: %s"
 msgstr "לא ניתן לאמת את התקן ה־Thunderbolt: ‏%s"
 
-#: js/ui/status/volume.js:150
+#: js/ui/status/volume.js:151
 msgid "Volume changed"
 msgstr "עצמת השמע השתנתה"
 
-#: js/ui/status/volume.js:221
+#: js/ui/status/volume.js:222
 msgid "Volume"
 msgstr "עצמה"
 
@@ -2409,24 +2180,23 @@ msgstr "מובנה בלבד"
 
 #. Translators: This is a time format for a date in
 #. long format
-#: js/ui/unlockDialog.js:370
-#| msgid "%A, %B %d"
+#: js/ui/unlockDialog.js:371
 msgid "%A %B %-d"
 msgstr "%A, ה־%d ב%B"
 
-#: js/ui/unlockDialog.js:376
+#: js/ui/unlockDialog.js:377
 msgid "Swipe up to unlock"
 msgstr "יש להחליק לשחרור"
 
-#: js/ui/unlockDialog.js:377
+#: js/ui/unlockDialog.js:378
 msgid "Click or press a key to unlock"
 msgstr "יש ללחוץ או להקיש כדי לשחרר"
 
-#: js/ui/unlockDialog.js:549
+#: js/ui/unlockDialog.js:550
 msgid "Unlock Window"
 msgstr "שחרור החלון"
 
-#: js/ui/unlockDialog.js:558
+#: js/ui/unlockDialog.js:559
 msgid "Log in as another user"
 msgstr "כניסה בתור משתמש אחר"
 
@@ -2445,7 +2215,6 @@ msgstr "‏„%s” מוכן"
 
 #. Translators: This string should be shorter than 30 characters
 #: js/ui/windowManager.js:55
-#| msgid "Do you want to keep these display settings?"
 msgid "Keep these display settings?"
 msgstr "האם ברצונך לשמור הגדרות תצוגה אלה?"
 
@@ -2586,6 +2355,133 @@ msgstr "הססמה אינה יכולה להישאר ריקה"
 msgid "Authentication dialog was dismissed by the user"
 msgstr "המשתמש בחר להתעלם מתיבת דו־שיח האימות"
 
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:5
+#: subprojects/extensions-app/data/org.gnome.Extensions.desktop.in.in:4
+#: subprojects/extensions-app/js/main.js:182
+#: subprojects/extensions-app/data/ui/extensions-window.ui:61
+msgid "Extensions"
+msgstr "הרחבות"
+
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:6
+#: subprojects/extensions-app/js/main.js:183
+msgid "Manage your GNOME Extensions"
+msgstr "ניהול הרחבות GNOME שלך"
+
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:35
+msgid ""
+"GNOME Extensions handles updating extensions, configuring extension "
+"preferences and removing or disabling unwanted extensions."
+msgstr ""
+"הרחבות GNOME מטפל בעדכון הרחבות, הגדרת אפשרויות של כל הרחבה, הסרה והשבתת "
+"הרחבות לא רצויות."
+
+#: subprojects/extensions-app/data/org.gnome.Extensions.desktop.in.in:7
+msgid "Configure GNOME Shell Extensions"
+msgstr "הגדרת הרחבות GNOME Shell"
+
+#: subprojects/extensions-app/js/main.js:144
+#, javascript-format
+msgid "Remove “%s”?"
+msgstr "להסיר את „%s”?"
+
+#: subprojects/extensions-app/js/main.js:145
+msgid ""
+"If you remove the extension, you need to return to download it if you want "
+"to enable it again"
+msgstr "אם ההרחבה תוסר, על מנת להפעיל אותה שוב עליך יהיה להוריד אותה שוב"
+
+#: subprojects/extensions-app/js/main.js:149
+msgid "Remove"
+msgstr "הסרה"
+
+#: subprojects/extensions-app/js/main.js:181
+msgid "translator-credits"
+msgstr "יוסף אור בוצ׳קו <yoseforb@gmail.com>"
+
+#: subprojects/extensions-app/js/main.js:316
+#, javascript-format
+msgid "%d extension will be updated on next login."
+msgid_plural "%d extensions will be updated on next login."
+msgstr[0] "הרחבה אחת תעודכן בהתחברות הבאה."
+msgstr[1] "‏%d הרחבות תעודכנה בהתחברות הבאה."
+msgstr[2] "‏%d הרחבות תעודכנה בהתחברות הבאה."
+
+#: subprojects/extensions-app/data/ui/extension-row.ui:100
+#: subprojects/extensions-tool/src/command-create.c:211
+#: subprojects/extensions-tool/src/main.c:173
+msgid "Description"
+msgstr "תיאור"
+
+#: subprojects/extensions-app/data/ui/extension-row.ui:123
+#: subprojects/extensions-tool/src/main.c:185
+msgid "Version"
+msgstr "גרסה"
+
+#: subprojects/extensions-app/data/ui/extension-row.ui:151
+msgid "Author"
+msgstr "מחבר"
+
+#: subprojects/extensions-app/data/ui/extension-row.ui:175
+msgid "Website"
+msgstr "אתר אינטרנט"
+
+#: subprojects/extensions-app/data/ui/extension-row.ui:192
+msgid "Remove…"
+msgstr "הסרה…"
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:8
+msgid "Help"
+msgstr "עזרה"
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:12
+msgid "About Extensions"
+msgstr "על אודות הרחבות"
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:27
+msgid ""
+"To find and add extensions, visit <a href=\"https://extensions.gnome.org"
+"\">extensions.gnome.org</a>."
+msgstr ""
+"על מנת למצוא ולהוסיף הרחבות, יש לבקר באתר <a href=\"https://extensions.gnome."
+"org\">extensions.gnome.org</a>."
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:35
+msgid "Warning"
+msgstr "אזהרה"
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:46
+msgid ""
+"Extensions can cause system issues, including performance problems. If you "
+"encounter problems with your system, it is recommended to disable all "
+"extensions."
+msgstr ""
+"הרחבות עשויות לגרום לבעיות במערכת, לרבות בעיות ביצועים. אם מצאת בעיות במערכת "
+"שלך, מומלץ להשבית את כל ההרחבות."
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:134
+msgid "Manually Installed"
+msgstr "הותקן ידנית"
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:158
+msgid "Built-In"
+msgstr "מובנה"
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:199
+msgid "No Installed Extensions"
+msgstr "אין אף הרחבה מותקנת"
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:235
+msgid ""
+"We’re very sorry, but it was not possible to get the list of installed "
+"extensions. Make sure you are logged into GNOME and try again."
+msgstr ""
+"אנו מצטערים, אך לא ניתן לקבל את רשימת ההרחבות המותקנות. יש לוודא שהתחברת "
+"לתוך GNOME ולנסות שוב."
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:288
+msgid "Log Out…"
+msgstr "יציאה…"
+
 #. Translators: a file path to an extension directory
 #: subprojects/extensions-tool/src/command-create.c:125
 #, c-format
@@ -2655,7 +2551,6 @@ msgstr "Create a new extension"
 
 #: subprojects/extensions-tool/src/command-create.c:280
 #: subprojects/extensions-tool/src/command-list.c:168
-#| msgid "Unknown artist"
 msgid "Unknown arguments"
 msgstr "Unknown arguments"
 
@@ -2686,12 +2581,10 @@ msgid "More than one UUID given"
 msgstr "More than one UUID given"
 
 #: subprojects/extensions-tool/src/command-enable.c:57
-#| msgid "Extension"
 msgid "Enable an extension"
 msgstr "Enable an extension"
 
 #: subprojects/extensions-tool/src/command-info.c:79
-#| msgid "No extensions installed"
 msgid "Show extensions info"
 msgstr "Show extensions info"
 
@@ -2704,12 +2597,10 @@ msgid "EXTENSION_BUNDLE"
 msgstr "EXTENSION_BUNDLE"
 
 #: subprojects/extensions-tool/src/command-install.c:184
-#| msgid "UUIDs of extensions to enable"
 msgid "Install an extension bundle"
 msgstr "Install an extension bundle"
 
 #: subprojects/extensions-tool/src/command-install.c:201
-#| msgid "No extensions installed"
 msgid "No extension bundle specified"
 msgstr "No extension bundle specified"
 
@@ -2718,37 +2609,30 @@ msgid "More than one extension bundle specified"
 msgstr "More than one extension bundle specified"
 
 #: subprojects/extensions-tool/src/command-list.c:125
-#| msgid "Shell Extensions"
 msgid "Show user-installed extensions"
 msgstr "Show user-installed extensions"
 
 #: subprojects/extensions-tool/src/command-list.c:128
-#| msgid "Shell Extensions"
 msgid "Show system-installed extensions"
 msgstr "Show system-installed extensions"
 
 #: subprojects/extensions-tool/src/command-list.c:131
-#| msgid "Shell Extensions"
 msgid "Show enabled extensions"
 msgstr "Show enabled extensions"
 
 #: subprojects/extensions-tool/src/command-list.c:134
-#| msgid "Shell Extensions"
 msgid "Show disabled extensions"
 msgstr "Show disabled extensions"
 
 #: subprojects/extensions-tool/src/command-list.c:137
-#| msgid "GNOME Shell Extension Preferences"
 msgid "Show extensions with preferences"
 msgstr "Show extensions with preferences"
 
 #: subprojects/extensions-tool/src/command-list.c:140
-#| msgid "No extensions installed"
 msgid "Show extensions with updates"
 msgstr "Show extensions with updates"
 
 #: subprojects/extensions-tool/src/command-list.c:143
-#| msgid "Print version"
 msgid "Print extension details"
 msgstr "Print extension details"
 
@@ -2810,7 +2694,6 @@ msgid "More than one source directory specified"
 msgstr "More than one source directory specified"
 
 #: subprojects/extensions-tool/src/command-prefs.c:90
-#| msgid "GNOME Shell Extension Preferences"
 msgid "Opens extension preferences"
 msgstr "Opens extension preferences"
 
@@ -2854,7 +2737,7 @@ msgstr "Print version information and exit."
 #: subprojects/extensions-tool/src/main.c:242
 #: subprojects/extensions-tool/src/main.c:245
 msgid "COMMAND"
-msgstr "COMMAND"
+msgstr "ביטול"
 
 #: subprojects/extensions-tool/src/main.c:245
 msgid "[ARGS…]"
@@ -2865,58 +2748,47 @@ msgid "Commands:"
 msgstr "Commands:"
 
 #: subprojects/extensions-tool/src/main.c:248
-#| msgid "Print version"
 msgid "Print help"
 msgstr "Print help"
 
 #: subprojects/extensions-tool/src/main.c:250
-#| msgid "Extension"
 msgid "Enable extension"
 msgstr "Enable extension"
 
 #: subprojects/extensions-tool/src/main.c:251
-#| msgid "Extension"
 msgid "Disable extension"
 msgstr "Disable extension"
 
 #: subprojects/extensions-tool/src/main.c:252
-#| msgid "Extension"
 msgid "Reset extension"
 msgstr "Reset extension"
 
 #: subprojects/extensions-tool/src/main.c:253
-#| msgid "Shell Extensions"
 msgid "Uninstall extension"
 msgstr "Uninstall extension"
 
 #: subprojects/extensions-tool/src/main.c:254
-#| msgid "Extension"
 msgid "List extensions"
 msgstr "List extensions"
 
 #: subprojects/extensions-tool/src/main.c:255
 #: subprojects/extensions-tool/src/main.c:256
-#| msgid "No extensions installed"
 msgid "Show extension info"
 msgstr "Show extension info"
 
 #: subprojects/extensions-tool/src/main.c:257
-#| msgid "GNOME Shell Extension Preferences"
 msgid "Open extension preferences"
 msgstr "Open extension preferences"
 
 #: subprojects/extensions-tool/src/main.c:258
-#| msgid "Extension"
 msgid "Create extension"
 msgstr "Create extension"
 
 #: subprojects/extensions-tool/src/main.c:259
-#| msgid "Extension"
 msgid "Package extension"
 msgstr "Package extension"
 
 #: subprojects/extensions-tool/src/main.c:260
-#| msgid "UUIDs of extensions to enable"
 msgid "Install extension bundle"
 msgstr "Install extension bundle"
 
@@ -2948,6 +2820,10 @@ msgstr[2] "שני קלטים"
 #: subprojects/gvc/gvc-mixer-control.c:2766
 msgid "System Sounds"
 msgstr "צלילי מערכת"
+
+#~| msgid "Show Errors"
+#~ msgid "Copy Error"
+#~ msgstr "שגיאת העתקה"
 
 #~ msgid "There was an error loading the preferences dialog for %s:"
 #~ msgstr "אירעה שגיאה בעת טעינת דו־שיח ההעדפות עבור %s:"
