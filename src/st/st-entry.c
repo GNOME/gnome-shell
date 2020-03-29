@@ -516,6 +516,27 @@ st_entry_allocate (ClutterActor          *actor,
 }
 
 static void
+clutter_text_reactive_changed_cb (ClutterActor *text,
+                                  GParamSpec   *pspec,
+                                  gpointer      user_data)
+{
+  ClutterActor *stage;
+
+  stage = clutter_actor_get_stage (text);
+
+  if (stage == NULL)
+    return;
+
+  if (clutter_actor_get_reactive (text))
+    return;
+
+  if (!clutter_actor_has_key_focus (text))
+    return;
+
+  clutter_stage_set_key_focus (CLUTTER_STAGE (stage), NULL);
+}
+
+static void
 clutter_text_focus_in_cb (ClutterText  *text,
                           ClutterActor *actor)
 {
@@ -982,6 +1003,9 @@ st_entry_init (StEntry *entry)
   g_object_bind_property (G_OBJECT (entry), "reactive",
                           priv->entry, "reactive",
                           G_BINDING_DEFAULT);
+
+  g_signal_connect(priv->entry, "notify::reactive",
+                   G_CALLBACK (clutter_text_reactive_changed_cb), entry);
 
   g_signal_connect (priv->entry, "key-focus-in",
                     G_CALLBACK (clutter_text_focus_in_cb), entry);
