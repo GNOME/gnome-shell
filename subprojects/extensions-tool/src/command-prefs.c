@@ -28,6 +28,11 @@
 static gboolean
 launch_extension_prefs (const char *uuid)
 {
+  if (!extension_exist(uuid)) {
+    g_printerr (_("This extension does not exist.\n"));
+    return FALSE;
+  }
+
   g_autoptr (GDBusProxy) proxy = NULL;
   g_autoptr (GVariant) response = NULL;
   g_autoptr (GVariant) asv = NULL;
@@ -56,8 +61,10 @@ launch_extension_prefs (const char *uuid)
     return FALSE;
 
   g_variant_dict_lookup (info, "hasPrefs", "b", &has_prefs);
-  if (!has_prefs)
+  if (!has_prefs) {
+    g_printerr (_("This extension doesn't have any preferences.\n"));
     return FALSE;
+  }
 
   g_dbus_proxy_call_sync (proxy,
                           "LaunchExtensionPrefs",

@@ -28,6 +28,11 @@
 static gboolean
 show_extension_info (const char *uuid)
 {
+  if (!extension_exist(uuid)) {
+    g_printerr (_("This extension does not exist.\n"));
+    return FALSE;
+  }
+
   g_autoptr (GDBusProxy) proxy = NULL;
   g_autoptr (GVariant) response = NULL;
   g_autoptr (GVariant) asv = NULL;
