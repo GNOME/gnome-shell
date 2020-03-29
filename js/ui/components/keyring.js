@@ -111,15 +111,11 @@ class KeyringDialog extends ModalDialog.ModalDialog {
     }
 
     _updateSensitivity(sensitive) {
-        if (this._passwordEntry) {
+        if (this._passwordEntry)
             this._passwordEntry.reactive = sensitive;
-            this._passwordEntry.clutter_text.editable = sensitive;
-        }
 
-        if (this._confirmEntry) {
+        if (this._confirmEntry)
             this._confirmEntry.reactive = sensitive;
-            this._confirmEntry.clutter_text.editable = sensitive;
-        }
 
         this._continueButton.can_focus = sensitive;
         this._continueButton.reactive = sensitive;

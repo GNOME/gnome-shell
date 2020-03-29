@@ -691,8 +691,6 @@ var AllView = GObject.registerClass({
 
             // Toggle search entry
             Main.overview.searchEntry.reactive = !isOpen;
-            Main.overview.searchEntry.clutter_text.reactive = !isOpen;
-            Main.overview.searchEntry.clutter_text.editable = !isOpen;
 
             this._displayingPopup = isOpen;
         });
