@@ -6,6 +6,7 @@ const { Clutter, Gio, GLib, GObject, Meta, Shell, St } = imports.gi;
 const AppDisplay = imports.ui.appDisplay;
 const IconGrid = imports.ui.iconGrid;
 const Main = imports.ui.main;
+const ParentalControlsManager = imports.misc.parentalControlsManager;
 const RemoteSearch = imports.ui.remoteSearch;
 const Util = imports.misc.util;
 
@@ -431,6 +432,9 @@ var SearchResultsView = GObject.registerClass({
     _init() {
         super._init({ name: 'searchResults', vertical: true });
 
+        this._parentalControlsManager = ParentalControlsManager.getDefault();
+        this._parentalControlsManager.connect('app-filter-changed', this._reloadRemoteProviders.bind(this));
+
         this._content = new MaxWidthBox({
             name: 'searchResultsContent',
             vertical: true,
@@ -505,6 +509,11 @@ var SearchResultsView = GObject.registerClass({
 
     _registerProvider(provider) {
         provider.searchInProgress = false;
+
+        // Filter out unwanted providers.
+        if (provider.appInfo && !this._parentalControlsManager.shouldShowApp(provider.appInfo))
+            return;
+
         this._providers.push(provider);
         this._ensureProviderDisplay(provider);
     }
