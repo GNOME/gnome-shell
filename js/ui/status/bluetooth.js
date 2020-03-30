@@ -85,7 +85,7 @@ class Indicator extends PanelMenu.SystemIndicator {
         while (ret) {
             deviceInfos.push({
                 connected: this._model.get_value(iter,
-                                                 GnomeBluetooth.Column.CONNECTED),
+                    GnomeBluetooth.Column.CONNECTED),
                 name: this._model.get_value(iter,
                                             GnomeBluetooth.Column.ALIAS),
             };
