@@ -1,5 +1,5 @@
 project('gnome-extensions-app',
-  version: '3.36.0',
+  version: '3.37.0',
   meson_version: '>= 0.47.0',
   license: 'GPLv2+'
 )
