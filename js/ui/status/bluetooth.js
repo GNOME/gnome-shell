@@ -72,75 +72,64 @@ class Indicator extends PanelMenu.SystemIndicator {
         return null;
     }
 
-    // nDevices is the number of devices setup for the current default
-    // adapter if one exists and is powered. If unpowered or unavailable,
-    // nDevice is "1" if it had setup devices associated to it the last
-    // time it was seen, and "-1" if not.
-    //
-    // nConnectedDevices is the number of devices connected to the default
-    // adapter if one exists and is powered, or -1 if it's not available.
-    _getNDevices() {
+    _getDeviceInfos() {
         let adapter = this._getDefaultAdapter();
 
         if (!adapter)
             return [this._hadSetupDevices ? 1 : -1, -1];
 
-        let nConnectedDevices = 0;
-        let nDevices = 0;
-        let deviceName = '';
+        let i = 0;
+        let deviceInfos = [];
         let [ret, iter] = this._model.iter_children(adapter);
 
         while (ret) {
-            let isConnected = this._model.get_value(iter,
-                                                    GnomeBluetooth.Column.CONNECTED);
+            deviceInfos[i] = {
+                connected: this._model.get_value(iter,
+                                                 GnomeBluetooth.Column.CONNECTED),
+                name: this._model.get_value(iter,
+                                            GnomeBluetooth.Column.ALIAS),
+            };
 
-            if (isConnected) {
-                nConnectedDevices++;
-                deviceName = this._model.get_value(iter,
-                    GnomeBluetooth.Column.ALIAS);
-            }
-
-            let isPaired = this._model.get_value(iter,
-                                                 GnomeBluetooth.Column.PAIRED);
-            let isTrusted = this._model.get_value(iter,
-                                                  GnomeBluetooth.Column.TRUSTED);
-            if (isPaired || isTrusted)
-                nDevices++;
             ret = this._model.iter_next(iter);
+            i++;
         }
 
-        if (this._hadSetupDevices != (nDevices > 0)) {
+        if (this._hadSetupDevices !== (deviceInfos.length > 0)) {
             this._hadSetupDevices = !this._hadSetupDevices;
             global.settings.set_boolean(HAD_BLUETOOTH_DEVICES_SETUP, this._hadSetupDevices);
         }
 
-        return [nDevices, nConnectedDevices, deviceName];
+        return deviceInfos;
     }
 
     _sync() {
-        let [nDevices, nConnectedDevices, deviceName] = this._getNDevices();
+        let devices = this._getDeviceInfos();
+        let nConnectedDevices = devices.filter(device => device.connected);
+
         let sensitive = !Main.sessionMode.isLocked && !Main.sessionMode.isGreeter;
 
         this.menu.setSensitive(sensitive);
-        this._indicator.visible = nConnectedDevices > 0;
+        this._indicator.visible = devices.length > 0;
 
         // Remember if there were setup devices and show the menu
         // if we've seen setup devices and we're not hard blocked
-        if (nDevices > 0)
+        if (devices.length > 0)
             this._item.visible = !this._proxy.BluetoothHardwareAirplaneMode;
         else
             this._item.visible = this._proxy.BluetoothHasAirplaneMode && !this._proxy.BluetoothAirplaneMode;
 
-        if (nConnectedDevices > 1)
+        if (nConnectedDevices.length > 1) {
+            let numberOfDevices = nConnectedDevices.length;
             /* Translators: this is the number of connected bluetooth devices */
-            this._item.label.text = ngettext("%d Connected", "%d Connected", nConnectedDevices).format(nConnectedDevices);
-        else if (nConnectedDevices == 1)
-            this._item.label.text = _(deviceName);
-        else if (nConnectedDevices == -1)
-            this._item.label.text = _("Bluetooth Off");
-        else
-            this._item.label.text = _("Bluetooth On");
+            this._item.label.text = ngettext('%d Connected', '%d Connected', numberOfDevices).format(numberOfDevices);
+        } else if (nConnectedDevices.length === 1) {
+            this._item.label.text = _(nConnectedDevices[0].name);
+        } else if (nConnectedDevices.length === 0 && this._client.defaultAdapterPowered) {
+            this._item.label.text = _('Bluetooth On');
+        } else {
+            this._item.label.text = _('Bluetooth Off');
+        }
 
-        this._toggleItem.label.text = this._proxy.BluetoothAirplaneMode ? _("Turn On") : _("Turn Off");
+        this._toggleItem.label.text =  this._proxy.BluetoothAirplaneMode ? _('Turn On') : _('Turn Off');
     }
 });
