@@ -1,3 +1,18 @@
+3.34.5
+======
+* Leave overview when locking the screen [Jonas D.; !1043]
+* Avoid IO on the main thread [Christian; !1050]
+* Fix OSK layout fallback for unsupported variants [Florian; #2471]
+* Fix high-contrast/symbolic icon mix-up [Florian; #2414]
+* Misc. bug fixes and cleanups [Jonas Å., Florian; !1032, #2386]
+
+Contributors:
+  Jonas Dreßler, Christian Hergert, Florian Müllner, Jwtiyar Nariman,
+  Jonas Ådahl
+
+Translators:
+  Jwtiyar Nariman [ckb]
+
 3.34.4
 ======
 * Switch screen-recorder back to VP8 [Björn; #256]
