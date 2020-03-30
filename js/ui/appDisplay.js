@@ -192,6 +192,9 @@ var BaseAppView = GObject.registerClass({
             this._items.set(icon.id, icon);
         });
 
+        this._animateLaterId = 0;
+        this._viewLoadedHandlerId = 0;
+        this._viewIsReady = true;
         this.emit('view-loaded');
     }
 
@@ -241,6 +244,18 @@ var BaseAppView = GObject.registerClass({
             Main.overview.dash.showAppsButton);
     }
 
+    _clearAnimateLater() {
+        if (this._animateLaterId) {
+            Meta.later_remove(this._animateLaterId);
+            this._animateLaterId = 0;
+        }
+        if (this._viewLoadedHandlerId) {
+            this.disconnect(this._viewLoadedHandlerId);
+            this._viewLoadedHandlerId = 0;
+        }
+        this._grid.opacity = 255;
+    }
+
     animate(animationDirection, onComplete) {
         if (onComplete) {
             let animationDoneId = this._grid.connect('animation-done', () => {
@@ -249,11 +264,30 @@ var BaseAppView = GObject.registerClass({
             });
         }
 
+        this._clearAnimateLater();
+
         if (animationDirection == IconGrid.AnimationDirection.IN) {
-            let id = this._grid.connect('paint', () => {
-                this._grid.disconnect(id);
-                this._doSpringAnimation(animationDirection);
-            });
+            const doSpringAnimationLater = (laterType, animationDirection) => {
+                this._animateLaterId = Meta.later_add(laterType,
+                    () => {
+                        this._animateLaterId = 0;
+                        this._doSpringAnimation(animationDirection);
+                        return GLib.SOURCE_REMOVE;
+                    });
+            };
+
+            if (this._viewIsReady) {
+                this._grid.opacity = 0;
+                doSpringAnimationLater(
+                    Meta.LaterType.IDLE, animationDirection);
+            } else {
+                this._viewLoadedHandlerId = this.connect('view-loaded',
+                    () => {
+                        this._clearAnimateLater();
+                        doSpringAnimationLater(
+                            Meta.LaterType.BEFORE_REDRAW, animationDirection);
+                    });
+            }
         } else {
             this._doSpringAnimation(animationDirection);
         }
@@ -375,15 +409,19 @@ var AllView = GObject.registerClass({
         this._lastOvershootY = -1;
         this._lastOvershootTimeoutId = 0;
 
+        this._viewIsReady = false;
+
         Main.overview.connect('hidden', () => this.goToPage(0));
 
         this._redisplayWorkId = Main.initializeDeferredWork(this, this._redisplay.bind(this));
 
         Shell.AppSystem.get_default().connect('installed-changed', () => {
+            this._viewIsReady = false;
             Main.queueDeferredWork(this._redisplayWorkId);
         });
         this._folderSettings = new Gio.Settings({ schema_id: 'org.gnome.desktop.app-folders' });
         this._folderSettings.connect('changed::folder-children', () => {
+            this._viewIsReady = false;
             Main.queueDeferredWork(this._redisplayWorkId);
         });
 
