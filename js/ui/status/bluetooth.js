@@ -104,7 +104,7 @@ class Indicator extends PanelMenu.SystemIndicator {
 
     _sync() {
         let devices = this._getDeviceInfos();
-        let nConnectedDevices = devices.filter(device => device.connected);
+        const nConnectedDevices = devices.filter(device => device.connected);
 
         let sensitive = !Main.sessionMode.isLocked && !Main.sessionMode.isGreeter;
 
