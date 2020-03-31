@@ -132,7 +132,9 @@ function start() {
         notifyError(msg, detail);
     });
 
-    Gio.DesktopAppInfo.set_desktop_env('GNOME');
+    let currentDesktop = GLib.getenv('XDG_CURRENT_DESKTOP');
+    if (!currentDesktop || !currentDesktop.split(':').includes('GNOME'))
+        Gio.DesktopAppInfo.set_desktop_env('GNOME');
 
     sessionMode = new SessionMode.SessionMode();
     sessionMode.connect('updated', _sessionUpdated);
