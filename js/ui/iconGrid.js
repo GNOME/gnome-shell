@@ -949,7 +949,8 @@ class PaginatedIconGrid extends IconGrid {
 
         // We want to contain the grid inside the parent box with padding
         this._rowsPerPage = this.rowsForHeight(availHeightPerPage);
-        this._nPages = Math.ceil(nRows / this._rowsPerPage);
+        // Prevent zero or negative height values from breaking the calculation.
+        this._nPages = Math.max(1, Math.ceil(nRows / this._rowsPerPage));
         this._spaceBetweenPages = availHeightPerPage - (this.topPadding + this.bottomPadding) - this._availableHeightPerPageForItems();
         this._childrenPerPage = nColumns * this._rowsPerPage;
     }
