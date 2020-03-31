@@ -837,7 +837,7 @@ class PopoverMenu extends PanelMenu.SingleIconButton {
         this.add_style_class_name('powermenu');
     }
 
-    _onEvent(actor, event) {
+    vfunc_event(event) {
         if (this.menu &&
             (event.type() == Clutter.EventType.TOUCH_BEGIN ||
              event.type() == Clutter.EventType.BUTTON_PRESS)) {
