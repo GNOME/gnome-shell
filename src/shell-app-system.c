@@ -453,8 +453,7 @@ shell_app_system_lookup_app (ShellAppSystem   *self,
 {
   ShellAppSystemPrivate *priv = self->priv;
   ShellApp *app;
-  g_autoptr(GDesktopAppInfo) info = NULL;
-  g_autofree char *alias = NULL;
+  GDesktopAppInfo *info;
 
   app = g_hash_table_lookup (priv->id_to_app, id);
   if (app)
