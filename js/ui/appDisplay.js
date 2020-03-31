@@ -291,6 +291,11 @@ var BaseAppView = GObject.registerClass({
         }
     }
 
+    vfunc_unmap() {
+        this._clearAnimateLater();
+        super.vfunc_unmap();
+    }
+
     animateSwitch(animationDirection) {
         this.remove_all_transitions();
         this._grid.remove_all_transitions();
