@@ -2037,8 +2037,6 @@ var AppIcon = GObject.registerClass({
             this._updateRunningStyle();
         });
         this._updateRunningStyle();
-
-        this.connect('destroy', this._onDestroy.bind(this));
     }
 
     _onDestroy() {
