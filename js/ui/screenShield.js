@@ -498,6 +498,8 @@ var ScreenShield = class {
         if (Main.sessionMode.currentMode == 'unlock-dialog')
             Main.sessionMode.popMode('unlock-dialog');
 
+        this.emit('wake-up-screen');
+
         if (this._isGreeter) {
             // We don't want to "deactivate" any more than
             // this. In particular, we don't want to drop
