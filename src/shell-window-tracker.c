@@ -375,13 +375,6 @@ maybe_find_target_app_for_toolbox (ShellWindowTracker  *tracker,
   g_autofree gchar *app_id_prefix = NULL;
   const gchar *hack_toolbox_id = HACK_TOOLBOX_ID;
 
-  /* If code view is disabled globally, do nothing here */
-  settings = shell_global_get_settings (shell_global_get ());
-  g_object_get (settings, "settings-schema", &schema, NULL);
-  if (!g_settings_schema_has_key (schema, "hack-mode-enabled") ||
-      !g_settings_get_boolean (settings, "hack-mode-enabled"))
-    return NULL;
-
   /* Check if there is a set application id and object path
    * on this window. If not, then it can't be a toolbox. */
   window_app_id = meta_window_get_gtk_application_id (window);
