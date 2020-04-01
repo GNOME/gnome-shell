@@ -1,7 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported ExtensionState, ExtensionType, getCurrentExtension,
-   getSettings, initTranslations, isOutOfDate, installImporter,
-   serializeExtension, deserializeExtension */
+   getSettings, initTranslations, openPrefs, isOutOfDate,
+   installImporter, serializeExtension, deserializeExtension */
 
 // Common utils for the extension system and the extension
 // preferences tool
@@ -151,6 +151,27 @@ function getSettings(schema) {
         throw new Error(`Schema ${schema} could not be found for extension ${extension.metadata.uuid}. Please check your installation`);
 
     return new Gio.Settings({ settings_schema: schemaObj });
+}
+
+/**
+ * openPrefs:
+ *
+ * Open the preference dialog of the current extension
+ */
+function openPrefs() {
+    const extension = getCurrentExtension();
+
+    if (!extension)
+        throw new Error('openPrefs() can only be called from extensions');
+
+    try {
+        const extensionManager = imports.ui.main.extensionManager;
+        extensionManager.openExtensionPrefs(extension.uuid, '', {});
+    } catch (e) {
+        if (e.name === 'ImportError')
+            throw new Error('openPrefs() cannot be called from preferences');
+        logError(e, 'Failed to open extension preferences');
+    }
 }
 
 /**
