@@ -37,6 +37,7 @@ servicedir = join_paths(datadir, 'dbus-1', 'services')
 
 gjs = find_program('gjs')
 appstream_util = find_program('appstream-util', required: false)
+desktop_file_validate = find_program('desktop-file-validate', required: false)
 
 subdir('data')
 subdir('js')
