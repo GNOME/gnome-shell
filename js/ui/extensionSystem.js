@@ -215,6 +215,24 @@ var ExtensionManager = class {
         return true;
     }
 
+    openExtensionPrefs(uuid, parentWindow, options) {
+        const extension = this.lookup(uuid);
+        if (!extension || !extension.hasPrefs)
+            return false;
+
+        Gio.DBus.session.call(
+            'org.gnome.Shell.Extensions',
+            '/org/gnome/Shell/Extensions',
+            'org.gnome.Shell.Extensions',
+            'OpenExtensionPrefs',
+            new GLib.Variant('(ssa{sv})', [uuid, parentWindow, options]),
+            null,
+            Gio.DBusCallFlags.NONE,
+            -1,
+            null);
+        return true;
+    }
+
     notifyExtensionUpdate(uuid) {
         let extension = this.lookup(uuid);
         if (!extension)
