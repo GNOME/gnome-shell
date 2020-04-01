@@ -519,6 +519,9 @@ var ScreenShield = class {
             this._isModal = false;
         }
 
+        this._longLightbox.lightOff();
+        this._shortLightbox.lightOff();
+
         this._lockDialogGroup.ease({
             translation_y: -global.screen_height,
             duration: Overview.ANIMATION_TIME,
@@ -533,8 +536,6 @@ var ScreenShield = class {
             this._dialog = null;
         }
 
-        this._longLightbox.lightOff();
-        this._shortLightbox.lightOff();
         this.actor.hide();
 
         if (this._becameActiveId != 0) {
