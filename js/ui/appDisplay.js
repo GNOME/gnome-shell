@@ -493,7 +493,7 @@ class AppDisplay extends BaseAppView {
                 this._currentDialog.popdown();
         });
         Main.overview.addAction(this._clickAction, false);
-        this._eventBlocker.bind_property('visible', this._clickAction,
+        this._eventBlocker.bind_property('reactive', this._clickAction,
             'enabled', GObject.BindingFlags.SYNC_CREATE);
 
         this._bgAction = new Clutter.ClickAction();
