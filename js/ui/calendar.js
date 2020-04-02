@@ -222,7 +222,9 @@ class DBusEventSource extends EventSourceBase {
             }
         }
 
-        this._dbusProxy.connectSignal('Changed', this._onChanged.bind(this));
+        this._dbusProxy.connectSignal('EventsAdded', this._onEventsAdded.bind(this));
+        this._dbusProxy.connectSignal('EventsRemoved', this._onEventsRemoved.bind(this));
+        this._dbusProxy.connectSignal('ClientDisappeared', this._onClientDisappeared.bind(this));
 
         this._dbusProxy.connect('notify::g-name-owner', () => {
             if (this._dbusProxy.g_name_owner)
@@ -258,7 +260,7 @@ class DBusEventSource extends EventSourceBase {
     }
 
     _resetCache() {
-        this._events = [];
+        this._events = new Map();
         this._lastRequestBegin = null;
         this._lastRequestEnd = null;
     }
@@ -274,28 +276,59 @@ class DBusEventSource extends EventSourceBase {
         this.emit('changed');
     }
 
-    _onChanged() {
-        this._loadEvents(false);
-    }
+    _onEventsAdded(dbusProxy, nameOwner, argArray) {
+        let appointments = argArray[0] || [];
+        let changed = false;
 
-    _onEventsReceived(results, _error) {
-        let newEvents = [];
-        let appointments = results[0] || [];
         for (let n = 0; n < appointments.length; n++) {
             let a = appointments[n];
-            let date = new Date(a[4] * 1000);
-            let end = new Date(a[5] * 1000);
             let id = a[0];
             let summary = a[1];
-            let allDay = a[3];
+            let allDay = a[2];
+            let date = new Date(a[3] * 1000);
+            let end = new Date(a[4] * 1000);
             let event = new CalendarEvent(id, date, end, summary, allDay);
-            newEvents.push(event);
-        }
-        newEvents.sort((ev1, ev2) => ev1.date.getTime() - ev2.date.getTime());
+            this._events.set(event.id, event);
 
-        this._events = newEvents;
-        this._isLoading = false;
-        this.emit('changed');
+            changed = true;
+        }
+
+        if (changed)
+            this.emit('changed');
+    }
+
+    _onEventsRemoved(dbusProxy, nameOwner, argArray) {
+        let ids = argArray[0] || [];
+        let changed = false;
+
+        for (let n = 0; n < ids.length; n++) {
+            let id = ids[n];
+
+            if (this._events.delete(id))
+                changed = true;
+        }
+
+        if (changed)
+            this.emit('changed');
+    }
+
+    _onClientDisappeared(dbusProxy, nameOwner, argArray) {
+        let sourceUid = argArray[0] || "";
+        let changed = false;
+        let idsIter = this._events.keys();
+
+        sourceUid += '\n';
+
+        for (let item = idsIter.next(); !item.done; item = idsIter.next()) {
+            let id = item.value;
+
+            if (id.startsWith(sourceUid) &&
+                this._events.delete(id))
+                changed = true;
+        }
+
+        if (changed)
+            this.emit('changed');
     }
 
     _loadEvents(forceReload) {
@@ -304,32 +337,40 @@ class DBusEventSource extends EventSourceBase {
             return;
 
         if (this._curRequestBegin && this._curRequestEnd) {
-            this._dbusProxy.GetEventsRemote(this._curRequestBegin.getTime() / 1000,
-                                            this._curRequestEnd.getTime() / 1000,
-                                            forceReload,
-                                            this._onEventsReceived.bind(this),
-                                            Gio.DBusCallFlags.NONE);
+            if (forceReload) {
+                this._events.clear();
+                this.emit('changed');
+            }
+            this._dbusProxy.SetTimeRangeRemote(this._curRequestBegin.getTime() / 1000,
+                                               this._curRequestEnd.getTime() / 1000,
+                                               forceReload,
+                                               Gio.DBusCallFlags.NONE);
         }
     }
 
     requestRange(begin, end) {
         if (!(_datesEqual(begin, this._lastRequestBegin) && _datesEqual(end, this._lastRequestEnd))) {
-            this._isLoading = true;
             this._lastRequestBegin = begin;
             this._lastRequestEnd = end;
             this._curRequestBegin = begin;
             this._curRequestEnd = end;
-            this._loadEvents(false);
+            this._loadEvents(true);
         }
     }
 
-    getEvents(begin, end) {
+    getEvents(begin, end, onlyCheckExistence) {
         let result = [];
-        for (let n = 0; n < this._events.length; n++) {
-            let event = this._events[n];
+        let eventsIter = this._events.values();
 
-            if (_dateIntervalsOverlap(event.date, event.end, begin, end))
+        for (let item = eventsIter.next(); !item.done; item = eventsIter.next()) {
+            let event = item.value;
+
+            if (_dateIntervalsOverlap(event.date, event.end, begin, end)) {
                 result.push(event);
+
+                if (onlyCheckExistence)
+                    return result;
+            }
         }
         result.sort((event1, event2) => {
             // sort events by end time on ending day
@@ -344,7 +385,7 @@ class DBusEventSource extends EventSourceBase {
         let dayBegin = _getBeginningOfDay(day);
         let dayEnd = _getEndOfDay(day);
 
-        let events = this.getEvents(dayBegin, dayEnd);
+        let events = this.getEvents(dayBegin, dayEnd, true);
 
         if (events.length == 0)
             return false;
@@ -875,7 +916,7 @@ class EventsSection extends MessageList.MessageListSection {
     }
 
     _reloadEvents() {
-        if (this._eventSource.isLoading)
+        if (this._eventSource.isLoading || this._reloading)
             return;
 
         this._reloading = true;
@@ -884,10 +925,7 @@ class EventsSection extends MessageList.MessageListSection {
         let periodEnd = _getEndOfDay(this._date);
         let events = this._eventSource.getEvents(periodBegin, periodEnd);
 
-        let ids = events.map(e => e.id);
         this._messageById.forEach((message, id) => {
-            if (ids.includes(id))
-                return;
             this._messageById.delete(id);
             this.removeMessage(message);
         });
