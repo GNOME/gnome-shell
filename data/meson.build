@@ -1,5 +1,6 @@
 desktop_files = [
   'org.gnome.Shell.desktop',
+  'org.gnome.Shell.Extensions.desktop',
 ]
 service_files = []
 
@@ -42,6 +43,7 @@ endforeach
 
 
 subdir('dbus-interfaces')
+subdir('icons')
 subdir('theme')
 
 data_resources = [
