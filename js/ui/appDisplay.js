@@ -466,10 +466,11 @@ class AppDisplay extends BaseAppView {
         this._eventBlocker = new St.Widget({
             x_expand: true,
             y_expand: true,
-            reactive: true,
-            visible: false,
+            reactive: false,
+            visible: true,
         });
         this._stack.add_actor(this._eventBlocker);
+        this._nEventBlockerInhibits = 0;
 
         box.add_actor(this._stack);
         this._scrollView.add_actor(box);
@@ -811,7 +812,7 @@ class AppDisplay extends BaseAppView {
     addFolderDialog(dialog) {
         this.add_child(dialog);
         dialog.connect('open-state-changed', (o, isOpen) => {
-            this._eventBlocker.visible = isOpen;
+            this._eventBlocker.reactive = isOpen;
 
             if (this._currentDialog) {
                 this._currentDialog.disconnect(this._currentDialogDestroyId);
@@ -825,7 +826,7 @@ class AppDisplay extends BaseAppView {
                 this._currentDialogDestroyId = dialog.connect('destroy', () => {
                     this._currentDialog = null;
                     this._currentDialogDestroyId = 0;
-                    this._eventBlocker.visible = false;
+                    this._eventBlocker.reactive = false;
                 });
             }
             this._updateIconOpacities(isOpen);
@@ -960,7 +961,6 @@ class AppDisplay extends BaseAppView {
         DND.addDragMonitor(this._dragMonitor);
 
         this._bgAction.release();
-        this._eventBlocker.visible = false;
     }
 
     _onDragMotion(dragEvent) {
@@ -985,7 +985,6 @@ class AppDisplay extends BaseAppView {
             this._dragMonitor = null;
         }
 
-        this._eventBlocker.visible = this._currentDialog !== null;
         this._resetOvershoot();
     }
 
@@ -1019,6 +1018,19 @@ class AppDisplay extends BaseAppView {
 
     get scrollView() {
         return this._scrollView;
+    }
+
+    inhibitEventBlocker() {
+        this._nEventBlockerInhibits++;
+        this._eventBlocker.visible = this._nEventBlockerInhibits == 0;
+    }
+
+    uninhibitEventBlocker() {
+        if (this._nEventBlockerInhibits === 0)
+            throw new Error('Not inhibited');
+
+        this._nEventBlockerInhibits--;
+        this._eventBlocker.visible = this._nEventBlockerInhibits == 0;
     }
 });
 
@@ -1521,6 +1533,8 @@ var FolderIcon = GObject.registerClass({
             dragMotion: this._onDragMotion.bind(this),
         };
         DND.addDragMonitor(this._dragMonitor);
+
+        this._parentView.inhibitEventBlocker();
     }
 
     _onDragMotion(dragEvent) {
@@ -1537,6 +1551,7 @@ var FolderIcon = GObject.registerClass({
     _onDragEnd() {
         this.remove_style_pseudo_class('drop');
         if (this._dragMonitor) {
+            this._parentView.uninhibitEventBlocker();
             DND.removeDragMonitor(this._dragMonitor);
             delete this._dragMonitor;
         }
