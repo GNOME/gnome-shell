@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+# Keep in sync with subprojects/extensions-app
+Name=Extensions
+# Translators: Do NOT translate or transliterate this text (this is an icon file name)!
+Icon=org.gnome.Shell.Extensions
+# Never launch this, just provide name+icon to portal dialog
+Exec=false
+OnlyShowIn=GNOME;
+NoDisplay=true
