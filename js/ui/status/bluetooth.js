@@ -84,15 +84,14 @@ class Indicator extends PanelMenu.SystemIndicator {
             const isTrusted = this._model.get_value(iter,
                 GnomeBluetooth.Column.TRUSTED);
 
-            if (!isPaired && !isTrusted)
-                continue;
-
-            deviceInfos.push({
-                connected: this._model.get_value(iter,
-                    GnomeBluetooth.Column.CONNECTED),
-                name: this._model.get_value(iter,
-                    GnomeBluetooth.Column.ALIAS),
-            });
+            if (isPaired || isTrusted) {
+                deviceInfos.push({
+                    connected: this._model.get_value(iter,
+                        GnomeBluetooth.Column.CONNECTED),
+                    name: this._model.get_value(iter,
+                        GnomeBluetooth.Column.ALIAS),
+                });
+            }
 
             ret = this._model.iter_next(iter);
         }
