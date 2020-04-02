@@ -41,21 +41,25 @@ G_GNUC_END_IGNORE_DEPRECATIONS
 
 #include "calendar-sources.h"
 
-/* Set the environment variable CALENDAR_SERVER_DEBUG to show debug */
-static void print_debug (const gchar *str, ...);
-
 #define BUS_NAME "org.gnome.Shell.CalendarServer"
 
 static const gchar introspection_xml[] =
   "<node>"
   "  <interface name='org.gnome.Shell.CalendarServer'>"
-  "    <method name='GetEvents'>"
+  "    <method name='SetTimeRange'>"
   "      <arg type='x' name='since' direction='in'/>"
   "      <arg type='x' name='until' direction='in'/>"
   "      <arg type='b' name='force_reload' direction='in'/>"
-  "      <arg type='a(sssbxxa{sv})' name='events' direction='out'/>"
   "    </method>"
-  "    <signal name='Changed'/>"
+  "    <signal name='EventsAddedOrUpdated'>"
+  "      <arg type='a(ssbxxa{sv})' name='events' direction='out'/>"
+  "    </signal>"
+  "    <signal name='EventsRemoved'>"
+  "      <arg type='as' name='ids' direction='out'/>"
+  "    </signal>"
+  "    <signal name='ClientDisappeared'>"
+  "      <arg type='s' name='source_uid' direction='out'/>"
+  "    </signal>"
   "    <property name='Since' type='x' access='read'/>"
   "    <property name='Until' type='x' access='read'/>"
   "    <property name='HasCalendars' type='b' access='read'/>"
@@ -75,34 +79,39 @@ static App *_global_app = NULL;
 
 /* ---------------------------------------------------------------------------------------------------- */
 
-typedef struct
+/* While the UID is usually enough to identify an event,
+ * only the triple of (source,UID,RID) is fully unambiguous;
+ * neither may contain '\n', so we can safely use it to
+ * create a unique ID from the triple
+ */
+static gchar *
+create_event_id (const gchar *source_uid,
+                 const gchar *comp_uid,
+                 const gchar *comp_rid)
 {
-  char *rid;
-  time_t start_time;
-  time_t end_time;
-} CalendarOccurrence;
-
-typedef struct
-{
-  char   *uid;
-  char   *source_id;
-  char   *backend_name;
-  char   *summary;
-  char   *description;
-  char   *color_string;
-  time_t  start_time;
-  time_t  end_time;
-  guint   is_all_day : 1;
-
-  /* Only used internally */
-  GSList *occurrences;
-} CalendarAppointment;
+  return g_strconcat (
+    source_uid ? source_uid : "",
+    "\n",
+    comp_uid ? comp_uid : "",
+    "\n",
+    comp_rid ? comp_rid : "",
+    NULL);
+}
 
 typedef struct
 {
   ECalClient *client;
-  GHashTable *appointments;
+  GSList **pappointments; /* CalendarAppointment * */
 } CollectAppointmentsData;
+
+typedef struct
+{
+  gchar  *id;
+  gchar  *summary;
+  time_t  start_time;
+  time_t  end_time;
+  guint   is_all_day : 1;
+} CalendarAppointment;
 
 static time_t
 get_time_from_property (ECalClient            *cal,
@@ -138,46 +147,6 @@ get_time_from_property (ECalClient            *cal,
   g_clear_object (&param);
   g_clear_object (&prop);
   g_clear_object (&itt);
-
-  return retval;
-}
-
-static char *
-get_ical_uid (ICalComponent *icomp)
-{
-  return g_strdup (i_cal_component_get_uid (icomp));
-}
-
-static char *
-get_ical_summary (ICalComponent *icomp)
-{
-  ICalProperty *prop;
-  char         *retval;
-
-  prop = i_cal_component_get_first_property (icomp, I_CAL_SUMMARY_PROPERTY);
-  if (!prop)
-    return NULL;
-
-  retval = g_strdup (i_cal_property_get_summary (prop));
-
-  g_object_unref (prop);
-
-  return retval;
-}
-
-static char *
-get_ical_description (ICalComponent *icomp)
-{
-  ICalProperty *prop;
-  char         *retval;
-
-  prop = i_cal_component_get_first_property (icomp, I_CAL_DESCRIPTION_PROPERTY);
-  if (!prop)
-    return NULL;
-
-  retval = g_strdup (i_cal_property_get_description (prop));
-
-  g_object_unref (prop);
 
   return retval;
 }
@@ -275,172 +244,48 @@ get_ical_completed_time (ECalClient    *cal,
                                  default_zone);
 }
 
-static char *
-get_source_color (ECalClient *esource)
-{
-  ESource *source;
-  ECalClientSourceType source_type;
-  ESourceSelectable *extension;
-  const gchar *extension_name;
-
-  g_return_val_if_fail (E_IS_CAL_CLIENT (esource), NULL);
-
-  source = e_client_get_source (E_CLIENT (esource));
-  source_type = e_cal_client_get_source_type (esource);
-
-  switch (source_type)
-    {
-      case E_CAL_CLIENT_SOURCE_TYPE_EVENTS:
-        extension_name = E_SOURCE_EXTENSION_CALENDAR;
-        break;
-      case E_CAL_CLIENT_SOURCE_TYPE_TASKS:
-        extension_name = E_SOURCE_EXTENSION_TASK_LIST;
-        break;
-      default:
-        g_return_val_if_reached (NULL);
-    }
-
-  extension = e_source_get_extension (source, extension_name);
-
-  return e_source_selectable_dup_color (extension);
-}
-
-static gchar *
-get_source_backend_name (ECalClient *esource)
-{
-  ESource *source;
-  ECalClientSourceType source_type;
-  ESourceBackend *extension;
-  const gchar *extension_name;
-
-  g_return_val_if_fail (E_IS_CAL_CLIENT (esource), NULL);
-
-  source = e_client_get_source (E_CLIENT (esource));
-  source_type = e_cal_client_get_source_type (esource);
-
-  switch (source_type)
-    {
-      case E_CAL_CLIENT_SOURCE_TYPE_EVENTS:
-        extension_name = E_SOURCE_EXTENSION_CALENDAR;
-        break;
-      case E_CAL_CLIENT_SOURCE_TYPE_TASKS:
-        extension_name = E_SOURCE_EXTENSION_TASK_LIST;
-        break;
-      default:
-        g_return_val_if_reached (NULL);
-    }
-
-  extension = e_source_get_extension (source, extension_name);
-
-  return e_source_backend_dup_backend_name (extension);
-}
-
-static inline int
-null_safe_strcmp (const char *a,
-                  const char *b)
-{
-  return (!a && !b) ? 0 : (a && !b) || (!a && b) ? 1 : strcmp (a, b);
-}
-
-static inline gboolean
-calendar_appointment_equal (CalendarAppointment *a,
-                            CalendarAppointment *b)
-{
-  GSList *la, *lb;
-
-  if (g_slist_length (a->occurrences) != g_slist_length (b->occurrences))
-      return FALSE;
-
-  for (la = a->occurrences, lb = b->occurrences; la && lb; la = la->next, lb = lb->next)
-    {
-      CalendarOccurrence *oa = la->data;
-      CalendarOccurrence *ob = lb->data;
-
-      if (oa->start_time != ob->start_time ||
-          oa->end_time   != ob->end_time ||
-          null_safe_strcmp (oa->rid, ob->rid) != 0)
-        return FALSE;
-    }
-
-  return
-    null_safe_strcmp (a->uid,          b->uid)          == 0 &&
-    null_safe_strcmp (a->source_id,    b->source_id)    == 0 &&
-    null_safe_strcmp (a->backend_name, b->backend_name) == 0 &&
-    null_safe_strcmp (a->summary,      b->summary)      == 0 &&
-    null_safe_strcmp (a->description,  b->description)  == 0 &&
-    null_safe_strcmp (a->color_string, b->color_string) == 0 &&
-    a->start_time == b->start_time                         &&
-    a->end_time   == b->end_time                           &&
-    a->is_all_day == b->is_all_day;
-}
-
-static void
-calendar_appointment_free (CalendarAppointment *appointment)
-{
-  GSList *l;
-
-  for (l = appointment->occurrences; l; l = l->next)
-    g_free (((CalendarOccurrence *)l->data)->rid);
-  g_slist_free_full (appointment->occurrences, g_free);
-  appointment->occurrences = NULL;
-
-  g_free (appointment->uid);
-  appointment->uid = NULL;
-
-  g_free (appointment->source_id);
-  appointment->source_id = NULL;
-
-  g_free (appointment->backend_name);
-  appointment->backend_name = NULL;
-
-  g_free (appointment->summary);
-  appointment->summary = NULL;
-
-  g_free (appointment->description);
-  appointment->description = NULL;
-
-  g_free (appointment->color_string);
-  appointment->color_string = NULL;
-
-  appointment->start_time = 0;
-  appointment->is_all_day = FALSE;
-}
-
-static void
-calendar_appointment_init (CalendarAppointment  *appointment,
-                           ICalComponent        *icomp,
-                           ECalClient           *cal)
-{
-  ICalTimezone *default_zone;
-  const char *source_id;
-
-  source_id = e_source_get_uid (e_client_get_source (E_CLIENT (cal)));
-  default_zone = e_cal_client_get_default_timezone (cal);
-
-  appointment->uid          = get_ical_uid (icomp);
-  appointment->source_id    = g_strdup (source_id);
-  appointment->backend_name = get_source_backend_name (cal);
-  appointment->summary      = get_ical_summary (icomp);
-  appointment->description  = get_ical_description (icomp);
-  appointment->color_string = get_source_color (cal);
-  appointment->start_time   = get_ical_start_time (cal, icomp, default_zone);
-  appointment->end_time     = get_ical_end_time (cal, icomp, default_zone);
-  appointment->is_all_day   = get_ical_is_all_day (cal,
-                                                   icomp,
-                                                   appointment->start_time,
-                                                   default_zone);
-}
-
 static CalendarAppointment *
-calendar_appointment_new (ICalComponent        *icomp,
-                          ECalClient           *cal)
+calendar_appointment_new (ECalClient    *cal,
+                          ECalComponent *comp)
 {
-  CalendarAppointment *appointment;
+  CalendarAppointment *appt;
+  ICalTimezone *default_zone;
+  ICalComponent *ical;
+  ECalComponentId *id;
 
-  appointment = g_new0 (CalendarAppointment, 1);
+  default_zone = e_cal_client_get_default_timezone (cal);
+  ical = e_cal_component_get_icalcomponent (comp);
+  id = e_cal_component_get_id (comp);
 
-  calendar_appointment_init (appointment, icomp, cal);
-  return appointment;
+  appt = g_new0 (CalendarAppointment, 1);
+
+  appt->id          = create_event_id (e_source_get_uid (e_client_get_source (E_CLIENT (cal))),
+                                       id ? e_cal_component_id_get_uid (id) : NULL,
+                                       id ? e_cal_component_id_get_rid (id) : NULL);
+  appt->summary     = g_strdup (i_cal_component_get_summary (ical));
+  appt->start_time  = get_ical_start_time (cal, ical, default_zone);
+  appt->end_time    = get_ical_end_time (cal, ical, default_zone);
+  appt->is_all_day  = get_ical_is_all_day (cal,
+                                           ical,
+                                           appt->start_time,
+                                           default_zone);
+
+  e_cal_component_id_free (id);
+
+  return appt;
+}
+
+static void
+calendar_appointment_free (gpointer ptr)
+{
+  CalendarAppointment *appt = ptr;
+
+  if (appt)
+    {
+      g_free (appt->id);
+      g_free (appt->summary);
+      g_free (appt);
+    }
 }
 
 static time_t
@@ -463,33 +308,24 @@ generate_instances_cb (ICalComponent *icomp,
                        GCancellable *cancellable,
                        GError **error)
 {
-  ECalClient *cal = ((CollectAppointmentsData *)user_data)->client;
-  GHashTable *appointments = ((CollectAppointmentsData *)user_data)->appointments;
+  CollectAppointmentsData *data = user_data;
   CalendarAppointment *appointment;
-  CalendarOccurrence *occurrence;
+  ECalComponent *comp;
   ICalTimezone *default_zone;
-  const gchar *uid;
 
-  default_zone = e_cal_client_get_default_timezone (cal);
-  uid = i_cal_component_get_uid (icomp);
-  appointment = g_hash_table_lookup (appointments, uid);
+  default_zone = e_cal_client_get_default_timezone (data->client);
+  comp = e_cal_component_new_from_icalcomponent (i_cal_component_clone (icomp));
 
-  if (appointment == NULL)
-    {
-      appointment = calendar_appointment_new (icomp, cal);
-      g_hash_table_insert (appointments, g_strdup (uid), appointment);
-    }
+  appointment             = calendar_appointment_new (data->client, comp);
+  appointment->start_time = timet_from_ical_time (instance_start, default_zone);
+  appointment->end_time   = timet_from_ical_time (instance_end, default_zone);
 
-  occurrence             = g_new0 (CalendarOccurrence, 1);
-  occurrence->start_time = timet_from_ical_time (instance_start, default_zone);
-  occurrence->end_time   = timet_from_ical_time (instance_end, default_zone);
-  occurrence->rid        = e_cal_util_component_get_recurid_as_string (icomp);
+  *(data->pappointments) = g_slist_prepend (*(data->pappointments), appointment);
 
-  appointment->occurrences = g_slist_append (appointment->occurrences, occurrence);
+  g_clear_object (&comp);
 
   return TRUE;
 }
-
 
 /* ---------------------------------------------------------------------------------------------------- */
 
@@ -503,24 +339,23 @@ struct _App
   ICalTimezone *zone;
 
   CalendarSources *sources;
-  gulong sources_signal_id;
-
-  /* hash from uid to CalendarAppointment objects */
-  GHashTable *appointments;
+  gulong client_appeared_signal_id;
+  gulong client_disappeared_signal_id;
 
   gchar *timezone_location;
 
-  guint changed_timeout_id;
+  GSList *notify_appointments; /* CalendarAppointment *, for EventsAdded */
+  GSList *notify_ids; /* gchar *, for EventsRemoved */
+  guint events_added_timeout_id;
+  guint events_removed_timeout_id;
 
-  gboolean cache_invalid;
-
-  GList *live_views;
+  GSList *live_views;
 };
 
 static void
 app_update_timezone (App *app)
 {
-  gchar *location;
+  g_autofree char *location = NULL;
 
   location = e_cal_system_timezone_get_location ();
   if (g_strcmp0 (location, app->timezone_location) != 0)
@@ -530,48 +365,188 @@ app_update_timezone (App *app)
       else
         app->zone = i_cal_timezone_get_builtin_timezone (location);
       g_free (app->timezone_location);
-      app->timezone_location = location;
+      app->timezone_location = g_steal_pointer (&location);
       print_debug ("Using timezone %s", app->timezone_location);
-    }
-  else
-    {
-      g_free (location);
     }
 }
 
 static gboolean
-on_app_schedule_changed_cb (gpointer user_data)
+on_app_schedule_events_added_cb (gpointer user_data)
 {
   App *app = user_data;
-  print_debug ("Emitting changed");
+  GVariantBuilder builder, extras_builder;
+  GSList *events, *link;
+
+  if (g_source_is_destroyed (g_main_current_source ()))
+    return FALSE;
+
+  events = g_slist_reverse (app->notify_appointments);
+  app->notify_appointments = NULL;
+  app->events_added_timeout_id = 0;
+
+  print_debug ("Emitting EventsAddedOrUpdated with %d events", g_slist_length (events));
+
+  if (!events)
+    return FALSE;
+
+  /* The a{sv} is used as an escape hatch in case we want to provide more
+   * information in the future without breaking ABI
+   */
+  g_variant_builder_init (&builder, G_VARIANT_TYPE ("a(ssbxxa{sv})"));
+  for (link = events; link; link = g_slist_next (link))
+    {
+      CalendarAppointment *appt = link->data;
+      time_t start_time = appt->start_time;
+      time_t end_time   = appt->end_time;
+
+      if ((start_time >= app->since &&
+           start_time < app->until) ||
+          (start_time <= app->since &&
+          (end_time - 1) > app->since))
+        {
+          g_variant_builder_init (&extras_builder, G_VARIANT_TYPE ("a{sv}"));
+          g_variant_builder_add (&builder,
+                                 "(ssbxxa{sv})",
+                                 appt->id,
+                                 appt->summary != NULL ? appt->summary : "",
+                                 (gboolean) appt->is_all_day,
+                                 (gint64) start_time,
+                                 (gint64) end_time,
+                                 extras_builder);
+          g_variant_builder_clear (&extras_builder);
+        }
+    }
+
   g_dbus_connection_emit_signal (app->connection,
                                  NULL, /* destination_bus_name */
                                  "/org/gnome/Shell/CalendarServer",
                                  "org.gnome.Shell.CalendarServer",
-                                 "Changed",
-                                 NULL, /* no params */
+                                 "EventsAddedOrUpdated",
+                                 g_variant_new ("(a(ssbxxa{sv}))", &builder),
                                  NULL);
-  app->changed_timeout_id = 0;
+
+  g_variant_builder_clear (&builder);
+
+  g_slist_free_full (events, calendar_appointment_free);
+
   return FALSE;
 }
 
 static void
-app_schedule_changed (App *app)
+app_schedule_events_added (App *app)
 {
-  print_debug ("Scheduling changed");
-  if (app->changed_timeout_id == 0)
+  print_debug ("Scheduling EventsAddedOrUpdated");
+  if (app->events_added_timeout_id == 0)
     {
-      app->changed_timeout_id = g_timeout_add (2000,
-                                               on_app_schedule_changed_cb,
-                                               app);
-      g_source_set_name_by_id (app->changed_timeout_id, "[gnome-shell] on_app_schedule_changed_cb");
+      app->events_added_timeout_id = g_timeout_add_seconds (2,
+                                                            on_app_schedule_events_added_cb,
+                                                            app);
+      g_source_set_name_by_id (app->events_added_timeout_id, "[gnome-shell] on_app_schedule_events_added_cb");
+    }
+}
+
+static gboolean
+on_app_schedule_events_removed_cb (gpointer user_data)
+{
+  App *app = user_data;
+  GVariantBuilder builder;
+  GSList *ids, *link;
+
+  if (g_source_is_destroyed (g_main_current_source ()))
+    return FALSE;
+
+  ids = app->notify_ids;
+  app->notify_ids = NULL;
+  app->events_removed_timeout_id = 0;
+
+  print_debug ("Emitting EventsRemoved with %d ids", g_slist_length (ids));
+
+  if (!ids)
+    return FALSE;
+
+  g_variant_builder_init (&builder, G_VARIANT_TYPE ("as"));
+  for (link = ids; link; link = g_slist_next (link))
+    {
+      const gchar *id = link->data;
+
+      g_variant_builder_add (&builder, "s", id);
+    }
+
+  g_dbus_connection_emit_signal (app->connection,
+                                 NULL, /* destination_bus_name */
+                                 "/org/gnome/Shell/CalendarServer",
+                                 "org.gnome.Shell.CalendarServer",
+                                 "EventsRemoved",
+                                 g_variant_new ("(as)", &builder),
+                                 NULL);
+  g_variant_builder_clear (&builder);
+
+  g_slist_free_full (ids, g_free);
+
+  return FALSE;
+}
+
+static void
+app_schedule_events_removed (App *app)
+{
+  print_debug ("Scheduling EventsRemoved");
+  if (app->events_removed_timeout_id == 0)
+    {
+      app->events_removed_timeout_id = g_timeout_add_seconds (2,
+                                                              on_app_schedule_events_removed_cb,
+                                                              app);
+      g_source_set_name_by_id (app->events_removed_timeout_id, "[gnome-shell] on_app_schedule_events_removed_cb");
     }
 }
 
 static void
-invalidate_cache (App *app)
+app_process_added_modified_objects (App *app,
+                                    ECalClientView *view,
+                                    GSList *objects) /* ICalComponent * */
 {
-  app->cache_invalid = TRUE;
+  ECalClient *cal_client;
+  GSList *link;
+  gboolean expand_recurrences;
+
+  cal_client = e_cal_client_view_ref_client (view);
+  expand_recurrences = e_cal_client_get_source_type (cal_client) == E_CAL_CLIENT_SOURCE_TYPE_EVENTS;
+
+  for (link = objects; link; link = g_slist_next (link))
+    {
+      ECalComponent *comp;
+      ICalComponent *icomp = link->data;
+
+      if (!icomp || !i_cal_component_get_uid (icomp))
+        continue;
+
+      if (expand_recurrences &&
+          !e_cal_util_component_is_instance (icomp) &&
+          e_cal_util_component_has_recurrences (icomp))
+        {
+          CollectAppointmentsData data;
+
+          data.client = cal_client;
+          data.pappointments = &app->notify_appointments;
+
+          e_cal_client_generate_instances_for_object_sync (cal_client, icomp, app->since, app->until, NULL,
+                                                           generate_instances_cb, &data);
+        }
+      else
+        {
+          comp = e_cal_component_new_from_icalcomponent (i_cal_component_clone (icomp));
+          if (!comp)
+            continue;
+
+          app->notify_appointments = g_slist_prepend (app->notify_appointments,
+                                                      calendar_appointment_new (cal_client, comp));
+          g_object_unref (comp);
+        }
+    }
+
+  g_clear_object (&cal_client);
+
+  if (app->notify_appointments)
+    app_schedule_events_added (app);
 }
 
 static void
@@ -580,24 +555,13 @@ on_objects_added (ECalClientView *view,
                   gpointer        user_data)
 {
   App *app = user_data;
-  GSList *l;
+  ECalClient *client;
 
-  print_debug ("%s for calendar", G_STRFUNC);
+  client = e_cal_client_view_ref_client (view);
+  print_debug ("%s (%d) for calendar '%s'", G_STRFUNC, g_slist_length (objects), e_source_get_uid (e_client_get_source (E_CLIENT (client))));
+  g_clear_object (&client);
 
-  for (l = objects; l != NULL; l = l->next)
-    {
-      ICalComponent *icomp = l->data;
-      const char *uid;
-
-      uid = i_cal_component_get_uid (icomp);
-
-      if (g_hash_table_lookup (app->appointments, uid) == NULL)
-        {
-          /* new appointment we don't know about => changed signal */
-          invalidate_cache (app);
-          app_schedule_changed (app);
-        }
-    }
+  app_process_added_modified_objects (app, view, objects);
 }
 
 static void
@@ -606,9 +570,13 @@ on_objects_modified (ECalClientView *view,
                      gpointer        user_data)
 {
   App *app = user_data;
-  print_debug ("%s for calendar", G_STRFUNC);
-  invalidate_cache (app);
-  app_schedule_changed (app);
+  ECalClient *client;
+
+  client = e_cal_client_view_ref_client (view);
+  print_debug ("%s (%d) for calendar '%s'", G_STRFUNC, g_slist_length (objects), e_source_get_uid (e_client_get_source (E_CLIENT (client))));
+  g_clear_object (&client);
+
+  app_process_added_modified_objects (app, view, objects);
 }
 
 static void
@@ -617,42 +585,60 @@ on_objects_removed (ECalClientView *view,
                     gpointer        user_data)
 {
   App *app = user_data;
-  print_debug ("%s for calendar", G_STRFUNC);
-  invalidate_cache (app);
-  app_schedule_changed (app);
+  ECalClient *client;
+  GSList *link;
+  const gchar *source_uid;
+
+  client = e_cal_client_view_ref_client (view);
+  source_uid = e_source_get_uid (e_client_get_source (E_CLIENT (client)));
+
+  print_debug ("%s (%d) for calendar '%s'", G_STRFUNC, g_slist_length (uids), source_uid);
+
+  for (link = uids; link; link = g_slist_next (link))
+    {
+      ECalComponentId *id = link->data;
+
+      if (!id)
+        continue;
+
+      app->notify_ids = g_slist_prepend (app->notify_ids,
+                                         create_event_id (source_uid,
+                                         e_cal_component_id_get_uid (id),
+                                         e_cal_component_id_get_rid (id)));
+    }
+
+  g_clear_object (&client);
+
+  if (app->notify_ids)
+    app_schedule_events_removed (app);
 }
 
-static void
-app_load_events (App *app)
+static gboolean
+app_has_calendars (App *app)
 {
-  GList *clients;
-  GList *l;
-  GList *ll;
-  gchar *since_iso8601;
-  gchar *until_iso8601;
-  gchar *query;
-  const char *tz_location;
+  return app->live_views != NULL;
+}
 
-  /* out with the old */
-  g_hash_table_remove_all (app->appointments);
-  /* nuke existing views */
-  for (ll = app->live_views; ll != NULL; ll = ll->next)
-    {
-      ECalClientView *view = E_CAL_CLIENT_VIEW (ll->data);
-      g_signal_handlers_disconnect_by_func (view, on_objects_added, app);
-      g_signal_handlers_disconnect_by_func (view, on_objects_modified, app);
-      g_signal_handlers_disconnect_by_func (view, on_objects_removed, app);
-      e_cal_client_view_stop (view, NULL);
-      g_object_unref (view);
-    }
-  g_list_free (app->live_views);
-  app->live_views = NULL;
+static ECalClientView *
+app_start_view (App *app,
+                ECalClient *cal_client)
+{
+  g_autofree char *since_iso8601 = NULL;
+  g_autofree char *until_iso8601 = NULL;
+  g_autofree char *query = NULL;
+  const gchar *tz_location;
+  ECalClientView *view = NULL;
+  g_autoptr (GError) error = NULL;
+
+  if (app->since <= 0 || app->since >= app->until)
+    return NULL;
 
   if (!app->since || !app->until)
     {
       print_debug ("Skipping load of events, no time interval set yet");
-      return;
+      return NULL;
     }
+
   /* timezone could have changed */
   app_update_timezone (app);
 
@@ -660,9 +646,10 @@ app_load_events (App *app)
   until_iso8601 = isodate_from_time_t (app->until);
   tz_location = i_cal_timezone_get_location (app->zone);
 
-  print_debug ("Loading events since %s until %s",
+  print_debug ("Loading events since %s until %s for calendar '%s'",
                since_iso8601,
-               until_iso8601);
+               until_iso8601,
+               e_source_get_uid (e_client_get_source (E_CLIENT (cal_client))));
 
   query = g_strdup_printf ("occur-in-time-range? (make-time \"%s\") "
                            "(make-time \"%s\") \"%s\"",
@@ -670,94 +657,186 @@ app_load_events (App *app)
                            until_iso8601,
                            tz_location);
 
-  clients = calendar_sources_get_appointment_clients (app->sources);
-  for (l = clients; l != NULL; l = l->next)
+  e_cal_client_set_default_timezone (cal_client, app->zone);
+
+  if (!e_cal_client_get_view_sync (cal_client, query, &view, NULL /* cancellable */, &error))
     {
-      ECalClient *cal = E_CAL_CLIENT (l->data);
-      GError *error;
-      ECalClientView *view;
-      CollectAppointmentsData data;
-
-      e_cal_client_set_default_timezone (cal, app->zone);
-
-      data.client = cal;
-      data.appointments = app->appointments;
-      e_cal_client_generate_instances_sync (cal,
-                                            app->since,
-                                            app->until,
-                                            NULL,
-                                            generate_instances_cb,
-                                            &data);
-
-      error = NULL;
-      if (!e_cal_client_get_view_sync (cal,
-                                       query,
-                                       &view,
-                                       NULL, /* cancellable */
-                                       &error))
-        {
-          g_warning ("Error setting up live-query on calendar: %s\n", error->message);
-          g_error_free (error);
-        }
-      else
-        {
-          g_signal_connect (view,
-                            "objects-added",
-                            G_CALLBACK (on_objects_added),
-                            app);
-          g_signal_connect (view,
-                            "objects-modified",
-                            G_CALLBACK (on_objects_modified),
-                            app);
-          g_signal_connect (view,
-                            "objects-removed",
-                            G_CALLBACK (on_objects_removed),
-                            app);
-          e_cal_client_view_start (view, NULL);
-          app->live_views = g_list_prepend (app->live_views, view);
-        }
+      g_warning ("Error setting up live-query '%s' on calendar: %s\n", query, error ? error->message : "Unknown error");
+      view = NULL;
     }
-  g_list_free (clients);
-  g_free (since_iso8601);
-  g_free (until_iso8601);
-  g_free (query);
-  app->cache_invalid = FALSE;
-}
+  else
+    {
+      g_signal_connect (view,
+                        "objects-added",
+                        G_CALLBACK (on_objects_added),
+                        app);
+      g_signal_connect (view,
+                        "objects-modified",
+                        G_CALLBACK (on_objects_modified),
+                        app);
+      g_signal_connect (view,
+                        "objects-removed",
+                        G_CALLBACK (on_objects_removed),
+                        app);
+      e_cal_client_view_start (view, NULL);
+    }
 
-static gboolean
-app_has_calendars (App *app)
-{
-  return calendar_sources_has_sources (app->sources);
+  return view;
 }
 
 static void
-on_appointment_sources_changed (CalendarSources *sources,
-                                gpointer         user_data)
+app_stop_view (App *app,
+               ECalClientView *view)
+{
+      e_cal_client_view_stop (view, NULL);
+
+      g_signal_handlers_disconnect_by_func (view, on_objects_added, app);
+      g_signal_handlers_disconnect_by_func (view, on_objects_modified, app);
+      g_signal_handlers_disconnect_by_func (view, on_objects_removed, app);
+}
+
+static void
+app_update_views (App *app)
+{
+  GSList *link, *clients;
+
+  for (link = app->live_views; link; link = g_slist_next (link))
+    {
+      app_stop_view (app, link->data);
+    }
+
+  g_slist_free_full (app->live_views, g_object_unref);
+  app->live_views = NULL;
+
+  clients = calendar_sources_ref_clients (app->sources);
+
+  for (link = clients; link; link = g_slist_next (link))
+    {
+      ECalClient *cal_client = link->data;
+      ECalClientView *view;
+
+      if (!cal_client)
+        continue;
+
+      view = app_start_view (app, cal_client);
+      if (view)
+        app->live_views = g_slist_prepend (app->live_views, view);
+    }
+
+  g_slist_free_full (clients, g_object_unref);
+}
+
+static void
+app_notify_has_calendars (App *app)
+{
+  GVariantBuilder dict_builder;
+
+  g_variant_builder_init (&dict_builder, G_VARIANT_TYPE ("a{sv}"));
+  g_variant_builder_add (&dict_builder, "{sv}", "HasCalendars",
+                         g_variant_new_boolean (app_has_calendars (app)));
+
+  g_dbus_connection_emit_signal (g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, NULL),
+                                 NULL,
+                                 "/org/gnome/Shell/CalendarServer",
+                                 "org.freedesktop.DBus.Properties",
+                                 "PropertiesChanged",
+                                 g_variant_new ("(sa{sv}as)",
+                                                "org.gnome.Shell.CalendarServer",
+                                                &dict_builder,
+                                                NULL),
+                                 NULL);
+  g_variant_builder_clear (&dict_builder);
+}
+
+static void
+on_client_appeared_cb (CalendarSources *sources,
+                       ECalClient *client,
+                       gpointer user_data)
 {
   App *app = user_data;
+  ECalClientView *view;
+  GSList *link;
+  const gchar *source_uid;
 
-  print_debug ("Sources changed\n");
-  app_load_events (app);
+  source_uid = e_source_get_uid (e_client_get_source (E_CLIENT (client)));
 
-  /* Notify the HasCalendars property */
-  {
-    GVariantBuilder dict_builder;
+  print_debug ("Client appeared '%s'", source_uid);
 
-    g_variant_builder_init (&dict_builder, G_VARIANT_TYPE ("a{sv}"));
-    g_variant_builder_add (&dict_builder, "{sv}", "HasCalendars",
-                           g_variant_new_boolean (app_has_calendars (app)));
+  for (link = app->live_views; link; link = g_slist_next (link))
+    {
+      ECalClientView *view = link->data;
+      ECalClient *cal_client;
+      ESource *source;
 
-    g_dbus_connection_emit_signal (g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, NULL),
-                                   NULL,
-                                   "/org/gnome/Shell/CalendarServer",
-                                   "org.freedesktop.DBus.Properties",
-                                   "PropertiesChanged",
-                                   g_variant_new ("(sa{sv}as)",
-                                                  "org.gnome.Shell.CalendarServer",
-                                                  &dict_builder,
-                                                  NULL),
-                                   NULL);
-  }
+      cal_client = e_cal_client_view_ref_client (view);
+      source = e_client_get_source (E_CLIENT (cal_client));
+
+      if (g_strcmp0 (source_uid, e_source_get_uid (source)) == 0)
+        {
+          g_clear_object (&cal_client);
+          return;
+        }
+
+      g_clear_object (&cal_client);
+    }
+
+  view = app_start_view (app, client);
+
+  if (view)
+    {
+      app->live_views = g_slist_prepend (app->live_views, view);
+
+      /* It's the first view, notify that it has calendars now */
+      if (!g_slist_next (app->live_views))
+        app_notify_has_calendars (app);
+    }
+}
+
+static void
+on_client_disappeared_cb (CalendarSources *sources,
+                          const gchar *source_uid,
+                          gpointer user_data)
+{
+  App *app = user_data;
+  GSList *link;
+
+  print_debug ("Client disappeared '%s'", source_uid);
+
+  for (link = app->live_views; link; link = g_slist_next (link))
+    {
+      ECalClientView *view = link->data;
+      ECalClient *cal_client;
+      ESource *source;
+
+      cal_client = e_cal_client_view_ref_client (view);
+      source = e_client_get_source (E_CLIENT (cal_client));
+
+      if (g_strcmp0 (source_uid, e_source_get_uid (source)) == 0)
+        {
+          g_clear_object (&cal_client);
+          app_stop_view (app, view);
+          app->live_views = g_slist_remove (app->live_views, view);
+          g_object_unref (view);
+
+          print_debug ("Emitting ClientDisappeared for '%s'", source_uid);
+
+          g_dbus_connection_emit_signal (app->connection,
+                                         NULL, /* destination_bus_name */
+                                         "/org/gnome/Shell/CalendarServer",
+                                         "org.gnome.Shell.CalendarServer",
+                                         "ClientDisappeared",
+                                         g_variant_new ("(s)", source_uid),
+                                         NULL);
+
+          /* It was the last view, notify that it doesn't have calendars now */
+          if (!app->live_views)
+            app_notify_has_calendars (app);
+
+          break;
+        }
+
+      g_clear_object (&cal_client);
+    }
 }
 
 static App *
@@ -768,15 +847,14 @@ app_new (GDBusConnection *connection)
   app = g_new0 (App, 1);
   app->connection = g_object_ref (connection);
   app->sources = calendar_sources_get ();
-  app->sources_signal_id = g_signal_connect (app->sources,
-                                             "appointment-sources-changed",
-                                             G_CALLBACK (on_appointment_sources_changed),
-                                             app);
-
-  app->appointments = g_hash_table_new_full (g_str_hash,
-                                             g_str_equal,
-                                             g_free,
-                                             (GDestroyNotify) calendar_appointment_free);
+  app->client_appeared_signal_id = g_signal_connect (app->sources,
+                                                     "client-appeared",
+                                                     G_CALLBACK (on_client_appeared_cb),
+                                                     app);
+  app->client_disappeared_signal_id = g_signal_connect (app->sources,
+                                                        "client-disappeared",
+                                                        G_CALLBACK (on_client_disappeared_cb),
+                                                        app);
 
   app_update_timezone (app);
 
@@ -786,27 +864,31 @@ app_new (GDBusConnection *connection)
 static void
 app_free (App *app)
 {
-  GList *ll;
-  for (ll = app->live_views; ll != NULL; ll = ll->next)
+  GSList *ll;
+
+  g_clear_handle_id (&app->events_added_timeout_id, g_source_remove);
+  g_clear_handle_id (&app->events_removed_timeout_id, g_source_remove);
+
+  for (ll = app->live_views; ll != NULL; ll = g_slist_next (ll))
     {
       ECalClientView *view = E_CAL_CLIENT_VIEW (ll->data);
-      g_signal_handlers_disconnect_by_func (view, on_objects_added, app);
-      g_signal_handlers_disconnect_by_func (view, on_objects_modified, app);
-      g_signal_handlers_disconnect_by_func (view, on_objects_removed, app);
-      e_cal_client_view_stop (view, NULL);
-      g_object_unref (view);
+
+      app_stop_view (app, view);
     }
-  g_list_free (app->live_views);
+
+  g_signal_handler_disconnect (app->sources,
+                               app->client_appeared_signal_id);
+  g_signal_handler_disconnect (app->sources,
+                               app->client_disappeared_signal_id);
 
   g_free (app->timezone_location);
 
-  g_hash_table_unref (app->appointments);
+  g_slist_free_full (app->live_views, g_object_unref);
+  g_slist_free_full (app->notify_appointments, calendar_appointment_free);
+  g_slist_free_full (app->notify_ids, g_free);
 
   g_object_unref (app->connection);
-  g_clear_signal_handler (&app->sources_signal_id, app->sources);
   g_object_unref (app->sources);
-
-  g_clear_handle_id (&app->changed_timeout_id, g_source_remove);
 
   g_free (app);
 }
@@ -825,15 +907,12 @@ handle_method_call (GDBusConnection       *connection,
 {
   App *app = user_data;
 
-  if (g_strcmp0 (method_name, "GetEvents") == 0)
+  if (g_strcmp0 (method_name, "SetTimeRange") == 0)
     {
-      GVariantBuilder builder;
-      GHashTableIter hash_iter;
-      CalendarAppointment *a;
       gint64 since;
       gint64 until;
-      gboolean force_reload;
-      gboolean window_changed;
+      gboolean force_reload = FALSE;
+      gboolean window_changed = FALSE;
 
       g_variant_get (parameters,
                      "(xxb)",
@@ -849,13 +928,12 @@ handle_method_call (GDBusConnection       *connection,
           goto out;
         }
 
-      print_debug ("Handling GetEvents (since=%" G_GINT64_FORMAT ", until=%" G_GINT64_FORMAT ", force_reload=%s)",
+      print_debug ("Handling SetTimeRange (since=%" G_GINT64_FORMAT ", until=%" G_GINT64_FORMAT ", force_reload=%s)",
                    since,
                    until,
                    force_reload ? "true" : "false");
 
-      window_changed = FALSE;
-      if (!(app->until == until && app->since == since))
+      if (app->until != until || app->since != since)
         {
           GVariantBuilder *builder;
           GVariantBuilder *invalidated_builder;
@@ -880,61 +958,15 @@ handle_method_call (GDBusConnection       *connection,
                                                         builder,
                                                         invalidated_builder),
                                          NULL); /* GError** */
+
+          g_variant_builder_unref (builder);
+          g_variant_builder_unref (invalidated_builder);
         }
 
-      /* reload events if necessary */
-      if (window_changed || force_reload || app->cache_invalid)
-        {
-          app_load_events (app);
-        }
+      g_dbus_method_invocation_return_value (invocation, NULL);
 
-      /* The a{sv} is used as an escape hatch in case we want to provide more
-       * information in the future without breaking ABI
-       */
-      g_variant_builder_init (&builder, G_VARIANT_TYPE ("a(sssbxxa{sv})"));
-      g_hash_table_iter_init (&hash_iter, app->appointments);
-      while (g_hash_table_iter_next (&hash_iter, NULL, (gpointer) &a))
-        {
-          GVariantBuilder extras_builder;
-          GSList *l;
-
-          for (l = a->occurrences; l; l = l->next)
-            {
-              CalendarOccurrence *o = l->data;
-              time_t start_time = o->start_time;
-              time_t end_time   = o->end_time;
-
-              if ((start_time >= app->since &&
-                   start_time < app->until) ||
-                  (start_time <= app->since &&
-                  (end_time - 1) > app->since))
-                {
-                  /* While the UID is usually enough to identify an event,
-                   * only the triple of (source,UID,RID) is fully unambiguous;
-                   * neither may contain '\n', so we can safely use it to
-                   * create a unique ID from the triple
-                   */
-                  char *id = g_strdup_printf ("%s\n%s\n%s",
-                                              a->source_id,
-                                              a->uid,
-                                              o->rid ? o->rid : "");
-
-                  g_variant_builder_init (&extras_builder, G_VARIANT_TYPE ("a{sv}"));
-                  g_variant_builder_add (&builder,
-                                         "(sssbxxa{sv})",
-                                         id,
-                                         a->summary != NULL ? a->summary : "",
-                                         a->description != NULL ? a->description : "",
-                                         (gboolean) a->is_all_day,
-                                         (gint64) start_time,
-                                         (gint64) end_time,
-                                         extras_builder);
-                  g_free (id);
-                }
-            }
-        }
-      g_dbus_method_invocation_return_value (invocation,
-                                             g_variant_new ("(a(sssbxxa{sv}))", &builder));
+      if (window_changed || force_reload)
+        app_update_views (app);
     }
   else
     {
@@ -989,12 +1021,12 @@ on_bus_acquired (GDBusConnection *connection,
                  const gchar     *name,
                  gpointer         user_data)
 {
-  GError *error;
+  GMainLoop *main_loop = user_data;
   guint registration_id;
+  g_autoptr (GError) error = NULL;
 
   _global_app = app_new (connection);
 
-  error = NULL;
   registration_id = g_dbus_connection_register_object (connection,
                                                        "/org/gnome/Shell/CalendarServer",
                                                        introspection_data->interfaces[0],
@@ -1004,16 +1036,15 @@ on_bus_acquired (GDBusConnection *connection,
                                                        &error);
   if (registration_id == 0)
     {
-      g_printerr ("Error exporting object: %s (%s %d)",
+      g_printerr ("Error exporting object: %s (%s %d)\n",
                   error->message,
                   g_quark_to_string (error->domain),
                   error->code);
-      g_error_free (error);
-      _exit (1);
+      g_main_loop_quit (main_loop);
+      return;
     }
 
   print_debug ("Connected to the session bus");
-
 }
 
 static void
@@ -1060,7 +1091,7 @@ int
 main (int    argc,
       char **argv)
 {
-  GError *error;
+  g_autoptr (GError) error = NULL;
   GOptionContext *opt_context;
   GMainLoop *main_loop;
   gint ret;
@@ -1077,11 +1108,9 @@ main (int    argc,
 
   opt_context = g_option_context_new ("gnome-shell calendar server");
   g_option_context_add_main_entries (opt_context, opt_entries, NULL);
-  error = NULL;
   if (!g_option_context_parse (opt_context, &argc, &argv, &error))
     {
-      g_printerr ("Error parsing options: %s", error->message);
-      g_error_free (error);
+      g_printerr ("Error parsing options: %s\n", error->message);
       goto out;
     }
 
@@ -1120,41 +1149,6 @@ main (int    argc,
     g_bus_unown_name (name_owner_id);
   if (opt_context != NULL)
     g_option_context_free (opt_context);
+
   return ret;
-}
-
-/* ---------------------------------------------------------------------------------------------------- */
-
-static void __attribute__((format(printf, 1, 0)))
-print_debug (const gchar *format, ...)
-{
-  g_autofree char *s = NULL;
-  g_autofree char *timestamp = NULL;
-  va_list ap;
-  g_autoptr (GDateTime) now = NULL;
-  static volatile gsize once_init_value = 0;
-  static gboolean show_debug = FALSE;
-  static guint pid = 0;
-
-  if (g_once_init_enter (&once_init_value))
-    {
-      show_debug = (g_getenv ("CALENDAR_SERVER_DEBUG") != NULL);
-      pid = getpid ();
-      g_once_init_leave (&once_init_value, 1);
-    }
-
-  if (!show_debug)
-    goto out;
-
-  now = g_date_time_new_now_local ();
-  timestamp = g_date_time_format (now, "%H:%M:%S");
-
-  va_start (ap, format);
-  s = g_strdup_vprintf (format, ap);
-  va_end (ap);
-
-  g_print ("gnome-shell-calendar-server[%d]: %s.%03d: %s\n",
-           pid, timestamp, g_date_time_get_microsecond (now), s);
- out:
-  ;
 }
