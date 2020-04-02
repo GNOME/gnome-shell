@@ -109,11 +109,17 @@ load_folder (GHashTable *folders,
 
   while ((name = g_dir_read_name (dir)))
     {
+      g_autofree gchar *name_without_extension = NULL;
       g_autofree gchar *filename = NULL;
       g_autoptr(GKeyFile) keyfile = NULL;
 
+      if (!g_str_has_suffix (name, ".directory"))
+        continue;
+
+      name_without_extension = g_strndup (name, strlen (name) - strlen (".directory"));
+
       /* First added wins */
-      if (g_hash_table_contains (folders, name))
+      if (g_hash_table_contains (folders, name_without_extension))
         continue;
 
       filename = g_build_filename (path, name, NULL);
@@ -128,7 +134,7 @@ load_folder (GHashTable *folders,
                                                      NULL, NULL);
 
           if (translated != NULL)
-            g_hash_table_insert (folders, g_strdup (name), translated);
+            g_hash_table_insert (folders, g_steal_pointer (&name_without_extension), translated);
         }
     }
 }
