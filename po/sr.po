@@ -5,25 +5,26 @@
 # Translators:
 # Милош Поповић <gpopac@gmail.com>, 2010—2011.
 # Мирослав Николић <miroslavnikolic@rocketmail.com>, 2011—2017.
-# Марко М. Костић <marko.m.kostic@gmail.com>, 2016.
 # Борисав Живановић <borisavzivanovic@gmail.com>, 2017—2018.
+# Марко М. Костић <marko.m.kostic@gmail.com>, 2016-2020.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2020-03-19 14:34+0000\n"
-"PO-Revision-Date: 2020-03-21 15:30+0100\n"
+"POT-Creation-Date: 2020-03-31 07:15+0000\n"
+"PO-Revision-Date: 2020-04-02 21:42+0200\n"
 "Last-Translator: Марко М. Костић <marko.m.kostic@gmail.com>\n"
-"Language-Team: српски <gnome-sr@googlegroups.org>\n"
+"Language-Team: Serbian <gnome-sr@googlegroups.org>\n"
 "Language: sr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=n==1? 3 : n%10==1 && n%100!=11 ? 0 : n"
-"%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2\n"
 "X-Project-Style: gnome\n"
 "X-Poedit-Bookmarks: -1,167,-1,-1,-1,-1,-1,-1,-1,-1\n"
-"X-Generator: Poedit 2.3\n"
+"X-Generator: Gtranslator 3.36.0\n"
 
 #: data/50-gnome-shell-system.xml:6
 msgid "System"
@@ -67,7 +68,7 @@ msgid ""
 "dialog."
 msgstr ""
 "Дозвољава приступ унутрашњем отклањању грешака и алатима за праћење "
-"коришћењем „Alt-F2“ прозорчета."
+"коришћењем „Alt-F2“ прозорчета"
 
 #: data/org.gnome.shell.gschema.xml.in:16
 msgid "UUIDs of extensions to enable"
@@ -389,71 +390,12 @@ msgstr "Застој првог плана се мења у режиму миш�
 msgid "Network Login"
 msgstr "Мрежна пријава"
 
-#: js/extensionPrefs/data/metainfo/org.gnome.Extensions.metainfo.xml.in:5
-#: js/extensionPrefs/data/org.gnome.Extensions.desktop.in.in:4
-#: js/extensionPrefs/js/main.js:242
-#: js/extensionPrefs/data/ui/extensions-window.ui:61
-msgid "Extensions"
-msgstr "Проширења"
-
-#: js/extensionPrefs/data/metainfo/org.gnome.Extensions.metainfo.xml.in:6
-#: js/extensionPrefs/js/main.js:243
-msgid "Manage your GNOME Extensions"
-msgstr "Подесите проширења Гнома"
-
-#: js/extensionPrefs/data/metainfo/org.gnome.Extensions.metainfo.xml.in:35
-msgid ""
-"GNOME Extensions handles updating extensions, configuring extension "
-"preferences and removing or disabling unwanted extensions."
-msgstr ""
-"Гномова проширења руководе ажурирањем проширења, подешавањем поставки "
-"проширења и уклањањем или онемогућавањем проширења."
-
-#: js/extensionPrefs/data/org.gnome.Extensions.desktop.in.in:7
-msgid "Configure GNOME Shell Extensions"
-msgstr "Подесите проширења Гномове шкољке"
-
-#: js/extensionPrefs/js/main.js:164
-#, javascript-format
-msgid "Remove “%s”?"
-msgstr "Уклонити „%s“?"
-
-#: js/extensionPrefs/js/main.js:165
-msgid ""
-"If you remove the extension, you need to return to download it if you want "
-"to enable it again"
-msgstr ""
-"Уколико уклоните проширење, мораћете га поново преузети да бисте га поново "
-"омогућили"
-
-#: js/extensionPrefs/js/main.js:168 js/gdm/authPrompt.js:135
-#: js/ui/audioDeviceSelection.js:57 js/ui/components/networkAgent.js:109
-#: js/ui/components/polkitAgent.js:139 js/ui/endSessionDialog.js:374
-#: js/ui/extensionDownloader.js:177 js/ui/shellMountOperation.js:376
-#: js/ui/shellMountOperation.js:386 js/ui/status/network.js:913
-msgid "Cancel"
-msgstr "Откажи"
-
-#: js/extensionPrefs/js/main.js:169
-msgid "Remove"
-msgstr "Уклони"
-
-#: js/extensionPrefs/js/main.js:241
-msgid "translator-credits"
-msgstr ""
-"Мирослав Николић <miroslavnikolic@rocketmail.com>\n"
-"Милош Поповић <gpopac@gmail.com>\n"
-"Борисав Живановић <borisavzivanovic@gmail.com>\n"
-"Марко М. Костић <marko.m.kostic@gmail.com>\n"
-"\n"
-"  https://гном.срб/ — превд пројекта Гном на српски језик"
-
-#: js/extensionPrefs/js/main.js:285
-#: js/extensionPrefs/data/ui/extensions-window.ui:223
+#: js/dbusServices/extensions/ui/extension-prefs-dialog.ui:36
+#: subprojects/extensions-app/data/ui/extensions-window.ui:223
 msgid "Something’s gone wrong"
 msgstr "Нешто је пошло наопако"
 
-#: js/extensionPrefs/js/main.js:292
+#: js/dbusServices/extensions/ui/extension-prefs-dialog.ui:48
 msgid ""
 "We’re very sorry, but there’s been a problem: the settings for this "
 "extension can’t be displayed. We recommend that you report the issue to the "
@@ -462,107 +404,25 @@ msgstr ""
 "Веома нам је жао али се догодио проблем, не можемо приказати подешавања за "
 "ово проширење. Предлажемо вам да пријавите овај проблем творцима проширења."
 
-#: js/extensionPrefs/js/main.js:299
+#: js/dbusServices/extensions/ui/extension-prefs-dialog.ui:82
 msgid "Technical Details"
 msgstr "Техничке појединости"
 
-#: js/extensionPrefs/js/main.js:334
-msgid "Copy Error"
-msgstr "Грешка при копирању"
-
-#: js/extensionPrefs/js/main.js:361
+#: js/dbusServices/extensions/ui/extension-prefs-dialog.ui:165
 msgid "Homepage"
 msgstr "Матична страна"
 
-#: js/extensionPrefs/js/main.js:362
+#: js/dbusServices/extensions/ui/extension-prefs-dialog.ui:166
 msgid "Visit extension homepage"
 msgstr "Посети матичну страну проширењ"
 
-#: js/extensionPrefs/js/main.js:479
-#, javascript-format
-msgid "%d extension will be updated on next login."
-msgid_plural "%d extensions will be updated on next login."
-msgstr[0] "%d проширење биће ажурирано током следећег пријављивања."
-msgstr[1] "%d проширења биће ажурирана током следећег пријављивања."
-msgstr[2] "%d проширења биће ажурирана током следећег пријављивања."
-msgstr[3] "Једно проширење биће ажурирано током следећег пријављивања."
-
-#: js/extensionPrefs/data/ui/extension-row.ui:100
-#: subprojects/extensions-tool/src/command-create.c:211
-#: subprojects/extensions-tool/src/main.c:173
-msgid "Description"
-msgstr "Опис"
-
-#: js/extensionPrefs/data/ui/extension-row.ui:123
-#: subprojects/extensions-tool/src/main.c:185
-msgid "Version"
-msgstr "Издање"
-
-#: js/extensionPrefs/data/ui/extension-row.ui:151
-msgid "Author"
-msgstr "Творац"
-
-#: js/extensionPrefs/data/ui/extension-row.ui:175
-msgid "Website"
-msgstr "Веб страница"
-
-#: js/extensionPrefs/data/ui/extension-row.ui:192
-msgid "Remove…"
-msgstr "Уклони…"
-
-#: js/extensionPrefs/data/ui/extensions-window.ui:8
-msgid "Help"
-msgstr "Помоћ"
-
-#: js/extensionPrefs/data/ui/extensions-window.ui:12
-msgid "About Extensions"
-msgstr "О Проширењима"
-
-#: js/extensionPrefs/data/ui/extensions-window.ui:27
-msgid ""
-"To find and add extensions, visit <a href=\"https://extensions.gnome.org"
-"\">extensions.gnome.org</a>."
-msgstr ""
-"Да бисте пронашли и додали проширења, посетите страницу <a href=\"https://"
-"extensions.gnome.org\">extensions.gnome.org</a>."
-
-#: js/extensionPrefs/data/ui/extensions-window.ui:35
-msgid "Warning"
-msgstr "Упозорење"
-
-#: js/extensionPrefs/data/ui/extensions-window.ui:46
-msgid ""
-"Extensions can cause system issues, including performance problems. If you "
-"encounter problems with your system, it is recommended to disable all "
-"extensions."
-msgstr ""
-"Проширења могу утицати на стабилност система, укључујући и на делотворност. "
-"Уколико приметите проблеме у раду, препоручујемо да онемогућите сва "
-"проширења."
-
-#: js/extensionPrefs/data/ui/extensions-window.ui:134
-msgid "Manually Installed"
-msgstr "Ручно инсталирана"
-
-#: js/extensionPrefs/data/ui/extensions-window.ui:158
-msgid "Built-In"
-msgstr "Уграђена"
-
-#: js/extensionPrefs/data/ui/extensions-window.ui:199
-msgid "No Installed Extensions"
-msgstr "Неинсталирана проширења"
-
-#: js/extensionPrefs/data/ui/extensions-window.ui:235
-msgid ""
-"We’re very sorry, but it was not possible to get the list of installed "
-"extensions. Make sure you are logged into GNOME and try again."
-msgstr ""
-"Нажалост, није било могуће добавити списак инсталираних проширења. Проверите "
-"да ли сте пријављени у Гном и пробајте поново."
-
-#: js/extensionPrefs/data/ui/extensions-window.ui:288
-msgid "Log Out…"
-msgstr "Одјава…"
+#: js/gdm/authPrompt.js:135 js/ui/audioDeviceSelection.js:57
+#: js/ui/components/networkAgent.js:109 js/ui/components/polkitAgent.js:139
+#: js/ui/endSessionDialog.js:374 js/ui/extensionDownloader.js:181
+#: js/ui/shellMountOperation.js:376 js/ui/shellMountOperation.js:386
+#: js/ui/status/network.js:913 subprojects/extensions-app/js/main.js:148
+msgid "Cancel"
+msgstr "Откажи"
 
 #. Cisco LEAP
 #: js/gdm/authPrompt.js:237 js/ui/components/networkAgent.js:204
@@ -866,44 +726,44 @@ msgstr "Забрани приступ"
 msgid "Grant Access"
 msgstr "Дозволи приступ"
 
-#: js/ui/appDisplay.js:898
+#: js/ui/appDisplay.js:932
 msgid "Unnamed Folder"
 msgstr "Неименована фасцикла"
 
-#: js/ui/appDisplay.js:921
+#: js/ui/appDisplay.js:955
 msgid "Frequently used applications will appear here"
 msgstr "Често коришћени програми ће се појавити овде"
 
-#: js/ui/appDisplay.js:1056
+#: js/ui/appDisplay.js:1090
 msgid "Frequent"
 msgstr "Често"
 
-#: js/ui/appDisplay.js:1063
+#: js/ui/appDisplay.js:1097
 msgid "All"
 msgstr "Све"
 
 #. Translators: This is the heading of a list of open windows
-#: js/ui/appDisplay.js:2446 js/ui/panel.js:75
+#: js/ui/appDisplay.js:2473 js/ui/panel.js:75
 msgid "Open Windows"
 msgstr "Отвори прозоре"
 
-#: js/ui/appDisplay.js:2466 js/ui/panel.js:82
+#: js/ui/appDisplay.js:2493 js/ui/panel.js:82
 msgid "New Window"
 msgstr "Нови прозор"
 
-#: js/ui/appDisplay.js:2477
+#: js/ui/appDisplay.js:2504
 msgid "Launch using Dedicated Graphics Card"
 msgstr "Покрени са намењеном графичком картицом"
 
-#: js/ui/appDisplay.js:2505 js/ui/dash.js:239
+#: js/ui/appDisplay.js:2532 js/ui/dash.js:239
 msgid "Remove from Favorites"
 msgstr "Уклони из омиљених"
 
-#: js/ui/appDisplay.js:2511
+#: js/ui/appDisplay.js:2538
 msgid "Add to Favorites"
 msgstr "Додај у омиљене"
 
-#: js/ui/appDisplay.js:2521 js/ui/panel.js:93
+#: js/ui/appDisplay.js:2548 js/ui/panel.js:93
 msgid "Show Details"
 msgstr "Прикажи детаље"
 
@@ -933,7 +793,7 @@ msgstr "Слушалице"
 msgid "Headset"
 msgstr "Слушалице са микрофоном"
 
-#: js/ui/audioDeviceSelection.js:68 js/ui/status/volume.js:269
+#: js/ui/audioDeviceSelection.js:68 js/ui/status/volume.js:270
 msgid "Microphone"
 msgstr "Микрофон"
 
@@ -1074,7 +934,7 @@ msgstr "Без догађаја"
 msgid "Do Not Disturb"
 msgstr "Не узнемиравај"
 
-#: js/ui/calendar.js:1171
+#: js/ui/calendar.js:1176
 msgid "Clear"
 msgstr "Очисти"
 
@@ -1221,7 +1081,7 @@ msgstr "Погрешили сте! Покушајте поново."
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
-#: js/ui/components/telepathyClient.js:787
+#: js/ui/components/telepathyClient.js:823
 #, javascript-format
 msgid "%s is now known as %s"
 msgstr "„%s“ је сада познат као „%s“"
@@ -1265,38 +1125,38 @@ msgstr "Светски сатови…"
 msgid "World Clocks"
 msgstr "Светски сатови"
 
-#: js/ui/dateMenu.js:279
+#: js/ui/dateMenu.js:289
 msgid "Weather"
 msgstr "Временска прогноза"
 
-#: js/ui/dateMenu.js:394
+#: js/ui/dateMenu.js:418
 msgid "Select a location…"
 msgstr "Изаберите место…"
 
-#: js/ui/dateMenu.js:407
+#: js/ui/dateMenu.js:426
 msgid "Loading…"
 msgstr "Учитавам…"
 
-#: js/ui/dateMenu.js:417
+#: js/ui/dateMenu.js:436
 msgid "Go online for weather information"
 msgstr "Идите на мрежу за податке о временској прогнози."
 
-#: js/ui/dateMenu.js:419
+#: js/ui/dateMenu.js:438
 msgid "Weather information is currently unavailable"
 msgstr "Подаци о временској прогнози тренутно нису доступни."
 
-#: js/ui/endSessionDialog.js:37
+#: js/ui/endSessionDialog.js:39
 #, javascript-format
 msgctxt "title"
 msgid "Log Out %s"
 msgstr "Одјави корисника „%s“"
 
-#: js/ui/endSessionDialog.js:38
+#: js/ui/endSessionDialog.js:40
 msgctxt "title"
 msgid "Log Out"
 msgstr "Одјави ме"
 
-#: js/ui/endSessionDialog.js:40
+#: js/ui/endSessionDialog.js:42
 #, javascript-format
 msgid "%s will be logged out automatically in %d second."
 msgid_plural "%s will be logged out automatically in %d seconds."
@@ -1305,7 +1165,7 @@ msgstr[1] "%s ће бити одјављен за %d секунде."
 msgstr[2] "%s ће бити одјављен за %d секунди."
 msgstr[3] "%s ће бити одјављен за %d секунду."
 
-#: js/ui/endSessionDialog.js:45
+#: js/ui/endSessionDialog.js:47
 #, javascript-format
 msgid "You will be logged out automatically in %d second."
 msgid_plural "You will be logged out automatically in %d seconds."
@@ -1314,22 +1174,22 @@ msgstr[1] "Бићете одјављени за %d секунде."
 msgstr[2] "Бићете одјављени за %d секунди."
 msgstr[3] "Бићете одјављени за %d секунду."
 
-#: js/ui/endSessionDialog.js:51
+#: js/ui/endSessionDialog.js:53
 msgctxt "button"
 msgid "Log Out"
 msgstr "Одјави"
 
-#: js/ui/endSessionDialog.js:56
+#: js/ui/endSessionDialog.js:58
 msgctxt "title"
 msgid "Power Off"
 msgstr "Искључи"
 
-#: js/ui/endSessionDialog.js:57
+#: js/ui/endSessionDialog.js:59
 msgctxt "title"
 msgid "Install Updates & Power Off"
 msgstr "Инсталирај освежења и искључи"
 
-#: js/ui/endSessionDialog.js:59
+#: js/ui/endSessionDialog.js:61
 #, javascript-format
 msgid "The system will power off automatically in %d second."
 msgid_plural "The system will power off automatically in %d seconds."
@@ -1338,27 +1198,27 @@ msgstr[1] "Рачунар ће се искључити за %d секунде."
 msgstr[2] "Рачунар ће се искључити за %d секунди."
 msgstr[3] "Рачунар ће се искључити за %d секунду."
 
-#: js/ui/endSessionDialog.js:63
+#: js/ui/endSessionDialog.js:65
 msgctxt "checkbox"
 msgid "Install pending software updates"
 msgstr "Инсталирај освежења софтвера на чекању"
 
-#: js/ui/endSessionDialog.js:66 js/ui/endSessionDialog.js:82
+#: js/ui/endSessionDialog.js:68 js/ui/endSessionDialog.js:84
 msgctxt "button"
 msgid "Restart"
 msgstr "Поново покрени"
 
-#: js/ui/endSessionDialog.js:68
+#: js/ui/endSessionDialog.js:70
 msgctxt "button"
 msgid "Power Off"
 msgstr "Искључи"
 
-#: js/ui/endSessionDialog.js:74
+#: js/ui/endSessionDialog.js:76
 msgctxt "title"
 msgid "Restart"
 msgstr "Поново покрени"
 
-#: js/ui/endSessionDialog.js:76
+#: js/ui/endSessionDialog.js:78
 #, javascript-format
 msgid "The system will restart automatically in %d second."
 msgid_plural "The system will restart automatically in %d seconds."
@@ -1367,12 +1227,12 @@ msgstr[1] "Систем ће се поново покренути за %d сек
 msgstr[2] "Систем ће се поново покренути за %d секунди."
 msgstr[3] "Систем ће се поново покренути за %d секунду."
 
-#: js/ui/endSessionDialog.js:89
+#: js/ui/endSessionDialog.js:91
 msgctxt "title"
 msgid "Restart & Install Updates"
 msgstr "Поново покрени и инсталирај ажурирања"
 
-#: js/ui/endSessionDialog.js:91
+#: js/ui/endSessionDialog.js:93
 #, javascript-format
 msgid "The system will automatically restart and install updates in %d second."
 msgid_plural ""
@@ -1386,22 +1246,22 @@ msgstr[2] ""
 msgstr[3] ""
 "Систем ће се сам поново покренути и инсталирати ажурирања за %d секунду."
 
-#: js/ui/endSessionDialog.js:97 js/ui/endSessionDialog.js:116
+#: js/ui/endSessionDialog.js:99 js/ui/endSessionDialog.js:118
 msgctxt "button"
 msgid "Restart &amp; Install"
 msgstr "Поново покрени и инсталирај"
 
-#: js/ui/endSessionDialog.js:98
+#: js/ui/endSessionDialog.js:100
 msgctxt "button"
 msgid "Install &amp; Power Off"
 msgstr "Инсталирај и искључи"
 
-#: js/ui/endSessionDialog.js:99
+#: js/ui/endSessionDialog.js:101
 msgctxt "checkbox"
 msgid "Power off after updates are installed"
 msgstr "Искључи након инсталирања освежења"
 
-#: js/ui/endSessionDialog.js:106
+#: js/ui/endSessionDialog.js:108
 msgctxt "title"
 msgid "Restart & Install Upgrade"
 msgstr "Поново покрени и инсталирај надоградњу"
@@ -1409,7 +1269,7 @@ msgstr "Поново покрени и инсталирај надоградњу
 #. Translators: This is the text displayed for system upgrades in the
 #. shut down dialog. First %s gets replaced with the distro name and
 #. second %s with the distro version to upgrade to
-#: js/ui/endSessionDialog.js:111
+#: js/ui/endSessionDialog.js:113
 #, javascript-format
 msgid ""
 "%s %s will be installed after restart. Upgrade installation can take a long "
@@ -1419,15 +1279,15 @@ msgstr ""
 "понекад може да потраје: проверите да ли сте направили резерву ваших важних "
 "података и да ли је рачунар прикључен на мрежно напајање."
 
-#: js/ui/endSessionDialog.js:259
+#: js/ui/endSessionDialog.js:261
 msgid "Running on battery power: Please plug in before installing updates."
 msgstr "На батерији сте, прикључите мрежно напајање пре инсталирања ажурирања."
 
-#: js/ui/endSessionDialog.js:268
+#: js/ui/endSessionDialog.js:270
 msgid "Some applications are busy or have unsaved work"
 msgstr "Неки програми су заузети или имају несачувани рад"
 
-#: js/ui/endSessionDialog.js:273
+#: js/ui/endSessionDialog.js:275
 msgid "Other users are logged in"
 msgstr "Други корисници су пријављени"
 
@@ -1443,24 +1303,24 @@ msgstr "%s (удаљено)"
 msgid "%s (console)"
 msgstr "%s (љуска)"
 
-#: js/ui/extensionDownloader.js:181
+#: js/ui/extensionDownloader.js:185
 msgid "Install"
 msgstr "Инсталирај"
 
-#: js/ui/extensionDownloader.js:187
+#: js/ui/extensionDownloader.js:191
 msgid "Install Extension"
 msgstr "Инсталирај проширење"
 
-#: js/ui/extensionDownloader.js:188
+#: js/ui/extensionDownloader.js:192
 #, javascript-format
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "Да преузмем и да инсталирам „%s“ са „extensions.gnome.org“-а?"
 
-#: js/ui/extensionSystem.js:228
+#: js/ui/extensionSystem.js:233
 msgid "Extension Updates Available"
 msgstr "Доступна су ажурирања проширења"
 
-#: js/ui/extensionSystem.js:229
+#: js/ui/extensionSystem.js:234
 msgid "Extension updates are ready to be installed."
 msgstr "Ажурирања проширења су доступна за инсталирање."
 
@@ -1607,11 +1467,11 @@ msgstr "Прикажи код"
 msgid "Web Page"
 msgstr "Веб страница"
 
-#: js/ui/main.js:274
+#: js/ui/main.js:277
 msgid "Logged in as a privileged user"
 msgstr "Пријављен као повлашћен корисник"
 
-#: js/ui/main.js:275
+#: js/ui/main.js:278
 msgid ""
 "Running a session as a privileged user should be avoided for security "
 "reasons. If possible, you should log in as a normal user."
@@ -1619,15 +1479,15 @@ msgstr ""
 "Покретање сесије под повлашћеним корисничким налогом треба избегавати из "
 "безбедносних разлога. Ако је то могуће, пријавите се као обичан корисник."
 
-#: js/ui/main.js:281
+#: js/ui/main.js:317
 msgid "Screen Lock disabled"
 msgstr "Закључавање екрана онемогућено"
 
-#: js/ui/main.js:282
+#: js/ui/main.js:318
 msgid "Screen Locking requires the GNOME display manager."
 msgstr "Потребан је Гномов управник екрана за могућност закључавања екрана."
 
-#: js/ui/messageTray.js:1554
+#: js/ui/messageTray.js:1551
 msgid "System Information"
 msgstr "Подаци о систему"
 
@@ -1836,13 +1696,13 @@ msgid "The PIM must be a number or empty."
 msgstr "ЛИЧ (PIM) мора бити број или празно."
 
 #. Translators: %s is the Disks application
-#: js/ui/shellMountOperation.js:469
+#: js/ui/shellMountOperation.js:465
 #, javascript-format
 msgid "Unable to start %s"
 msgstr "Не могу да покренем „%s“"
 
 #. Translators: %s is the Disks application
-#: js/ui/shellMountOperation.js:471
+#: js/ui/shellMountOperation.js:467
 #, javascript-format
 msgid "Couldn’t find the %s application"
 msgstr "Нисам могао наћи програм %s"
@@ -2326,11 +2186,11 @@ msgstr "Грешка у овлашћивању Тандерболта"
 msgid "Could not authorize the Thunderbolt device: %s"
 msgstr "Не могу да овластим Тандерболт уређај: %s"
 
-#: js/ui/status/volume.js:150
+#: js/ui/status/volume.js:151
 msgid "Volume changed"
 msgstr "Промена јачине звука"
 
-#: js/ui/status/volume.js:221
+#: js/ui/status/volume.js:222
 msgid "Volume"
 msgstr "Јачина звука"
 
@@ -2364,23 +2224,23 @@ msgstr "Само уграђени"
 
 #. Translators: This is a time format for a date in
 #. long format
-#: js/ui/unlockDialog.js:370
+#: js/ui/unlockDialog.js:371
 msgid "%A %B %-d"
 msgstr "%A, %-d. %B"
 
-#: js/ui/unlockDialog.js:376
+#: js/ui/unlockDialog.js:377
 msgid "Swipe up to unlock"
 msgstr "Превуци за откључавање"
 
-#: js/ui/unlockDialog.js:377
+#: js/ui/unlockDialog.js:378
 msgid "Click or press a key to unlock"
 msgstr "Кликни или притисни тастер за откључавање"
 
-#: js/ui/unlockDialog.js:549
+#: js/ui/unlockDialog.js:550
 msgid "Unlock Window"
 msgstr "Откључај прозор"
 
-#: js/ui/unlockDialog.js:558
+#: js/ui/unlockDialog.js:559
 msgid "Log in as another user"
 msgstr "Пријавите се као други корисник"
 
@@ -2538,6 +2398,143 @@ msgstr "Лозинка не може бити празна"
 #: src/shell-polkit-authentication-agent.c:344
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Корисник је одбацио прозорче за потврђивање идентитета"
+
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:5
+#: subprojects/extensions-app/data/org.gnome.Extensions.desktop.in.in:4
+#: subprojects/extensions-app/js/main.js:182
+#: subprojects/extensions-app/data/ui/extensions-window.ui:61
+msgid "Extensions"
+msgstr "Проширења"
+
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:6
+#: subprojects/extensions-app/js/main.js:183
+msgid "Manage your GNOME Extensions"
+msgstr "Подесите проширења Гнома"
+
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:35
+msgid ""
+"GNOME Extensions handles updating extensions, configuring extension "
+"preferences and removing or disabling unwanted extensions."
+msgstr ""
+"Гномова проширења руководе ажурирањем проширења, подешавањем поставки "
+"проширења и уклањањем или онемогућавањем проширења."
+
+#: subprojects/extensions-app/data/org.gnome.Extensions.desktop.in.in:7
+msgid "Configure GNOME Shell Extensions"
+msgstr "Подесите проширења Гномове шкољке"
+
+#: subprojects/extensions-app/js/main.js:144
+#, javascript-format
+msgid "Remove “%s”?"
+msgstr "Уклонити „%s“?"
+
+#: subprojects/extensions-app/js/main.js:145
+msgid ""
+"If you remove the extension, you need to return to download it if you want "
+"to enable it again"
+msgstr ""
+"Уколико уклоните проширење, мораћете га поново преузети да бисте га поново "
+"омогућили"
+
+#: subprojects/extensions-app/js/main.js:149
+msgid "Remove"
+msgstr "Уклони"
+
+#: subprojects/extensions-app/js/main.js:181
+msgid "translator-credits"
+msgstr ""
+"Мирослав Николић <miroslavnikolic@rocketmail.com>\n"
+"Милош Поповић <gpopac@gmail.com>\n"
+"Борисав Живановић <borisavzivanovic@gmail.com>\n"
+"Марко М. Костић <marko.m.kostic@gmail.com>\n"
+"\n"
+"  https://гном.срб/ — превод пројекта Гном на српски језик"
+
+#: subprojects/extensions-app/js/main.js:316
+#, javascript-format
+msgid "%d extension will be updated on next login."
+msgid_plural "%d extensions will be updated on next login."
+msgstr[0] "%d проширење биће ажурирано током следећег пријављивања."
+msgstr[1] "%d проширења биће ажурирана током следећег пријављивања."
+msgstr[2] "%d проширења биће ажурирана током следећег пријављивања."
+msgstr[3] "Једно проширење биће ажурирано током следећег пријављивања."
+
+#: subprojects/extensions-app/data/ui/extension-row.ui:100
+#: subprojects/extensions-tool/src/command-create.c:211
+#: subprojects/extensions-tool/src/main.c:173
+msgid "Description"
+msgstr "Опис"
+
+#: subprojects/extensions-app/data/ui/extension-row.ui:123
+#: subprojects/extensions-tool/src/main.c:185
+msgid "Version"
+msgstr "Издање"
+
+#: subprojects/extensions-app/data/ui/extension-row.ui:151
+msgid "Author"
+msgstr "Творац"
+
+#: subprojects/extensions-app/data/ui/extension-row.ui:175
+msgid "Website"
+msgstr "Веб страница"
+
+#: subprojects/extensions-app/data/ui/extension-row.ui:192
+msgid "Remove…"
+msgstr "Уклони…"
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:8
+msgid "Help"
+msgstr "Помоћ"
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:12
+msgid "About Extensions"
+msgstr "О Проширењима"
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:27
+msgid ""
+"To find and add extensions, visit <a href=\"https://extensions.gnome.org"
+"\">extensions.gnome.org</a>."
+msgstr ""
+"Да бисте пронашли и додали проширења, посетите страницу <a href=\"https://"
+"extensions.gnome.org\">extensions.gnome.org</a>."
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:35
+msgid "Warning"
+msgstr "Упозорење"
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:46
+msgid ""
+"Extensions can cause system issues, including performance problems. If you "
+"encounter problems with your system, it is recommended to disable all "
+"extensions."
+msgstr ""
+"Проширења могу утицати на стабилност система, укључујући и на делотворност. "
+"Уколико приметите проблеме у раду, препоручујемо да онемогућите сва "
+"проширења."
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:134
+msgid "Manually Installed"
+msgstr "Ручно инсталирана"
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:158
+msgid "Built-In"
+msgstr "Уграђена"
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:199
+msgid "No Installed Extensions"
+msgstr "Неинсталирана проширења"
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:235
+msgid ""
+"We’re very sorry, but it was not possible to get the list of installed "
+"extensions. Make sure you are logged into GNOME and try again."
+msgstr ""
+"Нажалост, није било могуће добавити списак инсталираних проширења. Проверите "
+"да ли сте пријављени у Гном и пробајте поново."
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:288
+msgid "Log Out…"
+msgstr "Одјава…"
 
 #. Translators: a file path to an extension directory
 #: subprojects/extensions-tool/src/command-create.c:125
@@ -2878,6 +2875,9 @@ msgstr[3] "%u улаз"
 #: subprojects/gvc/gvc-mixer-control.c:2766
 msgid "System Sounds"
 msgstr "Системски звуци"
+
+#~ msgid "Copy Error"
+#~ msgstr "Грешка при копирању"
 
 #~ msgid "Username…"
 #~ msgstr "Корисник…"
