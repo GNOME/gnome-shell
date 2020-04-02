@@ -157,6 +157,10 @@ var BaseAppView = GObject.registerClass({
 
         this._items = new Map();
         this._orderedItems = [];
+
+        this._animateLaterId = 0;
+        this._viewLoadedHandlerId = 0;
+        this._viewIsReady = false;
     }
 
     _childFocused(_actor) {
@@ -192,8 +196,6 @@ var BaseAppView = GObject.registerClass({
             this._items.set(icon.id, icon);
         });
 
-        this._animateLaterId = 0;
-        this._viewLoadedHandlerId = 0;
         this._viewIsReady = true;
         this.emit('view-loaded');
     }
@@ -411,8 +413,6 @@ var AllView = GObject.registerClass({
 
         this._lastOvershootY = -1;
         this._lastOvershootTimeoutId = 0;
-
-        this._viewIsReady = false;
 
         Main.overview.connect('hidden', () => this.goToPage(0));
 
