@@ -360,6 +360,18 @@ update_fbo (FramebufferData *data,
   float new_width = floorf (width / downscale_factor);
   float new_height = floorf (height / downscale_factor);
 
+  if (G_UNLIKELY (new_width < 1.0f))
+    {
+      g_warning ("%s: Correcting width from %f to 1", G_STRLOC, new_width);
+      new_width = 1.0f;
+    }
+
+  if (G_UNLIKELY (new_height < 1.0f))
+    {
+      g_warning ("%s: Correcting height from %f to 1", G_STRLOC, new_height);
+      new_height = 1.0f;
+    }
+
   data->texture = cogl_texture_2d_new_with_size (ctx, new_width, new_height);
   if (!data->texture)
     return FALSE;
