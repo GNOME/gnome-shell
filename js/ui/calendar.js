@@ -322,14 +322,16 @@ class DBusEventSource extends EventSourceBase {
         }
     }
 
-    getEvents(begin, end) {
-        let result = [];
-        for (let n = 0; n < this._events.length; n++) {
-            let event = this._events[n];
-
+    *_getFilteredEvents(begin, end) {
+        for (const event of this._events) {
             if (_dateIntervalsOverlap(event.date, event.end, begin, end))
-                result.push(event);
+                yield event;
         }
+    }
+
+    getEvents(begin, end) {
+        let result = [...this._getFilteredEvents(begin, end)];
+
         result.sort((event1, event2) => {
             // sort events by end time on ending day
             let d1 = event1.date < begin && event1.end <= end ? event1.end : event1.date;
@@ -343,12 +345,8 @@ class DBusEventSource extends EventSourceBase {
         let dayBegin = _getBeginningOfDay(day);
         let dayEnd = _getEndOfDay(day);
 
-        let events = this.getEvents(dayBegin, dayEnd);
-
-        if (events.length == 0)
-            return false;
-
-        return true;
+        const { done } = this._getFilteredEvents(dayBegin, dayEnd).next();
+        return !done;
     }
 });
 
