@@ -176,7 +176,11 @@ st_theme_context_set_property (GObject      *object,
         int scale_factor = g_value_get_int (value);
         if (scale_factor != context->scale_factor)
           {
+            StTextureCache *cache = st_texture_cache_get_default ();
+
             context->scale_factor = scale_factor;
+
+            st_texture_cache_invalidate (cache);
             st_theme_context_changed (context);
           }
 

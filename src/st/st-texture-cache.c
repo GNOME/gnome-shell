@@ -1619,3 +1619,18 @@ st_texture_cache_rescan_icon_theme (StTextureCache *cache)
 
   return gtk_icon_theme_rescan_if_needed (priv->icon_theme);
 }
+
+
+/**
+ * st_texture_cache_invalidate:
+ * @cache: a #StTextureCache
+ *
+ * Invalidates the texture cache, and evicts all icons.
+ */
+void
+st_texture_cache_invalidate (StTextureCache *cache)
+{
+  g_return_if_fail (ST_IS_TEXTURE_CACHE (cache));
+
+  st_texture_cache_evict_icons (cache);
+}
