@@ -50,6 +50,7 @@ class Indicator extends PanelMenu.SystemIndicator {
         this.menu.addMenuItem(this._item);
 
         this._syncId = 0;
+        this._adapter = null;
 
         this._client = new GnomeBluetooth.Client();
         this._model = this._client.get_model();
@@ -58,6 +59,15 @@ class Indicator extends PanelMenu.SystemIndicator {
         this._model.connect('row-inserted', this._sync.bind(this));
         Main.sessionMode.connect('updated', this._sync.bind(this));
         this._sync();
+    }
+
+    _setHadSetupDevices(value) {
+        if (this._hadSetupDevices === value)
+            return;
+
+        this._hadSetupDevices = value;
+        global.settings.set_boolean(
+            HAD_BLUETOOTH_DEVICES_SETUP, this._hadSetupDevices);
     }
 
     _getDefaultAdapter() {
@@ -98,11 +108,6 @@ class Indicator extends PanelMenu.SystemIndicator {
             ret = this._model.iter_next(iter);
         }
 
-        if (this._hadSetupDevices !== (deviceInfos.length > 0)) {
-            this._hadSetupDevices = !this._hadSetupDevices;
-            global.settings.set_boolean(HAD_BLUETOOTH_DEVICES_SETUP, this._hadSetupDevices);
-        }
-
         return deviceInfos;
     }
 
@@ -121,6 +126,10 @@ class Indicator extends PanelMenu.SystemIndicator {
         let devices = this._getDeviceInfos(adapter);
         const connectedDevices = devices.filter(dev => dev.connected);
         const nConnectedDevices = connectedDevices.length;
+
+        if (adapter && this._adapter)
+            this._setHadSetupDevices(devices.length > 0);
+        this._adapter = adapter;
 
         let sensitive = !Main.sessionMode.isLocked && !Main.sessionMode.isGreeter;
 
