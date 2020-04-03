@@ -80,6 +80,8 @@ struct _StWidgetPrivate
   AtkRole accessible_role;
   AtkStateSet *local_state_set;
 
+  int scale_factor;
+
   ClutterActor *label_actor;
   gchar        *accessible_name;
 
@@ -1648,6 +1650,7 @@ st_widget_init (StWidget *actor)
   priv = st_widget_get_instance_private (actor);
   priv->transition_animation = NULL;
   priv->local_state_set = atk_state_set_new ();
+  priv->scale_factor = 1;
 
   /* connect style changed */
   g_signal_connect (actor, "notify::name", G_CALLBACK (st_widget_name_notify), NULL);
@@ -1686,6 +1689,7 @@ st_widget_recompute_style (StWidget    *widget,
   StSettings *settings;
   gboolean paint_equal, geometry_equal = FALSE;
   gboolean animations_enabled;
+  ClutterActor *stage;
 
   if (new_theme_node == old_theme_node)
     {
@@ -1697,6 +1701,23 @@ st_widget_recompute_style (StWidget    *widget,
 
   if (old_theme_node)
     geometry_equal = st_theme_node_geometry_equal (old_theme_node, new_theme_node);
+
+  stage = clutter_actor_get_stage (CLUTTER_ACTOR (widget));
+  if (stage)
+    {
+      StThemeContext *context;
+      int scale_factor;
+
+      context = st_theme_context_get_for_stage (CLUTTER_STAGE (stage));
+      g_object_get (context, "scale-factor", &scale_factor, NULL);
+
+      if (scale_factor != priv->scale_factor)
+        {
+          priv->scale_factor = scale_factor;
+          geometry_equal = FALSE;
+        }
+    }
+
   if (!geometry_equal)
     clutter_actor_queue_relayout ((ClutterActor *) widget);
 
