@@ -1153,10 +1153,9 @@ class Panel extends St.Widget {
 
     _getDraggableWindowForPosition(stageX) {
         let workspaceManager = global.workspace_manager;
-        let workspace = workspaceManager.get_active_workspace();
-        let allWindowsByStacking = global.display.sort_windows_by_stacking(
-            workspace.list_windows()
-        ).reverse();
+        const windows = workspaceManager.get_active_workspace().list_windows();
+        const allWindowsByStacking =
+            global.display.sort_windows_by_stacking(windows).reverse();
 
         return allWindowsByStacking.find(metaWindow => {
             let rect = metaWindow.get_frame_rect();
