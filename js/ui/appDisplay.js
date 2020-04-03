@@ -1472,7 +1472,7 @@ class ViewIcon extends St.Button {
 var FolderIcon = GObject.registerClass({
     Signals: {
         'apps-changed': {},
-     },
+    },
 }, class FolderIcon extends ViewIcon {
     _init(dirInfo, parentView) {
         this._dirInfo = dirInfo;
