@@ -391,7 +391,7 @@ var PaygUnlockWidget = GObject.registerClass({
             entrySpinnerBox.add_child(prefix);
         }
         entrySpinnerBox.add_child(this._codeEntry);
-        entrySpinnerBox.add_child(this._spinner.actor);
+        entrySpinnerBox.add_child(this._spinner);
 
         if (Main.paygManager.codeFormatSuffix !== '') {
             let suffix = new St.Label({
@@ -435,8 +435,8 @@ var PaygUnlockWidget = GObject.registerClass({
         // We make the most of the spacer to show the spinner while verifying the code.
         let spinnerIcon = Gio.File.new_for_uri('resource:///org/gnome/shell/theme/process-working.svg');
         let spinner = new Animation.AnimatedIcon(spinnerIcon, SPINNER_ICON_SIZE_PIXELS);
-        spinner.actor.opacity = 0;
-        spinner.actor.hide();
+        spinner.opacity = 0;
+        spinner.hide();
 
         return spinner;
     }
