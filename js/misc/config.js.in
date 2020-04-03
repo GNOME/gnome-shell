@@ -8,8 +8,6 @@ var PACKAGE_VERSION = '@PACKAGE_VERSION@';
 var HAVE_BLUETOOTH = @HAVE_BLUETOOTH@;
 /* 1 if networkmanager is available, 0 otherwise */
 var HAVE_NETWORKMANAGER = @HAVE_NETWORKMANAGER@;
-/* 1 if libmalcontent is available, 0 otherwise */
-var HAVE_MALCONTENT = @HAVE_MALCONTENT@;
 /* gettext package */
 var GETTEXT_PACKAGE = '@GETTEXT_PACKAGE@';
 /* locale dir */

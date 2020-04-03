@@ -35,7 +35,6 @@ gnome_desktop_req = '>= 3.35.90'
 bt_req = '>= 3.9.0'
 gst_req = '>= 0.11.92'
 nm_req = '>= 1.10.4'
-malcontent_req = '>= 0.6.0'
 secret_req = '>= 0.18'
 
 gnome = import('gnome')
@@ -110,8 +109,6 @@ enable_recorder = gst_dep.found() and gst_base_dep.found()
 if enable_recorder
   recorder_deps += [gst_dep, gst_base_dep, gtk_dep, x11_dep]
 endif
-
-malcontent_dep = dependency('malcontent-0', version: malcontent_req, required: false)
 
 nm_deps = []
 if get_option('networkmanager')
