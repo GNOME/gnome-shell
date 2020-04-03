@@ -27,13 +27,11 @@ var RadialShaderEffect = GObject.registerClass({
         'brightness': GObject.ParamSpec.float(
             'brightness', 'brightness', 'brightness',
             GObject.ParamFlags.READWRITE,
-            0, 1, 1
-        ),
+            0, 1, 1),
         'sharpness': GObject.ParamSpec.float(
             'sharpness', 'sharpness', 'sharpness',
             GObject.ParamFlags.READWRITE,
-            0, 1, 0
-        ),
+            0, 1, 0),
     },
 }, class RadialShaderEffect extends Shell.GLSLEffect {
     _init(params) {

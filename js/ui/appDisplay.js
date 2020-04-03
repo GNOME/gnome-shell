@@ -655,8 +655,7 @@ var AllView = GObject.registerClass({
                 this._canScroll = true;
                 this._scrollTimeoutId = 0;
                 return GLib.SOURCE_REMOVE;
-            }
-        );
+            });
 
         return Clutter.EVENT_STOP;
     }
@@ -1294,8 +1293,7 @@ var AppSearchProvider = class AppSearchProvider {
                 return app && app.app_info.should_show();
             });
             results = results.concat(group.sort(
-                (a, b) => usage.compare(a, b)
-            ));
+                (a, b) => usage.compare(a, b)));
         });
 
         results = results.concat(this._systemActions.getMatchingActions(terms));
@@ -2469,14 +2467,12 @@ var AppIconMenu = class AppIconMenu extends PopupMenu.PopupMenu {
         this.removeAll();
 
         let windows = this._source.app.get_windows().filter(
-            w => !w.skip_taskbar
-        );
+            w => !w.skip_taskbar);
 
         if (windows.length > 0) {
             this.addMenuItem(
                 /* Translators: This is the heading of a list of open windows */
-                new PopupMenu.PopupSeparatorMenuItem(_("Open Windows"))
-            );
+                new PopupMenu.PopupSeparatorMenuItem(_('Open Windows')));
         }
 
         windows.forEach(window => {

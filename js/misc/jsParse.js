@@ -24,8 +24,7 @@ function getCompletions(text, commandHeader, globalCompletionList) {
             [expr_, base, attrHead] = matches;
 
             methods = getPropertyNamesFromExpression(base, commandHeader).filter(
-                attr => attr.slice(0, attrHead.length) == attrHead
-            );
+                attr => attr.slice(0, attrHead.length) === attrHead);
         }
 
         // Look for the empty expression or partially entered words
@@ -34,8 +33,7 @@ function getCompletions(text, commandHeader, globalCompletionList) {
         if (text == '' || matches) {
             [expr_, attrHead] = matches;
             methods = globalCompletionList.filter(
-                attr => attr.slice(0, attrHead.length) == attrHead
-            );
+                attr => attr.slice(0, attrHead.length) === attrHead);
         }
     }
 

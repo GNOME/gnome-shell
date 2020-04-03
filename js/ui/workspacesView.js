@@ -819,8 +819,7 @@ class WorkspacesDisplay extends St.Widget {
                 this._canScroll = true;
                 this._scrollTimeoutId = 0;
                 return GLib.SOURCE_REMOVE;
-            }
-        );
+            });
 
         return Clutter.EVENT_STOP;
     }
