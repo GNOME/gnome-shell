@@ -99,7 +99,7 @@ class AppMenu extends PopupMenu.PopupMenu {
                 '/org/gnome/Software',
                 'org.gtk.Actions', 'Activate',
                 new GLib.Variant('(sava{sv})', ['details', [args], null]),
-                null, 0, -1, null, null);
+                null, 0, -1, null);
         });
 
         this.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
