@@ -225,6 +225,7 @@ st_theme_node_new (StThemeContext    *context,
   node->element_classes = split_on_whitespace (element_class);
   node->pseudo_classes = split_on_whitespace (pseudo_class);
   node->inline_style = g_strdup (inline_style);
+  node->cached_scale_factor = st_theme_context_get_scale_factor (context);
 
   return node;
 }
@@ -345,6 +346,7 @@ st_theme_node_equal (StThemeNode *node_a, StThemeNode *node_b)
       node_a->context != node_b->context ||
       node_a->theme != node_b->theme ||
       node_a->element_type != node_b->element_type ||
+      node_a->cached_scale_factor != node_b->cached_scale_factor ||
       g_strcmp0 (node_a->element_id, node_b->element_id) ||
       g_strcmp0 (node_a->inline_style, node_b->inline_style))
     return FALSE;
@@ -396,6 +398,7 @@ st_theme_node_hash (StThemeNode *node)
   hash = hash * 33 + GPOINTER_TO_UINT (node->context);
   hash = hash * 33 + GPOINTER_TO_UINT (node->theme);
   hash = hash * 33 + ((guint) node->element_type);
+  hash = hash * 33 + ((guint) node->cached_scale_factor);
 
   if (node->element_id != NULL)
     hash = hash * 33 + g_str_hash (node->element_id);
@@ -3966,6 +3969,9 @@ st_theme_node_geometry_equal (StThemeNode *node,
     return TRUE;
 
   g_return_val_if_fail (ST_IS_THEME_NODE (other), FALSE);
+
+  if (node->cached_scale_factor != other->cached_scale_factor)
+    return FALSE;
 
   _st_theme_node_ensure_geometry (node);
   _st_theme_node_ensure_geometry (other);
