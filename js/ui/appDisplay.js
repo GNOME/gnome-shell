@@ -2463,19 +2463,16 @@ class SystemActionIcon extends Search.GridSearchResult {
 var AppCenterIcon = GObject.registerClass(
 class AppCenterIcon extends AppIcon {
     _init() {
-        let viewIconParams = {
+        let iconParams = {
             isDraggable: false,
             showMenu: false,
-        };
-
-        let iconParams = {
             createIcon: this._createIcon.bind(this),
         };
 
         let appSys = Shell.AppSystem.get_default();
         let app = appSys.lookup_app(EOS_APP_CENTER_ID);
 
-        super._init(app, viewIconParams, iconParams);
+        super._init(app, iconParams);
 
         this._id = EOS_APP_CENTER_ID;
         this._name = this.app.get_generic_name();
