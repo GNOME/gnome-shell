@@ -24,10 +24,13 @@
 /* exported getDefault */
 
 const { Gio, GObject, Shell } = imports.gi;
-const Config = imports.misc.config;
+
+// We require libmalcontent ≥ 0.6.0
+const HAVE_MALCONTENT = imports.package.checkSymbol(
+    'Malcontent', '0', 'ManagerGetValueFlags');
 
 var Malcontent = null;
-if (Config.HAVE_MALCONTENT)
+if (HAVE_MALCONTENT)
     Malcontent = imports.gi.Malcontent;
 
 let _singleton = null;
@@ -55,7 +58,7 @@ var ParentalControlsManager = GObject.registerClass({
         this._disabled = false;
         this._appFilter = null;
 
-        if (!Config.HAVE_MALCONTENT) {
+        if (!HAVE_MALCONTENT) {
             log('Skipping parental controls support as it’s disabled');
             this._initialized = true;
             this.emit('app-filter-changed');
@@ -126,7 +129,7 @@ var ParentalControlsManager = GObject.registerClass({
             return false;
 
         // Are parental controls enabled (at configure time or runtime)?
-        if (!Config.HAVE_MALCONTENT || this._disabled)
+        if (!HAVE_MALCONTENT || this._disabled)
             return true;
 
         // Have we finished initialising yet?
