@@ -498,6 +498,8 @@ var ScreenShield = class {
         if (Main.sessionMode.currentMode == 'unlock-dialog')
             Main.sessionMode.popMode('unlock-dialog');
 
+        this.emit('wake-up-screen');
+
         if (this._isGreeter) {
             // We don't want to "deactivate" any more than
             // this. In particular, we don't want to drop
@@ -519,6 +521,9 @@ var ScreenShield = class {
             this._isModal = false;
         }
 
+        this._longLightbox.lightOff();
+        this._shortLightbox.lightOff();
+
         this._lockDialogGroup.ease({
             translation_y: -global.screen_height,
             duration: Overview.ANIMATION_TIME,
@@ -533,8 +538,6 @@ var ScreenShield = class {
             this._dialog = null;
         }
 
-        this._longLightbox.lightOff();
-        this._shortLightbox.lightOff();
         this.actor.hide();
 
         if (this._becameActiveId != 0) {
