@@ -118,7 +118,7 @@ class Indicator extends PanelMenu.SystemIndicator {
 
         // Remember if there were setup devices and show the menu
         // if we've seen setup devices and we're not hard blocked
-        if (nDevices > 0)
+        if (this._hadSetupDevices)
             this._item.visible = !this._proxy.BluetoothHardwareAirplaneMode;
         else
             this._item.visible = this._proxy.BluetoothHasAirplaneMode && !this._proxy.BluetoothAirplaneMode;
