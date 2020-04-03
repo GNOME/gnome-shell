@@ -688,7 +688,8 @@ var ScreenShield = class {
         // end up loging the screen for not regular sessions (e.g. initial-setup).
         let shouldLockForPayg = Main.paygManager.isLocked &&
             (Main.sessionMode.currentMode == 'user' ||
-             Main.sessionMode.currentMode == 'user-coding');
+             Main.sessionMode.currentMode == 'user-coding' ||
+             Main.sessionMode.currentMode == 'endless');
 
         if (!this._settings.get_boolean(LOCK_ENABLED_KEY) && !shouldLockForPayg)
             return;
