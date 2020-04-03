@@ -82,6 +82,7 @@ var ParentalControlsManager = GObject.registerClass({
                 this._disabled = true;
             } else {
                 logError(e, 'Failed to get parental controls settings');
+                return;
             }
         }
 
@@ -107,6 +108,7 @@ var ParentalControlsManager = GObject.registerClass({
             this._appFilter = this._manager.get_app_filter_finish(res);
             this.emit('app-filter-changed');
         } catch (e) {
+            // Log an error and keep the old app filter.
             logError(e, `Failed to get new MctAppFilter for uid ${Shell.util_get_uid()} on app-filter-changed`);
         }
     }
