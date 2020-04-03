@@ -316,16 +316,7 @@ var GnomeShellExtensions = class {
     }
 
     OpenExtensionPrefs(uuid, parentWindow, options) {
-        Gio.DBus.session.call(
-            'org.gnome.Shell.Extensions',
-            '/org/gnome/Shell/Extensions',
-            'org.gnome.Shell.Extensions',
-            'OpenExtensionPrefs',
-            new GLib.Variant('(ssa{sv})', [uuid, parentWindow, options]),
-            null,
-            Gio.DBusCallFlags.NONE,
-            -1,
-            null);
+        Main.extensionManager.openExtensionPrefs(uuid, parentWindow, options);
     }
 
     ReloadExtensionAsync(params, invocation) {
