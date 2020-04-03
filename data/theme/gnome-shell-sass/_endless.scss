@@ -399,18 +399,25 @@ popup-separator-menu-item {
 
 .app-well-app {
     .overview-icon { @extend %app-well-icon; }
-    & > .overview-icon.overview-icon-with-label {
-        /* Use defaults here to "remove" the values set in _common.scss */
-        padding: 0px;
+    .overview-icon.overview-icon-with-label {
+        padding: 6px;
         spacing: 6px;
-    }
-}
+        > StBoxLayout {
+            padding: 0px;
+            spacing: 0px;
+        }
+     }
+ }
+
 
 /* Need to declare this one outside of .app-folder for DnD */
 .app-folder-icon {
     border-radius: 12px;
     background: rgba(23, 25, 26, 0.3);
     box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.7);
+    padding: 5px;
+    spacing-rows: 5px;
+    spacing-columns: 5px;
 }
 
 .app-folder,
