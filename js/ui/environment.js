@@ -14,6 +14,8 @@ const { Clutter, Gio, GLib, GObject, Meta, Shell, St } = imports.gi;
 const Gettext = imports.gettext;
 const System = imports.system;
 
+Gio._promisify(Gio.DBusConnection.prototype, 'call', 'call_finish');
+
 let _localTimeZone = null;
 
 // We can't import shell JS modules yet, because they may have
