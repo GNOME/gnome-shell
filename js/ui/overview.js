@@ -400,8 +400,7 @@ var Overview = class {
 
     _getDesktopClone() {
         let windows = global.get_window_actors().filter(
-            w => w.meta_window.get_window_type() == Meta.WindowType.DESKTOP
-        );
+            w => w.meta_window.get_window_type() === Meta.WindowType.DESKTOP);
         if (windows.length == 0)
             return null;
 

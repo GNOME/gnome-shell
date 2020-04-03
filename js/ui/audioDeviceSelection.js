@@ -147,9 +147,8 @@ var AudioDeviceSelectionDBus = class AudioDeviceSelectionDBus {
     _onDeviceSelected(dialog, device) {
         let connection = this._dbusImpl.get_connection();
         let info = this._dbusImpl.get_info();
-        let deviceName = Object.keys(AudioDevice).filter(
-            dev => AudioDevice[dev] == device
-        )[0].toLowerCase();
+        const deviceName = Object.keys(AudioDevice)
+            .filter(dev => AudioDevice[dev] === device)[0].toLowerCase();
         connection.emit_signal(this._audioSelectionDialog._sender,
                                this._dbusImpl.get_object_path(),
                                info ? info.name : null,

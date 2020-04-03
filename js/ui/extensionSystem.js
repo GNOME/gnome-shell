@@ -463,19 +463,15 @@ var ExtensionManager = class {
 
         // Find and enable all the newly enabled extensions: UUIDs found in the
         // new setting, but not in the old one.
-        newEnabledExtensions.filter(
-            uuid => !this._enabledExtensions.includes(uuid)
-        ).forEach(uuid => {
-            this._callExtensionEnable(uuid);
-        });
+        newEnabledExtensions
+            .filter(uuid => !this._enabledExtensions.includes(uuid))
+            .forEach(uuid => this._callExtensionEnable(uuid));
 
         // Find and disable all the newly disabled extensions: UUIDs found in the
         // old setting, but not in the new one.
-        this._extensionOrder.filter(
-            uuid => !newEnabledExtensions.includes(uuid)
-        ).reverse().forEach(uuid => {
-            this._callExtensionDisable(uuid);
-        });
+        this._extensionOrder
+            .filter(uuid => !newEnabledExtensions.includes(uuid))
+            .reverse().forEach(uuid => this._callExtensionDisable(uuid));
 
         this._enabledExtensions = newEnabledExtensions;
     }

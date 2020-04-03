@@ -643,8 +643,7 @@ var Magnifier = class Magnifier {
         // Applies only to the first zoom region.
         if (this._zoomRegions.length) {
             this._zoomRegions[0].setClampScrollingAtEdges(
-                !this._settings.get_boolean(CLAMP_MODE_KEY)
-            );
+                !this._settings.get_boolean(CLAMP_MODE_KEY));
         }
     }
 
@@ -652,8 +651,7 @@ var Magnifier = class Magnifier {
         // Applies only to the first zoom region.
         if (this._zoomRegions.length) {
             this._zoomRegions[0].setMouseTrackingMode(
-                this._settings.get_enum(MOUSE_TRACKING_KEY)
-            );
+                this._settings.get_enum(MOUSE_TRACKING_KEY));
         }
     }
 
@@ -661,8 +659,7 @@ var Magnifier = class Magnifier {
         // Applies only to the first zoom region.
         if (this._zoomRegions.length) {
             this._zoomRegions[0].setFocusTrackingMode(
-                this._settings.get_enum(FOCUS_TRACKING_KEY)
-            );
+                this._settings.get_enum(FOCUS_TRACKING_KEY));
         }
     }
 
@@ -670,8 +667,7 @@ var Magnifier = class Magnifier {
         // Applies only to the first zoom region.
         if (this._zoomRegions.length) {
             this._zoomRegions[0].setCaretTrackingMode(
-                this._settings.get_enum(CARET_TRACKING_KEY)
-            );
+                this._settings.get_enum(CARET_TRACKING_KEY));
         }
     }
 
@@ -679,8 +675,7 @@ var Magnifier = class Magnifier {
         // Applies only to the first zoom region.
         if (this._zoomRegions.length) {
             this._zoomRegions[0].setInvertLightness(
-                this._settings.get_boolean(INVERT_LIGHTNESS_KEY)
-            );
+                this._settings.get_boolean(INVERT_LIGHTNESS_KEY));
         }
     }
 
@@ -688,8 +683,7 @@ var Magnifier = class Magnifier {
         // Applies only to the first zoom region.
         if (this._zoomRegions.length) {
             this._zoomRegions[0].setColorSaturation(
-                this._settings.get_double(COLOR_SATURATION_KEY)
-            );
+                this._settings.get_double(COLOR_SATURATION_KEY));
         }
     }
 
@@ -1941,9 +1935,8 @@ var MagShaderEffects = class MagShaderEffects {
         // it modifies the brightness and/or contrast.
         let [cRed, cGreen, cBlue] = this._brightnessContrast.get_contrast();
         this._brightnessContrast.set_enabled(
-            bRed != NO_CHANGE || bGreen != NO_CHANGE || bBlue != NO_CHANGE ||
-             cRed != NO_CHANGE || cGreen != NO_CHANGE || cBlue != NO_CHANGE
-        );
+            bRed !== NO_CHANGE || bGreen !== NO_CHANGE || bBlue !== NO_CHANGE ||
+            cRed !== NO_CHANGE || cGreen !== NO_CHANGE || cBlue !== NO_CHANGE);
     }
 
     /**
@@ -1970,8 +1963,7 @@ var MagShaderEffects = class MagShaderEffects {
         // a null first argument.
         let [bRed, bGreen, bBlue] = this._brightnessContrast.get_brightness();
         this._brightnessContrast.set_enabled(
-            cRed != NO_CHANGE || cGreen != NO_CHANGE || cBlue != NO_CHANGE ||
-            bRed != NO_CHANGE || bGreen != NO_CHANGE || bBlue != NO_CHANGE
-        );
+            cRed !== NO_CHANGE || cGreen !== NO_CHANGE || cBlue !== NO_CHANGE ||
+            bRed !== NO_CHANGE || bGreen !== NO_CHANGE || bBlue !== NO_CHANGE);
     }
 };

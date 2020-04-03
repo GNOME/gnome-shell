@@ -716,8 +716,7 @@ class NMWirelessDialog extends ModalDialog.ModalDialog {
 
         let connections = client.get_connections();
         this._connections = connections.filter(
-            connection => device.connection_valid(connection)
-        );
+            connection => device.connection_valid(connection));
 
         this._apAddedId = device.connect('access-point-added', this._accessPointAdded.bind(this));
         this._apRemovedId = device.connect('access-point-removed', this._accessPointRemoved.bind(this));
@@ -1863,8 +1862,7 @@ class Indicator extends PanelMenu.SystemIndicator {
     _syncVpnConnections() {
         let activeConnections = this._client.get_active_connections() || [];
         let vpnConnections = activeConnections.filter(
-            a => a instanceof NM.VpnConnection
-        );
+            a => a instanceof NM.VpnConnection);
         vpnConnections.forEach(a => {
             ensureActiveConnectionProps(a);
         });
