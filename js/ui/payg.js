@@ -304,8 +304,8 @@ var PaygUnlockUi = GObject.registerClass({
 
     startSpinning() {
         this.spinner.play();
-        this.spinner.actor.show();
-        this.spinner.actor.ease({
+        this.spinner.show();
+        this.spinner.ease({
             opacity: 255,
             delay: SPINNER_ANIMATION_DELAY_MSECS,
             duration: SPINNER_ANIMATION_TIME_MSECS,
@@ -314,8 +314,8 @@ var PaygUnlockUi = GObject.registerClass({
     }
 
     stopSpinning() {
-        this.spinner.actor.hide();
-        this.spinner.actor.opacity = 0;
+        this.spinner.hide();
+        this.spinner.opacity = 0;
         this.spinner.stop();
     }
 
