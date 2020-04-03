@@ -981,9 +981,7 @@ get_length_from_term (StThemeNode *node,
   } type = ABSOLUTE;
 
   double multiplier = 1.0;
-  int scale_factor;
 
-  g_object_get (node->context, "scale-factor", &scale_factor, NULL);
 
   if (term->type != TERM_NUMBER)
     {
@@ -998,7 +996,7 @@ get_length_from_term (StThemeNode *node,
     {
     case NUM_LENGTH_PX:
       type = ABSOLUTE;
-      multiplier = 1 * scale_factor;
+      multiplier = 1 * node->scale_factor;
       break;
     case NUM_LENGTH_PT:
       type = POINTS;
@@ -1129,14 +1127,10 @@ get_length_from_term_int (StThemeNode *node,
 {
   double value;
   GetFromTermResult result;
-  int scale_factor;
 
   result = get_length_from_term (node, term, use_parent_font, &value);
   if (result == VALUE_FOUND)
-    {
-      g_object_get (node->context, "scale-factor", &scale_factor, NULL);
-      *length = (int) ((value / scale_factor) + 0.5) * scale_factor;
-    }
+    *length = (int) ((value / node->scale_factor) + 0.5) * node->scale_factor;
   return result;
 }
 
@@ -3057,7 +3051,6 @@ StBorderImage *
 st_theme_node_get_border_image (StThemeNode *node)
 {
   int i;
-  int scale_factor;
 
   if (node->border_image_computed)
     return node->border_image;
@@ -3066,7 +3059,6 @@ st_theme_node_get_border_image (StThemeNode *node)
   node->border_image_computed = TRUE;
 
   ensure_properties (node);
-  g_object_get (node->context, "scale-factor", &scale_factor, NULL);
 
   for (i = node->n_properties - 1; i >= 0; i--)
     {
@@ -3171,7 +3163,7 @@ st_theme_node_get_border_image (StThemeNode *node)
 
           node->border_image = st_border_image_new (file,
                                                     border_top, border_right, border_bottom, border_left,
-                                                    scale_factor);
+                                                    node->scale_factor);
 
           g_object_unref (file);
 
