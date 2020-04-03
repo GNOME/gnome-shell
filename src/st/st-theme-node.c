@@ -399,6 +399,7 @@ st_theme_node_hash (StThemeNode *node)
   hash = hash * 33 + GPOINTER_TO_UINT (node->context);
   hash = hash * 33 + GPOINTER_TO_UINT (node->theme);
   hash = hash * 33 + ((guint) node->element_type);
+  hash = hash * 33 + ((guint) node->scale_factor);
 
   if (node->element_id != NULL)
     hash = hash * 33 + g_str_hash (node->element_id);
