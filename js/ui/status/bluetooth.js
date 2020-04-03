@@ -1,7 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported Indicator */
 
-const { Gio, GnomeBluetooth, GObject } = imports.gi;
+const { Gio, GLib, GnomeBluetooth, GObject } = imports.gi;
 
 const Main = imports.ui.main;
 const PanelMenu = imports.ui.panelMenu;
@@ -35,7 +35,7 @@ class Indicator extends PanelMenu.SystemIndicator {
 
                                                  this._sync();
                                              });
-        this._proxy.connect('g-properties-changed', this._sync.bind(this));
+        this._proxy.connect('g-properties-changed', this._queueSync.bind(this));
 
         this._item = new PopupMenu.PopupSubMenuMenuItem(_("Bluetooth"), true);
         this._item.icon.icon_name = 'bluetooth-active-symbolic';
@@ -49,10 +49,12 @@ class Indicator extends PanelMenu.SystemIndicator {
         this._item.menu.addSettingsAction(_("Bluetooth Settings"), 'gnome-bluetooth-panel.desktop');
         this.menu.addMenuItem(this._item);
 
+        this._syncId = 0;
+
         this._client = new GnomeBluetooth.Client();
         this._model = this._client.get_model();
-        this._model.connect('row-changed', this._sync.bind(this));
-        this._model.connect('row-deleted', this._sync.bind(this));
+        this._model.connect('row-deleted', this._queueSync.bind(this));
+        this._model.connect('row-changed', this._queueSync.bind(this));
         this._model.connect('row-inserted', this._sync.bind(this));
         Main.sessionMode.connect('updated', this._sync.bind(this));
         this._sync();
@@ -102,6 +104,16 @@ class Indicator extends PanelMenu.SystemIndicator {
         }
 
         return deviceInfos;
+    }
+
+    _queueSync() {
+        if (this._syncId)
+            return;
+        this._syncId = GLib.idle_add(GLib.PRIORITY_DEFAULT, () => {
+            this._syncId = 0;
+            this._sync();
+            return GLib.SOURCE_REMOVE;
+        });
     }
 
     _sync() {
