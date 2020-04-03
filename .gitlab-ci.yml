@@ -18,7 +18,7 @@ variables:
         - merge_requests
 
 check_commit_log:
-    image: registry.gitlab.gnome.org/gnome/mutter/master:v3
+    image: registry.gitlab.gnome.org/gnome/mutter/master:v4
     stage: review
     variables:
         GIT_DEPTH: "100"
@@ -65,7 +65,7 @@ no_template_check:
     <<: *only_default
 
 build:
-    image: registry.gitlab.gnome.org/gnome/mutter/master:v3
+    image: registry.gitlab.gnome.org/gnome/mutter/master:v4
     stage: build
     before_script:
         - .gitlab-ci/checkout-mutter.sh
@@ -83,7 +83,7 @@ build:
             - build
 
 test:
-    image: registry.gitlab.gnome.org/gnome/mutter/master:v3
+    image: registry.gitlab.gnome.org/gnome/mutter/master:v4
     stage: test
     variables:
         XDG_RUNTIME_DIR: "$CI_PROJECT_DIR/runtime-dir"
@@ -100,7 +100,7 @@ test:
         when: on_failure
 
 test-pot:
-    image: registry.gitlab.gnome.org/gnome/mutter/master:v3
+    image: registry.gitlab.gnome.org/gnome/mutter/master:v4
     stage: test
     before_script:
         - ninja -C mutter/build install
