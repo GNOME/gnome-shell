@@ -1225,11 +1225,12 @@ class FolderView extends BaseAppView {
         });
         layout.hookup_style(icon);
         let subSize = Math.floor(FOLDER_SUBICON_FRACTION * size);
+        let scale = St.ThemeContext.get_for_stage(global.stage).scale_factor;
 
         let numItems = this._orderedItems.length;
         let rtl = icon.get_text_direction() == Clutter.TextDirection.RTL;
         for (let i = 0; i < 4; i++) {
-            let bin = new St.Bin({ width: subSize, height: subSize });
+            let bin = new St.Bin({ width: subSize * scale, height: subSize * scale });
             if (i < numItems)
                 bin.child = this._orderedItems[i].app.create_icon_texture(subSize);
             layout.attach(bin, rtl ? (i + 1) % 2 : i % 2, Math.floor(i / 2), 1, 1);
