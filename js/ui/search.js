@@ -220,8 +220,7 @@ var SearchResultsBase = GObject.registerClass({
 
     _ensureResultActors(results, callback) {
         let metasNeeded = results.filter(
-            resultId => this._resultDisplays[resultId] === undefined
-        );
+            resultId => this._resultDisplays[resultId] === undefined);
 
         if (metasNeeded.length === 0) {
             callback(true);
