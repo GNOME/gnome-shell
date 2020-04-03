@@ -681,8 +681,7 @@ class AppSwitcher extends SwitcherPopup.SwitcherList {
             // Cache the window list now; we don't handle dynamic changes here,
             // and we don't want to be continually retrieving it
             appIcon.cachedWindows = allWindows.filter(
-                w => windowTracker.get_window_app(w) == appIcon.app
-            );
+                w => windowTracker.get_window_app(w) === appIcon.app);
             if (appIcon.cachedWindows.length > 0)
                 this._addIcon(appIcon);
         }

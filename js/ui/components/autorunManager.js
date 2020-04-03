@@ -125,8 +125,7 @@ var ContentTypeDiscoverer = class {
     _emitCallback(mount, contentTypes = []) {
         // we're not interested in win32 software content types here
         contentTypes = contentTypes.filter(
-            type => type != 'x-content/win32-software'
-        );
+            type => type !== 'x-content/win32-software');
 
         let apps = [];
         contentTypes.forEach(type => {

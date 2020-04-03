@@ -39,8 +39,7 @@ function _getAutoCompleteGlobalKeywords() {
     const keywords = ['true', 'false', 'null', 'new'];
     // Don't add the private properties of window (i.e., ones starting with '_')
     const windowProperties = Object.getOwnPropertyNames(window).filter(
-        a => a.charAt(0) != '_'
-    );
+        a => a.charAt(0) !== '_');
     const headerProperties = JsParse.getDeclaredConstants(commandHeader);
 
     return keywords.concat(windowProperties).concat(headerProperties);

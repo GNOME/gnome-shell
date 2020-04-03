@@ -1167,8 +1167,7 @@ var MessageTray = GObject.registerClass({
                                      this._onNotificationDestroy.bind(this));
                 this._notificationQueue.push(notification);
                 this._notificationQueue.sort(
-                    (n1, n2) => n2.urgency - n1.urgency
-                );
+                    (n1, n2) => n2.urgency - n1.urgency);
                 this.emit('queue-changed');
             }
         }
