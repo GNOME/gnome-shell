@@ -643,15 +643,13 @@ create_cairo_pattern_of_background_image (StThemeNode *node,
   gdouble background_image_width, background_image_height;
   gdouble x, y;
   gdouble scale_w, scale_h;
-  int scale_factor;
 
   file = st_theme_node_get_background_image (node);
 
   texture_cache = st_texture_cache_get_default ();
 
-  g_object_get (node->context, "scale-factor", &scale_factor, NULL);
   surface = st_texture_cache_load_file_to_cairo_surface (texture_cache, file,
-                                                         scale_factor,
+                                                         node->scale_factor,
                                                          resource_scale);
 
   if (surface == NULL)
@@ -1374,7 +1372,6 @@ st_theme_node_load_border_image (StThemeNode *node,
     {
       StBorderImage *border_image;
       GFile *file;
-      int scale_factor;
 
       border_image = st_theme_node_get_border_image (node);
       if (border_image == NULL)
@@ -1382,10 +1379,9 @@ st_theme_node_load_border_image (StThemeNode *node,
 
       file = st_border_image_get_file (border_image);
 
-      g_object_get (node->context, "scale-factor", &scale_factor, NULL);
-
       node->border_slices_texture = st_texture_cache_load_file_to_cogl_texture (st_texture_cache_get_default (),
-                                                                                file, scale_factor,
+                                                                                file,
+                                                                                node->scale_factor,
                                                                                 resource_scale);
       if (node->border_slices_texture == NULL)
         goto out;
@@ -1413,17 +1409,15 @@ st_theme_node_load_background_image (StThemeNode *node,
     {
       GFile *background_image;
       StShadow *background_image_shadow_spec;
-      int scale_factor;
 
       background_image = st_theme_node_get_background_image (node);
       if (background_image == NULL)
         goto out;
 
-      g_object_get (node->context, "scale-factor", &scale_factor, NULL);
-
       background_image_shadow_spec = st_theme_node_get_background_image_shadow (node);
       node->background_texture = st_texture_cache_load_file_to_cogl_texture (st_texture_cache_get_default (),
-                                                                             background_image, scale_factor,
+                                                                             background_image,
+                                                                             node->scale_factor,
                                                                              resource_scale);
       if (node->background_texture == NULL)
         goto out;
