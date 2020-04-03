@@ -720,7 +720,7 @@ class PaygNotifier extends GObject.Object {
 
         this._notification.setTransient(false);
         this._notification.setUrgency(urgency);
-        source.notify(this._notification);
+        source.showNotification(this._notification);
 
         // if the user triggered this notification, immediately expand so the
         // user sees the input field
