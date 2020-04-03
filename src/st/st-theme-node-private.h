@@ -117,6 +117,8 @@ struct _StThemeNode {
   CoglPipeline *color_pipeline;
 
   StThemeNodePaintState cached_state;
+
+  int scale_factor;
 };
 
 void _st_theme_node_ensure_background (StThemeNode *node);

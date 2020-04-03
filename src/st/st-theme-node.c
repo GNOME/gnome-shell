@@ -219,6 +219,8 @@ st_theme_node_new (StThemeContext    *context,
   if (theme == NULL && parent_node != NULL)
     theme = parent_node->theme;
 
+  g_object_get (context, "scale-factor", &node->scale_factor, NULL);
+
   g_set_object (&node->theme, theme);
   node->element_type = element_type;
   node->element_id = g_strdup (element_id);
@@ -345,6 +347,7 @@ st_theme_node_equal (StThemeNode *node_a, StThemeNode *node_b)
       node_a->context != node_b->context ||
       node_a->theme != node_b->theme ||
       node_a->element_type != node_b->element_type ||
+      node_a->scale_factor != node_b->scale_factor ||
       g_strcmp0 (node_a->element_id, node_b->element_id) ||
       g_strcmp0 (node_a->inline_style, node_b->inline_style))
     return FALSE;
@@ -3966,6 +3969,9 @@ st_theme_node_geometry_equal (StThemeNode *node,
     return TRUE;
 
   g_return_val_if_fail (ST_IS_THEME_NODE (other), FALSE);
+
+  if (node->scale_factor != other->scale_factor)
+    return FALSE;
 
   _st_theme_node_ensure_geometry (node);
   _st_theme_node_ensure_geometry (other);
