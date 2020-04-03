@@ -136,8 +136,11 @@ class BaseIcon extends St.Bin {
         if (this._setSizeManually) {
             size = this.iconSize;
         } else {
+            const { scaleFactor } =
+                St.ThemeContext.get_for_stage(global.stage);
+
             let [found, len] = node.lookup_length('icon-size', false);
-            size = found ? len : ICON_SIZE;
+            size = found ? len / scaleFactor : ICON_SIZE;
         }
 
         if (this.iconSize == size && this._iconBin.child)
