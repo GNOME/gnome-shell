@@ -47,6 +47,7 @@
     <file>ui/closeDialog.js</file>
     <file>ui/ctrlAltTab.js</file>
     <file>ui/dash.js</file>
+    <file>ui/dock.js</file>
     <file>ui/dateMenu.js</file>
     <file>ui/dialog.js</file>
     <file>ui/dnd.js</file>

@@ -137,7 +137,7 @@ var ViewSelector = GObject.registerClass({
         this._showAppsButton = showAppsButton;
         this._showAppsButton.connect('notify::checked', this._onShowAppsButtonToggled.bind(this));
 
-        this._activePage = null;
+        this._activePage = this._workspacesPage;
 
         this._searchActive = false;
 
@@ -395,8 +395,14 @@ var ViewSelector = GObject.registerClass({
     }
 
     _onShowAppsButtonToggled() {
-        this._showPage(this._showAppsButton.checked
-            ? this._appsPage : this._workspacesPage);
+        if (this._showAppsButton.checked) {
+            if (!Main.overview.visibleTarget)
+                Main.overview.show();
+
+            this._showPage(this._appsPage);
+        } else {
+            this._showPage(this._workspacesPage);
+        }
     }
 
     _onStageKeyPress(actor, event) {

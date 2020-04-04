@@ -1,9 +1,9 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported ControlsManager */
+/* exported ControlsManager, DashSlider */
 
 const { Clutter, GObject, Meta, St } = imports.gi;
 
-const Dash = imports.ui.dash;
+const Dock = imports.ui.dock;
 const Main = imports.ui.main;
 const Params = imports.misc.params;
 const ViewSelector = imports.ui.viewSelector;
@@ -324,23 +324,12 @@ class ThumbnailsSlider extends SlidingControl {
 
 var DashSlider = GObject.registerClass(
 class DashSlider extends SlidingControl {
-    _init(dash) {
+    _init() {
         super._init({ slideDirection: SlideDirection.LEFT });
-
-        this._dash = dash;
-
-        // SlideLayout reads the actor's expand flags to decide
-        // whether to allocate the natural size to its child, or the whole
-        // available allocation
-        this._dash.x_expand = true;
 
         this.x_expand = true;
         this.x_align = Clutter.ActorAlign.START;
         this.y_expand = true;
-
-        this.add_actor(this._dash);
-
-        this._dash.connect('icon-size-changed', this._updateSlide.bind(this));
     }
 
     _getSlide() {
@@ -350,12 +339,26 @@ class DashSlider extends SlidingControl {
             return 0;
     }
 
-    _onWindowDragBegin() {
-        this.fadeHalf();
+    _onOverviewHiding() {}
+
+    _updateSlide(duration, delay = 0, onComplete = () => {}) {
+        const slide = this._getSlide();
+        this.ease_property('@layout.slide-x', slide, {
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            duration: duration * 1000,
+            delay: delay * 1000,
+            onComplete,
+        });
     }
 
-    _onWindowDragEnd() {
-        this.fadeIn();
+    slideIn(duration, delay = 0, onComplete = () => { }) {
+        this._visible = true;
+        this._updateSlide(duration, delay, onComplete);
+    }
+
+    slideOut(duration, delay = 0, onComplete = () => { }) {
+        this._visible = false;
+        this._updateSlide(duration, delay, onComplete);
     }
 });
 
@@ -413,10 +416,11 @@ class ControlsManager extends St.Widget {
             clip_to_allocation: true,
         });
 
-        this.dash = new Dash.Dash();
-        this._dashSlider = new DashSlider(this.dash);
+        this.dock = new Dock.Dock({
+            monitorIndex: Main.layoutManager.primaryIndex,
+        });
         this._dashSpacer = new DashSpacer();
-        this._dashSpacer.setDashActor(this._dashSlider);
+        this._dashSpacer.setDashActor(this.dock._slider);
 
         let workspaceManager = global.workspace_manager;
         let activeWorkspaceIndex = workspaceManager.get_active_workspace_index();
@@ -447,8 +451,6 @@ class ControlsManager extends St.Widget {
                                          x_expand: true, y_expand: true });
         this.add_actor(this._group);
 
-        this.add_actor(this._dashSlider);
-
         this._group.add_actor(this._dashSpacer);
         this._group.add_child(this.viewSelector);
         this._group.add_actor(this._thumbnailsSlider);
@@ -458,6 +460,10 @@ class ControlsManager extends St.Widget {
         Main.overview.connect('showing', this._updateSpacerVisibility.bind(this));
 
         this.connect('destroy', this._onDestroy.bind(this));
+    }
+
+    get dash() {
+        return this.dock.dash;
     }
 
     _onDestroy() {
@@ -482,7 +488,7 @@ class ControlsManager extends St.Widget {
         let geometry = { x, y, width, height };
 
         let spacing = this.get_theme_node().get_length('spacing');
-        let dashWidth = this._dashSlider.getVisibleWidth() + spacing;
+        let dashWidth = this.dock._slider.getVisibleWidth() + spacing;
         let thumbnailsWidth = this._thumbnailsSlider.getNonExpandedWidth() + spacing;
 
         geometry.width -= dashWidth;
@@ -511,9 +517,9 @@ class ControlsManager extends St.Widget {
         let thumbnailsVisible = activePage == ViewSelector.ViewPage.WINDOWS;
 
         if (dashVisible)
-            this._dashSlider.slideIn();
+            this.dock.slideIn();
         else
-            this._dashSlider.slideOut();
+            this.dock.slideOut();
 
         if (thumbnailsVisible)
             this._thumbnailsSlider.slideIn();
@@ -530,7 +536,7 @@ class ControlsManager extends St.Widget {
     }
 
     _onPageEmpty() {
-        this._dashSlider.pageEmpty();
+        this.dock._slider.pageEmpty();
         this._thumbnailsSlider.pageEmpty();
 
         this._updateSpacerVisibility();
