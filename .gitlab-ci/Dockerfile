@@ -1,17 +1,17 @@
 # Rebuild and push with
 #
 #     cd .gitlab-ci/
-#     podman build --format docker --no-cache -t registry.gitlab.gnome.org/gnome/gnome-shell/extension-ci:v1 .
-#     podman push registry.gitlab.gnome.org/gnome/gnome-shell/extension-ci:v1
+#     podman build --format docker --no-cache -t registry.gitlab.gnome.org/gnome/gnome-shell/extension-ci:v2 .
+#     podman push registry.gitlab.gnome.org/gnome/gnome-shell/extension-ci:v2
 #
 
-FROM registry.fedoraproject.org/fedora:latest
+FROM registry.fedoraproject.org/fedora:32
 
 RUN dnf -y update && dnf -y upgrade && \
     dnf install -y 'dnf-command(copr)' git && \
 
-    # For syntax checks with `find . -name '*.js' -exec js60 -c -s '{}' ';'`
-    dnf install -y findutils mozjs60-devel && \
+    # For syntax checks with `find . -name '*.js' -exec js68 -c -s '{}' ';'`
+    dnf install -y findutils mozjs68-devel && \
 
     # For static analysis with eslint
     dnf install -y nodejs && \
@@ -21,5 +21,4 @@ RUN dnf -y update && dnf -y upgrade && \
     dnf copr enable -y fmuellner/gnome-shell-ci && \
     dnf install -y gnome-extensions-tool meson && \
 
-    dnf clean all && \
-    rm -rf /var/cache/dnf
+    dnf clean all
