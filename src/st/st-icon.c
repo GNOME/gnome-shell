@@ -450,7 +450,9 @@ st_icon_update (StIcon *icon)
                                                          paint_scale,
                                                          resource_scale);
 
-  if (priv->pending_texture == NULL)
+  if (priv->pending_texture == NULL &&
+      (priv->gicon != NULL ||
+       priv->fallback_gicon != NULL))
     priv->pending_texture = st_texture_cache_load_gicon (cache,
                                                          theme_node,
                                                          priv->default_gicon,
