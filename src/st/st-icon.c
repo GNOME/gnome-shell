@@ -59,7 +59,6 @@ struct _StIconPrivate
   gint             theme_icon_size; /* icon size from theme node */
   gint             icon_size;       /* icon size we are using */
   GIcon           *fallback_gicon;
-  GIcon           *default_gicon;
 
   CoglPipeline    *shadow_pipeline;
   StShadow        *shadow_spec;
@@ -72,6 +71,8 @@ static void st_icon_update               (StIcon *icon);
 static gboolean st_icon_update_icon_size (StIcon *icon);
 static void st_icon_update_shadow_pipeline (StIcon *icon);
 static void st_icon_clear_shadow_pipeline (StIcon *icon);
+
+static GIcon *default_gicon = NULL;
 
 #define IMAGE_MISSING_ICON_NAME "image-missing"
 #define DEFAULT_ICON_SIZE 48
@@ -168,7 +169,6 @@ st_icon_dispose (GObject *gobject)
 
   g_clear_object (&priv->gicon);
   g_clear_object (&priv->fallback_gicon);
-  g_clear_object (&priv->default_gicon);
   g_clear_pointer (&priv->shadow_pipeline, cogl_object_unref);
   g_clear_pointer (&priv->shadow_spec, st_shadow_unref);
 
@@ -295,13 +295,14 @@ st_icon_init (StIcon *self)
 {
   ClutterLayoutManager *layout_manager;
 
+  if (G_UNLIKELY (default_gicon == NULL))
+    default_gicon = g_themed_icon_new (IMAGE_MISSING_ICON_NAME);
+
   self->priv = st_icon_get_instance_private (self);
 
   layout_manager = clutter_bin_layout_new (CLUTTER_BIN_ALIGNMENT_FILL,
                                            CLUTTER_BIN_ALIGNMENT_FILL);
   clutter_actor_set_layout_manager (CLUTTER_ACTOR (self), layout_manager);
-
-  self->priv->default_gicon = g_themed_icon_new (IMAGE_MISSING_ICON_NAME);
 
   self->priv->icon_size = DEFAULT_ICON_SIZE;
   self->priv->prop_icon_size = -1;
@@ -453,7 +454,7 @@ st_icon_update (StIcon *icon)
   if (priv->pending_texture == NULL)
     priv->pending_texture = st_texture_cache_load_gicon (cache,
                                                          theme_node,
-                                                         priv->default_gicon,
+                                                         default_gicon,
                                                          priv->icon_size,
                                                          paint_scale,
                                                          resource_scale);
