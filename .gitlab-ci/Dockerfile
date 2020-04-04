@@ -1,3 +1,10 @@
+# Rebuild and push with
+#
+#     cd .gitlab-ci/
+#     podman build --format docker --no-cache -t registry.gitlab.gnome.org/gnome/gnome-shell/extension-ci:v1 .
+#     podman push registry.gitlab.gnome.org/gnome/gnome-shell/extension-ci:v1
+#
+
 FROM registry.fedoraproject.org/fedora:latest
 
 RUN dnf -y update && dnf -y upgrade && \
