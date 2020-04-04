@@ -33,6 +33,8 @@ var Malcontent = null;
 if (HAVE_MALCONTENT)
     Malcontent = imports.gi.Malcontent;
 
+Gio._promisify(Malcontent.Manager.prototype, 'get_app_filter_async', 'get_app_filter_finish')
+
 let _singleton = null;
 
 function getDefault() {
@@ -58,6 +60,10 @@ var ParentalControlsManager = GObject.registerClass({
         this._disabled = false;
         this._appFilter = null;
 
+        this._initializeManager();
+    }
+
+    async _initializeManager() {
         if (!HAVE_MALCONTENT) {
             log('Skipping parental controls support as it’s disabled');
             this._initialized = true;
@@ -66,17 +72,14 @@ var ParentalControlsManager = GObject.registerClass({
         }
 
         log(`Getting parental controls for user ${Shell.util_get_uid()}`);
-        let connection = Gio.bus_get_sync(Gio.BusType.SYSTEM, null);
-        this._manager = new Malcontent.Manager({ connection });
-        this._manager.get_app_filter_async(Shell.util_get_uid(),
-                                           Malcontent.ManagerGetValueFlags.NONE,
-                                           null, this._onGetAppFilter.bind(this));
-    }
-
-    _onGetAppFilter(object, res) {
         try {
-            this._appFilter = this._manager.get_app_filter_finish(res);
-        } catch (e) {
+            const connection = await Gio.DBus.get(Gio.BusType.SYSTEM, null);
+            this._manager = new Malcontent.Manager({ connection });
+            this._appFilter = await this._manager.get_app_filter_async(
+                Shell.util_get_uid(),
+                Malcontent.ManagerGetValueFlags.NONE,
+                null);
+        } catch(e) {
             if (e.matches(Malcontent.ManagerError, Malcontent.ManagerError.DISABLED)) {
                 log('Parental controls globally disabled');
                 this._disabled = true;
@@ -86,26 +89,24 @@ var ParentalControlsManager = GObject.registerClass({
             }
         }
 
-        this._manager.connect('app-filter-changed', (manager, uid) => {
-            let currentUid = Shell.util_get_uid();
-            // Emit 'changed' signal only if app-filter is changed for currently logged-in user.
-            if (currentUid === uid) {
-                this._manager.get_app_filter_async(
-                    currentUid,
-                    Malcontent.ManagerGetValueFlags.NONE,
-                    null,
-                    this._onAppFilterChanged.bind(this));
-            }
-        });
+        this._manager.connect('app-filter-changed', this._onAppFilterChanged.bind(this));
 
         // Signal initialisation is complete.
         this._initialized = true;
         this.emit('app-filter-changed');
     }
 
-    _onAppFilterChanged(object, res) {
+    async _onAppFilterChanged(manager, uid) {
+        // Emit 'changed' signal only if app-filter is changed for currently logged-in user.
+        let currentUid = Shell.util_get_uid();
+        if (currentUid !== uid)
+            return;
+
         try {
-            this._appFilter = this._manager.get_app_filter_finish(res);
+            this._appFilter = await this._manager.get_app_filter_async(
+                currentUid,
+                Malcontent.ManagerGetValueFlags.NONE,
+                null);
             this.emit('app-filter-changed');
         } catch (e) {
             // Log an error and keep the old app filter.
