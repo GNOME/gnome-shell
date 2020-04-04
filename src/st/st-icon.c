@@ -419,7 +419,10 @@ st_icon_update (StIcon *icon)
     }
 
   if (priv->gicon == NULL && priv->fallback_gicon == NULL)
-    return;
+    {
+      g_clear_pointer (&priv->icon_texture, clutter_actor_destroy);
+      return;
+    }
 
   if (!st_widget_get_resource_scale (ST_WIDGET (icon), &resource_scale))
     return;
