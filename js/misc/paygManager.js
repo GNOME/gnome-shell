@@ -28,6 +28,7 @@ const { Gio, GLib, GnomeDesktop, GObject, Shell } = imports.gi;
 const { loadInterfaceXML } = imports.misc.fileUtils;
 
 const Payg = imports.ui.payg;
+const Signals = imports.signals;
 
 const EOS_PAYG_NAME = 'com.endlessm.Payg1';
 const EOS_PAYG_PATH = '/com/endlessm/Payg1';
