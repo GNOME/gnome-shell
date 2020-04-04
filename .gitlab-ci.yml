@@ -28,10 +28,10 @@ check_commit_log:
         - merge_requests
 
 js_check:
-    image: registry.gitlab.gnome.org/gnome/gnome-shell/extension-ci:v1
+    image: registry.gitlab.gnome.org/gnome/gnome-shell/extension-ci:v2
     stage: review
     script:
-        - find js -name '*.js' -exec js60 -c -s '{}' ';' 2>&1 | tee $JS_LOG
+        - find js -name '*.js' -exec js68 -c -s '{}' ';' 2>&1 | tee $JS_LOG
         - (! grep -q . $JS_LOG)
     <<: *only_default
     artifacts:
@@ -40,7 +40,7 @@ js_check:
         when: on_failure
 
 eslint:
-    image: registry.gitlab.gnome.org/gnome/gnome-shell/extension-ci:v1
+    image: registry.gitlab.gnome.org/gnome/gnome-shell/extension-ci:v2
     stage: review
     script:
         - ./.gitlab-ci/run-eslint.sh
@@ -51,14 +51,14 @@ eslint:
         when: always
 
 potfile_check:
-    image: registry.gitlab.gnome.org/gnome/gnome-shell/extension-ci:v1
+    image: registry.gitlab.gnome.org/gnome/gnome-shell/extension-ci:v2
     stage: review
     script:
         - ./.gitlab-ci/check-potfiles.sh
     <<: *only_default
 
 no_template_check:
-    image: registry.gitlab.gnome.org/gnome/gnome-shell/extension-ci:v1
+    image: registry.gitlab.gnome.org/gnome/gnome-shell/extension-ci:v2
     stage: review
     script:
         - ./.gitlab-ci/check-template-strings.sh
