@@ -46,13 +46,19 @@ show_extension_info (const char *uuid)
                                      NULL,
                                      &error);
   if (response == NULL)
-    return FALSE;
+    {
+      g_printerr (_("Failed to connect to GNOME Shell\n"));
+      return FALSE;
+    }
 
   asv = g_variant_get_child_value (response, 0);
   info = g_variant_dict_new (asv);
 
   if (!g_variant_dict_contains (info, "uuid"))
-    return FALSE;
+    {
+      g_printerr (_("Extension “%s” doesn't exist\n"), uuid);
+      return FALSE;
+    }
 
   print_extension_info (info, DISPLAY_DETAILED);
 
@@ -78,6 +84,7 @@ handle_info (int argc, char *argv[], gboolean do_help)
   g_option_context_set_help_enabled (context, FALSE);
   g_option_context_set_summary (context, _("Show extensions info"));
   g_option_context_add_main_entries (context, entries, GETTEXT_PACKAGE);
+  g_option_context_add_group (context, get_option_group());
 
   if (do_help)
     {

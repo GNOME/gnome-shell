@@ -29,13 +29,26 @@ static gboolean
 uninstall_extension (const char *uuid)
 {
   g_autoptr (GDBusProxy) proxy = NULL;
+  g_autoptr (GVariant) info = NULL;
   g_autoptr (GVariant) response = NULL;
   g_autoptr (GError) error = NULL;
   gboolean success = FALSE;
+  double type;
 
   proxy = get_shell_proxy (&error);
   if (proxy == NULL)
     return FALSE;
+
+  info = get_extension_property (proxy, uuid, "type");
+  if (info == NULL)
+    return FALSE;
+
+  type = g_variant_get_double (info);
+  if (type == TYPE_SYSTEM)
+    {
+      g_printerr (_("Cannot uninstall system extensions\n"));
+      return FALSE;
+    }
 
   response = g_dbus_proxy_call_sync (proxy,
                                      "UninstallExtension",
@@ -44,10 +57,11 @@ uninstall_extension (const char *uuid)
                                      -1,
                                      NULL,
                                      &error);
-  if (response == NULL)
-    return FALSE;
 
   g_variant_get (response, "(b)", &success);
+
+  if (!success)
+    g_printerr (_("Failed to uninstall “%s”\n"), uuid);
 
   return success;
 }
@@ -71,6 +85,7 @@ handle_uninstall (int argc, char *argv[], gboolean do_help)
   g_option_context_set_help_enabled (context, FALSE);
   g_option_context_set_summary (context, _("Uninstall an extension"));
   g_option_context_add_main_entries (context, entries, GETTEXT_PACKAGE);
+  g_option_context_add_group (context, get_option_group());
 
   if (do_help)
     {

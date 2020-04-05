@@ -45,6 +45,8 @@ typedef enum {
   DISPLAY_DETAILED
 } DisplayFormat;
 
+GOptionGroup *get_option_group (void);
+
 void show_help (GOptionContext *context,
                 const char     *message);
 
@@ -52,6 +54,10 @@ void print_extension_info (GVariantDict  *info,
                            DisplayFormat  format);
 
 GDBusProxy *get_shell_proxy (GError **error);
+GVariant   *get_extension_property (GDBusProxy *proxy,
+                                    const char *uuid,
+                                    const char *property);
+
 GSettings  *get_shell_settings (void);
 
 gboolean settings_list_add (GSettings  *settings,

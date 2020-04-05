@@ -49,6 +49,39 @@ extension_state_to_string (ExtensionState state)
   return "UNKNOWN";
 }
 
+static void
+print_nothing (const char *message)
+{
+}
+
+static gboolean
+quiet_cb (const gchar  *option_name,
+          const gchar  *value,
+          gpointer      data,
+          GError      **error)
+{
+  g_set_printerr_handler (print_nothing);
+  return TRUE;
+}
+
+GOptionGroup *
+get_option_group ()
+{
+  GOptionEntry entries[] = {
+    { .long_name = "quiet", .short_name = 'q',
+      .description = _("Do not print error messages"),
+      .arg = G_OPTION_ARG_CALLBACK, .arg_data = &quiet_cb,
+      .flags = G_OPTION_FLAG_NO_ARG | G_OPTION_FLAG_IN_MAIN },
+    { NULL }
+  };
+  GOptionGroup *group;
+
+  group = g_option_group_new ("Common", "common options", "common options", NULL, NULL);
+  g_option_group_add_entries (group, entries);
+
+  return group;
+}
+
 void
 show_help (GOptionContext *context, const char *message)
 {
@@ -89,6 +122,41 @@ get_shell_settings (void)
     return NULL;
 
   return g_settings_new_full (schema, NULL, NULL);
+}
+
+GVariant *
+get_extension_property (GDBusProxy *proxy,
+                        const char *uuid,
+                        const char *property)
+{
+  g_autoptr (GVariant) response = NULL;
+  g_autoptr (GVariant) asv = NULL;
+  g_autoptr (GVariantDict) info = NULL;
+  g_autoptr (GError) error = NULL;
+
+  response = g_dbus_proxy_call_sync (proxy,
+                                     "GetExtensionInfo",
+                                     g_variant_new ("(s)", uuid),
+                                     0,
+                                     -1,
+                                     NULL,
+                                     &error);
+  if (response == NULL)
+    {
+      g_printerr (_("Failed to connect to GNOME Shell"));
+      return NULL;
+    }
+
+  asv = g_variant_get_child_value (response, 0);
+  info = g_variant_dict_new (asv);
+
+  if (!g_variant_dict_contains (info, "uuid"))
+    {
+      g_printerr (_("Extension “%s” doesn't exist\n"), uuid);
+      return NULL;
+    }
+
+  return g_variant_dict_lookup_value (info, property, NULL);
 }
 
 gboolean
