@@ -281,13 +281,13 @@ class WeatherSection extends St.Button {
         this.child = box;
 
         let titleBox = new St.BoxLayout({ style_class: 'weather-header-box' });
-        titleBox.add_child(new St.Label({
+        this._titleLabel = new St.Label({
             style_class: 'weather-header',
             x_align: Clutter.ActorAlign.START,
             x_expand: true,
             y_align: Clutter.ActorAlign.END,
-            text: _('Weather'),
-        }));
+        });
+        titleBox.add_child(this._titleLabel);
         box.add_child(titleBox);
 
         this._titleLocation = new St.Label({
@@ -414,10 +414,8 @@ class WeatherSection extends St.Button {
     _updateForecasts() {
         this._forecastGrid.destroy_all_children();
 
-        if (!this._weatherClient.hasLocation) {
-            this._setStatusLabel(_("Select a location…"));
+        if (!this._weatherClient.hasLocation)
             return;
-        }
 
         const { info } = this._weatherClient;
         this._titleLocation.text = this._findBestLocationName(info.location);
@@ -444,6 +442,12 @@ class WeatherSection extends St.Button {
         if (!this.visible)
             return;
 
+        if (this._weatherClient.hasLocation)
+            this._titleLabel.text = _('Weather');
+        else
+            this._titleLabel.text = _('Select weather location...');
+
+        this._forecastGrid.visible = this._weatherClient.hasLocation;
         this._titleLocation.visible = this._weatherClient.hasLocation;
 
         this._updateForecasts();
