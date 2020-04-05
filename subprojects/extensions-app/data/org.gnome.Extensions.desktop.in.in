@@ -6,5 +6,5 @@ Icon=@app_id@
 Comment=Configure GNOME Shell Extensions
 Exec=@bindir@/@prgname@
 DBusActivatable=true
-Categories=GNOME;GTK;
+Categories=GNOME;GTK;Utility;
 OnlyShowIn=GNOME;

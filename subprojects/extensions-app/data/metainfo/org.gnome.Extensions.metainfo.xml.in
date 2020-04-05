@@ -14,6 +14,7 @@
   <url type="translate">https://wiki.gnome.org/TranslationProject</url>
 
   <project_group>GNOME</project_group>
+  <developer_name>The GNOME Project</developer_name>
 
   <launchable type="desktop-id">org.gnome.Extensions.desktop</launchable>
 
