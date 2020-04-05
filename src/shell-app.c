@@ -218,10 +218,19 @@ window_backed_app_get_icon (ShellApp *app,
 
   if (meta_window_get_client_type (window) == META_WINDOW_CLIENT_TYPE_X11)
     {
-      widget = st_texture_cache_bind_cairo_surface_property (st_texture_cache_get_default (),
-                                                             G_OBJECT (window),
-                                                             "icon",
-                                                             scaled_size);
+      StWidget *texture_actor;
+
+      texture_actor =
+        st_texture_cache_bind_cairo_surface_property (st_texture_cache_get_default (),
+                                                      G_OBJECT (window),
+                                                      "icon",
+                                                      scaled_size);
+
+      widget = g_object_new (ST_TYPE_BIN,
+                             "width", (float)scaled_size,
+                             "height", (float)scaled_size,
+                             "child", texture_actor,
+                             NULL);
     }
   else
     {
