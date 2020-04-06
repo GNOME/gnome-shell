@@ -58,6 +58,8 @@ StThemeNode *               st_theme_context_get_root_node  (StThemeContext     
 StThemeNode *               st_theme_context_intern_node    (StThemeContext             *context,
                                                              StThemeNode                *node);
 
+int st_theme_context_get_scale_factor (StThemeContext *context);
+
 G_END_DECLS
 
 #endif /* __ST_THEME_CONTEXT_H__ */
