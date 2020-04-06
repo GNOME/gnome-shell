@@ -15,8 +15,7 @@ class Animation extends St.Bin {
         const themeContext = St.ThemeContext.get_for_stage(global.stage);
 
         super._init({
-            width: width * themeContext.scale_factor,
-            height: height * themeContext.scale_factor,
+            style: `width: ${width}px; height: ${height}px;`,
         });
 
         this.connect('destroy', this._onDestroy.bind(this));
