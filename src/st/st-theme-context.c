@@ -469,3 +469,19 @@ st_theme_context_intern_node (StThemeContext *context,
   g_hash_table_add (context->nodes, g_object_ref (node));
   return node;
 }
+
+/**
+ * st_theme_context_get_scale_factor:
+ * @context: a #StThemeContext
+ *
+ * Return the current scale factor of @context.
+ *
+ * Return value: a scale factor
+ */
+int
+st_theme_context_get_scale_factor (StThemeContext *context)
+{
+  g_return_val_if_fail (ST_IS_THEME_CONTEXT (context), -1);
+
+  return context->scale_factor;
+}
