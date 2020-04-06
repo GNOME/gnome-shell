@@ -343,7 +343,7 @@ get_app_from_window_pid (ShellWindowTracker  *tracker,
 
   pid = meta_window_get_pid (window);
 
-  if (pid == -1)
+  if (pid == 0)
     return NULL;
 
   result = shell_window_tracker_get_app_from_pid (tracker, pid);
