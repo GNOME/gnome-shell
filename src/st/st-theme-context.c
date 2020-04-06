@@ -297,6 +297,9 @@ on_custom_stylesheets_changed (StTheme        *theme,
   GHashTableIter iter;
   StThemeNode *node;
 
+  if (context->root_node)
+    _st_theme_node_reset_for_stylesheet_change (context->root_node);
+
   g_hash_table_iter_init (&iter, context->nodes);
 
   while (g_hash_table_iter_next (&iter, (gpointer *) &node, NULL))
