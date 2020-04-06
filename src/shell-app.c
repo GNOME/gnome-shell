@@ -1159,6 +1159,10 @@ shell_app_get_pids (ShellApp *app)
     {
       MetaWindow *window = iter->data;
       int pid = meta_window_get_pid (window);
+
+      if (pid < 1)
+        continue;
+
       /* Note in the (by far) common case, app will only have one pid, so
        * we'll hit the first element, so don't worry about O(N^2) here.
        */
