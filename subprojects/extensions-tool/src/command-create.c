@@ -188,42 +188,54 @@ prompt_metadata (char **uuid, char **name, char **description)
 
   if (name != NULL && *name == NULL)
     {
-      char *line;
+      char *line = NULL;
 
       g_print (
         _("Name should be a very short (ideally descriptive) string.\n"
           "Examples are: %s"),
         "“Click To Focus”, “Adblock”, “Shell Window Shrinker”\n");
-      g_print ("%s: ", _("Name"));
 
-      line = g_data_input_stream_read_line_utf8 (istream, NULL, NULL, NULL);
+      while (line == NULL)
+        {
+          g_print ("%s: ", _("Name"));
+
+          line = g_data_input_stream_read_line_utf8 (istream, NULL, NULL, NULL);
+        }
       *name = g_strdelimit (line, "\n", '\0');
     }
 
   if (description != NULL && *description == NULL)
     {
-      char *line;
+      char *line = NULL;
 
       g_print (
         _("Description is a single-sentence explanation of what your extension does.\n"
           "Examples are: %s"),
         "“Make windows visible on click”, “Block advertisement popups”, “Animate windows shrinking on minimize”\n");
-      g_print ("%s: ", _("Description"));
 
-      line = g_data_input_stream_read_line_utf8 (istream, NULL, NULL, NULL);
+      while (line == NULL)
+        {
+          g_print ("%s: ", _("Description"));
+
+          line = g_data_input_stream_read_line_utf8 (istream, NULL, NULL, NULL);
+        }
       *description = g_strdelimit (line, "\n", '\0');
     }
 
   if (uuid != NULL && *uuid == NULL)
     {
-      char *line;
+      char *line = NULL;
 
       g_print (
         _("UUID is a globally-unique identifier for your extension.\n"
           "This should be in the format of an email address (clicktofocus@janedoe.example.com)\n"));
-      g_print ("UUID: ");
 
-      line = g_data_input_stream_read_line_utf8 (istream, NULL, NULL, NULL);
+      while (line == NULL)
+        {
+          g_print ("UUID: ");
+
+          line = g_data_input_stream_read_line_utf8 (istream, NULL, NULL, NULL);
+        }
       *uuid = g_strdelimit (line, "\n", '\0');
     }
 }
