@@ -608,10 +608,6 @@ var ScreenShield = class {
         if (this._activationTime == 0)
             this._activationTime = GLib.get_monotonic_time();
 
-        this._ensureUnlockDialog(true);
-
-        this.actor.show();
-
         if (Main.sessionMode.currentMode !== 'unlock-dialog' &&
             Main.sessionMode.currentMode !== 'unlock-dialog-payg') {
             this._isGreeter = Main.sessionMode.isGreeter;
@@ -626,6 +622,10 @@ var ScreenShield = class {
                     Main.sessionMode.pushMode('unlock-dialog-payg');
             }
         }
+
+        this._ensureUnlockDialog(true);
+
+        this.actor.show();
 
         this._resetLockScreen({ animateLockScreen: animate,
                                 fadeToBlack: true });

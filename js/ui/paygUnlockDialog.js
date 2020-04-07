@@ -213,13 +213,13 @@ var PaygUnlockDialog = GObject.registerClass({
         });
 
         this.connect('code-added', () => {
-            this.actor.remove_child(mainBox);
+            this.remove_child(mainBox);
             this._successScreen();
         });
 
         this.connect('code-reset', () => {
             this._paygUnlockDialog = mainBox;
-            this.actor.remove_child(mainBox);
+            this.remove_child(mainBox);
             this._resetScreen();
         });
 
@@ -429,17 +429,17 @@ var PaygUnlockDialog = GObject.registerClass({
             });
         this._messageButton.connect('button-press-event', () => {
             this._restorePaygUnlockCodeEntry();
-            this.actor.remove_child(messageBox);
+            this.remove_child(messageBox);
         });
         this._messageButton.connect('key-press-event', () => {
             this._restorePaygUnlockCodeEntry();
-            this.actor.remove_child(messageBox);
+            this.remove_child(messageBox);
         });
     }
 
     _restorePaygUnlockCodeEntry() {
         GLib.source_remove(this._timeoutId);
-        this.actor.add_child(this._paygUnlockDialog);
+        this.add_child(this._paygUnlockDialog);
         this.updateSensitivity();
         this._entry.grab_key_focus();
     }
@@ -505,7 +505,6 @@ var PaygUnlockDialog = GObject.registerClass({
 
     cancel() {
         this.entryReset();
-        this.destroy();
     }
 
     finish(onComplete) {

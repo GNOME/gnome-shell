@@ -75,8 +75,9 @@ var PaygManager = GObject.registerClass({
         'code-expired': {},
         'code-format-changed': {},
         'enabled-changed': { param_types: [GObject.TYPE_BOOLEAN] },
-        'expiry-time-changed': { param_types: [GObject.TYPE_INT64] },
+        'expiry-time-changed': { param_types: [GObject.TYPE_UINT64] },
         'initialized': {},
+        'rate-limit-end-time-changed':  { param_types: [GObject.TYPE_UINT64] },
     },
 }, class PaygManager extends GObject.Object {
 

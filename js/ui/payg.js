@@ -519,8 +519,11 @@ var PaygUnlockWidget = GObject.registerClass({
 
 });
 
-var ApplyCodeNotification = GObject.registerClass(
-class ApplyCodeNotification extends MessageTray.Notification {
+var ApplyCodeNotification = GObject.registerClass({
+    Signals: {
+        'done-displaying': {},
+    },
+}, class ApplyCodeNotification extends MessageTray.Notification {
     _init(source, title, banner) {
         super._init(source, title, banner);
 
