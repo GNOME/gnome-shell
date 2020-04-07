@@ -505,7 +505,6 @@ var PaygUnlockDialog = GObject.registerClass({
 
     cancel() {
         this.entryReset();
-        this.destroy();
     }
 
     finish(onComplete) {
