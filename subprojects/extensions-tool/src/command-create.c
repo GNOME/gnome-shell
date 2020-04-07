@@ -18,13 +18,21 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
+#define _GNU_SOURCE /* for strcasestr */
+#include <string.h>
+
 #include <glib/gi18n.h>
 #include <gio/gio.h>
+#include <gio/gdesktopappinfo.h>
 #include <gio/gunixinputstream.h>
 
 #include "commands.h"
 #include "common.h"
 #include "config.h"
+
+#define TEMPLATES_PATH "/org/gnome/extensions-tool/templates"
+#define TEMPLATE_KEY "Path"
+#define SORT_DATA "desktop-id"
 
 static char *
 get_shell_version (GError **error)
@@ -46,6 +54,66 @@ get_shell_version (GError **error)
     g_clear_pointer (&split_version[2], g_free);
 
   return g_strjoinv (".", split_version);
+}
+
+static GDesktopAppInfo *
+load_app_info_from_resource (const char *uri)
+{
+  g_autoptr (GFile) file = NULL;
+  g_autofree char *contents = NULL;
+  g_autoptr (GKeyFile) keyfile = NULL;
+
+  file = g_file_new_for_uri (uri);
+  if (!g_file_load_contents (file, NULL, &contents, NULL, NULL, NULL))
+    return NULL;
+
+  keyfile = g_key_file_new ();
+  if (!g_key_file_load_from_data (keyfile, contents, -1, G_KEY_FILE_NONE, NULL))
+    return NULL;
+
+  return g_desktop_app_info_new_from_keyfile (keyfile);
+}
+
+static int
+sort_func (gconstpointer a, gconstpointer b)
+{
+  GObject *info1 = *((GObject **) a);
+  GObject *info2 = *((GObject **) b);
+  const char *desktop1 = g_object_get_data (info1, SORT_DATA);
+  const char *desktop2 = g_object_get_data (info2, SORT_DATA);
+
+  return g_strcmp0 (desktop1, desktop2);
+}
+
+static GPtrArray *
+get_templates (void)
+{
+  g_auto (GStrv) children = NULL;
+  GPtrArray *templates = g_ptr_array_new_with_free_func (g_object_unref);
+  char **s;
+
+  children = g_resources_enumerate_children (TEMPLATES_PATH, 0, NULL);
+
+  for (s = children; *s; s++)
+    {
+      g_autofree char *uri = NULL;
+      GDesktopAppInfo *info;
+
+      if (!g_str_has_suffix (*s, ".desktop"))
+        continue;
+
+      uri = g_strdup_printf ("resource://" TEMPLATES_PATH "/%s", *s);
+      info = load_app_info_from_resource (uri);
+      if (!info)
+        continue;
+
+      g_object_set_data_full (G_OBJECT (info), SORT_DATA, g_strdup (*s), g_free);
+      g_ptr_array_add (templates, info);
+    }
+
+  g_ptr_array_sort (templates, sort_func);
+
+  return templates;
 }
 
 static gboolean
@@ -85,21 +153,30 @@ create_metadata (GFile       *target_dir,
 }
 
 
-#define TEMPLATE_PATH "/org/gnome/extensions-tool/template"
 static gboolean
-copy_extension_template (GFile *target_dir, GError **error)
+copy_extension_template (const char *template, GFile *target_dir, GError **error)
 {
   g_auto (GStrv) templates = NULL;
+  g_autofree char *path = NULL;
   char **s;
 
-  templates = g_resources_enumerate_children (TEMPLATE_PATH, 0, NULL);
+  path = g_strdup_printf (TEMPLATES_PATH "/%s", template);
+  templates = g_resources_enumerate_children (path, 0, NULL);
+
+  if (templates == NULL)
+    {
+      g_set_error (error, G_IO_ERROR, G_IO_ERROR_NOT_FOUND,
+                   "No template %s", template);
+      return FALSE;
+    }
+
   for (s = templates; *s; s++)
     {
       g_autoptr (GFile) target = NULL;
       g_autoptr (GFile) source = NULL;
       g_autofree char *uri = NULL;
 
-      uri = g_strdup_printf ("resource://%s/%s", TEMPLATE_PATH, *s);
+      uri = g_strdup_printf ("resource://%s/%s", path, *s);
       source = g_file_new_for_uri (uri);
       target = g_file_get_child (target_dir, *s);
 
@@ -134,10 +211,13 @@ launch_extension_source (GFile *dir, GError **error)
 }
 
 static gboolean
-create_extension (const char *uuid, const char *name, const char *description)
+create_extension (const char *uuid, const char *name, const char *description, const char *template)
 {
   g_autoptr (GFile) dir = NULL;
   g_autoptr (GError) error = NULL;
+
+  if (template == NULL)
+    template = "plain";
 
   dir = g_file_new_build_filename (g_get_user_data_dir (),
                                    "gnome-shell",
@@ -157,7 +237,7 @@ create_extension (const char *uuid, const char *name, const char *description)
       return FALSE;
     }
 
-  if (!copy_extension_template (dir, &error))
+  if (!copy_extension_template (template, dir, &error))
     {
       g_printerr ("%s\n", error->message);
       return FALSE;
@@ -173,14 +253,15 @@ create_extension (const char *uuid, const char *name, const char *description)
 }
 
 static void
-prompt_metadata (char **uuid, char **name, char **description)
+prompt_metadata (char **uuid, char **name, char **description, char **template)
 {
   g_autoptr (GInputStream) stdin = NULL;
   g_autoptr (GDataInputStream) istream = NULL;
 
   if ((uuid == NULL || *uuid != NULL) &&
       (name == NULL || *name != NULL) &&
-      (description == NULL || *description != NULL))
+      (description == NULL || *description != NULL) &&
+      (template == NULL || *template != NULL))
     return;
 
   stdin = g_unix_input_stream_new (0, FALSE);
@@ -188,43 +269,127 @@ prompt_metadata (char **uuid, char **name, char **description)
 
   if (name != NULL && *name == NULL)
     {
-      char *line;
+      char *line = NULL;
 
       g_print (
         _("Name should be a very short (ideally descriptive) string.\n"
           "Examples are: %s"),
         "“Click To Focus”, “Adblock”, “Shell Window Shrinker”\n");
-      g_print ("%s: ", _("Name"));
 
-      line = g_data_input_stream_read_line_utf8 (istream, NULL, NULL, NULL);
+      while (line == NULL)
+        {
+          g_print ("%s: ", _("Name"));
+
+          line = g_data_input_stream_read_line_utf8 (istream, NULL, NULL, NULL);
+        }
       *name = g_strdelimit (line, "\n", '\0');
+
+      g_print ("\n");
     }
 
   if (description != NULL && *description == NULL)
     {
-      char *line;
+      char *line = NULL;
 
       g_print (
         _("Description is a single-sentence explanation of what your extension does.\n"
           "Examples are: %s"),
         "“Make windows visible on click”, “Block advertisement popups”, “Animate windows shrinking on minimize”\n");
-      g_print ("%s: ", _("Description"));
 
-      line = g_data_input_stream_read_line_utf8 (istream, NULL, NULL, NULL);
+      while (line == NULL)
+        {
+          g_print ("%s: ", _("Description"));
+
+          line = g_data_input_stream_read_line_utf8 (istream, NULL, NULL, NULL);
+        }
       *description = g_strdelimit (line, "\n", '\0');
+
+      g_print ("\n");
     }
 
   if (uuid != NULL && *uuid == NULL)
     {
-      char *line;
+      char *line = NULL;
 
       g_print (
         _("UUID is a globally-unique identifier for your extension.\n"
           "This should be in the format of an email address (clicktofocus@janedoe.example.com)\n"));
-      g_print ("UUID: ");
 
-      line = g_data_input_stream_read_line_utf8 (istream, NULL, NULL, NULL);
+      while (line == NULL)
+        {
+          g_print ("UUID: ");
+
+          line = g_data_input_stream_read_line_utf8 (istream, NULL, NULL, NULL);
+        }
       *uuid = g_strdelimit (line, "\n", '\0');
+
+      g_print ("\n");
+    }
+
+  if (template != NULL && *template == NULL)
+    {
+      g_autoptr (GPtrArray) templates = get_templates ();
+
+      if (templates->len == 1)
+        {
+          GDesktopAppInfo *info = g_ptr_array_index (templates, 0);
+          *template = g_desktop_app_info_get_string (info, TEMPLATE_KEY);
+        }
+      else
+        {
+          int i;
+
+          g_print (_("Choose one of the available templates:\n"));
+          for (i = 0; i < templates->len; i++)
+            {
+              GAppInfo *info = g_ptr_array_index (templates, i);
+              g_print ("%d) %-10s  –  %s\n",
+                       i + 1,
+                       g_app_info_get_name (info),
+                       g_app_info_get_description (info));
+            }
+
+          while (*template == NULL)
+            {
+              g_autofree char *line = NULL;
+
+              g_print ("%s [1-%d]: ", _("Template"), templates->len);
+
+              line = g_data_input_stream_read_line_utf8 (istream, NULL, NULL, NULL);
+
+              if (line == NULL)
+                continue;
+
+              if (g_ascii_isdigit (*line))
+                {
+                  long i = strtol (line, NULL, 10);
+
+                  if (i > 0 && i <= templates->len)
+                    {
+                      GDesktopAppInfo *info;
+
+                      info = g_ptr_array_index (templates, i - 1);
+                      *template =
+                        g_desktop_app_info_get_string (info, TEMPLATE_KEY);
+                    }
+                }
+              else
+                {
+                  for (i = 0; i < templates->len; i++)
+                    {
+                      GDesktopAppInfo *info = g_ptr_array_index (templates, i);
+                      g_autofree char *cur_template = NULL;
+
+                      cur_template =
+                        g_desktop_app_info_get_string (info, TEMPLATE_KEY);
+
+                      if (strcasestr (cur_template, line) != NULL)
+                        *template = g_steal_pointer (&cur_template);
+                    }
+                }
+            }
+          g_print ("\n");
+        }
     }
 }
 
@@ -236,7 +401,9 @@ handle_create (int argc, char *argv[], gboolean do_help)
   g_autofree char *name = NULL;
   g_autofree char *description = NULL;
   g_autofree char *uuid = NULL;
+  g_autofree char *template = NULL;
   gboolean interactive = FALSE;
+  gboolean list_templates = FALSE;
   GOptionEntry entries[] = {
     { .long_name = "uuid",
       .arg = G_OPTION_ARG_STRING, .arg_data = &uuid,
@@ -250,6 +417,13 @@ handle_create (int argc, char *argv[], gboolean do_help)
       .arg_description = _("DESCRIPTION"),
       .arg = G_OPTION_ARG_STRING, .arg_data = &description,
       .description = _("A short description of what the extension does") },
+    { .long_name = "template",
+      .arg = G_OPTION_ARG_STRING, .arg_data = &template,
+      .arg_description = _("TEMPLATE"),
+      .description = _("The template to use for the new extension") },
+    { .long_name = "list-templates",
+      .arg = G_OPTION_ARG_NONE, .arg_data = &list_templates,
+      .flags = G_OPTION_FLAG_HIDDEN },
     { .long_name = "interactive", .short_name = 'i',
       .arg = G_OPTION_ARG_NONE, .arg_data = &interactive,
       .description = _("Enter extension information interactively") },
@@ -282,8 +456,24 @@ handle_create (int argc, char *argv[], gboolean do_help)
       return 1;
     }
 
+  if (list_templates)
+    {
+      g_autoptr (GPtrArray) templates = get_templates ();
+      int i;
+
+      for (i = 0; i < templates->len; i++)
+        {
+          GDesktopAppInfo *info = g_ptr_array_index (templates, i);
+          g_autofree char *template = NULL;
+
+          template = g_desktop_app_info_get_string (info, TEMPLATE_KEY);
+          g_print ("%s\n", template);
+        }
+      return 0;
+    }
+
   if (interactive)
-    prompt_metadata (&uuid, &name, &description);
+    prompt_metadata (&uuid, &name, &description, &template);
 
   if (uuid == NULL || name == NULL || description == NULL)
     {
@@ -291,5 +481,5 @@ handle_create (int argc, char *argv[], gboolean do_help)
       return 1;
     }
 
-  return create_extension (uuid, name, description) ? 0 : 2;
+  return create_extension (uuid, name, description, template) ? 0 : 2;
 }

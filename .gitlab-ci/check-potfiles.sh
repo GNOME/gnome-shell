@@ -6,6 +6,11 @@ globs=('*.js' '*.c')
 # find source files that contain gettext keywords
 files=$(grep -lR ${globs[@]/#/--include=} '\(gettext\|[^I_)]_\)(' $srcdirs)
 
+# filter out excluded files
+if [ -f po/POTFILES.skip ]; then
+  files=$(for f in $files; do ! grep -q ^$f po/POTFILES.skip && echo $f; done)
+fi
+
 # find those that aren't listed in POTFILES.in
 missing=$(for f in $files; do ! grep -q ^$f po/POTFILES.in && echo $f; done)
 
