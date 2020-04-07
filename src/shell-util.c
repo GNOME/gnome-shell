@@ -638,6 +638,20 @@ shell_util_check_cloexec_fds (void)
   g_info ("Open fd CLOEXEC check complete");
 }
 
+/**
+ * shell_util_get_uid:
+ *
+ * A wrapper around getuid() so that it can be used from JavaScript. This
+ * function will always succeed.
+ *
+ * Returns: the real user ID of the calling process
+ */
+gint
+shell_util_get_uid (void)
+{
+  return getuid ();
+}
+
 static void
 on_systemd_call_cb (GObject      *source,
                     GAsyncResult *res,
