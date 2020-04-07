@@ -1,7 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported Indicator */
 
-const { Gio, GnomeBluetooth, GObject } = imports.gi;
+const { Gio, GLib, GnomeBluetooth, GObject } = imports.gi;
 
 const Main = imports.ui.main;
 const PanelMenu = imports.ui.panelMenu;
@@ -35,7 +35,7 @@ class Indicator extends PanelMenu.SystemIndicator {
 
                                                  this._sync();
                                              });
-        this._proxy.connect('g-properties-changed', this._sync.bind(this));
+        this._proxy.connect('g-properties-changed', this._queueSync.bind(this));
 
         this._item = new PopupMenu.PopupSubMenuMenuItem(_("Bluetooth"), true);
         this._item.icon.icon_name = 'bluetooth-active-symbolic';
@@ -49,13 +49,25 @@ class Indicator extends PanelMenu.SystemIndicator {
         this._item.menu.addSettingsAction(_("Bluetooth Settings"), 'gnome-bluetooth-panel.desktop');
         this.menu.addMenuItem(this._item);
 
+        this._syncId = 0;
+        this._adapter = null;
+
         this._client = new GnomeBluetooth.Client();
         this._model = this._client.get_model();
-        this._model.connect('row-changed', this._sync.bind(this));
-        this._model.connect('row-deleted', this._sync.bind(this));
+        this._model.connect('row-deleted', this._queueSync.bind(this));
+        this._model.connect('row-changed', this._queueSync.bind(this));
         this._model.connect('row-inserted', this._sync.bind(this));
         Main.sessionMode.connect('updated', this._sync.bind(this));
         this._sync();
+    }
+
+    _setHadSetupDevices(value) {
+        if (this._hadSetupDevices === value)
+            return;
+
+        this._hadSetupDevices = value;
+        global.settings.set_boolean(
+            HAD_BLUETOOTH_DEVICES_SETUP, this._hadSetupDevices);
     }
 
     _getDefaultAdapter() {
@@ -96,12 +108,17 @@ class Indicator extends PanelMenu.SystemIndicator {
             ret = this._model.iter_next(iter);
         }
 
-        if (this._hadSetupDevices !== (deviceInfos.length > 0)) {
-            this._hadSetupDevices = !this._hadSetupDevices;
-            global.settings.set_boolean(HAD_BLUETOOTH_DEVICES_SETUP, this._hadSetupDevices);
-        }
-
         return deviceInfos;
+    }
+
+    _queueSync() {
+        if (this._syncId)
+            return;
+        this._syncId = GLib.idle_add(GLib.PRIORITY_DEFAULT, () => {
+            this._syncId = 0;
+            this._sync();
+            return GLib.SOURCE_REMOVE;
+        });
     }
 
     _sync() {
@@ -109,7 +126,10 @@ class Indicator extends PanelMenu.SystemIndicator {
         let devices = this._getDeviceInfos(adapter);
         const connectedDevices = devices.filter(dev => dev.connected);
         const nConnectedDevices = connectedDevices.length;
-        const nDevices = devices.length;
+
+        if (adapter && this._adapter)
+            this._setHadSetupDevices(devices.length > 0);
+        this._adapter = adapter;
 
         let sensitive = !Main.sessionMode.isLocked && !Main.sessionMode.isGreeter;
 
@@ -118,7 +138,7 @@ class Indicator extends PanelMenu.SystemIndicator {
 
         // Remember if there were setup devices and show the menu
         // if we've seen setup devices and we're not hard blocked
-        if (nDevices > 0)
+        if (this._hadSetupDevices)
             this._item.visible = !this._proxy.BluetoothHardwareAirplaneMode;
         else
             this._item.visible = this._proxy.BluetoothHasAirplaneMode && !this._proxy.BluetoothAirplaneMode;
