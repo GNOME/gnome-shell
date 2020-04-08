@@ -503,7 +503,9 @@ class AppDisplay extends BaseAppView {
                 'enabled', GObject.BindingFlags.SYNC_CREATE);
         }
 
-        this._bgAction = new Clutter.ClickAction();
+        this._bgAction = new Clutter.ClickAction({
+            long_press_duration: MENU_POPUP_TIMEOUT * 1.5,
+        });
         if (params.addBackgroundAction) {
             Main.overview.addAction(this._bgAction);
             BackgroundMenu.addBackgroundMenuForAction(this._bgAction, Main.layoutManager);
@@ -643,6 +645,10 @@ class AppDisplay extends BaseAppView {
                 if (!icon) {
                     icon = new AppIcon(app, {
                         isDraggable: favoritesWritable,
+                    });
+                    icon.connect('menu-state-changed', menuVisible => {
+                        if (menuVisible)
+                            this._bgAction.release();
                     });
                 }
             }
