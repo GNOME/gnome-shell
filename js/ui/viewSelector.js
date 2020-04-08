@@ -316,7 +316,9 @@ class ViewsClone extends St.Widget {
         entry.reactive = false;
         entry.clutter_text.reactive = false;
 
-        const appDisplayClone = new AppDisplay.AppDisplay();
+        const appDisplayClone = new AppDisplay.AppDisplay({
+            addBackgroundAction: false,
+        });
         appDisplayClone._eventBlocker.visible = true;
 
         let discoveryFeedButton = DiscoveryFeedButton.maybeCreateInactiveButton();
