@@ -314,7 +314,7 @@ st_entry_get_preferred_width (ClutterActor *actor,
 {
   StEntryPrivate *priv = ST_ENTRY_PRIV (actor);
   StThemeNode *theme_node = st_widget_get_theme_node (ST_WIDGET (actor));
-  gfloat hint_w, icon_w;
+  gfloat hint_w, hint_min_w, icon_w;
 
   st_theme_node_adjust_for_height (theme_node, &for_height);
 
@@ -324,10 +324,11 @@ st_entry_get_preferred_width (ClutterActor *actor,
 
   if (priv->hint_actor)
     {
-      clutter_actor_get_preferred_width (priv->hint_actor, -1, NULL, &hint_w);
+      clutter_actor_get_preferred_width (priv->hint_actor, -1,
+                                         &hint_min_w, &hint_w);
 
-      if (min_width_p && hint_w > *min_width_p)
-        *min_width_p = hint_w;
+      if (min_width_p && hint_min_w > *min_width_p)
+        *min_width_p = hint_min_w;
 
       if (natural_width_p && hint_w > *natural_width_p)
         *natural_width_p = hint_w;
@@ -422,7 +423,7 @@ st_entry_allocate (ClutterActor          *actor,
   StThemeNode *theme_node = st_widget_get_theme_node (ST_WIDGET (actor));
   ClutterActorBox content_box, child_box, icon_box, hint_box;
   gfloat icon_w, icon_h;
-  gfloat hint_w, hint_h;
+  gfloat hint_w, hint_min_w, hint_h;
   gfloat entry_h, min_h, pref_h, avail_h;
   ClutterActor *left_icon, *right_icon;
   gboolean is_rtl;
@@ -488,8 +489,10 @@ st_entry_allocate (ClutterActor          *actor,
       /* now allocate the hint actor */
       hint_box = child_box;
 
-      clutter_actor_get_preferred_width (priv->hint_actor, -1, NULL, &hint_w);
+      clutter_actor_get_preferred_width (priv->hint_actor, -1, &hint_min_w, &hint_w);
       clutter_actor_get_preferred_height (priv->hint_actor, -1, NULL, &hint_h);
+
+      hint_w = CLAMP (hint_w, hint_min_w, child_box.x2 - child_box.x1);
 
       if (is_rtl)
         hint_box.x1 = hint_box.x2 - hint_w;
