@@ -59,6 +59,7 @@ var ParentalControlsManager = GObject.registerClass({
         this._initialized = false;
         this._disabled = false;
         this._appFilter = null;
+        this._warnNotInitialized = true;
 
         this._initializeManager();
     }
@@ -137,8 +138,11 @@ var ParentalControlsManager = GObject.registerClass({
 
         // Have we finished initialising yet?
         if (!this.initialized) {
-            log(`Warning: Hiding app because parental controls not yet initialised: ${appInfo.get_id()}`);
-            return false;
+            if (this._warnNotInitialized) {
+                log(`Warning: Showing apps even though parental controls not yet initialised`);
+                this._warnNotInitialized = false;
+            }
+            return true;
         }
 
         return this._appFilter.is_appinfo_allowed(appInfo);
