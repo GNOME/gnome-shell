@@ -416,7 +416,11 @@ var BaseAppView = GObject.registerClass({
 
 var AppDisplay = GObject.registerClass(
 class AppDisplay extends BaseAppView {
-    _init() {
+    _init(params = {}) {
+        params = Params.parse(params, {
+            addBackgroundAction: true,
+        });
+
         super._init({
             layout_manager: new Clutter.BinLayout(),
             x_expand: true,
@@ -493,18 +497,21 @@ class AppDisplay extends BaseAppView {
             if (!this._currentDialog.contains(actor))
                 this._currentDialog.popdown();
         });
-        Main.overview.addAction(this._clickAction, false);
-        this._eventBlocker.bind_property('reactive', this._clickAction,
-            'enabled', GObject.BindingFlags.SYNC_CREATE);
+        if (params.addBackgroundAction) {
+            Main.overview.addAction(this._clickAction, false);
+            this._eventBlocker.bind_property('reactive', this._clickAction,
+                'enabled', GObject.BindingFlags.SYNC_CREATE);
+        }
 
-        this._bgAction = new Clutter.ClickAction();
-        Main.overview.addAction(this._bgAction);
-        BackgroundMenu.addBackgroundMenuForAction(this._bgAction, Main.layoutManager);
-        this._clickAction.bind_property('enabled', this._bgAction,
-            'enabled',
-            GObject.BindingFlags.SYNC_CREATE | GObject.BindingFlags.INVERT_BOOLEAN);
-        this.bind_property('mapped', this._bgAction,
-            'enabled', GObject.BindingFlags.SYNC_CREATE);
+        this._bgAction = new Clutter.ClickAction({
+            long_press_duration: MENU_POPUP_TIMEOUT * 1.5,
+        });
+        if (params.addBackgroundAction) {
+            Main.overview.addAction(this._bgAction);
+            BackgroundMenu.addBackgroundMenuForAction(this._bgAction, Main.layoutManager);
+            this._eventBlocker.bind_property('reactive', this._bgAction,
+                'enabled', GObject.BindingFlags.SYNC_CREATE | GObject.BindingFlags.INVERT_BOOLEAN);
+        }
 
         this._appCenterIcon = null;
         this._currentDialog = null;
@@ -584,6 +591,7 @@ class AppDisplay extends BaseAppView {
             this._keyPressEventId = 0;
         }
         this._swipeTracker.enabled = false;
+        this._bgAction.release();
         super.vfunc_unmap();
     }
 
@@ -634,9 +642,15 @@ class AppDisplay extends BaseAppView {
                 if (!app)
                     return;
 
-                icon = new AppIcon(app, {
-                    isDraggable: favoritesWritable,
-                });
+                if (!icon) {
+                    icon = new AppIcon(app, {
+                        isDraggable: favoritesWritable,
+                    });
+                    icon.connect('menu-state-changed', menuVisible => {
+                        if (menuVisible)
+                            this._bgAction.release();
+                    });
+                }
             }
 
             appIcons.push(icon);
