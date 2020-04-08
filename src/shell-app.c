@@ -1158,7 +1158,7 @@ shell_app_get_pids (ShellApp *app)
   for (iter = shell_app_get_windows (app); iter; iter = iter->next)
     {
       MetaWindow *window = iter->data;
-      int pid = meta_window_get_pid (window);
+      pid_t pid = meta_window_get_pid (window);
 
       if (pid < 1)
         continue;
