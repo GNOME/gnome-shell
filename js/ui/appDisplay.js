@@ -640,9 +640,11 @@ class AppDisplay extends BaseAppView {
                 if (!app)
                     return;
 
-                icon = new AppIcon(app, {
-                    isDraggable: favoritesWritable,
-                });
+                if (!icon) {
+                    icon = new AppIcon(app, {
+                        isDraggable: favoritesWritable,
+                    });
+                }
             }
 
             appIcons.push(icon);
