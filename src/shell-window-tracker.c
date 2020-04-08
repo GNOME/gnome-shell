@@ -336,7 +336,7 @@ get_app_from_window_pid (ShellWindowTracker  *tracker,
                          MetaWindow          *window)
 {
   ShellApp *result;
-  int pid;
+  pid_t pid;
 
   if (meta_window_is_remote (window))
     return NULL;
