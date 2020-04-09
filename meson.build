@@ -72,7 +72,7 @@ systemduserunitdir = join_paths(prefix, 'lib', 'systemd', 'user')
 
 keybindings_dep = dependency('gnome-keybindings', required: false)
 if keybindings_dep.found()
-  keysdir = keybindings_dep.get_pkgconfig_variable('keysdir')
+  keysdir = keybindings_dep.get_pkgconfig_variable('keysdir', define_variable: ['datadir', datadir])
 else
   keysdir = join_paths(datadir, 'gnome-control-center', 'keybindings')
 endif
