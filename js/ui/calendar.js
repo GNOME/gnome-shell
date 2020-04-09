@@ -700,12 +700,11 @@ var Calendar = GObject.registerClass({
 var EventMessage = GObject.registerClass(
 class EventMessage extends MessageList.Message {
     _init(event, date) {
-        super._init('', event.summary);
+        super._init('', '');
 
-        this._event = event;
         this._date = date;
 
-        this.setTitle(this._formatEventTime());
+        this.update(event);
 
         this._icon = new St.Icon({ icon_name: 'x-office-calendar-symbolic' });
         this.setIcon(this._icon);
@@ -715,6 +714,13 @@ class EventMessage extends MessageList.Message {
         let iconVisible = this.get_parent().has_style_pseudo_class('first-child');
         this._icon.opacity = iconVisible ? 255 : 0;
         super.vfunc_style_changed();
+    }
+
+    update(event) {
+        this._event = event;
+
+        this.setTitle(this._formatEventTime());
+        this.setBody(event.summary);
     }
 
     _formatEventTime() {
@@ -900,6 +906,7 @@ class EventsSection extends MessageList.MessageListSection {
                 this._messageById.set(event.id, message);
                 this.addMessage(message, false);
             } else {
+                message.update(event);
                 this.moveMessage(message, i, false);
             }
         }
