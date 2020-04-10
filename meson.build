@@ -63,12 +63,11 @@ portaldir = join_paths(datadir, 'xdg-desktop-portal', 'portals')
 schemadir = join_paths(datadir, 'glib-2.0', 'schemas')
 servicedir = join_paths(datadir, 'dbus-1', 'services')
 
-# XXX: Once https://github.com/systemd/systemd/issues/9595 is fixed and we can
-# depend on this version, replace with something like:
-# systemduserunitdir = systemd_dep.get_pkgconfig_variable('systemduserunitdir',
-#                                                         define_variable: ['prefix', prefix])
-# and uncomment systemd_dep below
-systemduserunitdir = join_paths(prefix, 'lib', 'systemd', 'user')
+if get_option('systemd')
+  systemd_dep = dependency('systemd')
+  systemduserunitdir = systemd_dep.get_pkgconfig_variable('systemduserunitdir',
+                                                          define_variable: ['prefix', prefix])
+endif
 
 keybindings_dep = dependency('gnome-keybindings', required: false)
 if keybindings_dep.found()
@@ -122,8 +121,6 @@ endif
 
 if get_option('systemd')
   libsystemd_dep = dependency('libsystemd')
-  # XXX: see systemduserunitdir
-  # systemd_dep = dependency('systemd')
   have_systemd = true
 else
   libsystemd_dep = []
