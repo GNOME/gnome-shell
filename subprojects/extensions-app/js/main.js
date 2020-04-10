@@ -39,7 +39,7 @@ function toggleState(action) {
 var Application = GObject.registerClass(
 class Application extends Gtk.Application {
     _init() {
-        GLib.set_prgname('gnome-shell-extension-prefs');
+        GLib.set_prgname('gnome-extensions-app');
         super._init({ application_id: 'org.gnome.Extensions' });
     }
 
