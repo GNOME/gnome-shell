@@ -5,7 +5,7 @@ project('gnome-extensions-app',
 )
 
 app_id = 'org.gnome.Extensions'
-prgname = 'gnome-shell-extension-prefs'
+prgname = 'gnome-extensions-app'
 
 gnome = import('gnome')
 i18n  = import('i18n')

@@ -3,7 +3,7 @@
   "runtime": "org.gnome.Platform",
   "runtime-version": "master",
   "sdk": "org.gnome.Sdk",
-  "command": "gnome-shell-extension-prefs",
+  "command": "gnome-extensions-app",
   "tags": ["nightly"],
   "desktop-file-name-prefix": "(Nightly) ",
   "finish-args": [
