@@ -133,9 +133,12 @@ load_folder (GHashTable *folders,
                                                      "Desktop Entry", "Name",
                                                      NULL, NULL);
 
-          if (translated != NULL)
-            g_hash_table_insert (folders, g_steal_pointer (&stripped_name),
-                                 translated);
+          if (translated == NULL)
+            continue;
+
+          g_hash_table_insert (folders, g_strdup (name), g_strdup (translated));
+          g_hash_table_insert (folders, g_steal_pointer (&stripped_name),
+                               translated);
         }
     }
 }
