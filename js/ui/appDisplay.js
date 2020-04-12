@@ -114,7 +114,8 @@ function _findBestFolderName(apps) {
     }, commonCategories);
 
     for (let category of commonCategories) {
-        let translated = Shell.util_get_translated_folder_name(category);
+        const directory = '%s.directory'.format(category);
+        const translated = Shell.util_get_translated_folder_name(directory);
         if (translated !== null)
             return translated;
     }
