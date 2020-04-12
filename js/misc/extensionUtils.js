@@ -1,7 +1,8 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported ExtensionState, ExtensionType, getCurrentExtension,
-   getSettings, initTranslations, openPrefs, isOutOfDate,
-   installImporter, serializeExtension, deserializeExtension */
+   getSettings, initTranslations, gettext, ngettext, pgettext,
+   openPrefs, isOutOfDate, installImporter, serializeExtension,
+   deserializeExtension */
 
 // Common utils for the extension system and the extension
 // preferences tool
@@ -112,6 +113,64 @@ function initTranslations(domain) {
         Gettext.bindtextdomain(domain, localeDir.get_path());
     else
         Gettext.bindtextdomain(domain, Config.LOCALEDIR);
+
+    Object.assign(extension, Gettext.domain(domain));
+}
+
+/**
+ * gettext:
+ * @param {string} str - the string to translate
+ *
+ * Translate @str using the extension's gettext domain
+ *
+ * @returns {string} - the translated string
+ *
+ */
+function gettext(str) {
+    return callExtensionGettextFunc('gettext', str);
+}
+
+/**
+ * ngettext:
+ * @param {string} str - the string to translate
+ * @param {string} strPlural - the plural form of the string
+ * @param {number} n - the quantity for which translation is needed
+ *
+ * Translate @str and choose plural form using the extension's
+ * gettext domain
+ *
+ * @returns {string} - the translated string
+ *
+ */
+function ngettext(str, strPlural, n) {
+    return callExtensionGettextFunc('ngettext', str, strPlural, n);
+}
+
+/**
+ * pgettext:
+ * @param {string} context - context to disambiguate @str
+ * @param {string} str - the string to translate
+ *
+ * Translate @str in the context of @context using the extension's
+ * gettext domain
+ *
+ * @returns {string} - the translated string
+ *
+ */
+function pgettext(context, str) {
+    return callExtensionGettextFunc('pgettext', context, str);
+}
+
+function callExtensionGettextFunc(func, ...args) {
+    const extension = getCurrentExtension();
+
+    if (!extension)
+        throw new Error(`${func}() can only be called from extensions`);
+
+    if (!extension[func])
+        throw new Error(`${func}() is used without calling initTranslations() first`);
+
+    return extension[func](...args);
 }
 
 /**

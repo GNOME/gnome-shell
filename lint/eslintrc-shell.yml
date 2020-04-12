@@ -18,6 +18,7 @@ overrides:
   - files: js/**
     excludedFiles:
       - js/portalHelper/*
+      - js/misc/extensionUtils.js
     globals:
       global: readonly
       _: readonly
