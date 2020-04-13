@@ -41,7 +41,7 @@ subdir('src')
 
 if bash_completion.found()
   install_data('completion/bash/gnome-extensions',
-    install_dir: bash_completion.get_pkgconfig_variable('completionsdir')
+    install_dir: bash_completion.get_pkgconfig_variable('completionsdir', define_variable: ['datadir', datadir])
   )
 endif
 
