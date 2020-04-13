@@ -25,8 +25,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2020-03-31 07:15+0000\n"
-"PO-Revision-Date: 2020-04-02 12:43+0300\n"
+"POT-Creation-Date: 2020-04-02 09:45+0000\n"
+"PO-Revision-Date: 2020-04-13 18:02+0300\n"
 "Last-Translator: Jiri Grönroos <jiri.gronroos+l10n@iki.fi>\n"
 "Language-Team: suomi <lokalisointi-lista@googlegroups.com>\n"
 "Language: fi\n"
@@ -736,44 +736,44 @@ msgstr "Estä pääsy"
 msgid "Grant Access"
 msgstr "Salli pääsy"
 
-#: js/ui/appDisplay.js:932
+#: js/ui/appDisplay.js:937
 msgid "Unnamed Folder"
 msgstr "Nimetön kansio"
 
-#: js/ui/appDisplay.js:955
+#: js/ui/appDisplay.js:960
 msgid "Frequently used applications will appear here"
 msgstr "Usein käytetyt sovellukset ilmestyvät tänne"
 
-#: js/ui/appDisplay.js:1090
+#: js/ui/appDisplay.js:1095
 msgid "Frequent"
 msgstr "Käytetyimmät"
 
-#: js/ui/appDisplay.js:1097
+#: js/ui/appDisplay.js:1102
 msgid "All"
 msgstr "Kaikki"
 
 #. Translators: This is the heading of a list of open windows
-#: js/ui/appDisplay.js:2473 js/ui/panel.js:75
+#: js/ui/appDisplay.js:2478 js/ui/panel.js:75
 msgid "Open Windows"
 msgstr "Avoimet ikkunat"
 
-#: js/ui/appDisplay.js:2493 js/ui/panel.js:82
+#: js/ui/appDisplay.js:2498 js/ui/panel.js:82
 msgid "New Window"
 msgstr "Uusi ikkuna"
 
-#: js/ui/appDisplay.js:2504
+#: js/ui/appDisplay.js:2509
 msgid "Launch using Dedicated Graphics Card"
 msgstr "Käynnistä erillisnäytönohjainta käyttäen"
 
-#: js/ui/appDisplay.js:2532 js/ui/dash.js:239
+#: js/ui/appDisplay.js:2537 js/ui/dash.js:239
 msgid "Remove from Favorites"
 msgstr "Poista suosikeista"
 
-#: js/ui/appDisplay.js:2538
+#: js/ui/appDisplay.js:2543
 msgid "Add to Favorites"
 msgstr "Lisää suosikkeihin"
 
-#: js/ui/appDisplay.js:2548 js/ui/panel.js:93
+#: js/ui/appDisplay.js:2553 js/ui/panel.js:93
 msgid "Show Details"
 msgstr "Näytä tiedot"
 
@@ -1472,11 +1472,11 @@ msgstr "Näytä lähde"
 msgid "Web Page"
 msgstr "Verkkosivusto"
 
-#: js/ui/main.js:277
+#: js/ui/main.js:279
 msgid "Logged in as a privileged user"
 msgstr "Kirjautuneena etuoikeutettuna käyttäjänä"
 
-#: js/ui/main.js:278
+#: js/ui/main.js:280
 msgid ""
 "Running a session as a privileged user should be avoided for security "
 "reasons. If possible, you should log in as a normal user."
@@ -1484,11 +1484,11 @@ msgstr ""
 "Istunnon suorittamista etuoikeutettuna käyttäjänä tulisi välttää "
 "tietoturvasyistä. Jos mahdollista, kirjaudu tavallisena käyttäjänä."
 
-#: js/ui/main.js:317
+#: js/ui/main.js:319
 msgid "Screen Lock disabled"
 msgstr "Näytön lukitus pois käytöstä"
 
-#: js/ui/main.js:318
+#: js/ui/main.js:320
 msgid "Screen Locking requires the GNOME display manager."
 msgstr "Näytön lukitus vaatii Gnomen kirjautumishallinnan."
 
@@ -2407,6 +2407,9 @@ msgid ""
 "GNOME Extensions handles updating extensions, configuring extension "
 "preferences and removing or disabling unwanted extensions."
 msgstr ""
+"Gnomen laajennussovellus Laajennukset käsittelee laajennusten päivitykset, "
+"niiden asetukset ja sen avulla voi poistaa laajennuksia käytöstä tai "
+"kokonaan järjestelmästä."
 
 #: subprojects/extensions-app/data/org.gnome.Extensions.desktop.in.in:7
 msgid "Configure GNOME Shell Extensions"
