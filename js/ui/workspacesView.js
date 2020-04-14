@@ -604,7 +604,10 @@ class WorkspacesDisplay extends St.Widget {
     }
 
     vfunc_navigate_focus(from, direction) {
-        return this._getPrimaryView().navigate_focus(from, direction, false);
+        let primaryView = this._getPrimaryView();
+        if (!primaryView)
+            return false;
+        return primaryView.navigate_focus(from, direction, false);
     }
 
     show(fadeOnPrimary) {
@@ -706,7 +709,10 @@ class WorkspacesDisplay extends St.Widget {
     }
 
     activeWorkspaceHasMaximizedWindows() {
-        return this._getPrimaryView().getActiveWorkspace().hasMaximizedWindows();
+        let primaryView = this._getPrimaryView();
+        if (!primaryView)
+            return false;
+        return primaryView.getActiveWorkspace().hasMaximizedWindows();
     }
 
     vfunc_parent_set(oldParent) {
