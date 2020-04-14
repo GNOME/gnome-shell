@@ -155,6 +155,11 @@ var ScreenShield = class {
                 return;
             }
 
+            // The time may have been extended using the tray applet from a
+            // logged in session.
+            if (this._dialog === null)
+                return;
+
             // Take the dialog instance and wait for the success message to be shown
             this._dialog.connect('success-message-shown', () => {
                 // A new valid code unlocked the machine and user has no
