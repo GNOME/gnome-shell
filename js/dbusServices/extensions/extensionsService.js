@@ -156,7 +156,6 @@ var ExtensionPrefsDialog = GObject.registerClass({
     GTypeName: 'ExtensionPrefsDialog',
     Template: 'resource:///org/gnome/Shell/Extensions/ui/extension-prefs-dialog.ui',
     InternalChildren: [
-        'headerBar',
         'stack',
         'expander',
         'expanderArrow',
@@ -165,12 +164,12 @@ var ExtensionPrefsDialog = GObject.registerClass({
     ],
 }, class ExtensionPrefsDialog extends Gtk.Window {
     _init(extension) {
-        super._init();
+        super._init({
+            title: extension.metadata.name,
+        });
 
         this._uuid = extension.uuid;
         this._url = extension.metadata.url || '';
-
-        this._headerBar.title = extension.metadata.name;
 
         this._actionGroup = new Gio.SimpleActionGroup();
         this.insert_action_group('win', this._actionGroup);
