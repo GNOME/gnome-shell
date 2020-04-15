@@ -1599,10 +1599,8 @@ shell_global_end_work (ShellGlobal *global)
  * Idle means here no animations, no redrawing, and no ongoing background
  * work. Since there is currently no way to hook into the Clutter master
  * clock and know when is running, the implementation here is somewhat
- * approximation. Animations done through the shell's Tweener module will
- * be handled properly, but other animations may be detected as terminating
- * early if they can be drawn fast enough so that the event loop goes idle
- * between frames.
+ * approximation. Animations may be detected as terminating early if they
+ * can be drawn fast enough so that the event loop goes idle between frames.
  *
  * The intent of this function is for performance measurement runs
  * where a number of actions should be run serially and each action is

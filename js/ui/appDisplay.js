@@ -638,7 +638,7 @@ var AllView = GObject.registerClass({
 
         this._grid.currentPage = pageNumber;
 
-        // Tween the change between pages.
+        // Animate the change between pages.
         this._adjustment.ease(this._grid.getPageY(this._grid.currentPage), {
             mode: Clutter.AnimationMode.EASE_OUT_CUBIC,
             duration: animate ? PAGE_SWITCH_TIME : 0,
