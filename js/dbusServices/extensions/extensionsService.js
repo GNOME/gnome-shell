@@ -204,7 +204,7 @@ var ExtensionPrefsDialog = GObject.registerClass({
             prefsModule.init(extension.metadata);
 
             const widget = prefsModule.buildPrefsWidget();
-            this._stack.add(widget);
+            this._stack.add_named(widget, 'prefs');
             this._stack.visible_child = widget;
         } catch (e) {
             this._setError(e);
