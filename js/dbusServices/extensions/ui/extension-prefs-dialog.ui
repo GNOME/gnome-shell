@@ -3,23 +3,23 @@
 <interface>
   <requires lib="gtk+" version="3.20"/>
   <template class="ExtensionPrefsDialog" parent="GtkWindow">
-    <property name="default_width">600</property>
-    <property name="default_height">400</property>
+    <property name="default-width">600</property>
+    <property name="default-height">400</property>
     <child type="titlebar">
       <object class="GtkHeaderBar" id="headerBar">
         <property name="visible">True</property>
-        <property name="show_close_button">True</property>
+        <property name="show-close-button">True</property>
       </object>
     </child>
     <child>
       <object class="GtkStack" id="stack">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
+        <property name="can-focus">False</property>
         <child>
           <object class="GtkScrolledWindow">
             <property name="visible">True</property>
-            <property name="hscrollbar_policy">never</property>
-            <property name="propagate_natural_height">True</property>
+            <property name="hscrollbar-policy">never</property>
+            <property name="propagate-natural-height">True</property>
             <child>
               <object class="GtkViewport">
                 <property name="visible">True</property>
@@ -28,7 +28,7 @@
                     <property name="visible">True</property>
                     <property name="orientation">vertical</property>
                     <property name="margin">100</property>
-                    <property name="margin_bottom">60</property>
+                    <property name="margin-bottom">60</property>
                     <property name="spacing">12</property>
                     <child>
                       <object class="GtkLabel">
@@ -54,7 +54,7 @@
                       <object class="GtkBox">
                         <property name="visible">True</property>
                         <property name="orientation">vertical</property>
-                        <property name="margin_top">12</property>
+                        <property name="margin-top">12</property>
                         <child>
                           <object class="GtkFrame" id="expander">
                             <property name="visible">True</property>
@@ -70,7 +70,7 @@
                                     <child>
                                       <object class="GtkImage" id="expanderArrow">
                                         <property name="visible">True</property>
-                                        <property name="icon_name">pan-end-symbolic</property>
+                                        <property name="icon-name">pan-end-symbolic</property>
                                       </object>
                                     </child>
                                     <child>
@@ -101,14 +101,14 @@
                                     <child>
                                       <object class="GtkTextView" id="errorView">
                                         <property name="visible">True</property>
-                                        <property name="can_focus">True</property>
+                                        <property name="can-focus">True</property>
                                         <property name="monospace">True</property>
                                         <property name="editable">False</property>
-                                        <property name="wrap_mode">word</property>
-                                        <property name="left_margin">12</property>
-                                        <property name="right_margin">12</property>
-                                        <property name="top_margin">12</property>
-                                        <property name="bottom_margin">12</property>
+                                        <property name="wrap-mode">word</property>
+                                        <property name="left-margin">12</property>
+                                        <property name="right-margin">12</property>
+                                        <property name="top-margin">12</property>
+                                        <property name="bottom-margin">12</property>
                                       </object>
                                     </child>
                                     <child>
@@ -123,9 +123,9 @@
                                             <child>
                                               <object class="GtkButton">
                                                 <property name="visible">True</property>
-                                                <property name="can_focus">True</property>
-                                                <property name="receives_default">True</property>
-                                                <property name="action_name">win.copy-error</property>
+                                                <property name="can-focus">True</property>
+                                                <property name="receives-default">True</property>
+                                                <property name="action-name">win.copy-error</property>
                                                 <style>
                                                   <class name="flat"/>
                                                   <class name="image-button"/>
@@ -133,7 +133,7 @@
                                                 <child>
                                                   <object class="GtkImage">
                                                     <property name="visible">True</property>
-                                                    <property name="icon_name">edit-copy-symbolic</property>
+                                                    <property name="icon-name">edit-copy-symbolic</property>
                                                   </object>
                                                 </child>
                                               </object>
@@ -158,12 +158,14 @@
                                                           bind-source="homeButton"
                                                           bind-property="sensitive"
                                                           bind-flags="sync-create"/>
+                                                <property name="hexpand">True</property>
+                                                <property name="halign">end</property>
                                                 <property name="label" translatable="yes">Homepage</property>
-                                                <property name="tooltip_text" translatable="yes">Visit extension homepage</property>
-                                                <property name="can_focus">True</property>
-                                                <property name="receives_default">True</property>
-                                                <property name="no_show_all">True</property>
-                                                <property name="action_name">win.show-url</property>
+                                                <property name="tooltip-text" translatable="yes">Visit extension homepage</property>
+                                                <property name="can-focus">True</property>
+                                                <property name="receives-default">True</property>
+                                                <property name="no-show-all">True</property>
+                                                <property name="action-name">win.show-url</property>
                                                 <style>
                                                   <class name="flat"/>
                                                 </style>
