@@ -21,7 +21,7 @@
 #include <gdk/gdk.h>
 
 #ifdef GDK_WINDOWING_WAYLAND
-#include <gdk/gdkwayland.h>
+#include <gdk/wayland/gdkwayland.h>
 #endif
 
 #include "shew-external-window-wayland.h"
@@ -77,14 +77,14 @@ shew_external_window_wayland_new (const char *handle_str)
 
 static void
 shew_external_window_wayland_set_parent_of (ShewExternalWindow *external_window,
-                                            GdkWindow      *child_window)
+                                            GdkSurface         *child_surface)
 {
   ShewExternalWindowWayland *external_window_wayland =
     SHEW_EXTERNAL_WINDOW_WAYLAND (external_window);
   char *handle_str = external_window_wayland->handle_str;
 
 #ifdef GDK_WINDOWING_WAYLAND
-  if (!gdk_wayland_window_set_transient_for_exported (child_window, handle_str))
+  if (!gdk_wayland_surface_set_transient_for_exported (GDK_WAYLAND_SURFACE (child_surface), handle_str))
     g_warning ("Failed to set portal window transient for external parent");
 #endif
 }

@@ -1,6 +1,6 @@
 /* exported main */
-imports.gi.versions.Gdk = '3.0';
-imports.gi.versions.Gtk = '3.0';
+imports.gi.versions.Gdk = '4.0';
+imports.gi.versions.Gtk = '4.0';
 
 const Gettext = imports.gettext;
 const Package = imports.package;
@@ -62,7 +62,7 @@ class Application extends Gtk.Application {
         } catch (e) {
             logError(e, 'Failed to add application style');
         }
-        Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(),
+        Gtk.StyleContext.add_provider_for_display(Gdk.Display.get_default(),
             provider,
             Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
 
@@ -79,7 +79,6 @@ var ExtensionsWindow = GObject.registerClass({
     InternalChildren: [
         'userList',
         'systemList',
-        'mainBox',
         'mainStack',
         'scrolledWindow',
         'updatesBar',
@@ -93,8 +92,6 @@ var ExtensionsWindow = GObject.registerClass({
 
         this._exporter = new Shew.WindowExporter({ window: this });
         this._exportedHandle = '';
-
-        this._mainBox.set_focus_vadjustment(this._scrolledWindow.vadjustment);
 
         let action;
         action = new Gio.SimpleAction({ name: 'show-about' });
@@ -116,10 +113,7 @@ var ExtensionsWindow = GObject.registerClass({
         this.add_action(action);
 
         this._userList.set_sort_func(this._sortList.bind(this));
-        this._userList.set_header_func(this._updateHeader.bind(this));
-
         this._systemList.set_sort_func(this._sortList.bind(this));
-        this._systemList.set_header_func(this._updateHeader.bind(this));
 
         this._shellProxy.connectSignal('ExtensionStateChanged',
             this._onExtensionStateChanged.bind(this));
@@ -208,14 +202,6 @@ var ExtensionsWindow = GObject.registerClass({
         return row1.name.localeCompare(row2.name);
     }
 
-    _updateHeader(row, before) {
-        if (!before || row.get_header())
-            return;
-
-        let sep = new Gtk.Separator({ orientation: Gtk.Orientation.HORIZONTAL });
-        row.set_header(sep);
-    }
-
     _findExtensionRow(uuid) {
         return [
             ...this._userList.get_children(),
@@ -275,7 +261,6 @@ var ExtensionsWindow = GObject.registerClass({
 
     _addExtensionRow(extension) {
         let row = new ExtensionRow(extension);
-        row.show_all();
 
         if (row.type === ExtensionType.PER_USER)
             this._userList.add(row);
@@ -313,7 +298,7 @@ var ExtensionsWindow = GObject.registerClass({
             '%d extension will be updated on next login.',
             '%d extensions will be updated on next login.',
             nUpdates).format(nUpdates);
-        this._updatesBar.visible = nUpdates > 0;
+        this._updatesBar.revealed = nUpdates > 0;
     }
 
     _extensionsLoaded() {
@@ -350,7 +335,7 @@ var ExtensionRow = GObject.registerClass({
             name: 'show-prefs',
             enabled: this.hasPrefs,
         });
-        action.connect('activate', () => this.get_toplevel().openPrefs(this.uuid));
+        action.connect('activate', () => this.get_root().openPrefs(this.uuid));
         this._actionGroup.add_action(action);
 
         action = new Gio.SimpleAction({
@@ -367,7 +352,7 @@ var ExtensionRow = GObject.registerClass({
             name: 'uninstall',
             enabled: this.type === ExtensionType.PER_USER,
         });
-        action.connect('activate', () => this.get_toplevel().uninstall(this.uuid));
+        action.connect('activate', () => this.get_root().uninstall(this.uuid));
         this._actionGroup.add_action(action);
 
         action = new Gio.SimpleAction({
