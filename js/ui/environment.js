@@ -356,9 +356,7 @@ function init() {
 
     // OK, now things are initialized enough that we can import shell JS
     const Format = imports.format;
-    const Tweener = imports.ui.tweener;
 
-    Tweener.init();
     String.prototype.format = Format.format;
 }
 

@@ -345,7 +345,7 @@ var ScreenShield = class {
         this._lockDialogGroup.remove_all_transitions();
 
         if (animate) {
-            // Tween the lock screen out of screen
+            // Animate the lock screen out of screen
             // if velocity is not specified (i.e. we come here from pressing ESC),
             // use the same speed regardless of original position
             // if velocity is specified, it's in pixels per milliseconds
