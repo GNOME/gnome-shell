@@ -152,7 +152,10 @@ var ExtensionsWindow = GObject.registerClass({
         this._userList.set_filter_func(this._filterList.bind(this));
         this._userList.set_placeholder(new Gtk.Label({
             label: _('No Matches'),
-            margin: 12,
+            margin_start: 12,
+            margin_end: 12,
+            margin_top: 12,
+            margin_bottom: 12,
             visible: true,
         }));
 
@@ -161,7 +164,10 @@ var ExtensionsWindow = GObject.registerClass({
         this._systemList.set_filter_func(this._filterList.bind(this));
         this._systemList.set_placeholder(new Gtk.Label({
             label: _('No Matches'),
-            margin: 12,
+            margin_start: 12,
+            margin_end: 12,
+            margin_top: 12,
+            margin_bottom: 12,
             visible: true,
         }));
 
