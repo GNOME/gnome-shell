@@ -2342,7 +2342,7 @@ msgstr "Deslizar para desbloquear"
 
 #: js/ui/unlockDialog.js:377
 msgid "Click or press a key to unlock"
-msgstr "Pulse con el ratón o un tecla para desbloquear"
+msgstr "Pulse con el ratón o una tecla para desbloquear"
 
 #: js/ui/unlockDialog.js:549
 msgid "Unlock Window"
