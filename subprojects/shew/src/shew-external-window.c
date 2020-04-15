@@ -75,10 +75,10 @@ shew_external_window_new_from_handle (const char *handle_str)
 
 void
 shew_external_window_set_parent_of (ShewExternalWindow *external_window,
-                                    GdkWindow          *child_window)
+                                    GdkSurface         *child_surface)
 {
   SHEW_EXTERNAL_WINDOW_GET_CLASS (external_window)->set_parent_of (external_window,
-                                                                   child_window);
+                                                                   child_surface);
 }
 
 /**
