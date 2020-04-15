@@ -1,6 +1,6 @@
 /* exported main */
-imports.gi.versions.Gdk = '3.0';
-imports.gi.versions.Gtk = '3.0';
+imports.gi.versions.Gdk = '4.0';
+imports.gi.versions.Gtk = '4.0';
 
 const Gettext = imports.gettext;
 const Package = imports.package;
@@ -37,6 +37,11 @@ function toggleState(action) {
     action.change_state(new GLib.Variant('b', !state.get_boolean()));
 }
 
+function *listChildren(list) {
+    for (let c = list.get_first_child(); c; c = c.get_next_sibling())
+        yield c;
+}
+
 var Application = GObject.registerClass(
 class Application extends Gtk.Application {
     _init() {
@@ -63,7 +68,7 @@ class Application extends Gtk.Application {
         } catch (e) {
             logError(e, 'Failed to add application style');
         }
-        Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(),
+        Gtk.StyleContext.add_provider_for_display(Gdk.Display.get_default(),
             provider,
             Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
 
@@ -80,7 +85,6 @@ var ExtensionsWindow = GObject.registerClass({
     InternalChildren: [
         'userList',
         'systemList',
-        'mainBox',
         'mainStack',
         'scrolledWindow',
         'updatesBar',
@@ -94,8 +98,6 @@ var ExtensionsWindow = GObject.registerClass({
 
         this._exporter = new Shew.WindowExporter({ window: this });
         this._exportedHandle = '';
-
-        this._mainBox.set_focus_vadjustment(this._scrolledWindow.vadjustment);
 
         let action;
         action = new Gio.SimpleAction({ name: 'show-about' });
@@ -117,10 +119,7 @@ var ExtensionsWindow = GObject.registerClass({
         this.add_action(action);
 
         this._userList.set_sort_func(this._sortList.bind(this));
-        this._userList.set_header_func(this._updateHeader.bind(this));
-
         this._systemList.set_sort_func(this._sortList.bind(this));
-        this._systemList.set_header_func(this._updateHeader.bind(this));
 
         this._shellProxy.connectSignal('ExtensionStateChanged',
             this._onExtensionStateChanged.bind(this));
@@ -209,18 +208,10 @@ var ExtensionsWindow = GObject.registerClass({
         return row1.name.localeCompare(row2.name);
     }
 
-    _updateHeader(row, before) {
-        if (!before || row.get_header())
-            return;
-
-        let sep = new Gtk.Separator({ orientation: Gtk.Orientation.HORIZONTAL });
-        row.set_header(sep);
-    }
-
     _findExtensionRow(uuid) {
         return [
-            ...this._userList.get_children(),
-            ...this._systemList.get_children(),
+            ...listChildren(this._userList),
+            ...listChildren(this._systemList),
         ].find(c => c.uuid === uuid);
     }
 
@@ -240,13 +231,13 @@ var ExtensionsWindow = GObject.registerClass({
         // and reset the variable to null so that we create a new row
         // below and add it to the appropriate list
         if (row && row.type !== extension.type) {
-            row.destroy();
+            row.get_parent().remove(row);
             row = null;
         }
 
         if (row) {
             if (extension.state === ExtensionState.UNINSTALLED)
-                row.destroy();
+                row.get_parent().remove(row);
         } else {
             this._addExtensionRow(extension);
         }
@@ -276,12 +267,11 @@ var ExtensionsWindow = GObject.registerClass({
 
     _addExtensionRow(extension) {
         let row = new ExtensionRow(extension);
-        row.show_all();
 
         if (row.type === ExtensionType.PER_USER)
-            this._userList.add(row);
+            this._userList.insert(row, -1);
         else
-            this._systemList.add(row);
+            this._systemList.insert(row, -1);
     }
 
     _queueUpdatesCheck() {
@@ -298,8 +288,8 @@ var ExtensionsWindow = GObject.registerClass({
     }
 
     _syncListVisibility() {
-        this._userList.visible = this._userList.get_children().length > 0;
-        this._systemList.visible = this._systemList.get_children().length > 0;
+        this._userList.visible = [...listChildren(this._userList)].length > 0;
+        this._systemList.visible = [...listChildren(this._systemList)].length > 0;
 
         if (this._userList.visible || this._systemList.visible)
             this._mainStack.visible_child_name = 'main';
@@ -308,13 +298,13 @@ var ExtensionsWindow = GObject.registerClass({
     }
 
     _checkUpdates() {
-        let nUpdates = this._userList.get_children().filter(c => c.hasUpdate).length;
+        let nUpdates = [...listChildren(this._userList)].filter(c => c.hasUpdate).length;
 
         this._updatesLabel.label = Gettext.ngettext(
             '%d extension will be updated on next login.',
             '%d extensions will be updated on next login.',
             nUpdates).format(nUpdates);
-        this._updatesBar.visible = nUpdates > 0;
+        this._updatesBar.revealed = nUpdates > 0;
     }
 
     _extensionsLoaded() {
@@ -351,7 +341,7 @@ var ExtensionRow = GObject.registerClass({
             name: 'show-prefs',
             enabled: this.hasPrefs,
         });
-        action.connect('activate', () => this.get_toplevel().openPrefs(this.uuid));
+        action.connect('activate', () => this.get_root().openPrefs(this.uuid));
         this._actionGroup.add_action(action);
 
         action = new Gio.SimpleAction({
@@ -368,7 +358,7 @@ var ExtensionRow = GObject.registerClass({
             name: 'uninstall',
             enabled: this.type === ExtensionType.PER_USER,
         });
-        action.connect('activate', () => this.get_toplevel().uninstall(this.uuid));
+        action.connect('activate', () => this.get_root().uninstall(this.uuid));
         this._actionGroup.add_action(action);
 
         action = new Gio.SimpleAction({
