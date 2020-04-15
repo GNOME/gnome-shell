@@ -281,7 +281,7 @@ var AppMenuButton = GObject.registerClass({
         this.remove_all_transitions();
         this.ease({
             opacity: 0,
-            mode: Clutter.Animation.EASE_OUT_QUAD,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
             duration: Overview.ANIMATION_TIME,
             onComplete: () => this.hide(),
         });
