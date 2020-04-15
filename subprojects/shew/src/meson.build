@@ -12,7 +12,7 @@ shew_sources = [
 
 libshew = library(full_name,
   sources: shew_sources,
-  dependencies: [gtk_dep],
+  dependencies: [gtk_dep, x11_dep],
   install_dir: pkglibdir,
   install: true,
 )
