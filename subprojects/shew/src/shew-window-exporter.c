@@ -21,10 +21,10 @@
 #include "shew-window-exporter.h"
 
 #ifdef GDK_WINDOWING_X11
-#include <gdk/gdkx.h>
+#include <gdk/x11/gdkx.h>
 #endif
 #ifdef GDK_WINDOWING_WAYLAND
-#include <gdk/gdkwayland.h>
+#include <gdk/wayland/gdkwayland.h>
 #endif
 
 struct _ShewWindowExporter
@@ -53,7 +53,7 @@ shew_window_exporter_new (GtkWindow *window)
 
 #ifdef GDK_WINDOWING_WAYLAND
 static void
-wayland_window_exported (GdkWindow  *window,
+wayland_window_exported (GdkSurface *surface,
                          const char *handle,
                          gpointer    user_data)
 {
@@ -90,8 +90,8 @@ shew_window_exporter_export (ShewWindowExporter  *exporter,
 #ifdef GDK_WINDOWING_X11
   if (GDK_IS_X11_DISPLAY (gtk_widget_get_display (widget)))
     {
-      GdkWindow *w = gtk_widget_get_window (widget);
-      guint32 xid = (guint32) gdk_x11_window_get_xid (w);
+      GdkSurface *s = gtk_native_get_surface (GTK_NATIVE (widget));
+      guint32 xid = (guint32) gdk_x11_surface_get_xid (s);
 
       g_task_return_pointer (task, g_strdup_printf ("x11:%x", xid), g_free);
     }
@@ -100,9 +100,9 @@ shew_window_exporter_export (ShewWindowExporter  *exporter,
 #ifdef GDK_WINDOWING_WAYLAND
   if (GDK_IS_WAYLAND_DISPLAY (gtk_widget_get_display (widget)))
     {
-      GdkWindow *w = gtk_widget_get_window (widget);
-      gdk_wayland_window_export_handle (w, wayland_window_exported,
-                                        g_steal_pointer (&task), NULL);
+      GdkSurface *s = gtk_native_get_surface (GTK_NATIVE (widget));
+      gdk_wayland_surface_export_handle (s, wayland_window_exported,
+                                         g_steal_pointer (&task), NULL);
     }
 #endif
 
@@ -136,8 +136,8 @@ shew_window_exporter_unexport (ShewWindowExporter *exporter)
 #ifdef GDK_WINDOWING_WAYLAND
   if (GDK_IS_WAYLAND_DISPLAY (gtk_widget_get_display (widget)))
     {
-      GdkWindow *w = gtk_widget_get_window (widget);
-      gdk_wayland_window_unexport_handle (w);
+      GdkSurface *s = gtk_native_get_surface (GTK_NATIVE (widget));
+      gdk_wayland_surface_unexport_handle (s);
     }
 #endif
 }

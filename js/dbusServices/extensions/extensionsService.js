@@ -128,7 +128,7 @@ var ExtensionsService = class extends ServiceImplementation {
                 externalWindow = Shew.ExternalWindow.new_from_handle(parentWindow);
 
             if (externalWindow)
-                externalWindow.set_parent_of(window.window);
+                externalWindow.set_parent_of(window.get_surface());
 
             if (options.modal)
                 window.modal = options.modal.get_boolean();
@@ -156,7 +156,6 @@ var ExtensionPrefsDialog = GObject.registerClass({
     GTypeName: 'ExtensionPrefsDialog',
     Template: 'resource:///org/gnome/Shell/Extensions/ui/extension-prefs-dialog.ui',
     InternalChildren: [
-        'headerBar',
         'stack',
         'expander',
         'expanderArrow',
@@ -165,12 +164,12 @@ var ExtensionPrefsDialog = GObject.registerClass({
     ],
 }, class ExtensionPrefsDialog extends Gtk.Window {
     _init(extension) {
-        super._init();
+        super._init({
+            title: extension.metadata.name,
+        });
 
         this._uuid = extension.uuid;
         this._url = extension.metadata.url || '';
-
-        this._headerBar.title = extension.metadata.name;
 
         this._actionGroup = new Gio.SimpleActionGroup();
         this.insert_action_group('win', this._actionGroup);
@@ -178,11 +177,11 @@ var ExtensionPrefsDialog = GObject.registerClass({
         this._initActions();
         this._addCustomStylesheet();
 
-        this._gesture = new Gtk.GestureMultiPress({
-            widget: this._expander,
+        this._gesture = new Gtk.GestureClick({
             button: 0,
             exclusive: true,
         });
+        this._expander.add_controller(this._gesture);
 
         this._gesture.connect('released', (gesture, nPress) => {
             if (nPress === 1)
@@ -205,7 +204,7 @@ var ExtensionPrefsDialog = GObject.registerClass({
             prefsModule.init(extension.metadata);
 
             const widget = prefsModule.buildPrefsWidget();
-            this._stack.add(widget);
+            this._stack.add_named(widget, 'prefs');
             this._stack.visible_child = widget;
         } catch (e) {
             this._setError(e);
@@ -267,7 +266,7 @@ var ExtensionPrefsDialog = GObject.registerClass({
         } catch (e) {
             logError(e, 'Failed to add application style');
         }
-        Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(),
+        Gtk.StyleContext.add_provider_for_display(Gdk.Display.get_default(),
             provider,
             Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
     }

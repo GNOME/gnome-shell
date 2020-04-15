@@ -1,23 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.22.0 -->
 <interface>
   <requires lib="gtk+" version="3.20"/>
   <template class="ExtensionRow" parent="GtkListBoxRow">
-    <property name="visible">True</property>
     <property name="activatable">False</property>
     <child>
       <object class="GtkGrid">
-        <property name="visible">True</property>
-        <property name="margin">12</property>
+        <property name="margin-start">12</property>
+        <property name="margin-end">12</property>
+        <property name="margin-top">12</property>
+        <property name="margin-bottom">12</property>
         <property name="column_spacing">12</property>
         <child>
-          <object class="GtkLabel" id="nameLabel">
-            <property name="visible">True</property>
-          </object>
+          <object class="GtkLabel" id="nameLabel"/>
         </child>
         <child>
           <object class="GtkImage" id="errorIcon">
-            <property name="no_show_all">True</property>
+            <property name="visible">False</property>
             <property name="icon_name">dialog-error-symbolic</property>
             <style>
               <class name="error"/>>
@@ -26,86 +24,61 @@
         </child>
         <child>
           <object class="GtkImage" id="updatesIcon">
-            <property name="no_show_all">True</property>
+            <property name="visible">False</property>
             <property name="icon_name">software-update-available-symbolic</property>
             <style>
-              <class name="warning"/>>
+              <class name="warning"/>
             </style>
           </object>
         </child>
         <child>
           <object class="GtkLabel">
-            <property name="visible">True</property>
             <property name="hexpand">True</property>
           </object>
         </child>
         <child>
           <object class="GtkButton" id="prefsButton">
-            <property name="no_show_all">True</property>
-            <property name="visible"
-                      bind-source="prefsButton"
+            <property name="visible" bind-source="prefsButton"
                       bind-property="sensitive"
                       bind-flags="sync-create"/>
-            <property name="can_focus">True</property>
+            <property name="icon_name">emblem-system-symbolic</property>
             <property name="receives_default">True</property>
             <property name="valign">center</property>
             <property name="action-name">row.show-prefs</property>
             <style>
-              <class name="circular"/>>
-              <class name="image-button"/>>
+              <class name="circular"/>
             </style>
-            <child>
-              <object class="GtkImage">
-                <property name="visible">True</property>
-                <property name="icon_name">emblem-system-symbolic</property>
-              </object>
-            </child>
           </object>
         </child>
         <child>
           <object class="GtkSwitch" id="switch">
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
             <property name="valign">center</property>
             <property name="action-name">row.enabled</property>
           </object>
         </child>
         <child>
-          <object class="GtkSeparator">
-            <property name="visible">True</property>
-          </object>
+          <object class="GtkSeparator"/>
         </child>
-         <child>
+        <child>
           <object class="GtkButton" id="revealButton">
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
             <property name="receives_default">True</property>
             <property name="valign">center</property>
+            <property name="has-frame">False</property>
+            <property name="icon_name">pan-end-symbolic</property>
             <style>
               <class name="details-button"/>
-              <class name="image-button"/>
-              <class name="flat"/>
             </style>
-            <child>
-              <object class="GtkImage">
-                <property name="visible">True</property>
-                <property name="icon_name">pan-end-symbolic</property>
-              </object>
-            </child>
           </object>
         </child>
         <child>
           <object class="GtkRevealer" id="revealer">
-            <property name="visible">True</property>
             <child>
               <object class="GtkGrid">
-                <property name="visible">True</property>
                 <property name="margin_top">12</property>
                 <property name="row_spacing">6</property>
                 <property name="column_spacing">12</property>
                 <child>
                   <object class="GtkLabel">
-                    <property name="visible">True</property>
                     <property name="label" translatable="yes">Description</property>
                     <property name="xalign">0</property>
                     <style>
@@ -115,7 +88,6 @@
                 </child>
                 <child>
                   <object class="GtkLabel" id="descriptionLabel">
-                    <property name="visible">True</property>
                     <property name="ellipsize">end</property>
                     <property name="max_width_chars">60</property>
                     <property name="xalign">0</property>
@@ -128,27 +100,26 @@
                               bind-source="versionLabel"
                               bind-property="visible"
                               bind-flags="sync-create"/>
-                    <property name="no_show_all">True</property>
                     <property name="label" translatable="yes">Version</property>
                     <property name="xalign">0</property>
                     <style>
                       <class name="dim-label"/>
                     </style>
+                    <layout>
+                      <property name="left_attach">0</property>
+                      <property name="top_attach">1</property>
+                    </layout>
                   </object>
-                  <packing>
-                    <property name="left_attach">0</property>
-                    <property name="top_attach">1</property>
-                  </packing>
                 </child>
                 <child>
                   <object class="GtkLabel" id="versionLabel">
-                    <property name="no_show_all">True</property>
+                    <property name="visible">False</property>
                     <property name="xalign">0</property>
+                    <layout>
+                      <property name="left_attach">1</property>
+                      <property name="top_attach">1</property>
+                    </layout>
                   </object>
-                  <packing>
-                    <property name="left_attach">1</property>
-                    <property name="top_attach">1</property>
-                  </packing>
                 </child>
                 <child>
                   <object class="GtkLabel">
@@ -156,27 +127,26 @@
                               bind-source="authorLabel"
                               bind-property="visible"
                               bind-flags="sync-create"/>
-                    <property name="no_show_all">True</property>
                     <property name="label" translatable="yes">Author</property>
                     <property name="xalign">0</property>
                     <style>
                       <class name="dim-label"/>
                     </style>
+                    <layout>
+                      <property name="left_attach">0</property>
+                      <property name="top_attach">2</property>
+                    </layout>
                   </object>
-                  <packing>
-                    <property name="left_attach">0</property>
-                    <property name="top_attach">2</property>
-                  </packing>
                 </child>
                 <child>
                   <object class="GtkLabel" id="authorLabel">
-                    <property name="no_show_all">True</property>
+                    <property name="visible">False</property>
                     <property name="xalign">0</property>
+                    <layout>
+                      <property name="left_attach">1</property>
+                      <property name="top_attach">2</property>
+                    </layout>
                   </object>
-                  <packing>
-                    <property name="left_attach">1</property>
-                    <property name="top_attach">2</property>
-                  </packing>
                 </child>
                 <child>
                   <object class="GtkLabel">
@@ -184,44 +154,42 @@
                               bind-source="errorLabel"
                               bind-property="visible"
                               bind-flags="sync-create"/>
-                    <property name="no_show_all">True</property>
                     <property name="label" translatable="yes">Error</property>
                     <property name="xalign">0</property>
                     <property name="yalign">0</property>
                     <style>
                       <class name="dim-label"/>
                     </style>
+                    <layout>
+                      <property name="left_attach">0</property>
+                      <property name="top_attach">3</property>
+                    </layout>
                   </object>
-                  <packing>
-                    <property name="left_attach">0</property>
-                    <property name="top_attach">3</property>
-                  </packing>
                 </child>
                 <child>
                   <object class="GtkLabel" id="errorLabel">
-                    <property name="no_show_all">True</property>
+                    <property name="visible">False</property>
                     <property name="selectable">True</property>
                     <property name="wrap">True</property>
                     <property name="max_width_chars">60</property>
                     <property name="xalign">0</property>
+                    <layout>
+                      <property name="left_attach">1</property>
+                      <property name="top_attach">3</property>
+                    </layout>
                   </object>
-                  <packing>
-                    <property name="left_attach">1</property>
-                    <property name="top_attach">3</property>
-                  </packing>
                 </child>
                 <child>
                   <object class="GtkButton">
-                    <property name="visible">True</property>
                     <property name="label" translatable="yes">Website</property>
                     <property name="action_name">row.show-url</property>
                     <property name="valign">end</property>
                     <property name="margin-top">12</property>
+                    <layout>
+                      <property name="left_attach">0</property>
+                      <property name="top_attach">4</property>
+                    </layout>
                   </object>
-                  <packing>
-                    <property name="left_attach">0</property>
-                    <property name="top_attach">4</property>
-                  </packing>
                 </child>
                 <child>
                   <object class="GtkButton" id="removeButton">
@@ -229,7 +197,6 @@
                               bind-source="removeButton"
                               bind-property="sensitive"
                               bind-flags="sync-create"/>
-                    <property name="no_show_all">True</property>
                     <property name="label" translatable="yes">Remove…</property>
                     <property name="action_name">row.uninstall</property>
                     <property name="hexpand">True</property>
@@ -238,20 +205,20 @@
                     <style>
                       <class name="destructive-action"/>
                     </style>
+                    <layout>
+                      <property name="left_attach">1</property>
+                      <property name="top_attach">4</property>
+                    </layout>
                   </object>
-                  <packing>
-                    <property name="left_attach">1</property>
-                    <property name="top_attach">4</property>
-                  </packing>
                 </child>
               </object>
             </child>
+            <layout>
+              <property name="left_attach">0</property>
+              <property name="top_attach">1</property>
+              <property name="column-span">8</property>
+            </layout>
           </object>
-          <packing>
-            <property name="left_attach">0</property>
-            <property name="top_attach">1</property>
-            <property name="width">8</property>
-          </packing>
         </child>
       </object>
     </child>
