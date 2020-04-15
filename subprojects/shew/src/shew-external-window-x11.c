@@ -21,7 +21,7 @@
 #include <errno.h>
 #include <gdk/gdk.h>
 #ifdef GDK_WINDOWING_X11
-#include <gdk/gdkx.h>
+#include <gdk/x11/gdkx.h>
 #include <X11/Xlib.h>
 #endif
 #include <stdlib.h>
@@ -110,14 +110,14 @@ shew_external_window_x11_new (const char *handle_str)
 
 static void
 shew_external_window_x11_set_parent_of (ShewExternalWindow *external_window,
-                                        GdkWindow      *child_window)
+                                        GdkSurface         *child_surface)
 {
   ShewExternalWindowX11 *external_window_x11 =
     SHEW_EXTERNAL_WINDOW_X11 (external_window);
 
 #ifdef GDK_WINDOWING_X11
-  XSetTransientForHint (GDK_WINDOW_XDISPLAY (child_window),
-                        GDK_WINDOW_XID (child_window),
+  XSetTransientForHint (GDK_SURFACE_XDISPLAY (child_surface),
+                        GDK_SURFACE_XID (child_surface),
                         external_window_x11->foreign_xid);
 #endif
 }

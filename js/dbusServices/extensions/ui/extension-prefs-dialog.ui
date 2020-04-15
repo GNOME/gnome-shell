@@ -1,31 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.22.1 -->
 <interface>
   <requires lib="gtk+" version="3.20"/>
   <template class="ExtensionPrefsDialog" parent="GtkWindow">
     <property name="default-width">600</property>
     <property name="default-height">400</property>
     <child type="titlebar">
-      <object class="GtkHeaderBar" id="headerBar">
-        <property name="visible">True</property>
-        <property name="show-close-button">True</property>
-      </object>
+      <object class="GtkHeaderBar"/>
     </child>
     <child>
       <object class="GtkStack" id="stack">
-        <property name="visible">True</property>
-        <property name="can-focus">False</property>
         <child>
           <object class="GtkScrolledWindow">
-            <property name="visible">True</property>
             <property name="hscrollbar-policy">never</property>
             <property name="propagate-natural-height">True</property>
             <child>
               <object class="GtkViewport">
-                <property name="visible">True</property>
                 <child>
                   <object class="GtkBox">
-                    <property name="visible">True</property>
                     <property name="orientation">vertical</property>
                     <property name="margin-start">100</property>
                     <property name="margin-end">100</property>
@@ -34,7 +25,6 @@
                     <property name="spacing">12</property>
                     <child>
                       <object class="GtkLabel">
-                        <property name="visible">True</property>
                         <property name="label" translatable="yes">Something’s gone wrong</property>
                         <attributes>
                           <attribute name="scale" value="1.44"/> <!-- x-large -->
@@ -46,7 +36,6 @@
                     </child>
                     <child>
                       <object class="GtkLabel">
-                        <property name="visible">True</property>
                         <property name="label" translatable="yes">We’re very sorry, but there’s been a problem: the settings for this extension can’t be displayed. We recommend that you report the issue to the extension authors.</property>
                         <property name="justify">center</property>
                         <property name="wrap">True</property>
@@ -54,29 +43,24 @@
                     </child>
                     <child>
                       <object class="GtkFrame">
-                        <property name="visible">True</property>
                         <property name="margin-top">12</property>
                         <child>
                           <object class="GtkBox">
-                            <property name="visible">True</property>
                             <property name="hexpand">True</property>
                             <property name="orientation">vertical</property>
                             <child>
                               <object class="GtkBox" id="expander">
-                                <property name="visible">True</property>
                                 <property name="spacing">6</property>
                                 <style>
                                   <class name="expander"/>
                                 </style>
                                 <child>
                                   <object class="GtkImage" id="expanderArrow">
-                                    <property name="visible">True</property>
                                     <property name="icon-name">pan-end-symbolic</property>
                                   </object>
                                 </child>
                                 <child>
                                   <object class="GtkLabel">
-                                    <property name="visible">True</property>
                                     <property name="label" translatable="yes">Technical Details</property>
                                   </object>
                                 </child>
@@ -84,15 +68,11 @@
                             </child>
                             <child>
                               <object class="GtkRevealer" id="revealer">
-                                <property name="visible">True</property>
                                 <child>
                                   <object class="GtkBox">
-                                    <property name="visible">True</property>
                                     <property name="orientation">vertical</property>
                                     <child>
                                       <object class="GtkTextView" id="errorView">
-                                        <property name="visible">True</property>
-                                        <property name="can-focus">True</property>
                                         <property name="monospace">True</property>
                                         <property name="editable">False</property>
                                         <property name="wrap-mode">word</property>
@@ -104,26 +84,15 @@
                                     </child>
                                     <child>
                                       <object class="GtkBox">
-                                        <property name="visible">True</property>
                                         <style>
                                           <class name="expander-toolbar"/>
                                         </style>
                                         <child>
                                           <object class="GtkButton">
-                                            <property name="visible">True</property>
-                                            <property name="can-focus">True</property>
                                             <property name="receives-default">True</property>
                                             <property name="action-name">win.copy-error</property>
-                                            <style>
-                                              <class name="flat"/>
-                                              <class name="image-button"/>
-                                            </style>
-                                            <child>
-                                              <object class="GtkImage">
-                                                <property name="visible">True</property>
-                                                <property name="icon-name">edit-copy-symbolic</property>
-                                              </object>
-                                            </child>
+                                            <property name="has-frame">False</property>
+                                            <property name="icon-name">edit-copy-symbolic</property>
                                           </object>
                                         </child>
                                         <child>
@@ -136,13 +105,9 @@
                                             <property name="halign">end</property>
                                             <property name="label" translatable="yes">Homepage</property>
                                             <property name="tooltip-text" translatable="yes">Visit extension homepage</property>
-                                            <property name="can-focus">True</property>
                                             <property name="receives-default">True</property>
-                                            <property name="no-show-all">True</property>
+                                            <property name="has-frame">False</property>
                                             <property name="action-name">win.show-url</property>
-                                            <style>
-                                              <class name="flat"/>
-                                            </style>
                                           </object>
                                         </child>
                                       </object>

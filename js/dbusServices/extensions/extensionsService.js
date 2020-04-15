@@ -128,7 +128,7 @@ var ExtensionsService = class extends ServiceImplementation {
                 externalWindow = Shew.ExternalWindow.new_from_handle(parentWindow);
 
             if (externalWindow)
-                externalWindow.set_parent_of(window.window);
+                externalWindow.set_parent_of(window.get_surface());
 
             if (options.modal)
                 window.modal = options.modal.get_boolean();
@@ -177,11 +177,11 @@ var ExtensionPrefsDialog = GObject.registerClass({
         this._initActions();
         this._addCustomStylesheet();
 
-        this._gesture = new Gtk.GestureMultiPress({
-            widget: this._expander,
+        this._gesture = new Gtk.GestureClick({
             button: 0,
             exclusive: true,
         });
+        this._expander.add_controller(this._gesture);
 
         this._gesture.connect('released', (gesture, nPress) => {
             if (nPress === 1)
@@ -216,9 +216,9 @@ var ExtensionPrefsDialog = GObject.registerClass({
 
     _syncExpandedStyle() {
         if (this._revealer.reveal_child)
-            this._expander.get_style_context().add_class('expanded');
+            this._expander.add_css_class('expanded');
         else if (!this._revealer.child_revealed)
-            this._expander.get_style_context().remove_class('expanded');
+            this._expander.remove_css_class('expanded');
     }
 
     _setError(exc) {
@@ -276,7 +276,7 @@ var ExtensionPrefsDialog = GObject.registerClass({
         } catch (e) {
             logError(e, 'Failed to add application style');
         }
-        Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(),
+        Gtk.StyleContext.add_provider_for_display(Gdk.Display.get_default(),
             provider,
             Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
     }
