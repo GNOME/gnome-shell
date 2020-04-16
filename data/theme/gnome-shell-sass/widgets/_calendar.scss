@@ -92,8 +92,8 @@
     width: $calendar_day_size * 1.375;
     height: $calendar_day_size * 1.375;
     padding: 0;
-    margin: 0.25em;
-    border-radius: $calendar_day_size * 0.5 * 1.375 + 0.25em;
+    margin: 2px;
+    border-radius: 99px;
     border: 1px solid transparent; //avoid jumparound due to today
     font-feature-settings: "tnum";
     &:hover, &:focus { background-color: $hover_bg_color; }
