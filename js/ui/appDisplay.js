@@ -2130,22 +2130,22 @@ var AppIcon = GObject.registerClass({
     }
 
     vfunc_button_press_event(buttonEvent) {
-        super.vfunc_button_press_event(buttonEvent);
+        const ret = super.vfunc_button_press_event(buttonEvent);
         if (buttonEvent.button == 1) {
             this._setPopupTimeout();
         } else if (buttonEvent.button == 3) {
             this.popupMenu();
             return Clutter.EVENT_STOP;
         }
-        return Clutter.EVENT_PROPAGATE;
+        return ret;
     }
 
     vfunc_touch_event(touchEvent) {
-        super.vfunc_touch_event(touchEvent);
+        const ret = super.vfunc_touch_event(touchEvent);
         if (touchEvent.type == Clutter.EventType.TOUCH_BEGIN)
             this._setPopupTimeout();
 
-        return Clutter.EVENT_PROPAGATE;
+        return ret;
     }
 
     vfunc_clicked(button) {
