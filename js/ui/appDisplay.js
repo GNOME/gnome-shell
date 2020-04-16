@@ -2017,7 +2017,7 @@ var AppIcon = GObject.registerClass({
         this._id = app.get_id();
         this._name = app.get_name();
 
-        // Get the isDraggable property without passing it on to the BaseIcon:
+        // Get the showMenu property without passing it on to the BaseIcon:
         let appIconParams = Params.parse(iconParams, {
             showMenu: true,
         }, true);
