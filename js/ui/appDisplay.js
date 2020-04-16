@@ -2034,8 +2034,6 @@ var AppIcon = GObject.registerClass({
             button_mask: St.ButtonMask.ONE | St.ButtonMask.TWO,
         }, iconParams);
 
-        let buttonParams = { button_mask: St.ButtonMask.ONE | St.ButtonMask.TWO };
-
         this._iconContainer = new St.Widget({ layout_manager: new Clutter.BinLayout(),
                                               x_expand: true, y_expand: true });
         this._iconContainer.add_child(this.icon);
