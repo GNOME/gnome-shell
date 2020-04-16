@@ -2025,7 +2025,9 @@ var AppIcon = GObject.registerClass({
         this._showMenu = appIconParams['showMenu'];
         delete iconParams['showMenu'];
 
-        iconParams['createIcon'] = this._createIcon.bind(this);
+        iconParams = Params.parse(iconParams, {
+            createIcon: this._createIcon.bind(this),
+        }, true);
         iconParams['setSizeManually'] = false;
 
         super._init({
@@ -2033,9 +2035,6 @@ var AppIcon = GObject.registerClass({
         }, iconParams);
 
         let buttonParams = { button_mask: St.ButtonMask.ONE | St.ButtonMask.TWO };
-        iconParams = Params.parse(iconParams, {
-            createIcon: this._createIcon.bind(this),
-        }, true);
 
         this._iconContainer = new St.Widget({ layout_manager: new Clutter.BinLayout(),
                                               x_expand: true, y_expand: true });
