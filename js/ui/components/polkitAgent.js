@@ -327,6 +327,8 @@ var AuthenticationDialog = GObject.registerClass({
         }
 
         let resetDialog = () => {
+            this._sessionRequestTimeoutId = 0;
+
             if (this.state != ModalDialog.State.OPENED)
                 return;
 
