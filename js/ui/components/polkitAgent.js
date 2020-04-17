@@ -327,12 +327,15 @@ var AuthenticationDialog = GObject.registerClass({
         }
 
         let resetDialog = () => {
-            if (this.state != ModalDialog.State.OPENED)
+            if (this.state !== ModalDialog.State.OPENED) {
+                this._sessionRequestTimeoutId = 0;
                 return GLib.SOURCE_REMOVE;
+            }
 
             this._passwordEntry.hide();
             this._cancelButton.grab_key_focus();
             this._okButton.reactive = false;
+            this._sessionRequestTimeoutId = 0;
 
             return GLib.SOURCE_REMOVE;
         };
