@@ -6,9 +6,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
-"shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-04-22 07:25+0000\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-04-17 17:09+0100\n"
 "PO-Revision-Date: 2014-04-03 10:34+0700\n"
 "Last-Translator: Sophea Sok <sophea@open.org.kh>\n"
 "Language-Team: Khmer <>\n"
@@ -20,67 +19,54 @@ msgstr ""
 "X-Generator: WordForge 0.8 RC1\n"
 "X-Language: km-KH\n"
 
-#: ../data/50-gnome-shell-system.xml.in.h:1
+#: data/50-gnome-shell-system.xml:6
 msgid "System"
 msgstr "ប្រព័ន្ធ"
 
-#: ../data/50-gnome-shell-system.xml.in.h:2
-msgid "Show the message tray"
-msgstr "បង្ហាញ​ថាស​សារ"
+#: data/50-gnome-shell-system.xml:9
+#, fuzzy
+msgid "Show the notification list"
+msgstr "ការ​ជូនដំណឺង​ថ្មី %d"
 
-#: ../data/50-gnome-shell-system.xml.in.h:3
+#: data/50-gnome-shell-system.xml:12
 msgid "Focus the active notification"
 msgstr "ផ្ដោត​លើ​ការ​ជូនដំណឹង​សកម្ម"
 
-#: ../data/50-gnome-shell-system.xml.in.h:4
+#: data/50-gnome-shell-system.xml:15
 msgid "Show the overview"
 msgstr "បង្ហាញ​ទិដ្ឋភាព​ទូទៅ"
 
-#: ../data/50-gnome-shell-system.xml.in.h:5
+#: data/50-gnome-shell-system.xml:18
 msgid "Show all applications"
 msgstr "បង្ហាញ​កម្មវិធី​ទាំងអស់"
 
-#: ../data/50-gnome-shell-system.xml.in.h:6
+#: data/50-gnome-shell-system.xml:21
 msgid "Open the application menu"
 msgstr "បើក​ម៉ឺនុយ​កម្មវិធី"
 
-#: ../data/gnome-shell.desktop.in.in.h:1
+#: data/org.gnome.Shell.desktop.in.in:4
 msgid "GNOME Shell"
 msgstr "GNOME សែល"
 
-#: ../data/gnome-shell.desktop.in.in.h:2
-#: ../data/gnome-shell-wayland.desktop.in.in.h:2
+#: data/org.gnome.Shell.desktop.in.in:5
 msgid "Window management and application launching"
 msgstr "ការ​គ្រប់គ្រង​វីនដូ និង​ការ​ចាប់ផ្ដើម​កម្មវិធី"
 
-#: ../data/gnome-shell-extension-prefs.desktop.in.in.h:1
-#: ../js/extensionPrefs/main.js:155
-msgid "GNOME Shell Extension Preferences"
-msgstr "ចំណូលចិត្ត​ផ្នែក​បន្ថែម​របស់ GNOME សែល"
-
-#: ../data/gnome-shell-extension-prefs.desktop.in.in.h:2
-msgid "Configure GNOME Shell Extensions"
-msgstr "កំណត់​រចនាសម្ព័ន្ធ​ផ្នែក​បន្ថែម​របស់ GNOME សែល"
-
-#: ../data/gnome-shell-wayland.desktop.in.in.h:1
-msgid "GNOME Shell (wayland compositor)"
-msgstr "GNOME សែល (wayland compositor)"
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:1
+#: data/org.gnome.shell.gschema.xml.in:15
 msgid "Enable internal tools useful for developers and testers from Alt-F2"
 msgstr "បើក​ឧបករណ៍​ខាងក្នុង មាន​ប្រយោជន៍​សម្រាប់​អ្នក​អភិវឌ្ឍន៍ និង​អ្នក​សាកល្បង​ចេញពី Alt-F2"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:2
+#: data/org.gnome.shell.gschema.xml.in:18
 msgid ""
 "Allows access to internal debugging and monitoring tools using the Alt-F2 "
 "dialog."
 msgstr "អនុញ្ញាត​ឲ្យ​ចូល​ដំណើរការ​ឧបករណ៍​តាមដាន និង​ឧបករណ៍​បំបាត់​កំហុស​ខាងក្នុង​ដោយ​ប្រើ​ប្រអប់ Alt-F2 ។"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:3
+#: data/org.gnome.shell.gschema.xml.in:25
 msgid "UUIDs of extensions to enable"
 msgstr "UUIDs នៃ​ផ្នែក​បន្ថែម​ដែល​ត្រូវ​បើក"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:4
+#: data/org.gnome.shell.gschema.xml.in:26
 msgid ""
 "GNOME Shell extensions have a UUID property; this key lists extensions which "
 "should be loaded. Any extension that wants to be loaded needs to be in this "
@@ -92,11 +78,40 @@ msgstr ""
 "វិធីសាស្ត្រ EnableExtension និង DisableExtension D-Bus បាន​ផង​ដែរ​នៅ​លើ org.gnome."
 "Shell ។"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:5
+#: data/org.gnome.shell.gschema.xml.in:35
+#, fuzzy
+msgid "UUIDs of extensions to force disabling"
+msgstr "UUIDs នៃ​ផ្នែក​បន្ថែម​ដែល​ត្រូវ​បើក"
+
+#: data/org.gnome.shell.gschema.xml.in:36
+#, fuzzy
+msgid ""
+"GNOME Shell extensions have a UUID property; this key lists extensions which "
+"should be disabled, even if loaded as part of the current mode. You can also "
+"manipulate this list with the EnableExtension and DisableExtension D-Bus "
+"methods on org.gnome.Shell. This key takes precedence over the “enabled-"
+"extensions” setting."
+msgstr ""
+"ផ្នែក​បន្ថែម​របស់ GNOME សែល​ដែល​មាន​លក្ខណសម្បត្តិ UUID ។ ពាក្យ​គន្លឹះ​នេះ​គឺ​រាយ​ផ្នែក​បន្ថែម​ដែល​គួរ​ត្រូវ​"
+"បាន​ផ្ទុក។ ផ្នែក​បន្ថែម​ណា​ដែល​ត្រូវ​ផ្ទុក គឺ​ត្រូវតែ​នៅ​ក្នុង​បញ្ជី​នេះ។ អ្នក​ក៏​អាច​រៀបចំ​បញ្ជី​នេះ​ដោយ​ប្រើ​"
+"វិធីសាស្ត្រ EnableExtension និង DisableExtension D-Bus បាន​ផង​ដែរ​នៅ​លើ org.gnome."
+"Shell ។"
+
+#: data/org.gnome.shell.gschema.xml.in:46
+msgid "Disable user extensions"
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:47
+msgid ""
+"Disable all extensions the user has enabled without affecting the “enabled-"
+"extension” setting."
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:54
 msgid "Disables the validation of extension version compatibility"
 msgstr "បិទ​សុពលកម្ម​នៃ​ភាព​ឆបគ្នា​របស់​កំណែ​ផ្នែក​បន្ថែម"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:6
+#: data/org.gnome.shell.gschema.xml.in:55
 msgid ""
 "GNOME Shell will only load extensions that claim to support the current "
 "running version. Enabling this option will disable this check and try to "
@@ -106,1589 +121,3179 @@ msgstr ""
 "ជម្រើស​នេះ គឺ​វា​នឹង​បិទ​ការ​ពិនិត្យមើល​នេះ ហើយ​ព្យាយាម​ផ្ទុក​ផ្នែក​បន្ថែម​ទាំងអស់​ដោយ​មិន​គិត​អំពី​កំណែ​ដែល​ពួកគេ​"
 "ប្រកាស​ដើម្បី​គាំទ្រ​ឡើយ។"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:7
+#: data/org.gnome.shell.gschema.xml.in:63
 msgid "List of desktop file IDs for favorite applications"
 msgstr "បញ្ជី​លេខ​សម្គាល់​ឯកសារ​ផ្ទៃតុ​សម្រាប់​កម្មវិធី​សំណព្វ"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:8
+#: data/org.gnome.shell.gschema.xml.in:64
 msgid ""
 "The applications corresponding to these identifiers will be displayed in the "
 "favorites area."
 msgstr "កម្មវិធី​ដែល​ត្រូវគ្នា​ជាមួយ​កម្មវិធី​កំណត់​អត្តសញ្ញាណ​ទាំងនេះ នឹង​ត្រូវ​បាន​បង្ហាញ​នៅ​ក្នុង​ផ្ទៃ​សំណព្វ។"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:9
+#: data/org.gnome.shell.gschema.xml.in:71
+msgid "App Picker View"
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:72
+msgid "Index of the currently selected view in the application picker."
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:78
 msgid "History for command (Alt-F2) dialog"
 msgstr "ប្រវត្តិ​សម្រាប់​ប្រអប់​ពាក្យ​បញ្ជា (Alt-F2)"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:10
+#. Translators: looking glass is a debugger and inspector tool, see https://wiki.gnome.org/Projects/GnomeShell/LookingGlass
+#: data/org.gnome.shell.gschema.xml.in:83
 msgid "History for the looking glass dialog"
 msgstr "ប្រវត្តិ​សម្រាប់​ប្រអប់ looking glass"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:11
-msgid "Always show the 'Log out' menu item in the user menu."
+#: data/org.gnome.shell.gschema.xml.in:87
+#, fuzzy
+msgid "Always show the “Log out” menu item in the user menu."
 msgstr "បង្ហាញ​ធាតុ​ម៉ឺនុយ 'ចេញ' ជានិច្ច​នៅ​ក្នុង​ម៉ឺនុយ​អ្នកប្រើ។"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:12
+#: data/org.gnome.shell.gschema.xml.in:88
+#, fuzzy
 msgid ""
-"This key overrides the automatic hiding of the 'Log out' menu item in single-"
+"This key overrides the automatic hiding of the “Log out” menu item in single-"
 "user, single-session situations."
 msgstr ""
 "ពាក្យ​គន្លឹះ​នេះ​បដិសេធ​ការ​លាក់​ធាតុ​ម៉ឺនុយ 'ចេញ' ស្វ័យប្រវត្តិ​នៅ​ក្នុង​ស្ថានភាព​អ្នកប្រើ​តែមួយ សម័យ​តែមួយ។"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:13
+#: data/org.gnome.shell.gschema.xml.in:95
 msgid ""
 "Whether to remember password for mounting encrypted or remote filesystems"
 msgstr ""
 "ថា​តើ​ត្រូវ​ចងចាំ​ពាក្យសម្ងាត់​សម្រាប់​ការ​ម៉ោន​ប្រព័ន្ធ​ឯកសារ​ពី​ចម្ងាយ ឬ​ឯកសារ​ដែល​បាន​ដាក់​លេខ​កូដ​ដែរ​ឬទេ"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:14
+#: data/org.gnome.shell.gschema.xml.in:96
+#, fuzzy
 msgid ""
 "The shell will request a password when an encrypted device or a remote "
 "filesystem is mounted. If the password can be saved for future use a "
-"'Remember Password' checkbox will be present. This key sets the default "
+"“Remember Password” checkbox will be present. This key sets the default "
 "state of the checkbox."
 msgstr ""
 "សែល​នឹង​ស្នើ​ពាក្យសម្ងាត់ នៅ​ពេល​ដែល​ឧបករណ៍​ដាក់​លេខ​កូដ ឬ​ប្រព័ន្ធ​ឯកសារ​ពី​ចម្ងាយ​ត្រូវ​បាន​ម៉ោន។ ប្រសិនបើ​"
 "ពាក្យសម្ងាត់​អាច​ត្រូវ​បាន​រក្សាទុក​សម្រាប់​ប្រើ​នៅ​ពេល​អនាគត ប្រអប់​ធីក 'ចងចាំ​ពាក្យសម្ងាត់' នឹង​បង្ហាញ។ "
 "ពាក្យ​គន្លឹះ​នេះ​កំណត់​សភាព​លំនាំដើម​នៃ​ប្រអប់​ធីក។"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:15
-msgid "Show the week date in the calendar"
-msgstr "បង្ហាញ​កាលបរិច្ឆេទ​សប្ដាហ៍​នៅ​ក្នុង​ប្រតិទិន"
+#: data/org.gnome.shell.gschema.xml.in:105
+msgid ""
+"Whether the default Bluetooth adapter had set up devices associated to it"
+msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:16
-msgid "If true, display the ISO week date in the calendar."
-msgstr "បើ​ពិត បង្ហាញ​កាលបរិច្ឆេទ​សប្ដាហ៍ ISO នៅ​ក្នុង​ប្រតិទិន។"
+#: data/org.gnome.shell.gschema.xml.in:106
+msgid ""
+"The shell will only show a Bluetooth menu item if a Bluetooth adapter is "
+"powered, or if there were devices set up associated with the default "
+"adapter. This will be reset if the default adapter is ever seen not to have "
+"devices associated to it."
+msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:17
+#: data/org.gnome.shell.gschema.xml.in:115
+msgid "Enable introspection API"
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:116
+msgid ""
+"Enables a D-Bus API that allows to introspect the application state of the "
+"shell."
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:126
+msgid "Enables the hot corner for the window picker"
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:129
+msgid ""
+"By default, the hot corner for the window picker is enabled. Set false to "
+"disable the hot corner."
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:136
+msgid "Set the left/right position of the hot corner for the window picker"
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:139
+msgid ""
+"Default position of the hot corner is in a right corner. Set false to move "
+"the hot corner to a left corner. The position is not affected by the RTL vs. "
+"LTR text direction."
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:147
+msgid "Set the top/bottom position of the hot corner for the window picker"
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:150
+msgid ""
+"Default position of the hot corner is in a bottom corner. Set false to move "
+"the hot corner to a top corner."
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:157
+msgid "Set the size of the hot corner target"
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:160
+msgid ""
+"Number of pixels in one dimension of the square target for the hot corner. "
+"Default is for a single pixel in the very corner. For some virtual machines, "
+"this value may need to be set larger than the default."
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:170
+msgid "Prevent apps from being automatically maximized on launch"
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:173
+msgid ""
+"Makes window management more like standard Gnome. Hides application splash "
+"screens, prevents applications from being forced to open maximized, and does "
+"not automatically switch to the app selector when a window is minimized."
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:182
+msgid "Whether password reset is allowed"
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:183
+msgid ""
+"This key controls whether to show the \"Forgot Password?\" button on the "
+"login screen. 'default' tells GNOME Shell to use the vendor default setting. "
+"'enable' and 'disable' can be used to explicitly enable or disable the reset "
+"button, respectively. Note that it only makes sense to set this key for the "
+"Debian-gdm user; changing it for your own user account will have no effect."
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:194
+msgid "Layout of application launcher icons in the grid"
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:195
+msgid ""
+"This key specifies the exact order of the icons shown in the applications "
+"launcher view."
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:201
+msgid "Languages for which the discovery feed feature is enabled."
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:204
+msgid ""
+"If the system language matches any of these languages, the discovery feed "
+"will be enabled. You will need to restart the shell for changes to this "
+"setting to take effect."
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:215
 msgid "Keybinding to open the application menu"
 msgstr "បង្គំ​គ្រាប់ចុច​ដើម្បី​បើក​ម៉ឺនុយ​កម្មវិធី"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:18
+#: data/org.gnome.shell.gschema.xml.in:216
 msgid "Keybinding to open the application menu."
 msgstr "បង្គំ​គ្រាប់ចុច​ដើម្បី​បើក​ម៉ឺនុយ​កម្មវិធី។"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:19
-msgid "Keybinding to open the \"Show Applications\" view"
+#: data/org.gnome.shell.gschema.xml.in:222
+#, fuzzy
+msgid "Keybinding to open the “Show Applications” view"
 msgstr "បង្គំ​គ្រាប់ចុច​ដើម្បី​បើក​ទិដ្ឋភាព \"កម្មវិធី​បង្ហាញ\""
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:20
+#: data/org.gnome.shell.gschema.xml.in:223
+#, fuzzy
 msgid ""
-"Keybinding to open the \"Show Applications\" view of the Activities Overview."
+"Keybinding to open the “Show Applications” view of the Activities Overview."
 msgstr "បង្គំ​គ្រាប់ចុច​ដើម្បី​បើក​ទិដ្ឋភាព \"កម្មវិធី​បង្ហាញ\" របស់​ទិដ្ឋភាព​សកម្មភាព។"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:21
+#: data/org.gnome.shell.gschema.xml.in:230
 msgid "Keybinding to open the overview"
 msgstr "បង្គំ​គ្រាប់ចុច​ដើម្បី​បើក​ទិដ្ឋភាព​ទូទៅ"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:22
+#: data/org.gnome.shell.gschema.xml.in:231
 msgid "Keybinding to open the Activities Overview."
 msgstr "បង្គំ​គ្រាប់ចុច​ដើម្បី​បើក​ទិដ្ឋភាព​សកម្មភាព។"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:23
-msgid "Keybinding to toggle the visibility of the message tray"
+#: data/org.gnome.shell.gschema.xml.in:237
+#, fuzzy
+msgid "Keybinding to toggle the visibility of the notification list"
 msgstr "បង្គំ​គ្រាប់ចុច​ដើម្បី​បិទ/បើក​លទ្ធភាព​មើល​ឃើញ​របស់​ថាស​សារ"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:24
-msgid "Keybinding to toggle the visibility of the message tray."
+#: data/org.gnome.shell.gschema.xml.in:238
+#, fuzzy
+msgid "Keybinding to toggle the visibility of the notification list."
 msgstr "បង្គំ​គ្រាប់ចុច​ដើម្បី​បិទ/បើក​លទ្ធភាព​មើល​ឃើញ​របស់​ថាស​សារ។"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:25
+#: data/org.gnome.shell.gschema.xml.in:244
 msgid "Keybinding to focus the active notification"
 msgstr "បង្គំ​គ្រាប់ចុច​ដើម្បី​ផ្ដោត​លើ​ការ​ជូនដំណឹង​សកម្ម"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:26
+#: data/org.gnome.shell.gschema.xml.in:245
 msgid "Keybinding to focus the active notification."
 msgstr "បង្គំ​គ្រាប់ចុច​ដើម្បី​ផ្ដោត​លើ​ការ​ជូនដំណឹង​សកម្ម។"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:27
-msgid "Which keyboard to use"
-msgstr "ក្ដារចុច​ដែល​ត្រូវ​ប្រើ"
+#: data/org.gnome.shell.gschema.xml.in:251
+#, fuzzy
+msgid "Switch to application 1"
+msgstr "បង្ហាញ​កម្មវិធី"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:28
-msgid "The type of keyboard to use."
-msgstr "ប្រភេទ​ក្ដារចុច​ដែល​ត្រូវ​ប្រើ។"
+#: data/org.gnome.shell.gschema.xml.in:255
+#, fuzzy
+msgid "Switch to application 2"
+msgstr "បង្ហាញ​កម្មវិធី"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:29
-msgid "The maximum accuracy level of location."
-msgstr "កម្រិត​សុក្រឹតភាព​អតិបរមា​នៃ​ទីតាំង។"
+#: data/org.gnome.shell.gschema.xml.in:259
+#, fuzzy
+msgid "Switch to application 3"
+msgstr "បង្ហាញ​កម្មវិធី"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:30
+#: data/org.gnome.shell.gschema.xml.in:263
+#, fuzzy
+msgid "Switch to application 4"
+msgstr "បង្ហាញ​កម្មវិធី"
+
+#: data/org.gnome.shell.gschema.xml.in:267
+#, fuzzy
+msgid "Switch to application 5"
+msgstr "បង្ហាញ​កម្មវិធី"
+
+#: data/org.gnome.shell.gschema.xml.in:271
+#, fuzzy
+msgid "Switch to application 6"
+msgstr "បង្ហាញ​កម្មវិធី"
+
+#: data/org.gnome.shell.gschema.xml.in:275
+#, fuzzy
+msgid "Switch to application 7"
+msgstr "បង្ហាញ​កម្មវិធី"
+
+#: data/org.gnome.shell.gschema.xml.in:279
+#, fuzzy
+msgid "Switch to application 8"
+msgstr "បង្ហាញ​កម្មវិធី"
+
+#: data/org.gnome.shell.gschema.xml.in:283
+#, fuzzy
+msgid "Switch to application 9"
+msgstr "បង្ហាញ​កម្មវិធី"
+
+#: data/org.gnome.shell.gschema.xml.in:290
+#, fuzzy
+msgid "Keybinding that shows the force app exit dialog"
+msgstr "បង្គំ​គ្រាប់ចុច​ដើម្បី​បើក​ម៉ឺនុយ​កម្មវិធី"
+
+#: data/org.gnome.shell.gschema.xml.in:295
+#, fuzzy
+msgid "Keybinding to activate the first app in the icon bar."
+msgstr "បង្គំ​គ្រាប់ចុច​ដើម្បី​បើក​ម៉ឺនុយ​កម្មវិធី។"
+
+#: data/org.gnome.shell.gschema.xml.in:296
 msgid ""
-"Configures the maximum level of location accuracy applications are allowed "
-"to see. Valid options are 'off' (disable location tracking), 'country', "
-"'city', 'neighborhood', 'street', and 'exact' (typically requires GPS "
-"receiver). Please keep in mind that this only controls what GeoClue will "
-"allow applications to see and they can find user's location on their own "
-"using network resources (albeit with street-level accuracy at best)."
+"Keybinding to open the first app in the icon bar, or switch to the app if "
+"already open."
 msgstr ""
-"កំណត់​រចនាសម្ព័ន្ធ​កម្រិត​អតិបរមា​របស់​កម្មវិធី​សុក្រឹតភាព​ទីតាំង​ដែល​បាន​អនុញ្ញាត​ឲ្យ​មើល​ឃើញ។ ជម្រើស​ដែល​ត្រឹមត្រូវ​"
-"គឺ 'off' (បិទ​ការ​តាមដាន​ទីតាំង), 'country', 'city', 'neighborhood', 'street', និង "
-"'exact' (ត្រូវ​មានឧបករណ៍​ទទួល GPS) ។ សូម​ចងចាំ​ថា​វា​គ្រប់គ្រង​អ្វី​ដែល GeoClue នឹង​អនុញ្ញាត​ឲ្យ​កម្មវិធី​"
-"មើល​ឃើញ ហើយ​ពួកគេ​អាច​រក​ឃើញ​ទីតាំង​របស់​អ្នកប្រើ​ដោយ​ប្រើ​ធនធាន​បណ្ដាញ​ផ្ទាល់ខ្លួន (សូម្បីតែ​សុក្រឹតភាព​កម្រិត​"
-"ផ្លូវ​ក៏​ល្អ​ដែរ)"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:31
+#: data/org.gnome.shell.gschema.xml.in:302
+#, fuzzy
+msgid "Keybinding to activate the second app in the icon bar."
+msgstr "បង្គំ​គ្រាប់ចុច​ដើម្បី​បើក​ម៉ឺនុយ​កម្មវិធី។"
+
+#: data/org.gnome.shell.gschema.xml.in:303
+msgid ""
+"Keybinding to open the second app in the icon bar, or switch to the app if "
+"already open."
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:309
+#, fuzzy
+msgid "Keybinding to activate the third app in the icon bar."
+msgstr "បង្គំ​គ្រាប់ចុច​ដើម្បី​បើក​ម៉ឺនុយ​កម្មវិធី។"
+
+#: data/org.gnome.shell.gschema.xml.in:310
+msgid ""
+"Keybinding to open the third app in the icon bar, or switch to the app if "
+"already open."
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:316
+#, fuzzy
+msgid "Keybinding to activate the fourth app in the icon bar."
+msgstr "បង្គំ​គ្រាប់ចុច​ដើម្បី​បើក​ម៉ឺនុយ​កម្មវិធី។"
+
+#: data/org.gnome.shell.gschema.xml.in:317
+msgid ""
+"Keybinding to open the fourth app in the icon bar, or switch to the app if "
+"already open."
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:323
+#, fuzzy
+msgid "Keybinding to activate the fifth app in the icon bar."
+msgstr "បង្គំ​គ្រាប់ចុច​ដើម្បី​បើក​ម៉ឺនុយ​កម្មវិធី។"
+
+#: data/org.gnome.shell.gschema.xml.in:324
+msgid ""
+"Keybinding to open the fifth app in the icon bar, or switch to the app if "
+"already open."
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:330
+#, fuzzy
+msgid "Keybinding to activate the sixth app in the icon bar."
+msgstr "បង្គំ​គ្រាប់ចុច​ដើម្បី​បើក​ម៉ឺនុយ​កម្មវិធី។"
+
+#: data/org.gnome.shell.gschema.xml.in:331
+msgid ""
+"Keybinding to open the sixth app in the icon bar, or switch to the app if "
+"already open."
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:337
+#, fuzzy
+msgid "Keybinding to activate the seventh app in the icon bar."
+msgstr "បង្គំ​គ្រាប់ចុច​ដើម្បី​បើក​ម៉ឺនុយ​កម្មវិធី។"
+
+#: data/org.gnome.shell.gschema.xml.in:338
+msgid ""
+"Keybinding to open the seventh app in the icon bar, or switch to the app if "
+"already open."
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:344
+#, fuzzy
+msgid "Keybinding to activate the eighth app in the icon bar."
+msgstr "បង្គំ​គ្រាប់ចុច​ដើម្បី​បើក​ម៉ឺនុយ​កម្មវិធី។"
+
+#: data/org.gnome.shell.gschema.xml.in:345
+msgid ""
+"Keybinding to open the eighth app in the icon bar, or switch to the app if "
+"already open."
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:351
+#, fuzzy
+msgid "Keybinding to activate the last app in the icon bar."
+msgstr "បង្គំ​គ្រាប់ចុច​ដើម្បី​បើក​ម៉ឺនុយ​កម្មវិធី។"
+
+#: data/org.gnome.shell.gschema.xml.in:352
+msgid ""
+"Keybinding to open the last app in the icon bar, or switch to the app if "
+"already open."
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:363
+#: data/org.gnome.shell.gschema.xml.in:390
+msgid "Limit switcher to current workspace."
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:364
+msgid ""
+"If true, only applications that have windows on the current workspace are "
+"shown in the switcher. Otherwise, all applications are included."
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:381
 msgid "The application icon mode."
 msgstr "របៀប​រូបតំណាង​កម្មវិធី។"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:32
+#: data/org.gnome.shell.gschema.xml.in:382
+#, fuzzy
 msgid ""
 "Configures how the windows are shown in the switcher. Valid possibilities "
-"are 'thumbnail-only' (shows a thumbnail of the window), 'app-icon-"
-"only' (shows only the application icon) or 'both'."
+"are “thumbnail-only” (shows a thumbnail of the window), “app-icon-"
+"only” (shows only the application icon) or “both”."
 msgstr ""
 "កំណត់​រចនាសម្ព័ន្ធ​អំពី​របៀប​បង្ហាញ​បង្អួច​នៅ​ក្នុង​កម្មវិធី​ប្ដូរ។ តម្លៃ​ត្រឹមត្រូវ​ដែល​អាច​ប្រើ​បាន​គឺ 'thumbnail-"
 "only' (បង្ហាញ​រូបភាព​តូច​របស់​បង្អួច), 'app-icon-only' (បង្ហាញ​តែ​រូបតំណាង​កម្មវិធី​ប៉ុណ្ណោះ) ឬ "
 "'both'។"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:33
+#: data/org.gnome.shell.gschema.xml.in:391
+msgid ""
+"If true, only windows from the current workspace are shown in the switcher. "
+"Otherwise, all windows are included."
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:401
+#, fuzzy
+msgid "Locations"
+msgstr "ទីតាំង"
+
+#: data/org.gnome.shell.gschema.xml.in:402
+msgid "The locations to show in world clocks"
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:412
+msgid "Automatic location"
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:413
+msgid "Whether to fetch the current location or not"
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:420
+msgid "Location"
+msgstr "ទីតាំង"
+
+#: data/org.gnome.shell.gschema.xml.in:421
+msgid "The location for which to show a forecast"
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:433
 msgid "Attach modal dialog to the parent window"
 msgstr "ភ្ជាប់​ប្រអប់​បែបបទ​ទៅ​បង្អួច​មេ"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:34
+#: data/org.gnome.shell.gschema.xml.in:434
+#: data/org.gnome.shell.gschema.xml.in:443
+#: data/org.gnome.shell.gschema.xml.in:451
+#: data/org.gnome.shell.gschema.xml.in:459
+#: data/org.gnome.shell.gschema.xml.in:467
 msgid ""
 "This key overrides the key in org.gnome.mutter when running GNOME Shell."
 msgstr "ពាក្យ​គន្លឹះ​នេះ​បដិសេធ​ពាក្យ​គន្លឹះ​នៅ​ក្នុង org.gnome.mutter ពេល​ដំណើរការ GNOME សែល។"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:35
-msgid "Arrangement of buttons on the titlebar"
-msgstr "ការ​រៀបចំ​ប៊ូតុង​នៅ​លើ​របារ​ចំណងជើង"
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:36
-msgid ""
-"This key overrides the key in org.gnome.desktop.wm.preferences when running "
-"GNOME Shell."
-msgstr ""
-"ពាក្យ​គន្លឹះ​នេះ​បដិសេធ​ពាក្យ​គន្លឹះ​នៅ​ក្នុង org.gnome.desktop.wm.preferences ពេល​ដំណើរការ "
-"GNOME សែល។"
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:37
+#: data/org.gnome.shell.gschema.xml.in:442
 msgid "Enable edge tiling when dropping windows on screen edges"
 msgstr "បើក​គម្រប​គែម​ពេល​ទម្លាក់​បង្អួច​នៅ​លើ​គែម​អេក្រង់"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:38
+#: data/org.gnome.shell.gschema.xml.in:450
 msgid "Workspaces are managed dynamically"
 msgstr "តំបន់​ធ្វើការ​ត្រូវ​បាន​គ្រប់គ្រង​ជា​ថាមវន្ត"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:39
+#: data/org.gnome.shell.gschema.xml.in:458
 msgid "Workspaces only on primary monitor"
 msgstr "តំបន់​ធ្វើការ​មានតែ​នៅ​លើ​ម៉ូនីទ័រ​មេ​ប៉ុណ្ណោះ"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:40
+#: data/org.gnome.shell.gschema.xml.in:466
 msgid "Delay focus changes in mouse mode until the pointer stops moving"
 msgstr "ប្ដូរ​ការ​ពន្យារពេល​ផ្ដោត​នៅ​ក្នុង​របៀប​កណ្ដុរ​រហូតដល់​ព្រួញ​កណ្ដុរ​លែង​ផ្លាស់ទី"
 
-#: ../js/extensionPrefs/main.js:127
-#, javascript-format
-msgid "There was an error loading the preferences dialog for %s:"
-msgstr "មាន​កំហុស​ពេល​ផ្ទុក​ប្រអប់​ចំណូលចិត្ត​សម្រាប់ %s ៖"
+#: data/org.gnome.Shell.PortalHelper.desktop.in.in:3
+#, fuzzy
+msgid "Network Login"
+msgstr "កំហុស​បណ្ដាញ"
 
-#: ../js/extensionPrefs/main.js:167
-msgid "Extension"
+#: js/dbusServices/extensions/ui/extension-prefs-dialog.ui:36
+#: js/extensionPrefs/data/ui/extensions-window.ui:223
+msgid "Something’s gone wrong"
+msgstr ""
+
+#: js/dbusServices/extensions/ui/extension-prefs-dialog.ui:48
+msgid ""
+"We’re very sorry, but there’s been a problem: the settings for this "
+"extension can’t be displayed. We recommend that you report the issue to the "
+"extension authors."
+msgstr ""
+
+#: js/dbusServices/extensions/ui/extension-prefs-dialog.ui:82
+msgid "Technical Details"
+msgstr ""
+
+#: js/dbusServices/extensions/ui/extension-prefs-dialog.ui:165
+msgid "Homepage"
+msgstr ""
+
+#: js/dbusServices/extensions/ui/extension-prefs-dialog.ui:166
+#, fuzzy
+msgid "Visit extension homepage"
+msgstr "UUIDs នៃ​ផ្នែក​បន្ថែម​ដែល​ត្រូវ​បើក"
+
+#: js/extensionPrefs/data/metainfo/org.gnome.Extensions.metainfo.xml.in:5
+#: js/extensionPrefs/data/org.gnome.Extensions.desktop.in.in:4
+#: js/extensionPrefs/js/main.js:182
+#: js/extensionPrefs/data/ui/extensions-window.ui:61
+#, fuzzy
+msgid "Extensions"
 msgstr "ផ្នែក​បន្ថែម"
 
-#: ../js/extensionPrefs/main.js:191
-msgid "Select an extension to configure using the combobox above."
-msgstr "ជ្រើស​ផ្នែក​បន្ថែម​ដើម្បី​កំណត់​រចនាសម្ព័ន្ធ​ដោយ​ប្រើ​​ប្រអប់​បន្សំ​ខាង​លើ។"
+#: js/extensionPrefs/data/metainfo/org.gnome.Extensions.metainfo.xml.in:6
+#: js/extensionPrefs/js/main.js:183
+#, fuzzy
+msgid "Manage your GNOME Extensions"
+msgstr "កំណត់​រចនាសម្ព័ន្ធ​ផ្នែក​បន្ថែម​របស់ GNOME សែល"
 
-#: ../js/gdm/authPrompt.js:147 ../js/ui/components/networkAgent.js:136
-#: ../js/ui/components/polkitAgent.js:166 ../js/ui/endSessionDialog.js:429
-#: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
-#: ../js/ui/status/network.js:878
+#: js/extensionPrefs/data/metainfo/org.gnome.Extensions.metainfo.xml.in:35
+msgid ""
+"GNOME Extensions handles updating extensions, configuring extension "
+"preferences and removing or disabling unwanted extensions."
+msgstr ""
+
+#: js/extensionPrefs/data/org.gnome.Extensions.desktop.in.in:7
+msgid "Configure GNOME Shell Extensions"
+msgstr "កំណត់​រចនាសម្ព័ន្ធ​ផ្នែក​បន្ថែម​របស់ GNOME សែល"
+
+#: js/extensionPrefs/js/main.js:144
+#, javascript-format
+msgid "Remove “%s”?"
+msgstr ""
+
+#: js/extensionPrefs/js/main.js:145
+msgid ""
+"If you remove the extension, you need to return to download it if you want "
+"to enable it again"
+msgstr ""
+
+#: js/extensionPrefs/js/main.js:148 js/gdm/authPrompt.js:189
+#: js/ui/audioDeviceSelection.js:57 js/ui/components/networkAgent.js:115
+#: js/ui/components/polkitAgent.js:139 js/ui/endSessionDialog.js:374
+#: js/ui/extensionDownloader.js:188 js/ui/paygUnlockDialog.js:262
+#: js/ui/shellMountOperation.js:376 js/ui/shellMountOperation.js:386
+#: js/ui/status/network.js:913 js/ui/forceAppExitDialog.js:79
 msgid "Cancel"
 msgstr "បោះបង់"
 
-#: ../js/gdm/authPrompt.js:169 ../js/gdm/authPrompt.js:217
-msgid "Next"
-msgstr "បន្ទាប់"
+#: js/extensionPrefs/js/main.js:149 js/ui/appDisplay.js:2499
+msgid "Remove"
+msgstr "យកចេញ"
 
-#: ../js/gdm/authPrompt.js:213 ../js/ui/shellMountOperation.js:403
-#: ../js/ui/unlockDialog.js:59
-msgid "Unlock"
-msgstr "ដោះ​សោ"
+#: js/extensionPrefs/js/main.js:181
+msgid "translator-credits"
+msgstr ""
 
-#: ../js/gdm/authPrompt.js:215
-msgctxt "button"
-msgid "Sign In"
-msgstr "ចូល"
+#: js/extensionPrefs/js/main.js:316
+#, javascript-format
+msgid "%d extension will be updated on next login."
+msgid_plural "%d extensions will be updated on next login."
+msgstr[0] ""
 
-#: ../js/gdm/loginDialog.js:271
+#: js/extensionPrefs/data/ui/extension-row.ui:100
+#: subprojects/extensions-tool/src/command-create.c:211
+#: subprojects/extensions-tool/src/main.c:173
+msgid "Description"
+msgstr ""
+
+#: js/extensionPrefs/data/ui/extension-row.ui:123
+#: subprojects/extensions-tool/src/main.c:185
+#, fuzzy
+msgid "Version"
+msgstr "ផ្នែក​បន្ថែម"
+
+#: js/extensionPrefs/data/ui/extension-row.ui:151
+msgid "Author"
+msgstr ""
+
+#: js/extensionPrefs/data/ui/extension-row.ui:175
+msgid "Website"
+msgstr ""
+
+#: js/extensionPrefs/data/ui/extension-row.ui:192
+#, fuzzy
+msgid "Remove…"
+msgstr "យកចេញ"
+
+#: js/extensionPrefs/data/ui/extensions-window.ui:8 js/ui/userMenu.js:27
+msgid "Help"
+msgstr ""
+
+#: js/extensionPrefs/data/ui/extensions-window.ui:12
+#, fuzzy
+msgid "About Extensions"
+msgstr "ផ្នែក​បន្ថែម"
+
+#: js/extensionPrefs/data/ui/extensions-window.ui:27
+msgid ""
+"To find and add extensions, visit <a href=\"https://extensions.gnome.org"
+"\">extensions.gnome.org</a>."
+msgstr ""
+
+#: js/extensionPrefs/data/ui/extensions-window.ui:35
+msgid "Warning"
+msgstr ""
+
+#: js/extensionPrefs/data/ui/extensions-window.ui:46
+msgid ""
+"Extensions can cause system issues, including performance problems. If you "
+"encounter problems with your system, it is recommended to disable all "
+"extensions."
+msgstr ""
+
+#: js/extensionPrefs/data/ui/extensions-window.ui:134
+msgid "Manually Installed"
+msgstr ""
+
+#: js/extensionPrefs/data/ui/extensions-window.ui:158
+msgid "Built-In"
+msgstr ""
+
+#: js/extensionPrefs/data/ui/extensions-window.ui:199
+msgid "No Installed Extensions"
+msgstr ""
+
+#: js/extensionPrefs/data/ui/extensions-window.ui:235
+msgid ""
+"We’re very sorry, but it was not possible to get the list of installed "
+"extensions. Make sure you are logged into GNOME and try again."
+msgstr ""
+
+#: js/extensionPrefs/data/ui/extensions-window.ui:288
+#, fuzzy
+msgid "Log Out…"
+msgstr "ចេញ"
+
+#: js/gdm/authPrompt.js:131
+msgid "Show password hint"
+msgstr ""
+
+#: js/gdm/authPrompt.js:148
+msgid "Forgot password?"
+msgstr ""
+
+#. Cisco LEAP
+#: js/gdm/authPrompt.js:303 js/ui/components/networkAgent.js:363
+#: js/ui/components/networkAgent.js:379 js/ui/components/networkAgent.js:403
+#: js/ui/components/networkAgent.js:424 js/ui/components/networkAgent.js:444
+#: js/ui/components/networkAgent.js:454 js/ui/components/polkitAgent.js:277
+#: js/ui/shellMountOperation.js:326
+msgid "Password"
+msgstr "ពាក្យសម្ងាត់"
+
+#. Translators: During a password reset, prompt for the "secret code" provided by customer support.
+#: js/gdm/authPrompt.js:680
+msgid "Enter unlock code"
+msgstr ""
+
+#. Translators: Password reset. The first %s is a verification code and the second is an email.
+#: js/gdm/authPrompt.js:683
+#, javascript-format
+msgid ""
+"Please inform customer support of your verification code %s by emailing %s. "
+"Customer support will use the verification code to provide you with an "
+"unlock code, which you can enter here."
+msgstr ""
+
+#: js/gdm/authPrompt.js:762
+#, fuzzy
+msgid "Your unlock code was incorrect. Please try again."
+msgstr "សុំទោស​ដែល​មិន​ដំណើរការ។ សូម​ព្យាយាម​ម្ដងទៀត។"
+
+#: js/gdm/loginDialog.js:317
 msgid "Choose Session"
 msgstr "ជ្រើស​សម័យ"
 
-#: ../js/gdm/loginDialog.js:431
+#: js/gdm/loginDialog.js:456
 msgid "Not listed?"
 msgstr "មិន​បាន​រាយ?"
 
-#: ../js/gdm/loginDialog.js:616
+#. Translators: this message is shown below the username entry field
+#. to clue the user in on how to login to the local network realm
+#: js/gdm/loginDialog.js:915
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(ឧ., អ្នកប្រើ ឬ %s)"
 
-#: ../js/gdm/loginDialog.js:621 ../js/ui/components/networkAgent.js:262
-#: ../js/ui/components/networkAgent.js:280
-msgid "Username: "
+#. TTLS and PEAP are actually much more complicated, but this complication
+#. is not visible here since we only care about phase2 authentication
+#. (and don't even care of which one)
+#: js/gdm/loginDialog.js:920 js/ui/components/networkAgent.js:399
+#: js/ui/components/networkAgent.js:422 js/ui/components/networkAgent.js:440
+#, fuzzy
+msgid "Username"
 msgstr "ឈ្មោះ​អ្នកប្រើ៖"
 
-#: ../js/gdm/loginDialog.js:924
+#: js/gdm/loginDialog.js:1256
 msgid "Login Window"
 msgstr "បង្អួច​ចូល"
 
-#: ../js/gdm/util.js:323
+#: js/gdm/util.js:338
 msgid "Authentication error"
 msgstr "កំហុស​ការ​ផ្ទៀងផ្ទាត់"
 
-#: ../js/gdm/util.js:453
+#. We don't show fingerprint messages directly since it's
+#. not the main auth service. Instead we use the messages
+#. as a cue to display our own message.
+#. Translators: this message is shown below the password entry field
+#. to indicate the user can swipe their finger instead
+#: js/gdm/util.js:473
 msgid "(or swipe finger)"
 msgstr "(ឬ​អូស​ម្រាមដៃ)"
 
-#: ../js/misc/util.js:115
+#. Translators: The name of the power-off action in search
+#: js/misc/systemActions.js:89
+#, fuzzy
+msgctxt "search-result"
+msgid "Power Off"
+msgstr "បិទ"
+
+#. Translators: A list of keywords that match the power-off action, separated by semicolons
+#: js/misc/systemActions.js:92
+msgid "power off;shutdown;reboot;restart;halt;stop"
+msgstr ""
+
+#. Translators: The name of the lock screen action in search
+#: js/misc/systemActions.js:97
+msgctxt "search-result"
+msgid "Lock Screen"
+msgstr ""
+
+#. Translators: A list of keywords that match the lock screen action, separated by semicolons
+#: js/misc/systemActions.js:100
+msgid "lock screen"
+msgstr ""
+
+#. Translators: The name of the logout action in search
+#: js/misc/systemActions.js:105
+#, fuzzy
+msgctxt "search-result"
+msgid "Log Out"
+msgstr "ចេញ"
+
+#. Translators: A list of keywords that match the logout action, separated by semicolons
+#: js/misc/systemActions.js:108
+msgid "logout;log out;sign off"
+msgstr ""
+
+#. Translators: The name of the suspend action in search
+#: js/misc/systemActions.js:113
+#, fuzzy
+msgctxt "search-result"
+msgid "Suspend"
+msgstr "ផ្អាក"
+
+#. Translators: A list of keywords that match the suspend action, separated by semicolons
+#: js/misc/systemActions.js:116
+#, fuzzy
+msgid "suspend;sleep"
+msgstr "ផ្អាក"
+
+#. Translators: The name of the switch user action in search
+#: js/misc/systemActions.js:121
+#, fuzzy
+msgctxt "search-result"
+msgid "Switch User"
+msgstr "ប្ដូរ​អ្នកប្រើ"
+
+#. Translators: A list of keywords that match the switch user action, separated by semicolons
+#: js/misc/systemActions.js:124
+#, fuzzy
+msgid "switch user"
+msgstr "ប្ដូរ​អ្នកប្រើ"
+
+#. Translators: A list of keywords that match the lock orientation action, separated by semicolons
+#: js/misc/systemActions.js:131
+msgid "lock orientation;unlock orientation;screen;rotation"
+msgstr ""
+
+#: js/misc/systemActions.js:251
+msgctxt "search-result"
+msgid "Unlock Screen Rotation"
+msgstr ""
+
+#: js/misc/systemActions.js:252
+msgctxt "search-result"
+msgid "Lock Screen Rotation"
+msgstr ""
+
+#: js/misc/util.js:125
 msgid "Command not found"
 msgstr "រក​មិន​ឃើញ​ពាក្យ​បញ្ជា"
 
-#: ../js/misc/util.js:148
+#. Replace "Error invoking GLib.shell_parse_argv: " with
+#. something nicer
+#: js/misc/util.js:161
 msgid "Could not parse command:"
 msgstr "មិន​អាច​ញែក​ពាក្យ​បញ្ជា៖"
 
-#: ../js/misc/util.js:156
+#: js/misc/util.js:169
 #, javascript-format
 msgid "Execution of “%s” failed:"
 msgstr "ការ​ប្រតិបត្តិ “%s” បាន​បរាជ័យ៖"
 
-#: ../js/ui/appDisplay.js:636
-msgid "Frequently used applications will appear here"
-msgstr "កម្មវិធី​ដែល​បាន​ប្រើ​ញឹកញាប់​នឹង​បង្ហាញ​នៅ​ទីនេះ"
+#: js/misc/util.js:186
+msgid "Just now"
+msgstr ""
 
-#: ../js/ui/appDisplay.js:747
-msgid "Frequent"
-msgstr "ញឹកញាប់"
-
-#: ../js/ui/appDisplay.js:754
-msgid "All"
-msgstr "ទាំងអស់"
-
-#: ../js/ui/appDisplay.js:1567
-msgid "New Window"
-msgstr "បង្អួច​ថ្មី"
-
-#: ../js/ui/appDisplay.js:1589 ../js/ui/dash.js:285
-msgid "Remove from Favorites"
-msgstr "យកចេញ​ពី​សំណព្វ"
-
-#: ../js/ui/appDisplay.js:1595
-msgid "Add to Favorites"
-msgstr "បន្ថែម​ទៅ​សំណព្វ"
-
-#: ../js/ui/appFavorites.js:87
+#: js/misc/util.js:188
 #, javascript-format
-msgid "%s has been added to your favorites."
-msgstr "បាន​បន្ថែម %s ទៅកាន់​សំណព្វ​របស់​អ្នក។"
+msgid "%d minute ago"
+msgid_plural "%d minutes ago"
+msgstr[0] ""
 
-#: ../js/ui/appFavorites.js:121
+#: js/misc/util.js:192
 #, javascript-format
-msgid "%s has been removed from your favorites."
-msgstr "បាន​យក %s ចេញពី​សំណព្វ​របស់​អ្នក។"
+msgid "%d hour ago"
+msgid_plural "%d hours ago"
+msgstr[0] ""
 
-#: ../js/ui/backgroundMenu.js:19 ../js/ui/panel.js:810
-#: ../js/ui/status/system.js:334
-msgid "Settings"
-msgstr "ការ​កំណត់"
+#: js/misc/util.js:196
+#, fuzzy
+msgid "Yesterday"
+msgstr "ម្សិលមិញ %H∶%M"
 
-#: ../js/ui/backgroundMenu.js:21
-msgid "Change Background…"
-msgstr "ប្ដូរ​ផ្ទៃ​ខាងក្រោយ..."
+#: js/misc/util.js:198
+#, javascript-format
+msgid "%d day ago"
+msgid_plural "%d days ago"
+msgstr[0] ""
 
-#. Translators: Shown in calendar event list for all day events
-#. * Keep it short, best if you can use less then 10 characters
-#. */
-#: ../js/ui/calendar.js:64
-msgctxt "event list time"
-msgid "All Day"
-msgstr "ពេញ​មួយ​ថ្ងៃ"
+#: js/misc/util.js:202
+#, javascript-format
+msgid "%d week ago"
+msgid_plural "%d weeks ago"
+msgstr[0] ""
 
-#. Translators: Shown in calendar event list, if 24h format,
-#. \u2236 is a ratio character, similar to : */
-#: ../js/ui/calendar.js:70
-msgctxt "event list time"
+#: js/misc/util.js:206
+#, javascript-format
+msgid "%d month ago"
+msgid_plural "%d months ago"
+msgstr[0] ""
+
+#: js/misc/util.js:209
+#, javascript-format
+msgid "%d year ago"
+msgid_plural "%d years ago"
+msgstr[0] ""
+
+#. Translators: Time in 24h format
+#: js/misc/util.js:242
 msgid "%H∶%M"
 msgstr "%H∶%M"
 
-#. Translators: Shown in calendar event list, if 12h format,
-#. \u2236 is a ratio character, similar to : and \u2009 is
-#. a thin space */
-#: ../js/ui/calendar.js:79
-msgctxt "event list time"
-msgid "%l∶%M %p"
-msgstr "%l∶%M %p"
+#. Translators: this is the word "Yesterday" followed by a
+#. time string in 24h format. i.e. "Yesterday, 14:30"
+#: js/misc/util.js:248
+#, no-c-format
+msgid "Yesterday, %H∶%M"
+msgstr "ម្សិលមិញ %H∶%M"
+
+#. Translators: this is the week day name followed by a time
+#. string in 24h format. i.e. "Monday, 14:30"
+#: js/misc/util.js:254
+#, no-c-format
+msgid "%A, %H∶%M"
+msgstr "%A, %H∶%M"
+
+#. Translators: this is the month name and day number
+#. followed by a time string in 24h format.
+#. i.e. "May 25, 14:30"
+#: js/misc/util.js:260
+#, fuzzy, no-c-format
+msgid "%B %-d, %H∶%M"
+msgstr "%B %d, %H∶%M"
+
+#. Translators: this is the month name, day number, year
+#. number followed by a time string in 24h format.
+#. i.e. "May 25 2012, 14:30"
+#: js/misc/util.js:266
+#, fuzzy, no-c-format
+msgid "%B %-d %Y, %H∶%M"
+msgstr "%B %d %Y, %H∶%M"
+
+#. Show only the time if date is on today
+#. eslint-disable-line no-lonely-if
+#. Translators: Time in 12h format
+#: js/misc/util.js:271
+msgid "%l∶%M %p"
+msgstr "%l∶%M %p"
+
+#. Translators: this is the word "Yesterday" followed by a
+#. time string in 12h format. i.e. "Yesterday, 2:30 pm"
+#: js/misc/util.js:277
+#, no-c-format
+msgid "Yesterday, %l∶%M %p"
+msgstr "ម្សិលមិញ %l∶%M %p"
+
+#. Translators: this is the week day name followed by a time
+#. string in 12h format. i.e. "Monday, 2:30 pm"
+#: js/misc/util.js:283
+#, no-c-format
+msgid "%A, %l∶%M %p"
+msgstr "%A, %l∶%M %p"
+
+#. Translators: this is the month name and day number
+#. followed by a time string in 12h format.
+#. i.e. "May 25, 2:30 pm"
+#: js/misc/util.js:289
+#, fuzzy, no-c-format
+msgid "%B %-d, %l∶%M %p"
+msgstr "%B %d, %l∶%M %p"
+
+#. Translators: this is the month name, day number, year
+#. number followed by a time string in 12h format.
+#. i.e. "May 25 2012, 2:30 pm"
+#: js/misc/util.js:295
+#, fuzzy, no-c-format
+msgid "%B %-d %Y, %l∶%M %p"
+msgstr "%B %d %Y, %l∶%M %p"
+
+#.
+#. * Translators: this is the name of the search engine that shows in the
+#. * Shell's desktop search entry.
+#.
+#: js/misc/util.js:573
+msgid "Google"
+msgstr ""
+
+#. TRANSLATORS: this is the title of the wifi captive portal login window
+#: js/portalHelper/main.js:41
+#, fuzzy
+msgid "Hotspot Login"
+msgstr "ហតស្ប៉ត​សកម្ម"
+
+#: js/portalHelper/main.js:87
+msgid ""
+"Your connection to this hotspot login is not secure. Passwords or other "
+"information you enter on this page can be viewed by people nearby."
+msgstr ""
+
+#. No support for non-modal system dialogs, so ignore the option
+#. let modal = options['modal'] || true;
+#: js/ui/accessDialog.js:39 js/ui/status/location.js:374
+msgid "Deny Access"
+msgstr ""
+
+#: js/ui/accessDialog.js:40 js/ui/status/location.js:377
+msgid "Grant Access"
+msgstr ""
+
+#. Translators: This is the heading of a list of open windows
+#: js/ui/appDisplay.js:2390 js/ui/panel.js:78
+#, fuzzy
+msgid "Open Windows"
+msgstr "វីនដូ"
+
+#: js/ui/appDisplay.js:2410 js/ui/panel.js:85
+msgid "New Window"
+msgstr "បង្អួច​ថ្មី"
+
+#: js/ui/appDisplay.js:2421
+msgid "Launch using Dedicated Graphics Card"
+msgstr ""
+
+#. Add the "Remove from desktop" menu item at the end.
+#: js/ui/appDisplay.js:2443
+#, fuzzy
+msgid "Remove from desktop"
+msgstr "យកចេញ​ពី​សំណព្វ"
+
+#: js/ui/audioDeviceSelection.js:41
+msgid "Select Audio Device"
+msgstr ""
+
+#: js/ui/audioDeviceSelection.js:54
+#, fuzzy
+msgid "Sound Settings"
+msgstr "ការ​កំណត់"
+
+#: js/ui/audioDeviceSelection.js:64
+msgid "Headphones"
+msgstr ""
+
+#: js/ui/audioDeviceSelection.js:66
+msgid "Headset"
+msgstr ""
+
+#: js/ui/audioDeviceSelection.js:68 js/ui/status/volume.js:269
+msgid "Microphone"
+msgstr "មីក្រូហ្វូន"
+
+#: js/ui/backgroundMenu.js:15
+msgid "Change Background…"
+msgstr "ប្ដូរ​ផ្ទៃ​ខាងក្រោយ..."
+
+#: js/ui/backgroundMenu.js:18
+msgid "Add App"
+msgstr ""
+
+#: js/ui/backgroundMenu.js:24
+msgid "Add Website"
+msgstr ""
+
+#. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday).
+#: js/ui/calendar.js:41
+msgctxt "calendar-no-work"
+msgid "06"
+msgstr ""
 
 #. Translators: Calendar grid abbreviation for Sunday.
 #. *
 #. * NOTE: These grid abbreviations are always shown together
 #. * and in order, e.g. "S M T W T F S".
-#. */
-#: ../js/ui/calendar.js:110
+#.
+#: js/ui/calendar.js:70
 msgctxt "grid sunday"
 msgid "S"
 msgstr "S"
 
-#. Translators: Calendar grid abbreviation for Monday */
-#: ../js/ui/calendar.js:112
+#. Translators: Calendar grid abbreviation for Monday
+#: js/ui/calendar.js:72
 msgctxt "grid monday"
 msgid "M"
 msgstr "M"
 
-#. Translators: Calendar grid abbreviation for Tuesday */
-#: ../js/ui/calendar.js:114
+#. Translators: Calendar grid abbreviation for Tuesday
+#: js/ui/calendar.js:74
 msgctxt "grid tuesday"
 msgid "T"
 msgstr "T"
 
-#. Translators: Calendar grid abbreviation for Wednesday */
-#: ../js/ui/calendar.js:116
+#. Translators: Calendar grid abbreviation for Wednesday
+#: js/ui/calendar.js:76
 msgctxt "grid wednesday"
 msgid "W"
 msgstr "W"
 
-#. Translators: Calendar grid abbreviation for Thursday */
-#: ../js/ui/calendar.js:118
+#. Translators: Calendar grid abbreviation for Thursday
+#: js/ui/calendar.js:78
 msgctxt "grid thursday"
 msgid "T"
 msgstr "T"
 
-#. Translators: Calendar grid abbreviation for Friday */
-#: ../js/ui/calendar.js:120
+#. Translators: Calendar grid abbreviation for Friday
+#: js/ui/calendar.js:80
 msgctxt "grid friday"
 msgid "F"
 msgstr "F"
 
-#. Translators: Calendar grid abbreviation for Saturday */
-#: ../js/ui/calendar.js:122
+#. Translators: Calendar grid abbreviation for Saturday
+#: js/ui/calendar.js:82
 msgctxt "grid saturday"
 msgid "S"
 msgstr "S"
 
-#. Translators: Event list abbreviation for Sunday.
 #. *
-#. * NOTE: These list abbreviations are normally not shown together
-#. * so they need to be unique (e.g. Tuesday and Thursday cannot
-#. * both be 'T').
-#. */
-#: ../js/ui/calendar.js:135
-msgctxt "list sunday"
-msgid "Su"
-msgstr "Su"
+#. * Translators: The header displaying just the month name
+#. * standalone, when this is a month of the current year.
+#. * "%OB" is the new format specifier introduced in glibc 2.27,
+#. * in most cases you should not change it.
+#.
+#: js/ui/calendar.js:371
+msgid "%OB"
+msgstr ""
 
-#. Translators: Event list abbreviation for Monday */
-#: ../js/ui/calendar.js:137
-msgctxt "list monday"
-msgid "M"
-msgstr "M"
+#. *
+#. * Translators: The header displaying the month name and the year
+#. * number, when this is a month of a different year.  You can
+#. * reorder the format specifiers or add other modifications
+#. * according to the requirements of your language.
+#. * "%OB" is the new format specifier introduced in glibc 2.27,
+#. * in most cases you should not use the old "%B" here unless you
+#. * absolutely know what you are doing.
+#.
+#: js/ui/calendar.js:381
+msgid "%OB %Y"
+msgstr ""
 
-#. Translators: Event list abbreviation for Tuesday */
-#: ../js/ui/calendar.js:139
-msgctxt "list tuesday"
-msgid "T"
-msgstr "T"
-
-#. Translators: Event list abbreviation for Wednesday */
-#: ../js/ui/calendar.js:141
-msgctxt "list wednesday"
-msgid "W"
-msgstr "W"
-
-#. Translators: Event list abbreviation for Thursday */
-#: ../js/ui/calendar.js:143
-msgctxt "list thursday"
-msgid "Th"
-msgstr "Th"
-
-#. Translators: Event list abbreviation for Friday */
-#: ../js/ui/calendar.js:145
-msgctxt "list friday"
-msgid "F"
-msgstr "F"
-
-#. Translators: Event list abbreviation for Saturday */
-#: ../js/ui/calendar.js:147
-msgctxt "list saturday"
-msgid "S"
-msgstr "S"
-
-#: ../js/ui/calendar.js:390
-msgid "calendar:MY"
-msgstr "calendar:MY"
-
-#: ../js/ui/calendar.js:450
+#: js/ui/calendar.js:440
 msgid "Previous month"
 msgstr "ខែ​មុន"
 
-#: ../js/ui/calendar.js:460
+#: js/ui/calendar.js:455
 msgid "Next month"
 msgstr "ខែ​បន្ទាប់"
 
-#. Translators: Text to show if there are no events */
-#: ../js/ui/calendar.js:772
-msgid "Nothing Scheduled"
-msgstr "គ្មាន​កាលវិភាគ"
+#: js/ui/calendar.js:605
+#, no-javascript-format
+msgctxt "date day number format"
+msgid "%d"
+msgstr ""
 
-#. Translators: Shown on calendar heading when selected day occurs on current year */
-#: ../js/ui/calendar.js:790
+#: js/ui/calendar.js:661
+msgid "Week %V"
+msgstr ""
+
+#. Translators: Shown in calendar event list for all day events
+#. * Keep it short, best if you can use less then 10 characters
+#.
+#: js/ui/calendar.js:730
+msgctxt "event list time"
+msgid "All Day"
+msgstr "ពេញ​មួយ​ថ្ងៃ"
+
+#. Translators: Shown on calendar heading when selected day occurs on current year
+#: js/ui/calendar.js:868
+#, fuzzy
 msgctxt "calendar heading"
-msgid "%A, %B %d"
+msgid "%A, %B %-d"
 msgstr "%A, %B %d"
 
-#. Translators: Shown on calendar heading when selected day occurs on different year */
-#: ../js/ui/calendar.js:793
+#. Translators: Shown on calendar heading when selected day occurs on different year
+#: js/ui/calendar.js:871
+#, fuzzy
 msgctxt "calendar heading"
-msgid "%A, %B %d, %Y"
+msgid "%A, %B %-d, %Y"
 msgstr "%A, %B %d, %Y"
 
-#: ../js/ui/calendar.js:804
-msgid "Today"
-msgstr "ថ្ងៃនេះ"
+#: js/ui/calendar.js:1100
+#, fuzzy
+msgid "No Notifications"
+msgstr "ការ​ជូនដំណឹង"
 
-#: ../js/ui/calendar.js:808
-msgid "Tomorrow"
-msgstr "ថ្ងៃស្អែក"
+#: js/ui/calendar.js:1103
+msgid "No Events"
+msgstr ""
 
-#: ../js/ui/calendar.js:819
-msgid "This week"
-msgstr "សប្ដាហ៍​នេះ"
+#: js/ui/calendar.js:1157
+msgid "Do Not Disturb"
+msgstr ""
 
-#: ../js/ui/calendar.js:827
-msgid "Next week"
-msgstr "សប្ដាហ៍​បន្ទាប់"
+#: js/ui/calendar.js:1171
+msgid "Clear"
+msgstr ""
 
-#: ../js/ui/components/automountManager.js:91
+#. Translators: %s is an application name
+#: js/ui/closeDialog.js:42
+#, fuzzy, javascript-format
+msgid "“%s” is not responding."
+msgstr "“%s” គឺ​រួចរាល់​ហើយ"
+
+#: js/ui/closeDialog.js:43
+msgid ""
+"You may choose to wait a short while for it to continue or force the "
+"application to quit entirely."
+msgstr ""
+
+#: js/ui/closeDialog.js:70
+msgid "Force Quit"
+msgstr ""
+
+#: js/ui/closeDialog.js:73
+msgid "Wait"
+msgstr ""
+
+#: js/ui/components/automountManager.js:86
 msgid "External drive connected"
 msgstr "បាន​ភ្ជាប់​ដ្រាយ​ខាងក្រៅ"
 
-#: ../js/ui/components/automountManager.js:102
+#: js/ui/components/automountManager.js:98
 msgid "External drive disconnected"
 msgstr "បាន​ផ្ដាច់​ដ្រាយ​ខាងក្រៅ"
 
-#: ../js/ui/components/autorunManager.js:296
-msgid "Removable Devices"
-msgstr "ឧបករណ៍​ចល័ត"
+#: js/ui/components/automountManager.js:208
+#, fuzzy
+msgid "Unable to unlock volume"
+msgstr "មិន​អាច​ចាក់សោ"
 
-#: ../js/ui/components/autorunManager.js:596
+#: js/ui/components/automountManager.js:209
+msgid "The installed udisks version does not support the PIM setting"
+msgstr ""
+
+#: js/ui/components/autorunManager.js:333
 #, javascript-format
 msgid "Open with %s"
 msgstr "បើក​ជាមួយ %s"
 
-#: ../js/ui/components/autorunManager.js:622
-msgid "Eject"
-msgstr "ច្រានចេញ"
+#: js/ui/components/networkAgent.js:97
+msgid ""
+"Alternatively you can connect by pushing the “WPS” button on your router."
+msgstr ""
 
-#: ../js/ui/components/keyring.js:91 ../js/ui/components/polkitAgent.js:285
-msgid "Password:"
-msgstr "ពាក្យសម្ងាត់៖"
-
-#: ../js/ui/components/keyring.js:110
-msgid "Type again:"
-msgstr "វាយ​ម្ដងទៀត៖"
-
-#: ../js/ui/components/networkAgent.js:131 ../js/ui/status/network.js:240
-#: ../js/ui/status/network.js:322 ../js/ui/status/network.js:881
+#: js/ui/components/networkAgent.js:109 js/ui/status/network.js:223
+#: js/ui/status/network.js:314 js/ui/status/network.js:916
 msgid "Connect"
 msgstr "តភ្ជាប់"
 
-#: ../js/ui/components/networkAgent.js:224
-#: ../js/ui/components/networkAgent.js:236
-#: ../js/ui/components/networkAgent.js:264
-#: ../js/ui/components/networkAgent.js:284
-#: ../js/ui/components/networkAgent.js:294
-msgid "Password: "
-msgstr "ពាក្យសម្ងាត់៖"
+#: js/ui/components/networkAgent.js:141
+msgid "Limited Data"
+msgstr ""
 
-#: ../js/ui/components/networkAgent.js:229
-msgid "Key: "
+#: js/ui/components/networkAgent.js:151
+msgid "Unlimited Data"
+msgstr ""
+
+#: js/ui/components/networkAgent.js:163 js/ui/components/networkAgent.js:198
+msgid "Enable if your connection has limits on how much you can download."
+msgstr ""
+
+#: js/ui/components/networkAgent.js:200
+msgid "This connection doesn't have limits on how much you can download."
+msgstr ""
+
+#: js/ui/components/networkAgent.js:369
+#, fuzzy
+msgid "Key"
 msgstr "សោ៖"
 
-#: ../js/ui/components/networkAgent.js:268
-msgid "Identity: "
-msgstr "អត្តសញ្ញាណ៖"
-
-#: ../js/ui/components/networkAgent.js:270
-msgid "Private key password: "
+#: js/ui/components/networkAgent.js:407 js/ui/components/networkAgent.js:430
+#, fuzzy
+msgid "Private key password"
 msgstr "ពាក្យសម្ងាត់​សោ​ឯកជន៖"
 
-#: ../js/ui/components/networkAgent.js:282
-msgid "Service: "
+#: js/ui/components/networkAgent.js:428
+#, fuzzy
+msgid "Identity"
+msgstr "អត្តសញ្ញាណ៖"
+
+#: js/ui/components/networkAgent.js:442
+#, fuzzy
+msgid "Service"
 msgstr "សេវាកម្ម៖"
 
-#: ../js/ui/components/networkAgent.js:311
-msgid "Authentication required by wireless network"
-msgstr "បាន​ទាមទារ​ការ​ផ្ទៀងផ្ទាត់​តាម​បណ្ដាញ​ឥតខ្សែ"
+#: js/ui/components/networkAgent.js:471
+#, javascript-format
+msgid "Enter the Wi-Fi password for “%s”"
+msgstr ""
 
-#: ../js/ui/components/networkAgent.js:312
+#: js/ui/components/networkAgent.js:476 js/ui/components/networkAgent.js:851
+msgid "Wired 802.1X authentication"
+msgstr "ការ​ផ្ទៀង​ផ្ទាត់​ខ្សែ 802.1X"
+
+#: js/ui/components/networkAgent.js:478
+#, fuzzy
+msgid "Network name"
+msgstr "ឈ្មោះ​បណ្ដាញ៖"
+
+#: js/ui/components/networkAgent.js:483 js/ui/components/networkAgent.js:855
+msgid "DSL authentication"
+msgstr "ការ​ផ្ទៀងផ្ទាត់ DSL"
+
+#: js/ui/components/networkAgent.js:490 js/ui/components/networkAgent.js:860
+msgid "PIN code required"
+msgstr "បាន​ទាមទារ​លេខ​កូដ PIN"
+
+#: js/ui/components/networkAgent.js:491 js/ui/components/networkAgent.js:861
+msgid "PIN code is needed for the mobile broadband device"
+msgstr "បាន​ទាមទារ​លេខ​កូដ PIN សម្រាប់​ឧបករណ៍​រលក​អាកាស​ធំ​ចល័ត"
+
+#: js/ui/components/networkAgent.js:492
+#, fuzzy
+msgid "PIN"
+msgstr "PIN: "
+
+#: js/ui/components/networkAgent.js:499 js/ui/components/networkAgent.js:846
+#: js/ui/components/networkAgent.js:867
+msgid "Authentication required"
+msgstr "ទាមទារ​ការ​ផ្ទៀងផ្ទាត់"
+
+#: js/ui/components/networkAgent.js:500 js/ui/components/networkAgent.js:852
+#: js/ui/components/networkAgent.js:856 js/ui/components/networkAgent.js:868
+#: js/ui/components/networkAgent.js:872
+#, javascript-format
+msgid "A password is required to connect to “%s”."
+msgstr "បាន​ទាមទារ​ពាក្យសម្ងាត់​ដើម្បី​តភ្ជាប់​ទៅ “%s” ។"
+
+#: js/ui/components/networkAgent.js:835 js/ui/status/network.js:1691
+msgid "Network Manager"
+msgstr "កម្មវិធី​គ្រប់គ្រង​បណ្ដាញ"
+
+#: js/ui/components/networkAgent.js:847
 #, javascript-format
 msgid ""
 "Passwords or encryption keys are required to access the wireless network "
 "“%s”."
 msgstr "បាន​ទាមទារ​ពាក្យសម្ងាត់ ឬ​សោ​លេខ​កូដ​ដើម្បី​ចូល​ដំណើរការ​បណ្ដាញ​ឥត​ខ្សែ “%s” ។"
 
-#: ../js/ui/components/networkAgent.js:316
-msgid "Wired 802.1X authentication"
-msgstr "ការ​ផ្ទៀង​ផ្ទាត់​ខ្សែ 802.1X"
+#: js/ui/components/networkAgent.js:871
+#, fuzzy
+msgid "VPN password"
+msgstr "ពាក្យសម្ងាត់"
 
-#: ../js/ui/components/networkAgent.js:318
-msgid "Network name: "
-msgstr "ឈ្មោះ​បណ្ដាញ៖"
-
-#: ../js/ui/components/networkAgent.js:323
-msgid "DSL authentication"
-msgstr "ការ​ផ្ទៀងផ្ទាត់ DSL"
-
-#: ../js/ui/components/networkAgent.js:330
-msgid "PIN code required"
-msgstr "បាន​ទាមទារ​លេខ​កូដ PIN"
-
-#: ../js/ui/components/networkAgent.js:331
-msgid "PIN code is needed for the mobile broadband device"
-msgstr "បាន​ទាមទារ​លេខ​កូដ PIN សម្រាប់​ឧបករណ៍​រលក​អាកាស​ធំ​ចល័ត"
-
-#: ../js/ui/components/networkAgent.js:332
-msgid "PIN: "
-msgstr "PIN: "
-
-#: ../js/ui/components/networkAgent.js:338
-msgid "Mobile broadband network password"
-msgstr "ពាក្យសម្ងាត់​បណ្ដាញ​រលក​អាកាស​ធំ​ចល័ត"
-
-#: ../js/ui/components/networkAgent.js:339
-#, javascript-format
-msgid "A password is required to connect to “%s”."
-msgstr "បាន​ទាមទារ​ពាក្យសម្ងាត់​ដើម្បី​តភ្ជាប់​ទៅ “%s” ។"
-
-#: ../js/ui/components/polkitAgent.js:54
+#: js/ui/components/polkitAgent.js:39
 msgid "Authentication Required"
 msgstr "បាន​ទាមទារ​ការ​ផ្ទៀងផ្ទាត់"
 
-#: ../js/ui/components/polkitAgent.js:96
+#: js/ui/components/polkitAgent.js:80
 msgid "Administrator"
 msgstr "អ្នក​គ្រប់គ្រង"
 
-#: ../js/ui/components/polkitAgent.js:175
+#: js/ui/components/polkitAgent.js:142
 msgid "Authenticate"
 msgstr "ផ្ទៀងផ្ទាត់"
 
 #. Translators: "that didn't work" refers to the fact that the
 #. * requested authentication was not gained; this can happen
 #. * because of an authentication error (like invalid password),
-#. * for instance. */
-#: ../js/ui/components/polkitAgent.js:271 ../js/ui/shellMountOperation.js:383
-msgid "Sorry, that didn't work. Please try again."
+#. * for instance.
+#: js/ui/components/polkitAgent.js:254 js/ui/shellMountOperation.js:402
+#, fuzzy
+msgid "Sorry, that didn’t work. Please try again."
 msgstr "សុំទោស​ដែល​មិន​ដំណើរការ។ សូម​ព្យាយាម​ម្ដងទៀត។"
 
-#: ../js/ui/components/telepathyClient.js:240
-msgid "Invitation"
-msgstr "ការ​អញ្ជើញ"
-
-#: ../js/ui/components/telepathyClient.js:300
-msgid "Call"
-msgstr "ហៅ"
-
-#: ../js/ui/components/telepathyClient.js:316
-msgid "File Transfer"
-msgstr "ផ្ទេរ​ឯកសារ"
-
-#: ../js/ui/components/telepathyClient.js:420
-msgid "Chat"
-msgstr "ជជែក"
-
-#: ../js/ui/components/telepathyClient.js:483
-msgid "Unmute"
-msgstr "បើក​សំឡេង"
-
-#: ../js/ui/components/telepathyClient.js:483
-msgid "Mute"
-msgstr "បិទ​សំឡេង"
-
-#. Translators: Time in 24h format */
-#: ../js/ui/components/telepathyClient.js:958
-msgid "%H∶%M"
-msgstr "%H∶%M"
-
-#. Translators: this is the word "Yesterday" followed by a
-#. time string in 24h format. i.e. "Yesterday, 14:30" */
-#: ../js/ui/components/telepathyClient.js:965
-msgid "Yesterday, %H∶%M"
-msgstr "ម្សិលមិញ %H∶%M"
-
-#. Translators: this is the week day name followed by a time
-#. string in 24h format. i.e. "Monday, 14:30" */
-#: ../js/ui/components/telepathyClient.js:972
-msgid "%A, %H∶%M"
-msgstr "%A, %H∶%M"
-
-#. Translators: this is the month name and day number
-#. followed by a time string in 24h format.
-#. i.e. "May 25, 14:30" */
-#: ../js/ui/components/telepathyClient.js:979
-msgid "%B %d, %H∶%M"
-msgstr "%B %d, %H∶%M"
-
-#. Translators: this is the month name, day number, year
-#. number followed by a time string in 24h format.
-#. i.e. "May 25 2012, 14:30" */
-#: ../js/ui/components/telepathyClient.js:985
-msgid "%B %d %Y, %H∶%M"
-msgstr "%B %d %Y, %H∶%M"
-
-#. Translators: Time in 24h format */
-#: ../js/ui/components/telepathyClient.js:994
-msgid "%l∶%M %p"
-msgstr "%l∶%M %p"
-
-#. Translators: this is the word "Yesterday" followed by a
-#. time string in 12h format. i.e. "Yesterday, 2:30 pm" */
-#: ../js/ui/components/telepathyClient.js:1001
-msgid "Yesterday, %l∶%M %p"
-msgstr "ម្សិលមិញ %l∶%M %p"
-
-#. Translators: this is the week day name followed by a time
-#. string in 12h format. i.e. "Monday, 2:30 pm" */
-#: ../js/ui/components/telepathyClient.js:1008
-msgid "%A, %l∶%M %p"
-msgstr "%A, %l∶%M %p"
-
-#. Translators: this is the month name and day number
-#. followed by a time string in 12h format.
-#. i.e. "May 25, 2:30 pm" */
-#: ../js/ui/components/telepathyClient.js:1015
-msgid "%B %d, %l∶%M %p"
-msgstr "%B %d, %l∶%M %p"
-
-#. Translators: this is the month name, day number, year
-#. number followed by a time string in 12h format.
-#. i.e. "May 25 2012, 2:30 pm"*/
-#: ../js/ui/components/telepathyClient.js:1021
-msgid "%B %d %Y, %l∶%M %p"
-msgstr "%B %d %Y, %l∶%M %p"
-
 #. Translators: this is the other person changing their old IM name to their new
-#. IM name. */
-#: ../js/ui/components/telepathyClient.js:1054
+#. IM name.
+#: js/ui/components/telepathyClient.js:823
 #, javascript-format
 msgid "%s is now known as %s"
 msgstr "%s បាន​ស្គាល់​ជា %s"
 
-#. translators: argument is a room name like
-#. * room@jabber.org for example. */
-#: ../js/ui/components/telepathyClient.js:1158
-#, javascript-format
-msgid "Invitation to %s"
-msgstr "ការ​អញ្ជើញ​មកកាន់ %s"
-
-#. translators: first argument is the name of a contact and the second
-#. * one the name of a room. "Alice is inviting you to join room@jabber.org
-#. * for example. */
-#: ../js/ui/components/telepathyClient.js:1166
-#, javascript-format
-msgid "%s is inviting you to join %s"
-msgstr "%s អញ្ជើញ​អ្នក​ឲ្យ​ចូលរួម %s"
-
-#: ../js/ui/components/telepathyClient.js:1168
-#: ../js/ui/components/telepathyClient.js:1203
-#: ../js/ui/components/telepathyClient.js:1237
-#: ../js/ui/components/telepathyClient.js:1295
-msgid "Decline"
-msgstr "បដិសេធ"
-
-#: ../js/ui/components/telepathyClient.js:1174
-#: ../js/ui/components/telepathyClient.js:1243
-#: ../js/ui/components/telepathyClient.js:1300
-msgid "Accept"
-msgstr "ព្រម​ទទួល"
-
-#. translators: argument is a contact name like Alice for example. */
-#: ../js/ui/components/telepathyClient.js:1193
-#, javascript-format
-msgid "Video call from %s"
-msgstr "ហៅ​ជា​វីដេអូ​ពី %s"
-
-#. translators: argument is a contact name like Alice for example. */
-#: ../js/ui/components/telepathyClient.js:1196
-#, javascript-format
-msgid "Call from %s"
-msgstr "ហៅ​ពី %s"
-
-#. translators: this is a button label (verb), not a noun */
-#: ../js/ui/components/telepathyClient.js:1210
-msgid "Answer"
-msgstr "ឆ្លើយ"
-
-#. To translators: The first parameter is
-#. * the contact's alias and the second one is the
-#. * file name. The string will be something
-#. * like: "Alice is sending you test.ogg"
-#. */
-#: ../js/ui/components/telepathyClient.js:1231
-#, javascript-format
-msgid "%s is sending you %s"
-msgstr "%s កំពុង​ផ្ញើ %s ឲ្យ​អ្នក"
-
-#. To translators: The parameter is the contact's alias */
-#: ../js/ui/components/telepathyClient.js:1260
-#, javascript-format
-msgid "%s would like permission to see when you are online"
-msgstr "%s ចង់​បាន​សិទ្ធិ​ដើម្បី​មើល ពេល​អ្នក​នៅ​ក្រៅ​បណ្ដាញ"
-
-#: ../js/ui/components/telepathyClient.js:1346
-msgid "Network error"
-msgstr "កំហុស​បណ្ដាញ"
-
-#: ../js/ui/components/telepathyClient.js:1348
-msgid "Authentication failed"
-msgstr "ការ​ផ្ទៀងផ្ទាត់​បាន​បរាជ័យ"
-
-#: ../js/ui/components/telepathyClient.js:1350
-msgid "Encryption error"
-msgstr "កំហុស​ការ​ដាក់​លេខ​កូដ"
-
-#: ../js/ui/components/telepathyClient.js:1352
-msgid "Certificate not provided"
-msgstr "មិន​បាន​ផ្ដល់​វិញ្ញាបនបត្រ"
-
-#: ../js/ui/components/telepathyClient.js:1354
-msgid "Certificate untrusted"
-msgstr "វិញ្ញាបនបត្រ​មិន​ទុកចិត្ត"
-
-#: ../js/ui/components/telepathyClient.js:1356
-msgid "Certificate expired"
-msgstr "វិញ្ញាបនបត្រ​ផុត​កំណត់"
-
-#: ../js/ui/components/telepathyClient.js:1358
-msgid "Certificate not activated"
-msgstr "វិញ្ញាបនបត្រ​មិន​បាន​ធ្វើឲ្យ​សកម្ម"
-
-#: ../js/ui/components/telepathyClient.js:1360
-msgid "Certificate hostname mismatch"
-msgstr "វិញ្ញាបនបត្រ​ឈ្មោះ​ម៉ាស៊ីន​មិន​ផ្គូផ្គង"
-
-#: ../js/ui/components/telepathyClient.js:1362
-msgid "Certificate fingerprint mismatch"
-msgstr "វិញ្ញាបនបត្រ​ស្នាម​ម្រាមដៃ​មិន​ផ្គូផ្គង"
-
-#: ../js/ui/components/telepathyClient.js:1364
-msgid "Certificate self-signed"
-msgstr "វិញ្ញាបនបត្រ​ចុះហត្ថលេខា​ខ្លួន​ឯង"
-
-#: ../js/ui/components/telepathyClient.js:1366
-msgid "Status is set to offline"
-msgstr "បាន​កំណត់​ស្ថានភាព​ទៅ​ក្រៅ​បណ្ដាញ"
-
-#: ../js/ui/components/telepathyClient.js:1368
-msgid "Encryption is not available"
-msgstr "មិន​មាន​ការ​ដាក់​លេខ​កូដ"
-
-#: ../js/ui/components/telepathyClient.js:1370
-msgid "Certificate is invalid"
-msgstr "វិញ្ញាបនបត្រ​មិន​ត្រឹមត្រូវ"
-
-#: ../js/ui/components/telepathyClient.js:1372
-msgid "Connection has been refused"
-msgstr "បាន​បដិសេធ​ការ​តភ្ជាប់"
-
-#: ../js/ui/components/telepathyClient.js:1374
-msgid "Connection can't be established"
-msgstr "មិន​អាច​បង្កើត​ការ​តភ្ជាប់"
-
-#: ../js/ui/components/telepathyClient.js:1376
-msgid "Connection has been lost"
-msgstr "ការ​តភ្ជាប់​បាន​ដាច់"
-
-#: ../js/ui/components/telepathyClient.js:1378
-msgid "This account is already connected to the server"
-msgstr "គណនី​នេះ​បាន​ភ្ជាប់​ទៅ​ម៉ាស៊ីន​មេ​រួចហើយ"
-
-#: ../js/ui/components/telepathyClient.js:1380
-msgid ""
-"Connection has been replaced by a new connection using the same resource"
-msgstr "បាន​ជំនួស​ការ​តភ្ជាប់​ថ្មី​ដោយ​ប្រើ​ធនធាន​ដូចគ្នា"
-
-#: ../js/ui/components/telepathyClient.js:1382
-msgid "The account already exists on the server"
-msgstr "គណនី​មាន​នៅ​លើ​ម៉ាស៊ីន​មេ​រួចហើយ"
-
-#: ../js/ui/components/telepathyClient.js:1384
-msgid "Server is currently too busy to handle the connection"
-msgstr "ម៉ាស៊ីន​មេ​កំពុង​រវល់​ក្នុង​ការ​តភ្ជាប់"
-
-#: ../js/ui/components/telepathyClient.js:1386
-msgid "Certificate has been revoked"
-msgstr "បាន​ដកហូត​វិញ្ញាបនបត្រ"
-
-#: ../js/ui/components/telepathyClient.js:1388
-msgid ""
-"Certificate uses an insecure cipher algorithm or is cryptographically weak"
-msgstr "វិញ្ញាបនបត្រ​ប្រើ​ក្បួន​ដោះស្រាយ​ការ​សរសេរ​សម្ងាត់​ដែល​គ្មាន​សុវត្ថិភាព ឬ​ការ​ដាក់​លេខ​កូដ​ខ្សោយ"
-
-#: ../js/ui/components/telepathyClient.js:1390
-msgid ""
-"The length of the server certificate, or the depth of the server certificate "
-"chain, exceed the limits imposed by the cryptography library"
-msgstr ""
-"ប្រវែង​វិញ្ញាបនបត្រ​ម៉ាស៊ីន​មេ ឬ​ជម្រៅ​ច្រវាក់​វិញ្ញាបនបត្រ​ម៉ាស៊ីន​មេ​បាន​លើស​ដែន​កំណត់​ដែល​បាន​បង្ខំ​ដោយ​បណ្ណាល័យ​"
-"ការ​ដាក់​លេខ​កូដ"
-
-#: ../js/ui/components/telepathyClient.js:1392
-msgid "Internal error"
-msgstr "កំហុស​ខាងក្នុង"
-
-#. translators: argument is the account name, like
-#. * name@jabber.org for example. */
-#: ../js/ui/components/telepathyClient.js:1402
-#, javascript-format
-msgid "Unable to connect to %s"
-msgstr "មិន​អាច​តភ្ជាប់​ទៅ %s"
-
-#: ../js/ui/components/telepathyClient.js:1407
-msgid "View account"
-msgstr "មើល​គណនី"
-
-#: ../js/ui/components/telepathyClient.js:1444
-msgid "Unknown reason"
-msgstr "មិន​ស្គាល់​មូលហេតុ"
-
-#: ../js/ui/ctrlAltTab.js:29 ../js/ui/viewSelector.js:96
+#: js/ui/ctrlAltTab.js:21 js/ui/viewSelector.js:606
 msgid "Windows"
 msgstr "វីនដូ"
 
-#: ../js/ui/dash.js:249 ../js/ui/dash.js:287
+#: js/ui/dash.js:200 js/ui/dash.js:241
 msgid "Show Applications"
 msgstr "បង្ហាញ​កម្មវិធី"
 
-#: ../js/ui/dash.js:445
+#: js/ui/dash.js:239
+msgid "Remove from Favorites"
+msgstr "យកចេញ​ពី​សំណព្វ"
+
+#. Translators: this is the name of the dock/favorites area on
+#. the left of the overview
+#: js/ui/dash.js:394
 msgid "Dash"
 msgstr "ដាច់ៗ"
 
-#: ../js/ui/dateMenu.js:91
-msgid "Open Calendar"
-msgstr "បើក​ប្រតិទិន"
-
-#: ../js/ui/dateMenu.js:95
-msgid "Open Clocks"
-msgstr "បើក​នាឡិកា"
-
-#: ../js/ui/dateMenu.js:102
-msgid "Date & Time Settings"
-msgstr "ការ​កំណត់​កាលបរិច្ឆេទ និង​ពេលវេលា"
-
 #. Translators: This is the date format to use when the calendar popup is
-#. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
-#. */
-#: ../js/ui/dateMenu.js:192
-msgid "%A %B %e, %Y"
+#. * shown - it is shown just below the time in the top bar (e.g.,
+#. * "Tue 9:29 AM").  The string itself should become a full date, e.g.,
+#. * "February 17 2015".
+#.
+#: js/ui/dateMenu.js:75
+#, fuzzy
+msgid "%B %-d %Y"
+msgstr "%A, %B %d, %Y"
+
+#. Translators: This is the accessible name of the date button shown
+#. * below the time in the shell; it should combine the weekday and the
+#. * date, e.g. "Tuesday February 17 2015".
+#.
+#: js/ui/dateMenu.js:82
+#, fuzzy
+msgid "%A %B %e %Y"
 msgstr "%A %B %e, %Y"
 
-#: ../js/ui/endSessionDialog.js:66
+#: js/ui/dateMenu.js:161
+msgid "Add world clocks…"
+msgstr ""
+
+#: js/ui/dateMenu.js:162
+#, fuzzy
+msgid "World Clocks"
+msgstr "បើក​នាឡិកា"
+
+#: js/ui/dateMenu.js:289
+msgid "Weather"
+msgstr ""
+
+#: js/ui/dateMenu.js:404
+#, fuzzy
+msgid "Select a location…"
+msgstr "ជ្រើស​បណ្ដាញ"
+
+#: js/ui/dateMenu.js:417
+#, fuzzy
+msgid "Loading…"
+msgstr "កំពុង​ស្វែងរក..."
+
+#: js/ui/dateMenu.js:427
+msgid "Go online for weather information"
+msgstr ""
+
+#: js/ui/dateMenu.js:429
+#, fuzzy
+msgid "Weather information is currently unavailable"
+msgstr "មិន​មាន​ការ​ដាក់​លេខ​កូដ"
+
+#: js/ui/endSessionDialog.js:39
 #, javascript-format
 msgctxt "title"
 msgid "Log Out %s"
 msgstr "ចេញ %s"
 
-#: ../js/ui/endSessionDialog.js:67
+#: js/ui/endSessionDialog.js:40
 msgctxt "title"
 msgid "Log Out"
 msgstr "ចេញ"
 
-#: ../js/ui/endSessionDialog.js:69
+#: js/ui/endSessionDialog.js:42
 #, javascript-format
 msgid "%s will be logged out automatically in %d second."
 msgid_plural "%s will be logged out automatically in %d seconds."
 msgstr[0] "%s នឹង​ចេញ​ដោយ​ស្វ័យប្រវត្តិ​ក្នុង​រយៈពេល %d វិនាទី។"
 
-#: ../js/ui/endSessionDialog.js:74
+#: js/ui/endSessionDialog.js:47
 #, javascript-format
 msgid "You will be logged out automatically in %d second."
 msgid_plural "You will be logged out automatically in %d seconds."
 msgstr[0] "អ្នក​នឹង​ចេញ​ដោយ​ស្វ័យប្រវត្តិ​ក្នុង​រយៈពេល %d វិនាទី។"
 
-#: ../js/ui/endSessionDialog.js:80
+#: js/ui/endSessionDialog.js:53
 msgctxt "button"
 msgid "Log Out"
 msgstr "ចេញ"
 
-#: ../js/ui/endSessionDialog.js:86
+#: js/ui/endSessionDialog.js:58
 msgctxt "title"
 msgid "Power Off"
 msgstr "បិទ"
 
-#: ../js/ui/endSessionDialog.js:87
+#: js/ui/endSessionDialog.js:59
 msgctxt "title"
 msgid "Install Updates & Power Off"
 msgstr "ដំឡើង​បច្ចុប្បន្នភាព រួច​បិទ"
 
-#: ../js/ui/endSessionDialog.js:89
+#: js/ui/endSessionDialog.js:61
 #, javascript-format
 msgid "The system will power off automatically in %d second."
 msgid_plural "The system will power off automatically in %d seconds."
 msgstr[0] "ប្រព័ន្ធ​នឹង​បិទ​ដោយ​ស្វ័យប្រវត្តិ​ក្នុង​រយៈពេល  %d វិនាទី។"
 
-#: ../js/ui/endSessionDialog.js:93
+#: js/ui/endSessionDialog.js:65
 msgctxt "checkbox"
 msgid "Install pending software updates"
 msgstr "ដំឡើង​បច្ចុប្បន្នភាព​កម្មវិធី​មិនទាន់​សម្រេច"
 
-#: ../js/ui/endSessionDialog.js:96 ../js/ui/endSessionDialog.js:113
+#: js/ui/endSessionDialog.js:68 js/ui/endSessionDialog.js:84
 msgctxt "button"
 msgid "Restart"
 msgstr "ចាប់ផ្ដើម​ឡើងវិញ"
 
-#: ../js/ui/endSessionDialog.js:98
+#: js/ui/endSessionDialog.js:70
 msgctxt "button"
 msgid "Power Off"
 msgstr "បិទ"
 
-#: ../js/ui/endSessionDialog.js:105
+#: js/ui/endSessionDialog.js:76
 msgctxt "title"
 msgid "Restart"
 msgstr "ចាប់ផ្ដើម​ឡើងវិញ"
 
-#: ../js/ui/endSessionDialog.js:107
+#: js/ui/endSessionDialog.js:78
 #, javascript-format
 msgid "The system will restart automatically in %d second."
 msgid_plural "The system will restart automatically in %d seconds."
 msgstr[0] "ប្រព័ន្ធ​នឹង​ចាប់ផ្ដើម​ឡើងវិញ​ដោយ​ស្វ័យប្រវត្តិ​ក្នុង​រយៈពេល  %d វិនាទី។"
 
-#: ../js/ui/endSessionDialog.js:121
+#: js/ui/endSessionDialog.js:91
 msgctxt "title"
 msgid "Restart & Install Updates"
 msgstr "ចាប់ផ្ដើម​ឡើងវិញ រួច​ដំឡើង​បច្ចុប្បន្នភាព"
 
-#: ../js/ui/endSessionDialog.js:123
+#: js/ui/endSessionDialog.js:93
 #, javascript-format
 msgid "The system will automatically restart and install updates in %d second."
 msgid_plural ""
 "The system will automatically restart and install updates in %d seconds."
 msgstr[0] "ប្រព័ន្ធ​នឹង​ចាប់ផ្ដើម​ឡើងវិញ រួច​ដំឡើង​បច្ចុប្បន្នភាព​ដោយ​ស្វ័យប្រវត្តិ​ក្នុង​រយៈពេល  %d វិនាទី។"
 
-#: ../js/ui/endSessionDialog.js:129
+#: js/ui/endSessionDialog.js:99 js/ui/endSessionDialog.js:118
 msgctxt "button"
 msgid "Restart &amp; Install"
 msgstr "ចាប់ផ្ដើម​ឡើងវិញ &amp; ដំឡើង"
 
-#: ../js/ui/endSessionDialog.js:130
+#: js/ui/endSessionDialog.js:100
 msgctxt "button"
 msgid "Install &amp; Power Off"
 msgstr "ដំឡើង &amp; បិទ"
 
-#: ../js/ui/endSessionDialog.js:131
+#: js/ui/endSessionDialog.js:101
 msgctxt "checkbox"
 msgid "Power off after updates are installed"
 msgstr "បិទ​បន្ទាប់ពី​បាន​ដំឡើង​បច្ចុប្បន្នភាព"
 
-#: ../js/ui/endSessionDialog.js:315
-msgid "Running on battery power: please plug in before installing updates."
+#: js/ui/endSessionDialog.js:108
+#, fuzzy
+msgctxt "title"
+msgid "Restart & Install Upgrade"
+msgstr "ចាប់ផ្ដើម​ឡើងវិញ រួច​ដំឡើង​បច្ចុប្បន្នភាព"
+
+#. Translators: This is the text displayed for system upgrades in the
+#. shut down dialog. First %s gets replaced with the distro name and
+#. second %s with the distro version to upgrade to
+#: js/ui/endSessionDialog.js:113
+#, javascript-format
+msgid ""
+"%s %s will be installed after restart. Upgrade installation can take a long "
+"time: ensure that you have backed up and that the computer is plugged in."
+msgstr ""
+
+#: js/ui/endSessionDialog.js:261
+#, fuzzy
+msgid "Running on battery power: Please plug in before installing updates."
 msgstr "កំពុង​ដំណើរការ​ដោយសារ​ថាមពល​ថ្ម៖ សូម​ដោត​ខ្សែ​មុន​នឹង​ដំឡើង​បច្ចុប្បន្នភាព។"
 
-#: ../js/ui/endSessionDialog.js:332
-msgid "Some applications are busy or have unsaved work."
+#: js/ui/endSessionDialog.js:270
+#, fuzzy
+msgid "Some applications are busy or have unsaved work"
 msgstr "កម្មវិធី​មួយ​ចំនួន​កំពុង​រវល់ ឬ​មាន​កិច្ចការ​មិនទាន់​រក្សាទុក។"
 
-#: ../js/ui/endSessionDialog.js:339
-msgid "Other users are logged in."
+#: js/ui/endSessionDialog.js:275
+#, fuzzy
+msgid "Other users are logged in"
 msgstr "អ្នកប្រើ​ផ្សេង​បាន​ចូល។"
 
-#. Translators: Remote here refers to a remote session, like a ssh login */
-#: ../js/ui/endSessionDialog.js:619
+#. Translators: Remote here refers to a remote session, like a ssh login
+#: js/ui/endSessionDialog.js:588
 #, javascript-format
 msgid "%s (remote)"
 msgstr "%s (ពី​ចម្ងាយ)"
 
-#. Translators: Console here refers to a tty like a VT console */
-#: ../js/ui/endSessionDialog.js:622
+#. Translators: Console here refers to a tty like a VT console
+#: js/ui/endSessionDialog.js:591
 #, javascript-format
 msgid "%s (console)"
 msgstr "%s (កុងសូល)"
 
-#: ../js/ui/extensionDownloader.js:199
+#: js/ui/extensionDownloader.js:24
+#, javascript-format
+msgid "Can't install “%s”:"
+msgstr ""
+
+#: js/ui/extensionDownloader.js:25
+msgid ""
+"This is an extension enabled by your current mode, you can't install "
+"manually any update in that session."
+msgstr ""
+
+#: js/ui/extensionDownloader.js:192
 msgid "Install"
 msgstr "ដំឡើង"
 
-#: ../js/ui/extensionDownloader.js:204
+#: js/ui/extensionDownloader.js:198
+#, fuzzy
+msgid "Install Extension"
+msgstr "ផ្នែក​បន្ថែម"
+
+#: js/ui/extensionDownloader.js:199
 #, javascript-format
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "ទាញ​យក និង​ដំឡើង “%s” ពី extensions.gnome.org?"
 
-#: ../js/ui/keyboard.js:645 ../js/ui/status/keyboard.js:335
-msgid "Keyboard"
-msgstr "ក្ដារចុច"
+#: js/ui/extensionSystem.js:229
+msgid "Extension Updates Available"
+msgstr ""
 
-#: ../js/ui/lookingGlass.js:643
+#: js/ui/extensionSystem.js:230
+msgid "Extension updates are ready to be installed."
+msgstr ""
+
+#: js/ui/inhibitShortcutsDialog.js:79
+msgid "Allow inhibiting shortcuts"
+msgstr ""
+
+#. Translators: %s is an application name like "Settings"
+#: js/ui/inhibitShortcutsDialog.js:82
+#, javascript-format
+msgid "The application %s wants to inhibit shortcuts"
+msgstr ""
+
+#: js/ui/inhibitShortcutsDialog.js:83
+msgid "An application wants to inhibit shortcuts"
+msgstr ""
+
+#. Translators: %s is a keyboard shortcut like "Super+x"
+#: js/ui/inhibitShortcutsDialog.js:90
+#, javascript-format
+msgid "You can restore shortcuts by pressing %s."
+msgstr ""
+
+#: js/ui/inhibitShortcutsDialog.js:98
+msgid "Deny"
+msgstr ""
+
+#: js/ui/inhibitShortcutsDialog.js:105
+msgid "Allow"
+msgstr ""
+
+#: js/ui/kbdA11yDialog.js:32
+#, fuzzy
+msgid "Slow Keys Turned On"
+msgstr "គ្រាប់ចុច​យឺត"
+
+#: js/ui/kbdA11yDialog.js:33
+#, fuzzy
+msgid "Slow Keys Turned Off"
+msgstr "គ្រាប់ចុច​យឺត"
+
+#: js/ui/kbdA11yDialog.js:34
+msgid ""
+"You just held down the Shift key for 8 seconds. This is the shortcut for the "
+"Slow Keys feature, which affects the way your keyboard works."
+msgstr ""
+
+#: js/ui/kbdA11yDialog.js:41
+#, fuzzy
+msgid "Sticky Keys Turned On"
+msgstr "គ្រាប់ចុចស្អិត"
+
+#: js/ui/kbdA11yDialog.js:42
+#, fuzzy
+msgid "Sticky Keys Turned Off"
+msgstr "គ្រាប់ចុចស្អិត"
+
+#: js/ui/kbdA11yDialog.js:44
+msgid ""
+"You just pressed the Shift key 5 times in a row. This is the shortcut for "
+"the Sticky Keys feature, which affects the way your keyboard works."
+msgstr ""
+
+#: js/ui/kbdA11yDialog.js:46
+msgid ""
+"You just pressed two keys at once, or pressed the Shift key 5 times in a "
+"row. This turns off the Sticky Keys feature, which affects the way your "
+"keyboard works."
+msgstr ""
+
+#: js/ui/kbdA11yDialog.js:55
+msgid "Leave On"
+msgstr ""
+
+#: js/ui/kbdA11yDialog.js:55 js/ui/status/automaticUpdates.js:315
+#: js/ui/status/bluetooth.js:138 js/ui/status/network.js:1288
+msgid "Turn On"
+msgstr "បើក"
+
+#: js/ui/kbdA11yDialog.js:63 js/ui/status/automaticUpdates.js:317
+#: js/ui/status/bluetooth.js:138 js/ui/status/network.js:131
+#: js/ui/status/network.js:315 js/ui/status/network.js:1288
+#: js/ui/status/network.js:1400 js/ui/status/nightLight.js:41
+#: js/ui/status/rfkill.js:81 js/ui/status/rfkill.js:108
+msgid "Turn Off"
+msgstr "បិទ"
+
+#: js/ui/kbdA11yDialog.js:63
+msgid "Leave Off"
+msgstr ""
+
+#: js/ui/keyboard.js:207
+#, fuzzy
+msgid "Region & Language Settings"
+msgstr "ការ​កំណត់​កាលបរិច្ឆេទ និង​ពេលវេលា"
+
+#: js/ui/lookingGlass.js:665
 msgid "No extensions installed"
 msgstr "មិន​បាន​ដំឡើង​ផ្នែក​បន្ថែម"
 
-#. Translators: argument is an extension UUID. */
-#: ../js/ui/lookingGlass.js:697
+#. Translators: argument is an extension UUID.
+#: js/ui/lookingGlass.js:720
 #, javascript-format
 msgid "%s has not emitted any errors."
 msgstr "%s មិន​បាន​បញ្ចេញ​កំហុស។"
 
-#: ../js/ui/lookingGlass.js:703
+#: js/ui/lookingGlass.js:726
 msgid "Hide Errors"
 msgstr "លាក់​កំហុស"
 
-#: ../js/ui/lookingGlass.js:707 ../js/ui/lookingGlass.js:767
+#: js/ui/lookingGlass.js:730 js/ui/lookingGlass.js:795
 msgid "Show Errors"
 msgstr "បង្ហាញ​កំហុស"
 
-#: ../js/ui/lookingGlass.js:716 ../js/ui/status/location.js:59
-#: ../js/ui/status/location.js:167
+#: js/ui/lookingGlass.js:739
 msgid "Enabled"
 msgstr "បាន​បើក"
 
-#. Translators: this is for a network device that cannot be activated
-#. because it's disabled by rfkill (airplane mode) */
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:719 ../js/ui/status/location.js:164
-#: ../js/ui/status/network.js:555 ../src/gvc/gvc-mixer-control.c:1830
+#: js/ui/lookingGlass.js:742 subprojects/gvc/gvc-mixer-control.c:1892
 msgid "Disabled"
 msgstr "បាន​បិទ"
 
-#: ../js/ui/lookingGlass.js:721
+#: js/ui/lookingGlass.js:744
 msgid "Error"
 msgstr "កំហុស"
 
-#: ../js/ui/lookingGlass.js:723
+#: js/ui/lookingGlass.js:746
 msgid "Out of date"
 msgstr "ហួស​សម័យ"
 
-#: ../js/ui/lookingGlass.js:725
+#: js/ui/lookingGlass.js:748
 msgid "Downloading"
 msgstr "ការ​ទាញ​យក"
 
-#: ../js/ui/lookingGlass.js:749
+#: js/ui/lookingGlass.js:777
 msgid "View Source"
 msgstr "មើល​ប្រភព"
 
-#: ../js/ui/lookingGlass.js:758
+#: js/ui/lookingGlass.js:786
 msgid "Web Page"
 msgstr "ទំព័រ​បណ្ដាញ"
 
-#: ../js/ui/messageTray.js:1326
-msgid "Open"
-msgstr "បើក"
+#: js/ui/main.js:315
+#, fuzzy
+msgid "Logged in as a privileged user"
+msgstr "ចូល​ជា​អ្នកប្រើ​ផ្សេង"
 
-#: ../js/ui/messageTray.js:1333
-msgid "Remove"
-msgstr "យកចេញ"
+#: js/ui/main.js:316
+msgid ""
+"Running a session as a privileged user should be avoided for security "
+"reasons. If possible, you should log in as a normal user."
+msgstr ""
 
-#: ../js/ui/messageTray.js:1630
-msgid "Notifications"
-msgstr "ការ​ជូនដំណឹង"
+#: js/ui/main.js:355
+msgid "Screen Lock disabled"
+msgstr ""
 
-#: ../js/ui/messageTray.js:1637
-msgid "Clear Messages"
-msgstr "សម្អាត​សារ"
+#: js/ui/main.js:356
+msgid "Screen Locking requires the GNOME display manager."
+msgstr ""
 
-#: ../js/ui/messageTray.js:1656
-msgid "Notification Settings"
-msgstr "ការ​កំណត់​ការ​ជូនដំណឺង"
-
-#: ../js/ui/messageTray.js:1709
-msgid "Tray Menu"
-msgstr "ម៉ឺនុយ​ថាស"
-
-#: ../js/ui/messageTray.js:1926
-msgid "No Messages"
-msgstr "មិន​មាន​សារ"
-
-#: ../js/ui/messageTray.js:1964
-msgid "Message Tray"
-msgstr "ថាស​សារ"
-
-#: ../js/ui/messageTray.js:2967
+#: js/ui/messageTray.js:1552
 msgid "System Information"
 msgstr "ព័ត៌មាន​ប្រព័ន្ធ"
 
-#: ../js/ui/notificationDaemon.js:516 ../src/shell-app.c:425
-msgctxt "program"
-msgid "Unknown"
+#: js/ui/mpris.js:199
+#, fuzzy
+msgid "Unknown artist"
+msgstr "មិន​ស្គាល់​មូលហេតុ"
+
+#: js/ui/mpris.js:209
+#, fuzzy
+msgid "Unknown title"
 msgstr "មិន​ស្គាល់"
 
-#: ../js/ui/overviewControls.js:483 ../js/ui/screenShield.js:151
-#, javascript-format
-msgid "%d new message"
-msgid_plural "%d new messages"
-msgstr[0] "សារ​ថ្មី %d"
-
-#: ../js/ui/overview.js:84
+#: js/ui/overview.js:94
 msgid "Undo"
 msgstr "មិនធ្វើវិញ"
 
-#: ../js/ui/overview.js:124
+#: js/ui/overview.js:113
+msgid "No apps are open"
+msgstr ""
+
+#. Translators: This is the main view to select
+#. activities. See also note for "Activities" string.
+#: js/ui/overview.js:159
 msgid "Overview"
 msgstr "ទិដ្ឋភាព​ទូទៅ"
 
-#. Translators: this is the text displayed
-#. in the search entry when no search is
-#. active; it should not exceed ~30
-#. characters. */
-#: ../js/ui/overview.js:250
-msgid "Type to search…"
-msgstr "វាយ​បញ្ចូល​ដើម្បី​ស្វែងរក..."
+#: js/ui/padOsd.js:95
+msgid "New shortcut…"
+msgstr ""
 
-#: ../js/ui/panel.js:516
+#: js/ui/padOsd.js:142
+#, fuzzy
+msgid "Application defined"
+msgstr "កម្មវិធី"
+
+#: js/ui/padOsd.js:143
+msgid "Show on-screen help"
+msgstr ""
+
+#: js/ui/padOsd.js:144
+#, fuzzy
+msgid "Switch monitor"
+msgstr "ប្ដូរ​អ្នកប្រើ"
+
+#: js/ui/padOsd.js:145
+msgid "Assign keystroke"
+msgstr ""
+
+#: js/ui/padOsd.js:211
+msgid "Done"
+msgstr ""
+
+#: js/ui/padOsd.js:745
+msgid "Edit…"
+msgstr ""
+
+#: js/ui/padOsd.js:787 js/ui/padOsd.js:910
+msgid "None"
+msgstr ""
+
+#: js/ui/padOsd.js:863
+msgid "Press a button to configure"
+msgstr ""
+
+#: js/ui/padOsd.js:864
+msgid "Press Esc to exit"
+msgstr ""
+
+#: js/ui/padOsd.js:867
+msgid "Press any key to exit"
+msgstr ""
+
+#: js/ui/panel.js:96
+#, fuzzy
+msgid "Show Details"
+msgstr "បង្ហាញ​អត្ថបទ"
+
+#: js/ui/panel.js:112
 msgid "Quit"
 msgstr "បោះបង់"
 
 #. Translators: If there is no suitable word for "Activities"
-#. in your language, you can use the word for "Overview". */
-#: ../js/ui/panel.js:568
+#. in your language, you can use the word for "Overview".
+#: js/ui/panel.js:437
 msgid "Activities"
 msgstr "សកម្មភាព"
 
-#: ../js/ui/panel.js:915
-msgid "Top Bar"
-msgstr "របារ​កំពូល"
+#: js/ui/panel.js:716
+#, fuzzy
+msgctxt "System menu in the top bar"
+msgid "System"
+msgstr "ប្រព័ន្ធ"
 
-#: ../js/ui/popupMenu.js:271
-msgid "toggle-switch-us"
-msgstr "toggle-switch-us"
+#: js/ui/panel.js:801
+#, fuzzy
+msgctxt "User menu"
+msgid "User Menu"
+msgstr "ម៉ឺនុយ​ថាស"
 
-#: ../js/ui/runDialog.js:74
-msgid "Enter a Command"
-msgstr "បញ្ចូល​ពាក្យ​បញ្ជា"
-
-#: ../js/ui/runDialog.js:114
-msgid "Close"
+#: js/ui/panel.js:833
+#, fuzzy
+msgctxt "Power menu"
+msgid "Power"
 msgstr "បិទ"
 
-#. Translators: This is a time format for a date in
-#. long format */
-#: ../js/ui/screenShield.js:88
-msgid "%A, %B %d"
-msgstr "%A, %B %d"
+#: js/ui/panel.js:907
+msgid "Bottom Bar"
+msgstr ""
 
-#: ../js/ui/screenShield.js:153
+#: js/ui/paygUnlockDialog.js:93
+msgid "Your Pay As You Go usage credit has expired."
+msgstr ""
+
+#: js/ui/paygUnlockDialog.js:116
+msgid "Enter a new code to unlock your computer:"
+msgstr ""
+
+#: js/ui/paygUnlockDialog.js:139
+msgid "Don’t have an unlock code? That’s OK!"
+msgstr ""
+
+#. The second possible override is to use the template text below
+#. with the contact's name and phone number, if BOTH are present.
+#: js/ui/paygUnlockDialog.js:160
 #, javascript-format
-msgid "%d new notification"
-msgid_plural "%d new notifications"
-msgstr[0] "ការ​ជូនដំណឺង​ថ្មី %d"
+msgid ""
+"Talk to your sales representative to purchase a new code. Call or text %s at "
+"%s"
+msgstr ""
 
-#: ../js/ui/screenShield.js:474 ../js/ui/status/system.js:342
-msgid "Lock"
-msgstr "ចាក់សោ"
+#. No overrides present, default to fallback text.
+#: js/ui/paygUnlockDialog.js:164
+msgid "Talk to your sales representative to purchase a new code."
+msgstr ""
 
-#: ../js/ui/screenShield.js:708
+#: js/ui/paygUnlockDialog.js:188
+#, javascript-format
+msgid "Pay As You Go Account ID: %s"
+msgstr ""
+
+#: js/ui/paygUnlockDialog.js:198
+#, fuzzy
+msgid "Unlock Machine"
+msgstr "ដោះ​សោ​វីនដូ"
+
+#: js/ui/paygUnlockDialog.js:287 js/ui/shellMountOperation.js:380
+msgid "Unlock"
+msgstr "ដោះ​សោ"
+
+#: js/ui/paygUnlockDialog.js:394
+msgid "Success!"
+msgstr ""
+
+#: js/ui/paygUnlockDialog.js:418
+msgid "Remaining time cleared!"
+msgstr ""
+
+#: js/ui/paygUnlockDialog.js:419
+msgid "OK!"
+msgstr ""
+
+#: js/ui/payg.js:39
+msgid "Pay As You Go"
+msgstr ""
+
+#: js/ui/payg.js:40
+msgid "Enter an unlock code to extend the time before your credit has expired."
+msgstr ""
+
+#: js/ui/payg.js:41
+#, javascript-format
+msgid "Subscription runs out in %s."
+msgstr ""
+
+#: js/ui/payg.js:236
+#, javascript-format
+msgid "Too many attempts. Try again in %s minute."
+msgid_plural "Too many attempts. Try again in %s minutes."
+msgstr[0] ""
+
+#: js/ui/payg.js:240
+msgid "Too many attempts. Try again in a few seconds."
+msgstr ""
+
+#: js/ui/payg.js:261
+#, fuzzy
+msgid "Invalid code. Please try again."
+msgstr "សុំទោស​ដែល​មិន​ដំណើរការ។ សូម​ព្យាយាម​ម្ដងទៀត។"
+
+#: js/ui/payg.js:263
+msgid "Code already used. Please enter a new code."
+msgstr ""
+
+#: js/ui/payg.js:265
+msgid "Time exceeded while verifying the code"
+msgstr ""
+
+#: js/ui/payg.js:267
+#, javascript-format
+msgid "Your Pay As You Go Account ID is: %s"
+msgstr ""
+
+#. We don't consider any other error here (and we don't consider DISABLED explicitly,
+#. since that should not happen), but still we need to show something to the user.
+#: js/ui/payg.js:271
+#, fuzzy
+msgid "Unknown error"
+msgstr "មិន​ស្គាល់​មូលហេតុ"
+
+#: js/ui/payg.js:452
+msgid "Apply Code"
+msgstr ""
+
+#: js/ui/payg.js:606
+#, javascript-format
+msgid "%s second"
+msgid_plural "%s seconds"
+msgstr[0] ""
+
+#: js/ui/payg.js:610 js/ui/payg.js:620
+#, javascript-format
+msgid "%s minute"
+msgid_plural "%s minutes"
+msgstr[0] ""
+
+#: js/ui/payg.js:614 js/ui/payg.js:631
+#, javascript-format
+msgid "%s hour"
+msgid_plural "%s hours"
+msgstr[0] ""
+
+#: js/ui/payg.js:625
+#, javascript-format
+msgid "%s day"
+msgid_plural "%s days"
+msgstr[0] ""
+
+#: js/ui/payg.js:641
+#, fuzzy, javascript-format
+msgid "%s second has been added to your Pay As You Go credit."
+msgid_plural "%s seconds have been added to your Pay As You Go credit."
+msgstr[0] "បាន​បន្ថែម %s ទៅកាន់​សំណព្វ​របស់​អ្នក។"
+
+#: js/ui/payg.js:648
+#, fuzzy, javascript-format
+msgid "%s minute has been added to your Pay As You Go credit."
+msgid_plural "%s minutes have been added to your Pay As You Go credit."
+msgstr[0] "បាន​បន្ថែម %s ទៅកាន់​សំណព្វ​របស់​អ្នក។"
+
+#: js/ui/payg.js:655
+#, fuzzy, javascript-format
+msgid "%s hour has been added to your Pay As You Go credit."
+msgid_plural "%s hours have been added to your Pay As You Go credit."
+msgstr[0] "បាន​បន្ថែម %s ទៅកាន់​សំណព្វ​របស់​អ្នក។"
+
+#: js/ui/payg.js:662
+#, fuzzy, javascript-format
+msgid "%s day has been added to your Pay As You Go credit."
+msgid_plural "%s days have been added to your Pay As You Go credit."
+msgstr[0] "បាន​បន្ថែម %s ទៅកាន់​សំណព្វ​របស់​អ្នក។"
+
+#: js/ui/payg.js:669
+#, fuzzy, javascript-format
+msgid "%s month has been added to your Pay As You Go credit."
+msgid_plural "%s months have been added to your Pay As You Go credit."
+msgstr[0] "បាន​បន្ថែម %s ទៅកាន់​សំណព្វ​របស់​អ្នក។"
+
+#: js/ui/payg.js:676
+#, fuzzy
+msgid "1 year has been added to your Pay As You Go credit."
+msgstr "បាន​បន្ថែម %s ទៅកាន់​សំណព្វ​របស់​អ្នក។"
+
+#. Unlock permanently message
+#: js/ui/payg.js:679
+msgid "You have successfully unlocked your Endless Machine"
+msgstr ""
+
+#: js/ui/runDialog.js:58
+#, fuzzy
+msgid "Run a Command"
+msgstr "បញ្ចូល​ពាក្យ​បញ្ជា"
+
+#: js/ui/runDialog.js:73
+msgid "Press ESC to close"
+msgstr ""
+
+#: js/ui/runDialog.js:240
+#, fuzzy
+msgid "Restart is not available on Wayland"
+msgstr "មិន​មាន​ការ​ដាក់​លេខ​កូដ"
+
+#: js/ui/runDialog.js:245
+#, fuzzy
+msgid "Restarting…"
+msgstr "កំពុង​ប៉ាន់ស្មាន..."
+
+#: js/ui/screenShield.js:254
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME ត្រូវការ​ចាក់សោ​អេក្រង់"
 
-#: ../js/ui/screenShield.js:835 ../js/ui/screenShield.js:1312
+#. We could not become modal, so we can't activate the
+#. screenshield. The user is probably very upset at this
+#. point, but any application using global grabs is broken
+#. Just tell him to stop using this app
+#.
+#. XXX: another option is to kick the user into the gdm login
+#. screen, where we're not affected by grabs
+#: js/ui/screenShield.js:295 js/ui/screenShield.js:674
 msgid "Unable to lock"
 msgstr "មិន​អាច​ចាក់សោ"
 
-#: ../js/ui/screenShield.js:836 ../js/ui/screenShield.js:1313
+#: js/ui/screenShield.js:296 js/ui/screenShield.js:675
 msgid "Lock was blocked by an application"
 msgstr "បាន​ទប់ស្កាត់​ការ​ចាក់សោ​ដោយ​កម្មវិធី"
 
-#: ../js/ui/search.js:606
+#: js/ui/search.js:793
 msgid "Searching…"
 msgstr "កំពុង​ស្វែងរក..."
 
-#: ../js/ui/search.js:652
+#: js/ui/search.js:795
 msgid "No results."
 msgstr "មិន​មាន​លទ្ធផល។"
 
-#: ../js/ui/shellEntry.js:27
+#: js/ui/shellEntry.js:30
 msgid "Copy"
 msgstr "ចម្លង"
 
-#: ../js/ui/shellEntry.js:32
+#: js/ui/shellEntry.js:35
 msgid "Paste"
 msgstr "បិទភ្ជាប់"
 
-#: ../js/ui/shellEntry.js:99
+#: js/ui/shellEntry.js:83
 msgid "Show Text"
 msgstr "បង្ហាញ​អត្ថបទ"
 
-#: ../js/ui/shellEntry.js:101
+#: js/ui/shellEntry.js:85
 msgid "Hide Text"
 msgstr "លាក់​អត្ថបទ"
 
-#: ../js/ui/shellMountOperation.js:370
-msgid "Password"
-msgstr "ពាក្យសម្ងាត់"
+#: js/ui/shellEntry.js:194
+#, fuzzy, javascript-format
+msgid "Search %s and more…"
+msgstr "កំពុង​ស្វែងរក..."
 
-#: ../js/ui/shellMountOperation.js:391
+#: js/ui/shellEntry.js:196
+msgid "Search the internet and more…"
+msgstr ""
+
+#: js/ui/shellEntry.js:198
+#, fuzzy
+msgid "Search…"
+msgstr "កំពុង​ស្វែងរក..."
+
+#: js/ui/shellEntry.js:490
+msgid "Caps lock is on."
+msgstr ""
+
+#: js/ui/shellMountOperation.js:285
+#, fuzzy
+msgid "Hidden Volume"
+msgstr "កម្រិត​សំឡេង"
+
+#: js/ui/shellMountOperation.js:288
+msgid "Windows System Volume"
+msgstr ""
+
+#: js/ui/shellMountOperation.js:291
+#, fuzzy
+msgid "Uses Keyfiles"
+msgstr "ប៊ូតុង​កណ្ដុរ"
+
+#. Translators: %s is the Disks application
+#: js/ui/shellMountOperation.js:298
+#, javascript-format
+msgid ""
+"To unlock a volume that uses keyfiles, use the <i>%s</i> utility instead."
+msgstr ""
+
+#: js/ui/shellMountOperation.js:306
+msgid "PIM Number"
+msgstr ""
+
+#: js/ui/shellMountOperation.js:365
 msgid "Remember Password"
 msgstr "ចងចាំ​ពាក្យសម្ងាត់"
 
-#: ../js/ui/status/accessibility.js:42
+#. Translators: %s is the Disks application
+#: js/ui/shellMountOperation.js:391
+#, fuzzy, javascript-format
+msgid "Open %s"
+msgstr "បើក​ជាមួយ %s"
+
+#: js/ui/shellMountOperation.js:423
+msgid "The PIM must be a number or empty."
+msgstr ""
+
+#. Translators: %s is the Disks application
+#: js/ui/shellMountOperation.js:469
+#, fuzzy, javascript-format
+msgid "Unable to start %s"
+msgstr "មិន​អាច​តភ្ជាប់​ទៅ %s"
+
+#. Translators: %s is the Disks application
+#: js/ui/shellMountOperation.js:471
+#, javascript-format
+msgid "Couldn’t find the %s application"
+msgstr ""
+
+#: js/ui/status/accessibility.js:35
 msgid "Accessibility"
 msgstr "ងាយស្រួល"
 
-#: ../js/ui/status/accessibility.js:57
+#: js/ui/status/accessibility.js:50
 msgid "Zoom"
 msgstr "ពង្រីក"
 
-#: ../js/ui/status/accessibility.js:64
+#: js/ui/status/accessibility.js:57
 msgid "Screen Reader"
 msgstr "កម្មវិធី​អាន​អេក្រង់"
 
-#: ../js/ui/status/accessibility.js:68
+#: js/ui/status/accessibility.js:61
 msgid "Screen Keyboard"
 msgstr "ក្ដារចុច​អេក្រង់"
 
-#: ../js/ui/status/accessibility.js:72
+#: js/ui/status/accessibility.js:65
 msgid "Visual Alerts"
 msgstr "ការ​ជូនដំណឹង​និម្មិត"
 
-#: ../js/ui/status/accessibility.js:75
+#: js/ui/status/accessibility.js:68
 msgid "Sticky Keys"
 msgstr "គ្រាប់ចុចស្អិត"
 
-#: ../js/ui/status/accessibility.js:78
+#: js/ui/status/accessibility.js:71
 msgid "Slow Keys"
 msgstr "គ្រាប់ចុច​យឺត"
 
-#: ../js/ui/status/accessibility.js:81
+#: js/ui/status/accessibility.js:74
 msgid "Bounce Keys"
 msgstr "គ្រាប់ចុច​លោត"
 
-#: ../js/ui/status/accessibility.js:84
+#: js/ui/status/accessibility.js:77
 msgid "Mouse Keys"
 msgstr "ប៊ូតុង​កណ្ដុរ"
 
-#: ../js/ui/status/accessibility.js:144
+#: js/ui/status/accessibility.js:136
 msgid "High Contrast"
 msgstr "កម្រិត​ពណ៌​ខ្ពស់"
 
-#: ../js/ui/status/accessibility.js:193
+#: js/ui/status/accessibility.js:178
 msgid "Large Text"
 msgstr "អត្ថបទ​ធំ"
 
-#: ../js/ui/status/bluetooth.js:49
+#: js/ui/status/automaticUpdates.js:80
+msgid "Updates Queue"
+msgstr ""
+
+#: js/ui/status/automaticUpdates.js:105
+#, fuzzy
+msgid "Set a Schedule"
+msgstr "គ្មាន​កាលវិភាគ"
+
+#. The status label
+#: js/ui/status/automaticUpdates.js:198
+msgid "Automatic Updates"
+msgstr ""
+
+#: js/ui/status/automaticUpdates.js:263
+msgid "Automatic updates on"
+msgstr ""
+
+#: js/ui/status/automaticUpdates.js:264
+msgid ""
+"You have Unlimited Data so automatic updates have been turned on for this "
+"connection."
+msgstr ""
+
+#: js/ui/status/automaticUpdates.js:267
+msgid "Automatic updates are turned off to save your data"
+msgstr ""
+
+#: js/ui/status/automaticUpdates.js:268
+msgid ""
+"You will need to choose which Endless updates to apply when on this "
+"connection."
+msgstr ""
+
+#: js/ui/status/automaticUpdates.js:286 js/ui/windowMenu.js:167
+msgid "Close"
+msgstr "បិទ"
+
+#: js/ui/status/automaticUpdates.js:290
+#, fuzzy
+msgid "Change Settings…"
+msgstr "ការ​កំណត់​ខ្សែ"
+
+#: js/ui/status/bluetooth.js:40
 msgid "Bluetooth"
 msgstr "ប៊្លូធូស"
 
-#: ../js/ui/status/bluetooth.js:51 ../js/ui/status/network.js:151
-#: ../js/ui/status/network.js:323 ../js/ui/status/network.js:1234
-#: ../js/ui/status/network.js:1345 ../js/ui/status/rfkill.js:85
-#: ../js/ui/status/rfkill.js:105
-msgid "Turn Off"
-msgstr "បិទ"
-
-#: ../js/ui/status/bluetooth.js:54
+#: js/ui/status/bluetooth.js:49 js/ui/status/network.js:591
 msgid "Bluetooth Settings"
 msgstr "ការ​កំណត់​ប៊្លូធូស"
 
-#: ../js/ui/status/bluetooth.js:104
-#, javascript-format
-msgid "%d Connected Device"
-msgid_plural "%d Connected Devices"
-msgstr[0] "បាន​តភ្ជាប់​ឧបករណ៍ %d"
+#. Translators: this is the number of connected bluetooth devices
+#: js/ui/status/bluetooth.js:132
+#, fuzzy, javascript-format
+msgid "%d Connected"
+msgid_plural "%d Connected"
+msgstr[0] "បាន​តភ្ជាប់"
 
-#: ../js/ui/status/bluetooth.js:106 ../js/ui/status/network.js:1262
-msgid "Not Connected"
-msgstr "មិន​បាន​តភ្ជាប់"
+#: js/ui/status/bluetooth.js:134
+#, fuzzy
+msgid "Bluetooth Off"
+msgstr "ប៊្លូធូស"
 
-#: ../js/ui/status/brightness.js:44
+#: js/ui/status/bluetooth.js:136
+#, fuzzy
+msgid "Bluetooth On"
+msgstr "ប៊្លូធូស"
+
+#: js/ui/status/brightness.js:39
 msgid "Brightness"
 msgstr "ពន្លឺ"
 
-#: ../js/ui/status/keyboard.js:403
+#: js/ui/status/dwellClick.js:13
+msgid "Single Click"
+msgstr ""
+
+#: js/ui/status/dwellClick.js:18
+msgid "Double Click"
+msgstr ""
+
+#: js/ui/status/dwellClick.js:23
+msgid "Drag"
+msgstr ""
+
+#: js/ui/status/dwellClick.js:28
+msgid "Secondary Click"
+msgstr ""
+
+#: js/ui/status/dwellClick.js:37
+msgid "Dwell Click"
+msgstr ""
+
+#: js/ui/status/keyboard.js:826
+msgid "Keyboard"
+msgstr "ក្ដារចុច"
+
+#: js/ui/status/keyboard.js:848
 msgid "Show Keyboard Layout"
 msgstr "បង្ហាញ​ប្លង់​ក្ដារចុច"
 
-#: ../js/ui/status/location.js:53
-msgid "Location"
+#: js/ui/status/location.js:65 js/ui/status/location.js:174
+#, fuzzy
+msgid "Location Enabled"
 msgstr "ទីតាំង"
 
-#: ../js/ui/status/location.js:60 ../js/ui/status/location.js:168
+#: js/ui/status/location.js:66 js/ui/status/location.js:175
 msgid "Disable"
 msgstr "បិទ"
 
-#: ../js/ui/status/location.js:165
+#: js/ui/status/location.js:67
+#, fuzzy
+msgid "Privacy Settings"
+msgstr "ការ​កំណត់ថាមពល"
+
+#: js/ui/status/location.js:173
+#, fuzzy
+msgid "Location In Use"
+msgstr "ទីតាំង"
+
+#: js/ui/status/location.js:177
+#, fuzzy
+msgid "Location Disabled"
+msgstr "ការ​តភ្ជាប់​បាន​បរាជ័យ"
+
+#: js/ui/status/location.js:178
 msgid "Enable"
 msgstr "បើក"
 
-#: ../js/ui/status/location.js:167
-msgid "In Use"
-msgstr "កំពុង​ប្រើ"
+#: js/ui/status/location.js:355
+msgid "Allow location access"
+msgstr ""
 
-#: ../js/ui/status/network.js:74
+#. Translators: %s is an application name
+#: js/ui/status/location.js:357
+#, javascript-format
+msgid "The app %s wants to access your location"
+msgstr ""
+
+#: js/ui/status/location.js:367
+msgid "Location access can be changed at any time from the privacy settings."
+msgstr ""
+
+#: js/ui/status/network.js:66
 msgid "<unknown>"
 msgstr "<មិន​ស្គាល់>"
 
-#: ../js/ui/status/network.js:420 ../js/ui/status/network.js:1260
-#: ../js/ui/status/network.js:1464
-msgid "Off"
-msgstr "បិទ"
+#. Translators: %s is a network identifier
+#: js/ui/status/network.js:420 js/ui/status/network.js:1317
+#, javascript-format
+msgid "%s Off"
+msgstr ""
 
-#: ../js/ui/status/network.js:422
-msgid "Connected"
+#. Translators: %s is a network identifier
+#: js/ui/status/network.js:423
+#, fuzzy, javascript-format
+msgid "%s Connected"
 msgstr "បាន​តភ្ជាប់"
 
 #. Translators: this is for network devices that are physically present but are not
-#. under NetworkManager's control (and thus cannot be used in the menu) */
-#: ../js/ui/status/network.js:426
-#| msgid "unmanaged"
-msgid "Unmanaged"
+#. under NetworkManager's control (and thus cannot be used in the menu);
+#. %s is a network identifier
+#: js/ui/status/network.js:428
+#, fuzzy, javascript-format
+msgid "%s Unmanaged"
 msgstr "មិន​បាន​គ្រប់គ្រង"
 
-#: ../js/ui/status/network.js:428
-#| msgid "disconnecting..."
-msgid "Disconnecting"
+#. Translators: %s is a network identifier
+#: js/ui/status/network.js:431
+#, fuzzy, javascript-format
+msgid "%s Disconnecting"
 msgstr "​ផ្ដាច់"
 
-#: ../js/ui/status/network.js:434 ../js/ui/status/network.js:1254
-msgid "Connecting"
+#. Translators: %s is a network identifier
+#: js/ui/status/network.js:438 js/ui/status/network.js:1309
+#, fuzzy, javascript-format
+msgid "%s Connecting"
 msgstr "ការ​តភ្ជាប់"
 
-#. Translators: this is for network connections that require some kind of key or password */
-#: ../js/ui/status/network.js:437
-#| msgid "authentication required"
-msgid "Authentication required"
-msgstr "ទាមទារ​ការ​ផ្ទៀងផ្ទាត់"
+#. Translators: this is for network connections that require some kind of key or password; %s is a network identifier
+#: js/ui/status/network.js:441
+#, fuzzy, javascript-format
+msgid "%s Requires Authentication"
+msgstr "ការ​ផ្ទៀង​ផ្ទាត់​ខ្សែ 802.1X"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
-#. module, which is missing */
-#: ../js/ui/status/network.js:445
-#| msgid "firmware missing"
-msgid "Firmware missing"
+#. module, which is missing; %s is a network identifier
+#: js/ui/status/network.js:449
+#, fuzzy, javascript-format
+msgid "Firmware Missing For %s"
 msgstr "បាត់​កម្មវិធី​បង្កប់"
 
 #. Translators: this is for a network device that cannot be activated (for example it
-#. is disabled by rfkill, or it has no coverage */
-#: ../js/ui/status/network.js:449
-#| msgid "unavailable"
-msgid "Unavailable"
+#. is disabled by rfkill, or it has no coverage; %s is a network identifier
+#: js/ui/status/network.js:453
+#, fuzzy, javascript-format
+msgid "%s Unavailable"
 msgstr "មិន​មាន"
 
-#: ../js/ui/status/network.js:451 ../js/ui/status/network.js:1646
-msgid "Connection failed"
+#. Translators: %s is a network identifier
+#: js/ui/status/network.js:456
+#, fuzzy, javascript-format
+msgid "%s Connection Failed"
 msgstr "ការ​តភ្ជាប់​បាន​បរាជ័យ"
 
-#: ../js/ui/status/network.js:467
+#: js/ui/status/network.js:468
 msgid "Wired Settings"
 msgstr "ការ​កំណត់​ខ្សែ"
 
-#: ../js/ui/status/network.js:509 ../js/ui/status/network.js:587
+#: js/ui/status/network.js:511
 msgid "Mobile Broadband Settings"
 msgstr "ការ​កំណត់​រលក​អាកាស​ធំ​ចល័ត"
 
-#: ../js/ui/status/network.js:551 ../js/ui/status/network.js:1258
-msgid "Hardware Disabled"
+#. Translators: %s is a network identifier
+#: js/ui/status/network.js:558 js/ui/status/network.js:1314
+#, fuzzy, javascript-format
+msgid "%s Hardware Disabled"
 msgstr "បាន​បិទ​ផ្នែក​រឹង"
 
-#: ../js/ui/status/network.js:595
-msgid "Use as Internet connection"
-msgstr "ប្រើ​ជា​ការ​តភ្ជាប់​អ៊ីនធឺណិត"
+#. Translators: this is for a network device that cannot be activated
+#. because it's disabled by rfkill (airplane mode); %s is a network identifier
+#: js/ui/status/network.js:562
+#, fuzzy, javascript-format
+msgid "%s Disabled"
+msgstr "បាន​បិទ"
 
-#: ../js/ui/status/network.js:776
+#: js/ui/status/network.js:603
+msgid "Connect to Internet"
+msgstr ""
+
+#: js/ui/status/network.js:808
 msgid "Airplane Mode is On"
 msgstr "បាន​របៀប​ជិះ​យន្តហោះ"
 
-#: ../js/ui/status/network.js:777
+#: js/ui/status/network.js:809
 msgid "Wi-Fi is disabled when airplane mode is on."
 msgstr "វ៉ាយហ្វាយ​ត្រូវ​បាន​បិទ ពេល​បើក​របៀប​ជិះ​យន្តហោះ។"
 
-#: ../js/ui/status/network.js:778
+#: js/ui/status/network.js:810
 msgid "Turn Off Airplane Mode"
 msgstr "បិទ​របៀប​ជិះ​យន្តហោះ"
 
-#: ../js/ui/status/network.js:787
+#: js/ui/status/network.js:819
 msgid "Wi-Fi is Off"
 msgstr "បាន​បិទ​វ៉ាយហ្វាយ"
 
-#: ../js/ui/status/network.js:788
+#: js/ui/status/network.js:820
 msgid "Wi-Fi needs to be turned on in order to connect to a network."
 msgstr "ចាំបាច់​ត្រូវ​បើក​វ៉ាយហ្វាយ​ដើម្បី​តភ្ជាប់​បណ្ដាញ។"
 
-#: ../js/ui/status/network.js:789
+#: js/ui/status/network.js:821
 msgid "Turn On Wi-Fi"
 msgstr "បើក​វ៉ាយហ្វាយ"
 
-#: ../js/ui/status/network.js:814
+#: js/ui/status/network.js:846
 msgid "Wi-Fi Networks"
 msgstr "បណ្ដាញ​វ៉ាយហ្វាយ"
 
-#: ../js/ui/status/network.js:816
+#: js/ui/status/network.js:848
 msgid "Select a network"
 msgstr "ជ្រើស​បណ្ដាញ"
 
-#: ../js/ui/status/network.js:845
+#: js/ui/status/network.js:880
 msgid "No Networks"
 msgstr "គ្មាន​បណ្ដាញ"
 
-#: ../js/ui/status/network.js:866 ../js/ui/status/rfkill.js:103
+#: js/ui/status/network.js:901 js/ui/status/rfkill.js:106
 msgid "Use hardware switch to turn off"
 msgstr "ប្រើ​កុងតាក់​ផ្នែក​រឹង​ដើម្បី​បិទ"
 
-#: ../js/ui/status/network.js:1136
+#: js/ui/status/network.js:1178
 msgid "Select Network"
 msgstr "ជ្រើស​បណ្ដាញ"
 
-#: ../js/ui/status/network.js:1142
+#: js/ui/status/network.js:1184
 msgid "Wi-Fi Settings"
 msgstr "ការ​កំណត់​វ៉ាយហ្វាយ"
 
-#: ../js/ui/status/network.js:1234
-msgid "Turn On"
-msgstr "បើក"
-
-#: ../js/ui/status/network.js:1251
-msgid "Hotspot Active"
+#. Translators: %s is a network identifier
+#: js/ui/status/network.js:1305
+#, fuzzy, javascript-format
+msgid "%s Hotspot Active"
 msgstr "ហតស្ប៉ត​សកម្ម"
 
-#: ../js/ui/status/network.js:1362
-msgid "connecting..."
-msgstr "កំពុង​តភ្ជាប់"
+#. Translators: %s is a network identifier
+#: js/ui/status/network.js:1320
+#, fuzzy, javascript-format
+msgid "%s Not Connected"
+msgstr "មិន​បាន​តភ្ជាប់"
 
-#. Translators: this is for network connections that require some kind of key or password */
-#: ../js/ui/status/network.js:1365
+#: js/ui/status/network.js:1417
+#, fuzzy
+msgid "connecting…"
+msgstr "ការ​តភ្ជាប់"
+
+#. Translators: this is for network connections that require some kind of key or password
+#: js/ui/status/network.js:1420
 msgid "authentication required"
 msgstr "ទាមទារ​ការ​ផ្ទៀងផ្ទាត់"
 
-#: ../js/ui/status/network.js:1367
+#: js/ui/status/network.js:1422
 msgid "connection failed"
 msgstr "ការ​តភ្ជាប់​បាន​បរាជ័យ"
 
-#: ../js/ui/status/network.js:1433 ../js/ui/status/rfkill.js:88
-msgid "Network Settings"
-msgstr "ការ​កំណត់​បណ្ដាញ"
-
-#: ../js/ui/status/network.js:1435
+#: js/ui/status/network.js:1473
 msgid "VPN Settings"
 msgstr "ការ​កំណត់​វីភីអិន"
 
-#: ../js/ui/status/network.js:1454
+#: js/ui/status/network.js:1490
 msgid "VPN"
 msgstr "វីភីអិន"
 
-#: ../js/ui/status/network.js:1607
-msgid "Network Manager"
-msgstr "កម្មវិធី​គ្រប់គ្រង​បណ្ដាញ"
+#: js/ui/status/network.js:1500
+#, fuzzy
+msgid "VPN Off"
+msgstr "បិទ"
 
-#: ../js/ui/status/network.js:1647
+#: js/ui/status/network.js:1561 js/ui/status/rfkill.js:84
+msgid "Network Settings"
+msgstr "ការ​កំណត់​បណ្ដាញ"
+
+#: js/ui/status/network.js:1590
+#, fuzzy, javascript-format
+msgid "%s Wired Connection"
+msgid_plural "%s Wired Connections"
+msgstr[0] "ប្រើ​ជា​ការ​តភ្ជាប់​អ៊ីនធឺណិត"
+
+#: js/ui/status/network.js:1594
+#, fuzzy, javascript-format
+msgid "%s Wi-Fi Connection"
+msgid_plural "%s Wi-Fi Connections"
+msgstr[0] "ការ​តភ្ជាប់"
+
+#: js/ui/status/network.js:1598
+#, fuzzy, javascript-format
+msgid "%s Modem Connection"
+msgid_plural "%s Modem Connections"
+msgstr[0] "ការ​តភ្ជាប់"
+
+#: js/ui/status/network.js:1732
+msgid "Connection failed"
+msgstr "ការ​តភ្ជាប់​បាន​បរាជ័យ"
+
+#: js/ui/status/network.js:1733
 msgid "Activation of network connection failed"
 msgstr "ការ​ធ្វើឲ្យ​បណ្ដាញ​សកម្ម បាន​បរាជ័យ"
 
-#: ../js/ui/status/power.js:49
+#: js/ui/status/nightLight.js:45
+#, fuzzy
+msgid "Display Settings"
+msgstr "ការ​កំណត់​ខ្សែ"
+
+#: js/ui/status/nightLight.js:63
+msgid "Night Light Disabled"
+msgstr ""
+
+#: js/ui/status/nightLight.js:64
+msgid "Night Light On"
+msgstr ""
+
+#: js/ui/status/nightLight.js:66
+msgid "Resume"
+msgstr ""
+
+#: js/ui/status/nightLight.js:67
+msgid "Disable Until Tomorrow"
+msgstr ""
+
+#: js/ui/status/payg.js:27
+msgid "Enter unlock code…"
+msgstr ""
+
+#: js/ui/status/payg.js:86
+msgid "Getting time…"
+msgstr ""
+
+#: js/ui/status/payg.js:90
+msgid "Less than 1 minute"
+msgstr ""
+
+#: js/ui/status/payg.js:124
+#, javascript-format
+msgid "Account ID: %s"
+msgstr ""
+
+#: js/ui/status/power.js:47
 msgid "Power Settings"
 msgstr "ការ​កំណត់ថាមពល"
 
-#: ../js/ui/status/power.js:65
+#: js/ui/status/power.js:63
 msgid "Fully Charged"
 msgstr "បាន​បញ្ចូល​ពេញ"
 
-#: ../js/ui/status/power.js:72 ../js/ui/status/power.js:78
+#: js/ui/status/power.js:69
+msgid "Not Charging"
+msgstr ""
+
+#. 0 is reported when UPower does not have enough data
+#. to estimate battery life
+#: js/ui/status/power.js:72 js/ui/status/power.js:78
 msgid "Estimating…"
 msgstr "កំពុង​ប៉ាន់ស្មាន..."
 
-#: ../js/ui/status/power.js:86
-#, javascript-format
-msgid "%d∶%02d Remaining (%d%%)"
+#. Translators: this is <hours>:<minutes> Remaining (<percentage>)
+#: js/ui/status/power.js:86
+#, fuzzy, javascript-format
+msgid "%d∶%02d Remaining (%d %%)"
 msgstr "%d∶%02d នៅសល់ (%d%%)"
 
-#: ../js/ui/status/power.js:91
-#, javascript-format
-msgid "%d∶%02d Until Full (%d%%)"
+#. Translators: this is <hours>:<minutes> Until Full (<percentage>)
+#: js/ui/status/power.js:91
+#, fuzzy, javascript-format
+msgid "%d∶%02d Until Full (%d %%)"
 msgstr "%d∶%02d រហូត​ពេញ (%d%%)"
 
-#: ../js/ui/status/power.js:119
-msgid "UPS"
-msgstr "យូភីអេស"
+#: js/ui/status/power.js:140 js/ui/status/power.js:142
+#, javascript-format
+msgid "%d %%"
+msgstr ""
 
-#: ../js/ui/status/power.js:121
-msgid "Battery"
-msgstr "ថ្ម"
+#: js/ui/status/remoteAccess.js:44
+msgid "Screen is Being Shared"
+msgstr ""
 
-#: ../js/ui/status/rfkill.js:82
-msgid "Airplane Mode"
-msgstr "របៀប​ជិះ​យន្តហោះ"
+#: js/ui/status/remoteAccess.js:46
+#, fuzzy
+msgid "Turn off"
+msgstr "បិទ"
 
-#: ../js/ui/status/rfkill.js:84
-msgid "On"
-msgstr "បើក"
+#. The menu only appears when airplane mode is on, so just
+#. statically build it as if it was on, rather than dynamically
+#. changing the menu contents.
+#: js/ui/status/rfkill.js:79
+#, fuzzy
+msgid "Airplane Mode On"
+msgstr "បាន​របៀប​ជិះ​យន្តហោះ"
 
-#: ../js/ui/status/system.js:314
-msgid "Switch User"
-msgstr "ប្ដូរ​អ្នកប្រើ"
+#: js/ui/status/system.js:77
+msgid "Lock"
+msgstr "ចាក់សោ"
 
-#: ../js/ui/status/system.js:319
+#: js/ui/status/system.js:90
+#, fuzzy
+msgid "Power Off / Log Out"
+msgstr "បិទ"
+
+#: js/ui/status/system.js:93
 msgid "Log Out"
 msgstr "ចេញ"
 
-#: ../js/ui/status/system.js:338
-msgid "Orientation Lock"
-msgstr "ចាក់សោ​ទិស"
+#: js/ui/status/system.js:105
+#, fuzzy
+msgid "Switch User…"
+msgstr "ប្ដូរ​អ្នកប្រើ"
 
-#: ../js/ui/status/system.js:346
+#: js/ui/status/system.js:119
 msgid "Suspend"
 msgstr "ផ្អាក"
 
-#: ../js/ui/status/system.js:349
-msgid "Power Off"
+#: js/ui/status/system.js:131
+#, fuzzy
+msgid "Power Off…"
 msgstr "បិទ"
 
-#: ../js/ui/status/volume.js:127
+#: js/ui/status/thunderbolt.js:263
+msgid "Thunderbolt"
+msgstr ""
+
+#: js/ui/status/thunderbolt.js:325
+msgid "Unknown Thunderbolt device"
+msgstr ""
+
+#: js/ui/status/thunderbolt.js:326
+msgid ""
+"New device has been detected while you were away. Please disconnect and "
+"reconnect the device to start using it."
+msgstr ""
+
+#: js/ui/status/thunderbolt.js:329
+msgid "Unauthorized Thunderbolt device"
+msgstr ""
+
+#: js/ui/status/thunderbolt.js:330
+msgid ""
+"New device has been detected and needs to be authorized by an administrator."
+msgstr ""
+
+#: js/ui/status/thunderbolt.js:336
+msgid "Thunderbolt authorization error"
+msgstr ""
+
+#: js/ui/status/thunderbolt.js:337
+#, javascript-format
+msgid "Could not authorize the Thunderbolt device: %s"
+msgstr ""
+
+#: js/ui/status/volume.js:150
 msgid "Volume changed"
 msgstr "ប្ដូរ​កម្រិត​សំឡេង"
 
-#: ../js/ui/status/volume.js:162
+#: js/ui/status/volume.js:221
 msgid "Volume"
 msgstr "កម្រិត​សំឡេង"
 
-#: ../js/ui/status/volume.js:213
-msgid "Microphone"
-msgstr "មីក្រូហ្វូន"
+#. Translators: this is for display mirroring i.e. cloning.
+#. * Try to keep it under around 15 characters.
+#.
+#: js/ui/switchMonitor.js:17
+#, fuzzy
+msgid "Mirror"
+msgstr "កំហុស"
 
-#: ../js/ui/unlockDialog.js:67
-msgid "Log in as another user"
-msgstr "ចូល​ជា​អ្នកប្រើ​ផ្សេង"
+#. Translators: this is for the desktop spanning displays.
+#. * Try to keep it under around 15 characters.
+#.
+#: js/ui/switchMonitor.js:22
+msgid "Join Displays"
+msgstr ""
 
-#: ../js/ui/unlockDialog.js:84
+#. Translators: this is for using only an external display.
+#. * Try to keep it under around 15 characters.
+#.
+#: js/ui/switchMonitor.js:27
+msgid "External Only"
+msgstr ""
+
+#. Translators: this is for using only the laptop display.
+#. * Try to keep it under around 15 characters.
+#.
+#: js/ui/switchMonitor.js:32
+msgid "Built-in Only"
+msgstr ""
+
+#. Translators: This is a time format for a date in
+#. long format
+#: js/ui/unlockDialog.js:371
+#, fuzzy
+msgid "%A %B %-d"
+msgstr "%A, %B %d"
+
+#: js/ui/unlockDialog.js:377
+msgid "Swipe up to unlock"
+msgstr ""
+
+#: js/ui/unlockDialog.js:378
+msgid "Click or press a key to unlock"
+msgstr ""
+
+#: js/ui/unlockDialog.js:550
 msgid "Unlock Window"
 msgstr "ដោះ​សោ​វីនដូ"
 
-#: ../js/ui/viewSelector.js:100
+#: js/ui/unlockDialog.js:559
+msgid "Log in as another user"
+msgstr "ចូល​ជា​អ្នកប្រើ​ផ្សេង"
+
+#: js/ui/viewSelector.js:610
 msgid "Applications"
 msgstr "កម្មវិធី"
 
-#: ../js/ui/viewSelector.js:104
-msgid "Search"
-msgstr "ស្វែងរក"
-
-#: ../js/ui/windowAttentionHandler.js:19
+#: js/ui/windowAttentionHandler.js:20
 #, javascript-format
 msgid "“%s” is ready"
 msgstr "“%s” គឺ​រួចរាល់​ហើយ"
 
-#: ../js/ui/windowManager.js:56
-msgid "Do you want to keep these display settings?"
+#. Translators: This string should be shorter than 30 characters
+#: js/ui/windowManager.js:61
+#, fuzzy
+msgid "Keep these display settings?"
 msgstr "អ្នក​ចង់​រក្សា​ការ​កំណត់​បង្ហាញ​ទាំងនេះ​ដែរ​ឬទេ?"
 
-#. Translators: this and the following message should be limited in lenght,
+#. Translators: this and the following message should be limited in length,
 #. to avoid ellipsizing the labels.
-#. */
-#: ../js/ui/windowManager.js:75
+#.
+#: js/ui/windowManager.js:70
 msgid "Revert Settings"
 msgstr "ត្រឡប់​ការ​កំណត់​ទៅ​ដើម"
 
-#: ../js/ui/windowManager.js:79
+#: js/ui/windowManager.js:73
 msgid "Keep Changes"
 msgstr "រក្សា​ការ​ផ្លាស់ប្ដូរ"
 
-#: ../js/ui/windowManager.js:98
+#: js/ui/windowManager.js:91
 #, javascript-format
 msgid "Settings changes will revert in %d second"
 msgid_plural "Settings changes will revert in %d seconds"
 msgstr[0] "ការ​ផ្លាស់ប្ដូរ​ការ​កំណត់​នឹង​ត្រឡប់​ទៅ​ដើម​ក្នុង​រយៈពេល %d វិនាទី"
 
-#: ../src/calendar-server/evolution-calendar.desktop.in.in.h:1
+#. Translators: This represents the size of a window. The first number is
+#. * the width of the window and the second is the height.
+#: js/ui/windowManager.js:550
+#, javascript-format
+msgid "%d × %d"
+msgstr ""
+
+#: js/ui/windowMenu.js:27
+msgid "Minimize"
+msgstr ""
+
+#: js/ui/windowMenu.js:34
+msgid "Unmaximize"
+msgstr ""
+
+#: js/ui/windowMenu.js:38
+msgid "Maximize"
+msgstr ""
+
+#: js/ui/windowMenu.js:45
+msgid "Move"
+msgstr ""
+
+#: js/ui/windowMenu.js:51
+msgid "Resize"
+msgstr ""
+
+#: js/ui/windowMenu.js:58
+msgid "Move Titlebar Onscreen"
+msgstr ""
+
+#: js/ui/windowMenu.js:63
+msgid "Always on Top"
+msgstr ""
+
+#: js/ui/windowMenu.js:82
+msgid "Always on Visible Workspace"
+msgstr ""
+
+#: js/ui/windowMenu.js:96
+msgid "Move to Workspace Left"
+msgstr ""
+
+#: js/ui/windowMenu.js:102
+msgid "Move to Workspace Right"
+msgstr ""
+
+#: js/ui/windowMenu.js:108
+msgid "Move to Workspace Up"
+msgstr ""
+
+#: js/ui/windowMenu.js:114
+msgid "Move to Workspace Down"
+msgstr ""
+
+#: js/ui/windowMenu.js:132
+msgid "Move to Monitor Up"
+msgstr ""
+
+#: js/ui/windowMenu.js:141
+msgid "Move to Monitor Down"
+msgstr ""
+
+#: js/ui/windowMenu.js:150
+msgid "Move to Monitor Left"
+msgstr ""
+
+#: js/ui/windowMenu.js:159
+msgid "Move to Monitor Right"
+msgstr ""
+
+#: src/calendar-server/evolution-calendar.desktop.in:3
 msgid "Evolution Calendar"
 msgstr "ប្រតិទិន​ការ​វិវត្ត"
 
+#: src/main.c:458 subprojects/extensions-tool/src/main.c:249
+msgid "Print version"
+msgstr "បោះពុម្ព​កំណែ"
+
+#: src/main.c:464
+msgid "Mode used by GDM for login screen"
+msgstr "របៀប​ដែល​បាន​ប្រើ​ដោយ GDM សម្រាប់​អេក្រង់​ចូល"
+
+#: src/main.c:470
+#, fuzzy
+msgid "Use a specific mode, e.g. “gdm” for login screen"
+msgstr "ប្រើ​រៀប​ជាក់លាក់, ឧ. \"gdm\" សម្រាប់​អេក្រង់​ចូល"
+
+#: src/main.c:476
+msgid "List possible modes"
+msgstr "រាយ​របៀប​ដែល​អាច​ធ្វើ​បាន"
+
+#: src/shell-app.c:280
+msgctxt "program"
+msgid "Unknown"
+msgstr "មិន​ស្គាល់"
+
+#: src/shell-app.c:570
+#, c-format
+msgid "Failed to launch “%s”"
+msgstr "បាន​បរាជ័យ​ក្នុង​ការ​ចាប់ផ្ដើម “%s”"
+
+#: src/shell-keyring-prompt.c:731
+msgid "Passwords do not match."
+msgstr "ពាក្យសម្ងាត់​មិន​ផ្គូរផ្គង។"
+
+#: src/shell-keyring-prompt.c:739
+msgid "Password cannot be blank"
+msgstr "ពាក្យសម្ងាត់​មិន​អាចទទេ"
+
+#: src/shell-polkit-authentication-agent.c:344
+msgid "Authentication dialog was dismissed by the user"
+msgstr "បាន​បដិសេធ​ប្រអប់​ផ្ទៀងផ្ទាត់​ដោយ​អ្នកប្រើ"
+
+#. Translators: a file path to an extension directory
+#: subprojects/extensions-tool/src/command-create.c:125
+#, c-format
+msgid "The new extension was successfully created in %s.\n"
+msgstr ""
+
+#: subprojects/extensions-tool/src/command-create.c:194
+#, c-format
+msgid ""
+"Name should be a very short (ideally descriptive) string.\n"
+"Examples are: %s"
+msgstr ""
+
+#: subprojects/extensions-tool/src/command-create.c:197
+#: subprojects/extensions-tool/src/main.c:170
+msgid "Name"
+msgstr ""
+
+#: subprojects/extensions-tool/src/command-create.c:208
+#, c-format
+msgid ""
+"Description is a single-sentence explanation of what your extension does.\n"
+"Examples are: %s"
+msgstr ""
+
+#: subprojects/extensions-tool/src/command-create.c:222
+#, c-format
+msgid ""
+"UUID is a globally-unique identifier for your extension.\n"
+"This should be in the format of an email address (clicktofocus@janedoe."
+"example.com)\n"
+msgstr ""
+
+#: subprojects/extensions-tool/src/command-create.c:244
+msgid "The unique identifier of the new extension"
+msgstr ""
+
+#: subprojects/extensions-tool/src/command-create.c:247
+msgid "NAME"
+msgstr ""
+
+#: subprojects/extensions-tool/src/command-create.c:248
+msgid "The user-visible name of the new extension"
+msgstr ""
+
+#: subprojects/extensions-tool/src/command-create.c:250
+msgid "DESCRIPTION"
+msgstr ""
+
+#: subprojects/extensions-tool/src/command-create.c:252
+msgid "A short description of what the extension does"
+msgstr ""
+
+#: subprojects/extensions-tool/src/command-create.c:255
+msgid "Enter extension information interactively"
+msgstr ""
+
+#: subprojects/extensions-tool/src/command-create.c:263
+msgid "Create a new extension"
+msgstr ""
+
+#: subprojects/extensions-tool/src/command-create.c:280
+#: subprojects/extensions-tool/src/command-list.c:168
+#, fuzzy
+msgid "Unknown arguments"
+msgstr "មិន​ស្គាល់​មូលហេតុ"
+
+#: subprojects/extensions-tool/src/command-create.c:289
+msgid "UUID, name and description are required"
+msgstr ""
+
+#: subprojects/extensions-tool/src/command-disable.c:57
+msgid "Disable an extension"
+msgstr ""
+
+#: subprojects/extensions-tool/src/command-disable.c:74
+#: subprojects/extensions-tool/src/command-enable.c:74
+#: subprojects/extensions-tool/src/command-info.c:96
+#: subprojects/extensions-tool/src/command-prefs.c:107
+#: subprojects/extensions-tool/src/command-reset.c:74
+#: subprojects/extensions-tool/src/command-uninstall.c:89
+msgid "No UUID given"
+msgstr ""
+
+#: subprojects/extensions-tool/src/command-disable.c:79
+#: subprojects/extensions-tool/src/command-enable.c:79
+#: subprojects/extensions-tool/src/command-info.c:101
+#: subprojects/extensions-tool/src/command-prefs.c:112
+#: subprojects/extensions-tool/src/command-reset.c:79
+#: subprojects/extensions-tool/src/command-uninstall.c:94
+msgid "More than one UUID given"
+msgstr ""
+
+#: subprojects/extensions-tool/src/command-enable.c:57
+#, fuzzy
+msgid "Enable an extension"
+msgstr "ផ្នែក​បន្ថែម"
+
+#: subprojects/extensions-tool/src/command-info.c:79
+#, fuzzy
+msgid "Show extensions info"
+msgstr "មិន​បាន​ដំឡើង​ផ្នែក​បន្ថែម"
+
+#: subprojects/extensions-tool/src/command-install.c:173
+msgid "Overwrite an existing extension"
+msgstr ""
+
+#: subprojects/extensions-tool/src/command-install.c:175
+msgid "EXTENSION_BUNDLE"
+msgstr ""
+
+#: subprojects/extensions-tool/src/command-install.c:184
+#, fuzzy
+msgid "Install an extension bundle"
+msgstr "UUIDs នៃ​ផ្នែក​បន្ថែម​ដែល​ត្រូវ​បើក"
+
+#: subprojects/extensions-tool/src/command-install.c:201
+#, fuzzy
+msgid "No extension bundle specified"
+msgstr "មិន​បាន​ដំឡើង​ផ្នែក​បន្ថែម"
+
+#: subprojects/extensions-tool/src/command-install.c:207
+msgid "More than one extension bundle specified"
+msgstr ""
+
+#: subprojects/extensions-tool/src/command-list.c:125
+msgid "Show user-installed extensions"
+msgstr ""
+
+#: subprojects/extensions-tool/src/command-list.c:128
+msgid "Show system-installed extensions"
+msgstr ""
+
+#: subprojects/extensions-tool/src/command-list.c:131
+msgid "Show enabled extensions"
+msgstr ""
+
+#: subprojects/extensions-tool/src/command-list.c:134
+msgid "Show disabled extensions"
+msgstr ""
+
+#: subprojects/extensions-tool/src/command-list.c:137
+#, fuzzy
+msgid "Show extensions with preferences"
+msgstr "ចំណូលចិត្ត​ផ្នែក​បន្ថែម​របស់ GNOME សែល"
+
+#: subprojects/extensions-tool/src/command-list.c:140
+#, fuzzy
+msgid "Show extensions with updates"
+msgstr "មិន​បាន​ដំឡើង​ផ្នែក​បន្ថែម"
+
+#: subprojects/extensions-tool/src/command-list.c:143
+#, fuzzy
+msgid "Print extension details"
+msgstr "បោះពុម្ព​កំណែ"
+
+#: subprojects/extensions-tool/src/command-list.c:151
+msgid "List installed extensions"
+msgstr ""
+
+#: subprojects/extensions-tool/src/command-pack.c:450
+msgid "FILE"
+msgstr ""
+
+#: subprojects/extensions-tool/src/command-pack.c:451
+msgid "Additional source to include in the bundle"
+msgstr ""
+
+#: subprojects/extensions-tool/src/command-pack.c:454
+msgid "SCHEMA"
+msgstr ""
+
+#: subprojects/extensions-tool/src/command-pack.c:455
+msgid "A GSettings schema that should be included"
+msgstr ""
+
+#: subprojects/extensions-tool/src/command-pack.c:457
+#: subprojects/extensions-tool/src/command-pack.c:468
+msgid "DIRECTORY"
+msgstr ""
+
+#: subprojects/extensions-tool/src/command-pack.c:459
+msgid "The directory where translations are found"
+msgstr ""
+
+#: subprojects/extensions-tool/src/command-pack.c:461
+msgid "DOMAIN"
+msgstr ""
+
+#: subprojects/extensions-tool/src/command-pack.c:463
+msgid "The gettext domain to use for translations"
+msgstr ""
+
+#: subprojects/extensions-tool/src/command-pack.c:466
+msgid "Overwrite an existing pack"
+msgstr ""
+
+#: subprojects/extensions-tool/src/command-pack.c:470
+msgid "The directory where the pack should be created"
+msgstr ""
+
+#: subprojects/extensions-tool/src/command-pack.c:472
+msgid "SOURCE_DIRECTORY"
+msgstr ""
+
+#: subprojects/extensions-tool/src/command-pack.c:481
+msgid "Create an extension bundle"
+msgstr ""
+
+#: subprojects/extensions-tool/src/command-pack.c:500
+msgid "More than one source directory specified"
+msgstr ""
+
+#: subprojects/extensions-tool/src/command-prefs.c:90
+#, fuzzy
+msgid "Opens extension preferences"
+msgstr "ចំណូលចិត្ត​ផ្នែក​បន្ថែម​របស់ GNOME សែល"
+
+#: subprojects/extensions-tool/src/command-reset.c:57
+msgid "Reset an extension"
+msgstr ""
+
+#: subprojects/extensions-tool/src/command-uninstall.c:72
+msgid "Uninstall an extension"
+msgstr ""
+
+#: subprojects/extensions-tool/src/main.c:176
+msgid "Path"
+msgstr ""
+
+#: subprojects/extensions-tool/src/main.c:179
+msgid "URL"
+msgstr ""
+
+#: subprojects/extensions-tool/src/main.c:182
+msgid "Original author"
+msgstr ""
+
+#: subprojects/extensions-tool/src/main.c:188
+msgid "State"
+msgstr ""
+
+#: subprojects/extensions-tool/src/main.c:222
+msgid "“version” takes no arguments"
+msgstr ""
+
+#: subprojects/extensions-tool/src/main.c:224
+#: subprojects/extensions-tool/src/main.c:244
+msgid "Usage:"
+msgstr ""
+
+#: subprojects/extensions-tool/src/main.c:227
+msgid "Print version information and exit."
+msgstr ""
+
+#: subprojects/extensions-tool/src/main.c:242
+#: subprojects/extensions-tool/src/main.c:245
+msgid "COMMAND"
+msgstr ""
+
+#: subprojects/extensions-tool/src/main.c:245
+msgid "[ARGS…]"
+msgstr ""
+
+#: subprojects/extensions-tool/src/main.c:247
+msgid "Commands:"
+msgstr ""
+
+#: subprojects/extensions-tool/src/main.c:248
+#, fuzzy
+msgid "Print help"
+msgstr "បោះពុម្ព​កំណែ"
+
+#: subprojects/extensions-tool/src/main.c:250
+#, fuzzy
+msgid "Enable extension"
+msgstr "ផ្នែក​បន្ថែម"
+
+#: subprojects/extensions-tool/src/main.c:251
+#, fuzzy
+msgid "Disable extension"
+msgstr "ផ្នែក​បន្ថែម"
+
+#: subprojects/extensions-tool/src/main.c:252
+#, fuzzy
+msgid "Reset extension"
+msgstr "ផ្នែក​បន្ថែម"
+
+#: subprojects/extensions-tool/src/main.c:253
+msgid "Uninstall extension"
+msgstr ""
+
+#: subprojects/extensions-tool/src/main.c:254
+#, fuzzy
+msgid "List extensions"
+msgstr "ផ្នែក​បន្ថែម"
+
+#: subprojects/extensions-tool/src/main.c:255
+#: subprojects/extensions-tool/src/main.c:256
+#, fuzzy
+msgid "Show extension info"
+msgstr "មិន​បាន​ដំឡើង​ផ្នែក​បន្ថែម"
+
+#: subprojects/extensions-tool/src/main.c:257
+#, fuzzy
+msgid "Open extension preferences"
+msgstr "ចំណូលចិត្ត​ផ្នែក​បន្ថែម​របស់ GNOME សែល"
+
+#: subprojects/extensions-tool/src/main.c:258
+#, fuzzy
+msgid "Create extension"
+msgstr "ផ្នែក​បន្ថែម"
+
+#: subprojects/extensions-tool/src/main.c:259
+#, fuzzy
+msgid "Package extension"
+msgstr "ផ្នែក​បន្ថែម"
+
+#: subprojects/extensions-tool/src/main.c:260
+#, fuzzy
+msgid "Install extension bundle"
+msgstr "UUIDs នៃ​ផ្នែក​បន្ថែម​ដែល​ត្រូវ​បើក"
+
+#: subprojects/extensions-tool/src/main.c:262
+#, c-format
+msgid "Use “%s” to get detailed help.\n"
+msgstr ""
+
 #. translators:
 #. * The number of sound outputs on a particular device
-#: ../src/gvc/gvc-mixer-control.c:1837
+#: subprojects/gvc/gvc-mixer-control.c:1899
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -1696,45 +3301,454 @@ msgstr[0] "ចេញ %u"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: ../src/gvc/gvc-mixer-control.c:1847
+#: subprojects/gvc/gvc-mixer-control.c:1909
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
 msgstr[0] "ចូល %u"
 
-#: ../src/gvc/gvc-mixer-control.c:2373
+#: subprojects/gvc/gvc-mixer-control.c:2766
 msgid "System Sounds"
 msgstr "សំឡេង​ប្រព័ន្ធ"
 
-#: ../src/main.c:349
-msgid "Print version"
-msgstr "បោះពុម្ព​កំណែ"
+#: js/ui/appIconBar.js:195
+msgid "Other workspaces"
+msgstr ""
 
-#: ../src/main.c:355
-msgid "Mode used by GDM for login screen"
-msgstr "របៀប​ដែល​បាន​ប្រើ​ដោយ GDM សម្រាប់​អេក្រង់​ចូល"
+#: js/ui/appIconBar.js:204
+msgid "Current workspace"
+msgstr ""
 
-#: ../src/main.c:361
-msgid "Use a specific mode, e.g. \"gdm\" for login screen"
-msgstr "ប្រើ​រៀប​ជាក់លាក់, ឧ. \"gdm\" សម្រាប់​អេក្រង់​ចូល"
+#: js/ui/appIconBar.js:282
+msgid "Pin to Taskbar"
+msgstr ""
 
-#: ../src/main.c:367
-msgid "List possible modes"
-msgstr "រាយ​របៀប​ដែល​អាច​ធ្វើ​បាន"
+#: js/ui/appIconBar.js:286
+msgid "Unpin from Taskbar"
+msgstr ""
 
-#: ../src/shell-app.c:666
+#: js/ui/appIconBar.js:310
+#, fuzzy, javascript-format
+msgid "Quit %s"
+msgstr "បោះបង់"
+
+#: js/ui/endlessButton.js:14
+msgid "Endless Button"
+msgstr ""
+
+#: js/ui/endlessButton.js:67
+#, fuzzy
+msgid "Show Desktop"
+msgstr "បង្ហាញ​អត្ថបទ"
+
+#: js/ui/endlessButton.js:69
+#, fuzzy
+msgid "Show Apps"
+msgstr "បង្ហាញ​កម្មវិធី"
+
+#: js/ui/forceAppExitDialog.js:50
+#, fuzzy
+msgid "Quit applications"
+msgstr "កម្មវិធី"
+
+#: js/ui/forceAppExitDialog.js:56
+msgid ""
+"If an application doesn't respond for a while, select its name and click "
+"Quit Application."
+msgstr ""
+
+#: js/ui/forceAppExitDialog.js:87
+#, fuzzy
+msgid "System Monitor"
+msgstr "សំឡេង​ប្រព័ន្ធ"
+
+#: js/ui/forceAppExitDialog.js:95
+#, fuzzy
+msgid "Quit Application"
+msgstr "កម្មវិធី"
+
+#: js/ui/hotCorner.js:15
+#, fuzzy
+msgid "Hot Corner"
+msgstr "មិន​បាន​តភ្ជាប់"
+
+#: js/ui/hotCorner.js:25
+msgid "Enable Hot Corner"
+msgstr ""
+
+#: js/ui/hotCorner.js:29
+msgid "Disable Hot Corner"
+msgstr ""
+
+#: js/ui/iconGridLayout.js:312
+#, fuzzy, javascript-format
+msgid "%s has been removed"
+msgstr "បាន​យក %s ចេញពី​សំណព្វ​របស់​អ្នក។"
+
+#: js/ui/iconGridLayout.js:540
+msgid "New Folder"
+msgstr ""
+
+#: js/ui/internetSearch.js:70
+#, javascript-format
+msgid "Open \"%s\" in browser"
+msgstr ""
+
+#. Translators: the first %s is the search engine name, and the second
+#. * is the search string. For instance, 'Search Google for "hello"'.
+#.
+#: js/ui/internetSearch.js:79
+#, javascript-format
+msgid "Search %s for \"%s\""
+msgstr ""
+
+#: js/ui/internetSearch.js:81
+#, javascript-format
+msgid "Search the internet for \"%s\""
+msgstr ""
+
+#: js/ui/userMenu.js:16
+msgid "Social Accounts"
+msgstr ""
+
+#: js/ui/userMenu.js:19
+msgid "Settings"
+msgstr "ការ​កំណត់"
+
+#: js/ui/userMenu.js:24
+msgid "Give Us Feedback"
+msgstr ""
+
+#: src/shell-desktop-dir-info.c:485
+msgid "Unnamed"
+msgstr ""
+
+#: src/shell-desktop-dir-info.c:745
 #, c-format
-msgid "Failed to launch “%s”"
-msgstr "បាន​បរាជ័យ​ក្នុង​ការ​ចាប់ផ្ដើម “%s”"
+msgid "Custom definition for %s"
+msgstr ""
 
-#: ../src/shell-keyring-prompt.c:714
-msgid "Passwords do not match."
-msgstr "ពាក្យសម្ងាត់​មិន​ផ្គូរផ្គង។"
+#~ msgid "Show the message tray"
+#~ msgstr "បង្ហាញ​ថាស​សារ"
 
-#: ../src/shell-keyring-prompt.c:722
-msgid "Password cannot be blank"
-msgstr "ពាក្យសម្ងាត់​មិន​អាចទទេ"
+#~ msgid "GNOME Shell (wayland compositor)"
+#~ msgstr "GNOME សែល (wayland compositor)"
 
-#: ../src/shell-polkit-authentication-agent.c:346
-msgid "Authentication dialog was dismissed by the user"
-msgstr "បាន​បដិសេធ​ប្រអប់​ផ្ទៀងផ្ទាត់​ដោយ​អ្នកប្រើ"
+#~ msgid "Show the week date in the calendar"
+#~ msgstr "បង្ហាញ​កាលបរិច្ឆេទ​សប្ដាហ៍​នៅ​ក្នុង​ប្រតិទិន"
+
+#~ msgid "If true, display the ISO week date in the calendar."
+#~ msgstr "បើ​ពិត បង្ហាញ​កាលបរិច្ឆេទ​សប្ដាហ៍ ISO នៅ​ក្នុង​ប្រតិទិន។"
+
+#~ msgid "Which keyboard to use"
+#~ msgstr "ក្ដារចុច​ដែល​ត្រូវ​ប្រើ"
+
+#~ msgid "The type of keyboard to use."
+#~ msgstr "ប្រភេទ​ក្ដារចុច​ដែល​ត្រូវ​ប្រើ។"
+
+#~ msgid "The maximum accuracy level of location."
+#~ msgstr "កម្រិត​សុក្រឹតភាព​អតិបរមា​នៃ​ទីតាំង។"
+
+#~ msgid ""
+#~ "Configures the maximum level of location accuracy applications are "
+#~ "allowed to see. Valid options are 'off' (disable location tracking), "
+#~ "'country', 'city', 'neighborhood', 'street', and 'exact' (typically "
+#~ "requires GPS receiver). Please keep in mind that this only controls what "
+#~ "GeoClue will allow applications to see and they can find user's location "
+#~ "on their own using network resources (albeit with street-level accuracy "
+#~ "at best)."
+#~ msgstr ""
+#~ "កំណត់​រចនាសម្ព័ន្ធ​កម្រិត​អតិបរមា​របស់​កម្មវិធី​សុក្រឹតភាព​ទីតាំង​ដែល​បាន​អនុញ្ញាត​ឲ្យ​មើល​ឃើញ។ ជម្រើស​ដែល​"
+#~ "ត្រឹមត្រូវ​គឺ 'off' (បិទ​ការ​តាមដាន​ទីតាំង), 'country', 'city', 'neighborhood', "
+#~ "'street', និង 'exact' (ត្រូវ​មានឧបករណ៍​ទទួល GPS) ។ សូម​ចងចាំ​ថា​វា​គ្រប់គ្រង​អ្វី​ដែល GeoClue "
+#~ "នឹង​អនុញ្ញាត​ឲ្យ​កម្មវិធី​មើល​ឃើញ ហើយ​ពួកគេ​អាច​រក​ឃើញ​ទីតាំង​របស់​អ្នកប្រើ​ដោយ​ប្រើ​ធនធាន​បណ្ដាញ​ផ្ទាល់ខ្លួន "
+#~ "(សូម្បីតែ​សុក្រឹតភាព​កម្រិត​ផ្លូវ​ក៏​ល្អ​ដែរ)"
+
+#~ msgid "Arrangement of buttons on the titlebar"
+#~ msgstr "ការ​រៀបចំ​ប៊ូតុង​នៅ​លើ​របារ​ចំណងជើង"
+
+#~ msgid ""
+#~ "This key overrides the key in org.gnome.desktop.wm.preferences when "
+#~ "running GNOME Shell."
+#~ msgstr ""
+#~ "ពាក្យ​គន្លឹះ​នេះ​បដិសេធ​ពាក្យ​គន្លឹះ​នៅ​ក្នុង org.gnome.desktop.wm.preferences ពេល​ដំណើរការ "
+#~ "GNOME សែល។"
+
+#~ msgid "There was an error loading the preferences dialog for %s:"
+#~ msgstr "មាន​កំហុស​ពេល​ផ្ទុក​ប្រអប់​ចំណូលចិត្ត​សម្រាប់ %s ៖"
+
+#~ msgid "Select an extension to configure using the combobox above."
+#~ msgstr "ជ្រើស​ផ្នែក​បន្ថែម​ដើម្បី​កំណត់​រចនាសម្ព័ន្ធ​ដោយ​ប្រើ​​ប្រអប់​បន្សំ​ខាង​លើ។"
+
+#~ msgid "Next"
+#~ msgstr "បន្ទាប់"
+
+#~ msgctxt "button"
+#~ msgid "Sign In"
+#~ msgstr "ចូល"
+
+#~ msgid "Frequently used applications will appear here"
+#~ msgstr "កម្មវិធី​ដែល​បាន​ប្រើ​ញឹកញាប់​នឹង​បង្ហាញ​នៅ​ទីនេះ"
+
+#~ msgid "Frequent"
+#~ msgstr "ញឹកញាប់"
+
+#~ msgid "All"
+#~ msgstr "ទាំងអស់"
+
+#~ msgid "Add to Favorites"
+#~ msgstr "បន្ថែម​ទៅ​សំណព្វ"
+
+#~ msgctxt "event list time"
+#~ msgid "%H∶%M"
+#~ msgstr "%H∶%M"
+
+#~ msgctxt "event list time"
+#~ msgid "%l∶%M %p"
+#~ msgstr "%l∶%M %p"
+
+#~ msgctxt "list sunday"
+#~ msgid "Su"
+#~ msgstr "Su"
+
+#~ msgctxt "list monday"
+#~ msgid "M"
+#~ msgstr "M"
+
+#~ msgctxt "list tuesday"
+#~ msgid "T"
+#~ msgstr "T"
+
+#~ msgctxt "list wednesday"
+#~ msgid "W"
+#~ msgstr "W"
+
+#~ msgctxt "list thursday"
+#~ msgid "Th"
+#~ msgstr "Th"
+
+#~ msgctxt "list friday"
+#~ msgid "F"
+#~ msgstr "F"
+
+#~ msgctxt "list saturday"
+#~ msgid "S"
+#~ msgstr "S"
+
+#~ msgid "calendar:MY"
+#~ msgstr "calendar:MY"
+
+#~ msgid "Today"
+#~ msgstr "ថ្ងៃនេះ"
+
+#~ msgid "Tomorrow"
+#~ msgstr "ថ្ងៃស្អែក"
+
+#~ msgid "This week"
+#~ msgstr "សប្ដាហ៍​នេះ"
+
+#~ msgid "Next week"
+#~ msgstr "សប្ដាហ៍​បន្ទាប់"
+
+#~ msgid "Removable Devices"
+#~ msgstr "ឧបករណ៍​ចល័ត"
+
+#~ msgid "Eject"
+#~ msgstr "ច្រានចេញ"
+
+#~ msgid "Password:"
+#~ msgstr "ពាក្យសម្ងាត់៖"
+
+#~ msgid "Type again:"
+#~ msgstr "វាយ​ម្ដងទៀត៖"
+
+#~ msgid "Password: "
+#~ msgstr "ពាក្យសម្ងាត់៖"
+
+#~ msgid "Authentication required by wireless network"
+#~ msgstr "បាន​ទាមទារ​ការ​ផ្ទៀងផ្ទាត់​តាម​បណ្ដាញ​ឥតខ្សែ"
+
+#~ msgid "Mobile broadband network password"
+#~ msgstr "ពាក្យសម្ងាត់​បណ្ដាញ​រលក​អាកាស​ធំ​ចល័ត"
+
+#~ msgid "Invitation"
+#~ msgstr "ការ​អញ្ជើញ"
+
+#~ msgid "Call"
+#~ msgstr "ហៅ"
+
+#~ msgid "File Transfer"
+#~ msgstr "ផ្ទេរ​ឯកសារ"
+
+#~ msgid "Chat"
+#~ msgstr "ជជែក"
+
+#~ msgid "Unmute"
+#~ msgstr "បើក​សំឡេង"
+
+#~ msgid "Mute"
+#~ msgstr "បិទ​សំឡេង"
+
+#~ msgid "Invitation to %s"
+#~ msgstr "ការ​អញ្ជើញ​មកកាន់ %s"
+
+#~ msgid "%s is inviting you to join %s"
+#~ msgstr "%s អញ្ជើញ​អ្នក​ឲ្យ​ចូលរួម %s"
+
+#~ msgid "Decline"
+#~ msgstr "បដិសេធ"
+
+#~ msgid "Accept"
+#~ msgstr "ព្រម​ទទួល"
+
+#~ msgid "Video call from %s"
+#~ msgstr "ហៅ​ជា​វីដេអូ​ពី %s"
+
+#~ msgid "Call from %s"
+#~ msgstr "ហៅ​ពី %s"
+
+#~ msgid "Answer"
+#~ msgstr "ឆ្លើយ"
+
+#~ msgid "%s is sending you %s"
+#~ msgstr "%s កំពុង​ផ្ញើ %s ឲ្យ​អ្នក"
+
+#~ msgid "%s would like permission to see when you are online"
+#~ msgstr "%s ចង់​បាន​សិទ្ធិ​ដើម្បី​មើល ពេល​អ្នក​នៅ​ក្រៅ​បណ្ដាញ"
+
+#~ msgid "Authentication failed"
+#~ msgstr "ការ​ផ្ទៀងផ្ទាត់​បាន​បរាជ័យ"
+
+#~ msgid "Encryption error"
+#~ msgstr "កំហុស​ការ​ដាក់​លេខ​កូដ"
+
+#~ msgid "Certificate not provided"
+#~ msgstr "មិន​បាន​ផ្ដល់​វិញ្ញាបនបត្រ"
+
+#~ msgid "Certificate untrusted"
+#~ msgstr "វិញ្ញាបនបត្រ​មិន​ទុកចិត្ត"
+
+#~ msgid "Certificate expired"
+#~ msgstr "វិញ្ញាបនបត្រ​ផុត​កំណត់"
+
+#~ msgid "Certificate not activated"
+#~ msgstr "វិញ្ញាបនបត្រ​មិន​បាន​ធ្វើឲ្យ​សកម្ម"
+
+#~ msgid "Certificate hostname mismatch"
+#~ msgstr "វិញ្ញាបនបត្រ​ឈ្មោះ​ម៉ាស៊ីន​មិន​ផ្គូផ្គង"
+
+#~ msgid "Certificate fingerprint mismatch"
+#~ msgstr "វិញ្ញាបនបត្រ​ស្នាម​ម្រាមដៃ​មិន​ផ្គូផ្គង"
+
+#~ msgid "Certificate self-signed"
+#~ msgstr "វិញ្ញាបនបត្រ​ចុះហត្ថលេខា​ខ្លួន​ឯង"
+
+#~ msgid "Status is set to offline"
+#~ msgstr "បាន​កំណត់​ស្ថានភាព​ទៅ​ក្រៅ​បណ្ដាញ"
+
+#~ msgid "Certificate is invalid"
+#~ msgstr "វិញ្ញាបនបត្រ​មិន​ត្រឹមត្រូវ"
+
+#~ msgid "Connection has been refused"
+#~ msgstr "បាន​បដិសេធ​ការ​តភ្ជាប់"
+
+#~ msgid "Connection can't be established"
+#~ msgstr "មិន​អាច​បង្កើត​ការ​តភ្ជាប់"
+
+#~ msgid "Connection has been lost"
+#~ msgstr "ការ​តភ្ជាប់​បាន​ដាច់"
+
+#~ msgid "This account is already connected to the server"
+#~ msgstr "គណនី​នេះ​បាន​ភ្ជាប់​ទៅ​ម៉ាស៊ីន​មេ​រួចហើយ"
+
+#~ msgid ""
+#~ "Connection has been replaced by a new connection using the same resource"
+#~ msgstr "បាន​ជំនួស​ការ​តភ្ជាប់​ថ្មី​ដោយ​ប្រើ​ធនធាន​ដូចគ្នា"
+
+#~ msgid "The account already exists on the server"
+#~ msgstr "គណនី​មាន​នៅ​លើ​ម៉ាស៊ីន​មេ​រួចហើយ"
+
+#~ msgid "Server is currently too busy to handle the connection"
+#~ msgstr "ម៉ាស៊ីន​មេ​កំពុង​រវល់​ក្នុង​ការ​តភ្ជាប់"
+
+#~ msgid "Certificate has been revoked"
+#~ msgstr "បាន​ដកហូត​វិញ្ញាបនបត្រ"
+
+#~ msgid ""
+#~ "Certificate uses an insecure cipher algorithm or is cryptographically weak"
+#~ msgstr "វិញ្ញាបនបត្រ​ប្រើ​ក្បួន​ដោះស្រាយ​ការ​សរសេរ​សម្ងាត់​ដែល​គ្មាន​សុវត្ថិភាព ឬ​ការ​ដាក់​លេខ​កូដ​ខ្សោយ"
+
+#~ msgid ""
+#~ "The length of the server certificate, or the depth of the server "
+#~ "certificate chain, exceed the limits imposed by the cryptography library"
+#~ msgstr ""
+#~ "ប្រវែង​វិញ្ញាបនបត្រ​ម៉ាស៊ីន​មេ ឬ​ជម្រៅ​ច្រវាក់​វិញ្ញាបនបត្រ​ម៉ាស៊ីន​មេ​បាន​លើស​ដែន​កំណត់​ដែល​បាន​បង្ខំ​ដោយ​"
+#~ "បណ្ណាល័យ​ការ​ដាក់​លេខ​កូដ"
+
+#~ msgid "Internal error"
+#~ msgstr "កំហុស​ខាងក្នុង"
+
+#~ msgid "View account"
+#~ msgstr "មើល​គណនី"
+
+#~ msgid "Open Calendar"
+#~ msgstr "បើក​ប្រតិទិន"
+
+#~ msgid "Open"
+#~ msgstr "បើក"
+
+#~ msgid "Clear Messages"
+#~ msgstr "សម្អាត​សារ"
+
+#~ msgid "Notification Settings"
+#~ msgstr "ការ​កំណត់​ការ​ជូនដំណឺង"
+
+#~ msgid "No Messages"
+#~ msgstr "មិន​មាន​សារ"
+
+#~ msgid "Message Tray"
+#~ msgstr "ថាស​សារ"
+
+#~ msgid "%d new message"
+#~ msgid_plural "%d new messages"
+#~ msgstr[0] "សារ​ថ្មី %d"
+
+#~ msgid "Type to search…"
+#~ msgstr "វាយ​បញ្ចូល​ដើម្បី​ស្វែងរក..."
+
+#~ msgid "Top Bar"
+#~ msgstr "របារ​កំពូល"
+
+#~ msgid "toggle-switch-us"
+#~ msgstr "toggle-switch-us"
+
+#~ msgid "%d Connected Device"
+#~ msgid_plural "%d Connected Devices"
+#~ msgstr[0] "បាន​តភ្ជាប់​ឧបករណ៍ %d"
+
+#~ msgid "In Use"
+#~ msgstr "កំពុង​ប្រើ"
+
+#~ msgid "Off"
+#~ msgstr "បិទ"
+
+#~ msgid "connecting..."
+#~ msgstr "កំពុង​តភ្ជាប់"
+
+#~ msgid "UPS"
+#~ msgstr "យូភីអេស"
+
+#~ msgid "Battery"
+#~ msgstr "ថ្ម"
+
+#~ msgid "Airplane Mode"
+#~ msgstr "របៀប​ជិះ​យន្តហោះ"
+
+#~ msgid "On"
+#~ msgstr "បើក"
+
+#~ msgid "Orientation Lock"
+#~ msgstr "ចាក់សោ​ទិស"
+
+#~ msgid "Search"
+#~ msgstr "ស្វែងរក"
