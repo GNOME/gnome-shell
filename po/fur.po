@@ -1,22 +1,22 @@
-# Friulian translation for video-subtitles.
-# Copyright (C) 2016 video-subtitles's COPYRIGHT HOLDER
-# This file is distributed under the same license as the video-subtitles package.
-# Fabio Tomat <f.t.public@gmail.com>, 2016.
-#
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the gnome-shell package.
+# 
+# Translators:
+# Fabio Tomat <f.t.public@gmail.com>, 2013,2016
 msgid ""
 msgstr ""
-"Project-Id-Version: video-subtitles master\n"
+"Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-04-17 17:11+0100\n"
-"PO-Revision-Date: 2020-01-26 20:08+0100\n"
-"Last-Translator: Fabio Tomat <f.t.public@gmail.com>\n"
-"Language-Team: Friulian <fur@li.org>\n"
-"Language: fur\n"
+"PO-Revision-Date: 2020-04-17 16:22+0000\n"
+"Last-Translator: Will Thompson <wjt@endlessm.com>\n"
+"Language-Team: Friulian (http://www.transifex.com/endless-os/gnome-shell/language/fur/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: fur\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 2.2.4\n"
 
 #: data/50-gnome-shell-system.xml:6
 msgid "System"
@@ -52,16 +52,13 @@ msgstr "Gjestion barcons e inviament aplicazions"
 
 #: data/org.gnome.shell.gschema.xml.in:15
 msgid "Enable internal tools useful for developers and testers from Alt-F2"
-msgstr ""
-"Abilite i struments internis utii pai svilupadôrs e beta-tester vie Alt-F2"
+msgstr "Abilite i struments internis utii pai svilupadôrs e beta-tester vie Alt-F2"
 
 #: data/org.gnome.shell.gschema.xml.in:18
 msgid ""
 "Allows access to internal debugging and monitoring tools using the Alt-F2 "
 "dialog."
-msgstr ""
-"Permet l'acès ai struments internis di debug e di analisi doprant il dialic "
-"ALT-F2."
+msgstr "Permet l'acès ai struments internis di debug e di analisi doprant il dialic ALT-F2."
 
 #: data/org.gnome.shell.gschema.xml.in:25
 msgid "UUIDs of extensions to enable"
@@ -69,15 +66,11 @@ msgstr "UUID des estensions di abilitâ"
 
 #: data/org.gnome.shell.gschema.xml.in:26
 msgid ""
-"GNOME Shell extensions have a UUID property; this key lists extensions which "
-"should be loaded. Any extension that wants to be loaded needs to be in this "
-"list. You can also manipulate this list with the EnableExtension and "
+"GNOME Shell extensions have a UUID property; this key lists extensions which"
+" should be loaded. Any extension that wants to be loaded needs to be in this"
+" list. You can also manipulate this list with the EnableExtension and "
 "DisableExtension D-Bus methods on org.gnome.Shell."
-msgstr ""
-"Lis estensions par GNOME Shell a àn une proprietât UUID: cheste clâf a met "
-"in liste lis estensions di cjamâ. Si scugne meti in cheste liste dutis lis "
-"estensions che si vûl di cjariâ. Al è pussibil ancje modificâ cheste liste "
-"cun la modalitât DBus EnableExtension e DisableExtension su org.gnome.Shell."
+msgstr "Lis estensions par GNOME Shell a àn une proprietât UUID: cheste clâf a met in liste lis estensions di cjamâ. Si scugne meti in cheste liste dutis lis estensions che si vûl di cjariâ. Al è pussibil ancje modificâ cheste liste cun la modalitât DBus EnableExtension e DisableExtension su org.gnome.Shell."
 
 #: data/org.gnome.shell.gschema.xml.in:35
 msgid "UUIDs of extensions to force disabling"
@@ -85,17 +78,12 @@ msgstr "UUID des estensions di sfuarçâ ae disabilitazion"
 
 #: data/org.gnome.shell.gschema.xml.in:36
 msgid ""
-"GNOME Shell extensions have a UUID property; this key lists extensions which "
-"should be disabled, even if loaded as part of the current mode. You can also "
-"manipulate this list with the EnableExtension and DisableExtension D-Bus "
-"methods on org.gnome.Shell. This key takes precedence over the “enabled-"
-"extensions” setting."
-msgstr ""
-"Lis estensions par GNOME Shell a àn une proprietât UUID: cheste clâf e liste "
-"lis estensions che si à di disabilitâ, ancje se cjariadis come part di une "
-"modalitât atuâl. Al è pussibil ancje modificâ cheste liste cun la modalitât "
-"DBus EnableExtension e DisableExtension su org.gnome.Shell. Cheste clâf e à "
-"precedence su la impostazion “enabled-extensions”."
+"GNOME Shell extensions have a UUID property; this key lists extensions which"
+" should be disabled, even if loaded as part of the current mode. You can "
+"also manipulate this list with the EnableExtension and DisableExtension "
+"D-Bus methods on org.gnome.Shell. This key takes precedence over the "
+"“enabled-extensions” setting."
+msgstr "Lis estensions par GNOME Shell a àn une proprietât UUID: cheste clâf e liste lis estensions che si à di disabilitâ, ancje se cjariadis come part di une modalitât atuâl. Al è pussibil ancje modificâ cheste liste cun la modalitât DBus EnableExtension e DisableExtension su org.gnome.Shell. Cheste clâf e à precedence su la impostazion “enabled-extensions”."
 
 #: data/org.gnome.shell.gschema.xml.in:46
 msgid "Disable user extensions"
@@ -105,9 +93,7 @@ msgstr "Disabilite lis estensions dal utent"
 msgid ""
 "Disable all extensions the user has enabled without affecting the “enabled-"
 "extension” setting."
-msgstr ""
-"Disabilite dutis lis estensions che l'utent al à abilitât cence vê "
-"interessât la impostazion “enabled-extension”."
+msgstr "Disabilite dutis lis estensions che l'utent al à abilitât cence vê interessât la impostazion “enabled-extension”."
 
 #: data/org.gnome.shell.gschema.xml.in:54
 msgid "Disables the validation of extension version compatibility"
@@ -118,11 +104,7 @@ msgid ""
 "GNOME Shell will only load extensions that claim to support the current "
 "running version. Enabling this option will disable this check and try to "
 "load all extensions regardless of the versions they claim to support."
-msgstr ""
-"GNOME Shell al cjarie nome lis estensions che a disin di supuartâ la version "
-"di GNOME Shell atualmentri in esecuzion. Abilitant cheste opzion il control "
-"nol vignarà plui fat e al cirarà di cjariâ dutis lis estensions ignorant la "
-"version che a disin di supuartâ."
+msgstr "GNOME Shell al cjarie nome lis estensions che a disin di supuartâ la version di GNOME Shell atualmentri in esecuzion. Abilitant cheste opzion il control nol vignarà plui fat e al cirarà di cjariâ dutis lis estensions ignorant la version che a disin di supuartâ."
 
 #: data/org.gnome.shell.gschema.xml.in:63
 msgid "List of desktop file IDs for favorite applications"
@@ -130,11 +112,9 @@ msgstr "Liste di ID di file dal scritori par lis aplicazions preferidis"
 
 #: data/org.gnome.shell.gschema.xml.in:64
 msgid ""
-"The applications corresponding to these identifiers will be displayed in the "
-"favorites area."
-msgstr ""
-"Lis aplicazions che a corispuindin a chescj identificadôrs a vignaran "
-"mostrâts te aree dai preferîts."
+"The applications corresponding to these identifiers will be displayed in the"
+" favorites area."
+msgstr "Lis aplicazions che a corispuindin a chescj identificadôrs a vignaran mostrâts te aree dai preferîts."
 
 #: data/org.gnome.shell.gschema.xml.in:71
 msgid "App Picker View"
@@ -148,7 +128,8 @@ msgstr "Indiç de viodude cumò selezionade tal seletôr di aplicazions."
 msgid "History for command (Alt-F2) dialog"
 msgstr "Storic comants pal dialic dai comants (Alt-F2)"
 
-#. Translators: looking glass is a debugger and inspector tool, see https://wiki.gnome.org/Projects/GnomeShell/LookingGlass
+#. Translators: looking glass is a debugger and inspector tool, see
+#. https://wiki.gnome.org/Projects/GnomeShell/LookingGlass
 #: data/org.gnome.shell.gschema.xml.in:83
 msgid "History for the looking glass dialog"
 msgstr "Storic pal dialic looking glass"
@@ -159,17 +140,14 @@ msgstr "Mostre simpri l'element “Jes” tal menu dal utent."
 
 #: data/org.gnome.shell.gschema.xml.in:88
 msgid ""
-"This key overrides the automatic hiding of the “Log out” menu item in single-"
-"user, single-session situations."
-msgstr ""
-"Cheste clâf a anule il platâ automatic de vôs di menù “Jes” cuant che si è "
-"te modalitât ugnul-utent, ugnule-session."
+"This key overrides the automatic hiding of the “Log out” menu item in "
+"single-user, single-session situations."
+msgstr "Cheste clâf a anule il platâ automatic de vôs di menù “Jes” cuant che si è te modalitât ugnul-utent, ugnule-session."
 
 #: data/org.gnome.shell.gschema.xml.in:95
 msgid ""
 "Whether to remember password for mounting encrypted or remote filesystems"
-msgstr ""
-"Specifiche se visâsi la password par montâ i filesystem rimots o cifrâts"
+msgstr "Specifiche se visâsi la password par montâ i filesystem rimots o cifrâts"
 
 #: data/org.gnome.shell.gschema.xml.in:96
 msgid ""
@@ -177,17 +155,12 @@ msgid ""
 "filesystem is mounted. If the password can be saved for future use a "
 "“Remember Password” checkbox will be present. This key sets the default "
 "state of the checkbox."
-msgstr ""
-"La shell e domandarà une password cuant che un dispositîf cifrât o un "
-"filesystem rimot al ven montât. Se le password e pues jessi salvade par un "
-"ûs futûr, une casele di selezion “Visasi Password” e sarà presinte. Cheste "
-"clâf e stabilìs il valôr predefinît di cheste casele di selezion."
+msgstr "La shell e domandarà une password cuant che un dispositîf cifrât o un filesystem rimot al ven montât. Se le password e pues jessi salvade par un ûs futûr, une casele di selezion “Visasi Password” e sarà presinte. Cheste clâf e stabilìs il valôr predefinît di cheste casele di selezion."
 
 #: data/org.gnome.shell.gschema.xml.in:105
 msgid ""
 "Whether the default Bluetooth adapter had set up devices associated to it"
-msgstr ""
-"Indiche se il dispositîf Bluetooth predefinît al à vût dispositîfs associâts"
+msgstr "Indiche se il dispositîf Bluetooth predefinît al à vût dispositîfs associâts"
 
 #: data/org.gnome.shell.gschema.xml.in:106
 msgid ""
@@ -195,11 +168,7 @@ msgid ""
 "powered, or if there were devices set up associated with the default "
 "adapter. This will be reset if the default adapter is ever seen not to have "
 "devices associated to it."
-msgstr ""
-"La shell e mostrarà un menù Bluetooth nome se un adatatôr Bluetooth al è "
-"alimentât, o se a son dispositîfs configurâts e associâts cul adatatôr "
-"predefinît. Chest al vignarà azerât se l'adatatôr predefinît nol à mai vût "
-"dispositîfs associâts."
+msgstr "La shell e mostrarà un menù Bluetooth nome se un adatatôr Bluetooth al è alimentât, o se a son dispositîfs configurâts e associâts cul adatatôr predefinît. Chest al vignarà azerât se l'adatatôr predefinît nol à mai vût dispositîfs associâts."
 
 #: data/org.gnome.shell.gschema.xml.in:115
 msgid "Enable introspection API"
@@ -209,9 +178,7 @@ msgstr "Abilite la API di introspezion"
 msgid ""
 "Enables a D-Bus API that allows to introspect the application state of the "
 "shell."
-msgstr ""
-"Al abilite une API di D-Bus che e permet la introspezion dal stât de "
-"aplicazion de shell."
+msgstr "Al abilite une API di D-Bus che e permet la introspezion dal stât de aplicazion de shell."
 
 #: data/org.gnome.shell.gschema.xml.in:126
 msgid "Enables the hot corner for the window picker"
@@ -230,8 +197,8 @@ msgstr ""
 #: data/org.gnome.shell.gschema.xml.in:139
 msgid ""
 "Default position of the hot corner is in a right corner. Set false to move "
-"the hot corner to a left corner. The position is not affected by the RTL vs. "
-"LTR text direction."
+"the hot corner to a left corner. The position is not affected by the RTL vs."
+" LTR text direction."
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:147
@@ -251,8 +218,8 @@ msgstr ""
 #: data/org.gnome.shell.gschema.xml.in:160
 msgid ""
 "Number of pixels in one dimension of the square target for the hot corner. "
-"Default is for a single pixel in the very corner. For some virtual machines, "
-"this value may need to be set larger than the default."
+"Default is for a single pixel in the very corner. For some virtual machines,"
+" this value may need to be set larger than the default."
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:170
@@ -262,8 +229,8 @@ msgstr ""
 #: data/org.gnome.shell.gschema.xml.in:173
 msgid ""
 "Makes window management more like standard Gnome. Hides application splash "
-"screens, prevents applications from being forced to open maximized, and does "
-"not automatically switch to the app selector when a window is minimized."
+"screens, prevents applications from being forced to open maximized, and does"
+" not automatically switch to the app selector when a window is minimized."
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:182
@@ -273,10 +240,11 @@ msgstr ""
 #: data/org.gnome.shell.gschema.xml.in:183
 msgid ""
 "This key controls whether to show the \"Forgot Password?\" button on the "
-"login screen. 'default' tells GNOME Shell to use the vendor default setting. "
-"'enable' and 'disable' can be used to explicitly enable or disable the reset "
-"button, respectively. Note that it only makes sense to set this key for the "
-"Debian-gdm user; changing it for your own user account will have no effect."
+"login screen. 'default' tells GNOME Shell to use the vendor default setting."
+" 'enable' and 'disable' can be used to explicitly enable or disable the "
+"reset button, respectively. Note that it only makes sense to set this key "
+"for the Debian-gdm user; changing it for your own user account will have no "
+"effect."
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:194
@@ -315,9 +283,7 @@ msgstr "Cumbinazion di tascj par vierzi la visuâl “Mostre Aplicazions”"
 #: data/org.gnome.shell.gschema.xml.in:223
 msgid ""
 "Keybinding to open the “Show Applications” view of the Activities Overview."
-msgstr ""
-"Cumbinazion di tascj par vierzi la visuâl “Mostre Aplicazions” inte "
-"Panoramiche Ativitâts."
+msgstr "Cumbinazion di tascj par vierzi la visuâl “Mostre Aplicazions” inte Panoramiche Ativitâts."
 
 #: data/org.gnome.shell.gschema.xml.in:230
 msgid "Keybinding to open the overview"
@@ -380,14 +346,12 @@ msgid "Switch to application 9"
 msgstr "Passe ae aplicazion 9"
 
 #: data/org.gnome.shell.gschema.xml.in:290
-#, fuzzy
 msgid "Keybinding that shows the force app exit dialog"
-msgstr "Tast rapit associât par vierzi il menù des aplicazions"
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:295
-#, fuzzy
 msgid "Keybinding to activate the first app in the icon bar."
-msgstr "Tast rapit associât par vierzi il menù des aplicazions."
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:296
 msgid ""
@@ -396,9 +360,8 @@ msgid ""
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:302
-#, fuzzy
 msgid "Keybinding to activate the second app in the icon bar."
-msgstr "Tast rapit associât par vierzi il menù des aplicazions."
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:303
 msgid ""
@@ -407,9 +370,8 @@ msgid ""
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:309
-#, fuzzy
 msgid "Keybinding to activate the third app in the icon bar."
-msgstr "Tast rapit associât par vierzi il menù des aplicazions."
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:310
 msgid ""
@@ -418,9 +380,8 @@ msgid ""
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:316
-#, fuzzy
 msgid "Keybinding to activate the fourth app in the icon bar."
-msgstr "Tast rapit associât par vierzi il menù des aplicazions."
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:317
 msgid ""
@@ -429,9 +390,8 @@ msgid ""
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:323
-#, fuzzy
 msgid "Keybinding to activate the fifth app in the icon bar."
-msgstr "Tast rapit associât par vierzi il menù des aplicazions."
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:324
 msgid ""
@@ -440,9 +400,8 @@ msgid ""
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:330
-#, fuzzy
 msgid "Keybinding to activate the sixth app in the icon bar."
-msgstr "Tast rapit associât par vierzi il menù des aplicazions."
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:331
 msgid ""
@@ -451,9 +410,8 @@ msgid ""
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:337
-#, fuzzy
 msgid "Keybinding to activate the seventh app in the icon bar."
-msgstr "Tast rapit associât par vierzi il menù des aplicazions."
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:338
 msgid ""
@@ -462,9 +420,8 @@ msgid ""
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:344
-#, fuzzy
 msgid "Keybinding to activate the eighth app in the icon bar."
-msgstr "Tast rapit associât par vierzi il menù des aplicazions."
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:345
 msgid ""
@@ -473,9 +430,8 @@ msgid ""
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:351
-#, fuzzy
 msgid "Keybinding to activate the last app in the icon bar."
-msgstr "Tast rapit associât par vierzi il menù des aplicazions."
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:352
 msgid ""
@@ -492,9 +448,7 @@ msgstr "Limite il seletôr al spazi di lavôr in ûs."
 msgid ""
 "If true, only applications that have windows on the current workspace are "
 "shown in the switcher. Otherwise, all applications are included."
-msgstr ""
-"Se vêr, nome lis aplicazions che a àn barcons tal spazi di lavôr curint a "
-"son mostrâts tal seletôr. Se no, dutis lis aplicazions a vegnin includudis."
+msgstr "Se vêr, nome lis aplicazions che a àn barcons tal spazi di lavôr curint a son mostrâts tal seletôr. Se no, dutis lis aplicazions a vegnin includudis."
 
 #: data/org.gnome.shell.gschema.xml.in:381
 msgid "The application icon mode."
@@ -503,21 +457,15 @@ msgstr "La modalitât de icone de aplicazion."
 #: data/org.gnome.shell.gschema.xml.in:382
 msgid ""
 "Configures how the windows are shown in the switcher. Valid possibilities "
-"are “thumbnail-only” (shows a thumbnail of the window), “app-icon-"
-"only” (shows only the application icon) or “both”."
-msgstr ""
-"Configure cemût che i barcons a saran viodûts intal scambiadôr. Lis "
-"pussibilitâts validis a son “thumbnail-only” (al mostre une anteprime dal "
-"barcon), “app-icon-only” (al mostre nome la icone de aplicazion) o "
-"“both” (al mostre ducj e doi)."
+"are “thumbnail-only” (shows a thumbnail of the window), “app-icon-only” "
+"(shows only the application icon) or “both”."
+msgstr "Configure cemût che i barcons a saran viodûts intal scambiadôr. Lis pussibilitâts validis a son “thumbnail-only” (al mostre une anteprime dal barcon), “app-icon-only” (al mostre nome la icone de aplicazion) o “both” (al mostre ducj e doi)."
 
 #: data/org.gnome.shell.gschema.xml.in:391
 msgid ""
 "If true, only windows from the current workspace are shown in the switcher. "
 "Otherwise, all windows are included."
-msgstr ""
-"Se vêr, nome i barcons dal spazi di lavôr curint a vegnin mostrâts intal "
-"seletôr. Se no, ducj i barcons a vegnin includûts."
+msgstr "Se vêr, nome i barcons dal spazi di lavôr curint a vegnin mostrâts intal seletôr. Se no, ducj i barcons a vegnin includûts."
 
 #: data/org.gnome.shell.gschema.xml.in:401
 msgid "Locations"
@@ -554,15 +502,11 @@ msgstr "Lee il barcon modâl al barcon gjenitôr"
 #: data/org.gnome.shell.gschema.xml.in:467
 msgid ""
 "This key overrides the key in org.gnome.mutter when running GNOME Shell."
-msgstr ""
-"Cheste clâf e sorplante chê in org.gnome.mutter cuant che al è in esecuzion "
-"GNOME Shell."
+msgstr "Cheste clâf e sorplante chê in org.gnome.mutter cuant che al è in esecuzion GNOME Shell."
 
 #: data/org.gnome.shell.gschema.xml.in:442
 msgid "Enable edge tiling when dropping windows on screen edges"
-msgstr ""
-"Abilite la tasseladure sul ôr cuant che si strissine i barcons tal ôr dal "
-"visôr"
+msgstr "Abilite la tasseladure sul ôr cuant che si strissine i barcons tal ôr dal visôr"
 
 #: data/org.gnome.shell.gschema.xml.in:450
 msgid "Workspaces are managed dynamically"
@@ -574,9 +518,7 @@ msgstr "Spazis di lavôr dome sul visôr principâl"
 
 #: data/org.gnome.shell.gschema.xml.in:466
 msgid "Delay focus changes in mouse mode until the pointer stops moving"
-msgstr ""
-"Tardâ il cambiament dal focus te modalitât mouse fintant che il pontadôr no "
-"si ferme"
+msgstr "Tardâ il cambiament dal focus te modalitât mouse fintant che il pontadôr no si ferme"
 
 #: data/org.gnome.Shell.PortalHelper.desktop.in.in:3
 msgid "Network Login"
@@ -592,10 +534,7 @@ msgid ""
 "We’re very sorry, but there’s been a problem: the settings for this "
 "extension can’t be displayed. We recommend that you report the issue to the "
 "extension authors."
-msgstr ""
-"Si scusin, ma si à vût un probleme: lis impostazions par cheste estension no "
-"puedin jessi mostradis. Si consee di segnalâ il probleme ai autôrs de "
-"estension."
+msgstr "Si scusin, ma si à vût un probleme: lis impostazions par cheste estension no puedin jessi mostradis. Si consee di segnalâ il probleme ai autôrs de estension."
 
 #: js/dbusServices/extensions/ui/extension-prefs-dialog.ui:82
 msgid "Technical Details"
@@ -613,15 +552,13 @@ msgstr "Visite la pagjine principâl de estension"
 #: js/extensionPrefs/data/org.gnome.Extensions.desktop.in.in:4
 #: js/extensionPrefs/js/main.js:182
 #: js/extensionPrefs/data/ui/extensions-window.ui:61
-#, fuzzy
 msgid "Extensions"
-msgstr "Estensions Shell"
+msgstr ""
 
 #: js/extensionPrefs/data/metainfo/org.gnome.Extensions.metainfo.xml.in:6
 #: js/extensionPrefs/js/main.js:183
-#, fuzzy
 msgid "Manage your GNOME Extensions"
-msgstr "Configure lis estensions di GNOME Shell"
+msgstr ""
 
 #: js/extensionPrefs/data/metainfo/org.gnome.Extensions.metainfo.xml.in:35
 msgid ""
@@ -696,18 +633,14 @@ msgid "Help"
 msgstr ""
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:12
-#, fuzzy
 msgid "About Extensions"
-msgstr "Liste lis estensions"
+msgstr ""
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:27
-#, fuzzy
 msgid ""
-"To find and add extensions, visit <a href=\"https://extensions.gnome.org"
-"\">extensions.gnome.org</a>."
+"To find and add extensions, visit <a "
+"href=\"https://extensions.gnome.org\">extensions.gnome.org</a>."
 msgstr ""
-"Si puedin instalâ lis estension cun Software o cun <a href=\"https://"
-"extensions.gnome.org\">extensions.gnome.org</a>."
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:35
 msgid "Warning"
@@ -725,37 +658,30 @@ msgid "Manually Installed"
 msgstr ""
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:158
-#, fuzzy
 msgid "Built-In"
-msgstr "Dome incorporât"
+msgstr ""
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:199
-#, fuzzy
 msgid "No Installed Extensions"
-msgstr "Liste lis estensions instaladis"
+msgstr ""
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:235
 msgid ""
 "We’re very sorry, but it was not possible to get the list of installed "
 "extensions. Make sure you are logged into GNOME and try again."
-msgstr ""
-"Nus displâs, ma nol è stât pussibil otignî la liste des estensions "
-"instaladis. Controle di jessi jentrât in GNOME e torne prove."
+msgstr "Nus displâs, ma nol è stât pussibil otignî la liste des estensions instaladis. Controle di jessi jentrât in GNOME e torne prove."
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:288
-#, fuzzy
 msgid "Log Out…"
-msgstr "Jes"
+msgstr ""
 
 #: js/gdm/authPrompt.js:131
-#, fuzzy
 msgid "Show password hint"
-msgstr "Password VPN"
+msgstr ""
 
 #: js/gdm/authPrompt.js:148
-#, fuzzy
 msgid "Forgot password?"
-msgstr "Password VPN"
+msgstr ""
 
 #. Cisco LEAP
 #: js/gdm/authPrompt.js:303 js/ui/components/networkAgent.js:363
@@ -766,13 +692,14 @@ msgstr "Password VPN"
 msgid "Password"
 msgstr "Password"
 
-#. Translators: During a password reset, prompt for the "secret code" provided by customer support.
+#. Translators: During a password reset, prompt for the "secret code" provided
+#. by customer support.
 #: js/gdm/authPrompt.js:680
-#, fuzzy
 msgid "Enter unlock code"
-msgstr "Impussibil sblocâ il volum"
+msgstr ""
 
-#. Translators: Password reset. The first %s is a verification code and the second is an email.
+#. Translators: Password reset. The first %s is a verification code and the
+#. second is an email.
 #: js/gdm/authPrompt.js:683
 #, javascript-format
 msgid ""
@@ -782,9 +709,8 @@ msgid ""
 msgstr ""
 
 #: js/gdm/authPrompt.js:762
-#, fuzzy
 msgid "Your unlock code was incorrect. Please try again."
-msgstr "Mi displâs, no je lade drete. Prove di gnûf."
+msgstr ""
 
 #: js/gdm/loginDialog.js:317
 msgid "Choose Session"
@@ -806,9 +732,8 @@ msgstr "(p.e., utent o %s)"
 #. (and don't even care of which one)
 #: js/gdm/loginDialog.js:920 js/ui/components/networkAgent.js:399
 #: js/ui/components/networkAgent.js:422 js/ui/components/networkAgent.js:440
-#, fuzzy
 msgid "Username"
-msgstr "Non utent: "
+msgstr ""
 
 #: js/gdm/loginDialog.js:1256
 msgid "Login Window"
@@ -833,7 +758,8 @@ msgctxt "search-result"
 msgid "Power Off"
 msgstr "Distudâ"
 
-#. Translators: A list of keywords that match the power-off action, separated by semicolons
+#. Translators: A list of keywords that match the power-off action, separated
+#. by semicolons
 #: js/misc/systemActions.js:92
 msgid "power off;shutdown;reboot;restart;halt;stop"
 msgstr "distudâ;studâ;tornâ a inviâ;fermâ"
@@ -844,7 +770,8 @@ msgctxt "search-result"
 msgid "Lock Screen"
 msgstr "Bloc schermi"
 
-#. Translators: A list of keywords that match the lock screen action, separated by semicolons
+#. Translators: A list of keywords that match the lock screen action,
+#. separated by semicolons
 #: js/misc/systemActions.js:100
 msgid "lock screen"
 msgstr "bloc schermi"
@@ -855,7 +782,8 @@ msgctxt "search-result"
 msgid "Log Out"
 msgstr "Jessî"
 
-#. Translators: A list of keywords that match the logout action, separated by semicolons
+#. Translators: A list of keywords that match the logout action, separated by
+#. semicolons
 #: js/misc/systemActions.js:108
 msgid "logout;log out;sign off"
 msgstr "jessî;sierâ session;disconeti"
@@ -866,7 +794,8 @@ msgctxt "search-result"
 msgid "Suspend"
 msgstr "Sospindi"
 
-#. Translators: A list of keywords that match the suspend action, separated by semicolons
+#. Translators: A list of keywords that match the suspend action, separated by
+#. semicolons
 #: js/misc/systemActions.js:116
 msgid "suspend;sleep"
 msgstr "sospindi;polse"
@@ -877,28 +806,27 @@ msgctxt "search-result"
 msgid "Switch User"
 msgstr "Cambi Utent"
 
-#. Translators: A list of keywords that match the switch user action, separated by semicolons
+#. Translators: A list of keywords that match the switch user action,
+#. separated by semicolons
 #: js/misc/systemActions.js:124
 msgid "switch user"
 msgstr "cambiâ utent"
 
-#. Translators: A list of keywords that match the lock orientation action, separated by semicolons
+#. Translators: A list of keywords that match the lock orientation action,
+#. separated by semicolons
 #: js/misc/systemActions.js:131
-#, fuzzy
 msgid "lock orientation;unlock orientation;screen;rotation"
-msgstr "bloc orientament;schermi;rotazion"
+msgstr ""
 
 #: js/misc/systemActions.js:251
-#, fuzzy
 msgctxt "search-result"
 msgid "Unlock Screen Rotation"
-msgstr "Bloche rotazion schermi"
+msgstr ""
 
 #: js/misc/systemActions.js:252
-#, fuzzy
 msgctxt "search-result"
 msgid "Lock Screen Rotation"
-msgstr "Bloche rotazion schermi"
+msgstr ""
 
 #: js/misc/util.js:125
 msgid "Command not found"
@@ -1037,10 +965,8 @@ msgstr "%-d di %B, %I∶%M %p"
 msgid "%B %-d %Y, %l∶%M %p"
 msgstr "%-d di %B dal %Y, %I∶%M %p"
 
-#.
 #. * Translators: this is the name of the search engine that shows in the
 #. * Shell's desktop search entry.
-#.
 #: js/misc/util.js:573
 msgid "Google"
 msgstr ""
@@ -1054,10 +980,7 @@ msgstr "Acès Hotspot"
 msgid ""
 "Your connection to this hotspot login is not secure. Passwords or other "
 "information you enter on this page can be viewed by people nearby."
-msgstr ""
-"La tô conession a chest acès hotspot no je sigure. Lis password o altris "
-"informazions che tu inserirâs su cheste pagjine e podaran jessi viodudis des "
-"personis chi ator."
+msgstr "La tô conession a chest acès hotspot no je sigure. Lis password o altris informazions che tu inserirâs su cheste pagjine e podaran jessi viodudis des personis chi ator."
 
 #. No support for non-modal system dialogs, so ignore the option
 #. let modal = options['modal'] || true;
@@ -1084,9 +1007,8 @@ msgstr "Invie doprant une schede grafiche dedicade"
 
 #. Add the "Remove from desktop" menu item at the end.
 #: js/ui/appDisplay.js:2443
-#, fuzzy
 msgid "Remove from desktop"
-msgstr "Gjave dai preferîts"
+msgstr ""
 
 #: js/ui/audioDeviceSelection.js:41
 msgid "Select Audio Device"
@@ -1120,7 +1042,8 @@ msgstr ""
 msgid "Add Website"
 msgstr ""
 
-#. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday).
+#. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0"
+#. (Sunday) "6" (Saturday) "06" (Sunday and Saturday).
 #: js/ui/calendar.js:41
 msgctxt "calendar-no-work"
 msgid "06"
@@ -1130,7 +1053,6 @@ msgstr "06"
 #. *
 #. * NOTE: These grid abbreviations are always shown together
 #. * and in order, e.g. "S M T W T F S".
-#.
 #: js/ui/calendar.js:70
 msgctxt "grid sunday"
 msgid "S"
@@ -1177,7 +1099,6 @@ msgstr "S"
 #. * standalone, when this is a month of the current year.
 #. * "%OB" is the new format specifier introduced in glibc 2.27,
 #. * in most cases you should not change it.
-#.
 #: js/ui/calendar.js:371
 msgid "%OB"
 msgstr "%OB"
@@ -1190,7 +1111,6 @@ msgstr "%OB"
 #. * "%OB" is the new format specifier introduced in glibc 2.27,
 #. * in most cases you should not use the old "%B" here unless you
 #. * absolutely know what you are doing.
-#.
 #: js/ui/calendar.js:381
 msgid "%OB %Y"
 msgstr "%OB dal %Y"
@@ -1215,19 +1135,20 @@ msgstr "Setemane %V"
 
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
-#.
 #: js/ui/calendar.js:730
 msgctxt "event list time"
 msgid "All Day"
 msgstr "Dut il dì"
 
-#. Translators: Shown on calendar heading when selected day occurs on current year
+#. Translators: Shown on calendar heading when selected day occurs on current
+#. year
 #: js/ui/calendar.js:868
 msgctxt "calendar heading"
 msgid "%A, %B %-d"
 msgstr "%A, %-d di %B"
 
-#. Translators: Shown on calendar heading when selected day occurs on different year
+#. Translators: Shown on calendar heading when selected day occurs on
+#. different year
 #: js/ui/calendar.js:871
 msgctxt "calendar heading"
 msgid "%A, %B %-d, %Y"
@@ -1259,9 +1180,7 @@ msgstr "“%s” nol rispuint."
 msgid ""
 "You may choose to wait a short while for it to continue or force the "
 "application to quit entirely."
-msgstr ""
-"Si pues sielzi di spietâ un tic che al continui o sfuarçâ la aplicazion a "
-"jessî dal dut."
+msgstr "Si pues sielzi di spietâ un tic che al continui o sfuarçâ la aplicazion a jessî dal dut."
 
 #: js/ui/closeDialog.js:70
 msgid "Force Quit"
@@ -1295,8 +1214,7 @@ msgstr "Vierç cun %s"
 #: js/ui/components/networkAgent.js:97
 msgid ""
 "Alternatively you can connect by pushing the “WPS” button on your router."
-msgstr ""
-"In alternative al è pussibil conetisi fracant il boton “WPS” sul router."
+msgstr "In alternative al è pussibil conetisi fracant il boton “WPS” sul router."
 
 #: js/ui/components/networkAgent.js:109 js/ui/status/network.js:223
 #: js/ui/status/network.js:314 js/ui/status/network.js:916
@@ -1320,24 +1238,20 @@ msgid "This connection doesn't have limits on how much you can download."
 msgstr ""
 
 #: js/ui/components/networkAgent.js:369
-#, fuzzy
 msgid "Key"
-msgstr "Clâf: "
+msgstr ""
 
 #: js/ui/components/networkAgent.js:407 js/ui/components/networkAgent.js:430
-#, fuzzy
 msgid "Private key password"
-msgstr "Password di clâf privade: "
+msgstr ""
 
 #: js/ui/components/networkAgent.js:428
-#, fuzzy
 msgid "Identity"
-msgstr "Identitât: "
+msgstr ""
 
 #: js/ui/components/networkAgent.js:442
-#, fuzzy
 msgid "Service"
-msgstr "Servizi: "
+msgstr ""
 
 #: js/ui/components/networkAgent.js:471
 #, javascript-format
@@ -1349,9 +1263,8 @@ msgid "Wired 802.1X authentication"
 msgstr "Autenticazion vie fîl 802.1X"
 
 #: js/ui/components/networkAgent.js:478
-#, fuzzy
 msgid "Network name"
-msgstr "Non rêt: "
+msgstr ""
 
 #: js/ui/components/networkAgent.js:483 js/ui/components/networkAgent.js:855
 msgid "DSL authentication"
@@ -1366,15 +1279,13 @@ msgid "PIN code is needed for the mobile broadband device"
 msgstr "Si scugne meti un codiç PIN pal dispositîf a bande largje mobil"
 
 #: js/ui/components/networkAgent.js:492
-#, fuzzy
 msgid "PIN"
-msgstr "PIN: "
+msgstr ""
 
 #: js/ui/components/networkAgent.js:499 js/ui/components/networkAgent.js:846
 #: js/ui/components/networkAgent.js:867
-#, fuzzy
 msgid "Authentication required"
-msgstr "autenticazion necessarie"
+msgstr ""
 
 #: js/ui/components/networkAgent.js:500 js/ui/components/networkAgent.js:852
 #: js/ui/components/networkAgent.js:856 js/ui/components/networkAgent.js:868
@@ -1392,9 +1303,7 @@ msgstr "Ministradôr di rêt"
 msgid ""
 "Passwords or encryption keys are required to access the wireless network "
 "“%s”."
-msgstr ""
-"Si scugne meti une password o une clâf di cifradure par jentrâ te rêt cence "
-"fîl \"%s\"."
+msgstr "Si scugne meti une password o une clâf di cifradure par jentrâ te rêt cence fîl \"%s\"."
 
 #: js/ui/components/networkAgent.js:871
 msgid "VPN password"
@@ -1420,7 +1329,8 @@ msgstr "Autentiche"
 msgid "Sorry, that didn’t work. Please try again."
 msgstr "Mi displâs, no je lade drete. Prove di gnûf."
 
-#. Translators: this is the other person changing their old IM name to their new
+#. Translators: this is the other person changing their old IM name to their
+#. new
 #. IM name.
 #: js/ui/components/telepathyClient.js:823
 #, javascript-format
@@ -1449,7 +1359,6 @@ msgstr "Dash"
 #. * shown - it is shown just below the time in the top bar (e.g.,
 #. * "Tue 9:29 AM").  The string itself should become a full date, e.g.,
 #. * "February 17 2015".
-#.
 #: js/ui/dateMenu.js:75
 msgid "%B %-d %Y"
 msgstr "%-d di %B dal %Y"
@@ -1457,7 +1366,6 @@ msgstr "%-d di %B dal %Y"
 #. Translators: This is the accessible name of the date button shown
 #. * below the time in the shell; it should combine the weekday and the
 #. * date, e.g. "Tuesday February 17 2015".
-#.
 #: js/ui/dateMenu.js:82
 msgid "%A %B %e %Y"
 msgstr "%A %e di %B dal %Y"
@@ -1571,15 +1479,12 @@ msgstr "Torne a inviâ e instale inzornaments"
 
 #: js/ui/endSessionDialog.js:93
 #, javascript-format
-msgid "The system will automatically restart and install updates in %d second."
+msgid ""
+"The system will automatically restart and install updates in %d second."
 msgid_plural ""
 "The system will automatically restart and install updates in %d seconds."
-msgstr[0] ""
-"Il sisteme al tornarà a inviâsi in automatic instalant i inzornaments chi di "
-"%d secont."
-msgstr[1] ""
-"Il sisteme al tornarà a inviâsi in automatic instalant i inzornaments chi di "
-"%d seconts."
+msgstr[0] "Il sisteme al tornarà a inviâsi in automatic instalant i inzornaments chi di %d secont."
+msgstr[1] "Il sisteme al tornarà a inviâsi in automatic instalant i inzornaments chi di %d seconts."
 
 #: js/ui/endSessionDialog.js:99 js/ui/endSessionDialog.js:118
 msgctxt "button"
@@ -1609,16 +1514,11 @@ msgstr "Torne invie e instale avanzament"
 msgid ""
 "%s %s will be installed after restart. Upgrade installation can take a long "
 "time: ensure that you have backed up and that the computer is plugged in."
-msgstr ""
-"%s %s al vignarà instalât dopo vê tornât a inviâ il computer. La instalazion "
-"dal avanzament e pues tirâ a dilunc: siguriti di vê fat i backup e che il to "
-"computer al sedi tacât."
+msgstr "%s %s al vignarà instalât dopo vê tornât a inviâ il computer. La instalazion dal avanzament e pues tirâ a dilunc: siguriti di vê fat i backup e che il to computer al sedi tacât."
 
 #: js/ui/endSessionDialog.js:261
 msgid "Running on battery power: Please plug in before installing updates."
-msgstr ""
-"Funzionament su batarie: par plasê tache la spine prime di instalâ i "
-"inzornaments."
+msgstr "Funzionament su batarie: par plasê tache la spine prime di instalâ i inzornaments."
 
 #: js/ui/endSessionDialog.js:270
 msgid "Some applications are busy or have unsaved work"
@@ -1656,9 +1556,8 @@ msgid "Install"
 msgstr "Instale"
 
 #: js/ui/extensionDownloader.js:198
-#, fuzzy
 msgid "Install Extension"
-msgstr "Disinstale estension"
+msgstr ""
 
 #: js/ui/extensionDownloader.js:199
 #, javascript-format
@@ -1666,29 +1565,26 @@ msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "Scjariâ e instalâ '%s' da extensions.gnome.org?"
 
 #: js/ui/extensionSystem.js:229
-#, fuzzy
 msgid "Extension Updates Available"
-msgstr "Nissune estension instalade"
+msgstr ""
 
 #: js/ui/extensionSystem.js:230
 msgid "Extension updates are ready to be installed."
 msgstr ""
 
 #: js/ui/inhibitShortcutsDialog.js:79
-#, fuzzy
 msgid "Allow inhibiting shortcuts"
-msgstr "%s al desidere inibî lis scurtis"
+msgstr ""
 
 #. Translators: %s is an application name like "Settings"
 #: js/ui/inhibitShortcutsDialog.js:82
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "The application %s wants to inhibit shortcuts"
-msgstr "Une aplicazion e desidere inibî lis scurtis"
+msgstr ""
 
 #: js/ui/inhibitShortcutsDialog.js:83
-#, fuzzy
 msgid "An application wants to inhibit shortcuts"
-msgstr "Une aplicazion e desidere inibî lis scurtis"
+msgstr ""
 
 #. Translators: %s is a keyboard shortcut like "Super+x"
 #: js/ui/inhibitShortcutsDialog.js:90
@@ -1714,11 +1610,9 @@ msgstr "Tascj lents disativâts"
 
 #: js/ui/kbdA11yDialog.js:34
 msgid ""
-"You just held down the Shift key for 8 seconds. This is the shortcut for the "
-"Slow Keys feature, which affects the way your keyboard works."
-msgstr ""
-"Si à apene tignût fracât par 8 seconts il tast Maiusc. Chê e je la scurte pe "
-"funzion tascj lents, che e determine il mût di lavorâ de tastiere."
+"You just held down the Shift key for 8 seconds. This is the shortcut for the"
+" Slow Keys feature, which affects the way your keyboard works."
+msgstr "Si à apene tignût fracât par 8 seconts il tast Maiusc. Chê e je la scurte pe funzion tascj lents, che e determine il mût di lavorâ de tastiere."
 
 #: js/ui/kbdA11yDialog.js:41
 msgid "Sticky Keys Turned On"
@@ -1732,20 +1626,14 @@ msgstr "Tascj tacadiçs disativâts"
 msgid ""
 "You just pressed the Shift key 5 times in a row. This is the shortcut for "
 "the Sticky Keys feature, which affects the way your keyboard works."
-msgstr ""
-"Si à apene fracât par 5 voltis, une daûr di chê altre, il tast Maiusc. Chê e "
-"je la scurte pe funzion Tascj singui/tacadiçs, che e determine il mût di "
-"lavorâ de tastiere."
+msgstr "Si à apene fracât par 5 voltis, une daûr di chê altre, il tast Maiusc. Chê e je la scurte pe funzion Tascj singui/tacadiçs, che e determine il mût di lavorâ de tastiere."
 
 #: js/ui/kbdA11yDialog.js:46
 msgid ""
 "You just pressed two keys at once, or pressed the Shift key 5 times in a "
 "row. This turns off the Sticky Keys feature, which affects the way your "
 "keyboard works."
-msgstr ""
-"A son stâts fracâts doi tascj adun o cinc voltis in file il tast Maiusc. "
-"Chest al disative la funzion tascj singui/tacadiçs, che al determine il mût "
-"di lavorâ de tastiere."
+msgstr "A son stâts fracâts doi tascj adun o cinc voltis in file il tast Maiusc. Chest al disative la funzion tascj singui/tacadiçs, che al determine il mût di lavorâ de tastiere."
 
 #: js/ui/kbdA11yDialog.js:55
 msgid "Leave On"
@@ -1828,9 +1716,7 @@ msgstr "Jentre come utent privilegjât"
 msgid ""
 "Running a session as a privileged user should be avoided for security "
 "reasons. If possible, you should log in as a normal user."
-msgstr ""
-"Si varès di evitâ di eseguî une session come utent privilegjât par resons di "
-"sigurece. Se pussibil, tu varessis di jentrâ come utent normâl."
+msgstr "Si varès di evitâ di eseguî une session come utent privilegjât par resons di sigurece. Se pussibil, tu varessis di jentrâ come utent normâl."
 
 #: js/ui/main.js:355
 msgid "Screen Lock disabled"
@@ -1894,7 +1780,6 @@ msgstr "Fat"
 msgid "Edit…"
 msgstr "Modifiche…"
 
-# masculin o feminin
 #: js/ui/padOsd.js:787 js/ui/padOsd.js:910
 msgid "None"
 msgstr "Nissune"
@@ -1961,8 +1846,8 @@ msgstr ""
 #: js/ui/paygUnlockDialog.js:160
 #, javascript-format
 msgid ""
-"Talk to your sales representative to purchase a new code. Call or text %s at "
-"%s"
+"Talk to your sales representative to purchase a new code. Call or text %s at"
+" %s"
 msgstr ""
 
 #. No overrides present, default to fallback text.
@@ -1976,9 +1861,8 @@ msgid "Pay As You Go Account ID: %s"
 msgstr ""
 
 #: js/ui/paygUnlockDialog.js:198
-#, fuzzy
 msgid "Unlock Machine"
-msgstr "Sbloche barcon"
+msgstr ""
 
 #: js/ui/paygUnlockDialog.js:287 js/ui/shellMountOperation.js:380
 msgid "Unlock"
@@ -2001,7 +1885,8 @@ msgid "Pay As You Go"
 msgstr ""
 
 #: js/ui/payg.js:40
-msgid "Enter an unlock code to extend the time before your credit has expired."
+msgid ""
+"Enter an unlock code to extend the time before your credit has expired."
 msgstr ""
 
 #: js/ui/payg.js:41
@@ -2021,9 +1906,8 @@ msgid "Too many attempts. Try again in a few seconds."
 msgstr ""
 
 #: js/ui/payg.js:261
-#, fuzzy
 msgid "Invalid code. Please try again."
-msgstr "Mi displâs, no je lade drete. Prove di gnûf."
+msgstr ""
 
 #: js/ui/payg.js:263
 msgid "Code already used. Please enter a new code."
@@ -2038,12 +1922,13 @@ msgstr ""
 msgid "Your Pay As You Go Account ID is: %s"
 msgstr ""
 
-#. We don't consider any other error here (and we don't consider DISABLED explicitly,
-#. since that should not happen), but still we need to show something to the user.
+#. We don't consider any other error here (and we don't consider DISABLED
+#. explicitly,
+#. since that should not happen), but still we need to show something to the
+#. user.
 #: js/ui/payg.js:271
-#, fuzzy
 msgid "Unknown error"
-msgstr "No cognossût"
+msgstr ""
 
 #: js/ui/payg.js:452
 msgid "Apply Code"
@@ -2057,65 +1942,64 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: js/ui/payg.js:610 js/ui/payg.js:620
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s minute"
 msgid_plural "%s minutes"
-msgstr[0] "%d minût indaûr"
-msgstr[1] "%d minûts indaûr"
+msgstr[0] ""
+msgstr[1] ""
 
 #: js/ui/payg.js:614 js/ui/payg.js:631
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s hour"
 msgid_plural "%s hours"
-msgstr[0] "%d ore indaûr"
-msgstr[1] "%d oris indaûr"
+msgstr[0] ""
+msgstr[1] ""
 
 #: js/ui/payg.js:625
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s day"
 msgid_plural "%s days"
-msgstr[0] "%s dut il dì."
-msgstr[1] "%s dut il dì."
+msgstr[0] ""
+msgstr[1] ""
 
 #: js/ui/payg.js:641
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s second has been added to your Pay As You Go credit."
 msgid_plural "%s seconds have been added to your Pay As You Go credit."
-msgstr[0] "%s al è stât zontât tai tiei preferîts."
-msgstr[1] "%s al è stât zontât tai tiei preferîts."
+msgstr[0] ""
+msgstr[1] ""
 
 #: js/ui/payg.js:648
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s minute has been added to your Pay As You Go credit."
 msgid_plural "%s minutes have been added to your Pay As You Go credit."
-msgstr[0] "%s al è stât zontât tai tiei preferîts."
-msgstr[1] "%s al è stât zontât tai tiei preferîts."
+msgstr[0] ""
+msgstr[1] ""
 
 #: js/ui/payg.js:655
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s hour has been added to your Pay As You Go credit."
 msgid_plural "%s hours have been added to your Pay As You Go credit."
-msgstr[0] "%s al è stât zontât tai tiei preferîts."
-msgstr[1] "%s al è stât zontât tai tiei preferîts."
+msgstr[0] ""
+msgstr[1] ""
 
 #: js/ui/payg.js:662
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s day has been added to your Pay As You Go credit."
 msgid_plural "%s days have been added to your Pay As You Go credit."
-msgstr[0] "%s al è stât zontât tai tiei preferîts."
-msgstr[1] "%s al è stât zontât tai tiei preferîts."
+msgstr[0] ""
+msgstr[1] ""
 
 #: js/ui/payg.js:669
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s month has been added to your Pay As You Go credit."
 msgid_plural "%s months have been added to your Pay As You Go credit."
-msgstr[0] "%s al è stât zontât tai tiei preferîts."
-msgstr[1] "%s al è stât zontât tai tiei preferîts."
+msgstr[0] ""
+msgstr[1] ""
 
 #: js/ui/payg.js:676
-#, fuzzy
 msgid "1 year has been added to your Pay As You Go credit."
-msgstr "%s al è stât zontât tai tiei preferîts."
+msgstr ""
 
 #. Unlock permanently message
 #: js/ui/payg.js:679
@@ -2123,16 +2007,13 @@ msgid "You have successfully unlocked your Endless Machine"
 msgstr ""
 
 #: js/ui/runDialog.js:58
-#, fuzzy
 msgid "Run a Command"
-msgstr "Scrîf un comant"
+msgstr ""
 
 #: js/ui/runDialog.js:73
-#, fuzzy
 msgid "Press ESC to close"
-msgstr "Frache Esc par jessî"
+msgstr ""
 
-# torne invie o torne tache
 #: js/ui/runDialog.js:240
 msgid "Restart is not available on Wayland"
 msgstr "Il tornâ a tacâ nol è disponibil in Wayland"
@@ -2149,7 +2030,6 @@ msgstr "GNOME al à di blocâ il visôr"
 #. screenshield. The user is probably very upset at this
 #. point, but any application using global grabs is broken
 #. Just tell him to stop using this app
-#.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
 #: js/ui/screenShield.js:295 js/ui/screenShield.js:674
@@ -2185,18 +2065,17 @@ msgid "Hide Text"
 msgstr "Plate Test"
 
 #: js/ui/shellEntry.js:194
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Search %s and more…"
-msgstr "Daûr a cirî…"
+msgstr ""
 
 #: js/ui/shellEntry.js:196
 msgid "Search the internet and more…"
 msgstr ""
 
 #: js/ui/shellEntry.js:198
-#, fuzzy
 msgid "Search…"
-msgstr "Daûr a cirî…"
+msgstr ""
 
 #: js/ui/shellEntry.js:490
 msgid "Caps lock is on."
@@ -2219,9 +2098,7 @@ msgstr "Al dopre i File-clâf"
 #, javascript-format
 msgid ""
 "To unlock a volume that uses keyfiles, use the <i>%s</i> utility instead."
-msgstr ""
-"Par sblocâ un volum che al dopre i file-clâf dopre invezit il program di "
-"utilitât <i>%s</i>."
+msgstr "Par sblocâ un volum che al dopre i file-clâf dopre invezit il program di utilitât <i>%s</i>."
 
 #: js/ui/shellMountOperation.js:306
 msgid "PIM Number"
@@ -2311,9 +2188,8 @@ msgid "Automatic Updates"
 msgstr "Inzornaments automatics"
 
 #: js/ui/status/automaticUpdates.js:263
-#, fuzzy
 msgid "Automatic updates on"
-msgstr "Ubicazion automatiche"
+msgstr ""
 
 #: js/ui/status/automaticUpdates.js:264
 msgid ""
@@ -2336,9 +2212,8 @@ msgid "Close"
 msgstr "Siere"
 
 #: js/ui/status/automaticUpdates.js:290
-#, fuzzy
 msgid "Change Settings…"
-msgstr "Impostazions suns"
+msgstr ""
 
 #: js/ui/status/bluetooth.js:40
 msgid "Bluetooth"
@@ -2357,14 +2232,12 @@ msgstr[0] "%d tacât"
 msgstr[1] "%d tacâts"
 
 #: js/ui/status/bluetooth.js:134
-#, fuzzy
 msgid "Bluetooth Off"
-msgstr "Bluetooth"
+msgstr ""
 
 #: js/ui/status/bluetooth.js:136
-#, fuzzy
 msgid "Bluetooth On"
-msgstr "Bluetooth"
+msgstr ""
 
 #: js/ui/status/brightness.js:39
 msgid "Brightness"
@@ -2428,15 +2301,13 @@ msgstr ""
 
 #. Translators: %s is an application name
 #: js/ui/status/location.js:357
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "The app %s wants to access your location"
-msgstr "Permeti a %s di cognossi la tô posizion?"
+msgstr ""
 
 #: js/ui/status/location.js:367
 msgid "Location access can be changed at any time from the privacy settings."
-msgstr ""
-"L'acès ae posizion al pues jessi cambiât cuant che tu vuelis su impostazions "
-"privacy."
+msgstr "L'acès ae posizion al pues jessi cambiât cuant che tu vuelis su impostazions privacy."
 
 #: js/ui/status/network.js:66
 msgid "<unknown>"
@@ -2454,7 +2325,8 @@ msgstr "%s distudât"
 msgid "%s Connected"
 msgstr "%s tacât"
 
-#. Translators: this is for network devices that are physically present but are not
+#. Translators: this is for network devices that are physically present but
+#. are not
 #. under NetworkManager's control (and thus cannot be used in the menu);
 #. %s is a network identifier
 #: js/ui/status/network.js:428
@@ -2474,20 +2346,23 @@ msgstr "%s daûr a disconeti"
 msgid "%s Connecting"
 msgstr "%s in conession"
 
-#. Translators: this is for network connections that require some kind of key or password; %s is a network identifier
+#. Translators: this is for network connections that require some kind of key
+#. or password; %s is a network identifier
 #: js/ui/status/network.js:441
 #, javascript-format
 msgid "%s Requires Authentication"
 msgstr "%s al à dibisugne di autenticazion"
 
-#. Translators: this is for devices that require some kind of firmware or kernel
+#. Translators: this is for devices that require some kind of firmware or
+#. kernel
 #. module, which is missing; %s is a network identifier
 #: js/ui/status/network.js:449
 #, javascript-format
 msgid "Firmware Missing For %s"
 msgstr "Al mancje il firmware par %s"
 
-#. Translators: this is for a network device that cannot be activated (for example it
+#. Translators: this is for a network device that cannot be activated (for
+#. example it
 #. is disabled by rfkill, or it has no coverage; %s is a network identifier
 #: js/ui/status/network.js:453
 #, javascript-format
@@ -2589,7 +2464,8 @@ msgstr "%s distacât"
 msgid "connecting…"
 msgstr "daûr a coneti…"
 
-#. Translators: this is for network connections that require some kind of key or password
+#. Translators: this is for network connections that require some kind of key
+#. or password
 #: js/ui/status/network.js:1420
 msgid "authentication required"
 msgstr "autenticazion necessarie"
@@ -2668,18 +2544,17 @@ msgid "Enter unlock code…"
 msgstr ""
 
 #: js/ui/status/payg.js:86
-#, fuzzy
 msgid "Getting time…"
-msgstr "Daûr a tornâ a inviâ…"
+msgstr ""
 
 #: js/ui/status/payg.js:90
 msgid "Less than 1 minute"
 msgstr ""
 
 #: js/ui/status/payg.js:124
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Account ID: %s"
-msgstr "Impostazions account"
+msgstr ""
 
 #: js/ui/status/power.js:47
 msgid "Power Settings"
@@ -2767,9 +2642,7 @@ msgstr "Dispositîf Thunderbolt no cognossût"
 msgid ""
 "New device has been detected while you were away. Please disconnect and "
 "reconnect the device to start using it."
-msgstr ""
-"Un gnûf dispositîf al è stât rilevât intant che tu jeris vie. Par plasê "
-"disconet e torne conet il dispositîf par tacâ a doprâlu."
+msgstr "Un gnûf dispositîf al è stât rilevât intant che tu jeris vie. Par plasê disconet e torne conet il dispositîf par tacâ a doprâlu."
 
 #: js/ui/status/thunderbolt.js:329
 msgid "Unauthorized Thunderbolt device"
@@ -2778,9 +2651,7 @@ msgstr "Dispositîf Thunderbolt cence autorizazion"
 #: js/ui/status/thunderbolt.js:330
 msgid ""
 "New device has been detected and needs to be authorized by an administrator."
-msgstr ""
-"Al è stât cjatât un gnûf dispositîf e al covente jessi autorizâts di un "
-"aministradôr."
+msgstr "Al è stât cjatât un gnûf dispositîf e al covente jessi autorizâts di un aministradôr."
 
 #: js/ui/status/thunderbolt.js:336
 msgid "Thunderbolt authorization error"
@@ -2801,28 +2672,24 @@ msgstr "Volum"
 
 #. Translators: this is for display mirroring i.e. cloning.
 #. * Try to keep it under around 15 characters.
-#.
 #: js/ui/switchMonitor.js:17
 msgid "Mirror"
 msgstr "Sdopleâ"
 
 #. Translators: this is for the desktop spanning displays.
 #. * Try to keep it under around 15 characters.
-#.
 #: js/ui/switchMonitor.js:22
 msgid "Join Displays"
 msgstr "Unìs schermis"
 
 #. Translators: this is for using only an external display.
 #. * Try to keep it under around 15 characters.
-#.
 #: js/ui/switchMonitor.js:27
 msgid "External Only"
 msgstr "Dome esterni"
 
 #. Translators: this is for using only the laptop display.
 #. * Try to keep it under around 15 characters.
-#.
 #: js/ui/switchMonitor.js:32
 msgid "Built-in Only"
 msgstr "Dome incorporât"
@@ -2830,9 +2697,8 @@ msgstr "Dome incorporât"
 #. Translators: This is a time format for a date in
 #. long format
 #: js/ui/unlockDialog.js:371
-#, fuzzy
 msgid "%A %B %-d"
-msgstr "%A, %-d di %B"
+msgstr ""
 
 #: js/ui/unlockDialog.js:377
 msgid "Swipe up to unlock"
@@ -2861,13 +2727,11 @@ msgstr "“%s” al è pront"
 
 #. Translators: This string should be shorter than 30 characters
 #: js/ui/windowManager.js:61
-#, fuzzy
 msgid "Keep these display settings?"
-msgstr "Vûstu tignî chestis impostazions di visôr?"
+msgstr ""
 
 #. Translators: this and the following message should be limited in length,
 #. to avoid ellipsizing the labels.
-#.
 #: js/ui/windowManager.js:70
 msgid "Revert Settings"
 msgstr "Ripristine impostazions"
@@ -2880,10 +2744,8 @@ msgstr "Ten lis modifichis"
 #, javascript-format
 msgid "Settings changes will revert in %d second"
 msgid_plural "Settings changes will revert in %d seconds"
-msgstr[0] ""
-"Lis modifichis as impostazions a vignaran ripristinadis chi di %d secont"
-msgstr[1] ""
-"Lis modifichis as impostazions a vignaran ripristinadis chi di %d seconts"
+msgstr[0] "Lis modifichis as impostazions a vignaran ripristinadis chi di %d secont"
+msgstr[1] "Lis modifichis as impostazions a vignaran ripristinadis chi di %d seconts"
 
 #. Translators: This represents the size of a window. The first number is
 #. * the width of the window and the second is the height.
@@ -3009,9 +2871,7 @@ msgstr "La gnove estension e je stade creade cun sucès in %s.\n"
 msgid ""
 "Name should be a very short (ideally descriptive) string.\n"
 "Examples are: %s"
-msgstr ""
-"Il non al à di jessi une stringhe (descritive in mût ideâl) une vore curte.\n"
-"Esemplis a son: %s"
+msgstr "Il non al à di jessi une stringhe (descritive in mût ideâl) une vore curte.\nEsemplis a son: %s"
 
 #: subprojects/extensions-tool/src/command-create.c:197
 #: subprojects/extensions-tool/src/main.c:170
@@ -3023,21 +2883,14 @@ msgstr "Non"
 msgid ""
 "Description is a single-sentence explanation of what your extension does.\n"
 "Examples are: %s"
-msgstr ""
-"La descrizion e je une spiegazion fate di une frase singule su ce che la "
-"estension e fâs.\n"
-"Esemplis a son: %s"
+msgstr "La descrizion e je une spiegazion fate di une frase singule su ce che la estension e fâs.\nEsemplis a son: %s"
 
 #: subprojects/extensions-tool/src/command-create.c:222
 #, c-format
 msgid ""
 "UUID is a globally-unique identifier for your extension.\n"
-"This should be in the format of an email address (clicktofocus@janedoe."
-"example.com)\n"
-msgstr ""
-"Il UUID al è un identificadôr unic e globâl pe tô estension.\n"
-"Chest al à di jessi tal formât di une direzion e-mail "
-"(clicparfocalizâ@titedalfari.esempli.com)\n"
+"This should be in the format of an email address (clicktofocus@janedoe.example.com)\n"
+msgstr "Il UUID al è un identificadôr unic e globâl pe tô estension.\nChest al à di jessi tal formât di une direzion e-mail (clicparfocalizâ@titedalfari.esempli.com)\n"
 
 #: subprojects/extensions-tool/src/command-create.c:244
 msgid "The unique identifier of the new extension"
@@ -3147,9 +3000,8 @@ msgid "Show extensions with preferences"
 msgstr "Mostre lis estensions cu lis preferencis"
 
 #: subprojects/extensions-tool/src/command-list.c:140
-#, fuzzy
 msgid "Show extensions with updates"
-msgstr "Mostre lis estensions cu lis preferencis"
+msgstr ""
 
 #: subprojects/extensions-tool/src/command-list.c:143
 msgid "Print extension details"
@@ -3343,9 +3195,8 @@ msgid "Other workspaces"
 msgstr ""
 
 #: js/ui/appIconBar.js:204
-#, fuzzy
 msgid "Current workspace"
-msgstr "Limite il seletôr al spazi di lavôr in ûs."
+msgstr ""
 
 #: js/ui/appIconBar.js:282
 msgid "Pin to Taskbar"
@@ -3356,28 +3207,25 @@ msgid "Unpin from Taskbar"
 msgstr ""
 
 #: js/ui/appIconBar.js:310
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Quit %s"
-msgstr "Jes"
+msgstr ""
 
 #: js/ui/endlessButton.js:14
 msgid "Endless Button"
 msgstr ""
 
 #: js/ui/endlessButton.js:67
-#, fuzzy
 msgid "Show Desktop"
-msgstr "Mostre Detais"
+msgstr ""
 
 #: js/ui/endlessButton.js:69
-#, fuzzy
 msgid "Show Apps"
-msgstr "Mostre Aplicazions"
+msgstr ""
 
 #: js/ui/forceAppExitDialog.js:50
-#, fuzzy
 msgid "Quit applications"
-msgstr "Aplicazions"
+msgstr ""
 
 #: js/ui/forceAppExitDialog.js:56
 msgid ""
@@ -3386,47 +3234,41 @@ msgid ""
 msgstr ""
 
 #: js/ui/forceAppExitDialog.js:87
-#, fuzzy
 msgid "System Monitor"
-msgstr "Suns di sisteme"
+msgstr ""
 
 #: js/ui/forceAppExitDialog.js:95
-#, fuzzy
 msgid "Quit Application"
-msgstr "Aplicazions"
+msgstr ""
 
 #: js/ui/hotCorner.js:15
 msgid "Hot Corner"
 msgstr ""
 
 #: js/ui/hotCorner.js:25
-#, fuzzy
 msgid "Enable Hot Corner"
-msgstr "Abilite estension"
+msgstr ""
 
 #: js/ui/hotCorner.js:29
-#, fuzzy
 msgid "Disable Hot Corner"
-msgstr "Disabilite fintremai doman"
+msgstr ""
 
 #: js/ui/iconGridLayout.js:312
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s has been removed"
-msgstr "%s al è stât gjavât dai tiei preferîts."
+msgstr ""
 
 #: js/ui/iconGridLayout.js:540
-#, fuzzy
 msgid "New Folder"
-msgstr "Cartele cence non"
+msgstr ""
 
 #: js/ui/internetSearch.js:70
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Open \"%s\" in browser"
-msgstr "Barcons vierts"
+msgstr ""
 
 #. Translators: the first %s is the search engine name, and the second
 #. * is the search string. For instance, 'Search Google for "hello"'.
-#.
 #: js/ui/internetSearch.js:79
 #, javascript-format
 msgid "Search %s for \"%s\""
@@ -3450,300 +3292,10 @@ msgid "Give Us Feedback"
 msgstr ""
 
 #: src/shell-desktop-dir-info.c:485
-#, fuzzy
 msgid "Unnamed"
-msgstr "Cartele cence non"
+msgstr ""
 
 #: src/shell-desktop-dir-info.c:745
 #, c-format
 msgid "Custom definition for %s"
 msgstr ""
-
-#~ msgid "Copy Error"
-#~ msgstr "Copie erôr"
-
-#~ msgid "Browse in Software"
-#~ msgstr "Esplore in Software"
-
-#~ msgid "Next"
-#~ msgstr "Indenant"
-
-#~ msgctxt "button"
-#~ msgid "Sign In"
-#~ msgstr "Jentre"
-
-#~ msgctxt "search-result"
-#~ msgid "Lock Orientation"
-#~ msgstr "Bloc orientament"
-
-#~ msgid "Frequently used applications will appear here"
-#~ msgstr "Lis aplicazions dopradis dispès a vignaran mostradis culì"
-
-#~ msgid "Frequent"
-#~ msgstr "Dispès"
-
-#~ msgid "All"
-#~ msgstr "Dutis"
-
-#~ msgid "Add to Favorites"
-#~ msgstr "Zonte tai preferîts"
-
-#~ msgid "Password:"
-#~ msgstr "Password:"
-
-#~ msgid "Type again:"
-#~ msgstr "Scîf di gnûf:"
-
-#~ msgid "Password: "
-#~ msgstr "Password: "
-
-#~ msgid "Authentication required by wireless network"
-#~ msgstr "La rêt cence fîl e domande autenticazion"
-
-#~ msgid "Mobile broadband network password"
-#~ msgstr "Passowrd rêt mobil a bande largje"
-
-#~ msgid "Type to search…"
-#~ msgstr "Scrîf par cirî…"
-
-#~ msgid "Top Bar"
-#~ msgstr "Sbare parsore"
-
-#~ msgid "%A, %B %d"
-#~ msgstr "%A, %d di %B"
-
-#~ msgid "%d new message"
-#~ msgid_plural "%d new messages"
-#~ msgstr[0] "%d gnûf messaç"
-#~ msgstr[1] "%d gnûfs messaçs"
-
-#~ msgid "%d new notification"
-#~ msgid_plural "%d new notifications"
-#~ msgstr[0] "%d gnove notifiche"
-#~ msgstr[1] "%d gnovis modifichis"
-
-# o ancjemò %d
-#~ msgid "%d more"
-#~ msgid_plural "%d more"
-#~ msgstr[0] "%d altri"
-#~ msgstr[1] "%d altris"
-
-#~ msgid "Off"
-#~ msgstr "Distudât"
-
-#~ msgid "On"
-#~ msgstr "Impiât"
-
-#~ msgid "Search"
-#~ msgstr "Cîr"
-
-#~ msgid "Rename"
-#~ msgstr "Cambie non"
-
-#~ msgid "Orientation Lock"
-#~ msgstr "Bloc Orientament"
-
-#~ msgid ""
-#~ "Keybinding that pauses and resumes all running tweens, for debugging "
-#~ "purposes"
-#~ msgstr ""
-#~ "Associazion di tascj par meti in pause e ripiâ ducj i tween in esecuzion, "
-#~ "par motîfs di debug"
-
-#~ msgid "Which keyboard to use"
-#~ msgstr "Cuale tastiere doprâ"
-
-#~ msgid "The type of keyboard to use."
-#~ msgstr "Il stamp di tastiere di doprâ."
-
-#~ msgid "network-workgroup"
-#~ msgstr "network-workgroup"
-
-#~ msgid "toggle-switch-us"
-#~ msgstr "toggle-switch-intl"
-
-#~ msgid "evolution"
-#~ msgstr "evolution"
-
-#~ msgid "%s, then %s later."
-#~ msgstr "%s, plui tart %s."
-
-#~ msgid "%s, then %s, followed by %s later."
-#~ msgstr "%s, chi di un pôc %s, e plui tart %s."
-
-#~ msgid "Feels like %s."
-#~ msgstr "Si sintin %s."
-
-#~ msgid "There was an error loading the preferences dialog for %s:"
-#~ msgstr ""
-#~ "Al è vignût fûr un erôr cuant che si cjamave il dialic des preferencis "
-#~ "par %s:"
-
-#~ msgctxt "search-result"
-#~ msgid "Power off"
-#~ msgstr "Distudâ"
-
-#~ msgctxt "search-result"
-#~ msgid "Log out"
-#~ msgstr "Jessî"
-
-#~ msgctxt "search-result"
-#~ msgid "Switch user"
-#~ msgstr "Cambiâ utent"
-
-#~ msgid "Hide tray"
-#~ msgstr "Plate casset"
-
-#~ msgid "Status Icons"
-#~ msgstr "Iconis di stât"
-
-#~ msgid "Events"
-#~ msgstr "Events"
-
-#~ msgid "Notifications"
-#~ msgstr "Notifichis"
-
-#~ msgid "Clear section"
-#~ msgstr "Nete la sezion"
-
-#~ msgid "Media"
-#~ msgstr "Supuart"
-
-#~ msgid "Web Authentication Redirect"
-#~ msgstr "Indreçament pe autenticazion web"
-
-#~ msgid "%d x %d"
-#~ msgstr "%d x %d"
-
-#~ msgid "Not In Use"
-#~ msgstr "No in ûs"
-
-#~ msgid "Show the week date in the calendar"
-#~ msgstr "Mostre il dì de setemane tal calendari"
-
-#~ msgid "If true, display the ISO week date in the calendar."
-#~ msgstr "Se VÊR, al mostre la date ISO de setemane tal calendari."
-
-#~ msgid "Use as Internet connection"
-#~ msgstr "Dopre come conession internet"
-
-#~ msgid "GNOME Delivers a full desktop experience"
-#~ msgstr "GNOME al da fûr une esperience di scritori complete "
-
-#~ msgid "Part of this means making it easy for users.."
-#~ msgstr "Part di chest al significhe rindi facil pai utents.."
-
-#~ msgid "..to explore new features and workflows."
-#~ msgstr "..esplorâ gnovis carateristichis e flus di lavôr."
-
-#~ msgid "This is where GNOME Help comes into the picture."
-#~ msgstr "Chest al è dulà che Jutori di GNOME al jentre in sene."
-
-#~ msgid "Need to know the keyboard shortcuts of gedit?"
-#~ msgstr "Covential savê lis scurtis de tastiere di gedit?"
-
-#~ msgid "GNOME Help lets you explore them easily through its interface."
-#~ msgstr ""
-#~ "Il Jutori di GNOME ti permet di esplorâju in mût facil cun la sô "
-#~ "interface."
-
-#~ msgid "Want to know what documents have to offer?"
-#~ msgstr "Vûstu cognossi ce che documents al à di ufrî?"
-
-#~ msgid "Press F1 and you can get an overview of.."
-#~ msgstr "Frache F1 e tu puedis vê une panoramiche des.."
-
-#~ msgid "..Documents' features at a glance."
-#~ msgstr "..carateristichis di Documents cuntune cucade."
-
-#~ msgid "GNOME Help is your offline assistant.."
-#~ msgstr "Jutori di GNOME al è il to assistent fûr linie.."
-
-#~ msgid "..ready to lend a hand with any application adventure you may take."
-#~ msgstr "..pront par dâti une man cun cualsisei aplicazion che ti covente."
-
-#~ msgid "The documentation is there to help you speed up.."
-#~ msgstr "La documentazion e je lì par judâ a niçâti.."
-
-#~ msgid "..and get work done."
-#~ msgstr "..e finî il lavôr."
-
-#~ msgid "Similarly, the GNOME project aims to provide good documentation.."
-#~ msgstr ""
-#~ "Te stesse maniere, il progjet GNOME al smire a furnî une buine "
-#~ "documentazion.."
-
-#~ msgid "..for developers and administrators."
-#~ msgstr "..par svilupadôrs e aministradôrs."
-
-#~ msgid "For developers, help is provided through Devhelp.."
-#~ msgstr "Pai svilupadôrs, il jutori al è furnît vie Devhelp.."
-
-#~ msgid "..and online at the GNOME Developer Center."
-#~ msgstr "..e in rêt tal Centri dal Svilupadôr GNOME."
-
-#~ msgid "Combined you have a library of knowledge and tools.."
-#~ msgstr "Cumbinâts tu âs une librarie di cognossince e struments.."
-
-#~ msgid "..to get you up to date with the latest happenings.."
-#~ msgstr "..par vêti inzornât cun lis ultimis novitâts.."
-
-#~ msgid "..in everything from glib to gnome-shell.."
-#~ msgstr "..su dut a partî di glib fin a gnome-shell.."
-
-#~ msgid "..in terms of source code, API and plug-in development."
-#~ msgstr "..in tiermins di codiç sorzint, API e plug-in di svilup."
-
-#~ msgid "For system administrators and tinkerers.."
-#~ msgstr "Pai aministradôrs di sisteme e traficons.."
-
-#~ msgid "..we provide the System Administration Guide online.."
-#~ msgstr "..o furnin la Guide par Aministradôrs di Sisteme in linie.."
-
-#~ msgid "at help.gnome.org."
-#~ msgstr "su help.gnome.org."
-
-#~ msgid "This guide aims at addressing your needs.."
-#~ msgstr "Cheste guide a ponte a indreçâ lis tôs dibisugnis.."
-
-#~ msgid ""
-#~ "..whether it be managing the configuration of several computers from one "
-#~ "place.."
-#~ msgstr ""
-#~ "..che a sedin ministrâ la configurazion di diviers computer da un puest "
-#~ "sôl.."
-
-#~ msgid "..or playing with the logo on the login screen."
-#~ msgstr "..o zuiâ cul logo de schermade di acès."
-
-#~ msgid "Together, Help, Developer Center and the Sysadmin Guide.."
-#~ msgstr ""
-#~ "Adun, Jutori, Centri dal Svilupadôr e la Guide dal Aministradôr di "
-#~ "sisteme.."
-
-#~ msgid "..makes up GNOMEs documentation."
-#~ msgstr "..a fasin la documentazion di GNOME."
-
-#~ msgid "Of course, we are always looking to make the documentation better."
-#~ msgstr "Sigûr, nô o cirin simpri di miorâ la documentazion."
-
-#~ msgid "Got an idea, found a typo.."
-#~ msgstr "Vût une idee, cjatât un erôr di scriture.."
-
-#~ msgid "..or just want to find a way to help?"
-#~ msgstr "..o nome vê gole di cjatâ une maniere par judâ?"
-
-#~ msgid "File a bug at bugzilla.gnome.org.."
-#~ msgstr "Invie un erôr a bugzilla.gnome.org.."
-
-#~ msgid "..against \"gnome-user-docs\"."
-#~ msgstr "..su \"gnome-user-docs\"."
-
-#~ msgid "Or come hangout at in the #docs channel.."
-#~ msgstr "O vent te cunvigne al canâl #docs.."
-
-#~ msgid "..at irc.gnome.org"
-#~ msgstr "..su irc.gnome.org"
-
-#~ msgid "This is Karen Sandler, thank you for using GNOME."
-#~ msgstr "O soi Karen Sandler, gracie di doprâ GNOME."

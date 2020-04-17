@@ -1,31 +1,30 @@
-# Oriya translation for gnome-shell.
-# Copyright (C) 2011 gnome-shell's COPYRIGHT HOLDER
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the gnome-shell package.
-#
-# Manoj Kumar Giri <mgiri@redhat.com>, 2011, 2012, 2013, 2014.
+# 
+# Translators:
+# Manoj Kumar Giri <mgiri@redhat.com>, 2011-2014
 msgid ""
 msgstr ""
-"Project-Id-Version: gnome-shell master\n"
+"Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-04-17 17:11+0100\n"
-"PO-Revision-Date: 2014-09-18 17:43+0530\n"
-"Last-Translator: Manoj Kumar Giri <mgiri@redhat.com>\n"
-"Language-Team: Oriya <oriya-it@googlegroups.com>\n"
-"Language: or\n"
+"PO-Revision-Date: 2020-04-17 16:22+0000\n"
+"Last-Translator: Will Thompson <wjt@endlessm.com>\n"
+"Language-Team: Oriya (http://www.transifex.com/endless-os/gnome-shell/language/or/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: or\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 1.5\n"
 
 #: data/50-gnome-shell-system.xml:6
 msgid "System"
 msgstr "ତନ୍ତ୍ର"
 
 #: data/50-gnome-shell-system.xml:9
-#, fuzzy
 msgid "Show the notification list"
-msgstr "%d ଟି ନୂତନ ବିଜ୍ଞପ୍ତିଗୁଡ଼ିକ"
+msgstr ""
 
 #: data/50-gnome-shell-system.xml:12
 msgid "Focus the active notification"
@@ -59,8 +58,7 @@ msgstr "ଆଭ୍ୟନ୍ତରୀଣ ସାଧନଗୁଡ଼ିକୁ Alt-F2 
 msgid ""
 "Allows access to internal debugging and monitoring tools using the Alt-F2 "
 "dialog."
-msgstr ""
-"ଆଭ୍ୟନ୍ତରୀଣ ତ୍ରୁଟିନିବାରଣ ଏବଂ ନିରୀକ୍ଷଣ ସାଧନଗୁଡ଼ିକୁ Alt-F2 ସଂଳାପ ବ୍ୟବହାର କରି ଅନୁମତି ପ୍ରଦାନ କରନ୍ତୁ।"
+msgstr "ଆଭ୍ୟନ୍ତରୀଣ ତ୍ରୁଟିନିବାରଣ ଏବଂ ନିରୀକ୍ଷଣ ସାଧନଗୁଡ଼ିକୁ Alt-F2 ସଂଳାପ ବ୍ୟବହାର କରି ଅନୁମତି ପ୍ରଦାନ କରନ୍ତୁ।"
 
 #: data/org.gnome.shell.gschema.xml.in:25
 msgid "UUIDs of extensions to enable"
@@ -68,32 +66,24 @@ msgstr "ସକ୍ରିୟ କରିବା ପାଇଁ ଥିବା ଅନୁ�
 
 #: data/org.gnome.shell.gschema.xml.in:26
 msgid ""
-"GNOME Shell extensions have a UUID property; this key lists extensions which "
-"should be loaded. Any extension that wants to be loaded needs to be in this "
-"list. You can also manipulate this list with the EnableExtension and "
+"GNOME Shell extensions have a UUID property; this key lists extensions which"
+" should be loaded. Any extension that wants to be loaded needs to be in this"
+" list. You can also manipulate this list with the EnableExtension and "
 "DisableExtension D-Bus methods on org.gnome.Shell."
-msgstr ""
-"GNOME ସେଲ ଅନୁଲଗ୍ନଗୁଡ଼ିକରେ ଗୋଟିଏ UUID ଗୁଣଧର୍ମ ଅଛି; ଏହି କି ଅନୁଲଗ୍ନଗୁଡ଼ିକୁ ତାଲିକାଭୁକ୍ତ କରିଥାଏ ଯାହାକୁ "
-"ଧାରଣ କରିବା ଉଚିତ। ସକ୍ରିୟ ଅନୁଲଗ୍ନ ଏବଂ ନିଷ୍କ୍ରିୟ-ଅନୁଲଗ୍ନଗୁଡ଼ିକ ସହିତ D-Bus ପଦ୍ଧତିରେ ଆପଣ ତାଲିକାକୁ "
-"ସଙ୍କଳନ କରିପାରିବେ।"
+msgstr "GNOME ସେଲ ଅନୁଲଗ୍ନଗୁଡ଼ିକରେ ଗୋଟିଏ UUID ଗୁଣଧର୍ମ ଅଛି; ଏହି କି ଅନୁଲଗ୍ନଗୁଡ଼ିକୁ ତାଲିକାଭୁକ୍ତ କରିଥାଏ ଯାହାକୁ ଧାରଣ କରିବା ଉଚିତ। ସକ୍ରିୟ ଅନୁଲଗ୍ନ ଏବଂ ନିଷ୍କ୍ରିୟ-ଅନୁଲଗ୍ନଗୁଡ଼ିକ ସହିତ D-Bus ପଦ୍ଧତିରେ ଆପଣ ତାଲିକାକୁ ସଙ୍କଳନ କରିପାରିବେ।"
 
 #: data/org.gnome.shell.gschema.xml.in:35
-#, fuzzy
 msgid "UUIDs of extensions to force disabling"
-msgstr "ସକ୍ରିୟ କରିବା ପାଇଁ ଥିବା ଅନୁଲଗ୍ନଗୁଡ଼ିକର UUID ଗୁଡ଼ିକ"
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:36
-#, fuzzy
 msgid ""
-"GNOME Shell extensions have a UUID property; this key lists extensions which "
-"should be disabled, even if loaded as part of the current mode. You can also "
-"manipulate this list with the EnableExtension and DisableExtension D-Bus "
-"methods on org.gnome.Shell. This key takes precedence over the “enabled-"
-"extensions” setting."
+"GNOME Shell extensions have a UUID property; this key lists extensions which"
+" should be disabled, even if loaded as part of the current mode. You can "
+"also manipulate this list with the EnableExtension and DisableExtension "
+"D-Bus methods on org.gnome.Shell. This key takes precedence over the "
+"“enabled-extensions” setting."
 msgstr ""
-"GNOME ସେଲ ଅନୁଲଗ୍ନଗୁଡ଼ିକରେ ଗୋଟିଏ UUID ଗୁଣଧର୍ମ ଅଛି; ଏହି କି ଅନୁଲଗ୍ନଗୁଡ଼ିକୁ ତାଲିକାଭୁକ୍ତ କରିଥାଏ ଯାହାକୁ "
-"ଧାରଣ କରିବା ଉଚିତ। ସକ୍ରିୟ ଅନୁଲଗ୍ନ ଏବଂ ନିଷ୍କ୍ରିୟ-ଅନୁଲଗ୍ନଗୁଡ଼ିକ ସହିତ D-Bus ପଦ୍ଧତିରେ ଆପଣ ତାଲିକାକୁ "
-"ସଙ୍କଳନ କରିପାରିବେ।"
 
 #: data/org.gnome.shell.gschema.xml.in:46
 msgid "Disable user extensions"
@@ -114,10 +104,7 @@ msgid ""
 "GNOME Shell will only load extensions that claim to support the current "
 "running version. Enabling this option will disable this check and try to "
 "load all extensions regardless of the versions they claim to support."
-msgstr ""
-"GNOME ସେଲ କେବଳ ଅନୁଲଗ୍ନଗୁଡ଼ିକୁ ଧାରଣ କରିବ ଯାହାକି ପ୍ରଚଳିତ ସଂସ୍କରଣକୁ ସହାୟତା ଦେବା ପାଇଁ ଉଦ୍ଦିଷ୍ଟ।"
-"ଏହି ବିକଳ୍ପକୁ ସକ୍ରିୟ କରିବା ଫଳରେ ତାହା ଏହି ଯାଞ୍ଚକୁ ନିଷ୍କ୍ରିୟ କରିବ ଏବଂ ସହାୟତା ପାଇଁ ଉଦ୍ଦିଷ୍ଟ "
-"ସଂସ୍କରଣଗୁଡ଼ିକୁ ଅଦେଖା କରି ସମସ୍ତ ଅନୁଲଗ୍ନଗୁଡ଼ିକୁ ଧାରଣ କରିବା ପାଇଁ ଚେଷ୍ଟା କରିବ।"
+msgstr "GNOME ସେଲ କେବଳ ଅନୁଲଗ୍ନଗୁଡ଼ିକୁ ଧାରଣ କରିବ ଯାହାକି ପ୍ରଚଳିତ ସଂସ୍କରଣକୁ ସହାୟତା ଦେବା ପାଇଁ ଉଦ୍ଦିଷ୍ଟ।ଏହି ବିକଳ୍ପକୁ ସକ୍ରିୟ କରିବା ଫଳରେ ତାହା ଏହି ଯାଞ୍ଚକୁ ନିଷ୍କ୍ରିୟ କରିବ ଏବଂ ସହାୟତା ପାଇଁ ଉଦ୍ଦିଷ୍ଟ ସଂସ୍କରଣଗୁଡ଼ିକୁ ଅଦେଖା କରି ସମସ୍ତ ଅନୁଲଗ୍ନଗୁଡ଼ିକୁ ଧାରଣ କରିବା ପାଇଁ ଚେଷ୍ଟା କରିବ।"
 
 #: data/org.gnome.shell.gschema.xml.in:63
 msgid "List of desktop file IDs for favorite applications"
@@ -125,8 +112,8 @@ msgstr "ମନପସନ୍ଦ ପ୍ରୟୋଗଗୁଡ଼ିକ ପାଇଁ 
 
 #: data/org.gnome.shell.gschema.xml.in:64
 msgid ""
-"The applications corresponding to these identifiers will be displayed in the "
-"favorites area."
+"The applications corresponding to these identifiers will be displayed in the"
+" favorites area."
 msgstr "ଏହି ପରିଚାୟକମାନଙ୍କ ସହିତ ସମ୍ପୃକ୍ତ ପ୍ରୟୋଗଗୁଡ଼ିକୁ ମନପସନ୍ଦ ସ୍ଥାନରେ ଦର୍ଶାଯିବ।"
 
 #: data/org.gnome.shell.gschema.xml.in:71
@@ -141,24 +128,21 @@ msgstr "ପ୍ରୟୋଗ ଗୋଟାଳୀରେ ବର୍ତ୍ତମାନ 
 msgid "History for command (Alt-F2) dialog"
 msgstr "ନିର୍ଦ୍ଦେଶ (Alt-F2) ସଂଳାପ ପାଇଁ ପୁରୁଣା ତଥ୍ୟ"
 
-#. Translators: looking glass is a debugger and inspector tool, see https://wiki.gnome.org/Projects/GnomeShell/LookingGlass
+#. Translators: looking glass is a debugger and inspector tool, see
+#. https://wiki.gnome.org/Projects/GnomeShell/LookingGlass
 #: data/org.gnome.shell.gschema.xml.in:83
 msgid "History for the looking glass dialog"
 msgstr "କାଚ ସଂଳାପ ଦେଖିବା ପାଇଁ ପୁରୁଣା ତଥ୍ୟ"
 
 #: data/org.gnome.shell.gschema.xml.in:87
-#, fuzzy
 msgid "Always show the “Log out” menu item in the user menu."
-msgstr "ସର୍ବଦା 'ଲଗଆଉଟ' ତାଲିକା ବସ୍ତୁକୁ ବ୍ୟବହାରକାରୀ ତାଲିକାରେ ଦର୍ଶାନ୍ତୁ।"
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:88
-#, fuzzy
 msgid ""
-"This key overrides the automatic hiding of the “Log out” menu item in single-"
-"user, single-session situations."
+"This key overrides the automatic hiding of the “Log out” menu item in "
+"single-user, single-session situations."
 msgstr ""
-"ଏହି ଚାବିଟି ସ୍ୱୟଂଚାଳିତ ଭାବରେ 'ଲଗଆଉଟ' ତାଲିକା ବସ୍ତୁକୁ ଲୁଚାଇବାକୁ ଏକକ-ବ୍ୟବହାରକାରୀ, ଏକକ-ଅଧିବେଶନ "
-"ପରିସ୍ଥିତିରେ ନବଲିଖନ କରିଥାଏ।"
 
 #: data/org.gnome.shell.gschema.xml.in:95
 msgid ""
@@ -166,16 +150,12 @@ msgid ""
 msgstr "ସଂଗୁପ୍ତ ଅଥବା ସୁଦୂର ଫାଇଲତନ୍ତ୍ରଗୁଡ଼ିକୁ ସ୍ଥାପନ କରିବା ପାଇଁ ପ୍ରବେଶ ସଂକେତକୁ ମନେରଖିବା ଉଚିତ କି"
 
 #: data/org.gnome.shell.gschema.xml.in:96
-#, fuzzy
 msgid ""
 "The shell will request a password when an encrypted device or a remote "
 "filesystem is mounted. If the password can be saved for future use a "
 "“Remember Password” checkbox will be present. This key sets the default "
 "state of the checkbox."
 msgstr ""
-"ସେଲ ଏକ ପ୍ରବେଶ ସଂକେତ ମାଗିବ ଯେତେବେଳେ ଏକ ସଂଗୁପ୍ତ ଉପକରଣ ଅଥବା ସୁଦୂର ଫାଇଲତନ୍ତ୍ରକୁ ସ୍ଥାପନ "
-"କରାଯିବ। ଯଦି ପ୍ରବେଶ ସଂକେତକୁ ଭବିଷ୍ୟତ ପାଇଁ ସଂରକ୍ଷଣ କରାଯାଇପାରିବ ତେବେ'ପ୍ରବେଶ ସଂକେତ ମନେରଖନ୍ତୁ' "
-"ଯାଞ୍ଚବାକ୍ସ ଥିବା ଉଚିତ। ଏହି ଚାବି ପୂର୍ବନିର୍ଦ୍ଧାରିତ ସ୍ଥିତିକୁ ସେଟ କରିଥାଏ।"
 
 #: data/org.gnome.shell.gschema.xml.in:105
 msgid ""
@@ -217,8 +197,8 @@ msgstr ""
 #: data/org.gnome.shell.gschema.xml.in:139
 msgid ""
 "Default position of the hot corner is in a right corner. Set false to move "
-"the hot corner to a left corner. The position is not affected by the RTL vs. "
-"LTR text direction."
+"the hot corner to a left corner. The position is not affected by the RTL vs."
+" LTR text direction."
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:147
@@ -238,8 +218,8 @@ msgstr ""
 #: data/org.gnome.shell.gschema.xml.in:160
 msgid ""
 "Number of pixels in one dimension of the square target for the hot corner. "
-"Default is for a single pixel in the very corner. For some virtual machines, "
-"this value may need to be set larger than the default."
+"Default is for a single pixel in the very corner. For some virtual machines,"
+" this value may need to be set larger than the default."
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:170
@@ -249,8 +229,8 @@ msgstr ""
 #: data/org.gnome.shell.gschema.xml.in:173
 msgid ""
 "Makes window management more like standard Gnome. Hides application splash "
-"screens, prevents applications from being forced to open maximized, and does "
-"not automatically switch to the app selector when a window is minimized."
+"screens, prevents applications from being forced to open maximized, and does"
+" not automatically switch to the app selector when a window is minimized."
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:182
@@ -260,10 +240,11 @@ msgstr ""
 #: data/org.gnome.shell.gschema.xml.in:183
 msgid ""
 "This key controls whether to show the \"Forgot Password?\" button on the "
-"login screen. 'default' tells GNOME Shell to use the vendor default setting. "
-"'enable' and 'disable' can be used to explicitly enable or disable the reset "
-"button, respectively. Note that it only makes sense to set this key for the "
-"Debian-gdm user; changing it for your own user account will have no effect."
+"login screen. 'default' tells GNOME Shell to use the vendor default setting."
+" 'enable' and 'disable' can be used to explicitly enable or disable the "
+"reset button, respectively. Note that it only makes sense to set this key "
+"for the Debian-gdm user; changing it for your own user account will have no "
+"effect."
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:194
@@ -296,15 +277,13 @@ msgid "Keybinding to open the application menu."
 msgstr "ପ୍ରୟୋଗ ମେନୁକୁ ଖୋଲିବା ପାଇଁ କି ବନ୍ଧନ।"
 
 #: data/org.gnome.shell.gschema.xml.in:222
-#, fuzzy
 msgid "Keybinding to open the “Show Applications” view"
-msgstr "\"ପ୍ରୟୋଗଗୁଡ଼ିକୁ ଦର୍ଶାନ୍ତୁ\" ଦୃଶ୍ୟକୁ ଖୋଲିବା ପାଇଁ କି ବନ୍ଧନ"
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:223
-#, fuzzy
 msgid ""
 "Keybinding to open the “Show Applications” view of the Activities Overview."
-msgstr "କାର୍ଯ୍ୟକଳାପ ସମୀକ୍ଷାର \"ପ୍ରୟୋଗଗୁଡ଼ିକୁ ଦର୍ଶାନ୍ତୁ\" ଦୃଶ୍ୟକୁ ଖୋଲିବା ପାଇଁ କି ବନ୍ଧନ।"
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:230
 msgid "Keybinding to open the overview"
@@ -315,14 +294,12 @@ msgid "Keybinding to open the Activities Overview."
 msgstr "କାର୍ଯ୍ୟକଳାପ ସମୀକ୍ଷାକୁ ଖୋଲିବା ପାଇଁ କି ବନ୍ଧନ।"
 
 #: data/org.gnome.shell.gschema.xml.in:237
-#, fuzzy
 msgid "Keybinding to toggle the visibility of the notification list"
-msgstr "ସନ୍ଦେଶ ଟ୍ରେର ଦୃଶ୍ୟମାନ୍ୟତାକୁ ଆଗପଛ କରିବା ପାଇଁ କି ବନ୍ଧନ।"
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:238
-#, fuzzy
 msgid "Keybinding to toggle the visibility of the notification list."
-msgstr "ସନ୍ଦେଶ ଟ୍ରେର ଦୃଶ୍ୟମାନ୍ୟତାକୁ ଆରମ୍ଭ/ବନ୍ଦ କରିବା ପାଇଁ କି ବନ୍ଧନ।"
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:244
 msgid "Keybinding to focus the active notification"
@@ -333,59 +310,48 @@ msgid "Keybinding to focus the active notification."
 msgstr "ସକ୍ରିୟ ବିଜ୍ଞପ୍ତିକୁ ଲକ୍ଷ୍ଯ କରିବା ପାଇଁ କି ବନ୍ଧନ।"
 
 #: data/org.gnome.shell.gschema.xml.in:251
-#, fuzzy
 msgid "Switch to application 1"
-msgstr "ପ୍ରୟୋଗଗୁଡ଼ିକୁ ଦର୍ଶାନ୍ତୁ"
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:255
-#, fuzzy
 msgid "Switch to application 2"
-msgstr "ପ୍ରୟୋଗଗୁଡ଼ିକୁ ଦର୍ଶାନ୍ତୁ"
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:259
-#, fuzzy
 msgid "Switch to application 3"
-msgstr "ପ୍ରୟୋଗଗୁଡ଼ିକୁ ଦର୍ଶାନ୍ତୁ"
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:263
-#, fuzzy
 msgid "Switch to application 4"
-msgstr "ପ୍ରୟୋଗଗୁଡ଼ିକୁ ଦର୍ଶାନ୍ତୁ"
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:267
-#, fuzzy
 msgid "Switch to application 5"
-msgstr "ପ୍ରୟୋଗଗୁଡ଼ିକୁ ଦର୍ଶାନ୍ତୁ"
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:271
-#, fuzzy
 msgid "Switch to application 6"
-msgstr "ପ୍ରୟୋଗଗୁଡ଼ିକୁ ଦର୍ଶାନ୍ତୁ"
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:275
-#, fuzzy
 msgid "Switch to application 7"
-msgstr "ପ୍ରୟୋଗଗୁଡ଼ିକୁ ଦର୍ଶାନ୍ତୁ"
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:279
-#, fuzzy
 msgid "Switch to application 8"
-msgstr "ପ୍ରୟୋଗଗୁଡ଼ିକୁ ଦର୍ଶାନ୍ତୁ"
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:283
-#, fuzzy
 msgid "Switch to application 9"
-msgstr "ପ୍ରୟୋଗଗୁଡ଼ିକୁ ଦର୍ଶାନ୍ତୁ"
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:290
-#, fuzzy
 msgid "Keybinding that shows the force app exit dialog"
-msgstr "ପ୍ରୟୋଗ ମେନୁକୁ ସକ୍ରିୟ କରିବା ପାଇଁ କି ବନ୍ଧନ"
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:295
-#, fuzzy
 msgid "Keybinding to activate the first app in the icon bar."
-msgstr "ପ୍ରୟୋଗ ମେନୁକୁ ଖୋଲିବା ପାଇଁ କି ବନ୍ଧନ।"
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:296
 msgid ""
@@ -394,9 +360,8 @@ msgid ""
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:302
-#, fuzzy
 msgid "Keybinding to activate the second app in the icon bar."
-msgstr "ପ୍ରୟୋଗ ମେନୁକୁ ଖୋଲିବା ପାଇଁ କି ବନ୍ଧନ।"
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:303
 msgid ""
@@ -405,9 +370,8 @@ msgid ""
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:309
-#, fuzzy
 msgid "Keybinding to activate the third app in the icon bar."
-msgstr "ପ୍ରୟୋଗ ମେନୁକୁ ଖୋଲିବା ପାଇଁ କି ବନ୍ଧନ।"
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:310
 msgid ""
@@ -416,9 +380,8 @@ msgid ""
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:316
-#, fuzzy
 msgid "Keybinding to activate the fourth app in the icon bar."
-msgstr "ପ୍ରୟୋଗ ମେନୁକୁ ଖୋଲିବା ପାଇଁ କି ବନ୍ଧନ।"
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:317
 msgid ""
@@ -427,9 +390,8 @@ msgid ""
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:323
-#, fuzzy
 msgid "Keybinding to activate the fifth app in the icon bar."
-msgstr "ପ୍ରୟୋଗ ମେନୁକୁ ଖୋଲିବା ପାଇଁ କି ବନ୍ଧନ।"
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:324
 msgid ""
@@ -438,9 +400,8 @@ msgid ""
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:330
-#, fuzzy
 msgid "Keybinding to activate the sixth app in the icon bar."
-msgstr "ପ୍ରୟୋଗ ମେନୁକୁ ଖୋଲିବା ପାଇଁ କି ବନ୍ଧନ।"
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:331
 msgid ""
@@ -449,9 +410,8 @@ msgid ""
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:337
-#, fuzzy
 msgid "Keybinding to activate the seventh app in the icon bar."
-msgstr "ପ୍ରୟୋଗ ମେନୁକୁ ଖୋଲିବା ପାଇଁ କି ବନ୍ଧନ।"
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:338
 msgid ""
@@ -460,9 +420,8 @@ msgid ""
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:344
-#, fuzzy
 msgid "Keybinding to activate the eighth app in the icon bar."
-msgstr "ପ୍ରୟୋଗ ମେନୁକୁ ଖୋଲିବା ପାଇଁ କି ବନ୍ଧନ।"
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:345
 msgid ""
@@ -471,9 +430,8 @@ msgid ""
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:351
-#, fuzzy
 msgid "Keybinding to activate the last app in the icon bar."
-msgstr "ପ୍ରୟୋଗ ମେନୁକୁ ଖୋଲିବା ପାଇଁ କି ବନ୍ଧନ।"
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:352
 msgid ""
@@ -490,37 +448,28 @@ msgstr "ପରିବର୍ତ୍ତକକୁ ପ୍ରଚଳିତ କାର୍�
 msgid ""
 "If true, only applications that have windows on the current workspace are "
 "shown in the switcher. Otherwise, all applications are included."
-msgstr ""
-"ଯଦି true, ତେବେ କେବଳ ପ୍ରଚଳିତ କାର୍ଯ୍ୟକ୍ଷେତ୍ରରେ ଥିବା ପ୍ରୟୋଗଗୁଡ଼ିକ ପରିବର୍ତ୍ତକରେ ଦର୍ଶାଯାଇଥାଏ।"
-"ଅନ୍ୟଥା, ସମସ୍ତ ପ୍ରୟୋଗଗୁଡ଼ିକୁ ଅନ୍ତର୍ଭୁକ୍ତ କରାଯାଇଥାଏ।"
+msgstr "ଯଦି true, ତେବେ କେବଳ ପ୍ରଚଳିତ କାର୍ଯ୍ୟକ୍ଷେତ୍ରରେ ଥିବା ପ୍ରୟୋଗଗୁଡ଼ିକ ପରିବର୍ତ୍ତକରେ ଦର୍ଶାଯାଇଥାଏ।ଅନ୍ୟଥା, ସମସ୍ତ ପ୍ରୟୋଗଗୁଡ଼ିକୁ ଅନ୍ତର୍ଭୁକ୍ତ କରାଯାଇଥାଏ।"
 
 #: data/org.gnome.shell.gschema.xml.in:381
 msgid "The application icon mode."
 msgstr "ପ୍ରୟୋଗ ଚିତ୍ରସଂକେତ ଧାରା।"
 
 #: data/org.gnome.shell.gschema.xml.in:382
-#, fuzzy
 msgid ""
 "Configures how the windows are shown in the switcher. Valid possibilities "
-"are “thumbnail-only” (shows a thumbnail of the window), “app-icon-"
-"only” (shows only the application icon) or “both”."
+"are “thumbnail-only” (shows a thumbnail of the window), “app-icon-only” "
+"(shows only the application icon) or “both”."
 msgstr ""
-"ସ୍ୱୀଚରରେ ୱିଣ୍ଡୋଗୁଡ଼ିକ କିପରି ଦର୍ଶାଯିବ ତାହା ପାଇଁ ବିନ୍ୟାସ କରନ୍ତୁ। ବୈଧ ସମ୍ଭାବ୍ୟଗୁଡ଼ିକ ହେଉଛି 'କେବଳ-"
-"ଅଙ୍ଗିଳିଚିହ୍ନ' (ୱିଣ୍ଡୋର ଏକ ଅଙ୍ଗୁଳି ଚିହ୍ନକୁ ଦର୍ଶାନ୍ତୁ), 'app-icon-only' (କେବଳ ପ୍ରୟୋଗ ଚିତ୍ର ସଂକେତ "
-"ଦର୍ଶାଇଥାଏ) ଅଥବା 'ଉଭୟ'।"
 
 #: data/org.gnome.shell.gschema.xml.in:391
 msgid ""
 "If true, only windows from the current workspace are shown in the switcher. "
 "Otherwise, all windows are included."
-msgstr ""
-"ଯଦି true, ତେବେ କେବଳ ପ୍ରଚଳିତ କାର୍ଯ୍ୟକ୍ଷେତ୍ରରୁ ୱିଣ୍ଡୋଗୁଡ଼ିକ ପରିବର୍ତ୍ତକରେ ଦର୍ଶାଯାଇଥାଏ।ଅନ୍ୟଥା, "
-"ସମସ୍ତ ୱିଣ୍ଡୋଗୁଡ଼ିକୁ ଅନ୍ତର୍ଭୁକ୍ତ କରାଯାଇଥାଏ।"
+msgstr "ଯଦି true, ତେବେ କେବଳ ପ୍ରଚଳିତ କାର୍ଯ୍ୟକ୍ଷେତ୍ରରୁ ୱିଣ୍ଡୋଗୁଡ଼ିକ ପରିବର୍ତ୍ତକରେ ଦର୍ଶାଯାଇଥାଏ।ଅନ୍ୟଥା, ସମସ୍ତ ୱିଣ୍ଡୋଗୁଡ଼ିକୁ ଅନ୍ତର୍ଭୁକ୍ତ କରାଯାଇଥାଏ।"
 
 #: data/org.gnome.shell.gschema.xml.in:401
-#, fuzzy
 msgid "Locations"
-msgstr "ଅବସ୍ଥାନ"
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:402
 msgid "The locations to show in world clocks"
@@ -553,8 +502,7 @@ msgstr "ମୂଖ୍ୟ ୱିଣ୍ଡୋରେ ମଡେଲ ସଂଳାପ �
 #: data/org.gnome.shell.gschema.xml.in:467
 msgid ""
 "This key overrides the key in org.gnome.mutter when running GNOME Shell."
-msgstr ""
-"GNOME ସେଲ ଚାଲିଥିବା ସମୟରେ ଏହି ଚାବିଟି  org.gnome.mutter ରେ ଥିବା ଚାବିକୁ ନବଲିଖନ କରିଥାଏ।"
+msgstr "GNOME ସେଲ ଚାଲିଥିବା ସମୟରେ ଏହି ଚାବିଟି  org.gnome.mutter ରେ ଥିବା ଚାବିକୁ ନବଲିଖନ କରିଥାଏ।"
 
 #: data/org.gnome.shell.gschema.xml.in:442
 msgid "Enable edge tiling when dropping windows on screen edges"
@@ -573,9 +521,8 @@ msgid "Delay focus changes in mouse mode until the pointer stops moving"
 msgstr "ସୂଚକ ଗତି କରିବା ବନ୍ଦ ନହେଲା ପର୍ଯ୍ୟନ୍ତ ମାଉସ ଧାରାରେ ଲକ୍ଷ୍ଯସ୍ଥଳ ପରିବର୍ତ୍ତନକୁ ବିଳମ୍ବ କରନ୍ତୁ"
 
 #: data/org.gnome.Shell.PortalHelper.desktop.in.in:3
-#, fuzzy
 msgid "Network Login"
-msgstr "ନେଟୱର୍କ ତ୍ରୁଟି"
+msgstr ""
 
 #: js/dbusServices/extensions/ui/extension-prefs-dialog.ui:36
 #: js/extensionPrefs/data/ui/extensions-window.ui:223
@@ -590,32 +537,28 @@ msgid ""
 msgstr ""
 
 #: js/dbusServices/extensions/ui/extension-prefs-dialog.ui:82
-#, fuzzy
 msgid "Technical Details"
-msgstr "ବିସ୍ତୃତ ବିବରଣୀ ଦର୍ଶାନ୍ତୁ"
+msgstr ""
 
 #: js/dbusServices/extensions/ui/extension-prefs-dialog.ui:165
 msgid "Homepage"
 msgstr ""
 
 #: js/dbusServices/extensions/ui/extension-prefs-dialog.ui:166
-#, fuzzy
 msgid "Visit extension homepage"
-msgstr "ସକ୍ରିୟ କରିବା ପାଇଁ ଥିବା ଅନୁଲଗ୍ନଗୁଡ଼ିକର UUID ଗୁଡ଼ିକ"
+msgstr ""
 
 #: js/extensionPrefs/data/metainfo/org.gnome.Extensions.metainfo.xml.in:5
 #: js/extensionPrefs/data/org.gnome.Extensions.desktop.in.in:4
 #: js/extensionPrefs/js/main.js:182
 #: js/extensionPrefs/data/ui/extensions-window.ui:61
-#, fuzzy
 msgid "Extensions"
-msgstr "ଅନୁଲଗ୍ନ"
+msgstr ""
 
 #: js/extensionPrefs/data/metainfo/org.gnome.Extensions.metainfo.xml.in:6
 #: js/extensionPrefs/js/main.js:183
-#, fuzzy
 msgid "Manage your GNOME Extensions"
-msgstr "GNOME ସେଲ ଅନୁଲଗ୍ନଗୁଡ଼ିକ"
+msgstr ""
 
 #: js/extensionPrefs/data/metainfo/org.gnome.Extensions.metainfo.xml.in:35
 msgid ""
@@ -670,9 +613,8 @@ msgstr "ବର୍ଣ୍ଣନା"
 
 #: js/extensionPrefs/data/ui/extension-row.ui:123
 #: subprojects/extensions-tool/src/main.c:185
-#, fuzzy
 msgid "Version"
-msgstr "ଅନୁଲଗ୍ନ"
+msgstr ""
 
 #: js/extensionPrefs/data/ui/extension-row.ui:151
 msgid "Author"
@@ -683,23 +625,21 @@ msgid "Website"
 msgstr ""
 
 #: js/extensionPrefs/data/ui/extension-row.ui:192
-#, fuzzy
 msgid "Remove…"
-msgstr "ବାହାର କରନ୍ତୁ"
+msgstr ""
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:8 js/ui/userMenu.js:27
 msgid "Help"
 msgstr ""
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:12
-#, fuzzy
 msgid "About Extensions"
-msgstr "ଅନୁଲଗ୍ନ"
+msgstr ""
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:27
 msgid ""
-"To find and add extensions, visit <a href=\"https://extensions.gnome.org"
-"\">extensions.gnome.org</a>."
+"To find and add extensions, visit <a "
+"href=\"https://extensions.gnome.org\">extensions.gnome.org</a>."
 msgstr ""
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:35
@@ -722,9 +662,8 @@ msgid "Built-In"
 msgstr ""
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:199
-#, fuzzy
 msgid "No Installed Extensions"
-msgstr "GNOME ସେଲ ଅନୁଲଗ୍ନଗୁଡ଼ିକ"
+msgstr ""
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:235
 msgid ""
@@ -733,19 +672,16 @@ msgid ""
 msgstr ""
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:288
-#, fuzzy
 msgid "Log Out…"
-msgstr "ଲଗଆଉଟ କରନ୍ତୁ"
+msgstr ""
 
 #: js/gdm/authPrompt.js:131
-#, fuzzy
 msgid "Show password hint"
-msgstr "ପ୍ରବେଶ ସଂକେତ ଦର୍ଶାନ୍ତୁ"
+msgstr ""
 
 #: js/gdm/authPrompt.js:148
-#, fuzzy
 msgid "Forgot password?"
-msgstr "ପ୍ରବେଶ ସଂକେତ ଦର୍ଶାନ୍ତୁ"
+msgstr ""
 
 #. Cisco LEAP
 #: js/gdm/authPrompt.js:303 js/ui/components/networkAgent.js:363
@@ -756,12 +692,14 @@ msgstr "ପ୍ରବେଶ ସଂକେତ ଦର୍ଶାନ୍ତୁ"
 msgid "Password"
 msgstr "ପ୍ରବେଶ ସଙ୍କେତ"
 
-#. Translators: During a password reset, prompt for the "secret code" provided by customer support.
+#. Translators: During a password reset, prompt for the "secret code" provided
+#. by customer support.
 #: js/gdm/authPrompt.js:680
 msgid "Enter unlock code"
 msgstr ""
 
-#. Translators: Password reset. The first %s is a verification code and the second is an email.
+#. Translators: Password reset. The first %s is a verification code and the
+#. second is an email.
 #: js/gdm/authPrompt.js:683
 #, javascript-format
 msgid ""
@@ -771,9 +709,8 @@ msgid ""
 msgstr ""
 
 #: js/gdm/authPrompt.js:762
-#, fuzzy
 msgid "Your unlock code was incorrect. Please try again."
-msgstr "ଦୁଖିତଃ, ତାହା କାର୍ଯ୍ୟକାରୀ ହେଲା ନହିଁ। ଦୟାକରି ପୁଣିଥରେ ଚେଷ୍ଟା କରନ୍ତୁ।"
+msgstr ""
 
 #: js/gdm/loginDialog.js:317
 msgid "Choose Session"
@@ -795,9 +732,8 @@ msgstr "(ଯେପରିକି, %s ପାଇଁ ଚାଳକ)"
 #. (and don't even care of which one)
 #: js/gdm/loginDialog.js:920 js/ui/components/networkAgent.js:399
 #: js/ui/components/networkAgent.js:422 js/ui/components/networkAgent.js:440
-#, fuzzy
 msgid "Username"
-msgstr "ଚାଳକ ନାମ: "
+msgstr ""
 
 #: js/gdm/loginDialog.js:1256
 msgid "Login Window"
@@ -822,7 +758,8 @@ msgctxt "search-result"
 msgid "Power Off"
 msgstr "ବିଦ୍ୟୁତ ପ୍ରବାହ ବନ୍ଦ କରନ୍ତୁ"
 
-#. Translators: A list of keywords that match the power-off action, separated by semicolons
+#. Translators: A list of keywords that match the power-off action, separated
+#. by semicolons
 #: js/misc/systemActions.js:92
 msgid "power off;shutdown;reboot;restart;halt;stop"
 msgstr ""
@@ -833,11 +770,11 @@ msgctxt "search-result"
 msgid "Lock Screen"
 msgstr "ପରଦାକୁ ତାଲା ଦେଇ ରଖନ୍ତୁ"
 
-#. Translators: A list of keywords that match the lock screen action, separated by semicolons
+#. Translators: A list of keywords that match the lock screen action,
+#. separated by semicolons
 #: js/misc/systemActions.js:100
-#, fuzzy
 msgid "lock screen"
-msgstr "ପରଦାକୁ ତାଲା ଦେଇ ରଖନ୍ତୁ"
+msgstr ""
 
 #. Translators: The name of the logout action in search
 #: js/misc/systemActions.js:105
@@ -845,7 +782,8 @@ msgctxt "search-result"
 msgid "Log Out"
 msgstr "ଲଗଆଉଟ କରନ୍ତୁ"
 
-#. Translators: A list of keywords that match the logout action, separated by semicolons
+#. Translators: A list of keywords that match the logout action, separated by
+#. semicolons
 #: js/misc/systemActions.js:108
 msgid "logout;log out;sign off"
 msgstr ""
@@ -856,11 +794,11 @@ msgctxt "search-result"
 msgid "Suspend"
 msgstr "ନିଲମ୍ବନ କରନ୍ତୁ"
 
-#. Translators: A list of keywords that match the suspend action, separated by semicolons
+#. Translators: A list of keywords that match the suspend action, separated by
+#. semicolons
 #: js/misc/systemActions.js:116
-#, fuzzy
 msgid "suspend;sleep"
-msgstr "ନିଲମ୍ବନ କରନ୍ତୁ"
+msgstr ""
 
 #. Translators: The name of the switch user action in search
 #: js/misc/systemActions.js:121
@@ -868,28 +806,27 @@ msgctxt "search-result"
 msgid "Switch User"
 msgstr "ଚାଳକଙ୍କୁ ବଦଳାନ୍ତୁ"
 
-#. Translators: A list of keywords that match the switch user action, separated by semicolons
+#. Translators: A list of keywords that match the switch user action,
+#. separated by semicolons
 #: js/misc/systemActions.js:124
-#, fuzzy
 msgid "switch user"
-msgstr "ଚାଳକଙ୍କୁ ବଦଳାନ୍ତୁ"
+msgstr ""
 
-#. Translators: A list of keywords that match the lock orientation action, separated by semicolons
+#. Translators: A list of keywords that match the lock orientation action,
+#. separated by semicolons
 #: js/misc/systemActions.js:131
 msgid "lock orientation;unlock orientation;screen;rotation"
 msgstr ""
 
 #: js/misc/systemActions.js:251
-#, fuzzy
 msgctxt "search-result"
 msgid "Unlock Screen Rotation"
-msgstr "ପରଦାକୁ ତାଲା ଦେଇ ରଖନ୍ତୁ"
+msgstr ""
 
 #: js/misc/systemActions.js:252
-#, fuzzy
 msgctxt "search-result"
 msgid "Lock Screen Rotation"
-msgstr "ପରଦାକୁ ତାଲା ଦେଇ ରଖନ୍ତୁ"
+msgstr ""
 
 #: js/misc/util.js:125
 msgid "Command not found"
@@ -911,23 +848,22 @@ msgid "Just now"
 msgstr ""
 
 #: js/misc/util.js:188
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
-msgstr[0] "%d ମିନଟ ବଳିଅଛି"
-msgstr[1] "%d ମିନଟ ବଳିଅଛି"
+msgstr[0] ""
+msgstr[1] ""
 
 #: js/misc/util.js:192
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
-msgstr[0] "%d ଘଣ୍ଟା ବଳିଛି"
-msgstr[1] "%d ଘଣ୍ଟା ବଳିଛି"
+msgstr[0] ""
+msgstr[1] ""
 
 #: js/misc/util.js:196
-#, fuzzy
 msgid "Yesterday"
-msgstr "ଗତକାଲି,%H:%M"
+msgstr ""
 
 #: js/misc/util.js:198
 #, javascript-format
@@ -980,17 +916,17 @@ msgstr "%A, %H∶%M"
 #. followed by a time string in 24h format.
 #. i.e. "May 25, 14:30"
 #: js/misc/util.js:260
-#, fuzzy, no-c-format
+#, no-c-format
 msgid "%B %-d, %H∶%M"
-msgstr "%B %d, %H∶%M"
+msgstr ""
 
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 24h format.
 #. i.e. "May 25 2012, 14:30"
 #: js/misc/util.js:266
-#, fuzzy, no-c-format
+#, no-c-format
 msgid "%B %-d %Y, %H∶%M"
-msgstr "%B %d %Y, %H∶%M"
+msgstr ""
 
 #. Show only the time if date is on today
 #. eslint-disable-line no-lonely-if
@@ -1017,31 +953,28 @@ msgstr "%A, %l∶%M %p"
 #. followed by a time string in 12h format.
 #. i.e. "May 25, 2:30 pm"
 #: js/misc/util.js:289
-#, fuzzy, no-c-format
+#, no-c-format
 msgid "%B %-d, %l∶%M %p"
-msgstr "%B %d, %l∶%M %p"
+msgstr ""
 
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 12h format.
 #. i.e. "May 25 2012, 2:30 pm"
 #: js/misc/util.js:295
-#, fuzzy, no-c-format
+#, no-c-format
 msgid "%B %-d %Y, %l∶%M %p"
-msgstr "%B %d %Y, %l∶%M %p"
+msgstr ""
 
-#.
 #. * Translators: this is the name of the search engine that shows in the
 #. * Shell's desktop search entry.
-#.
 #: js/misc/util.js:573
 msgid "Google"
 msgstr ""
 
 #. TRANSLATORS: this is the title of the wifi captive portal login window
 #: js/portalHelper/main.js:41
-#, fuzzy
 msgid "Hotspot Login"
-msgstr "ହଟସ୍ପଟ୍‌ ସକ୍ରିୟ ଅଛି"
+msgstr ""
 
 #: js/portalHelper/main.js:87
 msgid ""
@@ -1056,15 +989,13 @@ msgid "Deny Access"
 msgstr ""
 
 #: js/ui/accessDialog.js:40 js/ui/status/location.js:377
-#, fuzzy
 msgid "Grant Access"
-msgstr "ସର୍ବଦା ଅନୁମତି ପ୍ରଦାନ କରନ୍ତୁ"
+msgstr ""
 
 #. Translators: This is the heading of a list of open windows
 #: js/ui/appDisplay.js:2390 js/ui/panel.js:78
-#, fuzzy
 msgid "Open Windows"
-msgstr "Windows"
+msgstr ""
 
 #: js/ui/appDisplay.js:2410 js/ui/panel.js:85
 msgid "New Window"
@@ -1076,14 +1007,12 @@ msgstr ""
 
 #. Add the "Remove from desktop" menu item at the end.
 #: js/ui/appDisplay.js:2443
-#, fuzzy
 msgid "Remove from desktop"
-msgstr "ମନପସନ୍ଦଗୁଡ଼ିକ ମଧ୍ଯରୁ କାଢ଼ନ୍ତୁ"
+msgstr ""
 
 #: js/ui/audioDeviceSelection.js:41
-#, fuzzy
 msgid "Select Audio Device"
-msgstr "ଉପକରଣ ମଧ୍ଯକୁ ଫାଇଲଗୁଡ଼ିକୁ ପଠାନ୍ତୁ…"
+msgstr ""
 
 #: js/ui/audioDeviceSelection.js:54
 msgid "Sound Settings"
@@ -1113,7 +1042,8 @@ msgstr ""
 msgid "Add Website"
 msgstr ""
 
-#. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday).
+#. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0"
+#. (Sunday) "6" (Saturday) "06" (Sunday and Saturday).
 #: js/ui/calendar.js:41
 msgctxt "calendar-no-work"
 msgid "06"
@@ -1123,7 +1053,6 @@ msgstr ""
 #. *
 #. * NOTE: These grid abbreviations are always shown together
 #. * and in order, e.g. "S M T W T F S".
-#.
 #: js/ui/calendar.js:70
 msgctxt "grid sunday"
 msgid "S"
@@ -1170,7 +1099,6 @@ msgstr "S"
 #. * standalone, when this is a month of the current year.
 #. * "%OB" is the new format specifier introduced in glibc 2.27,
 #. * in most cases you should not change it.
-#.
 #: js/ui/calendar.js:371
 msgid "%OB"
 msgstr ""
@@ -1183,7 +1111,6 @@ msgstr ""
 #. * "%OB" is the new format specifier introduced in glibc 2.27,
 #. * in most cases you should not use the old "%B" here unless you
 #. * absolutely know what you are doing.
-#.
 #: js/ui/calendar.js:381
 msgid "%OB %Y"
 msgstr ""
@@ -1197,10 +1124,10 @@ msgid "Next month"
 msgstr "ପର ମାସ"
 
 #: js/ui/calendar.js:605
-#, fuzzy, no-javascript-format
+#, no-javascript-format
 msgctxt "date day number format"
 msgid "%d"
-msgstr "%d%%"
+msgstr ""
 
 #: js/ui/calendar.js:661
 msgid "Week %V"
@@ -1208,30 +1135,28 @@ msgstr ""
 
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
-#.
 #: js/ui/calendar.js:730
 msgctxt "event list time"
 msgid "All Day"
 msgstr "ସାରା ଦିନ"
 
-#. Translators: Shown on calendar heading when selected day occurs on current year
+#. Translators: Shown on calendar heading when selected day occurs on current
+#. year
 #: js/ui/calendar.js:868
-#, fuzzy
 msgctxt "calendar heading"
 msgid "%A, %B %-d"
-msgstr "%A, %B %d"
+msgstr ""
 
-#. Translators: Shown on calendar heading when selected day occurs on different year
+#. Translators: Shown on calendar heading when selected day occurs on
+#. different year
 #: js/ui/calendar.js:871
-#, fuzzy
 msgctxt "calendar heading"
 msgid "%A, %B %-d, %Y"
-msgstr "%A, %B %d, %Y"
+msgstr ""
 
 #: js/ui/calendar.js:1100
-#, fuzzy
 msgid "No Notifications"
-msgstr "ବିଜ୍ଞପ୍ତିଗୁଡ଼ିକ"
+msgstr ""
 
 #: js/ui/calendar.js:1103
 msgid "No Events"
@@ -1247,9 +1172,9 @@ msgstr ""
 
 #. Translators: %s is an application name
 #: js/ui/closeDialog.js:42
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "“%s” is not responding."
-msgstr "“%s” ପ୍ରସ୍ତୁତ ଅଛି"
+msgstr ""
 
 #: js/ui/closeDialog.js:43
 msgid ""
@@ -1274,9 +1199,8 @@ msgid "External drive disconnected"
 msgstr "ବାହ୍ୟ ଡ୍ରାଇଭ ସଂଯକ୍ତ ଅଛି"
 
 #: js/ui/components/automountManager.js:208
-#, fuzzy
 msgid "Unable to unlock volume"
-msgstr "ତାଲା ପକାଇବାରେ ଅସମର୍ଥ"
+msgstr ""
 
 #: js/ui/components/automountManager.js:209
 msgid "The installed udisks version does not support the PIM setting"
@@ -1314,24 +1238,20 @@ msgid "This connection doesn't have limits on how much you can download."
 msgstr ""
 
 #: js/ui/components/networkAgent.js:369
-#, fuzzy
 msgid "Key"
-msgstr "କି: "
+msgstr ""
 
 #: js/ui/components/networkAgent.js:407 js/ui/components/networkAgent.js:430
-#, fuzzy
 msgid "Private key password"
-msgstr "ବ୍ୟକ୍ତିଗତ କି ପ୍ରବେଶ ସଂକେତ: "
+msgstr ""
 
 #: js/ui/components/networkAgent.js:428
-#, fuzzy
 msgid "Identity"
-msgstr "ପରିଚୟ: "
+msgstr ""
 
 #: js/ui/components/networkAgent.js:442
-#, fuzzy
 msgid "Service"
-msgstr "ସର୍ଭିସ: "
+msgstr ""
 
 #: js/ui/components/networkAgent.js:471
 #, javascript-format
@@ -1343,9 +1263,8 @@ msgid "Wired 802.1X authentication"
 msgstr "ତାରଯୁକ୍ତ 802.1X ବୈଧିକରଣ"
 
 #: js/ui/components/networkAgent.js:478
-#, fuzzy
 msgid "Network name"
-msgstr "ନେଟୱାର୍କ ନାମ: "
+msgstr ""
 
 #: js/ui/components/networkAgent.js:483 js/ui/components/networkAgent.js:855
 msgid "DSL authentication"
@@ -1360,9 +1279,8 @@ msgid "PIN code is needed for the mobile broadband device"
 msgstr "ମୋବାଇଲ ବ୍ରୋଡବ୍ୟାଣ୍ଡ ଉପକରଣ ପାଇଁ PIN ସଂକେତ ଆବଶ୍ୟକ"
 
 #: js/ui/components/networkAgent.js:492
-#, fuzzy
 msgid "PIN"
-msgstr "PIN: "
+msgstr ""
 
 #: js/ui/components/networkAgent.js:499 js/ui/components/networkAgent.js:846
 #: js/ui/components/networkAgent.js:867
@@ -1388,9 +1306,8 @@ msgid ""
 msgstr "ବେତାର ନେଟୱର୍କ “%s” କୁ ଅଭିଗମ୍ୟ କରିବା ପାଇଁ ପ୍ରବେଶ ସଂକେତ କିମ୍ବା ସଂଗୁପ୍ତ କିଗୁଡ଼ିକ ଆବଶ୍ୟକ।"
 
 #: js/ui/components/networkAgent.js:871
-#, fuzzy
 msgid "VPN password"
-msgstr "ପ୍ରବେଶ ସଙ୍କେତ"
+msgstr ""
 
 #: js/ui/components/polkitAgent.js:39
 msgid "Authentication Required"
@@ -1409,11 +1326,11 @@ msgstr "ବୈଧିକୃତ"
 #. * because of an authentication error (like invalid password),
 #. * for instance.
 #: js/ui/components/polkitAgent.js:254 js/ui/shellMountOperation.js:402
-#, fuzzy
 msgid "Sorry, that didn’t work. Please try again."
-msgstr "ଦୁଖିତଃ, ତାହା କାର୍ଯ୍ୟକାରୀ ହେଲା ନହିଁ। ଦୟାକରି ପୁଣିଥରେ ଚେଷ୍ଟା କରନ୍ତୁ।"
+msgstr ""
 
-#. Translators: this is the other person changing their old IM name to their new
+#. Translators: this is the other person changing their old IM name to their
+#. new
 #. IM name.
 #: js/ui/components/telepathyClient.js:823
 #, javascript-format
@@ -1442,52 +1359,44 @@ msgstr "ଡ୍ୟାସ"
 #. * shown - it is shown just below the time in the top bar (e.g.,
 #. * "Tue 9:29 AM").  The string itself should become a full date, e.g.,
 #. * "February 17 2015".
-#.
 #: js/ui/dateMenu.js:75
-#, fuzzy
 msgid "%B %-d %Y"
-msgstr "%A, %B %d, %Y"
+msgstr ""
 
 #. Translators: This is the accessible name of the date button shown
 #. * below the time in the shell; it should combine the weekday and the
 #. * date, e.g. "Tuesday February 17 2015".
-#.
 #: js/ui/dateMenu.js:82
-#, fuzzy
 msgid "%A %B %e %Y"
-msgstr "%A %B %e, %Y"
+msgstr ""
 
 #: js/ui/dateMenu.js:161
 msgid "Add world clocks…"
 msgstr ""
 
 #: js/ui/dateMenu.js:162
-#, fuzzy
 msgid "World Clocks"
-msgstr "ଘଡ଼ିଗୁଡ଼ିକୁ ଖୋଲନ୍ତୁ"
+msgstr ""
 
 #: js/ui/dateMenu.js:289
 msgid "Weather"
 msgstr ""
 
 #: js/ui/dateMenu.js:404
-#, fuzzy
 msgid "Select a location…"
-msgstr "ଗୋଟିଏ ନେଟୱର୍କ ବାଛନ୍ତୁ"
+msgstr ""
 
 #: js/ui/dateMenu.js:417
-#, fuzzy
 msgid "Loading…"
-msgstr "ସନ୍ଧାନ କରୁଅଛି…"
+msgstr ""
 
 #: js/ui/dateMenu.js:427
 msgid "Go online for weather information"
 msgstr ""
 
 #: js/ui/dateMenu.js:429
-#, fuzzy
 msgid "Weather information is currently unavailable"
-msgstr "ସଂଗୁପ୍ତ ଉପଲବ୍ଧ ନାହିଁ"
+msgstr ""
 
 #: js/ui/endSessionDialog.js:39
 #, javascript-format
@@ -1570,13 +1479,12 @@ msgstr "ପୁନଃଚାଳନ କରନ୍ତୁ ଏବଂ ଅଦ୍ୟତନ
 
 #: js/ui/endSessionDialog.js:93
 #, javascript-format
-msgid "The system will automatically restart and install updates in %d second."
+msgid ""
+"The system will automatically restart and install updates in %d second."
 msgid_plural ""
 "The system will automatically restart and install updates in %d seconds."
-msgstr[0] ""
-"ତନ୍ତ୍ର ସ୍ୱୟଂଚାଳିତ ଭାବରେ %d ସେକଣ୍ଡରେ ପୁନଃପ୍ରାରମ୍ଭ ହେବ ଏବଂ ଅଦ୍ୟତନଗୁଡ଼ିକୁ ସ୍ଥାପନ କରିବ।"
-msgstr[1] ""
-"ତନ୍ତ୍ର ସ୍ୱୟଂଚାଳିତ ଭାବରେ %d ସେକଣ୍ଡରେ ପୁନଃପ୍ରାରମ୍ଭ ହେବ ଏବଂ ଅଦ୍ୟତନଗୁଡ଼ିକୁ ସ୍ଥାପନ କରିବ।"
+msgstr[0] "ତନ୍ତ୍ର ସ୍ୱୟଂଚାଳିତ ଭାବରେ %d ସେକଣ୍ଡରେ ପୁନଃପ୍ରାରମ୍ଭ ହେବ ଏବଂ ଅଦ୍ୟତନଗୁଡ଼ିକୁ ସ୍ଥାପନ କରିବ।"
+msgstr[1] "ତନ୍ତ୍ର ସ୍ୱୟଂଚାଳିତ ଭାବରେ %d ସେକଣ୍ଡରେ ପୁନଃପ୍ରାରମ୍ଭ ହେବ ଏବଂ ଅଦ୍ୟତନଗୁଡ଼ିକୁ ସ୍ଥାପନ କରିବ।"
 
 #: js/ui/endSessionDialog.js:99 js/ui/endSessionDialog.js:118
 msgctxt "button"
@@ -1594,10 +1502,9 @@ msgid "Power off after updates are installed"
 msgstr "ଅଦ୍ୟତନଗୁଡ଼ିକ ସ୍ଥାପିତ ହୋଇସାରିବା ପରେ ଅଫ୍‌ କରନ୍ତୁ"
 
 #: js/ui/endSessionDialog.js:108
-#, fuzzy
 msgctxt "title"
 msgid "Restart & Install Upgrade"
-msgstr "ପୁନଃଚାଳନ କରନ୍ତୁ ଏବଂ ଅଦ୍ୟତନଗୁଡ଼ିକୁ ସ୍ଥାପନ କରନ୍ତୁ"
+msgstr ""
 
 #. Translators: This is the text displayed for system upgrades in the
 #. shut down dialog. First %s gets replaced with the distro name and
@@ -1610,19 +1517,16 @@ msgid ""
 msgstr ""
 
 #: js/ui/endSessionDialog.js:261
-#, fuzzy
 msgid "Running on battery power: Please plug in before installing updates."
-msgstr "ବ୍ୟାଟେରୀରେ ଚାଲୁଅଛି: ଅଦ୍ୟତନଗୁଡ଼ିକୁ ସ୍ଥାପନ କରିବା ପୂର୍ବରୁ ପ୍ଲଗଇନ୍‌ କରନ୍ତୁ।"
+msgstr ""
 
 #: js/ui/endSessionDialog.js:270
-#, fuzzy
 msgid "Some applications are busy or have unsaved work"
-msgstr "କିଛି ପ୍ରୟୋଗଗୁଡ଼ିକ ବ୍ୟସ୍ତ ଅଛି କିମ୍ବା ସେଥିରେ କିଛି କାମ ଅସଂରକ୍ଷିତ ଅଛି।"
+msgstr ""
 
 #: js/ui/endSessionDialog.js:275
-#, fuzzy
 msgid "Other users are logged in"
-msgstr "ଅନ୍ୟ ବ୍ୟବହାରକାରୀମାନେ ଲଗଇନ ହୋଇଛନ୍ତି।"
+msgstr ""
 
 #. Translators: Remote here refers to a remote session, like a ssh login
 #: js/ui/endSessionDialog.js:588
@@ -1652,9 +1556,8 @@ msgid "Install"
 msgstr "ସ୍ଥାପନ କରନ୍ତୁ"
 
 #: js/ui/extensionDownloader.js:198
-#, fuzzy
 msgid "Install Extension"
-msgstr "ଅନୁଲଗ୍ନ"
+msgstr ""
 
 #: js/ui/extensionDownloader.js:199
 #, javascript-format
@@ -1707,8 +1610,8 @@ msgstr "ଅଫ୍‌ ହୋଇଥିବା ଚାବିଗୁଡ଼ିକୁ ମ
 
 #: js/ui/kbdA11yDialog.js:34
 msgid ""
-"You just held down the Shift key for 8 seconds. This is the shortcut for the "
-"Slow Keys feature, which affects the way your keyboard works."
+"You just held down the Shift key for 8 seconds. This is the shortcut for the"
+" Slow Keys feature, which affects the way your keyboard works."
 msgstr ""
 
 #: js/ui/kbdA11yDialog.js:41
@@ -1806,9 +1709,8 @@ msgid "Web Page"
 msgstr "ୱେବ ପୃଷ୍ଠା"
 
 #: js/ui/main.js:315
-#, fuzzy
 msgid "Logged in as a privileged user"
-msgstr "ଅନ୍ୟ ଏକ ଚାଳକ ଭାବରେ ଲଗଇନ କରନ୍ତୁ"
+msgstr ""
 
 #: js/ui/main.js:316
 msgid ""
@@ -1829,14 +1731,12 @@ msgid "System Information"
 msgstr "ତନ୍ତ୍ର ସୂଚନା"
 
 #: js/ui/mpris.js:199
-#, fuzzy
 msgid "Unknown artist"
-msgstr "ଅଜ୍ଞାତ କାରଣ"
+msgstr ""
 
 #: js/ui/mpris.js:209
-#, fuzzy
 msgid "Unknown title"
-msgstr "ଅଜଣା"
+msgstr ""
 
 #: js/ui/overview.js:94
 msgid "Undo"
@@ -1857,18 +1757,16 @@ msgid "New shortcut…"
 msgstr ""
 
 #: js/ui/padOsd.js:142
-#, fuzzy
 msgid "Application defined"
-msgstr "ପ୍ରୟୋଗଗୁଡ଼ିକ"
+msgstr ""
 
 #: js/ui/padOsd.js:143
 msgid "Show on-screen help"
 msgstr ""
 
 #: js/ui/padOsd.js:144
-#, fuzzy
 msgid "Switch monitor"
-msgstr "ଚାଳକଙ୍କୁ ବଦଳାନ୍ତୁ"
+msgstr ""
 
 #: js/ui/padOsd.js:145
 msgid "Assign keystroke"
@@ -1918,10 +1816,9 @@ msgid "System"
 msgstr "ତନ୍ତ୍ର"
 
 #: js/ui/panel.js:801
-#, fuzzy
 msgctxt "User menu"
 msgid "User Menu"
-msgstr "ଟ୍ରେ ତାଲିକା"
+msgstr ""
 
 #: js/ui/panel.js:833
 msgctxt "Power menu"
@@ -1949,8 +1846,8 @@ msgstr ""
 #: js/ui/paygUnlockDialog.js:160
 #, javascript-format
 msgid ""
-"Talk to your sales representative to purchase a new code. Call or text %s at "
-"%s"
+"Talk to your sales representative to purchase a new code. Call or text %s at"
+" %s"
 msgstr ""
 
 #. No overrides present, default to fallback text.
@@ -1964,9 +1861,8 @@ msgid "Pay As You Go Account ID: %s"
 msgstr ""
 
 #: js/ui/paygUnlockDialog.js:198
-#, fuzzy
 msgid "Unlock Machine"
-msgstr "ୱିଣ୍ଡୋକୁ ଖୋଲନ୍ତୁ"
+msgstr ""
 
 #: js/ui/paygUnlockDialog.js:287 js/ui/shellMountOperation.js:380
 msgid "Unlock"
@@ -1981,22 +1877,22 @@ msgid "Remaining time cleared!"
 msgstr ""
 
 #: js/ui/paygUnlockDialog.js:419
-#, fuzzy
 msgid "OK!"
-msgstr "ଠିକ ଅଛି"
+msgstr ""
 
 #: js/ui/payg.js:39
 msgid "Pay As You Go"
 msgstr ""
 
 #: js/ui/payg.js:40
-msgid "Enter an unlock code to extend the time before your credit has expired."
+msgid ""
+"Enter an unlock code to extend the time before your credit has expired."
 msgstr ""
 
 #: js/ui/payg.js:41
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Subscription runs out in %s."
-msgstr "ସଦସ୍ୟତା ‍ଅନୁରୋଧ"
+msgstr ""
 
 #: js/ui/payg.js:236
 #, javascript-format
@@ -2010,9 +1906,8 @@ msgid "Too many attempts. Try again in a few seconds."
 msgstr ""
 
 #: js/ui/payg.js:261
-#, fuzzy
 msgid "Invalid code. Please try again."
-msgstr "ଦୁଖିତଃ, ତାହା କାର୍ଯ୍ୟକାରୀ ହେଲା ନହିଁ। ଦୟାକରି ପୁଣିଥରେ ଚେଷ୍ଟା କରନ୍ତୁ।"
+msgstr ""
 
 #: js/ui/payg.js:263
 msgid "Code already used. Please enter a new code."
@@ -2027,12 +1922,13 @@ msgstr ""
 msgid "Your Pay As You Go Account ID is: %s"
 msgstr ""
 
-#. We don't consider any other error here (and we don't consider DISABLED explicitly,
-#. since that should not happen), but still we need to show something to the user.
+#. We don't consider any other error here (and we don't consider DISABLED
+#. explicitly,
+#. since that should not happen), but still we need to show something to the
+#. user.
 #: js/ui/payg.js:271
-#, fuzzy
 msgid "Unknown error"
-msgstr "ଅଜ୍ଞାତ କାରଣ"
+msgstr ""
 
 #: js/ui/payg.js:452
 msgid "Apply Code"
@@ -2046,18 +1942,18 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: js/ui/payg.js:610 js/ui/payg.js:620
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s minute"
 msgid_plural "%s minutes"
-msgstr[0] "ମିନିଟ"
-msgstr[1] "ମିନିଟ"
+msgstr[0] ""
+msgstr[1] ""
 
 #: js/ui/payg.js:614 js/ui/payg.js:631
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s hour"
 msgid_plural "%s hours"
-msgstr[0] "ଘଣ୍ଟା"
-msgstr[1] "ଘଣ୍ଟା"
+msgstr[0] ""
+msgstr[1] ""
 
 #: js/ui/payg.js:625
 #, javascript-format
@@ -2067,44 +1963,43 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: js/ui/payg.js:641
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s second has been added to your Pay As You Go credit."
 msgid_plural "%s seconds have been added to your Pay As You Go credit."
-msgstr[0] "%s କୁ ଆପଣଙ୍କର ମନପସନ୍ଦରେ ଯୋଗ କରାଯାଇଛି।"
-msgstr[1] "%s କୁ ଆପଣଙ୍କର ମନପସନ୍ଦରେ ଯୋଗ କରାଯାଇଛି।"
+msgstr[0] ""
+msgstr[1] ""
 
 #: js/ui/payg.js:648
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s minute has been added to your Pay As You Go credit."
 msgid_plural "%s minutes have been added to your Pay As You Go credit."
-msgstr[0] "%s କୁ ଆପଣଙ୍କର ମନପସନ୍ଦରେ ଯୋଗ କରାଯାଇଛି।"
-msgstr[1] "%s କୁ ଆପଣଙ୍କର ମନପସନ୍ଦରେ ଯୋଗ କରାଯାଇଛି।"
+msgstr[0] ""
+msgstr[1] ""
 
 #: js/ui/payg.js:655
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s hour has been added to your Pay As You Go credit."
 msgid_plural "%s hours have been added to your Pay As You Go credit."
-msgstr[0] "%s କୁ ଆପଣଙ୍କର ମନପସନ୍ଦରେ ଯୋଗ କରାଯାଇଛି।"
-msgstr[1] "%s କୁ ଆପଣଙ୍କର ମନପସନ୍ଦରେ ଯୋଗ କରାଯାଇଛି।"
+msgstr[0] ""
+msgstr[1] ""
 
 #: js/ui/payg.js:662
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s day has been added to your Pay As You Go credit."
 msgid_plural "%s days have been added to your Pay As You Go credit."
-msgstr[0] "%s କୁ ଆପଣଙ୍କର ମନପସନ୍ଦରେ ଯୋଗ କରାଯାଇଛି।"
-msgstr[1] "%s କୁ ଆପଣଙ୍କର ମନପସନ୍ଦରେ ଯୋଗ କରାଯାଇଛି।"
+msgstr[0] ""
+msgstr[1] ""
 
 #: js/ui/payg.js:669
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s month has been added to your Pay As You Go credit."
 msgid_plural "%s months have been added to your Pay As You Go credit."
-msgstr[0] "%s କୁ ଆପଣଙ୍କର ମନପସନ୍ଦରେ ଯୋଗ କରାଯାଇଛି।"
-msgstr[1] "%s କୁ ଆପଣଙ୍କର ମନପସନ୍ଦରେ ଯୋଗ କରାଯାଇଛି।"
+msgstr[0] ""
+msgstr[1] ""
 
 #: js/ui/payg.js:676
-#, fuzzy
 msgid "1 year has been added to your Pay As You Go credit."
-msgstr "%s କୁ ଆପଣଙ୍କର ମନପସନ୍ଦରେ ଯୋଗ କରାଯାଇଛି।"
+msgstr ""
 
 #. Unlock permanently message
 #: js/ui/payg.js:679
@@ -2112,18 +2007,16 @@ msgid "You have successfully unlocked your Endless Machine"
 msgstr ""
 
 #: js/ui/runDialog.js:58
-#, fuzzy
 msgid "Run a Command"
-msgstr "ଗୋଟିଏ ନିର୍ଦ୍ଦେଶକୁ ଭରଣ କରନ୍ତୁ"
+msgstr ""
 
 #: js/ui/runDialog.js:73
 msgid "Press ESC to close"
 msgstr ""
 
 #: js/ui/runDialog.js:240
-#, fuzzy
 msgid "Restart is not available on Wayland"
-msgstr "ସଂଗୁପ୍ତ ଉପଲବ୍ଧ ନାହିଁ"
+msgstr ""
 
 #: js/ui/runDialog.js:245
 msgid "Restarting…"
@@ -2137,7 +2030,6 @@ msgstr "GNOME ପରଦାକୁ ତାଲା ପକାଇବା ଆବଶ୍ୟ
 #. screenshield. The user is probably very upset at this
 #. point, but any application using global grabs is broken
 #. Just tell him to stop using this app
-#.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
 #: js/ui/screenShield.js:295 js/ui/screenShield.js:674
@@ -2173,36 +2065,33 @@ msgid "Hide Text"
 msgstr "ପାଠ୍ଯ ଲୁଚାନ୍ତୁ"
 
 #: js/ui/shellEntry.js:194
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Search %s and more…"
-msgstr "ସନ୍ଧାନ କରୁଅଛି…"
+msgstr ""
 
 #: js/ui/shellEntry.js:196
 msgid "Search the internet and more…"
 msgstr ""
 
 #: js/ui/shellEntry.js:198
-#, fuzzy
 msgid "Search…"
-msgstr "ସନ୍ଧାନ କରୁଅଛି…"
+msgstr ""
 
 #: js/ui/shellEntry.js:490
 msgid "Caps lock is on."
 msgstr ""
 
 #: js/ui/shellMountOperation.js:285
-#, fuzzy
 msgid "Hidden Volume"
-msgstr "ଭଲ୍ଯୁମ"
+msgstr ""
 
 #: js/ui/shellMountOperation.js:288
 msgid "Windows System Volume"
 msgstr ""
 
 #: js/ui/shellMountOperation.js:291
-#, fuzzy
 msgid "Uses Keyfiles"
-msgstr "ମାଉସ କିଗୁଡ଼ିକ"
+msgstr ""
 
 #. Translators: %s is the Disks application
 #: js/ui/shellMountOperation.js:298
@@ -2221,9 +2110,9 @@ msgstr "ପ୍ରବେଶ ସଂକେତ ମନେରଖନ୍ତୁ"
 
 #. Translators: %s is the Disks application
 #: js/ui/shellMountOperation.js:391
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Open %s"
-msgstr "%s ସହିତ ଖୋଲନ୍ତୁ"
+msgstr ""
 
 #: js/ui/shellMountOperation.js:423
 msgid "The PIM must be a number or empty."
@@ -2231,9 +2120,9 @@ msgstr ""
 
 #. Translators: %s is the Disks application
 #: js/ui/shellMountOperation.js:469
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Unable to start %s"
-msgstr "%s ସହିତ ସଂଯୋଗ ହେବାରେ ଅସମର୍ଥ"
+msgstr ""
 
 #. Translators: %s is the Disks application
 #: js/ui/shellMountOperation.js:471
@@ -2290,9 +2179,8 @@ msgid "Updates Queue"
 msgstr ""
 
 #: js/ui/status/automaticUpdates.js:105
-#, fuzzy
 msgid "Set a Schedule"
-msgstr "କିଛି ଯୋଜନା କରାହୋଇନାହିଁ"
+msgstr ""
 
 #. The status label
 #: js/ui/status/automaticUpdates.js:198
@@ -2324,9 +2212,8 @@ msgid "Close"
 msgstr "ବନ୍ଦକରନ୍ତୁ"
 
 #: js/ui/status/automaticUpdates.js:290
-#, fuzzy
 msgid "Change Settings…"
-msgstr "ମାଉସ ସେଟିଙ୍ଗଗୁଡିକ"
+msgstr ""
 
 #: js/ui/status/bluetooth.js:40
 msgid "Bluetooth"
@@ -2338,21 +2225,19 @@ msgstr "ବ୍ଲୁଟୁଥ ସଂରଚନାଗୁଡ଼ିକ"
 
 #. Translators: this is the number of connected bluetooth devices
 #: js/ui/status/bluetooth.js:132
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%d Connected"
 msgid_plural "%d Connected"
-msgstr[0] "ସଂଯୁକ୍ତ"
-msgstr[1] "ସଂଯୁକ୍ତ"
+msgstr[0] ""
+msgstr[1] ""
 
 #: js/ui/status/bluetooth.js:134
-#, fuzzy
 msgid "Bluetooth Off"
-msgstr "ବ୍ଲୁଟୁଥ"
+msgstr ""
 
 #: js/ui/status/bluetooth.js:136
-#, fuzzy
 msgid "Bluetooth On"
-msgstr "ବ୍ଲୁଟୁଥ"
+msgstr ""
 
 #: js/ui/status/brightness.js:39
 msgid "Brightness"
@@ -2387,9 +2272,8 @@ msgid "Show Keyboard Layout"
 msgstr "କି-ବୋର୍ଡ ବିନ୍ଯାସ ଦର୍ଶାନ୍ତୁ"
 
 #: js/ui/status/location.js:65 js/ui/status/location.js:174
-#, fuzzy
 msgid "Location Enabled"
-msgstr "ଅବସ୍ଥାନ"
+msgstr ""
 
 #: js/ui/status/location.js:66 js/ui/status/location.js:175
 msgid "Disable"
@@ -2400,23 +2284,20 @@ msgid "Privacy Settings"
 msgstr "ଗୋପନୀୟତା ସେଟିଙ୍ଗ"
 
 #: js/ui/status/location.js:173
-#, fuzzy
 msgid "Location In Use"
-msgstr "ଅବସ୍ଥାନ"
+msgstr ""
 
 #: js/ui/status/location.js:177
-#, fuzzy
 msgid "Location Disabled"
-msgstr "ସଂଯୋଗ ବିଫଳ ହୋଇଛି"
+msgstr ""
 
 #: js/ui/status/location.js:178
 msgid "Enable"
 msgstr "ସକ୍ରିୟ"
 
 #: js/ui/status/location.js:355
-#, fuzzy
 msgid "Allow location access"
-msgstr "ସର୍ବଦା ଅନୁମତି ପ୍ରଦାନ କରନ୍ତୁ"
+msgstr ""
 
 #. Translators: %s is an application name
 #: js/ui/status/location.js:357
@@ -2440,55 +2321,59 @@ msgstr ""
 
 #. Translators: %s is a network identifier
 #: js/ui/status/network.js:423
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s Connected"
-msgstr "ସଂଯୁକ୍ତ"
+msgstr ""
 
-#. Translators: this is for network devices that are physically present but are not
+#. Translators: this is for network devices that are physically present but
+#. are not
 #. under NetworkManager's control (and thus cannot be used in the menu);
 #. %s is a network identifier
 #: js/ui/status/network.js:428
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s Unmanaged"
-msgstr "ଅପରିଚାଳିତ"
+msgstr ""
 
 #. Translators: %s is a network identifier
 #: js/ui/status/network.js:431
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s Disconnecting"
-msgstr "ସଂଯୋଗ ବିଚ୍ଛିନ୍ନ କରୁଅଛି"
+msgstr ""
 
 #. Translators: %s is a network identifier
 #: js/ui/status/network.js:438 js/ui/status/network.js:1309
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s Connecting"
-msgstr "ସଂଯୋଗ କରୁଅଛି"
+msgstr ""
 
-#. Translators: this is for network connections that require some kind of key or password; %s is a network identifier
+#. Translators: this is for network connections that require some kind of key
+#. or password; %s is a network identifier
 #: js/ui/status/network.js:441
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s Requires Authentication"
-msgstr "ତାରଯୁକ୍ତ 802.1X ବୈଧିକରଣ"
+msgstr ""
 
-#. Translators: this is for devices that require some kind of firmware or kernel
+#. Translators: this is for devices that require some kind of firmware or
+#. kernel
 #. module, which is missing; %s is a network identifier
 #: js/ui/status/network.js:449
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Firmware Missing For %s"
-msgstr "ଫର୍ମୱେର ଅନୁପସ୍ଥିତ ଅଛି"
+msgstr ""
 
-#. Translators: this is for a network device that cannot be activated (for example it
+#. Translators: this is for a network device that cannot be activated (for
+#. example it
 #. is disabled by rfkill, or it has no coverage; %s is a network identifier
 #: js/ui/status/network.js:453
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s Unavailable"
-msgstr "ଉପଲବ୍ଧ ନାହିଁ"
+msgstr ""
 
 #. Translators: %s is a network identifier
 #: js/ui/status/network.js:456
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s Connection Failed"
-msgstr "ସଂଯୋଗ ବିଫଳ ହୋଇଛି"
+msgstr ""
 
 #: js/ui/status/network.js:468
 msgid "Wired Settings"
@@ -2500,21 +2385,20 @@ msgstr "ମୋବାଇଲ ବ୍ରୋଡ଼ବ୍ୟାଣ୍ଡ ସଂରଚ�
 
 #. Translators: %s is a network identifier
 #: js/ui/status/network.js:558 js/ui/status/network.js:1314
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s Hardware Disabled"
-msgstr "ହାର୍ଡୱେର ନିଷ୍କ୍ରିୟ ଅଛି"
+msgstr ""
 
 #. Translators: this is for a network device that cannot be activated
 #. because it's disabled by rfkill (airplane mode); %s is a network identifier
 #: js/ui/status/network.js:562
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s Disabled"
-msgstr "ନିଷ୍କ୍ରିୟ"
+msgstr ""
 
 #: js/ui/status/network.js:603
-#, fuzzy
 msgid "Connect to Internet"
-msgstr "ସଂଯୋଗ ତ୍ରୁଟି"
+msgstr ""
 
 #: js/ui/status/network.js:808
 msgid "Airplane Mode is On"
@@ -2566,22 +2450,22 @@ msgstr "ୱାଇ-ଫାଇ ସଂରଚନା"
 
 #. Translators: %s is a network identifier
 #: js/ui/status/network.js:1305
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s Hotspot Active"
-msgstr "ହଟସ୍ପଟ୍‌ ସକ୍ରିୟ ଅଛି"
+msgstr ""
 
 #. Translators: %s is a network identifier
 #: js/ui/status/network.js:1320
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s Not Connected"
-msgstr "ସଂଯୁକ୍ତ ହୋଇନାହିଁ"
+msgstr ""
 
 #: js/ui/status/network.js:1417
-#, fuzzy
 msgid "connecting…"
-msgstr "ସଂଯୋଗ କରୁଅଛି"
+msgstr ""
 
-#. Translators: this is for network connections that require some kind of key or password
+#. Translators: this is for network connections that require some kind of key
+#. or password
 #: js/ui/status/network.js:1420
 msgid "authentication required"
 msgstr "ବୈଧିକରଣ ଆବଶ୍ୟକ"
@@ -2599,34 +2483,33 @@ msgid "VPN"
 msgstr "VPN"
 
 #: js/ui/status/network.js:1500
-#, fuzzy
 msgid "VPN Off"
-msgstr "ବିଦ୍ୟୁତ ପ୍ରବାହ ବନ୍ଦ କରନ୍ତୁ"
+msgstr ""
 
 #: js/ui/status/network.js:1561 js/ui/status/rfkill.js:84
 msgid "Network Settings"
 msgstr "ନେଟୱର୍କ ସଂରଚନା"
 
 #: js/ui/status/network.js:1590
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s Wired Connection"
 msgid_plural "%s Wired Connections"
-msgstr[0] "VPN ସଂୟୋଗଗୁଡିକ"
-msgstr[1] "VPN ସଂୟୋଗଗୁଡିକ"
+msgstr[0] ""
+msgstr[1] ""
 
 #: js/ui/status/network.js:1594
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s Wi-Fi Connection"
 msgid_plural "%s Wi-Fi Connections"
-msgstr[0] "VPN ସଂୟୋଗଗୁଡିକ"
-msgstr[1] "VPN ସଂୟୋଗଗୁଡିକ"
+msgstr[0] ""
+msgstr[1] ""
 
 #: js/ui/status/network.js:1598
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s Modem Connection"
 msgid_plural "%s Modem Connections"
-msgstr[0] "VPN ସଂୟୋଗଗୁଡିକ"
-msgstr[1] "VPN ସଂୟୋଗଗୁଡିକ"
+msgstr[0] ""
+msgstr[1] ""
 
 #: js/ui/status/network.js:1732
 msgid "Connection failed"
@@ -2637,14 +2520,12 @@ msgid "Activation of network connection failed"
 msgstr "ନେଟୱର୍କ ସଂଯୋଗ ବିଫଳ ହୋଇଛି"
 
 #: js/ui/status/nightLight.js:45
-#, fuzzy
 msgid "Display Settings"
-msgstr "ଗୋପନୀୟତା ସେଟିଙ୍ଗ"
+msgstr ""
 
 #: js/ui/status/nightLight.js:63
-#, fuzzy
 msgid "Night Light Disabled"
-msgstr "ନେଟୱର୍କିଙ୍ଗ ନିଷ୍କ୍ରିୟ ହୋଇଛି"
+msgstr ""
 
 #: js/ui/status/nightLight.js:64
 msgid "Night Light On"
@@ -2663,9 +2544,8 @@ msgid "Enter unlock code…"
 msgstr ""
 
 #: js/ui/status/payg.js:86
-#, fuzzy
 msgid "Getting time…"
-msgstr "ପୁନଃଚାଳନ କରୁଅଛି…"
+msgstr ""
 
 #: js/ui/status/payg.js:90
 msgid "Less than 1 minute"
@@ -2716,44 +2596,39 @@ msgid "Screen is Being Shared"
 msgstr ""
 
 #: js/ui/status/remoteAccess.js:46
-#, fuzzy
 msgid "Turn off"
-msgstr "ଅଫ୍‌ କରନ୍ତୁ"
+msgstr ""
 
 #. The menu only appears when airplane mode is on, so just
 #. statically build it as if it was on, rather than dynamically
 #. changing the menu contents.
 #: js/ui/status/rfkill.js:79
-#, fuzzy
 msgid "Airplane Mode On"
-msgstr "ବିମାନ ଧାରା ଅନ୍‌ ଅଛି"
+msgstr ""
 
 #: js/ui/status/system.js:77
 msgid "Lock"
 msgstr "ଅପରିବର୍ତ୍ତନୀୟ କରନ୍ତୁ"
 
 #: js/ui/status/system.js:90
-#, fuzzy
 msgid "Power Off / Log Out"
-msgstr "ବିଦ୍ୟୁତ ପ୍ରବାହ ବନ୍ଦ କରନ୍ତୁ"
+msgstr ""
 
 #: js/ui/status/system.js:93
 msgid "Log Out"
 msgstr "ଲଗଆଉଟ କରନ୍ତୁ"
 
 #: js/ui/status/system.js:105
-#, fuzzy
 msgid "Switch User…"
-msgstr "ଚାଳକଙ୍କୁ ବଦଳାନ୍ତୁ"
+msgstr ""
 
 #: js/ui/status/system.js:119
 msgid "Suspend"
 msgstr "ନିଲମ୍ବନ କରନ୍ତୁ"
 
 #: js/ui/status/system.js:131
-#, fuzzy
 msgid "Power Off…"
-msgstr "ବିଦ୍ୟୁତ ପ୍ରବାହ ବନ୍ଦ କରନ୍ତୁ"
+msgstr ""
 
 #: js/ui/status/thunderbolt.js:263
 msgid "Thunderbolt"
@@ -2797,29 +2672,24 @@ msgstr "ଭଲ୍ଯୁମ"
 
 #. Translators: this is for display mirroring i.e. cloning.
 #. * Try to keep it under around 15 characters.
-#.
 #: js/ui/switchMonitor.js:17
-#, fuzzy
 msgid "Mirror"
-msgstr "ତୃଟି"
+msgstr ""
 
 #. Translators: this is for the desktop spanning displays.
 #. * Try to keep it under around 15 characters.
-#.
 #: js/ui/switchMonitor.js:22
 msgid "Join Displays"
 msgstr ""
 
 #. Translators: this is for using only an external display.
 #. * Try to keep it under around 15 characters.
-#.
 #: js/ui/switchMonitor.js:27
 msgid "External Only"
 msgstr ""
 
 #. Translators: this is for using only the laptop display.
 #. * Try to keep it under around 15 characters.
-#.
 #: js/ui/switchMonitor.js:32
 msgid "Built-in Only"
 msgstr ""
@@ -2827,9 +2697,8 @@ msgstr ""
 #. Translators: This is a time format for a date in
 #. long format
 #: js/ui/unlockDialog.js:371
-#, fuzzy
 msgid "%A %B %-d"
-msgstr "%A, %B %d"
+msgstr ""
 
 #: js/ui/unlockDialog.js:377
 msgid "Swipe up to unlock"
@@ -2858,13 +2727,11 @@ msgstr "“%s” ପ୍ରସ୍ତୁତ ଅଛି"
 
 #. Translators: This string should be shorter than 30 characters
 #: js/ui/windowManager.js:61
-#, fuzzy
 msgid "Keep these display settings?"
-msgstr "ଆପଣ ଏହି ପ୍ରଦର୍ଶନୀ ସଂରଚନାକୁ ରଖିବାକୁ ଚାହୁଁଛନ୍ତି କି?"
+msgstr ""
 
 #. Translators: this and the following message should be limited in length,
 #. to avoid ellipsizing the labels.
-#.
 #: js/ui/windowManager.js:70
 msgid "Revert Settings"
 msgstr "ସଂରଚନାକୁ ପରିବର୍ତ୍ତନ କରନ୍ତୁ"
@@ -2920,14 +2787,12 @@ msgid "Always on Visible Workspace"
 msgstr "ସଦାବେଳେ ଦୃଶ୍ଯମାନ କାର୍ଯ୍ଯକ୍ଷେତ୍ରରେ ଥାଏ"
 
 #: js/ui/windowMenu.js:96
-#, fuzzy
 msgid "Move to Workspace Left"
-msgstr "ଉପର କାର୍ଯ୍ଯକ୍ଷେତ୍ରକୁ ପଠାନ୍ତୁ"
+msgstr ""
 
 #: js/ui/windowMenu.js:102
-#, fuzzy
 msgid "Move to Workspace Right"
-msgstr "ଉପର କାର୍ଯ୍ଯକ୍ଷେତ୍ରକୁ ପଠାନ୍ତୁ"
+msgstr ""
 
 #: js/ui/windowMenu.js:108
 msgid "Move to Workspace Up"
@@ -2938,14 +2803,12 @@ msgid "Move to Workspace Down"
 msgstr "ତଳ କାର୍ଯ୍ଯକ୍ଷେତ୍ରକୁ ପଠାନ୍ତୁ"
 
 #: js/ui/windowMenu.js:132
-#, fuzzy
 msgid "Move to Monitor Up"
-msgstr "ଉପର କାର୍ଯ୍ଯକ୍ଷେତ୍ରକୁ ପଠାନ୍ତୁ"
+msgstr ""
 
 #: js/ui/windowMenu.js:141
-#, fuzzy
 msgid "Move to Monitor Down"
-msgstr "ତଳ କାର୍ଯ୍ଯକ୍ଷେତ୍ରକୁ ପଠାନ୍ତୁ"
+msgstr ""
 
 #: js/ui/windowMenu.js:150
 msgid "Move to Monitor Left"
@@ -2968,9 +2831,8 @@ msgid "Mode used by GDM for login screen"
 msgstr "ଲଗଇନ ପରଦା ପାଇଁ ବ୍ୟବହୃତ GDM"
 
 #: src/main.c:470
-#, fuzzy
 msgid "Use a specific mode, e.g. “gdm” for login screen"
-msgstr "ଏକ ନିର୍ଦ୍ଦିଷ୍ଟ ଧାରା ବ୍ୟବହାର କରନ୍ତୁ, ଯେପରିକି ଲଗଇନ ପରଦା ପାଇଁ \"gdm\""
+msgstr ""
 
 #: src/main.c:476
 msgid "List possible modes"
@@ -3027,8 +2889,7 @@ msgstr ""
 #, c-format
 msgid ""
 "UUID is a globally-unique identifier for your extension.\n"
-"This should be in the format of an email address (clicktofocus@janedoe."
-"example.com)\n"
+"This should be in the format of an email address (clicktofocus@janedoe.example.com)\n"
 msgstr ""
 
 #: subprojects/extensions-tool/src/command-create.c:244
@@ -3061,9 +2922,8 @@ msgstr ""
 
 #: subprojects/extensions-tool/src/command-create.c:280
 #: subprojects/extensions-tool/src/command-list.c:168
-#, fuzzy
 msgid "Unknown arguments"
-msgstr "ଅଜ୍ଞାତ କାରଣ"
+msgstr ""
 
 #: subprojects/extensions-tool/src/command-create.c:289
 msgid "UUID, name and description are required"
@@ -3092,14 +2952,12 @@ msgid "More than one UUID given"
 msgstr ""
 
 #: subprojects/extensions-tool/src/command-enable.c:57
-#, fuzzy
 msgid "Enable an extension"
-msgstr "ଅନୁଲଗ୍ନ"
+msgstr ""
 
 #: subprojects/extensions-tool/src/command-info.c:79
-#, fuzzy
 msgid "Show extensions info"
-msgstr "କୌଣସି ଅନୁଲଗ୍ନ ସ୍ଥାପିତ ହୋଇନାହିଁ"
+msgstr ""
 
 #: subprojects/extensions-tool/src/command-install.c:173
 msgid "Overwrite an existing extension"
@@ -3110,14 +2968,12 @@ msgid "EXTENSION_BUNDLE"
 msgstr ""
 
 #: subprojects/extensions-tool/src/command-install.c:184
-#, fuzzy
 msgid "Install an extension bundle"
-msgstr "ସକ୍ରିୟ କରିବା ପାଇଁ ଥିବା ଅନୁଲଗ୍ନଗୁଡ଼ିକର UUID ଗୁଡ଼ିକ"
+msgstr ""
 
 #: subprojects/extensions-tool/src/command-install.c:201
-#, fuzzy
 msgid "No extension bundle specified"
-msgstr "କୌଣସି ଅନୁଲଗ୍ନ ସ୍ଥାପିତ ହୋଇନାହିଁ"
+msgstr ""
 
 #: subprojects/extensions-tool/src/command-install.c:207
 msgid "More than one extension bundle specified"
@@ -3132,28 +2988,24 @@ msgid "Show system-installed extensions"
 msgstr ""
 
 #: subprojects/extensions-tool/src/command-list.c:131
-#, fuzzy
 msgid "Show enabled extensions"
-msgstr "GNOME ସେଲ ଅନୁଲଗ୍ନଗୁଡ଼ିକ"
+msgstr ""
 
 #: subprojects/extensions-tool/src/command-list.c:134
 msgid "Show disabled extensions"
 msgstr ""
 
 #: subprojects/extensions-tool/src/command-list.c:137
-#, fuzzy
 msgid "Show extensions with preferences"
-msgstr "GNOME ସେଲ ଅନୁଲଗ୍ନ ପସନ୍ଦଗୁଡ଼ିକ"
+msgstr ""
 
 #: subprojects/extensions-tool/src/command-list.c:140
-#, fuzzy
 msgid "Show extensions with updates"
-msgstr "କୌଣସି ଅନୁଲଗ୍ନ ସ୍ଥାପିତ ହୋଇନାହିଁ"
+msgstr ""
 
 #: subprojects/extensions-tool/src/command-list.c:143
-#, fuzzy
 msgid "Print extension details"
-msgstr "ମୁଦ୍ରଣ ସଂସ୍କରଣ"
+msgstr ""
 
 #: subprojects/extensions-tool/src/command-list.c:151
 msgid "List installed extensions"
@@ -3213,9 +3065,8 @@ msgid "More than one source directory specified"
 msgstr ""
 
 #: subprojects/extensions-tool/src/command-prefs.c:90
-#, fuzzy
 msgid "Opens extension preferences"
-msgstr "GNOME ସେଲ ଅନୁଲଗ୍ନ ପସନ୍ଦଗୁଡ଼ିକ"
+msgstr ""
 
 #: subprojects/extensions-tool/src/command-reset.c:57
 msgid "Reset an extension"
@@ -3268,59 +3119,49 @@ msgid "Commands:"
 msgstr ""
 
 #: subprojects/extensions-tool/src/main.c:248
-#, fuzzy
 msgid "Print help"
-msgstr "ମୁଦ୍ରଣ ସଂସ୍କରଣ"
+msgstr ""
 
 #: subprojects/extensions-tool/src/main.c:250
-#, fuzzy
 msgid "Enable extension"
-msgstr "ଅନୁଲଗ୍ନ"
+msgstr ""
 
 #: subprojects/extensions-tool/src/main.c:251
-#, fuzzy
 msgid "Disable extension"
-msgstr "ଅନୁଲଗ୍ନ"
+msgstr ""
 
 #: subprojects/extensions-tool/src/main.c:252
-#, fuzzy
 msgid "Reset extension"
-msgstr "ଅନୁଲଗ୍ନ"
+msgstr ""
 
 #: subprojects/extensions-tool/src/main.c:253
 msgid "Uninstall extension"
 msgstr ""
 
 #: subprojects/extensions-tool/src/main.c:254
-#, fuzzy
 msgid "List extensions"
-msgstr "ଅନୁଲଗ୍ନ"
+msgstr ""
 
 #: subprojects/extensions-tool/src/main.c:255
 #: subprojects/extensions-tool/src/main.c:256
-#, fuzzy
 msgid "Show extension info"
-msgstr "କୌଣସି ଅନୁଲଗ୍ନ ସ୍ଥାପିତ ହୋଇନାହିଁ"
+msgstr ""
 
 #: subprojects/extensions-tool/src/main.c:257
-#, fuzzy
 msgid "Open extension preferences"
-msgstr "GNOME ସେଲ ଅନୁଲଗ୍ନ ପସନ୍ଦଗୁଡ଼ିକ"
+msgstr ""
 
 #: subprojects/extensions-tool/src/main.c:258
-#, fuzzy
 msgid "Create extension"
-msgstr "ଅନୁଲଗ୍ନ"
+msgstr ""
 
 #: subprojects/extensions-tool/src/main.c:259
-#, fuzzy
 msgid "Package extension"
-msgstr "ଅନୁଲଗ୍ନ"
+msgstr ""
 
 #: subprojects/extensions-tool/src/main.c:260
-#, fuzzy
 msgid "Install extension bundle"
-msgstr "ସକ୍ରିୟ କରିବା ପାଇଁ ଥିବା ଅନୁଲଗ୍ନଗୁଡ଼ିକର UUID ଗୁଡ଼ିକ"
+msgstr ""
 
 #: subprojects/extensions-tool/src/main.c:262
 #, c-format
@@ -3354,9 +3195,8 @@ msgid "Other workspaces"
 msgstr ""
 
 #: js/ui/appIconBar.js:204
-#, fuzzy
 msgid "Current workspace"
-msgstr "ପରିବର୍ତ୍ତକକୁ ପ୍ରଚଳିତ କାର୍ଯ୍ୟକ୍ଷେତ୍ର ପାଇଁ ସିମୀତ ରଖନ୍ତୁ।"
+msgstr ""
 
 #: js/ui/appIconBar.js:282
 msgid "Pin to Taskbar"
@@ -3367,28 +3207,25 @@ msgid "Unpin from Taskbar"
 msgstr ""
 
 #: js/ui/appIconBar.js:310
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Quit %s"
-msgstr "ବିଦାୟ ନିଅନ୍ତୁ"
+msgstr ""
 
 #: js/ui/endlessButton.js:14
 msgid "Endless Button"
 msgstr ""
 
 #: js/ui/endlessButton.js:67
-#, fuzzy
 msgid "Show Desktop"
-msgstr "ବିସ୍ତୃତ ବିବରଣୀ ଦର୍ଶାନ୍ତୁ"
+msgstr ""
 
 #: js/ui/endlessButton.js:69
-#, fuzzy
 msgid "Show Apps"
-msgstr "ପ୍ରୟୋଗଗୁଡ଼ିକୁ ଦର୍ଶାନ୍ତୁ"
+msgstr ""
 
 #: js/ui/forceAppExitDialog.js:50
-#, fuzzy
 msgid "Quit applications"
-msgstr "ପ୍ରୟୋଗଗୁଡ଼ିକ"
+msgstr ""
 
 #: js/ui/forceAppExitDialog.js:56
 msgid ""
@@ -3397,19 +3234,16 @@ msgid ""
 msgstr ""
 
 #: js/ui/forceAppExitDialog.js:87
-#, fuzzy
 msgid "System Monitor"
-msgstr "ତନ୍ତ୍ର ଧ୍ୱନି"
+msgstr ""
 
 #: js/ui/forceAppExitDialog.js:95
-#, fuzzy
 msgid "Quit Application"
-msgstr "ପ୍ରୟୋଗଗୁଡ଼ିକ"
+msgstr ""
 
 #: js/ui/hotCorner.js:15
-#, fuzzy
 msgid "Hot Corner"
-msgstr "ସଂଯୁକ୍ତ ହୋଇନାହିଁ"
+msgstr ""
 
 #: js/ui/hotCorner.js:25
 msgid "Enable Hot Corner"
@@ -3420,14 +3254,13 @@ msgid "Disable Hot Corner"
 msgstr ""
 
 #: js/ui/iconGridLayout.js:312
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s has been removed"
-msgstr "%s କୁ ମନପସନ୍ଦରୁ ବାହାର କରିଦିଆଯାଇଛି।"
+msgstr ""
 
 #: js/ui/iconGridLayout.js:540
-#, fuzzy
 msgid "New Folder"
-msgstr "ମୂଳ ଫୋଲଡର"
+msgstr ""
 
 #: js/ui/internetSearch.js:70
 #, javascript-format
@@ -3436,7 +3269,6 @@ msgstr ""
 
 #. Translators: the first %s is the search engine name, and the second
 #. * is the search string. For instance, 'Search Google for "hello"'.
-#.
 #: js/ui/internetSearch.js:79
 #, javascript-format
 msgid "Search %s for \"%s\""
@@ -3448,9 +3280,8 @@ msgid "Search the internet for \"%s\""
 msgstr ""
 
 #: js/ui/userMenu.js:16
-#, fuzzy
 msgid "Social Accounts"
-msgstr "ଅନଲାଇନ ଖାତାଗୁଡ଼ିକ"
+msgstr ""
 
 #: js/ui/userMenu.js:19
 msgid "Settings"
@@ -3468,765 +3299,3 @@ msgstr ""
 #, c-format
 msgid "Custom definition for %s"
 msgstr ""
-
-#~ msgid "Show the message tray"
-#~ msgstr "ସନ୍ଦେଶ ପାତ୍ରକୁ ଦର୍ଶାନ୍ତୁ"
-
-#~ msgid "GNOME Shell (wayland compositor)"
-#~ msgstr "GNOME ସେଲ (ୱେଲ୍ୟାଣ୍ଡ ଯୋଜନାକାରୀ)"
-
-#~ msgid "Show the week date in the calendar"
-#~ msgstr "କ୍ୟାଲେଣ୍ଡରରେ ସାପ୍ତାହିକ ତାରିଖ ଦର୍ଶାନ୍ତୁ"
-
-#~ msgid "If true, display the ISO week date in the calendar."
-#~ msgstr "ସତ ହେଲେ, କାଲେଣ୍ଡରରେ ISO ସପ୍ତାହ ତାରିଖ ଦେଖାନ୍ତୁ।"
-
-#~ msgid ""
-#~ "Keybinding that pauses and resumes all running tweens, for debugging "
-#~ "purposes"
-#~ msgstr ""
-#~ "ଚାଲୁଥିବା ସମସ୍ତ ଟ୍ୱୀନଗୁଡ଼ିକୁ ସ୍ଥିର ରଖିବା ଏବଂ ପୁନଃଚାଳନ କରିବା ପାଇଁ ଥିବା କି ବନ୍ଧନ, ତୃଟି ନିବାରଣ "
-#~ "ଉଦ୍ଦେଶ୍ୟରେ"
-
-#~ msgid "Which keyboard to use"
-#~ msgstr "କେଉଁ କିବୋର୍ଡକୁ ବ୍ୟବହାର କରିବା ଉଚିତ"
-
-#~ msgid "The type of keyboard to use."
-#~ msgstr "ବ୍ୟବହାର କରିବାକୁ ଥିବା କିବୋର୍ଡ ପ୍ରକାର"
-
-#~ msgid "Captive Portal"
-#~ msgstr "କେପଟିଭ୍‌ ପୋର୍ଟାଲ"
-
-#~ msgid "There was an error loading the preferences dialog for %s:"
-#~ msgstr "%s ପାଇଁ ପସନ୍ଦ ସଂଳାପ ଧାରଣ କରିବା ସମୟରେ ତ୍ରୁଟି:"
-
-#~ msgid "Next"
-#~ msgstr "ପରବର୍ତ୍ତୀ"
-
-#~ msgctxt "button"
-#~ msgid "Sign In"
-#~ msgstr "ସାଇନ ଇନ"
-
-#~ msgid "Web Authentication Redirect"
-#~ msgstr "ୱେବ ବୈଧିକରଣ ଦିଗ ପରିବର୍ତ୍ତନ"
-
-#~ msgid "Frequently used applications will appear here"
-#~ msgstr "ବାରମ୍ବାର ବ୍ୟବହୃତ ପ୍ରୟୋଗଗୁଡ଼ିକ ଏଠାରେ ଦୃଶ୍ୟମାନ ହେବ"
-
-#~ msgid "Frequent"
-#~ msgstr "ବାରମ୍ବାର"
-
-#~ msgid "All"
-#~ msgstr "ସମସ୍ତ"
-
-#~ msgid "Add to Favorites"
-#~ msgstr "ମନପସନ୍ଦ ମଧ୍ଯରେ ଯୋଗକରନ୍ତୁ"
-
-#~ msgctxt "event list time"
-#~ msgid "%H∶%M"
-#~ msgstr "%H∶%M"
-
-#~ msgctxt "event list time"
-#~ msgid "%l∶%M %p"
-#~ msgstr "%l∶%M %p"
-
-#~ msgctxt "list sunday"
-#~ msgid "Su"
-#~ msgstr "Su"
-
-#~ msgctxt "list monday"
-#~ msgid "M"
-#~ msgstr "M"
-
-#~ msgctxt "list tuesday"
-#~ msgid "T"
-#~ msgstr "T"
-
-#~ msgctxt "list wednesday"
-#~ msgid "W"
-#~ msgstr "W"
-
-#~ msgctxt "list thursday"
-#~ msgid "Th"
-#~ msgstr "Th"
-
-#~ msgctxt "list friday"
-#~ msgid "F"
-#~ msgstr "F"
-
-#~ msgctxt "list saturday"
-#~ msgid "S"
-#~ msgstr "S"
-
-#~ msgid "Today"
-#~ msgstr "ଆଜି"
-
-#~ msgid "Tomorrow"
-#~ msgstr "ଆସନ୍ତାକାଲି"
-
-#~ msgid "This week"
-#~ msgstr "ଏହି ସପ୍ତାହ"
-
-#~ msgid "Next week"
-#~ msgstr "ପରବର୍ତ୍ତୀ ସପ୍ତାହ"
-
-#~ msgid "Removable Devices"
-#~ msgstr "କଢ଼ାଯୋଗ୍ୟ ଉପକରଣଗୁଡ଼ିକ"
-
-#~ msgid "Eject"
-#~ msgstr "ବାହାର କରନ୍ତୁ"
-
-#~ msgid "Password:"
-#~ msgstr "ପ୍ରବେଶ ସଙ୍କେତ:"
-
-#~ msgid "Type again:"
-#~ msgstr "ପୁଣିଥରେ ଲେଖନ୍ତୁ:"
-
-#~ msgid "Password: "
-#~ msgstr "ପ୍ରବେଶ ସଙ୍କେତ: "
-
-#~ msgid "Authentication required by wireless network"
-#~ msgstr "ବେତାର ନେଟୱର୍କ ପାଇଁ ପ୍ରାଧିକରଣ ଆବଶ୍ୟକ"
-
-#~ msgid "Mobile broadband network password"
-#~ msgstr "ମୋବାଇଲ ବ୍ରୋଡ଼ବ୍ୟାଣ୍ଡ ନେଟୱର୍କ ପ୍ରବେଶ ସଂକେତ"
-
-#~ msgid "Invitation"
-#~ msgstr "ଆମନ୍ତ୍ରଣ"
-
-#~ msgid "Call"
-#~ msgstr "ଡାକରା"
-
-#~ msgid "File Transfer"
-#~ msgstr "ଫାଇଲ ସ୍ଥାନାନ୍ତରଣ"
-
-#~ msgid "Chat"
-#~ msgstr "ଆଳାପ"
-
-#~ msgid "Unmute"
-#~ msgstr "ଧ୍ୱନି ଚାଲୁ କରନ୍ତୁ"
-
-#~ msgid "Mute"
-#~ msgstr "ଧ୍ୱନିକୁ ମୁକ କରନ୍ତୁ"
-
-#~ msgid "Invitation to %s"
-#~ msgstr "%s କୁ ଆମନ୍ତ୍ରଣ"
-
-#~ msgid "%s is inviting you to join %s"
-#~ msgstr "%s ଆପଣଙ୍କୁ %s ରେ ଯୋଗଦାନ କରିବା ପାଇଁ ଆମନ୍ତ୍ରଣ କରୁଛନ୍ତି"
-
-#~ msgid "Decline"
-#~ msgstr "ମନା କରନ୍ତୁ"
-
-#~ msgid "Accept"
-#~ msgstr "ଗ୍ରହଣ କରନ୍ତୁ"
-
-#~ msgid "Video call from %s"
-#~ msgstr "%s ଠାରୁ ଭିଡିଓ ଡାକରା"
-
-#~ msgid "Call from %s"
-#~ msgstr "%s ଠାରୁ ଡାକରା"
-
-#~ msgid "Answer"
-#~ msgstr "ଉତ୍ତର"
-
-#~ msgid "%s is sending you %s"
-#~ msgstr "%s ଆପଣଙ୍କୁ %s ପଠାଉଅଛି"
-
-#~ msgid "%s would like permission to see when you are online"
-#~ msgstr "ଆପଣ କେତେ ବେଳେ ଅନଲାଇନ ଆସୁଛନ୍ତି ଦେଖିବା ପାଇଁ %s କୁ ଅନୁମତି ଆବଶ୍ୟକ କରୁଛି"
-
-#~ msgid "Authentication failed"
-#~ msgstr "ବୈଧିକରଣ ବିଫଳ ହେଲା"
-
-#~ msgid "Encryption error"
-#~ msgstr "ସଂଗୁପ୍ତ ତ୍ରୁଟି"
-
-#~ msgid "Certificate not provided"
-#~ msgstr "ପ୍ରମାଣପତ୍ର ଦିଆଯାଇନାହିଁ"
-
-#~ msgid "Certificate untrusted"
-#~ msgstr "ପ୍ରମାଣପତ୍ର ବିଶ୍ୱସ୍ଥ ନୁହଁ"
-
-#~ msgid "Certificate expired"
-#~ msgstr "ପ୍ରମାଣପତ୍ରର ସମୟ ସମାପ୍ତ"
-
-#~ msgid "Certificate not activated"
-#~ msgstr "ପ୍ରମାଣପତ୍ର ସକ୍ରିୟ କରାଯାଇନାହିଁ"
-
-#~ msgid "Certificate hostname mismatch"
-#~ msgstr "ପ୍ରମାଣପତ୍ର ହୋଷ୍ଟ ନାମ ମେଳଖାଉ ନାହିଁ"
-
-#~ msgid "Certificate fingerprint mismatch"
-#~ msgstr "ପ୍ରମାଣପତ୍ର ଅଙ୍ଗୁଳିଚିହ୍ନ ମେଳଖାଉନାହିଁ"
-
-#~ msgid "Certificate self-signed"
-#~ msgstr "ପ୍ରମାଣପତ୍ର ନିଜ ଦ୍ୱାରା ହସ୍ତାକ୍ଷର ହୋଇଛି"
-
-#~ msgid "Status is set to offline"
-#~ msgstr "ସ୍ଥିତିକୁ ଅଫଲାଇନ ସେଟ କରାଯାଇଛି"
-
-#~ msgid "Certificate is invalid"
-#~ msgstr "ପ୍ରମାଣପତ୍ରଟି ଅବୈଧ ଅଟେ"
-
-#~ msgid "Connection has been refused"
-#~ msgstr "ସଂଯୋଗକୁ ବାରଣ ହୋଇଛି"
-
-#~ msgid "Connection can't be established"
-#~ msgstr "ସଂଯୋଗ ସ୍ଥାପନ କରିପାରିବେ ନାହିଁ"
-
-#~ msgid "Connection has been lost"
-#~ msgstr "ସଂଯୋଗ ବିଚ୍ଛିନ୍ନ ହୋଇଛି"
-
-#~ msgid "This account is already connected to the server"
-#~ msgstr "ଏହି ଖାତାଟି ସର୍ଭର ସହିତ ପୂର୍ବରୁ ସଂଯୁକ୍ତ ଅଛି"
-
-#~ msgid ""
-#~ "Connection has been replaced by a new connection using the same resource"
-#~ msgstr "ସମାନ ଉତ୍ସ ବ୍ୟବହାର କରି ଏହି ସଂଯୋଗଟି ଏକ ନୂତନ ସଂଯୋଗ ଦ୍ୱାରା ପରିବର୍ତ୍ତିତ ହୋଇଛି"
-
-#~ msgid "The account already exists on the server"
-#~ msgstr "ସର୍ଭରରେ ଏହି ଖାତାଟି ପୂର୍ବରୁ ଅବସ୍ଥିତ ଅଛି"
-
-#~ msgid "Server is currently too busy to handle the connection"
-#~ msgstr "ଏହି ସଂଯୋଗକୁ କାର୍ଯ୍ୟକାରୀ କରିବା ପାଇଁ ସର୍ଭର ବର୍ତ୍ତମାନ ବ୍ୟସ୍ତ ଅଛି"
-
-#~ msgid "Certificate has been revoked"
-#~ msgstr "ପ୍ରମାଣପତ୍ରଟିର ସମୟ ସମାପ୍ତ ହୋଇଛି"
-
-#~ msgid ""
-#~ "Certificate uses an insecure cipher algorithm or is cryptographically weak"
-#~ msgstr ""
-#~ "ପ୍ରମାଣପତ୍ରଟି ଗୋଟିଏ ଅସୁରକ୍ଷିତ ଆଲଗୋରିଦମ ବ୍ୟବହାର କରିଥାଏ କିମ୍ବା ତାହା କ୍ରିପ୍ଟୋଗ୍ରାଫି ଅନୁଯାୟୀ "
-#~ "ଦୁର୍ବଳ ଅଟେ"
-
-#~ msgid ""
-#~ "The length of the server certificate, or the depth of the server "
-#~ "certificate chain, exceed the limits imposed by the cryptography library"
-#~ msgstr ""
-#~ "ସର୍ଭର ପ୍ରମାଣପତ୍ରର ଲମ୍ବ, ଅଥବା ସର୍ଭର ପ୍ରମାଣପତ୍ର ସୃଙ୍ଖଳର ଗଭୀରତା, କ୍ରିପ୍ଟୋଗ୍ରାଫି ଲାଇବ୍ରେରୀ "
-#~ "ଦ୍ୱାରା ନିୟୋଜିତ ସୀମାକୁ ଅତିକ୍ରମ କରିଥାଏ"
-
-#~ msgid "Internal error"
-#~ msgstr "ଆଭ୍ଯନ୍ତରୀଣ ତ୍ରୁଟି"
-
-#~ msgid "View account"
-#~ msgstr "ଖାତା ଦେଖନ୍ତୁ"
-
-#~ msgid "Open Calendar"
-#~ msgstr "କ୍ୟାଲେଣ୍ଡର ଖୋଲନ୍ତୁ"
-
-#~ msgid "Date & Time Settings"
-#~ msgstr "ତାରିଖ ଏବଂ ସମୟ ସେଟିଙ୍ଗ"
-
-#~ msgid "Open"
-#~ msgstr "ଖୋଲନ୍ତୁ"
-
-#~ msgid "Clear Messages"
-#~ msgstr "ସନ୍ଦେଶଗୁଡ଼ିକୁ ସଫାକରନ୍ତୁ"
-
-#~ msgid "Notification Settings"
-#~ msgstr "ବିଜ୍ଞପ୍ତି ବିନ୍ୟାସ"
-
-#~ msgid "No Messages"
-#~ msgstr "କୌଣସି ସନ୍ଦେଶ ନାହିଁ"
-
-#~ msgid "Message Tray"
-#~ msgstr "ସନ୍ଦେଶ ଟ୍ରେ"
-
-#~ msgid "%d new message"
-#~ msgid_plural "%d new messages"
-#~ msgstr[0] "%d ଟି ନୂତନ ସନ୍ଦେଶ"
-#~ msgstr[1] "%d ଟି ନୂତନ ସନ୍ଦେଶ"
-
-#~ msgid "Type to search…"
-#~ msgstr "ସନ୍ଧାନ କରିବା ପାଇଁ ଲେଖନ୍ତୁ…"
-
-#~ msgid "Top Bar"
-#~ msgstr "ଉପର ପଟି"
-
-#~ msgid "toggle-switch-us"
-#~ msgstr "toggle-switch-us"
-
-#~ msgid "%d Connected Device"
-#~ msgid_plural "%d Connected Devices"
-#~ msgstr[0] "%d ଟି ସଂଯୁକ୍ତ ଉପକରଣ"
-#~ msgstr[1] "%d ଟି ସଂଯୁକ୍ତ ଉପକରଣଗୁଡ଼ିକ"
-
-#~ msgid "In Use"
-#~ msgstr "ବ୍ଯବହୃତ ହେଉଅଛି"
-
-#~ msgid "Off"
-#~ msgstr "ଅଫ"
-
-#~ msgid "Use as Internet connection"
-#~ msgstr "ଇଣ୍ଟରନେଟ ସଂଯୋଗ ବ୍ୟବହାର କରନ୍ତୁ"
-
-#~ msgid "connecting..."
-#~ msgstr "ସଂଯୋଗ କରୁଅଛି..."
-
-#~ msgid "UPS"
-#~ msgstr "UPS"
-
-#~ msgid "Battery"
-#~ msgstr "ବ୍ଯାଟେରୀ"
-
-#~ msgid "Airplane Mode"
-#~ msgstr "ବିମାନ ଧାରା"
-
-#~ msgid "On"
-#~ msgstr "ଅନ୍‌"
-
-#~ msgid "Orientation Lock"
-#~ msgstr "ଆବର୍ତ୍ତନ ତାଲା"
-
-#~ msgid "Search"
-#~ msgstr "ସନ୍ଧାନ କରନ୍ତୁ"
-
-#~ msgid "Screenshots"
-#~ msgstr "ପରଦା ପ୍ରତିଛବିଗୁଡ଼ିକ"
-
-#~ msgid "Record a screencast"
-#~ msgstr "ସ୍କ୍ରିନକାଷ୍ଟକୁ ଲିପିବଦ୍ଧ କରନ୍ତୁ"
-
-#~ msgid "Whether to collect stats about applications usage"
-#~ msgstr "ପ୍ରୟୋଗ ଉପଯୋଗ ବିଷୟରେ ସ୍ଥିତି ସଂଗ୍ରହ କରିବା ଉଚିତ କି"
-
-#~ msgid ""
-#~ "The shell normally monitors active applications in order to present the "
-#~ "most used ones (e.g. in launchers). While this data will be kept private, "
-#~ "you may want to disable this for privacy reasons. Please note that doing "
-#~ "so won't remove already saved data."
-#~ msgstr ""
-#~ "ବହୁଳ ଭାବରେ ବ୍ୟବହୃତ ପ୍ରୟୋଗକୁ ଉପସ୍ଥାପନ କରିବା ପାଇଁ ସେଲ ସାଧାରଣତଃ ସକ୍ରିୟ ପ୍ରୟୋଗଗୁଡ଼ିକୁ ନିରୀକ୍ଷଣ "
-#~ "କରିଥାଏ। ଯେତେବେଳେ ଏହି ତଥ୍ୟକୁ ବ୍ୟକ୍ତିଗତ ରଖାଯାଇଥାଏ, ସେତେବେଳେ ଆପଣ ଏହାକୁ ବ୍ୟକ୍ତିଗତ କାରଣ "
-#~ "ହେତୁ ନିଷ୍କ୍ରିୟ କରିପାରିବେ। ଦୟାକରିମନେରଖନ୍ତୁ ଯେ ଏହା କରିବା ଫଳରେ ତାହା ସଂରକ୍ଷିତ ତଥ୍ୟକୁ ବାହାର "
-#~ "କରିନଥାଏ।"
-
-#~ msgid "List of categories that should be displayed as folders"
-#~ msgstr "ବିଭାଗଗୁଡ଼ିକର ତାଲିକା ଯାହାକୁ ଫୋଲଡର୍‌ ଭାବରେ ଦର୍ଶାଯାଇଥାଏ"
-
-#~ msgid ""
-#~ "Each category name in this list will be represented as folder in the "
-#~ "application view, rather than being displayed inline in the main view."
-#~ msgstr ""
-#~ "ମୂଖ୍ୟ ଦୃଶ୍ୟରେ ଦର୍ଶାଇବା ପରିବର୍ତ୍ତେ, ଏହି ତାଲିକାରେ ପ୍ରତ୍ୟେକ ବିଭାଗ ନାମକୁ ପ୍ରୟୋଗ ଦୃଶ୍ୟରେ ଫୋଲଡର୍‌ "
-#~ "ଭାବରେ ଉପସ୍ଥାପନା କରାଯାଇଥାଏ।"
-
-#~ msgid ""
-#~ "Internally used to store the last IM presence explicitly set by the user. "
-#~ "The value here is from the TpConnectionPresenceType enumeration."
-#~ msgstr ""
-#~ "ଶେଷ IM ଉପସ୍ଥିତିକୁ ସଂରକ୍ଷଣ କରିବା ପାଇଁ ଆଭ୍ୟନ୍ତରୀଣ ବ୍ୟବହାର ପାଇଁ ବ୍ୟବହାରକାରୀ ଦ୍ୱାରା ସେଟ "
-#~ "କରାଯାଇଥାଏ। ଏଠାରେ ଥିବା ମୂଲ୍ଯଟି ହେଉଛି TpConnectionPresenceType enumeration."
-
-#~ msgid ""
-#~ "Internally used to store the last session presence status for the user. "
-#~ "The value here is from the GsmPresenceStatus enumeration."
-#~ msgstr ""
-#~ "ବ୍ୟବହାରକାରୀ ପାଇଁ ଅନ୍ତିମ ଅଧିବେଶନ ଉପସ୍ଥିତିକୁ ସଂରକ୍ଷଣ କରିବା ପାଇଁ ଆଭ୍ୟନ୍ତରିଣ ଭାବରେ ବ୍ୟବହାର "
-#~ "କରାଯାଇଥାଏ। ଏଠାରେ ଥିବା ମୂଲ୍ଯଟି ହେଉଛି GsmPresenceStatus enumeration."
-
-#~ msgid "Keybinding to toggle the screen recorder"
-#~ msgstr "ପରଦା ଲେଖକକୁ ଆଗପଛ କରିବା ପାଇଁ କି ବନ୍ଧନ"
-
-#~ msgid "Keybinding to start/stop the builtin screen recorder."
-#~ msgstr "ପୂର୍ବନିର୍ମିତ ପରଦା ଲେଖକକୁ ଆରମ୍ଭ/ବନ୍ଦ କରିବା ପାଇଁ କି ବନ୍ଧନ।"
-
-#~ msgid "Framerate used for recording screencasts."
-#~ msgstr "ସ୍କ୍ରିନକାଷ୍ଟଗୁଡ଼ିକୁ ଲିପିବଦ୍ଧ କରିବା ପାଇଁ ବ୍ୟବହୃତ ଫ୍ରେମ ହାର।"
-
-#~ msgid ""
-#~ "The framerate of the resulting screencast recordered by GNOME Shell's "
-#~ "screencast recorder in frames-per-second."
-#~ msgstr ""
-#~ "GNOME ସେଲ ସ୍କ୍ରିନକାଷ୍ଟ ଲେଖକ ଦ୍ୱାରା ଲିପିବଦ୍ଧ ଫଳାଫଳ ସ୍କ୍ରିନକାଷ୍ଟର ଫ୍ରେମ ହାର ହେଉଛି ସେକଣ୍ଡ "
-#~ "ପ୍ରତି ଫ୍ରେମ ସଂଖ୍ୟା।"
-
-#~ msgid "The gstreamer pipeline used to encode the screencast"
-#~ msgstr "ସ୍କ୍ରିନକାଷ୍ଟକୁ ସାଙ୍କେତିକରଣ କରିବା ପାଇଁ ବ୍ୟବହୃତ gstreamer"
-
-#~ msgid ""
-#~ "Sets the GStreamer pipeline used to encode recordings. It follows the "
-#~ "syntax used for gst-launch. The pipeline should have an unconnected sink "
-#~ "pad where the recorded video is recorded. It will normally have a "
-#~ "unconnected source pad; output from that pad will be written into the "
-#~ "output file. However the pipeline can also take care of its own output - "
-#~ "this might be used to send the output to an icecast server via shout2send "
-#~ "or similar. When unset or set to an empty value, the default pipeline "
-#~ "will be used. This is currently 'vp8enc min_quantizer=13 max_quantizer=13 "
-#~ "cpu-used=5 deadline=1000000 threads=%T ! queue ! webmmux' and records to "
-#~ "WEBM using the VP8 codec. %T is used as a placeholder for a guess at the "
-#~ "optimal thread count on the system."
-#~ msgstr ""
-#~ "ଲିପିବଦ୍ଧ କରିବା ପାଇଁ ସାଙ୍କେତିକରଣରେ ବ୍ୟବହୃତ GStreamer  ପାଇପଲାଇନ। ଏହା gst-launch ପାଇଁ "
-#~ "ବ୍ୟବହୃତ ବାକ୍ୟ ବିନ୍ୟାସକୁ ଅନୁସରଣ କରିଥାଏ। ସେହି ପାଇପଲାଇନରେ ଅସଂଯୁକ୍ତ ସିଙ୍କ ପ୍ୟାଡ଼ ଥାଏ "
-#~ "ଯେଉଁଠିଲିପିବଦ୍ଧ ଭିଡ଼ିଓକୁ ରଖାଯାଇଥାଏ। ଏଥିରେ ସାଧାରଣତଃ ଅସଂଯୁକ୍ତ ଉତ୍ସ ପ୍ୟାଡ଼ ଥାଏ; ସେହି ପ୍ୟାଡ଼ର "
-#~ "ଫଳାଫଳକୁ ଫଳାଫଳ ଫାଇଲରେ ଲେଖାଯାଇଥାଏ। ତଥାପି ସେହି ପାଇପଲାଇନ ତାହାର ଯତ୍ନ ନେଇପାରିବ -ଏହା "
-#~ "ହୁଏତଃଫଳାଫଳକୁ icecast ସର୍ଭରକୁ shout2send କିମ୍ବା ସେହିପରି କିଛି ମାଧ୍ଯମରେପଠାଇବାରେ ବ୍ୟବହାର "
-#~ "କରାଯାଇପାରିବ। ଯେତେବେଳେ ସେଟ କରାଯାଇନଥାଏ କିମ୍ବା ଖାଲି ମୂଲ୍ୟ ସେଟ ହୋଇଥାଏ, ସେତେବେଳେ "
-#~ "ପୂର୍ବନିର୍ଦ୍ଧାରିତ ପାଇପଲାଇନକୁ ବ୍ୟବହାର କରାଯିବ। ଏହା ବର୍ତ୍ତମାନ 'vp8enc min_quantizer=13 "
-#~ "max_quantizer=13 cpu-used=5 deadline=1000000 threads=%T ! queue ! "
-#~ "webmmux' ଏବଂ WEBM ରେ VP8 କୋଡେକ ବ୍ୟବହାର କରି ଲିପିବଦ୍ଧ କରିଥାଏ। %T କୁ ତନ୍ତ୍ରରେ ଏକ ସ୍ଥାନ "
-#~ "ରକ୍ଷକ ଭାବରେ ବ୍ୟବହାର କରାଯାଇଥାଏ।"
-
-#~ msgid "File extension used for storing the screencast"
-#~ msgstr "ସ୍କ୍ରିନକାଷ୍ଟକୁ ସଂରକ୍ଷଣ କରିବା ପାଇଁ ବ୍ୟବହୃତ ଫାଇଲ ଅନୁଲଗ୍ନ"
-
-#~ msgid ""
-#~ "The filename for recorded screencasts will be a unique filename based on "
-#~ "the current date, and use this extension. It should be changed when "
-#~ "recording to a different container format."
-#~ msgstr ""
-#~ "ଲିପିବଦ୍ଧ ସ୍କ୍ରିନକାଷ୍ଟ ପାଇଁ ଫାଇଲ ନାମଟି ବର୍ତ୍ତମାନ ତାରିଖ ଅନୁସାରେ ଏକ ଅନନ୍ୟ ଫାଇଲନାମ "
-#~ "ଦିଆଯାଇଥାଏ, ଏବଂ ଏହି ଅନୁଲଗ୍ନକୁ ବ୍ୟବହାର କରାଯାଇଥାଏ। ଏହାକୁ ବିଭିନ୍ନ ଧାରଣକର୍ତ୍ତା ଶୈଳୀରେ "
-#~ "ପରିବର୍ତ୍ତନ କରିବା ଉଚିତ।"
-
-#~ msgid "Arrangement of buttons on the titlebar"
-#~ msgstr "ଶୀର୍ଷକ ପଟିରେ ଚାବିର ସଜ୍ଜା"
-
-#~ msgid ""
-#~ "This key overrides the key in org.gnome.desktop.wm.preferences when "
-#~ "running GNOME Shell."
-#~ msgstr ""
-#~ "GNOME ସେଲ ଚାଲିଥିବା ସମୟରେ ଏହି ଚାବିଟି  org.gnome.desktop.wm.preferences ରେ ଥିବା "
-#~ "ଚାବିକୁ ନବଲିଖନ କରିଥାଏ।"
-
-#~ msgid "Select an extension to configure using the combobox above."
-#~ msgstr "ଉପରେ ଥିବା କମ୍ବୋବକ୍ସ ବ୍ୟବହାର କରି ବିନ୍ୟାସ କରିବା ପାଇଁ ଏକ ଅନୁଲଗ୍ନ ବାଛନ୍ତୁ।"
-
-#~ msgid "Session…"
-#~ msgstr "ଅଧିବେଶନ…"
-
-#~ msgid "Restart"
-#~ msgstr "ପୂନଃପ୍ରାରମ୍ଭ କରନ୍ତୁ"
-
-#~ msgctxt "event list time"
-#~ msgid "%H\\u2236%M"
-#~ msgstr "%H\\u2236%M"
-
-#~ msgctxt "event list time"
-#~ msgid "%l\\u2236%M\\u2009%p"
-#~ msgstr "%l\\u2236%M\\u2009%p"
-
-#~ msgid "Screencast from %d %t"
-#~ msgstr "%d %t ରୁ ସ୍କ୍ରିନକାଷ୍ଟ"
-
-#~ msgid "<b>%A</b>, <b>%H:%M</b>"
-#~ msgstr "<b>%A</b>, <b>%H:%M</b>"
-
-#~ msgid "<b>%B</b> <b>%d</b>, <b>%H:%M</b>"
-#~ msgstr "<b>%B</b> <b>%d</b>, <b>%H:%M</b>"
-
-#~ msgid "<b>%B</b> <b>%d</b> <b>%Y</b>, <b>%H:%M</b> "
-#~ msgstr "<b>%B</b> <b>%d</b> <b>%Y</b>, <b>%H:%M</b> "
-
-#~ msgid "Click Log Out to quit these applications and log out of the system."
-#~ msgstr "ଏହି ପ୍ରୟୋଗଗୁଡ଼ିକରୁ ପ୍ରସ୍ଥାନ କରିବା ପାଇଁ ଲଗ ଆଉଟ କ୍ଲିକ କରନ୍ତୁ ଏବଂ ତନ୍ତ୍ରରୁ ଲଗ ଆଉଟ କରନ୍ତୁ।"
-
-#~ msgid "Logging out of the system."
-#~ msgstr "ତନ୍ତ୍ରରୁ ଲଗ ଆଉଟ କରୁଅଛି।"
-
-#~ msgid "Click Power Off to quit these applications and power off the system."
-#~ msgstr ""
-#~ "ଏହି ପ୍ରୟୋଗଗୁଡ଼ିକରୁ ପ୍ରସ୍ଥାନ କରିବା ପାଇଁ ବିଦ୍ୟୁତ ପ୍ରବାହ ବନ୍ଦ କରନ୍ତୁକୁ କ୍ଲିକ କରନ୍ତୁ ଏବଂ ତନ୍ତ୍ରର ବିଦ୍ୟୁତ "
-#~ "ପ୍ରବାହ ବନ୍ଦ କରନ୍ତୁ।"
-
-#~ msgid "Powering off the system."
-#~ msgstr "ତନ୍ତ୍ରର ବିଦ୍ୟୁତ ପ୍ରବାହ ବନ୍ଦ ହେଉଅଛି।"
-
-#~ msgid "Click Restart to quit these applications and restart the system."
-#~ msgstr ""
-#~ "ଏହି ପ୍ରୟୋଗଗୁଡ଼ିକରୁ ପ୍ରସ୍ଥାନ କରିବା ପାଇଁ ପୁନଃପ୍ରାରମ୍ଭ କରନ୍ତୁକୁ କ୍ଲିକ କରନ୍ତୁ ଏବଂ ତନ୍ତ୍ରକୁ ପୁନଃପ୍ରାରମ୍ଭ "
-#~ "କରନ୍ତୁ।"
-
-#~ msgid "Restarting the system."
-#~ msgstr "ତନ୍ତ୍ରକୁ ପୁନଃଚାଳନ କରୁଅଛି।"
-
-#~ msgid "Universal Access Settings"
-#~ msgstr "ସାର୍ବଜନିକ ଅଭିଗମ୍ୟତା ବିନ୍ଯାସ"
-
-#~ msgid "Visibility"
-#~ msgstr "ଦେଖିବା କ୍ଷମତା"
-
-#~ msgid "Set Up a New Device…"
-#~ msgstr "ଏକ ନୂଆ ଉପକରଣ ବ୍ୟବସ୍ଥା କରନ୍ତୁ ..."
-
-#~ msgid "Send Files…"
-#~ msgstr "ଫାଇଲଗୁଡ଼ିକୁ ପଠାନ୍ତୁ…"
-
-#~ msgid "Keyboard Settings"
-#~ msgstr "କିବୋର୍ଡ ବିନ୍ୟାସଗୁଡ଼ିକ"
-
-#~ msgid "Authorization request from %s"
-#~ msgstr "%s ରୁ ବୈଧିକରଣ ଅନୁରୋଧ"
-
-#~ msgid "Device %s wants access to the service '%s'"
-#~ msgstr "ଉପକରଣ %s ସର୍ଭିସ '%s' ପାଇଁ ଅଭିଗମ୍ୟତା ଆଶା କରିଥାଏ।"
-
-#~ msgid "Grant this time only"
-#~ msgstr "କେବଳ ବର୍ତ୍ତମାନ ପାଇଁ ଅନୁମତି ପ୍ରଦାନ କରନ୍ତୁ"
-
-#~ msgid "Reject"
-#~ msgstr "ଅସ୍ବୀକାର କରନ୍ତୁ"
-
-#~ msgid "Pairing confirmation for %s"
-#~ msgstr "%s ପାଇଁ ଯୁଗଳ ନିଶ୍ଚିତକରଣ"
-
-#~ msgid "Device %s wants to pair with this computer"
-#~ msgstr "ଉପକରଣ %s ଏହି କମ୍ପୁଟର ସହିତ ଯୁଗଳ ହେବାକୁ ଇଚ୍ଛାପ୍ରକାଶ କରୁଅଛି"
-
-#~ msgid "Please confirm whether the PIN '%06d' matches the one on the device."
-#~ msgstr "ଦୟାକରି ନିଶ୍ଚିତ କରନ୍ତୁ ଯେ PIN '%06d' ଉପକରଣ ସହିତ ମେଳ ଖାଇଥାଏ।"
-
-#~ msgid "Matches"
-#~ msgstr "ମେଳଗୁଡିକ"
-
-#~ msgid "Does not match"
-#~ msgstr "ମେଳ ଖାଉନାହିଁ"
-
-#~ msgid "Pairing request for %s"
-#~ msgstr "%s ପାଇଁ ଯୁଗଳ ଅନୁରୋଧ"
-
-#~ msgid "Please enter the PIN mentioned on the device."
-#~ msgstr "ଉପକରଣରେ ନିର୍ଦ୍ଦିଷ୍ଟ PIN କୁ ଭରଣ କରନ୍ତୁ।"
-
-#~ msgid "Volume, network, battery"
-#~ msgstr "ଭଲ୍ୟୁମ, ନେଟୱର୍କ, ବ୍ୟାଟେରୀ"
-
-#~ msgid "disabled"
-#~ msgstr "ନିଷ୍କ୍ରିୟ ହୋଇଛି"
-
-#~ msgid "cable unplugged"
-#~ msgstr "କେବଲ ଲଗାହୋଇ ନାହିଁ"
-
-#~ msgid "unavailable"
-#~ msgstr "ଉପଲବ୍ଧ ନାହିଁ"
-
-#~ msgid "More…"
-#~ msgstr "ଅଧିକ…"
-
-#~ msgid "Wired"
-#~ msgstr "ତାରଯୁକ୍ତ"
-
-#~ msgid "Auto Ethernet"
-#~ msgstr "ସ୍ୱୟଂଚାଳିତ ଇଥରନେଟ"
-
-#~ msgid "Auto broadband"
-#~ msgstr "ସ୍ୱୟଂଚାଳିତ ବ୍ରୋଡ଼ବ୍ୟାଣ୍ଡ"
-
-#~ msgid "Auto dial-up"
-#~ msgstr "ସ୍ୱୟଂଚାଳିତ ଡାଏଲ-ଅପ"
-
-#~ msgid "Auto %s"
-#~ msgstr "ସ୍ବୟଂଚାଳିତ %s"
-
-#~ msgid "Auto bluetooth"
-#~ msgstr "ସ୍ବୟଂଚାଳିତ ବ୍ଲୁଟୁଥ"
-
-#~ msgid "Auto wireless"
-#~ msgstr "ସ୍ବୟଂଚାଳିତ ବେତାର"
-
-#~ msgid "Wi-Fi"
-#~ msgstr "Wi-Fi"
-
-#~ msgid "%d %s %d %s remaining"
-#~ msgstr "%d %s %d %s ବଳିଅଛି"
-
-#~ msgid "AC Adapter"
-#~ msgstr "AC ଏଡପଟର"
-
-#~ msgid "Laptop Battery"
-#~ msgstr "ଲାପଟପ ବ୍ଯାଟେରୀ"
-
-#~ msgid "Monitor"
-#~ msgstr "ମନିଟର"
-
-#~ msgid "Mouse"
-#~ msgstr "ମାଉସ"
-
-#~ msgid "PDA"
-#~ msgstr "PDA"
-
-#~ msgid "Cell Phone"
-#~ msgstr "ସେଲ ଫୋନ"
-
-#~ msgid "Media Player"
-#~ msgstr "ମେଡ଼ିଆ ଚାଲକ"
-
-#~ msgid "Tablet"
-#~ msgstr "ଟ୍ୟାବଲେଟ"
-
-#~ msgid "Computer"
-#~ msgstr "କମ୍ପୁଟର"
-
-#~ msgctxt "device"
-#~ msgid "Unknown"
-#~ msgstr "ଅଜଣା"
-
-#~ msgid "Available"
-#~ msgstr "ଉପଲବ୍ଧ "
-
-#~ msgid "Busy"
-#~ msgstr "ବ୍ଯସ୍ତ"
-
-#~ msgid "Invisible"
-#~ msgstr "ଅଦୃଶ୍ଯ"
-
-#~ msgid "Away"
-#~ msgstr "ଅନୁପସ୍ଥିତ"
-
-#~ msgid "Idle"
-#~ msgstr "ନିଷ୍କ୍ରିୟ"
-
-#~ msgid "Your chat status will be set to busy"
-#~ msgstr "ଆପଣଙ୍କର ଚାଟ ସ୍ଥିତିକୁ ବ୍ୟସ୍ତ ବୋଲି ସେଟ କରାଯିବ"
-
-#~ msgid ""
-#~ "Notifications are now disabled, including chat messages. Your online "
-#~ "status has been adjusted to let others know that you might not see their "
-#~ "messages."
-#~ msgstr ""
-#~ "ଆଳାପ ସନ୍ଦେଶଗୁଡ଼ିକୁ ଅନ୍ତର୍ଭୁକ୍ତ କରି ବିଜ୍ଞପ୍ତିକୁ ବର୍ତ୍ତମାନ ନିଷ୍କ୍ରିୟ କରାଯାଇଛି। ଆପଣ ଅନ୍ୟମାନଙ୍କର "
-#~ "ସନ୍ଦେଶଗୁଡ଼ିକୁ ଦେଖିପାରୁଛନ୍ତି କି ନାହିଁ ତାହା ଜଣାଇବା ପାଇଁ ଆପଣଙ୍କର ଅନଲାଇନ ସ୍ଥିତିକୁ ସଜଡ଼ାଯାଇଛି।"
-
-#~ msgid "Shutting down might cause them to lose unsaved work."
-#~ msgstr "ବନ୍ଦ କରିବା ଫଳରେ ହୁଏତ ସେମାନେ ତାଙ୍କର ଅସଂରକ୍ଷିତ କାର୍ଯ୍ୟକୁ ହରାଇପାରନ୍ତି।"
-
-#~ msgid ""
-#~ "Sorry, no wisdom for you today:\n"
-#~ "%s"
-#~ msgstr ""
-#~ "କ୍ଷମା କରିବେ, ଆପଣଙ୍କ ପାଇଁ ଆଜି କୌଣସି ଜ୍ଞାନ ନାହିଁ:\n"
-#~ "%s"
-
-#~ msgid "%s the Oracle says"
-#~ msgstr "%s Oracle କହିଥାଏ"
-
-#~ msgctxt "title"
-#~ msgid "Sign In"
-#~ msgstr "ସାଇନ ଇନ"
-
-#~ msgid "APPLICATIONS"
-#~ msgstr "ପ୍ରୟୋଗଗୁଡ଼ିକ"
-
-#~ msgid "SETTINGS"
-#~ msgstr "ସେଟିଙ୍ଗଗୁଡିକ"
-
-#~ msgctxt "event list time"
-#~ msgid "%H:%M"
-#~ msgstr "%H:%M"
-
-#~ msgid "Sent at <b>%X</b> on <b>%A</b>"
-#~ msgstr "<b>%X</b> କୁ <b>%A</b> ଉପରେ ପଠାଯାଇଛି"
-
-#~ msgid "Sent on <b>%A</b>, <b>%B %d</b>, %Y"
-#~ msgstr "<b>%A</b> ଉପରେ ପଠାଯାଇଛି, <b>%B %d</b>, %Y"
-
-#~ msgid "Connection to %s failed"
-#~ msgstr "%s  ସହିତ ସଂଯୋଗ ବିଫଳ ହୋଇଛି"
-
-#~ msgid "Reconnect"
-#~ msgstr "ପୁନଃସଂଯୋଗ କରନ୍ତୁ"
-
-#~ msgid "tray"
-#~ msgstr "ଟ୍ରେ"
-
-#~ msgid "Browse Files..."
-#~ msgstr "ଫାଇଲଗୁଡ଼ିକୁ ବ୍ରାଉଜ କରନ୍ତୁ..."
-
-#~ msgid "Error browsing device"
-#~ msgstr "ଉପକରଣକୁ ବ୍ରାଉଜ କରିବାରେ ତ୍ରୁଟି"
-
-#~ msgid "The requested device cannot be browsed, error is '%s'"
-#~ msgstr "ଅନୁରୋଧ କରାଯାଇଥିବା ଉପକରଣକୁ ବ୍ରାଉଜ କରିହେବ ନାହିଁ, ତ୍ରୁଟି ହେଉଛି '%s'"
-
-#~ msgid "More..."
-#~ msgstr "ଅଧିକ..."
-
-#~ msgid "Wireless"
-#~ msgstr "ବେତାର"
-
-#~ msgid "System Settings"
-#~ msgstr "ତନ୍ତ୍ର ବିନ୍ୟାସ"
-
-#~ msgid "Your favorite Easter Egg"
-#~ msgstr "ଆପଣଙ୍କର ମନପସନ୍ଦ ଇଷ୍ଟର ଏଗ"
-
-#~ msgid "United Kingdom"
-#~ msgstr "ଯୁକ୍ତ ରାଜ୍ଯ"
-
-#~ msgid "Default"
-#~ msgstr "ପୂର୍ବନିର୍ଦ୍ଧାରିତ"
-
-#~ msgid "If true, display date in the clock, in addition to time."
-#~ msgstr "ସତ ଥିଲେ, ଘଣ୍ଟାରେ ସମୟ ସହିତ ତାରିଖ ଦେଖାନ୍ତୁ।"
-
-#~ msgid "If true, display seconds in time."
-#~ msgstr "ସତ ଥିଲେ, ସମୟରେ ସେକେଣ୍ଡ ଦେଖାନ୍ତୁ।"
-
-#~ msgid "Show date in clock"
-#~ msgstr "ଘଣ୍ଟାରେ ତାରିଖ ଦେଖାନ୍ତୁ"
-
-#~ msgid "Show time with seconds"
-#~ msgstr "ସମୟରେ ସେକେଣ୍ଡ ଦେଖାନ୍ତୁ"
-
-#~ msgid "CONTACTS"
-#~ msgstr "ସମ୍ପର୍କଗୁଡ଼ିକ"
-
-#~ msgid "%a %b %e, %R:%S"
-#~ msgstr "%a %b %e, %R:%S"
-
-#~ msgid "%a %b %e, %R"
-#~ msgstr "%a %b %e, %R"
-
-#~ msgid "%a %R:%S"
-#~ msgstr "%a %R:%S"
-
-#~ msgid "%a %R"
-#~ msgstr "%a %R"
-
-#~ msgid "%a %b %e, %l:%M:%S %p"
-#~ msgstr "%a %b %e, %l:%M:%S %p"
-
-#~ msgid "%a %l:%M:%S %p"
-#~ msgstr "%a %l:%M:%S %p"
-
-#~ msgid "RECENT ITEMS"
-#~ msgstr "ସାମ୍ପ୍ରତିକ ବସ୍ତୁଗୁଡ଼ିକ"
-
-#~ msgid "Retry"
-#~ msgstr "ପୁଣି ଚେଷ୍ଟାକରନ୍ତୁ"
-
-#~ msgid "Connect to..."
-#~ msgstr "ଏହା ସହିତ ସଂଯୋଗ କରନ୍ତୁ..."
-
-#~ msgid "PLACES & DEVICES"
-#~ msgstr "ସ୍ଥାନ ଏବଂ ଉପକରଣଗୁଡ଼ିକ"
-
-#~ msgid "%s is online."
-#~ msgstr "%s ଅନଲାଇନ ଅଛି।"
-
-#~ msgid "%s is offline."
-#~ msgstr "%s ଅଫଲାଇନ ଅଛି।"
-
-#~ msgid "%s is away."
-#~ msgstr "%s ଅନୁପସ୍ଥିତ ଅଛି।"
-
-#~ msgid "%s is busy."
-#~ msgstr "%s ବ୍ୟସ୍ତ ଅଛି।"
-
-#~ msgid "Hidden"
-#~ msgstr "ଲୁକ୍କାଇତ"
-
-#~ msgid "Power Off..."
-#~ msgstr "ବିଦ୍ୟୁତ ପ୍ରବାହ ବନ୍ଦ କରନ୍ତୁ..."
-
-#~ msgid "Log Out..."
-#~ msgstr "ଲଗ ଆଉଟ..."
-
-#~ msgid "%1$s: %2$s"
-#~ msgstr "%1$s: %2$s"
-
-#~ msgid "calendar:week_start:0"
-#~ msgstr "calendar:week_start:0"

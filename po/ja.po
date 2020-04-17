@@ -1,29 +1,30 @@
-# Japanese translation of gnome-shell package.
-# Copyright (C) 2009-2020 the gnome-shell copyright holder.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the gnome-shell package.
-# Nishio Futoshi <fut_nis@d3.dion.ne.jp>, 2010.
-# Kiyotaka NISHIBORI <ml.nishibori.kiyotaka@gmail.com>, 2011.
-# Hideki Yamane <henrich@debian.org>, 2011.
-# Takayuki KUSANO <AE5T-KSN@asahi-net.or.jp>, 2011, 2012.
-# Jiro Matsuzawa <jmatsuzawa@gnome.org>, 2011-2017.
-# Takanori MATSUURA <t.matsuu@gmail.com>, 2012.
-# Yoji TOYODA <bsyamato@sea.plala.or.jp>, 2013.
-# Ikuya Awashiro <ikuya@fruitsbasket.info>, 2014.
-# IWAI, Masaharu <iwaim.sub@gmail.com>, 2015.
-# sicklylife <translation@sicklylife.jp>, 2019-2020.
-#
+# 
+# Translators:
+# Hideki Yamane <henrich@debian.org>, 2011
+# Ikuya Awashiro <ikuya@fruitsbasket.info>, 2014
+# IWAI, Masaharu <iwaim.sub@gmail.com>, 2015
+# Jiro Matsuzawa <jmatsuzawa@gnome.org>, 2011-2013
+# Kiyotaka NISHIBORI <ml.nishibori.kiyotaka@gmail.com>, 2011
+# Nishio Futoshi <fut_nis@d3.dion.ne.jp>, 2010
+# sicklylife <translation@sicklylife.jp>, 2019
+# Takanori MATSUURA <t.matsuu@gmail.com>, 2012
+# Takayuki KUSANO <AE5T-KSN@asahi-net.or.jp>, 2011-2012
+# Yoji TOYODA <bsyamato@sea.plala.or.jp>, 2013
 msgid ""
 msgstr ""
-"Project-Id-Version: gnome-shell master\n"
+"Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-04-17 17:11+0100\n"
-"PO-Revision-Date: 2020-03-09 21:10+0900\n"
-"Last-Translator: sicklylife <translation@sicklylife.jp>\n"
-"Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
-"Language: ja\n"
+"PO-Revision-Date: 2020-04-17 16:17+0000\n"
+"Last-Translator: Will Thompson <wjt@endlessm.com>\n"
+"Language-Team: Japanese (http://www.transifex.com/endless-os/gnome-shell/language/ja/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: ja\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #: data/50-gnome-shell-system.xml:6
@@ -66,9 +67,7 @@ msgstr "Alt-F2 から開発・テスト用の内部ツールを利用可能に�
 msgid ""
 "Allows access to internal debugging and monitoring tools using the Alt-F2 "
 "dialog."
-msgstr ""
-"Alt-F2 ダイアログを利用した内部のデバッグツールとモニターツールへのアクセスを"
-"許可します。"
+msgstr "Alt-F2 ダイアログを利用した内部のデバッグツールとモニターツールへのアクセスを許可します。"
 
 #: data/org.gnome.shell.gschema.xml.in:25
 msgid "UUIDs of extensions to enable"
@@ -76,34 +75,24 @@ msgstr "有効にする拡張機能の UUID"
 
 #: data/org.gnome.shell.gschema.xml.in:26
 msgid ""
-"GNOME Shell extensions have a UUID property; this key lists extensions which "
-"should be loaded. Any extension that wants to be loaded needs to be in this "
-"list. You can also manipulate this list with the EnableExtension and "
+"GNOME Shell extensions have a UUID property; this key lists extensions which"
+" should be loaded. Any extension that wants to be loaded needs to be in this"
+" list. You can also manipulate this list with the EnableExtension and "
 "DisableExtension D-Bus methods on org.gnome.Shell."
-msgstr ""
-"GNOME Shell の拡張機能には UUID プロパティがあり、このキーは、ロードしたい拡"
-"張機能の UUID のリストです。ロードしたい拡張機能はこのリストに含めなければな"
-"りません。このリストは org.gnome.Shell の EnableExtensions や "
-"DisableExtensions といった DBus メソッドでも操作できます。"
+msgstr "GNOME Shell の拡張機能には UUID プロパティがあり、このキーは、ロードしたい拡張機能の UUID のリストです。ロードしたい拡張機能はこのリストに含めなければなりません。このリストは org.gnome.Shell の EnableExtensions や DisableExtensions といった DBus メソッドでも操作できます。"
 
 #: data/org.gnome.shell.gschema.xml.in:35
 msgid "UUIDs of extensions to force disabling"
 msgstr "強制的に無効にする拡張機能の UUID"
 
 #: data/org.gnome.shell.gschema.xml.in:36
-#, fuzzy
 msgid ""
-"GNOME Shell extensions have a UUID property; this key lists extensions which "
-"should be disabled, even if loaded as part of the current mode. You can also "
-"manipulate this list with the EnableExtension and DisableExtension D-Bus "
-"methods on org.gnome.Shell. This key takes precedence over the “enabled-"
-"extensions” setting."
+"GNOME Shell extensions have a UUID property; this key lists extensions which"
+" should be disabled, even if loaded as part of the current mode. You can "
+"also manipulate this list with the EnableExtension and DisableExtension "
+"D-Bus methods on org.gnome.Shell. This key takes precedence over the "
+"“enabled-extensions” setting."
 msgstr ""
-"GNOME Shell の拡張機能には UUID プロパティがあり、このキーは、現在のモードの"
-"一部としてロードされる場合でも無効化したい拡張機能の UUID のリストです。この"
-"リストは org.gnome.Shell の EnableExtensions や DisableExtensions といった "
-"DBus メソッドでも操作できます。このキーは“enabled-extensions”の設定より優先さ"
-"れます。"
 
 #: data/org.gnome.shell.gschema.xml.in:46
 msgid "Disable user extensions"
@@ -113,9 +102,7 @@ msgstr "ユーザー拡張機能を無効化"
 msgid ""
 "Disable all extensions the user has enabled without affecting the “enabled-"
 "extension” setting."
-msgstr ""
-"ユーザーが有効にした拡張機能をすべて無効にします。“enabled-extension”の設定値"
-"には影響しません。"
+msgstr "ユーザーが有効にした拡張機能をすべて無効にします。“enabled-extension”の設定値には影響しません。"
 
 #: data/org.gnome.shell.gschema.xml.in:54
 msgid "Disables the validation of extension version compatibility"
@@ -126,10 +113,7 @@ msgid ""
 "GNOME Shell will only load extensions that claim to support the current "
 "running version. Enabling this option will disable this check and try to "
 "load all extensions regardless of the versions they claim to support."
-msgstr ""
-"通常は現在起動中の GNOME Shell のバージョンをサポートする拡張機能のみを読み込"
-"みます。この設定を true にした場合、バージョンチェック機能が無効になり、拡張"
-"機能のサポートバージョンに関係なく、すべての拡張機能を読み込みます。"
+msgstr "通常は現在起動中の GNOME Shell のバージョンをサポートする拡張機能のみを読み込みます。この設定を true にした場合、バージョンチェック機能が無効になり、拡張機能のサポートバージョンに関係なく、すべての拡張機能を読み込みます。"
 
 #: data/org.gnome.shell.gschema.xml.in:63
 msgid "List of desktop file IDs for favorite applications"
@@ -137,8 +121,8 @@ msgstr "お気に入りのアプリケーションの .desktop ファイル ID �
 
 #: data/org.gnome.shell.gschema.xml.in:64
 msgid ""
-"The applications corresponding to these identifiers will be displayed in the "
-"favorites area."
+"The applications corresponding to these identifiers will be displayed in the"
+" favorites area."
 msgstr "これらの ID で示されるアプリケーションは「お気に入り」に表示されます。"
 
 #: data/org.gnome.shell.gschema.xml.in:71
@@ -153,7 +137,8 @@ msgstr "現在のアプリケーション一覧画面のインデックスです
 msgid "History for command (Alt-F2) dialog"
 msgstr "コマンド (Alt-F2) ダイアログの履歴"
 
-#. Translators: looking glass is a debugger and inspector tool, see https://wiki.gnome.org/Projects/GnomeShell/LookingGlass
+#. Translators: looking glass is a debugger and inspector tool, see
+#. https://wiki.gnome.org/Projects/GnomeShell/LookingGlass
 #: data/org.gnome.shell.gschema.xml.in:83
 msgid "History for the looking glass dialog"
 msgstr "looking glass ダイアログの履歴"
@@ -164,18 +149,14 @@ msgstr "ユーザーメニューに「ログアウト」を常に表示する"
 
 #: data/org.gnome.shell.gschema.xml.in:88
 msgid ""
-"This key overrides the automatic hiding of the “Log out” menu item in single-"
-"user, single-session situations."
-msgstr ""
-"このキーは、単一ユーザー、単一セッション状況で「ログアウト」メニューアイテム"
-"を自動的に非表示にする機能よりも優先します。"
+"This key overrides the automatic hiding of the “Log out” menu item in "
+"single-user, single-session situations."
+msgstr "このキーは、単一ユーザー、単一セッション状況で「ログアウト」メニューアイテムを自動的に非表示にする機能よりも優先します。"
 
 #: data/org.gnome.shell.gschema.xml.in:95
 msgid ""
 "Whether to remember password for mounting encrypted or remote filesystems"
-msgstr ""
-"マウント対象の暗号化されたファイルシステムやリモートファイルシステムのパス"
-"ワードを記憶する"
+msgstr "マウント対象の暗号化されたファイルシステムやリモートファイルシステムのパスワードを記憶する"
 
 #: data/org.gnome.shell.gschema.xml.in:96
 msgid ""
@@ -183,17 +164,12 @@ msgid ""
 "filesystem is mounted. If the password can be saved for future use a "
 "“Remember Password” checkbox will be present. This key sets the default "
 "state of the checkbox."
-msgstr ""
-"GNOME Shell は、暗号化されたデバイスやリモートファイルシステムのマウント時に"
-"パスワードを要求します。パスワードを保存できる場合は、「パスワードを保存」"
-"チェックボックスが表示されます。このキーは、チェックボックスのデフォルト値と"
-"なります。"
+msgstr "GNOME Shell は、暗号化されたデバイスやリモートファイルシステムのマウント時にパスワードを要求します。パスワードを保存できる場合は、「パスワードを保存」チェックボックスが表示されます。このキーは、チェックボックスのデフォルト値となります。"
 
 #: data/org.gnome.shell.gschema.xml.in:105
 msgid ""
 "Whether the default Bluetooth adapter had set up devices associated to it"
-msgstr ""
-"デフォルトの Bluetooth アダプターにデバイスが関連付けられているかどうか"
+msgstr "デフォルトの Bluetooth アダプターにデバイスが関連付けられているかどうか"
 
 #: data/org.gnome.shell.gschema.xml.in:106
 msgid ""
@@ -201,11 +177,7 @@ msgid ""
 "powered, or if there were devices set up associated with the default "
 "adapter. This will be reset if the default adapter is ever seen not to have "
 "devices associated to it."
-msgstr ""
-"Bluetooth アダプターの電源がオンになっているか、あるいはデフォルトのアダプ"
-"ターに関連付けられたデバイスがある場合にのみ、GNOME Shell は Bluetooth メ"
-"ニューを表示します。デフォルトのアダプターに関連付けられたデバイスがなくなっ"
-"た場合に、この値はリセットされます。"
+msgstr "Bluetooth アダプターの電源がオンになっているか、あるいはデフォルトのアダプターに関連付けられたデバイスがある場合にのみ、GNOME Shell は Bluetooth メニューを表示します。デフォルトのアダプターに関連付けられたデバイスがなくなった場合に、この値はリセットされます。"
 
 #: data/org.gnome.shell.gschema.xml.in:115
 msgid "Enable introspection API"
@@ -215,9 +187,7 @@ msgstr "イントロスペクション API を有効にする"
 msgid ""
 "Enables a D-Bus API that allows to introspect the application state of the "
 "shell."
-msgstr ""
-"Shell のアプリケーション状態をイントロスペクトできる D-Bus API を有効にしま"
-"す。"
+msgstr "Shell のアプリケーション状態をイントロスペクトできる D-Bus API を有効にします。"
 
 #: data/org.gnome.shell.gschema.xml.in:126
 msgid "Enables the hot corner for the window picker"
@@ -236,8 +206,8 @@ msgstr ""
 #: data/org.gnome.shell.gschema.xml.in:139
 msgid ""
 "Default position of the hot corner is in a right corner. Set false to move "
-"the hot corner to a left corner. The position is not affected by the RTL vs. "
-"LTR text direction."
+"the hot corner to a left corner. The position is not affected by the RTL vs."
+" LTR text direction."
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:147
@@ -257,8 +227,8 @@ msgstr ""
 #: data/org.gnome.shell.gschema.xml.in:160
 msgid ""
 "Number of pixels in one dimension of the square target for the hot corner. "
-"Default is for a single pixel in the very corner. For some virtual machines, "
-"this value may need to be set larger than the default."
+"Default is for a single pixel in the very corner. For some virtual machines,"
+" this value may need to be set larger than the default."
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:170
@@ -268,8 +238,8 @@ msgstr ""
 #: data/org.gnome.shell.gschema.xml.in:173
 msgid ""
 "Makes window management more like standard Gnome. Hides application splash "
-"screens, prevents applications from being forced to open maximized, and does "
-"not automatically switch to the app selector when a window is minimized."
+"screens, prevents applications from being forced to open maximized, and does"
+" not automatically switch to the app selector when a window is minimized."
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:182
@@ -279,10 +249,11 @@ msgstr ""
 #: data/org.gnome.shell.gschema.xml.in:183
 msgid ""
 "This key controls whether to show the \"Forgot Password?\" button on the "
-"login screen. 'default' tells GNOME Shell to use the vendor default setting. "
-"'enable' and 'disable' can be used to explicitly enable or disable the reset "
-"button, respectively. Note that it only makes sense to set this key for the "
-"Debian-gdm user; changing it for your own user account will have no effect."
+"login screen. 'default' tells GNOME Shell to use the vendor default setting."
+" 'enable' and 'disable' can be used to explicitly enable or disable the "
+"reset button, respectively. Note that it only makes sense to set this key "
+"for the Debian-gdm user; changing it for your own user account will have no "
+"effect."
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:194
@@ -384,14 +355,12 @@ msgid "Switch to application 9"
 msgstr "アプリケーション 9 に切り替える"
 
 #: data/org.gnome.shell.gschema.xml.in:290
-#, fuzzy
 msgid "Keybinding that shows the force app exit dialog"
-msgstr "アプリケーションメニューを開くキーバインド"
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:295
-#, fuzzy
 msgid "Keybinding to activate the first app in the icon bar."
-msgstr "アプリケーションメニューを開くキーバインドです。"
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:296
 msgid ""
@@ -400,9 +369,8 @@ msgid ""
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:302
-#, fuzzy
 msgid "Keybinding to activate the second app in the icon bar."
-msgstr "アプリケーションメニューを開くキーバインドです。"
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:303
 msgid ""
@@ -411,9 +379,8 @@ msgid ""
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:309
-#, fuzzy
 msgid "Keybinding to activate the third app in the icon bar."
-msgstr "アプリケーションメニューを開くキーバインドです。"
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:310
 msgid ""
@@ -422,9 +389,8 @@ msgid ""
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:316
-#, fuzzy
 msgid "Keybinding to activate the fourth app in the icon bar."
-msgstr "アプリケーションメニューを開くキーバインドです。"
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:317
 msgid ""
@@ -433,9 +399,8 @@ msgid ""
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:323
-#, fuzzy
 msgid "Keybinding to activate the fifth app in the icon bar."
-msgstr "アプリケーションメニューを開くキーバインドです。"
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:324
 msgid ""
@@ -444,9 +409,8 @@ msgid ""
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:330
-#, fuzzy
 msgid "Keybinding to activate the sixth app in the icon bar."
-msgstr "アプリケーションメニューを開くキーバインドです。"
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:331
 msgid ""
@@ -455,9 +419,8 @@ msgid ""
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:337
-#, fuzzy
 msgid "Keybinding to activate the seventh app in the icon bar."
-msgstr "アプリケーションメニューを開くキーバインドです。"
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:338
 msgid ""
@@ -466,9 +429,8 @@ msgid ""
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:344
-#, fuzzy
 msgid "Keybinding to activate the eighth app in the icon bar."
-msgstr "アプリケーションメニューを開くキーバインドです。"
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:345
 msgid ""
@@ -477,9 +439,8 @@ msgid ""
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:351
-#, fuzzy
 msgid "Keybinding to activate the last app in the icon bar."
-msgstr "アプリケーションメニューを開くキーバインドです。"
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:352
 msgid ""
@@ -496,10 +457,7 @@ msgstr "スイッチャーを現在のワークスペース内に制限する"
 msgid ""
 "If true, only applications that have windows on the current workspace are "
 "shown in the switcher. Otherwise, all applications are included."
-msgstr ""
-"true に設定した場合、現在のワークスペースにウィンドウのあるアプリケーションだ"
-"けをスイッチャーに表示します。false に設定した場合はすべてのアプリケーション"
-"を表示します。"
+msgstr "true に設定した場合、現在のワークスペースにウィンドウのあるアプリケーションだけをスイッチャーに表示します。false に設定した場合はすべてのアプリケーションを表示します。"
 
 #: data/org.gnome.shell.gschema.xml.in:381
 msgid "The application icon mode."
@@ -508,20 +466,15 @@ msgstr "アプリケーションアイコンモード"
 #: data/org.gnome.shell.gschema.xml.in:382
 msgid ""
 "Configures how the windows are shown in the switcher. Valid possibilities "
-"are “thumbnail-only” (shows a thumbnail of the window), “app-icon-"
-"only” (shows only the application icon) or “both”."
-msgstr ""
-"ウィンドウスイッチャーでのウィンドウの表示方法を設定します。指定可能な値"
-"は、“thumbnail-only”(ウィンドウのサムネイルを表示します)、“app-icon-only”(ア"
-"プリケーションアイコンを表示します)、あるいは“both”です。"
+"are “thumbnail-only” (shows a thumbnail of the window), “app-icon-only” "
+"(shows only the application icon) or “both”."
+msgstr "ウィンドウスイッチャーでのウィンドウの表示方法を設定します。指定可能な値は、“thumbnail-only”(ウィンドウのサムネイルを表示します)、“app-icon-only”(アプリケーションアイコンを表示します)、あるいは“both”です。"
 
 #: data/org.gnome.shell.gschema.xml.in:391
 msgid ""
 "If true, only windows from the current workspace are shown in the switcher. "
 "Otherwise, all windows are included."
-msgstr ""
-"true に設定した場合、現在のワークスペースのウィンドウだけをスイッチャーに表示"
-"します。false に設定した場合はすべてのアプリケーションを表示します。"
+msgstr "true に設定した場合、現在のワークスペースのウィンドウだけをスイッチャーに表示します。false に設定した場合はすべてのアプリケーションを表示します。"
 
 #: data/org.gnome.shell.gschema.xml.in:401
 msgid "Locations"
@@ -541,7 +494,7 @@ msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:420
 msgid "Location"
-msgstr ""
+msgstr "場所"
 
 #: data/org.gnome.shell.gschema.xml.in:421
 msgid "The location for which to show a forecast"
@@ -558,9 +511,7 @@ msgstr "モーダルダイアログを親ウィンドウに結び付ける"
 #: data/org.gnome.shell.gschema.xml.in:467
 msgid ""
 "This key overrides the key in org.gnome.mutter when running GNOME Shell."
-msgstr ""
-"GNOME Shell 使用時は、 このキーが、org.gnome.mutter の同じキーよりも優先しま"
-"す。"
+msgstr "GNOME Shell 使用時は、 このキーが、org.gnome.mutter の同じキーよりも優先します。"
 
 #: data/org.gnome.shell.gschema.xml.in:442
 msgid "Enable edge tiling when dropping windows on screen edges"
@@ -592,9 +543,7 @@ msgid ""
 "We’re very sorry, but there’s been a problem: the settings for this "
 "extension can’t be displayed. We recommend that you report the issue to the "
 "extension authors."
-msgstr ""
-"大変申し訳ありませんが、拡張機能の設定を表示できない問題が発生しました。拡張"
-"機能の作者に問題を報告することをお勧めします。"
+msgstr "大変申し訳ありませんが、拡張機能の設定を表示できない問題が発生しました。拡張機能の作者に問題を報告することをお勧めします。"
 
 #: js/dbusServices/extensions/ui/extension-prefs-dialog.ui:82
 msgid "Technical Details"
@@ -639,8 +588,7 @@ msgstr "“%s”を削除しますか?"
 msgid ""
 "If you remove the extension, you need to return to download it if you want "
 "to enable it again"
-msgstr ""
-"拡張機能を削除した場合、再度有効にするにはダウンロードし直す必要があります"
+msgstr "拡張機能を削除した場合、再度有効にするにはダウンロードし直す必要があります"
 
 #: js/extensionPrefs/js/main.js:148 js/gdm/authPrompt.js:189
 #: js/ui/audioDeviceSelection.js:57 js/ui/components/networkAgent.js:115
@@ -657,17 +605,7 @@ msgstr "削除"
 
 #: js/extensionPrefs/js/main.js:181
 msgid "translator-credits"
-msgstr ""
-"Hideki Yamane <henrich@debian.org>\n"
-"Ikuya Awashiro <ikuya@fruitsbasket.info>\n"
-"IWAI, Masaharu <iwaim.sub@gmail.com>\n"
-"Jiro Matsuzawa <jmatsuzawa@gnome.org>\n"
-"Kiyotaka NISHIBORI <ml.nishibori.kiyotaka@gmail.com>\n"
-"Nishio Futoshi <fut_nis@d3.dion.ne.jp>\n"
-"sicklylife <translation@sicklylife.jp>\n"
-"Takanori MATSUURA <t.matsuu@gmail.com>\n"
-"Takayuki KUSANO <AE5T-KSN@asahi-net.or.jp>\n"
-"Yoji TOYODA <bsyamato@sea.plala.or.jp>"
+msgstr "Hideki Yamane <henrich@debian.org>\nIkuya Awashiro <ikuya@fruitsbasket.info>\nIWAI, Masaharu <iwaim.sub@gmail.com>\nJiro Matsuzawa <jmatsuzawa@gnome.org>\nKiyotaka NISHIBORI <ml.nishibori.kiyotaka@gmail.com>\nNishio Futoshi <fut_nis@d3.dion.ne.jp>\nsicklylife <translation@sicklylife.jp>\nTakanori MATSUURA <t.matsuu@gmail.com>\nTakayuki KUSANO <AE5T-KSN@asahi-net.or.jp>\nYoji TOYODA <bsyamato@sea.plala.or.jp>"
 
 #: js/extensionPrefs/js/main.js:316
 #, javascript-format
@@ -708,11 +646,9 @@ msgstr "“拡張機能”について"
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:27
 msgid ""
-"To find and add extensions, visit <a href=\"https://extensions.gnome.org"
-"\">extensions.gnome.org</a>."
-msgstr ""
-"拡張機能の検索や追加は <a href=\"https://extensions.gnome.org\">extensions."
-"gnome.org</a> で行うことができます。"
+"To find and add extensions, visit <a "
+"href=\"https://extensions.gnome.org\">extensions.gnome.org</a>."
+msgstr "拡張機能の検索や追加は <a href=\"https://extensions.gnome.org\">extensions.gnome.org</a> で行うことができます。"
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:35
 msgid "Warning"
@@ -723,10 +659,7 @@ msgid ""
 "Extensions can cause system issues, including performance problems. If you "
 "encounter problems with your system, it is recommended to disable all "
 "extensions."
-msgstr ""
-"拡張機能は、システムに何らかの問題 (パフォーマンスへの影響を含む) を引き起こ"
-"す可能性があります。システムに問題が発生した場合は、すべての拡張機能を無効に"
-"することをお勧めします。"
+msgstr "拡張機能は、システムに何らかの問題 (パフォーマンスへの影響を含む) を引き起こす可能性があります。システムに問題が発生した場合は、すべての拡張機能を無効にすることをお勧めします。"
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:134
 msgid "Manually Installed"
@@ -744,23 +677,19 @@ msgstr "インストールされた拡張機能はありません"
 msgid ""
 "We’re very sorry, but it was not possible to get the list of installed "
 "extensions. Make sure you are logged into GNOME and try again."
-msgstr ""
-"大変申し訳ありませんが、インストール済み拡張機能一覧を取得できませんでした。"
-"GNOME にログインしていることを確認した上で再試行してください。"
+msgstr "大変申し訳ありませんが、インストール済み拡張機能一覧を取得できませんでした。GNOME にログインしていることを確認した上で再試行してください。"
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:288
 msgid "Log Out…"
 msgstr "ログアウト…"
 
 #: js/gdm/authPrompt.js:131
-#, fuzzy
 msgid "Show password hint"
-msgstr "VPN パスワード"
+msgstr ""
 
 #: js/gdm/authPrompt.js:148
-#, fuzzy
 msgid "Forgot password?"
-msgstr "VPN パスワード"
+msgstr ""
 
 #. Cisco LEAP
 #: js/gdm/authPrompt.js:303 js/ui/components/networkAgent.js:363
@@ -771,13 +700,14 @@ msgstr "VPN パスワード"
 msgid "Password"
 msgstr "パスワード"
 
-#. Translators: During a password reset, prompt for the "secret code" provided by customer support.
+#. Translators: During a password reset, prompt for the "secret code" provided
+#. by customer support.
 #: js/gdm/authPrompt.js:680
-#, fuzzy
 msgid "Enter unlock code"
-msgstr "ボリュームをロック解除できません"
+msgstr ""
 
-#. Translators: Password reset. The first %s is a verification code and the second is an email.
+#. Translators: Password reset. The first %s is a verification code and the
+#. second is an email.
 #: js/gdm/authPrompt.js:683
 #, javascript-format
 msgid ""
@@ -787,9 +717,8 @@ msgid ""
 msgstr ""
 
 #: js/gdm/authPrompt.js:762
-#, fuzzy
 msgid "Your unlock code was incorrect. Please try again."
-msgstr "申し訳ありません、認証できませんでした。再試行してください。"
+msgstr ""
 
 #: js/gdm/loginDialog.js:317
 msgid "Choose Session"
@@ -837,12 +766,11 @@ msgctxt "search-result"
 msgid "Power Off"
 msgstr "電源オフ"
 
-#. Translators: A list of keywords that match the power-off action, separated by semicolons
+#. Translators: A list of keywords that match the power-off action, separated
+#. by semicolons
 #: js/misc/systemActions.js:92
 msgid "power off;shutdown;reboot;restart;halt;stop"
-msgstr ""
-"power off;shutdown;reboot;restart;halt;stop;電源オフ;パワーオフ;シャットダウ"
-"ン;リブート;リスタート;再起動;停止"
+msgstr "power off;shutdown;reboot;restart;halt;stop;電源オフ;パワーオフ;シャットダウン;リブート;リスタート;再起動;停止"
 
 #. Translators: The name of the lock screen action in search
 #: js/misc/systemActions.js:97
@@ -850,7 +778,8 @@ msgctxt "search-result"
 msgid "Lock Screen"
 msgstr "画面ロック"
 
-#. Translators: A list of keywords that match the lock screen action, separated by semicolons
+#. Translators: A list of keywords that match the lock screen action,
+#. separated by semicolons
 #: js/misc/systemActions.js:100
 msgid "lock screen"
 msgstr "lock screen;画面ロック"
@@ -861,7 +790,8 @@ msgctxt "search-result"
 msgid "Log Out"
 msgstr "ログアウト"
 
-#. Translators: A list of keywords that match the logout action, separated by semicolons
+#. Translators: A list of keywords that match the logout action, separated by
+#. semicolons
 #: js/misc/systemActions.js:108
 msgid "logout;log out;sign off"
 msgstr "logout;log out;sign off;ログアウト;サインオフ"
@@ -872,7 +802,8 @@ msgctxt "search-result"
 msgid "Suspend"
 msgstr "サスペンド"
 
-#. Translators: A list of keywords that match the suspend action, separated by semicolons
+#. Translators: A list of keywords that match the suspend action, separated by
+#. semicolons
 #: js/misc/systemActions.js:116
 msgid "suspend;sleep"
 msgstr "suspend;sleep;サスペンド;スリープ"
@@ -883,12 +814,14 @@ msgctxt "search-result"
 msgid "Switch User"
 msgstr "ユーザーを切り替え"
 
-#. Translators: A list of keywords that match the switch user action, separated by semicolons
+#. Translators: A list of keywords that match the switch user action,
+#. separated by semicolons
 #: js/misc/systemActions.js:124
 msgid "switch user"
 msgstr "switch user;ユーザー切り替え"
 
-#. Translators: A list of keywords that match the lock orientation action, separated by semicolons
+#. Translators: A list of keywords that match the lock orientation action,
+#. separated by semicolons
 #: js/misc/systemActions.js:131
 msgid "lock orientation;unlock orientation;screen;rotation"
 msgstr ""
@@ -1034,10 +967,8 @@ msgstr "%B%-e日 %p %l:%M"
 msgid "%B %-d %Y, %l∶%M %p"
 msgstr "%Y年%B%-e日 %p %l:%M"
 
-#.
 #. * Translators: this is the name of the search engine that shows in the
 #. * Shell's desktop search entry.
-#.
 #: js/misc/util.js:573
 msgid "Google"
 msgstr ""
@@ -1051,9 +982,7 @@ msgstr "ホットスポットログイン"
 msgid ""
 "Your connection to this hotspot login is not secure. Passwords or other "
 "information you enter on this page can be viewed by people nearby."
-msgstr ""
-"このホットスポットログインの接続は安全ではありません。このページであなたが入"
-"力したパスワードなどの情報は、近くにいる人に知られてしまう恐れがあります。"
+msgstr "このホットスポットログインの接続は安全ではありません。このページであなたが入力したパスワードなどの情報は、近くにいる人に知られてしまう恐れがあります。"
 
 #. No support for non-modal system dialogs, so ignore the option
 #. let modal = options['modal'] || true;
@@ -1080,9 +1009,8 @@ msgstr "専用のグラフィックカードを使用して起動する"
 
 #. Add the "Remove from desktop" menu item at the end.
 #: js/ui/appDisplay.js:2443
-#, fuzzy
 msgid "Remove from desktop"
-msgstr "お気に入りから削除"
+msgstr ""
 
 #: js/ui/audioDeviceSelection.js:41
 msgid "Select Audio Device"
@@ -1113,11 +1041,11 @@ msgid "Add App"
 msgstr ""
 
 #: js/ui/backgroundMenu.js:24
-#, fuzzy
 msgid "Add Website"
-msgstr "ウェブサイト"
+msgstr ""
 
-#. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday).
+#. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0"
+#. (Sunday) "6" (Saturday) "06" (Sunday and Saturday).
 #: js/ui/calendar.js:41
 msgctxt "calendar-no-work"
 msgid "06"
@@ -1127,7 +1055,6 @@ msgstr "06"
 #. *
 #. * NOTE: These grid abbreviations are always shown together
 #. * and in order, e.g. "S M T W T F S".
-#.
 #: js/ui/calendar.js:70
 msgctxt "grid sunday"
 msgid "S"
@@ -1169,14 +1096,11 @@ msgctxt "grid saturday"
 msgid "S"
 msgstr "土"
 
-# %OB は February、%Ob は Feb のように月名が表示される
-# 日本語環境だと %OB は 「2月」 %Ob は 「 2月」 (半角スペース付き) のように表示される？
 #. *
 #. * Translators: The header displaying just the month name
 #. * standalone, when this is a month of the current year.
 #. * "%OB" is the new format specifier introduced in glibc 2.27,
 #. * in most cases you should not change it.
-#.
 #: js/ui/calendar.js:371
 msgid "%OB"
 msgstr "%B"
@@ -1189,7 +1113,6 @@ msgstr "%B"
 #. * "%OB" is the new format specifier introduced in glibc 2.27,
 #. * in most cases you should not use the old "%B" here unless you
 #. * absolutely know what you are doing.
-#.
 #: js/ui/calendar.js:381
 msgid "%OB %Y"
 msgstr "%Y年%B"
@@ -1214,19 +1137,20 @@ msgstr "第 %V 週"
 
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
-#.
 #: js/ui/calendar.js:730
 msgctxt "event list time"
 msgid "All Day"
 msgstr "終日"
 
-#. Translators: Shown on calendar heading when selected day occurs on current year
+#. Translators: Shown on calendar heading when selected day occurs on current
+#. year
 #: js/ui/calendar.js:868
 msgctxt "calendar heading"
 msgid "%A, %B %-d"
 msgstr "%B%-e日 (%a)"
 
-#. Translators: Shown on calendar heading when selected day occurs on different year
+#. Translators: Shown on calendar heading when selected day occurs on
+#. different year
 #: js/ui/calendar.js:871
 msgctxt "calendar heading"
 msgid "%A, %B %-d, %Y"
@@ -1258,8 +1182,7 @@ msgstr "“%s”の応答がありません。"
 msgid ""
 "You may choose to wait a short while for it to continue or force the "
 "application to quit entirely."
-msgstr ""
-"もうしばらく応答を待ちますか? それともアプリケーションを強制的に終了しますか?"
+msgstr "もうしばらく応答を待ちますか? それともアプリケーションを強制的に終了しますか?"
 
 #: js/ui/closeDialog.js:70
 msgid "Force Quit"
@@ -1283,8 +1206,7 @@ msgstr "ボリュームをロック解除できません"
 
 #: js/ui/components/automountManager.js:209
 msgid "The installed udisks version does not support the PIM setting"
-msgstr ""
-"インストールされているバージョンの udisks は PIM の設定に対応していません"
+msgstr "インストールされているバージョンの udisks は PIM の設定に対応していません"
 
 #: js/ui/components/autorunManager.js:333
 #, javascript-format
@@ -1383,8 +1305,7 @@ msgstr "ネットワークマネージャー"
 msgid ""
 "Passwords or encryption keys are required to access the wireless network "
 "“%s”."
-msgstr ""
-"無線ネットワーク“%s”にアクセスするにはパスワードか暗号化キーが必要です。"
+msgstr "無線ネットワーク“%s”にアクセスするにはパスワードか暗号化キーが必要です。"
 
 #: js/ui/components/networkAgent.js:871
 msgid "VPN password"
@@ -1410,7 +1331,8 @@ msgstr "認証"
 msgid "Sorry, that didn’t work. Please try again."
 msgstr "申し訳ありません、認証できませんでした。再試行してください。"
 
-#. Translators: this is the other person changing their old IM name to their new
+#. Translators: this is the other person changing their old IM name to their
+#. new
 #. IM name.
 #: js/ui/components/telepathyClient.js:823
 #, javascript-format
@@ -1439,7 +1361,6 @@ msgstr "ダッシュボード"
 #. * shown - it is shown just below the time in the top bar (e.g.,
 #. * "Tue 9:29 AM").  The string itself should become a full date, e.g.,
 #. * "February 17 2015".
-#.
 #: js/ui/dateMenu.js:75
 msgid "%B %-d %Y"
 msgstr "%Y年%-m月%-e日"
@@ -1447,7 +1368,6 @@ msgstr "%Y年%-m月%-e日"
 #. Translators: This is the accessible name of the date button shown
 #. * below the time in the shell; it should combine the weekday and the
 #. * date, e.g. "Tuesday February 17 2015".
-#.
 #: js/ui/dateMenu.js:82
 msgid "%A %B %e %Y"
 msgstr "%Y年%-m月%-e日 (%a)"
@@ -1557,7 +1477,8 @@ msgstr "再起動してアップデートをインストール"
 
 #: js/ui/endSessionDialog.js:93
 #, javascript-format
-msgid "The system will automatically restart and install updates in %d second."
+msgid ""
+"The system will automatically restart and install updates in %d second."
 msgid_plural ""
 "The system will automatically restart and install updates in %d seconds."
 msgstr[0] "%d 秒後にシステムを再起動してアップデートをインストールします。"
@@ -1590,16 +1511,11 @@ msgstr "再起動してアップグレード"
 msgid ""
 "%s %s will be installed after restart. Upgrade installation can take a long "
 "time: ensure that you have backed up and that the computer is plugged in."
-msgstr ""
-"%s %s は再起動後にインストールされます。アップグレードには時間が掛かることが"
-"あります。重要なデータはバックアップを取っておいてください。また、コンピュー"
-"ター本体は電源につないでください。"
+msgstr "%s %s は再起動後にインストールされます。アップグレードには時間が掛かることがあります。重要なデータはバックアップを取っておいてください。また、コンピューター本体は電源につないでください。"
 
 #: js/ui/endSessionDialog.js:261
 msgid "Running on battery power: Please plug in before installing updates."
-msgstr ""
-"バッテリーで動作中です: アップデートをインストールする前に電源に接続してくだ"
-"さい。"
+msgstr "バッテリーで動作中です: アップデートをインストールする前に電源に接続してください。"
 
 #: js/ui/endSessionDialog.js:270
 msgid "Some applications are busy or have unsaved work"
@@ -1691,11 +1607,9 @@ msgstr "スローキーをオフにする"
 
 #: js/ui/kbdA11yDialog.js:34
 msgid ""
-"You just held down the Shift key for 8 seconds. This is the shortcut for the "
-"Slow Keys feature, which affects the way your keyboard works."
-msgstr ""
-"[SHIFT] キーを 8 秒間押下しました。これはスローキー機能のショートカットとし"
-"て、キーボード操作に影響を与えるものです。"
+"You just held down the Shift key for 8 seconds. This is the shortcut for the"
+" Slow Keys feature, which affects the way your keyboard works."
+msgstr "[SHIFT] キーを 8 秒間押下しました。これはスローキー機能のショートカットとして、キーボード操作に影響を与えるものです。"
 
 #: js/ui/kbdA11yDialog.js:41
 msgid "Sticky Keys Turned On"
@@ -1709,18 +1623,14 @@ msgstr "固定キーをオフにする"
 msgid ""
 "You just pressed the Shift key 5 times in a row. This is the shortcut for "
 "the Sticky Keys feature, which affects the way your keyboard works."
-msgstr ""
-"[SHIFT] キーを連続して 5 回押下しました。これは固定キー機能のショートカットと"
-"して、キーボード操作に影響を与えるものです。"
+msgstr "[SHIFT] キーを連続して 5 回押下しました。これは固定キー機能のショートカットとして、キーボード操作に影響を与えるものです。"
 
 #: js/ui/kbdA11yDialog.js:46
 msgid ""
 "You just pressed two keys at once, or pressed the Shift key 5 times in a "
 "row. This turns off the Sticky Keys feature, which affects the way your "
 "keyboard works."
-msgstr ""
-"同時に 2 つのキーを押下したか、[SHIFT] キーを連続して 5 回押下しました。これ"
-"は固定キー機能を無効にし、キーボード操作に影響を与えるものです。"
+msgstr "同時に 2 つのキーを押下したか、[SHIFT] キーを連続して 5 回押下しました。これは固定キー機能を無効にし、キーボード操作に影響を与えるものです。"
 
 #: js/ui/kbdA11yDialog.js:55
 msgid "Leave On"
@@ -1803,9 +1713,7 @@ msgstr "特権ユーザーでログインしました"
 msgid ""
 "Running a session as a privileged user should be avoided for security "
 "reasons. If possible, you should log in as a normal user."
-msgstr ""
-"セキュリティ上の観点から、特権ユーザーでセッションを実行することはお勧めでき"
-"ません。可能な限り、一般ユーザーでログインしてください。"
+msgstr "セキュリティ上の観点から、特権ユーザーでセッションを実行することはお勧めできません。可能な限り、一般ユーザーでログインしてください。"
 
 #: js/ui/main.js:355
 msgid "Screen Lock disabled"
@@ -1935,8 +1843,8 @@ msgstr ""
 #: js/ui/paygUnlockDialog.js:160
 #, javascript-format
 msgid ""
-"Talk to your sales representative to purchase a new code. Call or text %s at "
-"%s"
+"Talk to your sales representative to purchase a new code. Call or text %s at"
+" %s"
 msgstr ""
 
 #. No overrides present, default to fallback text.
@@ -1950,9 +1858,8 @@ msgid "Pay As You Go Account ID: %s"
 msgstr ""
 
 #: js/ui/paygUnlockDialog.js:198
-#, fuzzy
 msgid "Unlock Machine"
-msgstr "ロック解除"
+msgstr ""
 
 #: js/ui/paygUnlockDialog.js:287 js/ui/shellMountOperation.js:380
 msgid "Unlock"
@@ -1975,7 +1882,8 @@ msgid "Pay As You Go"
 msgstr ""
 
 #: js/ui/payg.js:40
-msgid "Enter an unlock code to extend the time before your credit has expired."
+msgid ""
+"Enter an unlock code to extend the time before your credit has expired."
 msgstr ""
 
 #: js/ui/payg.js:41
@@ -1994,9 +1902,8 @@ msgid "Too many attempts. Try again in a few seconds."
 msgstr ""
 
 #: js/ui/payg.js:261
-#, fuzzy
 msgid "Invalid code. Please try again."
-msgstr "申し訳ありません、認証できませんでした。再試行してください。"
+msgstr ""
 
 #: js/ui/payg.js:263
 msgid "Code already used. Please enter a new code."
@@ -2011,12 +1918,13 @@ msgstr ""
 msgid "Your Pay As You Go Account ID is: %s"
 msgstr ""
 
-#. We don't consider any other error here (and we don't consider DISABLED explicitly,
-#. since that should not happen), but still we need to show something to the user.
+#. We don't consider any other error here (and we don't consider DISABLED
+#. explicitly,
+#. since that should not happen), but still we need to show something to the
+#. user.
 #: js/ui/payg.js:271
-#, fuzzy
 msgid "Unknown error"
-msgstr "不明なプログラム"
+msgstr ""
 
 #: js/ui/payg.js:452
 msgid "Apply Code"
@@ -2029,57 +1937,56 @@ msgid_plural "%s seconds"
 msgstr[0] ""
 
 #: js/ui/payg.js:610 js/ui/payg.js:620
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s minute"
 msgid_plural "%s minutes"
-msgstr[0] "%d 分前"
+msgstr[0] ""
 
 #: js/ui/payg.js:614 js/ui/payg.js:631
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s hour"
 msgid_plural "%s hours"
-msgstr[0] "%d 時間前"
+msgstr[0] ""
 
 #: js/ui/payg.js:625
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s day"
 msgid_plural "%s days"
-msgstr[0] "%d 日前"
+msgstr[0] ""
 
 #: js/ui/payg.js:641
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s second has been added to your Pay As You Go credit."
 msgid_plural "%s seconds have been added to your Pay As You Go credit."
-msgstr[0] "%s をお気に入りに追加しました。"
+msgstr[0] ""
 
 #: js/ui/payg.js:648
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s minute has been added to your Pay As You Go credit."
 msgid_plural "%s minutes have been added to your Pay As You Go credit."
-msgstr[0] "%s をお気に入りに追加しました。"
+msgstr[0] ""
 
 #: js/ui/payg.js:655
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s hour has been added to your Pay As You Go credit."
 msgid_plural "%s hours have been added to your Pay As You Go credit."
-msgstr[0] "%s をお気に入りに追加しました。"
+msgstr[0] ""
 
 #: js/ui/payg.js:662
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s day has been added to your Pay As You Go credit."
 msgid_plural "%s days have been added to your Pay As You Go credit."
-msgstr[0] "%s をお気に入りに追加しました。"
+msgstr[0] ""
 
 #: js/ui/payg.js:669
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s month has been added to your Pay As You Go credit."
 msgid_plural "%s months have been added to your Pay As You Go credit."
-msgstr[0] "%s をお気に入りに追加しました。"
+msgstr[0] ""
 
 #: js/ui/payg.js:676
-#, fuzzy
 msgid "1 year has been added to your Pay As You Go credit."
-msgstr "%s をお気に入りに追加しました。"
+msgstr ""
 
 #. Unlock permanently message
 #: js/ui/payg.js:679
@@ -2110,7 +2017,6 @@ msgstr "画面をロックする必要があります"
 #. screenshield. The user is probably very upset at this
 #. point, but any application using global grabs is broken
 #. Just tell him to stop using this app
-#.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
 #: js/ui/screenShield.js:295 js/ui/screenShield.js:674
@@ -2146,18 +2052,17 @@ msgid "Hide Text"
 msgstr "文字を非表示"
 
 #: js/ui/shellEntry.js:194
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Search %s and more…"
-msgstr "検索中…"
+msgstr ""
 
 #: js/ui/shellEntry.js:196
 msgid "Search the internet and more…"
 msgstr ""
 
 #: js/ui/shellEntry.js:198
-#, fuzzy
 msgid "Search…"
-msgstr "検索中…"
+msgstr ""
 
 #: js/ui/shellEntry.js:490
 msgid "Caps lock is on."
@@ -2180,9 +2085,7 @@ msgstr "キーファイルを使用する"
 #, javascript-format
 msgid ""
 "To unlock a volume that uses keyfiles, use the <i>%s</i> utility instead."
-msgstr ""
-"キーファイルを使用するボリュームのロック解除には <i>%s</i> ユーティリティを使"
-"用します。"
+msgstr "キーファイルを使用するボリュームのロック解除には <i>%s</i> ユーティリティを使用します。"
 
 #: js/ui/shellMountOperation.js:306
 msgid "PIM Number"
@@ -2296,9 +2199,8 @@ msgid "Close"
 msgstr "閉じる"
 
 #: js/ui/status/automaticUpdates.js:290
-#, fuzzy
 msgid "Change Settings…"
-msgstr "サウンド設定"
+msgstr ""
 
 #: js/ui/status/bluetooth.js:40
 msgid "Bluetooth"
@@ -2316,14 +2218,12 @@ msgid_plural "%d Connected"
 msgstr[0] "%d 台接続"
 
 #: js/ui/status/bluetooth.js:134
-#, fuzzy
 msgid "Bluetooth Off"
-msgstr "Bluetooth"
+msgstr ""
 
 #: js/ui/status/bluetooth.js:136
-#, fuzzy
 msgid "Bluetooth On"
-msgstr "Bluetooth"
+msgstr ""
 
 #: js/ui/status/brightness.js:39
 msgid "Brightness"
@@ -2393,8 +2293,7 @@ msgstr "アプリ %s が位置情報へのアクセスを要求しています"
 
 #: js/ui/status/location.js:367
 msgid "Location access can be changed at any time from the privacy settings."
-msgstr ""
-"位置情報のアクセス許可設定は、プライバシー設定からいつでも変更できます。"
+msgstr "位置情報のアクセス許可設定は、プライバシー設定からいつでも変更できます。"
 
 #: js/ui/status/network.js:66
 msgid "<unknown>"
@@ -2412,7 +2311,8 @@ msgstr "%s オフ"
 msgid "%s Connected"
 msgstr "%s 接続済み"
 
-#. Translators: this is for network devices that are physically present but are not
+#. Translators: this is for network devices that are physically present but
+#. are not
 #. under NetworkManager's control (and thus cannot be used in the menu);
 #. %s is a network identifier
 #: js/ui/status/network.js:428
@@ -2432,20 +2332,23 @@ msgstr "%s 切断中"
 msgid "%s Connecting"
 msgstr "%s 接続中"
 
-#. Translators: this is for network connections that require some kind of key or password; %s is a network identifier
+#. Translators: this is for network connections that require some kind of key
+#. or password; %s is a network identifier
 #: js/ui/status/network.js:441
 #, javascript-format
 msgid "%s Requires Authentication"
 msgstr "%s には認証が必要"
 
-#. Translators: this is for devices that require some kind of firmware or kernel
+#. Translators: this is for devices that require some kind of firmware or
+#. kernel
 #. module, which is missing; %s is a network identifier
 #: js/ui/status/network.js:449
 #, javascript-format
 msgid "Firmware Missing For %s"
 msgstr "%s のファームウェア未検出"
 
-#. Translators: this is for a network device that cannot be activated (for example it
+#. Translators: this is for a network device that cannot be activated (for
+#. example it
 #. is disabled by rfkill, or it has no coverage; %s is a network identifier
 #: js/ui/status/network.js:453
 #, javascript-format
@@ -2547,7 +2450,8 @@ msgstr "%s 未接続"
 msgid "connecting…"
 msgstr "接続中…"
 
-#. Translators: this is for network connections that require some kind of key or password
+#. Translators: this is for network connections that require some kind of key
+#. or password
 #: js/ui/status/network.js:1420
 msgid "authentication required"
 msgstr "認証が必要"
@@ -2623,9 +2527,8 @@ msgid "Enter unlock code…"
 msgstr ""
 
 #: js/ui/status/payg.js:86
-#, fuzzy
 msgid "Getting time…"
-msgstr "再起動中…"
+msgstr ""
 
 #: js/ui/status/payg.js:90
 msgid "Less than 1 minute"
@@ -2722,9 +2625,7 @@ msgstr "不明な Thunderbolt デバイス"
 msgid ""
 "New device has been detected while you were away. Please disconnect and "
 "reconnect the device to start using it."
-msgstr ""
-"離席中に新しいデバイスを検出しました。そのデバイスを使用する場合は一度取り外"
-"し、再接続してください。"
+msgstr "離席中に新しいデバイスを検出しました。そのデバイスを使用する場合は一度取り外し、再接続してください。"
 
 #: js/ui/status/thunderbolt.js:329
 msgid "Unauthorized Thunderbolt device"
@@ -2754,28 +2655,24 @@ msgstr "音量"
 
 #. Translators: this is for display mirroring i.e. cloning.
 #. * Try to keep it under around 15 characters.
-#.
 #: js/ui/switchMonitor.js:17
 msgid "Mirror"
 msgstr "画面を複製"
 
 #. Translators: this is for the desktop spanning displays.
 #. * Try to keep it under around 15 characters.
-#.
 #: js/ui/switchMonitor.js:22
 msgid "Join Displays"
 msgstr "画面を拡張"
 
 #. Translators: this is for using only an external display.
 #. * Try to keep it under around 15 characters.
-#.
 #: js/ui/switchMonitor.js:27
 msgid "External Only"
 msgstr "外部のみ"
 
 #. Translators: this is for using only the laptop display.
 #. * Try to keep it under around 15 characters.
-#.
 #: js/ui/switchMonitor.js:32
 msgid "Built-in Only"
 msgstr "組み込みのみ"
@@ -2818,7 +2715,6 @@ msgstr "このディスプレイ設定を保存しますか?"
 
 #. Translators: this and the following message should be limited in length,
 #. to avoid ellipsizing the labels.
-#.
 #: js/ui/windowManager.js:70
 msgid "Revert Settings"
 msgstr "設定を元に戻す"
@@ -2975,8 +2871,7 @@ msgstr ""
 #, c-format
 msgid ""
 "UUID is a globally-unique identifier for your extension.\n"
-"This should be in the format of an email address (clicktofocus@janedoe."
-"example.com)\n"
+"This should be in the format of an email address (clicktofocus@janedoe.example.com)\n"
 msgstr ""
 
 #: subprojects/extensions-tool/src/command-create.c:244
@@ -3195,7 +3090,7 @@ msgstr "バージョン情報を表示して終了します。"
 #: subprojects/extensions-tool/src/main.c:242
 #: subprojects/extensions-tool/src/main.c:245
 msgid "COMMAND"
-msgstr ""
+msgstr "COMMAND"
 
 #: subprojects/extensions-tool/src/main.c:245
 msgid "[ARGS…]"
@@ -3280,9 +3175,8 @@ msgid "Other workspaces"
 msgstr ""
 
 #: js/ui/appIconBar.js:204
-#, fuzzy
 msgid "Current workspace"
-msgstr "スイッチャーを現在のワークスペース内に制限する"
+msgstr ""
 
 #: js/ui/appIconBar.js:282
 msgid "Pin to Taskbar"
@@ -3293,28 +3187,25 @@ msgid "Unpin from Taskbar"
 msgstr ""
 
 #: js/ui/appIconBar.js:310
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Quit %s"
-msgstr "終了"
+msgstr ""
 
 #: js/ui/endlessButton.js:14
 msgid "Endless Button"
 msgstr ""
 
 #: js/ui/endlessButton.js:67
-#, fuzzy
 msgid "Show Desktop"
-msgstr "詳細を表示"
+msgstr ""
 
 #: js/ui/endlessButton.js:69
-#, fuzzy
 msgid "Show Apps"
-msgstr "アプリケーションを表示する"
+msgstr ""
 
 #: js/ui/forceAppExitDialog.js:50
-#, fuzzy
 msgid "Quit applications"
-msgstr "アプリケーション"
+msgstr ""
 
 #: js/ui/forceAppExitDialog.js:56
 msgid ""
@@ -3323,47 +3214,41 @@ msgid ""
 msgstr ""
 
 #: js/ui/forceAppExitDialog.js:87
-#, fuzzy
 msgid "System Monitor"
-msgstr "システムのサウンド"
+msgstr ""
 
 #: js/ui/forceAppExitDialog.js:95
-#, fuzzy
 msgid "Quit Application"
-msgstr "アプリケーション"
+msgstr ""
 
 #: js/ui/hotCorner.js:15
 msgid "Hot Corner"
 msgstr ""
 
 #: js/ui/hotCorner.js:25
-#, fuzzy
 msgid "Enable Hot Corner"
-msgstr "拡張機能を有効にする"
+msgstr ""
 
 #: js/ui/hotCorner.js:29
-#, fuzzy
 msgid "Disable Hot Corner"
-msgstr "明日まで無効にする"
+msgstr ""
 
 #: js/ui/iconGridLayout.js:312
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s has been removed"
-msgstr "%s をお気に入りから削除しました。"
+msgstr ""
 
 #: js/ui/iconGridLayout.js:540
-#, fuzzy
 msgid "New Folder"
-msgstr "名前なしのフォルダー"
+msgstr ""
 
 #: js/ui/internetSearch.js:70
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Open \"%s\" in browser"
-msgstr "開いているウィンドウ"
+msgstr ""
 
 #. Translators: the first %s is the search engine name, and the second
 #. * is the search string. For instance, 'Search Google for "hello"'.
-#.
 #: js/ui/internetSearch.js:79
 #, javascript-format
 msgid "Search %s for \"%s\""
@@ -3387,71 +3272,10 @@ msgid "Give Us Feedback"
 msgstr ""
 
 #: src/shell-desktop-dir-info.c:485
-#, fuzzy
 msgid "Unnamed"
-msgstr "名前なしのフォルダー"
+msgstr ""
 
 #: src/shell-desktop-dir-info.c:745
 #, c-format
 msgid "Custom definition for %s"
 msgstr ""
-
-#~ msgid "Copy Error"
-#~ msgstr "エラーをコピー"
-
-#~ msgid "Frequently used applications will appear here"
-#~ msgstr "よく使用するアプリケーションがここに表示されます"
-
-#~ msgid "Frequent"
-#~ msgstr "常用"
-
-#~ msgid "All"
-#~ msgstr "すべて"
-
-#~ msgid "Add to Favorites"
-#~ msgstr "お気に入りに追加"
-
-#~ msgid "Type to search"
-#~ msgstr "検索ワードを入力"
-
-#~ msgid "Top Bar"
-#~ msgstr "トップバー"
-
-#~ msgid "%d more"
-#~ msgid_plural "%d more"
-#~ msgstr[0] "他 %d 件"
-
-#~ msgid "Off"
-#~ msgstr "オフ"
-
-#~ msgid "On"
-#~ msgstr "オン"
-
-#~ msgid "Search"
-#~ msgstr "検索"
-
-#~ msgid "%d new message"
-#~ msgid_plural "%d new messages"
-#~ msgstr[0] "%d 件の新しいメッセージ"
-
-#~ msgid "%d new notification"
-#~ msgid_plural "%d new notifications"
-#~ msgstr[0] "%d 件の新しい通知"
-
-#~ msgid "Authentication required by wireless network"
-#~ msgstr "無線ネットワークでは認証が要求されます"
-
-#~ msgid "Which keyboard to use"
-#~ msgstr "使いたいキーボードの種類"
-
-#~ msgid "The type of keyboard to use."
-#~ msgstr "使いたいキーボードの種類です。"
-
-#~ msgid "Show the week date in the calendar"
-#~ msgstr "暦週日付を表示"
-
-#~ msgid "If true, display the ISO week date in the calendar."
-#~ msgstr "ISO 8601 方式の暦週日付を表示します。"
-
-#~ msgid "Not In Use"
-#~ msgstr "未使用"

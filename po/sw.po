@@ -1,21 +1,23 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the gnome-shell package.
-#
+# 
 # Translators:
+# Jesse Wakukha <jesse@endlessm.com>, 2019
+# Jesse Wakukha <jesse@endlessm.com>, 2019-2020
+# Will Thompson <wjt@endlessm.com>, 2019
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-04-17 17:11+0100\n"
-"PO-Revision-Date: 2019-01-08 11:43+0000\n"
+"PO-Revision-Date: 2020-04-17 16:14+0000\n"
 "Last-Translator: Will Thompson <wjt@endlessm.com>\n"
-"Language-Team: Swahili (http://www.transifex.com/endless-os/gnome-shell/"
-"language/sw/)\n"
-"Language: sw\n"
+"Language-Team: Swahili (http://www.transifex.com/endless-os/gnome-shell/language/sw/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: sw\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: data/50-gnome-shell-system.xml:6
@@ -52,16 +54,13 @@ msgstr "Usimamizi wa Window na uzinduzi wa programu"
 
 #: data/org.gnome.shell.gschema.xml.in:15
 msgid "Enable internal tools useful for developers and testers from Alt-F2"
-msgstr ""
-"Wezesha zana za ndani muhimu kwa watengenezaji na majaribio kutoka Alt-F2"
+msgstr "Wezesha zana za ndani muhimu kwa watengenezaji na majaribio kutoka Alt-F2"
 
 #: data/org.gnome.shell.gschema.xml.in:18
 msgid ""
 "Allows access to internal debugging and monitoring tools using the Alt-F2 "
 "dialog."
-msgstr ""
-"Inaruhusu ufikiaji Debugging ya ndani na zana za ufuatiliaji kwa kutumia "
-"mazungumzo ya Alt-F2."
+msgstr "Inaruhusu ufikiaji Debugging ya ndani na zana za ufuatiliaji kwa kutumia mazungumzo ya Alt-F2."
 
 #: data/org.gnome.shell.gschema.xml.in:25
 msgid "UUIDs of extensions to enable"
@@ -69,15 +68,11 @@ msgstr "UUID wa upanuzi ili kuwezesha"
 
 #: data/org.gnome.shell.gschema.xml.in:26
 msgid ""
-"GNOME Shell extensions have a UUID property; this key lists extensions which "
-"should be loaded. Any extension that wants to be loaded needs to be in this "
-"list. You can also manipulate this list with the EnableExtension and "
+"GNOME Shell extensions have a UUID property; this key lists extensions which"
+" should be loaded. Any extension that wants to be loaded needs to be in this"
+" list. You can also manipulate this list with the EnableExtension and "
 "DisableExtension D-Bus methods on org.gnome.Shell."
-msgstr ""
-"Upanuzi wa Shell wa GNOME una mali ya UUID; kifungo hiki kinaorodhesha "
-"upanuzi ambao unapaswa kupakiwa. Ugani wowote ambao unataka kupakiwa "
-"unahitaji kuwa katika orodha hii. Unaweza pia kudanganya orodha hii na Njia "
-"za EnableExtension na DisableExtension D-Bus kwenye org.gnome.Shell."
+msgstr "Upanuzi wa Shell wa GNOME una mali ya UUID; kifungo hiki kinaorodhesha upanuzi ambao unapaswa kupakiwa. Ugani wowote ambao unataka kupakiwa unahitaji kuwa katika orodha hii. Unaweza pia kudanganya orodha hii na Njia za EnableExtension na DisableExtension D-Bus kwenye org.gnome.Shell."
 
 #: data/org.gnome.shell.gschema.xml.in:35
 msgid "UUIDs of extensions to force disabling"
@@ -85,17 +80,12 @@ msgstr "UUIDs wa upanuzi kulazimisha kuzima"
 
 #: data/org.gnome.shell.gschema.xml.in:36
 msgid ""
-"GNOME Shell extensions have a UUID property; this key lists extensions which "
-"should be disabled, even if loaded as part of the current mode. You can also "
-"manipulate this list with the EnableExtension and DisableExtension D-Bus "
-"methods on org.gnome.Shell. This key takes precedence over the “enabled-"
-"extensions” setting."
-msgstr ""
-"Upanuzi wa Shell wa GNOME una mali ya UUID; orodha hii inaorodhesha upanuzi "
-"ambao unapaswa kuzimwa, hata ikiwa umejaa kama sehemu ya hali ya sasa. "
-"Unaweza pia kudanganya orodha hii na Njia za EnableExtension na "
-"DisableExtension D-Bus kwenye org.gnome.Shell. Ufunguo unachukua kipaumbele "
-"juu ya mpangilio wa \"viongezeo\"."
+"GNOME Shell extensions have a UUID property; this key lists extensions which"
+" should be disabled, even if loaded as part of the current mode. You can "
+"also manipulate this list with the EnableExtension and DisableExtension "
+"D-Bus methods on org.gnome.Shell. This key takes precedence over the "
+"“enabled-extensions” setting."
+msgstr "Upanuzi wa Shell wa GNOME una mali ya UUID; orodha hii inaorodhesha upanuzi ambao unapaswa kuzimwa, hata ikiwa umejaa kama sehemu ya hali ya sasa. Unaweza pia kudanganya orodha hii na Njia za EnableExtension na DisableExtension D-Bus kwenye org.gnome.Shell. Ufunguo unachukua kipaumbele juu ya mpangilio wa \"viongezeo\"."
 
 #: data/org.gnome.shell.gschema.xml.in:46
 msgid "Disable user extensions"
@@ -105,9 +95,7 @@ msgstr "Lemaza upanuzi wa watumiaji"
 msgid ""
 "Disable all extensions the user has enabled without affecting the “enabled-"
 "extension” setting."
-msgstr ""
-"Lemaza upanuzi wote ambao mtumiaji amewezesha bila kuathiri mpangilio wa "
-"\"kuwezeshwa-ugani\".mpangilio."
+msgstr "Lemaza upanuzi wote ambao mtumiaji amewezesha bila kuathiri mpangilio wa \"kuwezeshwa-ugani\".mpangilio."
 
 #: data/org.gnome.shell.gschema.xml.in:54
 msgid "Disables the validation of extension version compatibility"
@@ -118,10 +106,7 @@ msgid ""
 "GNOME Shell will only load extensions that claim to support the current "
 "running version. Enabling this option will disable this check and try to "
 "load all extensions regardless of the versions they claim to support."
-msgstr ""
-"GNOME Shell itapakia viongezeo tu ambavyo vinadai kusaidia toleo la sasa la "
-"kazi. Kuwezesha chaguo hili kutalemaza ukaguzi huu na kujaribu kupakia "
-"viongezeo vyote bila kujali matoleo wanayodai kuunga mkono."
+msgstr "GNOME Shell itapakia viongezeo tu ambavyo vinadai kusaidia toleo la sasa la kazi. Kuwezesha chaguo hili kutalemaza ukaguzi huu na kujaribu kupakia viongezeo vyote bila kujali matoleo wanayodai kuunga mkono."
 
 #: data/org.gnome.shell.gschema.xml.in:63
 msgid "List of desktop file IDs for favorite applications"
@@ -129,10 +114,9 @@ msgstr "Orodha ya vitambulisho vya faili ya desktop kwa programu unazopenda"
 
 #: data/org.gnome.shell.gschema.xml.in:64
 msgid ""
-"The applications corresponding to these identifiers will be displayed in the "
-"favorites area."
-msgstr ""
-"Maombi yanayolingana na kitambulisho hiki yataonyeshwa kwenye eneo linalofaa."
+"The applications corresponding to these identifiers will be displayed in the"
+" favorites area."
+msgstr "Maombi yanayolingana na kitambulisho hiki yataonyeshwa kwenye eneo linalofaa."
 
 #: data/org.gnome.shell.gschema.xml.in:71
 msgid "App Picker View"
@@ -140,30 +124,27 @@ msgstr "Mwonekano wa Picker ya programu"
 
 #: data/org.gnome.shell.gschema.xml.in:72
 msgid "Index of the currently selected view in the application picker."
-msgstr ""
-"Kielelezo cha mwonekano uliochaguliwa kwa sasa katika kichagua programu."
+msgstr "Kielelezo cha mwonekano uliochaguliwa kwa sasa katika kichagua programu."
 
 #: data/org.gnome.shell.gschema.xml.in:78
 msgid "History for command (Alt-F2) dialog"
 msgstr "Historia ya dialog ya amri (Alt-F2)"
 
-#. Translators: looking glass is a debugger and inspector tool, see https://wiki.gnome.org/Projects/GnomeShell/LookingGlass
+#. Translators: looking glass is a debugger and inspector tool, see
+#. https://wiki.gnome.org/Projects/GnomeShell/LookingGlass
 #: data/org.gnome.shell.gschema.xml.in:83
 msgid "History for the looking glass dialog"
 msgstr "Historia ya mazungumzo ya glasi inayoangalia"
 
 #: data/org.gnome.shell.gschema.xml.in:87
 msgid "Always show the “Log out” menu item in the user menu."
-msgstr ""
-"Onyesha kila wakati kitufe cha menyu \"Toka\" kwenye menyu ya watumiaji."
+msgstr "Onyesha kila wakati kitufe cha menyu \"Toka\" kwenye menyu ya watumiaji."
 
 #: data/org.gnome.shell.gschema.xml.in:88
 msgid ""
-"This key overrides the automatic hiding of the “Log out” menu item in single-"
-"user, single-session situations."
-msgstr ""
-"Kifunguo hiki kinazidi ufichaji wa otomatiki wa menyu ya \"Toka\" katika "
-"hali ya mtumiaji mmoja, hali ya kikao kimoja."
+"This key overrides the automatic hiding of the “Log out” menu item in "
+"single-user, single-session situations."
+msgstr "Kifunguo hiki kinazidi ufichaji wa otomatiki wa menyu ya \"Toka\" katika hali ya mtumiaji mmoja, hali ya kikao kimoja."
 
 #: data/org.gnome.shell.gschema.xml.in:95
 msgid ""
@@ -176,18 +157,12 @@ msgid ""
 "filesystem is mounted. If the password can be saved for future use a "
 "“Remember Password” checkbox will be present. This key sets the default "
 "state of the checkbox."
-msgstr ""
-"Gombo litaomba nenosiri wakati kifaa kilichosimbwa au mfumo wa faili wa "
-"mbali umewekwa. Ikiwa nywila inaweza kuokolewa kwa kutumia kisanduku cha "
-"kuangalia cha \"Kumbuka Nywila\" kitakuwepo. Kifunguo hiki huweka hali ya "
-"kisanduku cha ukaguzi."
+msgstr "Gombo litaomba nenosiri wakati kifaa kilichosimbwa au mfumo wa faili wa mbali umewekwa. Ikiwa nywila inaweza kuokolewa kwa kutumia kisanduku cha kuangalia cha \"Kumbuka Nywila\" kitakuwepo. Kifunguo hiki huweka hali ya kisanduku cha ukaguzi."
 
 #: data/org.gnome.shell.gschema.xml.in:105
 msgid ""
 "Whether the default Bluetooth adapter had set up devices associated to it"
-msgstr ""
-"Ikiwa adapta ya default ya Bluetooth ilikuwa imeweka vifaa vinavyohusiana "
-"nayo"
+msgstr "Ikiwa adapta ya default ya Bluetooth ilikuwa imeweka vifaa vinavyohusiana nayo"
 
 #: data/org.gnome.shell.gschema.xml.in:106
 msgid ""
@@ -195,11 +170,7 @@ msgid ""
 "powered, or if there were devices set up associated with the default "
 "adapter. This will be reset if the default adapter is ever seen not to have "
 "devices associated to it."
-msgstr ""
-"Gamba litaonyesha tu kipengee cha menyu ya Bluetooth ikiwa adapta ya "
-"Bluetooth imewezeshwa, au ikiwa kuna vifaa vilivyoundwa vilivyojumuishwa na "
-"adapta ya kawaida. Hii itawekwa upya ikiwa adapta chaguo-msingi ikionekana "
-"kutokuwa na vifaa vinavyohusiana nayo."
+msgstr "Gamba litaonyesha tu kipengee cha menyu ya Bluetooth ikiwa adapta ya Bluetooth imewezeshwa, au ikiwa kuna vifaa vilivyoundwa vilivyojumuishwa na adapta ya kawaida. Hii itawekwa upya ikiwa adapta chaguo-msingi ikionekana kutokuwa na vifaa vinavyohusiana nayo."
 
 #: data/org.gnome.shell.gschema.xml.in:115
 msgid "Enable introspection API"
@@ -209,8 +180,7 @@ msgstr "Wezesha API ya utambuzi"
 msgid ""
 "Enables a D-Bus API that allows to introspect the application state of the "
 "shell."
-msgstr ""
-"Inawezesha D-Bus API ambayo inaruhusu kugundua hali ya matumizi ya ganda."
+msgstr "Inawezesha D-Bus API ambayo inaruhusu kugundua hali ya matumizi ya ganda."
 
 #: data/org.gnome.shell.gschema.xml.in:126
 msgid "Enables the hot corner for the window picker"
@@ -220,9 +190,7 @@ msgstr "Inawasha kona ya moto kwa kichaa cha windows"
 msgid ""
 "By default, the hot corner for the window picker is enabled. Set false to "
 "disable the hot corner."
-msgstr ""
-"Kwa msingi, kona ya moto kwa kichaa cha iwasha imewashwa. Weka uwongo kuzima "
-"kona moto."
+msgstr "Kwa msingi, kona ya moto kwa kichaa cha iwasha imewashwa. Weka uwongo kuzima kona moto."
 
 #: data/org.gnome.shell.gschema.xml.in:136
 msgid "Set the left/right position of the hot corner for the window picker"
@@ -231,12 +199,9 @@ msgstr "Weka nafasi ya kushoto / kulia ya kona moto kwa kichaa cha dirisha"
 #: data/org.gnome.shell.gschema.xml.in:139
 msgid ""
 "Default position of the hot corner is in a right corner. Set false to move "
-"the hot corner to a left corner. The position is not affected by the RTL vs. "
-"LTR text direction."
-msgstr ""
-"Msimbo wa chaguo-msingi wa kona moto iko kwenye kona ya kulia. Weka uwongo "
-"kusonga kona ya moto hadi kona ya kushoto. Msemo haujaathiriwa na mwelekeo "
-"wa maandishi wa RTL dhidi ya LTR."
+"the hot corner to a left corner. The position is not affected by the RTL vs."
+" LTR text direction."
+msgstr "Msimbo wa chaguo-msingi wa kona moto iko kwenye kona ya kulia. Weka uwongo kusonga kona ya moto hadi kona ya kushoto. Msemo haujaathiriwa na mwelekeo wa maandishi wa RTL dhidi ya LTR."
 
 #: data/org.gnome.shell.gschema.xml.in:147
 msgid "Set the top/bottom position of the hot corner for the window picker"
@@ -246,9 +211,7 @@ msgstr "Weka nafasi ya juu / chini ya kona ya moto kwa kichaa cha dirisha"
 msgid ""
 "Default position of the hot corner is in a bottom corner. Set false to move "
 "the hot corner to a top corner."
-msgstr ""
-"Msingi wa nafasi ya kona moto iko kwenye kona ya chini. Weka uwongo kusonga "
-"kona ya moto hadi kona ya juu."
+msgstr "Msingi wa nafasi ya kona moto iko kwenye kona ya chini. Weka uwongo kusonga kona ya moto hadi kona ya juu."
 
 #: data/org.gnome.shell.gschema.xml.in:157
 msgid "Set the size of the hot corner target"
@@ -257,12 +220,9 @@ msgstr "Weka saizi ya shabaha ya kona ya moto"
 #: data/org.gnome.shell.gschema.xml.in:160
 msgid ""
 "Number of pixels in one dimension of the square target for the hot corner. "
-"Default is for a single pixel in the very corner. For some virtual machines, "
-"this value may need to be set larger than the default."
-msgstr ""
-"Idadi ya saizi katika mwelekeo mmoja wa lengo la mraba kwa kona ya moto. "
-"Chaguo msingi ni saizi moja kwenye kona moja. Kwa mashine zingine, thamani "
-"hii inaweza kuhitaji kuwekwa kubwa kuliko chaguo msingi."
+"Default is for a single pixel in the very corner. For some virtual machines,"
+" this value may need to be set larger than the default."
+msgstr "Idadi ya saizi katika mwelekeo mmoja wa lengo la mraba kwa kona ya moto. Chaguo msingi ni saizi moja kwenye kona moja. Kwa mashine zingine, thamani hii inaweza kuhitaji kuwekwa kubwa kuliko chaguo msingi."
 
 #: data/org.gnome.shell.gschema.xml.in:170
 msgid "Prevent apps from being automatically maximized on launch"
@@ -271,12 +231,9 @@ msgstr "Zuia programu kutoka kuzidishwa kiatomati kwenye uzinduzi"
 #: data/org.gnome.shell.gschema.xml.in:173
 msgid ""
 "Makes window management more like standard Gnome. Hides application splash "
-"screens, prevents applications from being forced to open maximized, and does "
-"not automatically switch to the app selector when a window is minimized."
-msgstr ""
-"Hufanya usimamizi wa windows kama kawaida ya Gnome. Hificha programu za "
-"kugawanyika, inazuia maombi kutoka kwa kulazimishwa kufungua kuongezeka, na "
-"haibadilishi kiotomati kiotomati wakati dirisha linapopunguzwa."
+"screens, prevents applications from being forced to open maximized, and does"
+" not automatically switch to the app selector when a window is minimized."
+msgstr "Hufanya usimamizi wa windows kama kawaida ya Gnome. Hificha programu za kugawanyika, inazuia maombi kutoka kwa kulazimishwa kufungua kuongezeka, na haibadilishi kiotomati kiotomati wakati dirisha linapopunguzwa."
 
 #: data/org.gnome.shell.gschema.xml.in:182
 msgid "Whether password reset is allowed"
@@ -285,17 +242,12 @@ msgstr "Ikiwa kuweka upya nywila kunaruhusiwa"
 #: data/org.gnome.shell.gschema.xml.in:183
 msgid ""
 "This key controls whether to show the \"Forgot Password?\" button on the "
-"login screen. 'default' tells GNOME Shell to use the vendor default setting. "
-"'enable' and 'disable' can be used to explicitly enable or disable the reset "
-"button, respectively. Note that it only makes sense to set this key for the "
-"Debian-gdm user; changing it for your own user account will have no effect."
-msgstr ""
-"Kifunguo hiki kinadhibiti ikiwa ni kuonyesha \"Nywila ya kusahau?\" kitufe "
-"kwenye skrini ya kuingia. 'default' inamwambia GNOME Shell kutumia mpangilio "
-"wa chaguo-msingi wa muuzaji. 'Wezesha' na 'afya' inaweza kutumika kuwezesha "
-"wazi au kuzima kitufe cha kuweka upya, mtawaliwa. Kumbuka kuwa ina maana tu "
-"kuweka ufunguo huu kwa mtumiaji wa Debian-gdm; kuibadilisha kwa akaunti yako "
-"mwenyewe hakutakuwa na athari."
+"login screen. 'default' tells GNOME Shell to use the vendor default setting."
+" 'enable' and 'disable' can be used to explicitly enable or disable the "
+"reset button, respectively. Note that it only makes sense to set this key "
+"for the Debian-gdm user; changing it for your own user account will have no "
+"effect."
+msgstr "Kifunguo hiki kinadhibiti ikiwa ni kuonyesha \"Nywila ya kusahau?\" kitufe kwenye skrini ya kuingia. 'default' inamwambia GNOME Shell kutumia mpangilio wa chaguo-msingi wa muuzaji. 'Wezesha' na 'afya' inaweza kutumika kuwezesha wazi au kuzima kitufe cha kuweka upya, mtawaliwa. Kumbuka kuwa ina maana tu kuweka ufunguo huu kwa mtumiaji wa Debian-gdm; kuibadilisha kwa akaunti yako mwenyewe hakutakuwa na athari."
 
 #: data/org.gnome.shell.gschema.xml.in:194
 msgid "Layout of application launcher icons in the grid"
@@ -305,9 +257,7 @@ msgstr "Mpangilio wa icons za uzinduzi wa programu kwenye gridi ."
 msgid ""
 "This key specifies the exact order of the icons shown in the applications "
 "launcher view."
-msgstr ""
-"Kitufe hiki kinabainisha mpangilio halisi wa icons zilizoonyeshwa kwenye "
-"mwonekano wa kishawishi cha programu."
+msgstr "Kitufe hiki kinabainisha mpangilio halisi wa icons zilizoonyeshwa kwenye mwonekano wa kishawishi cha programu."
 
 #: data/org.gnome.shell.gschema.xml.in:201
 msgid "Languages for which the discovery feed feature is enabled."
@@ -318,10 +268,7 @@ msgid ""
 "If the system language matches any of these languages, the discovery feed "
 "will be enabled. You will need to restart the shell for changes to this "
 "setting to take effect."
-msgstr ""
-"Ikiwa lugha ya mfumo inalingana na yoyote ya lugha hizi, malisho ya ugunduzi "
-"yatawezeshwa. Utahitaji kuanza tena ganda kwa mabadiliko kwenye mpangilio "
-"huu ili kuanza kutumika."
+msgstr "Ikiwa lugha ya mfumo inalingana na yoyote ya lugha hizi, malisho ya ugunduzi yatawezeshwa. Utahitaji kuanza tena ganda kwa mabadiliko kwenye mpangilio huu ili kuanza kutumika."
 
 #: data/org.gnome.shell.gschema.xml.in:215
 msgid "Keybinding to open the application menu"
@@ -338,8 +285,7 @@ msgstr "Kufunga muhimu kufungua mtazamo wa \"Onyesha Programu\""
 #: data/org.gnome.shell.gschema.xml.in:223
 msgid ""
 "Keybinding to open the “Show Applications” view of the Activities Overview."
-msgstr ""
-"Kufunga muhimu kufungua \"Maombi ya Onyesho\" ya muhtasari wa Shughuli."
+msgstr "Kufunga muhimu kufungua \"Maombi ya Onyesho\" ya muhtasari wa Shughuli."
 
 #: data/org.gnome.shell.gschema.xml.in:230
 msgid "Keybinding to open the overview"
@@ -413,9 +359,7 @@ msgstr "Kufunga kuu ili kuamilisha programu ya kwanza kwenye upau wa ikoni."
 msgid ""
 "Keybinding to open the first app in the icon bar, or switch to the app if "
 "already open."
-msgstr ""
-"Kufunga muhimu kufungua programu ya kwanza kwenye upau wa ikoni, au "
-"badilisha kwa programu ikiwa tayari imefunguliwa."
+msgstr "Kufunga muhimu kufungua programu ya kwanza kwenye upau wa ikoni, au badilisha kwa programu ikiwa tayari imefunguliwa."
 
 #: data/org.gnome.shell.gschema.xml.in:302
 msgid "Keybinding to activate the second app in the icon bar."
@@ -425,9 +369,7 @@ msgstr "Kufunga kuu ili kuamilisha programu ya pili kwenye upau wa ikoni."
 msgid ""
 "Keybinding to open the second app in the icon bar, or switch to the app if "
 "already open."
-msgstr ""
-"Kufunga muhimu kufungua programu ya pili kwenye upau wa ikoni, au badilisha "
-"kwa programu ikiwa tayari imefunguliwa."
+msgstr "Kufunga muhimu kufungua programu ya pili kwenye upau wa ikoni, au badilisha kwa programu ikiwa tayari imefunguliwa."
 
 #: data/org.gnome.shell.gschema.xml.in:309
 msgid "Keybinding to activate the third app in the icon bar."
@@ -437,9 +379,7 @@ msgstr "Kufunga kuu ili kuamilisha programu ya tatu kwenye upau wa icon."
 msgid ""
 "Keybinding to open the third app in the icon bar, or switch to the app if "
 "already open."
-msgstr ""
-"Kufunga muhimu kufungua programu ya tatu kwenye upau wa ikoni, au badilisha "
-"kwa programu ikiwa tayari imefunguliwa."
+msgstr "Kufunga muhimu kufungua programu ya tatu kwenye upau wa ikoni, au badilisha kwa programu ikiwa tayari imefunguliwa."
 
 #: data/org.gnome.shell.gschema.xml.in:316
 msgid "Keybinding to activate the fourth app in the icon bar."
@@ -449,9 +389,7 @@ msgstr "Kufunga kuu ili kuamilisha programu ya nne kwenye upau wa kidude."
 msgid ""
 "Keybinding to open the fourth app in the icon bar, or switch to the app if "
 "already open."
-msgstr ""
-"Kufunga muhimu kufungua programu ya nne kwenye upau wa ikoni, au badilisha "
-"kwa programu ikiwa tayari imefunguliwa."
+msgstr "Kufunga muhimu kufungua programu ya nne kwenye upau wa ikoni, au badilisha kwa programu ikiwa tayari imefunguliwa."
 
 #: data/org.gnome.shell.gschema.xml.in:323
 msgid "Keybinding to activate the fifth app in the icon bar."
@@ -461,9 +399,7 @@ msgstr "Kufunga kuu ili kuamilisha programu ya tano kwenye upau wa ikoni."
 msgid ""
 "Keybinding to open the fifth app in the icon bar, or switch to the app if "
 "already open."
-msgstr ""
-"Kufunga muhimu kufungua programu ya tano kwenye upau wa ikoni, au badilisha "
-"kwa programu ikiwa tayari imefunguliwa."
+msgstr "Kufunga muhimu kufungua programu ya tano kwenye upau wa ikoni, au badilisha kwa programu ikiwa tayari imefunguliwa."
 
 #: data/org.gnome.shell.gschema.xml.in:330
 msgid "Keybinding to activate the sixth app in the icon bar."
@@ -473,9 +409,7 @@ msgstr "Kufunga muhimu ili kuamilisha programu ya sita kwenye upau wa ikoni."
 msgid ""
 "Keybinding to open the sixth app in the icon bar, or switch to the app if "
 "already open."
-msgstr ""
-"Kufunga kufungua programu ya sita kwenye upau wa ikoni, au badilisha kwa "
-"programu ikiwa tayari imefunguliwa."
+msgstr "Kufunga kufungua programu ya sita kwenye upau wa ikoni, au badilisha kwa programu ikiwa tayari imefunguliwa."
 
 #: data/org.gnome.shell.gschema.xml.in:337
 msgid "Keybinding to activate the seventh app in the icon bar."
@@ -485,9 +419,7 @@ msgstr "Kufunga kuu ili kuamilisha programu ya saba kwenye upau wa ikoni."
 msgid ""
 "Keybinding to open the seventh app in the icon bar, or switch to the app if "
 "already open."
-msgstr ""
-"Kufunga muhimu kufungua programu ya saba kwenye upau wa ikoni, au badilisha "
-"kwa programu ikiwa tayari imefunguliwa."
+msgstr "Kufunga muhimu kufungua programu ya saba kwenye upau wa ikoni, au badilisha kwa programu ikiwa tayari imefunguliwa."
 
 #: data/org.gnome.shell.gschema.xml.in:344
 msgid "Keybinding to activate the eighth app in the icon bar."
@@ -497,9 +429,7 @@ msgstr "Kufunga kuu ili kuamilisha programu ya nane kwenye upau wa ikoni."
 msgid ""
 "Keybinding to open the eighth app in the icon bar, or switch to the app if "
 "already open."
-msgstr ""
-"Kufunga muhimu kufungua programu ya nane kwenye upau wa ikoni, au badilisha "
-"kwa programu ikiwa tayari imefunguliwa."
+msgstr "Kufunga muhimu kufungua programu ya nane kwenye upau wa ikoni, au badilisha kwa programu ikiwa tayari imefunguliwa."
 
 #: data/org.gnome.shell.gschema.xml.in:351
 msgid "Keybinding to activate the last app in the icon bar."
@@ -509,9 +439,7 @@ msgstr "Kufunga kuu ili kuamilisha programu ya mwisho kwenye upau wa ikoni."
 msgid ""
 "Keybinding to open the last app in the icon bar, or switch to the app if "
 "already open."
-msgstr ""
-"Kufunga muhimu kufungua programu ya mwisho kwenye bar ya ikoni, au badilisha "
-"kwa programu ikiwa tayari imefunguliwa."
+msgstr "Kufunga muhimu kufungua programu ya mwisho kwenye bar ya ikoni, au badilisha kwa programu ikiwa tayari imefunguliwa."
 
 #: data/org.gnome.shell.gschema.xml.in:363
 #: data/org.gnome.shell.gschema.xml.in:390
@@ -522,10 +450,7 @@ msgstr "Punguza swichi kwa nafasi ya kazi ya sasa."
 msgid ""
 "If true, only applications that have windows on the current workspace are "
 "shown in the switcher. Otherwise, all applications are included."
-msgstr ""
-"Ikiwa ni kweli, matumizi tu ambayo yana madirisha kwenye nafasi ya kufanya "
-"kazi ya sasa yanaonyeshwa kwenye swichi. Vinginevyo, matumizi yote "
-"yanajumuishwa."
+msgstr "Ikiwa ni kweli, matumizi tu ambayo yana madirisha kwenye nafasi ya kufanya kazi ya sasa yanaonyeshwa kwenye swichi. Vinginevyo, matumizi yote yanajumuishwa."
 
 #: data/org.gnome.shell.gschema.xml.in:381
 msgid "The application icon mode."
@@ -534,20 +459,15 @@ msgstr "Njia ya ikoni ya programu."
 #: data/org.gnome.shell.gschema.xml.in:382
 msgid ""
 "Configures how the windows are shown in the switcher. Valid possibilities "
-"are “thumbnail-only” (shows a thumbnail of the window), “app-icon-"
-"only” (shows only the application icon) or “both”."
-msgstr ""
-"Inasanidi jinsi madirisha yanaonyeshwa kwenye swichi. Uwezo halali ni "
-"\"kijipicha-pekee\" (inaonyesha kijipicha cha dirisha), \"programu-ikoni-tu"
-"\" (inaonyesha tu ikoni ya programu) au \"zote mbili\"."
+"are “thumbnail-only” (shows a thumbnail of the window), “app-icon-only” "
+"(shows only the application icon) or “both”."
+msgstr "Inasanidi jinsi madirisha yanaonyeshwa kwenye swichi. Uwezo halali ni \"kijipicha-pekee\" (inaonyesha kijipicha cha dirisha), \"programu-ikoni-tu\" (inaonyesha tu ikoni ya programu) au \"zote mbili\"."
 
 #: data/org.gnome.shell.gschema.xml.in:391
 msgid ""
 "If true, only windows from the current workspace are shown in the switcher. "
 "Otherwise, all windows are included."
-msgstr ""
-"Ikiwa ni kweli, madirisha tu kutoka kwa nafasi ya kazi ya sasa yanaonyeshwa "
-"kwenye swichi. Vinginevyo, madirisha yote yanajumuishwa."
+msgstr "Ikiwa ni kweli, madirisha tu kutoka kwa nafasi ya kazi ya sasa yanaonyeshwa kwenye swichi. Vinginevyo, madirisha yote yanajumuishwa."
 
 #: data/org.gnome.shell.gschema.xml.in:401
 msgid "Locations"
@@ -584,9 +504,7 @@ msgstr "Mahali pa kuonyesha utabiri"
 #: data/org.gnome.shell.gschema.xml.in:467
 msgid ""
 "This key overrides the key in org.gnome.mutter when running GNOME Shell."
-msgstr ""
-"Kitufe hiki hufunika ufunguo zaidi katika org.gnome.mutter wakati wa "
-"kuendesha Shelisha ya GNOME."
+msgstr "Kitufe hiki hufunika ufunguo zaidi katika org.gnome.mutter wakati wa kuendesha Shelisha ya GNOME."
 
 #: data/org.gnome.shell.gschema.xml.in:442
 msgid "Enable edge tiling when dropping windows on screen edges"
@@ -602,8 +520,7 @@ msgstr "Nafasi za kazi tu kwenye mfuatiliaji wa kimsingi"
 
 #: data/org.gnome.shell.gschema.xml.in:466
 msgid "Delay focus changes in mouse mode until the pointer stops moving"
-msgstr ""
-"Kuchelewesha mabadiliko katika hali ya panya hadi pointer itaacha kusonga"
+msgstr "Kuchelewesha mabadiliko katika hali ya panya hadi pointer itaacha kusonga"
 
 #: data/org.gnome.Shell.PortalHelper.desktop.in.in:3
 msgid "Network Login"
@@ -619,9 +536,7 @@ msgid ""
 "We’re very sorry, but there’s been a problem: the settings for this "
 "extension can’t be displayed. We recommend that you report the issue to the "
 "extension authors."
-msgstr ""
-"Samahani sana, lakini kumekuwa na shida: mipangilio ya ugani hii haiwezi "
-"kuonyeshwa. Tunapendekeza uripoti suala hilo kwa waandishi wa ugani."
+msgstr "Samahani sana, lakini kumekuwa na shida: mipangilio ya ugani hii haiwezi kuonyeshwa. Tunapendekeza uripoti suala hilo kwa waandishi wa ugani."
 
 #: js/dbusServices/extensions/ui/extension-prefs-dialog.ui:82
 msgid "Technical Details"
@@ -725,8 +640,8 @@ msgstr ""
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:27
 msgid ""
-"To find and add extensions, visit <a href=\"https://extensions.gnome.org"
-"\">extensions.gnome.org</a>."
+"To find and add extensions, visit <a "
+"href=\"https://extensions.gnome.org\">extensions.gnome.org</a>."
 msgstr ""
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:35
@@ -756,9 +671,7 @@ msgstr ""
 msgid ""
 "We’re very sorry, but it was not possible to get the list of installed "
 "extensions. Make sure you are logged into GNOME and try again."
-msgstr ""
-"Tunasikitika sana, lakini haikuwezekana kupata orodha ya viongezo "
-"vilivyosanikishwa. Hakikisha umeingia kwenye GNOME na ujaribu tena."
+msgstr "Tunasikitika sana, lakini haikuwezekana kupata orodha ya viongezo vilivyosanikishwa. Hakikisha umeingia kwenye GNOME na ujaribu tena."
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:288
 msgid "Log Out…"
@@ -781,22 +694,21 @@ msgstr "Umesahau nywila?"
 msgid "Password"
 msgstr "Neno siri"
 
-#. Translators: During a password reset, prompt for the "secret code" provided by customer support.
+#. Translators: During a password reset, prompt for the "secret code" provided
+#. by customer support.
 #: js/gdm/authPrompt.js:680
 msgid "Enter unlock code"
 msgstr ""
 
-#. Translators: Password reset. The first %s is a verification code and the second is an email.
+#. Translators: Password reset. The first %s is a verification code and the
+#. second is an email.
 #: js/gdm/authPrompt.js:683
 #, javascript-format
 msgid ""
 "Please inform customer support of your verification code %s by emailing %s. "
 "Customer support will use the verification code to provide you with an "
 "unlock code, which you can enter here."
-msgstr ""
-"Tafadhali eleza usaidizi wa mteja kwa nambari yako ya uthibitisho%skwa "
-"kutuma barua pepe%s.Msaada wa mteja utatumia nambari ya uthibitisho kukupa "
-"nambari ya kufungua, ambayo unaweza kuingia hapa."
+msgstr "Tafadhali eleza usaidizi wa mteja kwa nambari yako ya uthibitisho%skwa kutuma barua pepe%s.Msaada wa mteja utatumia nambari ya uthibitisho kukupa nambari ya kufungua, ambayo unaweza kuingia hapa."
 
 #: js/gdm/authPrompt.js:762
 msgid "Your unlock code was incorrect. Please try again."
@@ -848,7 +760,8 @@ msgctxt "search-result"
 msgid "Power Off"
 msgstr "Kuzima"
 
-#. Translators: A list of keywords that match the power-off action, separated by semicolons
+#. Translators: A list of keywords that match the power-off action, separated
+#. by semicolons
 #: js/misc/systemActions.js:92
 msgid "power off;shutdown;reboot;restart;halt;stop"
 msgstr ""
@@ -859,7 +772,8 @@ msgctxt "search-result"
 msgid "Lock Screen"
 msgstr "Kufunga skirini"
 
-#. Translators: A list of keywords that match the lock screen action, separated by semicolons
+#. Translators: A list of keywords that match the lock screen action,
+#. separated by semicolons
 #: js/misc/systemActions.js:100
 msgid "lock screen"
 msgstr "Funga  skrini"
@@ -870,7 +784,8 @@ msgctxt "search-result"
 msgid "Log Out"
 msgstr "logi nje"
 
-#. Translators: A list of keywords that match the logout action, separated by semicolons
+#. Translators: A list of keywords that match the logout action, separated by
+#. semicolons
 #: js/misc/systemActions.js:108
 msgid "logout;log out;sign off"
 msgstr "logi, toka nje; saini mbali"
@@ -881,7 +796,8 @@ msgctxt "search-result"
 msgid "Suspend"
 msgstr "Ahirisha/Ning’iniza"
 
-#. Translators: A list of keywords that match the suspend action, separated by semicolons
+#. Translators: A list of keywords that match the suspend action, separated by
+#. semicolons
 #: js/misc/systemActions.js:116
 msgid "suspend;sleep"
 msgstr "Ahirisha;kulala"
@@ -892,12 +808,14 @@ msgctxt "search-result"
 msgid "Switch User"
 msgstr "Badili mtumiaji"
 
-#. Translators: A list of keywords that match the switch user action, separated by semicolons
+#. Translators: A list of keywords that match the switch user action,
+#. separated by semicolons
 #: js/misc/systemActions.js:124
 msgid "switch user"
 msgstr "Badili mtumiaji"
 
-#. Translators: A list of keywords that match the lock orientation action, separated by semicolons
+#. Translators: A list of keywords that match the lock orientation action,
+#. separated by semicolons
 #: js/misc/systemActions.js:131
 msgid "lock orientation;unlock orientation;screen;rotation"
 msgstr ""
@@ -994,9 +912,7 @@ msgstr "Jana %Masaa∶ %Dakika"
 #: js/misc/util.js:254
 #, no-c-format
 msgid "%A, %H∶%M"
-msgstr ""
-"Hii ni jina la siku ya wiki lifuatiwa na kamba ya muda katika muundo wa 24h. "
-"yaani, \"Jumatatu, %A14:30\""
+msgstr "Hii ni jina la siku ya wiki lifuatiwa na kamba ya muda katika muundo wa 24h. yaani, \"Jumatatu, %A14:30\""
 
 #. Translators: this is the month name and day number
 #. followed by a time string in 24h format.
@@ -1051,10 +967,8 @@ msgstr ""
 msgid "%B %-d %Y, %l∶%M %p"
 msgstr ""
 
-#.
 #. * Translators: this is the name of the search engine that shows in the
 #. * Shell's desktop search entry.
-#.
 #: js/misc/util.js:573
 msgid "Google"
 msgstr "Google"
@@ -1068,9 +982,7 @@ msgstr "Hotspot Ingia "
 msgid ""
 "Your connection to this hotspot login is not secure. Passwords or other "
 "information you enter on this page can be viewed by people nearby."
-msgstr ""
-"Uunganisho wako kwenye kuingia hii hotspot si salama. Nywila au habari "
-"nyingine unazoingia kwenye ukurasa huu zinaweza kutazamwa na watu wa karibu."
+msgstr "Uunganisho wako kwenye kuingia hii hotspot si salama. Nywila au habari nyingine unazoingia kwenye ukurasa huu zinaweza kutazamwa na watu wa karibu."
 
 #. No support for non-modal system dialogs, so ignore the option
 #. let modal = options['modal'] || true;
@@ -1132,7 +1044,8 @@ msgstr "Ongeza Programu"
 msgid "Add Website"
 msgstr "Ongeza Tovuti"
 
-#. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday).
+#. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0"
+#. (Sunday) "6" (Saturday) "06" (Sunday and Saturday).
 #: js/ui/calendar.js:41
 msgctxt "calendar-no-work"
 msgid "06"
@@ -1142,7 +1055,6 @@ msgstr "06"
 #. *
 #. * NOTE: These grid abbreviations are always shown together
 #. * and in order, e.g. "S M T W T F S".
-#.
 #: js/ui/calendar.js:70
 msgctxt "grid sunday"
 msgid "S"
@@ -1189,7 +1101,6 @@ msgstr "S"
 #. * standalone, when this is a month of the current year.
 #. * "%OB" is the new format specifier introduced in glibc 2.27,
 #. * in most cases you should not change it.
-#.
 #: js/ui/calendar.js:371
 msgid "%OB"
 msgstr ""
@@ -1202,7 +1113,6 @@ msgstr ""
 #. * "%OB" is the new format specifier introduced in glibc 2.27,
 #. * in most cases you should not use the old "%B" here unless you
 #. * absolutely know what you are doing.
-#.
 #: js/ui/calendar.js:381
 msgid "%OB %Y"
 msgstr ""
@@ -1227,19 +1137,20 @@ msgstr "Week  five"
 
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
-#.
 #: js/ui/calendar.js:730
 msgctxt "event list time"
 msgid "All Day"
 msgstr "Siku nzima"
 
-#. Translators: Shown on calendar heading when selected day occurs on current year
+#. Translators: Shown on calendar heading when selected day occurs on current
+#. year
 #: js/ui/calendar.js:868
 msgctxt "calendar heading"
 msgid "%A, %B %-d"
 msgstr ""
 
-#. Translators: Shown on calendar heading when selected day occurs on different year
+#. Translators: Shown on calendar heading when selected day occurs on
+#. different year
 #: js/ui/calendar.js:871
 msgctxt "calendar heading"
 msgid "%A, %B %-d, %Y"
@@ -1271,9 +1182,7 @@ msgstr "%s haijibu"
 msgid ""
 "You may choose to wait a short while for it to continue or force the "
 "application to quit entirely."
-msgstr ""
-"Unaweza kuchagua kusubiri muda mfupi ili kuendelea au kushinikiza programu "
-"kuacha kabisa."
+msgstr "Unaweza kuchagua kusubiri muda mfupi ili kuendelea au kushinikiza programu kuacha kabisa."
 
 #: js/ui/closeDialog.js:70
 msgid "Force Quit"
@@ -1307,9 +1216,7 @@ msgstr "Fungua na %s"
 #: js/ui/components/networkAgent.js:97
 msgid ""
 "Alternatively you can connect by pushing the “WPS” button on your router."
-msgstr ""
-"Vinginevyo unaweza kuungana kwa kusukuma kitufe cha \"WPS\" kwenye router "
-"yako."
+msgstr "Vinginevyo unaweza kuungana kwa kusukuma kitufe cha \"WPS\" kwenye router yako."
 
 #: js/ui/components/networkAgent.js:109 js/ui/status/network.js:223
 #: js/ui/status/network.js:314 js/ui/status/network.js:916
@@ -1326,8 +1233,7 @@ msgstr "Takwimu zisizo na ukomo"
 
 #: js/ui/components/networkAgent.js:163 js/ui/components/networkAgent.js:198
 msgid "Enable if your connection has limits on how much you can download."
-msgstr ""
-"Wezesha ikiwa uunganisho wako una mipaka kwa kiasi gani unaweza kupakua."
+msgstr "Wezesha ikiwa uunganisho wako una mipaka kwa kiasi gani unaweza kupakua."
 
 #: js/ui/components/networkAgent.js:200
 msgid "This connection doesn't have limits on how much you can download."
@@ -1399,8 +1305,7 @@ msgstr "Meneja wa Mtandao"
 msgid ""
 "Passwords or encryption keys are required to access the wireless network "
 "“%s”."
-msgstr ""
-"Nywila au funguo za encryption inahitajika kupata mtandao wa waya \"%s\""
+msgstr "Nywila au funguo za encryption inahitajika kupata mtandao wa waya \"%s\""
 
 #: js/ui/components/networkAgent.js:871
 msgid "VPN password"
@@ -1426,7 +1331,8 @@ msgstr "Thibitisha"
 msgid "Sorry, that didn’t work. Please try again."
 msgstr "Samahani, hiyo haijafanya kazi. Tafadhali jaribu tena."
 
-#. Translators: this is the other person changing their old IM name to their new
+#. Translators: this is the other person changing their old IM name to their
+#. new
 #. IM name.
 #: js/ui/components/telepathyClient.js:823
 #, javascript-format
@@ -1455,7 +1361,6 @@ msgstr "Dashi"
 #. * shown - it is shown just below the time in the top bar (e.g.,
 #. * "Tue 9:29 AM").  The string itself should become a full date, e.g.,
 #. * "February 17 2015".
-#.
 #: js/ui/dateMenu.js:75
 msgid "%B %-d %Y"
 msgstr ""
@@ -1463,7 +1368,6 @@ msgstr ""
 #. Translators: This is the accessible name of the date button shown
 #. * below the time in the shell; it should combine the weekday and the
 #. * date, e.g. "Tuesday February 17 2015".
-#.
 #: js/ui/dateMenu.js:82
 msgid "%A %B %e %Y"
 msgstr ""
@@ -1577,7 +1481,8 @@ msgstr "Anzisha tena na Usasishe Sasisho"
 
 #: js/ui/endSessionDialog.js:93
 #, javascript-format
-msgid "The system will automatically restart and install updates in %d second."
+msgid ""
+"The system will automatically restart and install updates in %d second."
 msgid_plural ""
 "The system will automatically restart and install updates in %d seconds."
 msgstr[0] ""
@@ -1611,9 +1516,7 @@ msgstr "Anzisha upya na Usakinishe"
 msgid ""
 "%s %s will be installed after restart. Upgrade installation can take a long "
 "time: ensure that you have backed up and that the computer is plugged in."
-msgstr ""
-"%s%s itawekwa baada ya kuanza tena. Usanidi wa kuboresha unaweza kuchukua "
-"muda mrefu: hakikisha una msaada na kwamba kompyuta imeunganishwa."
+msgstr "%s%s itawekwa baada ya kuanza tena. Usanidi wa kuboresha unaweza kuchukua muda mrefu: hakikisha una msaada na kwamba kompyuta imeunganishwa."
 
 #: js/ui/endSessionDialog.js:261
 msgid "Running on battery power: Please plug in before installing updates."
@@ -1709,11 +1612,9 @@ msgstr "Funguo nyepesi Zimezimwa"
 
 #: js/ui/kbdA11yDialog.js:34
 msgid ""
-"You just held down the Shift key for 8 seconds. This is the shortcut for the "
-"Slow Keys feature, which affects the way your keyboard works."
-msgstr ""
-"Ulishikilia tu kitufe cha Shift kwa sekunde 8. Hii ndio njia ya mkato ya "
-"kipengele cha Slow Keys, ambacho huathiri jinsi kibodi yako inavyofanya kazi."
+"You just held down the Shift key for 8 seconds. This is the shortcut for the"
+" Slow Keys feature, which affects the way your keyboard works."
+msgstr "Ulishikilia tu kitufe cha Shift kwa sekunde 8. Hii ndio njia ya mkato ya kipengele cha Slow Keys, ambacho huathiri jinsi kibodi yako inavyofanya kazi."
 
 #: js/ui/kbdA11yDialog.js:41
 msgid "Sticky Keys Turned On"
@@ -1727,19 +1628,14 @@ msgstr "Funguo za Sticky Zilizimwa"
 msgid ""
 "You just pressed the Shift key 5 times in a row. This is the shortcut for "
 "the Sticky Keys feature, which affects the way your keyboard works."
-msgstr ""
-"Ulisisitiza kitufe cha Shift mara 5 mfululizo. Hii ndio njia ya mkato ya "
-"kifunguo cha Stick Keys, ambacho huathiri jinsi kibodi yako inavyofanya kazi."
+msgstr "Ulisisitiza kitufe cha Shift mara 5 mfululizo. Hii ndio njia ya mkato ya kifunguo cha Stick Keys, ambacho huathiri jinsi kibodi yako inavyofanya kazi."
 
 #: js/ui/kbdA11yDialog.js:46
 msgid ""
 "You just pressed two keys at once, or pressed the Shift key 5 times in a "
 "row. This turns off the Sticky Keys feature, which affects the way your "
 "keyboard works."
-msgstr ""
-"Ulisisitiza funguo mbili mara moja, au ukashinikiza kitufe cha Shift mara 5 "
-"mfululizo. Hii inazima funguo za Stick Keys, zinazoathiri jinsi kibodi yako "
-"inavyofanya kazi."
+msgstr "Ulisisitiza funguo mbili mara moja, au ukashinikiza kitufe cha Shift mara 5 mfululizo. Hii inazima funguo za Stick Keys, zinazoathiri jinsi kibodi yako inavyofanya kazi."
 
 #: js/ui/kbdA11yDialog.js:55
 msgid "Leave On"
@@ -1952,11 +1848,9 @@ msgstr "Hamuna msimbo wa kufungua? Hiyo ni sawa!"
 #: js/ui/paygUnlockDialog.js:160
 #, javascript-format
 msgid ""
-"Talk to your sales representative to purchase a new code. Call or text %s at "
-"%s"
-msgstr ""
-"Ongea na mwakilishi wako wa mauzo kununua code mpya. Wito au maandishi %s "
-"katika %s"
+"Talk to your sales representative to purchase a new code. Call or text %s at"
+" %s"
+msgstr "Ongea na mwakilishi wako wa mauzo kununua code mpya. Wito au maandishi %s katika %s"
 
 #. No overrides present, default to fallback text.
 #: js/ui/paygUnlockDialog.js:164
@@ -1993,10 +1887,9 @@ msgid "Pay As You Go"
 msgstr "Kulipa unapoenda au Unapotumia"
 
 #: js/ui/payg.js:40
-msgid "Enter an unlock code to extend the time before your credit has expired."
-msgstr ""
-"Ingiza msimbo wa kufungua ili kupanua wakati kabla ya mkopo wako kufukia "
-"tamati."
+msgid ""
+"Enter an unlock code to extend the time before your credit has expired."
+msgstr "Ingiza msimbo wa kufungua ili kupanua wakati kabla ya mkopo wako kufukia tamati."
 
 #: js/ui/payg.js:41
 #, javascript-format
@@ -2031,8 +1924,10 @@ msgstr "Muda ulizidi wakati wa kuthibitisha msimbo."
 msgid "Your Pay As You Go Account ID is: %s"
 msgstr ""
 
-#. We don't consider any other error here (and we don't consider DISABLED explicitly,
-#. since that should not happen), but still we need to show something to the user.
+#. We don't consider any other error here (and we don't consider DISABLED
+#. explicitly,
+#. since that should not happen), but still we need to show something to the
+#. user.
 #: js/ui/payg.js:271
 msgid "Unknown error"
 msgstr "Hitilafu isiyojulika."
@@ -2137,7 +2032,6 @@ msgstr "GNOME inahitaji kufunga skrini"
 #. screenshield. The user is probably very upset at this
 #. point, but any application using global grabs is broken
 #. Just tell him to stop using this app
-#.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
 #: js/ui/screenShield.js:295 js/ui/screenShield.js:674
@@ -2206,9 +2100,7 @@ msgstr "Inatumia funguo"
 #, javascript-format
 msgid ""
 "To unlock a volume that uses keyfiles, use the <i>%s</i> utility instead."
-msgstr ""
-"Kufunua kiasi kinachotumia funguo za siri, tumia<i>%s</i>matumizi badala "
-"yake."
+msgstr "Kufunua kiasi kinachotumia funguo za siri, tumia<i>%s</i>matumizi badala yake."
 
 #: js/ui/shellMountOperation.js:306
 msgid "PIM Number"
@@ -2305,9 +2197,7 @@ msgstr "Sasisho otomatiki kwenye"
 msgid ""
 "You have Unlimited Data so automatic updates have been turned on for this "
 "connection."
-msgstr ""
-"Una data isiyo na kikomo kwa hivyo sasisho otomatiki zimewashwa kwa "
-"unganisho hili."
+msgstr "Una data isiyo na kikomo kwa hivyo sasisho otomatiki zimewashwa kwa unganisho hili."
 
 #: js/ui/status/automaticUpdates.js:267
 msgid "Automatic updates are turned off to save your data"
@@ -2317,9 +2207,7 @@ msgstr "Sasisho otomatiki zimezimwa ili kuhifadhi data yako"
 msgid ""
 "You will need to choose which Endless updates to apply when on this "
 "connection."
-msgstr ""
-"Utahitaji kuchagua ni sasisho zipi ambazo hazina mwisho kutumia wakati huu "
-"kwenye unganisho hili."
+msgstr "Utahitaji kuchagua ni sasisho zipi ambazo hazina mwisho kutumia wakati huu kwenye unganisho hili."
 
 #: js/ui/status/automaticUpdates.js:286 js/ui/windowMenu.js:167
 msgid "Close"
@@ -2421,9 +2309,7 @@ msgstr ""
 
 #: js/ui/status/location.js:367
 msgid "Location access can be changed at any time from the privacy settings."
-msgstr ""
-"Ufikiaji wa eneo unaweza kubadilishwa wakati wowote kutoka kwa mipangilio ya "
-"faragha."
+msgstr "Ufikiaji wa eneo unaweza kubadilishwa wakati wowote kutoka kwa mipangilio ya faragha."
 
 #: js/ui/status/network.js:66
 msgid "<unknown>"
@@ -2441,7 +2327,8 @@ msgstr "%sImezimwa"
 msgid "%s Connected"
 msgstr "%sImeunganishwa"
 
-#. Translators: this is for network devices that are physically present but are not
+#. Translators: this is for network devices that are physically present but
+#. are not
 #. under NetworkManager's control (and thus cannot be used in the menu);
 #. %s is a network identifier
 #: js/ui/status/network.js:428
@@ -2461,20 +2348,23 @@ msgstr "%sKukataliwa"
 msgid "%s Connecting"
 msgstr "%sInaunganisha"
 
-#. Translators: this is for network connections that require some kind of key or password; %s is a network identifier
+#. Translators: this is for network connections that require some kind of key
+#. or password; %s is a network identifier
 #: js/ui/status/network.js:441
 #, javascript-format
 msgid "%s Requires Authentication"
 msgstr "%sInahitaji Uthibitishaji"
 
-#. Translators: this is for devices that require some kind of firmware or kernel
+#. Translators: this is for devices that require some kind of firmware or
+#. kernel
 #. module, which is missing; %s is a network identifier
 #: js/ui/status/network.js:449
 #, javascript-format
 msgid "Firmware Missing For %s"
 msgstr "Kukosekana kwa Firmware Kwa%s"
 
-#. Translators: this is for a network device that cannot be activated (for example it
+#. Translators: this is for a network device that cannot be activated (for
+#. example it
 #. is disabled by rfkill, or it has no coverage; %s is a network identifier
 #: js/ui/status/network.js:453
 #, javascript-format
@@ -2576,7 +2466,8 @@ msgstr "%sHaijaunganishwa"
 msgid "connecting…"
 msgstr "inaunganisha…"
 
-#. Translators: this is for network connections that require some kind of key or password
+#. Translators: this is for network connections that require some kind of key
+#. or password
 #: js/ui/status/network.js:1420
 msgid "authentication required"
 msgstr "uthibitishaji unahitajika"
@@ -2753,9 +2644,7 @@ msgstr "Kifaa kisichojulikana cha Thunderbolt"
 msgid ""
 "New device has been detected while you were away. Please disconnect and "
 "reconnect the device to start using it."
-msgstr ""
-"Kifaa kipya kimegunduliwa ukiwa mbali. Tafadhali unganisha na unganishe "
-"kifaa ili uanze kuitumia."
+msgstr "Kifaa kipya kimegunduliwa ukiwa mbali. Tafadhali unganisha na unganishe kifaa ili uanze kuitumia."
 
 #: js/ui/status/thunderbolt.js:329
 msgid "Unauthorized Thunderbolt device"
@@ -2785,28 +2674,24 @@ msgstr "juzuu"
 
 #. Translators: this is for display mirroring i.e. cloning.
 #. * Try to keep it under around 15 characters.
-#.
 #: js/ui/switchMonitor.js:17
 msgid "Mirror"
 msgstr "Kioo"
 
 #. Translators: this is for the desktop spanning displays.
 #. * Try to keep it under around 15 characters.
-#.
 #: js/ui/switchMonitor.js:22
 msgid "Join Displays"
 msgstr "Jiunge na Maonyesho"
 
 #. Translators: this is for using only an external display.
 #. * Try to keep it under around 15 characters.
-#.
 #: js/ui/switchMonitor.js:27
 msgid "External Only"
 msgstr "Nje tu"
 
 #. Translators: this is for using only the laptop display.
 #. * Try to keep it under around 15 characters.
-#.
 #: js/ui/switchMonitor.js:32
 msgid "Built-in Only"
 msgstr "Imejengwa ndani tu"
@@ -2849,7 +2734,6 @@ msgstr ""
 
 #. Translators: this and the following message should be limited in length,
 #. to avoid ellipsizing the labels.
-#.
 #: js/ui/windowManager.js:70
 msgid "Revert Settings"
 msgstr "Rejea mipangilio"
@@ -3001,16 +2885,13 @@ msgstr "Jina"
 msgid ""
 "Description is a single-sentence explanation of what your extension does.\n"
 "Examples are: %s"
-msgstr ""
-"Maelezo ni maelezo ya sentensi moja ya kile ugani wako hufanya.\n"
-"Mifano ni: %s"
+msgstr "Maelezo ni maelezo ya sentensi moja ya kile ugani wako hufanya.\nMifano ni: %s"
 
 #: subprojects/extensions-tool/src/command-create.c:222
 #, c-format
 msgid ""
 "UUID is a globally-unique identifier for your extension.\n"
-"This should be in the format of an email address (clicktofocus@janedoe."
-"example.com)\n"
+"This should be in the format of an email address (clicktofocus@janedoe.example.com)\n"
 msgstr ""
 
 #: subprojects/extensions-tool/src/command-create.c:244
@@ -3352,9 +3233,7 @@ msgstr "Acha matumizi"
 msgid ""
 "If an application doesn't respond for a while, select its name and click "
 "Quit Application."
-msgstr ""
-"Ikiwa programu haitojibu kwa muda, chagua jina lake na ubonyeze Kuacha "
-"Maombi."
+msgstr "Ikiwa programu haitojibu kwa muda, chagua jina lake na ubonyeze Kuacha Maombi."
 
 #: js/ui/forceAppExitDialog.js:87
 msgid "System Monitor"
@@ -3392,7 +3271,6 @@ msgstr "Fungua \"%s\" kwa tovuti"
 
 #. Translators: the first %s is the search engine name, and the second
 #. * is the search string. For instance, 'Search Google for "hello"'.
-#.
 #: js/ui/internetSearch.js:79
 #, javascript-format
 msgid "Search %s for \"%s\""

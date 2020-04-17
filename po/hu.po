@@ -1,25 +1,29 @@
-# Hungarian translation for gnome-shell.
-# Copyright 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020 Free Software Foundation, Inc.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the gnome-shell package.
-#
-# Gabor Kelemen <kelemeng at gnome dot hu>, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016.
-# Lukács Bence <lukacs.bence1 at gmail dot com>, 2012.
-# Balázs Meskó <mesko.balazs at fsf dot hu>, 2014, 2019, 2020.
-# Balázs Úr <ur.balazs at fsf dot hu>, 2012, 2014, 2015, 2016, 2017, 2018, 2019, 2020.
+# 
+# Translators:
+# Balázs Meskó <mesko.balazs at fsf dot hu>, 2014,2019-2020
+# Balázs Meskó <meskobalazs at gmail dot com>, 2014
+# Balázs Úr <ur.balazs at fsf dot hu>, 2012,2014-2020
+# Balázs Úr <urbalazs at gmail dot com>, 2012,2014-2019
+# Gabor Kelemen <kelemeng at gnome dot hu>, 2009-2016
+# Gyula Szabó <gyhun95@gmail.com>, 2018
+# Lukács Bence <lukacs.bence1 at gmail dot com>, 2012
+# Zoltan Hoppar <hopparz@gmail.com>, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: gnome-shell master\n"
+"Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-04-17 17:11+0100\n"
-"PO-Revision-Date: 2020-02-25 07:25+0100\n"
-"Last-Translator: Balázs Úr <ur.balazs at fsf dot hu>\n"
-"Language-Team: Hungarian <gnome-hu-list at gnome dot org>\n"
-"Language: hu\n"
+"PO-Revision-Date: 2020-04-17 16:18+0000\n"
+"Last-Translator: Will Thompson <wjt@endlessm.com>\n"
+"Language-Team: Hungarian (http://www.transifex.com/endless-os/gnome-shell/language/hu/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: hu\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 19.04.3\n"
 
 #: data/50-gnome-shell-system.xml:6
 msgid "System"
@@ -55,17 +59,13 @@ msgstr "Ablakkezelés és alkalmazásindítás"
 
 #: data/org.gnome.shell.gschema.xml.in:15
 msgid "Enable internal tools useful for developers and testers from Alt-F2"
-msgstr ""
-"Fejlesztők és tesztelők számára hasznos belső eszközök engedélyezése az Alt-"
-"F2 ablakból"
+msgstr "Fejlesztők és tesztelők számára hasznos belső eszközök engedélyezése az Alt-F2 ablakból"
 
 #: data/org.gnome.shell.gschema.xml.in:18
 msgid ""
 "Allows access to internal debugging and monitoring tools using the Alt-F2 "
 "dialog."
-msgstr ""
-"Belső hibakereső és megfigyelő eszközök elérésének engedélyezése az Alt-F2 "
-"ablak használatával."
+msgstr "Belső hibakereső és megfigyelő eszközök elérésének engedélyezése az Alt-F2 ablak használatával."
 
 #: data/org.gnome.shell.gschema.xml.in:25
 msgid "UUIDs of extensions to enable"
@@ -73,15 +73,11 @@ msgstr "Engedélyezendő kiterjesztések UUID azonosítói"
 
 #: data/org.gnome.shell.gschema.xml.in:26
 msgid ""
-"GNOME Shell extensions have a UUID property; this key lists extensions which "
-"should be loaded. Any extension that wants to be loaded needs to be in this "
-"list. You can also manipulate this list with the EnableExtension and "
+"GNOME Shell extensions have a UUID property; this key lists extensions which"
+" should be loaded. Any extension that wants to be loaded needs to be in this"
+" list. You can also manipulate this list with the EnableExtension and "
 "DisableExtension D-Bus methods on org.gnome.Shell."
-msgstr ""
-"A GNOME Shell kiterjesztések rendelkeznek egy UUID tulajdonsággal; ez a "
-"kulcs felsorolja a betöltendő kiterjesztéseket. Minden betöltendő "
-"kiterjesztésnek szerepelnie kell a listában. A listát az org.gnome.Shell "
-"EnableExtension és DisableExtension D-Bus metódusaival is manipulálhatja."
+msgstr "A GNOME Shell kiterjesztések rendelkeznek egy UUID tulajdonsággal; ez a kulcs felsorolja a betöltendő kiterjesztéseket. Minden betöltendő kiterjesztésnek szerepelnie kell a listában. A listát az org.gnome.Shell EnableExtension és DisableExtension D-Bus metódusaival is manipulálhatja."
 
 #: data/org.gnome.shell.gschema.xml.in:35
 msgid "UUIDs of extensions to force disabling"
@@ -89,18 +85,12 @@ msgstr "A kényszerítetten letiltandó kiterjesztések UUID azonosítói"
 
 #: data/org.gnome.shell.gschema.xml.in:36
 msgid ""
-"GNOME Shell extensions have a UUID property; this key lists extensions which "
-"should be disabled, even if loaded as part of the current mode. You can also "
-"manipulate this list with the EnableExtension and DisableExtension D-Bus "
-"methods on org.gnome.Shell. This key takes precedence over the “enabled-"
-"extensions” setting."
-msgstr ""
-"A GNOME Shell kiterjesztések rendelkeznek egy UUID tulajdonsággal; ez a "
-"kulcs felsorolja a letiltandó kiterjesztéseket. Ezek akkor is le lesznek "
-"tiltva, ha a jelenlegi mód részeként betöltésre kerültek. A listát az org."
-"gnome.Shell EnableExtension és DisableExtension D-Bus metódusaival is "
-"manipulálhatja. Ez a kulcs elsőbbséget élvez az „enabled-extensions” "
-"beállítással szemben."
+"GNOME Shell extensions have a UUID property; this key lists extensions which"
+" should be disabled, even if loaded as part of the current mode. You can "
+"also manipulate this list with the EnableExtension and DisableExtension "
+"D-Bus methods on org.gnome.Shell. This key takes precedence over the "
+"“enabled-extensions” setting."
+msgstr "A GNOME Shell kiterjesztések rendelkeznek egy UUID tulajdonsággal; ez a kulcs felsorolja a letiltandó kiterjesztéseket. Ezek akkor is le lesznek tiltva, ha a jelenlegi mód részeként betöltésre kerültek. A listát az org.gnome.Shell EnableExtension és DisableExtension D-Bus metódusaival is manipulálhatja. Ez a kulcs elsőbbséget élvez az „enabled-extensions” beállítással szemben."
 
 #: data/org.gnome.shell.gschema.xml.in:46
 msgid "Disable user extensions"
@@ -110,9 +100,7 @@ msgstr "Felhasználói kiterjesztések letiltása"
 msgid ""
 "Disable all extensions the user has enabled without affecting the “enabled-"
 "extension” setting."
-msgstr ""
-"Minden olyan kiterjesztés letiltása, amelyet a felhasználó az „enabled-"
-"extension” beállítást nem érintve engedélyezett."
+msgstr "Minden olyan kiterjesztés letiltása, amelyet a felhasználó az „enabled-extension” beállítást nem érintve engedélyezett."
 
 #: data/org.gnome.shell.gschema.xml.in:54
 msgid "Disables the validation of extension version compatibility"
@@ -123,11 +111,7 @@ msgid ""
 "GNOME Shell will only load extensions that claim to support the current "
 "running version. Enabling this option will disable this check and try to "
 "load all extensions regardless of the versions they claim to support."
-msgstr ""
-"A GNOME Shell csak azon kiterjesztéseket tölti be, amelyek állítják, hogy "
-"támogatják az éppen futó verziót. Ezt a lehetőséget bekapcsolva ez az "
-"ellenőrzés kikapcsolható, és az összes kiterjesztés betöltésére kísérletet "
-"tesz, függetlenül attól, hogy melyik verziót támogatják."
+msgstr "A GNOME Shell csak azon kiterjesztéseket tölti be, amelyek állítják, hogy támogatják az éppen futó verziót. Ezt a lehetőséget bekapcsolva ez az ellenőrzés kikapcsolható, és az összes kiterjesztés betöltésére kísérletet tesz, függetlenül attól, hogy melyik verziót támogatják."
 
 #: data/org.gnome.shell.gschema.xml.in:63
 msgid "List of desktop file IDs for favorite applications"
@@ -135,11 +119,9 @@ msgstr "A kedvenc alkalmazások asztalifájl-azonosítóinak listája"
 
 #: data/org.gnome.shell.gschema.xml.in:64
 msgid ""
-"The applications corresponding to these identifiers will be displayed in the "
-"favorites area."
-msgstr ""
-"Az itt felsorolt azonosítóknak megfelelő alkalmazások jelennek meg a "
-"kedvencek területen."
+"The applications corresponding to these identifiers will be displayed in the"
+" favorites area."
+msgstr "Az itt felsorolt azonosítóknak megfelelő alkalmazások jelennek meg a kedvencek területen."
 
 #: data/org.gnome.shell.gschema.xml.in:71
 msgid "App Picker View"
@@ -153,7 +135,8 @@ msgstr "Az aktuálisan kiválasztott nézet indexe az alkalmazás-választóban.
 msgid "History for command (Alt-F2) dialog"
 msgstr "A parancsablak (Alt-F2) előzményei"
 
-#. Translators: looking glass is a debugger and inspector tool, see https://wiki.gnome.org/Projects/GnomeShell/LookingGlass
+#. Translators: looking glass is a debugger and inspector tool, see
+#. https://wiki.gnome.org/Projects/GnomeShell/LookingGlass
 #: data/org.gnome.shell.gschema.xml.in:83
 msgid "History for the looking glass dialog"
 msgstr "A távcső ablak előzményei"
@@ -164,17 +147,14 @@ msgstr "Mindig jelenjen meg a „Kijelentkezés” menüelem a felhasználói me
 
 #: data/org.gnome.shell.gschema.xml.in:88
 msgid ""
-"This key overrides the automatic hiding of the “Log out” menu item in single-"
-"user, single-session situations."
-msgstr ""
-"Ez a kulcs felülbírálja a „Kijelentkezés” menüelem automatikus elrejtését "
-"egyfelhasználós, egyedüli munkamenet esetén."
+"This key overrides the automatic hiding of the “Log out” menu item in "
+"single-user, single-session situations."
+msgstr "Ez a kulcs felülbírálja a „Kijelentkezés” menüelem automatikus elrejtését egyfelhasználós, egyedüli munkamenet esetén."
 
 #: data/org.gnome.shell.gschema.xml.in:95
 msgid ""
 "Whether to remember password for mounting encrypted or remote filesystems"
-msgstr ""
-"Megjegyezze-e a jelszót a titkosított vagy távoli fájlrendszerek csatolásához"
+msgstr "Megjegyezze-e a jelszót a titkosított vagy távoli fájlrendszerek csatolásához"
 
 #: data/org.gnome.shell.gschema.xml.in:96
 msgid ""
@@ -182,11 +162,7 @@ msgid ""
 "filesystem is mounted. If the password can be saved for future use a "
 "“Remember Password” checkbox will be present. This key sets the default "
 "state of the checkbox."
-msgstr ""
-"A shell jelszót fog kérni titkosított eszköz vagy távoli fájlrendszer "
-"csatolásakor. Ha a jelszó elmenthető későbbi használatra, akkor megjelenik "
-"egy „Jelszó megjegyzése” jelölőmező. Ez a kulcs a jelölőnégyzet "
-"alapértelmezett állapotát állítja be."
+msgstr "A shell jelszót fog kérni titkosított eszköz vagy távoli fájlrendszer csatolásakor. Ha a jelszó elmenthető későbbi használatra, akkor megjelenik egy „Jelszó megjegyzése” jelölőmező. Ez a kulcs a jelölőnégyzet alapértelmezett állapotát állítja be."
 
 #: data/org.gnome.shell.gschema.xml.in:105
 msgid ""
@@ -199,11 +175,7 @@ msgid ""
 "powered, or if there were devices set up associated with the default "
 "adapter. This will be reset if the default adapter is ever seen not to have "
 "devices associated to it."
-msgstr ""
-"A shell csak akkor fogja megjelenítem a Bluetooth menüelemet, ha az adapter "
-"be van kapcsolva, vagy ha voltak az alapértelmezett adapterhez rendelt "
-"eszközök. Ez visszaállításra kerül, ha az alapértelmezett adapter nem "
-"látható, vagy nincsenek hozzárendelt eszközök."
+msgstr "A shell csak akkor fogja megjelenítem a Bluetooth menüelemet, ha az adapter be van kapcsolva, vagy ha voltak az alapértelmezett adapterhez rendelt eszközök. Ez visszaállításra kerül, ha az alapértelmezett adapter nem látható, vagy nincsenek hozzárendelt eszközök."
 
 #: data/org.gnome.shell.gschema.xml.in:115
 msgid "Enable introspection API"
@@ -213,9 +185,7 @@ msgstr "Önelemző API engedélyezése"
 msgid ""
 "Enables a D-Bus API that allows to introspect the application state of the "
 "shell."
-msgstr ""
-"Egy olyan D-Bus API-t engedélyez, amely lehetővé teszi a parancsértelmező "
-"alkalmazás állapotának önellenőrzését."
+msgstr "Egy olyan D-Bus API-t engedélyez, amely lehetővé teszi a parancsértelmező alkalmazás állapotának önellenőrzését."
 
 #: data/org.gnome.shell.gschema.xml.in:126
 msgid "Enables the hot corner for the window picker"
@@ -234,8 +204,8 @@ msgstr ""
 #: data/org.gnome.shell.gschema.xml.in:139
 msgid ""
 "Default position of the hot corner is in a right corner. Set false to move "
-"the hot corner to a left corner. The position is not affected by the RTL vs. "
-"LTR text direction."
+"the hot corner to a left corner. The position is not affected by the RTL vs."
+" LTR text direction."
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:147
@@ -255,8 +225,8 @@ msgstr ""
 #: data/org.gnome.shell.gschema.xml.in:160
 msgid ""
 "Number of pixels in one dimension of the square target for the hot corner. "
-"Default is for a single pixel in the very corner. For some virtual machines, "
-"this value may need to be set larger than the default."
+"Default is for a single pixel in the very corner. For some virtual machines,"
+" this value may need to be set larger than the default."
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:170
@@ -266,8 +236,8 @@ msgstr ""
 #: data/org.gnome.shell.gschema.xml.in:173
 msgid ""
 "Makes window management more like standard Gnome. Hides application splash "
-"screens, prevents applications from being forced to open maximized, and does "
-"not automatically switch to the app selector when a window is minimized."
+"screens, prevents applications from being forced to open maximized, and does"
+" not automatically switch to the app selector when a window is minimized."
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:182
@@ -277,10 +247,11 @@ msgstr ""
 #: data/org.gnome.shell.gschema.xml.in:183
 msgid ""
 "This key controls whether to show the \"Forgot Password?\" button on the "
-"login screen. 'default' tells GNOME Shell to use the vendor default setting. "
-"'enable' and 'disable' can be used to explicitly enable or disable the reset "
-"button, respectively. Note that it only makes sense to set this key for the "
-"Debian-gdm user; changing it for your own user account will have no effect."
+"login screen. 'default' tells GNOME Shell to use the vendor default setting."
+" 'enable' and 'disable' can be used to explicitly enable or disable the "
+"reset button, respectively. Note that it only makes sense to set this key "
+"for the Debian-gdm user; changing it for your own user account will have no "
+"effect."
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:194
@@ -319,9 +290,7 @@ msgstr "Billentyűtársítás az „Alkalmazások megjelenítése” nézet megn
 #: data/org.gnome.shell.gschema.xml.in:223
 msgid ""
 "Keybinding to open the “Show Applications” view of the Activities Overview."
-msgstr ""
-"Billentyűtársítás a Tevékenységek áttekintés „Alkalmazások megjelenítése” "
-"nézetének megnyitásához."
+msgstr "Billentyűtársítás a Tevékenységek áttekintés „Alkalmazások megjelenítése” nézetének megnyitásához."
 
 #: data/org.gnome.shell.gschema.xml.in:230
 msgid "Keybinding to open the overview"
@@ -384,14 +353,12 @@ msgid "Switch to application 9"
 msgstr "Váltás a 9. alkalmazásra"
 
 #: data/org.gnome.shell.gschema.xml.in:290
-#, fuzzy
 msgid "Keybinding that shows the force app exit dialog"
-msgstr "Billentyűtársítás az alkalmazásmenü megnyitásához"
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:295
-#, fuzzy
 msgid "Keybinding to activate the first app in the icon bar."
-msgstr "Billentyűtársítás az alkalmazásmenü megnyitásához."
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:296
 msgid ""
@@ -400,9 +367,8 @@ msgid ""
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:302
-#, fuzzy
 msgid "Keybinding to activate the second app in the icon bar."
-msgstr "Billentyűtársítás az alkalmazásmenü megnyitásához."
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:303
 msgid ""
@@ -411,9 +377,8 @@ msgid ""
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:309
-#, fuzzy
 msgid "Keybinding to activate the third app in the icon bar."
-msgstr "Billentyűtársítás az alkalmazásmenü megnyitásához."
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:310
 msgid ""
@@ -422,9 +387,8 @@ msgid ""
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:316
-#, fuzzy
 msgid "Keybinding to activate the fourth app in the icon bar."
-msgstr "Billentyűtársítás az alkalmazásmenü megnyitásához."
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:317
 msgid ""
@@ -433,9 +397,8 @@ msgid ""
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:323
-#, fuzzy
 msgid "Keybinding to activate the fifth app in the icon bar."
-msgstr "Billentyűtársítás az alkalmazásmenü megnyitásához."
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:324
 msgid ""
@@ -444,9 +407,8 @@ msgid ""
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:330
-#, fuzzy
 msgid "Keybinding to activate the sixth app in the icon bar."
-msgstr "Billentyűtársítás az alkalmazásmenü megnyitásához."
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:331
 msgid ""
@@ -455,9 +417,8 @@ msgid ""
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:337
-#, fuzzy
 msgid "Keybinding to activate the seventh app in the icon bar."
-msgstr "Billentyűtársítás az alkalmazásmenü megnyitásához."
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:338
 msgid ""
@@ -466,9 +427,8 @@ msgid ""
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:344
-#, fuzzy
 msgid "Keybinding to activate the eighth app in the icon bar."
-msgstr "Billentyűtársítás az alkalmazásmenü megnyitásához."
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:345
 msgid ""
@@ -477,9 +437,8 @@ msgid ""
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:351
-#, fuzzy
 msgid "Keybinding to activate the last app in the icon bar."
-msgstr "Billentyűtársítás az alkalmazásmenü megnyitásához."
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:352
 msgid ""
@@ -496,10 +455,7 @@ msgstr "Váltó korlátozása a jelenlegi munkaterületre."
 msgid ""
 "If true, only applications that have windows on the current workspace are "
 "shown in the switcher. Otherwise, all applications are included."
-msgstr ""
-"Ha igaz, akkor csak azok az alkalmazások lesznek megjelenítve a váltón, "
-"amelyek ablakokkal rendelkeznek az aktuális munkaterületen. Egyébként minden "
-"alkalmazás fel van véve."
+msgstr "Ha igaz, akkor csak azok az alkalmazások lesznek megjelenítve a váltón, amelyek ablakokkal rendelkeznek az aktuális munkaterületen. Egyébként minden alkalmazás fel van véve."
 
 #: data/org.gnome.shell.gschema.xml.in:381
 msgid "The application icon mode."
@@ -508,20 +464,15 @@ msgstr "Az alkalmazás ikon mód."
 #: data/org.gnome.shell.gschema.xml.in:382
 msgid ""
 "Configures how the windows are shown in the switcher. Valid possibilities "
-"are “thumbnail-only” (shows a thumbnail of the window), “app-icon-"
-"only” (shows only the application icon) or “both”."
-msgstr ""
-"Az ablakok megjelenésének beállítása a váltóban. Lehetséges értékek: "
-"„thumbnail-only” (az ablak bélyegképének megjelenítése), „app-icon-only” (az "
-"alkalmazás ikonjának megjelenítése) vagy „both” (mindkettő)."
+"are “thumbnail-only” (shows a thumbnail of the window), “app-icon-only” "
+"(shows only the application icon) or “both”."
+msgstr "Az ablakok megjelenésének beállítása a váltóban. Lehetséges értékek: „thumbnail-only” (az ablak bélyegképének megjelenítése), „app-icon-only” (az alkalmazás ikonjának megjelenítése) vagy „both” (mindkettő)."
 
 #: data/org.gnome.shell.gschema.xml.in:391
 msgid ""
 "If true, only windows from the current workspace are shown in the switcher. "
 "Otherwise, all windows are included."
-msgstr ""
-"Ha igaz, akkor csak az aktuális munkaterületről származó ablakok lesznek "
-"megjelenítve a váltón. Egyébként minden ablak fel lesz véve."
+msgstr "Ha igaz, akkor csak az aktuális munkaterületről származó ablakok lesznek megjelenítve a váltón. Egyébként minden ablak fel lesz véve."
 
 #: data/org.gnome.shell.gschema.xml.in:401
 msgid "Locations"
@@ -558,9 +509,7 @@ msgstr "Kizárólagos párbeszédablak csatolása a szülő ablakhoz"
 #: data/org.gnome.shell.gschema.xml.in:467
 msgid ""
 "This key overrides the key in org.gnome.mutter when running GNOME Shell."
-msgstr ""
-"Ez a kulcs felülbírálja az org.gnome.mutter helyen lévő kulcsot, amikor a "
-"GNOME Shell fut."
+msgstr "Ez a kulcs felülbírálja az org.gnome.mutter helyen lévő kulcsot, amikor a GNOME Shell fut."
 
 #: data/org.gnome.shell.gschema.xml.in:442
 msgid "Enable edge tiling when dropping windows on screen edges"
@@ -576,8 +525,7 @@ msgstr "Munkaterületek csak az elsődleges monitoron"
 
 #: data/org.gnome.shell.gschema.xml.in:466
 msgid "Delay focus changes in mouse mode until the pointer stops moving"
-msgstr ""
-"Fókuszváltozások késleltetése a mutató mozgásának megállásáig egér módban"
+msgstr "Fókuszváltozások késleltetése a mutató mozgásának megállásáig egér módban"
 
 #: data/org.gnome.Shell.PortalHelper.desktop.in.in:3
 msgid "Network Login"
@@ -593,9 +541,7 @@ msgid ""
 "We’re very sorry, but there’s been a problem: the settings for this "
 "extension can’t be displayed. We recommend that you report the issue to the "
 "extension authors."
-msgstr ""
-"Nagyon sajnáljuk, de probléma történt: a kiterjesztés beállításait nem lehet "
-"megjeleníteni. Azt ajánljuk, hogy jelentse a hibát a kiterjesztés szerzőinek."
+msgstr "Nagyon sajnáljuk, de probléma történt: a kiterjesztés beállításait nem lehet megjeleníteni. Azt ajánljuk, hogy jelentse a hibát a kiterjesztés szerzőinek."
 
 #: js/dbusServices/extensions/ui/extension-prefs-dialog.ui:82
 msgid "Technical Details"
@@ -640,9 +586,7 @@ msgstr "Eltávolítja ezt: „%s”?"
 msgid ""
 "If you remove the extension, you need to return to download it if you want "
 "to enable it again"
-msgstr ""
-"Ha eltávolítja a kiterjesztést, akkor vissza kell térnie a letöltéshez, ha "
-"újra engedélyezni akarja."
+msgstr "Ha eltávolítja a kiterjesztést, akkor vissza kell térnie a letöltéshez, ha újra engedélyezni akarja."
 
 #: js/extensionPrefs/js/main.js:148 js/gdm/authPrompt.js:189
 #: js/ui/audioDeviceSelection.js:57 js/ui/components/networkAgent.js:115
@@ -659,9 +603,7 @@ msgstr "Eltávolítás"
 
 #: js/extensionPrefs/js/main.js:181
 msgid "translator-credits"
-msgstr ""
-"Meskó Balázs <mesko dot balazs at fsf dot hu>\n"
-"Úr Balázs <ur dot balazs at fsf dot hu>"
+msgstr "Meskó Balázs <mesko dot balazs at fsf dot hu>\nÚr Balázs <ur dot balazs at fsf dot hu>"
 
 #: js/extensionPrefs/js/main.js:316
 #, javascript-format
@@ -703,11 +645,9 @@ msgstr "A kiterjesztések névjegye"
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:27
 msgid ""
-"To find and add extensions, visit <a href=\"https://extensions.gnome.org"
-"\">extensions.gnome.org</a>."
-msgstr ""
-"A kiterjesztések megtalálásához és hozzáadásához keresse fel az <a href="
-"\"https://extensions.gnome.org\">extensions.gnome.org</a> oldalt."
+"To find and add extensions, visit <a "
+"href=\"https://extensions.gnome.org\">extensions.gnome.org</a>."
+msgstr "A kiterjesztések megtalálásához és hozzáadásához keresse fel az <a href=\"https://extensions.gnome.org\">extensions.gnome.org</a> oldalt."
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:35
 msgid "Warning"
@@ -718,10 +658,7 @@ msgid ""
 "Extensions can cause system issues, including performance problems. If you "
 "encounter problems with your system, it is recommended to disable all "
 "extensions."
-msgstr ""
-"A kiterjesztések rendszerproblémákat, köztük teljesítménybeli problémákat is "
-"okozhatnak. Ha problémákat tapasztal a rendszerével, akkor azt javasoljuk, "
-"hogy tiltsa le az összes kiterjesztést."
+msgstr "A kiterjesztések rendszerproblémákat, köztük teljesítménybeli problémákat is okozhatnak. Ha problémákat tapasztal a rendszerével, akkor azt javasoljuk, hogy tiltsa le az összes kiterjesztést."
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:134
 msgid "Manually Installed"
@@ -739,24 +676,19 @@ msgstr "Nincsenek telepített kiterjesztések"
 msgid ""
 "We’re very sorry, but it was not possible to get the list of installed "
 "extensions. Make sure you are logged into GNOME and try again."
-msgstr ""
-"Sajnáljuk, de nem volt lehetséges lekérni a telepített kiterjesztések "
-"listáját. Győződjön meg róla, hogy bejelentkezett a GNOME-ba, és próbálja "
-"meg újra."
+msgstr "Sajnáljuk, de nem volt lehetséges lekérni a telepített kiterjesztések listáját. Győződjön meg róla, hogy bejelentkezett a GNOME-ba, és próbálja meg újra."
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:288
 msgid "Log Out…"
 msgstr "Kijelentkezés…"
 
 #: js/gdm/authPrompt.js:131
-#, fuzzy
 msgid "Show password hint"
-msgstr "VPN jelszó"
+msgstr ""
 
 #: js/gdm/authPrompt.js:148
-#, fuzzy
 msgid "Forgot password?"
-msgstr "VPN jelszó"
+msgstr ""
 
 #. Cisco LEAP
 #: js/gdm/authPrompt.js:303 js/ui/components/networkAgent.js:363
@@ -767,13 +699,14 @@ msgstr "VPN jelszó"
 msgid "Password"
 msgstr "Jelszó"
 
-#. Translators: During a password reset, prompt for the "secret code" provided by customer support.
+#. Translators: During a password reset, prompt for the "secret code" provided
+#. by customer support.
 #: js/gdm/authPrompt.js:680
-#, fuzzy
 msgid "Enter unlock code"
-msgstr "Nem lehet feloldani a kötetet"
+msgstr ""
 
-#. Translators: Password reset. The first %s is a verification code and the second is an email.
+#. Translators: Password reset. The first %s is a verification code and the
+#. second is an email.
 #: js/gdm/authPrompt.js:683
 #, javascript-format
 msgid ""
@@ -832,7 +765,8 @@ msgctxt "search-result"
 msgid "Power Off"
 msgstr "Kikapcsolás"
 
-#. Translators: A list of keywords that match the power-off action, separated by semicolons
+#. Translators: A list of keywords that match the power-off action, separated
+#. by semicolons
 #: js/misc/systemActions.js:92
 msgid "power off;shutdown;reboot;restart;halt;stop"
 msgstr "kikapcsolás;leállítás;újraindítás;megállítás"
@@ -843,7 +777,8 @@ msgctxt "search-result"
 msgid "Lock Screen"
 msgstr "Zárolási képernyő"
 
-#. Translators: A list of keywords that match the lock screen action, separated by semicolons
+#. Translators: A list of keywords that match the lock screen action,
+#. separated by semicolons
 #: js/misc/systemActions.js:100
 msgid "lock screen"
 msgstr "képernyő zárolása;képernyő;zárolás"
@@ -854,7 +789,8 @@ msgctxt "search-result"
 msgid "Log Out"
 msgstr "Kijelentkezés"
 
-#. Translators: A list of keywords that match the logout action, separated by semicolons
+#. Translators: A list of keywords that match the logout action, separated by
+#. semicolons
 #: js/misc/systemActions.js:108
 msgid "logout;log out;sign off"
 msgstr "kijelentkezés;kilépés"
@@ -865,7 +801,8 @@ msgctxt "search-result"
 msgid "Suspend"
 msgstr "Felfüggesztés"
 
-#. Translators: A list of keywords that match the suspend action, separated by semicolons
+#. Translators: A list of keywords that match the suspend action, separated by
+#. semicolons
 #: js/misc/systemActions.js:116
 msgid "suspend;sleep"
 msgstr "felfüggesztés;alvás"
@@ -876,12 +813,14 @@ msgctxt "search-result"
 msgid "Switch User"
 msgstr "Felhasználóváltás"
 
-#. Translators: A list of keywords that match the switch user action, separated by semicolons
+#. Translators: A list of keywords that match the switch user action,
+#. separated by semicolons
 #: js/misc/systemActions.js:124
 msgid "switch user"
 msgstr "felhasználóváltás"
 
-#. Translators: A list of keywords that match the lock orientation action, separated by semicolons
+#. Translators: A list of keywords that match the lock orientation action,
+#. separated by semicolons
 #: js/misc/systemActions.js:131
 msgid "lock orientation;unlock orientation;screen;rotation"
 msgstr "tájolás zárolása;tájolás feloldása;képernyő;tájolás;forgatás"
@@ -1033,10 +972,8 @@ msgstr "%B %-d. %H:%M"
 msgid "%B %-d %Y, %l∶%M %p"
 msgstr "%Y. %B %-d. %H:%M"
 
-#.
 #. * Translators: this is the name of the search engine that shows in the
 #. * Shell's desktop search entry.
-#.
 #: js/misc/util.js:573
 msgid "Google"
 msgstr "Google"
@@ -1050,10 +987,7 @@ msgstr "Hotspot bejelentkezés"
 msgid ""
 "Your connection to this hotspot login is not secure. Passwords or other "
 "information you enter on this page can be viewed by people nearby."
-msgstr ""
-"A kapcsolata ehhez a hotspot bejelentkezéshez nem biztonságos. Az ezen az "
-"oldalon megadott jelszavakat és más információkat a közelben lévő emberek is "
-"láthatják."
+msgstr "A kapcsolata ehhez a hotspot bejelentkezéshez nem biztonságos. Az ezen az oldalon megadott jelszavakat és más információkat a közelben lévő emberek is láthatják."
 
 #. No support for non-modal system dialogs, so ignore the option
 #. let modal = options['modal'] || true;
@@ -1115,7 +1049,8 @@ msgstr "Alkalmazás hozzáadása"
 msgid "Add Website"
 msgstr "Weboldal hozzáadása"
 
-#. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday).
+#. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0"
+#. (Sunday) "6" (Saturday) "06" (Sunday and Saturday).
 #: js/ui/calendar.js:41
 msgctxt "calendar-no-work"
 msgid "06"
@@ -1125,7 +1060,6 @@ msgstr "06"
 #. *
 #. * NOTE: These grid abbreviations are always shown together
 #. * and in order, e.g. "S M T W T F S".
-#.
 #: js/ui/calendar.js:70
 msgctxt "grid sunday"
 msgid "S"
@@ -1172,7 +1106,6 @@ msgstr "Sz"
 #. * standalone, when this is a month of the current year.
 #. * "%OB" is the new format specifier introduced in glibc 2.27,
 #. * in most cases you should not change it.
-#.
 #: js/ui/calendar.js:371
 msgid "%OB"
 msgstr "%OB"
@@ -1185,7 +1118,6 @@ msgstr "%OB"
 #. * "%OB" is the new format specifier introduced in glibc 2.27,
 #. * in most cases you should not use the old "%B" here unless you
 #. * absolutely know what you are doing.
-#.
 #: js/ui/calendar.js:381
 msgid "%OB %Y"
 msgstr "%Y. %OB"
@@ -1210,19 +1142,20 @@ msgstr "%V. hét"
 
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
-#.
 #: js/ui/calendar.js:730
 msgctxt "event list time"
 msgid "All Day"
 msgstr "Egész nap"
 
-#. Translators: Shown on calendar heading when selected day occurs on current year
+#. Translators: Shown on calendar heading when selected day occurs on current
+#. year
 #: js/ui/calendar.js:868
 msgctxt "calendar heading"
 msgid "%A, %B %-d"
 msgstr "%B %-d. %A"
 
-#. Translators: Shown on calendar heading when selected day occurs on different year
+#. Translators: Shown on calendar heading when selected day occurs on
+#. different year
 #: js/ui/calendar.js:871
 msgctxt "calendar heading"
 msgid "%A, %B %-d, %Y"
@@ -1254,9 +1187,7 @@ msgstr "„%s” nem válaszol."
 msgid ""
 "You may choose to wait a short while for it to continue or force the "
 "application to quit entirely."
-msgstr ""
-"Várhat egy kicsit a folytatódására, vagy kikényszerítheti az alkalmazás "
-"teljes kilépését."
+msgstr "Várhat egy kicsit a folytatódására, vagy kikényszerítheti az alkalmazás teljes kilépését."
 
 #: js/ui/closeDialog.js:70
 msgid "Force Quit"
@@ -1379,9 +1310,7 @@ msgstr "Hálózatkezelő"
 msgid ""
 "Passwords or encryption keys are required to access the wireless network "
 "“%s”."
-msgstr ""
-"Jelszavak vagy titkosítási kulcsok szükségesek a(z) „%s” vezeték nélküli "
-"hálózat eléréséhez."
+msgstr "Jelszavak vagy titkosítási kulcsok szükségesek a(z) „%s” vezeték nélküli hálózat eléréséhez."
 
 #: js/ui/components/networkAgent.js:871
 msgid "VPN password"
@@ -1407,7 +1336,8 @@ msgstr "Hitelesítés"
 msgid "Sorry, that didn’t work. Please try again."
 msgstr "Elnézést, ez nem sikerült. Próbálja újra."
 
-#. Translators: this is the other person changing their old IM name to their new
+#. Translators: this is the other person changing their old IM name to their
+#. new
 #. IM name.
 #: js/ui/components/telepathyClient.js:823
 #, javascript-format
@@ -1426,7 +1356,6 @@ msgstr "Alkalmazások megjelenítése"
 msgid "Remove from Favorites"
 msgstr "Eltávolítás a Kedvencek közül"
 
-# FIXME - valami jobbat
 #. Translators: this is the name of the dock/favorites area on
 #. the left of the overview
 #: js/ui/dash.js:394
@@ -1437,7 +1366,6 @@ msgstr "Dash"
 #. * shown - it is shown just below the time in the top bar (e.g.,
 #. * "Tue 9:29 AM").  The string itself should become a full date, e.g.,
 #. * "February 17 2015".
-#.
 #: js/ui/dateMenu.js:75
 msgid "%B %-d %Y"
 msgstr "%Y. %B %-d."
@@ -1445,7 +1373,6 @@ msgstr "%Y. %B %-d."
 #. Translators: This is the accessible name of the date button shown
 #. * below the time in the shell; it should combine the weekday and the
 #. * date, e.g. "Tuesday February 17 2015".
-#.
 #: js/ui/dateMenu.js:82
 msgid "%A %B %e %Y"
 msgstr "%Y. %B %-e. %A"
@@ -1559,15 +1486,12 @@ msgstr "Újraindítás és frissítések telepítése"
 
 #: js/ui/endSessionDialog.js:93
 #, javascript-format
-msgid "The system will automatically restart and install updates in %d second."
+msgid ""
+"The system will automatically restart and install updates in %d second."
 msgid_plural ""
 "The system will automatically restart and install updates in %d seconds."
-msgstr[0] ""
-"A rendszer %d másodperc múlva automatikusan újraindul és telepíti a "
-"frissítéseket."
-msgstr[1] ""
-"A rendszer %d másodperc múlva automatikusan újraindul és telepíti a "
-"frissítéseket."
+msgstr[0] "A rendszer %d másodperc múlva automatikusan újraindul és telepíti a frissítéseket."
+msgstr[1] "A rendszer %d másodperc múlva automatikusan újraindul és telepíti a frissítéseket."
 
 #: js/ui/endSessionDialog.js:99 js/ui/endSessionDialog.js:118
 msgctxt "button"
@@ -1597,16 +1521,11 @@ msgstr "Újraindítás és frissítések telepítése"
 msgid ""
 "%s %s will be installed after restart. Upgrade installation can take a long "
 "time: ensure that you have backed up and that the computer is plugged in."
-msgstr ""
-"A(z) %s %s újraindítás után lesz telepítve. A frissítések telepítése "
-"eltarthat egy ideig: győződjön meg arról, hogy készített-e biztonsági "
-"mentést, valamint a számítógép be van-e dugva."
+msgstr "A(z) %s %s újraindítás után lesz telepítve. A frissítések telepítése eltarthat egy ideig: győződjön meg arról, hogy készített-e biztonsági mentést, valamint a számítógép be van-e dugva."
 
 #: js/ui/endSessionDialog.js:261
 msgid "Running on battery power: Please plug in before installing updates."
-msgstr ""
-"Akkumulátoros működés: a frissítések telepítése előtt dugja be eszközét a "
-"konnektorba."
+msgstr "Akkumulátoros működés: a frissítések telepítése előtt dugja be eszközét a konnektorba."
 
 #: js/ui/endSessionDialog.js:270
 msgid "Some applications are busy or have unsaved work"
@@ -1650,8 +1569,7 @@ msgstr "Kiterjesztés telepítése"
 #: js/ui/extensionDownloader.js:199
 #, javascript-format
 msgid "Download and install “%s” from extensions.gnome.org?"
-msgstr ""
-"Letölti és telepíti a következőt az extensions.gnome.org webhelyről: „%s”?"
+msgstr "Letölti és telepíti a következőt az extensions.gnome.org webhelyről: „%s”?"
 
 #: js/ui/extensionSystem.js:229
 msgid "Extension Updates Available"
@@ -1699,11 +1617,9 @@ msgstr "Lassú billentyűk ki"
 
 #: js/ui/kbdA11yDialog.js:34
 msgid ""
-"You just held down the Shift key for 8 seconds. This is the shortcut for the "
-"Slow Keys feature, which affects the way your keyboard works."
-msgstr ""
-"Lenyomva tartotta a Shift billentyűt 8 másodpercig. Ez a Lassú billentyűk "
-"szolgáltatás gyorsbillentyűje, ami a billentyűzet működését befolyásolja."
+"You just held down the Shift key for 8 seconds. This is the shortcut for the"
+" Slow Keys feature, which affects the way your keyboard works."
+msgstr "Lenyomva tartotta a Shift billentyűt 8 másodpercig. Ez a Lassú billentyűk szolgáltatás gyorsbillentyűje, ami a billentyűzet működését befolyásolja."
 
 #: js/ui/kbdA11yDialog.js:41
 msgid "Sticky Keys Turned On"
@@ -1717,19 +1633,14 @@ msgstr "Ragadós billentyűk ki"
 msgid ""
 "You just pressed the Shift key 5 times in a row. This is the shortcut for "
 "the Sticky Keys feature, which affects the way your keyboard works."
-msgstr ""
-"Egymás után ötször nyomta meg a Shift billentyűt. Ez a Ragadós billentyűk "
-"szolgáltatás gyorsbillentyűje, ami a billentyűzet viselkedését befolyásolja."
+msgstr "Egymás után ötször nyomta meg a Shift billentyűt. Ez a Ragadós billentyűk szolgáltatás gyorsbillentyűje, ami a billentyűzet viselkedését befolyásolja."
 
 #: js/ui/kbdA11yDialog.js:46
 msgid ""
 "You just pressed two keys at once, or pressed the Shift key 5 times in a "
 "row. This turns off the Sticky Keys feature, which affects the way your "
 "keyboard works."
-msgstr ""
-"Egyszerre két billentyűt nyomott meg, vagy a Shift billentyűt egymás után "
-"ötször. Ez kikapcsolja a Ragadós billentyűk szolgáltatást, ami a "
-"billentyűzet viselkedését befolyásolja."
+msgstr "Egyszerre két billentyűt nyomott meg, vagy a Shift billentyűt egymás után ötször. Ez kikapcsolja a Ragadós billentyűk szolgáltatást, ami a billentyűzet viselkedését befolyásolja."
 
 #: js/ui/kbdA11yDialog.js:55
 msgid "Leave On"
@@ -1812,9 +1723,7 @@ msgstr "Bejelentkezés privilegizált felhasználóként"
 msgid ""
 "Running a session as a privileged user should be avoided for security "
 "reasons. If possible, you should log in as a normal user."
-msgstr ""
-"A privilegizált felhasználóként futtatott munkameneteket biztonsági okokból "
-"érdemes kerülni. Ha lehetséges, jelentkezzen be normál felhasználóként."
+msgstr "A privilegizált felhasználóként futtatott munkameneteket biztonsági okokból érdemes kerülni. Ha lehetséges, jelentkezzen be normál felhasználóként."
 
 #: js/ui/main.js:355
 msgid "Screen Lock disabled"
@@ -1944,8 +1853,8 @@ msgstr ""
 #: js/ui/paygUnlockDialog.js:160
 #, javascript-format
 msgid ""
-"Talk to your sales representative to purchase a new code. Call or text %s at "
-"%s"
+"Talk to your sales representative to purchase a new code. Call or text %s at"
+" %s"
 msgstr ""
 
 #. No overrides present, default to fallback text.
@@ -1959,9 +1868,8 @@ msgid "Pay As You Go Account ID: %s"
 msgstr ""
 
 #: js/ui/paygUnlockDialog.js:198
-#, fuzzy
 msgid "Unlock Machine"
-msgstr "Ablak feloldása"
+msgstr ""
 
 #: js/ui/paygUnlockDialog.js:287 js/ui/shellMountOperation.js:380
 msgid "Unlock"
@@ -1984,7 +1892,8 @@ msgid "Pay As You Go"
 msgstr ""
 
 #: js/ui/payg.js:40
-msgid "Enter an unlock code to extend the time before your credit has expired."
+msgid ""
+"Enter an unlock code to extend the time before your credit has expired."
 msgstr ""
 
 #: js/ui/payg.js:41
@@ -2004,9 +1913,8 @@ msgid "Too many attempts. Try again in a few seconds."
 msgstr ""
 
 #: js/ui/payg.js:261
-#, fuzzy
 msgid "Invalid code. Please try again."
-msgstr "Elnézést, ez nem sikerült. Próbálja újra."
+msgstr ""
 
 #: js/ui/payg.js:263
 msgid "Code already used. Please enter a new code."
@@ -2021,8 +1929,10 @@ msgstr ""
 msgid "Your Pay As You Go Account ID is: %s"
 msgstr ""
 
-#. We don't consider any other error here (and we don't consider DISABLED explicitly,
-#. since that should not happen), but still we need to show something to the user.
+#. We don't consider any other error here (and we don't consider DISABLED
+#. explicitly,
+#. since that should not happen), but still we need to show something to the
+#. user.
 #: js/ui/payg.js:271
 msgid "Unknown error"
 msgstr "Ismeretlen hiba"
@@ -2039,65 +1949,64 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: js/ui/payg.js:610 js/ui/payg.js:620
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s minute"
 msgid_plural "%s minutes"
-msgstr[0] "%d perce"
-msgstr[1] "%d perce"
+msgstr[0] ""
+msgstr[1] ""
 
 #: js/ui/payg.js:614 js/ui/payg.js:631
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s hour"
 msgid_plural "%s hours"
-msgstr[0] "%d órája"
-msgstr[1] "%d órája"
+msgstr[0] ""
+msgstr[1] ""
 
 #: js/ui/payg.js:625
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s day"
 msgid_plural "%s days"
-msgstr[0] "%d napja"
-msgstr[1] "%d napja"
+msgstr[0] ""
+msgstr[1] ""
 
 #: js/ui/payg.js:641
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s second has been added to your Pay As You Go credit."
 msgid_plural "%s seconds have been added to your Pay As You Go credit."
-msgstr[0] "%s felvéve a Kedvencek közé."
-msgstr[1] "%s felvéve a Kedvencek közé."
+msgstr[0] ""
+msgstr[1] ""
 
 #: js/ui/payg.js:648
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s minute has been added to your Pay As You Go credit."
 msgid_plural "%s minutes have been added to your Pay As You Go credit."
-msgstr[0] "%s felvéve a Kedvencek közé."
-msgstr[1] "%s felvéve a Kedvencek közé."
+msgstr[0] ""
+msgstr[1] ""
 
 #: js/ui/payg.js:655
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s hour has been added to your Pay As You Go credit."
 msgid_plural "%s hours have been added to your Pay As You Go credit."
-msgstr[0] "%s felvéve a Kedvencek közé."
-msgstr[1] "%s felvéve a Kedvencek közé."
+msgstr[0] ""
+msgstr[1] ""
 
 #: js/ui/payg.js:662
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s day has been added to your Pay As You Go credit."
 msgid_plural "%s days have been added to your Pay As You Go credit."
-msgstr[0] "%s felvéve a Kedvencek közé."
-msgstr[1] "%s felvéve a Kedvencek közé."
+msgstr[0] ""
+msgstr[1] ""
 
 #: js/ui/payg.js:669
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s month has been added to your Pay As You Go credit."
 msgid_plural "%s months have been added to your Pay As You Go credit."
-msgstr[0] "%s felvéve a Kedvencek közé."
-msgstr[1] "%s felvéve a Kedvencek közé."
+msgstr[0] ""
+msgstr[1] ""
 
 #: js/ui/payg.js:676
-#, fuzzy
 msgid "1 year has been added to your Pay As You Go credit."
-msgstr "%s felvéve a Kedvencek közé."
+msgstr ""
 
 #. Unlock permanently message
 #: js/ui/payg.js:679
@@ -2128,7 +2037,6 @@ msgstr "A GNOME-nak zárolnia kell a képernyőt"
 #. screenshield. The user is probably very upset at this
 #. point, but any application using global grabs is broken
 #. Just tell him to stop using this app
-#.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
 #: js/ui/screenShield.js:295 js/ui/screenShield.js:674
@@ -2197,9 +2105,7 @@ msgstr "Kulcsfájlokat használ"
 #, javascript-format
 msgid ""
 "To unlock a volume that uses keyfiles, use the <i>%s</i> utility instead."
-msgstr ""
-"A kulcsfájlokat használó kötetek feloldásához használja inkább a(z) <i>%s</"
-"i> segédprogramot."
+msgstr "A kulcsfájlokat használó kötetek feloldásához használja inkább a(z) <i>%s</i> segédprogramot."
 
 #: js/ui/shellMountOperation.js:306
 msgid "PIM Number"
@@ -2408,8 +2314,7 @@ msgstr "A(z) %s alkalmazás el szeretné érni a helyadatait"
 
 #: js/ui/status/location.js:367
 msgid "Location access can be changed at any time from the privacy settings."
-msgstr ""
-"A helyadatok elérése bármikor megváltoztatható az adatvédelmi beállításokban."
+msgstr "A helyadatok elérése bármikor megváltoztatható az adatvédelmi beállításokban."
 
 #: js/ui/status/network.js:66
 msgid "<unknown>"
@@ -2427,7 +2332,8 @@ msgstr "%s ki"
 msgid "%s Connected"
 msgstr "%s kapcsolódva"
 
-#. Translators: this is for network devices that are physically present but are not
+#. Translators: this is for network devices that are physically present but
+#. are not
 #. under NetworkManager's control (and thus cannot be used in the menu);
 #. %s is a network identifier
 #: js/ui/status/network.js:428
@@ -2447,20 +2353,23 @@ msgstr "%s leválasztása"
 msgid "%s Connecting"
 msgstr "%s kapcsolódás"
 
-#. Translators: this is for network connections that require some kind of key or password; %s is a network identifier
+#. Translators: this is for network connections that require some kind of key
+#. or password; %s is a network identifier
 #: js/ui/status/network.js:441
 #, javascript-format
 msgid "%s Requires Authentication"
 msgstr "%s hitelesítést igényel"
 
-#. Translators: this is for devices that require some kind of firmware or kernel
+#. Translators: this is for devices that require some kind of firmware or
+#. kernel
 #. module, which is missing; %s is a network identifier
 #: js/ui/status/network.js:449
 #, javascript-format
 msgid "Firmware Missing For %s"
 msgstr "Hiányzó firmware ennél: %s"
 
-#. Translators: this is for a network device that cannot be activated (for example it
+#. Translators: this is for a network device that cannot be activated (for
+#. example it
 #. is disabled by rfkill, or it has no coverage; %s is a network identifier
 #: js/ui/status/network.js:453
 #, javascript-format
@@ -2562,7 +2471,8 @@ msgstr "%s nincs kapcsolódva"
 msgid "connecting…"
 msgstr "kapcsolódás…"
 
-#. Translators: this is for network connections that require some kind of key or password
+#. Translators: this is for network connections that require some kind of key
+#. or password
 #: js/ui/status/network.js:1420
 msgid "authentication required"
 msgstr "hitelesítés szükséges"
@@ -2641,9 +2551,8 @@ msgid "Enter unlock code…"
 msgstr ""
 
 #: js/ui/status/payg.js:86
-#, fuzzy
 msgid "Getting time…"
-msgstr "Újraindítás…"
+msgstr ""
 
 #: js/ui/status/payg.js:90
 msgid "Less than 1 minute"
@@ -2740,9 +2649,7 @@ msgstr "Ismeretlen thunderbolt eszköz"
 msgid ""
 "New device has been detected while you were away. Please disconnect and "
 "reconnect the device to start using it."
-msgstr ""
-"Új eszköz lett felismerve, amíg távol volt. Válassza le, és csatlakoztassa "
-"újra az eszközt, hogy megkezdhesse a használatát."
+msgstr "Új eszköz lett felismerve, amíg távol volt. Válassza le, és csatlakoztassa újra az eszközt, hogy megkezdhesse a használatát."
 
 #: js/ui/status/thunderbolt.js:329
 msgid "Unauthorized Thunderbolt device"
@@ -2751,8 +2658,7 @@ msgstr "Jogosulatlan Thunderbolt eszköz"
 #: js/ui/status/thunderbolt.js:330
 msgid ""
 "New device has been detected and needs to be authorized by an administrator."
-msgstr ""
-"Új eszköz lett észlelve, de egy rendszergazdának hitelesítenie szükséges."
+msgstr "Új eszköz lett észlelve, de egy rendszergazdának hitelesítenie szükséges."
 
 #: js/ui/status/thunderbolt.js:336
 msgid "Thunderbolt authorization error"
@@ -2773,28 +2679,24 @@ msgstr "Hangerő"
 
 #. Translators: this is for display mirroring i.e. cloning.
 #. * Try to keep it under around 15 characters.
-#.
 #: js/ui/switchMonitor.js:17
 msgid "Mirror"
 msgstr "Tükrözés"
 
 #. Translators: this is for the desktop spanning displays.
 #. * Try to keep it under around 15 characters.
-#.
 #: js/ui/switchMonitor.js:22
 msgid "Join Displays"
 msgstr "Kijelzők egyesítése"
 
 #. Translators: this is for using only an external display.
 #. * Try to keep it under around 15 characters.
-#.
 #: js/ui/switchMonitor.js:27
 msgid "External Only"
 msgstr "Csak a külső"
 
 #. Translators: this is for using only the laptop display.
 #. * Try to keep it under around 15 characters.
-#.
 #: js/ui/switchMonitor.js:32
 msgid "Built-in Only"
 msgstr "Csak a beépített"
@@ -2837,7 +2739,6 @@ msgstr "Megtartja ezen beállításokat?"
 
 #. Translators: this and the following message should be limited in length,
 #. to avoid ellipsizing the labels.
-#.
 #: js/ui/windowManager.js:70
 msgid "Revert Settings"
 msgstr "Beállítások visszavonása"
@@ -2938,8 +2839,7 @@ msgstr "A GDM által a bejelentkezési képernyőhöz használt mód"
 
 #: src/main.c:470
 msgid "Use a specific mode, e.g. “gdm” for login screen"
-msgstr ""
-"Használjon egy adott módot, például a „gdm”-et a bejelentkező képernyőn"
+msgstr "Használjon egy adott módot, például a „gdm”-et a bejelentkező képernyőn"
 
 #: src/main.c:476
 msgid "List possible modes"
@@ -2978,9 +2878,7 @@ msgstr "Az új kiterjesztés sikeresen létrehozva itt: %s.\n"
 msgid ""
 "Name should be a very short (ideally descriptive) string.\n"
 "Examples are: %s"
-msgstr ""
-"A névnek egy rövid (ideális esetben kifejező) karakterláncnak kell lennie.\n"
-"Példák: %s"
+msgstr "A névnek egy rövid (ideális esetben kifejező) karakterláncnak kell lennie.\nPéldák: %s"
 
 #: subprojects/extensions-tool/src/command-create.c:197
 #: subprojects/extensions-tool/src/main.c:170
@@ -2992,19 +2890,14 @@ msgstr "Név"
 msgid ""
 "Description is a single-sentence explanation of what your extension does.\n"
 "Examples are: %s"
-msgstr ""
-"A leírás egy egymondatos magyarázat a kiterjesztés működéséről.\n"
-"Példák: %s"
+msgstr "A leírás egy egymondatos magyarázat a kiterjesztés működéséről.\nPéldák: %s"
 
 #: subprojects/extensions-tool/src/command-create.c:222
 #, c-format
 msgid ""
 "UUID is a globally-unique identifier for your extension.\n"
-"This should be in the format of an email address (clicktofocus@janedoe."
-"example.com)\n"
-msgstr ""
-"A UUID a kiegészítő globálisan egyedi azonosítója.\n"
-"E-mail cím formátumúnak kell lennie (clicktofocus@janedoe.example.com)\n"
+"This should be in the format of an email address (clicktofocus@janedoe.example.com)\n"
+msgstr "A UUID a kiegészítő globálisan egyedi azonosítója.\nE-mail cím formátumúnak kell lennie (clicktofocus@janedoe.example.com)\n"
 
 #: subprojects/extensions-tool/src/command-create.c:244
 msgid "The unique identifier of the new extension"
@@ -3345,9 +3238,7 @@ msgstr "Kilépés az alkalmazásból"
 msgid ""
 "If an application doesn't respond for a while, select its name and click "
 "Quit Application."
-msgstr ""
-"Ha egy alkalmazás nem válaszol egy ideig, válassza ki a nevét, és válassza a "
-"kilépést az alkalmazásból-t."
+msgstr "Ha egy alkalmazás nem válaszol egy ideig, válassza ki a nevét, és válassza a kilépést az alkalmazásból-t."
 
 #: js/ui/forceAppExitDialog.js:87
 msgid "System Monitor"
@@ -3370,9 +3261,9 @@ msgid "Disable Hot Corner"
 msgstr "Aktív sarok kikapcsolása"
 
 #: js/ui/iconGridLayout.js:312
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s has been removed"
-msgstr "%s eltávolítva a Kedvencek közül."
+msgstr ""
 
 #: js/ui/iconGridLayout.js:540
 msgid "New Folder"
@@ -3385,7 +3276,6 @@ msgstr "\"%s\" megnyitása böngészőben"
 
 #. Translators: the first %s is the search engine name, and the second
 #. * is the search string. For instance, 'Search Google for "hello"'.
-#.
 #: js/ui/internetSearch.js:79
 #, javascript-format
 msgid "Search %s for \"%s\""
@@ -3416,38 +3306,3 @@ msgstr "Névtelen"
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Egyéni meghatározás ehhez: %s"
-
-#~ msgid "Copy Error"
-#~ msgstr "Hiba másolása"
-
-#~ msgid "Frequently used applications will appear here"
-#~ msgstr "Itt jelennek meg a gyakran használt alkalmazások"
-
-#~ msgid "Frequent"
-#~ msgstr "Gyakori"
-
-#~ msgid "All"
-#~ msgstr "Összes"
-
-#~ msgid "Add to Favorites"
-#~ msgstr "Hozzáadás a Kedvencekhez"
-
-#~ msgid "Type to search"
-#~ msgstr "Gépeljen a kereséshez"
-
-#~ msgid "Top Bar"
-#~ msgstr "Felső sáv"
-
-#~ msgid "%d more"
-#~ msgid_plural "%d more"
-#~ msgstr[0] "még %d további"
-#~ msgstr[1] "még %d további"
-
-#~ msgid "Off"
-#~ msgstr "Ki"
-
-#~ msgid "On"
-#~ msgstr "Be"
-
-#~ msgid "Search"
-#~ msgstr "Oldalsáv"

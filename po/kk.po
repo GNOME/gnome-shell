@@ -1,22 +1,21 @@
-# Kazakh translation for gnome-shell.
-# Copyright (C) 2015 The gnome-shell authors.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the gnome-shell package.
-# Baurzhan Muftakhidinov <baurthefirst@gmail.com>, 2012-2019.
-#
+# 
+# Translators:
 msgid ""
 msgstr ""
-"Project-Id-Version: master\n"
+"Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-04-17 17:11+0100\n"
-"PO-Revision-Date: 2019-02-16 15:54+0500\n"
-"Last-Translator: Baurzhan Muftakhidinov <baurthefirst@gmail.com>\n"
-"Language-Team: Kazakh <kk_KZ@googlegroups.com>\n"
-"Language: kk\n"
+"PO-Revision-Date: 2020-04-17 16:22+0000\n"
+"Last-Translator: Will Thompson <wjt@endlessm.com>\n"
+"Language-Team: Kazakh (http://www.transifex.com/endless-os/gnome-shell/language/kk/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 2.2.1\n"
+"Language: kk\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\n"
 
 #: data/50-gnome-shell-system.xml:6
 msgid "System"
@@ -52,17 +51,13 @@ msgstr "Терезелерді басқару мен қолданбаларды 
 
 #: data/org.gnome.shell.gschema.xml.in:15
 msgid "Enable internal tools useful for developers and testers from Alt-F2"
-msgstr ""
-"Alt-F2 ішінен өндірушілер мен сынаушылар үшін пайдалы ішкі саймандарды іске "
-"қосу"
+msgstr "Alt-F2 ішінен өндірушілер мен сынаушылар үшін пайдалы ішкі саймандарды іске қосу"
 
 #: data/org.gnome.shell.gschema.xml.in:18
 msgid ""
 "Allows access to internal debugging and monitoring tools using the Alt-F2 "
 "dialog."
-msgstr ""
-"Alt-F2 сұхбат арқылы қолжетерлік болатын ішкі жөндеу мен бақылау "
-"саймандарына қатынауды рұқсат ету."
+msgstr "Alt-F2 сұхбат арқылы қолжетерлік болатын ішкі жөндеу мен бақылау саймандарына қатынауды рұқсат ету."
 
 #: data/org.gnome.shell.gschema.xml.in:25
 msgid "UUIDs of extensions to enable"
@@ -70,34 +65,24 @@ msgstr "Іске қосу үшін кеңейтулердің UUID-ры"
 
 #: data/org.gnome.shell.gschema.xml.in:26
 msgid ""
-"GNOME Shell extensions have a UUID property; this key lists extensions which "
-"should be loaded. Any extension that wants to be loaded needs to be in this "
-"list. You can also manipulate this list with the EnableExtension and "
+"GNOME Shell extensions have a UUID property; this key lists extensions which"
+" should be loaded. Any extension that wants to be loaded needs to be in this"
+" list. You can also manipulate this list with the EnableExtension and "
 "DisableExtension D-Bus methods on org.gnome.Shell."
-msgstr ""
-"GNOME Shell кеңейтулерінде UUID қасиеті бар; бұл кілт жүктелетін кеңейтулер "
-"тізімін сақтайды. Жүйеге кірген кезде жүктелем дейтін кеңейту осы тізімде "
-"болуы тиіс. Бұл тізімді org.gnome.Shell ішіндегі EnableExtension және "
-"DisableExtension DBus тәсілдерімен де өзгертуге болады."
+msgstr "GNOME Shell кеңейтулерінде UUID қасиеті бар; бұл кілт жүктелетін кеңейтулер тізімін сақтайды. Жүйеге кірген кезде жүктелем дейтін кеңейту осы тізімде болуы тиіс. Бұл тізімді org.gnome.Shell ішіндегі EnableExtension және DisableExtension DBus тәсілдерімен де өзгертуге болады."
 
 #: data/org.gnome.shell.gschema.xml.in:35
-#, fuzzy
 msgid "UUIDs of extensions to force disabling"
-msgstr "Іске қосу үшін кеңейтулердің UUID-ры"
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:36
-#, fuzzy
 msgid ""
-"GNOME Shell extensions have a UUID property; this key lists extensions which "
-"should be disabled, even if loaded as part of the current mode. You can also "
-"manipulate this list with the EnableExtension and DisableExtension D-Bus "
-"methods on org.gnome.Shell. This key takes precedence over the “enabled-"
-"extensions” setting."
+"GNOME Shell extensions have a UUID property; this key lists extensions which"
+" should be disabled, even if loaded as part of the current mode. You can "
+"also manipulate this list with the EnableExtension and DisableExtension "
+"D-Bus methods on org.gnome.Shell. This key takes precedence over the "
+"“enabled-extensions” setting."
 msgstr ""
-"GNOME Shell кеңейтулерінде UUID қасиеті бар; бұл кілт жүктелетін кеңейтулер "
-"тізімін сақтайды. Жүйеге кірген кезде жүктелем дейтін кеңейту осы тізімде "
-"болуы тиіс. Бұл тізімді org.gnome.Shell ішіндегі EnableExtension және "
-"DisableExtension DBus тәсілдерімен де өзгертуге болады."
 
 #: data/org.gnome.shell.gschema.xml.in:46
 msgid "Disable user extensions"
@@ -107,9 +92,7 @@ msgstr "Пайдаланушы кеңейтулерін сөндіру"
 msgid ""
 "Disable all extensions the user has enabled without affecting the “enabled-"
 "extension” setting."
-msgstr ""
-"\"enabled-extension\" баптауын тимей-ақ, пайдаланушы іске қосқан барлық "
-"кеңейтулерді сөндіру."
+msgstr "\"enabled-extension\" баптауын тимей-ақ, пайдаланушы іске қосқан барлық кеңейтулерді сөндіру."
 
 #: data/org.gnome.shell.gschema.xml.in:54
 msgid "Disables the validation of extension version compatibility"
@@ -120,10 +103,7 @@ msgid ""
 "GNOME Shell will only load extensions that claim to support the current "
 "running version. Enabling this option will disable this check and try to "
 "load all extensions regardless of the versions they claim to support."
-msgstr ""
-"GNOME Shell тек ағымдағы орындалып жатқан нұсқаны қолдаймын деп хабарлайтын "
-"кеңейтулерді жүктейтін болады. Бұл опцияны іске қосу ол мүмкіндікті "
-"сөндіреді, және кеңейту қолдайтын нұсқасына қарамастан жүктеп көретін болады."
+msgstr "GNOME Shell тек ағымдағы орындалып жатқан нұсқаны қолдаймын деп хабарлайтын кеңейтулерді жүктейтін болады. Бұл опцияны іске қосу ол мүмкіндікті сөндіреді, және кеңейту қолдайтын нұсқасына қарамастан жүктеп көретін болады."
 
 #: data/org.gnome.shell.gschema.xml.in:63
 msgid "List of desktop file IDs for favorite applications"
@@ -131,11 +111,9 @@ msgstr "Таңдамалы қолданбалар үшін desktop файлда�
 
 #: data/org.gnome.shell.gschema.xml.in:64
 msgid ""
-"The applications corresponding to these identifiers will be displayed in the "
-"favorites area."
-msgstr ""
-"Осы анықтағыштарға сәйкес келетін қолданбалар таңдамалылар аймағында "
-"көрсетілетін болады."
+"The applications corresponding to these identifiers will be displayed in the"
+" favorites area."
+msgstr "Осы анықтағыштарға сәйкес келетін қолданбалар таңдамалылар аймағында көрсетілетін болады."
 
 #: data/org.gnome.shell.gschema.xml.in:71
 msgid "App Picker View"
@@ -143,14 +121,14 @@ msgstr "Қолданбаларды таңдау көрінісі"
 
 #: data/org.gnome.shell.gschema.xml.in:72
 msgid "Index of the currently selected view in the application picker."
-msgstr ""
-"Ағымдағы таңдалған көріністің қолданбаларды таңдау режиміндегі индексі."
+msgstr "Ағымдағы таңдалған көріністің қолданбаларды таңдау режиміндегі индексі."
 
 #: data/org.gnome.shell.gschema.xml.in:78
 msgid "History for command (Alt-F2) dialog"
 msgstr "Командалар сұхбаты (Alt-F2) үшін тарихы"
 
-#. Translators: looking glass is a debugger and inspector tool, see https://wiki.gnome.org/Projects/GnomeShell/LookingGlass
+#. Translators: looking glass is a debugger and inspector tool, see
+#. https://wiki.gnome.org/Projects/GnomeShell/LookingGlass
 #: data/org.gnome.shell.gschema.xml.in:83
 msgid "History for the looking glass dialog"
 msgstr "Іздеу сұхбатының тарихы"
@@ -161,18 +139,14 @@ msgstr "Пайдаланушы мәзірінде \"Жүйеден шығу\" н
 
 #: data/org.gnome.shell.gschema.xml.in:88
 msgid ""
-"This key overrides the automatic hiding of the “Log out” menu item in single-"
-"user, single-session situations."
-msgstr ""
-"Бұл кілт бір пайдаланушы, бір сессия бар кезінде \"Жүйеден шығу\" "
-"мүмкіндігінің автоматты түрде жасыруын алмастырады."
+"This key overrides the automatic hiding of the “Log out” menu item in "
+"single-user, single-session situations."
+msgstr "Бұл кілт бір пайдаланушы, бір сессия бар кезінде \"Жүйеден шығу\" мүмкіндігінің автоматты түрде жасыруын алмастырады."
 
 #: data/org.gnome.shell.gschema.xml.in:95
 msgid ""
 "Whether to remember password for mounting encrypted or remote filesystems"
-msgstr ""
-"Шифрленген немесе қашықтағы файлдық жүйелерді тіркеу парольдерін сақтау "
-"керек пе, соны көрсетеді"
+msgstr "Шифрленген немесе қашықтағы файлдық жүйелерді тіркеу парольдерін сақтау керек пе, соны көрсетеді"
 
 #: data/org.gnome.shell.gschema.xml.in:96
 msgid ""
@@ -180,17 +154,12 @@ msgid ""
 "filesystem is mounted. If the password can be saved for future use a "
 "“Remember Password” checkbox will be present. This key sets the default "
 "state of the checkbox."
-msgstr ""
-"Қоршам шифрленген құрылғы немесе қашықтағы файлдық жүйе тіркелген кезде "
-"парольді сұрайды. Егер парольді болашақтағы қолданулар үшін сақтау керек "
-"болса, \"Парольді есте сақтау\" жалаушасын орнатыңыз. Бұл кілт жалаушаның "
-"бастапқы күйін орнатады."
+msgstr "Қоршам шифрленген құрылғы немесе қашықтағы файлдық жүйе тіркелген кезде парольді сұрайды. Егер парольді болашақтағы қолданулар үшін сақтау керек болса, \"Парольді есте сақтау\" жалаушасын орнатыңыз. Бұл кілт жалаушаның бастапқы күйін орнатады."
 
 #: data/org.gnome.shell.gschema.xml.in:105
 msgid ""
 "Whether the default Bluetooth adapter had set up devices associated to it"
-msgstr ""
-"Үнсіз келісім бойынша Bluetooth адаптерінде байланысқан құрылғылар бар ма"
+msgstr "Үнсіз келісім бойынша Bluetooth адаптерінде байланысқан құрылғылар бар ма"
 
 #: data/org.gnome.shell.gschema.xml.in:106
 msgid ""
@@ -198,11 +167,7 @@ msgid ""
 "powered, or if there were devices set up associated with the default "
 "adapter. This will be reset if the default adapter is ever seen not to have "
 "devices associated to it."
-msgstr ""
-"Қоршам Bluetooth мәзірін тек Bluetooth адаптері іске қосылған болса және "
-"үнсіз келісім бойынша адаптерінде байланысқан құрылғылар бар болса ғана "
-"көрсетеді. Бұл үнсіз келісім адаптерінде байланысқан құрылғылар жоқ болса "
-"тасталады."
+msgstr "Қоршам Bluetooth мәзірін тек Bluetooth адаптері іске қосылған болса және үнсіз келісім бойынша адаптерінде байланысқан құрылғылар бар болса ғана көрсетеді. Бұл үнсіз келісім адаптерінде байланысқан құрылғылар жоқ болса тасталады."
 
 #: data/org.gnome.shell.gschema.xml.in:115
 msgid "Enable introspection API"
@@ -212,9 +177,7 @@ msgstr "Интроспекция API іске қосу"
 msgid ""
 "Enables a D-Bus API that allows to introspect the application state of the "
 "shell."
-msgstr ""
-"Қоршамның қолданба күйін интроспекциялауды мүмкін қылатын D-Bus API іске "
-"қосу."
+msgstr "Қоршамның қолданба күйін интроспекциялауды мүмкін қылатын D-Bus API іске қосу."
 
 #: data/org.gnome.shell.gschema.xml.in:126
 msgid "Enables the hot corner for the window picker"
@@ -233,8 +196,8 @@ msgstr ""
 #: data/org.gnome.shell.gschema.xml.in:139
 msgid ""
 "Default position of the hot corner is in a right corner. Set false to move "
-"the hot corner to a left corner. The position is not affected by the RTL vs. "
-"LTR text direction."
+"the hot corner to a left corner. The position is not affected by the RTL vs."
+" LTR text direction."
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:147
@@ -254,8 +217,8 @@ msgstr ""
 #: data/org.gnome.shell.gschema.xml.in:160
 msgid ""
 "Number of pixels in one dimension of the square target for the hot corner. "
-"Default is for a single pixel in the very corner. For some virtual machines, "
-"this value may need to be set larger than the default."
+"Default is for a single pixel in the very corner. For some virtual machines,"
+" this value may need to be set larger than the default."
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:170
@@ -265,8 +228,8 @@ msgstr ""
 #: data/org.gnome.shell.gschema.xml.in:173
 msgid ""
 "Makes window management more like standard Gnome. Hides application splash "
-"screens, prevents applications from being forced to open maximized, and does "
-"not automatically switch to the app selector when a window is minimized."
+"screens, prevents applications from being forced to open maximized, and does"
+" not automatically switch to the app selector when a window is minimized."
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:182
@@ -276,10 +239,11 @@ msgstr ""
 #: data/org.gnome.shell.gschema.xml.in:183
 msgid ""
 "This key controls whether to show the \"Forgot Password?\" button on the "
-"login screen. 'default' tells GNOME Shell to use the vendor default setting. "
-"'enable' and 'disable' can be used to explicitly enable or disable the reset "
-"button, respectively. Note that it only makes sense to set this key for the "
-"Debian-gdm user; changing it for your own user account will have no effect."
+"login screen. 'default' tells GNOME Shell to use the vendor default setting."
+" 'enable' and 'disable' can be used to explicitly enable or disable the "
+"reset button, respectively. Note that it only makes sense to set this key "
+"for the Debian-gdm user; changing it for your own user account will have no "
+"effect."
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:194
@@ -318,8 +282,7 @@ msgstr "\"Қолданбаларды көрсету\" көрінісін ашу 
 #: data/org.gnome.shell.gschema.xml.in:223
 msgid ""
 "Keybinding to open the “Show Applications” view of the Activities Overview."
-msgstr ""
-"Көрініс ішінен \"Қолданбаларды көрсету\" ашу үшін пернелер комбинациясы."
+msgstr "Көрініс ішінен \"Қолданбаларды көрсету\" ашу үшін пернелер комбинациясы."
 
 #: data/org.gnome.shell.gschema.xml.in:230
 msgid "Keybinding to open the overview"
@@ -331,13 +294,11 @@ msgstr "Көріністі ашу үшін пернелер комбинация
 
 #: data/org.gnome.shell.gschema.xml.in:237
 msgid "Keybinding to toggle the visibility of the notification list"
-msgstr ""
-"Хабарламалар тізімінің көрінуін іске қосу/сөндіру үшін пернелер комбинациясы"
+msgstr "Хабарламалар тізімінің көрінуін іске қосу/сөндіру үшін пернелер комбинациясы"
 
 #: data/org.gnome.shell.gschema.xml.in:238
 msgid "Keybinding to toggle the visibility of the notification list."
-msgstr ""
-"Хабарламалар тізімінің көрінуін іске қосу/сөндіру үшін пернелер комбинациясы."
+msgstr "Хабарламалар тізімінің көрінуін іске қосу/сөндіру үшін пернелер комбинациясы."
 
 #: data/org.gnome.shell.gschema.xml.in:244
 msgid "Keybinding to focus the active notification"
@@ -384,14 +345,12 @@ msgid "Switch to application 9"
 msgstr "9-шы қолданбаға ауысу"
 
 #: data/org.gnome.shell.gschema.xml.in:290
-#, fuzzy
 msgid "Keybinding that shows the force app exit dialog"
-msgstr "Қолданбалар мәзірін ашу үшін пернелер комбинациясы"
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:295
-#, fuzzy
 msgid "Keybinding to activate the first app in the icon bar."
-msgstr "Қолданбалар мәзірін ашу үшін пернелер комбинациясы."
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:296
 msgid ""
@@ -400,9 +359,8 @@ msgid ""
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:302
-#, fuzzy
 msgid "Keybinding to activate the second app in the icon bar."
-msgstr "Қолданбалар мәзірін ашу үшін пернелер комбинациясы."
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:303
 msgid ""
@@ -411,9 +369,8 @@ msgid ""
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:309
-#, fuzzy
 msgid "Keybinding to activate the third app in the icon bar."
-msgstr "Қолданбалар мәзірін ашу үшін пернелер комбинациясы."
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:310
 msgid ""
@@ -422,9 +379,8 @@ msgid ""
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:316
-#, fuzzy
 msgid "Keybinding to activate the fourth app in the icon bar."
-msgstr "Қолданбалар мәзірін ашу үшін пернелер комбинациясы."
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:317
 msgid ""
@@ -433,9 +389,8 @@ msgid ""
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:323
-#, fuzzy
 msgid "Keybinding to activate the fifth app in the icon bar."
-msgstr "Қолданбалар мәзірін ашу үшін пернелер комбинациясы."
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:324
 msgid ""
@@ -444,9 +399,8 @@ msgid ""
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:330
-#, fuzzy
 msgid "Keybinding to activate the sixth app in the icon bar."
-msgstr "Қолданбалар мәзірін ашу үшін пернелер комбинациясы."
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:331
 msgid ""
@@ -455,9 +409,8 @@ msgid ""
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:337
-#, fuzzy
 msgid "Keybinding to activate the seventh app in the icon bar."
-msgstr "Қолданбалар мәзірін ашу үшін пернелер комбинациясы."
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:338
 msgid ""
@@ -466,9 +419,8 @@ msgid ""
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:344
-#, fuzzy
 msgid "Keybinding to activate the eighth app in the icon bar."
-msgstr "Қолданбалар мәзірін ашу үшін пернелер комбинациясы."
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:345
 msgid ""
@@ -477,9 +429,8 @@ msgid ""
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:351
-#, fuzzy
 msgid "Keybinding to activate the last app in the icon bar."
-msgstr "Қолданбалар мәзірін ашу үшін пернелер комбинациясы."
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:352
 msgid ""
@@ -496,9 +447,7 @@ msgstr "Ауыстырғышты ағымдағы жұмыс орнымен ше
 msgid ""
 "If true, only applications that have windows on the current workspace are "
 "shown in the switcher. Otherwise, all applications are included."
-msgstr ""
-"Таңдалса, ауыстырғышта тек ағымдағы жұмыс орнындағы терезелері бар "
-"қолданбалар көрсетіледі. Болмаса, барлық қолданбалар болады."
+msgstr "Таңдалса, ауыстырғышта тек ағымдағы жұмыс орнындағы терезелері бар қолданбалар көрсетіледі. Болмаса, барлық қолданбалар болады."
 
 #: data/org.gnome.shell.gschema.xml.in:381
 msgid "The application icon mode."
@@ -507,25 +456,19 @@ msgstr "Қолданбаның таңбаша режимі."
 #: data/org.gnome.shell.gschema.xml.in:382
 msgid ""
 "Configures how the windows are shown in the switcher. Valid possibilities "
-"are “thumbnail-only” (shows a thumbnail of the window), “app-icon-"
-"only” (shows only the application icon) or “both”."
-msgstr ""
-"Терезелер ауыстырғышта қалай көрсетілетінін сипаттайды. Мүмкін мәндері "
-"\"thumbnail-only\" (терезенің кіші көрінісі көрсетіледі), \"app-icon-only"
-"\" (тек қолданба таңбашасы көрсетіледі) немесе \"both\" (екеуі де)."
+"are “thumbnail-only” (shows a thumbnail of the window), “app-icon-only” "
+"(shows only the application icon) or “both”."
+msgstr "Терезелер ауыстырғышта қалай көрсетілетінін сипаттайды. Мүмкін мәндері \"thumbnail-only\" (терезенің кіші көрінісі көрсетіледі), \"app-icon-only\" (тек қолданба таңбашасы көрсетіледі) немесе \"both\" (екеуі де)."
 
 #: data/org.gnome.shell.gschema.xml.in:391
 msgid ""
 "If true, only windows from the current workspace are shown in the switcher. "
 "Otherwise, all windows are included."
-msgstr ""
-"Таңдалса, ауыстырғышта тек ағымдағы жұмыс орнындағы терезелер көрсетіледі. "
-"Болмаса, барлық терезелер болады."
+msgstr "Таңдалса, ауыстырғышта тек ағымдағы жұмыс орнындағы терезелер көрсетіледі. Болмаса, барлық терезелер болады."
 
 #: data/org.gnome.shell.gschema.xml.in:401
-#, fuzzy
 msgid "Locations"
-msgstr "Орналасу қолданылуда"
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:402
 msgid "The locations to show in world clocks"
@@ -558,15 +501,11 @@ msgstr "Модальды сұхбатты аталық терезесіне жа
 #: data/org.gnome.shell.gschema.xml.in:467
 msgid ""
 "This key overrides the key in org.gnome.mutter when running GNOME Shell."
-msgstr ""
-"Бұл кілт GNOME Shell орындалған кезде org.gnome.mutter ішіндегі кілтті "
-"үстінен жазады."
+msgstr "Бұл кілт GNOME Shell орындалған кезде org.gnome.mutter ішіндегі кілтті үстінен жазады."
 
 #: data/org.gnome.shell.gschema.xml.in:442
 msgid "Enable edge tiling when dropping windows on screen edges"
-msgstr ""
-"Терезелерді экран шеттеріне апарған кезде олардың өлшемдерін өзгертуді іске "
-"қосу"
+msgstr "Терезелерді экран шеттеріне апарған кезде олардың өлшемдерін өзгертуді іске қосу"
 
 #: data/org.gnome.shell.gschema.xml.in:450
 msgid "Workspaces are managed dynamically"
@@ -594,9 +533,7 @@ msgid ""
 "We’re very sorry, but there’s been a problem: the settings for this "
 "extension can’t be displayed. We recommend that you report the issue to the "
 "extension authors."
-msgstr ""
-"Кешіріңіз, мәселе орын алды: бұл кеңейту үшін баптауларды көрсету мүмкін "
-"емес. Бұл мәселені кеңейту авторларына хабарлауды ұсынамыз."
+msgstr "Кешіріңіз, мәселе орын алды: бұл кеңейту үшін баптауларды көрсету мүмкін емес. Бұл мәселені кеңейту авторларына хабарлауды ұсынамыз."
 
 #: js/dbusServices/extensions/ui/extension-prefs-dialog.ui:82
 msgid "Technical Details"
@@ -614,15 +551,13 @@ msgstr "Кеңейтудің үй парағын шолу"
 #: js/extensionPrefs/data/org.gnome.Extensions.desktop.in.in:4
 #: js/extensionPrefs/js/main.js:182
 #: js/extensionPrefs/data/ui/extensions-window.ui:61
-#, fuzzy
 msgid "Extensions"
-msgstr "Қоршам кеңейтулері"
+msgstr ""
 
 #: js/extensionPrefs/data/metainfo/org.gnome.Extensions.metainfo.xml.in:6
 #: js/extensionPrefs/js/main.js:183
-#, fuzzy
 msgid "Manage your GNOME Extensions"
-msgstr "GNOME Shell кеңейтулерін баптау"
+msgstr ""
 
 #: js/extensionPrefs/data/metainfo/org.gnome.Extensions.metainfo.xml.in:35
 msgid ""
@@ -667,6 +602,7 @@ msgstr ""
 msgid "%d extension will be updated on next login."
 msgid_plural "%d extensions will be updated on next login."
 msgstr[0] ""
+msgstr[1] ""
 
 #: js/extensionPrefs/data/ui/extension-row.ui:100
 #: subprojects/extensions-tool/src/command-create.c:211
@@ -688,27 +624,22 @@ msgid "Website"
 msgstr ""
 
 #: js/extensionPrefs/data/ui/extension-row.ui:192
-#, fuzzy
 msgid "Remove…"
-msgstr "Өшіру"
+msgstr ""
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:8 js/ui/userMenu.js:27
 msgid "Help"
 msgstr ""
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:12
-#, fuzzy
 msgid "About Extensions"
-msgstr "Қоршам кеңейтулері"
+msgstr ""
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:27
-#, fuzzy
 msgid ""
-"To find and add extensions, visit <a href=\"https://extensions.gnome.org"
-"\">extensions.gnome.org</a>."
+"To find and add extensions, visit <a "
+"href=\"https://extensions.gnome.org\">extensions.gnome.org</a>."
 msgstr ""
-"Кеңейтулерді БҚ қолданбасы немесе <a href=\"https://extensions.gnome.org"
-"\">extensions.gnome.org</a> арқылы орнатуға болады."
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:35
 msgid "Warning"
@@ -726,14 +657,12 @@ msgid "Manually Installed"
 msgstr ""
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:158
-#, fuzzy
 msgid "Built-In"
-msgstr "Тек құрамындағы"
+msgstr ""
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:199
-#, fuzzy
 msgid "No Installed Extensions"
-msgstr "Қоршам кеңейтулері"
+msgstr ""
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:235
 msgid ""
@@ -742,9 +671,8 @@ msgid ""
 msgstr ""
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:288
-#, fuzzy
 msgid "Log Out…"
-msgstr "Жүйеден шығу"
+msgstr ""
 
 #: js/gdm/authPrompt.js:131
 msgid "Show password hint"
@@ -763,12 +691,14 @@ msgstr ""
 msgid "Password"
 msgstr "Пароль"
 
-#. Translators: During a password reset, prompt for the "secret code" provided by customer support.
+#. Translators: During a password reset, prompt for the "secret code" provided
+#. by customer support.
 #: js/gdm/authPrompt.js:680
 msgid "Enter unlock code"
 msgstr ""
 
-#. Translators: Password reset. The first %s is a verification code and the second is an email.
+#. Translators: Password reset. The first %s is a verification code and the
+#. second is an email.
 #: js/gdm/authPrompt.js:683
 #, javascript-format
 msgid ""
@@ -778,9 +708,8 @@ msgid ""
 msgstr ""
 
 #: js/gdm/authPrompt.js:762
-#, fuzzy
 msgid "Your unlock code was incorrect. Please try again."
-msgstr "Кешіріңіз, талап сәтсіз. Қайтадан көріңіз."
+msgstr ""
 
 #: js/gdm/loginDialog.js:317
 msgid "Choose Session"
@@ -802,9 +731,8 @@ msgstr "(мыс., пайдаланушы не %s)"
 #. (and don't even care of which one)
 #: js/gdm/loginDialog.js:920 js/ui/components/networkAgent.js:399
 #: js/ui/components/networkAgent.js:422 js/ui/components/networkAgent.js:440
-#, fuzzy
 msgid "Username"
-msgstr "Пайдаланушы аты: "
+msgstr ""
 
 #: js/gdm/loginDialog.js:1256
 msgid "Login Window"
@@ -829,11 +757,11 @@ msgctxt "search-result"
 msgid "Power Off"
 msgstr "Сөндіру"
 
-#. Translators: A list of keywords that match the power-off action, separated by semicolons
+#. Translators: A list of keywords that match the power-off action, separated
+#. by semicolons
 #: js/misc/systemActions.js:92
-#, fuzzy
 msgid "power off;shutdown;reboot;restart;halt;stop"
-msgstr "сөндіру;қайта қосу"
+msgstr ""
 
 #. Translators: The name of the lock screen action in search
 #: js/misc/systemActions.js:97
@@ -841,7 +769,8 @@ msgctxt "search-result"
 msgid "Lock Screen"
 msgstr "Экранды блоктау"
 
-#. Translators: A list of keywords that match the lock screen action, separated by semicolons
+#. Translators: A list of keywords that match the lock screen action,
+#. separated by semicolons
 #: js/misc/systemActions.js:100
 msgid "lock screen"
 msgstr "экранды блоктау"
@@ -852,11 +781,11 @@ msgctxt "search-result"
 msgid "Log Out"
 msgstr "Жүйеден шығу"
 
-#. Translators: A list of keywords that match the logout action, separated by semicolons
+#. Translators: A list of keywords that match the logout action, separated by
+#. semicolons
 #: js/misc/systemActions.js:108
-#, fuzzy
 msgid "logout;log out;sign off"
-msgstr "жүйеден шығу"
+msgstr ""
 
 #. Translators: The name of the suspend action in search
 #: js/misc/systemActions.js:113
@@ -864,7 +793,8 @@ msgctxt "search-result"
 msgid "Suspend"
 msgstr "Ұйықтату"
 
-#. Translators: A list of keywords that match the suspend action, separated by semicolons
+#. Translators: A list of keywords that match the suspend action, separated by
+#. semicolons
 #: js/misc/systemActions.js:116
 msgid "suspend;sleep"
 msgstr "ұйықтату"
@@ -875,28 +805,27 @@ msgctxt "search-result"
 msgid "Switch User"
 msgstr "Пайдаланушыны ауыстыру"
 
-#. Translators: A list of keywords that match the switch user action, separated by semicolons
+#. Translators: A list of keywords that match the switch user action,
+#. separated by semicolons
 #: js/misc/systemActions.js:124
 msgid "switch user"
 msgstr "пайдаланушыны ауыстыру"
 
-#. Translators: A list of keywords that match the lock orientation action, separated by semicolons
+#. Translators: A list of keywords that match the lock orientation action,
+#. separated by semicolons
 #: js/misc/systemActions.js:131
-#, fuzzy
 msgid "lock orientation;unlock orientation;screen;rotation"
-msgstr "бағдарды бекіту;экран;бұру"
+msgstr ""
 
 #: js/misc/systemActions.js:251
-#, fuzzy
 msgctxt "search-result"
 msgid "Unlock Screen Rotation"
-msgstr "Бағдарды бекіту"
+msgstr ""
 
 #: js/misc/systemActions.js:252
-#, fuzzy
 msgctxt "search-result"
 msgid "Lock Screen Rotation"
-msgstr "Бағдарды бекіту"
+msgstr ""
 
 #: js/misc/util.js:125
 msgid "Command not found"
@@ -1035,10 +964,8 @@ msgstr "%B %-d, %l∶%M %p"
 msgid "%B %-d %Y, %l∶%M %p"
 msgstr "%B %-d %Y, %l∶%M %p"
 
-#.
 #. * Translators: this is the name of the search engine that shows in the
 #. * Shell's desktop search entry.
-#.
 #: js/misc/util.js:573
 msgid "Google"
 msgstr ""
@@ -1052,10 +979,7 @@ msgstr "Қатынау нүктесіне кіру"
 msgid ""
 "Your connection to this hotspot login is not secure. Passwords or other "
 "information you enter on this page can be viewed by people nearby."
-msgstr ""
-"Бұл қатынау нүктесіне кіруге байланысыңыз қауіпсіз емес. Бұл парақта "
-"енгізілген парольдер немесе басқа да ақпаратыңызды сол желідегі адамдар көре "
-"алады."
+msgstr "Бұл қатынау нүктесіне кіруге байланысыңыз қауіпсіз емес. Бұл парақта енгізілген парольдер немесе басқа да ақпаратыңызды сол желідегі адамдар көре алады."
 
 #. No support for non-modal system dialogs, so ignore the option
 #. let modal = options['modal'] || true;
@@ -1069,9 +993,8 @@ msgstr "Рұқсат ету"
 
 #. Translators: This is the heading of a list of open windows
 #: js/ui/appDisplay.js:2390 js/ui/panel.js:78
-#, fuzzy
 msgid "Open Windows"
-msgstr "Терезелер"
+msgstr ""
 
 #: js/ui/appDisplay.js:2410 js/ui/panel.js:85
 msgid "New Window"
@@ -1083,9 +1006,8 @@ msgstr "Бөлек графикалық картаны пайдаланып жө
 
 #. Add the "Remove from desktop" menu item at the end.
 #: js/ui/appDisplay.js:2443
-#, fuzzy
 msgid "Remove from desktop"
-msgstr "Таңдамалылардан өшіру"
+msgstr ""
 
 #: js/ui/audioDeviceSelection.js:41
 msgid "Select Audio Device"
@@ -1119,7 +1041,8 @@ msgstr ""
 msgid "Add Website"
 msgstr ""
 
-#. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday).
+#. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0"
+#. (Sunday) "6" (Saturday) "06" (Sunday and Saturday).
 #: js/ui/calendar.js:41
 msgctxt "calendar-no-work"
 msgid "06"
@@ -1129,7 +1052,6 @@ msgstr "06"
 #. *
 #. * NOTE: These grid abbreviations are always shown together
 #. * and in order, e.g. "S M T W T F S".
-#.
 #: js/ui/calendar.js:70
 msgctxt "grid sunday"
 msgid "S"
@@ -1176,7 +1098,6 @@ msgstr "Сн"
 #. * standalone, when this is a month of the current year.
 #. * "%OB" is the new format specifier introduced in glibc 2.27,
 #. * in most cases you should not change it.
-#.
 #: js/ui/calendar.js:371
 msgid "%OB"
 msgstr "%OB"
@@ -1189,7 +1110,6 @@ msgstr "%OB"
 #. * "%OB" is the new format specifier introduced in glibc 2.27,
 #. * in most cases you should not use the old "%B" here unless you
 #. * absolutely know what you are doing.
-#.
 #: js/ui/calendar.js:381
 msgid "%OB %Y"
 msgstr "%OB %Y"
@@ -1214,19 +1134,20 @@ msgstr "Апта %V"
 
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
-#.
 #: js/ui/calendar.js:730
 msgctxt "event list time"
 msgid "All Day"
 msgstr "Толық күн"
 
-#. Translators: Shown on calendar heading when selected day occurs on current year
+#. Translators: Shown on calendar heading when selected day occurs on current
+#. year
 #: js/ui/calendar.js:868
 msgctxt "calendar heading"
 msgid "%A, %B %-d"
 msgstr "%A, %B %-d"
 
-#. Translators: Shown on calendar heading when selected day occurs on different year
+#. Translators: Shown on calendar heading when selected day occurs on
+#. different year
 #: js/ui/calendar.js:871
 msgctxt "calendar heading"
 msgid "%A, %B %-d, %Y"
@@ -1258,9 +1179,7 @@ msgstr "\"%s\" жауап бермейді."
 msgid ""
 "You may choose to wait a short while for it to continue or force the "
 "application to quit entirely."
-msgstr ""
-"Сіз оның жалғастыруын біраз уақыт бойы күте аласыз, немесе қолданбаны "
-"толықтай шығуды мәжбүрлете аласыз."
+msgstr "Сіз оның жалғастыруын біраз уақыт бойы күте аласыз, немесе қолданбаны толықтай шығуды мәжбүрлете аласыз."
 
 #: js/ui/closeDialog.js:70
 msgid "Force Quit"
@@ -1279,9 +1198,8 @@ msgid "External drive disconnected"
 msgstr "Сыртқы диск алынды"
 
 #: js/ui/components/automountManager.js:208
-#, fuzzy
 msgid "Unable to unlock volume"
-msgstr "Блоктау мүмкін емес"
+msgstr ""
 
 #: js/ui/components/automountManager.js:209
 msgid "The installed udisks version does not support the PIM setting"
@@ -1295,9 +1213,7 @@ msgstr "%s көмегімен ашу"
 #: js/ui/components/networkAgent.js:97
 msgid ""
 "Alternatively you can connect by pushing the “WPS” button on your router."
-msgstr ""
-"Қосымша түрде, сіз роутердегі \"WPS\" батырмасын басу арқылы байланыса "
-"аласыз."
+msgstr "Қосымша түрде, сіз роутердегі \"WPS\" батырмасын басу арқылы байланыса аласыз."
 
 #: js/ui/components/networkAgent.js:109 js/ui/status/network.js:223
 #: js/ui/status/network.js:314 js/ui/status/network.js:916
@@ -1321,24 +1237,20 @@ msgid "This connection doesn't have limits on how much you can download."
 msgstr ""
 
 #: js/ui/components/networkAgent.js:369
-#, fuzzy
 msgid "Key"
-msgstr "Кілт: "
+msgstr ""
 
 #: js/ui/components/networkAgent.js:407 js/ui/components/networkAgent.js:430
-#, fuzzy
 msgid "Private key password"
-msgstr "Жеке кілт паролі: "
+msgstr ""
 
 #: js/ui/components/networkAgent.js:428
-#, fuzzy
 msgid "Identity"
-msgstr "Анықтағыш: "
+msgstr ""
 
 #: js/ui/components/networkAgent.js:442
-#, fuzzy
 msgid "Service"
-msgstr "Қызмет: "
+msgstr ""
 
 #: js/ui/components/networkAgent.js:471
 #, javascript-format
@@ -1350,9 +1262,8 @@ msgid "Wired 802.1X authentication"
 msgstr "Сымды 802.1X аутентификациясы"
 
 #: js/ui/components/networkAgent.js:478
-#, fuzzy
 msgid "Network name"
-msgstr "Желі аты: "
+msgstr ""
 
 #: js/ui/components/networkAgent.js:483 js/ui/components/networkAgent.js:855
 msgid "DSL authentication"
@@ -1367,9 +1278,8 @@ msgid "PIN code is needed for the mobile broadband device"
 msgstr "Сымсыз кеңжолақты құрылғы үшін PIN коды керек"
 
 #: js/ui/components/networkAgent.js:492
-#, fuzzy
 msgid "PIN"
-msgstr "PIN: "
+msgstr ""
 
 #: js/ui/components/networkAgent.js:499 js/ui/components/networkAgent.js:846
 #: js/ui/components/networkAgent.js:867
@@ -1392,13 +1302,11 @@ msgstr "Желілер басқарушысы"
 msgid ""
 "Passwords or encryption keys are required to access the wireless network "
 "“%s”."
-msgstr ""
-"\"%s\" сымсыз желісіне қатынау үшін парольдер не шифрлеу кілттері керек."
+msgstr "\"%s\" сымсыз желісіне қатынау үшін парольдер не шифрлеу кілттері керек."
 
 #: js/ui/components/networkAgent.js:871
-#, fuzzy
 msgid "VPN password"
-msgstr "Пароль"
+msgstr ""
 
 #: js/ui/components/polkitAgent.js:39
 msgid "Authentication Required"
@@ -1420,7 +1328,8 @@ msgstr "Аутентификация"
 msgid "Sorry, that didn’t work. Please try again."
 msgstr "Кешіріңіз, талап сәтсіз. Қайтадан көріңіз."
 
-#. Translators: this is the other person changing their old IM name to their new
+#. Translators: this is the other person changing their old IM name to their
+#. new
 #. IM name.
 #: js/ui/components/telepathyClient.js:823
 #, javascript-format
@@ -1449,7 +1358,6 @@ msgstr "Dash"
 #. * shown - it is shown just below the time in the top bar (e.g.,
 #. * "Tue 9:29 AM").  The string itself should become a full date, e.g.,
 #. * "February 17 2015".
-#.
 #: js/ui/dateMenu.js:75
 msgid "%B %-d %Y"
 msgstr "%B %-d %Y"
@@ -1457,7 +1365,6 @@ msgstr "%B %-d %Y"
 #. Translators: This is the accessible name of the date button shown
 #. * below the time in the shell; it should combine the weekday and the
 #. * date, e.g. "Tuesday February 17 2015".
-#.
 #: js/ui/dateMenu.js:82
 msgid "%A %B %e %Y"
 msgstr "%A %B %e %Y"
@@ -1571,15 +1478,12 @@ msgstr "Қайта қосу және жаңартуларды орнату"
 
 #: js/ui/endSessionDialog.js:93
 #, javascript-format
-msgid "The system will automatically restart and install updates in %d second."
+msgid ""
+"The system will automatically restart and install updates in %d second."
 msgid_plural ""
 "The system will automatically restart and install updates in %d seconds."
-msgstr[0] ""
-"Жүйе %d секундтан кейін автоматты түрде қайта қосылады және жаңартуларды "
-"орнатады."
-msgstr[1] ""
-"Жүйе %d секундтан кейін автоматты түрде қайта қосылады және жаңартуларды "
-"орнатады."
+msgstr[0] "Жүйе %d секундтан кейін автоматты түрде қайта қосылады және жаңартуларды орнатады."
+msgstr[1] "Жүйе %d секундтан кейін автоматты түрде қайта қосылады және жаңартуларды орнатады."
 
 #: js/ui/endSessionDialog.js:99 js/ui/endSessionDialog.js:118
 msgctxt "button"
@@ -1609,27 +1513,19 @@ msgstr "Қайта қосу және жаңартуларды орнату"
 msgid ""
 "%s %s will be installed after restart. Upgrade installation can take a long "
 "time: ensure that you have backed up and that the computer is plugged in."
-msgstr ""
-"%s %s қайта қосылғаннан кейін орнатылатын болады. Орнатуды жаңарту ұзақ "
-"уақытты алуы мүмкін: деректердің қор көшірмесі бар екеніне және компьютер "
-"эл. желісіне жалғанып тұрғанына көз жеткізіңіз."
+msgstr "%s %s қайта қосылғаннан кейін орнатылатын болады. Орнатуды жаңарту ұзақ уақытты алуы мүмкін: деректердің қор көшірмесі бар екеніне және компьютер эл. желісіне жалғанып тұрғанына көз жеткізіңіз."
 
 #: js/ui/endSessionDialog.js:261
-#, fuzzy
 msgid "Running on battery power: Please plug in before installing updates."
 msgstr ""
-"Батареядан жұмыс істеуде: жаңартуларды орнату алдында эл. қорек көзіне "
-"қосыңыз."
 
 #: js/ui/endSessionDialog.js:270
-#, fuzzy
 msgid "Some applications are busy or have unsaved work"
-msgstr "Кейбір қолданбалар бос емес не сақталмаған жұмыстары бар."
+msgstr ""
 
 #: js/ui/endSessionDialog.js:275
-#, fuzzy
 msgid "Other users are logged in"
-msgstr "Басқа пайдаланушылар жүйеге кіріп тұр."
+msgstr ""
 
 #. Translators: Remote here refers to a remote session, like a ssh login
 #: js/ui/endSessionDialog.js:588
@@ -1659,9 +1555,8 @@ msgid "Install"
 msgstr "Орнату"
 
 #: js/ui/extensionDownloader.js:198
-#, fuzzy
 msgid "Install Extension"
-msgstr "Қоршам кеңейтулері"
+msgstr ""
 
 #: js/ui/extensionDownloader.js:199
 #, javascript-format
@@ -1669,29 +1564,26 @@ msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "extensions.gnome.org адресінен \"%s\" жүктеп алып, орнату керек пе?"
 
 #: js/ui/extensionSystem.js:229
-#, fuzzy
 msgid "Extension Updates Available"
-msgstr "Кеңейтулер орнатылмаған"
+msgstr ""
 
 #: js/ui/extensionSystem.js:230
 msgid "Extension updates are ready to be installed."
 msgstr ""
 
 #: js/ui/inhibitShortcutsDialog.js:79
-#, fuzzy
 msgid "Allow inhibiting shortcuts"
-msgstr "%s жарлықтарды сөндіргісі келеді"
+msgstr ""
 
 #. Translators: %s is an application name like "Settings"
 #: js/ui/inhibitShortcutsDialog.js:82
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "The application %s wants to inhibit shortcuts"
-msgstr "Қолданба жарлықтарды сөндіргісі келеді"
+msgstr ""
 
 #: js/ui/inhibitShortcutsDialog.js:83
-#, fuzzy
 msgid "An application wants to inhibit shortcuts"
-msgstr "Қолданба жарлықтарды сөндіргісі келеді"
+msgstr ""
 
 #. Translators: %s is a keyboard shortcut like "Super+x"
 #: js/ui/inhibitShortcutsDialog.js:90
@@ -1717,11 +1609,9 @@ msgstr "Баяу пернелер сөндірілген"
 
 #: js/ui/kbdA11yDialog.js:34
 msgid ""
-"You just held down the Shift key for 8 seconds. This is the shortcut for the "
-"Slow Keys feature, which affects the way your keyboard works."
-msgstr ""
-"Сіз Shift пернесін 8 секунд бойы басулы ұстадыңыз. Бұл Баяу пернелер "
-"мүмкіндігінің жарлығы, ол пернетақта жұмысына әсер етеді."
+"You just held down the Shift key for 8 seconds. This is the shortcut for the"
+" Slow Keys feature, which affects the way your keyboard works."
+msgstr "Сіз Shift пернесін 8 секунд бойы басулы ұстадыңыз. Бұл Баяу пернелер мүмкіндігінің жарлығы, ол пернетақта жұмысына әсер етеді."
 
 #: js/ui/kbdA11yDialog.js:41
 msgid "Sticky Keys Turned On"
@@ -1735,19 +1625,14 @@ msgstr "Жабысқақ пернелер сөндірілген"
 msgid ""
 "You just pressed the Shift key 5 times in a row. This is the shortcut for "
 "the Sticky Keys feature, which affects the way your keyboard works."
-msgstr ""
-"Сіз Shift пернесін қатарынан 5 рет бастыңыз. Бұл Жабысқақ пернелер "
-"мүмкіндігінің жарлығы, ол пернетақта жұмысына әсер етеді."
+msgstr "Сіз Shift пернесін қатарынан 5 рет бастыңыз. Бұл Жабысқақ пернелер мүмкіндігінің жарлығы, ол пернетақта жұмысына әсер етеді."
 
 #: js/ui/kbdA11yDialog.js:46
 msgid ""
 "You just pressed two keys at once, or pressed the Shift key 5 times in a "
 "row. This turns off the Sticky Keys feature, which affects the way your "
 "keyboard works."
-msgstr ""
-"Сіз екі пернені бірге бастыңыз, немесе Shift пернесін қатарынан 5 рет "
-"бастыңыз. Бұл Жабысқақ пернелер мүмкіндігін сөндіреді, ол пернетақта "
-"жұмысына әсер етеді."
+msgstr "Сіз екі пернені бірге бастыңыз, немесе Shift пернесін қатарынан 5 рет бастыңыз. Бұл Жабысқақ пернелер мүмкіндігін сөндіреді, ол пернетақта жұмысына әсер етеді."
 
 #: js/ui/kbdA11yDialog.js:55
 msgid "Leave On"
@@ -1823,9 +1708,8 @@ msgid "Web Page"
 msgstr "Веб парағы"
 
 #: js/ui/main.js:315
-#, fuzzy
 msgid "Logged in as a privileged user"
-msgstr "Басқа пайдаланушы ретінде жүйеге кіру"
+msgstr ""
 
 #: js/ui/main.js:316
 msgid ""
@@ -1931,10 +1815,9 @@ msgid "System"
 msgstr "Жүйелік"
 
 #: js/ui/panel.js:801
-#, fuzzy
 msgctxt "User menu"
 msgid "User Menu"
-msgstr "Трей мәзірі"
+msgstr ""
 
 #: js/ui/panel.js:833
 msgctxt "Power menu"
@@ -1962,8 +1845,8 @@ msgstr ""
 #: js/ui/paygUnlockDialog.js:160
 #, javascript-format
 msgid ""
-"Talk to your sales representative to purchase a new code. Call or text %s at "
-"%s"
+"Talk to your sales representative to purchase a new code. Call or text %s at"
+" %s"
 msgstr ""
 
 #. No overrides present, default to fallback text.
@@ -1977,9 +1860,8 @@ msgid "Pay As You Go Account ID: %s"
 msgstr ""
 
 #: js/ui/paygUnlockDialog.js:198
-#, fuzzy
 msgid "Unlock Machine"
-msgstr "Блоктауды алу терезесі"
+msgstr ""
 
 #: js/ui/paygUnlockDialog.js:287 js/ui/shellMountOperation.js:380
 msgid "Unlock"
@@ -2002,7 +1884,8 @@ msgid "Pay As You Go"
 msgstr ""
 
 #: js/ui/payg.js:40
-msgid "Enter an unlock code to extend the time before your credit has expired."
+msgid ""
+"Enter an unlock code to extend the time before your credit has expired."
 msgstr ""
 
 #: js/ui/payg.js:41
@@ -2015,15 +1898,15 @@ msgstr ""
 msgid "Too many attempts. Try again in %s minute."
 msgid_plural "Too many attempts. Try again in %s minutes."
 msgstr[0] ""
+msgstr[1] ""
 
 #: js/ui/payg.js:240
 msgid "Too many attempts. Try again in a few seconds."
 msgstr ""
 
 #: js/ui/payg.js:261
-#, fuzzy
 msgid "Invalid code. Please try again."
-msgstr "Кешіріңіз, талап сәтсіз. Қайтадан көріңіз."
+msgstr ""
 
 #: js/ui/payg.js:263
 msgid "Code already used. Please enter a new code."
@@ -2038,12 +1921,13 @@ msgstr ""
 msgid "Your Pay As You Go Account ID is: %s"
 msgstr ""
 
-#. We don't consider any other error here (and we don't consider DISABLED explicitly,
-#. since that should not happen), but still we need to show something to the user.
+#. We don't consider any other error here (and we don't consider DISABLED
+#. explicitly,
+#. since that should not happen), but still we need to show something to the
+#. user.
 #: js/ui/payg.js:271
-#, fuzzy
 msgid "Unknown error"
-msgstr "Белгісіз"
+msgstr ""
 
 #: js/ui/payg.js:452
 msgid "Apply Code"
@@ -2054,59 +1938,67 @@ msgstr ""
 msgid "%s second"
 msgid_plural "%s seconds"
 msgstr[0] ""
+msgstr[1] ""
 
 #: js/ui/payg.js:610 js/ui/payg.js:620
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s minute"
 msgid_plural "%s minutes"
-msgstr[0] "%d минут бұрын"
+msgstr[0] ""
+msgstr[1] ""
 
 #: js/ui/payg.js:614 js/ui/payg.js:631
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s hour"
 msgid_plural "%s hours"
-msgstr[0] "%d сағат бұрын"
+msgstr[0] ""
+msgstr[1] ""
 
 #: js/ui/payg.js:625
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s day"
 msgid_plural "%s days"
-msgstr[0] "%s күні бойы."
+msgstr[0] ""
+msgstr[1] ""
 
 #: js/ui/payg.js:641
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s second has been added to your Pay As You Go credit."
 msgid_plural "%s seconds have been added to your Pay As You Go credit."
-msgstr[0] "%s таңдамалыларыңызға қосылды."
+msgstr[0] ""
+msgstr[1] ""
 
 #: js/ui/payg.js:648
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s minute has been added to your Pay As You Go credit."
 msgid_plural "%s minutes have been added to your Pay As You Go credit."
-msgstr[0] "%s таңдамалыларыңызға қосылды."
+msgstr[0] ""
+msgstr[1] ""
 
 #: js/ui/payg.js:655
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s hour has been added to your Pay As You Go credit."
 msgid_plural "%s hours have been added to your Pay As You Go credit."
-msgstr[0] "%s таңдамалыларыңызға қосылды."
+msgstr[0] ""
+msgstr[1] ""
 
 #: js/ui/payg.js:662
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s day has been added to your Pay As You Go credit."
 msgid_plural "%s days have been added to your Pay As You Go credit."
-msgstr[0] "%s таңдамалыларыңызға қосылды."
+msgstr[0] ""
+msgstr[1] ""
 
 #: js/ui/payg.js:669
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s month has been added to your Pay As You Go credit."
 msgid_plural "%s months have been added to your Pay As You Go credit."
-msgstr[0] "%s таңдамалыларыңызға қосылды."
+msgstr[0] ""
+msgstr[1] ""
 
 #: js/ui/payg.js:676
-#, fuzzy
 msgid "1 year has been added to your Pay As You Go credit."
-msgstr "%s таңдамалыларыңызға қосылды."
+msgstr ""
 
 #. Unlock permanently message
 #: js/ui/payg.js:679
@@ -2114,14 +2006,12 @@ msgid "You have successfully unlocked your Endless Machine"
 msgstr ""
 
 #: js/ui/runDialog.js:58
-#, fuzzy
 msgid "Run a Command"
-msgstr "Команданы енгізу"
+msgstr ""
 
 #: js/ui/runDialog.js:73
-#, fuzzy
 msgid "Press ESC to close"
-msgstr "Шығу үшін Esc басыңыз"
+msgstr ""
 
 #: js/ui/runDialog.js:240
 msgid "Restart is not available on Wayland"
@@ -2139,7 +2029,6 @@ msgstr "GNOME экранды блоктау керек"
 #. screenshield. The user is probably very upset at this
 #. point, but any application using global grabs is broken
 #. Just tell him to stop using this app
-#.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
 #: js/ui/screenShield.js:295 js/ui/screenShield.js:674
@@ -2175,36 +2064,33 @@ msgid "Hide Text"
 msgstr "Мәтінді жасыру"
 
 #: js/ui/shellEntry.js:194
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Search %s and more…"
-msgstr "Іздеу…"
+msgstr ""
 
 #: js/ui/shellEntry.js:196
 msgid "Search the internet and more…"
 msgstr ""
 
 #: js/ui/shellEntry.js:198
-#, fuzzy
 msgid "Search…"
-msgstr "Іздеу…"
+msgstr ""
 
 #: js/ui/shellEntry.js:490
 msgid "Caps lock is on."
 msgstr ""
 
 #: js/ui/shellMountOperation.js:285
-#, fuzzy
 msgid "Hidden Volume"
-msgstr "Дыбыс деңгейі"
+msgstr ""
 
 #: js/ui/shellMountOperation.js:288
 msgid "Windows System Volume"
 msgstr ""
 
 #: js/ui/shellMountOperation.js:291
-#, fuzzy
 msgid "Uses Keyfiles"
-msgstr "Тышқан пернелері"
+msgstr ""
 
 #. Translators: %s is the Disks application
 #: js/ui/shellMountOperation.js:298
@@ -2233,9 +2119,9 @@ msgstr ""
 
 #. Translators: %s is the Disks application
 #: js/ui/shellMountOperation.js:469
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Unable to start %s"
-msgstr "%s байланысын орнату мүмкін емес"
+msgstr ""
 
 #. Translators: %s is the Disks application
 #: js/ui/shellMountOperation.js:471
@@ -2292,9 +2178,8 @@ msgid "Updates Queue"
 msgstr ""
 
 #: js/ui/status/automaticUpdates.js:105
-#, fuzzy
 msgid "Set a Schedule"
-msgstr "Жоспар бос"
+msgstr ""
 
 #. The status label
 #: js/ui/status/automaticUpdates.js:198
@@ -2326,9 +2211,8 @@ msgid "Close"
 msgstr "Жабу"
 
 #: js/ui/status/automaticUpdates.js:290
-#, fuzzy
 msgid "Change Settings…"
-msgstr "Дыбыс баптаулары"
+msgstr ""
 
 #: js/ui/status/bluetooth.js:40
 msgid "Bluetooth"
@@ -2347,14 +2231,12 @@ msgstr[0] "%d байланысқан"
 msgstr[1] "%d байланысқан"
 
 #: js/ui/status/bluetooth.js:134
-#, fuzzy
 msgid "Bluetooth Off"
-msgstr "Bluetooth"
+msgstr ""
 
 #: js/ui/status/bluetooth.js:136
-#, fuzzy
 msgid "Bluetooth On"
-msgstr "Bluetooth"
+msgstr ""
 
 #: js/ui/status/brightness.js:39
 msgid "Brightness"
@@ -2418,15 +2300,13 @@ msgstr ""
 
 #. Translators: %s is an application name
 #: js/ui/status/location.js:357
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "The app %s wants to access your location"
-msgstr "%s үшін орналасуыңызға рұқсат ету керек пе?"
+msgstr ""
 
 #: js/ui/status/location.js:367
 msgid "Location access can be changed at any time from the privacy settings."
-msgstr ""
-"Орналасуыңызға қатынауды кез-кезген кезде жекелік баптауларының ішінен "
-"өзгертуге болады."
+msgstr "Орналасуыңызға қатынауды кез-кезген кезде жекелік баптауларының ішінен өзгертуге болады."
 
 #: js/ui/status/network.js:66
 msgid "<unknown>"
@@ -2444,7 +2324,8 @@ msgstr "%s сөндірулі"
 msgid "%s Connected"
 msgstr "%s байланысқан"
 
-#. Translators: this is for network devices that are physically present but are not
+#. Translators: this is for network devices that are physically present but
+#. are not
 #. under NetworkManager's control (and thus cannot be used in the menu);
 #. %s is a network identifier
 #: js/ui/status/network.js:428
@@ -2464,20 +2345,23 @@ msgstr "%s  байланысты үзуде"
 msgid "%s Connecting"
 msgstr "%s байланысуда"
 
-#. Translators: this is for network connections that require some kind of key or password; %s is a network identifier
+#. Translators: this is for network connections that require some kind of key
+#. or password; %s is a network identifier
 #: js/ui/status/network.js:441
 #, javascript-format
 msgid "%s Requires Authentication"
 msgstr "%s аутентификацияны талап етеді"
 
-#. Translators: this is for devices that require some kind of firmware or kernel
+#. Translators: this is for devices that require some kind of firmware or
+#. kernel
 #. module, which is missing; %s is a network identifier
 #: js/ui/status/network.js:449
 #, javascript-format
 msgid "Firmware Missing For %s"
 msgstr "%s үшін бинарлы кодтары жоқ"
 
-#. Translators: this is for a network device that cannot be activated (for example it
+#. Translators: this is for a network device that cannot be activated (for
+#. example it
 #. is disabled by rfkill, or it has no coverage; %s is a network identifier
 #: js/ui/status/network.js:453
 #, javascript-format
@@ -2579,7 +2463,8 @@ msgstr "%s байланыспаған"
 msgid "connecting…"
 msgstr "байланысты орнату…"
 
-#. Translators: this is for network connections that require some kind of key or password
+#. Translators: this is for network connections that require some kind of key
+#. or password
 #: js/ui/status/network.js:1420
 msgid "authentication required"
 msgstr "аутентификация керек"
@@ -2658,18 +2543,17 @@ msgid "Enter unlock code…"
 msgstr ""
 
 #: js/ui/status/payg.js:86
-#, fuzzy
 msgid "Getting time…"
-msgstr "Қайта қосу…"
+msgstr ""
 
 #: js/ui/status/payg.js:90
 msgid "Less than 1 minute"
 msgstr ""
 
 #: js/ui/status/payg.js:124
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Account ID: %s"
-msgstr "Тіркелгі баптаулары"
+msgstr ""
 
 #: js/ui/status/power.js:47
 msgid "Power Settings"
@@ -2726,27 +2610,24 @@ msgid "Lock"
 msgstr "Блоктау"
 
 #: js/ui/status/system.js:90
-#, fuzzy
 msgid "Power Off / Log Out"
-msgstr "Сөндіру"
+msgstr ""
 
 #: js/ui/status/system.js:93
 msgid "Log Out"
 msgstr "Жүйеден шығу"
 
 #: js/ui/status/system.js:105
-#, fuzzy
 msgid "Switch User…"
-msgstr "Пайдаланушыны ауыстыру"
+msgstr ""
 
 #: js/ui/status/system.js:119
 msgid "Suspend"
 msgstr "Ұйықтату"
 
 #: js/ui/status/system.js:131
-#, fuzzy
 msgid "Power Off…"
-msgstr "Сөндіру"
+msgstr ""
 
 #: js/ui/status/thunderbolt.js:263
 msgid "Thunderbolt"
@@ -2760,9 +2641,7 @@ msgstr "Белгісіз Thunderbolt құрылғысы"
 msgid ""
 "New device has been detected while you were away. Please disconnect and "
 "reconnect the device to start using it."
-msgstr ""
-"Сіз кетіп қалған уақытта жаңа құрылғы анықталған. Оны қолдануды бастау үшін, "
-"оны ажыратып, қайта салыңыз."
+msgstr "Сіз кетіп қалған уақытта жаңа құрылғы анықталған. Оны қолдануды бастау үшін, оны ажыратып, қайта салыңыз."
 
 #: js/ui/status/thunderbolt.js:329
 msgid "Unauthorized Thunderbolt device"
@@ -2792,28 +2671,24 @@ msgstr "Дыбыс деңгейі"
 
 #. Translators: this is for display mirroring i.e. cloning.
 #. * Try to keep it under around 15 characters.
-#.
 #: js/ui/switchMonitor.js:17
 msgid "Mirror"
 msgstr "Айналы"
 
 #. Translators: this is for the desktop spanning displays.
 #. * Try to keep it under around 15 characters.
-#.
 #: js/ui/switchMonitor.js:22
 msgid "Join Displays"
 msgstr "Экран­дарды біріктіру"
 
 #. Translators: this is for using only an external display.
 #. * Try to keep it under around 15 characters.
-#.
 #: js/ui/switchMonitor.js:27
 msgid "External Only"
 msgstr "Тек сыртқы"
 
 #. Translators: this is for using only the laptop display.
 #. * Try to keep it under around 15 characters.
-#.
 #: js/ui/switchMonitor.js:32
 msgid "Built-in Only"
 msgstr "Тек құрамындағы"
@@ -2821,9 +2696,8 @@ msgstr "Тек құрамындағы"
 #. Translators: This is a time format for a date in
 #. long format
 #: js/ui/unlockDialog.js:371
-#, fuzzy
 msgid "%A %B %-d"
-msgstr "%A, %B %-d"
+msgstr ""
 
 #: js/ui/unlockDialog.js:377
 msgid "Swipe up to unlock"
@@ -2852,13 +2726,11 @@ msgstr "\"%s\" дайын"
 
 #. Translators: This string should be shorter than 30 characters
 #: js/ui/windowManager.js:61
-#, fuzzy
 msgid "Keep these display settings?"
-msgstr "Экранның бұл баптауларын сақтауды қалайсыз ба?"
+msgstr ""
 
 #. Translators: this and the following message should be limited in length,
 #. to avoid ellipsizing the labels.
-#.
 #: js/ui/windowManager.js:70
 msgid "Revert Settings"
 msgstr "Баптауларды қалпына келтіру"
@@ -3016,8 +2888,7 @@ msgstr ""
 #, c-format
 msgid ""
 "UUID is a globally-unique identifier for your extension.\n"
-"This should be in the format of an email address (clicktofocus@janedoe."
-"example.com)\n"
+"This should be in the format of an email address (clicktofocus@janedoe.example.com)\n"
 msgstr ""
 
 #: subprojects/extensions-tool/src/command-create.c:244
@@ -3045,24 +2916,21 @@ msgid "Enter extension information interactively"
 msgstr ""
 
 #: subprojects/extensions-tool/src/command-create.c:263
-#, fuzzy
 msgid "Create a new extension"
-msgstr "Пайдаланушы кеңейтулерін сөндіру"
+msgstr ""
 
 #: subprojects/extensions-tool/src/command-create.c:280
 #: subprojects/extensions-tool/src/command-list.c:168
-#, fuzzy
 msgid "Unknown arguments"
-msgstr "Белгісіз әртіс"
+msgstr ""
 
 #: subprojects/extensions-tool/src/command-create.c:289
 msgid "UUID, name and description are required"
 msgstr ""
 
 #: subprojects/extensions-tool/src/command-disable.c:57
-#, fuzzy
 msgid "Disable an extension"
-msgstr "Пайдаланушы кеңейтулерін сөндіру"
+msgstr ""
 
 #: subprojects/extensions-tool/src/command-disable.c:74
 #: subprojects/extensions-tool/src/command-enable.c:74
@@ -3083,14 +2951,12 @@ msgid "More than one UUID given"
 msgstr ""
 
 #: subprojects/extensions-tool/src/command-enable.c:57
-#, fuzzy
 msgid "Enable an extension"
-msgstr "Пайдаланушы кеңейтулерін сөндіру"
+msgstr ""
 
 #: subprojects/extensions-tool/src/command-info.c:79
-#, fuzzy
 msgid "Show extensions info"
-msgstr "Кеңейтулер орнатылмаған"
+msgstr ""
 
 #: subprojects/extensions-tool/src/command-install.c:173
 msgid "Overwrite an existing extension"
@@ -3101,58 +2967,48 @@ msgid "EXTENSION_BUNDLE"
 msgstr ""
 
 #: subprojects/extensions-tool/src/command-install.c:184
-#, fuzzy
 msgid "Install an extension bundle"
-msgstr "Іске қосу үшін кеңейтулердің UUID-ры"
+msgstr ""
 
 #: subprojects/extensions-tool/src/command-install.c:201
-#, fuzzy
 msgid "No extension bundle specified"
-msgstr "Кеңейтулер орнатылмаған"
+msgstr ""
 
 #: subprojects/extensions-tool/src/command-install.c:207
 msgid "More than one extension bundle specified"
 msgstr ""
 
 #: subprojects/extensions-tool/src/command-list.c:125
-#, fuzzy
 msgid "Show user-installed extensions"
-msgstr "Қоршам кеңейтулері"
+msgstr ""
 
 #: subprojects/extensions-tool/src/command-list.c:128
-#, fuzzy
 msgid "Show system-installed extensions"
-msgstr "Қоршам кеңейтулері"
+msgstr ""
 
 #: subprojects/extensions-tool/src/command-list.c:131
-#, fuzzy
 msgid "Show enabled extensions"
-msgstr "Қоршам кеңейтулері"
+msgstr ""
 
 #: subprojects/extensions-tool/src/command-list.c:134
-#, fuzzy
 msgid "Show disabled extensions"
-msgstr "Пайдаланушы кеңейтулерін сөндіру"
+msgstr ""
 
 #: subprojects/extensions-tool/src/command-list.c:137
-#, fuzzy
 msgid "Show extensions with preferences"
-msgstr "GNOME Shell кеңейту баптаулары"
+msgstr ""
 
 #: subprojects/extensions-tool/src/command-list.c:140
-#, fuzzy
 msgid "Show extensions with updates"
-msgstr "Кеңейтулер орнатылмаған"
+msgstr ""
 
 #: subprojects/extensions-tool/src/command-list.c:143
-#, fuzzy
 msgid "Print extension details"
-msgstr "Кеңейтудің үй парағын шолу"
+msgstr ""
 
 #: subprojects/extensions-tool/src/command-list.c:151
-#, fuzzy
 msgid "List installed extensions"
-msgstr "Пайдаланушы кеңейтулерін сөндіру"
+msgstr ""
 
 #: subprojects/extensions-tool/src/command-pack.c:450
 msgid "FILE"
@@ -3208,19 +3064,16 @@ msgid "More than one source directory specified"
 msgstr ""
 
 #: subprojects/extensions-tool/src/command-prefs.c:90
-#, fuzzy
 msgid "Opens extension preferences"
-msgstr "GNOME Shell кеңейту баптаулары"
+msgstr ""
 
 #: subprojects/extensions-tool/src/command-reset.c:57
-#, fuzzy
 msgid "Reset an extension"
-msgstr "Пайдаланушы кеңейтулерін сөндіру"
+msgstr ""
 
 #: subprojects/extensions-tool/src/command-uninstall.c:72
-#, fuzzy
 msgid "Uninstall an extension"
-msgstr "Пайдаланушы кеңейтулерін сөндіру"
+msgstr ""
 
 #: subprojects/extensions-tool/src/main.c:176
 msgid "Path"
@@ -3265,60 +3118,49 @@ msgid "Commands:"
 msgstr ""
 
 #: subprojects/extensions-tool/src/main.c:248
-#, fuzzy
 msgid "Print help"
-msgstr "Баспа нұсқасы"
+msgstr ""
 
 #: subprojects/extensions-tool/src/main.c:250
-#, fuzzy
 msgid "Enable extension"
-msgstr "Пайдаланушы кеңейтулерін сөндіру"
+msgstr ""
 
 #: subprojects/extensions-tool/src/main.c:251
-#, fuzzy
 msgid "Disable extension"
-msgstr "Пайдаланушы кеңейтулерін сөндіру"
+msgstr ""
 
 #: subprojects/extensions-tool/src/main.c:252
-#, fuzzy
 msgid "Reset extension"
-msgstr "Пайдаланушы кеңейтулерін сөндіру"
+msgstr ""
 
 #: subprojects/extensions-tool/src/main.c:253
-#, fuzzy
 msgid "Uninstall extension"
-msgstr "Пайдаланушы кеңейтулерін сөндіру"
+msgstr ""
 
 #: subprojects/extensions-tool/src/main.c:254
-#, fuzzy
 msgid "List extensions"
-msgstr "Пайдаланушы кеңейтулерін сөндіру"
+msgstr ""
 
 #: subprojects/extensions-tool/src/main.c:255
 #: subprojects/extensions-tool/src/main.c:256
-#, fuzzy
 msgid "Show extension info"
-msgstr "Кеңейтулер орнатылмаған"
+msgstr ""
 
 #: subprojects/extensions-tool/src/main.c:257
-#, fuzzy
 msgid "Open extension preferences"
-msgstr "GNOME Shell кеңейту баптаулары"
+msgstr ""
 
 #: subprojects/extensions-tool/src/main.c:258
-#, fuzzy
 msgid "Create extension"
-msgstr "Қоршам кеңейтулері"
+msgstr ""
 
 #: subprojects/extensions-tool/src/main.c:259
-#, fuzzy
 msgid "Package extension"
-msgstr "Қоршам кеңейтулері"
+msgstr ""
 
 #: subprojects/extensions-tool/src/main.c:260
-#, fuzzy
 msgid "Install extension bundle"
-msgstr "Іске қосу үшін кеңейтулердің UUID-ры"
+msgstr ""
 
 #: subprojects/extensions-tool/src/main.c:262
 #, c-format
@@ -3352,9 +3194,8 @@ msgid "Other workspaces"
 msgstr ""
 
 #: js/ui/appIconBar.js:204
-#, fuzzy
 msgid "Current workspace"
-msgstr "Ауыстырғышты ағымдағы жұмыс орнымен шектеу."
+msgstr ""
 
 #: js/ui/appIconBar.js:282
 msgid "Pin to Taskbar"
@@ -3365,28 +3206,25 @@ msgid "Unpin from Taskbar"
 msgstr ""
 
 #: js/ui/appIconBar.js:310
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Quit %s"
-msgstr "Шығу"
+msgstr ""
 
 #: js/ui/endlessButton.js:14
 msgid "Endless Button"
 msgstr ""
 
 #: js/ui/endlessButton.js:67
-#, fuzzy
 msgid "Show Desktop"
-msgstr "Деректерді көрсету"
+msgstr ""
 
 #: js/ui/endlessButton.js:69
-#, fuzzy
 msgid "Show Apps"
-msgstr "Қолданбаларды көрсету"
+msgstr ""
 
 #: js/ui/forceAppExitDialog.js:50
-#, fuzzy
 msgid "Quit applications"
-msgstr "Қолданбалар"
+msgstr ""
 
 #: js/ui/forceAppExitDialog.js:56
 msgid ""
@@ -3395,14 +3233,12 @@ msgid ""
 msgstr ""
 
 #: js/ui/forceAppExitDialog.js:87
-#, fuzzy
 msgid "System Monitor"
-msgstr "Жүйелік дыбыстар"
+msgstr ""
 
 #: js/ui/forceAppExitDialog.js:95
-#, fuzzy
 msgid "Quit Application"
-msgstr "Қолданбалар"
+msgstr ""
 
 #: js/ui/hotCorner.js:15
 msgid "Hot Corner"
@@ -3413,14 +3249,13 @@ msgid "Enable Hot Corner"
 msgstr ""
 
 #: js/ui/hotCorner.js:29
-#, fuzzy
 msgid "Disable Hot Corner"
-msgstr "Ертеңге дейін сөндіру"
+msgstr ""
 
 #: js/ui/iconGridLayout.js:312
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s has been removed"
-msgstr "%s таңдамалыларыңыздан өшірілді."
+msgstr ""
 
 #: js/ui/iconGridLayout.js:540
 msgid "New Folder"
@@ -3433,7 +3268,6 @@ msgstr ""
 
 #. Translators: the first %s is the search engine name, and the second
 #. * is the search string. For instance, 'Search Google for "hello"'.
-#.
 #: js/ui/internetSearch.js:79
 #, javascript-format
 msgid "Search %s for \"%s\""
@@ -3464,382 +3298,3 @@ msgstr ""
 #, c-format
 msgid "Custom definition for %s"
 msgstr ""
-
-#~ msgid ""
-#~ "Keybinding that pauses and resumes all running tweens, for debugging "
-#~ "purposes"
-#~ msgstr ""
-#~ "Барлық орындалып тұрған анимацияларды тоқтататын не жалғастыратын "
-#~ "пернелер жарлығы (жөндеу үшін)"
-
-#~ msgid "Which keyboard to use"
-#~ msgstr "Қолданылатын пернетақта"
-
-#~ msgid "The type of keyboard to use."
-#~ msgstr "Қолданылатын пернетақта түрі."
-
-#~ msgid "network-workgroup"
-#~ msgstr "network-workgroup"
-
-#~ msgid "Copy Error"
-#~ msgstr "Көшіріп алу қатесі"
-
-#~ msgid "Browse in Software"
-#~ msgstr "БҚ қолданбасында шолу"
-
-#~ msgid "Next"
-#~ msgstr "Келесі"
-
-#~ msgctxt "button"
-#~ msgid "Sign In"
-#~ msgstr "Кіру"
-
-#~ msgid "Frequently used applications will appear here"
-#~ msgstr "Жиі қолданылатын қолданбалар осында көрінеді"
-
-#~ msgid "Frequent"
-#~ msgstr "Жиі қолданылатын"
-
-#~ msgid "All"
-#~ msgstr "Барлығы"
-
-#~ msgid "Add to Favorites"
-#~ msgstr "Таңдамалыларға қосу"
-
-#~ msgid "Password:"
-#~ msgstr "Пароль:"
-
-#~ msgid "Type again:"
-#~ msgstr "Қайтадан енгізіңіз:"
-
-#~ msgid "Password: "
-#~ msgstr "Пароль: "
-
-#~ msgid "Authentication required by wireless network"
-#~ msgstr "Сымсыз желісі аутентификацияны талап етеді"
-
-#~ msgid "Mobile broadband network password"
-#~ msgstr "Сымсыз кеңжолақты желісінің паролі"
-
-#~ msgid "Type to search…"
-#~ msgstr "Іздеу үшін теріңіз…"
-
-#~ msgid "Top Bar"
-#~ msgstr "Үстідегі панель"
-
-#~ msgid "toggle-switch-us"
-#~ msgstr "toggle-switch-intl"
-
-#~ msgid "%A, %B %d"
-#~ msgstr "%A, %B %d"
-
-#~ msgid "%d new message"
-#~ msgid_plural "%d new messages"
-#~ msgstr[0] "%d жаңа хабарлама"
-#~ msgstr[1] "%d жаңа хабарлама"
-
-#~ msgid "%d new notification"
-#~ msgid_plural "%d new notifications"
-#~ msgstr[0] "%d жаңа ескерту"
-#~ msgstr[1] "%d жаңа ескерту"
-
-#~ msgid "%d more"
-#~ msgid_plural "%d more"
-#~ msgstr[0] "тағы %d"
-
-#~ msgid "Off"
-#~ msgstr "Сөнд."
-
-#~ msgid "On"
-#~ msgstr "Іске қос."
-
-#~ msgid "Orientation Lock"
-#~ msgstr "Бағдарды бекіту"
-
-#~ msgid "Search"
-#~ msgstr "Іздеу"
-
-#~ msgid "evolution"
-#~ msgstr "evolution"
-
-#~ msgid "There was an error loading the preferences dialog for %s:"
-#~ msgstr "%s үшін баптаулар сұхбатын жүктеу кезінде қате орын алды:"
-
-#~ msgid "%s, then %s later."
-#~ msgstr "%s, одан кейін %s."
-
-#~ msgid "%s, then %s, followed by %s later."
-#~ msgstr "%s, одан кейін %s, одан кейін %s."
-
-#~ msgid "Feels like %s."
-#~ msgstr "%s сияқты сезіледі."
-
-#~ msgctxt "search-result"
-#~ msgid "Power off"
-#~ msgstr "Сөндіру"
-
-#~ msgctxt "search-result"
-#~ msgid "Log out"
-#~ msgstr "Жүйеден шығу"
-
-#~ msgctxt "search-result"
-#~ msgid "Switch user"
-#~ msgstr "Пайдаланушыны ауыстыру"
-
-#~ msgid "Hide tray"
-#~ msgstr "Жүйелік трейді жасыру"
-
-#~ msgid "Status Icons"
-#~ msgstr "Қалып-күй таңбашалары"
-
-#~ msgid "Events"
-#~ msgstr "Оқиғалар"
-
-#~ msgid "Notifications"
-#~ msgstr "Хабарламалар"
-
-#~ msgid "Clear section"
-#~ msgstr "Санатты тазарту"
-
-#~ msgid "Media"
-#~ msgstr "Медиа"
-
-#~ msgid "%d x %d"
-#~ msgstr "%d x %d"
-
-#~ msgid "Web Authentication Redirect"
-#~ msgstr "Веб аутентификацияның қайта бағдарлауы"
-
-#~ msgid "Not In Use"
-#~ msgstr "Қолданылуда емес"
-
-#~ msgid "Show the week date in the calendar"
-#~ msgstr "Күнтізбеде апта күнін көрсету"
-
-#~ msgid "If true, display the ISO week date in the calendar."
-#~ msgstr "Ақиқат болса, күнтізбеде ISO апта күнін көрсетеді."
-
-#~ msgid "Use as Internet connection"
-#~ msgstr "Интернетпен байланыс ретінде қолдану"
-
-#~ msgid "%s is requesting access to your location."
-#~ msgstr "%s орналасу ақпаратыңызға қатынауды сұрайды."
-
-#~ msgid "GNOME Shell (wayland compositor)"
-#~ msgstr "GNOME Shell (wayland үйлестіргіші)"
-
-#~ msgid "%d Connected Device"
-#~ msgid_plural "%d Connected Devices"
-#~ msgstr[0] "%d байланысқан құрылғы"
-
-#~ msgid "UPS"
-#~ msgstr "UPS"
-
-#~ msgid "Battery"
-#~ msgstr "Батарея"
-
-#~ msgid "Airplane Mode"
-#~ msgstr "Ұшақтағы режим"
-
-#~ msgctxt "event list time"
-#~ msgid "%H∶%M"
-#~ msgstr "%H∶%M"
-
-#~ msgctxt "event list time"
-#~ msgid "%l∶%M %p"
-#~ msgstr "%l∶%M %p"
-
-#~ msgid "Invitation"
-#~ msgstr "Шақыру"
-
-#~ msgid "Call"
-#~ msgstr "Қоңырау"
-
-#~ msgid "File Transfer"
-#~ msgstr "Файлдармен алмасу"
-
-#~ msgid "Chat"
-#~ msgstr "Чат"
-
-#~ msgid "Invitation to %s"
-#~ msgstr "%s ішіне шақыру"
-
-#~ msgid "%s is inviting you to join %s"
-#~ msgstr "%s сізді %s ішіне қосылуды шақырады"
-
-#~ msgid "Decline"
-#~ msgstr "Тайдыру"
-
-#~ msgid "Accept"
-#~ msgstr "Қабылдау"
-
-#~ msgid "Video call from %s"
-#~ msgstr "Видео қоңырау: %s"
-
-#~ msgid "Call from %s"
-#~ msgstr "Қоңырау: %s"
-
-#~ msgid "Answer"
-#~ msgstr "Жауап"
-
-#~ msgid "%s is sending you %s"
-#~ msgstr "%s сізге %s жіберуде"
-
-#~ msgid "%s would like permission to see when you are online"
-#~ msgstr "%s сіз қашан желіде болатыныңызды білу құқығын сұрап тұр"
-
-#~ msgid "Authentication failed"
-#~ msgstr "Аутентификация сәтсіз"
-
-#~ msgid "Encryption error"
-#~ msgstr "Шифрлеу қатесі"
-
-#~ msgid "Certificate not provided"
-#~ msgstr "Сертификат ұсынылмады"
-
-#~ msgid "Certificate untrusted"
-#~ msgstr "Сертификат сенімсіз"
-
-#~ msgid "Certificate expired"
-#~ msgstr "Сертификаттың мерзімі аяқталған"
-
-#~ msgid "Certificate not activated"
-#~ msgstr "Сертификат белсендірілмеген"
-
-#~ msgid "Certificate hostname mismatch"
-#~ msgstr "Сертификаттың хост аты сәйкес емес"
-
-#~ msgid "Certificate fingerprint mismatch"
-#~ msgstr "Сертификаттың баспасы сәйкес емес"
-
-#~ msgid "Certificate self-signed"
-#~ msgstr "Сертификат өздігінен қолтаңбаланған"
-
-#~ msgid "Status is set to offline"
-#~ msgstr "Қалып-күй желіде емес етіп орнатылды"
-
-#~ msgid "Certificate is invalid"
-#~ msgstr "Сертификат дұрыс емес"
-
-#~ msgid "Connection has been refused"
-#~ msgstr "Сертификат тайдырылды"
-
-#~ msgid "Connection can't be established"
-#~ msgstr "Байланысты орнату мүмкін емес"
-
-#~ msgid "Connection has been lost"
-#~ msgstr "Байланыс жоғалтылды"
-
-#~ msgid "This account is already connected to the server"
-#~ msgstr "Бұл тіркелгі серверге байланысқан болып тұр"
-
-#~ msgid ""
-#~ "Connection has been replaced by a new connection using the same resource"
-#~ msgstr "Байланыс дәл сол ресурсты қолданып, жаңа байланыспен алмастырылды"
-
-#~ msgid "The account already exists on the server"
-#~ msgstr "Бұл тіркелгі серверде бар болып тұр"
-
-#~ msgid "Server is currently too busy to handle the connection"
-#~ msgstr "Сервер бұл байланысты өңдеу үшін тым бос емес"
-
-#~ msgid "Certificate has been revoked"
-#~ msgstr "Сертификат қайта шақырылған"
-
-#~ msgid ""
-#~ "Certificate uses an insecure cipher algorithm or is cryptographically weak"
-#~ msgstr ""
-#~ "Сертификат қауіпсіз емес шифрлеу алгоритмін қолдануда немесе "
-#~ "криптографиялы әлсіз"
-
-#~ msgid ""
-#~ "The length of the server certificate, or the depth of the server "
-#~ "certificate chain, exceed the limits imposed by the cryptography library"
-#~ msgstr ""
-#~ "Сервер сертификатының ұзындығы, не ол сертификат тізбегінің ұзындығы "
-#~ "криптографиялық жинақ ұсына алатын шегінен асып тұр"
-
-#~ msgid "Internal error"
-#~ msgstr "Ішкі қате"
-
-#~ msgid "View account"
-#~ msgstr "Тіркелгіні қарап шығу"
-
-#~ msgid "Show the message list"
-#~ msgstr "Хабарламалар тізімін көрсету"
-
-#~ msgctxt "list sunday"
-#~ msgid "Su"
-#~ msgstr "Жк"
-
-#~ msgctxt "list monday"
-#~ msgid "M"
-#~ msgstr "Бс"
-
-#~ msgctxt "list tuesday"
-#~ msgid "T"
-#~ msgstr "Сс"
-
-#~ msgctxt "list wednesday"
-#~ msgid "W"
-#~ msgstr "Ср"
-
-#~ msgctxt "list thursday"
-#~ msgid "Th"
-#~ msgstr "Бс"
-
-#~ msgctxt "list friday"
-#~ msgid "F"
-#~ msgstr "Жм"
-
-#~ msgctxt "list saturday"
-#~ msgid "S"
-#~ msgstr "Сн"
-
-#~ msgid "Today"
-#~ msgstr "Бүгін"
-
-#~ msgid "Tomorrow"
-#~ msgstr "Ертең"
-
-#~ msgid "This week"
-#~ msgstr "Осы аптада"
-
-#~ msgid "Next week"
-#~ msgstr "Келесі аптада"
-
-#~ msgid "Removable Devices"
-#~ msgstr "Ауыстырмалы құрылғылар"
-
-#~ msgid "Eject"
-#~ msgstr "Шығару"
-
-#~ msgid "Unmute"
-#~ msgstr "Дыбысты қайтару"
-
-#~ msgid "Mute"
-#~ msgstr "Дыбысын өшіру"
-
-#~ msgid "Open Calendar"
-#~ msgstr "Күнтізбені ашу"
-
-#~ msgid "Open"
-#~ msgstr "Ашу"
-
-#~ msgid "Clear Messages"
-#~ msgstr "Хабарламаларды тазарту"
-
-#~ msgid "Notification Settings"
-#~ msgstr "Хабарлау баптаулары"
-
-#~ msgid "No Messages"
-#~ msgstr "Хабарламалар жоқ"
-
-#~ msgid "Message Tray"
-#~ msgstr "Жүйелік трей"
-
-#~ msgid "Captive Portal"
-#~ msgstr "Captive-портал"
-
-#~ msgid "The maximum accuracy level of location."
-#~ msgstr "Орналасудың максималды дәлдік деңгейі."

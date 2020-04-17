@@ -1,24 +1,22 @@
-# Norwegian bokmål translation of gnome-shell.
-# Copyright (C) 2009 THE PACKAGE'S COPYRIGHT HOLDER
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the gnome-shell package.
-#
-# Åka Sikrom <a4@hush.com>, 2014-2015.
-# Kjartan Maraas <kmaraas@gnome.org>, 2009-2020.
-# Torstein Adolf Winterseth <kvikende@fsfe.org>, 2010.
+# 
+# Translators:
+# Torstein Adolf Winterseth <kvikende@fsfe.org>, 2010
 msgid ""
 msgstr ""
-"Project-Id-Version: gnome-shell 3.36.x\n"
+"Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-04-17 17:11+0100\n"
-"PO-Revision-Date: 2020-03-09 16:39+0100\n"
-"Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
-"Language-Team: Norwegian bokmål <i18n-nb@lister.ping.uio.no>\n"
-"Language: nb\n"
+"PO-Revision-Date: 2020-04-17 16:20+0000\n"
+"Last-Translator: Will Thompson <wjt@endlessm.com>\n"
+"Language-Team: Norwegian Bokmål (http://www.transifex.com/endless-os/gnome-shell/language/nb/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: nb\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 1.5.4\n"
 
 #: data/50-gnome-shell-system.xml:6
 msgid "System"
@@ -60,9 +58,7 @@ msgstr "Slå på interne verktøy for utviklere og testere fra Alt-F2"
 msgid ""
 "Allows access to internal debugging and monitoring tools using the Alt-F2 "
 "dialog."
-msgstr ""
-"Tillat tilgang til interne feilsøkings- og overvåkingsverktøy ved å bruke "
-"Alt-F2-dialogen."
+msgstr "Tillat tilgang til interne feilsøkings- og overvåkingsverktøy ved å bruke Alt-F2-dialogen."
 
 #: data/org.gnome.shell.gschema.xml.in:25
 msgid "UUIDs of extensions to enable"
@@ -70,15 +66,11 @@ msgstr "UUID-er for utvidelser som skal slås på"
 
 #: data/org.gnome.shell.gschema.xml.in:26
 msgid ""
-"GNOME Shell extensions have a UUID property; this key lists extensions which "
-"should be loaded. Any extension that wants to be loaded needs to be in this "
-"list. You can also manipulate this list with the EnableExtension and "
+"GNOME Shell extensions have a UUID property; this key lists extensions which"
+" should be loaded. Any extension that wants to be loaded needs to be in this"
+" list. You can also manipulate this list with the EnableExtension and "
 "DisableExtension D-Bus methods on org.gnome.Shell."
-msgstr ""
-"GNOME Shell-utvidelser har en UUID-egenskap. Denne nøkkelen viser utvidelser "
-"som skal lastes inn. Alle utvidelser som ønsker å bli lastet inn må være med "
-"på denne lista. Du kan også manipulere lista med DBus-metodene "
-"EnablExtension og DisableExtension på org.gnome.Shell."
+msgstr "GNOME Shell-utvidelser har en UUID-egenskap. Denne nøkkelen viser utvidelser som skal lastes inn. Alle utvidelser som ønsker å bli lastet inn må være med på denne lista. Du kan også manipulere lista med DBus-metodene EnablExtension og DisableExtension på org.gnome.Shell."
 
 #: data/org.gnome.shell.gschema.xml.in:35
 msgid "UUIDs of extensions to force disabling"
@@ -86,16 +78,12 @@ msgstr "UUID-er for utvidelser som skal tvinges til å slås av"
 
 #: data/org.gnome.shell.gschema.xml.in:36
 msgid ""
-"GNOME Shell extensions have a UUID property; this key lists extensions which "
-"should be disabled, even if loaded as part of the current mode. You can also "
-"manipulate this list with the EnableExtension and DisableExtension D-Bus "
-"methods on org.gnome.Shell. This key takes precedence over the “enabled-"
-"extensions” setting."
-msgstr ""
-"GNOME Shell-utvidelser har en UUID-egenskap. Denne nøkkelen viser utvidelser "
-"som skal slås av selv om de lastes som en del av aktiv modus. Du kan også "
-"manipulere lista med DBus-metodene EnablExtension og DisableExtension på org."
-"gnome.Shell."
+"GNOME Shell extensions have a UUID property; this key lists extensions which"
+" should be disabled, even if loaded as part of the current mode. You can "
+"also manipulate this list with the EnableExtension and DisableExtension "
+"D-Bus methods on org.gnome.Shell. This key takes precedence over the "
+"“enabled-extensions” setting."
+msgstr "GNOME Shell-utvidelser har en UUID-egenskap. Denne nøkkelen viser utvidelser som skal slås av selv om de lastes som en del av aktiv modus. Du kan også manipulere lista med DBus-metodene EnablExtension og DisableExtension på org.gnome.Shell."
 
 #: data/org.gnome.shell.gschema.xml.in:46
 msgid "Disable user extensions"
@@ -105,24 +93,18 @@ msgstr "Slå av brukerutvideleser"
 msgid ""
 "Disable all extensions the user has enabled without affecting the “enabled-"
 "extension” setting."
-msgstr ""
-"Slå av alle utvidelser bruker har aktivert uten å påvirke innstillingen for "
-"«enabled-extension»."
+msgstr "Slå av alle utvidelser bruker har aktivert uten å påvirke innstillingen for «enabled-extension»."
 
 #: data/org.gnome.shell.gschema.xml.in:54
 msgid "Disables the validation of extension version compatibility"
-msgstr ""
-"Slår av gyldighetssjekk av hvorvidt programversjoner passer med utvidelser"
+msgstr "Slår av gyldighetssjekk av hvorvidt programversjoner passer med utvidelser"
 
 #: data/org.gnome.shell.gschema.xml.in:55
 msgid ""
 "GNOME Shell will only load extensions that claim to support the current "
 "running version. Enabling this option will disable this check and try to "
 "load all extensions regardless of the versions they claim to support."
-msgstr ""
-"GNOME Shell laster bare inn utvidelser som hevder å støtte kjørende versjon. "
-"Hvis du slår på dette valget, slår du av denne sjekken, og alle utvidelser "
-"lastes inn uavhengig av hvilke versjoner de hevder å støtte."
+msgstr "GNOME Shell laster bare inn utvidelser som hevder å støtte kjørende versjon. Hvis du slår på dette valget, slår du av denne sjekken, og alle utvidelser lastes inn uavhengig av hvilke versjoner de hevder å støtte."
 
 #: data/org.gnome.shell.gschema.xml.in:63
 msgid "List of desktop file IDs for favorite applications"
@@ -130,10 +112,9 @@ msgstr "Liste av skrivebordsfil-id-er for favorittprogrammer"
 
 #: data/org.gnome.shell.gschema.xml.in:64
 msgid ""
-"The applications corresponding to these identifiers will be displayed in the "
-"favorites area."
-msgstr ""
-"Programmene som passer til disse identifikatorene vises i favorittområdet."
+"The applications corresponding to these identifiers will be displayed in the"
+" favorites area."
+msgstr "Programmene som passer til disse identifikatorene vises i favorittområdet."
 
 #: data/org.gnome.shell.gschema.xml.in:71
 msgid "App Picker View"
@@ -147,7 +128,8 @@ msgstr "Indeks for valgt visning i programvelgeren."
 msgid "History for command (Alt-F2) dialog"
 msgstr "Historikk for kommandodialog (Alt-F2)"
 
-#. Translators: looking glass is a debugger and inspector tool, see https://wiki.gnome.org/Projects/GnomeShell/LookingGlass
+#. Translators: looking glass is a debugger and inspector tool, see
+#. https://wiki.gnome.org/Projects/GnomeShell/LookingGlass
 #: data/org.gnome.shell.gschema.xml.in:83
 msgid "History for the looking glass dialog"
 msgstr "Historikk for forstørrelsesglass-dialogen"
@@ -158,11 +140,9 @@ msgstr "Alltid vis menyoppføringen «Logg ut» i brukermenyen."
 
 #: data/org.gnome.shell.gschema.xml.in:88
 msgid ""
-"This key overrides the automatic hiding of the “Log out” menu item in single-"
-"user, single-session situations."
-msgstr ""
-"Denne nøkkelen overstyrer automatisk skjuling av menyoppføringen «Logg ut» i "
-"situasjonen én bruker, én sesjon."
+"This key overrides the automatic hiding of the “Log out” menu item in "
+"single-user, single-session situations."
+msgstr "Denne nøkkelen overstyrer automatisk skjuling av menyoppføringen «Logg ut» i situasjonen én bruker, én sesjon."
 
 #: data/org.gnome.shell.gschema.xml.in:95
 msgid ""
@@ -175,18 +155,12 @@ msgid ""
 "filesystem is mounted. If the password can be saved for future use a "
 "“Remember Password” checkbox will be present. This key sets the default "
 "state of the checkbox."
-msgstr ""
-"Skallet spør etter passord når du monterer en kryptert enhet eller et "
-"eksternt filsystem. Hvis passordet kan lagres for fremtidig bruk, vises en "
-"avkryssingsboks med teksten «Husk passord». Denne nøkkelen bestemmer "
-"standardverdien for avkryssingsboksen."
+msgstr "Skallet spør etter passord når du monterer en kryptert enhet eller et eksternt filsystem. Hvis passordet kan lagres for fremtidig bruk, vises en avkryssingsboks med teksten «Husk passord». Denne nøkkelen bestemmer standardverdien for avkryssingsboksen."
 
 #: data/org.gnome.shell.gschema.xml.in:105
 msgid ""
 "Whether the default Bluetooth adapter had set up devices associated to it"
-msgstr ""
-"Hvorvidt forvalgt Bluetooth-enhet hadde ferdigoppsatte enheter assosiert med "
-"seg"
+msgstr "Hvorvidt forvalgt Bluetooth-enhet hadde ferdigoppsatte enheter assosiert med seg"
 
 #: data/org.gnome.shell.gschema.xml.in:106
 msgid ""
@@ -223,8 +197,8 @@ msgstr ""
 #: data/org.gnome.shell.gschema.xml.in:139
 msgid ""
 "Default position of the hot corner is in a right corner. Set false to move "
-"the hot corner to a left corner. The position is not affected by the RTL vs. "
-"LTR text direction."
+"the hot corner to a left corner. The position is not affected by the RTL vs."
+" LTR text direction."
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:147
@@ -244,8 +218,8 @@ msgstr ""
 #: data/org.gnome.shell.gschema.xml.in:160
 msgid ""
 "Number of pixels in one dimension of the square target for the hot corner. "
-"Default is for a single pixel in the very corner. For some virtual machines, "
-"this value may need to be set larger than the default."
+"Default is for a single pixel in the very corner. For some virtual machines,"
+" this value may need to be set larger than the default."
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:170
@@ -255,8 +229,8 @@ msgstr ""
 #: data/org.gnome.shell.gschema.xml.in:173
 msgid ""
 "Makes window management more like standard Gnome. Hides application splash "
-"screens, prevents applications from being forced to open maximized, and does "
-"not automatically switch to the app selector when a window is minimized."
+"screens, prevents applications from being forced to open maximized, and does"
+" not automatically switch to the app selector when a window is minimized."
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:182
@@ -266,10 +240,11 @@ msgstr ""
 #: data/org.gnome.shell.gschema.xml.in:183
 msgid ""
 "This key controls whether to show the \"Forgot Password?\" button on the "
-"login screen. 'default' tells GNOME Shell to use the vendor default setting. "
-"'enable' and 'disable' can be used to explicitly enable or disable the reset "
-"button, respectively. Note that it only makes sense to set this key for the "
-"Debian-gdm user; changing it for your own user account will have no effect."
+"login screen. 'default' tells GNOME Shell to use the vendor default setting."
+" 'enable' and 'disable' can be used to explicitly enable or disable the "
+"reset button, respectively. Note that it only makes sense to set this key "
+"for the Debian-gdm user; changing it for your own user account will have no "
+"effect."
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:194
@@ -308,8 +283,7 @@ msgstr "Tastaturbinding som åpner visningen «Vis programmer»"
 #: data/org.gnome.shell.gschema.xml.in:223
 msgid ""
 "Keybinding to open the “Show Applications” view of the Activities Overview."
-msgstr ""
-"Tastaturbinding som åpner visningen «Vis programmer» i aktivitetsoversikten."
+msgstr "Tastaturbinding som åpner visningen «Vis programmer» i aktivitetsoversikten."
 
 #: data/org.gnome.shell.gschema.xml.in:230
 msgid "Keybinding to open the overview"
@@ -372,14 +346,12 @@ msgid "Switch to application 9"
 msgstr "Bytt til program 9"
 
 #: data/org.gnome.shell.gschema.xml.in:290
-#, fuzzy
 msgid "Keybinding that shows the force app exit dialog"
-msgstr "Tastaturbinding som åpner programmenyen"
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:295
-#, fuzzy
 msgid "Keybinding to activate the first app in the icon bar."
-msgstr "Tastaturbinding som åpner programmenyen."
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:296
 msgid ""
@@ -388,9 +360,8 @@ msgid ""
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:302
-#, fuzzy
 msgid "Keybinding to activate the second app in the icon bar."
-msgstr "Tastaturbinding som åpner programmenyen."
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:303
 msgid ""
@@ -399,9 +370,8 @@ msgid ""
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:309
-#, fuzzy
 msgid "Keybinding to activate the third app in the icon bar."
-msgstr "Tastaturbinding som åpner programmenyen."
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:310
 msgid ""
@@ -410,9 +380,8 @@ msgid ""
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:316
-#, fuzzy
 msgid "Keybinding to activate the fourth app in the icon bar."
-msgstr "Tastaturbinding som åpner programmenyen."
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:317
 msgid ""
@@ -421,9 +390,8 @@ msgid ""
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:323
-#, fuzzy
 msgid "Keybinding to activate the fifth app in the icon bar."
-msgstr "Tastaturbinding som åpner programmenyen."
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:324
 msgid ""
@@ -432,9 +400,8 @@ msgid ""
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:330
-#, fuzzy
 msgid "Keybinding to activate the sixth app in the icon bar."
-msgstr "Tastaturbinding som åpner programmenyen."
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:331
 msgid ""
@@ -443,9 +410,8 @@ msgid ""
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:337
-#, fuzzy
 msgid "Keybinding to activate the seventh app in the icon bar."
-msgstr "Tastaturbinding som åpner programmenyen."
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:338
 msgid ""
@@ -454,9 +420,8 @@ msgid ""
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:344
-#, fuzzy
 msgid "Keybinding to activate the eighth app in the icon bar."
-msgstr "Tastaturbinding som åpner programmenyen."
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:345
 msgid ""
@@ -465,9 +430,8 @@ msgid ""
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:351
-#, fuzzy
 msgid "Keybinding to activate the last app in the icon bar."
-msgstr "Tastaturbinding som åpner programmenyen."
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:352
 msgid ""
@@ -484,10 +448,7 @@ msgstr "Begrens programveksling til gjeldende arbeidsområde."
 msgid ""
 "If true, only applications that have windows on the current workspace are "
 "shown in the switcher. Otherwise, all applications are included."
-msgstr ""
-"Hvis verdien er sann («true»), er det bare programmer med vinduer på "
-"gjeldende arbeidsområder som vises i programveksleren. I motsatt fall kan du "
-"veksle mellom programmer på tvers av arbeidsområder."
+msgstr "Hvis verdien er sann («true»), er det bare programmer med vinduer på gjeldende arbeidsområder som vises i programveksleren. I motsatt fall kan du veksle mellom programmer på tvers av arbeidsområder."
 
 #: data/org.gnome.shell.gschema.xml.in:381
 msgid "The application icon mode."
@@ -496,21 +457,15 @@ msgstr "Ikonmodus for programmet."
 #: data/org.gnome.shell.gschema.xml.in:382
 msgid ""
 "Configures how the windows are shown in the switcher. Valid possibilities "
-"are “thumbnail-only” (shows a thumbnail of the window), “app-icon-"
-"only” (shows only the application icon) or “both”."
-msgstr ""
-"Bestemmer hvordan vinduene vises i programveksleren. Gyldige "
-"valgalternativer er «thumbnail-only» (viser miniatyrbilde av vinduet), «app-"
-"icon-only» (viser bare programikonet) og «both» (viser begge forannevnte)."
+"are “thumbnail-only” (shows a thumbnail of the window), “app-icon-only” "
+"(shows only the application icon) or “both”."
+msgstr "Bestemmer hvordan vinduene vises i programveksleren. Gyldige valgalternativer er «thumbnail-only» (viser miniatyrbilde av vinduet), «app-icon-only» (viser bare programikonet) og «both» (viser begge forannevnte)."
 
 #: data/org.gnome.shell.gschema.xml.in:391
 msgid ""
 "If true, only windows from the current workspace are shown in the switcher. "
 "Otherwise, all windows are included."
-msgstr ""
-"Hvis verdien er sann («true»), er det bare vinduer på gjeldende "
-"arbeidsområder som vises i programveksleren. I motsatt fall vises vinduer "
-"fra alle arbeidsområder."
+msgstr "Hvis verdien er sann («true»), er det bare vinduer på gjeldende arbeidsområder som vises i programveksleren. I motsatt fall vises vinduer fra alle arbeidsområder."
 
 #: data/org.gnome.shell.gschema.xml.in:401
 msgid "Locations"
@@ -547,13 +502,11 @@ msgstr "Fest modal dialog til opphavsvinduet"
 #: data/org.gnome.shell.gschema.xml.in:467
 msgid ""
 "This key overrides the key in org.gnome.mutter when running GNOME Shell."
-msgstr ""
-"Denne nøkkelen overstyrer nøkkelen i org.gnome.mutter når GNOME Shell kjøres."
+msgstr "Denne nøkkelen overstyrer nøkkelen i org.gnome.mutter når GNOME Shell kjøres."
 
 #: data/org.gnome.shell.gschema.xml.in:442
 msgid "Enable edge tiling when dropping windows on screen edges"
-msgstr ""
-"Del opp skjermkantene i fliser når brukeren drar og slipper vinduer på dem"
+msgstr "Del opp skjermkantene i fliser når brukeren drar og slipper vinduer på dem"
 
 #: data/org.gnome.shell.gschema.xml.in:450
 msgid "Workspaces are managed dynamically"
@@ -581,10 +534,7 @@ msgid ""
 "We’re very sorry, but there’s been a problem: the settings for this "
 "extension can’t be displayed. We recommend that you report the issue to the "
 "extension authors."
-msgstr ""
-"Beklager, men det har oppstått et problem. Innstillingene for denne "
-"utvidelsen kan ikke vises. Vi anbefaler at du rapporterer dette til "
-"utviklerene av denne utvidelsen."
+msgstr "Beklager, men det har oppstått et problem. Innstillingene for denne utvidelsen kan ikke vises. Vi anbefaler at du rapporterer dette til utviklerene av denne utvidelsen."
 
 #: js/dbusServices/extensions/ui/extension-prefs-dialog.ui:82
 msgid "Technical Details"
@@ -687,13 +637,10 @@ msgid "About Extensions"
 msgstr "Om utvidelser"
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:27
-#, fuzzy
 msgid ""
-"To find and add extensions, visit <a href=\"https://extensions.gnome.org"
-"\">extensions.gnome.org</a>."
+"To find and add extensions, visit <a "
+"href=\"https://extensions.gnome.org\">extensions.gnome.org</a>."
 msgstr ""
-"Utvidelser kan installeres gjennom Programvare eller <a href=\"https://"
-"extensions.gnome.org\">extensions.gnome.org</a>."
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:35
 msgid "Warning"
@@ -722,23 +669,19 @@ msgstr "Ingen installerte utvideleser"
 msgid ""
 "We’re very sorry, but it was not possible to get the list of installed "
 "extensions. Make sure you are logged into GNOME and try again."
-msgstr ""
-"Beklager men det var ikke mulig å hente listen over installerte utvidelser. "
-"Sjekk at du har logget inn i GNOME og prøv igjen."
+msgstr "Beklager men det var ikke mulig å hente listen over installerte utvidelser. Sjekk at du har logget inn i GNOME og prøv igjen."
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:288
 msgid "Log Out…"
 msgstr "Logg ut …"
 
 #: js/gdm/authPrompt.js:131
-#, fuzzy
 msgid "Show password hint"
-msgstr "Passord for VPN"
+msgstr ""
 
 #: js/gdm/authPrompt.js:148
-#, fuzzy
 msgid "Forgot password?"
-msgstr "Passord for VPN"
+msgstr ""
 
 #. Cisco LEAP
 #: js/gdm/authPrompt.js:303 js/ui/components/networkAgent.js:363
@@ -749,13 +692,14 @@ msgstr "Passord for VPN"
 msgid "Password"
 msgstr "Passord"
 
-#. Translators: During a password reset, prompt for the "secret code" provided by customer support.
+#. Translators: During a password reset, prompt for the "secret code" provided
+#. by customer support.
 #: js/gdm/authPrompt.js:680
-#, fuzzy
 msgid "Enter unlock code"
-msgstr "Kan ikke låse opp volum"
+msgstr ""
 
-#. Translators: Password reset. The first %s is a verification code and the second is an email.
+#. Translators: Password reset. The first %s is a verification code and the
+#. second is an email.
 #: js/gdm/authPrompt.js:683
 #, javascript-format
 msgid ""
@@ -765,9 +709,8 @@ msgid ""
 msgstr ""
 
 #: js/gdm/authPrompt.js:762
-#, fuzzy
 msgid "Your unlock code was incorrect. Please try again."
-msgstr "Beklager, det virket ikke. Prøv igjen."
+msgstr ""
 
 #: js/gdm/loginDialog.js:317
 msgid "Choose Session"
@@ -815,7 +758,8 @@ msgctxt "search-result"
 msgid "Power Off"
 msgstr "Slå av"
 
-#. Translators: A list of keywords that match the power-off action, separated by semicolons
+#. Translators: A list of keywords that match the power-off action, separated
+#. by semicolons
 #: js/misc/systemActions.js:92
 msgid "power off;shutdown;reboot;restart;halt;stop"
 msgstr "slå av;steng ned;start på nytt;omstart;stopp"
@@ -826,7 +770,8 @@ msgctxt "search-result"
 msgid "Lock Screen"
 msgstr "Lås skjerm"
 
-#. Translators: A list of keywords that match the lock screen action, separated by semicolons
+#. Translators: A list of keywords that match the lock screen action,
+#. separated by semicolons
 #: js/misc/systemActions.js:100
 msgid "lock screen"
 msgstr "lås skjerm"
@@ -837,7 +782,8 @@ msgctxt "search-result"
 msgid "Log Out"
 msgstr "Logg ut"
 
-#. Translators: A list of keywords that match the logout action, separated by semicolons
+#. Translators: A list of keywords that match the logout action, separated by
+#. semicolons
 #: js/misc/systemActions.js:108
 msgid "logout;log out;sign off"
 msgstr "logg ut;logg av;"
@@ -848,7 +794,8 @@ msgctxt "search-result"
 msgid "Suspend"
 msgstr "Hvilemodus"
 
-#. Translators: A list of keywords that match the suspend action, separated by semicolons
+#. Translators: A list of keywords that match the suspend action, separated by
+#. semicolons
 #: js/misc/systemActions.js:116
 msgid "suspend;sleep"
 msgstr "hvilemodus;sov;"
@@ -859,12 +806,14 @@ msgctxt "search-result"
 msgid "Switch User"
 msgstr "Bytt bruker"
 
-#. Translators: A list of keywords that match the switch user action, separated by semicolons
+#. Translators: A list of keywords that match the switch user action,
+#. separated by semicolons
 #: js/misc/systemActions.js:124
 msgid "switch user"
 msgstr "bytt bruker"
 
-#. Translators: A list of keywords that match the lock orientation action, separated by semicolons
+#. Translators: A list of keywords that match the lock orientation action,
+#. separated by semicolons
 #: js/misc/systemActions.js:131
 msgid "lock orientation;unlock orientation;screen;rotation"
 msgstr "lås orientering;lås opp orientering;skjerm;rotasjon;"
@@ -1016,10 +965,8 @@ msgstr "%-d %B, %H.%M"
 msgid "%B %-d %Y, %l∶%M %p"
 msgstr "%-d %B %Y, %H.%M"
 
-#.
 #. * Translators: this is the name of the search engine that shows in the
 #. * Shell's desktop search entry.
-#.
 #: js/misc/util.js:573
 msgid "Google"
 msgstr ""
@@ -1033,9 +980,7 @@ msgstr "Pålogging for trådløst aksesspunkt"
 msgid ""
 "Your connection to this hotspot login is not secure. Passwords or other "
 "information you enter on this page can be viewed by people nearby."
-msgstr ""
-"Påloggingen din til dette trådløse aksesspunktet er ikke sikker. Passord "
-"eller annen informasjon du oppgir på denne siden kan ses av andre i nærheten."
+msgstr "Påloggingen din til dette trådløse aksesspunktet er ikke sikker. Passord eller annen informasjon du oppgir på denne siden kan ses av andre i nærheten."
 
 #. No support for non-modal system dialogs, so ignore the option
 #. let modal = options['modal'] || true;
@@ -1062,9 +1007,8 @@ msgstr "Start med dedikert skjermkort"
 
 #. Add the "Remove from desktop" menu item at the end.
 #: js/ui/appDisplay.js:2443
-#, fuzzy
 msgid "Remove from desktop"
-msgstr "Fjern fra favoritter"
+msgstr ""
 
 #: js/ui/audioDeviceSelection.js:41
 msgid "Select Audio Device"
@@ -1095,11 +1039,11 @@ msgid "Add App"
 msgstr ""
 
 #: js/ui/backgroundMenu.js:24
-#, fuzzy
 msgid "Add Website"
-msgstr "Nettsted"
+msgstr ""
 
-#. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday).
+#. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0"
+#. (Sunday) "6" (Saturday) "06" (Sunday and Saturday).
 #: js/ui/calendar.js:41
 msgctxt "calendar-no-work"
 msgid "06"
@@ -1109,7 +1053,6 @@ msgstr "06"
 #. *
 #. * NOTE: These grid abbreviations are always shown together
 #. * and in order, e.g. "S M T W T F S".
-#.
 #: js/ui/calendar.js:70
 msgctxt "grid sunday"
 msgid "S"
@@ -1156,7 +1099,6 @@ msgstr "L"
 #. * standalone, when this is a month of the current year.
 #. * "%OB" is the new format specifier introduced in glibc 2.27,
 #. * in most cases you should not change it.
-#.
 #: js/ui/calendar.js:371
 msgid "%OB"
 msgstr "%OB"
@@ -1169,7 +1111,6 @@ msgstr "%OB"
 #. * "%OB" is the new format specifier introduced in glibc 2.27,
 #. * in most cases you should not use the old "%B" here unless you
 #. * absolutely know what you are doing.
-#.
 #: js/ui/calendar.js:381
 msgid "%OB %Y"
 msgstr "%OB %Y"
@@ -1194,19 +1135,20 @@ msgstr "Uke %V"
 
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
-#.
 #: js/ui/calendar.js:730
 msgctxt "event list time"
 msgid "All Day"
 msgstr "Hele dagen"
 
-#. Translators: Shown on calendar heading when selected day occurs on current year
+#. Translators: Shown on calendar heading when selected day occurs on current
+#. year
 #: js/ui/calendar.js:868
 msgctxt "calendar heading"
 msgid "%A, %B %-d"
 msgstr "%A, %-d %B"
 
-#. Translators: Shown on calendar heading when selected day occurs on different year
+#. Translators: Shown on calendar heading when selected day occurs on
+#. different year
 #: js/ui/calendar.js:871
 msgctxt "calendar heading"
 msgid "%A, %B %-d, %Y"
@@ -1238,9 +1180,7 @@ msgstr "«%s» svarer ikke."
 msgid ""
 "You may choose to wait a short while for it to continue or force the "
 "application to quit entirely."
-msgstr ""
-"Du kan vente en liten stund for å se om det fortsetter eller tvinge "
-"programmet til å avsluttes."
+msgstr "Du kan vente en liten stund for å se om det fortsetter eller tvinge programmet til å avsluttes."
 
 #: js/ui/closeDialog.js:70
 msgid "Force Quit"
@@ -1274,8 +1214,7 @@ msgstr "Åpne med %s"
 #: js/ui/components/networkAgent.js:97
 msgid ""
 "Alternatively you can connect by pushing the “WPS” button on your router."
-msgstr ""
-"Alternativt kan du koble til ved å trykke på «WPS»-knappen på ruteren din."
+msgstr "Alternativt kan du koble til ved å trykke på «WPS»-knappen på ruteren din."
 
 #: js/ui/components/networkAgent.js:109 js/ui/status/network.js:223
 #: js/ui/status/network.js:314 js/ui/status/network.js:916
@@ -1364,9 +1303,7 @@ msgstr "Nettverkshåndtering"
 msgid ""
 "Passwords or encryption keys are required to access the wireless network "
 "“%s”."
-msgstr ""
-"Passord eller krypteringsnøkler kreves for å koble til trådløst nettverk "
-"«%s»."
+msgstr "Passord eller krypteringsnøkler kreves for å koble til trådløst nettverk «%s»."
 
 #: js/ui/components/networkAgent.js:871
 msgid "VPN password"
@@ -1392,7 +1329,8 @@ msgstr "Autentiser"
 msgid "Sorry, that didn’t work. Please try again."
 msgstr "Beklager, det virket ikke. Prøv igjen."
 
-#. Translators: this is the other person changing their old IM name to their new
+#. Translators: this is the other person changing their old IM name to their
+#. new
 #. IM name.
 #: js/ui/components/telepathyClient.js:823
 #, javascript-format
@@ -1421,7 +1359,6 @@ msgstr "Favoritter"
 #. * shown - it is shown just below the time in the top bar (e.g.,
 #. * "Tue 9:29 AM").  The string itself should become a full date, e.g.,
 #. * "February 17 2015".
-#.
 #: js/ui/dateMenu.js:75
 msgid "%B %-d %Y"
 msgstr "%-d %B %Y"
@@ -1429,7 +1366,6 @@ msgstr "%-d %B %Y"
 #. Translators: This is the accessible name of the date button shown
 #. * below the time in the shell; it should combine the weekday and the
 #. * date, e.g. "Tuesday February 17 2015".
-#.
 #: js/ui/dateMenu.js:82
 msgid "%A %B %e %Y"
 msgstr "%A %e %B %Y"
@@ -1543,14 +1479,12 @@ msgstr "Start på nytt og installer oppdateringer"
 
 #: js/ui/endSessionDialog.js:93
 #, javascript-format
-msgid "The system will automatically restart and install updates in %d second."
+msgid ""
+"The system will automatically restart and install updates in %d second."
 msgid_plural ""
 "The system will automatically restart and install updates in %d seconds."
-msgstr[0] ""
-"Systemet starter på nytt og installere oppdateringer automatisk om %d sekund."
-msgstr[1] ""
-"Systemet starter på nytt og installere oppdateringer automatisk om %d "
-"sekunder."
+msgstr[0] "Systemet starter på nytt og installere oppdateringer automatisk om %d sekund."
+msgstr[1] "Systemet starter på nytt og installere oppdateringer automatisk om %d sekunder."
 
 #: js/ui/endSessionDialog.js:99 js/ui/endSessionDialog.js:118
 msgctxt "button"
@@ -1580,16 +1514,11 @@ msgstr "Start på nytt og installer oppgradering"
 msgid ""
 "%s %s will be installed after restart. Upgrade installation can take a long "
 "time: ensure that you have backed up and that the computer is plugged in."
-msgstr ""
-"%s %s vil bli installert etter omstart. Installering av oppgraderinger kan "
-"ta lang tid: sjekk at du har en sikkerhetskopi og at datamaskinen er koblet "
-"til strøm."
+msgstr "%s %s vil bli installert etter omstart. Installering av oppgraderinger kan ta lang tid: sjekk at du har en sikkerhetskopi og at datamaskinen er koblet til strøm."
 
 #: js/ui/endSessionDialog.js:261
 msgid "Running on battery power: Please plug in before installing updates."
-msgstr ""
-"Kjører på batteristrøm: vennligst koble til strøm før oppdateringer blir "
-"installert."
+msgstr "Kjører på batteristrøm: vennligst koble til strøm før oppdateringer blir installert."
 
 #: js/ui/endSessionDialog.js:270
 msgid "Some applications are busy or have unsaved work"
@@ -1636,9 +1565,8 @@ msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "Vil du laste ned og installere «%s» fra extensions.gnome.org?"
 
 #: js/ui/extensionSystem.js:229
-#, fuzzy
 msgid "Extension Updates Available"
-msgstr "Ingen utvidelser installert"
+msgstr ""
 
 #: js/ui/extensionSystem.js:230
 msgid "Extension updates are ready to be installed."
@@ -1650,14 +1578,13 @@ msgstr "Tillat hindring av snarveier"
 
 #. Translators: %s is an application name like "Settings"
 #: js/ui/inhibitShortcutsDialog.js:82
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "The application %s wants to inhibit shortcuts"
-msgstr "Programmet vil hindre snarveier"
+msgstr ""
 
 #: js/ui/inhibitShortcutsDialog.js:83
-#, fuzzy
 msgid "An application wants to inhibit shortcuts"
-msgstr "Programmet vil hindre snarveier"
+msgstr ""
 
 #. Translators: %s is a keyboard shortcut like "Super+x"
 #: js/ui/inhibitShortcutsDialog.js:90
@@ -1683,8 +1610,8 @@ msgstr "Trege taster er slått av"
 
 #: js/ui/kbdA11yDialog.js:34
 msgid ""
-"You just held down the Shift key for 8 seconds. This is the shortcut for the "
-"Slow Keys feature, which affects the way your keyboard works."
+"You just held down the Shift key for 8 seconds. This is the shortcut for the"
+" Slow Keys feature, which affects the way your keyboard works."
 msgstr ""
 
 #: js/ui/kbdA11yDialog.js:41
@@ -1919,8 +1846,8 @@ msgstr ""
 #: js/ui/paygUnlockDialog.js:160
 #, javascript-format
 msgid ""
-"Talk to your sales representative to purchase a new code. Call or text %s at "
-"%s"
+"Talk to your sales representative to purchase a new code. Call or text %s at"
+" %s"
 msgstr ""
 
 #. No overrides present, default to fallback text.
@@ -1934,9 +1861,8 @@ msgid "Pay As You Go Account ID: %s"
 msgstr ""
 
 #: js/ui/paygUnlockDialog.js:198
-#, fuzzy
 msgid "Unlock Machine"
-msgstr "Lås opp vindu"
+msgstr ""
 
 #: js/ui/paygUnlockDialog.js:287 js/ui/shellMountOperation.js:380
 msgid "Unlock"
@@ -1959,7 +1885,8 @@ msgid "Pay As You Go"
 msgstr ""
 
 #: js/ui/payg.js:40
-msgid "Enter an unlock code to extend the time before your credit has expired."
+msgid ""
+"Enter an unlock code to extend the time before your credit has expired."
 msgstr ""
 
 #: js/ui/payg.js:41
@@ -1979,9 +1906,8 @@ msgid "Too many attempts. Try again in a few seconds."
 msgstr ""
 
 #: js/ui/payg.js:261
-#, fuzzy
 msgid "Invalid code. Please try again."
-msgstr "Beklager, det virket ikke. Prøv igjen."
+msgstr ""
 
 #: js/ui/payg.js:263
 msgid "Code already used. Please enter a new code."
@@ -1996,12 +1922,13 @@ msgstr ""
 msgid "Your Pay As You Go Account ID is: %s"
 msgstr ""
 
-#. We don't consider any other error here (and we don't consider DISABLED explicitly,
-#. since that should not happen), but still we need to show something to the user.
+#. We don't consider any other error here (and we don't consider DISABLED
+#. explicitly,
+#. since that should not happen), but still we need to show something to the
+#. user.
 #: js/ui/payg.js:271
-#, fuzzy
 msgid "Unknown error"
-msgstr "Ukjent"
+msgstr ""
 
 #: js/ui/payg.js:452
 msgid "Apply Code"
@@ -2015,65 +1942,64 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: js/ui/payg.js:610 js/ui/payg.js:620
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s minute"
 msgid_plural "%s minutes"
-msgstr[0] "%d minutt siden"
-msgstr[1] "%d minutter siden"
+msgstr[0] ""
+msgstr[1] ""
 
 #: js/ui/payg.js:614 js/ui/payg.js:631
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s hour"
 msgid_plural "%s hours"
-msgstr[0] "%d time siden"
-msgstr[1] "%d timer siden"
+msgstr[0] ""
+msgstr[1] ""
 
 #: js/ui/payg.js:625
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s day"
 msgid_plural "%s days"
-msgstr[0] "%d dag siden"
-msgstr[1] "%d dager siden"
+msgstr[0] ""
+msgstr[1] ""
 
 #: js/ui/payg.js:641
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s second has been added to your Pay As You Go credit."
 msgid_plural "%s seconds have been added to your Pay As You Go credit."
-msgstr[0] "%s ble lagt til i favoritter."
-msgstr[1] "%s ble lagt til i favoritter."
+msgstr[0] ""
+msgstr[1] ""
 
 #: js/ui/payg.js:648
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s minute has been added to your Pay As You Go credit."
 msgid_plural "%s minutes have been added to your Pay As You Go credit."
-msgstr[0] "%s ble lagt til i favoritter."
-msgstr[1] "%s ble lagt til i favoritter."
+msgstr[0] ""
+msgstr[1] ""
 
 #: js/ui/payg.js:655
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s hour has been added to your Pay As You Go credit."
 msgid_plural "%s hours have been added to your Pay As You Go credit."
-msgstr[0] "%s ble lagt til i favoritter."
-msgstr[1] "%s ble lagt til i favoritter."
+msgstr[0] ""
+msgstr[1] ""
 
 #: js/ui/payg.js:662
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s day has been added to your Pay As You Go credit."
 msgid_plural "%s days have been added to your Pay As You Go credit."
-msgstr[0] "%s ble lagt til i favoritter."
-msgstr[1] "%s ble lagt til i favoritter."
+msgstr[0] ""
+msgstr[1] ""
 
 #: js/ui/payg.js:669
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s month has been added to your Pay As You Go credit."
 msgid_plural "%s months have been added to your Pay As You Go credit."
-msgstr[0] "%s ble lagt til i favoritter."
-msgstr[1] "%s ble lagt til i favoritter."
+msgstr[0] ""
+msgstr[1] ""
 
 #: js/ui/payg.js:676
-#, fuzzy
 msgid "1 year has been added to your Pay As You Go credit."
-msgstr "%s ble lagt til i favoritter."
+msgstr ""
 
 #. Unlock permanently message
 #: js/ui/payg.js:679
@@ -2104,7 +2030,6 @@ msgstr "GNOME må låse skjermen"
 #. screenshield. The user is probably very upset at this
 #. point, but any application using global grabs is broken
 #. Just tell him to stop using this app
-#.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
 #: js/ui/screenShield.js:295 js/ui/screenShield.js:674
@@ -2140,18 +2065,17 @@ msgid "Hide Text"
 msgstr "Skjul tekst"
 
 #: js/ui/shellEntry.js:194
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Search %s and more…"
-msgstr "Søker …"
+msgstr ""
 
 #: js/ui/shellEntry.js:196
 msgid "Search the internet and more…"
 msgstr ""
 
 #: js/ui/shellEntry.js:198
-#, fuzzy
 msgid "Search…"
-msgstr "Søker …"
+msgstr ""
 
 #: js/ui/shellEntry.js:490
 msgid "Caps lock is on."
@@ -2174,9 +2098,7 @@ msgstr "Bruker nøkkelfiler"
 #, javascript-format
 msgid ""
 "To unlock a volume that uses keyfiles, use the <i>%s</i> utility instead."
-msgstr ""
-"For å låse opp et volum som bruker nøkkelfiler kan du bruke <i>%s</i> "
-"verktøyet i stedet."
+msgstr "For å låse opp et volum som bruker nøkkelfiler kan du bruke <i>%s</i> verktøyet i stedet."
 
 #: js/ui/shellMountOperation.js:306
 msgid "PIM Number"
@@ -2266,9 +2188,8 @@ msgid "Automatic Updates"
 msgstr "Automatiske oppdateringer"
 
 #: js/ui/status/automaticUpdates.js:263
-#, fuzzy
 msgid "Automatic updates on"
-msgstr "Automatisk stedsplassering"
+msgstr ""
 
 #: js/ui/status/automaticUpdates.js:264
 msgid ""
@@ -2291,9 +2212,8 @@ msgid "Close"
 msgstr "Lukk"
 
 #: js/ui/status/automaticUpdates.js:290
-#, fuzzy
 msgid "Change Settings…"
-msgstr "Innstillinger for lyd"
+msgstr ""
 
 #: js/ui/status/bluetooth.js:40
 msgid "Bluetooth"
@@ -2312,14 +2232,12 @@ msgstr[0] "%d koblet til"
 msgstr[1] "%d koblet til"
 
 #: js/ui/status/bluetooth.js:134
-#, fuzzy
 msgid "Bluetooth Off"
-msgstr "Bluetooth"
+msgstr ""
 
 #: js/ui/status/bluetooth.js:136
-#, fuzzy
 msgid "Bluetooth On"
-msgstr "Bluetooth"
+msgstr ""
 
 #: js/ui/status/brightness.js:39
 msgid "Brightness"
@@ -2383,15 +2301,13 @@ msgstr "Gi tilgang til stedsinformasjon"
 
 #. Translators: %s is an application name
 #: js/ui/status/location.js:357
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "The app %s wants to access your location"
-msgstr "Gi %s tilgang til din plassering?"
+msgstr ""
 
 #: js/ui/status/location.js:367
 msgid "Location access can be changed at any time from the privacy settings."
-msgstr ""
-"Tilgang til plassering kan endres når som helst fra innstillinger for "
-"personvern."
+msgstr "Tilgang til plassering kan endres når som helst fra innstillinger for personvern."
 
 #: js/ui/status/network.js:66
 msgid "<unknown>"
@@ -2409,7 +2325,8 @@ msgstr "%s av"
 msgid "%s Connected"
 msgstr "%s koblet til"
 
-#. Translators: this is for network devices that are physically present but are not
+#. Translators: this is for network devices that are physically present but
+#. are not
 #. under NetworkManager's control (and thus cannot be used in the menu);
 #. %s is a network identifier
 #: js/ui/status/network.js:428
@@ -2429,20 +2346,23 @@ msgstr "%s kobler fra"
 msgid "%s Connecting"
 msgstr "%s kobler til"
 
-#. Translators: this is for network connections that require some kind of key or password; %s is a network identifier
+#. Translators: this is for network connections that require some kind of key
+#. or password; %s is a network identifier
 #: js/ui/status/network.js:441
 #, javascript-format
 msgid "%s Requires Authentication"
 msgstr "%s krever autentisering"
 
-#. Translators: this is for devices that require some kind of firmware or kernel
+#. Translators: this is for devices that require some kind of firmware or
+#. kernel
 #. module, which is missing; %s is a network identifier
 #: js/ui/status/network.js:449
 #, javascript-format
 msgid "Firmware Missing For %s"
 msgstr "Fastvare mangler for %s"
 
-#. Translators: this is for a network device that cannot be activated (for example it
+#. Translators: this is for a network device that cannot be activated (for
+#. example it
 #. is disabled by rfkill, or it has no coverage; %s is a network identifier
 #: js/ui/status/network.js:453
 #, javascript-format
@@ -2544,7 +2464,8 @@ msgstr "%s ikke koblet til"
 msgid "connecting…"
 msgstr "kobler til …"
 
-#. Translators: this is for network connections that require some kind of key or password
+#. Translators: this is for network connections that require some kind of key
+#. or password
 #: js/ui/status/network.js:1420
 msgid "authentication required"
 msgstr "autentisering kreves"
@@ -2623,9 +2544,8 @@ msgid "Enter unlock code…"
 msgstr ""
 
 #: js/ui/status/payg.js:86
-#, fuzzy
 msgid "Getting time…"
-msgstr "Starter på nytt …"
+msgstr ""
 
 #: js/ui/status/payg.js:90
 msgid "Less than 1 minute"
@@ -2752,28 +2672,24 @@ msgstr "Volum"
 
 #. Translators: this is for display mirroring i.e. cloning.
 #. * Try to keep it under around 15 characters.
-#.
 #: js/ui/switchMonitor.js:17
 msgid "Mirror"
 msgstr "Speil"
 
 #. Translators: this is for the desktop spanning displays.
 #. * Try to keep it under around 15 characters.
-#.
 #: js/ui/switchMonitor.js:22
 msgid "Join Displays"
 msgstr "Slå sammen skjermer"
 
 #. Translators: this is for using only an external display.
 #. * Try to keep it under around 15 characters.
-#.
 #: js/ui/switchMonitor.js:27
 msgid "External Only"
 msgstr "Kun ekstern"
 
 #. Translators: this is for using only the laptop display.
 #. * Try to keep it under around 15 characters.
-#.
 #: js/ui/switchMonitor.js:32
 msgid "Built-in Only"
 msgstr "Kun innebygget"
@@ -2816,7 +2732,6 @@ msgstr "Beholde disse skjerminnstillingene?"
 
 #. Translators: this and the following message should be limited in length,
 #. to avoid ellipsizing the labels.
-#.
 #: js/ui/windowManager.js:70
 msgid "Revert Settings"
 msgstr "Forkast innstillinger"
@@ -2974,8 +2889,7 @@ msgstr ""
 #, c-format
 msgid ""
 "UUID is a globally-unique identifier for your extension.\n"
-"This should be in the format of an email address (clicktofocus@janedoe."
-"example.com)\n"
+"This should be in the format of an email address (clicktofocus@janedoe.example.com)\n"
 msgstr ""
 
 #: subprojects/extensions-tool/src/command-create.c:244
@@ -3054,57 +2968,48 @@ msgid "EXTENSION_BUNDLE"
 msgstr ""
 
 #: subprojects/extensions-tool/src/command-install.c:184
-#, fuzzy
 msgid "Install an extension bundle"
-msgstr "UUID-er for utvidelser som skal slås på"
+msgstr ""
 
 #: subprojects/extensions-tool/src/command-install.c:201
-#, fuzzy
 msgid "No extension bundle specified"
-msgstr "Ingen utvidelser installert"
+msgstr ""
 
 #: subprojects/extensions-tool/src/command-install.c:207
 msgid "More than one extension bundle specified"
 msgstr ""
 
 #: subprojects/extensions-tool/src/command-list.c:125
-#, fuzzy
 msgid "Show user-installed extensions"
-msgstr "Utvidelser for GNOME Shell"
+msgstr ""
 
 #: subprojects/extensions-tool/src/command-list.c:128
-#, fuzzy
 msgid "Show system-installed extensions"
-msgstr "Utvidelser for GNOME Shell"
+msgstr ""
 
 #: subprojects/extensions-tool/src/command-list.c:131
-#, fuzzy
 msgid "Show enabled extensions"
-msgstr "Utvidelser for GNOME Shell"
+msgstr ""
 
 #: subprojects/extensions-tool/src/command-list.c:134
-#, fuzzy
 msgid "Show disabled extensions"
-msgstr "Slå av brukerutvideleser"
+msgstr ""
 
 #: subprojects/extensions-tool/src/command-list.c:137
 msgid "Show extensions with preferences"
 msgstr ""
 
 #: subprojects/extensions-tool/src/command-list.c:140
-#, fuzzy
 msgid "Show extensions with updates"
-msgstr "Vis informasjon om utvidelse"
+msgstr ""
 
 #: subprojects/extensions-tool/src/command-list.c:143
-#, fuzzy
 msgid "Print extension details"
-msgstr "Vis versjon"
+msgstr ""
 
 #: subprojects/extensions-tool/src/command-list.c:151
-#, fuzzy
 msgid "List installed extensions"
-msgstr "Slå av brukerutvideleser"
+msgstr ""
 
 #: subprojects/extensions-tool/src/command-pack.c:450
 msgid "FILE"
@@ -3164,14 +3069,12 @@ msgid "Opens extension preferences"
 msgstr ""
 
 #: subprojects/extensions-tool/src/command-reset.c:57
-#, fuzzy
 msgid "Reset an extension"
-msgstr "Slå av brukerutvideleser"
+msgstr ""
 
 #: subprojects/extensions-tool/src/command-uninstall.c:72
-#, fuzzy
 msgid "Uninstall an extension"
-msgstr "Slå av brukerutvideleser"
+msgstr ""
 
 #: subprojects/extensions-tool/src/main.c:176
 msgid "Path"
@@ -3220,54 +3123,45 @@ msgid "Print help"
 msgstr "Vis hjelp"
 
 #: subprojects/extensions-tool/src/main.c:250
-#, fuzzy
 msgid "Enable extension"
-msgstr "Slå av brukerutvideleser"
+msgstr ""
 
 #: subprojects/extensions-tool/src/main.c:251
-#, fuzzy
 msgid "Disable extension"
-msgstr "Slå av brukerutvideleser"
+msgstr ""
 
 #: subprojects/extensions-tool/src/main.c:252
-#, fuzzy
 msgid "Reset extension"
-msgstr "Slå av brukerutvideleser"
+msgstr ""
 
 #: subprojects/extensions-tool/src/main.c:253
-#, fuzzy
 msgid "Uninstall extension"
-msgstr "Slå av brukerutvideleser"
+msgstr ""
 
 #: subprojects/extensions-tool/src/main.c:254
-#, fuzzy
 msgid "List extensions"
-msgstr "Slå av brukerutvideleser"
+msgstr ""
 
 #: subprojects/extensions-tool/src/main.c:255
 #: subprojects/extensions-tool/src/main.c:256
-#, fuzzy
 msgid "Show extension info"
-msgstr "Ingen utvidelser installert"
+msgstr ""
 
 #: subprojects/extensions-tool/src/main.c:257
 msgid "Open extension preferences"
 msgstr ""
 
 #: subprojects/extensions-tool/src/main.c:258
-#, fuzzy
 msgid "Create extension"
-msgstr "Utvidelser for GNOME Shell"
+msgstr ""
 
 #: subprojects/extensions-tool/src/main.c:259
-#, fuzzy
 msgid "Package extension"
-msgstr "Utvidelser for GNOME Shell"
+msgstr ""
 
 #: subprojects/extensions-tool/src/main.c:260
-#, fuzzy
 msgid "Install extension bundle"
-msgstr "UUID-er for utvidelser som skal slås på"
+msgstr ""
 
 #: subprojects/extensions-tool/src/main.c:262
 #, c-format
@@ -3301,9 +3195,8 @@ msgid "Other workspaces"
 msgstr ""
 
 #: js/ui/appIconBar.js:204
-#, fuzzy
 msgid "Current workspace"
-msgstr "Begrens programveksling til gjeldende arbeidsområde."
+msgstr ""
 
 #: js/ui/appIconBar.js:282
 msgid "Pin to Taskbar"
@@ -3314,28 +3207,25 @@ msgid "Unpin from Taskbar"
 msgstr ""
 
 #: js/ui/appIconBar.js:310
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Quit %s"
-msgstr "Avslutt"
+msgstr ""
 
 #: js/ui/endlessButton.js:14
 msgid "Endless Button"
 msgstr ""
 
 #: js/ui/endlessButton.js:67
-#, fuzzy
 msgid "Show Desktop"
-msgstr "Vis detaljer"
+msgstr ""
 
 #: js/ui/endlessButton.js:69
-#, fuzzy
 msgid "Show Apps"
-msgstr "Vis programmer"
+msgstr ""
 
 #: js/ui/forceAppExitDialog.js:50
-#, fuzzy
 msgid "Quit applications"
-msgstr "Programmer"
+msgstr ""
 
 #: js/ui/forceAppExitDialog.js:56
 msgid ""
@@ -3344,47 +3234,41 @@ msgid ""
 msgstr ""
 
 #: js/ui/forceAppExitDialog.js:87
-#, fuzzy
 msgid "System Monitor"
-msgstr "Systemlyder"
+msgstr ""
 
 #: js/ui/forceAppExitDialog.js:95
-#, fuzzy
 msgid "Quit Application"
-msgstr "Programmer"
+msgstr ""
 
 #: js/ui/hotCorner.js:15
 msgid "Hot Corner"
 msgstr ""
 
 #: js/ui/hotCorner.js:25
-#, fuzzy
 msgid "Enable Hot Corner"
-msgstr "Slå av brukerutvideleser"
+msgstr ""
 
 #: js/ui/hotCorner.js:29
-#, fuzzy
 msgid "Disable Hot Corner"
-msgstr "Slå av til i morgen"
+msgstr ""
 
 #: js/ui/iconGridLayout.js:312
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s has been removed"
-msgstr "%s ble fjernet fra favoritter."
+msgstr ""
 
 #: js/ui/iconGridLayout.js:540
-#, fuzzy
 msgid "New Folder"
-msgstr "Mappe uten navn"
+msgstr ""
 
 #: js/ui/internetSearch.js:70
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Open \"%s\" in browser"
-msgstr "Åpne vinduer"
+msgstr ""
 
 #. Translators: the first %s is the search engine name, and the second
 #. * is the search string. For instance, 'Search Google for "hello"'.
-#.
 #: js/ui/internetSearch.js:79
 #, javascript-format
 msgid "Search %s for \"%s\""
@@ -3408,46 +3292,10 @@ msgid "Give Us Feedback"
 msgstr ""
 
 #: src/shell-desktop-dir-info.c:485
-#, fuzzy
 msgid "Unnamed"
-msgstr "Mappe uten navn"
+msgstr ""
 
 #: src/shell-desktop-dir-info.c:745
 #, c-format
 msgid "Custom definition for %s"
 msgstr ""
-
-#~ msgid "Copy Error"
-#~ msgstr "Kopier feil"
-
-#~ msgid "Frequently used applications will appear here"
-#~ msgstr "Ofte brukte programmer vises her"
-
-#~ msgid "Frequent"
-#~ msgstr "Ofte"
-
-#~ msgid "All"
-#~ msgstr "Alle"
-
-#~ msgid "Add to Favorites"
-#~ msgstr "Legg til i favoritter"
-
-#~ msgid "Type to search"
-#~ msgstr "Skriv for å søke"
-
-#~ msgid "Top Bar"
-#~ msgstr "Topp-panel"
-
-#~ msgid "%d more"
-#~ msgid_plural "%d more"
-#~ msgstr[0] "%d flere"
-#~ msgstr[1] "%d flere"
-
-#~ msgid "Off"
-#~ msgstr "Av"
-
-#~ msgid "On"
-#~ msgstr "På"
-
-#~ msgid "Search"
-#~ msgstr "Søk"

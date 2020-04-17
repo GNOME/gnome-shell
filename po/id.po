@@ -1,28 +1,36 @@
-# Copyright (C) 2010 THE gnome-shell'S COPYRIGHT HOLDER
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the gnome-shell package.
-#
-# Andika Triwidada <andika@gmail.com>, 2010-2014, 2017.
-# Dirgita <dirgitadevina@yahoo.co.id>, 2011, 2012, 2014.
-# Wibiharto <wibinem@yahoo.com>, 2011.
-# Kukuh Syafaat <kukuhsyafaat@gnome.org>, 2017-2020.
-# Sucipto <sucipto@pm.me>, 2020.
-#
+# 
+# Translators:
+# Andika Triwidada <andika@gmail.com>, 2010-2014,2017
+# Andika Triwidada <andika@gmail.com>, 2017
+# dirgita <dirgitadevina@yahoo.co.id>, 2011-2012,2014
+# Hartono <hartono.s10@gmail.com>, 2016-2017
+# Helmi Fauzian <helmi@endlessm.com>, 2019
+# Kukuh Syafaat <kukuhsyafaat@gnome.org>, 2017-2019
+# Kukuh Syafaat <syafaatkukuh@gmail.com>, 2018
+# Mario Sanchez Prada, 2018
+# Mario Sanchez Prada, 2018
+# Nieke Adriani <nieke@endlessm.com>, 2019
+# Roddy Shuler <roddy@stanfordalumni.org>, 2016-2018
+# Septira Taruna <septira@endlessm.com>, 2017-2018
+# Sucipto <sucipto@pm.me>, 2020
+# Wibiharto <wibinem@yahoo.com>, 2011
+# Will Thompson <wjt@endlessm.com>, 2019
 msgid ""
 msgstr ""
-"Project-Id-Version: gnome-shell master\n"
+"Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-04-17 17:11+0100\n"
-"PO-Revision-Date: 2020-03-20 14:13+0700\n"
-"Last-Translator: Kukuh Syafaat <kukuhsyafaat@gnome.org>\n"
-"Language-Team: Indonesian <gnome-l10n-id@googlegroups.com>\n"
-"Language: id\n"
+"PO-Revision-Date: 2020-04-17 16:22+0000\n"
+"Last-Translator: Will Thompson <wjt@endlessm.com>\n"
+"Language-Team: Indonesian (http://www.transifex.com/endless-os/gnome-shell/language/id/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-DamnedLies-Scope: partial\n"
-"X-Generator: Poedit 2.3\n"
-"X-Poedit-SourceCharset: UTF-8\n"
+"Language: id\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 
 #: data/50-gnome-shell-system.xml:6
 msgid "System"
@@ -58,17 +66,13 @@ msgstr "Manajemen jendela dan peluncuran aplikasi"
 
 #: data/org.gnome.shell.gschema.xml.in:15
 msgid "Enable internal tools useful for developers and testers from Alt-F2"
-msgstr ""
-"Mengaktifkan perkakas internal yang berguna bagi pengembang dan penguji "
-"dengan Alt-F2"
+msgstr "Mengaktifkan perkakas internal yang berguna bagi pengembang dan penguji dengan Alt-F2"
 
 #: data/org.gnome.shell.gschema.xml.in:18
 msgid ""
 "Allows access to internal debugging and monitoring tools using the Alt-F2 "
 "dialog."
-msgstr ""
-"Izinkan askes ke perkakas pemantauan dan pengawakutuan internal memakai "
-"dialog Alt-F2."
+msgstr "Izinkan askes ke perkakas pemantauan dan pengawakutuan internal memakai dialog Alt-F2."
 
 #: data/org.gnome.shell.gschema.xml.in:25
 msgid "UUIDs of extensions to enable"
@@ -76,15 +80,11 @@ msgstr "UUID ekstensi yang akan difungsikan"
 
 #: data/org.gnome.shell.gschema.xml.in:26
 msgid ""
-"GNOME Shell extensions have a UUID property; this key lists extensions which "
-"should be loaded. Any extension that wants to be loaded needs to be in this "
-"list. You can also manipulate this list with the EnableExtension and "
+"GNOME Shell extensions have a UUID property; this key lists extensions which"
+" should be loaded. Any extension that wants to be loaded needs to be in this"
+" list. You can also manipulate this list with the EnableExtension and "
 "DisableExtension D-Bus methods on org.gnome.Shell."
-msgstr ""
-"Ekstensi GNOME Shell memiliki properti UUID; kunci ini memuat daftar "
-"ekstensi yang mesti dimuat. Sebarang ekstensi yang ingin dimuat perlu berada "
-"dalam daftar ini. Anda juga dapat memanipulasi daftar ini dengan metoda D-"
-"Bus EnableExtension dan DisableExtension pada org.gnome.Shell."
+msgstr "Ekstensi GNOME Shell memiliki properti UUID; kunci ini memuat daftar ekstensi yang mesti dimuat. Sebarang ekstensi yang ingin dimuat perlu berada dalam daftar ini. Anda juga dapat memanipulasi daftar ini dengan metoda D-Bus EnableExtension dan DisableExtension pada org.gnome.Shell."
 
 #: data/org.gnome.shell.gschema.xml.in:35
 msgid "UUIDs of extensions to force disabling"
@@ -92,16 +92,12 @@ msgstr "UUID ekstensi untuk memaksa penonaktifan"
 
 #: data/org.gnome.shell.gschema.xml.in:36
 msgid ""
-"GNOME Shell extensions have a UUID property; this key lists extensions which "
-"should be disabled, even if loaded as part of the current mode. You can also "
-"manipulate this list with the EnableExtension and DisableExtension D-Bus "
-"methods on org.gnome.Shell. This key takes precedence over the “enabled-"
-"extensions” setting."
-msgstr ""
-"Ekstensi GNOME Shell memiliki properti UUID; kunci ini memuat daftar "
-"ekstensi yang harus dinonaktifkan, meskipun dimuat sebagai bagian dari mode "
-"saat ini. Anda juga dapat memanipulasi daftar ini dengan metode D-Bus "
-"EnableExtension dan DisableExtension pada org.gnome.Shell."
+"GNOME Shell extensions have a UUID property; this key lists extensions which"
+" should be disabled, even if loaded as part of the current mode. You can "
+"also manipulate this list with the EnableExtension and DisableExtension "
+"D-Bus methods on org.gnome.Shell. This key takes precedence over the "
+"“enabled-extensions” setting."
+msgstr "Ekstensi GNOME Shell memiliki properti UUID; kunci ini memuat daftar ekstensi yang harus dinonaktifkan, meskipun dimuat sebagai bagian dari mode saat ini. Anda juga dapat memanipulasi daftar ini dengan metode D-Bus EnableExtension dan DisableExtension pada org.gnome.Shell."
 
 #: data/org.gnome.shell.gschema.xml.in:46
 msgid "Disable user extensions"
@@ -111,9 +107,7 @@ msgstr "Nonaktifkan ekstensi pengguna"
 msgid ""
 "Disable all extensions the user has enabled without affecting the “enabled-"
 "extension” setting."
-msgstr ""
-"Nonaktifkan semua ekstensi pengguna yang telah diaktifkan tanpa mempengaruhi "
-"pengaturan \"ekstensi-diaktifkan\"."
+msgstr "Nonaktifkan semua ekstensi pengguna yang telah diaktifkan tanpa mempengaruhi pengaturan \"ekstensi-diaktifkan\"."
 
 #: data/org.gnome.shell.gschema.xml.in:54
 msgid "Disables the validation of extension version compatibility"
@@ -124,11 +118,7 @@ msgid ""
 "GNOME Shell will only load extensions that claim to support the current "
 "running version. Enabling this option will disable this check and try to "
 "load all extensions regardless of the versions they claim to support."
-msgstr ""
-"GNOME Shell hanya akan memuat ekstensi yang mengklaim mendukung versi "
-"berjalan saat ini. Memfungsikan opsi ini akan menonaktifkan pemeriksaan ini "
-"dan mencoba memuat semua ekstensi tanpa peduli versi yang mereka klaim "
-"didukung."
+msgstr "GNOME Shell hanya akan memuat ekstensi yang mengklaim mendukung versi berjalan saat ini. Memfungsikan opsi ini akan menonaktifkan pemeriksaan ini dan mencoba memuat semua ekstensi tanpa peduli versi yang mereka klaim didukung."
 
 #: data/org.gnome.shell.gschema.xml.in:63
 msgid "List of desktop file IDs for favorite applications"
@@ -136,11 +126,9 @@ msgstr "Daftar ID berkas desktop untuk aplikasi favorit"
 
 #: data/org.gnome.shell.gschema.xml.in:64
 msgid ""
-"The applications corresponding to these identifiers will be displayed in the "
-"favorites area."
-msgstr ""
-"Aplikasi yang terkait dengan identifier-identifier ini akan ditampilkan pada "
-"area favorit."
+"The applications corresponding to these identifiers will be displayed in the"
+" favorites area."
+msgstr "Aplikasi yang terkait dengan identifier-identifier ini akan ditampilkan pada area favorit."
 
 #: data/org.gnome.shell.gschema.xml.in:71
 msgid "App Picker View"
@@ -154,7 +142,8 @@ msgstr "Indeks dari tilikan yang sedang dipilih dalam penyomot aplikasi."
 msgid "History for command (Alt-F2) dialog"
 msgstr "Riwayat dialog perintah (Alt-F2)"
 
-#. Translators: looking glass is a debugger and inspector tool, see https://wiki.gnome.org/Projects/GnomeShell/LookingGlass
+#. Translators: looking glass is a debugger and inspector tool, see
+#. https://wiki.gnome.org/Projects/GnomeShell/LookingGlass
 #: data/org.gnome.shell.gschema.xml.in:83
 msgid "History for the looking glass dialog"
 msgstr "Riwayat untuk dialog yang berpenampilan gelas kaca"
@@ -165,18 +154,14 @@ msgstr "Selalu tampilkan butir menu 'Log keluar' dalam menu pengguna."
 
 #: data/org.gnome.shell.gschema.xml.in:88
 msgid ""
-"This key overrides the automatic hiding of the “Log out” menu item in single-"
-"user, single-session situations."
-msgstr ""
-"Kunci ini menimpa penyembunyian otomatis butir menu 'Log keluar' dalam "
-"situasi pengguna-tunggal, sesi-tunggal."
+"This key overrides the automatic hiding of the “Log out” menu item in "
+"single-user, single-session situations."
+msgstr "Kunci ini menimpa penyembunyian otomatis butir menu 'Log keluar' dalam situasi pengguna-tunggal, sesi-tunggal."
 
 #: data/org.gnome.shell.gschema.xml.in:95
 msgid ""
 "Whether to remember password for mounting encrypted or remote filesystems"
-msgstr ""
-"Apakah mengingat kata sandi untuk mengait sistem berkas terenkripsi atau "
-"jarak jauh"
+msgstr "Apakah mengingat kata sandi untuk mengait sistem berkas terenkripsi atau jarak jauh"
 
 #: data/org.gnome.shell.gschema.xml.in:96
 msgid ""
@@ -184,18 +169,12 @@ msgid ""
 "filesystem is mounted. If the password can be saved for future use a "
 "“Remember Password” checkbox will be present. This key sets the default "
 "state of the checkbox."
-msgstr ""
-"Shell akan meminta suatu kata sandi ketika suatu perangkat terenkripsi atau "
-"sistem berkas jarak jauh dikaitkan. Bila sandi dapat disimpan untuk dipakai "
-"dimasa depan, suatu kotak contreng 'Ingat Sandi' akan tampil. Kunci ini "
-"menata keadaan baku dari kotak contreng."
+msgstr "Shell akan meminta suatu kata sandi ketika suatu perangkat terenkripsi atau sistem berkas jarak jauh dikaitkan. Bila sandi dapat disimpan untuk dipakai dimasa depan, suatu kotak contreng 'Ingat Sandi' akan tampil. Kunci ini menata keadaan baku dari kotak contreng."
 
 #: data/org.gnome.shell.gschema.xml.in:105
 msgid ""
 "Whether the default Bluetooth adapter had set up devices associated to it"
-msgstr ""
-"Apakah adapter Bluetooth baku telah menyiapkan perangkat yang terasosiasi "
-"dengannya"
+msgstr "Apakah adapter Bluetooth baku telah menyiapkan perangkat yang terasosiasi dengannya"
 
 #: data/org.gnome.shell.gschema.xml.in:106
 msgid ""
@@ -203,11 +182,7 @@ msgid ""
 "powered, or if there were devices set up associated with the default "
 "adapter. This will be reset if the default adapter is ever seen not to have "
 "devices associated to it."
-msgstr ""
-"Shell hanya akan menampilkan butir menu Bluetooth bila sebuah adapter "
-"Bluetooth dinyalakan, atau ada perangkat yang telah disiapkan terasosiasi "
-"dengan adapter baku. Ini akan di-reset bila adapter baku pernah terlihat "
-"tidak punya perangkat yang terasosiasi dengannya."
+msgstr "Shell hanya akan menampilkan butir menu Bluetooth bila sebuah adapter Bluetooth dinyalakan, atau ada perangkat yang telah disiapkan terasosiasi dengan adapter baku. Ini akan di-reset bila adapter baku pernah terlihat tidak punya perangkat yang terasosiasi dengannya."
 
 #: data/org.gnome.shell.gschema.xml.in:115
 msgid "Enable introspection API"
@@ -217,9 +192,7 @@ msgstr "Aktifkan API introspeksi"
 msgid ""
 "Enables a D-Bus API that allows to introspect the application state of the "
 "shell."
-msgstr ""
-"Aktifkan API D-Bus yang memungkinkan untuk mengintrospeksi status aplikasi "
-"shell."
+msgstr "Aktifkan API D-Bus yang memungkinkan untuk mengintrospeksi status aplikasi shell."
 
 #: data/org.gnome.shell.gschema.xml.in:126
 msgid "Enables the hot corner for the window picker"
@@ -229,9 +202,7 @@ msgstr "Mengaktifkan pojok aktif untuk pemilih jendela"
 msgid ""
 "By default, the hot corner for the window picker is enabled. Set false to "
 "disable the hot corner."
-msgstr ""
-"Pada umumnya, pojok aktif untuk pemilih jendela telah diaktifkan. Ubah ke "
-"nonaktif untuk menonaktifkan pojok aktif."
+msgstr "Pada umumnya, pojok aktif untuk pemilih jendela telah diaktifkan. Ubah ke nonaktif untuk menonaktifkan pojok aktif."
 
 #: data/org.gnome.shell.gschema.xml.in:136
 msgid "Set the left/right position of the hot corner for the window picker"
@@ -240,12 +211,9 @@ msgstr "Tetapkan posisi kiri/kanan pojok aktif untuk pemilih jendela"
 #: data/org.gnome.shell.gschema.xml.in:139
 msgid ""
 "Default position of the hot corner is in a right corner. Set false to move "
-"the hot corner to a left corner. The position is not affected by the RTL vs. "
-"LTR text direction."
-msgstr ""
-"Posisi awal dari pojok aktif adalah di sudut kanan. Non-aktifkan untuk "
-"memindahkan pojok aktif ke sudut kiri. Posisi ini tidak terpengaruh dengan "
-"arah tulisan Dari Kanan Ke Kiri atau Dari Kiri Ke Kanan."
+"the hot corner to a left corner. The position is not affected by the RTL vs."
+" LTR text direction."
+msgstr "Posisi awal dari pojok aktif adalah di sudut kanan. Non-aktifkan untuk memindahkan pojok aktif ke sudut kiri. Posisi ini tidak terpengaruh dengan arah tulisan Dari Kanan Ke Kiri atau Dari Kiri Ke Kanan."
 
 #: data/org.gnome.shell.gschema.xml.in:147
 msgid "Set the top/bottom position of the hot corner for the window picker"
@@ -255,9 +223,7 @@ msgstr "Atur posisi atas/bawah dari pojok aktif bagi pemilih jendela"
 msgid ""
 "Default position of the hot corner is in a bottom corner. Set false to move "
 "the hot corner to a top corner."
-msgstr ""
-"Posisi baku pojok aktif adalah di sudut bawah. Tetapkan salah untuk "
-"memindahkan pojok aktif ke sudut atas."
+msgstr "Posisi baku pojok aktif adalah di sudut bawah. Tetapkan salah untuk memindahkan pojok aktif ke sudut atas."
 
 #: data/org.gnome.shell.gschema.xml.in:157
 msgid "Set the size of the hot corner target"
@@ -266,12 +232,9 @@ msgstr "Tentukan ukuran target pojok aktif"
 #: data/org.gnome.shell.gschema.xml.in:160
 msgid ""
 "Number of pixels in one dimension of the square target for the hot corner. "
-"Default is for a single pixel in the very corner. For some virtual machines, "
-"this value may need to be set larger than the default."
-msgstr ""
-"Jumlah piksel dalam satu dimensi dari target persegi untuk pojok aktif. "
-"Pengaturan awal adalah satu piksel di bagian sudut. Untuk sejumlah mesin "
-"virtual, nilai ini mungkin perlu diatur lebih besar dari nilai awal."
+"Default is for a single pixel in the very corner. For some virtual machines,"
+" this value may need to be set larger than the default."
+msgstr "Jumlah piksel dalam satu dimensi dari target persegi untuk pojok aktif. Pengaturan awal adalah satu piksel di bagian sudut. Untuk sejumlah mesin virtual, nilai ini mungkin perlu diatur lebih besar dari nilai awal."
 
 #: data/org.gnome.shell.gschema.xml.in:170
 msgid "Prevent apps from being automatically maximized on launch"
@@ -280,12 +243,9 @@ msgstr "Cegah aplikasi ditampilkan secara penuh saat dijalankan"
 #: data/org.gnome.shell.gschema.xml.in:173
 msgid ""
 "Makes window management more like standard Gnome. Hides application splash "
-"screens, prevents applications from being forced to open maximized, and does "
-"not automatically switch to the app selector when a window is minimized."
-msgstr ""
-"Jadikan manajemen jendela seperti Gnome standar. Sembunyikan layar splash "
-"aplikasi, cegah aplikasi dipaksa membuka di layar penuh, dan tidak secara "
-"otomatis beralih ke pemilih aplikasi saat jendela dikecilkan."
+"screens, prevents applications from being forced to open maximized, and does"
+" not automatically switch to the app selector when a window is minimized."
+msgstr "Jadikan manajemen jendela seperti Gnome standar. Sembunyikan layar splash aplikasi, cegah aplikasi dipaksa membuka di layar penuh, dan tidak secara otomatis beralih ke pemilih aplikasi saat jendela dikecilkan."
 
 #: data/org.gnome.shell.gschema.xml.in:182
 msgid "Whether password reset is allowed"
@@ -294,17 +254,12 @@ msgstr "Apakah memperbolehkan reset kata sandi"
 #: data/org.gnome.shell.gschema.xml.in:183
 msgid ""
 "This key controls whether to show the \"Forgot Password?\" button on the "
-"login screen. 'default' tells GNOME Shell to use the vendor default setting. "
-"'enable' and 'disable' can be used to explicitly enable or disable the reset "
-"button, respectively. Note that it only makes sense to set this key for the "
-"Debian-gdm user; changing it for your own user account will have no effect."
-msgstr ""
-"Tombol ini mengatur apakah akan menunjukkan pilihan \"Lupa Kata Sandi?\" "
-"pada layar log masuk. 'default/bawaan' memberi tahu GNOME Shell untuk "
-"menggunakan pengaturan awal vendor. 'aktifkan' dan 'nonaktifkan' bisa "
-"digunakan untuk mengaktifkan atau menonaktifkan tombol reset. Ingat bahwa "
-"tombol ini hanya bisa diatur untuk pengguna Debian-gdm; mengubahnya untuk "
-"akun Anda sendiri tidak akan berlaku."
+"login screen. 'default' tells GNOME Shell to use the vendor default setting."
+" 'enable' and 'disable' can be used to explicitly enable or disable the "
+"reset button, respectively. Note that it only makes sense to set this key "
+"for the Debian-gdm user; changing it for your own user account will have no "
+"effect."
+msgstr "Tombol ini mengatur apakah akan menunjukkan pilihan \"Lupa Kata Sandi?\" pada layar log masuk. 'default/bawaan' memberi tahu GNOME Shell untuk menggunakan pengaturan awal vendor. 'aktifkan' dan 'nonaktifkan' bisa digunakan untuk mengaktifkan atau menonaktifkan tombol reset. Ingat bahwa tombol ini hanya bisa diatur untuk pengguna Debian-gdm; mengubahnya untuk akun Anda sendiri tidak akan berlaku."
 
 #: data/org.gnome.shell.gschema.xml.in:194
 msgid "Layout of application launcher icons in the grid"
@@ -314,9 +269,7 @@ msgstr "Tata letak ikon pembuka aplikasi pada kotak-kotak"
 msgid ""
 "This key specifies the exact order of the icons shown in the applications "
 "launcher view."
-msgstr ""
-"Tombol ini menentukan urutan ikon yang ditampilkan pada tampilan pembuka "
-"aplikasi."
+msgstr "Tombol ini menentukan urutan ikon yang ditampilkan pada tampilan pembuka aplikasi."
 
 #: data/org.gnome.shell.gschema.xml.in:201
 msgid "Languages for which the discovery feed feature is enabled."
@@ -327,10 +280,7 @@ msgid ""
 "If the system language matches any of these languages, the discovery feed "
 "will be enabled. You will need to restart the shell for changes to this "
 "setting to take effect."
-msgstr ""
-"Apabila bahasa sistem dapat ditemukan di daftar bahasa ini, fitur discovery "
-"feed akan diaktifkan. Anda perlu menyalakan ulang komputer agar pengaturan "
-"ini mulai berlaku. "
+msgstr "Apabila bahasa sistem dapat ditemukan di daftar bahasa ini, fitur discovery feed akan diaktifkan. Anda perlu menyalakan ulang komputer agar pengaturan ini mulai berlaku. "
 
 #: data/org.gnome.shell.gschema.xml.in:215
 msgid "Keybinding to open the application menu"
@@ -347,9 +297,7 @@ msgstr "Kombinasi tombol untuk membuka tilikan \"Tampilkan Aplikasi\""
 #: data/org.gnome.shell.gschema.xml.in:223
 msgid ""
 "Keybinding to open the “Show Applications” view of the Activities Overview."
-msgstr ""
-"Kombinasi tombol untuk membuka tilikan Ringkasan Aktivitas \"Tampilkan "
-"Aplikasi\"."
+msgstr "Kombinasi tombol untuk membuka tilikan Ringkasan Aktivitas \"Tampilkan Aplikasi\"."
 
 #: data/org.gnome.shell.gschema.xml.in:230
 msgid "Keybinding to open the overview"
@@ -413,8 +361,7 @@ msgstr "Beralih ke aplikasi 9"
 
 #: data/org.gnome.shell.gschema.xml.in:290
 msgid "Keybinding that shows the force app exit dialog"
-msgstr ""
-"Kombinasi tombol yang akan menampilkan dialog keluar tutup paksa aplikasi"
+msgstr "Kombinasi tombol yang akan menampilkan dialog keluar tutup paksa aplikasi"
 
 #: data/org.gnome.shell.gschema.xml.in:295
 msgid "Keybinding to activate the first app in the icon bar."
@@ -424,9 +371,7 @@ msgstr "Tombol pintas untuk mengaktifkan aplikasi pertama di taskbar."
 msgid ""
 "Keybinding to open the first app in the icon bar, or switch to the app if "
 "already open."
-msgstr ""
-"Tombol pintas untuk membuka aplikasi pertama di taskbar, atau beralih ke "
-"aplikasi tersebut apabila aplikasinya sudah terbuka."
+msgstr "Tombol pintas untuk membuka aplikasi pertama di taskbar, atau beralih ke aplikasi tersebut apabila aplikasinya sudah terbuka."
 
 #: data/org.gnome.shell.gschema.xml.in:302
 msgid "Keybinding to activate the second app in the icon bar."
@@ -436,9 +381,7 @@ msgstr "Tombol pintas untuk mengaktifkan aplikasi kedua di taskbar."
 msgid ""
 "Keybinding to open the second app in the icon bar, or switch to the app if "
 "already open."
-msgstr ""
-"Tombol pintas untuk membuka aplikasi kedua di taskbar, atau beralih ke "
-"aplikasi tersebut apabila aplikasinya sudah terbuka."
+msgstr "Tombol pintas untuk membuka aplikasi kedua di taskbar, atau beralih ke aplikasi tersebut apabila aplikasinya sudah terbuka."
 
 #: data/org.gnome.shell.gschema.xml.in:309
 msgid "Keybinding to activate the third app in the icon bar."
@@ -448,9 +391,7 @@ msgstr "Tombol pintas untuk mengaktifkan aplikasi ketiga di taskbar."
 msgid ""
 "Keybinding to open the third app in the icon bar, or switch to the app if "
 "already open."
-msgstr ""
-"Tombol pintas untuk membuka aplikasi ketiga di taskbar, atau beralih ke "
-"aplikasi tersebut apabila aplikasinya sudah terbuka."
+msgstr "Tombol pintas untuk membuka aplikasi ketiga di taskbar, atau beralih ke aplikasi tersebut apabila aplikasinya sudah terbuka."
 
 #: data/org.gnome.shell.gschema.xml.in:316
 msgid "Keybinding to activate the fourth app in the icon bar."
@@ -460,9 +401,7 @@ msgstr "Tombol pintas untuk mengaktifkan aplikasi keempat di taskbar."
 msgid ""
 "Keybinding to open the fourth app in the icon bar, or switch to the app if "
 "already open."
-msgstr ""
-"Tombol pintas untuk membuka aplikasi keempat di taskbar, atau beralih ke "
-"aplikasi tersebut apabila aplikasinya sudah terbuka."
+msgstr "Tombol pintas untuk membuka aplikasi keempat di taskbar, atau beralih ke aplikasi tersebut apabila aplikasinya sudah terbuka."
 
 #: data/org.gnome.shell.gschema.xml.in:323
 msgid "Keybinding to activate the fifth app in the icon bar."
@@ -472,9 +411,7 @@ msgstr "Tombol pintas untuk mengaktifkan aplikasi kelima di taskbar."
 msgid ""
 "Keybinding to open the fifth app in the icon bar, or switch to the app if "
 "already open."
-msgstr ""
-"Tombol pintas untuk membuka aplikasi kelima di taskbar, atau beralih ke "
-"aplikasi tersebut apabila aplikasinya sudah terbuka."
+msgstr "Tombol pintas untuk membuka aplikasi kelima di taskbar, atau beralih ke aplikasi tersebut apabila aplikasinya sudah terbuka."
 
 #: data/org.gnome.shell.gschema.xml.in:330
 msgid "Keybinding to activate the sixth app in the icon bar."
@@ -484,9 +421,7 @@ msgstr "Tombol pintas untuk mengaktifkan aplikasi keenam di taskbar."
 msgid ""
 "Keybinding to open the sixth app in the icon bar, or switch to the app if "
 "already open."
-msgstr ""
-"Tombol pintas untuk membuka aplikasi keenam di taskbar, atau beralih ke "
-"aplikasi tersebut apabila aplikasinya sudah terbuka."
+msgstr "Tombol pintas untuk membuka aplikasi keenam di taskbar, atau beralih ke aplikasi tersebut apabila aplikasinya sudah terbuka."
 
 #: data/org.gnome.shell.gschema.xml.in:337
 msgid "Keybinding to activate the seventh app in the icon bar."
@@ -496,9 +431,7 @@ msgstr "Tombol pintas untuk mengaktifkan aplikasi ketujuh di taskbar."
 msgid ""
 "Keybinding to open the seventh app in the icon bar, or switch to the app if "
 "already open."
-msgstr ""
-"Tombol pintas untuk membuka aplikasi ketujuh di taskbar, atau beralih ke "
-"aplikasi tersebut apabila aplikasinya sudah terbuka."
+msgstr "Tombol pintas untuk membuka aplikasi ketujuh di taskbar, atau beralih ke aplikasi tersebut apabila aplikasinya sudah terbuka."
 
 #: data/org.gnome.shell.gschema.xml.in:344
 msgid "Keybinding to activate the eighth app in the icon bar."
@@ -508,9 +441,7 @@ msgstr "Tombol pintas untuk mengaktifkan aplikasi kedelapan di taskbar."
 msgid ""
 "Keybinding to open the eighth app in the icon bar, or switch to the app if "
 "already open."
-msgstr ""
-"Tombol pintas untuk membuka aplikasi kedelapan di taskbar, atau beralih ke "
-"aplikasi tersebut apabila aplikasinya sudah terbuka."
+msgstr "Tombol pintas untuk membuka aplikasi kedelapan di taskbar, atau beralih ke aplikasi tersebut apabila aplikasinya sudah terbuka."
 
 #: data/org.gnome.shell.gschema.xml.in:351
 msgid "Keybinding to activate the last app in the icon bar."
@@ -520,9 +451,7 @@ msgstr "Tombol pintas untuk mengaktifkan aplikasi terakhir di taskbar."
 msgid ""
 "Keybinding to open the last app in the icon bar, or switch to the app if "
 "already open."
-msgstr ""
-"Tombol pintas untuk membuka aplikasi terakhir di taskbar, atau beralih ke "
-"aplikasi tersebut apabila aplikasinya sudah terbuka."
+msgstr "Tombol pintas untuk membuka aplikasi terakhir di taskbar, atau beralih ke aplikasi tersebut apabila aplikasinya sudah terbuka."
 
 #: data/org.gnome.shell.gschema.xml.in:363
 #: data/org.gnome.shell.gschema.xml.in:390
@@ -533,9 +462,7 @@ msgstr "Batasi pengalih ke ruang kerja saat ini."
 msgid ""
 "If true, only applications that have windows on the current workspace are "
 "shown in the switcher. Otherwise, all applications are included."
-msgstr ""
-"Bila berisi true, hanya aplikasi yang punya jendela pada ruang kerja saat "
-"ini ditampilkan pada penukar. Bila tidak, semua aplikasi disertakan."
+msgstr "Bila berisi true, hanya aplikasi yang punya jendela pada ruang kerja saat ini ditampilkan pada penukar. Bila tidak, semua aplikasi disertakan."
 
 #: data/org.gnome.shell.gschema.xml.in:381
 msgid "The application icon mode."
@@ -544,20 +471,15 @@ msgstr "Mode ikon aplikasi."
 #: data/org.gnome.shell.gschema.xml.in:382
 msgid ""
 "Configures how the windows are shown in the switcher. Valid possibilities "
-"are “thumbnail-only” (shows a thumbnail of the window), “app-icon-"
-"only” (shows only the application icon) or “both”."
-msgstr ""
-"Mengatur bagaimana jendela ditampilkan dalam penukar. Kemungkinan yang valid "
-"adalah \"thumbnail-only\" (menampilkan gambar mini dari jendela), \"app-icon-"
-"only\" (hanya menampilkan ikon aplikasi), atau \"both\" (keduanya)."
+"are “thumbnail-only” (shows a thumbnail of the window), “app-icon-only” "
+"(shows only the application icon) or “both”."
+msgstr "Mengatur bagaimana jendela ditampilkan dalam penukar. Kemungkinan yang valid adalah \"thumbnail-only\" (menampilkan gambar mini dari jendela), \"app-icon-only\" (hanya menampilkan ikon aplikasi), atau \"both\" (keduanya)."
 
 #: data/org.gnome.shell.gschema.xml.in:391
 msgid ""
 "If true, only windows from the current workspace are shown in the switcher. "
 "Otherwise, all windows are included."
-msgstr ""
-"Bila berisi true, hanya jendela dari ruang kerja saat ini ditampilkan pada "
-"penukar. Bila tidak, semua jendela disertakan."
+msgstr "Bila berisi true, hanya jendela dari ruang kerja saat ini ditampilkan pada penukar. Bila tidak, semua jendela disertakan."
 
 #: data/org.gnome.shell.gschema.xml.in:401
 msgid "Locations"
@@ -594,14 +516,11 @@ msgstr "Mencantolkan dialog modal ke jendela induk"
 #: data/org.gnome.shell.gschema.xml.in:467
 msgid ""
 "This key overrides the key in org.gnome.mutter when running GNOME Shell."
-msgstr ""
-"Kunci ini menimpa kunci dalam org.gnome.mutter ketika menjalankan GNOME "
-"Shell."
+msgstr "Kunci ini menimpa kunci dalam org.gnome.mutter ketika menjalankan GNOME Shell."
 
 #: data/org.gnome.shell.gschema.xml.in:442
 msgid "Enable edge tiling when dropping windows on screen edges"
-msgstr ""
-"Memfungsikan pengubinan tepi ketika menjatuhkan jendela pada tepi layar"
+msgstr "Memfungsikan pengubinan tepi ketika menjatuhkan jendela pada tepi layar"
 
 #: data/org.gnome.shell.gschema.xml.in:450
 msgid "Workspaces are managed dynamically"
@@ -613,8 +532,7 @@ msgstr "Ruang kerja hanya pada monitor primer"
 
 #: data/org.gnome.shell.gschema.xml.in:466
 msgid "Delay focus changes in mouse mode until the pointer stops moving"
-msgstr ""
-"Tunda perubahan fokus dalam mode tetikus sampai penunjuk berhenti bergerak"
+msgstr "Tunda perubahan fokus dalam mode tetikus sampai penunjuk berhenti bergerak"
 
 #: data/org.gnome.Shell.PortalHelper.desktop.in.in:3
 msgid "Network Login"
@@ -630,10 +548,7 @@ msgid ""
 "We’re very sorry, but there’s been a problem: the settings for this "
 "extension can’t be displayed. We recommend that you report the issue to the "
 "extension authors."
-msgstr ""
-"Kami sangat menyesal, tetapi ada masalah: pengaturan untuk ekstensi ini "
-"tidak dapat ditampilkan. Kami menyarankan Anda melaporkan masalah ini kepada "
-"penulis ekstensi."
+msgstr "Kami sangat menyesal, tetapi ada masalah: pengaturan untuk ekstensi ini tidak dapat ditampilkan. Kami menyarankan Anda melaporkan masalah ini kepada penulis ekstensi."
 
 #: js/dbusServices/extensions/ui/extension-prefs-dialog.ui:82
 msgid "Technical Details"
@@ -663,9 +578,7 @@ msgstr "Kelola Ekstensi GNOME Anda"
 msgid ""
 "GNOME Extensions handles updating extensions, configuring extension "
 "preferences and removing or disabling unwanted extensions."
-msgstr ""
-"Ekstensi GNOME menangani pemutakhiran ekstensi, mengkonfigurasi preferensi "
-"ekstensi, dan menghapus atau menonaktifkan ekstensi yang tidak diinginkan."
+msgstr "Ekstensi GNOME menangani pemutakhiran ekstensi, mengkonfigurasi preferensi ekstensi, dan menghapus atau menonaktifkan ekstensi yang tidak diinginkan."
 
 #: js/extensionPrefs/data/org.gnome.Extensions.desktop.in.in:7
 msgid "Configure GNOME Shell Extensions"
@@ -680,9 +593,7 @@ msgstr "Hapus \"%s\"?"
 msgid ""
 "If you remove the extension, you need to return to download it if you want "
 "to enable it again"
-msgstr ""
-"Jika Anda menghapus ekstensi, Anda harus kembali untuk mengunduhnya jika "
-"Anda ingin mengaktifkannya lagi"
+msgstr "Jika Anda menghapus ekstensi, Anda harus kembali untuk mengunduhnya jika Anda ingin mengaktifkannya lagi"
 
 #: js/extensionPrefs/js/main.js:148 js/gdm/authPrompt.js:189
 #: js/ui/audioDeviceSelection.js:57 js/ui/components/networkAgent.js:115
@@ -699,19 +610,13 @@ msgstr "Hapus"
 
 #: js/extensionPrefs/js/main.js:181
 msgid "translator-credits"
-msgstr ""
-"Andika Triwidada <andika@gmail.com>, 2010-2014, 2017.\n"
-"Dirgita <dirgitadevina@yahoo.co.id>, 2011, 2012, 2014.\n"
-"Wibiharto <wibinem@yahoo.com>, 2011.\n"
-"Kukuh Syafaat <kukuhsyafaat@gnome.org>, 2017-2020.\n"
-"Sucipto <sucipto@pm.me>, 2020."
+msgstr "Andika Triwidada <andika@gmail.com>, 2010-2014, 2017.\nDirgita <dirgitadevina@yahoo.co.id>, 2011, 2012, 2014.\nWibiharto <wibinem@yahoo.com>, 2011.\nKukuh Syafaat <kukuhsyafaat@gnome.org>, 2017-2020.\nSucipto <sucipto@pm.me>, 2020."
 
 #: js/extensionPrefs/js/main.js:316
 #, javascript-format
 msgid "%d extension will be updated on next login."
 msgid_plural "%d extensions will be updated on next login."
-msgstr[0] "%d ekstensi akan diperbarui pada log masuk berikutnya."
-msgstr[1] "%d ekstensi akan diperbarui pada log masuk berikutnya."
+msgstr[0] ""
 
 #: js/extensionPrefs/data/ui/extension-row.ui:100
 #: subprojects/extensions-tool/src/command-create.c:211
@@ -746,11 +651,9 @@ msgstr "Tentang Ekstensi"
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:27
 msgid ""
-"To find and add extensions, visit <a href=\"https://extensions.gnome.org"
-"\">extensions.gnome.org</a>."
-msgstr ""
-"Untuk menemukan dan menambahkan ekstensi, kunjungi <a href=\"https://"
-"extensions.gnome.org\">extensions.gnome.org</a>."
+"To find and add extensions, visit <a "
+"href=\"https://extensions.gnome.org\">extensions.gnome.org</a>."
+msgstr "Untuk menemukan dan menambahkan ekstensi, kunjungi <a href=\"https://extensions.gnome.org\">extensions.gnome.org</a>."
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:35
 msgid "Warning"
@@ -761,10 +664,7 @@ msgid ""
 "Extensions can cause system issues, including performance problems. If you "
 "encounter problems with your system, it is recommended to disable all "
 "extensions."
-msgstr ""
-"Ekstensi dapat menyebabkan masalah sistem, termasuk masalah kinerja. Jika "
-"Anda mengalami masalah dengan sistem Anda, disarankan untuk menonaktifkan "
-"semua ekstensi."
+msgstr "Ekstensi dapat menyebabkan masalah sistem, termasuk masalah kinerja. Jika Anda mengalami masalah dengan sistem Anda, disarankan untuk menonaktifkan semua ekstensi."
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:134
 msgid "Manually Installed"
@@ -782,9 +682,7 @@ msgstr "Tidak Ada Ekstensi Terpasang"
 msgid ""
 "We’re very sorry, but it was not possible to get the list of installed "
 "extensions. Make sure you are logged into GNOME and try again."
-msgstr ""
-"Kami sangat menyesal, tetapi tidak mungkin mendapatkan daftar ekstensi yang "
-"dipasang. Pastikan Anda masuk ke GNOME dan coba lagi."
+msgstr "Kami sangat menyesal, tetapi tidak mungkin mendapatkan daftar ekstensi yang dipasang. Pastikan Anda masuk ke GNOME dan coba lagi."
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:288
 msgid "Log Out…"
@@ -807,13 +705,14 @@ msgstr "Lupa kata sandi?"
 msgid "Password"
 msgstr "Kata Sandi"
 
-#. Translators: During a password reset, prompt for the "secret code" provided by customer support.
+#. Translators: During a password reset, prompt for the "secret code" provided
+#. by customer support.
 #: js/gdm/authPrompt.js:680
-#, fuzzy
 msgid "Enter unlock code"
-msgstr "Tak bisa membuka kunci volume"
+msgstr ""
 
-#. Translators: Password reset. The first %s is a verification code and the second is an email.
+#. Translators: Password reset. The first %s is a verification code and the
+#. second is an email.
 #: js/gdm/authPrompt.js:683
 #, javascript-format
 msgid ""
@@ -872,7 +771,8 @@ msgctxt "search-result"
 msgid "Power Off"
 msgstr "Matikan"
 
-#. Translators: A list of keywords that match the power-off action, separated by semicolons
+#. Translators: A list of keywords that match the power-off action, separated
+#. by semicolons
 #: js/misc/systemActions.js:92
 msgid "power off;shutdown;reboot;restart;halt;stop"
 msgstr "matikan;nyalakan ulang;berhenti"
@@ -883,7 +783,8 @@ msgctxt "search-result"
 msgid "Lock Screen"
 msgstr "Kunci Layar"
 
-#. Translators: A list of keywords that match the lock screen action, separated by semicolons
+#. Translators: A list of keywords that match the lock screen action,
+#. separated by semicolons
 #: js/misc/systemActions.js:100
 msgid "lock screen"
 msgstr "kunci layar"
@@ -894,7 +795,8 @@ msgctxt "search-result"
 msgid "Log Out"
 msgstr "Keluar"
 
-#. Translators: A list of keywords that match the logout action, separated by semicolons
+#. Translators: A list of keywords that match the logout action, separated by
+#. semicolons
 #: js/misc/systemActions.js:108
 msgid "logout;log out;sign off"
 msgstr "keluar;logout;log out;sign off"
@@ -905,7 +807,8 @@ msgctxt "search-result"
 msgid "Suspend"
 msgstr "Suspensi"
 
-#. Translators: A list of keywords that match the suspend action, separated by semicolons
+#. Translators: A list of keywords that match the suspend action, separated by
+#. semicolons
 #: js/misc/systemActions.js:116
 msgid "suspend;sleep"
 msgstr "suspensi"
@@ -916,12 +819,14 @@ msgctxt "search-result"
 msgid "Switch User"
 msgstr "Ganti Pengguna"
 
-#. Translators: A list of keywords that match the switch user action, separated by semicolons
+#. Translators: A list of keywords that match the switch user action,
+#. separated by semicolons
 #: js/misc/systemActions.js:124
 msgid "switch user"
 msgstr "ganti pengguna"
 
-#. Translators: A list of keywords that match the lock orientation action, separated by semicolons
+#. Translators: A list of keywords that match the lock orientation action,
+#. separated by semicolons
 #: js/misc/systemActions.js:131
 msgid "lock orientation;unlock orientation;screen;rotation"
 msgstr "kunci orientasi;buka kunci orientasi;layar;rotasi"
@@ -1067,10 +972,8 @@ msgstr "%d %B, %l∶%M %p"
 msgid "%B %-d %Y, %l∶%M %p"
 msgstr "%d %B %Y, %l∶%M %p"
 
-#.
 #. * Translators: this is the name of the search engine that shows in the
 #. * Shell's desktop search entry.
-#.
 #: js/misc/util.js:573
 msgid "Google"
 msgstr "Google"
@@ -1084,10 +987,7 @@ msgstr "Log Masuk Area Bersinyal (hotspot)"
 msgid ""
 "Your connection to this hotspot login is not secure. Passwords or other "
 "information you enter on this page can be viewed by people nearby."
-msgstr ""
-"Koneksi Anda ke log masuk area bersinyal (hotspot) ini tidak aman. Kata kata "
-"sandi atau informasi lain yang Anda masukkan pada halaman ini dapat dilihat "
-"oleh orang-orang di sekitar."
+msgstr "Koneksi Anda ke log masuk area bersinyal (hotspot) ini tidak aman. Kata kata sandi atau informasi lain yang Anda masukkan pada halaman ini dapat dilihat oleh orang-orang di sekitar."
 
 #. No support for non-modal system dialogs, so ignore the option
 #. let modal = options['modal'] || true;
@@ -1149,7 +1049,8 @@ msgstr "Tambah Aplikasi"
 msgid "Add Website"
 msgstr "Tambah Website"
 
-#. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday).
+#. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0"
+#. (Sunday) "6" (Saturday) "06" (Sunday and Saturday).
 #: js/ui/calendar.js:41
 msgctxt "calendar-no-work"
 msgid "06"
@@ -1159,7 +1060,6 @@ msgstr "06"
 #. *
 #. * NOTE: These grid abbreviations are always shown together
 #. * and in order, e.g. "S M T W T F S".
-#.
 #: js/ui/calendar.js:70
 msgctxt "grid sunday"
 msgid "S"
@@ -1206,7 +1106,6 @@ msgstr "S"
 #. * standalone, when this is a month of the current year.
 #. * "%OB" is the new format specifier introduced in glibc 2.27,
 #. * in most cases you should not change it.
-#.
 #: js/ui/calendar.js:371
 msgid "%OB"
 msgstr "%OB"
@@ -1219,7 +1118,6 @@ msgstr "%OB"
 #. * "%OB" is the new format specifier introduced in glibc 2.27,
 #. * in most cases you should not use the old "%B" here unless you
 #. * absolutely know what you are doing.
-#.
 #: js/ui/calendar.js:381
 msgid "%OB %Y"
 msgstr "%OB %Y"
@@ -1244,19 +1142,20 @@ msgstr "Minggu %V"
 
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
-#.
 #: js/ui/calendar.js:730
 msgctxt "event list time"
 msgid "All Day"
 msgstr "Sepanjang Hari"
 
-#. Translators: Shown on calendar heading when selected day occurs on current year
+#. Translators: Shown on calendar heading when selected day occurs on current
+#. year
 #: js/ui/calendar.js:868
 msgctxt "calendar heading"
 msgid "%A, %B %-d"
 msgstr "%A, %d %B"
 
-#. Translators: Shown on calendar heading when selected day occurs on different year
+#. Translators: Shown on calendar heading when selected day occurs on
+#. different year
 #: js/ui/calendar.js:871
 msgctxt "calendar heading"
 msgid "%A, %B %-d, %Y"
@@ -1288,9 +1187,7 @@ msgstr "\"%s\" tidak merespon."
 msgid ""
 "You may choose to wait a short while for it to continue or force the "
 "application to quit entirely."
-msgstr ""
-"Anda dapat memilih untuk menunggu sebentar untuk melanjutkan atau memaksa "
-"aplikasi keluar."
+msgstr "Anda dapat memilih untuk menunggu sebentar untuk melanjutkan atau memaksa aplikasi keluar."
 
 #: js/ui/closeDialog.js:70
 msgid "Force Quit"
@@ -1324,9 +1221,7 @@ msgstr "Buka dengan %s"
 #: js/ui/components/networkAgent.js:97
 msgid ""
 "Alternatively you can connect by pushing the “WPS” button on your router."
-msgstr ""
-"Sebagai alternatif Anda dapat terhubung dengan menekan tombol \"WPS\" pada "
-"router Anda."
+msgstr "Sebagai alternatif Anda dapat terhubung dengan menekan tombol \"WPS\" pada router Anda."
 
 #: js/ui/components/networkAgent.js:109 js/ui/status/network.js:223
 #: js/ui/status/network.js:314 js/ui/status/network.js:916
@@ -1415,9 +1310,7 @@ msgstr "Manajer Jaringan"
 msgid ""
 "Passwords or encryption keys are required to access the wireless network "
 "“%s”."
-msgstr ""
-"Kata sandi atau kunci enkripsi diperlukan untuk mengakses jaringan nirkabel "
-"\"%s\"."
+msgstr "Kata sandi atau kunci enkripsi diperlukan untuk mengakses jaringan nirkabel \"%s\"."
 
 #: js/ui/components/networkAgent.js:871
 msgid "VPN password"
@@ -1443,7 +1336,8 @@ msgstr "Autentikasi"
 msgid "Sorry, that didn’t work. Please try again."
 msgstr "Maaf, tidak berhasil. Silakan coba lagi."
 
-#. Translators: this is the other person changing their old IM name to their new
+#. Translators: this is the other person changing their old IM name to their
+#. new
 #. IM name.
 #: js/ui/components/telepathyClient.js:823
 #, javascript-format
@@ -1472,7 +1366,6 @@ msgstr "Dash"
 #. * shown - it is shown just below the time in the top bar (e.g.,
 #. * "Tue 9:29 AM").  The string itself should become a full date, e.g.,
 #. * "February 17 2015".
-#.
 #: js/ui/dateMenu.js:75
 msgid "%B %-d %Y"
 msgstr "%e %B %Y"
@@ -1480,7 +1373,6 @@ msgstr "%e %B %Y"
 #. Translators: This is the accessible name of the date button shown
 #. * below the time in the shell; it should combine the weekday and the
 #. * date, e.g. "Tuesday February 17 2015".
-#.
 #: js/ui/dateMenu.js:82
 msgid "%A %B %e %Y"
 msgstr "%A %e %B %Y"
@@ -1590,12 +1482,11 @@ msgstr "Start Ulang & Pasang Pemutakhiran"
 
 #: js/ui/endSessionDialog.js:93
 #, javascript-format
-msgid "The system will automatically restart and install updates in %d second."
+msgid ""
+"The system will automatically restart and install updates in %d second."
 msgid_plural ""
 "The system will automatically restart and install updates in %d seconds."
-msgstr[0] ""
-"Sistem ini akan otomatis dimulai ulang dan memasang pemutakhiran dalam %d "
-"detik."
+msgstr[0] "Sistem ini akan otomatis dimulai ulang dan memasang pemutakhiran dalam %d detik."
 
 #: js/ui/endSessionDialog.js:99 js/ui/endSessionDialog.js:118
 msgctxt "button"
@@ -1625,15 +1516,11 @@ msgstr "Start Ulang & Pasang Peningkatan"
 msgid ""
 "%s %s will be installed after restart. Upgrade installation can take a long "
 "time: ensure that you have backed up and that the computer is plugged in."
-msgstr ""
-"%s %s akan dipasang setelah start ulang. Instalasi peningkatan bisa makan "
-"waktu lama: pastikan bahwa Anda telah melakukan back up dan komputer "
-"tersambung ke listrik."
+msgstr "%s %s akan dipasang setelah start ulang. Instalasi peningkatan bisa makan waktu lama: pastikan bahwa Anda telah melakukan back up dan komputer tersambung ke listrik."
 
 #: js/ui/endSessionDialog.js:261
 msgid "Running on battery power: Please plug in before installing updates."
-msgstr ""
-"Berjalan memakai daya baterai: Harap tancapkan sebelum memasang pemutakhiran."
+msgstr "Berjalan memakai daya baterai: Harap tancapkan sebelum memasang pemutakhiran."
 
 #: js/ui/endSessionDialog.js:270
 msgid "Some applications are busy or have unsaved work"
@@ -1725,11 +1612,9 @@ msgstr "Tombol Lambat Dimatikan"
 
 #: js/ui/kbdA11yDialog.js:34
 msgid ""
-"You just held down the Shift key for 8 seconds. This is the shortcut for the "
-"Slow Keys feature, which affects the way your keyboard works."
-msgstr ""
-"Anda hanya menahan tombol Shift selama 8 detik. Ini adalah pintasan untuk "
-"fitur Tombol Lambat, yang mempengaruhi cara kerja papan tik Anda."
+"You just held down the Shift key for 8 seconds. This is the shortcut for the"
+" Slow Keys feature, which affects the way your keyboard works."
+msgstr "Anda hanya menahan tombol Shift selama 8 detik. Ini adalah pintasan untuk fitur Tombol Lambat, yang mempengaruhi cara kerja papan tik Anda."
 
 #: js/ui/kbdA11yDialog.js:41
 msgid "Sticky Keys Turned On"
@@ -1743,19 +1628,14 @@ msgstr "Tombol Lengket Dimatikan"
 msgid ""
 "You just pressed the Shift key 5 times in a row. This is the shortcut for "
 "the Sticky Keys feature, which affects the way your keyboard works."
-msgstr ""
-"Anda hanya menekan tombol Shift 5 kali berturut-turut. Ini adalah pintasan "
-"untuk fitur Tombol Lengket, yang mempengaruhi cara kerja papan tik Anda."
+msgstr "Anda hanya menekan tombol Shift 5 kali berturut-turut. Ini adalah pintasan untuk fitur Tombol Lengket, yang mempengaruhi cara kerja papan tik Anda."
 
 #: js/ui/kbdA11yDialog.js:46
 msgid ""
 "You just pressed two keys at once, or pressed the Shift key 5 times in a "
 "row. This turns off the Sticky Keys feature, which affects the way your "
 "keyboard works."
-msgstr ""
-"Anda hanya menekan dua tombol sekaligus, atau menekan tombol Shift 5 kali "
-"berturut-turut. Ini mematikan fitur Tombol Lengket, yang mempengaruhi cara "
-"kerja papan tik Anda."
+msgstr "Anda hanya menekan dua tombol sekaligus, atau menekan tombol Shift 5 kali berturut-turut. Ini mematikan fitur Tombol Lengket, yang mempengaruhi cara kerja papan tik Anda."
 
 #: js/ui/kbdA11yDialog.js:55
 msgid "Leave On"
@@ -1838,9 +1718,7 @@ msgstr "Masuk sebagai pengguna istimewa"
 msgid ""
 "Running a session as a privileged user should be avoided for security "
 "reasons. If possible, you should log in as a normal user."
-msgstr ""
-"Menjalankan sesi sebagai pengguna istimewa harus dihindari untuk alasan "
-"keamanan. Jika memungkinkan, Anda harus masuk sebagai pengguna biasa."
+msgstr "Menjalankan sesi sebagai pengguna istimewa harus dihindari untuk alasan keamanan. Jika memungkinkan, Anda harus masuk sebagai pengguna biasa."
 
 #: js/ui/main.js:355
 msgid "Screen Lock disabled"
@@ -1970,11 +1848,9 @@ msgstr "Tidak memiliki kode token? Jangan khawatir."
 #: js/ui/paygUnlockDialog.js:160
 #, javascript-format
 msgid ""
-"Talk to your sales representative to purchase a new code. Call or text %s at "
-"%s"
-msgstr ""
-"Hubungi agen penjualan Anda untuk membeli kode token baru. Telepon atau SMS "
-"%s di nomor %s."
+"Talk to your sales representative to purchase a new code. Call or text %s at"
+" %s"
+msgstr "Hubungi agen penjualan Anda untuk membeli kode token baru. Telepon atau SMS %s di nomor %s."
 
 #. No overrides present, default to fallback text.
 #: js/ui/paygUnlockDialog.js:164
@@ -2011,10 +1887,9 @@ msgid "Pay As You Go"
 msgstr "Paket Berlangganan"
 
 #: js/ui/payg.js:40
-msgid "Enter an unlock code to extend the time before your credit has expired."
-msgstr ""
-"Masukkan kode kunci untuk memperpanjang waktu sebelum kredit Anda "
-"kedaluwarsa."
+msgid ""
+"Enter an unlock code to extend the time before your credit has expired."
+msgstr "Masukkan kode kunci untuk memperpanjang waktu sebelum kredit Anda kedaluwarsa."
 
 #: js/ui/payg.js:41
 #, javascript-format
@@ -2048,8 +1923,10 @@ msgstr "Proses verifikasi kode token telah melebihi batas waktu."
 msgid "Your Pay As You Go Account ID is: %s"
 msgstr ""
 
-#. We don't consider any other error here (and we don't consider DISABLED explicitly,
-#. since that should not happen), but still we need to show something to the user.
+#. We don't consider any other error here (and we don't consider DISABLED
+#. explicitly,
+#. since that should not happen), but still we need to show something to the
+#. user.
 #: js/ui/payg.js:271
 msgid "Unknown error"
 msgstr "Galat tidak diketahui"
@@ -2083,44 +1960,38 @@ msgid_plural "%s days"
 msgstr[0] "%s hari"
 
 #: js/ui/payg.js:641
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s second has been added to your Pay As You Go credit."
 msgid_plural "%s seconds have been added to your Pay As You Go credit."
-msgstr[0] "%s telah ditambahkan ke favorit Anda."
-msgstr[1] "%s telah ditambahkan ke favorit Anda."
+msgstr[0] ""
 
 #: js/ui/payg.js:648
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s minute has been added to your Pay As You Go credit."
 msgid_plural "%s minutes have been added to your Pay As You Go credit."
-msgstr[0] "%s telah ditambahkan ke favorit Anda."
-msgstr[1] "%s telah ditambahkan ke favorit Anda."
+msgstr[0] ""
 
 #: js/ui/payg.js:655
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s hour has been added to your Pay As You Go credit."
 msgid_plural "%s hours have been added to your Pay As You Go credit."
-msgstr[0] "%s telah ditambahkan ke favorit Anda."
-msgstr[1] "%s telah ditambahkan ke favorit Anda."
+msgstr[0] ""
 
 #: js/ui/payg.js:662
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s day has been added to your Pay As You Go credit."
 msgid_plural "%s days have been added to your Pay As You Go credit."
-msgstr[0] "%s telah ditambahkan ke favorit Anda."
-msgstr[1] "%s telah ditambahkan ke favorit Anda."
+msgstr[0] ""
 
 #: js/ui/payg.js:669
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s month has been added to your Pay As You Go credit."
 msgid_plural "%s months have been added to your Pay As You Go credit."
-msgstr[0] "%s telah ditambahkan ke favorit Anda."
-msgstr[1] "%s telah ditambahkan ke favorit Anda."
+msgstr[0] ""
 
 #: js/ui/payg.js:676
-#, fuzzy
 msgid "1 year has been added to your Pay As You Go credit."
-msgstr "%s telah ditambahkan ke favorit Anda."
+msgstr ""
 
 #. Unlock permanently message
 #: js/ui/payg.js:679
@@ -2151,7 +2022,6 @@ msgstr "GNOME perlu mengunci layar"
 #. screenshield. The user is probably very upset at this
 #. point, but any application using global grabs is broken
 #. Just tell him to stop using this app
-#.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
 #: js/ui/screenShield.js:295 js/ui/screenShield.js:674
@@ -2220,9 +2090,7 @@ msgstr "Gunakan Berkas Kunci"
 #, javascript-format
 msgid ""
 "To unlock a volume that uses keyfiles, use the <i>%s</i> utility instead."
-msgstr ""
-"Untuk membuka kunci volume yang menggunakan berkas kunci, gunakan utilitas "
-"<i>%s</i>."
+msgstr "Untuk membuka kunci volume yang menggunakan berkas kunci, gunakan utilitas <i>%s</i>."
 
 #: js/ui/shellMountOperation.js:306
 msgid "PIM Number"
@@ -2319,9 +2187,7 @@ msgstr "Pembaruan otomatis nyala"
 msgid ""
 "You have Unlimited Data so automatic updates have been turned on for this "
 "connection."
-msgstr ""
-"Anda memiliki Data Tak Terbatas hingga pembaruan otomatis telah dinyalakan "
-"pada koneksi ini."
+msgstr "Anda memiliki Data Tak Terbatas hingga pembaruan otomatis telah dinyalakan pada koneksi ini."
 
 #: js/ui/status/automaticUpdates.js:267
 msgid "Automatic updates are turned off to save your data"
@@ -2331,9 +2197,7 @@ msgstr "Pembaruan otomatis dimatikan untuk menghemat data Anda"
 msgid ""
 "You will need to choose which Endless updates to apply when on this "
 "connection."
-msgstr ""
-"Anda perlu memilih pembaruan Endless mana yang akan diterapkan saat berada "
-"pada koneksi ini."
+msgstr "Anda perlu memilih pembaruan Endless mana yang akan diterapkan saat berada pada koneksi ini."
 
 #: js/ui/status/automaticUpdates.js:286 js/ui/windowMenu.js:167
 msgid "Close"
@@ -2452,7 +2316,8 @@ msgstr "%s Mati"
 msgid "%s Connected"
 msgstr "%s Tersambung"
 
-#. Translators: this is for network devices that are physically present but are not
+#. Translators: this is for network devices that are physically present but
+#. are not
 #. under NetworkManager's control (and thus cannot be used in the menu);
 #. %s is a network identifier
 #: js/ui/status/network.js:428
@@ -2472,20 +2337,23 @@ msgstr "%s Memutus"
 msgid "%s Connecting"
 msgstr "%s Menyambung"
 
-#. Translators: this is for network connections that require some kind of key or password; %s is a network identifier
+#. Translators: this is for network connections that require some kind of key
+#. or password; %s is a network identifier
 #: js/ui/status/network.js:441
 #, javascript-format
 msgid "%s Requires Authentication"
 msgstr "%s Memerlukan Autentikasi"
 
-#. Translators: this is for devices that require some kind of firmware or kernel
+#. Translators: this is for devices that require some kind of firmware or
+#. kernel
 #. module, which is missing; %s is a network identifier
 #: js/ui/status/network.js:449
 #, javascript-format
 msgid "Firmware Missing For %s"
 msgstr "Firmware Hilang Untuk %s"
 
-#. Translators: this is for a network device that cannot be activated (for example it
+#. Translators: this is for a network device that cannot be activated (for
+#. example it
 #. is disabled by rfkill, or it has no coverage; %s is a network identifier
 #: js/ui/status/network.js:453
 #, javascript-format
@@ -2587,7 +2455,8 @@ msgstr "%s Tak Tersambung"
 msgid "connecting…"
 msgstr "menyambungkan…"
 
-#. Translators: this is for network connections that require some kind of key or password
+#. Translators: this is for network connections that require some kind of key
+#. or password
 #: js/ui/status/network.js:1420
 msgid "authentication required"
 msgstr "memerlukan autentikasi"
@@ -2761,9 +2630,7 @@ msgstr "Perangkat Thunderbolt tak dikenal"
 msgid ""
 "New device has been detected while you were away. Please disconnect and "
 "reconnect the device to start using it."
-msgstr ""
-"Perangkat baru telah terdeteksi saat Anda pergi. Harap lepaskan dan "
-"sambungkan kembali perangkat untuk mulai menggunakannya."
+msgstr "Perangkat baru telah terdeteksi saat Anda pergi. Harap lepaskan dan sambungkan kembali perangkat untuk mulai menggunakannya."
 
 #: js/ui/status/thunderbolt.js:329
 msgid "Unauthorized Thunderbolt device"
@@ -2772,8 +2639,7 @@ msgstr "Perangkat Thunderbolt tak dikenal"
 #: js/ui/status/thunderbolt.js:330
 msgid ""
 "New device has been detected and needs to be authorized by an administrator."
-msgstr ""
-"Perangkat baru telah terdeteksi dan perlu diautorisasi oleh administrator."
+msgstr "Perangkat baru telah terdeteksi dan perlu diautorisasi oleh administrator."
 
 #: js/ui/status/thunderbolt.js:336
 msgid "Thunderbolt authorization error"
@@ -2794,38 +2660,28 @@ msgstr "Volume"
 
 #. Translators: this is for display mirroring i.e. cloning.
 #. * Try to keep it under around 15 characters.
-#.
 #: js/ui/switchMonitor.js:17
 msgid "Mirror"
 msgstr "Cermin"
 
 #. Translators: this is for the desktop spanning displays.
 #. * Try to keep it under around 15 characters.
-#.
 #: js/ui/switchMonitor.js:22
 msgid "Join Displays"
 msgstr "Gabung Layar"
 
 #. Translators: this is for using only an external display.
 #. * Try to keep it under around 15 characters.
-#.
 #: js/ui/switchMonitor.js:27
 msgid "External Only"
 msgstr "Hanya Eksternal"
 
 #. Translators: this is for using only the laptop display.
 #. * Try to keep it under around 15 characters.
-#.
 #: js/ui/switchMonitor.js:32
 msgid "Built-in Only"
 msgstr "Hanya Bawaan"
 
-# %A: Full weekday name
-# %A: Minggu
-# %B: Full month name
-# %B: Januari
-# %d: Day of month as decimal number (01-31)
-# %d: 1
 #. Translators: This is a time format for a date in
 #. long format
 #: js/ui/unlockDialog.js:371
@@ -2864,7 +2720,6 @@ msgstr "Simpan pengaturan tampilan ini?"
 
 #. Translators: this and the following message should be limited in length,
 #. to avoid ellipsizing the labels.
-#.
 #: js/ui/windowManager.js:70
 msgid "Revert Settings"
 msgstr "Kembalikan Pengaturan"
@@ -3003,9 +2858,7 @@ msgstr "Ekstensi baru berhasil dibuat di %s.\n"
 msgid ""
 "Name should be a very short (ideally descriptive) string.\n"
 "Examples are: %s"
-msgstr ""
-"Nama harus berupa string yang sangat pendek (idealnya deskriptif).\n"
-"Contohnya adalah: %s"
+msgstr "Nama harus berupa string yang sangat pendek (idealnya deskriptif).\nContohnya adalah: %s"
 
 #: subprojects/extensions-tool/src/command-create.c:197
 #: subprojects/extensions-tool/src/main.c:170
@@ -3017,20 +2870,14 @@ msgstr "Nama"
 msgid ""
 "Description is a single-sentence explanation of what your extension does.\n"
 "Examples are: %s"
-msgstr ""
-"Deskripsi adalah penjelasan satu kalimat tentang apa yang dilakukan ekstensi "
-"Anda.\n"
-"Contohnya adalah: %s"
+msgstr "Deskripsi adalah penjelasan satu kalimat tentang apa yang dilakukan ekstensi Anda.\nContohnya adalah: %s"
 
 #: subprojects/extensions-tool/src/command-create.c:222
 #, c-format
 msgid ""
 "UUID is a globally-unique identifier for your extension.\n"
-"This should be in the format of an email address (clicktofocus@janedoe."
-"example.com)\n"
-msgstr ""
-"UUID adalah pengidentifikasi unik secara global untuk ekstensi Anda.\n"
-"Ini harus dalam format alamat surel (clicktofocus@janedoe.example.com)\n"
+"This should be in the format of an email address (clicktofocus@janedoe.example.com)\n"
+msgstr "UUID adalah pengidentifikasi unik secara global untuk ekstensi Anda.\nIni harus dalam format alamat surel (clicktofocus@janedoe.example.com)\n"
 
 #: subprojects/extensions-tool/src/command-create.c:244
 msgid "The unique identifier of the new extension"
@@ -3369,9 +3216,7 @@ msgstr "Keluar dari aplikasi"
 msgid ""
 "If an application doesn't respond for a while, select its name and click "
 "Quit Application."
-msgstr ""
-"Jika aplikasi tidak merespons selama beberapa waktu, pilih namanya dan klik "
-"Keluar Aplikasi."
+msgstr "Jika aplikasi tidak merespons selama beberapa waktu, pilih namanya dan klik Keluar Aplikasi."
 
 #: js/ui/forceAppExitDialog.js:87
 msgid "System Monitor"
@@ -3394,9 +3239,9 @@ msgid "Disable Hot Corner"
 msgstr "Nonaktifkan Pojok Aktif"
 
 #: js/ui/iconGridLayout.js:312
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s has been removed"
-msgstr "%s telah dihapus dari favorit Anda."
+msgstr ""
 
 #: js/ui/iconGridLayout.js:540
 msgid "New Folder"
@@ -3409,7 +3254,6 @@ msgstr "Buka \"%s\" di browser"
 
 #. Translators: the first %s is the search engine name, and the second
 #. * is the search string. For instance, 'Search Google for "hello"'.
-#.
 #: js/ui/internetSearch.js:79
 #, javascript-format
 msgid "Search %s for \"%s\""
@@ -3440,93 +3284,3 @@ msgstr "Tanpa Nama"
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Definisi bebas untuk %s"
-
-#~ msgid "Copy Error"
-#~ msgstr "Salin Galat"
-
-#~ msgid "Frequently used applications will appear here"
-#~ msgstr "Aplikasi yang sering dipakai akan muncul di sini"
-
-#~ msgid "Frequent"
-#~ msgstr "Sering"
-
-#~ msgid "All"
-#~ msgstr "Semua"
-
-#~ msgid "Add to Favorites"
-#~ msgstr "Tambah ke Favorit"
-
-#~ msgid "Type to search"
-#~ msgstr "Ketik untuk mencari"
-
-#~ msgid "Top Bar"
-#~ msgstr "Bar Atas"
-
-#~ msgid "%d more"
-#~ msgid_plural "%d more"
-#~ msgstr[0] "%d lagi"
-#~ msgstr[1] "%d lagi"
-
-#~ msgid "Off"
-#~ msgstr "Mati"
-
-#~ msgid "On"
-#~ msgstr "Hidup"
-
-#~ msgid "Search"
-#~ msgstr "Cari"
-
-#~ msgid "Username…"
-#~ msgstr "Nama pengguna…"
-
-#~ msgid "Password: "
-#~ msgstr "Kata Sandi: "
-
-#~ msgid "Enter Password…"
-#~ msgstr "Masukkan Kata Sandi…"
-
-#~ msgid "Next"
-#~ msgstr "Selanjutnya"
-
-#~ msgctxt "button"
-#~ msgid "Sign In"
-#~ msgstr "Masuk"
-
-#~ msgid "%A, %B %d"
-#~ msgstr "%A, %d %B"
-
-#~ msgid "%d new message"
-#~ msgid_plural "%d new messages"
-#~ msgstr[0] "%d pesan baru"
-
-#~ msgid "%d new notification"
-#~ msgid_plural "%d new notifications"
-#~ msgstr[0] "%d pemberitahuan baru"
-
-#~ msgid "org.gnome.Extensions"
-#~ msgstr "org.gnome.Extensions"
-
-#~ msgid "Logout…"
-#~ msgstr "Keluar…"
-
-#~ msgid "Browse in Software"
-#~ msgstr "Ramban di Perangkat Lunak"
-
-#~ msgctxt "search-result"
-#~ msgid "Lock Orientation"
-#~ msgstr "Kunci Orientasi"
-
-#~ msgid "Password:"
-#~ msgstr "Kata Sandi:"
-
-#~ msgid "Type again:"
-#~ msgstr "Ketik lagi:"
-
-#~ msgid "Authentication required by wireless network"
-#~ msgstr "Autentikasi diperlukan oleh jaringan nirkabel"
-
-#~ msgid "Mobile broadband network password"
-#~ msgstr "Kata kata sandi jaringan data seluler"
-
-#~ msgid "Rename"
-#~ msgstr "Ubah Nama"

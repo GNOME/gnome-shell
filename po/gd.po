@@ -1,24 +1,22 @@
-# Scottish Gaelic translation for gnome-shell.
-# Copyright (C) 2015 gnome-shell's COPYRIGHT HOLDER
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the gnome-shell package.
-# GunChleoc <fios@foramnagaidhlig.net>, 2015, 2016, 2017, 2018.
+# 
+# Translators:
+# GunChleoc, 2015-2018
 msgid ""
 msgstr ""
-"Project-Id-Version: gnome-shell master\n"
+"Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-04-17 17:11+0100\n"
-"PO-Revision-Date: 2018-02-26 12:55+0100\n"
-"Last-Translator: GunChleoc <fios@foramnagaidhlig.net>\n"
-"Language-Team: Fòram na Gàidhlig\n"
-"Language: gd\n"
+"PO-Revision-Date: 2020-04-17 16:16+0000\n"
+"Last-Translator: Will Thompson <wjt@endlessm.com>\n"
+"Language-Team: Gaelic, Scottish (http://www.transifex.com/endless-os/gnome-shell/language/gd/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n==1 || n==11) ? 0 : (n==2 || n==12) ? 1 : "
-"(n > 2 && n < 20) ? 2 : 3;\n"
-"X-DamnedLies-Scope: partial\n"
-"X-Generator: Virtaal 0.7.1\n"
-"X-Project-Style: gnome\n"
+"Language: gd\n"
+"Plural-Forms: nplurals=4; plural=(n==1 || n==11) ? 0 : (n==2 || n==12) ? 1 : (n > 2 && n < 20) ? 2 : 3;\n"
 
 #: data/50-gnome-shell-system.xml:6
 msgid "System"
@@ -60,9 +58,7 @@ msgstr "Cuir an comas innealan an luchd-leasachaidh ’s deuchainne o Alt-F2"
 msgid ""
 "Allows access to internal debugging and monitoring tools using the Alt-F2 "
 "dialog."
-msgstr ""
-"Ceadaich inntrigeadh dha na h-innealan a chum dì-bhugachaidh ’s sgrùdaidh le "
-"còmhradh Alt-F2."
+msgstr "Ceadaich inntrigeadh dha na h-innealan a chum dì-bhugachaidh ’s sgrùdaidh le còmhradh Alt-F2."
 
 #: data/org.gnome.shell.gschema.xml.in:25
 msgid "UUIDs of extensions to enable"
@@ -70,36 +66,24 @@ msgstr "UUIDs nan leudachan ri an cur an comas"
 
 #: data/org.gnome.shell.gschema.xml.in:26
 msgid ""
-"GNOME Shell extensions have a UUID property; this key lists extensions which "
-"should be loaded. Any extension that wants to be loaded needs to be in this "
-"list. You can also manipulate this list with the EnableExtension and "
+"GNOME Shell extensions have a UUID property; this key lists extensions which"
+" should be loaded. Any extension that wants to be loaded needs to be in this"
+" list. You can also manipulate this list with the EnableExtension and "
 "DisableExtension D-Bus methods on org.gnome.Shell."
-msgstr ""
-"Tha buadh UUID aig leudachain Slige GNOME; seallaidh an iuchair sin na "
-"leudachain a bu chòir luchdadh. Feumaidh gach leudachan a tha ag iarraidh "
-"luchdadh a bhith air an liosta seo. ’S urrainn dhut an liosta seo "
-"atharrachadh cuideachd leis na modhan D-Bus EnableExtension agus "
-"DisableExtension air org.gnome.Shell."
+msgstr "Tha buadh UUID aig leudachain Slige GNOME; seallaidh an iuchair sin na leudachain a bu chòir luchdadh. Feumaidh gach leudachan a tha ag iarraidh luchdadh a bhith air an liosta seo. ’S urrainn dhut an liosta seo atharrachadh cuideachd leis na modhan D-Bus EnableExtension agus DisableExtension air org.gnome.Shell."
 
 #: data/org.gnome.shell.gschema.xml.in:35
-#, fuzzy
 msgid "UUIDs of extensions to force disabling"
-msgstr "UUIDs nan leudachan ri an cur an comas"
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:36
-#, fuzzy
 msgid ""
-"GNOME Shell extensions have a UUID property; this key lists extensions which "
-"should be disabled, even if loaded as part of the current mode. You can also "
-"manipulate this list with the EnableExtension and DisableExtension D-Bus "
-"methods on org.gnome.Shell. This key takes precedence over the “enabled-"
-"extensions” setting."
+"GNOME Shell extensions have a UUID property; this key lists extensions which"
+" should be disabled, even if loaded as part of the current mode. You can "
+"also manipulate this list with the EnableExtension and DisableExtension "
+"D-Bus methods on org.gnome.Shell. This key takes precedence over the "
+"“enabled-extensions” setting."
 msgstr ""
-"Tha buadh UUID aig leudachain Slige GNOME; seallaidh an iuchair sin na "
-"leudachain a bu chòir luchdadh. Feumaidh gach leudachan a tha ag iarraidh "
-"luchdadh a bhith air an liosta seo. ’S urrainn dhut an liosta seo "
-"atharrachadh cuideachd leis na modhan D-Bus EnableExtension agus "
-"DisableExtension air org.gnome.Shell."
 
 #: data/org.gnome.shell.gschema.xml.in:46
 msgid "Disable user extensions"
@@ -109,40 +93,28 @@ msgstr "Cuir à comas leudachain a’ chleachdaiche"
 msgid ""
 "Disable all extensions the user has enabled without affecting the “enabled-"
 "extension” setting."
-msgstr ""
-"Cuir à comas gach leudachan a chuir an cleachdaiche an comas gun bhuaidh air "
-"an roghainn “enabled-extension”."
+msgstr "Cuir à comas gach leudachan a chuir an cleachdaiche an comas gun bhuaidh air an roghainn “enabled-extension”."
 
 #: data/org.gnome.shell.gschema.xml.in:54
 msgid "Disables the validation of extension version compatibility"
-msgstr ""
-"Cuiridh seo à comas dearbhadh na co-chòrdalachd airson tionndadh nan "
-"leudachan"
+msgstr "Cuiridh seo à comas dearbhadh na co-chòrdalachd airson tionndadh nan leudachan"
 
 #: data/org.gnome.shell.gschema.xml.in:55
 msgid ""
 "GNOME Shell will only load extensions that claim to support the current "
 "running version. Enabling this option will disable this check and try to "
 "load all extensions regardless of the versions they claim to support."
-msgstr ""
-"Cha luchdaich Slige GNOME ach leudachain a dh’innseas gu bheil iad co-"
-"chòrdail leis an tionndadh a tha ’ga ruith. Ma chuireas tu an roghainn seo "
-"an comas, thèid an dearbhadh a chur à comas agus feuchaidh sinn ris a h-uile "
-"leudachan a luchdadh ge b’ e dè na tionndaidhean ris an cuir iad taic dhan "
-"rèir-san."
+msgstr "Cha luchdaich Slige GNOME ach leudachain a dh’innseas gu bheil iad co-chòrdail leis an tionndadh a tha ’ga ruith. Ma chuireas tu an roghainn seo an comas, thèid an dearbhadh a chur à comas agus feuchaidh sinn ris a h-uile leudachan a luchdadh ge b’ e dè na tionndaidhean ris an cuir iad taic dhan rèir-san."
 
 #: data/org.gnome.shell.gschema.xml.in:63
 msgid "List of desktop file IDs for favorite applications"
-msgstr ""
-"Liosta dhe IDan nam faidhlichean desktop airson nan aplacaidean as annsa leat"
+msgstr "Liosta dhe IDan nam faidhlichean desktop airson nan aplacaidean as annsa leat"
 
 #: data/org.gnome.shell.gschema.xml.in:64
 msgid ""
-"The applications corresponding to these identifiers will be displayed in the "
-"favorites area."
-msgstr ""
-"Thèid na h-aplacaidean a fhreagras ris na h-aithnichearan seo a shealltainn "
-"air raon nan annsachdan."
+"The applications corresponding to these identifiers will be displayed in the"
+" favorites area."
+msgstr "Thèid na h-aplacaidean a fhreagras ris na h-aithnichearan seo a shealltainn air raon nan annsachdan."
 
 #: data/org.gnome.shell.gschema.xml.in:71
 msgid "App Picker View"
@@ -156,31 +128,26 @@ msgstr "Inneacs an t-seallaidh làithrich ann an roghnaichear nan aplacaid."
 msgid "History for command (Alt-F2) dialog"
 msgstr "Eachdraidh a’ chòmhraidh-àithne (Alt-F2)"
 
-#. Translators: looking glass is a debugger and inspector tool, see https://wiki.gnome.org/Projects/GnomeShell/LookingGlass
+#. Translators: looking glass is a debugger and inspector tool, see
+#. https://wiki.gnome.org/Projects/GnomeShell/LookingGlass
 #: data/org.gnome.shell.gschema.xml.in:83
 msgid "History for the looking glass dialog"
 msgstr "Eachdraidh a’ chòmhraidh aig looking glass"
 
 #: data/org.gnome.shell.gschema.xml.in:87
 msgid "Always show the “Log out” menu item in the user menu."
-msgstr ""
-"Seall nì “Clàraich a-mach” air clàr-taice a’ chleachdaiche an-còmhnaidh."
+msgstr "Seall nì “Clàraich a-mach” air clàr-taice a’ chleachdaiche an-còmhnaidh."
 
 #: data/org.gnome.shell.gschema.xml.in:88
 msgid ""
-"This key overrides the automatic hiding of the “Log out” menu item in single-"
-"user, single-session situations."
-msgstr ""
-"Tar-àithnidh an iuchair seo am falach fèin-obrachail aig “Clàraich a-mach” "
-"air a’ chlàr-taice ann an suidheachaidhean le aon chleachdaiche ’s aon "
-"seisean a-mhàin."
+"This key overrides the automatic hiding of the “Log out” menu item in "
+"single-user, single-session situations."
+msgstr "Tar-àithnidh an iuchair seo am falach fèin-obrachail aig “Clàraich a-mach” air a’ chlàr-taice ann an suidheachaidhean le aon chleachdaiche ’s aon seisean a-mhàin."
 
 #: data/org.gnome.shell.gschema.xml.in:95
 msgid ""
 "Whether to remember password for mounting encrypted or remote filesystems"
-msgstr ""
-"Co-dhiù an dèid am facal-faire a chuimhneachadh airson munntachadh "
-"shiostaman-fhaidhlichean crioptaichte no cèine"
+msgstr "Co-dhiù an dèid am facal-faire a chuimhneachadh airson munntachadh shiostaman-fhaidhlichean crioptaichte no cèine"
 
 #: data/org.gnome.shell.gschema.xml.in:96
 msgid ""
@@ -188,18 +155,12 @@ msgid ""
 "filesystem is mounted. If the password can be saved for future use a "
 "“Remember Password” checkbox will be present. This key sets the default "
 "state of the checkbox."
-msgstr ""
-"Iarraidh an t-slige facal-faire ort nuair a thèid siostam-fhaidhlichean "
-"crioptaichte no cèin a mhunntachadh. Ma ghabhas am facal-faire sàbhaladh "
-"airson na h-ama ri teachd, bidh bogsa-cromaige “Cuimhnich am facal-faire” "
-"ann. Suidhichidh an iuchair seo staid thùsail na bogsa-cromaige ud."
+msgstr "Iarraidh an t-slige facal-faire ort nuair a thèid siostam-fhaidhlichean crioptaichte no cèin a mhunntachadh. Ma ghabhas am facal-faire sàbhaladh airson na h-ama ri teachd, bidh bogsa-cromaige “Cuimhnich am facal-faire” ann. Suidhichidh an iuchair seo staid thùsail na bogsa-cromaige ud."
 
 #: data/org.gnome.shell.gschema.xml.in:105
 msgid ""
 "Whether the default Bluetooth adapter had set up devices associated to it"
-msgstr ""
-"Co-dhiù an robh uidheaman co-cheangailte ris an adaptar Bluetooth gus nach "
-"robh"
+msgstr "Co-dhiù an robh uidheaman co-cheangailte ris an adaptar Bluetooth gus nach robh"
 
 #: data/org.gnome.shell.gschema.xml.in:106
 msgid ""
@@ -207,11 +168,7 @@ msgid ""
 "powered, or if there were devices set up associated with the default "
 "adapter. This will be reset if the default adapter is ever seen not to have "
 "devices associated to it."
-msgstr ""
-"Cha seall an t-slige nì clàir-thaice “Bluetooth” ach ma tha cumhachd aig "
-"adaptar Bluetooth no ma chaidh uidheaman co-cheangailte ris an adaptar "
-"tùsail roimhe. Thèid seo ath-shuidheachadh ma chithear an t-adaptar tùsail "
-"gun uidheam co-cheangailte ris."
+msgstr "Cha seall an t-slige nì clàir-thaice “Bluetooth” ach ma tha cumhachd aig adaptar Bluetooth no ma chaidh uidheaman co-cheangailte ris an adaptar tùsail roimhe. Thèid seo ath-shuidheachadh ma chithear an t-adaptar tùsail gun uidheam co-cheangailte ris."
 
 #: data/org.gnome.shell.gschema.xml.in:115
 msgid "Enable introspection API"
@@ -240,8 +197,8 @@ msgstr ""
 #: data/org.gnome.shell.gschema.xml.in:139
 msgid ""
 "Default position of the hot corner is in a right corner. Set false to move "
-"the hot corner to a left corner. The position is not affected by the RTL vs. "
-"LTR text direction."
+"the hot corner to a left corner. The position is not affected by the RTL vs."
+" LTR text direction."
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:147
@@ -261,8 +218,8 @@ msgstr ""
 #: data/org.gnome.shell.gschema.xml.in:160
 msgid ""
 "Number of pixels in one dimension of the square target for the hot corner. "
-"Default is for a single pixel in the very corner. For some virtual machines, "
-"this value may need to be set larger than the default."
+"Default is for a single pixel in the very corner. For some virtual machines,"
+" this value may need to be set larger than the default."
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:170
@@ -272,8 +229,8 @@ msgstr ""
 #: data/org.gnome.shell.gschema.xml.in:173
 msgid ""
 "Makes window management more like standard Gnome. Hides application splash "
-"screens, prevents applications from being forced to open maximized, and does "
-"not automatically switch to the app selector when a window is minimized."
+"screens, prevents applications from being forced to open maximized, and does"
+" not automatically switch to the app selector when a window is minimized."
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:182
@@ -283,10 +240,11 @@ msgstr ""
 #: data/org.gnome.shell.gschema.xml.in:183
 msgid ""
 "This key controls whether to show the \"Forgot Password?\" button on the "
-"login screen. 'default' tells GNOME Shell to use the vendor default setting. "
-"'enable' and 'disable' can be used to explicitly enable or disable the reset "
-"button, respectively. Note that it only makes sense to set this key for the "
-"Debian-gdm user; changing it for your own user account will have no effect."
+"login screen. 'default' tells GNOME Shell to use the vendor default setting."
+" 'enable' and 'disable' can be used to explicitly enable or disable the "
+"reset button, respectively. Note that it only makes sense to set this key "
+"for the Debian-gdm user; changing it for your own user account will have no "
+"effect."
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:194
@@ -325,9 +283,7 @@ msgstr "Nasgadh iuchrach gus an sealladh “Seall na h-aplacaidean” fhosgladh"
 #: data/org.gnome.shell.gschema.xml.in:223
 msgid ""
 "Keybinding to open the “Show Applications” view of the Activities Overview."
-msgstr ""
-"Nasgadh iuchrach gus an sealladh “Seall na h-aplacaidean” aig foir-shealladh "
-"nan gnìomhachdan fhosgladh."
+msgstr "Nasgadh iuchrach gus an sealladh “Seall na h-aplacaidean” aig foir-shealladh nan gnìomhachdan fhosgladh."
 
 #: data/org.gnome.shell.gschema.xml.in:230
 msgid "Keybinding to open the overview"
@@ -354,59 +310,48 @@ msgid "Keybinding to focus the active notification."
 msgstr "Nasgadh iuchrach gus am fòcas a chur air a’ bhrath ghnìomhach."
 
 #: data/org.gnome.shell.gschema.xml.in:251
-#, fuzzy
 msgid "Switch to application 1"
-msgstr "Seall na h-aplacaidean"
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:255
-#, fuzzy
 msgid "Switch to application 2"
-msgstr "Seall na h-aplacaidean"
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:259
-#, fuzzy
 msgid "Switch to application 3"
-msgstr "Seall na h-aplacaidean"
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:263
-#, fuzzy
 msgid "Switch to application 4"
-msgstr "Seall na h-aplacaidean"
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:267
-#, fuzzy
 msgid "Switch to application 5"
-msgstr "Seall na h-aplacaidean"
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:271
-#, fuzzy
 msgid "Switch to application 6"
-msgstr "Seall na h-aplacaidean"
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:275
-#, fuzzy
 msgid "Switch to application 7"
-msgstr "Seall na h-aplacaidean"
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:279
-#, fuzzy
 msgid "Switch to application 8"
-msgstr "Seall na h-aplacaidean"
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:283
-#, fuzzy
 msgid "Switch to application 9"
-msgstr "Seall na h-aplacaidean"
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:290
-#, fuzzy
 msgid "Keybinding that shows the force app exit dialog"
-msgstr "Nasgadh iuchrach gus clàr-taice nan aplacaidean fhosgladh"
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:295
-#, fuzzy
 msgid "Keybinding to activate the first app in the icon bar."
-msgstr "Nasgadh iuchrach gus clàr-taice nan aplacaidean fhosgladh."
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:296
 msgid ""
@@ -415,9 +360,8 @@ msgid ""
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:302
-#, fuzzy
 msgid "Keybinding to activate the second app in the icon bar."
-msgstr "Nasgadh iuchrach gus clàr-taice nan aplacaidean fhosgladh."
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:303
 msgid ""
@@ -426,9 +370,8 @@ msgid ""
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:309
-#, fuzzy
 msgid "Keybinding to activate the third app in the icon bar."
-msgstr "Nasgadh iuchrach gus clàr-taice nan aplacaidean fhosgladh."
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:310
 msgid ""
@@ -437,9 +380,8 @@ msgid ""
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:316
-#, fuzzy
 msgid "Keybinding to activate the fourth app in the icon bar."
-msgstr "Nasgadh iuchrach gus clàr-taice nan aplacaidean fhosgladh."
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:317
 msgid ""
@@ -448,9 +390,8 @@ msgid ""
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:323
-#, fuzzy
 msgid "Keybinding to activate the fifth app in the icon bar."
-msgstr "Nasgadh iuchrach gus clàr-taice nan aplacaidean fhosgladh."
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:324
 msgid ""
@@ -459,9 +400,8 @@ msgid ""
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:330
-#, fuzzy
 msgid "Keybinding to activate the sixth app in the icon bar."
-msgstr "Nasgadh iuchrach gus clàr-taice nan aplacaidean fhosgladh."
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:331
 msgid ""
@@ -470,9 +410,8 @@ msgid ""
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:337
-#, fuzzy
 msgid "Keybinding to activate the seventh app in the icon bar."
-msgstr "Nasgadh iuchrach gus clàr-taice nan aplacaidean fhosgladh."
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:338
 msgid ""
@@ -481,9 +420,8 @@ msgid ""
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:344
-#, fuzzy
 msgid "Keybinding to activate the eighth app in the icon bar."
-msgstr "Nasgadh iuchrach gus clàr-taice nan aplacaidean fhosgladh."
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:345
 msgid ""
@@ -492,9 +430,8 @@ msgid ""
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:351
-#, fuzzy
 msgid "Keybinding to activate the last app in the icon bar."
-msgstr "Nasgadh iuchrach gus clàr-taice nan aplacaidean fhosgladh."
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:352
 msgid ""
@@ -511,10 +448,7 @@ msgstr "Cuingich an t-suidsear air an rùm-obrach làithreach."
 msgid ""
 "If true, only applications that have windows on the current workspace are "
 "shown in the switcher. Otherwise, all applications are included."
-msgstr ""
-"Mas e true a th’ ann, cha dèid a shealltainn san t-suidsear ach na h-"
-"aplacaidean aig a bheil uinneag san rùm-obrach làithreach. Mur e, thèid a h-"
-"uile aplacaid a ghabhail a-staigh."
+msgstr "Mas e true a th’ ann, cha dèid a shealltainn san t-suidsear ach na h-aplacaidean aig a bheil uinneag san rùm-obrach làithreach. Mur e, thèid a h-uile aplacaid a ghabhail a-staigh."
 
 #: data/org.gnome.shell.gschema.xml.in:381
 msgid "The application icon mode."
@@ -523,27 +457,19 @@ msgstr "Modh ìomhaigheagan nan aplacaid."
 #: data/org.gnome.shell.gschema.xml.in:382
 msgid ""
 "Configures how the windows are shown in the switcher. Valid possibilities "
-"are “thumbnail-only” (shows a thumbnail of the window), “app-icon-"
-"only” (shows only the application icon) or “both”."
-msgstr ""
-"Rèitichidh seo an dòigh sa thèid na h-uinneagan a shealltainn san t-"
-"suidsear. ’S e “thumbnail-only” (seallaidh seo dealbhag na h-uinneige), “app-"
-"icon-only” (seallaidh seo ìomhaigheag na h-aplacaid) no “both” (seallaidh "
-"seo an dà chuid dhiubh) a tha sna luachan dligheach."
+"are “thumbnail-only” (shows a thumbnail of the window), “app-icon-only” "
+"(shows only the application icon) or “both”."
+msgstr "Rèitichidh seo an dòigh sa thèid na h-uinneagan a shealltainn san t-suidsear. ’S e “thumbnail-only” (seallaidh seo dealbhag na h-uinneige), “app-icon-only” (seallaidh seo ìomhaigheag na h-aplacaid) no “both” (seallaidh seo an dà chuid dhiubh) a tha sna luachan dligheach."
 
 #: data/org.gnome.shell.gschema.xml.in:391
 msgid ""
 "If true, only windows from the current workspace are shown in the switcher. "
 "Otherwise, all windows are included."
-msgstr ""
-"Mas e true a th’ ann, cha dèid a shealltainn san t-suidsear ach na h-"
-"uinneagan a tha san rùm-obrach làithreach. Mur e, thèid a h-uile uinneag a "
-"ghabhail a-staigh."
+msgstr "Mas e true a th’ ann, cha dèid a shealltainn san t-suidsear ach na h-uinneagan a tha san rùm-obrach làithreach. Mur e, thèid a h-uile uinneag a ghabhail a-staigh."
 
 #: data/org.gnome.shell.gschema.xml.in:401
-#, fuzzy
 msgid "Locations"
-msgstr "Tha an t-ionad ’ga chleachdadh"
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:402
 msgid "The locations to show in world clocks"
@@ -576,15 +502,11 @@ msgstr "Ceangail còmhradh mòdach ris an uinneag-pàrant"
 #: data/org.gnome.shell.gschema.xml.in:467
 msgid ""
 "This key overrides the key in org.gnome.mutter when running GNOME Shell."
-msgstr ""
-"Tar-àithnidh an iuchair seo an iuchair ann an org.gnome.mutter nuair a thèid "
-"Slige GNOME a ruith."
+msgstr "Tar-àithnidh an iuchair seo an iuchair ann an org.gnome.mutter nuair a thèid Slige GNOME a ruith."
 
 #: data/org.gnome.shell.gschema.xml.in:442
 msgid "Enable edge tiling when dropping windows on screen edges"
-msgstr ""
-"Cuir leacadh nan oirean an comas nuair a thèid uinneagan a leigeil às aig "
-"oir na sgrìn"
+msgstr "Cuir leacadh nan oirean an comas nuair a thèid uinneagan a leigeil às aig oir na sgrìn"
 
 #: data/org.gnome.shell.gschema.xml.in:450
 msgid "Workspaces are managed dynamically"
@@ -596,9 +518,7 @@ msgstr "Rumannan-obrach air a’ phrìomh-mhonatair a-mhàin"
 
 #: data/org.gnome.shell.gschema.xml.in:466
 msgid "Delay focus changes in mouse mode until the pointer stops moving"
-msgstr ""
-"Cuir dàil air atharraichean an fòcais ann am modh luchaige gus an sguir an "
-"tomhaire air gluasad"
+msgstr "Cuir dàil air atharraichean an fòcais ann am modh luchaige gus an sguir an tomhaire air gluasad"
 
 #: data/org.gnome.Shell.PortalHelper.desktop.in.in:3
 msgid "Network Login"
@@ -617,32 +537,28 @@ msgid ""
 msgstr ""
 
 #: js/dbusServices/extensions/ui/extension-prefs-dialog.ui:82
-#, fuzzy
 msgid "Technical Details"
-msgstr "Seall am mion-fhiosrachadh"
+msgstr ""
 
 #: js/dbusServices/extensions/ui/extension-prefs-dialog.ui:165
 msgid "Homepage"
 msgstr ""
 
 #: js/dbusServices/extensions/ui/extension-prefs-dialog.ui:166
-#, fuzzy
 msgid "Visit extension homepage"
-msgstr "UUIDs nan leudachan ri an cur an comas"
+msgstr ""
 
 #: js/extensionPrefs/data/metainfo/org.gnome.Extensions.metainfo.xml.in:5
 #: js/extensionPrefs/data/org.gnome.Extensions.desktop.in.in:4
 #: js/extensionPrefs/js/main.js:182
 #: js/extensionPrefs/data/ui/extensions-window.ui:61
-#, fuzzy
 msgid "Extensions"
-msgstr "Leudachain na slige"
+msgstr ""
 
 #: js/extensionPrefs/data/metainfo/org.gnome.Extensions.metainfo.xml.in:6
 #: js/extensionPrefs/js/main.js:183
-#, fuzzy
 msgid "Manage your GNOME Extensions"
-msgstr "Rèitich leudachain Slige GNOME"
+msgstr ""
 
 #: js/extensionPrefs/data/metainfo/org.gnome.Extensions.metainfo.xml.in:35
 msgid ""
@@ -719,14 +635,13 @@ msgid "Help"
 msgstr ""
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:12
-#, fuzzy
 msgid "About Extensions"
-msgstr "Leudachain na slige"
+msgstr ""
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:27
 msgid ""
-"To find and add extensions, visit <a href=\"https://extensions.gnome.org"
-"\">extensions.gnome.org</a>."
+"To find and add extensions, visit <a "
+"href=\"https://extensions.gnome.org\">extensions.gnome.org</a>."
 msgstr ""
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:35
@@ -745,14 +660,12 @@ msgid "Manually Installed"
 msgstr ""
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:158
-#, fuzzy
 msgid "Built-In"
-msgstr "’Na bhroinn a-mhàin"
+msgstr ""
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:199
-#, fuzzy
 msgid "No Installed Extensions"
-msgstr "Leudachain na slige"
+msgstr ""
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:235
 msgid ""
@@ -761,9 +674,8 @@ msgid ""
 msgstr ""
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:288
-#, fuzzy
 msgid "Log Out…"
-msgstr "Clàraich a-mach"
+msgstr ""
 
 #: js/gdm/authPrompt.js:131
 msgid "Show password hint"
@@ -782,12 +694,14 @@ msgstr ""
 msgid "Password"
 msgstr "Facal-faire "
 
-#. Translators: During a password reset, prompt for the "secret code" provided by customer support.
+#. Translators: During a password reset, prompt for the "secret code" provided
+#. by customer support.
 #: js/gdm/authPrompt.js:680
 msgid "Enter unlock code"
 msgstr ""
 
-#. Translators: Password reset. The first %s is a verification code and the second is an email.
+#. Translators: Password reset. The first %s is a verification code and the
+#. second is an email.
 #: js/gdm/authPrompt.js:683
 #, javascript-format
 msgid ""
@@ -797,10 +711,8 @@ msgid ""
 msgstr ""
 
 #: js/gdm/authPrompt.js:762
-#, fuzzy
 msgid "Your unlock code was incorrect. Please try again."
 msgstr ""
-"Tha sinn duilich ach cha do dh’obraich sin. Am feuch thu ris a-rithist?"
 
 #: js/gdm/loginDialog.js:317
 msgid "Choose Session"
@@ -822,9 +734,8 @@ msgstr "(m.e., cleachdaiche no %s)"
 #. (and don't even care of which one)
 #: js/gdm/loginDialog.js:920 js/ui/components/networkAgent.js:399
 #: js/ui/components/networkAgent.js:422 js/ui/components/networkAgent.js:440
-#, fuzzy
 msgid "Username"
-msgstr "Ainm-cleachdaiche:"
+msgstr ""
 
 #: js/gdm/loginDialog.js:1256
 msgid "Login Window"
@@ -849,13 +760,11 @@ msgctxt "search-result"
 msgid "Power Off"
 msgstr "Cuir dheth"
 
-#. Translators: A list of keywords that match the power-off action, separated by semicolons
+#. Translators: A list of keywords that match the power-off action, separated
+#. by semicolons
 #: js/misc/systemActions.js:92
-#, fuzzy
 msgid "power off;shutdown;reboot;restart;halt;stop"
 msgstr ""
-"power off;shutdown;reboot;restart;cumhachd;dheth;cur sìos;cuir sìos;cuir "
-"dheth;cur dheth;dùin;dùin sìos;ath-thòisich;ath-thòiseachadh;tòisich"
 
 #. Translators: The name of the lock screen action in search
 #: js/misc/systemActions.js:97
@@ -863,7 +772,8 @@ msgctxt "search-result"
 msgid "Lock Screen"
 msgstr "Glais an sgrìn"
 
-#. Translators: A list of keywords that match the lock screen action, separated by semicolons
+#. Translators: A list of keywords that match the lock screen action,
+#. separated by semicolons
 #: js/misc/systemActions.js:100
 msgid "lock screen"
 msgstr "sgrìn-ghlasaidh;glais;glas;sgrìn"
@@ -874,11 +784,11 @@ msgctxt "search-result"
 msgid "Log Out"
 msgstr "Clàraich a-mach"
 
-#. Translators: A list of keywords that match the logout action, separated by semicolons
+#. Translators: A list of keywords that match the logout action, separated by
+#. semicolons
 #: js/misc/systemActions.js:108
-#, fuzzy
 msgid "logout;log out;sign off"
-msgstr "logout;sign off;clàraidh a-mach;clàradh a-mach;logadh a-mach;"
+msgstr ""
 
 #. Translators: The name of the suspend action in search
 #: js/misc/systemActions.js:113
@@ -886,7 +796,8 @@ msgctxt "search-result"
 msgid "Suspend"
 msgstr "Cuir ’na dhàil"
 
-#. Translators: A list of keywords that match the suspend action, separated by semicolons
+#. Translators: A list of keywords that match the suspend action, separated by
+#. semicolons
 #: js/misc/systemActions.js:116
 msgid "suspend;sleep"
 msgstr "suspend;sleep;cuir 'na dhàil;cur 'na dhàil;cuir na dhàil;cur na dhàil;"
@@ -897,30 +808,27 @@ msgctxt "search-result"
 msgid "Switch User"
 msgstr "Leum gu cleachdaiche eile"
 
-#. Translators: A list of keywords that match the switch user action, separated by semicolons
+#. Translators: A list of keywords that match the switch user action,
+#. separated by semicolons
 #: js/misc/systemActions.js:124
 msgid "switch user"
 msgstr "switch user;suids;cleachdaiche"
 
-#. Translators: A list of keywords that match the lock orientation action, separated by semicolons
+#. Translators: A list of keywords that match the lock orientation action,
+#. separated by semicolons
 #: js/misc/systemActions.js:131
-#, fuzzy
 msgid "lock orientation;unlock orientation;screen;rotation"
 msgstr ""
-"lock orientation;screen;rotation;glais;comhair;glais a' chomhair;sgrìn;"
-"cuairteachadh;cuairtich"
 
 #: js/misc/systemActions.js:251
-#, fuzzy
 msgctxt "search-result"
 msgid "Unlock Screen Rotation"
-msgstr "Glais a’ chomhair"
+msgstr ""
 
 #: js/misc/systemActions.js:252
-#, fuzzy
 msgctxt "search-result"
 msgid "Lock Screen Rotation"
-msgstr "Glais a’ chomhair"
+msgstr ""
 
 #: js/misc/util.js:125
 msgid "Command not found"
@@ -1022,17 +930,17 @@ msgstr "%A, %H∶%M"
 #. followed by a time string in 24h format.
 #. i.e. "May 25, 14:30"
 #: js/misc/util.js:260
-#, fuzzy, no-c-format
+#, no-c-format
 msgid "%B %-d, %H∶%M"
-msgstr "%d %B, %H∶%M"
+msgstr ""
 
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 24h format.
 #. i.e. "May 25 2012, 14:30"
 #: js/misc/util.js:266
-#, fuzzy, no-c-format
+#, no-c-format
 msgid "%B %-d %Y, %H∶%M"
-msgstr "%d %B %Y, %H∶%M"
+msgstr ""
 
 #. Show only the time if date is on today
 #. eslint-disable-line no-lonely-if
@@ -1059,22 +967,20 @@ msgstr "%A, %l∶%M%p"
 #. followed by a time string in 12h format.
 #. i.e. "May 25, 2:30 pm"
 #: js/misc/util.js:289
-#, fuzzy, no-c-format
+#, no-c-format
 msgid "%B %-d, %l∶%M %p"
-msgstr "%d %B, %l∶%M%p"
+msgstr ""
 
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 12h format.
 #. i.e. "May 25 2012, 2:30 pm"
 #: js/misc/util.js:295
-#, fuzzy, no-c-format
+#, no-c-format
 msgid "%B %-d %Y, %l∶%M %p"
-msgstr "%d %B %Y, %l∶%M%p"
+msgstr ""
 
-#.
 #. * Translators: this is the name of the search engine that shows in the
 #. * Shell's desktop search entry.
-#.
 #: js/misc/util.js:573
 msgid "Google"
 msgstr ""
@@ -1088,10 +994,7 @@ msgstr "Clàradh a-steach Hotspot"
 msgid ""
 "Your connection to this hotspot login is not secure. Passwords or other "
 "information you enter on this page can be viewed by people nearby."
-msgstr ""
-"Chan eil an ceangal agad gu clàradh a-steach a’ hotspot seo tèarainte. Chì "
-"daoine a tha faisg ort na faclan-faire agus fiosrachadh sam bith eile a "
-"chuireas tu a-steach air an duilleag seo."
+msgstr "Chan eil an ceangal agad gu clàradh a-steach a’ hotspot seo tèarainte. Chì daoine a tha faisg ort na faclan-faire agus fiosrachadh sam bith eile a chuireas tu a-steach air an duilleag seo."
 
 #. No support for non-modal system dialogs, so ignore the option
 #. let modal = options['modal'] || true;
@@ -1105,9 +1008,8 @@ msgstr "Ceadaich an t-inntrigeadh"
 
 #. Translators: This is the heading of a list of open windows
 #: js/ui/appDisplay.js:2390 js/ui/panel.js:78
-#, fuzzy
 msgid "Open Windows"
-msgstr "Uinneagan"
+msgstr ""
 
 #: js/ui/appDisplay.js:2410 js/ui/panel.js:85
 msgid "New Window"
@@ -1119,9 +1021,8 @@ msgstr "Cuir gu dol le cairt-ghrafaigeachd shònraichte"
 
 #. Add the "Remove from desktop" menu item at the end.
 #: js/ui/appDisplay.js:2443
-#, fuzzy
 msgid "Remove from desktop"
-msgstr "Thoir air falbh o na h-annsachdan"
+msgstr ""
 
 #: js/ui/audioDeviceSelection.js:41
 msgid "Select Audio Device"
@@ -1155,7 +1056,8 @@ msgstr ""
 msgid "Add Website"
 msgstr ""
 
-#. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday).
+#. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0"
+#. (Sunday) "6" (Saturday) "06" (Sunday and Saturday).
 #: js/ui/calendar.js:41
 msgctxt "calendar-no-work"
 msgid "06"
@@ -1165,7 +1067,6 @@ msgstr "06"
 #. *
 #. * NOTE: These grid abbreviations are always shown together
 #. * and in order, e.g. "S M T W T F S".
-#.
 #: js/ui/calendar.js:70
 msgctxt "grid sunday"
 msgid "S"
@@ -1212,7 +1113,6 @@ msgstr "Dò"
 #. * standalone, when this is a month of the current year.
 #. * "%OB" is the new format specifier introduced in glibc 2.27,
 #. * in most cases you should not change it.
-#.
 #: js/ui/calendar.js:371
 msgid "%OB"
 msgstr "%OB"
@@ -1225,7 +1125,6 @@ msgstr "%OB"
 #. * "%OB" is the new format specifier introduced in glibc 2.27,
 #. * in most cases you should not use the old "%B" here unless you
 #. * absolutely know what you are doing.
-#.
 #: js/ui/calendar.js:381
 msgid "%OB %Y"
 msgstr "%OB %Y"
@@ -1250,25 +1149,24 @@ msgstr "Seachdain %V"
 
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
-#.
 #: js/ui/calendar.js:730
 msgctxt "event list time"
 msgid "All Day"
 msgstr "Fad an latha"
 
-#. Translators: Shown on calendar heading when selected day occurs on current year
+#. Translators: Shown on calendar heading when selected day occurs on current
+#. year
 #: js/ui/calendar.js:868
-#, fuzzy
 msgctxt "calendar heading"
 msgid "%A, %B %-d"
-msgstr "%A, %d %B"
+msgstr ""
 
-#. Translators: Shown on calendar heading when selected day occurs on different year
+#. Translators: Shown on calendar heading when selected day occurs on
+#. different year
 #: js/ui/calendar.js:871
-#, fuzzy
 msgctxt "calendar heading"
 msgid "%A, %B %-d, %Y"
-msgstr "%A, %d %B, %Y"
+msgstr ""
 
 #: js/ui/calendar.js:1100
 msgid "No Notifications"
@@ -1283,9 +1181,8 @@ msgid "Do Not Disturb"
 msgstr ""
 
 #: js/ui/calendar.js:1171
-#, fuzzy
 msgid "Clear"
-msgstr "Falamhaich na h-uile"
+msgstr ""
 
 #. Translators: %s is an application name
 #: js/ui/closeDialog.js:42
@@ -1297,9 +1194,7 @@ msgstr "Chan eil “%s” a’ freagairt."
 msgid ""
 "You may choose to wait a short while for it to continue or force the "
 "application to quit entirely."
-msgstr ""
-"Faodaidh tu feitheamh greis gus an lean seo air adhart no sparradh air an "
-"aplacaid gum fàg i gu lèir."
+msgstr "Faodaidh tu feitheamh greis gus an lean seo air adhart no sparradh air an aplacaid gum fàg i gu lèir."
 
 #: js/ui/closeDialog.js:70
 msgid "Force Quit"
@@ -1318,9 +1213,8 @@ msgid "External drive disconnected"
 msgstr "Chaidh draibh on taobh a-muigh a dhì-cheangal"
 
 #: js/ui/components/automountManager.js:208
-#, fuzzy
 msgid "Unable to unlock volume"
-msgstr "Cha ghabh a ghlasadh"
+msgstr ""
 
 #: js/ui/components/automountManager.js:209
 msgid "The installed udisks version does not support the PIM setting"
@@ -1358,24 +1252,20 @@ msgid "This connection doesn't have limits on how much you can download."
 msgstr ""
 
 #: js/ui/components/networkAgent.js:369
-#, fuzzy
 msgid "Key"
-msgstr "Iuchair: "
+msgstr ""
 
 #: js/ui/components/networkAgent.js:407 js/ui/components/networkAgent.js:430
-#, fuzzy
 msgid "Private key password"
-msgstr "Facal-faire na h-iuchrach prìobhaidich: "
+msgstr ""
 
 #: js/ui/components/networkAgent.js:428
-#, fuzzy
 msgid "Identity"
-msgstr "Dearbh-aithne: "
+msgstr ""
 
 #: js/ui/components/networkAgent.js:442
-#, fuzzy
 msgid "Service"
-msgstr "Seirbheis: "
+msgstr ""
 
 #: js/ui/components/networkAgent.js:471
 #, javascript-format
@@ -1387,9 +1277,8 @@ msgid "Wired 802.1X authentication"
 msgstr "Dearbhadh Wired 802.1X"
 
 #: js/ui/components/networkAgent.js:478
-#, fuzzy
 msgid "Network name"
-msgstr "Ainm an lìonraidh: "
+msgstr ""
 
 #: js/ui/components/networkAgent.js:483 js/ui/components/networkAgent.js:855
 msgid "DSL authentication"
@@ -1404,15 +1293,13 @@ msgid "PIN code is needed for the mobile broadband device"
 msgstr "Tha feum air còd PIN airson an uidheim mobile banna-leathainn"
 
 #: js/ui/components/networkAgent.js:492
-#, fuzzy
 msgid "PIN"
-msgstr "PIN: "
+msgstr ""
 
 #: js/ui/components/networkAgent.js:499 js/ui/components/networkAgent.js:846
 #: js/ui/components/networkAgent.js:867
-#, fuzzy
 msgid "Authentication required"
-msgstr "tha feum air dearbhadh"
+msgstr ""
 
 #: js/ui/components/networkAgent.js:500 js/ui/components/networkAgent.js:852
 #: js/ui/components/networkAgent.js:856 js/ui/components/networkAgent.js:868
@@ -1430,14 +1317,11 @@ msgstr "Manaidsear nan lìonra"
 msgid ""
 "Passwords or encryption keys are required to access the wireless network "
 "“%s”."
-msgstr ""
-"Tha feum air faclan-faire no iuchraichean crioptachaidh gus an lìonra "
-"uèirleas “%s” inntrigeadh."
+msgstr "Tha feum air faclan-faire no iuchraichean crioptachaidh gus an lìonra uèirleas “%s” inntrigeadh."
 
 #: js/ui/components/networkAgent.js:871
-#, fuzzy
 msgid "VPN password"
-msgstr "Facal-faire "
+msgstr ""
 
 #: js/ui/components/polkitAgent.js:39
 msgid "Authentication Required"
@@ -1457,10 +1341,10 @@ msgstr "Dearbhaich"
 #. * for instance.
 #: js/ui/components/polkitAgent.js:254 js/ui/shellMountOperation.js:402
 msgid "Sorry, that didn’t work. Please try again."
-msgstr ""
-"Tha sinn duilich ach cha do dh’obraich sin. Am feuch thu ris a-rithist?"
+msgstr "Tha sinn duilich ach cha do dh’obraich sin. Am feuch thu ris a-rithist?"
 
-#. Translators: this is the other person changing their old IM name to their new
+#. Translators: this is the other person changing their old IM name to their
+#. new
 #. IM name.
 #: js/ui/components/telepathyClient.js:823
 #, javascript-format
@@ -1489,16 +1373,13 @@ msgstr "Deas-bhòrd"
 #. * shown - it is shown just below the time in the top bar (e.g.,
 #. * "Tue 9:29 AM").  The string itself should become a full date, e.g.,
 #. * "February 17 2015".
-#.
 #: js/ui/dateMenu.js:75
-#, fuzzy
 msgid "%B %-d %Y"
-msgstr "%e %B %Y"
+msgstr ""
 
 #. Translators: This is the accessible name of the date button shown
 #. * below the time in the shell; it should combine the weekday and the
 #. * date, e.g. "Tuesday February 17 2015".
-#.
 #: js/ui/dateMenu.js:82
 msgid "%A %B %e %Y"
 msgstr "%A %e %B %Y"
@@ -1608,14 +1489,10 @@ msgstr "Ath-thòisich"
 #, javascript-format
 msgid "The system will restart automatically in %d second."
 msgid_plural "The system will restart automatically in %d seconds."
-msgstr[0] ""
-"Thèid an siostam a thòiseachadh às ùr gu fèin-obrachail an ceann %d diog."
-msgstr[1] ""
-"Thèid an siostam a thòiseachadh às ùr gu fèin-obrachail an ceann %d dhiog."
-msgstr[2] ""
-"Thèid an siostam a thòiseachadh às ùr gu fèin-obrachail an ceann %d diogan."
-msgstr[3] ""
-"Thèid an siostam a thòiseachadh às ùr gu fèin-obrachail an ceann %d diog."
+msgstr[0] "Thèid an siostam a thòiseachadh às ùr gu fèin-obrachail an ceann %d diog."
+msgstr[1] "Thèid an siostam a thòiseachadh às ùr gu fèin-obrachail an ceann %d dhiog."
+msgstr[2] "Thèid an siostam a thòiseachadh às ùr gu fèin-obrachail an ceann %d diogan."
+msgstr[3] "Thèid an siostam a thòiseachadh às ùr gu fèin-obrachail an ceann %d diog."
 
 #: js/ui/endSessionDialog.js:91
 msgctxt "title"
@@ -1624,21 +1501,14 @@ msgstr "Ath-thòisich ⁊ stàlaich na h-ùrachaidhean"
 
 #: js/ui/endSessionDialog.js:93
 #, javascript-format
-msgid "The system will automatically restart and install updates in %d second."
+msgid ""
+"The system will automatically restart and install updates in %d second."
 msgid_plural ""
 "The system will automatically restart and install updates in %d seconds."
-msgstr[0] ""
-"Tòisichidh an siostam às ùr is stàlaichidh e ùrachaidhean gu fèin-obrachail "
-"an ceann %d diog."
-msgstr[1] ""
-"Tòisichidh an siostam às ùr is stàlaichidh e ùrachaidhean gu fèin-obrachail "
-"an ceann %d dhiog."
-msgstr[2] ""
-"Tòisichidh an siostam às ùr is stàlaichidh e ùrachaidhean gu fèin-obrachail "
-"an ceann %d diogan."
-msgstr[3] ""
-"Tòisichidh an siostam às ùr is stàlaichidh e ùrachaidhean gu fèin-obrachail "
-"an ceann %d diog."
+msgstr[0] "Tòisichidh an siostam às ùr is stàlaichidh e ùrachaidhean gu fèin-obrachail an ceann %d diog."
+msgstr[1] "Tòisichidh an siostam às ùr is stàlaichidh e ùrachaidhean gu fèin-obrachail an ceann %d dhiog."
+msgstr[2] "Tòisichidh an siostam às ùr is stàlaichidh e ùrachaidhean gu fèin-obrachail an ceann %d diogan."
+msgstr[3] "Tòisichidh an siostam às ùr is stàlaichidh e ùrachaidhean gu fèin-obrachail an ceann %d diog."
 
 #: js/ui/endSessionDialog.js:99 js/ui/endSessionDialog.js:118
 msgctxt "button"
@@ -1668,28 +1538,19 @@ msgstr "Ath-thòisich ⁊ stàlaich an t-àrdachadh"
 msgid ""
 "%s %s will be installed after restart. Upgrade installation can take a long "
 "time: ensure that you have backed up and that the computer is plugged in."
-msgstr ""
-"Thèid %s %s a stàladh às dèidh an ath-thòiseachaidh. Dh’fhaoidte gun doir e "
-"fada an t-àrdachadh a stàladh: dèan cinnteach gun do rinn thu lethbhreac-"
-"glèidhidh agus gu bheil an coimpiutair ceangailte ri bun-dealain."
+msgstr "Thèid %s %s a stàladh às dèidh an ath-thòiseachaidh. Dh’fhaoidte gun doir e fada an t-àrdachadh a stàladh: dèan cinnteach gun do rinn thu lethbhreac-glèidhidh agus gu bheil an coimpiutair ceangailte ri bun-dealain."
 
 #: js/ui/endSessionDialog.js:261
-#, fuzzy
 msgid "Running on battery power: Please plug in before installing updates."
 msgstr ""
-"A’ ruith air cumhachd a’ bhataraidh: ceangail gu bun-dealain mus stàlaich "
-"thu ùrachaidhean."
 
 #: js/ui/endSessionDialog.js:270
-#, fuzzy
 msgid "Some applications are busy or have unsaved work"
 msgstr ""
-"Tha cuid a dh’aplacaidean trang no tha obair aca nach deach a shàbhaladh."
 
 #: js/ui/endSessionDialog.js:275
-#, fuzzy
 msgid "Other users are logged in"
-msgstr "Tha daoine eile air an clàradh a-steach."
+msgstr ""
 
 #. Translators: Remote here refers to a remote session, like a ssh login
 #: js/ui/endSessionDialog.js:588
@@ -1719,16 +1580,13 @@ msgid "Install"
 msgstr "Stàlaich"
 
 #: js/ui/extensionDownloader.js:198
-#, fuzzy
 msgid "Install Extension"
-msgstr "Leudachain na slige"
+msgstr ""
 
 #: js/ui/extensionDownloader.js:199
 #, javascript-format
 msgid "Download and install “%s” from extensions.gnome.org?"
-msgstr ""
-"A bheil thu airson “%s” a luchdadh a-nuas is a stàladh o extensions.gnome."
-"org?"
+msgstr "A bheil thu airson “%s” a luchdadh a-nuas is a stàladh o extensions.gnome.org?"
 
 #: js/ui/extensionSystem.js:229
 msgid "Extension Updates Available"
@@ -1739,20 +1597,18 @@ msgid "Extension updates are ready to be installed."
 msgstr ""
 
 #: js/ui/inhibitShortcutsDialog.js:79
-#, fuzzy
 msgid "Allow inhibiting shortcuts"
-msgstr "Tha %s airson ath-ghoiridean a bhacadh"
+msgstr ""
 
 #. Translators: %s is an application name like "Settings"
 #: js/ui/inhibitShortcutsDialog.js:82
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "The application %s wants to inhibit shortcuts"
-msgstr "Tha aplacaid airson ath-ghoiridean a bhacadh"
+msgstr ""
 
 #: js/ui/inhibitShortcutsDialog.js:83
-#, fuzzy
 msgid "An application wants to inhibit shortcuts"
-msgstr "Tha aplacaid airson ath-ghoiridean a bhacadh"
+msgstr ""
 
 #. Translators: %s is a keyboard shortcut like "Super+x"
 #: js/ui/inhibitShortcutsDialog.js:90
@@ -1778,12 +1634,9 @@ msgstr "Tha na h-iuchraichean slaodach dheth"
 
 #: js/ui/kbdA11yDialog.js:34
 msgid ""
-"You just held down the Shift key for 8 seconds. This is the shortcut for the "
-"Slow Keys feature, which affects the way your keyboard works."
-msgstr ""
-"Chum thu sìos an iuchair Shift fad 8 diogan. Seo an ath-ghoirid airson gleus "
-"nan iuchraichean slaodach agus tha buaidh aige air an dòigh air a "
-"dh’obraicheas am meur-chlàr agad."
+"You just held down the Shift key for 8 seconds. This is the shortcut for the"
+" Slow Keys feature, which affects the way your keyboard works."
+msgstr "Chum thu sìos an iuchair Shift fad 8 diogan. Seo an ath-ghoirid airson gleus nan iuchraichean slaodach agus tha buaidh aige air an dòigh air a dh’obraicheas am meur-chlàr agad."
 
 #: js/ui/kbdA11yDialog.js:41
 msgid "Sticky Keys Turned On"
@@ -1797,20 +1650,14 @@ msgstr "Tha na h-iuchraichean steigeach dheth"
 msgid ""
 "You just pressed the Shift key 5 times in a row. This is the shortcut for "
 "the Sticky Keys feature, which affects the way your keyboard works."
-msgstr ""
-"Bhrùth thu an iuchair Shift 5 tursan às dèidh a chèile. Seo an ath-ghoirid "
-"airson gleus nan iuchraichean steigeach agus tha buaidh aige air an dòigh "
-"air a dh’obraicheas am meur-chlàr agad."
+msgstr "Bhrùth thu an iuchair Shift 5 tursan às dèidh a chèile. Seo an ath-ghoirid airson gleus nan iuchraichean steigeach agus tha buaidh aige air an dòigh air a dh’obraicheas am meur-chlàr agad."
 
 #: js/ui/kbdA11yDialog.js:46
 msgid ""
 "You just pressed two keys at once, or pressed the Shift key 5 times in a "
 "row. This turns off the Sticky Keys feature, which affects the way your "
 "keyboard works."
-msgstr ""
-"Bhrùth thu dà iuchair aig an aon àm no bhrùth thu an iuchair Shift 5 tursan "
-"às dèidh a chèile. Cuiridh seo dheth gleus nan iuchraichean steigeach agus "
-"tha buaidh aige air an dòigh air a dh’obraicheas am meur-chlàr agad."
+msgstr "Bhrùth thu dà iuchair aig an aon àm no bhrùth thu an iuchair Shift 5 tursan às dèidh a chèile. Cuiridh seo dheth gleus nan iuchraichean steigeach agus tha buaidh aige air an dòigh air a dh’obraicheas am meur-chlàr agad."
 
 #: js/ui/kbdA11yDialog.js:55
 msgid "Leave On"
@@ -1886,9 +1733,8 @@ msgid "Web Page"
 msgstr "Duilleag-lìn"
 
 #: js/ui/main.js:315
-#, fuzzy
 msgid "Logged in as a privileged user"
-msgstr "Clàraich a-steach mar chleachdaiche eile"
+msgstr ""
 
 #: js/ui/main.js:316
 msgid ""
@@ -2024,8 +1870,8 @@ msgstr ""
 #: js/ui/paygUnlockDialog.js:160
 #, javascript-format
 msgid ""
-"Talk to your sales representative to purchase a new code. Call or text %s at "
-"%s"
+"Talk to your sales representative to purchase a new code. Call or text %s at"
+" %s"
 msgstr ""
 
 #. No overrides present, default to fallback text.
@@ -2039,9 +1885,8 @@ msgid "Pay As You Go Account ID: %s"
 msgstr ""
 
 #: js/ui/paygUnlockDialog.js:198
-#, fuzzy
 msgid "Unlock Machine"
-msgstr "Thoir a’ ghlas far na h-uinneige"
+msgstr ""
 
 #: js/ui/paygUnlockDialog.js:287 js/ui/shellMountOperation.js:380
 msgid "Unlock"
@@ -2064,7 +1909,8 @@ msgid "Pay As You Go"
 msgstr ""
 
 #: js/ui/payg.js:40
-msgid "Enter an unlock code to extend the time before your credit has expired."
+msgid ""
+"Enter an unlock code to extend the time before your credit has expired."
 msgstr ""
 
 #: js/ui/payg.js:41
@@ -2086,10 +1932,8 @@ msgid "Too many attempts. Try again in a few seconds."
 msgstr ""
 
 #: js/ui/payg.js:261
-#, fuzzy
 msgid "Invalid code. Please try again."
 msgstr ""
-"Tha sinn duilich ach cha do dh’obraich sin. Am feuch thu ris a-rithist?"
 
 #: js/ui/payg.js:263
 msgid "Code already used. Please enter a new code."
@@ -2104,12 +1948,13 @@ msgstr ""
 msgid "Your Pay As You Go Account ID is: %s"
 msgstr ""
 
-#. We don't consider any other error here (and we don't consider DISABLED explicitly,
-#. since that should not happen), but still we need to show something to the user.
+#. We don't consider any other error here (and we don't consider DISABLED
+#. explicitly,
+#. since that should not happen), but still we need to show something to the
+#. user.
 #: js/ui/payg.js:271
-#, fuzzy
 msgid "Unknown error"
-msgstr "Chan eil fhios"
+msgstr ""
 
 #: js/ui/payg.js:452
 msgid "Apply Code"
@@ -2125,81 +1970,80 @@ msgstr[2] ""
 msgstr[3] ""
 
 #: js/ui/payg.js:610 js/ui/payg.js:620
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s minute"
 msgid_plural "%s minutes"
-msgstr[0] "%d mhionaid air ais"
-msgstr[1] "%d mhionaid air ais"
-msgstr[2] "%d mionaidean air ais"
-msgstr[3] "%d mionaid air ais"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
 
 #: js/ui/payg.js:614 js/ui/payg.js:631
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s hour"
 msgid_plural "%s hours"
-msgstr[0] "%d uair a thìde air ais"
-msgstr[1] "%d uair a thìde air ais"
-msgstr[2] "%d uairean a thìde air ais"
-msgstr[3] "%d uair a thìde air ais"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
 
 #: js/ui/payg.js:625
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s day"
 msgid_plural "%s days"
-msgstr[0] "%s fad an latha."
-msgstr[1] "%s fad an latha."
-msgstr[2] "%s fad an latha."
-msgstr[3] "%s fad an latha."
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
 
 #: js/ui/payg.js:641
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s second has been added to your Pay As You Go credit."
 msgid_plural "%s seconds have been added to your Pay As You Go credit."
-msgstr[0] "Chaidh %s a chur ris na h-annsachdan agad."
-msgstr[1] "Chaidh %s a chur ris na h-annsachdan agad."
-msgstr[2] "Chaidh %s a chur ris na h-annsachdan agad."
-msgstr[3] "Chaidh %s a chur ris na h-annsachdan agad."
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
 
 #: js/ui/payg.js:648
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s minute has been added to your Pay As You Go credit."
 msgid_plural "%s minutes have been added to your Pay As You Go credit."
-msgstr[0] "Chaidh %s a chur ris na h-annsachdan agad."
-msgstr[1] "Chaidh %s a chur ris na h-annsachdan agad."
-msgstr[2] "Chaidh %s a chur ris na h-annsachdan agad."
-msgstr[3] "Chaidh %s a chur ris na h-annsachdan agad."
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
 
 #: js/ui/payg.js:655
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s hour has been added to your Pay As You Go credit."
 msgid_plural "%s hours have been added to your Pay As You Go credit."
-msgstr[0] "Chaidh %s a chur ris na h-annsachdan agad."
-msgstr[1] "Chaidh %s a chur ris na h-annsachdan agad."
-msgstr[2] "Chaidh %s a chur ris na h-annsachdan agad."
-msgstr[3] "Chaidh %s a chur ris na h-annsachdan agad."
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
 
 #: js/ui/payg.js:662
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s day has been added to your Pay As You Go credit."
 msgid_plural "%s days have been added to your Pay As You Go credit."
-msgstr[0] "Chaidh %s a chur ris na h-annsachdan agad."
-msgstr[1] "Chaidh %s a chur ris na h-annsachdan agad."
-msgstr[2] "Chaidh %s a chur ris na h-annsachdan agad."
-msgstr[3] "Chaidh %s a chur ris na h-annsachdan agad."
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
 
 #: js/ui/payg.js:669
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s month has been added to your Pay As You Go credit."
 msgid_plural "%s months have been added to your Pay As You Go credit."
-msgstr[0] "Chaidh %s a chur ris na h-annsachdan agad."
-msgstr[1] "Chaidh %s a chur ris na h-annsachdan agad."
-msgstr[2] "Chaidh %s a chur ris na h-annsachdan agad."
-msgstr[3] "Chaidh %s a chur ris na h-annsachdan agad."
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
 
 #: js/ui/payg.js:676
-#, fuzzy
 msgid "1 year has been added to your Pay As You Go credit."
-msgstr "Chaidh %s a chur ris na h-annsachdan agad."
+msgstr ""
 
 #. Unlock permanently message
 #: js/ui/payg.js:679
@@ -2207,14 +2051,12 @@ msgid "You have successfully unlocked your Endless Machine"
 msgstr ""
 
 #: js/ui/runDialog.js:58
-#, fuzzy
 msgid "Run a Command"
-msgstr "Cuir a-steach àithne"
+msgstr ""
 
 #: js/ui/runDialog.js:73
-#, fuzzy
 msgid "Press ESC to close"
-msgstr "Brùth air Esc airson fàgail"
+msgstr ""
 
 #: js/ui/runDialog.js:240
 msgid "Restart is not available on Wayland"
@@ -2232,7 +2074,6 @@ msgstr "Feumaidh GNOME an sgrìn a ghlasadh"
 #. screenshield. The user is probably very upset at this
 #. point, but any application using global grabs is broken
 #. Just tell him to stop using this app
-#.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
 #: js/ui/screenShield.js:295 js/ui/screenShield.js:674
@@ -2268,36 +2109,33 @@ msgid "Hide Text"
 msgstr "Falaich an teacsa"
 
 #: js/ui/shellEntry.js:194
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Search %s and more…"
-msgstr "’Ga lorg…"
+msgstr ""
 
 #: js/ui/shellEntry.js:196
 msgid "Search the internet and more…"
 msgstr ""
 
 #: js/ui/shellEntry.js:198
-#, fuzzy
 msgid "Search…"
-msgstr "’Ga lorg…"
+msgstr ""
 
 #: js/ui/shellEntry.js:490
 msgid "Caps lock is on."
 msgstr ""
 
 #: js/ui/shellMountOperation.js:285
-#, fuzzy
 msgid "Hidden Volume"
-msgstr "Àirde na fuaime"
+msgstr ""
 
 #: js/ui/shellMountOperation.js:288
 msgid "Windows System Volume"
 msgstr ""
 
 #: js/ui/shellMountOperation.js:291
-#, fuzzy
 msgid "Uses Keyfiles"
-msgstr "Iuchraichean luchaige"
+msgstr ""
 
 #. Translators: %s is the Disks application
 #: js/ui/shellMountOperation.js:298
@@ -2326,9 +2164,9 @@ msgstr ""
 
 #. Translators: %s is the Disks application
 #: js/ui/shellMountOperation.js:469
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Unable to start %s"
-msgstr "Cha ghabh a ghlasadh"
+msgstr ""
 
 #. Translators: %s is the Disks application
 #: js/ui/shellMountOperation.js:471
@@ -2418,9 +2256,8 @@ msgid "Close"
 msgstr "Dùin"
 
 #: js/ui/status/automaticUpdates.js:290
-#, fuzzy
 msgid "Change Settings…"
-msgstr "Roghainnean na fuaime"
+msgstr ""
 
 #: js/ui/status/bluetooth.js:40
 msgid "Bluetooth"
@@ -2441,14 +2278,12 @@ msgstr[2] "%d uidheaman ceangailte"
 msgstr[3] "%d uidheam ceangailte"
 
 #: js/ui/status/bluetooth.js:134
-#, fuzzy
 msgid "Bluetooth Off"
-msgstr "Bluetooth"
+msgstr ""
 
 #: js/ui/status/bluetooth.js:136
-#, fuzzy
 msgid "Bluetooth On"
-msgstr "Bluetooth"
+msgstr ""
 
 #: js/ui/status/brightness.js:39
 msgid "Brightness"
@@ -2512,15 +2347,13 @@ msgstr ""
 
 #. Translators: %s is an application name
 #: js/ui/status/location.js:357
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "The app %s wants to access your location"
-msgstr "A bheil thu airson inntrigeadh dhan ionad agad a thoirt dha %s?"
+msgstr ""
 
 #: js/ui/status/location.js:367
 msgid "Location access can be changed at any time from the privacy settings."
-msgstr ""
-"’S urrainn dhut inntrigeadh an ionaid atharrachadh uair sam bith ann an "
-"roghainnean na prìobhaideachd."
+msgstr "’S urrainn dhut inntrigeadh an ionaid atharrachadh uair sam bith ann an roghainnean na prìobhaideachd."
 
 #: js/ui/status/network.js:66
 msgid "<unknown>"
@@ -2538,7 +2371,8 @@ msgstr "Tha %s dheth"
 msgid "%s Connected"
 msgstr "Ceangailte ri %s"
 
-#. Translators: this is for network devices that are physically present but are not
+#. Translators: this is for network devices that are physically present but
+#. are not
 #. under NetworkManager's control (and thus cannot be used in the menu);
 #. %s is a network identifier
 #: js/ui/status/network.js:428
@@ -2558,20 +2392,23 @@ msgstr "A’ dì-cheangal o %s"
 msgid "%s Connecting"
 msgstr "A’ ceangal ri %s"
 
-#. Translators: this is for network connections that require some kind of key or password; %s is a network identifier
+#. Translators: this is for network connections that require some kind of key
+#. or password; %s is a network identifier
 #: js/ui/status/network.js:441
 #, javascript-format
 msgid "%s Requires Authentication"
 msgstr "Tha %s ag iarraidh dearbhadh"
 
-#. Translators: this is for devices that require some kind of firmware or kernel
+#. Translators: this is for devices that require some kind of firmware or
+#. kernel
 #. module, which is missing; %s is a network identifier
 #: js/ui/status/network.js:449
 #, javascript-format
 msgid "Firmware Missing For %s"
 msgstr "Tha bathar-an-sàs a dhìth air %s"
 
-#. Translators: this is for a network device that cannot be activated (for example it
+#. Translators: this is for a network device that cannot be activated (for
+#. example it
 #. is disabled by rfkill, or it has no coverage; %s is a network identifier
 #: js/ui/status/network.js:453
 #, javascript-format
@@ -2673,7 +2510,8 @@ msgstr "Chan eil %s ceangailte"
 msgid "connecting…"
 msgstr "a’ dèanamh ceangal…"
 
-#. Translators: this is for network connections that require some kind of key or password
+#. Translators: this is for network connections that require some kind of key
+#. or password
 #: js/ui/status/network.js:1420
 msgid "authentication required"
 msgstr "tha feum air dearbhadh"
@@ -2758,18 +2596,17 @@ msgid "Enter unlock code…"
 msgstr ""
 
 #: js/ui/status/payg.js:86
-#, fuzzy
 msgid "Getting time…"
-msgstr "’Ga ath-thòiseachadh…"
+msgstr ""
 
 #: js/ui/status/payg.js:90
 msgid "Less than 1 minute"
 msgstr ""
 
 #: js/ui/status/payg.js:124
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Account ID: %s"
-msgstr "Roghainnean a’ chunntais"
+msgstr ""
 
 #: js/ui/status/power.js:47
 msgid "Power Settings"
@@ -2826,27 +2663,24 @@ msgid "Lock"
 msgstr "Glais"
 
 #: js/ui/status/system.js:90
-#, fuzzy
 msgid "Power Off / Log Out"
-msgstr "Cuir dheth"
+msgstr ""
 
 #: js/ui/status/system.js:93
 msgid "Log Out"
 msgstr "Clàraich a-mach"
 
 #: js/ui/status/system.js:105
-#, fuzzy
 msgid "Switch User…"
-msgstr "Leum gu cleachdaiche eile"
+msgstr ""
 
 #: js/ui/status/system.js:119
 msgid "Suspend"
 msgstr "Cuir ’na dhàil"
 
 #: js/ui/status/system.js:131
-#, fuzzy
 msgid "Power Off…"
-msgstr "Cuir dheth"
+msgstr ""
 
 #: js/ui/status/thunderbolt.js:263
 msgid "Thunderbolt"
@@ -2860,14 +2694,11 @@ msgstr "Uidheam Thunderbolt nach aithne dhuinn"
 msgid ""
 "New device has been detected while you were away. Please disconnect and "
 "reconnect the device to start using it."
-msgstr ""
-"Mhothaich sinn do dh’uidheam ùr fhad ’s an robh thu air falbh. Bris an "
-"ceangal is ceangail an uidheam a-rithist gus a chleachdadh."
+msgstr "Mhothaich sinn do dh’uidheam ùr fhad ’s an robh thu air falbh. Bris an ceangal is ceangail an uidheam a-rithist gus a chleachdadh."
 
 #: js/ui/status/thunderbolt.js:329
-#, fuzzy
 msgid "Unauthorized Thunderbolt device"
-msgstr "Uidheam Thunderbolt nach aithne dhuinn"
+msgstr ""
 
 #: js/ui/status/thunderbolt.js:330
 msgid ""
@@ -2893,28 +2724,24 @@ msgstr "Àirde na fuaime"
 
 #. Translators: this is for display mirroring i.e. cloning.
 #. * Try to keep it under around 15 characters.
-#.
 #: js/ui/switchMonitor.js:17
 msgid "Mirror"
 msgstr "Sgàthanaich"
 
 #. Translators: this is for the desktop spanning displays.
 #. * Try to keep it under around 15 characters.
-#.
 #: js/ui/switchMonitor.js:22
 msgid "Join Displays"
 msgstr "Cuir iad còmhla"
 
 #. Translators: this is for using only an external display.
 #. * Try to keep it under around 15 characters.
-#.
 #: js/ui/switchMonitor.js:27
 msgid "External Only"
 msgstr "Taobh a-muigh a-mhàin"
 
 #. Translators: this is for using only the laptop display.
 #. * Try to keep it under around 15 characters.
-#.
 #: js/ui/switchMonitor.js:32
 msgid "Built-in Only"
 msgstr "’Na bhroinn a-mhàin"
@@ -2922,9 +2749,8 @@ msgstr "’Na bhroinn a-mhàin"
 #. Translators: This is a time format for a date in
 #. long format
 #: js/ui/unlockDialog.js:371
-#, fuzzy
 msgid "%A %B %-d"
-msgstr "%A, %d %B"
+msgstr ""
 
 #: js/ui/unlockDialog.js:377
 msgid "Swipe up to unlock"
@@ -2953,13 +2779,11 @@ msgstr "Tha “%s” deiseil"
 
 #. Translators: This string should be shorter than 30 characters
 #: js/ui/windowManager.js:61
-#, fuzzy
 msgid "Keep these display settings?"
-msgstr "A bheil thu airson na roghainnean seallaidh seo a chumail?"
+msgstr ""
 
 #. Translators: this and the following message should be limited in length,
 #. to avoid ellipsizing the labels.
-#.
 #: js/ui/windowManager.js:70
 msgid "Revert Settings"
 msgstr "Till na roghainnean"
@@ -2972,14 +2796,10 @@ msgstr "Cùm na h-atharraichean"
 #, javascript-format
 msgid "Settings changes will revert in %d second"
 msgid_plural "Settings changes will revert in %d seconds"
-msgstr[0] ""
-"Thèid na h-atharraichean air na roghainnean a thilleadh an ceann %d diog"
-msgstr[1] ""
-"Thèid na h-atharraichean air na roghainnean a thilleadh an ceann %d dhiog"
-msgstr[2] ""
-"Thèid na h-atharraichean air na roghainnean a thilleadh an ceann %d diogan"
-msgstr[3] ""
-"Thèid na h-atharraichean air na roghainnean a thilleadh an ceann %d diog"
+msgstr[0] "Thèid na h-atharraichean air na roghainnean a thilleadh an ceann %d diog"
+msgstr[1] "Thèid na h-atharraichean air na roghainnean a thilleadh an ceann %d dhiog"
+msgstr[2] "Thèid na h-atharraichean air na roghainnean a thilleadh an ceann %d diogan"
+msgstr[3] "Thèid na h-atharraichean air na roghainnean a thilleadh an ceann %d diog"
 
 #. Translators: This represents the size of a window. The first number is
 #. * the width of the window and the second is the height.
@@ -3123,8 +2943,7 @@ msgstr ""
 #, c-format
 msgid ""
 "UUID is a globally-unique identifier for your extension.\n"
-"This should be in the format of an email address (clicktofocus@janedoe."
-"example.com)\n"
+"This should be in the format of an email address (clicktofocus@janedoe.example.com)\n"
 msgstr ""
 
 #: subprojects/extensions-tool/src/command-create.c:244
@@ -3152,24 +2971,21 @@ msgid "Enter extension information interactively"
 msgstr ""
 
 #: subprojects/extensions-tool/src/command-create.c:263
-#, fuzzy
 msgid "Create a new extension"
-msgstr "Cuir à comas leudachain a’ chleachdaiche"
+msgstr ""
 
 #: subprojects/extensions-tool/src/command-create.c:280
 #: subprojects/extensions-tool/src/command-list.c:168
-#, fuzzy
 msgid "Unknown arguments"
-msgstr "Chan eil fhios cò an neach-ciùil"
+msgstr ""
 
 #: subprojects/extensions-tool/src/command-create.c:289
 msgid "UUID, name and description are required"
 msgstr ""
 
 #: subprojects/extensions-tool/src/command-disable.c:57
-#, fuzzy
 msgid "Disable an extension"
-msgstr "Cuir à comas leudachain a’ chleachdaiche"
+msgstr ""
 
 #: subprojects/extensions-tool/src/command-disable.c:74
 #: subprojects/extensions-tool/src/command-enable.c:74
@@ -3190,14 +3006,12 @@ msgid "More than one UUID given"
 msgstr ""
 
 #: subprojects/extensions-tool/src/command-enable.c:57
-#, fuzzy
 msgid "Enable an extension"
-msgstr "Cuir à comas leudachain a’ chleachdaiche"
+msgstr ""
 
 #: subprojects/extensions-tool/src/command-info.c:79
-#, fuzzy
 msgid "Show extensions info"
-msgstr "Cha deach leudachan a stàladh"
+msgstr ""
 
 #: subprojects/extensions-tool/src/command-install.c:173
 msgid "Overwrite an existing extension"
@@ -3208,58 +3022,48 @@ msgid "EXTENSION_BUNDLE"
 msgstr ""
 
 #: subprojects/extensions-tool/src/command-install.c:184
-#, fuzzy
 msgid "Install an extension bundle"
-msgstr "UUIDs nan leudachan ri an cur an comas"
+msgstr ""
 
 #: subprojects/extensions-tool/src/command-install.c:201
-#, fuzzy
 msgid "No extension bundle specified"
-msgstr "Cha deach leudachan a stàladh"
+msgstr ""
 
 #: subprojects/extensions-tool/src/command-install.c:207
 msgid "More than one extension bundle specified"
 msgstr ""
 
 #: subprojects/extensions-tool/src/command-list.c:125
-#, fuzzy
 msgid "Show user-installed extensions"
-msgstr "Leudachain na slige"
+msgstr ""
 
 #: subprojects/extensions-tool/src/command-list.c:128
-#, fuzzy
 msgid "Show system-installed extensions"
-msgstr "Leudachain na slige"
+msgstr ""
 
 #: subprojects/extensions-tool/src/command-list.c:131
-#, fuzzy
 msgid "Show enabled extensions"
-msgstr "Leudachain na slige"
+msgstr ""
 
 #: subprojects/extensions-tool/src/command-list.c:134
-#, fuzzy
 msgid "Show disabled extensions"
-msgstr "Cuir à comas leudachain a’ chleachdaiche"
+msgstr ""
 
 #: subprojects/extensions-tool/src/command-list.c:137
-#, fuzzy
 msgid "Show extensions with preferences"
-msgstr "Roghainnean airson leudachain na Slige GNOME"
+msgstr ""
 
 #: subprojects/extensions-tool/src/command-list.c:140
-#, fuzzy
 msgid "Show extensions with updates"
-msgstr "Cha deach leudachan a stàladh"
+msgstr ""
 
 #: subprojects/extensions-tool/src/command-list.c:143
-#, fuzzy
 msgid "Print extension details"
-msgstr "Seall an tionndadh"
+msgstr ""
 
 #: subprojects/extensions-tool/src/command-list.c:151
-#, fuzzy
 msgid "List installed extensions"
-msgstr "Cuir à comas leudachain a’ chleachdaiche"
+msgstr ""
 
 #: subprojects/extensions-tool/src/command-pack.c:450
 msgid "FILE"
@@ -3315,19 +3119,16 @@ msgid "More than one source directory specified"
 msgstr ""
 
 #: subprojects/extensions-tool/src/command-prefs.c:90
-#, fuzzy
 msgid "Opens extension preferences"
-msgstr "Roghainnean airson leudachain na Slige GNOME"
+msgstr ""
 
 #: subprojects/extensions-tool/src/command-reset.c:57
-#, fuzzy
 msgid "Reset an extension"
-msgstr "Cuir à comas leudachain a’ chleachdaiche"
+msgstr ""
 
 #: subprojects/extensions-tool/src/command-uninstall.c:72
-#, fuzzy
 msgid "Uninstall an extension"
-msgstr "Cuir à comas leudachain a’ chleachdaiche"
+msgstr ""
 
 #: subprojects/extensions-tool/src/main.c:176
 msgid "Path"
@@ -3372,60 +3173,49 @@ msgid "Commands:"
 msgstr ""
 
 #: subprojects/extensions-tool/src/main.c:248
-#, fuzzy
 msgid "Print help"
-msgstr "Seall an tionndadh"
+msgstr ""
 
 #: subprojects/extensions-tool/src/main.c:250
-#, fuzzy
 msgid "Enable extension"
-msgstr "Cuir à comas leudachain a’ chleachdaiche"
+msgstr ""
 
 #: subprojects/extensions-tool/src/main.c:251
-#, fuzzy
 msgid "Disable extension"
-msgstr "Cuir à comas leudachain a’ chleachdaiche"
+msgstr ""
 
 #: subprojects/extensions-tool/src/main.c:252
-#, fuzzy
 msgid "Reset extension"
-msgstr "Cuir à comas leudachain a’ chleachdaiche"
+msgstr ""
 
 #: subprojects/extensions-tool/src/main.c:253
-#, fuzzy
 msgid "Uninstall extension"
-msgstr "Cuir à comas leudachain a’ chleachdaiche"
+msgstr ""
 
 #: subprojects/extensions-tool/src/main.c:254
-#, fuzzy
 msgid "List extensions"
-msgstr "Cuir à comas leudachain a’ chleachdaiche"
+msgstr ""
 
 #: subprojects/extensions-tool/src/main.c:255
 #: subprojects/extensions-tool/src/main.c:256
-#, fuzzy
 msgid "Show extension info"
-msgstr "Cha deach leudachan a stàladh"
+msgstr ""
 
 #: subprojects/extensions-tool/src/main.c:257
-#, fuzzy
 msgid "Open extension preferences"
-msgstr "Roghainnean airson leudachain na Slige GNOME"
+msgstr ""
 
 #: subprojects/extensions-tool/src/main.c:258
-#, fuzzy
 msgid "Create extension"
-msgstr "Leudachain na slige"
+msgstr ""
 
 #: subprojects/extensions-tool/src/main.c:259
-#, fuzzy
 msgid "Package extension"
-msgstr "Leudachain na slige"
+msgstr ""
 
 #: subprojects/extensions-tool/src/main.c:260
-#, fuzzy
 msgid "Install extension bundle"
-msgstr "UUIDs nan leudachan ri an cur an comas"
+msgstr ""
 
 #: subprojects/extensions-tool/src/main.c:262
 #, c-format
@@ -3463,9 +3253,8 @@ msgid "Other workspaces"
 msgstr ""
 
 #: js/ui/appIconBar.js:204
-#, fuzzy
 msgid "Current workspace"
-msgstr "Cuingich an t-suidsear air an rùm-obrach làithreach."
+msgstr ""
 
 #: js/ui/appIconBar.js:282
 msgid "Pin to Taskbar"
@@ -3476,28 +3265,25 @@ msgid "Unpin from Taskbar"
 msgstr ""
 
 #: js/ui/appIconBar.js:310
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Quit %s"
-msgstr "Fàg an-seo"
+msgstr ""
 
 #: js/ui/endlessButton.js:14
 msgid "Endless Button"
 msgstr ""
 
 #: js/ui/endlessButton.js:67
-#, fuzzy
 msgid "Show Desktop"
-msgstr "Seall am mion-fhiosrachadh"
+msgstr ""
 
 #: js/ui/endlessButton.js:69
-#, fuzzy
 msgid "Show Apps"
-msgstr "Seall na h-aplacaidean"
+msgstr ""
 
 #: js/ui/forceAppExitDialog.js:50
-#, fuzzy
 msgid "Quit applications"
-msgstr "Aplacaidean"
+msgstr ""
 
 #: js/ui/forceAppExitDialog.js:56
 msgid ""
@@ -3506,14 +3292,12 @@ msgid ""
 msgstr ""
 
 #: js/ui/forceAppExitDialog.js:87
-#, fuzzy
 msgid "System Monitor"
-msgstr "Fuaimean an t-siostaim"
+msgstr ""
 
 #: js/ui/forceAppExitDialog.js:95
-#, fuzzy
 msgid "Quit Application"
-msgstr "Aplacaidean"
+msgstr ""
 
 #: js/ui/hotCorner.js:15
 msgid "Hot Corner"
@@ -3524,14 +3308,13 @@ msgid "Enable Hot Corner"
 msgstr ""
 
 #: js/ui/hotCorner.js:29
-#, fuzzy
 msgid "Disable Hot Corner"
-msgstr "Cuir à comas gus a-màireach"
+msgstr ""
 
 #: js/ui/iconGridLayout.js:312
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s has been removed"
-msgstr "Chaidh %s a toirt air falbh o na h-annsachdan agad."
+msgstr ""
 
 #: js/ui/iconGridLayout.js:540
 msgid "New Folder"
@@ -3544,7 +3327,6 @@ msgstr ""
 
 #. Translators: the first %s is the search engine name, and the second
 #. * is the search string. For instance, 'Search Google for "hello"'.
-#.
 #: js/ui/internetSearch.js:79
 #, javascript-format
 msgid "Search %s for \"%s\""
@@ -3575,155 +3357,3 @@ msgstr ""
 #, c-format
 msgid "Custom definition for %s"
 msgstr ""
-
-#~ msgid ""
-#~ "Keybinding that pauses and resumes all running tweens, for debugging "
-#~ "purposes"
-#~ msgstr ""
-#~ "Nasgadh iuchrach a chuireas gach tween a tha ’ga ruith ’na stad ’s a "
-#~ "thòisicheas orra a-rithist a chum dì-bhugachaidh"
-
-#~ msgid "Which keyboard to use"
-#~ msgstr "Am meur-chlàr ri chleachdadh"
-
-#~ msgid "The type of keyboard to use."
-#~ msgstr "An seòrsa de mheur-chlàr a thèid a chleachdadh."
-
-#~ msgid "network-workgroup"
-#~ msgstr "network-workgroup"
-
-#~ msgid "There was an error loading the preferences dialog for %s:"
-#~ msgstr "Thachair mearachd le luchdadh còmhradh nan roghainnean airson %s:"
-
-#~ msgid "Next"
-#~ msgstr "Air adhart"
-
-#~ msgctxt "button"
-#~ msgid "Sign In"
-#~ msgstr "Clàraich a-steach"
-
-#~ msgid "Frequently used applications will appear here"
-#~ msgstr "Nochdaidh aplacaidean a chleachdas tu gu tric an-seo"
-
-#~ msgid "Frequent"
-#~ msgstr "An fheadhainn thric"
-
-#~ msgid "All"
-#~ msgstr "Na h-uile"
-
-#~ msgid "Add to Favorites"
-#~ msgstr "Cuir ris na h-annsachdan"
-
-#~ msgid "Password:"
-#~ msgstr "Facal-faire:"
-
-#~ msgid "Type again:"
-#~ msgstr "Am facal-faire a-rithist:"
-
-#~ msgid "Password: "
-#~ msgstr "Facal-faire: "
-
-#~ msgid "Authentication required by wireless network"
-#~ msgstr "Tha an lìonra uèirleas ag iarraidh dearbhadh"
-
-#~ msgid "Mobile broadband network password"
-#~ msgstr "Facal-faire an lìonraidh banna-leathainn mobile"
-
-#~ msgid "%s, then %s later."
-#~ msgstr "%s ’s %s an uairsin."
-
-#~ msgid "%s, then %s, followed by %s later."
-#~ msgstr "%s ’s %s an uairsin ’s %s an uairsin."
-
-#~ msgid "Feels like %s."
-#~ msgstr "A’ faireachdainn mar %s."
-
-#~ msgid "Type to search…"
-#~ msgstr "Sgrìobh airson lorg…"
-
-#~ msgid "Top Bar"
-#~ msgstr "Bàr a’ bharra"
-
-#~ msgid "toggle-switch-us"
-#~ msgstr "toggle-switch-intl"
-
-#~ msgid "%d new message"
-#~ msgid_plural "%d new messages"
-#~ msgstr[0] "%d teachdaireachd ùr"
-#~ msgstr[1] "%d theachdaireachd ùr"
-#~ msgstr[2] "%d teachdaireachdan ùra"
-#~ msgstr[3] "%d teachdaireachd ùr"
-
-#~ msgid "%d new notification"
-#~ msgid_plural "%d new notifications"
-#~ msgstr[0] "%d bhrath ùr"
-#~ msgstr[1] "%d bhrath ùr"
-#~ msgstr[2] "%d brathan ùra"
-#~ msgstr[3] "%d brath ùr"
-
-#~ msgid "%d more"
-#~ msgid_plural "%d more"
-#~ msgstr[0] "%d a bharrachd"
-#~ msgstr[1] "%d a bharrachd"
-#~ msgstr[2] "%d a bharrachd"
-#~ msgstr[3] "%d a bharrachd"
-
-#~ msgid "Off"
-#~ msgstr "Dheth"
-
-#~ msgid "On"
-#~ msgstr "Air"
-
-#~ msgid "Orientation Lock"
-#~ msgstr "Glais na comhair"
-
-#~ msgid "Search"
-#~ msgstr "Lorg"
-
-#~ msgid "evolution"
-#~ msgstr "evolution"
-
-#~ msgctxt "search-result"
-#~ msgid "Power off"
-#~ msgstr "Cuir a’ chumhachd dheth"
-
-#~ msgctxt "search-result"
-#~ msgid "Log out"
-#~ msgstr "Clàraich a-mach"
-
-#~ msgctxt "search-result"
-#~ msgid "Switch user"
-#~ msgstr "Dèan suids eadar cleachdaichean"
-
-#~ msgid "Web Authentication Redirect"
-#~ msgstr "Ath-stiùireadh an dearbhaidh-lìn"
-
-#~ msgid "Events"
-#~ msgstr "Tachartasan"
-
-#~ msgid "Notifications"
-#~ msgstr "Brathan"
-
-#~ msgid "Hide tray"
-#~ msgstr "Falaich an treidhe"
-
-#~ msgid "Status Icons"
-#~ msgstr "Ìomhaigheagan staide"
-
-#~ msgid "Clear section"
-#~ msgstr "Falamhaich an earrann"
-
-#~ msgid "Media"
-#~ msgstr "Meadhanan"
-
-#~ msgid "Not In Use"
-#~ msgstr "Chan eil e 'ga chleachdadh"
-
-#~ msgid "%d x %d"
-#~ msgstr "%d x %d"
-
-#~ msgid "Use as Internet connection"
-#~ msgstr "Cleachd e mar cheangal ris an eadar-lìon"
-
-#~ msgid "GNOME Shell (wayland compositor)"
-#~ msgstr "Slige GNOME (co-dhèanadair wayland)"

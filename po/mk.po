@@ -1,31 +1,29 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# This file is distributed under the same license as the gnome-shell package.
+# 
+# Translators:
 msgid ""
 msgstr ""
-"Project-Id-Version: 3.4\n"
+"Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-04-17 17:11+0100\n"
-"PO-Revision-Date: 2011-12-08 22:37+0100\n"
-"Last-Translator: Jovan N\n"
-"Language-Team: mk_MK <jovan@lugola.net>\n"
-"Language: mk\n"
+"PO-Revision-Date: 2020-04-17 16:14+0000\n"
+"Last-Translator: Will Thompson <wjt@endlessm.com>\n"
+"Language-Team: Macedonian (http://www.transifex.com/endless-os/gnome-shell/language/mk/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural= n==1 || n%10==1 ? 0 : 1;\n"
+"Language: mk\n"
+"Plural-Forms: nplurals=2; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : 1;\n"
 
 #: data/50-gnome-shell-system.xml:6
-#, fuzzy
 msgid "System"
-msgstr "Датотечен систем"
+msgstr ""
 
 #: data/50-gnome-shell-system.xml:9
-#, fuzzy
 msgid "Show the notification list"
-msgstr "DSL автентикација"
+msgstr ""
 
 #: data/50-gnome-shell-system.xml:12
 msgid "Focus the active notification"
@@ -36,9 +34,8 @@ msgid "Show the overview"
 msgstr ""
 
 #: data/50-gnome-shell-system.xml:18
-#, fuzzy
 msgid "Show all applications"
-msgstr "Апликации"
+msgstr ""
 
 #: data/50-gnome-shell-system.xml:21
 msgid "Open the application menu"
@@ -54,54 +51,38 @@ msgstr "Менаџмент на прозорци и пуштање на апли
 
 #: data/org.gnome.shell.gschema.xml.in:15
 msgid "Enable internal tools useful for developers and testers from Alt-F2"
-msgstr ""
-"Овозможи ги внатрешните алатки кои се корисни за програмерите и тестерите "
-"преку Alt-F2"
+msgstr "Овозможи ги внатрешните алатки кои се корисни за програмерите и тестерите преку Alt-F2"
 
 #: data/org.gnome.shell.gschema.xml.in:18
 msgid ""
 "Allows access to internal debugging and monitoring tools using the Alt-F2 "
 "dialog."
-msgstr ""
-"Овозможува пристап до внатрешни алатки за дебагирање и мониторирање со "
-"користење на дијалогот на Alt-F2."
+msgstr "Овозможува пристап до внатрешни алатки за дебагирање и мониторирање со користење на дијалогот на Alt-F2."
 
 #: data/org.gnome.shell.gschema.xml.in:25
-#, fuzzy
 msgid "UUIDs of extensions to enable"
-msgstr "Uuid на екстензиите кои ќе се овозможат"
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:26
-#, fuzzy
 msgid ""
-"GNOME Shell extensions have a UUID property; this key lists extensions which "
-"should be loaded. Any extension that wants to be loaded needs to be in this "
-"list. You can also manipulate this list with the EnableExtension and "
+"GNOME Shell extensions have a UUID property; this key lists extensions which"
+" should be loaded. Any extension that wants to be loaded needs to be in this"
+" list. You can also manipulate this list with the EnableExtension and "
 "DisableExtension D-Bus methods on org.gnome.Shell."
 msgstr ""
-"Додатоците за Gnome Shell имаат uuid својство; овој клуч ги листа додатоците "
-"кои ќе се вчитаат. Секој додаток кој треба да биде вчитан мора да стои во "
-"оваа листа. Можете да манипулирате со оваа листа со DBus методите "
-"EnableExtension и DisableExtension на org.gnome.Shell."
 
 #: data/org.gnome.shell.gschema.xml.in:35
-#, fuzzy
 msgid "UUIDs of extensions to force disabling"
-msgstr "Uuid на екстензиите кои ќе се овозможат"
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:36
-#, fuzzy
 msgid ""
-"GNOME Shell extensions have a UUID property; this key lists extensions which "
-"should be disabled, even if loaded as part of the current mode. You can also "
-"manipulate this list with the EnableExtension and DisableExtension D-Bus "
-"methods on org.gnome.Shell. This key takes precedence over the “enabled-"
-"extensions” setting."
+"GNOME Shell extensions have a UUID property; this key lists extensions which"
+" should be disabled, even if loaded as part of the current mode. You can "
+"also manipulate this list with the EnableExtension and DisableExtension "
+"D-Bus methods on org.gnome.Shell. This key takes precedence over the "
+"“enabled-extensions” setting."
 msgstr ""
-"Додатоците за Gnome Shell имаат uuid својство; овој клуч ги листа додатоците "
-"кои ќе се вчитаат. Секој додаток кој треба да биде вчитан мора да стои во "
-"оваа листа. Можете да манипулирате со оваа листа со DBus методите "
-"EnableExtension и DisableExtension на org.gnome.Shell."
 
 #: data/org.gnome.shell.gschema.xml.in:46
 msgid "Disable user extensions"
@@ -130,11 +111,9 @@ msgstr "Листа на ID на desktop датотеки за омилените
 
 #: data/org.gnome.shell.gschema.xml.in:64
 msgid ""
-"The applications corresponding to these identifiers will be displayed in the "
-"favorites area."
-msgstr ""
-"Апликациите на кои се однесуваат овие идентификатори ќе бидат прикажани во "
-"површината за омилени."
+"The applications corresponding to these identifiers will be displayed in the"
+" favorites area."
+msgstr "Апликациите на кои се однесуваат овие идентификатори ќе бидат прикажани во површината за омилени."
 
 #: data/org.gnome.shell.gschema.xml.in:71
 msgid "App Picker View"
@@ -148,7 +127,8 @@ msgstr ""
 msgid "History for command (Alt-F2) dialog"
 msgstr "Историја на дијалогот за команди (Alt-F2)"
 
-#. Translators: looking glass is a debugger and inspector tool, see https://wiki.gnome.org/Projects/GnomeShell/LookingGlass
+#. Translators: looking glass is a debugger and inspector tool, see
+#. https://wiki.gnome.org/Projects/GnomeShell/LookingGlass
 #: data/org.gnome.shell.gschema.xml.in:83
 msgid "History for the looking glass dialog"
 msgstr "Историја на стаклениот дијалог"
@@ -159,8 +139,8 @@ msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:88
 msgid ""
-"This key overrides the automatic hiding of the “Log out” menu item in single-"
-"user, single-session situations."
+"This key overrides the automatic hiding of the “Log out” menu item in "
+"single-user, single-session situations."
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:95
@@ -216,8 +196,8 @@ msgstr ""
 #: data/org.gnome.shell.gschema.xml.in:139
 msgid ""
 "Default position of the hot corner is in a right corner. Set false to move "
-"the hot corner to a left corner. The position is not affected by the RTL vs. "
-"LTR text direction."
+"the hot corner to a left corner. The position is not affected by the RTL vs."
+" LTR text direction."
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:147
@@ -237,8 +217,8 @@ msgstr ""
 #: data/org.gnome.shell.gschema.xml.in:160
 msgid ""
 "Number of pixels in one dimension of the square target for the hot corner. "
-"Default is for a single pixel in the very corner. For some virtual machines, "
-"this value may need to be set larger than the default."
+"Default is for a single pixel in the very corner. For some virtual machines,"
+" this value may need to be set larger than the default."
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:170
@@ -248,8 +228,8 @@ msgstr ""
 #: data/org.gnome.shell.gschema.xml.in:173
 msgid ""
 "Makes window management more like standard Gnome. Hides application splash "
-"screens, prevents applications from being forced to open maximized, and does "
-"not automatically switch to the app selector when a window is minimized."
+"screens, prevents applications from being forced to open maximized, and does"
+" not automatically switch to the app selector when a window is minimized."
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:182
@@ -259,10 +239,11 @@ msgstr ""
 #: data/org.gnome.shell.gschema.xml.in:183
 msgid ""
 "This key controls whether to show the \"Forgot Password?\" button on the "
-"login screen. 'default' tells GNOME Shell to use the vendor default setting. "
-"'enable' and 'disable' can be used to explicitly enable or disable the reset "
-"button, respectively. Note that it only makes sense to set this key for the "
-"Debian-gdm user; changing it for your own user account will have no effect."
+"login screen. 'default' tells GNOME Shell to use the vendor default setting."
+" 'enable' and 'disable' can be used to explicitly enable or disable the "
+"reset button, respectively. Note that it only makes sense to set this key "
+"for the Debian-gdm user; changing it for your own user account will have no "
+"effect."
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:194
@@ -475,8 +456,8 @@ msgstr ""
 #: data/org.gnome.shell.gschema.xml.in:382
 msgid ""
 "Configures how the windows are shown in the switcher. Valid possibilities "
-"are “thumbnail-only” (shows a thumbnail of the window), “app-icon-"
-"only” (shows only the application icon) or “both”."
+"are “thumbnail-only” (shows a thumbnail of the window), “app-icon-only” "
+"(shows only the application icon) or “both”."
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:391
@@ -486,9 +467,8 @@ msgid ""
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:401
-#, fuzzy
 msgid "Locations"
-msgstr "Известувања"
+msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:402
 msgid "The locations to show in world clocks"
@@ -540,9 +520,8 @@ msgid "Delay focus changes in mouse mode until the pointer stops moving"
 msgstr ""
 
 #: data/org.gnome.Shell.PortalHelper.desktop.in.in:3
-#, fuzzy
 msgid "Network Login"
-msgstr "Грешка во мрежата"
+msgstr ""
 
 #: js/dbusServices/extensions/ui/extension-prefs-dialog.ui:36
 #: js/extensionPrefs/data/ui/extensions-window.ui:223
@@ -561,14 +540,12 @@ msgid "Technical Details"
 msgstr ""
 
 #: js/dbusServices/extensions/ui/extension-prefs-dialog.ui:165
-#, fuzzy
 msgid "Homepage"
-msgstr "Дома"
+msgstr ""
 
 #: js/dbusServices/extensions/ui/extension-prefs-dialog.ui:166
-#, fuzzy
 msgid "Visit extension homepage"
-msgstr "Uuid на екстензиите кои ќе се овозможат"
+msgstr ""
 
 #: js/extensionPrefs/data/metainfo/org.gnome.Extensions.metainfo.xml.in:5
 #: js/extensionPrefs/data/org.gnome.Extensions.desktop.in.in:4
@@ -635,9 +612,8 @@ msgstr "Опис"
 
 #: js/extensionPrefs/data/ui/extension-row.ui:123
 #: subprojects/extensions-tool/src/main.c:185
-#, fuzzy
 msgid "Version"
-msgstr "Печатена верзија"
+msgstr ""
 
 #: js/extensionPrefs/data/ui/extension-row.ui:151
 msgid "Author"
@@ -648,9 +624,8 @@ msgid "Website"
 msgstr ""
 
 #: js/extensionPrefs/data/ui/extension-row.ui:192
-#, fuzzy
 msgid "Remove…"
-msgstr "Отстрани"
+msgstr ""
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:8 js/ui/userMenu.js:27
 msgid "Help"
@@ -662,8 +637,8 @@ msgstr ""
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:27
 msgid ""
-"To find and add extensions, visit <a href=\"https://extensions.gnome.org"
-"\">extensions.gnome.org</a>."
+"To find and add extensions, visit <a "
+"href=\"https://extensions.gnome.org\">extensions.gnome.org</a>."
 msgstr ""
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:35
@@ -696,9 +671,8 @@ msgid ""
 msgstr ""
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:288
-#, fuzzy
 msgid "Log Out…"
-msgstr "Одјави се"
+msgstr ""
 
 #: js/gdm/authPrompt.js:131
 msgid "Show password hint"
@@ -714,16 +688,17 @@ msgstr ""
 #: js/ui/components/networkAgent.js:424 js/ui/components/networkAgent.js:444
 #: js/ui/components/networkAgent.js:454 js/ui/components/polkitAgent.js:277
 #: js/ui/shellMountOperation.js:326
-#, fuzzy
 msgid "Password"
-msgstr "Лозинка:"
+msgstr ""
 
-#. Translators: During a password reset, prompt for the "secret code" provided by customer support.
+#. Translators: During a password reset, prompt for the "secret code" provided
+#. by customer support.
 #: js/gdm/authPrompt.js:680
 msgid "Enter unlock code"
 msgstr ""
 
-#. Translators: Password reset. The first %s is a verification code and the second is an email.
+#. Translators: Password reset. The first %s is a verification code and the
+#. second is an email.
 #: js/gdm/authPrompt.js:683
 #, javascript-format
 msgid ""
@@ -733,9 +708,8 @@ msgid ""
 msgstr ""
 
 #: js/gdm/authPrompt.js:762
-#, fuzzy
 msgid "Your unlock code was incorrect. Please try again."
-msgstr "Жалам, но тоа не успеа. Пробајте пак."
+msgstr ""
 
 #: js/gdm/loginDialog.js:317
 msgid "Choose Session"
@@ -757,18 +731,16 @@ msgstr ""
 #. (and don't even care of which one)
 #: js/gdm/loginDialog.js:920 js/ui/components/networkAgent.js:399
 #: js/ui/components/networkAgent.js:422 js/ui/components/networkAgent.js:440
-#, fuzzy
 msgid "Username"
-msgstr "Корисничко име:"
+msgstr ""
 
 #: js/gdm/loginDialog.js:1256
 msgid "Login Window"
 msgstr "Најавен прозорец"
 
 #: js/gdm/util.js:338
-#, fuzzy
 msgid "Authentication error"
-msgstr "Потребна е автентикација"
+msgstr ""
 
 #. We don't show fingerprint messages directly since it's
 #. not the main auth service. Instead we use the messages
@@ -785,23 +757,23 @@ msgctxt "search-result"
 msgid "Power Off"
 msgstr "Исклучи се"
 
-#. Translators: A list of keywords that match the power-off action, separated by semicolons
+#. Translators: A list of keywords that match the power-off action, separated
+#. by semicolons
 #: js/misc/systemActions.js:92
 msgid "power off;shutdown;reboot;restart;halt;stop"
 msgstr ""
 
 #. Translators: The name of the lock screen action in search
 #: js/misc/systemActions.js:97
-#, fuzzy
 msgctxt "search-result"
 msgid "Lock Screen"
-msgstr "Заклучи го екранот"
+msgstr ""
 
-#. Translators: A list of keywords that match the lock screen action, separated by semicolons
+#. Translators: A list of keywords that match the lock screen action,
+#. separated by semicolons
 #: js/misc/systemActions.js:100
-#, fuzzy
 msgid "lock screen"
-msgstr "Заклучи го екранот"
+msgstr ""
 
 #. Translators: The name of the logout action in search
 #: js/misc/systemActions.js:105
@@ -809,7 +781,8 @@ msgctxt "search-result"
 msgid "Log Out"
 msgstr "Одјави се"
 
-#. Translators: A list of keywords that match the logout action, separated by semicolons
+#. Translators: A list of keywords that match the logout action, separated by
+#. semicolons
 #: js/misc/systemActions.js:108
 msgid "logout;log out;sign off"
 msgstr ""
@@ -820,11 +793,11 @@ msgctxt "search-result"
 msgid "Suspend"
 msgstr "Суспендирај"
 
-#. Translators: A list of keywords that match the suspend action, separated by semicolons
+#. Translators: A list of keywords that match the suspend action, separated by
+#. semicolons
 #: js/misc/systemActions.js:116
-#, fuzzy
 msgid "suspend;sleep"
-msgstr "Суспендирај"
+msgstr ""
 
 #. Translators: The name of the switch user action in search
 #: js/misc/systemActions.js:121
@@ -832,28 +805,27 @@ msgctxt "search-result"
 msgid "Switch User"
 msgstr "Смени корисник"
 
-#. Translators: A list of keywords that match the switch user action, separated by semicolons
+#. Translators: A list of keywords that match the switch user action,
+#. separated by semicolons
 #: js/misc/systemActions.js:124
-#, fuzzy
 msgid "switch user"
-msgstr "Смени корисник"
+msgstr ""
 
-#. Translators: A list of keywords that match the lock orientation action, separated by semicolons
+#. Translators: A list of keywords that match the lock orientation action,
+#. separated by semicolons
 #: js/misc/systemActions.js:131
 msgid "lock orientation;unlock orientation;screen;rotation"
 msgstr ""
 
 #: js/misc/systemActions.js:251
-#, fuzzy
 msgctxt "search-result"
 msgid "Unlock Screen Rotation"
-msgstr "Заклучи го екранот"
+msgstr ""
 
 #: js/misc/systemActions.js:252
-#, fuzzy
 msgctxt "search-result"
 msgid "Lock Screen Rotation"
-msgstr "Заклучи го екранот"
+msgstr ""
 
 #: js/misc/util.js:125
 msgid "Command not found"
@@ -866,27 +838,27 @@ msgid "Could not parse command:"
 msgstr "Не можев да ја испарсирам командата:"
 
 #: js/misc/util.js:169
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Execution of “%s” failed:"
-msgstr "Извршувањето на „%s“ не успеа:"
+msgstr ""
 
 #: js/misc/util.js:186
 msgid "Just now"
 msgstr ""
 
 #: js/misc/util.js:188
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
-msgstr[0] "преостанува уште %d минута"
-msgstr[1] "преостануваат уште %d минути"
+msgstr[0] ""
+msgstr[1] ""
 
 #: js/misc/util.js:192
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
-msgstr[0] "преостанува уште %d час"
-msgstr[1] "преостануваат уште %d часа"
+msgstr[0] ""
+msgstr[1] ""
 
 #: js/misc/util.js:196
 msgid "Yesterday"
@@ -959,9 +931,8 @@ msgstr ""
 #. eslint-disable-line no-lonely-if
 #. Translators: Time in 12h format
 #: js/misc/util.js:271
-#, fuzzy
 msgid "%l∶%M %p"
-msgstr "%l:%M %p"
+msgstr ""
 
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 12h format. i.e. "Yesterday, 2:30 pm"
@@ -973,30 +944,28 @@ msgstr ""
 #. Translators: this is the week day name followed by a time
 #. string in 12h format. i.e. "Monday, 2:30 pm"
 #: js/misc/util.js:283
-#, fuzzy, no-c-format
+#, no-c-format
 msgid "%A, %l∶%M %p"
-msgstr "%a %l:%M %p"
+msgstr ""
 
 #. Translators: this is the month name and day number
 #. followed by a time string in 12h format.
 #. i.e. "May 25, 2:30 pm"
 #: js/misc/util.js:289
-#, fuzzy, no-c-format
+#, no-c-format
 msgid "%B %-d, %l∶%M %p"
-msgstr "%a %b %e, %l:%M %p"
+msgstr ""
 
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 12h format.
 #. i.e. "May 25 2012, 2:30 pm"
 #: js/misc/util.js:295
-#, fuzzy, no-c-format
+#, no-c-format
 msgid "%B %-d %Y, %l∶%M %p"
-msgstr "%a %b %e, %l:%M %p"
+msgstr ""
 
-#.
 #. * Translators: this is the name of the search engine that shows in the
 #. * Shell's desktop search entry.
-#.
 #: js/misc/util.js:573
 msgid "Google"
 msgstr ""
@@ -1019,15 +988,13 @@ msgid "Deny Access"
 msgstr ""
 
 #: js/ui/accessDialog.js:40 js/ui/status/location.js:377
-#, fuzzy
 msgid "Grant Access"
-msgstr "Секогаш доделувај му пристап"
+msgstr ""
 
 #. Translators: This is the heading of a list of open windows
 #: js/ui/appDisplay.js:2390 js/ui/panel.js:78
-#, fuzzy
 msgid "Open Windows"
-msgstr "Прозорци"
+msgstr ""
 
 #: js/ui/appDisplay.js:2410 js/ui/panel.js:85
 msgid "New Window"
@@ -1039,23 +1006,20 @@ msgstr ""
 
 #. Add the "Remove from desktop" menu item at the end.
 #: js/ui/appDisplay.js:2443
-#, fuzzy
 msgid "Remove from desktop"
-msgstr "Отстрани од омилените"
+msgstr ""
 
 #: js/ui/audioDeviceSelection.js:41
-#, fuzzy
 msgid "Select Audio Device"
-msgstr "Испрати датотеки до уред..."
+msgstr ""
 
 #: js/ui/audioDeviceSelection.js:54
 msgid "Sound Settings"
 msgstr "Поставувања за звук"
 
 #: js/ui/audioDeviceSelection.js:64
-#, fuzzy
 msgid "Headphones"
-msgstr "Мобилен телефон"
+msgstr ""
 
 #: js/ui/audioDeviceSelection.js:66
 msgid "Headset"
@@ -1077,7 +1041,8 @@ msgstr ""
 msgid "Add Website"
 msgstr ""
 
-#. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday).
+#. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0"
+#. (Sunday) "6" (Saturday) "06" (Sunday and Saturday).
 #: js/ui/calendar.js:41
 msgctxt "calendar-no-work"
 msgid "06"
@@ -1087,7 +1052,6 @@ msgstr ""
 #. *
 #. * NOTE: These grid abbreviations are always shown together
 #. * and in order, e.g. "S M T W T F S".
-#.
 #: js/ui/calendar.js:70
 msgctxt "grid sunday"
 msgid "S"
@@ -1134,7 +1098,6 @@ msgstr "С"
 #. * standalone, when this is a month of the current year.
 #. * "%OB" is the new format specifier introduced in glibc 2.27,
 #. * in most cases you should not change it.
-#.
 #: js/ui/calendar.js:371
 msgid "%OB"
 msgstr ""
@@ -1147,7 +1110,6 @@ msgstr ""
 #. * "%OB" is the new format specifier introduced in glibc 2.27,
 #. * in most cases you should not use the old "%B" here unless you
 #. * absolutely know what you are doing.
-#.
 #: js/ui/calendar.js:381
 msgid "%OB %Y"
 msgstr ""
@@ -1161,10 +1123,10 @@ msgid "Next month"
 msgstr ""
 
 #: js/ui/calendar.js:605
-#, fuzzy, no-javascript-format
+#, no-javascript-format
 msgctxt "date day number format"
 msgid "%d"
-msgstr "%d%%"
+msgstr ""
 
 #: js/ui/calendar.js:661
 msgid "Week %V"
@@ -1172,30 +1134,28 @@ msgstr ""
 
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
-#.
 #: js/ui/calendar.js:730
 msgctxt "event list time"
 msgid "All Day"
 msgstr "Цел ден"
 
-#. Translators: Shown on calendar heading when selected day occurs on current year
+#. Translators: Shown on calendar heading when selected day occurs on current
+#. year
 #: js/ui/calendar.js:868
-#, fuzzy
 msgctxt "calendar heading"
 msgid "%A, %B %-d"
-msgstr "%A, %B %d"
+msgstr ""
 
-#. Translators: Shown on calendar heading when selected day occurs on different year
+#. Translators: Shown on calendar heading when selected day occurs on
+#. different year
 #: js/ui/calendar.js:871
-#, fuzzy
 msgctxt "calendar heading"
 msgid "%A, %B %-d, %Y"
-msgstr "%A, %B %d, %Y"
+msgstr ""
 
 #: js/ui/calendar.js:1100
-#, fuzzy
 msgid "No Notifications"
-msgstr "Известувања"
+msgstr ""
 
 #: js/ui/calendar.js:1103
 msgid "No Events"
@@ -1277,24 +1237,20 @@ msgid "This connection doesn't have limits on how much you can download."
 msgstr ""
 
 #: js/ui/components/networkAgent.js:369
-#, fuzzy
 msgid "Key"
-msgstr "Клуч:"
+msgstr ""
 
 #: js/ui/components/networkAgent.js:407 js/ui/components/networkAgent.js:430
-#, fuzzy
 msgid "Private key password"
-msgstr "Лозинка на приватниот клуч:"
+msgstr ""
 
 #: js/ui/components/networkAgent.js:428
-#, fuzzy
 msgid "Identity"
-msgstr "Идентитет:"
+msgstr ""
 
 #: js/ui/components/networkAgent.js:442
-#, fuzzy
 msgid "Service"
-msgstr "Сервис:"
+msgstr ""
 
 #: js/ui/components/networkAgent.js:471
 #, javascript-format
@@ -1306,9 +1262,8 @@ msgid "Wired 802.1X authentication"
 msgstr "Жичена 802.1X автентикација"
 
 #: js/ui/components/networkAgent.js:478
-#, fuzzy
 msgid "Network name"
-msgstr "Име на мрежа:"
+msgstr ""
 
 #: js/ui/components/networkAgent.js:483 js/ui/components/networkAgent.js:855
 msgid "DSL authentication"
@@ -1323,40 +1278,35 @@ msgid "PIN code is needed for the mobile broadband device"
 msgstr "Потребен е PIN кодот за мобилниот уред"
 
 #: js/ui/components/networkAgent.js:492
-#, fuzzy
 msgid "PIN"
-msgstr "PIN:"
+msgstr ""
 
 #: js/ui/components/networkAgent.js:499 js/ui/components/networkAgent.js:846
 #: js/ui/components/networkAgent.js:867
-#, fuzzy
 msgid "Authentication required"
-msgstr "потребна е автентикација"
+msgstr ""
 
 #: js/ui/components/networkAgent.js:500 js/ui/components/networkAgent.js:852
 #: js/ui/components/networkAgent.js:856 js/ui/components/networkAgent.js:868
 #: js/ui/components/networkAgent.js:872
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "A password is required to connect to “%s”."
-msgstr "Потребна е лозинка за поврзување со „%s“."
+msgstr ""
 
 #: js/ui/components/networkAgent.js:835 js/ui/status/network.js:1691
 msgid "Network Manager"
 msgstr "Менаџер на мрежи"
 
 #: js/ui/components/networkAgent.js:847
-#, fuzzy, javascript-format
+#, javascript-format
 msgid ""
 "Passwords or encryption keys are required to access the wireless network "
 "“%s”."
 msgstr ""
-"Потребни се лозинки или клучеви за енкрипција за пристап на безжичната мрежа "
-"„%s“."
 
 #: js/ui/components/networkAgent.js:871
-#, fuzzy
 msgid "VPN password"
-msgstr "Лозинка:"
+msgstr ""
 
 #: js/ui/components/polkitAgent.js:39
 msgid "Authentication Required"
@@ -1375,11 +1325,11 @@ msgstr "Автентицирај се"
 #. * because of an authentication error (like invalid password),
 #. * for instance.
 #: js/ui/components/polkitAgent.js:254 js/ui/shellMountOperation.js:402
-#, fuzzy
 msgid "Sorry, that didn’t work. Please try again."
-msgstr "Жалам, но тоа не успеа. Пробајте пак."
+msgstr ""
 
-#. Translators: this is the other person changing their old IM name to their new
+#. Translators: this is the other person changing their old IM name to their
+#. new
 #. IM name.
 #: js/ui/components/telepathyClient.js:823
 #, javascript-format
@@ -1391,9 +1341,8 @@ msgid "Windows"
 msgstr "Прозорци"
 
 #: js/ui/dash.js:200 js/ui/dash.js:241
-#, fuzzy
 msgid "Show Applications"
-msgstr "Апликации"
+msgstr ""
 
 #: js/ui/dash.js:239
 msgid "Remove from Favorites"
@@ -1409,20 +1358,16 @@ msgstr "Лента"
 #. * shown - it is shown just below the time in the top bar (e.g.,
 #. * "Tue 9:29 AM").  The string itself should become a full date, e.g.,
 #. * "February 17 2015".
-#.
 #: js/ui/dateMenu.js:75
-#, fuzzy
 msgid "%B %-d %Y"
-msgstr "%A, %B %d, %Y"
+msgstr ""
 
 #. Translators: This is the accessible name of the date button shown
 #. * below the time in the shell; it should combine the weekday and the
 #. * date, e.g. "Tuesday February 17 2015".
-#.
 #: js/ui/dateMenu.js:82
-#, fuzzy
 msgid "%A %B %e %Y"
-msgstr "%A %B %e, %Y"
+msgstr ""
 
 #: js/ui/dateMenu.js:161
 msgid "Add world clocks…"
@@ -1449,9 +1394,8 @@ msgid "Go online for weather information"
 msgstr ""
 
 #: js/ui/dateMenu.js:429
-#, fuzzy
 msgid "Weather information is currently unavailable"
-msgstr "Енкрипцијата не е достапна"
+msgstr ""
 
 #: js/ui/endSessionDialog.js:39
 #, javascript-format
@@ -1533,12 +1477,13 @@ msgid "Restart & Install Updates"
 msgstr ""
 
 #: js/ui/endSessionDialog.js:93
-#, fuzzy, javascript-format
-msgid "The system will automatically restart and install updates in %d second."
+#, javascript-format
+msgid ""
+"The system will automatically restart and install updates in %d second."
 msgid_plural ""
 "The system will automatically restart and install updates in %d seconds."
-msgstr[0] "Системот ќе се рестартира автоматски за %d секунда."
-msgstr[1] "Системот ќе се рестартира автоматски за %d секунди."
+msgstr[0] ""
+msgstr[1] ""
 
 #: js/ui/endSessionDialog.js:99 js/ui/endSessionDialog.js:118
 msgctxt "button"
@@ -1614,9 +1559,9 @@ msgid "Install Extension"
 msgstr ""
 
 #: js/ui/extensionDownloader.js:199
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Download and install “%s” from extensions.gnome.org?"
-msgstr "Да го преземам и инсталирам „%s“ од extensions.gnome.org?"
+msgstr ""
 
 #: js/ui/extensionSystem.js:229
 msgid "Extension Updates Available"
@@ -1664,8 +1609,8 @@ msgstr "Бавните копчиња се исклучени"
 
 #: js/ui/kbdA11yDialog.js:34
 msgid ""
-"You just held down the Shift key for 8 seconds. This is the shortcut for the "
-"Slow Keys feature, which affects the way your keyboard works."
+"You just held down the Shift key for 8 seconds. This is the shortcut for the"
+" Slow Keys feature, which affects the way your keyboard works."
 msgstr ""
 
 #: js/ui/kbdA11yDialog.js:41
@@ -1711,9 +1656,8 @@ msgid "Leave Off"
 msgstr "Остани исклучен"
 
 #: js/ui/keyboard.js:207
-#, fuzzy
 msgid "Region & Language Settings"
-msgstr "Поставувања за регион и јазик"
+msgstr ""
 
 #: js/ui/lookingGlass.js:665
 msgid "No extensions installed"
@@ -1786,14 +1730,12 @@ msgid "System Information"
 msgstr "Информации за системот"
 
 #: js/ui/mpris.js:199
-#, fuzzy
 msgid "Unknown artist"
-msgstr "Непозната причина"
+msgstr ""
 
 #: js/ui/mpris.js:209
-#, fuzzy
 msgid "Unknown title"
-msgstr "Непознато"
+msgstr ""
 
 #: js/ui/overview.js:94
 msgid "Undo"
@@ -1814,18 +1756,16 @@ msgid "New shortcut…"
 msgstr ""
 
 #: js/ui/padOsd.js:142
-#, fuzzy
 msgid "Application defined"
-msgstr "Апликации"
+msgstr ""
 
 #: js/ui/padOsd.js:143
 msgid "Show on-screen help"
 msgstr ""
 
 #: js/ui/padOsd.js:144
-#, fuzzy
 msgid "Switch monitor"
-msgstr "Смени корисник"
+msgstr ""
 
 #: js/ui/padOsd.js:145
 msgid "Assign keystroke"
@@ -1860,9 +1800,8 @@ msgid "Show Details"
 msgstr "Прикажи детали"
 
 #: js/ui/panel.js:112
-#, fuzzy
 msgid "Quit"
-msgstr "Исклучи го %s"
+msgstr ""
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
@@ -1871,10 +1810,9 @@ msgid "Activities"
 msgstr "Активности"
 
 #: js/ui/panel.js:716
-#, fuzzy
 msgctxt "System menu in the top bar"
 msgid "System"
-msgstr "Датотечен систем"
+msgstr ""
 
 #: js/ui/panel.js:801
 msgctxt "User menu"
@@ -1907,8 +1845,8 @@ msgstr ""
 #: js/ui/paygUnlockDialog.js:160
 #, javascript-format
 msgid ""
-"Talk to your sales representative to purchase a new code. Call or text %s at "
-"%s"
+"Talk to your sales representative to purchase a new code. Call or text %s at"
+" %s"
 msgstr ""
 
 #. No overrides present, default to fallback text.
@@ -1938,22 +1876,22 @@ msgid "Remaining time cleared!"
 msgstr ""
 
 #: js/ui/paygUnlockDialog.js:419
-#, fuzzy
 msgid "OK!"
-msgstr "Во ред"
+msgstr ""
 
 #: js/ui/payg.js:39
 msgid "Pay As You Go"
 msgstr ""
 
 #: js/ui/payg.js:40
-msgid "Enter an unlock code to extend the time before your credit has expired."
+msgid ""
+"Enter an unlock code to extend the time before your credit has expired."
 msgstr ""
 
 #: js/ui/payg.js:41
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Subscription runs out in %s."
-msgstr "Барање за претплата"
+msgstr ""
 
 #: js/ui/payg.js:236
 #, javascript-format
@@ -1967,9 +1905,8 @@ msgid "Too many attempts. Try again in a few seconds."
 msgstr ""
 
 #: js/ui/payg.js:261
-#, fuzzy
 msgid "Invalid code. Please try again."
-msgstr "Жалам, но тоа не успеа. Пробајте пак."
+msgstr ""
 
 #: js/ui/payg.js:263
 msgid "Code already used. Please enter a new code."
@@ -1984,12 +1921,13 @@ msgstr ""
 msgid "Your Pay As You Go Account ID is: %s"
 msgstr ""
 
-#. We don't consider any other error here (and we don't consider DISABLED explicitly,
-#. since that should not happen), but still we need to show something to the user.
+#. We don't consider any other error here (and we don't consider DISABLED
+#. explicitly,
+#. since that should not happen), but still we need to show something to the
+#. user.
 #: js/ui/payg.js:271
-#, fuzzy
 msgid "Unknown error"
-msgstr "Непозната причина"
+msgstr ""
 
 #: js/ui/payg.js:452
 msgid "Apply Code"
@@ -2003,18 +1941,18 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: js/ui/payg.js:610 js/ui/payg.js:620
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s minute"
 msgid_plural "%s minutes"
-msgstr[0] "минута"
-msgstr[1] "минути"
+msgstr[0] ""
+msgstr[1] ""
 
 #: js/ui/payg.js:614 js/ui/payg.js:631
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s hour"
 msgid_plural "%s hours"
-msgstr[0] "час"
-msgstr[1] "часа"
+msgstr[0] ""
+msgstr[1] ""
 
 #: js/ui/payg.js:625
 #, javascript-format
@@ -2024,44 +1962,43 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: js/ui/payg.js:641
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s second has been added to your Pay As You Go credit."
 msgid_plural "%s seconds have been added to your Pay As You Go credit."
-msgstr[0] "%s е веќе постои во омилените."
-msgstr[1] "%s е веќе постои во омилените."
+msgstr[0] ""
+msgstr[1] ""
 
 #: js/ui/payg.js:648
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s minute has been added to your Pay As You Go credit."
 msgid_plural "%s minutes have been added to your Pay As You Go credit."
-msgstr[0] "%s е веќе постои во омилените."
-msgstr[1] "%s е веќе постои во омилените."
+msgstr[0] ""
+msgstr[1] ""
 
 #: js/ui/payg.js:655
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s hour has been added to your Pay As You Go credit."
 msgid_plural "%s hours have been added to your Pay As You Go credit."
-msgstr[0] "%s е веќе постои во омилените."
-msgstr[1] "%s е веќе постои во омилените."
+msgstr[0] ""
+msgstr[1] ""
 
 #: js/ui/payg.js:662
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s day has been added to your Pay As You Go credit."
 msgid_plural "%s days have been added to your Pay As You Go credit."
-msgstr[0] "%s е веќе постои во омилените."
-msgstr[1] "%s е веќе постои во омилените."
+msgstr[0] ""
+msgstr[1] ""
 
 #: js/ui/payg.js:669
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s month has been added to your Pay As You Go credit."
 msgid_plural "%s months have been added to your Pay As You Go credit."
-msgstr[0] "%s е веќе постои во омилените."
-msgstr[1] "%s е веќе постои во омилените."
+msgstr[0] ""
+msgstr[1] ""
 
 #: js/ui/payg.js:676
-#, fuzzy
 msgid "1 year has been added to your Pay As You Go credit."
-msgstr "%s е веќе постои во омилените."
+msgstr ""
 
 #. Unlock permanently message
 #: js/ui/payg.js:679
@@ -2077,14 +2014,12 @@ msgid "Press ESC to close"
 msgstr ""
 
 #: js/ui/runDialog.js:240
-#, fuzzy
 msgid "Restart is not available on Wayland"
-msgstr "Енкрипцијата не е достапна"
+msgstr ""
 
 #: js/ui/runDialog.js:245
-#, fuzzy
 msgid "Restarting…"
-msgstr "Рестартирај се"
+msgstr ""
 
 #: js/ui/screenShield.js:254
 msgid "GNOME needs to lock the screen"
@@ -2094,7 +2029,6 @@ msgstr ""
 #. screenshield. The user is probably very upset at this
 #. point, but any application using global grabs is broken
 #. Just tell him to stop using this app
-#.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
 #: js/ui/screenShield.js:295 js/ui/screenShield.js:674
@@ -2106,14 +2040,12 @@ msgid "Lock was blocked by an application"
 msgstr ""
 
 #: js/ui/search.js:793
-#, fuzzy
 msgid "Searching…"
-msgstr "Барам..."
+msgstr ""
 
 #: js/ui/search.js:795
-#, fuzzy
 msgid "No results."
-msgstr "Нема резултати."
+msgstr ""
 
 #: js/ui/shellEntry.js:30
 msgid "Copy"
@@ -2141,27 +2073,24 @@ msgid "Search the internet and more…"
 msgstr ""
 
 #: js/ui/shellEntry.js:198
-#, fuzzy
 msgid "Search…"
-msgstr "Пребарај"
+msgstr ""
 
 #: js/ui/shellEntry.js:490
 msgid "Caps lock is on."
 msgstr ""
 
 #: js/ui/shellMountOperation.js:285
-#, fuzzy
 msgid "Hidden Volume"
-msgstr "Гласност"
+msgstr ""
 
 #: js/ui/shellMountOperation.js:288
 msgid "Windows System Volume"
 msgstr ""
 
 #: js/ui/shellMountOperation.js:291
-#, fuzzy
 msgid "Uses Keyfiles"
-msgstr "Копчиња на глушец"
+msgstr ""
 
 #. Translators: %s is the Disks application
 #: js/ui/shellMountOperation.js:298
@@ -2175,9 +2104,8 @@ msgid "PIM Number"
 msgstr ""
 
 #: js/ui/shellMountOperation.js:365
-#, fuzzy
 msgid "Remember Password"
-msgstr "Лозинка:"
+msgstr ""
 
 #. Translators: %s is the Disks application
 #: js/ui/shellMountOperation.js:391
@@ -2202,18 +2130,16 @@ msgid "Couldn’t find the %s application"
 msgstr ""
 
 #: js/ui/status/accessibility.js:35
-#, fuzzy
 msgid "Accessibility"
-msgstr "Видливост"
+msgstr ""
 
 #: js/ui/status/accessibility.js:50
 msgid "Zoom"
 msgstr "Зумирај"
 
 #: js/ui/status/accessibility.js:57
-#, fuzzy
 msgid "Screen Reader"
-msgstr "Екранска тастатура"
+msgstr ""
 
 #: js/ui/status/accessibility.js:61
 msgid "Screen Keyboard"
@@ -2252,9 +2178,8 @@ msgid "Updates Queue"
 msgstr ""
 
 #: js/ui/status/automaticUpdates.js:105
-#, fuzzy
 msgid "Set a Schedule"
-msgstr "Нема ништо закажано"
+msgstr ""
 
 #. The status label
 #: js/ui/status/automaticUpdates.js:198
@@ -2286,9 +2211,8 @@ msgid "Close"
 msgstr ""
 
 #: js/ui/status/automaticUpdates.js:290
-#, fuzzy
 msgid "Change Settings…"
-msgstr "Поставувања за глушец"
+msgstr ""
 
 #: js/ui/status/bluetooth.js:40
 msgid "Bluetooth"
@@ -2300,21 +2224,19 @@ msgstr "Поставувања за bluetooth"
 
 #. Translators: this is the number of connected bluetooth devices
 #: js/ui/status/bluetooth.js:132
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%d Connected"
 msgid_plural "%d Connected"
-msgstr[0] "Поврзи се"
-msgstr[1] "Поврзи се"
+msgstr[0] ""
+msgstr[1] ""
 
 #: js/ui/status/bluetooth.js:134
-#, fuzzy
 msgid "Bluetooth Off"
-msgstr "Bluetooth"
+msgstr ""
 
 #: js/ui/status/bluetooth.js:136
-#, fuzzy
 msgid "Bluetooth On"
-msgstr "Bluetooth"
+msgstr ""
 
 #: js/ui/status/brightness.js:39
 msgid "Brightness"
@@ -2349,38 +2271,32 @@ msgid "Show Keyboard Layout"
 msgstr "Прикажи го распоредот на тастатурата"
 
 #: js/ui/status/location.js:65 js/ui/status/location.js:174
-#, fuzzy
 msgid "Location Enabled"
-msgstr "не успеа врската"
+msgstr ""
 
 #: js/ui/status/location.js:66 js/ui/status/location.js:175
-#, fuzzy
 msgid "Disable"
-msgstr "Оневозможено"
+msgstr ""
 
 #: js/ui/status/location.js:67
-#, fuzzy
 msgid "Privacy Settings"
-msgstr "Поставувања за енергијата"
+msgstr ""
 
 #: js/ui/status/location.js:173
 msgid "Location In Use"
 msgstr ""
 
 #: js/ui/status/location.js:177
-#, fuzzy
 msgid "Location Disabled"
-msgstr "не успеа врската"
+msgstr ""
 
 #: js/ui/status/location.js:178
-#, fuzzy
 msgid "Enable"
-msgstr "Овозможено"
+msgstr ""
 
 #: js/ui/status/location.js:355
-#, fuzzy
 msgid "Allow location access"
-msgstr "Секогаш доделувај му пристап"
+msgstr ""
 
 #. Translators: %s is an application name
 #: js/ui/status/location.js:357
@@ -2404,83 +2320,84 @@ msgstr ""
 
 #. Translators: %s is a network identifier
 #: js/ui/status/network.js:423
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s Connected"
-msgstr "Поврзи се"
+msgstr ""
 
-#. Translators: this is for network devices that are physically present but are not
+#. Translators: this is for network devices that are physically present but
+#. are not
 #. under NetworkManager's control (and thus cannot be used in the menu);
 #. %s is a network identifier
 #: js/ui/status/network.js:428
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s Unmanaged"
-msgstr "неменаџирана"
+msgstr ""
 
 #. Translators: %s is a network identifier
 #: js/ui/status/network.js:431
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s Disconnecting"
-msgstr "ја прекинувам врската..."
+msgstr ""
 
 #. Translators: %s is a network identifier
 #: js/ui/status/network.js:438 js/ui/status/network.js:1309
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s Connecting"
-msgstr "Врска"
+msgstr ""
 
-#. Translators: this is for network connections that require some kind of key or password; %s is a network identifier
+#. Translators: this is for network connections that require some kind of key
+#. or password; %s is a network identifier
 #: js/ui/status/network.js:441
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s Requires Authentication"
-msgstr "Жичена 802.1X автентикација"
+msgstr ""
 
-#. Translators: this is for devices that require some kind of firmware or kernel
+#. Translators: this is for devices that require some kind of firmware or
+#. kernel
 #. module, which is missing; %s is a network identifier
 #: js/ui/status/network.js:449
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Firmware Missing For %s"
-msgstr "недостасува firmware"
+msgstr ""
 
-#. Translators: this is for a network device that cannot be activated (for example it
+#. Translators: this is for a network device that cannot be activated (for
+#. example it
 #. is disabled by rfkill, or it has no coverage; %s is a network identifier
 #: js/ui/status/network.js:453
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s Unavailable"
-msgstr "Недостапен"
+msgstr ""
 
 #. Translators: %s is a network identifier
 #: js/ui/status/network.js:456
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s Connection Failed"
-msgstr "Врската не успеа"
+msgstr ""
 
 #: js/ui/status/network.js:468
-#, fuzzy
 msgid "Wired Settings"
-msgstr "Поставувања за звук"
+msgstr ""
 
 #: js/ui/status/network.js:511
-#, fuzzy
 msgid "Mobile Broadband Settings"
-msgstr "Мобилна широкопојасна мрежа"
+msgstr ""
 
 #. Translators: %s is a network identifier
 #: js/ui/status/network.js:558 js/ui/status/network.js:1314
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s Hardware Disabled"
-msgstr "уредот е оневозможен"
+msgstr ""
 
 #. Translators: this is for a network device that cannot be activated
 #. because it's disabled by rfkill (airplane mode); %s is a network identifier
 #: js/ui/status/network.js:562
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s Disabled"
-msgstr "Оневозможено"
+msgstr ""
 
 #: js/ui/status/network.js:603
-#, fuzzy
 msgid "Connect to Internet"
-msgstr "Грешка во поврзувањето"
+msgstr ""
 
 #: js/ui/status/network.js:808
 msgid "Airplane Mode is On"
@@ -2511,9 +2428,8 @@ msgid "Wi-Fi Networks"
 msgstr ""
 
 #: js/ui/status/network.js:848
-#, fuzzy
 msgid "Select a network"
-msgstr "Овозможи мрежа"
+msgstr ""
 
 #: js/ui/status/network.js:880
 msgid "No Networks"
@@ -2528,9 +2444,8 @@ msgid "Select Network"
 msgstr ""
 
 #: js/ui/status/network.js:1184
-#, fuzzy
 msgid "Wi-Fi Settings"
-msgstr "Поставувања за глушец"
+msgstr ""
 
 #. Translators: %s is a network identifier
 #: js/ui/status/network.js:1305
@@ -2540,16 +2455,16 @@ msgstr ""
 
 #. Translators: %s is a network identifier
 #: js/ui/status/network.js:1320
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s Not Connected"
-msgstr "Поврзи се"
+msgstr ""
 
 #: js/ui/status/network.js:1417
-#, fuzzy
 msgid "connecting…"
-msgstr "се поврзувам..."
+msgstr ""
 
-#. Translators: this is for network connections that require some kind of key or password
+#. Translators: this is for network connections that require some kind of key
+#. or password
 #: js/ui/status/network.js:1420
 msgid "authentication required"
 msgstr "потребна е автентикација"
@@ -2559,43 +2474,41 @@ msgid "connection failed"
 msgstr "не успеа врската"
 
 #: js/ui/status/network.js:1473
-#, fuzzy
 msgid "VPN Settings"
-msgstr "Поставувања за енергијата"
+msgstr ""
 
 #: js/ui/status/network.js:1490
 msgid "VPN"
 msgstr ""
 
 #: js/ui/status/network.js:1500
-#, fuzzy
 msgid "VPN Off"
-msgstr "Исклучи се"
+msgstr ""
 
 #: js/ui/status/network.js:1561 js/ui/status/rfkill.js:84
 msgid "Network Settings"
 msgstr "Поставувања за мрежата"
 
 #: js/ui/status/network.js:1590
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s Wired Connection"
 msgid_plural "%s Wired Connections"
-msgstr[0] "Врска"
-msgstr[1] "Врска"
+msgstr[0] ""
+msgstr[1] ""
 
 #: js/ui/status/network.js:1594
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s Wi-Fi Connection"
 msgid_plural "%s Wi-Fi Connections"
-msgstr[0] "Врска"
-msgstr[1] "Врска"
+msgstr[0] ""
+msgstr[1] ""
 
 #: js/ui/status/network.js:1598
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s Modem Connection"
 msgid_plural "%s Modem Connections"
-msgstr[0] "Врска"
-msgstr[1] "Врска"
+msgstr[0] ""
+msgstr[1] ""
 
 #: js/ui/status/network.js:1732
 msgid "Connection failed"
@@ -2606,14 +2519,12 @@ msgid "Activation of network connection failed"
 msgstr "Активирањето на мрежата не успеа"
 
 #: js/ui/status/nightLight.js:45
-#, fuzzy
 msgid "Display Settings"
-msgstr "Поставувања за глушец"
+msgstr ""
 
 #: js/ui/status/nightLight.js:63
-#, fuzzy
 msgid "Night Light Disabled"
-msgstr "Мрежата е оневозможена"
+msgstr ""
 
 #: js/ui/status/nightLight.js:64
 msgid "Night Light On"
@@ -2659,9 +2570,8 @@ msgstr ""
 #. 0 is reported when UPower does not have enough data
 #. to estimate battery life
 #: js/ui/status/power.js:72 js/ui/status/power.js:78
-#, fuzzy
 msgid "Estimating…"
-msgstr "Проценувам..."
+msgstr ""
 
 #. Translators: this is <hours>:<minutes> Remaining (<percentage>)
 #: js/ui/status/power.js:86
@@ -2700,27 +2610,24 @@ msgid "Lock"
 msgstr ""
 
 #: js/ui/status/system.js:90
-#, fuzzy
 msgid "Power Off / Log Out"
-msgstr "Исклучи се"
+msgstr ""
 
 #: js/ui/status/system.js:93
 msgid "Log Out"
 msgstr "Одјави се"
 
 #: js/ui/status/system.js:105
-#, fuzzy
 msgid "Switch User…"
-msgstr "Смени корисник"
+msgstr ""
 
 #: js/ui/status/system.js:119
 msgid "Suspend"
 msgstr "Суспендирај"
 
 #: js/ui/status/system.js:131
-#, fuzzy
 msgid "Power Off…"
-msgstr "Исклучи се"
+msgstr ""
 
 #: js/ui/status/thunderbolt.js:263
 msgid "Thunderbolt"
@@ -2755,9 +2662,8 @@ msgid "Could not authorize the Thunderbolt device: %s"
 msgstr ""
 
 #: js/ui/status/volume.js:150
-#, fuzzy
 msgid "Volume changed"
-msgstr "Гласност"
+msgstr ""
 
 #: js/ui/status/volume.js:221
 msgid "Volume"
@@ -2765,29 +2671,24 @@ msgstr "Гласност"
 
 #. Translators: this is for display mirroring i.e. cloning.
 #. * Try to keep it under around 15 characters.
-#.
 #: js/ui/switchMonitor.js:17
-#, fuzzy
 msgid "Mirror"
-msgstr "Грешка"
+msgstr ""
 
 #. Translators: this is for the desktop spanning displays.
 #. * Try to keep it under around 15 characters.
-#.
 #: js/ui/switchMonitor.js:22
 msgid "Join Displays"
 msgstr ""
 
 #. Translators: this is for using only an external display.
 #. * Try to keep it under around 15 characters.
-#.
 #: js/ui/switchMonitor.js:27
 msgid "External Only"
 msgstr ""
 
 #. Translators: this is for using only the laptop display.
 #. * Try to keep it under around 15 characters.
-#.
 #: js/ui/switchMonitor.js:32
 msgid "Built-in Only"
 msgstr ""
@@ -2795,9 +2696,8 @@ msgstr ""
 #. Translators: This is a time format for a date in
 #. long format
 #: js/ui/unlockDialog.js:371
-#, fuzzy
 msgid "%A %B %-d"
-msgstr "%A, %B %d"
+msgstr ""
 
 #: js/ui/unlockDialog.js:377
 msgid "Swipe up to unlock"
@@ -2808,9 +2708,8 @@ msgid "Click or press a key to unlock"
 msgstr ""
 
 #: js/ui/unlockDialog.js:550
-#, fuzzy
 msgid "Unlock Window"
-msgstr "Најавен прозорец"
+msgstr ""
 
 #: js/ui/unlockDialog.js:559
 msgid "Log in as another user"
@@ -2821,9 +2720,9 @@ msgid "Applications"
 msgstr "Апликации"
 
 #: js/ui/windowAttentionHandler.js:20
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "“%s” is ready"
-msgstr "„%s“ е подготвен"
+msgstr ""
 
 #. Translators: This string should be shorter than 30 characters
 #: js/ui/windowManager.js:61
@@ -2832,11 +2731,9 @@ msgstr ""
 
 #. Translators: this and the following message should be limited in length,
 #. to avoid ellipsizing the labels.
-#.
 #: js/ui/windowManager.js:70
-#, fuzzy
 msgid "Revert Settings"
-msgstr "Поставувања за енергијата"
+msgstr ""
 
 #: js/ui/windowManager.js:73
 msgid "Keep Changes"
@@ -2921,9 +2818,8 @@ msgid "Move to Monitor Right"
 msgstr ""
 
 #: src/calendar-server/evolution-calendar.desktop.in:3
-#, fuzzy
 msgid "Evolution Calendar"
-msgstr "Отвори го календарот"
+msgstr ""
 
 #: src/main.c:458 subprojects/extensions-tool/src/main.c:249
 msgid "Print version"
@@ -2942,20 +2838,18 @@ msgid "List possible modes"
 msgstr ""
 
 #: src/shell-app.c:280
-#, fuzzy
 msgctxt "program"
 msgid "Unknown"
-msgstr "Непознато"
+msgstr ""
 
 #: src/shell-app.c:570
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to launch “%s”"
-msgstr "Не успеав да го пуштам „%s“"
+msgstr ""
 
 #: src/shell-keyring-prompt.c:731
-#, fuzzy
 msgid "Passwords do not match."
-msgstr "Не одговара"
+msgstr ""
 
 #: src/shell-keyring-prompt.c:739
 msgid "Password cannot be blank"
@@ -2994,8 +2888,7 @@ msgstr ""
 #, c-format
 msgid ""
 "UUID is a globally-unique identifier for your extension.\n"
-"This should be in the format of an email address (clicktofocus@janedoe."
-"example.com)\n"
+"This should be in the format of an email address (clicktofocus@janedoe.example.com)\n"
 msgstr ""
 
 #: subprojects/extensions-tool/src/command-create.c:244
@@ -3028,9 +2921,8 @@ msgstr ""
 
 #: subprojects/extensions-tool/src/command-create.c:280
 #: subprojects/extensions-tool/src/command-list.c:168
-#, fuzzy
 msgid "Unknown arguments"
-msgstr "Непозната причина"
+msgstr ""
 
 #: subprojects/extensions-tool/src/command-create.c:289
 msgid "UUID, name and description are required"
@@ -3059,14 +2951,12 @@ msgid "More than one UUID given"
 msgstr ""
 
 #: subprojects/extensions-tool/src/command-enable.c:57
-#, fuzzy
 msgid "Enable an extension"
-msgstr "Овозможи мрежа"
+msgstr ""
 
 #: subprojects/extensions-tool/src/command-info.c:79
-#, fuzzy
 msgid "Show extensions info"
-msgstr "Не е инсталиран додаток"
+msgstr ""
 
 #: subprojects/extensions-tool/src/command-install.c:173
 msgid "Overwrite an existing extension"
@@ -3081,9 +2971,8 @@ msgid "Install an extension bundle"
 msgstr ""
 
 #: subprojects/extensions-tool/src/command-install.c:201
-#, fuzzy
 msgid "No extension bundle specified"
-msgstr "Не е инсталиран додаток"
+msgstr ""
 
 #: subprojects/extensions-tool/src/command-install.c:207
 msgid "More than one extension bundle specified"
@@ -3110,14 +2999,12 @@ msgid "Show extensions with preferences"
 msgstr ""
 
 #: subprojects/extensions-tool/src/command-list.c:140
-#, fuzzy
 msgid "Show extensions with updates"
-msgstr "Не е инсталиран додаток"
+msgstr ""
 
 #: subprojects/extensions-tool/src/command-list.c:143
-#, fuzzy
 msgid "Print extension details"
-msgstr "Печатена верзија"
+msgstr ""
 
 #: subprojects/extensions-tool/src/command-list.c:151
 msgid "List installed extensions"
@@ -3231,14 +3118,12 @@ msgid "Commands:"
 msgstr ""
 
 #: subprojects/extensions-tool/src/main.c:248
-#, fuzzy
 msgid "Print help"
-msgstr "Печатена верзија"
+msgstr ""
 
 #: subprojects/extensions-tool/src/main.c:250
-#, fuzzy
 msgid "Enable extension"
-msgstr "Овозможи мрежа"
+msgstr ""
 
 #: subprojects/extensions-tool/src/main.c:251
 msgid "Disable extension"
@@ -3258,9 +3143,8 @@ msgstr ""
 
 #: subprojects/extensions-tool/src/main.c:255
 #: subprojects/extensions-tool/src/main.c:256
-#, fuzzy
 msgid "Show extension info"
-msgstr "Не е инсталиран додаток"
+msgstr ""
 
 #: subprojects/extensions-tool/src/main.c:257
 msgid "Open extension preferences"
@@ -3331,19 +3215,16 @@ msgid "Endless Button"
 msgstr ""
 
 #: js/ui/endlessButton.js:67
-#, fuzzy
 msgid "Show Desktop"
-msgstr "Прикажи текст"
+msgstr ""
 
 #: js/ui/endlessButton.js:69
-#, fuzzy
 msgid "Show Apps"
-msgstr "Прикажи ги грешките"
+msgstr ""
 
 #: js/ui/forceAppExitDialog.js:50
-#, fuzzy
 msgid "Quit applications"
-msgstr "Апликации"
+msgstr ""
 
 #: js/ui/forceAppExitDialog.js:56
 msgid ""
@@ -3352,32 +3233,29 @@ msgid ""
 msgstr ""
 
 #: js/ui/forceAppExitDialog.js:87
-#, fuzzy
 msgid "System Monitor"
-msgstr "Монитор"
+msgstr ""
 
 #: js/ui/forceAppExitDialog.js:95
-#, fuzzy
 msgid "Quit Application"
-msgstr "Апликации"
+msgstr ""
 
 #: js/ui/hotCorner.js:15
 msgid "Hot Corner"
 msgstr ""
 
 #: js/ui/hotCorner.js:25
-#, fuzzy
 msgid "Enable Hot Corner"
-msgstr "Овозможи мрежа"
+msgstr ""
 
 #: js/ui/hotCorner.js:29
 msgid "Disable Hot Corner"
 msgstr ""
 
 #: js/ui/iconGridLayout.js:312
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s has been removed"
-msgstr "%s е отстранет од листата на омилени."
+msgstr ""
 
 #: js/ui/iconGridLayout.js:540
 msgid "New Folder"
@@ -3390,7 +3268,6 @@ msgstr ""
 
 #. Translators: the first %s is the search engine name, and the second
 #. * is the search string. For instance, 'Search Google for "hello"'.
-#.
 #: js/ui/internetSearch.js:79
 #, javascript-format
 msgid "Search %s for \"%s\""
@@ -3402,14 +3279,12 @@ msgid "Search the internet for \"%s\""
 msgstr ""
 
 #: js/ui/userMenu.js:16
-#, fuzzy
 msgid "Social Accounts"
-msgstr "Онлајн сметки"
+msgstr ""
 
 #: js/ui/userMenu.js:19
-#, fuzzy
 msgid "Settings"
-msgstr "Поставувања за глушец"
+msgstr ""
 
 #: js/ui/userMenu.js:24
 msgid "Give Us Feedback"
@@ -3423,573 +3298,3 @@ msgstr ""
 #, c-format
 msgid "Custom definition for %s"
 msgstr ""
-
-#~ msgid "File extension used for storing the screencast"
-#~ msgstr ""
-#~ "Наставка на датотека која се користи за зачувување на снимката од екран"
-
-#~ msgid "Framerate used for recording screencasts."
-#~ msgstr "Рата на рамки која се користи при снимање на снимки од екран."
-
-#~ msgid "If true, display date in the clock, in addition to time."
-#~ msgstr "Ако е точно, прикажи го датумот на часовникот, покрај времето."
-
-#~ msgid "If true, display seconds in time."
-#~ msgstr "Ако е точно, прикажи ги секундите во часовникот."
-
-#~ msgid "If true, display the ISO week date in the calendar."
-#~ msgstr "Ако е точно, прикажи го ISO датумот во календарот."
-
-#~ msgid ""
-#~ "Sets the GStreamer pipeline used to encode recordings. It follows the "
-#~ "syntax used for gst-launch. The pipeline should have an unconnected sink "
-#~ "pad where the recorded video is recorded. It will normally have a "
-#~ "unconnected source pad; output from that pad will be written into the "
-#~ "output file. However the pipeline can also take care of its own output - "
-#~ "this might be used to send the output to an icecast server via shout2send "
-#~ "or similar. When unset or set to an empty value, the default pipeline "
-#~ "will be used. This is currently 'videorate ! vp8enc quality=10 speed=2 "
-#~ "threads=%T ! queue ! webmmux' and records to WEBM using the VP8 codec. %T "
-#~ "is used as a placeholder for a guess at the optimal thread count on the "
-#~ "system."
-#~ msgstr ""
-#~ "Го поставува GStreamer цевководот за енкодирање на снимки. Ја следи "
-#~ "синтаксата која се користи за gst-launch. Цевководот треба да има "
-#~ "неповрзан одвод каде се зачувува сниманото видео. Вообичаено тој има "
-#~ "неповрзан извор; излезните податоци ќе бидат запишани во излезната "
-#~ "датотека. Сепак, цевководот може да се грижи за својот излез - тоа "
-#~ "најчесто може да се користи за испраќање на излезните податоци на icecast "
-#~ "сервер преку shout2send или слично. Кога не е поставен или пак е поставен "
-#~ "на празна вредност, се користи стандардниот цевковод. Оваа вредност "
-#~ "моментално е „videorate ! vp8enc quality=10 speed=2 threads=%T ! queue ! "
-#~ "webmmux“ и снима во WEBM со користење на кодекот VP8. %T се користи за "
-#~ "определување на оптималниот број на нишки за системот."
-
-#~ msgid "Show date in clock"
-#~ msgstr "Прикажи го датумот во часовникот"
-
-#~ msgid "Show the week date in the calendar"
-#~ msgstr "Покажи ја неделата во календарот"
-
-#~ msgid "Show time with seconds"
-#~ msgstr "Покажи го времето со секунди"
-
-#~ msgid ""
-#~ "The filename for recorded screencasts will be a unique filename based on "
-#~ "the current date, and use this extension. It should be changed when "
-#~ "recording to a different container format."
-#~ msgstr ""
-#~ "Името на датотеката за зачуваните снимки од екранот ќе бидее уникатно "
-#~ "според тековниот датум и ќе ја има оваа наставка. Таа треба да се промени "
-#~ "кога снимањето се прави со различен формат на контејнерот. "
-
-#~ msgid ""
-#~ "The framerate of the resulting screencast recordered by GNOME Shell's "
-#~ "screencast recorder in frames-per-second."
-#~ msgstr ""
-#~ "Ратата на рамки, во рамки/секунда, на добиената снимка на екранот снимана "
-#~ "од алатката за правење снимки од екранот на GNOME Shell."
-
-#~ msgid "The gstreamer pipeline used to encode the screencast"
-#~ msgstr ""
-#~ "Цевководот на gstreamer кој се користи за енкодирање на снимката од екран"
-
-#~ msgid ""
-#~ "The shell normally monitors active applications in order to present the "
-#~ "most used ones (e.g. in launchers). While this data will be kept private, "
-#~ "you may want to disable this for privacy reasons. Please note that doing "
-#~ "so won't remove already saved data."
-#~ msgstr ""
-#~ "Школката обично ги набљудува активните апликации за да прикаже кои се "
-#~ "најкористени (пр. во пуштачите). Иако овие податоци се се чуваат како "
-#~ "приватни, може да го оневозможите ова за поголема приватност. Имајте во "
-#~ "предвид дека со тоа нема да се отстранат тековно сниманите податоци."
-
-#~ msgid "The type of keyboard to use."
-#~ msgstr "Типот на тастатура кој се користи."
-
-#~ msgid "Whether to collect stats about applications usage"
-#~ msgstr "Дали да се собира статистика за користењето на апликациите"
-
-#~ msgid "Which keyboard to use"
-#~ msgstr "Која тастатура да се користи"
-
-#~ msgid "disabled OpenSearch providers"
-#~ msgstr "оневозможени OpenSearch провајдери"
-
-#~ msgid "Session..."
-#~ msgstr "Сесија..."
-
-#~ msgctxt "title"
-#~ msgid "Sign In"
-#~ msgstr "Најави се"
-
-#~ msgctxt "button"
-#~ msgid "Sign In"
-#~ msgstr "Најави се"
-
-#~ msgid "All"
-#~ msgstr "Сите"
-
-#~ msgid "APPLICATIONS"
-#~ msgstr "АПЛИКАЦИИ"
-
-#~ msgid "SETTINGS"
-#~ msgstr "ПОСТАВУВАЊА"
-
-#~ msgid "Add to Favorites"
-#~ msgstr "Додај во омилени"
-
-#~ msgid "Removable Devices"
-#~ msgstr "Отстранливи уреди"
-
-#~ msgid "Eject"
-#~ msgstr "Извади"
-
-#~ msgctxt "event list time"
-#~ msgid "%H:%M"
-#~ msgstr "%H:%M"
-
-#~ msgctxt "list sunday"
-#~ msgid "Su"
-#~ msgstr "Нед"
-
-#~ msgctxt "list monday"
-#~ msgid "M"
-#~ msgstr "Пон"
-
-#~ msgctxt "list tuesday"
-#~ msgid "T"
-#~ msgstr "Вто"
-
-#~ msgctxt "list wednesday"
-#~ msgid "W"
-#~ msgstr "Сре"
-
-#~ msgctxt "list thursday"
-#~ msgid "Th"
-#~ msgstr "Чет"
-
-#~ msgctxt "list friday"
-#~ msgid "F"
-#~ msgstr "Пет"
-
-#~ msgctxt "list saturday"
-#~ msgid "S"
-#~ msgstr "Саб"
-
-#~ msgid "Today"
-#~ msgstr "Денес"
-
-#~ msgid "Tomorrow"
-#~ msgstr "Утре"
-
-#~ msgid "This week"
-#~ msgstr "Оваа недела"
-
-#~ msgid "Next week"
-#~ msgstr "Следната недела"
-
-#~ msgid "Available"
-#~ msgstr "Достапен"
-
-#~ msgid "Away"
-#~ msgstr "Отсутен"
-
-#~ msgid "Busy"
-#~ msgstr "Зафатен"
-
-#~ msgid "Offline"
-#~ msgstr "Офлајн"
-
-#~ msgid "CONTACTS"
-#~ msgstr "КОНТАКТИ"
-
-#~ msgid "Date and Time Settings"
-#~ msgstr "Поставувања за датум и време"
-
-#~ msgid "%a %b %e, %R:%S"
-#~ msgstr "%a %b %e, %R:%S"
-
-#~ msgid "%a %b %e, %R"
-#~ msgstr "%a %b %e, %R"
-
-#~ msgid "%a %R:%S"
-#~ msgstr "%a %R:%S"
-
-#~ msgid "%a %R"
-#~ msgstr "%a %R"
-
-#~ msgid "%a %b %e, %l:%M:%S %p"
-#~ msgstr "%a %b %e, %l:%M:%S %p"
-
-#~ msgid "%a %l:%M:%S %p"
-#~ msgstr "%a %l:%M:%S %p"
-
-#~ msgid "RECENT ITEMS"
-#~ msgstr "СКОРЕШНИ ПРЕДМЕТИ"
-
-#~ msgid "Click Log Out to quit these applications and log out of the system."
-#~ msgstr ""
-#~ "Кликнете „Одјави се“ за да се исклучат овие апликации и за одјавување од "
-#~ "системот."
-
-#~ msgid "Logging out of the system."
-#~ msgstr "Одјавување од системот."
-
-#~ msgid "Click Power Off to quit these applications and power off the system."
-#~ msgstr ""
-#~ "Кликнете „Исклучи се“ за да ги исклучите овие апликации и да го исклучите "
-#~ "системот."
-
-#~ msgid "Powering off the system."
-#~ msgstr "Го исклучувам системот."
-
-#~ msgid "Click Restart to quit these applications and restart the system."
-#~ msgstr ""
-#~ "Кликнете „Рестартирај се“ за да ги исклучите овие апликации и да го "
-#~ "рестартирате системот."
-
-#~ msgid "Restarting the system."
-#~ msgstr "Го рестартирам системот."
-
-#~ msgid "tray"
-#~ msgstr "место за известување"
-
-#~ msgid "Open"
-#~ msgstr "Отвори"
-
-#~ msgid "Unmute"
-#~ msgstr "Пушти го гласот"
-
-#~ msgid "Mute"
-#~ msgstr "Исклучи го гласот"
-
-#~ msgid "Password: "
-#~ msgstr "Лозинка:"
-
-#~ msgid "Authentication required by wireless network"
-#~ msgstr "Потребна е автентикација од безжичната мрежа"
-
-#~ msgid "Mobile broadband network password"
-#~ msgstr "Лозинка за мобилна широкопојасна мрежа "
-
-#~ msgid "Top Bar"
-#~ msgstr "Горна лента"
-
-#~ msgid "Failed to unmount '%s'"
-#~ msgstr "Не успеав да го одмонтирам „%s“"
-
-#~ msgid "Retry"
-#~ msgstr "Обиди се повторно"
-
-#~ msgid "Connect to..."
-#~ msgstr "Поврзи се со..."
-
-#~ msgid "PLACES & DEVICES"
-#~ msgstr "МЕСТА И УРЕДИ"
-
-#~ msgid "toggle-switch-us"
-#~ msgstr "toggle-switch-intl"
-
-#~ msgid "Please enter a command:"
-#~ msgstr "Ве молам, внесете команда:"
-
-#~ msgid "Wrong password, please try again"
-#~ msgstr "Грешна лозинка, пробајте пак"
-
-#~ msgid "Universal Access Settings"
-#~ msgstr "Поставувања за универзален пристап"
-
-#~ msgid "Set up a New Device..."
-#~ msgstr "Постави нов уред..."
-
-#~ msgid "Send Files..."
-#~ msgstr "Испраќам датотеки..."
-
-#~ msgid "Browse Files..."
-#~ msgstr "Прелистај низ датотеките..."
-
-#~ msgid "Error browsing device"
-#~ msgstr "Грешка при прелистувањето низ уредот"
-
-#~ msgid "The requested device cannot be browsed, error is '%s'"
-#~ msgstr "Низ побараниот уред не може да се прелистува, грешката е „%s“"
-
-#~ msgid "Keyboard Settings"
-#~ msgstr "Поставувања за тастатура"
-
-#~ msgid "Authorization request from %s"
-#~ msgstr "Барање за авторизација од %s"
-
-#~ msgid "Device %s wants access to the service '%s'"
-#~ msgstr "Уредот %s бара пристап до сервисот „%s“"
-
-#~ msgid "Grant this time only"
-#~ msgstr "Додели му само овој пат"
-
-#~ msgid "Reject"
-#~ msgstr "Одбиј"
-
-#~ msgid "Pairing confirmation for %s"
-#~ msgstr "Потврда за спарување за %s"
-
-#~ msgid "Device %s wants to pair with this computer"
-#~ msgstr "Уредот %s сака да се спари со компјутерот"
-
-#~ msgid "Please confirm whether the PIN '%s' matches the one on the device."
-#~ msgstr "Потврдете дека PIN-от „%s“ одговара со тој на уредот."
-
-#~ msgid "Matches"
-#~ msgstr "Одговара"
-
-#~ msgid "Pairing request for %s"
-#~ msgstr "Барање за спарување со %s"
-
-#~ msgid "Please enter the PIN mentioned on the device."
-#~ msgstr "Внесете го PIN-от кој се појавува на уредот."
-
-#~ msgid "disabled"
-#~ msgstr "оневозможена"
-
-#~ msgid "cable unplugged"
-#~ msgstr "кабелот е откачен"
-
-#~ msgid "unavailable"
-#~ msgstr "нема пристап"
-
-#~ msgid "More..."
-#~ msgstr "Повеќе..."
-
-#~ msgid "Connected (private)"
-#~ msgstr "Поврзан (приватен)"
-
-#~ msgid "Auto Ethernet"
-#~ msgstr "Автоматски ethernet"
-
-#~ msgid "Auto broadband"
-#~ msgstr "Автоматски широкопојасен"
-
-#~ msgid "Auto dial-up"
-#~ msgstr "Автоматски dial-up"
-
-#~ msgid "Auto %s"
-#~ msgstr "Aвтоматски %s"
-
-#~ msgid "Auto bluetooth"
-#~ msgstr "Автоматски bluetooth"
-
-#~ msgid "Auto wireless"
-#~ msgstr "Автоматски безжично"
-
-#~ msgid "Wired"
-#~ msgstr "Жичена"
-
-#~ msgid "Wireless"
-#~ msgstr "Безжична"
-
-#~ msgid "VPN Connections"
-#~ msgstr "VPN врски"
-
-#~ msgid "%d %s %d %s remaining"
-#~ msgstr "преостануваат уште %d %s %d %s"
-
-#~ msgid "AC adapter"
-#~ msgstr "Адаптер"
-
-#~ msgid "Laptop battery"
-#~ msgstr "Батерија од лаптоп"
-
-#~ msgid "UPS"
-#~ msgstr "UPS"
-
-#~ msgid "Mouse"
-#~ msgstr "Глушец"
-
-#~ msgid "PDA"
-#~ msgstr "PDA"
-
-#~ msgid "Media player"
-#~ msgstr "Плеер"
-
-#~ msgid "Tablet"
-#~ msgstr "Таблет"
-
-#~ msgid "Computer"
-#~ msgstr "Компјутер"
-
-#~ msgid "Invitation"
-#~ msgstr "Покана"
-
-#~ msgid "Call"
-#~ msgstr "Повик"
-
-#~ msgid "File Transfer"
-#~ msgstr "Пренос на датотеки"
-
-#~ msgid "%s is online."
-#~ msgstr "%s е онлајн."
-
-#~ msgid "%s is offline."
-#~ msgstr "%s е офлајн."
-
-#~ msgid "%s is away."
-#~ msgstr "%s е отсутен/на."
-
-#~ msgid "%s is busy."
-#~ msgstr "%s е зафатен(а)."
-
-#~ msgid "Sent at <b>%X</b> on <b>%A</b>"
-#~ msgstr "Испратено на <b>%X</b> на <b>%A</b>"
-
-#~ msgid "Sent on <b>%A</b>, <b>%B %d</b>"
-#~ msgstr "Испратено на <b>%A</b>, <b>%d %B</b>"
-
-#~ msgid "Sent on <b>%A</b>, <b>%B %d</b>, %Y"
-#~ msgstr "Испратено на <b>%A</b>, <b>%B %d</b>, %Y"
-
-#~ msgid "Invitation to %s"
-#~ msgstr "Покана до %s"
-
-#~ msgid "%s is inviting you to join %s"
-#~ msgstr "%s Ве поканува да се придружите во %s"
-
-#~ msgid "Decline"
-#~ msgstr "Одбиј"
-
-#~ msgid "Accept"
-#~ msgstr "Прифати"
-
-#~ msgid "Video call from %s"
-#~ msgstr "Видео повик од %s"
-
-#~ msgid "Call from %s"
-#~ msgstr "Повик од %s"
-
-#~ msgid "Answer"
-#~ msgstr "Одговори"
-
-#~ msgid "%s is sending you %s"
-#~ msgstr "%s Ви праќа %s"
-
-#~ msgid "%s would like permission to see when you are online"
-#~ msgstr "%s бара дозвола да гледа кога сте онлајн"
-
-#~ msgid "Authentication failed"
-#~ msgstr "Автентикацијата не успеа"
-
-#~ msgid "Encryption error"
-#~ msgstr "Грешка во енкрипцијата"
-
-#~ msgid "Certificate not provided"
-#~ msgstr "Не е обезбеден сертификат"
-
-#~ msgid "Certificate untrusted"
-#~ msgstr "Сертификатот не е доверлив"
-
-#~ msgid "Certificate expired"
-#~ msgstr "Сертификатот е истечен"
-
-#~ msgid "Certificate not activated"
-#~ msgstr "Сертификатот не е активиран"
-
-#~ msgid "Certificate hostname mismatch"
-#~ msgstr "Името на хостот на сертификатот не одговара"
-
-#~ msgid "Certificate fingerprint mismatch"
-#~ msgstr "Отпечатокот на сертификатот не одговара"
-
-#~ msgid "Certificate self-signed"
-#~ msgstr "Сертификатот е самопотпишан"
-
-#~ msgid "Status is set to offline"
-#~ msgstr "Статусот е поставен на „офлајн“"
-
-#~ msgid "Certificate is invalid"
-#~ msgstr "Сертификатот не е валиден"
-
-#~ msgid "Connection has been refused"
-#~ msgstr "Врската беше одбиена"
-
-#~ msgid "Connection can't be established"
-#~ msgstr "Врската не може да се воспостави"
-
-#~ msgid "Connection has been lost"
-#~ msgstr "Врската е загубена"
-
-#~ msgid "This resource is already connected to the server"
-#~ msgstr "Ресурсот е веќе поврзан на серверот"
-
-#~ msgid ""
-#~ "Connection has been replaced by a new connection using the same resource"
-#~ msgstr "Врската е заменета со нова врска со користење на истиот ресурс"
-
-#~ msgid "The account already exists on the server"
-#~ msgstr "Сметката веќе постои на серверот"
-
-#~ msgid "Server is currently too busy to handle the connection"
-#~ msgstr "Серверот е моментално презафатен за да се справи со врската"
-
-#~ msgid "Certificate has been revoked"
-#~ msgstr "Сертификатот е отповикан"
-
-#~ msgid ""
-#~ "Certificate uses an insecure cipher algorithm or is cryptographically weak"
-#~ msgstr ""
-#~ "Сертификатот користи небезбеден алгоритам за шифрирање или е "
-#~ "криптографски слаб"
-
-#~ msgid ""
-#~ "The length of the server certificate, or the depth of the server "
-#~ "certificate chain, exceed the limits imposed by the cryptography library"
-#~ msgstr ""
-#~ "Должината на сертификатот од серверот или длабочината на веригата од "
-#~ "сертификати ги надминува границите на библиотеката за криптографија"
-
-#~ msgid "Connection to %s failed"
-#~ msgstr "Врската со %s не успеа"
-
-#~ msgid "Reconnect"
-#~ msgstr "Поврзи се пак"
-
-#~ msgid "Edit account"
-#~ msgstr "Уреди ја сметката"
-
-#~ msgid "Hidden"
-#~ msgstr "Скриен"
-
-#~ msgid "Idle"
-#~ msgstr "Неактивен"
-
-#~ msgid "Power Off..."
-#~ msgstr "Исклучи се..."
-
-#~ msgid "System Settings"
-#~ msgstr "Поставувања за системот"
-
-#~ msgid "Log Out..."
-#~ msgstr "Одјави се..."
-
-#~ msgid "Your chat status will be set to busy"
-#~ msgstr "Вашиот статус на разговорите ќе биде поставен на „зафатен“"
-
-#~ msgid ""
-#~ "Notifications are now disabled, including chat messages. Your online "
-#~ "status has been adjusted to let others know that you might not see their "
-#~ "messages."
-#~ msgstr ""
-#~ "Известувањата сега се оневозможени, вклучувајќи ги и тие на разговорите. "
-#~ "Вашиот онлајн статус е прилагоден за да им се каже на другите дека Вие "
-#~ "нема да ги видите нивните пораки."
-
-#~ msgid "Type to search..."
-#~ msgstr "Внесете текст за пребарување..."
-
-#~ msgid "United Kingdom"
-#~ msgstr "Обединетото Кралство"
-
-#~ msgid "Default"
-#~ msgstr "Стандардно"
-
-#~ msgid "%1$s: %2$s"
-#~ msgstr "%1$s: %2$s"
