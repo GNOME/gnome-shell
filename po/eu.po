@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-17 17:09+0100\n"
+"POT-Creation-Date: 2020-04-17 17:11+0100\n"
 "PO-Revision-Date: 2020-03-24 15:55+0100\n"
 "Last-Translator: Ibai Oihanguren Sala <ibai@oihanguren.com>\n"
 "Language-Team: Basque <librezale@librezale.eus>\n"
@@ -1916,10 +1916,9 @@ msgid "User Menu"
 msgstr ""
 
 #: js/ui/panel.js:833
-#, fuzzy
 msgctxt "Power menu"
 msgid "Power"
-msgstr "Itzali"
+msgstr "Energia"
 
 #: js/ui/panel.js:907
 msgid "Bottom Bar"
@@ -2285,9 +2284,8 @@ msgstr ""
 
 #. The status label
 #: js/ui/status/automaticUpdates.js:198
-#, fuzzy
 msgid "Automatic Updates"
-msgstr "Kokaleku automatikoa"
+msgstr "Eguneraketa automatikoak"
 
 #: js/ui/status/automaticUpdates.js:263
 #, fuzzy

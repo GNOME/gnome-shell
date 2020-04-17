@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master fr\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-17 17:09+0100\n"
+"POT-Creation-Date: 2020-04-17 17:11+0100\n"
 "PO-Revision-Date: 2018-07-05 11:45+0200\n"
 "Last-Translator: Cédric Valmary (totenoc.eu) <cvalmary@yahoo.fr>\n"
 "Language-Team: Tot En Òc\n"
@@ -557,9 +557,8 @@ msgid "Whether to fetch the current location or not"
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:420
-#, fuzzy
 msgid "Location"
-msgstr "Localizacion activada"
+msgstr "Emplaçament"
 
 #: data/org.gnome.shell.gschema.xml.in:421
 msgid "The location for which to show a forecast"
@@ -674,7 +673,7 @@ msgstr "Anullar"
 
 #: js/extensionPrefs/js/main.js:149 js/ui/appDisplay.js:2499
 msgid "Remove"
-msgstr "Levar"
+msgstr "Suprimir"
 
 #: js/extensionPrefs/js/main.js:181
 msgid "translator-credits"
@@ -691,13 +690,12 @@ msgstr[1] ""
 #: subprojects/extensions-tool/src/command-create.c:211
 #: subprojects/extensions-tool/src/main.c:173
 msgid "Description"
-msgstr ""
+msgstr "Descripcion"
 
 #: js/extensionPrefs/data/ui/extension-row.ui:123
 #: subprojects/extensions-tool/src/main.c:185
-#, fuzzy
 msgid "Version"
-msgstr "Extension"
+msgstr "Version"
 
 #: js/extensionPrefs/data/ui/extension-row.ui:151
 msgid "Author"
@@ -1987,7 +1985,6 @@ msgid "User Menu"
 msgstr "Menú del tirador de messatjariá"
 
 #: js/ui/panel.js:833
-#, fuzzy
 msgctxt "Power menu"
 msgid "Power"
 msgstr "Energia"
@@ -2285,9 +2282,9 @@ msgstr "Se remembrar del senhal"
 
 #. Translators: %s is the Disks application
 #: js/ui/shellMountOperation.js:391
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Open %s"
-msgstr "Dobrir amb %s"
+msgstr "Dobrir %s"
 
 #: js/ui/shellMountOperation.js:423
 msgid "The PIM must be a number or empty."
@@ -2361,7 +2358,7 @@ msgstr "Pas res de previst"
 #. The status label
 #: js/ui/status/automaticUpdates.js:198
 msgid "Automatic Updates"
-msgstr ""
+msgstr "Mesas a jorn automaticas"
 
 #: js/ui/status/automaticUpdates.js:263
 msgid "Automatic updates on"
@@ -3067,7 +3064,7 @@ msgstr ""
 #: subprojects/extensions-tool/src/command-create.c:197
 #: subprojects/extensions-tool/src/main.c:170
 msgid "Name"
-msgstr ""
+msgstr "Nom"
 
 #: subprojects/extensions-tool/src/command-create.c:208
 #, c-format
@@ -3292,7 +3289,7 @@ msgstr ""
 
 #: subprojects/extensions-tool/src/main.c:179
 msgid "URL"
-msgstr ""
+msgstr "URL"
 
 #: subprojects/extensions-tool/src/main.c:182
 msgid "Original author"
@@ -3318,7 +3315,7 @@ msgstr ""
 #: subprojects/extensions-tool/src/main.c:242
 #: subprojects/extensions-tool/src/main.c:245
 msgid "COMMAND"
-msgstr ""
+msgstr "COMANDA"
 
 #: subprojects/extensions-tool/src/main.c:245
 msgid "[ARGS…]"
@@ -3542,7 +3539,6 @@ msgstr "Convit cap a %s"
 #~ msgid "The type of keyboard to use."
 #~ msgstr "Lo tipe de clavièr utilizat."
 
-#~| msgid "Network error"
 #~ msgid "network-workgroup"
 #~ msgstr "network-workgroup"
 
@@ -3747,7 +3743,8 @@ msgstr "Convit cap a %s"
 #      (including the complete collection of Aubade calendars),
 #      most of them use either the one-letter either the full text version.
 #      Here I set it to the two-letters version because I think it is
-#      visually better, more readable and as much understandable than alternatives
+#      visually better, more readable and as much understandable than
+# alternatives
 #~ msgctxt "list sunday"
 #~ msgid "Su"
 #~ msgstr "D"
@@ -4329,7 +4326,6 @@ msgstr "Convit cap a %s"
 #~ msgid "SETTINGS"
 #~ msgstr "PARAMÈTRES"
 
-#
 # luc: https://bugzilla.gnome.org/show_bug.cgi?id=658675
 #~ msgctxt "event list time"
 #~ msgid "%H:%M"
@@ -4339,8 +4335,8 @@ msgstr "Convit cap a %s"
 #~ msgid "%l:%M %p"
 #~ msgstr "%l:%M %p"
 
-#
-# luc: TODO: double check with source code. %A is weekday « Mandat lundi a 8:23»
+# luc: TODO: double check with source code. %A is weekday « Mandat lundi a
+# 8:23»
 #~ msgid "Sent at <b>%X</b> on <b>%A</b>"
 #~ msgstr "Mandat <b>%A</b> a <b>%X</b>"
 

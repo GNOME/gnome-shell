@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-17 17:09+0100\n"
+"POT-Creation-Date: 2020-04-17 17:11+0100\n"
 "PO-Revision-Date: 2020-03-09 14:56+0100\n"
 "Last-Translator: Daniel Rusek <mail@asciiwolf.com>\n"
 "Language-Team: čeština <gnome-cs-list@gnome.org>\n"
@@ -741,14 +741,12 @@ msgid "Log Out…"
 msgstr "Odhlásit se…"
 
 #: js/gdm/authPrompt.js:131
-#, fuzzy
 msgid "Show password hint"
-msgstr "Heslo k VPN"
+msgstr "Zobrazit nápovědu k heslu"
 
 #: js/gdm/authPrompt.js:148
-#, fuzzy
 msgid "Forgot password?"
-msgstr "Heslo k VPN"
+msgstr "Zapomenuté heslo?"
 
 #. Cisco LEAP
 #: js/gdm/authPrompt.js:303 js/ui/components/networkAgent.js:363
@@ -775,9 +773,8 @@ msgid ""
 msgstr ""
 
 #: js/gdm/authPrompt.js:762
-#, fuzzy
 msgid "Your unlock code was incorrect. Please try again."
-msgstr "Ověření bohužel nebylo úspěšné. Zkuste to prosím znovu."
+msgstr "Váš odblokovací kód není správný. Zkuste to prosím znovu."
 
 #: js/gdm/loginDialog.js:317
 msgid "Choose Session"
@@ -928,6 +925,7 @@ msgid_plural "%d minutes ago"
 msgstr[0] "před minutou"
 msgstr[1] "před %d minutami"
 msgstr[2] "před %d minutami"
+msgstr[3] "před %d minutami"
 
 #: js/misc/util.js:192
 #, javascript-format
@@ -936,6 +934,7 @@ msgid_plural "%d hours ago"
 msgstr[0] "před hodinou"
 msgstr[1] "před %d hodinami"
 msgstr[2] "před %d hodinami"
+msgstr[3] "před %d hodinami"
 
 #: js/misc/util.js:196
 msgid "Yesterday"
@@ -948,6 +947,7 @@ msgid_plural "%d days ago"
 msgstr[0] "před %d dnem"
 msgstr[1] "před %d dny"
 msgstr[2] "před %d dny"
+msgstr[3] "před %d dny"
 
 #: js/misc/util.js:202
 #, javascript-format
@@ -956,6 +956,7 @@ msgid_plural "%d weeks ago"
 msgstr[0] "před týdnem"
 msgstr[1] "před %d týdny"
 msgstr[2] "před %d týdny"
+msgstr[3] "před %d týdny"
 
 #: js/misc/util.js:206
 #, javascript-format
@@ -964,6 +965,7 @@ msgid_plural "%d months ago"
 msgstr[0] "před měsícem"
 msgstr[1] "před %d měsíci"
 msgstr[2] "před %d měsíci"
+msgstr[3] "před %d měsíci"
 
 #: js/misc/util.js:209
 #, javascript-format
@@ -972,6 +974,7 @@ msgid_plural "%d years ago"
 msgstr[0] "před rokem"
 msgstr[1] "před %d roky"
 msgstr[2] "před %d lety"
+msgstr[3] "před %d lety"
 
 #. Translators: Time in 24h format
 #: js/misc/util.js:242
@@ -1091,9 +1094,8 @@ msgstr "Spustit pomocí vyhrazené grafické karty"
 
 #. Add the "Remove from desktop" menu item at the end.
 #: js/ui/appDisplay.js:2443
-#, fuzzy
 msgid "Remove from desktop"
-msgstr "Odstranit z oblíbených"
+msgstr "Odstranit z plochy"
 
 #: js/ui/audioDeviceSelection.js:41
 msgid "Select Audio Device"
@@ -1121,12 +1123,11 @@ msgstr "Změnit pozadí…"
 
 #: js/ui/backgroundMenu.js:18
 msgid "Add App"
-msgstr ""
+msgstr "Přidat aplikaci"
 
 #: js/ui/backgroundMenu.js:24
-#, fuzzy
 msgid "Add Website"
-msgstr "Webové stránky"
+msgstr "Přidat webovou stránku"
 
 #. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday).
 #: js/ui/calendar.js:41
@@ -1445,7 +1446,8 @@ msgstr "Odstranit z oblíbených"
 msgid "Dash"
 msgstr "Oblíbené"
 
-# Not sure whether we've enough space for it, but anyway, looks more aesthetically with "%A".
+# Not sure whether we've enough space for it, but anyway, looks more
+# aesthetically with "%A".
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the top bar (e.g.,
 #. * "Tue 9:29 AM").  The string itself should become a full date, e.g.,
@@ -1455,7 +1457,8 @@ msgstr "Oblíbené"
 msgid "%B %-d %Y"
 msgstr "%e. %B %Y"
 
-# Not sure whether we've enough space for it, but anyway, looks more aesthetically with "%A".
+# Not sure whether we've enough space for it, but anyway, looks more
+# aesthetically with "%A".
 #. Translators: This is the accessible name of the date button shown
 #. * below the time in the shell; it should combine the weekday and the
 #. * date, e.g. "Tuesday February 17 2015".
@@ -1510,6 +1513,7 @@ msgid_plural "%s will be logged out automatically in %d seconds."
 msgstr[0] "Uživatel %s bude automaticky odhlášen za %d sekundu."
 msgstr[1] "Uživatel %s bude automaticky odhlášen za %d sekundy."
 msgstr[2] "Uživatel %s bude automaticky odhlášen za %d sekund."
+msgstr[3] "Uživatel %s bude automaticky odhlášen za %d sekund."
 
 #: js/ui/endSessionDialog.js:47
 #, javascript-format
@@ -1518,6 +1522,7 @@ msgid_plural "You will be logged out automatically in %d seconds."
 msgstr[0] "Budete automaticky odhlášeni za %d sekundu."
 msgstr[1] "Budete automaticky odhlášeni za %d sekundy."
 msgstr[2] "Budete automaticky odhlášeni za %d sekund."
+msgstr[3] "Budete automaticky odhlášeni za %d sekund."
 
 #: js/ui/endSessionDialog.js:53
 msgctxt "button"
@@ -1541,6 +1546,7 @@ msgid_plural "The system will power off automatically in %d seconds."
 msgstr[0] "Systém bude automaticky vypnut za %d sekundu."
 msgstr[1] "Systém bude automaticky vypnut za %d sekundy."
 msgstr[2] "Systém bude automaticky vypnut za %d sekund."
+msgstr[3] "Systém bude automaticky vypnut za %d sekund."
 
 #: js/ui/endSessionDialog.js:65
 msgctxt "checkbox"
@@ -1569,6 +1575,7 @@ msgid_plural "The system will restart automatically in %d seconds."
 msgstr[0] "Systém bude automaticky restartován za %d sekundu."
 msgstr[1] "Systém bude automaticky restartován za %d sekundy."
 msgstr[2] "Systém bude automaticky restartován za %d sekund."
+msgstr[3] "Systém bude automaticky restartován za %d sekund."
 
 #: js/ui/endSessionDialog.js:91
 msgctxt "title"
@@ -1587,6 +1594,9 @@ msgstr[1] ""
 "Systém bude automaticky restartován za %d sekundy a poté se nainstalují "
 "aktualizace."
 msgstr[2] ""
+"Systém bude automaticky restartován za %d sekund a poté se nainstalují "
+"aktualizace."
+msgstr[3] ""
 "Systém bude automaticky restartován za %d sekund a poté se nainstalují "
 "aktualizace."
 
@@ -1941,7 +1951,6 @@ msgid "User Menu"
 msgstr ""
 
 #: js/ui/panel.js:833
-#, fuzzy
 msgctxt "Power menu"
 msgid "Power"
 msgstr "Vypnout"
@@ -2320,9 +2329,8 @@ msgstr ""
 
 #. The status label
 #: js/ui/status/automaticUpdates.js:198
-#, fuzzy
 msgid "Automatic Updates"
-msgstr "Automatické místo"
+msgstr "Automatické aktualizace"
 
 #: js/ui/status/automaticUpdates.js:263
 #, fuzzy
@@ -2370,6 +2378,7 @@ msgid_plural "%d Connected"
 msgstr[0] "%d připojené"
 msgstr[1] "%d připojená"
 msgstr[2] "%d připojených"
+msgstr[3] "%d připojených"
 
 #: js/ui/status/bluetooth.js:134
 #, fuzzy
@@ -2636,6 +2645,7 @@ msgid_plural "%s Wired Connections"
 msgstr[0] "%s drátové připojení"
 msgstr[1] "%s drátová připojení"
 msgstr[2] "%s drátových připojení"
+msgstr[3] "%s drátových připojení"
 
 #: js/ui/status/network.js:1594
 #, javascript-format
@@ -2644,6 +2654,7 @@ msgid_plural "%s Wi-Fi Connections"
 msgstr[0] "%s bezdrátové připojení"
 msgstr[1] "%s bezdrátová připojení"
 msgstr[2] "%s bezdrátových připojení"
+msgstr[3] "%s bezdrátových připojení"
 
 #: js/ui/status/network.js:1598
 #, javascript-format
@@ -2652,6 +2663,7 @@ msgid_plural "%s Modem Connections"
 msgstr[0] "%s modemové připojení"
 msgstr[1] "%s modemová připojení"
 msgstr[2] "%s modemových připojení"
+msgstr[3] "%s modemových připojení"
 
 #: js/ui/status/network.js:1732
 msgid "Connection failed"
@@ -2897,6 +2909,7 @@ msgid_plural "Settings changes will revert in %d seconds"
 msgstr[0] "Nastavení se obnoví na původní za %d sekundu"
 msgstr[1] "Nastavení se obnoví na původní za %d sekundy"
 msgstr[2] "Nastavení se obnoví na původní za %d sekund"
+msgstr[3] "Nastavení se obnoví na původní za %d sekund"
 
 #. Translators: This represents the size of a window. The first number is
 #. * the width of the window and the second is the height.
@@ -3335,6 +3348,7 @@ msgid_plural "%u Outputs"
 msgstr[0] "%u výstup"
 msgstr[1] "%u výstupy"
 msgstr[2] "%u výstupů"
+msgstr[3] "%u výstupů"
 
 #. translators:
 #. * The number of sound inputs on a particular device
@@ -3345,6 +3359,7 @@ msgid_plural "%u Inputs"
 msgstr[0] "%u vstup"
 msgstr[1] "%u vstupy"
 msgstr[2] "%u vstupů"
+msgstr[3] "%u vstupů"
 
 #: subprojects/gvc/gvc-mixer-control.c:2766
 msgid "System Sounds"
@@ -3352,12 +3367,11 @@ msgstr "Systémové zvuky"
 
 #: js/ui/appIconBar.js:195
 msgid "Other workspaces"
-msgstr ""
+msgstr "Ostatní plochy"
 
 #: js/ui/appIconBar.js:204
-#, fuzzy
 msgid "Current workspace"
-msgstr "Omezit přepínání jen na aktuální plochu"
+msgstr "Aktuální plocha"
 
 #: js/ui/appIconBar.js:282
 msgid "Pin to Taskbar"
@@ -3398,14 +3412,12 @@ msgid ""
 msgstr ""
 
 #: js/ui/forceAppExitDialog.js:87
-#, fuzzy
 msgid "System Monitor"
-msgstr "Systémové zvuky"
+msgstr "Monitorování systému"
 
 #: js/ui/forceAppExitDialog.js:95
-#, fuzzy
 msgid "Quit Application"
-msgstr "Aplikace"
+msgstr "Opustit aplikaci"
 
 #: js/ui/hotCorner.js:15
 msgid "Hot Corner"
@@ -3459,7 +3471,7 @@ msgstr "Nastavení"
 
 #: js/ui/userMenu.js:24
 msgid "Give Us Feedback"
-msgstr ""
+msgstr "Zašlete nám zpětnou vazbu"
 
 #: src/shell-desktop-dir-info.c:485
 #, fuzzy

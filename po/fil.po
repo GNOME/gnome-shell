@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-17 17:09+0100\n"
+"POT-Creation-Date: 2020-04-17 17:11+0100\n"
 "PO-Revision-Date: 2017-06-18 05:51+0000\n"
 "Last-Translator: Roddy Shuler <roddy@endlessm.com>\n"
 "Language-Team: Filipino (http://www.transifex.com/endless-mobile-inc/gnome-"
@@ -2833,7 +2833,7 @@ msgstr ""
 #: src/shell-app.c:280
 msgctxt "program"
 msgid "Unknown"
-msgstr ""
+msgstr "Hindi alam"
 
 #: src/shell-app.c:570
 #, c-format

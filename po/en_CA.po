@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-17 17:09+0100\n"
+"POT-Creation-Date: 2020-04-17 17:11+0100\n"
 "PO-Revision-Date: 2017-06-18 05:51+0000\n"
 "Last-Translator: Roddy Shuler <roddy@endlessm.com>\n"
 "Language-Team: English (Canada) (http://www.transifex.com/endless-mobile-inc/"
@@ -483,7 +483,7 @@ msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:420
 msgid "Location"
-msgstr ""
+msgstr "Location"
 
 #: data/org.gnome.shell.gschema.xml.in:421
 msgid "The location for which to show a forecast"
@@ -586,11 +586,11 @@ msgstr ""
 #: js/ui/shellMountOperation.js:376 js/ui/shellMountOperation.js:386
 #: js/ui/status/network.js:913 js/ui/forceAppExitDialog.js:79
 msgid "Cancel"
-msgstr ""
+msgstr "Cancel"
 
 #: js/extensionPrefs/js/main.js:149 js/ui/appDisplay.js:2499
 msgid "Remove"
-msgstr ""
+msgstr "Remove"
 
 #: js/extensionPrefs/js/main.js:181
 msgid "translator-credits"
@@ -607,12 +607,12 @@ msgstr[1] ""
 #: subprojects/extensions-tool/src/command-create.c:211
 #: subprojects/extensions-tool/src/main.c:173
 msgid "Description"
-msgstr ""
+msgstr "Description"
 
 #: js/extensionPrefs/data/ui/extension-row.ui:123
 #: subprojects/extensions-tool/src/main.c:185
 msgid "Version"
-msgstr ""
+msgstr "Version"
 
 #: js/extensionPrefs/data/ui/extension-row.ui:151
 msgid "Author"
@@ -688,7 +688,7 @@ msgstr ""
 #: js/ui/components/networkAgent.js:454 js/ui/components/polkitAgent.js:277
 #: js/ui/shellMountOperation.js:326
 msgid "Password"
-msgstr ""
+msgstr "Password"
 
 #. Translators: During a password reset, prompt for the "secret code" provided by customer support.
 #: js/gdm/authPrompt.js:680
@@ -752,7 +752,7 @@ msgstr ""
 #: js/misc/systemActions.js:89
 msgctxt "search-result"
 msgid "Power Off"
-msgstr ""
+msgstr "Power Off"
 
 #. Translators: A list of keywords that match the power-off action, separated by semicolons
 #: js/misc/systemActions.js:92
@@ -1308,7 +1308,7 @@ msgstr ""
 
 #: js/ui/components/polkitAgent.js:80
 msgid "Administrator"
-msgstr ""
+msgstr "Administrator"
 
 #: js/ui/components/polkitAgent.js:142
 msgid "Authenticate"
@@ -1425,7 +1425,7 @@ msgstr ""
 #: js/ui/endSessionDialog.js:58
 msgctxt "title"
 msgid "Power Off"
-msgstr ""
+msgstr "Power Off"
 
 #: js/ui/endSessionDialog.js:59
 msgctxt "title"
@@ -1447,17 +1447,17 @@ msgstr ""
 #: js/ui/endSessionDialog.js:68 js/ui/endSessionDialog.js:84
 msgctxt "button"
 msgid "Restart"
-msgstr ""
+msgstr "Restart"
 
 #: js/ui/endSessionDialog.js:70
 msgctxt "button"
 msgid "Power Off"
-msgstr ""
+msgstr "Power Off"
 
 #: js/ui/endSessionDialog.js:76
 msgctxt "title"
 msgid "Restart"
-msgstr ""
+msgstr "Restart"
 
 #: js/ui/endSessionDialog.js:78
 #, javascript-format
@@ -1546,7 +1546,7 @@ msgstr ""
 
 #: js/ui/extensionDownloader.js:192
 msgid "Install"
-msgstr ""
+msgstr "Install"
 
 #: js/ui/extensionDownloader.js:198
 msgid "Install Extension"
@@ -1635,7 +1635,7 @@ msgstr ""
 #: js/ui/kbdA11yDialog.js:55 js/ui/status/automaticUpdates.js:315
 #: js/ui/status/bluetooth.js:138 js/ui/status/network.js:1288
 msgid "Turn On"
-msgstr ""
+msgstr "Turn On"
 
 #: js/ui/kbdA11yDialog.js:63 js/ui/status/automaticUpdates.js:317
 #: js/ui/status/bluetooth.js:138 js/ui/status/network.js:131
@@ -1673,13 +1673,13 @@ msgstr ""
 
 #: js/ui/lookingGlass.js:739
 msgid "Enabled"
-msgstr ""
+msgstr "Enabled"
 
 #. translators:
 #. * The device has been disabled
 #: js/ui/lookingGlass.js:742 subprojects/gvc/gvc-mixer-control.c:1892
 msgid "Disabled"
-msgstr ""
+msgstr "Disabled"
 
 #: js/ui/lookingGlass.js:744
 msgid "Error"
@@ -1691,7 +1691,7 @@ msgstr ""
 
 #: js/ui/lookingGlass.js:748
 msgid "Downloading"
-msgstr ""
+msgstr "Downloading"
 
 #: js/ui/lookingGlass.js:777
 msgid "View Source"
@@ -1733,7 +1733,7 @@ msgstr ""
 
 #: js/ui/overview.js:94
 msgid "Undo"
-msgstr ""
+msgstr "Undo"
 
 #: js/ui/overview.js:113
 msgid "No apps are open"
@@ -1791,7 +1791,7 @@ msgstr ""
 
 #: js/ui/panel.js:96
 msgid "Show Details"
-msgstr ""
+msgstr "Show Details"
 
 #: js/ui/panel.js:112
 msgid "Quit"
@@ -1806,7 +1806,7 @@ msgstr ""
 #: js/ui/panel.js:716
 msgctxt "System menu in the top bar"
 msgid "System"
-msgstr ""
+msgstr "System"
 
 #: js/ui/panel.js:801
 msgctxt "User menu"
@@ -2103,7 +2103,7 @@ msgstr ""
 #: js/ui/shellMountOperation.js:391
 #, javascript-format
 msgid "Open %s"
-msgstr ""
+msgstr "Open %s"
 
 #: js/ui/shellMountOperation.js:423
 msgid "The PIM must be a number or empty."
@@ -2176,7 +2176,7 @@ msgstr ""
 #. The status label
 #: js/ui/status/automaticUpdates.js:198
 msgid "Automatic Updates"
-msgstr ""
+msgstr "Automatic Updates"
 
 #: js/ui/status/automaticUpdates.js:263
 msgid "Automatic updates on"
@@ -2256,7 +2256,7 @@ msgstr ""
 
 #: js/ui/status/keyboard.js:826
 msgid "Keyboard"
-msgstr ""
+msgstr "Keyboard"
 
 #: js/ui/status/keyboard.js:848
 msgid "Show Keyboard Layout"
@@ -2268,7 +2268,7 @@ msgstr ""
 
 #: js/ui/status/location.js:66 js/ui/status/location.js:175
 msgid "Disable"
-msgstr ""
+msgstr "Disable"
 
 #: js/ui/status/location.js:67
 msgid "Privacy Settings"
@@ -2284,7 +2284,7 @@ msgstr ""
 
 #: js/ui/status/location.js:178
 msgid "Enable"
-msgstr ""
+msgstr "Enable"
 
 #: js/ui/status/location.js:355
 msgid "Allow location access"
@@ -2474,7 +2474,7 @@ msgstr ""
 
 #: js/ui/status/network.js:1561 js/ui/status/rfkill.js:84
 msgid "Network Settings"
-msgstr ""
+msgstr "Network Settings"
 
 #: js/ui/status/network.js:1590
 #, javascript-format
@@ -2654,7 +2654,7 @@ msgstr ""
 
 #: js/ui/status/volume.js:221
 msgid "Volume"
-msgstr ""
+msgstr "Volume"
 
 #. Translators: this is for display mirroring i.e. cloning.
 #. * Try to keep it under around 15 characters.
@@ -2832,7 +2832,7 @@ msgstr ""
 #: src/shell-app.c:280
 msgctxt "program"
 msgid "Unknown"
-msgstr ""
+msgstr "Unknown"
 
 #: src/shell-app.c:570
 #, c-format
@@ -2867,7 +2867,7 @@ msgstr ""
 #: subprojects/extensions-tool/src/command-create.c:197
 #: subprojects/extensions-tool/src/main.c:170
 msgid "Name"
-msgstr ""
+msgstr "Name"
 
 #: subprojects/extensions-tool/src/command-create.c:208
 #, c-format
@@ -3074,7 +3074,7 @@ msgstr ""
 
 #: subprojects/extensions-tool/src/main.c:179
 msgid "URL"
-msgstr ""
+msgstr "URL"
 
 #: subprojects/extensions-tool/src/main.c:182
 msgid "Original author"
@@ -3082,7 +3082,7 @@ msgstr ""
 
 #: subprojects/extensions-tool/src/main.c:188
 msgid "State"
-msgstr ""
+msgstr "State"
 
 #: subprojects/extensions-tool/src/main.c:222
 msgid "“version” takes no arguments"
@@ -3100,7 +3100,7 @@ msgstr ""
 #: subprojects/extensions-tool/src/main.c:242
 #: subprojects/extensions-tool/src/main.c:245
 msgid "COMMAND"
-msgstr ""
+msgstr "COMMAND"
 
 #: subprojects/extensions-tool/src/main.c:245
 msgid "[ARGS…]"
@@ -3278,7 +3278,7 @@ msgstr ""
 
 #: js/ui/userMenu.js:19
 msgid "Settings"
-msgstr ""
+msgstr "Settings"
 
 #: js/ui/userMenu.js:24
 msgid "Give Us Feedback"

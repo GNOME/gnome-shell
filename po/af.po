@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-17 17:09+0100\n"
+"POT-Creation-Date: 2020-04-17 17:11+0100\n"
 "PO-Revision-Date: 2018-02-10 11:12+0200\n"
 "Last-Translator: Pieter Schalk Schoeman <pieter@sonbesie.co.za>\n"
 "Language-Team: Afrikaans <pieter@sonbesie.co.za>\n"
@@ -18,8 +18,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 2.0.3\n"
 "X-DamnedLies-Scope: partial\n"
+"X-Generator: Poedit 2.0.3\n"
 "X-Project-Style: gnome\n"
 
 #: data/50-gnome-shell-system.xml:6
@@ -551,9 +551,8 @@ msgid "Whether to fetch the current location or not"
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:420
-#, fuzzy
 msgid "Location"
-msgstr "Ligging in gebruik"
+msgstr "Ligging"
 
 #: data/org.gnome.shell.gschema.xml.in:421
 msgid "The location for which to show a forecast"
@@ -683,13 +682,12 @@ msgstr[1] ""
 #: subprojects/extensions-tool/src/command-create.c:211
 #: subprojects/extensions-tool/src/main.c:173
 msgid "Description"
-msgstr ""
+msgstr "Beskrywing"
 
 #: js/extensionPrefs/data/ui/extension-row.ui:123
 #: subprojects/extensions-tool/src/main.c:185
-#, fuzzy
 msgid "Version"
-msgstr "Sessie"
+msgstr "Weergawe"
 
 #: js/extensionPrefs/data/ui/extension-row.ui:151
 msgid "Author"
@@ -1949,7 +1947,6 @@ msgid "User Menu"
 msgstr "Laai-kieslys"
 
 #: js/ui/panel.js:833
-#, fuzzy
 msgctxt "Power menu"
 msgid "Power"
 msgstr "Krag"
@@ -2247,9 +2244,9 @@ msgstr "Onthou wagwoord"
 
 #. Translators: %s is the Disks application
 #: js/ui/shellMountOperation.js:391
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Open %s"
-msgstr "Open met %s"
+msgstr "Open %s"
 
 #: js/ui/shellMountOperation.js:423
 msgid "The PIM must be a number or empty."
@@ -2323,7 +2320,7 @@ msgstr "Niks geskeduleer nie"
 #. The status label
 #: js/ui/status/automaticUpdates.js:198
 msgid "Automatic Updates"
-msgstr ""
+msgstr "Outomatiese bywerkings"
 
 #: js/ui/status/automaticUpdates.js:263
 msgid "Automatic updates on"
@@ -3027,7 +3024,7 @@ msgstr ""
 #: subprojects/extensions-tool/src/command-create.c:197
 #: subprojects/extensions-tool/src/main.c:170
 msgid "Name"
-msgstr ""
+msgstr "Naam"
 
 #: subprojects/extensions-tool/src/command-create.c:208
 #, c-format
@@ -3252,7 +3249,7 @@ msgstr ""
 
 #: subprojects/extensions-tool/src/main.c:179
 msgid "URL"
-msgstr ""
+msgstr "URL"
 
 #: subprojects/extensions-tool/src/main.c:182
 msgid "Original author"
@@ -3278,7 +3275,7 @@ msgstr ""
 #: subprojects/extensions-tool/src/main.c:242
 #: subprojects/extensions-tool/src/main.c:245
 msgid "COMMAND"
-msgstr ""
+msgstr "BEVEL"
 
 #: subprojects/extensions-tool/src/main.c:245
 msgid "[ARGS…]"
@@ -3613,7 +3610,6 @@ msgstr ""
 #~ msgstr "Indien waar, vertoon die ISO-weekdatum in die kalender."
 
 #, fuzzy
-#~| msgid "Authentication Required"
 #~ msgid "Web Authentication Redirect"
 #~ msgstr "Verifiëringsversoek"
 
@@ -3623,7 +3619,6 @@ msgstr ""
 #~ msgid "Notifications"
 #~ msgstr "Kennisgewings"
 
-#~| msgid "Hide Text"
 #~ msgid "Hide tray"
 #~ msgstr "Versteek laai"
 
@@ -3633,7 +3628,6 @@ msgstr ""
 #~ msgid "Media"
 #~ msgstr "Media"
 
-#~| msgid "In Use"
 #~ msgid "Not In Use"
 #~ msgstr "Nie in gebruik nie"
 

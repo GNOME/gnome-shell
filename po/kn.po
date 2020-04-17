@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-17 17:09+0100\n"
+"POT-Creation-Date: 2020-04-17 17:11+0100\n"
 "PO-Revision-Date: 2014-09-22 12:15+0530\n"
 "Last-Translator: Shankar Prasad <svenkate AT redhat Dot com>\n"
 "Language-Team: Kannada <kde-i18n-doc@kde.org>\n"
@@ -683,7 +683,7 @@ msgstr[1] ""
 #: subprojects/extensions-tool/src/command-create.c:211
 #: subprojects/extensions-tool/src/main.c:173
 msgid "Description"
-msgstr ""
+msgstr "ವಿವರಣೆ"
 
 #: js/extensionPrefs/data/ui/extension-row.ui:123
 #: subprojects/extensions-tool/src/main.c:185
@@ -833,10 +833,9 @@ msgstr "(ಅಥವ ನಿಮ್ಮ ಬೆರಳನ್ನು ಉಜ್ಜಿ)"
 
 #. Translators: The name of the power-off action in search
 #: js/misc/systemActions.js:89
-#, fuzzy
 msgctxt "search-result"
 msgid "Power Off"
-msgstr "ಸ್ಥಗಿತಗೊಳಿಸು"
+msgstr "ಆಫ್ ಮಾಡು"
 
 #. Translators: A list of keywords that match the power-off action, separated by semicolons
 #: js/misc/systemActions.js:92
@@ -847,7 +846,7 @@ msgstr ""
 #: js/misc/systemActions.js:97
 msgctxt "search-result"
 msgid "Lock Screen"
-msgstr ""
+msgstr "ತೆರೆಯನ್ನು ಲಾಕ್ ಮಾಡು"
 
 #. Translators: A list of keywords that match the lock screen action, separated by semicolons
 #: js/misc/systemActions.js:100
@@ -856,7 +855,6 @@ msgstr ""
 
 #. Translators: The name of the logout action in search
 #: js/misc/systemActions.js:105
-#, fuzzy
 msgctxt "search-result"
 msgid "Log Out"
 msgstr "ನಿರ್ಗಮಿಸು"
@@ -868,7 +866,6 @@ msgstr ""
 
 #. Translators: The name of the suspend action in search
 #: js/misc/systemActions.js:113
-#, fuzzy
 msgctxt "search-result"
 msgid "Suspend"
 msgstr "ಅಮಾನತ್ತಿನಲ್ಲಿಡು"
@@ -881,7 +878,6 @@ msgstr "ಅಮಾನತ್ತಿನಲ್ಲಿಡು"
 
 #. Translators: The name of the switch user action in search
 #: js/misc/systemActions.js:121
-#, fuzzy
 msgctxt "search-result"
 msgid "Switch User"
 msgstr "ಬಳಕೆದಾರನನ್ನು ಬದಲಿಸು"
@@ -1720,14 +1716,12 @@ msgid "Allow"
 msgstr ""
 
 #: js/ui/kbdA11yDialog.js:32
-#, fuzzy
 msgid "Slow Keys Turned On"
-msgstr "ನಿಧಾನ ಕೀಲಿಗಳು"
+msgstr "ನಿಧಾನ ಕೀಲಿಗಳನ್ನು ಚಾಲಿತಗೊಳಿಸಲಾಗಿದೆ"
 
 #: js/ui/kbdA11yDialog.js:33
-#, fuzzy
 msgid "Slow Keys Turned Off"
-msgstr "ನಿಧಾನ ಕೀಲಿಗಳು"
+msgstr "ನಿಧಾನ ಕೀಲಿಗಳನ್ನು ಸ್ಥಗಿತಗೊಳಿಸಲಾಗಿದೆ"
 
 #: js/ui/kbdA11yDialog.js:34
 msgid ""
@@ -1736,14 +1730,12 @@ msgid ""
 msgstr ""
 
 #: js/ui/kbdA11yDialog.js:41
-#, fuzzy
 msgid "Sticky Keys Turned On"
-msgstr "ಸ್ಟಿಕಿ ಕೀಲಿಗಳು"
+msgstr "ಸ್ಟಿಕಿ ಕೀಲಿಗಳನ್ನು ಚಾಲನೆಗೊಳಿಸಲಾಗಿದೆ"
 
 #: js/ui/kbdA11yDialog.js:42
-#, fuzzy
 msgid "Sticky Keys Turned Off"
-msgstr "ಸ್ಟಿಕಿ ಕೀಲಿಗಳು"
+msgstr "ಸ್ಟಿಕಿ ಕೀಲಿಗಳನ್ನು ಸ್ಥಗಿತಗೊಳಿಸಲಾಗಿದೆ"
 
 #: js/ui/kbdA11yDialog.js:44
 msgid ""
@@ -1760,7 +1752,7 @@ msgstr ""
 
 #: js/ui/kbdA11yDialog.js:55
 msgid "Leave On"
-msgstr ""
+msgstr "ಚಾಲನೆಯಲ್ಲಿರಿಸು"
 
 #: js/ui/kbdA11yDialog.js:55 js/ui/status/automaticUpdates.js:315
 #: js/ui/status/bluetooth.js:138 js/ui/status/network.js:1288
@@ -1777,7 +1769,7 @@ msgstr "ಆಫ್ ಮಾಡು"
 
 #: js/ui/kbdA11yDialog.js:63
 msgid "Leave Off"
-msgstr ""
+msgstr "ಸ್ಥಗಿತವಾಗಿರಿಸು"
 
 #: js/ui/keyboard.js:207
 msgid "Region & Language Settings"
@@ -1939,7 +1931,6 @@ msgid "Activities"
 msgstr "ಚಟುವಟಿಕೆಗಳು"
 
 #: js/ui/panel.js:716
-#, fuzzy
 msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "ವ್ಯವಸ್ಥೆ"
@@ -1951,7 +1942,6 @@ msgid "User Menu"
 msgstr "ಟ್ರೇ ಮೆನು"
 
 #: js/ui/panel.js:833
-#, fuzzy
 msgctxt "Power menu"
 msgid "Power"
 msgstr "ವಿದ್ಯುಚ್ಛಕ್ತಿ"
@@ -2723,15 +2713,15 @@ msgstr "ಊಹಿಸಲಾಗುತ್ತಿದೆ…"
 
 #. Translators: this is <hours>:<minutes> Remaining (<percentage>)
 #: js/ui/status/power.js:86
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%d∶%02d Remaining (%d %%)"
-msgstr "%d∶%02d ಬಾಕಿ ಇರುವುದು (%d%%)"
+msgstr "%d∶%02d ಬಾಕಿ ಇರುವುದು (%d %%)"
 
 #. Translators: this is <hours>:<minutes> Until Full (<percentage>)
 #: js/ui/status/power.js:91
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%d∶%02d Until Full (%d %%)"
-msgstr "%d∶%02d ಪೂರ್ಣಗೊಳ್ಳುವ ವರೆಗೆ (%d%%)"
+msgstr "%d∶%02d ಪೂರ್ಣಗೊಳ್ಳುವ ವರೆಗೆ (%d %%)"
 
 #: js/ui/status/power.js:140 js/ui/status/power.js:142
 #, javascript-format
@@ -3041,7 +3031,7 @@ msgstr ""
 #: subprojects/extensions-tool/src/command-create.c:197
 #: subprojects/extensions-tool/src/main.c:170
 msgid "Name"
-msgstr ""
+msgstr "ಹೆಸರು"
 
 #: subprojects/extensions-tool/src/command-create.c:208
 #, c-format
@@ -3258,7 +3248,7 @@ msgstr ""
 
 #: subprojects/extensions-tool/src/main.c:179
 msgid "URL"
-msgstr ""
+msgstr "URL"
 
 #: subprojects/extensions-tool/src/main.c:182
 msgid "Original author"
@@ -3284,7 +3274,7 @@ msgstr ""
 #: subprojects/extensions-tool/src/main.c:242
 #: subprojects/extensions-tool/src/main.c:245
 msgid "COMMAND"
-msgstr ""
+msgstr "COMMAND"
 
 #: subprojects/extensions-tool/src/main.c:245
 msgid "[ARGS…]"

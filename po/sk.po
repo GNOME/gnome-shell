@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-17 17:09+0100\n"
+"POT-Creation-Date: 2020-04-17 17:11+0100\n"
 "PO-Revision-Date: 2020-03-18 15:52+0100\n"
 "Last-Translator: Dušan Kazik <prescott66@gmail.com>\n"
 "Language-Team: Slovak <gnome-sk-list@gnome.org>\n"
@@ -19,8 +19,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 1 : (n>=2 && n<=4) ? 2 : 0;\n"
-"X-Generator: Poedit 2.3\n"
 "X-DamnedLies-Scope: partial\n"
+"X-Generator: Poedit 2.3\n"
 "X-Project-Style: gnome\n"
 
 #: data/50-gnome-shell-system.xml:6
@@ -956,14 +956,16 @@ msgid_plural "%d minutes ago"
 msgstr[0] "Pred %d minútou"
 msgstr[1] "Pred %d minútami"
 msgstr[2] "Pred %d minútami"
+msgstr[3] "Pred %d minútami"
 
 #: js/misc/util.js:192
 #, javascript-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
-msgstr[0] "Pred %d hodinou"
-msgstr[1] "Pred %d hodinami"
-msgstr[2] "Pred %d hodinami"
+msgstr[0] "Pred %d dňom"
+msgstr[1] "Pred %d dňami"
+msgstr[2] "Pred %d dňami"
+msgstr[3] "Pred %d dňami"
 
 #: js/misc/util.js:196
 msgid "Yesterday"
@@ -976,6 +978,7 @@ msgid_plural "%d days ago"
 msgstr[0] "Pred %d dňom"
 msgstr[1] "Pred %d dňami"
 msgstr[2] "Pred %d dňami"
+msgstr[3] "Pred %d dňami"
 
 #: js/misc/util.js:202
 #, javascript-format
@@ -984,6 +987,7 @@ msgid_plural "%d weeks ago"
 msgstr[0] "Pred %d týždňom"
 msgstr[1] "Pred %d týždňami"
 msgstr[2] "Pred %d týždňami"
+msgstr[3] "Pred %d týždňami"
 
 #: js/misc/util.js:206
 #, javascript-format
@@ -992,6 +996,7 @@ msgid_plural "%d months ago"
 msgstr[0] "Pred %d mesiacom"
 msgstr[1] "Pred %d mesiacmi"
 msgstr[2] "Pred %d mesiacmi"
+msgstr[3] "Pred %d mesiacmi"
 
 #: js/misc/util.js:209
 #, javascript-format
@@ -1000,6 +1005,7 @@ msgid_plural "%d years ago"
 msgstr[0] "Pred %d rokom"
 msgstr[1] "Pred %d rokmi"
 msgstr[2] "Pred %d rokmi"
+msgstr[3] "Pred %d rokmi"
 
 #. Translators: Time in 24h format
 #: js/misc/util.js:242
@@ -1166,8 +1172,10 @@ msgctxt "calendar-no-work"
 msgid "06"
 msgstr "06"
 
-# MČ: nemali by tu byť tiež jednopísmenové? Občas som videl v kolendároch aj také použiť a ďalej sú dvojpísmenové.
-# PK: v grid to skratene bude, inac v liste to moze byt 2 pismenove, kedze aj v
+# MČ: nemali by tu byť tiež jednopísmenové? Občas som videl v kolendároch aj
+# také použiť a ďalej sú dvojpísmenové.
+# PK: v grid to skratene bude, inac v liste to moze byt 2 pismenove, kedze aj
+# v
 # originale dali Su
 #. Translators: Calendar grid abbreviation for Sunday.
 #. *
@@ -1330,7 +1338,8 @@ msgstr "Nepodarilo sa odomknúť zväzok"
 msgid "The installed udisks version does not support the PIM setting"
 msgstr "Nainštalovaná verzia programu udisks nepodporuje nastavenie PIM"
 
-# DK: doplnil som slovo "programu", aby to znelo prirodzenejsie. priklad:po pripojeni USB kluca bolo zobrazene "Otvoriť pomocou Súbory"
+# DK: doplnil som slovo "programu", aby to znelo prirodzenejsie. priklad:po
+# pripojeni USB kluca bolo zobrazene "Otvoriť pomocou Súbory"
 #: js/ui/components/autorunManager.js:333
 #, javascript-format
 msgid "Open with %s"
@@ -1547,6 +1556,7 @@ msgid_plural "%s will be logged out automatically in %d seconds."
 msgstr[0] "Používateľ %s bude automaticky odhlásený o %d sekundu."
 msgstr[1] "Používateľ %s bude automaticky odhlásený o %d sekundy."
 msgstr[2] "Používateľ %s bude automaticky odhlásený o %d sekúnd."
+msgstr[3] "Používateľ %s bude automaticky odhlásený o %d sekúnd."
 
 #: js/ui/endSessionDialog.js:47
 #, javascript-format
@@ -1555,6 +1565,7 @@ msgid_plural "You will be logged out automatically in %d seconds."
 msgstr[0] "Budete automaticky odhlásený o %d sekundu."
 msgstr[1] "Budete automaticky odhlásený o %d sekundy."
 msgstr[2] "Budete automaticky odhlásený o %d sekúnd."
+msgstr[3] "Budete automaticky odhlásený o %d sekúnd."
 
 #: js/ui/endSessionDialog.js:53
 msgctxt "button"
@@ -1575,9 +1586,10 @@ msgstr "Inštalácia aktualizácií a vypnutie"
 #, javascript-format
 msgid "The system will power off automatically in %d second."
 msgid_plural "The system will power off automatically in %d seconds."
-msgstr[0] "Systém sa automaticky vypne o %d sekúnd."
-msgstr[1] "Systém sa automaticky vypne o %d sekundu."
-msgstr[2] "Systém sa automaticky vypne o %d sekundy."
+msgstr[0] "Systém sa automaticky vypne o %d sekundu."
+msgstr[1] "Systém sa automaticky vypne o %d sekundy."
+msgstr[2] "Systém sa automaticky vypne o %d sekúnd."
+msgstr[3] "Systém sa automaticky vypne o %d sekúnd."
 
 #: js/ui/endSessionDialog.js:65
 msgctxt "checkbox"
@@ -1606,6 +1618,7 @@ msgid_plural "The system will restart automatically in %d seconds."
 msgstr[0] "Systém sa automaticky reštartuje o %d sekundu."
 msgstr[1] "Systém sa automaticky reštartuje o %d sekundy."
 msgstr[2] "Systém sa automaticky reštartuje o %d sekúnd."
+msgstr[3] "Systém sa automaticky reštartuje o %d sekúnd."
 
 #: js/ui/endSessionDialog.js:91
 msgctxt "title"
@@ -1622,6 +1635,8 @@ msgstr[0] ""
 msgstr[1] ""
 "Systém sa automaticky reštartuje a nainštaluje aktualizácie o %d sekundy."
 msgstr[2] ""
+"Systém sa automaticky reštartuje a nainštaluje aktualizácie o %d sekúnd."
+msgstr[3] ""
 "Systém sa automaticky reštartuje a nainštaluje aktualizácie o %d sekúnd."
 
 #: js/ui/endSessionDialog.js:99 js/ui/endSessionDialog.js:118
@@ -1975,7 +1990,10 @@ msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "Systém"
 
-# MČ" zd sa mi to čudné. tuším som videl preklady „oznamovacia oblasť“, čo mi viac sedí. Toto je trošku akoby zavádzajúce, ale možno to s okolím ozrejmuje výsledok. Možno by som tam ponechal len „ponuka“ ak akolie jednoznačne naznačuje, že ide o „lištu správ“
+# MČ" zd sa mi to čudné. tuším som videl preklady „oznamovacia oblasť“, čo mi
+# viac sedí. Toto je trošku akoby zavádzajúce, ale možno to s okolím ozrejmuje
+# výsledok. Možno by som tam ponechal len „ponuka“ ak akolie jednoznačne
+# naznačuje, že ide o „lištu správ“
 #: js/ui/panel.js:801
 #, fuzzy
 msgctxt "User menu"
@@ -1983,10 +2001,9 @@ msgid "User Menu"
 msgstr "Ponuka v lište"
 
 #: js/ui/panel.js:833
-#, fuzzy
 msgctxt "Power menu"
 msgid "Power"
-msgstr "Vypnúť"
+msgstr "Napájanie"
 
 #: js/ui/panel.js:907
 msgid "Bottom Bar"
@@ -2285,7 +2302,8 @@ msgstr "Číslo PIM"
 msgid "Remember Password"
 msgstr "Zapamätať heslo"
 
-# DK: doplnil som slovo "programu", aby to znelo prirodzenejsie. priklad:po pripojeni USB kluca bolo zobrazene "Otvoriť pomocou Súbory"
+# DK: doplnil som slovo "programu", aby to znelo prirodzenejsie. priklad:po
+# pripojeni USB kluca bolo zobrazene "Otvoriť pomocou Súbory"
 #. Translators: %s is the Disks application
 #: js/ui/shellMountOperation.js:391
 #, javascript-format
@@ -2366,9 +2384,8 @@ msgstr "Žiadne naplánované udalosti"
 
 #. The status label
 #: js/ui/status/automaticUpdates.js:198
-#, fuzzy
 msgid "Automatic Updates"
-msgstr "Automatické umiestnenie"
+msgstr "Automatické aktualizácie"
 
 #: js/ui/status/automaticUpdates.js:263
 #, fuzzy
@@ -2416,6 +2433,7 @@ msgid_plural "%d Connected"
 msgstr[0] "%d pripojené"
 msgstr[1] "%d pripojené"
 msgstr[2] "%d pripojených"
+msgstr[3] "%d pripojených"
 
 #: js/ui/status/bluetooth.js:134
 #, fuzzy
@@ -2684,6 +2702,7 @@ msgid_plural "%s Wired Connections"
 msgstr[0] "%s drôtové pripojenie"
 msgstr[1] "%s drôtové pripojenia"
 msgstr[2] "%s drôtových pripojení"
+msgstr[3] "%s drôtových pripojení"
 
 #: js/ui/status/network.js:1594
 #, javascript-format
@@ -2692,6 +2711,7 @@ msgid_plural "%s Wi-Fi Connections"
 msgstr[0] "%s pripojenie k sieti Wi-Fi"
 msgstr[1] "%s pripojenia k sieti Wi-Fi"
 msgstr[2] "%s pripojení k sieti Wi-Fi"
+msgstr[3] "%s pripojení k sieti Wi-Fi"
 
 #: js/ui/status/network.js:1598
 #, javascript-format
@@ -2700,6 +2720,7 @@ msgid_plural "%s Modem Connections"
 msgstr[0] "%s pripojenie modemom"
 msgstr[1] "%s pripojenia modemom"
 msgstr[2] "%s pripojení modemom"
+msgstr[3] "%s pripojení modemom"
 
 #: js/ui/status/network.js:1732
 msgid "Connection failed"
@@ -2948,6 +2969,7 @@ msgid_plural "Settings changes will revert in %d seconds"
 msgstr[0] "Zmeny nastavení budú vrátené za %d sekundu"
 msgstr[1] "Zmeny nastavení budú vrátené za %d sekundy"
 msgstr[2] "Zmeny nastavení budú vrátené za %d sekúnd"
+msgstr[3] "Zmeny nastavení budú vrátené za %d sekúnd"
 
 #. Translators: This represents the size of a window. The first number is
 #. * the width of the window and the second is the height.
@@ -3398,6 +3420,7 @@ msgid_plural "%u Outputs"
 msgstr[0] "%u výstup"
 msgstr[1] "%u výstupy"
 msgstr[2] "%u výstupov"
+msgstr[3] "%u výstupov"
 
 #. translators:
 #. * The number of sound inputs on a particular device
@@ -3408,6 +3431,7 @@ msgid_plural "%u Inputs"
 msgstr[0] "%u vstup"
 msgstr[1] "%u vstupy"
 msgstr[2] "%u vstupov"
+msgstr[3] "%u vstupov"
 
 #: subprojects/gvc/gvc-mixer-control.c:2766
 msgid "System Sounds"
@@ -3575,7 +3599,6 @@ msgstr ""
 #~ msgid "Search"
 #~ msgstr "Hľadať"
 
-#~| msgid "Shell Extensions"
 #~ msgid "org.gnome.Extensions"
 #~ msgstr "org.gnome.Extensions"
 
@@ -3606,12 +3629,14 @@ msgstr ""
 #~ msgstr[0] "%d nová správa"
 #~ msgstr[1] "%d nové správy"
 #~ msgstr[2] "%d nových správ"
+#~ msgstr[3] "%d nových správ"
 
 #~ msgid "%d new notification"
 #~ msgid_plural "%d new notifications"
 #~ msgstr[0] "%d nové oznámenie"
 #~ msgstr[1] "%d nové oznámenia"
 #~ msgstr[2] "%d nových oznámení"
+#~ msgstr[3] "%d nových oznámení"
 
 #~ msgid "Browse in Software"
 #~ msgstr "Prehliadať v aplikácii Softvér"

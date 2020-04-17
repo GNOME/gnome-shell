@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-17 17:09+0100\n"
+"POT-Creation-Date: 2020-04-17 17:11+0100\n"
 "PO-Revision-Date: 2017-09-04 23:54+0300\n"
 "Last-Translator: Alexander Shopov <ash@kambanaria.org>\n"
 "Language-Team: Bulgarian <dict@fsa-bg.org>\n"
@@ -547,9 +547,8 @@ msgid "Whether to fetch the current location or not"
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:420
-#, fuzzy
 msgid "Location"
-msgstr "Текущо местоположение"
+msgstr "Местоположение"
 
 #: data/org.gnome.shell.gschema.xml.in:421
 msgid "The location for which to show a forecast"
@@ -666,7 +665,7 @@ msgstr "Отказване"
 
 #: js/extensionPrefs/js/main.js:149 js/ui/appDisplay.js:2499
 msgid "Remove"
-msgstr ""
+msgstr "Премахване"
 
 #: js/extensionPrefs/js/main.js:181
 msgid "translator-credits"
@@ -683,13 +682,12 @@ msgstr[1] ""
 #: subprojects/extensions-tool/src/command-create.c:211
 #: subprojects/extensions-tool/src/main.c:173
 msgid "Description"
-msgstr ""
+msgstr "Описание"
 
 #: js/extensionPrefs/data/ui/extension-row.ui:123
 #: subprojects/extensions-tool/src/main.c:185
-#, fuzzy
 msgid "Version"
-msgstr "Показване на версията"
+msgstr "Версия"
 
 #: js/extensionPrefs/data/ui/extension-row.ui:151
 msgid "Author"
@@ -833,7 +831,6 @@ msgstr "(или се регистрирайте с пръстов отпечат
 
 #. Translators: The name of the power-off action in search
 #: js/misc/systemActions.js:89
-#, fuzzy
 msgctxt "search-result"
 msgid "Power Off"
 msgstr "Изключване"
@@ -857,7 +854,6 @@ msgstr "lock screen;заключване"
 
 #. Translators: The name of the logout action in search
 #: js/misc/systemActions.js:105
-#, fuzzy
 msgctxt "search-result"
 msgid "Log Out"
 msgstr "Изход"
@@ -881,7 +877,6 @@ msgstr "приспиване"
 
 #. Translators: The name of the switch user action in search
 #: js/misc/systemActions.js:121
-#, fuzzy
 msgctxt "search-result"
 msgid "Switch User"
 msgstr "Смяна на потребител"
@@ -1722,14 +1717,12 @@ msgid "Allow"
 msgstr "Позволяване"
 
 #: js/ui/kbdA11yDialog.js:32
-#, fuzzy
 msgid "Slow Keys Turned On"
-msgstr "Бавни клавиши"
+msgstr "Бавните клавиши са включени"
 
 #: js/ui/kbdA11yDialog.js:33
-#, fuzzy
 msgid "Slow Keys Turned Off"
-msgstr "Бавни клавиши"
+msgstr "Бавните клавиши са изключени"
 
 #: js/ui/kbdA11yDialog.js:34
 msgid ""
@@ -1738,14 +1731,12 @@ msgid ""
 msgstr ""
 
 #: js/ui/kbdA11yDialog.js:41
-#, fuzzy
 msgid "Sticky Keys Turned On"
-msgstr "Лепкави клавиши"
+msgstr "Лепкавите клавиши са включени"
 
 #: js/ui/kbdA11yDialog.js:42
-#, fuzzy
 msgid "Sticky Keys Turned Off"
-msgstr "Лепкави клавиши"
+msgstr "Лепкавите клавиши са изключени"
 
 #: js/ui/kbdA11yDialog.js:44
 msgid ""
@@ -1762,7 +1753,7 @@ msgstr ""
 
 #: js/ui/kbdA11yDialog.js:55
 msgid "Leave On"
-msgstr ""
+msgstr "Оставяне включено"
 
 #: js/ui/kbdA11yDialog.js:55 js/ui/status/automaticUpdates.js:315
 #: js/ui/status/bluetooth.js:138 js/ui/status/network.js:1288
@@ -1779,11 +1770,11 @@ msgstr "Изключване"
 
 #: js/ui/kbdA11yDialog.js:63
 msgid "Leave Off"
-msgstr ""
+msgstr "Оставяне изключено"
 
 #: js/ui/keyboard.js:207
 msgid "Region & Language Settings"
-msgstr ""
+msgstr "Настройки на региона и езика"
 
 #: js/ui/lookingGlass.js:665
 msgid "No extensions installed"
@@ -1947,10 +1938,9 @@ msgid "User Menu"
 msgstr ""
 
 #: js/ui/panel.js:833
-#, fuzzy
 msgctxt "Power menu"
 msgid "Power"
-msgstr "Изключване"
+msgstr "Спиране"
 
 #: js/ui/panel.js:907
 msgid "Bottom Bar"
@@ -2244,9 +2234,9 @@ msgstr "Запомняне на паролата"
 
 #. Translators: %s is the Disks application
 #: js/ui/shellMountOperation.js:391
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Open %s"
-msgstr "Отваряне с „%s“"
+msgstr "Отваряне на „%s“"
 
 #: js/ui/shellMountOperation.js:423
 msgid "The PIM must be a number or empty."
@@ -3022,7 +3012,7 @@ msgstr ""
 #: subprojects/extensions-tool/src/command-create.c:197
 #: subprojects/extensions-tool/src/main.c:170
 msgid "Name"
-msgstr ""
+msgstr "Име"
 
 #: subprojects/extensions-tool/src/command-create.c:208
 #, c-format
@@ -3245,7 +3235,7 @@ msgstr ""
 
 #: subprojects/extensions-tool/src/main.c:179
 msgid "URL"
-msgstr ""
+msgstr "Адрес"
 
 #: subprojects/extensions-tool/src/main.c:182
 msgid "Original author"
@@ -3271,7 +3261,7 @@ msgstr ""
 #: subprojects/extensions-tool/src/main.c:242
 #: subprojects/extensions-tool/src/main.c:245
 msgid "COMMAND"
-msgstr ""
+msgstr "КОМАНДА"
 
 #: subprojects/extensions-tool/src/main.c:245
 msgid "[ARGS…]"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-17 17:09+0100\n"
+"POT-Creation-Date: 2020-04-17 17:11+0100\n"
 "PO-Revision-Date: 2019-09-28 21:08+0200\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
@@ -18,8 +18,8 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || n"
 "%100==4 ? 3 : 0);\n"
-"X-Poedit-SourceCharset: utf-8\n"
 "X-Generator: Poedit 2.2.1\n"
+"X-Poedit-SourceCharset: utf-8\n"
 
 #: data/50-gnome-shell-system.xml:6
 msgid "System"
@@ -691,7 +691,7 @@ msgstr "Odstrani"
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:8 js/ui/userMenu.js:27
 msgid "Help"
-msgstr ""
+msgstr "Pomoč"
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:12
 #, fuzzy
@@ -745,14 +745,12 @@ msgid "Log Out…"
 msgstr "Odjava"
 
 #: js/gdm/authPrompt.js:131
-#, fuzzy
 msgid "Show password hint"
-msgstr "Pokaži geslo"
+msgstr "Pokaži namig za geslo"
 
 #: js/gdm/authPrompt.js:148
-#, fuzzy
 msgid "Forgot password?"
-msgstr "Pokaži geslo"
+msgstr "Ste pozabili geslo?"
 
 #. Cisco LEAP
 #: js/gdm/authPrompt.js:303 js/ui/components/networkAgent.js:363
@@ -779,9 +777,8 @@ msgid ""
 msgstr ""
 
 #: js/gdm/authPrompt.js:762
-#, fuzzy
 msgid "Your unlock code was incorrect. Please try again."
-msgstr "Overitev je spodletela.. Poskusite znova."
+msgstr "Vaše geslo za odklepanje ni bila pravilno. Prosim poskusite ponovno."
 
 #: js/gdm/loginDialog.js:317
 msgid "Choose Session"
@@ -1053,7 +1050,7 @@ msgstr "%d. %B %Y, %l∶%M %p"
 #.
 #: js/misc/util.js:573
 msgid "Google"
-msgstr ""
+msgstr "Google"
 
 #. TRANSLATORS: this is the title of the wifi captive portal login window
 #: js/portalHelper/main.js:41
@@ -1093,9 +1090,8 @@ msgstr "Zaženi z uporabo določene grafične kartice"
 
 #. Add the "Remove from desktop" menu item at the end.
 #: js/ui/appDisplay.js:2443
-#, fuzzy
 msgid "Remove from desktop"
-msgstr "Odstrani iz priljubljenih"
+msgstr "Odstrani iz Namizja"
 
 #: js/ui/audioDeviceSelection.js:41
 msgid "Select Audio Device"
@@ -1123,11 +1119,11 @@ msgstr "Spremeni ozadje …"
 
 #: js/ui/backgroundMenu.js:18
 msgid "Add App"
-msgstr ""
+msgstr "Dodaj Aplikacijo"
 
 #: js/ui/backgroundMenu.js:24
 msgid "Add Website"
-msgstr ""
+msgstr "Dodaj Spletno stran"
 
 #. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday).
 #: js/ui/calendar.js:41
@@ -1313,11 +1309,11 @@ msgstr "Poveži"
 
 #: js/ui/components/networkAgent.js:141
 msgid "Limited Data"
-msgstr ""
+msgstr "Omejeni Podatki"
 
 #: js/ui/components/networkAgent.js:151
 msgid "Unlimited Data"
-msgstr ""
+msgstr "Neomejeni Podatki"
 
 #: js/ui/components/networkAgent.js:163 js/ui/components/networkAgent.js:198
 msgid "Enable if your connection has limits on how much you can download."
@@ -1350,7 +1346,7 @@ msgstr "Storitev: "
 #: js/ui/components/networkAgent.js:471
 #, javascript-format
 msgid "Enter the Wi-Fi password for “%s”"
-msgstr ""
+msgstr "Vnesite geslo za Wi-Fi za “%s”"
 
 #: js/ui/components/networkAgent.js:476 js/ui/components/networkAgent.js:851
 msgid "Wired 802.1X authentication"
@@ -1878,7 +1874,7 @@ msgstr "Razveljavi"
 
 #: js/ui/overview.js:113
 msgid "No apps are open"
-msgstr ""
+msgstr "Nobena aplikacija ni odprta"
 
 #. Translators: This is the main view to select
 #. activities. See also note for "Activities" string.
@@ -1956,14 +1952,13 @@ msgid "User Menu"
 msgstr "Meni sistemske vrstice"
 
 #: js/ui/panel.js:833
-#, fuzzy
 msgctxt "Power menu"
 msgid "Power"
 msgstr "Napajanje"
 
 #: js/ui/panel.js:907
 msgid "Bottom Bar"
-msgstr ""
+msgstr "Spodnja vrstica"
 
 #: js/ui/paygUnlockDialog.js:93
 msgid "Your Pay As You Go usage credit has expired."
@@ -1971,7 +1966,7 @@ msgstr ""
 
 #: js/ui/paygUnlockDialog.js:116
 msgid "Enter a new code to unlock your computer:"
-msgstr ""
+msgstr "Vnesite novo geslo za odklepanje računalnika:"
 
 #: js/ui/paygUnlockDialog.js:139
 msgid "Don’t have an unlock code? That’s OK!"
@@ -1997,9 +1992,8 @@ msgid "Pay As You Go Account ID: %s"
 msgstr ""
 
 #: js/ui/paygUnlockDialog.js:198
-#, fuzzy
 msgid "Unlock Machine"
-msgstr "Odkleni okno"
+msgstr "Odkleni Napravo"
 
 #: js/ui/paygUnlockDialog.js:287 js/ui/shellMountOperation.js:380
 msgid "Unlock"
@@ -2045,9 +2039,8 @@ msgid "Too many attempts. Try again in a few seconds."
 msgstr ""
 
 #: js/ui/payg.js:261
-#, fuzzy
 msgid "Invalid code. Please try again."
-msgstr "Overitev je spodletela.. Poskusite znova."
+msgstr "Napačno geslo. Prosim poskusite ponovno."
 
 #: js/ui/payg.js:263
 msgid "Code already used. Please enter a new code."
@@ -2065,49 +2058,48 @@ msgstr ""
 #. We don't consider any other error here (and we don't consider DISABLED explicitly,
 #. since that should not happen), but still we need to show something to the user.
 #: js/ui/payg.js:271
-#, fuzzy
 msgid "Unknown error"
-msgstr "Neznan vzrok"
+msgstr "Neznana napaka"
 
 #: js/ui/payg.js:452
 msgid "Apply Code"
-msgstr ""
+msgstr "Vpiši Geslo"
 
 #: js/ui/payg.js:606
 #, javascript-format
 msgid "%s second"
 msgid_plural "%s seconds"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
+msgstr[0] "%s sekund"
+msgstr[1] "%s sekund"
+msgstr[2] "%s sekund"
+msgstr[3] "%s sekund"
 
 #: js/ui/payg.js:610 js/ui/payg.js:620
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s minute"
 msgid_plural "%s minutes"
-msgstr[0] "minut"
-msgstr[1] "minuta"
-msgstr[2] "minuti"
-msgstr[3] "minute"
+msgstr[0] "%s minut"
+msgstr[1] "%s minut"
+msgstr[2] "%s minut"
+msgstr[3] "%s minut"
 
 #: js/ui/payg.js:614 js/ui/payg.js:631
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s hour"
 msgid_plural "%s hours"
-msgstr[0] "ur"
-msgstr[1] "ura"
-msgstr[2] "uri"
-msgstr[3] "ure"
+msgstr[0] "%s ura"
+msgstr[1] "%s ur"
+msgstr[2] "%s ur"
+msgstr[3] "%s ur"
 
 #: js/ui/payg.js:625
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s day"
 msgid_plural "%s days"
-msgstr[0] "%s – ves dan."
-msgstr[1] "%s – ves dan."
-msgstr[2] "%s – ves dan."
-msgstr[3] "%s – ves dan."
+msgstr[0] "%s dan"
+msgstr[1] "%s dni"
+msgstr[2] "%s dni"
+msgstr[3] "%s dni"
 
 #: js/ui/payg.js:641
 #, fuzzy, javascript-format
@@ -2226,18 +2218,17 @@ msgid "Hide Text"
 msgstr "Skrij besedilo"
 
 #: js/ui/shellEntry.js:194
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Search %s and more…"
-msgstr "Iskanje …"
+msgstr "Išči %s in več…"
 
 #: js/ui/shellEntry.js:196
 msgid "Search the internet and more…"
-msgstr ""
+msgstr "Preiščite internet in še več…"
 
 #: js/ui/shellEntry.js:198
-#, fuzzy
 msgid "Search…"
-msgstr "Iskanje …"
+msgstr "Išči ..."
 
 #: js/ui/shellEntry.js:490
 msgid "Caps lock is on."
@@ -2339,23 +2330,20 @@ msgstr "Veliko besedilo"
 
 #: js/ui/status/automaticUpdates.js:80
 msgid "Updates Queue"
-msgstr ""
+msgstr "Čakalna vrsta posodobitev"
 
 #: js/ui/status/automaticUpdates.js:105
-#, fuzzy
 msgid "Set a Schedule"
-msgstr "Nič ni razporejeno"
+msgstr "Nastavite urnik"
 
 #. The status label
 #: js/ui/status/automaticUpdates.js:198
-#, fuzzy
 msgid "Automatic Updates"
-msgstr "Samodejno določanje mesta"
+msgstr "Samodejne posodobitve"
 
 #: js/ui/status/automaticUpdates.js:263
-#, fuzzy
 msgid "Automatic updates on"
-msgstr "Samodejno določanje mesta"
+msgstr "Samodejne posodobitve prižgane"
 
 #: js/ui/status/automaticUpdates.js:264
 msgid ""
@@ -2378,9 +2366,8 @@ msgid "Close"
 msgstr "Zapri"
 
 #: js/ui/status/automaticUpdates.js:290
-#, fuzzy
 msgid "Change Settings…"
-msgstr "Nastavitve miške"
+msgstr "Spremenite Nastavitve…"
 
 #: js/ui/status/bluetooth.js:40
 msgid "Bluetooth"
@@ -2401,14 +2388,12 @@ msgstr[2] "%d povezano"
 msgstr[3] "%d povezano"
 
 #: js/ui/status/bluetooth.js:134
-#, fuzzy
 msgid "Bluetooth Off"
-msgstr "Bluetooth"
+msgstr "Bluetooth Off"
 
 #: js/ui/status/bluetooth.js:136
-#, fuzzy
 msgid "Bluetooth On"
-msgstr "Bluetooth"
+msgstr "Bluetooth On"
 
 #: js/ui/status/brightness.js:39
 msgid "Brightness"
@@ -2716,7 +2701,7 @@ msgstr "Onemogoči do jutri"
 
 #: js/ui/status/payg.js:27
 msgid "Enter unlock code…"
-msgstr ""
+msgstr "Vnesite kodo za odklepanje…"
 
 #: js/ui/status/payg.js:86
 #, fuzzy
@@ -2725,7 +2710,7 @@ msgstr "Poteka ponovno zaganjanje …"
 
 #: js/ui/status/payg.js:90
 msgid "Less than 1 minute"
-msgstr ""
+msgstr "Manj kot 1 minuto nazaj"
 
 #: js/ui/status/payg.js:124
 #, fuzzy, javascript-format
@@ -3407,35 +3392,32 @@ msgstr "Omeji preklopnik na trenutno delovno površino."
 
 #: js/ui/appIconBar.js:282
 msgid "Pin to Taskbar"
-msgstr ""
+msgstr "Pripni na opravilno vrstico"
 
 #: js/ui/appIconBar.js:286
 msgid "Unpin from Taskbar"
-msgstr ""
+msgstr "Odpni iz opravilne vrstice"
 
 #: js/ui/appIconBar.js:310
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Quit %s"
-msgstr "Končaj"
+msgstr "Končaj %s"
 
 #: js/ui/endlessButton.js:14
 msgid "Endless Button"
-msgstr ""
+msgstr "Gumb Endless"
 
 #: js/ui/endlessButton.js:67
-#, fuzzy
 msgid "Show Desktop"
-msgstr "Pokaži besedilo"
+msgstr "Pokaži Namizje"
 
 #: js/ui/endlessButton.js:69
-#, fuzzy
 msgid "Show Apps"
-msgstr "Pokaži programe"
+msgstr "Pokaži Aplikacije"
 
 #: js/ui/forceAppExitDialog.js:50
-#, fuzzy
 msgid "Quit applications"
-msgstr "Programi"
+msgstr "Zaprite aplikacije"
 
 #: js/ui/forceAppExitDialog.js:56
 msgid ""
@@ -3454,9 +3436,8 @@ msgid "Quit Application"
 msgstr "Programi"
 
 #: js/ui/hotCorner.js:15
-#, fuzzy
 msgid "Hot Corner"
-msgstr "Ni vzpostavljene povezave"
+msgstr "Vroči kot"
 
 #: js/ui/hotCorner.js:25
 #, fuzzy
@@ -3474,9 +3455,8 @@ msgid "%s has been removed"
 msgstr "Program »%s« je odstranjen iz priljubljenih."
 
 #: js/ui/iconGridLayout.js:540
-#, fuzzy
 msgid "New Folder"
-msgstr "Neimenovana mapa"
+msgstr "Nova Mapa"
 
 #: js/ui/internetSearch.js:70
 #, fuzzy, javascript-format
@@ -3497,9 +3477,8 @@ msgid "Search the internet for \"%s\""
 msgstr ""
 
 #: js/ui/userMenu.js:16
-#, fuzzy
 msgid "Social Accounts"
-msgstr "Spletni računi"
+msgstr "Socialna Računi"
 
 #: js/ui/userMenu.js:19
 msgid "Settings"
@@ -3510,9 +3489,8 @@ msgid "Give Us Feedback"
 msgstr ""
 
 #: src/shell-desktop-dir-info.c:485
-#, fuzzy
 msgid "Unnamed"
-msgstr "Neimenovana mapa"
+msgstr "Neimenovano"
 
 #: src/shell-desktop-dir-info.c:745
 #, c-format

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: l 10n-gnome\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-17 17:09+0100\n"
+"POT-Creation-Date: 2020-04-17 17:11+0100\n"
 "PO-Revision-Date: 2011-10-17 13:36+0200\n"
 "Last-Translator: Erdal Ronahî <erdal dot ronahi at gmail dot com>\n"
 "Language-Team: Kurdish Team http://pckurd.net\n"
@@ -484,7 +484,7 @@ msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:420
 msgid "Location"
-msgstr ""
+msgstr "Cih"
 
 #: data/org.gnome.shell.gschema.xml.in:421
 msgid "The location for which to show a forecast"
@@ -608,7 +608,7 @@ msgstr[1] ""
 #: subprojects/extensions-tool/src/command-create.c:211
 #: subprojects/extensions-tool/src/main.c:173
 msgid "Description"
-msgstr ""
+msgstr "Rave"
 
 #: js/extensionPrefs/data/ui/extension-row.ui:123
 #: subprojects/extensions-tool/src/main.c:185
@@ -752,7 +752,6 @@ msgstr ""
 
 #. Translators: The name of the power-off action in search
 #: js/misc/systemActions.js:89
-#, fuzzy
 msgctxt "search-result"
 msgid "Power Off"
 msgstr "Girtin"
@@ -786,7 +785,6 @@ msgstr ""
 
 #. Translators: The name of the suspend action in search
 #: js/misc/systemActions.js:113
-#, fuzzy
 msgctxt "search-result"
 msgid "Suspend"
 msgstr "Xew"
@@ -1431,7 +1429,6 @@ msgid "Log Out"
 msgstr ""
 
 #: js/ui/endSessionDialog.js:58
-#, fuzzy
 msgctxt "title"
 msgid "Power Off"
 msgstr "Girtin"
@@ -1454,19 +1451,16 @@ msgid "Install pending software updates"
 msgstr ""
 
 #: js/ui/endSessionDialog.js:68 js/ui/endSessionDialog.js:84
-#, fuzzy
 msgctxt "button"
 msgid "Restart"
 msgstr "Dîsdestpêkirin"
 
 #: js/ui/endSessionDialog.js:70
-#, fuzzy
 msgctxt "button"
 msgid "Power Off"
 msgstr "Girtin"
 
 #: js/ui/endSessionDialog.js:76
-#, fuzzy
 msgctxt "title"
 msgid "Restart"
 msgstr "Dîsdestpêkirin"
@@ -2117,9 +2111,9 @@ msgstr ""
 
 #. Translators: %s is the Disks application
 #: js/ui/shellMountOperation.js:391
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Open %s"
-msgstr "Bi %s veke"
+msgstr "%s veke"
 
 #: js/ui/shellMountOperation.js:423
 msgid "The PIM must be a number or empty."
@@ -2887,7 +2881,7 @@ msgstr ""
 #: subprojects/extensions-tool/src/command-create.c:197
 #: subprojects/extensions-tool/src/main.c:170
 msgid "Name"
-msgstr ""
+msgstr "Nav"
 
 #: subprojects/extensions-tool/src/command-create.c:208
 #, c-format
@@ -3094,7 +3088,7 @@ msgstr ""
 
 #: subprojects/extensions-tool/src/main.c:179
 msgid "URL"
-msgstr ""
+msgstr "URL"
 
 #: subprojects/extensions-tool/src/main.c:182
 msgid "Original author"
@@ -3120,7 +3114,7 @@ msgstr ""
 #: subprojects/extensions-tool/src/main.c:242
 #: subprojects/extensions-tool/src/main.c:245
 msgid "COMMAND"
-msgstr ""
+msgstr "FERMAN"
 
 #: subprojects/extensions-tool/src/main.c:245
 msgid "[ARGS…]"

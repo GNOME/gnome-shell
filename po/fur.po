@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: video-subtitles master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-17 17:09+0100\n"
+"POT-Creation-Date: 2020-04-17 17:11+0100\n"
 "PO-Revision-Date: 2020-01-26 20:08+0100\n"
 "Last-Translator: Fabio Tomat <f.t.public@gmail.com>\n"
 "Language-Team: Friulian <fur@li.org>\n"
@@ -15,8 +15,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.2.4\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 2.2.4\n"
 
 #: data/50-gnome-shell-system.xml:6
 msgid "System"
@@ -655,7 +655,7 @@ msgstr "Anule"
 
 #: js/extensionPrefs/js/main.js:149 js/ui/appDisplay.js:2499
 msgid "Remove"
-msgstr ""
+msgstr "Gjave"
 
 #: js/extensionPrefs/js/main.js:181
 msgid "translator-credits"
@@ -1936,10 +1936,9 @@ msgid "User Menu"
 msgstr ""
 
 #: js/ui/panel.js:833
-#, fuzzy
 msgctxt "Power menu"
 msgid "Power"
-msgstr "Distudâ"
+msgstr "Sparagn energjietic"
 
 #: js/ui/panel.js:907
 msgid "Bottom Bar"
@@ -2308,9 +2307,8 @@ msgstr ""
 
 #. The status label
 #: js/ui/status/automaticUpdates.js:198
-#, fuzzy
 msgid "Automatic Updates"
-msgstr "Ubicazion automatiche"
+msgstr "Inzornaments automatics"
 
 #: js/ui/status/automaticUpdates.js:263
 #, fuzzy

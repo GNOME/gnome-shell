@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell-3-6\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-17 17:09+0100\n"
+"POT-Creation-Date: 2020-04-17 17:11+0100\n"
 "PO-Revision-Date: 2012-09-24 14:29+0600\n"
 "Last-Translator: Timur Zhamakeev <ztimur@gmail.com>\n"
 "Language-Team: Kirghiz <gnome-i18n@gnome.org>\n"
@@ -18,8 +18,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Poedit-SourceCharset: UTF-8\n"
 "X-Generator: Lokalize 1.4\n"
+"X-Poedit-SourceCharset: UTF-8\n"
 
 #: data/50-gnome-shell-system.xml:6
 msgid "System"
@@ -519,9 +519,8 @@ msgid "Whether to fetch the current location or not"
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:420
-#, fuzzy
 msgid "Location"
-msgstr "Эскертүүлөр"
+msgstr "Дарек"
 
 #: data/org.gnome.shell.gschema.xml.in:421
 msgid "The location for which to show a forecast"
@@ -649,7 +648,7 @@ msgstr[0] ""
 #: subprojects/extensions-tool/src/command-create.c:211
 #: subprojects/extensions-tool/src/main.c:173
 msgid "Description"
-msgstr ""
+msgstr "Баяндама"
 
 #: js/extensionPrefs/data/ui/extension-row.ui:123
 #: subprojects/extensions-tool/src/main.c:185
@@ -801,7 +800,6 @@ msgstr "(же эсептеген орнотмодон бармагыңызды �
 
 #. Translators: The name of the power-off action in search
 #: js/misc/systemActions.js:89
-#, fuzzy
 msgctxt "search-result"
 msgid "Power Off"
 msgstr "Өчүрүү"
@@ -824,7 +822,6 @@ msgstr ""
 
 #. Translators: The name of the logout action in search
 #: js/misc/systemActions.js:105
-#, fuzzy
 msgctxt "search-result"
 msgid "Log Out"
 msgstr "Системадан чыгуу"
@@ -836,7 +833,6 @@ msgstr ""
 
 #. Translators: The name of the suspend action in search
 #: js/misc/systemActions.js:113
-#, fuzzy
 msgctxt "search-result"
 msgid "Suspend"
 msgstr "Күтүүчү режим"
@@ -849,7 +845,6 @@ msgstr "Күтүүчү режим"
 
 #. Translators: The name of the switch user action in search
 #: js/misc/systemActions.js:121
-#, fuzzy
 msgctxt "search-result"
 msgid "Switch User"
 msgstr "Колдонуучуну которуу"
@@ -1872,9 +1867,8 @@ msgid "Press any key to exit"
 msgstr ""
 
 #: js/ui/panel.js:96
-#, fuzzy
 msgid "Show Details"
-msgstr "Текстти көрсөтүү"
+msgstr "Детальдарды көрсөтүү"
 
 #: js/ui/panel.js:112
 msgid "Quit"
@@ -1887,7 +1881,6 @@ msgid "Activities"
 msgstr "Сереп"
 
 #: js/ui/panel.js:716
-#, fuzzy
 msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "Файлдар системасы"
@@ -2982,7 +2975,7 @@ msgstr ""
 #: subprojects/extensions-tool/src/command-create.c:197
 #: subprojects/extensions-tool/src/main.c:170
 msgid "Name"
-msgstr ""
+msgstr "Ат"
 
 #: subprojects/extensions-tool/src/command-create.c:208
 #, c-format
@@ -3197,7 +3190,7 @@ msgstr ""
 
 #: subprojects/extensions-tool/src/main.c:179
 msgid "URL"
-msgstr ""
+msgstr "URL"
 
 #: subprojects/extensions-tool/src/main.c:182
 msgid "Original author"

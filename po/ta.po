@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-17 17:09+0100\n"
+"POT-Creation-Date: 2020-04-17 17:11+0100\n"
 "PO-Revision-Date: 2014-09-13 21:39+0630\n"
 "Last-Translator: Shantha kumar <shkumar@redhat.com>\n"
 "Language-Team: American English <kde-i18n-doc@kde.org>\n"
@@ -18,8 +18,8 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Lokalize 1.5\n"
-"X-Poedit-Language: தமிழ்\n"
 "X-Poedit-Country: இந்தியா\n"
+"X-Poedit-Language: தமிழ்\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
 #: data/50-gnome-shell-system.xml:6
@@ -680,7 +680,7 @@ msgstr[1] ""
 #: subprojects/extensions-tool/src/command-create.c:211
 #: subprojects/extensions-tool/src/main.c:173
 msgid "Description"
-msgstr ""
+msgstr "விளக்கம்"
 
 #: js/extensionPrefs/data/ui/extension-row.ui:123
 #: subprojects/extensions-tool/src/main.c:185
@@ -830,10 +830,9 @@ msgstr "(அல்லது விரல் தீய்ப்பு)"
 
 #. Translators: The name of the power-off action in search
 #: js/misc/systemActions.js:89
-#, fuzzy
 msgctxt "search-result"
 msgid "Power Off"
-msgstr "மின்சக்தி நிறுத்தம்"
+msgstr "மின்சக்தி நிறுத்து"
 
 #. Translators: A list of keywords that match the power-off action, separated by semicolons
 #: js/misc/systemActions.js:92
@@ -844,7 +843,7 @@ msgstr ""
 #: js/misc/systemActions.js:97
 msgctxt "search-result"
 msgid "Lock Screen"
-msgstr ""
+msgstr "பூட்டுத் திரை"
 
 #. Translators: A list of keywords that match the lock screen action, separated by semicolons
 #: js/misc/systemActions.js:100
@@ -853,7 +852,6 @@ msgstr ""
 
 #. Translators: The name of the logout action in search
 #: js/misc/systemActions.js:105
-#, fuzzy
 msgctxt "search-result"
 msgid "Log Out"
 msgstr "வெளியேறு"
@@ -865,7 +863,6 @@ msgstr ""
 
 #. Translators: The name of the suspend action in search
 #: js/misc/systemActions.js:113
-#, fuzzy
 msgctxt "search-result"
 msgid "Suspend"
 msgstr "இடைநிறுத்தம்."
@@ -878,7 +875,6 @@ msgstr "இடைநிறுத்தம்."
 
 #. Translators: The name of the switch user action in search
 #: js/misc/systemActions.js:121
-#, fuzzy
 msgctxt "search-result"
 msgid "Switch User"
 msgstr "பயனர் மாற்று"
@@ -1098,9 +1094,8 @@ msgid "Select Audio Device"
 msgstr ""
 
 #: js/ui/audioDeviceSelection.js:54
-#, fuzzy
 msgid "Sound Settings"
-msgstr "அமைப்புகள்"
+msgstr "ஒலி அமைப்புகள்"
 
 #: js/ui/audioDeviceSelection.js:64
 msgid "Headphones"
@@ -1712,14 +1707,12 @@ msgid "Allow"
 msgstr "அனுமதி"
 
 #: js/ui/kbdA11yDialog.js:32
-#, fuzzy
 msgid "Slow Keys Turned On"
-msgstr "மெது விசைகள்"
+msgstr "எச்சரிக்கை விசைகள் மெதுவானது"
 
 #: js/ui/kbdA11yDialog.js:33
-#, fuzzy
 msgid "Slow Keys Turned Off"
-msgstr "மெது விசைகள்"
+msgstr "எச்சரிக்கை விசைகள் "
 
 #: js/ui/kbdA11yDialog.js:34
 msgid ""
@@ -1728,14 +1721,12 @@ msgid ""
 msgstr ""
 
 #: js/ui/kbdA11yDialog.js:41
-#, fuzzy
 msgid "Sticky Keys Turned On"
-msgstr "ஒட்டு விசைகள்"
+msgstr "எச்சரிக்கை விசைகள் ஒட்டுபவை "
 
 #: js/ui/kbdA11yDialog.js:42
-#, fuzzy
 msgid "Sticky Keys Turned Off"
-msgstr "ஒட்டு விசைகள்"
+msgstr "எச்சரிக்கை விசைகள் ஒட்டுபவை "
 
 #: js/ui/kbdA11yDialog.js:44
 msgid ""
@@ -1752,7 +1743,7 @@ msgstr ""
 
 #: js/ui/kbdA11yDialog.js:55
 msgid "Leave On"
-msgstr ""
+msgstr "இயக்கத்தில் விடு"
 
 #: js/ui/kbdA11yDialog.js:55 js/ui/status/automaticUpdates.js:315
 #: js/ui/status/bluetooth.js:138 js/ui/status/network.js:1288
@@ -1769,12 +1760,11 @@ msgstr "முடக்கு"
 
 #: js/ui/kbdA11yDialog.js:63
 msgid "Leave Off"
-msgstr ""
+msgstr "இயக்க நீக்கத்தில் விடு"
 
 #: js/ui/keyboard.js:207
-#, fuzzy
 msgid "Region & Language Settings"
-msgstr "தேதி நேரம் அமைப்புகள்"
+msgstr "வட்டாரம் மற்றும் மொழி  அமைப்புகள்"
 
 #: js/ui/lookingGlass.js:665
 msgid "No extensions installed"
@@ -1932,7 +1922,6 @@ msgid "Activities"
 msgstr "செயல்பாடுகள்"
 
 #: js/ui/panel.js:716
-#, fuzzy
 msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "கணினி"
@@ -1944,7 +1933,6 @@ msgid "User Menu"
 msgstr "தட்டில் பட்டி"
 
 #: js/ui/panel.js:833
-#, fuzzy
 msgctxt "Power menu"
 msgid "Power"
 msgstr "மின்சக்தி"
@@ -2715,15 +2703,15 @@ msgstr "கணிக்கிறது…"
 
 #. Translators: this is <hours>:<minutes> Remaining (<percentage>)
 #: js/ui/status/power.js:86
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%d∶%02d Remaining (%d %%)"
-msgstr "%d∶%02d மீதமுள்ளது (%d%%)"
+msgstr "%d∶%02d மீதமுள்ளது (%d %%)"
 
 #. Translators: this is <hours>:<minutes> Until Full (<percentage>)
 #: js/ui/status/power.js:91
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%d∶%02d Until Full (%d %%)"
-msgstr "%d∶%02d முழுமையாகும் வரை (%d%%)"
+msgstr "%d∶%02d முழுமையாகும் வரை (%d %%)"
 
 #: js/ui/status/power.js:140 js/ui/status/power.js:142
 #, javascript-format
@@ -3033,7 +3021,7 @@ msgstr ""
 #: subprojects/extensions-tool/src/command-create.c:197
 #: subprojects/extensions-tool/src/main.c:170
 msgid "Name"
-msgstr ""
+msgstr "பெயர்"
 
 #: subprojects/extensions-tool/src/command-create.c:208
 #, c-format
@@ -3250,7 +3238,7 @@ msgstr ""
 
 #: subprojects/extensions-tool/src/main.c:179
 msgid "URL"
-msgstr ""
+msgstr "வலைமனை"
 
 #: subprojects/extensions-tool/src/main.c:182
 msgid "Original author"
@@ -3276,7 +3264,7 @@ msgstr ""
 #: subprojects/extensions-tool/src/main.c:242
 #: subprojects/extensions-tool/src/main.c:245
 msgid "COMMAND"
-msgstr ""
+msgstr "COMMAND"
 
 #: subprojects/extensions-tool/src/main.c:245
 msgid "[ARGS…]"
@@ -3524,7 +3512,6 @@ msgstr ""
 #~ msgid "Sign In"
 #~ msgstr "உள்நுழை"
 
-#~| msgid "Authentication Required"
 #~ msgid "Web Authentication Redirect"
 #~ msgstr "இணைய அங்கீகரிப்பு திருப்பிவிடல்"
 
@@ -3867,7 +3854,6 @@ msgstr ""
 #~ msgid "Restarting the system."
 #~ msgstr "கணினி மறு துவக்கம் செய்யப்படுகிறது"
 
-#~| msgid "Settings"
 #~ msgid "Settings Menu"
 #~ msgstr "பட்டி அமைப்புகள்"
 
@@ -3889,8 +3875,6 @@ msgstr ""
 #~ msgid "Pairing confirmation for %s"
 #~ msgstr "%s க்கு இணை சேர்த்த உறுதிப்படுத்தல்"
 
-#~| msgid ""
-#~| "Please confirm whether the PIN '%06d' matches the one on the device."
 #~ msgid ""
 #~ "Please confirm whether the Passkey '%06d' matches the one on the device."
 #~ msgstr ""

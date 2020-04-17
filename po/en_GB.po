@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-17 17:09+0100\n"
+"POT-Creation-Date: 2020-04-17 17:11+0100\n"
 "PO-Revision-Date: 2020-02-23 12:49+0000\n"
 "Last-Translator: Bruce Cowan <bruce@bcowan.me.uk>\n"
 "Language-Team: English - United Kingdom <en@li.org>\n"
@@ -1913,7 +1913,6 @@ msgid "User Menu"
 msgstr "Tray Menu"
 
 #: js/ui/panel.js:833
-#, fuzzy
 msgctxt "Power menu"
 msgid "Power"
 msgstr "Power"
@@ -2283,9 +2282,8 @@ msgstr "Nothing Scheduled"
 
 #. The status label
 #: js/ui/status/automaticUpdates.js:198
-#, fuzzy
 msgid "Automatic Updates"
-msgstr "Automatic location"
+msgstr "Automatic Updates"
 
 #: js/ui/status/automaticUpdates.js:263
 #, fuzzy
@@ -3444,7 +3442,6 @@ msgstr ""
 #~ msgid "Add to Favorites"
 #~ msgstr "Add to Favourites"
 
-#~| msgid "Type to search…"
 #~ msgid "Type to search"
 #~ msgstr "Type to search"
 
@@ -3491,7 +3488,6 @@ msgstr ""
 #~ msgstr[0] "%d new notification"
 #~ msgstr[1] "%d new notifications"
 
-#~| msgid "Shell Extensions"
 #~ msgid "org.gnome.Extensions"
 #~ msgstr "org.gnome.Extensions"
 
@@ -3502,7 +3498,6 @@ msgstr ""
 #~ msgid "Lock Orientation"
 #~ msgstr "Lock Orientation"
 
-#~| msgid "Username: "
 #~ msgid "Rename"
 #~ msgstr "Rename"
 
@@ -3865,7 +3860,6 @@ msgstr ""
 #~ msgid "<b>%B</b> <b>%d</b> <b>%Y</b>, <b>%H:%M</b> "
 #~ msgstr "<b>%d</b> <b>%B</b> <b>%Y</b>, <b>%H:%M</b> "
 
-#~| msgid "Settings"
 #~ msgid "Settings Menu"
 #~ msgstr "Settings Menu"
 
@@ -3887,8 +3881,6 @@ msgstr ""
 #~ msgid "Pairing confirmation for %s"
 #~ msgstr "Pairing confirmation for %s"
 
-#~| msgid ""
-#~| "Please confirm whether the PIN '%06d' matches the one on the device."
 #~ msgid ""
 #~ "Please confirm whether the Passkey '%06d' matches the one on the device."
 #~ msgstr ""
@@ -4009,7 +4001,6 @@ msgstr ""
 #~ "the current date, and use this extension. It should be changed when "
 #~ "recording to a different container format."
 
-#~| msgid "Session..."
 #~ msgid "Session…"
 #~ msgstr "Session…"
 
@@ -4044,11 +4035,9 @@ msgstr ""
 #~ msgid "Visibility"
 #~ msgstr "Visibility"
 
-#~| msgid "Set up a New Device..."
 #~ msgid "Set Up a New Device…"
 #~ msgstr "Set Up a New Device…"
 
-#~| msgid "Send Files..."
 #~ msgid "Send Files…"
 #~ msgstr "Send Files…"
 
@@ -4104,11 +4093,9 @@ msgstr ""
 #~ msgstr[0] "%d minute remaining"
 #~ msgstr[1] "%d minutes remaining"
 
-#~| msgid "AC adapter"
 #~ msgid "AC Adapter"
 #~ msgstr "AC Adapter"
 
-#~| msgid "Laptop battery"
 #~ msgid "Laptop Battery"
 #~ msgstr "Laptop Battery"
 
@@ -4121,11 +4108,9 @@ msgstr ""
 #~ msgid "PDA"
 #~ msgstr "PDA"
 
-#~| msgid "Cell phone"
 #~ msgid "Cell Phone"
 #~ msgstr "Mobile Phone"
 
-#~| msgid "Media player"
 #~ msgid "Media Player"
 #~ msgstr "Media Player"
 

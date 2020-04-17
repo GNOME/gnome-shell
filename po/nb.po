@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell 3.36.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-17 17:09+0100\n"
+"POT-Creation-Date: 2020-04-17 17:11+0100\n"
 "PO-Revision-Date: 2020-03-09 16:39+0100\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian bokmål <i18n-nb@lister.ping.uio.no>\n"
@@ -1675,11 +1675,11 @@ msgstr "Tillat"
 
 #: js/ui/kbdA11yDialog.js:32
 msgid "Slow Keys Turned On"
-msgstr "Trege taster slått på"
+msgstr "Trege taster er slått på"
 
 #: js/ui/kbdA11yDialog.js:33
 msgid "Slow Keys Turned Off"
-msgstr "Trege taster slått av"
+msgstr "Trege taster er slått av"
 
 #: js/ui/kbdA11yDialog.js:34
 msgid ""
@@ -1710,7 +1710,7 @@ msgstr ""
 
 #: js/ui/kbdA11yDialog.js:55
 msgid "Leave On"
-msgstr "La den være på"
+msgstr "La være på"
 
 #: js/ui/kbdA11yDialog.js:55 js/ui/status/automaticUpdates.js:315
 #: js/ui/status/bluetooth.js:138 js/ui/status/network.js:1288
@@ -1727,7 +1727,7 @@ msgstr "Slå av"
 
 #: js/ui/kbdA11yDialog.js:63
 msgid "Leave Off"
-msgstr "La den være av"
+msgstr "La være av"
 
 #: js/ui/keyboard.js:207
 msgid "Region & Language Settings"
@@ -1894,10 +1894,9 @@ msgid "User Menu"
 msgstr ""
 
 #: js/ui/panel.js:833
-#, fuzzy
 msgctxt "Power menu"
 msgid "Power"
-msgstr "Slå av"
+msgstr "Strøm"
 
 #: js/ui/panel.js:907
 msgid "Bottom Bar"
@@ -2263,9 +2262,8 @@ msgstr ""
 
 #. The status label
 #: js/ui/status/automaticUpdates.js:198
-#, fuzzy
 msgid "Automatic Updates"
-msgstr "Automatisk stedsplassering"
+msgstr "Automatiske oppdateringer"
 
 #: js/ui/status/automaticUpdates.js:263
 #, fuzzy

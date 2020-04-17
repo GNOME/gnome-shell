@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-17 17:09+0100\n"
+"POT-Creation-Date: 2020-04-17 17:11+0100\n"
 "PO-Revision-Date: 2014-04-03 10:34+0700\n"
 "Last-Translator: Sophea Sok <sophea@open.org.kh>\n"
 "Language-Team: Khmer <>\n"
@@ -665,9 +665,8 @@ msgstr ""
 
 #: js/extensionPrefs/data/ui/extension-row.ui:123
 #: subprojects/extensions-tool/src/main.c:185
-#, fuzzy
 msgid "Version"
-msgstr "ផ្នែក​បន្ថែម"
+msgstr "កំណែ"
 
 #: js/extensionPrefs/data/ui/extension-row.ui:151
 msgid "Author"
@@ -810,7 +809,6 @@ msgstr "(ឬ​អូស​ម្រាមដៃ)"
 
 #. Translators: The name of the power-off action in search
 #: js/misc/systemActions.js:89
-#, fuzzy
 msgctxt "search-result"
 msgid "Power Off"
 msgstr "បិទ"
@@ -833,7 +831,6 @@ msgstr ""
 
 #. Translators: The name of the logout action in search
 #: js/misc/systemActions.js:105
-#, fuzzy
 msgctxt "search-result"
 msgid "Log Out"
 msgstr "ចេញ"
@@ -845,7 +842,6 @@ msgstr ""
 
 #. Translators: The name of the suspend action in search
 #: js/misc/systemActions.js:113
-#, fuzzy
 msgctxt "search-result"
 msgid "Suspend"
 msgstr "ផ្អាក"
@@ -858,7 +854,6 @@ msgstr "ផ្អាក"
 
 #. Translators: The name of the switch user action in search
 #: js/misc/systemActions.js:121
-#, fuzzy
 msgctxt "search-result"
 msgid "Switch User"
 msgstr "ប្ដូរ​អ្នកប្រើ"
@@ -1677,14 +1672,12 @@ msgid "Allow"
 msgstr ""
 
 #: js/ui/kbdA11yDialog.js:32
-#, fuzzy
 msgid "Slow Keys Turned On"
-msgstr "គ្រាប់ចុច​យឺត"
+msgstr "បាន​បើក​គ្រាប់ចុច​យឺត"
 
 #: js/ui/kbdA11yDialog.js:33
-#, fuzzy
 msgid "Slow Keys Turned Off"
-msgstr "គ្រាប់ចុច​យឺត"
+msgstr "បាន​បិទ​គ្រាប់ចុច​យឺត"
 
 #: js/ui/kbdA11yDialog.js:34
 msgid ""
@@ -1693,14 +1686,12 @@ msgid ""
 msgstr ""
 
 #: js/ui/kbdA11yDialog.js:41
-#, fuzzy
 msgid "Sticky Keys Turned On"
-msgstr "គ្រាប់ចុចស្អិត"
+msgstr "បាន​បើក​គ្រាប់ចុច​ស្អិត"
 
 #: js/ui/kbdA11yDialog.js:42
-#, fuzzy
 msgid "Sticky Keys Turned Off"
-msgstr "គ្រាប់ចុចស្អិត"
+msgstr "បាន​បិទ​គ្រាប់ចុច​ស្អិត"
 
 #: js/ui/kbdA11yDialog.js:44
 msgid ""
@@ -1717,7 +1708,7 @@ msgstr ""
 
 #: js/ui/kbdA11yDialog.js:55
 msgid "Leave On"
-msgstr ""
+msgstr "បន្ត"
 
 #: js/ui/kbdA11yDialog.js:55 js/ui/status/automaticUpdates.js:315
 #: js/ui/status/bluetooth.js:138 js/ui/status/network.js:1288
@@ -1734,7 +1725,7 @@ msgstr "បិទ"
 
 #: js/ui/kbdA11yDialog.js:63
 msgid "Leave Off"
-msgstr ""
+msgstr "ឈប់"
 
 #: js/ui/keyboard.js:207
 #, fuzzy
@@ -1883,9 +1874,8 @@ msgid "Press any key to exit"
 msgstr ""
 
 #: js/ui/panel.js:96
-#, fuzzy
 msgid "Show Details"
-msgstr "បង្ហាញ​អត្ថបទ"
+msgstr "បង្ហាញព័ត៌មាន​លម្អិត"
 
 #: js/ui/panel.js:112
 msgid "Quit"
@@ -1898,7 +1888,6 @@ msgid "Activities"
 msgstr "សកម្មភាព"
 
 #: js/ui/panel.js:716
-#, fuzzy
 msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "ប្រព័ន្ធ"
@@ -1910,10 +1899,9 @@ msgid "User Menu"
 msgstr "ម៉ឺនុយ​ថាស"
 
 #: js/ui/panel.js:833
-#, fuzzy
 msgctxt "Power menu"
 msgid "Power"
-msgstr "បិទ"
+msgstr "ថាមពល"
 
 #: js/ui/panel.js:907
 msgid "Bottom Bar"
@@ -2666,15 +2654,15 @@ msgstr "កំពុង​ប៉ាន់ស្មាន..."
 
 #. Translators: this is <hours>:<minutes> Remaining (<percentage>)
 #: js/ui/status/power.js:86
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%d∶%02d Remaining (%d %%)"
-msgstr "%d∶%02d នៅសល់ (%d%%)"
+msgstr "%d∶%02d នៅសល់ (%d %%)"
 
 #. Translators: this is <hours>:<minutes> Until Full (<percentage>)
 #: js/ui/status/power.js:91
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%d∶%02d Until Full (%d %%)"
-msgstr "%d∶%02d រហូត​ពេញ (%d%%)"
+msgstr "%d∶%02d រហូត​ពេញ (%d %%)"
 
 #: js/ui/status/power.js:140 js/ui/status/power.js:142
 #, javascript-format
@@ -2979,7 +2967,7 @@ msgstr ""
 #: subprojects/extensions-tool/src/command-create.c:197
 #: subprojects/extensions-tool/src/main.c:170
 msgid "Name"
-msgstr ""
+msgstr "ឈ្មោះ"
 
 #: subprojects/extensions-tool/src/command-create.c:208
 #, c-format
@@ -3221,7 +3209,7 @@ msgstr ""
 #: subprojects/extensions-tool/src/main.c:242
 #: subprojects/extensions-tool/src/main.c:245
 msgid "COMMAND"
-msgstr ""
+msgstr "ពាក្យ​បញ្ជា"
 
 #: subprojects/extensions-tool/src/main.c:245
 msgid "[ARGS…]"

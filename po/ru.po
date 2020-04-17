@@ -18,7 +18,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-17 17:09+0100\n"
+"POT-Creation-Date: 2020-04-17 17:11+0100\n"
 "PO-Revision-Date: 2020-03-16 00:10+0300\n"
 "Last-Translator: Stas Solovey <whats_up@tut.by>\n"
 "Language-Team: Русский <gnome-cyr@gnome.org>\n"
@@ -546,7 +546,7 @@ msgstr "Определяет получать местоположение ил�
 
 #: data/org.gnome.shell.gschema.xml.in:420
 msgid "Location"
-msgstr "Местоположение"
+msgstr "Адрес"
 
 #: data/org.gnome.shell.gschema.xml.in:421
 msgid "The location for which to show a forecast"
@@ -678,7 +678,7 @@ msgstr[2] "%d расширений будет обновлено при след
 #: subprojects/extensions-tool/src/command-create.c:211
 #: subprojects/extensions-tool/src/main.c:173
 msgid "Description"
-msgstr "Описание"
+msgstr "Полное описание"
 
 #: js/extensionPrefs/data/ui/extension-row.ui:123
 #: subprojects/extensions-tool/src/main.c:185
@@ -1933,10 +1933,9 @@ msgid "User Menu"
 msgstr ""
 
 #: js/ui/panel.js:833
-#, fuzzy
 msgctxt "Power menu"
 msgid "Power"
-msgstr "Выключить"
+msgstr "Электропитание"
 
 #: js/ui/panel.js:907
 msgid "Bottom Bar"
@@ -2312,9 +2311,8 @@ msgstr ""
 
 #. The status label
 #: js/ui/status/automaticUpdates.js:198
-#, fuzzy
 msgid "Automatic Updates"
-msgstr "Автоматическое местоположение"
+msgstr "Автоматические обновления"
 
 #: js/ui/status/automaticUpdates.js:263
 #, fuzzy
@@ -2421,7 +2419,8 @@ msgstr "Параметры конфиденциальности"
 msgid "Location In Use"
 msgstr "Геолокация используется"
 
-# заменил "определение местоположения" на "геолокация" потому что не влазит в панель
+# заменил "определение местоположения" на "геолокация" потому что не влазит в
+# панель
 #: js/ui/status/location.js:177
 msgid "Location Disabled"
 msgstr "Геолокация выключена"
@@ -3063,7 +3062,7 @@ msgstr ""
 #: subprojects/extensions-tool/src/command-create.c:197
 #: subprojects/extensions-tool/src/main.c:170
 msgid "Name"
-msgstr "Имя"
+msgstr "Название"
 
 #: subprojects/extensions-tool/src/command-create.c:208
 #, c-format

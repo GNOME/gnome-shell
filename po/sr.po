@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-17 17:09+0100\n"
+"POT-Creation-Date: 2020-04-17 17:11+0100\n"
 "PO-Revision-Date: 2020-03-21 15:30+0100\n"
 "Last-Translator: Марко М. Костић <marko.m.kostic@gmail.com>\n"
 "Language-Team: српски <gnome-sr@googlegroups.org>\n"
@@ -21,9 +21,9 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=n==1? 3 : n%10==1 && n%100!=11 ? 0 : n"
 "%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Project-Style: gnome\n"
-"X-Poedit-Bookmarks: -1,167,-1,-1,-1,-1,-1,-1,-1,-1\n"
 "X-Generator: Poedit 2.3\n"
+"X-Poedit-Bookmarks: -1,167,-1,-1,-1,-1,-1,-1,-1,-1\n"
+"X-Project-Style: gnome\n"
 
 #: data/50-gnome-shell-system.xml:6
 msgid "System"
@@ -1954,10 +1954,9 @@ msgid "User Menu"
 msgstr "Изборник фиоке"
 
 #: js/ui/panel.js:833
-#, fuzzy
 msgctxt "Power menu"
 msgid "Power"
-msgstr "Искључи"
+msgstr "Угаси"
 
 #: js/ui/panel.js:907
 msgid "Bottom Bar"
@@ -2345,9 +2344,8 @@ msgstr "Ништа планирано"
 
 #. The status label
 #: js/ui/status/automaticUpdates.js:198
-#, fuzzy
 msgid "Automatic Updates"
-msgstr "Аутоматска локација"
+msgstr "Самостална ажурирања"
 
 #: js/ui/status/automaticUpdates.js:263
 #, fuzzy
@@ -2752,7 +2750,8 @@ msgstr "Прорачунавам…"
 msgid "%d∶%02d Remaining (%d %%)"
 msgstr "До празне: %d:%02d (%d %%)"
 
-# Кратак превод да би се видело време и проценат напуњености у системском менију Гномове шкољке.
+# Кратак превод да би се видело време и проценат напуњености у системском
+# менију Гномове шкољке.
 #. Translators: this is <hours>:<minutes> Until Full (<percentage>)
 #: js/ui/status/power.js:91
 #, javascript-format

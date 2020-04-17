@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell 3.3.90\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-17 17:09+0100\n"
+"POT-Creation-Date: 2020-04-17 17:11+0100\n"
 "PO-Revision-Date: 2020-02-19 14:32+0800\n"
 "Last-Translator: Yi-Jyun Pan <pan93412@gmail.com>\n"
 "Language-Team: Chinese (Taiwan) <zh-l10n@lists.linux.org.tw>\n"
@@ -78,7 +78,7 @@ msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:35
 msgid "UUIDs of extensions to force disabling"
-msgstr "強制停用的擴充套件 UUID"
+msgstr "要強制停用的擴充 UUIDs"
 
 #: data/org.gnome.shell.gschema.xml.in:36
 msgid ""
@@ -88,10 +88,9 @@ msgid ""
 "methods on org.gnome.Shell. This key takes precedence over the “enabled-"
 "extensions” setting."
 msgstr ""
-"GNOME Shell 擴充套件有 UUID 屬性；這個設定鍵列出了應停用的擴充套件，即使它是"
-"做為目前模式的一部分載入的。您也可以用 org.gnome.Shell 中的 EnableExtension "
-"和 DisableExtension D-Bus 方法來操作這個清單。這個設定鍵會優先於 “enabled-"
-"extensions” 設定值。"
+"GNOME Shell 擴充有 UUID 屬性；此金鑰列出應被停用的擴充，包含在當前模式中正在"
+"使用之項目。您也可用 org.gnome.Shell 上的 EnableExtension 及 "
+"DisableExtension D-Bus 方式調整清單。此金鑰優先於「啟用-擴充」設定。"
 
 #: data/org.gnome.shell.gschema.xml.in:46
 msgid "Disable user extensions"
@@ -196,17 +195,17 @@ msgstr "啟用允許審視 Shell 應用程式狀態的 D-Bus API。"
 
 #: data/org.gnome.shell.gschema.xml.in:126
 msgid "Enables the hot corner for the window picker"
-msgstr ""
+msgstr "啟用視窗選擇器的熱角"
 
 #: data/org.gnome.shell.gschema.xml.in:129
 msgid ""
 "By default, the hot corner for the window picker is enabled. Set false to "
 "disable the hot corner."
-msgstr ""
+msgstr "依照預設值，視窗選擇器的熱角為啟用狀態。設置為假來停用熱角。"
 
 #: data/org.gnome.shell.gschema.xml.in:136
 msgid "Set the left/right position of the hot corner for the window picker"
-msgstr ""
+msgstr "為視窗選擇器設定熱角左／右位置"
 
 #: data/org.gnome.shell.gschema.xml.in:139
 msgid ""
@@ -214,20 +213,22 @@ msgid ""
 "the hot corner to a left corner. The position is not affected by the RTL vs. "
 "LTR text direction."
 msgstr ""
+"熱角預設位置在右邊角落。設置為假可將熱角移至左方。此位置不受 RTL 及 LTR 文字"
+"方向影響。"
 
 #: data/org.gnome.shell.gschema.xml.in:147
 msgid "Set the top/bottom position of the hot corner for the window picker"
-msgstr ""
+msgstr "為視窗選擇器設定熱角上／下位置"
 
 #: data/org.gnome.shell.gschema.xml.in:150
 msgid ""
 "Default position of the hot corner is in a bottom corner. Set false to move "
 "the hot corner to a top corner."
-msgstr ""
+msgstr "熱角的預設位置在下方角落。設置為假將熱角移至上方角落。"
 
 #: data/org.gnome.shell.gschema.xml.in:157
 msgid "Set the size of the hot corner target"
-msgstr ""
+msgstr "設定熱角標的的大小"
 
 #: data/org.gnome.shell.gschema.xml.in:160
 msgid ""
@@ -235,10 +236,12 @@ msgid ""
 "Default is for a single pixel in the very corner. For some virtual machines, "
 "this value may need to be set larger than the default."
 msgstr ""
+"熱角標的方格單唯尺寸內的像素數。預設為最角落的單一像素。對一些虛擬機器來說，"
+"此數值可能需要設定為比預設值還大。"
 
 #: data/org.gnome.shell.gschema.xml.in:170
 msgid "Prevent apps from being automatically maximized on launch"
-msgstr ""
+msgstr "防止應用程式在啟動時自動放到最大"
 
 #: data/org.gnome.shell.gschema.xml.in:173
 msgid ""
@@ -246,10 +249,12 @@ msgid ""
 "screens, prevents applications from being forced to open maximized, and does "
 "not automatically switch to the app selector when a window is minimized."
 msgstr ""
+"讓視窗管理更像標準 Gnome。隱藏應用程式啟用畫面、防止程式強制開啟至最大視窗、"
+"以及在視窗最小化時不會自動轉換至 app 選擇器。"
 
 #: data/org.gnome.shell.gschema.xml.in:182
 msgid "Whether password reset is allowed"
-msgstr ""
+msgstr "是否允許密碼重置"
 
 #: data/org.gnome.shell.gschema.xml.in:183
 msgid ""
@@ -259,20 +264,24 @@ msgid ""
 "button, respectively. Note that it only makes sense to set this key for the "
 "Debian-gdm user; changing it for your own user account will have no effect."
 msgstr ""
+"此鍵用以控制是否在登入畫面顯示「忘記密碼？」按鈕。'預設' 告訴 GNOME Shell 使"
+"用供應商的預設設定。'啟用' 和 '停用' 分別用於指定啟用或停用重置按鈕。請注意，"
+"設定此鍵僅對 Debian-gdm 使用者有意義；在您自己的使用者帳號進行變更將沒有效"
+"果。"
 
 #: data/org.gnome.shell.gschema.xml.in:194
 msgid "Layout of application launcher icons in the grid"
-msgstr ""
+msgstr "座標方格上的應用程式啟動器佈局"
 
 #: data/org.gnome.shell.gschema.xml.in:195
 msgid ""
 "This key specifies the exact order of the icons shown in the applications "
 "launcher view."
-msgstr ""
+msgstr "此金鑰詳列各圖示在應用程式啟動器畫面中的個別順序。"
 
 #: data/org.gnome.shell.gschema.xml.in:201
 msgid "Languages for which the discovery feed feature is enabled."
-msgstr ""
+msgstr "啟用探索摘要功能所需的語言。"
 
 #: data/org.gnome.shell.gschema.xml.in:204
 msgid ""
@@ -280,6 +289,8 @@ msgid ""
 "will be enabled. You will need to restart the shell for changes to this "
 "setting to take effect."
 msgstr ""
+"如果系統語言與此任一語言相符，探索摘要將被啟用。你必須重啟 shell 才能套用在此"
+"設定上的變更。"
 
 #: data/org.gnome.shell.gschema.xml.in:215
 msgid "Keybinding to open the application menu"
@@ -359,108 +370,107 @@ msgid "Switch to application 9"
 msgstr "切換至應用程式 9"
 
 #: data/org.gnome.shell.gschema.xml.in:290
-#, fuzzy
 msgid "Keybinding that shows the force app exit dialog"
-msgstr "開啟應用程式選單的組合鍵"
+msgstr "顯示強制退出應用程式對話框的按鍵繫結"
 
 #: data/org.gnome.shell.gschema.xml.in:295
-#, fuzzy
 msgid "Keybinding to activate the first app in the icon bar."
-msgstr "開啟應用程式選單的組合鍵。"
+msgstr "用來啟動圖示列中第一個應用程式的按鍵繫結。"
 
 #: data/org.gnome.shell.gschema.xml.in:296
 msgid ""
 "Keybinding to open the first app in the icon bar, or switch to the app if "
 "already open."
 msgstr ""
+"用來打開圖示列中第一個應用程式的按鍵繫結，如已打開的話則切換至應用程式。"
 
 #: data/org.gnome.shell.gschema.xml.in:302
-#, fuzzy
 msgid "Keybinding to activate the second app in the icon bar."
-msgstr "開啟應用程式選單的組合鍵。"
+msgstr "用來啟動圖示列中第二個應用程式的按鍵繫結。"
 
 #: data/org.gnome.shell.gschema.xml.in:303
 msgid ""
 "Keybinding to open the second app in the icon bar, or switch to the app if "
 "already open."
 msgstr ""
+"用來打開圖示列中第二個應用程式的按鍵繫結，如已打開的話則切換至應用程式。"
 
 #: data/org.gnome.shell.gschema.xml.in:309
-#, fuzzy
 msgid "Keybinding to activate the third app in the icon bar."
-msgstr "開啟應用程式選單的組合鍵。"
+msgstr "用來啟動圖示列中第三個應用程式的按鍵繫結。"
 
 #: data/org.gnome.shell.gschema.xml.in:310
 msgid ""
 "Keybinding to open the third app in the icon bar, or switch to the app if "
 "already open."
 msgstr ""
+"用來打開圖示列中第三個應用程式的按鍵繫結，如已打開的話則切換至應用程式。"
 
 #: data/org.gnome.shell.gschema.xml.in:316
-#, fuzzy
 msgid "Keybinding to activate the fourth app in the icon bar."
-msgstr "開啟應用程式選單的組合鍵。"
+msgstr "用來啟動圖示列中第四個應用程式的按鍵繫結。"
 
 #: data/org.gnome.shell.gschema.xml.in:317
 msgid ""
 "Keybinding to open the fourth app in the icon bar, or switch to the app if "
 "already open."
 msgstr ""
+"用來打開圖示列中第四個應用程式的按鍵繫結，如已打開的話則切換至應用程式。"
 
 #: data/org.gnome.shell.gschema.xml.in:323
-#, fuzzy
 msgid "Keybinding to activate the fifth app in the icon bar."
-msgstr "開啟應用程式選單的組合鍵。"
+msgstr "用來啟動圖示列中第五個應用程式的按鍵繫結。"
 
 #: data/org.gnome.shell.gschema.xml.in:324
 msgid ""
 "Keybinding to open the fifth app in the icon bar, or switch to the app if "
 "already open."
 msgstr ""
+"用來打開圖示列中第五個應用程式的按鍵繫結，如已打開的話則切換至應用程式。"
 
 #: data/org.gnome.shell.gschema.xml.in:330
-#, fuzzy
 msgid "Keybinding to activate the sixth app in the icon bar."
-msgstr "開啟應用程式選單的組合鍵。"
+msgstr "用來啟動圖示列中第六個應用程式的按鍵繫結。"
 
 #: data/org.gnome.shell.gschema.xml.in:331
 msgid ""
 "Keybinding to open the sixth app in the icon bar, or switch to the app if "
 "already open."
 msgstr ""
+"用來打開圖示列中第六個應用程式的按鍵繫結，如已打開的話則切換至應用程式。"
 
 #: data/org.gnome.shell.gschema.xml.in:337
-#, fuzzy
 msgid "Keybinding to activate the seventh app in the icon bar."
-msgstr "開啟應用程式選單的組合鍵。"
+msgstr "用來啟動圖示列中第七個應用程式的按鍵繫結。"
 
 #: data/org.gnome.shell.gschema.xml.in:338
 msgid ""
 "Keybinding to open the seventh app in the icon bar, or switch to the app if "
 "already open."
 msgstr ""
+"用來打開圖示列中第七個應用程式的按鍵繫結，如已打開的話則切換至應用程式。"
 
 #: data/org.gnome.shell.gschema.xml.in:344
-#, fuzzy
 msgid "Keybinding to activate the eighth app in the icon bar."
-msgstr "開啟應用程式選單的組合鍵。"
+msgstr "用來啟動圖示列中第八個應用程式的按鍵繫結。"
 
 #: data/org.gnome.shell.gschema.xml.in:345
 msgid ""
 "Keybinding to open the eighth app in the icon bar, or switch to the app if "
 "already open."
 msgstr ""
+"用來打開圖示列中第八個應用程式的按鍵繫結，如已打開的話則切換至應用程式。"
 
 #: data/org.gnome.shell.gschema.xml.in:351
-#, fuzzy
 msgid "Keybinding to activate the last app in the icon bar."
-msgstr "開啟應用程式選單的組合鍵。"
+msgstr "用來啟動圖示列中最後一個應用程式的按鍵繫結。"
 
 #: data/org.gnome.shell.gschema.xml.in:352
 msgid ""
 "Keybinding to open the last app in the icon bar, or switch to the app if "
 "already open."
 msgstr ""
+"用來打開圖示列中最後一個應用程式的按鍵繫結，如已打開的話則切換至應用程式。"
 
 #: data/org.gnome.shell.gschema.xml.in:363
 #: data/org.gnome.shell.gschema.xml.in:390
@@ -502,15 +512,15 @@ msgstr "位置"
 
 #: data/org.gnome.shell.gschema.xml.in:402
 msgid "The locations to show in world clocks"
-msgstr "要在世界時鐘顯示的位置"
+msgstr "世界時鐘裡顯示的地點"
 
 #: data/org.gnome.shell.gschema.xml.in:412
 msgid "Automatic location"
-msgstr "自動位置"
+msgstr "自動地點"
 
 #: data/org.gnome.shell.gschema.xml.in:413
 msgid "Whether to fetch the current location or not"
-msgstr "是否取得目前位置"
+msgstr "是否要取得當前地點"
 
 #: data/org.gnome.shell.gschema.xml.in:420
 msgid "Location"
@@ -518,7 +528,7 @@ msgstr "位置"
 
 #: data/org.gnome.shell.gschema.xml.in:421
 msgid "The location for which to show a forecast"
-msgstr "要顯示哪個區域的天氣預報"
+msgstr "顯示預測的地點"
 
 #: data/org.gnome.shell.gschema.xml.in:433
 msgid "Attach modal dialog to the parent window"
@@ -660,7 +670,7 @@ msgstr "移除…"
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:8 js/ui/userMenu.js:27
 msgid "Help"
-msgstr "求助"
+msgstr "說明"
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:12
 msgid "About Extensions"
@@ -704,21 +714,19 @@ msgid ""
 "We’re very sorry, but it was not possible to get the list of installed "
 "extensions. Make sure you are logged into GNOME and try again."
 msgstr ""
-"非常抱歉，但無法取得已安裝擴充套件的清單。請確定您已登入 GNOME 後重試。"
+"我們非常抱歉，但無法取得已安裝擴充的清單。確保您有登入 GNOME 並再試一次。"
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:288
 msgid "Log Out…"
 msgstr "登出…"
 
 #: js/gdm/authPrompt.js:131
-#, fuzzy
 msgid "Show password hint"
-msgstr "VPN 密碼"
+msgstr "顯示密碼提示"
 
 #: js/gdm/authPrompt.js:148
-#, fuzzy
 msgid "Forgot password?"
-msgstr "VPN 密碼"
+msgstr "忘記帳號密碼"
 
 #. Cisco LEAP
 #: js/gdm/authPrompt.js:303 js/ui/components/networkAgent.js:363
@@ -743,11 +751,12 @@ msgid ""
 "Customer support will use the verification code to provide you with an "
 "unlock code, which you can enter here."
 msgstr ""
+"請將您的驗證碼%s透過電子郵件寄至%s告知客戶支援。客戶支援將使用驗證碼提供您解"
+"鎖碼，您可以在此處輸入。"
 
 #: js/gdm/authPrompt.js:762
-#, fuzzy
 msgid "Your unlock code was incorrect. Please try again."
-msgstr "抱歉，那沒有作用。請再試一次。"
+msgstr "您的解鎖碼不正確。請再試一次。"
 
 #: js/gdm/loginDialog.js:317
 msgid "Choose Session"
@@ -822,7 +831,7 @@ msgstr "登出"
 #. Translators: A list of keywords that match the logout action, separated by semicolons
 #: js/misc/systemActions.js:108
 msgid "logout;log out;sign off"
-msgstr "logout;log out;sign off;登出"
+msgstr "登出；登出；登出"
 
 #. Translators: The name of the suspend action in search
 #: js/misc/systemActions.js:113
@@ -1000,7 +1009,7 @@ msgstr "%Y年%b%-d日%p %l∶%M"
 #.
 #: js/misc/util.js:573
 msgid "Google"
-msgstr ""
+msgstr "Google"
 
 #. TRANSLATORS: this is the title of the wifi captive portal login window
 #: js/portalHelper/main.js:41
@@ -1028,7 +1037,7 @@ msgstr "授予存取權限"
 #. Translators: This is the heading of a list of open windows
 #: js/ui/appDisplay.js:2390 js/ui/panel.js:78
 msgid "Open Windows"
-msgstr "開啟視窗"
+msgstr "開啟 Windows"
 
 #: js/ui/appDisplay.js:2410 js/ui/panel.js:85
 msgid "New Window"
@@ -1040,9 +1049,8 @@ msgstr "使用獨立顯卡啟動"
 
 #. Add the "Remove from desktop" menu item at the end.
 #: js/ui/appDisplay.js:2443
-#, fuzzy
 msgid "Remove from desktop"
-msgstr "自喜好中移除"
+msgstr "從桌面移除"
 
 #: js/ui/audioDeviceSelection.js:41
 msgid "Select Audio Device"
@@ -1070,12 +1078,11 @@ msgstr "改變背景…"
 
 #: js/ui/backgroundMenu.js:18
 msgid "Add App"
-msgstr ""
+msgstr "新增應用程式"
 
 #: js/ui/backgroundMenu.js:24
-#, fuzzy
 msgid "Add Website"
-msgstr "網站"
+msgstr "新增網站"
 
 #. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday).
 #: js/ui/calendar.js:41
@@ -1236,11 +1243,11 @@ msgstr "外部裝置已拔除"
 
 #: js/ui/components/automountManager.js:208
 msgid "Unable to unlock volume"
-msgstr "無法解鎖磁碟區"
+msgstr "無法解鎖卷宗"
 
 #: js/ui/components/automountManager.js:209
 msgid "The installed udisks version does not support the PIM setting"
-msgstr "安裝的 udisks 版本不支援設定 PIM"
+msgstr "安裝的 udisks 版本不支援 PIM 設定"
 
 #: js/ui/components/autorunManager.js:333
 #, javascript-format
@@ -1259,19 +1266,19 @@ msgstr "連線"
 
 #: js/ui/components/networkAgent.js:141
 msgid "Limited Data"
-msgstr ""
+msgstr "有限數據"
 
 #: js/ui/components/networkAgent.js:151
 msgid "Unlimited Data"
-msgstr ""
+msgstr "無限制數據"
 
 #: js/ui/components/networkAgent.js:163 js/ui/components/networkAgent.js:198
 msgid "Enable if your connection has limits on how much you can download."
-msgstr ""
+msgstr "如果你的連線設有下載限制，請啟用此項。"
 
 #: js/ui/components/networkAgent.js:200
 msgid "This connection doesn't have limits on how much you can download."
-msgstr ""
+msgstr "此連線不設下載限制。"
 
 #: js/ui/components/networkAgent.js:369
 msgid "Key"
@@ -1292,7 +1299,7 @@ msgstr "服務"
 #: js/ui/components/networkAgent.js:471
 #, javascript-format
 msgid "Enter the Wi-Fi password for “%s”"
-msgstr ""
+msgstr "輸入 “%s” 的 Wi-Fi 密碼"
 
 #: js/ui/components/networkAgent.js:476 js/ui/components/networkAgent.js:851
 msgid "Wired 802.1X authentication"
@@ -1785,7 +1792,7 @@ msgstr "復原"
 
 #: js/ui/overview.js:113
 msgid "No apps are open"
-msgstr ""
+msgstr "沒有打開任何應用程式"
 
 #. Translators: This is the main view to select
 #. activities. See also note for "Activities" string.
@@ -1857,32 +1864,30 @@ msgid "System"
 msgstr "系統"
 
 #: js/ui/panel.js:801
-#, fuzzy
 msgctxt "User menu"
 msgid "User Menu"
-msgstr "系統匣選單"
+msgstr "用戶選單"
 
 #: js/ui/panel.js:833
-#, fuzzy
 msgctxt "Power menu"
 msgid "Power"
-msgstr "關閉電源"
+msgstr "電源"
 
 #: js/ui/panel.js:907
 msgid "Bottom Bar"
-msgstr ""
+msgstr "底條"
 
 #: js/ui/paygUnlockDialog.js:93
 msgid "Your Pay As You Go usage credit has expired."
-msgstr ""
+msgstr "您的預付信用已經失效。"
 
 #: js/ui/paygUnlockDialog.js:116
 msgid "Enter a new code to unlock your computer:"
-msgstr ""
+msgstr "輸入新代碼以解除電腦鎖定："
 
 #: js/ui/paygUnlockDialog.js:139
 msgid "Don’t have an unlock code? That’s OK!"
-msgstr ""
+msgstr "沒有解鎖代碼？沒關係！"
 
 #. The second possible override is to use the template text below
 #. with the contact's name and phone number, if BOTH are present.
@@ -1891,12 +1896,12 @@ msgstr ""
 msgid ""
 "Talk to your sales representative to purchase a new code. Call or text %s at "
 "%s"
-msgstr ""
+msgstr "與銷售代表聯絡以購買新代碼。給 %s 致電或發送簡訊，電話號碼為 %s"
 
 #. No overrides present, default to fallback text.
 #: js/ui/paygUnlockDialog.js:164
 msgid "Talk to your sales representative to purchase a new code."
-msgstr ""
+msgstr "與銷售代表聯絡以購買新代碼。"
 
 #: js/ui/paygUnlockDialog.js:188
 #, javascript-format
@@ -1904,9 +1909,8 @@ msgid "Pay As You Go Account ID: %s"
 msgstr ""
 
 #: js/ui/paygUnlockDialog.js:198
-#, fuzzy
 msgid "Unlock Machine"
-msgstr "解鎖視窗"
+msgstr "解除機器鎖定"
 
 #: js/ui/paygUnlockDialog.js:287 js/ui/shellMountOperation.js:380
 msgid "Unlock"
@@ -1914,52 +1918,50 @@ msgstr "解鎖"
 
 #: js/ui/paygUnlockDialog.js:394
 msgid "Success!"
-msgstr ""
+msgstr "成功！"
 
 #: js/ui/paygUnlockDialog.js:418
 msgid "Remaining time cleared!"
-msgstr ""
+msgstr "剩餘時間已清除！"
 
 #: js/ui/paygUnlockDialog.js:419
-#, fuzzy
 msgid "OK!"
-msgstr "確定"
+msgstr "OK!"
 
 #: js/ui/payg.js:39
 msgid "Pay As You Go"
-msgstr ""
+msgstr "預付"
 
 #: js/ui/payg.js:40
 msgid "Enter an unlock code to extend the time before your credit has expired."
-msgstr ""
+msgstr "在信用過期前輸入解鎖代碼延長時間。"
 
 #: js/ui/payg.js:41
 #, javascript-format
 msgid "Subscription runs out in %s."
-msgstr ""
+msgstr "訂閱將於 %s 後到期。"
 
 #: js/ui/payg.js:236
 #, javascript-format
 msgid "Too many attempts. Try again in %s minute."
 msgid_plural "Too many attempts. Try again in %s minutes."
-msgstr[0] ""
+msgstr[0] "已嘗試太多次，請在 %s 分鐘後重試。"
 
 #: js/ui/payg.js:240
 msgid "Too many attempts. Try again in a few seconds."
-msgstr ""
+msgstr "已嘗試太多次，請在幾秒鐘後再試。"
 
 #: js/ui/payg.js:261
-#, fuzzy
 msgid "Invalid code. Please try again."
-msgstr "抱歉，那沒有作用。請再試一次。"
+msgstr "代碼無效，請再試一次。"
 
 #: js/ui/payg.js:263
 msgid "Code already used. Please enter a new code."
-msgstr ""
+msgstr "代碼已被使用，請輸入新的代碼。"
 
 #: js/ui/payg.js:265
 msgid "Time exceeded while verifying the code"
-msgstr ""
+msgstr "驗證代碼逾時"
 
 #: js/ui/payg.js:267
 #, javascript-format
@@ -1969,77 +1971,75 @@ msgstr ""
 #. We don't consider any other error here (and we don't consider DISABLED explicitly,
 #. since that should not happen), but still we need to show something to the user.
 #: js/ui/payg.js:271
-#, fuzzy
 msgid "Unknown error"
-msgstr "不明"
+msgstr "未知錯誤"
 
 #: js/ui/payg.js:452
 msgid "Apply Code"
-msgstr ""
+msgstr "使用代碼"
 
 #: js/ui/payg.js:606
 #, javascript-format
 msgid "%s second"
 msgid_plural "%s seconds"
-msgstr[0] ""
+msgstr[0] "%s 秒"
 
 #: js/ui/payg.js:610 js/ui/payg.js:620
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s minute"
 msgid_plural "%s minutes"
-msgstr[0] "%d 分鐘前"
+msgstr[0] "%s 分鐘"
 
 #: js/ui/payg.js:614 js/ui/payg.js:631
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s hour"
 msgid_plural "%s hours"
-msgstr[0] "%d 小時前"
+msgstr[0] "%s 小時"
 
 #: js/ui/payg.js:625
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s day"
 msgid_plural "%s days"
-msgstr[0] "全天%s。"
+msgstr[0] "%s 天"
 
 #: js/ui/payg.js:641
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s second has been added to your Pay As You Go credit."
 msgid_plural "%s seconds have been added to your Pay As You Go credit."
-msgstr[0] "%s 已加入您的喜好中。"
+msgstr[0] "您的預付信用已經新增 %s 秒。"
 
 #: js/ui/payg.js:648
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s minute has been added to your Pay As You Go credit."
 msgid_plural "%s minutes have been added to your Pay As You Go credit."
-msgstr[0] "%s 已加入您的喜好中。"
+msgstr[0] "您的預付信用已經新增 %s 分鐘。"
 
 #: js/ui/payg.js:655
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s hour has been added to your Pay As You Go credit."
 msgid_plural "%s hours have been added to your Pay As You Go credit."
-msgstr[0] "%s 已加入您的喜好中。"
+msgstr[0] "您的預付信用已經新增 %s 小時。"
 
 #: js/ui/payg.js:662
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s day has been added to your Pay As You Go credit."
 msgid_plural "%s days have been added to your Pay As You Go credit."
-msgstr[0] "%s 已加入您的喜好中。"
+msgstr[0] "您的預付信用已經新增 %s 天。"
 
 #: js/ui/payg.js:669
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s month has been added to your Pay As You Go credit."
 msgid_plural "%s months have been added to your Pay As You Go credit."
-msgstr[0] "%s 已加入您的喜好中。"
+msgstr[0] "您的預付信用已經新增 %s 個月。"
 
 #: js/ui/payg.js:676
-#, fuzzy
 msgid "1 year has been added to your Pay As You Go credit."
-msgstr "%s 已加入您的喜好中。"
+msgstr "您的預付信用已經新增 1 年。"
 
 #. Unlock permanently message
 #: js/ui/payg.js:679
 msgid "You have successfully unlocked your Endless Machine"
-msgstr ""
+msgstr "您已成功解鎖 Endless Machine"
 
 #: js/ui/runDialog.js:58
 msgid "Run a Command"
@@ -2101,18 +2101,17 @@ msgid "Hide Text"
 msgstr "隱藏文字"
 
 #: js/ui/shellEntry.js:194
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Search %s and more…"
-msgstr "搜尋…"
+msgstr "搜尋 %s 以及更多…"
 
 #: js/ui/shellEntry.js:196
 msgid "Search the internet and more…"
-msgstr ""
+msgstr "搜尋網際網路，以及更多…"
 
 #: js/ui/shellEntry.js:198
-#, fuzzy
 msgid "Search…"
-msgstr "搜尋…"
+msgstr "搜尋……"
 
 #: js/ui/shellEntry.js:490
 msgid "Caps lock is on."
@@ -2120,26 +2119,26 @@ msgstr "已開啟大寫鎖定。"
 
 #: js/ui/shellMountOperation.js:285
 msgid "Hidden Volume"
-msgstr "隱藏磁碟區"
+msgstr "隱藏的音量"
 
 #: js/ui/shellMountOperation.js:288
 msgid "Windows System Volume"
-msgstr "Windows 系統磁碟區"
+msgstr "Windows 系統音量"
 
 #: js/ui/shellMountOperation.js:291
 msgid "Uses Keyfiles"
-msgstr "使用 Keyfiles"
+msgstr "使用密鑰"
 
 #. Translators: %s is the Disks application
 #: js/ui/shellMountOperation.js:298
 #, javascript-format
 msgid ""
 "To unlock a volume that uses keyfiles, use the <i>%s</i> utility instead."
-msgstr "如要解鎖使用 keyfiles 的磁碟區，請改用 <i>%s</i> 工具。"
+msgstr "如要解鎖使用密鑰的卷宗，請改為使用<i>%s</i> 功能。"
 
 #: js/ui/shellMountOperation.js:306
 msgid "PIM Number"
-msgstr "PIM 碼"
+msgstr "PIM 號碼"
 
 #: js/ui/shellMountOperation.js:365
 msgid "Remember Password"
@@ -2153,7 +2152,7 @@ msgstr "開啟 %s"
 
 #: js/ui/shellMountOperation.js:423
 msgid "The PIM must be a number or empty."
-msgstr "PIM 必須是數字或空白。"
+msgstr "PIM 須為數字或留白。"
 
 #. Translators: %s is the Disks application
 #: js/ui/shellMountOperation.js:469
@@ -2165,7 +2164,7 @@ msgstr "無法啟動 %s"
 #: js/ui/shellMountOperation.js:471
 #, javascript-format
 msgid "Couldn’t find the %s application"
-msgstr "找不到 %s 應用程式"
+msgstr "無法找到 %s 應用程式"
 
 #: js/ui/status/accessibility.js:35
 msgid "Accessibility"
@@ -2213,48 +2212,44 @@ msgstr "大型文字"
 
 #: js/ui/status/automaticUpdates.js:80
 msgid "Updates Queue"
-msgstr ""
+msgstr "更新隊列"
 
 #: js/ui/status/automaticUpdates.js:105
-#, fuzzy
 msgid "Set a Schedule"
-msgstr "沒有預訂行程"
+msgstr "設定時間表"
 
 #. The status label
 #: js/ui/status/automaticUpdates.js:198
-#, fuzzy
 msgid "Automatic Updates"
-msgstr "自動位置"
+msgstr "自動更新"
 
 #: js/ui/status/automaticUpdates.js:263
-#, fuzzy
 msgid "Automatic updates on"
-msgstr "自動位置"
+msgstr "自動更新已開啟"
 
 #: js/ui/status/automaticUpdates.js:264
 msgid ""
 "You have Unlimited Data so automatic updates have been turned on for this "
 "connection."
-msgstr ""
+msgstr "你可以使用無限數據，因此已開啟自動更新功能。"
 
 #: js/ui/status/automaticUpdates.js:267
 msgid "Automatic updates are turned off to save your data"
-msgstr ""
+msgstr "已關閉自動更新功能以節省你的數據用量"
 
 #: js/ui/status/automaticUpdates.js:268
 msgid ""
 "You will need to choose which Endless updates to apply when on this "
 "connection."
-msgstr ""
+msgstr "你需要選擇在此連線上執行哪些 Endless 更新。"
 
 #: js/ui/status/automaticUpdates.js:286 js/ui/windowMenu.js:167
 msgid "Close"
 msgstr "關閉"
 
 #: js/ui/status/automaticUpdates.js:290
-#, fuzzy
 msgid "Change Settings…"
-msgstr "音效設定值"
+msgstr "變更設定……"
 
 #: js/ui/status/bluetooth.js:40
 msgid "Bluetooth"
@@ -2272,14 +2267,12 @@ msgid_plural "%d Connected"
 msgstr[0] "%d 已連線"
 
 #: js/ui/status/bluetooth.js:134
-#, fuzzy
 msgid "Bluetooth Off"
-msgstr "藍牙"
+msgstr "藍牙已關閉"
 
 #: js/ui/status/bluetooth.js:136
-#, fuzzy
 msgid "Bluetooth On"
-msgstr "藍牙"
+msgstr "藍牙已開啟"
 
 #: js/ui/status/brightness.js:39
 msgid "Brightness"
@@ -2287,11 +2280,11 @@ msgstr "亮度"
 
 #: js/ui/status/dwellClick.js:13
 msgid "Single Click"
-msgstr "按一下"
+msgstr "單擊"
 
 #: js/ui/status/dwellClick.js:18
 msgid "Double Click"
-msgstr "按兩下"
+msgstr "雙點擊"
 
 #: js/ui/status/dwellClick.js:23
 msgid "Drag"
@@ -2299,11 +2292,11 @@ msgstr "拖曳"
 
 #: js/ui/status/dwellClick.js:28
 msgid "Secondary Click"
-msgstr "右鍵"
+msgstr "二次點擊"
 
 #: js/ui/status/dwellClick.js:37
 msgid "Dwell Click"
-msgstr "替代點選"
+msgstr "停留點擊"
 
 #: js/ui/status/keyboard.js:826
 msgid "Keyboard"
@@ -2575,16 +2568,15 @@ msgstr "停用直到明天"
 
 #: js/ui/status/payg.js:27
 msgid "Enter unlock code…"
-msgstr ""
+msgstr "輸入解鎖代碼..."
 
 #: js/ui/status/payg.js:86
-#, fuzzy
 msgid "Getting time…"
-msgstr "重新啟動…"
+msgstr "正在取得時間..."
 
 #: js/ui/status/payg.js:90
 msgid "Less than 1 minute"
-msgstr ""
+msgstr "少於 1 分鐘"
 
 #: js/ui/status/payg.js:124
 #, fuzzy, javascript-format
@@ -2911,8 +2903,8 @@ msgid ""
 "Name should be a very short (ideally descriptive) string.\n"
 "Examples are: %s"
 msgstr ""
-"名稱應是非常短（理想上是描述性的）字串。\n"
-"範例：%s"
+"名稱應為非常短（最好是敘述性）的字串。\n"
+"例如：%s"
 
 #: subprojects/extensions-tool/src/command-create.c:197
 #: subprojects/extensions-tool/src/main.c:170
@@ -2925,8 +2917,8 @@ msgid ""
 "Description is a single-sentence explanation of what your extension does.\n"
 "Examples are: %s"
 msgstr ""
-"描述是解釋你擴充套件作用的一句話。\n"
-"範例：%s"
+"敘述為解釋該擴充功能的單一句子。\n"
+"例如：%s"
 
 #: subprojects/extensions-tool/src/command-create.c:222
 #, c-format
@@ -2935,49 +2927,49 @@ msgid ""
 "This should be in the format of an email address (clicktofocus@janedoe."
 "example.com)\n"
 msgstr ""
-"UUID 是您擴充套件的全域唯一識別碼。\n"
-"格式應該如電子信箱位址 (clicktofocus@janedoe.example.com)\n"
+"UUID 是您的擴充之通用唯一識別碼。\n"
+"其格式應像 email 位址一樣 (clicktofocus@janedoe.example.com)\n"
 
 #: subprojects/extensions-tool/src/command-create.c:244
 msgid "The unique identifier of the new extension"
-msgstr "新擴充套件的唯一識別碼"
+msgstr "新擴充的唯一識別碼"
 
 #: subprojects/extensions-tool/src/command-create.c:247
 msgid "NAME"
-msgstr "名稱"
+msgstr "NAME"
 
 #: subprojects/extensions-tool/src/command-create.c:248
 msgid "The user-visible name of the new extension"
-msgstr "使用者看得到的新擴充套件名稱"
+msgstr "新擴充的用戶可見名稱"
 
 #: subprojects/extensions-tool/src/command-create.c:250
 msgid "DESCRIPTION"
-msgstr "描述"
+msgstr "敘述"
 
 #: subprojects/extensions-tool/src/command-create.c:252
 msgid "A short description of what the extension does"
-msgstr "簡短描述這擴充套件的作用"
+msgstr "擴充功能作用的簡短描述"
 
 #: subprojects/extensions-tool/src/command-create.c:255
 msgid "Enter extension information interactively"
-msgstr "互動式輸入擴充套件資訊"
+msgstr "以互動方式輸入擴充功能資訊"
 
 #: subprojects/extensions-tool/src/command-create.c:263
 msgid "Create a new extension"
-msgstr "建立新擴充套件"
+msgstr "創造新擴充"
 
 #: subprojects/extensions-tool/src/command-create.c:280
 #: subprojects/extensions-tool/src/command-list.c:168
 msgid "Unknown arguments"
-msgstr "未知參數"
+msgstr "未知的引數"
 
 #: subprojects/extensions-tool/src/command-create.c:289
 msgid "UUID, name and description are required"
-msgstr "UUID、名稱及描述皆必填"
+msgstr "UUID、名稱與敘述為必要"
 
 #: subprojects/extensions-tool/src/command-disable.c:57
 msgid "Disable an extension"
-msgstr "停用擴充套件"
+msgstr "停用一項擴充"
 
 #: subprojects/extensions-tool/src/command-disable.c:74
 #: subprojects/extensions-tool/src/command-enable.c:74
@@ -2986,7 +2978,7 @@ msgstr "停用擴充套件"
 #: subprojects/extensions-tool/src/command-reset.c:74
 #: subprojects/extensions-tool/src/command-uninstall.c:89
 msgid "No UUID given"
-msgstr "未提供 UUID"
+msgstr "未給定 UUID"
 
 #: subprojects/extensions-tool/src/command-disable.c:79
 #: subprojects/extensions-tool/src/command-enable.c:79
@@ -2995,55 +2987,55 @@ msgstr "未提供 UUID"
 #: subprojects/extensions-tool/src/command-reset.c:79
 #: subprojects/extensions-tool/src/command-uninstall.c:94
 msgid "More than one UUID given"
-msgstr "提供多於一個 UUID"
+msgstr "給定多於一個 UUID"
 
 #: subprojects/extensions-tool/src/command-enable.c:57
 msgid "Enable an extension"
-msgstr "啟用擴充套件"
+msgstr "啟用一個擴充"
 
 #: subprojects/extensions-tool/src/command-info.c:79
 msgid "Show extensions info"
-msgstr "顯示擴充套件資訊"
+msgstr "顯示擴充資訊"
 
 #: subprojects/extensions-tool/src/command-install.c:173
 msgid "Overwrite an existing extension"
-msgstr "覆蓋現存擴充套件"
+msgstr "覆寫一個現有的擴充功能"
 
 #: subprojects/extensions-tool/src/command-install.c:175
 msgid "EXTENSION_BUNDLE"
-msgstr "擴充套件組合"
+msgstr "擴充＿包"
 
 #: subprojects/extensions-tool/src/command-install.c:184
 msgid "Install an extension bundle"
-msgstr "安裝擴充套件組合"
+msgstr "安裝一個擴充包"
 
 #: subprojects/extensions-tool/src/command-install.c:201
 msgid "No extension bundle specified"
-msgstr "未指定擴充套件組合"
+msgstr "未指定擴充包"
 
 #: subprojects/extensions-tool/src/command-install.c:207
 msgid "More than one extension bundle specified"
-msgstr "指定多於一個擴充套件組合"
+msgstr "已指定一個以上擴充套件"
 
 #: subprojects/extensions-tool/src/command-list.c:125
 msgid "Show user-installed extensions"
-msgstr "顯示使用者安裝的擴充套件"
+msgstr "顯示用戶安裝的擴充"
 
 #: subprojects/extensions-tool/src/command-list.c:128
 msgid "Show system-installed extensions"
-msgstr "顯示系統安裝的擴充套件"
+msgstr "顯示由系統安裝的擴充"
 
 #: subprojects/extensions-tool/src/command-list.c:131
 msgid "Show enabled extensions"
-msgstr "顯示啟用的擴充套件"
+msgstr "顯示啟用的擴充功能"
 
 #: subprojects/extensions-tool/src/command-list.c:134
 msgid "Show disabled extensions"
-msgstr "顯示停用的擴充套件"
+msgstr "顯示停用的擴充"
 
 #: subprojects/extensions-tool/src/command-list.c:137
 msgid "Show extensions with preferences"
-msgstr "顯示有偏好設定的擴充套件"
+msgstr "顯示擴充與選項"
 
 #: subprojects/extensions-tool/src/command-list.c:140
 msgid "Show extensions with updates"
@@ -3051,27 +3043,27 @@ msgstr "顯示有更新的擴充套件"
 
 #: subprojects/extensions-tool/src/command-list.c:143
 msgid "Print extension details"
-msgstr "輸出擴充套件的詳細資訊"
+msgstr "列印擴充細節"
 
 #: subprojects/extensions-tool/src/command-list.c:151
 msgid "List installed extensions"
-msgstr "列出已安裝的擴充套件"
+msgstr "列出已安裝的擴充"
 
 #: subprojects/extensions-tool/src/command-pack.c:450
 msgid "FILE"
-msgstr "檔案"
+msgstr "FILE"
 
 #: subprojects/extensions-tool/src/command-pack.c:451
 msgid "Additional source to include in the bundle"
-msgstr "要包進組合的其他來源"
+msgstr "要加入群組的額外來源"
 
 #: subprojects/extensions-tool/src/command-pack.c:454
 msgid "SCHEMA"
-msgstr "基模"
+msgstr "綱要"
 
 #: subprojects/extensions-tool/src/command-pack.c:455
 msgid "A GSettings schema that should be included"
-msgstr "應包含的 GSettings 基模"
+msgstr "應包含一個 GSettings 綱要"
 
 #: subprojects/extensions-tool/src/command-pack.c:457
 #: subprojects/extensions-tool/src/command-pack.c:468
@@ -3080,47 +3072,47 @@ msgstr "目錄"
 
 #: subprojects/extensions-tool/src/command-pack.c:459
 msgid "The directory where translations are found"
-msgstr "翻譯的尋找目錄"
+msgstr "找到翻譯的目錄"
 
 #: subprojects/extensions-tool/src/command-pack.c:461
 msgid "DOMAIN"
-msgstr "領域"
+msgstr "網域"
 
 #: subprojects/extensions-tool/src/command-pack.c:463
 msgid "The gettext domain to use for translations"
-msgstr "用於翻譯的 gettext 領域"
+msgstr "用來翻譯的 gettext 網域"
 
 #: subprojects/extensions-tool/src/command-pack.c:466
 msgid "Overwrite an existing pack"
-msgstr "覆蓋既存套件"
+msgstr "覆寫一個現存封包"
 
 #: subprojects/extensions-tool/src/command-pack.c:470
 msgid "The directory where the pack should be created"
-msgstr "應建立套件的目錄"
+msgstr "封包應被創建的目錄"
 
 #: subprojects/extensions-tool/src/command-pack.c:472
 msgid "SOURCE_DIRECTORY"
-msgstr "來源目錄"
+msgstr "來源＿目錄"
 
 #: subprojects/extensions-tool/src/command-pack.c:481
 msgid "Create an extension bundle"
-msgstr "建立擴充套件組合"
+msgstr "創造擴充組"
 
 #: subprojects/extensions-tool/src/command-pack.c:500
 msgid "More than one source directory specified"
-msgstr "指定多於一個來源目錄"
+msgstr "指定了多於一個來源目錄"
 
 #: subprojects/extensions-tool/src/command-prefs.c:90
 msgid "Opens extension preferences"
-msgstr "開啟擴充套件的偏好設定"
+msgstr "開啟擴充功能喜好設定"
 
 #: subprojects/extensions-tool/src/command-reset.c:57
 msgid "Reset an extension"
-msgstr "重設擴充套件"
+msgstr "重設擴充"
 
 #: subprojects/extensions-tool/src/command-uninstall.c:72
 msgid "Uninstall an extension"
-msgstr "解除安裝擴充套件"
+msgstr "解除安裝一項擴充"
 
 #: subprojects/extensions-tool/src/main.c:176
 msgid "Path"
@@ -3128,7 +3120,7 @@ msgstr "路徑"
 
 #: subprojects/extensions-tool/src/main.c:179
 msgid "URL"
-msgstr "網址"
+msgstr "URL"
 
 #: subprojects/extensions-tool/src/main.c:182
 msgid "Original author"
@@ -3136,29 +3128,29 @@ msgstr "原始作者"
 
 #: subprojects/extensions-tool/src/main.c:188
 msgid "State"
-msgstr "狀態"
+msgstr "州"
 
 #: subprojects/extensions-tool/src/main.c:222
 msgid "“version” takes no arguments"
-msgstr "「版本」沒有參數"
+msgstr "「版本」未採用引數"
 
 #: subprojects/extensions-tool/src/main.c:224
 #: subprojects/extensions-tool/src/main.c:244
 msgid "Usage:"
-msgstr "用法："
+msgstr "使用方式："
 
 #: subprojects/extensions-tool/src/main.c:227
 msgid "Print version information and exit."
-msgstr "輸出版本資訊後離開。"
+msgstr "列印版本資訊並離開。"
 
 #: subprojects/extensions-tool/src/main.c:242
 #: subprojects/extensions-tool/src/main.c:245
 msgid "COMMAND"
-msgstr "指令"
+msgstr "COMMAND"
 
 #: subprojects/extensions-tool/src/main.c:245
 msgid "[ARGS…]"
-msgstr "[參數...]"
+msgstr "[ARGS…]"
 
 #: subprojects/extensions-tool/src/main.c:247
 msgid "Commands:"
@@ -3166,53 +3158,53 @@ msgstr "指令："
 
 #: subprojects/extensions-tool/src/main.c:248
 msgid "Print help"
-msgstr "輸出說明"
+msgstr "列印說明"
 
 #: subprojects/extensions-tool/src/main.c:250
 msgid "Enable extension"
-msgstr "啟用擴充套件"
+msgstr "容許擴充"
 
 #: subprojects/extensions-tool/src/main.c:251
 msgid "Disable extension"
-msgstr "停用擴充套件"
+msgstr "停用擴充"
 
 #: subprojects/extensions-tool/src/main.c:252
 msgid "Reset extension"
-msgstr "重設擴充套件"
+msgstr "重設擴充"
 
 #: subprojects/extensions-tool/src/main.c:253
 msgid "Uninstall extension"
-msgstr "解除安裝擴充套件"
+msgstr "解除安裝擴充"
 
 #: subprojects/extensions-tool/src/main.c:254
 msgid "List extensions"
-msgstr "列出擴充套件"
+msgstr "列出擴充"
 
 #: subprojects/extensions-tool/src/main.c:255
 #: subprojects/extensions-tool/src/main.c:256
 msgid "Show extension info"
-msgstr "顯示擴充套件資訊"
+msgstr "顯示擴充資訊"
 
 #: subprojects/extensions-tool/src/main.c:257
 msgid "Open extension preferences"
-msgstr "開啟擴充套件偏好設定"
+msgstr "開啟擴充選項"
 
 #: subprojects/extensions-tool/src/main.c:258
 msgid "Create extension"
-msgstr "建立擴充套件"
+msgstr "建立擴充功能"
 
 #: subprojects/extensions-tool/src/main.c:259
 msgid "Package extension"
-msgstr "軟體包擴充套件"
+msgstr "封裝擴充功能"
 
 #: subprojects/extensions-tool/src/main.c:260
 msgid "Install extension bundle"
-msgstr "安裝擴充套件組合"
+msgstr "安裝擴充包"
 
 #: subprojects/extensions-tool/src/main.c:262
 #, c-format
 msgid "Use “%s” to get detailed help.\n"
-msgstr "使用「%s」取得詳細說明。\n"
+msgstr "使用 “%s” 獲得詳細協助。\n"
 
 #. translators:
 #. * The number of sound outputs on a particular device
@@ -3236,90 +3228,81 @@ msgstr "系統音效"
 
 #: js/ui/appIconBar.js:195
 msgid "Other workspaces"
-msgstr ""
+msgstr "其他的工作空間"
 
 #: js/ui/appIconBar.js:204
-#, fuzzy
 msgid "Current workspace"
-msgstr "限制切換器使用目前的工作區。"
+msgstr "目前的工作空間"
 
 #: js/ui/appIconBar.js:282
 msgid "Pin to Taskbar"
-msgstr ""
+msgstr "釘選至工作列"
 
 #: js/ui/appIconBar.js:286
 msgid "Unpin from Taskbar"
-msgstr ""
+msgstr "從工作列取消釘選"
 
 #: js/ui/appIconBar.js:310
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Quit %s"
-msgstr "結束"
+msgstr "退出 %s"
 
 #: js/ui/endlessButton.js:14
 msgid "Endless Button"
-msgstr ""
+msgstr "Endless 按鈕"
 
 #: js/ui/endlessButton.js:67
-#, fuzzy
 msgid "Show Desktop"
-msgstr "顯示詳細資訊"
+msgstr "顯示桌面"
 
 #: js/ui/endlessButton.js:69
-#, fuzzy
 msgid "Show Apps"
 msgstr "顯示應用程式"
 
 #: js/ui/forceAppExitDialog.js:50
-#, fuzzy
 msgid "Quit applications"
-msgstr "應用程式"
+msgstr "退出應用程式"
 
 #: js/ui/forceAppExitDialog.js:56
 msgid ""
 "If an application doesn't respond for a while, select its name and click "
 "Quit Application."
 msgstr ""
+"如果應用程式已有一段時間沒有回應，選取此應用程式的名稱並點擊離開應用程式。"
 
 #: js/ui/forceAppExitDialog.js:87
-#, fuzzy
 msgid "System Monitor"
-msgstr "系統音效"
+msgstr "系統監控"
 
 #: js/ui/forceAppExitDialog.js:95
-#, fuzzy
 msgid "Quit Application"
-msgstr "應用程式"
+msgstr "結束應用程式"
 
 #: js/ui/hotCorner.js:15
-#, fuzzy
 msgid "Hot Corner"
-msgstr "未連線"
+msgstr "熱角"
 
 #: js/ui/hotCorner.js:25
-#, fuzzy
 msgid "Enable Hot Corner"
-msgstr "啟用擴充套件"
+msgstr "啟用熱角"
 
 #: js/ui/hotCorner.js:29
-#, fuzzy
 msgid "Disable Hot Corner"
-msgstr "停用直到明天"
+msgstr "禁用 Hot Corner"
 
 #: js/ui/iconGridLayout.js:312
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s has been removed"
-msgstr "%s 已經從您的喜好中移除。"
+msgstr "已移除 %s"
 
 #: js/ui/iconGridLayout.js:540
-#, fuzzy
 msgid "New Folder"
-msgstr "未命名資料夾"
+msgstr "新資料夾"
 
 #: js/ui/internetSearch.js:70
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Open \"%s\" in browser"
-msgstr "開啟視窗"
+msgstr "在瀏覽器中開啟「%s」"
 
 #. Translators: the first %s is the search engine name, and the second
 #. * is the search string. For instance, 'Search Google for "hello"'.
@@ -3327,16 +3310,16 @@ msgstr "開啟視窗"
 #: js/ui/internetSearch.js:79
 #, javascript-format
 msgid "Search %s for \"%s\""
-msgstr ""
+msgstr "用 %s 搜索「%s」"
 
 #: js/ui/internetSearch.js:81
 #, javascript-format
 msgid "Search the internet for \"%s\""
-msgstr ""
+msgstr "在網際網路上搜索「%s」"
 
 #: js/ui/userMenu.js:16
 msgid "Social Accounts"
-msgstr ""
+msgstr "社群帳戶"
 
 #: js/ui/userMenu.js:19
 msgid "Settings"
@@ -3344,17 +3327,16 @@ msgstr "設定值"
 
 #: js/ui/userMenu.js:24
 msgid "Give Us Feedback"
-msgstr ""
+msgstr "給我們回饋意見"
 
 #: src/shell-desktop-dir-info.c:485
-#, fuzzy
 msgid "Unnamed"
-msgstr "未命名資料夾"
+msgstr "未命名"
 
 #: src/shell-desktop-dir-info.c:745
 #, c-format
 msgid "Custom definition for %s"
-msgstr ""
+msgstr "針對 %s 的自行定義"
 
 #~ msgid "Copy Error"
 #~ msgstr "複製錯誤"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-17 17:09+0100\n"
+"POT-Creation-Date: 2020-04-17 17:11+0100\n"
 "PO-Revision-Date: 2017-06-18 05:51+0000\n"
 "Last-Translator: Roddy Shuler <roddy@endlessm.com>\n"
 "Language-Team: Lingala (http://www.transifex.com/endless-mobile-inc/gnome-"
@@ -483,7 +483,7 @@ msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:420
 msgid "Location"
-msgstr ""
+msgstr "Esíká"
 
 #: data/org.gnome.shell.gschema.xml.in:421
 msgid "The location for which to show a forecast"
@@ -607,7 +607,7 @@ msgstr[1] ""
 #: subprojects/extensions-tool/src/command-create.c:211
 #: subprojects/extensions-tool/src/main.c:173
 msgid "Description"
-msgstr ""
+msgstr "Bolimboli"
 
 #: js/extensionPrefs/data/ui/extension-row.ui:123
 #: subprojects/extensions-tool/src/main.c:185
@@ -1791,7 +1791,7 @@ msgstr ""
 
 #: js/ui/panel.js:96
 msgid "Show Details"
-msgstr ""
+msgstr "Lakisa ndimbola"
 
 #: js/ui/panel.js:112
 msgid "Quit"
@@ -2103,7 +2103,7 @@ msgstr ""
 #: js/ui/shellMountOperation.js:391
 #, javascript-format
 msgid "Open %s"
-msgstr ""
+msgstr "Fungola %s"
 
 #: js/ui/shellMountOperation.js:423
 msgid "The PIM must be a number or empty."
@@ -2867,7 +2867,7 @@ msgstr ""
 #: subprojects/extensions-tool/src/command-create.c:197
 #: subprojects/extensions-tool/src/main.c:170
 msgid "Name"
-msgstr ""
+msgstr "nkómbó"
 
 #: subprojects/extensions-tool/src/command-create.c:208
 #, c-format
@@ -3074,7 +3074,7 @@ msgstr ""
 
 #: subprojects/extensions-tool/src/main.c:179
 msgid "URL"
-msgstr ""
+msgstr "URL"
 
 #: subprojects/extensions-tool/src/main.c:182
 msgid "Original author"

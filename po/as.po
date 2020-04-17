@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-17 17:09+0100\n"
+"POT-Creation-Date: 2020-04-17 17:11+0100\n"
 "PO-Revision-Date: 2014-09-15 14:59+0530\n"
 "Last-Translator: Nilamdyuti Goswami <ngoswami@redhat.com>\n"
 "Language-Team: Assamese <kde-i18n-doc@kde.org>\n"
@@ -674,13 +674,12 @@ msgstr[1] ""
 #: subprojects/extensions-tool/src/command-create.c:211
 #: subprojects/extensions-tool/src/main.c:173
 msgid "Description"
-msgstr ""
+msgstr "বিবৰণ"
 
 #: js/extensionPrefs/data/ui/extension-row.ui:123
 #: subprojects/extensions-tool/src/main.c:185
-#, fuzzy
 msgid "Version"
-msgstr "প্ৰসাৰন"
+msgstr "সংস্কৰণ"
 
 #: js/extensionPrefs/data/ui/extension-row.ui:151
 msgid "Author"
@@ -826,7 +825,6 @@ msgstr "(অথবা আঙুলি স্বাইপ কৰক)"
 
 #. Translators: The name of the power-off action in search
 #: js/misc/systemActions.js:89
-#, fuzzy
 msgctxt "search-result"
 msgid "Power Off"
 msgstr "বন্ধ কৰক"
@@ -838,7 +836,6 @@ msgstr ""
 
 #. Translators: The name of the lock screen action in search
 #: js/misc/systemActions.js:97
-#, fuzzy
 msgctxt "search-result"
 msgid "Lock Screen"
 msgstr "পৰ্দা লক কৰক"
@@ -851,7 +848,6 @@ msgstr "পৰ্দা লক কৰক"
 
 #. Translators: The name of the logout action in search
 #: js/misc/systemActions.js:105
-#, fuzzy
 msgctxt "search-result"
 msgid "Log Out"
 msgstr "লগ আউট কৰক"
@@ -863,7 +859,6 @@ msgstr ""
 
 #. Translators: The name of the suspend action in search
 #: js/misc/systemActions.js:113
-#, fuzzy
 msgctxt "search-result"
 msgid "Suspend"
 msgstr "বাতিল কৰক"
@@ -876,7 +871,6 @@ msgstr "বাতিল কৰক"
 
 #. Translators: The name of the switch user action in search
 #: js/misc/systemActions.js:121
-#, fuzzy
 msgctxt "search-result"
 msgid "Switch User"
 msgstr "ব্যৱহাৰকাৰী পৰিবৰ্তন কৰক"
@@ -1710,14 +1704,12 @@ msgid "Allow"
 msgstr "অনুমতি দিয়ক"
 
 #: js/ui/kbdA11yDialog.js:32
-#, fuzzy
 msgid "Slow Keys Turned On"
-msgstr "মন্থৰ কি'সমূহ"
+msgstr "লেহেম কি'সমূহ অন কৰা আছে"
 
 #: js/ui/kbdA11yDialog.js:33
-#, fuzzy
 msgid "Slow Keys Turned Off"
-msgstr "মন্থৰ কি'সমূহ"
+msgstr "লেহেম কি'সমূহ অফ কৰা আছে"
 
 #: js/ui/kbdA11yDialog.js:34
 msgid ""
@@ -1726,14 +1718,12 @@ msgid ""
 msgstr ""
 
 #: js/ui/kbdA11yDialog.js:41
-#, fuzzy
 msgid "Sticky Keys Turned On"
-msgstr "স্টিকি কি'সমূহ"
+msgstr "স্টিকি কি'সমূহ অন কৰা আছে"
 
 #: js/ui/kbdA11yDialog.js:42
-#, fuzzy
 msgid "Sticky Keys Turned Off"
-msgstr "স্টিকি কি'সমূহ"
+msgstr "স্টিকি কি'সমূহ অফ কৰা আছে"
 
 #: js/ui/kbdA11yDialog.js:44
 msgid ""
@@ -1750,7 +1740,7 @@ msgstr ""
 
 #: js/ui/kbdA11yDialog.js:55
 msgid "Leave On"
-msgstr ""
+msgstr "অন ৰাখক"
 
 #: js/ui/kbdA11yDialog.js:55 js/ui/status/automaticUpdates.js:315
 #: js/ui/status/bluetooth.js:138 js/ui/status/network.js:1288
@@ -1767,7 +1757,7 @@ msgstr "বন্ধ কৰক"
 
 #: js/ui/kbdA11yDialog.js:63
 msgid "Leave Off"
-msgstr ""
+msgstr "অফ ৰাখক"
 
 #: js/ui/keyboard.js:207
 msgid "Region & Language Settings"
@@ -1929,7 +1919,6 @@ msgid "Activities"
 msgstr "কাৰ্য্যসমূহ"
 
 #: js/ui/panel.js:716
-#, fuzzy
 msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "চিস্টেম"
@@ -1941,7 +1930,6 @@ msgid "User Menu"
 msgstr "ট্ৰে মেনু"
 
 #: js/ui/panel.js:833
-#, fuzzy
 msgctxt "Power menu"
 msgid "Power"
 msgstr "শক্তি"
@@ -2714,15 +2702,15 @@ msgstr "অনুমান কৰা হৈছে…"
 
 #. Translators: this is <hours>:<minutes> Remaining (<percentage>)
 #: js/ui/status/power.js:86
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%d∶%02d Remaining (%d %%)"
-msgstr "%d∶%02d অৱশিষ্ট (%d%%)"
+msgstr "%d∶%02d অৱশিষ্ট (%d %%)"
 
 #. Translators: this is <hours>:<minutes> Until Full (<percentage>)
 #: js/ui/status/power.js:91
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%d∶%02d Until Full (%d %%)"
-msgstr "%d∶%02d সম্পূৰ্ণ হোৱালৈ (%d%%)"
+msgstr "%d∶%02d সম্পূৰ্ণ হোৱালৈ (%d %%)"
 
 #: js/ui/status/power.js:140 js/ui/status/power.js:142
 #, javascript-format
@@ -3032,7 +3020,7 @@ msgstr ""
 #: subprojects/extensions-tool/src/command-create.c:197
 #: subprojects/extensions-tool/src/main.c:170
 msgid "Name"
-msgstr ""
+msgstr "নাম"
 
 #: subprojects/extensions-tool/src/command-create.c:208
 #, c-format
@@ -3249,7 +3237,7 @@ msgstr ""
 
 #: subprojects/extensions-tool/src/main.c:179
 msgid "URL"
-msgstr ""
+msgstr "URL"
 
 #: subprojects/extensions-tool/src/main.c:182
 msgid "Original author"
@@ -3275,7 +3263,7 @@ msgstr ""
 #: subprojects/extensions-tool/src/main.c:242
 #: subprojects/extensions-tool/src/main.c:245
 msgid "COMMAND"
-msgstr ""
+msgstr "COMMAND"
 
 #: subprojects/extensions-tool/src/main.c:245
 msgid "[ARGS…]"
@@ -3981,7 +3969,6 @@ msgstr ""
 #~ "অবিকল্প ফাইল নাম হব, আৰু এই সম্প্ৰসাৰন ব্যৱহাৰ কৰিব। ইয়াক এটা ভিন্ন অন্তৰ্ভুক্তক "
 #~ "বিন্যাসত ৰেকৰ্ড কৰোতে পৰিবৰ্তন কৰিব লাগিব।"
 
-#~| msgid "Session..."
 #~ msgid "Session…"
 #~ msgstr "অধিবেশন…"
 
@@ -4015,11 +4002,9 @@ msgstr ""
 #~ msgid "Visibility"
 #~ msgstr "দৃশ্যমানতা"
 
-#~| msgid "Set up a New Device..."
 #~ msgid "Set Up a New Device…"
 #~ msgstr "এটা নতুন ডিভাইচ সংহতি কৰক…"
 
-#~| msgid "Send Files..."
 #~ msgid "Send Files…"
 #~ msgstr "ফাইলসমূহ পঠাওক…"
 
@@ -4065,11 +4050,9 @@ msgstr ""
 #~ msgid "%d %s %d %s remaining"
 #~ msgstr "%d %s %d %s অৱশিষ্ট"
 
-#~| msgid "AC adapter"
 #~ msgid "AC Adapter"
 #~ msgstr "AC এডাপ্টাৰ"
 
-#~| msgid "Laptop battery"
 #~ msgid "Laptop Battery"
 #~ msgstr "লেপটপ বেটাৰি"
 
@@ -4082,11 +4065,9 @@ msgstr ""
 #~ msgid "PDA"
 #~ msgstr "PDA"
 
-#~| msgid "Cell phone"
 #~ msgid "Cell Phone"
 #~ msgstr "চেল ফোন"
 
-#~| msgid "Media player"
 #~ msgid "Media Player"
 #~ msgstr "মিডিয়া প্লেয়াৰ"
 

@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-17 17:09+0100\n"
+"POT-Creation-Date: 2020-04-17 17:11+0100\n"
 "PO-Revision-Date: 2020-03-19 22:41+0200\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <kde-i18n-uk@kde.org>\n"
@@ -537,7 +537,7 @@ msgstr "Чи одержувати поточну локацію"
 
 #: data/org.gnome.shell.gschema.xml.in:420
 msgid "Location"
-msgstr "Місцевість"
+msgstr "Адреса"
 
 #: data/org.gnome.shell.gschema.xml.in:421
 msgid "The location for which to show a forecast"
@@ -597,7 +597,7 @@ msgstr "Технічні подробиці"
 
 #: js/dbusServices/extensions/ui/extension-prefs-dialog.ui:165
 msgid "Homepage"
-msgstr "Сторінка"
+msgstr "Домашня сторінка"
 
 #: js/dbusServices/extensions/ui/extension-prefs-dialog.ui:166
 msgid "Visit extension homepage"
@@ -923,7 +923,7 @@ msgid_plural "%d minutes ago"
 msgstr[0] "%d хвилина тому"
 msgstr[1] "%d хвилини тому"
 msgstr[2] "%d хвилин тому"
-msgstr[3] "%d хвилина тому"
+msgstr[3] "%d хвилин тому"
 
 #: js/misc/util.js:192
 #, javascript-format
@@ -932,7 +932,7 @@ msgid_plural "%d hours ago"
 msgstr[0] "%d година тому"
 msgstr[1] "%d години тому"
 msgstr[2] "%d годин тому"
-msgstr[3] "%d година тому"
+msgstr[3] "%d годин тому"
 
 #: js/misc/util.js:196
 msgid "Yesterday"
@@ -945,7 +945,7 @@ msgid_plural "%d days ago"
 msgstr[0] "%d день тому"
 msgstr[1] "%d дні тому"
 msgstr[2] "%d днів тому"
-msgstr[3] "%d день тому"
+msgstr[3] "%d днів тому"
 
 #: js/misc/util.js:202
 #, javascript-format
@@ -954,7 +954,7 @@ msgid_plural "%d weeks ago"
 msgstr[0] "%d тиждень тому"
 msgstr[1] "%d тижні тому"
 msgstr[2] "%d тижнів тому"
-msgstr[3] "%d тиждень тому"
+msgstr[3] "%d тижнів тому"
 
 #: js/misc/util.js:206
 #, javascript-format
@@ -963,7 +963,7 @@ msgid_plural "%d months ago"
 msgstr[0] "%d місяць тому"
 msgstr[1] "%d місяці тому"
 msgstr[2] "%d місяців тому"
-msgstr[3] "%d місяць тому"
+msgstr[3] "%d місяців тому"
 
 #: js/misc/util.js:209
 #, javascript-format
@@ -972,7 +972,7 @@ msgid_plural "%d years ago"
 msgstr[0] "%d рік тому"
 msgstr[1] "%d роки тому"
 msgstr[2] "%d років тому"
-msgstr[3] "%d рік тому"
+msgstr[3] "%d років тому"
 
 #. Translators: Time in 24h format
 #: js/misc/util.js:242
@@ -1507,7 +1507,7 @@ msgid_plural "%s will be logged out automatically in %d seconds."
 msgstr[0] "%s вийде автоматично через %d секунду."
 msgstr[1] "%s вийде автоматично через %d секунди."
 msgstr[2] "%s вийде автоматично через %d секунд."
-msgstr[3] "%s вийде автоматично через %d секунду."
+msgstr[3] "%s вийде автоматично через %d секунд."
 
 #: js/ui/endSessionDialog.js:47
 #, javascript-format
@@ -1516,7 +1516,7 @@ msgid_plural "You will be logged out automatically in %d seconds."
 msgstr[0] "Вихід автоматично через %d секунду."
 msgstr[1] "Вихід автоматично через %d секунди."
 msgstr[2] "Вихід автоматично через %d секунд."
-msgstr[3] "Вихід автоматично через %d секунду."
+msgstr[3] "Вихід автоматично через %d секунд."
 
 #: js/ui/endSessionDialog.js:53
 msgctxt "button"
@@ -1540,7 +1540,7 @@ msgid_plural "The system will power off automatically in %d seconds."
 msgstr[0] "Система автоматично вимкнеться через %d секунду."
 msgstr[1] "Система автоматично вимкнеться через %d секунди."
 msgstr[2] "Система автоматично вимкнеться через %d секунд."
-msgstr[3] "Система автоматично вимкнеться через %d секунду."
+msgstr[3] "Система автоматично вимкнеться через %d секунд."
 
 #: js/ui/endSessionDialog.js:65
 msgctxt "checkbox"
@@ -1569,7 +1569,7 @@ msgid_plural "The system will restart automatically in %d seconds."
 msgstr[0] "Система автоматично перезапуститься через %d секунду."
 msgstr[1] "Система автоматично перезапуститься через %d секунди."
 msgstr[2] "Система автоматично перезапуститься через %d секунд."
-msgstr[3] "Система автоматично перезапуститься через %d секунду."
+msgstr[3] "Система автоматично перезапуститься через %d секунд."
 
 #: js/ui/endSessionDialog.js:91
 msgctxt "title"
@@ -1588,7 +1588,7 @@ msgstr[1] ""
 msgstr[2] ""
 "Система автоматично перезапуститься та встановить оновлення через %d секунд."
 msgstr[3] ""
-"Система автоматично перезапуститься та встановить оновлення через %d секунду."
+"Система автоматично перезапуститься та встановить оновлення через %d секунд."
 
 #: js/ui/endSessionDialog.js:99 js/ui/endSessionDialog.js:118
 msgctxt "button"
@@ -1711,11 +1711,11 @@ msgstr "Дозволити"
 
 #: js/ui/kbdA11yDialog.js:32
 msgid "Slow Keys Turned On"
-msgstr "Повільні клавіші ввімкнено"
+msgstr "Увімкнено сповільнені клавіші"
 
 #: js/ui/kbdA11yDialog.js:33
 msgid "Slow Keys Turned Off"
-msgstr "Повільні клавіші вимкнено"
+msgstr "Вимкнено сповільнені клавіші"
 
 #: js/ui/kbdA11yDialog.js:34
 msgid ""
@@ -1752,7 +1752,7 @@ msgstr ""
 
 #: js/ui/kbdA11yDialog.js:55
 msgid "Leave On"
-msgstr "Залишити"
+msgstr "Не вмикати"
 
 #: js/ui/kbdA11yDialog.js:55 js/ui/status/automaticUpdates.js:315
 #: js/ui/status/bluetooth.js:138 js/ui/status/network.js:1288
@@ -1769,7 +1769,7 @@ msgstr "Вимкнути"
 
 #: js/ui/kbdA11yDialog.js:63
 msgid "Leave Off"
-msgstr "Покинути"
+msgstr "Не вимикати"
 
 #: js/ui/keyboard.js:207
 msgid "Region & Language Settings"
@@ -1938,7 +1938,6 @@ msgid "User Menu"
 msgstr ""
 
 #: js/ui/panel.js:833
-#, fuzzy
 msgctxt "Power menu"
 msgid "Power"
 msgstr "Вимкнути"
@@ -2325,9 +2324,8 @@ msgstr ""
 
 #. The status label
 #: js/ui/status/automaticUpdates.js:198
-#, fuzzy
 msgid "Automatic Updates"
-msgstr "Автоматичне визначення місцевості"
+msgstr "Автоматичні оновлення"
 
 #: js/ui/status/automaticUpdates.js:263
 #, fuzzy
@@ -2642,7 +2640,7 @@ msgid_plural "%s Wired Connections"
 msgstr[0] "%s з'єднання через дріт"
 msgstr[1] "%s з'єднання через дріт"
 msgstr[2] "%s з'єднань через дріт"
-msgstr[3] "%s з'єднання через дріт"
+msgstr[3] "%s з'єднань через дріт"
 
 #: js/ui/status/network.js:1594
 #, javascript-format
@@ -2651,7 +2649,7 @@ msgid_plural "%s Wi-Fi Connections"
 msgstr[0] "%s з'єднання через Wi-Fi"
 msgstr[1] "%s з'єднання через Wi-Fi"
 msgstr[2] "%s з'єднань через Wi-Fi"
-msgstr[3] "%s з'єднання через Wi-Fi"
+msgstr[3] "%s з'єднань через Wi-Fi"
 
 #: js/ui/status/network.js:1598
 #, javascript-format
@@ -2660,7 +2658,7 @@ msgid_plural "%s Modem Connections"
 msgstr[0] "%s з'єднання через модем"
 msgstr[1] "%s з'єднання через модем"
 msgstr[2] "%s з'єднань через модем"
-msgstr[3] "%s з'єднання через модем"
+msgstr[3] "%s з'єднань через модем"
 
 #: js/ui/status/network.js:1732
 msgid "Connection failed"
@@ -2906,7 +2904,7 @@ msgid_plural "Settings changes will revert in %d seconds"
 msgstr[0] "Зміни параметрів буде повернуто через %d секунду"
 msgstr[1] "Зміни параметрів буде повернуто через %d секунди"
 msgstr[2] "Зміни параметрів буде повернуто через %d секунд"
-msgstr[3] "Зміни параметрів буде повернуто через %d секунду"
+msgstr[3] "Зміни параметрів буде повернуто через %d секунд"
 
 #. Translators: This represents the size of a window. The first number is
 #. * the width of the window and the second is the height.
@@ -3251,7 +3249,7 @@ msgstr "Шлях"
 
 #: subprojects/extensions-tool/src/main.c:179
 msgid "URL"
-msgstr "Посилання"
+msgstr "АДРЕСА"
 
 #: subprojects/extensions-tool/src/main.c:182
 msgid "Original author"
@@ -3277,7 +3275,7 @@ msgstr "Вивести версію та вийти."
 #: subprojects/extensions-tool/src/main.c:242
 #: subprojects/extensions-tool/src/main.c:245
 msgid "COMMAND"
-msgstr "Команда"
+msgstr "КОМАНДА"
 
 #: subprojects/extensions-tool/src/main.c:245
 msgid "[ARGS…]"
@@ -3343,10 +3341,10 @@ msgstr "Натисніть «%s», щоб показати докладну до
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
-msgstr[0] "%u вивід"
-msgstr[1] "%u виводи"
-msgstr[2] "%u виводів"
-msgstr[3] "%u вивід"
+msgstr[0] "%u вихід"
+msgstr[1] "%u виходи"
+msgstr[2] "%u виходів"
+msgstr[3] "%u виходів"
 
 #. translators:
 #. * The number of sound inputs on a particular device
@@ -3357,7 +3355,7 @@ msgid_plural "%u Inputs"
 msgstr[0] "%u вхід"
 msgstr[1] "%u входи"
 msgstr[2] "%u входів"
-msgstr[3] "%u вхід"
+msgstr[3] "%u входів"
 
 #: subprojects/gvc/gvc-mixer-control.c:2766
 msgid "System Sounds"

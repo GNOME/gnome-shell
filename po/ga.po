@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell.master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-17 17:09+0100\n"
+"POT-Creation-Date: 2020-04-17 17:11+0100\n"
 "PO-Revision-Date: 2015-09-30 22:29-0600\n"
 "Last-Translator: Seán de Búrca <leftmostcat@gmail.com>\n"
 "Language-Team: Irish <gaeilge-gnulinux@lists.sourceforge.net>\n"
@@ -494,9 +494,8 @@ msgid "Whether to fetch the current location or not"
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:420
-#, fuzzy
 msgid "Location"
-msgstr "Suíomh in Úsáid"
+msgstr "Suíomh"
 
 #: data/org.gnome.shell.gschema.xml.in:421
 msgid "The location for which to show a forecast"
@@ -607,7 +606,7 @@ msgstr "Cealaigh"
 
 #: js/extensionPrefs/js/main.js:149 js/ui/appDisplay.js:2499
 msgid "Remove"
-msgstr ""
+msgstr "Bain"
 
 #: js/extensionPrefs/js/main.js:181
 msgid "translator-credits"
@@ -627,13 +626,12 @@ msgstr[4] ""
 #: subprojects/extensions-tool/src/command-create.c:211
 #: subprojects/extensions-tool/src/main.c:173
 msgid "Description"
-msgstr ""
+msgstr "Cur Síos"
 
 #: js/extensionPrefs/data/ui/extension-row.ui:123
 #: subprojects/extensions-tool/src/main.c:185
-#, fuzzy
 msgid "Version"
-msgstr "Taispeáin leagan"
+msgstr "Leagan"
 
 #: js/extensionPrefs/data/ui/extension-row.ui:151
 msgid "Author"
@@ -775,7 +773,6 @@ msgstr "(nó faidhpeáil méar)"
 
 #. Translators: The name of the power-off action in search
 #: js/misc/systemActions.js:89
-#, fuzzy
 msgctxt "search-result"
 msgid "Power Off"
 msgstr "Múch"
@@ -798,7 +795,6 @@ msgstr ""
 
 #. Translators: The name of the logout action in search
 #: js/misc/systemActions.js:105
-#, fuzzy
 msgctxt "search-result"
 msgid "Log Out"
 msgstr "Logáil Amach"
@@ -810,7 +806,6 @@ msgstr ""
 
 #. Translators: The name of the suspend action in search
 #: js/misc/systemActions.js:113
-#, fuzzy
 msgctxt "search-result"
 msgid "Suspend"
 msgstr "Cuir ar Fionraí"
@@ -823,7 +818,6 @@ msgstr "Cuir ar Fionraí"
 
 #. Translators: The name of the switch user action in search
 #: js/misc/systemActions.js:121
-#, fuzzy
 msgctxt "search-result"
 msgid "Switch User"
 msgstr "Athraigh Úsáideoir"
@@ -1060,9 +1054,8 @@ msgid "Select Audio Device"
 msgstr ""
 
 #: js/ui/audioDeviceSelection.js:54
-#, fuzzy
 msgid "Sound Settings"
-msgstr "Socruithe Cuntais"
+msgstr "Socruithe Fuaime"
 
 #: js/ui/audioDeviceSelection.js:64
 msgid "Headphones"
@@ -1920,10 +1913,9 @@ msgid "User Menu"
 msgstr ""
 
 #: js/ui/panel.js:833
-#, fuzzy
 msgctxt "Power menu"
 msgid "Power"
-msgstr "Múch"
+msgstr "Cumhacht"
 
 #: js/ui/panel.js:907
 msgid "Bottom Bar"
@@ -2353,9 +2345,8 @@ msgid "Change Settings…"
 msgstr "Socruithe Sreangaithe"
 
 #: js/ui/status/bluetooth.js:40
-#, fuzzy
 msgid "Bluetooth"
-msgstr "Socruithe Bluetooth"
+msgstr "Bluetooth"
 
 #: js/ui/status/bluetooth.js:49 js/ui/status/network.js:591
 msgid "Bluetooth Settings"
@@ -3043,7 +3034,7 @@ msgstr ""
 #: subprojects/extensions-tool/src/command-create.c:197
 #: subprojects/extensions-tool/src/main.c:170
 msgid "Name"
-msgstr ""
+msgstr "Ainm"
 
 #: subprojects/extensions-tool/src/command-create.c:208
 #, c-format
@@ -3258,7 +3249,7 @@ msgstr ""
 
 #: subprojects/extensions-tool/src/main.c:179
 msgid "URL"
-msgstr ""
+msgstr "URL"
 
 #: subprojects/extensions-tool/src/main.c:182
 msgid "Original author"
@@ -3284,7 +3275,7 @@ msgstr ""
 #: subprojects/extensions-tool/src/main.c:242
 #: subprojects/extensions-tool/src/main.c:245
 msgid "COMMAND"
-msgstr ""
+msgstr "ORDÚ"
 
 #: subprojects/extensions-tool/src/main.c:245
 msgid "[ARGS…]"

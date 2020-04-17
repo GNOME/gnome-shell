@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-17 17:09+0100\n"
+"POT-Creation-Date: 2020-04-17 17:11+0100\n"
 "PO-Revision-Date: 2020-02-25 07:25+0100\n"
 "Last-Translator: Balázs Úr <ur.balazs at fsf dot hu>\n"
 "Language-Team: Hungarian <gnome-hu-list at gnome dot org>\n"
@@ -783,9 +783,8 @@ msgid ""
 msgstr ""
 
 #: js/gdm/authPrompt.js:762
-#, fuzzy
 msgid "Your unlock code was incorrect. Please try again."
-msgstr "Elnézést, ez nem sikerült. Próbálja újra."
+msgstr "A feloldókódja helytelen volt. Kérem próbálja újra."
 
 #: js/gdm/loginDialog.js:317
 msgid "Choose Session"
@@ -1040,7 +1039,7 @@ msgstr "%Y. %B %-d. %H:%M"
 #.
 #: js/misc/util.js:573
 msgid "Google"
-msgstr ""
+msgstr "Google"
 
 #. TRANSLATORS: this is the title of the wifi captive portal login window
 #: js/portalHelper/main.js:41
@@ -1081,9 +1080,8 @@ msgstr "Futtatás a dedikált videokártyával"
 
 #. Add the "Remove from desktop" menu item at the end.
 #: js/ui/appDisplay.js:2443
-#, fuzzy
 msgid "Remove from desktop"
-msgstr "Eltávolítás a Kedvencek közül"
+msgstr "Eltávolítás az asztalról"
 
 #: js/ui/audioDeviceSelection.js:41
 msgid "Select Audio Device"
@@ -1111,12 +1109,11 @@ msgstr "Háttér megváltoztatása…"
 
 #: js/ui/backgroundMenu.js:18
 msgid "Add App"
-msgstr ""
+msgstr "Alkalmazás hozzáadása"
 
 #: js/ui/backgroundMenu.js:24
-#, fuzzy
 msgid "Add Website"
-msgstr "Weboldal"
+msgstr "Weboldal hozzáadása"
 
 #. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday).
 #: js/ui/calendar.js:41
@@ -1845,7 +1842,7 @@ msgstr "Visszavonás"
 
 #: js/ui/overview.js:113
 msgid "No apps are open"
-msgstr ""
+msgstr "Nincsenek nyitott alkalmazások"
 
 #. Translators: This is the main view to select
 #. activities. See also note for "Activities" string.
@@ -1919,17 +1916,16 @@ msgstr "Rendszer"
 #: js/ui/panel.js:801
 msgctxt "User menu"
 msgid "User Menu"
-msgstr ""
+msgstr "Felhasználói menü"
 
 #: js/ui/panel.js:833
-#, fuzzy
 msgctxt "Power menu"
 msgid "Power"
 msgstr "Kikapcsolás"
 
 #: js/ui/panel.js:907
 msgid "Bottom Bar"
-msgstr ""
+msgstr "Alsó sáv"
 
 #: js/ui/paygUnlockDialog.js:93
 msgid "Your Pay As You Go usage credit has expired."
@@ -2028,9 +2024,8 @@ msgstr ""
 #. We don't consider any other error here (and we don't consider DISABLED explicitly,
 #. since that should not happen), but still we need to show something to the user.
 #: js/ui/payg.js:271
-#, fuzzy
 msgid "Unknown error"
-msgstr "Ismeretlen"
+msgstr "Ismeretlen hiba"
 
 #: js/ui/payg.js:452
 msgid "Apply Code"
@@ -2169,18 +2164,17 @@ msgid "Hide Text"
 msgstr "Szöveg elrejtése"
 
 #: js/ui/shellEntry.js:194
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Search %s and more…"
-msgstr "Keresés…"
+msgstr " %s keresése és egyéb…"
 
 #: js/ui/shellEntry.js:196
 msgid "Search the internet and more…"
-msgstr ""
+msgstr "Keresés az interneten és egyebek..."
 
 #: js/ui/shellEntry.js:198
-#, fuzzy
 msgid "Search…"
-msgstr "Keresés…"
+msgstr "Keresés..."
 
 #: js/ui/shellEntry.js:490
 msgid "Caps lock is on."
@@ -2283,22 +2277,20 @@ msgstr "Nagy szöveg"
 
 #: js/ui/status/automaticUpdates.js:80
 msgid "Updates Queue"
-msgstr ""
+msgstr "Frissítési várólista"
 
 #: js/ui/status/automaticUpdates.js:105
 msgid "Set a Schedule"
-msgstr ""
+msgstr "Ütemezés beállítása"
 
 #. The status label
 #: js/ui/status/automaticUpdates.js:198
-#, fuzzy
 msgid "Automatic Updates"
-msgstr "Automatikus hely"
+msgstr "Automatikus frissítések"
 
 #: js/ui/status/automaticUpdates.js:263
-#, fuzzy
 msgid "Automatic updates on"
-msgstr "Automatikus hely"
+msgstr "Automatikus frissítések: BE"
 
 #: js/ui/status/automaticUpdates.js:264
 msgid ""
@@ -2321,9 +2313,8 @@ msgid "Close"
 msgstr "Bezárás"
 
 #: js/ui/status/automaticUpdates.js:290
-#, fuzzy
 msgid "Change Settings…"
-msgstr "Hangbeállítások"
+msgstr "Beállítások módosítása..."
 
 #: js/ui/status/bluetooth.js:40
 msgid "Bluetooth"
@@ -2342,14 +2333,12 @@ msgstr[0] "%d kapcsolódva"
 msgstr[1] "%d kapcsolódva"
 
 #: js/ui/status/bluetooth.js:134
-#, fuzzy
 msgid "Bluetooth Off"
-msgstr "Bluetooth"
+msgstr "Bluetooth Ki"
 
 #: js/ui/status/bluetooth.js:136
-#, fuzzy
 msgid "Bluetooth On"
-msgstr "Bluetooth"
+msgstr "Bluetooth Be"
 
 #: js/ui/status/brightness.js:39
 msgid "Brightness"
@@ -3317,74 +3306,68 @@ msgstr "Rendszerhangok"
 
 #: js/ui/appIconBar.js:195
 msgid "Other workspaces"
-msgstr ""
+msgstr "További munkaasztalok"
 
 #: js/ui/appIconBar.js:204
-#, fuzzy
 msgid "Current workspace"
-msgstr "Váltó korlátozása a jelenlegi munkaterületre."
+msgstr "Jelenlegi munkaasztal"
 
 #: js/ui/appIconBar.js:282
 msgid "Pin to Taskbar"
-msgstr ""
+msgstr "Rögzítés tálcára"
 
 #: js/ui/appIconBar.js:286
 msgid "Unpin from Taskbar"
-msgstr ""
+msgstr "Leválasztás a tálcáról"
 
 #: js/ui/appIconBar.js:310
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Quit %s"
-msgstr "Kilépés"
+msgstr "%s bezárása"
 
 #: js/ui/endlessButton.js:14
 msgid "Endless Button"
-msgstr ""
+msgstr "Endless gomb"
 
 #: js/ui/endlessButton.js:67
-#, fuzzy
 msgid "Show Desktop"
-msgstr "Részletek megjelenítése"
+msgstr "Asztal megjelenítése"
 
 #: js/ui/endlessButton.js:69
-#, fuzzy
 msgid "Show Apps"
 msgstr "Alkalmazások megjelenítése"
 
 #: js/ui/forceAppExitDialog.js:50
-#, fuzzy
 msgid "Quit applications"
-msgstr "Alkalmazások"
+msgstr "Kilépés az alkalmazásból"
 
 #: js/ui/forceAppExitDialog.js:56
 msgid ""
 "If an application doesn't respond for a while, select its name and click "
 "Quit Application."
 msgstr ""
+"Ha egy alkalmazás nem válaszol egy ideig, válassza ki a nevét, és válassza a "
+"kilépést az alkalmazásból-t."
 
 #: js/ui/forceAppExitDialog.js:87
-#, fuzzy
 msgid "System Monitor"
-msgstr "Rendszerhangok"
+msgstr "Rendszerfigyelő"
 
 #: js/ui/forceAppExitDialog.js:95
-#, fuzzy
 msgid "Quit Application"
-msgstr "Alkalmazások"
+msgstr "Alkalmazás bezárása"
 
 #: js/ui/hotCorner.js:15
 msgid "Hot Corner"
-msgstr ""
+msgstr "Aktív sarok"
 
 #: js/ui/hotCorner.js:25
-#, fuzzy
 msgid "Enable Hot Corner"
-msgstr "Kiterjesztés engedélyezése"
+msgstr "Aktív sarok engedélyezése"
 
 #: js/ui/hotCorner.js:29
-#, fuzzy
 msgid "Disable Hot Corner"
-msgstr "Letiltás holnapig"
+msgstr "Aktív sarok kikapcsolása"
 
 #: js/ui/iconGridLayout.js:312
 #, fuzzy, javascript-format
@@ -3392,14 +3375,13 @@ msgid "%s has been removed"
 msgstr "%s eltávolítva a Kedvencek közül."
 
 #: js/ui/iconGridLayout.js:540
-#, fuzzy
 msgid "New Folder"
-msgstr "Névtelen mappa"
+msgstr "Új mappa"
 
 #: js/ui/internetSearch.js:70
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Open \"%s\" in browser"
-msgstr "Ablakok megnyitása"
+msgstr "\"%s\" megnyitása böngészőben"
 
 #. Translators: the first %s is the search engine name, and the second
 #. * is the search string. For instance, 'Search Google for "hello"'.
@@ -3407,16 +3389,16 @@ msgstr "Ablakok megnyitása"
 #: js/ui/internetSearch.js:79
 #, javascript-format
 msgid "Search %s for \"%s\""
-msgstr ""
+msgstr "Keresés %s \"%s\" után"
 
 #: js/ui/internetSearch.js:81
 #, javascript-format
 msgid "Search the internet for \"%s\""
-msgstr ""
+msgstr "Keresés az interneten ez után: \"%s\""
 
 #: js/ui/userMenu.js:16
 msgid "Social Accounts"
-msgstr ""
+msgstr "Közösségi kapcsolatok"
 
 #: js/ui/userMenu.js:19
 msgid "Settings"
@@ -3427,14 +3409,13 @@ msgid "Give Us Feedback"
 msgstr ""
 
 #: src/shell-desktop-dir-info.c:485
-#, fuzzy
 msgid "Unnamed"
-msgstr "Névtelen mappa"
+msgstr "Névtelen"
 
 #: src/shell-desktop-dir-info.c:745
 #, c-format
 msgid "Custom definition for %s"
-msgstr ""
+msgstr "Egyéni meghatározás ehhez: %s"
 
 #~ msgid "Copy Error"
 #~ msgstr "Hiba másolása"

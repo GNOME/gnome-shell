@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-17 17:09+0100\n"
+"POT-Creation-Date: 2020-04-17 17:11+0100\n"
 "PO-Revision-Date: 2014-10-01 15:51+0530\n"
 "Last-Translator: \n"
 "Language-Team: American English <kde-i18n-doc@kde.org>\n"
@@ -670,7 +670,7 @@ msgstr[1] ""
 #: subprojects/extensions-tool/src/command-create.c:211
 #: subprojects/extensions-tool/src/main.c:173
 msgid "Description"
-msgstr ""
+msgstr "વર્ણન"
 
 #: js/extensionPrefs/data/ui/extension-row.ui:123
 #: subprojects/extensions-tool/src/main.c:185
@@ -822,7 +822,6 @@ msgstr "(અથવા સ્વાઇપ આંગળી)"
 
 #. Translators: The name of the power-off action in search
 #: js/misc/systemActions.js:89
-#, fuzzy
 msgctxt "search-result"
 msgid "Power Off"
 msgstr "પાવર બંધ"
@@ -834,10 +833,9 @@ msgstr ""
 
 #. Translators: The name of the lock screen action in search
 #: js/misc/systemActions.js:97
-#, fuzzy
 msgctxt "search-result"
 msgid "Lock Screen"
-msgstr "સ્ક્રીનને તાળુ મારો"
+msgstr "તાળુ સ્ક્રીન"
 
 #. Translators: A list of keywords that match the lock screen action, separated by semicolons
 #: js/misc/systemActions.js:100
@@ -847,7 +845,6 @@ msgstr "સ્ક્રીનને તાળુ મારો"
 
 #. Translators: The name of the logout action in search
 #: js/misc/systemActions.js:105
-#, fuzzy
 msgctxt "search-result"
 msgid "Log Out"
 msgstr "બહાર નીકળો"
@@ -859,7 +856,6 @@ msgstr ""
 
 #. Translators: The name of the suspend action in search
 #: js/misc/systemActions.js:113
-#, fuzzy
 msgctxt "search-result"
 msgid "Suspend"
 msgstr "અટકાવો"
@@ -872,7 +868,6 @@ msgstr "અટકાવો"
 
 #. Translators: The name of the switch user action in search
 #: js/misc/systemActions.js:121
-#, fuzzy
 msgctxt "search-result"
 msgid "Switch User"
 msgstr "વપરાશકર્તાને બદલો"
@@ -1706,14 +1701,12 @@ msgid "Allow"
 msgstr ""
 
 #: js/ui/kbdA11yDialog.js:32
-#, fuzzy
 msgid "Slow Keys Turned On"
-msgstr "ધીમી કી"
+msgstr "સ્લો કી ચાલુ છે"
 
 #: js/ui/kbdA11yDialog.js:33
-#, fuzzy
 msgid "Slow Keys Turned Off"
-msgstr "ધીમી કી"
+msgstr "સ્લો કી બંધ છે"
 
 #: js/ui/kbdA11yDialog.js:34
 msgid ""
@@ -1722,14 +1715,12 @@ msgid ""
 msgstr ""
 
 #: js/ui/kbdA11yDialog.js:41
-#, fuzzy
 msgid "Sticky Keys Turned On"
-msgstr "સ્ટીકી કી"
+msgstr "સ્ટીકી કીઓ ચાલુ"
 
 #: js/ui/kbdA11yDialog.js:42
-#, fuzzy
 msgid "Sticky Keys Turned Off"
-msgstr "સ્ટીકી કી"
+msgstr "સ્ટીકી કીઓ બંધ"
 
 #: js/ui/kbdA11yDialog.js:44
 msgid ""
@@ -1746,7 +1737,7 @@ msgstr ""
 
 #: js/ui/kbdA11yDialog.js:55
 msgid "Leave On"
-msgstr ""
+msgstr "ચાલુ છોડો"
 
 #: js/ui/kbdA11yDialog.js:55 js/ui/status/automaticUpdates.js:315
 #: js/ui/status/bluetooth.js:138 js/ui/status/network.js:1288
@@ -1763,7 +1754,7 @@ msgstr "બંધ કરો"
 
 #: js/ui/kbdA11yDialog.js:63
 msgid "Leave Off"
-msgstr ""
+msgstr "નિકાળી દો"
 
 #: js/ui/keyboard.js:207
 msgid "Region & Language Settings"
@@ -1925,7 +1916,6 @@ msgid "Activities"
 msgstr "પ્રવૃત્તિઓ"
 
 #: js/ui/panel.js:716
-#, fuzzy
 msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "સિસ્ટમ"
@@ -1937,7 +1927,6 @@ msgid "User Menu"
 msgstr "ટ્રે મેનુ"
 
 #: js/ui/panel.js:833
-#, fuzzy
 msgctxt "Power menu"
 msgid "Power"
 msgstr "પાવર"
@@ -2710,15 +2699,15 @@ msgstr "અંદાજ કરી રહ્યા છે..."
 
 #. Translators: this is <hours>:<minutes> Remaining (<percentage>)
 #: js/ui/status/power.js:86
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%d∶%02d Remaining (%d %%)"
-msgstr "%d∶%02d બાકી રહેલ છે (%d%%)"
+msgstr "%d∶%02d બાકી રહેલ છે (%d %%)"
 
 #. Translators: this is <hours>:<minutes> Until Full (<percentage>)
 #: js/ui/status/power.js:91
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%d∶%02d Until Full (%d %%)"
-msgstr "%d∶%02d જ્યાં સુધી સંપૂર્ણ થાય (%d%%)"
+msgstr "%d∶%02d જ્યાં સુધી સંપૂર્ણ થાય (%d %%)"
 
 #: js/ui/status/power.js:140 js/ui/status/power.js:142
 #, javascript-format
@@ -3028,7 +3017,7 @@ msgstr ""
 #: subprojects/extensions-tool/src/command-create.c:197
 #: subprojects/extensions-tool/src/main.c:170
 msgid "Name"
-msgstr ""
+msgstr "નામ"
 
 #: subprojects/extensions-tool/src/command-create.c:208
 #, c-format
@@ -3245,7 +3234,7 @@ msgstr ""
 
 #: subprojects/extensions-tool/src/main.c:179
 msgid "URL"
-msgstr ""
+msgstr "URL"
 
 #: subprojects/extensions-tool/src/main.c:182
 msgid "Original author"
@@ -3271,7 +3260,7 @@ msgstr ""
 #: subprojects/extensions-tool/src/main.c:242
 #: subprojects/extensions-tool/src/main.c:245
 msgid "COMMAND"
-msgstr ""
+msgstr "આદેશ"
 
 #: subprojects/extensions-tool/src/main.c:245
 msgid "[ARGS…]"
@@ -3905,7 +3894,6 @@ msgstr ""
 #~ msgid "Select an extension to configure using the combobox above."
 #~ msgstr "ઉપર કોમ્બોબોક્સની મદદથી રૂપરેખાંકિત કરવા માટે ઍક્સટેન્શનને પસંદ કરો."
 
-#~| msgid "Session..."
 #~ msgid "Session…"
 #~ msgstr "સત્ર..."
 
@@ -3961,11 +3949,9 @@ msgstr ""
 #~ msgid "Visibility"
 #~ msgstr "દૃશ્યતા"
 
-#~| msgid "Set Up a New Device..."
 #~ msgid "Set Up a New Device…"
 #~ msgstr "નવા ઉપકરણને સુયોજિત કરો..."
 
-#~| msgid "Send Files..."
 #~ msgid "Send Files…"
 #~ msgstr "ફાઇલોને મોકલો..."
 

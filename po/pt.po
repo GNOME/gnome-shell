@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 3.14\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-17 17:09+0100\n"
+"POT-Creation-Date: 2020-04-17 17:11+0100\n"
 "PO-Revision-Date: 2016-09-07 06:46+0100\n"
 "Last-Translator: Tiago Santos <tiagofsantos81@sapo.pt>\n"
 "Language-Team: Português <>\n"
@@ -23,8 +23,8 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 1.8.7.1\n"
-"X-Project-Style: gnome\n"
 "X-Language: pt_PT\n"
+"X-Project-Style: gnome\n"
 "X-Source-Language: C\n"
 
 #: data/50-gnome-shell-system.xml:6
@@ -227,17 +227,21 @@ msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:126
 msgid "Enables the hot corner for the window picker"
-msgstr ""
+msgstr "Ativa o Canto de Acesso Rápido para a visão de Panorama"
 
 #: data/org.gnome.shell.gschema.xml.in:129
 msgid ""
 "By default, the hot corner for the window picker is enabled. Set false to "
 "disable the hot corner."
 msgstr ""
+"O Canto de Aceso Rápido para visão de Panorama esta ativado por padrão. "
+"Definir falso para desativar o  Canto de Aceso Rápido "
 
 #: data/org.gnome.shell.gschema.xml.in:136
 msgid "Set the left/right position of the hot corner for the window picker"
 msgstr ""
+" Defina a posição direita/esquerda do Canto de Acesso Rápido para a visão de "
+"Panorama"
 
 #: data/org.gnome.shell.gschema.xml.in:139
 msgid ""
@@ -245,20 +249,27 @@ msgid ""
 "the hot corner to a left corner. The position is not affected by the RTL vs. "
 "LTR text direction."
 msgstr ""
+"Por padrão o Canto de Acesso Rápido está no canto direito. Definir falso "
+"para mover o  Canto de Acesso Rápido para o canto esquerdo. A posição não é "
+"afetada pela direção de texto RTL vs LTR."
 
 #: data/org.gnome.shell.gschema.xml.in:147
 msgid "Set the top/bottom position of the hot corner for the window picker"
 msgstr ""
+" Defina a posição superior/inferior do Canto de Acesso Rápido para a visão "
+"de Panorama"
 
 #: data/org.gnome.shell.gschema.xml.in:150
 msgid ""
 "Default position of the hot corner is in a bottom corner. Set false to move "
 "the hot corner to a top corner."
 msgstr ""
+" A posição padrão para o Canto de Acesso Rápido é o canto inferior. Defina "
+"falso para mover o Canto de Acesso Rápido para o canto superior."
 
 #: data/org.gnome.shell.gschema.xml.in:157
 msgid "Set the size of the hot corner target"
-msgstr ""
+msgstr "Defina o tamanho do painel de programas escolhido"
 
 #: data/org.gnome.shell.gschema.xml.in:160
 msgid ""
@@ -266,10 +277,13 @@ msgid ""
 "Default is for a single pixel in the very corner. For some virtual machines, "
 "this value may need to be set larger than the default."
 msgstr ""
+"Número de pixeis numa dimensão do quadrado alvo do painel de programas. Por "
+"padrão é um único pixel no mesmo canto. Para algumas máquinas virtuais, este "
+"valor pode necessitar ser definido como maior que o existente por padrão"
 
 #: data/org.gnome.shell.gschema.xml.in:170
 msgid "Prevent apps from being automatically maximized on launch"
-msgstr ""
+msgstr "Previne que os programas sejam automaticamente maximizadas ao iniciar"
 
 #: data/org.gnome.shell.gschema.xml.in:173
 msgid ""
@@ -277,6 +291,9 @@ msgid ""
 "screens, prevents applications from being forced to open maximized, and does "
 "not automatically switch to the app selector when a window is minimized."
 msgstr ""
+"Torna a gestão de janelas como o padrão do Gnome. Esconde os ecrãs totais "
+"dos programas, previne que eles sejam forçados a iniciar maximizados e não "
+"muda automaticamente o seletor de programas quando uma janela é minimizada."
 
 #: data/org.gnome.shell.gschema.xml.in:182
 msgid "Whether password reset is allowed"
@@ -293,13 +310,15 @@ msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:194
 msgid "Layout of application launcher icons in the grid"
-msgstr ""
+msgstr "Visual dos ícones de iniciação das aplicações no grid"
 
 #: data/org.gnome.shell.gschema.xml.in:195
 msgid ""
 "This key specifies the exact order of the icons shown in the applications "
 "launcher view."
 msgstr ""
+"Esta chave especifica a ordem exata dos ícones apresentados na visualização "
+"de iniciação dos programas."
 
 #: data/org.gnome.shell.gschema.xml.in:201
 msgid "Languages for which the discovery feed feature is enabled."
@@ -404,9 +423,8 @@ msgid "Switch to application 9"
 msgstr "Mostrar aplicações"
 
 #: data/org.gnome.shell.gschema.xml.in:290
-#, fuzzy
 msgid "Keybinding that shows the force app exit dialog"
-msgstr "Atalho de teclado para abrir o menu de aplicações"
+msgstr "Atalho que revela janela de forçar saída do aplicativo"
 
 #: data/org.gnome.shell.gschema.xml.in:295
 #, fuzzy
@@ -561,9 +579,8 @@ msgid "Whether to fetch the current location or not"
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:420
-#, fuzzy
 msgid "Location"
-msgstr "Localização em uso"
+msgstr "Localização"
 
 #: data/org.gnome.shell.gschema.xml.in:421
 msgid "The location for which to show a forecast"
@@ -694,13 +711,12 @@ msgstr[1] ""
 #: subprojects/extensions-tool/src/command-create.c:211
 #: subprojects/extensions-tool/src/main.c:173
 msgid "Description"
-msgstr ""
+msgstr "Descrição"
 
 #: js/extensionPrefs/data/ui/extension-row.ui:123
 #: subprojects/extensions-tool/src/main.c:185
-#, fuzzy
 msgid "Version"
-msgstr "Extensão"
+msgstr "Versão"
 
 #: js/extensionPrefs/data/ui/extension-row.ui:151
 msgid "Author"
@@ -717,7 +733,7 @@ msgstr "Remover"
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:8 js/ui/userMenu.js:27
 msgid "Help"
-msgstr ""
+msgstr "Ajuda"
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:12
 #, fuzzy
@@ -767,7 +783,7 @@ msgstr "Terminar sessão"
 
 #: js/gdm/authPrompt.js:131
 msgid "Show password hint"
-msgstr ""
+msgstr "Mostrar lembrete de senha"
 
 #: js/gdm/authPrompt.js:148
 msgid "Forgot password?"
@@ -844,7 +860,6 @@ msgstr "(ou utilize a impressão digital)"
 
 #. Translators: The name of the power-off action in search
 #: js/misc/systemActions.js:89
-#, fuzzy
 msgctxt "search-result"
 msgid "Power Off"
 msgstr "Desligar"
@@ -858,7 +873,7 @@ msgstr ""
 #: js/misc/systemActions.js:97
 msgctxt "search-result"
 msgid "Lock Screen"
-msgstr ""
+msgstr "Bloquear o ecrã"
 
 #. Translators: A list of keywords that match the lock screen action, separated by semicolons
 #: js/misc/systemActions.js:100
@@ -867,7 +882,6 @@ msgstr ""
 
 #. Translators: The name of the logout action in search
 #: js/misc/systemActions.js:105
-#, fuzzy
 msgctxt "search-result"
 msgid "Log Out"
 msgstr "Terminar sessão"
@@ -879,7 +893,6 @@ msgstr ""
 
 #. Translators: The name of the suspend action in search
 #: js/misc/systemActions.js:113
-#, fuzzy
 msgctxt "search-result"
 msgid "Suspend"
 msgstr "Suspender"
@@ -892,7 +905,6 @@ msgstr "Suspender"
 
 #. Translators: The name of the switch user action in search
 #: js/misc/systemActions.js:121
-#, fuzzy
 msgctxt "search-result"
 msgid "Switch User"
 msgstr "Alternar utilizador"
@@ -1062,7 +1074,7 @@ msgstr "%B %d %Y, %l∶%M %p"
 #.
 #: js/misc/util.js:573
 msgid "Google"
-msgstr ""
+msgstr "Google"
 
 #. TRANSLATORS: this is the title of the wifi captive portal login window
 #: js/portalHelper/main.js:41
@@ -1102,9 +1114,8 @@ msgstr ""
 
 #. Add the "Remove from desktop" menu item at the end.
 #: js/ui/appDisplay.js:2443
-#, fuzzy
 msgid "Remove from desktop"
-msgstr "Remover dos favoritos"
+msgstr "Remover da área de trabalho"
 
 #: js/ui/audioDeviceSelection.js:41
 msgid "Select Audio Device"
@@ -1728,14 +1739,12 @@ msgid "Allow"
 msgstr "Permitir"
 
 #: js/ui/kbdA11yDialog.js:32
-#, fuzzy
 msgid "Slow Keys Turned On"
-msgstr "Teclas lentas"
+msgstr "Teclas lentas ligadas"
 
 #: js/ui/kbdA11yDialog.js:33
-#, fuzzy
 msgid "Slow Keys Turned Off"
-msgstr "Teclas lentas"
+msgstr "Teclas lentas desligadas"
 
 #: js/ui/kbdA11yDialog.js:34
 msgid ""
@@ -1744,14 +1753,12 @@ msgid ""
 msgstr ""
 
 #: js/ui/kbdA11yDialog.js:41
-#, fuzzy
 msgid "Sticky Keys Turned On"
-msgstr "Teclas pegajosas"
+msgstr "Teclas coladas ligadas"
 
 #: js/ui/kbdA11yDialog.js:42
-#, fuzzy
 msgid "Sticky Keys Turned Off"
-msgstr "Teclas pegajosas"
+msgstr "Teclas coladas desligadas"
 
 #: js/ui/kbdA11yDialog.js:44
 msgid ""
@@ -1768,7 +1775,7 @@ msgstr ""
 
 #: js/ui/kbdA11yDialog.js:55
 msgid "Leave On"
-msgstr ""
+msgstr "Manter ligado"
 
 #: js/ui/kbdA11yDialog.js:55 js/ui/status/automaticUpdates.js:315
 #: js/ui/status/bluetooth.js:138 js/ui/status/network.js:1288
@@ -1785,12 +1792,11 @@ msgstr "Desligar"
 
 #: js/ui/kbdA11yDialog.js:63
 msgid "Leave Off"
-msgstr ""
+msgstr "Manter desligado"
 
 #: js/ui/keyboard.js:207
-#, fuzzy
 msgid "Region & Language Settings"
-msgstr "Definições de Data & Hora"
+msgstr "Definições de Região & Idioma"
 
 #: js/ui/lookingGlass.js:665
 msgid "No extensions installed"
@@ -1957,7 +1963,6 @@ msgid "User Menu"
 msgstr "Menu de Bandeja"
 
 #: js/ui/panel.js:833
-#, fuzzy
 msgctxt "Power menu"
 msgid "Power"
 msgstr "Desligar"
@@ -2255,9 +2260,9 @@ msgstr "Recordar senha"
 
 #. Translators: %s is the Disks application
 #: js/ui/shellMountOperation.js:391
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Open %s"
-msgstr "Abrir com %s"
+msgstr "Abrir %s"
 
 #: js/ui/shellMountOperation.js:423
 msgid "The PIM must be a number or empty."
@@ -3038,7 +3043,7 @@ msgstr ""
 #: subprojects/extensions-tool/src/command-create.c:197
 #: subprojects/extensions-tool/src/main.c:170
 msgid "Name"
-msgstr ""
+msgstr "Nome"
 
 #: subprojects/extensions-tool/src/command-create.c:208
 #, c-format
@@ -3255,7 +3260,7 @@ msgstr ""
 
 #: subprojects/extensions-tool/src/main.c:179
 msgid "URL"
-msgstr ""
+msgstr "URL"
 
 #: subprojects/extensions-tool/src/main.c:182
 msgid "Original author"
@@ -3281,7 +3286,7 @@ msgstr ""
 #: subprojects/extensions-tool/src/main.c:242
 #: subprojects/extensions-tool/src/main.c:245
 msgid "COMMAND"
-msgstr ""
+msgstr "COMANDO"
 
 #: subprojects/extensions-tool/src/main.c:245
 msgid "[ARGS…]"
@@ -3479,7 +3484,7 @@ msgstr "Definições"
 
 #: js/ui/userMenu.js:24
 msgid "Give Us Feedback"
-msgstr ""
+msgstr "Nos dê a sua opinião"
 
 #: src/shell-desktop-dir-info.c:485
 msgid "Unnamed"

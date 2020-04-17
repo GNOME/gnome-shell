@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-17 17:09+0100\n"
+"POT-Creation-Date: 2020-04-17 17:11+0100\n"
 "PO-Revision-Date: 2020-01-11 11:29+0100\n"
 "Last-Translator: Kristjan SCHMIDT <kristjan.schmidt@googlemail.com>\n"
 "Language-Team: Esperanto <gnome-eo-list@gnome.org>\n"
@@ -21,8 +21,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Gtranslator 3.34.0\n"
 "X-DamnedLies-Scope: partial\n"
+"X-Generator: Gtranslator 3.34.0\n"
 "X-Project-Style: gnome\n"
 
 #: data/50-gnome-shell-system.xml:6
@@ -688,7 +688,7 @@ msgstr "Forigi"
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:8 js/ui/userMenu.js:27
 msgid "Help"
-msgstr ""
+msgstr "Helpi"
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:12
 #, fuzzy
@@ -1925,10 +1925,9 @@ msgid "User Menu"
 msgstr "Pleto-menuo"
 
 #: js/ui/panel.js:833
-#, fuzzy
 msgctxt "Power menu"
 msgid "Power"
-msgstr "kurento"
+msgstr "Elektro"
 
 #: js/ui/panel.js:907
 msgid "Bottom Bar"
@@ -2299,7 +2298,7 @@ msgstr "Nenio estas planita"
 #. The status label
 #: js/ui/status/automaticUpdates.js:198
 msgid "Automatic Updates"
-msgstr ""
+msgstr "Aŭtomataj ĝisdatigoj"
 
 #: js/ui/status/automaticUpdates.js:263
 msgid "Automatic updates on"

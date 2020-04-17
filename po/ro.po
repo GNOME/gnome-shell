@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-17 17:09+0100\n"
+"POT-Creation-Date: 2020-04-17 17:11+0100\n"
 "PO-Revision-Date: 2019-09-11 22:12+0200\n"
 "Last-Translator: Daniel Șerbănescu <daniel [at] serbanescu [dot] dk>\n"
 "Language-Team: Gnome Romanian Translation Team <gnomero-list@lists."
@@ -23,8 +23,8 @@ msgstr ""
 "%100<=19) ? 1 : 2);\n"
 "20)) ? 1: 2);\n"
 "X-Generator: Poedit 2.2.3\n"
-"X-Project-Style: gnome\n"
 "X-Poedit-SourceCharset: UTF-8\n"
+"X-Project-Style: gnome\n"
 
 #: data/50-gnome-shell-system.xml:6
 msgid "System"
@@ -226,16 +226,21 @@ msgstr ""
 #: data/org.gnome.shell.gschema.xml.in:126
 msgid "Enables the hot corner for the window picker"
 msgstr ""
+"Activează colțul fierbinte pentru dispozitivul de selectare a ferestrelor"
 
 #: data/org.gnome.shell.gschema.xml.in:129
 msgid ""
 "By default, the hot corner for the window picker is enabled. Set false to "
 "disable the hot corner."
 msgstr ""
+"În mod prestabilit, colțul fierbinte pentru selectorul de ferestre este "
+"activat. Setați fals pentru a dezactiva colțul fierbinte."
 
 #: data/org.gnome.shell.gschema.xml.in:136
 msgid "Set the left/right position of the hot corner for the window picker"
 msgstr ""
+"Setați poziția stânga / dreapta a colțului fierbinte pentru dispozitivul de "
+"selectare a ferestrelor"
 
 #: data/org.gnome.shell.gschema.xml.in:139
 msgid ""
@@ -243,20 +248,27 @@ msgid ""
 "the hot corner to a left corner. The position is not affected by the RTL vs. "
 "LTR text direction."
 msgstr ""
+"Poziția inițială a colțului fierbinte se află în colțul dreapta. Setați fals "
+"pentru a muta colțul fierbinte într-un colț stâng. Poziția nu este afectată "
+"de direcția textului RTL vs. LTR."
 
 #: data/org.gnome.shell.gschema.xml.in:147
 msgid "Set the top/bottom position of the hot corner for the window picker"
 msgstr ""
+"Setați poziția de sus / jos a colțului fierbinte pentru dispozitivul de "
+"selectare a ferestrelor."
 
 #: data/org.gnome.shell.gschema.xml.in:150
 msgid ""
 "Default position of the hot corner is in a bottom corner. Set false to move "
 "the hot corner to a top corner."
 msgstr ""
+"Poziția inițială a colțului fierbinte se află într-un colț inferior. Setați "
+"fals pentru a muta colțul fierbinte într-un colț superior."
 
 #: data/org.gnome.shell.gschema.xml.in:157
 msgid "Set the size of the hot corner target"
-msgstr ""
+msgstr "Stabiliți dimensiunea colțului fierbinte"
 
 #: data/org.gnome.shell.gschema.xml.in:160
 msgid ""
@@ -264,10 +276,14 @@ msgid ""
 "Default is for a single pixel in the very corner. For some virtual machines, "
 "this value may need to be set larger than the default."
 msgstr ""
+"Numărul de pixeli dintr-o dimensiune a țintei pătrate pentru colțul "
+"fierbinte. Implicit este pentru un singur pixel chiar în colț. Pentru unele "
+"mașini virtuale, este posibil ca această valoare să fie mai mare decât cea "
+"implicită."
 
 #: data/org.gnome.shell.gschema.xml.in:170
 msgid "Prevent apps from being automatically maximized on launch"
-msgstr ""
+msgstr "Preveniți maximizarea automată a aplicațiilor la lansare"
 
 #: data/org.gnome.shell.gschema.xml.in:173
 msgid ""
@@ -275,10 +291,14 @@ msgid ""
 "screens, prevents applications from being forced to open maximized, and does "
 "not automatically switch to the app selector when a window is minimized."
 msgstr ""
+"Face managementul ferestrelor mai mult ca standardul Gnome. Ascunde ecrane "
+"de aplicație, împiedică aplicațiile să fie forțate să se deschidă la maxim "
+"și nu trece automat la selectorul de aplicații atunci când o fereastră este "
+"redusă la minimum."
 
 #: data/org.gnome.shell.gschema.xml.in:182
 msgid "Whether password reset is allowed"
-msgstr ""
+msgstr "Daca resetarea parolei este permisa"
 
 #: data/org.gnome.shell.gschema.xml.in:183
 msgid ""
@@ -288,20 +308,29 @@ msgid ""
 "button, respectively. Note that it only makes sense to set this key for the "
 "Debian-gdm user; changing it for your own user account will have no effect."
 msgstr ""
+"Această cheie controlează dacă trebuie să apară \"Parola uitată?\" pe "
+"ecranul de conectare. \"default\" indică GNOME Shell să utilizeze setarea "
+"prestabilită a furnizorului. 'activare' și 'dezactivare' pot fi folosite "
+"pentru a activa sau a dezactiva explicit butonul de resetare. Rețineți că "
+"are sens să setați această cheie pentru utilizatorul Debian-gdm; modificarea "
+"acestuia pentru contul dvs. de utilizator nu va avea niciun efect."
 
 #: data/org.gnome.shell.gschema.xml.in:194
 msgid "Layout of application launcher icons in the grid"
-msgstr ""
+msgstr "Amplasarea icoanelor de lansare a aplicațiilor în rețea"
 
 #: data/org.gnome.shell.gschema.xml.in:195
 msgid ""
 "This key specifies the exact order of the icons shown in the applications "
 "launcher view."
 msgstr ""
+"Această tastă specifică ordinea exactă a pictogramelor afișate în ecranul de "
+"lansare a aplicațiilor."
 
 #: data/org.gnome.shell.gschema.xml.in:201
 msgid "Languages for which the discovery feed feature is enabled."
 msgstr ""
+"Limbile pentru care este activată caracteristica fluxului de descoperire."
 
 #: data/org.gnome.shell.gschema.xml.in:204
 msgid ""
@@ -309,6 +338,9 @@ msgid ""
 "will be enabled. You will need to restart the shell for changes to this "
 "setting to take effect."
 msgstr ""
+"Dacă limbajul sistemului se potrivește cu oricare dintre aceste limbi, "
+"feedul de descoperire va fi activat. Va trebui să reporniți shell-ul pentru "
+"ca modificările la această setare sa intre în vigoare."
 
 #: data/org.gnome.shell.gschema.xml.in:215
 msgid "Keybinding to open the application menu"
@@ -394,108 +426,126 @@ msgid "Switch to application 9"
 msgstr "Comută la aplicația 9"
 
 #: data/org.gnome.shell.gschema.xml.in:290
-#, fuzzy
 msgid "Keybinding that shows the force app exit dialog"
-msgstr "Combinație de taste pentru deschiderea meniului aplicației"
+msgstr ""
+"combinație de taste care afișează dialogul de ieșire a aplicației de forță"
 
 #: data/org.gnome.shell.gschema.xml.in:295
-#, fuzzy
 msgid "Keybinding to activate the first app in the icon bar."
-msgstr "Combinație de taste pentru deschiderea meniului aplicației."
+msgstr ""
+"combinație de taste pentru a activa prima aplicație în bara de pictograme."
 
 #: data/org.gnome.shell.gschema.xml.in:296
 msgid ""
 "Keybinding to open the first app in the icon bar, or switch to the app if "
 "already open."
 msgstr ""
+"combinație de taste pentru a deschide prima aplicație în bara de pictograme "
+"sau pentru a comuta la aplicație dacă este deja deschisă."
 
 #: data/org.gnome.shell.gschema.xml.in:302
-#, fuzzy
 msgid "Keybinding to activate the second app in the icon bar."
-msgstr "Combinație de taste pentru deschiderea meniului aplicației."
+msgstr ""
+"combinație de taste pentru a activa a doua aplicație în bara de pictograme."
 
 #: data/org.gnome.shell.gschema.xml.in:303
 msgid ""
 "Keybinding to open the second app in the icon bar, or switch to the app if "
 "already open."
 msgstr ""
+"Combinatie de taste pentru a deschide cea de-a doua aplicație în bara de "
+"pictograme sau pentru a comuta la aplicație dacă este deja deschisă."
 
 #: data/org.gnome.shell.gschema.xml.in:309
-#, fuzzy
 msgid "Keybinding to activate the third app in the icon bar."
-msgstr "Combinație de taste pentru deschiderea meniului aplicației."
+msgstr ""
+"Combinatie de taste pentru a activa a treia aplicație în bara de pictograme."
 
 #: data/org.gnome.shell.gschema.xml.in:310
 msgid ""
 "Keybinding to open the third app in the icon bar, or switch to the app if "
 "already open."
 msgstr ""
+"Combinatie de taste pentru a deschide cea de-a treia aplicație în bara de "
+"pictograme sau pentru a comuta la aplicație dacă este deja deschisă."
 
 #: data/org.gnome.shell.gschema.xml.in:316
-#, fuzzy
 msgid "Keybinding to activate the fourth app in the icon bar."
-msgstr "Combinație de taste pentru deschiderea meniului aplicației."
+msgstr ""
+"Combinatie de taste pentru a activa a patra aplicație în bara de pictograme."
 
 #: data/org.gnome.shell.gschema.xml.in:317
 msgid ""
 "Keybinding to open the fourth app in the icon bar, or switch to the app if "
 "already open."
 msgstr ""
+"Combinatie de taste pentru a deschide cea de-a patra aplicație din bara de "
+"pictograme sau pentru a comuta la aplicație dacă este deja deschisă."
 
 #: data/org.gnome.shell.gschema.xml.in:323
-#, fuzzy
 msgid "Keybinding to activate the fifth app in the icon bar."
-msgstr "Combinație de taste pentru deschiderea meniului aplicației."
+msgstr ""
+"Combinatie de taste pentru a activa aplicația a cincea în bara de pictograme."
 
 #: data/org.gnome.shell.gschema.xml.in:324
 msgid ""
 "Keybinding to open the fifth app in the icon bar, or switch to the app if "
 "already open."
 msgstr ""
+"Combinatie de taste pentru a deschide aplicația a cincea în bara de "
+"pictograme sau pentru a comuta la aplicație dacă este deja deschisă."
 
 #: data/org.gnome.shell.gschema.xml.in:330
-#, fuzzy
 msgid "Keybinding to activate the sixth app in the icon bar."
-msgstr "Combinație de taste pentru deschiderea meniului aplicației."
+msgstr ""
+"Combinatie de taste pentru a activa aplicația a șasea în bara de pictograme."
 
 #: data/org.gnome.shell.gschema.xml.in:331
 msgid ""
 "Keybinding to open the sixth app in the icon bar, or switch to the app if "
 "already open."
 msgstr ""
+"Combinatie de taste pentru a deschide cea de-a șasea aplicație din bara de "
+"pictograme sau pentru a comuta la aplicație dacă este deja deschisă."
 
 #: data/org.gnome.shell.gschema.xml.in:337
-#, fuzzy
 msgid "Keybinding to activate the seventh app in the icon bar."
-msgstr "Combinație de taste pentru deschiderea meniului aplicației."
+msgstr ""
+"Combinatie de taste pentru a activa aplicația a șaptea în bara de pictograme."
 
 #: data/org.gnome.shell.gschema.xml.in:338
 msgid ""
 "Keybinding to open the seventh app in the icon bar, or switch to the app if "
 "already open."
 msgstr ""
+"Combinatie de taste pentru a deschide cea de-a șaptea aplicație din bara de "
+"pictograme sau pentru a comuta la aplicație dacă este deja deschisă."
 
 #: data/org.gnome.shell.gschema.xml.in:344
-#, fuzzy
 msgid "Keybinding to activate the eighth app in the icon bar."
-msgstr "Combinație de taste pentru deschiderea meniului aplicației."
+msgstr ""
+"Combinatie de taste pentru a activa aplicația a opta în bara de pictograme."
 
 #: data/org.gnome.shell.gschema.xml.in:345
 msgid ""
 "Keybinding to open the eighth app in the icon bar, or switch to the app if "
 "already open."
 msgstr ""
+"Combinatie de taste pentru a deschide cea de-a opta aplicație din bara de "
+"pictograme sau pentru a comuta la aplicație dacă este deja deschisă."
 
 #: data/org.gnome.shell.gschema.xml.in:351
-#, fuzzy
 msgid "Keybinding to activate the last app in the icon bar."
-msgstr "Combinație de taste pentru deschiderea meniului aplicației."
+msgstr ""
+"Combinatie de taste pentru a activa ultima aplicație din bara de pictograme."
 
 #: data/org.gnome.shell.gschema.xml.in:352
 msgid ""
 "Keybinding to open the last app in the icon bar, or switch to the app if "
 "already open."
 msgstr ""
+"Combinatie de taste pentru a deschide ultima aplicație din bara de "
+"pictograme sau pentru a comuta la aplicație dacă este deja deschisă."
 
 #: data/org.gnome.shell.gschema.xml.in:363
 #: data/org.gnome.shell.gschema.xml.in:390
@@ -707,7 +757,7 @@ msgstr "Elimină"
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:8 js/ui/userMenu.js:27
 msgid "Help"
-msgstr ""
+msgstr "Ajutor"
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:12
 #, fuzzy
@@ -763,11 +813,11 @@ msgstr "Ieșire din sesiune"
 
 #: js/gdm/authPrompt.js:131
 msgid "Show password hint"
-msgstr ""
+msgstr "Arata sugestie parola"
 
 #: js/gdm/authPrompt.js:148
 msgid "Forgot password?"
-msgstr ""
+msgstr "Parola uitata"
 
 #. Cisco LEAP
 #: js/gdm/authPrompt.js:303 js/ui/components/networkAgent.js:363
@@ -794,9 +844,8 @@ msgid ""
 msgstr ""
 
 #: js/gdm/authPrompt.js:762
-#, fuzzy
 msgid "Your unlock code was incorrect. Please try again."
-msgstr "Nu a funcționat. Încercați din nou."
+msgstr "Codul de deblocare este incorect.Te rugam sa incerci din nou"
 
 #: js/gdm/loginDialog.js:317
 msgid "Choose Session"
@@ -1064,7 +1113,7 @@ msgstr "%B %-d %Y, %l∶%M %p"
 #.
 #: js/misc/util.js:573
 msgid "Google"
-msgstr ""
+msgstr "Google"
 
 #. TRANSLATORS: this is the title of the wifi captive portal login window
 #: js/portalHelper/main.js:41
@@ -1105,9 +1154,8 @@ msgstr "Lansează folosind placa grafică dedicată"
 
 #. Add the "Remove from desktop" menu item at the end.
 #: js/ui/appDisplay.js:2443
-#, fuzzy
 msgid "Remove from desktop"
-msgstr "Elimină din favorite"
+msgstr "Sterge de pe desktop"
 
 #: js/ui/audioDeviceSelection.js:41
 msgid "Select Audio Device"
@@ -1135,11 +1183,11 @@ msgstr "Schimbă fundalul…"
 
 #: js/ui/backgroundMenu.js:18
 msgid "Add App"
-msgstr ""
+msgstr "Adauga aplicatii"
 
 #: js/ui/backgroundMenu.js:24
 msgid "Add Website"
-msgstr ""
+msgstr "Adauga website"
 
 #. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday).
 #: js/ui/calendar.js:41
@@ -1885,7 +1933,7 @@ msgstr "Anulează"
 
 #: js/ui/overview.js:113
 msgid "No apps are open"
-msgstr ""
+msgstr "Nici o aplicatie deschisa"
 
 #. Translators: This is the main view to select
 #. activities. See also note for "Activities" string.
@@ -1959,17 +2007,16 @@ msgstr "Sistem"
 #: js/ui/panel.js:801
 msgctxt "User menu"
 msgid "User Menu"
-msgstr ""
+msgstr "Meniu Utilizator"
 
 #: js/ui/panel.js:833
-#, fuzzy
 msgctxt "Power menu"
 msgid "Power"
-msgstr "Oprire"
+msgstr "Pornire"
 
 #: js/ui/panel.js:907
 msgid "Bottom Bar"
-msgstr ""
+msgstr "Bara de jos"
 
 #: js/ui/paygUnlockDialog.js:93
 msgid "Your Pay As You Go usage credit has expired."
@@ -2222,18 +2269,17 @@ msgid "Hide Text"
 msgstr "Ascunde text"
 
 #: js/ui/shellEntry.js:194
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Search %s and more…"
-msgstr "Se caută…"
+msgstr "Cauta %s si mai multe…"
 
 #: js/ui/shellEntry.js:196
 msgid "Search the internet and more…"
-msgstr ""
+msgstr "Cauta pe internet…"
 
 #: js/ui/shellEntry.js:198
-#, fuzzy
 msgid "Search…"
-msgstr "Se caută…"
+msgstr "Căutare…"
 
 #: js/ui/shellEntry.js:490
 msgid "Caps lock is on."
@@ -2345,9 +2391,8 @@ msgstr "Nimic programat"
 
 #. The status label
 #: js/ui/status/automaticUpdates.js:198
-#, fuzzy
 msgid "Automatic Updates"
-msgstr "Locație automată"
+msgstr "Actualizări automate"
 
 #: js/ui/status/automaticUpdates.js:263
 #, fuzzy
@@ -3386,74 +3431,68 @@ msgstr "Sunete de sistem"
 
 #: js/ui/appIconBar.js:195
 msgid "Other workspaces"
-msgstr ""
+msgstr "Alte spatii de lucru"
 
 #: js/ui/appIconBar.js:204
-#, fuzzy
 msgid "Current workspace"
-msgstr "Limitează comutatorul la spațiul de lucru curent."
+msgstr "Spatiu de lucru curent"
 
 #: js/ui/appIconBar.js:282
 msgid "Pin to Taskbar"
-msgstr ""
+msgstr "Lipeste de Taskbar"
 
 #: js/ui/appIconBar.js:286
 msgid "Unpin from Taskbar"
-msgstr ""
+msgstr "Sterge din Taskbar"
 
 #: js/ui/appIconBar.js:310
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Quit %s"
-msgstr "Ieșire"
+msgstr "Închide %s"
 
 #: js/ui/endlessButton.js:14
 msgid "Endless Button"
-msgstr ""
+msgstr "Buton Endless"
 
 #: js/ui/endlessButton.js:67
-#, fuzzy
 msgid "Show Desktop"
-msgstr "Arată detaliile"
+msgstr "Arata Desktop"
 
 #: js/ui/endlessButton.js:69
-#, fuzzy
 msgid "Show Apps"
-msgstr "Arată aplicațiile"
+msgstr "Arata Aplicatii"
 
 #: js/ui/forceAppExitDialog.js:50
-#, fuzzy
 msgid "Quit applications"
-msgstr "Aplicații"
+msgstr "Renunțați la aplicații"
 
 #: js/ui/forceAppExitDialog.js:56
 msgid ""
 "If an application doesn't respond for a while, select its name and click "
 "Quit Application."
 msgstr ""
+"Daca o aplicatie nu raspunde pentru moment,selecteaza numele si apasa pe "
+"Inchide Aplicatia"
 
 #: js/ui/forceAppExitDialog.js:87
-#, fuzzy
 msgid "System Monitor"
-msgstr "Sunete de sistem"
+msgstr "Monitorul de sistem"
 
 #: js/ui/forceAppExitDialog.js:95
-#, fuzzy
 msgid "Quit Application"
-msgstr "Aplicații"
+msgstr "Iesi din aplicatie"
 
 #: js/ui/hotCorner.js:15
 msgid "Hot Corner"
-msgstr ""
+msgstr "Colt Fierbinte"
 
 #: js/ui/hotCorner.js:25
-#, fuzzy
 msgid "Enable Hot Corner"
-msgstr "Activează extensia"
+msgstr "Porneste Colt"
 
 #: js/ui/hotCorner.js:29
-#, fuzzy
 msgid "Disable Hot Corner"
-msgstr "Dezactivează până mâine"
+msgstr "Opreste Colt"
 
 #: js/ui/iconGridLayout.js:312
 #, fuzzy, javascript-format
@@ -3461,14 +3500,13 @@ msgid "%s has been removed"
 msgstr "%s a fost eliminat de la favorite."
 
 #: js/ui/iconGridLayout.js:540
-#, fuzzy
 msgid "New Folder"
-msgstr "Dosar nedenumit"
+msgstr "Dosar Nou"
 
 #: js/ui/internetSearch.js:70
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Open \"%s\" in browser"
-msgstr "Ferestre deschise"
+msgstr "Deschide %s in browser"
 
 #. Translators: the first %s is the search engine name, and the second
 #. * is the search string. For instance, 'Search Google for "hello"'.
@@ -3476,17 +3514,16 @@ msgstr "Ferestre deschise"
 #: js/ui/internetSearch.js:79
 #, javascript-format
 msgid "Search %s for \"%s\""
-msgstr ""
+msgstr "Cauta %s pentru %s"
 
 #: js/ui/internetSearch.js:81
 #, javascript-format
 msgid "Search the internet for \"%s\""
-msgstr ""
+msgstr "Cauta pe internet %s"
 
 #: js/ui/userMenu.js:16
-#, fuzzy
 msgid "Social Accounts"
-msgstr "Conturi online"
+msgstr "Conturi Sociale"
 
 #: js/ui/userMenu.js:19
 msgid "Settings"
@@ -3494,17 +3531,16 @@ msgstr "Configurări"
 
 #: js/ui/userMenu.js:24
 msgid "Give Us Feedback"
-msgstr ""
+msgstr "Lasa-ne o parere"
 
 #: src/shell-desktop-dir-info.c:485
-#, fuzzy
 msgid "Unnamed"
-msgstr "Dosar nedenumit"
+msgstr "Fara nume"
 
 #: src/shell-desktop-dir-info.c:745
 #, c-format
 msgid "Custom definition for %s"
-msgstr ""
+msgstr "Definitie proprie pentru %s"
 
 #~ msgid "Copy Error"
 #~ msgstr "Eroare la copiere"
@@ -3920,18 +3956,6 @@ msgstr ""
 #~ "Linia de asamblare gstreamer folosită pentru a coda captura de ecran"
 
 #, fuzzy
-#~| msgid ""
-#~| "Sets the GStreamer pipeline used to encode recordings. It follows the "
-#~| "syntax used for gst-launch. The pipeline should have an unconnected sink "
-#~| "pad where the recorded video is recorded. It will normally have a "
-#~| "unconnected source pad; output from that pad will be written into the "
-#~| "output file. However the pipeline can also take care of its own output - "
-#~| "this might be used to send the output to an icecast server via "
-#~| "shout2send or similar. When unset or set to an empty value, the default "
-#~| "pipeline will be used. This is currently 'videorate ! vp8enc quality=10 "
-#~| "speed=2 threads=%T ! queue ! webmmux' and records to WEBM using the VP8 "
-#~| "codec. %T is used as a placeholder for a guess at the optimal thread "
-#~| "count on the system."
 #~ msgid ""
 #~ "Sets the GStreamer pipeline used to encode recordings. It follows the "
 #~ "syntax used for gst-launch. The pipeline should have an unconnected sink "
@@ -4002,12 +4026,10 @@ msgstr ""
 #~ msgstr "Vizibilitate"
 
 #, fuzzy
-#~| msgid "Set up a New Device..."
 #~ msgid "Set Up a New Device…"
 #~ msgstr "Configurează un dispozitiv nou..."
 
 #, fuzzy
-#~| msgid "Send Files..."
 #~ msgid "Send Files…"
 #~ msgstr "Trimite fișiere..."
 

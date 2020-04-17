@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-17 17:09+0100\n"
+"POT-Creation-Date: 2020-04-17 17:11+0100\n"
 "PO-Revision-Date: 2020-03-19 15:40+0100\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <community-poland@mozilla.org>\n"
@@ -1511,17 +1511,19 @@ msgstr "Wylogowanie"
 #, javascript-format
 msgid "%s will be logged out automatically in %d second."
 msgid_plural "%s will be logged out automatically in %d seconds."
-msgstr[0] "Użytkownik %s zostanie wylogowany za %d sekundę."
-msgstr[1] "Użytkownik %s zostanie wylogowany za %d sekundy."
-msgstr[2] "Użytkownik %s zostanie wylogowany za %d sekund."
+msgstr[0] "Użytkownik %s zostanie wylogowany za %d sekundę."
+msgstr[1] "Użytkownik %s zostanie wylogowany za %d sekundy."
+msgstr[2] "Użytkownik %s zostanie wylogowany za %d sekund."
+msgstr[3] "Użytkownik %s zostanie wylogowany za %d sekund."
 
 #: js/ui/endSessionDialog.js:47
 #, javascript-format
 msgid "You will be logged out automatically in %d second."
 msgid_plural "You will be logged out automatically in %d seconds."
-msgstr[0] "Wylogowanie nastąpi za %d sekundę."
-msgstr[1] "Wylogowanie nastąpi za %d sekundy."
-msgstr[2] "Wylogowanie nastąpi za %d sekund."
+msgstr[0] "Wylogowanie nastąpi za %d sekundę."
+msgstr[1] "Wylogowanie nastąpi za %d sekundy."
+msgstr[2] "Wylogowanie nastąpi za %d sekund."
+msgstr[3] "Wylogowanie nastąpi za %d sekund."
 
 #: js/ui/endSessionDialog.js:53
 msgctxt "button"
@@ -1542,9 +1544,10 @@ msgstr "Instalacja aktualizacji i wyłączenie komputera"
 #, javascript-format
 msgid "The system will power off automatically in %d second."
 msgid_plural "The system will power off automatically in %d seconds."
-msgstr[0] "Wyłączenie komputera nastąpi za %d sekundę."
-msgstr[1] "Wyłączenie komputera nastąpi za %d sekundy."
-msgstr[2] "Wyłączenie komputera nastąpi za %d sekund."
+msgstr[0] "Wyłączenie komputera nastąpi za %d sekundę."
+msgstr[1] "Wyłączenie komputera nastąpi za %d sekundy."
+msgstr[2] "Wyłączenie komputera nastąpi za %d sekund."
+msgstr[3] "Wyłączenie komputera nastąpi za %d sekund."
 
 #: js/ui/endSessionDialog.js:65
 msgctxt "checkbox"
@@ -1570,9 +1573,10 @@ msgstr "Ponowne uruchomienie"
 #, javascript-format
 msgid "The system will restart automatically in %d second."
 msgid_plural "The system will restart automatically in %d seconds."
-msgstr[0] "Ponowne uruchomienie komputera nastąpi za %d sekundę."
-msgstr[1] "Ponowne uruchomienie komputera nastąpi za %d sekundy."
-msgstr[2] "Ponowne uruchomienie komputera nastąpi za %d sekund."
+msgstr[0] "Ponowne uruchomienie systemu nastąpi za %d sekundę."
+msgstr[1] "Ponowne uruchomienie systemu nastąpi za %d sekundy."
+msgstr[2] "Ponowne uruchomienie systemu nastąpi za %d sekund."
+msgstr[3] "Ponowne uruchomienie systemu nastąpi za %d sekund."
 
 #: js/ui/endSessionDialog.js:91
 msgctxt "title"
@@ -1944,10 +1948,9 @@ msgid "User Menu"
 msgstr ""
 
 #: js/ui/panel.js:833
-#, fuzzy
 msgctxt "Power menu"
 msgid "Power"
-msgstr "Wyłącz komputer"
+msgstr "Zasilanie"
 
 #: js/ui/panel.js:907
 msgid "Bottom Bar"
@@ -2323,9 +2326,8 @@ msgstr ""
 
 #. The status label
 #: js/ui/status/automaticUpdates.js:198
-#, fuzzy
 msgid "Automatic Updates"
-msgstr "Automatyczne położenie"
+msgstr "Automatyczne aktualizacje"
 
 #: js/ui/status/automaticUpdates.js:263
 #, fuzzy
@@ -2897,9 +2899,10 @@ msgstr "Zachowaj zmiany"
 #, javascript-format
 msgid "Settings changes will revert in %d second"
 msgid_plural "Settings changes will revert in %d seconds"
-msgstr[0] "Zmienione ustawienia zostaną przywrócone za %d sekundę"
-msgstr[1] "Zmienione ustawienia zostaną przywrócone za %d sekundy"
-msgstr[2] "Zmienione ustawienia zostaną przywrócone za %d sekund"
+msgstr[0] "Zmiany ustawień zostaną przywrócone za %d sekundę"
+msgstr[1] "Zmiany ustawień zostaną przywrócone za %d sekundy"
+msgstr[2] "Zmiany ustawień zostaną przywrócone za %d sekund"
+msgstr[3] "Zmiany ustawień zostaną przywrócone za %d sekund"
 
 #. Translators: This represents the size of a window. The first number is
 #. * the width of the window and the second is the height.
@@ -3338,6 +3341,7 @@ msgid_plural "%u Outputs"
 msgstr[0] "%u wyjście"
 msgstr[1] "%u wyjścia"
 msgstr[2] "%u wyjść"
+msgstr[3] "%u wyjść"
 
 #. translators:
 #. * The number of sound inputs on a particular device
@@ -3348,6 +3352,7 @@ msgid_plural "%u Inputs"
 msgstr[0] "%u wejście"
 msgstr[1] "%u wejścia"
 msgstr[2] "%u wejść"
+msgstr[3] "%u wejść"
 
 #: subprojects/gvc/gvc-mixer-control.c:2766
 msgid "System Sounds"

@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-17 17:09+0100\n"
+"POT-Creation-Date: 2020-04-17 17:11+0100\n"
 "PO-Revision-Date: 2020-03-22 01:26+0200\n"
 "Last-Translator: Yosef Or Boczko <yoseforb@gmail.com>\n"
 "Language-Team: Hebrew <yoseforb@gmail.com>\n"
@@ -18,8 +18,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n==1 ? 0 : (n>2||n==0) ? 1 : 2\n"
-"X-Poedit-SourceCharset: UTF-8\n"
 "X-Generator: Gtranslator 3.34.0\n"
+"X-Poedit-SourceCharset: UTF-8\n"
 
 #: data/50-gnome-shell-system.xml:6
 msgid "System"
@@ -537,7 +537,7 @@ msgstr "Whether to fetch the current location or not"
 
 #: data/org.gnome.shell.gschema.xml.in:420
 msgid "Location"
-msgstr "Location"
+msgstr "מיקום"
 
 #: data/org.gnome.shell.gschema.xml.in:421
 msgid "The location for which to show a forecast"
@@ -575,7 +575,7 @@ msgstr "Delay focus changes in mouse mode until the pointer stops moving"
 
 #: data/org.gnome.Shell.PortalHelper.desktop.in.in:3
 msgid "Network Login"
-msgstr "חיבורי רשת"
+msgstr "Network Login"
 
 #: js/dbusServices/extensions/ui/extension-prefs-dialog.ui:36
 #: js/extensionPrefs/data/ui/extensions-window.ui:223
@@ -1490,6 +1490,7 @@ msgid_plural "%s will be logged out automatically in %d seconds."
 msgstr[0] "המשתמש %s ייצא אוטומטית בעוד שנייה."
 msgstr[1] "המשתמש %s ייצא אוטומטית בעוד %d שניות."
 msgstr[2] "המשתמש %s ייצא אוטומטית בעוד %d שניות."
+msgstr[3] "המשתמש %s ייצא אוטומטית בעוד %d שניות."
 
 #: js/ui/endSessionDialog.js:47
 #, javascript-format
@@ -1498,6 +1499,7 @@ msgid_plural "You will be logged out automatically in %d seconds."
 msgstr[0] "אתה תצא אוטומטית בעוד שנייה."
 msgstr[1] "אתה תצא אוטומטית בעוד %d שניות."
 msgstr[2] "אתה תצא אוטומטית בעוד %d שניות."
+msgstr[3] "אתה תצא אוטומטית בעוד %d שניות."
 
 #: js/ui/endSessionDialog.js:53
 msgctxt "button"
@@ -1521,6 +1523,7 @@ msgid_plural "The system will power off automatically in %d seconds."
 msgstr[0] "המערכת תכבה אוטומטית בעוד שנייה."
 msgstr[1] "המערכת תכבה אוטומטית בעוד %d שניות."
 msgstr[2] "המערכת תכבה אוטומטית בעוד %d שניות."
+msgstr[3] "המערכת תכבה אוטומטית בעוד %d שניות."
 
 #: js/ui/endSessionDialog.js:65
 msgctxt "checkbox"
@@ -1549,6 +1552,7 @@ msgid_plural "The system will restart automatically in %d seconds."
 msgstr[0] "המערכת תופעל מחדש בעוד שנייה."
 msgstr[1] "המערכת תופעל מחדש בעוד %d שניות."
 msgstr[2] "המערכת תופעל מחדש בעוד %d שניות."
+msgstr[3] "המערכת תופעל מחדש בעוד %d שניות."
 
 #: js/ui/endSessionDialog.js:91
 msgctxt "title"
@@ -1563,6 +1567,7 @@ msgid_plural ""
 msgstr[0] "המערכת תופעל מחדש ותתקין עדכונים בעוד שנייה."
 msgstr[1] "המערכת תופעל מחדש ותקין עדכונים בעוד %d שניות."
 msgstr[2] "המערכת תופעל מחדש ותקין עדכונים בעוד %d שניות."
+msgstr[3] "המערכת תופעל מחדש ותקין עדכונים בעוד %d שניות."
 
 #: js/ui/endSessionDialog.js:99 js/ui/endSessionDialog.js:118
 msgctxt "button"
@@ -1682,11 +1687,11 @@ msgstr "לאפשר"
 
 #: js/ui/kbdA11yDialog.js:32
 msgid "Slow Keys Turned On"
-msgstr "מצב מקשים אטיים פועל"
+msgstr "מקשים אטיים פעילים"
 
 #: js/ui/kbdA11yDialog.js:33
 msgid "Slow Keys Turned Off"
-msgstr "מצב מקשים אטיים כבוי"
+msgstr "מקשים אטיים כבויים"
 
 #: js/ui/kbdA11yDialog.js:34
 msgid ""
@@ -1698,11 +1703,11 @@ msgstr ""
 
 #: js/ui/kbdA11yDialog.js:41
 msgid "Sticky Keys Turned On"
-msgstr "מצב מקשים דביקים פועל"
+msgstr "מקשים דביקים פעילים"
 
 #: js/ui/kbdA11yDialog.js:42
 msgid "Sticky Keys Turned Off"
-msgstr "מצב מקשים דביקים כבוי"
+msgstr "מקשים דביקים כבויים"
 
 #: js/ui/kbdA11yDialog.js:44
 msgid ""
@@ -1910,7 +1915,6 @@ msgid "User Menu"
 msgstr "תפריט מגש"
 
 #: js/ui/panel.js:833
-#, fuzzy
 msgctxt "Power menu"
 msgid "Power"
 msgstr "צריכת חשמל"
@@ -2339,7 +2343,8 @@ msgid "%d Connected"
 msgid_plural "%d Connected"
 msgstr[0] "אחד מחובר"
 msgstr[1] "%d מחוברים"
-msgstr[2] "שניים מחוברים"
+msgstr[2] "%d מחוברים"
+msgstr[3] "%d מחוברים"
 
 #: js/ui/status/bluetooth.js:134
 #, fuzzy
@@ -2357,7 +2362,7 @@ msgstr "בהירות"
 
 #: js/ui/status/dwellClick.js:13
 msgid "Single Click"
-msgstr "לחיצה בודדת"
+msgstr "Single Click"
 
 #: js/ui/status/dwellClick.js:18
 msgid "Double Click"
@@ -2866,6 +2871,7 @@ msgid_plural "Settings changes will revert in %d seconds"
 msgstr[0] "שינויי הגדרות ישוחזרו בעוד שנייה"
 msgstr[1] "שינויי הגדרות ישוחזרו בעוד %d שניות"
 msgstr[2] "שינויי הגדרות ישוחזרו בעוד %d שניות"
+msgstr[3] "שינויי הגדרות ישוחזרו בעוד %d שניות"
 
 #. Translators: This represents the size of a window. The first number is
 #. * the width of the window and the second is the height.
@@ -2998,7 +3004,7 @@ msgstr ""
 #: subprojects/extensions-tool/src/command-create.c:197
 #: subprojects/extensions-tool/src/main.c:170
 msgid "Name"
-msgstr "Name"
+msgstr "שם"
 
 #: subprojects/extensions-tool/src/command-create.c:208
 #, c-format
@@ -3210,7 +3216,7 @@ msgstr "Path"
 
 #: subprojects/extensions-tool/src/main.c:179
 msgid "URL"
-msgstr "URL"
+msgstr "כתובת"
 
 #: subprojects/extensions-tool/src/main.c:182
 msgid "Original author"
@@ -3304,7 +3310,8 @@ msgid "%u Output"
 msgid_plural "%u Outputs"
 msgstr[0] "פלט אחד"
 msgstr[1] "%u פלטים"
-msgstr[2] "שני פלטים"
+msgstr[2] "%u פלטים"
+msgstr[3] "%u פלטים"
 
 #. translators:
 #. * The number of sound inputs on a particular device
@@ -3314,7 +3321,8 @@ msgid "%u Input"
 msgid_plural "%u Inputs"
 msgstr[0] "קלט אחד"
 msgstr[1] "%u קלטים"
-msgstr[2] "שני קלטים"
+msgstr[2] "%u קלטים"
+msgstr[3] "%u קלטים"
 
 #: subprojects/gvc/gvc-mixer-control.c:2766
 msgid "System Sounds"
@@ -3442,7 +3450,6 @@ msgstr "תיקייה ללא שם"
 msgid "Custom definition for %s"
 msgstr ""
 
-#~| msgid "Show Errors"
 #~ msgid "Copy Error"
 #~ msgstr "שגיאת העתקה"
 
@@ -3458,7 +3465,6 @@ msgstr ""
 #~ msgid "Add to Favorites"
 #~ msgstr "הוספה למועדפים"
 
-#~| msgid "Type to search…"
 #~ msgid "Type to search"
 #~ msgstr "יש להקליד כדי לחפש"
 
@@ -3522,14 +3528,16 @@ msgstr ""
 #~ msgid_plural "%d new messages"
 #~ msgstr[0] "הודעה חדשה אחת"
 #~ msgstr[1] "%d הודעות חדשות"
-#~ msgstr[2] "שתי הודעות חדשות"
+#~ msgstr[2] "%d הודעות חדשות"
+#~ msgstr[3] "%d הודעות חדשות"
 
 # javascript-format
 #~ msgid "%d new notification"
 #~ msgid_plural "%d new notifications"
 #~ msgstr[0] "התרעה חדשה אחת"
 #~ msgstr[1] "%d התרעות חדשות"
-#~ msgstr[2] "שתי התרעות חדשות"
+#~ msgstr[2] "%d התרעות חדשות"
+#~ msgstr[3] "%d התרעות חדשות"
 
 #~ msgid "Orientation Lock"
 #~ msgstr "נעילת כיוון"
@@ -3547,7 +3555,6 @@ msgstr ""
 #~ msgid "The type of keyboard to use."
 #~ msgstr "The type of keyboard to use."
 
-#~| msgid "Network error"
 #~ msgid "network-workgroup"
 #~ msgstr "network-workgroup"
 

@@ -1,8 +1,9 @@
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: bn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-17 17:09+0100\n"
+"POT-Creation-Date: 2020-04-17 17:11+0100\n"
 "PO-Revision-Date: 2011-04-04 11:04+0600\n"
 "Last-Translator: Israt Jahan <israt@ankur.org.bd>\n"
 "Language-Team: Bengali <ankur-bd-l10n@googlegroups.com>\n"
@@ -11,9 +12,9 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-DamnedLies-Scope: partial\n"
 "X-Generator: Translate Toolkit 1.8.0\n"
 "X-Language: bn_BD\n"
-"X-DamnedLies-Scope: partial\n"
 
 #: data/50-gnome-shell-system.xml:6
 #, fuzzy
@@ -484,9 +485,8 @@ msgid "Whether to fetch the current location or not"
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:420
-#, fuzzy
 msgid "Location"
-msgstr "সংযোগ"
+msgstr "অবস্থান  "
 
 #: data/org.gnome.shell.gschema.xml.in:421
 msgid "The location for which to show a forecast"
@@ -570,7 +570,7 @@ msgstr ""
 
 #: js/extensionPrefs/data/org.gnome.Extensions.desktop.in.in:7
 msgid "Configure GNOME Shell Extensions"
-msgstr ""
+msgstr "জিনোম শেলের বিস্তার কনফিগার"
 
 #: js/extensionPrefs/js/main.js:144
 #, javascript-format
@@ -611,13 +611,12 @@ msgstr[1] ""
 #: subprojects/extensions-tool/src/command-create.c:211
 #: subprojects/extensions-tool/src/main.c:173
 msgid "Description"
-msgstr ""
+msgstr "বিবরণ"
 
 #: js/extensionPrefs/data/ui/extension-row.ui:123
 #: subprojects/extensions-tool/src/main.c:185
-#, fuzzy
 msgid "Version"
-msgstr "মুদ্রণ সংস্করণ"
+msgstr "ভার্সন"
 
 #: js/extensionPrefs/data/ui/extension-row.ui:151
 msgid "Author"
@@ -634,7 +633,7 @@ msgstr "অপসারণ"
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:8 js/ui/userMenu.js:27
 msgid "Help"
-msgstr ""
+msgstr "সাহায্য "
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:12
 msgid "About Extensions"
@@ -682,11 +681,11 @@ msgstr "লগআউট"
 
 #: js/gdm/authPrompt.js:131
 msgid "Show password hint"
-msgstr ""
+msgstr "পাসওয়ার্ডের সূত্র দেখান"
 
 #: js/gdm/authPrompt.js:148
 msgid "Forgot password?"
-msgstr ""
+msgstr "পাসওয়ার্ড ভুলে গেছেন?"
 
 #. Cisco LEAP
 #: js/gdm/authPrompt.js:303 js/ui/components/networkAgent.js:363
@@ -695,7 +694,7 @@ msgstr ""
 #: js/ui/components/networkAgent.js:454 js/ui/components/polkitAgent.js:277
 #: js/ui/shellMountOperation.js:326
 msgid "Password"
-msgstr ""
+msgstr "পাসওয়ার্ড "
 
 #. Translators: During a password reset, prompt for the "secret code" provided by customer support.
 #: js/gdm/authPrompt.js:680
@@ -713,7 +712,7 @@ msgstr ""
 
 #: js/gdm/authPrompt.js:762
 msgid "Your unlock code was incorrect. Please try again."
-msgstr ""
+msgstr "আপনার খুলবার কোডটি ভুল হয়েছে। দয়া করে আবার চেষ্টা করুন।"
 
 #: js/gdm/loginDialog.js:317
 msgid "Choose Session"
@@ -721,14 +720,14 @@ msgstr ""
 
 #: js/gdm/loginDialog.js:456
 msgid "Not listed?"
-msgstr ""
+msgstr "তালিকায় নেই?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
 #: js/gdm/loginDialog.js:915
 #, javascript-format
 msgid "(e.g., user or %s)"
-msgstr ""
+msgstr "(যেমন ব্যবহারকারী বা %s)"
 
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
@@ -739,14 +738,12 @@ msgid "Username"
 msgstr ""
 
 #: js/gdm/loginDialog.js:1256
-#, fuzzy
 msgid "Login Window"
-msgstr "নতুন উইন্ডো"
+msgstr "লগিনের উইন্ডো"
 
 #: js/gdm/util.js:338
-#, fuzzy
 msgid "Authentication error"
-msgstr "প্রমাণীকরণ আবশ্যক"
+msgstr "প্রামাণীকরণে ভুল"
 
 #. We don't show fingerprint messages directly since it's
 #. not the main auth service. Instead we use the messages
@@ -755,14 +752,13 @@ msgstr "প্রমাণীকরণ আবশ্যক"
 #. to indicate the user can swipe their finger instead
 #: js/gdm/util.js:473
 msgid "(or swipe finger)"
-msgstr ""
+msgstr "{বা আঙুল দিয়ে সরান)"
 
 #. Translators: The name of the power-off action in search
 #: js/misc/systemActions.js:89
-#, fuzzy
 msgctxt "search-result"
 msgid "Power Off"
-msgstr "পাওয়ার বন্ধ..."
+msgstr "বিদ্যুৎ বন্ধ "
 
 #. Translators: A list of keywords that match the power-off action, separated by semicolons
 #: js/misc/systemActions.js:92
@@ -771,10 +767,9 @@ msgstr ""
 
 #. Translators: The name of the lock screen action in search
 #: js/misc/systemActions.js:97
-#, fuzzy
 msgctxt "search-result"
 msgid "Lock Screen"
-msgstr "লক স্ক্রিন"
+msgstr "পর্দা আটকানো "
 
 #. Translators: A list of keywords that match the lock screen action, separated by semicolons
 #: js/misc/systemActions.js:100
@@ -784,7 +779,6 @@ msgstr "লক স্ক্রিন"
 
 #. Translators: The name of the logout action in search
 #: js/misc/systemActions.js:105
-#, fuzzy
 msgctxt "search-result"
 msgid "Log Out"
 msgstr "লগআউট"
@@ -796,7 +790,6 @@ msgstr ""
 
 #. Translators: The name of the suspend action in search
 #: js/misc/systemActions.js:113
-#, fuzzy
 msgctxt "search-result"
 msgid "Suspend"
 msgstr "বাতিল"
@@ -809,7 +802,6 @@ msgstr "বাতিল"
 
 #. Translators: The name of the switch user action in search
 #: js/misc/systemActions.js:121
-#, fuzzy
 msgctxt "search-result"
 msgid "Switch User"
 msgstr "ব্যবহারকারী পরিবর্তন"
@@ -905,7 +897,7 @@ msgstr[1] "%d দিন আগে"
 #. Translators: Time in 24h format
 #: js/misc/util.js:242
 msgid "%H∶%M"
-msgstr ""
+msgstr "%H∶%M"
 
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 24h format. i.e. "Yesterday, 14:30"
@@ -981,7 +973,7 @@ msgstr "%a %b %e, %l:%M %p"
 #.
 #: js/misc/util.js:573
 msgid "Google"
-msgstr ""
+msgstr "গুগল"
 
 #. TRANSLATORS: this is the title of the wifi captive portal login window
 #: js/portalHelper/main.js:41
@@ -1021,9 +1013,8 @@ msgstr ""
 
 #. Add the "Remove from desktop" menu item at the end.
 #: js/ui/appDisplay.js:2443
-#, fuzzy
 msgid "Remove from desktop"
-msgstr "পছন্দ থেকে অপসারণ"
+msgstr "ডেস্কটপ সরান"
 
 #: js/ui/audioDeviceSelection.js:41
 #, fuzzy
@@ -1049,15 +1040,15 @@ msgstr "মাইক্রোফোন"
 
 #: js/ui/backgroundMenu.js:15
 msgid "Change Background…"
-msgstr ""
+msgstr "পেছনের ছবি বদলান "
 
 #: js/ui/backgroundMenu.js:18
 msgid "Add App"
-msgstr ""
+msgstr "অ্যাপ যোগ করুন "
 
 #: js/ui/backgroundMenu.js:24
 msgid "Add Website"
-msgstr ""
+msgstr "ওয়েবসাইট যোগ করুন "
 
 #. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday).
 #: js/ui/calendar.js:41
@@ -1212,11 +1203,11 @@ msgstr ""
 
 #: js/ui/components/automountManager.js:86
 msgid "External drive connected"
-msgstr ""
+msgstr "অতিরিক্ত ড্রাইভ সংযুক্ত"
 
 #: js/ui/components/automountManager.js:98
 msgid "External drive disconnected"
-msgstr ""
+msgstr "অতিরিক্ত ড্রাইভ বিচ্ছিন্ন"
 
 #: js/ui/components/automountManager.js:208
 msgid "Unable to unlock volume"
@@ -1229,7 +1220,7 @@ msgstr ""
 #: js/ui/components/autorunManager.js:333
 #, javascript-format
 msgid "Open with %s"
-msgstr ""
+msgstr "%s দিয়ে খুলুন"
 
 #: js/ui/components/networkAgent.js:97
 msgid ""
@@ -1238,9 +1229,8 @@ msgstr ""
 
 #: js/ui/components/networkAgent.js:109 js/ui/status/network.js:223
 #: js/ui/status/network.js:314 js/ui/status/network.js:916
-#, fuzzy
 msgid "Connect"
-msgstr "সংযোগ"
+msgstr "সংযোগ  "
 
 #: js/ui/components/networkAgent.js:141
 msgid "Limited Data"
@@ -1281,7 +1271,7 @@ msgstr ""
 
 #: js/ui/components/networkAgent.js:476 js/ui/components/networkAgent.js:851
 msgid "Wired 802.1X authentication"
-msgstr ""
+msgstr "তারে ৮০২.১x যাচাইকৃত "
 
 #: js/ui/components/networkAgent.js:478
 #, fuzzy
@@ -1289,17 +1279,16 @@ msgid "Network name"
 msgstr "নেটওয়ার্ক ব্যবস্থাপক"
 
 #: js/ui/components/networkAgent.js:483 js/ui/components/networkAgent.js:855
-#, fuzzy
 msgid "DSL authentication"
-msgstr "প্রমাণীকরণ আবশ্যক"
+msgstr "ডিএসএল যাচাই "
 
 #: js/ui/components/networkAgent.js:490 js/ui/components/networkAgent.js:860
 msgid "PIN code required"
-msgstr ""
+msgstr "পিন কোড প্রয়োজন "
 
 #: js/ui/components/networkAgent.js:491 js/ui/components/networkAgent.js:861
 msgid "PIN code is needed for the mobile broadband device"
-msgstr ""
+msgstr "মোবাইল ব্রডব্যান্ড যন্ত্রের জন্য পিন কোড প্রয়োজন  "
 
 #: js/ui/components/networkAgent.js:492
 msgid "PIN"
@@ -1367,9 +1356,8 @@ msgid "Windows"
 msgstr "উইন্ডো"
 
 #: js/ui/dash.js:200 js/ui/dash.js:241
-#, fuzzy
 msgid "Show Applications"
-msgstr "অ্যাপ্লিকেশন"
+msgstr "অ্যাপ্লিকেশন দেখান "
 
 #: js/ui/dash.js:239
 msgid "Remove from Favorites"
@@ -1429,42 +1417,39 @@ msgid "Weather information is currently unavailable"
 msgstr ""
 
 #: js/ui/endSessionDialog.js:39
-#, fuzzy, javascript-format
+#, javascript-format
 msgctxt "title"
 msgid "Log Out %s"
-msgstr "লগআউট %s"
+msgstr "বেরিয়ে যান %s "
 
 #: js/ui/endSessionDialog.js:40
-#, fuzzy
 msgctxt "title"
 msgid "Log Out"
-msgstr "লগআউট"
+msgstr "বেরিয়ে যান "
 
 #: js/ui/endSessionDialog.js:42
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s will be logged out automatically in %d second."
 msgid_plural "%s will be logged out automatically in %d seconds."
-msgstr[0] "%s থেকে স্বয়ংক্রিয়ভাবে %d সেকেন্ডের মধ্যে লগআউট।"
-msgstr[1] "%s থেকে স্বয়ংক্রিয়ভাবে %d সেকেন্ডের মধ্যে লগআউট।"
+msgstr[0] "স্বয়ংক্রিয়ভাবে %s কে %d সেকেন্ড পর লগআউট করে দেয়া হবে।"
+msgstr[1] "স্বয়ংক্রিয়ভাবে %s কে %d সেকেন্ড পর লগআউট করে দেয়া হবে।"
 
 #: js/ui/endSessionDialog.js:47
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "You will be logged out automatically in %d second."
 msgid_plural "You will be logged out automatically in %d seconds."
-msgstr[0] "আপনি স্বয়ংক্রিয়ভাবে %d সেকেন্ডের মধ্যে লগআউট হবেন।"
-msgstr[1] "আপনি স্বয়ংক্রিয়ভাবে %d সেকেন্ডের মধ্যে লগআউট হবেন।"
+msgstr[0] "আপনাকে স্বয়ংক্রিয়ভাবে %d সেকেন্ড পর লগআউট করে দেয়া হবে।"
+msgstr[1] "আপনাকে স্বয়ংক্রিয়ভাবে %d সেকেন্ড পর লগআউট করে দেয়া হবে।"
 
 #: js/ui/endSessionDialog.js:53
-#, fuzzy
 msgctxt "button"
 msgid "Log Out"
-msgstr "লগআউট"
+msgstr "বেরিয়ে যান  "
 
 #: js/ui/endSessionDialog.js:58
-#, fuzzy
 msgctxt "title"
 msgid "Power Off"
-msgstr "পাওয়ার বন্ধ..."
+msgstr "বন্ধ করে দেয়া"
 
 #: js/ui/endSessionDialog.js:59
 msgctxt "title"
@@ -1472,11 +1457,11 @@ msgid "Install Updates & Power Off"
 msgstr ""
 
 #: js/ui/endSessionDialog.js:61
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "The system will power off automatically in %d second."
 msgid_plural "The system will power off automatically in %d seconds."
-msgstr[0] "সিস্টেম %d সেকেন্ডে স্বয়ংক্রিয়ভাবে রিস্টার্ট হবে।"
-msgstr[1] "সিস্টেম %d সেকেন্ডে স্বয়ংক্রিয়ভাবে রিস্টার্ট হবে।"
+msgstr[0] "%d সেকেন্ড পর স্বয়ংক্রিয়ভাবে সিস্টেম বন্ধ হয়ে যাবে।"
+msgstr[1] "%d সেকেন্ড পর স্বয়ংক্রিয়ভাবে সিস্টেম বন্ধ হয়ে যাবে।"
 
 #: js/ui/endSessionDialog.js:65
 msgctxt "checkbox"
@@ -1484,29 +1469,26 @@ msgid "Install pending software updates"
 msgstr ""
 
 #: js/ui/endSessionDialog.js:68 js/ui/endSessionDialog.js:84
-#, fuzzy
 msgctxt "button"
 msgid "Restart"
 msgstr "রিস্টার্ট"
 
 #: js/ui/endSessionDialog.js:70
-#, fuzzy
 msgctxt "button"
 msgid "Power Off"
-msgstr "পাওয়ার বন্ধ..."
+msgstr "বন্ধ করে দেয়া"
 
 #: js/ui/endSessionDialog.js:76
-#, fuzzy
 msgctxt "title"
 msgid "Restart"
 msgstr "রিস্টার্ট"
 
 #: js/ui/endSessionDialog.js:78
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "The system will restart automatically in %d second."
 msgid_plural "The system will restart automatically in %d seconds."
-msgstr[0] "সিস্টেম %d সেকেন্ডে স্বয়ংক্রিয়ভাবে রিস্টার্ট হবে।"
-msgstr[1] "সিস্টেম %d সেকেন্ডে স্বয়ংক্রিয়ভাবে রিস্টার্ট হবে।"
+msgstr[0] "%d সেকেন্ড পর স্বয়ংক্রিয়ভাবে সিস্টেম আবার চালু হবে।"
+msgstr[1] "%d সেকেন্ড পর স্বয়ংক্রিয়ভাবে সিস্টেম আবার চালু হবে।"
 
 #: js/ui/endSessionDialog.js:91
 msgctxt "title"
@@ -1567,13 +1549,13 @@ msgstr ""
 #: js/ui/endSessionDialog.js:588
 #, javascript-format
 msgid "%s (remote)"
-msgstr ""
+msgstr "%s (রিমোট)"
 
 #. Translators: Console here refers to a tty like a VT console
 #: js/ui/endSessionDialog.js:591
 #, javascript-format
 msgid "%s (console)"
-msgstr ""
+msgstr "%s (কনসোল)"
 
 #: js/ui/extensionDownloader.js:24
 #, javascript-format
@@ -1588,7 +1570,7 @@ msgstr ""
 
 #: js/ui/extensionDownloader.js:192
 msgid "Install"
-msgstr ""
+msgstr "স্থাপন করা "
 
 #: js/ui/extensionDownloader.js:198
 msgid "Install Extension"
@@ -1636,14 +1618,12 @@ msgid "Allow"
 msgstr ""
 
 #: js/ui/kbdA11yDialog.js:32
-#, fuzzy
 msgid "Slow Keys Turned On"
-msgstr "ধীর গতির কী"
+msgstr "ধীর বোতাম চালু করা"
 
 #: js/ui/kbdA11yDialog.js:33
-#, fuzzy
 msgid "Slow Keys Turned Off"
-msgstr "ধীর গতির কী"
+msgstr "ধীর বোতাম বন্ধ করা"
 
 #: js/ui/kbdA11yDialog.js:34
 msgid ""
@@ -1652,14 +1632,12 @@ msgid ""
 msgstr ""
 
 #: js/ui/kbdA11yDialog.js:41
-#, fuzzy
 msgid "Sticky Keys Turned On"
-msgstr "স্টিকি কী"
+msgstr "স্টিকি বোতাম চালি করা "
 
 #: js/ui/kbdA11yDialog.js:42
-#, fuzzy
 msgid "Sticky Keys Turned Off"
-msgstr "স্টিকি কী"
+msgstr "্টিকি বোতাম বন্ধ করা "
 
 #: js/ui/kbdA11yDialog.js:44
 msgid ""
@@ -1676,7 +1654,7 @@ msgstr ""
 
 #: js/ui/kbdA11yDialog.js:55
 msgid "Leave On"
-msgstr ""
+msgstr "চালিয়ে যাওয়া "
 
 #: js/ui/kbdA11yDialog.js:55 js/ui/status/automaticUpdates.js:315
 #: js/ui/status/bluetooth.js:138 js/ui/status/network.js:1288
@@ -1693,12 +1671,11 @@ msgstr ""
 
 #: js/ui/kbdA11yDialog.js:63
 msgid "Leave Off"
-msgstr ""
+msgstr "বন্ধ রাখা "
 
 #: js/ui/keyboard.js:207
-#, fuzzy
 msgid "Region & Language Settings"
-msgstr "মাউস সেটিং"
+msgstr "অঞ্চল ও ভাষা সেটিংস "
 
 #: js/ui/lookingGlass.js:665
 msgid "No extensions installed"
@@ -1708,17 +1685,15 @@ msgstr "কোনো এক্সটেনশন ইনস্টল করা �
 #: js/ui/lookingGlass.js:720
 #, javascript-format
 msgid "%s has not emitted any errors."
-msgstr ""
+msgstr "%s থেকে কোন ভুল হয়নি।"
 
 #: js/ui/lookingGlass.js:726
-#, fuzzy
 msgid "Hide Errors"
-msgstr "ত্রুটি"
+msgstr "ভুল লুকান "
 
 #: js/ui/lookingGlass.js:730 js/ui/lookingGlass.js:795
-#, fuzzy
 msgid "Show Errors"
-msgstr "ত্রুটি"
+msgstr "ভুল দেখান "
 
 #: js/ui/lookingGlass.js:739
 msgid "Enabled"
@@ -1740,7 +1715,7 @@ msgstr "সময় শেষ"
 
 #: js/ui/lookingGlass.js:748
 msgid "Downloading"
-msgstr ""
+msgstr "নামান হচ্ছে "
 
 #: js/ui/lookingGlass.js:777
 msgid "View Source"
@@ -1794,7 +1769,7 @@ msgstr ""
 #. activities. See also note for "Activities" string.
 #: js/ui/overview.js:159
 msgid "Overview"
-msgstr ""
+msgstr "সংক্ষিপ্ত বিবরণ "
 
 #: js/ui/padOsd.js:95
 msgid "New shortcut…"
@@ -1844,7 +1819,7 @@ msgstr ""
 
 #: js/ui/panel.js:96
 msgid "Show Details"
-msgstr ""
+msgstr "বিশদ প্রদর্শন করুন"
 
 #: js/ui/panel.js:112
 #, fuzzy
@@ -1858,10 +1833,9 @@ msgid "Activities"
 msgstr "অ্যাক্টিভিটিজ"
 
 #: js/ui/panel.js:716
-#, fuzzy
 msgctxt "System menu in the top bar"
 msgid "System"
-msgstr "ফাইল সিস্টেম"
+msgstr "সিস্টেম"
 
 #: js/ui/panel.js:801
 msgctxt "User menu"
@@ -1869,10 +1843,9 @@ msgid "User Menu"
 msgstr ""
 
 #: js/ui/panel.js:833
-#, fuzzy
 msgctxt "Power menu"
 msgid "Power"
-msgstr "পাওয়ার বন্ধ..."
+msgstr "চালু করা"
 
 #: js/ui/panel.js:907
 msgid "Bottom Bar"
@@ -1915,7 +1888,7 @@ msgstr ""
 
 #: js/ui/paygUnlockDialog.js:287 js/ui/shellMountOperation.js:380
 msgid "Unlock"
-msgstr ""
+msgstr "খুলুন "
 
 #: js/ui/paygUnlockDialog.js:394
 msgid "Success!"
@@ -2074,7 +2047,7 @@ msgstr "রিস্টার্ট"
 
 #: js/ui/screenShield.js:254
 msgid "GNOME needs to lock the screen"
-msgstr ""
+msgstr "জিনোমকে পর্দা বন্ধ করে দিতে হবে "
 
 #. We could not become modal, so we can't activate the
 #. screenshield. The user is probably very upset at this
@@ -2085,38 +2058,35 @@ msgstr ""
 #. screen, where we're not affected by grabs
 #: js/ui/screenShield.js:295 js/ui/screenShield.js:674
 msgid "Unable to lock"
-msgstr ""
+msgstr "বন্ধ করা যাচ্ছে না "
 
 #: js/ui/screenShield.js:296 js/ui/screenShield.js:675
 msgid "Lock was blocked by an application"
-msgstr ""
+msgstr "অ্যাপ্লিকেশন দিয়ে বন্ধ করা আটকানো "
 
 #: js/ui/search.js:793
-#, fuzzy
 msgid "Searching…"
-msgstr "অনুসন্ধান..."
+msgstr "খোঁজা হচ্ছে "
 
 #: js/ui/search.js:795
-#, fuzzy
 msgid "No results."
-msgstr "মিলযুক্ত কোনো ফলাফল নেই।"
+msgstr "ফলাফল নেই "
 
 #: js/ui/shellEntry.js:30
 msgid "Copy"
-msgstr ""
+msgstr "কপি "
 
 #: js/ui/shellEntry.js:35
 msgid "Paste"
-msgstr ""
+msgstr "লাগান "
 
 #: js/ui/shellEntry.js:83
 msgid "Show Text"
-msgstr ""
+msgstr "লেখা দেখান "
 
 #: js/ui/shellEntry.js:85
-#, fuzzy
 msgid "Hide Text"
-msgstr "বড় টেক্সট"
+msgstr "লেখা লুকান "
 
 #: js/ui/shellEntry.js:194
 #, javascript-format
@@ -2163,13 +2133,13 @@ msgstr ""
 
 #: js/ui/shellMountOperation.js:365
 msgid "Remember Password"
-msgstr ""
+msgstr "পাসওয়ার্ড মনে করুন "
 
 #. Translators: %s is the Disks application
 #: js/ui/shellMountOperation.js:391
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Open %s"
-msgstr "খুলুন"
+msgstr "%s খুলুন"
 
 #: js/ui/shellMountOperation.js:423
 msgid "The PIM must be a number or empty."
@@ -2188,9 +2158,8 @@ msgid "Couldn’t find the %s application"
 msgstr ""
 
 #: js/ui/status/accessibility.js:35
-#, fuzzy
 msgid "Accessibility"
-msgstr "দৃশ্যমানতা"
+msgstr "প্রবেশগম্যতা"
 
 #: js/ui/status/accessibility.js:50
 msgid "Zoom"
@@ -2198,12 +2167,11 @@ msgstr "বড় আকারে প্রদর্শন"
 
 #: js/ui/status/accessibility.js:57
 msgid "Screen Reader"
-msgstr ""
+msgstr "স্ক্রিন পাঠক "
 
 #: js/ui/status/accessibility.js:61
-#, fuzzy
 msgid "Screen Keyboard"
-msgstr "কীবোর্ড"
+msgstr "স্ক্রিন কীবোর্ড "
 
 #: js/ui/status/accessibility.js:65
 msgid "Visual Alerts"
@@ -2269,7 +2237,7 @@ msgstr ""
 
 #: js/ui/status/automaticUpdates.js:286 js/ui/windowMenu.js:167
 msgid "Close"
-msgstr ""
+msgstr "বন্ধ "
 
 #: js/ui/status/automaticUpdates.js:290
 #, fuzzy
@@ -2331,9 +2299,8 @@ msgid "Keyboard"
 msgstr "কীবোর্ড"
 
 #: js/ui/status/keyboard.js:848
-#, fuzzy
 msgid "Show Keyboard Layout"
-msgstr "কীবোর্ডের লেআউট প্রদর্শন..."
+msgstr "কীবোর্ডের ধরন দেখান "
 
 #: js/ui/status/location.js:65 js/ui/status/location.js:174
 #, fuzzy
@@ -2586,14 +2553,12 @@ msgstr[0] "সংযোগ"
 msgstr[1] "সংযোগ"
 
 #: js/ui/status/network.js:1732
-#, fuzzy
 msgid "Connection failed"
-msgstr "সংযোগ ব্যর্থ"
+msgstr "সংযোগ ব্যর্থ "
 
 #: js/ui/status/network.js:1733
-#, fuzzy
 msgid "Activation of network connection failed"
-msgstr "সংযোগ ব্যর্থ"
+msgstr "নেটওয়ার্ক সংযোগ সক্রিয়করণ ব্যর্থ "
 
 #: js/ui/status/nightLight.js:45
 #, fuzzy
@@ -2641,7 +2606,7 @@ msgstr "পাওয়ার সেটিং"
 
 #: js/ui/status/power.js:63
 msgid "Fully Charged"
-msgstr ""
+msgstr "সম্পূর্ণ চার্জড "
 
 #: js/ui/status/power.js:69
 msgid "Not Charging"
@@ -2650,21 +2615,20 @@ msgstr ""
 #. 0 is reported when UPower does not have enough data
 #. to estimate battery life
 #: js/ui/status/power.js:72 js/ui/status/power.js:78
-#, fuzzy
 msgid "Estimating…"
-msgstr "গণনা করা হচ্ছে..."
+msgstr "হিসাব করা হচ্ছে…"
 
 #. Translators: this is <hours>:<minutes> Remaining (<percentage>)
 #: js/ui/status/power.js:86
 #, javascript-format
 msgid "%d∶%02d Remaining (%d %%)"
-msgstr ""
+msgstr "%d∶%02d বাকি (%d %%)"
 
 #. Translators: this is <hours>:<minutes> Until Full (<percentage>)
 #: js/ui/status/power.js:91
 #, javascript-format
 msgid "%d∶%02d Until Full (%d %%)"
-msgstr ""
+msgstr "%d∶%02d পর্যন্ত সম্পূর্ণ (%d %%)"
 
 #: js/ui/status/power.js:140 js/ui/status/power.js:142
 #, javascript-format
@@ -2688,7 +2652,7 @@ msgstr ""
 
 #: js/ui/status/system.js:77
 msgid "Lock"
-msgstr ""
+msgstr "বন্ধ "
 
 #: js/ui/status/system.js:90
 #, fuzzy
@@ -2746,9 +2710,8 @@ msgid "Could not authorize the Thunderbolt device: %s"
 msgstr ""
 
 #: js/ui/status/volume.js:150
-#, fuzzy
 msgid "Volume changed"
-msgstr "ভলিউম"
+msgstr "শব্দের মাত্রা পরিবর্তিত"
 
 #: js/ui/status/volume.js:221
 msgid "Volume"
@@ -2799,13 +2762,12 @@ msgid "Click or press a key to unlock"
 msgstr ""
 
 #: js/ui/unlockDialog.js:550
-#, fuzzy
 msgid "Unlock Window"
-msgstr "নতুন উইন্ডো"
+msgstr "উইন্ডো খুলুন "
 
 #: js/ui/unlockDialog.js:559
 msgid "Log in as another user"
-msgstr ""
+msgstr "অন্য আরেকজন ব্যবহারকারী হিসেবে ঢুকুন"
 
 #: js/ui/viewSelector.js:610
 msgid "Applications"
@@ -2825,20 +2787,19 @@ msgstr ""
 #. to avoid ellipsizing the labels.
 #.
 #: js/ui/windowManager.js:70
-#, fuzzy
 msgid "Revert Settings"
-msgstr "পাওয়ার সেটিং"
+msgstr "সেটিং পূর্বাবস্থায় নিন "
 
 #: js/ui/windowManager.js:73
 msgid "Keep Changes"
-msgstr ""
+msgstr "পরিবর্তন রাখুন "
 
 #: js/ui/windowManager.js:91
 #, javascript-format
 msgid "Settings changes will revert in %d second"
 msgid_plural "Settings changes will revert in %d seconds"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%d সেকেন্ডে সেটিংসের পরিবর্তনগুলো আগের অবস্থায় ফেরত যাবে"
+msgstr[1] "%d সেকেন্ডে সেটিংসের পরিবর্তনগুলো আগের অবস্থায় ফেরত যাবে"
 
 #. Translators: This represents the size of a window. The first number is
 #. * the width of the window and the second is the height.
@@ -2912,9 +2873,8 @@ msgid "Move to Monitor Right"
 msgstr ""
 
 #: src/calendar-server/evolution-calendar.desktop.in:3
-#, fuzzy
 msgid "Evolution Calendar"
-msgstr "ক্যালেন্ডার খুলুন"
+msgstr "বিবর্তন দিনপঞ্জী "
 
 #: src/main.c:458 subprojects/extensions-tool/src/main.c:249
 msgid "Print version"
@@ -2922,7 +2882,7 @@ msgstr "মুদ্রণ সংস্করণ"
 
 #: src/main.c:464
 msgid "Mode used by GDM for login screen"
-msgstr ""
+msgstr "লগিন পর্দার জন্য জিডিএম ব্যবহৃত পদ্ধতি "
 
 #: src/main.c:470
 msgid "Use a specific mode, e.g. “gdm” for login screen"
@@ -2930,13 +2890,12 @@ msgstr ""
 
 #: src/main.c:476
 msgid "List possible modes"
-msgstr ""
+msgstr "সম্ভাব্য পদ্ধতির তালিকা "
 
 #: src/shell-app.c:280
-#, fuzzy
 msgctxt "program"
 msgid "Unknown"
-msgstr "অজানা"
+msgstr "অপরিচিত "
 
 #: src/shell-app.c:570
 #, fuzzy, c-format
@@ -2944,13 +2903,12 @@ msgid "Failed to launch “%s”"
 msgstr "'%s' চালু করতে ব্যর্থ"
 
 #: src/shell-keyring-prompt.c:731
-#, fuzzy
 msgid "Passwords do not match."
-msgstr "মিলে না"
+msgstr "পাসওয়ার্ড মিলছে না "
 
 #: src/shell-keyring-prompt.c:739
 msgid "Password cannot be blank"
-msgstr ""
+msgstr "পাসওয়ার্ড খালি থাকতে পারবে না "
 
 #: src/shell-polkit-authentication-agent.c:344
 msgid "Authentication dialog was dismissed by the user"
@@ -2972,7 +2930,7 @@ msgstr ""
 #: subprojects/extensions-tool/src/command-create.c:197
 #: subprojects/extensions-tool/src/main.c:170
 msgid "Name"
-msgstr ""
+msgstr "নাম "
 
 #: subprojects/extensions-tool/src/command-create.c:208
 #, c-format
@@ -3184,7 +3142,7 @@ msgstr ""
 
 #: subprojects/extensions-tool/src/main.c:179
 msgid "URL"
-msgstr ""
+msgstr "URL"
 
 #: subprojects/extensions-tool/src/main.c:182
 msgid "Original author"
@@ -3210,7 +3168,7 @@ msgstr ""
 #: subprojects/extensions-tool/src/main.c:242
 #: subprojects/extensions-tool/src/main.c:245
 msgid "COMMAND"
-msgstr ""
+msgstr "COMMAND"
 
 #: subprojects/extensions-tool/src/main.c:245
 msgid "[ARGS…]"
@@ -3297,19 +3255,19 @@ msgstr "সিস্টেমের শব্দ"
 
 #: js/ui/appIconBar.js:195
 msgid "Other workspaces"
-msgstr ""
+msgstr "অন্য কাজের ক্ষেত্র"
 
 #: js/ui/appIconBar.js:204
 msgid "Current workspace"
-msgstr ""
+msgstr "বর্তমান কাজের ক্ষেত্র"
 
 #: js/ui/appIconBar.js:282
 msgid "Pin to Taskbar"
-msgstr ""
+msgstr "টাস্কবারে গেঁথে রাখুন "
 
 #: js/ui/appIconBar.js:286
 msgid "Unpin from Taskbar"
-msgstr ""
+msgstr "টাস্কবার থেকে সরিয়ে নিন "
 
 #: js/ui/appIconBar.js:310
 #, javascript-format
@@ -3338,29 +3296,28 @@ msgid ""
 "If an application doesn't respond for a while, select its name and click "
 "Quit Application."
 msgstr ""
+"যদি কোন অ্যাপ্লিকেশন কিছুক্ষণের মধ্যে চালু না হয়, তবে নামটি বেছে নিয়ে অ্যাপ্লিকেশন "
+"থেকে বেরোনতে চাপ দিন। "
 
 #: js/ui/forceAppExitDialog.js:87
-#, fuzzy
 msgid "System Monitor"
-msgstr "মনিটর"
+msgstr "সিস্টেম মনিটর "
 
 #: js/ui/forceAppExitDialog.js:95
-#, fuzzy
 msgid "Quit Application"
-msgstr "অ্যাপ্লিকেশন"
+msgstr "অ্যাপ্লিকেশন থেকে বেরোনো "
 
 #: js/ui/hotCorner.js:15
 msgid "Hot Corner"
 msgstr ""
 
 #: js/ui/hotCorner.js:25
-#, fuzzy
 msgid "Enable Hot Corner"
-msgstr "নেটওয়ার্কিং সক্রিয়"
+msgstr "হট কর্নার সচল করা "
 
 #: js/ui/hotCorner.js:29
 msgid "Disable Hot Corner"
-msgstr ""
+msgstr "হট কর্নার অচল করা "
 
 #: js/ui/iconGridLayout.js:312
 #, fuzzy, javascript-format
@@ -3375,7 +3332,7 @@ msgstr "হোম ফোল্ডার"
 #: js/ui/internetSearch.js:70
 #, javascript-format
 msgid "Open \"%s\" in browser"
-msgstr ""
+msgstr "ব্রাউজারে \"%s\" খুলুন"
 
 #. Translators: the first %s is the search engine name, and the second
 #. * is the search string. For instance, 'Search Google for "hello"'.
@@ -3383,12 +3340,12 @@ msgstr ""
 #: js/ui/internetSearch.js:79
 #, javascript-format
 msgid "Search %s for \"%s\""
-msgstr ""
+msgstr "\"%s\" জন্য %s খোঁজ করুন"
 
 #: js/ui/internetSearch.js:81
 #, javascript-format
 msgid "Search the internet for \"%s\""
-msgstr ""
+msgstr "\"%s\" ইন্টারনেটে খোঁজ করুন"
 
 #: js/ui/userMenu.js:16
 #, fuzzy
@@ -3396,22 +3353,21 @@ msgid "Social Accounts"
 msgstr "আমার অ্যাকাউন্ট"
 
 #: js/ui/userMenu.js:19
-#, fuzzy
 msgid "Settings"
-msgstr "মাউস সেটিং"
+msgstr "সেটিংস "
 
 #: js/ui/userMenu.js:24
 msgid "Give Us Feedback"
-msgstr ""
+msgstr "আমাদেরকে প্রতিক্রিয়া জানান "
 
 #: src/shell-desktop-dir-info.c:485
 msgid "Unnamed"
-msgstr ""
+msgstr "অনামা "
 
 #: src/shell-desktop-dir-info.c:745
 #, c-format
 msgid "Custom definition for %s"
-msgstr ""
+msgstr "%s -এর জন্য পছন্দানুযায়ী ডেফিনিশন"
 
 #~ msgid "All"
 #~ msgstr "সব"

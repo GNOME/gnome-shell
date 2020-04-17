@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-17 17:09+0100\n"
+"POT-Creation-Date: 2020-04-17 17:11+0100\n"
 "PO-Revision-Date: 2020-02-26 17:08+0100\n"
 "Last-Translator: Alan Mortensen <alanmortensen.am@gmail.com>\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
@@ -1927,7 +1927,6 @@ msgid "User Menu"
 msgstr "Menu for statusfelt"
 
 #: js/ui/panel.js:833
-#, fuzzy
 msgctxt "Power menu"
 msgid "Power"
 msgstr "Strøm"
@@ -2298,9 +2297,8 @@ msgstr "Intet planlagt"
 
 #. The status label
 #: js/ui/status/automaticUpdates.js:198
-#, fuzzy
 msgid "Automatic Updates"
-msgstr "Automatisk placering"
+msgstr "Automatiske opdateringer"
 
 #: js/ui/status/automaticUpdates.js:263
 #, fuzzy
@@ -3566,17 +3564,14 @@ msgstr ""
 #~ msgid "Feels like %s."
 #~ msgstr "Føles som %s."
 
-#~| msgid "Power Off"
 #~ msgctxt "search-result"
 #~ msgid "Power off"
 #~ msgstr "Sluk"
 
-#~| msgid "Log Out"
 #~ msgctxt "search-result"
 #~ msgid "Log out"
 #~ msgstr "Log ud"
 
-#~| msgid "Switch User"
 #~ msgctxt "search-result"
 #~ msgid "Switch user"
 #~ msgstr "Skift bruger"
@@ -3885,7 +3880,8 @@ msgstr ""
 #~ msgid "unavailable"
 #~ msgstr "utilgængelig"
 
-# Dette her er kode for at skrive måned før år jvf. kommentar for samme streng i gtk+:
+# Dette her er kode for at skrive måned før år jvf. kommentar for samme streng
+# i gtk+:
 #
 # Translate to calendar:YM if you want years to be displayed
 # before months; otherwise translate to calendar:MY.

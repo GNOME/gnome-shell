@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-17 17:09+0100\n"
+"POT-Creation-Date: 2020-04-17 17:11+0100\n"
 "PO-Revision-Date: 2019-03-18 14:37+0200\n"
 "Last-Translator: Khaled Hosny <khaledhosny@eglug.org>\n"
 "Language-Team: Arabic <doc@arabeyes.org>\n"
@@ -78,9 +78,8 @@ msgid ""
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:35
-#, fuzzy
 msgid "UUIDs of extensions to force disabling"
-msgstr "معرّفات الامتدادات التي ستُفعّل"
+msgstr "معرّفات UUID للامتدادات التي سيفرض تعطيلها"
 
 #: data/org.gnome.shell.gschema.xml.in:36
 msgid ""
@@ -90,6 +89,11 @@ msgid ""
 "methods on org.gnome.Shell. This key takes precedence over the “enabled-"
 "extensions” setting."
 msgstr ""
+"تحتوي امتدادات GNOME Shell على خاصية UUID / المعرّف الوحيد الشامل؛ يسرد هذا "
+"المفتاح الامتدادات التي يجب تعطيلها، حتى لو تم تحميلها كجزء من الوضع الحالي. "
+"يمكنك أيضاً التعامل مع هذه القائمة باستخدام أساليب دي بس \"تمكين الامتداد\" و"
+"\"تعطيل الامتداد\" على org.gnome.Shell. هذا المفتاح له الأسبقية على إعداد "
+"\"الامتدادات الممكّنة\"."
 
 #: data/org.gnome.shell.gschema.xml.in:46
 msgid "Disable user extensions"
@@ -187,17 +191,19 @@ msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:126
 msgid "Enables the hot corner for the window picker"
-msgstr ""
+msgstr "مكن الزاوية الساخنة لمنتقي النافذة"
 
 #: data/org.gnome.shell.gschema.xml.in:129
 msgid ""
 "By default, the hot corner for the window picker is enabled. Set false to "
 "disable the hot corner."
 msgstr ""
+"بشكلٍ افتراضي، يتم تمكين الزاوية الساخنة لمنتقي النافذة. قم بتعيين القيمة "
+"false لتعطيل الزاوية الساخنة."
 
 #: data/org.gnome.shell.gschema.xml.in:136
 msgid "Set the left/right position of the hot corner for the window picker"
-msgstr ""
+msgstr "اضبط الموضع الأيسر/الأيمن من الزاوية الساخنة لمنتقي النافذة"
 
 #: data/org.gnome.shell.gschema.xml.in:139
 msgid ""
@@ -205,20 +211,25 @@ msgid ""
 "the hot corner to a left corner. The position is not affected by the RTL vs. "
 "LTR text direction."
 msgstr ""
+"الموضع الافتراضي للزاوية الساخنة هو في زاوية يمنى. قم بتعيين القيمة false "
+"لتحريك الزاوية الساخنة إلى زاوية يسرى. لا يتأثر الوضع من قِبل اتجاه النص من "
+"اليمين إلى اليسار في مقابل اتجاهه من اليسار إلى اليمين."
 
 #: data/org.gnome.shell.gschema.xml.in:147
 msgid "Set the top/bottom position of the hot corner for the window picker"
-msgstr ""
+msgstr "اضبط الموضع الأعلى / الأسفل من الزاوية الساخنة لمنتقي الإطار"
 
 #: data/org.gnome.shell.gschema.xml.in:150
 msgid ""
 "Default position of the hot corner is in a bottom corner. Set false to move "
 "the hot corner to a top corner."
 msgstr ""
+"الموضع الافتراضي من الزاوية الساخنة هو في زاوية سفلى. قم بتعيين القيمة false "
+"لتحريك الزاوية الساخنة إلى زاوية عليا."
 
 #: data/org.gnome.shell.gschema.xml.in:157
 msgid "Set the size of the hot corner target"
-msgstr ""
+msgstr "تعيين حجم هدف الزاوية الساخنة"
 
 #: data/org.gnome.shell.gschema.xml.in:160
 msgid ""
@@ -226,10 +237,13 @@ msgid ""
 "Default is for a single pixel in the very corner. For some virtual machines, "
 "this value may need to be set larger than the default."
 msgstr ""
+"عدد وحدات البكسل في بعدٍ واحدٍ من الهدف المربع للزاوية الساخنة. الوضع "
+"الافتراضي هو بكسل واحد في الزاوية ذاتها. بالنسبة لبعض الأجهزة الافتراضية، قد "
+"تحتاج لجعل هذه القيمة أكبر من الافتراضي."
 
 #: data/org.gnome.shell.gschema.xml.in:170
 msgid "Prevent apps from being automatically maximized on launch"
-msgstr ""
+msgstr "منع التطبيقات من الفتح مكبرة بشكل تلقائي عند البدء"
 
 #: data/org.gnome.shell.gschema.xml.in:173
 msgid ""
@@ -237,10 +251,13 @@ msgid ""
 "screens, prevents applications from being forced to open maximized, and does "
 "not automatically switch to the app selector when a window is minimized."
 msgstr ""
+"يجعل إدارة النوافذ أشبه بجنوم القياسي. يخفي شاشات البداية للتطبيق، ويمنع "
+"التطبيقات من إجبارها على الفتح مكبرة، ولا يتحول بشكل تلقائي إلى محدد التطبيق "
+"عندما يتم تصغير نافذة."
 
 #: data/org.gnome.shell.gschema.xml.in:182
 msgid "Whether password reset is allowed"
-msgstr ""
+msgstr "إذا ما كان إعادة تعيين كلمة المرور مسموح به"
 
 #: data/org.gnome.shell.gschema.xml.in:183
 msgid ""
@@ -250,20 +267,26 @@ msgid ""
 "button, respectively. Note that it only makes sense to set this key for the "
 "Debian-gdm user; changing it for your own user account will have no effect."
 msgstr ""
+"يتحكم هذا المفتاح في إظهار وأخفاء زر \"هل نسيت كلمة المرور؟\" الذي يظهر على "
+"شاشة تسجيل الدخول. 'الافتراضي' تجعل GNOME Shell يستخدم الإعدادات الافتراضية "
+"للبائع. يمكن استخدام 'تمكين' و'تعطيل' لتمكين وتعطيل زر إعادة التعيين - تباعًا "
+"- بشكلٍ صريح. لاحظ أن الوضع المنطقي الوحيد هو ضبط هذا المفتاح لمستخدم Debian-"
+"gdm؛ فتغييره إلى حساب المستخدم الخاص بك لن يكون له تأثير."
 
 #: data/org.gnome.shell.gschema.xml.in:194
 msgid "Layout of application launcher icons in the grid"
-msgstr ""
+msgstr "تصميم أيقونات مشغل التطبيق في الشبكة"
 
 #: data/org.gnome.shell.gschema.xml.in:195
 msgid ""
 "This key specifies the exact order of the icons shown in the applications "
 "launcher view."
 msgstr ""
+"يحدد هذا المفتاح الترتيب الدقيق للأيقونات الظاهرة في معرض مشغل التطبيقات."
 
 #: data/org.gnome.shell.gschema.xml.in:201
 msgid "Languages for which the discovery feed feature is enabled."
-msgstr ""
+msgstr "اللغات التي يتم تمكين ميزة تغذية الاكتشاف فيها."
 
 #: data/org.gnome.shell.gschema.xml.in:204
 msgid ""
@@ -271,6 +294,9 @@ msgid ""
 "will be enabled. You will need to restart the shell for changes to this "
 "setting to take effect."
 msgstr ""
+"إذا تطابقت لغة النظام مع أي من هذه اللغات، سيتم تمكين ملخص الاكتشاف. ستحتاج "
+"إلى إعادة تشغيل القشرة لكي تصبح التغييرات التي تم إجراؤها على هذا الإعداد "
+"سارية المفعول."
 
 #: data/org.gnome.shell.gschema.xml.in:215
 msgid "Keybinding to open the application menu"
@@ -359,108 +385,116 @@ msgid "Switch to application 9"
 msgstr "أظهر التطبيقات"
 
 #: data/org.gnome.shell.gschema.xml.in:290
-#, fuzzy
 msgid "Keybinding that shows the force app exit dialog"
-msgstr "اختصار فتح قائمة التطبيقات"
+msgstr "رابط المفتاح الذي يُظهر المربع الحواري للخروج الإجباري من التطبيق"
 
 #: data/org.gnome.shell.gschema.xml.in:295
-#, fuzzy
 msgid "Keybinding to activate the first app in the icon bar."
-msgstr "اختصار فتح قائمة التطبيقات."
+msgstr "ربط المفاتيح لتفعيل التطبيق الأول في شريط الأيقونات."
 
 #: data/org.gnome.shell.gschema.xml.in:296
 msgid ""
 "Keybinding to open the first app in the icon bar, or switch to the app if "
 "already open."
 msgstr ""
+"مفتاح الارتباط لفتح التطبيق الأول في شريط الأيقونات، أو الانتقال إلى التطبيق "
+"إذا كان مفتوحاً بالفعل."
 
 #: data/org.gnome.shell.gschema.xml.in:302
-#, fuzzy
 msgid "Keybinding to activate the second app in the icon bar."
-msgstr "اختصار فتح قائمة التطبيقات."
+msgstr "مفتاح الارتباط لفتح التطبيق الثاني في شريط الأيقونات."
 
 #: data/org.gnome.shell.gschema.xml.in:303
 msgid ""
 "Keybinding to open the second app in the icon bar, or switch to the app if "
 "already open."
 msgstr ""
+"ربط المفاتيح لتفعيل التطبيق الثاني في شريط الأيقونات أو الانتقال إلى التطبيق "
+"إذا كان مفتوحاً."
 
 #: data/org.gnome.shell.gschema.xml.in:309
-#, fuzzy
 msgid "Keybinding to activate the third app in the icon bar."
-msgstr "اختصار فتح قائمة التطبيقات."
+msgstr "مفتاح الارتباط لفتح التطبيق الثالث في شريط الأيقونات."
 
 #: data/org.gnome.shell.gschema.xml.in:310
 msgid ""
 "Keybinding to open the third app in the icon bar, or switch to the app if "
 "already open."
 msgstr ""
+"مفتاح الارتباط لفتح التطبيق الثالث في شريط الأيقونات، أو الانتقال إلى "
+"التطبيق إذا كان مفتوحاً بالفعل."
 
 #: data/org.gnome.shell.gschema.xml.in:316
-#, fuzzy
 msgid "Keybinding to activate the fourth app in the icon bar."
-msgstr "اختصار فتح قائمة التطبيقات."
+msgstr "مفتاح الارتباط لتفعيل التطبيق الرابع في شريط الأيقونات."
 
 #: data/org.gnome.shell.gschema.xml.in:317
 msgid ""
 "Keybinding to open the fourth app in the icon bar, or switch to the app if "
 "already open."
 msgstr ""
+"مفتاح الارتباط لفتح التطبيق الرابع في شريط الأيقونات، أو الانتقال إلى "
+"التطبيق إذا كان مفتوحاً بالفعل."
 
 #: data/org.gnome.shell.gschema.xml.in:323
-#, fuzzy
 msgid "Keybinding to activate the fifth app in the icon bar."
-msgstr "اختصار فتح قائمة التطبيقات."
+msgstr "مفتاح الارتباط لتفعيل التطبيق الخامس في شريط الأيقونات."
 
 #: data/org.gnome.shell.gschema.xml.in:324
 msgid ""
 "Keybinding to open the fifth app in the icon bar, or switch to the app if "
 "already open."
 msgstr ""
+"مفتاح الارتباط لفتح التطبيق الخامس في شريط الأيقونات، أو الانتقال إلى "
+"التطبيق إذا كان مفتوحاً بالفعل."
 
 #: data/org.gnome.shell.gschema.xml.in:330
-#, fuzzy
 msgid "Keybinding to activate the sixth app in the icon bar."
-msgstr "اختصار فتح قائمة التطبيقات."
+msgstr "ربط المفاتيح لتفعيل التطبيق السادس في شريط الأيقونات"
 
 #: data/org.gnome.shell.gschema.xml.in:331
 msgid ""
 "Keybinding to open the sixth app in the icon bar, or switch to the app if "
 "already open."
 msgstr ""
+"مفتاح الارتباط لفتح التطبيق السادس في شريط الأيقونات، أو الانتقال إلى "
+"التطبيق إذا كان مفتوحاً بالفعل."
 
 #: data/org.gnome.shell.gschema.xml.in:337
-#, fuzzy
 msgid "Keybinding to activate the seventh app in the icon bar."
-msgstr "اختصار فتح قائمة التطبيقات."
+msgstr "مفتاح الارتباط لفتح التطبيق السابع في شريط الأيقونات."
 
 #: data/org.gnome.shell.gschema.xml.in:338
 msgid ""
 "Keybinding to open the seventh app in the icon bar, or switch to the app if "
 "already open."
 msgstr ""
+"مفتاح الارتباط لفتح التطبيق السابع في شريط الأيقونات، أو الانتقال إلى "
+"التطبيق إذا كان مفتوحاً بالفعل."
 
 #: data/org.gnome.shell.gschema.xml.in:344
-#, fuzzy
 msgid "Keybinding to activate the eighth app in the icon bar."
-msgstr "اختصار فتح قائمة التطبيقات."
+msgstr "مفتاح الارتباط لتفعيل التطبيق الثامن في شريط الأيقونات."
 
 #: data/org.gnome.shell.gschema.xml.in:345
 msgid ""
 "Keybinding to open the eighth app in the icon bar, or switch to the app if "
 "already open."
 msgstr ""
+"الربط المفتاحي لفتح التطبيق الثامن في شريط الرموز، أو التبديل إلى التطبيق "
+"إذا كان مفتوحاً بالفعل."
 
 #: data/org.gnome.shell.gschema.xml.in:351
-#, fuzzy
 msgid "Keybinding to activate the last app in the icon bar."
-msgstr "اختصار فتح قائمة التطبيقات."
+msgstr "مفتاح الارتباط لفتح التطبيق الأخير في شريط الأيقونات."
 
 #: data/org.gnome.shell.gschema.xml.in:352
 msgid ""
 "Keybinding to open the last app in the icon bar, or switch to the app if "
 "already open."
 msgstr ""
+"مفتاح الارتباط لفتح التطبيق الأخير في شريط الأيقونات، أو الانتقال إلى "
+"التطبيق إذا كان مفتوحاً بالفعل."
 
 #: data/org.gnome.shell.gschema.xml.in:363
 #: data/org.gnome.shell.gschema.xml.in:390
@@ -491,30 +525,28 @@ msgid ""
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:401
-#, fuzzy
 msgid "Locations"
-msgstr "التموضع مستخدم"
+msgstr "المواقع"
 
 #: data/org.gnome.shell.gschema.xml.in:402
 msgid "The locations to show in world clocks"
-msgstr ""
+msgstr "المواقع التي ستظهر في ساعات العالم"
 
 #: data/org.gnome.shell.gschema.xml.in:412
 msgid "Automatic location"
-msgstr ""
+msgstr "الموقع التلقائي"
 
 #: data/org.gnome.shell.gschema.xml.in:413
 msgid "Whether to fetch the current location or not"
-msgstr ""
+msgstr "سواء لجلب الموقع الحالي أم لا"
 
 #: data/org.gnome.shell.gschema.xml.in:420
-#, fuzzy
 msgid "Location"
-msgstr "التموضع مستخدم"
+msgstr "المكان"
 
 #: data/org.gnome.shell.gschema.xml.in:421
 msgid "The location for which to show a forecast"
-msgstr ""
+msgstr "الموقع الذي تظهر التوقعات من خلاله"
 
 #: data/org.gnome.shell.gschema.xml.in:433
 msgid "Attach modal dialog to the parent window"
@@ -621,7 +653,7 @@ msgstr "ألغِ"
 
 #: js/extensionPrefs/js/main.js:149 js/ui/appDisplay.js:2499
 msgid "Remove"
-msgstr "أزِل"
+msgstr "أزل"
 
 #: js/extensionPrefs/js/main.js:181
 msgid "translator-credits"
@@ -642,13 +674,12 @@ msgstr[5] ""
 #: subprojects/extensions-tool/src/command-create.c:211
 #: subprojects/extensions-tool/src/main.c:173
 msgid "Description"
-msgstr ""
+msgstr "الوصف"
 
 #: js/extensionPrefs/data/ui/extension-row.ui:123
 #: subprojects/extensions-tool/src/main.c:185
-#, fuzzy
 msgid "Version"
-msgstr "الجلسة"
+msgstr "الإصدار"
 
 #: js/extensionPrefs/data/ui/extension-row.ui:151
 msgid "Author"
@@ -665,7 +696,7 @@ msgstr "أزِل"
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:8 js/ui/userMenu.js:27
 msgid "Help"
-msgstr ""
+msgstr "المساعدة"
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:12
 #, fuzzy
@@ -711,6 +742,8 @@ msgid ""
 "We’re very sorry, but it was not possible to get the list of installed "
 "extensions. Make sure you are logged into GNOME and try again."
 msgstr ""
+"نعتذر بشدة، ولكن قد تعذّر الحصول على قائمة الامتدادات المثبتة. تأكد من تسجيلك "
+"للدخول إلى GNOME وحاول مرة أخرى."
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:288
 #, fuzzy
@@ -719,11 +752,11 @@ msgstr "اخرج"
 
 #: js/gdm/authPrompt.js:131
 msgid "Show password hint"
-msgstr ""
+msgstr "إظهار لمحة عن كلمة السر"
 
 #: js/gdm/authPrompt.js:148
 msgid "Forgot password?"
-msgstr ""
+msgstr "هل نسيت كلمة المرور؟"
 
 #. Cisco LEAP
 #: js/gdm/authPrompt.js:303 js/ui/components/networkAgent.js:363
@@ -747,11 +780,13 @@ msgid ""
 "Customer support will use the verification code to provide you with an "
 "unlock code, which you can enter here."
 msgstr ""
+"يرجى إبلاغ دعم الزبائن برمز التحقق الخاص بك %s عن طريق البريد الإلكتروني %s. "
+"سيستخدم فريق دعم الزبائن رمز التحقق لتزويدك برمز إلغاء القفل، والذي يمكنك "
+"إدخاله هنا."
 
 #: js/gdm/authPrompt.js:762
-#, fuzzy
 msgid "Your unlock code was incorrect. Please try again."
-msgstr "للأسف لم يُفلح هذا. أعِد المحاولة."
+msgstr "لقد كان رمز الفتح الخاص بك غير صحيح. يُرجى المحاولة مرة أخرى."
 
 #: js/gdm/loginDialog.js:317
 msgid "Choose Session"
@@ -825,9 +860,8 @@ msgstr "اخرج"
 
 #. Translators: A list of keywords that match the logout action, separated by semicolons
 #: js/misc/systemActions.js:108
-#, fuzzy
 msgid "logout;log out;sign off"
-msgstr "اخرج"
+msgstr "تسجيل الخروج؛ الخروج؛ تسجيل الخروج"
 
 #. Translators: The name of the suspend action in search
 #: js/misc/systemActions.js:113
@@ -1036,7 +1070,7 @@ msgstr "%-d %B %Y، %l:%M %p"
 #.
 #: js/misc/util.js:573
 msgid "Google"
-msgstr ""
+msgstr "جوجل"
 
 #. TRANSLATORS: this is the title of the wifi captive portal login window
 #: js/portalHelper/main.js:41
@@ -1063,9 +1097,8 @@ msgstr "امنح الصلاحية"
 
 #. Translators: This is the heading of a list of open windows
 #: js/ui/appDisplay.js:2390 js/ui/panel.js:78
-#, fuzzy
 msgid "Open Windows"
-msgstr "النوافذ"
+msgstr "فتح الويندوز"
 
 #: js/ui/appDisplay.js:2410 js/ui/panel.js:85
 msgid "New Window"
@@ -1077,9 +1110,8 @@ msgstr "شغل باستخدام بطاقة الرسوميات المنفصلة"
 
 #. Add the "Remove from desktop" menu item at the end.
 #: js/ui/appDisplay.js:2443
-#, fuzzy
 msgid "Remove from desktop"
-msgstr "أزِل من المفضّلة"
+msgstr "إزالة من سطح المكتب"
 
 #: js/ui/audioDeviceSelection.js:41
 msgid "Select Audio Device"
@@ -1107,11 +1139,11 @@ msgstr "غيّر الخلفية…"
 
 #: js/ui/backgroundMenu.js:18
 msgid "Add App"
-msgstr ""
+msgstr "إضافة تطبيق"
 
 #: js/ui/backgroundMenu.js:24
 msgid "Add Website"
-msgstr ""
+msgstr " إضافة موقع على الإنترنت"
 
 #. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday).
 #: js/ui/calendar.js:41
@@ -1271,13 +1303,12 @@ msgid "External drive disconnected"
 msgstr "فُصل القرص الخارجي"
 
 #: js/ui/components/automountManager.js:208
-#, fuzzy
 msgid "Unable to unlock volume"
-msgstr "تعذّر الإيصاد"
+msgstr "غير قادر على فتح مستوى الصوت"
 
 #: js/ui/components/automountManager.js:209
 msgid "The installed udisks version does not support the PIM setting"
-msgstr ""
+msgstr "لا يدعم إصدار udisks المثبت إعداد PIM"
 
 #: js/ui/components/autorunManager.js:333
 #, javascript-format
@@ -1296,19 +1327,19 @@ msgstr "اتصل"
 
 #: js/ui/components/networkAgent.js:141
 msgid "Limited Data"
-msgstr ""
+msgstr "بيانات محدودة"
 
 #: js/ui/components/networkAgent.js:151
 msgid "Unlimited Data"
-msgstr ""
+msgstr "بيانات غير محدودة"
 
 #: js/ui/components/networkAgent.js:163 js/ui/components/networkAgent.js:198
 msgid "Enable if your connection has limits on how much you can download."
-msgstr ""
+msgstr "قم بتمكينه إذا كان الاتصال لديك به قيود على كمية التنزيلات."
 
 #: js/ui/components/networkAgent.js:200
 msgid "This connection doesn't have limits on how much you can download."
-msgstr ""
+msgstr "هذا الاتصال ليست به قيود على كمية التنزيلات."
 
 #: js/ui/components/networkAgent.js:369
 #, fuzzy
@@ -1333,7 +1364,7 @@ msgstr "الخدمة: "
 #: js/ui/components/networkAgent.js:471
 #, javascript-format
 msgid "Enter the Wi-Fi password for “%s”"
-msgstr ""
+msgstr "ادخل الرمز السري لشبكة الواي فاي \"%s\""
 
 #: js/ui/components/networkAgent.js:476 js/ui/components/networkAgent.js:851
 msgid "Wired 802.1X authentication"
@@ -1860,7 +1891,7 @@ msgstr "تراجع"
 
 #: js/ui/overview.js:113
 msgid "No apps are open"
-msgstr ""
+msgstr "لا توجد تطبيقات مفتوحة"
 
 #. Translators: This is the main view to select
 #. activities. See also note for "Activities" string.
@@ -1932,32 +1963,30 @@ msgid "System"
 msgstr "النظام"
 
 #: js/ui/panel.js:801
-#, fuzzy
 msgctxt "User menu"
 msgid "User Menu"
-msgstr "قائمة الصينية"
+msgstr "قائمة المستخدم"
 
 #: js/ui/panel.js:833
-#, fuzzy
 msgctxt "Power menu"
 msgid "Power"
 msgstr "الطاقة"
 
 #: js/ui/panel.js:907
 msgid "Bottom Bar"
-msgstr ""
+msgstr "الشريط السفلي"
 
 #: js/ui/paygUnlockDialog.js:93
 msgid "Your Pay As You Go usage credit has expired."
-msgstr ""
+msgstr "لقد انتهت صلاحية رصيدك المُخصص للاستخدام عن طريق خدمة \"الدفع المسبق\" "
 
 #: js/ui/paygUnlockDialog.js:116
 msgid "Enter a new code to unlock your computer:"
-msgstr ""
+msgstr "ادخل رمزاً جديداً لإلغاء قفل حاسوبك:"
 
 #: js/ui/paygUnlockDialog.js:139
 msgid "Don’t have an unlock code? That’s OK!"
-msgstr ""
+msgstr "لا تملك رمز الغاء القفل ؟ لا مشكلة!"
 
 #. The second possible override is to use the template text below
 #. with the contact's name and phone number, if BOTH are present.
@@ -1967,11 +1996,13 @@ msgid ""
 "Talk to your sales representative to purchase a new code. Call or text %s at "
 "%s"
 msgstr ""
+"تحدَّث إلى مُمثِّل المبيعات الخاص بك، لشراء رمز جديد. الاتصال هاتفياً أو مراسلة %s "
+"نصياً في %s"
 
 #. No overrides present, default to fallback text.
 #: js/ui/paygUnlockDialog.js:164
 msgid "Talk to your sales representative to purchase a new code."
-msgstr ""
+msgstr "إتصل بممثل المبيعات الخاص بك لشراء رمزجديد."
 
 #: js/ui/paygUnlockDialog.js:188
 #, javascript-format
@@ -1979,9 +2010,8 @@ msgid "Pay As You Go Account ID: %s"
 msgstr ""
 
 #: js/ui/paygUnlockDialog.js:198
-#, fuzzy
 msgid "Unlock Machine"
-msgstr "افتح قفل النافذة"
+msgstr "إلغاء قفل الجهاز"
 
 #: js/ui/paygUnlockDialog.js:287 js/ui/shellMountOperation.js:380
 msgid "Unlock"
@@ -1989,57 +2019,56 @@ msgstr "فك القفل"
 
 #: js/ui/paygUnlockDialog.js:394
 msgid "Success!"
-msgstr ""
+msgstr "تم بنجاح!"
 
 #: js/ui/paygUnlockDialog.js:418
 msgid "Remaining time cleared!"
-msgstr ""
+msgstr "تمت إزالة الوقت المتبقي!"
 
 #: js/ui/paygUnlockDialog.js:419
-#, fuzzy
 msgid "OK!"
-msgstr "حسنا"
+msgstr "حسناً!"
 
 #: js/ui/payg.js:39
 msgid "Pay As You Go"
-msgstr ""
+msgstr "الدفع المسبق"
 
 #: js/ui/payg.js:40
 msgid "Enter an unlock code to extend the time before your credit has expired."
-msgstr ""
+msgstr "أدخل رمز إلغاء القفل لتمديد الوقت قبل انتهاء صلاحية الرصيد."
 
 #: js/ui/payg.js:41
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Subscription runs out in %s."
-msgstr "طلب اشتراك"
+msgstr "ينتهي الاشتراك في %s."
 
 #: js/ui/payg.js:236
 #, javascript-format
 msgid "Too many attempts. Try again in %s minute."
 msgid_plural "Too many attempts. Try again in %s minutes."
-msgstr[0] ""
+msgstr[0] "العديد من المحاولات الفاشلة. يرجى إعادة المحاولة بعد لحظات %s."
 msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
-msgstr[4] ""
-msgstr[5] ""
+"العديد من المحاولات الفاشلة. يرجى إعادة المحاولة بعد دقيقة واحدة %s."
+msgstr[2] "العديد من المحاولات الفاشلة. يرجى إعادة المحاولة بعد دقيقتين %s."
+msgstr[3] "العديد من المحاولات الفاشلة. يرجى إعادة المحاولة بعد %s دقائق."
+msgstr[4] "العديد من المحاولات الفاشلة. يرجى إعادة المحاولة بعد %s دقائق."
+msgstr[5] "العديد من المحاولات الفاشلة. يرجى إعادة المحاولة بعد %s دقائق."
 
 #: js/ui/payg.js:240
 msgid "Too many attempts. Try again in a few seconds."
-msgstr ""
+msgstr "العديد من المحاولات الفاشلة. يرجى إعادة المحاولة بعد لحظات."
 
 #: js/ui/payg.js:261
-#, fuzzy
 msgid "Invalid code. Please try again."
-msgstr "للأسف لم يُفلح هذا. أعِد المحاولة."
+msgstr "الرمز خاطئ. من فضلك حاول مرة أُخرى"
 
 #: js/ui/payg.js:263
 msgid "Code already used. Please enter a new code."
-msgstr ""
+msgstr "الرمز مستخدم من قبل. يرجى إدخال رمز جديد."
 
 #: js/ui/payg.js:265
 msgid "Time exceeded while verifying the code"
-msgstr ""
+msgstr "تم تجاوز الوقت المسموح أثناء التحقق من الرمز."
 
 #: js/ui/payg.js:267
 #, javascript-format
@@ -2049,122 +2078,132 @@ msgstr ""
 #. We don't consider any other error here (and we don't consider DISABLED explicitly,
 #. since that should not happen), but still we need to show something to the user.
 #: js/ui/payg.js:271
-#, fuzzy
 msgid "Unknown error"
-msgstr "غير معروف"
+msgstr "خطأ غير معروف"
 
 #: js/ui/payg.js:452
 msgid "Apply Code"
-msgstr ""
+msgstr "تطبيق الرمز"
 
 #: js/ui/payg.js:606
 #, javascript-format
 msgid "%s second"
 msgid_plural "%s seconds"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
-msgstr[4] ""
-msgstr[5] ""
+msgstr[0] "%s ثانية"
+msgstr[1] "%s ثانية"
+msgstr[2] "%s ثانية"
+msgstr[3] "%s ثوانٍ"
+msgstr[4] "%s ثانية"
+msgstr[5] "%s ثانية"
 
 #: js/ui/payg.js:610 js/ui/payg.js:620
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s minute"
 msgid_plural "%s minutes"
-msgstr[0] "دقيقة"
-msgstr[1] "دقيقة"
-msgstr[2] "دقيقتان"
-msgstr[3] "دقائق"
-msgstr[4] "دقيقة"
-msgstr[5] "دقيقة"
+msgstr[0] "%s دقيقة"
+msgstr[1] "%s دقيقة"
+msgstr[2] "%s دقائق"
+msgstr[3] "%s دقيقة"
+msgstr[4] "%s دقائق"
+msgstr[5] "%s دقائق"
 
 #: js/ui/payg.js:614 js/ui/payg.js:631
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s hour"
 msgid_plural "%s hours"
-msgstr[0] "ساعة"
-msgstr[1] "ساعة"
-msgstr[2] "ساعتان"
-msgstr[3] "ساعات"
-msgstr[4] "ساعة"
-msgstr[5] "ساعة"
+msgstr[0] "%s ساعات"
+msgstr[1] "%s ساعة"
+msgstr[2] "%s ساعات"
+msgstr[3] "%s ساعات"
+msgstr[4] "%s ساعات"
+msgstr[5] "%s ساعات"
 
 #: js/ui/payg.js:625
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s day"
 msgid_plural "%s days"
-msgstr[0] "%s طوال اليوم."
-msgstr[1] "%s طوال اليوم."
-msgstr[2] "%s طوال اليوم."
-msgstr[3] "%s طوال اليوم."
-msgstr[4] "%s طوال اليوم."
-msgstr[5] "%s طوال اليوم."
+msgstr[0] "%s أيام"
+msgstr[1] "%s يوم"
+msgstr[2] "%s أيام"
+msgstr[3] "%s أيام"
+msgstr[4] "%s أيام"
+msgstr[5] "%s يوماً"
 
 #: js/ui/payg.js:641
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s second has been added to your Pay As You Go credit."
 msgid_plural "%s seconds have been added to your Pay As You Go credit."
-msgstr[0] "أُضيف %s إلى مفضلتك."
-msgstr[1] "أُضيف %s إلى مفضلتك."
-msgstr[2] "أُضيف %s إلى مفضلتك."
-msgstr[3] "أُضيف %s إلى مفضلتك."
-msgstr[4] "أُضيف %s إلى مفضلتك."
-msgstr[5] "أُضيف %s إلى مفضلتك."
+msgstr[0] ""
+"%s من الثواني أضيفت إلى رصيد Pay As You Go (الدفع حسب الاستهلاك) الخاص بك."
+msgstr[1] ""
+"%s من الثواني أضيفت إلى رصيد Pay As You Go (الدفع حسب الاستهلاك) الخاص بك."
+msgstr[2] ""
+"%s من الثواني أضيفت إلى رصيد Pay As You Go (الدفع حسب الاستهلاك) الخاص بك."
+msgstr[3] ""
+"%s من الثواني أضيفت إلى رصيد Pay As You Go (الدفع حسب الاستهلاك) الخاص بك."
+msgstr[4] ""
+"%s من الثواني أضيفت إلى رصيد Pay As You Go (الدفع حسب الاستهلاك) الخاص بك."
+msgstr[5] ""
+"%s من الثواني أضيفت إلى رصيد Pay As You Go (الدفع حسب الاستهلاك) الخاص بك."
 
 #: js/ui/payg.js:648
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s minute has been added to your Pay As You Go credit."
 msgid_plural "%s minutes have been added to your Pay As You Go credit."
-msgstr[0] "أُضيف %s إلى مفضلتك."
-msgstr[1] "أُضيف %s إلى مفضلتك."
-msgstr[2] "أُضيف %s إلى مفضلتك."
-msgstr[3] "أُضيف %s إلى مفضلتك."
-msgstr[4] "أُضيف %s إلى مفضلتك."
-msgstr[5] "أُضيف %s إلى مفضلتك."
+msgstr[0] "لقد تمت إضافة %s دقائق إلى رصيد Pay As You Go الخاص بك."
+msgstr[1] "لقد تمت إضافة %s دقيقة إلى رصيد Pay As You Go الخاص بك."
+msgstr[2] "لقد تمت إضافة %s دقائق إلى رصيد Pay As You Go الخاص بك."
+msgstr[3] "لقد تمت إضافة %s دقائق إلى رصيد Pay As You Go الخاص بك."
+msgstr[4] "لقد تمت إضافة %s دقائق إلى رصيد Pay As You Go الخاص بك."
+msgstr[5] "لقد تمت إضافة %s دقائق إلى رصيد Pay As You Go الخاص بك."
 
 #: js/ui/payg.js:655
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s hour has been added to your Pay As You Go credit."
 msgid_plural "%s hours have been added to your Pay As You Go credit."
-msgstr[0] "أُضيف %s إلى مفضلتك."
-msgstr[1] "أُضيف %s إلى مفضلتك."
-msgstr[2] "أُضيف %s إلى مفضلتك."
-msgstr[3] "أُضيف %s إلى مفضلتك."
-msgstr[4] "أُضيف %s إلى مفضلتك."
-msgstr[5] "أُضيف %s إلى مفضلتك."
+msgstr[0] "تمت إضافة %s ساعات إلى رصيد Pay As You Go الخاص بك."
+msgstr[1] "تمت إضافة %s ساعة إلى رصيد Pay As You Go الخاص بك."
+msgstr[2] "تمت إضافة %s ساعات إلى رصيد Pay As You Go الخاص بك."
+msgstr[3] "تمت إضافة %s ساعات إلى رصيد Pay As You Go الخاص بك."
+msgstr[4] "تمت إضافة %s ساعات إلى رصيد Pay As You Go الخاص بك."
+msgstr[5] "تمت إضافة %s ساعات إلى رصيد Pay As You Go الخاص بك."
 
 #: js/ui/payg.js:662
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s day has been added to your Pay As You Go credit."
 msgid_plural "%s days have been added to your Pay As You Go credit."
-msgstr[0] "أُضيف %s إلى مفضلتك."
-msgstr[1] "أُضيف %s إلى مفضلتك."
-msgstr[2] "أُضيف %s إلى مفضلتك."
-msgstr[3] "أُضيف %s إلى مفضلتك."
-msgstr[4] "أُضيف %s إلى مفضلتك."
-msgstr[5] "أُضيف %s إلى مفضلتك."
+msgstr[0] "لقد تمت إضافة %s أيام إلى رصيد Pay As You Go الخاص بك."
+msgstr[1] "لقد تمت إضافة %s يوم إلى رصيد Pay As You Go الخاص بك."
+msgstr[2] "لقد تمت إضافة %s أيام إلى رصيد Pay As You Go الخاص بك."
+msgstr[3] "لقد تمت إضافة %s أيام إلى رصيد Pay As You Go الخاص بك."
+msgstr[4] "لقد تمت إضافة %s أيام إلى رصيد Pay As You Go الخاص بك."
+msgstr[5] "لقد تمت إضافة %s أيام إلى رصيد Pay As You Go الخاص بك."
 
 #: js/ui/payg.js:669
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s month has been added to your Pay As You Go credit."
 msgid_plural "%s months have been added to your Pay As You Go credit."
-msgstr[0] "أُضيف %s إلى مفضلتك."
-msgstr[1] "أُضيف %s إلى مفضلتك."
-msgstr[2] "أُضيف %s إلى مفضلتك."
-msgstr[3] "أُضيف %s إلى مفضلتك."
-msgstr[4] "أُضيف %s إلى مفضلتك."
-msgstr[5] "أُضيف %s إلى مفضلتك."
+msgstr[0] ""
+"%s من الأشهر أضيفت إلى رصيد Pay As You Go (الدفع حسب الاستهلاك) الخاص بك. "
+msgstr[1] ""
+"%s من الأشهر أضيفت إلى رصيد Pay As You Go (الدفع حسب الاستهلاك) الخاص بك."
+msgstr[2] ""
+"%s من الأشهر أضيفت إلى رصيد Pay As You Go (الدفع حسب الاستهلاك) الخاص بك."
+msgstr[3] ""
+"%s من الأشهر أضيفت إلى رصيد Pay As You Go (الدفع حسب الاستهلاك) الخاص بك."
+msgstr[4] ""
+"%s من الأشهر أضيفت إلى رصيد Pay As You Go (الدفع حسب الاستهلاك) الخاص بك."
+msgstr[5] ""
+"%s من الأشهر أضيفت إلى رصيد Pay As You Go (الدفع حسب الاستهلاك) الخاص بك."
 
 #: js/ui/payg.js:676
-#, fuzzy
 msgid "1 year has been added to your Pay As You Go credit."
-msgstr "أُضيف %s إلى مفضلتك."
+msgstr "تمت إضافة سنة واحدة إلى رصيد Pay As You Go الخاص بك."
 
 #. Unlock permanently message
 #: js/ui/payg.js:679
 msgid "You have successfully unlocked your Endless Machine"
-msgstr ""
+msgstr "لقد قمت بفتح جهاز Endless الخاص بك بنجاح"
 
 #: js/ui/runDialog.js:58
 #, fuzzy
@@ -2228,47 +2267,44 @@ msgid "Hide Text"
 msgstr "أخفِ النص"
 
 #: js/ui/shellEntry.js:194
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Search %s and more…"
-msgstr "يبحث…"
+msgstr "ابحث في %s وأكثر من ذلك…"
 
 #: js/ui/shellEntry.js:196
 msgid "Search the internet and more…"
-msgstr ""
+msgstr "ابحث في الإنترنت وأكثر من ذلك…"
 
 #: js/ui/shellEntry.js:198
-#, fuzzy
 msgid "Search…"
-msgstr "يبحث…"
+msgstr "البحث..."
 
 #: js/ui/shellEntry.js:490
 msgid "Caps lock is on."
 msgstr ""
 
 #: js/ui/shellMountOperation.js:285
-#, fuzzy
 msgid "Hidden Volume"
-msgstr "شدة الصوت"
+msgstr "صوت مخفي"
 
 #: js/ui/shellMountOperation.js:288
 msgid "Windows System Volume"
-msgstr ""
+msgstr "وحدة تخزين نظام الويندوز"
 
 #: js/ui/shellMountOperation.js:291
-#, fuzzy
 msgid "Uses Keyfiles"
-msgstr "مفاتيح الفأرة"
+msgstr "يستخدم Keyfiles"
 
 #. Translators: %s is the Disks application
 #: js/ui/shellMountOperation.js:298
 #, javascript-format
 msgid ""
 "To unlock a volume that uses keyfiles, use the <i>%s</i> utility instead."
-msgstr ""
+msgstr "لفتح وحدة تخزين تستخدم keyfiles، استخدم وسيلة <i>%s</i> بدلاً من ذلك."
 
 #: js/ui/shellMountOperation.js:306
 msgid "PIM Number"
-msgstr ""
+msgstr "رقم التكرار الشخصي المضاعف / PIM"
 
 #: js/ui/shellMountOperation.js:365
 msgid "Remember Password"
@@ -2276,25 +2312,25 @@ msgstr "تذكر كلمة السر"
 
 #. Translators: %s is the Disks application
 #: js/ui/shellMountOperation.js:391
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Open %s"
-msgstr "افتح باستخدام %s"
+msgstr "افتح %s"
 
 #: js/ui/shellMountOperation.js:423
 msgid "The PIM must be a number or empty."
-msgstr ""
+msgstr "يجب أن يكون رمز PIM رقماً أو فارغاً."
 
 #. Translators: %s is the Disks application
 #: js/ui/shellMountOperation.js:469
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Unable to start %s"
-msgstr "تعذّر الاتصال مع %s"
+msgstr "يتعذّر بدء %s"
 
 #. Translators: %s is the Disks application
 #: js/ui/shellMountOperation.js:471
 #, javascript-format
 msgid "Couldn’t find the %s application"
-msgstr ""
+msgstr "تعذّر العثور على تطبيق %s"
 
 #: js/ui/status/accessibility.js:35
 msgid "Accessibility"
@@ -2342,46 +2378,46 @@ msgstr "نص كبير"
 
 #: js/ui/status/automaticUpdates.js:80
 msgid "Updates Queue"
-msgstr ""
+msgstr "طابور التحديثات"
 
 #: js/ui/status/automaticUpdates.js:105
-#, fuzzy
 msgid "Set a Schedule"
-msgstr "الجدول خال"
+msgstr "تعيين جدول"
 
 #. The status label
 #: js/ui/status/automaticUpdates.js:198
 msgid "Automatic Updates"
-msgstr ""
+msgstr "التحديث التلقائي"
 
 #: js/ui/status/automaticUpdates.js:263
 msgid "Automatic updates on"
-msgstr ""
+msgstr "التحديث التلقائي يعمل"
 
 #: js/ui/status/automaticUpdates.js:264
 msgid ""
 "You have Unlimited Data so automatic updates have been turned on for this "
 "connection."
-msgstr ""
+msgstr "لديك بيانات غير محدودة لذا تم تشغيل التحديثات التلقائية لهذا الاتصال."
 
 #: js/ui/status/automaticUpdates.js:267
 msgid "Automatic updates are turned off to save your data"
-msgstr ""
+msgstr "تم إيقاف التحديثات التلقائية عن العمل، لتوفير استهلاك البيانات"
 
 #: js/ui/status/automaticUpdates.js:268
 msgid ""
 "You will need to choose which Endless updates to apply when on this "
 "connection."
 msgstr ""
+"ستحتاج إلى تحديد تحديثات نظام Endless التي يمكن تنزيلها أثناء استخدام هذا "
+"الاتصال."
 
 #: js/ui/status/automaticUpdates.js:286 js/ui/windowMenu.js:167
 msgid "Close"
 msgstr "أغلِق"
 
 #: js/ui/status/automaticUpdates.js:290
-#, fuzzy
 msgid "Change Settings…"
-msgstr "إعدادات الفأرة"
+msgstr "تغيير الإعدادات..."
 
 #: js/ui/status/bluetooth.js:40
 msgid "Bluetooth"
@@ -2404,14 +2440,12 @@ msgstr[4] "%d مُتصل"
 msgstr[5] "%d مُتصل"
 
 #: js/ui/status/bluetooth.js:134
-#, fuzzy
 msgid "Bluetooth Off"
-msgstr "بلوتوث"
+msgstr "إغلاق البلوتوث"
 
 #: js/ui/status/bluetooth.js:136
-#, fuzzy
 msgid "Bluetooth On"
-msgstr "بلوتوث"
+msgstr "جهاز بلوتوث يعمل"
 
 #: js/ui/status/brightness.js:39
 msgid "Brightness"
@@ -2419,23 +2453,23 @@ msgstr "السطوع"
 
 #: js/ui/status/dwellClick.js:13
 msgid "Single Click"
-msgstr ""
+msgstr "نقرة واحدة"
 
 #: js/ui/status/dwellClick.js:18
 msgid "Double Click"
-msgstr ""
+msgstr "نقرة مزدوجة"
 
 #: js/ui/status/dwellClick.js:23
 msgid "Drag"
-msgstr ""
+msgstr "سحب"
 
 #: js/ui/status/dwellClick.js:28
 msgid "Secondary Click"
-msgstr ""
+msgstr "النقرة الثانوية"
 
 #: js/ui/status/dwellClick.js:37
 msgid "Dwell Click"
-msgstr ""
+msgstr "تطبيق Dwell Click"
 
 #: js/ui/status/keyboard.js:826
 msgid "Keyboard"
@@ -2722,17 +2756,15 @@ msgstr "أوقف حتى الغد"
 
 #: js/ui/status/payg.js:27
 msgid "Enter unlock code…"
-msgstr ""
+msgstr "أدخل رمز إلغاء القفل"
 
 #: js/ui/status/payg.js:86
-#, fuzzy
 msgid "Getting time…"
-msgstr "يُعيد التشغيل…"
+msgstr "جاري الحصول على الوقت"
 
 #: js/ui/status/payg.js:90
-#, fuzzy
 msgid "Less than 1 minute"
-msgstr "منذ أقل من دقيقة"
+msgstr "أقل من دقيقة واحدة"
 
 #: js/ui/status/payg.js:124
 #, fuzzy, javascript-format
@@ -3070,11 +3102,13 @@ msgid ""
 "Name should be a very short (ideally descriptive) string.\n"
 "Examples are: %s"
 msgstr ""
+"يجب أن يكون الاسم عبارة عن سلسلة قصيرة جداً من الرموز (وصفية بشكل مثالي).\n"
+"الأمثلة هي: %s"
 
 #: subprojects/extensions-tool/src/command-create.c:197
 #: subprojects/extensions-tool/src/main.c:170
 msgid "Name"
-msgstr ""
+msgstr "الاسم"
 
 #: subprojects/extensions-tool/src/command-create.c:208
 #, c-format
@@ -3082,6 +3116,8 @@ msgid ""
 "Description is a single-sentence explanation of what your extension does.\n"
 "Examples are: %s"
 msgstr ""
+"الوصف هو عبارة عن جملة واحدة توضح ما يقوم به الامتداد الخاص بك.\n"
+"الأمثلة هي: %s"
 
 #: subprojects/extensions-tool/src/command-create.c:222
 #, c-format
@@ -3090,50 +3126,50 @@ msgid ""
 "This should be in the format of an email address (clicktofocus@janedoe."
 "example.com)\n"
 msgstr ""
+"UUID هو معرف وحيد شامل للامتداد الخاص بك.\n"
+"يجب أن يكون هذا بتنسيق عنوان بريد إلكتروني (clicktofocus@janedoe.example."
+"com)\n"
 
 #: subprojects/extensions-tool/src/command-create.c:244
 msgid "The unique identifier of the new extension"
-msgstr ""
+msgstr "المعرف الوحيد للامتداد الجديد"
 
 #: subprojects/extensions-tool/src/command-create.c:247
 msgid "NAME"
-msgstr ""
+msgstr "الاسم"
 
 #: subprojects/extensions-tool/src/command-create.c:248
 msgid "The user-visible name of the new extension"
-msgstr ""
+msgstr "اسم المستخدم المرئي للامتداد الجديد"
 
 #: subprojects/extensions-tool/src/command-create.c:250
 msgid "DESCRIPTION"
-msgstr ""
+msgstr "الوصف"
 
 #: subprojects/extensions-tool/src/command-create.c:252
 msgid "A short description of what the extension does"
-msgstr ""
+msgstr "وصف قصير لما يفعله الامتداد"
 
 #: subprojects/extensions-tool/src/command-create.c:255
 msgid "Enter extension information interactively"
-msgstr ""
+msgstr "أدخل معلومات الامتداد بشكل تفاعلي"
 
 #: subprojects/extensions-tool/src/command-create.c:263
-#, fuzzy
 msgid "Create a new extension"
-msgstr "عطّل امتدادات المستخدمين"
+msgstr "إنشاء امتداد جديد"
 
 #: subprojects/extensions-tool/src/command-create.c:280
 #: subprojects/extensions-tool/src/command-list.c:168
-#, fuzzy
 msgid "Unknown arguments"
-msgstr "فنان غير معروف"
+msgstr "وسائط غير معروفة"
 
 #: subprojects/extensions-tool/src/command-create.c:289
 msgid "UUID, name and description are required"
-msgstr ""
+msgstr "مطلوب معرّف UUID والاسم والوصف"
 
 #: subprojects/extensions-tool/src/command-disable.c:57
-#, fuzzy
 msgid "Disable an extension"
-msgstr "عطّل امتدادات المستخدمين"
+msgstr "تعطيل امتداد ما"
 
 #: subprojects/extensions-tool/src/command-disable.c:74
 #: subprojects/extensions-tool/src/command-enable.c:74
@@ -3142,7 +3178,7 @@ msgstr "عطّل امتدادات المستخدمين"
 #: subprojects/extensions-tool/src/command-reset.c:74
 #: subprojects/extensions-tool/src/command-uninstall.c:89
 msgid "No UUID given"
-msgstr ""
+msgstr "لم يتم تعيين معرّف UUID"
 
 #: subprojects/extensions-tool/src/command-disable.c:79
 #: subprojects/extensions-tool/src/command-enable.c:79
@@ -3151,64 +3187,55 @@ msgstr ""
 #: subprojects/extensions-tool/src/command-reset.c:79
 #: subprojects/extensions-tool/src/command-uninstall.c:94
 msgid "More than one UUID given"
-msgstr ""
+msgstr "تم تعيين أكثر من معرّف وحيد شامل / UUID "
 
 #: subprojects/extensions-tool/src/command-enable.c:57
-#, fuzzy
 msgid "Enable an extension"
-msgstr "عطّل امتدادات المستخدمين"
+msgstr "تمكين امتداد ما"
 
 #: subprojects/extensions-tool/src/command-info.c:79
-#, fuzzy
 msgid "Show extensions info"
-msgstr "لا امتدادات مثبّتة"
+msgstr "عرض معلومات الامتدادات"
 
 #: subprojects/extensions-tool/src/command-install.c:173
 msgid "Overwrite an existing extension"
-msgstr ""
+msgstr "الكتابة فوق امتداد موجود"
 
 #: subprojects/extensions-tool/src/command-install.c:175
 msgid "EXTENSION_BUNDLE"
-msgstr ""
+msgstr "حزمة_ الامتدادات"
 
 #: subprojects/extensions-tool/src/command-install.c:184
-#, fuzzy
 msgid "Install an extension bundle"
-msgstr "معرّفات الامتدادات التي ستُفعّل"
+msgstr "تثبيت حزمة امتدادات"
 
 #: subprojects/extensions-tool/src/command-install.c:201
-#, fuzzy
 msgid "No extension bundle specified"
-msgstr "لا امتدادات مثبّتة"
+msgstr "لم يتم تحديد حزمة امتدادات"
 
 #: subprojects/extensions-tool/src/command-install.c:207
 msgid "More than one extension bundle specified"
-msgstr ""
+msgstr "تم تحديد أكثر من حزمة امتدادات واحدة"
 
 #: subprojects/extensions-tool/src/command-list.c:125
-#, fuzzy
 msgid "Show user-installed extensions"
-msgstr "امتدادات الصدفة"
+msgstr "عرض الامتدادات المثبتة من قبل المستخدم"
 
 #: subprojects/extensions-tool/src/command-list.c:128
-#, fuzzy
 msgid "Show system-installed extensions"
-msgstr "امتدادات الصدفة"
+msgstr "عرض الامتدادات المثبتة على النظام"
 
 #: subprojects/extensions-tool/src/command-list.c:131
-#, fuzzy
 msgid "Show enabled extensions"
-msgstr "امتدادات الصدفة"
+msgstr "إظهار الامتدادات الممكّنة"
 
 #: subprojects/extensions-tool/src/command-list.c:134
-#, fuzzy
 msgid "Show disabled extensions"
-msgstr "عطّل امتدادات المستخدمين"
+msgstr "إظهار الامتدادات المعطلة"
 
 #: subprojects/extensions-tool/src/command-list.c:137
-#, fuzzy
 msgid "Show extensions with preferences"
-msgstr "تفضيلات امتدادات صدفة جنوم"
+msgstr "عرض الامتدادات ذات التفضيلات"
 
 #: subprojects/extensions-tool/src/command-list.c:140
 #, fuzzy
@@ -3216,185 +3243,169 @@ msgid "Show extensions with updates"
 msgstr "لا امتدادات مثبّتة"
 
 #: subprojects/extensions-tool/src/command-list.c:143
-#, fuzzy
 msgid "Print extension details"
-msgstr "اذهب إلى صفحة الامتداد الرئيسية"
+msgstr "طباعة تفاصيل الامتداد"
 
 #: subprojects/extensions-tool/src/command-list.c:151
-#, fuzzy
 msgid "List installed extensions"
-msgstr "عطّل امتدادات المستخدمين"
+msgstr "إدراج الامتدادات المثبتة في قائمة"
 
 #: subprojects/extensions-tool/src/command-pack.c:450
 msgid "FILE"
-msgstr ""
+msgstr "ملف"
 
 #: subprojects/extensions-tool/src/command-pack.c:451
 msgid "Additional source to include in the bundle"
-msgstr ""
+msgstr "المصدر الإضافي المراد تضمينه في الحزمة"
 
 #: subprojects/extensions-tool/src/command-pack.c:454
 msgid "SCHEMA"
-msgstr ""
+msgstr "المخطط"
 
 #: subprojects/extensions-tool/src/command-pack.c:455
 msgid "A GSettings schema that should be included"
-msgstr ""
+msgstr "مخطط GSettings الذي يجب تضمينه"
 
 #: subprojects/extensions-tool/src/command-pack.c:457
 #: subprojects/extensions-tool/src/command-pack.c:468
 msgid "DIRECTORY"
-msgstr ""
+msgstr "الدليل"
 
 #: subprojects/extensions-tool/src/command-pack.c:459
 msgid "The directory where translations are found"
-msgstr ""
+msgstr "الدليل الذي توجد به الترجمات"
 
 #: subprojects/extensions-tool/src/command-pack.c:461
 msgid "DOMAIN"
-msgstr ""
+msgstr "النطاق"
 
 #: subprojects/extensions-tool/src/command-pack.c:463
 msgid "The gettext domain to use for translations"
-msgstr ""
+msgstr "نطاق gettext المستخدم للترجمات"
 
 #: subprojects/extensions-tool/src/command-pack.c:466
 msgid "Overwrite an existing pack"
-msgstr ""
+msgstr "الكتابة فوق حزمة موجودة"
 
 #: subprojects/extensions-tool/src/command-pack.c:470
 msgid "The directory where the pack should be created"
-msgstr ""
+msgstr "الدليل الذي يجب إنشاء الحزمة به"
 
 #: subprojects/extensions-tool/src/command-pack.c:472
 msgid "SOURCE_DIRECTORY"
-msgstr ""
+msgstr "دليل المصدر"
 
 #: subprojects/extensions-tool/src/command-pack.c:481
 msgid "Create an extension bundle"
-msgstr ""
+msgstr "إنشاء حزمة امتدادات"
 
 #: subprojects/extensions-tool/src/command-pack.c:500
 msgid "More than one source directory specified"
-msgstr ""
+msgstr "تم تحديد أكثر من دليل مصدر واحد"
 
 #: subprojects/extensions-tool/src/command-prefs.c:90
-#, fuzzy
 msgid "Opens extension preferences"
-msgstr "تفضيلات امتدادات صدفة جنوم"
+msgstr "يفتح تفضيلات الامتدادات"
 
 #: subprojects/extensions-tool/src/command-reset.c:57
-#, fuzzy
 msgid "Reset an extension"
-msgstr "عطّل امتدادات المستخدمين"
+msgstr "إعادة تعيين امتداد"
 
 #: subprojects/extensions-tool/src/command-uninstall.c:72
-#, fuzzy
 msgid "Uninstall an extension"
-msgstr "عطّل امتدادات المستخدمين"
+msgstr "إلغاء تثبيت امتداد ما"
 
 #: subprojects/extensions-tool/src/main.c:176
 msgid "Path"
-msgstr ""
+msgstr "مسار"
 
 #: subprojects/extensions-tool/src/main.c:179
 msgid "URL"
-msgstr ""
+msgstr "المسار"
 
 #: subprojects/extensions-tool/src/main.c:182
 msgid "Original author"
-msgstr ""
+msgstr "المؤلف الأصلي"
 
 #: subprojects/extensions-tool/src/main.c:188
 msgid "State"
-msgstr ""
+msgstr "الولاية"
 
 #: subprojects/extensions-tool/src/main.c:222
 msgid "“version” takes no arguments"
-msgstr ""
+msgstr "“version” لا تأخذ أي وسائط"
 
 #: subprojects/extensions-tool/src/main.c:224
 #: subprojects/extensions-tool/src/main.c:244
 msgid "Usage:"
-msgstr ""
+msgstr "الاستخدام:"
 
 #: subprojects/extensions-tool/src/main.c:227
 msgid "Print version information and exit."
-msgstr ""
+msgstr "طباعة معلومات الإصدار والخروج."
 
 #: subprojects/extensions-tool/src/main.c:242
 #: subprojects/extensions-tool/src/main.c:245
 msgid "COMMAND"
-msgstr ""
+msgstr "أمر"
 
 #: subprojects/extensions-tool/src/main.c:245
 msgid "[ARGS…]"
-msgstr ""
+msgstr "[الوسائط…]"
 
 #: subprojects/extensions-tool/src/main.c:247
 msgid "Commands:"
-msgstr ""
+msgstr "الأوامر:"
 
 #: subprojects/extensions-tool/src/main.c:248
-#, fuzzy
 msgid "Print help"
-msgstr "اطبع الإصدارة"
+msgstr "طباعة المساعدة"
 
 #: subprojects/extensions-tool/src/main.c:250
-#, fuzzy
 msgid "Enable extension"
-msgstr "امتداد"
+msgstr "تمكين الامتداد"
 
 #: subprojects/extensions-tool/src/main.c:251
-#, fuzzy
 msgid "Disable extension"
-msgstr "عطّل امتدادات المستخدمين"
+msgstr "تعطيل الامتداد"
 
 #: subprojects/extensions-tool/src/main.c:252
-#, fuzzy
 msgid "Reset extension"
-msgstr "عطّل امتدادات المستخدمين"
+msgstr "إعادة تعيين الامتداد"
 
 #: subprojects/extensions-tool/src/main.c:253
-#, fuzzy
 msgid "Uninstall extension"
-msgstr "عطّل امتدادات المستخدمين"
+msgstr "إلغاء تثبيت الامتداد"
 
 #: subprojects/extensions-tool/src/main.c:254
-#, fuzzy
 msgid "List extensions"
-msgstr "عطّل امتدادات المستخدمين"
+msgstr "إدراج الامتدادات في قائمة"
 
 #: subprojects/extensions-tool/src/main.c:255
 #: subprojects/extensions-tool/src/main.c:256
-#, fuzzy
 msgid "Show extension info"
-msgstr "لا امتدادات مثبّتة"
+msgstr "عرض معلومات الامتداد"
 
 #: subprojects/extensions-tool/src/main.c:257
-#, fuzzy
 msgid "Open extension preferences"
-msgstr "تفضيلات امتدادات صدفة جنوم"
+msgstr "فتح تفضيلات الامتدادات"
 
 #: subprojects/extensions-tool/src/main.c:258
-#, fuzzy
 msgid "Create extension"
-msgstr "امتداد"
+msgstr "إنشاء امتداد"
 
 #: subprojects/extensions-tool/src/main.c:259
-#, fuzzy
 msgid "Package extension"
-msgstr "امتداد"
+msgstr "امتداد الحزمة"
 
 #: subprojects/extensions-tool/src/main.c:260
-#, fuzzy
 msgid "Install extension bundle"
-msgstr "معرّفات الامتدادات التي ستُفعّل"
+msgstr "تثبيت حزمة امتدادات"
 
 #: subprojects/extensions-tool/src/main.c:262
 #, c-format
 msgid "Use “%s” to get detailed help.\n"
-msgstr ""
+msgstr "استخدم “%s” لتحصل على مساعدة تفصيلية.\n"
 
 #. translators:
 #. * The number of sound outputs on a particular device
@@ -3428,87 +3439,82 @@ msgstr "أصوات النظام"
 
 #: js/ui/appIconBar.js:195
 msgid "Other workspaces"
-msgstr ""
+msgstr "مساحات عمل أخرى"
 
 #: js/ui/appIconBar.js:204
 msgid "Current workspace"
-msgstr ""
+msgstr "مساحة العمل الحالية "
 
 #: js/ui/appIconBar.js:282
 msgid "Pin to Taskbar"
-msgstr ""
+msgstr "قُم بالتثبيت إلى شريط المهام"
 
 #: js/ui/appIconBar.js:286
 msgid "Unpin from Taskbar"
-msgstr ""
+msgstr "إلغاء التثبيت من شريط المهام"
 
 #: js/ui/appIconBar.js:310
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Quit %s"
-msgstr "أنْهِ"
+msgstr "إغلاق %s"
 
 #: js/ui/endlessButton.js:14
 msgid "Endless Button"
-msgstr ""
+msgstr "زر Endless "
 
 #: js/ui/endlessButton.js:67
-#, fuzzy
 msgid "Show Desktop"
-msgstr "أظهر التفاصيل"
+msgstr "عرض سطح المكتب"
 
 #: js/ui/endlessButton.js:69
-#, fuzzy
 msgid "Show Apps"
-msgstr "أظهر التطبيقات"
+msgstr "عرض التطبيقات"
 
 #: js/ui/forceAppExitDialog.js:50
-#, fuzzy
 msgid "Quit applications"
-msgstr "التطبيقات"
+msgstr "الخروج من التطبيقات"
 
 #: js/ui/forceAppExitDialog.js:56
 msgid ""
 "If an application doesn't respond for a while, select its name and click "
 "Quit Application."
 msgstr ""
+"إذا ظل أحد التطبيقات في حالة عدم استجابة لفترة، حدد اسمه وانقر على 'الخروج "
+"من التطبيق'."
 
 #: js/ui/forceAppExitDialog.js:87
-#, fuzzy
 msgid "System Monitor"
-msgstr "أصوات النظام"
+msgstr "شاشة النظام"
 
 #: js/ui/forceAppExitDialog.js:95
-#, fuzzy
 msgid "Quit Application"
-msgstr "التطبيقات"
+msgstr "الخروج من التطبيق"
 
 #: js/ui/hotCorner.js:15
 msgid "Hot Corner"
-msgstr ""
+msgstr "الركن الساخن"
 
 #: js/ui/hotCorner.js:25
 msgid "Enable Hot Corner"
-msgstr ""
+msgstr "تمكين الزاوية الساخنة"
 
 #: js/ui/hotCorner.js:29
-#, fuzzy
 msgid "Disable Hot Corner"
-msgstr "أوقف حتى الغد"
+msgstr "تعطيل الزاوية الساخنة"
 
 #: js/ui/iconGridLayout.js:312
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s has been removed"
-msgstr "أُزيل %s من مفضّلتك."
+msgstr "لقد تمت إزالة %s"
 
 #: js/ui/iconGridLayout.js:540
-#, fuzzy
 msgid "New Folder"
-msgstr "مجلد المنزل"
+msgstr "مجلد جديد"
 
 #: js/ui/internetSearch.js:70
 #, javascript-format
 msgid "Open \"%s\" in browser"
-msgstr ""
+msgstr "افتح \"%s\" في مستعرض الإنترنت"
 
 #. Translators: the first %s is the search engine name, and the second
 #. * is the search string. For instance, 'Search Google for "hello"'.
@@ -3516,17 +3522,16 @@ msgstr ""
 #: js/ui/internetSearch.js:79
 #, javascript-format
 msgid "Search %s for \"%s\""
-msgstr ""
+msgstr "بحث %s من أجل \"%s\" "
 
 #: js/ui/internetSearch.js:81
 #, javascript-format
 msgid "Search the internet for \"%s\""
-msgstr ""
+msgstr "البحث في الإنترنت عن \"%s\" "
 
 #: js/ui/userMenu.js:16
-#, fuzzy
 msgid "Social Accounts"
-msgstr "الحسابات المتصلة"
+msgstr "حسابات اجتماعية"
 
 #: js/ui/userMenu.js:19
 msgid "Settings"
@@ -3534,16 +3539,16 @@ msgstr "الإعدادات"
 
 #: js/ui/userMenu.js:24
 msgid "Give Us Feedback"
-msgstr ""
+msgstr "تعطينا تعليق"
 
 #: src/shell-desktop-dir-info.c:485
 msgid "Unnamed"
-msgstr ""
+msgstr "مجهول"
 
 #: src/shell-desktop-dir-info.c:745
 #, c-format
 msgid "Custom definition for %s"
-msgstr ""
+msgstr "تعريف مخصص ل%s"
 
 #~ msgid "Which keyboard to use"
 #~ msgstr "أي لوحة مفاتيح ترغب باستخدامها"

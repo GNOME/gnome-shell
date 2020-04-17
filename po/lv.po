@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-17 17:09+0100\n"
+"POT-Creation-Date: 2020-04-17 17:11+0100\n"
 "PO-Revision-Date: 2019-08-24 19:21+0200\n"
 "Last-Translator: Rūdolfs Mazurs <rudolfs.mazurs@gmail.com>\n"
 "Language-Team: Latvian <lata-l10n@googlegroups.com>\n"
@@ -646,7 +646,7 @@ msgstr "Atcelt"
 
 #: js/extensionPrefs/js/main.js:149 js/ui/appDisplay.js:2499
 msgid "Remove"
-msgstr ""
+msgstr "Izņemt"
 
 #: js/extensionPrefs/js/main.js:181
 msgid "translator-credits"
@@ -1940,10 +1940,9 @@ msgid "User Menu"
 msgstr ""
 
 #: js/ui/panel.js:833
-#, fuzzy
 msgctxt "Power menu"
 msgid "Power"
-msgstr "Izslēgt"
+msgstr "Barošana"
 
 #: js/ui/panel.js:907
 msgid "Bottom Bar"
@@ -2321,9 +2320,8 @@ msgstr ""
 
 #. The status label
 #: js/ui/status/automaticUpdates.js:198
-#, fuzzy
 msgid "Automatic Updates"
-msgstr "Automātiska atrašanās vieta"
+msgstr "Automātiska atjaunināšana"
 
 #: js/ui/status/automaticUpdates.js:263
 #, fuzzy

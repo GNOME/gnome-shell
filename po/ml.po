@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-17 17:09+0100\n"
+"POT-Creation-Date: 2020-04-17 17:11+0100\n"
 "PO-Revision-Date: 2018-10-26 13:50+0530\n"
 "Last-Translator: Ranjith Siji <ranjith.sajeev@gmail.com>\n"
 "Language-Team: American English <kde-i18n-doc@kde.org>\n"
@@ -19,8 +19,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 2.2\n"
 "X-DamnedLies-Scope: partial\n"
+"X-Generator: Poedit 2.2\n"
 "X-Project-Style: gnome\n"
 
 #: data/50-gnome-shell-system.xml:6
@@ -542,9 +542,8 @@ msgid "Whether to fetch the current location or not"
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:420
-#, fuzzy
 msgid "Location"
-msgstr "ലൊക്കേഷന്‍ ഉപയോഗത്തിലാണ്"
+msgstr "സ്ഥാനം"
 
 #: data/org.gnome.shell.gschema.xml.in:421
 msgid "The location for which to show a forecast"
@@ -673,13 +672,12 @@ msgstr[1] ""
 #: subprojects/extensions-tool/src/command-create.c:211
 #: subprojects/extensions-tool/src/main.c:173
 msgid "Description"
-msgstr ""
+msgstr "വിവരണം"
 
 #: js/extensionPrefs/data/ui/extension-row.ui:123
 #: subprojects/extensions-tool/src/main.c:185
-#, fuzzy
 msgid "Version"
-msgstr "പ്രിന്റ് ചെയ്യുവാന്‍ സാധിയ്ക്കുന്ന പതിപ്പു്"
+msgstr "പതിപ്പ്"
 
 #: js/extensionPrefs/data/ui/extension-row.ui:151
 msgid "Author"
@@ -1932,7 +1930,6 @@ msgid "User Menu"
 msgstr ""
 
 #: js/ui/panel.js:833
-#, fuzzy
 msgctxt "Power menu"
 msgid "Power"
 msgstr "ഓഫ്"
@@ -2230,9 +2227,9 @@ msgstr "രഹസ്യവാക്ക് ഓര്‍ത്തു് വയ്�
 
 #. Translators: %s is the Disks application
 #: js/ui/shellMountOperation.js:391
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Open %s"
-msgstr "%s ഉപയോഗിച്ചു തുറക്കുക"
+msgstr "%s തുറക്കുക"
 
 #: js/ui/shellMountOperation.js:423
 msgid "The PIM must be a number or empty."
@@ -2306,7 +2303,7 @@ msgstr "ഒന്നും ക്രമീകരിച്ചിട്ടില�
 #. The status label
 #: js/ui/status/automaticUpdates.js:198
 msgid "Automatic Updates"
-msgstr ""
+msgstr "സ്വമേധയായുള്ള പുതുക്കലുകൾ"
 
 #: js/ui/status/automaticUpdates.js:263
 msgid "Automatic updates on"
@@ -3009,7 +3006,7 @@ msgstr ""
 #: subprojects/extensions-tool/src/command-create.c:197
 #: subprojects/extensions-tool/src/main.c:170
 msgid "Name"
-msgstr ""
+msgstr "പേര്"
 
 #: subprojects/extensions-tool/src/command-create.c:208
 #, c-format
@@ -3234,7 +3231,7 @@ msgstr ""
 
 #: subprojects/extensions-tool/src/main.c:179
 msgid "URL"
-msgstr ""
+msgstr "യുആർഎൽ"
 
 #: subprojects/extensions-tool/src/main.c:182
 msgid "Original author"
@@ -3260,7 +3257,7 @@ msgstr ""
 #: subprojects/extensions-tool/src/main.c:242
 #: subprojects/extensions-tool/src/main.c:245
 msgid "COMMAND"
-msgstr ""
+msgstr "നിർദ്ദേശം"
 
 #: subprojects/extensions-tool/src/main.c:245
 msgid "[ARGS…]"

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-17 17:09+0100\n"
+"POT-Creation-Date: 2020-04-17 17:11+0100\n"
 "PO-Revision-Date: 2020-03-01 01:16-0800\n"
 "Last-Translator: A S Alam <aalam@users.sf.net>\n"
 "Language-Team: Punjabi <punjabi-users@list.sf.net>\n"
@@ -1876,7 +1876,6 @@ msgid "User Menu"
 msgstr "ਟਰੇ ਮੇਨੂ"
 
 #: js/ui/panel.js:833
-#, fuzzy
 msgctxt "Power menu"
 msgid "Power"
 msgstr "ਪਾਵਰ"
@@ -2245,9 +2244,8 @@ msgstr "ਕੋਈ ਵੀ ਸੈਡਿਊਲ ਨਹੀਂ ਹੈ"
 
 #. The status label
 #: js/ui/status/automaticUpdates.js:198
-#, fuzzy
 msgid "Automatic Updates"
-msgstr "ਆਪਣੇ-ਆਪ ਟਿਕਾਣਾ ਲਵੋ"
+msgstr "ਆਪਣੇ-ਆਪ ਅੱਪਡੇਟ ਕਰੋ"
 
 #: js/ui/status/automaticUpdates.js:263
 #, fuzzy
@@ -3398,7 +3396,6 @@ msgstr ""
 #~ msgid "Add to Favorites"
 #~ msgstr "ਪਸੰਦ 'ਚ ਸ਼ਾਮਲ ਕਰੋ"
 
-#~| msgid "Type to search…"
 #~ msgid "Type to search"
 #~ msgstr "ਲੱਭਣ ਲਈ ਲਿਖੋ"
 
@@ -3492,17 +3489,14 @@ msgstr ""
 #~ msgid "evolution"
 #~ msgstr "evolution"
 
-#~| msgid "Power Off"
 #~ msgctxt "search-result"
 #~ msgid "Power off"
 #~ msgstr "ਬੰਦ ਕਰੋ"
 
-#~| msgid "Log Out"
 #~ msgctxt "search-result"
 #~ msgid "Log out"
 #~ msgstr "ਲਾਗ ਆਉਟ"
 
-#~| msgid "Switch User"
 #~ msgctxt "search-result"
 #~ msgid "Switch user"
 #~ msgstr "ਵਰਤੋਂਕਾਰ ਨੂੰ ਬਦਲੋ"
@@ -3998,11 +3992,9 @@ msgstr ""
 #~ msgid "Visibility"
 #~ msgstr "ਦਿੱਖ"
 
-#~| msgid "Set Up a New Device..."
 #~ msgid "Set Up a New Device…"
 #~ msgstr "…ਨਵਾਂ ਜੰਤਰ ਸੈਟਅੱਪ ਕਰੋ"
 
-#~| msgid "Send Files..."
 #~ msgid "Send Files…"
 #~ msgstr "…ਫਾਇਲਾਂ ਭੇਜੋ"
 
@@ -4206,7 +4198,6 @@ msgstr ""
 #~ msgid "Passphrase"
 #~ msgstr "ਵਾਕ"
 
-#~| msgid "Unknown"
 #~ msgctxt "contact"
 #~ msgid "Unknown"
 #~ msgstr "ਅਣਜਾਣ"
@@ -4289,7 +4280,6 @@ msgstr ""
 #~ msgid "Connectivity lost"
 #~ msgstr "ਕੁਨੈਕਸ਼ਨ ਟੁੱਟ ਗਿਆ"
 
-#~| msgid "You're no longer connected to the network"
 #~ msgid "You are no longer connected to the network"
 #~ msgstr "ਹੁਣ ਤੁਸੀਂ ਨੈੱਟਵਰਕ ਨਾਲ ਕੁਨਕੈਟ ਨਹੀਂ ਰਹੇ ਹੋ"
 
@@ -4502,7 +4492,6 @@ msgstr ""
 #~ msgid "Find"
 #~ msgstr "ਖੋਜ"
 
-#~| msgid "Preferences"
 #~ msgid "System Preferences..."
 #~ msgstr "ਸਿਸਟਮ ਪਸੰਦ..."
 

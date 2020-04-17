@@ -1,12 +1,11 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 #
-# , 2014.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-17 17:09+0100\n"
+"POT-Creation-Date: 2020-04-17 17:11+0100\n"
 "PO-Revision-Date: 2014-12-30 16:45+0000\n"
 "Last-Translator: \n"
 "Language-Team: American English <kde-i18n-doc@kde.org>\n"
@@ -668,7 +667,7 @@ msgstr[1] ""
 #: subprojects/extensions-tool/src/command-create.c:211
 #: subprojects/extensions-tool/src/main.c:173
 msgid "Description"
-msgstr ""
+msgstr "বিবরণ"
 
 #: js/extensionPrefs/data/ui/extension-row.ui:123
 #: subprojects/extensions-tool/src/main.c:185
@@ -817,10 +816,9 @@ msgstr "(অাঙুল চালানো)"
 
 #. Translators: The name of the power-off action in search
 #: js/misc/systemActions.js:89
-#, fuzzy
 msgctxt "search-result"
 msgid "Power Off"
-msgstr "পাওয়ার বন্ধ"
+msgstr "বন্ধ করুন"
 
 #. Translators: A list of keywords that match the power-off action, separated by semicolons
 #: js/misc/systemActions.js:92
@@ -831,7 +829,7 @@ msgstr ""
 #: js/misc/systemActions.js:97
 msgctxt "search-result"
 msgid "Lock Screen"
-msgstr ""
+msgstr "পর্দা লক করুন"
 
 #. Translators: A list of keywords that match the lock screen action, separated by semicolons
 #: js/misc/systemActions.js:100
@@ -840,7 +838,6 @@ msgstr ""
 
 #. Translators: The name of the logout action in search
 #: js/misc/systemActions.js:105
-#, fuzzy
 msgctxt "search-result"
 msgid "Log Out"
 msgstr "লগ অাউট করুন"
@@ -852,7 +849,6 @@ msgstr ""
 
 #. Translators: The name of the suspend action in search
 #: js/misc/systemActions.js:113
-#, fuzzy
 msgctxt "search-result"
 msgid "Suspend"
 msgstr "থামানো"
@@ -865,7 +861,6 @@ msgstr "থামানো"
 
 #. Translators: The name of the switch user action in search
 #: js/misc/systemActions.js:121
-#, fuzzy
 msgctxt "search-result"
 msgid "Switch User"
 msgstr "ব্যবহারকারী পাল্টান"
@@ -1084,9 +1079,8 @@ msgid "Select Audio Device"
 msgstr ""
 
 #: js/ui/audioDeviceSelection.js:54
-#, fuzzy
 msgid "Sound Settings"
-msgstr "সেটিং"
+msgstr "শব্দ সংক্রান্ত বৈশিষ্ট্য"
 
 #: js/ui/audioDeviceSelection.js:64
 msgid "Headphones"
@@ -1697,14 +1691,12 @@ msgid "Allow"
 msgstr ""
 
 #: js/ui/kbdA11yDialog.js:32
-#, fuzzy
 msgid "Slow Keys Turned On"
-msgstr "মন্থর কী"
+msgstr "ধীর-কি (Key) চালু করা হয়েছে"
 
 #: js/ui/kbdA11yDialog.js:33
-#, fuzzy
 msgid "Slow Keys Turned Off"
-msgstr "মন্থর কী"
+msgstr "ধীর-কি (Key) বন্ধ করা হয়েছে"
 
 #: js/ui/kbdA11yDialog.js:34
 msgid ""
@@ -1713,14 +1705,12 @@ msgid ""
 msgstr ""
 
 #: js/ui/kbdA11yDialog.js:41
-#, fuzzy
 msgid "Sticky Keys Turned On"
-msgstr "স্টিকি কী"
+msgstr "স্টিকি-কি চালু রয়েছে"
 
 #: js/ui/kbdA11yDialog.js:42
-#, fuzzy
 msgid "Sticky Keys Turned Off"
-msgstr "স্টিকি কী"
+msgstr "স্টিকি-কি বন্ধ রয়েছে"
 
 #: js/ui/kbdA11yDialog.js:44
 msgid ""
@@ -1737,7 +1727,7 @@ msgstr ""
 
 #: js/ui/kbdA11yDialog.js:55
 msgid "Leave On"
-msgstr ""
+msgstr "চালু রাখা হবে"
 
 #: js/ui/kbdA11yDialog.js:55 js/ui/status/automaticUpdates.js:315
 #: js/ui/status/bluetooth.js:138 js/ui/status/network.js:1288
@@ -1754,7 +1744,7 @@ msgstr "বন্ধ করুন"
 
 #: js/ui/kbdA11yDialog.js:63
 msgid "Leave Off"
-msgstr ""
+msgstr "বন্ধ রাখা হবে"
 
 #: js/ui/keyboard.js:207
 #, fuzzy
@@ -1917,7 +1907,6 @@ msgid "Activities"
 msgstr "ক্রিয়াকলাপ"
 
 #: js/ui/panel.js:716
-#, fuzzy
 msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "সিস্টেম"
@@ -1929,10 +1918,9 @@ msgid "User Menu"
 msgstr "ট্রে মেনু"
 
 #: js/ui/panel.js:833
-#, fuzzy
 msgctxt "Power menu"
 msgid "Power"
-msgstr "পাওয়ার বন্ধ"
+msgstr "পাওয়ার"
 
 #: js/ui/panel.js:907
 msgid "Bottom Bar"
@@ -2698,15 +2686,15 @@ msgstr "নির্ধারণ করা হচ্ছে…"
 
 #. Translators: this is <hours>:<minutes> Remaining (<percentage>)
 #: js/ui/status/power.js:86
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%d∶%02d Remaining (%d %%)"
-msgstr "%d∶%02d বাকি অাছে (%d%%)"
+msgstr "%d∶%02d বাকি অাছে (%d %%)"
 
 #. Translators: this is <hours>:<minutes> Until Full (<percentage>)
 #: js/ui/status/power.js:91
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%d∶%02d Until Full (%d %%)"
-msgstr "%d∶%02d ভর্তি পর্যন্ত (%d%%)"
+msgstr "%d∶%02d ভর্তি পর্যন্ত (%d %%)"
 
 #: js/ui/status/power.js:140 js/ui/status/power.js:142
 #, javascript-format
@@ -3016,7 +3004,7 @@ msgstr ""
 #: subprojects/extensions-tool/src/command-create.c:197
 #: subprojects/extensions-tool/src/main.c:170
 msgid "Name"
-msgstr ""
+msgstr "নাম"
 
 #: subprojects/extensions-tool/src/command-create.c:208
 #, c-format
@@ -3232,7 +3220,7 @@ msgstr ""
 
 #: subprojects/extensions-tool/src/main.c:179
 msgid "URL"
-msgstr ""
+msgstr "URL"
 
 #: subprojects/extensions-tool/src/main.c:182
 msgid "Original author"
@@ -3258,7 +3246,7 @@ msgstr ""
 #: subprojects/extensions-tool/src/main.c:242
 #: subprojects/extensions-tool/src/main.c:245
 msgid "COMMAND"
-msgstr ""
+msgstr "COMMAND"
 
 #: subprojects/extensions-tool/src/main.c:245
 msgid "[ARGS…]"
@@ -3362,9 +3350,9 @@ msgid "Unpin from Taskbar"
 msgstr ""
 
 #: js/ui/appIconBar.js:310
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Quit %s"
-msgstr "প্রস্থান"
+msgstr "%s থেকে প্রস্থান করুন"
 
 #: js/ui/endlessButton.js:14
 msgid "Endless Button"

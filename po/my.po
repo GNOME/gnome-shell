@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-17 17:09+0100\n"
+"POT-Creation-Date: 2020-04-17 17:11+0100\n"
 "PO-Revision-Date: 2017-06-18 05:51+0000\n"
 "Last-Translator: Roddy Shuler <roddy@endlessm.com>\n"
 "Language-Team: Burmese (http://www.transifex.com/endless-mobile-inc/gnome-"
@@ -483,7 +483,7 @@ msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:420
 msgid "Location"
-msgstr ""
+msgstr "တည်နေရာ"
 
 #: data/org.gnome.shell.gschema.xml.in:421
 msgid "The location for which to show a forecast"
@@ -606,7 +606,7 @@ msgstr[0] ""
 #: subprojects/extensions-tool/src/command-create.c:211
 #: subprojects/extensions-tool/src/main.c:173
 msgid "Description"
-msgstr ""
+msgstr "ဖော်ပြချက်"
 
 #: js/extensionPrefs/data/ui/extension-row.ui:123
 #: subprojects/extensions-tool/src/main.c:185
@@ -2233,7 +2233,7 @@ msgstr ""
 
 #: js/ui/status/keyboard.js:826
 msgid "Keyboard"
-msgstr ""
+msgstr "ကီးဘုတ်"
 
 #: js/ui/status/keyboard.js:848
 msgid "Show Keyboard Layout"
@@ -2840,7 +2840,7 @@ msgstr ""
 #: subprojects/extensions-tool/src/command-create.c:197
 #: subprojects/extensions-tool/src/main.c:170
 msgid "Name"
-msgstr ""
+msgstr "အမည်"
 
 #: subprojects/extensions-tool/src/command-create.c:208
 #, c-format

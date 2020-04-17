@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-17 17:09+0100\n"
+"POT-Creation-Date: 2020-04-17 17:11+0100\n"
 "PO-Revision-Date: 2019-03-03 13:47+0700\n"
 "Last-Translator: Trần Ngọc Quân <vnwildman@gmail.com>\n"
 "Language-Team: Vietnamese <gnome-vi-list@gnome.org>\n"
@@ -216,17 +216,19 @@ msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:126
 msgid "Enables the hot corner for the window picker"
-msgstr ""
+msgstr "Bật góc nóng cho bộ chọn cửa sổ"
 
 #: data/org.gnome.shell.gschema.xml.in:129
 msgid ""
 "By default, the hot corner for the window picker is enabled. Set false to "
 "disable the hot corner."
 msgstr ""
+"Theo mặc định, góc nóng cho trình chọn cửa sổ được bật. Thiết lập là sai để "
+"tắt góc nóng."
 
 #: data/org.gnome.shell.gschema.xml.in:136
 msgid "Set the left/right position of the hot corner for the window picker"
-msgstr ""
+msgstr "Đặt vị trí bên trái/bên phải của góc nóng cho trình chọn cửa sổ"
 
 #: data/org.gnome.shell.gschema.xml.in:139
 msgid ""
@@ -234,20 +236,25 @@ msgid ""
 "the hot corner to a left corner. The position is not affected by the RTL vs. "
 "LTR text direction."
 msgstr ""
+"Vị trí mặc định của góc nóng là ở góc bên phải. Đặt là sai để di chuyển góc "
+"nóng đến góc bên trái. Vị trí này không bị ảnh hưởng bởi hướng văn bản RTL "
+"và LTR."
 
 #: data/org.gnome.shell.gschema.xml.in:147
 msgid "Set the top/bottom position of the hot corner for the window picker"
-msgstr ""
+msgstr "Đặt vị trí trên cùng/dưới cùng của góc nóng cho trình chọn cửa sổ"
 
 #: data/org.gnome.shell.gschema.xml.in:150
 msgid ""
 "Default position of the hot corner is in a bottom corner. Set false to move "
 "the hot corner to a top corner."
 msgstr ""
+"Vị trí mặc định của góc nóng là ở góc phía dưới. Đặt là sai để di chuyển góc "
+"nóng đến góc bên trên. "
 
 #: data/org.gnome.shell.gschema.xml.in:157
 msgid "Set the size of the hot corner target"
-msgstr ""
+msgstr "Đặt kích thước của đích góc nóng"
 
 #: data/org.gnome.shell.gschema.xml.in:160
 msgid ""
@@ -255,10 +262,13 @@ msgid ""
 "Default is for a single pixel in the very corner. For some virtual machines, "
 "this value may need to be set larger than the default."
 msgstr ""
+"Số điểm ảnh trong một chiều của đích vuông cho góc nóng.  Mặc định là cho "
+"một điểm ảnh duy nhất ở chính góc đó. Đối với một số máy ảo, giá trị này có "
+"thể cần được đặt lớn hơn giá trị mặc định."
 
 #: data/org.gnome.shell.gschema.xml.in:170
 msgid "Prevent apps from being automatically maximized on launch"
-msgstr ""
+msgstr "Ngăn không cho các ứng dụng tự động mở rộng  tối đa khi khởi chạy"
 
 #: data/org.gnome.shell.gschema.xml.in:173
 msgid ""
@@ -266,10 +276,13 @@ msgid ""
 "screens, prevents applications from being forced to open maximized, and does "
 "not automatically switch to the app selector when a window is minimized."
 msgstr ""
+"Giúp cho việc quản lý cửa sổ giống như phần mềm Gnome tiêu chuẩn. Ẩn các màn "
+"hình có các ứng dụng xếp lộn xộn, ngăn không cho ứng dụng bị mở rộng tối đa, "
+"và không tự động chuyển đến bộ chọn ứng dụng khi một cửa sổ đang thu nhỏ. "
 
 #: data/org.gnome.shell.gschema.xml.in:182
 msgid "Whether password reset is allowed"
-msgstr ""
+msgstr "Có cho phép cài lại mật khẩu không"
 
 #: data/org.gnome.shell.gschema.xml.in:183
 msgid ""
@@ -279,20 +292,28 @@ msgid ""
 "button, respectively. Note that it only makes sense to set this key for the "
 "Debian-gdm user; changing it for your own user account will have no effect."
 msgstr ""
+"Phím này điều khiển sự hiển thị/ẩn nút \"Quên Mật khẩu?\" trên màn hình đăng "
+"nhập. Khi ở chế độ \"mặc định\", GNOM Shell sẽ sử dụng cài đặt mặc định của "
+"nhà cung cấp. Có thể sử dụng chế độ \"bật\" và \"tắt\" để dứt khoát bật hoặc "
+"tắt nút cài tại. Lưu ý rằng phím này chỉ có hiệu lực khi được cài đặt cho "
+"người dùng Debian-gdm và không có hiệu lực khi thay đổi phím cho tài khoản "
+"người dùng riêng của bạn."
 
 #: data/org.gnome.shell.gschema.xml.in:194
 msgid "Layout of application launcher icons in the grid"
-msgstr ""
+msgstr "Bố cục các biểu tượng trình khởi chạy ứng dụng trong lưới"
 
 #: data/org.gnome.shell.gschema.xml.in:195
 msgid ""
 "This key specifies the exact order of the icons shown in the applications "
 "launcher view."
 msgstr ""
+"Phím này chỉ rõ thứ tự chính xác của các biểu tượng hiển thị trong khung xem "
+"trình khởi chạy ứng dụng."
 
 #: data/org.gnome.shell.gschema.xml.in:201
 msgid "Languages for which the discovery feed feature is enabled."
-msgstr ""
+msgstr "Những ngôn ngữ khả dụng cho tính năng nguồn cấp dữ liệu khám phá."
 
 #: data/org.gnome.shell.gschema.xml.in:204
 msgid ""
@@ -300,6 +321,9 @@ msgid ""
 "will be enabled. You will need to restart the shell for changes to this "
 "setting to take effect."
 msgstr ""
+"Nếu hệ thống ngôn ngữ khớp với bất kỳ ngôn ngữ nào trong số những ngôn ngữ "
+"này, thì nguồn cấp dữ liệu khám phá sẽ được bật. Bạn sẽ phải khởi động lại "
+"trình bao để những thay đổi trong cài đặt này có hiệu lực."
 
 #: data/org.gnome.shell.gschema.xml.in:215
 msgid "Keybinding to open the application menu"
@@ -379,108 +403,116 @@ msgid "Switch to application 9"
 msgstr "Chuyển đến ứng dụng 9"
 
 #: data/org.gnome.shell.gschema.xml.in:290
-#, fuzzy
 msgid "Keybinding that shows the force app exit dialog"
-msgstr "Phím mở trình đơn ứng dụng"
+msgstr "Tổ hợp phím để hiển thị hộp thoại thoát khỏi ứng dụng"
 
 #: data/org.gnome.shell.gschema.xml.in:295
-#, fuzzy
 msgid "Keybinding to activate the first app in the icon bar."
-msgstr "Phím mở trình đơn ứng dụng."
+msgstr "Tổ hợp phím để kích hoạt ứng dụng thứ nhất trên thanh biểu tượng."
 
 #: data/org.gnome.shell.gschema.xml.in:296
 msgid ""
 "Keybinding to open the first app in the icon bar, or switch to the app if "
 "already open."
 msgstr ""
+"Tổ hợp phím để mở ứng dụng thứ nhất trên thanh biểu tượng, hoặc chuyển đến "
+"ứng dụng này nếu nó đang mở."
 
 #: data/org.gnome.shell.gschema.xml.in:302
-#, fuzzy
 msgid "Keybinding to activate the second app in the icon bar."
-msgstr "Phím mở trình đơn ứng dụng."
+msgstr "Tổ hợp phím để kích hoạt ứng dụng thứ hai trên thanh biểu tượng."
 
 #: data/org.gnome.shell.gschema.xml.in:303
 msgid ""
 "Keybinding to open the second app in the icon bar, or switch to the app if "
 "already open."
 msgstr ""
+"Tổ hợp phím để kích hoạt ứng dụng thứ hai trên thanh biểu tượng, hoặc chuyển "
+"đến ứng dụng này nếu nó đang mở."
 
 #: data/org.gnome.shell.gschema.xml.in:309
-#, fuzzy
 msgid "Keybinding to activate the third app in the icon bar."
-msgstr "Phím mở trình đơn ứng dụng."
+msgstr "Tổ hợp phím để kích hoạt ứng dụng thứ ba trên thanh biểu tượng."
 
 #: data/org.gnome.shell.gschema.xml.in:310
 msgid ""
 "Keybinding to open the third app in the icon bar, or switch to the app if "
 "already open."
 msgstr ""
+"Tổ hợp phím để mở ứng dụng thứ ba trên thanh biểu tượng, hoặc chuyển đến ứng "
+"dụng này nếu nó đang mở."
 
 #: data/org.gnome.shell.gschema.xml.in:316
-#, fuzzy
 msgid "Keybinding to activate the fourth app in the icon bar."
-msgstr "Phím mở trình đơn ứng dụng."
+msgstr "Tổ hợp phím để kích hoạt ứng dụng thứ tư trên thanh biểu tượng."
 
 #: data/org.gnome.shell.gschema.xml.in:317
 msgid ""
 "Keybinding to open the fourth app in the icon bar, or switch to the app if "
 "already open."
 msgstr ""
+"Tổ hợp phím để mở ứng dụng thứ tư trên thanh biểu tượng, hoặc chuyển đến ứng "
+"dụng này nếu nó đang mở."
 
 #: data/org.gnome.shell.gschema.xml.in:323
-#, fuzzy
 msgid "Keybinding to activate the fifth app in the icon bar."
-msgstr "Phím mở trình đơn ứng dụng."
+msgstr "Tổ hợp phím để kích hoạt ứng dụng thứ năm trên thanh biểu tượng."
 
 #: data/org.gnome.shell.gschema.xml.in:324
 msgid ""
 "Keybinding to open the fifth app in the icon bar, or switch to the app if "
 "already open."
 msgstr ""
+"Tổ hợp phím để kích hoạt ứng dụng thứ năm trên thanh biểu tượng, hoặc chuyển "
+"đến ứng dụng này nếu nó đang mở."
 
 #: data/org.gnome.shell.gschema.xml.in:330
-#, fuzzy
 msgid "Keybinding to activate the sixth app in the icon bar."
-msgstr "Phím mở trình đơn ứng dụng."
+msgstr "Tổ hợp phím để kích hoạt ứng dụng thứ sáu trên thanh biểu tượng."
 
 #: data/org.gnome.shell.gschema.xml.in:331
 msgid ""
 "Keybinding to open the sixth app in the icon bar, or switch to the app if "
 "already open."
 msgstr ""
+"Tổ hợp phím để mở ứng dụng thứ sáu trên thanh biểu tượng, hoặc chuyển đến "
+"ứng dụng này nếu nó đang mở. "
 
 #: data/org.gnome.shell.gschema.xml.in:337
-#, fuzzy
 msgid "Keybinding to activate the seventh app in the icon bar."
-msgstr "Phím mở trình đơn ứng dụng."
+msgstr "Tổ hợp phím để kích hoạt ứng dụng thứ bảy trên thanh biểu tượng."
 
 #: data/org.gnome.shell.gschema.xml.in:338
 msgid ""
 "Keybinding to open the seventh app in the icon bar, or switch to the app if "
 "already open."
 msgstr ""
+"Tổ hợp phím để mở ứng dụng thứ bảy trên thanh biểu tượng, hoặc chuyển đến "
+"ứng dụng này nếu nó đang mở."
 
 #: data/org.gnome.shell.gschema.xml.in:344
-#, fuzzy
 msgid "Keybinding to activate the eighth app in the icon bar."
-msgstr "Phím mở trình đơn ứng dụng."
+msgstr "Tổ hợp phím để kích hoạt ứng dụng thứ tám trên thanh biểu tượng."
 
 #: data/org.gnome.shell.gschema.xml.in:345
 msgid ""
 "Keybinding to open the eighth app in the icon bar, or switch to the app if "
 "already open."
 msgstr ""
+"Tổ hợp phím để mở ứng dụng thứ tám trên thanh biểu tượng, hoặc chuyển đến "
+"ứng dụng này nếu nó đang mở."
 
 #: data/org.gnome.shell.gschema.xml.in:351
-#, fuzzy
 msgid "Keybinding to activate the last app in the icon bar."
-msgstr "Phím mở trình đơn ứng dụng."
+msgstr "Tổ hợp phím để kích hoạt ứng dụng cuối cùng trên thanh biểu tượng."
 
 #: data/org.gnome.shell.gschema.xml.in:352
 msgid ""
 "Keybinding to open the last app in the icon bar, or switch to the app if "
 "already open."
 msgstr ""
+"Tổ hợp phím để mở ứng dụng cuối cùng trên thanh biểu tượng, hoặc chuyển đến "
+"ứng dụng này nếu nó đang mở"
 
 #: data/org.gnome.shell.gschema.xml.in:363
 #: data/org.gnome.shell.gschema.xml.in:390
@@ -536,9 +568,8 @@ msgid "Whether to fetch the current location or not"
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:420
-#, fuzzy
 msgid "Location"
-msgstr "Vị trí đang dùng"
+msgstr "Địa điểm"
 
 #: data/org.gnome.shell.gschema.xml.in:421
 msgid "The location for which to show a forecast"
@@ -651,7 +682,7 @@ msgstr "Thôi"
 
 #: js/extensionPrefs/js/main.js:149 js/ui/appDisplay.js:2499
 msgid "Remove"
-msgstr "Xóa bỏ"
+msgstr "Xóa"
 
 #: js/extensionPrefs/js/main.js:181
 msgid "translator-credits"
@@ -667,13 +698,12 @@ msgstr[0] ""
 #: subprojects/extensions-tool/src/command-create.c:211
 #: subprojects/extensions-tool/src/main.c:173
 msgid "Description"
-msgstr ""
+msgstr "Mô tả"
 
 #: js/extensionPrefs/data/ui/extension-row.ui:123
 #: subprojects/extensions-tool/src/main.c:185
-#, fuzzy
 msgid "Version"
-msgstr "Phiên làm việc"
+msgstr "Phiên bản"
 
 #: js/extensionPrefs/data/ui/extension-row.ui:151
 msgid "Author"
@@ -690,7 +720,7 @@ msgstr "Xóa bỏ"
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:8 js/ui/userMenu.js:27
 msgid "Help"
-msgstr ""
+msgstr "Trợ giúp"
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:12
 #, fuzzy
@@ -743,14 +773,12 @@ msgid "Log Out…"
 msgstr "Đăng xuất"
 
 #: js/gdm/authPrompt.js:131
-#, fuzzy
 msgid "Show password hint"
-msgstr "Hiện mật khẩu"
+msgstr "Hiển thị gợi ý mật khẩu"
 
 #: js/gdm/authPrompt.js:148
-#, fuzzy
 msgid "Forgot password?"
-msgstr "Hiện mật khẩu"
+msgstr "Quên mật khẩu?"
 
 #. Cisco LEAP
 #: js/gdm/authPrompt.js:303 js/ui/components/networkAgent.js:363
@@ -776,9 +804,8 @@ msgid ""
 msgstr ""
 
 #: js/gdm/authPrompt.js:762
-#, fuzzy
 msgid "Your unlock code was incorrect. Please try again."
-msgstr "Rất tiếc, không được. Vui lòng thử lại."
+msgstr "Mã mở khóa của bạn không chính xác. Vui lòng thử lại."
 
 #: js/gdm/loginDialog.js:317
 msgid "Choose Session"
@@ -1037,7 +1064,7 @@ msgstr "%-d %B %Y, %l∶%M %p"
 #.
 #: js/misc/util.js:573
 msgid "Google"
-msgstr ""
+msgstr "Google"
 
 #. TRANSLATORS: this is the title of the wifi captive portal login window
 #: js/portalHelper/main.js:41
@@ -1078,9 +1105,8 @@ msgstr "Launch sử dụng Card đồ họa riêng biệt"
 
 #. Add the "Remove from desktop" menu item at the end.
 #: js/ui/appDisplay.js:2443
-#, fuzzy
 msgid "Remove from desktop"
-msgstr "Bỏ khỏi danh sách ưa thích"
+msgstr "Xóa khỏi màn hình"
 
 #: js/ui/audioDeviceSelection.js:41
 msgid "Select Audio Device"
@@ -1108,11 +1134,11 @@ msgstr "Đổi ảnh nền…"
 
 #: js/ui/backgroundMenu.js:18
 msgid "Add App"
-msgstr ""
+msgstr "Thêm Ứng dụng"
 
 #: js/ui/backgroundMenu.js:24
 msgid "Add Website"
-msgstr ""
+msgstr "Thêm Trang web"
 
 #. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday).
 #: js/ui/calendar.js:41
@@ -1301,19 +1327,19 @@ msgstr "Kết nối"
 
 #: js/ui/components/networkAgent.js:141
 msgid "Limited Data"
-msgstr ""
+msgstr "Dữ liệu Giới hạn"
 
 #: js/ui/components/networkAgent.js:151
 msgid "Unlimited Data"
-msgstr ""
+msgstr "Dữ liệu Không giới hạn"
 
 #: js/ui/components/networkAgent.js:163 js/ui/components/networkAgent.js:198
 msgid "Enable if your connection has limits on how much you can download."
-msgstr ""
+msgstr "Bật nếu kết nối của bạn giới hạn dung lượng tải về."
 
 #: js/ui/components/networkAgent.js:200
 msgid "This connection doesn't have limits on how much you can download."
-msgstr ""
+msgstr "Kết nối này không giới hạn dung lượng tải về của bạn."
 
 #: js/ui/components/networkAgent.js:369
 #, fuzzy
@@ -1338,7 +1364,7 @@ msgstr "Dịch vụ: "
 #: js/ui/components/networkAgent.js:471
 #, javascript-format
 msgid "Enter the Wi-Fi password for “%s”"
-msgstr ""
+msgstr "Nhập mật khẩu Wi-Fi cho \"%s\""
 
 #: js/ui/components/networkAgent.js:476 js/ui/components/networkAgent.js:851
 msgid "Wired 802.1X authentication"
@@ -1845,7 +1871,7 @@ msgstr "Hoàn lại"
 
 #: js/ui/overview.js:113
 msgid "No apps are open"
-msgstr ""
+msgstr "Không có ứng dụng nào đang mở"
 
 #. Translators: This is the main view to select
 #. activities. See also note for "Activities" string.
@@ -1917,20 +1943,18 @@ msgid "System"
 msgstr "Hệ thống"
 
 #: js/ui/panel.js:801
-#, fuzzy
 msgctxt "User menu"
 msgid "User Menu"
-msgstr "Trình đơn khay"
+msgstr "Menu Người dùng"
 
 #: js/ui/panel.js:833
-#, fuzzy
 msgctxt "Power menu"
 msgid "Power"
 msgstr "Nguồn"
 
 #: js/ui/panel.js:907
 msgid "Bottom Bar"
-msgstr ""
+msgstr "Thanh Công cụ Dưới"
 
 #: js/ui/paygUnlockDialog.js:93
 msgid "Your Pay As You Go usage credit has expired."
@@ -1938,11 +1962,11 @@ msgstr ""
 
 #: js/ui/paygUnlockDialog.js:116
 msgid "Enter a new code to unlock your computer:"
-msgstr ""
+msgstr "Nhập vào một mã mới để mở khóa máy tính của bạn:"
 
 #: js/ui/paygUnlockDialog.js:139
 msgid "Don’t have an unlock code? That’s OK!"
-msgstr ""
+msgstr "Bạn không có mã mở khóa? Không sao!"
 
 #. The second possible override is to use the template text below
 #. with the contact's name and phone number, if BOTH are present.
@@ -1952,11 +1976,13 @@ msgid ""
 "Talk to your sales representative to purchase a new code. Call or text %s at "
 "%s"
 msgstr ""
+"Nói chuyện với đại diện bán hàng của bạn để mua mã mới. Gọi hoặc nhắn tin %s "
+"số %s"
 
 #. No overrides present, default to fallback text.
 #: js/ui/paygUnlockDialog.js:164
 msgid "Talk to your sales representative to purchase a new code."
-msgstr ""
+msgstr "Nói chuyện với đại diện bán hàng của bạn để mua mã mới."
 
 #: js/ui/paygUnlockDialog.js:188
 #, javascript-format
@@ -1964,9 +1990,8 @@ msgid "Pay As You Go Account ID: %s"
 msgstr ""
 
 #: js/ui/paygUnlockDialog.js:198
-#, fuzzy
 msgid "Unlock Machine"
-msgstr "Bỏ khóa cửa sổ"
+msgstr "Mở khóa Máy"
 
 #: js/ui/paygUnlockDialog.js:287 js/ui/shellMountOperation.js:380
 msgid "Unlock"
@@ -1994,32 +2019,31 @@ msgid "Enter an unlock code to extend the time before your credit has expired."
 msgstr ""
 
 #: js/ui/payg.js:41
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Subscription runs out in %s."
-msgstr "Yêu cầu đăng ký"
+msgstr "Gói thuê bao sẽ hết hạn trong %s."
 
 #: js/ui/payg.js:236
 #, javascript-format
 msgid "Too many attempts. Try again in %s minute."
 msgid_plural "Too many attempts. Try again in %s minutes."
-msgstr[0] ""
+msgstr[0] "Quá nhiều lần thử. Thử lại sau %s phút."
 
 #: js/ui/payg.js:240
 msgid "Too many attempts. Try again in a few seconds."
-msgstr ""
+msgstr "Quá nhiều lần thử. Thử lại sau vài giây."
 
 #: js/ui/payg.js:261
-#, fuzzy
 msgid "Invalid code. Please try again."
-msgstr "Rất tiếc, không được. Vui lòng thử lại."
+msgstr "Mã không hợp lệ. Vui lòng thử lại."
 
 #: js/ui/payg.js:263
 msgid "Code already used. Please enter a new code."
-msgstr ""
+msgstr "Mã đã được dùng. Xin vui lòng nhập vào một mã khác."
 
 #: js/ui/payg.js:265
 msgid "Time exceeded while verifying the code"
-msgstr ""
+msgstr "Quá thời gian khi xác minh mã"
 
 #: js/ui/payg.js:267
 #, javascript-format
@@ -2029,9 +2053,8 @@ msgstr ""
 #. We don't consider any other error here (and we don't consider DISABLED explicitly,
 #. since that should not happen), but still we need to show something to the user.
 #: js/ui/payg.js:271
-#, fuzzy
 msgid "Unknown error"
-msgstr "Chưa biết"
+msgstr "Lỗi không xác định"
 
 #: js/ui/payg.js:452
 msgid "Apply Code"
@@ -2041,25 +2064,25 @@ msgstr ""
 #, javascript-format
 msgid "%s second"
 msgid_plural "%s seconds"
-msgstr[0] ""
+msgstr[0] "%s giây"
 
 #: js/ui/payg.js:610 js/ui/payg.js:620
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s minute"
 msgid_plural "%s minutes"
-msgstr[0] "phút"
+msgstr[0] "%s phút"
 
 #: js/ui/payg.js:614 js/ui/payg.js:631
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s hour"
 msgid_plural "%s hours"
-msgstr[0] "giờ"
+msgstr[0] "%s giờ"
 
 #: js/ui/payg.js:625
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s day"
 msgid_plural "%s days"
-msgstr[0] "%s cả ngày."
+msgstr[0] "%s ngày"
 
 #: js/ui/payg.js:641
 #, fuzzy, javascript-format
@@ -2163,18 +2186,17 @@ msgid "Hide Text"
 msgstr "Ẩn chữ"
 
 #: js/ui/shellEntry.js:194
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Search %s and more…"
-msgstr "Đang tìm…"
+msgstr "Tìm kiếm %s và hơn thế nữa…"
 
 #: js/ui/shellEntry.js:196
 msgid "Search the internet and more…"
-msgstr ""
+msgstr "Tìm kiếm trên internet và hơn thế nữa…"
 
 #: js/ui/shellEntry.js:198
-#, fuzzy
 msgid "Search…"
-msgstr "Đang tìm…"
+msgstr "Tìm..."
 
 #: js/ui/shellEntry.js:490
 msgid "Caps lock is on."
@@ -2211,9 +2233,9 @@ msgstr "Nhớ mật khẩu"
 
 #. Translators: %s is the Disks application
 #: js/ui/shellMountOperation.js:391
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Open %s"
-msgstr "Mở bằng %s"
+msgstr "Mở %s"
 
 #: js/ui/shellMountOperation.js:423
 msgid "The PIM must be a number or empty."
@@ -2277,46 +2299,48 @@ msgstr "Chữ lớn"
 
 #: js/ui/status/automaticUpdates.js:80
 msgid "Updates Queue"
-msgstr ""
+msgstr "Các cập nhật đang chờ"
 
 #: js/ui/status/automaticUpdates.js:105
-#, fuzzy
 msgid "Set a Schedule"
-msgstr "Không có lịch hẹn"
+msgstr "Lên lịch"
 
 #. The status label
 #: js/ui/status/automaticUpdates.js:198
 msgid "Automatic Updates"
-msgstr ""
+msgstr "Các cập nhật tự động"
 
 #: js/ui/status/automaticUpdates.js:263
 msgid "Automatic updates on"
-msgstr ""
+msgstr "Tự động cập nhật ở trạng thái mở"
 
 #: js/ui/status/automaticUpdates.js:264
 msgid ""
 "You have Unlimited Data so automatic updates have been turned on for this "
 "connection."
 msgstr ""
+"Bạn có Gói dữ liệu Không giới hạn nên tự động cập nhật đã được bật cho kết "
+"nối này."
 
 #: js/ui/status/automaticUpdates.js:267
 msgid "Automatic updates are turned off to save your data"
-msgstr ""
+msgstr "Tự động cập nhật được tắt để lưu dữ liệu của bạn"
 
 #: js/ui/status/automaticUpdates.js:268
 msgid ""
 "You will need to choose which Endless updates to apply when on this "
 "connection."
 msgstr ""
+"Bạn sẽ cần phải chọn bản cập nhật Endless nào để áp dụng khi dùng kết nối "
+"này."
 
 #: js/ui/status/automaticUpdates.js:286 js/ui/windowMenu.js:167
 msgid "Close"
 msgstr "Đóng"
 
 #: js/ui/status/automaticUpdates.js:290
-#, fuzzy
 msgid "Change Settings…"
-msgstr "Cài đặt chuột"
+msgstr "Thay đổi Cài đặt..."
 
 #: js/ui/status/bluetooth.js:40
 msgid "Bluetooth"
@@ -2334,14 +2358,12 @@ msgid_plural "%d Connected"
 msgstr[0] "%d Đã kết nối"
 
 #: js/ui/status/bluetooth.js:134
-#, fuzzy
 msgid "Bluetooth Off"
-msgstr "Bluetooth"
+msgstr "Bluetooth đang tắt"
 
 #: js/ui/status/bluetooth.js:136
-#, fuzzy
 msgid "Bluetooth On"
-msgstr "Bluetooth"
+msgstr "Bluetooth Bật"
 
 #: js/ui/status/brightness.js:39
 msgid "Brightness"
@@ -2349,7 +2371,7 @@ msgstr "Độ sáng"
 
 #: js/ui/status/dwellClick.js:13
 msgid "Single Click"
-msgstr ""
+msgstr "Nhấp Đơn"
 
 #: js/ui/status/dwellClick.js:18
 msgid "Double Click"
@@ -2892,7 +2914,8 @@ msgstr "Di chuyển thanh tiêu đề trên màn hình"
 msgid "Always on Top"
 msgstr "Luôn ở trên cùng"
 
-# Không gian làm việc nào đang được kích hoạt thì ở trên đó. Khi chuyển không gian làm việc, nó sẽ chuyển theo.
+# Không gian làm việc nào đang được kích hoạt thì ở trên đó. Khi chuyển không
+# gian làm việc, nó sẽ chuyển theo.
 #: js/ui/windowMenu.js:82
 msgid "Always on Visible Workspace"
 msgstr "Luôn trên không gian làm việc nhìn thấy"
@@ -2988,7 +3011,7 @@ msgstr ""
 #: subprojects/extensions-tool/src/command-create.c:197
 #: subprojects/extensions-tool/src/main.c:170
 msgid "Name"
-msgstr ""
+msgstr "Tên"
 
 #: subprojects/extensions-tool/src/command-create.c:208
 #, c-format
@@ -3213,7 +3236,7 @@ msgstr ""
 
 #: subprojects/extensions-tool/src/main.c:179
 msgid "URL"
-msgstr ""
+msgstr "URL"
 
 #: subprojects/extensions-tool/src/main.c:182
 msgid "Original author"
@@ -3239,7 +3262,7 @@ msgstr ""
 #: subprojects/extensions-tool/src/main.c:242
 #: subprojects/extensions-tool/src/main.c:245
 msgid "COMMAND"
-msgstr ""
+msgstr "LỆNH"
 
 #: subprojects/extensions-tool/src/main.c:245
 msgid "[ARGS…]"
@@ -3332,73 +3355,68 @@ msgstr "Âm thanh hệ thống"
 
 #: js/ui/appIconBar.js:195
 msgid "Other workspaces"
-msgstr ""
+msgstr "Các vùng làm việc khác"
 
 #: js/ui/appIconBar.js:204
-#, fuzzy
 msgid "Current workspace"
-msgstr "Giới hạn bộ chuyển đổi cho không gian làm việc hiện tại."
+msgstr "Vùng làm việc hiện tại"
 
 #: js/ui/appIconBar.js:282
 msgid "Pin to Taskbar"
-msgstr ""
+msgstr "Ghim vào Thanh tác vụ"
 
 #: js/ui/appIconBar.js:286
 msgid "Unpin from Taskbar"
-msgstr ""
+msgstr "Bỏ ghim khỏi Thanh tác vụ"
 
 #: js/ui/appIconBar.js:310
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Quit %s"
-msgstr "Thoát"
+msgstr "Thoát %s"
 
 #: js/ui/endlessButton.js:14
 msgid "Endless Button"
-msgstr ""
+msgstr "Nút Endless"
 
 #: js/ui/endlessButton.js:67
-#, fuzzy
 msgid "Show Desktop"
-msgstr "Hiện chi tiết"
+msgstr "Hiển thị Màn hình nền"
 
 #: js/ui/endlessButton.js:69
-#, fuzzy
 msgid "Show Apps"
-msgstr "Hiện ứng dụng"
+msgstr "Hiển thị Ứng dụng"
 
 #: js/ui/forceAppExitDialog.js:50
-#, fuzzy
 msgid "Quit applications"
-msgstr "Ứng dụng"
+msgstr "Thoát khỏi ứng dụng"
 
 #: js/ui/forceAppExitDialog.js:56
 msgid ""
 "If an application doesn't respond for a while, select its name and click "
 "Quit Application."
 msgstr ""
+"Nếu ứng dụng không phản hồi trong một thời gian, hãy chọn tên ứng dụng và "
+"nhấn Thoát Ứng dụng."
 
 #: js/ui/forceAppExitDialog.js:87
-#, fuzzy
 msgid "System Monitor"
-msgstr "Âm thanh hệ thống"
+msgstr "Màn hình Hệ thống"
 
 #: js/ui/forceAppExitDialog.js:95
-#, fuzzy
 msgid "Quit Application"
-msgstr "Ứng dụng"
+msgstr "Thoát Ứng dụng"
 
 #: js/ui/hotCorner.js:15
 msgid "Hot Corner"
-msgstr ""
+msgstr "Góc Nóng"
 
 #: js/ui/hotCorner.js:25
 msgid "Enable Hot Corner"
-msgstr ""
+msgstr "Kích hoạt Hot Corner"
 
 #: js/ui/hotCorner.js:29
-#, fuzzy
 msgid "Disable Hot Corner"
-msgstr "Tắt cho đến ngày mai"
+msgstr "Vô hiệu hóa Hot Corner"
 
 #: js/ui/iconGridLayout.js:312
 #, fuzzy, javascript-format
@@ -3406,14 +3424,13 @@ msgid "%s has been removed"
 msgstr "%s đã bị xóa khỏi danh sách ưa thích."
 
 #: js/ui/iconGridLayout.js:540
-#, fuzzy
 msgid "New Folder"
-msgstr "Thư mục riêng"
+msgstr "Thư mục Mới"
 
 #: js/ui/internetSearch.js:70
 #, javascript-format
 msgid "Open \"%s\" in browser"
-msgstr ""
+msgstr "Mở \"%s\" trong trình duyệt"
 
 #. Translators: the first %s is the search engine name, and the second
 #. * is the search string. For instance, 'Search Google for "hello"'.
@@ -3421,17 +3438,16 @@ msgstr ""
 #: js/ui/internetSearch.js:79
 #, javascript-format
 msgid "Search %s for \"%s\""
-msgstr ""
+msgstr "Tìm kiếm %s để có \"%s\""
 
 #: js/ui/internetSearch.js:81
 #, javascript-format
 msgid "Search the internet for \"%s\""
-msgstr ""
+msgstr "Tìm \"%s\" trên internet"
 
 #: js/ui/userMenu.js:16
-#, fuzzy
 msgid "Social Accounts"
-msgstr "Tài khoản trực tuyến"
+msgstr "Tài khoản mạng xã hội"
 
 #: js/ui/userMenu.js:19
 msgid "Settings"
@@ -3439,16 +3455,16 @@ msgstr "Cài đặt"
 
 #: js/ui/userMenu.js:24
 msgid "Give Us Feedback"
-msgstr ""
+msgstr "Gửi Phản hồi cho Chúng tôi"
 
 #: src/shell-desktop-dir-info.c:485
 msgid "Unnamed"
-msgstr ""
+msgstr "Chưa đặt tên"
 
 #: src/shell-desktop-dir-info.c:745
 #, c-format
 msgid "Custom definition for %s"
-msgstr ""
+msgstr "Xác định tùy chỉnh cho %s"
 
 #~ msgid ""
 #~ "Keybinding that pauses and resumes all running tweens, for debugging "

@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-17 17:09+0100\n"
+"POT-Creation-Date: 2020-04-17 17:11+0100\n"
 "PO-Revision-Date: 2013-03-07 21:01+0900\n"
 "Last-Translator: Gheyret Kenji <gheyret@gmail.com>\n"
 "Language-Team: Uyghur Computer Science Association <UKIJ@yahoogroups.com>\n"
@@ -547,9 +547,8 @@ msgid "Whether to fetch the current location or not"
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:420
-#, fuzzy
 msgid "Location"
-msgstr "ئۇقتۇرۇشلار"
+msgstr "ئورنى"
 
 #: data/org.gnome.shell.gschema.xml.in:421
 msgid "The location for which to show a forecast"
@@ -678,7 +677,7 @@ msgstr[0] ""
 #: subprojects/extensions-tool/src/command-create.c:211
 #: subprojects/extensions-tool/src/main.c:173
 msgid "Description"
-msgstr ""
+msgstr "چۈشەندۈرۈش"
 
 #: js/extensionPrefs/data/ui/extension-row.ui:123
 #: subprojects/extensions-tool/src/main.c:185
@@ -827,7 +826,6 @@ msgstr "(ياكى بارمىقىڭىزنى سىيرىڭ)"
 
 #. Translators: The name of the power-off action in search
 #: js/misc/systemActions.js:89
-#, fuzzy
 msgctxt "search-result"
 msgid "Power Off"
 msgstr "توكنى ئۈز"
@@ -839,7 +837,6 @@ msgstr ""
 
 #. Translators: The name of the lock screen action in search
 #: js/misc/systemActions.js:97
-#, fuzzy
 msgctxt "search-result"
 msgid "Lock Screen"
 msgstr "ئېكراننى قۇلۇپلاش"
@@ -852,7 +849,6 @@ msgstr "ئېكراننى قۇلۇپلاش"
 
 #. Translators: The name of the logout action in search
 #: js/misc/systemActions.js:105
-#, fuzzy
 msgctxt "search-result"
 msgid "Log Out"
 msgstr "تىزىمدىن چىقىش"
@@ -864,7 +860,6 @@ msgstr ""
 
 #. Translators: The name of the suspend action in search
 #: js/misc/systemActions.js:113
-#, fuzzy
 msgctxt "search-result"
 msgid "Suspend"
 msgstr "توڭلات"
@@ -877,7 +872,6 @@ msgstr "توڭلات"
 
 #. Translators: The name of the switch user action in search
 #: js/misc/systemActions.js:121
-#, fuzzy
 msgctxt "search-result"
 msgid "Switch User"
 msgstr "ئىشلەتكۈچى ئالماشتۇرۇش"
@@ -1699,14 +1693,12 @@ msgid "Allow"
 msgstr ""
 
 #: js/ui/kbdA11yDialog.js:32
-#, fuzzy
 msgid "Slow Keys Turned On"
-msgstr "ئاستا كۇنۇپكىلار"
+msgstr "ئاستا كۇنۇپكىلار ئېچىلدى"
 
 #: js/ui/kbdA11yDialog.js:33
-#, fuzzy
 msgid "Slow Keys Turned Off"
-msgstr "ئاستا كۇنۇپكىلار"
+msgstr "ئاستا كۇنۇپكىلار تاقالدى"
 
 #: js/ui/kbdA11yDialog.js:34
 msgid ""
@@ -1715,14 +1707,12 @@ msgid ""
 msgstr ""
 
 #: js/ui/kbdA11yDialog.js:41
-#, fuzzy
 msgid "Sticky Keys Turned On"
-msgstr "يېپىشقاق كۇنۇپكىلار"
+msgstr "يېپىشقاق كۇنۇپكىلار ئېچىلدى"
 
 #: js/ui/kbdA11yDialog.js:42
-#, fuzzy
 msgid "Sticky Keys Turned Off"
-msgstr "يېپىشقاق كۇنۇپكىلار"
+msgstr "يېپىشقاق كۇنۇپكىلار تاقالدى"
 
 #: js/ui/kbdA11yDialog.js:44
 msgid ""
@@ -1739,7 +1729,7 @@ msgstr ""
 
 #: js/ui/kbdA11yDialog.js:55
 msgid "Leave On"
-msgstr ""
+msgstr "ئايرىل"
 
 #: js/ui/kbdA11yDialog.js:55 js/ui/status/automaticUpdates.js:315
 #: js/ui/status/bluetooth.js:138 js/ui/status/network.js:1288
@@ -1756,7 +1746,7 @@ msgstr ""
 
 #: js/ui/kbdA11yDialog.js:63
 msgid "Leave Off"
-msgstr ""
+msgstr "توختا"
 
 #: js/ui/keyboard.js:207
 msgid "Region & Language Settings"
@@ -1904,9 +1894,8 @@ msgid "Press any key to exit"
 msgstr ""
 
 #: js/ui/panel.js:96
-#, fuzzy
 msgid "Show Details"
-msgstr "تېكىست كۆرسەت"
+msgstr "تەپسىلاتلارنى كۆرسەت"
 
 #: js/ui/panel.js:112
 msgid "Quit"
@@ -1919,7 +1908,6 @@ msgid "Activities"
 msgstr "پائالىيەتلەر"
 
 #: js/ui/panel.js:716
-#, fuzzy
 msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "سىستېما"
@@ -1930,7 +1918,6 @@ msgid "User Menu"
 msgstr ""
 
 #: js/ui/panel.js:833
-#, fuzzy
 msgctxt "Power menu"
 msgid "Power"
 msgstr "توك مەنبە"
@@ -3011,7 +2998,7 @@ msgstr ""
 #: subprojects/extensions-tool/src/command-create.c:197
 #: subprojects/extensions-tool/src/main.c:170
 msgid "Name"
-msgstr ""
+msgstr "ئاتى"
 
 #: subprojects/extensions-tool/src/command-create.c:208
 #, c-format
@@ -3226,7 +3213,7 @@ msgstr ""
 
 #: subprojects/extensions-tool/src/main.c:179
 msgid "URL"
-msgstr ""
+msgstr "URL"
 
 #: subprojects/extensions-tool/src/main.c:182
 msgid "Original author"
@@ -3252,7 +3239,7 @@ msgstr ""
 #: subprojects/extensions-tool/src/main.c:242
 #: subprojects/extensions-tool/src/main.c:245
 msgid "COMMAND"
-msgstr ""
+msgstr "بۇيرۇق"
 
 #: subprojects/extensions-tool/src/main.c:245
 msgid "[ARGS…]"

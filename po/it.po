@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-17 17:09+0100\n"
+"POT-Creation-Date: 2020-04-17 17:11+0100\n"
 "PO-Revision-Date: 2020-03-19 16:08+0100\n"
 "Last-Translator: Milo Casagrande <milo@milo.name>\n"
 "Language-Team: Italiano <gnome-it-list@gnome.org>\n"
@@ -21,8 +21,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 2.2.4\n"
 "X-DamnedLies-Scope: partial\n"
+"X-Generator: Poedit 2.2.4\n"
 
 #: data/50-gnome-shell-system.xml:6
 msgid "System"
@@ -769,9 +769,8 @@ msgid "Show password hint"
 msgstr "Password VPN"
 
 #: js/gdm/authPrompt.js:148
-#, fuzzy
 msgid "Forgot password?"
-msgstr "Password VPN"
+msgstr "Hai dimenticato la password?"
 
 #. Cisco LEAP
 #: js/gdm/authPrompt.js:303 js/ui/components/networkAgent.js:363
@@ -1055,7 +1054,7 @@ msgstr "%e %B %Y, %I∶%M %p"
 #.
 #: js/misc/util.js:573
 msgid "Google"
-msgstr ""
+msgstr "Google"
 
 #. TRANSLATORS: this is the title of the wifi captive portal login window
 #: js/portalHelper/main.js:41
@@ -1125,12 +1124,11 @@ msgstr "Cambia sfondo…"
 
 #: js/ui/backgroundMenu.js:18
 msgid "Add App"
-msgstr ""
+msgstr "Aggiungi App"
 
 #: js/ui/backgroundMenu.js:24
-#, fuzzy
 msgid "Add Website"
-msgstr "Sito web"
+msgstr "Aggiungi sito web"
 
 #. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday).
 #: js/ui/calendar.js:41
@@ -1937,13 +1935,12 @@ msgstr "Sistema"
 #: js/ui/panel.js:801
 msgctxt "User menu"
 msgid "User Menu"
-msgstr ""
+msgstr "Menu utente"
 
 #: js/ui/panel.js:833
-#, fuzzy
 msgctxt "Power menu"
 msgid "Power"
-msgstr "Spegni"
+msgstr "Risparmio energetico"
 
 #: js/ui/panel.js:907
 msgid "Bottom Bar"
@@ -1999,7 +1996,7 @@ msgstr ""
 
 #: js/ui/paygUnlockDialog.js:419
 msgid "OK!"
-msgstr ""
+msgstr "OK!"
 
 #: js/ui/payg.js:39
 msgid "Pay As You Go"
@@ -2046,13 +2043,12 @@ msgstr ""
 #. We don't consider any other error here (and we don't consider DISABLED explicitly,
 #. since that should not happen), but still we need to show something to the user.
 #: js/ui/payg.js:271
-#, fuzzy
 msgid "Unknown error"
-msgstr "Sconosciuto"
+msgstr "Errore sconosciuto"
 
 #: js/ui/payg.js:452
 msgid "Apply Code"
-msgstr ""
+msgstr "Applica codice"
 
 #: js/ui/payg.js:606
 #, javascript-format
@@ -2318,13 +2314,12 @@ msgstr ""
 
 #: js/ui/status/automaticUpdates.js:105
 msgid "Set a Schedule"
-msgstr ""
+msgstr "Imposta un programma"
 
 #. The status label
 #: js/ui/status/automaticUpdates.js:198
-#, fuzzy
 msgid "Automatic Updates"
-msgstr "Posizione automatica"
+msgstr "Aggiornamenti automatici"
 
 #: js/ui/status/automaticUpdates.js:263
 #, fuzzy
@@ -2373,14 +2368,12 @@ msgstr[0] "%d collegato"
 msgstr[1] "%d collegati"
 
 #: js/ui/status/bluetooth.js:134
-#, fuzzy
 msgid "Bluetooth Off"
-msgstr "Bluetooth"
+msgstr "Bluetooth disabilitato"
 
 #: js/ui/status/bluetooth.js:136
-#, fuzzy
 msgid "Bluetooth On"
-msgstr "Bluetooth"
+msgstr "Bluetooth attivo"
 
 #: js/ui/status/brightness.js:39
 msgid "Brightness"
@@ -2694,7 +2687,7 @@ msgstr "Riavvio…"
 
 #: js/ui/status/payg.js:90
 msgid "Less than 1 minute"
-msgstr ""
+msgstr "Meno di 1 minuto"
 
 #: js/ui/status/payg.js:124
 #, javascript-format
@@ -3432,9 +3425,8 @@ msgid "%s has been removed"
 msgstr "%s è stato rimosso dai preferiti."
 
 #: js/ui/iconGridLayout.js:540
-#, fuzzy
 msgid "New Folder"
-msgstr "Cartella senza nome"
+msgstr "Nuova cartella"
 
 #: js/ui/internetSearch.js:70
 #, fuzzy, javascript-format
@@ -3467,9 +3459,8 @@ msgid "Give Us Feedback"
 msgstr ""
 
 #: src/shell-desktop-dir-info.c:485
-#, fuzzy
 msgid "Unnamed"
-msgstr "Cartella senza nome"
+msgstr "Senza nome"
 
 #: src/shell-desktop-dir-info.c:745
 #, c-format

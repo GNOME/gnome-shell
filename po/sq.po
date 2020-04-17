@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-17 17:09+0100\n"
+"POT-Creation-Date: 2020-04-17 17:11+0100\n"
 "PO-Revision-Date: 2017-06-18 05:51+0000\n"
 "Last-Translator: Roddy Shuler <roddy@endlessm.com>\n"
 "Language-Team: Albanian (http://www.transifex.com/endless-mobile-inc/gnome-"
@@ -483,7 +483,7 @@ msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:420
 msgid "Location"
-msgstr ""
+msgstr "Pozicioni"
 
 #: data/org.gnome.shell.gschema.xml.in:421
 msgid "The location for which to show a forecast"
@@ -586,7 +586,7 @@ msgstr ""
 #: js/ui/shellMountOperation.js:376 js/ui/shellMountOperation.js:386
 #: js/ui/status/network.js:913 js/ui/forceAppExitDialog.js:79
 msgid "Cancel"
-msgstr ""
+msgstr "Anulo"
 
 #: js/extensionPrefs/js/main.js:149 js/ui/appDisplay.js:2499
 msgid "Remove"
@@ -607,7 +607,7 @@ msgstr[1] ""
 #: subprojects/extensions-tool/src/command-create.c:211
 #: subprojects/extensions-tool/src/main.c:173
 msgid "Description"
-msgstr ""
+msgstr "Përshkrimi"
 
 #: js/extensionPrefs/data/ui/extension-row.ui:123
 #: subprojects/extensions-tool/src/main.c:185
@@ -1683,7 +1683,7 @@ msgstr ""
 
 #: js/ui/lookingGlass.js:744
 msgid "Error"
-msgstr ""
+msgstr "Gabim"
 
 #: js/ui/lookingGlass.js:746
 msgid "Out of date"
@@ -1691,7 +1691,7 @@ msgstr ""
 
 #: js/ui/lookingGlass.js:748
 msgid "Downloading"
-msgstr ""
+msgstr "Shkarkim"
 
 #: js/ui/lookingGlass.js:777
 msgid "View Source"
@@ -2041,7 +2041,7 @@ msgstr ""
 
 #: js/ui/shellEntry.js:30
 msgid "Copy"
-msgstr ""
+msgstr "Kopje"
 
 #: js/ui/shellEntry.js:35
 msgid "Paste"
@@ -2103,7 +2103,7 @@ msgstr ""
 #: js/ui/shellMountOperation.js:391
 #, javascript-format
 msgid "Open %s"
-msgstr ""
+msgstr "Hap %s"
 
 #: js/ui/shellMountOperation.js:423
 msgid "The PIM must be a number or empty."
@@ -2127,7 +2127,7 @@ msgstr ""
 
 #: js/ui/status/accessibility.js:50
 msgid "Zoom"
-msgstr ""
+msgstr "Zoom"
 
 #: js/ui/status/accessibility.js:57
 msgid "Screen Reader"
@@ -2200,7 +2200,7 @@ msgstr ""
 
 #: js/ui/status/automaticUpdates.js:286 js/ui/windowMenu.js:167
 msgid "Close"
-msgstr ""
+msgstr "Mbyll"
 
 #: js/ui/status/automaticUpdates.js:290
 msgid "Change Settings…"
@@ -2256,7 +2256,7 @@ msgstr ""
 
 #: js/ui/status/keyboard.js:826
 msgid "Keyboard"
-msgstr ""
+msgstr "Tastiera"
 
 #: js/ui/status/keyboard.js:848
 msgid "Show Keyboard Layout"
@@ -2519,7 +2519,7 @@ msgstr ""
 
 #: js/ui/status/nightLight.js:66
 msgid "Resume"
-msgstr ""
+msgstr "Rifilloj"
 
 #: js/ui/status/nightLight.js:67
 msgid "Disable Until Tomorrow"
@@ -2743,7 +2743,7 @@ msgstr[1] ""
 #: js/ui/windowManager.js:550
 #, javascript-format
 msgid "%d × %d"
-msgstr ""
+msgstr "%d × %d"
 
 #: js/ui/windowMenu.js:27
 msgid "Minimize"
@@ -2832,7 +2832,7 @@ msgstr ""
 #: src/shell-app.c:280
 msgctxt "program"
 msgid "Unknown"
-msgstr ""
+msgstr "Panjohur"
 
 #: src/shell-app.c:570
 #, c-format
@@ -2867,7 +2867,7 @@ msgstr ""
 #: subprojects/extensions-tool/src/command-create.c:197
 #: subprojects/extensions-tool/src/main.c:170
 msgid "Name"
-msgstr ""
+msgstr "Emri"
 
 #: subprojects/extensions-tool/src/command-create.c:208
 #, c-format
@@ -3074,7 +3074,7 @@ msgstr ""
 
 #: subprojects/extensions-tool/src/main.c:179
 msgid "URL"
-msgstr ""
+msgstr "URL"
 
 #: subprojects/extensions-tool/src/main.c:182
 msgid "Original author"
@@ -3100,7 +3100,7 @@ msgstr ""
 #: subprojects/extensions-tool/src/main.c:242
 #: subprojects/extensions-tool/src/main.c:245
 msgid "COMMAND"
-msgstr ""
+msgstr "KOMANDA"
 
 #: subprojects/extensions-tool/src/main.c:245
 msgid "[ARGS…]"

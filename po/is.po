@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-17 17:09+0100\n"
+"POT-Creation-Date: 2020-04-17 17:11+0100\n"
 "PO-Revision-Date: 2019-08-12 07:46+0000\n"
 "Last-Translator: Sveinn í Felli <sv1@fellsnet.is>\n"
 "Language-Team: Icelandic <translation-team-is@lists.sourceforge.net>\n"
@@ -502,9 +502,8 @@ msgid "Whether to fetch the current location or not"
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:420
-#, fuzzy
 msgid "Location"
-msgstr "Staðsetning í notkun"
+msgstr "Staðsetning"
 
 #: data/org.gnome.shell.gschema.xml.in:421
 msgid "The location for which to show a forecast"
@@ -633,13 +632,12 @@ msgstr[1] ""
 #: subprojects/extensions-tool/src/command-create.c:211
 #: subprojects/extensions-tool/src/main.c:173
 msgid "Description"
-msgstr ""
+msgstr "Lýsing"
 
 #: js/extensionPrefs/data/ui/extension-row.ui:123
 #: subprojects/extensions-tool/src/main.c:185
-#, fuzzy
 msgid "Version"
-msgstr "Prenta útgáfunúmer"
+msgstr "Útgáfa"
 
 #: js/extensionPrefs/data/ui/extension-row.ui:151
 msgid "Author"
@@ -1886,10 +1884,9 @@ msgid "User Menu"
 msgstr "Valmynd í kerfisbakka"
 
 #: js/ui/panel.js:833
-#, fuzzy
 msgctxt "Power menu"
 msgid "Power"
-msgstr "Slökkva"
+msgstr "Aflstjórnun"
 
 #: js/ui/panel.js:907
 msgid "Bottom Bar"
@@ -2183,9 +2180,9 @@ msgstr "Muna lykilorð"
 
 #. Translators: %s is the Disks application
 #: js/ui/shellMountOperation.js:391
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Open %s"
-msgstr "Opna með %s"
+msgstr "Opna %s"
 
 #: js/ui/shellMountOperation.js:423
 msgid "The PIM must be a number or empty."
@@ -2259,7 +2256,7 @@ msgstr "Ekkert á dagskrá"
 #. The status label
 #: js/ui/status/automaticUpdates.js:198
 msgid "Automatic Updates"
-msgstr ""
+msgstr "Sjálfvirkar uppfærslur"
 
 #: js/ui/status/automaticUpdates.js:263
 msgid "Automatic updates on"
@@ -2322,7 +2319,7 @@ msgstr "Birtustig"
 
 #: js/ui/status/dwellClick.js:13
 msgid "Single Click"
-msgstr ""
+msgstr "Einsmella"
 
 #: js/ui/status/dwellClick.js:18
 msgid "Double Click"
@@ -2961,7 +2958,7 @@ msgstr ""
 #: subprojects/extensions-tool/src/command-create.c:197
 #: subprojects/extensions-tool/src/main.c:170
 msgid "Name"
-msgstr ""
+msgstr "Heiti"
 
 #: subprojects/extensions-tool/src/command-create.c:208
 #, c-format
@@ -3186,7 +3183,7 @@ msgstr ""
 
 #: subprojects/extensions-tool/src/main.c:179
 msgid "URL"
-msgstr ""
+msgstr "Slóð (URL)"
 
 #: subprojects/extensions-tool/src/main.c:182
 msgid "Original author"
@@ -3212,7 +3209,7 @@ msgstr ""
 #: subprojects/extensions-tool/src/main.c:242
 #: subprojects/extensions-tool/src/main.c:245
 msgid "COMMAND"
-msgstr ""
+msgstr "SKIPUN"
 
 #: subprojects/extensions-tool/src/main.c:245
 msgid "[ARGS…]"
@@ -3429,7 +3426,6 @@ msgstr ""
 #~ msgid "The type of keyboard to use."
 #~ msgstr "Tegund lyklaborðs sem á að nota."
 
-#~| msgid "Show Errors"
 #~ msgid "Copy Error"
 #~ msgstr "Afrita villu"
 

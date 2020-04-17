@@ -25,7 +25,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-17 17:09+0100\n"
+"POT-Creation-Date: 2020-04-17 17:11+0100\n"
 "PO-Revision-Date: 2020-02-22 17:34+0200\n"
 "Last-Translator: Jiri Grönroos <jiri.gronroos+l10n@iki.fi>\n"
 "Language-Team: suomi <lokalisointi-lista@googlegroups.com>\n"
@@ -34,10 +34,10 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 2.3\n"
 "X-DamnedLies-Scope: partial\n"
-"X-Project-Style: gnome\n"
+"X-Generator: Poedit 2.3\n"
 "X-POT-Import-Date: 2012-03-05 15:06:10+0000\n"
+"X-Project-Style: gnome\n"
 
 #: data/50-gnome-shell-system.xml:6
 msgid "System"
@@ -1936,7 +1936,6 @@ msgid "User Menu"
 msgstr "Viestialuevalikko"
 
 #: js/ui/panel.js:833
-#, fuzzy
 msgctxt "Power menu"
 msgid "Power"
 msgstr "Virta"
@@ -2305,9 +2304,8 @@ msgstr "Ei merkintöjä"
 
 #. The status label
 #: js/ui/status/automaticUpdates.js:198
-#, fuzzy
 msgid "Automatic Updates"
-msgstr "Automaattinen sijainti"
+msgstr "Automaattiset päivitykset"
 
 #: js/ui/status/automaticUpdates.js:263
 #, fuzzy
@@ -3568,17 +3566,14 @@ msgstr ""
 #~ msgid "Feels like %s."
 #~ msgstr "Tuntuu kuin %s."
 
-#~| msgid "Power Off"
 #~ msgctxt "search-result"
 #~ msgid "Power off"
 #~ msgstr "Sammuta"
 
-#~| msgid "Log Out"
 #~ msgctxt "search-result"
 #~ msgid "Log out"
 #~ msgstr "Kirjaudu ulos"
 
-#~| msgid "Switch User"
 #~ msgctxt "search-result"
 #~ msgid "Switch user"
 #~ msgstr "Vaihda käyttäjää"
@@ -4000,7 +3995,6 @@ msgstr ""
 #~ "tiedostonimi nykyisen päivämäärän ja tämän tiedostopäätteen mukaisesti. "
 #~ "Tiedostopääte tulisi vaihtaa mikäli nauhoitetaan eri tallennusmuotoon."
 
-#~| msgid "Session..."
 #~ msgid "Session…"
 #~ msgstr "Istunto…"
 
@@ -4040,11 +4034,9 @@ msgstr ""
 #~ msgid "Visibility"
 #~ msgstr "Näkyvyys"
 
-#~| msgid "Set up a New Device..."
 #~ msgid "Set Up a New Device…"
 #~ msgstr "Asenna uusi laite…"
 
-#~| msgid "Send Files..."
 #~ msgid "Send Files…"
 #~ msgstr "Lähetä tiedostoja…"
 
@@ -4090,11 +4082,9 @@ msgstr ""
 #~ msgid "%d %s %d %s remaining"
 #~ msgstr "%d %s %d %s jäljellä"
 
-#~| msgid "AC adapter"
 #~ msgid "AC Adapter"
 #~ msgstr "Virtalähde"
 
-#~| msgid "Laptop battery"
 #~ msgid "Laptop Battery"
 #~ msgstr "Kannettavan akku"
 
@@ -4107,11 +4097,9 @@ msgstr ""
 #~ msgid "PDA"
 #~ msgstr "Kämmentietokone"
 
-#~| msgid "Cell phone"
 #~ msgid "Cell Phone"
 #~ msgstr "Matkapuhelin"
 
-#~| msgid "Media player"
 #~ msgid "Media Player"
 #~ msgstr "Mediasoitin"
 

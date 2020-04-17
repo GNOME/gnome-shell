@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell.po.master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-17 17:09+0100\n"
+"POT-Creation-Date: 2020-04-17 17:11+0100\n"
 "PO-Revision-Date: 2020-02-18 12:54+0200\n"
 "Last-Translator: Efstathios Iosifidis <iosifidis@opensuse.org>\n"
 "Language-Team: Greek, Modern (1453-) <gnome-el-list@gnome.org>\n"
@@ -16,8 +16,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 2.3\n"
 "X-DamnedLies-Scope: partial\n"
+"X-Generator: Poedit 2.3\n"
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Project-Style: gnome\n"
 
@@ -1945,7 +1945,6 @@ msgid "User Menu"
 msgstr "Μενού περιοχής ειδοποιήσεων"
 
 #: js/ui/panel.js:833
-#, fuzzy
 msgctxt "Power menu"
 msgid "Power"
 msgstr "Ενέργεια"
@@ -2315,9 +2314,8 @@ msgstr "Τίποτα προγραμματισμένο"
 
 #. The status label
 #: js/ui/status/automaticUpdates.js:198
-#, fuzzy
 msgid "Automatic Updates"
-msgstr "Αυτόματη τοποθεσία"
+msgstr "Αυτόματες ενημερώσεις"
 
 #: js/ui/status/automaticUpdates.js:263
 #, fuzzy
@@ -3512,8 +3510,6 @@ msgstr ""
 #~ msgstr "Σύνδεση"
 
 #, fuzzy
-#~| msgctxt "search-result"
-#~| msgid "Lock orientation"
 #~ msgctxt "search-result"
 #~ msgid "Lock Orientation"
 #~ msgstr "Κλείδωμα προσανατολισμού"
@@ -3588,17 +3584,14 @@ msgstr ""
 #~ msgid "evolution"
 #~ msgstr "evolution"
 
-#~| msgid "Power Off"
 #~ msgctxt "search-result"
 #~ msgid "Power off"
 #~ msgstr "Τερματισμός"
 
-#~| msgid "Log Out"
 #~ msgctxt "search-result"
 #~ msgid "Log out"
 #~ msgstr "Αποσύνδεση"
 
-#~| msgid "Switch User"
 #~ msgctxt "search-result"
 #~ msgid "Switch user"
 #~ msgstr "Αλλαγή χρήστη"
