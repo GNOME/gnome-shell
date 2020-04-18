@@ -17,7 +17,7 @@ msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-04-17 17:11+0100\n"
-"PO-Revision-Date: 2020-04-17 16:17+0000\n"
+"PO-Revision-Date: 2020-04-18 06:44+0000\n"
 "Last-Translator: Will Thompson <wjt@endlessm.com>\n"
 "Language-Team: Arabic (http://www.transifex.com/endless-os/gnome-shell/language/ar/)\n"
 "MIME-Version: 1.0\n"
@@ -561,18 +561,18 @@ msgstr "اذهب إلى صفحة الامتداد الرئيسية"
 #: js/extensionPrefs/js/main.js:182
 #: js/extensionPrefs/data/ui/extensions-window.ui:61
 msgid "Extensions"
-msgstr ""
+msgstr "الملحقات"
 
 #: js/extensionPrefs/data/metainfo/org.gnome.Extensions.metainfo.xml.in:6
 #: js/extensionPrefs/js/main.js:183
 msgid "Manage your GNOME Extensions"
-msgstr ""
+msgstr "إدارة امتدادات GNOME الخاصة بك"
 
 #: js/extensionPrefs/data/metainfo/org.gnome.Extensions.metainfo.xml.in:35
 msgid ""
 "GNOME Extensions handles updating extensions, configuring extension "
 "preferences and removing or disabling unwanted extensions."
-msgstr ""
+msgstr "تتعامل ملحقات GNOME مع تحديث الملحقات، وتهيئة تفضيلات الملحقات، وإزالة أو تعطيل الملحقات غير المرغوب فيها."
 
 #: js/extensionPrefs/data/org.gnome.Extensions.desktop.in.in:7
 msgid "Configure GNOME Shell Extensions"
@@ -581,13 +581,13 @@ msgstr "اضبط امتدادات صدفة جنوم"
 #: js/extensionPrefs/js/main.js:144
 #, javascript-format
 msgid "Remove “%s”?"
-msgstr ""
+msgstr "هل ترغب بإزالة “%s”؟"
 
 #: js/extensionPrefs/js/main.js:145
 msgid ""
 "If you remove the extension, you need to return to download it if you want "
 "to enable it again"
-msgstr ""
+msgstr "إذا قمت بإزالة الملحق، فإنك ستحتاج إلى العودة لتنزيّله إذا كنت ترغب في تمكينه مرةً أخرى"
 
 #: js/extensionPrefs/js/main.js:148 js/gdm/authPrompt.js:189
 #: js/ui/audioDeviceSelection.js:57 js/ui/components/networkAgent.js:115
@@ -604,18 +604,18 @@ msgstr "أزل"
 
 #: js/extensionPrefs/js/main.js:181
 msgid "translator-credits"
-msgstr ""
+msgstr "أرصدة المترجم"
 
 #: js/extensionPrefs/js/main.js:316
 #, javascript-format
 msgid "%d extension will be updated on next login."
 msgid_plural "%d extensions will be updated on next login."
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
-msgstr[4] ""
-msgstr[5] ""
+msgstr[0] "%d امتدادات سيتم تحديثها عند تسجيل الدخول التالي."
+msgstr[1] "%d امتداد سيتم تحديثها عند تسجيل الدخول التالي."
+msgstr[2] "%d امتدادات سيتم تحديثها عند تسجيل الدخول التالي."
+msgstr[3] "%d امتدادات سيتم تحديثها عند تسجيل الدخول التالي."
+msgstr[4] "%d امتدادات سيتم تحديثها عند تسجيل الدخول التالي."
+msgstr[5] "%d امتدادات سيتم تحديثها عند تسجيل الدخول التالي."
 
 #: js/extensionPrefs/data/ui/extension-row.ui:100
 #: subprojects/extensions-tool/src/command-create.c:211
@@ -630,15 +630,15 @@ msgstr "الإصدار"
 
 #: js/extensionPrefs/data/ui/extension-row.ui:151
 msgid "Author"
-msgstr ""
+msgstr "المؤلف"
 
 #: js/extensionPrefs/data/ui/extension-row.ui:175
 msgid "Website"
-msgstr ""
+msgstr "موقع الويب"
 
 #: js/extensionPrefs/data/ui/extension-row.ui:192
 msgid "Remove…"
-msgstr ""
+msgstr "جارٍ الإزالة..."
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:8 js/ui/userMenu.js:27
 msgid "Help"
@@ -646,36 +646,36 @@ msgstr "المساعدة"
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:12
 msgid "About Extensions"
-msgstr ""
+msgstr "نبذة عن الملحقات"
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:27
 msgid ""
 "To find and add extensions, visit <a "
 "href=\"https://extensions.gnome.org\">extensions.gnome.org</a>."
-msgstr ""
+msgstr "للبحث عن ملحقات وإضافتها، قم بزيارة <a href=\"https://extensions.gnome.org\"> extensions.gnome.org </a>."
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:35
 msgid "Warning"
-msgstr ""
+msgstr "تحذير"
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:46
 msgid ""
 "Extensions can cause system issues, including performance problems. If you "
 "encounter problems with your system, it is recommended to disable all "
 "extensions."
-msgstr ""
+msgstr "يمكن أن تُسبب الملحقات مشكلات في النظام، بما في ذلك مشكلات في الأداء. إذا واجهت مشكلات في نظامك، فمن المستحسن تعطيل جميع الملحقات."
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:134
 msgid "Manually Installed"
-msgstr ""
+msgstr "تم التثبيت يدوياً"
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:158
 msgid "Built-In"
-msgstr ""
+msgstr "مدمج"
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:199
 msgid "No Installed Extensions"
-msgstr ""
+msgstr "لا توجد ملحقات مثبتة"
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:235
 msgid ""
@@ -685,7 +685,7 @@ msgstr "نعتذر بشدة، ولكن قد تعذّر الحصول على قا�
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:288
 msgid "Log Out…"
-msgstr ""
+msgstr "تسجيل الخروج ..."
 
 #: js/gdm/authPrompt.js:131
 msgid "Show password hint"
@@ -708,7 +708,7 @@ msgstr "كلمة السر"
 #. by customer support.
 #: js/gdm/authPrompt.js:680
 msgid "Enter unlock code"
-msgstr ""
+msgstr "أدخل رمز إلغاء القفل"
 
 #. Translators: Password reset. The first %s is a verification code and the
 #. second is an email.
@@ -745,7 +745,7 @@ msgstr "(مثلا مستخدم أو %s)"
 #: js/gdm/loginDialog.js:920 js/ui/components/networkAgent.js:399
 #: js/ui/components/networkAgent.js:422 js/ui/components/networkAgent.js:440
 msgid "Username"
-msgstr ""
+msgstr "اسم المستخدم"
 
 #: js/gdm/loginDialog.js:1256
 msgid "Login Window"
@@ -774,7 +774,7 @@ msgstr "أطفئ"
 #. by semicolons
 #: js/misc/systemActions.js:92
 msgid "power off;shutdown;reboot;restart;halt;stop"
-msgstr ""
+msgstr "فصل الطاقة؛ إيقاف التشغيل؛ إعادة التشغيل؛ إعادة التشغيل؛ توقّف؛ إيقاف"
 
 #. Translators: The name of the lock screen action in search
 #: js/misc/systemActions.js:97
@@ -828,17 +828,17 @@ msgstr "بدّل المستخدم"
 #. separated by semicolons
 #: js/misc/systemActions.js:131
 msgid "lock orientation;unlock orientation;screen;rotation"
-msgstr ""
+msgstr "قفل اتجاه الشاشة؛ فتح اتجاه الشاشة؛ الشاشة؛ دوران الشاشة"
 
 #: js/misc/systemActions.js:251
 msgctxt "search-result"
 msgid "Unlock Screen Rotation"
-msgstr ""
+msgstr "فتح تدوير الشاشة"
 
 #: js/misc/systemActions.js:252
 msgctxt "search-result"
 msgid "Lock Screen Rotation"
-msgstr ""
+msgstr "إقفال ميزة تدوير الشاشة"
 
 #: js/misc/util.js:125
 msgid "Command not found"
@@ -1200,7 +1200,7 @@ msgstr "لا أحداث"
 
 #: js/ui/calendar.js:1157
 msgid "Do Not Disturb"
-msgstr ""
+msgstr "ممنوع الإزعاج"
 
 #: js/ui/calendar.js:1171
 msgid "Clear"
@@ -1275,19 +1275,19 @@ msgstr "هذا الاتصال ليست به قيود على كمية التنز�
 
 #: js/ui/components/networkAgent.js:369
 msgid "Key"
-msgstr ""
+msgstr "المفتاح"
 
 #: js/ui/components/networkAgent.js:407 js/ui/components/networkAgent.js:430
 msgid "Private key password"
-msgstr ""
+msgstr "كلمة مرور المفتاح الخاص"
 
 #: js/ui/components/networkAgent.js:428
 msgid "Identity"
-msgstr ""
+msgstr "الهوية"
 
 #: js/ui/components/networkAgent.js:442
 msgid "Service"
-msgstr ""
+msgstr "الخدمة"
 
 #: js/ui/components/networkAgent.js:471
 #, javascript-format
@@ -1300,7 +1300,7 @@ msgstr "استيثاق 802.1X سلكي"
 
 #: js/ui/components/networkAgent.js:478
 msgid "Network name"
-msgstr ""
+msgstr "اسم الشبكة"
 
 #: js/ui/components/networkAgent.js:483 js/ui/components/networkAgent.js:855
 msgid "DSL authentication"
@@ -1316,7 +1316,7 @@ msgstr "جهاز شبكة الهاتف المحمول يتطلب رمز PIN"
 
 #: js/ui/components/networkAgent.js:492
 msgid "PIN"
-msgstr ""
+msgstr "رقم التعريف الشخصي"
 
 #: js/ui/components/networkAgent.js:499 js/ui/components/networkAgent.js:846
 #: js/ui/components/networkAgent.js:867
@@ -1343,7 +1343,7 @@ msgstr "كلمات السر أو مفاتيح التعمية مطلوبة للو
 
 #: js/ui/components/networkAgent.js:871
 msgid "VPN password"
-msgstr ""
+msgstr "كلمة مرور VPN"
 
 #: js/ui/components/polkitAgent.js:39
 msgid "Authentication Required"
@@ -1574,15 +1574,15 @@ msgstr "ستُثبّت %s %s بعد إعادة التشغيل. قد يستغرق
 
 #: js/ui/endSessionDialog.js:261
 msgid "Running on battery power: Please plug in before installing updates."
-msgstr ""
+msgstr "يتم التشغيل باستخدام طاقة البطارية: يرجى التوصيل بمنفذ الطاقة قبل تنصيب التحديثات. "
 
 #: js/ui/endSessionDialog.js:270
 msgid "Some applications are busy or have unsaved work"
-msgstr ""
+msgstr "بعض التطبيقات مشغولة أو بها عمل غير محفوظ"
 
 #: js/ui/endSessionDialog.js:275
 msgid "Other users are logged in"
-msgstr ""
+msgstr "تم تسجيل دخول مستخدمين آخرين"
 
 #. Translators: Remote here refers to a remote session, like a ssh login
 #: js/ui/endSessionDialog.js:588
@@ -1599,13 +1599,13 @@ msgstr "%s (طرفية)"
 #: js/ui/extensionDownloader.js:24
 #, javascript-format
 msgid "Can't install “%s”:"
-msgstr ""
+msgstr "لا يمكن تثبيت “%s”:"
 
 #: js/ui/extensionDownloader.js:25
 msgid ""
 "This is an extension enabled by your current mode, you can't install "
 "manually any update in that session."
-msgstr ""
+msgstr "هذا ملحق تم تمكينه بواسطة وضعك الحالي، ولا يمكنك تثبيت أي تحديث يدوياً في تلك الجلسة."
 
 #: js/ui/extensionDownloader.js:192
 msgid "Install"
@@ -1613,7 +1613,7 @@ msgstr "ثبت"
 
 #: js/ui/extensionDownloader.js:198
 msgid "Install Extension"
-msgstr ""
+msgstr "تثبيت الملحق"
 
 #: js/ui/extensionDownloader.js:199
 #, javascript-format
@@ -1622,25 +1622,25 @@ msgstr "هل تريد تنزيل و تثبيت ”%s“ من extensions.gnome.o
 
 #: js/ui/extensionSystem.js:229
 msgid "Extension Updates Available"
-msgstr ""
+msgstr "تحديثات الملحقات متاحة"
 
 #: js/ui/extensionSystem.js:230
 msgid "Extension updates are ready to be installed."
-msgstr ""
+msgstr "تحديثات الملحقات جاهزة للتثبيت."
 
 #: js/ui/inhibitShortcutsDialog.js:79
 msgid "Allow inhibiting shortcuts"
-msgstr ""
+msgstr "السماح باختصارات المنع"
 
 #. Translators: %s is an application name like "Settings"
 #: js/ui/inhibitShortcutsDialog.js:82
 #, javascript-format
 msgid "The application %s wants to inhibit shortcuts"
-msgstr ""
+msgstr "يريد تطبيق %s منع الاختصارات"
 
 #: js/ui/inhibitShortcutsDialog.js:83
 msgid "An application wants to inhibit shortcuts"
-msgstr ""
+msgstr "يريد أحد التطبيقات منع الاختصارات"
 
 #. Translators: %s is a keyboard shortcut like "Super+x"
 #: js/ui/inhibitShortcutsDialog.js:90
@@ -1766,21 +1766,21 @@ msgstr "صفحة الوب"
 
 #: js/ui/main.js:315
 msgid "Logged in as a privileged user"
-msgstr ""
+msgstr "تم تسجيل الدخول كمستخدم مميز"
 
 #: js/ui/main.js:316
 msgid ""
 "Running a session as a privileged user should be avoided for security "
 "reasons. If possible, you should log in as a normal user."
-msgstr ""
+msgstr "يجب تجنب تشغيل الجلسات كمستخدم مميز لأسباب أمنية. إذا كان ذلك ممكناً، يجب عليك تسجيل الدخول كمستخدم عادي."
 
 #: js/ui/main.js:355
 msgid "Screen Lock disabled"
-msgstr ""
+msgstr "تم تعطيل قفل الشاشة"
 
 #: js/ui/main.js:356
 msgid "Screen Locking requires the GNOME display manager."
-msgstr ""
+msgstr "إقفال الشاشة يتطلب مدير عرض GNOME "
 
 #: js/ui/messageTray.js:1552
 msgid "System Information"
@@ -1914,7 +1914,7 @@ msgstr "إتصل بممثل المبيعات الخاص بك لشراء رمزج
 #: js/ui/paygUnlockDialog.js:188
 #, javascript-format
 msgid "Pay As You Go Account ID: %s"
-msgstr ""
+msgstr "معرّف حساب Pay As You Go: %s"
 
 #: js/ui/paygUnlockDialog.js:198
 msgid "Unlock Machine"
@@ -1980,7 +1980,7 @@ msgstr "تم تجاوز الوقت المسموح أثناء التحقق من �
 #: js/ui/payg.js:267
 #, javascript-format
 msgid "Your Pay As You Go Account ID is: %s"
-msgstr ""
+msgstr "الرمز التعريفي لحساب الدفع حسب الاستهلاك الخاص بك هو: %s "
 
 #. We don't consider any other error here (and we don't consider DISABLED
 #. explicitly,
@@ -2104,11 +2104,11 @@ msgstr "لقد قمت بفتح جهاز Endless الخاص بك بنجاح"
 
 #: js/ui/runDialog.js:58
 msgid "Run a Command"
-msgstr ""
+msgstr "تشغيل أمر"
 
 #: js/ui/runDialog.js:73
 msgid "Press ESC to close"
-msgstr ""
+msgstr "اضغط على ESC للغلق"
 
 #: js/ui/runDialog.js:240
 msgid "Restart is not available on Wayland"
@@ -2175,7 +2175,7 @@ msgstr "البحث..."
 
 #: js/ui/shellEntry.js:490
 msgid "Caps lock is on."
-msgstr ""
+msgstr "مفتاح Caps lock قيد التشغيل."
 
 #: js/ui/shellMountOperation.js:285
 msgid "Hidden Volume"
@@ -2397,13 +2397,13 @@ msgstr "فعّل"
 
 #: js/ui/status/location.js:355
 msgid "Allow location access"
-msgstr ""
+msgstr "السماح بالوصول إلى الموقع"
 
 #. Translators: %s is an application name
 #: js/ui/status/location.js:357
 #, javascript-format
 msgid "The app %s wants to access your location"
-msgstr ""
+msgstr "يرغب التطبيق %s في الوصول إلى موقعك"
 
 #: js/ui/status/location.js:367
 msgid "Location access can be changed at any time from the privacy settings."
@@ -2666,7 +2666,7 @@ msgstr "أقل من دقيقة واحدة"
 #: js/ui/status/payg.js:124
 #, javascript-format
 msgid "Account ID: %s"
-msgstr ""
+msgstr "معرّف الحساب: %s"
 
 #: js/ui/status/power.js:47
 msgid "Power Settings"
@@ -2724,7 +2724,7 @@ msgstr "أوصِد"
 
 #: js/ui/status/system.js:90
 msgid "Power Off / Log Out"
-msgstr ""
+msgstr "إغلاق الجهاز / تسجيل الخروج"
 
 #: js/ui/status/system.js:93
 msgid "Log Out"
@@ -2732,7 +2732,7 @@ msgstr "اخرج"
 
 #: js/ui/status/system.js:105
 msgid "Switch User…"
-msgstr ""
+msgstr "جاري تبديل المستخدم ..."
 
 #: js/ui/status/system.js:119
 msgid "Suspend"
@@ -2740,7 +2740,7 @@ msgstr "علّق"
 
 #: js/ui/status/system.js:131
 msgid "Power Off…"
-msgstr ""
+msgstr "جارٍ إيقاف التشغيل..."
 
 #: js/ui/status/thunderbolt.js:263
 msgid "Thunderbolt"
@@ -2810,15 +2810,15 @@ msgstr "المدمجة فقط"
 #. long format
 #: js/ui/unlockDialog.js:371
 msgid "%A %B %-d"
-msgstr ""
+msgstr "%A %B %-d"
 
 #: js/ui/unlockDialog.js:377
 msgid "Swipe up to unlock"
-msgstr ""
+msgstr "مرر لأعلى لإلغاء القفل"
 
 #: js/ui/unlockDialog.js:378
 msgid "Click or press a key to unlock"
-msgstr ""
+msgstr "انقر أو اضغط على زر لإلغاء القفل"
 
 #: js/ui/unlockDialog.js:550
 msgid "Unlock Window"
@@ -2840,7 +2840,7 @@ msgstr "‏”%s“ جاهز"
 #. Translators: This string should be shorter than 30 characters
 #: js/ui/windowManager.js:61
 msgid "Keep these display settings?"
-msgstr ""
+msgstr "هل ترغب بالإبقاء على إعدادات العرض هذه؟"
 
 #. Translators: this and the following message should be limited in length,
 #. to avoid ellipsizing the labels.
@@ -2980,7 +2980,7 @@ msgstr "أغلق المستخدم مربع الاستيثاق الحِواري"
 #: subprojects/extensions-tool/src/command-create.c:125
 #, c-format
 msgid "The new extension was successfully created in %s.\n"
-msgstr ""
+msgstr "تم إنشاء الملحق الجديد بنجاح في %s. \n"
 
 #: subprojects/extensions-tool/src/command-create.c:194
 #, c-format
@@ -3117,7 +3117,7 @@ msgstr "عرض الامتدادات ذات التفضيلات"
 
 #: subprojects/extensions-tool/src/command-list.c:140
 msgid "Show extensions with updates"
-msgstr ""
+msgstr "عرض الملحقات مع التحديثات"
 
 #: subprojects/extensions-tool/src/command-list.c:143
 msgid "Print extension details"

@@ -16,7 +16,7 @@ msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-04-17 17:11+0100\n"
-"PO-Revision-Date: 2020-04-17 16:16+0000\n"
+"PO-Revision-Date: 2020-04-18 10:47+0000\n"
 "Last-Translator: Will Thompson <wjt@endlessm.com>\n"
 "Language-Team: Hindi (http://www.transifex.com/endless-os/gnome-shell/language/hi/)\n"
 "MIME-Version: 1.0\n"
@@ -31,7 +31,7 @@ msgstr "तंत्र"
 
 #: data/50-gnome-shell-system.xml:9
 msgid "Show the notification list"
-msgstr ""
+msgstr "सूचना सूची दिखाएँ"
 
 #: data/50-gnome-shell-system.xml:12
 msgid "Focus the active notification"
@@ -560,18 +560,18 @@ msgstr "एक्सटेंशन होमपेज पर जाएँ"
 #: js/extensionPrefs/js/main.js:182
 #: js/extensionPrefs/data/ui/extensions-window.ui:61
 msgid "Extensions"
-msgstr ""
+msgstr "एक्सटेंशन"
 
 #: js/extensionPrefs/data/metainfo/org.gnome.Extensions.metainfo.xml.in:6
 #: js/extensionPrefs/js/main.js:183
 msgid "Manage your GNOME Extensions"
-msgstr ""
+msgstr "अपने GNOME एक्सटेंशन को प्रबंधित करें"
 
 #: js/extensionPrefs/data/metainfo/org.gnome.Extensions.metainfo.xml.in:35
 msgid ""
 "GNOME Extensions handles updating extensions, configuring extension "
 "preferences and removing or disabling unwanted extensions."
-msgstr ""
+msgstr "GNOME एक्सटेंशन अपडेट करने वाले एक्सटेंशन को संभालता है, एक्सटेंशन प्राथमिकताएँ कॉन्फ़िगर करता है और अवांछित एक्सटेंशन को हटाना या अक्षम करना संभालता है।"
 
 #: js/extensionPrefs/data/org.gnome.Extensions.desktop.in.in:7
 msgid "Configure GNOME Shell Extensions"
@@ -580,13 +580,13 @@ msgstr "गनोम शेल एक्सटेंशन विन्यस्
 #: js/extensionPrefs/js/main.js:144
 #, javascript-format
 msgid "Remove “%s”?"
-msgstr ""
+msgstr "\"%s\" निकालें?"
 
 #: js/extensionPrefs/js/main.js:145
 msgid ""
 "If you remove the extension, you need to return to download it if you want "
 "to enable it again"
-msgstr ""
+msgstr "अगर आप एक्स्टेंशन को हटा देते हैं, आपको इसे डाउनलोड करने के लिए वापस आना होगा यदि आप इसे फिर से सक्रिय करना चाहें"
 
 #: js/extensionPrefs/js/main.js:148 js/gdm/authPrompt.js:189
 #: js/ui/audioDeviceSelection.js:57 js/ui/components/networkAgent.js:115
@@ -603,14 +603,14 @@ msgstr "हटाएँ"
 
 #: js/extensionPrefs/js/main.js:181
 msgid "translator-credits"
-msgstr ""
+msgstr "अनुवादक-क्रेडिट"
 
 #: js/extensionPrefs/js/main.js:316
 #, javascript-format
 msgid "%d extension will be updated on next login."
 msgid_plural "%d extensions will be updated on next login."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%d एक्सटेंशन को अगले लॉगिन पर अपडेट किया जाएगा।"
+msgstr[1] "%d एक्सटेंशन अगले लॉगिन पर अपडेट किए जाएंगे।"
 
 #: js/extensionPrefs/data/ui/extension-row.ui:100
 #: subprojects/extensions-tool/src/command-create.c:211
@@ -625,15 +625,15 @@ msgstr "संस्करण"
 
 #: js/extensionPrefs/data/ui/extension-row.ui:151
 msgid "Author"
-msgstr ""
+msgstr "लेखक"
 
 #: js/extensionPrefs/data/ui/extension-row.ui:175
 msgid "Website"
-msgstr ""
+msgstr "वेबसाइट"
 
 #: js/extensionPrefs/data/ui/extension-row.ui:192
 msgid "Remove…"
-msgstr ""
+msgstr "निकालें..."
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:8 js/ui/userMenu.js:27
 msgid "Help"
@@ -641,36 +641,36 @@ msgstr "मदद"
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:12
 msgid "About Extensions"
-msgstr ""
+msgstr "एक्सटेंशन के बारे में"
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:27
 msgid ""
 "To find and add extensions, visit <a "
 "href=\"https://extensions.gnome.org\">extensions.gnome.org</a>."
-msgstr ""
+msgstr "एक्सटेंशन खोजने और जोड़ने के लिए, <a href=\"https://extensions.gnome.org\">extensions.gnome.org</a> पर जाएं।"
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:35
 msgid "Warning"
-msgstr ""
+msgstr "चेतावनी"
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:46
 msgid ""
 "Extensions can cause system issues, including performance problems. If you "
 "encounter problems with your system, it is recommended to disable all "
 "extensions."
-msgstr ""
+msgstr "एक्स्टेंसन सिस्टम की समस्या, जिसमें प्रदर्शन की समस्या शामिल है, पैदा कर सकते हैं। यदि आप अपने सिस्टम में समस्या पाते हैं, तो सारे एक्स्टेंसन को निष्क्रिय करने की सलाह दी जाती है।"
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:134
 msgid "Manually Installed"
-msgstr ""
+msgstr "मैन्युअली इंस्टाल किया गया"
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:158
 msgid "Built-In"
-msgstr ""
+msgstr "अन्तर्निहित"
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:199
 msgid "No Installed Extensions"
-msgstr ""
+msgstr "कोई एक्सटेंशन इनस्टॉल नहीं है"
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:235
 msgid ""
@@ -680,7 +680,7 @@ msgstr "हमें खेद है, लेकिन इंस्टॉल क
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:288
 msgid "Log Out…"
-msgstr ""
+msgstr "लॉग आउट..."
 
 #: js/gdm/authPrompt.js:131
 msgid "Show password hint"
@@ -703,7 +703,7 @@ msgstr "कूटशब्द:"
 #. by customer support.
 #: js/gdm/authPrompt.js:680
 msgid "Enter unlock code"
-msgstr ""
+msgstr "अनलॉक कोड दर्ज करें"
 
 #. Translators: Password reset. The first %s is a verification code and the
 #. second is an email.
@@ -740,7 +740,7 @@ msgstr "(उदाहरण के लिए, उपयोक्ता या %s
 #: js/gdm/loginDialog.js:920 js/ui/components/networkAgent.js:399
 #: js/ui/components/networkAgent.js:422 js/ui/components/networkAgent.js:440
 msgid "Username"
-msgstr ""
+msgstr "यूजरनेम"
 
 #: js/gdm/loginDialog.js:1256
 msgid "Login Window"
@@ -769,7 +769,7 @@ msgstr "बंद करें"
 #. by semicolons
 #: js/misc/systemActions.js:92
 msgid "power off;shutdown;reboot;restart;halt;stop"
-msgstr ""
+msgstr "बंद करें;शटडाउन;रिबूट;रिस्टार्ट;हॉल्ट;रोकें"
 
 #. Translators: The name of the lock screen action in search
 #: js/misc/systemActions.js:97
@@ -823,17 +823,17 @@ msgstr "उपयोक्ता बदलें"
 #. separated by semicolons
 #: js/misc/systemActions.js:131
 msgid "lock orientation;unlock orientation;screen;rotation"
-msgstr ""
+msgstr "लॉक ओरिएंटेशन;अनलॉक ओरिएंटेशन;स्क्रीन;रोटेशन"
 
 #: js/misc/systemActions.js:251
 msgctxt "search-result"
 msgid "Unlock Screen Rotation"
-msgstr ""
+msgstr "स्क्रीन रोटेशन को अनलॉक करें"
 
 #: js/misc/systemActions.js:252
 msgctxt "search-result"
 msgid "Lock Screen Rotation"
-msgstr ""
+msgstr "लॉक स्क्रीन रोटेशन"
 
 #: js/misc/util.js:125
 msgid "Command not found"
@@ -1171,7 +1171,7 @@ msgstr "कोई ईवेंट नहीं"
 
 #: js/ui/calendar.js:1157
 msgid "Do Not Disturb"
-msgstr ""
+msgstr "डू नॉट डिस्टर्ब"
 
 #: js/ui/calendar.js:1171
 msgid "Clear"
@@ -1246,19 +1246,19 @@ msgstr "इस कनेक्शन पर सीमाएं नहीं ह�
 
 #: js/ui/components/networkAgent.js:369
 msgid "Key"
-msgstr ""
+msgstr "की"
 
 #: js/ui/components/networkAgent.js:407 js/ui/components/networkAgent.js:430
 msgid "Private key password"
-msgstr ""
+msgstr "निजी कुंजी पासवर्ड"
 
 #: js/ui/components/networkAgent.js:428
 msgid "Identity"
-msgstr ""
+msgstr "पहचान"
 
 #: js/ui/components/networkAgent.js:442
 msgid "Service"
-msgstr ""
+msgstr "सेवा"
 
 #: js/ui/components/networkAgent.js:471
 #, javascript-format
@@ -1271,7 +1271,7 @@ msgstr "तारयुक्त 802.1X सत्यापन"
 
 #: js/ui/components/networkAgent.js:478
 msgid "Network name"
-msgstr ""
+msgstr "नेटवर्क का नाम"
 
 #: js/ui/components/networkAgent.js:483 js/ui/components/networkAgent.js:855
 msgid "DSL authentication"
@@ -1287,7 +1287,7 @@ msgstr "पिन कोड मोबाइल ब्रॉडबैंड य�
 
 #: js/ui/components/networkAgent.js:492
 msgid "PIN"
-msgstr ""
+msgstr "पिन"
 
 #: js/ui/components/networkAgent.js:499 js/ui/components/networkAgent.js:846
 #: js/ui/components/networkAgent.js:867
@@ -1314,7 +1314,7 @@ msgstr "कूटशब्द या गोपन कुंजी बेता�
 
 #: js/ui/components/networkAgent.js:871
 msgid "VPN password"
-msgstr ""
+msgstr "VPN पासवर्ड"
 
 #: js/ui/components/polkitAgent.js:39
 msgid "Authentication Required"
@@ -1525,15 +1525,15 @@ msgstr "%s %s फिर से आरंभ के बाद स्थापि�
 
 #: js/ui/endSessionDialog.js:261
 msgid "Running on battery power: Please plug in before installing updates."
-msgstr ""
+msgstr "बैटरी पावर पर चल रहा है: अपडेट इंस्टॉल करने से पहले कृपया प्लग इन करें।"
 
 #: js/ui/endSessionDialog.js:270
 msgid "Some applications are busy or have unsaved work"
-msgstr ""
+msgstr "कुछ एप्लिकेशन व्यस्त हैं या उनमे सेव नहीं किए गए कार्य हैं"
 
 #: js/ui/endSessionDialog.js:275
 msgid "Other users are logged in"
-msgstr ""
+msgstr "अन्य उपयोगकर्ता लॉग इन हैं"
 
 #. Translators: Remote here refers to a remote session, like a ssh login
 #: js/ui/endSessionDialog.js:588
@@ -1550,13 +1550,13 @@ msgstr "%s (कंसोल)"
 #: js/ui/extensionDownloader.js:24
 #, javascript-format
 msgid "Can't install “%s”:"
-msgstr ""
+msgstr "“%s” इनस्टॉल नहीं कर सकते:"
 
 #: js/ui/extensionDownloader.js:25
 msgid ""
 "This is an extension enabled by your current mode, you can't install "
 "manually any update in that session."
-msgstr ""
+msgstr "यह आपके वर्तमान मोड द्वारा सक्षम किया गया एक्सटेंशन है, आप उस सत्र में किसी भी अपडेट को मैनुअल रूप से इंस्टाल नहीं कर सकते।"
 
 #: js/ui/extensionDownloader.js:192
 msgid "Install"
@@ -1564,7 +1564,7 @@ msgstr "संस्थापित करें"
 
 #: js/ui/extensionDownloader.js:198
 msgid "Install Extension"
-msgstr ""
+msgstr "एक्स्टेंसन इंस्टाल करें"
 
 #: js/ui/extensionDownloader.js:199
 #, javascript-format
@@ -1573,25 +1573,25 @@ msgstr "“%s” को extensions.gnome.org से डाउनलोड कर
 
 #: js/ui/extensionSystem.js:229
 msgid "Extension Updates Available"
-msgstr ""
+msgstr "एक्सटेंशन अपडेट उपलब्ध हैं"
 
 #: js/ui/extensionSystem.js:230
 msgid "Extension updates are ready to be installed."
-msgstr ""
+msgstr "एक्सटेंशन अपडेट इंस्टॉल होने के लिए तैयार हैं।"
 
 #: js/ui/inhibitShortcutsDialog.js:79
 msgid "Allow inhibiting shortcuts"
-msgstr ""
+msgstr "शॉर्टकट्स को बाधित करने की अनुमति दें"
 
 #. Translators: %s is an application name like "Settings"
 #: js/ui/inhibitShortcutsDialog.js:82
 #, javascript-format
 msgid "The application %s wants to inhibit shortcuts"
-msgstr ""
+msgstr "एप्लिकेशन %s शॉर्टकट्स को रोकना चाहता है"
 
 #: js/ui/inhibitShortcutsDialog.js:83
 msgid "An application wants to inhibit shortcuts"
-msgstr ""
+msgstr "एक एप्लीकेशन शॉर्टकट को बाधित करना चाहता है"
 
 #. Translators: %s is a keyboard shortcut like "Super+x"
 #: js/ui/inhibitShortcutsDialog.js:90
@@ -1717,21 +1717,21 @@ msgstr "वेब पृष्ठ"
 
 #: js/ui/main.js:315
 msgid "Logged in as a privileged user"
-msgstr ""
+msgstr "एक विशेषाधिकार प्राप्त यूजर के रूप में लॉग इन किया हुआ"
 
 #: js/ui/main.js:316
 msgid ""
 "Running a session as a privileged user should be avoided for security "
 "reasons. If possible, you should log in as a normal user."
-msgstr ""
+msgstr "सुरक्षा कारणों से एक विशेषाधिकार प्राप्त उपयोगकर्ता के रूप में सेशन चलाने से बचना चाहिए। यदि संभव हो, तो आपको एक सामान्य उपयोगकर्ता के रूप में लॉग इन करना चाहिए।"
 
 #: js/ui/main.js:355
 msgid "Screen Lock disabled"
-msgstr ""
+msgstr "स्क्रीन लॉक अक्षम"
 
 #: js/ui/main.js:356
 msgid "Screen Locking requires the GNOME display manager."
-msgstr ""
+msgstr "स्क्रीन लॉकिंग के लिए GNOME डिस्प्ले प्रबंधक आवश्यक है।"
 
 #: js/ui/messageTray.js:1552
 msgid "System Information"
@@ -1865,7 +1865,7 @@ msgstr "एक नया कोड खरीदने के लिए अपन
 #: js/ui/paygUnlockDialog.js:188
 #, javascript-format
 msgid "Pay As You Go Account ID: %s"
-msgstr ""
+msgstr "पे ऐज यू गो अकाउंट आईडी:%s "
 
 #: js/ui/paygUnlockDialog.js:198
 msgid "Unlock Machine"
@@ -1927,7 +1927,7 @@ msgstr "कोड सत्यापित करते समय समय प�
 #: js/ui/payg.js:267
 #, javascript-format
 msgid "Your Pay As You Go Account ID is: %s"
-msgstr ""
+msgstr "आपकी उपयोग अनुसार भुगतान खाता ID है: %s"
 
 #. We don't consider any other error here (and we don't consider DISABLED
 #. explicitly,
@@ -2015,11 +2015,11 @@ msgstr "आपने अपनी एंडलेस मशीन को सफ�
 
 #: js/ui/runDialog.js:58
 msgid "Run a Command"
-msgstr ""
+msgstr "एक कमांड चलाएँ"
 
 #: js/ui/runDialog.js:73
 msgid "Press ESC to close"
-msgstr ""
+msgstr "बंद करने के लिए ESC दबाएँ"
 
 #: js/ui/runDialog.js:240
 msgid "Restart is not available on Wayland"
@@ -2086,7 +2086,7 @@ msgstr "खोजें... "
 
 #: js/ui/shellEntry.js:490
 msgid "Caps lock is on."
-msgstr ""
+msgstr "कैप्स लॉक ऑन है।"
 
 #: js/ui/shellMountOperation.js:285
 msgid "Hidden Volume"
@@ -2304,13 +2304,13 @@ msgstr "सक्रिय करें"
 
 #: js/ui/status/location.js:355
 msgid "Allow location access"
-msgstr ""
+msgstr "लोकेशन एक्सेस की अनुमति दें"
 
 #. Translators: %s is an application name
 #: js/ui/status/location.js:357
 #, javascript-format
 msgid "The app %s wants to access your location"
-msgstr ""
+msgstr "%s ऐप आपका स्थान एक्सेस करना चाहता है"
 
 #: js/ui/status/location.js:367
 msgid "Location access can be changed at any time from the privacy settings."
@@ -2561,7 +2561,7 @@ msgstr "1 मिनट से भी कम"
 #: js/ui/status/payg.js:124
 #, javascript-format
 msgid "Account ID: %s"
-msgstr ""
+msgstr "खाता ID: %s "
 
 #: js/ui/status/power.js:47
 msgid "Power Settings"
@@ -2619,7 +2619,7 @@ msgstr "तालाबंद"
 
 #: js/ui/status/system.js:90
 msgid "Power Off / Log Out"
-msgstr ""
+msgstr "बंद करे / लॉग आउट"
 
 #: js/ui/status/system.js:93
 msgid "Log Out"
@@ -2627,7 +2627,7 @@ msgstr "लॉग आउट"
 
 #: js/ui/status/system.js:105
 msgid "Switch User…"
-msgstr ""
+msgstr "उपयोगकर्ता स्विच करें..."
 
 #: js/ui/status/system.js:119
 msgid "Suspend"
@@ -2635,7 +2635,7 @@ msgstr "स्थगित"
 
 #: js/ui/status/system.js:131
 msgid "Power Off…"
-msgstr ""
+msgstr "बिजली बंद…"
 
 #: js/ui/status/thunderbolt.js:263
 msgid "Thunderbolt"
@@ -2705,15 +2705,15 @@ msgstr "केवल अंतर्निहित"
 #. long format
 #: js/ui/unlockDialog.js:371
 msgid "%A %B %-d"
-msgstr ""
+msgstr "%A %B %-d"
 
 #: js/ui/unlockDialog.js:377
 msgid "Swipe up to unlock"
-msgstr ""
+msgstr "अनलॉक करने के लिए स्वाइप अप करें"
 
 #: js/ui/unlockDialog.js:378
 msgid "Click or press a key to unlock"
-msgstr ""
+msgstr "अनलॉक करने के लिए एक की पर क्लिक करें या दबाएँ"
 
 #: js/ui/unlockDialog.js:550
 msgid "Unlock Window"
@@ -2735,7 +2735,7 @@ msgstr "“%s” तैयार है"
 #. Translators: This string should be shorter than 30 characters
 #: js/ui/windowManager.js:61
 msgid "Keep these display settings?"
-msgstr ""
+msgstr "इन डिस्प्ले सेटिंग्स को रखना चाहते हैं?"
 
 #. Translators: this and the following message should be limited in length,
 #. to avoid ellipsizing the labels.
@@ -2871,7 +2871,7 @@ msgstr "सत्यापन संवाद को उपयोक्ता �
 #: subprojects/extensions-tool/src/command-create.c:125
 #, c-format
 msgid "The new extension was successfully created in %s.\n"
-msgstr ""
+msgstr "नया एक्सटेंशन सफ़लतापूर्वक %s में बनाया गया था।\n"
 
 #: subprojects/extensions-tool/src/command-create.c:194
 #, c-format
@@ -3008,7 +3008,7 @@ msgstr "प्राथमिकता के साथ एक्सटेंश
 
 #: subprojects/extensions-tool/src/command-list.c:140
 msgid "Show extensions with updates"
-msgstr ""
+msgstr "अपडेट के साथ एक्सटेंशन दिखाएं"
 
 #: subprojects/extensions-tool/src/command-list.c:143
 msgid "Print extension details"

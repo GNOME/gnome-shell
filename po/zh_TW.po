@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-04-17 17:11+0100\n"
-"PO-Revision-Date: 2020-04-17 16:19+0000\n"
+"PO-Revision-Date: 2020-04-18 08:46+0000\n"
 "Last-Translator: Will Thompson <wjt@endlessm.com>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/endless-os/gnome-shell/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
@@ -567,7 +567,7 @@ msgstr "管理 GNOME Shell 擴充套件"
 msgid ""
 "GNOME Extensions handles updating extensions, configuring extension "
 "preferences and removing or disabling unwanted extensions."
-msgstr ""
+msgstr "GNOME 擴充套件處理更新擴充功能、設定擴充功能偏好，以及移除或停用不需要的擴充功能。"
 
 #: js/extensionPrefs/data/org.gnome.Extensions.desktop.in.in:7
 msgid "Configure GNOME Shell Extensions"
@@ -599,7 +599,7 @@ msgstr "移除"
 
 #: js/extensionPrefs/js/main.js:181
 msgid "translator-credits"
-msgstr ""
+msgstr "參與的譯者"
 
 #: js/extensionPrefs/js/main.js:316
 #, javascript-format
@@ -698,7 +698,7 @@ msgstr "密碼"
 #. by customer support.
 #: js/gdm/authPrompt.js:680
 msgid "Enter unlock code"
-msgstr ""
+msgstr "輸入解鎖碼"
 
 #. Translators: Password reset. The first %s is a verification code and the
 #. second is an email.
@@ -1534,13 +1534,13 @@ msgstr "%s (主控臺)"
 #: js/ui/extensionDownloader.js:24
 #, javascript-format
 msgid "Can't install “%s”:"
-msgstr ""
+msgstr "無法安裝 “%s”："
 
 #: js/ui/extensionDownloader.js:25
 msgid ""
 "This is an extension enabled by your current mode, you can't install "
 "manually any update in that session."
-msgstr ""
+msgstr "這是您目前模式啟用的擴充功能，您不能在該工作階段中手動安裝任何更新。"
 
 #: js/ui/extensionDownloader.js:192
 msgid "Install"
@@ -1849,7 +1849,7 @@ msgstr "與銷售代表聯絡以購買新代碼。"
 #: js/ui/paygUnlockDialog.js:188
 #, javascript-format
 msgid "Pay As You Go Account ID: %s"
-msgstr ""
+msgstr "Pay As You Go 帳戶 ID：%s"
 
 #: js/ui/paygUnlockDialog.js:198
 msgid "Unlock Machine"
@@ -1910,7 +1910,7 @@ msgstr "驗證代碼逾時"
 #: js/ui/payg.js:267
 #, javascript-format
 msgid "Your Pay As You Go Account ID is: %s"
-msgstr ""
+msgstr "您的 Pay As You Go 帳戶 ID 為：%s"
 
 #. We don't consider any other error here (and we don't consider DISABLED
 #. explicitly,
@@ -2531,7 +2531,7 @@ msgstr "少於 1 分鐘"
 #: js/ui/status/payg.js:124
 #, javascript-format
 msgid "Account ID: %s"
-msgstr ""
+msgstr "帳戶 ID：%s"
 
 #: js/ui/status/power.js:47
 msgid "Power Settings"

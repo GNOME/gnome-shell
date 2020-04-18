@@ -26,7 +26,7 @@ msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-04-17 17:11+0100\n"
-"PO-Revision-Date: 2020-04-17 16:15+0000\n"
+"PO-Revision-Date: 2020-04-18 02:39+0000\n"
 "Last-Translator: Will Thompson <wjt@endlessm.com>\n"
 "Language-Team: Spanish (http://www.transifex.com/endless-os/gnome-shell/language/es/)\n"
 "MIME-Version: 1.0\n"
@@ -713,7 +713,7 @@ msgstr "Contraseña"
 #. by customer support.
 #: js/gdm/authPrompt.js:680
 msgid "Enter unlock code"
-msgstr ""
+msgstr "Introduce el código de desbloqueo"
 
 #. Translators: Password reset. The first %s is a verification code and the
 #. second is an email.
@@ -1560,13 +1560,13 @@ msgstr "%s (consola)"
 #: js/ui/extensionDownloader.js:24
 #, javascript-format
 msgid "Can't install “%s”:"
-msgstr ""
+msgstr "No se puede instalar “%s”:"
 
 #: js/ui/extensionDownloader.js:25
 msgid ""
 "This is an extension enabled by your current mode, you can't install "
 "manually any update in that session."
-msgstr ""
+msgstr "Esta es una extensión habilitada por tu modo actual: no puedes instalar manualmente ninguna actualización en esa sesión."
 
 #: js/ui/extensionDownloader.js:192
 msgid "Install"
@@ -1875,7 +1875,7 @@ msgstr "Compra un código nuevo en los puntos autorizados."
 #: js/ui/paygUnlockDialog.js:188
 #, javascript-format
 msgid "Pay As You Go Account ID: %s"
-msgstr ""
+msgstr "ID de la cuenta de pago según el uso: %s"
 
 #: js/ui/paygUnlockDialog.js:198
 msgid "Unlock Machine"
@@ -1937,7 +1937,7 @@ msgstr "Tiempo excedido al verificar el código"
 #: js/ui/payg.js:267
 #, javascript-format
 msgid "Your Pay As You Go Account ID is: %s"
-msgstr ""
+msgstr "Tu identificación de cuentas de pago según el uso es: %s"
 
 #. We don't consider any other error here (and we don't consider DISABLED
 #. explicitly,
@@ -2571,7 +2571,7 @@ msgstr "Menos de 1 minuto"
 #: js/ui/status/payg.js:124
 #, javascript-format
 msgid "Account ID: %s"
-msgstr ""
+msgstr "Nº de cuenta: %s"
 
 #: js/ui/status/power.js:47
 msgid "Power Settings"
