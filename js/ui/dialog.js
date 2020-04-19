@@ -118,7 +118,7 @@ class Dialog extends St.Widget {
         let keys;
 
         if (key)
-            keys = [key];
+            keys = Array.isArray(key) ? key : [key];
         else if (isDefault)
             keys = [Clutter.KEY_Return, Clutter.KEY_KP_Enter, Clutter.KEY_ISO_Enter];
         else
