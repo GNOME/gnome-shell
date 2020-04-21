@@ -1119,7 +1119,7 @@ var KeyboardManager = class KeyBoardManager {
         this._seat.connect('notify::touch-mode', this._syncEnabled.bind(this));
 
         this._lastDevice = null;
-        Meta.get_backend().connect('last-device-changed', (backend, device) => {
+        global.backend.connect('last-device-changed', (backend, device) => {
             if (device.device_type === Clutter.InputDeviceType.KEYBOARD_DEVICE)
                 return;
 
