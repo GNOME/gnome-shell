@@ -32,10 +32,11 @@ G_BEGIN_DECLS
 G_DECLARE_FINAL_TYPE (StThemeNodeTransition, st_theme_node_transition,
                       ST, THEME_NODE_TRANSITION, GObject)
 
-StThemeNodeTransition *st_theme_node_transition_new (StThemeNode *from_node,
-                                                     StThemeNode *to_node,
+StThemeNodeTransition *st_theme_node_transition_new (ClutterActor          *actor,
+                                                     StThemeNode           *from_node,
+                                                     StThemeNode           *to_node,
                                                      StThemeNodePaintState *old_paint_state,
-                                                     guint        duration);
+                                                     guint                  duration);
 
 void  st_theme_node_transition_update   (StThemeNodeTransition *transition,
                                          StThemeNode           *new_node);
