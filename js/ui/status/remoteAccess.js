@@ -24,7 +24,8 @@ class RemoteAccessApplet extends PanelMenu.SystemIndicator {
             return;
 
         this._handles = new Set();
-        this._indicator = null;
+        this._sharedIndicator = null;
+        this._recordingIndicator = null;
         this._menuSection = null;
 
         controller.connect('new-handle', (o, handle) => {
@@ -33,32 +34,49 @@ class RemoteAccessApplet extends PanelMenu.SystemIndicator {
     }
 
     _ensureControls() {
-        if (this._indicator)
+        if (this._sharedIndicator && this._recordingIndicator)
             return;
 
-        this._indicator = this._addIndicator();
-        this._indicator.icon_name = 'screen-shared-symbolic';
-        this._indicator.add_style_class_name('remote-access-indicator');
-        this._item =
+        this._sharedIndicator = this._addIndicator();
+        this._sharedIndicator.icon_name = 'screen-shared-symbolic';
+        this._sharedIndicator.add_style_class_name('remote-access-indicator');
+
+        this._sharedItem =
             new PopupMenu.PopupSubMenuMenuItem(_("Screen is Being Shared"),
                                                true);
-        this._item.menu.addAction(_("Turn off"),
-                                  () => {
-                                      for (let handle of this._handles)
-                                          handle.stop();
-                                  });
-        this._item.icon.icon_name = 'screen-shared-symbolic';
-        this.menu.addMenuItem(this._item);
+        this._sharedItem.menu.addAction(_("Turn off"),
+            () => {
+                for (let handle of this._handles) {
+                    if (!handle.is_recording)
+                        handle.stop();
+                }
+            });
+        this._sharedItem.icon.icon_name = 'screen-shared-symbolic';
+        this.menu.addMenuItem(this._sharedItem);
+
+        this._recordingIndicator = this._addIndicator();
+        this._recordingIndicator.icon_name = 'media-record-symbolic';
+        this._recordingIndicator.add_style_class_name('screencast-indicator');
+    }
+
+    _isScreenShared() {
+        return [...this._handles].some(handle => !handle.is_recording);
+    }
+
+    _isRecording() {
+        return [...this._handles].some(handle => handle.is_recording);
     }
 
     _sync() {
-        if (this._handles.size == 0) {
-            this._indicator.visible = false;
-            this._item.visible = false;
+        if (this._isScreenShared()) {
+            this._sharedIndicator.visible = true;
+            this._sharedItem.visible = true;
         } else {
-            this._indicator.visible = true;
-            this._item.visible = true;
+            this._sharedIndicator.visible = false;
+            this._sharedItem.visible = false;
         }
+
+        this._recordingIndicator.visible = this._isRecording();
     }
 
     _onStopped(handle) {
@@ -70,9 +88,7 @@ class RemoteAccessApplet extends PanelMenu.SystemIndicator {
         this._handles.add(handle);
         handle.connect('stopped', this._onStopped.bind(this));
 
-        if (this._handles.size == 1) {
-            this._ensureControls();
-            this._sync();
-        }
+        this._ensureControls();
+        this._sync();
     }
 });
