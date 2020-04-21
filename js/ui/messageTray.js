@@ -136,29 +136,22 @@ var FocusGrabber = class FocusGrabber {
 var NotificationPolicy = GObject.registerClass({
     Properties: {
         'enable': GObject.ParamSpec.boolean(
-            'enable', 'enable', 'enable',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            true),
+            'enable', 'enable', 'enable', GObject.ParamFlags.READABLE, true),
         'enable-sound': GObject.ParamSpec.boolean(
             'enable-sound', 'enable-sound', 'enable-sound',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            true),
+            GObject.ParamFlags.READABLE, true),
         'show-banners': GObject.ParamSpec.boolean(
             'show-banners', 'show-banners', 'show-banners',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            true),
+            GObject.ParamFlags.READABLE, true),
         'force-expanded': GObject.ParamSpec.boolean(
             'force-expanded', 'force-expanded', 'force-expanded',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            false),
+            GObject.ParamFlags.READABLE, false),
         'show-in-lock-screen': GObject.ParamSpec.boolean(
             'show-in-lock-screen', 'show-in-lock-screen', 'show-in-lock-screen',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            false),
+            GObject.ParamFlags.READABLE, false),
         'details-in-lock-screen': GObject.ParamSpec.boolean(
             'details-in-lock-screen', 'details-in-lock-screen', 'details-in-lock-screen',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            false),
+            GObject.ParamFlags.READABLE, false),
     },
 }, class NotificationPolicy extends GObject.Object {
     // Do nothing for the default policy. These methods are only useful for the
@@ -170,23 +163,23 @@ var NotificationPolicy = GObject.registerClass({
     }
 
     get enableSound() {
-        return this.enable_sound;
+        return true;
     }
 
     get showBanners() {
-        return this.show_banners;
+        return true;
     }
 
     get forceExpanded() {
-        return this.force_expanded;
+        return false;
     }
 
     get showInLockScreen() {
-        return this.show_in_lock_screen;
+        return false;
     }
 
     get detailsInLockScreen() {
-        return this.details_in_lock_screen;
+        return false;
     }
 });
 
