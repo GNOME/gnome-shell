@@ -1109,7 +1109,7 @@ var AppSearchProvider = class AppSearchProvider {
 
                 const app = this._appSys.lookup_app(appID);
 
-                if (!parentalControlsManager.shouldShowApp(app.app_info))
+                if (app && !parentalControlsManager.shouldShowApp(app.app_info))
                     return false;
 
                 if (app && app.app_info.should_show()) {
