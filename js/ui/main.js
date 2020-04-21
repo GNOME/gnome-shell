@@ -802,7 +802,7 @@ function showRestartMessage(message) {
 
 var AnimationsSettings = class {
     constructor() {
-        let backend = Meta.get_backend();
+        let backend = global.backend;
         if (!backend.is_rendering_hardware_accelerated()) {
             St.Settings.get().inhibit_animations();
             return;
