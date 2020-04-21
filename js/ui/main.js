@@ -97,6 +97,8 @@ let _oskResource = null;
 Gio._promisify(Gio._LocalFilePrototype, 'delete_async', 'delete_finish');
 Gio._promisify(Gio._LocalFilePrototype, 'touch_async', 'touch_finish');
 
+let _remoteAccessInhibited = false;
+
 function _sessionUpdated() {
     if (sessionMode.isPrimary)
         _loadDefaultStylesheet();
@@ -120,6 +122,17 @@ function _sessionUpdated() {
             runDialog.close();
         if (lookingGlass)
             lookingGlass.close();
+    }
+
+    let remoteAccessController = backend.get_remote_access_controller();
+    if (remoteAccessController) {
+        if (sessionMode.allowScreencast && _remoteAccessInhibited) {
+            remoteAccessController.uninhibit_remote_access();
+            _remoteAccessInhibited = false;
+        } else if (!sessionMode.allowScreencast && !_remoteAccessInhibited) {
+            remoteAccessController.inhibit_remote_access();
+            _remoteAccessInhibited = true;
+        }
     }
 }
 
