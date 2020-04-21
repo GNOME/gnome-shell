@@ -11,8 +11,7 @@ class RemoteAccessApplet extends PanelMenu.SystemIndicator {
     _init() {
         super._init();
 
-        let backend = Meta.get_backend();
-        let controller = backend.get_remote_access_controller();
+        let controller = global.backend.get_remote_access_controller();
 
         if (!controller)
             return;

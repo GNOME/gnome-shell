@@ -62,11 +62,11 @@ var KeyboardManager = class {
             return;
 
         this._currentKeymap = { layouts, variants, options };
-        Meta.get_backend().set_keymap(layouts, variants, options);
+        global.backend.set_keymap(layouts, variants, options);
     }
 
     _applyLayoutGroupIndex(idx) {
-        Meta.get_backend().lock_layout_group(idx);
+        global.backend.lock_layout_group(idx);
     }
 
     apply(id) {

@@ -17,7 +17,7 @@ var XdndHandler = class {
         Main.uiGroup.add_actor(this._dummy);
         this._dummy.hide();
 
-        var dnd = Meta.get_backend().get_dnd();
+        var dnd = global.backend.get_dnd();
         dnd.connect('dnd-enter', this._onEnter.bind(this));
         dnd.connect('dnd-position-change', this._onPositionChanged.bind(this));
         dnd.connect('dnd-leave', this._onLeave.bind(this));
