@@ -84,10 +84,11 @@ on_timeline_new_frame (ClutterTimeline       *timeline,
 }
 
 StThemeNodeTransition *
-st_theme_node_transition_new (StThemeNode *from_node,
-                              StThemeNode *to_node,
+st_theme_node_transition_new (ClutterActor          *actor,
+                              StThemeNode           *from_node,
+                              StThemeNode           *to_node,
                               StThemeNodePaintState *old_paint_state,
-                              guint        duration)
+                              unsigned int           duration)
 {
   StThemeNodeTransition *transition;
   g_return_val_if_fail (ST_IS_THEME_NODE (from_node), NULL);
@@ -103,7 +104,7 @@ st_theme_node_transition_new (StThemeNode *from_node,
   st_theme_node_paint_state_copy (&transition->priv->old_paint_state,
                                   old_paint_state);
 
-  transition->priv->timeline = clutter_timeline_new (duration);
+  transition->priv->timeline = clutter_timeline_new_for_actor (actor, duration);
 
   transition->priv->timeline_completed_id =
     g_signal_connect (transition->priv->timeline, "completed",
