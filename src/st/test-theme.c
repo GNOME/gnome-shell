@@ -546,7 +546,8 @@ main (int argc, char **argv)
 
   meta_test_init ();
 
-  chdir (cwd);
+  if (chdir (cwd) < 0)
+    g_error ("chdir('%s') failed: %s", cwd, g_strerror (errno));
 
   /* Make sure our assumptions about resolution are correct */
   g_object_set (clutter_settings_get_default (), "font-dpi", -1, NULL);
