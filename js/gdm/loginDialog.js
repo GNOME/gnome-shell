@@ -810,12 +810,13 @@ var LoginDialog = GObject.registerClass({
             return;
 
         this._logoBin.destroy_all_children();
-        if (this._logoFile && this._logoBin.resource_scale > 0) {
+        let [validResourceScale, resourceScale] = this._logoBin.get_resource_scale();
+        if (this._logoFile && validResourceScale) {
             let scaleFactor = St.ThemeContext.get_for_stage(global.stage).scale_factor;
             this._logoBin.add_child(this._textureCache.load_file_async(this._logoFile,
                                                                        -1, -1,
                                                                        scaleFactor,
-                                                                       this._logoBin.resource_scale));
+                                                                       resourceScale));
         }
     }
 
