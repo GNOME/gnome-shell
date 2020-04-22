@@ -120,25 +120,25 @@ calendar_sources_class_init (CalendarSourcesClass *klass)
 
   signals [APPOINTMENT_SOURCES_CHANGED] =
     g_signal_new ("appointment-sources-changed",
-		  G_TYPE_FROM_CLASS (gobject_class),
-		  G_SIGNAL_RUN_LAST,
-		  0,
-		  NULL,
-		  NULL,
+                  G_TYPE_FROM_CLASS (gobject_class),
+                  G_SIGNAL_RUN_LAST,
+                  0,
                   NULL,
-		  G_TYPE_NONE,
-		  0);
+                  NULL,
+                  NULL,
+                  G_TYPE_NONE,
+                  0);
 
   signals [TASK_SOURCES_CHANGED] =
     g_signal_new ("task-sources-changed",
-		  G_TYPE_FROM_CLASS (gobject_class),
-		  G_SIGNAL_RUN_LAST,
-		  0,
-		  NULL,
-		  NULL,
+                  G_TYPE_FROM_CLASS (gobject_class),
+                  G_SIGNAL_RUN_LAST,
+                  0,
                   NULL,
-		  G_TYPE_NONE,
-		  0);
+                  NULL,
+                  NULL,
+                  G_TYPE_NONE,
+                  0);
 }
 
 static void
@@ -227,7 +227,7 @@ calendar_sources_init (CalendarSources *sources)
 
 static void
 calendar_sources_finalize_source_data (CalendarSources    *sources,
-				       CalendarSourceData *source_data)
+                                       CalendarSourceData *source_data)
 {
   if (source_data->loaded)
     {
@@ -274,7 +274,7 @@ calendar_sources_get (void)
 
   calendar_sources_singleton = g_object_new (CALENDAR_TYPE_SOURCES, NULL);
   g_object_add_weak_pointer (G_OBJECT (calendar_sources_singleton),
-			     singleton_location);
+                             singleton_location);
 
   return calendar_sources_singleton;
 }
@@ -282,8 +282,8 @@ calendar_sources_get (void)
 /* The clients are just created here but not loaded */
 static void
 create_client_for_source (ESource              *source,
-		          ECalClientSourceType  source_type,
-		          CalendarSourceData   *source_data)
+                          ECalClientSourceType  source_type,
+                          CalendarSourceData   *source_data)
 {
   ClientData *data;
   EClient *client;
@@ -296,8 +296,8 @@ create_client_for_source (ESource              *source,
   if (!client)
     {
       g_warning ("Could not load source '%s': %s",
-		 e_source_get_uid (source),
-		 error->message);
+                 e_source_get_uid (source),
+                 error->message);
       g_clear_error(&error);
       return;
     }
@@ -325,8 +325,8 @@ debug_dump_ecal_list (GHashTable *clients)
       ESource *source = E_SOURCE (link->data);
 
       dprintf ("  %s %s\n",
-	       e_source_get_uid (source),
-	       e_source_get_display_name (source));
+               e_source_get_uid (source),
+               e_source_get_display_name (source));
     }
   g_list_free (list);
 #endif
@@ -365,7 +365,7 @@ backend_died_cb (EClient *client, CalendarSourceData *source_data)
   g_clear_handle_id (&source_data->timeout_id, g_source_remove);
 
   source_data->timeout_id = g_timeout_add_seconds (2, backend_restart,
-		  				   source_data);
+                                                   source_data);
   g_source_set_name_by_id (source_data->timeout_id, "[gnome-shell] backend_restart");
 }
 
