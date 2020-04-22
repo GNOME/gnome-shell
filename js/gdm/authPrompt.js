@@ -276,6 +276,8 @@ var AuthPrompt = GObject.registerClass({
         this.clear();
 
         this.updateSensitivity(canRetry);
+        if (canRetry)
+            this._entry.grab_key_focus();
         this.setActorInDefaultButtonWell(null);
         this.verificationStatus = AuthPromptStatus.VERIFICATION_FAILED;
 
