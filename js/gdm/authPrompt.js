@@ -425,6 +425,9 @@ var AuthPrompt = GObject.registerClass({
 
     updateSensitivity(sensitive) {
         this._entry.reactive = sensitive;
+
+        if (sensitive)
+            this._entry.grab_key_focus();
     }
 
     vfunc_hide() {
