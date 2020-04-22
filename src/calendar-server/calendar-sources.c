@@ -64,11 +64,7 @@ typedef struct _CalendarSourcesPrivate CalendarSourcesPrivate;
 struct _CalendarSources
 {
   GObject                 parent;
-  CalendarSourcesPrivate *priv;
-};
 
-struct _CalendarSourcesPrivate
-{
   ESourceRegistry    *registry;
   gulong              source_added_id;
   gulong              source_changed_id;
@@ -78,7 +74,7 @@ struct _CalendarSourcesPrivate
   CalendarSourceData  task_sources;
 };
 
-G_DEFINE_TYPE_WITH_PRIVATE (CalendarSources, calendar_sources, G_TYPE_OBJECT)
+G_DEFINE_TYPE (CalendarSources, calendar_sources, G_TYPE_OBJECT)
 
 static void calendar_sources_finalize   (GObject             *object);
 
@@ -148,8 +144,6 @@ calendar_sources_init (CalendarSources *sources)
   GDBusConnection *session_bus;
   GVariant *result;
 
-  sources->priv = calendar_sources_get_instance_private (sources);
-
   /* WORKAROUND: the hardcoded timeout for e_source_registry_new_sync()
      (and other library calls that eventually call g_dbus_proxy_new[_sync]())
      is 25 seconds. This has been shown to be too small for
@@ -179,7 +173,7 @@ calendar_sources_init (CalendarSources *sources)
   if (result != NULL)
     {
       g_variant_unref (result);
-      sources->priv->registry = e_source_registry_new_sync (NULL, &error);
+      sources->registry = e_source_registry_new_sync (NULL, &error);
     }
 
   if (error != NULL)
@@ -193,36 +187,36 @@ calendar_sources_init (CalendarSources *sources)
 
   g_object_unref (session_bus);
 
-  sources->priv->source_added_id   = g_signal_connect (sources->priv->registry,
-                                                       "source-added",
-                                                       G_CALLBACK (calendar_sources_registry_source_changed_cb),
-                                                       sources);
-  sources->priv->source_changed_id = g_signal_connect (sources->priv->registry,
-                                                       "source-changed",
-                                                       G_CALLBACK (calendar_sources_registry_source_changed_cb),
-                                                       sources);
-  sources->priv->source_removed_id = g_signal_connect (sources->priv->registry,
-                                                       "source-removed",
-                                                       G_CALLBACK (calendar_sources_registry_source_removed_cb),
-                                                       sources);
+  sources->source_added_id = g_signal_connect (sources->registry,
+                                               "source-added",
+                                               G_CALLBACK (calendar_sources_registry_source_changed_cb),
+                                               sources);
+  sources->source_changed_id = g_signal_connect (sources->registry,
+                                                 "source-changed",
+                                                 G_CALLBACK (calendar_sources_registry_source_changed_cb),
+                                                 sources);
+  sources->source_removed_id = g_signal_connect (sources->registry,
+                                                 "source-removed",
+                                                 G_CALLBACK (calendar_sources_registry_source_removed_cb),
+                                                 sources);
 
-  sources->priv->appointment_sources.source_type    = E_CAL_CLIENT_SOURCE_TYPE_EVENTS;
-  sources->priv->appointment_sources.sources        = sources;
-  sources->priv->appointment_sources.changed_signal = signals [APPOINTMENT_SOURCES_CHANGED];
-  sources->priv->appointment_sources.clients        = g_hash_table_new_full ((GHashFunc) e_source_hash,
-                                                                             (GEqualFunc) e_source_equal,
-                                                                             (GDestroyNotify) g_object_unref,
-                                                                             (GDestroyNotify) client_data_free);
-  sources->priv->appointment_sources.timeout_id     = 0;
+  sources->appointment_sources.source_type = E_CAL_CLIENT_SOURCE_TYPE_EVENTS;
+  sources->appointment_sources.sources = sources;
+  sources->appointment_sources.changed_signal = signals [APPOINTMENT_SOURCES_CHANGED];
+  sources->appointment_sources.clients = g_hash_table_new_full ((GHashFunc) e_source_hash,
+                                                                (GEqualFunc) e_source_equal,
+                                                                (GDestroyNotify) g_object_unref,
+                                                                (GDestroyNotify) client_data_free);
+  sources->appointment_sources.timeout_id = 0;
 
-  sources->priv->task_sources.source_type    = E_CAL_CLIENT_SOURCE_TYPE_TASKS;
-  sources->priv->task_sources.sources        = sources;
-  sources->priv->task_sources.changed_signal = signals [TASK_SOURCES_CHANGED];
-  sources->priv->task_sources.clients        = g_hash_table_new_full ((GHashFunc) e_source_hash,
-                                                                      (GEqualFunc) e_source_equal,
-                                                                      (GDestroyNotify) g_object_unref,
-                                                                      (GDestroyNotify) client_data_free);
-  sources->priv->task_sources.timeout_id     = 0;
+  sources->task_sources.source_type = E_CAL_CLIENT_SOURCE_TYPE_TASKS;
+  sources->task_sources.sources = sources;
+  sources->task_sources.changed_signal = signals [TASK_SOURCES_CHANGED];
+  sources->task_sources.clients = g_hash_table_new_full ((GHashFunc) e_source_hash,
+                                                         (GEqualFunc) e_source_equal,
+                                                         (GDestroyNotify) g_object_unref,
+                                                         (GDestroyNotify) client_data_free);
+  sources->task_sources.timeout_id = 0;
 }
 
 static void
@@ -245,20 +239,20 @@ calendar_sources_finalize (GObject *object)
 {
   CalendarSources *sources = CALENDAR_SOURCES (object);
 
-  if (sources->priv->registry)
+  if (sources->registry)
     {
-      g_clear_signal_handler (&sources->priv->source_added_id,
-                              sources->priv->registry);
-      g_clear_signal_handler (&sources->priv->source_changed_id,
-                              sources->priv->registry);
-      g_clear_signal_handler (&sources->priv->source_removed_id,
-                              sources->priv->registry);
-      g_object_unref (sources->priv->registry);
+      g_clear_signal_handler (&sources->source_added_id,
+                              sources->registry);
+      g_clear_signal_handler (&sources->source_changed_id,
+                              sources->registry);
+      g_clear_signal_handler (&sources->source_removed_id,
+                              sources->registry);
+      g_object_unref (sources->registry);
     }
-  sources->priv->registry = NULL;
+  sources->registry = NULL;
 
-  calendar_sources_finalize_source_data (sources, &sources->priv->appointment_sources);
-  calendar_sources_finalize_source_data (sources, &sources->priv->task_sources);
+  calendar_sources_finalize_source_data (sources, &sources->appointment_sources);
+  calendar_sources_finalize_source_data (sources, &sources->task_sources);
 
   if (G_OBJECT_CLASS (parent_class)->finalize)
     G_OBJECT_CLASS (parent_class)->finalize (object);
@@ -342,7 +336,7 @@ backend_restart (gpointer data)
   CalendarSourceData *source_data = data;
   ESourceRegistry *registry;
 
-  registry = source_data->sources->priv->registry;
+  registry = source_data->sources->registry;
   calendar_sources_load_esource_list (registry, source_data);
   g_signal_emit (source_data->sources, source_data->changed_signal, 0);
 
@@ -420,7 +414,7 @@ calendar_sources_registry_source_changed_cb (ESourceRegistry *registry,
       gboolean have_client;
       gboolean show_source;
 
-      source_data = &sources->priv->appointment_sources;
+      source_data = &sources->appointment_sources;
       extension = e_source_get_extension (source, E_SOURCE_EXTENSION_CALENDAR);
       have_client = (g_hash_table_lookup (source_data->clients, source) != NULL);
       show_source = e_source_get_enabled (source) && e_source_selectable_get_selected (extension);
@@ -444,7 +438,7 @@ calendar_sources_registry_source_changed_cb (ESourceRegistry *registry,
       gboolean have_client;
       gboolean show_source;
 
-      source_data = &sources->priv->task_sources;
+      source_data = &sources->task_sources;
       extension = e_source_get_extension (source, E_SOURCE_EXTENSION_TASK_LIST);
       have_client = (g_hash_table_lookup (source_data->clients, source) != NULL);
       show_source = e_source_get_enabled (source) && e_source_selectable_get_selected (extension);
@@ -471,7 +465,7 @@ calendar_sources_registry_source_removed_cb (ESourceRegistry *registry,
     {
       CalendarSourceData *source_data;
 
-      source_data = &sources->priv->appointment_sources;
+      source_data = &sources->appointment_sources;
       g_hash_table_remove (source_data->clients, source);
       g_signal_emit (sources, source_data->changed_signal, 0);
     }
@@ -480,7 +474,7 @@ calendar_sources_registry_source_removed_cb (ESourceRegistry *registry,
     {
       CalendarSourceData *source_data;
 
-      source_data = &sources->priv->task_sources;
+      source_data = &sources->task_sources;
       g_hash_table_remove (source_data->clients, source);
       g_signal_emit (sources, source_data->changed_signal, 0);
     }
@@ -489,11 +483,11 @@ calendar_sources_registry_source_removed_cb (ESourceRegistry *registry,
 static void
 ensure_appointment_sources (CalendarSources *sources)
 {
-  if (!sources->priv->appointment_sources.loaded)
+  if (!sources->appointment_sources.loaded)
     {
-      calendar_sources_load_esource_list (sources->priv->registry,
-                                          &sources->priv->appointment_sources);
-      sources->priv->appointment_sources.loaded = TRUE;
+      calendar_sources_load_esource_list (sources->registry,
+                                          &sources->appointment_sources);
+      sources->appointment_sources.loaded = TRUE;
     }
 }
 
@@ -506,7 +500,7 @@ calendar_sources_get_appointment_clients (CalendarSources *sources)
 
   ensure_appointment_sources (sources);
 
-  list = g_hash_table_get_values (sources->priv->appointment_sources.clients);
+  list = g_hash_table_get_values (sources->appointment_sources.clients);
 
   for (link = list; link != NULL; link = g_list_next (link))
     link->data = ((ClientData *) link->data)->client;
@@ -517,11 +511,11 @@ calendar_sources_get_appointment_clients (CalendarSources *sources)
 static void
 ensure_task_sources (CalendarSources *sources)
 {
-  if (!sources->priv->task_sources.loaded)
+  if (!sources->task_sources.loaded)
     {
-      calendar_sources_load_esource_list (sources->priv->registry,
-                                          &sources->priv->task_sources);
-      sources->priv->task_sources.loaded = TRUE;
+      calendar_sources_load_esource_list (sources->registry,
+                                          &sources->task_sources);
+      sources->task_sources.loaded = TRUE;
     }
 }
 
@@ -534,7 +528,7 @@ calendar_sources_get_task_clients (CalendarSources *sources)
 
   ensure_task_sources (sources);
 
-  list = g_hash_table_get_values (sources->priv->task_sources.clients);
+  list = g_hash_table_get_values (sources->task_sources.clients);
 
   for (link = list; link != NULL; link = g_list_next (link))
     link->data = ((ClientData *) link->data)->client;
@@ -550,6 +544,6 @@ calendar_sources_has_sources (CalendarSources *sources)
   ensure_appointment_sources (sources);
   ensure_task_sources (sources);
 
-  return g_hash_table_size (sources->priv->appointment_sources.clients) > 0 ||
-    g_hash_table_size (sources->priv->task_sources.clients) > 0;
+  return g_hash_table_size (sources->appointment_sources.clients) > 0 ||
+    g_hash_table_size (sources->task_sources.clients) > 0;
 }
