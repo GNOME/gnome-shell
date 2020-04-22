@@ -691,10 +691,10 @@ app_load_events (App *app)
 
       error = NULL;
       if (!e_cal_client_get_view_sync (cal,
-				       query,
-				       &view,
-				       NULL, /* cancellable */
-				       &error))
+                                       query,
+                                       &view,
+                                       NULL, /* cancellable */
+                                       &error))
         {
           g_warning ("Error setting up live-query on calendar: %s\n", error->message);
           g_error_free (error);
