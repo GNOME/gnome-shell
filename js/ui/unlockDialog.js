@@ -709,6 +709,8 @@ var UnlockDialog = GObject.registerClass({
             duration: CROSSFADE_TIME,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
         });
+
+        this._authPrompt._entry.grab_key_focus();
     }
 
     _setTransitionProgress(progress) {
@@ -788,6 +790,9 @@ var UnlockDialog = GObject.registerClass({
         this._activePage = endProgress
             ? this._promptBox
             : this._clock;
+
+        if (this._activePage === this._promptBox)
+            this._authPrompt._entry.grab_key_focus();
 
         this._adjustment.ease(endProgress, {
             mode: Clutter.AnimationMode.EASE_OUT_CUBIC,
