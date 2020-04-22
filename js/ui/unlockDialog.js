@@ -605,7 +605,7 @@ var UnlockDialog = GObject.registerClass({
         this._showPrompt();
 
         if (GLib.unichar_isgraph(unichar))
-            this.addCharacter(unichar);
+            this._authPrompt.addCharacter(unichar);
 
         return Clutter.EVENT_PROPAGATE;
     }
@@ -833,11 +833,6 @@ var UnlockDialog = GObject.registerClass({
     cancel() {
         if (this._authPrompt)
             this._authPrompt.cancel();
-    }
-
-    addCharacter(unichar) {
-        this._showPrompt();
-        this._authPrompt.addCharacter(unichar);
     }
 
     finish(onComplete) {
