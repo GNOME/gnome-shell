@@ -188,7 +188,7 @@ calendar_sources_init (CalendarSources *sources)
          because of e-d-s problems. So just exit here.
       */
       g_warning ("Failed to start evolution-source-registry: %s", error->message);
-      exit(EXIT_FAILURE);
+      exit (EXIT_FAILURE);
     }
 
   g_object_unref (session_bus);
@@ -298,7 +298,7 @@ create_client_for_source (ESource              *source,
       g_warning ("Could not load source '%s': %s",
                  e_source_get_uid (source),
                  error->message);
-      g_clear_error(&error);
+      g_clear_error (&error);
       return;
     }
 
