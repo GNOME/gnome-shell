@@ -3,10 +3,10 @@
             ctrlAltTabManager, padOsdService, osdWindowManager,
             osdMonitorLabeler, shellMountOpDBusService, shellDBusService,
             shellAccessDialogDBusService, shellAudioSelectionDBusService,
-            screenSaverDBus, screencastService, uiGroup, magnifier,
-            xdndHandler, keyboard, kbdA11yDialog, introspectService,
-            start, pushModal, popModal, activateWindow, createLookingGlass,
-            initializeDeferredWork, getThemeStylesheet, setThemeStylesheet */
+            screenSaverDBus, uiGroup, magnifier, xdndHandler, keyboard,
+            kbdA11yDialog, introspectService, start, pushModal, popModal,
+            activateWindow, createLookingGlass, initializeDeferredWork,
+            getThemeStylesheet, setThemeStylesheet */
 
 const { Clutter, Gio, GLib, GObject, Meta, Shell, St } = imports.gi;
 
@@ -34,7 +34,6 @@ const LoginManager = imports.misc.loginManager;
 const LookingGlass = imports.ui.lookingGlass;
 const NotificationDaemon = imports.ui.notificationDaemon;
 const WindowAttentionHandler = imports.ui.windowAttentionHandler;
-const Screencast = imports.ui.screencast;
 const ScreenShield = imports.ui.screenShield;
 const Scripting = imports.ui.scripting;
 const SessionMode = imports.ui.sessionMode;
@@ -74,7 +73,6 @@ var shellAudioSelectionDBusService = null;
 var shellDBusService = null;
 var shellMountOpDBusService = null;
 var screenSaverDBus = null;
-var screencastService = null;
 var modalCount = 0;
 var actionMode = Shell.ActionMode.NONE;
 var modalActorFocusStack = [];
@@ -200,7 +198,6 @@ function _initializeUI() {
     uiGroup = layoutManager.uiGroup;
 
     padOsdService = new PadOsd.PadOsdService();
-    screencastService = new Screencast.ScreencastService();
     xdndHandler = new XdndHandler.XdndHandler();
     ctrlAltTabManager = new CtrlAltTab.CtrlAltTabManager();
     osdWindowManager = new OsdWindow.OsdWindowManager();

@@ -163,15 +163,6 @@ libshell_private_sources = [
   'shell-app-cache.c',
 ]
 
-if enable_recorder
-    libshell_sources += ['shell-recorder.c']
-    libshell_public_headers += ['shell-recorder.h']
-
-    libshell_private_sources += ['shell-recorder-src.c']
-    libshell_private_headers += ['shell-recorder-src.h']
-endif
-
-
 libshell_enums = gnome.mkenums_simple('shell-enum-types',
   sources: libshell_public_headers
 )

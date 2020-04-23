@@ -92,7 +92,6 @@
     <file>ui/ripples.js</file>
     <file>ui/runDialog.js</file>
     <file>ui/screenShield.js</file>
-    <file>ui/screencast.js</file>
     <file>ui/screenshot.js</file>
     <file>ui/scripting.js</file>
     <file>ui/search.js</file>
@@ -137,7 +136,6 @@
     <file>ui/status/volume.js</file>
     <file>ui/status/bluetooth.js</file>
     <file>ui/status/remoteAccess.js</file>
-    <file>ui/status/screencast.js</file>
     <file>ui/status/system.js</file>
     <file>ui/status/thunderbolt.js</file>
   </gresource>

@@ -8,6 +8,12 @@ dbus_services = {
   'org.gnome.Shell.Notifications': 'notifications',
 }
 
+if enable_recorder
+  dbus_services += {
+    'org.gnome.Shell.Screencast': 'screencast',
+  }
+endif
+
 config_dir = '@0@/..'.format(meson.current_build_dir())
 
 foreach service, dir : dbus_services

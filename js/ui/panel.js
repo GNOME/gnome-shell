@@ -736,13 +736,11 @@ class AggregateMenu extends PanelMenu.Button {
         this._volume = new imports.ui.status.volume.Indicator();
         this._brightness = new imports.ui.status.brightness.Indicator();
         this._system = new imports.ui.status.system.Indicator();
-        this._screencast = new imports.ui.status.screencast.Indicator();
         this._location = new imports.ui.status.location.Indicator();
         this._nightLight = new imports.ui.status.nightLight.Indicator();
         this._thunderbolt = new imports.ui.status.thunderbolt.Indicator();
 
         this._indicators.add_child(this._thunderbolt);
-        this._indicators.add_child(this._screencast);
         this._indicators.add_child(this._location);
         this._indicators.add_child(this._nightLight);
         if (this._network)

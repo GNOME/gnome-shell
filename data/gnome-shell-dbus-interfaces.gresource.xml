@@ -28,6 +28,7 @@
     <file preprocess="xml-stripblanks">org.freedesktop.UPower.xml</file>
     <file preprocess="xml-stripblanks">org.gnome.Magnifier.xml</file>
     <file preprocess="xml-stripblanks">org.gnome.Magnifier.ZoomRegion.xml</file>
+    <file preprocess="xml-stripblanks">org.gnome.Mutter.ScreenCast.xml</file>
     <file preprocess="xml-stripblanks">org.gnome.ScreenSaver.xml</file>
     <file preprocess="xml-stripblanks">org.gnome.SessionManager.EndSessionDialog.xml</file>
     <file preprocess="xml-stripblanks">org.gnome.SessionManager.Inhibitor.xml</file>

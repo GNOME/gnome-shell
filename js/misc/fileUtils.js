@@ -1,6 +1,6 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported collectFromDatadirs, recursivelyDeleteDir,
-            recursivelyMoveDir, loadInterfaceXML */
+            recursivelyMoveDir, loadInterfaceXML, loadSubInterfaceXML */
 
 const { Gio, GLib } = imports.gi;
 const Config = imports.misc.config;
@@ -67,14 +67,19 @@ function recursivelyMoveDir(srcDir, destDir) {
 }
 
 let _ifaceResource = null;
+function ensureIfaceResource() {
+    if (_ifaceResource)
+        return;
+
+    // don't use global.datadir so the method is usable from tests/tools
+    let dir = GLib.getenv('GNOME_SHELL_DATADIR') || Config.PKGDATADIR;
+    let path = `${dir}/gnome-shell-dbus-interfaces.gresource`;
+    _ifaceResource = Gio.Resource.load(path);
+    _ifaceResource._register();
+}
+
 function loadInterfaceXML(iface) {
-    if (!_ifaceResource) {
-        // don't use global.datadir so the method is usable from tests/tools
-        let dir = GLib.getenv('GNOME_SHELL_DATADIR') || Config.PKGDATADIR;
-        let path = `${dir}/gnome-shell-dbus-interfaces.gresource`;
-        _ifaceResource = Gio.Resource.load(path);
-        _ifaceResource._register();
-    }
+    ensureIfaceResource();
 
     let uri = `resource:///org/gnome/shell/dbus-interfaces/${iface}.xml`;
     let f = Gio.File.new_for_uri(uri);
@@ -87,4 +92,26 @@ function loadInterfaceXML(iface) {
     }
 
     return null;
+}
+
+function loadSubInterfaceXML(iface, ifaceFile) {
+    let xml = loadInterfaceXML(ifaceFile);
+    if (!xml)
+        return null;
+
+    let ifaceStartTag = `<interface name="${iface}">`;
+    let ifaceStopTag = '</interface>';
+    let ifaceStartIndex = xml.indexOf(ifaceStartTag);
+    let ifaceEndIndex = xml.indexOf(ifaceStopTag, ifaceStartIndex + 1) + ifaceStopTag.length;
+
+    let xmlHeader = '<!DOCTYPE node PUBLIC\n' +
+        '\'-//freedesktop//DTD D-BUS Object Introspection 1.0//EN\'\n' +
+        '\'http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd\'>\n' +
+        '<node>\n';
+    let xmlFooter = '</node>';
+
+    return (
+        xmlHeader +
+        xml.substr(ifaceStartIndex, ifaceEndIndex - ifaceStartIndex) +
+        xmlFooter);
 }

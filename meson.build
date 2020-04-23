@@ -96,9 +96,10 @@ gnome_desktop_dep = dependency('gnome-desktop-3.0', version: gnome_desktop_req)
 bt_dep = dependency('gnome-bluetooth-1.0', version: bt_req, required: false)
 gst_dep = dependency('gstreamer-1.0', version: gst_req, required: false)
 gst_base_dep = dependency('gstreamer-base-1.0', required: false)
+pipewire_dep = dependency('libpipewire-0.3', required: false)
 
 recorder_deps = []
-enable_recorder = gst_dep.found() and gst_base_dep.found()
+enable_recorder = gst_dep.found() and gst_base_dep.found() and pipewire_dep.found()
 if enable_recorder
   recorder_deps += [gst_dep, gst_base_dep, gtk_dep, x11_dep]
 endif

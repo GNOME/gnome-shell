@@ -1,0 +1,191 @@
+<!DOCTYPE node PUBLIC
+'-//freedesktop//DTD D-BUS Object Introspection 1.0//EN'
+'http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd'>
+<node>
+
+  <!--
+      org.gnome.Mutter.ScreenCast:
+      @short_description: Screen cast interface
+
+      This API is private and not intended to be used outside of the integrated
+      system that uses libmutter. No compatibility between versions are
+      promised.
+  -->
+  <interface name="org.gnome.Mutter.ScreenCast">
+
+    <!--
+	CreateSession:
+	@properties: Properties
+	@session_path: Path to the new session object
+
+	* "remote-desktop-session-id" (s): The ID of a remote desktop session.
+					   Remote desktop driven screen casts
+					   are started and stopped by the remote
+					   desktop session.
+	* "disable-animations" (b): Set to "true" if the screen cast application
+				    would prefer animations to be globally
+				    disabled, while the session is running. Default
+				    is "false". Available since version 3.
+    -->
+    <method name="CreateSession">
+      <arg name="properties" type="a{sv}" direction="in" />
+      <arg name="session_path" type="o" direction="out" />
+    </method>
+
+    <!--
+        Version:
+        @short_description: API version
+    -->
+    <property name="Version" type="i" access="read" />
+
+  </interface>
+
+  <!--
+       org.gnome.Mutter.ScreenCast.Session:
+       @short_description: Screen cast session
+  -->
+  <interface name="org.gnome.Mutter.ScreenCast.Session">
+
+    <!--
+	Start:
+
+	Start the screen cast session
+    -->
+    <method name="Start" />
+
+    <!--
+	Stop:
+
+	Stop the screen cast session
+    -->
+    <method name="Stop" />
+
+    <!--
+	Closed:
+
+	The session has closed.
+    -->
+    <signal name="Closed" />
+
+    <!--
+	RecordMonitor:
+	@connector: Connector of the monitor to record
+	@properties: Properties
+	@stream_path: Path to the new stream object
+
+	Record a single monitor.
+
+	Available @properties include:
+
+	* "cursor-mode" (u): Cursor mode. Default: 'hidden' (see below)
+	                     Available since API version 2.
+	* "is-recording" (b): Whether this is a screen recording. May be
+			      be used for choosing panel icon.
+			      Default: false. Available since API version 4.
+
+	Available cursor mode values:
+
+	0: hidden - cursor is not included in the stream
+	1: embedded - cursor is included in the framebuffer
+	2: metadata - cursor is included as metadata in the PipeWire stream
+    -->
+    <method name="RecordMonitor">
+      <arg name="connector" type="s" direction="in" />
+      <arg name="properties" type="a{sv}" direction="in" />
+      <arg name="stream_path" type="o" direction="out" />
+    </method>
+
+    <!--
+	RecordWindow:
+	@properties: Properties used determining what window to select
+	@stream_path: Path to the new stream object
+
+	Supported since API version 2.
+
+	Record a single window. The cursor will not be included.
+
+	Available @properties include:
+
+	* "window-id" (t): Id of the window to record.
+	* "cursor-mode" (u): Cursor mode. Default: 'hidden' (see RecordMonitor).
+	* "is-recording" (b): Whether this is a screen recording. May be
+			      be used for choosing panel icon.
+			      Default: false. Available since API version 4.
+
+    -->
+    <method name="RecordWindow">
+      <arg name="properties" type="a{sv}" direction="in" />
+      <arg name="stream_path" type="o" direction="out" />
+    </method>
+
+    <!--
+	RecordArea:
+	@x: X position of the recorded area
+	@y: Y position of the recorded area
+	@width: width of the recorded area
+	@height: height of the recorded area
+	@properties: Properties
+	@stream_path: Path to the new stream object
+
+	Record an area of the stage. The coordinates are in stage coordinates.
+	The size of the stream does not necessarily match the size of the
+	recorded area, and will depend on DPI scale of the affected monitors.
+
+	Available @properties include:
+
+	* "cursor-mode" (u): Cursor mode. Default: 'hidden' (see below)
+	                     Available since API version 2.
+	* "is-recording" (b): Whether this is a screen recording. May be
+			      be used for choosing panel icon.
+			      Default: false. Available since API version 4.
+
+	Available cursor mode values:
+
+	0: hidden - cursor is not included in the stream
+	1: embedded - cursor is included in the framebuffer
+	2: metadata - cursor is included as metadata in the PipeWire stream
+    -->
+    <method name="RecordArea">
+      <arg name="x" type="i" direction="in" />
+      <arg name="y" type="i" direction="in" />
+      <arg name="width" type="i" direction="in" />
+      <arg name="height" type="i" direction="in" />
+      <arg name="properties" type="a{sv}" direction="in" />
+      <arg name="stream_path" type="o" direction="out" />
+    </method>
+  </interface>
+
+  <!--
+       org.gnome.Mutter.ScreenCast.Stream:
+       @short_description: Screen cast stream
+  -->
+  <interface name="org.gnome.Mutter.ScreenCast.Stream">
+
+    <!--
+	PipeWireStreamAdded:
+	@short_description: Pipewire stream added
+
+	A signal emitted when PipeWire stream for the screen cast stream has
+	been created. The @node_id corresponds to the PipeWire stream node.
+    -->
+    <signal name="PipeWireStreamAdded">
+      <annotation name="org.gtk.GDBus.C.Name" value="pipewire-stream-added"/>
+      <arg name="node_id" type="u" direction="out" />
+    </signal>
+
+    <!--
+	Parameters:
+	@short_description: Optional stream parameters
+
+	Available parameters include:
+
+	* "position" (ii): Position of the source of the stream in the
+	                   compositor coordinate space.
+	* "size" (ii): Size of the source of the stream in the compositor
+		       coordinate space.
+    -->
+    <property name="Parameters" type="a{sv}" access="read" />
+
+  </interface>
+
+</node>
