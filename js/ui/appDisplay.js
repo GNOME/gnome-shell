@@ -2205,7 +2205,7 @@ var AppIcon = GObject.registerClass({
     }
 
     vfunc_leave_event(crossingEvent) {
-        let ret = super.vfunc_leave_event(crossingEvent);
+        const ret = super.vfunc_leave_event(crossingEvent);
 
         this.fake_release();
         this._removeMenuTimeout();
