@@ -476,7 +476,7 @@ var ExtensionRow = GObject.registerClass({
 function initEnvironment() {
     // Monkey-patch in a "global" object that fakes some Shell utilities
     // that ExtensionUtils depends on.
-    window.global = {
+    globalThis.global = {
         log(...args) {
             print(args.join(', '));
         },

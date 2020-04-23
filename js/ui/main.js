@@ -125,8 +125,8 @@ function _sessionUpdated() {
 
 function start() {
     // These are here so we don't break compatibility.
-    global.logError = window.log;
-    global.log = window.log;
+    global.logError = globalThis.log;
+    global.log = globalThis.log;
 
     // Chain up async errors reported from C
     global.connect('notify-error', (global, msg, detail) => {
