@@ -517,7 +517,9 @@ _st_create_shadow_pipeline_from_actor (StShadow     *shadow_spec,
 
       clutter_actor_set_opacity_override (actor, 255);
 
-      paint_context = clutter_paint_context_new_for_framebuffer (fb);
+      paint_context =
+        clutter_paint_context_new_for_framebuffer (fb, NULL,
+                                                   CLUTTER_PAINT_FLAG_NONE);
       clutter_actor_paint (actor, paint_context);
       clutter_paint_context_destroy (paint_context);
 
