@@ -17,8 +17,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-04-17 17:11+0100\n"
-"PO-Revision-Date: 2020-04-17 16:21+0000\n"
-"Last-Translator: Will Thompson <wjt@endlessm.com>\n"
+"PO-Revision-Date: 2020-04-21 11:29+0000\n"
+"Last-Translator: georgian balan <braila222@gmail.com>\n"
 "Language-Team: Romanian (http://www.transifex.com/endless-os/gnome-shell/language/ro/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -561,7 +561,7 @@ msgstr "Vizitează pagina principală a extensiei"
 #: js/extensionPrefs/js/main.js:182
 #: js/extensionPrefs/data/ui/extensions-window.ui:61
 msgid "Extensions"
-msgstr ""
+msgstr "Extensii"
 
 #: js/extensionPrefs/data/metainfo/org.gnome.Extensions.metainfo.xml.in:6
 #: js/extensionPrefs/js/main.js:183
@@ -581,7 +581,7 @@ msgstr "Configurarea extensiilor pentru Vizualizatorul activităților GNOME"
 #: js/extensionPrefs/js/main.js:144
 #, javascript-format
 msgid "Remove “%s”?"
-msgstr ""
+msgstr "Eliminați „%s”?"
 
 #: js/extensionPrefs/js/main.js:145
 msgid ""
@@ -604,7 +604,7 @@ msgstr "Elimină"
 
 #: js/extensionPrefs/js/main.js:181
 msgid "translator-credits"
-msgstr ""
+msgstr "Bogdan Mințoi <mintoi [dot ] bogdan [at] gmail [dot] com> 2014\nAdrian Gabor <raziel_theripper [at] yahoo [dot] com> 2015\nDaniel Șerbănescu <daniel [at] serbanescu [dot] dk> 2016-2019"
 
 #: js/extensionPrefs/js/main.js:316
 #, javascript-format
@@ -627,15 +627,15 @@ msgstr "Versiune"
 
 #: js/extensionPrefs/data/ui/extension-row.ui:151
 msgid "Author"
-msgstr ""
+msgstr "Autor"
 
 #: js/extensionPrefs/data/ui/extension-row.ui:175
 msgid "Website"
-msgstr ""
+msgstr "Portal web"
 
 #: js/extensionPrefs/data/ui/extension-row.ui:192
 msgid "Remove…"
-msgstr ""
+msgstr "Elimină"
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:8 js/ui/userMenu.js:27
 msgid "Help"
@@ -653,7 +653,7 @@ msgstr ""
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:35
 msgid "Warning"
-msgstr ""
+msgstr "Avertizment"
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:46
 msgid ""
@@ -742,7 +742,7 @@ msgstr "(de exemplu, utilizator sau %s)"
 #: js/gdm/loginDialog.js:920 js/ui/components/networkAgent.js:399
 #: js/ui/components/networkAgent.js:422 js/ui/components/networkAgent.js:440
 msgid "Username"
-msgstr ""
+msgstr "Nume de utilizator"
 
 #: js/gdm/loginDialog.js:1256
 msgid "Login Window"
@@ -1262,7 +1262,7 @@ msgstr ""
 
 #: js/ui/components/networkAgent.js:428
 msgid "Identity"
-msgstr ""
+msgstr "Identitate"
 
 #: js/ui/components/networkAgent.js:442
 msgid "Service"
@@ -1295,12 +1295,12 @@ msgstr "Este necesar codul PIN pentru dispozitivul mobil de bandă largă"
 
 #: js/ui/components/networkAgent.js:492
 msgid "PIN"
-msgstr ""
+msgstr "PIN"
 
 #: js/ui/components/networkAgent.js:499 js/ui/components/networkAgent.js:846
 #: js/ui/components/networkAgent.js:867
 msgid "Authentication required"
-msgstr ""
+msgstr "Autentificare necesară"
 
 #: js/ui/components/networkAgent.js:500 js/ui/components/networkAgent.js:852
 #: js/ui/components/networkAgent.js:856 js/ui/components/networkAgent.js:868

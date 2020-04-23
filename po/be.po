@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-04-17 17:11+0100\n"
-"PO-Revision-Date: 2020-04-17 16:20+0000\n"
+"PO-Revision-Date: 2020-04-21 11:29+0000\n"
 "Last-Translator: Will Thompson <wjt@endlessm.com>\n"
 "Language-Team: Belarusian (http://www.transifex.com/endless-os/gnome-shell/language/be/)\n"
 "MIME-Version: 1.0\n"
@@ -598,7 +598,7 @@ msgstr "Выдаліць"
 
 #: js/extensionPrefs/js/main.js:181
 msgid "translator-credits"
-msgstr ""
+msgstr "Віталь Хілько <vk@altlinux.ru>, 2002, 2003, 2005\nАлесь Няхайчык <nab@mail.by>, 2003, 2004\nІгар Грачышка <ihar.hrachyshka@gmail.com>, 2006, 2011-2012\nЮрась Шумовіч <shumovichy@gmail.com>, 2017"
 
 #: js/extensionPrefs/js/main.js:316
 #, javascript-format
@@ -622,7 +622,7 @@ msgstr ""
 
 #: js/extensionPrefs/data/ui/extension-row.ui:151
 msgid "Author"
-msgstr ""
+msgstr "Аўтар"
 
 #: js/extensionPrefs/data/ui/extension-row.ui:175
 msgid "Website"
@@ -648,7 +648,7 @@ msgstr ""
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:35
 msgid "Warning"
-msgstr ""
+msgstr "Перасцеражэнне"
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:46
 msgid ""
@@ -737,7 +737,7 @@ msgstr "(напр., карыстальнік ці %s)"
 #: js/gdm/loginDialog.js:920 js/ui/components/networkAgent.js:399
 #: js/ui/components/networkAgent.js:422 js/ui/components/networkAgent.js:440
 msgid "Username"
-msgstr ""
+msgstr "Імя карыстальніка"
 
 #: js/gdm/loginDialog.js:1256
 msgid "Login Window"
@@ -1263,7 +1263,7 @@ msgstr ""
 
 #: js/ui/components/networkAgent.js:428
 msgid "Identity"
-msgstr ""
+msgstr "Ідэнтычнасць"
 
 #: js/ui/components/networkAgent.js:442
 msgid "Service"
@@ -1301,7 +1301,7 @@ msgstr ""
 #: js/ui/components/networkAgent.js:499 js/ui/components/networkAgent.js:846
 #: js/ui/components/networkAgent.js:867
 msgid "Authentication required"
-msgstr ""
+msgstr "Патрабуецца ідэнтыфікацыя"
 
 #: js/ui/components/networkAgent.js:500 js/ui/components/networkAgent.js:852
 #: js/ui/components/networkAgent.js:856 js/ui/components/networkAgent.js:868

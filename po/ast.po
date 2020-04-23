@@ -10,8 +10,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-04-17 17:11+0100\n"
-"PO-Revision-Date: 2020-04-17 16:14+0000\n"
-"Last-Translator: Will Thompson <wjt@endlessm.com>\n"
+"PO-Revision-Date: 2020-04-21 11:29+0000\n"
+"Last-Translator: Vicki Niu <vicki@endlessm.com>\n"
 "Language-Team: Asturian (http://www.transifex.com/endless-os/gnome-shell/language/ast/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -21,7 +21,7 @@ msgstr ""
 
 #: data/50-gnome-shell-system.xml:6
 msgid "System"
-msgstr ""
+msgstr "Sistema"
 
 #: data/50-gnome-shell-system.xml:9
 msgid "Show the notification list"
@@ -33,7 +33,7 @@ msgstr ""
 
 #: data/50-gnome-shell-system.xml:15
 msgid "Show the overview"
-msgstr ""
+msgstr "Amosar la visión xeneral"
 
 #: data/50-gnome-shell-system.xml:18
 msgid "Show all applications"
@@ -597,7 +597,7 @@ msgstr "Desaniciar"
 
 #: js/extensionPrefs/js/main.js:181
 msgid "translator-credits"
-msgstr ""
+msgstr "Launchpad Contributions:\n  Costales https://launchpad.net/~costales\n  Iñigo Varela https://launchpad.net/~ivarela\n  Xandru Martino https://launchpad.net/~xandru-martino\n  Xuacu Saturio https://launchpad.net/~xuacusk8\n  xa https://launchpad.net/~xspuente"
 
 #: js/extensionPrefs/js/main.js:316
 #, javascript-format
@@ -734,7 +734,7 @@ msgstr ""
 #: js/gdm/loginDialog.js:920 js/ui/components/networkAgent.js:399
 #: js/ui/components/networkAgent.js:422 js/ui/components/networkAgent.js:440
 msgid "Username"
-msgstr ""
+msgstr "Nome d'Usuariu"
 
 #: js/gdm/loginDialog.js:1256
 msgid "Login Window"
@@ -1286,7 +1286,7 @@ msgstr ""
 #: js/ui/components/networkAgent.js:499 js/ui/components/networkAgent.js:846
 #: js/ui/components/networkAgent.js:867
 msgid "Authentication required"
-msgstr ""
+msgstr "Necesítase autenticación"
 
 #: js/ui/components/networkAgent.js:500 js/ui/components/networkAgent.js:852
 #: js/ui/components/networkAgent.js:856 js/ui/components/networkAgent.js:868

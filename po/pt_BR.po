@@ -39,7 +39,7 @@ msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-04-17 17:11+0100\n"
-"PO-Revision-Date: 2020-04-17 19:31+0000\n"
+"PO-Revision-Date: 2020-04-19 13:53+0000\n"
 "Last-Translator: Leandro Stanger <leandrostanger@hotmail.com>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/endless-os/gnome-shell/language/pt_BR/)\n"
 "MIME-Version: 1.0\n"
@@ -1573,7 +1573,7 @@ msgstr "%s (console)"
 #: js/ui/extensionDownloader.js:24
 #, javascript-format
 msgid "Can't install “%s”:"
-msgstr ""
+msgstr "Não é possível instalar “%s”:"
 
 #: js/ui/extensionDownloader.js:25
 msgid ""
@@ -1888,7 +1888,7 @@ msgstr "Converse com seu representante de vendas para comprar um novo código."
 #: js/ui/paygUnlockDialog.js:188
 #, javascript-format
 msgid "Pay As You Go Account ID: %s"
-msgstr ""
+msgstr "ID da conta Pay As You Go: %s"
 
 #: js/ui/paygUnlockDialog.js:198
 msgid "Unlock Machine"
@@ -1950,7 +1950,7 @@ msgstr "Tempo excedido durante a verificação do código"
 #: js/ui/payg.js:267
 #, javascript-format
 msgid "Your Pay As You Go Account ID is: %s"
-msgstr ""
+msgstr "O seu ID da conta Pay As You Go é: %s"
 
 #. We don't consider any other error here (and we don't consider DISABLED
 #. explicitly,
@@ -2584,7 +2584,7 @@ msgstr "Menos de 1 minuto"
 #: js/ui/status/payg.js:124
 #, javascript-format
 msgid "Account ID: %s"
-msgstr ""
+msgstr "ID da conta: %s"
 
 #: js/ui/status/power.js:47
 msgid "Power Settings"

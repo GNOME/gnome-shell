@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-04-17 17:11+0100\n"
-"PO-Revision-Date: 2020-04-17 16:21+0000\n"
-"Last-Translator: Will Thompson <wjt@endlessm.com>\n"
+"PO-Revision-Date: 2020-04-21 11:29+0000\n"
+"Last-Translator: Vicki Niu <vicki@endlessm.com>\n"
 "Language-Team: Gujarati (http://www.transifex.com/endless-os/gnome-shell/language/gu/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -596,7 +596,7 @@ msgstr "દૂર કરો"
 
 #: js/extensionPrefs/js/main.js:181
 msgid "translator-credits"
-msgstr ""
+msgstr "શ્ર્વેતા કોઠારી <swkothar@redhat.com>"
 
 #: js/extensionPrefs/js/main.js:316
 #, javascript-format
@@ -618,7 +618,7 @@ msgstr ""
 
 #: js/extensionPrefs/data/ui/extension-row.ui:151
 msgid "Author"
-msgstr ""
+msgstr "લેખક"
 
 #: js/extensionPrefs/data/ui/extension-row.ui:175
 msgid "Website"
@@ -644,7 +644,7 @@ msgstr ""
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:35
 msgid "Warning"
-msgstr ""
+msgstr "ચેતવણી"
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:46
 msgid ""
@@ -733,7 +733,7 @@ msgstr "(દા.ત., વપરાશકર્તા અથવા %s)"
 #: js/gdm/loginDialog.js:920 js/ui/components/networkAgent.js:399
 #: js/ui/components/networkAgent.js:422 js/ui/components/networkAgent.js:440
 msgid "Username"
-msgstr ""
+msgstr "વપરાશકર્તાનુ નામ"
 
 #: js/gdm/loginDialog.js:1256
 msgid "Login Window"
@@ -1247,7 +1247,7 @@ msgstr ""
 
 #: js/ui/components/networkAgent.js:428
 msgid "Identity"
-msgstr ""
+msgstr "ઓળખ"
 
 #: js/ui/components/networkAgent.js:442
 msgid "Service"

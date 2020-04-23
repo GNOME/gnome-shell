@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-04-17 17:11+0100\n"
-"PO-Revision-Date: 2020-04-17 16:22+0000\n"
+"PO-Revision-Date: 2020-04-21 11:29+0000\n"
 "Last-Translator: Will Thompson <wjt@endlessm.com>\n"
 "Language-Team: Kazakh (http://www.transifex.com/endless-os/gnome-shell/language/kk/)\n"
 "MIME-Version: 1.0\n"
@@ -572,7 +572,7 @@ msgstr "GNOME Shell кеңейтулерін баптау"
 #: js/extensionPrefs/js/main.js:144
 #, javascript-format
 msgid "Remove “%s”?"
-msgstr ""
+msgstr "\"%s\" өшіру керек пе?"
 
 #: js/extensionPrefs/js/main.js:145
 msgid ""
@@ -595,7 +595,7 @@ msgstr "Өшіру"
 
 #: js/extensionPrefs/js/main.js:181
 msgid "translator-credits"
-msgstr ""
+msgstr "Baurzhan Muftakhidinov <baurthefirst@gmail.com>"
 
 #: js/extensionPrefs/js/main.js:316
 #, javascript-format
@@ -617,15 +617,15 @@ msgstr "Нұсқасы"
 
 #: js/extensionPrefs/data/ui/extension-row.ui:151
 msgid "Author"
-msgstr ""
+msgstr "Авторы"
 
 #: js/extensionPrefs/data/ui/extension-row.ui:175
 msgid "Website"
-msgstr ""
+msgstr "Веб сайты"
 
 #: js/extensionPrefs/data/ui/extension-row.ui:192
 msgid "Remove…"
-msgstr ""
+msgstr "Өшіру…"
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:8 js/ui/userMenu.js:27
 msgid "Help"
@@ -643,7 +643,7 @@ msgstr ""
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:35
 msgid "Warning"
-msgstr ""
+msgstr "Ескерту"
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:46
 msgid ""
@@ -732,7 +732,7 @@ msgstr "(мыс., пайдаланушы не %s)"
 #: js/gdm/loginDialog.js:920 js/ui/components/networkAgent.js:399
 #: js/ui/components/networkAgent.js:422 js/ui/components/networkAgent.js:440
 msgid "Username"
-msgstr ""
+msgstr "Пайдаланушы"
 
 #: js/gdm/loginDialog.js:1256
 msgid "Login Window"
@@ -1246,7 +1246,7 @@ msgstr ""
 
 #: js/ui/components/networkAgent.js:428
 msgid "Identity"
-msgstr ""
+msgstr "Идентификация"
 
 #: js/ui/components/networkAgent.js:442
 msgid "Service"
@@ -1279,7 +1279,7 @@ msgstr "Сымсыз кеңжолақты құрылғы үшін PIN коды �
 
 #: js/ui/components/networkAgent.js:492
 msgid "PIN"
-msgstr ""
+msgstr "пин коды"
 
 #: js/ui/components/networkAgent.js:499 js/ui/components/networkAgent.js:846
 #: js/ui/components/networkAgent.js:867
