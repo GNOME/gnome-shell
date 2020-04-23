@@ -218,12 +218,12 @@ globals:
   ARGV: readonly
   Debugger: readonly
   GIRepositoryGType: readonly
+  globalThis: readonly
   imports: readonly
   Intl: readonly
   log: readonly
   logError: readonly
   print: readonly
   printerr: readonly
-  window: readonly
 parserOptions:
   ecmaVersion: 2019
