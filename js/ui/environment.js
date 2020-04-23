@@ -245,16 +245,15 @@ function _loggingFunc(...args) {
 }
 
 function init() {
-    // Add some bindings to the global JS namespace; (gjs keeps the web
-    // browser convention of having that namespace be called 'window'.)
-    window.global = Shell.Global.get();
+    // Add some bindings to the global JS namespace
+    globalThis.global = Shell.Global.get();
 
-    window.log = _loggingFunc;
+    globalThis.log = _loggingFunc;
 
-    window._ = Gettext.gettext;
-    window.C_ = Gettext.pgettext;
-    window.ngettext = Gettext.ngettext;
-    window.N_ = s => s;
+    globalThis._ = Gettext.gettext;
+    globalThis.C_ = Gettext.pgettext;
+    globalThis.ngettext = Gettext.ngettext;
+    globalThis.N_ = s => s;
 
     GObject.gtypeNameBasedOnJSPath = true;
 
