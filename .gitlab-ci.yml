@@ -124,11 +124,7 @@ flatpak:
         RUNTIME_REPO: "https://nightly.gnome.org/gnome-nightly.flatpakrepo"
         FLATPAK_MODULE: "gnome-extensions-app"
         APP_ID: "org.gnome.Extensions"
-        MESON_ARGS: "$SUBPROJECT"
     extends: .flatpak
-    before_script:
-        - flatpak run --command=$SUBPROJECT/generate-translations.sh
-                      --filesystem=host org.gnome.Sdk//master
     <<: *only_default
 
 nightly:
