@@ -86,6 +86,8 @@ class PaygIndicator extends PanelMenu.SystemIndicator {
             return _('Getting time…');
 
         let seconds = this._paygManager.timeRemainingSecs();
+        if (seconds == 0)
+            return _('Subscription expired');
         if (seconds < 60)
             return _('Less than 1 minute');
 
