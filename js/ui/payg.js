@@ -581,7 +581,7 @@ var ApplyCodeNotification = GObject.registerClass({
     }
 });
 
-// Takes an UNIX timestamp (in seconds) and returns a string
+// Takes a number of seconds and returns a string
 // with a precision level appropriate to show to the user.
 //
 // The returned string will be formatted just in seconds for times
@@ -632,7 +632,7 @@ function timeToString(seconds) {
     return '%s %s'.format(daysStr, hoursStr);
 }
 
-// Similar to timeToStrings, but does not process partial time,
+// Similar to timeToString, but does not process partial time,
 // since it's meant to be used for expiration time changes, with
 // a wider range of periods
 function successMessage() {
