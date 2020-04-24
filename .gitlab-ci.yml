@@ -1,7 +1,4 @@
-include:
-  - project: 'gnome/citemplates'
-    ref: '3ecafcc4f06d98a13eb958e86ae0d8c6f388c1aa'
-    file: '/flatpak/flatpak_ci_initiative.yml'
+include: 'https://gitlab.gnome.org/GNOME/citemplates/raw/master/flatpak/flatpak_ci_initiative.yml'
 
 stages:
  - review
