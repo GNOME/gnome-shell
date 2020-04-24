@@ -639,35 +639,40 @@ function successMessage() {
     let seconds = Main.paygManager.lastTimeAdded;
     if (seconds < 60) {
         return Gettext.ngettext("%s second has been added to your Pay As You Go credit.",
-                                "%s seconds have been added to your Pay As You Go credit.")
+                                "%s seconds have been added to your Pay As You Go credit.",
+                                Math.floor(seconds))
                                 .format(Math.floor(seconds));
     }
 
     let minutes = Math.floor(seconds / 60);
     if (minutes < 120) {
         return Gettext.ngettext("%s minute has been added to your Pay As You Go credit.",
-                                "%s minutes have been added to your Pay As You Go credit.")
+                                "%s minutes have been added to your Pay As You Go credit.",
+                                Math.floor(minutes))
                                 .format(Math.floor(minutes));
     }
 
     let hours = Math.floor(minutes / 60);
     if (hours < 24) {
         return Gettext.ngettext("%s hour has been added to your Pay As You Go credit.",
-                                "%s hours have been added to your Pay As You Go credit.")
+                                "%s hours have been added to your Pay As You Go credit.",
+                                Math.floor(hours))
                                 .format(Math.floor(hours));
     }
 
     let days = Math.floor(hours / 24);
     if (days < 30) {
         return Gettext.ngettext("%s day has been added to your Pay As You Go credit.",
-                                "%s days have been added to your Pay As You Go credit.")
+                                "%s days have been added to your Pay As You Go credit.",
+                                Math.floor(days))
                                 .format(Math.floor(days));
     }
 
     let months = Math.floor(days / 30);
     if (months < 12) {
         return Gettext.ngettext("%s month has been added to your Pay As You Go credit.",
-                                "%s months have been added to your Pay As You Go credit.")
+                                "%s months have been added to your Pay As You Go credit.",
+                                Math.floor(months))
                                 .format(Math.floor(months));
     }
 
