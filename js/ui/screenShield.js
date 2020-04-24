@@ -561,7 +561,8 @@ var ScreenShield = class {
         if (this._activationTime == 0)
             this._activationTime = GLib.get_monotonic_time();
 
-        this._ensureUnlockDialog(true);
+        if (!this._ensureUnlockDialog(true))
+            return;
 
         this.actor.show();
 
