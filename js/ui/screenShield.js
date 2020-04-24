@@ -198,7 +198,7 @@ var ScreenShield = class {
         let lockEnabled = this._settings.get_boolean(LOCK_ENABLED_KEY);
         let lockLocked = this._lockSettings.get_boolean(DISABLE_LOCK_KEY);
         let inhibit = this._loginSession && this._loginSession.Active &&
-                       !this._isActive && lockEnabled && !lockLocked;
+                       !this._isActive && lockEnabled && !lockLocked && Main.sessionMode.unlockDialog;
         if (inhibit) {
             this._loginManager.inhibit(_("GNOME needs to lock the screen"),
                 inhibitor => {
