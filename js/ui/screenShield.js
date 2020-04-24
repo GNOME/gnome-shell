@@ -431,7 +431,9 @@ var ScreenShield = class {
             this._lockScreenShown({ fadeToBlack, animateFade: false });
         }
 
-        this._dialog.grab_key_focus();
+        // In initial setup mode this._dialog is null
+        if (this._dialog)
+            this._dialog.grab_key_focus();
     }
 
     _lockScreenShown(params) {
@@ -561,7 +563,8 @@ var ScreenShield = class {
         if (this._activationTime == 0)
             this._activationTime = GLib.get_monotonic_time();
 
-        this._ensureUnlockDialog(true);
+        if (!this._ensureUnlockDialog(true))
+            return;
 
         this.actor.show();
 
