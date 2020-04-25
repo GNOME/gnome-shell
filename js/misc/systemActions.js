@@ -83,13 +83,23 @@ const SystemActions = GObject.registerClass({
         this._canHavePowerOff = true;
         this._canHaveSuspend = true;
 
+        function tokenizeKeywords(keywords) {
+            let tokenized = [];
+            for (let keyword of keywords.split(/[; ]/)) {
+                let [tokens, asciiAlternatives] = GLib.str_tokenize_and_fold(keyword, null);
+                tokenized.push(...tokens);
+                tokenized.push(...asciiAlternatives);
+            }
+            return tokenized;
+        }
+
         this._actions = new Map();
         this._actions.set(POWER_OFF_ACTION_ID, {
             // Translators: The name of the power-off action in search
             name: C_("search-result", "Power Off"),
             iconName: 'system-shutdown-symbolic',
             // Translators: A list of keywords that match the power-off action, separated by semicolons
-            keywords: _('power off;shutdown;reboot;restart;halt;stop').split(/[; ]/),
+            keywords: tokenizeKeywords(_('power off;shutdown;reboot;restart;halt;stop')),
             available: false,
         });
         this._actions.set(LOCK_SCREEN_ACTION_ID, {
@@ -97,7 +107,7 @@ const SystemActions = GObject.registerClass({
             name: C_("search-result", "Lock Screen"),
             iconName: 'system-lock-screen-symbolic',
             // Translators: A list of keywords that match the lock screen action, separated by semicolons
-            keywords: _("lock screen").split(/[; ]/),
+            keywords: tokenizeKeywords(_("lock screen")),
             available: false,
         });
         this._actions.set(LOGOUT_ACTION_ID, {
@@ -105,7 +115,7 @@ const SystemActions = GObject.registerClass({
             name: C_("search-result", "Log Out"),
             iconName: 'application-exit-symbolic',
             // Translators: A list of keywords that match the logout action, separated by semicolons
-            keywords: _("logout;log out;sign off").split(/[; ]/),
+            keywords: tokenizeKeywords(_("logout;log out;sign off")),
             available: false,
         });
         this._actions.set(SUSPEND_ACTION_ID, {
@@ -113,7 +123,7 @@ const SystemActions = GObject.registerClass({
             name: C_("search-result", "Suspend"),
             iconName: 'media-playback-pause-symbolic',
             // Translators: A list of keywords that match the suspend action, separated by semicolons
-            keywords: _("suspend;sleep").split(/[; ]/),
+            keywords: tokenizeKeywords(_("suspend;sleep")),
             available: false,
         });
         this._actions.set(SWITCH_USER_ACTION_ID, {
@@ -121,14 +131,14 @@ const SystemActions = GObject.registerClass({
             name: C_("search-result", "Switch User"),
             iconName: 'system-switch-user-symbolic',
             // Translators: A list of keywords that match the switch user action, separated by semicolons
-            keywords: _("switch user").split(/[; ]/),
+            keywords: tokenizeKeywords(_("switch user")),
             available: false,
         });
         this._actions.set(LOCK_ORIENTATION_ACTION_ID, {
             name: '',
             iconName: '',
             // Translators: A list of keywords that match the lock orientation action, separated by semicolons
-            keywords: _("lock orientation;unlock orientation;screen;rotation").split(/[; ]/),
+            keywords: tokenizeKeywords(_("lock orientation;unlock orientation;screen;rotation")),
             available: false,
         });
 
@@ -277,7 +287,7 @@ const SystemActions = GObject.registerClass({
 
     getMatchingActions(terms) {
         // terms is a list of strings
-        terms = terms.map(term => term.toLowerCase());
+        terms = terms.map(term => GLib.str_tokenize_and_fold(term, null)[0]);
 
         let results = [];
 
