@@ -566,9 +566,17 @@ var UnlockDialog = GObject.registerClass({
         this._otherUserButton.set_pivot_point(0.5, 0.5);
         this._otherUserButton.connect('clicked', this._otherUserClicked.bind(this));
 
-        let screenSaverSettings = new Gio.Settings({ schema_id: 'org.gnome.desktop.screensaver' });
-        screenSaverSettings.bind('user-switch-enabled',
-            this._otherUserButton, 'visible', Gio.SettingsBindFlags.GET);
+        this._screenSaverSettings = new Gio.Settings({ schema_id: 'org.gnome.desktop.screensaver' });
+
+        this._userSwitchEnabledId = 0;
+        this._userSwitchEnabledId = this._screenSaverSettings.connect('changed::user-switch-enabled',
+            this._updateUserSwitchVisibility.bind(this));
+
+        this._userLoadedId = 0;
+        this._userLoadedId = this._user.connect('notify::is-loaded',
+            this._updateUserSwitchVisibility.bind(this));
+
+        this._updateUserSwitchVisibility();
 
         // Main Box
         let mainBox = new St.Widget();
@@ -828,6 +836,21 @@ var UnlockDialog = GObject.registerClass({
             this._gdmClient = null;
             delete this._gdmClient;
         }
+
+        if (this._userLoadedId) {
+            this._user.disconnect(this._userLoadedId);
+            this._userLoadedId = 0;
+        }
+
+        if (this._userSwitchEnabledId) {
+            this._screenSaverSettings.disconnect(this._userSwitchEnabledId);
+            this._userSwitchEnabledId = 0;
+        }
+    }
+
+    _updateUserSwitchVisibility() {
+        this._otherUserButton.visible = this._userManager.can_switch() &&
+            this._screenSaverSettings.get_boolean('user-switch-enabled');
     }
 
     cancel() {
