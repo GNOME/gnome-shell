@@ -126,7 +126,6 @@ void _st_theme_node_ensure_background (StThemeNode *node);
 void _st_theme_node_ensure_geometry (StThemeNode *node);
 void _st_theme_node_apply_margins (StThemeNode *node,
                                    ClutterActor *actor);
-void _st_theme_node_reset_for_stylesheet_change (StThemeNode *node);
 void _st_theme_node_set_outdated (StThemeNode *node);
 
 G_END_DECLS
