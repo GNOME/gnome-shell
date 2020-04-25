@@ -6,13 +6,13 @@
 # Iñaki Larrañaga Murgoitio <dooteo@zundan.com>, 2011, 2012, 2013, 2014, 2015, 2016, 2017.
 # Asier Sarasua Garmendia <asier.sarasua@gmail.com>, 2013, 2019, 2020.
 # Ibai Oihanguren Sala <ibai@oihanguren.com>, 2020.
+#
 msgid ""
-msgstr ""
-"Project-Id-Version: gnome-shell master\n"
+msgstr "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2020-03-31 07:15+0000\n"
-"PO-Revision-Date: 2020-04-02 12:15+0100\n"
-"Last-Translator: Ibai Oihanguren Sala <ibai@oihanguren.com>\n"
+"POT-Creation-Date: 2020-04-09 14:00+0000\n"
+"PO-Revision-Date: 2020-04-25 12:15+0100\n"
+"Last-Translator: Asier Sarasua Garmendia <asier.sarasua@gmail.com>\n"
 "Language-Team: Basque <librezale@librezale.eus>\n"
 "Language: eu\n"
 "MIME-Version: 1.0\n"
@@ -61,9 +61,7 @@ msgstr "Gaitu garatzaile eta probatzaileentzako barne-tresnak Alt-F2 bitartez"
 msgid ""
 "Allows access to internal debugging and monitoring tools using the Alt-F2 "
 "dialog."
-msgstr ""
-"Barneko arazte- eta gainbegiraketa-tresnen atzipena onartzen du Alt-F2 "
-"elkarrizketa-koadroa erabiliz."
+msgstr "Barneko arazte- eta gainbegiraketa-tresnen atzipena onartzen du Alt-F2 elkarrizketa-koadroa erabiliz."
 
 #: data/org.gnome.shell.gschema.xml.in:16
 msgid "UUIDs of extensions to enable"
@@ -75,12 +73,7 @@ msgid ""
 "should be loaded. Any extension that wants to be loaded needs to be in this "
 "list. You can also manipulate this list with the EnableExtension and "
 "DisableExtension D-Bus methods on org.gnome.Shell."
-msgstr ""
-"GNOME Shell gehigarriek UUID propietatea dute; kargatu beharko liratekeen "
-"gehigarriak zerrendatzen ditu gako honek. Kargatzea nahi diren gehigarri "
-"guztiak zerrenda honetan agertu behar dute. Zerrenda hau alda dezakezu DBus-"
-"eko 'EnableExtension' (gehitu hedapena) eta 'DisableExtension' (desgaitu "
-"hedapena) metodoekin 'org.gnome.Shell'-en."
+msgstr "GNOME Shell gehigarriek UUID propietatea dute; kargatu beharko liratekeen gehigarriak zerrendatzen ditu gako honek. Kargatzea nahi diren gehigarri guztiak zerrenda honetan agertu behar dute. Zerrenda hau alda dezakezu DBus-eko 'EnableExtension' (gehitu hedapena) eta 'DisableExtension' (desgaitu hedapena) metodoekin 'org.gnome.Shell'-en."
 
 #: data/org.gnome.shell.gschema.xml.in:26
 msgid "UUIDs of extensions to force disabling"
@@ -93,13 +86,7 @@ msgid ""
 "manipulate this list with the EnableExtension and DisableExtension D-Bus "
 "methods on org.gnome.Shell. This key takes precedence over the “enabled-"
 "extensions” setting."
-msgstr ""
-"GNOME Shell gehigarriek UUID propietatea dute; nahiz eta uneko moduan "
-"kargatuak izan, desgaitu egin beharko liratekeen gehigarriak zerrendatzen "
-"ditu gako honek. Zerrenda hau alda dezakezu DBus-eko "
-"'EnableExtension' (gaitu hedapena) eta 'DisableExtension' (desgaitu "
-"hedapena) metodoekin 'org.gnome.Shell'-en. Gako honek lehentasuna du "
-"“enabled-extensions” ezarpenaren gainetik. "
+msgstr "GNOME Shell gehigarriek UUID propietatea dute; nahiz eta uneko moduan kargatuak izan, desgaitu egin beharko liratekeen gehigarriak zerrendatzen ditu gako honek. Zerrenda hau alda dezakezu DBus-eko 'EnableExtension' (gaitu hedapena) eta 'DisableExtension' (desgaitu hedapena) metodoekin 'org.gnome.Shell'-en. Gako honek lehentasuna du “enabled-extensions” ezarpenaren gainetik."
 
 #: data/org.gnome.shell.gschema.xml.in:37
 msgid "Disable user extensions"
@@ -109,9 +96,7 @@ msgstr "Desgaitu erabiltzailearen gehigarriak"
 msgid ""
 "Disable all extensions the user has enabled without affecting the “enabled-"
 "extension” setting."
-msgstr ""
-"“enabled-extension” ezarpenari eragin gabe erabiltzaileak gaitutako "
-"gehigarri guztiak desgaitu."
+msgstr "“enabled-extension” ezarpenari eragin gabe erabiltzaileak gaitutako gehigarri guztiak desgaitu."
 
 #: data/org.gnome.shell.gschema.xml.in:45
 msgid "Disables the validation of extension version compatibility"
@@ -122,11 +107,7 @@ msgid ""
 "GNOME Shell will only load extensions that claim to support the current "
 "running version. Enabling this option will disable this check and try to "
 "load all extensions regardless of the versions they claim to support."
-msgstr ""
-"GNOME Shell-ek unean exekutatzen ari den bertsioarekin bat datozen hedapenak "
-"soilik kargatzen ditu. Aukera hau gaitzean egiaztapen hau desgaitzen da eta "
-"hedapen guztiak kargatzen saiatzen da, onartzen duten bertsioari ez ikusi "
-"eginez."
+msgstr "GNOME Shell-ek unean exekutatzen ari den bertsioarekin bat datozen hedapenak soilik kargatzen ditu. Aukera hau gaitzean egiaztapen hau desgaitzen da eta hedapen guztiak kargatzen saiatzen da, onartzen duten bertsioari ez ikusi eginez."
 
 #: data/org.gnome.shell.gschema.xml.in:54
 msgid "List of desktop file IDs for favorite applications"
@@ -136,8 +117,7 @@ msgstr "Gogoko aplikazioen mahaigaineko fitxategien IDen zerrenda"
 msgid ""
 "The applications corresponding to these identifiers will be displayed in the "
 "favorites area."
-msgstr ""
-"Identifikadore horiei dagozkien aplikazioak bistaratuko dira gogokoen arean."
+msgstr "Identifikadore horiei dagozkien aplikazioak bistaratuko dira gogokoen arean."
 
 #: data/org.gnome.shell.gschema.xml.in:62
 msgid "App Picker View"
@@ -164,16 +144,12 @@ msgstr "Erakutsi beti erabiltzaile-menuko “Amaitu saioa” menu-elementua."
 msgid ""
 "This key overrides the automatic hiding of the “Log out” menu item in single-"
 "user, single-session situations."
-msgstr ""
-"Gako honek “Amaitu saioa” menu-elementua automatikoki ezkutatzea gainidazten "
-"du, saio bakarreko egoeran."
+msgstr "Gako honek “Amaitu saioa” menu-elementua automatikoki ezkutatzea gainidazten du, saio bakarreko egoeran."
 
 #: data/org.gnome.shell.gschema.xml.in:86
 msgid ""
 "Whether to remember password for mounting encrypted or remote filesystems"
-msgstr ""
-"Zifratutako edo urruneko fitxategi-sistemak muntatzeko pasahitza gogoratuko "
-"den ala ez"
+msgstr "Zifratutako edo urruneko fitxategi-sistemak muntatzeko pasahitza gogoratuko den ala ez"
 
 #: data/org.gnome.shell.gschema.xml.in:87
 msgid ""
@@ -181,18 +157,12 @@ msgid ""
 "filesystem is mounted. If the password can be saved for future use a "
 "“Remember Password” checkbox will be present. This key sets the default "
 "state of the checkbox."
-msgstr ""
-"Shell-ak pasahitza eskatuko du zifratutako gailu bat edo urruneko fitxategi-"
-"sistema bat muntatzen denean. Pasahitza geroago erabiltzeko gorde badaiteke, "
-"“Gogoratu pasahitza” kontrol-laukia agertuko da. Gako honek kontrol-"
-"laukiaren egoera lehenetsia ezartzen du."
+msgstr "Shell-ak pasahitza eskatuko du zifratutako gailu bat edo urruneko fitxategi-sistema bat muntatzen denean. Pasahitza geroago erabiltzeko gorde badaiteke, “Gogoratu pasahitza” kontrol-laukia agertuko da. Gako honek kontrol-laukiaren egoera lehenetsia ezartzen du."
 
 #: data/org.gnome.shell.gschema.xml.in:96
 msgid ""
 "Whether the default Bluetooth adapter had set up devices associated to it"
-msgstr ""
-"Bluetooth lehenetsiaren moldatzaileak berarekin esleitutako gailurik duen "
-"ala ez"
+msgstr "Bluetooth lehenetsiaren moldatzaileak berarekin esleitutako gailurik duen ala ez"
 
 #: data/org.gnome.shell.gschema.xml.in:97
 msgid ""
@@ -200,11 +170,7 @@ msgid ""
 "powered, or if there were devices set up associated with the default "
 "adapter. This will be reset if the default adapter is ever seen not to have "
 "devices associated to it."
-msgstr ""
-"Shell-ak Bluetooth moldagailu bat entxufatuta dagoenean soilik Bluetooth-"
-"aren menua erakutsiko duen, edo moldagailu lehenetsiarekin esleitutako "
-"gailuak konfiguratuta daudenean. Hau leheneratu egingo da moldagailu "
-"lehenetsiak berarekin esleitutako gailurik ez daukanean."
+msgstr "Shell-ak Bluetooth moldagailu bat entxufatuta dagoenean soilik Bluetooth-aren menua erakutsiko duen, edo moldagailu lehenetsiarekin esleitutako gailuak konfiguratuta daudenean. Hau leheneratu egingo da moldagailu lehenetsiak berarekin esleitutako gailurik ez daukanean."
 
 #: data/org.gnome.shell.gschema.xml.in:106
 msgid "Enable introspection API"
@@ -214,9 +180,7 @@ msgstr "Gaitu introspekzio APIa"
 msgid ""
 "Enables a D-Bus API that allows to introspect the application state of the "
 "shell."
-msgstr ""
-"Shell-en aplikazio-egoeraren introspekzioa ahalbidetzen duen D-Bus API bat "
-"gaitzen du."
+msgstr "Shell-en aplikazio-egoeraren introspekzioa ahalbidetzen duen D-Bus API bat gaitzen du."
 
 #: data/org.gnome.shell.gschema.xml.in:119
 msgid "Keybinding to open the application menu"
@@ -233,9 +197,7 @@ msgstr "“Erakutsi aplikazioak” bista irekitzeko laster-tekla"
 #: data/org.gnome.shell.gschema.xml.in:127
 msgid ""
 "Keybinding to open the “Show Applications” view of the Activities Overview."
-msgstr ""
-"Jarduerak ikuspegi orokorraren “Erakutsi aplikazioak” ikuspegia irekitzeko "
-"laster-tekla."
+msgstr "Jarduerak ikuspegi orokorraren “Erakutsi aplikazioak” ikuspegia irekitzeko laster-tekla."
 
 #: data/org.gnome.shell.gschema.xml.in:134
 msgid "Keybinding to open the overview"
@@ -306,9 +268,7 @@ msgstr "Mugatu aldatzailea uneko laneko areara."
 msgid ""
 "If true, only applications that have windows on the current workspace are "
 "shown in the switcher. Otherwise, all applications are included."
-msgstr ""
-"TRUE (egia) bada, uneko laneko arean leihoak dituzten aplikazioak soilik "
-"erakutsiko dira aldatzailean. Bestela, aplikazio guztiak egongo dira."
+msgstr "TRUE (egia) bada, uneko laneko arean leihoak dituzten aplikazioak soilik erakutsiko dira aldatzailean. Bestela, aplikazio guztiak egongo dira."
 
 #: data/org.gnome.shell.gschema.xml.in:214
 msgid "The application icon mode."
@@ -319,18 +279,13 @@ msgid ""
 "Configures how the windows are shown in the switcher. Valid possibilities "
 "are “thumbnail-only” (shows a thumbnail of the window), “app-icon-"
 "only” (shows only the application icon) or “both”."
-msgstr ""
-"Leihoak aldatzaileak nola erakusten diren konfiguratzen du. Aukera posibleak "
-"“thumbnail-only” (leihoaren miniatura erakustea), “app-icon-only” (aplikazio-"
-"ikonoa erakustea soilik) edo “both” (biak)."
+msgstr "Leihoak aldatzaileak nola erakusten diren konfiguratzen du. Aukera posibleak “thumbnail-only” (leihoaren miniatura erakustea), “app-icon-only” (aplikazio-ikonoa erakustea soilik) edo “both” (biak)."
 
 #: data/org.gnome.shell.gschema.xml.in:224
 msgid ""
 "If true, only windows from the current workspace are shown in the switcher. "
 "Otherwise, all windows are included."
-msgstr ""
-"TRUE (egia) bada, uneko laneko arean leihoak soilik erakutsiko dira "
-"aldatzailean. Bestela, leiho guztiak egongo dira."
+msgstr "TRUE (egia) bada, uneko laneko arean leihoak soilik erakutsiko dira aldatzailean. Bestela, leiho guztiak egongo dira."
 
 #: data/org.gnome.shell.gschema.xml.in:234
 msgid "Locations"
@@ -367,8 +322,7 @@ msgstr "Erantsi elkarrizketa-leiho modala leiho gurasoari"
 #: data/org.gnome.shell.gschema.xml.in:300
 msgid ""
 "This key overrides the key in org.gnome.mutter when running GNOME Shell."
-msgstr ""
-"Gako honek org.gnome.mutter gakoa gainidazten du GNOME Shell exekutatzean."
+msgstr "Gako honek org.gnome.mutter gakoa gainidazten du GNOME Shell exekutatzean."
 
 #: data/org.gnome.shell.gschema.xml.in:275
 msgid "Enable edge tiling when dropping windows on screen edges"
@@ -384,16 +338,14 @@ msgstr "Laneko areak monitore nagusian soilik"
 
 #: data/org.gnome.shell.gschema.xml.in:299
 msgid "Delay focus changes in mouse mode until the pointer stops moving"
-msgstr ""
-"Fokuaren aldaketaren atzerapena saguaren moduan erakusleak mugitzeari utzi "
-"arte"
+msgstr "Fokuaren aldaketaren atzerapena saguaren moduan erakusleak mugitzeari utzi arte"
 
 #: data/org.gnome.Shell.PortalHelper.desktop.in.in:3
 msgid "Network Login"
 msgstr "Sareko saio-hasiera"
 
 #: js/dbusServices/extensions/ui/extension-prefs-dialog.ui:36
-#: subprojects/extensions-app/data/ui/extensions-window.ui:223
+#: subprojects/extensions-app/data/ui/extensions-window.ui:224
 msgid "Something’s gone wrong"
 msgstr "Zerbait gaizki joan da"
 
@@ -402,9 +354,7 @@ msgid ""
 "We’re very sorry, but there’s been a problem: the settings for this "
 "extension can’t be displayed. We recommend that you report the issue to the "
 "extension authors."
-msgstr ""
-"Barkatu, arazo bat gertatu da: hedapen honen ezarpenak ezin dira erakutsi. "
-"Arazoa hedapenaren egileei jakinarazi diezaiezun gomendatzen dizugu."
+msgstr "Barkatu, arazo bat gertatu da: hedapen honen ezarpenak ezin dira erakutsi. Arazoa hedapenaren egileei jakinarazi diezaiezun gomendatzen dizugu."
 
 #: js/dbusServices/extensions/ui/extension-prefs-dialog.ui:82
 msgid "Technical Details"
@@ -419,18 +369,18 @@ msgid "Visit extension homepage"
 msgstr "Bisitatu hedapenaren webgunea"
 
 #: js/gdm/authPrompt.js:135 js/ui/audioDeviceSelection.js:57
-#: js/ui/components/networkAgent.js:109 js/ui/components/polkitAgent.js:139
-#: js/ui/endSessionDialog.js:374 js/ui/extensionDownloader.js:181
+#: js/ui/components/networkAgent.js:110 js/ui/components/polkitAgent.js:139
+#: js/ui/endSessionDialog.js:369 js/ui/extensionDownloader.js:181
 #: js/ui/shellMountOperation.js:376 js/ui/shellMountOperation.js:386
-#: js/ui/status/network.js:913 subprojects/extensions-app/js/main.js:148
+#: js/ui/status/network.js:917 subprojects/extensions-app/js/main.js:148
 msgid "Cancel"
 msgstr "Utzi"
 
 #. Cisco LEAP
-#: js/gdm/authPrompt.js:237 js/ui/components/networkAgent.js:204
-#: js/ui/components/networkAgent.js:220 js/ui/components/networkAgent.js:244
-#: js/ui/components/networkAgent.js:265 js/ui/components/networkAgent.js:285
-#: js/ui/components/networkAgent.js:295 js/ui/components/polkitAgent.js:277
+#: js/gdm/authPrompt.js:237 js/ui/components/networkAgent.js:205
+#: js/ui/components/networkAgent.js:221 js/ui/components/networkAgent.js:245
+#: js/ui/components/networkAgent.js:266 js/ui/components/networkAgent.js:286
+#: js/ui/components/networkAgent.js:296 js/ui/components/polkitAgent.js:277
 #: js/ui/shellMountOperation.js:326
 msgid "Password"
 msgstr "Pasahitza"
@@ -453,8 +403,8 @@ msgstr "(adib., erabiltzailea edo %s)"
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: js/gdm/loginDialog.js:917 js/ui/components/networkAgent.js:240
-#: js/ui/components/networkAgent.js:263 js/ui/components/networkAgent.js:281
+#: js/gdm/loginDialog.js:917 js/ui/components/networkAgent.js:241
+#: js/ui/components/networkAgent.js:264 js/ui/components/networkAgent.js:282
 msgid "Username"
 msgstr "Erabiltzaile-izena"
 
@@ -462,7 +412,7 @@ msgstr "Erabiltzaile-izena"
 msgid "Login Window"
 msgstr "Saio-hasierako leihoa"
 
-#: js/gdm/util.js:338
+#: js/gdm/util.js:345
 msgid "Authentication error"
 msgstr "Autentifikazio-errorea"
 
@@ -471,7 +421,7 @@ msgstr "Autentifikazio-errorea"
 #. as a cue to display our own message.
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger instead
-#: js/gdm/util.js:473
+#: js/gdm/util.js:471
 msgid "(or swipe finger)"
 msgstr "(edo lerratu hatza)"
 
@@ -691,10 +641,7 @@ msgstr "Wifigunearen saio-hasiera"
 msgid ""
 "Your connection to this hotspot login is not secure. Passwords or other "
 "information you enter on this page can be viewed by people nearby."
-msgstr ""
-"Wifigune honetarako saio-hasierako zure konexioa ez da segurua. Orri honetan "
-"sartzen dituzun pasahitzak edo bestelako informazioak inguruko beste jendeek "
-"ikus ditzakete."
+msgstr "Wifigune honetarako saio-hasierako zure konexioa ez da segurua. Orri honetan sartzen dituzun pasahitzak edo bestelako informazioak inguruko beste jendeek ikus ditzakete."
 
 #. No support for non-modal system dialogs, so ignore the option
 #. let modal = options['modal'] || true;
@@ -706,53 +653,53 @@ msgstr "Ukatu sarbidea"
 msgid "Grant Access"
 msgstr "Baimendu sarbidea"
 
-#: js/ui/appDisplay.js:932
+#: js/ui/appDisplay.js:950
 msgid "Unnamed Folder"
 msgstr "Izenik gabeko karpeta"
 
-#: js/ui/appDisplay.js:955
+#: js/ui/appDisplay.js:973
 msgid "Frequently used applications will appear here"
 msgstr "Maiztasunez erabilitako aplikazioak hemen agertuko dira"
 
-#: js/ui/appDisplay.js:1090
+#: js/ui/appDisplay.js:1108
 msgid "Frequent"
 msgstr "Erabilienak"
 
-#: js/ui/appDisplay.js:1097
+#: js/ui/appDisplay.js:1115
 msgid "All"
 msgstr "Denak"
 
 #. Translators: This is the heading of a list of open windows
-#: js/ui/appDisplay.js:2473 js/ui/panel.js:75
+#: js/ui/appDisplay.js:2506 js/ui/panel.js:75
 msgid "Open Windows"
 msgstr "Leiho irekiak"
 
-#: js/ui/appDisplay.js:2493 js/ui/panel.js:82
+#: js/ui/appDisplay.js:2526 js/ui/panel.js:82
 msgid "New Window"
-msgstr "_Leiho berria"
+msgstr "Leiho berria"
 
-#: js/ui/appDisplay.js:2504
+#: js/ui/appDisplay.js:2537
 msgid "Launch using Dedicated Graphics Card"
 msgstr "Abiarazi eskainitako txartel grafikoa erabiliz"
 
-#: js/ui/appDisplay.js:2532 js/ui/dash.js:239
+#: js/ui/appDisplay.js:2565 js/ui/dash.js:239
 msgid "Remove from Favorites"
 msgstr "Kendu gogokoetatik"
 
-#: js/ui/appDisplay.js:2538
+#: js/ui/appDisplay.js:2571
 msgid "Add to Favorites"
 msgstr "Gehitu gogokoei"
 
-#: js/ui/appDisplay.js:2548 js/ui/panel.js:93
+#: js/ui/appDisplay.js:2581 js/ui/panel.js:93
 msgid "Show Details"
 msgstr "Erakutsi xehetasunak"
 
-#: js/ui/appFavorites.js:152
+#: js/ui/appFavorites.js:163
 #, javascript-format
 msgid "%s has been added to your favorites."
 msgstr "%s gogokoei gehitu zaie."
 
-#: js/ui/appFavorites.js:185
+#: js/ui/appFavorites.js:196
 #, javascript-format
 msgid "%s has been removed from your favorites."
 msgstr "%s gogokoetatik kendu da."
@@ -847,7 +794,7 @@ msgstr "L"
 #. * "%OB" is the new format specifier introduced in glibc 2.27,
 #. * in most cases you should not change it.
 #.
-#: js/ui/calendar.js:371
+#: js/ui/calendar.js:372
 msgid "%OB"
 msgstr "%OB"
 
@@ -860,61 +807,61 @@ msgstr "%OB"
 #. * in most cases you should not use the old "%B" here unless you
 #. * absolutely know what you are doing.
 #.
-#: js/ui/calendar.js:381
+#: js/ui/calendar.js:382
 msgid "%OB %Y"
 msgstr "%OB %Y"
 
-#: js/ui/calendar.js:440
+#: js/ui/calendar.js:441
 msgid "Previous month"
 msgstr "Aurreko hila"
 
-#: js/ui/calendar.js:455
+#: js/ui/calendar.js:456
 msgid "Next month"
 msgstr "Hurrengo hila"
 
-#: js/ui/calendar.js:605
+#: js/ui/calendar.js:606
 #, no-javascript-format
 msgctxt "date day number format"
 msgid "%d"
 msgstr "%d"
 
-#: js/ui/calendar.js:661
+#: js/ui/calendar.js:662
 msgid "Week %V"
 msgstr "%V. astea"
 
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
 #.
-#: js/ui/calendar.js:730
+#: js/ui/calendar.js:731
 msgctxt "event list time"
 msgid "All Day"
 msgstr "Egun osoa"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year
-#: js/ui/calendar.js:868
+#: js/ui/calendar.js:869
 msgctxt "calendar heading"
 msgid "%A, %B %-d"
 msgstr "%A, %B %-d"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year
-#: js/ui/calendar.js:871
+#: js/ui/calendar.js:872
 msgctxt "calendar heading"
 msgid "%A, %B %-d, %Y"
 msgstr "%A, %B %-d, %Y"
 
-#: js/ui/calendar.js:1100
+#: js/ui/calendar.js:1101
 msgid "No Notifications"
 msgstr "Jakinarazpenik ez"
 
-#: js/ui/calendar.js:1103
+#: js/ui/calendar.js:1104
 msgid "No Events"
 msgstr "Gertaerarik ez"
 
-#: js/ui/calendar.js:1157
+#: js/ui/calendar.js:1158
 msgid "Do Not Disturb"
 msgstr "Ez gogaitu"
 
-#: js/ui/calendar.js:1176
+#: js/ui/calendar.js:1177
 msgid "Clear"
 msgstr "Garbitu"
 
@@ -928,9 +875,7 @@ msgstr "“%s”(e)k ez du erantzuten."
 msgid ""
 "You may choose to wait a short while for it to continue or force the "
 "application to quit entirely."
-msgstr ""
-"Pixka bat itxoitearen edo aplikazioa irtetera derrigortzearen artean aukera "
-"dezakezu."
+msgstr "Pixka bat itxoitearen edo aplikazioa irtetera derrigortzearen artean aukera dezakezu."
 
 #: js/ui/closeDialog.js:70
 msgid "Force Quit"
@@ -961,82 +906,80 @@ msgstr "Instalatutako udisks bertsioak ez du onartzen PIM ezarpena"
 msgid "Open with %s"
 msgstr "Ireki honekin: %s"
 
-#: js/ui/components/networkAgent.js:91
+#: js/ui/components/networkAgent.js:92
 msgid ""
 "Alternatively you can connect by pushing the “WPS” button on your router."
 msgstr "Bestela, zure routerreko \"WPS\" botoia sakatuta konektatu zaitezke."
 
-#: js/ui/components/networkAgent.js:103 js/ui/status/network.js:223
-#: js/ui/status/network.js:314 js/ui/status/network.js:916
+#: js/ui/components/networkAgent.js:104 js/ui/status/network.js:227
+#: js/ui/status/network.js:318 js/ui/status/network.js:920
 msgid "Connect"
 msgstr "Konektatu"
 
-#: js/ui/components/networkAgent.js:210
+#: js/ui/components/networkAgent.js:211
 msgid "Key"
 msgstr "Gakoa"
 
-#: js/ui/components/networkAgent.js:248 js/ui/components/networkAgent.js:271
+#: js/ui/components/networkAgent.js:249 js/ui/components/networkAgent.js:272
 msgid "Private key password"
 msgstr "Gako pribatuaren pasahitza"
 
-#: js/ui/components/networkAgent.js:269
+#: js/ui/components/networkAgent.js:270
 msgid "Identity"
 msgstr "Identitatea"
 
-#: js/ui/components/networkAgent.js:283
+#: js/ui/components/networkAgent.js:284
 msgid "Service"
 msgstr "Zerbitzua"
 
-#: js/ui/components/networkAgent.js:312 js/ui/components/networkAgent.js:340
-#: js/ui/components/networkAgent.js:679 js/ui/components/networkAgent.js:700
+#: js/ui/components/networkAgent.js:313 js/ui/components/networkAgent.js:341
+#: js/ui/components/networkAgent.js:680 js/ui/components/networkAgent.js:701
 msgid "Authentication required"
 msgstr "Autentifikazioa behar da"
 
-#: js/ui/components/networkAgent.js:313 js/ui/components/networkAgent.js:680
+#: js/ui/components/networkAgent.js:314 js/ui/components/networkAgent.js:681
 #, javascript-format
 msgid ""
 "Passwords or encryption keys are required to access the wireless network "
 "“%s”."
-msgstr ""
-"Pasahitzak edo zifratze-gakoak behar dira haririk gabeko '%s' sarera "
-"sarbidetzeko."
+msgstr "Pasahitzak edo zifratze-gakoak behar dira haririk gabeko '%s' sarera sarbidetzeko."
 
-#: js/ui/components/networkAgent.js:317 js/ui/components/networkAgent.js:684
+#: js/ui/components/networkAgent.js:318 js/ui/components/networkAgent.js:685
 msgid "Wired 802.1X authentication"
 msgstr "Haridun 802.1X autentifikazioa"
 
-#: js/ui/components/networkAgent.js:319
+#: js/ui/components/networkAgent.js:320
 msgid "Network name"
 msgstr "Sarearen izena"
 
-#: js/ui/components/networkAgent.js:324 js/ui/components/networkAgent.js:688
+#: js/ui/components/networkAgent.js:325 js/ui/components/networkAgent.js:689
 msgid "DSL authentication"
 msgstr "DSL autentifikazioa"
 
-#: js/ui/components/networkAgent.js:331 js/ui/components/networkAgent.js:693
+#: js/ui/components/networkAgent.js:332 js/ui/components/networkAgent.js:694
 msgid "PIN code required"
 msgstr "PIN kodea behar da"
 
-#: js/ui/components/networkAgent.js:332 js/ui/components/networkAgent.js:694
+#: js/ui/components/networkAgent.js:333 js/ui/components/networkAgent.js:695
 msgid "PIN code is needed for the mobile broadband device"
 msgstr "PIN kodea behar da banda zabal mugikorreko gailuarentzako"
 
-#: js/ui/components/networkAgent.js:333
+#: js/ui/components/networkAgent.js:334
 msgid "PIN"
 msgstr "PINa"
 
-#: js/ui/components/networkAgent.js:341 js/ui/components/networkAgent.js:685
-#: js/ui/components/networkAgent.js:689 js/ui/components/networkAgent.js:701
-#: js/ui/components/networkAgent.js:705
+#: js/ui/components/networkAgent.js:342 js/ui/components/networkAgent.js:686
+#: js/ui/components/networkAgent.js:690 js/ui/components/networkAgent.js:702
+#: js/ui/components/networkAgent.js:706
 #, javascript-format
 msgid "A password is required to connect to “%s”."
 msgstr "Pasahitza behar da '%s'(e)ra konektatzeko."
 
-#: js/ui/components/networkAgent.js:668 js/ui/status/network.js:1691
+#: js/ui/components/networkAgent.js:669 js/ui/status/network.js:1695
 msgid "Network Manager"
 msgstr "Sarearen kudeatzailea"
 
-#: js/ui/components/networkAgent.js:704
+#: js/ui/components/networkAgent.js:705
 msgid "VPN password"
 msgstr "VPN pasahitza"
 
@@ -1062,7 +1005,7 @@ msgstr "Huts egin du. Saiatu berriro."
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
-#: js/ui/components/telepathyClient.js:823
+#: js/ui/components/telepathyClient.js:822
 #, javascript-format
 msgid "%s is now known as %s"
 msgstr "%s orain %s izenarekin ezagutzen da"
@@ -1106,133 +1049,129 @@ msgstr "Gehitu munduko erlojuak…"
 msgid "World Clocks"
 msgstr "Munduko erlojuak"
 
-#: js/ui/dateMenu.js:289
-msgid "Weather"
-msgstr "Eguraldia"
-
-#: js/ui/dateMenu.js:418
-msgid "Select a location…"
-msgstr "Hautatu kokalekua…"
-
-#: js/ui/dateMenu.js:426
+#: js/ui/dateMenu.js:424
 msgid "Loading…"
 msgstr "Kargatzen…"
 
-#: js/ui/dateMenu.js:436
+#: js/ui/dateMenu.js:434
 msgid "Go online for weather information"
 msgstr "Konektatu eguraldiaren informazioa lortzeko"
 
-#: js/ui/dateMenu.js:438
+#: js/ui/dateMenu.js:436
 msgid "Weather information is currently unavailable"
 msgstr "Eguraldiaren informazioa unean ez dago eskuragarri"
 
-#: js/ui/endSessionDialog.js:39
+#: js/ui/dateMenu.js:446
+msgid "Weather"
+msgstr "Eguraldia"
+
+#: js/ui/dateMenu.js:448
+msgid "Select weather location…"
+msgstr "Hautatu eguraldiaren kokalekua…"
+
+#: js/ui/endSessionDialog.js:37
 #, javascript-format
 msgctxt "title"
 msgid "Log Out %s"
 msgstr "Amaitu %s(r)en saioa"
 
-#: js/ui/endSessionDialog.js:40
+#: js/ui/endSessionDialog.js:38
 msgctxt "title"
 msgid "Log Out"
 msgstr "Amaitu saioa"
 
-#: js/ui/endSessionDialog.js:42
+#: js/ui/endSessionDialog.js:40
 #, javascript-format
 msgid "%s will be logged out automatically in %d second."
 msgid_plural "%s will be logged out automatically in %d seconds."
 msgstr[0] "%s erabiltzailearen saioa automatikoki %d segundotan amaituko da."
 msgstr[1] "%s erabiltzailearen saioa automatikoki %d segundotan amaituko da."
 
-#: js/ui/endSessionDialog.js:47
+#: js/ui/endSessionDialog.js:45
 #, javascript-format
 msgid "You will be logged out automatically in %d second."
 msgid_plural "You will be logged out automatically in %d seconds."
 msgstr[0] "Zure saioa automatikoki %d segundotan amaituko da."
 msgstr[1] "Zure saioa automatikoki %d segundotan amaituko da."
 
-#: js/ui/endSessionDialog.js:53
+#: js/ui/endSessionDialog.js:51
 msgctxt "button"
 msgid "Log Out"
 msgstr "Amaitu saioa"
 
-#: js/ui/endSessionDialog.js:58
+#: js/ui/endSessionDialog.js:56
 msgctxt "title"
 msgid "Power Off"
 msgstr "Itzali"
 
-#: js/ui/endSessionDialog.js:59
+#: js/ui/endSessionDialog.js:57
 msgctxt "title"
 msgid "Install Updates & Power Off"
 msgstr "Instalatu eguneraketak eta itzali"
 
-#: js/ui/endSessionDialog.js:61
+#: js/ui/endSessionDialog.js:59
 #, javascript-format
 msgid "The system will power off automatically in %d second."
 msgid_plural "The system will power off automatically in %d seconds."
 msgstr[0] "Sistema automatikoki segundo %dean itzaliko da."
 msgstr[1] "Sistema automatikoki %d segundotan itzaliko da."
 
-#: js/ui/endSessionDialog.js:65
+#: js/ui/endSessionDialog.js:63
 msgctxt "checkbox"
 msgid "Install pending software updates"
 msgstr "Instalatu falta diren softwareen eguneraketak"
 
-#: js/ui/endSessionDialog.js:68 js/ui/endSessionDialog.js:84
+#: js/ui/endSessionDialog.js:66 js/ui/endSessionDialog.js:82
 msgctxt "button"
 msgid "Restart"
 msgstr "Berrabiarazi"
 
-#: js/ui/endSessionDialog.js:70
+#: js/ui/endSessionDialog.js:68
 msgctxt "button"
 msgid "Power Off"
 msgstr "Itzali"
 
-#: js/ui/endSessionDialog.js:76
+#: js/ui/endSessionDialog.js:74
 msgctxt "title"
 msgid "Restart"
 msgstr "Berrabiarazi"
 
-#: js/ui/endSessionDialog.js:78
+#: js/ui/endSessionDialog.js:76
 #, javascript-format
 msgid "The system will restart automatically in %d second."
 msgid_plural "The system will restart automatically in %d seconds."
 msgstr[0] "Sistema automatikoki segundo %dean berrabiaraziko da."
 msgstr[1] "Sistema automatikoki %d segundotan berrabiaraziko da."
 
-#: js/ui/endSessionDialog.js:91
+#: js/ui/endSessionDialog.js:89
 msgctxt "title"
 msgid "Restart & Install Updates"
 msgstr "Berrabiarazi eta instalatu eguneraketak"
 
-#: js/ui/endSessionDialog.js:93
+#: js/ui/endSessionDialog.js:91
 #, javascript-format
 msgid "The system will automatically restart and install updates in %d second."
 msgid_plural ""
 "The system will automatically restart and install updates in %d seconds."
-msgstr[0] ""
-"Sistema automatikoki berrabiaraziko da  eta eguneraketak instalatuko ditu "
-"segundo %dean."
-msgstr[1] ""
-"Sistema automatikoki berrabiaraziko da  eta eguneraketak instalatuko ditu %d "
-"segundotan."
+msgstr[0] "Sistema automatikoki berrabiaraziko da  eta eguneraketak instalatuko ditu segundo %dean."
+msgstr[1] "Sistema automatikoki berrabiaraziko da  eta eguneraketak instalatuko ditu %d segundotan."
 
-#: js/ui/endSessionDialog.js:99 js/ui/endSessionDialog.js:118
+#: js/ui/endSessionDialog.js:97 js/ui/endSessionDialog.js:116
 msgctxt "button"
 msgid "Restart &amp; Install"
 msgstr "Berrabiarazi eta instalatu"
 
-#: js/ui/endSessionDialog.js:100
+#: js/ui/endSessionDialog.js:98
 msgctxt "button"
 msgid "Install &amp; Power Off"
 msgstr "Instalatu eta itzali"
 
-#: js/ui/endSessionDialog.js:101
+#: js/ui/endSessionDialog.js:99
 msgctxt "checkbox"
 msgid "Power off after updates are installed"
 msgstr "Itzali eguneraketa guztiak instalatu ondoren"
 
-#: js/ui/endSessionDialog.js:108
+#: js/ui/endSessionDialog.js:106
 msgctxt "title"
 msgid "Restart & Install Upgrade"
 msgstr "Berrabiarazi eta instalatu bertsio-berritzea"
@@ -1240,36 +1179,33 @@ msgstr "Berrabiarazi eta instalatu bertsio-berritzea"
 #. Translators: This is the text displayed for system upgrades in the
 #. shut down dialog. First %s gets replaced with the distro name and
 #. second %s with the distro version to upgrade to
-#: js/ui/endSessionDialog.js:113
+#: js/ui/endSessionDialog.js:111
 #, javascript-format
 msgid ""
 "%s %s will be installed after restart. Upgrade installation can take a long "
 "time: ensure that you have backed up and that the computer is plugged in."
-msgstr ""
-"%s %s instalatuko da berrabiarazi ondoren. Bertsio-berritzearen instalazioak "
-"denbora luzea beharko du, ziurtatu zaitez babeskopia eginda daukazula eta "
-"ordenagailua entxufatuta dagoela."
+msgstr "%s %s instalatuko da berrabiarazi ondoren. Bertsio-berritzearen instalazioak denbora luzea beharko du, ziurtatu zaitez babeskopia eginda daukazula eta ordenagailua entxufatuta dagoela."
 
-#: js/ui/endSessionDialog.js:261
+#: js/ui/endSessionDialog.js:259
 msgid "Running on battery power: Please plug in before installing updates."
 msgstr "Bateriarekin lanean: entxufatu eguneraketak instalatu aurretik."
 
-#: js/ui/endSessionDialog.js:270
+#: js/ui/endSessionDialog.js:268
 msgid "Some applications are busy or have unsaved work"
 msgstr "Aplikazio batzuk lanpetuta daude edo gorde gabeko lanak dituzte."
 
-#: js/ui/endSessionDialog.js:275
+#: js/ui/endSessionDialog.js:273
 msgid "Other users are logged in"
 msgstr "Beste erabiltzaile batzuek saioa hasita dute."
 
 #. Translators: Remote here refers to a remote session, like a ssh login
-#: js/ui/endSessionDialog.js:588
+#: js/ui/endSessionDialog.js:583
 #, javascript-format
 msgid "%s (remote)"
 msgstr "%s (urrunekoa)"
 
 #. Translators: Console here refers to a tty like a VT console
-#: js/ui/endSessionDialog.js:591
+#: js/ui/endSessionDialog.js:586
 #, javascript-format
 msgid "%s (console)"
 msgstr "%s (kontsola)"
@@ -1287,11 +1223,11 @@ msgstr "Instalatu hedapena"
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "Deskargatu eta instalatu “%s” extensions.gnome.org gunetik?"
 
-#: js/ui/extensionSystem.js:233
+#: js/ui/extensionSystem.js:251
 msgid "Extension Updates Available"
 msgstr "Hedapenen eguneraketak eskuragarri"
 
-#: js/ui/extensionSystem.js:234
+#: js/ui/extensionSystem.js:252
 msgid "Extension updates are ready to be installed."
 msgstr "Hedapenen eguneraketak instalatzeko prest daude."
 
@@ -1335,10 +1271,7 @@ msgstr "Tekla motelak desaktibatuta"
 msgid ""
 "You just held down the Shift key for 8 seconds. This is the shortcut for the "
 "Slow Keys feature, which affects the way your keyboard works."
-msgstr ""
-"Shift teklari 8 segundo baino denbora gehiago eutsi diozu sakatuta. Hori "
-"tekla motelen eginbidea aktibatzeko lasterbidea da, eta zure teklatuaren "
-"funtzionamendua aldatzen du."
+msgstr "Shift teklari 8 segundo baino denbora gehiago eutsi diozu sakatuta. Hori tekla motelen eginbidea aktibatzeko lasterbidea da, eta zure teklatuaren funtzionamendua aldatzen du."
 
 #: js/ui/kbdA11yDialog.js:41
 msgid "Sticky Keys Turned On"
@@ -1352,33 +1285,27 @@ msgstr "Tekla itsaskorrak desaktibatuta"
 msgid ""
 "You just pressed the Shift key 5 times in a row. This is the shortcut for "
 "the Sticky Keys feature, which affects the way your keyboard works."
-msgstr ""
-"Shift teklari 5 aldiz jarraian sakatu diozu. Hori tekla itsaskorren "
-"eginbidea aktibatzeko lasterbidea da, eta zure teklatuaren funtzionamendua "
-"aldatzen du."
+msgstr "Shift teklari 5 aldiz jarraian sakatu diozu. Hori tekla itsaskorren eginbidea aktibatzeko lasterbidea da, eta zure teklatuaren funtzionamendua aldatzen du."
 
 #: js/ui/kbdA11yDialog.js:46
 msgid ""
 "You just pressed two keys at once, or pressed the Shift key 5 times in a "
 "row. This turns off the Sticky Keys feature, which affects the way your "
 "keyboard works."
-msgstr ""
-"Bi tekla aldi berean sakatu dituzu, edo Shift teklari 5 aldiz jarraian "
-"sakatu diozu. Hori tekla itsaskorren eginbidea desaktibatzeko lasterbidea "
-"da, eta zure teklatuaren funtzionamendua aldatzen du."
+msgstr "Bi tekla aldi berean sakatu dituzu, edo Shift teklari 5 aldiz jarraian sakatu diozu. Hori tekla itsaskorren eginbidea desaktibatzeko lasterbidea da, eta zure teklatuaren funtzionamendua aldatzen du."
 
 #: js/ui/kbdA11yDialog.js:55
 msgid "Leave On"
 msgstr "Utzi piztuta"
 
-#: js/ui/kbdA11yDialog.js:55 js/ui/status/bluetooth.js:135
-#: js/ui/status/network.js:1288
+#: js/ui/kbdA11yDialog.js:55 js/ui/status/bluetooth.js:156
+#: js/ui/status/network.js:1292
 msgid "Turn On"
 msgstr "Piztu"
 
-#: js/ui/kbdA11yDialog.js:63 js/ui/status/bluetooth.js:135
-#: js/ui/status/network.js:131 js/ui/status/network.js:315
-#: js/ui/status/network.js:1288 js/ui/status/network.js:1400
+#: js/ui/kbdA11yDialog.js:63 js/ui/status/bluetooth.js:156
+#: js/ui/status/network.js:135 js/ui/status/network.js:319
+#: js/ui/status/network.js:1292 js/ui/status/network.js:1404
 #: js/ui/status/nightLight.js:41 js/ui/status/rfkill.js:81
 #: js/ui/status/rfkill.js:108
 msgid "Turn Off"
@@ -1440,24 +1367,21 @@ msgstr "Ikusi iturburua"
 msgid "Web Page"
 msgstr "Web orria"
 
-#: js/ui/main.js:277
+#: js/ui/main.js:284
 msgid "Logged in as a privileged user"
 msgstr "Erabiltzaile pribilegiatu gisa saioa hasita"
 
-#: js/ui/main.js:278
+#: js/ui/main.js:285
 msgid ""
 "Running a session as a privileged user should be avoided for security "
 "reasons. If possible, you should log in as a normal user."
-msgstr ""
-"Erabiltzaile pribilegiatu gisa saio bat exekutatzea saihestu beharko "
-"litzateke segurtasuneko arrazoiak direla eta. Posible bada, erabiltzaile "
-"arrunt gisa hasi beharko zenuke saioa."
+msgstr "Erabiltzaile pribilegiatu gisa saio bat exekutatzea saihestu beharko litzateke segurtasuneko arrazoiak direla eta. Posible bada, erabiltzaile arrunt gisa hasi beharko zenuke saioa."
 
-#: js/ui/main.js:317
+#: js/ui/main.js:324
 msgid "Screen Lock disabled"
 msgstr "Pantailaren blokeoa desgaituta dago"
 
-#: js/ui/main.js:318
+#: js/ui/main.js:325
 msgid "Screen Locking requires the GNOME display manager."
 msgstr "Pantaila blokeatzeko GNOMEren pantaila-kudeatzailea behar da."
 
@@ -1535,22 +1459,22 @@ msgstr "Sakatu Ihes irteteko"
 msgid "Press any key to exit"
 msgstr "Sakatu edozer tekla irteteko"
 
-#: js/ui/panel.js:109
+#: js/ui/panel.js:107
 msgid "Quit"
 msgstr "Irten"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: js/ui/panel.js:434
+#: js/ui/panel.js:432
 msgid "Activities"
 msgstr "Jarduerak"
 
-#: js/ui/panel.js:713
+#: js/ui/panel.js:711
 msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "Sistema"
 
-#: js/ui/panel.js:826
+#: js/ui/panel.js:824
 msgid "Top Bar"
 msgstr "Goiko barra"
 
@@ -1581,23 +1505,23 @@ msgstr "GNOMEk pantaila blokeatzea behar du"
 #.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
-#: js/ui/screenShield.js:244 js/ui/screenShield.js:598
+#: js/ui/screenShield.js:244 js/ui/screenShield.js:601
 msgid "Unable to lock"
 msgstr "Ezin da blokeatu"
 
-#: js/ui/screenShield.js:245 js/ui/screenShield.js:599
+#: js/ui/screenShield.js:245 js/ui/screenShield.js:602
 msgid "Lock was blocked by an application"
 msgstr "Beste aplikazio batek blokeatu du"
 
-#: js/ui/search.js:694
+#: js/ui/search.js:703
 msgid "Searching…"
 msgstr "Bilatzen…"
 
-#: js/ui/search.js:696
+#: js/ui/search.js:705
 msgid "No results."
 msgstr "Emaitzarik ez."
 
-#: js/ui/search.js:822
+#: js/ui/search.js:831
 #, javascript-format
 msgid "%d more"
 msgid_plural "%d more"
@@ -1641,9 +1565,7 @@ msgstr "Gako-fitxategiak erabiltzen ditu"
 #, javascript-format
 msgid ""
 "To unlock a volume that uses keyfiles, use the <i>%s</i> utility instead."
-msgstr ""
-"Gako-fitxategiak erabiltzen dituen bolumen bat desmuntatzeko, erabili <i>%s</"
-"i> utilitatea"
+msgstr "Gako-fitxategiak erabiltzen dituen bolumen bat desmuntatzeko, erabili <i>%s</i> utilitatea"
 
 #: js/ui/shellMountOperation.js:306
 msgid "PIM Number"
@@ -1727,25 +1649,17 @@ msgstr "Testu handia"
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: js/ui/status/bluetooth.js:49 js/ui/status/network.js:591
+#: js/ui/status/bluetooth.js:49 js/ui/status/network.js:595
 msgid "Bluetooth Settings"
 msgstr "Bluetooth ezarpenak"
 
-#. Translators: this is the number of connected bluetooth devices
-#: js/ui/status/bluetooth.js:129
-#, javascript-format
-msgid "%d Connected"
-msgid_plural "%d Connected"
-msgstr[0] "%d konektatuta"
-msgstr[1] "%d konektatuta"
+#: js/ui/status/bluetooth.js:152
+msgid "Bluetooth Off"
+msgstr "Bluetooth-a desaktibatuta"
 
-#: js/ui/status/bluetooth.js:131
-msgid "Off"
-msgstr "Desaktibatuta"
-
-#: js/ui/status/bluetooth.js:133
-msgid "On"
-msgstr "Aktibatuta"
+#: js/ui/status/bluetooth.js:154
+msgid "Bluetooth On"
+msgstr "Bluetooth-a aktibatuta"
 
 #: js/ui/status/brightness.js:39
 msgid "Brightness"
@@ -1815,22 +1729,20 @@ msgstr "%s aplikazioak zure kokalekua atzitu nahi du"
 
 #: js/ui/status/location.js:367
 msgid "Location access can be changed at any time from the privacy settings."
-msgstr ""
-"Kokalekuaren sarbidea edozer unetan alda daiteke pribatutasunen "
-"ezarpenetatik."
+msgstr "Kokalekuaren sarbidea edozer unetan alda daiteke pribatutasunen ezarpenetatik."
 
-#: js/ui/status/network.js:66
+#: js/ui/status/network.js:70
 msgid "<unknown>"
 msgstr "<ezezaguna>"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:420 js/ui/status/network.js:1317
+#: js/ui/status/network.js:424 js/ui/status/network.js:1321
 #, javascript-format
 msgid "%s Off"
 msgstr "'%s' itzalita"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:423
+#: js/ui/status/network.js:427
 #, javascript-format
 msgid "%s Connected"
 msgstr "'%s' konektatuta"
@@ -1838,189 +1750,189 @@ msgstr "'%s' konektatuta"
 #. Translators: this is for network devices that are physically present but are not
 #. under NetworkManager's control (and thus cannot be used in the menu);
 #. %s is a network identifier
-#: js/ui/status/network.js:428
+#: js/ui/status/network.js:432
 #, javascript-format
 msgid "%s Unmanaged"
 msgstr "'%s' kudeatu gabea"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:431
+#: js/ui/status/network.js:435
 #, javascript-format
 msgid "%s Disconnecting"
 msgstr "'%s' deskonektatzen"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:438 js/ui/status/network.js:1309
+#: js/ui/status/network.js:442 js/ui/status/network.js:1313
 #, javascript-format
 msgid "%s Connecting"
 msgstr "'%s' konektatzen"
 
 #. Translators: this is for network connections that require some kind of key or password; %s is a network identifier
-#: js/ui/status/network.js:441
+#: js/ui/status/network.js:445
 #, javascript-format
 msgid "%s Requires Authentication"
 msgstr "'%s'(e)k autentifikazioa eskatzen du"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing; %s is a network identifier
-#: js/ui/status/network.js:449
+#: js/ui/status/network.js:453
 #, javascript-format
 msgid "Firmware Missing For %s"
 msgstr "'%s'(r)en firmwarea falta da"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage; %s is a network identifier
-#: js/ui/status/network.js:453
+#: js/ui/status/network.js:457
 #, javascript-format
 msgid "%s Unavailable"
 msgstr "'%s' ez dago erabilgarri"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:456
+#: js/ui/status/network.js:460
 #, javascript-format
 msgid "%s Connection Failed"
 msgstr "'%s'(r)en konexioak huts egin du"
 
-#: js/ui/status/network.js:468
+#: js/ui/status/network.js:472
 msgid "Wired Settings"
 msgstr "Haridunaren ezarpenak"
 
-#: js/ui/status/network.js:511
+#: js/ui/status/network.js:515
 msgid "Mobile Broadband Settings"
 msgstr "Banda zabal mugikorraren ezarpenak"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:558 js/ui/status/network.js:1314
+#: js/ui/status/network.js:562 js/ui/status/network.js:1318
 #, javascript-format
 msgid "%s Hardware Disabled"
 msgstr "'%s' hardwarea desgaituta"
 
 #. Translators: this is for a network device that cannot be activated
 #. because it's disabled by rfkill (airplane mode); %s is a network identifier
-#: js/ui/status/network.js:562
+#: js/ui/status/network.js:566
 #, javascript-format
 msgid "%s Disabled"
 msgstr "'%s' desgaituta"
 
-#: js/ui/status/network.js:603
+#: js/ui/status/network.js:607
 msgid "Connect to Internet"
 msgstr "Konektatu Internetera"
 
-#: js/ui/status/network.js:808
+#: js/ui/status/network.js:812
 msgid "Airplane Mode is On"
 msgstr "Hegazkin modua piztuta"
 
-#: js/ui/status/network.js:809
+#: js/ui/status/network.js:813
 msgid "Wi-Fi is disabled when airplane mode is on."
 msgstr "Haririk gabekoa desgaitu egiten da hegazkin modua piztean."
 
-#: js/ui/status/network.js:810
+#: js/ui/status/network.js:814
 msgid "Turn Off Airplane Mode"
 msgstr "Itzali hegazkin modua"
 
-#: js/ui/status/network.js:819
+#: js/ui/status/network.js:823
 msgid "Wi-Fi is Off"
 msgstr "Haririk gabekoa itzalita"
 
-#: js/ui/status/network.js:820
+#: js/ui/status/network.js:824
 msgid "Wi-Fi needs to be turned on in order to connect to a network."
 msgstr "Haririk gabekoa piztu egin behar da sare batera konektatzeko."
 
-#: js/ui/status/network.js:821
+#: js/ui/status/network.js:825
 msgid "Turn On Wi-Fi"
 msgstr "Piztu haririk gabekoa"
 
-#: js/ui/status/network.js:846
+#: js/ui/status/network.js:850
 msgid "Wi-Fi Networks"
 msgstr "Wifi sareak"
 
-#: js/ui/status/network.js:848
+#: js/ui/status/network.js:852
 msgid "Select a network"
 msgstr "Hautatu sare bat"
 
-#: js/ui/status/network.js:880
+#: js/ui/status/network.js:884
 msgid "No Networks"
 msgstr "Sarerik ez"
 
-#: js/ui/status/network.js:901 js/ui/status/rfkill.js:106
+#: js/ui/status/network.js:905 js/ui/status/rfkill.js:106
 msgid "Use hardware switch to turn off"
 msgstr "Erabili hardwarearen aldatzailea itzaltzeko"
 
-#: js/ui/status/network.js:1178
+#: js/ui/status/network.js:1182
 msgid "Select Network"
 msgstr "Hautatu sarea"
 
-#: js/ui/status/network.js:1184
+#: js/ui/status/network.js:1188
 msgid "Wi-Fi Settings"
 msgstr "Haririk gabekoaren ezarpenak"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1305
+#: js/ui/status/network.js:1309
 #, javascript-format
 msgid "%s Hotspot Active"
 msgstr "'%s' wifigunea aktibo"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1320
+#: js/ui/status/network.js:1324
 #, javascript-format
 msgid "%s Not Connected"
 msgstr "'%s' konektatu gabe"
 
-#: js/ui/status/network.js:1417
+#: js/ui/status/network.js:1421
 msgid "connecting…"
 msgstr "konektatzen…"
 
 #. Translators: this is for network connections that require some kind of key or password
-#: js/ui/status/network.js:1420
+#: js/ui/status/network.js:1424
 msgid "authentication required"
 msgstr "autentifikazioa behar da"
 
-#: js/ui/status/network.js:1422
+#: js/ui/status/network.js:1426
 msgid "connection failed"
 msgstr "konexioak huts egin du"
 
-#: js/ui/status/network.js:1473
+#: js/ui/status/network.js:1477
 msgid "VPN Settings"
 msgstr "VPNaren ezarpenak"
 
-#: js/ui/status/network.js:1490
+#: js/ui/status/network.js:1494
 msgid "VPN"
 msgstr "VPNa"
 
-#: js/ui/status/network.js:1500
+#: js/ui/status/network.js:1504
 msgid "VPN Off"
 msgstr "VPNa itzalita"
 
-#: js/ui/status/network.js:1561 js/ui/status/rfkill.js:84
+#: js/ui/status/network.js:1565 js/ui/status/rfkill.js:84
 msgid "Network Settings"
 msgstr "Sarearen ezarpenak"
 
-#: js/ui/status/network.js:1590
+#: js/ui/status/network.js:1594
 #, javascript-format
 msgid "%s Wired Connection"
 msgid_plural "%s Wired Connections"
 msgstr[0] "%s haridun konexioa"
 msgstr[1] "%s haridun konexioak"
 
-#: js/ui/status/network.js:1594
+#: js/ui/status/network.js:1598
 #, javascript-format
 msgid "%s Wi-Fi Connection"
 msgid_plural "%s Wi-Fi Connections"
 msgstr[0] "%s haririk gabeko konexioa"
 msgstr[1] "%s haririk gabeko konexioak"
 
-#: js/ui/status/network.js:1598
+#: js/ui/status/network.js:1602
 #, javascript-format
 msgid "%s Modem Connection"
 msgid_plural "%s Modem Connections"
 msgstr[0] "%s modem konexioa"
 msgstr[1] "%s modem konexioak"
 
-#: js/ui/status/network.js:1732
+#: js/ui/status/network.js:1736
 msgid "Connection failed"
 msgstr "Konexioak huts egin du"
 
-#: js/ui/status/network.js:1733
+#: js/ui/status/network.js:1737
 msgid "Activation of network connection failed"
 msgstr "Sareko konexioa aktibatzeak huts egin du"
 
@@ -2126,9 +2038,7 @@ msgstr "Thunderbolt gailu ezezaguna"
 msgid ""
 "New device has been detected while you were away. Please disconnect and "
 "reconnect the device to start using it."
-msgstr ""
-"Gailu berria detektatu da ez zeunden bitartean. Deskonektatu eta berriro "
-"konektatu gailua hura erabiltzen hasi ahal izateko."
+msgstr "Gailu berria detektatu da ez zeunden bitartean. Deskonektatu eta berriro konektatu gailua hura erabiltzen hasi ahal izateko."
 
 #: js/ui/status/thunderbolt.js:329
 msgid "Unauthorized Thunderbolt device"
@@ -2137,8 +2047,7 @@ msgstr "Baimenik gabeko Thunderbolt gailua"
 #: js/ui/status/thunderbolt.js:330
 msgid ""
 "New device has been detected and needs to be authorized by an administrator."
-msgstr ""
-"Gailu berria detektatu da eta administratzaile batek baimena eman behar dio."
+msgstr "Gailu berria detektatu da eta administratzaile batek baimena eman behar dio."
 
 #: js/ui/status/thunderbolt.js:336
 msgid "Thunderbolt authorization error"
@@ -2322,7 +2231,7 @@ msgstr "Itxi"
 msgid "Evolution Calendar"
 msgstr "Evolution egutegia"
 
-#: src/main.c:458 subprojects/extensions-tool/src/main.c:249
+#: src/main.c:458 subprojects/extensions-tool/src/main.c:317
 msgid "Print version"
 msgstr "Bistaratu bertsioa"
 
@@ -2338,12 +2247,12 @@ msgstr "Erabili modu jakin bat, adib. “gdm“, saioa hasteko pantailarako"
 msgid "List possible modes"
 msgstr "Zerrendatu modu posibleak"
 
-#: src/shell-app.c:279
+#: src/shell-app.c:286
 msgctxt "program"
 msgid "Unknown"
 msgstr "Ezezaguna"
 
-#: src/shell-app.c:530
+#: src/shell-app.c:537
 #, c-format
 msgid "Failed to launch “%s”"
 msgstr "Huts egin du '%s' abiaraztean"
@@ -2372,11 +2281,15 @@ msgstr "Hedapenak"
 msgid "Manage your GNOME Extensions"
 msgstr "Kudeatu zure GNOME hedapenak"
 
-#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:35
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:17
+msgid "The GNOME Project"
+msgstr "GNOME proiektua"
+
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:36
 msgid ""
 "GNOME Extensions handles updating extensions, configuring extension "
 "preferences and removing or disabling unwanted extensions."
-msgstr ""
+msgstr "GNOME Hedapenak aplikazioak hedapenak eguneratzea, hedapenen hobespenak konfiguratzea eta gehiago nahi ez diren hedapenak kentzea edo desgaitzea ahalbidetzen du."
 
 #: subprojects/extensions-app/data/org.gnome.Extensions.desktop.in.in:7
 msgid "Configure GNOME Shell Extensions"
@@ -2391,8 +2304,7 @@ msgstr "Kendu “%s”?"
 msgid ""
 "If you remove the extension, you need to return to download it if you want "
 "to enable it again"
-msgstr ""
-"Hedapena kentzen bada, berriro deskargatu beharko da atzera gaitu nahi bada."
+msgstr "Hedapena kentzen bada, berriro deskargatu beharko da atzera gaitu nahi bada."
 
 #: subprojects/extensions-app/js/main.js:149
 msgid "Remove"
@@ -2402,7 +2314,7 @@ msgstr "Kendu"
 msgid "translator-credits"
 msgstr "translator-credits"
 
-#: subprojects/extensions-app/js/main.js:316
+#: subprojects/extensions-app/js/main.js:313
 #, javascript-format
 msgid "%d extension will be updated on next login."
 msgid_plural "%d extensions will be updated on next login."
@@ -2410,13 +2322,13 @@ msgstr[0] "Hedapen %d eguneratuko da hurrengo saio-hasieran."
 msgstr[1] "%d hedapen eguneratuko dira hurrengo saio-hasieran."
 
 #: subprojects/extensions-app/data/ui/extension-row.ui:100
-#: subprojects/extensions-tool/src/command-create.c:211
-#: subprojects/extensions-tool/src/main.c:173
+#: subprojects/extensions-tool/src/command-create.c:301
+#: subprojects/extensions-tool/src/main.c:241
 msgid "Description"
 msgstr "Azalpena"
 
 #: subprojects/extensions-app/data/ui/extension-row.ui:123
-#: subprojects/extensions-tool/src/main.c:185
+#: subprojects/extensions-tool/src/main.c:253
 msgid "Version"
 msgstr "Bertsioa"
 
@@ -2444,9 +2356,7 @@ msgstr "Hedapenei buruz"
 msgid ""
 "To find and add extensions, visit <a href=\"https://extensions.gnome.org"
 "\">extensions.gnome.org</a>."
-msgstr ""
-"Hedapenak aurkitu eta gehitzeko, bisitatu <a href=\"https://extensions.gnome."
-"org\">extensions.gnome.org</a>."
+msgstr "Hedapenak aurkitu eta gehitzeko, bisitatu <a href=\"https://extensions.gnome.org\">extensions.gnome.org</a>."
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:35
 msgid "Warning"
@@ -2457,137 +2367,164 @@ msgid ""
 "Extensions can cause system issues, including performance problems. If you "
 "encounter problems with your system, it is recommended to disable all "
 "extensions."
-msgstr ""
-"Hedapenek arazoak sor ditzakete sisteman, errendimendu-arazoak barne. "
-"Sisteman arazoak aurkitzen badituzu, desgaitu hedapen guztiak."
+msgstr "Hedapenek arazoak sor ditzakete sisteman, errendimendu-arazoak barne. Sisteman arazoak aurkitzen badituzu, desgaitu hedapen guztiak."
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:134
+#: subprojects/extensions-app/data/ui/extensions-window.ui:135
 msgid "Manually Installed"
 msgstr "Eskuz instalatua"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:158
+#: subprojects/extensions-app/data/ui/extensions-window.ui:159
 msgid "Built-In"
 msgstr "Integratua"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:199
+#: subprojects/extensions-app/data/ui/extensions-window.ui:200
 msgid "No Installed Extensions"
 msgstr "Instalatu gabeko luzapenak"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:235
+#: subprojects/extensions-app/data/ui/extensions-window.ui:236
 msgid ""
 "We’re very sorry, but it was not possible to get the list of installed "
 "extensions. Make sure you are logged into GNOME and try again."
-msgstr ""
-"Barkatu, ezin izan da instalatutako hedapenen zerrenda eskuratu. Ziurtatu "
-"GNOMEn saioa hasi duzula eta saiatu berriro."
+msgstr "Barkatu, ezin izan da instalatutako hedapenen zerrenda eskuratu. Ziurtatu GNOMEn saioa hasi duzula eta saiatu berriro."
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:288
+#: subprojects/extensions-app/data/ui/extensions-window.ui:289
 msgid "Log Out…"
 msgstr "Amaitu saioa…"
 
 #. Translators: a file path to an extension directory
-#: subprojects/extensions-tool/src/command-create.c:125
+#: subprojects/extensions-tool/src/command-create.c:202
 #, c-format
 msgid "The new extension was successfully created in %s.\n"
 msgstr "Hedapen berria ongi sortu da %s kokalekuan.\n"
 
-#: subprojects/extensions-tool/src/command-create.c:194
+#: subprojects/extensions-tool/src/command-create.c:275
 #, c-format
 msgid ""
 "Name should be a very short (ideally descriptive) string.\n"
 "Examples are: %s"
-msgstr ""
-"Izenak kate laburra izan behar du (hobe deskribatzailea bada).\n"
+msgstr "Izenak kate laburra izan behar du (hobe deskribatzailea bada).\n"
 "Adibideak: %s"
 
-#: subprojects/extensions-tool/src/command-create.c:197
-#: subprojects/extensions-tool/src/main.c:170
+#: subprojects/extensions-tool/src/command-create.c:281
+#: subprojects/extensions-tool/src/main.c:238
 msgid "Name"
 msgstr "Izena"
 
-#: subprojects/extensions-tool/src/command-create.c:208
+#: subprojects/extensions-tool/src/command-create.c:295
 #, c-format
 msgid ""
 "Description is a single-sentence explanation of what your extension does.\n"
 "Examples are: %s"
-msgstr ""
-"Deskribapena zure hedapenak egiten duena azaltzen duen esaldi bakarra da.\n"
+msgstr "Deskribapena zure hedapenak egiten duena azaltzen duen esaldi bakarra da.\n"
 "Adibideak: %s"
 
-#: subprojects/extensions-tool/src/command-create.c:222
+#: subprojects/extensions-tool/src/command-create.c:315
 msgid ""
 "UUID is a globally-unique identifier for your extension.\n"
 "This should be in the format of an email address (clicktofocus@janedoe."
 "example.com)\n"
-msgstr ""
-"UUIDa zure hedapenaren identifikatzaile esklusiboa da.\n"
-"Posta elektronikoko helbide baten formatukoa izan behar du "
-"(klikirekitzeko@asier.adibidea.com)\n"
+msgstr "UUIDa zure hedapenaren identifikatzaile esklusiboa da.\n"
+"Posta elektronikoko helbide baten formatukoa izan behar du (klikirekitzeko@asier.adibidea.com)\n"
 
-#: subprojects/extensions-tool/src/command-create.c:244
+#: subprojects/extensions-tool/src/command-create.c:342
+msgid "Choose one of the available templates:\n"
+msgstr "Aukeratu erabilgarri dauden txantiloietako bat:\n"
+
+#: subprojects/extensions-tool/src/command-create.c:356
+msgid "Template"
+msgstr "Txantiloia"
+
+#: subprojects/extensions-tool/src/command-create.c:411
 msgid "The unique identifier of the new extension"
 msgstr "Hedapen berriaren identifikatzaile bakarra"
 
-#: subprojects/extensions-tool/src/command-create.c:247
+#: subprojects/extensions-tool/src/command-create.c:414
 msgid "NAME"
 msgstr "IZENA"
 
-#: subprojects/extensions-tool/src/command-create.c:248
+#: subprojects/extensions-tool/src/command-create.c:415
 msgid "The user-visible name of the new extension"
 msgstr "Hedapen berriaren izena, erabiltzaileak ikusiko duena"
 
-#: subprojects/extensions-tool/src/command-create.c:250
+#: subprojects/extensions-tool/src/command-create.c:417
 msgid "DESCRIPTION"
 msgstr "DESKRIBAPENA"
 
-#: subprojects/extensions-tool/src/command-create.c:252
+#: subprojects/extensions-tool/src/command-create.c:419
 msgid "A short description of what the extension does"
 msgstr "Hedapenak egiten duenaren deskribapen laburra"
 
-#: subprojects/extensions-tool/src/command-create.c:255
+#: subprojects/extensions-tool/src/command-create.c:422
+msgid "TEMPLATE"
+msgstr "TXANTILOIA"
+
+#: subprojects/extensions-tool/src/command-create.c:423
+msgid "The template to use for the new extension"
+msgstr "Hedapen berrirako erabiliko den txantiloia"
+
+#: subprojects/extensions-tool/src/command-create.c:429
 msgid "Enter extension information interactively"
 msgstr "Sartu hedapenaren informazioa dinamikoki"
 
-#: subprojects/extensions-tool/src/command-create.c:263
+#: subprojects/extensions-tool/src/command-create.c:437
 msgid "Create a new extension"
 msgstr "Sortu hedapen berria"
 
-#: subprojects/extensions-tool/src/command-create.c:280
-#: subprojects/extensions-tool/src/command-list.c:168
+#: subprojects/extensions-tool/src/command-create.c:455
+#: subprojects/extensions-tool/src/command-list.c:172
 msgid "Unknown arguments"
 msgstr "Argumentu ezezagunak"
 
-#: subprojects/extensions-tool/src/command-create.c:289
+#: subprojects/extensions-tool/src/command-create.c:480
 msgid "UUID, name and description are required"
 msgstr "UUIDa, izena eta deskribapena derrigorrezkoak dira"
 
-#: subprojects/extensions-tool/src/command-disable.c:57
+#: subprojects/extensions-tool/src/command-disable.c:46
+#: subprojects/extensions-tool/src/command-enable.c:46
+#: subprojects/extensions-tool/src/command-info.c:50
+#: subprojects/extensions-tool/src/command-list.c:64
+msgid "Failed to connect to GNOME Shell\n"
+msgstr "Huts egin du GNOME Shell-ekin konektatzeak\n"
+
+#: subprojects/extensions-tool/src/command-disable.c:53
+#: subprojects/extensions-tool/src/command-enable.c:53
+#, c-format
+msgid "Extension “%s” does not exist\n"
+msgstr "Ez dago “%s” hedapenik\n"
+
+#: subprojects/extensions-tool/src/command-disable.c:101
 msgid "Disable an extension"
 msgstr "Desgaitu hedapen bat"
 
-#: subprojects/extensions-tool/src/command-disable.c:74
-#: subprojects/extensions-tool/src/command-enable.c:74
-#: subprojects/extensions-tool/src/command-info.c:96
-#: subprojects/extensions-tool/src/command-prefs.c:107
-#: subprojects/extensions-tool/src/command-reset.c:74
-#: subprojects/extensions-tool/src/command-uninstall.c:89
+#: subprojects/extensions-tool/src/command-disable.c:119
+#: subprojects/extensions-tool/src/command-enable.c:119
+#: subprojects/extensions-tool/src/command-info.c:103
+#: subprojects/extensions-tool/src/command-prefs.c:97
+#: subprojects/extensions-tool/src/command-reset.c:76
+#: subprojects/extensions-tool/src/command-uninstall.c:104
 msgid "No UUID given"
 msgstr "Ez da UUIDrik eman"
 
-#: subprojects/extensions-tool/src/command-disable.c:79
-#: subprojects/extensions-tool/src/command-enable.c:79
-#: subprojects/extensions-tool/src/command-info.c:101
-#: subprojects/extensions-tool/src/command-prefs.c:112
-#: subprojects/extensions-tool/src/command-reset.c:79
-#: subprojects/extensions-tool/src/command-uninstall.c:94
+#: subprojects/extensions-tool/src/command-disable.c:124
+#: subprojects/extensions-tool/src/command-enable.c:124
+#: subprojects/extensions-tool/src/command-info.c:108
+#: subprojects/extensions-tool/src/command-prefs.c:102
+#: subprojects/extensions-tool/src/command-reset.c:81
+#: subprojects/extensions-tool/src/command-uninstall.c:109
 msgid "More than one UUID given"
 msgstr "UUID bat baino gehiago eman da"
 
-#: subprojects/extensions-tool/src/command-enable.c:57
+#: subprojects/extensions-tool/src/command-enable.c:101
 msgid "Enable an extension"
 msgstr "Gaitu hedapen bat"
 
-#: subprojects/extensions-tool/src/command-info.c:79
+#: subprojects/extensions-tool/src/command-info.c:59
+#: subprojects/extensions-tool/src/main.c:155
+#, c-format
+msgid "Extension “%s” doesn't exist\n"
+msgstr "Ez dago “%s” hedapenik.\n"
+
+#: subprojects/extensions-tool/src/command-info.c:85
 msgid "Show extensions info"
 msgstr "Hedapenen informazioa erakusten du"
 
@@ -2603,43 +2540,43 @@ msgstr "HEDAPEN_BILDUMA"
 msgid "Install an extension bundle"
 msgstr "Instalatu hedapen-bilduma"
 
-#: subprojects/extensions-tool/src/command-install.c:201
+#: subprojects/extensions-tool/src/command-install.c:202
 msgid "No extension bundle specified"
 msgstr "Ez da hedapen-bildumarik zehaztu"
 
-#: subprojects/extensions-tool/src/command-install.c:207
+#: subprojects/extensions-tool/src/command-install.c:208
 msgid "More than one extension bundle specified"
 msgstr "Hedapen-bilduma bat baino gehiago zehaztu da"
 
-#: subprojects/extensions-tool/src/command-list.c:125
+#: subprojects/extensions-tool/src/command-list.c:128
 msgid "Show user-installed extensions"
 msgstr "Erakutsi erabiltzaileak instalatutako hedapenak"
 
-#: subprojects/extensions-tool/src/command-list.c:128
+#: subprojects/extensions-tool/src/command-list.c:131
 msgid "Show system-installed extensions"
 msgstr "Erakutsi sistemak instalatutako hedapenak"
 
-#: subprojects/extensions-tool/src/command-list.c:131
+#: subprojects/extensions-tool/src/command-list.c:134
 msgid "Show enabled extensions"
 msgstr "Erakutsi gaitutako hedapenak"
 
-#: subprojects/extensions-tool/src/command-list.c:134
+#: subprojects/extensions-tool/src/command-list.c:137
 msgid "Show disabled extensions"
 msgstr "Erakutsi desgaitutako hedapenak"
 
-#: subprojects/extensions-tool/src/command-list.c:137
+#: subprojects/extensions-tool/src/command-list.c:140
 msgid "Show extensions with preferences"
 msgstr "Erakutsi hobespenak dituzten hedapenak"
 
-#: subprojects/extensions-tool/src/command-list.c:140
+#: subprojects/extensions-tool/src/command-list.c:143
 msgid "Show extensions with updates"
 msgstr "Erakutsi eguneraketak dituzten hedapenak"
 
-#: subprojects/extensions-tool/src/command-list.c:143
+#: subprojects/extensions-tool/src/command-list.c:146
 msgid "Print extension details"
 msgstr "Inprimatu hedapenaren xehetasunak"
 
-#: subprojects/extensions-tool/src/command-list.c:151
+#: subprojects/extensions-tool/src/command-list.c:154
 msgid "List installed extensions"
 msgstr "Zerrendatu instalatutako hedapenak"
 
@@ -2653,7 +2590,7 @@ msgstr "Bilduman sartuko zen iturburu gehigarria"
 
 #: subprojects/extensions-tool/src/command-pack.c:454
 msgid "SCHEMA"
-msgstr "ESKEMA\t"
+msgstr "ESKEMA"
 
 #: subprojects/extensions-tool/src/command-pack.c:455
 msgid "A GSettings schema that should be included"
@@ -2692,113 +2629,151 @@ msgstr "ITURBURU_DIREKTORIOA"
 msgid "Create an extension bundle"
 msgstr "Sortu hedapen-bilduma bat"
 
-#: subprojects/extensions-tool/src/command-pack.c:500
+#: subprojects/extensions-tool/src/command-pack.c:501
 msgid "More than one source directory specified"
 msgstr "Iturburu-direktorio bat baino gehiago zehaztu da"
 
-#: subprojects/extensions-tool/src/command-prefs.c:90
+#: subprojects/extensions-tool/src/command-prefs.c:47
+#, c-format
+msgid "Extension “%s” doesn't have preferences\n"
+msgstr "“%s” hedapenak ez dauka hobespenik\n"
+
+#: subprojects/extensions-tool/src/command-prefs.c:79
 msgid "Opens extension preferences"
 msgstr "Hedapenaren hobespenak irekitzen ditu"
 
-#: subprojects/extensions-tool/src/command-reset.c:57
+#: subprojects/extensions-tool/src/command-reset.c:58
 msgid "Reset an extension"
 msgstr "Berrezarri hedapen bat"
 
-#: subprojects/extensions-tool/src/command-uninstall.c:72
+#: subprojects/extensions-tool/src/command-uninstall.c:49
+msgid "Cannot uninstall system extensions\n"
+msgstr "Ezin dira sistemaren hedapenak desinstalatu\n"
+
+#: subprojects/extensions-tool/src/command-uninstall.c:64
+#, c-format
+msgid "Failed to uninstall “%s”\n"
+msgstr "Huts egin du “%s” instalatzeak\n"
+
+#: subprojects/extensions-tool/src/command-uninstall.c:86
 msgid "Uninstall an extension"
 msgstr "Desinstalatu hedapen bat"
 
-#: subprojects/extensions-tool/src/main.c:176
+#: subprojects/extensions-tool/src/main.c:72
+msgid "Do not print error messages"
+msgstr "Ez inprimatu errore-mezuak"
+
+#: subprojects/extensions-tool/src/main.c:146
+msgid "Failed to connect to GNOME Shell"
+msgstr "Huts egin du GNOME Shell-ekin konektatzeak"
+
+#: subprojects/extensions-tool/src/main.c:244
 msgid "Path"
 msgstr "Bide-izena"
 
-#: subprojects/extensions-tool/src/main.c:179
+#: subprojects/extensions-tool/src/main.c:247
 msgid "URL"
 msgstr "URLa"
 
-#: subprojects/extensions-tool/src/main.c:182
+#: subprojects/extensions-tool/src/main.c:250
 msgid "Original author"
 msgstr "Jatorrizko egilea"
 
-#: subprojects/extensions-tool/src/main.c:188
+#: subprojects/extensions-tool/src/main.c:256
 msgid "State"
 msgstr "Egoera"
 
-#: subprojects/extensions-tool/src/main.c:222
+#: subprojects/extensions-tool/src/main.c:290
 msgid "“version” takes no arguments"
 msgstr "“version” ez du argumenturik hartzen"
 
-#: subprojects/extensions-tool/src/main.c:224
-#: subprojects/extensions-tool/src/main.c:244
+#: subprojects/extensions-tool/src/main.c:292
+#: subprojects/extensions-tool/src/main.c:312
 msgid "Usage:"
 msgstr "Erabilera:"
 
-#: subprojects/extensions-tool/src/main.c:227
+#: subprojects/extensions-tool/src/main.c:295
 msgid "Print version information and exit."
 msgstr "Erakutsi bertsioaren informazioa eta irten"
 
-#: subprojects/extensions-tool/src/main.c:242
-#: subprojects/extensions-tool/src/main.c:245
+#: subprojects/extensions-tool/src/main.c:310
+#: subprojects/extensions-tool/src/main.c:313
 msgid "COMMAND"
 msgstr "KOMANDOA"
 
-#: subprojects/extensions-tool/src/main.c:245
+#: subprojects/extensions-tool/src/main.c:313
 msgid "[ARGS…]"
 msgstr "[ARGUMENTUAK…]"
 
-#: subprojects/extensions-tool/src/main.c:247
+#: subprojects/extensions-tool/src/main.c:315
 msgid "Commands:"
 msgstr "Komandoak:"
 
-#: subprojects/extensions-tool/src/main.c:248
+#: subprojects/extensions-tool/src/main.c:316
 msgid "Print help"
 msgstr "Erakutsi laguntza"
 
-#: subprojects/extensions-tool/src/main.c:250
+#: subprojects/extensions-tool/src/main.c:318
 msgid "Enable extension"
 msgstr "Gaitu hedapena"
 
-#: subprojects/extensions-tool/src/main.c:251
+#: subprojects/extensions-tool/src/main.c:319
 msgid "Disable extension"
 msgstr "Desgaitu hedapena"
 
-#: subprojects/extensions-tool/src/main.c:252
+#: subprojects/extensions-tool/src/main.c:320
 msgid "Reset extension"
 msgstr "Berrezarri hedapena"
 
-#: subprojects/extensions-tool/src/main.c:253
+#: subprojects/extensions-tool/src/main.c:321
 msgid "Uninstall extension"
 msgstr "Desinstalatu hedapena"
 
-#: subprojects/extensions-tool/src/main.c:254
+#: subprojects/extensions-tool/src/main.c:322
 msgid "List extensions"
 msgstr "Zerrendatu hedapenak"
 
-#: subprojects/extensions-tool/src/main.c:255
-#: subprojects/extensions-tool/src/main.c:256
+#: subprojects/extensions-tool/src/main.c:323
+#: subprojects/extensions-tool/src/main.c:324
 msgid "Show extension info"
 msgstr "Erakutsi hedapenaren informazioa"
 
-#: subprojects/extensions-tool/src/main.c:257
+#: subprojects/extensions-tool/src/main.c:325
 msgid "Open extension preferences"
 msgstr "Ireki hedapenaren hobespenak"
 
-#: subprojects/extensions-tool/src/main.c:258
+#: subprojects/extensions-tool/src/main.c:326
 msgid "Create extension"
 msgstr "Sortu hedapena"
 
-#: subprojects/extensions-tool/src/main.c:259
+#: subprojects/extensions-tool/src/main.c:327
 msgid "Package extension"
 msgstr "Paketatu hedapena"
 
-#: subprojects/extensions-tool/src/main.c:260
+#: subprojects/extensions-tool/src/main.c:328
 msgid "Install extension bundle"
 msgstr "Instalatu hedapen-bilduma"
 
-#: subprojects/extensions-tool/src/main.c:262
+#: subprojects/extensions-tool/src/main.c:330
 #, c-format
 msgid "Use “%s” to get detailed help.\n"
 msgstr "Erabili “%s” laguntza xehea lortzeko.\n"
+
+#: subprojects/extensions-tool/src/templates/00-plain.desktop.in:4
+msgid "Plain"
+msgstr "Soila"
+
+#: subprojects/extensions-tool/src/templates/00-plain.desktop.in:5
+msgid "An empty extension"
+msgstr "Hedapen huts bat"
+
+#: subprojects/extensions-tool/src/templates/indicator.desktop.in:4
+msgid "Indicator"
+msgstr "Adierazlea"
+
+#: subprojects/extensions-tool/src/templates/indicator.desktop.in:5
+msgid "Add an icon to the top bar"
+msgstr "Gehitu ikono bat goiko barrari"
 
 #. translators:
 #. * The number of sound outputs on a particular device
@@ -2821,6 +2796,17 @@ msgstr[1] "%u sarrera"
 #: subprojects/gvc/gvc-mixer-control.c:2766
 msgid "System Sounds"
 msgstr "Sistemaren soinuak"
+
+#~ msgid "%d Connected"
+#~ msgid_plural "%d Connected"
+#~ msgstr[0] "%d konektatuta"
+#~ msgstr[1] "%d konektatuta"
+
+#~ msgid "Off"
+#~ msgstr "Desaktibatuta"
+
+#~ msgid "On"
+#~ msgstr "Aktibatuta"
 
 #~ msgid "Copy Error"
 #~ msgstr "Kopiatze-errorea"
