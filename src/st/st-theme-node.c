@@ -77,13 +77,6 @@ maybe_free_properties (StThemeNode *node)
     }
 }
 
-void
-_st_theme_node_reset_for_stylesheet_change (StThemeNode *node)
-{
-  maybe_free_properties (node);
-  node->properties_computed = FALSE;
-}
-
 static void
 st_theme_node_dispose (GObject *gobject)
 {
