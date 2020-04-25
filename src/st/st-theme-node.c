@@ -84,6 +84,14 @@ _st_theme_node_reset_for_stylesheet_change (StThemeNode *node)
   node->properties_computed = FALSE;
 }
 
+void
+_st_theme_node_set_outdated (StThemeNode *node)
+{
+  maybe_free_properties (node);
+  node->properties_computed = FALSE;
+  node->outdated = TRUE;
+}
+
 static void
 st_theme_node_dispose (GObject *gobject)
 {
@@ -342,6 +350,9 @@ st_theme_node_equal (StThemeNode *node_a, StThemeNode *node_b)
 
   g_return_val_if_fail (ST_IS_THEME_NODE (node_b), FALSE);
 
+  if (node_a->outdated || node_b->outdated)
+    return FALSE;
+
   if (node_a->parent_node != node_b->parent_node ||
       node_a->context != node_b->context ||
       node_a->theme != node_b->theme ||
@@ -428,6 +439,9 @@ st_theme_node_hash (StThemeNode *node)
 static void
 ensure_properties (StThemeNode *node)
 {
+  if (node->outdated)
+    return;
+
   if (!node->properties_computed)
     {
       GPtrArray *properties = NULL;
@@ -3962,6 +3976,9 @@ st_theme_node_geometry_equal (StThemeNode *node,
 
   g_return_val_if_fail (ST_IS_THEME_NODE (other), FALSE);
 
+  if (node->outdated || other->outdated)
+    return FALSE;
+
   if (node->cached_scale_factor != other->cached_scale_factor)
     return FALSE;
 
@@ -4012,6 +4029,9 @@ st_theme_node_paint_equal (StThemeNode *node,
 
   if (node == other)
     return TRUE;
+
+  if (node->outdated || other->outdated)
+    return FALSE;
 
   _st_theme_node_ensure_background (node);
   _st_theme_node_ensure_background (other);

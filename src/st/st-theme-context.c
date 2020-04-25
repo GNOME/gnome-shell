@@ -248,7 +248,19 @@ static void
 st_theme_context_changed (StThemeContext *context)
 {
   StThemeNode *old_root = context->root_node;
+  GHashTableIter iter;
+  StThemeNode *node;
+
   context->root_node = NULL;
+
+  if (old_root)
+    _st_theme_node_set_outdated (old_root);
+
+  g_hash_table_iter_init (&iter, context->nodes);
+
+  while (g_hash_table_iter_next (&iter, (gpointer *) &node, NULL))
+    _st_theme_node_set_outdated (node);
+
   g_hash_table_remove_all (context->nodes);
 
   g_signal_emit (context, signals[CHANGED], 0);
