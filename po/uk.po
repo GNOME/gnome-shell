@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2020-04-05 12:40+0000\n"
-"PO-Revision-Date: 2020-04-06 19:13+0300\n"
+"POT-Creation-Date: 2020-04-22 13:01+0000\n"
+"PO-Revision-Date: 2020-04-25 10:57+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <kde-i18n-uk@kde.org>\n"
 "Language: uk\n"
@@ -439,7 +439,7 @@ msgstr "Немає в переліку?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: js/gdm/loginDialog.js:912
+#: js/gdm/loginDialog.js:913
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(наприклад, користувач або %s)"
@@ -447,12 +447,12 @@ msgstr "(наприклад, користувач або %s)"
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: js/gdm/loginDialog.js:917 js/ui/components/networkAgent.js:241
+#: js/gdm/loginDialog.js:918 js/ui/components/networkAgent.js:241
 #: js/ui/components/networkAgent.js:264 js/ui/components/networkAgent.js:282
 msgid "Username"
 msgstr "Користувач"
 
-#: js/gdm/loginDialog.js:1253
+#: js/gdm/loginDialog.js:1254
 msgid "Login Window"
 msgstr "Вікно входу"
 
@@ -713,53 +713,53 @@ msgstr "Заборонити доступ"
 msgid "Grant Access"
 msgstr "Надати доступ"
 
-#: js/ui/appDisplay.js:937
+#: js/ui/appDisplay.js:951
 msgid "Unnamed Folder"
 msgstr "Неназвана тека"
 
-#: js/ui/appDisplay.js:960
+#: js/ui/appDisplay.js:974
 msgid "Frequently used applications will appear here"
 msgstr "Часто використовувані програми будуть з'являтись тут"
 
-#: js/ui/appDisplay.js:1095
+#: js/ui/appDisplay.js:1109
 msgid "Frequent"
 msgstr "Частовживане"
 
-#: js/ui/appDisplay.js:1102
+#: js/ui/appDisplay.js:1116
 msgid "All"
 msgstr "Усе"
 
 #. Translators: This is the heading of a list of open windows
-#: js/ui/appDisplay.js:2478 js/ui/panel.js:75
+#: js/ui/appDisplay.js:2507 js/ui/panel.js:75
 msgid "Open Windows"
 msgstr "Відкрити вікна"
 
-#: js/ui/appDisplay.js:2498 js/ui/panel.js:82
+#: js/ui/appDisplay.js:2527 js/ui/panel.js:82
 msgid "New Window"
 msgstr "Нове вікно"
 
-#: js/ui/appDisplay.js:2509
+#: js/ui/appDisplay.js:2538
 msgid "Launch using Dedicated Graphics Card"
 msgstr "Запустити через відповідну графічну плату"
 
-#: js/ui/appDisplay.js:2537 js/ui/dash.js:239
+#: js/ui/appDisplay.js:2566 js/ui/dash.js:239
 msgid "Remove from Favorites"
 msgstr "Вилучити з улюбленого"
 
-#: js/ui/appDisplay.js:2543
+#: js/ui/appDisplay.js:2572
 msgid "Add to Favorites"
 msgstr "Додати до улюбленого"
 
-#: js/ui/appDisplay.js:2553 js/ui/panel.js:93
+#: js/ui/appDisplay.js:2582 js/ui/panel.js:93
 msgid "Show Details"
 msgstr "Показати подробиці"
 
-#: js/ui/appFavorites.js:152
+#: js/ui/appFavorites.js:163
 #, javascript-format
 msgid "%s has been added to your favorites."
 msgstr "%s додано до улюбленого."
 
-#: js/ui/appFavorites.js:185
+#: js/ui/appFavorites.js:196
 #, javascript-format
 msgid "%s has been removed from your favorites."
 msgstr "%s вилучено з улюбленого."
@@ -1111,25 +1111,26 @@ msgstr "Додати світові годинники…"
 msgid "World Clocks"
 msgstr "Світові годинники"
 
-#: js/ui/dateMenu.js:289
-msgid "Weather"
-msgstr "Погода"
-
-#: js/ui/dateMenu.js:418
-msgid "Select a location…"
-msgstr "Виберіть територію…"
-
-#: js/ui/dateMenu.js:426
+#: js/ui/dateMenu.js:424
 msgid "Loading…"
 msgstr "Завантаження…"
 
-#: js/ui/dateMenu.js:436
+#: js/ui/dateMenu.js:434
 msgid "Go online for weather information"
 msgstr "Увійти в мережу за прогнозом погоди"
 
-#: js/ui/dateMenu.js:438
+#: js/ui/dateMenu.js:436
 msgid "Weather information is currently unavailable"
 msgstr "Наразі інформації про погоду недоступна"
+
+#: js/ui/dateMenu.js:446
+msgid "Weather"
+msgstr "Погода"
+
+#: js/ui/dateMenu.js:448
+#| msgid "Select a location…"
+msgid "Select weather location…"
+msgstr "Виберіть місцевість для погоди…"
 
 #: js/ui/endSessionDialog.js:37
 #, javascript-format
@@ -1385,12 +1386,12 @@ msgstr ""
 msgid "Leave On"
 msgstr "Залишити"
 
-#: js/ui/kbdA11yDialog.js:55 js/ui/status/bluetooth.js:136
+#: js/ui/kbdA11yDialog.js:55 js/ui/status/bluetooth.js:156
 #: js/ui/status/network.js:1292
 msgid "Turn On"
 msgstr "Увімкнути"
 
-#: js/ui/kbdA11yDialog.js:63 js/ui/status/bluetooth.js:136
+#: js/ui/kbdA11yDialog.js:63 js/ui/status/bluetooth.js:156
 #: js/ui/status/network.js:135 js/ui/status/network.js:319
 #: js/ui/status/network.js:1292 js/ui/status/network.js:1404
 #: js/ui/status/nightLight.js:41 js/ui/status/rfkill.js:81
@@ -1454,11 +1455,11 @@ msgstr "Переглянути джерело"
 msgid "Web Page"
 msgstr "Веб-сторінка"
 
-#: js/ui/main.js:279
+#: js/ui/main.js:284
 msgid "Logged in as a privileged user"
 msgstr "Увійшов як наділений користувач"
 
-#: js/ui/main.js:280
+#: js/ui/main.js:285
 msgid ""
 "Running a session as a privileged user should be avoided for security "
 "reasons. If possible, you should log in as a normal user."
@@ -1466,15 +1467,15 @@ msgstr ""
 "З міркувань безпеки слід уникати сеансів з наділеними правами. Користуйтесь "
 "звичайним сеансом."
 
-#: js/ui/main.js:319
+#: js/ui/main.js:324
 msgid "Screen Lock disabled"
 msgstr "Блокування екрана вимкнено"
 
-#: js/ui/main.js:320
+#: js/ui/main.js:325
 msgid "Screen Locking requires the GNOME display manager."
 msgstr "Блокування екрана потребує керування входом GNOME."
 
-#: js/ui/messageTray.js:1551
+#: js/ui/messageTray.js:1544
 msgid "System Information"
 msgstr "Інформація про систему"
 
@@ -1602,15 +1603,15 @@ msgstr "Неможливо заблокувати"
 msgid "Lock was blocked by an application"
 msgstr "Блокування заборонено програмою"
 
-#: js/ui/search.js:694
+#: js/ui/search.js:703
 msgid "Searching…"
 msgstr "Пошуки…"
 
-#: js/ui/search.js:696
+#: js/ui/search.js:705
 msgid "No results."
 msgstr "Безрезультатно."
 
-#: js/ui/search.js:822
+#: js/ui/search.js:831
 #, javascript-format
 msgid "%d more"
 msgid_plural "%d more"
@@ -1744,13 +1745,11 @@ msgstr "Bluetooth"
 msgid "Bluetooth Settings"
 msgstr "Параметри Bluetooth"
 
-#: js/ui/status/bluetooth.js:132
-#| msgid "Bluetooth"
+#: js/ui/status/bluetooth.js:152
 msgid "Bluetooth Off"
 msgstr "Bluetooth вимкнено"
 
-#: js/ui/status/bluetooth.js:134
-#| msgid "Bluetooth"
+#: js/ui/status/bluetooth.js:154
 msgid "Bluetooth On"
 msgstr "Bluetooth увімкнено"
 
@@ -2248,7 +2247,7 @@ msgstr "Повернути параметри"
 msgid "Keep Changes"
 msgstr "Зберегти зміни"
 
-#: js/ui/windowManager.js:85
+#: js/ui/windowManager.js:86
 #, javascript-format
 msgid "Settings changes will revert in %d second"
 msgid_plural "Settings changes will revert in %d seconds"
@@ -2259,7 +2258,7 @@ msgstr[3] "Зміни параметрів буде повернуто чере�
 
 #. Translators: This represents the size of a window. The first number is
 #. * the width of the window and the second is the height.
-#: js/ui/windowManager.js:544
+#: js/ui/windowManager.js:546
 #, javascript-format
 msgid "%d × %d"
 msgstr "%d × %d"
@@ -2352,12 +2351,12 @@ msgstr "Використовувати вказаний режим, прикла
 msgid "List possible modes"
 msgstr "Перелік можливих режимів"
 
-#: src/shell-app.c:279
+#: src/shell-app.c:286
 msgctxt "program"
 msgid "Unknown"
 msgstr "Невідомо"
 
-#: src/shell-app.c:530
+#: src/shell-app.c:537
 #, c-format
 msgid "Failed to launch “%s”"
 msgstr "Не вдалося запустити «%s»"
@@ -2436,7 +2435,7 @@ msgstr[2] "Під час наступного входу до системи б�
 msgstr[3] "Під час наступного входу до системи буде оновлено одне розширення."
 
 #: subprojects/extensions-app/data/ui/extension-row.ui:100
-#: subprojects/extensions-tool/src/command-create.c:211
+#: subprojects/extensions-tool/src/command-create.c:301
 #: subprojects/extensions-tool/src/main.c:241
 msgid "Description"
 msgstr "Опис"
@@ -2513,12 +2512,12 @@ msgid "Log Out…"
 msgstr "Вийти…"
 
 #. Translators: a file path to an extension directory
-#: subprojects/extensions-tool/src/command-create.c:125
+#: subprojects/extensions-tool/src/command-create.c:202
 #, c-format
 msgid "The new extension was successfully created in %s.\n"
 msgstr "Нове розширення успішно створено в %s.\n"
 
-#: subprojects/extensions-tool/src/command-create.c:194
+#: subprojects/extensions-tool/src/command-create.c:275
 #, c-format
 msgid ""
 "Name should be a very short (ideally descriptive) string.\n"
@@ -2527,12 +2526,12 @@ msgstr ""
 "Назва повинна бути дуже короткою (бажано максимально описовою).\n"
 "Наприклад: %s"
 
-#: subprojects/extensions-tool/src/command-create.c:197
+#: subprojects/extensions-tool/src/command-create.c:281
 #: subprojects/extensions-tool/src/main.c:238
 msgid "Name"
 msgstr "Назва"
 
-#: subprojects/extensions-tool/src/command-create.c:208
+#: subprojects/extensions-tool/src/command-create.c:295
 #, c-format
 msgid ""
 "Description is a single-sentence explanation of what your extension does.\n"
@@ -2541,7 +2540,7 @@ msgstr ""
 "Опис — пояснення одним реченням того, що розширення робить.\n"
 "Наприклад: %s"
 
-#: subprojects/extensions-tool/src/command-create.c:222
+#: subprojects/extensions-tool/src/command-create.c:315
 msgid ""
 "UUID is a globally-unique identifier for your extension.\n"
 "This should be in the format of an email address (clicktofocus@janedoe."
@@ -2551,40 +2550,57 @@ msgstr ""
 "Він зберігається у форматі електронної адреси (clicktofocus@janedoe.example."
 "com)\n"
 
-#: subprojects/extensions-tool/src/command-create.c:244
+#: subprojects/extensions-tool/src/command-create.c:342
+msgid "Choose one of the available templates:\n"
+msgstr "Виберіть один із доступних шаблонів:\n"
+
+#: subprojects/extensions-tool/src/command-create.c:356
+msgid "Template"
+msgstr "Шаблон"
+
+#: subprojects/extensions-tool/src/command-create.c:411
 msgid "The unique identifier of the new extension"
 msgstr "Унікальний код розширення"
 
-#: subprojects/extensions-tool/src/command-create.c:247
+#: subprojects/extensions-tool/src/command-create.c:414
 msgid "NAME"
 msgstr "НАЗВА"
 
-#: subprojects/extensions-tool/src/command-create.c:248
+#: subprojects/extensions-tool/src/command-create.c:415
 msgid "The user-visible name of the new extension"
 msgstr "Загальна назва розширення"
 
-#: subprojects/extensions-tool/src/command-create.c:250
+#: subprojects/extensions-tool/src/command-create.c:417
 msgid "DESCRIPTION"
 msgstr "ОПИС"
 
-#: subprojects/extensions-tool/src/command-create.c:252
+#: subprojects/extensions-tool/src/command-create.c:419
 msgid "A short description of what the extension does"
 msgstr "Короткий опис того, що розширення робить"
 
-#: subprojects/extensions-tool/src/command-create.c:255
+#: subprojects/extensions-tool/src/command-create.c:422
+msgid "TEMPLATE"
+msgstr "ШАБЛОН"
+
+#: subprojects/extensions-tool/src/command-create.c:423
+#| msgid "The user-visible name of the new extension"
+msgid "The template to use for the new extension"
+msgstr "Шаблон, яким слід скористатися для нового розширення"
+
+#: subprojects/extensions-tool/src/command-create.c:429
 msgid "Enter extension information interactively"
 msgstr "Ввести інформацію про розширення покроково"
 
-#: subprojects/extensions-tool/src/command-create.c:263
+#: subprojects/extensions-tool/src/command-create.c:437
 msgid "Create a new extension"
 msgstr "Створити розширення"
 
-#: subprojects/extensions-tool/src/command-create.c:281
+#: subprojects/extensions-tool/src/command-create.c:455
 #: subprojects/extensions-tool/src/command-list.c:172
 msgid "Unknown arguments"
 msgstr "Невідомі параметри"
 
-#: subprojects/extensions-tool/src/command-create.c:290
+#: subprojects/extensions-tool/src/command-create.c:480
 msgid "UUID, name and description are required"
 msgstr "UUID, назва і опис — обов'язкові"
 
@@ -2744,7 +2760,6 @@ msgstr "Вказано понад один каталог джерела"
 
 #: subprojects/extensions-tool/src/command-prefs.c:47
 #, c-format
-#| msgid "Show extensions with preferences"
 msgid "Extension “%s” doesn't have preferences\n"
 msgstr "У розширення «%s» немає налаштувань\n"
 
@@ -2757,13 +2772,11 @@ msgid "Reset an extension"
 msgstr "Перезапустити розширення"
 
 #: subprojects/extensions-tool/src/command-uninstall.c:49
-#| msgid "List installed extensions"
 msgid "Cannot uninstall system extensions\n"
 msgstr "Не можна вилучати загальносистемні розширення\n"
 
 #: subprojects/extensions-tool/src/command-uninstall.c:64
 #, c-format
-#| msgid "Failed to launch “%s”"
 msgid "Failed to uninstall “%s”\n"
 msgstr "Не вдалося вилучити «%s»\n"
 
@@ -2870,6 +2883,23 @@ msgstr "Встановити комплект розширень"
 #, c-format
 msgid "Use “%s” to get detailed help.\n"
 msgstr "Натисніть «%s», щоб показати докладну довідку.\n"
+
+#: subprojects/extensions-tool/src/templates/00-plain.desktop.in:4
+msgid "Plain"
+msgstr "Просте"
+
+#: subprojects/extensions-tool/src/templates/00-plain.desktop.in:5
+#| msgid "Reset extension"
+msgid "An empty extension"
+msgstr "Порожнє розширення"
+
+#: subprojects/extensions-tool/src/templates/indicator.desktop.in:4
+msgid "Indicator"
+msgstr "Індикатор"
+
+#: subprojects/extensions-tool/src/templates/indicator.desktop.in:5
+msgid "Add an icon to the top bar"
+msgstr "Додає піктограму на верхню панель"
 
 #. translators:
 #. * The number of sound outputs on a particular device
