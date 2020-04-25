@@ -621,6 +621,8 @@ var ScreenShield = class {
         if (this._activationTime == 0)
             this._activationTime = GLib.get_monotonic_time();
 
+        this._ensureUnlockDialog(true);
+
         this._isGreeter = Main.sessionMode.isGreeter;
         if (!this._isGreeter) {
             let userManager = AccountsService.UserManager.get_default();
@@ -635,8 +637,6 @@ var ScreenShield = class {
                 Main.paygManager.isLocked)
                 Main.sessionMode.pushMode('unlock-dialog-payg');
         }
-
-        this._ensureUnlockDialog(true);
 
         this.actor.show();
 
