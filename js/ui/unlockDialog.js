@@ -6,6 +6,7 @@ const { AccountsService, Atk, Clutter, Gdm, Gio,
 
 const Background = imports.ui.background;
 const Layout = imports.ui.layout;
+const LoginManager = imports.misc.loginManager;
 const Main = imports.ui.main;
 const MessageTray = imports.ui.messageTray;
 const SwipeTracker = imports.ui.swipeTracker;
@@ -569,6 +570,14 @@ var UnlockDialog = GObject.registerClass({
         let screenSaverSettings = new Gio.Settings({ schema_id: 'org.gnome.desktop.screensaver' });
         screenSaverSettings.bind('user-switch-enabled',
             this._otherUserButton, 'visible', Gio.SettingsBindFlags.GET);
+
+        // Set Switch User Button invisible when the current session is Remote
+        this._loginManager = LoginManager.getLoginManager();
+        this._currentLoginSession = null;
+        this._loginManager.getCurrentSessionProxy(sessionProxy => {
+            this._currentLoginSession = sessionProxy;
+        });
+        this._otherUserButton.visible = !this._currentLoginSession.Remote;
 
         // Main Box
         let mainBox = new St.Widget();
