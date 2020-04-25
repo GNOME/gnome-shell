@@ -455,17 +455,12 @@ st_widget_parent_set (ClutterActor *widget,
 {
   StWidget *self = ST_WIDGET (widget);
   ClutterActorClass *parent_class;
-  ClutterActor *new_parent;
 
   parent_class = CLUTTER_ACTOR_CLASS (st_widget_parent_class);
   if (parent_class->parent_set)
     parent_class->parent_set (widget, old_parent);
 
-  new_parent = clutter_actor_get_parent (widget);
-
-  /* don't send the style changed signal if we no longer have a parent actor */
-  if (new_parent)
-    st_widget_style_changed (self);
+  st_widget_style_changed (self);
 }
 
 static void
@@ -510,7 +505,6 @@ static void
 st_widget_real_style_changed (StWidget *self)
 {
   clutter_actor_queue_redraw ((ClutterActor *) self);
-  notify_children_of_style_change ((ClutterActor *) self);
 }
 
 void
@@ -529,6 +523,8 @@ st_widget_style_changed (StWidget *widget)
   /* update the style only if we are mapped */
   if (clutter_actor_is_mapped (CLUTTER_ACTOR (widget)))
     st_widget_recompute_style (widget, old_theme_node);
+
+  notify_children_of_style_change (CLUTTER_ACTOR (widget));
 
   if (old_theme_node)
     g_object_unref (old_theme_node);
@@ -1772,8 +1768,6 @@ st_widget_recompute_style (StWidget    *widget,
 
   if (!paint_equal || !geometry_equal)
     g_signal_emit (widget, signals[STYLE_CHANGED], 0);
-  else
-    notify_children_of_style_change ((ClutterActor *) widget);
 
   priv->is_style_dirty = FALSE;
 }
@@ -1795,7 +1789,10 @@ st_widget_ensure_style (StWidget *widget)
   priv = st_widget_get_instance_private (widget);
 
   if (priv->is_style_dirty)
-    st_widget_recompute_style (widget, NULL);
+    {
+      st_widget_recompute_style (widget, NULL);
+      notify_children_of_style_change (CLUTTER_ACTOR (widget));
+    }
 }
 
 /**
