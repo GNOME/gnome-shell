@@ -323,14 +323,16 @@ class DBusEventSource extends EventSourceBase {
         }
     }
 
-    getEvents(begin, end) {
-        let result = [];
-        for (let n = 0; n < this._events.length; n++) {
-            let event = this._events[n];
-
+    *_getFilteredEvents(begin, end) {
+        for (const event of this._events) {
             if (_dateIntervalsOverlap(event.date, event.end, begin, end))
-                result.push(event);
+                yield event;
         }
+    }
+
+    getEvents(begin, end) {
+        let result = [...this._getFilteredEvents(begin, end)];
+
         result.sort((event1, event2) => {
             // sort events by end time on ending day
             let d1 = event1.date < begin && event1.end <= end ? event1.end : event1.date;
@@ -344,12 +346,8 @@ class DBusEventSource extends EventSourceBase {
         let dayBegin = _getBeginningOfDay(day);
         let dayEnd = _getEndOfDay(day);
 
-        let events = this.getEvents(dayBegin, dayEnd);
-
-        if (events.length == 0)
-            return false;
-
-        return true;
+        const { done } = this._getFilteredEvents(dayBegin, dayEnd).next();
+        return !done;
     }
 });
 
@@ -701,12 +699,11 @@ var Calendar = GObject.registerClass({
 var EventMessage = GObject.registerClass(
 class EventMessage extends MessageList.Message {
     _init(event, date) {
-        super._init('', event.summary);
+        super._init('', '');
 
-        this._event = event;
         this._date = date;
 
-        this.setTitle(this._formatEventTime());
+        this.update(event);
 
         this._icon = new St.Icon({ icon_name: 'x-office-calendar-symbolic' });
         this.setIcon(this._icon);
@@ -716,6 +713,13 @@ class EventMessage extends MessageList.Message {
         let iconVisible = this.get_parent().has_style_pseudo_class('first-child');
         this._icon.opacity = iconVisible ? 255 : 0;
         super.vfunc_style_changed();
+    }
+
+    update(event) {
+        this._event = event;
+
+        this.setTitle(this._formatEventTime());
+        this.setBody(event.summary);
     }
 
     _formatEventTime() {
@@ -901,6 +905,7 @@ class EventsSection extends MessageList.MessageListSection {
                 this._messageById.set(event.id, message);
                 this.addMessage(message, false);
             } else {
+                message.update(event);
                 this.moveMessage(message, i, false);
             }
         }
