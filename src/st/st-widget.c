@@ -517,7 +517,7 @@ void
 st_widget_style_changed (StWidget *widget)
 {
   StWidgetPrivate *priv = st_widget_get_instance_private (widget);
-  StThemeNode *old_theme_node = NULL;
+  g_autoptr (StThemeNode) old_theme_node = NULL;
 
   priv->is_style_dirty = TRUE;
   if (priv->theme_node)
@@ -529,9 +529,8 @@ st_widget_style_changed (StWidget *widget)
   /* update the style only if we are mapped */
   if (clutter_actor_is_mapped (CLUTTER_ACTOR (widget)))
     st_widget_recompute_style (widget, old_theme_node);
-
-  if (old_theme_node)
-    g_object_unref (old_theme_node);
+  else
+    notify_children_of_style_change (CLUTTER_ACTOR (widget));
 }
 
 static void
@@ -544,11 +543,16 @@ on_theme_context_changed (StThemeContext *context,
 static StThemeNode *
 get_root_theme_node (ClutterStage *stage)
 {
+  static GQuark st_theme_initialized = 0;
   StThemeContext *context = st_theme_context_get_for_stage (stage);
 
-  if (!g_object_get_data (G_OBJECT (context), "st-theme-initialized"))
+  if (G_UNLIKELY (st_theme_initialized == 0))
+    st_theme_initialized = g_quark_from_static_string ("st-theme-initialized");
+
+  if (!g_object_get_qdata (G_OBJECT (context), st_theme_initialized))
     {
-      g_object_set_data (G_OBJECT (context), "st-theme-initialized", GUINT_TO_POINTER (1));
+      g_object_set_qdata (G_OBJECT (context), st_theme_initialized,
+                          GUINT_TO_POINTER (1));
       g_signal_connect (G_OBJECT (context), "changed",
                         G_CALLBACK (on_theme_context_changed), stage);
     }
