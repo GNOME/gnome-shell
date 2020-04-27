@@ -37,8 +37,8 @@ const LG_ANIMATION_TIME = 500;
 
 function _getAutoCompleteGlobalKeywords() {
     const keywords = ['true', 'false', 'null', 'new'];
-    // Don't add the private properties of window (i.e., ones starting with '_')
-    const windowProperties = Object.getOwnPropertyNames(window).filter(
+    // Don't add the private properties of globalThis (i.e., ones starting with '_')
+    const windowProperties = Object.getOwnPropertyNames(globalThis).filter(
         a => a.charAt(0) != '_'
     );
     const headerProperties = JsParse.getDeclaredConstants(commandHeader);
