@@ -1,0 +1,31 @@
+#!/bin/sh
+
+openPrefs() {
+  if [ "$(which gnome-extensions)" ]
+  then
+    gnome-extensions prefs $1
+  else
+    gdbus call --session \
+      --dest=org.gnome.Shell.Extensions \
+      --object-path=/org/gnome/Shell/Extensions \
+      --method=org.gnome.Shell.Extensions.OpenExtensionPrefs $1 '' '{}'
+  fi
+}
+
+cat >&2 <<EOT
+gnome-shell-extension-prefs is deprecated
+
+Install https://flathub.org/apps/details/org.gnome.Extensions for extension
+management, or use the gnome-extensions command line tool.
+
+Extensions can use the ExtensionUtils.openPrefs() method.
+EOT
+
+UUID=$1
+
+if [ "$UUID" ]
+then
+  openPrefs $UUID
+else
+  gapplication launch org.gnome.Extensions
+fi
