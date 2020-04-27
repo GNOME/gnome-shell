@@ -1257,6 +1257,10 @@ class Keyboard extends St.BoxLayout {
         return this._keyboardVisible && super.visible;
     }
 
+    set visible(visible) {
+        super.visible = visible;
+    }
+
     _onFocusPositionChanged(focusTracker) {
         let rect = focusTracker.getCurrentRect();
         this.setCursorLocation(focusTracker.currentWindow, rect.x, rect.y, rect.width, rect.height);
