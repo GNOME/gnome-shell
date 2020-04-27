@@ -473,6 +473,7 @@ class ControlsManager extends St.Widget {
 
         // A workspace might have been inserted or removed before the active
         // one, causing the adjustment to go out of sync, so update the value
+        this._workspaceAdjustment.remove_transition('value');
         this._workspaceAdjustment.value = activeIndex;
     }
 
