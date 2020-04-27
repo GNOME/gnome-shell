@@ -1,7 +1,4 @@
-include:
-  - project: 'gnome/citemplates'
-    ref: '3ecafcc4f06d98a13eb958e86ae0d8c6f388c1aa'
-    file: '/flatpak/flatpak_ci_initiative.yml'
+include: 'https://gitlab.gnome.org/GNOME/citemplates/raw/master/flatpak/flatpak_ci_initiative.yml'
 
 stages:
  - review
@@ -127,11 +124,7 @@ flatpak:
         RUNTIME_REPO: "https://nightly.gnome.org/gnome-nightly.flatpakrepo"
         FLATPAK_MODULE: "gnome-extensions-app"
         APP_ID: "org.gnome.Extensions"
-        MESON_ARGS: "$SUBPROJECT"
     extends: .flatpak
-    before_script:
-        - flatpak run --command=$SUBPROJECT/generate-translations.sh
-                      --filesystem=host org.gnome.Sdk//master
     <<: *only_default
 
 nightly:
