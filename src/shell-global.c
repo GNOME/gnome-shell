@@ -57,6 +57,7 @@ struct _ShellGlobal {
 
   ClutterStage *stage;
 
+  MetaBackend *backend;
   MetaDisplay *meta_display;
   MetaWorkspaceManager *workspace_manager;
   Display *xdisplay;
@@ -95,6 +96,7 @@ enum {
   PROP_0,
 
   PROP_SESSION_MODE,
+  PROP_BACKEND,
   PROP_DISPLAY,
   PROP_WORKSPACE_MANAGER,
   PROP_SCREEN_WIDTH,
@@ -229,6 +231,9 @@ shell_global_get_property(GObject         *object,
     {
     case PROP_SESSION_MODE:
       g_value_set_string (value, shell_global_get_session_mode (global));
+      break;
+    case PROP_BACKEND:
+      g_value_set_object (value, global->backend);
       break;
     case PROP_DISPLAY:
       g_value_set_object (value, global->meta_display);
@@ -472,6 +477,13 @@ shell_global_class_init (ShellGlobalClass *klass)
                                                      "Screen height, in pixels",
                                                      0, G_MAXINT, 1,
                                                      G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
+  g_object_class_install_property (gobject_class,
+                                   PROP_BACKEND,
+                                   g_param_spec_object ("backend",
+                                                        "Backend",
+                                                        "MetaBackend object",
+                                                        META_TYPE_BACKEND,
+                                                        G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
   g_object_class_install_property (gobject_class,
                                    PROP_DISPLAY,
                                    g_param_spec_object ("display",
@@ -947,6 +959,7 @@ _shell_global_set_plugin (ShellGlobal *global,
   g_return_if_fail (SHELL_IS_GLOBAL (global));
   g_return_if_fail (global->plugin == NULL);
 
+  global->backend = meta_get_backend ();
   global->plugin = plugin;
   global->wm = shell_wm_new (plugin);
 
