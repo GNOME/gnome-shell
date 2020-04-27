@@ -60,7 +60,6 @@ src/calendar-server/evolution-calendar.desktop
 src/calendar-server/org.gnome.Shell.CalendarServer.service
 src/gnome-shell
 src/gnome-shell-calendar-server
-src/gnome-shell-extension-prefs
 src/gnome-shell-extension-tool
 src/gnome-shell-hotplug-sniffer
 src/gnome-shell-perf-helper

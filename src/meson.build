@@ -31,6 +31,10 @@ foreach tool : script_tools
   )
 endforeach
 
+install_data('gnome-shell-extension-prefs',
+  install_dir: bindir
+)
+
 gnome_shell_cflags = [
   '-DCLUTTER_ENABLE_EXPERIMENTAL_API',
   '-DCOGL_ENABLE_EXPERIMENTAL_API',
