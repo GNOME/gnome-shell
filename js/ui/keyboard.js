@@ -722,7 +722,7 @@ var EmojiPager = GObject.registerClass({
 
     _onPan(action) {
         let [dist_, dx, dy_] = action.get_motion_delta(0);
-        this.delta = this.delta + dx;
+        this.delta += dx;
 
         if (this._currentKey != null) {
             this._currentKey.cancel();
@@ -935,8 +935,7 @@ var EmojiSelection = GObject.registerClass({
         this.add_child(this._emojiPager);
 
         this._pageIndicator = new PageIndicators.PageIndicators(
-            Clutter.Orientation.HORIZONTAL
-        );
+            Clutter.Orientation.HORIZONTAL);
         this.add_child(this._pageIndicator);
         this._pageIndicator.setReactive(false);
 

@@ -13,17 +13,13 @@ var ComponentManager = class {
     _sessionUpdated() {
         let newEnabledComponents = Main.sessionMode.components;
 
-        newEnabledComponents.filter(
-            name => !this._enabledComponents.includes(name)
-        ).forEach(name => {
-            this._enableComponent(name);
-        });
+        newEnabledComponents
+            .filter(name => !this._enabledComponents.includes(name))
+            .forEach(name => this._enableComponent(name));
 
-        this._enabledComponents.filter(
-            name => !newEnabledComponents.includes(name)
-        ).forEach(name => {
-            this._disableComponent(name);
-        });
+        this._enabledComponents
+            .filter(name => !newEnabledComponents.includes(name))
+            .forEach(name => this._disableComponent(name));
 
         this._enabledComponents = newEnabledComponents;
     }

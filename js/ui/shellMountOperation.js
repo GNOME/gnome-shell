@@ -295,8 +295,8 @@ var ShellMountPasswordDialog = GObject.registerClass({
             this._keyfilesLabel = new St.Label({ visible: false });
             this._keyfilesLabel.clutter_text.set_markup(
                 /* Translators: %s is the Disks application */
-                _("To unlock a volume that uses keyfiles, use the <i>%s</i> utility instead.").format(disksApp.get_name())
-            );
+                _('To unlock a volume that uses keyfiles, use the <i>%s</i> utility instead.')
+               .format(disksApp.get_name()));
             this._keyfilesLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
             this._keyfilesLabel.clutter_text.line_wrap = true;
             content.add_child(this._keyfilesLabel);
@@ -464,8 +464,7 @@ var ShellMountPasswordDialog = GObject.registerClass({
                 /* Translators: %s is the Disks application */
                 _("Unable to start %s").format(app.get_name()),
                 /* Translators: %s is the Disks application */
-                _("Couldn’t find the %s application").format(app.get_name())
-            );
+                _('Couldn’t find the %s application').format(app.get_name()));
         }
         this._onCancelButton();
     }
