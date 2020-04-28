@@ -300,6 +300,35 @@ shell_global_get_property(GObject         *object,
 }
 
 static void
+switcheroo_appeared_cb (GDBusConnection *connection,
+                        const char     *name,
+                        const char     *name_owner,
+                        gpointer        user_data)
+{
+  ShellGlobal *global = user_data;
+
+  g_debug ("switcheroo-control appeared");
+  shell_net_hadess_switcheroo_control_proxy_new_for_bus (G_BUS_TYPE_SYSTEM,
+                                                         G_DBUS_PROXY_FLAGS_NONE,
+                                                         "net.hadess.SwitcherooControl",
+                                                         "/net/hadess/SwitcherooControl",
+                                                         global->switcheroo_cancellable,
+                                                         switcheroo_control_ready_cb,
+                                                         global);
+}
+
+static void
+switcheroo_vanished_cb (GDBusConnection *connection,
+                        const char      *name,
+                        gpointer         user_data)
+{
+  ShellGlobal *global = user_data;
+
+  g_debug ("switcheroo-control vanished");
+  g_clear_object (&global->switcheroo_control);
+}
+
+static void
 shell_global_init (ShellGlobal *global)
 {
   const char *datadir = g_getenv ("GNOME_SHELL_DATADIR");
@@ -394,13 +423,13 @@ shell_global_init (ShellGlobal *global)
                                             g_object_unref, g_object_unref);
 
   global->switcheroo_cancellable = g_cancellable_new ();
-  shell_net_hadess_switcheroo_control_proxy_new_for_bus (G_BUS_TYPE_SYSTEM,
-                                                         G_DBUS_PROXY_FLAGS_NONE,
-                                                         "net.hadess.SwitcherooControl",
-                                                         "/net/hadess/SwitcherooControl",
-                                                         global->switcheroo_cancellable,
-                                                         switcheroo_control_ready_cb,
-                                                         global);
+  g_bus_watch_name (G_BUS_TYPE_SYSTEM,
+                    "net.hadess.SwitcherooControl",
+                    G_BUS_NAME_WATCHER_FLAGS_NONE,
+                    switcheroo_appeared_cb,
+                    switcheroo_vanished_cb,
+                    global,
+                    NULL);
 }
 
 static void
