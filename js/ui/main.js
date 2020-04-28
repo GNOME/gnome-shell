@@ -539,7 +539,14 @@ function pushModal(actor, params) {
     let prevFocusDestroyId;
     if (prevFocus != null) {
         prevFocusDestroyId = prevFocus.connect('destroy', () => {
-            let index = _findModal(actor);
+            let index = -1;
+            for (let i = 0; i < modalActorFocusStack.length; i++) {
+                if (modalActorFocusStack[i].prevFocusDestroyId === prevFocusDestroyId) {
+                    index = i;
+                    break;
+                }
+            }
+
             if (index >= 0)
                 modalActorFocusStack[index].prevFocus = null;
         });
