@@ -1402,7 +1402,7 @@ shell_global_sync_pointer (ShellGlobal *global)
 }
 
 /**
- * _shell_global_get_switcheroo_control: (skip)
+ * shell_global_get_switcheroo_control:
  * @global: A #ShellGlobal
  *
  * Get the global #GDBusProxy instance for the switcheroo-control
@@ -1412,7 +1412,7 @@ shell_global_sync_pointer (ShellGlobal *global)
  *   or %NULL on error.
  */
 GDBusProxy *
-_shell_global_get_switcheroo_control    (ShellGlobal  *global)
+shell_global_get_switcheroo_control (ShellGlobal  *global)
 {
   return global->switcheroo_control;
 }
