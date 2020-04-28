@@ -163,23 +163,6 @@ do_grab_screenshot (ShellScreenshot *screenshot,
   g_free (captures);
 }
 
-static gboolean
-should_draw_cursor_image (ShellScreenshotMode mode)
-{
-  if (mode == SHELL_SCREENSHOT_WINDOW || !meta_is_wayland_compositor ())
-    {
-      StSettings *settings = st_settings_get ();
-      gboolean magnifier_active = FALSE;
-
-      g_object_get (settings, "magnifier-active", &magnifier_active, NULL);
-
-      if (!magnifier_active)
-        return TRUE;
-    }
-
-  return FALSE;
-}
-
 static void
 draw_cursor_image (cairo_surface_t       *surface,
                    cairo_rectangle_int_t  area)
@@ -468,7 +451,6 @@ shell_screenshot_screenshot (ShellScreenshot     *screenshot,
 {
   ClutterActor *stage;
   ShellScreenshotPrivate *priv;
-  gboolean use_paint_signal = FALSE;
   GTask *result;
 
   g_return_if_fail (SHELL_IS_SCREENSHOT (screenshot));
@@ -493,32 +475,15 @@ shell_screenshot_screenshot (ShellScreenshot     *screenshot,
   g_task_set_source_tag (result, shell_screenshot_screenshot);
 
   priv->stream = g_object_ref (stream);
-  priv->include_cursor = FALSE;
+  priv->include_cursor = include_cursor;
 
   stage = CLUTTER_ACTOR (shell_global_get_stage (priv->global));
 
   meta_disable_unredirect_for_display (shell_global_get_display (priv->global));
 
-  if (include_cursor)
-    {
-      if (should_draw_cursor_image (SHELL_SCREENSHOT_SCREEN))
-        priv->include_cursor = TRUE;
-      else
-        use_paint_signal = TRUE;
-    }
-
-  if (use_paint_signal)
-    {
-      g_signal_connect_after (stage, "paint",
-                              G_CALLBACK (on_paint),
-                              result);
-    }
-  else
-    {
-      g_signal_connect_after (stage, "actors-painted",
-                              G_CALLBACK (on_actors_painted),
-                              result);
-    }
+  g_signal_connect_after (stage, "actors-painted",
+                          G_CALLBACK (on_actors_painted),
+                          result);
 
   clutter_actor_queue_redraw (stage);
 }
@@ -696,8 +661,7 @@ shell_screenshot_screenshot_window (ShellScreenshot     *screenshot,
 
   priv->stream = g_object_ref (stream);
   priv->include_frame = include_frame;
-  priv->include_cursor = include_cursor &&
-                         should_draw_cursor_image (SHELL_SCREENSHOT_WINDOW);
+  priv->include_cursor = include_cursor;
 
   stage = CLUTTER_ACTOR (shell_global_get_stage (priv->global));
 
