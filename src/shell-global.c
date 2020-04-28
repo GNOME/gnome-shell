@@ -148,6 +148,7 @@ got_switcheroo_control_gpus_property_cb (GObject      *source_object,
 
   global = user_data;
   g_dbus_proxy_set_cached_property (global->switcheroo_control, "GPUs", gpus);
+  g_object_notify (G_OBJECT (global), "switcheroo-control");
 }
 
 static void
@@ -175,7 +176,11 @@ switcheroo_control_ready_cb (GObject      *source_object,
 
   cached_props = g_dbus_proxy_get_cached_property_names (global->switcheroo_control);
   if (cached_props != NULL && g_strv_contains ((const gchar * const *) cached_props, "GPUs"))
-    return;
+    {
+      g_object_notify (G_OBJECT (global), "switcheroo-control");
+      return;
+    }
+  /* Delay property notification until we have all the properties gathered */
 
   g_dbus_connection_call (g_dbus_proxy_get_connection (global->switcheroo_control),
                           g_dbus_proxy_get_name (global->switcheroo_control),
@@ -326,6 +331,7 @@ switcheroo_vanished_cb (GDBusConnection *connection,
 
   g_debug ("switcheroo-control vanished");
   g_clear_object (&global->switcheroo_control);
+  g_object_notify (G_OBJECT (global), "switcheroo-control");
 }
 
 static void
