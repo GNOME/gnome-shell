@@ -476,9 +476,8 @@ recorder_record_frame (ShellRecorder *recorder,
  * by clutter before glSwapBuffers() makes it visible to the user.
  */
 static void
-recorder_on_stage_paint (ClutterActor        *actor,
-                         ClutterPaintContext *paint_context,
-                         ShellRecorder       *recorder)
+recorder_on_stage_after_paint (ClutterActor        *actor,
+                               ShellRecorder       *recorder)
 {
   if (recorder->state == RECORDER_STATE_RECORDING)
     recorder_record_frame (recorder, FALSE);
@@ -612,8 +611,8 @@ recorder_connect_stage_callbacks (ShellRecorder *recorder)
 {
   g_signal_connect (recorder->stage, "destroy",
                     G_CALLBACK (recorder_on_stage_destroy), recorder);
-  g_signal_connect_after (recorder->stage, "paint",
-                          G_CALLBACK (recorder_on_stage_paint), recorder);
+  g_signal_connect_after (recorder->stage, "after-paint",
+                          G_CALLBACK (recorder_on_stage_after_paint), recorder);
   g_signal_connect (recorder->stage, "notify::width",
                     G_CALLBACK (recorder_on_stage_notify_size), recorder);
   g_signal_connect (recorder->stage, "notify::height",
@@ -629,7 +628,7 @@ recorder_disconnect_stage_callbacks (ShellRecorder *recorder)
                                         (void *)recorder_on_stage_destroy,
                                         recorder);
   g_signal_handlers_disconnect_by_func (recorder->stage,
-                                        (void *)recorder_on_stage_paint,
+                                        (void *)recorder_on_stage_after_paint,
                                         recorder);
   g_signal_handlers_disconnect_by_func (recorder->stage,
                                         (void *)recorder_on_stage_notify_size,
