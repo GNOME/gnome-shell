@@ -1289,7 +1289,7 @@ apply_discrete_gpu_env (GAppLaunchContext *context,
   GVariant* variant;
   guint num_children, i;
 
-  proxy = _shell_global_get_switcheroo_control (global);
+  proxy = shell_global_get_switcheroo_control (global);
   if (!proxy)
     {
       g_warning ("Could not apply discrete GPU environment, switcheroo-control not available");
