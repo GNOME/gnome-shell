@@ -1162,13 +1162,10 @@ class AppDisplay extends St.BoxLayout {
         this._showView(initialView);
         this._updateFrequentVisibility();
 
-        Gio.DBus.system.watch_name(SWITCHEROO_BUS_NAME,
-                                   Gio.BusNameWatcherFlags.NONE,
-                                   this._switcherooProxyAppeared.bind(this),
-                                   () => {
-                                       this._switcherooProxy = null;
-                                       this._updateDiscreteGpuAvailable();
-                                   });
+        this._switcherooNotifyId = global.connect('notify::switcheroo-control', () => {
+            this._switcherooProxy = global.get_switcheroo_control();
+            this._updateDiscreteGpuAvailable();
+        });
     }
 
     _updateDiscreteGpuAvailable() {
@@ -1176,17 +1173,6 @@ class AppDisplay extends St.BoxLayout {
             discreteGpuAvailable = false;
         else
             discreteGpuAvailable = this._switcherooProxy.HasDualGpu;
-    }
-
-    _switcherooProxyAppeared() {
-        this._switcherooProxy = new SwitcherooProxy(Gio.DBus.system, SWITCHEROO_BUS_NAME, SWITCHEROO_OBJECT_PATH,
-            (proxy, error) => {
-                if (error) {
-                    log(error.message);
-                    return;
-                }
-                this._updateDiscreteGpuAvailable();
-            });
     }
 
     animate(animationDirection, onComplete) {
