@@ -85,6 +85,10 @@ class PaygIndicator extends PanelMenu.SystemIndicator {
         if (!this._paygManager.initialized)
             return _('Getting time…');
 
+        // if PAYG is disabled, nothing should be showing this label
+        if (!this._paygManager.enabled)
+            return '';
+
         let seconds = this._paygManager.timeRemainingSecs();
         if (seconds == 0)
             return _('Subscription expired');
