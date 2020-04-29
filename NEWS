@@ -1,3 +1,31 @@
+3.36.2
+======
+* Add openPrefs() convenience method for extensions [Florian; !1163]
+* Bring back support for empty StIcons [Andre, Jonas D.; !1173, !1178]
+* Wake up screen when unlocking programmatically [Florian; !1158]
+* Improve handling of scale-factor changes [Georges; !1176]
+* Fix translations of folder names [Florian; #2623]
+* Fix delay on lock screen after entering wrong password [Jonas D.; #2655]
+* Match ASCII alternatives of system actions [Will; #2688]
+* Tone down weekend days with events in calendar [Jakub; #2588]
+* Fix area screenshots on multi-monitor systems [Jonas Å; !1224]
+* Fix stuck lock screen after unlock [Jonas D., Florian; #2446]
+* Fixed crashes [Jonas D., Florian, Carlos; #2584, #2625, !1223, !1218]
+* Misc. bug fixes and cleanups [Jonas Å., Marco, Andre, Florian, Jonas D.;
+  !1155, !1156, !1169, !1168, #2551, #2563, !1172, !1179, !1160, #2562, #2578,
+  !1203, #2649, #2628, #2691, #1615, #2607, !1228]
+
+Contributors:
+  Marco Trevisan (Treviño), Jonas Dreßler, Carlos Garnacho,
+  Andre Moreira Magalhaes, Florian Müllner, Georges Basile Stavracas Neto,
+  Jakub Steiner, Will Thompson, Jonas Ådahl
+
+Translators:
+  Fabio Tomat [fur], Cheng-Chia Tseng [zh_TW], Danial Behzadi [fa],
+  Jiri Grönroos [fi], Ibai Oihanguren Sala [eu], Марко Костић [sr],
+  Rūdolfs Mazurs [lv], Rafael Fontenelle [pt_BR], Petr Kovář [cs],
+  Daniel Rusek [cs]
+
 3.36.1
 ======
 * Improve app folders [Jonas D.; !1011]
