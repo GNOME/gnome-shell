@@ -2513,10 +2513,16 @@ var AppIconMenu = class AppIconMenu extends PopupMenu.PopupMenu {
 
             if (discreteGpuAvailable &&
                 this._source.app.state == Shell.AppState.STOPPED) {
-                this._onDiscreteGpuMenuItem = this._appendMenuItem(_("Launch using Dedicated Graphics Card"));
-                this._onDiscreteGpuMenuItem.connect('activate', () => {
+                let appPrefersNonDefaultGPU = appInfo.get_boolean('PrefersNonDefaultGPU');
+                let gpuPref = appPrefersNonDefaultGPU
+                    ? Shell.AppLaunchGpu.DEFAULT
+                    : Shell.AppLaunchGpu.DISCRETE;
+                this._onGpuMenuItem = this._appendMenuItem(appPrefersNonDefaultGPU
+                    ? _('Launch using Integrated Graphics Card')
+                    : _('Launch using Discrete Graphics Card'));
+                this._onGpuMenuItem.connect('activate', () => {
                     this._source.animateLaunch();
-                    this._source.app.launch(0, -1, true);
+                    this._source.app.launch(0, -1, gpuPref);
                     this.emit('activate-window', null);
                 });
             }
