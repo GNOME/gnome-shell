@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: video-subtitles master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2020-03-31 07:15+0000\n"
-"PO-Revision-Date: 2020-03-31 13:13+0200\n"
+"POT-Creation-Date: 2020-03-31 11:15+0000\n"
+"PO-Revision-Date: 2020-04-30 00:24+0200\n"
 "Last-Translator: Fabio Tomat <f.t.public@gmail.com>\n"
 "Language-Team: Friulian <fur@li.org>\n"
 "Language: fur\n"
@@ -2112,7 +2112,7 @@ msgstr "Cambie Utent…"
 
 #: js/ui/status/system.js:145
 msgid "Suspend"
-msgstr "Sospindi"
+msgstr "Sospint"
 
 #: js/ui/status/system.js:157
 msgid "Power Off…"
