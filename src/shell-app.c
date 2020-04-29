@@ -1332,7 +1332,7 @@ apply_discrete_gpu_env (GAppLaunchContext *context,
       return;
     }
 
-  g_warning ("Could not find discrete GPU data in switcheroo-control");
+  g_debug ("Could not find discrete GPU in switcheroo-control, not applying environment");
 }
 
 /**
