@@ -1,3 +1,47 @@
+3.37.1
+======
+* Improve bluetooth submenu title [Mariana; #2340]
+* Add openPrefs() convenience method for extensions [Florian; !1163]
+* Bring back support for empty StIcons [Andre, Jonas D.; !1173, !1178]
+* Wake up screen when unlocking programmatically [Florian; !1158]
+* Improve extensions tool error reporting [Florian; #2391]
+* Improve handling of scale-factor changes [Georges; !1176]
+* Tone down weekend days with events in calendar [Jakub; #2588]
+* Fix showing bluetooth submenu when devices were set up [Florian; !1174]
+* Add support for parental controls filtering [Philip W.; !465]
+* Provide alternative extension templates [Florian; !812]
+* Improve weather section's empty state [Mariana; #2179]
+* Fix translations of folder names [Florian; #2623]
+* Drop Tweener [Jonas Å.; !1200]
+* Match ASCII alternatives of system actions [Will; #2688]
+* Fix delay on lock screen after entering wrong password [Jonas D.; #2655]
+* Use globalThis instead of window [Andy; #2322]
+* Inhibit remote access when disabled by session mode [Jonas Å.; !1210]
+* Improve calendar-server performance [Milan; #1875]
+* Add gnome-shell-extension-prefs wrapper for compatibility [Florian; !1220]
+* Fix stuck lock screen after unlock [Jonas D., Florian; #2446]
+* Fixed crashes [Jonas D., Florian, Carlos; #2584, #2625, !1223, !1218]
+* Misc. bug fixes and cleanups [Florian, Jonas Å., Marco, Andre, Georges,
+  Jonas D., Jan, Philip Ch.,, Xiaoguang, Will, Jordan, Matthew, qarmin;
+  !1126, !1155, !1156, !1165, !1168, !1169, #2551, #2563, !1172, !1175, !1179,
+  !1160, #2562, #2578, !1184, #2559, !1186, #2607, !1191, !1194, !1199, !1203,
+  #2649, #2628, !1205, !1206, !1208, !1207, !1211, !1214, !1213, !1192, !1217,
+  !1219, #1615, #2691, !1094, !1177]
+
+Contributors:
+  Marco Trevisan (Treviño), Philip Chimento, Milan Crha, Jonas Dreßler,
+  Carlos Garnacho, Andy Holmes, Matthew Leeds, Andre Moreira Magalhaes,
+  Florian Müllner, Georges Basile Stavracas Neto, Jordan Petridis,
+  Mariana Picolo, Jakub Steiner, Will Thompson, Jan Tojnar, Xiaoguang Wang,
+  Philip Withnall, qarmin, Jonas Ådahl
+
+Translators:
+  Fabio Tomat [fur], Cheng-Chia Tseng [zh_TW], Danial Behzadi [fa],
+  Jiri Grönroos [fi], Ibai Oihanguren Sala [eu], Марко Костић [sr],
+  Rūdolfs Mazurs [lv], Yuri Chornoivan [uk], Carmen Bianca BAKKER [eo],
+  Dingzhong Chen [zh_CN], Rafael Fontenelle [pt_BR], Petr Kovář [cs],
+  Asier Sarasua Garmendia [eu], Daniel Mustieles [es], Emin Tufan Çetin [tr]
+
 3.36.0
 ======
 * Fix off-by-1900 error in date conversions [Florian; !1061]
