@@ -677,7 +677,7 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
 
         _setCheckBoxLabel(this._checkBox, dialogContent.checkBoxText || '');
         this._checkBox.visible = dialogContent.checkBoxText && updatePrepared && updatesAllowed;
-        this._checkBox.checked = this._checkBox.visible;
+        this._checkBox.checked = updatePrepared && updateTriggered;
 
         // We show the warning either together with the checkbox, or when
         // updates have already been triggered, but the user doesn't have
