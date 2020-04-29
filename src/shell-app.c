@@ -531,7 +531,7 @@ shell_app_activate_full (ShellApp      *app,
       case SHELL_APP_STATE_STOPPED:
         {
           GError *error = NULL;
-          if (!shell_app_launch (app, timestamp, workspace, FALSE, &error))
+          if (!shell_app_launch (app, timestamp, workspace, SHELL_APP_LAUNCH_GPU_APP_PREF, &error))
             {
               char *msg;
               msg = g_strdup_printf (_("Failed to launch “%s”"), shell_app_get_name (app));
@@ -606,7 +606,7 @@ shell_app_open_new_window (ShellApp      *app,
    * instance (Firefox).  There are a few less-sensical cases such
    * as say Pidgin.
    */
-  shell_app_launch (app, 0, workspace, FALSE, NULL);
+  shell_app_launch (app, 0, workspace, SHELL_APP_LAUNCH_GPU_APP_PREF, NULL);
 }
 
 /**
@@ -1339,20 +1339,21 @@ apply_discrete_gpu_env (GAppLaunchContext *context,
  * shell_app_launch:
  * @timestamp: Event timestamp, or 0 for current event timestamp
  * @workspace: Start on this workspace, or -1 for default
- * @discrete_gpu: Whether to start on the discrete GPU
+ * @gpu_pref: the GPU to prefer launching on
  * @error: A #GError
  */
 gboolean
-shell_app_launch (ShellApp     *app,
-                  guint         timestamp,
-                  int           workspace,
-                  gboolean      discrete_gpu,
-                  GError      **error)
+shell_app_launch (ShellApp           *app,
+                  guint               timestamp,
+                  int                 workspace,
+                  ShellAppLaunchGpu   gpu_pref,
+                  GError            **error)
 {
   ShellGlobal *global;
   GAppLaunchContext *context;
   gboolean ret;
   GSpawnFlags flags;
+  gboolean discrete_gpu = FALSE;
 
   if (app->info == NULL)
     {
@@ -1369,6 +1370,11 @@ shell_app_launch (ShellApp     *app,
 
   global = shell_global_get ();
   context = shell_global_create_app_launch_context (global, timestamp, workspace);
+  if (gpu_pref == SHELL_APP_LAUNCH_GPU_APP_PREF)
+    discrete_gpu = g_desktop_app_info_get_boolean (app->info, "PrefersNonDefaultGPU");
+  else
+    discrete_gpu = (gpu_pref == SHELL_APP_LAUNCH_GPU_DISCRETE);
+
   if (discrete_gpu)
     apply_discrete_gpu_env (context, global);
 
