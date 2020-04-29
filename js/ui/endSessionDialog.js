@@ -327,7 +327,8 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
             dialogContent.checkBoxText && updatePrepared && updatesAllowed;
 
         if (!this._checkBoxSet) {
-            this._checkBox.checked = this._checkBox.visible;
+            this._checkBox.checked =
+                this._checkBox.visible && !this._powerProxy.OnBattery;
             this._checkBoxSet = true;
         }
 
