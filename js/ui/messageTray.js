@@ -162,6 +162,10 @@ var NotificationPolicy = GObject.registerClass({
         this.run_dispose();
     }
 
+    get enable() {
+        return true;
+    }
+
     get enableSound() {
         return true;
     }
