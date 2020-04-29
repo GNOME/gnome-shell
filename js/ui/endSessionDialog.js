@@ -319,10 +319,28 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
         if (dialogContent.subjectWithUpdates && this._checkBox.checked)
             subject = dialogContent.subjectWithUpdates;
 
-        if (dialogContent.showBatteryWarning) {
-            this._batteryWarning.visible =
-                this._powerProxy.OnBattery && this._checkBox.checked;
+        const updatePrepared = this._updateInfo.UpdatePrepared;
+        const updateTriggered = this._updateInfo.UpdateTriggered;
+        const updatesAllowed = this._updatesPermission && this._updatesPermission.allowed;
+
+        this._checkBox.visible =
+            dialogContent.checkBoxText && updatePrepared && updatesAllowed;
+
+        if (!this._checkBoxSet) {
+            this._checkBox.checked = this._checkBox.visible;
+            this._checkBoxSet = true;
         }
+
+        // We show the warning either together with the checkbox, or when
+        // updates have already been triggered, but the user doesn't have
+        // enough permissions to cancel them.
+        const updateForced =
+            updatePrepared && updateTriggered && !updatesAllowed;
+
+        this._batteryWarning.visible =
+            dialogContent.showBatteryWarning &&
+            this._powerProxy.OnBattery &&
+            (this._checkBox.visible || updateForced);
 
         let description;
         let displayTime = _roundSecondsToInterval(this._totalSecondsToStayOpen,
@@ -623,6 +641,7 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
         let [type, timestamp, totalSecondsToStayOpen, inhibitorObjectPaths] = parameters;
         this._totalSecondsToStayOpen = totalSecondsToStayOpen;
         this._type = type;
+        this._checkBoxSet = false;
 
         try {
             this._updateInfo = await this._getUpdateInfo();
@@ -671,19 +690,7 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
         if (dialogContent.showOtherSessions)
             this._loadSessions();
 
-        let updateTriggered = this._updateInfo.UpdateTriggered;
-        let updatePrepared = this._updateInfo.UpdatePrepared;
-        let updatesAllowed = this._updatesPermission && this._updatesPermission.allowed;
-
         _setCheckBoxLabel(this._checkBox, dialogContent.checkBoxText || '');
-        this._checkBox.visible = dialogContent.checkBoxText && updatePrepared && updatesAllowed;
-        this._checkBox.checked = this._checkBox.visible;
-
-        // We show the warning either together with the checkbox, or when
-        // updates have already been triggered, but the user doesn't have
-        // enough permissions to cancel them.
-        this._batteryWarning.visible = dialogContent.showBatteryWarning &&
-                                        (this._checkBox.visible || updatePrepared && updateTriggered && !updatesAllowed);
 
         this._updateButtons();
 
