@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell 3.3.90\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2020-03-31 07:15+0000\n"
-"PO-Revision-Date: 2020-04-01 00:04+0800\n"
+"POT-Creation-Date: 2020-03-31 16:08+0000\n"
+"PO-Revision-Date: 2020-05-01 01:29+0800\n"
 "Last-Translator: Cheng-Chia Tseng <pswo10680@gmail.com>\n"
 "Language-Team: Chinese (Taiwan) <zh-l10n@lists.linux.org.tw>\n"
 "Language: zh_TW\n"
@@ -72,8 +72,8 @@ msgid ""
 "list. You can also manipulate this list with the EnableExtension and "
 "DisableExtension D-Bus methods on org.gnome.Shell."
 msgstr ""
-"GNOME Shell 擴充套件有 UUID 屬性；這個設定鍵列出了應載入的擴充套件。任何要載"
-"入的擴充套件都要出現在這個清單中。您也可以用 org.gnome.Shell 中的 "
+"GNOME Shell 擴充套件有 UUID 屬性；這個設定鍵列出應載入的擴充套件。任何要載入"
+"的擴充套件都要出現在這個清單中。您也可以用 org.gnome.Shell 中的 "
 "EnableExtension 和 DisableExtension D-Bus 方法來操作這個清單。"
 
 #: data/org.gnome.shell.gschema.xml.in:26
@@ -88,10 +88,10 @@ msgid ""
 "methods on org.gnome.Shell. This key takes precedence over the “enabled-"
 "extensions” setting."
 msgstr ""
-"GNOME Shell 擴充套件有 UUID 屬性；這個設定鍵列出了應停用的擴充套件，即使它是"
-"做為目前模式的一部分載入的。您也可以用 org.gnome.Shell 中的 EnableExtension "
-"和 DisableExtension D-Bus 方法來操作這個清單。這個設定鍵會優先於 “enabled-"
-"extensions” 設定值。"
+"GNOME Shell 擴充套件有 UUID 屬性；這個設定鍵列出應停用的擴充套件，即使它是做"
+"為目前模式的一部分載入的。您也可以用 org.gnome.Shell 中的 EnableExtension 和 "
+"DisableExtension D-Bus 方法來操作這個清單。這個設定鍵會優先於「enabled-"
+"extensions」設定值。"
 
 #: data/org.gnome.shell.gschema.xml.in:37
 msgid "Disable user extensions"
@@ -167,7 +167,7 @@ msgid ""
 "state of the checkbox."
 msgstr ""
 "當掛載加密裝置或遠端檔案系統時會要求密碼。如果密碼可以被儲存以供未來使用時會"
-"顯示「記住密碼」。這個設定鍵設定了勾選盒的預設狀態。"
+"顯示「記住密碼」。這個設定鍵設定勾選盒的預設狀態。"
 
 #: data/org.gnome.shell.gschema.xml.in:96
 msgid ""
@@ -365,7 +365,7 @@ msgstr "網路登入"
 #: js/dbusServices/extensions/ui/extension-prefs-dialog.ui:36
 #: subprojects/extensions-app/data/ui/extensions-window.ui:223
 msgid "Something’s gone wrong"
-msgstr "有地方出錯了"
+msgstr "有地方出錯"
 
 #: js/dbusServices/extensions/ui/extension-prefs-dialog.ui:48
 msgid ""
@@ -373,8 +373,8 @@ msgid ""
 "extension can’t be displayed. We recommend that you report the issue to the "
 "extension authors."
 msgstr ""
-"我們非常抱歉，發生了這個問題：無法顯示此擴充套件的設定。我們建議您回報此議題"
-"給擴充套件作者知曉。"
+"我們非常抱歉發生這個問題：無法顯示此擴充套件的設定。我們建議您回報此議題給擴"
+"充套件作者知曉。"
 
 #: js/dbusServices/extensions/ui/extension-prefs-dialog.ui:82
 msgid "Technical Details"
@@ -434,7 +434,7 @@ msgstr "登入視窗"
 
 #: js/gdm/util.js:338
 msgid "Authentication error"
-msgstr "核對錯誤"
+msgstr "身分核對錯誤"
 
 #. We don't show fingerprint messages directly since it's
 #. not the main auth service. Instead we use the messages
@@ -955,7 +955,7 @@ msgstr "服務"
 #: js/ui/components/networkAgent.js:312 js/ui/components/networkAgent.js:340
 #: js/ui/components/networkAgent.js:679 js/ui/components/networkAgent.js:700
 msgid "Authentication required"
-msgstr "要求核對"
+msgstr "要求核對身分"
 
 #: js/ui/components/networkAgent.js:313 js/ui/components/networkAgent.js:680
 #, javascript-format
@@ -966,7 +966,7 @@ msgstr "需要密碼或是加密金鑰來存取無線網路「%s」。"
 
 #: js/ui/components/networkAgent.js:317 js/ui/components/networkAgent.js:684
 msgid "Wired 802.1X authentication"
-msgstr "有線網路 802.1X 核對"
+msgstr "有線網路 802.1X 身分核對"
 
 #: js/ui/components/networkAgent.js:319
 msgid "Network name"
@@ -974,7 +974,7 @@ msgstr "網路名稱"
 
 #: js/ui/components/networkAgent.js:324 js/ui/components/networkAgent.js:688
 msgid "DSL authentication"
-msgstr "DSL 核對"
+msgstr "DSL 身分核對"
 
 #: js/ui/components/networkAgent.js:331 js/ui/components/networkAgent.js:693
 msgid "PIN code required"
@@ -1005,7 +1005,7 @@ msgstr "VPN 密碼"
 
 #: js/ui/components/polkitAgent.js:39
 msgid "Authentication Required"
-msgstr "要求核對"
+msgstr "要求核對身分"
 
 #: js/ui/components/polkitAgent.js:80
 msgid "Administrator"
@@ -1013,7 +1013,7 @@ msgstr "管理員"
 
 #: js/ui/components/polkitAgent.js:142
 msgid "Authenticate"
-msgstr "核對"
+msgstr "核對身分"
 
 #. Translators: "that didn't work" refers to the fact that the
 #. * requested authentication was not gained; this can happen
@@ -1802,7 +1802,7 @@ msgstr "正連線到 %s"
 #: js/ui/status/network.js:441
 #, javascript-format
 msgid "%s Requires Authentication"
-msgstr "%s 需要核對"
+msgstr "%s 需要核對身分"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing; %s is a network identifier
@@ -1916,7 +1916,7 @@ msgstr "連線中…"
 #. Translators: this is for network connections that require some kind of key or password
 #: js/ui/status/network.js:1420
 msgid "authentication required"
-msgstr "要求核對"
+msgstr "要求核對身分"
 
 #: js/ui/status/network.js:1422
 msgid "connection failed"
@@ -2036,7 +2036,7 @@ msgstr "鎖定"
 
 #: js/ui/status/system.js:116
 msgid "Power Off / Log Out"
-msgstr "關閉電源／登出"
+msgstr "關閉電源/登出"
 
 #: js/ui/status/system.js:119
 msgid "Log Out"
@@ -2294,7 +2294,7 @@ msgstr "密碼不能為空白"
 
 #: src/shell-polkit-authentication-agent.c:344
 msgid "Authentication dialog was dismissed by the user"
-msgstr "核對對話盒被使用者取消了"
+msgstr "身分核對對話盒被使用者取消"
 
 #: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:5
 #: subprojects/extensions-app/data/org.gnome.Extensions.desktop.in.in:4
@@ -2323,7 +2323,7 @@ msgstr "設定 GNOME Shell 擴充套件"
 #: subprojects/extensions-app/js/main.js:144
 #, javascript-format
 msgid "Remove “%s”?"
-msgstr "移除“%s”？"
+msgstr "移除「%s」？"
 
 #: subprojects/extensions-app/js/main.js:145
 msgid ""
@@ -2446,7 +2446,7 @@ msgid ""
 "Description is a single-sentence explanation of what your extension does.\n"
 "Examples are: %s"
 msgstr ""
-"描述是解釋你擴充套件作用的一句話。\n"
+"描述是解釋您擴充套件作用的一句話。\n"
 "範例：%s"
 
 #: subprojects/extensions-tool/src/command-create.c:222
