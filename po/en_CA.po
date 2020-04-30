@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-04-17 17:11+0100\n"
-"PO-Revision-Date: 2020-04-21 11:29+0000\n"
+"PO-Revision-Date: 2020-04-24 13:20+0000\n"
 "Last-Translator: Roddy Shuler <roddy@stanfordalumni.org>\n"
 "Language-Team: English (Canada) (http://www.transifex.com/endless-os/gnome-shell/language/en_CA/)\n"
 "MIME-Version: 1.0\n"
@@ -629,7 +629,7 @@ msgstr "Remove…"
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:8 js/ui/userMenu.js:27
 msgid "Help"
-msgstr ""
+msgstr "Help"
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:12
 msgid "About Extensions"
@@ -1781,7 +1781,7 @@ msgstr ""
 
 #: js/ui/padOsd.js:787 js/ui/padOsd.js:910
 msgid "None"
-msgstr ""
+msgstr "None"
 
 #: js/ui/padOsd.js:863
 msgid "Press a button to configure"
@@ -1801,7 +1801,7 @@ msgstr "Show Details"
 
 #: js/ui/panel.js:112
 msgid "Quit"
-msgstr ""
+msgstr "Quit"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".

@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-04-17 17:11+0100\n"
-"PO-Revision-Date: 2020-04-21 11:29+0000\n"
+"PO-Revision-Date: 2020-04-24 13:21+0000\n"
 "Last-Translator: Vicki Niu <vicki@endlessm.com>\n"
 "Language-Team: Irish (http://www.transifex.com/endless-os/gnome-shell/language/ga/)\n"
 "MIME-Version: 1.0\n"
@@ -632,7 +632,7 @@ msgstr ""
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:8 js/ui/userMenu.js:27
 msgid "Help"
-msgstr ""
+msgstr "Cabhair"
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:12
 msgid "About Extensions"
@@ -871,7 +871,7 @@ msgstr[4] ""
 
 #: js/misc/util.js:196
 msgid "Yesterday"
-msgstr ""
+msgstr "Inné"
 
 #: js/misc/util.js:198
 #, javascript-format
@@ -1408,7 +1408,7 @@ msgstr ""
 
 #: js/ui/dateMenu.js:417
 msgid "Loading…"
-msgstr ""
+msgstr "Á luchtú…"
 
 #: js/ui/dateMenu.js:427
 msgid "Go online for weather information"
@@ -1817,7 +1817,7 @@ msgstr ""
 
 #: js/ui/padOsd.js:787 js/ui/padOsd.js:910
 msgid "None"
-msgstr ""
+msgstr "Neamhní"
 
 #: js/ui/padOsd.js:863
 msgid "Press a button to configure"
@@ -1966,7 +1966,7 @@ msgstr ""
 #. user.
 #: js/ui/payg.js:271
 msgid "Unknown error"
-msgstr ""
+msgstr "Earráid anaithnid"
 
 #: js/ui/payg.js:452
 msgid "Apply Code"
@@ -2751,7 +2751,7 @@ msgstr "Airde"
 #. * Try to keep it under around 15 characters.
 #: js/ui/switchMonitor.js:17
 msgid "Mirror"
-msgstr ""
+msgstr "Scáthánaigh"
 
 #. Translators: this is for the desktop spanning displays.
 #. * Try to keep it under around 15 characters.
@@ -2832,7 +2832,7 @@ msgstr[4] "Fillfear athruithe socruithe i gceann %d soicind"
 #: js/ui/windowManager.js:550
 #, javascript-format
 msgid "%d × %d"
-msgstr ""
+msgstr "%d × %d"
 
 #: js/ui/windowMenu.js:27
 msgid "Minimize"

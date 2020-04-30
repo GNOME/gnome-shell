@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-04-17 17:11+0100\n"
-"PO-Revision-Date: 2020-04-21 11:29+0000\n"
+"PO-Revision-Date: 2020-04-24 13:18+0000\n"
 "Last-Translator: Vicki Niu <vicki@endlessm.com>\n"
 "Language-Team: Aragonese (http://www.transifex.com/endless-os/gnome-shell/language/an/)\n"
 "MIME-Version: 1.0\n"
@@ -632,7 +632,7 @@ msgstr ""
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:8 js/ui/userMenu.js:27
 msgid "Help"
-msgstr ""
+msgstr "Aduya"
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:12
 msgid "About Extensions"
@@ -865,7 +865,7 @@ msgstr[1] ""
 
 #: js/misc/util.js:196
 msgid "Yesterday"
-msgstr ""
+msgstr "Ahiere"
 
 #: js/misc/util.js:198
 #, javascript-format
@@ -1390,7 +1390,7 @@ msgstr ""
 
 #: js/ui/dateMenu.js:417
 msgid "Loading…"
-msgstr ""
+msgstr "Cargando…"
 
 #: js/ui/dateMenu.js:427
 msgid "Go online for weather information"
@@ -1756,7 +1756,7 @@ msgstr "Vista cheneral"
 
 #: js/ui/padOsd.js:95
 msgid "New shortcut…"
-msgstr ""
+msgstr "Nuevo alcorce de teclau…"
 
 #: js/ui/padOsd.js:142
 msgid "Application defined"
@@ -1784,7 +1784,7 @@ msgstr ""
 
 #: js/ui/padOsd.js:787 js/ui/padOsd.js:910
 msgid "None"
-msgstr ""
+msgstr "Garra"
 
 #: js/ui/padOsd.js:863
 msgid "Press a button to configure"
@@ -1930,7 +1930,7 @@ msgstr ""
 #. user.
 #: js/ui/payg.js:271
 msgid "Unknown error"
-msgstr ""
+msgstr "Error desconoixida"
 
 #: js/ui/payg.js:452
 msgid "Apply Code"
@@ -2676,7 +2676,7 @@ msgstr "Volumen"
 #. * Try to keep it under around 15 characters.
 #: js/ui/switchMonitor.js:17
 msgid "Mirror"
-msgstr ""
+msgstr "Espiello"
 
 #. Translators: this is for the desktop spanning displays.
 #. * Try to keep it under around 15 characters.
@@ -2754,7 +2754,7 @@ msgstr[1] "Os cambeos d'as opcions serán revertius en %d segundos"
 #: js/ui/windowManager.js:550
 #, javascript-format
 msgid "%d × %d"
-msgstr ""
+msgstr "%d × %d"
 
 #: js/ui/windowMenu.js:27
 msgid "Minimize"

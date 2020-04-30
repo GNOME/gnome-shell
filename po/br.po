@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-04-17 17:11+0100\n"
-"PO-Revision-Date: 2020-04-21 11:29+0000\n"
+"PO-Revision-Date: 2020-04-24 13:20+0000\n"
 "Last-Translator: Vicki Niu <vicki@endlessm.com>\n"
 "Language-Team: Breton (http://www.transifex.com/endless-os/gnome-shell/language/br/)\n"
 "MIME-Version: 1.0\n"
@@ -587,7 +587,7 @@ msgstr ""
 #: js/ui/shellMountOperation.js:376 js/ui/shellMountOperation.js:386
 #: js/ui/status/network.js:913 js/ui/forceAppExitDialog.js:79
 msgid "Cancel"
-msgstr ""
+msgstr "Nullañ"
 
 #: js/extensionPrefs/js/main.js:149 js/ui/appDisplay.js:2499
 msgid "Remove"
@@ -632,7 +632,7 @@ msgstr ""
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:8 js/ui/userMenu.js:27
 msgid "Help"
-msgstr ""
+msgstr "Skoazell"
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:12
 msgid "About Extensions"
@@ -1721,7 +1721,7 @@ msgstr ""
 #. * The device has been disabled
 #: js/ui/lookingGlass.js:742 subprojects/gvc/gvc-mixer-control.c:1892
 msgid "Disabled"
-msgstr ""
+msgstr "Diweredekaet"
 
 #: js/ui/lookingGlass.js:744
 msgid "Error"
@@ -1789,7 +1789,7 @@ msgstr ""
 
 #: js/ui/padOsd.js:95
 msgid "New shortcut…"
-msgstr ""
+msgstr "Berradenn nevez..."
 
 #: js/ui/padOsd.js:142
 msgid "Application defined"
@@ -1817,7 +1817,7 @@ msgstr ""
 
 #: js/ui/padOsd.js:787 js/ui/padOsd.js:910
 msgid "None"
-msgstr ""
+msgstr "Hini ebet"
 
 #: js/ui/padOsd.js:863
 msgid "Press a button to configure"
@@ -1837,7 +1837,7 @@ msgstr ""
 
 #: js/ui/panel.js:112
 msgid "Quit"
-msgstr ""
+msgstr "Kuitaat"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
@@ -1848,7 +1848,7 @@ msgstr ""
 #: js/ui/panel.js:716
 msgctxt "System menu in the top bar"
 msgid "System"
-msgstr ""
+msgstr "Reizhiad [Rummad]"
 
 #: js/ui/panel.js:801
 msgctxt "User menu"
@@ -1966,7 +1966,7 @@ msgstr ""
 #. user.
 #: js/ui/payg.js:271
 msgid "Unknown error"
-msgstr ""
+msgstr "Fazi dianav"
 
 #: js/ui/payg.js:452
 msgid "Apply Code"
@@ -2115,7 +2115,7 @@ msgstr ""
 
 #: js/ui/shellEntry.js:30
 msgid "Copy"
-msgstr ""
+msgstr "Eilañ"
 
 #: js/ui/shellEntry.js:35
 msgid "Paste"
@@ -2201,7 +2201,7 @@ msgstr ""
 
 #: js/ui/status/accessibility.js:50
 msgid "Zoom"
-msgstr ""
+msgstr "Zoumañ"
 
 #: js/ui/status/accessibility.js:57
 msgid "Screen Reader"
@@ -2282,7 +2282,7 @@ msgstr ""
 
 #: js/ui/status/bluetooth.js:40
 msgid "Bluetooth"
-msgstr ""
+msgstr "Bluetooth"
 
 #: js/ui/status/bluetooth.js:49 js/ui/status/network.js:591
 msgid "Bluetooth Settings"
@@ -2795,7 +2795,7 @@ msgstr ""
 
 #: js/ui/viewSelector.js:610
 msgid "Applications"
-msgstr ""
+msgstr "Arloadoù"
 
 #: js/ui/windowAttentionHandler.js:20
 #, javascript-format
@@ -2832,7 +2832,7 @@ msgstr[4] ""
 #: js/ui/windowManager.js:550
 #, javascript-format
 msgid "%d × %d"
-msgstr ""
+msgstr "%d × %d"
 
 #: js/ui/windowMenu.js:27
 msgid "Minimize"
@@ -2921,7 +2921,7 @@ msgstr ""
 #: src/shell-app.c:280
 msgctxt "program"
 msgid "Unknown"
-msgstr ""
+msgstr "Dianav"
 
 #: src/shell-app.c:570
 #, c-format
@@ -3274,7 +3274,7 @@ msgstr[4] ""
 
 #: subprojects/gvc/gvc-mixer-control.c:2766
 msgid "System Sounds"
-msgstr ""
+msgstr "Reizhiad sonioù"
 
 #: js/ui/appIconBar.js:195
 msgid "Other workspaces"
@@ -3371,7 +3371,7 @@ msgstr ""
 
 #: js/ui/userMenu.js:19
 msgid "Settings"
-msgstr ""
+msgstr "Arventennoù"
 
 #: js/ui/userMenu.js:24
 msgid "Give Us Feedback"

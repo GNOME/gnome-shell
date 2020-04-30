@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-04-17 17:11+0100\n"
-"PO-Revision-Date: 2020-04-21 11:29+0000\n"
+"PO-Revision-Date: 2020-04-24 13:19+0000\n"
 "Last-Translator: Vicki Niu <vicki@endlessm.com>\n"
 "Language-Team: Kannada (http://www.transifex.com/endless-os/gnome-shell/language/kn/)\n"
 "MIME-Version: 1.0\n"
@@ -630,7 +630,7 @@ msgstr ""
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:8 js/ui/userMenu.js:27
 msgid "Help"
-msgstr ""
+msgstr "ಸಹಾಯ"
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:12
 msgid "About Extensions"
@@ -863,7 +863,7 @@ msgstr[1] ""
 
 #: js/misc/util.js:196
 msgid "Yesterday"
-msgstr ""
+msgstr "ನಿನ್ನೆ"
 
 #: js/misc/util.js:198
 #, javascript-format
@@ -969,7 +969,7 @@ msgstr ""
 #. * Shell's desktop search entry.
 #: js/misc/util.js:573
 msgid "Google"
-msgstr ""
+msgstr "ಫೇಸ್‌ಬುಕ್"
 
 #. TRANSLATORS: this is the title of the wifi captive portal login window
 #: js/portalHelper/main.js:41
@@ -986,11 +986,11 @@ msgstr ""
 #. let modal = options['modal'] || true;
 #: js/ui/accessDialog.js:39 js/ui/status/location.js:374
 msgid "Deny Access"
-msgstr ""
+msgstr "ಪ್ರವೇಶವನ್ನು ನಿರಾಕರಿಸು"
 
 #: js/ui/accessDialog.js:40 js/ui/status/location.js:377
 msgid "Grant Access"
-msgstr ""
+msgstr "ಪ್ರವೇಶಕ್ಕೆ ಅನುಮತಿಸು"
 
 #. Translators: This is the heading of a list of open windows
 #: js/ui/appDisplay.js:2390 js/ui/panel.js:78
@@ -1388,7 +1388,7 @@ msgstr ""
 
 #: js/ui/dateMenu.js:417
 msgid "Loading…"
-msgstr ""
+msgstr "ಲೋಡ್ ಮಾಡಲಾಗುತ್ತಿದೆ…"
 
 #: js/ui/dateMenu.js:427
 msgid "Go online for weather information"
@@ -1754,7 +1754,7 @@ msgstr "ಅವಲೋಕನ"
 
 #: js/ui/padOsd.js:95
 msgid "New shortcut…"
-msgstr ""
+msgstr "ಹೊಸ ಸಮೀಪಮಾರ್ಗ.."
 
 #: js/ui/padOsd.js:142
 msgid "Application defined"
@@ -1774,7 +1774,7 @@ msgstr ""
 
 #: js/ui/padOsd.js:211
 msgid "Done"
-msgstr ""
+msgstr "ಆಯಿತು"
 
 #: js/ui/padOsd.js:745
 msgid "Edit…"
@@ -1782,7 +1782,7 @@ msgstr ""
 
 #: js/ui/padOsd.js:787 js/ui/padOsd.js:910
 msgid "None"
-msgstr ""
+msgstr "ಯಾವುದೂ ಇಲ್ಲ"
 
 #: js/ui/padOsd.js:863
 msgid "Press a button to configure"
@@ -1928,7 +1928,7 @@ msgstr ""
 #. user.
 #: js/ui/payg.js:271
 msgid "Unknown error"
-msgstr ""
+msgstr "ಗೊತ್ತಿಲ್ಲದ ದೋಷ"
 
 #: js/ui/payg.js:452
 msgid "Apply Code"
@@ -2674,7 +2674,7 @@ msgstr "ಧ್ವನಿ ಪ್ರಮಾಣ"
 #. * Try to keep it under around 15 characters.
 #: js/ui/switchMonitor.js:17
 msgid "Mirror"
-msgstr ""
+msgstr "ಬಿಂಬ"
 
 #. Translators: this is for the desktop spanning displays.
 #. * Try to keep it under around 15 characters.
@@ -2752,7 +2752,7 @@ msgstr[1] "ಸಿದ್ಧತೆಗಳ ಬದಲಾವಣೆಗಳು %d ಸೆ�
 #: js/ui/windowManager.js:550
 #, javascript-format
 msgid "%d × %d"
-msgstr ""
+msgstr "%d × %d"
 
 #: js/ui/windowMenu.js:27
 msgid "Minimize"

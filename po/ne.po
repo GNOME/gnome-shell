@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-04-17 17:11+0100\n"
-"PO-Revision-Date: 2020-04-21 11:29+0000\n"
+"PO-Revision-Date: 2020-04-24 13:19+0000\n"
 "Last-Translator: Roddy Shuler <roddy@stanfordalumni.org>\n"
 "Language-Team: Nepali (http://www.transifex.com/endless-os/gnome-shell/language/ne/)\n"
 "MIME-Version: 1.0\n"
@@ -629,7 +629,7 @@ msgstr "हटाउनुहोस्…"
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:8 js/ui/userMenu.js:27
 msgid "Help"
-msgstr ""
+msgstr "सहायता"
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:12
 msgid "About Extensions"
@@ -1927,7 +1927,7 @@ msgstr ""
 #. user.
 #: js/ui/payg.js:271
 msgid "Unknown error"
-msgstr ""
+msgstr "अज्ञात त्रुटि"
 
 #: js/ui/payg.js:452
 msgid "Apply Code"
@@ -3259,7 +3259,7 @@ msgstr ""
 
 #: js/ui/iconGridLayout.js:540
 msgid "New Folder"
-msgstr ""
+msgstr "नयाँ फोल्डर"
 
 #: js/ui/internetSearch.js:70
 #, javascript-format

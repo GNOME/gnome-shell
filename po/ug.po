@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-04-17 17:11+0100\n"
-"PO-Revision-Date: 2020-04-21 11:29+0000\n"
+"PO-Revision-Date: 2020-04-24 13:21+0000\n"
 "Last-Translator: Vicki Niu <vicki@endlessm.com>\n"
 "Language-Team: Uighur (http://www.transifex.com/endless-os/gnome-shell/language/ug/)\n"
 "MIME-Version: 1.0\n"
@@ -632,7 +632,7 @@ msgstr ""
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:8 js/ui/userMenu.js:27
 msgid "Help"
-msgstr ""
+msgstr "ياردەم"
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:12
 msgid "About Extensions"
@@ -863,7 +863,7 @@ msgstr[0] "%d سائەت ئىلگىرى"
 
 #: js/misc/util.js:196
 msgid "Yesterday"
-msgstr ""
+msgstr "تۈنۈگۈن"
 
 #: js/misc/util.js:198
 #, javascript-format
@@ -1384,7 +1384,7 @@ msgstr ""
 
 #: js/ui/dateMenu.js:417
 msgid "Loading…"
-msgstr ""
+msgstr "ئوقۇۋاتىدۇ…"
 
 #: js/ui/dateMenu.js:427
 msgid "Go online for weather information"
@@ -1633,7 +1633,7 @@ msgstr "ئايرىل"
 #: js/ui/kbdA11yDialog.js:55 js/ui/status/automaticUpdates.js:315
 #: js/ui/status/bluetooth.js:138 js/ui/status/network.js:1288
 msgid "Turn On"
-msgstr ""
+msgstr "ئاچ"
 
 #: js/ui/kbdA11yDialog.js:63 js/ui/status/automaticUpdates.js:317
 #: js/ui/status/bluetooth.js:138 js/ui/status/network.js:131
@@ -1641,7 +1641,7 @@ msgstr ""
 #: js/ui/status/network.js:1400 js/ui/status/nightLight.js:41
 #: js/ui/status/rfkill.js:81 js/ui/status/rfkill.js:108
 msgid "Turn Off"
-msgstr ""
+msgstr "تاقا"
 
 #: js/ui/kbdA11yDialog.js:63
 msgid "Leave Off"
@@ -1773,7 +1773,7 @@ msgstr ""
 
 #: js/ui/padOsd.js:787 js/ui/padOsd.js:910
 msgid "None"
-msgstr ""
+msgstr "يوق"
 
 #: js/ui/padOsd.js:863
 msgid "Press a button to configure"
@@ -1918,7 +1918,7 @@ msgstr ""
 #. user.
 #: js/ui/payg.js:271
 msgid "Unknown error"
-msgstr ""
+msgstr "نامەلۇم خاتالىق"
 
 #: js/ui/payg.js:452
 msgid "Apply Code"
@@ -2460,7 +2460,7 @@ msgstr ""
 
 #: js/ui/status/network.js:1490
 msgid "VPN"
-msgstr ""
+msgstr "VPN"
 
 #: js/ui/status/network.js:1500
 msgid "VPN Off"
@@ -2728,7 +2728,7 @@ msgstr[0] ""
 #: js/ui/windowManager.js:550
 #, javascript-format
 msgid "%d × %d"
-msgstr ""
+msgstr "%d × %d"
 
 #: js/ui/windowMenu.js:27
 msgid "Minimize"

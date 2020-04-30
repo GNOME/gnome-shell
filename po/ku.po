@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-04-17 17:11+0100\n"
-"PO-Revision-Date: 2020-04-21 11:29+0000\n"
+"PO-Revision-Date: 2020-04-24 13:21+0000\n"
 "Last-Translator: Vicki Niu <vicki@endlessm.com>\n"
 "Language-Team: Kurdish (http://www.transifex.com/endless-os/gnome-shell/language/ku/)\n"
 "MIME-Version: 1.0\n"
@@ -631,7 +631,7 @@ msgstr ""
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:8 js/ui/userMenu.js:27
 msgid "Help"
-msgstr ""
+msgstr "Alîkarî"
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:12
 msgid "About Extensions"
@@ -1687,7 +1687,7 @@ msgstr ""
 #. * The device has been disabled
 #: js/ui/lookingGlass.js:742 subprojects/gvc/gvc-mixer-control.c:1892
 msgid "Disabled"
-msgstr ""
+msgstr "Neçalak"
 
 #: js/ui/lookingGlass.js:744
 msgid "Error"
@@ -1783,7 +1783,7 @@ msgstr ""
 
 #: js/ui/padOsd.js:787 js/ui/padOsd.js:910
 msgid "None"
-msgstr ""
+msgstr "Tune"
 
 #: js/ui/padOsd.js:863
 msgid "Press a button to configure"
@@ -1803,7 +1803,7 @@ msgstr ""
 
 #: js/ui/panel.js:112
 msgid "Quit"
-msgstr ""
+msgstr "Derkeve"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
@@ -1814,7 +1814,7 @@ msgstr ""
 #: js/ui/panel.js:716
 msgctxt "System menu in the top bar"
 msgid "System"
-msgstr ""
+msgstr "Pergal"
 
 #: js/ui/panel.js:801
 msgctxt "User menu"
@@ -2842,7 +2842,7 @@ msgstr ""
 #: src/shell-app.c:280
 msgctxt "program"
 msgid "Unknown"
-msgstr ""
+msgstr "Nenas"
 
 #: src/shell-app.c:570
 #, c-format
@@ -3189,7 +3189,7 @@ msgstr[1] ""
 
 #: subprojects/gvc/gvc-mixer-control.c:2766
 msgid "System Sounds"
-msgstr ""
+msgstr "Dengên Pergalê"
 
 #: js/ui/appIconBar.js:195
 msgid "Other workspaces"

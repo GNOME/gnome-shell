@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-04-17 17:11+0100\n"
-"PO-Revision-Date: 2020-04-21 11:29+0000\n"
+"PO-Revision-Date: 2020-04-24 13:21+0000\n"
 "Last-Translator: Vicki Niu <vicki@endlessm.com>\n"
 "Language-Team: Norwegian Nynorsk (http://www.transifex.com/endless-os/gnome-shell/language/nn/)\n"
 "MIME-Version: 1.0\n"
@@ -634,7 +634,7 @@ msgstr ""
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:8 js/ui/userMenu.js:27
 msgid "Help"
-msgstr ""
+msgstr "Hjelp"
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:12
 msgid "About Extensions"
@@ -1786,7 +1786,7 @@ msgstr ""
 
 #: js/ui/padOsd.js:787 js/ui/padOsd.js:910
 msgid "None"
-msgstr ""
+msgstr "Ingen"
 
 #: js/ui/padOsd.js:863
 msgid "Press a button to configure"
@@ -1817,7 +1817,7 @@ msgstr "Aktivitetar"
 #: js/ui/panel.js:716
 msgctxt "System menu in the top bar"
 msgid "System"
-msgstr ""
+msgstr "System"
 
 #: js/ui/panel.js:801
 msgctxt "User menu"
@@ -1932,7 +1932,7 @@ msgstr ""
 #. user.
 #: js/ui/payg.js:271
 msgid "Unknown error"
-msgstr ""
+msgstr "Ukjend feil"
 
 #: js/ui/payg.js:452
 msgid "Apply Code"
@@ -2756,7 +2756,7 @@ msgstr[1] ""
 #: js/ui/windowManager.js:550
 #, javascript-format
 msgid "%d × %d"
-msgstr ""
+msgstr "%d × %d"
 
 #: js/ui/windowMenu.js:27
 msgid "Minimize"

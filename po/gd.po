@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-04-17 17:11+0100\n"
-"PO-Revision-Date: 2020-04-21 11:29+0000\n"
+"PO-Revision-Date: 2020-04-24 13:19+0000\n"
 "Last-Translator: Vicki Niu <vicki@endlessm.com>\n"
 "Language-Team: Gaelic, Scottish (http://www.transifex.com/endless-os/gnome-shell/language/gd/)\n"
 "MIME-Version: 1.0\n"
@@ -632,7 +632,7 @@ msgstr "Thoir air falbh…"
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:8 js/ui/userMenu.js:27
 msgid "Help"
-msgstr ""
+msgstr "Cobhair"
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:12
 msgid "About Extensions"
@@ -1954,7 +1954,7 @@ msgstr ""
 #. user.
 #: js/ui/payg.js:271
 msgid "Unknown error"
-msgstr ""
+msgstr "Mearachd neo-aithnichte"
 
 #: js/ui/payg.js:452
 msgid "Apply Code"
@@ -3318,7 +3318,7 @@ msgstr ""
 
 #: js/ui/iconGridLayout.js:540
 msgid "New Folder"
-msgstr ""
+msgstr "Pasgan ùr"
 
 #: js/ui/internetSearch.js:70
 #, javascript-format

@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-04-17 17:11+0100\n"
-"PO-Revision-Date: 2020-04-21 11:29+0000\n"
+"PO-Revision-Date: 2020-04-24 13:18+0000\n"
 "Last-Translator: Vicki Niu <vicki@endlessm.com>\n"
 "Language-Team: Chinese (Hong Kong) (http://www.transifex.com/endless-os/gnome-shell/language/zh_HK/)\n"
 "MIME-Version: 1.0\n"
@@ -630,7 +630,7 @@ msgstr ""
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:8 js/ui/userMenu.js:27
 msgid "Help"
-msgstr ""
+msgstr "求助"
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:12
 msgid "About Extensions"
@@ -861,7 +861,7 @@ msgstr[0] ""
 
 #: js/misc/util.js:196
 msgid "Yesterday"
-msgstr ""
+msgstr "昨日"
 
 #: js/misc/util.js:198
 #, javascript-format
@@ -963,7 +963,7 @@ msgstr ""
 #. * Shell's desktop search entry.
 #: js/misc/util.js:573
 msgid "Google"
-msgstr ""
+msgstr "Google"
 
 #. TRANSLATORS: this is the title of the wifi captive portal login window
 #: js/portalHelper/main.js:41
@@ -980,11 +980,11 @@ msgstr ""
 #. let modal = options['modal'] || true;
 #: js/ui/accessDialog.js:39 js/ui/status/location.js:374
 msgid "Deny Access"
-msgstr ""
+msgstr "Deny Access"
 
 #: js/ui/accessDialog.js:40 js/ui/status/location.js:377
 msgid "Grant Access"
-msgstr ""
+msgstr "Grant Access"
 
 #. Translators: This is the heading of a list of open windows
 #: js/ui/appDisplay.js:2390 js/ui/panel.js:78
@@ -1382,7 +1382,7 @@ msgstr ""
 
 #: js/ui/dateMenu.js:417
 msgid "Loading…"
-msgstr ""
+msgstr "載入中…"
 
 #: js/ui/dateMenu.js:427
 msgid "Go online for weather information"
@@ -1743,7 +1743,7 @@ msgstr "概覽"
 
 #: js/ui/padOsd.js:95
 msgid "New shortcut…"
-msgstr ""
+msgstr "新增捷徑鍵…"
 
 #: js/ui/padOsd.js:142
 msgid "Application defined"
@@ -1763,7 +1763,7 @@ msgstr ""
 
 #: js/ui/padOsd.js:211
 msgid "Done"
-msgstr ""
+msgstr "完成"
 
 #: js/ui/padOsd.js:745
 msgid "Edit…"
@@ -1771,7 +1771,7 @@ msgstr ""
 
 #: js/ui/padOsd.js:787 js/ui/padOsd.js:910
 msgid "None"
-msgstr ""
+msgstr "無"
 
 #: js/ui/padOsd.js:863
 msgid "Press a button to configure"
@@ -1916,7 +1916,7 @@ msgstr ""
 #. user.
 #: js/ui/payg.js:271
 msgid "Unknown error"
-msgstr ""
+msgstr "不明的錯誤"
 
 #: js/ui/payg.js:452
 msgid "Apply Code"
@@ -2649,7 +2649,7 @@ msgstr "音量"
 #. * Try to keep it under around 15 characters.
 #: js/ui/switchMonitor.js:17
 msgid "Mirror"
-msgstr ""
+msgstr "鏡射"
 
 #. Translators: this is for the desktop spanning displays.
 #. * Try to keep it under around 15 characters.
@@ -2726,7 +2726,7 @@ msgstr[0] "設定值的更改會在 %d 秒內還原"
 #: js/ui/windowManager.js:550
 #, javascript-format
 msgid "%d × %d"
-msgstr ""
+msgstr "%d × %d"
 
 #: js/ui/windowMenu.js:27
 msgid "Minimize"

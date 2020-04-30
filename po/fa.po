@@ -11,8 +11,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-04-17 17:11+0100\n"
-"PO-Revision-Date: 2020-04-17 16:16+0000\n"
-"Last-Translator: Will Thompson <wjt@endlessm.com>\n"
+"PO-Revision-Date: 2020-04-26 06:23+0000\n"
+"Last-Translator: Basirahmad Askari <basir.transilation786@gmail.com>\n"
 "Language-Team: Persian (http://www.transifex.com/endless-os/gnome-shell/language/fa/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1930,7 +1930,7 @@ msgstr ""
 #. user.
 #: js/ui/payg.js:271
 msgid "Unknown error"
-msgstr ""
+msgstr "خطای ناشناخته"
 
 #: js/ui/payg.js:452
 msgid "Apply Code"
@@ -3258,11 +3258,11 @@ msgstr ""
 #: js/ui/iconGridLayout.js:312
 #, javascript-format
 msgid "%s has been removed"
-msgstr ""
+msgstr "%sپاک شده است"
 
 #: js/ui/iconGridLayout.js:540
 msgid "New Folder"
-msgstr ""
+msgstr "پوشه جدید"
 
 #: js/ui/internetSearch.js:70
 #, javascript-format

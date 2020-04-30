@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-04-17 17:11+0100\n"
-"PO-Revision-Date: 2020-04-21 11:29+0000\n"
+"PO-Revision-Date: 2020-04-24 13:21+0000\n"
 "Last-Translator: Vicki Niu <vicki@endlessm.com>\n"
 "Language-Team: Lingala (http://www.transifex.com/endless-os/gnome-shell/language/ln/)\n"
 "MIME-Version: 1.0\n"
@@ -587,7 +587,7 @@ msgstr ""
 #: js/ui/shellMountOperation.js:376 js/ui/shellMountOperation.js:386
 #: js/ui/status/network.js:913 js/ui/forceAppExitDialog.js:79
 msgid "Cancel"
-msgstr ""
+msgstr "Koboma"
 
 #: js/extensionPrefs/js/main.js:149 js/ui/appDisplay.js:2499
 msgid "Remove"
@@ -862,7 +862,7 @@ msgstr[1] ""
 
 #: js/misc/util.js:196
 msgid "Yesterday"
-msgstr ""
+msgstr "Lóbí"
 
 #: js/misc/util.js:198
 #, javascript-format
@@ -998,7 +998,7 @@ msgstr ""
 
 #: js/ui/appDisplay.js:2410 js/ui/panel.js:85
 msgid "New Window"
-msgstr ""
+msgstr "Lininísa ya sika"
 
 #: js/ui/appDisplay.js:2421
 msgid "Launch using Dedicated Graphics Card"
@@ -1387,7 +1387,7 @@ msgstr ""
 
 #: js/ui/dateMenu.js:417
 msgid "Loading…"
-msgstr ""
+msgstr "Botómbisi..."
 
 #: js/ui/dateMenu.js:427
 msgid "Go online for weather information"
@@ -1739,7 +1739,7 @@ msgstr ""
 
 #: js/ui/overview.js:94
 msgid "Undo"
-msgstr ""
+msgstr "Bwakisa"
 
 #: js/ui/overview.js:113
 msgid "No apps are open"
@@ -1781,7 +1781,7 @@ msgstr ""
 
 #: js/ui/padOsd.js:787 js/ui/padOsd.js:910
 msgid "None"
-msgstr ""
+msgstr "Eloko te"
 
 #: js/ui/padOsd.js:863
 msgid "Press a button to configure"
@@ -2041,7 +2041,7 @@ msgstr ""
 
 #: js/ui/search.js:793
 msgid "Searching…"
-msgstr ""
+msgstr "Boluki..."
 
 #: js/ui/search.js:795
 msgid "No results."
@@ -2049,11 +2049,11 @@ msgstr ""
 
 #: js/ui/shellEntry.js:30
 msgid "Copy"
-msgstr ""
+msgstr "Kopi"
 
 #: js/ui/shellEntry.js:35
 msgid "Paste"
-msgstr ""
+msgstr "Bamba"
 
 #: js/ui/shellEntry.js:83
 msgid "Show Text"
@@ -2840,7 +2840,7 @@ msgstr ""
 #: src/shell-app.c:280
 msgctxt "program"
 msgid "Unknown"
-msgstr ""
+msgstr "Eyébání tɛ̂"
 
 #: src/shell-app.c:570
 #, c-format
@@ -3259,7 +3259,7 @@ msgstr ""
 
 #: js/ui/iconGridLayout.js:540
 msgid "New Folder"
-msgstr ""
+msgstr "Dosyé ya nsika"
 
 #: js/ui/internetSearch.js:70
 #, javascript-format

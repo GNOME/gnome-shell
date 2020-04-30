@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-04-17 17:11+0100\n"
-"PO-Revision-Date: 2020-04-21 11:29+0000\n"
+"PO-Revision-Date: 2020-04-24 13:20+0000\n"
 "Last-Translator: Vicki Niu <vicki@endlessm.com>\n"
 "Language-Team: Crimean Turkish (http://www.transifex.com/endless-os/gnome-shell/language/crh/)\n"
 "MIME-Version: 1.0\n"
@@ -43,7 +43,7 @@ msgstr ""
 
 #: data/org.gnome.Shell.desktop.in.in:4
 msgid "GNOME Shell"
-msgstr ""
+msgstr "GNOME Qabuğı"
 
 #: data/org.gnome.Shell.desktop.in.in:5
 msgid "Window management and application launching"
@@ -587,7 +587,7 @@ msgstr ""
 #: js/ui/shellMountOperation.js:376 js/ui/shellMountOperation.js:386
 #: js/ui/status/network.js:913 js/ui/forceAppExitDialog.js:79
 msgid "Cancel"
-msgstr ""
+msgstr "Vazgeç"
 
 #: js/extensionPrefs/js/main.js:149 js/ui/appDisplay.js:2499
 msgid "Remove"
@@ -629,7 +629,7 @@ msgstr ""
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:8 js/ui/userMenu.js:27
 msgid "Help"
-msgstr ""
+msgstr "Yardım"
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:12
 msgid "About Extensions"
@@ -689,7 +689,7 @@ msgstr ""
 #: js/ui/components/networkAgent.js:454 js/ui/components/polkitAgent.js:277
 #: js/ui/shellMountOperation.js:326
 msgid "Password"
-msgstr ""
+msgstr "Sır-söz"
 
 #. Translators: During a password reset, prompt for the "secret code" provided
 #. by customer support.
@@ -791,7 +791,7 @@ msgstr ""
 #: js/misc/systemActions.js:113
 msgctxt "search-result"
 msgid "Suspend"
-msgstr ""
+msgstr "Sarqıt"
 
 #. Translators: A list of keywords that match the suspend action, separated by
 #. semicolons
@@ -862,7 +862,7 @@ msgstr[1] ""
 
 #: js/misc/util.js:196
 msgid "Yesterday"
-msgstr ""
+msgstr "Tünevin"
 
 #: js/misc/util.js:198
 #, javascript-format
@@ -1310,15 +1310,15 @@ msgstr ""
 
 #: js/ui/components/polkitAgent.js:39
 msgid "Authentication Required"
-msgstr ""
+msgstr "Sahihlenim Şart"
 
 #: js/ui/components/polkitAgent.js:80
 msgid "Administrator"
-msgstr ""
+msgstr "Memur"
 
 #: js/ui/components/polkitAgent.js:142
 msgid "Authenticate"
-msgstr ""
+msgstr "Sahihlen"
 
 #. Translators: "that didn't work" refers to the fact that the
 #. * requested authentication was not gained; this can happen
@@ -1387,7 +1387,7 @@ msgstr ""
 
 #: js/ui/dateMenu.js:417
 msgid "Loading…"
-msgstr ""
+msgstr "Yüklene…"
 
 #: js/ui/dateMenu.js:427
 msgid "Go online for weather information"
@@ -1430,7 +1430,7 @@ msgstr ""
 #: js/ui/endSessionDialog.js:58
 msgctxt "title"
 msgid "Power Off"
-msgstr ""
+msgstr "Söndür"
 
 #: js/ui/endSessionDialog.js:59
 msgctxt "title"
@@ -1457,7 +1457,7 @@ msgstr ""
 #: js/ui/endSessionDialog.js:70
 msgctxt "button"
 msgid "Power Off"
-msgstr ""
+msgstr "Söndür"
 
 #: js/ui/endSessionDialog.js:76
 msgctxt "title"
@@ -1641,7 +1641,7 @@ msgstr "Açıq qalsın"
 #: js/ui/kbdA11yDialog.js:55 js/ui/status/automaticUpdates.js:315
 #: js/ui/status/bluetooth.js:138 js/ui/status/network.js:1288
 msgid "Turn On"
-msgstr ""
+msgstr "Aç"
 
 #: js/ui/kbdA11yDialog.js:63 js/ui/status/automaticUpdates.js:317
 #: js/ui/status/bluetooth.js:138 js/ui/status/network.js:131
@@ -1649,7 +1649,7 @@ msgstr ""
 #: js/ui/status/network.js:1400 js/ui/status/nightLight.js:41
 #: js/ui/status/rfkill.js:81 js/ui/status/rfkill.js:108
 msgid "Turn Off"
-msgstr ""
+msgstr "Söndür"
 
 #: js/ui/kbdA11yDialog.js:63
 msgid "Leave Off"
@@ -1679,13 +1679,13 @@ msgstr ""
 
 #: js/ui/lookingGlass.js:739
 msgid "Enabled"
-msgstr ""
+msgstr "Qabilleştirilgen"
 
 #. translators:
 #. * The device has been disabled
 #: js/ui/lookingGlass.js:742 subprojects/gvc/gvc-mixer-control.c:1892
 msgid "Disabled"
-msgstr ""
+msgstr "Ğayrıqabilleştirilgen"
 
 #: js/ui/lookingGlass.js:744
 msgid "Error"
@@ -1739,7 +1739,7 @@ msgstr ""
 
 #: js/ui/overview.js:94
 msgid "Undo"
-msgstr ""
+msgstr "Keri Yap"
 
 #: js/ui/overview.js:113
 msgid "No apps are open"
@@ -1749,7 +1749,7 @@ msgstr ""
 #. activities. See also note for "Activities" string.
 #: js/ui/overview.js:159
 msgid "Overview"
-msgstr ""
+msgstr "Üstbaqış"
 
 #: js/ui/padOsd.js:95
 msgid "New shortcut…"
@@ -1781,7 +1781,7 @@ msgstr ""
 
 #: js/ui/padOsd.js:787 js/ui/padOsd.js:910
 msgid "None"
-msgstr ""
+msgstr "Hiç biri"
 
 #: js/ui/padOsd.js:863
 msgid "Press a button to configure"
@@ -1801,7 +1801,7 @@ msgstr "Tafsilâtnı Köster"
 
 #: js/ui/panel.js:112
 msgid "Quit"
-msgstr ""
+msgstr "Çıq"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
@@ -1812,7 +1812,7 @@ msgstr ""
 #: js/ui/panel.js:716
 msgctxt "System menu in the top bar"
 msgid "System"
-msgstr ""
+msgstr "Sistem"
 
 #: js/ui/panel.js:801
 msgctxt "User menu"
@@ -1927,7 +1927,7 @@ msgstr ""
 #. user.
 #: js/ui/payg.js:271
 msgid "Unknown error"
-msgstr ""
+msgstr "Bilinmegen hata"
 
 #: js/ui/payg.js:452
 msgid "Apply Code"
@@ -2041,7 +2041,7 @@ msgstr ""
 
 #: js/ui/search.js:793
 msgid "Searching…"
-msgstr ""
+msgstr "Qıdırıla…"
 
 #: js/ui/search.js:795
 msgid "No results."
@@ -2049,7 +2049,7 @@ msgstr ""
 
 #: js/ui/shellEntry.js:30
 msgid "Copy"
-msgstr ""
+msgstr "Kopiyala"
 
 #: js/ui/shellEntry.js:35
 msgid "Paste"
@@ -2135,11 +2135,11 @@ msgstr ""
 
 #: js/ui/status/accessibility.js:50
 msgid "Zoom"
-msgstr ""
+msgstr "Miqyasla"
 
 #: js/ui/status/accessibility.js:57
 msgid "Screen Reader"
-msgstr ""
+msgstr "Ekran Oquyıcı"
 
 #: js/ui/status/accessibility.js:61
 msgid "Screen Keyboard"
@@ -2147,7 +2147,7 @@ msgstr ""
 
 #: js/ui/status/accessibility.js:65
 msgid "Visual Alerts"
-msgstr ""
+msgstr "Körsel İqazlar"
 
 #: js/ui/status/accessibility.js:68
 msgid "Sticky Keys"
@@ -2216,11 +2216,11 @@ msgstr ""
 
 #: js/ui/status/bluetooth.js:40
 msgid "Bluetooth"
-msgstr ""
+msgstr "Bluetooth"
 
 #: js/ui/status/bluetooth.js:49 js/ui/status/network.js:591
 msgid "Bluetooth Settings"
-msgstr ""
+msgstr "Bluetooth Ayarları"
 
 #. Translators: this is the number of connected bluetooth devices
 #: js/ui/status/bluetooth.js:132
@@ -2479,7 +2479,7 @@ msgstr ""
 
 #: js/ui/status/network.js:1490
 msgid "VPN"
-msgstr ""
+msgstr "VPN"
 
 #: js/ui/status/network.js:1500
 msgid "VPN Off"
@@ -2512,7 +2512,7 @@ msgstr[1] ""
 
 #: js/ui/status/network.js:1732
 msgid "Connection failed"
-msgstr ""
+msgstr "Bağlantı muvaffaqiyetsiz"
 
 #: js/ui/status/network.js:1733
 msgid "Activation of network connection failed"
@@ -2623,7 +2623,7 @@ msgstr ""
 
 #: js/ui/status/system.js:119
 msgid "Suspend"
-msgstr ""
+msgstr "Sarqıt"
 
 #: js/ui/status/system.js:131
 msgid "Power Off…"
@@ -2717,7 +2717,7 @@ msgstr ""
 
 #: js/ui/viewSelector.js:610
 msgid "Applications"
-msgstr ""
+msgstr "Uyğulamalar"
 
 #: js/ui/windowAttentionHandler.js:20
 #, javascript-format
@@ -2751,7 +2751,7 @@ msgstr[1] ""
 #: js/ui/windowManager.js:550
 #, javascript-format
 msgid "%d × %d"
-msgstr ""
+msgstr "%d × %d"
 
 #: js/ui/windowMenu.js:27
 msgid "Minimize"
@@ -2840,7 +2840,7 @@ msgstr ""
 #: src/shell-app.c:280
 msgctxt "program"
 msgid "Unknown"
-msgstr ""
+msgstr "Namalüm"
 
 #: src/shell-app.c:570
 #, c-format
@@ -3187,7 +3187,7 @@ msgstr[1] ""
 
 #: subprojects/gvc/gvc-mixer-control.c:2766
 msgid "System Sounds"
-msgstr ""
+msgstr "Sistem Sesleri"
 
 #: js/ui/appIconBar.js:195
 msgid "Other workspaces"
@@ -3284,7 +3284,7 @@ msgstr ""
 
 #: js/ui/userMenu.js:19
 msgid "Settings"
-msgstr ""
+msgstr "Ayarlar"
 
 #: js/ui/userMenu.js:24
 msgid "Give Us Feedback"

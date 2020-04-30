@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-04-17 17:11+0100\n"
-"PO-Revision-Date: 2020-04-21 11:29+0000\n"
+"PO-Revision-Date: 2020-04-24 13:21+0000\n"
 "Last-Translator: Vicki Niu <vicki@endlessm.com>\n"
 "Language-Team: Tibetan (http://www.transifex.com/endless-os/gnome-shell/language/bo/)\n"
 "MIME-Version: 1.0\n"
@@ -587,7 +587,7 @@ msgstr ""
 #: js/ui/shellMountOperation.js:376 js/ui/shellMountOperation.js:386
 #: js/ui/status/network.js:913 js/ui/forceAppExitDialog.js:79
 msgid "Cancel"
-msgstr ""
+msgstr "རྩིས་མེད་གཏོང"
 
 #: js/extensionPrefs/js/main.js:149 js/ui/appDisplay.js:2499
 msgid "Remove"
@@ -1769,7 +1769,7 @@ msgstr ""
 
 #: js/ui/padOsd.js:787 js/ui/padOsd.js:910
 msgid "None"
-msgstr ""
+msgstr "མེད་པ"
 
 #: js/ui/padOsd.js:863
 msgid "Press a button to configure"

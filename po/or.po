@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-04-17 17:11+0100\n"
-"PO-Revision-Date: 2020-04-21 11:29+0000\n"
+"PO-Revision-Date: 2020-04-24 13:19+0000\n"
 "Last-Translator: Vicki Niu <vicki@endlessm.com>\n"
 "Language-Team: Oriya (http://www.transifex.com/endless-os/gnome-shell/language/or/)\n"
 "MIME-Version: 1.0\n"
@@ -630,7 +630,7 @@ msgstr ""
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:8 js/ui/userMenu.js:27
 msgid "Help"
-msgstr ""
+msgstr "ସହାୟତା"
 
 #: js/extensionPrefs/data/ui/extensions-window.ui:12
 msgid "About Extensions"
@@ -863,7 +863,7 @@ msgstr[1] ""
 
 #: js/misc/util.js:196
 msgid "Yesterday"
-msgstr ""
+msgstr "ଗତକାଲି"
 
 #: js/misc/util.js:198
 #, javascript-format
@@ -1388,7 +1388,7 @@ msgstr ""
 
 #: js/ui/dateMenu.js:417
 msgid "Loading…"
-msgstr ""
+msgstr "ଧାରଣ କରୁଅଛି..."
 
 #: js/ui/dateMenu.js:427
 msgid "Go online for weather information"
@@ -1754,7 +1754,7 @@ msgstr "ସମୀକ୍ଷା"
 
 #: js/ui/padOsd.js:95
 msgid "New shortcut…"
-msgstr ""
+msgstr "ନୂତନ ସଂକ୍ଷିପ୍ତ ପଥ…"
 
 #: js/ui/padOsd.js:142
 msgid "Application defined"
@@ -1774,7 +1774,7 @@ msgstr ""
 
 #: js/ui/padOsd.js:211
 msgid "Done"
-msgstr ""
+msgstr "ସମାପ୍ତ"
 
 #: js/ui/padOsd.js:745
 msgid "Edit…"
@@ -1782,7 +1782,7 @@ msgstr ""
 
 #: js/ui/padOsd.js:787 js/ui/padOsd.js:910
 msgid "None"
-msgstr ""
+msgstr "କିଛି ନୁହେଁ"
 
 #: js/ui/padOsd.js:863
 msgid "Press a button to configure"
@@ -1928,7 +1928,7 @@ msgstr ""
 #. user.
 #: js/ui/payg.js:271
 msgid "Unknown error"
-msgstr ""
+msgstr "ଅଜଣା ତ୍ରୁଟି"
 
 #: js/ui/payg.js:452
 msgid "Apply Code"
@@ -2674,7 +2674,7 @@ msgstr "ଭଲ୍ଯୁମ"
 #. * Try to keep it under around 15 characters.
 #: js/ui/switchMonitor.js:17
 msgid "Mirror"
-msgstr ""
+msgstr "ପ୍ରତିଫଳକ"
 
 #. Translators: this is for the desktop spanning displays.
 #. * Try to keep it under around 15 characters.
@@ -2752,7 +2752,7 @@ msgstr[1] "ସଂରଚନା ପରିବର୍ତ୍ତନଗୁଡ଼ିକ %
 #: js/ui/windowManager.js:550
 #, javascript-format
 msgid "%d × %d"
-msgstr ""
+msgstr "%d × %d"
 
 #: js/ui/windowMenu.js:27
 msgid "Minimize"
