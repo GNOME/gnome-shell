@@ -270,7 +270,7 @@
                   <object class="GtkLabel">
                     <property name="visible">True</property>
                     <property name="halign">start</property>
-                    <property name="label">Extension Updates Ready</property>
+                    <property name="label" translatable="yes">Extension Updates Ready</property>
                     <attributes>
                       <attribute name="weight" value="bold"/>
                     </attributes>
