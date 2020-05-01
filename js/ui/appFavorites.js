@@ -13,6 +13,7 @@ const RENAMED_DESKTOP_IDS = {
     'cheese.desktop': 'org.gnome.Cheese.desktop',
     'dconf-editor.desktop': 'ca.desrt.dconf-editor.desktop',
     'empathy.desktop': 'org.gnome.Empathy.desktop',
+    'eog.desktop': 'org.gnome.eog.desktop',
     'epiphany.desktop': 'org.gnome.Epiphany.desktop',
     'evolution.desktop': 'org.gnome.Evolution.desktop',
     'file-roller.desktop': 'org.gnome.FileRoller.desktop',
