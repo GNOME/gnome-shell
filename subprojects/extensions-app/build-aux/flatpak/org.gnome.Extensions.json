@@ -9,6 +9,7 @@
   "finish-args": [
     "--share=ipc", "--socket=fallback-x11",
     "--socket=wayland",
+    "--talk-name=org.gnome.SessionManager",
     "--talk-name=org.gnome.Shell.Extensions"
   ],
   "build-options": {
