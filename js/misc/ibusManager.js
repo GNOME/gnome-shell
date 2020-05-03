@@ -171,13 +171,13 @@ var IBusManager = class {
             this._panelService.connect('set-content-type', this._setContentType.bind(this));
         } catch (e) {
         }
+        this._updateReadiness();
 
         try {
             // If an engine is already active we need to get its properties
             const engine =
                 await this._ibus.get_global_engine_async(-1, this._cancellable);
             this._engineChanged(this._ibus, engine.get_name());
-            this._updateReadiness();
         } catch (e) {
         }
     }
