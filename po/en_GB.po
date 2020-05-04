@@ -1217,7 +1217,7 @@ msgstr "Dash"
 #.
 #: js/ui/dateMenu.js:75
 msgid "%B %-d %Y"
-msgstr "%e %B %Y"
+msgstr "%-d %B %Y"
 
 #. Translators: This is the accessible name of the date button shown
 #. * below the time in the shell; it should combine the weekday and the
@@ -1225,7 +1225,7 @@ msgstr "%e %B %Y"
 #.
 #: js/ui/dateMenu.js:82
 msgid "%A %B %e %Y"
-msgstr "%A %e %B %Y"
+msgstr "%A %-d %B %Y"
 
 #: js/ui/dateMenu.js:161
 msgid "Add world clocks…"
