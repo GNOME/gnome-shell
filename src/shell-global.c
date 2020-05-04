@@ -148,6 +148,7 @@ got_switcheroo_control_gpus_property_cb (GObject      *source_object,
 
   global = user_data;
   g_dbus_proxy_set_cached_property (global->switcheroo_control, "GPUs", gpus);
+  g_object_notify (G_OBJECT (global), "switcheroo-control");
 }
 
 static void
@@ -175,7 +176,11 @@ switcheroo_control_ready_cb (GObject      *source_object,
 
   cached_props = g_dbus_proxy_get_cached_property_names (global->switcheroo_control);
   if (cached_props != NULL && g_strv_contains ((const gchar * const *) cached_props, "GPUs"))
-    return;
+    {
+      g_object_notify (G_OBJECT (global), "switcheroo-control");
+      return;
+    }
+  /* Delay property notification until we have all the properties gathered */
 
   g_dbus_connection_call (g_dbus_proxy_get_connection (global->switcheroo_control),
                           g_dbus_proxy_get_name (global->switcheroo_control),
@@ -300,6 +305,36 @@ shell_global_get_property(GObject         *object,
 }
 
 static void
+switcheroo_appeared_cb (GDBusConnection *connection,
+                        const char     *name,
+                        const char     *name_owner,
+                        gpointer        user_data)
+{
+  ShellGlobal *global = user_data;
+
+  g_debug ("switcheroo-control appeared");
+  shell_net_hadess_switcheroo_control_proxy_new_for_bus (G_BUS_TYPE_SYSTEM,
+                                                         G_DBUS_PROXY_FLAGS_NONE,
+                                                         "net.hadess.SwitcherooControl",
+                                                         "/net/hadess/SwitcherooControl",
+                                                         global->switcheroo_cancellable,
+                                                         switcheroo_control_ready_cb,
+                                                         global);
+}
+
+static void
+switcheroo_vanished_cb (GDBusConnection *connection,
+                        const char      *name,
+                        gpointer         user_data)
+{
+  ShellGlobal *global = user_data;
+
+  g_debug ("switcheroo-control vanished");
+  g_clear_object (&global->switcheroo_control);
+  g_object_notify (G_OBJECT (global), "switcheroo-control");
+}
+
+static void
 shell_global_init (ShellGlobal *global)
 {
   const char *datadir = g_getenv ("GNOME_SHELL_DATADIR");
@@ -394,13 +429,13 @@ shell_global_init (ShellGlobal *global)
                                             g_object_unref, g_object_unref);
 
   global->switcheroo_cancellable = g_cancellable_new ();
-  shell_net_hadess_switcheroo_control_proxy_new_for_bus (G_BUS_TYPE_SYSTEM,
-                                                         G_DBUS_PROXY_FLAGS_NONE,
-                                                         "net.hadess.SwitcherooControl",
-                                                         "/net/hadess/SwitcherooControl",
-                                                         global->switcheroo_cancellable,
-                                                         switcheroo_control_ready_cb,
-                                                         global);
+  g_bus_watch_name (G_BUS_TYPE_SYSTEM,
+                    "net.hadess.SwitcherooControl",
+                    G_BUS_NAME_WATCHER_FLAGS_NONE,
+                    switcheroo_appeared_cb,
+                    switcheroo_vanished_cb,
+                    global,
+                    NULL);
 }
 
 static void
@@ -1373,7 +1408,7 @@ shell_global_sync_pointer (ShellGlobal *global)
 }
 
 /**
- * _shell_global_get_switcheroo_control: (skip)
+ * shell_global_get_switcheroo_control:
  * @global: A #ShellGlobal
  *
  * Get the global #GDBusProxy instance for the switcheroo-control
@@ -1383,7 +1418,7 @@ shell_global_sync_pointer (ShellGlobal *global)
  *   or %NULL on error.
  */
 GDBusProxy *
-_shell_global_get_switcheroo_control    (ShellGlobal  *global)
+shell_global_get_switcheroo_control (ShellGlobal  *global)
 {
   return global->switcheroo_control;
 }

@@ -18,8 +18,6 @@ const Params = imports.misc.params;
 const Util = imports.misc.util;
 const SystemActions = imports.misc.systemActions;
 
-const { loadInterfaceXML } = imports.misc.fileUtils;
-
 var MENU_POPUP_TIMEOUT = 600;
 var MAX_COLUMNS = 6;
 var MIN_COLUMNS = 4;
@@ -46,11 +44,6 @@ const FOLDER_DIALOG_ANIMATION_TIME = 200;
 const OVERSHOOT_THRESHOLD = 20;
 const OVERSHOOT_TIMEOUT = 1000;
 
-const SWITCHEROO_BUS_NAME = 'net.hadess.SwitcherooControl';
-const SWITCHEROO_OBJECT_PATH = '/net/hadess/SwitcherooControl';
-
-const SwitcherooProxyInterface = loadInterfaceXML('net.hadess.SwitcherooControl');
-const SwitcherooProxy = Gio.DBusProxy.makeProxyWrapper(SwitcherooProxyInterface);
 let discreteGpuAvailable = false;
 
 function _getCategories(info) {
@@ -1162,31 +1155,19 @@ class AppDisplay extends St.BoxLayout {
         this._showView(initialView);
         this._updateFrequentVisibility();
 
-        Gio.DBus.system.watch_name(SWITCHEROO_BUS_NAME,
-                                   Gio.BusNameWatcherFlags.NONE,
-                                   this._switcherooProxyAppeared.bind(this),
-                                   () => {
-                                       this._switcherooProxy = null;
-                                       this._updateDiscreteGpuAvailable();
-                                   });
+        this._switcherooNotifyId = global.connect('notify::switcheroo-control',
+            () => this._updateDiscreteGpuAvailable());
+        this._updateDiscreteGpuAvailable();
     }
 
     _updateDiscreteGpuAvailable() {
-        if (!this._switcherooProxy)
+        this._switcherooProxy = global.get_switcheroo_control();
+        if (this._switcherooProxy) {
+            let prop = this._switcherooProxy.get_cached_property('HasDualGpu');
+            discreteGpuAvailable = prop ? prop.unpack() : false;
+        } else {
             discreteGpuAvailable = false;
-        else
-            discreteGpuAvailable = this._switcherooProxy.HasDualGpu;
-    }
-
-    _switcherooProxyAppeared() {
-        this._switcherooProxy = new SwitcherooProxy(Gio.DBus.system, SWITCHEROO_BUS_NAME, SWITCHEROO_OBJECT_PATH,
-            (proxy, error) => {
-                if (error) {
-                    log(error.message);
-                    return;
-                }
-                this._updateDiscreteGpuAvailable();
-            });
+        }
     }
 
     animate(animationDirection, onComplete) {
@@ -2531,10 +2512,16 @@ var AppIconMenu = class AppIconMenu extends PopupMenu.PopupMenu {
 
             if (discreteGpuAvailable &&
                 this._source.app.state == Shell.AppState.STOPPED) {
-                this._onDiscreteGpuMenuItem = this._appendMenuItem(_("Launch using Dedicated Graphics Card"));
-                this._onDiscreteGpuMenuItem.connect('activate', () => {
+                const appPrefersNonDefaultGPU = appInfo.get_boolean('PrefersNonDefaultGPU');
+                const gpuPref = appPrefersNonDefaultGPU
+                    ? Shell.AppLaunchGpu.DEFAULT
+                    : Shell.AppLaunchGpu.DISCRETE;
+                this._onGpuMenuItem = this._appendMenuItem(appPrefersNonDefaultGPU
+                    ? _('Launch using Integrated Graphics Card')
+                    : _('Launch using Discrete Graphics Card'));
+                this._onGpuMenuItem.connect('activate', () => {
                     this._source.animateLaunch();
-                    this._source.app.launch(0, -1, true);
+                    this._source.app.launch(0, -1, gpuPref);
                     this.emit('activate-window', null);
                 });
             }
