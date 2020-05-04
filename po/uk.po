@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2020-05-01 12:24+0000\n"
-"PO-Revision-Date: 2020-05-01 18:56+0300\n"
+"POT-Creation-Date: 2020-05-04 14:38+0000\n"
+"PO-Revision-Date: 2020-05-04 20:19+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <kde-i18n-uk@kde.org>\n"
 "Language: uk\n"
@@ -713,53 +713,59 @@ msgstr "Заборонити доступ"
 msgid "Grant Access"
 msgstr "Надати доступ"
 
-#: js/ui/appDisplay.js:950
+#: js/ui/appDisplay.js:943
 msgid "Unnamed Folder"
 msgstr "Неназвана тека"
 
-#: js/ui/appDisplay.js:973
+#: js/ui/appDisplay.js:966
 msgid "Frequently used applications will appear here"
 msgstr "Часто використовувані програми будуть з'являтись тут"
 
-#: js/ui/appDisplay.js:1108
+#: js/ui/appDisplay.js:1101
 msgid "Frequent"
 msgstr "Частовживане"
 
-#: js/ui/appDisplay.js:1115
+#: js/ui/appDisplay.js:1108
 msgid "All"
 msgstr "Усе"
 
 #. Translators: This is the heading of a list of open windows
-#: js/ui/appDisplay.js:2504 js/ui/panel.js:75
+#: js/ui/appDisplay.js:2485 js/ui/panel.js:75
 msgid "Open Windows"
 msgstr "Відкрити вікна"
 
-#: js/ui/appDisplay.js:2523 js/ui/panel.js:82
+#: js/ui/appDisplay.js:2504 js/ui/panel.js:82
 msgid "New Window"
 msgstr "Нове вікно"
 
-#: js/ui/appDisplay.js:2534
-msgid "Launch using Dedicated Graphics Card"
-msgstr "Запустити через відповідну графічну плату"
+#: js/ui/appDisplay.js:2520
+#| msgid "Launch using Dedicated Graphics Card"
+msgid "Launch using Integrated Graphics Card"
+msgstr "Запустити через інтегровану графічну плату"
 
-#: js/ui/appDisplay.js:2562 js/ui/dash.js:239
+#: js/ui/appDisplay.js:2521
+#| msgid "Launch using Dedicated Graphics Card"
+msgid "Launch using Discrete Graphics Card"
+msgstr "Запустити через дискретну графічну плату"
+
+#: js/ui/appDisplay.js:2549 js/ui/dash.js:239
 msgid "Remove from Favorites"
 msgstr "Вилучити з улюбленого"
 
-#: js/ui/appDisplay.js:2568
+#: js/ui/appDisplay.js:2555
 msgid "Add to Favorites"
 msgstr "Додати до улюбленого"
 
-#: js/ui/appDisplay.js:2578 js/ui/panel.js:93
+#: js/ui/appDisplay.js:2565 js/ui/panel.js:93
 msgid "Show Details"
 msgstr "Показати подробиці"
 
-#: js/ui/appFavorites.js:163
+#: js/ui/appFavorites.js:164
 #, javascript-format
 msgid "%s has been added to your favorites."
 msgstr "%s додано до улюбленого."
 
-#: js/ui/appFavorites.js:196
+#: js/ui/appFavorites.js:197
 #, javascript-format
 msgid "%s has been removed from your favorites."
 msgstr "%s вилучено з улюбленого."
@@ -2507,7 +2513,6 @@ msgstr ""
 "що ви увійшли в GNOME і спробуйте ще раз."
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:273
-#| msgid "Extension Updates Available"
 msgid "Extension Updates Ready"
 msgstr "Готові оновлення розширень"
 
