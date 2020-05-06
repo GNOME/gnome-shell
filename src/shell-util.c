@@ -31,6 +31,7 @@
 
 #ifdef HAVE_SYSTEMD
 #include <systemd/sd-daemon.h>
+#include <systemd/sd-login.h>
 #else
 /* So we don't need to add ifdef's everywhere */
 #define sd_notify(u, m)            do {} while (0)
@@ -673,7 +674,27 @@ shell_util_systemd_call (const char  *command,
                          const char  *mode,
                          GError     **error)
 {
+#ifdef HAVE_SYSTEMD
   g_autoptr (GDBusConnection) connection = NULL;
+  g_autofree char *self_unit = NULL;
+  int res;
+
+  res = sd_pid_get_user_unit (getpid (), &self_unit);
+
+  if (res == -ENODATA)
+    {
+      g_debug ("Not systemd-managed, not doing '%s' on '%s'", mode, unit);
+      return FALSE;
+    }
+  else if (res < 0)
+    {
+      g_set_error (error,
+                   G_IO_ERROR,
+                   g_io_error_from_errno (-res),
+                   "Error trying to start systemd unit '%s': %s",
+                   unit, g_strerror (-res));
+      return FALSE;
+    }
 
   connection = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, error);
 
@@ -692,7 +713,9 @@ shell_util_systemd_call (const char  *command,
                           -1, NULL,
                           on_systemd_call_cb,
                           (gpointer) command);
-  return TRUE;
+#endif /* HAVE_SYSTEMD */
+
+  return FALSE;
 }
 
 gboolean
