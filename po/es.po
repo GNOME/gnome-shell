@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell.master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2020-05-02 14:08+0000\n"
-"PO-Revision-Date: 2020-05-04 09:56+0200\n"
+"POT-Creation-Date: 2020-05-07 13:10+0000\n"
+"PO-Revision-Date: 2020-05-07 16:47+0200\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Spanish - Spain <gnome-es-list@gnome.org>\n"
 "Language: es_ES\n"
@@ -1470,7 +1470,7 @@ msgstr "Pantalla de bloqueo desactivada"
 msgid "Screen Locking requires the GNOME display manager."
 msgstr "La pantalla de bloqueo necesita el gestor de pantallas de GNOME."
 
-#: js/ui/messageTray.js:1551
+#: js/ui/messageTray.js:1548
 msgid "System Information"
 msgstr "Información del sistema"
 
@@ -1550,16 +1550,16 @@ msgstr "Salir"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: js/ui/panel.js:434
+#: js/ui/panel.js:437
 msgid "Activities"
 msgstr "Actividades"
 
-#: js/ui/panel.js:713
+#: js/ui/panel.js:716
 msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "Sistema"
 
-#: js/ui/panel.js:826
+#: js/ui/panel.js:829
 msgid "Top Bar"
 msgstr "Barra superior"
 
@@ -2206,7 +2206,7 @@ msgstr "Deslizar para desbloquear"
 
 #: js/ui/unlockDialog.js:378
 msgid "Click or press a key to unlock"
-msgstr "Pulse con el ratón o un tecla para desbloquear"
+msgstr "Pulse con el ratón o una tecla para desbloquear"
 
 #: js/ui/unlockDialog.js:550
 msgid "Unlock Window"
