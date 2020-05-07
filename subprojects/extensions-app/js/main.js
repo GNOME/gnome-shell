@@ -15,6 +15,7 @@ const { ExtensionState, ExtensionType } = ExtensionUtils;
 const GnomeShellIface = loadInterfaceXML('org.gnome.Shell.Extensions');
 const GnomeShellProxy = Gio.DBusProxy.makeProxyWrapper(GnomeShellIface);
 
+Gio._promisify(Gio.DBusConnection.prototype, 'call', 'call_finish');
 Gio._promisify(Shew.WindowExporter.prototype, 'export', 'export_finish');
 
 function loadInterfaceXML(iface) {
