@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell.master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2020-05-04 14:38+0000\n"
-"PO-Revision-Date: 2020-05-04 16:41+0200\n"
+"POT-Creation-Date: 2020-05-07 13:09+0000\n"
+"PO-Revision-Date: 2020-05-07 16:46+0200\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Spanish - Spain <gnome-es-list@gnome.org>\n"
 "Language: es_ES\n"
@@ -740,12 +740,10 @@ msgid "New Window"
 msgstr "Ventana nueva"
 
 #: js/ui/appDisplay.js:2520
-#| msgid "Launch using Dedicated Graphics Card"
 msgid "Launch using Integrated Graphics Card"
 msgstr "Lanzar usando la tarjeta gráfica integrada"
 
 #: js/ui/appDisplay.js:2521
-#| msgid "Launch using Dedicated Graphics Card"
 msgid "Launch using Discrete Graphics Card"
 msgstr "Lanzar usando la tarjeta gráfica discreta"
 
@@ -1556,16 +1554,16 @@ msgstr "Salir"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: js/ui/panel.js:432
+#: js/ui/panel.js:435
 msgid "Activities"
 msgstr "Actividades"
 
-#: js/ui/panel.js:711
+#: js/ui/panel.js:714
 msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "Sistema"
 
-#: js/ui/panel.js:824
+#: js/ui/panel.js:827
 msgid "Top Bar"
 msgstr "Barra superior"
 
@@ -2204,7 +2202,7 @@ msgstr "Deslizar para desbloquear"
 
 #: js/ui/unlockDialog.js:378
 msgid "Click or press a key to unlock"
-msgstr "Pulse con el ratón o un tecla para desbloquear"
+msgstr "Pulse con el ratón o una tecla para desbloquear"
 
 #: js/ui/unlockDialog.js:550
 msgid "Unlock Window"
