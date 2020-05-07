@@ -216,7 +216,10 @@ var AppMenuButton = GObject.registerClass({
                              this._onIconThemeChanged.bind(this));
 
         let iconEffect = new Clutter.DesaturateEffect();
-        this._iconBox = new St.Bin({ style_class: 'app-menu-icon' });
+        this._iconBox = new St.Bin({
+            style_class: 'app-menu-icon',
+            y_align: Clutter.ActorAlign.CENTER,
+        });
         this._iconBox.add_effect(iconEffect);
         this._container.add_actor(this._iconBox);
 
