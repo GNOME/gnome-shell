@@ -26,6 +26,7 @@ var ExtensionManager = class {
         this._updateNotified = false;
 
         this._extensions = new Map();
+        this._unloadedExtensions = new Map();
         this._enabledExtensions = [];
         this._extensionOrder = [];
 
@@ -318,6 +319,14 @@ var ExtensionManager = class {
         return extension;
     }
 
+    _canLoad(extension) {
+        if (!this._unloadedExtensions.has(extension.uuid))
+            return true;
+
+        const version = this._unloadedExtensions.get(extension.uuid);
+        return extension.metadata.version === version;
+    }
+
     loadExtension(extension) {
         // Default to error, we set success as the last step
         extension.state = ExtensionState.ERROR;
@@ -326,6 +335,9 @@ var ExtensionManager = class {
 
         if (checkVersion && ExtensionUtils.isOutOfDate(extension)) {
             extension.state = ExtensionState.OUT_OF_DATE;
+        } else if (!this._canLoad(extension)) {
+            this.logExtensionError(extension.uuid, new Error(
+                'A different version was loaded previously. You need to log out for changes to take effect.'));
         } else {
             let enabled = this._enabledExtensions.includes(extension.uuid);
             if (enabled) {
@@ -336,6 +348,8 @@ var ExtensionManager = class {
             } else {
                 extension.state = ExtensionState.INITIALIZED;
             }
+
+            this._unloadedExtensions.delete(extension.uuid);
         }
 
         this._updateCanChange(extension);
@@ -343,15 +357,22 @@ var ExtensionManager = class {
     }
 
     unloadExtension(extension) {
+        const { uuid, type } = extension;
+
         // Try to disable it -- if it's ERROR'd, we can't guarantee that,
         // but it will be removed on next reboot, and hopefully nothing
         // broke too much.
-        this._callExtensionDisable(extension.uuid);
+        this._callExtensionDisable(uuid);
 
         extension.state = ExtensionState.UNINSTALLED;
         this.emit('extension-state-changed', extension);
 
-        this._extensions.delete(extension.uuid);
+        // If we did install an importer, it is now cached and it's
+        // impossible to load a different version
+        if (type === ExtensionType.PER_USER && extension.imports)
+            this._unloadedExtensions.set(uuid, extension.metadata.version);
+
+        this._extensions.delete(uuid);
         return true;
     }
 
