@@ -107,7 +107,7 @@ const SystemActions = GObject.registerClass({
         this._actions.set(LOGOUT_ACTION_ID, {
             // Translators: The name of the logout action in search
             name: C_("search-result", "Log Out"),
-            iconName: 'application-exit-symbolic',
+            iconName: 'system-log-out-symbolic',
             // Translators: A list of keywords that match the logout action, separated by semicolons
             keywords: tokenizeKeywords(_('logout;log out;sign off')),
             available: false,
