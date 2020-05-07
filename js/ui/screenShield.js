@@ -145,7 +145,10 @@ var ScreenShield = class {
 
         Main.paygManager.connect('code-expired', () => {
             this._clearCurrentDialog();
-            this.lock(true);
+            if (Main.sessionMode.isGreeter)
+                this.showDialog();
+            else
+                this.lock(true);
         });
         Main.paygManager.connect('expiry-time-changed', () => {
             let userManager = AccountsService.UserManager.get_default();
