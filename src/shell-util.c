@@ -699,6 +699,7 @@ shell_util_systemd_call (const char  *command,
                           -1, NULL,
                           on_systemd_call_cb,
                           (gpointer) command);
+  return TRUE;
 #endif /* HAVE_SYSTEMD */
 
   return FALSE;
