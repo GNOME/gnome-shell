@@ -388,6 +388,9 @@ var ScreenShield = class {
         this._lockScreenState = MessageTray.State.HIDDEN;
         this._lockScreenGroup.hide();
 
+        if (!Main.workspaceMonitor.hasVisibleWindows)
+            Main.overview.toggleApps();
+
         if (this._dialog) {
             this._dialog.grab_key_focus();
             this._dialog.navigate_focus(null, St.DirectionType.TAB_FORWARD, false);
@@ -598,6 +601,9 @@ var ScreenShield = class {
         this._longLightbox.lightOff();
         this._shortLightbox.lightOff();
         this.actor.hide();
+
+        if (!Main.workspaceMonitor.hasVisibleWindows)
+            Main.overview.toggleApps();
 
         if (this._becameActiveId != 0) {
             this.idleMonitor.remove_watch(this._becameActiveId);
