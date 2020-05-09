@@ -79,7 +79,7 @@ class WindowCloneLayout extends Clutter.LayoutManager {
         return [this._boundingBox.width, this._boundingBox.width];
     }
 
-    vfunc_allocate(container, box, flags) {
+    vfunc_allocate(container, box) {
         container.get_children().forEach(child => {
             let realWindow;
             if (child == container._windowClone)
@@ -87,8 +87,7 @@ class WindowCloneLayout extends Clutter.LayoutManager {
             else
                 realWindow = child.source;
 
-            child.allocate(this._makeBoxForWindow(realWindow.meta_window),
-                           flags);
+            child.allocate(this._makeBoxForWindow(realWindow.meta_window));
         });
     }
 });

@@ -1070,13 +1070,13 @@ var ViewStackLayout = GObject.registerClass({
     Signals: { 'allocated-size-changed': { param_types: [GObject.TYPE_INT,
                                                          GObject.TYPE_INT] } },
 }, class ViewStackLayout extends Clutter.BinLayout {
-    vfunc_allocate(actor, box, flags) {
+    vfunc_allocate(actor, box) {
         let availWidth = box.x2 - box.x1;
         let availHeight = box.y2 - box.y1;
         // Prepare children of all views for the upcoming allocation, calculate all
         // the needed values to adapt available size
         this.emit('allocated-size-changed', availWidth, availHeight);
-        super.vfunc_allocate(actor, box, flags);
+        super.vfunc_allocate(actor, box);
     }
 });
 
@@ -1946,7 +1946,7 @@ var AppFolderDialog = GObject.registerClass({
         }
     }
 
-    vfunc_allocate(box, flags) {
+    vfunc_allocate(box) {
         let contentBox = this.get_theme_node().get_content_box(box);
         contentBox = this._viewBox.get_theme_node().get_content_box(contentBox);
 
@@ -1959,7 +1959,7 @@ var AppFolderDialog = GObject.registerClass({
 
         this._view._grid.topPadding = 0;
 
-        super.vfunc_allocate(box, flags);
+        super.vfunc_allocate(box);
 
         // We can only start zooming after receiving an allocation
         if (this._needsZoomAndFade)

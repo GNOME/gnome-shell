@@ -1204,8 +1204,8 @@ var ThumbnailsBox = GObject.registerClass({
         this.queue_relayout();
     }
 
-    vfunc_allocate(box, flags) {
-        this.set_allocation(box, flags);
+    vfunc_allocate(box) {
+        this.set_allocation(box);
 
         let rtl = Clutter.get_default_text_direction() == Clutter.TextDirection.RTL;
 
@@ -1299,7 +1299,7 @@ var ThumbnailsBox = GObject.registerClass({
                 childBox.x2 = x2;
                 childBox.y1 = Math.round(y);
                 childBox.y2 = Math.round(y + placeholderHeight);
-                this._dropPlaceholder.allocate(childBox, flags);
+                this._dropPlaceholder.allocate(childBox);
                 Meta.later_add(Meta.LaterType.BEFORE_REDRAW, () => {
                     this._dropPlaceholder.show();
                 });
@@ -1331,7 +1331,7 @@ var ThumbnailsBox = GObject.registerClass({
             childBox.y2 = y1 + portholeHeight;
 
             thumbnail.set_scale(roundedHScale, roundedVScale);
-            thumbnail.allocate(childBox, flags);
+            thumbnail.allocate(childBox);
 
             // We round the collapsing portion so that we don't get thumbnails resizing
             // during an animation due to differences in rounded, but leave the uncollapsed
@@ -1355,6 +1355,6 @@ var ThumbnailsBox = GObject.registerClass({
         childBox.x2 += indicatorRightFullBorder;
         childBox.y1 = indicatorY1 - indicatorTopFullBorder;
         childBox.y2 = indicatorY2 + indicatorBottomFullBorder;
-        this._indicator.allocate(childBox, flags);
+        this._indicator.allocate(childBox);
     }
 });

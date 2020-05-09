@@ -554,8 +554,8 @@ var Inspector = GObject.registerClass({
         this._lookingGlass = lookingGlass;
     }
 
-    vfunc_allocate(box, flags) {
-        this.set_allocation(box, flags);
+    vfunc_allocate(box) {
+        this.set_allocation(box);
 
         if (!this._eventHandler)
             return;
@@ -570,7 +570,7 @@ var Inspector = GObject.registerClass({
         childBox.x2 = childBox.x1 + natWidth;
         childBox.y1 = primary.y + Math.floor((primary.height - natHeight) / 2);
         childBox.y2 = childBox.y1 + natHeight;
-        this._eventHandler.allocate(childBox, flags);
+        this._eventHandler.allocate(childBox);
     }
 
     _close() {

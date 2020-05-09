@@ -17,7 +17,7 @@ var MAX_GRID_SEARCH_RESULTS_ROWS = 1;
 
 var MaxWidthBox = GObject.registerClass(
 class MaxWidthBox extends St.BoxLayout {
-    vfunc_allocate(box, flags) {
+    vfunc_allocate(box) {
         let themeNode = this.get_theme_node();
         let maxWidth = themeNode.get_max_width();
         let availWidth = box.x2 - box.x1;
@@ -29,7 +29,7 @@ class MaxWidthBox extends St.BoxLayout {
             adjustedBox.x2 -= Math.floor(excessWidth / 2);
         }
 
-        super.vfunc_allocate(adjustedBox, flags);
+        super.vfunc_allocate(adjustedBox);
     }
 });
 

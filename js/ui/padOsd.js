@@ -418,8 +418,8 @@ var PadDiagram = GObject.registerClass({
         child.allocate(childBox, 0);
     }
 
-    vfunc_allocate(box, flags) {
-        super.vfunc_allocate(box, flags);
+    vfunc_allocate(box) {
+        super.vfunc_allocate(box);
         this._updateDiagramScale();
 
         for (let i = 0; i < this._labels.length; i++) {
