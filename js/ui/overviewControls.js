@@ -51,7 +51,7 @@ var SlideLayout = GObject.registerClass({
         return [minWidth, natWidth];
     }
 
-    vfunc_allocate(container, box, flags) {
+    vfunc_allocate(container, box) {
         let child = container.get_first_child();
 
         let availWidth = Math.round(box.x2 - box.x1);
@@ -72,7 +72,7 @@ var SlideLayout = GObject.registerClass({
         actorBox.y1 = box.y1;
         actorBox.y2 = actorBox.y1 + availHeight;
 
-        child.allocate(actorBox, flags);
+        child.allocate(actorBox);
     }
 
     // eslint-disable-next-line camelcase
@@ -394,10 +394,10 @@ class DashSpacer extends St.Widget {
 });
 
 var ControlsLayout = GObject.registerClass({
-    Signals: { 'allocation-changed': { flags: GObject.SignalFlags.RUN_LAST } },
+    Signals: { 'allocation-changed': {} },
 }, class ControlsLayout extends Clutter.BinLayout {
-    vfunc_allocate(container, box, flags) {
-        super.vfunc_allocate(container, box, flags);
+    vfunc_allocate(container, box) {
+        super.vfunc_allocate(container, box);
         this.emit('allocation-changed');
     }
 });

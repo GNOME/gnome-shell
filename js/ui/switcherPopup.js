@@ -66,8 +66,8 @@ var SwitcherPopup = GObject.registerClass({
         this._disableHover();
     }
 
-    vfunc_allocate(box, flags) {
-        this.set_allocation(box, flags);
+    vfunc_allocate(box) {
+        this.set_allocation(box);
 
         let childBox = new Clutter.ActorBox();
         let primary = Main.layoutManager.primaryMonitor;
@@ -84,7 +84,7 @@ var SwitcherPopup = GObject.registerClass({
         childBox.x2 = Math.min(primary.x + primary.width - rightPadding, childBox.x1 + childNaturalWidth);
         childBox.y1 = primary.y + Math.floor((primary.height - childNaturalHeight) / 2);
         childBox.y2 = childBox.y1 + childNaturalHeight;
-        this._switcherList.allocate(childBox, flags);
+        this._switcherList.allocate(childBox);
     }
 
     _initialSelection(backward, _binding) {
@@ -591,8 +591,8 @@ var SwitcherList = GObject.registerClass({
         return themeNode.adjust_preferred_height(maxChildMin, maxChildNat);
     }
 
-    vfunc_allocate(box, flags) {
-        this.set_allocation(box, flags);
+    vfunc_allocate(box) {
+        this.set_allocation(box);
 
         let contentBox = this.get_theme_node().get_content_box(box);
         let width = contentBox.x2 - contentBox.x1;
@@ -606,7 +606,7 @@ var SwitcherList = GObject.registerClass({
         let childBox = new Clutter.ActorBox();
         let scrollable = minListWidth > width;
 
-        this._scrollView.allocate(contentBox, flags);
+        this._scrollView.allocate(contentBox);
 
         let arrowWidth = Math.floor(leftPadding / 3);
         let arrowHeight = arrowWidth * 2;
@@ -614,7 +614,7 @@ var SwitcherList = GObject.registerClass({
         childBox.y1 = this.height / 2 - arrowWidth;
         childBox.x2 = childBox.x1 + arrowWidth;
         childBox.y2 = childBox.y1 + arrowHeight;
-        this._leftArrow.allocate(childBox, flags);
+        this._leftArrow.allocate(childBox);
         this._leftArrow.opacity = this._scrollableLeft && scrollable ? 255 : 0;
 
         arrowWidth = Math.floor(rightPadding / 3);
@@ -623,7 +623,7 @@ var SwitcherList = GObject.registerClass({
         childBox.y1 = this.height / 2 - arrowWidth;
         childBox.x2 = childBox.x1 + arrowWidth;
         childBox.y2 = childBox.y1 + arrowHeight;
-        this._rightArrow.allocate(childBox, flags);
+        this._rightArrow.allocate(childBox);
         this._rightArrow.opacity = this._scrollableRight && scrollable ? 255 : 0;
     }
 });

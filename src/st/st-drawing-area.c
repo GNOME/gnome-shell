@@ -77,8 +77,7 @@ draw_content (ClutterCanvas *canvas,
 
 static void
 st_drawing_area_allocate (ClutterActor          *self,
-                          const ClutterActorBox *box,
-                          ClutterAllocationFlags flags)
+                          const ClutterActorBox *box)
 {
   StThemeNode *theme_node = st_widget_get_theme_node (ST_WIDGET (self));
   ClutterContent *content = clutter_actor_get_content (self);
@@ -89,11 +88,11 @@ st_drawing_area_allocate (ClutterActor          *self,
   if (!st_widget_get_resource_scale (ST_WIDGET (self), &resource_scale))
     {
       ClutterActorBox empty = CLUTTER_ACTOR_BOX_INIT_ZERO;
-      clutter_actor_set_allocation (self, &empty, 0);
+      clutter_actor_set_allocation (self, &empty);
       return;
     }
 
-  clutter_actor_set_allocation (self, box, flags);
+  clutter_actor_set_allocation (self, box);
   st_theme_node_get_content_box (theme_node, box, &content_box);
 
   width = (int)(0.5 + content_box.x2 - content_box.x1);

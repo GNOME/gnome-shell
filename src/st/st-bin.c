@@ -115,12 +115,11 @@ get_align_factor (ClutterActorAlign align)
 
 static void
 st_bin_allocate (ClutterActor          *self,
-                 const ClutterActorBox *box,
-                 ClutterAllocationFlags flags)
+                 const ClutterActorBox *box)
 {
   StBinPrivate *priv = st_bin_get_instance_private (ST_BIN (self));
 
-  clutter_actor_set_allocation (self, box, flags);
+  clutter_actor_set_allocation (self, box);
 
   if (priv->child && clutter_actor_is_visible (priv->child))
     {
@@ -134,8 +133,7 @@ st_bin_allocate (ClutterActor          *self,
                                          get_align_factor (x_align),
                                          get_align_factor (y_align),
                                          x_align == CLUTTER_ACTOR_ALIGN_FILL,
-                                         y_align == CLUTTER_ACTOR_ALIGN_FILL,
-                                         flags);
+                                         y_align == CLUTTER_ACTOR_ALIGN_FILL);
     }
 }
 

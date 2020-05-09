@@ -686,8 +686,8 @@ class SourceActorWithLabel extends SourceActor {
         });
     }
 
-    vfunc_allocate(box, flags) {
-        super.vfunc_allocate(box, flags);
+    vfunc_allocate(box) {
+        super.vfunc_allocate(box);
 
         let childBox = new Clutter.ActorBox();
 
@@ -707,7 +707,7 @@ class SourceActorWithLabel extends SourceActor {
         childBox.y1 = box.y2 - naturalHeight;
         childBox.y2 = box.y2;
 
-        this._counterBin.allocate(childBox, flags);
+        this._counterBin.allocate(childBox);
     }
 
     _updateCount() {

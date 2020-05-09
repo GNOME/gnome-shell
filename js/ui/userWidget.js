@@ -144,8 +144,8 @@ class UserWidgetLabel extends St.Widget {
         }
     }
 
-    vfunc_allocate(box, flags) {
-        this.set_allocation(box, flags);
+    vfunc_allocate(box) {
+        this.set_allocation(box);
 
         let availWidth = box.x2 - box.x1;
         let availHeight = box.y2 - box.y1;
@@ -164,7 +164,7 @@ class UserWidgetLabel extends St.Widget {
         childBox.x2 = availWidth;
         childBox.y2 = availHeight;
 
-        this._currentLabel.allocate(childBox, flags);
+        this._currentLabel.allocate(childBox);
     }
 
     vfunc_paint(paintContext) {

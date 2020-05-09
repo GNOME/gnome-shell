@@ -416,8 +416,7 @@ st_entry_get_preferred_height (ClutterActor *actor,
 
 static void
 st_entry_allocate (ClutterActor          *actor,
-                   const ClutterActorBox *box,
-                   ClutterAllocationFlags flags)
+                   const ClutterActorBox *box)
 {
   StEntryPrivate *priv = ST_ENTRY_PRIV (actor);
   StThemeNode *theme_node = st_widget_get_theme_node (ST_WIDGET (actor));
@@ -441,7 +440,7 @@ st_entry_allocate (ClutterActor          *actor,
       right_icon = priv->secondary_icon;
     }
 
-  clutter_actor_set_allocation (actor, box, flags);
+  clutter_actor_set_allocation (actor, box);
 
   st_theme_node_get_content_box (theme_node, box, &content_box);
 
@@ -461,7 +460,7 @@ st_entry_allocate (ClutterActor          *actor,
       icon_box.y1 = (int) (content_box.y1 + avail_h / 2 - icon_h / 2);
       icon_box.y2 = icon_box.y1 + icon_h;
 
-      clutter_actor_allocate (left_icon, &icon_box, flags);
+      clutter_actor_allocate (left_icon, &icon_box);
 
       /* reduce the size for the entry */
       child_box.x1 = MIN (child_box.x2, child_box.x1 + icon_w + priv->spacing);
@@ -478,7 +477,7 @@ st_entry_allocate (ClutterActor          *actor,
       icon_box.y1 = (int) (content_box.y1 + avail_h / 2 - icon_h / 2);
       icon_box.y2 = icon_box.y1 + icon_h;
 
-      clutter_actor_allocate (right_icon, &icon_box, flags);
+      clutter_actor_allocate (right_icon, &icon_box);
 
       /* reduce the size for the entry */
       child_box.x2 = MAX (child_box.x1, child_box.x2 - icon_w - priv->spacing);
@@ -502,7 +501,7 @@ st_entry_allocate (ClutterActor          *actor,
       hint_box.y1 = ceil (content_box.y1 + avail_h / 2 - hint_h / 2);
       hint_box.y2 = hint_box.y1 + hint_h;
 
-      clutter_actor_allocate (priv->hint_actor, &hint_box, flags);
+      clutter_actor_allocate (priv->hint_actor, &hint_box);
     }
 
   clutter_actor_get_preferred_height (priv->entry, child_box.x2 - child_box.x1,
@@ -513,7 +512,7 @@ st_entry_allocate (ClutterActor          *actor,
   child_box.y1 = (int) (content_box.y1 + avail_h / 2 - entry_h / 2);
   child_box.y2 = child_box.y1 + entry_h;
 
-  clutter_actor_allocate (priv->entry, &child_box, flags);
+  clutter_actor_allocate (priv->entry, &child_box);
 }
 
 static void

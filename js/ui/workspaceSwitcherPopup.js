@@ -86,8 +86,8 @@ class WorkspaceSwitcherPopupList extends St.Widget {
             return this._getSizeForOppositeOrientation();
     }
 
-    vfunc_allocate(box, flags) {
-        this.set_allocation(box, flags);
+    vfunc_allocate(box) {
+        this.set_allocation(box);
 
         let themeNode = this.get_theme_node();
         box = themeNode.get_content_box(box);
@@ -111,7 +111,7 @@ class WorkspaceSwitcherPopupList extends St.Widget {
             } else {
                 y += this._childHeight + this._itemSpacing;
             }
-            child.allocate(childBox, flags);
+            child.allocate(childBox);
         }
     }
 });

@@ -268,15 +268,14 @@ shell_gtk_embed_get_preferred_height (ClutterActor *actor,
 
 static void
 shell_gtk_embed_allocate (ClutterActor          *actor,
-                          const ClutterActorBox *box,
-                          ClutterAllocationFlags flags)
+                          const ClutterActorBox *box)
 {
   ShellGtkEmbed *embed = SHELL_GTK_EMBED (actor);
   ShellGtkEmbedPrivate *priv = shell_gtk_embed_get_instance_private (embed);
   float wx, wy;
 
   CLUTTER_ACTOR_CLASS (shell_gtk_embed_parent_class)->
-    allocate (actor, box, flags);
+    allocate (actor, box);
 
   /* Find the actor's new coordinates in terms of the stage (which is
    * priv->window's parent window.
