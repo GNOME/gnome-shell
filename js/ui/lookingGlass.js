@@ -833,9 +833,9 @@ class LookingGlass extends St.BoxLayout {
         Main.uiGroup.add_actor(this);
         Main.uiGroup.set_child_below_sibling(this,
                                              Main.layoutManager.panelBox);
-        Main.layoutManager.panelBox.connect('allocation-changed',
+        Main.layoutManager.panelBox.connect('notify::allocation',
                                             this._queueResize.bind(this));
-        Main.layoutManager.keyboardBox.connect('allocation-changed',
+        Main.layoutManager.keyboardBox.connect('notify::allocation',
                                                this._queueResize.bind(this));
 
         this._objInspector = new ObjInspector(this);

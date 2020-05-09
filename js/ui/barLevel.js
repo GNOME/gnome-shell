@@ -30,8 +30,8 @@ var BarLevel = GObject.registerClass({
             accessible_role: Atk.Role.LEVEL_BAR,
         };
         super._init(Object.assign(defaultParams, params));
-        this.connect('allocation-changed', (actor, box) => {
-            this._barLevelWidth = box.get_width();
+        this.connect('notify::allocation', () => {
+            this._barLevelWidth = this.allocation.get_width();
         });
 
         this._customAccessible = St.GenericAccessible.new_for_actor(this);

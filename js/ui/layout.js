@@ -246,7 +246,7 @@ var LayoutManager = GObject.registerClass({
                                            vertical: true });
         this.addChrome(this.panelBox, { affectsStruts: true,
                                         trackFullscreen: true });
-        this.panelBox.connect('allocation-changed',
+        this.panelBox.connect('notify::allocation',
                               this._panelBoxChanged.bind(this));
 
         this.modalDialogGroup = new St.Widget({ name: 'modalDialogGroup',
