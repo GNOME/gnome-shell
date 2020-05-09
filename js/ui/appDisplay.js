@@ -35,6 +35,7 @@ var VIEWS_SWITCH_TIME = 400;
 var VIEWS_SWITCH_ANIMATION_DELAY = 100;
 
 var PAGE_SWITCH_TIME = 250;
+var SCROLL_TIMEOUT_TIME = 150;
 
 var APP_ICON_SCALE_IN_TIME = 500;
 var APP_ICON_SCALE_IN_DELAY = 700;
@@ -658,7 +659,7 @@ var AllView = GObject.registerClass({
 
         this._canScroll = false;
         this._scrollTimeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT,
-            PAGE_SWITCH_TIME, () => {
+            SCROLL_TIMEOUT_TIME, () => {
                 this._canScroll = true;
                 this._scrollTimeoutId = 0;
                 return GLib.SOURCE_REMOVE;
