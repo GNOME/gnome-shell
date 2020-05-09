@@ -405,7 +405,7 @@ class UnlockDialogLayout extends Clutter.LayoutManager {
         return this._stack.get_preferred_height(forWidth);
     }
 
-    vfunc_allocate(container, box, flags) {
+    vfunc_allocate(container, box) {
         let [width, height] = box.get_size();
 
         let tenthOfHeight = height / 10.0;
@@ -432,7 +432,7 @@ class UnlockDialogLayout extends Clutter.LayoutManager {
         actorBox.x2 = columnX1 + columnWidth;
         actorBox.y2 = actorBox.y1 + maxNotificationsHeight;
 
-        this._notifications.allocate(actorBox, flags);
+        this._notifications.allocate(actorBox);
 
         // Authentication Box
         let stackY = Math.min(
@@ -444,7 +444,7 @@ class UnlockDialogLayout extends Clutter.LayoutManager {
         actorBox.x2 = columnX1 + columnWidth;
         actorBox.y2 = stackY + stackHeight;
 
-        this._stack.allocate(actorBox, flags);
+        this._stack.allocate(actorBox);
 
         // Switch User button
         if (this._switchUserButton.visible) {
@@ -461,7 +461,7 @@ class UnlockDialogLayout extends Clutter.LayoutManager {
             actorBox.x2 = actorBox.x1 + natWidth;
             actorBox.y2 = actorBox.y1 + natHeight;
 
-            this._switchUserButton.allocate(actorBox, flags);
+            this._switchUserButton.allocate(actorBox);
         }
     }
 });

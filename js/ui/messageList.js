@@ -285,12 +285,12 @@ var LabelExpanderLayout = GObject.registerClass({
         return [min, nat];
     }
 
-    vfunc_allocate(container, box, flags) {
+    vfunc_allocate(container, box) {
         for (let i = 0; i < container.get_n_children(); i++) {
             let child = container.get_child_at_index(i);
 
             if (child.visible)
-                child.allocate(box, flags);
+                child.allocate(box);
         }
 
     }

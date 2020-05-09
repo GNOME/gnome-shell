@@ -805,8 +805,8 @@ class InputSourceIndicatorContainer extends St.Widget {
         }, [0, 0]);
     }
 
-    vfunc_allocate(box, flags) {
-        this.set_allocation(box, flags);
+    vfunc_allocate(box) {
+        this.set_allocation(box);
 
         // translate box to (0, 0)
         box.x2 -= box.x1;
@@ -815,7 +815,7 @@ class InputSourceIndicatorContainer extends St.Widget {
         box.y1 = 0;
 
         this.get_children().forEach(c => {
-            c.allocate_align_fill(box, 0.5, 0.5, false, false, flags);
+            c.allocate_align_fill(box, 0.5, 0.5, false, false);
         });
     }
 });

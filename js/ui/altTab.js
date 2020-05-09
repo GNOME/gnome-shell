@@ -68,8 +68,8 @@ class AppSwitcherPopup extends SwitcherPopup.SwitcherPopup {
         this._items = this._switcherList.icons;
     }
 
-    vfunc_allocate(box, flags) {
-        super.vfunc_allocate(box, flags);
+    vfunc_allocate(box) {
+        super.vfunc_allocate(box);
 
         // Allocate the thumbnails
         // We try to avoid overflowing the screen so we base the resulting size on
@@ -102,7 +102,7 @@ class AppSwitcherPopup extends SwitcherPopup.SwitcherPopup {
             this._thumbnails.addClones(primary.y + primary.height - bottomPadding - childBox.y1);
             let [, childNaturalHeight] = this._thumbnails.get_preferred_height(-1);
             childBox.y2 = childBox.y1 + childNaturalHeight;
-            this._thumbnails.allocate(childBox, flags);
+            this._thumbnails.allocate(childBox);
         }
     }
 
@@ -749,9 +749,9 @@ class AppSwitcher extends SwitcherPopup.SwitcherList {
         return super.vfunc_get_preferred_height(forWidth);
     }
 
-    vfunc_allocate(box, flags) {
+    vfunc_allocate(box) {
         // Allocate the main list items
-        super.vfunc_allocate(box, flags);
+        super.vfunc_allocate(box);
 
         let contentBox = this.get_theme_node().get_content_box(box);
 
@@ -766,7 +766,7 @@ class AppSwitcher extends SwitcherPopup.SwitcherList {
             childBox.x2 = childBox.x1 + arrowWidth;
             childBox.y1 = contentBox.y1 + itemBox.y2 + arrowHeight;
             childBox.y2 = childBox.y1 + arrowHeight;
-            this._arrows[i].allocate(childBox, flags);
+            this._arrows[i].allocate(childBox);
         }
     }
 
@@ -1056,7 +1056,7 @@ class WindowSwitcher extends SwitcherPopup.SwitcherList {
         return [minHeight, natHeight];
     }
 
-    vfunc_allocate(box, flags) {
+    vfunc_allocate(box) {
         let themeNode = this.get_theme_node();
         let contentBox = themeNode.get_content_box(box);
         const labelHeight = this._label.height;
@@ -1064,20 +1064,20 @@ class WindowSwitcher extends SwitcherPopup.SwitcherList {
             labelHeight + themeNode.get_padding(St.Side.BOTTOM);
 
         box.y2 -= totalLabelHeight;
-        super.vfunc_allocate(box, flags);
+        super.vfunc_allocate(box);
 
         // Hooking up the parent vfunc will call this.set_allocation() with
         // the height without the label height, so call it again with the
         // correct size here.
         box.y2 += totalLabelHeight;
-        this.set_allocation(box, flags);
+        this.set_allocation(box);
 
         const childBox = new Clutter.ActorBox();
         childBox.x1 = contentBox.x1;
         childBox.x2 = contentBox.x2;
         childBox.y2 = contentBox.y2;
         childBox.y1 = childBox.y2 - labelHeight;
-        this._label.allocate(childBox, flags);
+        this._label.allocate(childBox);
     }
 
     highlight(index, justOutline) {

@@ -565,8 +565,8 @@ class FreezableBinLayout extends Clutter.BinLayout {
         return this._savedHeight;
     }
 
-    vfunc_allocate(container, allocation, flags) {
-        super.vfunc_allocate(container, allocation, flags);
+    vfunc_allocate(container, allocation) {
+        super.vfunc_allocate(container, allocation);
 
         let [width, height] = allocation.get_size();
         this._savedWidth = [width, width];

@@ -292,11 +292,11 @@ class DashActor extends St.Widget {
         });
     }
 
-    vfunc_allocate(box, flags) {
+    vfunc_allocate(box) {
         let contentBox = this.get_theme_node().get_content_box(box);
         let availWidth = contentBox.x2 - contentBox.x1;
 
-        this.set_allocation(box, flags);
+        this.set_allocation(box);
 
         let [appIcons, showAppsButton] = this.get_children();
         let [, showAppsNatHeight] = showAppsButton.get_preferred_height(availWidth);
@@ -306,11 +306,11 @@ class DashActor extends St.Widget {
         childBox.y1 = contentBox.y1;
         childBox.x2 = contentBox.x2;
         childBox.y2 = contentBox.y2 - showAppsNatHeight;
-        appIcons.allocate(childBox, flags);
+        appIcons.allocate(childBox);
 
         childBox.y1 = contentBox.y2 - showAppsNatHeight;
         childBox.y2 = contentBox.y2;
-        showAppsButton.allocate(childBox, flags);
+        showAppsButton.allocate(childBox);
     }
 
     vfunc_get_preferred_height(forWidth) {
