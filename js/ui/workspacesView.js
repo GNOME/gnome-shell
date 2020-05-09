@@ -8,6 +8,7 @@ const SwipeTracker = imports.ui.swipeTracker;
 const Workspace = imports.ui.workspace;
 
 var WORKSPACE_SWITCH_TIME = 250;
+var SCROLL_TIMEOUT_TIME = 150;
 
 var AnimationType = {
     ZOOM: 0,
@@ -815,7 +816,7 @@ class WorkspacesDisplay extends St.Widget {
 
         this._canScroll = false;
         this._scrollTimeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT,
-            WORKSPACE_SWITCH_TIME, () => {
+            SCROLL_TIMEOUT_TIME, () => {
                 this._canScroll = true;
                 this._scrollTimeoutId = 0;
                 return GLib.SOURCE_REMOVE;
