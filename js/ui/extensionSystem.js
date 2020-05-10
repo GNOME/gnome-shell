@@ -268,6 +268,7 @@ var ExtensionManager = class {
         extension.errors.push(message);
 
         logError(error, 'Extension %s'.format(uuid));
+        this._updateCanChange(extension);
         this.emit('extension-state-changed', extension);
     }
 
