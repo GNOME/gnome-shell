@@ -260,7 +260,8 @@ var ExtensionManager = class {
         if (!extension)
             return;
 
-        let message = error.toString();
+        const message = error instanceof Error
+            ? error.message : error.toString();
 
         extension.error = message;
         extension.state = ExtensionState.ERROR;
