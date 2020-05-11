@@ -285,11 +285,15 @@ st_theme_unload_stylesheet (StTheme    *theme,
     return;
 
   theme->custom_stylesheets = g_slist_remove (theme->custom_stylesheets, stylesheet);
-  g_hash_table_remove (theme->stylesheets_by_file, file);
-  g_hash_table_remove (theme->files_by_stylesheet, stylesheet);
 
   g_signal_emit (theme, signals[STYLESHEETS_CHANGED], 0);
 
+  /* We need to remove the entry from the hashtable after emitting the signal
+   * since we might still access the files_by_stylesheet hashtable in
+   * _st_theme_resolve_url() during the signal emission.
+   */
+  g_hash_table_remove (theme->stylesheets_by_file, file);
+  g_hash_table_remove (theme->files_by_stylesheet, stylesheet);
   cr_stylesheet_unref (stylesheet);
 }
 
