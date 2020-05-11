@@ -286,10 +286,10 @@ st_theme_unload_stylesheet (StTheme    *theme,
 
   theme->custom_stylesheets = g_slist_remove (theme->custom_stylesheets, stylesheet);
   g_hash_table_remove (theme->stylesheets_by_file, file);
-  g_hash_table_remove (theme->files_by_stylesheet, stylesheet);
 
   g_signal_emit (theme, signals[STYLESHEETS_CHANGED], 0);
 
+  g_hash_table_remove (theme->files_by_stylesheet, stylesheet);
   cr_stylesheet_unref (stylesheet);
 }
 
