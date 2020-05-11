@@ -799,3 +799,15 @@ $success_time_payg_color: #02b842;
   padding-right: 12px;
   margin-top: 6px;
 }
+
+// Dialog
+
+.modal-dialog {
+  .modal-dialog-content-box {
+    max-width: 32em;
+  }
+}
+
+.prompt-dialog {
+  width: 30em;
+}
