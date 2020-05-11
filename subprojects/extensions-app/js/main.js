@@ -331,6 +331,8 @@ var ExtensionRow = GObject.registerClass({
         'descriptionLabel',
         'versionLabel',
         'authorLabel',
+        'errorLabel',
+        'errorIcon',
         'updatesIcon',
         'revealButton',
         'revealer',
@@ -428,6 +430,12 @@ var ExtensionRow = GObject.registerClass({
         return this._extension.hasUpdate || false;
     }
 
+    get hasError() {
+        const { state } = this._extension;
+        return state === ExtensionState.OUT_OF_DATE ||
+               state === ExtensionState.ERROR;
+    }
+
     get type() {
         return this._extension.type;
     }
@@ -444,6 +452,17 @@ var ExtensionRow = GObject.registerClass({
         return this._extension.metadata.version || '';
     }
 
+    get error() {
+        if (!this.hasError)
+            return '';
+
+        if (this._extension.state === ExtensionState.OUT_OF_DATE)
+            return _('The extension is incompatible with the current GNOME version');
+
+        return this._extension.error
+            ? this._extension.error : _('The extension had an error');
+    }
+
     _updateState() {
         let state = this._extension.state === ExtensionState.ENABLED;
 
@@ -452,6 +471,10 @@ var ExtensionRow = GObject.registerClass({
         action.enabled = this._canToggle();
 
         this._updatesIcon.visible = this.hasUpdate;
+        this._errorIcon.visible = this.hasError;
+
+        this._errorLabel.label = this.error;
+        this._errorLabel.visible = this.error !== '';
 
         this._versionLabel.label = this.version.toString();
         this._versionLabel.visible = this.version !== '';
