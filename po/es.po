@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell.master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2020-05-07 13:10+0000\n"
-"PO-Revision-Date: 2020-05-07 16:47+0200\n"
+"POT-Creation-Date: 2020-05-11 14:06+0000\n"
+"PO-Revision-Date: 2020-05-11 17:28+0200\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Spanish - Spain <gnome-es-list@gnome.org>\n"
 "Language: es_ES\n"
@@ -714,44 +714,44 @@ msgstr "Denegar acceso"
 msgid "Grant Access"
 msgstr "Conceder acceso"
 
-#: js/ui/appDisplay.js:938
+#: js/ui/appDisplay.js:939
 msgid "Unnamed Folder"
 msgstr "Carpeta sin nombre"
 
-#: js/ui/appDisplay.js:961
+#: js/ui/appDisplay.js:962
 msgid "Frequently used applications will appear here"
 msgstr "Las aplicaciones usadas frecuentemente aparecerán aquí"
 
-#: js/ui/appDisplay.js:1096
+#: js/ui/appDisplay.js:1097
 msgid "Frequent"
 msgstr "Frecuentes"
 
-#: js/ui/appDisplay.js:1103
+#: js/ui/appDisplay.js:1104
 msgid "All"
 msgstr "Todas"
 
 #. Translators: This is the heading of a list of open windows
-#: js/ui/appDisplay.js:2479 js/ui/panel.js:75
+#: js/ui/appDisplay.js:2480 js/ui/panel.js:75
 msgid "Open Windows"
 msgstr "Ventanas abiertas"
 
-#: js/ui/appDisplay.js:2499 js/ui/panel.js:82
+#: js/ui/appDisplay.js:2500 js/ui/panel.js:82
 msgid "New Window"
 msgstr "Ventana nueva"
 
-#: js/ui/appDisplay.js:2510
+#: js/ui/appDisplay.js:2511
 msgid "Launch using Dedicated Graphics Card"
 msgstr "Lanzar usando la tarjeta gráfica dedicada"
 
-#: js/ui/appDisplay.js:2538 js/ui/dash.js:239
+#: js/ui/appDisplay.js:2539 js/ui/dash.js:239
 msgid "Remove from Favorites"
 msgstr "Quitar de los favoritos"
 
-#: js/ui/appDisplay.js:2544
+#: js/ui/appDisplay.js:2545
 msgid "Add to Favorites"
 msgstr "Añadir a los favoritos"
 
-#: js/ui/appDisplay.js:2554 js/ui/panel.js:93
+#: js/ui/appDisplay.js:2555 js/ui/panel.js:93
 msgid "Show Details"
 msgstr "Mostrar detalles"
 
@@ -2498,6 +2498,11 @@ msgid ""
 msgstr ""
 "No es posible obtener la lista de extensiones instaladas. asegúrese de que "
 "ha iniciado sesión en GNOME e inténtelo de nuevo."
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:273
+#| msgid "Extension Updates Available"
+msgid "Extension Updates Ready"
+msgstr "Actualizaciones de extensiones disponibles"
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:289
 msgid "Log Out…"
