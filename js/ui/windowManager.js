@@ -1299,8 +1299,10 @@ var WindowManager = class {
         actorClone.set_position(oldFrameRect.x, oldFrameRect.y);
         actorClone.set_size(oldFrameRect.width, oldFrameRect.height);
 
-        if (this._clearAnimationInfo(actor))
+        if (this._clearAnimationInfo(actor)) {
+            actor.thaw_updates();
             this._shellwm.completed_size_change(actor);
+        }
 
         let destroyId = actor.connect('destroy', () => {
             this._clearAnimationInfo(actor);
@@ -1310,6 +1312,8 @@ var WindowManager = class {
         actor.__animationInfo = { clone: actorClone,
                                   oldRect: oldFrameRect,
                                   destroyId };
+
+        actor.freeze_updates();
     }
 
     _sizeChangedWindow(shellwm, actor) {
@@ -1362,7 +1366,7 @@ var WindowManager = class {
         // Now unfreeze actor updates, to get it to the new size.
         // It's important that we don't wait until the animation is completed to
         // do this, otherwise our scale will be applied to the old texture size.
-        shellwm.completed_size_change(actor);
+        actor.thaw_updates();
     }
 
     _clearAnimationInfo(actor) {
@@ -1383,10 +1387,12 @@ var WindowManager = class {
             actor.translation_x = 0;
             actor.translation_y = 0;
             this._clearAnimationInfo(actor);
+            this._shellwm.completed_size_change(actor);
         }
 
         if (this._resizePending.delete(actor)) {
             this._clearAnimationInfo(actor);
+            actor.thaw_updates();
             this._shellwm.completed_size_change(actor);
         }
     }
