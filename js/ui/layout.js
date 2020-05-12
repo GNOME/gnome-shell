@@ -219,6 +219,7 @@ var LayoutManager = GObject.registerClass({
 
         this._inOverview = false;
         this._updateRegionIdle = 0;
+        this._timeoutId = 0;
 
         this._overlayRegion = null;
         this._trackedActors = [];
@@ -619,6 +620,19 @@ var LayoutManager = GObject.registerClass({
     }
 
     _monitorsChanged() {
+        this._updateEverything();
+        this.emit('monitors-changed');
+
+        if (!this._timeoutId) {
+            this._timeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, 1, () => {
+                this._updateEverything();
+                this._timeoutId = 0;
+                return GLib.SOURCE_REMOVE;
+            });
+        }
+    }
+
+    _updateEverything() {
         this._updateMonitors();
         this._updateBoxes();
         this._updateHotCorners();
@@ -626,8 +640,6 @@ var LayoutManager = GObject.registerClass({
         this._updateFullscreen();
         this._updateVisibility();
         this._queueUpdateRegions();
-
-        this.emit('monitors-changed');
     }
 
     _isAboveOrBelowPrimary(monitor) {
