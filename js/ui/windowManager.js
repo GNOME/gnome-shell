@@ -1276,16 +1276,18 @@ var WindowManager = class {
     }
 
     _sizeChangeWindow(shellwm, actor, whichChange, oldFrameRect, _oldBufferRect) {
-        let types = [Meta.WindowType.NORMAL];
-        if (!this._shouldAnimateActor(actor, types)) {
+        const types = [Meta.WindowType.NORMAL];
+        const shouldAnimate =
+            this._shouldAnimateActor(actor, types) &&
+            oldFrameRect.width > 0 &&
+            oldFrameRect.height > 0;
+
+        if (!shouldAnimate) {
             shellwm.completed_size_change(actor);
             return;
         }
 
-        if (oldFrameRect.width > 0 && oldFrameRect.height > 0)
-            this._prepareAnimationInfo(shellwm, actor, oldFrameRect, whichChange);
-        else
-            shellwm.completed_size_change(actor);
+        this._prepareAnimationInfo(shellwm, actor, oldFrameRect, whichChange);
     }
 
     _prepareAnimationInfo(shellwm, actor, oldFrameRect, _change) {
