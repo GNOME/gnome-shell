@@ -1301,8 +1301,10 @@ var WindowManager = class {
 
         actor.freeze();
 
-        if (this._clearAnimationInfo(actor))
+        if (this._clearAnimationInfo(actor)) {
+            log('Old animationInfo removed from actor %s'.format(actor));
             this._shellwm.completed_size_change(actor);
+        }
 
         let destroyId = actor.connect('destroy', () => {
             this._clearAnimationInfo(actor);
