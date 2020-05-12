@@ -529,6 +529,43 @@ var KeyboardModel = class {
     }
 };
 
+var IMFocusAction = GObject.registerClass({
+    Signals: {
+        'activated': {},
+    },
+}, class IMFocusAction extends Clutter.GestureAction {
+    constructor() {
+        this.parent();
+        this.set_n_touch_points(1);
+        this.set_threshold_trigger_edge(Clutter.GestureTriggerEdge.BEFORE);
+        this._rect = null;
+    }
+
+    vfunc_gesture_prepare(actor) {
+        let event = this.get_last_event(0);
+
+        if (event.type() != Clutter.EventType.TOUCH_BEGIN)
+            return false;
+
+        let [x, y] = event.get_coords();
+
+        if (this._rect &&
+            x >= this._rect.x - 40 &&
+            x < this._rect.x + this._rect.width + 40 &&
+            y >= this._rect.y - 40 &&
+            y < this._rect.y + this._rect.height + 40) {
+            this.emit('activated');
+        }
+
+        // Action work is already done
+        return false;
+    }
+
+    setFocusRect(rect) {
+        this._rect = rect;
+    }
+});
+
 var FocusTracker = class {
     constructor() {
         this._currentWindow = null;
@@ -1210,6 +1247,15 @@ class Keyboard extends St.BoxLayout {
         this._suggestions = null;
         this._emojiKeyVisible = Meta.is_wayland_compositor();
 
+        this._imFocusAction = new IMFocusAction();
+        this._imFocusAction.connect('activated', () => {
+            /* Valid for X11 clients only */
+            if (Main.inputMethod.currentFocus)
+                return;
+            this.open(Main.layoutManager.focusIndex);
+        });
+        global.stage.add_action(this._imFocusAction);
+
         this._focusTracker = new FocusTracker();
         this._connectSignal(this._focusTracker, 'position-changed',
             this._onFocusPositionChanged.bind(this));
@@ -1217,14 +1263,17 @@ class Keyboard extends St.BoxLayout {
             this._delayedAnimFocusWindow = null;
             this._animFocusedWindow = null;
             this._oskFocusWindow = null;
+            this._imFocusAction.setFocusRect(null);
         });
         // Valid only for X11
         if (!Meta.is_wayland_compositor()) {
             this._connectSignal(this._focusTracker, 'focus-changed', (_tracker, focused) => {
-                if (focused)
+                if (focused) {
                     this.open(Main.layoutManager.focusIndex);
-                else
+                } else {
                     this.close();
+                    this._imFocusAction.setFocusRect(null);
+                }
             });
         }
 
@@ -1264,6 +1313,7 @@ class Keyboard extends St.BoxLayout {
     _onFocusPositionChanged(focusTracker) {
         let rect = focusTracker.getCurrentRect();
         this.setCursorLocation(focusTracker.currentWindow, rect.x, rect.y, rect.width, rect.height);
+        this._imFocusAction.setFocusRect(rect);
     }
 
     _onDestroy() {
