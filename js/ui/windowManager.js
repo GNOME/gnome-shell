@@ -1300,6 +1300,7 @@ var WindowManager = class {
         actorClone.set_size(oldFrameRect.width, oldFrameRect.height);
 
         if (this._clearAnimationInfo(actor)) {
+            log(`Old animationInfo removed from actor '${actor}'`);
             actor.thaw_updates();
             this._shellwm.completed_size_change(actor);
         }
