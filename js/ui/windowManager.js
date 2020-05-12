@@ -1385,8 +1385,10 @@ var WindowManager = class {
             this._clearAnimationInfo(actor);
         }
 
-        if (this._resizePending.delete(actor))
+        if (this._resizePending.delete(actor)) {
+            this._clearAnimationInfo(actor);
             this._shellwm.completed_size_change(actor);
+        }
     }
 
     _hasAttachedDialogs(window, ignoreWindow) {
