@@ -1278,13 +1278,13 @@ var WindowManager = class {
     }
 
     _sizeChangeWindow(shellwm, actor, whichChange, oldFrameRect, _oldBufferRect) {
-        let types = [Meta.WindowType.NORMAL];
-        if (!this._shouldAnimateActor(actor, types)) {
-            shellwm.completed_size_change(actor);
-            return;
-        }
+        const types = [Meta.WindowType.NORMAL];
+        const shouldAnimate =
+            this._shouldAnimateActor(actor, types) &&
+            oldFrameRect.width > 0 &&
+            oldFrameRect.height > 0;
 
-        if (oldFrameRect.width > 0 && oldFrameRect.height > 0)
+        if (shouldAnimate)
             this._prepareAnimationInfo(shellwm, actor, oldFrameRect, whichChange);
         else
             shellwm.completed_size_change(actor);
