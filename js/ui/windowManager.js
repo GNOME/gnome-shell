@@ -902,31 +902,33 @@ var WindowManager = class {
             IBusManager.getIBusManager().restartDaemon(['--xim']);
 
             try {
-                if (Shell.util_start_systemd_unit('gsd-xsettings.target', 'fail')) {
-                    /* Leave this watchdog timeout so don't block indefinitely here */
-                    let timeoutId = GLib.timeout_add_seconds(GLib.PRIORITY_DEFAULT, 5, () => {
-                        Gio.DBus.session.unwatch_name(watchId);
-                        log('Warning: Failed to start gsd-xsettings');
-                        task.return_boolean(true);
-                        timeoutId = 0;
-                        return GLib.SOURCE_REMOVE;
-                    });
+                if (!Shell.util_start_systemd_unit('gsd-xsettings.target', 'fail'))
+                    log('Not starting gsd-xsettings; waiting for gnome-session to do so');
 
-                    /* When gsd-xsettings daemon is started, we are good to resume */
-                    let watchId = Gio.DBus.session.watch_name(
-                        'org.gnome.SettingsDaemon.XSettings',
-                        Gio.BusNameWatcherFlags.NONE,
-                        () => {
-                            Gio.DBus.session.unwatch_name(watchId);
-                            if (timeoutId > 0) {
-                                task.return_boolean(true);
-                                GLib.source_remove(timeoutId);
-                            }
-                        },
-                        null);
-                }
+                /* Leave this watchdog timeout so don't block indefinitely here */
+                let timeoutId = GLib.timeout_add_seconds(GLib.PRIORITY_DEFAULT, 5, () => {
+                    Gio.DBus.session.unwatch_name(watchId);
+                    log('Warning: Failed to start gsd-xsettings');
+                    task.return_boolean(true);
+                    timeoutId = 0;
+                    return GLib.SOURCE_REMOVE;
+                });
+
+                /* When gsd-xsettings daemon is started, we are good to resume */
+                let watchId = Gio.DBus.session.watch_name(
+                    'org.gnome.SettingsDaemon.XSettings',
+                    Gio.BusNameWatcherFlags.NONE,
+                    () => {
+                        Gio.DBus.session.unwatch_name(watchId);
+                        if (timeoutId > 0) {
+                            task.return_boolean(true);
+                            GLib.source_remove(timeoutId);
+                        }
+                    },
+                    null);
             } catch (e) {
                 log('Error starting gsd-xsettings: %s'.format(e.message));
+                task.return_boolean(true);
             }
 
             return true;
