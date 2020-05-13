@@ -786,7 +786,7 @@ var Dash = GObject.registerClass({
         let app = getAppFromSource(source);
 
         // Don't allow favoriting of transient apps
-        if (app == null || app.is_window_backed())
+        if (app === null || app.is_window_backed())
             return DND.DragMotionResult.NO_DROP;
 
         if (!global.settings.is_writable('favorite-apps'))
@@ -815,11 +815,16 @@ var Dash = GObject.registerClass({
         else
             pos = 0; // always insert at the top when dash is empty
 
-        if (pos != this._dragPlaceholderPos && pos <= numFavorites && this._animatingPlaceholdersCount == 0) {
+        // Put the placeholder after the last favorite if we are not
+        // in the favorites zone
+        if (pos > numFavorites)
+            pos = numFavorites;
+
+        if (pos !== this._dragPlaceholderPos && this._animatingPlaceholdersCount === 0) {
             this._dragPlaceholderPos = pos;
 
             // Don't allow positioning before or after self
-            if (favPos != -1 && (pos == favPos || pos == favPos + 1)) {
+            if (favPos !== -1 && (pos === favPos || pos === favPos + 1)) {
                 this._clearDragPlaceholder();
                 return DND.DragMotionResult.CONTINUE;
             }
@@ -842,11 +847,6 @@ var Dash = GObject.registerClass({
                                             this._dragPlaceholderPos);
             this._dragPlaceholder.show(fadeIn);
         }
-
-        // Remove the drag placeholder if we are not in the
-        // "favorites zone"
-        if (pos > numFavorites)
-            this._clearDragPlaceholder();
 
         if (!this._dragPlaceholder)
             return DND.DragMotionResult.NO_DROP;
