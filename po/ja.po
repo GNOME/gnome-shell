@@ -17,7 +17,7 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
 "POT-Creation-Date: 2020-05-04 14:38+0000\n"
-"PO-Revision-Date: 2020-03-09 21:10+0900\n"
+"PO-Revision-Date: 2020-05-13 23:00+0900\n"
 "Last-Translator: sicklylife <translation@sicklylife.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
 "Language: ja\n"
@@ -726,16 +726,12 @@ msgid "New Window"
 msgstr "新しいウィンドウで開く"
 
 #: js/ui/appDisplay.js:2520
-#, fuzzy
-#| msgid "Launch using Dedicated Graphics Card"
 msgid "Launch using Integrated Graphics Card"
-msgstr "専用のグラフィックカードを使用して起動する"
+msgstr "統合グラフィックカードを使用して起動"
 
 #: js/ui/appDisplay.js:2521
-#, fuzzy
-#| msgid "Launch using Dedicated Graphics Card"
 msgid "Launch using Discrete Graphics Card"
-msgstr "専用のグラフィックカードを使用して起動する"
+msgstr "ディスクリートグラフィックカードを使用して起動"
 
 #: js/ui/appDisplay.js:2549 js/ui/dash.js:239
 msgid "Remove from Favorites"
@@ -1126,10 +1122,8 @@ msgid "Weather"
 msgstr "天気"
 
 #: js/ui/dateMenu.js:448
-#, fuzzy
-#| msgid "Select a location…"
 msgid "Select weather location…"
-msgstr "場所を選択…"
+msgstr "天気の場所を選択…"
 
 #: js/ui/endSessionDialog.js:37
 #, javascript-format
@@ -1725,16 +1719,12 @@ msgid "Bluetooth Settings"
 msgstr "Bluetooth の設定"
 
 #: js/ui/status/bluetooth.js:152
-#, fuzzy
-#| msgid "Bluetooth"
 msgid "Bluetooth Off"
-msgstr "Bluetooth"
+msgstr "Bluetooth オフ"
 
 #: js/ui/status/bluetooth.js:154
-#, fuzzy
-#| msgid "Bluetooth"
 msgid "Bluetooth On"
-msgstr "Bluetooth"
+msgstr "Bluetooth オン"
 
 #: js/ui/status/brightness.js:39
 msgid "Brightness"
@@ -2455,8 +2445,8 @@ msgid ""
 "extensions."
 msgstr ""
 "拡張機能は、システムに何らかの問題 (パフォーマンスへの影響を含む) を引き起こ"
-"す可能性があります。システムに問題が発生した場合は、すべての拡張機能を無効に"
-"することをお勧めします。"
+"す場合があります。システムに問題が発生した場合は、すべての拡張機能を無効にす"
+"ることをお勧めします。"
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:135
 msgid "Manually Installed"
@@ -2479,10 +2469,8 @@ msgstr ""
 "GNOME にログインしていることを確認した上で再試行してください。"
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:273
-#, fuzzy
-#| msgid "Extension Updates Available"
 msgid "Extension Updates Ready"
-msgstr "拡張機能のアップデートが利用可能です"
+msgstr "拡張機能を更新できます"
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:289
 msgid "Log Out…"
@@ -2553,10 +2541,8 @@ msgid "TEMPLATE"
 msgstr ""
 
 #: subprojects/extensions-tool/src/command-create.c:423
-#, fuzzy
-#| msgid "Create a new extension"
 msgid "The template to use for the new extension"
-msgstr "新しい拡張機能を作成します"
+msgstr ""
 
 #: subprojects/extensions-tool/src/command-create.c:429
 msgid "Enter extension information interactively"
@@ -2730,10 +2716,9 @@ msgid "More than one source directory specified"
 msgstr "ソースディレクトリが複数指定されています"
 
 #: subprojects/extensions-tool/src/command-prefs.c:47
-#, fuzzy, c-format
-#| msgid "Show extensions with preferences"
+#, c-format
 msgid "Extension “%s” doesn't have preferences\n"
-msgstr "設定画面がある拡張機能を表示する"
+msgstr ""
 
 #: subprojects/extensions-tool/src/command-prefs.c:79
 msgid "Opens extension preferences"
@@ -2744,16 +2729,13 @@ msgid "Reset an extension"
 msgstr "拡張機能をリセットします"
 
 #: subprojects/extensions-tool/src/command-uninstall.c:49
-#, fuzzy
-#| msgid "List installed extensions"
 msgid "Cannot uninstall system extensions\n"
-msgstr "インストールされた拡張機能一覧を表示します"
+msgstr "システムの拡張機能はアンインストールできません\n"
 
 #: subprojects/extensions-tool/src/command-uninstall.c:64
-#, fuzzy, c-format
-#| msgid "Failed to launch “%s”"
+#, c-format
 msgid "Failed to uninstall “%s”\n"
-msgstr "“%s”の起動に失敗しました"
+msgstr "“%s”のアンインストールに失敗しました\n"
 
 #: subprojects/extensions-tool/src/command-uninstall.c:86
 msgid "Uninstall an extension"
@@ -2864,10 +2846,8 @@ msgid "Plain"
 msgstr ""
 
 #: subprojects/extensions-tool/src/templates/00-plain.desktop.in:5
-#, fuzzy
-#| msgid "Reset extension"
 msgid "An empty extension"
-msgstr "拡張機能をリセットする"
+msgstr ""
 
 #: subprojects/extensions-tool/src/templates/indicator.desktop.in:4
 msgid "Indicator"
