@@ -7,6 +7,10 @@
       <arg type="s" direction="in"/>
       <arg type="u" direction="out"/>
     </method>
+    <method name="NameHasOwner">
+      <arg type="s" direction="in"/>
+      <arg type="b" direction="out"/>
+    </method>
     <signal name="NameOwnerChanged">
       <arg type="s" direction="out" name="name"/>
       <arg type="s" direction="out" name="oldOwner"/>
