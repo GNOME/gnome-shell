@@ -93,25 +93,8 @@ class MediaMessage extends MessageList.Message {
 var MprisPlayer = class MprisPlayer {
     constructor(busName) {
         this._mprisProxy = new MprisProxy(Gio.DBus.session, busName,
-                                          '/org/mpris/MediaPlayer2');
-        this._ownerNotifyId = this._mprisProxy.connect('notify::g-name-owner',
-            () => {
-                if (!this._mprisProxy.g_name_owner)
-                    this._close();
-            });
-
-        // It is possible for the bus to disappear before the previous signal
-        // is connected, so we must check to ensure that the bus still exists
-        // at this point.
-        let proxy = new DBusProxy(Gio.DBus.session,
-                                  'org.freedesktop.DBus',
-                                  '/org/freedesktop/DBus');
-        let [stillExists] = proxy.NameHasOwnerSync(busName);
-        if (!stillExists) {
-            this._closed = true;
-            return;
-        }
-
+                                          '/org/mpris/MediaPlayer2',
+                                          this._onMprisProxyReady.bind(this));
         this._playerProxy = new MprisPlayerProxy(Gio.DBus.session, busName,
                                                  '/org/mpris/MediaPlayer2',
                                                  this._onPlayerProxyReady.bind(this));
@@ -183,13 +166,24 @@ var MprisPlayer = class MprisPlayer {
         this._mprisProxy.disconnect(this._ownerNotifyId);
         this._mprisProxy = null;
 
-        if (this._playerProxy) {
-            this._playerProxy.disconnect(this._propsChangedId);
-            this._playerProxy = null;
-        }
+        this._playerProxy.disconnect(this._propsChangedId);
+        this._playerProxy = null;
 
         this._closed = true;
         this.emit('closed');
+    }
+
+    _onMprisProxyReady() {
+        this._ownerNotifyId = this._mprisProxy.connect('notify::g-name-owner',
+            () => {
+                if (!this._mprisProxy.g_name_owner)
+                    this._close();
+            });
+        // It is possible for the bus to disappear before the previous signal
+        // is connected, so we must ensure that the bus still exists at this
+        // point.
+        if (!this._mprisProxy.g_name_owner)
+            this._close();
     }
 
     _onPlayerProxyReady() {
