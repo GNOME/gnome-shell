@@ -17,7 +17,7 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
 "POT-Creation-Date: 2020-05-11 14:00+0000\n"
-"PO-Revision-Date: 2020-03-09 21:10+0900\n"
+"PO-Revision-Date: 2020-05-13 23:00+0900\n"
 "Last-Translator: sicklylife <translation@sicklylife.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
 "Language: ja\n"
@@ -2444,8 +2444,8 @@ msgid ""
 "extensions."
 msgstr ""
 "拡張機能は、システムに何らかの問題 (パフォーマンスへの影響を含む) を引き起こ"
-"す可能性があります。システムに問題が発生した場合は、すべての拡張機能を無効に"
-"することをお勧めします。"
+"す場合があります。システムに問題が発生した場合は、すべての拡張機能を無効にす"
+"ることをお勧めします。"
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:135
 msgid "Manually Installed"
@@ -2468,10 +2468,8 @@ msgstr ""
 "GNOME にログインしていることを確認した上で再試行してください。"
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:273
-#, fuzzy
-#| msgid "Extension Updates Available"
 msgid "Extension Updates Ready"
-msgstr "拡張機能のアップデートが利用可能です"
+msgstr "拡張機能を更新できます"
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:289
 msgid "Log Out…"
