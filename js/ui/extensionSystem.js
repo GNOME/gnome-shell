@@ -102,16 +102,16 @@ var ExtensionManager = class {
             }
         }
 
-        if (extension.stylesheet) {
-            let theme = St.ThemeContext.get_for_stage(global.stage).get_theme();
-            theme.unload_stylesheet(extension.stylesheet);
-            delete extension.stylesheet;
-        }
-
         try {
             extension.stateObj.disable();
         } catch (e) {
             this.logExtensionError(uuid, e);
+        }
+
+        if (extension.stylesheet) {
+            let theme = St.ThemeContext.get_for_stage(global.stage).get_theme();
+            theme.unload_stylesheet(extension.stylesheet);
+            delete extension.stylesheet;
         }
 
         for (let i = 0; i < order.length; i++) {
