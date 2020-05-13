@@ -62,6 +62,8 @@ const _modes = {
     'unlock-dialog': {
         isLocked: true,
         unlockDialog: imports.ui.unlockDialog.UnlockDialog,
+        allowExtensions: true,
+        enabledExtensions: ['eos-hack@endlessm.com'],
         components: ['polkitAgent', 'telepathyClient'],
         panel: {
             left: [],
