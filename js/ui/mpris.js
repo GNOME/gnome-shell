@@ -99,11 +99,16 @@ var MprisPlayer = class MprisPlayer {
                                                  '/org/mpris/MediaPlayer2',
                                                  this._onPlayerProxyReady.bind(this));
 
+        this._closed = false;
         this._visible = false;
         this._trackArtists = [];
         this._trackTitle = '';
         this._trackCoverUrl = '';
         this._busName = busName;
+    }
+
+    get closed() {
+        return this._closed;
     }
 
     get status() {
@@ -164,6 +169,7 @@ var MprisPlayer = class MprisPlayer {
         this._playerProxy.disconnect(this._propsChangedId);
         this._playerProxy = null;
 
+        this._closed = true;
         this.emit('closed');
     }
 
@@ -173,6 +179,11 @@ var MprisPlayer = class MprisPlayer {
                 if (!this._mprisProxy.g_name_owner)
                     this._close();
             });
+        // It is possible for the bus to disappear before the previous signal
+        // is connected, so we must ensure that the bus still exists at this
+        // point.
+        if (!this._mprisProxy.g_name_owner)
+            this._close();
     }
 
     _onPlayerProxyReady() {
@@ -274,7 +285,8 @@ class MediaSection extends MessageList.MessageListSection {
             message = null;
         });
 
-        this._players.set(busName, player);
+        if (!player.closed)
+            this._players.set(busName, player);
     }
 
     _onProxyReady() {
