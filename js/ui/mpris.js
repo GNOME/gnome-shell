@@ -173,6 +173,11 @@ var MprisPlayer = class MprisPlayer {
                 if (!this._mprisProxy.g_name_owner)
                     this._close();
             });
+        // It is possible for the bus to disappear before the previous signal
+        // is connected, so we must ensure that the bus still exists at this
+        // point.
+        if (!this._mprisProxy.g_name_owner)
+            this._close();
     }
 
     _onPlayerProxyReady() {
