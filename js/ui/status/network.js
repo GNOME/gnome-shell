@@ -1439,7 +1439,7 @@ var NMVpnConnectionItem = class extends NMConnectionItem {
 
         if (newstate === NM.VpnConnectionState.ACTIVATED && ac.banner) {
                 var source = new MessageTray.Source(_("Network Manager"),
-                                                      'network-transmit-receive');
+                    'network-transmit-receive');
                 source.policy = new MessageTray.NotificationApplicationPolicy('gnome-network-panel');
                 Main.messageTray.add(source);
 
