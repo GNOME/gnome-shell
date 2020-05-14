@@ -94,6 +94,7 @@ class WorldClocksSection extends St.Button {
         });
         this._clock = new GnomeDesktop.WallClock();
         this._clockNotifyId = 0;
+        this._tzNotifyId = 0;
 
         this._locations = [];
 
@@ -166,8 +167,6 @@ class WorldClocksSection extends St.Button {
         layout.attach(header, 0, 0, 2, 1);
         this.label_actor = header;
 
-        let localOffset = GLib.DateTime.new_now_local().get_utc_offset();
-
         for (let i = 0; i < this._locations.length; i++) {
             let l = this._locations[i].location;
 
@@ -180,21 +179,8 @@ class WorldClocksSection extends St.Button {
 
             let time = new St.Label({ style_class: 'world-clocks-time' });
 
-            const utcOffset = this._getTimeAtLocation(l).get_utc_offset();
-            const offsetCurrentTz = utcOffset - localOffset;
-            const offsetHours = Math.abs(offsetCurrentTz) / GLib.TIME_SPAN_HOUR;
-            const offsetMinutes =
-                (Math.abs(offsetCurrentTz) % GLib.TIME_SPAN_HOUR) /
-                GLib.TIME_SPAN_MINUTE;
-
-            const prefix = offsetCurrentTz >= 0 ? '+' : '-';
-            const text = offsetMinutes === 0
-                ? '%s%d'.format(prefix, offsetHours)
-                : '%s%d\u2236%d'.format(prefix, offsetHours, offsetMinutes);
-
             const tz = new St.Label({
                 style_class: 'world-clocks-timezone',
-                text,
                 x_align: Clutter.ActorAlign.END,
                 y_align: Clutter.ActorAlign.CENTER,
             });
@@ -212,20 +198,46 @@ class WorldClocksSection extends St.Button {
                 layout.attach(tz, 2, i + 1, 1, 1);
             }
 
-            this._locations[i].actor = time;
+            this._locations[i].time = time;
+            this._locations[i].tz = tz;
         }
 
         if (this._grid.get_n_children() > 1) {
             if (!this._clockNotifyId) {
                 this._clockNotifyId =
-                    this._clock.connect('notify::clock', this._updateLabels.bind(this));
+                    this._clock.connect('notify::clock', this._updateTimeLabels.bind(this));
             }
-            this._updateLabels();
+            if (!this._tzNotifyId) {
+                this._tzNotifyId =
+                    this._clock.connect('notify::timezone', this._updateTimezoneLabels.bind(this));
+            }
+            this._updateTimeLabels();
+            this._updateTimezoneLabels();
         } else {
             if (this._clockNotifyId)
                 this._clock.disconnect(this._clockNotifyId);
             this._clockNotifyId = 0;
+
+            if (this._tzNotifyId)
+                this._clock.disconnect(this._tzNotifyId);
+            this._tzNotifyId = 0;
         }
+    }
+
+    _getTimezoneOffsetAtLocation(location) {
+        const localOffset = GLib.DateTime.new_now_local().get_utc_offset();
+        const utcOffset = this._getTimeAtLocation(location).get_utc_offset();
+        const offsetCurrentTz = utcOffset - localOffset;
+        const offsetHours = Math.abs(offsetCurrentTz) / GLib.TIME_SPAN_HOUR;
+        const offsetMinutes =
+            (Math.abs(offsetCurrentTz) % GLib.TIME_SPAN_HOUR) /
+            GLib.TIME_SPAN_MINUTE;
+
+        const prefix = offsetCurrentTz >= 0 ? '+' : '-';
+        const text = offsetMinutes === 0
+            ? '%s%d'.format(prefix, offsetHours)
+            : '%s%d\u2236%d'.format(prefix, offsetHours, offsetMinutes);
+        return text;
     }
 
     _getTimeAtLocation(location) {
@@ -233,11 +245,18 @@ class WorldClocksSection extends St.Button {
         return GLib.DateTime.new_now(tz);
     }
 
-    _updateLabels() {
+    _updateTimeLabels() {
         for (let i = 0; i < this._locations.length; i++) {
             let l = this._locations[i];
             let now = this._getTimeAtLocation(l.location);
-            l.actor.text = Util.formatTime(now, { timeOnly: true });
+            l.time.text = Util.formatTime(now, { timeOnly: true });
+        }
+    }
+
+    _updateTimezoneLabels() {
+        for (let i = 0; i < this._locations.length; i++) {
+            let l = this._locations[i];
+            l.tz.text = this._getTimezoneOffsetAtLocation(l.location);
         }
     }
 
