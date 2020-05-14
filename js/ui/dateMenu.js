@@ -13,7 +13,11 @@ const System = imports.system;
 
 const { loadInterfaceXML } = imports.misc.fileUtils;
 
+const NC_ = (context, str) => '%s\u0004%s'.format(context, str);
+const T_ = Shell.util_translate_time_string;
+
 const MAX_FORECASTS = 5;
+const ELLIPSIS_CHAR = '\u2026';
 
 const ClocksIntegrationIface = loadInterfaceXML('org.gnome.Shell.ClocksIntegration');
 const ClocksProxy = Gio.DBusProxy.makeProxyWrapper(ClocksIntegrationIface);
@@ -81,6 +85,177 @@ class TodayButton extends St.Button {
          */
         dateFormat = Shell.util_translate_time_string(N_("%A %B %e %Y"));
         this.accessible_name = date.toLocaleFormat(dateFormat);
+    }
+});
+
+var EventsSection = GObject.registerClass(
+class EventsSection extends St.Button {
+    _init() {
+        super._init({
+            style_class: 'events-button',
+            can_focus: true,
+            x_expand: true,
+            child: new St.BoxLayout({
+                style_class: 'events-box',
+                vertical: true,
+                x_expand: true,
+            }),
+        });
+
+        this._startDate = null;
+        this._endDate = null;
+
+        this._eventSource = null;
+        this._calendarApp = null;
+
+        this._title = new St.Label({
+            style_class: 'events-title',
+        });
+        this.child.add_child(this._title);
+
+        this._eventsList = new St.BoxLayout({
+            style_class: 'events-list',
+            vertical: true,
+            x_expand: true,
+        });
+        this.child.add_child(this._eventsList);
+
+        this._appSys = Shell.AppSystem.get_default();
+        this._appSys.connect('installed-changed',
+            this._appInstalledChanged.bind(this));
+        this._appInstalledChanged();
+    }
+
+    setDate(date) {
+        const day = [date.getFullYear(), date.getMonth(), date.getDate()];
+        this._startDate = new Date(...day);
+        this._endDate = new Date(...day, 23, 59, 59, 999);
+
+        this._updateTitle();
+        this._reloadEvents();
+    }
+
+    setEventSource(eventSource) {
+        if (!(eventSource instanceof Calendar.EventSourceBase))
+            throw new Error('Event source is not valid type');
+
+        this._eventSource = eventSource;
+        this._eventSource.connect('changed', this._reloadEvents.bind(this));
+    }
+
+    _updateTitle() {
+        /* Translators: Shown on calendar heading when selected day occurs on current year */
+        const sameYearFormat = T_(NC_('calendar heading', '%B %-d’s Events'));
+
+        /* Translators: Shown on calendar heading when selected day occurs on different year */
+        const otherYearFormat = T_(NC_('calendar heading', '%B %-d %Y’s Events'));
+
+        const timeSpanDay = GLib.TIME_SPAN_DAY / 1000;
+        const now = new Date();
+
+        if (this._startDate <= now && now <= this._endDate)
+            this._title.text = _('Today’s Events');
+        else if (this._endDate < now && now - this._endDate < timeSpanDay)
+            this._title.text = _('Yesterday’s Events');
+        else if (this._startDate > now && this._startDate - now < timeSpanDay)
+            this._title.text = _('Tomorrow’s Events');
+        else if (this._startDate.getFullYear() === now.getFullYear())
+            this._title.text = this._startDate.toLocaleFormat(sameYearFormat);
+        else
+            this._title.text = this._startDate.toLocaleFormat(otherYearFormat);
+    }
+
+    _formatEventTime(event) {
+        const allDay = event.allDay ||
+            (event.date <= this._startDate && event.end >= this._endDate);
+
+        let title;
+        if (allDay) {
+            /* Translators: Shown in calendar event list for all day events
+             * Keep it short, best if you can use less then 10 characters
+             */
+            title = C_('event list time', 'All Day');
+        } else {
+            let date = event.date >= this._startDate ? event.date : event.end;
+            title = Util.formatTime(date, { timeOnly: true });
+        }
+
+        const rtl = Clutter.get_default_text_direction() === Clutter.TextDirection.RTL;
+        if (event.date < this._startDate && !event.allDay) {
+            if (rtl)
+                title = '%s%s'.format(title, ELLIPSIS_CHAR);
+            else
+                title = '%s%s'.format(ELLIPSIS_CHAR, title);
+        }
+        if (event.end > this._endDate && !event.allDay) {
+            if (rtl)
+                title = '%s%s'.format(ELLIPSIS_CHAR, title);
+            else
+                title = '%s%s'.format(title, ELLIPSIS_CHAR);
+        }
+        return title;
+    }
+
+    _reloadEvents() {
+        if (this._eventSource.isLoading || this._reloading)
+            return;
+
+        this._reloading = true;
+
+        [...this._eventsList].forEach(c => c.destroy());
+
+        const events =
+            this._eventSource.getEvents(this._startDate, this._endDate);
+
+        for (let event of events) {
+            const box = new St.BoxLayout({
+                style_class: 'event-box',
+                vertical: true,
+            });
+            box.add(new St.Label({
+                text: event.summary,
+                style_class: 'event-summary',
+            }));
+            box.add(new St.Label({
+                text: this._formatEventTime(event),
+                style_class: 'event-time',
+            }));
+            this._eventsList.add_child(box);
+        }
+
+        this._reloading = false;
+        this._sync();
+    }
+
+    vfunc_clicked() {
+        Main.overview.hide();
+        Main.panel.closeCalendar();
+
+        let appInfo = this._calendarApp;
+        if (appInfo.get_id() === 'org.gnome.Evolution.desktop') {
+            const app = this._appSys.lookup_app('evolution-calendar.desktop');
+            if (app)
+                appInfo = app.app_info;
+        }
+        appInfo.launch([], global.create_app_launch_context(0, -1));
+    }
+
+    _appInstalledChanged() {
+        const apps = Gio.AppInfo.get_recommended_for_type('text/calendar');
+        if (apps && (apps.length > 0)) {
+            const app = Gio.AppInfo.get_default_for_type('text/calendar', false);
+            const defaultInRecommended = apps.some(a => a.equal(app));
+            this._calendarApp = defaultInRecommended ? app : apps[0];
+        } else {
+            this._calendarApp = null;
+        }
+
+        return this._sync();
+    }
+
+    _sync() {
+        this.visible = this._eventsList.get_n_children() > 0;
+        this.reactive = this._calendarApp !== null;
     }
 });
 
@@ -632,6 +807,7 @@ class DateMenuButton extends PanelMenu.Button {
         this._calendar.connect('selected-date-changed', (_calendar, datetime) => {
             let date = _gDateTimeToDate(datetime);
             layout.frozen = !_isToday(date);
+            this._eventsItem.setDate(date);
         });
 
         this.menu.connect('open-state-changed', (menu, isOpen) => {
@@ -640,6 +816,7 @@ class DateMenuButton extends PanelMenu.Button {
                 let now = new Date();
                 this._calendar.setDate(now);
                 this._date.setDate(now);
+                this._eventsItem.setDate(now);
             }
         });
 
@@ -670,6 +847,9 @@ class DateMenuButton extends PanelMenu.Button {
                                              style_class: 'datemenu-displays-box' });
         this._displaysSection.add_actor(displaysBox);
 
+        this._eventsItem = new EventsSection();
+        displaysBox.add_child(this._eventsItem);
+
         this._clocksItem = new WorldClocksSection();
         displaysBox.add_child(this._clocksItem);
 
@@ -695,6 +875,7 @@ class DateMenuButton extends PanelMenu.Button {
             this._eventSource.destroy();
 
         this._calendar.setEventSource(eventSource);
+        this._eventsItem.setEventSource(eventSource);
 
         this._eventSource = eventSource;
     }
