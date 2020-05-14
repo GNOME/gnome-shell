@@ -1437,8 +1437,7 @@ var NMVpnConnectionItem = class extends NMConnectionItem {
             this.emit('activation-failed', reason);
         }
 
-        if (newstate == NM.VpnConnectionState.ACTIVATED) {
-            if (ac.banner) {
+        if (newstate === NM.VpnConnectionState.ACTIVATED && ac.banner) {
                 var source = new MessageTray.Source(_("Network Manager"),
                                                       'network-transmit-receive');
                 source.policy = new MessageTray.NotificationApplicationPolicy('gnome-network-panel');
