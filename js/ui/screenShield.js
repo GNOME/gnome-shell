@@ -644,8 +644,11 @@ var ScreenShield = class {
                 Main.sessionMode.pushMode('unlock-dialog');
 
             if (Main.sessionMode.currentMode !== 'unlock-dialog-payg' &&
-                Main.paygManager.isLocked)
+                Main.paygManager.isLocked) {
                 Main.sessionMode.pushMode('unlock-dialog-payg');
+                this._clearCurrentDialog();
+                this._ensureUnlockDialog(true);
+            }
         }
 
         this.actor.show();
