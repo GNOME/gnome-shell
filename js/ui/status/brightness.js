@@ -48,6 +48,9 @@ class Indicator extends PanelMenu.SystemIndicator {
         this._item.connect('key-press-event', (actor, event) => {
             return this._slider.emit('key-press-event', event);
         });
+        this._item.connect('scroll-event', (actor, event) => {
+            return this._slider.emit('scroll-event', event);
+        });
 
     }
 
