@@ -56,6 +56,9 @@ var StreamSlider = class {
         this.item.connect('key-press-event', (actor, event) => {
             return this._slider.emit('key-press-event', event);
         });
+        this.item.connect('scroll-event', (actor, event) => {
+            return this._slider.emit('scroll-event', event);
+        });
 
         this._stream = null;
         this._volumeCancellable = null;
