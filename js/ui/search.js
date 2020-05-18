@@ -13,7 +13,6 @@ const Util = imports.misc.util;
 const SEARCH_PROVIDERS_SCHEMA = 'org.gnome.desktop.search-providers';
 
 var MAX_LIST_SEARCH_RESULTS_ROWS = 5;
-var MAX_GRID_SEARCH_RESULTS_ROWS = 1;
 
 var MaxWidthBox = GObject.registerClass(
 class MaxWidthBox extends St.BoxLayout {
@@ -349,18 +348,148 @@ class ListSearchResults extends SearchResultsBase {
     }
 });
 
+var GridSearchResultsLayout = GObject.registerClass({
+    Properties: {
+        'spacing': GObject.ParamSpec.int('spacing', 'Spacing', 'Spacing',
+            GObject.ParamFlags.READWRITE, 0, GLib.MAXINT32, 0),
+    },
+}, class GridSearchResultsLayout extends Clutter.LayoutManager {
+    _init() {
+        super._init();
+        this._spacing = 0;
+        this._lastMinWidth = 0;
+    }
+
+    vfunc_set_container(container) {
+        this._container = container;
+    }
+
+    vfunc_get_preferred_width(container, forHeight) {
+        let minWidth = 0;
+        let natWidth = 0;
+        let first = true;
+
+        for (let child = container.get_first_child();
+            child !== null;
+            child = child.get_next_sibling()) {
+            if (!child.visible)
+                continue;
+
+            const [childMinWidth, childNatWidth] = child.get_preferred_width(forHeight);
+
+            minWidth = Math.max(minWidth, childMinWidth);
+            natWidth += childNatWidth;
+
+            if (first)
+                first = false;
+            else
+                natWidth += this._spacing;
+        }
+
+        this._lastMinWidth = minWidth;
+
+        return [minWidth, natWidth];
+    }
+
+    vfunc_get_preferred_height(container, forWidth) {
+        let minHeight = 0;
+        let natHeight = 0;
+
+        for (let child = container.get_first_child();
+            child !== null;
+            child = child.get_next_sibling()) {
+            if (!child.visible)
+                continue;
+
+            const [childMinHeight, childNatHeight] = child.get_preferred_height(forWidth);
+
+            minHeight = Math.max(minHeight, childMinHeight);
+            natHeight = Math.max(natHeight, childNatHeight);
+        }
+
+        return [minHeight, natHeight];
+    }
+
+    vfunc_allocate(container, box, flags) {
+        const width = box.get_width();
+
+        const childBox = new Clutter.ActorBox();
+        childBox.x1 = 0;
+        childBox.y1 = 0;
+
+        let first = true;
+        for (let child = container.get_first_child();
+            child !== null;
+            child = child.get_next_sibling()) {
+            if (!child.visible)
+                continue;
+
+            if (first)
+                first = false;
+            else
+                childBox.x1 += this._spacing;
+
+            const [childWidth] = child.get_preferred_width(-1);
+            const [childHeight] = child.get_preferred_height(-1);
+            childBox.set_size(childWidth, childHeight);
+
+            if (childBox.x1 + childWidth > width)
+                return;
+
+            child.allocate(childBox, flags);
+
+            childBox.x1 += childWidth;
+        }
+    }
+
+    columnsForWidth(width) {
+        if (!this._container || this._lastMinWidth === 0)
+            return -1;
+
+        let nCols = 0;
+        while (width > this._lastMinWidth) {
+            width -= this._lastMinWidth;
+            if (nCols > 0)
+                width -= this._spacing;
+            nCols++;
+        }
+
+        return nCols;
+    }
+
+    get spacing() {
+        return this._spacing;
+    }
+
+    set spacing(v) {
+        if (this._spacing === v)
+            return;
+        this._spacing = v;
+        this.layout_changed();
+    }
+});
+
 var GridSearchResults = GObject.registerClass(
 class GridSearchResults extends SearchResultsBase {
     _init(provider, resultsView) {
         super._init(provider, resultsView);
 
-        this._grid = new IconGrid.IconGrid({ rowLimit: MAX_GRID_SEARCH_RESULTS_ROWS,
-                                             xAlign: St.Align.START });
+        this._grid = new St.Widget({
+            style_class: 'grid-search-results',
+            x_align: Clutter.ActorAlign.CENTER,
+        });
+        this._grid.layout_manager = new GridSearchResultsLayout();
 
-        this._bin = new St.Bin({ x_align: Clutter.ActorAlign.CENTER });
-        this._bin.set_child(this._grid);
+        this._grid.connect('style-changed', () => {
+            const node = this._grid.get_theme_node();
+            const [found, len] = node.lookup_length('spacing', false);
+            this._grid.layout_manager.spacing = found ? len : 0;
+        });
 
-        this._resultDisplayBin.set_child(this._bin);
+        const bin = new St.Bin({ x_align: Clutter.ActorAlign.CENTER });
+        bin.set_child(this._grid);
+
+        this._resultDisplayBin.set_child(bin);
     }
 
     _onDestroy() {
@@ -400,12 +529,11 @@ class GridSearchResults extends SearchResultsBase {
         if (width == 0)
             return -1;
 
-        let nCols = this._grid.columnsForWidth(width);
-        return nCols * this._grid.getRowLimit();
+        return this._grid.layout_manager.columnsForWidth(width);
     }
 
     _clearResultDisplay() {
-        this._grid.removeAll();
+        this._grid.remove_all_children();
     }
 
     _createResultDisplay(meta) {
@@ -414,14 +542,11 @@ class GridSearchResults extends SearchResultsBase {
     }
 
     _addItem(display) {
-        this._grid.addItem(display);
+        this._grid.add_child(display);
     }
 
     getFirstResult() {
-        if (this._grid.visibleItemsCount() > 0)
-            return this._grid.getItemAtIndex(0);
-        else
-            return null;
+        return this._grid.get_first_child();
     }
 });
 
