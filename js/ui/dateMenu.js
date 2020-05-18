@@ -485,7 +485,6 @@ class MessagesIndicator extends St.Icon {
 
         this._sources = [];
         this._count = 0;
-        this._doNotDisturb = false;
 
         this._settings = new Gio.Settings({
             schema_id: 'org.gnome.desktop.notifications',
