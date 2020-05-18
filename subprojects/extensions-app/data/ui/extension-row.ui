@@ -54,7 +54,7 @@
           </object>
         </child>
         <child>
-          <object class="GtkSwitch">
+          <object class="GtkSwitch" id="switch">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="valign">center</property>
