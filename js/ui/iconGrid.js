@@ -736,16 +736,6 @@ var IconGrid = GObject.registerClass({
         return usedWidth + this.leftPadding + this.rightPadding;
     }
 
-    removeAll() {
-        this._items = [];
-        this.remove_all_children();
-    }
-
-    destroyAll() {
-        this._items = [];
-        this.destroy_all_children();
-    }
-
     addItem(item, index) {
         if (!(item.icon instanceof BaseIcon))
             throw new Error('Only items with a BaseIcon icon property can be added to IconGrid');
@@ -759,14 +749,6 @@ var IconGrid = GObject.registerClass({
 
     removeItem(item) {
         this.remove_child(item);
-    }
-
-    getItemAtIndex(index) {
-        return this.get_child_at_index(index);
-    }
-
-    visibleItemsCount() {
-        return this.get_children().filter(c => c.is_visible()).length;
     }
 
     setSpacing(spacing) {
