@@ -332,6 +332,7 @@ var ExtensionRow = GObject.registerClass({
         'versionLabel',
         'authorLabel',
         'updatesIcon',
+        'switch',
         'revealButton',
         'revealer',
     ],
@@ -450,6 +451,9 @@ var ExtensionRow = GObject.registerClass({
         let action = this._actionGroup.lookup('enabled');
         action.set_state(new GLib.Variant('b', state));
         action.enabled = this._canToggle();
+
+        if (!action.enabled)
+            this._switch.active = state;
 
         this._updatesIcon.visible = this.hasUpdate;
 
