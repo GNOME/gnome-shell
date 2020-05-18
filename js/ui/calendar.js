@@ -1199,8 +1199,8 @@ class CalendarMessageList extends St.Widget {
             child: this._dndSwitch,
             label_actor: dndLabel,
         });
-        this._dndButton.bind_property('checked',
-            this._dndSwitch, 'state',
+        this._dndSwitch.bind_property('state',
+            this._dndButton, 'checked',
             GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE);
         hbox.add_child(this._dndButton);
 
