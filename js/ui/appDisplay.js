@@ -406,6 +406,8 @@ var AllView = GObject.registerClass({
             let actor = global.stage.get_actor_at_pos(Clutter.PickMode.ALL, x, y);
             if (!this._currentDialog.contains(actor))
                 this._currentDialog.popdown();
+            if (!actor.visible)
+                return;
         });
         this._eventBlocker.add_action(this._clickAction);
 
