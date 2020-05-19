@@ -9,6 +9,8 @@ const { ServiceImplementation } = imports.dbusService;
 const NotificationsIface = loadInterfaceXML('org.freedesktop.Notifications');
 const NotificationsProxy = Gio.DBusProxy.makeProxyWrapper(NotificationsIface);
 
+Gio._promisify(Gio.DBusConnection.prototype, 'call', 'call_finish');
+
 var NotificationDaemon = class extends ServiceImplementation {
     constructor() {
         super(NotificationsIface, '/org/freedesktop/Notifications');
@@ -42,7 +44,15 @@ var NotificationDaemon = class extends ServiceImplementation {
             null, null);
     }
 
-    NotifyAsync(params, invocation) {
+    async NotifyAsync(params, invocation) {
+        const pid = await this._getSenderPid(invocation.get_sender());
+        const hints = params[6];
+
+        params[6] = {
+            ...hints,
+            'sender-pid': new GLib.Variant('u', pid),
+        };
+
         this._proxy.NotifyRemote(...params, (res, error) => {
             if (this._handleError(invocation, error))
                 return;
@@ -76,5 +86,20 @@ var NotificationDaemon = class extends ServiceImplementation {
 
             invocation.return_value(new GLib.Variant('(ssss)', res));
         });
+    }
+
+    async _getSenderPid(sender) {
+        const res = await Gio.DBus.session.call(
+            'org.freedesktop.DBus',
+            '/',
+            'org.freedesktop.DBus',
+            'GetConnectionUnixProcessID',
+            new GLib.Variant('(s)', [sender]),
+            new GLib.VariantType('(u)'),
+            Gio.DBusCallFlags.NONE,
+            -1,
+            null);
+        const [pid] = res.deepUnpack();
+        return pid;
     }
 };
