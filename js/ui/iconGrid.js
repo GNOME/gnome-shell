@@ -242,6 +242,12 @@ var IconGrid = GObject.registerClass({
         this.rightPadding = 0;
         this.leftPadding = 0;
 
+        this._nPages = 0;
+        this.currentPage = 0;
+        this._rowsPerPage = 0;
+        this._spaceBetweenPages = 0;
+        this._childrenPerPage = 0;
+
         this._updateIconSizesLaterId = 0;
 
         this._items = [];
@@ -320,52 +326,29 @@ var IconGrid = GObject.registerClass({
         return this.get_children().filter(actor => actor.visible);
     }
 
-    vfunc_get_preferred_height(forWidth) {
-        if (this._fillParent)
-            // Ignore all size requests of children and request a size of 0;
-            // later we'll allocate as many children as fit the parent
-            return [0, 0];
+    _availableHeightPerPageForItems() {
+        return this.usedHeightForNRows(this._rowsPerPage) - (this.topPadding + this.bottomPadding);
+    }
 
-        let themeNode = this.get_theme_node();
-        let children = this._getVisibleChildren();
-        let nColumns;
-
-        forWidth = themeNode.adjust_for_width(forWidth);
-
-        if (forWidth < 0)
-            nColumns = children.length;
-        else
-            [nColumns] = this._computeLayout(forWidth);
-
-        let nRows;
-        if (nColumns > 0)
-            nRows = Math.ceil(children.length / nColumns);
-        else
-            nRows = 0;
-        if (this._rowLimit)
-            nRows = Math.min(nRows, this._rowLimit);
-        let totalSpacing = Math.max(0, nRows - 1) * this._getSpacing();
-        let height = nRows * this._getVItemSize() + totalSpacing + this.topPadding + this.bottomPadding;
-
-        return themeNode.adjust_preferred_height(height, height);
+    vfunc_get_preferred_height() {
+        let height = (this._availableHeightPerPageForItems() + this.bottomPadding + this.topPadding) * this._nPages + this._spaceBetweenPages * this._nPages;
+        return [height, height];
     }
 
     vfunc_allocate(box) {
-        this.set_allocation(box);
+        if (this._childrenPerPage == 0)
+            log('computePages() must be called before allocate(); pagination will not work.');
 
-        let themeNode = this.get_theme_node();
-        box = themeNode.get_content_box(box);
+        this.set_allocation(box);
 
         if (this._fillParent) {
             // Reset the passed in box to fill the parent
             let parentBox = this.get_parent().allocation;
-            let gridBox = themeNode.get_content_box(parentBox);
-            box = themeNode.get_content_box(gridBox);
+            let gridBox = this.get_theme_node().get_content_box(parentBox);
+            box = this.get_theme_node().get_content_box(gridBox);
         }
-
         let children = this._getVisibleChildren();
         let availWidth = box.x2 - box.x1;
-        let availHeight = box.y2 - box.y1;
         let spacing = this._getSpacing();
         let [nColumns, usedWidth] = this._computeLayout(availWidth);
 
@@ -381,34 +364,27 @@ var IconGrid = GObject.registerClass({
             leftEmptySpace = availWidth - usedWidth;
         }
 
-        let animating = this._clonesAnimating.length > 0;
         let x = box.x1 + leftEmptySpace + this.leftPadding;
         let y = box.y1 + this.topPadding;
         let columnIndex = 0;
-        let rowIndex = 0;
+
         let nChangedIcons = 0;
         for (let i = 0; i < children.length; i++) {
             let childBox = this._calculateChildBox(children[i], x, y, box);
 
-            if (this._rowLimit && rowIndex >= this._rowLimit ||
-                this._fillParent && childBox.y2 > availHeight - this.bottomPadding) {
-                children[i].opacity = 0;
-            } else {
-                if (!animating)
-                    children[i].opacity = 255;
+            if (animateIconPosition(children[i], childBox, nChangedIcons))
+                nChangedIcons++;
 
-                if (animateIconPosition(children[i], childBox, nChangedIcons))
-                    nChangedIcons++;
-            }
+            children[i].show();
 
             columnIndex++;
-            if (columnIndex == nColumns) {
+            if (columnIndex == nColumns)
                 columnIndex = 0;
-                rowIndex++;
-            }
 
             if (columnIndex == 0) {
                 y += this._getVItemSize() + spacing;
+                if ((i + 1) % this._childrenPerPage == 0)
+                    y +=  this._spaceBetweenPages - spacing + this.bottomPadding + this.topPadding;
                 x = box.x1 + leftEmptySpace + this.leftPadding;
             } else {
                 x += this._getHItemSize() + spacing;
@@ -460,7 +436,11 @@ var IconGrid = GObject.registerClass({
      * set of items to be animated.
      */
     _getChildrenToAnimate() {
-        return this._getVisibleChildren().filter(child => child.opacity > 0);
+        const children = this._getVisibleChildren().filter(child => child.opacity > 0);
+        let firstIndex = this._childrenPerPage * this.currentPage;
+        let lastIndex = firstIndex + this._childrenPerPage;
+
+        return children.slice(firstIndex, lastIndex);
     }
 
     _resetAnimationActors() {
@@ -800,6 +780,24 @@ var IconGrid = GObject.registerClass({
             this.topPadding = this.rightPadding = this.bottomPadding = this.leftPadding = spacing;
     }
 
+    _computePages(availWidthPerPage, availHeightPerPage) {
+        let [nColumns, usedWidth_] = this._computeLayout(availWidthPerPage);
+        let nRows;
+        let children = this._getVisibleChildren();
+        if (nColumns > 0)
+            nRows = Math.ceil(children.length / nColumns);
+        else
+            nRows = 0;
+        if (this._rowLimit)
+            nRows = Math.min(nRows, this._rowLimit);
+
+        // We want to contain the grid inside the parent box with padding
+        this._rowsPerPage = this.rowsForHeight(availHeightPerPage);
+        this._nPages = Math.ceil(nRows / this._rowsPerPage);
+        this._spaceBetweenPages = availHeightPerPage - (this.topPadding + this.bottomPadding) - this._availableHeightPerPageForItems();
+        this._childrenPerPage = nColumns * this._rowsPerPage;
+    }
+
     /*
      * This function must to be called before iconGrid allocation,
      * to know how much spacing can the grid has
@@ -825,6 +823,7 @@ var IconGrid = GObject.registerClass({
             this._updateIconSizesLaterId = Meta.later_add(Meta.LaterType.BEFORE_REDRAW,
                                                           this._updateIconSizes.bind(this));
         }
+        this._computePages(availWidth, availHeight);
     }
 
     // Note that this is ICON_SIZE as used by BaseIcon, not elsewhere in IconGrid; it's a bit messed up
@@ -836,116 +835,6 @@ var IconGrid = GObject.registerClass({
             this._items[i].icon.setIconSize(newIconSize);
 
         return GLib.SOURCE_REMOVE;
-    }
-});
-
-var PaginatedIconGrid = GObject.registerClass(
-class PaginatedIconGrid extends IconGrid {
-    _init(params) {
-        super._init(params);
-        this._nPages = 0;
-        this.currentPage = 0;
-        this._rowsPerPage = 0;
-        this._spaceBetweenPages = 0;
-        this._childrenPerPage = 0;
-    }
-
-    vfunc_get_preferred_height(_forWidth) {
-        let height = (this._availableHeightPerPageForItems() + this.bottomPadding + this.topPadding) * this._nPages + this._spaceBetweenPages * this._nPages;
-        return [height, height];
-    }
-
-    vfunc_allocate(box) {
-        if (this._childrenPerPage == 0)
-            log('computePages() must be called before allocate(); pagination will not work.');
-
-        this.set_allocation(box);
-
-        if (this._fillParent) {
-            // Reset the passed in box to fill the parent
-            let parentBox = this.get_parent().allocation;
-            let gridBox = this.get_theme_node().get_content_box(parentBox);
-            box = this.get_theme_node().get_content_box(gridBox);
-        }
-        let children = this._getVisibleChildren();
-        let availWidth = box.x2 - box.x1;
-        let spacing = this._getSpacing();
-        let [nColumns, usedWidth] = this._computeLayout(availWidth);
-
-        let leftEmptySpace;
-        switch (this._xAlign) {
-        case St.Align.START:
-            leftEmptySpace = 0;
-            break;
-        case St.Align.MIDDLE:
-            leftEmptySpace = Math.floor((availWidth - usedWidth) / 2);
-            break;
-        case St.Align.END:
-            leftEmptySpace = availWidth - usedWidth;
-        }
-
-        let x = box.x1 + leftEmptySpace + this.leftPadding;
-        let y = box.y1 + this.topPadding;
-        let columnIndex = 0;
-
-        let nChangedIcons = 0;
-        for (let i = 0; i < children.length; i++) {
-            let childBox = this._calculateChildBox(children[i], x, y, box);
-
-            if (animateIconPosition(children[i], childBox, nChangedIcons))
-                nChangedIcons++;
-
-            children[i].show();
-
-            columnIndex++;
-            if (columnIndex == nColumns)
-                columnIndex = 0;
-
-            if (columnIndex == 0) {
-                y += this._getVItemSize() + spacing;
-                if ((i + 1) % this._childrenPerPage == 0)
-                    y +=  this._spaceBetweenPages - spacing + this.bottomPadding + this.topPadding;
-                x = box.x1 + leftEmptySpace + this.leftPadding;
-            } else {
-                x += this._getHItemSize() + spacing;
-            }
-        }
-    }
-
-    // Overridden from IconGrid
-    _getChildrenToAnimate() {
-        let children = super._getChildrenToAnimate();
-        let firstIndex = this._childrenPerPage * this.currentPage;
-        let lastIndex = firstIndex + this._childrenPerPage;
-
-        return children.slice(firstIndex, lastIndex);
-    }
-
-    _computePages(availWidthPerPage, availHeightPerPage) {
-        let [nColumns, usedWidth_] = this._computeLayout(availWidthPerPage);
-        let nRows;
-        let children = this._getVisibleChildren();
-        if (nColumns > 0)
-            nRows = Math.ceil(children.length / nColumns);
-        else
-            nRows = 0;
-        if (this._rowLimit)
-            nRows = Math.min(nRows, this._rowLimit);
-
-        // We want to contain the grid inside the parent box with padding
-        this._rowsPerPage = this.rowsForHeight(availHeightPerPage);
-        this._nPages = Math.ceil(nRows / this._rowsPerPage);
-        this._spaceBetweenPages = availHeightPerPage - (this.topPadding + this.bottomPadding) - this._availableHeightPerPageForItems();
-        this._childrenPerPage = nColumns * this._rowsPerPage;
-    }
-
-    adaptToSize(availWidth, availHeight) {
-        super.adaptToSize(availWidth, availHeight);
-        this._computePages(availWidth, availHeight);
-    }
-
-    _availableHeightPerPageForItems() {
-        return this.usedHeightForNRows(this._rowsPerPage) - (this.topPadding + this.bottomPadding);
     }
 
     nPages() {
