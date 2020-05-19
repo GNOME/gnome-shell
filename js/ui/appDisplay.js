@@ -453,11 +453,11 @@ class AppDisplay extends BaseAppView {
     }
 
     _redisplay() {
-        super._redisplay();
-
         this._folderIcons.forEach(icon => {
             icon.view._redisplay();
         });
+
+        super._redisplay();
         this._refilterApps();
     }
 
