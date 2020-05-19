@@ -19,9 +19,6 @@ const Util = imports.misc.util;
 const SystemActions = imports.misc.systemActions;
 
 var MENU_POPUP_TIMEOUT = 600;
-var MAX_COLUMNS = 6;
-var MIN_COLUMNS = 4;
-var MIN_ROWS = 4;
 
 var INACTIVE_GRID_OPACITY = 77;
 // This time needs to be less than IconGrid.EXTRA_SPACE_ANIMATION_TIME
@@ -32,7 +29,6 @@ var FOLDER_SUBICON_FRACTION = .4;
 var VIEWS_SWITCH_TIME = 400;
 var VIEWS_SWITCH_ANIMATION_DELAY = 100;
 
-var PAGE_SWITCH_TIME = 250;
 var SCROLL_TIMEOUT_TIME = 150;
 
 var APP_ICON_SCALE_IN_TIME = 500;
@@ -124,17 +120,10 @@ var BaseAppView = GObject.registerClass({
         'view-loaded': {},
     },
 }, class BaseAppView extends St.Widget {
-    _init(params = {}, gridParams) {
+    _init(params = {}) {
         super._init(params);
 
-        gridParams = Params.parse(gridParams, {
-            columnLimit: MAX_COLUMNS,
-            minRows: MIN_ROWS,
-            minColumns: MIN_COLUMNS,
-            padWithSpacing: true,
-        }, true);
-
-        this._grid = new IconGrid.IconGrid(gridParams);
+        this._grid = new IconGrid.IconGrid();
         this._grid.connect('child-focused', (grid, actor) => {
             this._childFocused(actor);
         });
@@ -184,7 +173,7 @@ var BaseAppView = GObject.registerClass({
             let iconIndex = newApps.indexOf(icon);
 
             this._orderedItems.splice(iconIndex, 0, icon);
-            this._grid.addItem(icon, iconIndex);
+            this._grid.addItem(icon);
             this._items.set(icon.id, icon);
         });
 
@@ -334,19 +323,13 @@ class AppDisplay extends BaseAppView {
         });
         this.add_actor(this._stack);
 
-        let box = new St.BoxLayout({
-            vertical: true,
-            y_align: Clutter.ActorAlign.START,
-        });
-        box.add_child(this._grid);
-
         this._scrollView = new St.ScrollView({
             style_class: 'all-apps',
             x_expand: true,
             y_expand: true,
             reactive: true,
         });
-        this._scrollView.add_actor(box);
+        this._scrollView.add_actor(this._grid);
         this._stack.add_actor(this._scrollView);
 
         this._eventBlocker = new St.Widget({
@@ -375,8 +358,6 @@ class AppDisplay extends BaseAppView {
         this.add_actor(this._pageIndicators);
 
         this._folderIcons = [];
-
-        this._grid.currentPage = 0;
 
         this._scrollView.connect('scroll-event', this._onScroll.bind(this));
 
@@ -499,6 +480,16 @@ class AppDisplay extends BaseAppView {
         this.selectApp(item.id);
     }
 
+    _isItemInFolder(itemId) {
+        for (let folder of this._folderIcons) {
+            let folderApps = folder.getAppIds();
+            if (folderApps.some(appId => appId === itemId))
+                return true;
+        }
+
+        return false;
+    }
+
     _refilterApps() {
         let filteredApps = this._orderedItems.filter(icon => !icon.visible);
 
@@ -574,6 +565,7 @@ class AppDisplay extends BaseAppView {
                 });
             }
 
+            icon.visible = !this._isItemInFolder(appId);
             appIcons.push(icon);
         });
 
@@ -623,7 +615,7 @@ class AppDisplay extends BaseAppView {
     }
 
     goToPage(pageNumber, animate = true) {
-        pageNumber = Math.clamp(pageNumber, 0, this._grid.nPages() - 1);
+        pageNumber = Math.clamp(pageNumber, 0, this._grid.nPages - 1);
 
         if (this._grid.currentPage === pageNumber &&
             this._displayingDialog &&
@@ -632,23 +624,7 @@ class AppDisplay extends BaseAppView {
         if (this._displayingDialog && this._currentDialog)
             this._currentDialog.popdown();
 
-        if (!this.mapped) {
-            this._adjustment.value = this._grid.getPageY(pageNumber);
-            this._pageIndicators.setCurrentPosition(pageNumber);
-            this._grid.currentPage = pageNumber;
-            return;
-        }
-
-        if (this._grid.currentPage === pageNumber)
-            return;
-
-        this._grid.currentPage = pageNumber;
-
-        // Animate the change between pages.
-        this._adjustment.ease(this._grid.getPageY(this._grid.currentPage), {
-            mode: Clutter.AnimationMode.EASE_OUT_CUBIC,
-            duration: animate ? PAGE_SWITCH_TIME : 0,
-        });
+        this._grid.goToPage(pageNumber, animate);
     }
 
     _onScroll(actor, event) {
@@ -688,7 +664,7 @@ class AppDisplay extends BaseAppView {
         adjustment.remove_transition('value');
 
         let progress = adjustment.value / adjustment.page_size;
-        let points = Array.from({ length: this._grid.nPages() }, (v, i) => i);
+        let points = Array.from({ length: this._grid.nPages }, (v, i) => i);
 
         tracker.confirmSwipe(this._scrollView.height,
             points, progress, Math.round(progress));
@@ -789,21 +765,15 @@ class AppDisplay extends BaseAppView {
         box = this._grid.get_theme_node().get_content_box(box);
         let availWidth = box.x2 - box.x1;
         let availHeight = box.y2 - box.y1;
-        let oldNPages = this._grid.nPages();
+        let oldNPages = this._grid.nPages;
 
         this._grid.adaptToSize(availWidth, availHeight);
 
-        let fadeOffset = Math.min(this._grid.topPadding,
-                                  this._grid.bottomPadding);
-        this._scrollView.update_fade_effect(fadeOffset, 0);
-        if (fadeOffset > 0)
-            this._scrollView.get_effect('fade').fade_edges = true;
-
-        if (this._availWidth != availWidth || this._availHeight != availHeight || oldNPages != this._grid.nPages()) {
+        if (this._availWidth != availWidth || this._availHeight != availHeight || oldNPages != this._grid.nPages) {
             Meta.later_add(Meta.LaterType.BEFORE_REDRAW, () => {
                 this._adjustment.value = 0;
                 this._grid.currentPage = 0;
-                this._pageIndicators.setNPages(this._grid.nPages());
+                this._pageIndicators.setNPages(this._grid.nPages);
                 this._pageIndicators.setCurrentPosition(0);
                 return GLib.SOURCE_REMOVE;
             });
@@ -1060,8 +1030,6 @@ class FolderView extends BaseAppView {
             layout_manager: new Clutter.BinLayout(),
             x_expand: true,
             y_expand: true,
-        }, {
-            minRows: 1,
         });
 
         // If it not expand, the parent doesn't take into account its preferred_width when allocating
@@ -1140,20 +1108,6 @@ class FolderView extends BaseAppView {
         this._parentAvailableHeight = height;
 
         this._grid.adaptToSize(width, height);
-
-        // To avoid the fade effect being applied to the unscrolled grid,
-        // the offset would need to be applied after adjusting the padding;
-        // however the final padding is expected to be too small for the
-        // effect to look good, so use the unadjusted padding
-        let fadeOffset = Math.min(this._grid.topPadding,
-                                  this._grid.bottomPadding);
-        this._scrollView.update_fade_effect(fadeOffset, 0);
-
-        // Set extra padding to avoid popup or close button being cut off
-        this._grid.topPadding = Math.max(this._grid.topPadding, 0);
-        this._grid.bottomPadding = Math.max(this._grid.bottomPadding, 0);
-        this._grid.leftPadding = Math.max(this._grid.leftPadding, 0);
-        this._grid.rightPadding = Math.max(this._grid.rightPadding, 0);
     }
 
     _loadApps() {
@@ -1686,8 +1640,6 @@ var AppFolderDialog = GObject.registerClass({
         this._view.adaptToSize(
             contentBox.get_width(),
             contentBox.get_height() - entryBoxHeight - spacing);
-
-        this._view._grid.topPadding = 0;
 
         super.vfunc_allocate(box);
 

@@ -1,17 +1,13 @@
 /* App Grid */
 
 $app_icon_size: 96px;
-$app_icon_padding: 24px;
 
 // app icons
 .icon-grid {
-  -shell-grid-horizontal-item-size: $app_icon_size + $app_icon_padding * 2;
-  -shell-grid-vertical-item-size: $app_icon_size + $app_icon_padding * 2;
-  spacing: $base_spacing * 6;
-
-  .overview-icon {
-    icon-size: $app_icon_size;
-  }
+  row-spacing: $base_spacing * 6;
+  column-spacing: $base_spacing * 6;
+  max-row-spacing: $base_spacing * 12;
+  max-column-spacing: $base_spacing * 12;
 }
 
 /* App Icons */
