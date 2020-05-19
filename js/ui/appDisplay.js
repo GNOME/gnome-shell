@@ -124,9 +124,6 @@ var BaseAppView = GObject.registerClass({
         super._init(params);
 
         this._grid = new IconGrid.IconGrid();
-        this._grid.connect('child-focused', (grid, actor) => {
-            this._childFocused(actor);
-        });
         // Standard hack for ClutterBinLayout
         this._grid.x_expand = true;
 
@@ -142,10 +139,6 @@ var BaseAppView = GObject.registerClass({
         this._parentalControlsManager.connect('app-filter-changed', () => {
             this._redisplay();
         });
-    }
-
-    _childFocused(_actor) {
-        // Nothing by default
     }
 
     _redisplay() {
@@ -732,11 +725,6 @@ class AppDisplay extends BaseAppView {
         });
     }
 
-    _childFocused(icon) {
-        let itemPage = this._grid.getItemPage(icon);
-        this.goToPage(itemPage);
-    }
-
     _updateIconOpacities(folderOpen) {
         for (let icon of this._items.values()) {
             let opacity;
@@ -1062,10 +1050,6 @@ class FolderView extends BaseAppView {
         this._scrollView.add_action(action);
 
         this._redisplay();
-    }
-
-    _childFocused(actor) {
-        Util.ensureActorVisibleInScrollView(this._scrollView, actor);
     }
 
     // Overridden from BaseAppView
