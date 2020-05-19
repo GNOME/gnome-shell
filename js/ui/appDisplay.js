@@ -138,11 +138,7 @@ var BaseAppView = GObject.registerClass({
             padWithSpacing: true,
         }, true);
 
-        if (this.use_pagination)
-            this._grid = new IconGrid.PaginatedIconGrid(gridParams);
-        else
-            this._grid = new IconGrid.IconGrid(gridParams);
-
+        this._grid = new IconGrid.IconGrid(gridParams);
         this._grid.connect('child-focused', (grid, actor) => {
             this._childFocused(actor);
         });
@@ -331,7 +327,6 @@ class AppDisplay extends BaseAppView {
             layout_manager: new Clutter.BinLayout(),
             x_expand: true,
             y_expand: true,
-            use_pagination: true,
         });
 
         this._grid._delegate = this;
