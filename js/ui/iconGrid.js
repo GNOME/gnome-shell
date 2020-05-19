@@ -1052,7 +1052,6 @@ var IconGrid = GObject.registerClass({
     Signals: {
         'pages-changed': {},
         'animation-done': {},
-        'child-focused': { param_types: [Clutter.Actor.$gtype] },
     },
 }, class IconGrid extends St.Viewport {
     _init(layoutParams = {}) {
@@ -1106,7 +1105,9 @@ var IconGrid = GObject.registerClass({
     }
 
     _childAdded(grid, child) {
-        child._iconGridKeyFocusInId = child.connect('key-focus-in', actor => this.emit('child-focused', actor));
+        child._iconGridKeyFocusInId = child.connect('key-focus-in', () => {
+            this._ensureItemIsVisible(child);
+        });
 
         child._paintVisible = child.opacity > 0;
         child._opacityChangedId = child.connect('notify::opacity', () => {
@@ -1115,6 +1116,14 @@ var IconGrid = GObject.registerClass({
             if (paintVisible !== child._paintVisible)
                 this.queue_relayout();
         });
+    }
+
+    _ensureItemIsVisible(item) {
+        if (!this.contains(item))
+            throw new Error(`${item} is not a child of IconGrid`);
+
+        const itemPage = this.layout_manager.getItemPage(item);
+        this.goToPage(itemPage);
     }
 
     _setGridMode(modeIndex) {
