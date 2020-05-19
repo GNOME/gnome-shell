@@ -389,7 +389,10 @@ var ScreenSaverDBus = class {
     constructor(screenShield) {
         this._screenShield = screenShield;
         screenShield.connect('active-changed', shield => {
-            this._dbusImpl.emit_signal('ActiveChanged', GLib.Variant.new('(b)', [shield.active]));
+            // Don't blank the screen if locking for PAYG, so the unlock code
+            // entry screen is visible e.g. after the FBE.
+            if (!Main.paygManager.isLocked)
+                this._dbusImpl.emit_signal('ActiveChanged', GLib.Variant.new('(b)', [shield.active]));
         });
         screenShield.connect('wake-up-screen', () => {
             this._dbusImpl.emit_signal('WakeUpScreen', null);
