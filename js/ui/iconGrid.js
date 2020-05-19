@@ -33,6 +33,25 @@ var APPICON_ANIMATION_OUT_TIME = 250;
 
 const ICON_POSITION_DELAY = 25;
 
+const defaultGridModes = [
+    {
+        rows: 8,
+        columns: 3,
+    },
+    {
+        rows: 6,
+        columns: 4,
+    },
+    {
+        rows: 4,
+        columns: 6,
+    },
+    {
+        rows: 3,
+        columns: 8,
+    },
+];
+
 var BaseIcon = GObject.registerClass(
 class BaseIcon extends St.Bin {
     _init(label, params) {
@@ -1149,7 +1168,9 @@ var IconGrid = GObject.registerClass({
             y_expand: true,
         });
 
+        this._gridModes = defaultGridModes;
         this._currentPage = 0;
+        this._currentMode = -1;
         this._clonesAnimating = [];
 
         this.connect('actor-added', this._childAdded.bind(this));
@@ -1187,6 +1208,38 @@ var IconGrid = GObject.registerClass({
             if (paintVisible !== child._paintVisible)
                 this.queue_relayout();
         });
+    }
+
+    _setGridMode(modeIndex) {
+        if (this._currentMode === modeIndex)
+            return;
+
+        this._currentMode = modeIndex;
+
+        if (modeIndex !== -1) {
+            const newMode = this._gridModes[modeIndex];
+
+            this.layout_manager.rows_per_page = newMode.rows;
+            this.layout_manager.columns_per_page = newMode.columns;
+        }
+    }
+
+    _findBestModeForSize(width, height) {
+        const sizeRatio = width / height;
+        let closestRatio = Infinity;
+        let bestMode = -1;
+
+        for (let modeIndex in this._gridModes) {
+            const mode = this._gridModes[modeIndex];
+            const modeRatio = mode.columns / mode.rows;
+
+            if (Math.abs(sizeRatio - modeRatio) < Math.abs(sizeRatio - closestRatio)) {
+                closestRatio = modeRatio;
+                bestMode = modeIndex;
+            }
+        }
+
+        this._setGridMode(bestMode);
     }
 
     _childRemoved(grid, child) {
@@ -1371,6 +1424,7 @@ var IconGrid = GObject.registerClass({
     }
 
     adaptToSize(width, height) {
+        this._findBestModeForSize(width, height);
         this.layout_manager.adaptToSize(width, height);
     }
 
@@ -1489,6 +1543,11 @@ var IconGrid = GObject.registerClass({
             actorClone.ease(movementParams);
             actorClone.ease(fadeParams);
         });
+    }
+
+    setGridModes(modes) {
+        this._gridModes = modes ? modes : defaultGridModes;
+        this.queue_relayout();
     }
 
     get itemsPerPage() {
