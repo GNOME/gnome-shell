@@ -23,6 +23,14 @@ var AnimationDirection = {
     OUT: 1,
 };
 
+var IconSize = {
+    HUGE: 128,
+    LARGE: 96,
+    MEDIUM: 64,
+    SMALL: 32,
+    TINY: 16,
+};
+
 var APPICON_ANIMATION_OUT_SCALE = 3;
 var APPICON_ANIMATION_OUT_TIME = 250;
 
@@ -213,6 +221,762 @@ function animateIconPosition(icon, box, nChangedIcons) {
 
     return true;
 }
+
+function swap(value, length) {
+    return length - value - 1;
+}
+
+var IconGridLayout = GObject.registerClass({
+    Properties: {
+        'allow-incomplete-pages': GObject.ParamSpec.boolean('allow-incomplete-pages',
+            'Allow incomplete pages', 'Allow incomplete pages',
+            GObject.ParamFlags.READWRITE,
+            true),
+        'column-spacing': GObject.ParamSpec.int('column-spacing',
+            'Column spacing', 'Column spacing',
+            GObject.ParamFlags.READWRITE,
+            0, GLib.MAXINT32, 0),
+        'columns-per-page': GObject.ParamSpec.int('columns-per-page',
+            'Columns per page', 'Columns per page',
+            GObject.ParamFlags.READWRITE,
+            1, GLib.MAXINT32, 1),
+        'icon-size': GObject.ParamSpec.int('icon-size',
+            'Icon size', 'Icon size',
+            GObject.ParamFlags.READABLE,
+            0, GLib.MAXINT32, 0),
+        'last-row-align': GObject.ParamSpec.enum('last-row-align',
+            'Last row align', 'Last row align',
+            GObject.ParamFlags.READWRITE,
+            Clutter.ActorAlign.$gtype,
+            Clutter.ActorAlign.FILL),
+        'orientation': GObject.ParamSpec.enum('orientation',
+            'Orientation', 'Orientation',
+            GObject.ParamFlags.READWRITE,
+            Clutter.Orientation.$gtype,
+            Clutter.Orientation.VERTICAL),
+        'page-halign': GObject.ParamSpec.enum('page-halign',
+            'Horizontal page align',
+            'Horizontal page align',
+            GObject.ParamFlags.READWRITE,
+            Clutter.ActorAlign.$gtype,
+            Clutter.ActorAlign.FILL),
+        'page-valign': GObject.ParamSpec.enum('page-valign',
+            'Vertical page align',
+            'Vertical page align',
+            GObject.ParamFlags.READWRITE,
+            Clutter.ActorAlign.$gtype,
+            Clutter.ActorAlign.FILL),
+        'row-spacing': GObject.ParamSpec.int('row-spacing',
+            'Row spacing', 'Row spacing',
+            GObject.ParamFlags.READWRITE,
+            0, GLib.MAXINT32, 0),
+        'rows-per-page': GObject.ParamSpec.int('rows-per-page',
+            'Rows per page', 'Rows per page',
+            GObject.ParamFlags.READWRITE,
+            1, GLib.MAXINT32, 1),
+    },
+    Signals: {
+        'pages-changed': {},
+    },
+}, class OmniGridLayout extends Clutter.LayoutManager {
+    _init(params = {}) {
+        params = Params.parse(params, {
+            allow_incomplete_pages: true,
+            column_spacing: 0,
+            columns_per_page: 6,
+            last_row_align: Clutter.ActorAlign.FILL,
+            orientation: Clutter.Orientation.VERTICAL,
+            page_halign: Clutter.ActorAlign.FILL,
+            page_valign: Clutter.ActorAlign.FILL,
+            row_spacing: 0,
+            rows_per_page: 4,
+        });
+
+        this._allowIncompletePages = params.allow_incomplete_pages;
+        this._columnsPerPage = params.columns_per_page;
+        this._rowsPerPage = params.rows_per_page;
+        this._orientation = params.orientation;
+        this._columnSpacing = params.column_spacing;
+        this._pageHAlign = params.page_halign;
+        this._pageVAlign = params.page_valign;
+        this._lastRowAlign = params.last_row_align;
+        this._rowSpacing = params.row_spacing;
+
+        super._init(params);
+
+        this._iconSize = IconSize.LARGE;
+        this._pageSizeChanged = false;
+        this._pageHeight = 0;
+        this._pageWidth = 0;
+        this._nPages = -1;
+
+        // [
+        //     {
+        //         children: [ itemData, itemData, itemData, ... ],
+        //     },
+        //     {
+        //         children: [ itemData, itemData, itemData, ... ],
+        //     },
+        //     {
+        //         children: [ itemData, itemData, itemData, ... ],
+        //     },
+        // ]
+        this._pages = [];
+
+        // {
+        //     item: {
+        //         actor: Clutter.Actor,
+        //         pageIndex: <index>,
+        //     },
+        //     item: {
+        //         actor: Clutter.Actor,
+        //         pageIndex: <index>,
+        //     },
+        // }
+        this._items = new Map();
+
+        this._containerDestroyedId = 0;
+        this._updateIconSizesLaterId = 0;
+    }
+
+    _findBestIconSize() {
+        let nColumns = this._columnsPerPage;
+        let nRows = this._rowsPerPage;
+        let columnSpacingPerPage = this._columnSpacing * (nColumns - 1);
+        let rowSpacingPerPage = this._rowSpacing * (nRows - 1);
+        let firstItem = this._actor.get_first_child();
+        let bestSize;
+
+        for (let size of Object.values(IconSize)) {
+            let usedWidth, usedHeight;
+
+            if (firstItem) {
+                firstItem.icon.setIconSize(size);
+                let [firstItemWidth, firstItemHeight] =
+                    firstItem.get_preferred_size();
+
+                let itemSize = Math.max(firstItemWidth, firstItemHeight);
+
+                usedWidth = itemSize * nColumns;
+                usedHeight = itemSize * nRows;
+            } else {
+                usedWidth = size * nColumns;
+                usedHeight = size * nRows;
+            }
+
+            let emptyHSpace = this._pageWidth - usedWidth - columnSpacingPerPage;
+            let emptyVSpace = this._pageHeight - usedHeight -  rowSpacingPerPage;
+
+            if (emptyHSpace >= 0 && emptyVSpace > 0) {
+                bestSize = size;
+                break;
+            }
+        }
+
+        return bestSize;
+    }
+
+    _getChildrenMaxSize() {
+        let minWidth = 0;
+        let minHeight = 0;
+
+        for (let child = this._actor.get_first_child();
+            child !== null;
+            child = child.get_next_sibling()) {
+            if (!child.visible)
+                continue;
+
+            let [childMinHeight] = child.get_preferred_height(-1);
+            let [childMinWidth] = child.get_preferred_width(-1);
+
+            minWidth = Math.max(minWidth, childMinWidth);
+            minHeight = Math.max(minHeight, childMinHeight);
+        }
+
+        return Math.max(minWidth, minHeight);
+    }
+
+    _getVisibleChildrenForPage(pageIndex) {
+        return this._pages[pageIndex].children.filter(actor => actor.visible);
+    }
+
+    _updatePages() {
+        for (let i = 0; i < this._pages.length; i++)
+            this._maybeOverflowPage(i);
+    }
+
+    _removePage(pageIndex) {
+        // Make sure to not leave any icon left here
+        this._pages[pageIndex].children.forEach(item => {
+            this._items.delete(item);
+        });
+
+        this._pages.splice(pageIndex, 1);
+        this.emit('pages-changed');
+    }
+
+    _maybeReducePage(pageIndex) {
+        if (pageIndex >= this._pages.length - 1)
+            return;
+
+        const visiblePageItems = this._getVisibleChildrenForPage(pageIndex);
+        const itemsPerPage = this._columnsPerPage * this._rowsPerPage;
+
+        // No reduce needed
+        if (visiblePageItems.length === itemsPerPage)
+            return;
+
+        const visibleNextPageItems = this._getVisibleChildrenForPage(pageIndex + 1);
+        const nMissingItems = Math.min(itemsPerPage - visiblePageItems.length, visibleNextPageItems.length);
+
+        // Append to the current page the first items of the next page
+        for (let i = 0; i < nMissingItems; i++) {
+            const reducedItem = visibleNextPageItems[0];
+
+            this._removeItemData(reducedItem);
+            this._addItemToPage(reducedItem, pageIndex, -1);
+        }
+
+        // We may have made the next page incomplete, reduce it too
+        this._maybeReducePage(pageIndex + 1);
+    }
+
+    _removeItemData(item) {
+        const itemData = this._items.get(item);
+        const pageIndex = itemData.pageIndex;
+        const page = this._pages[pageIndex];
+        const itemIndex = page.children.indexOf(item);
+
+        item.disconnect(itemData.destroyId);
+        item.disconnect(itemData.visibleId);
+
+        page.children.splice(itemIndex, 1);
+
+        // Delete the page if this is the last icon in it
+        const visibleItems = this._getVisibleChildrenForPage(pageIndex);
+        if (visibleItems.length === 0)
+            this._removePage(itemData.pageIndex);
+
+        this._items.delete(item);
+
+        if (!this._allowIncompletePages)
+            this._maybeReducePage(pageIndex);
+    }
+
+    _maybeOverflowPage(pageIndex) {
+        const visiblePageItems = this._getVisibleChildrenForPage(pageIndex);
+        const itemsPerPage = this._columnsPerPage * this._rowsPerPage;
+
+        // No overflow needed
+        if (visiblePageItems.length <= itemsPerPage)
+            return;
+
+        const nExtraItems = visiblePageItems.length - itemsPerPage;
+        for (let i = 0; i < nExtraItems; i++) {
+            let overflowIndex = visiblePageItems.length - i - 1;
+            let overflowItem = visiblePageItems[overflowIndex];
+
+            this._removeItemData(overflowItem);
+            this._addItemToPage(overflowItem, pageIndex + 1, 0);
+        }
+    }
+
+    _addItemToPage(item, pageIndex, index) {
+        // Ensure we have at least one page
+        if (this._pages.length === 0)
+            this._appendPage();
+
+        // Append a new page if necessary
+        if (pageIndex === this._pages.length)
+            this._appendPage();
+
+        if (pageIndex === -1)
+            pageIndex = this._pages.length - 1;
+
+        if (index === -1)
+            index = this._pages[pageIndex].children.length;
+
+        this._items.set(item, {
+            actor: item,
+            pageIndex,
+            destroyId: item.connect('destroy', () => this._removeItemData(item)),
+            visibleId: item.connect('notify::visible', () => {
+                const itemData = this._items.get(item);
+
+                if (item.visible)
+                    this._maybeOverflowPage(itemData.pageIndex);
+                else if (!this._allowIncompletePages)
+                    this._maybeReducePage(itemData.pageIndex);
+            }),
+        });
+
+        item.icon.setIconSize(this._iconSize);
+
+        this._pages[pageIndex].children.splice(index, 0, item);
+        this._maybeOverflowPage(pageIndex);
+    }
+
+    _appendPage() {
+        let newPage = {
+            children: [],
+        };
+
+        this._pages.push(newPage);
+        this.emit('pages-changed');
+    }
+
+    _calculateSpacing(childSize) {
+        let nColumns = this._columnsPerPage;
+        let nRows = this._rowsPerPage;
+        let usedWidth = childSize * nColumns;
+        let usedHeight = childSize * nRows;
+        let columnSpacingPerPage = this._columnSpacing * (nColumns - 1);
+        let rowSpacingPerPage = this._rowSpacing * (nRows - 1);
+        let emptyHSpace = this._pageWidth - usedWidth - columnSpacingPerPage;
+        let emptyVSpace = this._pageHeight - usedHeight -  rowSpacingPerPage;
+        let leftEmptySpace;
+        let topEmptySpace;
+        let hSpacing;
+        let vSpacing;
+
+        switch (this._pageHAlign) {
+        case Clutter.ActorAlign.START:
+            leftEmptySpace = 0;
+            hSpacing = this._columnSpacing;
+            break;
+        case Clutter.ActorAlign.CENTER:
+            leftEmptySpace = Math.floor(emptyHSpace / 2);
+            hSpacing = this._columnSpacing;
+            break;
+        case Clutter.ActorAlign.END:
+            leftEmptySpace = emptyHSpace;
+            hSpacing = this._columnSpacing;
+            break;
+        case Clutter.ActorAlign.FILL:
+            leftEmptySpace = 0;
+            hSpacing = Math.max(emptyHSpace / (nColumns - 1), this._columnSpacing);
+            break;
+        }
+
+        switch (this._pageVAlign) {
+        case Clutter.ActorAlign.START:
+            topEmptySpace = 0;
+            vSpacing = this._rowSpacing;
+            break;
+        case Clutter.ActorAlign.CENTER:
+            topEmptySpace = Math.floor(emptyVSpace / 2);
+            vSpacing = this._rowSpacing;
+            break;
+        case Clutter.ActorAlign.END:
+            topEmptySpace = emptyVSpace;
+            vSpacing = this._rowSpacing;
+            break;
+        case Clutter.ActorAlign.FILL:
+            topEmptySpace = 0;
+            vSpacing = Math.max(emptyVSpace / (nRows - 1), this._rowSpacing);
+            break;
+        }
+
+        return [leftEmptySpace, topEmptySpace, hSpacing, vSpacing];
+    }
+
+    _getLastRowAlign(items, itemIndex, childSize, spacing) {
+        let rowAlign = 0;
+        let row = Math.floor(itemIndex / this._columnsPerPage);
+        let nRows = Math.ceil(items.length / this._columnsPerPage);
+
+        // Only apply to the last row
+        if (row < nRows - 1)
+            return 0;
+
+        let firstRowIndex = row * this._columnsPerPage;
+        let lastRowIndex = Math.min((row + 1) * this._columnsPerPage - 1,
+            items.length - 1);
+        let itemsInThisRow = lastRowIndex - firstRowIndex + 1;
+        let rowWidth =
+            this._columnsPerPage * childSize + (this._columnsPerPage - 1) * spacing;
+        let usedWidth =
+            itemsInThisRow * childSize + (itemsInThisRow - 1) * spacing;
+        let availableWidth = rowWidth - usedWidth;
+
+        const isRtl =
+            Clutter.get_default_text_direction() === Clutter.TextDirection.RTL;
+
+        switch (this._lastRowAlign) {
+        case Clutter.ActorAlign.START:
+            rowAlign = 0;
+            break;
+        case Clutter.ActorAlign.CENTER:
+            rowAlign = availableWidth / 2;
+            break;
+        case Clutter.ActorAlign.END:
+            rowAlign = availableWidth;
+            break;
+        case Clutter.ActorAlign.FILL:
+            rowAlign = 0;
+            break;
+        }
+
+        return isRtl ? rowAlign * -1 : rowAlign;
+    }
+
+    _onDestroy() {
+        if (this._updateIconSizesLaterId >= 0) {
+            Meta.later_remove(this._updateIconSizesLaterId);
+            this._updateIconSizesLaterId = 0;
+        }
+    }
+
+    vfunc_set_container(container) {
+        if (this._actor) {
+            this._actor.disconnect(this._containerDestroyedId);
+            this._actor = null;
+        }
+
+        this._actor = container;
+
+        if (this._actor)
+            this._containerDestroyedId = this._actor.connect('destroy', this._onDestroy.bind(this));
+    }
+
+    vfunc_get_preferred_width(_actor, _forHeight) {
+        let minWidth = -1;
+        let natWidth = -1;
+
+        switch (this._orientation) {
+        case Clutter.Orientation.VERTICAL:
+            natWidth = this._pageWidth;
+            minWidth = IconSize.TINY;
+            break;
+
+        case Clutter.Orientation.HORIZONTAL:
+            natWidth = this._pageWidth * this._pages.length;
+            minWidth = natWidth;
+            break;
+        }
+
+        return [minWidth, natWidth];
+    }
+
+    vfunc_get_preferred_height(_actor, _forWidth) {
+        let minHeight = -1;
+        let natHeight = -1;
+
+        switch (this._orientation) {
+        case Clutter.Orientation.VERTICAL:
+            natHeight = this._pageHeight * this._pages.length;
+            minHeight = natHeight;
+            break;
+
+        case Clutter.Orientation.HORIZONTAL:
+            natHeight = this._pageHeight;
+            minHeight = IconSize.TINY;
+            break;
+        }
+
+        return [minHeight, natHeight];
+    }
+
+    vfunc_allocate() {
+        this._updatePages();
+
+        let isRtl =
+            Clutter.get_default_text_direction() === Clutter.TextDirection.RTL;
+        let childSize = this._getChildrenMaxSize();
+
+        let [leftEmptySpace, topEmptySpace, hSpacing, vSpacing] =
+            this._calculateSpacing(childSize);
+
+        let childBox = new Clutter.ActorBox();
+        childBox.set_size(childSize, childSize);
+
+        let nChangedIcons = 0;
+
+        this._pages.forEach((page, pageIndex) => {
+            let visibleItems =
+                page.children.filter(actor => actor.visible);
+
+            if (isRtl && this._orientation === Clutter.Orientation.HORIZONTAL)
+                pageIndex = swap(pageIndex, this._pages.length);
+
+            visibleItems.forEach((item, itemIndex) => {
+                let column = itemIndex % this._columnsPerPage;
+                let row = Math.floor(itemIndex / this._columnsPerPage);
+
+                if (isRtl)
+                    column = swap(column, this._columnsPerPage);
+
+                let lastRowAlign = this._getLastRowAlign(visibleItems,
+                    itemIndex, childSize, hSpacing);
+
+                // Icon position
+                let x = leftEmptySpace + lastRowAlign + column * (childSize + hSpacing);
+                let y = topEmptySpace + row * (childSize + vSpacing);
+
+                // Page start
+                switch (this._orientation) {
+                case Clutter.Orientation.HORIZONTAL:
+                    x += pageIndex * this._pageWidth;
+                    break;
+                case Clutter.Orientation.VERTICAL:
+                    y += pageIndex * this._pageHeight;
+                    break;
+                }
+
+                childBox.set_origin(x, y);
+
+                // Only ease icons when the page size didn't change
+                if (this._pageSizeChanged)
+                    item.allocate(childBox);
+                else if (animateIconPosition(item, childBox, nChangedIcons))
+                    nChangedIcons++;
+            });
+        });
+
+        this._pageSizeChanged = false;
+    }
+
+    /**
+     * addItem:
+     * @param {Clutter.Actor} item: item to append to the grid
+     * @param {int} index: position in the page
+     * @param {int} page: page number
+     *
+     * Adds @item to the grid. @item must not be part of the grid.
+     *
+     * If @index exceeds the number of items per page, @item will
+     * be added to the next page.
+     *
+     * @page must be a number between 0 and the number of pages.
+     * Adding to the page after next will create a new page.
+     */
+    addItem(item, index = -1, page = -1) {
+        if (this._items.has(item))
+            throw new Error(`Item ${item} already added to IconGridLayout`);
+
+        if (page > this._pages.length)
+            throw new Error(`Cannot add ${item} to page ${page}`);
+
+        this._addItemToPage(item, page, index);
+    }
+
+    /**
+     * appendItem:
+     * @param {Clutter.Actor} item: item to append to the grid
+     *
+     * Appends @item to the grid. @item must not be part of the grid.
+     */
+    appendItem(item) {
+        this.addItem(item);
+    }
+
+    /**
+     * removeItem:
+     * @param {Clutter.Actor} item: item to remove from the grid
+     *
+     * Removes @item to the grid. @item must be part of the grid.
+     */
+    removeItem(item) {
+        if (!this._items.has(item))
+            throw new Error(`Item ${item} is not part of the IconGridLayout`);
+
+        this._removeItemData(item);
+    }
+
+    /**
+     * getChildrenAtPage:
+     * @param {int} pageIndex: page index
+     *
+     * Retrieves the children at page @pageIndex. Children may be invisible.
+     *
+     * @returns {Array} an array of {Clutter.Actor}s
+     */
+    getChildrenAtPage(pageIndex) {
+        if (pageIndex >= this._pages.length)
+            throw new Error(`IconGridLayout does not have page ${pageIndex}`);
+
+        return [...this._pages[pageIndex].children];
+    }
+
+    // eslint-disable-next-line camelcase
+    get allow_incomplete_pages() {
+        return this._allowIncompletePages;
+    }
+
+    // eslint-disable-next-line camelcase
+    set allow_incomplete_pages(v) {
+        if (this._allowIncompletePages === v)
+            return;
+
+        this._allowIncompletePages = v;
+        this.notify('allow-incomplete-pages');
+    }
+
+    // eslint-disable-next-line camelcase
+    get column_spacing() {
+        return this._columnSpacing;
+    }
+
+    // eslint-disable-next-line camelcase
+    set column_spacing(v) {
+        if (this._columnSpacing === v)
+            return;
+
+        this._columnSpacing = v;
+        this.notify('column-spacing');
+    }
+
+    // eslint-disable-next-line camelcase
+    get columns_per_page() {
+        return this._columnsPerPage;
+    }
+
+    // eslint-disable-next-line camelcase
+    set columns_per_page(v) {
+        if (this._columnsPerPage === v)
+            return;
+
+        this._columnsPerPage = v;
+        this.notify('columns-per-page');
+    }
+
+    // eslint-disable-next-line camelcase
+    get icon_size() {
+        return this._iconSize;
+    }
+
+    // eslint-disable-next-line camelcase
+    get last_row_align() {
+        return this._lastRowAlign;
+    }
+
+    // eslint-disable-next-line camelcase
+    set last_row_align(v) {
+        if (this._lastRowAlign === v)
+            return;
+
+        this._lastRowAlign = v;
+        this.notify('last-row-align');
+    }
+
+    get nPages() {
+        return this._pages.length;
+    }
+
+    // eslint-disable-next-line camelcase
+    get page_halign() {
+        return this._pageHAlign;
+    }
+
+    // eslint-disable-next-line camelcase
+    set page_halign(v) {
+        if (this._pageHAlign === v)
+            return;
+
+        this._pageHAlign = v;
+        this.notify('page-halign');
+    }
+
+    // eslint-disable-next-line camelcase
+    get page_valign() {
+        return this._pageVAlign;
+    }
+
+    // eslint-disable-next-line camelcase
+    set page_valign(v) {
+        if (this._pageVAlign === v)
+            return;
+
+        this._pageVAlign = v;
+        this.notify('page-valign');
+    }
+
+    // eslint-disable-next-line camelcase
+    get row_spacing() {
+        return this._rowSpacing;
+    }
+
+    // eslint-disable-next-line camelcase
+    set row_spacing(v) {
+        if (this._rowSpacing === v)
+            return;
+
+        this._rowSpacing = v;
+        this.notify('row-spacing');
+    }
+
+    // eslint-disable-next-line camelcase
+    get rows_per_page() {
+        return this._rowsPerPage;
+    }
+
+    // eslint-disable-next-line camelcase
+    set rows_per_page(v) {
+        if (this._rowsPerPage === v)
+            return;
+
+        this._rowsPerPage = v;
+        this.notify('rows-per-page');
+    }
+
+    get orientation() {
+        return this._orientation;
+    }
+
+    set orientation(v) {
+        if (this._orientation === v)
+            return;
+
+        switch (v) {
+        case Clutter.Orientation.VERTICAL:
+            this.request_mode = Clutter.RequestMode.HEIGHT_FOR_WIDTH;
+            break;
+        case Clutter.Orientation.HORIZONTAL:
+            this.request_mode = Clutter.RequestMode.WIDTH_FOR_HEIGHT;
+            break;
+        }
+
+        this._orientation = v;
+        this.notify('orientation');
+    }
+
+    get pageHeight() {
+        return this._pageHeight;
+    }
+
+    get pageWidth() {
+        return this._pageWidth;
+    }
+
+    adaptToSize(pageWidth, pageHeight) {
+        if (this._pageWidth === pageWidth && this._pageHeight === pageHeight)
+            return;
+
+        this._pageWidth = pageWidth;
+        this._pageHeight = pageHeight;
+        this._pageSizeChanged = true;
+
+        if (this._updateIconSizesLaterId === 0) {
+            this._updateIconSizesLaterId =
+                Meta.later_add(Meta.LaterType.BEFORE_REDRAW, () => {
+                    const iconSize = this._findBestIconSize();
+
+                    if (this._iconSize !== iconSize) {
+                        this._iconSize = iconSize;
+
+                        this._actor.get_children().forEach(child => {
+                            child.icon.setIconSize(iconSize);
+                        });
+
+                        this.notify('icon-size');
+                    }
+
+                    this._updateIconSizesLaterId = 0;
+                    return GLib.SOURCE_REMOVE;
+                });
+        }
+    }
+});
 
 var IconGrid = GObject.registerClass({
     Signals: { 'animation-done': {},
