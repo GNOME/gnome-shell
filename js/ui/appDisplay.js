@@ -435,7 +435,6 @@ class AppDisplay extends BaseAppView {
         });
 
         super._redisplay();
-        this._refilterApps();
     }
 
     _itemNameChanged(item) {
@@ -448,39 +447,6 @@ class AppDisplay extends BaseAppView {
         this._grid.removeItem(item);
         this._grid.addItem(item, -1, newIdx);
         this.selectApp(item.id);
-    }
-
-    _isItemInFolder(itemId) {
-        for (const folder of this._folderIcons) {
-            const folderApps = folder.getAppIds();
-            if (folderApps.some(appId => appId === itemId))
-                return true;
-        }
-
-        return false;
-    }
-
-    _refilterApps() {
-        let filteredApps = this._orderedItems.filter(icon => !icon.visible);
-
-        this._orderedItems.forEach(icon => {
-            if (icon instanceof AppIcon)
-                icon.visible = true;
-        });
-
-        this._folderIcons.forEach(folder => {
-            let folderApps = folder.getAppIds();
-            folderApps.forEach(appId => {
-                let appIcon = this._items.get(appId);
-                appIcon.visible = false;
-            });
-        });
-
-        // Scale in app icons that weren't visible, but now are
-        filteredApps.filter(icon => icon.visible).forEach(icon => {
-            if (icon instanceof AppIcon)
-                icon.scaleIn();
-        });
     }
 
     getAppInfos() {
@@ -502,6 +468,7 @@ class AppDisplay extends BaseAppView {
 
         let appSys = Shell.AppSystem.get_default();
 
+        const appsInsideFolders = new Set();
         this._folderIcons = [];
 
         let folders = this._folderSettings.get_strv('folder-children');
@@ -513,8 +480,17 @@ class AppDisplay extends BaseAppView {
                 icon.connect('name-changed', this._itemNameChanged.bind(this));
                 icon.connect('apps-changed', this._redisplay.bind(this));
             }
+
+            // Don't try to display empty folders
+            if (!icon.visible) {
+                icon.destroy();
+                return;
+            }
+
             appIcons.push(icon);
             this._folderIcons.push(icon);
+
+            icon.getAppIds().forEach(appId => appsInsideFolders.add(appId));
         });
 
         // Allow dragging of the icon only if the Dash would accept a drop to
@@ -526,6 +502,9 @@ class AppDisplay extends BaseAppView {
         let favoritesWritable = global.settings.is_writable('favorite-apps');
 
         apps.forEach(appId => {
+            if (appsInsideFolders.has(appId))
+                return;
+
             let icon = this._items.get(appId);
             if (!icon) {
                 let app = appSys.lookup_app(appId);
@@ -535,7 +514,6 @@ class AppDisplay extends BaseAppView {
                 });
             }
 
-            icon.visible = !this._isItemInFolder(appId);
             appIcons.push(icon);
         });
 
