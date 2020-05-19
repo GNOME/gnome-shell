@@ -320,7 +320,12 @@ var ScreenShield = class {
             GLib.Source.set_name_by_id(this._lockTimeoutId, '[gnome-shell] this.lock');
         }
 
-        this._activateFade(this._longLightbox, STANDARD_FADE_TIME);
+        // Leave the screen on for the PAYG unlock code entry. It's difficult
+        // to distinguish the "lock due to credit expiration" case from the
+        // "lock due to idle timeout" one, and we don't want a blank screen in
+        // the former which includes right after the FBE.
+        if (!Main.paygManager.isLocked)
+            this._activateFade(this._longLightbox, STANDARD_FADE_TIME);
     }
 
     _activateFade(lightbox, time) {
@@ -654,7 +659,7 @@ var ScreenShield = class {
         this.actor.show();
 
         this._resetLockScreen({ animateLockScreen: animate,
-                                fadeToBlack: true });
+                                fadeToBlack: Main.sessionMode.currentMode != 'unlock-dialog-payg' });
         // On wayland, a crash brings down the entire session, so we don't
         // need to defend against being restarted unlocked
         if (!Meta.is_wayland_compositor())
