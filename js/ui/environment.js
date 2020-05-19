@@ -285,7 +285,7 @@ function init() {
         _easeActorProperty(this, 'value', target, params);
     };
 
-    Clutter.Actor.prototype.iterate_children = function* () {
+    Clutter.Actor.prototype[Symbol.iterator] = function* () {
         for (let c = this.get_first_child(); c; c = c.get_next_sibling())
             yield c;
     };
