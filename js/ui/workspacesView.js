@@ -615,13 +615,16 @@ class WorkspacesDisplay extends St.Widget {
     animateToOverview(fadeOnPrimary) {
         this.show();
         this._updateWorkspacesViews();
-        for (let i = 0; i < this._workspacesViews.length; i++) {
-            let animationType;
-            if (fadeOnPrimary && i == this._primaryIndex)
-                animationType = AnimationType.FADE;
-            else
-                animationType = AnimationType.ZOOM;
-            this._workspacesViews[i].animateToOverview(animationType);
+
+        if (this._actualGeometry && this._fullGeometry) {
+            for (let i = 0; i < this._workspacesViews.length; i++) {
+                let animationType;
+                if (fadeOnPrimary && i == this._primaryIndex)
+                    animationType = AnimationType.FADE;
+                else
+                    animationType = AnimationType.ZOOM;
+                this._workspacesViews[i].animateToOverview(animationType);
+            }
         }
 
         this._restackedNotifyId =
