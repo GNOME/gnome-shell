@@ -67,6 +67,19 @@ $app_grid_fg_color: #fff;
       & > StIcon { icon-size: 16px }
     }
   }
+
+  & .icon-grid {
+    row-spacing: $base_spacing * 2;
+    column-spacing: $base_spacing * 5;
+  }
+
+  & .page-indicators {
+    margin-bottom: 18px;
+
+    .page-indicator {
+      padding: 15px 12px;
+    }
+  }
 }
 .app-folder-dialog-container {
   padding: 12px;
