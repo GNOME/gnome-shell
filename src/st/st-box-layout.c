@@ -53,10 +53,7 @@
 
 #include "st-private.h"
 #include "st-scrollable.h"
-#include "st-box-layout-child.h"
 
-
-static void st_box_container_iface_init (ClutterContainerIface *iface);
 
 enum {
   PROP_0,
@@ -71,16 +68,7 @@ struct _StBoxLayoutPrivate
   StAdjustment *vadjustment;
 };
 
-G_DEFINE_TYPE_WITH_CODE (StBoxLayout, st_box_layout, ST_TYPE_VIEWPORT,
-                         G_ADD_PRIVATE (StBoxLayout)
-                         G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_CONTAINER,
-                                                st_box_container_iface_init));
-
-static void
-st_box_container_iface_init (ClutterContainerIface *iface)
-{
-  iface->child_meta_type = ST_TYPE_BOX_LAYOUT_CHILD;
-}
+G_DEFINE_TYPE_WITH_PRIVATE (StBoxLayout, st_box_layout, ST_TYPE_VIEWPORT);
 
 
 static void
