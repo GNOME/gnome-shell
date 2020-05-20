@@ -36,8 +36,8 @@ $app_grid_fg_color: #fff;
 .app-folder-dialog {
   border-radius: $modal_radius * 1.5;
   border: 1px solid $osd_outer_borders_color;
-  spacing: 12px;
   background-color: transparentize(darken($osd_bg_color,10%), 0.05);
+  padding: 12px;
 
   & .folder-name-container {
     padding: 24px 36px 0;
@@ -46,7 +46,7 @@ $app_grid_fg_color: #fff;
     & .folder-name-label,
     & .folder-name-entry {
       font-size: 18pt;
-      font-weight: bold;
+      font-weight: 800;
     }
 
     & .folder-name-entry { width: 300px }
@@ -68,8 +68,8 @@ $app_grid_fg_color: #fff;
 }
 .app-folder-dialog-container {
   padding: 12px;
-  width: 800px;
-  height: 600px;
+  width: 620px;
+  height: 620px;
 }
 
 .app-folder-icon {
