@@ -159,12 +159,16 @@ var BaseAppView = GObject.registerClass({
         });
 
         // Add new app icons
+        const { itemsPerPage } = this._grid;
         addedApps.forEach(icon => {
             let iconIndex = newApps.indexOf(icon);
 
             this._orderedItems.splice(iconIndex, 0, icon);
-            this._grid.addItem(icon);
             this._items.set(icon.id, icon);
+
+            const page = Math.floor(iconIndex / itemsPerPage);
+            const position = iconIndex % itemsPerPage;
+            this._grid.addItem(icon, page, position);
         });
 
         this._viewIsReady = true;
@@ -445,7 +449,12 @@ class AppDisplay extends BaseAppView {
         let newIdx = Util.insertSorted(this._orderedItems, item, this._compareItems);
 
         this._grid.removeItem(item);
-        this._grid.addItem(item, -1, newIdx);
+
+        const { itemsPerPage } = this._grid;
+        const page = Math.floor(newIdx / itemsPerPage);
+        const position = newIdx % itemsPerPage;
+        this._grid.addItem(item, page, position);
+
         this.selectApp(item.id);
     }
 
