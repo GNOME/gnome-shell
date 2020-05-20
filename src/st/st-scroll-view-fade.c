@@ -389,6 +389,12 @@ st_scroll_view_fade_class_init (StScrollViewFadeClass *klass)
   offscreen_class->create_texture = st_scroll_view_fade_create_texture;
   offscreen_class->paint_target = st_scroll_view_fade_paint_target;
 
+  /**
+   * StScrollViewFade:vfade-offset:
+   *
+   * The height of area which is faded at the top and bottom edges of the
+   * #StScrollViewFade.
+   */
   props[PROP_VFADE_OFFSET] =
     g_param_spec_float ("vfade-offset",
                         "Vertical Fade Offset",
@@ -396,6 +402,12 @@ st_scroll_view_fade_class_init (StScrollViewFadeClass *klass)
                         0.f, G_MAXFLOAT, DEFAULT_FADE_OFFSET,
                         ST_PARAM_READWRITE);
 
+  /**
+   * StScrollViewFade:hfade-offset:
+   *
+   * The height of area which is faded at the left and right edges of the
+   * #StScrollViewFade.
+   */
   props[PROP_HFADE_OFFSET] =
     g_param_spec_float ("hfade-offset",
                         "Horizontal Fade Offset",
@@ -403,6 +415,11 @@ st_scroll_view_fade_class_init (StScrollViewFadeClass *klass)
                         0.f, G_MAXFLOAT, DEFAULT_FADE_OFFSET,
                         ST_PARAM_READWRITE);
 
+  /**
+   * StScrollViewFade:fade-edges:
+   *
+   * Whether the faded area should extend to the edges of the #StScrollViewFade.
+   */
   props[PROP_FADE_EDGES] =
     g_param_spec_boolean ("fade-edges",
                           "Fade Edges",
@@ -420,6 +437,13 @@ st_scroll_view_fade_init (StScrollViewFade *self)
   self->hfade_offset = DEFAULT_FADE_OFFSET;
 }
 
+/**
+ * st_scroll_view_fade_new:
+ *
+ * Create a new #StScrollViewFade.
+ *
+ * Returns: (transfer full): a new #StScrollViewFade
+ */
 ClutterEffect *
 st_scroll_view_fade_new (void)
 {

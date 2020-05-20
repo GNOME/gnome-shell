@@ -133,12 +133,23 @@ st_password_entry_class_init (StPasswordEntryClass *klass)
 
   st_entry_class->secondary_icon_clicked = st_password_entry_secondary_icon_clicked;
 
+  /**
+   * StPasswordEntry:password-visible:
+   *
+   * Whether the text in the entry is masked for privacy.
+   */
   props[PROP_PASSWORD_VISIBLE] = g_param_spec_boolean ("password-visible",
                                                        "Password visible",
-                                                       "Whether to text in the entry is masked or not",
+                                                       "Whether the text in the entry is masked or not",
                                                        FALSE,
                                                        ST_PARAM_READWRITE);
 
+  /**
+   * StPasswordEntry:show-peek-icon:
+   *
+   * Whether to display an icon button to toggle the masking enabled by the
+   * #StPasswordEntry:password-visible property.
+   */
   props[PROP_SHOW_PEEK_ICON] = g_param_spec_boolean ("show-peek-icon",
                                                      "Show peek icon",
                                                      "Whether to show the password peek icon",
@@ -202,12 +213,15 @@ st_password_entry_new (void)
 /**
  * st_password_entry_set_show_peek_icon:
  * @entry: a #StPasswordEntry
- * @value: #TRUE to show the peek-icon in the entry, #FALSE otherwise
+ * @value: %TRUE to show the peek-icon in the entry
  *
- * Sets whether to show or hide the peek-icon in the password entry.
+ * Sets whether to show or hide the peek-icon in the password entry. If %TRUE,
+ * a icon button for temporarily unmasking the password will be shown at the
+ * end of the entry.
  */
 void
-st_password_entry_set_show_peek_icon (StPasswordEntry *entry, gboolean value)
+st_password_entry_set_show_peek_icon (StPasswordEntry *entry,
+                                      gboolean         value)
 {
   StPasswordEntryPrivate *priv;
 
@@ -231,6 +245,8 @@ st_password_entry_set_show_peek_icon (StPasswordEntry *entry, gboolean value)
  * @entry: a #StPasswordEntry
  *
  * Gets whether peek-icon is shown or hidden in the password entry.
+ *
+ * Returns: %TRUE if visible
  */
 gboolean
 st_password_entry_get_show_peek_icon (StPasswordEntry *entry)
@@ -246,12 +262,13 @@ st_password_entry_get_show_peek_icon (StPasswordEntry *entry)
 /**
  * st_password_entry_set_password_visible:
  * @entry: a #StPasswordEntry
- * @value: #TRUE to show the password in the entry, #FALSE otherwise
+ * @value: %TRUE to show the password in the entry, #FALSE otherwise
  *
  * Sets whether to show or hide text in the password entry.
  */
 void
-st_password_entry_set_password_visible (StPasswordEntry *entry, gboolean value)
+st_password_entry_set_password_visible (StPasswordEntry *entry,
+                                        gboolean         value)
 {
   StPasswordEntryPrivate *priv;
   ClutterActor *clutter_text;
@@ -284,6 +301,8 @@ st_password_entry_set_password_visible (StPasswordEntry *entry, gboolean value)
  * @entry: a #StPasswordEntry
  *
  * Gets whether the text is masked in the password entry.
+ *
+ * Returns: %TRUE if visible
  */
 gboolean
 st_password_entry_get_password_visible (StPasswordEntry *entry)

@@ -72,7 +72,7 @@ st_generic_accessible_class_init (StGenericAccessibleClass *klass)
    * @self. Right now we only care about doubles, so the value is
    * directly returned by the signal.
    *
-   * Return value: value of the current element.
+   * Returns: value of the current element.
    */
   st_generic_accessible_signals[GET_CURRENT_VALUE] =
     g_signal_new ("get-current-value",
@@ -90,7 +90,7 @@ st_generic_accessible_class_init (StGenericAccessibleClass *klass)
    * @self. Right now we only care about doubles, so the value is
    * directly returned by the signal.
    *
-   * Return value: maximum value of the accessible.
+   * Returns: maximum value of the accessible.
    */
   st_generic_accessible_signals[GET_MAXIMUM_VALUE] =
     g_signal_new ("get-maximum-value",
@@ -108,7 +108,7 @@ st_generic_accessible_class_init (StGenericAccessibleClass *klass)
    * @self. Right now we only care about doubles, so the value is
    * directly returned by the signal.
    *
-   * Return value: minimum value of the accessible.
+   * Returns: minimum value of the accessible.
    */
   st_generic_accessible_signals[GET_MINIMUM_VALUE] =
     g_signal_new ("get-minimum-value",
@@ -126,7 +126,7 @@ st_generic_accessible_class_init (StGenericAccessibleClass *klass)
    * @self. Right now we only care about doubles, so the value is
    * directly returned by the signal.
    *
-   * Return value: value of the current element.
+   * Returns: value of the current element.
    */
   st_generic_accessible_signals[GET_MINIMUM_INCREMENT] =
     g_signal_new ("get-minimum-increment",
@@ -221,6 +221,16 @@ atk_value_iface_init (AtkValueIface *iface)
   iface->set_current_value = st_generic_accessible_set_current_value;
 }
 
+/**
+ * st_generic_accessible_new_for_actor:
+ * @actor: a #Clutter Actor
+ *
+ * Create a new #StGenericAccessible for @actor.
+ *
+ * This is useful only for custom widgets that need a proxy for #AtkObject.
+ *
+ * Returns: (transfer full): a new #AtkObject
+ */
 AtkObject*
 st_generic_accessible_new_for_actor (ClutterActor *actor)
 {
