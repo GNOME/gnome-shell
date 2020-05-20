@@ -100,6 +100,12 @@ st_texture_cache_class_init (StTextureCacheClass *klass)
   gobject_class->dispose = st_texture_cache_dispose;
   gobject_class->finalize = st_texture_cache_finalize;
 
+  /**
+   * StTextureCache::icon-theme-changed:
+   * @self: a #StTextureCache
+   *
+   * Emitted when the icon theme is changed.
+   */
   signals[ICON_THEME_CHANGED] =
     g_signal_new ("icon-theme-changed",
                   G_TYPE_FROM_CLASS (klass),
@@ -108,6 +114,13 @@ st_texture_cache_class_init (StTextureCacheClass *klass)
                   NULL, NULL, NULL,
                   G_TYPE_NONE, 0);
 
+  /**
+   * StTextureCache::texture-file-changed:
+   * @self: a #StTextureCache
+   * @file: a #GFile
+   *
+   * Emitted when the source file of a texture is changed.
+   */
   signals[TEXTURE_FILE_CHANGED] =
     g_signal_new ("texture-file-changed",
                   G_TYPE_FROM_CLASS (klass),
@@ -799,7 +812,7 @@ st_texture_cache_free_bind (gpointer data)
 
 /**
  * st_texture_cache_bind_cairo_surface_property:
- * @cache:
+ * @cache: A #StTextureCache
  * @object: A #GObject with a property @property_name of type #cairo_surface_t
  * @property_name: Name of a property
  *
@@ -810,7 +823,7 @@ st_texture_cache_free_bind (gpointer data)
  * If the source object is destroyed, the texture will continue to show the last
  * value of the property.
  *
- * Return value: (transfer none): A new #GIcon
+ * Returns: (transfer none): A new #GIcon
  */
 GIcon *
 st_texture_cache_bind_cairo_surface_property (StTextureCache    *cache,
@@ -879,7 +892,7 @@ st_texture_cache_load (StTextureCache       *cache,
 
 /**
  * ensure_request:
- * @cache:
+ * @cache: A #StTextureCache
  * @key: A cache key
  * @policy: Cache policy
  * @request: (out): If no request is outstanding, one will be created and returned here
@@ -932,8 +945,8 @@ ensure_request (StTextureCache        *cache,
 
 /**
  * st_texture_cache_load_gicon:
- * @cache: The texture cache instance
- * @theme_node: (nullable): The #StThemeNode to use for colors, or NULL
+ * @cache: A #StTextureCache
+ * @theme_node: (nullable): The #StThemeNode to use for colors, or %NULL
  *                            if the icon must not be recolored
  * @icon: the #GIcon to load
  * @size: Size of themed
@@ -944,7 +957,7 @@ ensure_request (StTextureCache        *cache,
  * icon isn't loaded already, the texture will be filled
  * asynchronously.
  *
- * Return Value: (transfer none): A new #ClutterActor for the icon, or %NULL if not found
+ * Returns: (transfer none) (nullable): A new #ClutterActor for the icon, or %NULL if not found
  */
 ClutterActor *
 st_texture_cache_load_gicon (StTextureCache    *cache,
@@ -1371,7 +1384,7 @@ st_texture_cache_load_sliced_image (StTextureCache *cache,
 
 /**
  * st_texture_cache_load_file_async:
- * @cache: The texture cache instance
+ * @cache: A #StTextureCache
  * @file: a #GFile of the image file from which to create a pixbuf
  * @available_width: available width for the image, can be -1 if not limited
  * @available_height: available height for the image, can be -1 if not limited
@@ -1382,7 +1395,7 @@ st_texture_cache_load_sliced_image (StTextureCache *cache,
  * size of zero.  At some later point, either the image will be loaded successfully
  * and at that point size will be negotiated, or upon an error, no image will be set.
  *
- * Return value: (transfer none): A new #ClutterActor with no image loaded initially.
+ * Returns: (transfer none): A new #ClutterActor with no image loaded initially.
  */
 ClutterActor *
 st_texture_cache_load_file_async (StTextureCache *cache,
@@ -1612,7 +1625,7 @@ static StTextureCache *instance = NULL;
 /**
  * st_texture_cache_get_default:
  *
- * Return value: (transfer none): The global texture cache
+ * Returns: (transfer none): The global texture cache
  */
 StTextureCache*
 st_texture_cache_get_default (void)
@@ -1622,6 +1635,13 @@ st_texture_cache_get_default (void)
   return instance;
 }
 
+/**
+ * st_texture_cache_rescan_icon_theme:
+ *
+ * Rescan the current icon theme, if necessary.
+ *
+ * Returns: %TRUE if the icon theme has changed and needed to be reloaded.
+ */
 gboolean
 st_texture_cache_rescan_icon_theme (StTextureCache *cache)
 {

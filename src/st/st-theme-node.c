@@ -180,11 +180,11 @@ split_on_whitespace (const gchar *s)
  * @pseudo_class: (nullable): a whitespace-separated list of pseudo-classes
  *   (like 'hover' or 'visited') to match CSS rules against
  *
- * Creates a new #StThemeNode. Once created, a node is immutable. Of any
+ * Creates a new #StThemeNode. Once created, a node is immutable. If any
  * of the attributes of the node (like the @element_class) change the node
  * and its child nodes must be destroyed and recreated.
  *
- * Return value: (transfer full): the theme node
+ * Returns: (transfer full): a new #StThemeNode
  */
 StThemeNode *
 st_theme_node_new (StThemeContext    *context,
@@ -229,8 +229,8 @@ st_theme_node_new (StThemeContext    *context,
  *
  * Gets the parent themed element node.
  *
- * Return value: (transfer none): the parent #StThemeNode, or %NULL if this
- *  is the root node of the tree of theme elements.
+ * Returns: (nullable) (transfer none): the parent #StThemeNode, or %NULL if
+ *  this is the root node of the tree of theme elements.
  */
 StThemeNode *
 st_theme_node_get_parent (StThemeNode *node)
@@ -246,7 +246,7 @@ st_theme_node_get_parent (StThemeNode *node)
  *
  * Gets the theme stylesheet set that styles this node
  *
- * Return value: (transfer none): the theme stylesheet set
+ * Returns: (transfer none): the theme stylesheet set
  */
 StTheme *
 st_theme_node_get_theme (StThemeNode *node)
@@ -256,6 +256,14 @@ st_theme_node_get_theme (StThemeNode *node)
   return node->theme;
 }
 
+/**
+ * st_theme_node_get_element_type:
+ * @node: a #StThemeNode
+ *
+ * Get the element #GType for @node.
+ *
+ * Returns: the element type
+ */
 GType
 st_theme_node_get_element_type (StThemeNode *node)
 {
@@ -264,6 +272,14 @@ st_theme_node_get_element_type (StThemeNode *node)
   return node->element_type;
 }
 
+/**
+ * st_theme_node_get_element_id:
+ * @node: a #StThemeNode
+ *
+ * Get the unqiue element ID for @node.
+ *
+ * Returns: (transfer none): the element's ID
+ */
 const char *
 st_theme_node_get_element_id (StThemeNode *node)
 {
@@ -274,6 +290,9 @@ st_theme_node_get_element_id (StThemeNode *node)
 
 /**
  * st_theme_node_get_element_classes:
+ * @node: a #StThemeNode
+ *
+ * Get the list of element classes for @node.
  *
  * Returns: (transfer none): the element's classes
  */
@@ -287,6 +306,9 @@ st_theme_node_get_element_classes (StThemeNode *node)
 
 /**
  * st_theme_node_get_pseudo_classes:
+ * @node: a #StThemeNode
+ *
+ * Get the list of pseudo-classes for @node (eg. `:focused`).
  *
  * Returns: (transfer none): the element's pseudo-classes
  */
@@ -307,21 +329,13 @@ st_theme_node_get_pseudo_classes (StThemeNode *node)
  * the same CSS rules and have the same style properties. However, two
  * nodes that have ended up with identical style properties do not
  * necessarily compare equal.
- * In detail, @node_a and @node_b are considered equal iff
- * <itemizedlist>
- *   <listitem>
- *     <para>they share the same #StTheme and #StThemeContext</para>
- *   </listitem>
- *   <listitem>
- *     <para>they have the same parent</para>
- *   </listitem>
- *   <listitem>
- *     <para>they have the same element type</para>
- *   </listitem>
- *   <listitem>
- *     <para>their id, class, pseudo-class and inline-style match</para>
- *   </listitem>
- * </itemizedlist>
+ *
+ * In detail, @node_a and @node_b are considered equal if and only if:
+ *
+ * - they share the same #StTheme and #StThemeContext
+ * - they have the same parent
+ * - they have the same element type
+ * - their id, class, pseudo-class and inline-style match
  *
  * Returns: %TRUE if @node_a equals @node_b
  */
@@ -383,6 +397,14 @@ st_theme_node_equal (StThemeNode *node_a, StThemeNode *node_b)
   return TRUE;
 }
 
+/**
+ * st_theme_node_hash:
+ * @node: a #StThemeNode
+ *
+ * Converts @node to a hash value.
+ *
+ * Returns: a hash value corresponding to @node
+ */
 guint
 st_theme_node_hash (StThemeNode *node)
 {
@@ -637,7 +659,7 @@ get_color_from_term (StThemeNode  *node,
  *
  * See also st_theme_node_get_color(), which provides a simpler API.
  *
- * Return value: %TRUE if the property was found in the properties for this
+ * Returns: %TRUE if the property was found in the properties for this
  *  theme node (or in the properties of parent nodes when inheriting.)
  */
 gboolean
@@ -727,7 +749,7 @@ st_theme_node_get_color (StThemeNode  *node,
  *
  * See also st_theme_node_get_double(), which provides a simpler API.
  *
- * Return value: %TRUE if the property was found in the properties for this
+ * Returns: %TRUE if the property was found in the properties for this
  *  theme node (or in the properties of parent nodes when inheriting.)
  */
 gboolean
@@ -780,7 +802,7 @@ st_theme_node_lookup_double (StThemeNode *node,
  * Generically looks up a property containing a single time value,
  *  which is converted to milliseconds.
  *
- * Return value: %TRUE if the property was found in the properties for this
+ * Returns: %TRUE if the property was found in the properties for this
  *  theme node (or in the properties of parent nodes when inheriting.)
  */
 gboolean
@@ -837,7 +859,7 @@ st_theme_node_lookup_time (StThemeNode *node,
  * and lets you handle the case where the theme does not specify the
  * indicated value.
  *
- * Return value: the value found. If @property_name is not
+ * Returns: the value found. If @property_name is not
  *  found, a warning will be logged and 0 will be returned.
  */
 gdouble
@@ -872,7 +894,7 @@ st_theme_node_get_double (StThemeNode *node,
  *
  * See also st_theme_node_get_url(), which provides a simpler API.
  *
- * Return value: %TRUE if the property was found in the properties for this
+ * Returns: %TRUE if the property was found in the properties for this
  *  theme node (or in the properties of parent nodes when inheriting.)
  */
 gboolean
@@ -928,7 +950,7 @@ st_theme_node_lookup_url (StThemeNode  *node,
  * and lets you handle the case where the theme does not specify the
  * indicated value.
  *
- * Returns: (transfer full): the newly allocated value if found.
+ * Returns: (nullable) (transfer full): the newly allocated value if found.
  *  If @property_name is not found, a warning will be logged and %NULL
  *  will be returned.
  */
@@ -1169,7 +1191,7 @@ get_length_internal (StThemeNode *node,
  *
  * See also st_theme_node_get_length(), which provides a simpler API.
  *
- * Return value: %TRUE if the property was found in the properties for this
+ * Returns: %TRUE if the property was found in the properties for this
  *  theme node (or in the properties of parent nodes when inheriting.)
  */
 gboolean
@@ -1204,9 +1226,10 @@ st_theme_node_lookup_length (StThemeNode *node,
  * this does not print a warning if the property is not found; it just
  * returns 0.
  *
- * See also st_theme_node_lookup_length(), which provides more options.
+ * See also st_theme_node_lookup_length(), which provides more options. The
+ * returned value is in physical pixels, as opposed to logical pixels.
  *
- * Return value: the length, in pixels, or 0 if the property was not found.
+ * Returns: the length, in pixels, or 0 if the property was not found.
  */
 gdouble
 st_theme_node_get_length (StThemeNode *node,
@@ -1807,6 +1830,15 @@ _st_theme_node_ensure_geometry (StThemeNode *node)
     node->height = node->min_height;
 }
 
+/**
+ * st_theme_node_get_border_width:
+ * @node: a #StThemeNode
+ * @side: a #StCorner
+ *
+ * Get the border width for @node on @side, in physical pixels.
+ *
+ * Returns: the border width in physical pixels
+ */
 int
 st_theme_node_get_border_width (StThemeNode *node,
                                 StSide       side)
@@ -1819,6 +1851,15 @@ st_theme_node_get_border_width (StThemeNode *node,
   return node->border_width[side];
 }
 
+/**
+ * st_theme_node_get_border_radius:
+ * @node: a #StThemeNode
+ * @corner: a #StCorner
+ *
+ * Get the border radius for @node at @corner, in physical pixels.
+ *
+ * Returns: the border radius in physical pixels
+ */
 int
 st_theme_node_get_border_radius (StThemeNode *node,
                                  StCorner     corner)
@@ -1831,6 +1872,14 @@ st_theme_node_get_border_radius (StThemeNode *node,
   return node->border_radius[corner];
 }
 
+/**
+ * st_theme_node_get_outline_width:
+ * @node: a #StThemeNode
+ *
+ * Get the width of the outline for @node, in physical pixels.
+ *
+ * Returns: the width in physical pixels
+ */
 int
 st_theme_node_get_outline_width (StThemeNode  *node)
 {
@@ -1859,6 +1908,14 @@ st_theme_node_get_outline_color (StThemeNode  *node,
   *color = node->outline_color;
 }
 
+/**
+ * st_theme_node_get_width:
+ * @node: a #StThemeNode
+ *
+ * Get the width for @node, in physical pixels.
+ *
+ * Returns: the width in physical pixels
+ */
 int
 st_theme_node_get_width (StThemeNode *node)
 {
@@ -1868,6 +1925,14 @@ st_theme_node_get_width (StThemeNode *node)
   return node->width;
 }
 
+/**
+ * st_theme_node_get_height:
+ * @node: a #StThemeNode
+ *
+ * Get the height for @node, in physical pixels.
+ *
+ * Returns: the height in physical pixels
+ */
 int
 st_theme_node_get_height (StThemeNode *node)
 {
@@ -1877,6 +1942,14 @@ st_theme_node_get_height (StThemeNode *node)
   return node->height;
 }
 
+/**
+ * st_theme_node_get_min_width:
+ * @node: a #StThemeNode
+ *
+ * Get the minimum width for @node, in physical pixels.
+ *
+ * Returns: the minimum width in physical pixels
+ */
 int
 st_theme_node_get_min_width (StThemeNode *node)
 {
@@ -1886,6 +1959,14 @@ st_theme_node_get_min_width (StThemeNode *node)
   return node->min_width;
 }
 
+/**
+ * st_theme_node_get_min_height:
+ * @node: a #StThemeNode
+ *
+ * Get the minimum height for @node, in physical pixels.
+ *
+ * Returns: the minimum height in physical pixels
+ */
 int
 st_theme_node_get_min_height (StThemeNode *node)
 {
@@ -1895,6 +1976,14 @@ st_theme_node_get_min_height (StThemeNode *node)
   return node->min_height;
 }
 
+/**
+ * st_theme_node_get_max_width:
+ * @node: a #StThemeNode
+ *
+ * Get the maximum width for @node, in physical pixels.
+ *
+ * Returns: the maximum width in physical pixels
+ */
 int
 st_theme_node_get_max_width (StThemeNode *node)
 {
@@ -1904,6 +1993,14 @@ st_theme_node_get_max_width (StThemeNode *node)
   return node->max_width;
 }
 
+/**
+ * st_theme_node_get_max_height:
+ * @node: a #StThemeNode
+ *
+ * Get the maximum height for @node, in physical pixels.
+ *
+ * Returns: the maximum height in physical pixels
+ */
 int
 st_theme_node_get_max_height (StThemeNode *node)
 {
@@ -2270,6 +2367,16 @@ st_theme_node_get_border_color (StThemeNode  *node,
   *color = node->border_color[side];
 }
 
+/**
+ * st_theme_node_get_padding:
+ * @node: a #StThemeNode
+ * @side: a #StSide
+ *
+ * Get the padding for @node on @side, in physical pixels. This corresponds to
+ * the CSS properties such as `padding-top`.
+ *
+ * Returns: the padding size in physical pixels
+ */
 double
 st_theme_node_get_padding (StThemeNode *node,
                            StSide       side)
@@ -2282,6 +2389,16 @@ st_theme_node_get_padding (StThemeNode *node,
   return node->padding[side];
 }
 
+/**
+ * st_theme_node_get_margin:
+ * @node: a #StThemeNode
+ * @side: a #StSide
+ *
+ * Get the margin for @node on @side, in physical pixels. This corresponds to
+ * the CSS properties such as `margin-top`.
+ *
+ * Returns: the margin size in physical pixels
+ */
 double
 st_theme_node_get_margin (StThemeNode *node,
                           StSide side)
@@ -2326,6 +2443,15 @@ st_theme_node_get_transition_duration (StThemeNode *node)
   return factor * node->transition_duration;
 }
 
+/**
+ * st_theme_node_get_icon_style:
+ * @node: a #StThemeNode
+ *
+ * Get the icon style for @node (eg. symbolic, regular). This corresponds to the
+ * special `-st-icon-style` CSS property.
+ *
+ * Returns: the icon style for @node
+ */
 StIconStyle
 st_theme_node_get_icon_style (StThemeNode *node)
 {
@@ -2368,6 +2494,14 @@ st_theme_node_get_icon_style (StThemeNode *node)
   return ST_ICON_STYLE_REQUESTED;
 }
 
+/**
+ * st_theme_node_get_text_decoration
+ * @node: a #StThemeNode
+ *
+ * Get the text decoration for @node (eg. underline, line-through, etc).
+ *
+ * Returns: the text decoration for @node
+ */
 StTextDecoration
 st_theme_node_get_text_decoration (StThemeNode *node)
 {
@@ -2435,6 +2569,14 @@ st_theme_node_get_text_decoration (StThemeNode *node)
   return 0;
 }
 
+/**
+ * st_theme_node_get_text_align:
+ * @node: a #StThemeNode
+ *
+ * Get the text alignment of @node.
+ *
+ * Returns: the alignment of text for @node
+ */
 StTextAlign
 st_theme_node_get_text_align(StThemeNode *node)
 {
@@ -2486,9 +2628,9 @@ st_theme_node_get_text_align(StThemeNode *node)
  * st_theme_node_get_letter_spacing:
  * @node: a #StThemeNode
  *
- * Gets the value for the letter-spacing style property, in pixels.
+ * Gets the value for the letter-spacing style property, in physical pixels.
  *
- * Return value: the value of the letter-spacing property, if
+ * Returns: the value of the letter-spacing property, if
  *   found, or zero if such property has not been found.
  */
 gdouble
@@ -2763,6 +2905,14 @@ font_variant_from_term (CRTerm       *term,
   return TRUE;
 }
 
+/**
+ * st_theme_node_get_font:
+ * @node: a #StThemeNode
+ *
+ * Get the current font of @node as a #PangoFontDescription
+ *
+ * Returns: (transfer none): the current font
+ */
 const PangoFontDescription *
 st_theme_node_get_font (StThemeNode *node)
 {
@@ -2956,6 +3106,14 @@ st_theme_node_get_font (StThemeNode *node)
   return node->font_desc;
 }
 
+/**
+ * st_theme_node_get_font_features:
+ * @node: a #StThemeNode
+ *
+ * Get the CSS font-features for @node.
+ *
+ * Returns: (transfer full): font-features as a string
+ */
 gchar *
 st_theme_node_get_font_features (StThemeNode *node)
 {
@@ -2995,7 +3153,7 @@ st_theme_node_get_font_features (StThemeNode *node)
  *
  * Gets the value for the border-image style property
  *
- * Return value: (transfer none): the border image, or %NULL
+ * Returns: (transfer none): the border image, or %NULL
  *   if there is no border image.
  */
 StBorderImage *
@@ -3132,10 +3290,9 @@ st_theme_node_get_border_image (StThemeNode *node)
  * st_theme_node_get_horizontal_padding:
  * @node: a #StThemeNode
  *
- * Gets the total horizonal padding (left + right padding)
+ * Gets the total horizonal padding (left + right padding), in physical pixels.
  *
- * Return value: the total horizonal padding
- *   in pixels
+ * Returns: the total horizonal padding in physical pixels
  */
 double
 st_theme_node_get_horizontal_padding (StThemeNode *node)
@@ -3151,10 +3308,9 @@ st_theme_node_get_horizontal_padding (StThemeNode *node)
  * st_theme_node_get_vertical_padding:
  * @node: a #StThemeNode
  *
- * Gets the total vertical padding (top + bottom padding)
+ * Gets the total vertical padding (top + bottom padding), in physical pixels.
  *
- * Return value: the total vertical padding
- *   in pixels
+ * Returns: the total vertical padding in physical pixels
  */
 double
 st_theme_node_get_vertical_padding (StThemeNode *node)
@@ -3317,9 +3473,9 @@ parse_shadow_property (StThemeNode       *node,
  *
  * See also st_theme_node_get_shadow(), which provides a simpler API.
  *
- * Return value: %TRUE if the property was found in the properties for this
- * theme node (or in the properties of parent nodes when inheriting.), %FALSE
- * if the property was not found, or was explicitly set to 'none'.
+ * Returns: %TRUE if the property was found in the properties for this
+ *   theme node (or in the properties of parent nodes when inheriting.), %FALSE
+ *   if the property was not found, or was explicitly set to 'none'.
  */
 gboolean
 st_theme_node_lookup_shadow (StThemeNode  *node,
@@ -3402,7 +3558,8 @@ st_theme_node_lookup_shadow (StThemeNode  *node,
  *
  * See also st_theme_node_lookup_shadow (), which provides more options.
  *
- * Return value: (transfer full): the shadow, or %NULL if the property was not found.
+ * Returns: (nullable) (transfer full): the shadow, or %NULL if the property was
+ *   not found.
  */
 StShadow *
 st_theme_node_get_shadow (StThemeNode  *node,
@@ -3422,7 +3579,7 @@ st_theme_node_get_shadow (StThemeNode  *node,
  *
  * Gets the value for the box-shadow style property
  *
- * Return value: (transfer none): the node's shadow, or %NULL
+ * Returns: (nullable) (transfer none): the node's shadow, or %NULL
  *   if node has no shadow
  */
 StShadow *
@@ -3455,8 +3612,8 @@ st_theme_node_get_box_shadow (StThemeNode *node)
  *
  * Gets the value for the -st-background-image-shadow style property
  *
- * Return value: (transfer none): the node's background image shadow, or %NULL
- *   if node has no such shadow
+ * Returns: (nullable) (transfer none): the node's background image shadow, or
+ *   %NULL if node has no such shadow
  */
 StShadow *
 st_theme_node_get_background_image_shadow (StThemeNode *node)
@@ -3496,7 +3653,7 @@ st_theme_node_get_background_image_shadow (StThemeNode *node)
  *
  * Gets the value for the text-shadow style property
  *
- * Return value: (transfer none): the node's text-shadow, or %NULL
+ * Returns: (nullable) (transfer none): the node's text-shadow, or %NULL
  *   if node has no text-shadow
  */
 StShadow *
@@ -3542,7 +3699,7 @@ st_theme_node_get_text_shadow (StThemeNode *node)
  * Gets the colors that should be used for colorizing symbolic icons according
  * the style of this node.
  *
- * Return value: (transfer none): the icon colors to use for this theme node
+ * Returns: (transfer none): the icon colors to use for this theme node
  */
 StIconColors *
 st_theme_node_get_icon_colors (StThemeNode *node)
@@ -3941,6 +4098,8 @@ st_theme_node_get_paint_box (StThemeNode           *node,
  * Tests if two theme nodes have the same borders and padding; this can be
  * used to optimize having to relayout when the style applied to a Clutter
  * actor changes colors without changing the geometry.
+ *
+ * Returns: %TRUE if equal, %FALSE otherwise
  */
 gboolean
 st_theme_node_geometry_equal (StThemeNode *node,
@@ -3988,7 +4147,7 @@ st_theme_node_geometry_equal (StThemeNode *node,
  * for @other. Note that in some cases this function may return %TRUE even
  * if there is no visible difference in the painting.
  *
- * Return value: %TRUE if the two theme nodes paint identically. %FALSE if the
+ * Returns: %TRUE if the two theme nodes paint identically. %FALSE if the
  *   two nodes potentially paint differently.
  */
 gboolean
@@ -4077,6 +4236,15 @@ st_theme_node_paint_equal (StThemeNode *node,
   return TRUE;
 }
 
+/**
+ * st_theme_node_to_string:
+ * @node: a #StThemeNode
+ *
+ * Serialize @node to a string of its #GType name, CSS ID, classes and
+ * pseudo-classes.
+ *
+ * Returns: the serialized theme node
+ */
 gchar *
 st_theme_node_to_string (StThemeNode *node)
 {

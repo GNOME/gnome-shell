@@ -26,7 +26,7 @@
  *
  * Creates a new #StIconColors. All colors are initialized to transparent black.
  *
- * Return value: a newly created #StIconColors. Free with st_icon_colors_unref()
+ * Returns: a newly created #StIconColors. Free with st_icon_colors_unref()
  */
 StIconColors *
 st_icon_colors_new (void)
@@ -106,6 +106,8 @@ st_icon_colors_copy (StIconColors *colors)
  * st_icon_colors_equal:
  * @colors: a #StIconColors
  * @other: another #StIconColors
+ *
+ * Check if two #StIconColors objects are identical.
  *
  * Returns: %TRUE if the #StIconColors are equal
  */
