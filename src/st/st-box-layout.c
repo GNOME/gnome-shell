@@ -181,8 +181,8 @@ st_box_layout_class_init (StBoxLayoutClass *klass)
   /**
    * StBoxLayout:vertical:
    *
-   * A convenience property for getting the #ClutterBoxLayout:vertical
-   * property of the layout for #StBoxLayout.
+   * A convenience property for the #ClutterBoxLayout:vertical property of the
+   * internal layout for #StBoxLayout.
    */
   pspec = g_param_spec_boolean ("vertical",
                                 "Vertical",
@@ -195,8 +195,8 @@ st_box_layout_class_init (StBoxLayoutClass *klass)
   /**
    * StBoxLayout:pack-start:
    *
-   * A convenience property for getting the #ClutterBoxLayout:pack-start
-   * property of the layout for #StBoxLayout.
+   * A convenience property for the #ClutterBoxLayout:pack-start property of the
+   * internal layout for #StBoxLayout.
    */
   pspec = g_param_spec_boolean ("pack-start",
                                 "Pack Start",

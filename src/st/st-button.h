@@ -63,7 +63,7 @@ void         st_button_fake_release    (StButton     *button);
  * @ST_BUTTON_TWO: button 2 (middle)
  * @ST_BUTTON_THREE: button 3 (right)
  *
- * A mask representing which mouse buttons an StButton responds to.
+ * A mask representing which mouse buttons an #StButton responds to.
  */
 typedef enum {
   ST_BUTTON_ONE   = (1 << 0),

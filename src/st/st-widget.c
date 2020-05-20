@@ -562,7 +562,7 @@ get_root_theme_node (ClutterStage *stage)
  * Note: it is a fatal error to call this on a widget that is
  *  not been added to a stage.
  *
- * Return value: (transfer none): the theme node for the widget.
+ * Returns: (transfer none): the theme node for the widget.
  *   This is owned by the widget. When attributes of the widget
  *   or the environment that affect the styling change (for example
  *   the style_class property of the widget), it will be recreated,
@@ -653,7 +653,7 @@ st_widget_get_theme_node (StWidget *widget)
  * node hasn't been computed. If %NULL is returned, then ::style-changed
  * will be reliably emitted before the widget is allocated or painted.
  *
- * Return value: (transfer none): the theme node for the widget.
+ * Returns: (transfer none): the theme node for the widget.
  *   This is owned by the widget. When attributes of the widget
  *   or the environment that affect the styling change (for example
  *   the style_class property of the widget), it will be recreated,
@@ -949,7 +949,7 @@ st_widget_class_init (StWidgetClass *klass)
                            ST_PARAM_READWRITE);
 
   /**
-   * ClutterActor:label-actor:
+   * StWidget:label-actor:
    *
    * An actor that labels this widget.
    */
@@ -1006,8 +1006,7 @@ st_widget_class_init (StWidgetClass *klass)
    * StWidget::popup-menu:
    * @widget: the #StWidget
    *
-   * Emitted when the user has requested a context menu (eg, via a
-   * keybinding)
+   * Emitted when the user has requested a context menu (eg, via a keybinding)
    */
   signals[POPUP_MENU] =
     g_signal_new ("popup-menu",
@@ -1388,8 +1387,8 @@ st_widget_set_style (StWidget  *actor,
  *
  * Get the current inline style string. See st_widget_set_style().
  *
- * Returns: The inline style string, or %NULL. The string is owned by the
- * #StWidget and should not be modified or freed.
+ * Returns: (transfer none) (nullable): The inline style string, or %NULL. The
+ *   string is owned by the #StWidget and should not be modified or freed.
  */
 const gchar*
 st_widget_get_style (StWidget *actor)
@@ -1745,8 +1744,8 @@ st_widget_recompute_style (StWidget    *widget,
  * st_widget_ensure_style:
  * @widget: A #StWidget
  *
- * Ensures that @widget has read its style information.
- *
+ * Ensures that @widget has read its style information and propagated any
+ * changes to its children.
  */
 void
 st_widget_ensure_style (StWidget *widget)
@@ -1808,7 +1807,7 @@ st_widget_set_track_hover (StWidget *widget,
  * st_widget_get_track_hover:
  * @widget: A #StWidget
  *
- * Returns the current value of the track-hover property. See
+ * Returns the current value of the #StWidget:track-hover property. See
  * st_widget_set_track_hover() for more information.
  *
  * Returns: current value of track-hover on @widget
@@ -1942,7 +1941,7 @@ st_widget_get_can_focus (StWidget *widget)
  * st_widget_popup_menu:
  * @self: A #StWidget
  *
- * Asks the widget to pop-up a context menu.
+ * Asks the widget to pop-up a context menu by emitting #StWidget::popup-menu.
  */
 void
 st_widget_popup_menu (StWidget *self)
@@ -2229,7 +2228,7 @@ st_widget_real_navigate_focus (StWidget         *widget,
  * time, using a %NULL @from, which should cause it to reset the focus
  * to the first available widget in the given direction.
  *
- * Return value: %TRUE if clutter_actor_grab_key_focus() has been
+ * Returns: %TRUE if clutter_actor_grab_key_focus() has been
  * called on an actor. %FALSE if not.
  */
 gboolean
@@ -2275,7 +2274,7 @@ append_actor_text (GString      *desc,
  * includes the class name and actor name (if any), plus if @actor
  * is an #StWidget, its style class and pseudo class names.
  *
- * Return value: the debug name.
+ * Returns: the debug name.
  */
 char *
 st_describe_actor (ClutterActor *actor)
@@ -2350,7 +2349,7 @@ st_describe_actor (ClutterActor *actor)
  *
  * Gets the label that identifies @widget if it is defined
  *
- * Return value: (transfer none): the label that identifies the widget
+ * Returns: (transfer none): the label that identifies the widget
  */
 ClutterActor *
 st_widget_get_label_actor (StWidget *widget)
@@ -2433,7 +2432,7 @@ st_widget_set_accessible_name (StWidget    *widget,
  * Gets the accessible name for this widget. See
  * st_widget_set_accessible_name() for more information.
  *
- * Return value: a character string representing the accessible name
+ * Returns: a character string representing the accessible name
  * of the widget.
  */
 const gchar *
@@ -2488,7 +2487,7 @@ st_widget_set_accessible_role (StWidget *widget,
  * Gets the #AtkRole for this widget. See
  * st_widget_set_accessible_role() for more information.
  *
- * Return value: accessible #AtkRole for this widget
+ * Returns: accessible #AtkRole for this widget
  */
 AtkRole
 st_widget_get_accessible_role (StWidget *widget)

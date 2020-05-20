@@ -274,6 +274,11 @@ st_label_class_init (StLabelClass *klass)
   widget_class->style_changed = st_label_style_changed;
   widget_class->get_accessible_type = st_label_accessible_get_type;
 
+  /**
+   * StLabel:clutter-text:
+   *
+   * The internal #ClutterText actor supporting the label
+   */
   props[PROP_CLUTTER_TEXT] =
       g_param_spec_object ("clutter-text",
                            "Clutter Text",
@@ -281,6 +286,11 @@ st_label_class_init (StLabelClass *klass)
                            CLUTTER_TYPE_TEXT,
                            ST_PARAM_READABLE);
 
+  /**
+   * StLabel:text:
+   *
+   * The current text being display in the #StLabel.
+   */
   props[PROP_TEXT] =
       g_param_spec_string ("text",
                            "Text",
@@ -314,9 +324,9 @@ st_label_init (StLabel *label)
 
 /**
  * st_label_new:
- * @text: text to set the label to
+ * @text: (nullable): text to set the label to
  *
- * Create a new #StLabel with the specified label
+ * Create a new #StLabel with the label specified by @text.
  *
  * Returns: a new #StLabel
  */
@@ -335,9 +345,10 @@ st_label_new (const gchar *text)
  * st_label_get_text:
  * @label: a #StLabel
  *
- * Get the text displayed on the label
+ * Get the text displayed on the label.
  *
- * Returns: the text for the label. This must not be freed by the application
+ * Returns: (transfer none): the text for the label. This must not be freed by
+ * the application
  */
 const gchar *
 st_label_get_text (StLabel *label)
@@ -350,9 +361,9 @@ st_label_get_text (StLabel *label)
 /**
  * st_label_set_text:
  * @label: a #StLabel
- * @text: text to set the label to
+ * @text: (nullable): text to set the label to
  *
- * Sets the text displayed on the label
+ * Sets the text displayed by the label.
  */
 void
 st_label_set_text (StLabel     *label,
@@ -382,10 +393,11 @@ st_label_set_text (StLabel     *label,
  * st_label_get_clutter_text:
  * @label: a #StLabel
  *
- * Retrieve the internal #ClutterText so that extra parameters can be set
+ * Retrieve the internal #ClutterText used by @label so that extra parameters
+ * can be set.
  *
- * Returns: (transfer none): ethe #ClutterText used by #StLabel. The label
- * is owned by the #StLabel and should not be unref'ed by the application.
+ * Returns: (transfer none): the #ClutterText used by #StLabel. The actor
+ * is owned by the #StLabel and should not be destroyed by the application.
  */
 ClutterActor*
 st_label_get_clutter_text (StLabel *label)
