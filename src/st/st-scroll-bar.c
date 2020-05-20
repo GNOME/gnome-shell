@@ -538,11 +538,21 @@ st_scroll_bar_class_init (StScrollBarClass *klass)
 
   widget_class->style_changed = st_scroll_bar_style_changed;
 
+  /**
+   * StScrollBar:adjustment:
+   *
+   * The #StAdjustment controlling the #StScrollBar.
+   */
   props[PROP_ADJUSTMENT] =
     g_param_spec_object ("adjustment", "Adjustment", "The adjustment",
                          ST_TYPE_ADJUSTMENT,
                          ST_PARAM_READWRITE);
 
+  /**
+   * StScrollBar:vertical:
+   *
+   * Whether the #StScrollBar is vertical. If %FALSE it is horizontal.
+   */
   props[PROP_VERTICAL] =
     g_param_spec_boolean ("vertical",
                           "Vertical Orientation",
@@ -552,6 +562,13 @@ st_scroll_bar_class_init (StScrollBarClass *klass)
 
   g_object_class_install_properties (object_class, N_PROPS, props);
 
+
+  /**
+   * StScrollBar::scroll-start:
+   * @bar: a #StScrollBar
+   *
+   * Emitted when the #StScrollBar begins scrolling.
+   */
   signals[SCROLL_START] =
     g_signal_new ("scroll-start",
                   G_TYPE_FROM_CLASS (klass),
@@ -560,6 +577,12 @@ st_scroll_bar_class_init (StScrollBarClass *klass)
                   NULL, NULL, NULL,
                   G_TYPE_NONE, 0);
 
+  /**
+   * StScrollBar::scroll-stop:
+   * @bar: a #StScrollBar
+   *
+   * Emitted when the #StScrollBar finishes scrolling.
+   */
   signals[SCROLL_STOP] =
     g_signal_new ("scroll-stop",
                   G_TYPE_FROM_CLASS (klass),
@@ -982,10 +1005,9 @@ st_scroll_bar_set_adjustment (StScrollBar  *bar,
  * st_scroll_bar_get_adjustment:
  * @bar: a #StScrollbar
  *
- * Gets the adjustment object that stores the current position
- * of the scrollbar.
+ * Gets the #StAdjustment that controls the current position of @bar.
  *
- * Return value: (transfer none): the adjustment
+ * Returns: (transfer none): an #StAdjustment
  */
 StAdjustment *
 st_scroll_bar_get_adjustment (StScrollBar *bar)

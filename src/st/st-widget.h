@@ -38,6 +38,17 @@ G_BEGIN_DECLS
 #define ST_TYPE_WIDGET                 (st_widget_get_type ())
 G_DECLARE_DERIVABLE_TYPE (StWidget, st_widget, ST, WIDGET, ClutterActor)
 
+/**
+ * StDirectionType:
+ * @ST_DIR_TAB_FORWARD: Move forward.
+ * @ST_DIR_TAB_BACKWARD: Move backward.
+ * @ST_DIR_UP: Move up.
+ * @ST_DIR_DOWN: Move down.
+ * @ST_DIR_LEFT: Move left.
+ * @ST_DIR_RIGHT: Move right.
+ *
+ * Enumeration for focus direction.
+ */
 typedef enum
 {
   ST_DIR_TAB_FORWARD,
