@@ -150,8 +150,8 @@ st_drawing_area_init (StDrawingArea *area)
  * st_drawing_area_queue_repaint:
  * @area: the #StDrawingArea
  *
- * Will cause the actor to emit a ::repaint signal before it is next
- * drawn to the scene. Useful if some parameters for the area being
+ * Will cause the actor to emit a #StDrawingArea::repaint signal before it is
+ * next drawn to the scene. Useful if some parameters for the area being
  * drawn other than the size or style have changed. Note that
  * clutter_actor_queue_redraw() will simply result in the same
  * contents being drawn to the scene again.
@@ -169,9 +169,25 @@ st_drawing_area_queue_repaint (StDrawingArea *area)
  * @area: the #StDrawingArea
  *
  * Gets the Cairo context to paint to. This function must only be called
- * from a signal hander for the ::repaint signal.
+ * from a signal hander for the #StDrawingArea::repaint signal.
  *
- * Return Value: (transfer none): the Cairo context for the paint operation
+ * GJS code must call the special dispose function before returning from the
+ * signal handler or virtual function to avoid leaking memory:
+ *
+ * |[<!-- language="JavaScript" -->
+ * function onRepaint(area) {
+ *     let cr = area.get_context();
+ *
+ *     // Draw to the context
+ *
+ *     cr.$dispose();
+ * }
+ *
+ * let area = new St.DrawingArea();
+ * area.connect('repaint', onRepaint);
+ * ]|
+ *
+ * Returns: (transfer none): the Cairo context for the paint operation
  */
 cairo_t *
 st_drawing_area_get_context (StDrawingArea *area)
@@ -189,12 +205,12 @@ st_drawing_area_get_context (StDrawingArea *area)
 /**
  * st_drawing_area_get_surface_size:
  * @area: the #StDrawingArea
- * @width: (out): location to store the width of the painted area
- * @height: (out): location to store the height of the painted area
+ * @width: (optional): location to store the width of the painted area
+ * @height: (optional): location to store the height of the painted area
  *
  * Gets the size of the cairo surface being painted to, which is equal
  * to the size of the content area of the widget. This function must
- * only be called from a signal hander for the ::repaint signal.
+ * only be called from a signal hander for the #StDrawingArea::repaint signal.
  */
 void
 st_drawing_area_get_surface_size (StDrawingArea *area,

@@ -172,8 +172,8 @@ st_scroll_view_get_property (GObject    *object,
  */
 void
 st_scroll_view_update_fade_effect (StScrollView *scroll,
-                                   float vfade_offset,
-                                   float hfade_offset)
+                                   float         vfade_offset,
+                                   float         hfade_offset)
 {
   StScrollViewPrivate *priv = ST_SCROLL_VIEW (scroll)->priv;
 
@@ -830,6 +830,11 @@ st_scroll_view_class_init (StScrollViewClass *klass)
 
   widget_class->style_changed = st_scroll_view_style_changed;
 
+  /**
+   * StScrollView:hscroll:
+   *
+   * The horizontal #StScrollBar for the #StScrollView.
+   */
   props[PROP_HSCROLL] =
     g_param_spec_object ("hscroll",
                          "StScrollBar",
@@ -837,6 +842,11 @@ st_scroll_view_class_init (StScrollViewClass *klass)
                          ST_TYPE_SCROLL_BAR,
                          ST_PARAM_READABLE);
 
+  /**
+   * StScrollView:vscroll:
+   *
+   * The vertical #StScrollBar for the #StScrollView.
+   */
   props[PROP_VSCROLL] =
     g_param_spec_object ("vscroll",
                          "StScrollBar",
@@ -844,6 +854,11 @@ st_scroll_view_class_init (StScrollViewClass *klass)
                          ST_TYPE_SCROLL_BAR,
                          ST_PARAM_READABLE);
 
+  /**
+   * StScrollView:vscrollbar-policy:
+   *
+   * The #StPolicyType for when to show the vertical #StScrollBar.
+   */
   props[PROP_VSCROLLBAR_POLICY] =
     g_param_spec_enum ("vscrollbar-policy",
                        "Vertical Scrollbar Policy",
@@ -852,6 +867,11 @@ st_scroll_view_class_init (StScrollViewClass *klass)
                        ST_POLICY_AUTOMATIC,
                        ST_PARAM_READWRITE);
 
+  /**
+   * StScrollView:hscrollbar-policy:
+   *
+   * The #StPolicyType for when to show the horizontal #StScrollBar.
+   */
   props[PROP_HSCROLLBAR_POLICY] =
     g_param_spec_enum ("hscrollbar-policy",
                        "Horizontal Scrollbar Policy",
@@ -860,6 +880,11 @@ st_scroll_view_class_init (StScrollViewClass *klass)
                        ST_POLICY_AUTOMATIC,
                        ST_PARAM_READWRITE);
 
+  /**
+   * StScrollView:hscrollbar-visible:
+   *
+   * Whether the horizontal #StScrollBar is visible.
+   */
   props[PROP_HSCROLLBAR_VISIBLE] =
     g_param_spec_boolean ("hscrollbar-visible",
                           "Horizontal Scrollbar Visibility",
@@ -867,6 +892,11 @@ st_scroll_view_class_init (StScrollViewClass *klass)
                           TRUE,
                           ST_PARAM_READABLE);
 
+  /**
+   * StScrollView:vscrollbar-visible:
+   *
+   * Whether the vertical #StScrollBar is visible.
+   */
   props[PROP_VSCROLLBAR_VISIBLE] =
     g_param_spec_boolean ("vscrollbar-visible",
                           "Vertical Scrollbar Visibility",
@@ -874,6 +904,11 @@ st_scroll_view_class_init (StScrollViewClass *klass)
                           TRUE,
                           ST_PARAM_READABLE);
 
+  /**
+   * StScrollView:enable-mouse-scrolling:
+   *
+   * Whether to enable automatic mouse wheel scrolling.
+   */
   props[PROP_MOUSE_SCROLL] =
     g_param_spec_boolean ("enable-mouse-scrolling",
                           "Enable Mouse Scrolling",
@@ -881,6 +916,11 @@ st_scroll_view_class_init (StScrollViewClass *klass)
                           TRUE,
                           ST_PARAM_READWRITE);
 
+  /**
+   * StScrollView:overlay-scrollbars:
+   *
+   * Whether scrollbars are painted on top of the content.
+   */
   props[PROP_OVERLAY_SCROLLBARS] =
     g_param_spec_boolean ("overlay-scrollbars",
                           "Use Overlay Scrollbars",
@@ -995,6 +1035,13 @@ clutter_container_iface_init (ClutterContainerIface *iface)
   iface->remove = st_scroll_view_remove;
 }
 
+/**
+ * st_scroll_view_new:
+ *
+ * Create a new #StScrollView.
+ *
+ * Returns: (transfer full): a new #StScrollView
+ */
 StWidget *
 st_scroll_view_new (void)
 {
@@ -1005,9 +1052,9 @@ st_scroll_view_new (void)
  * st_scroll_view_get_hscroll_bar:
  * @scroll: a #StScrollView
  *
- * Gets the horizontal scrollbar of the scrollbiew
+ * Gets the horizontal #StScrollBar of the #StScrollView.
  *
- * Return value: (transfer none): the horizontal #StScrollBar
+ * Returns: (transfer none): the horizontal scrollbar
  */
 ClutterActor *
 st_scroll_view_get_hscroll_bar (StScrollView *scroll)
@@ -1021,9 +1068,9 @@ st_scroll_view_get_hscroll_bar (StScrollView *scroll)
  * st_scroll_view_get_vscroll_bar:
  * @scroll: a #StScrollView
  *
- * Gets the vertical scrollbar of the scrollbiew
+ * Gets the vertical scrollbar of the #StScrollView.
  *
- * Return value: (transfer none): the vertical #StScrollBar
+ * Returns: (transfer none): the vertical #StScrollBar
  */
 ClutterActor *
 st_scroll_view_get_vscroll_bar (StScrollView *scroll)
@@ -1033,6 +1080,14 @@ st_scroll_view_get_vscroll_bar (StScrollView *scroll)
   return scroll->priv->vscroll;
 }
 
+/**
+ * st_scroll_view_get_column_size:
+ * @scroll: a #StScrollView
+ *
+ * Get the step increment of the horizontal plane.
+ *
+ * Returns: the horizontal step increment
+ */
 gfloat
 st_scroll_view_get_column_size (StScrollView *scroll)
 {
@@ -1047,6 +1102,13 @@ st_scroll_view_get_column_size (StScrollView *scroll)
   return column_size;
 }
 
+/**
+ * st_scroll_view_set_column_size:
+ * @scroll: a #StScrollView
+ * @column_size: horizontal step increment
+ *
+ * Set the step increment of the horizontal plane to @column_size.
+ */
 void
 st_scroll_view_set_column_size (StScrollView *scroll,
                                 gfloat        column_size)
@@ -1069,6 +1131,14 @@ st_scroll_view_set_column_size (StScrollView *scroll,
     }
 }
 
+/**
+ * st_scroll_view_get_row_size:
+ * @scroll: a #StScrollView
+ *
+ * Get the step increment of the vertical plane.
+ *
+ * Returns: the vertical step increment
+ */
 gfloat
 st_scroll_view_get_row_size (StScrollView *scroll)
 {
@@ -1083,6 +1153,13 @@ st_scroll_view_get_row_size (StScrollView *scroll)
   return row_size;
 }
 
+/**
+ * st_scroll_view_set_row_size:
+ * @scroll: a #StScrollView
+ * @row_size: vertical step increment
+ *
+ * Set the step increment of the vertical plane to @row_size.
+ */
 void
 st_scroll_view_set_row_size (StScrollView *scroll,
                              gfloat        row_size)
@@ -1105,6 +1182,13 @@ st_scroll_view_set_row_size (StScrollView *scroll,
     }
 }
 
+/**
+ * st_scroll_view_set_mouse_scrolling:
+ * @scroll: a #StScrollView
+ * @enabled: %TRUE or %FALSE
+ *
+ * Sets automatic mouse wheel scrolling to enabled or disabled.
+ */
 void
 st_scroll_view_set_mouse_scrolling (StScrollView *scroll,
                                     gboolean      enabled)
@@ -1125,6 +1209,14 @@ st_scroll_view_set_mouse_scrolling (StScrollView *scroll,
     }
 }
 
+/**
+ * st_scroll_view_get_mouse_scrolling:
+ * @scroll: a #StScrollView
+ *
+ * Get whether automatic mouse wheel scrolling is enabled or disabled.
+ *
+ * Returns: %TRUE if enabled, or %FALSE
+ */
 gboolean
 st_scroll_view_get_mouse_scrolling (StScrollView *scroll)
 {
@@ -1167,7 +1259,7 @@ st_scroll_view_set_overlay_scrollbars (StScrollView *scroll,
  * st_scroll_view_get_overlay_scrollbars:
  * @scroll: A #StScrollView
  *
- * Gets the value set by st_scroll_view_set_overlay_scrollbars().
+ * Gets whether scrollbars are painted on top of the content.
  */
 gboolean
 st_scroll_view_get_overlay_scrollbars (StScrollView *scroll)

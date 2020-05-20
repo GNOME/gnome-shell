@@ -195,7 +195,6 @@ st_clipboard_get_mimetypes (StClipboard     *clipboard,
  *
  * Request the data from the clipboard in text form. @callback is executed
  * when the data is retreived.
- *
  */
 void
 st_clipboard_get_text (StClipboard            *clipboard,
@@ -244,7 +243,6 @@ st_clipboard_get_text (StClipboard            *clipboard,
  *
  * Request the data from the clipboard in #GBytes form. @callback is executed
  * when the data is retrieved.
- *
  */
 void
 st_clipboard_get_content (StClipboard                    *clipboard,
@@ -287,7 +285,9 @@ st_clipboard_get_content (StClipboard                    *clipboard,
  * @mimetype: content mimetype
  * @bytes: content data
  *
- * Sets the clipboard content.
+ * Sets the clipboard content to @bytes.
+ *
+ * @mimetype is a semi-colon separated list of mime-type strings.
  **/
 void
 st_clipboard_set_content (StClipboard     *clipboard,
@@ -334,6 +334,13 @@ st_clipboard_set_text (StClipboard     *clipboard,
   g_bytes_unref (bytes);
 }
 
+/**
+ * st_clipboard_set_selection: (skip)
+ *
+ * Sets the #MetaSelection of the default #StClipboard.
+ *
+ * This function is called during the initialization of GNOME Shell.
+ */
 void
 st_clipboard_set_selection (MetaSelection *selection)
 {

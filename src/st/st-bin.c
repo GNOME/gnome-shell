@@ -327,7 +327,7 @@ st_bin_init (StBin *bin)
  *
  * Creates a new #StBin, a simple container for one child.
  *
- * Return value: the newly created #StBin actor
+ * Returns: the newly created #StBin actor
  */
 StWidget *
 st_bin_new (void)
@@ -378,9 +378,9 @@ st_bin_set_child (StBin        *bin,
  * st_bin_get_child:
  * @bin: a #StBin
  *
- * Retrieves a pointer to the child of @bin.
+ * Gets the #ClutterActor child for @bin.
  *
- * Return value: (transfer none): a #ClutterActor, or %NULL
+ * Returns: (transfer none) (nullable): a #ClutterActor, or %NULL
  */
 ClutterActor *
 st_bin_get_child (StBin *bin)

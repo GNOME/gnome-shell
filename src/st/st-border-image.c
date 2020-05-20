@@ -66,6 +66,19 @@ st_border_image_init (StBorderImage *image)
 {
 }
 
+/**
+ * st_border_image_new:
+ * @file: a #GFile
+ * @border_top: the top border
+ * @border_right: the right border
+ * @border_bottom: the bottom border
+ * @border_left: the left border
+ * @scale_factor: the scale factor
+ *
+ * Creates a new #StBorderImage.
+ *
+ * Returns: a new #StBorderImage.
+ */
 StBorderImage *
 st_border_image_new (GFile *file,
                      int    border_top,
@@ -90,9 +103,11 @@ st_border_image_new (GFile *file,
 
 /**
  * st_border_image_get_file:
- * @image: a #StBorder_Image
+ * @image: a #StBorderImage
  *
- * Returns: (transfer none): the #GFile for the #StBorder_Image
+ * Get the #GFile for @image.
+ *
+ * Returns: (transfer none): a #GFile
  */
 GFile *
 st_border_image_get_file (StBorderImage *image)
@@ -102,6 +117,17 @@ st_border_image_get_file (StBorderImage *image)
   return image->file;
 }
 
+/**
+ * st_border_image_get_border:
+ * @image: a #StBorderImage
+ * @border_top: (optional): the top border
+ * @border_right: (optional): the right border
+ * @border_bottom: (optional): the bottom border
+ * @border_left: (optional): the left border
+ *
+ * Get the border widths for @image, taking into account the scale factor
+ * provided at construction.
+ */
 void
 st_border_image_get_borders (StBorderImage *image,
                              int           *border_top,
@@ -123,12 +149,12 @@ st_border_image_get_borders (StBorderImage *image,
 
 /**
  * st_border_image_equal:
- * @image: a #StBorder_Image
- * @other: a different #StBorder_Image
+ * @image: a #StBorderImage
+ * @other: a different #StBorderImage
  *
- * Check if two border_image objects are identical.
+ * Check if two #StBorderImage objects are identical.
  *
- * Return value: %TRUE if the two border image objects are identical
+ * Returns: %TRUE if the two border image objects are identical
  */
 gboolean
 st_border_image_equal (StBorderImage *image,
