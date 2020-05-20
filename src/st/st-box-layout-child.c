@@ -176,12 +176,29 @@ st_box_layout_child_class_init (StBoxLayoutChildClass *klass)
   object_class->constructed = st_box_layout_child_constructed;
 
 
+  /**
+   * StBoxLayoutChild:expand
+   *
+   * Sets whether the child should expand, meaning the layout should allocate
+   * extra space, if possible
+   *
+   * This property does nothing since GNOME Shell 3.36; use
+   * #ClutterActor:x-expand or #ClutterActor:y-expand instead.
+   */
   pspec = g_param_spec_boolean ("expand", "Expand",
                                 "Allocate the child extra space",
                                 FALSE,
                                 ST_PARAM_READWRITE | G_PARAM_DEPRECATED);
   g_object_class_install_property (object_class, PROP_EXPAND, pspec);
 
+  /**
+   * StBoxLayoutChild:x-fill
+   *
+   * Whether the child should fill the vertical allocation.
+   *
+   * This property does nothing since GNOME Shell 3.36; use
+   * #ClutterActor:x-align instead.
+   */
   pspec = g_param_spec_boolean ("x-fill", "x-fill",
                                 "Whether the child should receive priority "
                                 "when the container is allocating spare space "
@@ -190,6 +207,14 @@ st_box_layout_child_class_init (StBoxLayoutChildClass *klass)
                                 ST_PARAM_READWRITE | G_PARAM_DEPRECATED);
   g_object_class_install_property (object_class, PROP_X_FILL, pspec);
 
+  /**
+   * StBoxLayoutChild:y-fill
+   *
+   * Whether the child should fill the vertical allocation.
+   *
+   * This property does nothing since GNOME Shell 3.36; use
+   * #ClutterActor:y-align instead.
+   */
   pspec = g_param_spec_boolean ("y-fill", "y-fill",
                                 "Whether the child should receive priority "
                                 "when the container is allocating spare space "
@@ -198,6 +223,14 @@ st_box_layout_child_class_init (StBoxLayoutChildClass *klass)
                                 ST_PARAM_READWRITE | G_PARAM_DEPRECATED);
   g_object_class_install_property (object_class, PROP_Y_FILL, pspec);
 
+  /**
+   * StBoxLayoutChild:x-align
+   *
+   * How the the child should align itself in the horizontal allocation.
+   *
+   * This property does nothing since GNOME Shell 3.36; use
+   * #ClutterActor:x-align instead.
+   */
   pspec = g_param_spec_enum ("x-align",
                              "X Alignment",
                              "X alignment of the widget within the cell",
@@ -206,6 +239,14 @@ st_box_layout_child_class_init (StBoxLayoutChildClass *klass)
                              ST_PARAM_READWRITE | G_PARAM_DEPRECATED);
   g_object_class_install_property (object_class, PROP_X_ALIGN, pspec);
 
+  /**
+   * StBoxLayoutChild:y-align
+   *
+   * How the the child should align itself in the vertical allocation.
+   *
+   * This property does nothing since GNOME Shell 3.36; use
+   * #ClutterActor:y-align instead.
+   */
   pspec = g_param_spec_enum ("y-align",
                              "Y Alignment",
                              "Y alignment of the widget within the cell",
