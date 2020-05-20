@@ -1216,15 +1216,15 @@ var FolderIcon = GObject.registerClass({
             this._dragMonitor = null;
         }
 
-        this.view.destroy();
+        if (this._dialog)
+            this._dialog.destroy();
+        else
+            this.view.destroy();
 
         if (this._folderChangedId) {
             this._folder.disconnect(this._folderChangedId);
             delete this._folderChangedId;
         }
-
-        if (this._dialog)
-            this._dialog.destroy();
     }
 
     vfunc_clicked() {
