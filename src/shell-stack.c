@@ -25,14 +25,13 @@ G_DEFINE_TYPE (ShellStack, shell_stack, ST_TYPE_WIDGET);
 
 static void
 shell_stack_allocate (ClutterActor           *self,
-                      const ClutterActorBox  *box,
-                      ClutterAllocationFlags  flags)
+                      const ClutterActorBox  *box)
 {
   StThemeNode *theme_node = st_widget_get_theme_node (ST_WIDGET (self));
   ClutterActorBox content_box;
   ClutterActor *child;
 
-  clutter_actor_set_allocation (self, box, flags);
+  clutter_actor_set_allocation (self, box);
 
   st_theme_node_get_content_box (theme_node, box, &content_box);
 
@@ -41,7 +40,7 @@ shell_stack_allocate (ClutterActor           *self,
        child = clutter_actor_get_next_sibling (child))
     {
       ClutterActorBox child_box = content_box;
-      clutter_actor_allocate (child, &child_box, flags);
+      clutter_actor_allocate (child, &child_box);
     }
 }
 

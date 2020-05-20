@@ -554,8 +554,8 @@ var Inspector = GObject.registerClass({
         this._lookingGlass = lookingGlass;
     }
 
-    vfunc_allocate(box, flags) {
-        this.set_allocation(box, flags);
+    vfunc_allocate(box) {
+        this.set_allocation(box);
 
         if (!this._eventHandler)
             return;
@@ -570,7 +570,7 @@ var Inspector = GObject.registerClass({
         childBox.x2 = childBox.x1 + natWidth;
         childBox.y1 = primary.y + Math.floor((primary.height - natHeight) / 2);
         childBox.y2 = childBox.y1 + natHeight;
-        this._eventHandler.allocate(childBox, flags);
+        this._eventHandler.allocate(childBox);
     }
 
     _close() {
@@ -833,9 +833,9 @@ class LookingGlass extends St.BoxLayout {
         Main.uiGroup.add_actor(this);
         Main.uiGroup.set_child_below_sibling(this,
                                              Main.layoutManager.panelBox);
-        Main.layoutManager.panelBox.connect('allocation-changed',
+        Main.layoutManager.panelBox.connect('notify::allocation',
                                             this._queueResize.bind(this));
-        Main.layoutManager.keyboardBox.connect('allocation-changed',
+        Main.layoutManager.keyboardBox.connect('notify::allocation',
                                                this._queueResize.bind(this));
 
         this._objInspector = new ObjInspector(this);

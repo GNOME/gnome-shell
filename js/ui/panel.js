@@ -842,8 +842,8 @@ class Panel extends St.Widget {
         return [0,  0];
     }
 
-    vfunc_allocate(box, flags) {
-        this.set_allocation(box, flags);
+    vfunc_allocate(box) {
+        this.set_allocation(box);
 
         let allocWidth = box.x2 - box.x1;
         let allocHeight = box.y2 - box.y1;
@@ -879,13 +879,13 @@ class Panel extends St.Widget {
             childBox.x2 = Math.min(Math.floor(sideWidth),
                                    leftNaturalWidth);
         }
-        this._leftBox.allocate(childBox, flags);
+        this._leftBox.allocate(childBox);
 
         childBox.x1 = Math.ceil(sideWidth);
         childBox.y1 = 0;
         childBox.x2 = childBox.x1 + centerWidth;
         childBox.y2 = allocHeight;
-        this._centerBox.allocate(childBox, flags);
+        this._centerBox.allocate(childBox);
 
         childBox.y1 = 0;
         childBox.y2 = allocHeight;
@@ -899,7 +899,7 @@ class Panel extends St.Widget {
                                    0);
             childBox.x2 = allocWidth;
         }
-        this._rightBox.allocate(childBox, flags);
+        this._rightBox.allocate(childBox);
 
         let cornerWidth, cornerHeight;
 
@@ -909,7 +909,7 @@ class Panel extends St.Widget {
         childBox.x2 = cornerWidth;
         childBox.y1 = allocHeight;
         childBox.y2 = allocHeight + cornerHeight;
-        this._leftCorner.allocate(childBox, flags);
+        this._leftCorner.allocate(childBox);
 
         [, cornerWidth] = this._rightCorner.get_preferred_width(-1);
         [, cornerHeight] = this._rightCorner.get_preferred_height(-1);
@@ -917,7 +917,7 @@ class Panel extends St.Widget {
         childBox.x2 = allocWidth;
         childBox.y1 = allocHeight;
         childBox.y2 = allocHeight + cornerHeight;
-        this._rightCorner.allocate(childBox, flags);
+        this._rightCorner.allocate(childBox);
     }
 
     _tryDragWindow(event) {
