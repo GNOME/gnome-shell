@@ -1317,6 +1317,9 @@ var FolderIcon = GObject.registerClass({
         if (this.name == name)
             return;
 
+        if (this._dialog)
+            this._dialog.popdown();
+
         this.name = name;
         this.icon.label.text = this.name;
         this.emit('name-changed');
