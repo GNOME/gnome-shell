@@ -1002,6 +1002,24 @@ var AppSearchProvider = class AppSearchProvider {
     }
 };
 
+var FolderGrid = GObject.registerClass(
+class FolderGrid extends IconGrid.IconGrid {
+    _init() {
+        super._init({
+            allow_incomplete_pages: false,
+            orientation: Clutter.Orientation.HORIZONTAL,
+            columns_per_page: 3,
+            rows_per_page: 3,
+            page_halign: Clutter.ActorAlign.CENTER,
+            page_valign: Clutter.ActorAlign.CENTER,
+        });
+    }
+
+    adaptToSize(width, height) {
+        this.layout_manager.adaptToSize(width, height);
+    }
+});
+
 var FolderView = GObject.registerClass(
 class FolderView extends BaseAppView {
     _init(folder, id, parentView) {
@@ -1010,6 +1028,8 @@ class FolderView extends BaseAppView {
             x_expand: true,
             y_expand: true,
         });
+
+        this._grid = new FolderGrid();
 
         // If it not expand, the parent doesn't take into account its preferred_width when allocating
         // the second time it allocates, so we apply the "Standard hack for ClutterBinLayout"
@@ -1024,17 +1044,37 @@ class FolderView extends BaseAppView {
             x_expand: true,
             y_expand: true,
         });
-        this._scrollView.set_policy(St.PolicyType.NEVER, St.PolicyType.EXTERNAL);
-        this.add_actor(this._scrollView);
+        this._scrollView.set_policy(St.PolicyType.EXTERNAL, St.PolicyType.NEVER);
+        this._scrollView.add_actor(this._grid);
 
-        let scrollableContainer = new St.BoxLayout({
+        const box = new St.BoxLayout({
             vertical: true,
             reactive: true,
             x_expand: true,
             y_expand: true,
         });
-        scrollableContainer.add_actor(this._grid);
-        this._scrollView.add_actor(scrollableContainer);
+        box.add_actor(this._scrollView);
+
+        // Page Dots
+        this._adjustment = this._scrollView.hscroll.adjustment;
+        this._adjustment.connect('notify::value', adj => {
+            this._pageIndicators.setCurrentPosition(adj.value / adj.page_size);
+        });
+
+        this._pageIndicators = new PageIndicators.PageIndicators(Clutter.Orientation.HORIZONTAL);
+        this._pageIndicators.y_expand = false;
+        this._pageIndicators.connect('page-activated',
+            (indicators, pageIndex) => {
+                this._grid.goToPage(pageIndex);
+            });
+        this._pageIndicators.connect('scroll-event', (actor, event) => {
+            this._scrollView.event(event, false);
+        });
+        box.add_actor(this._pageIndicators);
+        this.add_actor(box);
+
+        this._availWidth = 0;
+        this._availHeight = 0;
 
         let action = new Clutter.PanAction({ interpolate: true });
         action.connect('pan', this._onPan.bind(this));
@@ -1079,10 +1119,24 @@ class FolderView extends BaseAppView {
     }
 
     adaptToSize(width, height) {
-        this._parentAvailableWidth = width;
-        this._parentAvailableHeight = height;
+        const oldNPages = this._grid.nPages;
+        const [,indicatorHeight] = this._pageIndicators.get_preferred_height(-1);
+        height -= indicatorHeight;
 
         this._grid.adaptToSize(width, height);
+
+        if (this._availWidth != width || this._availHeight != height || oldNPages != this._grid.nPages) {
+            Meta.later_add(Meta.LaterType.BEFORE_REDRAW, () => {
+                this._adjustment.value = 0;
+                this._grid.currentPage = 0;
+                this._pageIndicators.setNPages(this._grid.nPages);
+                this._pageIndicators.setCurrentPosition(0);
+                return GLib.SOURCE_REMOVE;
+            });
+        }
+
+        this._availWidth = width;
+        this._availHeight = height;
     }
 
     _loadApps() {
