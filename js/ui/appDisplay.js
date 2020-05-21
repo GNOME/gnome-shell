@@ -1217,6 +1217,7 @@ class FolderView extends BaseAppView {
         action.connect('pan', this._onPan.bind(this));
         this._scrollView.add_action(action);
 
+        Shell.AppSystem.get_default().connect('installed-changed', this._redisplay.bind(this));
         this._iconGridLayout.connect('layout-changed', this._redisplay.bind(this));
         this._redisplay();
     }
