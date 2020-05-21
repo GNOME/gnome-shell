@@ -147,6 +147,29 @@ transfer_cb (MetaSelection *selection,
 }
 
 /**
+ * st_clipboard_get_mimetypes:
+ * @clipboard: a #StClipboard
+ *
+ * Gets a list of the mimetypes supported by the default #StClipboard.
+ *
+ * Returns: (element-type utf8) (transfer full): the supported mimetypes
+ */
+GList *
+st_clipboard_get_mimetypes (StClipboard     *clipboard,
+                            StClipboardType  type)
+{
+  MetaSelectionType selection_type;
+
+  g_return_val_if_fail (ST_IS_CLIPBOARD (clipboard), NULL);
+  g_return_val_if_fail (meta_selection != NULL, NULL);
+
+  if (!convert_type (type, &selection_type))
+    return NULL;
+
+  return meta_selection_get_mimetypes (meta_selection, selection_type);
+}
+
+/**
  * st_clipboard_get_text:
  * @clipboard: A #StCliboard
  * @type: The type of clipboard data you want
