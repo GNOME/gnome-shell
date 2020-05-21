@@ -47,12 +47,6 @@ StWidget   *  st_bin_new           (void);
 void          st_bin_set_child     (StBin        *bin,
                                     ClutterActor *child);
 ClutterActor *st_bin_get_child     (StBin        *bin);
-void          st_bin_set_fill      (StBin        *bin,
-                                    gboolean      x_fill,
-                                    gboolean      y_fill);
-void          st_bin_get_fill      (StBin        *bin,
-                                    gboolean     *x_fill,
-                                    gboolean     *y_fill);
 
 G_END_DECLS
 
