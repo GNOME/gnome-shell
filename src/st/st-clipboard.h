@@ -65,6 +65,9 @@ typedef void (*StClipboardCallbackFunc) (StClipboard *clipboard,
 
 StClipboard* st_clipboard_get_default (void);
 
+GList * st_clipboard_get_mimetypes (StClipboard             *clipboard,
+                                    StClipboardType          type);
+
 void st_clipboard_get_text (StClipboard             *clipboard,
                             StClipboardType          type,
                             StClipboardCallbackFunc  callback,
