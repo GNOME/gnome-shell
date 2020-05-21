@@ -70,6 +70,8 @@ struct _StTheme
   GHashTable *files_by_stylesheet;
 
   CRCascade *cascade;
+
+  gboolean finalizing_st;
 };
 
 enum
@@ -288,7 +290,9 @@ st_theme_unload_stylesheet (StTheme    *theme,
   g_hash_table_remove (theme->stylesheets_by_file, file);
   g_hash_table_remove (theme->files_by_stylesheet, stylesheet);
 
+  theme->finalizing_st = TRUE;
   g_signal_emit (theme, signals[STYLESHEETS_CHANGED], 0);
+  theme->finalizing_st = FALSE;
 
   cr_stylesheet_unref (stylesheet);
 }
@@ -1042,6 +1046,12 @@ _st_theme_resolve_url (StTheme      *theme,
       GFile *base_file = NULL, *parent;
 
       base_file = g_hash_table_lookup (theme->files_by_stylesheet, base_stylesheet);
+
+      /* This may be called from within st_theme_unload_stylesheet(), so we can
+       * skip looking up the path since it is about to go away.
+       */
+      if (!base_file && theme->finalizing_st)
+        return NULL;
 
       /* This is an internal function, if we get here with
          a bad @base_stylesheet we have a problem. */
