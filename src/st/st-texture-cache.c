@@ -50,6 +50,8 @@ struct _StTextureCachePrivate
 
   /* File monitors to evict cache data on changes */
   GHashTable *file_monitors; /* char * -> GFileMonitor * */
+
+  GCancellable *cancellable;
 };
 
 static void st_texture_cache_dispose (GObject *object);
@@ -144,6 +146,9 @@ on_icon_theme_changed (StSettings     *settings,
 {
   g_autofree gchar *theme = NULL;
 
+  g_cancellable_cancel (cache->priv->cancellable);
+  g_cancellable_reset (cache->priv->cancellable);
+
   st_texture_cache_evict_icons (cache);
 
   g_object_get (settings, "gtk-icon-theme", &theme, NULL);
@@ -190,6 +195,8 @@ st_texture_cache_init (StTextureCache *self)
   self->priv->file_monitors = g_hash_table_new_full (g_file_hash, (GEqualFunc) g_file_equal,
                                                      g_object_unref, g_object_unref);
 
+  self->priv->cancellable = g_cancellable_new ();
+
   on_icon_theme_changed (settings, NULL, self);
 }
 
@@ -200,6 +207,7 @@ st_texture_cache_dispose (GObject *object)
 
   g_clear_object (&self->priv->settings);
   g_clear_object (&self->priv->icon_theme);
+  g_clear_object (&self->priv->cancellable);
 
   g_clear_pointer (&self->priv->keyed_cache, g_hash_table_destroy);
   g_clear_pointer (&self->priv->keyed_surface_cache, g_hash_table_destroy);
@@ -696,11 +704,14 @@ load_texture_async (StTextureCache       *cache,
           gtk_icon_info_load_symbolic_async (data->icon_info,
                                              &foreground_color, &success_color,
                                              &warning_color, &error_color,
-                                             NULL, on_symbolic_icon_loaded, data);
+                                             cache->priv->cancellable,
+                                             on_symbolic_icon_loaded, data);
         }
       else
         {
-          gtk_icon_info_load_icon_async (data->icon_info, NULL, on_icon_loaded, data);
+          gtk_icon_info_load_icon_async (data->icon_info,
+                                         cache->priv->cancellable,
+                                         on_icon_loaded, data);
         }
     }
   else
