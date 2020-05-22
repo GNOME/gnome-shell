@@ -54,6 +54,7 @@ struct _StTextureCachePrivate
 
 static void st_texture_cache_dispose (GObject *object);
 static void st_texture_cache_finalize (GObject *object);
+static void st_texture_cache_cancel_pending (StTextureCache *cache);
 
 enum
 {
@@ -145,6 +146,7 @@ on_icon_theme_changed (StSettings     *settings,
   g_autofree gchar *theme = NULL;
 
   st_texture_cache_evict_icons (cache);
+  st_texture_cache_cancel_pending (cache);
 
   g_object_get (settings, "gtk-icon-theme", &theme, NULL);
   gtk_icon_theme_set_custom_theme (cache->priv->icon_theme, theme);
@@ -308,6 +310,7 @@ typedef struct {
   GtkIconInfo *icon_info;
   StIconColors *colors;
   GFile *file;
+  GCancellable *cancellable;
 } AsyncTextureLoadData;
 
 static void
@@ -324,6 +327,8 @@ texture_load_data_free (gpointer p)
   else if (data->file)
     g_object_unref (data->file);
 
+  g_clear_object (&data->cancellable);
+
   if (data->key)
     g_free (data->key);
 
@@ -331,6 +336,23 @@ texture_load_data_free (gpointer p)
     g_slist_free_full (data->actors, (GDestroyNotify) g_object_unref);
 
   g_slice_free (AsyncTextureLoadData, data);
+}
+
+static void
+st_texture_cache_cancel_pending (StTextureCache *cache)
+{
+  GHashTableIter iter;
+  gpointer key;
+  gpointer value;
+
+  g_hash_table_iter_init (&iter, cache->priv->outstanding_requests);
+  while (g_hash_table_iter_next (&iter, &key, &value))
+    {
+      AsyncTextureLoadData *data = value;
+
+      if (data->cancellable)
+        g_cancellable_cancel (data->cancellable);
+    }
 }
 
 /**
@@ -696,11 +718,14 @@ load_texture_async (StTextureCache       *cache,
           gtk_icon_info_load_symbolic_async (data->icon_info,
                                              &foreground_color, &success_color,
                                              &warning_color, &error_color,
-                                             NULL, on_symbolic_icon_loaded, data);
+                                             data->cancellable,
+                                             on_symbolic_icon_loaded, data);
         }
       else
         {
-          gtk_icon_info_load_icon_async (data->icon_info, NULL, on_icon_loaded, data);
+          gtk_icon_info_load_icon_async (data->icon_info,
+                                         data->cancellable,
+                                         on_icon_loaded, data);
         }
     }
   else
@@ -1042,6 +1067,7 @@ st_texture_cache_load_gicon (StTextureCache    *cache,
       request->width = request->height = size;
       request->paint_scale = paint_scale;
       request->resource_scale = resource_scale;
+      request->cancellable = g_cancellable_new ();
 
       load_texture_async (cache, request);
     }
