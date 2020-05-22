@@ -117,12 +117,64 @@ var BaseAppView = GObject.registerClass({
         'view-loaded': {},
     },
 }, class BaseAppView extends St.Widget {
-    _init(params = {}) {
+    _init(params = {}, orientation = Clutter.Orientation.VERTICAL) {
         super._init(params);
 
         this._grid = this._createGrid();
         // Standard hack for ClutterBinLayout
         this._grid.x_expand = true;
+
+        const vertical = orientation === Clutter.Orientation.VERTICAL;
+
+        // Scroll View
+        this._scrollView = new St.ScrollView({
+            clip_to_allocation: true,
+            x_expand: true,
+            y_expand: true,
+            reactive: true,
+        });
+        this._scrollView.set_policy(
+            vertical ? St.PolicyType.NEVER : St.PolicyType.EXTERNAL,
+            vertical ? St.PolicyType.EXTERNAL : St.PolicyType.NEVER);
+
+        this._canScroll = true; // limiting scrolling speed
+        this._scrollTimeoutId = 0;
+        this._scrollView.connect('scroll-event', this._onScroll.bind(this));
+
+        this._scrollView.add_actor(this._grid);
+
+        const scroll = vertical ?  this._scrollView.vscroll : this._scrollView.hscroll;
+        this._adjustment = scroll.adjustment;
+        this._adjustment.connect('notify::value', adj => {
+            this._pageIndicators.setCurrentPosition(adj.value / adj.page_size);
+        });
+
+        // Page Indicators
+        if (vertical)
+            this._pageIndicators = new PageIndicators.AnimatedPageIndicators();
+        else
+            this._pageIndicators = new PageIndicators.PageIndicators(orientation);
+
+        this._pageIndicators.y_expand = vertical;
+        this._pageIndicators.connect('page-activated',
+            (indicators, pageIndex) => {
+                this.goToPage(pageIndex);
+            });
+        this._pageIndicators.connect('scroll-event', (actor, event) => {
+            this._scrollView.event(event, false);
+        });
+
+        // Swipe
+        this._swipeTracker = new SwipeTracker.SwipeTracker(this._scrollView,
+            Shell.ActionMode.OVERVIEW | Shell.ActionMode.POPUP);
+        this._swipeTracker.orientation = orientation;
+        this._swipeTracker.connect('begin', this._swipeBegin.bind(this));
+        this._swipeTracker.connect('update', this._swipeUpdate.bind(this));
+        this._swipeTracker.connect('end', this._swipeEnd.bind(this));
+
+        this._availWidth = 0;
+        this._availHeight = 0;
+        this._orientation = orientation;
 
         this._items = new Map();
         this._orderedItems = [];
@@ -140,6 +192,93 @@ var BaseAppView = GObject.registerClass({
 
     _createGrid() {
         return new IconGrid.IconGrid();
+    }
+
+    _onScroll(actor, event) {
+        if (this._swipeTracker.canHandleScrollEvent(event))
+            return Clutter.EVENT_PROPAGATE;
+
+        if (!this._canScroll)
+            return Clutter.EVENT_STOP;
+
+        const rtl = this.get_text_direction() === Clutter.TextDirection.RTL;
+
+        if (this._orientation === Clutter.Orientation.VERTICAL) {
+            switch (event.get_scroll_direction()) {
+            case Clutter.ScrollDirection.UP:
+                this.goToPage(this._grid.currentPage - 1);
+                break;
+
+            case Clutter.ScrollDirection.DOWN:
+                this.goToPage(this._grid.currentPage + 1);
+                break;
+
+            default:
+                return Clutter.EVENT_STOP;
+            }
+        } else {
+            switch (event.get_scroll_direction()) {
+            case Clutter.ScrollDirection.UP:
+            case Clutter.ScrollDirection.LEFT:
+                if (rtl)
+                    this.goToPage(this._grid.currentPage + 1);
+                else
+                    this.goToPage(this._grid.currentPage - 1);
+                break;
+
+            case Clutter.ScrollDirection.DOWN:
+            case Clutter.ScrollDirection.RIGHT:
+                if (rtl)
+                    this.goToPage(this._grid.currentPage - 1);
+                else
+                    this.goToPage(this._grid.currentPage + 1);
+                break;
+
+            default:
+                return Clutter.EVENT_STOP;
+            }
+        }
+
+        this._canScroll = false;
+        this._scrollTimeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT,
+            SCROLL_TIMEOUT_TIME, () => {
+                this._canScroll = true;
+                this._scrollTimeoutId = 0;
+                return GLib.SOURCE_REMOVE;
+            });
+
+        return Clutter.EVENT_STOP;
+    }
+
+    _swipeBegin(tracker, monitor) {
+        if (monitor !== Main.layoutManager.primaryIndex)
+            return;
+
+        const adjustment = this._adjustment;
+        adjustment.remove_transition('value');
+
+        const progress = adjustment.value / adjustment.page_size;
+        const points = Array.from({ length: this._grid.nPages }, (v, i) => i);
+        const size = tracker.orientation === Clutter.Orientation.VERTICAL
+            ? this._scrollView.height : this._scrollView.width;
+
+        tracker.confirmSwipe(size, points, progress, Math.round(progress));
+    }
+
+    _swipeUpdate(tracker, progress) {
+        const adjustment = this._adjustment;
+        adjustment.value = progress * adjustment.page_size;
+    }
+
+    _swipeEnd(tracker, duration, endProgress) {
+        const adjustment = this._adjustment;
+        const value = endProgress * adjustment.page_size;
+
+        adjustment.ease(value, {
+            mode: Clutter.AnimationMode.EASE_OUT_CUBIC,
+            duration,
+            onComplete: () => this.goToPage(endProgress, false),
+        });
     }
 
     _redisplay() {
@@ -272,7 +411,22 @@ var BaseAppView = GObject.registerClass({
         }
     }
 
+    vfunc_allocate(box) {
+        const width = box.get_width();
+        const height = box.get_height();
+
+        this.adaptToSize(width, height);
+
+        super.vfunc_allocate(box);
+    }
+
+    vfunc_map() {
+        this._swipeTracker.enabled = true;
+        super.vfunc_map();
+    }
+
     vfunc_unmap() {
+        this._swipeTracker.enabled = false;
         this._clearAnimateLater();
         super.vfunc_unmap();
     }
@@ -298,8 +452,44 @@ var BaseAppView = GObject.registerClass({
         this._grid.ease(params);
     }
 
-    adaptToSize(_width, _height) {
-        throw new GObject.NotImplementedError('adaptToSize in %s'.format(this.constructor.name));
+    goToPage(pageNumber, animate = true) {
+        pageNumber = Math.clamp(pageNumber, 0, this._grid.nPages - 1);
+
+        if (this._grid.currentPage === pageNumber)
+            return;
+
+        this._grid.goToPage(pageNumber, animate);
+    }
+
+    adaptToSize(width, height) {
+        let box = new Clutter.ActorBox();
+        box.x1 = 0;
+        box.x2 = width;
+        box.y1 = 0;
+        box.y2 = height;
+        box = this._scrollView.get_theme_node().get_content_box(box);
+        box = this._grid.get_theme_node().get_content_box(box);
+
+        const availWidth = box.get_width();
+        const availHeight = box.get_height();
+        const oldNPages = this._grid.nPages;
+
+        this._grid.adaptToSize(availWidth, availHeight);
+
+        if (this._availWidth !== availWidth ||
+            this._availHeight !== availHeight ||
+            oldNPages !== this._grid.nPages) {
+            Meta.later_add(Meta.LaterType.BEFORE_REDRAW, () => {
+                this._adjustment.value = 0;
+                this._grid.currentPage = 0;
+                this._pageIndicators.setNPages(this._grid.nPages);
+                this._pageIndicators.setCurrentPosition(0);
+                return GLib.SOURCE_REMOVE;
+            });
+        }
+
+        this._availWidth = availWidth;
+        this._availHeight = availHeight;
     }
 });
 
@@ -314,58 +504,23 @@ class AppDisplay extends BaseAppView {
 
         this._grid._delegate = this;
 
+        this._scrollView.add_style_class_name('all-apps');
+
         this._stack = new St.Widget({
             layout_manager: new Clutter.BinLayout(),
             x_expand: true,
             y_expand: true,
         });
         this.add_actor(this._stack);
-
-        this._scrollView = new St.ScrollView({
-            style_class: 'all-apps',
-            x_expand: true,
-            y_expand: true,
-            reactive: true,
-        });
-        this._scrollView.add_actor(this._grid);
         this._stack.add_actor(this._scrollView);
 
-        this._scrollView.set_policy(St.PolicyType.NEVER,
-                                    St.PolicyType.EXTERNAL);
-        this._adjustment = this._scrollView.vscroll.adjustment;
-        this._adjustment.connect('notify::value', adj => {
-            this._pageIndicators.setCurrentPosition(adj.value / adj.page_size);
-        });
-
-        this._pageIndicators = new PageIndicators.AnimatedPageIndicators();
-        this._pageIndicators.connect('page-activated',
-            (indicators, pageIndex) => {
-                this.goToPage(pageIndex);
-            });
-        this._pageIndicators.connect('scroll-event', (actor, event) => {
-            this._scrollView.event(event, false);
-        });
         this.add_actor(this._pageIndicators);
 
         this._folderIcons = [];
 
-        this._scrollView.connect('scroll-event', this._onScroll.bind(this));
-
-        this._swipeTracker = new SwipeTracker.SwipeTracker(
-            this._scrollView, Shell.ActionMode.OVERVIEW);
-        this._swipeTracker.connect('begin', this._swipeBegin.bind(this));
-        this._swipeTracker.connect('update', this._swipeUpdate.bind(this));
-        this._swipeTracker.connect('end', this._swipeEnd.bind(this));
-
         this._currentDialog = null;
         this._displayingDialog = false;
         this._currentDialogDestroyId = 0;
-
-        this._canScroll = true; // limiting scrolling speed
-        this._scrollTimeoutId = 0;
-
-        this._availWidth = 0;
-        this._availHeight = 0;
 
         this._lastOvershootY = -1;
         this._lastOvershootTimeoutId = 0;
@@ -404,15 +559,6 @@ class AppDisplay extends BaseAppView {
         }
     }
 
-    vfunc_allocate(box) {
-        box = this.get_theme_node().get_content_box(box);
-        let availWidth = box.get_width();
-        let availHeight = box.get_height();
-        this.adaptToSize(availWidth, availHeight);
-
-        super.vfunc_allocate(box);
-    }
-
     _onDestroy() {
         if (this._scrollTimeoutId !== 0) {
             GLib.source_remove(this._scrollTimeoutId);
@@ -424,7 +570,6 @@ class AppDisplay extends BaseAppView {
         this._keyPressEventId =
             global.stage.connect('key-press-event',
                 this._onKeyPressEvent.bind(this));
-        this._swipeTracker.enabled = true;
         super.vfunc_map();
     }
 
@@ -433,7 +578,6 @@ class AppDisplay extends BaseAppView {
             global.stage.disconnect(this._keyPressEventId);
             this._keyPressEventId = 0;
         }
-        this._swipeTracker.enabled = false;
         super.vfunc_unmap();
     }
 
@@ -581,68 +725,14 @@ class AppDisplay extends BaseAppView {
         if (this._displayingDialog && this._currentDialog)
             this._currentDialog.popdown();
 
-        this._grid.goToPage(pageNumber, animate);
+        super.goToPage(pageNumber, animate);
     }
 
     _onScroll(actor, event) {
         if (this._displayingDialog || !this._scrollView.reactive)
             return Clutter.EVENT_STOP;
 
-        if (this._swipeTracker.canHandleScrollEvent(event))
-            return Clutter.EVENT_PROPAGATE;
-
-        if (!this._canScroll)
-            return Clutter.EVENT_STOP;
-
-        let direction = event.get_scroll_direction();
-        if (direction == Clutter.ScrollDirection.UP)
-            this.goToPage(this._grid.currentPage - 1);
-        else if (direction == Clutter.ScrollDirection.DOWN)
-            this.goToPage(this._grid.currentPage + 1);
-        else
-            return Clutter.EVENT_STOP;
-
-        this._canScroll = false;
-        this._scrollTimeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT,
-            SCROLL_TIMEOUT_TIME, () => {
-                this._canScroll = true;
-                this._scrollTimeoutId = 0;
-                return GLib.SOURCE_REMOVE;
-            });
-
-        return Clutter.EVENT_STOP;
-    }
-
-    _swipeBegin(tracker, monitor) {
-        if (monitor !== Main.layoutManager.primaryIndex)
-            return;
-
-        let adjustment = this._adjustment;
-        adjustment.remove_transition('value');
-
-        let progress = adjustment.value / adjustment.page_size;
-        let points = Array.from({ length: this._grid.nPages }, (v, i) => i);
-
-        tracker.confirmSwipe(this._scrollView.height,
-            points, progress, Math.round(progress));
-    }
-
-    _swipeUpdate(tracker, progress) {
-        let adjustment = this._adjustment;
-        adjustment.value = progress * adjustment.page_size;
-    }
-
-    _swipeEnd(tracker, duration, endProgress) {
-        let adjustment = this._adjustment;
-        let value = endProgress * adjustment.page_size;
-
-        adjustment.ease(value, {
-            mode: Clutter.AnimationMode.EASE_OUT_CUBIC,
-            duration,
-            onComplete: () => {
-                this.goToPage(endProgress, false);
-            },
-        });
+        return super._onScroll(actor, event);
     }
 
     _onKeyPressEvent(actor, event) {
@@ -681,36 +771,6 @@ class AppDisplay extends BaseAppView {
         });
     }
 
-
-    // Called before allocation to calculate dynamic spacing
-    adaptToSize(width, height) {
-        let box = new Clutter.ActorBox();
-        box.x1 = 0;
-        box.x2 = width;
-        box.y1 = 0;
-        box.y2 = height;
-        box = this.get_theme_node().get_content_box(box);
-        box = this._scrollView.get_theme_node().get_content_box(box);
-        box = this._grid.get_theme_node().get_content_box(box);
-        let availWidth = box.x2 - box.x1;
-        let availHeight = box.y2 - box.y1;
-        let oldNPages = this._grid.nPages;
-
-        this._grid.adaptToSize(availWidth, availHeight);
-
-        if (this._availWidth != availWidth || this._availHeight != availHeight || oldNPages != this._grid.nPages) {
-            Meta.later_add(Meta.LaterType.BEFORE_REDRAW, () => {
-                this._adjustment.value = 0;
-                this._grid.currentPage = 0;
-                this._pageIndicators.setNPages(this._grid.nPages);
-                this._pageIndicators.setCurrentPosition(0);
-                return GLib.SOURCE_REMOVE;
-            });
-        }
-
-        this._availWidth = availWidth;
-        this._availHeight = availHeight;
-    }
 
     _resetOvershoot() {
         if (this._lastOvershootTimeoutId)
@@ -974,7 +1034,7 @@ class FolderView extends BaseAppView {
             layout_manager: new Clutter.BinLayout(),
             x_expand: true,
             y_expand: true,
-        });
+        }, Clutter.Orientation.HORIZONTAL);
 
         // If it not expand, the parent doesn't take into account its preferred_width when allocating
         // the second time it allocates, so we apply the "Standard hack for ClutterBinLayout"
@@ -984,14 +1044,6 @@ class FolderView extends BaseAppView {
         this._parentView = parentView;
         this._grid._delegate = this;
 
-        this._scrollView = new St.ScrollView({
-            overlay_scrollbars: true,
-            x_expand: true,
-            y_expand: true,
-        });
-        this._scrollView.set_policy(St.PolicyType.EXTERNAL, St.PolicyType.NEVER);
-        this._scrollView.add_actor(this._grid);
-
         const box = new St.BoxLayout({
             vertical: true,
             reactive: true,
@@ -999,27 +1051,8 @@ class FolderView extends BaseAppView {
             y_expand: true,
         });
         box.add_child(this._scrollView);
-
-        // Page Dots
-        this._adjustment = this._scrollView.hscroll.adjustment;
-        this._adjustment.connect('notify::value', adj => {
-            this._pageIndicators.setCurrentPosition(adj.value / adj.page_size);
-        });
-
-        this._pageIndicators = new PageIndicators.PageIndicators(Clutter.Orientation.HORIZONTAL);
-        this._pageIndicators.y_expand = false;
-        this._pageIndicators.connect('page-activated',
-            (indicators, pageIndex) => {
-                this._grid.goToPage(pageIndex);
-            });
-        this._pageIndicators.connect('scroll-event', (actor, event) => {
-            this._scrollView.event(event, false);
-        });
         box.add_child(this._pageIndicators);
         this.add_child(box);
-
-        this._availWidth = 0;
-        this._availHeight = 0;
 
         let action = new Clutter.PanAction({ interpolate: true });
         action.connect('pan', this._onPan.bind(this));
@@ -1030,18 +1063,6 @@ class FolderView extends BaseAppView {
 
     _createGrid() {
         return new FolderGrid();
-    }
-
-    vfunc_allocate(box) {
-        const node = this.get_theme_node();
-        const contentBox = node.get_content_box(box);
-
-        const [width, height] = contentBox.get_size();
-        this.adaptToSize(width, height);
-
-        this._grid.topPadding = 0;
-
-        super.vfunc_allocate(box);
     }
 
     // Overridden from BaseAppView
@@ -1080,26 +1101,10 @@ class FolderView extends BaseAppView {
     }
 
     adaptToSize(width, height) {
-        const oldNPages = this._grid.nPages;
         const [, indicatorHeight] = this._pageIndicators.get_preferred_height(-1);
         height -= indicatorHeight;
 
-        this._grid.adaptToSize(width, height);
-
-        if (this._availWidth !== width ||
-            this._availHeight !== height ||
-            oldNPages !== this._grid.nPages) {
-            Meta.later_add(Meta.LaterType.BEFORE_REDRAW, () => {
-                this._adjustment.value = 0;
-                this._grid.currentPage = 0;
-                this._pageIndicators.setNPages(this._grid.nPages);
-                this._pageIndicators.setCurrentPosition(0);
-                return GLib.SOURCE_REMOVE;
-            });
-        }
-
-        this._availWidth = width;
-        this._availHeight = height;
+        super.adaptToSize(width, height);
     }
 
     _loadApps() {
