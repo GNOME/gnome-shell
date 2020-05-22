@@ -798,7 +798,7 @@ class AppDisplay extends BaseAppView {
     _handleDragOvershoot(dragEvent) {
         let [, gridY] = this.get_transformed_position();
         let [, gridHeight] = this.get_transformed_size();
-        let gridBottom = gridY + gridHeight;
+        const gridBottom = gridY + gridHeight - OVERSHOOT_THRESHOLD;
 
         // Already animating
         if (this._adjustment.get_transition('value') !== null)
