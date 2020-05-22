@@ -403,7 +403,7 @@ var GridSearchResultsLayout = GObject.registerClass({
         return [minHeight, natHeight];
     }
 
-    vfunc_allocate(container, box, flags) {
+    vfunc_allocate(container, box) {
         const width = box.get_width();
 
         const childBox = new Clutter.ActorBox();
@@ -427,7 +427,7 @@ var GridSearchResultsLayout = GObject.registerClass({
             if (childBox.x1 + childWidth > width)
                 return;
 
-            child.allocate(childBox, flags);
+            child.allocate(childBox);
 
             childBox.x1 += childWidth;
         }
