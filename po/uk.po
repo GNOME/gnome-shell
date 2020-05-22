@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2020-05-04 14:38+0000\n"
-"PO-Revision-Date: 2020-05-04 20:19+0300\n"
+"POT-Creation-Date: 2020-05-21 23:22+0000\n"
+"PO-Revision-Date: 2020-05-22 08:44+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <kde-i18n-uk@kde.org>\n"
 "Language: uk\n"
@@ -416,7 +416,7 @@ msgstr "Відвідати сторінку розширення"
 #: js/ui/components/networkAgent.js:110 js/ui/components/polkitAgent.js:139
 #: js/ui/endSessionDialog.js:369 js/ui/extensionDownloader.js:181
 #: js/ui/shellMountOperation.js:376 js/ui/shellMountOperation.js:386
-#: js/ui/status/network.js:916 subprojects/extensions-app/js/main.js:148
+#: js/ui/status/network.js:916 subprojects/extensions-app/js/main.js:149
 msgid "Cancel"
 msgstr "Скасувати"
 
@@ -713,50 +713,48 @@ msgstr "Заборонити доступ"
 msgid "Grant Access"
 msgstr "Надати доступ"
 
-#: js/ui/appDisplay.js:943
+#: js/ui/appDisplay.js:944
 msgid "Unnamed Folder"
 msgstr "Неназвана тека"
 
-#: js/ui/appDisplay.js:966
+#: js/ui/appDisplay.js:967
 msgid "Frequently used applications will appear here"
 msgstr "Часто використовувані програми будуть з'являтись тут"
 
-#: js/ui/appDisplay.js:1101
+#: js/ui/appDisplay.js:1102
 msgid "Frequent"
 msgstr "Частовживане"
 
-#: js/ui/appDisplay.js:1108
+#: js/ui/appDisplay.js:1109
 msgid "All"
 msgstr "Усе"
 
 #. Translators: This is the heading of a list of open windows
-#: js/ui/appDisplay.js:2485 js/ui/panel.js:75
+#: js/ui/appDisplay.js:2486 js/ui/panel.js:75
 msgid "Open Windows"
 msgstr "Відкрити вікна"
 
-#: js/ui/appDisplay.js:2504 js/ui/panel.js:82
+#: js/ui/appDisplay.js:2505 js/ui/panel.js:82
 msgid "New Window"
 msgstr "Нове вікно"
 
-#: js/ui/appDisplay.js:2520
-#| msgid "Launch using Dedicated Graphics Card"
+#: js/ui/appDisplay.js:2521
 msgid "Launch using Integrated Graphics Card"
 msgstr "Запустити через інтегровану графічну плату"
 
-#: js/ui/appDisplay.js:2521
-#| msgid "Launch using Dedicated Graphics Card"
+#: js/ui/appDisplay.js:2522
 msgid "Launch using Discrete Graphics Card"
 msgstr "Запустити через дискретну графічну плату"
 
-#: js/ui/appDisplay.js:2549 js/ui/dash.js:239
+#: js/ui/appDisplay.js:2550 js/ui/dash.js:239
 msgid "Remove from Favorites"
 msgstr "Вилучити з улюбленого"
 
-#: js/ui/appDisplay.js:2555
+#: js/ui/appDisplay.js:2556
 msgid "Add to Favorites"
 msgstr "Додати до улюбленого"
 
-#: js/ui/appDisplay.js:2565 js/ui/panel.js:93
+#: js/ui/appDisplay.js:2566 js/ui/panel.js:93
 msgid "Show Details"
 msgstr "Показати подробиці"
 
@@ -786,7 +784,7 @@ msgstr "Навушники"
 msgid "Headset"
 msgstr "Гарнітура"
 
-#: js/ui/audioDeviceSelection.js:68 js/ui/status/volume.js:270
+#: js/ui/audioDeviceSelection.js:68 js/ui/status/volume.js:273
 msgid "Microphone"
 msgstr "Мікрофон"
 
@@ -1109,31 +1107,31 @@ msgstr "%-d %B %Y"
 msgid "%A %B %e %Y"
 msgstr "%A %-d %B %Y"
 
-#: js/ui/dateMenu.js:161
+#: js/ui/dateMenu.js:162
 msgid "Add world clocks…"
 msgstr "Додати світові годинники…"
 
-#: js/ui/dateMenu.js:162
+#: js/ui/dateMenu.js:163
 msgid "World Clocks"
 msgstr "Світові годинники"
 
-#: js/ui/dateMenu.js:424
+#: js/ui/dateMenu.js:443
 msgid "Loading…"
 msgstr "Завантаження…"
 
-#: js/ui/dateMenu.js:434
+#: js/ui/dateMenu.js:453
 msgid "Go online for weather information"
 msgstr "Увійти в мережу за прогнозом погоди"
 
-#: js/ui/dateMenu.js:436
+#: js/ui/dateMenu.js:455
 msgid "Weather information is currently unavailable"
 msgstr "Наразі інформації про погоду недоступна"
 
-#: js/ui/dateMenu.js:446
+#: js/ui/dateMenu.js:465
 msgid "Weather"
 msgstr "Погода"
 
-#: js/ui/dateMenu.js:448
+#: js/ui/dateMenu.js:467
 msgid "Select weather location…"
 msgstr "Виберіть місцевість для погоди…"
 
@@ -1310,11 +1308,11 @@ msgstr "Встановити розширення"
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "Звантажити і встановити «%s» з extensions.gnome.org?"
 
-#: js/ui/extensionSystem.js:251
+#: js/ui/extensionSystem.js:252
 msgid "Extension Updates Available"
 msgstr "Випущено оновлення розширень"
 
-#: js/ui/extensionSystem.js:252
+#: js/ui/extensionSystem.js:253
 msgid "Extension updates are ready to be installed."
 msgstr "Приготовано до встановлення оновлення розширень."
 
@@ -1441,6 +1439,7 @@ msgid "Disabled"
 msgstr "Вимкнено"
 
 #: js/ui/lookingGlass.js:743
+#: subprojects/extensions-app/data/ui/extension-row.ui:188
 msgid "Error"
 msgstr "Помилка"
 
@@ -1484,11 +1483,11 @@ msgstr "Блокування екрана потребує керування в
 msgid "System Information"
 msgstr "Інформація про систему"
 
-#: js/ui/mpris.js:199
+#: js/ui/mpris.js:204
 msgid "Unknown artist"
 msgstr "Невідомий виконавець"
 
-#: js/ui/mpris.js:209
+#: js/ui/mpris.js:214
 msgid "Unknown title"
 msgstr "Невідома назва"
 
@@ -1560,16 +1559,16 @@ msgstr "Вийти"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: js/ui/panel.js:432
+#: js/ui/panel.js:435
 msgid "Activities"
 msgstr "Діяльність"
 
-#: js/ui/panel.js:711
+#: js/ui/panel.js:714
 msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "Система"
 
-#: js/ui/panel.js:824
+#: js/ui/panel.js:827
 msgid "Top Bar"
 msgstr "Верхня панель"
 
@@ -1608,15 +1607,15 @@ msgstr "Неможливо заблокувати"
 msgid "Lock was blocked by an application"
 msgstr "Блокування заборонено програмою"
 
-#: js/ui/search.js:702
+#: js/ui/search.js:823
 msgid "Searching…"
 msgstr "Пошуки…"
 
-#: js/ui/search.js:704
+#: js/ui/search.js:825
 msgid "No results."
 msgstr "Безрезультатно."
 
-#: js/ui/search.js:830
+#: js/ui/search.js:951
 #, javascript-format
 msgid "%d more"
 msgid_plural "%d more"
@@ -2165,11 +2164,11 @@ msgstr "Помилка завірення Thunderbolt"
 msgid "Could not authorize the Thunderbolt device: %s"
 msgstr "Неможливо завірити пристрій Thunderbolt: %s"
 
-#: js/ui/status/volume.js:151
+#: js/ui/status/volume.js:154
 msgid "Volume changed"
 msgstr "Гучність змінено"
 
-#: js/ui/status/volume.js:222
+#: js/ui/status/volume.js:225
 msgid "Volume"
 msgstr "Гучність"
 
@@ -2380,13 +2379,13 @@ msgstr "Вікно авторизації відхилено користува�
 
 #: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:5
 #: subprojects/extensions-app/data/org.gnome.Extensions.desktop.in.in:4
-#: subprojects/extensions-app/js/main.js:182
+#: subprojects/extensions-app/js/main.js:183
 #: subprojects/extensions-app/data/ui/extensions-window.ui:61
 msgid "Extensions"
 msgstr "Розширення"
 
 #: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:6
-#: subprojects/extensions-app/js/main.js:183
+#: subprojects/extensions-app/js/main.js:184
 msgid "Manage your GNOME Extensions"
 msgstr "Керуйте вашими розширеннями GNOME"
 
@@ -2406,12 +2405,12 @@ msgstr ""
 msgid "Configure GNOME Shell Extensions"
 msgstr "Налаштувати розширення GNOME Shell"
 
-#: subprojects/extensions-app/js/main.js:144
+#: subprojects/extensions-app/js/main.js:145
 #, javascript-format
 msgid "Remove “%s”?"
 msgstr "Вилучити «%s»?"
 
-#: subprojects/extensions-app/js/main.js:145
+#: subprojects/extensions-app/js/main.js:146
 msgid ""
 "If you remove the extension, you need to return to download it if you want "
 "to enable it again"
@@ -2419,18 +2418,18 @@ msgstr ""
 "Якщо ви вилучите розширення, вам доведеться отримати його код знову, якщо ви "
 "захочете його знову увімкнути"
 
-#: subprojects/extensions-app/js/main.js:149
+#: subprojects/extensions-app/js/main.js:150
 msgid "Remove"
 msgstr "Вилучити"
 
-#: subprojects/extensions-app/js/main.js:181
+#: subprojects/extensions-app/js/main.js:182
 msgid "translator-credits"
 msgstr ""
 "Максим Дзюманенко <dziumanenko@gmail.com>\n"
 "Данило Коростіль <ted.korostiled@gmail.com>\n"
 "Юрій Чорноіван <yurchor@ukr.net>"
 
-#: subprojects/extensions-app/js/main.js:313
+#: subprojects/extensions-app/js/main.js:314
 #, javascript-format
 msgid "%d extension will be updated on next login."
 msgid_plural "%d extensions will be updated on next login."
@@ -2439,26 +2438,35 @@ msgstr[1] "Під час наступного входу до системи б�
 msgstr[2] "Під час наступного входу до системи буде оновлено %d розширень."
 msgstr[3] "Під час наступного входу до системи буде оновлено одне розширення."
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:100
+#: subprojects/extensions-app/js/main.js:461
+msgid "The extension is incompatible with the current GNOME version"
+msgstr "Розширення є несумісним із поточною версією GNOME"
+
+#: subprojects/extensions-app/js/main.js:464
+#| msgid "Show extension info"
+msgid "The extension had an error"
+msgstr "У розширенні сталася помилка"
+
+#: subprojects/extensions-app/data/ui/extension-row.ui:109
 #: subprojects/extensions-tool/src/command-create.c:301
 #: subprojects/extensions-tool/src/main.c:241
 msgid "Description"
 msgstr "Опис"
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:123
+#: subprojects/extensions-app/data/ui/extension-row.ui:132
 #: subprojects/extensions-tool/src/main.c:253
 msgid "Version"
 msgstr "Версія"
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:151
+#: subprojects/extensions-app/data/ui/extension-row.ui:160
 msgid "Author"
 msgstr "Автор"
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:175
+#: subprojects/extensions-app/data/ui/extension-row.ui:216
 msgid "Website"
 msgstr "Сайт"
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:192
+#: subprojects/extensions-app/data/ui/extension-row.ui:233
 msgid "Remove…"
 msgstr "Вилучити…"
 
