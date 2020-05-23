@@ -139,7 +139,7 @@ class Indicator extends PanelMenu.SystemIndicator {
             label = _("%d\u2009%%").format(100);
         else
             label = _("%d\u2009%%").format(this._proxy.Percentage);
-        this._percentageLabel.clutter_text.set_markup('<span size="smaller">' + label + '</span>');
+        this._percentageLabel.clutter_text.set_markup(label);
 
         // The status label
         this._item.label.text = this._getStatus();
