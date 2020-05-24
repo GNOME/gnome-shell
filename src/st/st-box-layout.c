@@ -179,7 +179,7 @@ st_box_layout_class_init (StBoxLayoutClass *klass)
   widget_class->style_changed = st_box_layout_style_changed;
 
   /**
-   * #StBoxLayout:vertical:
+   * StBoxLayout:vertical:
    *
    * A convenience property for getting the #ClutterBoxLayout:vertical
    * property of the layout for #StBoxLayout.
@@ -193,7 +193,7 @@ st_box_layout_class_init (StBoxLayoutClass *klass)
   g_object_class_install_property (object_class, PROP_VERTICAL, pspec);
 
   /**
-   * #StBoxLayout:pack-start:
+   * StBoxLayout:pack-start:
    *
    * A convenience property for getting the #ClutterBoxLayout:pack-start
    * property of the layout for #StBoxLayout.
