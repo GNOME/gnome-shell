@@ -123,6 +123,7 @@ create_metadata (GFile       *target_dir,
                  const char  *description,
                  GError     **error)
 {
+  g_autoptr (GString) desc_escaped = NULL;
   g_autoptr (GFile) target = NULL;
   g_autoptr (GString) json = NULL;
   g_autofree char *version = NULL;
@@ -131,10 +132,18 @@ create_metadata (GFile       *target_dir,
   if (version == NULL)
     return FALSE;
 
+  desc_escaped = g_string_new (description);
+  for (gsize i = 0; i < desc_escaped->len; ++i) {
+    if (desc_escaped->str[i] == '"' || desc_escaped->str[i] == '\\') {
+      g_string_insert_c (desc_escaped, i, '\\');
+      ++i;
+    }
+  }
+
   json = g_string_new ("{\n");
 
   g_string_append_printf (json, "  \"name\": \"%s\",\n", name);
-  g_string_append_printf (json, "  \"description\": \"%s\",\n", description);
+  g_string_append_printf (json, "  \"description\": \"%s\",\n", desc_escaped->str);
   g_string_append_printf (json, "  \"uuid\": \"%s\",\n", uuid);
   g_string_append_printf (json, "  \"shell-version\": [\n");
   g_string_append_printf (json, "    \"%s\"\n", version);
