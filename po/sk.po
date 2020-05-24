@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2020-03-31 07:15+0000\n"
-"PO-Revision-Date: 2020-05-02 16:05+0200\n"
+"POT-Creation-Date: 2020-05-15 03:04+0000\n"
+"PO-Revision-Date: 2020-05-24 09:26+0200\n"
 "Last-Translator: Dušan Kazik <prescott66@gmail.com>\n"
 "Language-Team: Slovak <gnome-sk-list@gnome.org>\n"
 "Language: sk\n"
@@ -420,7 +420,7 @@ msgid "Network Login"
 msgstr "Sieťové prihlásenie"
 
 #: js/dbusServices/extensions/ui/extension-prefs-dialog.ui:36
-#: subprojects/extensions-app/data/ui/extensions-window.ui:223
+#: subprojects/extensions-app/data/ui/extensions-window.ui:224
 msgid "Something’s gone wrong"
 msgstr "Niečo sa pokazilo"
 
@@ -447,7 +447,7 @@ msgstr "Navštíviť domovskú stránku rozšírenia"
 
 #: js/gdm/authPrompt.js:135 js/ui/audioDeviceSelection.js:57
 #: js/ui/components/networkAgent.js:109 js/ui/components/polkitAgent.js:139
-#: js/ui/endSessionDialog.js:374 js/ui/extensionDownloader.js:181
+#: js/ui/endSessionDialog.js:372 js/ui/extensionDownloader.js:181
 #: js/ui/shellMountOperation.js:376 js/ui/shellMountOperation.js:386
 #: js/ui/status/network.js:913 subprojects/extensions-app/js/main.js:148
 msgid "Cancel"
@@ -505,74 +505,74 @@ msgid "(or swipe finger)"
 msgstr "(alebo prejdite prstom)"
 
 #. Translators: The name of the power-off action in search
-#: js/misc/systemActions.js:89
+#: js/misc/systemActions.js:93
 msgctxt "search-result"
 msgid "Power Off"
 msgstr "Vypnúť"
 
 #. Translators: A list of keywords that match the power-off action, separated by semicolons
-#: js/misc/systemActions.js:92
+#: js/misc/systemActions.js:96
 msgid "power off;shutdown;reboot;restart;halt;stop"
 msgstr "vypnúť;vypnutie;reštart;reštartovanie;zastaviť;zastavenie"
 
 #. Translators: The name of the lock screen action in search
-#: js/misc/systemActions.js:97
+#: js/misc/systemActions.js:101
 msgctxt "search-result"
 msgid "Lock Screen"
 msgstr "Uzamknúť obrazovku"
 
 #. Translators: A list of keywords that match the lock screen action, separated by semicolons
-#: js/misc/systemActions.js:100
+#: js/misc/systemActions.js:104
 msgid "lock screen"
 msgstr "uzamknúť;zámok;obrazovku;obrazovky"
 
 #. Translators: The name of the logout action in search
-#: js/misc/systemActions.js:105
+#: js/misc/systemActions.js:109
 msgctxt "search-result"
 msgid "Log Out"
 msgstr "Odhlásiť sa"
 
 #. Translators: A list of keywords that match the logout action, separated by semicolons
-#: js/misc/systemActions.js:108
+#: js/misc/systemActions.js:112
 msgid "logout;log out;sign off"
 msgstr "odhlásiť;odhlásenie"
 
 #. Translators: The name of the suspend action in search
-#: js/misc/systemActions.js:113
+#: js/misc/systemActions.js:117
 msgctxt "search-result"
 msgid "Suspend"
 msgstr "Uspať"
 
 #. Translators: A list of keywords that match the suspend action, separated by semicolons
-#: js/misc/systemActions.js:116
+#: js/misc/systemActions.js:120
 msgid "suspend;sleep"
 msgstr "uspať;režim;spánku"
 
 #. Translators: The name of the switch user action in search
-#: js/misc/systemActions.js:121
+#: js/misc/systemActions.js:125
 msgctxt "search-result"
 msgid "Switch User"
 msgstr "Prepnúť používateľa"
 
 #. Translators: A list of keywords that match the switch user action, separated by semicolons
-#: js/misc/systemActions.js:124
+#: js/misc/systemActions.js:128
 msgid "switch user"
 msgstr "prepnúť;prepnutie;používateľa"
 
 # action button
 #. Translators: A list of keywords that match the lock orientation action, separated by semicolons
-#: js/misc/systemActions.js:131
+#: js/misc/systemActions.js:135
 msgid "lock orientation;unlock orientation;screen;rotation"
 msgstr "uzamknúť orientáciu;odomknúť orientáciu;obrazovka;otočenie"
 
 # action button
-#: js/misc/systemActions.js:251
+#: js/misc/systemActions.js:255
 msgctxt "search-result"
 msgid "Unlock Screen Rotation"
 msgstr "Odomknúť otočenie obrazovky"
 
 # action button
-#: js/misc/systemActions.js:252
+#: js/misc/systemActions.js:256
 msgctxt "search-result"
 msgid "Lock Screen Rotation"
 msgstr "Uzamknúť otočenie obrazovky"
@@ -747,53 +747,53 @@ msgstr "Odmietnuť prístup"
 msgid "Grant Access"
 msgstr "Udeliť prístup"
 
-#: js/ui/appDisplay.js:932
+#: js/ui/appDisplay.js:939
 msgid "Unnamed Folder"
 msgstr "Nepomenovaný priečinok"
 
-#: js/ui/appDisplay.js:955
+#: js/ui/appDisplay.js:962
 msgid "Frequently used applications will appear here"
 msgstr "Tu sa objavia často používané aplikácie"
 
-#: js/ui/appDisplay.js:1090
+#: js/ui/appDisplay.js:1097
 msgid "Frequent"
 msgstr "Často používané"
 
-#: js/ui/appDisplay.js:1097
+#: js/ui/appDisplay.js:1104
 msgid "All"
 msgstr "Všetky"
 
 #. Translators: This is the heading of a list of open windows
-#: js/ui/appDisplay.js:2473 js/ui/panel.js:75
+#: js/ui/appDisplay.js:2480 js/ui/panel.js:75
 msgid "Open Windows"
 msgstr "Otvorené okná"
 
-#: js/ui/appDisplay.js:2493 js/ui/panel.js:82
+#: js/ui/appDisplay.js:2500 js/ui/panel.js:82
 msgid "New Window"
 msgstr "Nové okno"
 
-#: js/ui/appDisplay.js:2504
+#: js/ui/appDisplay.js:2511
 msgid "Launch using Dedicated Graphics Card"
 msgstr "Spustiť pomocou prídavnej grafickej karty"
 
-#: js/ui/appDisplay.js:2532 js/ui/dash.js:239
+#: js/ui/appDisplay.js:2539 js/ui/dash.js:239
 msgid "Remove from Favorites"
 msgstr "Odstrániť z obľúbených"
 
-#: js/ui/appDisplay.js:2538
+#: js/ui/appDisplay.js:2545
 msgid "Add to Favorites"
 msgstr "Pridať do obľúbených"
 
-#: js/ui/appDisplay.js:2548 js/ui/panel.js:93
+#: js/ui/appDisplay.js:2555 js/ui/panel.js:93
 msgid "Show Details"
 msgstr "Zobraziť podrobnosti"
 
-#: js/ui/appFavorites.js:152
+#: js/ui/appFavorites.js:153
 #, javascript-format
 msgid "%s has been added to your favorites."
 msgstr "Aplikácia %s bola pridaná medzi obľúbené."
 
-#: js/ui/appFavorites.js:185
+#: js/ui/appFavorites.js:186
 #, javascript-format
 msgid "%s has been removed from your favorites."
 msgstr "Aplikácia %s bola odstránená z obľúbených."
@@ -1174,18 +1174,18 @@ msgstr "Aby sa mohli zobraziť informácie o počasí, musíte sa pripojiť"
 msgid "Weather information is currently unavailable"
 msgstr "Informácie o počasí nie sú momentálne dostupné"
 
-#: js/ui/endSessionDialog.js:39
+#: js/ui/endSessionDialog.js:37
 #, javascript-format
 msgctxt "title"
 msgid "Log Out %s"
 msgstr "Odhlásenie používateľa %s"
 
-#: js/ui/endSessionDialog.js:40
+#: js/ui/endSessionDialog.js:38
 msgctxt "title"
 msgid "Log Out"
 msgstr "Odhlásenie"
 
-#: js/ui/endSessionDialog.js:42
+#: js/ui/endSessionDialog.js:40
 #, javascript-format
 msgid "%s will be logged out automatically in %d second."
 msgid_plural "%s will be logged out automatically in %d seconds."
@@ -1193,7 +1193,7 @@ msgstr[0] "Používateľ %s bude automaticky odhlásený o %d sekúnd."
 msgstr[1] "Používateľ %s bude automaticky odhlásený o %d sekundu."
 msgstr[2] "Používateľ %s bude automaticky odhlásený o %d sekundy."
 
-#: js/ui/endSessionDialog.js:47
+#: js/ui/endSessionDialog.js:45
 #, javascript-format
 msgid "You will be logged out automatically in %d second."
 msgid_plural "You will be logged out automatically in %d seconds."
@@ -1201,22 +1201,22 @@ msgstr[0] "Budete automaticky odhlásený o %d sekúnd."
 msgstr[1] "Budete automaticky odhlásený o %d sekundu."
 msgstr[2] "Budete automaticky odhlásený o %d sekundy."
 
-#: js/ui/endSessionDialog.js:53
+#: js/ui/endSessionDialog.js:51
 msgctxt "button"
 msgid "Log Out"
 msgstr "Odhlásiť sa"
 
-#: js/ui/endSessionDialog.js:58
+#: js/ui/endSessionDialog.js:56
 msgctxt "title"
 msgid "Power Off"
 msgstr "Vypnutie"
 
-#: js/ui/endSessionDialog.js:59
+#: js/ui/endSessionDialog.js:57
 msgctxt "title"
 msgid "Install Updates & Power Off"
 msgstr "Inštalácia aktualizácií a vypnutie"
 
-#: js/ui/endSessionDialog.js:61
+#: js/ui/endSessionDialog.js:59
 #, javascript-format
 msgid "The system will power off automatically in %d second."
 msgid_plural "The system will power off automatically in %d seconds."
@@ -1224,27 +1224,27 @@ msgstr[0] "Systém sa automaticky vypne o %d sekúnd."
 msgstr[1] "Systém sa automaticky vypne o %d sekundu."
 msgstr[2] "Systém sa automaticky vypne o %d sekundy."
 
-#: js/ui/endSessionDialog.js:65
+#: js/ui/endSessionDialog.js:63
 msgctxt "checkbox"
 msgid "Install pending software updates"
 msgstr "Nainštalovať čakajúce aktualizácie softvéru"
 
-#: js/ui/endSessionDialog.js:68 js/ui/endSessionDialog.js:84
+#: js/ui/endSessionDialog.js:66 js/ui/endSessionDialog.js:82
 msgctxt "button"
 msgid "Restart"
 msgstr "Reštartovať"
 
-#: js/ui/endSessionDialog.js:70
+#: js/ui/endSessionDialog.js:68
 msgctxt "button"
 msgid "Power Off"
 msgstr "Vypnúť"
 
-#: js/ui/endSessionDialog.js:76
+#: js/ui/endSessionDialog.js:74
 msgctxt "title"
 msgid "Restart"
 msgstr "Reštart"
 
-#: js/ui/endSessionDialog.js:78
+#: js/ui/endSessionDialog.js:76
 #, javascript-format
 msgid "The system will restart automatically in %d second."
 msgid_plural "The system will restart automatically in %d seconds."
@@ -1252,12 +1252,12 @@ msgstr[0] "Systém sa automaticky reštartuje o %d sekundu."
 msgstr[1] "Systém sa automaticky reštartuje o %d sekundy."
 msgstr[2] "Systém sa automaticky reštartuje o %d sekúnd."
 
-#: js/ui/endSessionDialog.js:91
+#: js/ui/endSessionDialog.js:89
 msgctxt "title"
 msgid "Restart & Install Updates"
 msgstr "Reštart a inštalácia aktualizácií"
 
-#: js/ui/endSessionDialog.js:93
+#: js/ui/endSessionDialog.js:91
 #, javascript-format
 msgid "The system will automatically restart and install updates in %d second."
 msgid_plural ""
@@ -1269,22 +1269,22 @@ msgstr[1] ""
 msgstr[2] ""
 "Systém sa automaticky reštartuje a nainštaluje aktualizácie o %d sekundy."
 
-#: js/ui/endSessionDialog.js:99 js/ui/endSessionDialog.js:118
+#: js/ui/endSessionDialog.js:97 js/ui/endSessionDialog.js:116
 msgctxt "button"
 msgid "Restart &amp; Install"
 msgstr "Reštartovať a inštalovať"
 
-#: js/ui/endSessionDialog.js:100
+#: js/ui/endSessionDialog.js:98
 msgctxt "button"
 msgid "Install &amp; Power Off"
 msgstr "Nainštalovať a vypnúť"
 
-#: js/ui/endSessionDialog.js:101
+#: js/ui/endSessionDialog.js:99
 msgctxt "checkbox"
 msgid "Power off after updates are installed"
 msgstr "Vypnúť po inštalácii aktualizácií"
 
-#: js/ui/endSessionDialog.js:108
+#: js/ui/endSessionDialog.js:106
 msgctxt "title"
 msgid "Restart & Install Upgrade"
 msgstr "Reštart a inštalácia inovácie"
@@ -1292,7 +1292,7 @@ msgstr "Reštart a inštalácia inovácie"
 #. Translators: This is the text displayed for system upgrades in the
 #. shut down dialog. First %s gets replaced with the distro name and
 #. second %s with the distro version to upgrade to
-#: js/ui/endSessionDialog.js:113
+#: js/ui/endSessionDialog.js:111
 #, javascript-format
 msgid ""
 "%s %s will be installed after restart. Upgrade installation can take a long "
@@ -1302,28 +1302,28 @@ msgstr ""
 "môže trvať dlhšiu dobu: uistite sa, že máte vytvorenú zálohu, a že počítač "
 "je pripojený k zdroju napájania."
 
-#: js/ui/endSessionDialog.js:261
+#: js/ui/endSessionDialog.js:259
 msgid "Running on battery power: Please plug in before installing updates."
 msgstr ""
 "Systém je napájaný z batérie. Pred inštaláciou aktualizácií pripojte "
 "napájací zdroj."
 
-#: js/ui/endSessionDialog.js:270
+#: js/ui/endSessionDialog.js:268
 msgid "Some applications are busy or have unsaved work"
 msgstr "Niektoré aplikácie sú zaneprázdnené, alebo obsahujú neuloženú prácu"
 
-#: js/ui/endSessionDialog.js:275
+#: js/ui/endSessionDialog.js:273
 msgid "Other users are logged in"
 msgstr "Sú prihlásení iní používatelia"
 
 #. Translators: Remote here refers to a remote session, like a ssh login
-#: js/ui/endSessionDialog.js:588
+#: js/ui/endSessionDialog.js:586
 #, javascript-format
 msgid "%s (remote)"
 msgstr "%s (vzdialená relácia)"
 
 #. Translators: Console here refers to a tty like a VT console
-#: js/ui/endSessionDialog.js:591
+#: js/ui/endSessionDialog.js:589
 #, javascript-format
 msgid "%s (console)"
 msgstr "%s (konzola)"
@@ -1342,11 +1342,11 @@ msgstr "Inštalácia rozšírenia"
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "Prevziať a nainštalovať rozšírenie „%s“ z extensions.gnome.org?"
 
-#: js/ui/extensionSystem.js:233
+#: js/ui/extensionSystem.js:252
 msgid "Extension Updates Available"
 msgstr "Sú dostupné aktualizácie rozšírení"
 
-#: js/ui/extensionSystem.js:234
+#: js/ui/extensionSystem.js:253
 msgid "Extension updates are ready to be installed."
 msgstr "Aktualizácie rozšírení sú pripravené na inštaláciu."
 
@@ -1499,11 +1499,11 @@ msgstr "Zobraziť zdroj"
 msgid "Web Page"
 msgstr "Webová stránka"
 
-#: js/ui/main.js:277
+#: js/ui/main.js:279
 msgid "Logged in as a privileged user"
 msgstr "Prihlásený ako privilegovaný používateľ"
 
-#: js/ui/main.js:278
+#: js/ui/main.js:280
 msgid ""
 "Running a session as a privileged user should be avoided for security "
 "reasons. If possible, you should log in as a normal user."
@@ -1512,23 +1512,23 @@ msgstr ""
 "bezpečnostných dôvodov zabrániť. Ak je to možné, mali by ste sa prihlásiť "
 "ako normálny používateľ."
 
-#: js/ui/main.js:317
+#: js/ui/main.js:319
 msgid "Screen Lock disabled"
 msgstr "Uzamknutie obrazovky je zakázané"
 
-#: js/ui/main.js:318
+#: js/ui/main.js:320
 msgid "Screen Locking requires the GNOME display manager."
 msgstr "Uzamykanie obrazovky vyžaduje správcu displejov prostredia GNOME."
 
-#: js/ui/messageTray.js:1551
+#: js/ui/messageTray.js:1548
 msgid "System Information"
 msgstr "Informácie o systéme"
 
-#: js/ui/mpris.js:199
+#: js/ui/mpris.js:204
 msgid "Unknown artist"
 msgstr "Neznámy interpret"
 
-#: js/ui/mpris.js:209
+#: js/ui/mpris.js:214
 msgid "Unknown title"
 msgstr "Neznámy názov"
 
@@ -1601,16 +1601,16 @@ msgstr "Ukončiť"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: js/ui/panel.js:434
+#: js/ui/panel.js:437
 msgid "Activities"
 msgstr "Aktivity"
 
-#: js/ui/panel.js:713
+#: js/ui/panel.js:716
 msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "Systém"
 
-#: js/ui/panel.js:826
+#: js/ui/panel.js:829
 msgid "Top Bar"
 msgstr "Horná lišta"
 
@@ -1642,11 +1642,11 @@ msgstr "Prostredie GNOME vyžaduje uzamknutie obrazovky"
 #.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
-#: js/ui/screenShield.js:244 js/ui/screenShield.js:598
+#: js/ui/screenShield.js:244 js/ui/screenShield.js:601
 msgid "Unable to lock"
 msgstr "Nepodarilo sa uzamknúť obrazovku"
 
-#: js/ui/screenShield.js:245 js/ui/screenShield.js:599
+#: js/ui/screenShield.js:245 js/ui/screenShield.js:602
 msgid "Lock was blocked by an application"
 msgstr "Uzamknutie bolo zablokované aplikáciou"
 
@@ -2310,7 +2310,7 @@ msgstr "Vrátiť nastavenia"
 msgid "Keep Changes"
 msgstr "Uchovať zmeny"
 
-#: js/ui/windowManager.js:85
+#: js/ui/windowManager.js:86
 #, javascript-format
 msgid "Settings changes will revert in %d second"
 msgid_plural "Settings changes will revert in %d seconds"
@@ -2320,7 +2320,7 @@ msgstr[2] "Zmeny nastavení budú vrátené o %d sekundy"
 
 #. Translators: This represents the size of a window. The first number is
 #. * the width of the window and the second is the height.
-#: js/ui/windowManager.js:544
+#: js/ui/windowManager.js:546
 #, javascript-format
 msgid "%d × %d"
 msgstr "%d × %d"
@@ -2413,12 +2413,12 @@ msgstr "Použitie zvláštneho režimu, napr. „gdm“  pre prihlasovaciu obraz
 msgid "List possible modes"
 msgstr "Zoznam možných režimov"
 
-#: src/shell-app.c:279
+#: src/shell-app.c:286
 msgctxt "program"
 msgid "Unknown"
 msgstr "Neznámy"
 
-#: src/shell-app.c:530
+#: src/shell-app.c:537
 #, c-format
 msgid "Failed to launch “%s”"
 msgstr "Zlyhalo spustenie „%s“"
@@ -2541,20 +2541,20 @@ msgstr ""
 "Ak sa stretnete s problémami s vaším systémom, odporúča sa zakázať všetky "
 "rozšírenia."
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:134
+#: subprojects/extensions-app/data/ui/extensions-window.ui:135
 msgid "Manually Installed"
 msgstr "Ručne nainštalované"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:158
+#: subprojects/extensions-app/data/ui/extensions-window.ui:159
 msgid "Built-In"
 msgstr "Vstavané"
 
 # dialog title
-#: subprojects/extensions-app/data/ui/extensions-window.ui:199
+#: subprojects/extensions-app/data/ui/extensions-window.ui:200
 msgid "No Installed Extensions"
 msgstr "Žiadne nainštalované rozšírenia"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:235
+#: subprojects/extensions-app/data/ui/extensions-window.ui:236
 msgid ""
 "We’re very sorry, but it was not possible to get the list of installed "
 "extensions. Make sure you are logged into GNOME and try again."
@@ -2563,7 +2563,11 @@ msgstr ""
 "rozšírení. Uistite sa, že ste prihlásený do prostredia GNOME a skúste to "
 "znovu."
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:288
+#: subprojects/extensions-app/data/ui/extensions-window.ui:273
+msgid "Extension Updates Ready"
+msgstr "Sú pripravené aktualizácie rozšírení"
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:289
 msgid "Log Out…"
 msgstr "Odhlásiť sa…"
 
