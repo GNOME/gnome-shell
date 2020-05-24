@@ -10,10 +10,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2020-05-04 14:38+0000\n"
-"PO-Revision-Date: 2020-05-05 17:18+0300\n"
-"Last-Translator: Florentina Mușat <florentina.musat.28 [at] gmail [dot] "
-"com>\n"
+"POT-Creation-Date: 2020-05-21 23:22+0000\n"
+"PO-Revision-Date: 2020-05-22 15:07+0300\n"
+"Last-Translator: Florentina Mușat <emryslokadottir [at] gmail [dot] com>\n"
 "Language-Team: Gnome Romanian Translation Team <gnomero-list@lists."
 "sourceforge.net>\n"
 "Language: ro\n"
@@ -23,7 +22,7 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n==0 || (n!=1 && n%100>=1 && n"
 "%100<=19) ? 1 : 2);\n"
 "20)) ? 1: 2);\n"
-"X-Generator: Poedit 2.3\n"
+"X-Generator: Poedit 2.3.1\n"
 "X-Project-Style: gnome\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 
@@ -435,7 +434,7 @@ msgstr "Vizitează pagina principală a extensiei"
 #: js/ui/components/networkAgent.js:110 js/ui/components/polkitAgent.js:139
 #: js/ui/endSessionDialog.js:369 js/ui/extensionDownloader.js:181
 #: js/ui/shellMountOperation.js:376 js/ui/shellMountOperation.js:386
-#: js/ui/status/network.js:916 subprojects/extensions-app/js/main.js:148
+#: js/ui/status/network.js:916 subprojects/extensions-app/js/main.js:149
 msgid "Cancel"
 msgstr "Anulează"
 
@@ -727,48 +726,48 @@ msgstr "Refuză accesul"
 msgid "Grant Access"
 msgstr "Permite accesul"
 
-#: js/ui/appDisplay.js:943
+#: js/ui/appDisplay.js:944
 msgid "Unnamed Folder"
 msgstr "Dosar nedenumit"
 
-#: js/ui/appDisplay.js:966
+#: js/ui/appDisplay.js:967
 msgid "Frequently used applications will appear here"
 msgstr "Aplicațiile utilizate frecvent vor fi afișate aici"
 
-#: js/ui/appDisplay.js:1101
+#: js/ui/appDisplay.js:1102
 msgid "Frequent"
 msgstr "Frecvente"
 
-#: js/ui/appDisplay.js:1108
+#: js/ui/appDisplay.js:1109
 msgid "All"
 msgstr "Toate"
 
 #. Translators: This is the heading of a list of open windows
-#: js/ui/appDisplay.js:2485 js/ui/panel.js:75
+#: js/ui/appDisplay.js:2486 js/ui/panel.js:75
 msgid "Open Windows"
 msgstr "Ferestre deschise"
 
-#: js/ui/appDisplay.js:2504 js/ui/panel.js:82
+#: js/ui/appDisplay.js:2505 js/ui/panel.js:82
 msgid "New Window"
 msgstr "Fereastră nouă"
 
-#: js/ui/appDisplay.js:2520
+#: js/ui/appDisplay.js:2521
 msgid "Launch using Integrated Graphics Card"
 msgstr "Lansează folosind placa grafică integrată"
 
-#: js/ui/appDisplay.js:2521
+#: js/ui/appDisplay.js:2522
 msgid "Launch using Discrete Graphics Card"
 msgstr "Lansează folosind placa grafică discretă"
 
-#: js/ui/appDisplay.js:2549 js/ui/dash.js:239
+#: js/ui/appDisplay.js:2550 js/ui/dash.js:239
 msgid "Remove from Favorites"
 msgstr "Elimină din favorite"
 
-#: js/ui/appDisplay.js:2555
+#: js/ui/appDisplay.js:2556
 msgid "Add to Favorites"
 msgstr "Adaugă la Favorite"
 
-#: js/ui/appDisplay.js:2565 js/ui/panel.js:93
+#: js/ui/appDisplay.js:2566 js/ui/panel.js:93
 msgid "Show Details"
 msgstr "Arată detaliile"
 
@@ -798,7 +797,7 @@ msgstr "Căști auriculare"
 msgid "Headset"
 msgstr "Căști cu microfon"
 
-#: js/ui/audioDeviceSelection.js:68 js/ui/status/volume.js:270
+#: js/ui/audioDeviceSelection.js:68 js/ui/status/volume.js:273
 msgid "Microphone"
 msgstr "Microfon"
 
@@ -1125,31 +1124,31 @@ msgstr "%B %-d %Y"
 msgid "%A %B %e %Y"
 msgstr "%A %B %e %Y"
 
-#: js/ui/dateMenu.js:161
+#: js/ui/dateMenu.js:162
 msgid "Add world clocks…"
 msgstr "Adaugă un fus orar…"
 
-#: js/ui/dateMenu.js:162
+#: js/ui/dateMenu.js:163
 msgid "World Clocks"
 msgstr "Fusuri orare"
 
-#: js/ui/dateMenu.js:424
+#: js/ui/dateMenu.js:443
 msgid "Loading…"
 msgstr "Se încarcă…"
 
-#: js/ui/dateMenu.js:434
+#: js/ui/dateMenu.js:453
 msgid "Go online for weather information"
 msgstr "Conectați-vă la internet pentru informații despre vreme"
 
-#: js/ui/dateMenu.js:436
+#: js/ui/dateMenu.js:455
 msgid "Weather information is currently unavailable"
 msgstr "Informațiile despre vreme nu sunt disponibile momentan"
 
-#: js/ui/dateMenu.js:446
+#: js/ui/dateMenu.js:465
 msgid "Weather"
 msgstr "Vreme"
 
-#: js/ui/dateMenu.js:448
+#: js/ui/dateMenu.js:467
 msgid "Select weather location…"
 msgstr "Selectează locația vremii…"
 
@@ -1317,11 +1316,11 @@ msgstr "Instalează extensia"
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "Descărcați și instalați „%s” de la extensions.gnome.org?"
 
-#: js/ui/extensionSystem.js:251
+#: js/ui/extensionSystem.js:252
 msgid "Extension Updates Available"
 msgstr "Actualizări de extensie disponibile"
 
-#: js/ui/extensionSystem.js:252
+#: js/ui/extensionSystem.js:253
 msgid "Extension updates are ready to be installed."
 msgstr "Actualizările de extensie sunt gata de instalat."
 
@@ -1451,6 +1450,7 @@ msgid "Disabled"
 msgstr "Dezactivat"
 
 #: js/ui/lookingGlass.js:743
+#: subprojects/extensions-app/data/ui/extension-row.ui:188
 msgid "Error"
 msgstr "Eroare"
 
@@ -1495,11 +1495,11 @@ msgstr "Blocarea ecranului necesită administratorul de afișaj GNOME."
 msgid "System Information"
 msgstr "Informații despre sistem"
 
-#: js/ui/mpris.js:199
+#: js/ui/mpris.js:204
 msgid "Unknown artist"
 msgstr "Artist necunoscut"
 
-#: js/ui/mpris.js:209
+#: js/ui/mpris.js:214
 msgid "Unknown title"
 msgstr "Titlu necunoscut"
 
@@ -1571,16 +1571,16 @@ msgstr "Ieșire"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: js/ui/panel.js:432
+#: js/ui/panel.js:435
 msgid "Activities"
 msgstr "Activități"
 
-#: js/ui/panel.js:711
+#: js/ui/panel.js:714
 msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "Sistem"
 
-#: js/ui/panel.js:824
+#: js/ui/panel.js:827
 msgid "Top Bar"
 msgstr "Bara de sus"
 
@@ -1619,15 +1619,15 @@ msgstr "Blocare nereușită"
 msgid "Lock was blocked by an application"
 msgstr "Blocarea a fost împiedicată de o aplicație"
 
-#: js/ui/search.js:702
+#: js/ui/search.js:823
 msgid "Searching…"
 msgstr "Se caută…"
 
-#: js/ui/search.js:704
+#: js/ui/search.js:825
 msgid "No results."
 msgstr "Niciun rezultat."
 
-#: js/ui/search.js:830
+#: js/ui/search.js:951
 #, javascript-format
 msgid "%d more"
 msgid_plural "%d more"
@@ -2175,11 +2175,11 @@ msgstr "Eroare de autorizare Thunderbolt"
 msgid "Could not authorize the Thunderbolt device: %s"
 msgstr "Nu s-a putut autoriza dispozitivul Thunderbolt: %s"
 
-#: js/ui/status/volume.js:151
+#: js/ui/status/volume.js:154
 msgid "Volume changed"
 msgstr "Volumul a fost schimbat"
 
-#: js/ui/status/volume.js:222
+#: js/ui/status/volume.js:225
 msgid "Volume"
 msgstr "Volum"
 
@@ -2389,13 +2389,13 @@ msgstr "Fereastra de autentificare a fost închisă de către utilizator"
 
 #: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:5
 #: subprojects/extensions-app/data/org.gnome.Extensions.desktop.in.in:4
-#: subprojects/extensions-app/js/main.js:182
+#: subprojects/extensions-app/js/main.js:183
 #: subprojects/extensions-app/data/ui/extensions-window.ui:61
 msgid "Extensions"
 msgstr "Extensii"
 
 #: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:6
-#: subprojects/extensions-app/js/main.js:183
+#: subprojects/extensions-app/js/main.js:184
 msgid "Manage your GNOME Extensions"
 msgstr "Administrați Exensiile GNOME"
 
@@ -2415,12 +2415,12 @@ msgstr ""
 msgid "Configure GNOME Shell Extensions"
 msgstr "Configurarea extensiilor pentru Vizualizatorul activităților GNOME"
 
-#: subprojects/extensions-app/js/main.js:144
+#: subprojects/extensions-app/js/main.js:145
 #, javascript-format
 msgid "Remove “%s”?"
 msgstr "Se elimină „%s”?"
 
-#: subprojects/extensions-app/js/main.js:145
+#: subprojects/extensions-app/js/main.js:146
 msgid ""
 "If you remove the extension, you need to return to download it if you want "
 "to enable it again"
@@ -2428,15 +2428,15 @@ msgstr ""
 "Dacă eliminați extensia, trebuie să vă întoarceți să o descărcați dacă "
 "doriți să o activați din nou"
 
-#: subprojects/extensions-app/js/main.js:149
+#: subprojects/extensions-app/js/main.js:150
 msgid "Remove"
 msgstr "Elimină"
 
-#: subprojects/extensions-app/js/main.js:181
+#: subprojects/extensions-app/js/main.js:182
 msgid "translator-credits"
 msgstr "Florentina Mușat <emryslokadottir [at] gmail [dot] com>, 2020"
 
-#: subprojects/extensions-app/js/main.js:313
+#: subprojects/extensions-app/js/main.js:314
 #, javascript-format
 msgid "%d extension will be updated on next login."
 msgid_plural "%d extensions will be updated on next login."
@@ -2444,26 +2444,34 @@ msgstr[0] "%d extensie va fi actualizată la următoarea autentificare."
 msgstr[1] "%d extensii vor fi actualizate la următoarea autentificare."
 msgstr[2] "%d de extensii vor fi actualizate la următoarea autentificare."
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:100
+#: subprojects/extensions-app/js/main.js:461
+msgid "The extension is incompatible with the current GNOME version"
+msgstr "Extensia nu este compatibilă cu versiunea GNOME curentă"
+
+#: subprojects/extensions-app/js/main.js:464
+msgid "The extension had an error"
+msgstr "Extensia a avut o eroare"
+
+#: subprojects/extensions-app/data/ui/extension-row.ui:109
 #: subprojects/extensions-tool/src/command-create.c:301
 #: subprojects/extensions-tool/src/main.c:241
 msgid "Description"
 msgstr "Descriere"
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:123
+#: subprojects/extensions-app/data/ui/extension-row.ui:132
 #: subprojects/extensions-tool/src/main.c:253
 msgid "Version"
 msgstr "Versiune"
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:151
+#: subprojects/extensions-app/data/ui/extension-row.ui:160
 msgid "Author"
 msgstr "Autor"
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:175
+#: subprojects/extensions-app/data/ui/extension-row.ui:216
 msgid "Website"
 msgstr "Pagină web"
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:192
+#: subprojects/extensions-app/data/ui/extension-row.ui:233
 msgid "Remove…"
 msgstr "Elimină…"
 
