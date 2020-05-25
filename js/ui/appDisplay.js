@@ -180,6 +180,8 @@ var BaseAppView = GObject.registerClass({
 
         this._availWidth = 0;
         this._availHeight = 0;
+        this._nudgedItem = null;
+        this._nudgedLocation = -1;
 
         this._items = new Map();
         this._orderedItems = [];
@@ -350,6 +352,47 @@ var BaseAppView = GObject.registerClass({
         this._grid.opacity = 255;
     }
 
+    _getRealDropPosition(item, dragLocation) {
+        const itemsPerPage = this._grid.itemsPerPage;
+        let [page, position] = this._grid.getItemPosition(item);
+
+        if (dragLocation === IconGrid.DragLocation.END_EDGE)
+            position += 1;
+
+        if (position >= itemsPerPage) {
+            position %= itemsPerPage;
+            page++;
+        } else if (position < 0) {
+            page--;
+            if (page >= 0) {
+                const pageItems =
+                    this._grid.getItemsAtPage(page).filter(c => c.visible);
+                position = pageItems.length - 1;
+            } else {
+                position = 0;
+                page = 0;
+            }
+        }
+
+        return [page, position];
+    }
+
+    _nudgedItemReallyChanged(item, dragLocation) {
+        if (!this._nudgedItem)
+            return true;
+
+        if (dragLocation === IconGrid.DragLocation.ON_ICON ||
+            this._nudgedLocation === IconGrid.DragLocation.ON_ICON)
+            return true;
+
+        const [realPage, realPosition] =
+            this._getRealDropPosition(item, dragLocation);
+        const [oldPage, oldPosition] =
+            this._getRealDropPosition(this._nudgedItem, this._nudgedLocation);
+
+        return realPage !== oldPage || realPosition !== oldPosition;
+    }
+
     animate(animationDirection, onComplete) {
         if (onComplete) {
             let animationDoneId = this._grid.connect('animation-done', () => {
@@ -433,6 +476,48 @@ var BaseAppView = GObject.registerClass({
             return;
 
         this._grid.goToPage(pageNumber, animate);
+    }
+
+    getDropTarget(x, y) {
+        let [item, dragLocation] = this._grid.getDropTarget(x, y);
+
+        // Append to the page if dragging over empty area
+        if (dragLocation === IconGrid.DragLocation.EMPTY_SPACE) {
+            const currentPage = this._grid.currentPage;
+            const pageItems =
+                this._grid.getItemsAtPage(currentPage).filter(c => c.visible);
+
+            item = pageItems[pageItems.length - 1];
+            dragLocation = IconGrid.DragLocation.END_EDGE;
+        }
+
+        return [item, dragLocation];
+    }
+
+    nudgeItem(item, dragLocation) {
+        if (this._nudgedItem === item && this._nudgedLocation === dragLocation)
+            return;
+
+        // Did the nudged item actually change?
+        if (!this._nudgedItemReallyChanged(item, dragLocation))
+            return;
+
+        this.removeNudges();
+
+        this._nudgedItem = item;
+        this._nudgedLocation = dragLocation;
+
+        this._grid.nudgeItem(item, dragLocation);
+    }
+
+    removeNudges() {
+        if (!this._nudgedItem)
+            return;
+
+        this._nudgedItem = null;
+        this._nudgedLocation = -1;
+
+        this._grid.removeNudges();
     }
 
     adaptToSize(width, height) {
