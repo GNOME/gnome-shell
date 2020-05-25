@@ -116,6 +116,23 @@ get_templates (void)
   return templates;
 }
 
+static GString *
+escape_string_for_json (const char *string)
+{
+  GString *escaped = g_string_new (string);
+
+  for (gsize i = 0; i < escaped->len; ++i)
+    {
+      if (escaped->str[i] == '"' || escaped->str[i] == '\\')
+        {
+          g_string_insert_c (escaped, i, '\\');
+          ++i;
+        }
+    }
+
+  return escaped;
+}
+
 static gboolean
 create_metadata (GFile       *target_dir,
                  const char  *uuid,
@@ -123,6 +140,8 @@ create_metadata (GFile       *target_dir,
                  const char  *description,
                  GError     **error)
 {
+  g_autoptr (GString) uuid_escaped = NULL;
+  g_autoptr (GString) name_escaped = NULL;
   g_autoptr (GString) desc_escaped = NULL;
   g_autoptr (GFile) target = NULL;
   g_autoptr (GString) json = NULL;
@@ -132,19 +151,15 @@ create_metadata (GFile       *target_dir,
   if (version == NULL)
     return FALSE;
 
-  desc_escaped = g_string_new (description);
-  for (gsize i = 0; i < desc_escaped->len; ++i) {
-    if (desc_escaped->str[i] == '"' || desc_escaped->str[i] == '\\') {
-      g_string_insert_c (desc_escaped, i, '\\');
-      ++i;
-    }
-  }
+  uuid_escaped = escape_string_for_json (uuid);
+  name_escaped = escape_string_for_json (name);
+  desc_escaped = escape_string_for_json (description);
 
   json = g_string_new ("{\n");
 
-  g_string_append_printf (json, "  \"name\": \"%s\",\n", name);
+  g_string_append_printf (json, "  \"name\": \"%s\",\n", name_escaped->str);
   g_string_append_printf (json, "  \"description\": \"%s\",\n", desc_escaped->str);
-  g_string_append_printf (json, "  \"uuid\": \"%s\",\n", uuid);
+  g_string_append_printf (json, "  \"uuid\": \"%s\",\n", uuid_escaped->str);
   g_string_append_printf (json, "  \"shell-version\": [\n");
   g_string_append_printf (json, "    \"%s\"\n", version);
   g_string_append_printf (json, "  ]\n}\n");
