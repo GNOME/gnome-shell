@@ -404,6 +404,21 @@ var BaseAppView = GObject.registerClass({
         }
     }
 
+    _getDropTarget(x, y) {
+        let [item, dragLocation] = this._grid.getDropTarget(x, y);
+
+        // Append to the page if dragging over empty area
+        if (dragLocation === IconGrid.DragLocation.EMPTY_SPACE) {
+            const { currentPage } = this._grid;
+            const pageItems =
+                this._grid.getItemsAtPage(currentPage).filter(c => c.visible);
+
+            item = pageItems[pageItems.length - 1];
+        }
+
+        return [item, dragLocation];
+    }
+
     vfunc_allocate(box) {
         const width = box.get_width();
         const height = box.get_height();
