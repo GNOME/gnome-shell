@@ -2176,22 +2176,35 @@ var AppIcon = GObject.registerClass({
         return DND.DragMotionResult.CONTINUE;
     }
 
-    handleDragOver(source) {
+    _withinLeeways(x) {
+        return x < IconGrid.LEFT_DIVIDER_LEEWAY ||
+            x > this.width - IconGrid.RIGHT_DIVIDER_LEEWAY;
+    }
+
+    handleDragOver(source, _actor, x) {
         if (source == this)
             return DND.DragMotionResult.NO_DROP;
 
         if (!this._canAccept(source))
             return DND.DragMotionResult.CONTINUE;
 
+        if (this._withinLeeways(x)) {
+            this._setHoveringByDnd(false);
+            return DND.DragMotionResult.CONTINUE;
+        }
+
         this._setHoveringByDnd(true);
 
         return DND.DragMotionResult.MOVE_DROP;
     }
 
-    acceptDrop(source) {
+    acceptDrop(source, _actor, x) {
         this._setHoveringByDnd(false);
 
         if (!this._canAccept(source))
+            return false;
+
+        if (this._withinLeeways(x))
             return false;
 
         let view = _getViewFromIcon(this);
