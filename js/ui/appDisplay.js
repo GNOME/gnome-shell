@@ -446,13 +446,13 @@ var BaseAppView = GObject.registerClass({
 
         const availWidth = box.get_width();
         const availHeight = box.get_height();
-        const oldNPages = this._grid.nPages;
+        const indicatorNPages = this._pageIndicators.nPages;
 
         this._grid.adaptToSize(availWidth, availHeight);
 
         if (this._availWidth !== availWidth ||
             this._availHeight !== availHeight ||
-            oldNPages !== this._grid.nPages) {
+            indicatorNPages !== this._grid.nPages) {
             Meta.later_add(Meta.LaterType.BEFORE_REDRAW, () => {
                 this._adjustment.value = 0;
                 this._grid.currentPage = 0;
