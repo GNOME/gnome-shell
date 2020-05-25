@@ -52,6 +52,17 @@ const defaultGridModes = [
     },
 ];
 
+var LEFT_DIVIDER_LEEWAY = 20;
+var RIGHT_DIVIDER_LEEWAY = 20;
+
+var DragLocation = {
+    INVALID: 0,
+    START_EDGE: 1,
+    ON_ICON: 2,
+    END_EDGE: 3,
+    EMPTY_SPACE: 4,
+};
+
 var BaseIcon = GObject.registerClass(
 class BaseIcon extends St.Bin {
     _init(label, params) {
@@ -946,6 +957,99 @@ var IconGridLayout = GObject.registerClass({
         }
     }
 
+    /**
+     * getDropTarget:
+     * @param {int} x: position of the horizontal axis
+     * @param {int} y: position of the vertical axis
+     *
+     * Retrieves the item located at (@x, @y), as well as the drag location.
+     * Both @x and @y are relative to the grid.
+     *
+     * @returns {[Clutter.Actor, DragLocation]} the item and drag location
+     * under (@x, @y)
+     */
+    getDropTarget(x, y) {
+        const childSize = this._getChildrenMaxSize();
+        const [leftEmptySpace, topEmptySpace, hSpacing, vSpacing] =
+            this._calculateSpacing(childSize);
+
+        const isRtl =
+            Clutter.get_default_text_direction() === Clutter.TextDirection.RTL;
+
+        let page = this._orientation === Clutter.Orientation.VERTICAL
+            ? Math.floor(y / this._pageHeight)
+            : Math.floor(x / this._pageWidth);
+
+        // Out of bounds
+        if (page >= this._pages.length)
+            return [null, DragLocation.INVALID];
+
+        if (isRtl && this._orientation === Clutter.Orientation.HORIZONTAL)
+            page = swap(page, this._pages.length);
+
+        // Page-relative coordinates from now on
+        x %= this._pageWidth;
+        y %= this._pageHeight;
+
+        if (x < leftEmptySpace || y < topEmptySpace)
+            return [null, DragLocation.INVALID];
+
+        const gridWidth =
+            childSize * this._columnsPerPage +
+            hSpacing * (this._columnsPerPage - 1);
+        const gridHeight =
+            childSize * this._rowsPerPage +
+            vSpacing * (this._rowsPerPage - 1);
+
+        if (x > leftEmptySpace + gridWidth || y > topEmptySpace + gridHeight)
+            return [null, DragLocation.INVALID];
+
+        const halfHSpacing = hSpacing / 2;
+        const halfVSpacing = vSpacing / 2;
+        const visibleItems = this._getVisibleChildrenForPage(page);
+
+        for (const item of visibleItems) {
+            const childBox = item.allocation.copy();
+
+            // Page offset
+            switch (this._orientation) {
+            case Clutter.Orientation.HORIZONTAL:
+                childBox.set_origin(childBox.x1 % this._pageWidth, childBox.y1);
+                break;
+            case Clutter.Orientation.VERTICAL:
+                childBox.set_origin(childBox.x1, childBox.y1 % this._pageHeight);
+                break;
+            }
+
+            // Outside the icon boundaries
+            if (x < childBox.x1 - halfHSpacing ||
+                x > childBox.x2 + halfHSpacing ||
+                y < childBox.y1 - halfVSpacing ||
+                y > childBox.y2 + halfVSpacing)
+                continue;
+
+            let dragLocation;
+
+            if (x < childBox.x1 + LEFT_DIVIDER_LEEWAY)
+                dragLocation = DragLocation.START_EDGE;
+            else if (x > childBox.x2 - RIGHT_DIVIDER_LEEWAY)
+                dragLocation = DragLocation.END_EDGE;
+            else
+                dragLocation = DragLocation.ON_ICON;
+
+            if (isRtl) {
+                if (dragLocation === DragLocation.START_EDGE)
+                    dragLocation = DragLocation.END_EDGE;
+                else if (dragLocation === DragLocation.END_EDGE)
+                    dragLocation = DragLocation.START_EDGE;
+            }
+
+            return [item, dragLocation];
+        }
+
+        return [null, DragLocation.EMPTY_SPACE];
+    }
+
     // eslint-disable-next-line camelcase
     get allow_incomplete_pages() {
         return this._allowIncompletePages;
@@ -1557,6 +1661,11 @@ var IconGrid = GObject.registerClass({
     setGridModes(modes) {
         this._gridModes = modes ? modes : defaultGridModes;
         this.queue_relayout();
+    }
+
+    getDropTarget(x, y) {
+        const layoutManager = this.layout_manager;
+        return layoutManager.getDropTarget(x, y, this._currentPage);
     }
 
     get itemsPerPage() {
