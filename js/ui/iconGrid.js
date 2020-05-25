@@ -52,6 +52,25 @@ const gridModes = [
     },
 ];
 
+var LEFT_DIVIDER_LEEWAY = 20;
+var RIGHT_DIVIDER_LEEWAY = 20;
+
+const NUDGE_ANIMATION_TYPE = Clutter.AnimationMode.EASE_OUT_ELASTIC;
+const NUDGE_DURATION = 800;
+
+const NUDGE_RETURN_ANIMATION_TYPE = Clutter.AnimationMode.EASE_OUT_QUINT;
+const NUDGE_RETURN_DURATION = 300;
+
+const NUDGE_FACTOR = 0.33;
+
+var DragLocation = {
+    INVALID: 0,
+    START_EDGE: 1,
+    ON_ICON: 2,
+    END_EDGE: 3,
+    EMPTY_SPACE: 4,
+};
+
 var BaseIcon = GObject.registerClass(
 class BaseIcon extends St.Bin {
     _init(label, params) {
@@ -895,6 +914,97 @@ var IconGridLayout = GObject.registerClass({
         return itemData.pageIndex;
     }
 
+    /**
+     * getDropTarget:
+     * @param {int} x: position of the horizontal axis
+     * @param {int} y: position of the vertical axis
+     * @param {int} page: page, or -1 for the current page
+     *
+     * Retrieves the item located at (@x, @y), as well as the position.
+     * Both @x and @y are relative to the current page.
+     *
+     * @returns {[Clutter.Actor, DragLocation]} the item and drag location
+     * under (@x, @y)
+     */
+    getDropTarget(x, y) {
+        const childSize = this._getChildrenMaxSize();
+        const [leftEmptySpace, topEmptySpace, hSpacing, vSpacing] =
+            this._calculateSpacing(childSize);
+
+        const isRtl =
+            Clutter.get_default_text_direction() === Clutter.TextDirection.RTL;
+
+        let page = this._orientation === Clutter.Orientation.VERTICAL
+            ? Math.floor(y / this._pageHeight)
+            : Math.floor(x / this._pageWidth);
+
+        if (isRtl && this._orientation === Clutter.Orientation.HORIZONTAL)
+            page = swap(page, this._pages.length);
+
+        // Page-relative coordinates from now on
+        x %= this._pageWidth;
+        y %= this._pageHeight;
+
+        if (x < leftEmptySpace || y < topEmptySpace)
+            return [null, DragLocation.INVALID];
+
+        const gridWidth =
+            childSize * this._columnsPerPage +
+            hSpacing * (this._columnsPerPage - 1);
+        const gridHeight =
+            childSize * this._rowsPerPage +
+            vSpacing * (this._rowsPerPage - 1);
+
+        if (x > leftEmptySpace + gridWidth || y > topEmptySpace + gridHeight)
+            return [null, DragLocation.INVALID];
+
+        const halfHSpacing = hSpacing / 2;
+        const halfVSpacing = vSpacing / 2;
+        const visibleItems = this._getVisibleChildrenForPage(page);
+
+        for (let itemIndex in visibleItems) {
+            const item = visibleItems[itemIndex];
+            const childBox = item.get_allocation_box().copy();
+
+            // Page offset
+            switch (this._orientation) {
+            case Clutter.Orientation.HORIZONTAL:
+                childBox.set_origin(childBox.x1 - page * this._pageWidth, childBox.y1);
+                break;
+            case Clutter.Orientation.VERTICAL:
+                childBox.set_origin(childBox.x1, childBox.y1 - page * this._pageHeight);
+                break;
+            }
+
+            // Outside the icon boundaries
+            if (x < childBox.x1 - halfHSpacing ||
+                x > childBox.x2 + halfHSpacing ||
+                y < childBox.y1 - halfVSpacing ||
+                y > childBox.y2 + halfVSpacing)
+                continue;
+
+            let dragLocation;
+
+            if (x < childBox.x1 + LEFT_DIVIDER_LEEWAY)
+                dragLocation = DragLocation.START_EDGE;
+            else if (x > childBox.x2 - RIGHT_DIVIDER_LEEWAY)
+                dragLocation = DragLocation.END_EDGE;
+            else
+                dragLocation = DragLocation.ON_ICON;
+
+            if (isRtl) {
+                if (dragLocation === DragLocation.START_EDGE)
+                    dragLocation = DragLocation.END_EDGE;
+                else if (dragLocation === DragLocation.END_EDGE)
+                    dragLocation = DragLocation.START_EDGE;
+            }
+
+            return [item, dragLocation];
+        }
+
+        return [null, DragLocation.EMPTY_SPACE];
+    }
+
     // eslint-disable-next-line camelcase
     get allow_incomplete_pages() {
         return this._allowIncompletePages;
@@ -1519,6 +1629,63 @@ var IconGrid = GObject.registerClass({
             actorClone.ease(movementParams);
             actorClone.ease(fadeParams);
         });
+    }
+
+    nudgeItem(item, dragLocation) {
+        if (dragLocation === DragLocation.INVALID ||
+            dragLocation === DragLocation.EMPTY_AREA ||
+            dragLocation === DragLocation.ON_ICON)
+            return;
+
+        const layoutManager = this.layout_manager;
+        const columnsPerPage = layoutManager.columns_per_page;
+        const itemPage = layoutManager.getItemPage(item);
+        const children = layoutManager.getChildrenAtPage(itemPage).filter(c => c.visible);
+        const nudgeIndex = children.indexOf(item);
+        const rtl = Clutter.get_default_text_direction() === Clutter.TextDirection.RTL;
+
+        if (dragLocation === DragLocation.START_EDGE) {
+            const offset = rtl
+                ? Math.floor(item.width * NUDGE_FACTOR)
+                : Math.floor(-item.width * NUDGE_FACTOR);
+
+            const leftItem = children[nudgeIndex - 1];
+            if (nudgeIndex % columnsPerPage > 0)
+                this._animateNudge(leftItem, NUDGE_ANIMATION_TYPE, NUDGE_DURATION, offset);
+
+            this._animateNudge(item, NUDGE_ANIMATION_TYPE, NUDGE_DURATION, -offset);
+        }
+
+        if (dragLocation === DragLocation.END_EDGE) {
+            const offset = rtl
+                ? Math.floor(-item.width * NUDGE_FACTOR)
+                : Math.floor(item.width * NUDGE_FACTOR);
+
+            this._animateNudge(item, NUDGE_ANIMATION_TYPE, NUDGE_DURATION, -offset);
+
+            const rightItem = children[nudgeIndex + 1];
+            if (nudgeIndex < children.length - 1 &&
+                nudgeIndex % columnsPerPage < columnsPerPage - 1)
+                this._animateNudge(rightItem, NUDGE_ANIMATION_TYPE, NUDGE_DURATION, offset);
+        }
+    }
+
+    removeNudges() {
+        const children = this.get_children().filter(c => c.visible);
+        for (let child of children)
+            this._animateNudge(child, NUDGE_RETURN_ANIMATION_TYPE, NUDGE_RETURN_DURATION, 0);
+    }
+
+    _animateNudge(item, animationType, duration, offset) {
+        item.ease({
+            translation_x: offset,
+            mode: Clutter.AnimationMode.EASE_IN_OUT_QUAD,
+        });
+    }
+
+    getDropTarget(x, y) {
+        const layoutManager = this.layout_manager;
+        return layoutManager.getDropTarget(x, y, this._currentPage);
     }
 
     get itemsPerPage() {
