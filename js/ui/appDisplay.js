@@ -404,6 +404,58 @@ var BaseAppView = GObject.registerClass({
         }
     }
 
+    _getDropTarget(x, y, source) {
+        const { currentPage } = this._grid;
+
+        let [item, dragLocation] = this._grid.getDropTarget(x, y);
+
+        const [sourcePage, sourcePosition] = this._grid.getItemPosition(source);
+        const targetPage = currentPage;
+        let targetPosition = item
+            ? this._grid.getItemPosition(item)[1] : -1;
+
+        // In case we're hovering over the edge of an item but the
+        // reflow will happen in the opposite direction (the drag
+        // can't "naturally push the item away"), we instead set the
+        // drop target to the adjacent item that can be pushed away
+        // in the reflow-direction.
+        //
+        // We must avoid doing that if we're hovering over the first
+        // or last column though, in that case there is no adjacent
+        // icon we could push away.
+        if (dragLocation === IconGrid.DragLocation.START_EDGE &&
+            targetPosition > sourcePosition &&
+            targetPage === sourcePage) {
+            const nColumns = this._grid.layout_manager.columns_per_page;
+            const targetColumn = targetPosition % nColumns;
+
+            if (targetColumn > 0) {
+                targetPosition -= 1;
+                dragLocation = IconGrid.DragLocation.END_EDGE;
+            }
+        } else if (dragLocation === IconGrid.DragLocation.END_EDGE &&
+            (targetPosition < sourcePosition ||
+             targetPage !== sourcePage)) {
+            const nColumns = this._grid.layout_manager.columns_per_page;
+            const targetColumn = targetPosition % nColumns;
+
+            if (targetColumn < nColumns - 1) {
+                targetPosition += 1;
+                dragLocation = IconGrid.DragLocation.START_EDGE;
+            }
+        }
+
+        // Append to the page if dragging over empty area
+        if (dragLocation === IconGrid.DragLocation.EMPTY_SPACE) {
+            const pageItems =
+                this._grid.getItemsAtPage(currentPage).filter(c => c.visible);
+
+            targetPosition = pageItems.length;
+        }
+
+        return [targetPage, targetPosition, dragLocation];
+    }
+
     vfunc_allocate(box) {
         const width = box.get_width();
         const height = box.get_height();
