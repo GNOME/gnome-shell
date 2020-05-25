@@ -2200,11 +2200,15 @@ var AppIcon = GObject.registerClass({
         return DND.DragMotionResult.CONTINUE;
     }
 
-    handleDragOver(source) {
+    handleDragOver(source, _actor, x) {
         if (source == this)
             return DND.DragMotionResult.NO_DROP;
 
         if (!this._canAccept(source))
+            return DND.DragMotionResult.CONTINUE;
+
+        if (x < IconGrid.LEFT_DIVIDER_LEEWAY ||
+            x + IconGrid.RIGHT_DIVIDER_LEEWAY > this.width)
             return DND.DragMotionResult.CONTINUE;
 
         this._setHoveringByDnd(true);
