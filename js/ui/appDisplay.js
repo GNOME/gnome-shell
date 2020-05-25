@@ -959,6 +959,7 @@ class AppDisplay extends BaseAppView {
 
         this._eventBlocker.visible = this._currentDialog !== null;
         this._resetOvershoot();
+        this.removeNudges();
     }
 
     _canAccept(source) {
@@ -972,7 +973,33 @@ class AppDisplay extends BaseAppView {
         return true;
     }
 
-    handleDragOver(source) {
+    _dropTargetIsValid(source, item, dropTarget) {
+        const [sourcePage, sourcePosition] =
+            this._grid.getItemPosition(source);
+        let [itemPage, itemPosition] = this._grid.getItemPosition(item);
+        const pageItems =
+            this._grid.getItemsAtPage(itemPage).filter(c => c.visible);
+
+        if (sourcePage === itemPage && itemPosition > sourcePosition)
+            itemPosition--;
+
+        if (source !== item && dropTarget === IconGrid.DragLocation.END_EDGE)
+            itemPosition++;
+
+        itemPosition = Math.clamp(itemPosition, 0, pageItems.length - 1);
+        const realDropTarget = this._grid.getItemAt(itemPage, itemPosition);
+
+        return source !== realDropTarget;
+    }
+
+    handleDragOver(source, _actor, x, y) {
+        const [item, dropTarget] = this.getDropTarget(x, y);
+
+        if (item && this._dropTargetIsValid(source, item, dropTarget))
+            this.nudgeItem(item, dropTarget);
+        else
+            this.removeNudges();
+
         if (!this._canAccept(source))
             return DND.DragMotionResult.NO_DROP;
 
