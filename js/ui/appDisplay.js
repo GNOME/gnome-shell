@@ -688,6 +688,26 @@ class AppDisplay extends BaseAppView {
         super._redisplay();
     }
 
+    _savePages() {
+        const pages = [];
+
+        for (let i = 0; i < this._grid.nPages; i++) {
+            const pageItems =
+                this._grid.getItemsAtPage(i).filter(c => c.visible);
+            const pageData = {};
+
+            for (let itemIndex in pageItems) {
+                const item = pageItems[itemIndex];
+                pageData[item.id] = {
+                    position: GLib.Variant.new_int32(itemIndex),
+                };
+            }
+            pages.push(pageData);
+        }
+
+        this._pageManager.pages = pages;
+    }
+
     _itemNameChanged(item) {
         // If an item's name changed, we can pluck it out of where it's
         // supposed to be and reinsert it where it's sorted.
@@ -1061,6 +1081,8 @@ class AppDisplay extends BaseAppView {
             this.moveItem(source, page, position);
             this._removeDelayedMove();
         }
+
+        this._savePages();
 
         let view = _getViewFromIcon(source);
         if (view instanceof FolderView)
