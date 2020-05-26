@@ -537,6 +537,13 @@ var BaseAppView = GObject.registerClass({
         this._grid.removeNudges();
     }
 
+    moveItem(item, newPage, newPosition) {
+        if (this._grid.contains(item))
+            this._removeItem(item);
+
+        this._addItem(item, newPage, newPosition);
+    }
+
     adaptToSize(width, height) {
         let box = new Clutter.ActorBox();
         box.x1 = 0;
