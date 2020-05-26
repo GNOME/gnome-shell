@@ -257,6 +257,27 @@ var BaseAppView = GObject.registerClass({
         });
     }
 
+    _addItem(item, page, position) {
+        let itemIndex = position;
+
+        for (let i = 0; i < page - 1; i++) {
+            const pageItems = this._grid.getItemsAtPage(i).filter(c => c.visible);
+            itemIndex += pageItems.length;
+        }
+
+        this._orderedItems.splice(itemIndex, 0, item);
+        this._items.set(item.id, item);
+        this._grid.addItem(item, position, page);
+    }
+
+    _removeItem(item) {
+        const iconIndex = this._orderedItems.indexOf(item);
+
+        this._orderedItems.splice(iconIndex, 1);
+        this._items.delete(item.id);
+        this._grid.removeItem(item);
+    }
+
     _redisplay() {
         let oldApps = this._orderedItems.slice();
         let oldAppIds = oldApps.map(icon => icon.id);
@@ -269,12 +290,8 @@ var BaseAppView = GObject.registerClass({
 
         // Remove old app icons
         removedApps.forEach(icon => {
-            let iconIndex = this._orderedItems.indexOf(icon);
-            let id = icon.id;
-
-            this._orderedItems.splice(iconIndex, 1);
+            this._removeItem(icon);
             icon.destroy();
-            this._items.delete(id);
         });
 
         // Add new app icons
