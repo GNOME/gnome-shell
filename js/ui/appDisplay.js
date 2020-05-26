@@ -278,7 +278,7 @@ var BaseAppView = GObject.registerClass({
         let oldApps = this._orderedItems.slice();
         let oldAppIds = oldApps.map(icon => icon.id);
 
-        let newApps = this._loadApps().sort(this._compareItems);
+        let newApps = this._loadApps().sort(this._compareItems.bind(this));
         let newAppIds = newApps.map(icon => icon.id);
 
         let addedApps = newApps.filter(icon => !oldAppIds.includes(icon.id));
@@ -749,7 +749,7 @@ class AppDisplay extends BaseAppView {
         // supposed to be and reinsert it where it's sorted.
         let oldIdx = this._orderedItems.indexOf(item);
         this._orderedItems.splice(oldIdx, 1);
-        let newIdx = Util.insertSorted(this._orderedItems, item, this._compareItems);
+        let newIdx = Util.insertSorted(this._orderedItems, item, this._compareItems.bind(this));
 
         this._grid.removeItem(item);
 
