@@ -112,12 +112,12 @@ class Indicator extends PanelMenu.SystemIndicator {
         let chargingState = this._proxy.State == UPower.DeviceState.CHARGING
             ? '-charging' : '';
         let fillLevel = 10 * Math.floor(this._proxy.Percentage / 10);
-        let icon;
-        if (this._proxy.State == UPower.DeviceState.FULLY_CHARGED ||
-            fillLevel === 100)
-            icon = 'battery-level-100-charged-symbolic';
-        else
-            icon = 'battery-level-%d%s-symbolic'.format(fillLevel, chargingState);
+        const charged =
+            this._proxy.State === UPower.DeviceState.FULLY_CHARGED ||
+            (this._proxy.State === UPower.DeviceState.CHARGING && fillLevel === 100);
+        const icon = charged
+            ? 'battery-level-100-charged-symbolic'
+            : 'battery-level-%d%s-symbolic'.format(fillLevel, chargingState);
 
         // Make sure we fall back to fallback-icon-name and not GThemedIcon's
         // default fallbacks
