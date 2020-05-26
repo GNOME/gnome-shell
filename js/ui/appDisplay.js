@@ -986,14 +986,7 @@ class AppDisplay extends BaseAppView {
         this.removeNudges();
     }
 
-    _canAccept(source) {
-        if (!(source instanceof AppIcon))
-            return false;
-
-        let view = _getViewFromIcon(source);
-        if (!(view instanceof FolderView))
-            return false;
-
+    _canAccept(_source) {
         return true;
     }
 
@@ -1024,18 +1017,37 @@ class AppDisplay extends BaseAppView {
         else
             this.removeNudges();
 
+        if (dropTarget === IconGrid.DragLocation.INVALID)
+            return DND.DragMotionResult.NO_DROP;
+
         if (!this._canAccept(source))
             return DND.DragMotionResult.NO_DROP;
 
         return DND.DragMotionResult.MOVE_DROP;
     }
 
-    acceptDrop(source) {
+    acceptDrop(source, _actor, x, y) {
         if (!this._canAccept(source))
             return false;
 
+        const [item, dropTarget] = this.getDropTarget(x, y);
+        if (!item || !this._dropTargetIsValid(source, item, dropTarget))
+            return false;
+
+        const [sourcePage, sourcePosition] = this._grid.getItemPosition(source);
+        let [targetPage, targetPosition] = this._grid.getItemPosition(item);
+
+        if (sourcePage === targetPage && targetPosition > sourcePosition)
+            targetPosition--;
+
+        if (source !== item && dropTarget === IconGrid.DragLocation.END_EDGE)
+            targetPosition++;
+
         let view = _getViewFromIcon(source);
-        view.removeApp(source.app);
+        if (view === this)
+            this.moveItem(source, targetPage, targetPosition);
+        else
+            view.removeApp(source.app);
 
         if (this._currentDialog)
             this._currentDialog.popdown();
