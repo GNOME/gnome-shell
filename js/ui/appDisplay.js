@@ -193,7 +193,7 @@ var BaseAppView = GObject.registerClass({
     }
 
     _createGrid() {
-        return new IconGrid.IconGrid();
+        return new IconGrid.IconGrid({ allow_incomplete_pages: true });
     }
 
     _onScroll(actor, event) {
