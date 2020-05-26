@@ -470,6 +470,13 @@ var BaseAppView = GObject.registerClass({
         return [item, dragLocation];
     }
 
+    moveItem(item, newPage, newPosition) {
+        if (this._grid.contains(item))
+            this._removeItem(item);
+
+        this._addItem(item, newPage, newPosition);
+    }
+
     adaptToSize(width, height) {
         let box = new Clutter.ActorBox({
             x2: width,
