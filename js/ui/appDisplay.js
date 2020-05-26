@@ -16,7 +16,6 @@ const PopupMenu = imports.ui.popupMenu;
 const Search = imports.ui.search;
 const SwipeTracker = imports.ui.swipeTracker;
 const Params = imports.misc.params;
-const Util = imports.misc.util;
 const SystemActions = imports.misc.systemActions;
 
 var MENU_POPUP_TIMEOUT = 600;
@@ -713,23 +712,6 @@ class AppDisplay extends BaseAppView {
         this._pageManager.pages = pages;
     }
 
-    _itemNameChanged(item) {
-        // If an item's name changed, we can pluck it out of where it's
-        // supposed to be and reinsert it where it's sorted.
-        let oldIdx = this._orderedItems.indexOf(item);
-        this._orderedItems.splice(oldIdx, 1);
-        let newIdx = Util.insertSorted(this._orderedItems, item, this._compareItems.bind(this));
-
-        this._grid.removeItem(item);
-
-        const { itemsPerPage } = this._grid;
-        const page = Math.floor(newIdx / itemsPerPage);
-        const position = newIdx % itemsPerPage;
-        this._grid.addItem(item, page, position);
-
-        this.selectApp(item.id);
-    }
-
     getAppInfos() {
         return this._appInfoList;
     }
@@ -779,7 +761,6 @@ class AppDisplay extends BaseAppView {
             let icon = this._items.get(id);
             if (!icon) {
                 icon = new FolderIcon(id, path, this);
-                icon.connect('name-changed', this._itemNameChanged.bind(this));
                 icon.connect('apps-changed', this._redisplay.bind(this));
             }
 
@@ -1580,7 +1561,6 @@ class FolderView extends BaseAppView {
 var FolderIcon = GObject.registerClass({
     Signals: {
         'apps-changed': {},
-        'name-changed': {},
     },
 }, class FolderIcon extends BaseAppIcon {
     _init(id, path, parentView) {
@@ -1714,7 +1694,6 @@ var FolderIcon = GObject.registerClass({
 
         this._name = name;
         this.icon.label.text = this.name;
-        this.emit('name-changed');
     }
 
     _sync() {
