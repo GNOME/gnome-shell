@@ -1095,8 +1095,7 @@ class AppDisplay extends BaseAppView {
     }
 
     _canAccept(source) {
-        return (source instanceof AppIcon) ||
-            (source instanceof FolderIcon);
+        return source instanceof AppViewItem;
     }
 
     handleDragOver(source) {
@@ -1250,6 +1249,153 @@ var AppSearchProvider = class AppSearchProvider {
             return new SystemActionIcon(this, resultMeta);
     }
 };
+
+var AppViewItem = GObject.registerClass(
+class AppViewItem extends St.Button {
+    _init(params = {}, isDraggable = true) {
+        super._init({
+            pivot_point: new Graphene.Point({ x: 0.5, y: 0.5 }),
+            reactive: true,
+            button_mask: St.ButtonMask.ONE | St.ButtonMask.TWO,
+            can_focus: true,
+            ...params,
+        });
+
+        this._delegate = this;
+
+        if (isDraggable) {
+            this._draggable = DND.makeDraggable(this);
+            this._draggable.connect('drag-begin', this._onDragBegin.bind(this));
+            this._draggable.connect('drag-cancelled', this._onDragCancelled.bind(this));
+            this._draggable.connect('drag-end', this._onDragEnd.bind(this));
+        }
+
+        this._otherIconIsHovering = false;
+
+        this.connect('destroy', this._onDestroy.bind(this));
+    }
+
+    _onDestroy() {
+        if (this._dragMonitor) {
+            DND.removeDragMonitor(this._dragMonitor);
+            this._dragMonitor = null;
+        }
+
+        if (this._draggable) {
+            if (this._dragging)
+                Main.overview.endItemDrag(this);
+            this._draggable = null;
+        }
+    }
+
+    _onDragBegin() {
+        this._dragging = true;
+        this.scaleAndFade();
+        Main.overview.beginItemDrag(this);
+    }
+
+    _onDragCancelled() {
+        this._dragging = false;
+        Main.overview.cancelledItemDrag(this);
+    }
+
+    _onDragEnd() {
+        this._dragging = false;
+        this.undoScaleAndFade();
+        Main.overview.endItemDrag(this);
+    }
+
+    scaleIn() {
+        this.scale_x = 0;
+        this.scale_y = 0;
+
+        this.ease({
+            scale_x: 1,
+            scale_y: 1,
+            duration: APP_ICON_SCALE_IN_TIME,
+            delay: APP_ICON_SCALE_IN_DELAY,
+            mode: Clutter.AnimationMode.EASE_OUT_QUINT,
+        });
+    }
+
+    scaleAndFade() {
+        this.reactive = false;
+        this.ease({
+            scale_x: 0.75,
+            scale_y: 0.75,
+            opacity: 128,
+        });
+    }
+
+    undoScaleAndFade() {
+        this.reactive = true;
+        this.ease({
+            scale_x: 1.0,
+            scale_y: 1.0,
+            opacity: 255,
+        });
+    }
+
+    _canAccept(source) {
+        return source !== this;
+    }
+
+    _setHoveringByDnd(hovering) {
+        if (this._otherIconIsHovering === hovering)
+            return;
+
+        this._otherIconIsHovering = hovering;
+
+        if (hovering) {
+            this._dragMonitor = {
+                dragMotion: this._onDragMotion.bind(this),
+            };
+            DND.addDragMonitor(this._dragMonitor);
+        } else {
+            DND.removeDragMonitor(this._dragMonitor);
+        }
+    }
+
+    _onDragMotion(dragEvent) {
+        if (!this.contains(dragEvent.targetActor))
+            this._setHoveringByDnd(false);
+
+        return DND.DragMotionResult.CONTINUE;
+    }
+
+    handleDragOver(source, _actor, x) {
+        if (source === this)
+            return DND.DragMotionResult.NO_DROP;
+
+        if (!this._canAccept(source))
+            return DND.DragMotionResult.CONTINUE;
+
+        if (x < IconGrid.LEFT_DIVIDER_LEEWAY ||
+            x + IconGrid.RIGHT_DIVIDER_LEEWAY > this.width)
+            return DND.DragMotionResult.CONTINUE;
+
+        this._setHoveringByDnd(true);
+
+        return DND.DragMotionResult.MOVE_DROP;
+    }
+
+    acceptDrop(source) {
+        this._setHoveringByDnd(false);
+
+        if (!this._canAccept(source))
+            return false;
+
+        return true;
+    }
+
+    get id() {
+        return this._id;
+    }
+
+    get name() {
+        return this._name;
+    }
+});
 
 var FolderGrid = GObject.registerClass(
 class FolderGrid extends IconGrid.IconGrid {
@@ -2044,33 +2190,25 @@ var AppIcon = GObject.registerClass({
         'menu-state-changed': { param_types: [GObject.TYPE_BOOLEAN] },
         'sync-tooltip': {},
     },
-}, class AppIcon extends St.Button {
+}, class AppIcon extends AppViewItem {
     _init(app, iconParams = {}) {
-        super._init({
-            style_class: 'app-well-app',
-            pivot_point: new Graphene.Point({ x: 0.5, y: 0.5 }),
-            reactive: true,
-            button_mask: St.ButtonMask.ONE | St.ButtonMask.TWO,
-            can_focus: true,
-        });
+        // Get the isDraggable property without passing it on to the BaseIcon:
+        const appIconParams = Params.parse(iconParams, { isDraggable: true }, true);
+        const isDraggable = appIconParams['isDraggable'];
+        delete iconParams['isDraggable'];
+
+        super._init({ style_class: 'app-well-app' }, isDraggable);
 
         this.app = app;
-        this.id = app.get_id();
-        this.name = app.get_name();
+        this._id = app.get_id();
+        this._name = app.get_name();
 
         this._iconContainer = new St.Widget({ layout_manager: new Clutter.BinLayout(),
                                               x_expand: true, y_expand: true });
 
         this.set_child(this._iconContainer);
 
-        this._delegate = this;
-
         this._folderPreviewId = 0;
-
-        // Get the isDraggable property without passing it on to the BaseIcon:
-        let appIconParams = Params.parse(iconParams, { isDraggable: true }, true);
-        let isDraggable = appIconParams['isDraggable'];
-        delete iconParams['isDraggable'];
 
         iconParams['createIcon'] = this._createIcon.bind(this);
         iconParams['setSizeManually'] = true;
@@ -2094,37 +2232,16 @@ var AppIcon = GObject.registerClass({
         this._menu = null;
         this._menuManager = new PopupMenu.PopupMenuManager(this);
 
-        if (isDraggable) {
-            this._draggable = DND.makeDraggable(this);
-            this._draggable.connect('drag-begin', () => {
-                this._dragging = true;
-                this.scaleAndFade();
-                this._removeMenuTimeout();
-                Main.overview.beginItemDrag(this);
-            });
-            this._draggable.connect('drag-cancelled', () => {
-                this._dragging = false;
-                Main.overview.cancelledItemDrag(this);
-            });
-            this._draggable.connect('drag-end', () => {
-                this._dragging = false;
-                this.undoScaleAndFade();
-                Main.overview.endItemDrag(this);
-            });
-        }
-
-        this._otherIconIsHovering = false;
-
         this._menuTimeoutId = 0;
         this._stateChangedId = this.app.connect('notify::state', () => {
             this._updateRunningStyle();
         });
         this._updateRunningStyle();
-
-        this.connect('destroy', this._onDestroy.bind(this));
     }
 
     _onDestroy() {
+        super._onDestroy();
+
         if (this._folderPreviewId > 0) {
             GLib.source_remove(this._folderPreviewId);
             this._folderPreviewId = 0;
@@ -2132,18 +2249,13 @@ var AppIcon = GObject.registerClass({
         if (this._stateChangedId > 0)
             this.app.disconnect(this._stateChangedId);
 
-        if (this._dragMonitor) {
-            DND.removeDragMonitor(this._dragMonitor);
-            this._dragMonitor = null;
-        }
-
-        if (this._draggable) {
-            if (this._dragging)
-                Main.overview.endItemDrag(this);
-            this._draggable = null;
-        }
         this._stateChangedId = 0;
         this._removeMenuTimeout();
+    }
+
+    _onDragBegin() {
+        this._removeMenuTimeout();
+        super._onDragBegin();
     }
 
     _createIcon(iconSize) {
@@ -2291,19 +2403,6 @@ var AppIcon = GObject.registerClass({
         this.icon.animateZoomOutAtPos(x, y);
     }
 
-    scaleIn() {
-        this.scale_x = 0;
-        this.scale_y = 0;
-
-        this.ease({
-            scale_x: 1,
-            scale_y: 1,
-            duration: APP_ICON_SCALE_IN_TIME,
-            delay: APP_ICON_SCALE_IN_DELAY,
-            mode: Clutter.AnimationMode.EASE_OUT_QUINT,
-        });
-    }
-
     shellWorkspaceLaunch(params) {
         let { stack } = new Error();
         log('shellWorkspaceLaunch is deprecated, use app.open_new_window() instead\n%s'.format(stack));
@@ -2326,24 +2425,6 @@ var AppIcon = GObject.registerClass({
 
     shouldShowTooltip() {
         return this.hover && (!this._menu || !this._menu.isOpen);
-    }
-
-    scaleAndFade() {
-        this.reactive = false;
-        this.ease({
-            scale_x: 0.75,
-            scale_y: 0.75,
-            opacity: 128,
-        });
-    }
-
-    undoScaleAndFade() {
-        this.reactive = true;
-        this.ease({
-            scale_x: 1.0,
-            scale_y: 1.0,
-            opacity: 255,
-        });
     }
 
     _showFolderPreview() {
@@ -2374,14 +2455,9 @@ var AppIcon = GObject.registerClass({
         if (this._otherIconIsHovering == hovering)
             return;
 
-        this._otherIconIsHovering = hovering;
+        super._setHoveringByDnd(hovering);
 
         if (hovering) {
-            this._dragMonitor = {
-                dragMotion: this._onDragMotion.bind(this),
-            };
-            DND.addDragMonitor(this._dragMonitor);
-
             if (this._folderPreviewId > 0)
                 return;
 
@@ -2393,8 +2469,6 @@ var AppIcon = GObject.registerClass({
                     return GLib.SOURCE_REMOVE;
                 });
         } else {
-            DND.removeDragMonitor(this._dragMonitor);
-
             if (this._folderPreviewId > 0) {
                 GLib.source_remove(this._folderPreviewId);
                 this._folderPreviewId = 0;
@@ -2404,33 +2478,9 @@ var AppIcon = GObject.registerClass({
         }
     }
 
-    _onDragMotion(dragEvent) {
-        if (!this.contains(dragEvent.targetActor))
-            this._setHoveringByDnd(false);
-
-        return DND.DragMotionResult.CONTINUE;
-    }
-
-    handleDragOver(source, _actor, x) {
-        if (source == this)
-            return DND.DragMotionResult.NO_DROP;
-
-        if (!this._canAccept(source))
-            return DND.DragMotionResult.CONTINUE;
-
-        if (x < IconGrid.LEFT_DIVIDER_LEEWAY ||
-            x + IconGrid.RIGHT_DIVIDER_LEEWAY > this.width)
-            return DND.DragMotionResult.CONTINUE;
-
-        this._setHoveringByDnd(true);
-
-        return DND.DragMotionResult.MOVE_DROP;
-    }
-
     acceptDrop(source) {
-        this._setHoveringByDnd(false);
-
-        if (!this._canAccept(source))
+        const accepted = super.acceptDrop(source);
+        if (!accepted)
             return false;
 
         let view = _getViewFromIcon(this);
