@@ -1054,9 +1054,6 @@ class AppDisplay extends BaseAppView {
     }
 
     _onDragMotion(dragEvent) {
-        if (!(dragEvent.source instanceof AppIcon))
-            return DND.DragMotionResult.CONTINUE;
-
         let appIcon = dragEvent.source;
 
         // Handle the drag overshoot. When dragging to above the
@@ -1581,21 +1578,20 @@ var FolderIcon = GObject.registerClass({
         'apps-changed': {},
         'name-changed': {},
     },
-}, class FolderIcon extends St.Button {
+}, class FolderIcon extends BaseAppIcon {
     _init(id, path, parentView) {
         super._init({
             style_class: 'app-well-app app-folder',
             button_mask: St.ButtonMask.ONE,
             toggle_mode: true,
             can_focus: true,
-        });
-        this.id = id;
-        this.name = '';
+        }, true);
+        this._id = id;
+        this._name = '';
         this._parentView = parentView;
 
         this._folder = new Gio.Settings({ schema_id: 'org.gnome.desktop.app-folders.folder',
                                           path });
-        this._delegate = this;
 
         this.icon = new IconGrid.BaseIcon('', {
             createIcon: this._createIcon.bind(this),
@@ -1606,20 +1602,13 @@ var FolderIcon = GObject.registerClass({
 
         this.view = new FolderView(this._folder, id, parentView);
 
-        this._iconIsHovering = false;
-
-        this.connect('destroy', this._onDestroy.bind(this));
-
         this._folderChangedId = this._folder.connect(
             'changed', this._sync.bind(this));
         this._sync();
     }
 
     _onDestroy() {
-        if (this._dragMonitor) {
-            DND.removeDragMonitor(this._dragMonitor);
-            this._dragMonitor = null;
-        }
+        super._onDestroy();
 
         if (this._dialog)
             this._dialog.destroy();
@@ -1654,29 +1643,39 @@ var FolderIcon = GObject.registerClass({
     }
 
     _setHoveringByDnd(hovering) {
-        if (this._iconIsHovering == hovering)
+        if (this._otherIconIsHovering == hovering)
             return;
 
-        this._iconIsHovering = hovering;
+        super._setHoveringByDnd(hovering);
 
-        if (hovering) {
-            this._dragMonitor = {
-                dragMotion: this._onDragMotion.bind(this),
-            };
-            DND.addDragMonitor(this._dragMonitor);
+        if (hovering)
             this.add_style_pseudo_class('drop');
-        } else {
-            DND.removeDragMonitor(this._dragMonitor);
+        else
             this.remove_style_pseudo_class('drop');
-        }
     }
 
     _onDragMotion(dragEvent) {
-        if (!this.contains(dragEvent.targetActor) ||
-            !this._canAccept(dragEvent.source))
+        if (!this._canAccept(dragEvent.source))
             this._setHoveringByDnd(false);
 
-        return DND.DragMotionResult.CONTINUE;
+        return super._onDragMotion(dragEvent);
+    }
+
+    getDragActor() {
+        const iconParams = {
+            createIcon: this._createIcon.bind(this),
+            showLabel: this.icon.label !== null,
+            setSizeManually: false,
+        };
+
+        const icon = new IconGrid.BaseIcon(this.name, iconParams);
+        icon.style_class = this.style_class;
+
+        return icon;
+    }
+
+    getDragActorSource() {
+        return this;
     }
 
     _canAccept(source) {
@@ -1693,19 +1692,10 @@ var FolderIcon = GObject.registerClass({
         return true;
     }
 
-    handleDragOver(source) {
-        if (!this._canAccept(source))
-            return DND.DragMotionResult.NO_DROP;
-
-        this._setHoveringByDnd(true);
-
-        return DND.DragMotionResult.MOVE_DROP;
-    }
-
     acceptDrop(source) {
-        this._setHoveringByDnd(false);
+        const accepted = super.acceptDrop(source);
 
-        if (!this._canAccept(source))
+        if (!accepted)
             return false;
 
         this.view.addApp(source.app);
@@ -1718,7 +1708,7 @@ var FolderIcon = GObject.registerClass({
         if (this.name == name)
             return;
 
-        this.name = name;
+        this._name = name;
         this.icon.label.text = this.name;
         this.emit('name-changed');
     }
