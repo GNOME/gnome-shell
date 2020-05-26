@@ -872,14 +872,8 @@ class AppDisplay extends BaseAppView {
     }
 
     _canAccept(source) {
-        if (!(source instanceof AppIcon))
-            return false;
-
-        let view = _getViewFromIcon(source);
-        if (!(view instanceof FolderView))
-            return false;
-
-        return true;
+        return (source instanceof AppIcon) ||
+            (source instanceof FolderIcon);
     }
 
     handleDragOver(source) {
@@ -894,7 +888,8 @@ class AppDisplay extends BaseAppView {
             return false;
 
         let view = _getViewFromIcon(source);
-        view.removeApp(source.app);
+        if (view instanceof FolderView)
+            view.removeApp(source.app);
 
         if (this._currentDialog)
             this._currentDialog.popdown();
