@@ -315,15 +315,20 @@ var BaseAppView = GObject.registerClass({
 
         // Add new app icons
         const { itemsPerPage } = this._grid;
-        addedApps.forEach(icon => {
-            let iconIndex = newApps.indexOf(icon);
+        const getItemPosition = item => {
+            if (this._getItemPosition)
+                return this._getItemPosition(item);
 
-            this._orderedItems.splice(iconIndex, 0, icon);
-            this._items.set(icon.id, icon);
-
+            const iconIndex = newApps.indexOf(item);
             const page = Math.floor(iconIndex / itemsPerPage);
             const position = iconIndex % itemsPerPage;
-            this._grid.addItem(icon, page, position);
+
+            return [page, position];
+        };
+
+        addedApps.forEach(icon => {
+            const [page, position] = getItemPosition(icon);
+            this._addItem(icon, page, position);
         });
 
         this._viewIsReady = true;
@@ -723,6 +728,27 @@ class AppDisplay extends BaseAppView {
 
     getAppInfos() {
         return this._appInfoList;
+    }
+
+    _getItemPosition(item) {
+        return this._pageManager.getAppPosition(item.id);
+    }
+
+    _compareItems(a, b) {
+        const [aPage, aPosition] = this._pageManager.getAppPosition(a.id);
+        const [bPage, bPosition] = this._pageManager.getAppPosition(b.id);
+
+        if (aPage === -1 && bPage === -1)
+            return a.name.localeCompare(b.name);
+        else if (aPage === -1)
+            return 1;
+        else if (bPage === -1)
+            return -1;
+
+        if (aPage !== bPage)
+            return aPage - bPage;
+
+        return aPosition - bPosition;
     }
 
     _loadApps() {
