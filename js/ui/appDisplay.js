@@ -772,23 +772,6 @@ class AppDisplay extends BaseAppView {
         return pages;
     }
 
-    _itemNameChanged(item) {
-        // If an item's name changed, we can pluck it out of where it's
-        // supposed to be and reinsert it where it's sorted.
-        let oldIdx = this._orderedItems.indexOf(item);
-        this._orderedItems.splice(oldIdx, 1);
-        let newIdx = Util.insertSorted(this._orderedItems, item, this._compareItems.bind(this));
-
-        this._grid.removeItem(item);
-
-        const appsPerPage = this._grid.appsPerPage;
-        const page = Math.floor(newIdx / appsPerPage);
-        const position = newIdx % appsPerPage;
-        this._grid.addItem(item, position, page);
-
-        this.selectApp(item.id);
-    }
-
     getAppInfos() {
         return this._appInfoList;
     }
@@ -835,7 +818,6 @@ class AppDisplay extends BaseAppView {
             let icon = this._items.get(id);
             if (!icon) {
                 icon = new FolderIcon(id, path, this);
-                icon.connect('name-changed', this._itemNameChanged.bind(this));
                 icon.connect('apps-changed', this._redisplay.bind(this));
             }
 
@@ -1624,7 +1606,6 @@ class FolderView extends BaseAppView {
 var FolderIcon = GObject.registerClass({
     Signals: {
         'apps-changed': {},
-        'name-changed': {},
     },
 }, class FolderIcon extends BaseAppIcon {
     _init(id, path, parentView) {
@@ -1761,7 +1742,6 @@ var FolderIcon = GObject.registerClass({
 
         this._name = name;
         this.icon.label.text = this.name;
-        this.emit('name-changed');
     }
 
     _sync() {
