@@ -456,6 +456,17 @@ var BaseAppView = GObject.registerClass({
         return [targetPage, targetPosition, dragLocation];
     }
 
+    _moveItem(item, newPage, newPosition) {
+        const [page, position] = this._grid.getItemPosition(item);
+        if (page === newPage && position === newPosition)
+            return;
+
+        if (page !== -1 && position !== -1)
+            this._removeItem(item);
+
+        this._addItem(item, newPage, newPosition);
+    }
+
     vfunc_allocate(box) {
         const width = box.get_width();
         const height = box.get_height();
