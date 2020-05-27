@@ -1126,6 +1126,11 @@ class AppDisplay extends BaseAppView {
             return false;
         }
 
+        // The hovered AppIcon always passes its own id as the first
+        // one, and this is where we want the folder to be created
+        const [folderPage, folderPosition] =
+            this._grid.getItemPosition(this._items.get(apps[0]));
+
         let appItems = apps.map(id => this._items.get(id).app);
         let folderName = _findBestFolderName(appItems);
         if (!folderName)
@@ -1136,7 +1141,12 @@ class AppDisplay extends BaseAppView {
         newFolderSettings.set_strv('apps', apps);
         newFolderSettings.apply();
 
-        this.selectApp(newFolderId);
+        this._redisplay();
+
+        // Move the folder to where the icon target icon was
+        const folderItem = this._items.get(newFolderId);
+        this.moveItem(folderItem, folderPage, folderPosition);
+        this._savePages();
 
         return true;
     }
