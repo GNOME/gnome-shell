@@ -226,7 +226,6 @@ var IconGrid = GObject.registerClass({
                                         columnLimit: null,
                                         minRows: 1,
                                         minColumns: 1,
-                                        fillParent: false,
                                         xAlign: St.Align.MIDDLE,
                                         padWithSpacing: false });
         this._rowLimit = params.rowLimit;
@@ -234,7 +233,6 @@ var IconGrid = GObject.registerClass({
         this._minRows = params.minRows;
         this._minColumns = params.minColumns;
         this._xAlign = params.xAlign;
-        this._fillParent = params.fillParent;
         this._padWithSpacing = params.padWithSpacing;
 
         this.topPadding = 0;
@@ -303,11 +301,6 @@ var IconGrid = GObject.registerClass({
     }
 
     vfunc_get_preferred_width(_forHeight) {
-        if (this._fillParent)
-            // Ignore all size requests of children and request a size of 0;
-            // later we'll allocate as many children as fit the parent
-            return [0, 0];
-
         let nChildren = this.get_n_children();
         let nColumns = this._colLimit
             ? Math.min(this._colLimit, nChildren)
@@ -341,12 +334,6 @@ var IconGrid = GObject.registerClass({
 
         this.set_allocation(box);
 
-        if (this._fillParent) {
-            // Reset the passed in box to fill the parent
-            let parentBox = this.get_parent().allocation;
-            const gridBox = this.get_theme_node().get_content_box(parentBox);
-            box = this.get_theme_node().get_content_box(gridBox);
-        }
         let children = this._getVisibleChildren();
         let availWidth = box.x2 - box.x1;
         let spacing = this._getSpacing();
