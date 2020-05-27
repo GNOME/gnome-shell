@@ -1117,6 +1117,9 @@ class AppDisplay extends BaseAppView {
             return false;
         }
 
+        const [folderPage, folderPosition] =
+            this._grid.getItemPosition(this._items.get(apps[0]));
+
         let appItems = apps.map(id => this._items.get(id).app);
         let folderName = _findBestFolderName(appItems);
         if (!folderName)
@@ -1127,7 +1130,11 @@ class AppDisplay extends BaseAppView {
         newFolderSettings.set_strv('apps', apps);
         newFolderSettings.apply();
 
-        this.selectApp(newFolderId);
+        this._redisplay();
+
+        // Move the folder to where the icon target icon was
+        const folderIcon = this._items.get(newFolderId);
+        this.moveItem(folderIcon, folderPage, folderPosition);
 
         return true;
     }
