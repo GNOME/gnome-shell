@@ -1,14 +1,16 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported Dash */
 
-const { Clutter, GLib, GObject,
-        Graphene, Meta, Shell, St } = imports.gi;
+const { Clutter, Gio, GLib, GObject,
+    Graphene, Meta, Shell, St } = imports.gi;
 
 const AppDisplay = imports.ui.appDisplay;
 const AppFavorites = imports.ui.appFavorites;
 const DND = imports.ui.dnd;
 const IconGrid = imports.ui.iconGrid;
 const Main = imports.ui.main;
+
+const Util = imports.misc.util;
 
 var DASH_ANIMATION_TIME = 200;
 var DASH_ITEM_LABEL_SHOW_TIME = 150;
@@ -331,14 +333,18 @@ class DashActor extends St.Widget {
     }
 });
 
-const baseIconSizes = [16, 22, 24, 32, 48, 64];
-
 var Dash = GObject.registerClass({
     Signals: { 'icon-size-changed': {} },
 }, class Dash extends St.Bin {
     _init() {
         this._maxHeight = -1;
-        this.iconSize = 64;
+
+        this._dashSettings = new Gio.Settings({ schema_id: 'org.gnome.shell.dash' });
+        this._fixedIconSize =  this._dashSettings.get_int('icon-size');
+        this.iconSize = this._fixedIconSize;
+
+        this._bindSettingsChanges();
+
         this._shownInitially = false;
 
         this._dragPlaceholder = null;
@@ -346,13 +352,27 @@ var Dash = GObject.registerClass({
         this._animatingPlaceholdersCount = 0;
         this._showLabelTimeoutId = 0;
         this._resetHoverTimeoutId = 0;
+        this._ensureAppIconVisibilityTimeoutId = 0;
         this._labelShowing = false;
-
         this._container = new DashActor();
-        this._box = new St.BoxLayout({ vertical: true,
-                                       clip_to_allocation: true });
+        this._box = new St.BoxLayout({
+            vertical: true,
+            clip_to_allocation: false,
+            x_align: Clutter.ActorAlign.START,
+            y_align: Clutter.ActorAlign.START,
+        });
         this._box._delegate = this;
-        this._container.add_actor(this._box);
+
+        this._scrollView = new St.ScrollView({
+            name: 'dockScrollView',
+            hscrollbar_policy: St.PolicyType.NEVER,
+            vscrollbar_policy: St.PolicyType.NEVER,
+            enable_mouse_scrolling: false,
+        });
+        this._scrollView.connect('scroll-event', this._onScroll.bind(this));
+        this._scrollView.add_actor(this._box);
+
+        this._container.add_actor(this._scrollView);
         this._container.set_offscreen_redirect(Clutter.OffscreenRedirect.ALWAYS);
 
         this._showAppsIcon = new ShowAppsIcon();
@@ -392,6 +412,54 @@ var Dash = GObject.registerClass({
         // Translators: this is the name of the dock/favorites area on
         // the left of the overview
         Main.ctrlAltTabManager.addGroup(this, _("Dash"), 'user-bookmarks-symbolic');
+    }
+
+    _bindSettingsChanges() {
+        const settings = this._dashSettings;
+
+        settings.connect('changed::icon-size',
+            () => {
+                const size = settings.get_int('icon-size');
+                this.dash.setIconSize(size);
+            },
+        );
+    }
+
+    setIconSize(size) {
+        this._fixedIconSize = size;
+        this._queueRedisplay();
+    }
+
+    _onScroll(_, event) {
+        // Reset timeout to avoid conflicting with the mouse hover event.
+        if (this._ensureAppIconVisibilityTimeoutId > 0) {
+            GLib.source_remove(this._ensureAppIconVisibilityTimeoutId);
+            this._ensureAppIconVisibilityTimeoutId = 0;
+        }
+
+        // Skip to prevent handling scroll twice.
+        if (event.is_pointer_emulated())
+            return Clutter.EVENT_STOP;
+
+        const adjustment = this._scrollView.get_vscroll_bar().get_adjustment();
+        const increment = adjustment.step_increment;
+
+        let value = adjustment.get_value();
+        let [, dy] = event.get_scroll_delta();
+
+        switch (event.get_scroll_direction()) {
+        case Clutter.ScrollDirection.UP:
+            value -= increment;
+            break;
+        case Clutter.ScrollDirection.DOWN:
+            value += increment;
+            break;
+        case Clutter.ScrollDirection.SMOOTH:
+            value += dy * increment;
+            break;
+        }
+        adjustment.set_value(value);
+        return Clutter.EVENT_STOP;
     }
 
     _onDragBegin() {
@@ -479,14 +547,38 @@ var Dash = GObject.registerClass({
 
     _createAppItem(app) {
         let appIcon = new DashIcon(app);
-
-        appIcon.connect('menu-state-changed',
-                        (o, opened) => {
-                            this._itemMenuStateChanged(item, opened);
-                        });
-
         let item = new DashItemContainer();
         item.setChild(appIcon);
+
+        appIcon.connect('menu-state-changed', (_, opened) => {
+            this._itemMenuStateChanged(item, opened);
+        });
+
+        appIcon.connect('notify::hover', () => {
+            if (appIcon.hover) {
+                this._ensureAppIconVisibilityTimeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, 100, () => {
+                    Util.ensureActorVisibleInScrollView(this._scrollView, appIcon);
+                    this._ensureAppIconVisibilityTimeoutId = 0;
+                    return GLib.SOURCE_REMOVE;
+                });
+            } else if (this._ensureAppIconVisibilityTimeoutId > 0) {
+                GLib.source_remove(this._ensureAppIconVisibilityTimeoutId);
+                this._ensureAppIconVisibilityTimeoutId = 0;
+            }
+        });
+
+        appIcon.connect('clicked', actor => {
+            Util.ensureActorVisibleInScrollView(this._scrollView, actor);
+        });
+
+        appIcon.connect('key-focus-in', actor => {
+            let [xShift, yShift] = Util.ensureActorVisibleInScrollView(this._scrollView, actor);
+
+            if (appIcon._menu) {
+                appIcon._menu._boxPointer.xOffset = -xShift;
+                appIcon._menu._boxPointer.yOffset = -yShift;
+            }
+        });
 
         // Override default AppIcon label_actor, now the
         // accessible_name is set at DashItemContainer.setLabelText
@@ -562,41 +654,14 @@ var Dash = GObject.registerClass({
 
         iconChildren.push(this._showAppsIcon);
 
-        if (this._maxHeight == -1)
+        if (this._maxHeight === -1)
             return;
 
-        let themeNode = this._container.get_theme_node();
-        let maxAllocation = new Clutter.ActorBox({ x1: 0, y1: 0,
-                                                   x2: 42 /* whatever */,
-                                                   y2: this._maxHeight });
-        let maxContent = themeNode.get_content_box(maxAllocation);
-        let availHeight = maxContent.y2 - maxContent.y1;
-        let spacing = themeNode.get_length('spacing');
 
-        let firstButton = iconChildren[0].child;
-        let firstIcon = firstButton._delegate.icon;
+        let newIconSize = this._fixedIconSize;
 
-        // Enforce valid spacings during the size request
-        firstIcon.icon.ensure_style();
-        let [, iconHeight] = firstIcon.icon.get_preferred_height(-1);
-        let [, buttonHeight] = firstButton.get_preferred_height(-1);
 
-        // Subtract icon padding and box spacing from the available height
-        availHeight -= iconChildren.length * (buttonHeight - iconHeight) +
-                       (iconChildren.length - 1) * spacing;
-
-        let availSize = availHeight / iconChildren.length;
-
-        let scaleFactor = St.ThemeContext.get_for_stage(global.stage).scale_factor;
-        let iconSizes = baseIconSizes.map(s => s * scaleFactor);
-
-        let newIconSize = baseIconSizes[0];
-        for (let i = 0; i < iconSizes.length; i++) {
-            if (iconSizes[i] < availSize)
-                newIconSize = baseIconSizes[i];
-        }
-
-        if (newIconSize == this.iconSize)
+        if (newIconSize === this.iconSize)
             return;
 
         let oldIconSize = this.iconSize;
@@ -757,6 +822,12 @@ var Dash = GObject.registerClass({
 
         for (let i = 0; i < addedItems.length; i++)
             addedItems[i].item.show(animate);
+
+        this._scrollView.update_fade_effect(this.iconSize * 0.2, 0);
+        const effect = this._scrollView.get_effect('fade');
+
+        if (effect)
+            effect.fade_edges = true;
 
         // Workaround for https://bugzilla.gnome.org/show_bug.cgi?id=692744
         // Without it, StBoxLayout may use a stale size cache

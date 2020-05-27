@@ -98,24 +98,7 @@ class OverviewActor extends St.BoxLayout {
         });
         this.add_actor(panelGhost);
 
-        this._searchEntry = new St.Entry({
-            style_class: 'search-entry',
-            /* Translators: this is the text displayed
-               in the search entry when no search is
-               active; it should not exceed ~30
-               characters. */
-            hint_text: _('Type to search'),
-            track_hover: true,
-            can_focus: true,
-        });
-        this._searchEntry.set_offscreen_redirect(Clutter.OffscreenRedirect.ALWAYS);
-        let searchEntryBin = new St.Bin({
-            child: this._searchEntry,
-            x_align: Clutter.ActorAlign.CENTER,
-        });
-        this.add_actor(searchEntryBin);
-
-        this._controls = new OverviewControls.ControlsManager(this._searchEntry);
+        this._controls = new OverviewControls.ControlsManager();
 
         // Add our same-line elements after the search entry
         this.add_child(this._controls);
@@ -126,7 +109,7 @@ class OverviewActor extends St.BoxLayout {
     }
 
     get searchEntry() {
-        return this._searchEntry;
+        return this._controls.searchEntry;
     }
 
     get viewSelector() {

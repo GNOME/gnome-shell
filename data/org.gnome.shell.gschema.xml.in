@@ -302,4 +302,14 @@
       </description>
     </key>
   </schema>
+
+  <schema id="org.gnome.shell.dash"
+          path="/org/gnome/shell/dash/"
+          gettext-domain="@GETTEXT_PACKAGE@">
+    <key type="i" name="icon-size">
+      <default>48</default>
+      <summary>Dash icon size when fixed.</summary>
+      <description>When fixed-icon-size is true this size will be used by the dash.</description>
+    </key>
+  </schema>
 </schemalist>

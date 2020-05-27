@@ -404,13 +404,34 @@ var ControlsLayout = GObject.registerClass({
 
 var ControlsManager = GObject.registerClass(
 class ControlsManager extends St.Widget {
-    _init(searchEntry) {
+    _init() {
         let layout = new ControlsLayout();
         super._init({
             layout_manager: layout,
             x_expand: true,
             y_expand: true,
             clip_to_allocation: true,
+        });
+
+        this.searchEntry = new St.Entry({
+            style_class: 'search-entry',
+            /* Translators: this is the text displayed
+               in the search entry when no search is
+               active; it should not exceed ~30
+               characters. */
+            hint_text: _('Type to search'),
+            track_hover: true,
+            can_focus: true,
+        });
+
+        this.searchEntry.set_offscreen_redirect(Clutter.OffscreenRedirect.ALWAYS);
+
+        this._searchEntryContainer = new St.Bin({
+            child: this.searchEntry,
+            x_expand: false,
+            x_align: Clutter.ActorAlign.CENTER,
+            y_expand: false,
+            y_align: Clutter.ActorAlign.START,
         });
 
         this.dash = new Dash.Dash();
@@ -438,19 +459,25 @@ class ControlsManager extends St.Widget {
             new WorkspaceThumbnail.ThumbnailsBox(this._workspaceAdjustment);
         this._thumbnailsSlider = new ThumbnailsSlider(this._thumbnailsBox);
 
-        this.viewSelector = new ViewSelector.ViewSelector(searchEntry,
+        this.viewSelector = new ViewSelector.ViewSelector(this.searchEntry,
             this._workspaceAdjustment, this.dash.showAppsButton);
         this.viewSelector.connect('page-changed', this._setVisibility.bind(this));
         this.viewSelector.connect('page-empty', this._onPageEmpty.bind(this));
 
         this._group = new St.BoxLayout({ name: 'overview-group',
                                          x_expand: true, y_expand: true });
+
+        this._centerGroup = new St.BoxLayout({ x_expand: true, y_expand: true, vertical: true });
+
+        this._centerGroup.add_actor(this._searchEntryContainer);
+        this._centerGroup.add_child(this.viewSelector);
+
         this.add_actor(this._group);
 
         this.add_actor(this._dashSlider);
 
         this._group.add_actor(this._dashSpacer);
-        this._group.add_child(this.viewSelector);
+        this._group.add_child(this._centerGroup);
         this._group.add_actor(this._thumbnailsSlider);
 
         layout.connect('allocation-changed', this._updateWorkspacesGeometry.bind(this));
