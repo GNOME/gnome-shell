@@ -1126,10 +1126,19 @@ class AppDisplay extends BaseAppView {
             targetPosition++;
 
         let view = _getViewFromIcon(source);
-        if (view === this)
-            this.moveItem(source, targetPage, targetPosition);
-        else
+        let movedItem = source;
+
+        // Remove from the folder
+        if (view !== this) {
+            const id = source.id;
+
             view.removeApp(source.app);
+            this._redisplay();
+
+            movedItem = this._items.get(id);
+        }
+
+        this.moveItem(movedItem, targetPage, targetPosition);
 
         if (this._currentDialog)
             this._currentDialog.popdown();
