@@ -1105,6 +1105,9 @@ class AppDisplay extends BaseAppView {
         if (!this._canAccept(source))
             return DND.DragMotionResult.NO_DROP;
 
+        if (this._currentDialog)
+            this._currentDialog.popdown();
+
         return DND.DragMotionResult.MOVE_DROP;
     }
 
