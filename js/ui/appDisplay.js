@@ -1055,7 +1055,7 @@ class AppDisplay extends BaseAppView {
         // Handle the drag overshoot. When dragging to above the
         // icon grid, move to the page above; when dragging below,
         // move to the page below.
-        if (this._grid.contains(appIcon))
+        if (appIcon instanceof BaseAppIcon)
             this._handleDragOvershoot(dragEvent);
 
         return DND.DragMotionResult.CONTINUE;
