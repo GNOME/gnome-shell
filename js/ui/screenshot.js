@@ -276,12 +276,13 @@ var ScreenshotService = class {
                     blue / 255.0,
                 ]),
             }]);
-            this._removeShooterForSender(invocation.get_sender());
             invocation.return_value(retval);
         } catch (e) {
             invocation.return_error_literal(
                 Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED,
                 'Operation was cancelled');
+        } finally {
+            this._removeShooterForSender(invocation.get_sender());
         }
     }
 };
