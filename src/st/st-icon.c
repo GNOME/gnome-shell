@@ -409,7 +409,7 @@ st_icon_update (StIcon *icon)
   gint paint_scale;
   ClutterActor *stage;
   StThemeContext *context;
-  float resource_scale;
+  unsigned int resource_scale;
 
   if (priv->pending_texture)
     {
