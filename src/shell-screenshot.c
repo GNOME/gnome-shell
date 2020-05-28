@@ -393,8 +393,7 @@ grab_window_screenshot (ClutterActor *stage,
       if (meta_window_get_client_type (window) == META_WINDOW_CLIENT_TYPE_WAYLAND)
         {
           float resource_scale;
-          if (!clutter_actor_get_resource_scale (window_actor, &resource_scale))
-            resource_scale = 1.0f;
+          resource_scale = clutter_actor_get_resource_scale (window_actor);
 
           cairo_surface_set_device_scale (priv->image, resource_scale, resource_scale);
         }
