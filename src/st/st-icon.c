@@ -425,8 +425,7 @@ st_icon_update (StIcon *icon)
       return;
     }
 
-  if (!st_widget_get_resource_scale (ST_WIDGET (icon), &resource_scale))
-    return;
+  resource_scale = clutter_actor_get_resource_scale (CLUTTER_ACTOR (icon));
 
   theme_node = st_widget_peek_theme_node (ST_WIDGET (icon));
   if (theme_node == NULL)
