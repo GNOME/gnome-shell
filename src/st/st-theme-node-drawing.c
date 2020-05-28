@@ -650,7 +650,7 @@ create_cairo_pattern_of_background_image (StThemeNode *node,
 
   surface = st_texture_cache_load_file_to_cairo_surface (texture_cache, file,
                                                          node->cached_scale_factor,
-                                                         resource_scale);
+                                                         (unsigned int) resource_scale);
 
   if (surface == NULL)
     return NULL;
