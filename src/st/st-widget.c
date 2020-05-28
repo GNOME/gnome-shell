@@ -412,8 +412,7 @@ st_widget_paint_background (StWidget            *widget,
   float resource_scale;
   guint8 opacity;
 
-  if (!st_widget_get_resource_scale (widget, &resource_scale))
-    return;
+  resource_scale = clutter_actor_get_resource_scale (CLUTTER_ACTOR (widget));
 
   framebuffer = clutter_paint_context_get_framebuffer (paint_context);
   theme_node = st_widget_get_theme_node (widget);
@@ -1413,8 +1412,10 @@ gboolean
 st_widget_get_resource_scale (StWidget *widget,
                               float    *resource_scale)
 {
-  return clutter_actor_get_resource_scale (CLUTTER_ACTOR (widget),
-                                           resource_scale);
+  if (resource_scale)
+    *resource_scale = clutter_actor_get_resource_scale (CLUTTER_ACTOR (widget));
+
+  return TRUE;
 }
 
 static void
