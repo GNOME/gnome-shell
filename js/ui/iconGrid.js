@@ -1334,7 +1334,7 @@ var IconGrid = GObject.registerClass({
     _init(layoutParams = {}) {
         layoutParams = Params.parse(layoutParams, {
             allow_incomplete_pages: false,
-            orientation: Clutter.Orientation.VERTICAL,
+            orientation: Clutter.Orientation.HORIZONTAL,
             columns_per_page: 6,
             rows_per_page: 4,
             page_halign: Clutter.ActorAlign.FILL,

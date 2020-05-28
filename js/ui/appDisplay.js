@@ -126,7 +126,7 @@ var BaseAppView = GObject.registerClass({
         'view-loaded': {},
     },
 }, class BaseAppView extends St.Widget {
-    _init(params = {}, orientation = Clutter.Orientation.VERTICAL) {
+    _init(params = {}, orientation = Clutter.Orientation.HORIZONTAL) {
         params = Params.parse(params, { animateIndicators: true }, true);
 
         const animateIndicators = params.animateIndicators;
@@ -969,9 +969,15 @@ class AppDisplay extends BaseAppView {
             y_expand: true,
         });
         this.add_actor(this._stack);
-        this._stack.add_actor(this._scrollView);
 
-        this.add_actor(this._pageIndicators);
+        const box = new St.BoxLayout({
+            x_expand: true,
+            y_expand: true,
+            vertical: true,
+        });
+        this._stack.add_child(box);
+        box.add_child(this._scrollView);
+        box.add_child(this._pageIndicators);
 
         this._folderIcons = [];
 
@@ -1040,6 +1046,13 @@ class AppDisplay extends BaseAppView {
         });
 
         super._redisplay();
+    }
+
+    adaptToSize(width, height) {
+        const [, indicatorHeight] = this._pageIndicators.get_preferred_height(-1);
+        height -= indicatorHeight;
+
+        super.adaptToSize(width, height);
     }
 
     _savePages() {
@@ -1693,7 +1706,6 @@ class FolderGrid extends IconGrid.IconGrid {
     _init() {
         super._init({
             allow_incomplete_pages: false,
-            orientation: Clutter.Orientation.HORIZONTAL,
             columns_per_page: 3,
             rows_per_page: 3,
             page_halign: Clutter.ActorAlign.CENTER,
@@ -1714,11 +1726,12 @@ class FolderView extends BaseAppView {
             x_expand: true,
             y_expand: true,
             animateIndicators: false,
-        }, Clutter.Orientation.HORIZONTAL);
+        });
 
         // If it not expand, the parent doesn't take into account its preferred_width when allocating
         // the second time it allocates, so we apply the "Standard hack for ClutterBinLayout"
         this._grid.x_expand = true;
+        this._pageIndicators.y_expand = false;
         this._id = id;
         this._folder = folder;
         this._parentView = parentView;
