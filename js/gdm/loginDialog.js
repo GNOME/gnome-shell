@@ -810,8 +810,8 @@ var LoginDialog = GObject.registerClass({
             return;
 
         this._logoBin.destroy_all_children();
-        const [valid, resourceScale] = this._logoBin.get_resource_scale();
-        if (this._logoFile && valid) {
+        const resourceScale = this._logoBin.get_resource_scale();
+        if (this._logoFile) {
             let scaleFactor = St.ThemeContext.get_for_stage(global.stage).scale_factor;
             this._logoBin.add_child(this._textureCache.load_file_async(this._logoFile,
                                                                        -1, -1,
