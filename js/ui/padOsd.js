@@ -329,6 +329,7 @@ var PadDiagram = GObject.registerClass({
 
         this._imagePath = imagePath;
         this._handle = this._composeStyledDiagram();
+        this._initLabels();
     }
 
     // eslint-disable-next-line camelcase
@@ -341,6 +342,33 @@ var PadDiagram = GObject.registerClass({
         actor.hide();
         this._editorActor = actor;
         this.add_actor(actor);
+    }
+
+    _initLabels() {
+        // FIXME: Fix num buttons.
+        let i = 0;
+        for (i = 0; i < 50; i++) {
+            let [found] = this.getButtonLabelCoords(i);
+            if (!found)
+                break;
+            this._addLabel(Meta.PadActionType.BUTTON, i);
+        }
+
+        for (i = 0; i < 2; i++) {
+            let [found] = this.getRingLabelCoords(i, CW);
+            if (!found)
+                break;
+            this._addLabel(Meta.PadActionType.RING, i, CW);
+            this._addLabel(Meta.PadActionType.RING, i, CCW);
+        }
+
+        for (i = 0; i < 2; i++) {
+            let [found] = this.getStripLabelCoords(i, UP);
+            if (!found)
+                break;
+            this._addLabel(Meta.PadActionType.STRIP, i, UP);
+            this._addLabel(Meta.PadActionType.STRIP, i, DOWN);
+        }
     }
 
     _wrappingSvgHeader() {
@@ -557,7 +585,8 @@ var PadDiagram = GObject.registerClass({
         this._invalidateSvg();
     }
 
-    addLabel(label, type, idx, dir) {
+    _addLabel(type, idx, dir) {
+        let label = new St.Label();
         this._labels.push([label, type, idx, dir]);
         this.add_actor(label);
     }
@@ -711,31 +740,7 @@ var PadOsd = GObject.registerClass({
                                             x_expand: true,
                                             y_expand: true });
         this.add_actor(this._padDiagram);
-
-        // FIXME: Fix num buttons.
-        let i = 0;
-        for (i = 0; i < 50; i++) {
-            let [found] = this._padDiagram.getButtonLabelCoords(i);
-            if (!found)
-                break;
-            this._createLabel(Meta.PadActionType.BUTTON, i);
-        }
-
-        for (i = 0; i < padDevice.get_n_rings(); i++) {
-            let [found] = this._padDiagram.getRingLabelCoords(i, CW);
-            if (!found)
-                break;
-            this._createLabel(Meta.PadActionType.RING, i, CW);
-            this._createLabel(Meta.PadActionType.RING, i, CCW);
-        }
-
-        for (i = 0; i < padDevice.get_n_strips(); i++) {
-            let [found] = this._padDiagram.getStripLabelCoords(i, UP);
-            if (!found)
-                break;
-            this._createLabel(Meta.PadActionType.STRIP, i, UP);
-            this._createLabel(Meta.PadActionType.STRIP, i, DOWN);
-        }
+        this._updateActionLabels();
 
         let buttonBox = new St.Widget({ layout_manager: new Clutter.BinLayout(),
                                         x_expand: true,
@@ -786,11 +791,6 @@ var PadOsd = GObject.registerClass({
     _getActionText(type, number) {
         let str = global.display.get_pad_action_label(this.padDevice, type, number);
         return str ? str : _("None");
-    }
-
-    _createLabel(type, number, dir) {
-        let label = new St.Label({ text: this._getActionText(type, number) });
-        this._padDiagram.addLabel(label, type, number, dir);
     }
 
     _updateActionLabels() {
