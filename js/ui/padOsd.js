@@ -348,14 +348,14 @@ var PadDiagram = GObject.registerClass({
         // FIXME: Fix num buttons.
         let i = 0;
         for (i = 0; i < 50; i++) {
-            let [found] = this.getButtonLabelCoords(i);
+            let [found] = this._getLabelCoords(Meta.PadActionType.BUTTON, i);
             if (!found)
                 break;
             this._addLabel(Meta.PadActionType.BUTTON, i);
         }
 
         for (i = 0; i < 2; i++) {
-            let [found] = this.getRingLabelCoords(i, CW);
+            let [found] = this._getLabelCoords(Meta.PadActionType.RING, i, CW);
             if (!found)
                 break;
             this._addLabel(Meta.PadActionType.RING, i, CW);
@@ -363,7 +363,7 @@ var PadDiagram = GObject.registerClass({
         }
 
         for (i = 0; i < 2; i++) {
-            let [found] = this.getStripLabelCoords(i, UP);
+            let [found] = this._getLabelCoords(Meta.PadActionType.STRIP, i, UP);
             if (!found)
                 break;
             this._addLabel(Meta.PadActionType.STRIP, i, UP);
@@ -452,13 +452,13 @@ var PadDiagram = GObject.registerClass({
 
         for (let i = 0; i < this._labels.length; i++) {
             let [label, action, idx, dir] = this._labels[i];
-            let [found_, x, y, arrangement] = this.getLabelCoords(action, idx, dir);
+            let [found_, x, y, arrangement] = this._getLabelCoords(action, idx, dir);
             this._allocateChild(label, x, y, arrangement);
         }
 
         if (this._editorActor && this._curEdited) {
             let [label_, action, idx, dir] = this._curEdited;
-            let [found_, x, y, arrangement] = this.getLabelCoords(action, idx, dir);
+            let [found_, x, y, arrangement] = this._getLabelCoords(action, idx, dir);
             this._allocateChild(this._editorActor, x, y, arrangement);
         }
     }
@@ -528,39 +528,36 @@ var PadDiagram = GObject.registerClass({
         return [true, x, y, direction];
     }
 
-    getButtonLabelCoords(button) {
+    _getButtonLabels(button) {
         let ch = String.fromCharCode('A'.charCodeAt() + button);
         let labelName = 'Label%s'.format(ch);
         let leaderName = 'Leader%s'.format(ch);
-
-        return this._getItemLabelCoords(labelName, leaderName);
+        return [labelName, leaderName];
     }
 
-    getRingLabelCoords(number, dir) {
+    _getRingLabels(number, dir) {
         let numStr = number > 0 ? (number + 1).toString() : '';
         let dirStr = dir == CW ? 'CW' : 'CCW';
         let labelName = 'LabelRing%s%s'.format(numStr, dirStr);
         let leaderName = 'LeaderRing%s%s'.format(numStr, dirStr);
-
-        return this._getItemLabelCoords(labelName, leaderName);
+        return [labelName, leaderName];
     }
 
-    getStripLabelCoords(number, dir) {
+    _getStripLabels(number, dir) {
         let numStr = number > 0 ? (number + 1).toString() : '';
         let dirStr = dir == UP ? 'Up' : 'Down';
         let labelName = 'LabelStrip%s%s'.format(numStr, dirStr);
         let leaderName = 'LeaderStrip%s%s'.format(numStr, dirStr);
-
-        return this._getItemLabelCoords(labelName, leaderName);
+        return [labelName, leaderName];
     }
 
-    getLabelCoords(action, idx, dir) {
+    _getLabelCoords(action, idx, dir) {
         if (action == Meta.PadActionType.BUTTON)
-            return this.getButtonLabelCoords(idx);
+            return this._getItemLabelCoords(...this._getButtonLabels(idx));
         else if (action == Meta.PadActionType.RING)
-            return this.getRingLabelCoords(idx, dir);
+            return this._getItemLabelCoords(...this._getRingLabels(idx, dir));
         else if (action == Meta.PadActionType.STRIP)
-            return this.getStripLabelCoords(idx, dir);
+            return this._getItemLabelCoords(...this._getStripLabels(idx, dir));
 
         return [false];
     }
@@ -603,7 +600,7 @@ var PadDiagram = GObject.registerClass({
         if (str != null) {
             label.set_text(str);
 
-            let [found_, x, y, arrangement] = this.getLabelCoords(action, idx, dir);
+            let [found_, x, y, arrangement] = this._getLabelCoords(action, idx, dir);
             this._allocateChild(label, x, y, arrangement);
         }
         label.show();
@@ -644,7 +641,7 @@ var PadDiagram = GObject.registerClass({
 
         if (this._curEdited == null)
             return;
-        let [found] = this.getLabelCoords(action, idx, dir);
+        let [found] = this._getLabelCoords(action, idx, dir);
         if (!found)
             return;
         this._editorActor.show();
