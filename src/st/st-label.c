@@ -201,44 +201,42 @@ st_label_paint (ClutterActor        *actor,
 
   if (shadow_spec)
     {
+      ClutterActorBox allocation;
+      float width, height;
       float resource_scale;
 
-      if (clutter_actor_get_resource_scale (priv->label, &resource_scale))
+      clutter_actor_get_allocation_box (priv->label, &allocation);
+      clutter_actor_box_get_size (&allocation, &width, &height);
+
+      resource_scale = clutter_actor_get_resource_scale (priv->label);
+
+      width *= resource_scale;
+      height *= resource_scale;
+
+      if (priv->text_shadow_pipeline == NULL ||
+          width != priv->shadow_width ||
+          height != priv->shadow_height)
         {
-          ClutterActorBox allocation;
-          float width, height;
+          g_clear_pointer (&priv->text_shadow_pipeline, cogl_object_unref);
 
-          clutter_actor_get_allocation_box (priv->label, &allocation);
-          clutter_actor_box_get_size (&allocation, &width, &height);
+          priv->shadow_width = width;
+          priv->shadow_height = height;
+          priv->text_shadow_pipeline =
+            _st_create_shadow_pipeline_from_actor (shadow_spec,
+                                                   priv->label);
+        }
 
-          width *= resource_scale;
-          height *= resource_scale;
+      if (priv->text_shadow_pipeline != NULL)
+        {
+          CoglFramebuffer *framebuffer;
 
-          if (priv->text_shadow_pipeline == NULL ||
-              width != priv->shadow_width ||
-              height != priv->shadow_height)
-            {
-              g_clear_pointer (&priv->text_shadow_pipeline, cogl_object_unref);
-
-              priv->shadow_width = width;
-              priv->shadow_height = height;
-              priv->text_shadow_pipeline =
-                _st_create_shadow_pipeline_from_actor (shadow_spec,
-                                                       priv->label);
-            }
-
-          if (priv->text_shadow_pipeline != NULL)
-            {
-              CoglFramebuffer *framebuffer;
-
-              framebuffer =
-                clutter_paint_context_get_framebuffer (paint_context);
-              _st_paint_shadow_with_opacity (shadow_spec,
-                                             framebuffer,
-                                             priv->text_shadow_pipeline,
-                                             &allocation,
-                                             clutter_actor_get_paint_opacity (priv->label));
-            }
+          framebuffer =
+            clutter_paint_context_get_framebuffer (paint_context);
+          _st_paint_shadow_with_opacity (shadow_spec,
+                                         framebuffer,
+                                         priv->text_shadow_pipeline,
+                                         &allocation,
+                                         clutter_actor_get_paint_opacity (priv->label));
         }
     }
 
