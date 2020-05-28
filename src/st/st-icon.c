@@ -231,9 +231,12 @@ st_icon_style_changed (StWidget *widget)
 }
 
 static void
-st_icon_resource_scale_changed (StWidget *widget)
+st_icon_resource_scale_changed (ClutterActor *actor)
 {
-  st_icon_update (ST_ICON (widget));
+  st_icon_update (ST_ICON (actor));
+
+  if (CLUTTER_ACTOR_CLASS (st_icon_parent_class)->resource_scale_changed)
+    CLUTTER_ACTOR_CLASS (st_icon_parent_class)->resource_scale_changed (actor);
 }
 
 static void
@@ -250,7 +253,7 @@ st_icon_class_init (StIconClass *klass)
   actor_class->paint = st_icon_paint;
 
   widget_class->style_changed = st_icon_style_changed;
-  widget_class->resource_scale_changed = st_icon_resource_scale_changed;
+  actor_class->resource_scale_changed = st_icon_resource_scale_changed;
 
   props[PROP_GICON] =
     g_param_spec_object ("gicon",
