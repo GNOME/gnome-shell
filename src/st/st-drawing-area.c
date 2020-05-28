@@ -106,13 +106,16 @@ st_drawing_area_style_changed (StWidget  *self)
 }
 
 static void
-st_drawing_area_resource_scale_changed (StWidget *self)
+st_drawing_area_resource_scale_changed (ClutterActor *self)
 {
   float resource_scale;
-  ClutterContent *content = clutter_actor_get_content (CLUTTER_ACTOR (self));
+  ClutterContent *content = clutter_actor_get_content (self);
 
-  resource_scale = clutter_actor_get_resource_scale (CLUTTER_ACTOR (self));
+  resource_scale = clutter_actor_get_resource_scale (self);
   clutter_canvas_set_scale_factor (CLUTTER_CANVAS (content), resource_scale);
+
+  if (CLUTTER_ACTOR_CLASS (st_drawing_area_parent_class)->resource_scale_changed)
+    CLUTTER_ACTOR_CLASS (st_drawing_area_parent_class)->resource_scale_changed (self);
 }
 
 static void
@@ -123,7 +126,7 @@ st_drawing_area_class_init (StDrawingAreaClass *klass)
 
   actor_class->allocate = st_drawing_area_allocate;
   widget_class->style_changed = st_drawing_area_style_changed;
-  widget_class->resource_scale_changed = st_drawing_area_resource_scale_changed;
+  actor_class->resource_scale_changed = st_drawing_area_resource_scale_changed;
 
   st_drawing_area_signals[REPAINT] =
     g_signal_new ("repaint",

@@ -63,7 +63,6 @@ struct _StWidgetClass
   /* signals */
   void     (* style_changed)       (StWidget         *self);
   void     (* popup_menu)          (StWidget         *self);
-  void     (* resource_scale_changed) (StWidget         *self);
 
   /* vfuncs */
 
