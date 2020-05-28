@@ -508,9 +508,7 @@ recorder_update_size (ShellRecorder *recorder)
 }
 
 static void
-recorder_on_stage_notify_size (GObject          *object,
-                               GParamSpec       *pspec,
-                               ShellRecorder    *recorder)
+recorder_on_stage_notify_size (ShellRecorder *recorder)
 {
   recorder_update_size (recorder);
 
@@ -614,12 +612,12 @@ recorder_connect_stage_callbacks (ShellRecorder *recorder)
                     G_CALLBACK (recorder_on_stage_destroy), recorder);
   g_signal_connect_after (recorder->stage, "paint",
                           G_CALLBACK (recorder_on_stage_paint), recorder);
-  g_signal_connect (recorder->stage, "notify::width",
-                    G_CALLBACK (recorder_on_stage_notify_size), recorder);
-  g_signal_connect (recorder->stage, "notify::height",
-                    G_CALLBACK (recorder_on_stage_notify_size), recorder);
-  g_signal_connect (recorder->stage, "notify::resource-scale",
-                    G_CALLBACK (recorder_on_stage_notify_size), recorder);
+  g_signal_connect_swapped (recorder->stage, "notify::width",
+    G_CALLBACK (recorder_on_stage_notify_size), recorder);
+  g_signal_connect_swapped (recorder->stage, "notify::height",
+    G_CALLBACK (recorder_on_stage_notify_size), recorder);
+  g_signal_connect_swapped (recorder->stage, "resource-scale-changed",
+    G_CALLBACK (recorder_on_stage_notify_size), recorder);
 }
 
 static void
