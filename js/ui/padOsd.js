@@ -415,7 +415,7 @@ var PadDiagram = GObject.registerClass({
 
         childBox.y1 = y - natHeight / 2;
         childBox.y2 = y + natHeight / 2;
-        child.allocate(childBox, 0);
+        child.allocate(childBox);
     }
 
     vfunc_allocate(box) {
