@@ -19,8 +19,10 @@ class Animation extends St.Bin {
         });
 
         this.connect('destroy', this._onDestroy.bind(this));
-        this.connect('resource-scale-changed',
-            this._loadFile.bind(this, file, width, height));
+        this.connect('resource-scale-changed', () => {
+            this._loadFile(file, width, height);
+            return false;
+        });
 
         this._scaleChangedId = themeContext.connect('notify::scale-factor',
             () => {

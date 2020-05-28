@@ -523,6 +523,16 @@ recorder_on_stage_notify_size (GObject          *object,
 }
 
 static gboolean
+recorder_on_stage_resource_scale_changed (GObject          *object,
+                                          GParamSpec       *pspec,
+                                          ShellRecorder    *recorder)
+{
+  recorder_on_stage_notify_size (object, pspec, recorder);
+
+  return FALSE;
+}
+
+static gboolean
 recorder_idle_redraw (gpointer data)
 {
   ShellRecorder *recorder = data;
@@ -618,8 +628,8 @@ recorder_connect_stage_callbacks (ShellRecorder *recorder)
                     G_CALLBACK (recorder_on_stage_notify_size), recorder);
   g_signal_connect (recorder->stage, "notify::height",
                     G_CALLBACK (recorder_on_stage_notify_size), recorder);
-  g_signal_connect (recorder->stage, "notify::resource-scale",
-                    G_CALLBACK (recorder_on_stage_notify_size), recorder);
+  g_signal_connect (recorder->stage, "resource-scale-changed",
+                    G_CALLBACK (recorder_on_stage_resource_scale_changed), recorder);
 }
 
 static void

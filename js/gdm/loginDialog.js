@@ -502,6 +502,7 @@ var LoginDialog = GObject.registerClass({
                                         y_align: Clutter.ActorAlign.END });
         this._logoBin.connect('resource-scale-changed', () => {
             this._updateLogoTexture(this._textureCache, this._logoFile);
+            return false;
         });
         this.add_child(this._logoBin);
         this._updateLogo();

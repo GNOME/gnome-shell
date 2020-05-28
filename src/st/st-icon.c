@@ -230,10 +230,12 @@ st_icon_style_changed (StWidget *widget)
   st_icon_update (self);
 }
 
-static void
-st_icon_resource_scale_changed (StWidget *widget)
+static gboolean
+st_icon_resource_scale_changed (ClutterActor *actor)
 {
-  st_icon_update (ST_ICON (widget));
+  st_icon_update (ST_ICON (actor));
+
+  return FALSE;
 }
 
 static void
@@ -250,7 +252,7 @@ st_icon_class_init (StIconClass *klass)
   actor_class->paint = st_icon_paint;
 
   widget_class->style_changed = st_icon_style_changed;
-  widget_class->resource_scale_changed = st_icon_resource_scale_changed;
+  actor_class->resource_scale_changed = st_icon_resource_scale_changed;
 
   props[PROP_GICON] =
     g_param_spec_object ("gicon",
