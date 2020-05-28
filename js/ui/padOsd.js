@@ -2,7 +2,7 @@
 /* exported PadOsd, PadOsdService */
 
 const { Atk, Clutter, GDesktopEnums, Gio,
-        GLib, GObject, Gtk, Meta, Rsvg, St } = imports.gi;
+        GLib, GObject, Gtk, Meta, Pango, Rsvg, St } = imports.gi;
 const Signals = imports.signals;
 
 const Main = imports.ui.main;
@@ -693,6 +693,7 @@ var PadOsd = GObject.registerClass({
 
         this._titleLabel = new St.Label({ style: 'font-side: larger; font-weight: bold;',
                                           x_align: Clutter.ActorAlign.CENTER });
+        this._titleLabel.clutter_text.set_ellipsize(Pango.EllipsizeMode.NONE);
         this._titleLabel.clutter_text.set_text(padDevice.get_device_name());
         labelBox.add_actor(this._titleLabel);
 
