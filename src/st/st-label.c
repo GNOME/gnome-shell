@@ -244,11 +244,14 @@ st_label_paint (ClutterActor        *actor,
 }
 
 static void
-st_label_resource_scale_changed (StWidget *widget)
+st_label_resource_scale_changed (ClutterActor *actor)
 {
-  StLabelPrivate *priv = ST_LABEL (widget)->priv;
+  StLabelPrivate *priv = ST_LABEL (actor)->priv;
 
   g_clear_pointer (&priv->text_shadow_pipeline, cogl_object_unref);
+
+  if (CLUTTER_ACTOR_CLASS (st_label_parent_class)->resource_scale_changed)
+    CLUTTER_ACTOR_CLASS (st_label_parent_class)->resource_scale_changed (actor);
 }
 
 static void
@@ -266,9 +269,9 @@ st_label_class_init (StLabelClass *klass)
   actor_class->allocate = st_label_allocate;
   actor_class->get_preferred_width = st_label_get_preferred_width;
   actor_class->get_preferred_height = st_label_get_preferred_height;
+  actor_class->resource_scale_changed = st_label_resource_scale_changed;
 
   widget_class->style_changed = st_label_style_changed;
-  widget_class->resource_scale_changed = st_label_resource_scale_changed;
   widget_class->get_accessible_type = st_label_accessible_get_type;
 
   props[PROP_CLUTTER_TEXT] =
