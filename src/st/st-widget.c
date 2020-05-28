@@ -1396,25 +1396,6 @@ st_widget_get_style (StWidget *actor)
   return ST_WIDGET_PRIVATE (actor)->inline_style;
 }
 
-/**
- * st_widget_get_resource_scale:
- * @widget: A #StWidget
- * @resource_scale: (out): return location for the resource scale
- *
- * Retrieves the resource scale for this #StWidget, if available.
- *
- * The resource scale refers to the scale the actor should use for its resources.
- */
-gboolean
-st_widget_get_resource_scale (StWidget *widget,
-                              float    *resource_scale)
-{
-  if (resource_scale)
-    *resource_scale = clutter_actor_get_resource_scale (CLUTTER_ACTOR (widget));
-
-  return TRUE;
-}
-
 static void
 st_widget_set_first_visible_child (StWidget     *widget,
                                    ClutterActor *actor)
