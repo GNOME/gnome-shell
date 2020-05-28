@@ -37,7 +37,9 @@ var ScreenshotService = class {
 
         let sender = invocation.get_sender();
         if (this._screenShooter.has(sender) || lockedDown) {
-            invocation.return_value(GLib.Variant.new('(bs)', [false, '']));
+            invocation.return_error_literal(
+                Gio.IOErrorEnum, Gio.IOErrorEnum.BUSY,
+                'There is an ongoing operation for this sender');
             return null;
         }
 
