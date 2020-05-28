@@ -16,7 +16,6 @@ const Main = imports.ui.main;
 const MessageTray = imports.ui.messageTray;
 const OverviewControls = imports.ui.overviewControls;
 const Params = imports.misc.params;
-const WorkspaceThumbnail = imports.ui.workspaceThumbnail;
 
 // Must be less than ANIMATION_TIME, since we switch to
 // or from the overview completely after ANIMATION_TIME,
@@ -358,8 +357,7 @@ var Overview = class {
     _onDragMotion(dragEvent) {
         let targetIsWindow = dragEvent.targetActor &&
                              dragEvent.targetActor._delegate &&
-                             dragEvent.targetActor._delegate.metaWindow &&
-                             !(dragEvent.targetActor._delegate instanceof WorkspaceThumbnail.WindowClone);
+                             dragEvent.targetActor._delegate.metaWindow;
 
         this._windowSwitchTimestamp = global.get_current_time();
 
