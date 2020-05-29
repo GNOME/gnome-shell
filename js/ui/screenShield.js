@@ -459,7 +459,6 @@ var ScreenShield = class {
         }
 
         this._dialog.allowCancel = allowCancel;
-        this._dialog.grab_key_focus();
         return true;
     }
 
