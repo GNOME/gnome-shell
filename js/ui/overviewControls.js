@@ -8,8 +8,9 @@ const Main = imports.ui.main;
 const Params = imports.misc.params;
 const ViewSelector = imports.ui.viewSelector;
 const WorkspaceThumbnail = imports.ui.workspaceThumbnail;
+const Overview = imports.ui.overview;
 
-var SIDE_CONTROLS_ANIMATION_TIME = 160;
+var SIDE_CONTROLS_ANIMATION_TIME = Overview.ANIMATION_TIME;
 
 function getRtlSlideDirection(direction, actor) {
     let rtl = actor.text_direction == Clutter.TextDirection.RTL;
