@@ -592,15 +592,13 @@ var PadDiagram = GObject.registerClass({
             let str = getText(action, idx, dir);
             label.set_text(str);
         }
+
+        this.queue_relayout();
     }
 
     _applyLabel(label, action, idx, dir, str) {
-        if (str != null) {
+        if (str !== null)
             label.set_text(str);
-
-            let [found_, x, y, arrangement] = this._getLabelCoords(action, idx, dir);
-            this._allocateChild(label, x, y, arrangement);
-        }
         label.show();
     }
 
@@ -620,6 +618,8 @@ var PadDiagram = GObject.registerClass({
                 this._prevEdited = this._curEdited;
             this._curEdited = null;
         }
+
+        this.queue_relayout();
     }
 
     startEdition(action, idx, dir) {
@@ -641,6 +641,7 @@ var PadDiagram = GObject.registerClass({
             return;
         this._editorActor.show();
         editedLabel.hide();
+        this.queue_relayout();
     }
 });
 
