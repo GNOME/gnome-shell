@@ -345,29 +345,22 @@ var PadDiagram = GObject.registerClass({
     }
 
     _initLabels() {
-        // FIXME: Fix num buttons.
         let i = 0;
-        for (i = 0; i < 50; i++) {
-            let [found] = this._getLabelCoords(Meta.PadActionType.BUTTON, i);
-            if (!found)
+        for (i = 0;; i++) {
+            if (!this._addLabel(Meta.PadActionType.BUTTON, i))
                 break;
-            this._addLabel(Meta.PadActionType.BUTTON, i);
         }
 
-        for (i = 0; i < 2; i++) {
-            let [found] = this._getLabelCoords(Meta.PadActionType.RING, i, CW);
-            if (!found)
+        for (i = 0;; i++) {
+            if (!this._addLabel(Meta.PadActionType.RING, i, CW) ||
+                !this._addLabel(Meta.PadActionType.RING, i, CCW))
                 break;
-            this._addLabel(Meta.PadActionType.RING, i, CW);
-            this._addLabel(Meta.PadActionType.RING, i, CCW);
         }
 
-        for (i = 0; i < 2; i++) {
-            let [found] = this._getLabelCoords(Meta.PadActionType.STRIP, i, UP);
-            if (!found)
+        for (i = 0;; i++) {
+            if (!this._addLabel(Meta.PadActionType.STRIP, i, UP) ||
+                !this._addLabel(Meta.PadActionType.STRIP, i, DOWN))
                 break;
-            this._addLabel(Meta.PadActionType.STRIP, i, UP);
-            this._addLabel(Meta.PadActionType.STRIP, i, DOWN);
         }
     }
 
@@ -583,9 +576,14 @@ var PadDiagram = GObject.registerClass({
     }
 
     _addLabel(type, idx, dir) {
+        let [found] = this._getLabelCoords(type, idx, dir);
+        if (!found)
+            return false;
+
         let label = new St.Label();
         this._labels.push([label, type, idx, dir]);
         this.add_actor(label);
+        return true;
     }
 
     updateLabels(getText) {
