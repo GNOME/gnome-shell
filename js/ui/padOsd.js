@@ -2,7 +2,7 @@
 /* exported PadOsd, PadOsdService */
 
 const { Atk, Clutter, GDesktopEnums, Gio,
-        GLib, GObject, Gtk, Meta, Rsvg, St } = imports.gi;
+        GLib, GObject, Gtk, Meta, Pango, Rsvg, St } = imports.gi;
 const Signals = imports.signals;
 
 const Main = imports.ui.main;
@@ -329,6 +329,7 @@ var PadDiagram = GObject.registerClass({
 
         this._imagePath = imagePath;
         this._handle = this._composeStyledDiagram();
+        this._initLabels();
     }
 
     // eslint-disable-next-line camelcase
@@ -341,6 +342,26 @@ var PadDiagram = GObject.registerClass({
         actor.hide();
         this._editorActor = actor;
         this.add_actor(actor);
+    }
+
+    _initLabels() {
+        let i = 0;
+        for (i = 0; ; i++) {
+            if (!this._addLabel(Meta.PadActionType.BUTTON, i))
+                break;
+        }
+
+        for (i = 0; ; i++) {
+            if (!this._addLabel(Meta.PadActionType.RING, i, CW) ||
+                !this._addLabel(Meta.PadActionType.RING, i, CCW))
+                break;
+        }
+
+        for (i = 0; ; i++) {
+            if (!this._addLabel(Meta.PadActionType.STRIP, i, UP) ||
+                !this._addLabel(Meta.PadActionType.STRIP, i, DOWN))
+                break;
+        }
     }
 
     _wrappingSvgHeader() {
@@ -362,10 +383,8 @@ var PadDiagram = GObject.registerClass({
 
         for (let i = 0; i < this._activeButtons.length; i++) {
             let ch = String.fromCharCode('A'.charCodeAt() + this._activeButtons[i]);
-            css += '.%s {'.format(ch);
-            css += '    stroke: %s !important;'.format(ACTIVE_COLOR);
-            css += '    fill: %s !important;'.format(ACTIVE_COLOR);
-            css += '}';
+            css += '.%s.Leader { stroke: %s !important; }'.format(ch, ACTIVE_COLOR);
+            css += '.%s.Button { stroke: %s !important; fill: %s !important; }'.format(ch, ACTIVE_COLOR, ACTIVE_COLOR);
         }
 
         return css;
@@ -390,9 +409,6 @@ var PadDiagram = GObject.registerClass({
     }
 
     _updateDiagramScale() {
-        if (this._handle == null)
-            return;
-
         [this._actorWidth, this._actorHeight] = this.get_size();
         let dimensions = this._handle.get_dimensions();
         let scaleX = this._actorWidth / dimensions.width;
@@ -405,6 +421,11 @@ var PadDiagram = GObject.registerClass({
         let [, natWidth] = child.get_preferred_width(natHeight);
         let childBox = new Clutter.ActorBox();
 
+        // I miss Cairo.Matrix
+        let dimensions = this._handle.get_dimensions();
+        x = x * this._scale + this._actorWidth / 2 - dimensions.width / 2 * this._scale;
+        y = y * this._scale + this._actorHeight / 2 - dimensions.height / 2 * this._scale;
+
         if (direction == LTR) {
             childBox.x1 = x;
             childBox.x2 = x + natWidth;
@@ -415,22 +436,23 @@ var PadDiagram = GObject.registerClass({
 
         childBox.y1 = y - natHeight / 2;
         childBox.y2 = y + natHeight / 2;
-        child.allocate(childBox, 0);
+        child.allocate(childBox);
     }
 
     vfunc_allocate(box) {
         super.vfunc_allocate(box);
+        if (this._handle === null)
+            return;
+
         this._updateDiagramScale();
 
         for (let i = 0; i < this._labels.length; i++) {
-            let [label, action, idx, dir] = this._labels[i];
-            let [found_, x, y, arrangement] = this.getLabelCoords(action, idx, dir);
+            const { label, x, y, arrangement } = this._labels[i];
             this._allocateChild(label, x, y, arrangement);
         }
 
         if (this._editorActor && this._curEdited) {
-            let [label_, action, idx, dir] = this._curEdited;
-            let [found_, x, y, arrangement] = this.getLabelCoords(action, idx, dir);
+            const { x, y, arrangement } = this._curEdited;
             this._allocateChild(this._editorActor, x, y, arrangement);
         }
     }
@@ -455,17 +477,6 @@ var PadDiagram = GObject.registerClass({
         this._handle.render_cairo(cr);
         cr.restore();
         cr.$dispose();
-    }
-
-    _transformPoint(x, y) {
-        if (this._handle == null || this._scale == null)
-            return [x, y];
-
-        // I miss Cairo.Matrix
-        let dimensions = this._handle.get_dimensions();
-        x = x * this._scale + this._actorWidth / 2 - dimensions.width / 2 * this._scale;
-        y = y * this._scale + this._actorHeight / 2 - dimensions.height / 2 * this._scale;
-        return [Math.round(x), Math.round(y)];
     }
 
     _getItemLabelCoords(labelName, leaderName) {
@@ -495,44 +506,39 @@ var PadDiagram = GObject.registerClass({
             pos.y = this._imageHeight - pos.y;
         }
 
-        let [x, y] = this._transformPoint(pos.x, pos.y);
-
-        return [true, x, y, direction];
+        return [true, pos.x, pos.y, direction];
     }
 
-    getButtonLabelCoords(button) {
+    _getButtonLabels(button) {
         let ch = String.fromCharCode('A'.charCodeAt() + button);
         let labelName = 'Label%s'.format(ch);
         let leaderName = 'Leader%s'.format(ch);
-
-        return this._getItemLabelCoords(labelName, leaderName);
+        return [labelName, leaderName];
     }
 
-    getRingLabelCoords(number, dir) {
+    _getRingLabels(number, dir) {
         let numStr = number > 0 ? (number + 1).toString() : '';
         let dirStr = dir == CW ? 'CW' : 'CCW';
         let labelName = 'LabelRing%s%s'.format(numStr, dirStr);
         let leaderName = 'LeaderRing%s%s'.format(numStr, dirStr);
-
-        return this._getItemLabelCoords(labelName, leaderName);
+        return [labelName, leaderName];
     }
 
-    getStripLabelCoords(number, dir) {
+    _getStripLabels(number, dir) {
         let numStr = number > 0 ? (number + 1).toString() : '';
         let dirStr = dir == UP ? 'Up' : 'Down';
         let labelName = 'LabelStrip%s%s'.format(numStr, dirStr);
         let leaderName = 'LeaderStrip%s%s'.format(numStr, dirStr);
-
-        return this._getItemLabelCoords(labelName, leaderName);
+        return [labelName, leaderName];
     }
 
-    getLabelCoords(action, idx, dir) {
+    _getLabelCoords(action, idx, dir) {
         if (action == Meta.PadActionType.BUTTON)
-            return this.getButtonLabelCoords(idx);
+            return this._getItemLabelCoords(...this._getButtonLabels(idx));
         else if (action == Meta.PadActionType.RING)
-            return this.getRingLabelCoords(idx, dir);
+            return this._getItemLabelCoords(...this._getRingLabels(idx, dir));
         else if (action == Meta.PadActionType.STRIP)
-            return this.getStripLabelCoords(idx, dir);
+            return this._getItemLabelCoords(...this._getStripLabels(idx, dir));
 
         return [false];
     }
@@ -557,26 +563,30 @@ var PadDiagram = GObject.registerClass({
         this._invalidateSvg();
     }
 
-    addLabel(label, type, idx, dir) {
-        this._labels.push([label, type, idx, dir]);
+    _addLabel(action, idx, dir) {
+        let [found, x, y, arrangement] = this._getLabelCoords(action, idx, dir);
+        if (!found)
+            return false;
+
+        let label = new St.Label();
+        this._labels.push({ label, action, idx, dir, x, y, arrangement });
         this.add_actor(label);
+        return true;
     }
 
     updateLabels(getText) {
         for (let i = 0; i < this._labels.length; i++) {
-            let [label, action, idx, dir] = this._labels[i];
+            const { label, action, idx, dir } = this._labels[i];
             let str = getText(action, idx, dir);
             label.set_text(str);
         }
+
+        this.queue_relayout();
     }
 
     _applyLabel(label, action, idx, dir, str) {
-        if (str != null) {
+        if (str !== null)
             label.set_text(str);
-
-            let [found_, x, y, arrangement] = this.getLabelCoords(action, idx, dir);
-            this._allocateChild(label, x, y, arrangement);
-        }
         label.show();
     }
 
@@ -584,18 +594,20 @@ var PadDiagram = GObject.registerClass({
         this._editorActor.hide();
 
         if (this._prevEdited) {
-            let [label, action, idx, dir] = this._prevEdited;
+            const { label, action, idx, dir } = this._prevEdited;
             this._applyLabel(label, action, idx, dir, str);
             this._prevEdited = null;
         }
 
         if (this._curEdited) {
-            let [label, action, idx, dir] = this._curEdited;
+            const { label, action, idx, dir } = this._curEdited;
             this._applyLabel(label, action, idx, dir, str);
             if (continues)
                 this._prevEdited = this._curEdited;
             this._curEdited = null;
         }
+
+        this.queue_relayout();
     }
 
     startEdition(action, idx, dir) {
@@ -605,21 +617,19 @@ var PadDiagram = GObject.registerClass({
             return;
 
         for (let i = 0; i < this._labels.length; i++) {
-            let [label, itemAction, itemIdx, itemDir] = this._labels[i];
-            if (action == itemAction && idx == itemIdx && dir == itemDir) {
+            if (action == this._labels[i].action &&
+                idx == this._labels[i].idx && dir == this._labels[i].dir) {
                 this._curEdited = this._labels[i];
-                editedLabel = label;
+                editedLabel = this._curEdited.label;
                 break;
             }
         }
 
         if (this._curEdited == null)
             return;
-        let [found] = this.getLabelCoords(action, idx, dir);
-        if (!found)
-            return;
         this._editorActor.show();
         editedLabel.hide();
+        this.queue_relayout();
     }
 });
 
@@ -693,6 +703,7 @@ var PadOsd = GObject.registerClass({
 
         this._titleLabel = new St.Label({ style: 'font-side: larger; font-weight: bold;',
                                           x_align: Clutter.ActorAlign.CENTER });
+        this._titleLabel.clutter_text.set_ellipsize(Pango.EllipsizeMode.NONE);
         this._titleLabel.clutter_text.set_text(padDevice.get_device_name());
         labelBox.add_actor(this._titleLabel);
 
@@ -710,31 +721,7 @@ var PadOsd = GObject.registerClass({
                                             x_expand: true,
                                             y_expand: true });
         this.add_actor(this._padDiagram);
-
-        // FIXME: Fix num buttons.
-        let i = 0;
-        for (i = 0; i < 50; i++) {
-            let [found] = this._padDiagram.getButtonLabelCoords(i);
-            if (!found)
-                break;
-            this._createLabel(Meta.PadActionType.BUTTON, i);
-        }
-
-        for (i = 0; i < padDevice.get_n_rings(); i++) {
-            let [found] = this._padDiagram.getRingLabelCoords(i, CW);
-            if (!found)
-                break;
-            this._createLabel(Meta.PadActionType.RING, i, CW);
-            this._createLabel(Meta.PadActionType.RING, i, CCW);
-        }
-
-        for (i = 0; i < padDevice.get_n_strips(); i++) {
-            let [found] = this._padDiagram.getStripLabelCoords(i, UP);
-            if (!found)
-                break;
-            this._createLabel(Meta.PadActionType.STRIP, i, UP);
-            this._createLabel(Meta.PadActionType.STRIP, i, DOWN);
-        }
+        this._updateActionLabels();
 
         let buttonBox = new St.Widget({ layout_manager: new Clutter.BinLayout(),
                                         x_expand: true,
@@ -785,11 +772,6 @@ var PadOsd = GObject.registerClass({
     _getActionText(type, number) {
         let str = global.display.get_pad_action_label(this.padDevice, type, number);
         return str ? str : _("None");
-    }
-
-    _createLabel(type, number, dir) {
-        let label = new St.Label({ text: this._getActionText(type, number) });
-        this._padDiagram.addLabel(label, type, number, dir);
     }
 
     _updateActionLabels() {
@@ -867,8 +849,7 @@ var PadOsd = GObject.registerClass({
             this._tipLabel.set_text(_("Press any key to exit"));
         }
 
-        this._titleLabel.clutter_text.set_markup(
-            '<span size="larger"><b>%s</b></span>'.format(title));
+        this._titleLabel.set_text(title);
     }
 
     _isEditedAction(type, number, dir) {
