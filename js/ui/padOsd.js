@@ -444,14 +444,14 @@ var PadDiagram = GObject.registerClass({
         this._updateDiagramScale();
 
         for (let i = 0; i < this._labels.length; i++) {
-            let [label, action, idx, dir] = this._labels[i];
-            let [found_, x, y, arrangement] = this._getLabelCoords(action, idx, dir);
-            this._allocateChild(label, x, y, arrangement);
+            let params = this._labels[i];
+            let [found_, x, y, arrangement] = this._getLabelCoords(params.action, params.idx, params.dir);
+            this._allocateChild(params.label, x, y, arrangement);
         }
 
         if (this._editorActor && this._curEdited) {
-            let [label_, action, idx, dir] = this._curEdited;
-            let [found_, x, y, arrangement] = this._getLabelCoords(action, idx, dir);
+            let params = this._curEdited;
+            let [found_, x, y, arrangement] = this._getLabelCoords(params.action, params.idx, params.dir);
             this._allocateChild(this._editorActor, x, y, arrangement);
         }
     }
@@ -575,22 +575,22 @@ var PadDiagram = GObject.registerClass({
         this._invalidateSvg();
     }
 
-    _addLabel(type, idx, dir) {
-        let [found] = this._getLabelCoords(type, idx, dir);
+    _addLabel(action, idx, dir) {
+        let [found] = this._getLabelCoords(action, idx, dir);
         if (!found)
             return false;
 
         let label = new St.Label();
-        this._labels.push([label, type, idx, dir]);
+        this._labels.push({ label, action, idx, dir });
         this.add_actor(label);
         return true;
     }
 
     updateLabels(getText) {
         for (let i = 0; i < this._labels.length; i++) {
-            let [label, action, idx, dir] = this._labels[i];
-            let str = getText(action, idx, dir);
-            label.set_text(str);
+            let params = this._labels[i];
+            let str = getText(params.action, params.idx, params.dir);
+            params.label.set_text(str);
         }
     }
 
@@ -608,14 +608,14 @@ var PadDiagram = GObject.registerClass({
         this._editorActor.hide();
 
         if (this._prevEdited) {
-            let [label, action, idx, dir] = this._prevEdited;
-            this._applyLabel(label, action, idx, dir, str);
+            let params = this._prevEdited;
+            this._applyLabel(params.label, params.action, params.idx, params.dir, str);
             this._prevEdited = null;
         }
 
         if (this._curEdited) {
-            let [label, action, idx, dir] = this._curEdited;
-            this._applyLabel(label, action, idx, dir, str);
+            let params = this._curEdited;
+            this._applyLabel(params.label, params.action, params.idx, params.dir, str);
             if (continues)
                 this._prevEdited = this._curEdited;
             this._curEdited = null;
@@ -629,10 +629,10 @@ var PadDiagram = GObject.registerClass({
             return;
 
         for (let i = 0; i < this._labels.length; i++) {
-            let [label, itemAction, itemIdx, itemDir] = this._labels[i];
-            if (action == itemAction && idx == itemIdx && dir == itemDir) {
+            let params = this._labels[i];
+            if (action == params.action && idx == params.idx && dir == params.dir) {
                 this._curEdited = this._labels[i];
-                editedLabel = label;
+                editedLabel = params.label;
                 break;
             }
         }
