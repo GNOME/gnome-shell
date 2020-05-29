@@ -373,11 +373,10 @@ var FdoNotificationDaemonSource = GObject.registerClass(
 class FdoNotificationDaemonSource extends MessageTray.Source {
     _init(title, pid, sender, appId) {
         this.pid = pid;
+        this.initialTitle = title;
         this.app = this._getApp(appId);
 
         super._init(title);
-
-        this.initialTitle = title;
 
         if (this.app)
             this.title = this.app.get_name();
@@ -426,19 +425,20 @@ class FdoNotificationDaemonSource extends MessageTray.Source {
     }
 
     _getApp(appId) {
+        const appSys = Shell.AppSystem.get_default();
         let app;
 
         app = Shell.WindowTracker.get_default().get_app_from_pid(this.pid);
         if (app != null)
             return app;
 
-        if (appId) {
-            app = Shell.AppSystem.get_default().lookup_app('%s.desktop'.format(appId));
-            if (app != null)
-                return app;
-        }
+        if (appId)
+            app = appSys.lookup_app('%s.desktop'.format(appId));
 
-        return null;
+        if (!app)
+            app = appSys.lookup_app('%s.desktop'.format(this.initialTitle));
+
+        return app;
     }
 
     setTitle(title) {
