@@ -499,10 +499,6 @@ var PaygUnlockDialog = GObject.registerClass({
         return this._nextButton;
     }
 
-    addCharacter(unichar) {
-        this._entry.addCharacter(unichar);
-    }
-
     cancel() {
         this.entryReset();
     }
@@ -526,6 +522,8 @@ var PaygUnlockDialog = GObject.registerClass({
             return false;
 
         this._isModal = true;
+
+        this._entry.grab_key_focus();
 
         return true;
     }
