@@ -426,6 +426,11 @@ var PadDiagram = GObject.registerClass({
         let [, natWidth] = child.get_preferred_width(natHeight);
         let childBox = new Clutter.ActorBox();
 
+        // I miss Cairo.Matrix
+        let dimensions = this._handle.get_dimensions();
+        x = x * this._scale + this._actorWidth / 2 - dimensions.width / 2 * this._scale;
+        y = y * this._scale + this._actorHeight / 2 - dimensions.height / 2 * this._scale;
+
         if (direction == LTR) {
             childBox.x1 = x;
             childBox.x2 = x + natWidth;
@@ -476,17 +481,6 @@ var PadDiagram = GObject.registerClass({
         cr.$dispose();
     }
 
-    _transformPoint(x, y) {
-        if (this._handle == null || this._scale == null)
-            return [x, y];
-
-        // I miss Cairo.Matrix
-        let dimensions = this._handle.get_dimensions();
-        x = x * this._scale + this._actorWidth / 2 - dimensions.width / 2 * this._scale;
-        y = y * this._scale + this._actorHeight / 2 - dimensions.height / 2 * this._scale;
-        return [Math.round(x), Math.round(y)];
-    }
-
     _getItemLabelCoords(labelName, leaderName) {
         if (this._handle == null)
             return [false];
@@ -514,9 +508,7 @@ var PadDiagram = GObject.registerClass({
             pos.y = this._imageHeight - pos.y;
         }
 
-        let [x, y] = this._transformPoint(pos.x, pos.y);
-
-        return [true, x, y, direction];
+        return [true, pos.x, pos.y, direction];
     }
 
     _getButtonLabels(button) {
