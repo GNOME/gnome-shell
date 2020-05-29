@@ -445,14 +445,12 @@ var PadDiagram = GObject.registerClass({
 
         for (let i = 0; i < this._labels.length; i++) {
             let params = this._labels[i];
-            let [found_, x, y, arrangement] = this._getLabelCoords(params.action, params.idx, params.dir);
-            this._allocateChild(params.label, x, y, arrangement);
+            this._allocateChild(params.label, params.x, params.y, params.arrangement);
         }
 
         if (this._editorActor && this._curEdited) {
             let params = this._curEdited;
-            let [found_, x, y, arrangement] = this._getLabelCoords(params.action, params.idx, params.dir);
-            this._allocateChild(this._editorActor, x, y, arrangement);
+            this._allocateChild(this._editorActor, params.x, params.y, params.arrangement);
         }
     }
 
@@ -576,12 +574,12 @@ var PadDiagram = GObject.registerClass({
     }
 
     _addLabel(action, idx, dir) {
-        let [found] = this._getLabelCoords(action, idx, dir);
+        let [found, x, y, arrangement] = this._getLabelCoords(action, idx, dir);
         if (!found)
             return false;
 
         let label = new St.Label();
-        this._labels.push({ label, action, idx, dir });
+        this._labels.push({ label, action, idx, dir, x, y, arrangement });
         this.add_actor(label);
         return true;
     }
