@@ -640,9 +640,6 @@ var PadDiagram = GObject.registerClass({
 
         if (this._curEdited == null)
             return;
-        let [found] = this._getLabelCoords(action, idx, dir);
-        if (!found)
-            return;
         this._editorActor.show();
         editedLabel.hide();
     }
