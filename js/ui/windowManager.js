@@ -944,8 +944,9 @@ var WindowManager = class {
         if (Main.sessionMode.hasWorkspaces)
             this._workspaceTracker = new WorkspaceTracker(this);
 
-        global.workspace_manager.override_workspace_layout(Meta.DisplayCorner.TOPLEFT,
-                                                           false, -1, 1);
+        global.workspace_manager.override_workspace_layout(
+            Meta.DisplayCorner.TOPLEFT,
+            false, 1, -1);
 
         let swipeTracker = new SwipeTracker.SwipeTracker(global.stage,
             Shell.ActionMode.NORMAL, { allowDrag: false, allowScroll: false });
