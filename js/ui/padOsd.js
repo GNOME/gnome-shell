@@ -411,9 +411,6 @@ var PadDiagram = GObject.registerClass({
     }
 
     _updateDiagramScale() {
-        if (this._handle == null)
-            return;
-
         [this._actorWidth, this._actorHeight] = this.get_size();
         let dimensions = this._handle.get_dimensions();
         let scaleX = this._actorWidth / dimensions.width;
@@ -425,6 +422,11 @@ var PadDiagram = GObject.registerClass({
         let [, natHeight] = child.get_preferred_height(-1);
         let [, natWidth] = child.get_preferred_width(natHeight);
         let childBox = new Clutter.ActorBox();
+
+        // I miss Cairo.Matrix
+        let dimensions = this._handle.get_dimensions();
+        x = x * this._scale + this._actorWidth / 2 - dimensions.width / 2 * this._scale;
+        y = y * this._scale + this._actorHeight / 2 - dimensions.height / 2 * this._scale;
 
         if (direction == LTR) {
             childBox.x1 = x;
@@ -441,6 +443,9 @@ var PadDiagram = GObject.registerClass({
 
     vfunc_allocate(box, flags) {
         super.vfunc_allocate(box, flags);
+        if (this._handle === null)
+            return;
+
         this._updateDiagramScale();
 
         for (let i = 0; i < this._labels.length; i++) {
@@ -476,17 +481,6 @@ var PadDiagram = GObject.registerClass({
         cr.$dispose();
     }
 
-    _transformPoint(x, y) {
-        if (this._handle == null || this._scale == null)
-            return [x, y];
-
-        // I miss Cairo.Matrix
-        let dimensions = this._handle.get_dimensions();
-        x = x * this._scale + this._actorWidth / 2 - dimensions.width / 2 * this._scale;
-        y = y * this._scale + this._actorHeight / 2 - dimensions.height / 2 * this._scale;
-        return [Math.round(x), Math.round(y)];
-    }
-
     _getItemLabelCoords(labelName, leaderName) {
         if (this._handle == null)
             return [false];
@@ -514,9 +508,7 @@ var PadDiagram = GObject.registerClass({
             pos.y = this._imageHeight - pos.y;
         }
 
-        let [x, y] = this._transformPoint(pos.x, pos.y);
-
-        return [true, x, y, direction];
+        return [true, pos.x, pos.y, direction];
     }
 
     _getButtonLabels(button) {
