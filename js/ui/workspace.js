@@ -154,7 +154,8 @@ var WindowClone = GObject.registerClass({
 
         this._updateAttachedDialogs();
         this._computeBoundingBox();
-        this.set_translation(this._boundingBox.x, this._boundingBox.y, 0);
+        this.x = this._boundingBox.x;
+        this.y = this._boundingBox.y;
 
         this._computeWindowCenter();
 
@@ -1367,8 +1368,8 @@ class Workspace extends St.Widget {
             if (!clone.positioned) {
                 // This window appeared after the overview was already up
                 // Grow the clone from the center of the slot
-                clone.translation_x = x + cloneWidth / 2;
-                clone.translation_y = y + cloneHeight / 2;
+                clone.x = x + cloneWidth / 2;
+                clone.y = y + cloneHeight / 2;
                 clone.scale_x = 0;
                 clone.scale_y = 0;
                 clone.positioned = true;
@@ -1383,8 +1384,8 @@ class Workspace extends St.Widget {
                         clone.opacity = 0;
                         clone.scale_x = 0;
                         clone.scale_y = 0;
-                        clone.translation_x = x;
-                        clone.translation_y = y;
+                        clone.x = x;
+                        clone.y = y;
                     }
 
                     clone.ease({
@@ -1398,7 +1399,7 @@ class Workspace extends St.Widget {
             } else {
                 // cancel any active tweens (otherwise they might override our changes)
                 clone.remove_all_transitions();
-                clone.set_translation(x, y, 0);
+                clone.set_position(x, y);
                 clone.set_scale(scale, scale);
                 clone.set_opacity(255);
                 clone.overlay.relayout(false);
@@ -1428,8 +1429,7 @@ class Workspace extends St.Widget {
 
     _animateClone(clone, overlay, x, y, scale) {
         clone.ease({
-            translation_x: x,
-            translation_y: y,
+            x, y,
             scale_x: scale,
             scale_y: scale,
             duration: Overview.ANIMATION_TIME,
@@ -1574,7 +1574,7 @@ class Workspace extends St.Widget {
             clone.slot = [x, y, clone.width * scale, clone.height * scale];
             clone.positioned = true;
 
-            clone.set_translation(x, y, 0);
+            clone.set_position(x, y);
             clone.set_scale(scale, scale);
             clone.overlay.relayout(false);
         }
@@ -1729,8 +1729,8 @@ class Workspace extends St.Widget {
             let [origX, origY] = clone.getOriginalPosition();
             clone.scale_x = 1;
             clone.scale_y = 1;
-            clone.translation_x = origX;
-            clone.translation_y = origY;
+            clone.x = origX;
+            clone.y = origY;
             clone.ease({
                 opacity,
                 duration,
@@ -1780,8 +1780,8 @@ class Workspace extends St.Widget {
         if (clone.metaWindow.showing_on_its_workspace()) {
             let [origX, origY] = clone.getOriginalPosition();
             clone.ease({
-                translation_x: origX,
-                translation_y: origY,
+                x: origX,
+                y: origY,
                 scale_x: 1,
                 scale_y: 1,
                 opacity: 255,
