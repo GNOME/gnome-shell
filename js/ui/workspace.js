@@ -188,14 +188,6 @@ var WindowClone = GObject.registerClass({
         this.metaWindow._delegate = this;
         this._workspace = workspace;
 
-        this._windowClone = new Clutter.Clone({ source: realWindow });
-        // We expect this to be used for all interaction rather than
-        // this._windowClone; as the former is reactive and the latter
-        // is not, this just works for most cases. However, for DND all
-        // actors are picked, so DND operations would operate on the clone.
-        // To avoid this, we hide it from pick.
-        Shell.util_set_hidden_from_pick(this._windowClone, true);
-
         // The MetaShapedTexture that we clone has a size that includes
         // the invisible border; this is inconvenient; rather than trying
         // to compensate all over the place we insert a ClutterActor into
@@ -209,7 +201,7 @@ var WindowClone = GObject.registerClass({
 
         this.set_offscreen_redirect(Clutter.OffscreenRedirect.AUTOMATIC_FOR_OPACITY);
 
-        this.layout_manager.addWindow(this._windowClone, this.metaWindow);
+        this._addWindow(realWindow.meta_window);
 
         this._delegate = this;
 
@@ -248,6 +240,20 @@ var WindowClone = GObject.registerClass({
         this._closeRequested = false;
     }
 
+    _addWindow(metaWindow) {
+        const windowActor = metaWindow.get_compositor_private();
+        const clone = new Clutter.Clone({ source: windowActor });
+
+        // We expect this to be used for all interaction rather than
+        // the ClutterClone; as the former is reactive and the latter
+        // is not, this just works for most cases. However, for DND all
+        // actors are picked, so DND operations would operate on the clone.
+        // To avoid this, we hide it from pick.
+        Shell.util_set_hidden_from_pick(clone, true);
+
+        this.layout_manager.addWindow(clone, metaWindow);
+    }
+
     vfunc_has_overlaps() {
         return this.hasAttachedDialogs();
     }
@@ -284,7 +290,7 @@ var WindowClone = GObject.registerClass({
 
         // Display dialog if it is attached to our metaWindow
         if (win.is_attached_dialog() && parent == this.metaWindow)
-            this._doAddAttachedDialog(win, win.get_compositor_private());
+            this._addWindow(win);
 
         // The dialog popped up after the user tried to close the window,
         // assume it's a close confirmation and leave the overview
@@ -296,14 +302,6 @@ var WindowClone = GObject.registerClass({
         return this.get_n_children() > 1;
     }
 
-    _doAddAttachedDialog(metaWin, realWin) {
-        let clone = new Clutter.Clone({ source: realWin });
-
-        Shell.util_set_hidden_from_pick(clone, true);
-
-        this.layout_manager.addWindow(clone, metaWin);
-    }
-
     _updateAttachedDialogs() {
         let iter = win => {
             let actor = win.get_compositor_private();
@@ -313,7 +311,7 @@ var WindowClone = GObject.registerClass({
             if (!win.is_attached_dialog())
                 return false;
 
-            this._doAddAttachedDialog(win, actor);
+            this._addWindow(win);
             win.foreach_transient(iter);
             return true;
         };
