@@ -227,8 +227,6 @@ var WindowClone = GObject.registerClass({
         this.x = this.boundingBox.x;
         this.y = this.boundingBox.y;
 
-        this._computeWindowCenter();
-
         let clickAction = new Clutter.ClickAction();
         clickAction.connect('clicked', this._onClicked.bind(this));
         clickAction.connect('long-press', this._onLongPress.bind(this));
@@ -333,12 +331,9 @@ var WindowClone = GObject.registerClass({
     }
 
     get windowCenter() {
-        return this._windowCenter;
-    }
+        const box = this.layout_manager.bounding_box;
 
-    _computeWindowCenter() {
-        let box = this.realWindow.get_allocation_box();
-        this._windowCenter = new Graphene.Point({
+        return new Graphene.Point({
             x: box.get_x() + box.get_width() / 2,
             y: box.get_y() + box.get_height() / 2,
         });
