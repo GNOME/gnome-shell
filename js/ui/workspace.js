@@ -274,10 +274,6 @@ var WindowClone = GObject.registerClass({
         return this._boundingBox.height;
     }
 
-    getOriginalPosition() {
-        return [this._boundingBox.x, this._boundingBox.y];
-    }
-
     _computeBoundingBox() {
         let rect = this.metaWindow.get_frame_rect();
 
@@ -1726,11 +1722,10 @@ class Workspace extends St.Widget {
             overlay.hide();
 
         if (clone.metaWindow.showing_on_its_workspace()) {
-            let [origX, origY] = clone.getOriginalPosition();
             clone.scale_x = 1;
             clone.scale_y = 1;
-            clone.x = origX;
-            clone.y = origY;
+            clone.x = clone.boundingBox.x;
+            clone.y = clone.boundingBox.y;
             clone.ease({
                 opacity,
                 duration,
@@ -1778,10 +1773,9 @@ class Workspace extends St.Widget {
             overlay.hide();
 
         if (clone.metaWindow.showing_on_its_workspace()) {
-            let [origX, origY] = clone.getOriginalPosition();
             clone.ease({
-                x: origX,
-                y: origY,
+                x: clone.boundingBox.x,
+                y: clone.boundingBox.y,
                 scale_x: 1,
                 scale_y: 1,
                 opacity: 255,
