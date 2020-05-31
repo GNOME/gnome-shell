@@ -194,6 +194,8 @@ var WindowClone = GObject.registerClass({
 
         this.set_offscreen_redirect(Clutter.OffscreenRedirect.AUTOMATIC_FOR_OPACITY);
 
+        this._destroyIds = new Map();
+
         this.layout_manager.addWindow(this._windowClone, this.metaWindow);
         this.add_child(this._windowClone);
 
@@ -207,16 +209,16 @@ var WindowClone = GObject.registerClass({
         this.layout_manager.connect('notify::bounding-box', () =>
             this.emit('size-changed'));
 
-        this._windowClone._destroyId =
+        const destroyId =
             this.realWindow.connect('destroy', () => {
                 this.layout_manager.removeWindow(this._windowClone);
+                this._destroyIds.delete(this.realWindow);
 
-                // First destroy the clone and then destroy everything
-                // This will ensure that we never see it in the
-                // _disconnectSignals loop
                 this._windowClone.destroy();
                 this.destroy();
             });
+
+        this._destroyIds.set(this.realWindow, destroyId);
 
         this._updateAttachedDialogs();
         this.x = this.boundingBox.x;
@@ -292,10 +294,12 @@ var WindowClone = GObject.registerClass({
 
     _doAddAttachedDialog(metaWin, realWin) {
         let clone = new Clutter.Clone({ source: realWin });
-        clone._destroyId = realWin.connect('destroy', () => {
+        const destroyId = realWin.connect('destroy', () => {
             this.layout_manager.removeWindow(clone);
+            this._destroyIds.delete(realWin);
             clone.destroy();
         });
+        this._destroyIds.set(realWin, destroyId);
 
         Shell.util_set_hidden_from_pick(clone, true);
 
@@ -368,22 +372,11 @@ var WindowClone = GObject.registerClass({
             parent.set_child_above_sibling(this, actualAbove);
     }
 
-    _disconnectSignals() {
-        this.get_children().forEach(child => {
-            let realWindow;
-            if (child == this._windowClone)
-                realWindow = this.realWindow;
-            else
-                realWindow = child.source;
-
-            realWindow.disconnect(child._destroyId);
-        });
-    }
-
     _onDestroy() {
         this.layout_manager.removeAllWindows();
 
-        this._disconnectSignals();
+        this._destroyIds.forEach((destroyId, windowActor) =>
+            windowActor.disconnect(destroyId));
 
         this.metaWindow._delegate = null;
         this._delegate = null;
