@@ -266,14 +266,6 @@ var WindowClone = GObject.registerClass({
         return this._boundingBox;
     }
 
-    get width() {
-        return this._boundingBox.width;
-    }
-
-    get height() {
-        return this._boundingBox.height;
-    }
-
     _computeBoundingBox() {
         let rect = this.metaWindow.get_frame_rect();
 
@@ -867,7 +859,7 @@ var LayoutStrategy = class {
         // thumbnails is much more important to preserve than the width of
         // them, so two windows with equal height, but maybe differering
         // widths line up.
-        let ratio = window.height / this._monitor.height;
+        let ratio = window.boundingBox.height / this._monitor.height;
 
         // The purpose of this manipulation here is to prevent windows
         // from getting too small. For something like a calculator window,
@@ -987,11 +979,11 @@ var LayoutStrategy = class {
                 let window = row.windows[j];
 
                 let s = scale * this._computeWindowScale(window) * row.additionalScale;
-                let cellWidth = window.width * s;
-                let cellHeight = window.height * s;
+                let cellWidth = window.boundingBox.width * s;
+                let cellHeight = window.boundingBox.height * s;
 
                 s = Math.min(s, WINDOW_CLONE_MAXIMUM_SCALE);
-                let cloneWidth = window.width * s;
+                let cloneWidth = window.boundingBox.width * s;
 
                 let cloneX = x + (cellWidth - cloneWidth) / 2;
                 let cloneY = row.y + row.height * row.additionalScale - cellHeight + compensation;
@@ -1045,7 +1037,7 @@ var UnalignedLayoutStrategy = class extends LayoutStrategy {
         for (let i = 0; i < windows.length; i++) {
             let window = windows[i];
             let s = this._computeWindowScale(window);
-            totalWidth += window.width * s;
+            totalWidth += window.boundingBox.width * s;
         }
 
         let idealRowWidth = totalWidth / numRows;
@@ -1063,8 +1055,8 @@ var UnalignedLayoutStrategy = class extends LayoutStrategy {
             for (; windowIdx < sortedWindows.length; windowIdx++) {
                 let window = sortedWindows[windowIdx];
                 let s = this._computeWindowScale(window);
-                let width = window.width * s;
-                let height = window.height * s;
+                let width = window.boundingBox.width * s;
+                let height = window.boundingBox.height * s;
                 row.fullHeight = Math.max(row.fullHeight, height);
 
                 // either new width is < idealWidth or new width is nearer from idealWidth then oldWidth
@@ -1348,8 +1340,8 @@ class Workspace extends St.Widget {
             if (clone.inDrag)
                 continue;
 
-            let cloneWidth = clone.width * scale;
-            let cloneHeight = clone.height * scale;
+            let cloneWidth = clone.boundingBox.width * scale;
+            let cloneHeight = clone.boundingBox.height * scale;
             clone.slot = [x, y, cloneWidth, cloneHeight];
 
             let cloneCenter = x + cloneWidth / 2;
@@ -1488,7 +1480,7 @@ class Workspace extends St.Widget {
                 win._overviewHint = {
                     x: stageX,
                     y: stageY,
-                    scale: stageWidth / clone.width,
+                    scale: stageWidth / clone.boundingBox.width,
                 };
             }
             clone.destroy();
@@ -1567,7 +1559,7 @@ class Workspace extends St.Widget {
             let scale = win._overviewHint.scale;
             delete win._overviewHint;
 
-            clone.slot = [x, y, clone.width * scale, clone.height * scale];
+            clone.slot = [x, y, clone.boundingBox.width * scale, clone.boundingBox.height * scale];
             clone.positioned = true;
 
             clone.set_position(x, y);
