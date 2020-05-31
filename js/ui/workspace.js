@@ -212,17 +212,15 @@ var WindowClone = GObject.registerClass({
         this._dragSlot = [0, 0, 0, 0];
         this._stackAbove = null;
 
-        this._windowClone._sizeChangedId = this.metaWindow.connect('size-changed',
-            this._onMetaWindowSizeChanged.bind(this));
-        this._windowClone._posChangedId = this.metaWindow.connect('position-changed',
-            this._computeBoundingBox.bind(this));
-        this._windowClone._destroyId =
+        this.layout_manager.connect('notify::bounding-box', () =>
+            this.emit('size-changed'));
+
+        this._windowDestroyId =
             this.realWindow.connect('destroy', () => this.destroy());
 
         this._updateAttachedDialogs();
-        this._computeBoundingBox();
-        this.x = this._boundingBox.x;
-        this.y = this._boundingBox.y;
+        this.x = this.boundingBox.x;
+        this.y = this.boundingBox.y;
 
         this._computeWindowCenter();
 
@@ -281,10 +279,8 @@ var WindowClone = GObject.registerClass({
             parent = parent.get_transient_for();
 
         // Display dialog if it is attached to our metaWindow
-        if (win.is_attached_dialog() && parent == this.metaWindow) {
+        if (win.is_attached_dialog() && parent == this.metaWindow)
             this._doAddAttachedDialog(win, win.get_compositor_private());
-            this._onMetaWindowSizeChanged();
-        }
 
         // The dialog popped up after the user tried to close the window,
         // assume it's a close confirmation and leave the overview
@@ -298,12 +294,6 @@ var WindowClone = GObject.registerClass({
 
     _doAddAttachedDialog(metaWin, realWin) {
         let clone = new Clutter.Clone({ source: realWin });
-        clone._sizeChangedId = metaWin.connect('size-changed',
-            this._onMetaWindowSizeChanged.bind(this));
-        clone._posChangedId = metaWin.connect('position-changed',
-            this._onMetaWindowSizeChanged.bind(this));
-        clone._destroyId = realWin.connect('destroy',
-            this._onMetaWindowSizeChanged.bind(this));
 
         Shell.util_set_hidden_from_pick(clone, true);
 
@@ -327,25 +317,14 @@ var WindowClone = GObject.registerClass({
     }
 
     get boundingBox() {
-        return this._boundingBox;
-    }
+        const box = this.layout_manager.bounding_box;
 
-    _computeBoundingBox() {
-        let rect = this.metaWindow.get_frame_rect();
-
-        this.get_children().forEach(child => {
-            let realWindow;
-            if (child == this._windowClone)
-                realWindow = this.realWindow;
-            else
-                realWindow = child.source;
-
-            let metaWindow = realWindow.meta_window;
-            rect = rect.union(metaWindow.get_frame_rect());
-        });
-
-        // Convert from a MetaRectangle to a native JS object
-        this._boundingBox = { x: rect.x, y: rect.y, width: rect.width, height: rect.height };
+        return {
+            x: box.x1,
+            y: box.y1,
+            width: box.get_width(),
+            height: box.get_height(),
+        };
     }
 
     get windowCenter() {
@@ -389,27 +368,8 @@ var WindowClone = GObject.registerClass({
             parent.set_child_above_sibling(this, actualAbove);
     }
 
-    _disconnectSignals() {
-        this.get_children().forEach(child => {
-            let realWindow;
-            if (child == this._windowClone)
-                realWindow = this.realWindow;
-            else
-                realWindow = child.source;
-
-            realWindow.meta_window.disconnect(child._sizeChangedId);
-            realWindow.meta_window.disconnect(child._posChangedId);
-            realWindow.disconnect(child._destroyId);
-        });
-    }
-
-    _onMetaWindowSizeChanged() {
-        this._computeBoundingBox();
-        this.emit('size-changed');
-    }
-
     _onDestroy() {
-        this._disconnectSignals();
+        this.realWindow.disconnect(this._windowDestroyId);
 
         this.metaWindow._delegate = null;
         this._delegate = null;
