@@ -239,6 +239,9 @@ var WindowClone = GObject.registerClass({
 
             this._onMetaWindowSizeChanged();
         });
+
+        Shell.util_set_hidden_from_pick(clone, true);
+
         this.add_child(clone);
     }
 
