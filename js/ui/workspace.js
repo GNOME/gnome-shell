@@ -1,8 +1,9 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported Workspace */
 
-const { Clutter, GLib, GObject, St } = imports.gi;
+const { Clutter, GLib, GObject, Meta, St } = imports.gi;
 
+const Background = imports.ui.background;
 const DND = imports.ui.dnd;
 const Main = imports.ui.main;
 const Overview = imports.ui.overview;
@@ -406,6 +407,7 @@ var WorkspaceLayout = GObject.registerClass({
         this._container = null;
         this._windows = new Map();
         this._sortedWindows = [];
+        this._background = null;
         this._lastBox = null;
         this._windowSlots = [];
         this._layout = null;
@@ -588,6 +590,9 @@ var WorkspaceLayout = GObject.registerClass({
                 this._windowSlots = this._getWindowSlots(box.copy());
         }
 
+        if (this._background)
+            this._background.allocate(box);
+
         const allocationScale = containerBox.get_width() / this._workarea.width;
 
         const workspaceBox = new Clutter.ActorBox();
@@ -595,7 +600,7 @@ var WorkspaceLayout = GObject.registerClass({
         let childBox = new Clutter.ActorBox();
 
         for (const child of container) {
-            if (!child.visible)
+            if (!child.visible || child === this._background)
                 continue;
 
             // The fifth element in the slot array is the WindowPreview
@@ -747,6 +752,16 @@ var WorkspaceLayout = GObject.registerClass({
         this.layout_changed();
     }
 
+    setBackground(background) {
+        if (this._background)
+            this._container.remove_child(this._background);
+
+        this._background = background;
+
+        if (this._background)
+            this._container.add_child(this._background);
+    }
+
     syncStacking(stackIndices) {
         const windows = [...this._windows.keys()];
         windows.sort((a, b) => {
@@ -756,7 +771,7 @@ var WorkspaceLayout = GObject.registerClass({
             return stackIndices[seqA] - stackIndices[seqB];
         });
 
-        let lastWindow = null;
+        let lastWindow = this._background;
         for (const window of windows) {
             window.setStackAbove(lastWindow);
             lastWindow = window;
@@ -830,6 +845,42 @@ var WorkspaceLayout = GObject.registerClass({
     }
 });
 
+var WorkspaceBackground = GObject.registerClass(
+class WorkspaceBackground extends St.Widget {
+    _init(monitorIndex) {
+        super._init({
+            style_class: 'workspace-background',
+            layout_manager: new Clutter.BinLayout(),
+        });
+
+        this._monitorIndex = monitorIndex;
+
+        this._backgroundGroup = new Meta.BackgroundGroup({
+            x_expand: true,
+            y_expand: true,
+            reactive: false,
+            layout_manager: new Clutter.BinLayout(),
+        });
+        this.add_child(this._backgroundGroup);
+
+        this._bgManager = new Background.BackgroundManager({
+            container: this._backgroundGroup,
+            monitorIndex: this._monitorIndex,
+            controlPosition: false,
+            useContentSize: false,
+        });
+
+        this.connect('destroy', this._onDestroy.bind(this));
+    }
+
+    _onDestroy() {
+        if (this._bgManager) {
+            this._bgManager.destroy();
+            this._bgManager = null;
+        }
+    }
+});
+
 /**
  * @metaWorkspace: a #Meta.Workspace, or null
  */
@@ -839,6 +890,7 @@ class Workspace extends St.Widget {
         super._init({
             style_class: 'window-picker',
             layout_manager: new WorkspaceLayout(metaWorkspace, monitorIndex),
+            reactive: true,
         });
 
         this.metaWorkspace = metaWorkspace;
@@ -848,6 +900,22 @@ class Workspace extends St.Widget {
 
         if (monitorIndex != Main.layoutManager.primaryIndex)
             this.add_style_class_name('external-monitor');
+
+        // Background
+        this._background = new WorkspaceBackground(monitorIndex);
+        this.layout_manager.setBackground(this._background);
+
+        const clickAction = new Clutter.ClickAction();
+        clickAction.connect('clicked', action => {
+            // Only switch to the workspace when there's no application
+            // windows open. The problem is that it's too easy to miss
+            // an app window and get the wrong one focused.
+            if ((action.get_button() === 1 || action.get_button() === 0) &&
+                this.isEmpty())
+                Main.overview.hide();
+        });
+        this.bind_property('mapped', clickAction, 'enabled', GObject.BindingFlags.SYNC_CREATE);
+        this.add_action(clickAction);
 
         this.connect('style-changed', this._onStyleChanged.bind(this));
         this.connect('destroy', this._onDestroy.bind(this));
@@ -1269,7 +1337,7 @@ class Workspace extends St.Widget {
         this.layout_manager.addWindow(clone, metaWindow);
 
         if (this._windows.length == 0)
-            clone.setStackAbove(null);
+            clone.setStackAbove(this._background);
         else
             clone.setStackAbove(this._windows[this._windows.length - 1]);
 
