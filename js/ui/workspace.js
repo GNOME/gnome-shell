@@ -34,61 +34,134 @@ function _interpolate(start, end, step) {
     return start + (end - start) * step;
 }
 
-var WindowCloneLayout = GObject.registerClass(
-class WindowCloneLayout extends Clutter.LayoutManager {
-    _init(boundingBox) {
+var WindowCloneLayout = GObject.registerClass({
+    Properties: {
+        'bounding-box': GObject.ParamSpec.boxed(
+            'bounding-box', 'Bounding box', 'Bounding box',
+            GObject.ParamFlags.READABLE,
+            Clutter.ActorBox.$gtype),
+    },
+}, class WindowCloneLayout extends Clutter.LayoutManager {
+    _init() {
         super._init();
 
-        this._boundingBox = boundingBox;
+        this._container = null;
+        this._boundingBox = new Clutter.ActorBox();
+        this._windows = new Map();
     }
 
-    get boundingBox() {
-        return this._boundingBox;
-    }
+    _windowGeometryChanged() {
+        let frameRect;
 
-    set boundingBox(b) {
-        this._boundingBox = b;
+        for (const windowInfo of this._windows.values()) {
+            const frame = windowInfo.metaWindow.get_frame_rect();
+            frameRect = frameRect ? frameRect.union(frame) : frame;
+        }
+
+        if (!frameRect)
+            frameRect = new Meta.Rectangle();
+
+        const oldBox = this._boundingBox.copy();
+        this._boundingBox.set_origin(frameRect.x, frameRect.y);
+        this._boundingBox.set_size(frameRect.width, frameRect.height);
+
+        if (!this._boundingBox.equal(oldBox))
+            this.notify('bounding-box');
+
+        // Always call layout_changed(), a size or position change of an
+        // attached dialog might not affect the boundingBox
         this.layout_changed();
     }
 
+    vfunc_set_container(container) {
+        this._container = container;
+    }
+
     vfunc_get_preferred_height(_container, _forWidth) {
-        return [0, this._boundingBox.height];
+        return [0, this._boundingBox.get_height()];
     }
 
     vfunc_get_preferred_width(_container, _forHeight) {
-        return [0, this._boundingBox.width];
+        return [0, this._boundingBox.get_width()];
     }
 
     vfunc_allocate(container, box) {
         // If the scale isn't 1, we weren't allocated our preferred size
         // and have to scale the children allocations accordingly.
-        const scaleX = box.get_width() / this._boundingBox.width;
-        const scaleY = box.get_height() / this._boundingBox.height;
+        const scaleX = box.get_width() / this._boundingBox.get_width();
+        const scaleY = box.get_height() / this._boundingBox.get_height();
 
         const childBox = new Clutter.ActorBox();
 
-        container.get_children().forEach(child => {
-            let realWindow;
-            if (child == container._windowClone)
-                realWindow = container.realWindow;
-            else
-                realWindow = child.source;
+        for (const child of container) {
+            if (!child.visible)
+                continue;
 
-            const bufferRect = realWindow.meta_window.get_buffer_rect();
-            childBox.set_origin(
-                bufferRect.x - this._boundingBox.x,
-                bufferRect.y - this._boundingBox.y);
+            const windowInfo = this._windows.get(child);
+            if (windowInfo) {
+                const bufferRect = windowInfo.metaWindow.get_buffer_rect();
+                childBox.set_origin(
+                    bufferRect.x - this._boundingBox.x1,
+                    bufferRect.y - this._boundingBox.y1);
 
-            const [, , natWidth, natHeight] = child.get_preferred_size();
-            childBox.set_size(natWidth, natHeight);
+                const [, , natWidth, natHeight] = child.get_preferred_size();
+                childBox.set_size(natWidth, natHeight);
 
-            childBox.x1 *= scaleX;
-            childBox.x2 *= scaleX;
-            childBox.y1 *= scaleY;
-            childBox.y2 *= scaleY;
+                childBox.x1 *= scaleX;
+                childBox.x2 *= scaleX;
+                childBox.y1 *= scaleY;
+                childBox.y2 *= scaleY;
 
-            child.allocate(childBox);
+                child.allocate(childBox);
+            } else {
+                child.allocate_preferred_size();
+            }
+        }
+    }
+
+    addWindow(clone, metaWindow) {
+        if (this._windows.has(clone))
+            return;
+
+        const windowActor = metaWindow.get_compositor_private();
+
+        this._windows.set(clone, {
+            metaWindow,
+            windowActor,
+            sizeChangedId: metaWindow.connect('size-changed', () =>
+                this._windowGeometryChanged()),
+            positionChangedId: metaWindow.connect('position-changed', () =>
+                this._windowGeometryChanged()),
+            destroyId: windowActor.connect('destroy', () =>
+                clone.destroy()),
+            cloneDestroyId: clone.connect('destroy', () =>
+                this.removeWindow(clone)),
         });
+
+        this._container.add_child(clone);
+
+        this._windowGeometryChanged();
+    }
+
+    removeWindow(clone) {
+        const windowInfo = this._windows.get(clone);
+        if (!windowInfo)
+            return;
+
+        windowInfo.metaWindow.disconnect(windowInfo.sizeChangedId);
+        windowInfo.metaWindow.disconnect(windowInfo.positionChangedId);
+        windowInfo.windowActor.disconnect(windowInfo.destroyId);
+        clone.disconnect(windowInfo.cloneDestroyId);
+
+        this._windows.delete(clone);
+        this._container.remove_child(clone);
+
+        this._windowGeometryChanged();
+    }
+
+    // eslint-disable-next-line camelcase
+    get bounding_box() {
+        return this._boundingBox;
     }
 });
 
@@ -130,7 +203,7 @@ var WindowClone = GObject.registerClass({
 
         this.set_offscreen_redirect(Clutter.OffscreenRedirect.AUTOMATIC_FOR_OPACITY);
 
-        this.add_child(this._windowClone);
+        this.layout_manager.addWindow(this._windowClone, this.metaWindow);
 
         this._delegate = this;
 
@@ -144,13 +217,7 @@ var WindowClone = GObject.registerClass({
         this._windowClone._posChangedId = this.metaWindow.connect('position-changed',
             this._computeBoundingBox.bind(this));
         this._windowClone._destroyId =
-            this.realWindow.connect('destroy', () => {
-                // First destroy the clone and then destroy everything
-                // This will ensure that we never see it in the
-                // _disconnectSignals loop
-                this._windowClone.destroy();
-                this.destroy();
-            });
+            this.realWindow.connect('destroy', () => this.destroy());
 
         this._updateAttachedDialogs();
         this._computeBoundingBox();
@@ -235,15 +302,12 @@ var WindowClone = GObject.registerClass({
             this._onMetaWindowSizeChanged.bind(this));
         clone._posChangedId = metaWin.connect('position-changed',
             this._onMetaWindowSizeChanged.bind(this));
-        clone._destroyId = realWin.connect('destroy', () => {
-            clone.destroy();
-
-            this._onMetaWindowSizeChanged();
-        });
+        clone._destroyId = realWin.connect('destroy',
+            this._onMetaWindowSizeChanged.bind(this));
 
         Shell.util_set_hidden_from_pick(clone, true);
 
-        this.add_child(clone);
+        this.layout_manager.addWindow(clone, metaWin);
     }
 
     _updateAttachedDialogs() {
@@ -282,7 +346,6 @@ var WindowClone = GObject.registerClass({
 
         // Convert from a MetaRectangle to a native JS object
         this._boundingBox = { x: rect.x, y: rect.y, width: rect.width, height: rect.height };
-        this.layout_manager.boundingBox = rect;
     }
 
     get windowCenter() {
