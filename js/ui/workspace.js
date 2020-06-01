@@ -51,35 +51,22 @@ class WindowCloneLayout extends Clutter.LayoutManager {
         this.layout_changed();
     }
 
-    _makeBoxForWindow(window) {
-        // We need to adjust the position of the actor because of the
-        // consequences of invisible borders -- in reality, the texture
-        // has an extra set of "padding" around it that we need to trim
-        // down.
-
-        // The bounding box is based on the (visible) frame rect, while
-        // the buffer rect contains everything, including the invisible
-        // border padding.
-        let bufferRect = window.get_buffer_rect();
-
-        let box = new Clutter.ActorBox();
-
-        box.set_origin(bufferRect.x - this._boundingBox.x,
-                       bufferRect.y - this._boundingBox.y);
-        box.set_size(bufferRect.width, bufferRect.height);
-
-        return box;
-    }
-
     vfunc_get_preferred_height(_container, _forWidth) {
-        return [this._boundingBox.height, this._boundingBox.height];
+        return [0, this._boundingBox.height];
     }
 
     vfunc_get_preferred_width(_container, _forHeight) {
-        return [this._boundingBox.width, this._boundingBox.width];
+        return [0, this._boundingBox.width];
     }
 
-    vfunc_allocate(container, _box) {
+    vfunc_allocate(container, box) {
+        // If the scale isn't 1, we weren't allocated our preferred size
+        // and have to scale the children allocations accordingly.
+        const scaleX = box.get_width() / this._boundingBox.width;
+        const scaleY = box.get_height() / this._boundingBox.height;
+
+        const childBox = new Clutter.ActorBox();
+
         container.get_children().forEach(child => {
             let realWindow;
             if (child == container._windowClone)
@@ -87,7 +74,20 @@ class WindowCloneLayout extends Clutter.LayoutManager {
             else
                 realWindow = child.source;
 
-            child.allocate(this._makeBoxForWindow(realWindow.meta_window));
+            const bufferRect = realWindow.meta_window.get_buffer_rect();
+            childBox.set_origin(
+                bufferRect.x - this._boundingBox.x,
+                bufferRect.y - this._boundingBox.y);
+
+            const [, , natWidth, natHeight] = child.get_preferred_size();
+            childBox.set_size(natWidth, natHeight);
+
+            childBox.x1 *= scaleX;
+            childBox.x2 *= scaleX;
+            childBox.y1 *= scaleY;
+            childBox.y2 *= scaleY;
+
+            child.allocate(childBox);
         });
     }
 });
