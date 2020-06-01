@@ -2,14 +2,14 @@
 # Copyright (C) 2006 Free Software Foundation, Inc.
 # This file is distributed under the same license as the gnome-shell package.
 #
-# Matej Urbančič <mateju@svn.gnome.org>, 2009–2019.
+# Matej Urbančič <mateju@svn.gnome.org>, 2009–2020.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2019-09-26 14:21+0000\n"
-"PO-Revision-Date: 2019-09-28 21:08+0200\n"
+"POT-Creation-Date: 2020-03-30 23:57+0000\n"
+"PO-Revision-Date: 2020-06-01 21:51+0200\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: sl\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || n"
 "%100==4 ? 3 : 0);\n"
 "X-Poedit-SourceCharset: utf-8\n"
-"X-Generator: Poedit 2.2.1\n"
+"X-Generator: Poedit 2.3\n"
 
 #: data/50-gnome-shell-system.xml:6
 msgid "System"
@@ -66,7 +66,7 @@ msgstr "Upravljanje oken in zaganjanje programov"
 msgid "Enable internal tools useful for developers and testers from Alt-F2"
 msgstr ""
 "Omogoči dostop do orodij razvijalcev in preizkuševalcev programske opreme "
-"prek vnosnega polja Alt-F2."
+"prek vnosnega polja Alt-F2"
 
 #: data/org.gnome.shell.gschema.xml.in:9
 msgid ""
@@ -92,18 +92,10 @@ msgstr ""
 "tudi prek vodila D-BUs na org.gnome.Shell."
 
 #: data/org.gnome.shell.gschema.xml.in:26
-#, fuzzy
-#| msgid "UUIDs of extensions to enable"
 msgid "UUIDs of extensions to force disabling"
-msgstr "Določila razširitev UUID, ki bodo omogočene"
+msgstr "Določila razširitev UUID, ki naj bodo onemogočene"
 
 #: data/org.gnome.shell.gschema.xml.in:27
-#, fuzzy
-#| msgid ""
-#| "GNOME Shell extensions have a UUID property; this key lists extensions "
-#| "which should be loaded. Any extension that wants to be loaded needs to be "
-#| "in this list. You can also manipulate this list with the EnableExtension "
-#| "and DisableExtension D-Bus methods on org.gnome.Shell."
 msgid ""
 "GNOME Shell extensions have a UUID property; this key lists extensions which "
 "should be disabled, even if loaded as part of the current mode. You can also "
@@ -112,8 +104,10 @@ msgid ""
 "extensions” setting."
 msgstr ""
 "Razširitve lupine GNOME imajo nastavljeno določilo UUID; ključ določa seznam "
-"razširitev, ki naj bodo naložene ob zagonu. Upravljanje seznama je mogoče "
-"tudi prek vodila D-BUs na org.gnome.Shell."
+"razširitev, ki naj bodo onemogočene, neglede na to ali so del trenutnega "
+"načina razširitev. Upravljanje seznama je mogoče tudi prek vodila D-BUs na "
+"org.gnome.Shell z možnostjo Omogoči/Onemogoči razširitev. Ta nastavitev ima "
+"prednost pred nastavitvijo »omogočene razširitve«"
 
 #: data/org.gnome.shell.gschema.xml.in:37
 msgid "Disable user extensions"
@@ -125,7 +119,7 @@ msgid ""
 "extension” setting."
 msgstr ""
 "Onemogoči vse razširitve, ki jih je uporabnik omogoči brez vpliva na "
-"nastavitev »omogočena razširitev«"
+"nastavitev »omogočena razširitev«."
 
 #: data/org.gnome.shell.gschema.xml.in:45
 msgid "Disables the validation of extension version compatibility"
@@ -151,7 +145,7 @@ msgid ""
 "favorites area."
 msgstr ""
 "Programi, ki ustrezajo določilom, bodo prikazani v polju priljubljenih "
-"programov"
+"programov."
 
 #: data/org.gnome.shell.gschema.xml.in:62
 msgid "App Picker View"
@@ -341,14 +335,12 @@ msgstr ""
 "preklopniku. V nasprotnem primeru so prikazana vsa okna."
 
 #: data/org.gnome.shell.gschema.xml.in:234
-#, fuzzy
-#| msgid "Location In Use"
 msgid "Locations"
-msgstr "Določevanje mesta je v uporabi"
+msgstr "Mesta"
 
 #: data/org.gnome.shell.gschema.xml.in:235
 msgid "The locations to show in world clocks"
-msgstr ""
+msgstr "Mesta, za katere naj bodo prikazani svetovni časi"
 
 #: data/org.gnome.shell.gschema.xml.in:245
 msgid "Automatic location"
@@ -356,17 +348,15 @@ msgstr "Samodejno določanje mesta"
 
 #: data/org.gnome.shell.gschema.xml.in:246
 msgid "Whether to fetch the current location or not"
-msgstr ""
+msgstr "Ali naj program pridobi trenutno mesto ali ne"
 
 #: data/org.gnome.shell.gschema.xml.in:253
-#, fuzzy
-#| msgid "Location In Use"
 msgid "Location"
-msgstr "Določevanje mesta je v uporabi"
+msgstr "Trenutno mesto"
 
 #: data/org.gnome.shell.gschema.xml.in:254
 msgid "The location for which to show a forecast"
-msgstr ""
+msgstr "Mesto, za katero naj bo pokazana napoved"
 
 #: data/org.gnome.shell.gschema.xml.in:266
 msgid "Attach modal dialog to the parent window"
@@ -406,7 +396,7 @@ msgstr "Omrežna prijava"
 
 #: js/extensionPrefs/main.js:104 js/extensionPrefs/main.js:535
 msgid "Something’s gone wrong"
-msgstr "Prišlo je do nepričakovane napake."
+msgstr "Prišlo je do nepričakovane napake"
 
 #: js/extensionPrefs/main.js:111
 msgid ""
@@ -455,11 +445,13 @@ msgid ""
 "We’re very sorry, but it was not possible to get the list of installed "
 "extensions. Make sure you are logged into GNOME and try again."
 msgstr ""
+"Kaže, da ni mogoče pridobiti seznama nameščenih razširitev. Prepričajte se, "
+"da ste prijavljeni v namizje GNOME in poskusite znova."
 
 #: js/gdm/authPrompt.js:139 js/ui/audioDeviceSelection.js:53
-#: js/ui/components/networkAgent.js:122 js/ui/components/polkitAgent.js:138
+#: js/ui/components/networkAgent.js:124 js/ui/components/polkitAgent.js:129
 #: js/ui/endSessionDialog.js:446 js/ui/extensionDownloader.js:190
-#: js/ui/shellMountOperation.js:392 js/ui/shellMountOperation.js:402
+#: js/ui/shellMountOperation.js:394 js/ui/shellMountOperation.js:404
 #: js/ui/status/network.js:898
 msgid "Cancel"
 msgstr "Prekliči"
@@ -468,7 +460,7 @@ msgstr "Prekliči"
 msgid "Next"
 msgstr "Naslednji"
 
-#: js/gdm/authPrompt.js:197 js/ui/shellMountOperation.js:396
+#: js/gdm/authPrompt.js:197 js/ui/shellMountOperation.js:398
 #: js/ui/unlockDialog.js:45
 msgid "Unlock"
 msgstr "Odkleni"
@@ -499,8 +491,8 @@ msgstr "(na primer, uporabnika ali %s)"
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: js/gdm/loginDialog.js:884 js/ui/components/networkAgent.js:247
-#: js/ui/components/networkAgent.js:267 js/ui/components/networkAgent.js:285
+#: js/gdm/loginDialog.js:884 js/ui/components/networkAgent.js:250
+#: js/ui/components/networkAgent.js:270 js/ui/components/networkAgent.js:288
 msgid "Username: "
 msgstr "Uporabniško ime: "
 
@@ -552,7 +544,7 @@ msgstr "Odjava"
 #. Translators: A list of keywords that match the logout action, separated by semicolons
 #: js/misc/systemActions.js:108
 msgid "logout;log out;sign off"
-msgstr "odjava;izpis;izklop;"
+msgstr "odjava;izpis;izklop;logout"
 
 #. Translators: The name of the suspend action in search
 #: js/misc/systemActions.js:113
@@ -593,20 +585,20 @@ msgstr "Ukaz ni mogoče najti"
 
 #. Replace "Error invoking GLib.shell_parse_argv: " with
 #. something nicer
-#: js/misc/util.js:149
+#: js/misc/util.js:157
 msgid "Could not parse command:"
 msgstr "Ukaza ni mogoče razčleniti:"
 
-#: js/misc/util.js:157
+#: js/misc/util.js:165
 #, javascript-format
 msgid "Execution of “%s” failed:"
 msgstr "Izvedba »%s« je spodletela:"
 
-#: js/misc/util.js:174
+#: js/misc/util.js:182
 msgid "Just now"
 msgstr "Ravnokar"
 
-#: js/misc/util.js:176
+#: js/misc/util.js:184
 #, javascript-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
@@ -615,7 +607,7 @@ msgstr[1] "Pred %d minuto"
 msgstr[2] "Pred %d minutama"
 msgstr[3] "Pred %d minutami"
 
-#: js/misc/util.js:179
+#: js/misc/util.js:187
 #, javascript-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
@@ -624,11 +616,11 @@ msgstr[1] "Pred %d uro"
 msgstr[2] "Pred %d urama"
 msgstr[3] "Pred %d urami"
 
-#: js/misc/util.js:182
+#: js/misc/util.js:190
 msgid "Yesterday"
 msgstr "Včeraj"
 
-#: js/misc/util.js:184
+#: js/misc/util.js:192
 #, javascript-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
@@ -637,7 +629,7 @@ msgstr[1] "Pred %d dnevom"
 msgstr[2] "Pred %d dnevoma"
 msgstr[3] "Pred %d dnevi"
 
-#: js/misc/util.js:187
+#: js/misc/util.js:195
 #, javascript-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
@@ -646,7 +638,7 @@ msgstr[1] "Pred %d tednom"
 msgstr[2] "Pred %d tednoma"
 msgstr[3] "Pred %d tedni"
 
-#: js/misc/util.js:190
+#: js/misc/util.js:198
 #, javascript-format
 msgid "%d month ago"
 msgid_plural "%d months ago"
@@ -655,7 +647,7 @@ msgstr[1] "Pred %d mesecem"
 msgstr[2] "Pred %d mesecema"
 msgstr[3] "Pred %d meseci"
 
-#: js/misc/util.js:192
+#: js/misc/util.js:200
 #, javascript-format
 msgid "%d year ago"
 msgid_plural "%d years ago"
@@ -665,20 +657,20 @@ msgstr[2] "Pred %d letoma"
 msgstr[3] "Pred %d leti"
 
 #. Translators: Time in 24h format
-#: js/misc/util.js:222
+#: js/misc/util.js:230
 msgid "%H∶%M"
 msgstr "%H∶%M"
 
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 24h format. i.e. "Yesterday, 14:30"
-#: js/misc/util.js:228
+#: js/misc/util.js:236
 #, no-c-format
 msgid "Yesterday, %H∶%M"
 msgstr "Včeraj, %H:%M"
 
 #. Translators: this is the week day name followed by a time
 #. string in 24h format. i.e. "Monday, 14:30"
-#: js/misc/util.js:234
+#: js/misc/util.js:242
 #, no-c-format
 msgid "%A, %H∶%M"
 msgstr "%A, %H∶%M"
@@ -686,7 +678,7 @@ msgstr "%A, %H∶%M"
 #. Translators: this is the month name and day number
 #. followed by a time string in 24h format.
 #. i.e. "May 25, 14:30"
-#: js/misc/util.js:240
+#: js/misc/util.js:248
 #, no-c-format
 msgid "%B %-d, %H∶%M"
 msgstr "%d %B, %H∶%M"
@@ -694,26 +686,26 @@ msgstr "%d %B, %H∶%M"
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 24h format.
 #. i.e. "May 25 2012, 14:30"
-#: js/misc/util.js:246
+#: js/misc/util.js:254
 #, no-c-format
 msgid "%B %-d %Y, %H∶%M"
 msgstr "%d. %B %Y, %H∶%M"
 
 #. Translators: Time in 12h format
-#: js/misc/util.js:251
+#: js/misc/util.js:259
 msgid "%l∶%M %p"
 msgstr "%l∶%M %p"
 
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 12h format. i.e. "Yesterday, 2:30 pm"
-#: js/misc/util.js:257
+#: js/misc/util.js:265
 #, no-c-format
 msgid "Yesterday, %l∶%M %p"
 msgstr "Včeraj, %l∶%M %p"
 
 #. Translators: this is the week day name followed by a time
 #. string in 12h format. i.e. "Monday, 2:30 pm"
-#: js/misc/util.js:263
+#: js/misc/util.js:271
 #, no-c-format
 msgid "%A, %l∶%M %p"
 msgstr "%A, %l∶%M %p"
@@ -721,7 +713,7 @@ msgstr "%A, %l∶%M %p"
 #. Translators: this is the month name and day number
 #. followed by a time string in 12h format.
 #. i.e. "May 25, 2:30 pm"
-#: js/misc/util.js:269
+#: js/misc/util.js:277
 #, no-c-format
 msgid "%B %-d, %l∶%M %p"
 msgstr "%d. %B, %l∶%M %p"
@@ -729,7 +721,7 @@ msgstr "%d. %B, %l∶%M %p"
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 12h format.
 #. i.e. "May 25 2012, 2:30 pm"
-#: js/misc/util.js:275
+#: js/misc/util.js:283
 #, no-c-format
 msgid "%B %-d %Y, %l∶%M %p"
 msgstr "%d. %B %Y, %l∶%M %p"
@@ -757,48 +749,48 @@ msgstr "Zavrni dostop"
 msgid "Grant Access"
 msgstr "Dovoli dostop"
 
-#: js/ui/appDisplay.js:852
+#: js/ui/appDisplay.js:892
 msgid "Unnamed Folder"
 msgstr "Neimenovana mapa"
 
-#: js/ui/appDisplay.js:872
+#: js/ui/appDisplay.js:912
 msgid "Frequently used applications will appear here"
 msgstr "Pogosto uporabljeni programi bodo prikazani tu"
 
-#: js/ui/appDisplay.js:995
+#: js/ui/appDisplay.js:1039
 msgid "Frequent"
 msgstr "Pogosti"
 
-#: js/ui/appDisplay.js:1002
+#: js/ui/appDisplay.js:1046
 msgid "All"
 msgstr "Vsi"
 
-#: js/ui/appDisplay.js:1745
+#: js/ui/appDisplay.js:1789
 msgid "Rename"
 msgstr "Preimenuj"
 
 #. Translators: This is the heading of a list of open windows
-#: js/ui/appDisplay.js:2418 js/ui/panel.js:76
+#: js/ui/appDisplay.js:2472 js/ui/panel.js:76
 msgid "Open Windows"
 msgstr "Odpri okna"
 
-#: js/ui/appDisplay.js:2437 js/ui/panel.js:83
+#: js/ui/appDisplay.js:2491 js/ui/panel.js:83
 msgid "New Window"
 msgstr "Novo okno"
 
-#: js/ui/appDisplay.js:2449
+#: js/ui/appDisplay.js:2503
 msgid "Launch using Dedicated Graphics Card"
 msgstr "Zaženi z uporabo določene grafične kartice"
 
-#: js/ui/appDisplay.js:2478 js/ui/dash.js:239
+#: js/ui/appDisplay.js:2532 js/ui/dash.js:239
 msgid "Remove from Favorites"
 msgstr "Odstrani iz priljubljenih"
 
-#: js/ui/appDisplay.js:2484
+#: js/ui/appDisplay.js:2538
 msgid "Add to Favorites"
 msgstr "Dodaj med priljubljene"
 
-#: js/ui/appDisplay.js:2494 js/ui/panel.js:94
+#: js/ui/appDisplay.js:2548 js/ui/panel.js:94
 msgid "Show Details"
 msgstr "Pokaži besedilo"
 
@@ -981,11 +973,11 @@ msgstr ""
 "Lahko počakate, če se program morda začne spet odzivati, lahko pa vsilite "
 "končanje delovanja."
 
-#: js/ui/closeDialog.js:59
+#: js/ui/closeDialog.js:71
 msgid "Force Quit"
 msgstr "Vsili končanje"
 
-#: js/ui/closeDialog.js:62
+#: js/ui/closeDialog.js:74
 msgid "Wait"
 msgstr "Počakaj"
 
@@ -1003,60 +995,60 @@ msgstr "Ni mogoče odkleniti nosilca"
 
 #: js/ui/components/automountManager.js:210
 msgid "The installed udisks version does not support the PIM setting"
-msgstr ""
+msgstr "Nameščena različica udisks ne podpira nastavitev PIM"
 
 #: js/ui/components/autorunManager.js:328
 #, javascript-format
 msgid "Open with %s"
 msgstr "Odpri s programom %s"
 
-#: js/ui/components/keyring.js:67 js/ui/components/polkitAgent.js:257
+#: js/ui/components/keyring.js:67 js/ui/components/polkitAgent.js:260
 msgid "Password:"
 msgstr "Geslo:"
 
-#: js/ui/components/keyring.js:98
+#: js/ui/components/keyring.js:100
 msgid "Type again:"
 msgstr "Ponovni vpis:"
 
-#: js/ui/components/networkAgent.js:105
+#: js/ui/components/networkAgent.js:107
 msgid ""
 "Alternatively you can connect by pushing the “WPS” button on your router."
 msgstr "Vzpostavitev povezave je mogoča tudi z gumbom »WPS« na usmerjevalniku."
 
-#: js/ui/components/networkAgent.js:116 js/ui/status/network.js:222
+#: js/ui/components/networkAgent.js:118 js/ui/status/network.js:222
 #: js/ui/status/network.js:313 js/ui/status/network.js:901
 msgid "Connect"
 msgstr "Poveži"
 
 #. Cisco LEAP
-#: js/ui/components/networkAgent.js:216 js/ui/components/networkAgent.js:228
-#: js/ui/components/networkAgent.js:250 js/ui/components/networkAgent.js:269
-#: js/ui/components/networkAgent.js:289 js/ui/components/networkAgent.js:299
+#: js/ui/components/networkAgent.js:219 js/ui/components/networkAgent.js:231
+#: js/ui/components/networkAgent.js:253 js/ui/components/networkAgent.js:272
+#: js/ui/components/networkAgent.js:292 js/ui/components/networkAgent.js:302
 msgid "Password: "
 msgstr "Geslo: "
 
 #. static WEP
-#: js/ui/components/networkAgent.js:221
+#: js/ui/components/networkAgent.js:224
 msgid "Key: "
 msgstr "Ključ: "
 
-#: js/ui/components/networkAgent.js:253 js/ui/components/networkAgent.js:275
+#: js/ui/components/networkAgent.js:256 js/ui/components/networkAgent.js:278
 msgid "Private key password: "
 msgstr "Geslo zasebnega ključa: "
 
-#: js/ui/components/networkAgent.js:273
+#: js/ui/components/networkAgent.js:276
 msgid "Identity: "
 msgstr "_Istovetnost: "
 
-#: js/ui/components/networkAgent.js:287
+#: js/ui/components/networkAgent.js:290
 msgid "Service: "
 msgstr "Storitev: "
 
-#: js/ui/components/networkAgent.js:316 js/ui/components/networkAgent.js:691
+#: js/ui/components/networkAgent.js:319 js/ui/components/networkAgent.js:686
 msgid "Authentication required by wireless network"
 msgstr "Zahtevana overitev za brezžično omrežje"
 
-#: js/ui/components/networkAgent.js:317 js/ui/components/networkAgent.js:692
+#: js/ui/components/networkAgent.js:320 js/ui/components/networkAgent.js:687
 #, javascript-format
 msgid ""
 "Passwords or encryption keys are required to access the wireless network "
@@ -1065,53 +1057,53 @@ msgstr ""
 "Za povezavo v brezžično omrežje »%s« je zahtevano geslo oziroma šifrirni "
 "ključ."
 
-#: js/ui/components/networkAgent.js:321 js/ui/components/networkAgent.js:696
+#: js/ui/components/networkAgent.js:324 js/ui/components/networkAgent.js:691
 msgid "Wired 802.1X authentication"
 msgstr "Žična overitev 802.1X"
 
-#: js/ui/components/networkAgent.js:323
+#: js/ui/components/networkAgent.js:326
 msgid "Network name: "
 msgstr "Naziv omrežja: "
 
-#: js/ui/components/networkAgent.js:328 js/ui/components/networkAgent.js:700
+#: js/ui/components/networkAgent.js:331 js/ui/components/networkAgent.js:695
 msgid "DSL authentication"
 msgstr "Overitev DSL"
 
-#: js/ui/components/networkAgent.js:335 js/ui/components/networkAgent.js:705
+#: js/ui/components/networkAgent.js:338 js/ui/components/networkAgent.js:700
 msgid "PIN code required"
 msgstr "Zahtevana koda PIN"
 
-#: js/ui/components/networkAgent.js:336 js/ui/components/networkAgent.js:706
+#: js/ui/components/networkAgent.js:339 js/ui/components/networkAgent.js:701
 msgid "PIN code is needed for the mobile broadband device"
 msgstr "Za napravo mobilnega širokopasovnega dostopa je zahtevana koda PIN."
 
-#: js/ui/components/networkAgent.js:337
+#: js/ui/components/networkAgent.js:340
 msgid "PIN: "
 msgstr "Koda PIN: "
 
-#: js/ui/components/networkAgent.js:344 js/ui/components/networkAgent.js:712
+#: js/ui/components/networkAgent.js:347 js/ui/components/networkAgent.js:707
 msgid "Mobile broadband network password"
 msgstr "Geslo mobilnega širokopasovnega dostopa"
 
-#: js/ui/components/networkAgent.js:345 js/ui/components/networkAgent.js:697
-#: js/ui/components/networkAgent.js:701 js/ui/components/networkAgent.js:713
+#: js/ui/components/networkAgent.js:348 js/ui/components/networkAgent.js:692
+#: js/ui/components/networkAgent.js:696 js/ui/components/networkAgent.js:708
 #, javascript-format
 msgid "A password is required to connect to “%s”."
 msgstr "Za povezavo z omrežjem »%s« je zahtevano geslo."
 
-#: js/ui/components/networkAgent.js:680 js/ui/status/network.js:1675
+#: js/ui/components/networkAgent.js:675 js/ui/status/network.js:1675
 msgid "Network Manager"
 msgstr "Upravljalnik omrežij"
 
-#: js/ui/components/polkitAgent.js:36
+#: js/ui/components/polkitAgent.js:41
 msgid "Authentication Required"
 msgstr "Zahtevana je overitev"
 
-#: js/ui/components/polkitAgent.js:64
+#: js/ui/components/polkitAgent.js:82
 msgid "Administrator"
 msgstr "Skrbnik"
 
-#: js/ui/components/polkitAgent.js:141
+#: js/ui/components/polkitAgent.js:132
 msgid "Authenticate"
 msgstr "Overi"
 
@@ -1119,7 +1111,7 @@ msgstr "Overi"
 #. * requested authentication was not gained; this can happen
 #. * because of an authentication error (like invalid password),
 #. * for instance.
-#: js/ui/components/polkitAgent.js:243 js/ui/shellMountOperation.js:376
+#: js/ui/components/polkitAgent.js:246 js/ui/shellMountOperation.js:378
 msgid "Sorry, that didn’t work. Please try again."
 msgstr "Overitev je spodletela.. Poskusite znova."
 
@@ -1473,7 +1465,7 @@ msgstr "Omogočeno"
 
 #. translators:
 #. * The device has been disabled
-#: js/ui/lookingGlass.js:706 subprojects/gvc/gvc-mixer-control.c:1864
+#: js/ui/lookingGlass.js:706 subprojects/gvc/gvc-mixer-control.c:1892
 msgid "Disabled"
 msgstr "Onemogočeno"
 
@@ -1523,7 +1515,7 @@ msgstr "Pregled"
 #. in the search entry when no search is
 #. active; it should not exceed ~30
 #. characters.
-#: js/ui/overview.js:230
+#: js/ui/overview.js:234
 msgid "Type to search…"
 msgstr "Poišči …"
 
@@ -1577,16 +1569,16 @@ msgstr "Končaj"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: js/ui/panel.js:427
+#: js/ui/panel.js:434
 msgid "Activities"
 msgstr "Dejavnosti"
 
-#: js/ui/panel.js:700
+#: js/ui/panel.js:707
 msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "Sistem"
 
-#: js/ui/panel.js:819
+#: js/ui/panel.js:826
 msgid "Top Bar"
 msgstr "Vrhnja vrstica"
 
@@ -1608,11 +1600,11 @@ msgstr "Poteka ponovno zaganjanje …"
 
 #. Translators: This is a time format for a date in
 #. long format
-#: js/ui/screenShield.js:72
+#: js/ui/screenShield.js:80
 msgid "%A, %B %d"
 msgstr "%A, %d. %B"
 
-#: js/ui/screenShield.js:128
+#: js/ui/screenShield.js:136
 #, javascript-format
 msgid "%d new message"
 msgid_plural "%d new messages"
@@ -1621,7 +1613,7 @@ msgstr[1] "%d novo sporočilo"
 msgstr[2] "%d novi sporočili"
 msgstr[3] "%d nova sporočila"
 
-#: js/ui/screenShield.js:130
+#: js/ui/screenShield.js:138
 #, javascript-format
 msgid "%d new notification"
 msgid_plural "%d new notifications"
@@ -1630,11 +1622,11 @@ msgstr[1] "%d novo obvestilo"
 msgstr[2] "%d novi obvestili"
 msgstr[3] "%d nova obvestila"
 
-#: js/ui/screenShield.js:445 js/ui/status/system.js:260
+#: js/ui/screenShield.js:453 js/ui/status/system.js:260
 msgid "Lock"
 msgstr "Zakleni"
 
-#: js/ui/screenShield.js:709
+#: js/ui/screenShield.js:717
 msgid "GNOME needs to lock the screen"
 msgstr "Zakleniti je treba zaslon"
 
@@ -1645,11 +1637,11 @@ msgstr "Zakleniti je treba zaslon"
 #.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
-#: js/ui/screenShield.js:823 js/ui/screenShield.js:1297
+#: js/ui/screenShield.js:831 js/ui/screenShield.js:1302
 msgid "Unable to lock"
 msgstr "Zaklep ni mogoč"
 
-#: js/ui/screenShield.js:824 js/ui/screenShield.js:1298
+#: js/ui/screenShield.js:832 js/ui/screenShield.js:1303
 msgid "Lock was blocked by an application"
 msgstr "Zaklep je preprečil program"
 
@@ -1692,13 +1684,11 @@ msgstr "Skrit razdelek"
 
 #: js/ui/shellMountOperation.js:308
 msgid "Windows System Volume"
-msgstr ""
+msgstr "Sistemska glasnost"
 
 #: js/ui/shellMountOperation.js:311
-#, fuzzy
-#| msgid "Mouse Keys"
 msgid "Uses Keyfiles"
-msgstr "Miškine tipke"
+msgstr "Uporablja nastavitvene datoteke"
 
 #. Translators: %s is the Disks application
 #: js/ui/shellMountOperation.js:317
@@ -1706,6 +1696,8 @@ msgstr "Miškine tipke"
 msgid ""
 "To unlock a volume that uses keyfiles, use the <i>%s</i> utility instead."
 msgstr ""
+"Za odklepanje pogona, ki uporablja nastavitvene datoteke, uporabite orodje "
+"<i>%s</i>."
 
 #: js/ui/shellMountOperation.js:324
 msgid "PIM Number"
@@ -1713,33 +1705,33 @@ msgstr "Koda PIM"
 
 #: js/ui/shellMountOperation.js:342
 msgid "The PIM must be a number or empty."
-msgstr ""
+msgstr "Vrednost PIM mora biti številka ali prazno polje."
 
 #: js/ui/shellMountOperation.js:353
 msgid "Password"
 msgstr "Geslo"
 
-#: js/ui/shellMountOperation.js:383
+#: js/ui/shellMountOperation.js:385
 msgid "Remember Password"
 msgstr "Zapomni si geslo"
 
 #. Translators: %s is the Disks application
-#: js/ui/shellMountOperation.js:407
+#: js/ui/shellMountOperation.js:409
 #, javascript-format
 msgid "Open %s"
 msgstr "Odpri %s"
 
 #. Translators: %s is the Disks application
-#: js/ui/shellMountOperation.js:479
+#: js/ui/shellMountOperation.js:481
 #, javascript-format
 msgid "Unable to start %s"
 msgstr "Ni mogoče začeti »%s«"
 
 #. Translators: %s is the Disks application
-#: js/ui/shellMountOperation.js:481
+#: js/ui/shellMountOperation.js:483
 #, javascript-format
 msgid "Couldn’t find the %s application"
-msgstr ""
+msgstr "Ni mogoče najti programa %s"
 
 #: js/ui/status/accessibility.js:35
 msgid "Accessibility"
@@ -2136,7 +2128,7 @@ msgstr "Preostaja %d∶%02d (%d %%)"
 msgid "%d∶%02d Until Full (%d %%)"
 msgstr "%d∶%02d do polnosti (%d %%)"
 
-#: js/ui/status/power.js:135 js/ui/status/power.js:137
+#: js/ui/status/power.js:138 js/ui/status/power.js:140
 #, javascript-format
 msgid "%d %%"
 msgstr "%d %%"
@@ -2269,7 +2261,7 @@ msgstr "Poišči"
 #: js/ui/windowAttentionHandler.js:20
 #, javascript-format
 msgid "“%s” is ready"
-msgstr "Storitev “%s” je pripravljena"
+msgstr "Storitev »%s« je pripravljena"
 
 #: js/ui/windowManager.js:54
 msgid "Do you want to keep these display settings?"
@@ -2297,7 +2289,7 @@ msgstr[3] "Spremembe nastavitev bodo povrnjene v %d sekundah."
 
 #. Translators: This represents the size of a window. The first number is
 #. * the width of the window and the second is the height.
-#: js/ui/windowManager.js:683
+#: js/ui/windowManager.js:686
 #, javascript-format
 msgid "%d × %d"
 msgstr "%d × %d"
@@ -2376,8 +2368,10 @@ msgid ""
 "Name should be a very short (ideally descriptive) string.\n"
 "Examples are: %s"
 msgstr ""
+"Ime naj bo kratek in (najbolje opisen) niz.\n"
+"Primer:: %s"
 
-#: src/extensions-tool/command-create.c:192 src/extensions-tool/main.c:169
+#: src/extensions-tool/command-create.c:192 src/extensions-tool/main.c:170
 msgid "Name"
 msgstr "Ime"
 
@@ -2387,8 +2381,10 @@ msgid ""
 "Description is a single-sentence explanation of what your extension does.\n"
 "Examples are: %s"
 msgstr ""
+"Opis je enostavčna razlaga, kaj omogoča razširitev.\n"
+"Na primer: %s"
 
-#: src/extensions-tool/command-create.c:206 src/extensions-tool/main.c:172
+#: src/extensions-tool/command-create.c:206 src/extensions-tool/main.c:173
 msgid "Description"
 msgstr "Opis"
 
@@ -2398,10 +2394,13 @@ msgid ""
 "This should be in the format of an email address (clicktofocus@janedoe."
 "example.com)\n"
 msgstr ""
+"Določilo UUID je splošno-enoznačno določilo razširitve.\n"
+"Zapisano mora biti v obliku elektronskega naslova (na primer: "
+"clicktofocus@janedoe.example.com)\n"
 
 #: src/extensions-tool/command-create.c:239
 msgid "The unique identifier of the new extension"
-msgstr ""
+msgstr "Enoznačno določilo nove razširitve"
 
 #: src/extensions-tool/command-create.c:242
 msgid "NAME"
@@ -2409,7 +2408,7 @@ msgstr "IME"
 
 #: src/extensions-tool/command-create.c:243
 msgid "The user-visible name of the new extension"
-msgstr ""
+msgstr "Prikazano ime nove razširitve"
 
 #: src/extensions-tool/command-create.c:245
 msgid "DESCRIPTION"
@@ -2417,17 +2416,15 @@ msgstr "OPIS"
 
 #: src/extensions-tool/command-create.c:247
 msgid "A short description of what the extension does"
-msgstr ""
+msgstr "Kratek opis funkcije razširitve"
 
 #: src/extensions-tool/command-create.c:250
 msgid "Enter extension information interactively"
-msgstr ""
+msgstr "Vnos podrobnosti razširitve"
 
 #: src/extensions-tool/command-create.c:258
-#, fuzzy
-#| msgid "Disable user extensions"
 msgid "Create a new extension"
-msgstr "Onemogoči uporabniške razširitve"
+msgstr "Ustvari novo razširitev"
 
 #: src/extensions-tool/command-create.c:275
 #: src/extensions-tool/command-list.c:158
@@ -2436,7 +2433,7 @@ msgstr "Neznani argumenti"
 
 #: src/extensions-tool/command-create.c:284
 msgid "UUID, name and description are required"
-msgstr ""
+msgstr "Zahtevani sta določilo UUID, ime in opis"
 
 #: src/extensions-tool/command-disable.c:57
 msgid "Disable an extension"
@@ -2458,7 +2455,7 @@ msgstr "Ni podanega UUID"
 #: src/extensions-tool/command-reset.c:79
 #: src/extensions-tool/command-uninstall.c:94
 msgid "More than one UUID given"
-msgstr ""
+msgstr "Podano je več kot eno določilo UUID"
 
 #: src/extensions-tool/command-enable.c:57
 msgid "Enable an extension"
@@ -2474,57 +2471,43 @@ msgstr "Prepiši obstoječo razširitev"
 
 #: src/extensions-tool/command-install.c:175
 msgid "EXTENSION_BUNDLE"
-msgstr ""
+msgstr "PAKET_RAZŠIRITVE"
 
 #: src/extensions-tool/command-install.c:184
-#, fuzzy
-#| msgid "UUIDs of extensions to enable"
 msgid "Install an extension bundle"
-msgstr "Določila razširitev UUID, ki bodo omogočene"
+msgstr "Namesti paket razširitve"
 
 #: src/extensions-tool/command-install.c:201
-#, fuzzy
-#| msgid "No extensions installed"
 msgid "No extension bundle specified"
-msgstr "Ni nameščenih razširitev"
+msgstr "Ni navedenega paketa razširitev"
 
 #: src/extensions-tool/command-install.c:207
 msgid "More than one extension bundle specified"
-msgstr ""
+msgstr "Določen je več kot en paket razširitve"
 
 #: src/extensions-tool/command-list.c:118
 msgid "Show user-installed extensions"
 msgstr "Pokaži uporabniško nameščene razširitve"
 
 #: src/extensions-tool/command-list.c:121
-#, fuzzy
-#| msgid "Shell Extensions"
 msgid "Show system-installed extensions"
-msgstr "Razširitve lupine"
+msgstr "Pokaži sistemsko nameščene razširitve lupine"
 
 #: src/extensions-tool/command-list.c:124
-#, fuzzy
-#| msgid "Shell Extensions"
 msgid "Show enabled extensions"
-msgstr "Razširitve lupine"
+msgstr "Pokaži omogočene razširitve"
 
 #: src/extensions-tool/command-list.c:127
-#, fuzzy
-#| msgid "Disable user extensions"
 msgid "Show disabled extensions"
-msgstr "Onemogoči uporabniške razširitve"
+msgstr "Pokaži onemogočene razširitve"
 
 #: src/extensions-tool/command-list.c:130
-#, fuzzy
-#| msgid "GNOME Shell Extension Preferences"
 msgid "Show extensions with preferences"
-msgstr "Možnosti razširitev lupine GNOME"
+msgstr "Pokaži razširitve z lastnostmi"
 
 #: src/extensions-tool/command-list.c:133
-#, fuzzy
-#| msgid "Visit extension homepage"
 msgid "Print extension details"
-msgstr "Odpri spletno stran razširitev"
+msgstr "Natisni podrobnosti razširitve"
 
 #: src/extensions-tool/command-list.c:141
 msgid "List installed extensions"
@@ -2536,7 +2519,7 @@ msgstr "DATOTEKA"
 
 #: src/extensions-tool/command-pack.c:451
 msgid "Additional source to include in the bundle"
-msgstr ""
+msgstr "Dodatni viri, ki morajo biti vključeni v paket"
 
 #: src/extensions-tool/command-pack.c:454
 msgid "SCHEMA"
@@ -2544,7 +2527,7 @@ msgstr "Shema"
 
 #: src/extensions-tool/command-pack.c:455
 msgid "A GSettings schema that should be included"
-msgstr ""
+msgstr "Shema GSettings, ki naj bo vključena v paket"
 
 #: src/extensions-tool/command-pack.c:457
 #: src/extensions-tool/command-pack.c:468
@@ -2569,7 +2552,7 @@ msgstr "Prepiši obstoječ paket"
 
 #: src/extensions-tool/command-pack.c:470
 msgid "The directory where the pack should be created"
-msgstr ""
+msgstr "Mapa, v kateri bo ustvarjen paket"
 
 #: src/extensions-tool/command-pack.c:472
 msgid "SOURCE_DIRECTORY"
@@ -2577,7 +2560,7 @@ msgstr "Izvorna mapa"
 
 #: src/extensions-tool/command-pack.c:481
 msgid "Create an extension bundle"
-msgstr ""
+msgstr "Ustvari paket razširitve"
 
 #: src/extensions-tool/command-pack.c:500
 msgid "More than one source directory specified"
@@ -2588,123 +2571,119 @@ msgid "Opens extension preferences"
 msgstr "Odpre možnosti razširitve"
 
 #: src/extensions-tool/command-reset.c:57
-#, fuzzy
-#| msgid "Disable user extensions"
 msgid "Reset an extension"
-msgstr "Onemogoči uporabniške razširitve"
+msgstr "Ponastavi razširitev"
 
 #: src/extensions-tool/command-uninstall.c:72
 msgid "Uninstall an extension"
 msgstr "Odstrani razširitev"
 
-#: src/extensions-tool/main.c:175
+#: src/extensions-tool/main.c:176
 msgid "Path"
 msgstr "Pot"
 
-#: src/extensions-tool/main.c:178
+#: src/extensions-tool/main.c:179
 msgid "URL"
 msgstr "Naslov URL"
 
-#: src/extensions-tool/main.c:181
+#: src/extensions-tool/main.c:182
 msgid "Original author"
 msgstr "Izvorni avtor"
 
-#: src/extensions-tool/main.c:184
+#: src/extensions-tool/main.c:185
 msgid "Version"
 msgstr "Različica"
 
-#: src/extensions-tool/main.c:187
+#: src/extensions-tool/main.c:188
 msgid "State"
 msgstr "Stanje"
 
-#: src/extensions-tool/main.c:221
+#: src/extensions-tool/main.c:222
 msgid "“version” takes no arguments"
-msgstr ""
+msgstr "»različica« ne prevzema argumentov"
 
-#: src/extensions-tool/main.c:223 src/extensions-tool/main.c:243
+#: src/extensions-tool/main.c:224 src/extensions-tool/main.c:244
 msgid "Usage:"
 msgstr "Uporaba:"
 
-#: src/extensions-tool/main.c:226
+#: src/extensions-tool/main.c:227
 msgid "Print version information and exit."
 msgstr "Izpiši podatke o različici in končaj."
 
-#: src/extensions-tool/main.c:241 src/extensions-tool/main.c:244
+#: src/extensions-tool/main.c:242 src/extensions-tool/main.c:245
 msgid "COMMAND"
 msgstr "UKAZ"
 
-#: src/extensions-tool/main.c:244
+#: src/extensions-tool/main.c:245
 msgid "[ARGS…]"
 msgstr "[ARGUMENTI ...]"
 
-#: src/extensions-tool/main.c:246
+#: src/extensions-tool/main.c:247
 msgid "Commands:"
 msgstr "Ukazi:"
 
-#: src/extensions-tool/main.c:247
+#: src/extensions-tool/main.c:248
 msgid "Print help"
 msgstr "Izpiši pomoč"
 
-#: src/extensions-tool/main.c:248 src/main.c:468
+#: src/extensions-tool/main.c:249 src/main.c:460
 msgid "Print version"
 msgstr "Izpiši različico"
 
-#: src/extensions-tool/main.c:249
+#: src/extensions-tool/main.c:250
 msgid "Enable extension"
 msgstr "Omogoči razširitev"
 
-#: src/extensions-tool/main.c:250
+#: src/extensions-tool/main.c:251
 msgid "Disable extension"
 msgstr "Onemogoči razširitev"
 
-#: src/extensions-tool/main.c:251
+#: src/extensions-tool/main.c:252
 msgid "Reset extension"
 msgstr "Ponastavi razširitev"
 
-#: src/extensions-tool/main.c:252
+#: src/extensions-tool/main.c:253
 msgid "Uninstall extension"
 msgstr "Odstrani razširitev"
 
-#: src/extensions-tool/main.c:253
+#: src/extensions-tool/main.c:254
 msgid "List extensions"
 msgstr "Izpiši seznam razširitev"
 
-#: src/extensions-tool/main.c:254 src/extensions-tool/main.c:255
+#: src/extensions-tool/main.c:255 src/extensions-tool/main.c:256
 msgid "Show extension info"
 msgstr "Pokaži podatke razširitve"
 
-#: src/extensions-tool/main.c:256
+#: src/extensions-tool/main.c:257
 msgid "Open extension preferences"
 msgstr "Odpri možnosti razširitve"
 
-#: src/extensions-tool/main.c:257
+#: src/extensions-tool/main.c:258
 msgid "Create extension"
 msgstr "Ustvari razširitev"
 
-#: src/extensions-tool/main.c:258
+#: src/extensions-tool/main.c:259
 msgid "Package extension"
 msgstr "Razširitev paketa"
 
-#: src/extensions-tool/main.c:259
-#, fuzzy
-#| msgid "UUIDs of extensions to enable"
+#: src/extensions-tool/main.c:260
 msgid "Install extension bundle"
-msgstr "Določila razširitev UUID, ki bodo omogočene"
+msgstr "Namesti paket razširitve"
 
-#: src/extensions-tool/main.c:261
+#: src/extensions-tool/main.c:262
 #, c-format
 msgid "Use “%s” to get detailed help.\n"
 msgstr "Z ukazom »%s« se izpiše podrobna pomoč.\n"
 
-#: src/main.c:474
+#: src/main.c:466
 msgid "Mode used by GDM for login screen"
 msgstr "Način uporabljen v GDM kot prijavni zaslon"
 
-#: src/main.c:480
+#: src/main.c:472
 msgid "Use a specific mode, e.g. “gdm” for login screen"
 msgstr "Uporabi poseben način, na primer »gdm« za prijavni zaslon"
 
-#: src/main.c:486
+#: src/main.c:478
 msgid "List possible modes"
 msgstr "Seznam mogočih načinov"
 
@@ -2732,7 +2711,7 @@ msgstr "Uporabnik je preklical pogovorno okno overitve"
 
 #. translators:
 #. * The number of sound outputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1871
+#: subprojects/gvc/gvc-mixer-control.c:1899
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -2743,7 +2722,7 @@ msgstr[3] "%u odvodi naprave"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1881
+#: subprojects/gvc/gvc-mixer-control.c:1909
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
@@ -2752,7 +2731,7 @@ msgstr[1] "%u dovod naprave"
 msgstr[2] "%u dovoda naprave"
 msgstr[3] "%u dovodi naprave"
 
-#: subprojects/gvc/gvc-mixer-control.c:2736
+#: subprojects/gvc/gvc-mixer-control.c:2766
 msgid "System Sounds"
 msgstr "Sistemski zvoki"
 
