@@ -164,7 +164,7 @@ var ScreenShield = class {
 
             // The time may have been extended using the tray applet from a
             // logged in session.
-            if (this._dialog === null)
+            if (!this._dialog)
                 return;
 
             // Take the dialog instance and wait for the success message to be shown
