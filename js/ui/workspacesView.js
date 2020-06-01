@@ -608,7 +608,7 @@ class WorkspacesDisplay extends St.Widget {
         return this._getPrimaryView().navigate_focus(from, direction, false);
     }
 
-    show(fadeOnPrimary) {
+    animateToOverview(fadeOnPrimary) {
         this._updateWorkspacesViews();
         for (let i = 0; i < this._workspacesViews.length; i++) {
             let animationType;

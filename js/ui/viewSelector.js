@@ -273,7 +273,7 @@ var ViewSelector = GObject.registerClass({
 
     show() {
         this.reset();
-        this._workspacesDisplay.show(this._showAppsButton.checked);
+        this._workspacesDisplay.animateToOverview(this._showAppsButton.checked);
         this._activePage = null;
         if (this._showAppsButton.checked)
             this._showPage(this._appsPage);
