@@ -1,8 +1,9 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported Workspace */
 
-const { Clutter, GLib, GObject, St } = imports.gi;
+const { Clutter, GLib, GObject, Meta, St } = imports.gi;
 
+const Background = imports.ui.background;
 const DND = imports.ui.dnd;
 const Main = imports.ui.main;
 const Overview = imports.ui.overview;
@@ -406,6 +407,7 @@ var WorkspaceLayout = GObject.registerClass({
         this._container = null;
         this._windows = new Map();
         this._sortedWindows = [];
+        this._background = null;
         this._lastBox = null;
         this._windowSlots = [];
         this._layout = null;
@@ -588,6 +590,9 @@ var WorkspaceLayout = GObject.registerClass({
                 this._windowSlots = this._getWindowSlots(box.copy());
         }
 
+        if (this._background)
+            this._background.allocate(box);
+
         const allocationScale = containerBox.get_width() / this._workarea.width;
 
         const workspaceBox = new Clutter.ActorBox();
@@ -595,7 +600,7 @@ var WorkspaceLayout = GObject.registerClass({
         let childBox = new Clutter.ActorBox();
 
         for (const child of container) {
-            if (!child.visible)
+            if (!child.visible || child === this._background)
                 continue;
 
             // The fifth element in the slot array is the WindowPreview
@@ -747,6 +752,16 @@ var WorkspaceLayout = GObject.registerClass({
         this.layout_changed();
     }
 
+    setBackground(background) {
+        if (this._background)
+            this._container.remove_child(this._background);
+
+        this._background = background;
+
+        if (this._background)
+            this._container.add_child(this._background);
+    }
+
     syncStacking(stackIndices) {
         const windows = [...this._windows.keys()];
         windows.sort((a, b) => {
@@ -756,7 +771,7 @@ var WorkspaceLayout = GObject.registerClass({
             return stackIndices[seqA] - stackIndices[seqB];
         });
 
-        let lastWindow = null;
+        let lastWindow = this._background;
         for (const window of windows) {
             window.setStackAbove(lastWindow);
             lastWindow = window;
@@ -830,6 +845,106 @@ var WorkspaceLayout = GObject.registerClass({
     }
 });
 
+var WorkspaceBackground = GObject.registerClass(
+class WorkspaceBackground extends St.Widget {
+    _init(monitorIndex) {
+        super._init({
+            style_class: 'workspace-background',
+            reactive: false,
+            clip_to_allocation: true,
+        });
+
+        this._monitorIndex = monitorIndex;
+        this._workarea = Main.layoutManager.getWorkAreaForMonitor(monitorIndex);
+
+        this._backgroundGroup = new Meta.BackgroundGroup({
+            layout_manager: new Clutter.BinLayout(),
+            x_expand: true,
+            y_expand: true,
+        });
+        this.add_child(this._backgroundGroup);
+
+        this._bgManager = null;
+
+        this.update();
+
+        this.connect('destroy', this._onDestroy.bind(this));
+    }
+
+    _getAdjustedWorkarea() {
+        const workarea = this._workarea.copy();
+
+        const themeNode = this.get_theme_node();
+        workarea.width -= themeNode.get_horizontal_padding();
+        workarea.height -= themeNode.get_vertical_padding();
+
+        return workarea;
+    }
+
+    vfunc_get_preferred_width(forHeight) {
+        const workarea = this._getAdjustedWorkarea();
+        if (forHeight === -1)
+            return [0, workarea.width];
+
+        const workAreaAspectRatio = workarea.width / workarea.height;
+        const widthPreservingAspectRatio = forHeight * workAreaAspectRatio;
+
+        return [0, widthPreservingAspectRatio];
+    }
+
+    vfunc_get_preferred_height(forWidth) {
+        const workarea = this._getAdjustedWorkarea();
+        if (forWidth === -1)
+            return [0, workarea.height];
+
+        const workAreaAspectRatio = workarea.width / workarea.height;
+        const heightPreservingAspectRatio = forWidth / workAreaAspectRatio;
+
+        return [0, heightPreservingAspectRatio];
+    }
+
+    vfunc_allocate(box) {
+        this.set_allocation(box);
+
+        const themeNode = this.get_theme_node();
+        const contentBox = themeNode.get_content_box(box);
+
+        const [contentWidth, contentHeight] = contentBox.get_size();
+        const monitor = Main.layoutManager.monitors[this._monitorIndex];
+        const xOff = (contentWidth / this._workarea.width) *
+            (this._workarea.x - monitor.x);
+        const yOff = (contentHeight / this._workarea.height) *
+            (this._workarea.y - monitor.y);
+
+        contentBox.x1 -= xOff;
+        contentBox.y1 -= yOff;
+        contentBox.set_size(xOff + contentWidth, yOff + contentHeight);
+        this._backgroundGroup.allocate(contentBox);
+    }
+
+
+    _onDestroy() {
+        if (this._bgManager) {
+            this._bgManager.destroy();
+            this._bgManager = null;
+        }
+    }
+
+    update() {
+        if (this._bgManager) {
+            this._bgManager.destroy();
+            this._bgManager = null;
+        }
+
+        this._bgManager = new Background.BackgroundManager({
+            container: this._backgroundGroup,
+            monitorIndex: this._monitorIndex,
+            controlPosition: false,
+            forceSize: false,
+        });
+    }
+});
+
 /**
  * @metaWorkspace: a #Meta.Workspace, or null
  */
@@ -848,6 +963,10 @@ class Workspace extends St.Widget {
 
         if (monitorIndex != Main.layoutManager.primaryIndex)
             this.add_style_class_name('external-monitor');
+
+        // Background
+        this._background = new WorkspaceBackground(monitorIndex);
+        this.layout_manager.setBackground(this._background);
 
         this.connect('style-changed', this._onStyleChanged.bind(this));
         this.connect('destroy', this._onDestroy.bind(this));
@@ -1269,7 +1388,7 @@ class Workspace extends St.Widget {
         this.layout_manager.addWindow(clone, metaWindow);
 
         if (this._windows.length == 0)
-            clone.setStackAbove(null);
+            clone.setStackAbove(this._background);
         else
             clone.setStackAbove(this._windows[this._windows.length - 1]);
 

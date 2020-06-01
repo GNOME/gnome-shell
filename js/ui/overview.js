@@ -8,19 +8,12 @@ const Signals = imports.signals;
 // this is defined here to make it available in imports.
 var ANIMATION_TIME = 250;
 
-const Background = imports.ui.background;
 const DND = imports.ui.dnd;
 const LayoutManager = imports.ui.layout;
-const Lightbox = imports.ui.lightbox;
 const Main = imports.ui.main;
 const MessageTray = imports.ui.messageTray;
 const OverviewControls = imports.ui.overviewControls;
 const Params = imports.misc.params;
-
-// Must be less than ANIMATION_TIME, since we switch to
-// or from the overview completely after ANIMATION_TIME,
-// and don't want the shading animation to get cut off
-var SHADE_ANIMATION_TIME = 240;
 
 var DND_WINDOW_SWITCH_TIMEOUT = 750;
 
@@ -176,15 +169,6 @@ var Overview = class {
         if (this.isDummy)
             return;
 
-        // The main Background actors are inside global.window_group which are
-        // hidden when displaying the overview, so we create a new
-        // one. Instances of this class share a single CoglTexture behind the
-        // scenes which allows us to show the background with different
-        // rendering options without duplicating the texture data.
-        this._backgroundGroup = new Meta.BackgroundGroup({ reactive: true });
-        Main.layoutManager.overviewGroup.add_child(this._backgroundGroup);
-        this._bgManagers = [];
-
         this._desktopFade = new St.Widget();
         Main.layoutManager.overviewGroup.add_child(this._desktopFade);
 
@@ -225,50 +209,6 @@ var Overview = class {
 
         if (this._initCalled)
             this.init();
-    }
-
-    _updateBackgrounds() {
-        for (let i = 0; i < this._bgManagers.length; i++)
-            this._bgManagers[i].destroy();
-
-        this._bgManagers = [];
-
-        for (let i = 0; i < Main.layoutManager.monitors.length; i++) {
-            let bgManager = new Background.BackgroundManager({ container: this._backgroundGroup,
-                                                               monitorIndex: i,
-                                                               vignette: true });
-            this._bgManagers.push(bgManager);
-        }
-    }
-
-    _unshadeBackgrounds() {
-        let backgrounds = this._backgroundGroup.get_children();
-        for (let i = 0; i < backgrounds.length; i++) {
-            backgrounds[i].ease_property('@content.brightness', 1.0, {
-                duration: SHADE_ANIMATION_TIME,
-                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            });
-            backgrounds[i].ease_property('@content.vignette-sharpness', 0.0, {
-                duration: SHADE_ANIMATION_TIME,
-                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            });
-        }
-    }
-
-    _shadeBackgrounds() {
-        let backgrounds = this._backgroundGroup.get_children();
-        for (let i = 0; i < backgrounds.length; i++) {
-            backgrounds[i].ease_property('@content.brightness',
-                Lightbox.VIGNETTE_BRIGHTNESS, {
-                    duration: SHADE_ANIMATION_TIME,
-                    mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-                });
-            backgrounds[i].ease_property('@content.vignette-sharpness',
-                Lightbox.VIGNETTE_SHARPNESS, {
-                    duration: SHADE_ANIMATION_TIME,
-                    mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-                });
-        }
     }
 
     _sessionUpdated() {
@@ -393,13 +333,6 @@ var Overview = class {
         return Clutter.EVENT_PROPAGATE;
     }
 
-    addAction(action) {
-        if (this.isDummy)
-            return;
-
-        this._backgroundGroup.add_action(action);
-    }
-
     _getDesktopClone() {
         let windows = global.get_window_actors().filter(
             w => w.meta_window.get_window_type() === Meta.WindowType.DESKTOP);
@@ -423,8 +356,6 @@ var Overview = class {
 
         this._coverPane.set_position(0, 0);
         this._coverPane.set_size(global.screen_width, global.screen_height);
-
-        this._updateBackgrounds();
     }
 
     _onRestacked() {
@@ -579,14 +510,13 @@ var Overview = class {
         Meta.disable_unredirect_for_display(global.display);
         this.viewSelector.animateToOverview();
 
-        this._overview.opacity = 0;
+        this._overview.opacity = 255;
         this._overview.ease({
             opacity: 255,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
             duration: ANIMATION_TIME,
             onComplete: () => this._showDone(),
         });
-        this._shadeBackgrounds();
 
         Main.layoutManager.overviewGroup.set_child_above_sibling(
             this._coverPane, null);
@@ -650,7 +580,6 @@ var Overview = class {
             duration: ANIMATION_TIME,
             onComplete: () => this._hideDone(),
         });
-        this._unshadeBackgrounds();
 
         Main.layoutManager.overviewGroup.set_child_above_sibling(
             this._coverPane, null);

@@ -379,7 +379,6 @@ class WorkspacesDisplay extends St.Widget {
                 this._workspacesViews[index].getActiveWorkspace().isEmpty())
                 Main.overview.hide();
         });
-        Main.overview.addAction(clickAction);
         this.bind_property('mapped', clickAction, 'enabled', GObject.BindingFlags.SYNC_CREATE);
         this._clickAction = clickAction;
 
