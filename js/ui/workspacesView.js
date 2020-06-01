@@ -608,7 +608,7 @@ class WorkspacesDisplay extends St.Widget {
         return this._getPrimaryView().navigate_focus(from, direction, false);
     }
 
-    show(fadeOnPrimary) {
+    reveal(fadeOnPrimary) {
         this._updateWorkspacesViews();
         for (let i = 0; i < this._workspacesViews.length; i++) {
             let animationType;
@@ -640,7 +640,7 @@ class WorkspacesDisplay extends St.Widget {
         }
     }
 
-    hide() {
+    conceal() {
         if (this._restackedNotifyId > 0) {
             Main.overview.disconnect(this._restackedNotifyId);
             this._restackedNotifyId = 0;
