@@ -609,6 +609,8 @@ class WorkspacesDisplay extends St.Widget {
     }
 
     show(fadeOnPrimary) {
+        super.show();
+
         this._updateWorkspacesViews();
         for (let i = 0; i < this._workspacesViews.length; i++) {
             let animationType;
@@ -641,6 +643,8 @@ class WorkspacesDisplay extends St.Widget {
     }
 
     hide() {
+        super.hide();
+
         if (this._restackedNotifyId > 0) {
             Main.overview.disconnect(this._restackedNotifyId);
             this._restackedNotifyId = 0;
