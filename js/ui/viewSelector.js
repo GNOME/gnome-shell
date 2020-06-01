@@ -273,7 +273,7 @@ var ViewSelector = GObject.registerClass({
 
     show() {
         this.reset();
-        this._workspacesDisplay.show(this._showAppsButton.checked);
+        this._workspacesDisplay.reveal(this._showAppsButton.checked);
         this._activePage = null;
         if (this._showAppsButton.checked)
             this._showPage(this._appsPage);
@@ -303,7 +303,7 @@ var ViewSelector = GObject.registerClass({
 
     hide() {
         this.reset();
-        this._workspacesDisplay.hide();
+        this._workspacesDisplay.dismiss();
     }
 
     _addPage(actor, name, a11yIcon, params) {
