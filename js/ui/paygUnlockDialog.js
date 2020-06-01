@@ -361,7 +361,7 @@ var PaygUnlockDialog = GObject.registerClass({
 
         this._messageButton = new St.Button({
             style_class: 'modal-dialog-button button',
-            button_mask: St.ButtonMask.THREE,
+            button_mask: St.ButtonMask.ONE | St.ButtonMask.THREE,
             reactive: true,
             can_focus: true,
             label: buttonLabel,
