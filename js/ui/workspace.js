@@ -3,7 +3,6 @@
 
 const { Atk, Clutter, GLib, GObject,
         Graphene, Meta, Pango, Shell, St } = imports.gi;
-const Signals = imports.signals;
 
 const DND = imports.ui.dnd;
 const Main = imports.ui.main;
@@ -200,7 +199,6 @@ var WindowClone = GObject.registerClass({
         'drag-begin': {},
         'drag-cancelled': {},
         'drag-end': {},
-        'hide-chrome': {},
         'selected': { param_types: [GObject.TYPE_UINT] },
         'show-chrome': {},
         'size-changed': {},
@@ -436,6 +434,8 @@ var WindowClone = GObject.registerClass({
                 mode: Clutter.AnimationMode.EASE_OUT_QUAD,
             });
         });
+
+        this.emit('show-chrome');
     }
 
     hideOverlay(animate) {
@@ -621,13 +621,11 @@ var WindowClone = GObject.registerClass({
     }
 
     vfunc_enter_event(crossingEvent) {
-        this.emit('show-chrome');
+        this.showOverlay(true);
         return super.vfunc_enter_event(crossingEvent);
     }
 
     vfunc_leave_event(crossingEvent) {
-        this.emit('hide-chrome');
-
         if (this._idleHideOverlayId > 0)
             GLib.source_remove(this._idleHideOverlayId);
 
@@ -652,13 +650,12 @@ var WindowClone = GObject.registerClass({
 
     vfunc_key_focus_in() {
         super.vfunc_key_focus_in();
-        this.emit('show-chrome');
+        this.showOverlay(true);
     }
 
     vfunc_key_focus_out() {
         super.vfunc_key_focus_out();
         this.hideOverlay(true);
-        this.emit('hide-chrome');
     }
 
     vfunc_key_press_event(keyEvent) {
@@ -698,7 +695,7 @@ var WindowClone = GObject.registerClass({
                 this._draggable.startDrag(x, y, global.get_current_time(), this._dragTouchSequence, event.get_device());
             });
         } else {
-            this.emit('show-chrome');
+            this.showOverlay(true);
         }
         return true;
     }
@@ -706,6 +703,7 @@ var WindowClone = GObject.registerClass({
     _onDragBegin(_draggable, _time) {
         this._dragSlot = this._slot;
         this.inDrag = true;
+        this.hideOverlay(false);
         this.emit('drag-begin');
     }
 
@@ -735,292 +733,12 @@ var WindowClone = GObject.registerClass({
                 parent.set_child_above_sibling(this, this._stackAbove);
         }
 
+        if (this['has-pointer'])
+            this.showOverlay(true);
 
         this.emit('drag-end');
     }
 });
-
-
-/**
- * @windowClone: Corresponding window clone
- * @parentActor: The actor which will be the parent of all overlay items
- *               such as the close button and window caption
- */
-var WindowOverlay = class {
-    constructor(windowClone, parentActor) {
-        let metaWindow = windowClone.metaWindow;
-
-        this._windowClone = windowClone;
-        this._parentActor = parentActor;
-        this._hidden = false;
-
-        this._idleHideOverlayId = 0;
-
-        this.borderSize = 0;
-        this.border = new St.Bin({ style_class: 'window-clone-border' });
-
-        this.title = new St.Label({ style_class: 'window-caption',
-                                    text: this._getCaption(),
-                                    reactive: true });
-        this.title.clutter_text.ellipsize = Pango.EllipsizeMode.END;
-        windowClone.label_actor = this.title;
-
-        this._maxTitleWidth = -1;
-
-        this._updateCaptionId = metaWindow.connect('notify::title', () => {
-            this.title.text = this._getCaption();
-            this.relayout(false);
-        });
-
-        this.closeButton = new St.Button({ style_class: 'window-close' });
-        this.closeButton.add_actor(new St.Icon({ icon_name: 'window-close-symbolic' }));
-        this.closeButton._overlap = 0;
-
-        this.closeButton.connect('clicked', () => this._windowClone.deleteAll());
-
-        windowClone.connect('destroy', this._onDestroy.bind(this));
-        windowClone.connect('show-chrome', this._onShowChrome.bind(this));
-        windowClone.connect('hide-chrome', this._onHideChrome.bind(this));
-
-        this.title.hide();
-        this.closeButton.hide();
-
-        // Don't block drop targets
-        Shell.util_set_hidden_from_pick(this.border, true);
-
-        parentActor.add_actor(this.border);
-        parentActor.add_actor(this.title);
-        parentActor.add_actor(this.closeButton);
-        this.title.connect('style-changed',
-                           this._onStyleChanged.bind(this));
-        this.closeButton.connect('style-changed',
-                                 this._onStyleChanged.bind(this));
-        this.border.connect('style-changed',
-                            this._onStyleChanged.bind(this));
-
-        // Force a style change if we are already on a stage - otherwise
-        // the signal will be emitted normally when we are added
-        if (parentActor.get_stage())
-            this._onStyleChanged();
-    }
-
-    hide() {
-        this._hidden = true;
-
-        this.hideOverlay();
-    }
-
-    show() {
-        this._hidden = false;
-
-        if (this._windowClone['has-pointer'])
-            this._animateVisible();
-    }
-
-    chromeHeights() {
-        return [Math.max(this.borderSize, this.closeButton.height - this.closeButton._overlap),
-                (this.title.height - this.borderSize) / 2];
-    }
-
-    chromeWidths() {
-        return [this.borderSize,
-                Math.max(this.borderSize, this.closeButton.width - this.closeButton._overlap)];
-    }
-
-    setMaxChromeWidth(max) {
-        if (this._maxTitleWidth == max)
-            return;
-
-        this._maxTitleWidth = max;
-    }
-
-    relayout(animate) {
-        let button = this.closeButton;
-        let title = this.title;
-        let border = this.border;
-
-        button.remove_all_transitions();
-        border.remove_all_transitions();
-        title.remove_all_transitions();
-
-        title.ensure_style();
-
-        let [cloneX, cloneY, cloneWidth, cloneHeight] = this._windowClone.slot;
-
-        let layout = Meta.prefs_get_button_layout();
-        let side = layout.left_buttons.includes(Meta.ButtonFunction.CLOSE) ? St.Side.LEFT : St.Side.RIGHT;
-
-        let buttonX;
-        let buttonY = cloneY - (button.height - button._overlap);
-        if (side == St.Side.LEFT)
-            buttonX = cloneX - (button.width - button._overlap);
-        else
-            buttonX = cloneX + (cloneWidth - button._overlap);
-
-        if (animate)
-            this._animateOverlayActor(button, Math.floor(buttonX), Math.floor(buttonY), button.width);
-        else
-            button.set_position(Math.floor(buttonX), Math.floor(buttonY));
-
-        // Clutter.Actor.get_preferred_width() will return the fixed width if
-        // one is set, so we need to reset the width by calling set_width(-1),
-        // to forward the call down to StLabel.
-        // We also need to save and restore the current width, otherwise the
-        // animation starts from the wrong point.
-        let prevTitleWidth = title.width;
-        title.set_width(-1);
-
-        let [titleMinWidth, titleNatWidth] = title.get_preferred_width(-1);
-        let titleWidth = Math.max(titleMinWidth,
-                                  Math.min(titleNatWidth, this._maxTitleWidth));
-        title.width = prevTitleWidth;
-
-        let titleX = cloneX + (cloneWidth - titleWidth) / 2;
-        let titleY = cloneY + cloneHeight - (title.height - this.borderSize) / 2;
-
-        if (animate) {
-            this._animateOverlayActor(title, Math.floor(titleX), Math.floor(titleY), titleWidth);
-        } else {
-            title.width = titleWidth;
-            title.set_position(Math.floor(titleX), Math.floor(titleY));
-        }
-
-        let borderX = cloneX - this.borderSize;
-        let borderY = cloneY - this.borderSize;
-        let borderWidth = cloneWidth + 2 * this.borderSize;
-        let borderHeight = cloneHeight + 2 * this.borderSize;
-
-        if (animate) {
-            this._animateOverlayActor(this.border, borderX, borderY,
-                                      borderWidth, borderHeight);
-        } else {
-            this.border.set_position(borderX, borderY);
-            this.border.set_size(borderWidth, borderHeight);
-        }
-    }
-
-    _getCaption() {
-        let metaWindow = this._windowClone.metaWindow;
-        if (metaWindow.title)
-            return metaWindow.title;
-
-        let tracker = Shell.WindowTracker.get_default();
-        let app = tracker.get_window_app(metaWindow);
-        return app.get_name();
-    }
-
-    _animateOverlayActor(actor, x, y, width, height) {
-        let params = {
-            x, y, width,
-            duration: Overview.ANIMATION_TIME,
-            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-        };
-
-        if (height !== undefined)
-            params.height = height;
-
-        actor.ease(params);
-    }
-
-    _windowCanClose() {
-        return this._windowClone.metaWindow.can_close() &&
-               !this._windowClone.hasAttachedDialogs();
-    }
-
-    _onDestroy() {
-        if (this._idleHideOverlayId > 0) {
-            GLib.source_remove(this._idleHideOverlayId);
-            this._idleHideOverlayId = 0;
-        }
-        this._windowClone.metaWindow.disconnect(this._updateCaptionId);
-        this.title.destroy();
-        this.closeButton.destroy();
-        this.border.destroy();
-    }
-
-    _animateVisible() {
-        this._parentActor.get_parent().set_child_above_sibling(
-            this._parentActor, null);
-
-        let toAnimate = [this.border, this.title];
-        if (this._windowCanClose())
-            toAnimate.push(this.closeButton);
-
-        toAnimate.forEach(a => {
-            a.show();
-            a.opacity = 0;
-            a.ease({
-                opacity: 255,
-                duration: WINDOW_OVERLAY_FADE_TIME,
-                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            });
-        });
-    }
-
-    _animateInvisible() {
-        [this.closeButton, this.border, this.title].forEach(a => {
-            a.opacity = 255;
-            a.ease({
-                opacity: 0,
-                duration: WINDOW_OVERLAY_FADE_TIME,
-                mode: Clutter.AnimationMode.EASE_IN_QUAD,
-            });
-        });
-    }
-
-    _onShowChrome() {
-        // We might get enter events on the clone while the overlay is
-        // hidden, e.g. during animations, we ignore these events,
-        // as the close button will be shown as needed when the overlays
-        // are shown again
-        if (this._hidden)
-            return;
-
-        this._animateVisible();
-        this.emit('chrome-visible');
-    }
-
-    _onHideChrome() {
-        if (this._idleHideOverlayId > 0)
-            GLib.source_remove(this._idleHideOverlayId);
-
-        this._idleHideOverlayId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, WINDOW_OVERLAY_IDLE_HIDE_TIMEOUT, this._idleHideOverlay.bind(this));
-        GLib.Source.set_name_by_id(this._idleHideOverlayId, '[gnome-shell] this._idleHideOverlay');
-    }
-
-    _idleHideOverlay() {
-        if (this.closeButton['has-pointer'] ||
-            this.title['has-pointer'])
-            return GLib.SOURCE_CONTINUE;
-
-        if (!this._windowClone['has-pointer'])
-            this._animateInvisible();
-
-        this._idleHideOverlayId = 0;
-        return GLib.SOURCE_REMOVE;
-    }
-
-    hideOverlay() {
-        if (this._idleHideOverlayId > 0) {
-            GLib.source_remove(this._idleHideOverlayId);
-            this._idleHideOverlayId = 0;
-        }
-        this.closeButton.hide();
-        this.border.hide();
-        this.title.hide();
-    }
-
-    _onStyleChanged() {
-        let closeNode = this.closeButton.get_theme_node();
-        this.closeButton._overlap = closeNode.get_length('-shell-close-overlap');
-
-        let borderNode = this.border.get_theme_node();
-        this.borderSize = borderNode.get_border_width(St.Side.TOP);
-
-        this._parentActor.queue_relayout();
-    }
-};
-Signals.addSignalMethods(WindowOverlay.prototype);
 
 var WindowPositionFlags = {
     NONE: 0,
@@ -1413,9 +1131,6 @@ class Workspace extends St.Widget {
 
         this.monitorIndex = monitorIndex;
         this._monitor = Main.layoutManager.monitors[this.monitorIndex];
-        this._windowOverlaysGroup = new Clutter.Actor();
-        // Without this the drop area will be overlapped.
-        this._windowOverlaysGroup.set_size(0, 0);
 
         if (monitorIndex != Main.layoutManager.primaryIndex)
             this.add_style_class_name('external-monitor');
@@ -1425,7 +1140,6 @@ class Workspace extends St.Widget {
         this._dropRect._delegate = this;
 
         this.add_actor(this._dropRect);
-        this.add_actor(this._windowOverlaysGroup);
 
         this.connect('destroy', this._onDestroy.bind(this));
 
@@ -1434,7 +1148,6 @@ class Workspace extends St.Widget {
         // Create clones for windows that should be
         // visible in the Overview
         this._windows = [];
-        this._windowOverlays = [];
         for (let i = 0; i < windows.length; i++) {
             if (this._isOverviewWindow(windows[i]))
                 this._addWindowClone(windows[i], true);
@@ -1619,11 +1332,6 @@ class Workspace extends St.Widget {
             const cloneHeight = cellHeight;
             clone.slot = [x, y, cloneWidth, cloneHeight];
 
-            clone.overlay.setMaxChromeWidth(cloneWidth);
-
-            if (clone.overlay && (initialPositioning || !clone.positioned))
-                clone.overlay.hide();
-
             if (!clone.positioned) {
                 // This window appeared after the overview was already up
                 // Grow the clone from the center of the slot
@@ -1654,15 +1362,13 @@ class Workspace extends St.Widget {
                     });
                 }
 
-                this._animateClone(clone, clone.overlay, x, y, cloneWidth, cloneHeight);
+                this._animateClone(clone, x, y, cloneWidth, cloneHeight);
             } else {
                 // cancel any active tweens (otherwise they might override our changes)
                 clone.remove_all_transitions();
                 clone.set_position(x, y);
                 clone.set_size(cloneWidth, cloneHeight);
                 clone.set_opacity(255);
-                clone.overlay.relayout(false);
-                this._showWindowOverlay(clone, clone.overlay);
             }
         }
     }
@@ -1686,25 +1392,13 @@ class Workspace extends St.Widget {
         }
     }
 
-    _animateClone(clone, overlay, x, y, width, height) {
+    _animateClone(clone, x, y, width, height) {
         clone.ease({
             x, y,
             width, height,
             duration: Overview.ANIMATION_TIME,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            onComplete: () => {
-                this._showWindowOverlay(clone, overlay);
-            },
         });
-        clone.overlay.relayout(true);
-    }
-
-    _showWindowOverlay(clone, overlay) {
-        if (clone.inDrag)
-            return;
-
-        if (overlay && overlay._hidden)
-            overlay.show();
     }
 
     _delayedWindowRepositioning() {
@@ -1824,7 +1518,7 @@ class Workspace extends St.Widget {
             return;
         }
 
-        let [clone, overlay_] = this._addWindowClone(win, false);
+        let clone = this._addWindowClone(win, false);
 
         if (win._overviewHint) {
             let x = win._overviewHint.x - this.x;
@@ -1838,7 +1532,6 @@ class Workspace extends St.Widget {
 
             clone.set_position(x, y);
             clone.set_size(width, height);
-            clone.overlay.relayout(false);
         }
 
         this._currentLayout = null;
@@ -1906,9 +1599,7 @@ class Workspace extends St.Widget {
         for (let i = 0; i < this._windows.length; i++) {
             if (i < topMaximizedWindow) {
                 // below top-most maximized window, don't animate
-                let overlay = this._windowOverlays[i];
-                if (overlay)
-                    overlay.hide();
+                this._windows[i].hideOverlay(false);
                 this._windows[i].opacity = 0;
             } else {
                 let fromTop = topIndex - i;
@@ -1962,9 +1653,7 @@ class Workspace extends St.Widget {
         for (let i = 0; i < this._windows.length; i++) {
             if (i < topMaximizedWindow) {
                 // below top-most maximized window, don't animate
-                let overlay = this._windowOverlays[i];
-                if (overlay)
-                    overlay.hide();
+                this._windows[i].hideOverlay(false);
                 this._windows[i].opacity = 0;
             } else {
                 let fromTop = topIndex - i;
@@ -1982,10 +1671,7 @@ class Workspace extends St.Widget {
 
     _fadeWindow(index, duration, opacity) {
         let clone = this._windows[index];
-        let overlay = this._windowOverlays[index];
-
-        if (overlay)
-            overlay.hide();
+        clone.hideOverlay(false);
 
         if (clone.metaWindow.showing_on_its_workspace()) {
             clone.x = clone.boundingBox.x;
@@ -2033,10 +1719,7 @@ class Workspace extends St.Widget {
 
     _zoomWindowFromOverview(index) {
         let clone = this._windows[index];
-        let overlay = this._windowOverlays[index];
-
-        if (overlay)
-            overlay.hide();
+        clone.hideOverlay(false);
 
         if (clone.metaWindow.showing_on_its_workspace()) {
             clone.ease({
@@ -2116,42 +1799,37 @@ class Workspace extends St.Widget {
     // Create a clone of a (non-desktop) window and add it to the window list
     _addWindowClone(win, positioned) {
         let clone = new WindowClone(win, this);
-        let overlay = new WindowOverlay(clone, this._windowOverlaysGroup);
-        clone.overlay = overlay;
         clone.positioned = positioned;
 
         clone.connect('selected',
                       this._onCloneSelected.bind(this));
         clone.connect('drag-begin', () => {
             Main.overview.beginWindowDrag(clone.metaWindow);
-            overlay.hide();
         });
         clone.connect('drag-cancelled', () => {
             Main.overview.cancelledWindowDrag(clone.metaWindow);
         });
         clone.connect('drag-end', () => {
             Main.overview.endWindowDrag(clone.metaWindow);
-            overlay.show();
         });
         clone.connect('size-changed', () => {
             this._recalculateWindowPositions(WindowPositionFlags.NONE);
+        });
+        clone.connect('show-chrome', () => {
+            let focus = global.stage.key_focus;
+            if (focus == null || this.contains(focus))
+                clone.grab_key_focus();
+
+            this._windows.forEach(c => {
+                if (c !== clone)
+                    c.hideOverlay(true);
+            });
         });
         clone.connect('destroy', () => {
             this._removeWindowClone(clone.metaWindow);
         });
 
-        this.add_actor(clone);
-
-        overlay.connect('chrome-visible', () => {
-            let focus = global.stage.key_focus;
-            if (focus == null || this.contains(focus))
-                clone.grab_key_focus();
-
-            this._windowOverlays.forEach(o => {
-                if (o != overlay)
-                    o.hideOverlay();
-            });
-        });
+        this.add_child(clone);
 
         if (this._windows.length == 0)
             clone.setStackAbove(null);
@@ -2159,9 +1837,8 @@ class Workspace extends St.Widget {
             clone.setStackAbove(this._windows[this._windows.length - 1]);
 
         this._windows.push(clone);
-        this._windowOverlays.push(overlay);
 
-        return [clone, overlay];
+        return clone;
     }
 
     _removeWindowClone(metaWin) {
@@ -2171,7 +1848,6 @@ class Workspace extends St.Widget {
         if (index == -1)
             return null;
 
-        this._windowOverlays.splice(index, 1);
         return this._windows.splice(index, 1).pop();
     }
 
@@ -2242,9 +1918,9 @@ class Workspace extends St.Widget {
 
         // All of the overlays have the same chrome sizes,
         // so just pick the first one.
-        let overlay = this._windowOverlays[0];
-        let [topBorder, bottomBorder] = overlay.chromeHeights();
-        let [leftBorder, rightBorder] = overlay.chromeWidths();
+        let clone = this._windows[0];
+        let [topBorder, bottomBorder] = clone.chromeHeights();
+        let [leftBorder, rightBorder] = clone.chromeWidths();
 
         rowSpacing += (topBorder + bottomBorder) / 2;
         columnSpacing += (rightBorder + leftBorder) / 2;
