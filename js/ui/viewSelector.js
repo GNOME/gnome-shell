@@ -271,7 +271,7 @@ var ViewSelector = GObject.registerClass({
         Main.overview.show();
     }
 
-    show() {
+    reveal() {
         this.reset();
         this._workspacesDisplay.reveal(this._showAppsButton.checked);
         this._activePage = null;
@@ -301,7 +301,7 @@ var ViewSelector = GObject.registerClass({
         this._workspacesDisplay.setWorkspacesFullGeometry(geom);
     }
 
-    hide() {
+    dismiss() {
         this.reset();
         this._workspacesDisplay.dismiss();
     }
