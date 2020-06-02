@@ -575,7 +575,7 @@ var Overview = class {
         this._activationTime = GLib.get_monotonic_time() / GLib.USEC_PER_SEC;
 
         Meta.disable_unredirect_for_display(global.display);
-        this.viewSelector.show();
+        this.viewSelector.animateToOverview();
 
         this._overview.opacity = 0;
         this._overview.ease({
