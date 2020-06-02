@@ -640,7 +640,7 @@ class WorkspacesDisplay extends St.Widget {
         }
     }
 
-    hide() {
+    vfunc_unmap() {
         if (this._restackedNotifyId > 0) {
             Main.overview.disconnect(this._restackedNotifyId);
             this._restackedNotifyId = 0;
@@ -656,6 +656,8 @@ class WorkspacesDisplay extends St.Widget {
         for (let i = 0; i < this._workspacesViews.length; i++)
             this._workspacesViews[i].destroy();
         this._workspacesViews = [];
+
+        super.vfunc_unmap();
     }
 
     _workspacesOnlyOnPrimaryChanged() {
