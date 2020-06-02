@@ -1,3 +1,37 @@
+3.36.3
+======
+* Add gnome-shell-extension-prefs wrapper for compatibility [Florian; !1220]
+* Fix distorted fallback icons in top bar [Florian; #2578]
+* Lower timeout for scrolling in overview [Alexander; #2602]
+* Only start systemd units when running under systemd
+  [Carlos, Florian; #2755, !1242, !1252]
+* Fix "ghost" media controls  [Bryan; #2776]
+* Fix zombie sockets from extensions downloader [Michael; #2774]
+* Update world clocks offsets when timezone changes [Bryan; #2209]
+* Fix "Do Not Disturb" setting getting reset on startup [Florian; #2804]
+* Fix pad OSD glitches [Carlos; !1290]
+* Fix matching notifications by PID [Florian; #2592]
+* Only allow updates for extensions that aren't cached [Florian; !1248]
+* Fixed crashes [Jonas, Florian; #2709, #2757]
+* Misc. bug fixes and cleanups [Michael, Piotr, Philip, Florian, Amr,
+  AsciiWolf; !1233, !1205, !1229, #2751, !1232, #2796, !1249, !1263,
+  !1277, #2286, !1288, !1291]
+
+Contributors:
+  AsciiWolf, Michael Catanzaro, Philip Chimento, Jonas Dreßler, Bryan Dunsmore,
+  Carlos Garnacho, Amr Ibrahim, Michael Lass, Alexander Mikhaylenko,
+  Florian Müllner
+
+Translators:
+  Fabio Tomat [fur], Cheng-Chia Tseng [zh_TW], Dušan Kazik [sk],
+  Piotr Drąg [pl], Daniel Mustieles [es], Nathan Follens [nl],
+  Bruce Cowan [en_GB], Florentina Mușat [ro], Yuri Chornoivan [uk],
+  Milo Casagrande [it], Anders Jonsson [sv], Charles Monzat [fr],
+  Daniel Șerbănescu [ro], sicklylife [ja], Kukuh Syafaat [id],
+  Emin Tufan Çetin [tr], Jiri Grönroos [fi], Марко Костић [sr],
+  Christian Kirbach [de], Changwoo Ryu [ko], Aurimas Černius [lt],
+  Matej Urbančič [sl]
+
 3.36.2
 ======
 * Add openPrefs() convenience method for extensions [Florian; !1163]
