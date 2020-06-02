@@ -132,6 +132,7 @@ var ViewSelector = GObject.registerClass({
         super._init({
             name: 'viewSelector',
             x_expand: true,
+            visible: false,
         });
 
         this._showAppsButton = showAppsButton;
@@ -272,6 +273,7 @@ var ViewSelector = GObject.registerClass({
     }
 
     animateToOverview() {
+        this.show();
         this.reset();
         this._workspacesDisplay.animateToOverview(this._showAppsButton.checked);
         this._activePage = null;
@@ -301,7 +303,8 @@ var ViewSelector = GObject.registerClass({
         this._workspacesDisplay.setWorkspacesFullGeometry(geom);
     }
 
-    hide() {
+    vfunc_unmap() {
+        super.vfunc_unmap();
         this.reset();
     }
 
