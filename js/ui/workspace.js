@@ -231,8 +231,6 @@ var WindowPreview = GObject.registerClass({
         this._delegate = this;
 
         this.slotId = 0;
-        this._slot = [0, 0, 0, 0];
-        this._dragSlot = [0, 0, 0, 0];
         this._stackAbove = null;
 
         this._windowContainer.layout_manager.connect(
@@ -482,17 +480,6 @@ var WindowPreview = GObject.registerClass({
         return this.hasAttachedDialogs();
     }
 
-    set slot(slot) {
-        this._slot = slot;
-    }
-
-    get slot() {
-        if (this.inDrag)
-            return this._dragSlot;
-        else
-            return this._slot;
-    }
-
     deleteAll() {
         const windows = this._windowContainer.layout_manager.getWindows();
 
@@ -701,7 +688,6 @@ var WindowPreview = GObject.registerClass({
     }
 
     _onDragBegin(_draggable, _time) {
-        this._dragSlot = this._slot;
         this.inDrag = true;
         this.hideOverlay(false);
         this.emit('drag-begin');
@@ -1331,7 +1317,6 @@ class Workspace extends St.Widget {
 
             const cloneWidth = cellWidth;
             const cloneHeight = cellHeight;
-            clone.slot = [x, y, cloneWidth, cloneHeight];
 
             if (!clone.positioned) {
                 // This window appeared after the overview was already up
@@ -1528,7 +1513,6 @@ class Workspace extends St.Widget {
             const height = win._overviewHint.height;
             delete win._overviewHint;
 
-            clone.slot = [x, y, width, height];
             clone.positioned = true;
 
             clone.set_position(x, y);
