@@ -1,7 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported findUrls, spawn, spawnCommandLine, spawnApp, trySpawnCommandLine,
             formatTime, formatTimeSpan, createTimeLabel, insertSorted,
-            makeCloseButton, ensureActorVisibleInScrollView, wiggle */
+            ensureActorVisibleInScrollView, wiggle */
 
 const { Clutter, Gio, GLib, GObject, Shell, St, GnomeDesktop } = imports.gi;
 const Gettext = imports.gettext;
@@ -361,51 +361,6 @@ function insertSorted(array, val, cmp) {
     array.splice(pos, 0, val);
 
     return pos;
-}
-
-var CloseButton = GObject.registerClass(
-class CloseButton extends St.Button {
-    _init(boxpointer) {
-        super._init({
-            style_class: 'notification-close',
-            x_expand: true,
-            y_expand: true,
-            x_align: Clutter.ActorAlign.END,
-            y_align: Clutter.ActorAlign.START,
-        });
-
-        this._boxPointer = boxpointer;
-        if (boxpointer)
-            this._boxPointer.connect('arrow-side-changed', this._sync.bind(this));
-    }
-
-    _computeBoxPointerOffset() {
-        if (!this._boxPointer || !this._boxPointer.get_stage())
-            return 0;
-
-        let side = this._boxPointer.arrowSide;
-        if (side == St.Side.TOP)
-            return this._boxPointer.getArrowHeight();
-        else
-            return 0;
-    }
-
-    _sync() {
-        let themeNode = this.get_theme_node();
-
-        let offY = this._computeBoxPointerOffset();
-        this.translation_x = themeNode.get_length('-shell-close-overlap-x');
-        this.translation_y = themeNode.get_length('-shell-close-overlap-y') + offY;
-    }
-
-    vfunc_style_changed() {
-        this._sync();
-        super.vfunc_style_changed();
-    }
-});
-
-function makeCloseButton(boxpointer) {
-    return new CloseButton(boxpointer);
 }
 
 function ensureActorVisibleInScrollView(scrollView, actor) {
