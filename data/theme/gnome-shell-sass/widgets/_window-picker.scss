@@ -54,8 +54,6 @@ $window_close_button_padding: 3px;
   width: $window_close_button_size;
   box-shadow: -1px 1px 5px 0px rgba(0,0,0,0.5);
 
-  -shell-close-overlap: $window_close_button_size * 0.5;
-
   &:hover {
     background-color: lighten($selected_bg_color, 5%);
   }
