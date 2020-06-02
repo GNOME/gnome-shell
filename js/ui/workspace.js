@@ -51,35 +51,22 @@ class WindowCloneLayout extends Clutter.LayoutManager {
         this.layout_changed();
     }
 
-    _makeBoxForWindow(window) {
-        // We need to adjust the position of the actor because of the
-        // consequences of invisible borders -- in reality, the texture
-        // has an extra set of "padding" around it that we need to trim
-        // down.
-
-        // The bounding box is based on the (visible) frame rect, while
-        // the buffer rect contains everything, including the invisible
-        // border padding.
-        let bufferRect = window.get_buffer_rect();
-
-        let box = new Clutter.ActorBox();
-
-        box.set_origin(bufferRect.x - this._boundingBox.x,
-                       bufferRect.y - this._boundingBox.y);
-        box.set_size(bufferRect.width, bufferRect.height);
-
-        return box;
-    }
-
     vfunc_get_preferred_height(_container, _forWidth) {
-        return [this._boundingBox.height, this._boundingBox.height];
+        return [0, this._boundingBox.height];
     }
 
     vfunc_get_preferred_width(_container, _forHeight) {
-        return [this._boundingBox.width, this._boundingBox.width];
+        return [0, this._boundingBox.width];
     }
 
-    vfunc_allocate(container, _box) {
+    vfunc_allocate(container, box) {
+        // If the scale isn't 1, we weren't allocated our preferred size
+        // and have to scale the children allocations accordingly.
+        const scaleX = box.get_width() / this._boundingBox.width;
+        const scaleY = box.get_height() / this._boundingBox.height;
+
+        const childBox = new Clutter.ActorBox();
+
         container.get_children().forEach(child => {
             let realWindow;
             if (child == container._windowClone)
@@ -87,7 +74,20 @@ class WindowCloneLayout extends Clutter.LayoutManager {
             else
                 realWindow = child.source;
 
-            child.allocate(this._makeBoxForWindow(realWindow.meta_window));
+            const bufferRect = realWindow.meta_window.get_buffer_rect();
+            childBox.set_origin(
+                bufferRect.x - this._boundingBox.x,
+                bufferRect.y - this._boundingBox.y);
+
+            const [, , natWidth, natHeight] = child.get_preferred_size();
+            childBox.set_size(natWidth, natHeight);
+
+            childBox.x1 *= scaleX;
+            childBox.x2 *= scaleX;
+            childBox.y1 *= scaleY;
+            childBox.y2 *= scaleY;
+
+            child.allocate(childBox);
         });
     }
 });
@@ -154,7 +154,8 @@ var WindowClone = GObject.registerClass({
 
         this._updateAttachedDialogs();
         this._computeBoundingBox();
-        this.set_translation(this._boundingBox.x, this._boundingBox.y, 0);
+        this.x = this._boundingBox.x;
+        this.y = this._boundingBox.y;
 
         this._computeWindowCenter();
 
@@ -263,18 +264,6 @@ var WindowClone = GObject.registerClass({
 
     get boundingBox() {
         return this._boundingBox;
-    }
-
-    get width() {
-        return this._boundingBox.width;
-    }
-
-    get height() {
-        return this._boundingBox.height;
-    }
-
-    getOriginalPosition() {
-        return [this._boundingBox.x, this._boundingBox.y];
     }
 
     _computeBoundingBox() {
@@ -870,7 +859,7 @@ var LayoutStrategy = class {
         // thumbnails is much more important to preserve than the width of
         // them, so two windows with equal height, but maybe differering
         // widths line up.
-        let ratio = window.height / this._monitor.height;
+        let ratio = window.boundingBox.height / this._monitor.height;
 
         // The purpose of this manipulation here is to prevent windows
         // from getting too small. For something like a calculator window,
@@ -990,11 +979,12 @@ var LayoutStrategy = class {
                 let window = row.windows[j];
 
                 let s = scale * this._computeWindowScale(window) * row.additionalScale;
-                let cellWidth = window.width * s;
-                let cellHeight = window.height * s;
+                let cellWidth = window.boundingBox.width * s;
+                let cellHeight = window.boundingBox.height * s;
 
                 s = Math.min(s, WINDOW_CLONE_MAXIMUM_SCALE);
-                let cloneWidth = window.width * s;
+                let cloneWidth = window.boundingBox.width * s;
+                const cloneHeight = window.boundingBox.height * s;
 
                 let cloneX = x + (cellWidth - cloneWidth) / 2;
                 let cloneY = row.y + row.height * row.additionalScale - cellHeight + compensation;
@@ -1003,7 +993,7 @@ var LayoutStrategy = class {
                 cloneX = Math.floor(cloneX);
                 cloneY = Math.floor(cloneY);
 
-                slots.push([cloneX, cloneY, s, window]);
+                slots.push([cloneX, cloneY, cloneWidth, cloneHeight, window]);
                 x += cellWidth + this._columnSpacing;
             }
         }
@@ -1048,7 +1038,7 @@ var UnalignedLayoutStrategy = class extends LayoutStrategy {
         for (let i = 0; i < windows.length; i++) {
             let window = windows[i];
             let s = this._computeWindowScale(window);
-            totalWidth += window.width * s;
+            totalWidth += window.boundingBox.width * s;
         }
 
         let idealRowWidth = totalWidth / numRows;
@@ -1066,8 +1056,8 @@ var UnalignedLayoutStrategy = class extends LayoutStrategy {
             for (; windowIdx < sortedWindows.length; windowIdx++) {
                 let window = sortedWindows[windowIdx];
                 let s = this._computeWindowScale(window);
-                let width = window.width * s;
-                let height = window.height * s;
+                let width = window.boundingBox.width * s;
+                let height = window.boundingBox.height * s;
                 row.fullHeight = Math.max(row.fullHeight, height);
 
                 // either new width is < idealWidth or new width is nearer from idealWidth then oldWidth
@@ -1342,7 +1332,7 @@ class Workspace extends St.Widget {
 
         for (let i = 0; i < slots.length; i++) {
             let slot = slots[i];
-            let [x, y, scale, clone] = slot;
+            const [x, y, cellWidth, cellHeight, clone] = slot;
 
             clone.slotId = i;
 
@@ -1351,8 +1341,8 @@ class Workspace extends St.Widget {
             if (clone.inDrag)
                 continue;
 
-            let cloneWidth = clone.width * scale;
-            let cloneHeight = clone.height * scale;
+            const cloneWidth = cellWidth;
+            const cloneHeight = cellHeight;
             clone.slot = [x, y, cloneWidth, cloneHeight];
 
             let cloneCenter = x + cloneWidth / 2;
@@ -1367,10 +1357,10 @@ class Workspace extends St.Widget {
             if (!clone.positioned) {
                 // This window appeared after the overview was already up
                 // Grow the clone from the center of the slot
-                clone.translation_x = x + cloneWidth / 2;
-                clone.translation_y = y + cloneHeight / 2;
-                clone.scale_x = 0;
-                clone.scale_y = 0;
+                clone.x = x + cloneWidth / 2;
+                clone.y = y + cloneHeight / 2;
+                clone.width = 0;
+                clone.height = 0;
                 clone.positioned = true;
             }
 
@@ -1381,10 +1371,10 @@ class Workspace extends St.Widget {
                      * can be scaled up later */
                     if (initialPositioning) {
                         clone.opacity = 0;
-                        clone.scale_x = 0;
-                        clone.scale_y = 0;
-                        clone.translation_x = x;
-                        clone.translation_y = y;
+                        clone.x = x;
+                        clone.y = y;
+                        clone.width = cloneWidth;
+                        clone.height = cloneHeight;
                     }
 
                     clone.ease({
@@ -1394,12 +1384,12 @@ class Workspace extends St.Widget {
                     });
                 }
 
-                this._animateClone(clone, clone.overlay, x, y, scale);
+                this._animateClone(clone, clone.overlay, x, y, cloneWidth, cloneHeight);
             } else {
                 // cancel any active tweens (otherwise they might override our changes)
                 clone.remove_all_transitions();
-                clone.set_translation(x, y, 0);
-                clone.set_scale(scale, scale);
+                clone.set_position(x, y);
+                clone.set_size(cloneWidth, cloneHeight);
                 clone.set_opacity(255);
                 clone.overlay.relayout(false);
                 this._showWindowOverlay(clone, clone.overlay);
@@ -1426,12 +1416,10 @@ class Workspace extends St.Widget {
         }
     }
 
-    _animateClone(clone, overlay, x, y, scale) {
+    _animateClone(clone, overlay, x, y, width, height) {
         clone.ease({
-            translation_x: x,
-            translation_y: y,
-            scale_x: scale,
-            scale_y: scale,
+            x, y,
+            width, height,
             duration: Overview.ANIMATION_TIME,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
             onComplete: () => {
@@ -1488,11 +1476,14 @@ class Workspace extends St.Widget {
             // this point.)
             if (win) {
                 let [stageX, stageY] = clone.get_transformed_position();
-                let [stageWidth] = clone.get_transformed_size();
+                const [transformedWidth, transformedHeight] =
+                    clone.get_transformed_size();
+
                 win._overviewHint = {
                     x: stageX,
                     y: stageY,
-                    scale: stageWidth / clone.width,
+                    width: transformedWidth,
+                    height: transformedHeight,
                 };
             }
             clone.destroy();
@@ -1568,14 +1559,15 @@ class Workspace extends St.Widget {
         if (win._overviewHint) {
             let x = win._overviewHint.x - this.x;
             let y = win._overviewHint.y - this.y;
-            let scale = win._overviewHint.scale;
+            const width = win._overviewHint.width;
+            const height = win._overviewHint.height;
             delete win._overviewHint;
 
-            clone.slot = [x, y, clone.width * scale, clone.height * scale];
+            clone.slot = [x, y, width, height];
             clone.positioned = true;
 
-            clone.set_translation(x, y, 0);
-            clone.set_scale(scale, scale);
+            clone.set_position(x, y);
+            clone.set_size(width, height);
             clone.overlay.relayout(false);
         }
 
@@ -1726,11 +1718,10 @@ class Workspace extends St.Widget {
             overlay.hide();
 
         if (clone.metaWindow.showing_on_its_workspace()) {
-            let [origX, origY] = clone.getOriginalPosition();
-            clone.scale_x = 1;
-            clone.scale_y = 1;
-            clone.translation_x = origX;
-            clone.translation_y = origY;
+            clone.x = clone.boundingBox.x;
+            clone.y = clone.boundingBox.y;
+            clone.width = clone.boundingBox.width;
+            clone.height = clone.boundingBox.height;
             clone.ease({
                 opacity,
                 duration,
@@ -1778,12 +1769,11 @@ class Workspace extends St.Widget {
             overlay.hide();
 
         if (clone.metaWindow.showing_on_its_workspace()) {
-            let [origX, origY] = clone.getOriginalPosition();
             clone.ease({
-                translation_x: origX,
-                translation_y: origY,
-                scale_x: 1,
-                scale_y: 1,
+                x: clone.boundingBox.x,
+                y: clone.boundingBox.y,
+                width: clone.boundingBox.width,
+                height: clone.boundingBox.height,
                 opacity: 255,
                 duration: Overview.ANIMATION_TIME,
                 mode: Clutter.AnimationMode.EASE_OUT_QUAD,
@@ -1791,8 +1781,8 @@ class Workspace extends St.Widget {
         } else {
             // The window is hidden, make it shrink and fade it out
             clone.ease({
-                scale_x: 0,
-                scale_y: 0,
+                width: 0,
+                height: 0,
                 opacity: 0,
                 duration: Overview.ANIMATION_TIME,
                 mode: Clutter.AnimationMode.EASE_OUT_QUAD,
@@ -2037,7 +2027,8 @@ class Workspace extends St.Widget {
             win._overviewHint = {
                 x: actor.x,
                 y: actor.y,
-                scale: actor.scale_x,
+                width: actor.width,
+                heigth: actor.height,
             };
 
             let metaWindow = win.get_meta_window();
