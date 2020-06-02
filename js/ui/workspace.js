@@ -40,6 +40,11 @@ var WindowCloneLayout = GObject.registerClass({
             'bounding-box', 'Bounding box', 'Bounding box',
             GObject.ParamFlags.READABLE,
             Clutter.ActorBox.$gtype),
+        'max-child-width': GObject.ParamSpec.double(
+            'max-child-width', 'Max child width', 'Max child width',
+            GObject.ParamFlags.READWRITE,
+            -1, Infinity, -1),
+
     },
 }, class WindowCloneLayout extends Clutter.LayoutManager {
     _init() {
@@ -47,6 +52,7 @@ var WindowCloneLayout = GObject.registerClass({
 
         this._container = null;
         this._boundingBox = new Clutter.ActorBox();
+        this._maxChildWidth = -1;
         this._windows = new Map();
     }
 
@@ -97,6 +103,8 @@ var WindowCloneLayout = GObject.registerClass({
             if (!child.visible)
                 continue;
 
+            const [, , natWidth, natHeight] = child.get_preferred_size();
+
             const windowInfo = this._windows.get(child);
             if (windowInfo) {
                 const bufferRect = windowInfo.metaWindow.get_buffer_rect();
@@ -104,18 +112,28 @@ var WindowCloneLayout = GObject.registerClass({
                     bufferRect.x - this._boundingBox.x1,
                     bufferRect.y - this._boundingBox.y1);
 
-                const [, , natWidth, natHeight] = child.get_preferred_size();
                 childBox.set_size(natWidth, natHeight);
 
                 childBox.x1 *= scaleX;
                 childBox.x2 *= scaleX;
                 childBox.y1 *= scaleY;
                 childBox.y2 *= scaleY;
-
-                child.allocate(childBox);
             } else {
-                child.allocate_preferred_size();
+                childBox.set_origin(
+                    child.fixed_position_set ? child.fixed_x : 0,
+                    child.fixed_position_set ? child.fixed_y : 0);
+
+                childBox.set_size(natWidth, natHeight);
+
+                if (this._maxChildWidth > 0 &&
+                    childBox.get_width() > this._maxChildWidth) {
+                    const excessWidth = childBox.get_width() - this._maxChildWidth;
+                    childBox.x1 += excessWidth / 2;
+                    childBox.x2 -= excessWidth / 2;
+                }
             }
+
+            child.allocate(childBox);
         }
     }
 
@@ -162,6 +180,20 @@ var WindowCloneLayout = GObject.registerClass({
     // eslint-disable-next-line camelcase
     get bounding_box() {
         return this._boundingBox;
+    }
+
+    // eslint-disable-next-line camelcase
+    get max_child_width() {
+        return this._maxChildWidth;
+    }
+
+    // eslint-disable-next-line camelcase
+    set max_child_width(w) {
+        if (this._maxChildWidth === w)
+            return;
+
+        this._maxChildWidth = w;
+        // don't call this.layout_changed() here to avoid allocation loops
     }
 });
 
