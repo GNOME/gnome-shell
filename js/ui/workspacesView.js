@@ -393,7 +393,10 @@ class ExtraWorkspaceView extends WorkspacesViewBase {
 var WorkspacesDisplay = GObject.registerClass(
 class WorkspacesDisplay extends St.Widget {
     _init(scrollAdjustment) {
-        super._init({ clip_to_allocation: true });
+        super._init({
+            visible: true,
+            clip_to_allocation: true,
+        });
         this.connect('notify::allocation', this._updateWorkspacesActualGeometry.bind(this));
 
         let workspaceManager = global.workspace_manager;
@@ -609,6 +612,7 @@ class WorkspacesDisplay extends St.Widget {
     }
 
     animateToOverview(fadeOnPrimary) {
+        this.show();
         this._updateWorkspacesViews();
         for (let i = 0; i < this._workspacesViews.length; i++) {
             let animationType;
@@ -640,7 +644,7 @@ class WorkspacesDisplay extends St.Widget {
         }
     }
 
-    hide() {
+    vfunc_hide() {
         if (this._restackedNotifyId > 0) {
             Main.overview.disconnect(this._restackedNotifyId);
             this._restackedNotifyId = 0;
@@ -656,6 +660,8 @@ class WorkspacesDisplay extends St.Widget {
         for (let i = 0; i < this._workspacesViews.length; i++)
             this._workspacesViews[i].destroy();
         this._workspacesViews = [];
+
+        super.vfunc_hide();
     }
 
     _workspacesOnlyOnPrimaryChanged() {
