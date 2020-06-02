@@ -28,10 +28,6 @@ const State = {
     SCROLLING: 1,
 };
 
-function clamp(value, min, max) {
-    return Math.max(min, Math.min(max, value));
-}
-
 const TouchpadSwipeGesture = GObject.registerClass({
     Properties: {
         'enabled': GObject.ParamSpec.boolean(
@@ -558,8 +554,8 @@ var SwipeTracker = GObject.registerClass({
 
         let firstPoint = this._snapPoints[0];
         let lastPoint = this._snapPoints[this._snapPoints.length - 1];
-        this._progress = clamp(this._progress, firstPoint, lastPoint);
-        this._progress = clamp(this._progress,
+        this._progress = Math.clamp(this._progress, firstPoint, lastPoint);
+        this._progress = Math.clamp(this._progress,
             this._initialProgress - 1, this._initialProgress + 1);
 
         this.emit('update', this._progress);
@@ -606,7 +602,7 @@ var SwipeTracker = GObject.registerClass({
 
         let duration = Math.abs((this._progress - endProgress) / velocity * DURATION_MULTIPLIER);
         if (duration > 0) {
-            duration = clamp(duration,
+            duration = Math.clamp(duration,
                 MIN_ANIMATION_DURATION, MAX_ANIMATION_DURATION);
         }
 
