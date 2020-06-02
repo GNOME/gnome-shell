@@ -1,3 +1,44 @@
+3.37.2
+======
+* Add support for "PrefersNonDefaultGPU" desktop key [Bastien; !1226]
+* Only start systemd units when running under systemd
+  [Carlos, Florian; #2755, !1242, !1252]
+* Fix "ghost" media controls [Bryan; #2776]
+* Fix zombie sockets from extensions downloader [Michael; #2774]
+* Update world clocks offsets when timezone changes [Bryan; #2209]
+* Support scrolling anywhere in slider menu items [Peter; #2795]
+* Fix "Do Not Disturb" setting getting reset on startup [Florian; #2804]
+* Only allow updates for extensions that aren't cached [Florian; !1248]
+* Fix matching notifications by PID [Florian; #2592]
+* Indicate extension errors in Extensions app [Florian; #2337]
+* Add clipboard API for querying supported mimetypes [Andy; #2819]
+* Add preview to color picker [Florian; #451]
+* Improve world clocks styling [PrOF-kk; #2825]
+* Remove Frequent view from app picker [Georges; !880]
+* Fix pad OSD glitches [Carlos; !1290]
+* Expose actor tree in looking glass [Georges; !1292]
+* Fixed crashes [Jonas D., Florian; #2709, #2757]
+* Misc. bug fixes and cleanups [Florian, AsciiWolf, Michael, Piotr, Ting-Wei,
+  Amr, Alexander, Bryan, Georges, Jonas D., Andy, Björn, Koki, Carlos; !1229,
+  !1231, !1233, !1235, #2578, #2735, #2751, #2602, #2777, !1249, #2796, !1268,
+  !1269, !1265, !1245, !1273, #2816, !1274, !1263, !1188, !1276, #2652, !1277,
+  !1281, #2286, !1267, !1286, !1279, !1288, !1293, !1294, !1291]
+
+Contributors:
+  AsciiWolf, Michael Catanzaro, Björn Daase, Jonas Dreßler, Bryan Dunsmore,
+  Koki Fukuda, Carlos Garnacho, Andy Holmes, Amr Ibrahim, Soslan Khubulov,
+  Ting-Wei Lan, Michael Lass, Alexander Mikhaylenko, Florian Müllner,
+  Georges Basile Stavracas Neto, Bastien Nocera, PrOF-kk, Peter Simonyi
+
+Translators:
+  Fabio Tomat [fur], Cheng-Chia Tseng [zh_TW], Yuri Chornoivan [uk],
+  Dušan Kazik [sk], Piotr Drąg [pl], Soslan Khubulov [os],
+  Daniel Mustieles [es], Nathan Follens [nl], Bruce Cowan [en_GB],
+  Florentina Mușat [ro], Milo Casagrande [it], Anders Jonsson [sv],
+  Charles Monzat [fr], Danial Behzadi [fa], sicklylife [ja], Kukuh Syafaat [id],
+  Jordi Mas [ca], Emin Tufan Çetin [tr], Jiri Grönroos [fi], Марко Костић [sr],
+  Christian Kirbach [de], Changwoo Ryu [ko], Matej Urbančič [sl]
+
 3.37.1
 ======
 * Improve bluetooth submenu title [Mariana; #2340]
