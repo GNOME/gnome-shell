@@ -221,8 +221,6 @@ var WindowClone = GObject.registerClass({
         this._delegate = this;
 
         this.slotId = 0;
-        this._slot = [0, 0, 0, 0];
-        this._dragSlot = [0, 0, 0, 0];
         this._stackAbove = null;
 
         this.layout_manager.connect('notify::bounding-box', () =>
@@ -432,17 +430,6 @@ var WindowClone = GObject.registerClass({
 
     vfunc_has_overlaps() {
         return this.hasAttachedDialogs();
-    }
-
-    set slot(slot) {
-        this._slot = slot;
-    }
-
-    get slot() {
-        if (this.inDrag)
-            return this._dragSlot;
-        else
-            return this._slot;
     }
 
     deleteAll() {
@@ -659,7 +646,6 @@ var WindowClone = GObject.registerClass({
     }
 
     _onDragBegin(_draggable, _time) {
-        this._dragSlot = this._slot;
         this.inDrag = true;
         this.hideOverlay(false);
         this.emit('drag-begin');
@@ -1288,7 +1274,6 @@ class Workspace extends St.Widget {
 
             const cloneWidth = cellWidth;
             const cloneHeight = cellHeight;
-            clone.slot = [x, y, cloneWidth, cloneHeight];
 
             let cloneCenter = x + cloneWidth / 2;
             let maxChromeWidth = 2 * Math.min(
@@ -1491,7 +1476,6 @@ class Workspace extends St.Widget {
             const height = win._overviewHint.height;
             delete win._overviewHint;
 
-            clone.slot = [x, y, width, height];
             clone.positioned = true;
 
             clone.set_position(x, y);
