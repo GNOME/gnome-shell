@@ -362,6 +362,10 @@ function init() {
     const Format = imports.format;
 
     String.prototype.format = Format.format;
+
+    Math.prototype.clamp = function (x, lower, upper) {
+        return Math.min(Math.max(x, lower), upper);
+    };
 }
 
 // adjustAnimationTime:

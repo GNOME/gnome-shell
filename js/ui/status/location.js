@@ -225,10 +225,6 @@ class Indicator extends PanelMenu.SystemIndicator {
     }
 });
 
-function clamp(value, min, max) {
-    return Math.max(min, Math.min(max, value));
-}
-
 var AppAuthorizer = class {
     constructor(desktopId, reqAccuracyLevel, permStoreProxy, maxAccuracyLevel) {
         this.desktopId = desktopId;
@@ -313,9 +309,8 @@ var AppAuthorizer = class {
 
     _completeAuth() {
         if (this._accuracyLevel != GeoclueAccuracyLevel.NONE) {
-            this._accuracyLevel = clamp(this._accuracyLevel,
-                                        0,
-                                        this._maxAccuracyLevel);
+            this._accuracyLevel = Math.clamp(this._accuracyLevel,
+                0, this._maxAccuracyLevel);
         }
         this._saveToPermissionStore();
 
