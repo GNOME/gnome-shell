@@ -251,6 +251,157 @@ var WindowClone = GObject.registerClass({
 
         this._selected = false;
         this._closeRequested = false;
+        this._idleHideOverlayId = 0;
+
+        this._border = new St.Widget({
+            visible: false,
+            style_class: 'window-clone-border',
+        });
+        this._borderConstraint = new Clutter.BindConstraint({
+            source: this,
+            coordinate: Clutter.BindCoordinate.SIZE
+        });
+        this._border.add_constraint(this._borderConstraint);
+        this._border.add_constraint(new Clutter.AlignConstraint({
+            source: this,
+            align_axis: Clutter.AlignAxis.BOTH,
+            ignore_source_position: true,
+            factor: 0.5,
+        }));
+        this._border.connect('style-changed',
+            this._onBorderStyleChanged.bind(this));
+
+        this._title = new St.Label({
+            visible: false,
+            style_class: 'window-caption',
+            text: this._getCaption(),
+            reactive: true,
+        });
+        this._title.add_constraint(new Clutter.AlignConstraint({
+            source: this,
+            align_axis: Clutter.AlignAxis.X_AXIS,
+            ignore_source_position: true,
+            factor: 0.5,
+        }));
+        this._title.add_constraint(new Clutter.AlignConstraint({
+            source: this,
+            align_axis: Clutter.AlignAxis.Y_AXIS,
+            align_position: Clutter.AlignPosition.ON_EDGE,
+            ignore_source_position: true,
+            factor: 1,
+        }));
+        this._title.clutter_text.ellipsize = Pango.EllipsizeMode.END;
+        this.label_actor = this._title;
+        this._updateCaptionId = this.metaWindow.connect('notify::title', () => {
+            this._title.text = this._getCaption();
+        });
+
+        this._closeButton = new St.Button({
+            visible: false,
+            style_class: 'window-close',
+            child: new St.Icon({ icon_name: 'window-close-symbolic' }),
+        });
+        this._closeButton.add_constraint(new Clutter.AlignConstraint({
+            source: this._border,
+            align_axis: Clutter.AlignAxis.X_AXIS,
+            align_position: Clutter.AlignPosition.ON_EDGE,
+            factor: 1,
+        }));
+        this._closeButton.add_constraint(new Clutter.AlignConstraint({
+            source: this._border,
+            align_axis: Clutter.AlignAxis.Y_AXIS,
+            align_position: Clutter.AlignPosition.ON_EDGE,
+            factor: 0,
+        }));
+        this._closeButton.connect('clicked', () => this.deleteAll());
+
+        this.add_child(this._border);
+        this.add_child(this._title);
+        this.add_child(this._closeButton);
+    }
+
+    _onBorderStyleChanged() {
+        let borderNode = this._border.get_theme_node();
+        this._borderSize = borderNode.get_border_width(St.Side.TOP);
+
+        this._borderConstraint.offset = this._borderSize * 2;
+    }
+
+    _getCaption() {
+        if (this.metaWindow.title)
+            return this.metaWindow.title;
+
+        let tracker = Shell.WindowTracker.get_default();
+        let app = tracker.get_window_app(this.metaWindow);
+        return app.get_name();
+    }
+
+    chromeHeights() {
+        this._border.ensure_style();
+        return [this._borderSize + this._closeButton.height / 2,
+                Math.max(this._borderSize, this._title.height / 2)];
+    }
+
+    chromeWidths() {
+        this._border.ensure_style();
+        return [this._borderSize,
+                this._borderSize + this._closeButton.width / 2];
+    }
+
+    setMaxChromeWidth(maxWidth) {
+        this.layout_manager.max_child_width = maxWidth;
+    }
+
+    showOverlay(animate) {
+        const ongoingTransition = this._border.get_transition('opacity');
+
+        // Don't do anything if we're fully visible already
+        if (this._border.visible && !ongoingTransition)
+            return;
+
+        // If we're supposed to animate and an animation in our direction
+        // is already happening, let that one continue
+        if (animate &&
+            ongoingTransition &&
+            ongoingTransition.get_interval().peek_final_value() === 255)
+            return;
+
+        [this._border, this._title, this._closeButton].forEach(a => {
+            a.remove_transition('opacity');
+            a.opacity = 0;
+            a.show();
+            a.ease({
+                opacity: 255,
+                duration: animate ? WINDOW_OVERLAY_FADE_TIME : 0,
+                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            });
+        });
+    }
+
+    hideOverlay(animate) {
+        const ongoingTransition = this._border.get_transition('opacity');
+
+        // Don't do anything if we're fully hidden already
+        if (!this._border.visible && !ongoingTransition)
+            return;
+
+        // If we're supposed to animate and an animation in our direction
+        // is already happening, let that one continue
+        if (animate &&
+            ongoingTransition &&
+            ongoingTransition.get_interval().peek_final_value() === 0)
+            return;
+
+        [this._border, this._title, this._closeButton].forEach(a => {
+            a.remove_transition('opacity');
+            a.opacity = 255;
+            a.ease({
+                opacity: 0,
+                duration: animate ? WINDOW_OVERLAY_FADE_TIME : 0,
+                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+                onComplete: () => a.hide(),
+            });
+        });
     }
 
     _addWindow(metaWindow) {
@@ -297,6 +448,9 @@ var WindowClone = GObject.registerClass({
         // Delete all windows, starting from the bottom-most (most-modal) one
         let windows = this.get_children();
         for (let i = windows.length - 1; i >= 1; i--) {
+            if (!(windows[i] instanceof Clutter.Clone))
+                continue;
+
             let realWindow = windows[i].source;
             let metaWindow = realWindow.meta_window;
 
@@ -400,9 +554,16 @@ var WindowClone = GObject.registerClass({
         this.metaWindow._delegate = null;
         this._delegate = null;
 
+        this.metaWindow.disconnect(this._updateCaptionId);
+
         if (this._longPressLater) {
             Meta.later_remove(this._longPressLater);
             delete this._longPressLater;
+        }
+
+        if (this._idleHideOverlayId !== 0) {
+            GLib.source_remove(this._idleHideOverlayId);
+            this._idleHideOverlayId = 0;
         }
 
         if (this.inDrag) {
@@ -423,6 +584,26 @@ var WindowClone = GObject.registerClass({
 
     vfunc_leave_event(crossingEvent) {
         this.emit('hide-chrome');
+
+        if (this._idleHideOverlayId !== 0)
+            GLib.source_remove(this._idleHideOverlayId);
+
+        this._idleHideOverlayId = GLib.timeout_add(
+            GLib.PRIORITY_DEFAULT,
+            WINDOW_OVERLAY_IDLE_HIDE_TIMEOUT, () => {
+                if (this._closeButton['has-pointer'] ||
+                    this._title['has-pointer'])
+                    return GLib.SOURCE_CONTINUE;
+
+                if (!this['has-pointer'])
+                    this.hideOverlay(true);
+
+                this._idleHideOverlayId = 0;
+                return GLib.SOURCE_REMOVE;
+            });
+
+        GLib.Source.set_name_by_id(this._idleHideOverlayId, '[gnome-shell] this._idleHideOverlayId');
+
         return super.vfunc_leave_event(crossingEvent);
     }
 
@@ -433,6 +614,7 @@ var WindowClone = GObject.registerClass({
 
     vfunc_key_focus_out() {
         super.vfunc_key_focus_out();
+        this.hideOverlay(true);
         this.emit('hide-chrome');
     }
 
