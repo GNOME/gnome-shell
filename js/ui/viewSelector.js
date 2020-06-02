@@ -303,7 +303,6 @@ var ViewSelector = GObject.registerClass({
 
     hide() {
         this.reset();
-        this._workspacesDisplay.hide();
     }
 
     _addPage(actor, name, a11yIcon, params) {
