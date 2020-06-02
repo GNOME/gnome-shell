@@ -188,10 +188,6 @@ var WindowClone = GObject.registerClass({
         this.metaWindow._delegate = this;
         this._workspace = workspace;
 
-        // The MetaShapedTexture that we clone has a size that includes
-        // the invisible border; this is inconvenient; rather than trying
-        // to compensate all over the place we insert a ClutterActor into
-        // the hierarchy that is sized to only the visible portion.
         super._init({
             reactive: true,
             can_focus: true,
