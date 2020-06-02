@@ -155,10 +155,6 @@ class BaseIcon extends St.Bin {
     }
 });
 
-function clamp(value, min, max) {
-    return Math.max(Math.min(value, max), min);
-}
-
 function zoomOutActor(actor) {
     let [x, y] = actor.get_transformed_position();
     zoomOutActorAtPos(actor, x, y);
@@ -182,8 +178,8 @@ function zoomOutActorAtPos(actor, x, y) {
     let scaledHeight = height * APPICON_ANIMATION_OUT_SCALE;
     let scaledX = x - (scaledWidth - width) / 2;
     let scaledY = y - (scaledHeight - height) / 2;
-    let containedX = clamp(scaledX, monitor.x, monitor.x + monitor.width - scaledWidth);
-    let containedY = clamp(scaledY, monitor.y, monitor.y + monitor.height - scaledHeight);
+    let containedX = Math.clamp(scaledX, monitor.x, monitor.x + monitor.width - scaledWidth);
+    let containedY = Math.clamp(scaledY, monitor.y, monitor.y + monitor.height - scaledHeight);
 
     actorClone.ease({
         scale_x: APPICON_ANIMATION_OUT_SCALE,

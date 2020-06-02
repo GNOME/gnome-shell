@@ -72,10 +72,6 @@ function _getFolderName(folder) {
     return name;
 }
 
-function clamp(value, min, max) {
-    return Math.max(min, Math.min(max, value));
-}
-
 function _getViewFromIcon(icon) {
     for (let parent = icon.get_parent(); parent; parent = parent.get_parent()) {
         if (parent instanceof BaseAppView)
@@ -627,7 +623,7 @@ class AppDisplay extends BaseAppView {
     }
 
     goToPage(pageNumber, animate = true) {
-        pageNumber = clamp(pageNumber, 0, this._grid.nPages() - 1);
+        pageNumber = Math.clamp(pageNumber, 0, this._grid.nPages() - 1);
 
         if (this._grid.currentPage === pageNumber &&
             this._displayingDialog &&
