@@ -802,6 +802,191 @@ var Extensions = GObject.registerClass({
     }
 });
 
+
+var ActorLink = GObject.registerClass({
+    Signals: {
+        'inspect-actor': {},
+    },
+}, class ActorLink extends St.Button {
+    _init(actor) {
+        this._arrow = new St.Icon({
+            icon_name: 'pan-end-symbolic',
+            icon_size: 8,
+            x_align: Clutter.ActorAlign.CENTER,
+            y_align: Clutter.ActorAlign.CENTER,
+            pivot_point: new Graphene.Point({ x: 0.5, y: 0.5 }),
+        });
+
+        const label = new St.Label({
+            text: actor.toString(),
+            x_align: Clutter.ActorAlign.START,
+        });
+
+        const inspectButton = new St.Button({
+            child: new St.Icon({
+                icon_name: 'insert-object-symbolic',
+                icon_size: 12,
+                y_align: Clutter.ActorAlign.CENTER,
+            }),
+            reactive: true,
+            x_expand: true,
+            x_align: Clutter.ActorAlign.START,
+            y_align: Clutter.ActorAlign.CENTER,
+        });
+        inspectButton.connect('clicked', () => this.emit('inspect-actor'));
+
+        const box = new St.BoxLayout();
+        box.add_child(this._arrow);
+        box.add_child(label);
+        box.add_child(inspectButton);
+
+        super._init({
+            reactive: true,
+            track_hover: true,
+            toggle_mode: true,
+            style_class: 'actor-link',
+            child: box,
+            x_align: Clutter.ActorAlign.START,
+        });
+
+        this._actor = actor;
+    }
+
+    vfunc_clicked() {
+        this._arrow.ease({
+            rotation_angle_z: this.checked ? 90 : 0,
+            duration: 250,
+        });
+    }
+});
+
+var ActorTreeViewer = GObject.registerClass(
+class ActorTreeViewer extends St.BoxLayout {
+    _init(lookingGlass) {
+        super._init();
+
+        this._lookingGlass = lookingGlass;
+        this._actorData = new Map();
+    }
+
+    _showActorChildren(actor) {
+        const data = this._actorData.get(actor);
+        if (!data || data.visible)
+            return;
+
+        data.visible = true;
+        data.actorAddedId = actor.connect('actor-added', (container, child) => {
+            this._addActor(data.children, child);
+        });
+        data.actorRemovedId = actor.connect('actor-removed', (container, child) => {
+            this._removeActor(child);
+        });
+
+        for (let child of actor)
+            this._addActor(data.children, child);
+    }
+
+    _hideActorChildren(actor) {
+        const data = this._actorData.get(actor);
+        if (!data || !data.visible)
+            return;
+
+        for (let child of actor)
+            this._removeActor(child);
+
+        data.visible = false;
+        if (data.actorAddedId > 0) {
+            actor.disconnect(data.actorAddedId);
+            data.actorAddedId = 0;
+        }
+        if (data.actorRemovedId > 0) {
+            actor.disconnect(data.actorRemovedId);
+            data.actorRemovedId = 0;
+        }
+        data.children.remove_all_children();
+    }
+
+    _addActor(container, actor) {
+        if (this._actorData.has(actor))
+            return;
+
+        if (actor === this._lookingGlass)
+            return;
+
+        const button = new ActorLink(actor);
+        button.connect('notify::checked', () => {
+            this._lookingGlass.setBorderPaintTarget(actor);
+            if (button.checked)
+                this._showActorChildren(actor);
+            else
+                this._hideActorChildren(actor);
+        });
+        button.connect('inspect-actor', () => {
+            this._lookingGlass.inspectObject(actor, button);
+        });
+
+        const mainContainer = new St.BoxLayout({ vertical: true });
+        const childrenContainer = new St.BoxLayout({
+            vertical: true,
+            style: 'padding: 0 0 0 18px',
+        });
+
+        mainContainer.add_child(button);
+        mainContainer.add_child(childrenContainer);
+
+        this._actorData.set(actor, {
+            button,
+            container: mainContainer,
+            children: childrenContainer,
+            visible: false,
+            actorAddedId: 0,
+            actorRemovedId: 0,
+            actorDestroyedId: actor.connect('destroy', () => this._removeActor(actor)),
+        });
+
+        let belowChild = null;
+        const nextSibling = actor.get_next_sibling();
+        if (nextSibling && this._actorData.has(nextSibling))
+            belowChild = this._actorData.get(nextSibling).container;
+
+        container.insert_child_above(mainContainer, belowChild);
+    }
+
+    _removeActor(actor) {
+        const data = this._actorData.get(actor);
+        if (!data)
+            return;
+
+        for (let child of actor)
+            this._removeActor(child);
+
+        if (data.actorAddedId > 0) {
+            actor.disconnect(data.actorAddedId);
+            data.actorAddedId = 0;
+        }
+        if (data.actorRemovedId > 0) {
+            actor.disconnect(data.actorRemovedId);
+            data.actorRemovedId = 0;
+        }
+        if (data.actorDestroyedId > 0) {
+            actor.disconnect(data.actorDestroyedId);
+            data.actorDestroyedId = 0;
+        }
+        data.container.destroy();
+        this._actorData.delete(actor);
+    }
+
+    vfunc_map() {
+        super.vfunc_map();
+        this._addActor(this, global.stage);
+    }
+
+    vfunc_unmap() {
+        super.vfunc_unmap();
+        this._removeActor(global.stage);
+    }
+});
+
 var LookingGlass = GObject.registerClass(
 class LookingGlass extends St.BoxLayout {
     _init() {
@@ -916,6 +1101,9 @@ class LookingGlass extends St.BoxLayout {
 
         this._extensions = new Extensions(this);
         notebook.appendPage('Extensions', this._extensions);
+
+        this._actorTreeViewer = new ActorTreeViewer(this);
+        notebook.appendPage('Actors', this._actorTreeViewer);
 
         this._entry.clutter_text.connect('activate', (o, _e) => {
             // Hide any completions we are currently showing
