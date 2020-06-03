@@ -25,9 +25,6 @@ var WorkspacesViewBase = GObject.registerClass({
         this.connect('destroy', this._onDestroy.bind(this));
         global.focus_manager.add_group(this);
 
-        // The actor itself isn't a drop target, so we don't want to pick on its area
-        this.set_size(0, 0);
-
         this._monitorIndex = monitorIndex;
 
         this._fullGeometry = null;
@@ -63,7 +60,6 @@ var WorkspacesViewBase = GObject.registerClass({
 
     setFullGeometry(geom) {
         this._fullGeometry = geom;
-        this._syncFullGeometry();
     }
 
     setActualGeometry(geom) {
@@ -117,14 +113,9 @@ class WorkspacesView extends WorkspacesViewBase {
             this._workspaces[i].setReservedSlot(window);
     }
 
-    _syncFullGeometry() {
-        for (let i = 0; i < this._workspaces.length; i++)
-            this._workspaces[i].setFullGeometry(this._fullGeometry);
-    }
-
     _syncActualGeometry() {
-        for (let i = 0; i < this._workspaces.length; i++)
-            this._workspaces[i].setActualGeometry(this._actualGeometry);
+        const { x, y, width, height } = this._actualGeometry;
+        this._workspaces.forEach(w => w.set({ x, y, width, height }));
     }
 
     getActiveWorkspace() {
@@ -242,10 +233,9 @@ class WorkspacesView extends WorkspacesViewBase {
             }
         }
 
-        if (this._fullGeometry) {
+        if (this._fullGeometry)
             this._updateWorkspaceActors(false);
-            this._syncFullGeometry();
-        }
+
         if (this._actualGeometry)
             this._syncActualGeometry();
     }
@@ -353,12 +343,9 @@ class ExtraWorkspaceView extends WorkspacesViewBase {
         this._workspace.setReservedSlot(window);
     }
 
-    _syncFullGeometry() {
-        this._workspace.setFullGeometry(this._fullGeometry);
-    }
-
     _syncActualGeometry() {
-        this._workspace.setActualGeometry(this._actualGeometry);
+        const { x, y, width, height } = this._actualGeometry;
+        this._workspace.set({ x, y, width, height });
     }
 
     getActiveWorkspace() {
