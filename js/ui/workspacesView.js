@@ -174,11 +174,11 @@ class WorkspacesView extends WorkspacesViewBase {
 
             let params = {};
             if (workspaceManager.layout_rows == -1)
-                params.y = (w - active) * this._fullGeometry.height;
+                params.translation_y = (w - active) * this._fullGeometry.height;
             else if (this.text_direction == Clutter.TextDirection.RTL)
-                params.x = (active - w) * this._fullGeometry.width;
+                params.translation_x = (active - w) * this._fullGeometry.width;
             else
-                params.x = (w - active) * this._fullGeometry.width;
+                params.translation_x = (w - active) * this._fullGeometry.width;
 
             if (showAnimation) {
                 let easeParams = Object.assign(params, {
@@ -310,8 +310,8 @@ class WorkspacesView extends WorkspacesViewBase {
         let last = this._workspaces.length - 1;
 
         if (workspaceManager.layout_rows == -1) {
-            let firstWorkspaceY = this._workspaces[0].y;
-            let lastWorkspaceY = this._workspaces[last].y;
+            let firstWorkspaceY = this._workspaces[0].translation_y;
+            let lastWorkspaceY = this._workspaces[last].translation_y;
             let workspacesHeight = lastWorkspaceY - firstWorkspaceY;
 
             let currentY = firstWorkspaceY;
@@ -321,11 +321,11 @@ class WorkspacesView extends WorkspacesViewBase {
 
             for (let i = 0; i < this._workspaces.length; i++) {
                 this._workspaces[i].visible = Math.abs(i - adj.value) <= 1;
-                this._workspaces[i].y += dy;
+                this._workspaces[i].translation_y += dy;
             }
         } else {
-            let firstWorkspaceX = this._workspaces[0].x;
-            let lastWorkspaceX = this._workspaces[last].x;
+            let firstWorkspaceX = this._workspaces[0].translation_x;
+            let lastWorkspaceX = this._workspaces[last].translation_x;
             let workspacesWidth = lastWorkspaceX - firstWorkspaceX;
 
             let currentX = firstWorkspaceX;
@@ -335,7 +335,7 @@ class WorkspacesView extends WorkspacesViewBase {
 
             for (let i = 0; i < this._workspaces.length; i++) {
                 this._workspaces[i].visible = Math.abs(i - adj.value) <= 1;
-                this._workspaces[i].x += dx;
+                this._workspaces[i].translation_x += dx;
             }
         }
     }
