@@ -25,13 +25,9 @@ var WorkspacesViewBase = GObject.registerClass({
         this.connect('destroy', this._onDestroy.bind(this));
         global.focus_manager.add_group(this);
 
-        // The actor itself isn't a drop target, so we don't want to pick on its area
-        this.set_size(0, 0);
-
         this._monitorIndex = monitorIndex;
 
         this._fullGeometry = null;
-        this._actualGeometry = null;
 
         this._inDrag = false;
         this._windowDragBeginId = Main.overview.connect('window-drag-begin', this._dragBegin.bind(this));
@@ -63,12 +59,13 @@ var WorkspacesViewBase = GObject.registerClass({
 
     setFullGeometry(geom) {
         this._fullGeometry = geom;
-        this._syncFullGeometry();
     }
 
-    setActualGeometry(geom) {
-        this._actualGeometry = geom;
-        this._syncActualGeometry();
+    vfunc_allocate(box) {
+        this.set_allocation(box);
+
+        for (const child of this)
+            child.allocate_available_size(0, 0, box.get_width(), box.get_height());
     }
 });
 
@@ -100,12 +97,9 @@ class WorkspacesView extends WorkspacesViewBase {
                 this._updateWorkspaceActors(false);
             });
 
-
-        this._overviewShownId =
-            Main.overview.connect('shown', () => {
-                this.set_clip(this._fullGeometry.x, this._fullGeometry.y,
-                              this._fullGeometry.width, this._fullGeometry.height);
-            });
+        this._overviewShownId = Main.overview.connect('shown', () => {
+            this.clip_to_allocation = true;
+        });
 
         this._switchWorkspaceNotifyId =
             global.window_manager.connect('switch-workspace',
@@ -115,16 +109,6 @@ class WorkspacesView extends WorkspacesViewBase {
     _setReservedSlot(window) {
         for (let i = 0; i < this._workspaces.length; i++)
             this._workspaces[i].setReservedSlot(window);
-    }
-
-    _syncFullGeometry() {
-        for (let i = 0; i < this._workspaces.length; i++)
-            this._workspaces[i].setFullGeometry(this._fullGeometry);
-    }
-
-    _syncActualGeometry() {
-        for (let i = 0; i < this._workspaces.length; i++)
-            this._workspaces[i].setActualGeometry(this._actualGeometry);
     }
 
     getActiveWorkspace() {
@@ -144,7 +128,7 @@ class WorkspacesView extends WorkspacesViewBase {
     }
 
     animateFromOverview(animationType) {
-        this.remove_clip();
+        this.clip_to_allocation = false;
 
         for (let w = 0; w < this._workspaces.length; w++) {
             if (animationType == AnimationType.ZOOM)
@@ -242,12 +226,8 @@ class WorkspacesView extends WorkspacesViewBase {
             }
         }
 
-        if (this._fullGeometry) {
+        if (this._fullGeometry)
             this._updateWorkspaceActors(false);
-            this._syncFullGeometry();
-        }
-        if (this._actualGeometry)
-            this._syncActualGeometry();
     }
 
     _activeWorkspaceChanged(_wm, _from, _to, _direction) {
@@ -351,14 +331,6 @@ class ExtraWorkspaceView extends WorkspacesViewBase {
 
     _setReservedSlot(window) {
         this._workspace.setReservedSlot(window);
-    }
-
-    _syncFullGeometry() {
-        this._workspace.setFullGeometry(this._fullGeometry);
-    }
-
-    _syncActualGeometry() {
-        this._workspace.setActualGeometry(this._actualGeometry);
     }
 
     getActiveWorkspace() {
@@ -785,7 +757,9 @@ class WorkspacesDisplay extends St.Widget {
         let monitors = Main.layoutManager.monitors;
         for (let i = 0; i < monitors.length; i++) {
             let geometry = i === this._primaryIndex ? this._actualGeometry : monitors[i];
-            this._workspacesViews[i].setActualGeometry(geometry);
+            const { x, y, width, height } = geometry;
+
+            this._workspacesViews[i].set({ x, y, width, height });
         }
     }
 
