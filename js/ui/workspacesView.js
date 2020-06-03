@@ -691,10 +691,11 @@ class WorkspacesDisplay extends St.Widget {
             Main.layoutManager.overviewGroup.add_actor(view);
         }
 
-        this._workspacesViews.forEach(v => v.show());
-
+        // Had to move this above show() because of the same bug mentioned above
         this._updateWorkspacesFullGeometry();
         this._updateWorkspacesActualGeometry();
+
+        this._workspacesViews.forEach(v => v.show());
     }
 
     _getMonitorIndexForEvent(event) {
