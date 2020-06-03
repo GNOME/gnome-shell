@@ -25,9 +25,6 @@ var WorkspacesViewBase = GObject.registerClass({
         this.connect('destroy', this._onDestroy.bind(this));
         global.focus_manager.add_group(this);
 
-        // The actor itself isn't a drop target, so we don't want to pick on its area
-        this.set_size(0, 0);
-
         this._monitorIndex = monitorIndex;
 
         this._fullGeometry = null;
