@@ -820,9 +820,6 @@ class Workspace extends St.Widget {
             layout_manager: new WorkspaceLayout(metaWorkspace, monitorIndex),
         });
 
-        // When dragging a window, we use this slot for reserve space.
-        this._reservedSlot = null;
-        this._reservedSlotWindow = null;
         this.metaWorkspace = metaWorkspace;
 
         this.monitorIndex = monitorIndex;
@@ -876,19 +873,6 @@ class Workspace extends St.Widget {
 
     isEmpty() {
         return this._windows.length == 0;
-    }
-
-    setReservedSlot(metaWindow) {
-        if (this._reservedSlotWindow == metaWindow)
-            return;
-
-        if (!metaWindow || this.containsMetaWindow(metaWindow)) {
-            this._reservedSlotWindow = null;
-            this._reservedSlot = null;
-        } else {
-            this._reservedSlotWindow = metaWindow;
-            this._reservedSlot = this._windows[this._lookupIndex(metaWindow)];
-        }
     }
 
     syncStacking(stackIndices) {
