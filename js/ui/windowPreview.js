@@ -237,8 +237,6 @@ var WindowPreview = GObject.registerClass({
             this._windowActor.connect('destroy', () => this.destroy());
 
         this._updateAttachedDialogs();
-        this.x = this.boundingBox.x;
-        this.y = this.boundingBox.y;
 
         let clickAction = new Clutter.ClickAction();
         clickAction.connect('clicked', () => this._activate());
