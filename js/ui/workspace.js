@@ -4,6 +4,7 @@
 const { Clutter, GLib, GObject, Meta, St } = imports.gi;
 
 const DND = imports.ui.dnd;
+const Environment = imports.ui.environment;
 const Main = imports.ui.main;
 const Overview = imports.ui.overview;
 const { WindowPreview } = imports.ui.windowPreview;
@@ -388,6 +389,429 @@ function rectEqual(one, two) {
             one.width == two.width &&
             one.height == two.height;
 }
+
+function animateAllocation(actor, box) {
+    if (actor.allocation.equal(box) ||
+        actor.allocation.get_width() === 0 ||
+        actor.allocation.get_height() === 0) {
+        actor.allocate(box);
+        return null;
+    }
+
+    actor.save_easing_state();
+    actor.set_easing_mode(Clutter.AnimationMode.EASE_OUT_QUAD);
+    actor.set_easing_duration(200);
+
+    actor.allocate(box);
+
+    actor.restore_easing_state();
+
+    return actor.get_transition('allocation');
+}
+
+var WorkspaceLayout = GObject.registerClass({
+    Properties: {
+        'spacing': GObject.ParamSpec.double(
+            'spacing', 'Spacing', 'Spacing',
+            GObject.ParamFlags.READWRITE,
+            0, Infinity, 20),
+        'layout-frozen': GObject.ParamSpec.boolean(
+            'layout-frozen', 'Layout frozen', 'Layout frozen',
+            GObject.ParamFlags.READWRITE,
+            false),
+    },
+}, class WorkspaceLayout extends Clutter.LayoutManager {
+    _init(metaWorkspace, monitorIndex) {
+        super._init();
+
+        this._spacing = 20;
+        this._layoutFrozen = false;
+
+        this._monitorIndex = monitorIndex;
+        this._workarea = metaWorkspace
+            ? metaWorkspace.get_work_area_for_monitor(this._monitorIndex)
+            : Main.layoutManager.getWorkAreaForMonitor(this._monitorIndex);
+
+        this._container = null;
+        this._windows = new Map();
+        this._sortedWindows = [];
+        this._lastBox = null;
+        this._windowSlots = [];
+        this._layout = null;
+
+        this._positionAdjustment = new St.Adjustment({
+            value: 1,
+            lower: 0,
+            upper: 1,
+        });
+
+        this._positionAdjustment.connect('notify::value', () =>
+            this.layout_changed());
+    }
+
+    _isBetterLayout(oldLayout, newLayout) {
+        if (oldLayout.scale === undefined)
+            return true;
+
+        let spacePower = (newLayout.space - oldLayout.space) * LAYOUT_SPACE_WEIGHT;
+        let scalePower = (newLayout.scale - oldLayout.scale) * LAYOUT_SCALE_WEIGHT;
+
+        if (newLayout.scale > oldLayout.scale && newLayout.space > oldLayout.space) {
+            // Win win -- better scale and better space
+            return true;
+        } else if (newLayout.scale > oldLayout.scale && newLayout.space <= oldLayout.space) {
+            // Keep new layout only if scale gain outweighs aspect space loss
+            return scalePower > spacePower;
+        } else if (newLayout.scale <= oldLayout.scale && newLayout.space > oldLayout.space) {
+            // Keep new layout only if aspect space gain outweighs scale loss
+            return spacePower > scalePower;
+        } else {
+            // Lose -- worse scale and space
+            return false;
+        }
+    }
+
+    _adjustSpacingAndPadding(rowSpacing, colSpacing, containerBox) {
+        if (this._sortedWindows.length === 0)
+            return [colSpacing, rowSpacing, containerBox];
+
+        // All of the overlays have the same chrome sizes,
+        // so just pick the first one.
+        const window = this._sortedWindows[0];
+
+        const [topOversize, bottomOversize] = window.chromeHeights();
+        const [leftOversize, rightOversize] = window.chromeWidths();
+
+        if (rowSpacing)
+            rowSpacing += Math.max(topOversize, bottomOversize);
+        if (colSpacing)
+            colSpacing += Math.max(leftOversize, rightOversize);
+
+        if (containerBox) {
+            containerBox.x1 += leftOversize;
+            containerBox.x2 -= rightOversize;
+            containerBox.y1 += topOversize;
+            containerBox.y2 -= bottomOversize;
+        }
+
+        return [rowSpacing, colSpacing, containerBox];
+    }
+
+    _createBestLayout(area) {
+        const [rowSpacing, colSpacing, _padding] =
+            this._adjustSpacingAndPadding(this._spacing, this._spacing, null);
+
+        // We look for the largest scale that allows us to fit the
+        // largest row/tallest column on the workspace.
+        const strategy = new UnalignedLayoutStrategy(
+            Main.layoutManager.monitors[this._monitorIndex],
+            rowSpacing,
+            colSpacing);
+
+        let lastLayout = {};
+
+        for (let numRows = 1; ; numRows++) {
+            let numColumns = Math.ceil(this._sortedWindows.length / numRows);
+
+            // If adding a new row does not change column count just stop
+            // (for instance: 9 windows, with 3 rows -> 3 columns, 4 rows ->
+            // 3 columns as well => just use 3 rows then)
+            if (numColumns === lastLayout.numColumns)
+                break;
+
+            let layout = { area, strategy, numRows, numColumns };
+            strategy.computeLayout(this._sortedWindows, layout);
+            strategy.computeScaleAndSpace(layout);
+
+            if (!this._isBetterLayout(lastLayout, layout))
+                break;
+
+            lastLayout = layout;
+        }
+
+        return lastLayout;
+    }
+
+    _getWindowSlots(containerBox) {
+        [, , containerBox] =
+            this._adjustSpacingAndPadding(null, null, containerBox);
+
+        const availArea = {
+            x: parseInt(containerBox.x1),
+            y: parseInt(containerBox.y1),
+            width: parseInt(containerBox.get_width()),
+            height: parseInt(containerBox.get_height()),
+        };
+
+        return this._layout.strategy.computeWindowSlots(this._layout, availArea);
+    }
+
+    vfunc_set_container(container) {
+        this._container = container;
+    }
+
+    vfunc_get_preferred_width(container, forHeight) {
+        if (forHeight === -1)
+            return [0, this._workarea.width];
+
+        const workAreaAspectRatio = this._workarea.width / this._workarea.height;
+        const widthPreservingAspectRatio = forHeight * workAreaAspectRatio;
+
+        return [0, widthPreservingAspectRatio];
+    }
+
+    vfunc_get_preferred_height(container, forWidth) {
+        if (forWidth === -1)
+            return [0, this._workarea.height];
+
+        const workAreaAspectRatio = this._workarea.width / this._workarea.height;
+        const heightPreservingAspectRatio = forWidth / workAreaAspectRatio;
+
+        return [0, heightPreservingAspectRatio];
+    }
+
+    vfunc_allocate(container, box) {
+        const containerAllocationChanged =
+            this._lastBox === null || !this._lastBox.equal(box);
+        this._lastBox = box.copy();
+
+        // If the containers size changed, we can no longer keep around
+        // the old windowSlots, so we must unfreeze the layout
+        if (this._layoutFrozen && containerAllocationChanged) {
+            this._layoutFrozen = false;
+            this.notify('layout-frozen');
+        }
+
+        let layoutChanged = false;
+        if (!this._layoutFrozen) {
+            if (this._layout === null) {
+                this._layout = this._createBestLayout(this._workarea);
+                layoutChanged = true;
+            }
+
+            if (layoutChanged || containerAllocationChanged)
+                this._windowSlots = this._getWindowSlots(box.copy());
+        }
+
+        const allocationScale = box.get_width() / this._workarea.width;
+
+        let workspaceBox = new Clutter.ActorBox();
+        let layoutBox = new Clutter.ActorBox();
+        let childBox = new Clutter.ActorBox();
+
+        for (const child of container) {
+            if (!child.visible)
+                continue;
+
+            // The fifth element in the slot array is the WindowPreview
+            const index = this._windowSlots.findIndex(s => s[4] === child);
+            if (index === -1)
+                continue;
+
+            const [x, y, width, height, _preview] = this._windowSlots[index];
+            const windowInfo = this._windows.get(child);
+
+            child.slotId = index;
+
+            workspaceBox.x1 = child.boundingBox.x - this._workarea.x;
+            workspaceBox.x2 = workspaceBox.x1 + child.boundingBox.width;
+            workspaceBox.y1 = child.boundingBox.y - this._workarea.y;
+            workspaceBox.y2 = workspaceBox.y1 + child.boundingBox.height;
+
+            workspaceBox.scale(allocationScale);
+
+            layoutBox.x1 = x;
+            layoutBox.x2 = layoutBox.x1 + width;
+            layoutBox.y1 = y;
+            layoutBox.y2 = layoutBox.y1 + height;
+
+            childBox = workspaceBox.interpolate(layoutBox,
+                this._positionAdjustment.value);
+
+            // We want layout changes (ie. larger changes to the layout like
+            // reshuffling the window order) to be animated, but small changes
+            // like changes to our available size to happen immediately (for
+            // example if available height is being animated, we want children
+            // allocations to be animated, too and "lag behind" the container
+            // animation).
+            if (layoutChanged) {
+                if (windowInfo.currentTransition) {
+                    windowInfo.currentTransition.get_interval().set_final(childBox);
+                } else {
+                    const transition = animateAllocation(child, childBox);
+                    if (transition) {
+                        windowInfo.currentTransition = transition;
+                        windowInfo.currentTransition.connect('stopped', () => {
+                            windowInfo.currentTransition = null;
+                        });
+                    }
+                }
+            } else {
+                if (windowInfo.currentTransition)
+                    windowInfo.currentTransition.get_interval().set_final(childBox);
+                else
+                    child.allocate(childBox);
+            }
+        }
+    }
+
+    /**
+     * addWindow:
+     * @param {WindowPreview} window: the window to add
+     * @param {Meta.Window} metaWindow: the MetaWindow of the window
+     *
+     * Adds @window to the workspace, it will be shown immediately if
+     * the layout isn't frozen using the layout-frozen property.
+     *
+     * If @window is already part of the workspace, nothing will happen.
+     */
+    addWindow(window, metaWindow) {
+        if (this._windows.has(window))
+            return;
+
+        this._windows.set(window, {
+            metaWindow,
+            sizeChangedId: metaWindow.connect('size-changed', () => {
+                this._layout = null;
+                this.layout_changed();
+            }),
+            destroyId: window.connect('destroy', () =>
+                this.removeWindow(window)),
+            currentTransition: null,
+        });
+
+        this._sortedWindows.push(window);
+        this._sortedWindows.sort((a, b) => {
+            const winA = this._windows.get(a).metaWindow;
+            const winB = this._windows.get(b).metaWindow;
+
+            return winA.get_stable_sequence() - winB.get_stable_sequence();
+        });
+
+        this._container.add_child(window);
+
+        this._layout = null;
+        this.layout_changed();
+    }
+
+    /**
+     * removeWindow:
+     * @param {WindowPreview} window: the window to remove
+     *
+     * Removes @window from the workspace if @window is a part of the
+     * workspace. If the layout-frozen property is set to true, the
+     * window will still be visible until the property is set to false.
+     */
+    removeWindow(window) {
+        const windowInfo = this._windows.get(window);
+        if (!windowInfo)
+            return;
+
+        windowInfo.metaWindow.disconnect(windowInfo.sizeChangedId);
+        window.disconnect(windowInfo.destroyId);
+        if (windowInfo.currentTransition)
+            window.remove_transition('allocation');
+
+        this._windows.delete(window);
+        this._sortedWindows.splice(this._sortedWindows.indexOf(window), 1);
+
+        // The layout might be frozen and we might not update the windowSlots
+        // on the next allocation, so remove the slot now already
+        this._windowSlots.splice(
+            this._windowSlots.findIndex(s => s[4] === window), 1);
+
+        // The window might have been reparented by DND
+        if (window.get_parent() === this._container)
+            this._container.remove_child(window);
+
+        this._layout = null;
+        this.layout_changed();
+    }
+
+    syncStacking(stackIndices) {
+        const windows = [...this._windows.keys()];
+        windows.sort((a, b) => {
+            const seqA = this._windows.get(a).metaWindow.get_stable_sequence();
+            const seqB = this._windows.get(b).metaWindow.get_stable_sequence();
+
+            return stackIndices[seqA] - stackIndices[seqB];
+        });
+
+        let lastWindow = null;
+        for (const window of windows) {
+            window.setStackAbove(lastWindow);
+            lastWindow = window;
+        }
+
+        this._layout = null;
+        this.layout_changed();
+    }
+
+    /**
+     * getFocusChain:
+     *
+     * Gets the focus chain of the workspace. This function will return
+     * an empty array if the floating window layout is used.
+     *
+     * @returns {Array} an array of {Clutter.Actor}s
+     */
+    getFocusChain() {
+        if (this._positionAdjustment.value === 0)
+            return [];
+
+        // The fifth element in the slot array is the WindowPreview
+        return this._windowSlots.map(s => s[4]);
+    }
+
+    /**
+     * getPositionAdjustment:
+     *
+     * Gets the StAdjustment for controlling and transitioning between
+     * the alignment of windows using the layout strategy and the
+     * floating window layout.
+     *
+     * A value of 0 of the adjustment completely uses the floating
+     * window layout while a value of 1 completely aligns windows using
+     * the layout strategy.
+     *
+     * @returns {St.Adjustment} the position adjustment
+     */
+    getPositionAdjustment() {
+        return this._positionAdjustment;
+    }
+
+    get spacing() {
+        return this._spacing;
+    }
+
+    set spacing(s) {
+        if (this._spacing === s)
+            return;
+
+        this._spacing = s;
+
+        this._layout = null;
+        this.notify('spacing');
+        this.layout_changed();
+    }
+
+    // eslint-disable-next-line camelcase
+    get layout_frozen() {
+        return this._layoutFrozen;
+    }
+
+    // eslint-disable-next-line camelcase
+    set layout_frozen(f) {
+        if (this._layoutFrozen === f)
+            return;
+
+        this._layoutFrozen = f;
+
+        this.notify('layout-frozen');
+        if (!this._layoutFrozen)
+            this.layout_changed();
+    }
+});
 
 /**
  * @metaWorkspace: a #Meta.Workspace, or null
