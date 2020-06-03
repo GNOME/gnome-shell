@@ -1053,6 +1053,9 @@ var WorkspaceLayout = GObject.registerClass({
             GObject.ParamFlags.READWRITE,
             false),
     },
+    Signals: {
+        'allocated': {},
+    },
 }, class WorkspaceLayout extends Clutter.LayoutManager {
     _init(metaWorkspace, monitorIndex) {
         super._init();
@@ -1277,6 +1280,10 @@ var WorkspaceLayout = GObject.registerClass({
                     child.allocate(childBox);
             }
         }
+
+        // FIXME: remove this signal once the custom transitions to support
+        // the old overview are removed
+        this.emit('allocated');
     }
 
     /**
@@ -1443,6 +1450,11 @@ class Workspace extends St.Widget {
             reactive: true,
             layout_manager: new WorkspaceLayout(metaWorkspace, monitorIndex),
         });
+
+        // HACK: initialize layout manager with layout_frozen = true
+        // to avoid relayouts caused by a ClutterClone bug starting an
+        // allocation-animation before we do the zoomToOverview() animation.
+        this.layout_manager.layout_frozen = true;
 
         // When dragging a window, we use this slot for reserve space.
         this._reservedSlot = null;
@@ -1696,7 +1708,7 @@ class Workspace extends St.Widget {
                     time = windowBaseTime;
 
                 this._windows[i].opacity = 255;
-                this._fadeWindow(i, time, 0);
+                this._fadeWindow(this._windows[i], time, 0);
             }
         }
     }
@@ -1750,28 +1762,132 @@ class Workspace extends St.Widget {
                     time = windowBaseTime * nTimeSlots;
 
                 this._windows[i].opacity = 0;
-                this._fadeWindow(i, time, 255);
+                this._fadeWindow(this._windows[i], time, 255);
             }
         }
     }
 
-    _fadeWindow(index, duration, opacity) {
-        let clone = this._windows[index];
-        clone.hideOverlay(false);
+    _fadeWindow(window, duration, opacity) {
+        window.hideOverlay(false);
 
-        if (clone.metaWindow.showing_on_its_workspace()) {
-            clone.ease({
+        if (window._notifyAllocationId) {
+            this.layout_manager.disconnect(window._notifyAllocationId);
+            delete window._notifyAllocationId;
+        }
+
+        if (!window.has_allocation()) {
+            window._notifyAllocationId =
+                this.layout_manager.connect('allocated', () =>
+                    this._fadeWindow(window, duration, opacity));
+
+            return;
+        }
+
+        if (window.metaWindow.showing_on_its_workspace()) {
+            window.translation_x = window.translation_y = 0;
+            window.scale_x = window.scale_y = 1;
+
+            const absAllocation = Shell.util_get_transformed_allocation(window);
+
+            window.translation_x = window.boundingBox.x - absAllocation.x1;
+            window.translation_y = window.boundingBox.y - absAllocation.y1;
+            window.scale_x = window.boundingBox.width / absAllocation.get_width();
+            window.scale_y = window.boundingBox.height / absAllocation.get_height();
+
+            // Make sure to update translation and scale in case the windows
+            // allocation changes
+            window._notifyAllocationId = this.layout_manager.connect('allocated',
+                () => {
+                    const newAbsAllocation = window.allocation;
+
+                    // We have to use the parents absolute position and size here and
+                    // add the window relative allocation manually to that.
+                    // Otherwise we'd also see the translation and scale we've
+                    // applying to the window before.
+                    const [parentTransformedX, parentTransformedY] =
+                        window.get_parent().get_transformed_position();
+                    newAbsAllocation.x1 += parentTransformedX;
+                    newAbsAllocation.x2 += parentTransformedX;
+                    newAbsAllocation.y1 += parentTransformedY;
+                    newAbsAllocation.y2 += parentTransformedY;
+
+                    window.translation_x = window.boundingBox.x - newAbsAllocation.x1;
+                    window.translation_y = window.boundingBox.y - newAbsAllocation.y1;
+                    window.scale_x = window.boundingBox.width / newAbsAllocation.get_width();
+                    window.scale_y = window.boundingBox.height / newAbsAllocation.get_height();
+                });
+
+            window.ease({
                 opacity,
                 duration,
                 mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+                onStopped: () => {
+                    this.layout_manager.disconnect(window._notifyAllocationId);
+                    delete window._notifyAllocationId;
+                },
             });
         } else {
             // The window is hidden
-            clone.opacity = 0;
+            window.opacity = 0;
         }
     }
 
     zoomToOverview() {
+        // See comment in _init(), we now unfreeze the layout and
+        // force clones to get their initial allocation by abusing
+        // get_allocation_box().
+        this.layout_manager.layout_frozen = false;
+        this.get_allocation_box();
+
+        for (const window of this._windows)
+          this._zoomWindowToOverview(window);
+    }
+
+    _zoomWindowToOverview(window) {
+        if (window._notifyAllocationId) {
+            this.layout_manager.disconnect(window._notifyAllocationId);
+            delete window._notifyAllocationId;
+        }
+
+        if (!window.has_allocation()) {
+            window._notifyAllocationId =
+                this.layout_manager.connect('allocated', () =>
+                    this._zoomWindowToOverview(window));
+
+            return;
+        }
+
+        if (window.metaWindow.showing_on_its_workspace()) {
+            window.translation_x = window.translation_y = 0;
+            window.scale_x = window.scale_y = 1;
+
+            const absAllocation = Shell.util_get_transformed_allocation(window);
+            window.translation_x = window.boundingBox.x - absAllocation.x1;
+            window.translation_y = window.boundingBox.y - absAllocation.y1;
+            window.scale_x = window.boundingBox.width / absAllocation.get_width();
+            window.scale_y = window.boundingBox.height / absAllocation.get_height();
+
+            window.ease({
+                translation_x: 0,
+                translation_y: 0,
+                scale_x: 1,
+                scale_y: 1,
+                opacity: 255,
+                duration: Overview.ANIMATION_TIME,
+                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            });
+        } else {
+            window.scale_x = 0;
+            window.scale_y = 0;
+
+            window.ease({
+                scale_x: 1,
+                scale_y: 1,
+                opacity: 255,
+                duration: Overview.ANIMATION_TIME,
+                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            });
+        }
     }
 
     zoomFromOverview() {
@@ -1793,23 +1909,46 @@ class Workspace extends St.Widget {
             return;
 
         // Position and scale the windows.
-        for (let i = 0; i < this._windows.length; i++)
-            this._zoomWindowFromOverview(i);
+        for (const window of this._windows)
+            this._zoomWindowFromOverview(window);
     }
 
-    _zoomWindowFromOverview(index) {
-        let clone = this._windows[index];
-        clone.hideOverlay(false);
+    _zoomWindowFromOverview(window) {
+        window.hideOverlay(false);
 
-        if (clone.metaWindow.showing_on_its_workspace()) {
-            clone.ease({
+        if (window._notifyAllocationId) {
+            this.layout_manager.disconnect(window._notifyAllocationId);
+            delete window._notifyAllocationId;
+        }
+
+        if (!window.has_allocation()) {
+            window._notifyAllocationId =
+                this.layout_manager.connect('allocated', () =>
+                    this._zoomWindowFromOverview(window));
+
+            return;
+        }
+
+        if (window.metaWindow.showing_on_its_workspace()) {
+            window.translation_x = window.translation_y = 0;
+            window.scale_x = window.scale_y = 1;
+
+            const absAllocation = Shell.util_get_transformed_allocation(window);
+
+            window.ease({
+                translation_x: window.boundingBox.x - absAllocation.x1,
+                translation_y: window.boundingBox.y - absAllocation.y1,
+                scale_x: window.boundingBox.width / absAllocation.get_width(),
+                scale_y: window.boundingBox.height / absAllocation.get_height(),
                 opacity: 255,
                 duration: Overview.ANIMATION_TIME,
                 mode: Clutter.AnimationMode.EASE_OUT_QUAD,
             });
         } else {
             // The window is hidden, make it shrink and fade it out
-            clone.ease({
+            window.ease({
+                scale_x: 0,
+                scale_y: 0,
                 opacity: 0,
                 duration: Overview.ANIMATION_TIME,
                 mode: Clutter.AnimationMode.EASE_OUT_QUAD,
@@ -1887,9 +2026,14 @@ class Workspace extends St.Widget {
             });
         });
         clone.connect('destroy', () => {
-            const index = this._lookupIndex(metaWin);
+            const index = this._lookupIndex(clone.metaWindow);
             if (index === -1)
                 return;
+
+            if (clone._notifyAllocationId) {
+                this.layout_manager.disconnect(clone._notifyAllocationId);
+                delete clone._notifyAllocationId;
+            }
 
             this.layout_manager.layout_frozen = true;
 
