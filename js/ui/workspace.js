@@ -1680,6 +1680,16 @@ class Workspace extends St.Widget {
 
         let clone = this._addWindowClone(metaWin);
 
+        clone.set_pivot_point(0.5, 0.5);
+        clone.scale_x = 0;
+        clone.scale_y = 0;
+        clone.ease({
+            scale_x: 1,
+            scale_y: 1,
+            duration: 250,
+            onStopped: () => clone.set_pivot_point(0, 0),
+        });
+
         this.layout_manager.layout_frozen = false;
     }
 
