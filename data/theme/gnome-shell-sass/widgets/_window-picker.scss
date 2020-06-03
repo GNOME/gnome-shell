@@ -12,8 +12,8 @@ $window_close_button_padding: 3px;
 // Window picker
 .window-picker {
   // Space between window thumbnails
-  -horizontal-spacing: $window_picker_spacing;
-  -vertical-spacing: $window_picker_spacing;
+  spacing: $window_picker_spacing;
+
   // Padding for container around window thumbnails
   padding: $window_picker_padding;
 
