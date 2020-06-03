@@ -962,7 +962,17 @@ class Workspace extends St.Widget {
             return;
         }
 
-        this._addWindowClone(metaWin);
+        const clone = this._addWindowClone(metaWin);
+
+        clone.set_pivot_point(0.5, 0.5);
+        clone.scale_x = 0;
+        clone.scale_y = 0;
+        clone.ease({
+            scale_x: 1,
+            scale_y: 1,
+            duration: 250,
+            onStopped: () => clone.set_pivot_point(0, 0),
+        });
 
         if (this._layoutFrozenId > 0) {
             // If a window was closed before, unfreeze the layout to ensure
