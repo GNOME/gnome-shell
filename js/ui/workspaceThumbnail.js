@@ -51,7 +51,8 @@ var WindowClone = GObject.registerClass({
     },
 }, class WindowClone extends Clutter.Actor {
     _init(realWindow) {
-        let clone = new Clutter.Clone({ source: realWindow });
+        let clone = new Clutter.Actor({ content: realWindow.content,
+                                        request_mode: Clutter.RequestMode.CONTENT_SIZE });
         super._init({
             layout_manager: new PrimaryActorLayout(clone),
             reactive: true,
@@ -136,7 +137,8 @@ var WindowClone = GObject.registerClass({
     }
 
     _doAddAttachedDialog(metaDialog, realDialog) {
-        let clone = new Clutter.Clone({ source: realDialog });
+        let clone = new Clutter.Actor({ content: realDialog.content,
+                                        request_mode: Clutter.RequestMode.CONTENT_SIZE });
         this._updateDialogPosition(realDialog, clone);
 
         clone._updateId = realDialog.connect('notify::position', dialog => {
@@ -162,7 +164,7 @@ var WindowClone = GObject.registerClass({
 
     _disconnectSignals() {
         this.get_children().forEach(child => {
-            let realWindow = child.source;
+            let realWindow = child.content.window_actor;
 
             realWindow.disconnect(child._updateId);
             realWindow.disconnect(child._destroyId);

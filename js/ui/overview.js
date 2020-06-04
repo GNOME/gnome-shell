@@ -405,8 +405,12 @@ var Overview = class {
             return null;
 
         let window = windows[0];
-        let clone = new Clutter.Clone({ source: window,
-                                        x: window.x, y: window.y });
+        let clone = new Clutter.Actor({
+            source: window.content,
+            request_mode: Clutter.RequestMode.CONTENT_SIZE,
+            x: window.x,
+            y: window.y,
+        });
         clone.source.connect('destroy', () => {
             clone.destroy();
         });

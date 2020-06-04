@@ -28,14 +28,20 @@ var AppIconMode = {
 function _createWindowClone(window, size) {
     let [width, height] = window.get_size();
     let scale = Math.min(1.0, size / width, size / height);
-    return new Clutter.Clone({ source: window,
-                               width: width * scale,
-                               height: height * scale,
-                               x_align: Clutter.ActorAlign.CENTER,
-                               y_align: Clutter.ActorAlign.CENTER,
-                               // usual hack for the usual bug in ClutterBinLayout...
-                               x_expand: true,
-                               y_expand: true });
+
+    let cloneWidth = size;
+    let cloneHeight = size;
+
+    if (width > height)
+        cloneHeight = size * (height / width);
+    else
+        cloneWidth = size * (width / height);
+
+    return new Clutter.Actor({
+        content: window.content,
+        width: cloneWidth,
+        height: cloneHeight,
+    });
 }
 
 function getWindows(workspace) {
@@ -402,7 +408,7 @@ class CyclerHighlight extends St.Widget {
         super._init({ layout_manager: new Clutter.BinLayout() });
         this._window = null;
 
-        this._clone = new Clutter.Clone();
+        this._clone = new Clutter.Actor();
         this.add_actor(this._clone);
 
         this._highlight = new St.Widget({ style_class: 'cycler-highlight' });
@@ -424,8 +430,8 @@ class CyclerHighlight extends St.Widget {
 
         this._window = w;
 
-        if (this._clone.source)
-            this._clone.source.sync_visibility();
+        if (this._clone.content)
+            this._clone.content.window_actor.sync_visibility();
 
         let windowActor = this._window
             ? this._window.get_compositor_private() : null;
@@ -433,7 +439,7 @@ class CyclerHighlight extends St.Widget {
         if (windowActor)
             windowActor.hide();
 
-        this._clone.source = windowActor;
+        this._clone.content = windowActor.content;
     }
 
     _onAllocationChanged() {
