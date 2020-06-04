@@ -1438,7 +1438,6 @@ var AppFolderDialog = GObject.registerClass({
         this._delegate = this;
 
         this._isOpen = false;
-        this.parentOffset = 0;
 
         this._viewBox = new St.BoxLayout({
             style_class: 'app-folder-dialog',
