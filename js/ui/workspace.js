@@ -34,61 +34,134 @@ function _interpolate(start, end, step) {
     return start + (end - start) * step;
 }
 
-var WindowCloneLayout = GObject.registerClass(
-class WindowCloneLayout extends Clutter.LayoutManager {
-    _init(boundingBox) {
+var WindowCloneLayout = GObject.registerClass({
+    Properties: {
+        'bounding-box': GObject.ParamSpec.boxed(
+            'bounding-box', 'Bounding box', 'Bounding box',
+            GObject.ParamFlags.READABLE,
+            Clutter.ActorBox.$gtype),
+    },
+}, class WindowCloneLayout extends Clutter.LayoutManager {
+    _init() {
         super._init();
 
-        this._boundingBox = boundingBox;
+        this._container = null;
+        this._boundingBox = new Clutter.ActorBox();
+        this._windows = new Map();
     }
 
-    get boundingBox() {
-        return this._boundingBox;
-    }
+    _layoutChanged() {
+        let frameRect;
 
-    set boundingBox(b) {
-        this._boundingBox = b;
+        for (const windowInfo of this._windows.values()) {
+            const frame = windowInfo.metaWindow.get_frame_rect();
+            frameRect = frameRect ? frameRect.union(frame) : frame;
+        }
+
+        if (!frameRect)
+            frameRect = new Meta.Rectangle();
+
+        const oldBox = this._boundingBox.copy();
+        this._boundingBox.set_origin(frameRect.x, frameRect.y);
+        this._boundingBox.set_size(frameRect.width, frameRect.height);
+
+        if (!this._boundingBox.equal(oldBox))
+            this.notify('bounding-box');
+
+        // Always call layout_changed(), a size or position change of an
+        // attached dialog might not affect the boundingBox
         this.layout_changed();
     }
 
+    vfunc_set_container(container) {
+        this._container = container;
+    }
+
     vfunc_get_preferred_height(_container, _forWidth) {
-        return [0, this._boundingBox.height];
+        return [0, this._boundingBox.get_height()];
     }
 
     vfunc_get_preferred_width(_container, _forHeight) {
-        return [0, this._boundingBox.width];
+        return [0, this._boundingBox.get_width()];
     }
 
     vfunc_allocate(container, box) {
         // If the scale isn't 1, we weren't allocated our preferred size
         // and have to scale the children allocations accordingly.
-        const scaleX = box.get_width() / this._boundingBox.width;
-        const scaleY = box.get_height() / this._boundingBox.height;
+        const scaleX = box.get_width() / this._boundingBox.get_width();
+        const scaleY = box.get_height() / this._boundingBox.get_height();
 
         const childBox = new Clutter.ActorBox();
 
-        container.get_children().forEach(child => {
-            let realWindow;
-            if (child == container._windowClone)
-                realWindow = container.realWindow;
-            else
-                realWindow = child.source;
+        for (const child of container) {
+            if (!child.visible)
+                continue;
 
-            const bufferRect = realWindow.meta_window.get_buffer_rect();
-            childBox.set_origin(
-                bufferRect.x - this._boundingBox.x,
-                bufferRect.y - this._boundingBox.y);
+            const windowInfo = this._windows.get(child);
+            if (windowInfo) {
+                const bufferRect = windowInfo.metaWindow.get_buffer_rect();
+                childBox.set_origin(
+                    bufferRect.x - this._boundingBox.x1,
+                    bufferRect.y - this._boundingBox.y1);
 
-            const [, , natWidth, natHeight] = child.get_preferred_size();
-            childBox.set_size(natWidth, natHeight);
+                const [, , natWidth, natHeight] = child.get_preferred_size();
+                childBox.set_size(natWidth, natHeight);
 
-            childBox.x1 *= scaleX;
-            childBox.x2 *= scaleX;
-            childBox.y1 *= scaleY;
-            childBox.y2 *= scaleY;
+                childBox.x1 *= scaleX;
+                childBox.x2 *= scaleX;
+                childBox.y1 *= scaleY;
+                childBox.y2 *= scaleY;
 
-            child.allocate(childBox);
+                child.allocate(childBox);
+            } else {
+                child.allocate_preferred_size();
+            }
+        }
+    }
+
+    addWindow(clone, metaWindow) {
+        if (this._windows.has(clone))
+            return;
+
+        const windowActor = metaWindow.get_compositor_private();
+
+        this._windows.set(clone, {
+            metaWindow,
+            windowActor,
+            sizeChangedId: metaWindow.connect('size-changed', () =>
+                this._layoutChanged()),
+            positionChangedId: metaWindow.connect('position-changed', () =>
+                this._layoutChanged()),
+            destroyId: windowActor.connect('destroy', () =>
+                clone.destroy()),
+            cloneDestroyId: clone.connect('destroy', () =>
+                this.removeWindow(clone)),
         });
+
+        this._container.add_child(clone);
+
+        this._layoutChanged();
+    }
+
+    removeWindow(clone) {
+        const windowInfo = this._windows.get(clone);
+        if (!windowInfo)
+            return;
+
+        windowInfo.metaWindow.disconnect(windowInfo.sizeChangedId);
+        windowInfo.metaWindow.disconnect(windowInfo.positionChangedId);
+        windowInfo.windowActor.disconnect(windowInfo.destroyId);
+        clone.disconnect(windowInfo.cloneDestroyId);
+
+        this._windows.delete(clone);
+        this._container.remove_child(clone);
+
+        this._layoutChanged();
+    }
+
+    // eslint-disable-next-line camelcase
+    get bounding_box() {
+        return this._boundingBox;
     }
 });
 
@@ -109,18 +182,6 @@ var WindowClone = GObject.registerClass({
         this.metaWindow._delegate = this;
         this._workspace = workspace;
 
-        this._windowClone = new Clutter.Clone({ source: realWindow });
-        // We expect this to be used for all interaction rather than
-        // this._windowClone; as the former is reactive and the latter
-        // is not, this just works for most cases. However, for DND all
-        // actors are picked, so DND operations would operate on the clone.
-        // To avoid this, we hide it from pick.
-        Shell.util_set_hidden_from_pick(this._windowClone, true);
-
-        // The MetaShapedTexture that we clone has a size that includes
-        // the invisible border; this is inconvenient; rather than trying
-        // to compensate all over the place we insert a ClutterActor into
-        // the hierarchy that is sized to only the visible portion.
         super._init({
             reactive: true,
             can_focus: true,
@@ -130,7 +191,7 @@ var WindowClone = GObject.registerClass({
 
         this.set_offscreen_redirect(Clutter.OffscreenRedirect.AUTOMATIC_FOR_OPACITY);
 
-        this.add_child(this._windowClone);
+        this._addWindow(realWindow.meta_window);
 
         this._delegate = this;
 
@@ -139,25 +200,15 @@ var WindowClone = GObject.registerClass({
         this._dragSlot = [0, 0, 0, 0];
         this._stackAbove = null;
 
-        this._windowClone._sizeChangedId = this.metaWindow.connect('size-changed',
-            this._onMetaWindowSizeChanged.bind(this));
-        this._windowClone._posChangedId = this.metaWindow.connect('position-changed',
-            this._computeBoundingBox.bind(this));
-        this._windowClone._destroyId =
-            this.realWindow.connect('destroy', () => {
-                // First destroy the clone and then destroy everything
-                // This will ensure that we never see it in the
-                // _disconnectSignals loop
-                this._windowClone.destroy();
-                this.destroy();
-            });
+        this.layout_manager.connect('notify::bounding-box', () =>
+            this.emit('size-changed'));
+
+        this._windowDestroyId =
+            this.realWindow.connect('destroy', () => this.destroy());
 
         this._updateAttachedDialogs();
-        this._computeBoundingBox();
-        this.x = this._boundingBox.x;
-        this.y = this._boundingBox.y;
-
-        this._computeWindowCenter();
+        this.x = this.boundingBox.x;
+        this.y = this.boundingBox.y;
 
         let clickAction = new Clutter.ClickAction();
         clickAction.connect('clicked', this._onClicked.bind(this));
@@ -177,6 +228,20 @@ var WindowClone = GObject.registerClass({
 
         this._selected = false;
         this._closeRequested = false;
+    }
+
+    _addWindow(metaWindow) {
+        const windowActor = metaWindow.get_compositor_private();
+        const clone = new Clutter.Clone({ source: windowActor });
+
+        // We expect this to be used for all interaction rather than
+        // the ClutterClone; as the former is reactive and the latter
+        // is not, this just works for most cases. However, for DND all
+        // actors are picked, so DND operations would operate on the clone.
+        // To avoid this, we hide it from pick.
+        Shell.util_set_hidden_from_pick(clone, true);
+
+        this.layout_manager.addWindow(clone, metaWindow);
     }
 
     vfunc_has_overlaps() {
@@ -214,10 +279,8 @@ var WindowClone = GObject.registerClass({
             parent = parent.get_transient_for();
 
         // Display dialog if it is attached to our metaWindow
-        if (win.is_attached_dialog() && parent == this.metaWindow) {
-            this._doAddAttachedDialog(win, win.get_compositor_private());
-            this._onMetaWindowSizeChanged();
-        }
+        if (win.is_attached_dialog() && parent == this.metaWindow)
+            this._addWindow(win);
 
         // The dialog popped up after the user tried to close the window,
         // assume it's a close confirmation and leave the overview
@@ -229,23 +292,6 @@ var WindowClone = GObject.registerClass({
         return this.get_n_children() > 1;
     }
 
-    _doAddAttachedDialog(metaWin, realWin) {
-        let clone = new Clutter.Clone({ source: realWin });
-        clone._sizeChangedId = metaWin.connect('size-changed',
-            this._onMetaWindowSizeChanged.bind(this));
-        clone._posChangedId = metaWin.connect('position-changed',
-            this._onMetaWindowSizeChanged.bind(this));
-        clone._destroyId = realWin.connect('destroy', () => {
-            clone.destroy();
-
-            this._onMetaWindowSizeChanged();
-        });
-
-        Shell.util_set_hidden_from_pick(clone, true);
-
-        this.add_child(clone);
-    }
-
     _updateAttachedDialogs() {
         let iter = win => {
             let actor = win.get_compositor_private();
@@ -255,7 +301,7 @@ var WindowClone = GObject.registerClass({
             if (!win.is_attached_dialog())
                 return false;
 
-            this._doAddAttachedDialog(win, actor);
+            this._addWindow(win);
             win.foreach_transient(iter);
             return true;
         };
@@ -263,35 +309,20 @@ var WindowClone = GObject.registerClass({
     }
 
     get boundingBox() {
-        return this._boundingBox;
-    }
+        const box = this.layout_manager.bounding_box;
 
-    _computeBoundingBox() {
-        let rect = this.metaWindow.get_frame_rect();
-
-        this.get_children().forEach(child => {
-            let realWindow;
-            if (child == this._windowClone)
-                realWindow = this.realWindow;
-            else
-                realWindow = child.source;
-
-            let metaWindow = realWindow.meta_window;
-            rect = rect.union(metaWindow.get_frame_rect());
-        });
-
-        // Convert from a MetaRectangle to a native JS object
-        this._boundingBox = { x: rect.x, y: rect.y, width: rect.width, height: rect.height };
-        this.layout_manager.boundingBox = rect;
+        return {
+            x: box.x1,
+            y: box.y1,
+            width: box.get_width(),
+            height: box.get_height(),
+        };
     }
 
     get windowCenter() {
-        return this._windowCenter;
-    }
+        const box = this.layout_manager.bounding_box;
 
-    _computeWindowCenter() {
-        let box = this.realWindow.get_allocation_box();
-        this._windowCenter = new Graphene.Point({
+        return new Graphene.Point({
             x: box.get_x() + box.get_width() / 2,
             y: box.get_y() + box.get_height() / 2,
         });
@@ -326,27 +357,8 @@ var WindowClone = GObject.registerClass({
             parent.set_child_above_sibling(this, actualAbove);
     }
 
-    _disconnectSignals() {
-        this.get_children().forEach(child => {
-            let realWindow;
-            if (child == this._windowClone)
-                realWindow = this.realWindow;
-            else
-                realWindow = child.source;
-
-            realWindow.meta_window.disconnect(child._sizeChangedId);
-            realWindow.meta_window.disconnect(child._posChangedId);
-            realWindow.disconnect(child._destroyId);
-        });
-    }
-
-    _onMetaWindowSizeChanged() {
-        this._computeBoundingBox();
-        this.emit('size-changed');
-    }
-
     _onDestroy() {
-        this._disconnectSignals();
+        this.realWindow.disconnect(this._windowDestroyId);
 
         this.metaWindow._delegate = null;
         this._delegate = null;
