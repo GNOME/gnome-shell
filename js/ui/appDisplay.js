@@ -350,14 +350,6 @@ class AppDisplay extends BaseAppView {
         this._scrollView.add_actor(box);
         this._stack.add_actor(this._scrollView);
 
-        this._eventBlocker = new St.Widget({
-            x_expand: true,
-            y_expand: true,
-            reactive: true,
-            visible: false,
-        });
-        this._stack.add_actor(this._eventBlocker);
-
         this._scrollView.set_policy(St.PolicyType.NEVER,
                                     St.PolicyType.EXTERNAL);
         this._adjustment = this._scrollView.vscroll.adjustment;
@@ -719,8 +711,6 @@ class AppDisplay extends BaseAppView {
     addFolderDialog(dialog) {
         Main.layoutManager.overviewGroup.add_child(dialog);
         dialog.connect('open-state-changed', (o, isOpen) => {
-            this._eventBlocker.visible = isOpen;
-
             if (this._currentDialog) {
                 this._currentDialog.disconnect(this._currentDialogDestroyId);
                 this._currentDialogDestroyId = 0;
@@ -733,7 +723,6 @@ class AppDisplay extends BaseAppView {
                 this._currentDialogDestroyId = dialog.connect('destroy', () => {
                     this._currentDialog = null;
                     this._currentDialogDestroyId = 0;
-                    this._eventBlocker.visible = false;
                 });
             }
             this._updateIconOpacities(isOpen);
@@ -861,8 +850,6 @@ class AppDisplay extends BaseAppView {
             dragMotion: this._onDragMotion.bind(this),
         };
         DND.addDragMonitor(this._dragMonitor);
-
-        this._eventBlocker.visible = false;
     }
 
     _onDragMotion(dragEvent) {
@@ -886,7 +873,6 @@ class AppDisplay extends BaseAppView {
             this._dragMonitor = null;
         }
 
-        this._eventBlocker.visible = this._currentDialog !== null;
         this._resetOvershoot();
     }
 
