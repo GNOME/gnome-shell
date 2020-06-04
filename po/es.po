@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell.master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2020-05-07 13:09+0000\n"
-"PO-Revision-Date: 2020-05-07 16:46+0200\n"
+"POT-Creation-Date: 2020-06-02 23:51+0000\n"
+"PO-Revision-Date: 2020-06-03 11:46+0200\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Spanish - Spain <gnome-es-list@gnome.org>\n"
 "Language: es_ES\n"
@@ -431,7 +431,7 @@ msgstr "Visitar la página web de la extensión"
 #: js/ui/components/networkAgent.js:110 js/ui/components/polkitAgent.js:139
 #: js/ui/endSessionDialog.js:369 js/ui/extensionDownloader.js:181
 #: js/ui/shellMountOperation.js:376 js/ui/shellMountOperation.js:386
-#: js/ui/status/network.js:916 subprojects/extensions-app/js/main.js:148
+#: js/ui/status/network.js:916 subprojects/extensions-app/js/main.js:149
 msgid "Cancel"
 msgstr "Cancelar"
 
@@ -714,48 +714,36 @@ msgstr "Denegar acceso"
 msgid "Grant Access"
 msgstr "Conceder acceso"
 
-#: js/ui/appDisplay.js:943
+#: js/ui/appDisplay.js:960
 msgid "Unnamed Folder"
 msgstr "Carpeta sin nombre"
 
-#: js/ui/appDisplay.js:966
-msgid "Frequently used applications will appear here"
-msgstr "Las aplicaciones usadas frecuentemente aparecerán aquí"
-
-#: js/ui/appDisplay.js:1101
-msgid "Frequent"
-msgstr "Frecuentes"
-
-#: js/ui/appDisplay.js:1108
-msgid "All"
-msgstr "Todas"
-
 #. Translators: This is the heading of a list of open windows
-#: js/ui/appDisplay.js:2485 js/ui/panel.js:75
+#: js/ui/appDisplay.js:2219 js/ui/panel.js:75
 msgid "Open Windows"
 msgstr "Ventanas abiertas"
 
-#: js/ui/appDisplay.js:2504 js/ui/panel.js:82
+#: js/ui/appDisplay.js:2238 js/ui/panel.js:82
 msgid "New Window"
 msgstr "Ventana nueva"
 
-#: js/ui/appDisplay.js:2520
+#: js/ui/appDisplay.js:2254
 msgid "Launch using Integrated Graphics Card"
 msgstr "Lanzar usando la tarjeta gráfica integrada"
 
-#: js/ui/appDisplay.js:2521
+#: js/ui/appDisplay.js:2255
 msgid "Launch using Discrete Graphics Card"
 msgstr "Lanzar usando la tarjeta gráfica discreta"
 
-#: js/ui/appDisplay.js:2549 js/ui/dash.js:239
+#: js/ui/appDisplay.js:2283 js/ui/dash.js:239
 msgid "Remove from Favorites"
 msgstr "Quitar de los favoritos"
 
-#: js/ui/appDisplay.js:2555
+#: js/ui/appDisplay.js:2289
 msgid "Add to Favorites"
 msgstr "Añadir a los favoritos"
 
-#: js/ui/appDisplay.js:2565 js/ui/panel.js:93
+#: js/ui/appDisplay.js:2299 js/ui/panel.js:93
 msgid "Show Details"
 msgstr "Mostrar detalles"
 
@@ -785,7 +773,7 @@ msgstr "Auriculares"
 msgid "Headset"
 msgstr "Manos libres"
 
-#: js/ui/audioDeviceSelection.js:68 js/ui/status/volume.js:270
+#: js/ui/audioDeviceSelection.js:68 js/ui/status/volume.js:273
 msgid "Microphone"
 msgstr "Micrófono"
 
@@ -1111,31 +1099,31 @@ msgstr "%B %e %Y"
 msgid "%A %B %e %Y"
 msgstr "%A %e de %B de %Y"
 
-#: js/ui/dateMenu.js:161
+#: js/ui/dateMenu.js:162
 msgid "Add world clocks…"
 msgstr "Añadir relojes del mundo…"
 
-#: js/ui/dateMenu.js:162
+#: js/ui/dateMenu.js:163
 msgid "World Clocks"
 msgstr "Relojes del mundo"
 
-#: js/ui/dateMenu.js:424
+#: js/ui/dateMenu.js:443
 msgid "Loading…"
 msgstr "Cargando…"
 
-#: js/ui/dateMenu.js:434
+#: js/ui/dateMenu.js:453
 msgid "Go online for weather information"
 msgstr "Conectarse para obtener la información meteorológica"
 
-#: js/ui/dateMenu.js:436
+#: js/ui/dateMenu.js:455
 msgid "Weather information is currently unavailable"
 msgstr "La información meteorológica no está disponible actualmente."
 
-#: js/ui/dateMenu.js:446
+#: js/ui/dateMenu.js:465
 msgid "Weather"
 msgstr "Meteorología"
 
-#: js/ui/dateMenu.js:448
+#: js/ui/dateMenu.js:467
 msgid "Select weather location…"
 msgstr "Seleccionar ubicación meteorológica…"
 
@@ -1301,11 +1289,11 @@ msgstr "Instalar extensión"
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "¿Descargar e instalar «%s» desde extensions.gnome.org?"
 
-#: js/ui/extensionSystem.js:251
+#: js/ui/extensionSystem.js:252
 msgid "Extension Updates Available"
 msgstr "Actualizaciones de extensiones disponibles"
 
-#: js/ui/extensionSystem.js:252
+#: js/ui/extensionSystem.js:253
 msgid "Extension updates are ready to be installed."
 msgstr "Las actualizaciones de las extensiones están listas para instalarse."
 
@@ -1435,6 +1423,7 @@ msgid "Disabled"
 msgstr "Desactivado"
 
 #: js/ui/lookingGlass.js:743
+#: subprojects/extensions-app/data/ui/extension-row.ui:188
 msgid "Error"
 msgstr "Error"
 
@@ -1478,11 +1467,11 @@ msgstr "La pantalla de bloqueo necesita el gestor de pantallas de GNOME."
 msgid "System Information"
 msgstr "Información del sistema"
 
-#: js/ui/mpris.js:199
+#: js/ui/mpris.js:204
 msgid "Unknown artist"
 msgstr "Artista desconocido"
 
-#: js/ui/mpris.js:209
+#: js/ui/mpris.js:214
 msgid "Unknown title"
 msgstr "Título desconocido"
 
@@ -1528,23 +1517,23 @@ msgstr "Asignar pulsación"
 msgid "Done"
 msgstr "Hecho"
 
-#: js/ui/padOsd.js:745
+#: js/ui/padOsd.js:732
 msgid "Edit…"
 msgstr "Editar…"
 
-#: js/ui/padOsd.js:787 js/ui/padOsd.js:910
+#: js/ui/padOsd.js:774 js/ui/padOsd.js:891
 msgid "None"
 msgstr "Nada"
 
-#: js/ui/padOsd.js:863
+#: js/ui/padOsd.js:845
 msgid "Press a button to configure"
 msgstr "Pulse un botón para configurar"
 
-#: js/ui/padOsd.js:864
+#: js/ui/padOsd.js:846
 msgid "Press Esc to exit"
 msgstr "Pulse Esc para salir"
 
-#: js/ui/padOsd.js:867
+#: js/ui/padOsd.js:849
 msgid "Press any key to exit"
 msgstr "Pulse cualquier tecla para salir"
 
@@ -1602,15 +1591,15 @@ msgstr "No se pudo bloquear"
 msgid "Lock was blocked by an application"
 msgstr "Una aplicación impidió el bloqueo"
 
-#: js/ui/search.js:702
+#: js/ui/search.js:823
 msgid "Searching…"
 msgstr "Buscando…"
 
-#: js/ui/search.js:704
+#: js/ui/search.js:825
 msgid "No results."
 msgstr "No se encontraron resultados."
 
-#: js/ui/search.js:830
+#: js/ui/search.js:951
 #, javascript-format
 msgid "%d more"
 msgid_plural "%d more"
@@ -2154,11 +2143,11 @@ msgstr "Error de autorización de Thunderbolt"
 msgid "Could not authorize the Thunderbolt device: %s"
 msgstr "No se pudo autorizar el dispositivo Thunderbolt: %s"
 
-#: js/ui/status/volume.js:151
+#: js/ui/status/volume.js:154
 msgid "Volume changed"
 msgstr "Volumen modificado"
 
-#: js/ui/status/volume.js:222
+#: js/ui/status/volume.js:225
 msgid "Volume"
 msgstr "Volumen"
 
@@ -2369,13 +2358,13 @@ msgstr "El usuario rechazó el diálogo de autenticación"
 
 #: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:5
 #: subprojects/extensions-app/data/org.gnome.Extensions.desktop.in.in:4
-#: subprojects/extensions-app/js/main.js:182
+#: subprojects/extensions-app/js/main.js:183
 #: subprojects/extensions-app/data/ui/extensions-window.ui:61
 msgid "Extensions"
 msgstr "Extensiones"
 
 #: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:6
-#: subprojects/extensions-app/js/main.js:183
+#: subprojects/extensions-app/js/main.js:184
 msgid "Manage your GNOME Extensions"
 msgstr "Gestionar sus extensiones de GNOME Shell"
 
@@ -2395,12 +2384,12 @@ msgstr ""
 msgid "Configure GNOME Shell Extensions"
 msgstr "Configurar las extensiones de GNOME Shell"
 
-#: subprojects/extensions-app/js/main.js:144
+#: subprojects/extensions-app/js/main.js:145
 #, javascript-format
 msgid "Remove “%s”?"
 msgstr "¿Quitar «%s»?"
 
-#: subprojects/extensions-app/js/main.js:145
+#: subprojects/extensions-app/js/main.js:146
 msgid ""
 "If you remove the extension, you need to return to download it if you want "
 "to enable it again"
@@ -2408,44 +2397,53 @@ msgstr ""
 "Si quita la extensión necesitará volver a descargarla si quiere activarla de "
 "nuevo"
 
-#: subprojects/extensions-app/js/main.js:149
+#: subprojects/extensions-app/js/main.js:150
 msgid "Remove"
 msgstr "Quitar"
 
-#: subprojects/extensions-app/js/main.js:181
+#: subprojects/extensions-app/js/main.js:182
 msgid "translator-credits"
 msgstr ""
 "Daniel Mustieles <daniel.mustieles@gmail.com>, 2010-2020\n"
 "Benjamín Valero Espinosa <benjavalero@gmail.com>, 2011\n"
 "Jorge González <jorgegonz@svn.gnome.org>, 2009, 2010, 2011"
 
-#: subprojects/extensions-app/js/main.js:313
+#: subprojects/extensions-app/js/main.js:314
 #, javascript-format
 msgid "%d extension will be updated on next login."
 msgid_plural "%d extensions will be updated on next login."
 msgstr[0] "la próxima vez que inicie sesión se actualizará %d extensión"
 msgstr[1] "la próxima vez que inicie sesión se actualizarán %d extensiones"
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:100
-#: subprojects/extensions-tool/src/command-create.c:301
+#: subprojects/extensions-app/js/main.js:461
+msgid "The extension is incompatible with the current GNOME version"
+msgstr "La extensión no es compatible con la versión de GNOME actual"
+
+#: subprojects/extensions-app/js/main.js:464
+#| msgid "Show extension info"
+msgid "The extension had an error"
+msgstr "La extensión contiene un error"
+
+#: subprojects/extensions-app/data/ui/extension-row.ui:109
+#: subprojects/extensions-tool/src/command-create.c:325
 #: subprojects/extensions-tool/src/main.c:241
 msgid "Description"
 msgstr "Descripción"
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:123
+#: subprojects/extensions-app/data/ui/extension-row.ui:132
 #: subprojects/extensions-tool/src/main.c:253
 msgid "Version"
 msgstr "Versión"
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:151
+#: subprojects/extensions-app/data/ui/extension-row.ui:160
 msgid "Author"
 msgstr "Autor"
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:175
+#: subprojects/extensions-app/data/ui/extension-row.ui:216
 msgid "Website"
 msgstr "Página web"
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:192
+#: subprojects/extensions-app/data/ui/extension-row.ui:233
 msgid "Remove…"
 msgstr "Quitar…"
 
@@ -2508,12 +2506,12 @@ msgid "Log Out…"
 msgstr "Cerrar la sesión…"
 
 #. Translators: a file path to an extension directory
-#: subprojects/extensions-tool/src/command-create.c:202
+#: subprojects/extensions-tool/src/command-create.c:226
 #, c-format
 msgid "The new extension was successfully created in %s.\n"
 msgstr "Se ha creado correctamente la nueva extensión en %s.\n"
 
-#: subprojects/extensions-tool/src/command-create.c:275
+#: subprojects/extensions-tool/src/command-create.c:299
 #, c-format
 msgid ""
 "Name should be a very short (ideally descriptive) string.\n"
@@ -2522,12 +2520,12 @@ msgstr ""
 "El nombre debe ser una cadena (descriptiva) muy corta.\n"
 "Algunos ejemplos: %s"
 
-#: subprojects/extensions-tool/src/command-create.c:281
+#: subprojects/extensions-tool/src/command-create.c:305
 #: subprojects/extensions-tool/src/main.c:238
 msgid "Name"
 msgstr "Nombre"
 
-#: subprojects/extensions-tool/src/command-create.c:295
+#: subprojects/extensions-tool/src/command-create.c:319
 #, c-format
 msgid ""
 "Description is a single-sentence explanation of what your extension does.\n"
@@ -2536,7 +2534,7 @@ msgstr ""
 "La descripción es una única frase para explicar qué hace su extensión.\n"
 "Algunos ejemplos: %s"
 
-#: subprojects/extensions-tool/src/command-create.c:315
+#: subprojects/extensions-tool/src/command-create.c:339
 msgid ""
 "UUID is a globally-unique identifier for your extension.\n"
 "This should be in the format of an email address (clicktofocus@janedoe."
@@ -2546,56 +2544,56 @@ msgstr ""
 "Normalmente debe estar en formato de dirección de correo electrónico "
 "(pulsarparaenfocar@usuario.ejemplo.com)\n"
 
-#: subprojects/extensions-tool/src/command-create.c:342
+#: subprojects/extensions-tool/src/command-create.c:366
 msgid "Choose one of the available templates:\n"
 msgstr "Elija una de las plantillas disponibles:\n"
 
-#: subprojects/extensions-tool/src/command-create.c:356
+#: subprojects/extensions-tool/src/command-create.c:380
 msgid "Template"
 msgstr "Plantilla"
 
-#: subprojects/extensions-tool/src/command-create.c:411
+#: subprojects/extensions-tool/src/command-create.c:435
 msgid "The unique identifier of the new extension"
 msgstr "El identificador único de la nueva extensión"
 
-#: subprojects/extensions-tool/src/command-create.c:414
+#: subprojects/extensions-tool/src/command-create.c:438
 msgid "NAME"
 msgstr "NOMBRE"
 
-#: subprojects/extensions-tool/src/command-create.c:415
+#: subprojects/extensions-tool/src/command-create.c:439
 msgid "The user-visible name of the new extension"
 msgstr "El nombre visible por el usuario de esta extensión"
 
-#: subprojects/extensions-tool/src/command-create.c:417
+#: subprojects/extensions-tool/src/command-create.c:441
 msgid "DESCRIPTION"
 msgstr "DESCRIPCIÓN"
 
-#: subprojects/extensions-tool/src/command-create.c:419
+#: subprojects/extensions-tool/src/command-create.c:443
 msgid "A short description of what the extension does"
 msgstr "Una breve descripción de qué hace la extensión"
 
-#: subprojects/extensions-tool/src/command-create.c:422
+#: subprojects/extensions-tool/src/command-create.c:446
 msgid "TEMPLATE"
 msgstr "PLANTILLA"
 
-#: subprojects/extensions-tool/src/command-create.c:423
+#: subprojects/extensions-tool/src/command-create.c:447
 msgid "The template to use for the new extension"
 msgstr "La plantilla que usar para la nueva extensión"
 
-#: subprojects/extensions-tool/src/command-create.c:429
+#: subprojects/extensions-tool/src/command-create.c:453
 msgid "Enter extension information interactively"
 msgstr "Introduzca la información de la extensión interactivamente"
 
-#: subprojects/extensions-tool/src/command-create.c:437
+#: subprojects/extensions-tool/src/command-create.c:461
 msgid "Create a new extension"
 msgstr "Crear una extensión nueva"
 
-#: subprojects/extensions-tool/src/command-create.c:455
+#: subprojects/extensions-tool/src/command-create.c:479
 #: subprojects/extensions-tool/src/command-list.c:172
 msgid "Unknown arguments"
 msgstr "Argumentos desconocidos"
 
-#: subprojects/extensions-tool/src/command-create.c:480
+#: subprojects/extensions-tool/src/command-create.c:504
 msgid "UUID, name and description are required"
 msgstr "Se necesita el UUID, el nombre y la descripción"
 
@@ -2916,6 +2914,15 @@ msgstr[1] "%u entradas"
 #: subprojects/gvc/gvc-mixer-control.c:2766
 msgid "System Sounds"
 msgstr "Sonidos del sistema"
+
+#~ msgid "Frequently used applications will appear here"
+#~ msgstr "Las aplicaciones usadas frecuentemente aparecerán aquí"
+
+#~ msgid "Frequent"
+#~ msgstr "Frecuentes"
+
+#~ msgid "All"
+#~ msgstr "Todas"
 
 #~ msgid "Copy Error"
 #~ msgstr "Copiar error"
