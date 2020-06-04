@@ -80,7 +80,13 @@ var WindowCloneLayout = GObject.registerClass({
     }
 
     vfunc_set_container(container) {
+        if (this.container)
+            this.container.unref();
+
         this._container = container;
+
+        if (container)
+            container.ref();
     }
 
     vfunc_get_preferred_height(_container, _forWidth) {
@@ -221,8 +227,9 @@ var WindowClone = GObject.registerClass({
         });
 
         this._cloneContainer = new Clutter.Actor({
-              layout_manager: new WindowCloneLayout(),
+//            layout_manager: new WindowCloneLayout(),
         });
+        this._cloneContainer.layout_manager = new WindowCloneLayout();
 
         this.add_child(this._cloneContainer);
 
