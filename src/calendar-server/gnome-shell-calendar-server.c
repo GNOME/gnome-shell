@@ -721,6 +721,9 @@ static void
 app_update_views (App *app)
 {
   GSList *link, *clients;
+  gboolean had_views, has_views;
+
+  had_views = app->live_views != NULL;
 
   for (link = app->live_views; link; link = g_slist_next (link))
     {
@@ -744,6 +747,11 @@ app_update_views (App *app)
       if (view)
         app->live_views = g_slist_prepend (app->live_views, view);
     }
+
+  has_views = app->live_views != NULL;
+
+  if (has_views != had_views)
+    app_notify_has_calendars (app);
 
   g_slist_free_full (clients, g_object_unref);
 }
