@@ -185,6 +185,7 @@ var WindowClone = GObject.registerClass({
             reactive: true,
             can_focus: true,
             accessible_role: Atk.Role.PUSH_BUTTON,
+            offscreen_redirect: Clutter.OffscreenRedirect.AUTOMATIC_FOR_OPACITY,
         });
 
         this._cloneContainer = new Clutter.Actor();
@@ -194,8 +195,6 @@ var WindowClone = GObject.registerClass({
         // container inside the constructor of the container, so create it
         // after creating the container
         this._cloneContainer.layout_manager = new WindowCloneLayout();
-
-        this.set_offscreen_redirect(Clutter.OffscreenRedirect.AUTOMATIC_FOR_OPACITY);
 
         this._addWindow(realWindow.meta_window);
 
