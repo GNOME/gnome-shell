@@ -387,18 +387,6 @@ class AppDisplay extends BaseAppView {
         this._swipeTracker.connect('update', this._swipeUpdate.bind(this));
         this._swipeTracker.connect('end', this._swipeEnd.bind(this));
 
-        this._clickAction = new Clutter.ClickAction();
-        this._clickAction.connect('clicked', () => {
-            if (!this._currentDialog)
-                return;
-
-            let [x, y] = this._clickAction.get_coords();
-            let actor = global.stage.get_actor_at_pos(Clutter.PickMode.ALL, x, y);
-            if (!this._currentDialog.contains(actor))
-                this._currentDialog.popdown();
-        });
-        this._eventBlocker.add_action(this._clickAction);
-
         this._currentDialog = null;
         this._displayingDialog = false;
         this._currentDialogDestroyId = 0;
@@ -1448,6 +1436,17 @@ var AppFolderDialog = GObject.registerClass({
             primary: true,
             work_area: true,
         }));
+
+        const clickAction = new Clutter.ClickAction();
+        clickAction.connect('clicked', () => {
+            const [x, y] = clickAction.get_coords();
+            const actor =
+                global.stage.get_actor_at_pos(Clutter.PickMode.ALL, x, y);
+
+            if (actor === this)
+                this.popdown();
+        });
+        this.add_action(clickAction);
 
         this._source = source;
         this._folder = folder;
