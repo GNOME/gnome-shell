@@ -1627,11 +1627,7 @@ class Workspace extends St.Widget {
             const cloneHeight = cellHeight;
             clone.slot = [x, y, cloneWidth, cloneHeight];
 
-            let cloneCenter = x + cloneWidth / 2;
-            let maxChromeWidth = 2 * Math.min(
-                cloneCenter - area.x,
-                area.x + area.width - cloneCenter);
-            clone.overlay.setMaxChromeWidth(Math.round(maxChromeWidth));
+            clone.overlay.setMaxChromeWidth(cloneWidth);
 
             if (clone.overlay && (initialPositioning || !clone.positioned))
                 clone.overlay.hide();
