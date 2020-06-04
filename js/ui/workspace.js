@@ -214,6 +214,7 @@ var WindowPreview = GObject.registerClass({
             reactive: true,
             can_focus: true,
             accessible_role: Atk.Role.PUSH_BUTTON,
+            offscreen_redirect: Clutter.OffscreenRedirect.AUTOMATIC_FOR_OPACITY,
         });
 
         this._windowContainer = new Clutter.Actor();
@@ -223,8 +224,6 @@ var WindowPreview = GObject.registerClass({
         // container
         this._windowContainer.layout_manager = new WindowPreviewLayout();
         this.add_child(this._windowContainer);
-
-        this.set_offscreen_redirect(Clutter.OffscreenRedirect.AUTOMATIC_FOR_OPACITY);
 
         this._addWindow(realWindow.meta_window);
 
