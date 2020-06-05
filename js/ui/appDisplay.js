@@ -575,10 +575,6 @@ class AppDisplay extends BaseAppView {
         if (animationDirection == IconGrid.AnimationDirection.OUT &&
             this._displayingDialog && this._currentDialog) {
             this._currentDialog.popdown();
-            let spaceClosedId = this._grid.connect('space-closed', () => {
-                this._grid.disconnect(spaceClosedId);
-                super.animate(animationDirection, completionFunc);
-            });
         } else {
             super.animate(animationDirection, completionFunc);
             if (animationDirection == IconGrid.AnimationDirection.OUT)
