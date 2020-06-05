@@ -1395,7 +1395,8 @@ var FolderIcon = GObject.registerClass({
         if (this._dialog)
             return;
         if (!this._dialog) {
-            this._dialog = new AppFolderDialog(this, this._folder);
+            this._dialog = new AppFolderDialog(this, this._folder,
+                this._parentView);
             this._parentView.addFolderDialog(this._dialog);
             this._dialog.connect('open-state-changed', (popup, isOpen) => {
                 if (!isOpen)
@@ -1410,7 +1411,7 @@ var AppFolderDialog = GObject.registerClass({
         'open-state-changed': { param_types: [GObject.TYPE_BOOLEAN] },
     },
 }, class AppFolderDialog extends St.Bin {
-    _init(source, folder) {
+    _init(source, folder, appDisplay) {
         super._init({
             visible: false,
             x_expand: true,
@@ -1437,6 +1438,8 @@ var AppFolderDialog = GObject.registerClass({
         this._source = source;
         this._folder = folder;
         this._view = source.view;
+        this._appDisplay = appDisplay;
+        this._delegate = this;
 
         this._isOpen = false;
         this.parentOffset = 0;
@@ -1736,6 +1739,26 @@ var AppFolderDialog = GObject.registerClass({
             return Clutter.EVENT_PROPAGATE;
         }
         return this.navigate_focus(null, direction, false);
+    }
+
+    _withinDialog(x, y) {
+        const childAllocation = this.child.allocation;
+        return x > childAllocation.x1 &&
+            x < childAllocation.x2 &&
+            y > childAllocation.y1 &&
+            y < childAllocation.y2;
+    }
+
+    handleDragOver(source, actor, x, y, timestamp) {
+        if (this._withinDialog(x, y))
+            return DND.DragMotionResult.NO_DROP;
+        return this._appDisplay.handleDragOver(source, actor, x, y, timestamp);
+    }
+
+    acceptDrop(source, actor, x, y, timestamp) {
+        if (this._withinDialog(x, y))
+            return false;
+        return this._appDisplay.acceptDrop(source, actor, x, y, timestamp);
     }
 
     toggle() {
