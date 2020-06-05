@@ -1395,7 +1395,8 @@ var FolderIcon = GObject.registerClass({
         if (this._dialog)
             return;
         if (!this._dialog) {
-            this._dialog = new AppFolderDialog(this, this._folder);
+            this._dialog = new AppFolderDialog(this, this._folder,
+                this._parentView);
             this._parentView.addFolderDialog(this._dialog);
             this._dialog.connect('open-state-changed', (popup, isOpen) => {
                 if (!isOpen)
@@ -1410,7 +1411,7 @@ var AppFolderDialog = GObject.registerClass({
         'open-state-changed': { param_types: [GObject.TYPE_BOOLEAN] },
     },
 }, class AppFolderDialog extends St.Bin {
-    _init(source, folder) {
+    _init(source, folder, appDisplay) {
         super._init({
             visible: false,
             x_expand: true,
@@ -1437,6 +1438,8 @@ var AppFolderDialog = GObject.registerClass({
         this._source = source;
         this._folder = folder;
         this._view = source.view;
+        this._appDisplay = appDisplay;
+        this._delegate = this;
 
         this._isOpen = false;
         this.parentOffset = 0;
@@ -1469,6 +1472,7 @@ var AppFolderDialog = GObject.registerClass({
         this.connect('destroy', this._onDestroy.bind(this));
 
         this._sourceMappedId = 0;
+        this._popdownTimeoutId = 0;
         this._needsZoomAndFade = false;
     }
 
@@ -1680,6 +1684,11 @@ var AppFolderDialog = GObject.registerClass({
             this._source.disconnect(this._sourceMappedId);
             this._sourceMappedId = 0;
         }
+
+        if (this._popdownTimeoutId > 0) {
+            GLib.source_remove(this._popdownTimeoutId);
+            this._popdownTimeoutId = 0;
+        }
     }
 
     vfunc_allocate(box) {
@@ -1734,6 +1743,34 @@ var AppFolderDialog = GObject.registerClass({
             return Clutter.EVENT_PROPAGATE;
         }
         return this.navigate_focus(null, direction, false);
+    }
+
+    _withinDialog(x, y) {
+        const childAllocation =
+            Shell.util_get_transformed_allocation(this.child);
+
+        return x > childAllocation.x1 &&
+            x < childAllocation.x2 &&
+            y > childAllocation.y1 &&
+            y < childAllocation.y2;
+    }
+
+    handleDragOver(source, actor, x, y) {
+        if (this._withinDialog(x, y)) {
+            if (this._popdownTimeoutId > 0) {
+                GLib.source_remove(this._popdownTimeoutId);
+                this._popdownTimeoutId = 0;
+            }
+        } else if (this._popdownTimeoutId === 0) {
+            this._popdownTimeoutId =
+                GLib.timeout_add(GLib.PRIORITY_DEFAULT, MENU_POPUP_TIMEOUT, () => {
+                    this._popdownTimeoutId = 0;
+                    this.popdown();
+                    return GLib.SOURCE_REMOVE;
+                });
+        }
+
+        return DND.DragMotionResult.NO_DROP;
     }
 
     toggle() {
