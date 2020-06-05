@@ -1622,6 +1622,11 @@ var AppFolderDialog = GObject.registerClass({
             opacity: 0,
         });
 
+        this.ease({
+            background_color: Clutter.Color.from_pixel(0x000000cc),
+            duration: FOLDER_DIALOG_ANIMATION_TIME,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+        });
         this.child.ease({
             translation_x: 0,
             translation_y: 0,
@@ -1653,6 +1658,12 @@ var AppFolderDialog = GObject.registerClass({
             this._source.get_transformed_position();
         let [dialogX, dialogY] =
             this.child.get_transformed_position();
+
+        this.ease({
+            background_color: Clutter.Color.from_pixel(0x00000000),
+            duration: FOLDER_DIALOG_ANIMATION_TIME,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+        });
 
         this.child.ease({
             translation_x: sourceX - dialogX,
