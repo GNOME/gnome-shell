@@ -726,7 +726,7 @@ class AppDisplay extends BaseAppView {
             // Toggle search entry
             Main.overview.searchEntry.reactive = !isOpen;
 
-            this._displayingPopup = isOpen;
+            this._displayingDialog = isOpen;
         });
     }
 
