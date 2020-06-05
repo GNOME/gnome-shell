@@ -1007,12 +1007,6 @@ do_border_property (StThemeNode   *node,
   gboolean width_set = FALSE;
   int j;
 
-  if (g_str_has_prefix (property_name, "-radius"))
-    {
-      do_border_radius (node, decl);
-      return;
-    }
-
   if (g_str_has_prefix (property_name, "-left"))
     {
       side = ST_SIDE_LEFT;
@@ -1305,7 +1299,9 @@ _st_theme_node_ensure_geometry (StThemeNode *node)
       CRDeclaration *decl = node->properties[i];
       const char *property_name = cr_declaration_name (decl);
 
-      if (g_str_has_prefix (property_name, "border"))
+      if (g_str_has_prefix (property_name, "border-radius"))
+        do_border_radius (node, decl);
+      else if (g_str_has_prefix (property_name, "border"))
         do_border_property (node, decl);
       else if (g_str_has_prefix (property_name, "outline"))
         do_outline_property (node, decl);
