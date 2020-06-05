@@ -1607,17 +1607,17 @@ var AppFolderDialog = GObject.registerClass({
         let [sourceX, sourceY] =
             this._source.get_transformed_position();
         let [dialogX, dialogY] =
-            this.get_transformed_position();
+            this.child.get_transformed_position();
 
-        this.set({
+        this.child.set({
             translation_x: sourceX - dialogX,
             translation_y: sourceY - dialogY,
-            scale_x: this._source.width / this.width,
-            scale_y: this._source.height / this.height,
+            scale_x: this._source.width / this.child.width,
+            scale_y: this._source.height / this.child.height,
             opacity: 0,
         });
 
-        this.ease({
+        this.child.ease({
             translation_x: 0,
             translation_y: 0,
             scale_x: 1,
@@ -1647,18 +1647,18 @@ var AppFolderDialog = GObject.registerClass({
         let [sourceX, sourceY] =
             this._source.get_transformed_position();
         let [dialogX, dialogY] =
-            this.get_transformed_position();
+            this.child.get_transformed_position();
 
-        this.ease({
+        this.child.ease({
             translation_x: sourceX - dialogX,
             translation_y: sourceY - dialogY,
-            scale_x: this._source.width / this.width,
-            scale_y: this._source.height / this.height,
+            scale_x: this._source.width / this.child.width,
+            scale_y: this._source.height / this.child.height,
             opacity: 0,
             duration: FOLDER_DIALOG_ANIMATION_TIME,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
             onComplete: () => {
-                this.set({
+                this.child.set({
                     translation_x: 0,
                     translation_y: 0,
                     scale_x: 1,
