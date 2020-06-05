@@ -2,7 +2,6 @@
 const { Gio, GObject, Shell, St } = imports.gi;
 const Signals = imports.signals;
 
-const Calendar = imports.ui.calendar;
 const Main = imports.ui.main;
 const MessageList = imports.ui.messageList;
 
@@ -250,10 +249,6 @@ class MediaSection extends MessageList.MessageListSection {
                                     'org.freedesktop.DBus',
                                     '/org/freedesktop/DBus',
                                     this._onProxyReady.bind(this));
-    }
-
-    _shouldShow() {
-        return !this.empty && Calendar.isToday(this._date);
     }
 
     get allowed() {
