@@ -1391,6 +1391,18 @@ var FolderIcon = GObject.registerClass({
                 this._parentView);
             this._parentView.addFolderDialog(this._dialog);
             this._dialog.connect('open-state-changed', (popup, isOpen) => {
+                const duration = FOLDER_DIALOG_ANIMATION_TIME / 2;
+                const mode = isOpen
+                    ? Clutter.AnimationMode.EASE_OUT_QUAD
+                    : Clutter.AnimationMode.EASE_IN_QUAD;
+
+                this.ease({
+                    opacity: isOpen ? 0 : 255,
+                    duration,
+                    mode,
+                    delay: isOpen ? 0 : FOLDER_DIALOG_ANIMATION_TIME - duration,
+                });
+
                 if (!isOpen)
                     this.checked = false;
             });
