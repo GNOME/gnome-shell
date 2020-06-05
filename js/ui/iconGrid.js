@@ -1,5 +1,5 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported BaseIcon, IconGrid, PaginatedIconGrid */
+/* exported BaseIcon, IconGrid */
 
 const { Clutter, GLib, GObject, Graphene, Meta, St } = imports.gi;
 
