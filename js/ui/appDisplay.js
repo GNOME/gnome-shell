@@ -1028,7 +1028,7 @@ class FolderView extends BaseAppView {
             x_expand: true,
             y_expand: true,
         }, {
-            minRows: 1,
+            minRows: 3,
         });
 
         // If it not expand, the parent doesn't take into account its preferred_width when allocating
