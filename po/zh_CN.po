@@ -23,16 +23,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2020-04-17 22:34+0000\n"
-"PO-Revision-Date: 2019-09-10 21:49+0800\n"
-"Last-Translator: Dingzhong Chen <wsxy162@gmail.com>\n"
+"POT-Creation-Date: 2020-05-28 11:29+0000\n"
+"PO-Revision-Date: 2020-05-29 09:03-0400\n"
+"Last-Translator: Boyuan Yang <073plan@gmail.com>\n"
 "Language-Team: Chinese (China) <i18n-zh@googlegroups.com>\n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Gtranslator 3.32.1\n"
+"X-Generator: Poedit 2.3.1\n"
 
 #: data/50-gnome-shell-system.xml:6
 msgid "System"
@@ -404,7 +404,7 @@ msgstr "访问扩展主页"
 #: js/ui/components/networkAgent.js:110 js/ui/components/polkitAgent.js:139
 #: js/ui/endSessionDialog.js:369 js/ui/extensionDownloader.js:181
 #: js/ui/shellMountOperation.js:376 js/ui/shellMountOperation.js:386
-#: js/ui/status/network.js:917 subprojects/extensions-app/js/main.js:148
+#: js/ui/status/network.js:916 subprojects/extensions-app/js/main.js:149
 msgid "Cancel"
 msgstr "取消"
 
@@ -427,7 +427,7 @@ msgstr "未列出？"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: js/gdm/loginDialog.js:912
+#: js/gdm/loginDialog.js:913
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "（如 user 或 %s）"
@@ -435,14 +435,12 @@ msgstr "（如 user 或 %s）"
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: js/gdm/loginDialog.js:917 js/ui/components/networkAgent.js:241
+#: js/gdm/loginDialog.js:918 js/ui/components/networkAgent.js:241
 #: js/ui/components/networkAgent.js:264 js/ui/components/networkAgent.js:282
-#, fuzzy
-#| msgid "Username: "
 msgid "Username"
-msgstr "用户名："
+msgstr "用户名"
 
-#: js/gdm/loginDialog.js:1253
+#: js/gdm/loginDialog.js:1254
 msgid "Login Window"
 msgstr "登录窗口"
 
@@ -460,84 +458,75 @@ msgid "(or swipe finger)"
 msgstr "（或滑动手指）"
 
 #. Translators: The name of the power-off action in search
-#: js/misc/systemActions.js:89
+#: js/misc/systemActions.js:93
 msgctxt "search-result"
 msgid "Power Off"
 msgstr "关机"
 
 #. Translators: A list of keywords that match the power-off action, separated by semicolons
-#: js/misc/systemActions.js:92
-#, fuzzy
-#| msgid "power off;shutdown;reboot;restart"
+#: js/misc/systemActions.js:96
 msgid "power off;shutdown;reboot;restart;halt;stop"
-msgstr "power off;shutdown;reboot;restart;关机;断电;重启;重新启动;"
+msgstr ""
+"power off;shutdown;reboot;restart;halt;stop;关机;断电;重启;重新启动;暂停;停止"
 
 #. Translators: The name of the lock screen action in search
-#: js/misc/systemActions.js:97
+#: js/misc/systemActions.js:101
 msgctxt "search-result"
 msgid "Lock Screen"
 msgstr "锁屏"
 
 #. Translators: A list of keywords that match the lock screen action, separated by semicolons
-#: js/misc/systemActions.js:100
+#: js/misc/systemActions.js:104
 msgid "lock screen"
 msgstr "锁屏"
 
 #. Translators: The name of the logout action in search
-#: js/misc/systemActions.js:105
+#: js/misc/systemActions.js:109
 msgctxt "search-result"
 msgid "Log Out"
 msgstr "注销"
 
 #. Translators: A list of keywords that match the logout action, separated by semicolons
-#: js/misc/systemActions.js:108
+#: js/misc/systemActions.js:112
 msgid "logout;log out;sign off"
-msgstr "logout;log out;sign off;登出;注销;退出;"
+msgstr "logout;log out;sign off;登出;注销;退出"
 
 #. Translators: The name of the suspend action in search
-#: js/misc/systemActions.js:113
+#: js/misc/systemActions.js:117
 msgctxt "search-result"
 msgid "Suspend"
 msgstr "挂起"
 
 #. Translators: A list of keywords that match the suspend action, separated by semicolons
-#: js/misc/systemActions.js:116
+#: js/misc/systemActions.js:120
 msgid "suspend;sleep"
-msgstr "suspend;sleep;挂起;睡眠;"
+msgstr "suspend;sleep;挂起;睡眠"
 
 #. Translators: The name of the switch user action in search
-#: js/misc/systemActions.js:121
+#: js/misc/systemActions.js:125
 msgctxt "search-result"
 msgid "Switch User"
 msgstr "切换用户"
 
 #. Translators: A list of keywords that match the switch user action, separated by semicolons
-#: js/misc/systemActions.js:124
+#: js/misc/systemActions.js:128
 msgid "switch user"
 msgstr "切换用户"
 
 #. Translators: A list of keywords that match the lock orientation action, separated by semicolons
-#: js/misc/systemActions.js:131
-#, fuzzy
-#| msgid "lock orientation;screen;rotation"
+#: js/misc/systemActions.js:135
 msgid "lock orientation;unlock orientation;screen;rotation"
-msgstr "lock orientation;screen;rotation;锁定方向;屏幕;旋转;"
+msgstr "lock orientation;screen;rotation;锁定方向;屏幕;旋转"
 
-#: js/misc/systemActions.js:251
-#, fuzzy
-#| msgctxt "search-result"
-#| msgid "Lock Orientation"
+#: js/misc/systemActions.js:255
 msgctxt "search-result"
 msgid "Unlock Screen Rotation"
-msgstr "锁定方向"
+msgstr "解锁屏幕旋转"
 
-#: js/misc/systemActions.js:252
-#, fuzzy
-#| msgctxt "search-result"
-#| msgid "Lock Orientation"
+#: js/misc/systemActions.js:256
 msgctxt "search-result"
 msgid "Lock Screen Rotation"
-msgstr "锁定方向"
+msgstr "锁定屏幕旋转"
 
 #: js/misc/util.js:120
 msgid "Command not found"
@@ -691,53 +680,45 @@ msgstr "拒绝访问"
 msgid "Grant Access"
 msgstr "允许访问"
 
-#: js/ui/appDisplay.js:951
+#: js/ui/appDisplay.js:960
 msgid "Unnamed Folder"
 msgstr "未命名文件夹"
 
-#: js/ui/appDisplay.js:974
-msgid "Frequently used applications will appear here"
-msgstr "常用的应用程序会出现在这里"
-
-#: js/ui/appDisplay.js:1109
-msgid "Frequent"
-msgstr "常用"
-
-#: js/ui/appDisplay.js:1116
-msgid "All"
-msgstr "全部"
-
 #. Translators: This is the heading of a list of open windows
-#: js/ui/appDisplay.js:2507 js/ui/panel.js:75
+#: js/ui/appDisplay.js:2219 js/ui/panel.js:75
 msgid "Open Windows"
 msgstr "打开窗口"
 
-#: js/ui/appDisplay.js:2527 js/ui/panel.js:82
+#: js/ui/appDisplay.js:2238 js/ui/panel.js:82
 msgid "New Window"
 msgstr "新窗口"
 
-#: js/ui/appDisplay.js:2538
-msgid "Launch using Dedicated Graphics Card"
+#: js/ui/appDisplay.js:2254
+msgid "Launch using Integrated Graphics Card"
+msgstr "使用集成显卡启动"
+
+#: js/ui/appDisplay.js:2255
+msgid "Launch using Discrete Graphics Card"
 msgstr "使用独立显卡启动"
 
-#: js/ui/appDisplay.js:2566 js/ui/dash.js:239
+#: js/ui/appDisplay.js:2283 js/ui/dash.js:239
 msgid "Remove from Favorites"
 msgstr "从收藏夹中移除"
 
-#: js/ui/appDisplay.js:2572
+#: js/ui/appDisplay.js:2289
 msgid "Add to Favorites"
 msgstr "添加到收藏夹"
 
-#: js/ui/appDisplay.js:2582 js/ui/panel.js:93
+#: js/ui/appDisplay.js:2299 js/ui/panel.js:93
 msgid "Show Details"
 msgstr "显示细节"
 
-#: js/ui/appFavorites.js:163
+#: js/ui/appFavorites.js:164
 #, javascript-format
 msgid "%s has been added to your favorites."
 msgstr "%s 已经添加到了您的收藏夹。"
 
-#: js/ui/appFavorites.js:196
+#: js/ui/appFavorites.js:197
 #, javascript-format
 msgid "%s has been removed from your favorites."
 msgstr "%s 已经从您的收藏夹移除。"
@@ -758,7 +739,7 @@ msgstr "耳机"
 msgid "Headset"
 msgstr "耳麦"
 
-#: js/ui/audioDeviceSelection.js:68 js/ui/status/volume.js:270
+#: js/ui/audioDeviceSelection.js:68 js/ui/status/volume.js:273
 msgid "Microphone"
 msgstr "麦克风"
 
@@ -832,7 +813,7 @@ msgstr "六"
 #. * "%OB" is the new format specifier introduced in glibc 2.27,
 #. * in most cases you should not change it.
 #.
-#: js/ui/calendar.js:372
+#: js/ui/calendar.js:397
 msgid "%OB"
 msgstr "%OB"
 
@@ -845,61 +826,61 @@ msgstr "%OB"
 #. * in most cases you should not use the old "%B" here unless you
 #. * absolutely know what you are doing.
 #.
-#: js/ui/calendar.js:382
+#: js/ui/calendar.js:407
 msgid "%OB %Y"
 msgstr "%Y %OB"
 
-#: js/ui/calendar.js:441
+#: js/ui/calendar.js:466
 msgid "Previous month"
 msgstr "上个月"
 
-#: js/ui/calendar.js:456
+#: js/ui/calendar.js:481
 msgid "Next month"
 msgstr "下个月"
 
-#: js/ui/calendar.js:606
+#: js/ui/calendar.js:631
 #, no-javascript-format
 msgctxt "date day number format"
 msgid "%d"
 msgstr "%d"
 
-#: js/ui/calendar.js:662
+#: js/ui/calendar.js:687
 msgid "Week %V"
 msgstr "第 %V 个星期"
 
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
 #.
-#: js/ui/calendar.js:731
+#: js/ui/calendar.js:762
 msgctxt "event list time"
 msgid "All Day"
 msgstr "全天"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year
-#: js/ui/calendar.js:869
+#: js/ui/calendar.js:900
 msgctxt "calendar heading"
 msgid "%A, %B %-d"
 msgstr "%-m月%-d日 %A"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year
-#: js/ui/calendar.js:872
+#: js/ui/calendar.js:903
 msgctxt "calendar heading"
 msgid "%A, %B %-d, %Y"
 msgstr "%Y年%-m月%-d日 %A"
 
-#: js/ui/calendar.js:1101
+#: js/ui/calendar.js:1133
 msgid "No Notifications"
 msgstr "无通知"
 
-#: js/ui/calendar.js:1104
+#: js/ui/calendar.js:1136
 msgid "No Events"
 msgstr "无事件"
 
-#: js/ui/calendar.js:1158
+#: js/ui/calendar.js:1190
 msgid "Do Not Disturb"
-msgstr ""
+msgstr "请勿打扰"
 
-#: js/ui/calendar.js:1177
+#: js/ui/calendar.js:1209
 msgid "Clear"
 msgstr "清除"
 
@@ -939,7 +920,7 @@ msgstr "无法解锁卷"
 msgid "The installed udisks version does not support the PIM setting"
 msgstr "安装的 udisks 版本不支持 PIM 设置"
 
-#: js/ui/components/autorunManager.js:333
+#: js/ui/components/autorunManager.js:332
 #, javascript-format
 msgid "Open with %s"
 msgstr "使用 %s 打开"
@@ -950,33 +931,25 @@ msgid ""
 msgstr "此外，您也可以通过按下您路由器的“WPS”按钮来连接。"
 
 #: js/ui/components/networkAgent.js:104 js/ui/status/network.js:227
-#: js/ui/status/network.js:318 js/ui/status/network.js:920
+#: js/ui/status/network.js:318 js/ui/status/network.js:919
 msgid "Connect"
 msgstr "连接"
 
 #: js/ui/components/networkAgent.js:211
-#, fuzzy
-#| msgid "Key: "
 msgid "Key"
-msgstr "密钥："
+msgstr "密钥"
 
 #: js/ui/components/networkAgent.js:249 js/ui/components/networkAgent.js:272
-#, fuzzy
-#| msgid "Private key password: "
 msgid "Private key password"
-msgstr "私钥密码："
+msgstr "私钥密码"
 
 #: js/ui/components/networkAgent.js:270
-#, fuzzy
-#| msgid "Identity: "
 msgid "Identity"
-msgstr "身份："
+msgstr "身份"
 
 #: js/ui/components/networkAgent.js:284
-#, fuzzy
-#| msgid "Service: "
 msgid "Service"
-msgstr "服务："
+msgstr "服务"
 
 #: js/ui/components/networkAgent.js:313 js/ui/components/networkAgent.js:341
 #: js/ui/components/networkAgent.js:680 js/ui/components/networkAgent.js:701
@@ -995,10 +968,8 @@ msgid "Wired 802.1X authentication"
 msgstr "有线 802.1X 认证"
 
 #: js/ui/components/networkAgent.js:320
-#, fuzzy
-#| msgid "Network name: "
 msgid "Network name"
-msgstr "网络名称："
+msgstr "网络名称"
 
 #: js/ui/components/networkAgent.js:325 js/ui/components/networkAgent.js:689
 msgid "DSL authentication"
@@ -1013,10 +984,8 @@ msgid "PIN code is needed for the mobile broadband device"
 msgstr "移动宽带设备需要 PIN 码"
 
 #: js/ui/components/networkAgent.js:334
-#, fuzzy
-#| msgid "PIN: "
 msgid "PIN"
-msgstr "PIN："
+msgstr "PIN"
 
 #: js/ui/components/networkAgent.js:342 js/ui/components/networkAgent.js:686
 #: js/ui/components/networkAgent.js:690 js/ui/components/networkAgent.js:702
@@ -1025,15 +994,13 @@ msgstr "PIN："
 msgid "A password is required to connect to “%s”."
 msgstr "连接到“%s”需要密码。"
 
-#: js/ui/components/networkAgent.js:669 js/ui/status/network.js:1695
+#: js/ui/components/networkAgent.js:669 js/ui/status/network.js:1694
 msgid "Network Manager"
 msgstr "网络管理器"
 
 #: js/ui/components/networkAgent.js:705
-#, fuzzy
-#| msgid "Password"
 msgid "VPN password"
-msgstr "密码"
+msgstr "VPN 密码"
 
 #: js/ui/components/polkitAgent.js:39
 msgid "Authentication Required"
@@ -1094,35 +1061,33 @@ msgstr "%Y年%-m月%-d日"
 msgid "%A %B %e %Y"
 msgstr "%Y年%-m月%-d日 %A"
 
-#: js/ui/dateMenu.js:161
+#: js/ui/dateMenu.js:162
 msgid "Add world clocks…"
 msgstr "添加世界时钟…"
 
-#: js/ui/dateMenu.js:162
+#: js/ui/dateMenu.js:163
 msgid "World Clocks"
 msgstr "世界时钟"
 
-#: js/ui/dateMenu.js:424
+#: js/ui/dateMenu.js:443
 msgid "Loading…"
 msgstr "正在载入……"
 
-#: js/ui/dateMenu.js:434
+#: js/ui/dateMenu.js:453
 msgid "Go online for weather information"
 msgstr "通过互联网查看天气信息"
 
-#: js/ui/dateMenu.js:436
+#: js/ui/dateMenu.js:455
 msgid "Weather information is currently unavailable"
 msgstr "天气信息目前不可用"
 
-#: js/ui/dateMenu.js:446
+#: js/ui/dateMenu.js:465
 msgid "Weather"
 msgstr "天气"
 
-#: js/ui/dateMenu.js:448
-#, fuzzy
-#| msgid "Select a location…"
+#: js/ui/dateMenu.js:467
 msgid "Select weather location…"
-msgstr "选择地点…"
+msgstr "选择天气地点…"
 
 #: js/ui/endSessionDialog.js:37
 #, javascript-format
@@ -1239,22 +1204,16 @@ msgstr ""
 "入了电源。"
 
 #: js/ui/endSessionDialog.js:259
-#, fuzzy
-#| msgid "Running on battery power: please plug in before installing updates."
 msgid "Running on battery power: Please plug in before installing updates."
 msgstr "正在用电池供电：安装更新前请插上电源。"
 
 #: js/ui/endSessionDialog.js:268
-#, fuzzy
-#| msgid "Some applications are busy or have unsaved work."
 msgid "Some applications are busy or have unsaved work"
-msgstr "有些应用程序正忙或有未保存的工作。"
+msgstr "有些应用程序正忙或有未保存的工作"
 
 #: js/ui/endSessionDialog.js:273
-#, fuzzy
-#| msgid "Other users are logged in."
 msgid "Other users are logged in"
-msgstr "有其他用户登录。"
+msgstr "有其他用户登录"
 
 #. Translators: Remote here refers to a remote session, like a ssh login
 #: js/ui/endSessionDialog.js:583
@@ -1273,44 +1232,35 @@ msgid "Install"
 msgstr "安装"
 
 #: js/ui/extensionDownloader.js:191
-#, fuzzy
-#| msgid "Uninstall extension"
 msgid "Install Extension"
-msgstr "卸载扩展"
+msgstr "安装扩展"
 
 #: js/ui/extensionDownloader.js:192
 #, javascript-format
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "从 extensions.gnome.org 下载并安装“%s”？"
 
-#: js/ui/extensionSystem.js:251
-#, fuzzy
-#| msgid "No Extensions Installed"
-msgid "Extension Updates Available"
-msgstr "未安装扩展"
-
 #: js/ui/extensionSystem.js:252
+msgid "Extension Updates Available"
+msgstr "扩展更新可用"
+
+#: js/ui/extensionSystem.js:253
 msgid "Extension updates are ready to be installed."
-msgstr ""
+msgstr "扩展更新已做好安装准备。"
 
 #: js/ui/inhibitShortcutsDialog.js:79
-#, fuzzy
-#| msgid "%s wants to inhibit shortcuts"
 msgid "Allow inhibiting shortcuts"
-msgstr "%s 希望禁用快捷键"
+msgstr "允许禁用快捷键"
 
 #. Translators: %s is an application name like "Settings"
 #: js/ui/inhibitShortcutsDialog.js:82
-#, fuzzy, javascript-format
-#| msgid "Application wants to inhibit shortcuts"
+#, javascript-format
 msgid "The application %s wants to inhibit shortcuts"
-msgstr "应用程序希望禁用快捷键"
+msgstr "应用程序 %s 希望禁用快捷键"
 
 #: js/ui/inhibitShortcutsDialog.js:83
-#, fuzzy
-#| msgid "Application wants to inhibit shortcuts"
 msgid "An application wants to inhibit shortcuts"
-msgstr "应用程序希望禁用快捷键"
+msgstr "某应用程序希望禁用快捷键"
 
 #. Translators: %s is a keyboard shortcut like "Super+x"
 #: js/ui/inhibitShortcutsDialog.js:90
@@ -1371,13 +1321,13 @@ msgid "Leave On"
 msgstr "保持开启"
 
 #: js/ui/kbdA11yDialog.js:55 js/ui/status/bluetooth.js:156
-#: js/ui/status/network.js:1292
+#: js/ui/status/network.js:1291
 msgid "Turn On"
 msgstr "开启"
 
 #: js/ui/kbdA11yDialog.js:63 js/ui/status/bluetooth.js:156
 #: js/ui/status/network.js:135 js/ui/status/network.js:319
-#: js/ui/status/network.js:1292 js/ui/status/network.js:1404
+#: js/ui/status/network.js:1291 js/ui/status/network.js:1403
 #: js/ui/status/nightLight.js:41 js/ui/status/rfkill.js:81
 #: js/ui/status/rfkill.js:108
 msgid "Turn Off"
@@ -1391,83 +1341,84 @@ msgstr "保持关闭"
 msgid "Region & Language Settings"
 msgstr "区域与语言设置"
 
-#: js/ui/lookingGlass.js:665
+#: js/ui/lookingGlass.js:664
 msgid "No extensions installed"
 msgstr "未安装扩展"
 
 #. Translators: argument is an extension UUID.
-#: js/ui/lookingGlass.js:720
+#: js/ui/lookingGlass.js:719
 #, javascript-format
 msgid "%s has not emitted any errors."
 msgstr "%s 没有传出任何错误信息。"
 
-#: js/ui/lookingGlass.js:726
+#: js/ui/lookingGlass.js:725
 msgid "Hide Errors"
 msgstr "隐藏错误"
 
-#: js/ui/lookingGlass.js:730 js/ui/lookingGlass.js:795
+#: js/ui/lookingGlass.js:729 js/ui/lookingGlass.js:794
 msgid "Show Errors"
 msgstr "显示错误"
 
-#: js/ui/lookingGlass.js:739
+#: js/ui/lookingGlass.js:738
 msgid "Enabled"
 msgstr "已启用"
 
 #. translators:
 #. * The device has been disabled
-#: js/ui/lookingGlass.js:742 subprojects/gvc/gvc-mixer-control.c:1892
+#: js/ui/lookingGlass.js:741 subprojects/gvc/gvc-mixer-control.c:1892
 msgid "Disabled"
 msgstr "已禁用"
 
-#: js/ui/lookingGlass.js:744
+#: js/ui/lookingGlass.js:743
+#: subprojects/extensions-app/data/ui/extension-row.ui:188
 msgid "Error"
 msgstr "出错"
 
-#: js/ui/lookingGlass.js:746
+#: js/ui/lookingGlass.js:745
 msgid "Out of date"
 msgstr "过时"
 
-#: js/ui/lookingGlass.js:748
+#: js/ui/lookingGlass.js:747
 msgid "Downloading"
 msgstr "下载中"
 
-#: js/ui/lookingGlass.js:777
+#: js/ui/lookingGlass.js:776
 msgid "View Source"
 msgstr "查看源"
 
-#: js/ui/lookingGlass.js:786
+#: js/ui/lookingGlass.js:785
 msgid "Web Page"
 msgstr "网页"
 
-#: js/ui/main.js:284
-#, fuzzy
-#| msgid "Log in as another user"
+#: js/ui/main.js:297
 msgid "Logged in as a privileged user"
-msgstr "以另一个用户身份登录"
+msgstr "以特权用户身份登录"
 
-#: js/ui/main.js:285
+#: js/ui/main.js:298
 msgid ""
 "Running a session as a privileged user should be avoided for security "
 "reasons. If possible, you should log in as a normal user."
 msgstr ""
+"出于安全原因，应避免以特权用户身份运行会话。如有可能，你应该以正常用户身份登"
+"录。"
 
-#: js/ui/main.js:324
+#: js/ui/main.js:337
 msgid "Screen Lock disabled"
-msgstr ""
+msgstr "屏幕锁定已禁用"
 
-#: js/ui/main.js:325
+#: js/ui/main.js:338
 msgid "Screen Locking requires the GNOME display manager."
-msgstr ""
+msgstr "屏幕锁定需要 GNOME 显示管理器。"
 
-#: js/ui/messageTray.js:1551
+#: js/ui/messageTray.js:1547
 msgid "System Information"
 msgstr "系统信息"
 
-#: js/ui/mpris.js:199
+#: js/ui/mpris.js:204
 msgid "Unknown artist"
 msgstr "未知艺人"
 
-#: js/ui/mpris.js:209
+#: js/ui/mpris.js:214
 msgid "Unknown title"
 msgstr "未知标题"
 
@@ -1486,10 +1437,8 @@ msgstr "概览"
 #. active; it should not exceed ~30
 #. characters.
 #: js/ui/overview.js:107
-#, fuzzy
-#| msgid "Type to search…"
 msgid "Type to search"
-msgstr "输入以搜索…"
+msgstr "输入以搜索"
 
 #: js/ui/padOsd.js:95
 msgid "New shortcut…"
@@ -1541,30 +1490,26 @@ msgstr "退出"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: js/ui/panel.js:432
+#: js/ui/panel.js:435
 msgid "Activities"
 msgstr "活动"
 
-#: js/ui/panel.js:711
+#: js/ui/panel.js:714
 msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "系统"
 
-#: js/ui/panel.js:824
+#: js/ui/panel.js:827
 msgid "Top Bar"
 msgstr "顶栏"
 
 #: js/ui/runDialog.js:58
-#, fuzzy
-#| msgid "Enter a Command"
 msgid "Run a Command"
-msgstr "输入一个命令"
+msgstr "运行一个命令"
 
 #: js/ui/runDialog.js:73
-#, fuzzy
-#| msgid "Press Esc to exit"
 msgid "Press ESC to close"
-msgstr "按 Esc 以退出"
+msgstr "按 Esc 以关闭"
 
 #: js/ui/runDialog.js:238
 msgid "Restart is not available on Wayland"
@@ -1585,23 +1530,23 @@ msgstr "GNOME 需要锁定屏幕"
 #.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
-#: js/ui/screenShield.js:244 js/ui/screenShield.js:601
+#: js/ui/screenShield.js:244 js/ui/screenShield.js:602
 msgid "Unable to lock"
 msgstr "无法锁定"
 
-#: js/ui/screenShield.js:245 js/ui/screenShield.js:602
+#: js/ui/screenShield.js:245 js/ui/screenShield.js:603
 msgid "Lock was blocked by an application"
 msgstr "一个应用程序阻止了锁定"
 
-#: js/ui/search.js:703
+#: js/ui/search.js:823
 msgid "Searching…"
 msgstr "正在搜索……"
 
-#: js/ui/search.js:705
+#: js/ui/search.js:825
 msgid "No results."
 msgstr "无结果。"
 
-#: js/ui/search.js:831
+#: js/ui/search.js:951
 #, javascript-format
 msgid "%d more"
 msgid_plural "%d more"
@@ -1625,7 +1570,7 @@ msgstr "隐藏文本"
 
 #: js/ui/shellEntry.js:162
 msgid "Caps lock is on."
-msgstr ""
+msgstr "大写锁定键已开启。"
 
 #: js/ui/shellMountOperation.js:285
 msgid "Hidden Volume"
@@ -1734,16 +1679,12 @@ msgid "Bluetooth Settings"
 msgstr "蓝牙设置"
 
 #: js/ui/status/bluetooth.js:152
-#, fuzzy
-#| msgid "Bluetooth"
 msgid "Bluetooth Off"
-msgstr "蓝牙"
+msgstr "蓝牙关闭"
 
 #: js/ui/status/bluetooth.js:154
-#, fuzzy
-#| msgid "Bluetooth"
 msgid "Bluetooth On"
-msgstr "蓝牙"
+msgstr "蓝牙开启"
 
 #: js/ui/status/brightness.js:39
 msgid "Brightness"
@@ -1803,14 +1744,13 @@ msgstr "启用"
 
 #: js/ui/status/location.js:355
 msgid "Allow location access"
-msgstr ""
+msgstr "允许获取位置信息"
 
 #. Translators: %s is an application name
 #: js/ui/status/location.js:357
-#, fuzzy, javascript-format
-#| msgid "Give %s access to your location?"
+#, javascript-format
 msgid "The app %s wants to access your location"
-msgstr "允许 %s 访问您的位置信息？"
+msgstr "应用 %s 想要获取您的位置信息"
 
 #: js/ui/status/location.js:367
 msgid "Location access can be changed at any time from the privacy settings."
@@ -1821,7 +1761,7 @@ msgid "<unknown>"
 msgstr "<未知>"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:424 js/ui/status/network.js:1321
+#: js/ui/status/network.js:424 js/ui/status/network.js:1320
 #, javascript-format
 msgid "%s Off"
 msgstr "%s 已关闭"
@@ -1847,7 +1787,7 @@ msgid "%s Disconnecting"
 msgstr "%s 正在断开"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:442 js/ui/status/network.js:1313
+#: js/ui/status/network.js:442 js/ui/status/network.js:1312
 #, javascript-format
 msgid "%s Connecting"
 msgstr "%s 正在连接"
@@ -1887,7 +1827,7 @@ msgid "Mobile Broadband Settings"
 msgstr "移动宽带设置"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:562 js/ui/status/network.js:1318
+#: js/ui/status/network.js:562 js/ui/status/network.js:1317
 #, javascript-format
 msgid "%s Hardware Disabled"
 msgstr "%s 硬件开关关闭"
@@ -1903,118 +1843,118 @@ msgstr "%s 已禁用"
 msgid "Connect to Internet"
 msgstr "连接到互联网"
 
-#: js/ui/status/network.js:812
+#: js/ui/status/network.js:811
 msgid "Airplane Mode is On"
 msgstr "飞行模式已开启"
 
-#: js/ui/status/network.js:813
+#: js/ui/status/network.js:812
 msgid "Wi-Fi is disabled when airplane mode is on."
 msgstr "启用飞行模式时 Wi-Fi 会关闭。"
 
-#: js/ui/status/network.js:814
+#: js/ui/status/network.js:813
 msgid "Turn Off Airplane Mode"
 msgstr "关闭飞行模式"
 
-#: js/ui/status/network.js:823
+#: js/ui/status/network.js:822
 msgid "Wi-Fi is Off"
 msgstr "Wi-Fi 已关闭"
 
-#: js/ui/status/network.js:824
+#: js/ui/status/network.js:823
 msgid "Wi-Fi needs to be turned on in order to connect to a network."
 msgstr "连接网络需要开启 Wi-Fi。"
 
-#: js/ui/status/network.js:825
+#: js/ui/status/network.js:824
 msgid "Turn On Wi-Fi"
 msgstr "开启 Wi-Fi"
 
-#: js/ui/status/network.js:850
+#: js/ui/status/network.js:849
 msgid "Wi-Fi Networks"
 msgstr "Wi-Fi 网络"
 
-#: js/ui/status/network.js:852
+#: js/ui/status/network.js:851
 msgid "Select a network"
 msgstr "选择网络"
 
-#: js/ui/status/network.js:884
+#: js/ui/status/network.js:883
 msgid "No Networks"
 msgstr "无网络"
 
-#: js/ui/status/network.js:905 js/ui/status/rfkill.js:106
+#: js/ui/status/network.js:904 js/ui/status/rfkill.js:106
 msgid "Use hardware switch to turn off"
 msgstr "使用硬件开关关闭"
 
-#: js/ui/status/network.js:1182
+#: js/ui/status/network.js:1181
 msgid "Select Network"
 msgstr "选择网络"
 
-#: js/ui/status/network.js:1188
+#: js/ui/status/network.js:1187
 msgid "Wi-Fi Settings"
 msgstr "Wi-Fi 设置"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1309
+#: js/ui/status/network.js:1308
 #, javascript-format
 msgid "%s Hotspot Active"
 msgstr "%s 热点已激活"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1324
+#: js/ui/status/network.js:1323
 #, javascript-format
 msgid "%s Not Connected"
 msgstr "%s 未连接"
 
-#: js/ui/status/network.js:1421
+#: js/ui/status/network.js:1420
 msgid "connecting…"
 msgstr "正在连接……"
 
 #. Translators: this is for network connections that require some kind of key or password
-#: js/ui/status/network.js:1424
+#: js/ui/status/network.js:1423
 msgid "authentication required"
 msgstr "需要认证"
 
-#: js/ui/status/network.js:1426
+#: js/ui/status/network.js:1425
 msgid "connection failed"
 msgstr "连接失败"
 
-#: js/ui/status/network.js:1477
+#: js/ui/status/network.js:1476
 msgid "VPN Settings"
 msgstr "VPN 设置"
 
-#: js/ui/status/network.js:1494
+#: js/ui/status/network.js:1493
 msgid "VPN"
 msgstr "VPN"
 
-#: js/ui/status/network.js:1504
+#: js/ui/status/network.js:1503
 msgid "VPN Off"
 msgstr "VPN 已关闭"
 
-#: js/ui/status/network.js:1565 js/ui/status/rfkill.js:84
+#: js/ui/status/network.js:1564 js/ui/status/rfkill.js:84
 msgid "Network Settings"
 msgstr "网络设置"
 
-#: js/ui/status/network.js:1594
+#: js/ui/status/network.js:1593
 #, javascript-format
 msgid "%s Wired Connection"
 msgid_plural "%s Wired Connections"
 msgstr[0] "%s 个有线连接"
 
-#: js/ui/status/network.js:1598
+#: js/ui/status/network.js:1597
 #, javascript-format
 msgid "%s Wi-Fi Connection"
 msgid_plural "%s Wi-Fi Connections"
 msgstr[0] "%s 个 Wi-Fi 连接"
 
-#: js/ui/status/network.js:1602
+#: js/ui/status/network.js:1601
 #, javascript-format
 msgid "%s Modem Connection"
 msgid_plural "%s Modem Connections"
 msgstr[0] "%s 个调制解调器连接"
 
-#: js/ui/status/network.js:1736
+#: js/ui/status/network.js:1735
 msgid "Connection failed"
 msgstr "连接失败"
 
-#: js/ui/status/network.js:1737
+#: js/ui/status/network.js:1736
 msgid "Activation of network connection failed"
 msgstr "网络连接激活失败"
 
@@ -2069,11 +2009,11 @@ msgstr "距充满还剩 %d:%02d (%d%%)"
 msgid "%d %%"
 msgstr "%d %%"
 
-#: js/ui/status/remoteAccess.js:44
+#: js/ui/status/remoteAccess.js:43
 msgid "Screen is Being Shared"
 msgstr "正在共享屏幕"
 
-#: js/ui/status/remoteAccess.js:46
+#: js/ui/status/remoteAccess.js:45
 msgid "Turn off"
 msgstr "关闭"
 
@@ -2084,35 +2024,29 @@ msgstr "关闭"
 msgid "Airplane Mode On"
 msgstr "飞行模式已开启"
 
-#: js/ui/status/system.js:103
+#: js/ui/status/system.js:102
 msgid "Lock"
 msgstr "锁定"
 
-#: js/ui/status/system.js:116
-#, fuzzy
-#| msgid "Power Off"
+#: js/ui/status/system.js:115
 msgid "Power Off / Log Out"
-msgstr "关机"
+msgstr "关机/注销"
 
-#: js/ui/status/system.js:119
+#: js/ui/status/system.js:118
 msgid "Log Out"
 msgstr "注销"
 
-#: js/ui/status/system.js:131
-#, fuzzy
-#| msgid "Switch User"
+#: js/ui/status/system.js:130
 msgid "Switch User…"
-msgstr "切换用户"
+msgstr "切换用户..."
 
-#: js/ui/status/system.js:145
+#: js/ui/status/system.js:144
 msgid "Suspend"
 msgstr "挂起"
 
-#: js/ui/status/system.js:157
-#, fuzzy
-#| msgid "Power Off"
+#: js/ui/status/system.js:156
 msgid "Power Off…"
-msgstr "关机"
+msgstr "关机..."
 
 # 这是英特尔的注册商标名，暂无官方译名。
 #: js/ui/status/thunderbolt.js:263
@@ -2147,11 +2081,11 @@ msgstr "Thunderbolt 授权错误"
 msgid "Could not authorize the Thunderbolt device: %s"
 msgstr "无法授权 Thunderbolt 设备：%s"
 
-#: js/ui/status/volume.js:151
+#: js/ui/status/volume.js:154
 msgid "Volume changed"
 msgstr "音量已变更"
 
-#: js/ui/status/volume.js:222
+#: js/ui/status/volume.js:225
 msgid "Volume"
 msgstr "音量"
 
@@ -2186,19 +2120,16 @@ msgstr "只使用内置"
 #. Translators: This is a time format for a date in
 #. long format
 #: js/ui/unlockDialog.js:371
-#, fuzzy
-#| msgctxt "calendar heading"
-#| msgid "%A, %B %-d"
 msgid "%A %B %-d"
 msgstr "%-m月%-d日 %A"
 
 #: js/ui/unlockDialog.js:377
 msgid "Swipe up to unlock"
-msgstr ""
+msgstr "向上滑动解锁"
 
 #: js/ui/unlockDialog.js:378
 msgid "Click or press a key to unlock"
-msgstr ""
+msgstr "单击或按键解锁"
 
 #: js/ui/unlockDialog.js:550
 msgid "Unlock Window"
@@ -2223,10 +2154,8 @@ msgstr "“%s”已就绪"
 
 #. Translators: This string should be shorter than 30 characters
 #: js/ui/windowManager.js:55
-#, fuzzy
-#| msgid "Do you want to keep these display settings?"
 msgid "Keep these display settings?"
-msgstr "您想保留这些显示设置吗？"
+msgstr "保留这些显示设置吗？"
 
 #. Translators: this and the following message should be limited in length,
 #. to avoid ellipsizing the labels.
@@ -2364,107 +2293,117 @@ msgstr "认证对话框已被用户取消"
 
 #: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:5
 #: subprojects/extensions-app/data/org.gnome.Extensions.desktop.in.in:4
-#: subprojects/extensions-app/js/main.js:182
+#: subprojects/extensions-app/js/main.js:183
 #: subprojects/extensions-app/data/ui/extensions-window.ui:61
-#, fuzzy
-#| msgid "Shell Extensions"
 msgid "Extensions"
-msgstr "Shell 扩展"
+msgstr "扩展"
 
 #: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:6
-#: subprojects/extensions-app/js/main.js:183
-#, fuzzy
-#| msgid "Configure GNOME Shell Extensions"
+#: subprojects/extensions-app/js/main.js:184
 msgid "Manage your GNOME Extensions"
-msgstr "配置 GNOME Shell 扩展"
+msgstr "管理您的 GNOME 扩展"
 
 #: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:17
 msgid "The GNOME Project"
-msgstr ""
+msgstr "GNOME 项目"
 
 #: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:36
 msgid ""
 "GNOME Extensions handles updating extensions, configuring extension "
 "preferences and removing or disabling unwanted extensions."
-msgstr ""
+msgstr "GNOME 扩展程序可用于升级扩展，配置扩展首选项和移除、禁用不想要的扩展。"
 
 #: subprojects/extensions-app/data/org.gnome.Extensions.desktop.in.in:7
 msgid "Configure GNOME Shell Extensions"
 msgstr "配置 GNOME Shell 扩展"
 
-#: subprojects/extensions-app/js/main.js:144
+#: subprojects/extensions-app/js/main.js:145
 #, javascript-format
 msgid "Remove “%s”?"
-msgstr ""
+msgstr "移除 “%s”？"
 
-#: subprojects/extensions-app/js/main.js:145
+#: subprojects/extensions-app/js/main.js:146
 msgid ""
 "If you remove the extension, you need to return to download it if you want "
 "to enable it again"
-msgstr ""
+msgstr "如果您移除该扩展，想要再次启用则需重新下载"
 
-#: subprojects/extensions-app/js/main.js:149
+#: subprojects/extensions-app/js/main.js:150
 msgid "Remove"
-msgstr ""
+msgstr "移除"
 
-#: subprojects/extensions-app/js/main.js:181
+#: subprojects/extensions-app/js/main.js:182
 msgid "translator-credits"
 msgstr ""
+"eternalhui <www.eternalhui@gmail.com>, 2013\n"
+"tuhaihe <1132321739qq@gmail.com>, 2013, 2020\n"
+"Wylmer Wang <wantinghard@gmail.com>, 2013\n"
+"YunQiang Su <wzssyqa@gmail.com>, 2014\n"
+"Sphinx Jiang <yishanj13@gmail.com>, 2014\n"
+"Tong Hui <tonghuix@gmail.com>, 2014\n"
+"Mingye Wang <arthur2e5@gmail.com>, 2015, 2016\n"
+"Mingcong Bai <jeffbai@aosc.xyz>, 2015, 2018\n"
+"Bin Li <binli@gnome.org>, 2016\n"
+"Michael Chen <searchends@gnu.hk>, 2016\n"
+"Mandy Wang <wangmychn@gmail.com>, 2016\n"
+"Dingzhong Chen <wsxy162@gmail.com>, 2015, 2016, 2017, 2019"
 
-#: subprojects/extensions-app/js/main.js:313
+#: subprojects/extensions-app/js/main.js:314
 #, javascript-format
 msgid "%d extension will be updated on next login."
 msgid_plural "%d extensions will be updated on next login."
-msgstr[0] ""
+msgstr[0] "%d 个扩展将在下次登录时更新。"
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:100
-#: subprojects/extensions-tool/src/command-create.c:301
+#: subprojects/extensions-app/js/main.js:461
+msgid "The extension is incompatible with the current GNOME version"
+msgstr "该扩展与当前 GNOME 版本不兼容"
+
+#: subprojects/extensions-app/js/main.js:464
+msgid "The extension had an error"
+msgstr "扩展有错误"
+
+#: subprojects/extensions-app/data/ui/extension-row.ui:109
+#: subprojects/extensions-tool/src/command-create.c:325
 #: subprojects/extensions-tool/src/main.c:241
 msgid "Description"
 msgstr "描述"
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:123
+#: subprojects/extensions-app/data/ui/extension-row.ui:132
 #: subprojects/extensions-tool/src/main.c:253
 msgid "Version"
 msgstr "版本"
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:151
+#: subprojects/extensions-app/data/ui/extension-row.ui:160
 msgid "Author"
-msgstr ""
+msgstr "作者"
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:175
+#: subprojects/extensions-app/data/ui/extension-row.ui:216
 msgid "Website"
-msgstr ""
+msgstr "网站"
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:192
+#: subprojects/extensions-app/data/ui/extension-row.ui:233
 msgid "Remove…"
-msgstr ""
+msgstr "移除..."
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:8
 msgid "Help"
-msgstr ""
+msgstr "帮助"
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:12
-#, fuzzy
-#| msgid "List extensions"
 msgid "About Extensions"
-msgstr "列出扩展"
+msgstr "关于扩展"
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:27
-#, fuzzy
-#| msgid ""
-#| "Extensions can be installed through Software or <a href=\"https://"
-#| "extensions.gnome.org\">extensions.gnome.org</a>."
 msgid ""
 "To find and add extensions, visit <a href=\"https://extensions.gnome.org"
 "\">extensions.gnome.org</a>."
 msgstr ""
-"扩展可以通过“软件”或者 <a href=\"https://extensions.gnome.org\">extensions."
-"gnome.org</a> 来安装。"
+"如需查找或添加扩展，请访问 <a href=\"https://extensions.gnome.org"
+"\">extensions.gnome.org</a> 网站。"
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:35
 msgid "Warning"
-msgstr ""
+msgstr "警告"
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:46
 msgid ""
@@ -2472,22 +2411,19 @@ msgid ""
 "encounter problems with your system, it is recommended to disable all "
 "extensions."
 msgstr ""
+"扩展可引起系统问题，包括性能问题。如果您遇到了系统的问题，推荐禁用全部扩展。"
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:135
 msgid "Manually Installed"
-msgstr ""
+msgstr "已手动安装"
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:159
-#, fuzzy
-#| msgid "Built-in Only"
 msgid "Built-In"
-msgstr "只使用内置"
+msgstr "内置"
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:200
-#, fuzzy
-#| msgid "List installed extensions"
 msgid "No Installed Extensions"
-msgstr "列出已安装的扩展"
+msgstr "没有已安装的扩展"
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:236
 msgid ""
@@ -2496,19 +2432,21 @@ msgid ""
 msgstr ""
 "非常抱歉，我们无法获取已安装扩展的列表。请确保您已登录进 GNOME 并再试一次。"
 
+#: subprojects/extensions-app/data/ui/extensions-window.ui:273
+msgid "Extension Updates Ready"
+msgstr "扩展更新已就绪"
+
 #: subprojects/extensions-app/data/ui/extensions-window.ui:289
-#, fuzzy
-#| msgid "Log Out"
 msgid "Log Out…"
-msgstr "注销"
+msgstr "注销..."
 
 #. Translators: a file path to an extension directory
-#: subprojects/extensions-tool/src/command-create.c:202
+#: subprojects/extensions-tool/src/command-create.c:226
 #, c-format
 msgid "The new extension was successfully created in %s.\n"
-msgstr ""
+msgstr "新扩展已成功创建在目录 %s。\n"
 
-#: subprojects/extensions-tool/src/command-create.c:275
+#: subprojects/extensions-tool/src/command-create.c:299
 #, c-format
 msgid ""
 "Name should be a very short (ideally descriptive) string.\n"
@@ -2517,12 +2455,12 @@ msgstr ""
 "名称应该为很短（最好是描述性的）的字符串。\n"
 "示例：%s"
 
-#: subprojects/extensions-tool/src/command-create.c:281
+#: subprojects/extensions-tool/src/command-create.c:305
 #: subprojects/extensions-tool/src/main.c:238
 msgid "Name"
 msgstr "名称"
 
-#: subprojects/extensions-tool/src/command-create.c:295
+#: subprojects/extensions-tool/src/command-create.c:319
 #, c-format
 msgid ""
 "Description is a single-sentence explanation of what your extension does.\n"
@@ -2531,7 +2469,7 @@ msgstr ""
 "描述是对你的扩展的单句话解释。\n"
 "示例：%s"
 
-#: subprojects/extensions-tool/src/command-create.c:315
+#: subprojects/extensions-tool/src/command-create.c:339
 msgid ""
 "UUID is a globally-unique identifier for your extension.\n"
 "This should be in the format of an email address (clicktofocus@janedoe."
@@ -2540,58 +2478,56 @@ msgstr ""
 "UUID 是你的扩展全局唯一的标识符。\n"
 "这应该是电子邮件地址的格式（clicktofocus@janedoe.example.com）\n"
 
-#: subprojects/extensions-tool/src/command-create.c:342
+#: subprojects/extensions-tool/src/command-create.c:366
 msgid "Choose one of the available templates:\n"
-msgstr ""
+msgstr "选择一个可用模板：\n"
 
-#: subprojects/extensions-tool/src/command-create.c:356
+#: subprojects/extensions-tool/src/command-create.c:380
 msgid "Template"
-msgstr ""
+msgstr "模板"
 
-#: subprojects/extensions-tool/src/command-create.c:411
+#: subprojects/extensions-tool/src/command-create.c:435
 msgid "The unique identifier of the new extension"
 msgstr "新扩展的唯一标识符"
 
-#: subprojects/extensions-tool/src/command-create.c:414
+#: subprojects/extensions-tool/src/command-create.c:438
 msgid "NAME"
 msgstr "名称"
 
-#: subprojects/extensions-tool/src/command-create.c:415
+#: subprojects/extensions-tool/src/command-create.c:439
 msgid "The user-visible name of the new extension"
 msgstr "新扩展的用户可见名称"
 
-#: subprojects/extensions-tool/src/command-create.c:417
+#: subprojects/extensions-tool/src/command-create.c:441
 msgid "DESCRIPTION"
 msgstr "描述"
 
-#: subprojects/extensions-tool/src/command-create.c:419
+#: subprojects/extensions-tool/src/command-create.c:443
 msgid "A short description of what the extension does"
 msgstr "简短描述下扩展所做的事情"
 
-#: subprojects/extensions-tool/src/command-create.c:422
+#: subprojects/extensions-tool/src/command-create.c:446
 msgid "TEMPLATE"
-msgstr ""
+msgstr "模板"
 
-#: subprojects/extensions-tool/src/command-create.c:423
-#, fuzzy
-#| msgid "The user-visible name of the new extension"
+#: subprojects/extensions-tool/src/command-create.c:447
 msgid "The template to use for the new extension"
-msgstr "新扩展的用户可见名称"
+msgstr "新扩展使用的模板"
 
-#: subprojects/extensions-tool/src/command-create.c:429
+#: subprojects/extensions-tool/src/command-create.c:453
 msgid "Enter extension information interactively"
 msgstr "以交互方式输入扩展信息"
 
-#: subprojects/extensions-tool/src/command-create.c:437
+#: subprojects/extensions-tool/src/command-create.c:461
 msgid "Create a new extension"
 msgstr "创建新扩展"
 
-#: subprojects/extensions-tool/src/command-create.c:455
+#: subprojects/extensions-tool/src/command-create.c:479
 #: subprojects/extensions-tool/src/command-list.c:172
 msgid "Unknown arguments"
 msgstr "未知参数"
 
-#: subprojects/extensions-tool/src/command-create.c:480
+#: subprojects/extensions-tool/src/command-create.c:504
 msgid "UUID, name and description are required"
 msgstr "UUID、名称和描述都是必需的"
 
@@ -2600,13 +2536,13 @@ msgstr "UUID、名称和描述都是必需的"
 #: subprojects/extensions-tool/src/command-info.c:50
 #: subprojects/extensions-tool/src/command-list.c:64
 msgid "Failed to connect to GNOME Shell\n"
-msgstr ""
+msgstr "连接 GNOME Shell 失败\n"
 
 #: subprojects/extensions-tool/src/command-disable.c:53
 #: subprojects/extensions-tool/src/command-enable.c:53
 #, c-format
 msgid "Extension “%s” does not exist\n"
-msgstr ""
+msgstr "扩展“%s”不存在\n"
 
 #: subprojects/extensions-tool/src/command-disable.c:101
 msgid "Disable an extension"
@@ -2638,7 +2574,7 @@ msgstr "启用扩展"
 #: subprojects/extensions-tool/src/main.c:155
 #, c-format
 msgid "Extension “%s” doesn't exist\n"
-msgstr ""
+msgstr "扩展“%s”不存在\n"
 
 #: subprojects/extensions-tool/src/command-info.c:85
 msgid "Show extensions info"
@@ -2685,10 +2621,8 @@ msgid "Show extensions with preferences"
 msgstr "显示有设置选项的扩展"
 
 #: subprojects/extensions-tool/src/command-list.c:143
-#, fuzzy
-#| msgid "Show extensions with preferences"
 msgid "Show extensions with updates"
-msgstr "显示有设置选项的扩展"
+msgstr "显示有更新的扩展"
 
 #: subprojects/extensions-tool/src/command-list.c:146
 msgid "Print extension details"
@@ -2752,10 +2686,9 @@ msgid "More than one source directory specified"
 msgstr "指定了超过一个的源目录"
 
 #: subprojects/extensions-tool/src/command-prefs.c:47
-#, fuzzy, c-format
-#| msgid "Show extensions with preferences"
+#, c-format
 msgid "Extension “%s” doesn't have preferences\n"
-msgstr "显示有设置选项的扩展"
+msgstr "扩展 “%s” 没有首选项\n"
 
 #: subprojects/extensions-tool/src/command-prefs.c:79
 msgid "Opens extension preferences"
@@ -2766,16 +2699,13 @@ msgid "Reset an extension"
 msgstr "重置扩展"
 
 #: subprojects/extensions-tool/src/command-uninstall.c:49
-#, fuzzy
-#| msgid "List installed extensions"
 msgid "Cannot uninstall system extensions\n"
-msgstr "列出已安装的扩展"
+msgstr "无法卸载系统扩展\n"
 
 #: subprojects/extensions-tool/src/command-uninstall.c:64
-#, fuzzy, c-format
-#| msgid "Failed to launch “%s”"
+#, c-format
 msgid "Failed to uninstall “%s”\n"
-msgstr "启动“%s”失败"
+msgstr "卸载“%s”失败\n"
 
 #: subprojects/extensions-tool/src/command-uninstall.c:86
 msgid "Uninstall an extension"
@@ -2783,11 +2713,11 @@ msgstr "卸载扩展"
 
 #: subprojects/extensions-tool/src/main.c:72
 msgid "Do not print error messages"
-msgstr ""
+msgstr "不要打印错误信息"
 
 #: subprojects/extensions-tool/src/main.c:146
 msgid "Failed to connect to GNOME Shell"
-msgstr ""
+msgstr "连接 GNOME Shell 失败"
 
 #: subprojects/extensions-tool/src/main.c:244
 msgid "Path"
@@ -2877,28 +2807,25 @@ msgid "Install extension bundle"
 msgstr "安装扩展包"
 
 #: subprojects/extensions-tool/src/main.c:330
-#, fuzzy, c-format
-#| msgid "Use %s to get detailed help.\n"
+#, c-format
 msgid "Use “%s” to get detailed help.\n"
-msgstr "使用 %s 以获取详细帮助。\n"
+msgstr "使用“%s”以获取详细帮助。\n"
 
 #: subprojects/extensions-tool/src/templates/00-plain.desktop.in:4
 msgid "Plain"
-msgstr ""
+msgstr "普通扩展"
 
 #: subprojects/extensions-tool/src/templates/00-plain.desktop.in:5
-#, fuzzy
-#| msgid "Reset extension"
 msgid "An empty extension"
-msgstr "重置扩展"
+msgstr "一个空扩展"
 
 #: subprojects/extensions-tool/src/templates/indicator.desktop.in:4
 msgid "Indicator"
-msgstr ""
+msgstr "指示器"
 
 #: subprojects/extensions-tool/src/templates/indicator.desktop.in:5
 msgid "Add an icon to the top bar"
-msgstr ""
+msgstr "添加图标到顶栏"
 
 #. translators:
 #. * The number of sound outputs on a particular device
@@ -2919,6 +2846,15 @@ msgstr[0] "%u 个输入"
 #: subprojects/gvc/gvc-mixer-control.c:2766
 msgid "System Sounds"
 msgstr "系统声音"
+
+#~ msgid "Frequently used applications will appear here"
+#~ msgstr "常用的应用程序会出现在这里"
+
+#~ msgid "Frequent"
+#~ msgstr "常用"
+
+#~ msgid "All"
+#~ msgstr "全部"
 
 #~ msgid "Copy Error"
 #~ msgstr "复制错误"
