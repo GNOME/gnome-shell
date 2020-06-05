@@ -721,7 +721,6 @@ class AppDisplay extends BaseAppView {
                     this._currentDialogDestroyId = 0;
                 });
             }
-            this._updateIconOpacities(isOpen);
             this._displayingDialog = isOpen;
         });
     }
@@ -729,22 +728,6 @@ class AppDisplay extends BaseAppView {
     _childFocused(icon) {
         let itemPage = this._grid.getItemPage(icon);
         this.goToPage(itemPage);
-    }
-
-    _updateIconOpacities(folderOpen) {
-        for (let icon of this._items.values()) {
-            let opacity;
-            if (folderOpen && !icon.checked)
-                opacity =  INACTIVE_GRID_OPACITY;
-            else
-                opacity = 255;
-
-            icon.ease({
-                opacity,
-                duration: INACTIVE_GRID_OPACITY_ANIMATION_TIME,
-                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            });
-        }
     }
 
     // Called before allocation to calculate dynamic spacing
