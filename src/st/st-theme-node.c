@@ -3574,8 +3574,6 @@ gboolean
 st_theme_node_geometry_equal (StThemeNode *node,
                               StThemeNode *other)
 {
-  StSide side;
-
   g_return_val_if_fail (ST_IS_THEME_NODE (node), FALSE);
 
   if (node == other)
@@ -3629,7 +3627,6 @@ st_theme_node_paint_equal (StThemeNode *node,
 {
   StBorderImage *border_image, *other_border_image;
   StShadow *shadow, *other_shadow;
-  int i;
 
   /* Make sure NULL != NULL */
   if (node == NULL || other == NULL)
