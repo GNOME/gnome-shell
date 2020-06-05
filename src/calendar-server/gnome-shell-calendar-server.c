@@ -696,9 +696,34 @@ app_stop_view (App *app,
 }
 
 static void
+app_notify_has_calendars (App *app)
+{
+  GVariantBuilder dict_builder;
+
+  g_variant_builder_init (&dict_builder, G_VARIANT_TYPE ("a{sv}"));
+  g_variant_builder_add (&dict_builder, "{sv}", "HasCalendars",
+                         g_variant_new_boolean (app_has_calendars (app)));
+
+  g_dbus_connection_emit_signal (app->connection,
+                                 NULL,
+                                 "/org/gnome/Shell/CalendarServer",
+                                 "org.freedesktop.DBus.Properties",
+                                 "PropertiesChanged",
+                                 g_variant_new ("(sa{sv}as)",
+                                                "org.gnome.Shell.CalendarServer",
+                                                &dict_builder,
+                                                NULL),
+                                 NULL);
+  g_variant_builder_clear (&dict_builder);
+}
+
+static void
 app_update_views (App *app)
 {
   GSList *link, *clients;
+  gboolean had_views, has_views;
+
+  had_views = app->live_views != NULL;
 
   for (link = app->live_views; link; link = g_slist_next (link))
     {
@@ -723,29 +748,12 @@ app_update_views (App *app)
         app->live_views = g_slist_prepend (app->live_views, view);
     }
 
+  has_views = app->live_views != NULL;
+
+  if (has_views != had_views)
+    app_notify_has_calendars (app);
+
   g_slist_free_full (clients, g_object_unref);
-}
-
-static void
-app_notify_has_calendars (App *app)
-{
-  GVariantBuilder dict_builder;
-
-  g_variant_builder_init (&dict_builder, G_VARIANT_TYPE ("a{sv}"));
-  g_variant_builder_add (&dict_builder, "{sv}", "HasCalendars",
-                         g_variant_new_boolean (app_has_calendars (app)));
-
-  g_dbus_connection_emit_signal (g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, NULL),
-                                 NULL,
-                                 "/org/gnome/Shell/CalendarServer",
-                                 "org.freedesktop.DBus.Properties",
-                                 "PropertiesChanged",
-                                 g_variant_new ("(sa{sv}as)",
-                                                "org.gnome.Shell.CalendarServer",
-                                                &dict_builder,
-                                                NULL),
-                                 NULL);
-  g_variant_builder_clear (&dict_builder);
 }
 
 static void
