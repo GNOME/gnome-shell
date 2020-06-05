@@ -253,7 +253,9 @@ deep_count_one (DeepCountState *state,
   else
     {
       content_type = g_file_info_get_content_type (info);
-      add_content_type_to_cache (state, content_type);
+
+      if (content_type)
+        add_content_type_to_cache (state, content_type);
     }
 }
 
