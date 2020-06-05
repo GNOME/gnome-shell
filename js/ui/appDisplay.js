@@ -722,10 +722,6 @@ class AppDisplay extends BaseAppView {
                 });
             }
             this._updateIconOpacities(isOpen);
-
-            // Toggle search entry
-            Main.overview.searchEntry.reactive = !isOpen;
-
             this._displayingDialog = isOpen;
         });
     }
