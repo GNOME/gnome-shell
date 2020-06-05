@@ -1097,6 +1097,18 @@ class FolderView extends BaseAppView {
         this._redisplay();
     }
 
+    vfunc_allocate(box) {
+        const node = this.get_theme_node();
+        const contentBox = node.get_content_box(box);
+
+        const [width, height] = contentBox.get_size();
+        this.adaptToSize(width, height);
+
+        this._grid.topPadding = 0;
+
+        super.vfunc_allocate(box);
+    }
+
     _childFocused(actor) {
         Util.ensureActorVisibleInScrollView(this._scrollView, actor);
     }
@@ -1686,18 +1698,6 @@ var AppFolderDialog = GObject.registerClass({
     }
 
     vfunc_allocate(box) {
-        let contentBox = this.get_theme_node().get_content_box(box);
-        contentBox = this._viewBox.get_theme_node().get_content_box(contentBox);
-
-        let [, entryBoxHeight] = this._entryBox.get_size();
-        let spacing = this._viewBox.layout_manager.spacing;
-
-        this._view.adaptToSize(
-            contentBox.get_width(),
-            contentBox.get_height() - entryBoxHeight - spacing);
-
-        this._view._grid.topPadding = 0;
-
         super.vfunc_allocate(box);
 
         // We can only start zooming after receiving an allocation
