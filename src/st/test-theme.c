@@ -33,6 +33,7 @@ static StThemeNode *group1;
 static StThemeNode *text1;
 static StThemeNode *text2;
 static StThemeNode *group2;
+static StThemeNode *shadows;
 static StThemeNode *text3;
 static StThemeNode *text4;
 static StThemeNode *group3;
@@ -593,6 +594,46 @@ test_background (void)
 }
 
 static void
+assert_shadow (StThemeNode *node,
+               const char  *prop_name,
+               gboolean     is_none,
+               gboolean     inset,
+               gdouble      xoffset,
+               gdouble      yoffset,
+               gdouble      blur,
+               gdouble      spread,
+               guint32      color)
+{
+  StShadow *shadow = NULL;
+
+  if (st_theme_node_lookup_shadow (node, prop_name, FALSE, &shadow))
+    {
+      g_assert (shadow != NULL);
+      g_assert_cmpfloat (xoffset, ==, shadow->xoffset);
+      g_assert_cmpfloat (yoffset, ==, shadow->yoffset);
+      g_assert_cmpfloat (blur, ==, shadow->blur);
+      g_assert_cmpfloat (spread, ==, shadow->spread);
+      g_assert (inset == shadow->inset);
+
+      st_shadow_unref (shadow);
+    }
+  else
+    {
+      g_assert (is_none);
+    }
+}
+
+static void
+test_shadows (void)
+{
+  test = "shadows";
+  assert_shadow (shadows, "shadow2", FALSE, TRUE, 1.0, 2.0, 0.0, 0.0, 0x00ff00ff);
+  assert_shadow (shadows, "shadow3", FALSE, FALSE, 1.0, 2.0, 3.0, 0.0, 0x00ff00ff);
+  assert_shadow (shadows, "shadow4", FALSE, FALSE, 1.0, 2.0, 3.0, 4.0, 0x00ff00ff);
+  assert_shadow (shadows, "shadownone", TRUE, FALSE, 0.0, 0.0, 0.0, 0.0, 0);
+}
+
+static void
 test_font (void)
 {
   test = "font";
@@ -742,6 +783,8 @@ main (int argc, char **argv)
                               CLUTTER_TYPE_TEXT, "text2", NULL, NULL, NULL);
   group2 = st_theme_node_new (context, root, NULL,
                               CLUTTER_TYPE_ACTOR, "group2", NULL, NULL, NULL);
+  shadows = st_theme_node_new (context, root, NULL,
+                               CLUTTER_TYPE_ACTOR, "shadows", NULL, NULL, NULL);
   text3 = st_theme_node_new  (context, group2, NULL,
                               CLUTTER_TYPE_TEXT, "text3", NULL, NULL,
                               "color: #0000ff; padding-bottom: 12px;");
@@ -817,6 +860,7 @@ main (int argc, char **argv)
   test_border_longhands();
   test_outline ();
   test_background ();
+  test_shadows ();
   test_font ();
   test_font_features ();
   test_pseudo_class ();
@@ -826,6 +870,7 @@ main (int argc, char **argv)
   g_object_unref (group1);
   g_object_unref (group2);
   g_object_unref (group3);
+  g_object_unref (shadows);
   g_object_unref (text1);
   g_object_unref (text2);
   g_object_unref (text3);
