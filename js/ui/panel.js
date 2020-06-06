@@ -861,6 +861,10 @@ class Panel extends St.Widget {
         if (monitor) {
             let workArea = Main.layoutManager.getWorkAreaForMonitor(monitor.index);
             centerOffset = 2 * (workArea.x - monitor.x) + workArea.width - monitor.width;
+            if (!this._safeDesktopAreaId)
+                this._safeDesktopAreaId = global.safeDesktopArea.register();
+            global.safeDesktopArea.unsetSafeMargins(this._safeDesktopAreaId, -1);
+            global.safeDesktopArea.setSafeMargins(this._safeDesktopAreaId, monitor.index, allocHeight, 0, 0, 0);
         }
 
         sideWidth = Math.max(0, (allocWidth - centerWidth + centerOffset) / 2);
