@@ -47,6 +47,7 @@ const KbdA11yDialog = imports.ui.kbdA11yDialog;
 const LocatePointer = imports.ui.locatePointer;
 const PointerA11yTimeout = imports.ui.pointerA11yTimeout;
 const ParentalControlsManager = imports.misc.parentalControlsManager;
+const SafeDesktopArea = imports.ui.safeDesktopArea;
 
 const A11Y_SCHEMA = 'org.gnome.desktop.a11y.keyboard';
 const STICKY_KEYS_ENABLE = 'stickykeys-enable';
@@ -311,6 +312,7 @@ function _initializeUI() {
             Scripting.runPerfScript(module, perfOutput);
         }
     });
+    global.safeDesktopArea = new SafeDesktopArea.SafeDesktopArea(layoutManager);
 }
 
 async function _handleLockScreenWarning() {
