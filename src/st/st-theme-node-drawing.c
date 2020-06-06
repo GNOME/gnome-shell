@@ -323,27 +323,27 @@ st_theme_node_get_corner_border_widths (StThemeNode *node,
     {
       case ST_CORNER_TOPLEFT:
         if (border_width_1)
-            *border_width_1 = node->border_width.top;
+            *border_width_1 = node->border.top.width;
         if (border_width_2)
-            *border_width_2 = node->border_width.left;
+            *border_width_2 = node->border.left.width;
         break;
       case ST_CORNER_TOPRIGHT:
         if (border_width_1)
-            *border_width_1 = node->border_width.top;
+            *border_width_1 = node->border.top.width;
         if (border_width_2)
-            *border_width_2 = node->border_width.right;
+            *border_width_2 = node->border.right.width;
         break;
       case ST_CORNER_BOTTOMRIGHT:
         if (border_width_1)
-            *border_width_1 = node->border_width.bottom;
+            *border_width_1 = node->border.bottom.width;
         if (border_width_2)
-            *border_width_2 = node->border_width.right;
+            *border_width_2 = node->border.right.width;
         break;
       case ST_CORNER_BOTTOMLEFT:
         if (border_width_1)
-            *border_width_1 = node->border_width.bottom;
+            *border_width_1 = node->border.bottom.width;
         if (border_width_2)
-            *border_width_2 = node->border_width.left;
+            *border_width_2 = node->border.left.width;
         break;
       default:
         g_assert_not_reached();
@@ -382,20 +382,20 @@ st_theme_node_lookup_corner (StThemeNode    *node,
   switch (corner_id)
     {
       case ST_CORNER_TOPLEFT:
-        over (&node->border_color[ST_SIDE_TOP], &corner.color, &corner.border_color_1);
-        over (&node->border_color[ST_SIDE_LEFT], &corner.color, &corner.border_color_2);
+        over (&node->border.top.color, &corner.color, &corner.border_color_1);
+        over (&node->border.left.color, &corner.color, &corner.border_color_2);
         break;
       case ST_CORNER_TOPRIGHT:
-        over (&node->border_color[ST_SIDE_TOP], &corner.color, &corner.border_color_1);
-        over (&node->border_color[ST_SIDE_RIGHT], &corner.color, &corner.border_color_2);
+        over (&node->border.top.color, &corner.color, &corner.border_color_1);
+        over (&node->border.right.color, &corner.color, &corner.border_color_2);
         break;
       case ST_CORNER_BOTTOMRIGHT:
-        over (&node->border_color[ST_SIDE_BOTTOM], &corner.color, &corner.border_color_1);
-        over (&node->border_color[ST_SIDE_RIGHT], &corner.color, &corner.border_color_2);
+        over (&node->border.bottom.color, &corner.color, &corner.border_color_1);
+        over (&node->border.right.color, &corner.color, &corner.border_color_2);
         break;
       case ST_CORNER_BOTTOMLEFT:
-        over (&node->border_color[ST_SIDE_BOTTOM], &corner.color, &corner.border_color_1);
-        over (&node->border_color[ST_SIDE_LEFT], &corner.color, &corner.border_color_2);
+        over (&node->border.bottom.color, &corner.color, &corner.border_color_1);
+        over (&node->border.left.color, &corner.color, &corner.border_color_2);
         break;
       default:
         g_assert_not_reached();
@@ -576,10 +576,10 @@ st_theme_node_has_visible_outline (StThemeNode *node)
       node->border_radius.bottom_right > 0)
     return TRUE;
 
-  if (node->border_width.top > 0 ||
-      node->border_width.right > 0 ||
-      node->border_width.bottom > 0 ||
-      node->border_width.left > 0)
+  if (node->border.top.width > 0 ||
+      node->border.right.width > 0 ||
+      node->border.bottom.width > 0 ||
+      node->border.left.width > 0)
     return TRUE;
 
   return FALSE;
@@ -1503,10 +1503,10 @@ st_theme_node_render_resources (StThemeNodePaintState *state,
   box_shadow_spec = st_theme_node_get_box_shadow (node);
   has_inset_box_shadow = box_shadow_spec && box_shadow_spec->inset;
 
-  if (node->border_width.top > 0 ||
-      node->border_width.right > 0 ||
-      node->border_width.bottom > 0 ||
-      node->border_width.left > 0)
+  if (node->border.top.width > 0 ||
+      node->border.right.width > 0 ||
+      node->border.bottom.width > 0 ||
+      node->border.left.width > 0)
     has_border = TRUE;
   else
     has_border = FALSE;
