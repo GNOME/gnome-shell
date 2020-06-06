@@ -995,17 +995,40 @@ do_border_radius (StThemeNode   *node,
     }
 }
 
+static StOutline
+st_outline_default (void)
+{
+  StOutline o;
+
+  o.color = TRANSPARENT_COLOR;
+  o.width = 0;
+
+  return o;
+}
+
+static void
+copy_outline (StOutline *dest, const StOutline *src, gboolean copy_color, gboolean copy_width)
+{
+  if (copy_color)
+    {
+      dest->color = src->color;
+    }
+
+  if (copy_width)
+    {
+      dest->width = src->width;
+    }
+}
+
 static void
 do_border_property (StThemeNode   *node,
                     CRDeclaration *decl)
 {
   const char *property_name = cr_declaration_name (decl) + 6; /* Skip 'border' */
   StSide side = (StSide)-1;
-  ClutterColor color;
+  StOutline outline = st_outline_default ();
   gboolean color_set = FALSE;
-  int width = 0; /* suppress warning */
   gboolean width_set = FALSE;
-  int j;
 
   if (g_str_has_prefix (property_name, "-left"))
     {
@@ -1030,67 +1053,22 @@ do_border_property (StThemeNode   *node,
 
   if (strcmp (property_name, "") == 0)
     {
-      /* Set value for width/color/style in any order */
-      CRTerm *term;
-
-      for (term = decl->value; term; term = term->next)
+      if (decl->value)
         {
-          GetFromTermResult result;
-
-          if (term->type == TERM_IDENT)
+          if (stylish_parse_outline_shorthand (decl->value, normalize_default (node), &outline)
+              == VALUE_FOUND)
             {
-              const char *ident = term->content.str->stryng->str;
-              if (strcmp (ident, "none") == 0 || strcmp (ident, "hidden") == 0)
-                {
-                  width = 0;
-                  width_set = TRUE;
-                  continue;
-                }
-              else if (strcmp (ident, "solid") == 0)
-                {
-                  /* The only thing we support */
-                  continue;
-                }
-              else if (strcmp (ident, "dotted") == 0 ||
-                       strcmp (ident, "dashed") == 0 ||
-                       strcmp (ident, "double") == 0 ||
-                       strcmp (ident, "groove") == 0 ||
-                       strcmp (ident, "ridge") == 0 ||
-                       strcmp (ident, "inset") == 0 ||
-                       strcmp (ident, "outset") == 0)
-                {
-                  /* Treat the same as solid */
-                  continue;
-                }
-
-              /* Presumably a color, fall through */
-            }
-
-          if (term->type == TERM_NUMBER)
-            {
-              result = get_length_from_term_int (term, normalize_default (node), &width);
-              if (result != VALUE_NOT_FOUND)
-                {
-                  width_set = result == VALUE_FOUND;
-                  continue;
-                }
-            }
-
-          result = stylish_get_color_from_term (term, &color);
-          if (result != VALUE_NOT_FOUND)
-            {
-              color_set = result == VALUE_FOUND;
-              continue;
+              color_set = TRUE;
+              width_set = TRUE;
             }
         }
-
     }
   else if (strcmp (property_name, "-color") == 0)
     {
       if (decl->value == NULL || decl->value->next != NULL)
         return;
 
-      if (stylish_get_color_from_term (decl->value, &color) == VALUE_FOUND)
+      if (stylish_get_color_from_term (decl->value, &outline.color) == VALUE_FOUND)
         /* Ignore inherit */
         color_set = TRUE;
     }
@@ -1099,53 +1077,40 @@ do_border_property (StThemeNode   *node,
       if (decl->value == NULL || decl->value->next != NULL)
         return;
 
-      if (get_length_from_term_int (decl->value, normalize_default (node), &width) == VALUE_FOUND)
+      if (get_length_from_term_int (decl->value, normalize_default (node), &outline.width) == VALUE_FOUND)
         /* Ignore inherit */
         width_set = TRUE;
     }
 
   if (side == (StSide)-1)
     {
-      for (j = 0; j < 4; j++)
-        {
-          if (color_set)
-            node->border_color[j] = color;
-          if (width_set)
-            {
-              node->border_width.top = width;
-              node->border_width.right = width;
-              node->border_width.bottom = width;
-              node->border_width.left = width;
-            }
-        }
+      copy_outline (&node->border.top,    &outline, color_set, width_set);
+      copy_outline (&node->border.right,  &outline, color_set, width_set);
+      copy_outline (&node->border.bottom, &outline, color_set, width_set);
+      copy_outline (&node->border.left,   &outline, color_set, width_set);
     }
   else
     {
-      if (color_set)
-        node->border_color[side] = color;
-      if (width_set)
+      switch (side)
         {
-          switch (side)
-            {
-            case ST_SIDE_TOP:
-              node->border_width.top = width;
-              break;
+        case ST_SIDE_TOP:
+          copy_outline (&node->border.top, &outline, color_set, width_set);
+          break;
 
-            case ST_SIDE_RIGHT:
-              node->border_width.right = width;
-              break;
+        case ST_SIDE_RIGHT:
+          copy_outline (&node->border.right, &outline, color_set, width_set);
+          break;
 
-            case ST_SIDE_BOTTOM:
-              node->border_width.bottom = width;
-              break;
+        case ST_SIDE_BOTTOM:
+          copy_outline (&node->border.bottom, &outline, color_set, width_set);
+          break;
 
-            case ST_SIDE_LEFT:
-              node->border_width.left = width;
-              break;
+        case ST_SIDE_LEFT:
+          copy_outline (&node->border.left, &outline, color_set, width_set);
+          break;
 
-            default:
-              g_assert_not_reached ();
-            }
+        default:
+          g_assert_not_reached ();
         }
     }
 }
@@ -1262,7 +1227,7 @@ do_size_property (StThemeNode   *node,
 void
 _st_theme_node_ensure_geometry (StThemeNode *node)
 {
-  int i, j;
+  int i;
   int width, height;
 
   if (node->geometry_computed)
@@ -1272,18 +1237,12 @@ _st_theme_node_ensure_geometry (StThemeNode *node)
 
   ensure_properties (node);
 
-  node->border_width.top = 0;
-  node->border_width.right = 0;
-  node->border_width.bottom = 0;
-  node->border_width.left = 0;
+  node->border.top = st_outline_default ();
+  node->border.right = st_outline_default ();
+  node->border.bottom = st_outline_default ();
+  node->border.left = st_outline_default ();
 
-  for (j = 0; j < 4; j++)
-    {
-      node->border_color[j] = TRANSPARENT_COLOR;
-    }
-
-  node->outline.width = 0;
-  node->outline.color = TRANSPARENT_COLOR;
+  node->outline = st_outline_default ();
 
   width = -1;
   height = -1;
@@ -1378,16 +1337,16 @@ st_theme_node_get_border_width (StThemeNode *node,
   switch (side)
     {
     case ST_SIDE_TOP:
-      return node->border_width.top;
+      return node->border.top.width;
 
     case ST_SIDE_RIGHT:
-      return node->border_width.right;
+      return node->border.right.width;
 
     case ST_SIDE_BOTTOM:
-      return node->border_width.bottom;
+      return node->border.bottom.width;
 
     case ST_SIDE_LEFT:
-      return node->border_width.left;
+      return node->border.left.width;
 
     default:
       g_assert_not_reached ();
@@ -1862,7 +1821,27 @@ st_theme_node_get_border_color (StThemeNode  *node,
 
   _st_theme_node_ensure_geometry (node);
 
-  *color = node->border_color[side];
+  switch (side)
+    {
+    case ST_SIDE_TOP:
+      *color = node->border.top.color;
+      break;
+
+    case ST_SIDE_RIGHT:
+      *color = node->border.right.color;
+      break;
+
+    case ST_SIDE_BOTTOM:
+      *color = node->border.bottom.color;
+      break;
+
+    case ST_SIDE_LEFT:
+      *color = node->border.left.color;
+      break;
+
+    default:
+      g_assert_not_reached ();
+    }
 }
 
 static double
@@ -3284,15 +3263,15 @@ st_theme_node_get_icon_colors (StThemeNode *node)
 static float
 get_width_inc (StThemeNode *node)
 {
-  return ((int)(0.5 + node->border_width.left) + node->padding.left +
-          (int)(0.5 + node->border_width.right) + node->padding.right);
+  return ((int)(0.5 + node->border.left.width) + node->padding.left +
+          (int)(0.5 + node->border.right.width) + node->padding.right);
 }
 
 static float
 get_height_inc (StThemeNode *node)
 {
-  return ((int)(0.5 + node->border_width.top) + node->padding.top +
-          (int)(0.5 + node->border_width.bottom) + node->padding.bottom);
+  return ((int)(0.5 + node->border.top.width) + node->padding.top +
+          (int)(0.5 + node->border.bottom.width) + node->padding.bottom);
 }
 
 /**
@@ -3454,10 +3433,10 @@ st_theme_node_get_content_box (StThemeNode           *node,
   avail_width = allocation->x2 - allocation->x1;
   avail_height = allocation->y2 - allocation->y1;
 
-  noncontent_left = node->border_width.left + node->padding.left;
-  noncontent_top = node->border_width.top + node->padding.top;
-  noncontent_right = node->border_width.right + node->padding.right;
-  noncontent_bottom = node->border_width.bottom + node->padding.bottom;
+  noncontent_left = node->border.left.width + node->padding.left;
+  noncontent_top = node->border.top.width + node->padding.top;
+  noncontent_right = node->border.right.width + node->padding.right;
+  noncontent_bottom = node->border.bottom.width + node->padding.bottom;
 
   content_box->x1 = (int)(0.5 + noncontent_left);
   content_box->y1 = (int)(0.5 + noncontent_top);
@@ -3583,10 +3562,10 @@ st_theme_node_geometry_equal (StThemeNode *node,
   _st_theme_node_ensure_geometry (node);
   _st_theme_node_ensure_geometry (other);
 
-  if (node->border_width.top != other->border_width.top
-      || node->border_width.right != other->border_width.right
-      || node->border_width.bottom != other->border_width.bottom
-      || node->border_width.left != other->border_width.left)
+  if (node->border.top.width != other->border.top.width
+      || node->border.right.width != other->border.right.width
+      || node->border.bottom.width != other->border.bottom.width
+      || node->border.left.width != other->border.left.width)
     return FALSE;
 
   if (node->padding.top != other->padding.top
@@ -3652,26 +3631,26 @@ st_theme_node_paint_equal (StThemeNode *node,
   _st_theme_node_ensure_geometry (node);
   _st_theme_node_ensure_geometry (other);
 
-  if (node->border_width.top != other->border_width.top
-      || node->border_width.right != other->border_width.right
-      || node->border_width.bottom != other->border_width.bottom
-      || node->border_width.left != other->border_width.left)
+  if (node->border.top.width != other->border.top.width
+      || node->border.right.width != other->border.right.width
+      || node->border.bottom.width != other->border.bottom.width
+      || node->border.left.width != other->border.left.width)
     return FALSE;
 
-  if (node->border_width.top > 0 &&
-      !clutter_color_equal (&node->border_color[ST_SIDE_TOP], &other->border_color[ST_SIDE_TOP]))
+  if (node->border.top.width > 0 &&
+      !clutter_color_equal (&node->border.top.color, &other->border.top.color))
     return FALSE;
 
-  if (node->border_width.right > 0 &&
-      !clutter_color_equal (&node->border_color[ST_SIDE_RIGHT], &other->border_color[ST_SIDE_RIGHT]))
+  if (node->border.right.width > 0 &&
+      !clutter_color_equal (&node->border.right.color, &other->border.right.color))
     return FALSE;
 
-  if (node->border_width.bottom > 0 &&
-      !clutter_color_equal (&node->border_color[ST_SIDE_BOTTOM], &other->border_color[ST_SIDE_BOTTOM]))
+  if (node->border.bottom.width > 0 &&
+      !clutter_color_equal (&node->border.bottom.color, &other->border.bottom.color))
     return FALSE;
 
-  if (node->border_width.left > 0 &&
-      !clutter_color_equal (&node->border_color[ST_SIDE_LEFT], &other->border_color[ST_SIDE_LEFT]))
+  if (node->border.left.width > 0 &&
+      !clutter_color_equal (&node->border.left.color, &other->border.left.color))
     return FALSE;
 
   if (node->border_radius.top_left != other->border_radius.top_left
