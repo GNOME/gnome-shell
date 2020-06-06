@@ -24,7 +24,7 @@ const _urlRegexp = new RegExp(
     '(^|%s)'.format(_leadingJunk) +
     '(' +
         '(?:' +
-            '(?:http|https|ftp)://' +             // scheme://
+            '(?:http|https|ftp|file)://' +        // scheme://
             '|' +
             'www\\d{0,3}[.]' +                    // www.
             '|' +
