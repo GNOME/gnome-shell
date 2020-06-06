@@ -171,6 +171,13 @@ stage > #text2 {
     border-radius: 10px 10px 0px 0px;
 }
 
+#shadows {
+    shadow2: inset 1 2 #00ff00;
+    shadow3: 1 2 3 #00ff00;
+    shadow4: 1 2 3 4 #00ff00;
+    shadownone: none;
+}
+
 ClutterText:hover, StLabel:hover {
     text-decoration: underline;
 }
