@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: HEAD\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2020-05-14 17:40+0000\n"
+"POT-Creation-Date: 2020-06-05 23:11+0000\n"
 "PO-Revision-Date: 2020-05-15 20:39+0200\n"
 "Last-Translator: Robert Antoni Buj Gelonch <rbuj@fedoraproject.org>\n"
 "Language-Team: Catalan <tradgnome@softcatala.org>\n"
@@ -592,7 +592,7 @@ msgid_plural "%d hours ago"
 msgstr[0] "fa %d hora"
 msgstr[1] "fa %d hores"
 
-#: js/misc/util.js:191
+#: js/misc/util.js:191 js/ui/dateMenu.js:162
 msgid "Yesterday"
 msgstr "Ahir"
 
@@ -712,56 +712,44 @@ msgstr ""
 
 #. No support for non-modal system dialogs, so ignore the option
 #. let modal = options['modal'] || true;
-#: js/ui/accessDialog.js:39 js/ui/status/location.js:374
+#: js/ui/accessDialog.js:39 js/ui/status/location.js:369
 msgid "Deny Access"
 msgstr "Denega l'accés"
 
-#: js/ui/accessDialog.js:40 js/ui/status/location.js:377
+#: js/ui/accessDialog.js:40 js/ui/status/location.js:372
 msgid "Grant Access"
 msgstr "Permet l'accés"
 
-#: js/ui/appDisplay.js:944
+#: js/ui/appDisplay.js:956
 msgid "Unnamed Folder"
 msgstr "Carpeta sense nom"
 
-#: js/ui/appDisplay.js:967
-msgid "Frequently used applications will appear here"
-msgstr "Les aplicacions utilitzades freqüentment apareixeran aquí"
-
-#: js/ui/appDisplay.js:1102
-msgid "Frequent"
-msgstr "Freqüent"
-
-#: js/ui/appDisplay.js:1109
-msgid "All"
-msgstr "Totes"
-
 #. Translators: This is the heading of a list of open windows
-#: js/ui/appDisplay.js:2486 js/ui/panel.js:75
+#: js/ui/appDisplay.js:2215 js/ui/panel.js:75
 msgid "Open Windows"
 msgstr "Obre finestres"
 
-#: js/ui/appDisplay.js:2505 js/ui/panel.js:82
+#: js/ui/appDisplay.js:2234 js/ui/panel.js:82
 msgid "New Window"
 msgstr "Finestra nova"
 
-#: js/ui/appDisplay.js:2521
+#: js/ui/appDisplay.js:2250
 msgid "Launch using Integrated Graphics Card"
 msgstr "Inicia usant una targeta gràfica integrada"
 
-#: js/ui/appDisplay.js:2522
+#: js/ui/appDisplay.js:2251
 msgid "Launch using Discrete Graphics Card"
-msgstr "Inicia usant una targeta gràfica discretaa"
+msgstr "Inicia usant una targeta gràfica discreta"
 
-#: js/ui/appDisplay.js:2550 js/ui/dash.js:239
+#: js/ui/appDisplay.js:2279 js/ui/dash.js:239
 msgid "Remove from Favorites"
 msgstr "Suprimeix dels preferits"
 
-#: js/ui/appDisplay.js:2556
+#: js/ui/appDisplay.js:2285
 msgid "Add to Favorites"
 msgstr "Afegeix als preferits"
 
-#: js/ui/appDisplay.js:2566 js/ui/panel.js:93
+#: js/ui/appDisplay.js:2295 js/ui/panel.js:93
 msgid "Show Details"
 msgstr "Mostra els detalls"
 
@@ -791,7 +779,7 @@ msgstr "Auriculars"
 msgid "Headset"
 msgstr "Auriculars amb micròfon"
 
-#: js/ui/audioDeviceSelection.js:68 js/ui/status/volume.js:270
+#: js/ui/audioDeviceSelection.js:68 js/ui/status/volume.js:273
 msgid "Microphone"
 msgstr "Micròfon"
 
@@ -808,7 +796,7 @@ msgid "Settings"
 msgstr "Paràmetres"
 
 #. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday).
-#: js/ui/calendar.js:41
+#: js/ui/calendar.js:36
 msgctxt "calendar-no-work"
 msgid "06"
 msgstr "06"
@@ -818,43 +806,43 @@ msgstr "06"
 #. * NOTE: These grid abbreviations are always shown together
 #. * and in order, e.g. "S M T W T F S".
 #.
-#: js/ui/calendar.js:70
+#: js/ui/calendar.js:65
 msgctxt "grid sunday"
 msgid "S"
 msgstr "Dg"
 
 #. Translators: Calendar grid abbreviation for Monday
-#: js/ui/calendar.js:72
+#: js/ui/calendar.js:67
 msgctxt "grid monday"
 msgid "M"
 msgstr "Dl"
 
 #. Translators: Calendar grid abbreviation for Tuesday
-#: js/ui/calendar.js:74
+#: js/ui/calendar.js:69
 msgctxt "grid tuesday"
 msgid "T"
 msgstr "Dt"
 
 #. Translators: Calendar grid abbreviation for Wednesday
-#: js/ui/calendar.js:76
+#: js/ui/calendar.js:71
 msgctxt "grid wednesday"
 msgid "W"
 msgstr "Dc"
 
 #. Translators: Calendar grid abbreviation for Thursday
-#: js/ui/calendar.js:78
+#: js/ui/calendar.js:73
 msgctxt "grid thursday"
 msgid "T"
 msgstr "Dj"
 
 #. Translators: Calendar grid abbreviation for Friday
-#: js/ui/calendar.js:80
+#: js/ui/calendar.js:75
 msgctxt "grid friday"
 msgid "F"
 msgstr "Dv"
 
 #. Translators: Calendar grid abbreviation for Saturday
-#: js/ui/calendar.js:82
+#: js/ui/calendar.js:77
 msgctxt "grid saturday"
 msgid "S"
 msgstr "Ds"
@@ -865,7 +853,7 @@ msgstr "Ds"
 #. * "%OB" is the new format specifier introduced in glibc 2.27,
 #. * in most cases you should not change it.
 #.
-#: js/ui/calendar.js:397
+#: js/ui/calendar.js:392
 msgid "%OB"
 msgstr "%OB"
 
@@ -878,61 +866,37 @@ msgstr "%OB"
 #. * in most cases you should not use the old "%B" here unless you
 #. * absolutely know what you are doing.
 #.
-#: js/ui/calendar.js:407
+#: js/ui/calendar.js:402
 msgid "%OB %Y"
 msgstr "%OB de %Y"
 
-#: js/ui/calendar.js:466
+#: js/ui/calendar.js:461
 msgid "Previous month"
 msgstr "Mes anterior"
 
-#: js/ui/calendar.js:481
+#: js/ui/calendar.js:476
 msgid "Next month"
 msgstr "Mes següent"
 
-#: js/ui/calendar.js:631
+#: js/ui/calendar.js:626
 #, no-javascript-format
 msgctxt "date day number format"
 msgid "%d"
 msgstr "%-d"
 
-#: js/ui/calendar.js:687
+#: js/ui/calendar.js:682
 msgid "Week %V"
 msgstr "Setmana %-V"
 
-#. Translators: Shown in calendar event list for all day events
-#. * Keep it short, best if you can use less then 10 characters
-#.
-#: js/ui/calendar.js:762
-msgctxt "event list time"
-msgid "All Day"
-msgstr "Tot el dia"
-
-#. Translators: Shown on calendar heading when selected day occurs on current year
-#: js/ui/calendar.js:900
-msgctxt "calendar heading"
-msgid "%A, %B %-d"
-msgstr "%A %-d %B"
-
-#. Translators: Shown on calendar heading when selected day occurs on different year
-#: js/ui/calendar.js:903
-msgctxt "calendar heading"
-msgid "%A, %B %-d, %Y"
-msgstr "%A %d %B de %Y"
-
-#: js/ui/calendar.js:1133
+#: js/ui/calendar.js:895
 msgid "No Notifications"
 msgstr "Cap notificació"
 
-#: js/ui/calendar.js:1136
-msgid "No Events"
-msgstr "Cap cita"
-
-#: js/ui/calendar.js:1190
+#: js/ui/calendar.js:949
 msgid "Do Not Disturb"
 msgstr "No molesteu"
 
-#: js/ui/calendar.js:1209
+#: js/ui/calendar.js:968
 msgid "Clear"
 msgstr "Neteja-ho"
 
@@ -1086,7 +1050,7 @@ msgstr "No ha funcionat. Torneu-ho a provar."
 msgid "%s is now known as %s"
 msgstr "En/na %s ara es diu %s"
 
-#: js/ui/ctrlAltTab.js:21 js/ui/viewSelector.js:177
+#: js/ui/ctrlAltTab.js:21 js/ui/viewSelector.js:178
 msgid "Windows"
 msgstr "Finestres"
 
@@ -1105,7 +1069,7 @@ msgstr "Quadre d'aplicacions"
 #. * "Tue 9:29 AM").  The string itself should become a full date, e.g.,
 #. * "February 17 2015".
 #.
-#: js/ui/dateMenu.js:75
+#: js/ui/dateMenu.js:79
 msgid "%B %-d %Y"
 msgstr "%-d %B de %Y"
 
@@ -1113,35 +1077,67 @@ msgstr "%-d %B de %Y"
 #. * below the time in the shell; it should combine the weekday and the
 #. * date, e.g. "Tuesday February 17 2015".
 #.
-#: js/ui/dateMenu.js:82
+#: js/ui/dateMenu.js:86
 msgid "%A %B %e %Y"
 msgstr "%A, %-e %B de %Y"
 
-#: js/ui/dateMenu.js:161
+#. Translators: Shown on calendar heading when selected day occurs on current year
+#: js/ui/dateMenu.js:151
+msgctxt "calendar heading"
+msgid "%B %-d"
+msgstr "%-d %B"
+
+#. Translators: Shown on calendar heading when selected day occurs on different year
+#: js/ui/dateMenu.js:154
+msgctxt "calendar heading"
+msgid "%B %-d %Y"
+msgstr "%-d %B de %Y"
+
+#: js/ui/dateMenu.js:160
+msgid "Today"
+msgstr "Avui"
+
+#: js/ui/dateMenu.js:164
+msgid "Tomorrow"
+msgstr "Demà"
+
+#. Translators: Shown in calendar event list for all day events
+#. * Keep it short, best if you can use less then 10 characters
+#.
+#: js/ui/dateMenu.js:180
+msgctxt "event list time"
+msgid "All Day"
+msgstr "Tot el dia"
+
+#: js/ui/dateMenu.js:231
+msgid "No Events"
+msgstr "Cap cita"
+
+#: js/ui/dateMenu.js:348
 msgid "Add world clocks…"
 msgstr "Afegeix rellotges del món…"
 
-#: js/ui/dateMenu.js:162
+#: js/ui/dateMenu.js:349
 msgid "World Clocks"
 msgstr "Rellotges del món"
 
-#: js/ui/dateMenu.js:424
+#: js/ui/dateMenu.js:629
 msgid "Loading…"
 msgstr "S'està carregant…"
 
-#: js/ui/dateMenu.js:434
+#: js/ui/dateMenu.js:639
 msgid "Go online for weather information"
 msgstr "Vés en línia per a informació sobre el temps"
 
-#: js/ui/dateMenu.js:436
+#: js/ui/dateMenu.js:641
 msgid "Weather information is currently unavailable"
 msgstr "La informació sobre el temps no està disponible"
 
-#: js/ui/dateMenu.js:446
+#: js/ui/dateMenu.js:651
 msgid "Weather"
 msgstr "El temps"
 
-#: js/ui/dateMenu.js:448
+#: js/ui/dateMenu.js:653
 msgid "Select weather location…"
 msgstr "Trieu una ubicació pel temps…"
 
@@ -1310,11 +1306,11 @@ msgstr "Instal·la l'extensió"
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "Voleu baixar i instal·lar «%s» d'extensions.gnome.org?"
 
-#: js/ui/extensionSystem.js:251
+#: js/ui/extensionSystem.js:252
 msgid "Extension Updates Available"
 msgstr "No hi ha cap actualització d'extensions disponible"
 
-#: js/ui/extensionSystem.js:252
+#: js/ui/extensionSystem.js:253
 msgid "Extension updates are ready to be installed."
 msgstr ""
 "Les actualitzacions de les extensions estan preparades per a ser "
@@ -1446,6 +1442,7 @@ msgid "Disabled"
 msgstr "Inhabilitat"
 
 #: js/ui/lookingGlass.js:743
+#: subprojects/extensions-app/data/ui/extension-row.ui:188
 msgid "Error"
 msgstr "Error"
 
@@ -1489,11 +1486,11 @@ msgstr "El bloqueig de pantalla requereix el gestor de pantalla del GNOME."
 msgid "System Information"
 msgstr "Informació de l'ordinador"
 
-#: js/ui/mpris.js:204
+#: js/ui/mpris.js:203
 msgid "Unknown artist"
 msgstr "Artista desconegut"
 
-#: js/ui/mpris.js:214
+#: js/ui/mpris.js:213
 msgid "Unknown title"
 msgstr "Títol desconegut"
 
@@ -1539,23 +1536,23 @@ msgstr "Assigna la pulsació de tecla"
 msgid "Done"
 msgstr "Fet"
 
-#: js/ui/padOsd.js:745
+#: js/ui/padOsd.js:732
 msgid "Edit…"
 msgstr "Edita…"
 
-#: js/ui/padOsd.js:787 js/ui/padOsd.js:910
+#: js/ui/padOsd.js:774 js/ui/padOsd.js:891
 msgid "None"
 msgstr "Cap"
 
-#: js/ui/padOsd.js:863
+#: js/ui/padOsd.js:845
 msgid "Press a button to configure"
 msgstr "Premeu un botó per a configurar"
 
-#: js/ui/padOsd.js:864
+#: js/ui/padOsd.js:846
 msgid "Press Esc to exit"
 msgstr "Premeu Esc per a sortir"
 
-#: js/ui/padOsd.js:867
+#: js/ui/padOsd.js:849
 msgid "Press any key to exit"
 msgstr "Premeu qualsevol tecla per a sortir"
 
@@ -1613,15 +1610,15 @@ msgstr "No es pot blocar"
 msgid "Lock was blocked by an application"
 msgstr "Una aplicació està bloquejant el bloqueig"
 
-#: js/ui/search.js:702
+#: js/ui/search.js:823
 msgid "Searching…"
 msgstr "S'està cercant…"
 
-#: js/ui/search.js:704
+#: js/ui/search.js:825
 msgid "No results."
 msgstr "No s'ha trobat cap resultat."
 
-#: js/ui/search.js:830
+#: js/ui/search.js:951
 #, javascript-format
 msgid "%d more"
 msgid_plural "%d more"
@@ -1818,17 +1815,17 @@ msgstr "Ubicació inhabilitada"
 msgid "Enable"
 msgstr "Habilita"
 
-#: js/ui/status/location.js:355
+#: js/ui/status/location.js:350
 msgid "Allow location access"
 msgstr "Permet accés a la ubicació"
 
 #. Translators: %s is an application name
-#: js/ui/status/location.js:357
+#: js/ui/status/location.js:352
 #, javascript-format
 msgid "The app %s wants to access your location"
 msgstr "L'aplicació %s vol accedir a la vostra ubicació"
 
-#: js/ui/status/location.js:367
+#: js/ui/status/location.js:362
 msgid "Location access can be changed at any time from the privacy settings."
 msgstr ""
 "Podeu canviar la configuració de l'accés a la ubicació sempre que vulgueu "
@@ -1940,7 +1937,8 @@ msgstr "La xarxa sense fil està desactivada"
 
 #: js/ui/status/network.js:823
 msgid "Wi-Fi needs to be turned on in order to connect to a network."
-msgstr "S'ha d'activar la xarxa sense fil per a poder-se connectar a una xarxa."
+msgstr ""
+"S'ha d'activar la xarxa sense fil per a poder-se connectar a una xarxa."
 
 #: js/ui/status/network.js:824
 msgid "Turn On Wi-Fi"
@@ -2166,11 +2164,11 @@ msgstr "S'ha produït un error d'autorització a Thunderbolt"
 msgid "Could not authorize the Thunderbolt device: %s"
 msgstr "No s'ha pogut autoritzar el dispositiu Thunderbolt: %s"
 
-#: js/ui/status/volume.js:151
+#: js/ui/status/volume.js:154
 msgid "Volume changed"
 msgstr "S'ha canviat el volum"
 
-#: js/ui/status/volume.js:222
+#: js/ui/status/volume.js:225
 msgid "Volume"
 msgstr "Volum"
 
@@ -2224,11 +2222,11 @@ msgstr "Desbloqueja la finestra"
 msgid "Log in as another user"
 msgstr "Entra amb un altre usuari"
 
-#: js/ui/viewSelector.js:181
+#: js/ui/viewSelector.js:182
 msgid "Applications"
 msgstr "Aplicacions"
 
-#: js/ui/viewSelector.js:185
+#: js/ui/viewSelector.js:186
 msgid "Search"
 msgstr "Cerca"
 
@@ -2438,26 +2436,34 @@ msgid_plural "%d extensions will be updated on next login."
 msgstr[0] "%d extensió serà actualitzada la següent vegada que entreu."
 msgstr[1] "%d extensions seran actualitzades la següent vegada que entreu."
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:100
-#: subprojects/extensions-tool/src/command-create.c:301
+#: subprojects/extensions-app/js/main.js:461
+msgid "The extension is incompatible with the current GNOME version"
+msgstr "L'extensió és incompatible amb la versió actual del GNOME"
+
+#: subprojects/extensions-app/js/main.js:464
+msgid "The extension had an error"
+msgstr "L'extensió ha tingut un error"
+
+#: subprojects/extensions-app/data/ui/extension-row.ui:109
+#: subprojects/extensions-tool/src/command-create.c:325
 #: subprojects/extensions-tool/src/main.c:241
 msgid "Description"
 msgstr "Descripció"
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:123
+#: subprojects/extensions-app/data/ui/extension-row.ui:132
 #: subprojects/extensions-tool/src/main.c:253
 msgid "Version"
 msgstr "Versió"
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:151
+#: subprojects/extensions-app/data/ui/extension-row.ui:160
 msgid "Author"
 msgstr "Autoria"
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:175
+#: subprojects/extensions-app/data/ui/extension-row.ui:216
 msgid "Website"
 msgstr "Lloc web"
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:192
+#: subprojects/extensions-app/data/ui/extension-row.ui:233
 msgid "Remove…"
 msgstr "Suprimeix…"
 
@@ -2474,8 +2480,8 @@ msgid ""
 "To find and add extensions, visit <a href=\"https://extensions.gnome.org"
 "\">extensions.gnome.org</a>."
 msgstr ""
-"Per a visitar i afegir extensions, visiteu <a href=\"https://extensions.gnome."
-"org\">extensions.gnome.org</a>."
+"Per a visitar i afegir extensions, visiteu <a href=\"https://extensions."
+"gnome.org\">extensions.gnome.org</a>."
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:35
 msgid "Warning"
@@ -2520,12 +2526,12 @@ msgid "Log Out…"
 msgstr "Surt…"
 
 #. Translators: a file path to an extension directory
-#: subprojects/extensions-tool/src/command-create.c:202
+#: subprojects/extensions-tool/src/command-create.c:226
 #, c-format
 msgid "The new extension was successfully created in %s.\n"
 msgstr "L'extensió nova s'ha creat amb èxit a %s.\n"
 
-#: subprojects/extensions-tool/src/command-create.c:275
+#: subprojects/extensions-tool/src/command-create.c:299
 #, c-format
 msgid ""
 "Name should be a very short (ideally descriptive) string.\n"
@@ -2534,12 +2540,12 @@ msgstr ""
 "El nom ha de ser una cadena molt curta (idealment descriptiva).\n"
 "Per exemple: %s"
 
-#: subprojects/extensions-tool/src/command-create.c:281
+#: subprojects/extensions-tool/src/command-create.c:305
 #: subprojects/extensions-tool/src/main.c:238
 msgid "Name"
 msgstr "Nom"
 
-#: subprojects/extensions-tool/src/command-create.c:295
+#: subprojects/extensions-tool/src/command-create.c:319
 #, c-format
 msgid ""
 "Description is a single-sentence explanation of what your extension does.\n"
@@ -2548,7 +2554,7 @@ msgstr ""
 "La descripció és una explicació d'una frase de què fa l'extensió.\n"
 "Per exemple: %s"
 
-#: subprojects/extensions-tool/src/command-create.c:315
+#: subprojects/extensions-tool/src/command-create.c:339
 msgid ""
 "UUID is a globally-unique identifier for your extension.\n"
 "This should be in the format of an email address (clicktofocus@janedoe."
@@ -2557,56 +2563,56 @@ msgstr ""
 "L'UUID és un identificador únic global per l'extensió\n"
 "Ha de tenir el format d'una adreça de correu (exemple@softcatala.org)\n"
 
-#: subprojects/extensions-tool/src/command-create.c:342
+#: subprojects/extensions-tool/src/command-create.c:366
 msgid "Choose one of the available templates:\n"
 msgstr "Trieu una de les plantilles disponibles:\n"
 
-#: subprojects/extensions-tool/src/command-create.c:356
+#: subprojects/extensions-tool/src/command-create.c:380
 msgid "Template"
 msgstr "Plantilla"
 
-#: subprojects/extensions-tool/src/command-create.c:411
+#: subprojects/extensions-tool/src/command-create.c:435
 msgid "The unique identifier of the new extension"
 msgstr "L'identificador únic de l'extensió nova"
 
-#: subprojects/extensions-tool/src/command-create.c:414
+#: subprojects/extensions-tool/src/command-create.c:438
 msgid "NAME"
 msgstr "NOM"
 
-#: subprojects/extensions-tool/src/command-create.c:415
+#: subprojects/extensions-tool/src/command-create.c:439
 msgid "The user-visible name of the new extension"
 msgstr "El nom visible a l'usuari de l'extensió nova"
 
-#: subprojects/extensions-tool/src/command-create.c:417
+#: subprojects/extensions-tool/src/command-create.c:441
 msgid "DESCRIPTION"
 msgstr "DESCRIPCIÓ"
 
-#: subprojects/extensions-tool/src/command-create.c:419
+#: subprojects/extensions-tool/src/command-create.c:443
 msgid "A short description of what the extension does"
 msgstr "Una descripció curta del que fa l'extensió"
 
-#: subprojects/extensions-tool/src/command-create.c:422
+#: subprojects/extensions-tool/src/command-create.c:446
 msgid "TEMPLATE"
 msgstr "PLANTILLA"
 
-#: subprojects/extensions-tool/src/command-create.c:423
+#: subprojects/extensions-tool/src/command-create.c:447
 msgid "The template to use for the new extension"
 msgstr "La plantilla a usar per a l'extensió nova"
 
-#: subprojects/extensions-tool/src/command-create.c:429
+#: subprojects/extensions-tool/src/command-create.c:453
 msgid "Enter extension information interactively"
 msgstr "Introduïu la informació de l'extensió interactivament"
 
-#: subprojects/extensions-tool/src/command-create.c:437
+#: subprojects/extensions-tool/src/command-create.c:461
 msgid "Create a new extension"
 msgstr "Crea una extensió nova"
 
-#: subprojects/extensions-tool/src/command-create.c:455
+#: subprojects/extensions-tool/src/command-create.c:479
 #: subprojects/extensions-tool/src/command-list.c:172
 msgid "Unknown arguments"
 msgstr "Arguments desconeguts"
 
-#: subprojects/extensions-tool/src/command-create.c:480
+#: subprojects/extensions-tool/src/command-create.c:504
 msgid "UUID, name and description are required"
 msgstr "Calen l'UUID, el nom i la descripció"
 
@@ -2792,7 +2798,7 @@ msgstr "Desinstal·la una extensió"
 
 #: subprojects/extensions-tool/src/main.c:72
 msgid "Do not print error messages"
-msgstr "No imprimeixis els missatges d'error "
+msgstr "No imprimeixis els missatges d'error"
 
 #: subprojects/extensions-tool/src/main.c:146
 msgid "Failed to connect to GNOME Shell"
@@ -2927,3 +2933,4 @@ msgstr[1] "%u entrades"
 #: subprojects/gvc/gvc-mixer-control.c:2766
 msgid "System Sounds"
 msgstr "Sons del sistema"
+
