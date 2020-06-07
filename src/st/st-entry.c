@@ -674,9 +674,12 @@ st_entry_key_press_event (ClutterActor    *actor,
       text = clutter_text_get_selection ((ClutterText*) priv->entry);
 
       if (text && strlen (text))
-        st_clipboard_set_text (clipboard,
-                               ST_CLIPBOARD_TYPE_CLIPBOARD,
-                               text);
+        {
+          st_clipboard_set_text (clipboard,
+                                 ST_CLIPBOARD_TYPE_CLIPBOARD,
+                                 text);
+          g_free (text);
+        }
 
       return TRUE;
     }
@@ -699,6 +702,7 @@ st_entry_key_press_event (ClutterActor    *actor,
           st_clipboard_set_text (clipboard,
                                  ST_CLIPBOARD_TYPE_CLIPBOARD,
                                  text);
+          g_free (text);
 
           /* now delete the text */
           clutter_text_delete_selection ((ClutterText *) priv->entry);
