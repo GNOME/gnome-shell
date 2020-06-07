@@ -679,6 +679,8 @@ st_entry_key_press_event (ClutterActor    *actor,
                                ST_CLIPBOARD_TYPE_CLIPBOARD,
                                text);
 
+      g_free (text);
+
       return TRUE;
     }
 
@@ -704,6 +706,8 @@ st_entry_key_press_event (ClutterActor    *actor,
           /* now delete the text */
           clutter_text_delete_selection ((ClutterText *) priv->entry);
         }
+
+      g_free (text);
 
       return TRUE;
     }
