@@ -65,7 +65,7 @@ struct _StIconPrivate
   graphene_size_t  shadow_size;
 };
 
-G_DEFINE_TYPE_WITH_PRIVATE (StIcon, st_icon, ST_TYPE_WIDGET)
+G_DEFINE_TYPE_WITH_PRIVATE (StIcon, st_icon, ST_TYPE_BIN)
 
 static void st_icon_update               (StIcon *icon);
 static gboolean st_icon_update_icon_size (StIcon *icon);
@@ -293,16 +293,10 @@ st_icon_class_init (StIconClass *klass)
 static void
 st_icon_init (StIcon *self)
 {
-  ClutterLayoutManager *layout_manager;
-
   if (G_UNLIKELY (default_gicon == NULL))
     default_gicon = g_themed_icon_new (IMAGE_MISSING_ICON_NAME);
 
   self->priv = st_icon_get_instance_private (self);
-
-  layout_manager = clutter_bin_layout_new (CLUTTER_BIN_ALIGNMENT_FILL,
-                                           CLUTTER_BIN_ALIGNMENT_FILL);
-  clutter_actor_set_layout_manager (CLUTTER_ACTOR (self), layout_manager);
 
   self->priv->icon_size = DEFAULT_ICON_SIZE;
   self->priv->prop_icon_size = -1;
@@ -373,7 +367,7 @@ st_icon_finish_update (StIcon *icon)
       priv->pending_texture = NULL;
       clutter_actor_set_x_align (priv->icon_texture, CLUTTER_ACTOR_ALIGN_CENTER);
       clutter_actor_set_y_align (priv->icon_texture, CLUTTER_ACTOR_ALIGN_CENTER);
-      clutter_actor_add_child (CLUTTER_ACTOR (icon), priv->icon_texture);
+      st_bin_set_child (ST_BIN (icon), priv->icon_texture);
 
       /* Remove the temporary ref we added */
       g_object_unref (priv->icon_texture);
