@@ -1752,6 +1752,8 @@ var AppFolderDialog = GObject.registerClass({
     handleDragOver(source, actor, x, y, timestamp) {
         if (this._withinDialog(x, y))
             return DND.DragMotionResult.NO_DROP;
+
+        this.popdown();
         return this._appDisplay.handleDragOver(source, actor, x, y, timestamp);
     }
 
