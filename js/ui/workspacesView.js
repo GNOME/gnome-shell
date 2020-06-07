@@ -132,7 +132,6 @@ class WorkspacesView extends WorkspacesViewBase {
         for (let w = 0; w < this._workspaces.length; w++)
             this._workspaces[w].zoomToOverview();
         this._updateScrollPosition();
-        this._updateVisibility();
     }
 
     animateFromOverview() {
@@ -150,33 +149,13 @@ class WorkspacesView extends WorkspacesViewBase {
         const active = workspaceManager.get_active_workspace_index();
 
         this._animating = true;
-        this._updateVisibility();
 
         this._scrollAdjustment.remove_transition('value');
         this._scrollAdjustment.ease(active, {
             duration: WORKSPACE_SWITCH_TIME,
             mode: Clutter.AnimationMode.EASE_OUT_CUBIC,
-            onComplete: () => {
-                this._animating = false;
-                this._updateVisibility();
-            },
+            onComplete: () => (this._animating = false),
         });
-    }
-
-    _updateVisibility() {
-        let workspaceManager = global.workspace_manager;
-        let active = workspaceManager.get_active_workspace_index();
-
-        for (let w = 0; w < this._workspaces.length; w++) {
-            let workspace = this._workspaces[w];
-
-            if (this._animating || this._gestureActive)
-                workspace.show();
-            else if (this._inDrag)
-                workspace.visible = Math.abs(w - active) <= 1;
-            else
-                workspace.visible = w == active;
-        }
     }
 
     _updateWorkspaces() {
@@ -228,16 +207,12 @@ class WorkspacesView extends WorkspacesViewBase {
 
     startTouchGesture() {
         this._gestureActive = true;
-
-        this._updateVisibility();
     }
 
     endTouchGesture() {
         this._gestureActive = false;
 
-        // Make sure title captions etc are shown as necessary
         this._scrollToActive();
-        this._updateVisibility();
     }
 
     // sync the workspaces' positions to the value of the scroll adjustment
