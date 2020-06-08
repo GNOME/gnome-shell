@@ -118,42 +118,42 @@ var WindowPreviewLayout = GObject.registerClass({
         }
     }
 
-    addWindow(clone, metaWindow) {
-        if (this._windows.has(clone))
+    addWindow(window, metaWindow) {
+        if (this._windows.has(window))
             return;
 
         const windowActor = metaWindow.get_compositor_private();
 
-        this._windows.set(clone, {
+        this._windows.set(window, {
             metaWindow,
             windowActor,
             sizeChangedId: metaWindow.connect('size-changed', () =>
                 this._layoutChanged()),
             positionChangedId: metaWindow.connect('position-changed', () =>
                 this._layoutChanged()),
-            destroyId: windowActor.connect('destroy', () =>
-                clone.destroy()),
-            cloneDestroyId: clone.connect('destroy', () =>
-                this.removeWindow(clone)),
+            windowActorDestroyId: windowActor.connect('destroy', () =>
+                window.destroy()),
+            destroyId: window.connect('destroy', () =>
+                this.removeWindow(window)),
         });
 
-        this._container.add_child(clone);
+        this._container.add_child(window);
 
         this._layoutChanged();
     }
 
-    removeWindow(clone) {
-        const windowInfo = this._windows.get(clone);
+    removeWindow(window) {
+        const windowInfo = this._windows.get(window);
         if (!windowInfo)
             return;
 
         windowInfo.metaWindow.disconnect(windowInfo.sizeChangedId);
         windowInfo.metaWindow.disconnect(windowInfo.positionChangedId);
-        windowInfo.windowActor.disconnect(windowInfo.destroyId);
-        clone.disconnect(windowInfo.cloneDestroyId);
+        windowInfo.windowActor.disconnect(windowInfo.windowActorDestroyId);
+        window.disconnect(windowInfo.destroyId);
 
-        this._windows.delete(clone);
-        this._container.remove_child(clone);
+        this._windows.delete(window);
+        this._container.remove_child(window);
 
         this._layoutChanged();
     }
