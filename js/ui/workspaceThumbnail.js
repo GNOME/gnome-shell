@@ -567,7 +567,8 @@ var WorkspaceThumbnail = GObject.registerClass({
         if (this.state > ThumbnailState.NORMAL)
             return DND.DragMotionResult.CONTINUE;
 
-        if (source.realWindow && !this._isMyWindow(source.realWindow))
+        if (source.metaWindow &&
+            !this._isMyWindow(source.metaWindow.get_compositor_private()))
             return DND.DragMotionResult.MOVE_DROP;
         if (source.app && source.app.can_open_new_window())
             return DND.DragMotionResult.COPY_DROP;
@@ -581,8 +582,8 @@ var WorkspaceThumbnail = GObject.registerClass({
         if (this.state > ThumbnailState.NORMAL)
             return false;
 
-        if (source.realWindow) {
-            let win = source.realWindow;
+        if (source.metaWindow) {
+            let win = source.metaWindow.get_compositor_private();
             if (this._isMyWindow(win))
                 return false;
 
@@ -795,7 +796,7 @@ var ThumbnailsBox = GObject.registerClass({
 
     // Draggable target interface
     handleDragOver(source, actor, x, y, time) {
-        if (!source.realWindow &&
+        if (!source.metaWindow &&
             (!source.app || !source.app.can_open_new_window()) &&
             (source.app || !source.shellWorkspaceLaunch) &&
             source != Main.xdndHandler)
@@ -846,7 +847,7 @@ var ThumbnailsBox = GObject.registerClass({
         if (this._dropWorkspace != -1)
             return this._thumbnails[this._dropWorkspace].handleDragOverInternal(source, actor, time);
         else if (this._dropPlaceholderPos != -1)
-            return source.realWindow ? DND.DragMotionResult.MOVE_DROP : DND.DragMotionResult.COPY_DROP;
+            return source.metaWindow ? DND.DragMotionResult.MOVE_DROP : DND.DragMotionResult.COPY_DROP;
         else
             return DND.DragMotionResult.CONTINUE;
     }
@@ -855,12 +856,12 @@ var ThumbnailsBox = GObject.registerClass({
         if (this._dropWorkspace != -1) {
             return this._thumbnails[this._dropWorkspace].acceptDropInternal(source, actor, time);
         } else if (this._dropPlaceholderPos != -1) {
-            if (!source.realWindow &&
+            if (!source.metaWindow &&
                 (!source.app || !source.app.can_open_new_window()) &&
                 (source.app || !source.shellWorkspaceLaunch))
                 return false;
 
-            let isWindow = !!source.realWindow;
+            let isWindow = !!source.metaWindow;
 
             let newWorkspaceIndex;
             [newWorkspaceIndex, this._dropPlaceholderPos] = [this._dropPlaceholderPos, -1];
