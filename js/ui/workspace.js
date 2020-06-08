@@ -224,7 +224,7 @@ var WindowPreview = GObject.registerClass({
     _init(metaWindow, workspace) {
         this.metaWindow = metaWindow;
         this.metaWindow._delegate = this;
-        this.realWindow = metaWindow.get_compositor_private();
+        this._windowActor = metaWindow.get_compositor_private();
         this._workspace = workspace;
 
         super._init({
@@ -242,7 +242,7 @@ var WindowPreview = GObject.registerClass({
         this._windowContainer.layout_manager = new WindowPreviewLayout();
         this.add_child(this._windowContainer);
 
-        this._addWindow(realWindow.meta_window);
+        this._addWindow(metaWindow);
 
         this._delegate = this;
 
@@ -253,7 +253,7 @@ var WindowPreview = GObject.registerClass({
             'notify::bounding-box', () => this.emit('size-changed'));
 
         this._windowDestroyId =
-            this.realWindow.connect('destroy', () => this.destroy());
+            this._windowActor.connect('destroy', () => this.destroy());
 
         this._updateAttachedDialogs();
         this.x = this.boundingBox.x;
@@ -594,7 +594,7 @@ var WindowPreview = GObject.registerClass({
     }
 
     _onDestroy() {
-        this.realWindow.disconnect(this._windowDestroyId);
+        this._windowActor.disconnect(this._windowDestroyId);
 
         this.metaWindow._delegate = null;
         this._delegate = null;
