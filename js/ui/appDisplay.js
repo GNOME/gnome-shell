@@ -8,6 +8,7 @@ const AppFavorites = imports.ui.appFavorites;
 const DND = imports.ui.dnd;
 const GrabHelper = imports.ui.grabHelper;
 const IconGrid = imports.ui.iconGrid;
+const Layout = imports.ui.layout;
 const Main = imports.ui.main;
 const PageIndicators = imports.ui.pageIndicators;
 const ParentalControlsManager = imports.misc.parentalControlsManager;
@@ -23,10 +24,6 @@ var MAX_COLUMNS = 6;
 var MIN_COLUMNS = 4;
 var MIN_ROWS = 4;
 
-var INACTIVE_GRID_OPACITY = 77;
-// This time needs to be less than IconGrid.EXTRA_SPACE_ANIMATION_TIME
-// to not clash with other animations
-var INACTIVE_GRID_OPACITY_ANIMATION_TIME = 240;
 var FOLDER_SUBICON_FRACTION = .4;
 
 var VIEWS_SWITCH_TIME = 400;
@@ -349,14 +346,6 @@ class AppDisplay extends BaseAppView {
         this._scrollView.add_actor(box);
         this._stack.add_actor(this._scrollView);
 
-        this._eventBlocker = new St.Widget({
-            x_expand: true,
-            y_expand: true,
-            reactive: true,
-            visible: false,
-        });
-        this._stack.add_actor(this._eventBlocker);
-
         this._scrollView.set_policy(St.PolicyType.NEVER,
                                     St.PolicyType.EXTERNAL);
         this._adjustment = this._scrollView.vscroll.adjustment;
@@ -385,18 +374,6 @@ class AppDisplay extends BaseAppView {
         this._swipeTracker.connect('begin', this._swipeBegin.bind(this));
         this._swipeTracker.connect('update', this._swipeUpdate.bind(this));
         this._swipeTracker.connect('end', this._swipeEnd.bind(this));
-
-        this._clickAction = new Clutter.ClickAction();
-        this._clickAction.connect('clicked', () => {
-            if (!this._currentDialog)
-                return;
-
-            let [x, y] = this._clickAction.get_coords();
-            let actor = global.stage.get_actor_at_pos(Clutter.PickMode.ALL, x, y);
-            if (!this._currentDialog.contains(actor))
-                this._currentDialog.popdown();
-        });
-        this._eventBlocker.add_action(this._clickAction);
 
         this._currentDialog = null;
         this._displayingDialog = false;
@@ -594,10 +571,6 @@ class AppDisplay extends BaseAppView {
         if (animationDirection == IconGrid.AnimationDirection.OUT &&
             this._displayingDialog && this._currentDialog) {
             this._currentDialog.popdown();
-            let spaceClosedId = this._grid.connect('space-closed', () => {
-                this._grid.disconnect(spaceClosedId);
-                super.animate(animationDirection, completionFunc);
-            });
         } else {
             super.animate(animationDirection, completionFunc);
             if (animationDirection == IconGrid.AnimationDirection.OUT)
@@ -728,10 +701,8 @@ class AppDisplay extends BaseAppView {
     }
 
     addFolderDialog(dialog) {
-        this.add_child(dialog);
+        Main.layoutManager.overviewGroup.add_child(dialog);
         dialog.connect('open-state-changed', (o, isOpen) => {
-            this._eventBlocker.visible = isOpen;
-
             if (this._currentDialog) {
                 this._currentDialog.disconnect(this._currentDialogDestroyId);
                 this._currentDialogDestroyId = 0;
@@ -744,37 +715,15 @@ class AppDisplay extends BaseAppView {
                 this._currentDialogDestroyId = dialog.connect('destroy', () => {
                     this._currentDialog = null;
                     this._currentDialogDestroyId = 0;
-                    this._eventBlocker.visible = false;
                 });
             }
-            this._updateIconOpacities(isOpen);
-
-            // Toggle search entry
-            Main.overview.searchEntry.reactive = !isOpen;
-
-            this._displayingPopup = isOpen;
+            this._displayingDialog = isOpen;
         });
     }
 
     _childFocused(icon) {
         let itemPage = this._grid.getItemPage(icon);
         this.goToPage(itemPage);
-    }
-
-    _updateIconOpacities(folderOpen) {
-        for (let icon of this._items.values()) {
-            let opacity;
-            if (folderOpen && !icon.checked)
-                opacity =  INACTIVE_GRID_OPACITY;
-            else
-                opacity = 255;
-
-            icon.ease({
-                opacity,
-                duration: INACTIVE_GRID_OPACITY_ANIMATION_TIME,
-                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            });
-        }
     }
 
     // Called before allocation to calculate dynamic spacing
@@ -872,8 +821,6 @@ class AppDisplay extends BaseAppView {
             dragMotion: this._onDragMotion.bind(this),
         };
         DND.addDragMonitor(this._dragMonitor);
-
-        this._eventBlocker.visible = false;
     }
 
     _onDragMotion(dragEvent) {
@@ -897,7 +844,6 @@ class AppDisplay extends BaseAppView {
             this._dragMonitor = null;
         }
 
-        this._eventBlocker.visible = this._currentDialog !== null;
         this._resetOvershoot();
     }
 
@@ -1061,7 +1007,7 @@ class FolderView extends BaseAppView {
             x_expand: true,
             y_expand: true,
         }, {
-            minRows: 1,
+            minRows: 3,
         });
 
         // If it not expand, the parent doesn't take into account its preferred_width when allocating
@@ -1094,6 +1040,18 @@ class FolderView extends BaseAppView {
         this._scrollView.add_action(action);
 
         this._redisplay();
+    }
+
+    vfunc_allocate(box) {
+        const node = this.get_theme_node();
+        const contentBox = node.get_content_box(box);
+
+        const [width, height] = contentBox.get_size();
+        this.adaptToSize(width, height);
+
+        this._grid.topPadding = 0;
+
+        super.vfunc_allocate(box);
     }
 
     _childFocused(actor) {
@@ -1408,9 +1366,22 @@ var FolderIcon = GObject.registerClass({
         if (this._dialog)
             return;
         if (!this._dialog) {
-            this._dialog = new AppFolderDialog(this, this._folder);
+            this._dialog = new AppFolderDialog(this, this._folder,
+                this._parentView);
             this._parentView.addFolderDialog(this._dialog);
             this._dialog.connect('open-state-changed', (popup, isOpen) => {
+                const duration = FOLDER_DIALOG_ANIMATION_TIME / 2;
+                const mode = isOpen
+                    ? Clutter.AnimationMode.EASE_OUT_QUAD
+                    : Clutter.AnimationMode.EASE_IN_QUAD;
+
+                this.ease({
+                    opacity: isOpen ? 0 : 255,
+                    duration,
+                    mode,
+                    delay: isOpen ? 0 : FOLDER_DIALOG_ANIMATION_TIME - duration,
+                });
+
                 if (!isOpen)
                     this.checked = false;
             });
@@ -1422,24 +1393,38 @@ var AppFolderDialog = GObject.registerClass({
     Signals: {
         'open-state-changed': { param_types: [GObject.TYPE_BOOLEAN] },
     },
-}, class AppFolderDialog extends St.Widget {
-    _init(source, folder) {
+}, class AppFolderDialog extends St.Bin {
+    _init(source, folder, appDisplay) {
         super._init({
-            layout_manager: new Clutter.BinLayout(),
-            style_class: 'app-folder-dialog-container',
             visible: false,
             x_expand: true,
             y_expand: true,
-            x_align: Clutter.ActorAlign.CENTER,
-            y_align: Clutter.ActorAlign.CENTER,
+            reactive: true,
         });
+
+        this.add_constraint(new Layout.MonitorConstraint({
+            primary: true,
+            work_area: true,
+        }));
+
+        const clickAction = new Clutter.ClickAction();
+        clickAction.connect('clicked', () => {
+            const [x, y] = clickAction.get_coords();
+            const actor =
+                global.stage.get_actor_at_pos(Clutter.PickMode.ALL, x, y);
+
+            if (actor === this)
+                this.popdown();
+        });
+        this.add_action(clickAction);
 
         this._source = source;
         this._folder = folder;
         this._view = source.view;
+        this._appDisplay = appDisplay;
+        this._delegate = this;
 
         this._isOpen = false;
-        this.parentOffset = 0;
 
         this._viewBox = new St.BoxLayout({
             style_class: 'app-folder-dialog',
@@ -1449,7 +1434,13 @@ var AppFolderDialog = GObject.registerClass({
             y_align: Clutter.ActorAlign.FILL,
             vertical: true,
         });
-        this.add_child(this._viewBox);
+
+        this.child = new St.Bin({
+            style_class: 'app-folder-dialog-container',
+            child: this._viewBox,
+            x_align: Clutter.ActorAlign.CENTER,
+            y_align: Clutter.ActorAlign.CENTER,
+        });
 
         this._addFolderNameEntry();
         this._viewBox.add_child(this._view);
@@ -1598,17 +1589,22 @@ var AppFolderDialog = GObject.registerClass({
         let [sourceX, sourceY] =
             this._source.get_transformed_position();
         let [dialogX, dialogY] =
-            this.get_transformed_position();
+            this.child.get_transformed_position();
 
-        this.set({
+        this.child.set({
             translation_x: sourceX - dialogX,
             translation_y: sourceY - dialogY,
-            scale_x: this._source.width / this.width,
-            scale_y: this._source.height / this.height,
+            scale_x: this._source.width / this.child.width,
+            scale_y: this._source.height / this.child.height,
             opacity: 0,
         });
 
         this.ease({
+            background_color: Clutter.Color.from_pixel(0x000000cc),
+            duration: FOLDER_DIALOG_ANIMATION_TIME,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+        });
+        this.child.ease({
             translation_x: 0,
             translation_y: 0,
             scale_x: 1,
@@ -1638,18 +1634,24 @@ var AppFolderDialog = GObject.registerClass({
         let [sourceX, sourceY] =
             this._source.get_transformed_position();
         let [dialogX, dialogY] =
-            this.get_transformed_position();
+            this.child.get_transformed_position();
 
         this.ease({
+            background_color: Clutter.Color.from_pixel(0x00000000),
+            duration: FOLDER_DIALOG_ANIMATION_TIME,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+        });
+
+        this.child.ease({
             translation_x: sourceX - dialogX,
             translation_y: sourceY - dialogY,
-            scale_x: this._source.width / this.width,
-            scale_y: this._source.height / this.height,
+            scale_x: this._source.width / this.child.width,
+            scale_y: this._source.height / this.child.height,
             opacity: 0,
             duration: FOLDER_DIALOG_ANIMATION_TIME,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
             onComplete: () => {
-                this.set({
+                this.child.set({
                     translation_x: 0,
                     translation_y: 0,
                     scale_x: 1,
@@ -1677,18 +1679,6 @@ var AppFolderDialog = GObject.registerClass({
     }
 
     vfunc_allocate(box) {
-        let contentBox = this.get_theme_node().get_content_box(box);
-        contentBox = this._viewBox.get_theme_node().get_content_box(contentBox);
-
-        let [, entryBoxHeight] = this._entryBox.get_size();
-        let spacing = this._viewBox.layout_manager.spacing;
-
-        this._view.adaptToSize(
-            contentBox.get_width(),
-            contentBox.get_height() - entryBoxHeight - spacing);
-
-        this._view._grid.topPadding = 0;
-
         super.vfunc_allocate(box);
 
         // We can only start zooming after receiving an allocation
@@ -1742,6 +1732,30 @@ var AppFolderDialog = GObject.registerClass({
         return this.navigate_focus(null, direction, false);
     }
 
+    _withinDialog(x, y) {
+        const childAllocation =
+            Shell.util_get_transformed_allocation(this.child);
+
+        return x > childAllocation.x1 &&
+            x < childAllocation.x2 &&
+            y > childAllocation.y1 &&
+            y < childAllocation.y2;
+    }
+
+    handleDragOver(source, actor, x, y, timestamp) {
+        if (this._withinDialog(x, y))
+            return DND.DragMotionResult.NO_DROP;
+
+        this.popdown();
+        return this._appDisplay.handleDragOver(source, actor, x, y, timestamp);
+    }
+
+    acceptDrop(source, actor, x, y, timestamp) {
+        if (this._withinDialog(x, y))
+            return false;
+        return this._appDisplay.acceptDrop(source, actor, x, y, timestamp);
+    }
+
     toggle() {
         if (this._isOpen)
             this.popdown();
@@ -1758,6 +1772,8 @@ var AppFolderDialog = GObject.registerClass({
 
         if (!this._isOpen)
             return;
+
+        this.get_parent().set_child_above_sibling(this, null);
 
         this._needsZoomAndFade = true;
         this.show();
