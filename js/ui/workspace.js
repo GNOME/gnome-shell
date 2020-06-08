@@ -290,16 +290,15 @@ var WindowClone = GObject.registerClass({
     }
 
     deleteAll() {
+        const windows = this.layout_manager.getWindows();
+
         // Delete all windows, starting from the bottom-most (most-modal) one
-        let windows = this.get_children();
-        for (let i = windows.length - 1; i >= 1; i--) {
-            let realWindow = windows[i].source;
-            let metaWindow = realWindow.meta_window;
+        for (const window of windows.reverse()) {
+            const metaWindow = this.layout_manager.getMetaWindow(window);
 
             metaWindow.delete(global.get_current_time());
         }
 
-        this.metaWindow.delete(global.get_current_time());
         this._closeRequested = true;
     }
 
