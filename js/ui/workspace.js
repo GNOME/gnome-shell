@@ -313,8 +313,9 @@ var WindowClone = GObject.registerClass({
         });
 
         const layout = Meta.prefs_get_button_layout();
-        const side = layout.left_buttons.includes(Meta.ButtonFunction.CLOSE)
-            ? St.Side.LEFT : St.Side.RIGHT;
+        this._closeButtonSide =
+            layout.left_buttons.includes(Meta.ButtonFunction.CLOSE)
+                ? St.Side.LEFT : St.Side.RIGHT;
 
         this._closeButton = new St.Button({
             visible: false,
@@ -329,7 +330,7 @@ var WindowClone = GObject.registerClass({
             source: this._border,
             align_axis: Clutter.AlignAxis.X_AXIS,
             align_position: Clutter.AlignPosition.ON_EDGE,
-            factor: side === St.Side.LEFT ? 0 : 1,
+            factor: this._closeButtonSide === St.Side.LEFT ? 0 : 1,
         }));
         this._closeButton.add_constraint(new Clutter.AlignConstraint({
             source: this._border,
@@ -396,16 +397,24 @@ var WindowClone = GObject.registerClass({
         const [, closeButtonHeight] = this._closeButton.get_preferred_height(-1);
         const [, titleHeight] = this._title.get_preferred_height(-1);
 
-        return [this._borderSize + closeButtonHeight / 2,
-                Math.max(this._borderSize, titleHeight / 2)];
+        const topOversize = this._borderSize + closeButtonHeight / 2;
+        const bottomOversize = Math.max(this._borderSize, titleHeight / 2);
+
+        return [topOversize, bottomOversize];
     }
 
     chromeWidths() {
         this._border.ensure_style();
         const [, closeButtonWidth] = this._closeButton.get_preferred_width(-1);
 
-        return [this._borderSize,
-                this._borderSize + closeButtonWidth / 2];
+        const leftOversize = this._closeButtonSide === St.Side.LEFT
+            ? this._borderSize + closeButtonWidth / 2
+            : this._borderSize;
+        const rightOversize = this._closeButtonSide === St.Side.LEFT
+            ? this._borderSize
+            : this._borderSize + closeButtonWidth / 2;
+
+        return [leftOversize, rightOversize];
     }
 
     showOverlay(animate) {
