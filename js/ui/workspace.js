@@ -349,7 +349,7 @@ var WindowPreview = GObject.registerClass({
             pivot_point: new Graphene.Point({ x: -1, y: 0.5 }),
             factor: 0,
         }));
-        this._closeButton.connect('clicked', () => this.deleteAll());
+        this._closeButton.connect('clicked', () => this._deleteAll());
 
         this.add_child(this._borderCenter);
         this.add_child(this._border);
@@ -396,7 +396,7 @@ var WindowPreview = GObject.registerClass({
 
     _windowCanClose() {
         return this.metaWindow.can_close() &&
-               !this.hasAttachedDialogs();
+               !this._hasAttachedDialogs();
     }
 
     _getCaption() {
@@ -507,10 +507,10 @@ var WindowPreview = GObject.registerClass({
     }
 
     vfunc_has_overlaps() {
-        return this.hasAttachedDialogs();
+        return this._hasAttachedDialogs();
     }
 
-    deleteAll() {
+    _deleteAll() {
         const windows = this._windowContainer.layout_manager.getWindows();
 
         // Delete all windows, starting from the bottom-most (most-modal) one
@@ -539,7 +539,7 @@ var WindowPreview = GObject.registerClass({
             this._activate();
     }
 
-    hasAttachedDialogs() {
+    _hasAttachedDialogs() {
         return this._windowContainer.layout_manager.getWindows().length > 1;
     }
 
@@ -580,13 +580,13 @@ var WindowPreview = GObject.registerClass({
     }
 
     // Find the actor just below us, respecting reparenting done by DND code
-    getActualStackAbove() {
+    _getActualStackAbove() {
         if (this._stackAbove == null)
             return null;
 
         if (this.inDrag) {
             if (this._stackAbove._delegate)
-                return this._stackAbove._delegate.getActualStackAbove();
+                return this._stackAbove._delegate._getActualStackAbove();
             else
                 return null;
         } else {
@@ -601,7 +601,7 @@ var WindowPreview = GObject.registerClass({
             return;
 
         let parent = this.get_parent();
-        let actualAbove = this.getActualStackAbove();
+        let actualAbove = this._getActualStackAbove();
         if (actualAbove == null)
             parent.set_child_below_sibling(this, null);
         else
