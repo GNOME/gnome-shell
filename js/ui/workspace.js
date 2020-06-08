@@ -118,34 +118,62 @@ var WindowPreviewLayout = GObject.registerClass({
         }
     }
 
-    addWindow(actor, metaWindow) {
-        if (this._windows.has(actor))
-            return;
+    /**
+     * addWindow:
+     * @param {Meta.Window} window: the MetaWindow instance
+     *
+     * Creates a ClutterActor drawing the texture of @window and adds it
+     * to the container. If @window is already part of the preview, this
+     * function will do nothing.
+     *
+     * @returns {Clutter.Actor} The newly created actor drawing @window
+     */
+    addWindow(window) {
+        const index = [...this._windows.values()].findIndex(info =>
+            info.metaWindow === window);
 
-        const windowActor = metaWindow.get_compositor_private();
+        if (index !== -1)
+            return null;
+
+        const windowActor = window.get_compositor_private();
+        const actor = new Clutter.Clone({ source: windowActor });
 
         this._windows.set(actor, {
-            metaWindow,
+            metaWindow: window,
             windowActor,
-            sizeChangedId: metaWindow.connect('size-changed', () =>
+            sizeChangedId: window.connect('size-changed', () =>
                 this._layoutChanged()),
-            positionChangedId: metaWindow.connect('position-changed', () =>
+            positionChangedId: window.connect('position-changed', () =>
                 this._layoutChanged()),
             windowActorDestroyId: windowActor.connect('destroy', () =>
                 actor.destroy()),
             destroyId: actor.connect('destroy', () =>
-                this.removeWindow(actor)),
+                this.removeWindow(window)),
         });
 
         this._container.add_child(actor);
 
         this._layoutChanged();
+
+        return actor;
     }
 
-    removeWindow(actor) {
-        const windowInfo = this._windows.get(actor);
-        if (!windowInfo)
+    /**
+     * removeWindow:
+     * @param {Meta.Window} window: the window to remove from the preview
+     *
+     * Removes a MetaWindow @window from the preview which has been added
+     * previously using addWindow(). If @window is not part of preview,
+     * this function will do nothing.
+     */
+    removeWindow(window) {
+        const entry = [...this._windows].find(
+            ([, i]) => i.metaWindow === window);
+
+        if (!entry)
             return;
+
+        const [actor, windowInfo] = entry;
 
         windowInfo.metaWindow.disconnect(windowInfo.sizeChangedId);
         windowInfo.metaWindow.disconnect(windowInfo.positionChangedId);
@@ -161,31 +189,13 @@ var WindowPreviewLayout = GObject.registerClass({
     /**
      * getWindows:
      *
-     * Gets an array of all ClutterActors that were added to the layout
+     * Gets an array of all MetaWindows that were added to the layout
      * using addWindow(), ordered by the insertion order.
      *
      * @returns {Array} An array including all windows
      */
     getWindows() {
-        return [...this._windows.keys()];
-    }
-
-    /**
-     * getMetaWindow:
-     * @param {Clutter.Actor} window: the window to get the MetaWindow for
-     *
-     * Gets the MetaWindow associated to the ClutterActor @window that was
-     * added to the layout using addWindow(). If @window is not found,
-     * null is returned.
-     *
-     * @returns {Meta.Window} The metaWindow of the window
-     */
-    getMetaWindow(window) {
-        const windowInfo = this._windows.get(window);
-        if (!windowInfo)
-            return null;
-
-        return windowInfo.metaWindow;
+        return [...this._windows.values()].map(i => i.metaWindow);
     }
 
     // eslint-disable-next-line camelcase
@@ -493,8 +503,7 @@ var WindowPreview = GObject.registerClass({
     }
 
     _addWindow(metaWindow) {
-        const windowActor = metaWindow.get_compositor_private();
-        const clone = new Clutter.Clone({ source: windowActor });
+        const clone = this._windowContainer.layout_manager.addWindow(metaWindow);
 
         // We expect this to be used for all interaction rather than
         // the ClutterClone; as the former is reactive and the latter
@@ -502,8 +511,6 @@ var WindowPreview = GObject.registerClass({
         // actors are picked, so DND operations would operate on the clone.
         // To avoid this, we hide it from pick.
         Shell.util_set_hidden_from_pick(clone, true);
-
-        this._windowContainer.layout_manager.addWindow(clone, metaWindow);
     }
 
     vfunc_has_overlaps() {
@@ -514,12 +521,8 @@ var WindowPreview = GObject.registerClass({
         const windows = this._windowContainer.layout_manager.getWindows();
 
         // Delete all windows, starting from the bottom-most (most-modal) one
-        for (const window of windows.reverse()) {
-            const metaWindow =
-                this._windowContainer.layout_manager.getMetaWindow(window);
-
-            metaWindow.delete(global.get_current_time());
-        }
+        for (const window of windows.reverse())
+            window.delete(global.get_current_time());
 
         this._closeRequested = true;
     }
