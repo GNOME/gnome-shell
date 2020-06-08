@@ -118,6 +118,15 @@ var WindowPreviewLayout = GObject.registerClass({
         }
     }
 
+    /**
+     * addWindow:
+     * @param {Clutter.Actor} window: a single window to add to the grid
+     * @param {Meta.Window} metaWindow: the MetaWindow instance of @window
+     *
+     * Adds a ClutterActor @window which is painting the texture of a
+     * MetaWindowActor to the preview. If @window is already part of the
+     * preview, this function will do nothing.
+     */
     addWindow(window, metaWindow) {
         if (this._windows.has(window))
             return;
@@ -142,6 +151,14 @@ var WindowPreviewLayout = GObject.registerClass({
         this._layoutChanged();
     }
 
+    /**
+     * removeItem:
+     * @param {Clutter.Actor} window: a window to remove from the grid
+     *
+     * Removes a ClutterActor @window which has been added previously using
+     * addWindow() from the preview. If @window is not part of preview, this
+     * function will do nothing.
+     */
     removeWindow(window) {
         const windowInfo = this._windows.get(window);
         if (!windowInfo)
