@@ -33,14 +33,14 @@ function _interpolate(start, end, step) {
     return start + (end - start) * step;
 }
 
-var WindowCloneLayout = GObject.registerClass({
+var WindowPreviewLayout = GObject.registerClass({
     Properties: {
         'bounding-box': GObject.ParamSpec.boxed(
             'bounding-box', 'Bounding box', 'Bounding box',
             GObject.ParamFlags.READABLE,
             Clutter.ActorBox.$gtype),
     },
-}, class WindowCloneLayout extends Clutter.LayoutManager {
+}, class WindowPreviewLayout extends Clutter.LayoutManager {
     _init() {
         super._init();
 
@@ -194,7 +194,7 @@ var WindowCloneLayout = GObject.registerClass({
     }
 });
 
-var WindowClone = GObject.registerClass({
+var WindowPreview = GObject.registerClass({
     Signals: {
         'drag-begin': {},
         'drag-cancelled': {},
@@ -203,7 +203,7 @@ var WindowClone = GObject.registerClass({
         'show-chrome': {},
         'size-changed': {},
     },
-}, class WindowClone extends St.Widget {
+}, class WindowPreview extends St.Widget {
     _init(realWindow, workspace) {
         this.realWindow = realWindow;
         this.metaWindow = realWindow.meta_window;
@@ -221,7 +221,7 @@ var WindowClone = GObject.registerClass({
         // the initialization of the actor if that layout manager keeps track
         // of its container, so set the layout manager after creating the
         // container
-        this._windowContainer.layout_manager = new WindowCloneLayout();
+        this._windowContainer.layout_manager = new WindowPreviewLayout();
         this.add_child(this._windowContainer);
 
         this.set_offscreen_redirect(Clutter.OffscreenRedirect.AUTOMATIC_FOR_OPACITY);
@@ -1178,7 +1178,7 @@ class Workspace extends St.Widget {
 
     vfunc_get_focus_chain() {
         return this.get_children().filter(c => c.visible).sort((a, b) => {
-            if (a instanceof WindowClone && b instanceof WindowClone)
+            if (a instanceof WindowPreview && b instanceof WindowPreview)
                 return a.slotId - b.slotId;
 
             return 0;
@@ -1797,7 +1797,7 @@ class Workspace extends St.Widget {
 
     // Create a clone of a (non-desktop) window and add it to the window list
     _addWindowClone(win, positioned) {
-        let clone = new WindowClone(win, this);
+        let clone = new WindowPreview(win, this);
         clone.positioned = positioned;
 
         clone.connect('selected',
