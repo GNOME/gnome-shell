@@ -2785,122 +2785,6 @@ _st_theme_node_apply_margins (StThemeNode *node,
   clutter_actor_set_margin_bottom (actor, st_theme_node_get_margin(node, ST_SIDE_BOTTOM));
 }
 
-static GetFromTermResult
-parse_shadow_property (StThemeNode       *node,
-                       CRDeclaration     *decl,
-                       ClutterColor      *color,
-                       gdouble           *xoffset,
-                       gdouble           *yoffset,
-                       gdouble           *blur,
-                       gdouble           *spread,
-                       gboolean          *inset,
-                       gboolean          *is_none)
-{
-  GetFromTermResult result;
-  CRTerm *term;
-  int n_offsets = 0;
-  *is_none = FALSE;
-
-  /* default values */
-  color->red = 0x0; color->green = 0x0; color->blue = 0x0; color->alpha = 0xff;
-  *xoffset = 0.;
-  *yoffset = 0.;
-  *blur = 0.;
-  *spread = 0.;
-  *inset = FALSE;
-
-  /* The CSS3 draft of the box-shadow property[0] is a lot stricter
-   * regarding the order of terms:
-   * If the 'inset' keyword is specified, it has to be first or last,
-   * and the color may not be mixed with the lengths; while we parse
-   * length values in the correct order, we allow for arbitrary
-   * placement of the color and 'inset' keyword.
-   *
-   * [0] http://www.w3.org/TR/css3-background/#box-shadow
-   */
-  for (term = decl->value; term; term = term->next)
-    {
-      /* if we found "none", we're all set with the default values */
-      if (term_is_none (term)) {
-        *is_none = TRUE;
-        return VALUE_FOUND;
-      }
-
-      if (term->type == TERM_NUMBER)
-        {
-          gdouble value;
-          gdouble multiplier;
-
-          multiplier = (term->unary_op == MINUS_UOP) ? -1. : 1.;
-          result = stylish_get_length_from_term (term, normalize_default (node), &value);
-
-          if (result == VALUE_INHERIT)
-            {
-              /* we only allow inherit on the line by itself */
-              if (n_offsets > 0)
-                return VALUE_NOT_FOUND;
-              else
-                return VALUE_INHERIT;
-            }
-          else if (result == VALUE_FOUND)
-            {
-              switch (n_offsets++)
-                {
-                case 0:
-                  *xoffset = multiplier * value;
-                  break;
-                case 1:
-                  *yoffset = multiplier * value;
-                  break;
-                case 2:
-                  if (multiplier < 0)
-                      g_warning ("Negative blur values are "
-                                 "not allowed");
-                  *blur = value;
-                  break;
-                case 3:
-                  if (multiplier < 0)
-                      g_warning ("Negative spread values are "
-                                 "not allowed");
-                  *spread = value;
-                  break;
-                default:
-                  g_warning ("Ignoring excess values in shadow definition");
-                  break;
-                }
-              continue;
-            }
-        }
-      else if (term->type == TERM_IDENT &&
-               strcmp (term->content.str->stryng->str, "inset") == 0)
-        {
-          *inset = TRUE;
-          continue;
-        }
-
-      result = stylish_get_color_from_term (term, color);
-
-      if (result == VALUE_INHERIT)
-        {
-          if (n_offsets > 0)
-            return VALUE_NOT_FOUND;
-          else
-            return VALUE_INHERIT;
-        }
-      else if (result == VALUE_FOUND)
-        {
-          continue;
-        }
-    }
-
-  /* The only required terms are the x and y offsets
-   */
-  if (n_offsets >= 2)
-    return VALUE_FOUND;
-  else
-    return VALUE_NOT_FOUND;
-}
-
 /**
  * st_theme_node_lookup_shadow:
  * @node: a #StThemeNode
@@ -2932,17 +2816,11 @@ st_theme_node_lookup_shadow (StThemeNode  *node,
                              gboolean      inherit,
                              StShadow    **shadow)
 {
-  ClutterColor color = { 0., };
-  gdouble xoffset = 0.;
-  gdouble yoffset = 0.;
-  gdouble blur = 0.;
-  gdouble spread = 0.;
-  gboolean inset = FALSE;
-  gboolean is_none = FALSE;
-
   int i;
 
   ensure_properties (node);
+
+  *shadow = NULL;
 
   for (i = node->n_properties - 1; i >= 0; i--)
     {
@@ -2950,35 +2828,50 @@ st_theme_node_lookup_shadow (StThemeNode  *node,
 
       if (strcmp (cr_declaration_name (decl), property_name) == 0)
         {
-          GetFromTermResult result = parse_shadow_property (node,
-                                                            decl,
-                                                            &color,
-                                                            &xoffset,
-                                                            &yoffset,
-                                                            &blur,
-                                                            &spread,
-                                                            &inset,
-                                                            &is_none);
-          if (result == VALUE_FOUND)
+          if (decl->value)
             {
-              if (is_none)
-                return FALSE;
+              StParsedShadow parsed;
 
-              *shadow = st_shadow_new (&color,
-                                       xoffset, yoffset,
-                                       blur, spread,
-                                       inset);
-              return TRUE;
+              switch (stylish_parse_shadow (decl->value, normalize_default (node), &parsed))
+                {
+                case VALUE_FOUND:
+                  if (parsed.is_none)
+                    {
+                      return FALSE;
+                    }
+                  else
+                    {
+                      *shadow = st_shadow_new (&parsed.color,
+                                               parsed.xoffset,
+                                               parsed.yoffset,
+                                               parsed.blur,
+                                               parsed.spread,
+                                               parsed.inset);
+                      return TRUE;
+                    }
+                  break;
+
+                case VALUE_NOT_FOUND:
+                  return FALSE;
+
+                case VALUE_INHERIT:
+                  if (node->parent_node)
+                    {
+                      return st_theme_node_lookup_shadow (node->parent_node,
+                                                          property_name,
+                                                          inherit,
+                                                          shadow);
+                    }
+                  break;
+
+                default:
+                  g_assert_not_reached ();
+                  return FALSE;
+                }
             }
-          else if (result == VALUE_INHERIT)
+          else
             {
-              if (node->parent_node)
-                return st_theme_node_lookup_shadow (node->parent_node,
-                                                    property_name,
-                                                    inherit,
-                                                    shadow);
-              else
-                break;
+              return FALSE;
             }
         }
     }
