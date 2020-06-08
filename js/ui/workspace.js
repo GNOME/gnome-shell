@@ -221,10 +221,10 @@ var WindowPreview = GObject.registerClass({
         'size-changed': {},
     },
 }, class WindowPreview extends St.Widget {
-    _init(realWindow, workspace) {
-        this.realWindow = realWindow;
-        this.metaWindow = realWindow.meta_window;
+    _init(metaWindow, workspace) {
+        this.metaWindow = metaWindow;
         this.metaWindow._delegate = this;
+        this.realWindow = metaWindow.get_compositor_private();
         this._workspace = workspace;
 
         super._init({
@@ -1159,7 +1159,7 @@ class Workspace extends St.Widget {
         this._windows = [];
         for (let i = 0; i < windows.length; i++) {
             if (this._isOverviewWindow(windows[i]))
-                this._addWindowClone(windows[i].get_compositor_private(), true);
+                this._addWindowClone(windows[i], true);
         }
 
         // Track window changes
@@ -1526,7 +1526,7 @@ class Workspace extends St.Widget {
             return;
         }
 
-        let clone = this._addWindowClone(win, false);
+        let clone = this._addWindowClone(metaWin, false);
 
         if (win._overviewHint) {
             let x = win._overviewHint.x - this.x;
@@ -1804,20 +1804,20 @@ class Workspace extends St.Widget {
     }
 
     // Create a clone of a (non-desktop) window and add it to the window list
-    _addWindowClone(win, positioned) {
-        let clone = new WindowPreview(win, this);
+    _addWindowClone(metaWindow, positioned) {
+        let clone = new WindowPreview(metaWindow, this);
         clone.positioned = positioned;
 
         clone.connect('selected',
                       this._onCloneSelected.bind(this));
         clone.connect('drag-begin', () => {
-            Main.overview.beginWindowDrag(clone.metaWindow);
+            Main.overview.beginWindowDrag(metaWindow);
         });
         clone.connect('drag-cancelled', () => {
-            Main.overview.cancelledWindowDrag(clone.metaWindow);
+            Main.overview.cancelledWindowDrag(metaWindow);
         });
         clone.connect('drag-end', () => {
-            Main.overview.endWindowDrag(clone.metaWindow);
+            Main.overview.endWindowDrag(metaWindow);
         });
         clone.connect('size-changed', () => {
             this._recalculateWindowPositions(WindowPositionFlags.NONE);
@@ -1833,7 +1833,7 @@ class Workspace extends St.Widget {
             });
         });
         clone.connect('destroy', () => {
-            this._removeWindowClone(clone.metaWindow);
+            this._removeWindowClone(metaWindow);
         });
 
         this.add_child(clone);
