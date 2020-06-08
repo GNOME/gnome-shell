@@ -243,7 +243,7 @@ var WindowPreview = GObject.registerClass({
         this.y = this.boundingBox.y;
 
         let clickAction = new Clutter.ClickAction();
-        clickAction.connect('clicked', this._onClicked.bind(this));
+        clickAction.connect('clicked', () => this._activate());
         clickAction.connect('long-press', this._onLongPress.bind(this));
         this.add_action(clickAction);
         this.connect('destroy', this._onDestroy.bind(this));
@@ -653,10 +653,6 @@ var WindowPreview = GObject.registerClass({
         }
 
         return super.vfunc_key_press_event(keyEvent);
-    }
-
-    _onClicked() {
-        this._activate();
     }
 
     _onLongPress(action, actor, state) {
