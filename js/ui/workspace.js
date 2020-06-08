@@ -159,6 +159,36 @@ var WindowCloneLayout = GObject.registerClass({
         this._layoutChanged();
     }
 
+    /**
+     * getWindows:
+     *
+     * Gets an array of all ClutterActors that were added to the layout
+     * using addWindow(), ordered by the insertion order.
+     *
+     * @returns {Array} An array including all windows
+     */
+    getWindows() {
+        return [...this._windows.keys()];
+    }
+
+    /**
+     * getMetaWindow:
+     * @param {Clutter.Actor} window: the window to get the MetaWindow for
+     *
+     * Gets the MetaWindow associated to the ClutterActor @window that was
+     * added to the layout using addWindow(). If @window is not found,
+     * null is returned.
+     *
+     * @returns {Meta.Window} The metaWindow of the window
+     */
+    getMetaWindow(window) {
+        const windowInfo = this._windows.get(window);
+        if (!windowInfo)
+            return null;
+
+        return windowInfo.metaWindow;
+    }
+
     // eslint-disable-next-line camelcase
     get bounding_box() {
         return this._boundingBox;
