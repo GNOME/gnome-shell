@@ -1974,6 +1974,7 @@ st_theme_node_get_icon_style (StThemeNode *node)
 StTextDecoration
 st_theme_node_get_text_decoration (StThemeNode *node)
 {
+  StTextDecoration decoration = 0;
   int i;
 
   ensure_properties (node);
@@ -1984,58 +1985,25 @@ st_theme_node_get_text_decoration (StThemeNode *node)
 
       if (strcmp (cr_declaration_name (decl), "text-decoration") == 0)
         {
-          CRTerm *term = decl->value;
-          StTextDecoration decoration = 0;
+          GetFromTermResult result = stylish_parse_text_decoration (decl->value, &decoration);
 
-          /* Specification is none | [ underline || overline || line-through || blink ] | inherit
-           *
-           * We're a bit more liberal, and for example treat 'underline none' as the same as
-           * none.
-           */
-          for (; term; term = term->next)
+          if (result == VALUE_FOUND)
             {
-              if (term->type != TERM_IDENT)
-                goto next_decl;
-
-              if (strcmp (term->content.str->stryng->str, "none") == 0)
+              return decoration;
+            }
+          else if (result == VALUE_INHERIT)
+            {
+              if (node->parent_node)
                 {
-                  return 0;
-                }
-              else if (strcmp (term->content.str->stryng->str, "inherit") == 0)
-                {
-                  if (node->parent_node)
-                    return st_theme_node_get_text_decoration (node->parent_node);
-                }
-              else if (strcmp (term->content.str->stryng->str, "underline") == 0)
-                {
-                  decoration |= ST_TEXT_DECORATION_UNDERLINE;
-                }
-              else if (strcmp (term->content.str->stryng->str, "overline") == 0)
-                {
-                  decoration |= ST_TEXT_DECORATION_OVERLINE;
-                }
-              else if (strcmp (term->content.str->stryng->str, "line-through") == 0)
-                {
-                  decoration |= ST_TEXT_DECORATION_LINE_THROUGH;
-                }
-              else if (strcmp (term->content.str->stryng->str, "blink") == 0)
-                {
-                  decoration |= ST_TEXT_DECORATION_BLINK;
-                }
-              else
-                {
-                  goto next_decl;
+                  return st_theme_node_get_text_decoration (node->parent_node);
                 }
             }
 
-          return decoration;
+          break;
         }
-
-    next_decl:
-      ;
     }
 
-  return 0;
+  return decoration;
 }
 
 static gboolean
