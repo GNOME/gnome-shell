@@ -1165,14 +1165,15 @@ class Workspace extends St.Widget {
 
         this.connect('destroy', this._onDestroy.bind(this));
 
-        let windows = global.get_window_actors().filter(this._isMyWindow, this);
+        const windows = global.get_window_actors().map(a => a.meta_window)
+            .filter(this._isMyWindow, this);
 
         // Create clones for windows that should be
         // visible in the Overview
         this._windows = [];
         for (let i = 0; i < windows.length; i++) {
             if (this._isOverviewWindow(windows[i]))
-                this._addWindowClone(windows[i], true);
+                this._addWindowClone(windows[i].get_compositor_private(), true);
         }
 
         // Track window changes
@@ -1520,10 +1521,10 @@ class Workspace extends St.Widget {
         if (this._lookupIndex(metaWin) != -1)
             return;
 
-        if (!this._isMyWindow(win))
+        if (!this._isMyWindow(metaWin))
             return;
 
-        if (!this._isOverviewWindow(win)) {
+        if (!this._isOverviewWindow(metaWin)) {
             if (metaWin.get_transient_for() == null)
                 return;
 
@@ -1804,16 +1805,16 @@ class Workspace extends St.Widget {
         this._recalculateWindowPositions(WindowPositionFlags.INITIAL);
     }
 
-    // Tests if @actor belongs to this workspaces and monitor
-    _isMyWindow(actor) {
-        let win = actor.meta_window;
-        return (this.metaWorkspace == null || win.located_on_workspace(this.metaWorkspace)) &&
-            (win.get_monitor() == this.monitorIndex);
+    _isMyWindow(window) {
+        const isOnWorkspace = this.metaWorkspace === null ||
+            window.located_on_workspace(this.metaWorkspace);
+        const isOnMonitor = window.get_monitor() === this.monitorIndex;
+
+        return isOnWorkspace && isOnMonitor;
     }
 
-    // Tests if @win should be shown in the Overview
-    _isOverviewWindow(win) {
-        return !win.get_meta_window().skip_taskbar;
+    _isOverviewWindow(window) {
+        return !window.skip_taskbar;
     }
 
     // Create a clone of a (non-desktop) window and add it to the window list
@@ -1967,7 +1968,7 @@ class Workspace extends St.Widget {
 
     // Draggable target interface
     handleDragOver(source, _actor, _x, _y, _time) {
-        if (source.realWindow && !this._isMyWindow(source.realWindow))
+        if (source.metaWindow && !this._isMyWindow(source.metaWindow))
             return DND.DragMotionResult.MOVE_DROP;
         if (source.app && source.app.can_open_new_window())
             return DND.DragMotionResult.COPY_DROP;
@@ -1983,29 +1984,27 @@ class Workspace extends St.Widget {
             ? this.metaWorkspace.index()
             : workspaceManager.get_active_workspace_index();
 
-        if (source.realWindow) {
-            let win = source.realWindow;
-            if (this._isMyWindow(win))
+        if (source.metaWindow) {
+            const window = source.metaWindow;
+            if (this._isMyWindow(window))
                 return false;
 
             // Set a hint on the Mutter.Window so its initial position
             // in the new workspace will be correct
-            win._overviewHint = {
+            window.get_compositor_private()._overviewHint = {
                 x: actor.x,
                 y: actor.y,
                 width: actor.width,
                 heigth: actor.height,
             };
 
-            let metaWindow = win.get_meta_window();
-
             // We need to move the window before changing the workspace, because
             // the move itself could cause a workspace change if the window enters
             // the primary monitor
-            if (metaWindow.get_monitor() != this.monitorIndex)
-                metaWindow.move_to_monitor(this.monitorIndex);
+            if (window.get_monitor() != this.monitorIndex)
+                window.move_to_monitor(this.monitorIndex);
 
-            metaWindow.change_workspace_by_index(workspaceIndex, false);
+            window.change_workspace_by_index(workspaceIndex, false);
             return true;
         } else if (source.app && source.app.can_open_new_window()) {
             if (source.animateLaunchAtPos)
