@@ -101,21 +101,20 @@ if have_systemd
   unitconf.set('bindir', bindir)
 
   configure_file(
-    input: 'org.gnome.Shell-x11.service.in',
-    output: 'org.gnome.Shell-x11.service',
+    input: 'org.gnome.Shell@x11.service.in',
+    output: 'org.gnome.Shell@x11.service',
     configuration: unitconf,
     install_dir: systemduserunitdir
   )
 
   configure_file(
-    input: 'org.gnome.Shell-wayland.service.in',
-    output: 'org.gnome.Shell-wayland.service',
+    input: 'org.gnome.Shell@wayland.service.in',
+    output: 'org.gnome.Shell@wayland.service',
     configuration: unitconf,
     install_dir: systemduserunitdir
   )
 
-  units = files('org.gnome.Shell-x11.target',
-                'org.gnome.Shell-wayland.target',
+  units = files('org.gnome.Shell.target',
                 'org.gnome.Shell-disable-extensions.service')
 
   install_data(units, install_dir: systemduserunitdir)

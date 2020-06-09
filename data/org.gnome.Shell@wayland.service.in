@@ -15,13 +15,18 @@ Before=gnome-session-initialized.target
 
 [Service]
 Type=notify
+# NOTE: This can be replaced with ConditionEnvironment=XDG_SESSION_TYPE=%I
+#       with systemd >= 245. Also, the current solution is kind of painful
+#       as systemd had a bug where it retries the condition.
+# Only start if the template instance matches the session type.
+ExecCondition=/bin/sh -c 'test "$XDG_SESSION_TYPE" = "%I" || exit 2'
 ExecStart=@bindir@/gnome-shell
+# Exit code 1 means we are probably *not* dealing with an extension failure
+SuccessExitStatus=1
 
 # unset some environment variables that were set by the shell and won't work now that the shell is gone
 ExecStopPost=-systemctl --user unset-environment GNOME_SETUP_DISPLAY WAYLAND_DISPLAY DISPLAY XAUTHORITY
 
-# Exit code 1 means we are probably *not* dealing with an extension failure
-SuccessExitStatus=1
 # On wayland we cannot restart
 Restart=no
 # Kill any stubborn child processes after this long
