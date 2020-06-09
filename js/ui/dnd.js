@@ -378,17 +378,27 @@ var _Draggable = class _Draggable {
             this._dragActorHadFixedPos = this._dragActor.fixed_position_set;
             this._dragOrigX = this._dragActor.allocation.x1;
             this._dragOrigY = this._dragActor.allocation.y1;
+            this._dragOrigWidth = this._dragActor.allocation.get_width();
+            this._dragOrigHeight = this._dragActor.allocation.get_height();
             this._dragOrigScale = this._dragActor.scale_x;
+
+            // When the actor gets reparented to the uiGroup, it will be
+            // allocated its preferred size, so use that size instead of the
+            // current allocation size.
+            const [, newAllocatedWidth] = this._dragActor.get_preferred_width(-1);
+            const [, newAllocatedHeight] = this._dragActor.get_preferred_height(-1);
+
+            const transformedAllocation =
+                Shell.util_get_transformed_allocation(this._dragActor);
 
             // Set the actor's scale such that it will keep the same
             // transformed size when it's reparented to the uiGroup
-            let [scaledWidth, scaledHeight] = this.actor.get_transformed_size();
-            this._dragActor.set_scale(scaledWidth / this.actor.width,
-                                      scaledHeight / this.actor.height);
+            this._dragActor.set_scale(
+                transformedAllocation.get_width() / newAllocatedWidth,
+                transformedAllocation.get_height() / newAllocatedHeight);
 
-            let [actorStageX, actorStageY] = this.actor.get_transformed_position();
-            this._dragOffsetX = actorStageX - this._dragStartX;
-            this._dragOffsetY = actorStageY - this._dragStartY;
+            this._dragOffsetX = transformedAllocation.x1 - this._dragStartX;
+            this._dragOffsetY = transformedAllocation.y1 - this._dragStartY;
 
             this._dragOrigParent.remove_actor(this._dragActor);
             Main.uiGroup.add_child(this._dragActor);
@@ -636,9 +646,15 @@ var _Draggable = class _Draggable {
             if (parentWidth != 0)
                 parentScale = parentScaledWidth / parentWidth;
 
+            // Also adjust for the difference in the original actor width
+            // and the width it is now (children of uiGroup always get
+            // allocated their preferred size)
+            const childScaleX =
+                this._dragOrigWidth / this._dragActor.allocation.get_width();
+
             x = parentX + parentScale * this._dragOrigX;
             y = parentY + parentScale * this._dragOrigY;
-            scale = this._dragOrigScale * parentScale;
+            scale = this._dragOrigScale * parentScale * childScaleX;
         } else {
             // Snap back actor to its original stage position
             x = this._snapBackX;
