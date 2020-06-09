@@ -435,6 +435,10 @@ var _Draggable = class _Draggable {
                 let scale = this._dragActorMaxSize / currentSize;
                 let origScale =  this._dragActor.scale_x;
 
+                this._dragActor.set_position(
+                    this._dragX + this._dragOffsetX,
+                    this._dragY + this._dragOffsetY);
+
                 // The position of the actor changes as we scale
                 // around the drag position, but we can't just tween
                 // to the final position because that tween would
