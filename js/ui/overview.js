@@ -244,11 +244,11 @@ var Overview = class {
     _unshadeBackgrounds() {
         let backgrounds = this._backgroundGroup.get_children();
         for (let i = 0; i < backgrounds.length; i++) {
-            backgrounds[i].ease_property('brightness', 1.0, {
+            backgrounds[i].ease_property('@content.brightness', 1.0, {
                 duration: SHADE_ANIMATION_TIME,
                 mode: Clutter.AnimationMode.EASE_OUT_QUAD,
             });
-            backgrounds[i].ease_property('vignette-sharpness', 0.0, {
+            backgrounds[i].ease_property('@content.vignette-sharpness', 0.0, {
                 duration: SHADE_ANIMATION_TIME,
                 mode: Clutter.AnimationMode.EASE_OUT_QUAD,
             });
@@ -258,14 +258,16 @@ var Overview = class {
     _shadeBackgrounds() {
         let backgrounds = this._backgroundGroup.get_children();
         for (let i = 0; i < backgrounds.length; i++) {
-            backgrounds[i].ease_property('brightness', Lightbox.VIGNETTE_BRIGHTNESS, {
-                duration: SHADE_ANIMATION_TIME,
-                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            });
-            backgrounds[i].ease_property('vignette-sharpness', Lightbox.VIGNETTE_SHARPNESS, {
-                duration: SHADE_ANIMATION_TIME,
-                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            });
+            backgrounds[i].ease_property('@content.brightness',
+                Lightbox.VIGNETTE_BRIGHTNESS, {
+                    duration: SHADE_ANIMATION_TIME,
+                    mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+                });
+            backgrounds[i].ease_property('@content.vignette-sharpness',
+                Lightbox.VIGNETTE_SHARPNESS, {
+                    duration: SHADE_ANIMATION_TIME,
+                    mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+                });
         }
     }
 
