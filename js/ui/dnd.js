@@ -375,8 +375,9 @@ var _Draggable = class _Draggable {
 
             this._dragActorSource = undefined;
             this._dragOrigParent = this.actor.get_parent();
-            this._dragOrigX = this._dragActor.x;
-            this._dragOrigY = this._dragActor.y;
+            this._dragActorHadFixedPos = this._dragActor.fixed_position_set;
+            this._dragOrigX = this._dragActor.allocation.x1;
+            this._dragOrigY = this._dragActor.allocation.y1;
             this._dragOrigScale = this._dragActor.scale_x;
 
             // Set the actor's scale such that it will keep the same
@@ -718,7 +719,10 @@ var _Draggable = class _Draggable {
             Main.uiGroup.remove_child(this._dragActor);
             this._dragOrigParent.add_actor(this._dragActor);
             dragActor.set_scale(this._dragOrigScale, this._dragOrigScale);
-            dragActor.set_position(this._dragOrigX, this._dragOrigY);
+            if (this._dragActorHadFixedPos)
+                dragActor.set_position(this._dragOrigX, this._dragOrigY);
+            else
+                dragActor.fixed_position_set = false;
         } else {
             dragActor.destroy();
         }
