@@ -655,12 +655,14 @@ class Animation extends GnomeDesktop.BGSlideShow {
 
 var BackgroundManager = class BackgroundManager {
     constructor(params) {
-        params = Params.parse(params, { container: null,
-                                        layoutManager: Main.layoutManager,
-                                        monitorIndex: null,
-                                        vignette: false,
-                                        controlPosition: true,
-                                        settingsSchema: BACKGROUND_SCHEMA });
+        params = Params.parse(params, {
+            container: null,
+            layoutManager: Main.layoutManager,
+            monitorIndex: null,
+            vignette: false,
+            controlPosition: true,
+            settingsSchema: BACKGROUND_SCHEMA,
+        });
 
         let cache = getBackgroundCache();
         this._settingsSchema = params.settingsSchema;
