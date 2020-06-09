@@ -714,7 +714,8 @@ var PopupMenuBase = new Lang.Class({
     },
 
     _getMenuItems() {
-        return this.box.get_children().map(a => a._delegate).filter(item => {
+        const children = this.box.get_children().filter(a => a._delegate !== undefined);
+        return children.map(a => a._delegate).filter(item => {
             return item instanceof PopupBaseMenuItem || item instanceof PopupMenuSection;
         });
     },
