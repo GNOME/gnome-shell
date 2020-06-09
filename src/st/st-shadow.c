@@ -287,8 +287,9 @@ st_shadow_helper_paint (StShadowHelper  *helper,
                         ClutterActorBox *actor_box,
                         guint8           paint_opacity)
 {
-  _st_paint_shadow_with_opacity (helper->shadow,
-                                 helper->pipeline,
-                                 actor_box,
-                                 paint_opacity);
+  if (helper->pipeline != NULL)
+    _st_paint_shadow_with_opacity (helper->shadow,
+                                   helper->pipeline,
+                                   actor_box,
+                                   paint_opacity);
 }
