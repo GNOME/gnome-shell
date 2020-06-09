@@ -2294,25 +2294,6 @@ font_weight_from_term (CRTerm      *term,
   return TRUE;
 }
 
-static gboolean
-font_variant_from_term (CRTerm       *term,
-                        PangoVariant *variant)
-{
-  if (term->type != TERM_IDENT)
-    return FALSE;
-
-  /* FIXME: handle INHERIT */
-
-  if (strcmp (term->content.str->stryng->str, "normal") == 0)
-    *variant = PANGO_VARIANT_NORMAL;
-  else if (strcmp (term->content.str->stryng->str, "small-caps") == 0)
-    *variant = PANGO_VARIANT_SMALL_CAPS;
-  else
-    return FALSE;
-
-  return TRUE;
-}
-
 const PangoFontDescription *
 st_theme_node_get_font (StThemeNode *node)
 {
@@ -2365,7 +2346,7 @@ st_theme_node_get_font (StThemeNode *node)
             {
               if (stylish_parse_font_style_single_term (term, &tmp_style) == VALUE_FOUND)
                 continue;
-              if (font_variant_from_term (term, &tmp_variant))
+              if (stylish_parse_font_variant_single_term (term, &tmp_variant) == VALUE_FOUND)
                 continue;
               if (font_weight_from_term (term, &tmp_weight, &tmp_weight_absolute))
                 continue;
@@ -2446,7 +2427,7 @@ st_theme_node_get_font (StThemeNode *node)
           if (decl->value == NULL || decl->value->next != NULL)
             continue;
 
-          if (font_variant_from_term (decl->value, &variant))
+          if (stylish_parse_font_variant (decl->value, &variant) == VALUE_FOUND)
             variant_set = TRUE;
         }
       else if (strcmp (cr_declaration_name (decl), "font-size") == 0)
