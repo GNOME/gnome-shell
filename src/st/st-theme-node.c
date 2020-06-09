@@ -2295,27 +2295,6 @@ font_weight_from_term (CRTerm      *term,
 }
 
 static gboolean
-font_style_from_term (CRTerm     *term,
-                      PangoStyle *style)
-{
-  if (term->type != TERM_IDENT)
-    return FALSE;
-
-  /* FIXME: handle INHERIT */
-
-  if (strcmp (term->content.str->stryng->str, "normal") == 0)
-    *style = PANGO_STYLE_NORMAL;
-  else if (strcmp (term->content.str->stryng->str, "oblique") == 0)
-    *style = PANGO_STYLE_OBLIQUE;
-  else if (strcmp (term->content.str->stryng->str, "italic") == 0)
-    *style = PANGO_STYLE_ITALIC;
-  else
-    return FALSE;
-
-  return TRUE;
-}
-
-static gboolean
 font_variant_from_term (CRTerm       *term,
                         PangoVariant *variant)
 {
@@ -2384,7 +2363,7 @@ st_theme_node_get_font (StThemeNode *node)
            */
           for (; term; term = term->next)
             {
-              if (font_style_from_term (term, &tmp_style))
+              if (stylish_parse_font_style_single_term (term, &tmp_style) == VALUE_FOUND)
                 continue;
               if (font_variant_from_term (term, &tmp_variant))
                 continue;
@@ -2459,7 +2438,7 @@ st_theme_node_get_font (StThemeNode *node)
           if (decl->value == NULL || decl->value->next != NULL)
             continue;
 
-          if (font_style_from_term (decl->value, &font_style))
+          if (stylish_parse_font_style (decl->value, &font_style) == VALUE_FOUND)
             font_style_set = TRUE;
         }
       else if (strcmp (cr_declaration_name (decl), "font-variant") == 0)
