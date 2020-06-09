@@ -428,6 +428,10 @@ var _Draggable = class _Draggable {
         this._dragOffsetX -= transX;
         this._dragOffsetY -= transY;
 
+        this._dragActor.set_position(
+            this._dragX + this._dragOffsetX,
+            this._dragY + this._dragOffsetY);
+
         if (this._dragActorMaxSize != undefined) {
             let [scaledWidth, scaledHeight] = this._dragActor.get_transformed_size();
             let currentSize = Math.max(scaledWidth, scaledHeight);
