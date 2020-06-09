@@ -662,6 +662,7 @@ var BackgroundManager = class BackgroundManager {
             vignette: false,
             controlPosition: true,
             settingsSchema: BACKGROUND_SCHEMA,
+            forceSize: true,
         });
 
         let cache = getBackgroundCache();
@@ -673,6 +674,7 @@ var BackgroundManager = class BackgroundManager {
         this._vignette = params.vignette;
         this._monitorIndex = params.monitorIndex;
         this._controlPosition = params.controlPosition;
+        this._forceSize = params.forceSize;
 
         this.backgroundActor = this._createBackgroundActor();
         this._newBackgroundActor = null;
@@ -747,6 +749,11 @@ var BackgroundManager = class BackgroundManager {
         let backgroundActor = new Meta.BackgroundActor({
             meta_display: global.display,
             monitor: this._monitorIndex,
+            request_mode: this._forceSize
+                ? Clutter.RequestMode.CONTENT_SIZE
+                : Clutter.RequestMode.HEIGHT_FOR_WIDTH,
+            x_expand: !this._forceSize,
+            y_expand: !this._forceSize,
         });
         backgroundActor.content.set({
             background,
