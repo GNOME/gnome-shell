@@ -102,6 +102,16 @@ const TouchpadSwipeGesture = GObject.registerClass({
         let [x, y] = event.get_coords();
         let [dx, dy] = event.get_gesture_motion_delta();
 
+        let gestureOrientation = -1;
+        if (dx !== dy) {
+            gestureOrientation = Math.abs(dx) > Math.abs(dy)
+                ? Clutter.Orientation.HORIZONTAL
+                : Clutter.Orientation.VERTICAL;
+        }
+
+        if (gestureOrientation >= 0 && gestureOrientation !== this._orientation)
+            return Clutter.EVENT_PROPAGATE;
+
         let delta;
         if (this._orientation === Clutter.Orientation.VERTICAL)
             delta = dy / TOUCHPAD_BASE_HEIGHT;
@@ -126,7 +136,9 @@ const TouchpadSwipeGesture = GObject.registerClass({
             break;
         }
 
-        return Clutter.EVENT_STOP;
+        return gestureOrientation === this._orientation
+            ? Clutter.EVENT_STOP
+            : Clutter.EVENT_PROPAGATE;
     }
 
     destroy() {
