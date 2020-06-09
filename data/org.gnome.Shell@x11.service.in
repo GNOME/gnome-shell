@@ -18,13 +18,22 @@ StartLimitIntervalSec=15s
 StartLimitBurst=3
 
 [Service]
-Type=notify
-ExecStart=@bindir@/gnome-shell
-# Exit code 1 means we are probably *not* dealing with an extension failure
-SuccessExitStatus=1
 # On X11 we want to restart on-success (Alt+F2 + r) and on-failure.
 Restart=always
 # Do not wait before restarting the shell
 RestartSec=0ms
+
+Type=notify
+# NOTE: This can be replaced with ConditionEnvironment=XDG_SESSION_TYPE=%I
+#       with systemd >= 245. Also, the current solution is kind of painful
+#       as systemd will try to restart before giving up.
+# Only start if the template instance matches the session type.
+ExecCondition=/bin/sh -c 'test "$XDG_SESSION_TYPE" = "%I" || exit 2'
+ExecStart=@bindir@/gnome-shell
+
+# On X11 we do not need to unset any variables
+
+# Exit code 1 means we are probably *not* dealing with an extension failure
+SuccessExitStatus=1
 # Kill any stubborn child processes after this long
 TimeoutStopSec=5
