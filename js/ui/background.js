@@ -512,8 +512,8 @@ var SystemBackground = GObject.registerClass({
         super._init({
             meta_display: global.display,
             monitor: 0,
-            background: _systemBackground,
         });
+        this.content.background = _systemBackground;
 
         let id = GLib.idle_add(GLib.PRIORITY_DEFAULT, () => {
             this.emit('loaded');
@@ -738,6 +738,8 @@ var BackgroundManager = class BackgroundManager {
         let backgroundActor = new Meta.BackgroundActor({
             meta_display: global.display,
             monitor: this._monitorIndex,
+        });
+        backgroundActor.content.set({
             background,
             vignette: this._vignette,
             vignette_sharpness: 0.5,
