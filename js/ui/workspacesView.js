@@ -397,27 +397,15 @@ class WorkspacesDisplay extends St.Widget {
             workspaceManager.connect('workspaces-reordered',
                 this._workspacesReordered.bind(this));
 
-        let clickAction = new Clutter.ClickAction();
-        clickAction.connect('clicked', action => {
-            // Only switch to the workspace when there's no application
-            // windows open. The problem is that it's too easy to miss
-            // an app window and get the wrong one focused.
-            let event = Clutter.get_current_event();
-            let index = this._getMonitorIndexForEvent(event);
-            if ((action.get_button() == 1 || action.get_button() == 0) &&
-                this._workspacesViews[index].getActiveWorkspace().isEmpty())
-                Main.overview.hide();
-        });
-        Main.overview.addAction(clickAction);
-        this.bind_property('mapped', clickAction, 'enabled', GObject.BindingFlags.SYNC_CREATE);
-        this._clickAction = clickAction;
-
         this._swipeTracker = new SwipeTracker.SwipeTracker(
             Main.layoutManager.overviewGroup, Shell.ActionMode.OVERVIEW);
         this._swipeTracker.connect('begin', this._switchWorkspaceBegin.bind(this));
         this._swipeTracker.connect('update', this._switchWorkspaceUpdate.bind(this));
         this._swipeTracker.connect('end', this._switchWorkspaceEnd.bind(this));
         this.connect('notify::mapped', this._updateSwipeTracker.bind(this));
+
+        let clickAction = this._createHideClickAction(this);
+        Main.overview.addAction(clickAction);
 
         this._windowDragBeginId =
             Main.overview.connect('window-drag-begin',
@@ -448,6 +436,34 @@ class WorkspacesDisplay extends St.Widget {
         this._canScroll = true; // limiting scrolling speed
 
         this.connect('destroy', this._onDestroy.bind(this));
+    }
+
+    _createHideClickAction(actor) {
+        const clickAction = new Clutter.ClickAction();
+        const clickedId = clickAction.connect('clicked', action => {
+            // Only switch to the workspace when there's no application
+            // windows open. The problem is that it's too easy to miss
+            // an app window and get the wrong one focused.
+            let event = Clutter.get_current_event();
+            let index = this._getMonitorIndexForEvent(event);
+            if ((action.get_button() == 1 || action.get_button() == 0) &&
+                this._workspacesViews[index].getActiveWorkspace().isEmpty())
+                Main.overview.hide();
+        });
+
+        const swipeEndId = this._swipeTracker.connect('end', () =>
+            clickAction.release());
+
+        actor.bind_property('mapped', clickAction,
+            'enabled', GObject.BindingFlags.SYNC_CREATE);
+
+        const destroyId = actor.connect('destroy', () => {
+            actor.disconnect(destroyId);
+            clickAction.disconnect(clickedId);
+            this._swipeTracker.disconnect(swipeEndId);
+        });
+
+        return clickAction;
     }
 
     _onDestroy() {
@@ -572,8 +588,6 @@ class WorkspacesDisplay extends St.Widget {
     }
 
     _switchWorkspaceEnd(tracker, duration, endProgress) {
-        this._clickAction.release();
-
         let workspaceManager = global.workspace_manager;
         let activeWorkspace = workspaceManager.get_active_workspace();
         let newWs = workspaceManager.get_workspace_by_index(endProgress);
@@ -677,6 +691,9 @@ class WorkspacesDisplay extends St.Widget {
                 view = new ExtraWorkspaceView(i);
             else
                 view = new WorkspacesView(i, this._scrollAdjustment);
+
+            let clickAction = this._createHideClickAction(view);
+            view.add_action(clickAction);
 
             // HACK: Avoid spurious allocation changes while updating views
             view.hide();
