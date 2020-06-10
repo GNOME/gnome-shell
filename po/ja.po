@@ -1,5 +1,5 @@
 # Japanese translation of gnome-shell package.
-# Copyright (C) 2009-2020 the gnome-shell copyright holder.
+# Copyright (C) 2010-2017, 2019-2020 the gnome-shell copyright holder.
 # This file is distributed under the same license as the gnome-shell package.
 # Nishio Futoshi <fut_nis@d3.dion.ne.jp>, 2010.
 # Kiyotaka NISHIBORI <ml.nishibori.kiyotaka@gmail.com>, 2011.
@@ -17,7 +17,7 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
 "POT-Creation-Date: 2020-06-09 18:01+0000\n"
-"PO-Revision-Date: 2020-05-13 23:00+0900\n"
+"PO-Revision-Date: 2020-06-10 18:45+0900\n"
 "Last-Translator: sicklylife <translation@sicklylife.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
 "Language: ja\n"
@@ -1063,27 +1063,23 @@ msgstr "%Y年%-m月%-e日 (%a)"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year
 #: js/ui/dateMenu.js:151
-#, fuzzy
-#| msgid "%B %-d %Y"
 msgctxt "calendar heading"
 msgid "%B %-d"
-msgstr "%Y年%-m月%-e日"
+msgstr "%-m月%-e日"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year
 #: js/ui/dateMenu.js:154
-#, fuzzy
-#| msgid "%B %-d %Y"
 msgctxt "calendar heading"
 msgid "%B %-d %Y"
 msgstr "%Y年%-m月%-e日"
 
 #: js/ui/dateMenu.js:160
 msgid "Today"
-msgstr ""
+msgstr "今日"
 
 #: js/ui/dateMenu.js:164
 msgid "Tomorrow"
-msgstr ""
+msgstr "明日"
 
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
@@ -2401,10 +2397,8 @@ msgid "The extension is incompatible with the current GNOME version"
 msgstr ""
 
 #: subprojects/extensions-app/js/main.js:464
-#, fuzzy
-#| msgid "Show extension info"
 msgid "The extension had an error"
-msgstr "拡張機能の情報を表示する"
+msgstr ""
 
 #: subprojects/extensions-app/data/ui/extension-row.ui:109
 #: subprojects/extensions-tool/src/command-create.c:325
