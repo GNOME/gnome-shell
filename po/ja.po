@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2020-05-04 14:38+0000\n"
+"POT-Creation-Date: 2020-06-09 18:01+0000\n"
 "PO-Revision-Date: 2020-05-13 23:00+0900\n"
 "Last-Translator: sicklylife <translation@sicklylife.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
@@ -421,7 +421,7 @@ msgstr "拡張機能のホームページを開く"
 #: js/ui/components/networkAgent.js:110 js/ui/components/polkitAgent.js:139
 #: js/ui/endSessionDialog.js:369 js/ui/extensionDownloader.js:181
 #: js/ui/shellMountOperation.js:376 js/ui/shellMountOperation.js:386
-#: js/ui/status/network.js:916 subprojects/extensions-app/js/main.js:148
+#: js/ui/status/network.js:916 subprojects/extensions-app/js/main.js:149
 msgid "Cancel"
 msgstr "キャンセル"
 
@@ -577,7 +577,7 @@ msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "%d 時間前"
 
-#: js/misc/util.js:191
+#: js/misc/util.js:191 js/ui/dateMenu.js:162
 msgid "Yesterday"
 msgstr "昨日"
 
@@ -692,56 +692,44 @@ msgstr ""
 
 #. No support for non-modal system dialogs, so ignore the option
 #. let modal = options['modal'] || true;
-#: js/ui/accessDialog.js:39 js/ui/status/location.js:374
+#: js/ui/accessDialog.js:39 js/ui/status/location.js:369
 msgid "Deny Access"
 msgstr "拒否"
 
-#: js/ui/accessDialog.js:40 js/ui/status/location.js:377
+#: js/ui/accessDialog.js:40 js/ui/status/location.js:372
 msgid "Grant Access"
 msgstr "許可"
 
-#: js/ui/appDisplay.js:943
+#: js/ui/appDisplay.js:956
 msgid "Unnamed Folder"
 msgstr "名前なしのフォルダー"
 
-#: js/ui/appDisplay.js:966
-msgid "Frequently used applications will appear here"
-msgstr "よく使用するアプリケーションがここに表示されます"
-
-#: js/ui/appDisplay.js:1101
-msgid "Frequent"
-msgstr "常用"
-
-#: js/ui/appDisplay.js:1108
-msgid "All"
-msgstr "すべて"
-
 #. Translators: This is the heading of a list of open windows
-#: js/ui/appDisplay.js:2485 js/ui/panel.js:75
+#: js/ui/appDisplay.js:2215 js/ui/panel.js:75
 msgid "Open Windows"
 msgstr "開いているウィンドウ"
 
-#: js/ui/appDisplay.js:2504 js/ui/panel.js:82
+#: js/ui/appDisplay.js:2234 js/ui/panel.js:82
 msgid "New Window"
 msgstr "新しいウィンドウで開く"
 
-#: js/ui/appDisplay.js:2520
+#: js/ui/appDisplay.js:2250
 msgid "Launch using Integrated Graphics Card"
 msgstr "統合グラフィックカードを使用して起動"
 
-#: js/ui/appDisplay.js:2521
+#: js/ui/appDisplay.js:2251
 msgid "Launch using Discrete Graphics Card"
 msgstr "ディスクリートグラフィックカードを使用して起動"
 
-#: js/ui/appDisplay.js:2549 js/ui/dash.js:239
+#: js/ui/appDisplay.js:2279 js/ui/dash.js:239
 msgid "Remove from Favorites"
 msgstr "お気に入りから削除"
 
-#: js/ui/appDisplay.js:2555
+#: js/ui/appDisplay.js:2285
 msgid "Add to Favorites"
 msgstr "お気に入りに追加"
 
-#: js/ui/appDisplay.js:2565 js/ui/panel.js:93
+#: js/ui/appDisplay.js:2295 js/ui/panel.js:93
 msgid "Show Details"
 msgstr "詳細を表示"
 
@@ -771,7 +759,7 @@ msgstr "ヘッドフォン"
 msgid "Headset"
 msgstr "ヘッドセット"
 
-#: js/ui/audioDeviceSelection.js:68 js/ui/status/volume.js:270
+#: js/ui/audioDeviceSelection.js:68 js/ui/status/volume.js:273
 msgid "Microphone"
 msgstr "マイク"
 
@@ -788,7 +776,7 @@ msgid "Settings"
 msgstr "設定"
 
 #. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday).
-#: js/ui/calendar.js:41
+#: js/ui/calendar.js:36
 msgctxt "calendar-no-work"
 msgid "06"
 msgstr "06"
@@ -798,43 +786,43 @@ msgstr "06"
 #. * NOTE: These grid abbreviations are always shown together
 #. * and in order, e.g. "S M T W T F S".
 #.
-#: js/ui/calendar.js:70
+#: js/ui/calendar.js:65
 msgctxt "grid sunday"
 msgid "S"
 msgstr "日"
 
 #. Translators: Calendar grid abbreviation for Monday
-#: js/ui/calendar.js:72
+#: js/ui/calendar.js:67
 msgctxt "grid monday"
 msgid "M"
 msgstr "月"
 
 #. Translators: Calendar grid abbreviation for Tuesday
-#: js/ui/calendar.js:74
+#: js/ui/calendar.js:69
 msgctxt "grid tuesday"
 msgid "T"
 msgstr "火"
 
 #. Translators: Calendar grid abbreviation for Wednesday
-#: js/ui/calendar.js:76
+#: js/ui/calendar.js:71
 msgctxt "grid wednesday"
 msgid "W"
 msgstr "水"
 
 #. Translators: Calendar grid abbreviation for Thursday
-#: js/ui/calendar.js:78
+#: js/ui/calendar.js:73
 msgctxt "grid thursday"
 msgid "T"
 msgstr "木"
 
 #. Translators: Calendar grid abbreviation for Friday
-#: js/ui/calendar.js:80
+#: js/ui/calendar.js:75
 msgctxt "grid friday"
 msgid "F"
 msgstr "金"
 
 #. Translators: Calendar grid abbreviation for Saturday
-#: js/ui/calendar.js:82
+#: js/ui/calendar.js:77
 msgctxt "grid saturday"
 msgid "S"
 msgstr "土"
@@ -847,7 +835,7 @@ msgstr "土"
 #. * "%OB" is the new format specifier introduced in glibc 2.27,
 #. * in most cases you should not change it.
 #.
-#: js/ui/calendar.js:397
+#: js/ui/calendar.js:392
 msgid "%OB"
 msgstr "%B"
 
@@ -860,61 +848,37 @@ msgstr "%B"
 #. * in most cases you should not use the old "%B" here unless you
 #. * absolutely know what you are doing.
 #.
-#: js/ui/calendar.js:407
+#: js/ui/calendar.js:402
 msgid "%OB %Y"
 msgstr "%Y年%B"
 
-#: js/ui/calendar.js:466
+#: js/ui/calendar.js:461
 msgid "Previous month"
 msgstr "先月"
 
-#: js/ui/calendar.js:481
+#: js/ui/calendar.js:476
 msgid "Next month"
 msgstr "来月"
 
-#: js/ui/calendar.js:631
+#: js/ui/calendar.js:626
 #, no-javascript-format
 msgctxt "date day number format"
 msgid "%d"
 msgstr "%d"
 
-#: js/ui/calendar.js:687
+#: js/ui/calendar.js:682
 msgid "Week %V"
 msgstr "第 %V 週"
 
-#. Translators: Shown in calendar event list for all day events
-#. * Keep it short, best if you can use less then 10 characters
-#.
-#: js/ui/calendar.js:762
-msgctxt "event list time"
-msgid "All Day"
-msgstr "終日"
-
-#. Translators: Shown on calendar heading when selected day occurs on current year
-#: js/ui/calendar.js:900
-msgctxt "calendar heading"
-msgid "%A, %B %-d"
-msgstr "%B%-e日 (%a)"
-
-#. Translators: Shown on calendar heading when selected day occurs on different year
-#: js/ui/calendar.js:903
-msgctxt "calendar heading"
-msgid "%A, %B %-d, %Y"
-msgstr "%Y年%B%-e日 (%a)"
-
-#: js/ui/calendar.js:1133
+#: js/ui/calendar.js:895
 msgid "No Notifications"
 msgstr "通知なし"
 
-#: js/ui/calendar.js:1136
-msgid "No Events"
-msgstr "イベントなし"
-
-#: js/ui/calendar.js:1190
+#: js/ui/calendar.js:949
 msgid "Do Not Disturb"
 msgstr "通知ポップアップを表示しない"
 
-#: js/ui/calendar.js:1209
+#: js/ui/calendar.js:968
 msgid "Clear"
 msgstr "消去"
 
@@ -1066,7 +1030,7 @@ msgstr "申し訳ありません、認証できませんでした。再試行し
 msgid "%s is now known as %s"
 msgstr "%s は %s になりました"
 
-#: js/ui/ctrlAltTab.js:21 js/ui/viewSelector.js:177
+#: js/ui/ctrlAltTab.js:21 js/ui/viewSelector.js:178
 msgid "Windows"
 msgstr "ウィンドウ"
 
@@ -1085,7 +1049,7 @@ msgstr "ダッシュボード"
 #. * "Tue 9:29 AM").  The string itself should become a full date, e.g.,
 #. * "February 17 2015".
 #.
-#: js/ui/dateMenu.js:75
+#: js/ui/dateMenu.js:79
 msgid "%B %-d %Y"
 msgstr "%Y年%-m月%-e日"
 
@@ -1093,35 +1057,71 @@ msgstr "%Y年%-m月%-e日"
 #. * below the time in the shell; it should combine the weekday and the
 #. * date, e.g. "Tuesday February 17 2015".
 #.
-#: js/ui/dateMenu.js:82
+#: js/ui/dateMenu.js:86
 msgid "%A %B %e %Y"
 msgstr "%Y年%-m月%-e日 (%a)"
 
-#: js/ui/dateMenu.js:161
+#. Translators: Shown on calendar heading when selected day occurs on current year
+#: js/ui/dateMenu.js:151
+#, fuzzy
+#| msgid "%B %-d %Y"
+msgctxt "calendar heading"
+msgid "%B %-d"
+msgstr "%Y年%-m月%-e日"
+
+#. Translators: Shown on calendar heading when selected day occurs on different year
+#: js/ui/dateMenu.js:154
+#, fuzzy
+#| msgid "%B %-d %Y"
+msgctxt "calendar heading"
+msgid "%B %-d %Y"
+msgstr "%Y年%-m月%-e日"
+
+#: js/ui/dateMenu.js:160
+msgid "Today"
+msgstr ""
+
+#: js/ui/dateMenu.js:164
+msgid "Tomorrow"
+msgstr ""
+
+#. Translators: Shown in calendar event list for all day events
+#. * Keep it short, best if you can use less then 10 characters
+#.
+#: js/ui/dateMenu.js:180
+msgctxt "event list time"
+msgid "All Day"
+msgstr "終日"
+
+#: js/ui/dateMenu.js:231
+msgid "No Events"
+msgstr "イベントなし"
+
+#: js/ui/dateMenu.js:348
 msgid "Add world clocks…"
 msgstr "世界時計を追加…"
 
-#: js/ui/dateMenu.js:162
+#: js/ui/dateMenu.js:349
 msgid "World Clocks"
 msgstr "世界時計"
 
-#: js/ui/dateMenu.js:424
+#: js/ui/dateMenu.js:629
 msgid "Loading…"
 msgstr "読み込み中…"
 
-#: js/ui/dateMenu.js:434
+#: js/ui/dateMenu.js:639
 msgid "Go online for weather information"
 msgstr "気象情報取得のためにネットワークに接続してください"
 
-#: js/ui/dateMenu.js:436
+#: js/ui/dateMenu.js:641
 msgid "Weather information is currently unavailable"
 msgstr "気象情報を取得できません"
 
-#: js/ui/dateMenu.js:446
+#: js/ui/dateMenu.js:651
 msgid "Weather"
 msgstr "天気"
 
-#: js/ui/dateMenu.js:448
+#: js/ui/dateMenu.js:653
 msgid "Select weather location…"
 msgstr "天気の場所を選択…"
 
@@ -1279,11 +1279,11 @@ msgstr "拡張機能をインストール"
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "extensions.gnome.org から“%s”をダウンロードしてインストールしますか?"
 
-#: js/ui/extensionSystem.js:251
+#: js/ui/extensionSystem.js:252
 msgid "Extension Updates Available"
 msgstr "拡張機能のアップデートが利用可能です"
 
-#: js/ui/extensionSystem.js:252
+#: js/ui/extensionSystem.js:253
 msgid "Extension updates are ready to be installed."
 msgstr "拡張機能のアップデートをインストールする準備ができました。"
 
@@ -1410,6 +1410,7 @@ msgid "Disabled"
 msgstr "無効"
 
 #: js/ui/lookingGlass.js:743
+#: subprojects/extensions-app/data/ui/extension-row.ui:188
 msgid "Error"
 msgstr "エラー"
 
@@ -1453,11 +1454,11 @@ msgstr "画面ロックには GNOME ディスプレイマネージャーが必�
 msgid "System Information"
 msgstr "システム情報"
 
-#: js/ui/mpris.js:199
+#: js/ui/mpris.js:203
 msgid "Unknown artist"
 msgstr "不明なアーティスト"
 
-#: js/ui/mpris.js:209
+#: js/ui/mpris.js:213
 msgid "Unknown title"
 msgstr "不明なタイトル"
 
@@ -1503,23 +1504,23 @@ msgstr "キーストロークを割り当て"
 msgid "Done"
 msgstr "完了"
 
-#: js/ui/padOsd.js:745
+#: js/ui/padOsd.js:732
 msgid "Edit…"
 msgstr "編集…"
 
-#: js/ui/padOsd.js:787 js/ui/padOsd.js:910
+#: js/ui/padOsd.js:774 js/ui/padOsd.js:891
 msgid "None"
 msgstr "なし"
 
-#: js/ui/padOsd.js:863
+#: js/ui/padOsd.js:845
 msgid "Press a button to configure"
 msgstr "ボタンを押して設定してください"
 
-#: js/ui/padOsd.js:864
+#: js/ui/padOsd.js:846
 msgid "Press Esc to exit"
 msgstr "Esc を押すと終了します"
 
-#: js/ui/padOsd.js:867
+#: js/ui/padOsd.js:849
 msgid "Press any key to exit"
 msgstr "キーを押すと終了します"
 
@@ -1529,16 +1530,16 @@ msgstr "終了"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: js/ui/panel.js:432
+#: js/ui/panel.js:435
 msgid "Activities"
 msgstr "アクティビティ"
 
-#: js/ui/panel.js:711
+#: js/ui/panel.js:714
 msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "システム"
 
-#: js/ui/panel.js:824
+#: js/ui/panel.js:827
 msgid "Top Bar"
 msgstr "トップバー"
 
@@ -1577,15 +1578,15 @@ msgstr "ロックできません"
 msgid "Lock was blocked by an application"
 msgstr "アプリケーションによってロックがブロックされました"
 
-#: js/ui/search.js:702
+#: js/ui/search.js:823
 msgid "Searching…"
 msgstr "検索中…"
 
-#: js/ui/search.js:704
+#: js/ui/search.js:825
 msgid "No results."
 msgstr "一致するものがありません。"
 
-#: js/ui/search.js:830
+#: js/ui/search.js:951
 #, javascript-format
 msgid "%d more"
 msgid_plural "%d more"
@@ -1782,17 +1783,17 @@ msgstr "位置情報サービス無効"
 msgid "Enable"
 msgstr "有効"
 
-#: js/ui/status/location.js:355
+#: js/ui/status/location.js:350
 msgid "Allow location access"
 msgstr "位置情報へのアクセスの許可"
 
 #. Translators: %s is an application name
-#: js/ui/status/location.js:357
+#: js/ui/status/location.js:352
 #, javascript-format
 msgid "The app %s wants to access your location"
 msgstr "アプリ %s が位置情報へのアクセスを要求しています"
 
-#: js/ui/status/location.js:367
+#: js/ui/status/location.js:362
 msgid "Location access can be changed at any time from the privacy settings."
 msgstr ""
 "位置情報のアクセス許可設定は、プライバシー設定からいつでも変更できます。"
@@ -2123,11 +2124,11 @@ msgstr "Thunderbolt 認証エラー"
 msgid "Could not authorize the Thunderbolt device: %s"
 msgstr "Thunderbolt デバイスを認証できませんでした: %s"
 
-#: js/ui/status/volume.js:151
+#: js/ui/status/volume.js:154
 msgid "Volume changed"
 msgstr "音量変更しました"
 
-#: js/ui/status/volume.js:222
+#: js/ui/status/volume.js:225
 msgid "Volume"
 msgstr "音量"
 
@@ -2181,11 +2182,11 @@ msgstr "ロック解除"
 msgid "Log in as another user"
 msgstr "別のユーザーでログイン"
 
-#: js/ui/viewSelector.js:181
+#: js/ui/viewSelector.js:182
 msgid "Applications"
 msgstr "アプリケーション"
 
-#: js/ui/viewSelector.js:185
+#: js/ui/viewSelector.js:186
 msgid "Search"
 msgstr "検索"
 
@@ -2335,13 +2336,13 @@ msgstr "認証ダイアログはユーザーに拒否されました"
 
 #: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:5
 #: subprojects/extensions-app/data/org.gnome.Extensions.desktop.in.in:4
-#: subprojects/extensions-app/js/main.js:182
+#: subprojects/extensions-app/js/main.js:183
 #: subprojects/extensions-app/data/ui/extensions-window.ui:61
 msgid "Extensions"
 msgstr "拡張機能"
 
 #: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:6
-#: subprojects/extensions-app/js/main.js:183
+#: subprojects/extensions-app/js/main.js:184
 msgid "Manage your GNOME Extensions"
 msgstr "GNOME 拡張機能を管理します"
 
@@ -2359,23 +2360,23 @@ msgstr ""
 msgid "Configure GNOME Shell Extensions"
 msgstr "GNOME Shell 拡張機能の設定を行います"
 
-#: subprojects/extensions-app/js/main.js:144
+#: subprojects/extensions-app/js/main.js:145
 #, javascript-format
 msgid "Remove “%s”?"
 msgstr "“%s”を削除しますか?"
 
-#: subprojects/extensions-app/js/main.js:145
+#: subprojects/extensions-app/js/main.js:146
 msgid ""
 "If you remove the extension, you need to return to download it if you want "
 "to enable it again"
 msgstr ""
 "拡張機能を削除した場合、再度有効にするにはダウンロードし直す必要があります"
 
-#: subprojects/extensions-app/js/main.js:149
+#: subprojects/extensions-app/js/main.js:150
 msgid "Remove"
 msgstr "削除"
 
-#: subprojects/extensions-app/js/main.js:181
+#: subprojects/extensions-app/js/main.js:182
 msgid "translator-credits"
 msgstr ""
 "Hideki Yamane <henrich@debian.org>\n"
@@ -2389,32 +2390,42 @@ msgstr ""
 "Takayuki KUSANO <AE5T-KSN@asahi-net.or.jp>\n"
 "Yoji TOYODA <bsyamato@sea.plala.or.jp>"
 
-#: subprojects/extensions-app/js/main.js:313
+#: subprojects/extensions-app/js/main.js:314
 #, javascript-format
 msgid "%d extension will be updated on next login."
 msgid_plural "%d extensions will be updated on next login."
 msgstr[0] "%d 個の拡張機能を次回ログイン時に更新します。"
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:100
-#: subprojects/extensions-tool/src/command-create.c:301
+#: subprojects/extensions-app/js/main.js:461
+msgid "The extension is incompatible with the current GNOME version"
+msgstr ""
+
+#: subprojects/extensions-app/js/main.js:464
+#, fuzzy
+#| msgid "Show extension info"
+msgid "The extension had an error"
+msgstr "拡張機能の情報を表示する"
+
+#: subprojects/extensions-app/data/ui/extension-row.ui:109
+#: subprojects/extensions-tool/src/command-create.c:325
 #: subprojects/extensions-tool/src/main.c:241
 msgid "Description"
 msgstr "説明"
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:123
+#: subprojects/extensions-app/data/ui/extension-row.ui:132
 #: subprojects/extensions-tool/src/main.c:253
 msgid "Version"
 msgstr "バージョン"
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:151
+#: subprojects/extensions-app/data/ui/extension-row.ui:160
 msgid "Author"
 msgstr "作者"
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:175
+#: subprojects/extensions-app/data/ui/extension-row.ui:216
 msgid "Website"
 msgstr "ウェブサイト"
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:192
+#: subprojects/extensions-app/data/ui/extension-row.ui:233
 msgid "Remove…"
 msgstr "削除…"
 
@@ -2477,87 +2488,87 @@ msgid "Log Out…"
 msgstr "ログアウト…"
 
 #. Translators: a file path to an extension directory
-#: subprojects/extensions-tool/src/command-create.c:202
+#: subprojects/extensions-tool/src/command-create.c:226
 #, c-format
 msgid "The new extension was successfully created in %s.\n"
 msgstr ""
 
-#: subprojects/extensions-tool/src/command-create.c:275
+#: subprojects/extensions-tool/src/command-create.c:299
 #, c-format
 msgid ""
 "Name should be a very short (ideally descriptive) string.\n"
 "Examples are: %s"
 msgstr ""
 
-#: subprojects/extensions-tool/src/command-create.c:281
+#: subprojects/extensions-tool/src/command-create.c:305
 #: subprojects/extensions-tool/src/main.c:238
 msgid "Name"
 msgstr "名前"
 
-#: subprojects/extensions-tool/src/command-create.c:295
+#: subprojects/extensions-tool/src/command-create.c:319
 #, c-format
 msgid ""
 "Description is a single-sentence explanation of what your extension does.\n"
 "Examples are: %s"
 msgstr ""
 
-#: subprojects/extensions-tool/src/command-create.c:315
+#: subprojects/extensions-tool/src/command-create.c:339
 msgid ""
 "UUID is a globally-unique identifier for your extension.\n"
 "This should be in the format of an email address (clicktofocus@janedoe."
 "example.com)\n"
 msgstr ""
 
-#: subprojects/extensions-tool/src/command-create.c:342
+#: subprojects/extensions-tool/src/command-create.c:366
 msgid "Choose one of the available templates:\n"
 msgstr ""
 
-#: subprojects/extensions-tool/src/command-create.c:356
+#: subprojects/extensions-tool/src/command-create.c:380
 msgid "Template"
 msgstr ""
 
-#: subprojects/extensions-tool/src/command-create.c:411
+#: subprojects/extensions-tool/src/command-create.c:435
 msgid "The unique identifier of the new extension"
 msgstr ""
 
-#: subprojects/extensions-tool/src/command-create.c:414
+#: subprojects/extensions-tool/src/command-create.c:438
 msgid "NAME"
 msgstr ""
 
-#: subprojects/extensions-tool/src/command-create.c:415
+#: subprojects/extensions-tool/src/command-create.c:439
 msgid "The user-visible name of the new extension"
 msgstr ""
 
-#: subprojects/extensions-tool/src/command-create.c:417
+#: subprojects/extensions-tool/src/command-create.c:441
 msgid "DESCRIPTION"
 msgstr ""
 
-#: subprojects/extensions-tool/src/command-create.c:419
+#: subprojects/extensions-tool/src/command-create.c:443
 msgid "A short description of what the extension does"
 msgstr ""
 
-#: subprojects/extensions-tool/src/command-create.c:422
+#: subprojects/extensions-tool/src/command-create.c:446
 msgid "TEMPLATE"
 msgstr ""
 
-#: subprojects/extensions-tool/src/command-create.c:423
+#: subprojects/extensions-tool/src/command-create.c:447
 msgid "The template to use for the new extension"
 msgstr ""
 
-#: subprojects/extensions-tool/src/command-create.c:429
+#: subprojects/extensions-tool/src/command-create.c:453
 msgid "Enter extension information interactively"
 msgstr ""
 
-#: subprojects/extensions-tool/src/command-create.c:437
+#: subprojects/extensions-tool/src/command-create.c:461
 msgid "Create a new extension"
 msgstr "新しい拡張機能を作成します"
 
-#: subprojects/extensions-tool/src/command-create.c:455
+#: subprojects/extensions-tool/src/command-create.c:479
 #: subprojects/extensions-tool/src/command-list.c:172
 msgid "Unknown arguments"
 msgstr "不明な引数です"
 
-#: subprojects/extensions-tool/src/command-create.c:480
+#: subprojects/extensions-tool/src/command-create.c:504
 msgid "UUID, name and description are required"
 msgstr ""
 
@@ -2876,6 +2887,23 @@ msgstr[0] "入力数: %u"
 #: subprojects/gvc/gvc-mixer-control.c:2766
 msgid "System Sounds"
 msgstr "システムのサウンド"
+
+#~ msgid "Frequently used applications will appear here"
+#~ msgstr "よく使用するアプリケーションがここに表示されます"
+
+#~ msgid "Frequent"
+#~ msgstr "常用"
+
+#~ msgid "All"
+#~ msgstr "すべて"
+
+#~ msgctxt "calendar heading"
+#~ msgid "%A, %B %-d"
+#~ msgstr "%B%-e日 (%a)"
+
+#~ msgctxt "calendar heading"
+#~ msgid "%A, %B %-d, %Y"
+#~ msgstr "%Y年%B%-e日 (%a)"
 
 #~ msgid "Copy Error"
 #~ msgstr "エラーをコピー"
