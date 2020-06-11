@@ -1,5 +1,5 @@
 # Japanese translation of gnome-shell package.
-# Copyright (C) 2009-2020 the gnome-shell copyright holder.
+# Copyright (C) 2010-2017, 2019-2020 the gnome-shell copyright holder.
 # This file is distributed under the same license as the gnome-shell package.
 # Nishio Futoshi <fut_nis@d3.dion.ne.jp>, 2010.
 # Kiyotaka NISHIBORI <ml.nishibori.kiyotaka@gmail.com>, 2011.
@@ -17,7 +17,7 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
 "POT-Creation-Date: 2020-06-10 16:14+0000\n"
-"PO-Revision-Date: 2020-05-13 23:00+0900\n"
+"PO-Revision-Date: 2020-06-11 19:00+0900\n"
 "Last-Translator: sicklylife <translation@sicklylife.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
 "Language: ja\n"
@@ -2469,7 +2469,7 @@ msgstr ""
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:273
 msgid "Extension Updates Ready"
-msgstr "拡張機能を更新できます"
+msgstr "拡張機能の更新準備完了"
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:289
 msgid "Log Out…"
