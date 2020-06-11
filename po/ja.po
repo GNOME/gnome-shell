@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2020-05-11 14:00+0000\n"
+"POT-Creation-Date: 2020-06-10 16:14+0000\n"
 "PO-Revision-Date: 2020-05-13 23:00+0900\n"
 "Last-Translator: sicklylife <translation@sicklylife.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
@@ -1093,31 +1093,31 @@ msgstr "%Y年%-m月%-e日"
 msgid "%A %B %e %Y"
 msgstr "%Y年%-m月%-e日 (%a)"
 
-#: js/ui/dateMenu.js:161
+#: js/ui/dateMenu.js:162
 msgid "Add world clocks…"
 msgstr "世界時計を追加…"
 
-#: js/ui/dateMenu.js:162
+#: js/ui/dateMenu.js:163
 msgid "World Clocks"
 msgstr "世界時計"
 
-#: js/ui/dateMenu.js:289
+#: js/ui/dateMenu.js:308
 msgid "Weather"
 msgstr "天気"
 
-#: js/ui/dateMenu.js:418
+#: js/ui/dateMenu.js:437
 msgid "Select a location…"
 msgstr "場所を選択…"
 
-#: js/ui/dateMenu.js:426
+#: js/ui/dateMenu.js:445
 msgid "Loading…"
 msgstr "読み込み中…"
 
-#: js/ui/dateMenu.js:436
+#: js/ui/dateMenu.js:455
 msgid "Go online for weather information"
 msgstr "気象情報取得のためにネットワークに接続してください"
 
-#: js/ui/dateMenu.js:438
+#: js/ui/dateMenu.js:457
 msgid "Weather information is currently unavailable"
 msgstr "気象情報を取得できません"
 
@@ -1275,11 +1275,11 @@ msgstr "拡張機能をインストール"
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "extensions.gnome.org から“%s”をダウンロードしてインストールしますか?"
 
-#: js/ui/extensionSystem.js:252
+#: js/ui/extensionSystem.js:253
 msgid "Extension Updates Available"
 msgstr "拡張機能のアップデートが利用可能です"
 
-#: js/ui/extensionSystem.js:253
+#: js/ui/extensionSystem.js:254
 msgid "Extension updates are ready to be installed."
 msgstr "拡張機能のアップデートをインストールする準備ができました。"
 
@@ -1449,11 +1449,11 @@ msgstr "画面ロックには GNOME ディスプレイマネージャーが必�
 msgid "System Information"
 msgstr "システム情報"
 
-#: js/ui/mpris.js:199
+#: js/ui/mpris.js:204
 msgid "Unknown artist"
 msgstr "不明なアーティスト"
 
-#: js/ui/mpris.js:209
+#: js/ui/mpris.js:214
 msgid "Unknown title"
 msgstr "不明なタイトル"
 
@@ -1499,23 +1499,23 @@ msgstr "キーストロークを割り当て"
 msgid "Done"
 msgstr "完了"
 
-#: js/ui/padOsd.js:745
+#: js/ui/padOsd.js:732
 msgid "Edit…"
 msgstr "編集…"
 
-#: js/ui/padOsd.js:787 js/ui/padOsd.js:910
+#: js/ui/padOsd.js:774 js/ui/padOsd.js:891
 msgid "None"
 msgstr "なし"
 
-#: js/ui/padOsd.js:863
+#: js/ui/padOsd.js:845
 msgid "Press a button to configure"
 msgstr "ボタンを押して設定してください"
 
-#: js/ui/padOsd.js:864
+#: js/ui/padOsd.js:846
 msgid "Press Esc to exit"
 msgstr "Esc を押すと終了します"
 
-#: js/ui/padOsd.js:867
+#: js/ui/padOsd.js:849
 msgid "Press any key to exit"
 msgstr "キーを押すと終了します"
 
