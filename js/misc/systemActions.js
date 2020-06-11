@@ -5,8 +5,6 @@ const GnomeSession = imports.misc.gnomeSession;
 const LoginManager = imports.misc.loginManager;
 const Main = imports.ui.main;
 
-const { loadInterfaceXML } = imports.misc.fileUtils;
-
 const LOCKDOWN_SCHEMA = 'org.gnome.desktop.lockdown';
 const LOGIN_SCREEN_SCHEMA = 'org.gnome.login-screen';
 const DISABLE_USER_SWITCH_KEY = 'disable-user-switching';
@@ -15,19 +13,12 @@ const DISABLE_LOG_OUT_KEY = 'disable-log-out';
 const DISABLE_RESTART_KEY = 'disable-restart-buttons';
 const ALWAYS_SHOW_LOG_OUT_KEY = 'always-show-log-out';
 
-const SENSOR_BUS_NAME = 'net.hadess.SensorProxy';
-const SENSOR_OBJECT_PATH = '/net/hadess/SensorProxy';
-
-const SensorProxyInterface = loadInterfaceXML('net.hadess.SensorProxy');
-
 const POWER_OFF_ACTION_ID        = 'power-off';
 const LOCK_SCREEN_ACTION_ID      = 'lock-screen';
 const LOGOUT_ACTION_ID           = 'logout';
 const SUSPEND_ACTION_ID          = 'suspend';
 const SWITCH_USER_ACTION_ID      = 'switch-user';
 const LOCK_ORIENTATION_ACTION_ID = 'lock-orientation';
-
-const SensorProxy = Gio.DBusProxy.makeProxyWrapper(SensorProxyInterface);
 
 let _singleton = null;
 
@@ -176,21 +167,8 @@ const SystemActions = GObject.registerClass({
         });
         Main.layoutManager.connect('monitors-changed',
                                    () => this._updateOrientationLock());
-        this._sensorProxy = new SensorProxy(Gio.DBus.system,
-            SENSOR_BUS_NAME,
-            SENSOR_OBJECT_PATH,
-            (proxy, error)  => {
-                if (error)
-                    log(error.message);
-            },
-            null,
-            Gio.DBusProxyFlags.DO_NOT_AUTO_START);
-        this._sensorProxy.connect('g-properties-changed', () => {
-            this._updateOrientationLock();
-        });
-        this._sensorProxy.connect('notify::g-name-owner', () => {
-            this._updateOrientationLock();
-        });
+        this._monitorManager.connect('notify::panel-orientation-managed',
+            () => this._updateOrientationLock());
         this._updateOrientationLock();
         this._updateOrientationLockStatus();
 
@@ -234,11 +212,7 @@ const SystemActions = GObject.registerClass({
     }
 
     _updateOrientationLock() {
-        let available = false;
-        if (this._sensorProxy.g_name_owner) {
-            available = this._sensorProxy.HasAccelerometer &&
-                        this._monitorManager.get_is_builtin_display_on();
-        }
+        const available = this._monitorManager.get_panel_orientation_managed();
 
         this._actions.get(LOCK_ORIENTATION_ACTION_ID).available = available;
 
