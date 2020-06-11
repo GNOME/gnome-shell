@@ -16,8 +16,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2020-06-09 18:01+0000\n"
-"PO-Revision-Date: 2020-06-10 18:45+0900\n"
+"POT-Creation-Date: 2020-06-10 17:32+0000\n"
+"PO-Revision-Date: 2020-06-11 19:00+0900\n"
 "Last-Translator: sicklylife <translation@sicklylife.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
 "Language: ja\n"
@@ -700,36 +700,36 @@ msgstr "拒否"
 msgid "Grant Access"
 msgstr "許可"
 
-#: js/ui/appDisplay.js:956
+#: js/ui/appDisplay.js:902
 msgid "Unnamed Folder"
 msgstr "名前なしのフォルダー"
 
 #. Translators: This is the heading of a list of open windows
-#: js/ui/appDisplay.js:2215 js/ui/panel.js:75
+#: js/ui/appDisplay.js:2241 js/ui/panel.js:75
 msgid "Open Windows"
 msgstr "開いているウィンドウ"
 
-#: js/ui/appDisplay.js:2234 js/ui/panel.js:82
+#: js/ui/appDisplay.js:2260 js/ui/panel.js:82
 msgid "New Window"
 msgstr "新しいウィンドウで開く"
 
-#: js/ui/appDisplay.js:2250
+#: js/ui/appDisplay.js:2276
 msgid "Launch using Integrated Graphics Card"
 msgstr "統合グラフィックカードを使用して起動"
 
-#: js/ui/appDisplay.js:2251
+#: js/ui/appDisplay.js:2277
 msgid "Launch using Discrete Graphics Card"
 msgstr "ディスクリートグラフィックカードを使用して起動"
 
-#: js/ui/appDisplay.js:2279 js/ui/dash.js:239
+#: js/ui/appDisplay.js:2305 js/ui/dash.js:239
 msgid "Remove from Favorites"
 msgstr "お気に入りから削除"
 
-#: js/ui/appDisplay.js:2285
+#: js/ui/appDisplay.js:2311
 msgid "Add to Favorites"
 msgstr "お気に入りに追加"
 
-#: js/ui/appDisplay.js:2295 js/ui/panel.js:93
+#: js/ui/appDisplay.js:2321 js/ui/panel.js:93
 msgid "Show Details"
 msgstr "詳細を表示"
 
@@ -2344,7 +2344,7 @@ msgstr "GNOME 拡張機能を管理します"
 
 #: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:17
 msgid "The GNOME Project"
-msgstr ""
+msgstr "The GNOME Project"
 
 #: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:36
 msgid ""
@@ -2394,11 +2394,11 @@ msgstr[0] "%d 個の拡張機能を次回ログイン時に更新します。"
 
 #: subprojects/extensions-app/js/main.js:461
 msgid "The extension is incompatible with the current GNOME version"
-msgstr ""
+msgstr "現在の GNOME のバージョンと互換性のない拡張機能です"
 
 #: subprojects/extensions-app/js/main.js:464
 msgid "The extension had an error"
-msgstr ""
+msgstr "拡張機能にエラーがありました"
 
 #: subprojects/extensions-app/data/ui/extension-row.ui:109
 #: subprojects/extensions-tool/src/command-create.c:325
@@ -2475,7 +2475,7 @@ msgstr ""
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:273
 msgid "Extension Updates Ready"
-msgstr "拡張機能を更新できます"
+msgstr "拡張機能の更新準備完了"
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:289
 msgid "Log Out…"
