@@ -1450,7 +1450,7 @@ class Workspace extends St.Widget {
                 const [transformedWidth, transformedHeight] =
                     clone.get_transformed_size();
 
-                win._overviewHint = {
+                metaWin._overviewHint = {
                     x: stageX,
                     y: stageY,
                     width: transformedWidth,
@@ -1527,12 +1527,12 @@ class Workspace extends St.Widget {
 
         let clone = this._addWindowClone(win, false);
 
-        if (win._overviewHint) {
-            let x = win._overviewHint.x - this.x;
-            let y = win._overviewHint.y - this.y;
-            const width = win._overviewHint.width;
-            const height = win._overviewHint.height;
-            delete win._overviewHint;
+        if (metaWin._overviewHint) {
+            let x = metaWin._overviewHint.x - this.x;
+            let y = metaWin._overviewHint.y - this.y;
+            const width = metaWin._overviewHint.width;
+            const height = metaWin._overviewHint.height;
+            delete metaWin._overviewHint;
 
             clone.positioned = true;
 
@@ -1976,7 +1976,7 @@ class Workspace extends St.Widget {
 
             // Set a hint on the Mutter.Window so its initial position
             // in the new workspace will be correct
-            window.get_compositor_private()._overviewHint = {
+            window._overviewHint = {
                 x: actor.x,
                 y: actor.y,
                 width: actor.width,
