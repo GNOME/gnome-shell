@@ -151,6 +151,7 @@ var BaseAppView = GObject.registerClass({
             x_expand: true,
             y_expand: true,
             reactive: true,
+            enable_mouse_scrolling: false,
         });
         this._scrollView.set_policy(St.PolicyType.EXTERNAL, St.PolicyType.NEVER);
 
