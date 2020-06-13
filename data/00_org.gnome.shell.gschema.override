@@ -4,3 +4,13 @@ edge-tiling=true
 dynamic-workspaces=true
 workspaces-only-on-primary=true
 focus-change-on-pointer-rest=true
+
+[org.gnome.desktop.wm.keybindings:GNOME]
+switch-to-workspace-up=['<Control><Alt>Up']
+switch-to-workspace-down=['<Control><Alt>Down']
+move-to-workspace-up=['<Control><Shift><Alt>Up']
+move-to-workspace-down=['<Control><Shift><Alt>Down']
+switch-to-workspace-left=['<Super>Page_Up','<Super><Alt>Left','<Control><Alt>Left']
+switch-to-workspace-right=['<Super>Page_Down','<Super><Alt>Right','<Control><Alt>Right']
+move-to-workspace-left=['<Super><Shift>Page_Up','<Super><Shift><Alt>Left','<Control><Shift><Alt>Left']
+move-to-workspace-right=['<Super><Shift>Page_Down','<Super><Shift><Alt>Right','<Control><Shift><Alt>Right']
