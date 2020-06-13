@@ -236,7 +236,11 @@ var WindowClone = GObject.registerClass({
         this._stackAbove = null;
 
         this._windowContainer.layout_manager.connect(
-            'notify::bounding-box', () => this.emit('size-changed'));
+            'notify::bounding-box', layout => {
+                // A bounding box of 0x0 means all windows were removed
+                if (layout.bounding_box.get_area() > 0)
+                    this.emit('size-changed');
+            });
 
         this._windowDestroyId =
             this.realWindow.connect('destroy', () => this.destroy());
