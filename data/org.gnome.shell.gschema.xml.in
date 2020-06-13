@@ -135,6 +135,20 @@
         Keybinding to open the application menu.
       </description>
     </key>
+    <key name="shift-overview-up" type="as">
+      <default>["&lt;Super&gt;&lt;Alt&gt;Up"]</default>
+      <summary>Keybinding to shift between overview states</summary>
+      <description>
+        Keybinding to shift between session, window picker and app grid
+      </description>
+    </key>
+    <key name="shift-overview-down" type="as">
+      <default>["&lt;Super&gt;&lt;Alt&gt;Down"]</default>
+      <summary>Keybinding to shift between overview states</summary>
+      <description>
+        Keybinding to shift between app grid, window picker and session
+      </description>
+    </key>
     <key name="toggle-application-view" type="as">
       <default>["&lt;Super&gt;a"]</default>
       <summary>Keybinding to open the “Show Applications” view</summary>

@@ -358,6 +358,18 @@ class ControlsManager extends St.Widget {
             Shell.ActionMode.NORMAL | Shell.ActionMode.OVERVIEW,
             this._toggleAppsPage.bind(this));
 
+        Main.wm.addKeybinding('shift-overview-up',
+            new Gio.Settings({ schema_id: WindowManager.SHELL_KEYBINDINGS_SCHEMA }),
+            Meta.KeyBindingFlags.IGNORE_AUTOREPEAT,
+            Shell.ActionMode.NORMAL | Shell.ActionMode.OVERVIEW,
+            () => this._shiftState(Meta.MotionDirection.UP));
+
+        Main.wm.addKeybinding('shift-overview-down',
+            new Gio.Settings({ schema_id: WindowManager.SHELL_KEYBINDINGS_SCHEMA }),
+            Meta.KeyBindingFlags.IGNORE_AUTOREPEAT,
+            Shell.ActionMode.NORMAL | Shell.ActionMode.OVERVIEW,
+            () => this._shiftState(Meta.MotionDirection.DOWN));
+
         this.connect('destroy', this._onDestroy.bind(this));
 
         this._update();
@@ -510,6 +522,34 @@ class ControlsManager extends St.Widget {
             this.dash.showAppsButton.checked = !checked;
         } else {
             Main.overview.show(ControlsState.APP_GRID);
+        }
+    }
+
+    _shiftState(direction) {
+        let { currentState, finalState } = this._stateAdjustment.getStateTransitionParams();
+
+        if (direction === Meta.MotionDirection.DOWN)
+            finalState = Math.max(finalState - 1, ControlsState.HIDDEN);
+        else if (direction === Meta.MotionDirection.UP)
+            finalState = Math.min(finalState + 1, ControlsState.APP_GRID);
+
+        if (finalState === currentState)
+            return;
+
+        if (currentState === ControlsState.HIDDEN &&
+            finalState === ControlsState.WINDOW_PICKER) {
+            Main.overview.show();
+        } else if (finalState === ControlsState.HIDDEN) {
+            Main.overview.hide();
+        } else {
+            this._stateAdjustment.ease(finalState, {
+                duration: SIDE_CONTROLS_ANIMATION_TIME,
+                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+                onComplete: () => {
+                    this.dash.showAppsButton.checked =
+                        finalState === ControlsState.APP_GRID;
+                },
+            });
         }
     }
 
