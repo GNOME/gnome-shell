@@ -283,6 +283,19 @@ var WindowClone = GObject.registerClass({
             align_axis: Clutter.AlignAxis.BOTH,
             factor: 0.5,
         }));
+        this._borderCenter = new Clutter.Actor();
+        this._border.bind_property('visible', this._borderCenter, 'visible',
+            GObject.BindingFlags.SYNC_CREATE);
+        this._borderCenterConstraint = new Clutter.BindConstraint({
+            source: this._windowContainer,
+            coordinate: Clutter.BindCoordinate.SIZE,
+        });
+        this._borderCenter.add_constraint(this._borderCenterConstraint);
+        this._borderCenter.add_constraint(new Clutter.AlignConstraint({
+            source: this._windowContainer,
+            align_axis: Clutter.AlignAxis.BOTH,
+            factor: 0.5,
+        }));
         this._border.connect('style-changed',
             this._onBorderStyleChanged.bind(this));
 
@@ -292,13 +305,17 @@ var WindowClone = GObject.registerClass({
             text: this._getCaption(),
             reactive: true,
         });
+        this._title.add_constraint(new Clutter.BindConstraint({
+            source: this._borderCenter,
+            coordinate: Clutter.BindCoordinate.POSITION,
+        }));
         this._title.add_constraint(new Clutter.AlignConstraint({
-            source: this._windowContainer,
+            source: this._borderCenter,
             align_axis: Clutter.AlignAxis.X_AXIS,
             factor: 0.5,
         }));
         this._title.add_constraint(new Clutter.AlignConstraint({
-            source: this._windowContainer,
+            source: this._borderCenter,
             align_axis: Clutter.AlignAxis.Y_AXIS,
             pivot_point: new Graphene.Point({ x: -1, y: 0.5 }),
             factor: 1,
@@ -320,23 +337,24 @@ var WindowClone = GObject.registerClass({
             child: new St.Icon({ icon_name: 'window-close-symbolic' }),
         });
         this._closeButton.add_constraint(new Clutter.BindConstraint({
-            source: this._border,
+            source: this._borderCenter,
             coordinate: Clutter.BindCoordinate.POSITION,
         }));
         this._closeButton.add_constraint(new Clutter.AlignConstraint({
-            source: this._border,
+            source: this._borderCenter,
             align_axis: Clutter.AlignAxis.X_AXIS,
             pivot_point: new Graphene.Point({ x: 0.5, y: -1 }),
             factor: this._closeButtonSide === St.Side.LEFT ? 0 : 1,
         }));
         this._closeButton.add_constraint(new Clutter.AlignConstraint({
-            source: this._border,
+            source: this._borderCenter,
             align_axis: Clutter.AlignAxis.Y_AXIS,
             pivot_point: new Graphene.Point({ x: -1, y: 0.5 }),
             factor: 0,
         }));
         this._closeButton.connect('clicked', () => this.deleteAll());
 
+        this.add_child(this._borderCenter);
         this.add_child(this._border);
         this.add_child(this._title);
         this.add_child(this._closeButton);
@@ -376,6 +394,7 @@ var WindowClone = GObject.registerClass({
         // Increase the size of the border actor so the border outlines
         // the bounding box
         this._borderConstraint.offset = this._borderSize * 2;
+        this._borderCenterConstraint.offset = this._borderSize;
     }
 
     _windowCanClose() {
@@ -398,7 +417,7 @@ var WindowClone = GObject.registerClass({
         const [, closeButtonHeight] = this._closeButton.get_preferred_height(-1);
         const [, titleHeight] = this._title.get_preferred_height(-1);
 
-        const topOversize = this._borderSize + closeButtonHeight / 2;
+        const topOversize = (this._borderSize / 2) + (closeButtonHeight / 2);
         const bottomOversize = Math.max(
             this._borderSize,
             (titleHeight / 2) + (this._borderSize / 2));
@@ -411,11 +430,11 @@ var WindowClone = GObject.registerClass({
         const [, closeButtonWidth] = this._closeButton.get_preferred_width(-1);
 
         const leftOversize = this._closeButtonSide === St.Side.LEFT
-            ? this._borderSize + closeButtonWidth / 2
+            ? (this._borderSize / 2) + (closeButtonWidth / 2)
             : this._borderSize;
         const rightOversize = this._closeButtonSide === St.Side.LEFT
             ? this._borderSize
-            : this._borderSize + closeButtonWidth / 2;
+            : (this._borderSize / 2) + (closeButtonWidth / 2);
 
         return [leftOversize, rightOversize];
     }
