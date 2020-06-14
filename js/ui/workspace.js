@@ -279,6 +279,19 @@ var WindowClone = GObject.registerClass({
             align_axis: Clutter.AlignAxis.BOTH,
             factor: 0.5,
         }));
+        this._borderCenter = new Clutter.Actor({
+            visible: false,
+        });
+        this._borderCenterConstraint = new Clutter.BindConstraint({
+            source: this._windowContainer,
+            coordinate: Clutter.BindCoordinate.SIZE,
+        });
+        this._borderCenter.add_constraint(this._borderCenterConstraint);
+        this._borderCenter.add_constraint(new Clutter.AlignConstraint({
+            source: this._windowContainer,
+            align_axis: Clutter.AlignAxis.BOTH,
+            factor: 0.5,
+        }));
         this._border.connect('style-changed',
             this._onBorderStyleChanged.bind(this));
 
@@ -288,13 +301,17 @@ var WindowClone = GObject.registerClass({
             text: this._getCaption(),
             reactive: true,
         });
+        this._title.add_constraint(new Clutter.BindConstraint({
+            source: this._borderCenter,
+            coordinate: Clutter.BindCoordinate.POSITION,
+        }));
         this._title.add_constraint(new Clutter.AlignConstraint({
-            source: this._windowContainer,
+            source: this._borderCenter,
             align_axis: Clutter.AlignAxis.X_AXIS,
             factor: 0.5,
         }));
         this._title.add_constraint(new Clutter.AlignConstraint({
-            source: this._windowContainer,
+            source: this._borderCenter,
             align_axis: Clutter.AlignAxis.Y_AXIS,
             pivot_point: new Graphene.Point({ x: -1, y: 0.5 }),
             factor: 1,
@@ -333,6 +350,7 @@ var WindowClone = GObject.registerClass({
         }));
         this._closeButton.connect('clicked', () => this.deleteAll());
 
+        this.add_child(this._borderCenter);
         this.add_child(this._border);
         this.add_child(this._title);
         this.add_child(this._closeButton);
@@ -372,6 +390,7 @@ var WindowClone = GObject.registerClass({
         // Increase the size of the border actor so the border outlines
         // the bounding box
         this._borderConstraint.offset = this._borderSize * 2;
+        this._borderCenterConstraint.offset = this._borderSize;
     }
 
     _windowCanClose() {
@@ -431,8 +450,8 @@ var WindowClone = GObject.registerClass({
             return;
 
         const toShow = this._windowCanClose()
-            ? [this._border, this._title, this._closeButton]
-            : [this._border, this._title];
+            ? [this._border, this._borderCenter, this._title, this._closeButton]
+            : [this._border, this._borderCenter, this._title];
 
         toShow.forEach(a => {
             a.opacity = 0;
@@ -461,7 +480,7 @@ var WindowClone = GObject.registerClass({
             ongoingTransition.get_interval().peek_final_value() === 0)
             return;
 
-        [this._border, this._title, this._closeButton].forEach(a => {
+        [this._border, this._borderCenter, this._title, this._closeButton].forEach(a => {
             a.opacity = 255;
             a.ease({
                 opacity: 0,
