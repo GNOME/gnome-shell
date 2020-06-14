@@ -25,7 +25,7 @@ var SafeDesktopArea = GObject.registerClass({
     _updateMonitors() {
         let monitors = this._layoutManager.monitors.length;
 
-        if (this._safeMargins.length == monitors)
+        if (this._safeMargins.length === monitors)
             return;
 
         if (this._safeMargins.length > monitors) {
@@ -70,7 +70,7 @@ var SafeDesktopArea = GObject.registerClass({
     unregister(id) {
         if (!this._registered.includes(id))
             throw new Error('Trying to unregister an inexistent ID');
-        for(let monitor in this._safeMargins)
+        for (let monitor in this._safeMargins)
             this.unsetMargins(id, monitor);
         this._registered.splice(this._registered.indexOf(id));
     }
@@ -84,11 +84,10 @@ var SafeDesktopArea = GObject.registerClass({
      * all the monitors
      */
     getMonitorForCoordinates(x, y) {
-        for(let monitorIndex = 0; monitorIndex < this._layoutManager.monitors.length; monitorIndex++) {
+        for (let monitorIndex = 0; monitorIndex < this._layoutManager.monitors.length; monitorIndex++) {
             let monitor = this._layoutManager.monitors[monitorIndex];
-            if ((x >= monitor.x) && (y >= monitor.y) && (x < (monitor.x + monitor.width)) && (y < (monitor.y + monitor.height))) {
+            if ((x >= monitor.x) && (y >= monitor.y) && (x < (monitor.x + monitor.width)) && (y < (monitor.y + monitor.height)))
                 return monitorIndex;
-            }
         }
         return -1;
     }
@@ -128,8 +127,8 @@ var SafeDesktopArea = GObject.registerClass({
     unsetSafeMargins(id, monitor) {
         if (!this._registered.includes(id))
             throw new Error('Using an inexistent ID to unset desktop safe margins');
-        if (monitor == -1) {
-            for(monitor in this._safeMargins) {
+        if (monitor === -1) {
+            for (monitor in this._safeMargins) {
                 if (id in this._safeMargins[monitor])
                     delete this._safeMargins[monitor][id];
             }
@@ -159,7 +158,7 @@ var SafeDesktopArea = GObject.registerClass({
         margins.left = 0;
         margins.right = 0;
         if (monitor < this._safeMargins.length) {
-            for(let id in this._safeMargins[monitor]) {
+            for (let id in this._safeMargins[monitor]) {
                 let idmargins = this._safeMargins[monitor][id];
                 if (idmargins.top > margins.top)
                     margins.top = idmargins.top;
