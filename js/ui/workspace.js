@@ -337,17 +337,17 @@ var WindowClone = GObject.registerClass({
             child: new St.Icon({ icon_name: 'window-close-symbolic' }),
         });
         this._closeButton.add_constraint(new Clutter.BindConstraint({
-            source: this._border,
+            source: this._borderCenter,
             coordinate: Clutter.BindCoordinate.POSITION,
         }));
         this._closeButton.add_constraint(new Clutter.AlignConstraint({
-            source: this._border,
+            source: this._borderCenter,
             align_axis: Clutter.AlignAxis.X_AXIS,
             pivot_point: new Graphene.Point({ x: 0.5, y: -1 }),
             factor: this._closeButtonSide === St.Side.LEFT ? 0 : 1,
         }));
         this._closeButton.add_constraint(new Clutter.AlignConstraint({
-            source: this._border,
+            source: this._borderCenter,
             align_axis: Clutter.AlignAxis.Y_AXIS,
             pivot_point: new Graphene.Point({ x: -1, y: 0.5 }),
             factor: 0,
@@ -417,7 +417,7 @@ var WindowClone = GObject.registerClass({
         const [, closeButtonHeight] = this._closeButton.get_preferred_height(-1);
         const [, titleHeight] = this._title.get_preferred_height(-1);
 
-        const topOversize = this._borderSize + closeButtonHeight / 2;
+        const topOversize = (this._borderSize / 2) + (closeButtonHeight / 2);
         const bottomOversize = Math.max(
             this._borderSize,
             (titleHeight / 2) + (this._borderSize / 2));
@@ -430,11 +430,11 @@ var WindowClone = GObject.registerClass({
         const [, closeButtonWidth] = this._closeButton.get_preferred_width(-1);
 
         const leftOversize = this._closeButtonSide === St.Side.LEFT
-            ? this._borderSize + closeButtonWidth / 2
+            ? (this._borderSize / 2) + (closeButtonWidth / 2)
             : this._borderSize;
         const rightOversize = this._closeButtonSide === St.Side.LEFT
             ? this._borderSize
-            : this._borderSize + closeButtonWidth / 2;
+            : (this._borderSize / 2) + (closeButtonWidth / 2);
 
         return [leftOversize, rightOversize];
     }
