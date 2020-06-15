@@ -1081,6 +1081,10 @@ _shell_app_add_window (ShellApp        *app,
   if (!app->running_state)
       create_running_state (app);
 
+  if (app->started_on_workspace >= 0)
+    meta_window_change_workspace_by_index (window, app->started_on_workspace, FALSE);
+  app->started_on_workspace = -1;
+
   app->running_state->window_sort_stale = TRUE;
   app->running_state->windows = g_slist_prepend (app->running_state->windows, g_object_ref (window));
   g_signal_connect_object (window, "unmanaged", G_CALLBACK(shell_app_on_unmanaged), app, 0);
@@ -1173,16 +1177,14 @@ _shell_app_handle_startup_sequence (ShellApp            *app,
       shell_app_state_transition (app, SHELL_APP_STATE_STARTING);
       meta_display_unset_input_focus (display,
                                       meta_startup_sequence_get_timestamp (sequence));
-      app->started_on_workspace = meta_startup_sequence_get_workspace (sequence);
     }
 
-  if (!starting)
-    {
-      if (app->running_state && app->running_state->windows)
-        shell_app_state_transition (app, SHELL_APP_STATE_RUNNING);
-      else /* application have > 1 .desktop file */
-        shell_app_state_transition (app, SHELL_APP_STATE_STOPPED);
-    }
+  if (starting)
+    app->started_on_workspace = meta_startup_sequence_get_workspace (sequence);
+  else if (app->running_state && app->running_state->windows)
+    shell_app_state_transition (app, SHELL_APP_STATE_RUNNING);
+  else /* application have > 1 .desktop file */
+    shell_app_state_transition (app, SHELL_APP_STATE_STOPPED);
 }
 
 /**
@@ -1550,6 +1552,7 @@ static void
 shell_app_init (ShellApp *self)
 {
   self->state = SHELL_APP_STATE_STOPPED;
+  self->started_on_workspace = -1;
 }
 
 static void
