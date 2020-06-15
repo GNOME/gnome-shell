@@ -68,6 +68,7 @@ struct _ShellApp
   GObject parent;
 
   int started_on_workspace;
+  int launch_workspace;
 
   ShellAppState state;
 
@@ -1099,6 +1100,10 @@ _shell_app_add_window (ShellApp        *app,
   if (!app->running_state)
       create_running_state (app);
 
+  if (app->launch_workspace >= 0)
+    meta_window_change_workspace_by_index (window, app->launch_workspace, FALSE);
+  app->launch_workspace = -1;
+
   app->running_state->window_sort_stale = TRUE;
   app->running_state->windows = g_slist_prepend (app->running_state->windows, g_object_ref (window));
   g_signal_connect_object (window, "unmanaged", G_CALLBACK(shell_app_on_unmanaged), app, 0);
@@ -1335,6 +1340,28 @@ apply_discrete_gpu_env (GAppLaunchContext *context,
   g_debug ("Could not find discrete GPU in switcheroo-control, not applying environment");
 }
 
+static int
+get_workspace_index_from_context (GAppLaunchContext *context)
+{
+  MetaDisplay *display = shell_global_get_display (shell_global_get ());
+  MetaWorkspaceManager *workspace_manager =
+    meta_display_get_workspace_manager (display);
+  MetaWorkspace *workspace = NULL;
+
+  g_object_get (G_OBJECT (context),
+                "workspace", &workspace,
+                NULL);
+
+  if (workspace)
+    {
+      int index = meta_workspace_index (workspace);
+      g_object_unref (workspace);
+
+      return index;
+    }
+  return meta_workspace_manager_get_active_workspace_index (workspace_manager);
+}
+
 /**
  * shell_app_launch:
  * @timestamp: Event timestamp, or 0 for current event timestamp
@@ -1377,6 +1404,8 @@ shell_app_launch (ShellApp           *app,
 
   if (discrete_gpu)
     apply_discrete_gpu_env (context, global);
+
+  app->launch_workspace = get_workspace_index_from_context (context);
 
   /* Set LEAVE_DESCRIPTORS_OPEN in order to use an optimized gspawn
    * codepath. The shell's open file descriptors should be marked CLOEXEC
@@ -1443,6 +1472,7 @@ shell_app_launch_action (ShellApp        *app,
 
   global = shell_global_get ();
   context = shell_global_create_app_launch_context (global, timestamp, workspace);
+  app->launch_workspace = get_workspace_index_from_context (context);
 
   g_desktop_app_info_launch_action (G_DESKTOP_APP_INFO (app->info),
                                     action_name, context);
@@ -1568,6 +1598,7 @@ static void
 shell_app_init (ShellApp *self)
 {
   self->state = SHELL_APP_STATE_STOPPED;
+  self->launch_workspace = -1;
 }
 
 static void
