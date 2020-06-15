@@ -1278,13 +1278,13 @@ var WindowManager = class {
     }
 
     _sizeChangeWindow(shellwm, actor, whichChange, oldFrameRect, _oldBufferRect) {
-        let types = [Meta.WindowType.NORMAL];
-        if (!this._shouldAnimateActor(actor, types)) {
-            shellwm.completed_size_change(actor);
-            return;
-        }
+        const types = [Meta.WindowType.NORMAL];
+        const shouldAnimate =
+            this._shouldAnimateActor(actor, types) &&
+            oldFrameRect.width > 0 &&
+            oldFrameRect.height > 0;
 
-        if (oldFrameRect.width > 0 && oldFrameRect.height > 0)
+        if (shouldAnimate)
             this._prepareAnimationInfo(shellwm, actor, oldFrameRect, whichChange);
         else
             shellwm.completed_size_change(actor);
@@ -1299,17 +1299,24 @@ var WindowManager = class {
         actorClone.set_position(oldFrameRect.x, oldFrameRect.y);
         actorClone.set_size(oldFrameRect.width, oldFrameRect.height);
 
-        if (this._clearAnimationInfo(actor))
+        actor.freeze();
+
+        if (this._clearAnimationInfo(actor)) {
+            log('Old animationInfo removed from actor %s'.format(actor));
             this._shellwm.completed_size_change(actor);
+        }
 
         let destroyId = actor.connect('destroy', () => {
             this._clearAnimationInfo(actor);
         });
 
         this._resizePending.add(actor);
-        actor.__animationInfo = { clone: actorClone,
-                                  oldRect: oldFrameRect,
-                                  destroyId };
+        actor.__animationInfo = {
+            clone: actorClone,
+            oldRect: oldFrameRect,
+            frozen: true,
+            destroyId,
+        };
     }
 
     _sizeChangedWindow(shellwm, actor) {
@@ -1362,13 +1369,17 @@ var WindowManager = class {
         // Now unfreeze actor updates, to get it to the new size.
         // It's important that we don't wait until the animation is completed to
         // do this, otherwise our scale will be applied to the old texture size.
-        shellwm.completed_size_change(actor);
+        actor.thaw();
+        actor.__animationInfo.frozen = false;
     }
 
     _clearAnimationInfo(actor) {
         if (actor.__animationInfo) {
             actor.__animationInfo.clone.destroy();
             actor.disconnect(actor.__animationInfo.destroyId);
+            if (actor.__animationInfo.frozen)
+                actor.thaw();
+
             delete actor.__animationInfo;
             return true;
         }
@@ -1383,10 +1394,13 @@ var WindowManager = class {
             actor.translation_x = 0;
             actor.translation_y = 0;
             this._clearAnimationInfo(actor);
+            this._shellwm.completed_size_change(actor);
         }
 
-        if (this._resizePending.delete(actor))
+        if (this._resizePending.delete(actor)) {
+            this._clearAnimationInfo(actor);
             this._shellwm.completed_size_change(actor);
+        }
     }
 
     _hasAttachedDialogs(window, ignoreWindow) {
