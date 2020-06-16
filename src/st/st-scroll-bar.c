@@ -262,14 +262,25 @@ scroll_bar_allocate_children (StScrollBar           *bar,
         }
       else
         {
+          ClutterTextDirection direction;
+
           avail_size = content_box.x2 - content_box.x1;
           handle_size = increment * avail_size;
           handle_size = CLAMP (handle_size, min_size, max_size);
 
-          handle_box.x1 = content_box.x1 + position * (avail_size - handle_size);
-          handle_box.y1 = content_box.y1;
+          direction = clutter_actor_get_text_direction (CLUTTER_ACTOR (bar));
+          if (direction == CLUTTER_TEXT_DIRECTION_RTL)
+            {
+              handle_box.x2 = content_box.x2 - position * (avail_size - handle_size);
+              handle_box.x1 = handle_box.x2 - handle_size;
+            }
+          else
+            {
+              handle_box.x1 = content_box.x1 + position * (avail_size - handle_size);
+              handle_box.x2 = handle_box.x1 + handle_size;
+            }
 
-          handle_box.x2 = handle_box.x1 + handle_size;
+          handle_box.y1 = content_box.y1;
           handle_box.y2 = content_box.y2;
         }
 
@@ -464,16 +475,24 @@ st_scroll_bar_scroll_event (ClutterActor       *actor,
                             ClutterScrollEvent *event)
 {
   StScrollBarPrivate *priv = ST_SCROLL_BAR_PRIVATE (actor);
+  ClutterTextDirection direction;
+  ClutterScrollDirection scroll_dir;
 
   if (clutter_event_is_pointer_emulated ((ClutterEvent *) event))
     return TRUE;
 
-  switch (event->direction)
+  direction = clutter_actor_get_text_direction (actor);
+  scroll_dir = event->direction;
+
+  switch (scroll_dir)
     {
     case CLUTTER_SCROLL_SMOOTH:
       {
         gdouble delta_x, delta_y;
         clutter_event_get_scroll_delta ((ClutterEvent *)event, &delta_x, &delta_y);
+
+        if (direction == CLUTTER_TEXT_DIRECTION_RTL)
+          delta_x *= -1;
 
         if (priv->vertical)
           st_adjustment_adjust_for_scroll_event (priv->adjustment, delta_y);
@@ -481,11 +500,15 @@ st_scroll_bar_scroll_event (ClutterActor       *actor,
           st_adjustment_adjust_for_scroll_event (priv->adjustment, delta_x);
       }
       break;
-    case CLUTTER_SCROLL_UP:
-    case CLUTTER_SCROLL_DOWN:
     case CLUTTER_SCROLL_LEFT:
     case CLUTTER_SCROLL_RIGHT:
-      adjust_with_direction (priv->adjustment, event->direction);
+      if (direction == CLUTTER_TEXT_DIRECTION_RTL)
+          scroll_dir = scroll_dir == CLUTTER_SCROLL_LEFT ? CLUTTER_SCROLL_RIGHT
+                                                         : CLUTTER_SCROLL_LEFT;
+    /* Fall through */
+    case CLUTTER_SCROLL_UP:
+    case CLUTTER_SCROLL_DOWN:
+      adjust_with_direction (priv->adjustment, scroll_dir);
       break;
     default:
       g_return_val_if_reached (FALSE);
@@ -552,6 +575,7 @@ move_slider (StScrollBar *bar,
              gfloat       y)
 {
   StScrollBarPrivate *priv = st_scroll_bar_get_instance_private (bar);
+  ClutterTextDirection direction;
   gdouble position, lower, upper, page_size;
   gfloat ux, uy, pos, size;
 
@@ -584,6 +608,10 @@ move_slider (StScrollBar *bar,
                             NULL,
                             NULL,
                             &page_size);
+
+  direction = clutter_actor_get_text_direction (CLUTTER_ACTOR (bar));
+  if (direction == CLUTTER_TEXT_DIRECTION_RTL)
+    pos = size - pos;
 
   position = ((pos / size)
               * (upper - lower - page_size))
@@ -668,6 +696,7 @@ static gboolean
 trough_paging_cb (StScrollBar *self)
 {
   StScrollBarPrivate *priv = st_scroll_bar_get_instance_private (self);
+  ClutterTextDirection direction;
   g_autoptr (ClutterTransition) transition = NULL;
   StSettings *settings;
   gfloat handle_pos, event_pos, tx, ty;
@@ -724,6 +753,10 @@ trough_paging_cb (StScrollBar *self)
                                        priv->move_x,
                                        priv->move_y,
                                        &tx, &ty);
+
+  direction = clutter_actor_get_text_direction (CLUTTER_ACTOR (self));
+  if (direction == CLUTTER_TEXT_DIRECTION_RTL)
+    page_increment *= -1;
 
   if (priv->vertical)
     event_pos = ty;
