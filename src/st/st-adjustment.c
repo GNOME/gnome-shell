@@ -47,6 +47,8 @@ struct _StAdjustmentPrivate
 
   GHashTable *transitions;
 
+  ClutterActor *actor;
+
   gdouble  lower;
   gdouble  upper;
   gdouble  value;
@@ -66,6 +68,7 @@ enum
 {
   PROP_0,
 
+  PROP_ACTOR,
   PROP_LOWER,
   PROP_UPPER,
   PROP_VALUE,
@@ -106,9 +109,21 @@ static gboolean st_adjustment_set_page_increment (StAdjustment *adjustment,
 static gboolean st_adjustment_set_page_size      (StAdjustment *adjustment,
                                                   gdouble       size);
 
+static ClutterActor *
+st_adjustment_get_actor (ClutterAnimatable *animatable)
+{
+  StAdjustment *adjustment = ST_ADJUSTMENT (animatable);
+  StAdjustmentPrivate *priv = st_adjustment_get_instance_private (adjustment);
+
+  g_warn_if_fail (priv->actor);
+
+  return priv->actor;
+}
+
 static void
 animatable_iface_init (ClutterAnimatableInterface *iface)
 {
+  iface->get_actor = st_adjustment_get_actor;
 }
 
 static void
@@ -141,6 +156,10 @@ st_adjustment_get_property (GObject    *gobject,
 
   switch (prop_id)
     {
+    case PROP_ACTOR:
+      g_value_set_object (value, priv->actor);
+      break;
+
     case PROP_LOWER:
       g_value_set_double (value, priv->lower);
       break;
@@ -178,9 +197,16 @@ st_adjustment_set_property (GObject      *gobject,
                             GParamSpec   *pspec)
 {
   StAdjustment *adj = ST_ADJUSTMENT (gobject);
+  StAdjustmentPrivate *priv;
+
+  priv = st_adjustment_get_instance_private (ST_ADJUSTMENT (gobject));
 
   switch (prop_id)
     {
+    case PROP_ACTOR:
+      g_set_object (&priv->actor, g_value_get_object (value));
+      break;
+
     case PROP_LOWER:
       st_adjustment_set_lower (adj, g_value_get_double (value));
       break;
@@ -217,6 +243,7 @@ st_adjustment_dispose (GObject *object)
   StAdjustmentPrivate *priv;
 
   priv = st_adjustment_get_instance_private (ST_ADJUSTMENT (object));
+  g_clear_object (&priv->actor);
   g_clear_pointer (&priv->transitions, g_hash_table_unref);
 
   G_OBJECT_CLASS (st_adjustment_parent_class)->dispose (object);
@@ -231,6 +258,12 @@ st_adjustment_class_init (StAdjustmentClass *klass)
   object_class->get_property = st_adjustment_get_property;
   object_class->set_property = st_adjustment_set_property;
   object_class->dispose = st_adjustment_dispose;
+
+  props[PROP_ACTOR] =
+    g_param_spec_object ("actor", "Actor", "Actor",
+                         CLUTTER_TYPE_ACTOR,
+                         ST_PARAM_READWRITE |
+                         G_PARAM_CONSTRUCT);
 
   props[PROP_LOWER] =
     g_param_spec_double ("lower", "Lower", "Lower bound",
@@ -299,7 +332,8 @@ st_adjustment_init (StAdjustment *self)
 }
 
 StAdjustment *
-st_adjustment_new (gdouble value,
+st_adjustment_new (ClutterActor *actor,
+                   gdouble value,
                    gdouble lower,
                    gdouble upper,
                    gdouble step_increment,
@@ -307,6 +341,7 @@ st_adjustment_new (gdouble value,
                    gdouble page_size)
 {
   return g_object_new (ST_TYPE_ADJUSTMENT,
+                       "actor", actor,
                        "value", value,
                        "lower", lower,
                        "upper", upper,

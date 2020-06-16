@@ -485,6 +485,7 @@ var UnlockDialog = GObject.registerClass({
         this._gdmClient = new Gdm.Client();
 
         this._adjustment = new St.Adjustment({
+            actor: this,
             lower: 0,
             upper: 2,
             page_size: 1,
