@@ -757,6 +757,7 @@ st_scroll_view_scroll_event (ClutterActor       *self,
                              ClutterScrollEvent *event)
 {
   StScrollViewPrivate *priv = ST_SCROLL_VIEW (self)->priv;
+  ClutterTextDirection direction;
 
   /* don't handle scroll events if requested not to */
   if (!priv->mouse_scroll)
@@ -765,12 +766,18 @@ st_scroll_view_scroll_event (ClutterActor       *self,
   if (clutter_event_is_pointer_emulated ((ClutterEvent *) event))
     return TRUE;
 
+  direction = clutter_actor_get_text_direction (self);
+
   switch (event->direction)
     {
     case CLUTTER_SCROLL_SMOOTH:
       {
         gdouble delta_x, delta_y;
         clutter_event_get_scroll_delta ((ClutterEvent *)event, &delta_x, &delta_y);
+
+        if (direction == CLUTTER_TEXT_DIRECTION_RTL)
+          delta_x *= -1;
+
         st_adjustment_adjust_for_scroll_event (priv->hadjustment, delta_x);
         st_adjustment_adjust_for_scroll_event (priv->vadjustment, delta_y);
       }
@@ -781,7 +788,18 @@ st_scroll_view_scroll_event (ClutterActor       *self,
       break;
     case CLUTTER_SCROLL_LEFT:
     case CLUTTER_SCROLL_RIGHT:
-      adjust_with_direction (priv->hadjustment, event->direction);
+      if (direction == CLUTTER_TEXT_DIRECTION_RTL)
+        {
+          ClutterScrollDirection dir;
+
+          dir = event->direction == CLUTTER_SCROLL_LEFT ? CLUTTER_SCROLL_RIGHT
+                                                        : CLUTTER_SCROLL_LEFT;
+          adjust_with_direction (priv->hadjustment, dir);
+        }
+      else
+        {
+          adjust_with_direction (priv->hadjustment, event->direction);
+        }
       break;
     default:
       g_warn_if_reached();
