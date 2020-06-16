@@ -881,13 +881,17 @@ st_scroll_view_init (StScrollView *self)
   priv->hscrollbar_policy = ST_POLICY_AUTOMATIC;
   priv->vscrollbar_policy = ST_POLICY_AUTOMATIC;
 
-  priv->hadjustment = g_object_new (ST_TYPE_ADJUSTMENT, NULL);
+  priv->hadjustment = g_object_new (ST_TYPE_ADJUSTMENT,
+                                    "actor", self,
+                                    NULL);
   priv->hscroll = g_object_new (ST_TYPE_SCROLL_BAR,
                                 "adjustment", priv->hadjustment,
                                 "vertical", FALSE,
                                 NULL);
 
-  priv->vadjustment = g_object_new (ST_TYPE_ADJUSTMENT, NULL);
+  priv->vadjustment = g_object_new (ST_TYPE_ADJUSTMENT,
+                                    "actor", self,
+                                    NULL);
   priv->vscroll = g_object_new (ST_TYPE_SCROLL_BAR,
                                 "adjustment", priv->vadjustment,
                                 "vertical", TRUE,

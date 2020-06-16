@@ -422,6 +422,7 @@ class ControlsManager extends St.Widget {
         let activeWorkspaceIndex = workspaceManager.get_active_workspace_index();
 
         this._workspaceAdjustment = new St.Adjustment({
+            actor: this,
             value: activeWorkspaceIndex,
             lower: 0,
             page_increment: 1,
