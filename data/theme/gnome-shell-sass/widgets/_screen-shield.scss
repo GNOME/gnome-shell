@@ -36,13 +36,14 @@
 
   .notification,
   .unlock-dialog-notification-source {
+    $_bg: $osd_bg_color;
     padding: 12px 6px;
     border: none;
-    background-color: transparentize($osd_bg_color,0.7);
+    background-color: transparentize($_bg, 0.7);
     color: $osd_fg_color;
     border-radius: $modal_radius;
 
-    &.critical { background-color: transparentize($osd_bg_color,0.1) }
+    &.critical { background-color: transparentize($_bg, 0.1) }
   }
 }
 
@@ -66,13 +67,14 @@
 }
 
 #lockDialogGroup {
-  background-color: lighten(#2e3436, 8%);
+  background-color: lighten($osd_bg_color, 8%);
 }
 
 #unlockDialogNotifications {
   StButton#vhandle, StButton#hhandle {
-    background-color: transparentize($bg_color,0.7);
-    &:hover, &:focus { background-color: transparentize($bg_color,0.5); }
-    &:active { background-color: transparentize($selected_bg_color,0.5); }
+    $_bg: $bg_color;
+    background-color: transparentize($_bg, 0.7);
+    &:hover, &:focus { background-color: transparentize($_bg, 0.5); }
+    &:active { background-color: transparentize($selected_bg_color, 0.5); }
   }
 }

@@ -1,5 +1,7 @@
 /* Date/Time Menu */
 
+$title_text_color: desaturate(darken($fg_color,40%), 10%);
+
 .clock-display-box {
   spacing: $base_spacing / 2;
 
@@ -33,7 +35,7 @@
 
 .events-section-title {
   @include notification_bubble($flat: true);
-  color: desaturate(darken($fg_color,40%), 10%);
+  color: $title_text_color;
   font-weight: bold;
   padding: .4em;
 }
@@ -191,7 +193,7 @@
   }
 
   .events-title {
-    color: desaturate(darken($fg_color,40%), 10%);
+    color: $title_text_color;
     font-weight: bold;
     margin-bottom: $base_margin;
   }
@@ -215,7 +217,7 @@
 
   // title
   .world-clocks-header {
-    color: desaturate(darken($fg_color,40%), 10%);
+    color: $title_text_color;
     font-weight: bold;
   }
 
@@ -257,7 +259,7 @@
   }
 
   .weather-header {
-    color: desaturate(darken($fg_color,40%), 10%);
+    color: $title_text_color;
     font-weight: bold;
 
     &.location {

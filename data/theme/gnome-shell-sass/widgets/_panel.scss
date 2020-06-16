@@ -4,6 +4,7 @@
 $panel_corner_radius: $base_border_radius+1;
 $panel_bg_color: #000;
 $panel_fg_color: #ccc;
+$panel_focused_color: lighten($selected_bg_color,5%); // for active box-shadow
 $panel_height: 1.86em;
 
 
@@ -74,8 +75,9 @@ $panel_height: 1.86em;
     // lock & login screen styles
     .unlock-screen &,
     .login-screen & {
-      color: lighten($fg_color, 10%);
-      &:focus, &:hover, &:active { color: lighten($fg_color, 10%); }
+      $_tc: lighten($fg_color, 10%);
+      color: $_tc;
+      &:focus, &:hover, &:active { color: lighten($_tc, 10%); }
     }
   }
 
@@ -83,7 +85,7 @@ $panel_height: 1.86em;
     &:active, &:overview, &:focus, &:checked {
       // Trick due to St limitations. It needs a background to draw a box-shadow
       background-color: rgba(0, 0, 0, 0.01);
-      box-shadow: inset 0 -2px 0 0 lighten($selected_bg_color,5%);
+      box-shadow: inset 0 -2px 0 0 $panel_focused_color;
     }
   }
 
@@ -94,7 +96,7 @@ $panel_height: 1.86em;
 
       .clock {
         background-color: rgba(0, 0, 0, 0.01);
-        box-shadow: inset 0 -2px 0 0 lighten($selected_bg_color,5%);
+        box-shadow: inset 0 -2px 0 0 $panel_focused_color;
       }
     }
   }

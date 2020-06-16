@@ -3,8 +3,9 @@
 $ripple_size: 50px;
 
 .ripple-box {
-  background-color: lighten(transparentize($selected_bg_color, 0.7), 40%);
-  box-shadow: 0 0 2px 2px lighten($selected_bg_color, 20%);
+  $c: $selected_bg_color;
+  background-color: lighten(transparentize($c, 0.7), 40%);
+  box-shadow: 0 0 2px 2px lighten($c, 20%);
   // plus + 2px for the border (box-shadow)
   width: $ripple_size + 2px;
   height: $ripple_size + 2px;

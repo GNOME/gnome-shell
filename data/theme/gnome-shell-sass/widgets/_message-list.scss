@@ -79,9 +79,10 @@
 
   // close button
   .message-close-button {
-    color: lighten($fg_color, 15%);
-    &:hover { color: if($variant=='light', lighten($fg_color, 30%), darken($fg_color, 10%)); }
-    &:active { color: if($variant=='light', lighten($fg_color, 40%), darken($fg_color, 20%)); }
+    $_tc: $fg_color;
+    color: lighten($_tc, 15%);
+    &:hover { color: if($variant=='light', lighten($_tc, 30%), darken($_tc, 10%)); }
+    &:active { color: if($variant=='light', lighten($_tc, 40%), darken($_tc, 20%)); }
   }
 
   // body

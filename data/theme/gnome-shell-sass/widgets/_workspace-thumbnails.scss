@@ -25,7 +25,8 @@
 
 // selected indicator
 .workspace-thumbnail-indicator {
-  border: 3px solid $selected_bg_color;
+  $_bg: $selected_bg_color;
+  border: 3px solid $_bg;
   border-radius: 3px;
   padding: 0px;
   // background-color: transparentize($selected_bg_color, 0.9);

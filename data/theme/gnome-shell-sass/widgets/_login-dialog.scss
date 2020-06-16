@@ -28,8 +28,8 @@
     border-color: $_gdm_bg;
     color: $fg_color;
 
-    $_hover_c: lighten($_gdm_bg, 5%);
     &:hover, &:focus {
+      $_hover_c: lighten($_gdm_bg, 5%);
       background-color: $_hover_c;
       border-color: $_hover_c;
     }
@@ -41,29 +41,33 @@
     }
     &:insensitive {
       @include button(insensitive);
-      border-color: darken($_gdm_bg, 5%);
-      background-color: darken($_gdm_bg, 5%);
+      $_insensitive_c: darken($_gdm_bg, 5%);
+      border-color: $_insensitive_c;
+      background-color: $_insensitive_c;
       color: transparentize($fg_color, 0.3);
     }
     &:default {
-      @include button(normal, $c:$selected_bg_color, $tc:$selected_fg_color);
-      border-color: $selected_bg_color;
+      $_bg: $selected_bg_color;
+      $_tc: $selected_fg_color;
+      @include button(normal, $c: $_bg, $tc: $_tc);
+      border-color: $_bg;
       &:hover, &:focus { 
-        @include button(hover,$c:$selected_bg_color, $tc:$selected_fg_color);
-        $_def_hover_c: lighten($selected_bg_color, 5%);
+        @include button(hover,$c: $_bg, $tc: $_tc);
+        $_def_hover_c: lighten($_bg, 5%);
         background-color: $_def_hover_c;
         border-color: $_def_hover_c;
       }
       &:active {
-        @include button(active,$c:$selected_bg_color, $tc:$selected_fg_color);
-        $_def_active_c: darken($selected_bg_color, 5%);
+        @include button(active,$c: $_bg, $tc: $_tc);
+        $_def_active_c: darken($_bg, 5%);
         background-color: $_def_active_c;
         border-color: $_def_active_c;
       }
       &:insensitive {
         @include button(insensitive);
-        border-color: darken($selected_bg_color, 10%);
-        background-color: darken($selected_bg_color, 10%);
+        $_insensitive_c: darken($_bg, 10%);
+        border-color: $_insensitive_c;
+        background-color: $_insensitive_c;
         color: transparentize($selected_fg_color, 0.3);
       }
     }
@@ -72,12 +76,13 @@
   .cancel-button,
   .switch-user-button,
   .login-dialog-session-list-button {
+    $_bg: transparentize($bg_color,0.7);
     padding: 0;
     border-radius: 99px;
     width: $base_icon_size * 2;
     height: $base_icon_size * 2;
-    border-color: transparentize($bg_color,0.7);
-    background-color: transparentize($bg_color,0.7);
+    border-color: $_bg;
+    background-color: $_bg;
 
     StIcon { icon-size: $base_icon_size; }
   }
@@ -111,10 +116,11 @@
 
 .login-dialog-user-list-view { -st-vfade-offset: 1em; }
 .login-dialog-user-list {
+  $_bg: $selected_bg_color;
   spacing: 12px;
   width: 23em;
-  &:expanded .login-dialog-user-list-item:selected { background-color: $selected_bg_color; color: $selected_fg_color; }
-  &:expanded .login-dialog-user-list-item:logged-in { border-right: 2px solid $selected_bg_color; }
+  &:expanded .login-dialog-user-list-item:selected { background-color: $_bg; color: $selected_fg_color; }
+  &:expanded .login-dialog-user-list-item:logged-in { border-right: 2px solid $_bg; }
 }
 
 .login-dialog-user-list-item {

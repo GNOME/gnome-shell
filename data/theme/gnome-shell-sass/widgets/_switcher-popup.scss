@@ -10,16 +10,17 @@
   @extend %osd_panel;
 
   .item-box {
+    $_bg: transparentize($osd_fg_color, 0.7);
     padding: 8px;
     border-radius: $base_border_radius + 1px;
     border: 1px solid transparent;
 
     &:outlined {
-      background-color: transparentize($osd_fg_color, 0.7);
+      background-color: $_bg;
     }
 
     &:selected {
-      background-color: transparentize($osd_fg_color, 0.7);
+      background-color: $_bg;
       color: $osd_fg_color;
     }
   }
@@ -45,10 +46,11 @@
 }
 
 .switcher-arrow {
-  border-color: rgba(0,0,0,0);
-  color: transparentize($fg_color,0.2);
+  $_tc: $fg_color;
+  border-color: rgba(0, 0, 0, 0);
+  color: transparentize($_tc, 0.2);
   &:highlighted {
-    color: $fg_color;
+    color: $_tc;
   }
 }
 

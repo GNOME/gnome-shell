@@ -19,21 +19,22 @@ $text_fg_color: #ccc;
 
   .labels { spacing: $base_spacing; }
   .notebook-tab {
+    $_tc: $osd_fg_color;
     -natural-hpadding: $base_padding * 2;
     -minimum-hpadding: 6px;
     font-weight: bold;
-    color: darken($osd_fg_color, 15%);
+    color: darken($_tc, 15%);
     transition-duration: 100ms;
     padding-left: .3em;
     padding-right: .3em;
     border-bottom-width: 2px;
     &:hover {
-      color: $osd_fg_color;
+      color: $_tc;
     }
     &:selected {
       border-bottom-width: 2px;
       box-shadow: inset 0 -2px 0 0 lighten($selected_bg_color, 5%);
-      color: $osd_fg_color;
+      color: $_tc;
     }
   }
   StBoxLayout#EvalBox { padding: 4px; spacing: $base_spacing; }
@@ -42,22 +43,25 @@ $text_fg_color: #ccc;
 
 .lg-dialog {
   StEntry {
+    $_tc: $osd_fg_color;
     background-color: transparentize(lighten($osd_bg_color, 5%), 0.4);
-    color: $osd_fg_color;
-    border-color: transparentize($osd_fg_color, 0.8);
+    color: $_tc;
+    border-color: transparentize($_tc, 0.8);
     min-height: 22px;
     selection-background-color: $selected_bg_color;
     selected-color: $selected_fg_color;
   }
   .shell-link {
-    color: $link_color;
-    &:hover { color: lighten($link_color, 10%); }
-    &:active { color: darken($link_color, 10%); }
+    $c: $link_color;
+    color: $c;
+    &:hover { color: lighten($c, 10%); }
+    &:active { color: darken($c, 10%); }
    }
   .actor-link {
-    color: $text_fg_color;
-    &:hover { color: lighten($text_fg_color, 20%); }
-    &:active { color: darken($text_fg_color, 20%); }
+    $c: $text_fg_color;
+    color: $c;
+    &:hover { color: lighten($c, 20%); }
+    &:active { color: darken($c, 20%); }
    }
 }
 
