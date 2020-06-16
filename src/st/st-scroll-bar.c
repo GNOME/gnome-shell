@@ -262,14 +262,25 @@ scroll_bar_allocate_children (StScrollBar           *bar,
         }
       else
         {
+          ClutterTextDirection direction;
+
           avail_size = content_box.x2 - content_box.x1;
           handle_size = increment * avail_size;
           handle_size = CLAMP (handle_size, min_size, max_size);
 
-          handle_box.x1 = content_box.x1 + position * (avail_size - handle_size);
-          handle_box.y1 = content_box.y1;
+          direction = clutter_actor_get_text_direction (CLUTTER_ACTOR (bar));
+          if (direction == CLUTTER_TEXT_DIRECTION_RTL)
+            {
+              handle_box.x2 = content_box.x2 - position * (avail_size - handle_size);
+              handle_box.x1 = handle_box.x2 - handle_size;
+            }
+          else
+            {
+              handle_box.x1 = content_box.x1 + position * (avail_size - handle_size);
+              handle_box.x2 = handle_box.x1 + handle_size;
+            }
 
-          handle_box.x2 = handle_box.x1 + handle_size;
+          handle_box.y1 = content_box.y1;
           handle_box.y2 = content_box.y2;
         }
 
@@ -552,6 +563,7 @@ move_slider (StScrollBar *bar,
              gfloat       y)
 {
   StScrollBarPrivate *priv = st_scroll_bar_get_instance_private (bar);
+  ClutterTextDirection direction;
   gdouble position, lower, upper, page_size;
   gfloat ux, uy, pos, size;
 
@@ -584,6 +596,10 @@ move_slider (StScrollBar *bar,
                             NULL,
                             NULL,
                             &page_size);
+
+  direction = clutter_actor_get_text_direction (CLUTTER_ACTOR (bar));
+  if (direction == CLUTTER_TEXT_DIRECTION_RTL)
+    pos = size - pos;
 
   position = ((pos / size)
               * (upper - lower - page_size))
