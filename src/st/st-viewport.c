@@ -301,6 +301,26 @@ st_viewport_allocate (ClutterActor           *actor,
     }
 }
 
+static double
+get_hadjustment_value (StViewport *viewport)
+{
+  StViewportPrivate *priv = st_viewport_get_instance_private (viewport);
+  ClutterTextDirection direction;
+  double x, upper, page_size;
+
+  if (!priv->hadjustment)
+    return 0;
+
+  st_adjustment_get_values (priv->hadjustment,
+                            &x, NULL, &upper, NULL, NULL, &page_size);
+
+  direction = clutter_actor_get_text_direction (CLUTTER_ACTOR (viewport));
+  if (direction == CLUTTER_TEXT_DIRECTION_RTL)
+    return upper - page_size - x;
+
+  return x;
+}
+
 static void
 st_viewport_apply_transform (ClutterActor *actor,
                              CoglMatrix   *matrix)
@@ -314,7 +334,7 @@ st_viewport_apply_transform (ClutterActor *actor,
   parent_class->apply_transform (actor, matrix);
 
   if (priv->hadjustment)
-    x = st_adjustment_get_value (priv->hadjustment);
+    x = get_hadjustment_value (viewport);
   else
     x = 0;
 
@@ -336,7 +356,7 @@ get_border_paint_offsets (StViewport *viewport,
   StViewportPrivate *priv = st_viewport_get_instance_private (viewport);
 
   if (priv->hadjustment)
-    *x = st_adjustment_get_value (priv->hadjustment);
+    *x = get_hadjustment_value (viewport);
   else
     *x = 0;
 
