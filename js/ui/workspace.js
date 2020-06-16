@@ -1,23 +1,16 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported Workspace */
 
-const { Atk, Clutter, GLib, GObject,
-        Graphene, Meta, Pango, Shell, St } = imports.gi;
+const { Clutter, GLib, GObject, Meta, St } = imports.gi;
 
 const DND = imports.ui.dnd;
 const Main = imports.ui.main;
 const Overview = imports.ui.overview;
+const { WindowPreview } = imports.ui.windowPreview;
 
-var WINDOW_DND_SIZE = 256;
-
-var WINDOW_CLONE_MAXIMUM_SCALE = 1.0;
-
-var WINDOW_OVERLAY_IDLE_HIDE_TIMEOUT = 750;
-var WINDOW_OVERLAY_FADE_TIME = 200;
+var WINDOW_PREVIEW_MAXIMUM_SCALE = 1.0;
 
 var WINDOW_REPOSITIONING_DELAY = 750;
-
-var DRAGGING_WINDOW_OPACITY = 100;
 
 // When calculating a layout, we calculate the scale of windows and the percent
 // of the available area the new layout uses. If the values for the new layout,
@@ -32,744 +25,6 @@ var WINDOW_ANIMATION_MAX_NUMBER_BLENDING = 3;
 function _interpolate(start, end, step) {
     return start + (end - start) * step;
 }
-
-var WindowCloneLayout = GObject.registerClass({
-    Properties: {
-        'bounding-box': GObject.ParamSpec.boxed(
-            'bounding-box', 'Bounding box', 'Bounding box',
-            GObject.ParamFlags.READABLE,
-            Clutter.ActorBox.$gtype),
-    },
-}, class WindowCloneLayout extends Clutter.LayoutManager {
-    _init() {
-        super._init();
-
-        this._container = null;
-        this._boundingBox = new Clutter.ActorBox();
-        this._windows = new Map();
-    }
-
-    _layoutChanged() {
-        let frameRect;
-
-        for (const windowInfo of this._windows.values()) {
-            const frame = windowInfo.metaWindow.get_frame_rect();
-            frameRect = frameRect ? frameRect.union(frame) : frame;
-        }
-
-        if (!frameRect)
-            frameRect = new Meta.Rectangle();
-
-        const oldBox = this._boundingBox.copy();
-        this._boundingBox.set_origin(frameRect.x, frameRect.y);
-        this._boundingBox.set_size(frameRect.width, frameRect.height);
-
-        if (!this._boundingBox.equal(oldBox))
-            this.notify('bounding-box');
-
-        // Always call layout_changed(), a size or position change of an
-        // attached dialog might not affect the boundingBox
-        this.layout_changed();
-    }
-
-    vfunc_set_container(container) {
-        this._container = container;
-    }
-
-    vfunc_get_preferred_height(_container, _forWidth) {
-        return [0, this._boundingBox.get_height()];
-    }
-
-    vfunc_get_preferred_width(_container, _forHeight) {
-        return [0, this._boundingBox.get_width()];
-    }
-
-    vfunc_allocate(container, box) {
-        // If the scale isn't 1, we weren't allocated our preferred size
-        // and have to scale the children allocations accordingly.
-        const scaleX = box.get_width() / this._boundingBox.get_width();
-        const scaleY = box.get_height() / this._boundingBox.get_height();
-
-        const childBox = new Clutter.ActorBox();
-
-        for (const child of container) {
-            if (!child.visible)
-                continue;
-
-            const windowInfo = this._windows.get(child);
-            if (windowInfo) {
-                const bufferRect = windowInfo.metaWindow.get_buffer_rect();
-                childBox.set_origin(
-                    bufferRect.x - this._boundingBox.x1,
-                    bufferRect.y - this._boundingBox.y1);
-
-                const [, , natWidth, natHeight] = child.get_preferred_size();
-                childBox.set_size(natWidth, natHeight);
-
-                childBox.x1 *= scaleX;
-                childBox.x2 *= scaleX;
-                childBox.y1 *= scaleY;
-                childBox.y2 *= scaleY;
-
-                child.allocate(childBox);
-            } else {
-                child.allocate_preferred_size();
-            }
-        }
-    }
-
-    addWindow(clone, metaWindow) {
-        if (this._windows.has(clone))
-            return;
-
-        const windowActor = metaWindow.get_compositor_private();
-
-        this._windows.set(clone, {
-            metaWindow,
-            windowActor,
-            sizeChangedId: metaWindow.connect('size-changed', () =>
-                this._layoutChanged()),
-            positionChangedId: metaWindow.connect('position-changed', () =>
-                this._layoutChanged()),
-            destroyId: windowActor.connect('destroy', () =>
-                clone.destroy()),
-            cloneDestroyId: clone.connect('destroy', () =>
-                this.removeWindow(clone)),
-        });
-
-        this._container.add_child(clone);
-
-        this._layoutChanged();
-    }
-
-    removeWindow(clone) {
-        const windowInfo = this._windows.get(clone);
-        if (!windowInfo)
-            return;
-
-        windowInfo.metaWindow.disconnect(windowInfo.sizeChangedId);
-        windowInfo.metaWindow.disconnect(windowInfo.positionChangedId);
-        windowInfo.windowActor.disconnect(windowInfo.destroyId);
-        clone.disconnect(windowInfo.cloneDestroyId);
-
-        this._windows.delete(clone);
-        this._container.remove_child(clone);
-
-        this._layoutChanged();
-    }
-
-    /**
-     * getWindows:
-     *
-     * Gets an array of all ClutterActors that were added to the layout
-     * using addWindow(), ordered by the insertion order.
-     *
-     * @returns {Array} An array including all windows
-     */
-    getWindows() {
-        return [...this._windows.keys()];
-    }
-
-    /**
-     * getMetaWindow:
-     * @param {Clutter.Actor} window: the window to get the MetaWindow for
-     *
-     * Gets the MetaWindow associated to the ClutterActor @window that was
-     * added to the layout using addWindow(). If @window is not found,
-     * null is returned.
-     *
-     * @returns {Meta.Window} The metaWindow of the window
-     */
-    getMetaWindow(window) {
-        const windowInfo = this._windows.get(window);
-        if (!windowInfo)
-            return null;
-
-        return windowInfo.metaWindow;
-    }
-
-    // eslint-disable-next-line camelcase
-    get bounding_box() {
-        return this._boundingBox;
-    }
-});
-
-var WindowClone = GObject.registerClass({
-    Signals: {
-        'drag-begin': {},
-        'drag-cancelled': {},
-        'drag-end': {},
-        'selected': { param_types: [GObject.TYPE_UINT] },
-        'show-chrome': {},
-        'size-changed': {},
-    },
-}, class WindowClone extends St.Widget {
-    _init(realWindow, workspace) {
-        this.realWindow = realWindow;
-        this.metaWindow = realWindow.meta_window;
-        this.metaWindow._delegate = this;
-        this._workspace = workspace;
-
-        super._init({
-            reactive: true,
-            can_focus: true,
-            accessible_role: Atk.Role.PUSH_BUTTON,
-        });
-
-        this._windowContainer = new Clutter.Actor();
-        // gjs currently can't handle setting an actors layout manager during
-        // the initialization of the actor if that layout manager keeps track
-        // of its container, so set the layout manager after creating the
-        // container
-        this._windowContainer.layout_manager = new WindowCloneLayout();
-        this.add_child(this._windowContainer);
-
-        this.set_offscreen_redirect(Clutter.OffscreenRedirect.AUTOMATIC_FOR_OPACITY);
-
-        this._addWindow(realWindow.meta_window);
-
-        this._delegate = this;
-
-        this.slotId = 0;
-        this._slot = [0, 0, 0, 0];
-        this._dragSlot = [0, 0, 0, 0];
-        this._stackAbove = null;
-
-        this._windowContainer.layout_manager.connect(
-            'notify::bounding-box', layout => {
-                // A bounding box of 0x0 means all windows were removed
-                if (layout.bounding_box.get_area() > 0)
-                    this.emit('size-changed');
-            });
-
-        this._windowDestroyId =
-            this.realWindow.connect('destroy', () => this.destroy());
-
-        this._updateAttachedDialogs();
-        this.x = this.boundingBox.x;
-        this.y = this.boundingBox.y;
-
-        let clickAction = new Clutter.ClickAction();
-        clickAction.connect('clicked', this._onClicked.bind(this));
-        clickAction.connect('long-press', this._onLongPress.bind(this));
-        this.add_action(clickAction);
-        this.connect('destroy', this._onDestroy.bind(this));
-
-        this._draggable = DND.makeDraggable(this,
-                                            { restoreOnSuccess: true,
-                                              manualMode: true,
-                                              dragActorMaxSize: WINDOW_DND_SIZE,
-                                              dragActorOpacity: DRAGGING_WINDOW_OPACITY });
-        this._draggable.connect('drag-begin', this._onDragBegin.bind(this));
-        this._draggable.connect('drag-cancelled', this._onDragCancelled.bind(this));
-        this._draggable.connect('drag-end', this._onDragEnd.bind(this));
-        this.inDrag = false;
-
-        this._selected = false;
-        this._closeRequested = false;
-        this._idleHideOverlayId = 0;
-
-        this._border = new St.Widget({
-            visible: false,
-            style_class: 'window-clone-border',
-        });
-        this._borderConstraint = new Clutter.BindConstraint({
-            source: this._windowContainer,
-            coordinate: Clutter.BindCoordinate.SIZE,
-        });
-        this._border.add_constraint(this._borderConstraint);
-        this._border.add_constraint(new Clutter.AlignConstraint({
-            source: this._windowContainer,
-            align_axis: Clutter.AlignAxis.BOTH,
-            factor: 0.5,
-        }));
-        this._borderCenter = new Clutter.Actor();
-        this._border.bind_property('visible', this._borderCenter, 'visible',
-            GObject.BindingFlags.SYNC_CREATE);
-        this._borderCenterConstraint = new Clutter.BindConstraint({
-            source: this._windowContainer,
-            coordinate: Clutter.BindCoordinate.SIZE,
-        });
-        this._borderCenter.add_constraint(this._borderCenterConstraint);
-        this._borderCenter.add_constraint(new Clutter.AlignConstraint({
-            source: this._windowContainer,
-            align_axis: Clutter.AlignAxis.BOTH,
-            factor: 0.5,
-        }));
-        this._border.connect('style-changed',
-            this._onBorderStyleChanged.bind(this));
-
-        this._title = new St.Label({
-            visible: false,
-            style_class: 'window-caption',
-            text: this._getCaption(),
-            reactive: true,
-        });
-        this._title.add_constraint(new Clutter.BindConstraint({
-            source: this._borderCenter,
-            coordinate: Clutter.BindCoordinate.POSITION,
-        }));
-        this._title.add_constraint(new Clutter.AlignConstraint({
-            source: this._borderCenter,
-            align_axis: Clutter.AlignAxis.X_AXIS,
-            factor: 0.5,
-        }));
-        this._title.add_constraint(new Clutter.AlignConstraint({
-            source: this._borderCenter,
-            align_axis: Clutter.AlignAxis.Y_AXIS,
-            pivot_point: new Graphene.Point({ x: -1, y: 0.5 }),
-            factor: 1,
-        }));
-        this._title.clutter_text.ellipsize = Pango.EllipsizeMode.END;
-        this.label_actor = this._title;
-        this._updateCaptionId = this.metaWindow.connect('notify::title', () => {
-            this._title.text = this._getCaption();
-        });
-
-        const layout = Meta.prefs_get_button_layout();
-        this._closeButtonSide =
-            layout.left_buttons.includes(Meta.ButtonFunction.CLOSE)
-                ? St.Side.LEFT : St.Side.RIGHT;
-
-        this._closeButton = new St.Button({
-            visible: false,
-            style_class: 'window-close',
-            child: new St.Icon({ icon_name: 'window-close-symbolic' }),
-        });
-        this._closeButton.add_constraint(new Clutter.BindConstraint({
-            source: this._borderCenter,
-            coordinate: Clutter.BindCoordinate.POSITION,
-        }));
-        this._closeButton.add_constraint(new Clutter.AlignConstraint({
-            source: this._borderCenter,
-            align_axis: Clutter.AlignAxis.X_AXIS,
-            pivot_point: new Graphene.Point({ x: 0.5, y: -1 }),
-            factor: this._closeButtonSide === St.Side.LEFT ? 0 : 1,
-        }));
-        this._closeButton.add_constraint(new Clutter.AlignConstraint({
-            source: this._borderCenter,
-            align_axis: Clutter.AlignAxis.Y_AXIS,
-            pivot_point: new Graphene.Point({ x: -1, y: 0.5 }),
-            factor: 0,
-        }));
-        this._closeButton.connect('clicked', () => this.deleteAll());
-
-        this.add_child(this._borderCenter);
-        this.add_child(this._border);
-        this.add_child(this._title);
-        this.add_child(this._closeButton);
-    }
-
-    vfunc_get_preferred_width(forHeight) {
-        const themeNode = this.get_theme_node();
-
-        // Only include window previews in size request, not chrome
-        const [minWidth, natWidth] =
-            this._windowContainer.get_preferred_width(
-                themeNode.adjust_for_height(forHeight));
-
-        return themeNode.adjust_preferred_width(minWidth, natWidth);
-    }
-
-    vfunc_get_preferred_height(forWidth) {
-        const themeNode = this.get_theme_node();
-        const [minHeight, natHeight] =
-            this._windowContainer.get_preferred_height(
-                themeNode.adjust_for_width(forWidth));
-
-        return themeNode.adjust_preferred_height(minHeight, natHeight);
-    }
-
-    vfunc_allocate(box) {
-        this.set_allocation(box);
-
-        for (const child of this)
-            child.allocate_available_size(0, 0, box.get_width(), box.get_height());
-    }
-
-    _onBorderStyleChanged() {
-        let borderNode = this._border.get_theme_node();
-        this._borderSize = borderNode.get_border_width(St.Side.TOP);
-
-        // Increase the size of the border actor so the border outlines
-        // the bounding box
-        this._borderConstraint.offset = this._borderSize * 2;
-        this._borderCenterConstraint.offset = this._borderSize;
-    }
-
-    _windowCanClose() {
-        return this.metaWindow.can_close() &&
-               !this.hasAttachedDialogs();
-    }
-
-    _getCaption() {
-        if (this.metaWindow.title)
-            return this.metaWindow.title;
-
-        let tracker = Shell.WindowTracker.get_default();
-        let app = tracker.get_window_app(this.metaWindow);
-        return app.get_name();
-    }
-
-    chromeHeights() {
-        this._border.ensure_style();
-        this._title.ensure_style();
-        const [, closeButtonHeight] = this._closeButton.get_preferred_height(-1);
-        const [, titleHeight] = this._title.get_preferred_height(-1);
-
-        const topOversize = (this._borderSize / 2) + (closeButtonHeight / 2);
-        const bottomOversize = Math.max(
-            this._borderSize,
-            (titleHeight / 2) + (this._borderSize / 2));
-
-        return [topOversize, bottomOversize];
-    }
-
-    chromeWidths() {
-        this._border.ensure_style();
-        const [, closeButtonWidth] = this._closeButton.get_preferred_width(-1);
-
-        const leftOversize = this._closeButtonSide === St.Side.LEFT
-            ? (this._borderSize / 2) + (closeButtonWidth / 2)
-            : this._borderSize;
-        const rightOversize = this._closeButtonSide === St.Side.LEFT
-            ? this._borderSize
-            : (this._borderSize / 2) + (closeButtonWidth / 2);
-
-        return [leftOversize, rightOversize];
-    }
-
-    showOverlay(animate) {
-        const ongoingTransition = this._border.get_transition('opacity');
-
-        // Don't do anything if we're fully visible already
-        if (this._border.visible && !ongoingTransition)
-            return;
-
-        // If we're supposed to animate and an animation in our direction
-        // is already happening, let that one continue
-        if (animate &&
-            ongoingTransition &&
-            ongoingTransition.get_interval().peek_final_value() === 255)
-            return;
-
-        const toShow = this._windowCanClose()
-            ? [this._border, this._title, this._closeButton]
-            : [this._border, this._title];
-
-        toShow.forEach(a => {
-            a.opacity = 0;
-            a.show();
-            a.ease({
-                opacity: 255,
-                duration: animate ? WINDOW_OVERLAY_FADE_TIME : 0,
-                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            });
-        });
-
-        this.emit('show-chrome');
-    }
-
-    hideOverlay(animate) {
-        const ongoingTransition = this._border.get_transition('opacity');
-
-        // Don't do anything if we're fully hidden already
-        if (!this._border.visible && !ongoingTransition)
-            return;
-
-        // If we're supposed to animate and an animation in our direction
-        // is already happening, let that one continue
-        if (animate &&
-            ongoingTransition &&
-            ongoingTransition.get_interval().peek_final_value() === 0)
-            return;
-
-        [this._border, this._title, this._closeButton].forEach(a => {
-            a.opacity = 255;
-            a.ease({
-                opacity: 0,
-                duration: animate ? WINDOW_OVERLAY_FADE_TIME : 0,
-                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-                onComplete: () => a.hide(),
-            });
-        });
-    }
-
-    _addWindow(metaWindow) {
-        const windowActor = metaWindow.get_compositor_private();
-        const clone = new Clutter.Clone({ source: windowActor });
-
-        // We expect this to be used for all interaction rather than
-        // the ClutterClone; as the former is reactive and the latter
-        // is not, this just works for most cases. However, for DND all
-        // actors are picked, so DND operations would operate on the clone.
-        // To avoid this, we hide it from pick.
-        Shell.util_set_hidden_from_pick(clone, true);
-
-        this._windowContainer.layout_manager.addWindow(clone, metaWindow);
-    }
-
-    vfunc_has_overlaps() {
-        return this.hasAttachedDialogs();
-    }
-
-    set slot(slot) {
-        this._slot = slot;
-    }
-
-    get slot() {
-        if (this.inDrag)
-            return this._dragSlot;
-        else
-            return this._slot;
-    }
-
-    deleteAll() {
-        const windows = this._windowContainer.layout_manager.getWindows();
-
-        // Delete all windows, starting from the bottom-most (most-modal) one
-        for (const window of windows.reverse()) {
-            const metaWindow =
-                this._windowContainer.layout_manager.getMetaWindow(window);
-
-            metaWindow.delete(global.get_current_time());
-        }
-
-        this._closeRequested = true;
-    }
-
-    addDialog(win) {
-        let parent = win.get_transient_for();
-        while (parent.is_attached_dialog())
-            parent = parent.get_transient_for();
-
-        // Display dialog if it is attached to our metaWindow
-        if (win.is_attached_dialog() && parent == this.metaWindow)
-            this._addWindow(win);
-
-        // The dialog popped up after the user tried to close the window,
-        // assume it's a close confirmation and leave the overview
-        if (this._closeRequested)
-            this._activate();
-    }
-
-    hasAttachedDialogs() {
-        return this._windowContainer.layout_manager.getWindows().length > 1;
-    }
-
-    _updateAttachedDialogs() {
-        let iter = win => {
-            let actor = win.get_compositor_private();
-
-            if (!actor)
-                return false;
-            if (!win.is_attached_dialog())
-                return false;
-
-            this._addWindow(win);
-            win.foreach_transient(iter);
-            return true;
-        };
-        this.metaWindow.foreach_transient(iter);
-    }
-
-    get boundingBox() {
-        const box = this._windowContainer.layout_manager.bounding_box;
-
-        return {
-            x: box.x1,
-            y: box.y1,
-            width: box.get_width(),
-            height: box.get_height(),
-        };
-    }
-
-    get windowCenter() {
-        const box = this._windowContainer.layout_manager.bounding_box;
-
-        return new Graphene.Point({
-            x: box.get_x() + box.get_width() / 2,
-            y: box.get_y() + box.get_height() / 2,
-        });
-    }
-
-    // Find the actor just below us, respecting reparenting done by DND code
-    getActualStackAbove() {
-        if (this._stackAbove == null)
-            return null;
-
-        if (this.inDrag) {
-            if (this._stackAbove._delegate)
-                return this._stackAbove._delegate.getActualStackAbove();
-            else
-                return null;
-        } else {
-            return this._stackAbove;
-        }
-    }
-
-    setStackAbove(actor) {
-        this._stackAbove = actor;
-        if (this.inDrag)
-            // We'll fix up the stack after the drag
-            return;
-
-        let parent = this.get_parent();
-        let actualAbove = this.getActualStackAbove();
-        if (actualAbove == null)
-            parent.set_child_below_sibling(this, null);
-        else
-            parent.set_child_above_sibling(this, actualAbove);
-    }
-
-    _onDestroy() {
-        this.realWindow.disconnect(this._windowDestroyId);
-
-        this.metaWindow._delegate = null;
-        this._delegate = null;
-
-        this.metaWindow.disconnect(this._updateCaptionId);
-
-        if (this._longPressLater) {
-            Meta.later_remove(this._longPressLater);
-            delete this._longPressLater;
-        }
-
-        if (this._idleHideOverlayId > 0) {
-            GLib.source_remove(this._idleHideOverlayId);
-            this._idleHideOverlayId = 0;
-        }
-
-        if (this.inDrag) {
-            this.emit('drag-end');
-            this.inDrag = false;
-        }
-    }
-
-    _activate() {
-        this._selected = true;
-        this.emit('selected', global.get_current_time());
-    }
-
-    vfunc_enter_event(crossingEvent) {
-        this.showOverlay(true);
-        return super.vfunc_enter_event(crossingEvent);
-    }
-
-    vfunc_leave_event(crossingEvent) {
-        if (this._idleHideOverlayId > 0)
-            GLib.source_remove(this._idleHideOverlayId);
-
-        this._idleHideOverlayId = GLib.timeout_add(
-            GLib.PRIORITY_DEFAULT,
-            WINDOW_OVERLAY_IDLE_HIDE_TIMEOUT, () => {
-                if (this._closeButton['has-pointer'] ||
-                    this._title['has-pointer'])
-                    return GLib.SOURCE_CONTINUE;
-
-                if (!this['has-pointer'])
-                    this.hideOverlay(true);
-
-                this._idleHideOverlayId = 0;
-                return GLib.SOURCE_REMOVE;
-            });
-
-        GLib.Source.set_name_by_id(this._idleHideOverlayId, '[gnome-shell] this._idleHideOverlayId');
-
-        return super.vfunc_leave_event(crossingEvent);
-    }
-
-    vfunc_key_focus_in() {
-        super.vfunc_key_focus_in();
-        this.showOverlay(true);
-    }
-
-    vfunc_key_focus_out() {
-        super.vfunc_key_focus_out();
-        this.hideOverlay(true);
-    }
-
-    vfunc_key_press_event(keyEvent) {
-        let symbol = keyEvent.keyval;
-        let isEnter = symbol == Clutter.KEY_Return || symbol == Clutter.KEY_KP_Enter;
-        if (isEnter) {
-            this._activate();
-            return true;
-        }
-
-        return super.vfunc_key_press_event(keyEvent);
-    }
-
-    _onClicked() {
-        this._activate();
-    }
-
-    _onLongPress(action, actor, state) {
-        // Take advantage of the Clutter policy to consider
-        // a long-press canceled when the pointer movement
-        // exceeds dnd-drag-threshold to manually start the drag
-        if (state == Clutter.LongPressState.CANCEL) {
-            let event = Clutter.get_current_event();
-            this._dragTouchSequence = event.get_event_sequence();
-
-            if (this._longPressLater)
-                return true;
-
-            // A click cancels a long-press before any click handler is
-            // run - make sure to not start a drag in that case
-            this._longPressLater = Meta.later_add(Meta.LaterType.BEFORE_REDRAW, () => {
-                delete this._longPressLater;
-                if (this._selected)
-                    return;
-                let [x, y] = action.get_coords();
-                action.release();
-                this._draggable.startDrag(x, y, global.get_current_time(), this._dragTouchSequence, event.get_device());
-            });
-        } else {
-            this.showOverlay(true);
-        }
-        return true;
-    }
-
-    _onDragBegin(_draggable, _time) {
-        this._dragSlot = this._slot;
-        this.inDrag = true;
-        this.hideOverlay(false);
-        this.emit('drag-begin');
-    }
-
-    handleDragOver(source, actor, x, y, time) {
-        return this._workspace.handleDragOver(source, actor, x, y, time);
-    }
-
-    acceptDrop(source, actor, x, y, time) {
-        return this._workspace.acceptDrop(source, actor, x, y, time);
-    }
-
-    _onDragCancelled(_draggable, _time) {
-        this.emit('drag-cancelled');
-    }
-
-    _onDragEnd(_draggable, _time, _snapback) {
-        this.inDrag = false;
-
-        // We may not have a parent if DnD completed successfully, in
-        // which case our clone will shortly be destroyed and replaced
-        // with a new one on the target workspace.
-        let parent = this.get_parent();
-        if (parent !== null) {
-            if (this._stackAbove == null)
-                parent.set_child_below_sibling(this, null);
-            else
-                parent.set_child_above_sibling(this, this._stackAbove);
-        }
-
-        if (this['has-pointer'])
-            this.showOverlay(true);
-
-        this.emit('drag-end');
-    }
-});
 
 var WindowPositionFlags = {
     NONE: 0,
@@ -836,13 +91,13 @@ var WindowPositionFlags = {
 // simply windowScale * layoutScale... almost.
 //
 // There's one additional constraint: the thumbnail scale must never be
-// larger than WINDOW_CLONE_MAXIMUM_SCALE, which means that the inequality:
+// larger than WINDOW_PREVIEW_MAXIMUM_SCALE, which means that the inequality:
 //
-//   windowScale * layoutScale <= WINDOW_CLONE_MAXIMUM_SCALE
+//   windowScale * layoutScale <= WINDOW_PREVIEW_MAXIMUM_SCALE
 //
 // must always be true. This is for each individual window -- while we
 // could adjust layoutScale to make the largest thumbnail smaller than
-// WINDOW_CLONE_MAXIMUM_SCALE, it would shrink windows which are already
+// WINDOW_PREVIEW_MAXIMUM_SCALE, it would shrink windows which are already
 // under the inequality. To solve this, we simply cheat: we simply keep
 // each window's "cell" area to be the same, but we shrink the thumbnail
 // and center it horizontally, and align it to the bottom vertically.
@@ -937,7 +192,8 @@ var LayoutStrategy = class {
         let verticalScale = spacedHeight / layout.gridHeight;
 
         // Thumbnails should be less than 70% of the original size
-        let scale = Math.min(horizontalScale, verticalScale, WINDOW_CLONE_MAXIMUM_SCALE);
+        let scale = Math.min(
+            horizontalScale, verticalScale, WINDOW_PREVIEW_MAXIMUM_SCALE);
 
         let scaledLayoutWidth = layout.gridWidth * scale + hspacing;
         let scaledLayoutHeight = layout.gridHeight * scale + vspacing;
@@ -1005,7 +261,7 @@ var LayoutStrategy = class {
                 let cellWidth = window.boundingBox.width * s;
                 let cellHeight = window.boundingBox.height * s;
 
-                s = Math.min(s, WINDOW_CLONE_MAXIMUM_SCALE);
+                s = Math.min(s, WINDOW_PREVIEW_MAXIMUM_SCALE);
                 let cloneWidth = window.boundingBox.width * s;
                 const cloneHeight = window.boundingBox.height * s;
 
@@ -1174,7 +430,8 @@ class Workspace extends St.Widget {
 
         this.connect('destroy', this._onDestroy.bind(this));
 
-        let windows = global.get_window_actors().filter(this._isMyWindow, this);
+        const windows = global.get_window_actors().map(a => a.meta_window)
+            .filter(this._isMyWindow, this);
 
         // Create clones for windows that should be
         // visible in the Overview
@@ -1210,7 +467,7 @@ class Workspace extends St.Widget {
 
     vfunc_get_focus_chain() {
         return this.get_children().filter(c => c.visible).sort((a, b) => {
-            if (a instanceof WindowClone && b instanceof WindowClone)
+            if (a instanceof WindowPreview && b instanceof WindowPreview)
                 return a.slotId - b.slotId;
 
             return 0;
@@ -1361,7 +618,6 @@ class Workspace extends St.Widget {
 
             const cloneWidth = cellWidth;
             const cloneHeight = cellHeight;
-            clone.slot = [x, y, cloneWidth, cloneHeight];
 
             if (!clone.positioned) {
                 // This window appeared after the overview was already up
@@ -1474,7 +730,7 @@ class Workspace extends St.Widget {
                 const [transformedWidth, transformedHeight] =
                     clone.get_transformed_size();
 
-                win._overviewHint = {
+                metaWin._overviewHint = {
                     x: stageX,
                     y: stageY,
                     width: transformedWidth,
@@ -1530,10 +786,10 @@ class Workspace extends St.Widget {
         if (this._lookupIndex(metaWin) != -1)
             return;
 
-        if (!this._isMyWindow(win))
+        if (!this._isMyWindow(metaWin))
             return;
 
-        if (!this._isOverviewWindow(win)) {
+        if (!this._isOverviewWindow(metaWin)) {
             if (metaWin.get_transient_for() == null)
                 return;
 
@@ -1549,16 +805,15 @@ class Workspace extends St.Widget {
             return;
         }
 
-        let clone = this._addWindowClone(win, false);
+        let clone = this._addWindowClone(metaWin, false);
 
-        if (win._overviewHint) {
-            let x = win._overviewHint.x - this.x;
-            let y = win._overviewHint.y - this.y;
-            const width = win._overviewHint.width;
-            const height = win._overviewHint.height;
-            delete win._overviewHint;
+        if (metaWin._overviewHint) {
+            let x = metaWin._overviewHint.x - this.x;
+            let y = metaWin._overviewHint.y - this.y;
+            const width = metaWin._overviewHint.width;
+            const height = metaWin._overviewHint.height;
+            delete metaWin._overviewHint;
 
-            clone.slot = [x, y, width, height];
             clone.positioned = true;
 
             clone.set_position(x, y);
@@ -1815,33 +1070,33 @@ class Workspace extends St.Widget {
         this._recalculateWindowPositions(WindowPositionFlags.INITIAL);
     }
 
-    // Tests if @actor belongs to this workspaces and monitor
-    _isMyWindow(actor) {
-        let win = actor.meta_window;
-        return (this.metaWorkspace == null || win.located_on_workspace(this.metaWorkspace)) &&
-            (win.get_monitor() == this.monitorIndex);
+    _isMyWindow(window) {
+        const isOnWorkspace = this.metaWorkspace === null ||
+            window.located_on_workspace(this.metaWorkspace);
+        const isOnMonitor = window.get_monitor() === this.monitorIndex;
+
+        return isOnWorkspace && isOnMonitor;
     }
 
-    // Tests if @win should be shown in the Overview
-    _isOverviewWindow(win) {
-        return !win.get_meta_window().skip_taskbar;
+    _isOverviewWindow(window) {
+        return !window.skip_taskbar;
     }
 
     // Create a clone of a (non-desktop) window and add it to the window list
-    _addWindowClone(win, positioned) {
-        let clone = new WindowClone(win, this);
+    _addWindowClone(metaWindow, positioned) {
+        let clone = new WindowPreview(metaWindow, this);
         clone.positioned = positioned;
 
         clone.connect('selected',
                       this._onCloneSelected.bind(this));
         clone.connect('drag-begin', () => {
-            Main.overview.beginWindowDrag(clone.metaWindow);
+            Main.overview.beginWindowDrag(metaWindow);
         });
         clone.connect('drag-cancelled', () => {
-            Main.overview.cancelledWindowDrag(clone.metaWindow);
+            Main.overview.cancelledWindowDrag(metaWindow);
         });
         clone.connect('drag-end', () => {
-            Main.overview.endWindowDrag(clone.metaWindow);
+            Main.overview.endWindowDrag(metaWindow);
         });
         clone.connect('size-changed', () => {
             this._recalculateWindowPositions(WindowPositionFlags.NONE);
@@ -1857,7 +1112,7 @@ class Workspace extends St.Widget {
             });
         });
         clone.connect('destroy', () => {
-            this._removeWindowClone(clone.metaWindow);
+            this._removeWindowClone(metaWindow);
         });
 
         this.add_child(clone);
@@ -1978,7 +1233,7 @@ class Workspace extends St.Widget {
 
     // Draggable target interface
     handleDragOver(source, _actor, _x, _y, _time) {
-        if (source.realWindow && !this._isMyWindow(source.realWindow))
+        if (source.metaWindow && !this._isMyWindow(source.metaWindow))
             return DND.DragMotionResult.MOVE_DROP;
         if (source.app && source.app.can_open_new_window())
             return DND.DragMotionResult.COPY_DROP;
@@ -1994,29 +1249,27 @@ class Workspace extends St.Widget {
             ? this.metaWorkspace.index()
             : workspaceManager.get_active_workspace_index();
 
-        if (source.realWindow) {
-            let win = source.realWindow;
-            if (this._isMyWindow(win))
+        if (source.metaWindow) {
+            const window = source.metaWindow;
+            if (this._isMyWindow(window))
                 return false;
 
             // Set a hint on the Mutter.Window so its initial position
             // in the new workspace will be correct
-            win._overviewHint = {
+            window._overviewHint = {
                 x: actor.x,
                 y: actor.y,
                 width: actor.width,
                 heigth: actor.height,
             };
 
-            let metaWindow = win.get_meta_window();
-
             // We need to move the window before changing the workspace, because
             // the move itself could cause a workspace change if the window enters
             // the primary monitor
-            if (metaWindow.get_monitor() != this.monitorIndex)
-                metaWindow.move_to_monitor(this.monitorIndex);
+            if (window.get_monitor() != this.monitorIndex)
+                window.move_to_monitor(this.monitorIndex);
 
-            metaWindow.change_workspace_by_index(workspaceIndex, false);
+            window.change_workspace_by_index(workspaceIndex, false);
             return true;
         } else if (source.app && source.app.can_open_new_window()) {
             if (source.animateLaunchAtPos)
