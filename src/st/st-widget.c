@@ -601,8 +601,11 @@ st_widget_get_theme_node (StWidget *widget)
 
       if (stage == NULL)
         {
+          g_autofree char *desc = st_describe_actor (CLUTTER_ACTOR (widget));
+
           g_critical ("st_widget_get_theme_node called on the widget %s which is not in the stage.",
-                      st_describe_actor (CLUTTER_ACTOR (widget)));
+                      desc);
+
           return g_object_new (ST_TYPE_THEME_NODE, NULL);
         }
 
