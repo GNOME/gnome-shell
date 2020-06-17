@@ -815,6 +815,26 @@ class Workspace extends St.Widget {
         if (monitorIndex != Main.layoutManager.primaryIndex)
             this.add_style_class_name('external-monitor');
 
+        this._hideClickAction = new Clutter.ClickAction();
+        this._hideClickAction.connect('clicked', action => {
+            const scaleFactor =
+                St.ThemeContext.get_for_stage(global.stage).scale_factor;
+            const threshold = St.Settings.get().drag_threshold * scaleFactor;
+
+            const event = Clutter.get_current_event();
+            const [pressX, pressY] = action.get_coords();
+            const [releaseX, releaseY] = event.get_coords();
+
+            if (Math.abs(pressX - releaseX) > threshold ||
+                Math.abs(pressY - releaseY) > threshold)
+                return;
+
+            if ((action.get_button() === 1 || action.get_button() === 0) &&
+                this.isEmpty())
+                Main.overview.hide();
+        });
+        this.add_action(this._hideClickAction);
+
         this.connect('style-changed', this._onStyleChanged.bind(this));
         this.connect('destroy', this._onDestroy.bind(this));
 
@@ -1391,6 +1411,10 @@ class Workspace extends St.Widget {
                       this._onCloneSelected.bind(this));
         clone.connect('drag-begin', () => {
             Main.overview.beginWindowDrag(metaWindow);
+
+            // The ClutterClickAction of the clone will consume the
+            // BUTTON_RELEASE event, so release our ClickAction now
+            this._hideClickAction.release();
         });
         clone.connect('drag-cancelled', () => {
             Main.overview.cancelledWindowDrag(metaWindow);
@@ -1446,6 +1470,11 @@ class Workspace extends St.Widget {
         if (this.metaWorkspace)
             wsIndex = this.metaWorkspace.index();
         Main.activateWindow(clone.metaWindow, time, wsIndex);
+
+        // The clone is usually selected using a ClutterClickAction,
+        // which just consumed the BUTTON_RELEASE event, so release our
+        // ClickAction
+        this._hideClickAction.release();
     }
 
     // Draggable target interface
