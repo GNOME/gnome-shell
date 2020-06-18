@@ -2235,65 +2235,6 @@ font_size_from_term (StThemeNode *node,
   return FALSE;
 }
 
-static gboolean
-font_weight_from_term (CRTerm      *term,
-                       PangoWeight *weight,
-                       gboolean    *weight_absolute)
-{
-  if (term->type == TERM_NUMBER)
-    {
-      int weight_int;
-
-      /* The spec only allows numeric weights from 100-900, though Pango
-       * will handle any number. We just let anything through.
-       */
-      if (term->content.num->type != NUM_GENERIC)
-        return FALSE;
-
-      weight_int = (int)(0.5 + term->content.num->val);
-
-      *weight = weight_int;
-      *weight_absolute = TRUE;
-
-    }
-  else if (term->type == TERM_IDENT)
-    {
-      /* FIXME: handle INHERIT */
-
-      if (strcmp (term->content.str->stryng->str, "bold") == 0)
-        {
-          *weight = PANGO_WEIGHT_BOLD;
-          *weight_absolute = TRUE;
-        }
-      else if (strcmp (term->content.str->stryng->str, "normal") == 0)
-        {
-          *weight = PANGO_WEIGHT_NORMAL;
-          *weight_absolute = TRUE;
-        }
-      else if (strcmp (term->content.str->stryng->str, "bolder") == 0)
-        {
-          *weight = PANGO_WEIGHT_BOLD;
-          *weight_absolute = FALSE;
-        }
-      else if (strcmp (term->content.str->stryng->str, "lighter") == 0)
-        {
-          *weight = PANGO_WEIGHT_LIGHT;
-          *weight_absolute = FALSE;
-        }
-      else
-        {
-          return FALSE;
-        }
-
-    }
-  else
-    {
-      return FALSE;
-    }
-
-  return TRUE;
-}
-
 const PangoFontDescription *
 st_theme_node_get_font (StThemeNode *node)
 {
@@ -2303,13 +2244,13 @@ st_theme_node_get_font (StThemeNode *node)
   PangoVariant variant = PANGO_VARIANT_NORMAL;
   gboolean variant_set = FALSE;
   PangoWeight weight = PANGO_WEIGHT_NORMAL;
-  gboolean weight_absolute = TRUE;
   gboolean weight_set = FALSE;
   double size = 0.;
   gboolean size_set = FALSE;
 
   char *family = NULL;
   double parent_size;
+  PangoWeight parent_weight;
   int i;
 
   if (node->font_desc)
@@ -2317,11 +2258,14 @@ st_theme_node_get_font (StThemeNode *node)
 
   node->font_desc = pango_font_description_copy (get_parent_font (node));
   parent_size = pango_font_description_get_size (node->font_desc);
+
   if (!pango_font_description_get_size_is_absolute (node->font_desc))
     {
       double resolution = clutter_backend_get_resolution (clutter_get_default_backend ());
       parent_size *= (resolution / 72.);
     }
+
+  parent_weight = pango_font_description_get_weight (node->font_desc);
 
   ensure_properties (node);
 
@@ -2334,7 +2278,6 @@ st_theme_node_get_font (StThemeNode *node)
           PangoStyle tmp_style = PANGO_STYLE_NORMAL;
           PangoVariant tmp_variant = PANGO_VARIANT_NORMAL;
           PangoWeight tmp_weight = PANGO_WEIGHT_NORMAL;
-          gboolean tmp_weight_absolute = TRUE;
           double tmp_size;
           CRTerm *term = decl->value;
 
@@ -2348,7 +2291,7 @@ st_theme_node_get_font (StThemeNode *node)
                 continue;
               if (stylish_parse_font_variant_single_term (term, &tmp_variant) == VALUE_FOUND)
                 continue;
-              if (font_weight_from_term (term, &tmp_weight, &tmp_weight_absolute))
+              if (stylish_parse_font_weight_single_term (term, parent_weight, &tmp_weight) == VALUE_FOUND)
                 continue;
 
               break;
@@ -2389,7 +2332,6 @@ st_theme_node_get_font (StThemeNode *node)
           font_style = tmp_style;
           font_style_set = TRUE;
           weight = tmp_weight;
-          weight_absolute = tmp_weight_absolute;
           weight_set = TRUE;
           variant = tmp_variant;
           variant_set = TRUE;
@@ -2411,7 +2353,7 @@ st_theme_node_get_font (StThemeNode *node)
           if (decl->value == NULL || decl->value->next != NULL)
             continue;
 
-          if (font_weight_from_term (decl->value, &weight, &weight_absolute))
+          if (stylish_parse_font_weight (decl->value, parent_weight, &weight) == VALUE_FOUND)
             weight_set = TRUE;
         }
       else if (strcmp (cr_declaration_name (decl), "font-style") == 0)
@@ -2455,32 +2397,11 @@ st_theme_node_get_font (StThemeNode *node)
     pango_font_description_set_absolute_size (node->font_desc, size);
 
   if (weight_set)
-    {
-      if (!weight_absolute)
-        {
-          /* bolder/lighter are supposed to switch between available styles, but with
-           * font substitution, that gets to be a pretty fuzzy concept. So we use
-           * a fixed step of 200. (The spec says 100, but that might not take us from
-           * normal to bold.
-           */
-
-          PangoWeight old_weight = pango_font_description_get_weight (node->font_desc);
-          if (weight == PANGO_WEIGHT_BOLD)
-            weight = old_weight + 200;
-          else
-            weight = old_weight - 200;
-
-          if (weight < 100)
-            weight = 100;
-          if (weight > 900)
-            weight = 900;
-        }
-
-      pango_font_description_set_weight (node->font_desc, weight);
-    }
+    pango_font_description_set_weight (node->font_desc, weight);
 
   if (font_style_set)
     pango_font_description_set_style (node->font_desc, font_style);
+
   if (variant_set)
     pango_font_description_set_variant (node->font_desc, variant);
 
