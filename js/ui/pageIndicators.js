@@ -120,6 +120,10 @@ var PageIndicators = GObject.registerClass({
         for (let i = 0; i < children.length; i++)
             this._updateIndicator(children[i], i);
     }
+
+    get nPages() {
+        return this._nPages;
+    }
 });
 
 var AnimatedPageIndicators = GObject.registerClass(
