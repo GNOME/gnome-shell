@@ -63,6 +63,18 @@ typedef void (*StClipboardCallbackFunc) (StClipboard *clipboard,
                                          const gchar *text,
                                          gpointer     user_data);
 
+/**
+ * StClipboardContentCallbackFunc:
+ * @clipboard: A #StClipboard
+ * @bytes: content from the clipboard
+ * @user_data: user data
+ *
+ * Callback function called when content is retrieved from the clipboard.
+ */
+typedef void (*StClipboardContentCallbackFunc) (StClipboard *clipboard,
+                                                GBytes      *bytes,
+                                                gpointer     user_data);
+
 StClipboard* st_clipboard_get_default (void);
 
 GList * st_clipboard_get_mimetypes (StClipboard             *clipboard,
@@ -80,6 +92,11 @@ void st_clipboard_set_content (StClipboard          *clipboard,
                                StClipboardType       type,
                                const gchar          *mimetype,
                                GBytes               *bytes);
+void st_clipboard_get_content (StClipboard                    *clipboard,
+                               StClipboardType                 type,
+                               const gchar                    *mimetype,
+                               StClipboardContentCallbackFunc  callback,
+                               gpointer                        user_data);
 
 void st_clipboard_set_selection (MetaSelection *selection);
 
