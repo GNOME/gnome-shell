@@ -97,7 +97,7 @@ var WindowPreviewLayout = GObject.registerClass({
 
                 child.allocate(childBox);
             } else {
-                child.allocate_preferred_size();
+                child.allocate_preferred_size(0, 0);
             }
         }
     }
