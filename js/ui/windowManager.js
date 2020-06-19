@@ -2115,8 +2115,16 @@ var WindowManager = class {
             newWs = workspaceManager.get_workspace_by_index(workspaceManager.n_workspaces - 1);
         } else if (isNaN(target)) {
             // Prepend a new workspace dynamically
-            if (workspaceManager.get_active_workspace_index() == 0 &&
-                action == 'move' && target == 'up' && this._isWorkspacePrepended == false) {
+            let prependTarget;
+            if (vertical)
+                prependTarget = 'up';
+            else if (rtl)
+                prependTarget = 'right';
+            else
+                prependTarget = 'left';
+            if (workspaceManager.get_active_workspace_index() === 0 &&
+                action === 'move' && target === prependTarget &&
+                this._isWorkspacePrepended === false) {
                 this.insertWorkspace(0);
                 this._isWorkspacePrepended = true;
             }
