@@ -67,8 +67,12 @@ var WindowPreviewLayout = GObject.registerClass({
     vfunc_allocate(container, box) {
         // If the scale isn't 1, we weren't allocated our preferred size
         // and have to scale the children allocations accordingly.
-        const scaleX = box.get_width() / this._boundingBox.get_width();
-        const scaleY = box.get_height() / this._boundingBox.get_height();
+        const scaleX = this._boundingBox.get_width() > 0
+            ? box.get_width() / this._boundingBox.get_width()
+            : 1;
+        const scaleY = this._boundingBox.get_height() > 0
+            ? box.get_height() / this._boundingBox.get_height()
+            : 1;
 
         const childBox = new Clutter.ActorBox();
 
