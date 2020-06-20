@@ -1,20 +1,22 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported WorkspaceAnimationController */
 
-const { Clutter, GObject, Meta, Shell } = imports.gi;
+const { Clutter, GObject, Meta, Shell, St } = imports.gi;
 
 const Main = imports.ui.main;
+const Layout = imports.ui.layout;
 const SwipeTracker = imports.ui.swipeTracker;
 
 const WINDOW_ANIMATION_TIME = 250;
 
 const WorkspaceGroup = GObject.registerClass(
 class WorkspaceGroup extends Clutter.Actor {
-    _init(controller, workspace) {
+    _init(controller, workspace, monitor) {
         super._init();
 
         this._controller = controller;
         this._workspace = workspace;
+        this._monitor = monitor;
         this._windows = [];
 
         this._refreshWindows();
@@ -29,6 +31,11 @@ class WorkspaceGroup extends Clutter.Actor {
             return false;
 
         if (!window.showing_on_its_workspace())
+            return false;
+
+        let geometry = global.display.get_monitor_geometry(this._monitor.index);
+        let [intersects, intersection_] = window.get_frame_rect().intersect(geometry);
+        if (!intersects)
             return false;
 
         if (window.is_on_all_workspaces())
@@ -51,8 +58,8 @@ class WorkspaceGroup extends Clutter.Actor {
         for (let window of windows) {
             let clone = new Clutter.Clone({
                 source: window,
-                x: window.x,
-                y: window.y,
+                x: window.x - this._monitor.x,
+                y: window.y - this._monitor.y,
             });
 
             this.add_actor(clone);
@@ -92,10 +99,11 @@ class WorkspaceGroup extends Clutter.Actor {
 
 const StickyGroup = GObject.registerClass(
 class StickyGroup extends Clutter.Actor {
-    _init(controller) {
+    _init(controller, monitor) {
         super._init();
 
         this._controller = controller;
+        this._monitor = monitor;
         this._windows = [];
 
         this._refreshWindows();
@@ -107,6 +115,11 @@ class StickyGroup extends Clutter.Actor {
 
     _shouldShowWindow(window) {
         if (!window.showing_on_its_workspace())
+            return false;
+
+        let geometry = global.display.get_monitor_geometry(this._monitor.index);
+        let [intersects, intersection_] = window.get_frame_rect().intersect(geometry);
+        if (!intersects)
             return false;
 
         return window.is_on_all_workspaces() || window === this._controller.movingWindow;
@@ -122,8 +135,8 @@ class StickyGroup extends Clutter.Actor {
         for (let window of windows) {
             let clone = new Clutter.Clone({
                 source: window,
-                x: window.x,
-                y: window.y,
+                x: window.x - this._monitor.x,
+                y: window.y - this._monitor.y,
             });
 
             this.add_actor(clone);
@@ -195,99 +208,129 @@ var WorkspaceAnimationController = class {
         let switchData = {};
 
         this._switchData = switchData;
-        switchData.stickyGroup = new StickyGroup(this);
-        switchData.workspaces = [];
+        switchData.monitors = [];
+
         switchData.gestureActivated = false;
         switchData.inProgress = false;
 
-        switchData.container = new Clutter.Actor();
-
-        wgroup.add_actor(switchData.stickyGroup);
-        wgroup.add_actor(switchData.container);
-
-        let x = 0;
-        let y = 0;
-
-        for (let i = 0; i < nWorkspaces; i++) {
-            let ws = workspaceManager.get_workspace_by_index(i);
-            let fullscreen = ws.list_windows().some(w => w.is_fullscreen());
-
-            if (i > 0 && vertical && !fullscreen) {
-                // We have to shift windows up or down by the height of the panel to prevent having a
-                // visible gap between the windows while switching workspaces. Since fullscreen windows
-                // hide the panel, they don't need to be shifted up or down.
-                y -= Main.panel.height;
-            }
-
-            let info = {
-                ws,
-                actor: new WorkspaceGroup(this, ws),
-                fullscreen,
-                x,
-                y,
+        for (let monitor of Main.layoutManager.monitors) {
+            let record = {
+                index: monitor.index,
+                clipBin: new St.Widget({
+                    x_expand: true,
+                    y_expand: true,
+                    clip_to_allocation: true,
+                }),
+                container: new Clutter.Actor(),
+                stickyGroup: new StickyGroup(this, monitor),
+                workspaces: [],
             };
 
-            if (vertical)
-                info.position = info.y / global.screen_height;
-            else if (Clutter.get_default_text_direction() === Clutter.TextDirection.RTL)
-                info.position = -info.x / global.screen_width;
-            else
-                info.position = info.x / global.screen_width;
+            let constraint = new Layout.MonitorConstraint({ index: monitor.index });
+            record.clipBin.add_constraint(constraint);
 
-            switchData.workspaces[i] = info;
-            switchData.container.add_actor(info.actor);
-            switchData.container.set_child_above_sibling(info.actor, null);
-            info.actor.set_position(x, y);
+            record.clipBin.add_actor(record.container);
+            record.clipBin.add_actor(record.stickyGroup);
 
-            if (vertical)
-                y += global.screen_height;
-            else if (Clutter.get_default_text_direction() === Clutter.TextDirection.RTL)
-                x -= global.screen_width;
-            else
-                x += global.screen_width;
+            wgroup.add_actor(record.clipBin);
+
+            let x = 0;
+            let y = 0;
+
+            for (let i = 0; i < nWorkspaces; i++) {
+                let ws = workspaceManager.get_workspace_by_index(i);
+                let fullscreen = ws.list_windows().some(w => w.get_monitor() == record.index && w.is_fullscreen());
+
+                if (i > 0 && vertical && !fullscreen && record.index === Main.layoutManager.primaryIndex) {
+                    // We have to shift windows up or down by the height of the panel to prevent having a
+                    // visible gap between the windows while switching workspaces. Since fullscreen windows
+                    // hide the panel, they don't need to be shifted up or down.
+                    y -= Main.panel.height;
+                }
+
+                let info = {
+                    ws,
+                    actor: new WorkspaceGroup(this, ws, monitor),
+                    fullscreen,
+                    x,
+                    y,
+                };
+
+                let geometry = Main.layoutManager.monitors[record.index];
+
+                if (vertical)
+                    info.position = info.y / geometry.height;
+                else if (Clutter.get_default_text_direction() === Clutter.TextDirection.RTL)
+                    info.position = -info.x / geometry.width;
+                else
+                    info.position = info.x / geometry.width;
+
+                record.workspaces[i] = info;
+                record.container.add_actor(info.actor);
+                record.container.set_child_above_sibling(info.actor, null);
+                info.actor.set_position(x, y);
+
+                if (vertical)
+                    y += geometry.height;
+                else if (Clutter.get_default_text_direction() === Clutter.TextDirection.RTL)
+                    x -= geometry.width;
+                else
+                    x += geometry.width;
+            }
+
+            record.clipBin.set_child_above_sibling(record.stickyGroup, null);
+
+            switchData.monitors.push(record);
         }
-
-        wgroup.set_child_above_sibling(switchData.stickyGroup, null);
     }
 
     _finishWorkspaceSwitch(switchData) {
         this._switchData = null;
 
-        switchData.container.destroy();
-        switchData.stickyGroup.destroy();
+        for (let monitor of switchData.monitors)
+            monitor.clipBin.destroy();
 
         this.movingWindow = null;
     }
 
     animateSwitchWorkspace(from, to, direction, onComplete) {
-        if (this._switchData)
-            this._switchData.container.remove_all_transitions();
+        if (this._switchData) {
+            for (let monitor of this._switchData.monitors)
+                monitor.container.remove_all_transitions();
+        }
 
         this._prepareWorkspaceSwitch();
         this._switchData.inProgress = true;
 
-        let fromWs = this._switchData.workspaces[from];
-        let toWs = this._switchData.workspaces[to];
+        for (let monitor of this._switchData.monitors) {
+            let fromWs = monitor.workspaces[from];
+            let toWs = monitor.workspaces[to];
 
-        this._switchData.container.x = -fromWs.x;
-        this._switchData.container.y = -fromWs.y;
+            monitor.container.x = -fromWs.x;
+            monitor.container.y = -fromWs.y;
 
-        this._switchData.container.ease({
-            x: -toWs.x,
-            y: -toWs.y,
-            duration: WINDOW_ANIMATION_TIME,
-            mode: Clutter.AnimationMode.EASE_OUT_CUBIC,
-            onComplete: () => {
-                this._finishWorkspaceSwitch(this._switchData);
-                onComplete();
-            },
-        });
+            let params = {
+                x: -toWs.x,
+                y: -toWs.y,
+                duration: WINDOW_ANIMATION_TIME,
+                mode: Clutter.AnimationMode.EASE_OUT_CUBIC,
+            };
+
+            if (monitor.index == Main.layoutManager.primaryIndex) {
+                params.onComplete = () => {
+                    this._finishWorkspaceSwitch(this._switchData);
+                    onComplete();
+                };
+            }
+
+            monitor.container.ease(params);
+        }
     }
 
-    _findClosestWorkspace(position) {
-        let distances = this._switchData.workspaces.map(ws => Math.abs(ws.position - position));
-        let index = distances.indexOf(Math.min(...distances));
-        return this._switchData.workspaces[index];
+    _findClosestWorkspaceIndex(position) {
+        let record = this._switchData.monitors[Main.layoutManager.primaryIndex];
+        let distances = record.workspaces.map(ws => Math.abs(ws.position - position));
+        return distances.indexOf(Math.min(...distances));
     }
 
     _switchWorkspaceBegin(tracker, monitor) {
@@ -301,49 +344,81 @@ var WorkspaceAnimationController = class {
             ? Clutter.Orientation.HORIZONTAL
             : Clutter.Orientation.VERTICAL;
 
-        let baseDistance = horiz ? global.screen_width : global.screen_height;
+        let geometry = Main.layoutManager.monitors[monitor];
+        let baseDistance = horiz ? geometry.width : geometry.height;
 
         let progress;
         let cancelProgress;
         if (this._switchData && this._switchData.gestureActivated) {
-            this._switchData.container.remove_all_transitions();
-            if (!horiz)
-                progress = -this._switchData.container.y / baseDistance;
-            else if (Clutter.get_default_text_direction() === Clutter.TextDirection.RTL)
-                progress = this._switchData.container.x / baseDistance;
-            else
-                progress = -this._switchData.container.x / baseDistance;
+            for (let record of this._switchData.monitors)
+                record.container.remove_all_transitions();
 
-            cancelProgress = this._findClosestWorkspace(progress).position;
+            let record = this._switchData.monitors[monitor];
+
+            if (!horiz)
+                progress = -record.container.y / baseDistance;
+            else if (Clutter.get_default_text_direction() === Clutter.TextDirection.RTL)
+                progress = record.container.x / baseDistance;
+            else
+                progress = -record.container.x / baseDistance;
+
+            let ws = record.workspaces[this._findClosestWorkspaceIndex(progress)];
+            cancelProgress = ws.position;
         } else {
             this._prepareWorkspaceSwitch();
 
             let activeIndex = workspaceManager.get_active_workspace_index();
-            let ws = this._switchData.workspaces[activeIndex];
+            let ws = this._switchData.monitors[monitor].workspaces[activeIndex];
 
             progress = cancelProgress = ws.position;
         }
 
-        let points = this._switchData.workspaces.map(ws => ws.position);
+        let points = this._switchData.monitors[monitor].workspaces.map(ws => ws.position);
+
+        this._switchData.baseMonitor = monitor;
 
         tracker.confirmSwipe(baseDistance, points, progress, cancelProgress);
+    }
+
+    _interpolateProgress(progress, monitor) {
+        let monitor1 = this._switchData.monitors[this._switchData.baseMonitor];
+        let monitor2 = monitor;
+
+        let points1 = monitor1.workspaces.map(ws => ws.position);
+        let points2 = monitor2.workspaces.map(ws => ws.position);
+
+        let upper = points1.indexOf(points1.find(p => p >= progress));
+        let lower = points1.indexOf(points1.slice().reverse().find(p => p <= progress));
+
+        if (points1[upper] === points1[lower])
+            return points2[upper];
+
+        let t = (progress - points1[lower]) / (points1[upper] - points1[lower]);
+
+        return points2[lower] + (points2[upper] - points2[lower]) * t;
     }
 
     _switchWorkspaceUpdate(tracker, progress) {
         if (!this._switchData)
             return;
 
-        let xPos = 0;
-        let yPos = 0;
+        for (let monitor of this._switchData.monitors) {
+            let xPos = 0;
+            let yPos = 0;
 
-        if (global.workspace_manager.layout_rows === -1)
-            yPos = -Math.round(progress * global.screen_height);
-        else if (Clutter.get_default_text_direction() === Clutter.TextDirection.RTL)
-            xPos = Math.round(progress * global.screen_width);
-        else
-            xPos = -Math.round(progress * global.screen_width);
+            let geometry = Main.layoutManager.monitors[monitor.index];
 
-        this._switchData.container.set_position(xPos, yPos);
+            let p = this._interpolateProgress(progress, monitor);
+
+            if (global.workspace_manager.layout_rows === -1)
+                yPos = -Math.round(p * geometry.height);
+            else if (Clutter.get_default_text_direction() === Clutter.TextDirection.RTL)
+                xPos = Math.round(p * geometry.width);
+            else
+                xPos = -Math.round(p * geometry.width);
+
+            monitor.container.set_position(xPos, yPos);
+        }
     }
 
     _switchWorkspaceEnd(tracker, duration, endProgress) {
@@ -352,22 +427,32 @@ var WorkspaceAnimationController = class {
 
         let workspaceManager = global.workspace_manager;
         let activeWorkspace = workspaceManager.get_active_workspace();
-        let newWs = this._findClosestWorkspace(endProgress);
 
         let switchData = this._switchData;
         switchData.gestureActivated = true;
 
-        this._switchData.container.ease({
-            x: -newWs.x,
-            y: -newWs.y,
-            duration,
-            mode: Clutter.AnimationMode.EASE_OUT_CUBIC,
-            onComplete: () => {
-                if (newWs.ws !== activeWorkspace)
-                    newWs.ws.activate(global.get_current_time());
-                this._finishWorkspaceSwitch(switchData);
-            },
-        });
+        let index = this._findClosestWorkspaceIndex(endProgress);
+
+        for (let monitor of this._switchData.monitors) {
+            let newWs = monitor.workspaces[index];
+
+            let params = {
+                x: -newWs.x,
+                y: -newWs.y,
+                duration,
+                mode: Clutter.AnimationMode.EASE_OUT_CUBIC,
+            };
+
+            if (monitor.index == Main.layoutManager.primaryIndex) {
+                params.onComplete = () => {
+                    if (newWs.ws !== activeWorkspace)
+                        newWs.ws.activate(global.get_current_time());
+                    this._finishWorkspaceSwitch(switchData);
+                };
+            }
+
+            monitor.container.ease(params);
+        }
     }
 
     isAnimating() {
