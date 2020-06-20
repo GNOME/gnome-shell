@@ -141,15 +141,14 @@ var WorkspaceAnimationController = class {
         const switchData = {};
 
         this._switchData = switchData;
-        switchData.movingWindowBin = new Clutter.Actor();
-        switchData.movingWindow = null;
+        switchData.stickyGroup = new WorkspaceGroup(null, this.movingWindow);
         switchData.workspaces = [];
         switchData.gestureActivated = false;
         switchData.inProgress = false;
 
         switchData.container = new Clutter.Actor();
 
-        wgroup.add_child(switchData.movingWindowBin);
+        wgroup.add_child(switchData.stickyGroup);
         wgroup.add_child(switchData.container);
 
         let x = 0;
@@ -199,38 +198,14 @@ var WorkspaceAnimationController = class {
         else
             switchData.container.x = -switchData.workspaces[activeWorkspaceIndex].x;
 
-        wgroup.set_child_above_sibling(switchData.movingWindowBin, null);
-
-        if (this.movingWindow) {
-            const windowActor = this.movingWindow.get_compositor_private();
-
-            switchData.movingWindow = {
-                windowActor,
-                parent: windowActor.get_parent(),
-            };
-
-            switchData.movingWindow.parent.remove_child(windowActor);
-            switchData.movingWindowBin.add_child(windowActor);
-            switchData.movingWindow.windowDestroyId = windowActor.connect('destroy', () => {
-                switchData.movingWindow = null;
-            });
-        }
+        wgroup.set_child_above_sibling(switchData.stickyGroup, null);
     }
 
     _finishWorkspaceSwitch(switchData) {
         this._switchData = null;
 
-        if (switchData.movingWindow) {
-            const record = switchData.movingWindow;
-            record.windowActor.disconnect(record.windowDestroyId);
-            switchData.movingWindowBin.remove_child(record.windowActor);
-            record.parent.add_child(record.windowActor);
-
-            switchData.movingWindow = null;
-        }
-
         switchData.container.destroy();
-        switchData.movingWindowBin.destroy();
+        switchData.stickyGroup.destroy();
 
         this.movingWindow = null;
     }
