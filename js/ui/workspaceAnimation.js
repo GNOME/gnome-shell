@@ -37,6 +37,11 @@ class WorkspaceGroup extends Clutter.Actor {
         const isSticky =
             window.is_on_all_workspaces() || window === this._movingWindow;
 
+        // No workspace means we should show windows that are on all workspaces
+        if (!this._workspace)
+            return isSticky;
+
+        // Otherwise only show windows that are (only) on that workspace
         return !isSticky && window.located_on_workspace(this._workspace);
     }
 
@@ -155,8 +160,7 @@ var WorkspaceAnimationController = class {
         const switchData = {};
 
         this._switchData = switchData;
-        switchData.movingWindowBin = new Clutter.Actor();
-        switchData.movingWindow = null;
+        switchData.stickyGroup = new WorkspaceGroup(null, this.movingWindow);
         switchData.workspaceGroups = [];
         switchData.gestureActivated = false;
         switchData.inProgress = false;
@@ -169,7 +173,7 @@ var WorkspaceAnimationController = class {
 
         Main.uiGroup.insert_child_above(switchData.backgroundGroup, global.window_group);
         Main.uiGroup.insert_child_above(switchData.container, switchData.backgroundGroup);
-        Main.uiGroup.insert_child_above(switchData.movingWindowBin, switchData.container);
+        Main.uiGroup.insert_child_above(switchData.stickyGroup, switchData.container);
 
         let x = 0;
         let y = 0;
@@ -208,38 +212,14 @@ var WorkspaceAnimationController = class {
             switchData.container.y = -activeGroup.y;
         else
             switchData.container.x = -activeGroup.x;
-
-        if (this.movingWindow) {
-            const windowActor = this.movingWindow.get_compositor_private();
-
-            switchData.movingWindow = {
-                windowActor,
-                parent: windowActor.get_parent(),
-            };
-
-            switchData.movingWindow.parent.remove_child(windowActor);
-            switchData.movingWindowBin.add_child(windowActor);
-            switchData.movingWindow.windowDestroyId = windowActor.connect('destroy', () => {
-                switchData.movingWindow = null;
-            });
-        }
     }
 
     _finishWorkspaceSwitch(switchData) {
         this._switchData = null;
 
-        if (switchData.movingWindow) {
-            const record = switchData.movingWindow;
-            record.windowActor.disconnect(record.windowDestroyId);
-            switchData.movingWindowBin.remove_child(record.windowActor);
-            record.parent.add_child(record.windowActor);
-
-            switchData.movingWindow = null;
-        }
-
         switchData.backgroundGroup.destroy();
         switchData.container.destroy();
-        switchData.movingWindowBin.destroy();
+        switchData.stickyGroup.destroy();
 
         this.movingWindow = null;
     }
