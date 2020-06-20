@@ -642,5 +642,7 @@ var SwipeTracker = GObject.registerClass({
 
         this._velocity = 0;
         this._state = State.SCROLLING;
+
+        this.emit('update', this._progress);
     }
 });
