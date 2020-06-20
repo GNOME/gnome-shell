@@ -86,6 +86,73 @@ class WorkspaceGroup extends Clutter.Actor {
     }
 });
 
+const StickyGroup = GObject.registerClass(
+class StickyGroup extends Clutter.Actor {
+    _init(movingWindow) {
+        super._init();
+
+        this._movingWindow = movingWindow;
+        this._windows = [];
+
+        this._refreshWindows();
+
+        this.connect('destroy', this._onDestroy.bind(this));
+        this._restackedId = global.display.connect('restacked',
+            this._refreshWindows.bind(this));
+    }
+
+    _shouldShowWindow(window) {
+        if (!window.showing_on_its_workspace())
+            return false;
+
+        return window.is_on_all_workspaces() || window === this._movingWindow;
+    }
+
+    _refreshWindows() {
+        if (this._windows.length > 0)
+            this._removeWindows();
+
+        const windows = global.get_window_actors().filter(w =>
+            this._shouldShowWindow(w.meta_window));
+
+        for (const windowActor of windows) {
+            const clone = new Clutter.Clone({
+                source: windowActor,
+                x: windowActor.x,
+                y: windowActor.y,
+            });
+
+            this.add_child(clone);
+            windowActor.hide();
+
+            const record = { windowActor, clone };
+
+            record.windowDestroyId = windowActor.connect('destroy', () => {
+                clone.destroy();
+                this._windows.splice(this._windows.indexOf(record), 1);
+            });
+
+            this._windows.push(record);
+        }
+    }
+
+    _removeWindows() {
+        for (const record of this._windows) {
+            record.windowActor.disconnect(record.windowDestroyId);
+            record.clone.destroy();
+
+            record.windowActor.show();
+        }
+
+        this._windows = [];
+    }
+
+    _onDestroy() {
+        global.display.disconnect(this._restackedId);
+        this._removeWindows();
+    }
+});
+
 var WorkspaceAnimationController = class {
     constructor() {
         this._movingWindow = null;
@@ -123,15 +190,14 @@ var WorkspaceAnimationController = class {
         const switchData = {};
 
         this._switchData = switchData;
-        switchData.movingWindowBin = new Clutter.Actor();
-        switchData.movingWindow = null;
+        switchData.stickyGroup = new StickyGroup(this.movingWindow);
         switchData.workspaces = [];
         switchData.gestureActivated = false;
         switchData.inProgress = false;
 
         switchData.container = new Clutter.Actor();
 
-        wgroup.add_child(switchData.movingWindowBin);
+        wgroup.add_child(switchData.stickyGroup);
         wgroup.add_child(switchData.container);
 
         let x = 0;
@@ -181,38 +247,14 @@ var WorkspaceAnimationController = class {
         else
             switchData.container.x = -switchData.workspaces[activeWorkspaceIndex].x;
 
-        wgroup.set_child_above_sibling(switchData.movingWindowBin, null);
-
-        if (this.movingWindow) {
-            const windowActor = this.movingWindow.get_compositor_private();
-
-            switchData.movingWindow = {
-                windowActor,
-                parent: windowActor.get_parent(),
-            };
-
-            switchData.movingWindow.parent.remove_child(windowActor);
-            switchData.movingWindowBin.add_child(windowActor);
-            switchData.movingWindow.windowDestroyId = windowActor.connect('destroy', () => {
-                switchData.movingWindow = null;
-            });
-        }
+        wgroup.set_child_above_sibling(switchData.stickyGroup, null);
     }
 
     _finishWorkspaceSwitch(switchData) {
         this._switchData = null;
 
-        if (switchData.movingWindow) {
-            const record = switchData.movingWindow;
-            record.windowActor.disconnect(record.windowDestroyId);
-            switchData.movingWindowBin.remove_child(record.windowActor);
-            record.parent.add_child(record.windowActor);
-
-            switchData.movingWindow = null;
-        }
-
         switchData.container.destroy();
-        switchData.movingWindowBin.destroy();
+        switchData.stickyGroup.destroy();
 
         this.movingWindow = null;
     }
