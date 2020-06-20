@@ -22,180 +22,6 @@ const ICON_OVERLAP = 0.7;
 
 const ICON_TITLE_SPACING = 6;
 
-var WindowPreviewLayout = GObject.registerClass({
-    Properties: {
-        'bounding-box': GObject.ParamSpec.boxed(
-            'bounding-box', 'Bounding box', 'Bounding box',
-            GObject.ParamFlags.READABLE,
-            Clutter.ActorBox.$gtype),
-    },
-}, class WindowPreviewLayout extends Clutter.LayoutManager {
-    _init() {
-        super._init();
-
-        this._container = null;
-        this._boundingBox = new Clutter.ActorBox();
-        this._windows = new Map();
-    }
-
-    _layoutChanged() {
-        let frameRect;
-
-        for (const windowInfo of this._windows.values()) {
-            const frame = windowInfo.metaWindow.get_frame_rect();
-            frameRect = frameRect?.union(frame) ?? frame;
-        }
-
-        if (!frameRect)
-            frameRect = new Meta.Rectangle();
-
-        const oldBox = this._boundingBox.copy();
-        this._boundingBox.set_origin(frameRect.x, frameRect.y);
-        this._boundingBox.set_size(frameRect.width, frameRect.height);
-
-        if (!this._boundingBox.equal(oldBox))
-            this.notify('bounding-box');
-
-        // Always call layout_changed(), a size or position change of an
-        // attached dialog might not affect the boundingBox
-        this.layout_changed();
-    }
-
-    vfunc_set_container(container) {
-        this._container = container;
-    }
-
-    vfunc_get_preferred_height(_container, _forWidth) {
-        return [0, this._boundingBox.get_height()];
-    }
-
-    vfunc_get_preferred_width(_container, _forHeight) {
-        return [0, this._boundingBox.get_width()];
-    }
-
-    vfunc_allocate(container, box) {
-        // If the scale isn't 1, we weren't allocated our preferred size
-        // and have to scale the children allocations accordingly.
-        const scaleX = this._boundingBox.get_width() > 0
-            ? box.get_width() / this._boundingBox.get_width()
-            : 1;
-        const scaleY = this._boundingBox.get_height() > 0
-            ? box.get_height() / this._boundingBox.get_height()
-            : 1;
-
-        const childBox = new Clutter.ActorBox();
-
-        for (const child of container) {
-            if (!child.visible)
-                continue;
-
-            const windowInfo = this._windows.get(child);
-            if (windowInfo) {
-                const bufferRect = windowInfo.metaWindow.get_buffer_rect();
-                childBox.set_origin(
-                    bufferRect.x - this._boundingBox.x1,
-                    bufferRect.y - this._boundingBox.y1);
-
-                const [, , natWidth, natHeight] = child.get_preferred_size();
-                childBox.set_size(natWidth, natHeight);
-
-                childBox.x1 *= scaleX;
-                childBox.x2 *= scaleX;
-                childBox.y1 *= scaleY;
-                childBox.y2 *= scaleY;
-
-                child.allocate(childBox);
-            } else {
-                child.allocate_preferred_size(0, 0);
-            }
-        }
-    }
-
-    /**
-     * addWindow:
-     * @param {Meta.Window} window: the MetaWindow instance
-     *
-     * Creates a ClutterActor drawing the texture of @window and adds it
-     * to the container. If @window is already part of the preview, this
-     * function will do nothing.
-     *
-     * @returns {Clutter.Actor} The newly created actor drawing @window
-     */
-    addWindow(window) {
-        const index = [...this._windows.values()].findIndex(info =>
-            info.metaWindow === window);
-
-        if (index !== -1)
-            return null;
-
-        const windowActor = window.get_compositor_private();
-        const actor = new Clutter.Clone({ source: windowActor });
-
-        this._windows.set(actor, {
-            metaWindow: window,
-            windowActor,
-            sizeChangedId: window.connect('size-changed', () =>
-                this._layoutChanged()),
-            positionChangedId: window.connect('position-changed', () =>
-                this._layoutChanged()),
-            windowActorDestroyId: windowActor.connect('destroy', () =>
-                actor.destroy()),
-            destroyId: actor.connect('destroy', () =>
-                this.removeWindow(window)),
-        });
-
-        this._container.add_child(actor);
-
-        this._layoutChanged();
-
-        return actor;
-    }
-
-    /**
-     * removeWindow:
-     * @param {Meta.Window} window: the window to remove from the preview
-     *
-     * Removes a MetaWindow @window from the preview which has been added
-     * previously using addWindow(). If @window is not part of preview,
-     * this function will do nothing.
-     */
-    removeWindow(window) {
-        const entry = [...this._windows].find(
-            ([, i]) => i.metaWindow === window);
-
-        if (!entry)
-            return;
-
-        const [actor, windowInfo] = entry;
-
-        windowInfo.metaWindow.disconnect(windowInfo.sizeChangedId);
-        windowInfo.metaWindow.disconnect(windowInfo.positionChangedId);
-        windowInfo.windowActor.disconnect(windowInfo.windowActorDestroyId);
-        actor.disconnect(windowInfo.destroyId);
-
-        this._windows.delete(actor);
-        this._container.remove_child(actor);
-
-        this._layoutChanged();
-    }
-
-    /**
-     * getWindows:
-     *
-     * Gets an array of all MetaWindows that were added to the layout
-     * using addWindow(), ordered by the insertion order.
-     *
-     * @returns {Array} An array including all windows
-     */
-    getWindows() {
-        return [...this._windows.values()].map(i => i.metaWindow);
-    }
-
-    get boundingBox() {
-        return this._boundingBox;
-    }
-});
-
 var WindowPreview = GObject.registerClass({
     Properties: {
         'overlay-enabled': GObject.ParamSpec.boolean(
@@ -235,7 +61,7 @@ var WindowPreview = GObject.registerClass({
         // the initialization of the actor if that layout manager keeps track
         // of its container, so set the layout manager after creating the
         // container
-        this._windowContainer.layout_manager = new WindowPreviewLayout();
+        this._windowContainer.layout_manager = new Shell.WindowPreviewLayout();
         this.add_child(this._windowContainer);
 
         this._addWindow(metaWindow);
@@ -601,7 +427,7 @@ var WindowPreview = GObject.registerClass({
     }
 
     _addWindow(metaWindow) {
-        const clone = this._windowContainer.layout_manager.addWindow(metaWindow);
+        const clone = this._windowContainer.layout_manager.add_window(metaWindow);
         if (!clone)
             return;
 
@@ -620,7 +446,7 @@ var WindowPreview = GObject.registerClass({
     }
 
     _deleteAll() {
-        const windows = this._windowContainer.layout_manager.getWindows();
+        const windows = this._windowContainer.layout_manager.get_windows();
 
         // Delete all windows, starting from the bottom-most (most-modal) one
         for (const window of windows.reverse())
@@ -645,7 +471,7 @@ var WindowPreview = GObject.registerClass({
     }
 
     _hasAttachedDialogs() {
-        return this._windowContainer.layout_manager.getWindows().length > 1;
+        return this._windowContainer.layout_manager.get_windows().length > 1;
     }
 
     _updateAttachedDialogs() {

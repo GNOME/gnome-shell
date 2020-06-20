@@ -109,6 +109,7 @@ libshell_public_headers = [
   'shell-tray-icon.h',
   'shell-tray-manager.h',
   'shell-util.h',
+  'shell-window-preview-layout.h',
   'shell-window-tracker.h',
   'shell-wm.h'
 ]
@@ -151,6 +152,7 @@ libshell_sources = [
   'shell-tray-icon.c',
   'shell-tray-manager.c',
   'shell-util.c',
+  'shell-window-preview-layout.c',
   'shell-window-tracker.c',
   'shell-wm.c'
 ]
