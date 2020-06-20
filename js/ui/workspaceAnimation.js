@@ -1,7 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported WorkspaceAnimationController */
 
-const { Clutter, GObject, Meta, Shell } = imports.gi;
+const { Clutter, GObject, Meta, Shell, St } = imports.gi;
 
 const Background = imports.ui.background;
 const Layout = imports.ui.layout;
@@ -9,6 +9,7 @@ const Main = imports.ui.main;
 const SwipeTracker = imports.ui.swipeTracker;
 
 const WINDOW_ANIMATION_TIME = 250;
+const WORKSPACE_SPACING = 100;
 
 const WorkspaceGroup = GObject.registerClass(
 class WorkspaceGroup extends Clutter.Actor {
@@ -19,6 +20,22 @@ class WorkspaceGroup extends Clutter.Actor {
         this._monitor = monitor;
         this._movingWindow = movingWindow;
         this._windowRecords = [];
+
+        if (this._workspace) {
+            this._background = new Meta.BackgroundGroup();
+
+            this.add_actor(this._background);
+
+            this._bgManager = new Background.BackgroundManager({
+                container: this._background,
+                monitorIndex: this._monitor.index,
+                controlPosition: false,
+            });
+        }
+
+        this.width = monitor.width;
+        this.height = monitor.height;
+        this.clip_to_allocation = true;
 
         this._createWindows();
 
@@ -60,7 +77,7 @@ class WorkspaceGroup extends Clutter.Actor {
         for (const windowActor of windowActors) {
             const record = this._windowRecords.find(r => r.windowActor === windowActor);
 
-            this.set_child_above_sibling(record.clone, lastRecord ? lastRecord.clone : null);
+            this.set_child_above_sibling(record.clone, lastRecord ? lastRecord.clone : this._background);
             lastRecord = record;
         }
     }
@@ -101,6 +118,9 @@ class WorkspaceGroup extends Clutter.Actor {
     _onDestroy() {
         global.display.disconnect(this._restackedId);
         this._removeWindows();
+
+        if (this._workspace)
+            this._bgManager.destroy();
     }
 });
 
@@ -111,20 +131,17 @@ const MonitorGroup = GObject.registerClass({
             GObject.ParamFlags.READWRITE,
             -Infinity, Infinity, 0),
     },
-}, class MonitorGroup extends Clutter.Actor {
+}, class MonitorGroup extends St.Widget {
     _init(monitor, workspaceIndices, movingWindow) {
         super._init({
             clip_to_allocation: true,
+            style_class: 'workspace-animation',
         });
 
         this._monitor = monitor;
 
         const constraint = new Layout.MonitorConstraint({ index: monitor.index });
         this.add_constraint(constraint);
-
-        const background = new Meta.BackgroundGroup();
-
-        this.add_child(background);
 
         this._container = new Clutter.Actor();
         this.add_child(this._container);
@@ -167,25 +184,15 @@ const MonitorGroup = GObject.registerClass({
         }
 
         this.progress = this.getWorkspaceProgress(activeWorkspace);
-
-        this._bgManager = new Background.BackgroundManager({
-            container: background,
-            monitorIndex: monitor.index,
-            controlPosition: false,
-        });
-
-        this.connect('destroy', this._onDestroy.bind(this));
-    }
-
-    _onDestroy() {
-        this._bgManager.destroy();
     }
 
     get baseDistance() {
+        const spacing = WORKSPACE_SPACING * St.ThemeContext.get_for_stage(global.stage).scale_factor;
+
         if (global.workspace_manager.layout_rows === -1)
-            return this._monitor.height;
+            return this._monitor.height + spacing;
         else
-            return this._monitor.width;
+            return this._monitor.width + spacing;
     }
 
     get progress() {
