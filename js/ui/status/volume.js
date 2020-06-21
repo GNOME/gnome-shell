@@ -178,7 +178,7 @@ var StreamSlider = class {
             this._updateVolume();
     }
 
-    getIcon() {
+    getAudioIcon() {
         if (!this._stream)
             return null;
 
@@ -198,6 +198,29 @@ var StreamSlider = class {
                 n = 1;
             else if (n > 3)
                 n = 4;
+        }
+        return icons[n];
+    }
+
+    getMicrophoneIcon() {
+        if (!this._stream)
+            return null;
+
+        let icons = ["microphone-sensitivity-muted-symbolic",
+                     "microphone-sensitivity-low-symbolic",
+                     "microphone-sensitivity-medium-symbolic",
+                     "microphone-sensitivity-high-symbolic"];
+
+        let volume = this._stream.volume;
+        let n;
+        if (this._stream.is_muted || volume <= 0) {
+            n = 0;
+        } else {
+            n = Math.ceil(3 * volume / this._control.get_vol_max_norm());
+            if (n < 1)
+                n = 1;
+            else if (n > 2)
+                n = 3;
         }
         return icons[n];
     }
@@ -319,13 +342,16 @@ var VolumeMenu = class extends PopupMenu.PopupMenuSection {
 
         this._output = new OutputStreamSlider(this._control);
         this._output.connect('stream-updated', () => {
-            this.emit('icon-changed');
+            this.emit('audio-icon-changed');
         });
         this.addMenuItem(this._output.item);
 
         this._input = new InputStreamSlider(this._control);
         this._input.item.connect('notify::visible', () => {
             this.emit('input-visible-changed');
+        });
+        this._input.connect('stream-updated', () => {
+            this.emit('microphone-icon-changed');
         });
         this.addMenuItem(this._input.item);
 
@@ -343,7 +369,7 @@ var VolumeMenu = class extends PopupMenu.PopupMenuSection {
             this._readInput();
             this._readOutput();
         } else {
-            this.emit('icon-changed');
+            this.emit('audio-icon-changed');
         }
     }
 
@@ -355,8 +381,12 @@ var VolumeMenu = class extends PopupMenu.PopupMenuSection {
         this._input.stream = this._control.get_default_source();
     }
 
-    getIcon() {
-        return this._output.getIcon();
+    getAudioIcon() {
+        return this._output.getAudioIcon();
+    }
+
+    getMicrophoneIcon() {
+        return this._input.getMicrophoneIcon();
     }
 
     getLevel() {
@@ -382,20 +412,23 @@ class Indicator extends PanelMenu.SystemIndicator {
 
         this._control = getMixerControl();
         this._volumeMenu = new VolumeMenu(this._control);
-        this._volumeMenu.connect('icon-changed', () => {
-            let icon = this._volumeMenu.getIcon();
+        this._volumeMenu.connect('audio-icon-changed', () => {
+            let icon = this._volumeMenu.getAudioIcon();
 
             if (icon != null)
                 this._primaryIndicator.icon_name = icon;
             this._primaryIndicator.visible = icon !== null;
         });
 
-        this._inputIndicator.set({
-            icon_name: 'audio-input-microphone-symbolic',
-            visible: this._volumeMenu.getInputVisible(),
-        });
+        this._inputIndicator.visible = this._volumeMenu.getInputVisible();
         this._volumeMenu.connect('input-visible-changed', () => {
             this._inputIndicator.visible = this._volumeMenu.getInputVisible();
+        });
+        this._volumeMenu.connect('microphone-icon-changed', () => {
+            let icon = this._volumeMenu.getMicrophoneIcon();
+
+            if(icon != null)
+                this._inputIndicator.icon_name = icon;
         });
 
         this.menu.addMenuItem(this._volumeMenu);
@@ -406,7 +439,7 @@ class Indicator extends PanelMenu.SystemIndicator {
         if (result == Clutter.EVENT_PROPAGATE || this.menu.actor.mapped)
             return result;
 
-        let gicon = new Gio.ThemedIcon({ name: this._volumeMenu.getIcon() });
+        let gicon = new Gio.ThemedIcon({ name: this._volumeMenu.getAudioIcon() });
         let level = this._volumeMenu.getLevel();
         let maxLevel = this._volumeMenu.getMaxLevel();
         Main.osdWindowManager.show(-1, gicon, null, level, maxLevel);
