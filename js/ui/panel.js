@@ -5,6 +5,7 @@ const { Atk, Clutter, Gio, GLib, GObject, Meta, Shell, St } = imports.gi;
 const Cairo = imports.cairo;
 
 const Animation = imports.ui.animation;
+const AppDisplay = imports.ui.appDisplay;
 const Config = imports.misc.config;
 const CtrlAltTab = imports.ui.ctrlAltTab;
 const DND = imports.ui.dnd;
@@ -60,69 +61,20 @@ function _unpremultiply(color) {
     return new Clutter.Color({ red, green, blue, alpha: color.alpha });
 }
 
-class AppMenu extends PopupMenu.PopupMenu {
+class AppMenu extends AppDisplay.BaseAppMenu {
     constructor(sourceActor) {
-        super(sourceActor, 0.5, St.Side.TOP);
+        super(sourceActor, St.Side.TOP);
 
         this.actor.add_style_class_name('app-menu');
 
         this._app = null;
-        this._appSystem = Shell.AppSystem.get_default();
 
         this._windowsChangedId = 0;
 
-        /* Translators: This is the heading of a list of open windows */
-        this.addMenuItem(new PopupMenu.PopupSeparatorMenuItem(_("Open Windows")));
-
-        this._windowSection = new PopupMenu.PopupMenuSection();
-        this.addMenuItem(this._windowSection);
-
-        this.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
-
-        this._newWindowItem = this.addAction(_("New Window"), () => {
-            this._app.open_new_window(-1);
-        });
-
-        this.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
-
-        this._actionSection = new PopupMenu.PopupMenuSection();
-        this.addMenuItem(this._actionSection);
-
-        this.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
-
-        this._detailsItem = this.addAction(_('Show Details'), async () => {
-            let id = this._app.get_id();
-            let args = GLib.Variant.new('(ss)', [id, '']);
-            const bus = await Gio.DBus.get(Gio.BusType.SESSION, null);
-            bus.call(
-                'org.gnome.Software',
-                '/org/gnome/Software',
-                'org.gtk.Actions', 'Activate',
-                new GLib.Variant('(sava{sv})', ['details', [args], null]),
-                null, 0, -1, null);
-        });
-
-        this.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
-
-        this.addAction(_("Quit"), () => {
-            this._app.request_quit();
-        });
-
-        this._appSystem.connect('installed-changed', () => {
-            this._updateDetailsVisibility();
-        });
-        this._updateDetailsVisibility();
     }
 
-    _updateDetailsVisibility() {
-        let sw = this._appSystem.lookup_app('org.gnome.Software.desktop');
-        this._detailsItem.visible = sw != null;
-    }
-
-    isEmpty() {
-        if (!this._app)
-            return true;
-        return super.isEmpty();
+    get app() {
+        return this._app;
     }
 
     setApp(app) {
@@ -156,25 +108,6 @@ class AppMenu extends PopupMenu.PopupMenu {
 
         this._newWindowItem.visible =
             app && app.can_open_new_window() && !actions.includes('new-window');
-    }
-
-    _updateWindowsSection() {
-        this._windowSection.removeAll();
-
-        if (!this._app)
-            return;
-
-        let windows = this._app.get_windows();
-        windows.forEach(window => {
-            let title = window.title || this._app.get_name();
-            let item = this._windowSection.addAction(title, event => {
-                Main.activateWindow(window, event.get_time());
-            });
-            let id = window.connect('notify::title', () => {
-                item.label.text = window.title || this._app.get_name();
-            });
-            item.connect('destroy', () => window.disconnect(id));
-        });
     }
 }
 

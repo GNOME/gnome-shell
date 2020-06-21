@@ -2185,20 +2185,17 @@ var AppIcon = GObject.registerClass({
     }
 });
 
-var AppIconMenu = class AppIconMenu extends PopupMenu.PopupMenu {
-    constructor(source) {
-        let side = St.Side.LEFT;
-        if (Clutter.get_default_text_direction() == Clutter.TextDirection.RTL)
-            side = St.Side.RIGHT;
-
+var BaseAppMenu = class BaseAppMenu extends PopupMenu.PopupMenu {
+    constructor(source, side) {
         super(source, 0.5, side);
 
-        // We want to keep the item hovered while the menu is up
-        this.blockSourceEvents = true;
-
         this._source = source;
+        this._appSystem = Shell.AppSystem.get_default();
 
-        this.actor.add_style_class_name('app-well-menu');
+        this._appSystem.connect('installed-changed', () => {
+            this._updateDetailsVisibility();
+        });
+        this._updateDetailsVisibility();
 
         // Chain our visibility and lifecycle to that of the source
         this._sourceMappedId = source.connect('notify::mapped', () => {
@@ -2209,14 +2206,50 @@ var AppIconMenu = class AppIconMenu extends PopupMenu.PopupMenu {
             source.disconnect(this._sourceMappedId);
             this.destroy();
         });
+    }
 
-        Main.uiGroup.add_actor(this.actor);
+    _updateDetailsVisibility() {
+        let sw = this._appSystem.lookup_app('org.gnome.Software.desktop');
+        this._detailsItem.visible = sw != null;
+    }
+
+
+    get app() {
+        return null;
+    }
+
+    isEmpty() {
+        const { app } = this;
+
+        if (!app)
+            return true;
+        return super.isEmpty();
+    }
+
+    _updateWindowsSection() {
+        this._windowSection.removeAll();
+
+        if (!this.app)
+            return;
+
+        let windows = this.app.get_windows().filter(
+            w => !w.skip_taskbar);
+        windows.forEach(window => {
+            let title = window.title || this.app.get_name();
+            let item = this._windowSection.addAction(title, event => {
+                Main.activateWindow(window, event.get_time());
+            });
+            let id = window.connect('notify::title', () => {
+                item.label.text = window.title || this.app.get_name();
+            });
+            item.connect('destroy', () => window.disconnect(id));
+        });
     }
 
     _rebuildMenu() {
         this.removeAll();
 
-        let windows = this._source.app.get_windows().filter(
+        let windows = this.app.get_windows().filter(
             w => !w.skip_taskbar);
 
         if (windows.length > 0) {
@@ -2225,33 +2258,29 @@ var AppIconMenu = class AppIconMenu extends PopupMenu.PopupMenu {
                 new PopupMenu.PopupSeparatorMenuItem(_('Open Windows')));
         }
 
-        windows.forEach(window => {
-            let title = window.title
-                ? window.title : this._source.app.get_name();
-            let item = this._appendMenuItem(title);
-            item.connect('activate', () => {
-                this.emit('activate-window', window);
-            });
-        });
+        this._windowSection = new PopupMenu.PopupMenuSection();
+        this.addMenuItem(this._windowSection);
 
-        if (!this._source.app.is_window_backed()) {
+        this._updateWindowsSection();
+
+        if (!this.app.is_window_backed()) {
             this._appendSeparator();
 
-            let appInfo = this._source.app.get_app_info();
+            let appInfo = this.app.get_app_info();
             let actions = appInfo.list_actions();
-            if (this._source.app.can_open_new_window() &&
+            if (this.app.can_open_new_window() &&
                 !actions.includes('new-window')) {
                 this._newWindowMenuItem = this._appendMenuItem(_("New Window"));
                 this._newWindowMenuItem.connect('activate', () => {
                     this._source.animateLaunch();
-                    this._source.app.open_new_window(-1);
+                    this.app.open_new_window(-1);
                     this.emit('activate-window', null);
                 });
                 this._appendSeparator();
             }
 
             if (discreteGpuAvailable &&
-                this._source.app.state == Shell.AppState.STOPPED) {
+                this.app.state == Shell.AppState.STOPPED) {
                 const appPrefersNonDefaultGPU = appInfo.get_boolean('PrefersNonDefaultGPU');
                 const gpuPref = appPrefersNonDefaultGPU
                     ? Shell.AppLaunchGpu.DEFAULT
@@ -2261,7 +2290,7 @@ var AppIconMenu = class AppIconMenu extends PopupMenu.PopupMenu {
                     : _('Launch using Discrete Graphics Card'));
                 this._onGpuMenuItem.connect('activate', () => {
                     this._source.animateLaunch();
-                    this._source.app.launch(0, -1, gpuPref);
+                    this.app.launch(0, -1, gpuPref);
                     this.emit('activate-window', null);
                 });
             }
@@ -2273,7 +2302,7 @@ var AppIconMenu = class AppIconMenu extends PopupMenu.PopupMenu {
                     if (action == 'new-window')
                         this._source.animateLaunch();
 
-                    this._source.app.launch_action(action, event.get_time(), -1);
+                    this.app.launch_action(action, event.get_time(), -1);
                     this.emit('activate-window', null);
                 });
             }
@@ -2283,19 +2312,19 @@ var AppIconMenu = class AppIconMenu extends PopupMenu.PopupMenu {
             if (canFavorite) {
                 this._appendSeparator();
 
-                let isFavorite = AppFavorites.getAppFavorites().isFavorite(this._source.app.get_id());
+                let isFavorite = AppFavorites.getAppFavorites().isFavorite(this._app.get_id());
 
                 if (isFavorite) {
                     let item = this._appendMenuItem(_("Remove from Favorites"));
                     item.connect('activate', () => {
                         let favs = AppFavorites.getAppFavorites();
-                        favs.removeFavorite(this._source.app.get_id());
+                        favs.removeFavorite(this.app.get_id());
                     });
                 } else {
                     let item = this._appendMenuItem(_("Add to Favorites"));
                     item.connect('activate', () => {
                         let favs = AppFavorites.getAppFavorites();
-                        favs.addFavorite(this._source.app.get_id());
+                        favs.addFavorite(this.app.get_id());
                     });
                 }
             }
@@ -2304,7 +2333,7 @@ var AppIconMenu = class AppIconMenu extends PopupMenu.PopupMenu {
                 this._appendSeparator();
                 let item = this._appendMenuItem(_("Show Details"));
                 item.connect('activate', async () => {
-                    let id = this._source.app.get_id();
+                    let id = this.app.get_id();
                     let args = GLib.Variant.new('(ss)', [id, '']);
                     const bus = await Gio.DBus.get(Gio.BusType.SESSION, null);
                     bus.call(
@@ -2316,7 +2345,17 @@ var AppIconMenu = class AppIconMenu extends PopupMenu.PopupMenu {
                         null, 0, -1, null);
                     Main.overview.hide();
                 });
+
+                this._detailsItem = item;
             }
+
+            this._appendSeparator();
+            
+            let item = this._appendMenuItem(_("Quit"));
+            
+            item.connect('activate', () => {
+                this.app.request_quit();
+            });
         }
     }
 
@@ -2338,6 +2377,27 @@ var AppIconMenu = class AppIconMenu extends PopupMenu.PopupMenu {
     }
 };
 Signals.addSignalMethods(AppIconMenu.prototype);
+
+var AppIconMenu = class AppIconMenu extends BaseAppMenu {
+    constructor(source) {
+        let side = St.Side.LEFT;
+        if (Clutter.get_default_text_direction() == Clutter.TextDirection.RTL)
+            side = St.Side.RIGHT;
+
+        super(source, side);
+
+        // We want to keep the item hovered while the menu is up
+        this.blockSourceEvents = true;
+
+        this.actor.add_style_class_name('app-well-menu');
+
+        Main.uiGroup.add_actor(this.actor);
+    }
+
+    get app() {
+        return this._source.app;
+    }
+}
 
 var SystemActionIcon = GObject.registerClass(
 class SystemActionIcon extends Search.GridSearchResult {
