@@ -427,7 +427,7 @@ class Indicator extends PanelMenu.SystemIndicator {
         this._volumeMenu.connect('microphone-icon-changed', () => {
             let icon = this._volumeMenu.getMicrophoneIcon();
 
-            if(icon != null)
+            if (icon != null)
                 this._inputIndicator.icon_name = icon;
         });
 
