@@ -36,6 +36,8 @@ const FOLDER_DIALOG_ANIMATION_TIME = 200;
 const OVERSHOOT_THRESHOLD = 20;
 const OVERSHOOT_TIMEOUT = 1000;
 
+const DELAYED_MOVE_TIMEOUT = 1500;
+
 let discreteGpuAvailable = false;
 
 function _getCategories(info) {
@@ -555,6 +557,8 @@ class AppDisplay extends BaseAppView {
 
         this._lastOvershootY = -1;
         this._lastOvershootTimeoutId = 0;
+        this._delayedMoveId = 0;
+        this._targetDropPosition = null;
 
         Main.overview.connect('hidden', () => this.goToPage(0));
 
@@ -591,6 +595,8 @@ class AppDisplay extends BaseAppView {
     }
 
     _onDestroy() {
+        this._removeDelayedMove();
+
         if (this._scrollTimeoutId !== 0) {
             GLib.source_remove(this._scrollTimeoutId);
             this._scrollTimeoutId = 0;
@@ -802,6 +808,50 @@ class AppDisplay extends BaseAppView {
         });
     }
 
+    _removeDelayedMove() {
+        if (this._delayedMoveId > 0) {
+            GLib.source_remove(this._delayedMoveId);
+            this._delayedMoveId = 0;
+        }
+        this._targetDropPosition = null;
+    }
+
+    _maybeMoveItem(dragEvent) {
+        const [success, x, y] =
+            this._grid.transform_stage_point(dragEvent.x, dragEvent.y);
+
+        if (!success)
+            return;
+
+        const { source } = dragEvent;
+        const [item, dragLocation] = this.getDropTarget(x, y);
+
+        // Dragging over invalid parts of the grid cancels the timeout
+        if (!item ||
+            item === source ||
+            dragLocation === IconGrid.DragLocation.ON_ICON) {
+            this._removeDelayedMove();
+            return;
+        }
+
+        const [page, position] = this._grid.getItemPosition(item);
+
+        if (!this._targetDropPosition ||
+            this._targetDropPosition.page !== page ||
+            this._targetDropPosition.position !== position) {
+            // Update the item with a small delay
+            this._removeDelayedMove();
+            this._targetDropPosition = { page, position };
+
+            this._delayedMoveId = GLib.timeout_add(GLib.PRIORITY_DEFAULT,
+                DELAYED_MOVE_TIMEOUT, () => {
+                    this.moveItem(source, page, position);
+                    this._targetDropPosition = null;
+                    this._delayedMoveId = 0;
+                    return GLib.SOURCE_REMOVE;
+                });
+        }
+    }
 
     _resetOvershoot() {
         if (this._lastOvershootTimeoutId)
@@ -876,6 +926,8 @@ class AppDisplay extends BaseAppView {
         if (this._grid.contains(appIcon))
             this._handleDragOvershoot(dragEvent);
 
+        this._maybeMoveItem(dragEvent);
+
         return DND.DragMotionResult.CONTINUE;
     }
 
@@ -903,6 +955,14 @@ class AppDisplay extends BaseAppView {
     acceptDrop(source) {
         if (!this._canAccept(source))
             return false;
+
+        // Dropped before the icon was moved
+        if (this._targetDropPosition) {
+            const { page, position } = this._targetDropPosition;
+
+            this.moveItem(source, page, position);
+            this._removeDelayedMove();
+        }
 
         let view = _getViewFromIcon(source);
         if (view instanceof FolderView)
