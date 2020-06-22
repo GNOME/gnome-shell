@@ -784,6 +784,7 @@ class DateMenuButton extends PanelMenu.Button {
 
         this._clockDisplay = new St.Label({ style_class: 'clock' });
         this._clockDisplay.clutter_text.y_align = Clutter.ActorAlign.CENTER;
+        this._clockDisplay.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
 
         this._indicator = new MessagesIndicator();
 
