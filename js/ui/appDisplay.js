@@ -559,6 +559,7 @@ class AppDisplay extends BaseAppView {
         this._lastOvershootTimeoutId = 0;
         this._delayedMoveId = 0;
         this._targetDropPosition = null;
+        this._nudgedItem = null;
 
         Main.overview.connect('hidden', () => this.goToPage(0));
 
@@ -816,6 +817,43 @@ class AppDisplay extends BaseAppView {
         this._targetDropPosition = null;
     }
 
+    _nudgeItem(source, item) {
+        if (this._nudgedItem)
+            this._removeNudge();
+
+        const params = {
+            duration: DELAYED_MOVE_TIMEOUT,
+            mode: Clutter.AnimationMode.EASE_IN_OUT_CUBIC,
+        };
+
+        const [sourcePage, sourcePosition] = this._grid.getItemPosition(source);
+        const [itemPage, itemPosition] = this._grid.getItemPosition(item);
+
+        const rtl = this.get_text_direction() === Clutter.TextDirection.RTL;
+        const movingForward =
+            sourcePage < itemPage ||
+            (sourcePage === itemPage && sourcePosition < itemPosition);
+
+        if (movingForward)
+            params.translation_x = -50 * (rtl ? -1 : 1);
+        else
+            params.translation_x = 50 * (rtl ? -1 : 1);
+
+        item.ease(params);
+        this._nudgedItem = item;
+    }
+
+    _removeNudge() {
+        if (!this._nudgedItem)
+            return;
+
+        this._nudgedItem.ease({
+            translation_x: 0,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+        });
+        this._nudgedItem = null;
+    }
+
     _maybeMoveItem(dragEvent) {
         const [success, x, y] =
             this._grid.transform_stage_point(dragEvent.x, dragEvent.y);
@@ -831,6 +869,7 @@ class AppDisplay extends BaseAppView {
             item === source ||
             dragLocation === IconGrid.DragLocation.ON_ICON) {
             this._removeDelayedMove();
+            this._removeNudge();
             return;
         }
 
@@ -846,10 +885,13 @@ class AppDisplay extends BaseAppView {
             this._delayedMoveId = GLib.timeout_add(GLib.PRIORITY_DEFAULT,
                 DELAYED_MOVE_TIMEOUT, () => {
                     this.moveItem(source, page, position);
+                    this._removeNudge();
                     this._targetDropPosition = null;
                     this._delayedMoveId = 0;
                     return GLib.SOURCE_REMOVE;
                 });
+
+            this._nudgeItem(source, item);
         }
     }
 
@@ -938,6 +980,7 @@ class AppDisplay extends BaseAppView {
         }
 
         this._resetOvershoot();
+        this._removeNudge();
     }
 
     _canAccept(source) {
