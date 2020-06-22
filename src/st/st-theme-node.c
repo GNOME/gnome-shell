@@ -2132,113 +2132,11 @@ font_family_from_terms (CRTerm *term,
     }
 }
 
-/* In points */
-static int font_sizes[] = {
-  6 * 1024,   /* xx-small */
-  8 * 1024,   /* x-small */
-  10 * 1024,  /* small */
-  12 * 1024,  /* medium */
-  16 * 1024,  /* large */
-  20 * 1024,  /* x-large */
-  24 * 1024,  /* xx-large */
-};
-
-static gboolean
-font_size_from_term (StThemeNode *node,
-                     CRTerm      *term,
-                     double      *size)
-{
-  if (term->type == TERM_IDENT)
-    {
-      double resolution = clutter_backend_get_resolution (clutter_get_default_backend ());
-      /* We work in integers to avoid double comparisons when converting back
-       * from a size in pixels to a logical size.
-       */
-      int size_points = (int)(0.5 + *size * (72. / resolution));
-
-      if (strcmp (term->content.str->stryng->str, "xx-small") == 0)
-        size_points = font_sizes[0];
-      else if (strcmp (term->content.str->stryng->str, "x-small") == 0)
-        size_points = font_sizes[1];
-      else if (strcmp (term->content.str->stryng->str, "small") == 0)
-        size_points = font_sizes[2];
-      else if (strcmp (term->content.str->stryng->str, "medium") == 0)
-        size_points = font_sizes[3];
-      else if (strcmp (term->content.str->stryng->str, "large") == 0)
-        size_points = font_sizes[4];
-      else if (strcmp (term->content.str->stryng->str, "x-large") == 0)
-        size_points = font_sizes[5];
-      else if (strcmp (term->content.str->stryng->str, "xx-large") == 0)
-        size_points = font_sizes[6];
-      else if (strcmp (term->content.str->stryng->str, "smaller") == 0)
-        {
-          /* Find the standard size equal to or smaller than the current size */
-          int i = 0;
-
-          while (i <= 6 && font_sizes[i] < size_points)
-            i++;
-
-          if (i > 6)
-            {
-              /* original size greater than any standard size */
-              size_points = (int)(0.5 + size_points / 1.2);
-            }
-          else
-            {
-              /* Go one smaller than that, if possible */
-              if (i > 0)
-                i--;
-
-              size_points = font_sizes[i];
-            }
-        }
-      else if (strcmp (term->content.str->stryng->str, "larger") == 0)
-        {
-          /* Find the standard size equal to or larger than the current size */
-          int i = 6;
-
-          while (i >= 0 && font_sizes[i] > size_points)
-            i--;
-
-          if (i < 0) /* original size smaller than any standard size */
-            i = 0;
-
-          /* Go one larger than that, if possible */
-          if (i < 6)
-            i++;
-
-          size_points = font_sizes[i];
-        }
-      else
-        {
-          return FALSE;
-        }
-
-      *size = size_points * (resolution / 72.);
-      return TRUE;
-
-    }
-  else if (term->type == TERM_NUMBER && term->content.num->type == NUM_PERCENTAGE)
-    {
-      *size *= term->content.num->val / 100.;
-      return TRUE;
-    }
-  else if (stylish_get_length_from_term (term,
-                                         normalize (node, get_parent_font (node)),
-                                         size) == VALUE_FOUND)
-    {
-      /* Convert from pixels to Pango units */
-      *size *= 1024;
-      return TRUE;
-    }
-
-  return FALSE;
-}
-
 const PangoFontDescription *
 st_theme_node_get_font (StThemeNode *node)
 {
   /* Initialized despite _set flags to suppress compiler warnings */
+  NormalizeParams norm;
   PangoStyle font_style = PANGO_STYLE_NORMAL;
   gboolean font_style_set = FALSE;
   PangoVariant variant = PANGO_VARIANT_NORMAL;
@@ -2249,7 +2147,6 @@ st_theme_node_get_font (StThemeNode *node)
   gboolean size_set = FALSE;
 
   char *family = NULL;
-  double parent_size;
   PangoWeight parent_weight;
   int i;
 
@@ -2257,13 +2154,7 @@ st_theme_node_get_font (StThemeNode *node)
     return node->font_desc;
 
   node->font_desc = pango_font_description_copy (get_parent_font (node));
-  parent_size = pango_font_description_get_size (node->font_desc);
-
-  if (!pango_font_description_get_size_is_absolute (node->font_desc))
-    {
-      double resolution = clutter_backend_get_resolution (clutter_get_default_backend ());
-      parent_size *= (resolution / 72.);
-    }
+  norm = normalize (node, node->font_desc);
 
   parent_weight = pango_font_description_get_weight (node->font_desc);
 
@@ -2278,7 +2169,7 @@ st_theme_node_get_font (StThemeNode *node)
           PangoStyle tmp_style = PANGO_STYLE_NORMAL;
           PangoVariant tmp_variant = PANGO_VARIANT_NORMAL;
           PangoWeight tmp_weight = PANGO_WEIGHT_NORMAL;
-          double tmp_size;
+          double tmp_size = 0.0;
           CRTerm *term = decl->value;
 
           /* A font specification starts with node/variant/weight
@@ -2298,17 +2189,9 @@ st_theme_node_get_font (StThemeNode *node)
             }
 
           /* The size is mandatory */
-
-          if (term == NULL || term->type != TERM_NUMBER)
+          if (stylish_parse_font_size_single_term (term, norm, &tmp_size) != VALUE_FOUND)
             {
               g_warning ("Size missing from font property");
-              continue;
-            }
-
-          tmp_size = parent_size;
-          if (!font_size_from_term (node, term, &tmp_size))
-            {
-              g_warning ("Couldn't parse size in font property");
               continue;
             }
 
@@ -2338,7 +2221,6 @@ st_theme_node_get_font (StThemeNode *node)
 
           size = tmp_size;
           size_set = TRUE;
-
         }
       else if (strcmp (cr_declaration_name (decl), "font-family") == 0)
         {
@@ -2378,8 +2260,8 @@ st_theme_node_get_font (StThemeNode *node)
           if (decl->value == NULL || decl->value->next != NULL)
             continue;
 
-          tmp_size = parent_size;
-          if (font_size_from_term (node, decl->value, &tmp_size))
+          tmp_size = norm.font_size;
+          if (stylish_parse_font_size (decl->value, norm, &tmp_size) == VALUE_FOUND)
             {
               size = tmp_size;
               size_set = TRUE;
@@ -2394,7 +2276,7 @@ st_theme_node_get_font (StThemeNode *node)
     }
 
   if (size_set)
-    pango_font_description_set_absolute_size (node->font_desc, size);
+    pango_font_description_set_absolute_size (node->font_desc, size * PANGO_SCALE);
 
   if (weight_set)
     pango_font_description_set_weight (node->font_desc, weight);
