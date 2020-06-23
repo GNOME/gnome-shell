@@ -2073,65 +2073,6 @@ st_theme_node_get_letter_spacing (StThemeNode *node)
   return spacing;
 }
 
-static gboolean
-font_family_from_terms (CRTerm *term,
-                        char  **family)
-{
-  GString *family_string;
-  gboolean result = FALSE;
-  gboolean last_was_quoted = FALSE;
-
-  if (!term)
-    return FALSE;
-
-  family_string = g_string_new (NULL);
-
-  while (term)
-    {
-      if (term->type != TERM_STRING && term->type != TERM_IDENT)
-        {
-          goto out;
-        }
-
-      if (family_string->len > 0)
-        {
-          if (term->the_operator != COMMA && term->the_operator != NO_OP)
-            goto out;
-          /* Can concatenate two bare words, but not two quoted strings */
-          if ((term->the_operator == NO_OP && last_was_quoted) || term->type == TERM_STRING)
-            goto out;
-
-          if (term->the_operator == NO_OP)
-            g_string_append (family_string, " ");
-          else
-            g_string_append (family_string, ",");
-        }
-      else
-        {
-          if (term->the_operator != NO_OP)
-            goto out;
-        }
-
-      g_string_append (family_string, term->content.str->stryng->str);
-
-      term = term->next;
-    }
-
-  result = TRUE;
-
- out:
-  if (result)
-    {
-      *family = g_string_free (family_string, FALSE);
-      return TRUE;
-    }
-  else
-    {
-      *family = g_string_free (family_string, TRUE);
-      return FALSE;
-    }
-}
-
 const PangoFontDescription *
 st_theme_node_get_font (StThemeNode *node)
 {
@@ -2206,7 +2147,7 @@ st_theme_node_get_font (StThemeNode *node)
           /* the font family is mandatory - it is a comma-separated list of
            * names.
            */
-          if (!font_family_from_terms (term, &family))
+          if (stylish_parse_font_family (term, &family) != VALUE_FOUND)
             {
               g_warning ("Couldn't parse family in font property");
               continue;
@@ -2224,7 +2165,7 @@ st_theme_node_get_font (StThemeNode *node)
         }
       else if (strcmp (cr_declaration_name (decl), "font-family") == 0)
         {
-          if (!font_family_from_terms (decl->value, &family))
+          if (stylish_parse_font_family (decl->value, &family) != VALUE_FOUND)
             {
               g_warning ("Couldn't parse family in font property");
               continue;
