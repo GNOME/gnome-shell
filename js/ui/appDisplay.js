@@ -333,10 +333,13 @@ var BaseAppView = GObject.registerClass({
             icon.destroy();
         });
 
-        // Add new app icons
-        addedApps.forEach(icon => {
-            const [page, position] = this._getItemPosition(icon, newApps);
-            this._addItem(icon, page, position);
+        // Add new app icons, or move existing ones
+        newApps.forEach(icon => {
+            const [page, position] = this._getItemPosition(icon);
+            if (addedApps.includes(icon))
+                this._addItem(icon, page, position);
+            else if (page !== -1 && position !== -1)
+                this.moveItem(icon, page, position);
         });
 
         this._viewIsReady = true;
