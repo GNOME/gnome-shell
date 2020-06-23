@@ -53,3 +53,8 @@
   @include fontsize($base_font_size - 1);
   color: $warning_color;
 }
+
+.screen-corner {
+  -screen-corner-radius: $panel_corner_radius;
+  -screen-corner-background-color: black;
+}
