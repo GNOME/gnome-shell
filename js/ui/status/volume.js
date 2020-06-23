@@ -62,6 +62,7 @@ var StreamSlider = class {
 
         this._stream = null;
         this._volumeCancellable = null;
+        this._icons = [];
     }
 
     get stream() {
@@ -178,15 +179,9 @@ var StreamSlider = class {
             this._updateVolume();
     }
 
-    getAudioIcon() {
+    getIcon() {
         if (!this._stream)
             return null;
-
-        let icons = ["audio-volume-muted-symbolic",
-                     "audio-volume-low-symbolic",
-                     "audio-volume-medium-symbolic",
-                     "audio-volume-high-symbolic",
-                     "audio-volume-overamplified-symbolic"];
 
         let volume = this._stream.volume;
         let n;
@@ -194,35 +189,9 @@ var StreamSlider = class {
             n = 0;
         } else {
             n = Math.ceil(3 * volume / this._control.get_vol_max_norm());
-            if (n < 1)
-                n = 1;
-            else if (n > 3)
-                n = 4;
+            n = Math.clamp(n, 1, this._icons.length - 1);
         }
-        return icons[n];
-    }
-
-    getMicrophoneIcon() {
-        if (!this._stream)
-            return null;
-
-        let icons = ["microphone-sensitivity-muted-symbolic",
-                     "microphone-sensitivity-low-symbolic",
-                     "microphone-sensitivity-medium-symbolic",
-                     "microphone-sensitivity-high-symbolic"];
-
-        let volume = this._stream.volume;
-        let n;
-        if (this._stream.is_muted || volume <= 0) {
-            n = 0;
-        } else {
-            n = Math.ceil(3 * volume / this._control.get_vol_max_norm());
-            if (n < 1)
-                n = 1;
-            else if (n > 2)
-                n = 3;
-        }
-        return icons[n];
+        return this._icons[n];
     }
 
     getLevel() {
@@ -246,6 +215,11 @@ var OutputStreamSlider = class extends StreamSlider {
     constructor(control) {
         super(control);
         this._slider.accessible_name = _("Volume");
+        this._icons = ["audio-volume-muted-symbolic",
+                       "audio-volume-low-symbolic",
+                       "audio-volume-medium-symbolic",
+                       "audio-volume-high-symbolic",
+                       "audio-volume-overamplified-symbolic"];
     }
 
     _connectStream(stream) {
@@ -297,6 +271,10 @@ var InputStreamSlider = class extends StreamSlider {
         this._control.connect('stream-added', this._maybeShowInput.bind(this));
         this._control.connect('stream-removed', this._maybeShowInput.bind(this));
         this._icon.icon_name = 'audio-input-microphone-symbolic';
+        this._icons = ["microphone-sensitivity-muted-symbolic",
+                       "microphone-sensitivity-low-symbolic",
+                       "microphone-sensitivity-medium-symbolic",
+                       "microphone-sensitivity-high-symbolic"];
     }
 
     _connectStream(stream) {
@@ -342,7 +320,7 @@ var VolumeMenu = class extends PopupMenu.PopupMenuSection {
 
         this._output = new OutputStreamSlider(this._control);
         this._output.connect('stream-updated', () => {
-            this.emit('audio-icon-changed');
+            this.emit('output-icon-changed');
         });
         this.addMenuItem(this._output.item);
 
@@ -351,7 +329,7 @@ var VolumeMenu = class extends PopupMenu.PopupMenuSection {
             this.emit('input-visible-changed');
         });
         this._input.connect('stream-updated', () => {
-            this.emit('microphone-icon-changed');
+            this.emit('input-icon-changed');
         });
         this.addMenuItem(this._input.item);
 
@@ -369,7 +347,7 @@ var VolumeMenu = class extends PopupMenu.PopupMenuSection {
             this._readInput();
             this._readOutput();
         } else {
-            this.emit('audio-icon-changed');
+            this.emit('output-icon-changed');
         }
     }
 
@@ -381,12 +359,12 @@ var VolumeMenu = class extends PopupMenu.PopupMenuSection {
         this._input.stream = this._control.get_default_source();
     }
 
-    getAudioIcon() {
-        return this._output.getAudioIcon();
+    getOutputIcon() {
+        return this._output.getIcon();
     }
 
-    getMicrophoneIcon() {
-        return this._input.getMicrophoneIcon();
+    getInputIcon() {
+        return this._input.getIcon();
     }
 
     getLevel() {
@@ -412,8 +390,8 @@ class Indicator extends PanelMenu.SystemIndicator {
 
         this._control = getMixerControl();
         this._volumeMenu = new VolumeMenu(this._control);
-        this._volumeMenu.connect('audio-icon-changed', () => {
-            let icon = this._volumeMenu.getAudioIcon();
+        this._volumeMenu.connect('output-icon-changed', () => {
+            let icon = this._volumeMenu.getOutputIcon();
 
             if (icon != null)
                 this._primaryIndicator.icon_name = icon;
@@ -424,8 +402,8 @@ class Indicator extends PanelMenu.SystemIndicator {
         this._volumeMenu.connect('input-visible-changed', () => {
             this._inputIndicator.visible = this._volumeMenu.getInputVisible();
         });
-        this._volumeMenu.connect('microphone-icon-changed', () => {
-            let icon = this._volumeMenu.getMicrophoneIcon();
+        this._volumeMenu.connect('input-icon-changed', () => {
+            let icon = this._volumeMenu.getInputIcon();
 
             if (icon != null)
                 this._inputIndicator.icon_name = icon;
@@ -439,7 +417,7 @@ class Indicator extends PanelMenu.SystemIndicator {
         if (result == Clutter.EVENT_PROPAGATE || this.menu.actor.mapped)
             return result;
 
-        let gicon = new Gio.ThemedIcon({ name: this._volumeMenu.getAudioIcon() });
+        let gicon = new Gio.ThemedIcon({ name: this._volumeMenu.getOutputIcon() });
         let level = this._volumeMenu.getLevel();
         let maxLevel = this._volumeMenu.getMaxLevel();
         Main.osdWindowManager.show(-1, gicon, null, level, maxLevel);
