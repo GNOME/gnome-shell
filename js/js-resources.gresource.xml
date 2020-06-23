@@ -89,6 +89,7 @@
     <file>ui/remoteSearch.js</file>
     <file>ui/ripples.js</file>
     <file>ui/runDialog.js</file>
+    <file>ui/screenCorner.js</file>
     <file>ui/screenShield.js</file>
     <file>ui/screencast.js</file>
     <file>ui/screenshot.js</file>
