@@ -440,19 +440,19 @@ var Overview = class {
         this.emit('windows-restacked', stackIndices);
     }
 
-    beginItemDrag(_source) {
-        this.emit('item-drag-begin');
+    beginItemDrag(source) {
+        this.emit('item-drag-begin', source);
         this._inItemDrag = true;
     }
 
-    cancelledItemDrag(_source) {
-        this.emit('item-drag-cancelled');
+    cancelledItemDrag(source) {
+        this.emit('item-drag-cancelled', source);
     }
 
-    endItemDrag(_source) {
+    endItemDrag(source) {
         if (!this._inItemDrag)
             return;
-        this.emit('item-drag-end');
+        this.emit('item-drag-end', source);
         this._inItemDrag = false;
     }
 
