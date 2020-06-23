@@ -633,6 +633,7 @@ class AppDisplay extends BaseAppView {
         this._delayedMoveId = 0;
         this._targetDropPosition = null;
         this._nudgedItem = null;
+        this._placeholder = null;
 
         Main.overview.connect('hidden', () => this.goToPage(0));
 
@@ -721,17 +722,42 @@ class AppDisplay extends BaseAppView {
         this._pageManager.pages = pages;
     }
 
+    _ensurePlaceholder(source) {
+        if (this._placeholder)
+            return;
+
+        const appSys = Shell.AppSystem.get_default();
+        const app = appSys.lookup_app(source.id);
+
+        this._placeholder = new AppIcon(app, {
+            isDraggable: global.settings.is_writable('favorite-apps'),
+        });
+        this._placeholder.scaleAndFade();
+        this._redisplay();
+    }
+
+    _removePlaceholder() {
+        if (this._placeholder) {
+            this._placeholder.undoScaleAndFade();
+            this._placeholder = null;
+            this._redisplay();
+        }
+    }
+
     getAppInfos() {
         return this._appInfoList;
     }
 
     _getItemPosition(item) {
+        if (item === this._placeholder)
+            return this._grid.getItemPosition(item);
+
         return this._pageManager.getAppPosition(item.id);
     }
 
     _compareItems(a, b) {
-        const [aPage, aPosition] = this._pageManager.getAppPosition(a.id);
-        const [bPage, bPosition] = this._pageManager.getAppPosition(b.id);
+        const [aPage, aPosition] = this._getItemPosition(a);
+        const [bPage, bPosition] = this._getItemPosition(b);
 
         if (aPage === -1 && bPage === -1)
             return a.name.localeCompare(b.name);
@@ -808,6 +834,10 @@ class AppDisplay extends BaseAppView {
 
             appIcons.push(icon);
         });
+
+        // At last, if there's a placeholder available, add it
+        if (this._placeholder)
+            appIcons.push(this._placeholder);
 
         return appIcons;
     }
@@ -953,7 +983,7 @@ class AppDisplay extends BaseAppView {
         if (!success)
             return;
 
-        const { source } = dragEvent;
+        const source = this._placeholder ? this._placeholder : dragEvent.source;
         const [item, dragLocation] = this.getDropTarget(x, y);
 
         // Dragging over invalid parts of the grid cancels the timeout
@@ -1041,11 +1071,17 @@ class AppDisplay extends BaseAppView {
             '[gnome-shell] this._lastOvershootTimeoutId');
     }
 
-    _onDragBegin() {
+    _onDragBegin(_overview, source) {
         this._dragMonitor = {
             dragMotion: this._onDragMotion.bind(this),
         };
         DND.addDragMonitor(this._dragMonitor);
+
+        // When dragging from a folder dialog, the dragged app icon
+        // doesn't exist in AppDisplay. We work around that hijacking
+        // a placeholder icon
+        if (_getViewFromIcon(source) instanceof FolderView)
+            this._ensurePlaceholder(source);
     }
 
     _onDragMotion(dragEvent) {
@@ -1070,6 +1106,7 @@ class AppDisplay extends BaseAppView {
 
         this._resetOvershoot();
         this._removeNudge();
+        this._removePlaceholder();
     }
 
     _onDragCancelled(_overview, source) {
