@@ -642,6 +642,7 @@ class AppDisplay extends BaseAppView {
 
         Main.overview.connect('item-drag-begin', this._onDragBegin.bind(this));
         Main.overview.connect('item-drag-end', this._onDragEnd.bind(this));
+        Main.overview.connect('item-drag-cancelled', this._onDragCancelled.bind(this));
 
         this.connect('destroy', this._onDestroy.bind(this));
 
@@ -1060,6 +1061,16 @@ class AppDisplay extends BaseAppView {
 
         this._resetOvershoot();
         this._removeNudge();
+    }
+
+    _onDragCancelled(_overview, source) {
+        const view = _getViewFromIcon(source);
+
+        if (view instanceof FolderView)
+            return;
+
+        const [originalPage, originalPosition] = this._getItemPosition(source);
+        this.moveItem(source, originalPage, originalPosition);
     }
 
     _canAccept(source) {
