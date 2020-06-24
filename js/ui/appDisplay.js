@@ -2298,11 +2298,12 @@ var AppFolderDialog = GObject.registerClass({
         if (!this._isOpen)
             return;
 
+        this._isOpen = false;
+
         this._zoomAndFadeOut();
         this._showFolderLabel();
 
         this._grabHelper.ungrab({ actor: this });
-        this._isOpen = false;
         this.emit('open-state-changed', false);
     }
 });
