@@ -85,6 +85,7 @@ class BaseIcon extends St.Bin {
                 x_align: Clutter.ActorAlign.CENTER,
                 y_align: Clutter.ActorAlign.CENTER,
             });
+            this.label.set_offscreen_redirect(Clutter.OffscreenRedirect.ALWAYS);
             this._box.add_actor(this.label);
         } else {
             this.label = null;
