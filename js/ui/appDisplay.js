@@ -1589,6 +1589,43 @@ class FolderView extends BaseAppView {
         return new FolderGrid();
     }
 
+    _getFolderApps() {
+        const appIds = [];
+        const excludedApps = this._folder.get_strv('excluded-apps');
+        const appSys = Shell.AppSystem.get_default();
+        const addAppId = appId => {
+            if (excludedApps.includes(appId))
+                return;
+
+            const app = appSys.lookup_app(appId);
+            if (!app)
+                return;
+
+            if (!this._parentalControlsManager.shouldShowApp(app.get_app_info()))
+                return;
+
+            if (appIds.indexOf(appId) !== -1)
+                return;
+
+            appIds.push(appId);
+        };
+
+        const folderApps = this._folder.get_strv('apps');
+        folderApps.forEach(addAppId);
+
+        const folderCategories = this._folder.get_strv('categories');
+        const appInfos = this._parentView.getAppInfos();
+        appInfos.forEach(appInfo => {
+            let appCategories = _getCategories(appInfo);
+            if (!_listsIntersect(folderCategories, appCategories))
+                return;
+
+            addAppId(appInfo.get_id());
+        });
+
+        return appIds;
+    }
+
     // Overridden from BaseAppView
     animate(animationDirection) {
         this._grid.animatePulse(animationDirection);
@@ -1633,40 +1670,17 @@ class FolderView extends BaseAppView {
 
     _loadApps() {
         let apps = [];
-        let excludedApps = this._folder.get_strv('excluded-apps');
         let appSys = Shell.AppSystem.get_default();
-        let addAppId = appId => {
-            if (excludedApps.includes(appId))
-                return;
+        const appIds = this._getFolderApps();
 
-            let app = appSys.lookup_app(appId);
-            if (!app)
-                return;
-
-            if (!this._parentalControlsManager.shouldShowApp(app.get_app_info()))
-                return;
-
-            if (apps.some(appIcon => appIcon.id == appId))
-                return;
+        appIds.forEach(appId => {
+            const app = appSys.lookup_app(appId);
 
             let icon = this._items.get(appId);
             if (!icon)
                 icon = new AppIcon(app);
 
             apps.push(icon);
-        };
-
-        let folderApps = this._folder.get_strv('apps');
-        folderApps.forEach(addAppId);
-
-        let folderCategories = this._folder.get_strv('categories');
-        let appInfos = this._parentView.getAppInfos();
-        appInfos.forEach(appInfo => {
-            let appCategories = _getCategories(appInfo);
-            if (!_listsIntersect(folderCategories, appCategories))
-                return;
-
-            addAppId(appInfo.get_id());
         });
 
         return apps;
