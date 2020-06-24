@@ -1354,9 +1354,9 @@ var BaseAppIcon = GObject.registerClass({
     scaleAndFade() {
         this.reactive = false;
         this.ease({
-            scale_x: 0.75,
-            scale_y: 0.75,
-            opacity: 128,
+            scale_x: 0.5,
+            scale_y: 0.5,
+            opacity: 0,
         });
     }
 
