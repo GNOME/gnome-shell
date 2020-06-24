@@ -4,6 +4,10 @@
 const { Clutter, GLib, GObject, Meta, Shell, St } = imports.gi;
 const Signals = imports.signals;
 
+// Time for initial animation going into Overview mode;
+// this is defined here to make it available in imports.
+var ANIMATION_TIME = 250;
+
 const Background = imports.ui.background;
 const DND = imports.ui.dnd;
 const LayoutManager = imports.ui.layout;
@@ -13,9 +17,6 @@ const MessageTray = imports.ui.messageTray;
 const OverviewControls = imports.ui.overviewControls;
 const Params = imports.misc.params;
 const WorkspaceThumbnail = imports.ui.workspaceThumbnail;
-
-// Time for initial animation going into Overview mode
-var ANIMATION_TIME = 250;
 
 // Must be less than ANIMATION_TIME, since we switch to
 // or from the overview completely after ANIMATION_TIME,
