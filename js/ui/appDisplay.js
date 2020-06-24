@@ -1782,8 +1782,8 @@ var AppFolderDialog = GObject.registerClass({
         this._zoomAndFadeOut();
         this._showFolderLabel();
 
-        this._grabHelper.ungrab({ actor: this });
         this._isOpen = false;
+        this._grabHelper.ungrab({ actor: this });
         this.emit('open-state-changed', false);
     }
 });
