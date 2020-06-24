@@ -197,39 +197,16 @@ var BaseAppView = GObject.registerClass({
         this._delayedMoveId = 0;
         this._targetDropPosition = null;
 
-        this._dragBeginId =
-            Main.overview.connect('item-drag-begin', this._onDragBegin.bind(this));
-        this._dragEndId =
-            Main.overview.connect('item-drag-end', this._onDragEnd.bind(this));
-        this._dragCancelledId =
-            Main.overview.connect('item-drag-cancelled', this._onDragCancelled.bind(this));
+        this._dragBeginId = 0;
+        this._dragEndId = 0;
+        this._dragCancelledId = 0;
 
         this.connect('destroy', this._onDestroy.bind(this));
     }
 
     _onDestroy() {
         this._removeDelayedMove();
-
-        if (this._dragBeginId > 0) {
-            Main.overview.disconnect(this._dragBeginId);
-            this._dragBeginId = 0;
-        }
-
-        if (this._dragEndId > 0) {
-            Main.overview.disconnect(this._dragEndId);
-            this._dragEndId = 0;
-        }
-
-        if (this._dragCancelledId > 0) {
-            Main.overview.disconnect(this._dragCancelledId);
-            this._dragCancelledId = 0;
-        }
-
-        if (this._dragMonitor) {
-            DND.removeDragMonitor(this._dragMonitor);
-            this._dragMonitor = null;
-        }
-
+        this._disconnectDnD();
     }
 
     _createGrid() {
@@ -314,6 +291,37 @@ var BaseAppView = GObject.registerClass({
             duration,
             onComplete: () => this.goToPage(endProgress, false),
         });
+    }
+
+    _connectDnD() {
+        this._dragBeginId =
+            Main.overview.connect('item-drag-begin', this._onDragBegin.bind(this));
+        this._dragEndId =
+            Main.overview.connect('item-drag-end', this._onDragEnd.bind(this));
+        this._dragCancelledId =
+            Main.overview.connect('item-drag-cancelled', this._onDragCancelled.bind(this));
+    }
+
+    _disconnectDnD() {
+        if (this._dragBeginId > 0) {
+            Main.overview.disconnect(this._dragBeginId);
+            this._dragBeginId = 0;
+        }
+
+        if (this._dragEndId > 0) {
+            Main.overview.disconnect(this._dragEndId);
+            this._dragEndId = 0;
+        }
+
+        if (this._dragCancelledId > 0) {
+            Main.overview.disconnect(this._dragCancelledId);
+            this._dragCancelledId = 0;
+        }
+
+        if (this._dragMonitor) {
+            DND.removeDragMonitor(this._dragMonitor);
+            this._dragMonitor = null;
+        }
     }
 
     _maybeMoveItem(dragEvent) {
@@ -728,12 +736,14 @@ var BaseAppView = GObject.registerClass({
 
     vfunc_map() {
         this._swipeTracker.enabled = true;
+        this._connectDnD();
         super.vfunc_map();
     }
 
     vfunc_unmap() {
         this._swipeTracker.enabled = false;
         this._clearAnimateLater();
+        this._disconnectDnD();
         super.vfunc_unmap();
     }
 
