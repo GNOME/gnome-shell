@@ -311,6 +311,7 @@ var WindowPreview = GObject.registerClass({
             pivot_point: new Graphene.Point({ x: -1, y: 0.5 }),
             factor: 1,
         }));
+        this._title.set_offscreen_redirect(Clutter.OffscreenRedirect.ALWAYS);
         this._title.clutter_text.ellipsize = Pango.EllipsizeMode.END;
         this.label_actor = this._title;
         this._updateCaptionId = this.metaWindow.connect('notify::title', () => {
