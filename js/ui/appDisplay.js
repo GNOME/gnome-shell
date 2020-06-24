@@ -122,6 +122,7 @@ var BaseAppView = GObject.registerClass({
         super._init(params);
 
         this._grid = this._createGrid();
+        this._grid._delegate = this;
         // Standard hack for ClutterBinLayout
         this._grid.x_expand = true;
 
@@ -189,6 +190,47 @@ var BaseAppView = GObject.registerClass({
         this._parentalControlsManager.connect('app-filter-changed', () => {
             this._redisplay();
         });
+
+        // Drag n' Drop
+        this._lastOvershoot = -1;
+        this._lastOvershootTimeoutId = 0;
+        this._delayedMoveId = 0;
+        this._targetDropPosition = null;
+        this._nudgedItem = null;
+
+        this._dragBeginId =
+            Main.overview.connect('item-drag-begin', this._onDragBegin.bind(this));
+        this._dragEndId =
+            Main.overview.connect('item-drag-end', this._onDragEnd.bind(this));
+        this._dragCancelledId =
+            Main.overview.connect('item-drag-cancelled', this._onDragCancelled.bind(this));
+
+        this.connect('destroy', this._onDestroy.bind(this));
+    }
+
+    _onDestroy() {
+        this._removeDelayedMove();
+
+        if (this._dragBeginId > 0) {
+            Main.overview.disconnect(this._dragBeginId);
+            this._dragBeginId = 0;
+        }
+
+        if (this._dragEndId > 0) {
+            Main.overview.disconnect(this._dragEndId);
+            this._dragEndId = 0;
+        }
+
+        if (this._dragCancelledId > 0) {
+            Main.overview.disconnect(this._dragCancelledId);
+            this._dragCancelledId = 0;
+        }
+
+        if (this._dragMonitor) {
+            DND.removeDragMonitor(this._dragMonitor);
+            this._dragMonitor = null;
+        }
+
     }
 
     _createGrid() {
@@ -273,6 +315,213 @@ var BaseAppView = GObject.registerClass({
             duration,
             onComplete: () => this.goToPage(endProgress, false),
         });
+    }
+
+    _maybeMoveItem(dragEvent) {
+        const [success, x, y] =
+            this._grid.transform_stage_point(dragEvent.x, dragEvent.y);
+
+        if (!success)
+            return;
+
+        const source = dragEvent.source;
+        const [item, dragLocation] = this.getDropTarget(x, y);
+
+        // Dragging over invalid parts of the grid cancels the timeout
+        if (!item ||
+            item === source ||
+            dragLocation === IconGrid.DragLocation.ON_ICON) {
+            this._removeDelayedMove();
+            this._removeNudge();
+            return;
+        }
+
+        const [page, position] = this._grid.getItemPosition(item);
+
+        if (!this._targetDropPosition ||
+            this._targetDropPosition.page !== page ||
+            this._targetDropPosition.position !== position) {
+            // Update the item with a small delay
+            this._removeDelayedMove();
+            this._targetDropPosition = { page, position };
+
+            this._delayedMoveId = GLib.timeout_add(GLib.PRIORITY_DEFAULT,
+                DELAYED_MOVE_TIMEOUT, () => {
+                    this.moveItem(source, page, position);
+                    this._removeNudge();
+                    this._targetDropPosition = null;
+                    this._delayedMoveId = 0;
+                    return GLib.SOURCE_REMOVE;
+                });
+
+            this._nudgeItem(item, dragLocation);
+        }
+    }
+
+    _removeDelayedMove() {
+        if (this._delayedMoveId > 0) {
+            GLib.source_remove(this._delayedMoveId);
+            this._delayedMoveId = 0;
+        }
+        this._targetDropPosition = null;
+    }
+
+    _nudgeItem(item, dragLocation) {
+        if (this._nudgedItem)
+            this._removeNudge();
+
+        const params = {
+            duration: DELAYED_MOVE_TIMEOUT,
+            mode: Clutter.AnimationMode.EASE_IN_OUT_QUAD,
+        };
+
+        const rtl = this.get_text_direction() === Clutter.TextDirection.RTL;
+        const nudgeOffset = item.width / 4;
+        if (dragLocation === IconGrid.DragLocation.START_EDGE)
+            params.translation_x = nudgeOffset * (rtl ? -1 : 1);
+        else if (dragLocation === IconGrid.DragLocation.END_EDGE)
+            params.translation_x = -nudgeOffset * (rtl ? -1 : 1);
+
+        item.ease(params);
+        this._nudgedItem = item;
+    }
+
+    _removeNudge() {
+        if (!this._nudgedItem)
+            return;
+
+        this._nudgedItem.ease({
+            translation_x: 0,
+            duration: DELAYED_MOVE_TIMEOUT,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+        });
+        this._nudgedItem = null;
+    }
+
+    _resetOvershoot() {
+        if (this._lastOvershootTimeoutId)
+            GLib.source_remove(this._lastOvershootTimeoutId);
+        this._lastOvershootTimeoutId = 0;
+        this._lastOvershoot = -1;
+    }
+
+    _handleDragOvershoot(dragEvent) {
+        const [gridX, gridY] = this.get_transformed_position();
+        const [gridWidth, gridHeight] = this.get_transformed_size();
+
+        const vertical = this._orientation === Clutter.Orientation.VERTICAL;
+        const gridStart = vertical ? gridY : gridX;
+        const gridEnd = vertical
+            ? gridY + gridHeight - OVERSHOOT_THRESHOLD
+            : gridX + gridWidth - OVERSHOOT_THRESHOLD;
+
+        // Already animating
+        if (this._adjustment.get_transition('value') !== null)
+            return;
+
+        // Within the grid boundaries
+        const dragPosition = vertical ? dragEvent.y : dragEvent.x;
+        if (dragPosition > gridStart && dragPosition < gridEnd) {
+            // Check whether we moved out the area of the last switch
+            if (Math.abs(this._lastOvershoot - dragPosition) > OVERSHOOT_THRESHOLD)
+                this._resetOvershoot();
+
+            return;
+        }
+
+        // Still in the area of the previous page switch
+        if (this._lastOvershoot >= 0)
+            return;
+
+        const currentPosition = this._adjustment.value;
+        const maxPosition = this._adjustment.upper - this._adjustment.page_size;
+
+        if (dragPosition <= gridStart && currentPosition > 0)
+            this.goToPage(this._grid.currentPage - 1);
+        else if (dragPosition >= gridEnd && currentPosition < maxPosition)
+            this.goToPage(this._grid.currentPage + 1);
+        else
+            return; // don't go beyond first/last page
+
+        this._lastOvershoot = dragPosition;
+
+        if (this._lastOvershootTimeoutId > 0)
+            GLib.source_remove(this._lastOvershootTimeoutId);
+
+        this._lastOvershootTimeoutId =
+            GLib.timeout_add(GLib.PRIORITY_DEFAULT, OVERSHOOT_TIMEOUT, () => {
+                this._resetOvershoot();
+                this._handleDragOvershoot(dragEvent);
+                return GLib.SOURCE_REMOVE;
+            });
+        GLib.Source.set_name_by_id(this._lastOvershootTimeoutId,
+            '[gnome-shell] this._lastOvershootTimeoutId');
+    }
+
+    _onDragBegin() {
+        this._dragMonitor = {
+            dragMotion: this._onDragMotion.bind(this),
+        };
+        DND.addDragMonitor(this._dragMonitor);
+    }
+
+    _onDragMotion(dragEvent) {
+        const appIcon = dragEvent.source;
+
+        // Handle the drag overshoot. When dragging to above the
+        // icon grid, move to the page above; when dragging below,
+        // move to the page below.
+        if (appIcon instanceof BaseAppIcon)
+            this._handleDragOvershoot(dragEvent);
+
+        this._maybeMoveItem(dragEvent);
+
+        return DND.DragMotionResult.CONTINUE;
+    }
+
+    _onDragEnd() {
+        if (this._dragMonitor) {
+            DND.removeDragMonitor(this._dragMonitor);
+            this._dragMonitor = null;
+        }
+
+        this._resetOvershoot();
+        this._removeNudge();
+    }
+
+    _onDragCancelled() {
+        // Restore all icon positions, since they may have reflowed
+        // to different pages
+        for (const item of this._orderedItems) {
+            const [page, position] = this._getItemPosition(item);
+            this.moveItem(item, page, position);
+        }
+    }
+
+    _canAccept(source) {
+        return source instanceof BaseAppIcon;
+    }
+
+    handleDragOver(source) {
+        if (!this._canAccept(source))
+            return DND.DragMotionResult.NO_DROP;
+
+        return DND.DragMotionResult.MOVE_DROP;
+    }
+
+    acceptDrop(source) {
+        if (!this._canAccept(source))
+            return false;
+
+        // Dropped before the icon was moved
+        if (this._targetDropPosition) {
+            const { page, position } = this._targetDropPosition;
+
+            this.moveItem(source, page, position);
+            this._removeDelayedMove();
+        }
+
+        return true;
     }
 
     _addItem(item, page, position) {
@@ -610,7 +859,6 @@ class AppDisplay extends BaseAppView {
             y_expand: true,
         });
 
-        this._grid._delegate = this;
         this._pageManager = new PageManager();
 
         this._scrollView.add_style_class_name('all-apps');
@@ -631,11 +879,6 @@ class AppDisplay extends BaseAppView {
         this._displayingDialog = false;
         this._currentDialogDestroyId = 0;
 
-        this._lastOvershootY = -1;
-        this._lastOvershootTimeoutId = 0;
-        this._delayedMoveId = 0;
-        this._targetDropPosition = null;
-        this._nudgedItem = null;
         this._placeholder = null;
 
         Main.overview.connect('hidden', () => this.goToPage(0));
@@ -651,12 +894,6 @@ class AppDisplay extends BaseAppView {
             this._viewIsReady = false;
             Main.queueDeferredWork(this._redisplayWorkId);
         });
-
-        Main.overview.connect('item-drag-begin', this._onDragBegin.bind(this));
-        Main.overview.connect('item-drag-end', this._onDragEnd.bind(this));
-        Main.overview.connect('item-drag-cancelled', this._onDragCancelled.bind(this));
-
-        this.connect('destroy', this._onDestroy.bind(this));
 
         this._switcherooNotifyId = global.connect('notify::switcheroo-control',
             () => this._updateDiscreteGpuAvailable());
@@ -674,7 +911,7 @@ class AppDisplay extends BaseAppView {
     }
 
     _onDestroy() {
-        this._removeDelayedMove();
+        super._onDestroy();
 
         if (this._scrollTimeoutId !== 0) {
             GLib.source_remove(this._scrollTimeoutId);
@@ -939,146 +1176,20 @@ class AppDisplay extends BaseAppView {
         });
     }
 
-    _removeDelayedMove() {
-        if (this._delayedMoveId > 0) {
-            GLib.source_remove(this._delayedMoveId);
-            this._delayedMoveId = 0;
-        }
-        this._targetDropPosition = null;
-    }
-
-    _nudgeItem(item, dragLocation) {
-        if (this._nudgedItem)
-            this._removeNudge();
-
-        const params = {
-            duration: DELAYED_MOVE_TIMEOUT,
-            mode: Clutter.AnimationMode.EASE_IN_OUT_QUAD,
-        };
-
-        const rtl = this.get_text_direction() === Clutter.TextDirection.RTL;
-        const nudgeOffset = item.width / 4;
-        if (dragLocation === IconGrid.DragLocation.START_EDGE)
-            params.translation_x = nudgeOffset * (rtl ? -1 : 1);
-        else if (dragLocation === IconGrid.DragLocation.END_EDGE)
-            params.translation_x = -nudgeOffset * (rtl ? -1 : 1);
-
-        item.ease(params);
-        this._nudgedItem = item;
-    }
-
-    _removeNudge() {
-        if (!this._nudgedItem)
-            return;
-
-        this._nudgedItem.ease({
-            translation_x: 0,
-            duration: DELAYED_MOVE_TIMEOUT,
-            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-        });
-        this._nudgedItem = null;
-    }
-
     _maybeMoveItem(dragEvent) {
-        const [success, x, y] =
-            this._grid.transform_stage_point(dragEvent.x, dragEvent.y);
-
-        if (!success)
-            return;
-
-        const source = this._placeholder ? this._placeholder : dragEvent.source;
-        const [item, dragLocation] = this.getDropTarget(x, y);
-
-        // Dragging over invalid parts of the grid cancels the timeout
-        if (!item ||
-            item === source ||
-            dragLocation === IconGrid.DragLocation.ON_ICON) {
-            this._removeDelayedMove();
-            this._removeNudge();
-            return;
-        }
-
-        const [page, position] = this._grid.getItemPosition(item);
-
-        if (!this._targetDropPosition ||
-            this._targetDropPosition.page !== page ||
-            this._targetDropPosition.position !== position) {
-            // Update the item with a small delay
-            this._removeDelayedMove();
-            this._targetDropPosition = { page, position };
-
-            this._delayedMoveId = GLib.timeout_add(GLib.PRIORITY_DEFAULT,
-                DELAYED_MOVE_TIMEOUT, () => {
-                    this.moveItem(source, page, position);
-                    this._removeNudge();
-                    this._targetDropPosition = null;
-                    this._delayedMoveId = 0;
-                    return GLib.SOURCE_REMOVE;
-                });
-
-            this._nudgeItem(item, dragLocation);
-        }
-    }
-
-    _resetOvershoot() {
-        if (this._lastOvershootTimeoutId)
-            GLib.source_remove(this._lastOvershootTimeoutId);
-        this._lastOvershootTimeoutId = 0;
-        this._lastOvershootY = -1;
-    }
-
-    _handleDragOvershoot(dragEvent) {
-        let [, gridY] = this.get_transformed_position();
-        let [, gridHeight] = this.get_transformed_size();
-        const gridBottom = gridY + gridHeight - OVERSHOOT_THRESHOLD;
-
-        // Already animating
-        if (this._adjustment.get_transition('value') !== null)
-            return;
-
-        // Within the grid boundaries
-        if (dragEvent.y > gridY && dragEvent.y < gridBottom) {
-            // Check whether we moved out the area of the last switch
-            if (Math.abs(this._lastOvershootY - dragEvent.y) > OVERSHOOT_THRESHOLD)
-                this._resetOvershoot();
-
-            return;
-        }
-
-        // Still in the area of the previous page switch
-        if (this._lastOvershootY >= 0)
-            return;
-
-        let currentY = this._adjustment.value;
-        let maxY = this._adjustment.upper - this._adjustment.page_size;
-
-        if (dragEvent.y <= gridY && currentY > 0)
-            this.goToPage(this._grid.currentPage - 1);
-        else if (dragEvent.y >= gridBottom && currentY < maxY)
-            this.goToPage(this._grid.currentPage + 1);
-        else
-            return; // don't go beyond first/last page
-
-        this._lastOvershootY = dragEvent.y;
-
-        if (this._lastOvershootTimeoutId > 0)
-            GLib.source_remove(this._lastOvershootTimeoutId);
-
-        this._lastOvershootTimeoutId =
-            GLib.timeout_add(GLib.PRIORITY_DEFAULT, OVERSHOOT_TIMEOUT, () => {
-                this._resetOvershoot();
-                this._handleDragOvershoot(dragEvent);
-                return GLib.SOURCE_REMOVE;
-            });
-        GLib.Source.set_name_by_id(this._lastOvershootTimeoutId,
-            '[gnome-shell] this._lastOvershootTimeoutId');
-    }
-
-    _onDragBegin(_overview, source) {
-        this._dragMonitor = {
-            dragMotion: this._onDragMotion.bind(this),
+        const clonedEvent = {
+            x: dragEvent.x,
+            y: dragEvent.y,
+            dragActor: dragEvent.dragActor,
+            source: this._placeholder ? this._placeholder : dragEvent.source,
+            targetActor: dragEvent.targetActor,
         };
-        DND.addDragMonitor(this._dragMonitor);
+
+        super._maybeMoveItem(clonedEvent);
+    }
+
+    _onDragBegin(overview, source) {
+        super._onDragBegin(overview, source);
 
         // When dragging from a folder dialog, the dragged app icon
         // doesn't exist in AppDisplay. We work around that hijacking
@@ -1088,66 +1199,29 @@ class AppDisplay extends BaseAppView {
     }
 
     _onDragMotion(dragEvent) {
-        let appIcon = dragEvent.source;
+        if (this._currentDialog)
+            return DND.DragMotionResult.CONTINUE;
 
-        // Handle the drag overshoot. When dragging to above the
-        // icon grid, move to the page above; when dragging below,
-        // move to the page below.
-        if (appIcon instanceof BaseAppIcon)
-            this._handleDragOvershoot(dragEvent);
-
-        this._maybeMoveItem(dragEvent);
-
-        return DND.DragMotionResult.CONTINUE;
+        return super._onDragMotion(dragEvent);
     }
 
     _onDragEnd() {
-        if (this._dragMonitor) {
-            DND.removeDragMonitor(this._dragMonitor);
-            this._dragMonitor = null;
-        }
-
-        this._resetOvershoot();
-        this._removeNudge();
+        super._onDragEnd();
         this._removePlaceholder();
     }
 
-    _onDragCancelled(_overview, source) {
+    _onDragCancelled(overview, source) {
         const view = _getViewFromIcon(source);
 
         if (view instanceof FolderView)
             return;
 
-        // Restore all icon positions, since they may have reflowed
-        // to different pages
-        for (const item of this._orderedItems) {
-            const [page, position] = this._getItemPosition(item);
-            this.moveItem(item, page, position);
-        }
-    }
-
-    _canAccept(source) {
-        return source instanceof BaseAppIcon;
-    }
-
-    handleDragOver(source) {
-        if (!this._canAccept(source))
-            return DND.DragMotionResult.NO_DROP;
-
-        return DND.DragMotionResult.MOVE_DROP;
+        super._onDragCancelled(overview, source);
     }
 
     acceptDrop(source) {
-        if (!this._canAccept(source))
+        if (!super.acceptDrop(source))
             return false;
-
-        // Dropped before the icon was moved
-        if (this._targetDropPosition) {
-            const { page, position } = this._targetDropPosition;
-
-            this.moveItem(source, page, position);
-            this._removeDelayedMove();
-        }
 
         this._savePages();
 
