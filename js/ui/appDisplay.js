@@ -1619,6 +1619,33 @@ class FolderView extends BaseAppView {
         return appIds;
     }
 
+    _getItemPosition(item) {
+        const appIds = this._getFolderApps();
+        const appIndex = appIds.indexOf(item.id);
+
+        if (appIndex === -1)
+            return [-1, -1];
+
+        const { itemsPerPage } = this._grid;
+        return [Math.floor(appIndex / itemsPerPage), appIndex % itemsPerPage];
+    }
+
+    _compareItems(a, b) {
+        const appIds = this._getFolderApps();
+
+        const aPosition = appIds.indexOf(a.id);
+        const bPosition = appIds.indexOf(b.id);
+
+        if (aPosition === -1 && bPosition === -1)
+            return a.name.localeCompare(b.name);
+        else if (aPosition === -1)
+            return 1;
+        else if (bPosition === -1)
+            return -1;
+
+        return aPosition - bPosition;
+    }
+
     // Overridden from BaseAppView
     animate(animationDirection) {
         this._grid.animatePulse(animationDirection);
@@ -1677,6 +1704,16 @@ class FolderView extends BaseAppView {
         });
 
         return apps;
+    }
+
+    acceptDrop(source) {
+        if (!super.acceptDrop(source))
+            return false;
+
+        const folderApps = this._orderedItems.map(item => item.id);
+        this._folder.set_strv('apps', folderApps);
+
+        return true;
     }
 
     addApp(app) {
