@@ -293,6 +293,7 @@ st_label_class_init (StLabelClass *klass)
 static void
 st_label_init (StLabel *label)
 {
+  ClutterActor *actor = CLUTTER_ACTOR (label);
   StLabelPrivate *priv;
 
   label->priv = priv = st_label_get_instance_private (label);
@@ -304,7 +305,10 @@ st_label_init (StLabel *label)
   label->priv->shadow_width = -1.;
   label->priv->shadow_height = -1.;
 
-  clutter_actor_add_child (CLUTTER_ACTOR (label), priv->label);
+  clutter_actor_add_child (actor, priv->label);
+
+  clutter_actor_set_offscreen_redirect (actor,
+                                        CLUTTER_OFFSCREEN_REDIRECT_ALWAYS);
 }
 
 /**
