@@ -7,6 +7,7 @@ const Main = imports.ui.main;
 const SwipeTracker = imports.ui.swipeTracker;
 const Workspace = imports.ui.workspace;
 
+var { ANIMATION_TIME } = imports.ui.overview;
 var WORKSPACE_SWITCH_TIME = 250;
 var SCROLL_TIMEOUT_TIME = 150;
 
@@ -579,6 +580,14 @@ class WorkspacesDisplay extends St.Widget {
 
     animateFromOverview(fadeOnPrimary) {
         for (let i = 0; i < this._workspacesViews.length; i++) {
+            const { x, y, width, height } =
+                Main.layoutManager.getWorkAreaForMonitor(i);
+            this._workspacesViews[i].ease({
+                x, y, width, height,
+                duration: ANIMATION_TIME,
+                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            });
+
             let animationType;
             if (fadeOnPrimary && i == this._primaryIndex)
                 animationType = AnimationType.FADE;
@@ -707,7 +716,11 @@ class WorkspacesDisplay extends St.Widget {
         if (!primaryView)
             return;
 
-        primaryView.set(this._actualGeometry);
+        primaryView.ease({
+            ...this._actualGeometry,
+            duration: Main.overview.animationInProgress ? ANIMATION_TIME : 0,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+        });
     }
 
     _onRestacked(overview, stackIndices) {
