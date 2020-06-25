@@ -19,6 +19,7 @@ const Params = imports.misc.params;
 const SystemActions = imports.misc.systemActions;
 
 var MENU_POPUP_TIMEOUT = 600;
+var POPDOWN_DIALOG_TIMEOUT = 1500;
 
 var FOLDER_SUBICON_FRACTION = .4;
 
@@ -2310,7 +2311,7 @@ var AppFolderDialog = GObject.registerClass({
             }
         } else if (this._popdownTimeoutId === 0) {
             this._popdownTimeoutId =
-                GLib.timeout_add(GLib.PRIORITY_DEFAULT, MENU_POPUP_TIMEOUT, () => {
+                GLib.timeout_add(GLib.PRIORITY_DEFAULT, POPDOWN_DIALOG_TIMEOUT, () => {
                     this._popdownTimeoutId = 0;
                     this.popdown();
                     return GLib.SOURCE_REMOVE;
