@@ -2012,6 +2012,7 @@ var AppFolderDialog = GObject.registerClass({
         this._grabHelper.addActor(Main.layoutManager.overviewGroup);
         this.connect('destroy', this._onDestroy.bind(this));
 
+        this._dragMonitor = null;
         this._sourceMappedId = 0;
         this._popdownTimeoutId = 0;
         this._needsZoomAndFade = false;
@@ -2225,6 +2226,22 @@ var AppFolderDialog = GObject.registerClass({
         this._needsZoomAndFade = false;
     }
 
+    _removeDragMonitor() {
+        if (!this._dragMonitor)
+            return;
+
+        DND.removeDragMonitor(this._dragMonitor);
+        this._dragMonitor = null;
+    }
+
+    _removePopdownTimeout() {
+        if (this._popdownTimeoutId === 0)
+            return;
+
+        GLib.source_remove(this._popdownTimeoutId);
+        this._popdownTimeoutId = 0;
+    }
+
     _onDestroy() {
         if (this._isOpen) {
             this._isOpen = false;
@@ -2237,10 +2254,8 @@ var AppFolderDialog = GObject.registerClass({
             this._sourceMappedId = 0;
         }
 
-        if (this._popdownTimeoutId > 0) {
-            GLib.source_remove(this._popdownTimeoutId);
-            this._popdownTimeoutId = 0;
-        }
+        this._removePopdownTimeout();
+        this._removeDragMonitor();
     }
 
     vfunc_allocate(box) {
@@ -2307,19 +2322,41 @@ var AppFolderDialog = GObject.registerClass({
             y < childAllocation.y2;
     }
 
+    _setupDragMonitor() {
+        if (this._dragMonitor)
+            return;
+
+        this._dragMonitor = {
+            dragMotion: dragEvent => {
+                if (this._withinDialog(dragEvent.x, dragEvent.y)) {
+                    this._removePopdownTimeout();
+                    this._removeDragMonitor();
+                }
+                return DND.DragMotionResult.CONTINUE;
+            },
+        };
+        DND.addDragMonitor(this._dragMonitor);
+    }
+
+    _setupPopdownTimeout() {
+        if (this._popdownTimeoutId > 0)
+            return;
+
+        this._popdownTimeoutId =
+            GLib.timeout_add(GLib.PRIORITY_DEFAULT, POPDOWN_DIALOG_TIMEOUT, () => {
+                this._popdownTimeoutId = 0;
+                this.popdown();
+                return GLib.SOURCE_REMOVE;
+            });
+    }
+
     handleDragOver(source, actor, x, y) {
         if (this._withinDialog(x, y)) {
-            if (this._popdownTimeoutId > 0) {
-                GLib.source_remove(this._popdownTimeoutId);
-                this._popdownTimeoutId = 0;
-            }
-        } else if (this._popdownTimeoutId === 0) {
-            this._popdownTimeoutId =
-                GLib.timeout_add(GLib.PRIORITY_DEFAULT, POPDOWN_DIALOG_TIMEOUT, () => {
-                    this._popdownTimeoutId = 0;
-                    this.popdown();
-                    return GLib.SOURCE_REMOVE;
-                });
+            this._removePopdownTimeout();
+            this._removeDragMonitor();
+        } else {
+            this._setupPopdownTimeout();
+            this._setupDragMonitor();
         }
 
         return DND.DragMotionResult.NO_DROP;
