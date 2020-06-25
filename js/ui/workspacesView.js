@@ -22,7 +22,7 @@ var WorkspacesViewBase = GObject.registerClass({
 }, class WorkspacesViewBase extends St.Widget {
     _init(monitorIndex) {
         const { x, y, width, height } =
-            Main.layoutManager.monitors[monitorIndex];
+            Main.layoutManager.getWorkAreaForMonitor(monitorIndex);
 
         super._init({
             style_class: 'workspaces-view',
