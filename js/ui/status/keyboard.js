@@ -970,7 +970,7 @@ class InputSourceIndicator extends PanelMenu.Button {
                 let currentSource = this._inputSourceManager.currentSource;
                 if (currentSource) {
                     let indicatorLabel = this._indicatorLabels[currentSource.index];
-                    if (text && text.length > 0 && text.length < 3)
+                    if (text && text.length > 0)
                         indicatorLabel.set_text(text);
                 }
             }
