@@ -635,7 +635,7 @@ var WorkspaceLayout = GObject.registerClass({
             // example if the container height is being animated, we want to
             // avoid animating the children allocations to make sure they
             // don't "lag behind" the other animation).
-            if (layoutChanged) {
+            if (layoutChanged && !Main.overview.animationInProgress) {
                 const transition = animateAllocation(child, childBox);
                 if (transition) {
                     windowInfo.currentTransition = transition;
@@ -1148,6 +1148,19 @@ class Workspace extends St.Widget {
     }
 
     zoomToOverview() {
+        let workspaceManager = global.workspace_manager;
+        let currentWorkspace = workspaceManager.get_active_workspace();
+
+        const animate =
+            this.metaWorkspace === null ||
+            this.metaWorkspace === currentWorkspace;
+
+        const adj = this.layout_manager.stateAdjustment;
+        adj.value = 0;
+        adj.ease(1, {
+            duration: animate ? Overview.ANIMATION_TIME : 0,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+        });
     }
 
     zoomFromOverview() {
@@ -1165,29 +1178,10 @@ class Workspace extends St.Widget {
         if (this.metaWorkspace !== null && !this.metaWorkspace.active)
             return;
 
-        // Position and scale the windows.
-        for (let i = 0; i < this._windows.length; i++)
-            this._zoomWindowFromOverview(i);
-    }
-
-    _zoomWindowFromOverview(index) {
-        let clone = this._windows[index];
-        clone.hideOverlay(false);
-
-        if (clone.metaWindow.showing_on_its_workspace()) {
-            clone.ease({
-                opacity: 255,
-                duration: Overview.ANIMATION_TIME,
-                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            });
-        } else {
-            // The window is hidden, make it shrink and fade it out
-            clone.ease({
-                opacity: 0,
-                duration: Overview.ANIMATION_TIME,
-                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            });
-        }
+        this.layout_manager.stateAdjustment.ease(0, {
+            duration: Overview.ANIMATION_TIME,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+        });
     }
 
     _onDestroy() {
