@@ -533,10 +533,26 @@ var BaseAppView = GObject.registerClass({
         return true;
     }
 
+    _findBestPageToAppend() {
+        for (let i = 1; i < this._grid.nPages; i++) {
+            const pageItems =
+                this._grid.getItemsAtPage(i).filter(c => c.visible);
+
+            if (pageItems.length < this._grid.itemsPerPage)
+                return i;
+        }
+
+        return -1;
+    }
+
     _addItem(item, page, position) {
         let itemIndex = 0;
 
         if (this._grid.nPages > 0) {
+            // Append icons to the first empty slot of the
+            if (this._grid.nPages > 1 && page === -1 && position === -1)
+                page = this._findBestPageToAppend();
+
             const realPage = page !== -1 ? page : Math.max(this._grid.nPages - 1, 0);
 
             itemIndex = position !== -1
