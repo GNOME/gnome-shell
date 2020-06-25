@@ -584,10 +584,17 @@ var WorkspaceLayout = GObject.registerClass({
 
             child.slotId = index;
 
-            workspaceBox.x1 = child.boundingBox.x - this._workarea.x;
-            workspaceBox.x2 = workspaceBox.x1 + child.boundingBox.width;
-            workspaceBox.y1 = child.boundingBox.y - this._workarea.y;
-            workspaceBox.y2 = workspaceBox.y1 + child.boundingBox.height;
+            if (windowInfo.metaWindow.showing_on_its_workspace()) {
+                workspaceBox.x1 = child.boundingBox.x - this._workarea.x;
+                workspaceBox.x2 = workspaceBox.x1 + child.boundingBox.width;
+                workspaceBox.y1 = child.boundingBox.y - this._workarea.y;
+                workspaceBox.y2 = workspaceBox.y1 + child.boundingBox.height;
+            } else {
+                workspaceBox.set_origin(this._workarea.x, this._workarea.y);
+                workspaceBox.set_size(0, 0);
+
+                child.opacity = this._stateAdjustment.value * 255;
+            }
 
             workspaceBox.scale(allocationScale);
 
