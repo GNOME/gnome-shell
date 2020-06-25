@@ -21,7 +21,7 @@ var WorkspacesViewBase = GObject.registerClass({
     GTypeFlags: GObject.TypeFlags.ABSTRACT,
 }, class WorkspacesViewBase extends St.Widget {
     _init(monitorIndex) {
-        super._init({ style_class: 'workspaces-view', reactive: true });
+        super._init({ style_class: 'workspaces-view' });
         this.connect('destroy', this._onDestroy.bind(this));
         global.focus_manager.add_group(this);
 
