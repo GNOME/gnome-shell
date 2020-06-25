@@ -282,30 +282,6 @@ st_entry_style_changed (StWidget *self)
   ST_WIDGET_CLASS (st_entry_parent_class)->style_changed (self);
 }
 
-static gboolean
-st_entry_navigate_focus (StWidget         *widget,
-                         ClutterActor     *from,
-                         StDirectionType   direction)
-{
-  StEntryPrivate *priv = ST_ENTRY_PRIV (widget);
-
-  /* This is basically the same as st_widget_real_navigate_focus(),
-   * except that widget is behaving as a proxy for priv->entry (which
-   * isn't an StWidget and so has no can-focus flag of its own).
-   */
-
-  if (from == priv->entry)
-    return FALSE;
-  else if (st_widget_get_can_focus (widget) &&
-           clutter_actor_is_mapped (priv->entry))
-    {
-      clutter_actor_grab_key_focus (priv->entry);
-      return TRUE;
-    }
-  else
-    return FALSE;
-}
-
 static void
 st_entry_get_preferred_width (ClutterActor *actor,
                               gfloat        for_height,
@@ -894,7 +870,6 @@ st_entry_class_init (StEntryClass *klass)
   actor_class->leave_event = st_entry_leave_event;
 
   widget_class->style_changed = st_entry_style_changed;
-  widget_class->navigate_focus = st_entry_navigate_focus;
   widget_class->get_accessible_type = st_entry_accessible_get_type;
 
   props[PROP_CLUTTER_TEXT] =
