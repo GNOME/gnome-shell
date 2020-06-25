@@ -21,7 +21,13 @@ var WorkspacesViewBase = GObject.registerClass({
     GTypeFlags: GObject.TypeFlags.ABSTRACT,
 }, class WorkspacesViewBase extends St.Widget {
     _init(monitorIndex) {
-        super._init({ style_class: 'workspaces-view' });
+        const { x, y, width, height } =
+            Main.layoutManager.monitors[monitorIndex];
+
+        super._init({
+            style_class: 'workspaces-view',
+            x, y, width, height,
+        });
         this.connect('destroy', this._onDestroy.bind(this));
         global.focus_manager.add_group(this);
 
@@ -747,16 +753,11 @@ class WorkspacesDisplay extends St.Widget {
     }
 
     _syncWorkspacesActualGeometry() {
-        if (!this._workspacesViews.length)
+        const primaryView = this._getPrimaryView();
+        if (!primaryView)
             return;
 
-        let monitors = Main.layoutManager.monitors;
-        for (let i = 0; i < monitors.length; i++) {
-            let geometry = i === this._primaryIndex ? this._actualGeometry : monitors[i];
-            const { x, y, width, height } = geometry;
-
-            this._workspacesViews[i].set({ x, y, width, height });
-        }
+        primaryView.set(this._actualGeometry);
     }
 
     _onRestacked(overview, stackIndices) {
