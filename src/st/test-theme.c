@@ -566,26 +566,26 @@ main (int argc, char **argv)
 
   root = st_theme_context_get_root_node (context);
   group1 = st_theme_node_new (context, root, NULL,
-                              CLUTTER_TYPE_GROUP, "group1", NULL, NULL, NULL);
+                              CLUTTER_TYPE_ACTOR, "group1", NULL, NULL, NULL);
   text1 = st_theme_node_new  (context, group1, NULL,
                               CLUTTER_TYPE_TEXT, "text1", "special-text", NULL, NULL);
   text2 = st_theme_node_new  (context, group1, NULL,
                               CLUTTER_TYPE_TEXT, "text2", NULL, NULL, NULL);
   group2 = st_theme_node_new (context, root, NULL,
-                              CLUTTER_TYPE_GROUP, "group2", NULL, NULL, NULL);
+                              CLUTTER_TYPE_ACTOR, "group2", NULL, NULL, NULL);
   group4 = st_theme_node_new (context, root, NULL,
-                              CLUTTER_TYPE_GROUP, "group4", NULL, NULL, NULL);
+                              CLUTTER_TYPE_ACTOR, "group4", NULL, NULL, NULL);
   group5 = st_theme_node_new (context, root, NULL,
-                              CLUTTER_TYPE_GROUP, "group5", NULL, NULL, NULL);
+                              CLUTTER_TYPE_ACTOR, "group5", NULL, NULL, NULL);
   group6 = st_theme_node_new (context, root, NULL,
-                              CLUTTER_TYPE_GROUP, "group6", NULL, NULL, NULL);
+                              CLUTTER_TYPE_ACTOR, "group6", NULL, NULL, NULL);
   text3 = st_theme_node_new  (context, group2, NULL,
                               CLUTTER_TYPE_TEXT, "text3", NULL, NULL,
                               "color: #0000ff; padding-bottom: 12px;");
   text4 = st_theme_node_new  (context, group2, NULL,
                               CLUTTER_TYPE_TEXT, "text4", NULL, "visited hover", NULL);
   group3 = st_theme_node_new (context, group2, NULL,
-                              CLUTTER_TYPE_GROUP, "group3", NULL, "hover", NULL);
+                              CLUTTER_TYPE_ACTOR, "group3", NULL, "hover", NULL);
   button = st_theme_node_new (context, root, NULL,
                               ST_TYPE_BUTTON, "button", NULL, NULL, NULL);
 
