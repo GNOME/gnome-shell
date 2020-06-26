@@ -255,6 +255,7 @@ var WindowPreview = GObject.registerClass({
         this.inDrag = false;
 
         this._selected = false;
+        this._overlayEnabled = true;
         this._closeRequested = false;
         this._idleHideOverlayId = 0;
 
@@ -349,6 +350,18 @@ var WindowPreview = GObject.registerClass({
         this.add_child(this._closeButton);
     }
 
+    setOverlayEnabled(enabled) {
+        if (this._overlayEnabled === enabled)
+            return;
+
+        this._overlayEnabled = enabled;
+
+        if (!enabled)
+            this.hideOverlay(false);
+        else if (this['has-pointer'] || global.stage.key_focus === this)
+            this.showOverlay(true);
+    }
+
     vfunc_get_preferred_width(forHeight) {
         const themeNode = this.get_theme_node();
 
@@ -429,6 +442,9 @@ var WindowPreview = GObject.registerClass({
     }
 
     showOverlay(animate) {
+        if (!this._overlayEnabled)
+            return;
+
         const ongoingTransition = this._border.get_transition('opacity');
 
         // Don't do anything if we're fully visible already
