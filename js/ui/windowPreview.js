@@ -189,6 +189,12 @@ var WindowPreviewLayout = GObject.registerClass({
 });
 
 var WindowPreview = GObject.registerClass({
+    Properties: {
+        'overlay-enabled': GObject.ParamSpec.boolean(
+            'overlay-enabled', 'overlay-enabled', 'overlay-enabled',
+            GObject.ParamFlags.READWRITE,
+            true),
+    },
     Signals: {
         'drag-begin': {},
         'drag-cancelled': {},
@@ -255,6 +261,7 @@ var WindowPreview = GObject.registerClass({
         this.inDrag = false;
 
         this._selected = false;
+        this._overlayEnabled = true;
         this._closeRequested = false;
         this._idleHideOverlayId = 0;
 
@@ -434,6 +441,9 @@ var WindowPreview = GObject.registerClass({
     }
 
     showOverlay(animate) {
+        if (!this._overlayEnabled)
+            return;
+
         const ongoingTransition = this._border.get_transition('opacity');
 
         // Don't do anything if we're fully visible already
@@ -568,6 +578,26 @@ var WindowPreview = GObject.registerClass({
             y: box.get_y() + box.get_height() / 2,
         });
     }
+
+    // eslint-disable-next-line camelcase
+    get overlay_enabled() {
+        return this._overlayEnabled;
+    }
+
+    // eslint-disable-next-line camelcase
+    set overlay_enabled(enabled) {
+        if (this._overlayEnabled === enabled)
+            return;
+
+        this._overlayEnabled = enabled;
+        this.notify('overlay-enabled');
+
+        if (!enabled)
+            this.hideOverlay(false);
+        else if (this['has-pointer'] || global.stage.key_focus === this)
+            this.showOverlay(true);
+    }
+
 
     // Find the actor just below us, respecting reparenting done by DND code
     _getActualStackAbove() {
