@@ -559,9 +559,10 @@ var WorkspaceLayout = GObject.registerClass({
     }
 
     vfunc_allocate(container, box) {
+        const containerBox = container.allocation;
         const containerAllocationChanged =
-            this._lastBox === null || !this._lastBox.equal(box);
-        this._lastBox = box.copy();
+            this._lastBox === null || !this._lastBox.equal(containerBox);
+        this._lastBox = containerBox.copy();
 
         // If the containers size changed, we can no longer keep around
         // the old windowSlots, so we must unfreeze the layout
@@ -581,7 +582,7 @@ var WorkspaceLayout = GObject.registerClass({
                 this._windowSlots = this._getWindowSlots(box.copy());
         }
 
-        const allocationScale = box.get_width() / this._workarea.width;
+        const allocationScale = containerBox.get_width() / this._workarea.width;
 
         const workspaceBox = new Clutter.ActorBox();
         const layoutBox = new Clutter.ActorBox();
