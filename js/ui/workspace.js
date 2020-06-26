@@ -854,14 +854,20 @@ class WorkspaceBackground extends St.Widget {
         });
 
         this._monitorIndex = monitorIndex;
+        this._workarea = Main.layoutManager.getWorkAreaForMonitor(monitorIndex);
+
+        this._bin = new Clutter.Actor({
+            layout_manager: new Clutter.BinLayout(),
+            clip_to_allocation: true,
+        });
 
         this._backgroundGroup = new Meta.BackgroundGroup({
+            layout_manager: new Clutter.BinLayout(),
             x_expand: true,
             y_expand: true,
-            reactive: false,
-            layout_manager: new Clutter.BinLayout(),
         });
-        this.add_child(this._backgroundGroup);
+        this._bin.add_child(this._backgroundGroup);
+        this.add_child(this._bin);
 
         this._bgManager = new Background.BackgroundManager({
             container: this._backgroundGroup,
@@ -871,6 +877,27 @@ class WorkspaceBackground extends St.Widget {
         });
 
         this.connect('destroy', this._onDestroy.bind(this));
+    }
+
+    vfunc_allocate(box) {
+        this.set_allocation(box);
+
+        const themeNode = this.get_theme_node();
+        const contentBox = themeNode.get_content_box(box);
+
+        this._bin.allocate(contentBox);
+
+        const [contentWidth, contentHeight] = contentBox.get_size();
+        const monitor = Main.layoutManager.monitors[this._monitorIndex];
+        const xOff = (contentWidth / this._workarea.width) *
+            (this._workarea.x - monitor.x);
+        const yOff = (contentHeight / this._workarea.height) *
+            (this._workarea.y - monitor.y);
+
+        contentBox.x1 -= xOff;
+        contentBox.y1 -= yOff;
+        contentBox.set_size(xOff + contentWidth, yOff + contentHeight);
+        this._backgroundGroup.allocate(contentBox);
     }
 
     _onDestroy() {
