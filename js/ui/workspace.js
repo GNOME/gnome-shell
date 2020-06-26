@@ -491,6 +491,18 @@ class Workspace extends St.Widget {
         this._actualGeometry = geom;
         this._actualGeometryDirty = true;
 
+        // Window overlays are scaled and positioned with respect to the size
+        // of their clone plus their border.  The actual chrome width, which
+        // includes the close button, is not considered.  Therefore, when an
+        // overlay is positioned at the edge of the view selector, the close
+        // button will be cut off past the overlay's border.  So we move the
+        // right edge left by the overhang.
+        let overlay = this._windowOverlays[0];
+        if (overlay) {
+            let [, rightChromeWidth] = overlay.chromeWidths();
+            this._actualGeometry.width -= rightChromeWidth - overlay.borderSize;
+        }
+
         if (this.mapped)
             this._syncActualGeometry();
     }
