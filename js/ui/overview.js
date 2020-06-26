@@ -224,7 +224,6 @@ var Overview = class {
         this._overview = new OverviewActor();
         this._overview._delegate = this;
         Main.layoutManager.overviewGroup.add_child(this._overview);
-        this._overview.connect('notify::allocation', () => this.emit('relayout'));
 
         this._shellInfo = new ShellInfo();
 

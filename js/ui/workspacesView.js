@@ -1,14 +1,13 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported WorkspacesView, WorkspacesDisplay */
 
-const { Clutter, Gio, GLib, GObject, Meta, Shell, St } = imports.gi;
+const { Clutter, Gio, GObject, Meta, Shell, St } = imports.gi;
 
 const Main = imports.ui.main;
 const SwipeTracker = imports.ui.swipeTracker;
 const Util = imports.misc.util;
 const Workspace = imports.ui.workspace;
 
-var { ANIMATION_TIME } = imports.ui.overview;
 var WORKSPACE_SWITCH_TIME = 250;
 
 const MUTTER_SCHEMA = 'org.gnome.mutter';
@@ -22,12 +21,11 @@ var WorkspacesViewBase = GObject.registerClass({
     GTypeFlags: GObject.TypeFlags.ABSTRACT,
 }, class WorkspacesViewBase extends St.Widget {
     _init(monitorIndex) {
-        const { x, y, width, height } =
-            Main.layoutManager.getWorkAreaForMonitor(monitorIndex);
-
         super._init({
             style_class: 'workspaces-view',
-            x, y, width, height,
+            clip_to_allocation: true,
+            x_expand: true,
+            y_expand: true,
         });
         this.connect('destroy', this._onDestroy.bind(this));
         global.focus_manager.add_group(this);
@@ -66,6 +64,14 @@ var WorkspacesViewBase = GObject.registerClass({
         for (const child of this)
             child.allocate_available_size(0, 0, box.get_width(), box.get_height());
     }
+
+    vfunc_get_preferred_width() {
+        return [0, 0];
+    }
+
+    vfunc_get_preferred_height() {
+        return [0, 0];
+    }
 });
 
 var FitMode = {
@@ -79,7 +85,6 @@ class WorkspacesView extends WorkspacesViewBase {
         let workspaceManager = global.workspace_manager;
 
         super._init(monitorIndex);
-        this.clip_to_allocation = true;
 
         this._fitModeAdjustment = fitModeAdjustment;
         this._fitModeNotifyId = this._fitModeAdjustment.connect('notify::value', () => {
@@ -380,6 +385,7 @@ class WorkspacesView extends WorkspacesViewBase {
     _onDestroy() {
         super._onDestroy();
 
+        this._workspaces = [];
         this._scrollAdjustment.disconnect(this._onScrollId);
         this._fitModeAdjustment.disconnect(this._fitModeNotifyId);
         global.window_manager.disconnect(this._switchWorkspaceNotifyId);
@@ -472,8 +478,8 @@ class WorkspacesDisplay extends St.Widget {
         super._init({
             visible: false,
             clip_to_allocation: true,
+            layout_manager: new Clutter.BinLayout(),
         });
-        this.connect('notify::allocation', this._updateWorkspacesActualGeometry.bind(this));
 
         this._fitModeAdjustment = new St.Adjustment({
             actor: this,
@@ -481,9 +487,6 @@ class WorkspacesDisplay extends St.Widget {
             lower: FitMode.SINGLE,
             upper: FitMode.ALL,
         });
-
-        Main.overview.connect('relayout',
-            () => this._updateWorkspacesActualGeometry());
 
         let workspaceManager = global.workspace_manager;
         this._scrollAdjustment = scrollAdjustment;
@@ -510,9 +513,6 @@ class WorkspacesDisplay extends St.Widget {
         this._windowDragEndId =
             Main.overview.connect('window-drag-end',
                 this._windowDragEnd.bind(this));
-        this._overviewShownId = Main.overview.connect('shown', () => {
-            this._syncWorkspacesActualGeometry();
-        });
 
         this._primaryVisible = true;
         this._primaryIndex = Main.layoutManager.primaryIndex;
@@ -527,9 +527,7 @@ class WorkspacesDisplay extends St.Widget {
         this._restackedNotifyId = 0;
         this._scrollEventId = 0;
         this._keyPressEventId = 0;
-        this._syncActualGeometryLater = 0;
 
-        this._actualGeometry = null;
         this._inWindowDrag = false;
         this._leavingOverview = false;
 
@@ -551,16 +549,10 @@ class WorkspacesDisplay extends St.Widget {
             this._parentSetLater = 0;
         }
 
-        if (this._syncActualGeometryLater) {
-            Meta.later_remove(this._syncActualGeometryLater);
-            this._syncActualGeometryLater = 0;
-        }
-
         global.window_manager.disconnect(this._switchWorkspaceId);
         global.workspace_manager.disconnect(this._reorderWorkspacesdId);
         Main.overview.disconnect(this._windowDragBeginId);
         Main.overview.disconnect(this._windowDragEndId);
-        Main.overview.disconnect(this._overviewShownId);
     }
 
     _windowDragBegin() {
@@ -690,9 +682,6 @@ class WorkspacesDisplay extends St.Widget {
         for (let i = 0; i < this._workspacesViews.length; i++)
             this._workspacesViews[i].animateToOverview();
 
-        if (this._actualGeometry)
-            this._syncWorkspacesActualGeometry();
-
         this._restackedNotifyId =
             Main.overview.connect('windows-restacked',
                                   this._onRestacked.bind(this));
@@ -740,7 +729,6 @@ class WorkspacesDisplay extends St.Widget {
             return;
 
         this._updateWorkspacesViews();
-        this._syncWorkspacesActualGeometry();
     }
 
     _updateWorkspacesViews() {
@@ -758,10 +746,17 @@ class WorkspacesDisplay extends St.Widget {
                 view = new WorkspacesView(i, this._scrollAdjustment, this._fitModeAdjustment);
 
             this._workspacesViews.push(view);
-            Main.layoutManager.overviewGroup.add_actor(view);
-        }
 
-        this._workspacesViews[this._primaryIndex].visible = this._primaryVisible;
+            if (i === this._primaryIndex) {
+                view.visible = this._primaryVisible;
+                this.add_child(view);
+            } else {
+                const { x, y, width, height } =
+                    Main.layoutManager.getWorkAreaForMonitor(i);
+                view.set({ x, y, width, height });
+                Main.layoutManager.overviewGroup.add_actor(view);
+            }
+        }
     }
 
     _getMonitorIndexForEvent(event) {
@@ -805,37 +800,6 @@ class WorkspacesDisplay extends St.Widget {
                 primaryView.opacity = opacity;
                 primaryView.visible = opacity != 0;
             });
-        });
-    }
-
-    _updateWorkspacesActualGeometry() {
-        const [x, y] = this.get_transformed_position();
-        const width = this.allocation.get_width();
-        const height = this.allocation.get_height();
-
-        this._actualGeometry = { x, y, width, height };
-
-        if (this._syncActualGeometryLater > 0)
-            return;
-
-        this._syncActualGeometryLater =
-            Meta.later_add(Meta.LaterType.BEFORE_REDRAW, () => {
-                this._syncWorkspacesActualGeometry();
-
-                this._syncActualGeometryLater = 0;
-                return GLib.SOURCE_REMOVE;
-            });
-    }
-
-    _syncWorkspacesActualGeometry() {
-        const primaryView = this._getPrimaryView();
-        if (!primaryView)
-            return;
-
-        primaryView.ease({
-            ...this._actualGeometry,
-            duration: Main.overview.animationInProgress ? ANIMATION_TIME : 0,
-            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
         });
     }
 
