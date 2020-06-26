@@ -21,7 +21,7 @@ var WorkspacesViewBase = GObject.registerClass({
     GTypeFlags: GObject.TypeFlags.ABSTRACT,
 }, class WorkspacesViewBase extends St.Widget {
     _init(monitorIndex) {
-        super._init({ style_class: 'workspaces-view', reactive: true });
+        super._init({ style_class: 'workspaces-view' });
         this.connect('destroy', this._onDestroy.bind(this));
         global.focus_manager.add_group(this);
 
@@ -508,25 +508,11 @@ class WorkspacesDisplay extends St.Widget {
             workspaceManager.get_active_workspace_index();
     }
 
-    _activeWorkspaceChanged(_wm, _from, _to, _direction) {
+    _activeWorkspaceChanged(_wm, _from, to, _direction) {
         if (this._gestureActive)
             return;
 
-        this._scrollToActive();
-    }
-
-    _scrollToActive() {
-        let workspaceManager = global.workspace_manager;
-        let active = workspaceManager.get_active_workspace_index();
-
-        this._updateScrollAdjustment(active);
-    }
-
-    _updateScrollAdjustment(index) {
-        if (this._gestureActive)
-            return;
-
-        this._scrollAdjustment.ease(index, {
+        this._scrollAdjustment.ease(to, {
             mode: Clutter.AnimationMode.EASE_OUT_CUBIC,
             duration: WORKSPACE_SWITCH_TIME,
         });
