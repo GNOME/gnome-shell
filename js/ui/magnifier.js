@@ -489,7 +489,10 @@ var Magnifier = class Magnifier {
     _updateMouseSprite() {
         this._updateSpriteTexture();
         let [xHot, yHot] = this._cursorTracker.get_hot();
-        this._mouseSprite.set_anchor_point(xHot, yHot);
+        this._mouseSprite.set({
+            translation_x: -xHot,
+            translation_y: -yHot,
+        });
     }
 
     _updateSpriteTexture() {

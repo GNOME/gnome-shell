@@ -1204,7 +1204,8 @@ class HotCorner extends Clutter.Actor {
 
             if (Clutter.get_default_text_direction() == Clutter.TextDirection.RTL) {
                 this._corner.set_position(this.width - this._corner.width, 0);
-                this.set_anchor_point_from_gravity(Clutter.Gravity.NORTH_EAST);
+                this.set_pivot_point(1.0, 0.0);
+                this.translation_x = -this.width;
             } else {
                 this._corner.set_position(0, 0);
             }
