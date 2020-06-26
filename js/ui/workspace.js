@@ -520,26 +520,40 @@ var WorkspaceLayout = GObject.registerClass({
         return this._layout.strategy.computeWindowSlots(this._layout, availArea);
     }
 
+    _getAdjustedWorkarea(container) {
+        const workarea = this._workarea.copy();
+
+        if (container instanceof St.Widget) {
+            const themeNode = container.get_theme_node();
+            workarea.width -= themeNode.get_horizontal_padding();
+            workarea.height -= themeNode.get_vertical_padding();
+        }
+
+        return workarea;
+    }
+
     vfunc_set_container(container) {
         this._container = container;
         this._stateAdjustment.actor = container;
     }
 
     vfunc_get_preferred_width(container, forHeight) {
+        const workarea = this._getAdjustedWorkarea(container);
         if (forHeight === -1)
-            return [0, this._workarea.width];
+            return [0, workarea.width];
 
-        const workAreaAspectRatio = this._workarea.width / this._workarea.height;
+        const workAreaAspectRatio = workarea.width / workarea.height;
         const widthPreservingAspectRatio = forHeight * workAreaAspectRatio;
 
         return [0, widthPreservingAspectRatio];
     }
 
     vfunc_get_preferred_height(container, forWidth) {
+        const workarea = this._getAdjustedWorkarea(container);
         if (forWidth === -1)
-            return [0, this._workarea.height];
+            return [0, workarea.height];
 
-        const workAreaAspectRatio = this._workarea.width / this._workarea.height;
+        const workAreaAspectRatio = workarea.width / workarea.height;
         const heightPreservingAspectRatio = forWidth / workAreaAspectRatio;
 
         return [0, heightPreservingAspectRatio];
