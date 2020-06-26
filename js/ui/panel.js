@@ -675,7 +675,7 @@ class PanelCorner extends St.DrawingArea {
         let borderWidth = node.get_length('-panel-corner-border-width');
 
         this.set_size(cornerRadius, borderWidth + cornerRadius);
-        this.set_anchor_point(0, borderWidth);
+        this.translation_y = -borderWidth;
     }
 });
 
