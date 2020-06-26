@@ -416,8 +416,11 @@ var WorkspaceLayout = GObject.registerClass({
             upper: 1,
         });
 
-        this._stateAdjustment.connect('notify::value', () =>
-            this.layout_changed());
+        this._stateAdjustment.connect('notify::value', () => {
+            [...this._windows.keys()].forEach(
+                preview => this._syncOverlay(preview));
+            this.layout_changed();
+        });
     }
 
     _isBetterLayout(oldLayout, newLayout) {
@@ -631,6 +634,10 @@ var WorkspaceLayout = GObject.registerClass({
         }
     }
 
+    _syncOverlay(preview) {
+        preview.overlay_enabled = this._stateAdjustment.value === 1;
+    }
+
     /**
      * addWindow:
      * @param {WindowPreview} window: the window to add
@@ -664,6 +671,7 @@ var WorkspaceLayout = GObject.registerClass({
             return winA.get_stable_sequence() - winB.get_stable_sequence();
         });
 
+        this._syncOverlay(window);
         this._container.add_child(window);
 
         this._layout = null;
