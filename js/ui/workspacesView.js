@@ -164,11 +164,11 @@ class WorkspacesView extends WorkspacesViewBase {
 
             let params = {};
             if (workspaceManager.layout_rows == -1)
-                params.translation_y = (w - active) * this._fullGeometry.height;
+                params.translation_y = (w - active) * this.height;
             else if (this.text_direction == Clutter.TextDirection.RTL)
-                params.translation_x = (active - w) * this._fullGeometry.width;
+                params.translation_x = (active - w) * this.width;
             else
-                params.translation_x = (w - active) * this._fullGeometry.width;
+                params.translation_x = (w - active) * this.width;
 
             if (showAnimation) {
                 let easeParams = Object.assign(params, {
@@ -232,8 +232,7 @@ class WorkspacesView extends WorkspacesViewBase {
             }
         }
 
-        if (this._fullGeometry)
-            this._updateWorkspaceActors(false);
+        this._updateWorkspaceActors(false);
     }
 
     _activeWorkspaceChanged(_wm, _from, _to, _direction) {
@@ -534,11 +533,8 @@ class WorkspacesDisplay extends St.Widget {
         for (let i = 0; i < this._workspacesViews.length; i++)
             this._workspacesViews[i].startTouchGesture();
 
-        let monitors = Main.layoutManager.monitors;
-        let geometry = monitor === this._primaryIndex
-            ? this._fullGeometry : monitors[monitor];
         let distance = global.workspace_manager.layout_rows === -1
-            ? geometry.height : geometry.width;
+            ? this.height : this.width;
 
         let progress = adjustment.value / adjustment.page_size;
         let points = Array.from(
@@ -585,7 +581,7 @@ class WorkspacesDisplay extends St.Widget {
         this.show();
         this._updateWorkspacesViews();
 
-        if (this._actualGeometry && this._fullGeometry) {
+        if (this._actualGeometry) {
             for (let i = 0; i < this._workspacesViews.length; i++) {
                 let animationType;
                 if (fadeOnPrimary && i == this._primaryIndex)
