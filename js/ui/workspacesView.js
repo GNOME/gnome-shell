@@ -33,8 +33,6 @@ var WorkspacesViewBase = GObject.registerClass({
 
         this._monitorIndex = monitorIndex;
 
-        this._fullGeometry = null;
-
         this._inDrag = false;
         this._windowDragBeginId = Main.overview.connect('window-drag-begin', this._dragBegin.bind(this));
         this._windowDragEndId = Main.overview.connect('window-drag-end', this._dragEnd.bind(this));
@@ -61,10 +59,6 @@ var WorkspacesViewBase = GObject.registerClass({
     _dragEnd() {
         this._inDrag = false;
         this._setReservedSlot(null);
-    }
-
-    setFullGeometry(geom) {
-        this._fullGeometry = geom;
     }
 
     vfunc_allocate(box) {
@@ -432,7 +426,6 @@ class WorkspacesDisplay extends St.Widget {
         this._syncActualGeometryLater = 0;
 
         this._actualGeometry = null;
-        this._fullGeometry = null;
         this._inWindowDrag = false;
 
         this._gestureActive = false; // touch(pad) gestures
@@ -660,8 +653,6 @@ class WorkspacesDisplay extends St.Widget {
             Main.layoutManager.overviewGroup.add_actor(view);
         }
 
-        if (this._fullGeometry)
-            this._syncWorkspacesFullGeometry();
         if (this._actualGeometry)
             this._syncWorkspacesActualGeometry();
     }
@@ -708,25 +699,6 @@ class WorkspacesDisplay extends St.Widget {
                 primaryView.visible = opacity != 0;
             });
         });
-    }
-
-    // This geometry should always be the fullest geometry
-    // the workspaces switcher can ever be allocated, as if
-    // the sliding controls were never slid in at all.
-    setWorkspacesFullGeometry(geom) {
-        this._fullGeometry = geom;
-        this._syncWorkspacesFullGeometry();
-    }
-
-    _syncWorkspacesFullGeometry() {
-        if (!this._workspacesViews.length)
-            return;
-
-        let monitors = Main.layoutManager.monitors;
-        for (let i = 0; i < monitors.length; i++) {
-            let geometry = i == this._primaryIndex ? this._fullGeometry : monitors[i];
-            this._workspacesViews[i].setFullGeometry(geometry);
-        }
     }
 
     _updateWorkspacesActualGeometry() {

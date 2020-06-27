@@ -454,8 +454,6 @@ class ControlsManager extends St.Widget {
         this._group.add_child(this.viewSelector);
         this._group.add_actor(this._thumbnailsSlider);
 
-        layout.connect('allocation-changed', this._updateWorkspacesGeometry.bind(this));
-
         Main.overview.connect('showing', this._updateSpacerVisibility.bind(this));
 
         this.connect('destroy', this._onDestroy.bind(this));
@@ -476,26 +474,6 @@ class ControlsManager extends St.Widget {
         // one, causing the adjustment to go out of sync, so update the value
         this._workspaceAdjustment.remove_transition('value');
         this._workspaceAdjustment.value = activeIndex;
-    }
-
-    _updateWorkspacesGeometry() {
-        let [x, y] = this.get_transformed_position();
-        let [width, height] = this.get_transformed_size();
-        let geometry = { x, y, width, height };
-
-        let spacing = this.get_theme_node().get_length('spacing');
-        let dashWidth = this._dashSlider.getVisibleWidth() + spacing;
-        let thumbnailsWidth = this._thumbnailsSlider.getNonExpandedWidth() + spacing;
-
-        geometry.width -= dashWidth;
-        geometry.width -= thumbnailsWidth;
-
-        if (this.get_text_direction() == Clutter.TextDirection.LTR)
-            geometry.x += dashWidth;
-        else
-            geometry.x += thumbnailsWidth;
-
-        this.viewSelector.setWorkspacesFullGeometry(geometry);
     }
 
     _setVisibility() {
