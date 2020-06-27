@@ -404,6 +404,8 @@ calendar_appointment_free (CalendarAppointment *appointment)
 
   appointment->start_time = 0;
   appointment->is_all_day = FALSE;
+
+  g_free(appointment);
 }
 
 static void
@@ -857,19 +859,18 @@ handle_method_call (GDBusConnection       *connection,
       window_changed = FALSE;
       if (!(app->until == until && app->since == since))
         {
-          GVariantBuilder *builder;
-          GVariantBuilder *invalidated_builder;
+          GVariantBuilder builder;
 
           app->until = until;
           app->since = since;
           window_changed = TRUE;
 
-          builder = g_variant_builder_new (G_VARIANT_TYPE ("a{sv}"));
-          invalidated_builder = g_variant_builder_new (G_VARIANT_TYPE ("as"));
-          g_variant_builder_add (builder, "{sv}",
+          g_variant_builder_init (&builder, G_VARIANT_TYPE ("a{sv}"));
+          g_variant_builder_add (&builder, "{sv}",
                                  "Until", g_variant_new_int64 (app->until));
-          g_variant_builder_add (builder, "{sv}",
+          g_variant_builder_add (&builder, "{sv}",
                                  "Since", g_variant_new_int64 (app->since));
+
           g_dbus_connection_emit_signal (app->connection,
                                          NULL, /* destination_bus_name */
                                          "/org/gnome/Shell/CalendarServer",
@@ -877,8 +878,8 @@ handle_method_call (GDBusConnection       *connection,
                                          "PropertiesChanged",
                                          g_variant_new ("(sa{sv}as)",
                                                         "org.gnome.Shell.CalendarServer",
-                                                        builder,
-                                                        invalidated_builder),
+                                                        &builder,
+                                                        NULL),
                                          NULL); /* GError** */
         }
 
@@ -895,7 +896,6 @@ handle_method_call (GDBusConnection       *connection,
       g_hash_table_iter_init (&hash_iter, app->appointments);
       while (g_hash_table_iter_next (&hash_iter, NULL, (gpointer) &a))
         {
-          GVariantBuilder extras_builder;
           GSList *l;
 
           for (l = a->occurrences; l; l = l->next)
@@ -919,7 +919,6 @@ handle_method_call (GDBusConnection       *connection,
                                               a->uid,
                                               o->rid ? o->rid : "");
 
-                  g_variant_builder_init (&extras_builder, G_VARIANT_TYPE ("a{sv}"));
                   g_variant_builder_add (&builder,
                                          "(sssbxxa{sv})",
                                          id,
@@ -928,7 +927,7 @@ handle_method_call (GDBusConnection       *connection,
                                          (gboolean) a->is_all_day,
                                          (gint64) start_time,
                                          (gint64) end_time,
-                                         extras_builder);
+                                         NULL);
                   g_free (id);
                 }
             }
