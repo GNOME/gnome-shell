@@ -299,10 +299,6 @@ var ViewSelector = GObject.registerClass({
             Main.overview.fadeInDesktop();
     }
 
-    setWorkspacesFullGeometry(geom) {
-        this._workspacesDisplay.setWorkspacesFullGeometry(geom);
-    }
-
     vfunc_hide() {
         this.reset();
         this._workspacesDisplay.hide();
