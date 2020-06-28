@@ -11,11 +11,6 @@ var { ANIMATION_TIME } = imports.ui.overview;
 var WORKSPACE_SWITCH_TIME = 250;
 var SCROLL_TIMEOUT_TIME = 150;
 
-var AnimationType = {
-    ZOOM: 0,
-    FADE: 1,
-};
-
 const MUTTER_SCHEMA = 'org.gnome.mutter';
 
 var WorkspacesViewBase = GObject.registerClass({
@@ -136,24 +131,16 @@ class WorkspacesView extends WorkspacesViewBase {
         return this._workspaces[active];
     }
 
-    animateToOverview(animationType) {
-        for (let w = 0; w < this._workspaces.length; w++) {
-            if (animationType == AnimationType.ZOOM)
-                this._workspaces[w].zoomToOverview();
-            else
-                this._workspaces[w].fadeToOverview();
-        }
+    animateToOverview() {
+        for (let w = 0; w < this._workspaces.length; w++)
+            this._workspaces[w].zoomToOverview();
         this._updateScrollPosition();
         this._updateVisibility();
     }
 
-    animateFromOverview(animationType) {
-        for (let w = 0; w < this._workspaces.length; w++) {
-            if (animationType == AnimationType.ZOOM)
-                this._workspaces[w].zoomFromOverview();
-            else
-                this._workspaces[w].fadeFromOverview();
-        }
+    animateFromOverview() {
+        for (let w = 0; w < this._workspaces.length; w++)
+            this._workspaces[w].zoomFromOverview();
     }
 
     syncStacking(stackIndices) {
@@ -323,18 +310,12 @@ class ExtraWorkspaceView extends WorkspacesViewBase {
         return this._workspace;
     }
 
-    animateToOverview(animationType) {
-        if (animationType == AnimationType.ZOOM)
-            this._workspace.zoomToOverview();
-        else
-            this._workspace.fadeToOverview();
+    animateToOverview() {
+        this._workspace.zoomToOverview();
     }
 
-    animateFromOverview(animationType) {
-        if (animationType == AnimationType.ZOOM)
-            this._workspace.zoomFromOverview();
-        else
-            this._workspace.fadeFromOverview();
+    animateFromOverview() {
+        this._workspace.zoomFromOverview();
     }
 
     syncStacking(stackIndices) {
@@ -385,7 +366,6 @@ class WorkspacesDisplay extends St.Widget {
             Main.overview.connect('window-drag-end',
                 this._windowDragEnd.bind(this));
         this._overviewShownId = Main.overview.connect('shown', () => {
-            this._inWindowFade = false;
             this._syncWorkspacesActualGeometry();
         });
 
@@ -407,7 +387,6 @@ class WorkspacesDisplay extends St.Widget {
 
         this._actualGeometry = null;
         this._inWindowDrag = false;
-        this._inWindowFade = false;
         this._leavingOverview = false;
 
         this._gestureActive = false; // touch(pad) gestures
@@ -566,22 +545,14 @@ class WorkspacesDisplay extends St.Widget {
             primaryWorkspace.visible = visible;
     }
 
-    animateToOverview(fadeOnPrimary) {
+    animateToOverview() {
         this.show();
         this._updateWorkspacesViews();
 
-        for (let i = 0; i < this._workspacesViews.length; i++) {
-            let animationType;
-            if (fadeOnPrimary && i == this._primaryIndex)
-                animationType = AnimationType.FADE;
-            else
-                animationType = AnimationType.ZOOM;
-            this._workspacesViews[i].animateToOverview(animationType);
-        }
+        for (let i = 0; i < this._workspacesViews.length; i++)
+            this._workspacesViews[i].animateToOverview();
 
-        this._inWindowFade = fadeOnPrimary;
-
-        if (this._actualGeometry && !fadeOnPrimary)
+        if (this._actualGeometry)
             this._syncWorkspacesActualGeometry();
 
         this._restackedNotifyId =
@@ -594,17 +565,9 @@ class WorkspacesDisplay extends St.Widget {
             this._keyPressEventId = global.stage.connect('key-press-event', this._onKeyPressEvent.bind(this));
     }
 
-    animateFromOverview(fadeOnPrimary) {
-        for (let i = 0; i < this._workspacesViews.length; i++) {
-            let animationType;
-            if (fadeOnPrimary && i == this._primaryIndex)
-                animationType = AnimationType.FADE;
-            else
-                animationType = AnimationType.ZOOM;
-            this._workspacesViews[i].animateFromOverview(animationType);
-        }
-
-        this._inWindowFade = fadeOnPrimary;
+    animateFromOverview() {
+        for (let i = 0; i < this._workspacesViews.length; i++)
+            this._workspacesViews[i].animateFromOverview();
 
         this._leavingOverview = true;
         this._updateSwipeTracker();
@@ -614,7 +577,7 @@ class WorkspacesDisplay extends St.Widget {
             Main.layoutManager.getWorkAreaForMonitor(primaryIndex);
         this._getPrimaryView().ease({
             x, y, width, height,
-            duration: fadeOnPrimary ? 0 : ANIMATION_TIME,
+            duration: ANIMATION_TIME,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
         });
     }
@@ -737,7 +700,7 @@ class WorkspacesDisplay extends St.Widget {
 
     _syncWorkspacesActualGeometry() {
         const primaryView = this._getPrimaryView();
-        if (!primaryView || this._inWindowFade)
+        if (!primaryView)
             return;
 
         primaryView.ease({

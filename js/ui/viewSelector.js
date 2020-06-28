@@ -404,7 +404,7 @@ var ViewSelector = GObject.registerClass({
     animateToOverview() {
         this.show();
         this.reset();
-        this._workspacesDisplay.animateToOverview(this._showAppsButton.checked);
+        this._workspacesDisplay.animateToOverview();
         this._activePage = null;
         this._showPage(this._activitiesPage);
 
@@ -413,7 +413,7 @@ var ViewSelector = GObject.registerClass({
     }
 
     animateFromOverview() {
-        this._workspacesDisplay.animateFromOverview(false);
+        this._workspacesDisplay.animateFromOverview();
 
         this._showAppsButton.checked = false;
 
