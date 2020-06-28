@@ -50,8 +50,6 @@ const ParentalControlsManager = imports.misc.parentalControlsManager;
 const Config = imports.misc.config;
 const Util = imports.misc.util;
 
-const A11Y_SCHEMA = 'org.gnome.desktop.a11y.keyboard';
-const STICKY_KEYS_ENABLE = 'stickykeys-enable';
 const WELCOME_DIALOG_LAST_SHOWN_VERSION = 'welcome-dialog-last-shown-version';
 // Make sure to mention the point release, otherwise it will show every time
 // until this version is current
@@ -96,7 +94,6 @@ var locatePointer = null;
 let _startDate;
 let _defaultCssStylesheet = null;
 let _cssStylesheet = null;
-let _a11ySettings = null;
 let _themeResource = null;
 let _oskResource = null;
 
@@ -237,13 +234,6 @@ function _initializeUI() {
     overview.init();
 
     new PointerA11yTimeout.PointerA11yTimeout();
-
-    _a11ySettings = new Gio.Settings({ schema_id: A11Y_SCHEMA });
-
-    global.display.connect('overlay-key', () => {
-        if (!_a11ySettings.get_boolean(STICKY_KEYS_ENABLE))
-            overview.toggle();
-    });
 
     global.connect('locate-pointer', () => {
         locatePointer.show();

@@ -16,6 +16,8 @@ const WorkspacesView = imports.ui.workspacesView;
 const SMALL_WORKSPACE_RATIO = 0.15;
 const DASH_MAX_HEIGHT_RATIO = 0.15;
 
+const A11Y_SCHEMA = 'org.gnome.desktop.a11y.keyboard';
+
 var SIDE_CONTROLS_ANIMATION_TIME = Overview.ANIMATION_TIME;
 
 var ControlsState = {
@@ -362,6 +364,15 @@ class ControlsManager extends St.Widget {
                         null, St.DirectionType.TAB_FORWARD, false);
                 },
             });
+
+        this._a11ySettings = new Gio.Settings({ schema_id: A11Y_SCHEMA });
+
+        global.display.connect('overlay-key', () => {
+            if (this._a11ySettings.get_boolean('stickykeys-enable'))
+                return;
+
+            Main.overview.toggle();
+        });
 
         Main.wm.addKeybinding(
             'toggle-application-view',
