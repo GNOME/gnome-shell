@@ -26,6 +26,7 @@ var PASSWORD_SERVICE_NAME = 'gdm-password';
 var FINGERPRINT_SERVICE_NAME = 'gdm-fingerprint';
 var SMARTCARD_SERVICE_NAME = 'gdm-smartcard';
 var OVIRT_SERVICE_NAME = 'gdm-ovirtcred';
+var VMWARE_SERVICE_NAME = 'gdm-vmwcred';
 var FADE_ANIMATION_TIME = 160;
 var CLONE_FADE_ANIMATION_TIME = 250;
 
@@ -163,6 +164,7 @@ var ShellUserVerifier = class {
 
         this._credentialManagers = {};
         this._credentialManagers[OVIRT_SERVICE_NAME] = OVirt.getOVirtCredentialsManager();
+        this._credentialManagers[VMWARE_SERVICE_NAME] = VmCred.getVmwareCredentialsManager();
 
         if (this._credentialManagers[OVIRT_SERVICE_NAME].token) {
             this._oVirtUserAuthenticated(this._credentialManagers[OVIRT_SERVICE_NAME],
