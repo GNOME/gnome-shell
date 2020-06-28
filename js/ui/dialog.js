@@ -228,6 +228,9 @@ var MessageDialogContent = GObject.registerClass({
     }
 
     set title(title) {
+        if (this._title.text === title)
+            return;
+
         _setLabel(this._title, title);
 
         this._title.remove_style_class_name('leightweight');
@@ -237,6 +240,9 @@ var MessageDialogContent = GObject.registerClass({
     }
 
     set description(description) {
+        if (this._description.text === description)
+            return;
+
         _setLabel(this._description, description);
         this.notify('description');
     }
