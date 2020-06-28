@@ -1,7 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported Dialog, MessageDialogContent, ListSection, ListSectionItem */
 
-const { Clutter, GObject, Meta, Pango, St } = imports.gi;
+const { Clutter, GLib, GObject, Meta, Pango, St } = imports.gi;
 
 function _setLabel(label, value) {
     label.set({
@@ -221,7 +221,7 @@ var MessageDialogContent = GObject.registerClass({
             this._updateTitleStyleLater = Meta.later_add(Meta.LaterType.BEFORE_REDRAW, () => {
                 this._updateTitleStyleLater = 0;
                 this._title.add_style_class_name('leightweight');
-                return false;
+                return GLib.SOURCE_REMOVE;
             });
         }
 
