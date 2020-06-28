@@ -21,7 +21,9 @@
 
 /* End Session Dialog */
 .end-session-dialog {
-  width: 30em;
+  .modal-dialog-content-box {
+    max-width: 24em;
+  }
 
   .end-session-dialog-battery-warning,
   .dialog-list-title {
@@ -88,10 +90,9 @@
 /* Password or Authentication Dialog */
 
 .prompt-dialog {
-  width: 28em;
-
   .modal-dialog-content-box {
     margin-bottom: 24px;
+    max-width: 22em;
   }
 }
 
