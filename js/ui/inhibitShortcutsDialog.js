@@ -1,5 +1,5 @@
 /* exported InhibitShortcutsDialog */
-const { Clutter, Gio, GLib, GObject, Gtk, Meta, Shell, St } = imports.gi;
+const { Clutter, Gio, GLib, GObject, Gtk, Meta, Pango, Shell, St } = imports.gi;
 
 const Dialog = imports.ui.dialog;
 const ModalDialog = imports.ui.modalDialog;
@@ -90,6 +90,8 @@ var InhibitShortcutsDialog = GObject.registerClass({
                 text: _('You can restore shortcuts by pressing %s.').format(restoreAccel),
                 style_class: 'message-dialog-description',
             });
+            restoreLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
+            restoreLabel.clutter_text.line_wrap = true;
             content.add_child(restoreLabel);
         }
 
