@@ -21,8 +21,6 @@ var WINDOW_REPOSITIONING_DELAY = 750;
 var LAYOUT_SCALE_WEIGHT = 1;
 var LAYOUT_SPACE_WEIGHT = 0.1;
 
-var WINDOW_ANIMATION_MAX_NUMBER_BLENDING = 3;
-
 function _interpolate(start, end, step) {
     return start + (end - start) * step;
 }
@@ -1157,123 +1155,6 @@ class Workspace extends St.Widget {
         return false;
     }
 
-    fadeToOverview() {
-        // We don't want to reposition windows while animating in this way.
-        this.layout_manager.layout_frozen = true;
-        this._overviewShownId = Main.overview.connect('shown', this._doneShowingOverview.bind(this));
-        if (this._windows.length == 0)
-            return;
-
-        if (this.metaWorkspace !== null && !this.metaWorkspace.active)
-            return;
-
-        this.layout_manager.stateAdjustment.value = 0;
-
-        // Special case maximized windows, since it doesn't make sense
-        // to animate windows below in the stack
-        let topMaximizedWindow;
-        // It is ok to treat the case where there is no maximized
-        // window as if the bottom-most window was maximized given that
-        // it won't affect the result of the animation
-        for (topMaximizedWindow = this._windows.length - 1; topMaximizedWindow > 0; topMaximizedWindow--) {
-            let metaWindow = this._windows[topMaximizedWindow].metaWindow;
-            if (metaWindow.maximized_horizontally && metaWindow.maximized_vertically)
-                break;
-        }
-
-        let nTimeSlots = Math.min(WINDOW_ANIMATION_MAX_NUMBER_BLENDING + 1, this._windows.length - topMaximizedWindow);
-        let windowBaseTime = Overview.ANIMATION_TIME / nTimeSlots;
-
-        let topIndex = this._windows.length - 1;
-        for (let i = 0; i < this._windows.length; i++) {
-            if (i < topMaximizedWindow) {
-                // below top-most maximized window, don't animate
-                this._windows[i].hideOverlay(false);
-                this._windows[i].opacity = 0;
-            } else {
-                let fromTop = topIndex - i;
-                let time;
-                if (fromTop < nTimeSlots) // animate top-most windows gradually
-                    time = windowBaseTime * (nTimeSlots - fromTop);
-                else
-                    time = windowBaseTime;
-
-                this._windows[i].opacity = 255;
-                this._fadeWindow(i, time, 0);
-            }
-        }
-    }
-
-    fadeFromOverview() {
-        this.layout_manager.layout_frozen = true;
-        this._overviewHiddenId = Main.overview.connect('hidden', this._doneLeavingOverview.bind(this));
-        if (this._windows.length == 0)
-            return;
-
-        for (let i = 0; i < this._windows.length; i++)
-            this._windows[i].remove_all_transitions();
-
-        if (this._layoutFrozenId > 0) {
-            GLib.source_remove(this._layoutFrozenId);
-            this._layoutFrozenId = 0;
-        }
-
-        if (this.metaWorkspace !== null && !this.metaWorkspace.active)
-            return;
-
-        this.layout_manager.stateAdjustment.value = 0;
-
-        // Special case maximized windows, since it doesn't make sense
-        // to animate windows below in the stack
-        let topMaximizedWindow;
-        // It is ok to treat the case where there is no maximized
-        // window as if the bottom-most window was maximized given that
-        // it won't affect the result of the animation
-        for (topMaximizedWindow = this._windows.length - 1; topMaximizedWindow > 0; topMaximizedWindow--) {
-            let metaWindow = this._windows[topMaximizedWindow].metaWindow;
-            if (metaWindow.maximized_horizontally && metaWindow.maximized_vertically)
-                break;
-        }
-
-        let nTimeSlots = Math.min(WINDOW_ANIMATION_MAX_NUMBER_BLENDING + 1, this._windows.length - topMaximizedWindow);
-        let windowBaseTime = Overview.ANIMATION_TIME / nTimeSlots;
-
-        let topIndex = this._windows.length - 1;
-        for (let i = 0; i < this._windows.length; i++) {
-            if (i < topMaximizedWindow) {
-                // below top-most maximized window, don't animate
-                this._windows[i].hideOverlay(false);
-                this._windows[i].opacity = 0;
-            } else {
-                let fromTop = topIndex - i;
-                let time;
-                if (fromTop < nTimeSlots) // animate top-most windows gradually
-                    time = windowBaseTime * (fromTop + 1);
-                else
-                    time = windowBaseTime * nTimeSlots;
-
-                this._windows[i].opacity = 0;
-                this._fadeWindow(i, time, 255);
-            }
-        }
-    }
-
-    _fadeWindow(index, duration, opacity) {
-        let clone = this._windows[index];
-        clone.hideOverlay(false);
-
-        if (clone.metaWindow.showing_on_its_workspace()) {
-            clone.ease({
-                opacity,
-                duration,
-                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            });
-        } else {
-            // The window is hidden
-            clone.opacity = 0;
-        }
-    }
-
     zoomToOverview() {
         const animate =
             this.metaWorkspace === null || this.metaWorkspace.active;
@@ -1312,11 +1193,6 @@ class Workspace extends St.Widget {
             this._overviewHiddenId = 0;
         }
 
-        if (this._overviewShownId) {
-            Main.overview.disconnect(this._overviewShownId);
-            this._overviewShownId = 0;
-        }
-
         if (this.metaWorkspace) {
             this.metaWorkspace.disconnect(this._windowAddedId);
             this.metaWorkspace.disconnect(this._windowRemovedId);
@@ -1334,14 +1210,10 @@ class Workspace extends St.Widget {
 
     _doneLeavingOverview() {
         this.layout_manager.layout_frozen = false;
-        this.layout_manager.stateAdjustment.value = 0;
-        this._windows.forEach(w => (w.opacity = 255));
     }
 
     _doneShowingOverview() {
         this.layout_manager.layout_frozen = false;
-        this.layout_manager.stateAdjustment.value = 1;
-        this._windows.forEach(w => (w.opacity = 255));
     }
 
     _isMyWindow(window) {
