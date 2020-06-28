@@ -262,8 +262,10 @@ st_viewport_allocate (ClutterActor           *actor,
   clutter_actor_set_allocation (actor, box, flags);
 
   content_box = viewport_box;
-  content_box.x2 += MAX (0, min_width - avail_width);
-  content_box.y2 += MAX (0, min_height - avail_height);
+  if (priv->hadjustment)
+    content_box.x2 += MAX (0, min_width - avail_width);
+  if (priv->vadjustment)
+    content_box.y2 += MAX (0, min_height - avail_height);
 
   clutter_layout_manager_allocate (layout, CLUTTER_CONTAINER (actor),
                                    &content_box, flags);
