@@ -1800,8 +1800,7 @@ var WindowManager = class {
             w.window.get_parent().remove_child(w.window);
             w.parent.add_child(w.window);
 
-            if (w.window.get_meta_window().get_workspace() !=
-                global.workspace_manager.get_active_workspace())
+            if (!w.window.get_meta_window().get_workspace().active)
                 w.window.hide();
         }
         switchData.container.destroy();
@@ -1985,7 +1984,7 @@ var WindowManager = class {
             duration,
             mode: Clutter.AnimationMode.EASE_OUT_CUBIC,
             onComplete: () => {
-                if (newWs !== activeWorkspace)
+                if (!newWs.active)
                     this.actionMoveWorkspace(newWs);
                 this._finishWorkspaceSwitch(switchData);
             },
@@ -2185,10 +2184,7 @@ var WindowManager = class {
         if (!Main.sessionMode.hasWorkspaces)
             return;
 
-        let workspaceManager = global.workspace_manager;
-        let activeWorkspace = workspaceManager.get_active_workspace();
-
-        if (activeWorkspace != workspace)
+        if (!workspace.active)
             workspace.activate(global.get_current_time());
     }
 
@@ -2196,10 +2192,7 @@ var WindowManager = class {
         if (!Main.sessionMode.hasWorkspaces)
             return;
 
-        let workspaceManager = global.workspace_manager;
-        let activeWorkspace = workspaceManager.get_active_workspace();
-
-        if (activeWorkspace != workspace) {
+        if (!workspace.active) {
             // This won't have any effect for "always sticky" windows
             // (like desktop windows or docks)
 

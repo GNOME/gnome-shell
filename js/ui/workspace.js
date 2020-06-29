@@ -601,9 +601,8 @@ class Workspace extends St.Widget {
         let area = padArea(this._actualGeometry, padding);
         let slots = strategy.computeWindowSlots(layout, area);
 
-        let workspaceManager = global.workspace_manager;
-        let currentWorkspace = workspaceManager.get_active_workspace();
-        let isOnCurrentWorkspace = this.metaWorkspace == null || this.metaWorkspace == currentWorkspace;
+        const isOnCurrentWorkspace =
+            this.metaWorkspace === null || this.metaWorkspace.active;
 
         for (let i = 0; i < slots.length; i++) {
             let slot = slots[i];
@@ -861,9 +860,7 @@ class Workspace extends St.Widget {
         if (this._windows.length == 0)
             return;
 
-        let workspaceManager = global.workspace_manager;
-        let activeWorkspace = workspaceManager.get_active_workspace();
-        if (this.metaWorkspace != null && this.metaWorkspace != activeWorkspace)
+        if (this.metaWorkspace !== null && !this.metaWorkspace.active)
             return;
 
         // Special case maximized windows, since it doesn't make sense
@@ -915,9 +912,7 @@ class Workspace extends St.Widget {
             this._repositionWindowsId = 0;
         }
 
-        let workspaceManager = global.workspace_manager;
-        let activeWorkspace = workspaceManager.get_active_workspace();
-        if (this.metaWorkspace != null && this.metaWorkspace != activeWorkspace)
+        if (this.metaWorkspace !== null && !this.metaWorkspace.active)
             return;
 
         // Special case maximized windows, since it doesn't make sense
@@ -981,9 +976,6 @@ class Workspace extends St.Widget {
     }
 
     zoomFromOverview() {
-        let workspaceManager = global.workspace_manager;
-        let currentWorkspace = workspaceManager.get_active_workspace();
-
         this.leavingOverview = true;
 
         for (let i = 0; i < this._windows.length; i++)
@@ -995,7 +987,7 @@ class Workspace extends St.Widget {
         }
         this._overviewHiddenId = Main.overview.connect('hidden', this._doneLeavingOverview.bind(this));
 
-        if (this.metaWorkspace != null && this.metaWorkspace != currentWorkspace)
+        if (this.metaWorkspace !== null && !this.metaWorkspace.active)
             return;
 
         // Position and scale the windows.

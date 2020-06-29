@@ -549,9 +549,7 @@ var WorkspaceThumbnail = GObject.registerClass({
             return;
 
         // a click on the already current workspace should go back to the main view
-        let workspaceManager = global.workspace_manager;
-        let activeWorkspace = workspaceManager.get_active_workspace();
-        if (this.metaWorkspace == activeWorkspace)
+        if (this.metaWorkspace.active)
             Main.overview.hide();
         else
             this.metaWorkspace.activate(time);
