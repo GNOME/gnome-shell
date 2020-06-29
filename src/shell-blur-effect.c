@@ -163,7 +163,6 @@ struct _ShellBlurEffect
   ClutterEffect parent_instance;
 
   ClutterActor *actor;
-  int old_opacity_override;
 
   BlurData blur[2];
 
@@ -487,21 +486,6 @@ calculate_downscale_factor (float width,
 }
 
 static void
-clear_framebuffer (CoglFramebuffer *framebuffer)
-{
-  static CoglColor transparent;
-  static gboolean initialized = FALSE;
-
-  if (!initialized)
-    {
-      cogl_color_init_from_4ub (&transparent, 0, 0, 0, 0);
-      initialized = TRUE;
-    }
-
-  cogl_framebuffer_clear (framebuffer, COGL_BUFFER_BIT_COLOR, &transparent);
-}
-
-static void
 shell_blur_effect_set_actor (ClutterActorMeta *meta,
                              ClutterActor     *actor)
 {
@@ -561,13 +545,11 @@ update_actor_box (ShellBlurEffect     *self,
 }
 
 static void
-paint_texture (ShellBlurEffect     *self,
-               ClutterPaintContext *paint_context)
+add_blurred_pipeline (ShellBlurEffect  *self,
+                      ClutterPaintNode *node)
 {
-  CoglFramebuffer *framebuffer;
+  g_autoptr (ClutterPaintNode) pipeline_node = NULL;
   float width, height;
-
-  framebuffer = clutter_paint_context_get_framebuffer (paint_context);
 
   /* Use the untransformed actor size here, since the framebuffer itself already
    * has the actor transform matrix applied.
@@ -575,32 +557,32 @@ paint_texture (ShellBlurEffect     *self,
   clutter_actor_get_size (self->actor, &width, &height);
 
   update_brightness_uniform (self);
-  cogl_framebuffer_draw_rectangle (framebuffer,
-                                   self->brightness_fb.pipeline,
-                                   0, 0,
-                                   width,
-                                   height);
+
+  pipeline_node = clutter_pipeline_node_new (self->brightness_fb.pipeline);
+  clutter_paint_node_set_static_name (pipeline_node, "ShellBlurEffect (final)");
+  clutter_paint_node_add_child (node, pipeline_node);
+
+  clutter_paint_node_add_rectangle (pipeline_node,
+                                    &(ClutterActorBox) {
+                                      0.f, 0.f,
+                                      width,
+                                      height,
+                                    });
 }
 
-static void
-apply_blur (ShellBlurEffect     *self,
-            ClutterPaintContext *paint_context,
-            FramebufferData     *from,
-            uint8_t              paint_opacity)
+static ClutterPaintNode *
+create_blur_nodes (ShellBlurEffect  *self,
+                   ClutterPaintNode *node,
+                   uint8_t           paint_opacity)
 {
+  g_autoptr (ClutterPaintNode) brightness_node = NULL;
+  g_autoptr (ClutterPaintNode) hblur_node = NULL;
+  g_autoptr (ClutterPaintNode) vblur_node = NULL;
   BlurData *vblur;
   BlurData *hblur;
 
   vblur = &self->blur[VERTICAL];
   hblur = &self->blur[HORIZONTAL];
-
-  /* Copy the actor contents into the vblur framebuffer */
-  clear_framebuffer (vblur->data.framebuffer);
-  cogl_framebuffer_draw_rectangle (vblur->data.framebuffer,
-                                   from->pipeline,
-                                   0, 0,
-                                   cogl_texture_get_width (vblur->data.texture),
-                                   cogl_texture_get_height (vblur->data.texture));
 
   /* Pass 1:
    *
@@ -611,12 +593,16 @@ apply_blur (ShellBlurEffect     *self,
    */
   update_blur_uniforms (self, vblur);
 
-  clear_framebuffer (hblur->data.framebuffer);
-  cogl_framebuffer_draw_rectangle (hblur->data.framebuffer,
-                                   vblur->data.pipeline,
-                                   0, 0,
-                                   cogl_texture_get_width (hblur->data.texture),
-                                   cogl_texture_get_height (hblur->data.texture));
+  vblur_node = clutter_layer_node_new_with_framebuffer (vblur->data.framebuffer,
+                                                        vblur->data.pipeline,
+                                                        255);
+  clutter_paint_node_set_static_name (vblur_node, "ShellBlurEffect (vertical pass)");
+  clutter_paint_node_add_rectangle (vblur_node,
+                                    &(ClutterActorBox) {
+                                      0.f, 0.f,
+                                      cogl_texture_get_width (hblur->data.texture),
+                                      cogl_texture_get_height (hblur->data.texture)
+                                    });
 
   /* Pass 2:
    *
@@ -624,30 +610,44 @@ apply_blur (ShellBlurEffect     *self,
    * horizontal blur pipeline into the brightness framebuffer.
    */
   update_blur_uniforms (self, hblur);
-  cogl_pipeline_set_color4ub (hblur->data.pipeline,
-                              paint_opacity,
-                              paint_opacity,
-                              paint_opacity,
-                              paint_opacity);
 
-  clear_framebuffer (self->brightness_fb.framebuffer);
-  cogl_framebuffer_draw_rectangle (self->brightness_fb.framebuffer,
-                                   hblur->data.pipeline,
-                                   0, 0,
-                                   cogl_texture_get_width (self->brightness_fb.texture),
-                                   cogl_texture_get_height (self->brightness_fb.texture));
+  hblur_node = clutter_layer_node_new_with_framebuffer (hblur->data.framebuffer,
+                                                        hblur->data.pipeline,
+                                                        paint_opacity);
+  clutter_paint_node_set_static_name (hblur_node, "ShellBlurEffect (horizontal pass)");
+  clutter_paint_node_add_rectangle (hblur_node,
+                                    &(ClutterActorBox) {
+                                      0.f, 0.f,
+                                      cogl_texture_get_width (self->brightness_fb.texture),
+                                      cogl_texture_get_height (self->brightness_fb.texture),
+                                    });
 
+  update_brightness_uniform (self);
+
+  brightness_node = clutter_layer_node_new_with_framebuffer (self->brightness_fb.framebuffer,
+                                                             self->brightness_fb.pipeline,
+                                                             255);
+  clutter_paint_node_set_static_name (brightness_node, "ShellBlurEffect (brightness)");
+
+  clutter_paint_node_add_child (hblur_node, vblur_node);
+  clutter_paint_node_add_child (brightness_node, hblur_node);
+  clutter_paint_node_add_child (node, brightness_node);
 
   self->cache_flags |= BLUR_APPLIED;
+
+  return g_steal_pointer (&vblur_node);
 }
 
-static gboolean
+static void
 paint_background (ShellBlurEffect     *self,
+                  ClutterPaintNode    *node,
                   ClutterPaintContext *paint_context,
                   ClutterActorBox     *source_actor_box)
 {
-  g_autoptr (GError) error = NULL;
+  g_autoptr (ClutterPaintNode) background_node = NULL;
+  g_autoptr (ClutterPaintNode) blit_node = NULL;
   CoglFramebuffer *framebuffer;
+  BlurData *vblur = &self->blur[VERTICAL];
   float transformed_x;
   float transformed_y;
   float transformed_width;
@@ -662,23 +662,31 @@ paint_background (ShellBlurEffect     *self,
                               &transformed_width,
                               &transformed_height);
 
-  clear_framebuffer (self->background_fb.framebuffer);
-  cogl_blit_framebuffer (framebuffer,
-                         self->background_fb.framebuffer,
-                         transformed_x,
-                         transformed_y,
-                         0, 0,
-                         transformed_width,
-                         transformed_height,
-                         &error);
+  /* Background layer node */
+  background_node =
+    clutter_layer_node_new_with_framebuffer (self->background_fb.framebuffer,
+                                             self->background_fb.pipeline,
+                                             255);
+  clutter_paint_node_set_static_name (background_node, "ShellBlurEffect (background)");
+  clutter_paint_node_add_child (node, background_node);
+  clutter_paint_node_add_rectangle (background_node,
+                                    &(ClutterActorBox) {
+                                      0.f, 0.f,
+                                      cogl_texture_get_width (vblur->data.texture),
+                                      cogl_texture_get_height (vblur->data.texture),
+                                    });
 
-  if (error)
-    {
-      g_warning ("Error blitting overlay framebuffer: %s", error->message);
-      return FALSE;
-    }
-
-  return TRUE;
+  /* Blit node */
+  blit_node = clutter_blit_node_new (framebuffer,
+                                     self->background_fb.framebuffer);
+  clutter_paint_node_set_static_name (blit_node, "ShellBlurEffect (blit)");
+  clutter_paint_node_add_child (background_node, blit_node);
+  clutter_blit_node_add_blit_rectangle (CLUTTER_BLIT_NODE (blit_node),
+                                        transformed_x,
+                                        transformed_y,
+                                        0, 0,
+                                        transformed_width,
+                                        transformed_height);
 }
 
 static gboolean
@@ -712,10 +720,24 @@ update_framebuffers (ShellBlurEffect     *self,
 }
 
 static void
+add_actor_node (ShellBlurEffect  *self,
+                ClutterPaintNode *node,
+                int               opacity)
+{
+  g_autoptr (ClutterPaintNode) actor_node = NULL;
+
+  actor_node = clutter_actor_node_new (self->actor, opacity);
+  clutter_paint_node_add_child (node, actor_node);
+}
+
+static void
 paint_actor_offscreen (ShellBlurEffect         *self,
-                       ClutterPaintContext     *paint_context,
+                       ClutterPaintNode        *node,
                        ClutterEffectPaintFlags  flags)
 {
+  g_autoptr (ClutterPaintNode) transform_node = NULL;
+  g_autoptr (ClutterPaintNode) layer_node = NULL;
+  CoglMatrix transform;
   gboolean actor_dirty;
 
   actor_dirty = (flags & CLUTTER_EFFECT_PAINT_ACTOR_DIRTY) != 0;
@@ -724,27 +746,30 @@ paint_actor_offscreen (ShellBlurEffect         *self,
   if (!actor_dirty && (self->cache_flags & ACTOR_PAINTED))
     return;
 
-  self->old_opacity_override = clutter_actor_get_opacity_override (self->actor);
-  clutter_actor_set_opacity_override (self->actor, 0xff);
+  // Layer node
+  layer_node = clutter_layer_node_new_with_framebuffer (self->actor_fb.framebuffer,
+                                                        self->actor_fb.pipeline,
+                                                        0xff);
+  clutter_paint_node_set_static_name (layer_node, "ShellBlurEffect (actor offscreen)");
+  clutter_paint_node_add_child (node, layer_node);
+  clutter_paint_node_add_rectangle (layer_node,
+                                    &(ClutterActorBox) {
+                                      0.f, 0.f,
+                                      cogl_texture_get_width (self->blur[VERTICAL].data.texture),
+                                      cogl_texture_get_height (self->blur[VERTICAL].data.texture),
+                                    });
 
-  /* Draw the actor contents into the actor offscreen framebuffer */
-  clear_framebuffer (self->actor_fb.framebuffer);
+  // Transform node
+  cogl_matrix_init_identity (&transform);
+  cogl_matrix_scale (&transform,
+                     1.f / self->downscale_factor,
+                     1.f / self->downscale_factor,
+                     1.f);
+  transform_node = clutter_transform_node_new (&transform);
+  clutter_paint_node_set_static_name (transform_node, "ShellBlurEffect (downscale)");
+  clutter_paint_node_add_child (layer_node, transform_node);
 
-  cogl_framebuffer_push_matrix (self->actor_fb.framebuffer);
-  cogl_framebuffer_scale (self->actor_fb.framebuffer,
-                          1.f / self->downscale_factor,
-                          1.f / self->downscale_factor,
-                          1.f);
-
-  clutter_paint_context_push_framebuffer (paint_context,
-                                          self->actor_fb.framebuffer);
-
-  clutter_actor_continue_paint (self->actor, paint_context);
-
-  cogl_framebuffer_pop_matrix (self->actor_fb.framebuffer);
-  clutter_paint_context_pop_framebuffer (paint_context);
-
-  clutter_actor_set_opacity_override (self->actor, self->old_opacity_override);
+  add_actor_node (self, transform_node, 255);
 
   self->cache_flags |= ACTOR_PAINTED;
 }
@@ -775,6 +800,7 @@ needs_repaint (ShellBlurEffect         *self,
 
 static void
 shell_blur_effect_paint (ClutterEffect           *effect,
+                         ClutterPaintNode        *node,
                          ClutterPaintContext     *paint_context,
                          ClutterEffectPaintFlags  flags)
 {
@@ -785,6 +811,8 @@ shell_blur_effect_paint (ClutterEffect           *effect,
 
   if (self->sigma > 0)
     {
+      g_autoptr (ClutterPaintNode) blur_node = NULL;
+
       if (needs_repaint (self, flags))
         {
           ClutterActorBox source_actor_box;
@@ -802,20 +830,18 @@ shell_blur_effect_paint (ClutterEffect           *effect,
             case SHELL_BLUR_MODE_ACTOR:
               paint_opacity = clutter_actor_get_paint_opacity (self->actor);
 
-              paint_actor_offscreen (self, paint_context, flags);
-              apply_blur (self, paint_context, &self->actor_fb, paint_opacity);
+              blur_node = create_blur_nodes (self, node, paint_opacity);
+              paint_actor_offscreen (self, blur_node, flags);
               break;
 
             case SHELL_BLUR_MODE_BACKGROUND:
-              if (!paint_background (self, paint_context, &source_actor_box))
-                goto fail;
-
-              apply_blur (self, paint_context, &self->background_fb, 255);
+              blur_node = create_blur_nodes (self, node, 255);
+              paint_background (self, blur_node, paint_context, &source_actor_box);
               break;
             }
         }
 
-      paint_texture (self, paint_context);
+      add_blurred_pipeline (self, node);
 
       /* Background blur needs to paint the actor after painting the blurred
        * background.
@@ -826,7 +852,7 @@ shell_blur_effect_paint (ClutterEffect           *effect,
           break;
 
         case SHELL_BLUR_MODE_BACKGROUND:
-          clutter_actor_continue_paint (self->actor, paint_context);
+          add_actor_node (self, node, -1);
           break;
         }
 
@@ -837,7 +863,7 @@ fail:
   /* When no blur is applied, or the offscreen framebuffers
    * couldn't be created, fallback to simply painting the actor.
    */
-  clutter_actor_continue_paint (self->actor, paint_context);
+  add_actor_node (self, node, -1);
 }
 
 static void
@@ -927,7 +953,7 @@ shell_blur_effect_class_init (ShellBlurEffectClass *klass)
 
   meta_class->set_actor = shell_blur_effect_set_actor;
 
-  effect_class->paint = shell_blur_effect_paint;
+  effect_class->paint_node = shell_blur_effect_paint;
 
   properties[PROP_SIGMA] =
     g_param_spec_int ("sigma",
