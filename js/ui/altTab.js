@@ -852,6 +852,9 @@ class AppSwitcher extends SwitcherPopup.SwitcherList {
         if (index === -1)
             return;
 
+        this._arrows[index].destroy();
+        this._arrows.splice(index, 1);
+
         this.icons.splice(index, 1);
         this.removeItem(index);
     }
