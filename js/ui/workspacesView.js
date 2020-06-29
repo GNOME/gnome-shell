@@ -574,14 +574,13 @@ class WorkspacesDisplay extends St.Widget {
         this._clickAction.release();
 
         let workspaceManager = global.workspace_manager;
-        let activeWorkspace = workspaceManager.get_active_workspace();
         let newWs = workspaceManager.get_workspace_by_index(endProgress);
 
         this._scrollAdjustment.ease(endProgress, {
             mode: Clutter.AnimationMode.EASE_OUT_CUBIC,
             duration,
             onComplete: () => {
-                if (newWs !== activeWorkspace)
+                if (!newWs.active)
                     newWs.activate(global.get_current_time());
                 this._endTouchGesture();
             },
