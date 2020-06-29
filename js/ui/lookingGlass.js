@@ -482,13 +482,16 @@ class RedBorderEffect extends Clutter.Effect {
         this._pipeline = null;
     }
 
-    vfunc_paint(paintContext) {
-        let framebuffer = paintContext.get_framebuffer();
-        let coglContext = framebuffer.get_context();
+    vfunc_paint_node(node, paintContext) {
         let actor = this.get_actor();
-        actor.continue_paint(paintContext);
+
+        const actorNode = new Clutter.ActorNode(actor);
+        node.add_child(actorNode);
 
         if (!this._pipeline) {
+            const framebuffer = paintContext.get_framebuffer();
+            const coglContext = framebuffer.get_context();
+
             let color = new Cogl.Color();
             color.init_from_4ub(0xff, 0, 0, 0xc4);
 
@@ -499,18 +502,28 @@ class RedBorderEffect extends Clutter.Effect {
         let alloc = actor.get_allocation_box();
         let width = 2;
 
+        const pipelineNode = new Clutter.PipelineNode(this._pipeline);
+        pipelineNode.set_name('Red Border');
+        actorNode.add_child(pipelineNode);
+
+        const box = new Clutter.ActorBox();
+
         // clockwise order
-        framebuffer.draw_rectangle(this._pipeline,
-            0, 0, alloc.get_width(), width);
-        framebuffer.draw_rectangle(this._pipeline,
-            alloc.get_width() - width, width,
-            alloc.get_width(), alloc.get_height());
-        framebuffer.draw_rectangle(this._pipeline,
-            0, alloc.get_height(),
-            alloc.get_width() - width, alloc.get_height() - width);
-        framebuffer.draw_rectangle(this._pipeline,
-            0, alloc.get_height() - width,
-            width, width);
+        box.set_origin(0, 0);
+        box.set_size(alloc.get_width(), width);
+        pipelineNode.add_rectangle(box);
+
+        box.set_origin(alloc.get_width() - width, width);
+        box.set_size(width, alloc.get_height());
+        pipelineNode.add_rectangle(box);
+
+        box.set_origin(0, alloc.get_height() - width);
+        box.set_size(alloc.get_width() - width, width);
+        pipelineNode.add_rectangle(box);
+
+        box.set_origin(0, width);
+        box.set_size(width, alloc.get_height() - width);
+        pipelineNode.add_rectangle(box);
     }
 });
 
