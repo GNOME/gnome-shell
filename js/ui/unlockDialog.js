@@ -524,6 +524,10 @@ var UnlockDialog = GObject.registerClass({
 
         this._bgManagers = [];
 
+        const themeContext = St.ThemeContext.get_for_stage(global.stage);
+        this._scaleChangedId = themeContext.connect('notify::scale-factor',
+            () => this._updateBackgroundEffects());
+
         this._updateBackgrounds();
         this._monitorsChangedId =
             Main.layoutManager.connect('monitors-changed', this._updateBackgrounds.bind(this));
@@ -626,6 +630,7 @@ var UnlockDialog = GObject.registerClass({
             y: monitor.y,
             width: monitor.width,
             height: monitor.height,
+            effect: new Shell.BlurEffect({ name: 'blur' }),
         });
 
         let bgManager = new Background.BackgroundManager({
@@ -637,19 +642,17 @@ var UnlockDialog = GObject.registerClass({
         this._bgManagers.push(bgManager);
 
         this._backgroundGroup.add_child(widget);
+    }
 
+    _updateBackgroundEffects() {
         const themeContext = St.ThemeContext.get_for_stage(global.stage);
 
-        let effect = new Shell.BlurEffect({
-            brightness: BLUR_BRIGHTNESS,
-            sigma: BLUR_SIGMA * themeContext.scale_factor,
-        });
-
-        this._scaleChangedId = themeContext.connect('notify::scale-factor', () => {
-            effect.sigma = BLUR_SIGMA * themeContext.scale_factor;
-        });
-
-        widget.add_effect(effect);
+        for (const widget of this._backgroundGroup) {
+            widget.get_effect('blur').set({
+                brightness: BLUR_BRIGHTNESS,
+                sigma: BLUR_SIGMA * themeContext.scale_factor,
+            });
+        }
     }
 
     _updateBackgrounds() {
@@ -661,6 +664,7 @@ var UnlockDialog = GObject.registerClass({
 
         for (let i = 0; i < Main.layoutManager.monitors.length; i++)
             this._createBackground(i);
+        this._updateBackgroundEffects();
     }
 
     _ensureAuthPrompt() {
