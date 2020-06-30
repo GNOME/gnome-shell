@@ -12,6 +12,7 @@ const DND = imports.ui.dnd;
 const Main = imports.ui.main;
 const Params = imports.misc.params;
 const Ripples = imports.ui.ripples;
+const ScreenCorner = imports.ui.screenCorner;
 
 var STARTUP_ANIMATION_TIME = 500;
 var KEYBOARD_ANIMATION_TIME = 150;
@@ -200,6 +201,7 @@ var LayoutManager = GObject.registerClass({
         this.primaryMonitor = null;
         this.primaryIndex = -1;
         this.hotCorners = [];
+        this._screenCorners = [];
 
         this._keyboardIndex = -1;
         this._rightPanelBarrier = null;
@@ -440,6 +442,25 @@ var LayoutManager = GObject.registerClass({
         this.emit('hot-corners-changed');
     }
 
+    _updateScreenCorners() {
+        // destroy old corners
+        this._screenCorners.forEach(corner => {
+            if (corner)
+                corner.destroy();
+        });
+        this._screenCorners = [];
+
+        // build new corners
+        for (let monitor of this.monitors) {
+            for (let corner of Object.values(Meta.DisplayCorner)) {
+                var actor = new ScreenCorner.ScreenCorner(corner, monitor);
+
+                this.addTopChrome(actor, { trackFullscreen: true });
+                this._screenCorners.push(actor);
+            }
+        }
+    }
+
     _addBackgroundMenu(bgManager) {
         BackgroundMenu.addBackgroundMenu(bgManager.backgroundActor, this);
     }
@@ -540,6 +561,7 @@ var LayoutManager = GObject.registerClass({
         this._updateMonitors();
         this._updateBoxes();
         this._updateHotCorners();
+        this._updateScreenCorners();
         this._updateBackgrounds();
         this._updateFullscreen();
         this._updateVisibility();
