@@ -981,6 +981,18 @@ st_texture_cache_load_gicon (StTextureCache    *cache,
   StIconStyle icon_style = ST_ICON_STYLE_REQUESTED;
   GtkIconLookupFlags lookup_flags;
 
+  actor_size = size * paint_scale;
+
+  if (ST_IS_IMAGE_CONTENT (icon))
+    {
+      return g_object_new (CLUTTER_TYPE_ACTOR,
+                           "request-mode", CLUTTER_REQUEST_CONTENT_SIZE,
+                           "width", actor_size,
+                           "height", actor_size,
+                           "content", CLUTTER_CONTENT (icon),
+                           NULL);
+    }
+
   if (theme_node)
     {
       colors = st_theme_node_get_icon_colors (theme_node);
@@ -1034,7 +1046,6 @@ st_texture_cache_load_gicon (StTextureCache    *cache,
   g_free (gicon_string);
 
   actor = create_invisible_actor ();
-  actor_size = size * paint_scale;
   clutter_actor_set_size (actor, actor_size, actor_size);
   if (ensure_request (cache, key, policy, &request, actor))
     {
