@@ -1,7 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported Workspace */
 
-const { Clutter, GLib, GObject, Shell, St } = imports.gi;
+const { Clutter, GLib, GObject, St } = imports.gi;
 
 const DND = imports.ui.dnd;
 const Main = imports.ui.main;
@@ -391,9 +391,6 @@ var WorkspaceLayout = GObject.registerClass({
             GObject.ParamFlags.READWRITE,
             false),
     },
-    Signals: {
-        'allocated': {},
-    },
 }, class WorkspaceLayout extends Clutter.LayoutManager {
     _init(metaWorkspace, monitorIndex) {
         super._init();
@@ -625,10 +622,6 @@ var WorkspaceLayout = GObject.registerClass({
                 child.allocate(childBox);
             }
         }
-
-        // FIXME: remove this signal once the custom transitions to support
-        // the old overview are removed
-        this.emit('allocated');
     }
 
     /**
@@ -1011,117 +1004,54 @@ class Workspace extends St.Widget {
         return false;
     }
 
-    _transformToOriginalPositions() {
-        this._windows.forEach(window => {
-            window.translation_x = window.translation_y = 0;
-            window.scale_x = window.scale_y = 1;
-
-            const absAllocation = Shell.util_get_transformed_allocation(window);
-
-            window.translation_x = window.boundingBox.x - absAllocation.x1;
-            window.translation_y = window.boundingBox.y - absAllocation.y1;
-            window.scale_x = window.boundingBox.width / absAllocation.get_width();
-            window.scale_y = window.boundingBox.height / absAllocation.get_height();
-        });
-
-        // Sadly this is the only way to get notified about *all* position changes
-        const id = this.connect('paint', () => {
-            this._windows.forEach(window => {
-                const newAbsAllocation = window.allocation;
-
-                // We have to use the parents absolute position and size here and
-                // add the window relative allocation manually to that.
-                // Otherwise we'd also see the translation and scale we've
-                // applying to the window before.
-                const [parentTransformedX, parentTransformedY] =
-                    window.get_parent().get_transformed_position();
-                newAbsAllocation.x1 += parentTransformedX;
-                newAbsAllocation.x2 += parentTransformedX;
-                newAbsAllocation.y1 += parentTransformedY;
-                newAbsAllocation.y2 += parentTransformedY;
-
-                window.translation_x = window.boundingBox.x - newAbsAllocation.x1;
-                window.translation_y = window.boundingBox.y - newAbsAllocation.y1;
-                window.scale_x = window.boundingBox.width / newAbsAllocation.get_width();
-                window.scale_y = window.boundingBox.height / newAbsAllocation.get_height();
-            });
-        });
-
-        return id;
-    }
-
-    _stopTransform(id) {
-        this.disconnect(id);
-
-        this._windows.forEach(window => {
-            window.translation_x = window.translation_y = 0;
-            window.scale_x = window.scale_y = 1;
-        });
-    }
-
     fadeToOverview() {
+        // We don't want to reposition windows while animating in this way.
+        this.layout_manager.layout_frozen = true;
+        this._overviewShownId = Main.overview.connect('shown', this._doneShowingOverview.bind(this));
         if (this._windows.length == 0)
             return;
 
         if (this.metaWorkspace !== null && !this.metaWorkspace.active)
             return;
 
-        const id = this.layout_manager.connect('allocated', () => {
-            this.layout_manager.disconnect(id);
+        // Special case maximized windows, since it doesn't make sense
+        // to animate windows below in the stack
+        let topMaximizedWindow;
+        // It is ok to treat the case where there is no maximized
+        // window as if the bottom-most window was maximized given that
+        // it won't affect the result of the animation
+        for (topMaximizedWindow = this._windows.length - 1; topMaximizedWindow > 0; topMaximizedWindow--) {
+            let metaWindow = this._windows[topMaximizedWindow].metaWindow;
+            if (metaWindow.maximized_horizontally && metaWindow.maximized_vertically)
+                break;
+        }
 
-            // We don't want to reposition windows while animating in this way.
-            this.layout_manager.layout_frozen = true;
-            const transformId = this._transformToOriginalPositions();
+        let nTimeSlots = Math.min(WINDOW_ANIMATION_MAX_NUMBER_BLENDING + 1, this._windows.length - topMaximizedWindow);
+        let windowBaseTime = Overview.ANIMATION_TIME / nTimeSlots;
 
-            this._overviewShownId = Main.overview.connect('shown', () => {
-                this.layout_manager.layout_frozen = false;
-                this._stopTransform(transformId);
+        let topIndex = this._windows.length - 1;
+        for (let i = 0; i < this._windows.length; i++) {
+            if (i < topMaximizedWindow) {
+                // below top-most maximized window, don't animate
+                this._windows[i].hideOverlay(false);
+                this._windows[i].opacity = 0;
+            } else {
+                let fromTop = topIndex - i;
+                let time;
+                if (fromTop < nTimeSlots) // animate top-most windows gradually
+                    time = windowBaseTime * (nTimeSlots - fromTop);
+                else
+                    time = windowBaseTime;
 
-                this._windows.forEach(w => {
-                    w.opacity = 255;
-                });
-            });
-
-            // Special case maximized windows, since it doesn't make sense
-            // to animate windows below in the stack
-            let topMaximizedWindow;
-            // It is ok to treat the case where there is no maximized
-            // window as if the bottom-most window was maximized given that
-            // it won't affect the result of the animation
-            for (topMaximizedWindow = this._windows.length - 1; topMaximizedWindow > 0; topMaximizedWindow--) {
-                let metaWindow = this._windows[topMaximizedWindow].metaWindow;
-                if (metaWindow.maximized_horizontally && metaWindow.maximized_vertically)
-                    break;
+                this._windows[i].opacity = 255;
+                this._fadeWindow(i, time, 0);
             }
-
-            let nTimeSlots = Math.min(
-                WINDOW_ANIMATION_MAX_NUMBER_BLENDING + 1,
-                this._windows.length - topMaximizedWindow);
-
-            let windowBaseTime = Overview.ANIMATION_TIME / nTimeSlots;
-
-            let topIndex = this._windows.length - 1;
-            for (let i = 0; i < this._windows.length; i++) {
-                if (i < topMaximizedWindow) {
-                    // below top-most maximized window, don't animate
-                    this._windows[i].hideOverlay(false);
-                    this._windows[i].opacity = 0;
-                } else {
-                    let fromTop = topIndex - i;
-                    let time;
-                    if (fromTop < nTimeSlots) // animate top-most windows gradually
-                        time = windowBaseTime * (nTimeSlots - fromTop);
-                    else
-                        time = windowBaseTime;
-
-                    this._windows[i].opacity = 255;
-                    this._fadeWindow(this._windows[i], time, 0);
-                }
-            }
-        });
+        }
     }
 
     fadeFromOverview() {
+        this.layout_manager.layout_frozen = true;
+        this._overviewHiddenId = Main.overview.connect('hidden', this._doneLeavingOverview.bind(this));
         if (this._windows.length == 0)
             return;
 
@@ -1135,14 +1065,6 @@ class Workspace extends St.Widget {
 
         if (this.metaWorkspace !== null && !this.metaWorkspace.active)
             return;
-
-        this.layout_manager.layout_frozen = true;
-        const transformId = this._transformToOriginalPositions();
-
-        this._overviewHiddenId = Main.overview.connect('hidden', () => {
-            this.layout_manager.layout_frozen = false;
-            this._stopTransform(transformId);
-        });
 
         // Special case maximized windows, since it doesn't make sense
         // to animate windows below in the stack
@@ -1174,74 +1096,28 @@ class Workspace extends St.Widget {
                     time = windowBaseTime * nTimeSlots;
 
                 this._windows[i].opacity = 0;
-                this._fadeWindow(this._windows[i], time, 255);
+                this._fadeWindow(i, time, 255);
             }
         }
     }
 
-    _fadeWindow(window, duration, opacity) {
-        window.hideOverlay(false);
+    _fadeWindow(index, duration, opacity) {
+        let clone = this._windows[index];
+        clone.hideOverlay(false);
 
-        if (window.metaWindow.showing_on_its_workspace()) {
-            window.ease({
+        if (clone.metaWindow.showing_on_its_workspace()) {
+            clone.ease({
                 opacity,
                 duration,
                 mode: Clutter.AnimationMode.EASE_OUT_QUAD,
             });
         } else {
             // The window is hidden
-            window.opacity = 0;
+            clone.opacity = 0;
         }
     }
 
     zoomToOverview() {
-        let workspaceManager = global.workspace_manager;
-        let currentWorkspace = workspaceManager.get_active_workspace();
-
-        if (this.metaWorkspace != null && this.metaWorkspace != currentWorkspace)
-            return;
-
-        const id = this.layout_manager.connect('allocated', () => {
-            this.layout_manager.disconnect(id);
-
-            for (const window of this._windows)
-                this._zoomWindowToOverview(window);
-        });
-    }
-
-    _zoomWindowToOverview(window) {
-        if (window.metaWindow.showing_on_its_workspace()) {
-            window.translation_x = window.translation_y = 0;
-            window.scale_x = window.scale_y = 1;
-
-            const absAllocation = Shell.util_get_transformed_allocation(window);
-            window.translation_x = window.boundingBox.x - absAllocation.x1;
-            window.translation_y = window.boundingBox.y - absAllocation.y1;
-            window.scale_x = window.boundingBox.width / absAllocation.get_width();
-            window.scale_y = window.boundingBox.height / absAllocation.get_height();
-
-            window.ease({
-                translation_x: 0,
-                translation_y: 0,
-                scale_x: 1,
-                scale_y: 1,
-                opacity: 255,
-                duration: Overview.ANIMATION_TIME,
-                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            });
-        } else {
-            window.scale_x = 0;
-            window.scale_y = 0;
-            window.opacity = 0;
-
-            window.ease({
-                scale_x: 1,
-                scale_y: 1,
-                opacity: 255,
-                duration: Overview.ANIMATION_TIME,
-                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            });
-        }
     }
 
     zoomFromOverview() {
@@ -1254,76 +1130,29 @@ class Workspace extends St.Widget {
         }
 
         this.layout_manager.layout_frozen = true;
-        this._overviewHiddenId = Main.overview.connect('hidden', () => {
-            this.layout_manager.layout_frozen = false;
-        });
+        this._overviewHiddenId = Main.overview.connect('hidden', this._doneLeavingOverview.bind(this));
 
         if (this.metaWorkspace !== null && !this.metaWorkspace.active)
             return;
 
         // Position and scale the windows.
-        for (const window of this._windows)
-            this._zoomWindowFromOverview(window);
+        for (let i = 0; i < this._windows.length; i++)
+            this._zoomWindowFromOverview(i);
     }
 
-    _zoomWindowFromOverview(window) {
-        window.hideOverlay(false);
+    _zoomWindowFromOverview(index) {
+        let clone = this._windows[index];
+        clone.hideOverlay(false);
 
-        if (window.metaWindow.showing_on_its_workspace()) {
-            window.translation_x = window.translation_y = 0;
-            window.scale_x = window.scale_y = 1;
-
-            const absAllocation = Shell.util_get_transformed_allocation(window);
-
-            window.ease({
-                translation_x: window.boundingBox.x - absAllocation.x1,
-                translation_y: window.boundingBox.y - absAllocation.y1,
-                scale_x: window.boundingBox.width / absAllocation.get_width(),
-                scale_y: window.boundingBox.height / absAllocation.get_height(),
+        if (clone.metaWindow.showing_on_its_workspace()) {
+            clone.ease({
                 opacity: 255,
                 duration: Overview.ANIMATION_TIME,
                 mode: Clutter.AnimationMode.EASE_OUT_QUAD,
             });
-
-            const transitionX = window.get_transition('translation-x');
-            const transitionY = window.get_transition('translation-y');
-            const transitionScaleX = window.get_transition('scale-x');
-            const transitionScaleY = window.get_transition('scale-y');
-
-            transitionX.connect('new-frame', () => {
-                const newAbsAllocation = window.allocation;
-
-                // We have to use the parents absolute position and size here and
-                // add the window relative allocation manually to that.
-                // Otherwise we'd also see the translation and scale we've
-                // applying to the window before.
-                const [parentTransformedX, parentTransformedY] =
-                    window.get_parent().get_transformed_position();
-                newAbsAllocation.x1 += parentTransformedX;
-                newAbsAllocation.x2 += parentTransformedX;
-                newAbsAllocation.y1 += parentTransformedY;
-                newAbsAllocation.y2 += parentTransformedY;
-
-                transitionX.get_interval().set_final(
-                    window.boundingBox.x - newAbsAllocation.x1);
-                transitionY.get_interval().set_final(
-                    window.boundingBox.y - newAbsAllocation.y1);
-
-                if (transitionScaleX) {
-                    transitionScaleX.get_interval().set_final(
-                        window.boundingBox.width / newAbsAllocation.get_width());
-                }
-
-                if (transitionScaleY) {
-                    transitionScaleY.get_interval().set_final(
-                        window.boundingBox.height / newAbsAllocation.get_height());
-                }
-            });
         } else {
             // The window is hidden, make it shrink and fade it out
-            window.ease({
-                scale_x: 0,
-                scale_y: 0,
+            clone.ease({
                 opacity: 0,
                 duration: Overview.ANIMATION_TIME,
                 mode: Clutter.AnimationMode.EASE_OUT_QUAD,
@@ -1355,6 +1184,14 @@ class Workspace extends St.Widget {
         }
 
         this._windows = [];
+    }
+
+    _doneLeavingOverview() {
+        this.layout_manager.layout_frozen = false;
+    }
+
+    _doneShowingOverview() {
+        this.layout_manager.layout_frozen = false;
     }
 
     _isMyWindow(window) {
