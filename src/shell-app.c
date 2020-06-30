@@ -180,66 +180,24 @@ window_backed_app_get_window (ShellApp     *app)
     return NULL;
 }
 
-static ClutterActor *
-window_backed_app_get_icon (ShellApp *app,
-                            int       size)
+static GIcon *
+window_backed_app_get_icon (ShellApp *app)
 {
   MetaWindow *window = NULL;
-  StWidget *widget;
-  int scale, scaled_size;
-  ShellGlobal *global;
-  StThemeContext *context;
-
-  global = shell_global_get ();
-  context = st_theme_context_get_for_stage (shell_global_get_stage (global));
-  g_object_get (context, "scale-factor", &scale, NULL);
-
-  scaled_size = size * scale;
 
   /* During a state transition from running to not-running for
    * window-backend apps, it's possible we get a request for the icon.
-   * Avoid asserting here and just return an empty image.
+   * Avoid asserting here and just return a fallback icon
    */
   if (app->running_state != NULL)
     window = window_backed_app_get_window (app);
 
-  if (window == NULL)
-    {
-      ClutterActor *actor;
-
-      actor = clutter_actor_new ();
-      g_object_set (actor,
-                    "opacity", 0,
-                    "width", (float) scaled_size,
-                    "height", (float) scaled_size,
-                    NULL);
-      return actor;
-    }
-
-  if (meta_window_get_client_type (window) == META_WINDOW_CLIENT_TYPE_X11)
-    {
-      StWidget *texture_actor;
-
-      texture_actor =
-        st_texture_cache_bind_cairo_surface_property (st_texture_cache_get_default (),
-                                                      G_OBJECT (window),
-                                                      "icon",
-                                                      scaled_size);
-
-      widget = g_object_new (ST_TYPE_BIN,
-                             "child", texture_actor,
-                             NULL);
-    }
-  else
-    {
-      widget = g_object_new (ST_TYPE_ICON,
-                             "icon-size", size,
-                             "icon-name", "application-x-executable",
-                             NULL);
-    }
-  st_widget_add_style_class_name (widget, "fallback-app-icon");
-
-  return CLUTTER_ACTOR (widget);
+  if (window &&
+      meta_window_get_client_type (window) == META_WINDOW_CLIENT_TYPE_X11)
+    return st_texture_cache_bind_cairo_surface_property (st_texture_cache_get_default (),
+                                                         G_OBJECT (window),
+                                                         "icon");
+  return g_themed_icon_new ("application-x-executable");
 }
 
 /**
@@ -254,17 +212,24 @@ ClutterActor *
 shell_app_create_icon_texture (ShellApp   *app,
                                int         size)
 {
-  GIcon *icon;
+  g_autoptr (GIcon) icon = NULL;
   ClutterActor *ret;
-
-  if (app->info == NULL)
-    return window_backed_app_get_icon (app, size);
 
   ret = st_icon_new ();
   st_icon_set_icon_size (ST_ICON (ret), size);
   st_icon_set_fallback_icon_name (ST_ICON (ret), "application-x-executable");
 
-  icon = g_app_info_get_icon (G_APP_INFO (app->info));
+  if (app->info == NULL)
+    {
+      icon = window_backed_app_get_icon (app);
+      st_widget_add_style_class_name (ST_WIDGET (ret), "fallback-app-icon");
+    }
+  else
+    {
+      icon = g_app_info_get_icon (G_APP_INFO (app->info));
+      g_object_ref (icon);
+    }
+
   st_icon_set_gicon (ST_ICON (ret), icon);
 
   return ret;
