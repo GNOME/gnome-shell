@@ -85,12 +85,7 @@ st_drawing_area_allocate (ClutterActor          *self,
   int width, height;
   float resource_scale;
 
-  if (!st_widget_get_resource_scale (ST_WIDGET (self), &resource_scale))
-    {
-      ClutterActorBox empty = CLUTTER_ACTOR_BOX_INIT_ZERO;
-      clutter_actor_set_allocation (self, &empty);
-      return;
-    }
+  resource_scale = clutter_actor_get_resource_scale (self);
 
   clutter_actor_set_allocation (self, box);
   st_theme_node_get_content_box (theme_node, box, &content_box);
@@ -111,13 +106,16 @@ st_drawing_area_style_changed (StWidget  *self)
 }
 
 static void
-st_drawing_area_resource_scale_changed (StWidget *self)
+st_drawing_area_resource_scale_changed (ClutterActor *self)
 {
   float resource_scale;
-  ClutterContent *content = clutter_actor_get_content (CLUTTER_ACTOR (self));
+  ClutterContent *content = clutter_actor_get_content (self);
 
-  if (st_widget_get_resource_scale (ST_WIDGET (self), &resource_scale))
-    clutter_canvas_set_scale_factor (CLUTTER_CANVAS (content), resource_scale);
+  resource_scale = clutter_actor_get_resource_scale (self);
+  clutter_canvas_set_scale_factor (CLUTTER_CANVAS (content), resource_scale);
+
+  if (CLUTTER_ACTOR_CLASS (st_drawing_area_parent_class)->resource_scale_changed)
+    CLUTTER_ACTOR_CLASS (st_drawing_area_parent_class)->resource_scale_changed (self);
 }
 
 static void
@@ -128,7 +126,7 @@ st_drawing_area_class_init (StDrawingAreaClass *klass)
 
   actor_class->allocate = st_drawing_area_allocate;
   widget_class->style_changed = st_drawing_area_style_changed;
-  widget_class->resource_scale_changed = st_drawing_area_resource_scale_changed;
+  actor_class->resource_scale_changed = st_drawing_area_resource_scale_changed;
 
   st_drawing_area_signals[REPAINT] =
     g_signal_new ("repaint",
@@ -215,15 +213,10 @@ st_drawing_area_get_surface_size (StDrawingArea *area,
   content = clutter_actor_get_content (CLUTTER_ACTOR (area));
   clutter_content_get_preferred_size (content, &w, &h);
 
-  if (st_widget_get_resource_scale (ST_WIDGET (area), &resource_scale))
-    {
-      w /= resource_scale;
-      h /= resource_scale;
-    }
-  else
-    {
-      w = h = 0.0f;
-    }
+  resource_scale = clutter_actor_get_resource_scale (CLUTTER_ACTOR (area));
+
+  w /= resource_scale;
+  h /= resource_scale;
 
   if (width)
     *width = ceilf (w);

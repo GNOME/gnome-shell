@@ -124,7 +124,6 @@ enum
 {
   STYLE_CHANGED,
   POPUP_MENU,
-  RESOURCE_SCALE_CHANGED,
 
   LAST_SIGNAL
 };
@@ -412,8 +411,7 @@ st_widget_paint_background (StWidget            *widget,
   float resource_scale;
   guint8 opacity;
 
-  if (!st_widget_get_resource_scale (widget, &resource_scale))
-    return;
+  resource_scale = clutter_actor_get_resource_scale (CLUTTER_ACTOR (widget));
 
   framebuffer = clutter_paint_context_get_framebuffer (paint_context);
   theme_node = st_widget_get_theme_node (widget);
@@ -821,6 +819,20 @@ st_widget_real_get_focus_chain (StWidget *widget)
 }
 
 static void
+st_widget_resource_scale_changed (ClutterActor *actor)
+{
+  StWidget *widget = ST_WIDGET (actor);
+  StWidgetPrivate *priv = st_widget_get_instance_private (widget);
+  int i;
+
+  for (i = 0; i < G_N_ELEMENTS (priv->paint_states); i++)
+    st_theme_node_paint_state_invalidate (&priv->paint_states[i]);
+
+  if (CLUTTER_ACTOR_CLASS (st_widget_parent_class)->resource_scale_changed)
+    CLUTTER_ACTOR_CLASS (st_widget_parent_class)->resource_scale_changed (actor);
+}
+
+static void
 st_widget_class_init (StWidgetClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
@@ -848,6 +860,8 @@ st_widget_class_init (StWidgetClass *klass)
 
   actor_class->get_accessible = st_widget_get_accessible;
   actor_class->has_accessible = st_widget_has_accessible;
+
+  actor_class->resource_scale_changed = st_widget_resource_scale_changed;
 
   klass->style_changed = st_widget_real_style_changed;
   klass->navigate_focus = st_widget_real_navigate_focus;
@@ -1000,21 +1014,6 @@ st_widget_class_init (StWidgetClass *klass)
                   G_TYPE_FROM_CLASS (klass),
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (StWidgetClass, popup_menu),
-                  NULL, NULL, NULL,
-                  G_TYPE_NONE, 0);
-
-  /**
-   * StWidget::resource-scale-changed:
-   * @widget: the #StWidget
-   *
-   * Emitted when the paint scale that the widget will be painted as
-   * changed.
-   */
-  signals[RESOURCE_SCALE_CHANGED] =
-    g_signal_new ("resource-scale-changed",
-                  G_TYPE_FROM_CLASS (klass),
-                  G_SIGNAL_RUN_LAST,
-                  G_STRUCT_OFFSET (StWidgetClass, resource_scale_changed),
                   NULL, NULL, NULL,
                   G_TYPE_NONE, 0);
 }
@@ -1400,23 +1399,6 @@ st_widget_get_style (StWidget *actor)
   return ST_WIDGET_PRIVATE (actor)->inline_style;
 }
 
-/**
- * st_widget_get_resource_scale:
- * @widget: A #StWidget
- * @resource_scale: (out): return location for the resource scale
- *
- * Retrieves the resource scale for this #StWidget, if available.
- *
- * The resource scale refers to the scale the actor should use for its resources.
- */
-gboolean
-st_widget_get_resource_scale (StWidget *widget,
-                              float    *resource_scale)
-{
-  return clutter_actor_get_resource_scale (CLUTTER_ACTOR (widget),
-                                           resource_scale);
-}
-
 static void
 st_widget_set_first_visible_child (StWidget     *widget,
                                    ClutterActor *actor)
@@ -1481,23 +1463,6 @@ st_widget_name_notify (StWidget   *widget,
                        gpointer    data)
 {
   st_widget_style_changed (widget);
-}
-
-static void
-st_widget_resource_scale_notify (StWidget   *widget,
-                                 GParamSpec *pspec,
-                                 gpointer    data)
-{
-  StWidgetPrivate *priv = st_widget_get_instance_private (widget);
-  int i;
-
-  for (i = 0; i < G_N_ELEMENTS (priv->paint_states); i++)
-    st_theme_node_paint_state_invalidate (&priv->paint_states[i]);
-
-  g_signal_emit (widget, signals[RESOURCE_SCALE_CHANGED], 0);
-
-  if (clutter_actor_is_mapped (CLUTTER_ACTOR (widget)))
-    clutter_actor_queue_redraw (CLUTTER_ACTOR (widget));
 }
 
 static void
@@ -1651,7 +1616,6 @@ st_widget_init (StWidget *actor)
 
   /* connect style changed */
   g_signal_connect (actor, "notify::name", G_CALLBACK (st_widget_name_notify), NULL);
-  g_signal_connect (actor, "notify::resource-scale", G_CALLBACK (st_widget_resource_scale_notify), NULL);
   g_signal_connect (actor, "notify::reactive", G_CALLBACK (st_widget_reactive_notify), NULL);
 
   g_signal_connect (actor, "notify::visible", G_CALLBACK (st_widget_visible_notify), NULL);
