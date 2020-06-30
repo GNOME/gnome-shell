@@ -68,30 +68,6 @@ enum
 static guint signals[LAST_SIGNAL] = { 0, };
 G_DEFINE_TYPE(StTextureCache, st_texture_cache, G_TYPE_OBJECT);
 
-/* We want to preserve the aspect ratio by default, also the default
- * pipeline for an empty texture is full opacity white, which we
- * definitely don't want.  Skip that by setting 0 opacity.
- */
-static ClutterActor *
-create_invisible_actor (void)
-{
-  return g_object_new (CLUTTER_TYPE_ACTOR,
-                       "opacity", 0,
-                       "request-mode", CLUTTER_REQUEST_CONTENT_SIZE,
-                       NULL);
-}
-
-/* Reverse the opacity we added while loading */
-static void
-set_content_from_image (ClutterActor   *actor,
-                        ClutterContent *image)
-{
-  g_assert (image && CLUTTER_IS_IMAGE (image));
-
-  clutter_actor_set_content (actor, image);
-  clutter_actor_set_opacity (actor, 255);
-}
-
 static void
 st_texture_cache_class_init (StTextureCacheClass *klass)
 {
@@ -302,7 +278,7 @@ typedef struct {
 } Dimensions;
 
 /* This struct corresponds to a request for an texture.
- * It's creasted when something needs a new texture,
+ * It's created when something needs a new texture,
  * and destroyed when the texture data is loaded. */
 typedef struct {
   StTextureCache *cache;
@@ -313,7 +289,7 @@ typedef struct {
   guint height;
   guint paint_scale;
   gfloat resource_scale;
-  GSList *actors;
+  GSList *tasks;
 
   GtkIconInfo *icon_info;
   StIconColors *colors;
@@ -337,8 +313,8 @@ texture_load_data_free (gpointer p)
   if (data->key)
     g_free (data->key);
 
-  if (data->actors)
-    g_slist_free_full (data->actors, (GDestroyNotify) g_object_unref);
+  if (data->tasks)
+    g_slist_free_full (data->tasks, (GDestroyNotify) g_object_unref);
 
   g_slice_free (AsyncTextureLoadData, data);
 }
@@ -460,13 +436,14 @@ impl_load_pixbuf_file (GFile          *file,
                        int             available_height,
                        int             paint_scale,
                        float           resource_scale,
+                       GCancellable   *cancellable,
                        GError        **error)
 {
   GdkPixbuf *pixbuf = NULL;
   char *contents = NULL;
   gsize size;
 
-  if (g_file_load_contents (file, NULL, &contents, &size, NULL, error))
+  if (g_file_load_contents (file, cancellable, &contents, &size, NULL, error))
     {
       int scale = ceilf (paint_scale * resource_scale);
       pixbuf = impl_load_pixbuf_data ((const guchar *) contents, size,
@@ -495,7 +472,7 @@ load_pixbuf_thread (GTask        *result,
 
   pixbuf = impl_load_pixbuf_file (data->file, data->width, data->height,
                                   data->paint_scale, data->resource_scale,
-                                  &error);
+                                  cancellable, &error);
 
   if (error != NULL)
     g_task_return_error (result, error);
@@ -512,14 +489,14 @@ load_pixbuf_async_finish (StTextureCache *cache, GAsyncResult *result, GError **
 }
 
 static ClutterContent *
-pixbuf_to_st_content_image (GdkPixbuf *pixbuf,
-                            int        width,
-                            int        height,
-                            int        paint_scale,
-                            float      resource_scale)
+pixbuf_to_st_content_image (GdkPixbuf  *pixbuf,
+                            int         width,
+                            int         height,
+                            int         paint_scale,
+                            float       resource_scale,
+                            GError    **error)
 {
   ClutterContent *image;
-  g_autoptr(GError) error = NULL;
 
   float native_width, native_height;
 
@@ -555,11 +532,11 @@ pixbuf_to_st_content_image (GdkPixbuf *pixbuf,
                           gdk_pixbuf_get_width (pixbuf),
                           gdk_pixbuf_get_height (pixbuf),
                           gdk_pixbuf_get_rowstride (pixbuf),
-                          &error);
+                          error);
 
-  if (error)
+  if (error && *error)
     {
-      g_warning ("Failed to allocate texture: %s", error->message);
+      g_warning ("Failed to allocate texture: %s", (*error)->message);
       g_clear_object (&image);
     }
 
@@ -588,59 +565,61 @@ pixbuf_to_cairo_surface (GdkPixbuf *pixbuf)
 }
 
 static void
-finish_texture_load (AsyncTextureLoadData *data,
-                     GdkPixbuf            *pixbuf)
+async_texture_load_return_error (AsyncTextureLoadData *data,
+                                 GError               *error)
 {
-  g_autoptr(ClutterContent) image = NULL;
   GSList *iter;
-  StTextureCache *cache;
 
-  cache = data->cache;
+  for (iter = data->tasks; iter; iter = iter->next)
+    g_task_return_error (G_TASK (iter->data), g_error_copy (error));
 
-  g_hash_table_remove (cache->priv->outstanding_requests, data->key);
+  texture_load_data_free (data);
+}
+
+static void
+finish_texture_load (AsyncTextureLoadData *data,
+                     GdkPixbuf            *pixbuf,
+                     GError               *error)
+{
+  StTextureCache *cache = data->cache;
+  StTextureCachePrivate *priv = cache->priv;
+  ClutterContent *image = NULL;
+  GSList *iter;
+
+  g_hash_table_remove (priv->outstanding_requests, data->key);
 
   if (pixbuf == NULL)
-    goto out;
+    {
+      async_texture_load_return_error (data, error);
+      return;
+    }
+
+  g_clear_error (&error);
+  image = pixbuf_to_st_content_image (pixbuf, data->width, data->height,
+                                      data->paint_scale, data->resource_scale,
+                                      &error);
+
+  if (error != NULL)
+    {
+      g_clear_object (&image);
+      async_texture_load_return_error (data, error);
+      return;
+    }
 
   if (data->policy != ST_TEXTURE_CACHE_POLICY_NONE)
-    {
-      gpointer orig_key = NULL, value = NULL;
+    g_hash_table_insert (priv->keyed_cache, g_strdup (data->key),
+                         g_object_ref (image));
 
-      if (!g_hash_table_lookup_extended (cache->priv->keyed_cache, data->key,
-                                         &orig_key, &value))
-        {
-          image = pixbuf_to_st_content_image (pixbuf,
-                                              data->width, data->height,
-                                              data->paint_scale,
-                                              data->resource_scale);
-          if (!image)
-            goto out;
-
-          g_hash_table_insert (cache->priv->keyed_cache, g_strdup (data->key),
-                               g_object_ref (image));
-        }
-      else
-        {
-          image = g_object_ref (value);
-        }
-    }
-  else
+  for (iter = data->tasks; iter; iter = iter->next)
     {
-      image = pixbuf_to_st_content_image (pixbuf,
-                                          data->width, data->height,
-                                          data->paint_scale,
-                                          data->resource_scale);
-      if (!image)
-        goto out;
+      GTask *task = iter->data;
+
+      /* Mark all tasks as cancellable again before returning, this ensures
+       * an error is returned if the task was cancelled. */
+      g_task_set_check_cancellable (task, TRUE);
+      g_task_return_pointer (task, g_object_ref (image), g_object_unref);
     }
 
-  for (iter = data->actors; iter; iter = iter->next)
-    {
-      ClutterActor *actor = iter->data;
-      set_content_from_image (actor, image);
-    }
-
-out:
   texture_load_data_free (data);
 }
 
@@ -649,10 +628,11 @@ on_symbolic_icon_loaded (GObject      *source,
                          GAsyncResult *result,
                          gpointer      user_data)
 {
-  GdkPixbuf *pixbuf;
-  pixbuf = gtk_icon_info_load_symbolic_finish (GTK_ICON_INFO (source), result, NULL, NULL);
-  finish_texture_load (user_data, pixbuf);
-  g_clear_object (&pixbuf);
+  g_autoptr(GdkPixbuf) pixbuf;
+  g_autoptr(GError) error = NULL;
+
+  pixbuf = gtk_icon_info_load_symbolic_finish (GTK_ICON_INFO (source), result, NULL, &error);
+  finish_texture_load (user_data, pixbuf, error);
 }
 
 static void
@@ -660,10 +640,11 @@ on_icon_loaded (GObject      *source,
                 GAsyncResult *result,
                 gpointer      user_data)
 {
-  GdkPixbuf *pixbuf;
-  pixbuf = gtk_icon_info_load_icon_finish (GTK_ICON_INFO (source), result, NULL);
-  finish_texture_load (user_data, pixbuf);
-  g_clear_object (&pixbuf);
+  g_autoptr(GdkPixbuf) pixbuf;
+  g_autoptr(GError) error = NULL;
+
+  pixbuf = gtk_icon_info_load_icon_finish (GTK_ICON_INFO (source), result, &error);
+  finish_texture_load (user_data, pixbuf, error);
 }
 
 static void
@@ -671,10 +652,11 @@ on_pixbuf_loaded (GObject      *source,
                   GAsyncResult *result,
                   gpointer      user_data)
 {
-  GdkPixbuf *pixbuf;
-  pixbuf = load_pixbuf_async_finish (ST_TEXTURE_CACHE (source), result, NULL);
-  finish_texture_load (user_data, pixbuf);
-  g_clear_object (&pixbuf);
+  g_autoptr(GdkPixbuf) pixbuf;
+  g_autoptr(GError) error = NULL;
+
+  pixbuf = load_pixbuf_async_finish (ST_TEXTURE_CACHE (source), result, &error);
+  finish_texture_load (user_data, pixbuf, error);
 }
 
 static void
@@ -693,10 +675,7 @@ load_texture_async (StTextureCache       *cache,
       StIconColors *colors = data->colors;
       if (colors)
         {
-          GdkRGBA foreground_color;
-          GdkRGBA success_color;
-          GdkRGBA warning_color;
-          GdkRGBA error_color;
+          GdkRGBA foreground_color, success_color, warning_color, error_color;
 
           rgba_from_clutter (&foreground_color, &colors->foreground);
           rgba_from_clutter (&success_color, &colors->success);
@@ -891,95 +870,114 @@ st_texture_cache_load (StTextureCache       *cache,
   return texture;
 }
 
-/**
- * ensure_request:
- * @cache:
- * @key: A cache key
- * @policy: Cache policy
- * @request: (out): If no request is outstanding, one will be created and returned here
- * @texture: A texture to be added to the request
- *
- * Check for any outstanding load for the data represented by @key.  If there
- * is already a request pending, append it to that request to avoid loading
- * the data multiple times.
- *
- * Returns: %TRUE if there is already a request pending
- */
-static gboolean
-ensure_request (StTextureCache        *cache,
-                const char            *key,
-                StTextureCachePolicy   policy,
-                AsyncTextureLoadData **request,
-                ClutterActor          *actor)
+static void
+request_texture_from_cache (StTextureCache       *cache,
+                            GFile                *file,
+                            const char           *key,
+                            StTextureCachePolicy  policy,
+                            StIconColors         *colors,
+                            GtkIconInfo          *info,
+                            gint                  width,
+                            gint                  height,
+                            gint                  paint_scale,
+                            float                 resource_scale,
+                            GTask                *task)
 {
+  StTextureCachePrivate *priv = cache->priv;
   ClutterContent *image;
-  AsyncTextureLoadData *pending;
-  gboolean had_pending;
+  AsyncTextureLoadData *pending_request, *request;
 
-  image = g_hash_table_lookup (cache->priv->keyed_cache, key);
-
+  /* First, do a lookup and check if we already have the texture cached */
+  image = g_hash_table_lookup (priv->keyed_cache, key);
   if (image != NULL)
     {
-      /* We had this cached already, just set the texture and we're done. */
-      set_content_from_image (actor, image);
-      return TRUE;
+      g_task_return_pointer (task, g_object_ref (image), g_object_unref);
+      return;
     }
 
-  pending = g_hash_table_lookup (cache->priv->outstanding_requests, key);
-  had_pending = pending != NULL;
-
-  if (pending == NULL)
+  /* Then check if the texture has already been requested */
+  pending_request = g_hash_table_lookup (priv->outstanding_requests, key);
+  if (pending_request != NULL)
     {
-      /* Not cached and no pending request, create it */
-      *request = g_slice_new0 (AsyncTextureLoadData);
-      if (policy != ST_TEXTURE_CACHE_POLICY_NONE)
-        g_hash_table_insert (cache->priv->outstanding_requests, g_strdup (key), *request);
+      /* If it was already requested, just add the task to the task-list
+       * of the pending request and return. */
+      pending_request->tasks = g_slist_prepend (pending_request->tasks,
+                                                g_object_ref (task));
+
+      /* Make sure the policy of the pending request is updated if a newer
+       * one wants the image to be stored. */
+      if (policy == ST_TEXTURE_CACHE_POLICY_FOREVER &&
+          pending_request->policy != policy)
+        pending_request->policy = policy;
+
+      return;
     }
-  else
-   *request = pending;
 
-  /* Regardless of whether there was a pending request, prepend our texture here. */
-  (*request)->actors = g_slist_prepend ((*request)->actors, g_object_ref (actor));
+  /* If this is an actual request, make the task non-cancellable since other
+   * requests might attach to the request later (see above). */
+  g_task_set_check_cancellable (task, FALSE);
 
-  return had_pending;
+  request = g_slice_new0 (AsyncTextureLoadData);
+  request->cache = cache;
+  request->key = g_strdup (key);
+  request->policy = policy;
+  request->colors = colors ? st_icon_colors_ref (colors) : NULL;
+  request->icon_info = info ? g_object_ref (info) : NULL;
+  request->width = width;
+  request->height = height;
+  request->paint_scale = paint_scale;
+  request->resource_scale = resource_scale;
+  request->file = file ? g_object_ref (file) : NULL;
+  request->tasks = g_slist_prepend (request->tasks, g_object_ref (task));
+
+  if (request->policy != ST_TEXTURE_CACHE_POLICY_NONE)
+    g_hash_table_insert (priv->outstanding_requests, g_strdup (key), request);
+
+  load_texture_async (cache, request);
 }
 
 /**
- * st_texture_cache_load_gicon:
+ * st_texture_cache_load_gicon_async:
  * @cache: The texture cache instance
- * @theme_node: (nullable): The #StThemeNode to use for colors, or NULL
- *                            if the icon must not be recolored
+ * @theme_node: (nullable): The #StThemeNode to use for colors, or %NULL
+ *   if the icon must not be recolored
  * @icon: the #GIcon to load
- * @size: Size of themed
+ * @size: Size of the theme-icon
  * @paint_scale: Scale factor of display
  * @resource_scale: Resource scale factor
+ * @cancellable: (nullable): A #GCancellable
+ * @callback: (scope async): A #GAsyncReadyCallback to call when the texture
+ *   finished loading
+ * @user_data: (closure): The data to pass to the callback function
  *
- * This method returns a new #ClutterActor for a given #GIcon. If the
- * icon isn't loaded already, the texture will be filled
- * asynchronously.
- *
- * Return Value: (transfer none): A new #ClutterActor for the icon, or %NULL if not found
+ * Asynchronously loads the texture for a given #GIcon either from cache or
+ * by reading the image data and calls @callback when the request finished.
+ * To get the texture data from the callback function, call
+ * st_texture_cache_load_gicon_finish().
  */
-ClutterActor *
-st_texture_cache_load_gicon (StTextureCache    *cache,
-                             StThemeNode       *theme_node,
-                             GIcon             *icon,
-                             gint               size,
-                             gint               paint_scale,
-                             gfloat             resource_scale)
+void
+st_texture_cache_load_gicon_async (StTextureCache      *cache,
+                                   StThemeNode         *theme_node,
+                                   GIcon               *icon,
+                                   gint                 size,
+                                   gint                 paint_scale,
+                                   gfloat               resource_scale,
+                                   GCancellable        *cancellable,
+                                   GAsyncReadyCallback  callback,
+                                   gpointer             user_data)
 {
-  AsyncTextureLoadData *request;
-  ClutterActor *actor;
+  g_autoptr(GTask) task;
   gint scale;
-  char *gicon_string;
-  char *key;
-  float actor_size;
+  g_autofree gchar *gicon_string = NULL;
+  g_autofree gchar *key = NULL;
   GtkIconTheme *theme;
-  GtkIconInfo *info;
+  g_autoptr(GtkIconInfo) info;
   StTextureCachePolicy policy;
   StIconColors *colors = NULL;
   StIconStyle icon_style = ST_ICON_STYLE_REQUESTED;
   GtkIconLookupFlags lookup_flags;
+
+  task = g_task_new (cache, cancellable, callback, user_data);
 
   if (theme_node)
     {
@@ -1003,11 +1001,14 @@ st_texture_cache_load_gicon (StTextureCache    *cache,
     lookup_flags |= GTK_ICON_LOOKUP_DIR_LTR;
 
   scale = ceilf (paint_scale * resource_scale);
-  info = gtk_icon_theme_lookup_by_gicon_for_scale (theme, icon,
-                                                   size, scale,
+  info = gtk_icon_theme_lookup_by_gicon_for_scale (theme, icon, size, scale,
                                                    lookup_flags);
   if (info == NULL)
-    return NULL;
+    {
+      g_task_return_new_error (task, G_IO_ERROR, G_IO_ERROR_NOT_FOUND,
+                               "GIcon lookup failed");
+      return;
+    }
 
   gicon_string = g_icon_to_string (icon);
   /* A return value of NULL indicates that the icon can not be serialized,
@@ -1031,35 +1032,33 @@ st_texture_cache_load_gicon (StTextureCache    *cache,
       key = g_strdup_printf (CACHE_PREFIX_ICON "%s,size=%d,scale=%d,style=%d",
                              gicon_string, size, scale, icon_style);
     }
-  g_free (gicon_string);
 
-  actor = create_invisible_actor ();
-  actor_size = size * paint_scale;
-  clutter_actor_set_size (actor, actor_size, actor_size);
-  if (ensure_request (cache, key, policy, &request, actor))
-    {
-      /* If there's an outstanding request, we've just added ourselves to it */
-      g_object_unref (info);
-      g_free (key);
-    }
-  else
-    {
-      /* Else, make a new request */
+  request_texture_from_cache (cache, NULL, key, policy, colors, info,
+                              size, size, paint_scale, resource_scale,
+                              task);
+}
 
-      request->cache = cache;
-      /* Transfer ownership of key */
-      request->key = key;
-      request->policy = policy;
-      request->colors = colors ? st_icon_colors_ref (colors) : NULL;
-      request->icon_info = info;
-      request->width = request->height = size;
-      request->paint_scale = paint_scale;
-      request->resource_scale = resource_scale;
+/**
+ * st_texture_cache_load_gicon_finish:
+ * @cache: The texture cache instance
+ * @result: A #GAsyncResult
+ * @error: (nullable): Location to store error information on failure,
+ *   or %NULL.
+ *
+ * Finishes an asynchronous load of a #GIcon, see
+ * st_texture_cache_load_gicon_async().
+ *
+ * Return Value: (transfer full): A new #ClutterContent for the icon, or
+ *   %NULL if not found
+ */
+ClutterContent *
+st_texture_cache_load_gicon_finish (StTextureCache  *cache,
+                                    GAsyncResult    *result,
+                                    GError         **error)
+{
+  g_return_val_if_fail (g_task_is_valid (result, cache), NULL);
 
-      load_texture_async (cache, request);
-    }
-
-  return actor;
+  return g_task_propagate_pointer (G_TASK (result), error);
 }
 
 static ClutterActor *
@@ -1070,7 +1069,8 @@ load_from_pixbuf (GdkPixbuf *pixbuf,
   g_autoptr(ClutterContent) image = NULL;
   ClutterActor *actor;
 
-  image = pixbuf_to_st_content_image (pixbuf, -1, -1, paint_scale, resource_scale);
+  image = pixbuf_to_st_content_image (pixbuf, -1, -1,
+                                      paint_scale, resource_scale, NULL);
 
   actor = g_object_new (CLUTTER_TYPE_ACTOR,
                         "request-mode", CLUTTER_REQUEST_CONTENT_SIZE,
@@ -1375,64 +1375,75 @@ st_texture_cache_load_sliced_image (StTextureCache *cache,
 /**
  * st_texture_cache_load_file_async:
  * @cache: The texture cache instance
- * @file: a #GFile of the image file from which to create a pixbuf
- * @available_width: available width for the image, can be -1 if not limited
- * @available_height: available height for the image, can be -1 if not limited
- * @paint_scale: scale factor of the display
+ * @file: A #GFile of the image file from which to create a pixbuf
+ * @available_width: Available width for the image, can be -1 if not limited
+ * @available_height: Available height for the image, can be -1 if not limited
+ * @paint_scale: Scale factor of the display
  * @resource_scale: Resource scale factor
+ * @cancellable: (nullable): A #GCancellable
+ * @callback: (scope async): A #GAsyncReadyCallback to call when the texture
+ *   finished loading
+ * @user_data: (closure): The data to pass to the callback function
  *
- * Asynchronously load an image.   Initially, the returned texture will have a natural
- * size of zero.  At some later point, either the image will be loaded successfully
- * and at that point size will be negotiated, or upon an error, no image will be set.
- *
- * Return value: (transfer none): A new #ClutterActor with no image loaded initially.
+ * Asynchronously loads the texture for a given #GFile either by reading the
+ * image data and calls @callback when the request finished.
+ * To get the texture data from the callback function, call
+ * st_texture_cache_load_file_finish().
  */
-ClutterActor *
-st_texture_cache_load_file_async (StTextureCache *cache,
-                                  GFile          *file,
-                                  int             available_width,
-                                  int             available_height,
-                                  int             paint_scale,
-                                  gfloat          resource_scale)
+void
+st_texture_cache_load_file_async (StTextureCache      *cache,
+                                  GFile               *file,
+                                  int                  available_width,
+                                  int                  available_height,
+                                  int                  paint_scale,
+                                  gfloat               resource_scale,
+                                  GCancellable        *cancellable,
+                                  GAsyncReadyCallback  callback,
+                                  gpointer             user_data)
 {
-  ClutterActor *actor;
-  AsyncTextureLoadData *request;
+  GTask *task;
   StTextureCachePolicy policy;
   gchar *key;
   int scale;
+
+  task = g_task_new (cache, cancellable, callback, user_data);
 
   scale = ceilf (paint_scale * resource_scale);
   key = g_strdup_printf (CACHE_PREFIX_FILE "%u%d", g_file_hash (file), scale);
 
   policy = ST_TEXTURE_CACHE_POLICY_NONE; /* XXX */
 
-  actor = create_invisible_actor ();
-
-  if (ensure_request (cache, key, policy, &request, actor))
-    {
-      /* If there's an outstanding request, we've just added ourselves to it */
-      g_free (key);
-    }
-  else
-    {
-      /* Else, make a new request */
-
-      request->cache = cache;
-      /* Transfer ownership of key */
-      request->key = key;
-      request->file = g_object_ref (file);
-      request->policy = policy;
-      request->width = available_width;
-      request->height = available_height;
-      request->paint_scale = paint_scale;
-      request->resource_scale = resource_scale;
-
-      load_texture_async (cache, request);
-    }
+  request_texture_from_cache (cache, file, key, policy, NULL, NULL,
+                              available_width, available_height,
+                              paint_scale, resource_scale, task);
 
   ensure_monitor_for_file (cache, file);
 
-  return actor;
+  g_free (key);
+  g_object_unref (task);
+}
+
+/**
+ * st_texture_cache_load_file_finish:
+ * @cache: The texture cache instance
+ * @result: A #GAsyncResult
+ * @error: (nullable): Location to store error information on failure,
+ *   or %NULL.
+ *
+ * Finishes an asynchronous load of a #GFile, see
+ * st_texture_cache_load_file_async().
+ *
+ * Return Value: (transfer full): A new #ClutterContent for the file, or
+ *   %NULL if not found
+ */
+ClutterContent *
+st_texture_cache_load_file_finish (StTextureCache  *cache,
+                                   GAsyncResult    *result,
+                                   GError         **error)
+{
+  g_return_val_if_fail (g_task_is_valid (result, cache), NULL);
+
+  return g_task_propagate_pointer (G_TASK (result), error);
 }
 
 static CoglTexture *
@@ -1458,13 +1469,13 @@ st_texture_cache_load_file_sync_to_cogl_texture (StTextureCache *cache,
   if (image == NULL)
     {
       pixbuf = impl_load_pixbuf_file (file, available_width, available_height,
-                                      paint_scale, resource_scale, error);
+                                      paint_scale, resource_scale, NULL, error);
       if (!pixbuf)
         goto out;
 
       image = pixbuf_to_st_content_image (pixbuf,
                                           available_height, available_width,
-                                          paint_scale, resource_scale);
+                                          paint_scale, resource_scale, error);
       g_object_unref (pixbuf);
 
       if (!image)
@@ -1511,7 +1522,7 @@ st_texture_cache_load_file_sync_to_cairo_surface (StTextureCache        *cache,
   if (surface == NULL)
     {
       pixbuf = impl_load_pixbuf_file (file, available_width, available_height,
-                                      paint_scale, resource_scale, error);
+                                      paint_scale, resource_scale, NULL, error);
       if (!pixbuf)
         goto out;
 
