@@ -95,7 +95,6 @@ class WorkspacesView extends WorkspacesViewBase {
         let workspaceManager = global.workspace_manager;
 
         super._init(monitorIndex, overviewAdjustment);
-        this.clip_to_allocation = true;
 
         this._snapAdjustment = snapAdjustment;
         this._snapNotifyId = this._snapAdjustment.connect('notify::value', () => {
@@ -490,7 +489,6 @@ class WorkspacesDisplay extends St.Widget {
         super._init({
             visible: false,
             y_expand: true,
-            clip_to_allocation: true,
             layout_manager: new Clutter.BinLayout(),
         });
 

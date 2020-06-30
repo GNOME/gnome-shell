@@ -981,6 +981,7 @@ class Workspace extends St.Widget {
             style_class: 'window-picker',
             reactive: true,
             track_hover: true,
+            clip_to_allocation: true,
             pivot_point: new Graphene.Point({ x: 0.5, y: 0.5 }),
             layout_manager: new WorkspaceLayout(metaWorkspace, monitorIndex),
         });
