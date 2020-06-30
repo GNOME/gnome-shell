@@ -42,11 +42,14 @@ enum
 };
 
 static void clutter_content_interface_init (ClutterContentInterface *iface);
+static void g_icon_interface_init (GIconIface *iface);
 
 G_DEFINE_TYPE_WITH_CODE (StImageContent, st_image_content, CLUTTER_TYPE_IMAGE,
                          G_ADD_PRIVATE (StImageContent)
                          G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_CONTENT,
-                                                clutter_content_interface_init))
+                                                clutter_content_interface_init)
+                         G_IMPLEMENT_INTERFACE (G_TYPE_ICON,
+                                                g_icon_interface_init))
 
 static void
 st_image_content_init (StImageContent *self)
@@ -169,6 +172,26 @@ static void
 clutter_content_interface_init (ClutterContentInterface *iface)
 {
   iface->get_preferred_size = st_image_content_get_preferred_size;
+}
+
+static guint
+st_image_content_hash (GIcon *icon)
+{
+  return g_direct_hash (icon);
+}
+
+static gboolean
+st_image_content_equal (GIcon *icon1,
+                        GIcon *icon2)
+{
+  return g_direct_equal (icon1, icon2);
+}
+
+static void
+g_icon_interface_init (GIconIface *iface)
+{
+  iface->hash = st_image_content_hash;
+  iface->equal = st_image_content_equal;
 }
 
 /**
