@@ -78,6 +78,7 @@ struct _ShellApp
                           * want (e.g. it will be of TYPE_NORMAL from
                           * the way shell-window-tracker.c works).
                           */
+  GIcon *fallback_icon;
 
   ShellAppRunningState *running_state;
 
@@ -180,10 +181,25 @@ window_backed_app_get_window (ShellApp     *app)
     return NULL;
 }
 
-static GIcon *
-window_backed_app_get_icon (ShellApp *app)
+/**
+ * shell_app_get_icon:
+ *
+ * Look up the icon for this application
+ *
+ * Return value: (transfer none): A #GIcon
+ */
+GIcon *
+shell_app_get_icon (ShellApp *app)
 {
   MetaWindow *window = NULL;
+
+  g_return_val_if_fail (SHELL_IS_APP (app), NULL);
+
+  if (app->info)
+    return g_app_info_get_icon (G_APP_INFO (app->info));
+
+  if (app->fallback_icon)
+    return app->fallback_icon;
 
   /* During a state transition from running to not-running for
    * window-backend apps, it's possible we get a request for the icon.
@@ -194,10 +210,18 @@ window_backed_app_get_icon (ShellApp *app)
 
   if (window &&
       meta_window_get_client_type (window) == META_WINDOW_CLIENT_TYPE_X11)
-    return st_texture_cache_bind_cairo_surface_property (st_texture_cache_get_default (),
-                                                         G_OBJECT (window),
-                                                         "icon");
-  return g_themed_icon_new ("application-x-executable");
+    {
+      app->fallback_icon =
+        st_texture_cache_bind_cairo_surface_property (st_texture_cache_get_default (),
+                                                       G_OBJECT (window),
+                                                       "icon");
+    }
+  else
+    {
+      app->fallback_icon = g_themed_icon_new ("application-x-executable");
+    }
+
+  return app->fallback_icon;
 }
 
 /**
@@ -212,25 +236,18 @@ ClutterActor *
 shell_app_create_icon_texture (ShellApp   *app,
                                int         size)
 {
-  g_autoptr (GIcon) icon = NULL;
+  GIcon *icon;
   ClutterActor *ret;
 
   ret = st_icon_new ();
   st_icon_set_icon_size (ST_ICON (ret), size);
   st_icon_set_fallback_icon_name (ST_ICON (ret), "application-x-executable");
 
-  if (app->info == NULL)
-    {
-      icon = window_backed_app_get_icon (app);
-      st_widget_add_style_class_name (ST_WIDGET (ret), "fallback-app-icon");
-    }
-  else
-    {
-      icon = g_app_info_get_icon (G_APP_INFO (app->info));
-      g_object_ref (icon);
-    }
-
+  icon = shell_app_get_icon (app);
   st_icon_set_gicon (ST_ICON (ret), icon);
+
+  if (shell_app_is_window_backed (app))
+    st_widget_add_style_class_name (ST_WIDGET (ret), "fallback-app-icon");
 
   return ret;
 }
@@ -1541,6 +1558,7 @@ shell_app_dispose (GObject *object)
   ShellApp *app = SHELL_APP (object);
 
   g_clear_object (&app->info);
+  g_clear_object (&app->fallback_icon);
 
   while (app->running_state)
     _shell_app_remove_window (app, app->running_state->windows->data);
