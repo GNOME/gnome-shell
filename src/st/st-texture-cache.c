@@ -722,8 +722,7 @@ load_texture_async (StTextureCache       *cache,
 
 typedef struct {
   StTextureCache *cache;
-  ClutterActor *actor;
-  gint size;
+  ClutterContent *image;
   GObject *source;
   gulong notify_signal_id;
   gboolean weakref_active;
@@ -742,37 +741,33 @@ st_texture_cache_reset_texture (StTextureCachePropertyBind *bind,
       (cairo_image_surface_get_format (surface) == CAIRO_FORMAT_ARGB32 ||
        cairo_image_surface_get_format (surface) == CAIRO_FORMAT_RGB24))
     {
-      g_autoptr(ClutterContent) image = NULL;
       g_autoptr(GError) error = NULL;
-      int size = bind->size;
+      int width, height, size;
 
-      if (size < 0)
-        clutter_actor_get_preferred_width (bind->actor, -1, NULL, (float *)&size);
+      width = cairo_image_surface_get_width (surface);
+      height = cairo_image_surface_get_width (surface);
+      size = MAX(width, height);
 
-      image = clutter_actor_get_content (bind->actor);
-      if (!image || !CLUTTER_IS_IMAGE (image))
-        image = st_image_content_new_with_preferred_size (size, size);
-      else
-        g_object_ref (image);
+      if (!bind->image)
+        bind->image = st_image_content_new_with_preferred_size (size, size);
 
-      clutter_image_set_data (CLUTTER_IMAGE (image),
+      clutter_image_set_data (CLUTTER_IMAGE (bind->image),
                               cairo_image_surface_get_data (surface),
                               cairo_image_surface_get_format (surface) == CAIRO_FORMAT_ARGB32 ?
                               COGL_PIXEL_FORMAT_BGRA_8888 : COGL_PIXEL_FORMAT_BGR_888,
-                              cairo_image_surface_get_width (surface),
-                              cairo_image_surface_get_height (surface),
+                              width,
+                              height,
                               cairo_image_surface_get_stride (surface),
                               &error);
 
-      if (image)
-        clutter_actor_set_content (bind->actor, image);
-      else if (error)
+      if (error)
         g_warning ("Failed to allocate texture: %s", error->message);
-
-      clutter_actor_set_opacity (bind->actor, 255);
     }
   else
-    clutter_actor_set_opacity (bind->actor, 0);
+    bind->image = g_object_new (ST_TYPE_IMAGE_CONTENT,
+                                "preferred-width", 0, /* tough luck */
+                                "preferred-height", 0,
+                                NULL);
 }
 
 static void
@@ -798,57 +793,48 @@ st_texture_cache_free_bind (gpointer data)
 {
   StTextureCachePropertyBind *bind = data;
   if (bind->weakref_active)
-    g_object_weak_unref (G_OBJECT (bind->actor), st_texture_cache_bind_weak_notify, bind);
+    g_object_weak_unref (G_OBJECT (bind->image), st_texture_cache_bind_weak_notify, bind);
   g_slice_free (StTextureCachePropertyBind, bind);
 }
 
 /**
  * st_texture_cache_bind_cairo_surface_property:
  * @cache:
- * @object: A #GObject with a property @property_name of type #GdkPixbuf
+ * @object: A #GObject with a property @property_name of type #cairo_surface_t
  * @property_name: Name of a property
  *
- * Create a #ClutterActor which tracks the #cairo_surface_t value of a GObject property
+ * Create a #GIcon which tracks the #cairo_surface_t value of a GObject property
  * named by @property_name.  Unlike other methods in StTextureCache, the underlying
  * #CoglTexture is not shared by default with other invocations to this method.
  *
  * If the source object is destroyed, the texture will continue to show the last
  * value of the property.
  *
- * Return value: (transfer none): A new #StWidget
+ * Return value: (transfer none): A new #GIcon
  */
-StWidget *
+GIcon *
 st_texture_cache_bind_cairo_surface_property (StTextureCache    *cache,
                                               GObject           *object,
-                                              const char        *property_name,
-                                              gint               size)
+                                              const char        *property_name)
 {
-  StWidget *widget;
   gchar *notify_key;
   StTextureCachePropertyBind *bind;
 
-  widget = g_object_new (ST_TYPE_WIDGET,
-                         "opacity", 0,
-                         "width", (float)size,
-                         "height", (float)size,
-                         NULL);
-
   bind = g_slice_new0 (StTextureCachePropertyBind);
   bind->cache = cache;
-  bind->actor = CLUTTER_ACTOR (widget);
-  bind->size = size;
   bind->source = object;
-  g_object_weak_ref (G_OBJECT (widget), st_texture_cache_bind_weak_notify, bind);
-  bind->weakref_active = TRUE;
 
   st_texture_cache_reset_texture (bind, property_name);
+
+  g_object_weak_ref (G_OBJECT (bind->image), st_texture_cache_bind_weak_notify, bind);
+  bind->weakref_active = TRUE;
 
   notify_key = g_strdup_printf ("notify::%s", property_name);
   bind->notify_signal_id = g_signal_connect_data (object, notify_key, G_CALLBACK(st_texture_cache_on_pixbuf_notify),
                                                   bind, (GClosureNotify)st_texture_cache_free_bind, 0);
   g_free (notify_key);
 
-  return widget;
+  return G_ICON (bind->image);
 }
 
 /**
@@ -981,6 +967,18 @@ st_texture_cache_load_gicon (StTextureCache    *cache,
   StIconStyle icon_style = ST_ICON_STYLE_REQUESTED;
   GtkIconLookupFlags lookup_flags;
 
+  actor_size = size * paint_scale;
+
+  if (ST_IS_IMAGE_CONTENT (icon))
+    {
+      return g_object_new (CLUTTER_TYPE_ACTOR,
+                           "request-mode", CLUTTER_REQUEST_CONTENT_SIZE,
+                           "width", actor_size,
+                           "height", actor_size,
+                           "content", CLUTTER_CONTENT (icon),
+                           NULL);
+    }
+
   if (theme_node)
     {
       colors = st_theme_node_get_icon_colors (theme_node);
@@ -1034,7 +1032,6 @@ st_texture_cache_load_gicon (StTextureCache    *cache,
   g_free (gicon_string);
 
   actor = create_invisible_actor ();
-  actor_size = size * paint_scale;
   clutter_actor_set_size (actor, actor_size, actor_size);
   if (ensure_request (cache, key, policy, &request, actor))
     {

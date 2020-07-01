@@ -42,11 +42,17 @@ enum
 };
 
 static void clutter_content_interface_init (ClutterContentInterface *iface);
+static void g_icon_interface_init (GIconIface *iface);
+static void g_loadable_icon_interface_init (GLoadableIconIface *iface);
 
 G_DEFINE_TYPE_WITH_CODE (StImageContent, st_image_content, CLUTTER_TYPE_IMAGE,
                          G_ADD_PRIVATE (StImageContent)
                          G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_CONTENT,
-                                                clutter_content_interface_init))
+                                                clutter_content_interface_init)
+                         G_IMPLEMENT_INTERFACE (G_TYPE_ICON,
+                                                g_icon_interface_init)
+                         G_IMPLEMENT_INTERFACE (G_TYPE_LOADABLE_ICON,
+                                                g_loadable_icon_interface_init))
 
 static void
 st_image_content_init (StImageContent *self)
@@ -165,10 +171,155 @@ st_image_content_get_preferred_size (ClutterContent *content,
   return TRUE;
 }
 
+static GdkPixbuf*
+pixbuf_from_image (StImageContent *image)
+{
+  CoglTexture *texture;
+  int width, height, rowstride;
+  uint8_t *data;
+
+  texture = clutter_image_get_texture (CLUTTER_IMAGE (image));
+  if (!texture || !cogl_texture_is_get_data_supported (texture))
+    return NULL;
+
+  width = cogl_texture_get_width (texture);
+  height = cogl_texture_get_width (texture);
+  rowstride = 4 * width;
+  data = g_new (uint8_t, rowstride * height);
+
+  cogl_texture_get_data (texture, COGL_PIXEL_FORMAT_RGBA_8888, rowstride, data);
+
+  return gdk_pixbuf_new_from_data ((const guchar *)data,
+                                   GDK_COLORSPACE_RGB,
+                                   TRUE, 8, width, height, rowstride,
+                                   (GdkPixbufDestroyNotify)g_free, NULL);
+}
+
 static void
 clutter_content_interface_init (ClutterContentInterface *iface)
 {
   iface->get_preferred_size = st_image_content_get_preferred_size;
+}
+
+static guint
+st_image_content_hash (GIcon *icon)
+{
+  return g_direct_hash (icon);
+}
+
+static gboolean
+st_image_content_equal (GIcon *icon1,
+                        GIcon *icon2)
+{
+  return g_direct_equal (icon1, icon2);
+}
+
+static GVariant *
+st_image_content_serialize (GIcon *icon)
+{
+  g_autoptr (GdkPixbuf) pixbuf = NULL;
+
+  pixbuf = pixbuf_from_image (ST_IMAGE_CONTENT (icon));
+  if (!pixbuf)
+    return NULL;
+
+  return g_icon_serialize (G_ICON (pixbuf));
+}
+
+static void
+g_icon_interface_init (GIconIface *iface)
+{
+  iface->hash = st_image_content_hash;
+  iface->equal = st_image_content_equal;
+  iface->serialize = st_image_content_serialize;
+}
+
+static GInputStream *
+st_image_load (GLoadableIcon  *icon,
+               int             size,
+               char          **type,
+               GCancellable   *cancellable,
+               GError       **error)
+{
+  g_autoptr (GdkPixbuf) pixbuf = NULL;
+
+  pixbuf = pixbuf_from_image (ST_IMAGE_CONTENT (icon));
+  if (!pixbuf)
+    {
+      g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                           "Failed to read texture");
+      return NULL;
+    }
+
+  return g_loadable_icon_load (G_LOADABLE_ICON (pixbuf),
+                               size, type, cancellable, error);
+}
+
+static void
+load_image_thread (GTask        *task,
+                   gpointer      object,
+                   gpointer      task_data,
+                   GCancellable *cancellable)
+{
+  GInputStream *stream;
+  GError *error = NULL;
+  char *type;
+
+  stream = st_image_load (G_LOADABLE_ICON (object),
+                          GPOINTER_TO_INT (task_data),
+                          &type,
+                          cancellable,
+                          &error);
+
+  if (error)
+    {
+      g_task_return_error (task, error);
+    }
+  else
+    {
+      g_task_set_task_data (task, type, g_free);
+      g_task_return_pointer (task, stream, g_object_unref);
+    }
+}
+
+static void
+st_image_load_async (GLoadableIcon       *icon,
+                     int                  size,
+                     GCancellable        *cancellable,
+                     GAsyncReadyCallback  callback,
+                     gpointer             user_data)
+{
+  g_autoptr (GTask) task = NULL;
+
+  task = g_task_new (icon, cancellable, callback, user_data);
+  g_task_set_task_data (task, GINT_TO_POINTER (size), NULL);
+  g_task_run_in_thread (task, load_image_thread);
+}
+
+static GInputStream *
+st_image_load_finish (GLoadableIcon  *icon,
+                      GAsyncResult   *res,
+                      char          **type,
+                      GError        **error)
+{
+  GInputStream *stream;
+
+  stream = g_task_propagate_pointer (G_TASK (res), error);
+  if (!stream)
+    return NULL;
+
+  if (type)
+    *type = g_strdup (g_task_get_task_data (G_TASK (res)));
+
+  return stream;
+}
+
+static void
+g_loadable_icon_interface_init (GLoadableIconIface *iface)
+{
+  iface->load = st_image_load;
+  iface->load_async = st_image_load_async;
+  iface->load_finish = st_image_load_finish;
 }
 
 /**
