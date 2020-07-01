@@ -718,7 +718,7 @@ var BackgroundManager = class BackgroundManager {
 
         this._newBackgroundActor = newBackgroundActor;
 
-        let background = newBackgroundActor.background;
+        let background = newBackgroundActor.content.background;
 
         if (background.isLoaded) {
             this._swapBackgroundActor();
