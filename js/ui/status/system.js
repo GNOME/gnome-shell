@@ -27,6 +27,8 @@ class Indicator extends PanelMenu.SystemIndicator {
             () => this._updateSessionSubMenu());
         this._powerOffItem.connect('notify::visible',
             () => this._updateSessionSubMenu());
+        this._restartItem.connect('notify::visible',
+            () => this._updateSessionSubMenu());
         // Whether shutdown is available or not depends on both lockdown
         // settings (disable-log-out) and Polkit policy - the latter doesn't
         // notify, so we update the menu item each time the menu opens or
@@ -52,6 +54,7 @@ class Indicator extends PanelMenu.SystemIndicator {
             this._loginScreenItem.visible ||
             this._logoutItem.visible ||
             this._suspendItem.visible ||
+            this._restartItem.visible ||
             this._powerOffItem.visible;
     }
 
@@ -122,6 +125,17 @@ class Indicator extends PanelMenu.SystemIndicator {
         this._suspendItem = item;
         this._systemActions.bind_property('can-suspend',
             this._suspendItem, 'visible',
+            bindFlags);
+
+        item = new PopupMenu.PopupMenuItem(_('Restart'));
+        item.connect('activate', () => {
+            this.menu.itemActivated(BoxPointer.PopupAnimation.NONE);
+            this._systemActions.activateRestart();
+        });
+        this._sessionSubMenu.menu.addMenuItem(item);
+        this._restartItem = item;
+        this._systemActions.bind_property('can-restart',
+            this._restartItem, 'visible',
             bindFlags);
 
         item = new PopupMenu.PopupMenuItem(_('Power Off'));
