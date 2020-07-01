@@ -80,13 +80,15 @@ const shutdownDialogContent = {
 
 const restartDialogContent = {
     subject: C_("title", "Restart"),
+    subjectWithUpdates: C_('title', 'Install Updates & Restart'),
     description(seconds) {
         return ngettext(
             'The system will restart automatically in %d second.',
             'The system will restart automatically in %d seconds.',
             seconds).format(seconds);
     },
-    showBatteryWarning: false,
+    checkBoxText: C_('checkbox', 'Install pending software updates'),
+    showBatteryWarning: true,
     confirmButtons: [{
         signal: 'ConfirmedReboot',
         label: C_('button', 'Restart'),
