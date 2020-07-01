@@ -712,13 +712,18 @@ var BackgroundManager = class BackgroundManager {
         }
 
         let newBackgroundActor = this._createBackgroundActor();
-        newBackgroundActor.vignette_sharpness = this.backgroundActor.vignette_sharpness;
-        newBackgroundActor.brightness = this.backgroundActor.brightness;
+
+        const oldContent = this.backgroundActor.content;
+        const newContent = newBackgroundActor.content;
+
+        newContent.vignette_sharpness = oldContent.vignette_sharpness;
+        newContent.brightness = oldContent.brightness;
+
         newBackgroundActor.visible = this.backgroundActor.visible;
 
         this._newBackgroundActor = newBackgroundActor;
 
-        let background = newBackgroundActor.background;
+        const { background } = newBackgroundActor.content;
 
         if (background.isLoaded) {
             this._swapBackgroundActor();
