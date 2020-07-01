@@ -171,11 +171,8 @@ static MetaWindow *
 window_backed_app_get_window (ShellApp     *app)
 {
   g_assert (app->info == NULL);
-  if (app->running_state)
-    {
-      g_assert (app->running_state->windows);
-      return app->running_state->windows->data;
-    }
+  if (app->running_state && app->running_state->windows)
+    return app->running_state->windows->data;
   else
     return NULL;
 }
@@ -942,7 +939,10 @@ shell_app_on_user_time_changed (MetaWindow *window,
                                 GParamSpec *pspec,
                                 ShellApp   *app)
 {
+  /* We only connect this signal handler on windows that exist in
+   * running_state->windows */
   g_assert (app->running_state != NULL);
+  g_assert (app->running_state->windows != NULL);
 
   /* Ideally we don't want to emit windows-changed if the sort order
    * isn't actually changing. This check catches most of those.
@@ -1577,7 +1577,7 @@ shell_app_dispose (GObject *object)
 
   g_clear_object (&app->info);
 
-  while (app->running_state)
+  while (app->running_state && app->running_state->windows)
     _shell_app_remove_window (app, app->running_state->windows->data);
 
   /* We should have been transitioned when we removed all of our windows */
