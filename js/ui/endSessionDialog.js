@@ -37,18 +37,22 @@ const logoutDialogContent = {
     subjectWithUser: C_("title", "Log Out %s"),
     subject: C_("title", "Log Out"),
     descriptionWithUser(user, seconds) {
-        return ngettext("%s will be logged out automatically in %d second.",
-                        "%s will be logged out automatically in %d seconds.",
-                        seconds).format(user, seconds);
+        return ngettext(
+            '%s will be logged out automatically in %d second.',
+            '%s will be logged out automatically in %d seconds.',
+            seconds).format(user, seconds);
     },
     description(seconds) {
-        return ngettext("You will be logged out automatically in %d second.",
-                        "You will be logged out automatically in %d seconds.",
-                        seconds).format(seconds);
+        return ngettext(
+            'You will be logged out automatically in %d second.',
+            'You will be logged out automatically in %d seconds.',
+            seconds).format(seconds);
     },
     showBatteryWarning: false,
-    confirmButtons: [{ signal: 'ConfirmedLogout',
-                       label: C_("button", "Log Out") }],
+    confirmButtons: [{
+        signal: 'ConfirmedLogout',
+        label: C_('button', 'Log Out'),
+    }],
     showOtherSessions: false,
 };
 
@@ -56,16 +60,20 @@ const shutdownDialogContent = {
     subject: C_("title", "Power Off"),
     subjectWithUpdates: C_("title", "Install Updates & Power Off"),
     description(seconds) {
-        return ngettext("The system will power off automatically in %d second.",
-                        "The system will power off automatically in %d seconds.",
-                        seconds).format(seconds);
+        return ngettext(
+            'The system will power off automatically in %d second.',
+            'The system will power off automatically in %d seconds.',
+            seconds).format(seconds);
     },
     checkBoxText: C_("checkbox", "Install pending software updates"),
     showBatteryWarning: true,
-    confirmButtons: [{ signal: 'ConfirmedReboot',
-                       label: C_("button", "Restart") },
-                     { signal: 'ConfirmedShutdown',
-                       label: C_("button", "Power Off") }],
+    confirmButtons: [{
+        signal: 'ConfirmedReboot',
+        label: C_('button", "Restart'),
+    }, {
+        signal: 'ConfirmedShutdown',
+        label: C_('button', 'Power Off'),
+    }],
     iconName: 'system-shutdown-symbolic',
     showOtherSessions: true,
 };
@@ -73,13 +81,16 @@ const shutdownDialogContent = {
 const restartDialogContent = {
     subject: C_("title", "Restart"),
     description(seconds) {
-        return ngettext("The system will restart automatically in %d second.",
-                        "The system will restart automatically in %d seconds.",
-                        seconds).format(seconds);
+        return ngettext(
+            'The system will restart automatically in %d second.',
+            'The system will restart automatically in %d seconds.',
+            seconds).format(seconds);
     },
     showBatteryWarning: false,
-    confirmButtons: [{ signal: 'ConfirmedReboot',
-                       label: C_("button", "Restart") }],
+    confirmButtons: [{
+        signal: 'ConfirmedReboot',
+        label: C_('button', 'Restart'),
+    }],
     iconName: 'view-refresh-symbolic',
     showOtherSessions: true,
 };
@@ -88,13 +99,16 @@ const restartUpdateDialogContent = {
 
     subject: C_("title", "Restart & Install Updates"),
     description(seconds) {
-        return ngettext("The system will automatically restart and install updates in %d second.",
-                        "The system will automatically restart and install updates in %d seconds.",
-                        seconds).format(seconds);
+        return ngettext(
+            'The system will automatically restart and install updates in %d second.',
+            'The system will automatically restart and install updates in %d seconds.',
+            seconds).format(seconds);
     },
     showBatteryWarning: true,
-    confirmButtons: [{ signal: 'ConfirmedReboot',
-                       label: C_("button", "Restart &amp; Install") }],
+    confirmButtons: [{
+        signal: 'ConfirmedReboot',
+        label: C_('button', 'Restart &amp; Install'),
+    }],
     unusedFutureButtonForTranslation: C_("button", "Install &amp; Power Off"),
     unusedFutureCheckBoxForTranslation: C_("checkbox", "Power off after updates are installed"),
     iconName: 'view-refresh-symbolic',
@@ -112,8 +126,10 @@ const restartUpgradeDialogContent = {
     },
     disableTimer: true,
     showBatteryWarning: false,
-    confirmButtons: [{ signal: 'ConfirmedReboot',
-                       label: C_("button", "Restart &amp; Install") }],
+    confirmButtons: [{
+        signal: 'ConfirmedReboot',
+        label: C_('button', 'Restart &amp; Install'),
+    }],
     iconName: 'view-refresh-symbolic',
     showOtherSessions: true,
 };
