@@ -602,7 +602,7 @@ var WorkspaceLayout = GObject.registerClass({
 
             child.slotId = index;
 
-            if (child.metaWindow.showing_on_its_workspace()) {
+            if (windowInfo.metaWindow.showing_on_its_workspace()) {
                 workspaceBox.x1 = child.boundingBox.x - this._workarea.x;
                 workspaceBox.x2 = workspaceBox.x1 + child.boundingBox.width;
                 workspaceBox.y1 = child.boundingBox.y - this._workarea.y;
