@@ -68,9 +68,6 @@ const shutdownDialogContent = {
     checkBoxText: C_("checkbox", "Install pending software updates"),
     showBatteryWarning: true,
     confirmButtons: [{
-        signal: 'ConfirmedReboot',
-        label: C_('button", "Restart'),
-    }, {
         signal: 'ConfirmedShutdown',
         label: C_('button', 'Power Off'),
     }],
