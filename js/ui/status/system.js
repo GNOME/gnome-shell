@@ -70,9 +70,8 @@ class Indicator extends PanelMenu.SystemIndicator {
         this.menu.addMenuItem(item);
         this._orientationLockItem = item;
         this._systemActions.bind_property('can-lock-orientation',
-                                          this._orientationLockItem,
-                                          'visible',
-                                          bindFlags);
+            this._orientationLockItem, 'visible',
+            bindFlags);
         this._systemActions.connect('notify::orientation-lock-icon', () => {
             let iconName = this._systemActions.orientation_lock_icon;
             let labelText = this._systemActions.getName("lock-orientation");
@@ -84,8 +83,8 @@ class Indicator extends PanelMenu.SystemIndicator {
         let app = this._settingsApp = Shell.AppSystem.get_default().lookup_app(
             'gnome-control-center.desktop');
         if (app) {
-            let [icon, name] = [app.app_info.get_icon().names[0],
-                                app.get_name()];
+            const [icon] = app.app_info.get_icon().names;
+            const name = app.app_info.get_name();
             item = new PopupMenu.PopupImageMenuItem(name, icon);
             item.connect('activate', () => {
                 this.menu.itemActivated(BoxPointer.PopupAnimation.NONE);
@@ -107,9 +106,8 @@ class Indicator extends PanelMenu.SystemIndicator {
         this.menu.addMenuItem(item);
         this._lockScreenItem = item;
         this._systemActions.bind_property('can-lock-screen',
-                                          this._lockScreenItem,
-                                          'visible',
-                                          bindFlags);
+            this._lockScreenItem, 'visible',
+            bindFlags);
 
         this._sessionSubMenu = new PopupMenu.PopupSubMenuMenuItem(
             _('Power Off / Log Out'), true);
@@ -123,9 +121,8 @@ class Indicator extends PanelMenu.SystemIndicator {
         this._sessionSubMenu.menu.addMenuItem(item);
         this._logoutItem = item;
         this._systemActions.bind_property('can-logout',
-                                          this._logoutItem,
-                                          'visible',
-                                          bindFlags);
+            this._logoutItem, 'visible',
+            bindFlags);
 
         item = new PopupMenu.PopupMenuItem(_("Switch User…"));
         item.connect('activate', () => {
@@ -135,9 +132,8 @@ class Indicator extends PanelMenu.SystemIndicator {
         this._sessionSubMenu.menu.addMenuItem(item);
         this._loginScreenItem = item;
         this._systemActions.bind_property('can-switch-user',
-                                          this._loginScreenItem,
-                                          'visible',
-                                          bindFlags);
+            this._loginScreenItem, 'visible',
+            bindFlags);
 
         this._sessionSubMenu.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
 
@@ -149,9 +145,8 @@ class Indicator extends PanelMenu.SystemIndicator {
         this._sessionSubMenu.menu.addMenuItem(item);
         this._suspendItem = item;
         this._systemActions.bind_property('can-suspend',
-                                          this._suspendItem,
-                                          'visible',
-                                          bindFlags);
+            this._suspendItem, 'visible',
+            bindFlags);
 
         item = new PopupMenu.PopupMenuItem(_("Power Off…"));
         item.connect('activate', () => {
@@ -161,9 +156,8 @@ class Indicator extends PanelMenu.SystemIndicator {
         this._sessionSubMenu.menu.addMenuItem(item);
         this._powerOffItem = item;
         this._systemActions.bind_property('can-power-off',
-                                          this._powerOffItem,
-                                          'visible',
-                                          bindFlags);
+            this._powerOffItem, 'visible',
+            bindFlags);
 
         this.menu.addMenuItem(this._sessionSubMenu);
     }
