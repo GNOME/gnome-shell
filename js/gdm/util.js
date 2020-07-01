@@ -8,6 +8,7 @@ const Signals = imports.signals;
 const Batch = imports.gdm.batch;
 const Fprint = imports.gdm.fingerprint;
 const OVirt = imports.gdm.oVirt;
+const Vmware = imports.gdm.vmware;
 const Main = imports.ui.main;
 const Params = imports.misc.params;
 const SmartcardManager = imports.misc.smartcardManager;
@@ -161,6 +162,7 @@ var ShellUserVerifier = class {
 
         this._credentialManagers = {};
         this._credentialManagers[OVirt.SERVICE_NAME] = OVirt.getOVirtCredentialsManager();
+        this._credentialManagers[Vmware.SERVICE_NAME] = Vmware.getVmwareCredentialsManager();
 
         if (this._credentialManagers[OVirt.SERVICE_NAME].token) {
             this._onCredentialManagerAuthenticated(this._credentialManagers[OVirt.SERVICE_NAME],
