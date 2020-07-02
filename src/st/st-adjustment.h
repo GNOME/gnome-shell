@@ -48,7 +48,8 @@ struct _StAdjustmentClass
   void (* changed) (StAdjustment *adjustment);
 };
 
-StAdjustment *st_adjustment_new         (gdouble       value,
+StAdjustment *st_adjustment_new         (ClutterActor *actor,
+                                         gdouble       value,
                                          gdouble       lower,
                                          gdouble       upper,
                                          gdouble       step_increment,

@@ -1687,7 +1687,8 @@ st_widget_recompute_style (StWidget    *widget,
            */
 
           priv->transition_animation =
-            st_theme_node_transition_new (old_theme_node,
+            st_theme_node_transition_new (CLUTTER_ACTOR (widget),
+                                          old_theme_node,
                                           new_theme_node,
                                           current_paint_state (widget),
                                           transition_duration);

@@ -899,8 +899,9 @@ load_gl_symbol (const char  *name,
 }
 
 static void
-global_stage_after_paint (ClutterStage *stage,
-                          ShellGlobal  *global)
+global_stage_after_paint (ClutterStage     *stage,
+                          ClutterStageView *stage_view,
+                          ShellGlobal      *global)
 {
   /* At this point, we've finished all layout and painting, but haven't
    * actually flushed or swapped */
