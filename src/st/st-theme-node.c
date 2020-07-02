@@ -2107,61 +2107,21 @@ st_theme_node_get_font (StThemeNode *node)
 
       if (strcmp (cr_declaration_name (decl), "font") == 0)
         {
-          PangoStyle tmp_style = PANGO_STYLE_NORMAL;
-          PangoVariant tmp_variant = PANGO_VARIANT_NORMAL;
-          PangoWeight tmp_weight = PANGO_WEIGHT_NORMAL;
-          double tmp_size = 0.0;
-          CRTerm *term = decl->value;
+          StFontSpec spec;
 
-          /* A font specification starts with node/variant/weight
-           * in any order. Each is allowed to be specified only once,
-           * but we don't enforce that.
-           */
-          for (; term; term = term->next)
+          if (stylish_parse_font_shorthand (decl->value, norm, parent_weight, &spec) == VALUE_FOUND)
             {
-              if (stylish_parse_font_style_single_term (term, &tmp_style) == VALUE_FOUND)
-                continue;
-              if (stylish_parse_font_variant_single_term (term, &tmp_variant) == VALUE_FOUND)
-                continue;
-              if (stylish_parse_font_weight_single_term (term, parent_weight, &tmp_weight) == VALUE_FOUND)
-                continue;
+              font_style = spec.style;
+              variant = spec.variant;
+              weight = spec.weight;
+              size = spec.size;
+              family = spec.family;
 
-              break;
+              font_style_set = TRUE;
+              variant_set = TRUE;
+              size_set = TRUE;
+              weight_set = TRUE;
             }
-
-          /* The size is mandatory */
-          if (stylish_parse_font_size_single_term (term, norm, &tmp_size) != VALUE_FOUND)
-            {
-              g_warning ("Size missing from font property");
-              continue;
-            }
-
-          term = term->next;
-
-          if (term != NULL && term->type && TERM_NUMBER && term->the_operator == DIVIDE)
-            {
-              /* Ignore line-height specification */
-              term = term->next;
-            }
-
-          /* the font family is mandatory - it is a comma-separated list of
-           * names.
-           */
-          if (stylish_parse_font_family (term, &family) != VALUE_FOUND)
-            {
-              g_warning ("Couldn't parse family in font property");
-              continue;
-            }
-
-          font_style = tmp_style;
-          font_style_set = TRUE;
-          weight = tmp_weight;
-          weight_set = TRUE;
-          variant = tmp_variant;
-          variant_set = TRUE;
-
-          size = tmp_size;
-          size_set = TRUE;
         }
       else if (strcmp (cr_declaration_name (decl), "font-family") == 0)
         {
