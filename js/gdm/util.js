@@ -8,6 +8,7 @@ const Signals = imports.signals;
 const Batch = imports.gdm.batch;
 const Fprint = imports.gdm.fingerprint;
 const OVirt = imports.gdm.oVirt;
+const Vmware = imports.gdm.vmware;
 const Main = imports.ui.main;
 const Params = imports.misc.params;
 const SmartcardManager = imports.misc.smartcardManager;
@@ -24,7 +25,6 @@ Gio._promisify(Gdm.UserVerifierProxy.prototype,
 var PASSWORD_SERVICE_NAME = 'gdm-password';
 var FINGERPRINT_SERVICE_NAME = 'gdm-fingerprint';
 var SMARTCARD_SERVICE_NAME = 'gdm-smartcard';
-var OVIRT_SERVICE_NAME = 'gdm-ovirtcred';
 var FADE_ANIMATION_TIME = 160;
 var CLONE_FADE_ANIMATION_TIME = 250;
 
@@ -160,13 +160,20 @@ var ShellUserVerifier = class {
 
         this._failCounter = 0;
 
-        this._oVirtCredentialsManager = OVirt.getOVirtCredentialsManager();
+        this._credentialManagers = {};
+        this._credentialManagers[OVirt.SERVICE_NAME] = OVirt.getOVirtCredentialsManager();
+        this._credentialManagers[Vmware.SERVICE_NAME] = Vmware.getVmwareCredentialsManager();
 
-        if (this._oVirtCredentialsManager.hasToken())
-            this._oVirtUserAuthenticated(this._oVirtCredentialsManager.getToken());
+        for (let service in this._credentialManagers) {
+            if (this._credentialManagers[service].token) {
+                this._onCredentialManagerAuthenticated(this._credentialManagers[service],
+                    this._credentialManagers[service].token);
+            }
 
-        this._oVirtUserAuthenticatedId = this._oVirtCredentialsManager.connect('user-authenticated',
-                                                                               this._oVirtUserAuthenticated.bind(this));
+            this._credentialManagers[service]._authenticatedSignalId =
+                this._credentialManagers[service].connect('user-authenticated',
+                                                          this._onCredentialManagerAuthenticated.bind(this));
+        }
     }
 
     begin(userName, hold) {
@@ -222,8 +229,11 @@ var ShellUserVerifier = class {
         this._smartcardManager.disconnect(this._smartcardRemovedId);
         this._smartcardManager = null;
 
-        this._oVirtCredentialsManager.disconnect(this._oVirtUserAuthenticatedId);
-        this._oVirtCredentialsManager = null;
+        for (let service in this._credentialManagers) {
+            let credentialManager = this._credentialManagers[service];
+            credentialManager.disconnect(credentialManager._authenticatedSignalId);
+            credentialManager = null;
+        }
     }
 
     answerQuery(serviceName, answer) {
@@ -311,9 +321,9 @@ var ShellUserVerifier = class {
             });
     }
 
-    _oVirtUserAuthenticated(_token) {
-        this._preemptingService = OVIRT_SERVICE_NAME;
-        this.emit('ovirt-user-authenticated');
+    _onCredentialManagerAuthenticated(credentialManager, _token) {
+        this._preemptingService = credentialManager.service;
+        this.emit('credential-manager-authenticated');
     }
 
     _checkForSmartcard() {
@@ -490,9 +500,12 @@ var ShellUserVerifier = class {
         if (!this.serviceIsForeground(serviceName))
             return;
 
-        if (serviceName == OVIRT_SERVICE_NAME) {
-            // The only question asked by this service is "Token?"
-            this.answerQuery(serviceName, this._oVirtCredentialsManager.getToken());
+        let token = null;
+        if (this._credentialManagers[serviceName])
+            token = this._credentialManagers[serviceName].token;
+
+        if (token) {
+            this.answerQuery(serviceName, token);
             return;
         }
 
@@ -560,8 +573,10 @@ var ShellUserVerifier = class {
         // If the login failed with the preauthenticated oVirt credentials
         // then discard the credentials and revert to default authentication
         // mechanism.
-        if (this.serviceIsForeground(OVIRT_SERVICE_NAME)) {
-            this._oVirtCredentialsManager.resetToken();
+        let foregroundService = Object.keys(this._credentialManagers).find(service =>
+            this.serviceIsForeground(service));
+        if (foregroundService) {
+            this._credentialManagers[foregroundService].token = null;
             this._preemptingService = null;
             this._verificationFailed(false);
             return;
