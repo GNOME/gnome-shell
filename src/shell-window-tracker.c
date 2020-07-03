@@ -214,7 +214,7 @@ get_app_from_id (MetaWindow  *window,
 {
   ShellApp *app;
   ShellAppSystem *appsys;
-  char *desktop_file;
+  g_autofree char *desktop_file = NULL;
 
   g_return_val_if_fail (id != NULL, NULL);
 
@@ -223,10 +223,9 @@ get_app_from_id (MetaWindow  *window,
   desktop_file = g_strconcat (id, ".desktop", NULL);
   app = shell_app_system_lookup_app (appsys, desktop_file);
   if (app)
-    g_object_ref (app);
+    return g_object_ref (app);
 
-  g_free (desktop_file);
-  return app;
+  return NULL;
 }
 
 /*
