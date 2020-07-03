@@ -402,6 +402,13 @@ get_app_for_window (ShellWindowTracker    *tracker,
   if (meta_window_is_remote (window))
     return _shell_app_new_for_window (window);
 
+  /* Check if the app's WM_CLASS specifies an app; this is
+   * canonical if it does.
+   */
+  result = get_app_from_window_wmclass (window);
+  if (result != NULL)
+    return result;
+
   /* Check if the window was opened from within a sandbox; if this
    * is the case, a corresponding .desktop file is guaranteed to match;
    */
@@ -413,13 +420,6 @@ get_app_for_window (ShellWindowTracker    *tracker,
    * canonical if it does
    */
   result = get_app_from_gapplication_id (window);
-  if (result != NULL)
-    return result;
-
-  /* Check if the app's WM_CLASS specifies an app; this is
-   * canonical if it does.
-   */
-  result = get_app_from_window_wmclass (window);
   if (result != NULL)
     return result;
 
