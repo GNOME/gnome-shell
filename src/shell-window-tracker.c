@@ -119,6 +119,16 @@ shell_window_tracker_class_init (ShellWindowTrackerClass *klass)
                                                    G_TYPE_NONE, 0);
 }
 
+static gboolean
+check_app_id_prefix (ShellApp   *app,
+                     const char *prefix)
+{
+  if (prefix == NULL)
+    return TRUE;
+
+  return g_str_has_prefix (shell_app_get_id (app), prefix);
+}
+
 /*
  * get_app_from_window_wmclass:
  *
@@ -135,8 +145,10 @@ get_app_from_window_wmclass (MetaWindow  *window)
   ShellAppSystem *appsys;
   const char *wm_class;
   const char *wm_instance;
+  const char *sandbox_id;
 
   appsys = shell_app_system_get_default ();
+  sandbox_id = meta_window_get_sandboxed_app_id (window);
 
   /* Notes on the heuristics used here:
      much of the complexity here comes from the desire to support
@@ -176,23 +188,23 @@ get_app_from_window_wmclass (MetaWindow  *window)
   /* first try a match from WM_CLASS (instance part) to StartupWMClass */
   wm_instance = meta_window_get_wm_class_instance (window);
   app = shell_app_system_lookup_startup_wmclass (appsys, wm_instance);
-  if (app != NULL)
+  if (app != NULL && check_app_id_prefix (app, sandbox_id))
     return g_object_ref (app);
 
   /* then try a match from WM_CLASS to StartupWMClass */
   wm_class = meta_window_get_wm_class (window);
   app = shell_app_system_lookup_startup_wmclass (appsys, wm_class);
-  if (app != NULL)
+  if (app != NULL && check_app_id_prefix (app, sandbox_id))
     return g_object_ref (app);
 
   /* then try a match from WM_CLASS (instance part) to .desktop */
   app = shell_app_system_lookup_desktop_wmclass (appsys, wm_instance);
-  if (app != NULL)
+  if (app != NULL && check_app_id_prefix (app, sandbox_id))
     return g_object_ref (app);
 
   /* finally, try a match from WM_CLASS to .desktop */
   app = shell_app_system_lookup_desktop_wmclass (appsys, wm_class);
-  if (app != NULL)
+  if (app != NULL && check_app_id_prefix (app, sandbox_id))
     return g_object_ref (app);
 
   return NULL;
