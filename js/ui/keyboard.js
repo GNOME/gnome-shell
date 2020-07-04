@@ -1609,7 +1609,8 @@ class Keyboard extends St.BoxLayout {
              * we allow the OSK being smaller than 1/3rd of the monitor height
              * there.
              */
-            this.height = Math.min(maxHeight, this.get_preferred_height(monitor.width));
+            const [, natHeight] = this.get_preferred_height(monitor.width);
+            this.height = Math.min(maxHeight, natHeight);
         }
     }
 
