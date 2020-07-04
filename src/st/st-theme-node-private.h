@@ -62,6 +62,13 @@ typedef struct {
   int bottom_left;
 } StCorners;
 
+typedef enum {
+  ST_BACKGROUND_SIZE_AUTO,
+  ST_BACKGROUND_SIZE_CONTAIN,
+  ST_BACKGROUND_SIZE_COVER,
+  ST_BACKGROUND_SIZE_FIXED
+} StBackgroundSize;
+
 struct _StThemeNode {
   GObject parent;
 

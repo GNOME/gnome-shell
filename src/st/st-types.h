@@ -40,13 +40,6 @@ typedef enum {
   ST_ALIGN_END
 } StAlign;
 
-typedef enum {
-  ST_BACKGROUND_SIZE_AUTO,
-  ST_BACKGROUND_SIZE_CONTAIN,
-  ST_BACKGROUND_SIZE_COVER,
-  ST_BACKGROUND_SIZE_FIXED
-} StBackgroundSize;
-
 G_END_DECLS
 
 #endif /* __ST_TYPES_H__ */
