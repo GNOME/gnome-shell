@@ -61,6 +61,24 @@ class AspectContainer extends St.Widget {
         this.queue_relayout();
     }
 
+    vfunc_get_preferred_width(forHeight) {
+        let [min, nat] = super.vfunc_get_preferred_width(forHeight);
+
+        if (forHeight > 0)
+            nat = forHeight * this._ratio;
+
+        return [min, nat];
+    }
+
+    vfunc_get_preferred_height(forWidth) {
+        let [min, nat] = super.vfunc_get_preferred_height(forWidth);
+
+        if (forWidth > 0)
+            nat = forWidth / this._ratio;
+
+        return [min, nat];
+    }
+
     vfunc_allocate(box) {
         if (box.get_width() > 0 && box.get_height() > 0) {
             let sizeRatio = box.get_width() / box.get_height();
@@ -1608,7 +1626,8 @@ class Keyboard extends St.BoxLayout {
              * we allow the OSK being smaller than 1/3rd of the monitor height
              * there.
              */
-            const [, natHeight] = this.get_preferred_height(monitor.width);
+            const forWidth = this.get_theme_node().adjust_for_width(monitor.width);
+            const [, natHeight] = this.get_preferred_height(forWidth);
             this.height = Math.min(maxHeight, natHeight);
         }
     }
