@@ -103,9 +103,10 @@ shell_dbus_acquire_names (GDBusProxy  *bus,
   va_end (al);
 }
 
-static void
-shell_dbus_init (gboolean replace)
+static gboolean
+shell_dbus_init (gpointer user_data)
 {
+  gboolean replace = GPOINTER_TO_INT (user_data);
   GDBusConnection *session;
   GDBusProxy *bus;
   GError *error = NULL;
@@ -164,6 +165,8 @@ shell_dbus_init (gboolean replace)
                             NULL);
   g_object_unref (bus);
   g_object_unref (session);
+
+  return G_SOURCE_REMOVE;
 }
 
 static void
@@ -521,7 +524,10 @@ main (int argc, char **argv)
 
   shell_init_debug (g_getenv ("SHELL_DEBUG"));
 
-  shell_dbus_init (meta_get_replace_current_wm ());
+  g_idle_add_full (G_PRIORITY_LOW,
+                   shell_dbus_init,
+                   GINT_TO_POINTER (meta_get_replace_current_wm ()),
+                   NULL);
   shell_a11y_init ();
   shell_perf_log_init ();
   shell_introspection_init ();
