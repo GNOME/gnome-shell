@@ -16,3 +16,11 @@ foreach test : ['insertSorted', 'jsParse', 'markup', 'params', 'url']
     env: testenv,
     workdir: meson.current_source_dir())
 endforeach
+
+run_gnome_shell = find_program('run-gnome-shell.sh')
+test('run-gnome-shell-wayland', run_gnome_shell,
+  args: '--wayland',
+  is_parallel: false)
+test('run-gnome-shell-x11', run_gnome_shell,
+  args: '--x11',
+  is_parallel: false)
