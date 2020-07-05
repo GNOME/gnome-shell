@@ -43,9 +43,6 @@ struct _ShellInvertLightnessEffect
 {
   ClutterOffscreenEffect parent_instance;
 
-  gint tex_width;
-  gint tex_height;
-
   CoglPipeline *pipeline;
 };
 
@@ -82,9 +79,6 @@ shell_invert_lightness_effect_pre_paint (ClutterEffect       *effect,
   ShellInvertLightnessEffect *self = SHELL_INVERT_LIGHTNESS_EFFECT (effect);
   ClutterEffectClass *parent_class;
 
-  if (!clutter_actor_meta_get_enabled (CLUTTER_ACTOR_META (effect)))
-    return FALSE;
-
   if (!clutter_feature_available (CLUTTER_FEATURE_SHADERS_GLSL))
     {
       /* if we don't have support for GLSL shaders then we
@@ -99,43 +93,19 @@ shell_invert_lightness_effect_pre_paint (ClutterEffect       *effect,
 
   parent_class =
     CLUTTER_EFFECT_CLASS (shell_invert_lightness_effect_parent_class);
-  if (parent_class->pre_paint (effect, paint_context))
-    {
-      ClutterOffscreenEffect *offscreen_effect =
-        CLUTTER_OFFSCREEN_EFFECT (effect);
-      CoglTexture *texture;
 
-      texture = clutter_offscreen_effect_get_texture (offscreen_effect);
-      self->tex_width = cogl_texture_get_width (texture);
-      self->tex_height = cogl_texture_get_height (texture);
-
-      cogl_pipeline_set_layer_texture (self->pipeline, 0, texture);
-
-      return TRUE;
-    }
-  else
-    return FALSE;
+  return parent_class->pre_paint (effect, paint_context);
 }
 
-static void
-shell_invert_lightness_effect_paint_target (ClutterOffscreenEffect *effect,
-                                            ClutterPaintContext    *paint_context)
+static CoglPipeline *
+shell_glsl_effect_create_pipeline (ClutterOffscreenEffect *effect,
+                                   CoglTexture            *texture)
 {
   ShellInvertLightnessEffect *self = SHELL_INVERT_LIGHTNESS_EFFECT (effect);
-  ClutterActor *actor;
-  guint8 paint_opacity;
-  CoglFramebuffer *fb = clutter_paint_context_get_framebuffer (paint_context);
 
-  actor = clutter_actor_meta_get_actor (CLUTTER_ACTOR_META (effect));
-  paint_opacity = clutter_actor_get_paint_opacity (actor);
+  cogl_pipeline_set_layer_texture (self->pipeline, 0, texture);
 
-  cogl_pipeline_set_color4ub (self->pipeline,
-                              paint_opacity,
-                              paint_opacity,
-                              paint_opacity,
-                              paint_opacity);
-  cogl_framebuffer_draw_rectangle (fb, self->pipeline,
-                                   0, 0, self->tex_width, self->tex_height);
+  return cogl_object_ref (self->pipeline);
 }
 
 static void
@@ -160,7 +130,7 @@ shell_invert_lightness_effect_class_init (ShellInvertLightnessEffectClass *klass
   ClutterOffscreenEffectClass *offscreen_class;
 
   offscreen_class = CLUTTER_OFFSCREEN_EFFECT_CLASS (klass);
-  offscreen_class->paint_target = shell_invert_lightness_effect_paint_target;
+  offscreen_class->create_pipeline = shell_glsl_effect_create_pipeline;
 
   effect_class->pre_paint = shell_invert_lightness_effect_pre_paint;
 
