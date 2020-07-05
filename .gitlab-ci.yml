@@ -89,7 +89,8 @@ test:
         XDG_RUNTIME_DIR: "$CI_PROJECT_DIR/runtime-dir"
         NO_AT_BRIDGE: "1"
     before_script:
-        - ninja -C mutter/build install
+        - ninja -C mutter/build --no-rebuild install
+        - ninja -C build --no-rebuild install
     script:
         - dbus-run-session -- xvfb-run meson test -C build --no-rebuild
     <<: *only_default
