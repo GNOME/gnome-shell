@@ -86,6 +86,7 @@ st_scroll_view_fade_get_static_shader_source (ClutterShaderEffect *effect)
 
 static void
 st_scroll_view_fade_paint_target (ClutterOffscreenEffect *effect,
+                                  ClutterPaintNode       *node,
                                   ClutterPaintContext    *paint_context)
 {
   StScrollViewFade *self = ST_SCROLL_VIEW_FADE (effect);
@@ -154,7 +155,7 @@ st_scroll_view_fade_paint_target (ClutterOffscreenEffect *effect,
   clutter_shader_effect_set_uniform (shader, "fade_area_bottomright", CLUTTER_TYPE_SHADER_FLOAT, 2, fade_area_bottomright);
 
   parent = CLUTTER_OFFSCREEN_EFFECT_CLASS (st_scroll_view_fade_parent_class);
-  parent->paint_target (effect, paint_context);
+  parent->paint_target (effect, node, paint_context);
 }
 
 static void
