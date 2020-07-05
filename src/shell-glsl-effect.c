@@ -18,9 +18,6 @@ typedef struct _ShellGLSLEffectPrivate ShellGLSLEffectPrivate;
 struct _ShellGLSLEffectPrivate
 {
   CoglPipeline  *pipeline;
-
-  gint tex_width;
-  gint tex_height;
 };
 
 G_DEFINE_TYPE_WITH_PRIVATE (ShellGLSLEffect, shell_glsl_effect, CLUTTER_TYPE_OFFSCREEN_EFFECT);
@@ -29,15 +26,7 @@ static gboolean
 shell_glsl_effect_pre_paint (ClutterEffect       *effect,
                              ClutterPaintContext *paint_context)
 {
-  ShellGLSLEffect *self = SHELL_GLSL_EFFECT (effect);
-  ClutterOffscreenEffect *offscreen_effect = CLUTTER_OFFSCREEN_EFFECT (effect);
-  ShellGLSLEffectPrivate *priv = shell_glsl_effect_get_instance_private (self);
   ClutterEffectClass *parent_class;
-  CoglHandle texture;
-  gboolean success;
-
-  if (!clutter_actor_meta_get_enabled (CLUTTER_ACTOR_META (effect)))
-    return FALSE;
 
   if (!clutter_feature_available (CLUTTER_FEATURE_SHADERS_GLSL))
     {
@@ -52,48 +41,20 @@ shell_glsl_effect_pre_paint (ClutterEffect       *effect,
     }
 
   parent_class = CLUTTER_EFFECT_CLASS (shell_glsl_effect_parent_class);
-  success = parent_class->pre_paint (effect, paint_context);
+  return parent_class->pre_paint (effect, paint_context);
+}
 
-  if (!success)
-    return FALSE;
-
-  texture = clutter_offscreen_effect_get_texture (offscreen_effect);
-  priv->tex_width = cogl_texture_get_width (texture);
-  priv->tex_height = cogl_texture_get_height (texture);
+static CoglPipeline *
+shell_glsl_effect_create_pipeline (ClutterOffscreenEffect *effect,
+                                   CoglTexture            *texture)
+{
+  ShellGLSLEffect *self = SHELL_GLSL_EFFECT (effect);
+  ShellGLSLEffectPrivate *priv = shell_glsl_effect_get_instance_private (self);
 
   cogl_pipeline_set_layer_texture (priv->pipeline, 0, texture);
 
-  return TRUE;
+  return cogl_object_ref (priv->pipeline);
 }
-
-static void
-shell_glsl_effect_paint_target (ClutterOffscreenEffect *effect,
-                                ClutterPaintContext    *paint_context)
-{
-  ShellGLSLEffect *self = SHELL_GLSL_EFFECT (effect);
-  ShellGLSLEffectPrivate *priv;
-  ClutterActor *actor;
-  guint8 paint_opacity;
-  CoglFramebuffer *framebuffer;
-
-  priv = shell_glsl_effect_get_instance_private (self);
-
-  actor = clutter_actor_meta_get_actor (CLUTTER_ACTOR_META (effect));
-  paint_opacity = clutter_actor_get_paint_opacity (actor);
-
-  cogl_pipeline_set_color4ub (priv->pipeline,
-                              paint_opacity,
-                              paint_opacity,
-                              paint_opacity,
-                              paint_opacity);
-
-  framebuffer = clutter_paint_context_get_framebuffer (paint_context);
-  cogl_framebuffer_draw_rectangle (framebuffer,
-                                   priv->pipeline,
-                                   0, 0,
-                                   priv->tex_width, priv->tex_height);
-}
-
 
 /**
  * shell_glsl_effect_add_glsl_snippet:
@@ -199,7 +160,7 @@ shell_glsl_effect_class_init (ShellGLSLEffectClass *klass)
   ClutterOffscreenEffectClass *offscreen_class;
 
   offscreen_class = CLUTTER_OFFSCREEN_EFFECT_CLASS (klass);
-  offscreen_class->paint_target = shell_glsl_effect_paint_target;
+  offscreen_class->create_pipeline = shell_glsl_effect_create_pipeline;
 
   effect_class->pre_paint = shell_glsl_effect_pre_paint;
 
