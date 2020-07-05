@@ -90,6 +90,7 @@ test:
         NO_AT_BRIDGE: "1"
     before_script:
         - ninja -C mutter/build install
+        - ninja -C build install
     script:
         - dbus-run-session -- xvfb-run meson test -C build --no-rebuild
     <<: *only_default
