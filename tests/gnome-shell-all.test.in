@@ -1,0 +1,5 @@
+[Test]
+Description=All GNOME Shell tests
+Exec=@datadir@/installed-tests/gnome-shell/run-gnome-shell-tests.sh
+Type=session
+Output=TAP
