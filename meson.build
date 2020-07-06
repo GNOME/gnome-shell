@@ -97,6 +97,8 @@ bt_dep = dependency('gnome-bluetooth-1.0', version: bt_req, required: false)
 gst_dep = dependency('gstreamer-1.0', version: gst_req, required: false)
 gst_base_dep = dependency('gstreamer-base-1.0', required: false)
 
+have_installed_tests = get_option('installed_tests')
+
 recorder_deps = []
 enable_recorder = gst_dep.found() and gst_base_dep.found()
 if enable_recorder
