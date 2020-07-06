@@ -89,6 +89,7 @@ test:
         XDG_RUNTIME_DIR: "$CI_PROJECT_DIR/runtime-dir"
         NO_AT_BRIDGE: "1"
     before_script:
+        - dnf install -y python3-dbus python3-gobject
         - ninja -C mutter/build --no-rebuild install
         - ninja -C build --no-rebuild install
     script:
