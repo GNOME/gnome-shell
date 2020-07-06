@@ -416,8 +416,11 @@ var WorkspaceLayout = GObject.registerClass({
             upper: 1,
         });
 
-        this._stateAdjustment.connect('notify::value', () =>
-            this.layout_changed());
+        this._stateAdjustment.connect('notify::value', () => {
+            [...this._windows.keys()].forEach(
+                preview => this._syncOverlay(preview));
+            this.layout_changed();
+        });
     }
 
     _isBetterLayout(oldLayout, newLayout) {
@@ -517,35 +520,50 @@ var WorkspaceLayout = GObject.registerClass({
         return this._layout.strategy.computeWindowSlots(this._layout, availArea);
     }
 
+    _getAdjustedWorkarea(container) {
+        const workarea = this._workarea.copy();
+
+        if (container instanceof St.Widget) {
+            const themeNode = container.get_theme_node();
+            workarea.width -= themeNode.get_horizontal_padding();
+            workarea.height -= themeNode.get_vertical_padding();
+        }
+
+        return workarea;
+    }
+
     vfunc_set_container(container) {
         this._container = container;
         this._stateAdjustment.actor = container;
     }
 
     vfunc_get_preferred_width(container, forHeight) {
+        const workarea = this._getAdjustedWorkarea(container);
         if (forHeight === -1)
-            return [0, this._workarea.width];
+            return [0, workarea.width];
 
-        const workAreaAspectRatio = this._workarea.width / this._workarea.height;
+        const workAreaAspectRatio = workarea.width / workarea.height;
         const widthPreservingAspectRatio = forHeight * workAreaAspectRatio;
 
         return [0, widthPreservingAspectRatio];
     }
 
     vfunc_get_preferred_height(container, forWidth) {
+        const workarea = this._getAdjustedWorkarea(container);
         if (forWidth === -1)
-            return [0, this._workarea.height];
+            return [0, workarea.height];
 
-        const workAreaAspectRatio = this._workarea.width / this._workarea.height;
+        const workAreaAspectRatio = workarea.width / workarea.height;
         const heightPreservingAspectRatio = forWidth / workAreaAspectRatio;
 
         return [0, heightPreservingAspectRatio];
     }
 
     vfunc_allocate(container, box) {
+        const containerBox = container.allocation;
         const containerAllocationChanged =
-            this._lastBox === null || !this._lastBox.equal(box);
-        this._lastBox = box.copy();
+            this._lastBox === null || !this._lastBox.equal(containerBox);
+        this._lastBox = containerBox.copy();
 
         // If the containers size changed, we can no longer keep around
         // the old windowSlots, so we must unfreeze the layout
@@ -565,7 +583,7 @@ var WorkspaceLayout = GObject.registerClass({
                 this._windowSlots = this._getWindowSlots(box.copy());
         }
 
-        const allocationScale = box.get_width() / this._workarea.width;
+        const allocationScale = containerBox.get_width() / this._workarea.width;
 
         const workspaceBox = new Clutter.ActorBox();
         const layoutBox = new Clutter.ActorBox();
@@ -585,10 +603,17 @@ var WorkspaceLayout = GObject.registerClass({
 
             child.slotId = index;
 
-            workspaceBox.x1 = child.boundingBox.x - this._workarea.x;
-            workspaceBox.x2 = workspaceBox.x1 + child.boundingBox.width;
-            workspaceBox.y1 = child.boundingBox.y - this._workarea.y;
-            workspaceBox.y2 = workspaceBox.y1 + child.boundingBox.height;
+            if (windowInfo.metaWindow.showing_on_its_workspace()) {
+                workspaceBox.x1 = child.boundingBox.x - this._workarea.x;
+                workspaceBox.x2 = workspaceBox.x1 + child.boundingBox.width;
+                workspaceBox.y1 = child.boundingBox.y - this._workarea.y;
+                workspaceBox.y2 = workspaceBox.y1 + child.boundingBox.height;
+            } else {
+                workspaceBox.set_origin(this._workarea.x, this._workarea.y);
+                workspaceBox.set_size(0, 0);
+
+                child.opacity = this._stateAdjustment.value * 255;
+            }
 
             workspaceBox.scale(allocationScale);
 
@@ -611,7 +636,7 @@ var WorkspaceLayout = GObject.registerClass({
             // example if the container height is being animated, we want to
             // avoid animating the children allocations to make sure they
             // don't "lag behind" the other animation).
-            if (layoutChanged) {
+            if (layoutChanged && !Main.overview.animationInProgress) {
                 const transition = animateAllocation(child, childBox);
                 if (transition) {
                     windowInfo.currentTransition = transition;
@@ -623,6 +648,10 @@ var WorkspaceLayout = GObject.registerClass({
                 child.allocate(childBox);
             }
         }
+    }
+
+    _syncOverlay(preview) {
+        preview.overlay_enabled = this._stateAdjustment.value === 1;
     }
 
     /**
@@ -658,6 +687,7 @@ var WorkspaceLayout = GObject.registerClass({
             return winA.get_stable_sequence() - winB.get_stable_sequence();
         });
 
+        this._syncOverlay(window);
         this._container.add_child(window);
 
         this._layout = null;
@@ -1119,6 +1149,15 @@ class Workspace extends St.Widget {
     }
 
     zoomToOverview() {
+        const animate =
+            this.metaWorkspace === null || this.metaWorkspace.active;
+
+        const adj = this.layout_manager.stateAdjustment;
+        adj.value = 0;
+        adj.ease(1, {
+            duration: animate ? Overview.ANIMATION_TIME : 0,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+        });
     }
 
     zoomFromOverview() {
@@ -1136,29 +1175,10 @@ class Workspace extends St.Widget {
         if (this.metaWorkspace !== null && !this.metaWorkspace.active)
             return;
 
-        // Position and scale the windows.
-        for (let i = 0; i < this._windows.length; i++)
-            this._zoomWindowFromOverview(i);
-    }
-
-    _zoomWindowFromOverview(index) {
-        let clone = this._windows[index];
-        clone.hideOverlay(false);
-
-        if (clone.metaWindow.showing_on_its_workspace()) {
-            clone.ease({
-                opacity: 255,
-                duration: Overview.ANIMATION_TIME,
-                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            });
-        } else {
-            // The window is hidden, make it shrink and fade it out
-            clone.ease({
-                opacity: 0,
-                duration: Overview.ANIMATION_TIME,
-                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            });
-        }
+        this.layout_manager.stateAdjustment.ease(0, {
+            duration: Overview.ANIMATION_TIME,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+        });
     }
 
     _onDestroy() {

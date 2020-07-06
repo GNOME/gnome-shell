@@ -7,6 +7,7 @@ const Main = imports.ui.main;
 const SwipeTracker = imports.ui.swipeTracker;
 const Workspace = imports.ui.workspace;
 
+var { ANIMATION_TIME } = imports.ui.overview;
 var WORKSPACE_SWITCH_TIME = 250;
 var SCROLL_TIMEOUT_TIME = 150;
 
@@ -21,13 +22,17 @@ var WorkspacesViewBase = GObject.registerClass({
     GTypeFlags: GObject.TypeFlags.ABSTRACT,
 }, class WorkspacesViewBase extends St.Widget {
     _init(monitorIndex) {
-        super._init({ style_class: 'workspaces-view' });
+        const { x, y, width, height } =
+            Main.layoutManager.getWorkAreaForMonitor(monitorIndex);
+
+        super._init({
+            style_class: 'workspaces-view',
+            x, y, width, height,
+        });
         this.connect('destroy', this._onDestroy.bind(this));
         global.focus_manager.add_group(this);
 
         this._monitorIndex = monitorIndex;
-
-        this._fullGeometry = null;
 
         this._inDrag = false;
         this._windowDragBeginId = Main.overview.connect('window-drag-begin', this._dragBegin.bind(this));
@@ -57,10 +62,6 @@ var WorkspacesViewBase = GObject.registerClass({
         this._setReservedSlot(null);
     }
 
-    setFullGeometry(geom) {
-        this._fullGeometry = geom;
-    }
-
     vfunc_allocate(box) {
         this.set_allocation(box);
 
@@ -80,9 +81,8 @@ class WorkspacesView extends WorkspacesViewBase {
         this._gestureActive = false; // touch(pad) gestures
 
         this._scrollAdjustment = scrollAdjustment;
-        this._onScrollId =
-            this._scrollAdjustment.connect('notify::value',
-                this._onScroll.bind(this));
+        this._onScrollId = this._scrollAdjustment.connect('notify::value',
+            this._updateScrollPosition.bind(this));
 
         this._workspaces = [];
         this._updateWorkspaces();
@@ -94,7 +94,8 @@ class WorkspacesView extends WorkspacesViewBase {
                 this._workspaces.sort((a, b) => {
                     return a.metaWorkspace.index() - b.metaWorkspace.index();
                 });
-                this._updateWorkspaceActors(false);
+                this._workspaces.forEach(
+                    (ws, i) => this.set_child_at_index(ws, i));
             });
 
         this._overviewShownId = Main.overview.connect('shown', () => {
@@ -104,6 +105,31 @@ class WorkspacesView extends WorkspacesViewBase {
         this._switchWorkspaceNotifyId =
             global.window_manager.connect('switch-workspace',
                                           this._activeWorkspaceChanged.bind(this));
+    }
+
+    vfunc_allocate(box) {
+        this.set_allocation(box);
+
+        if (this.get_n_children() === 0)
+            return;
+
+        const { workspaceManager } = global;
+        const { nWorkspaces } = workspaceManager;
+
+        const vertical = workspaceManager.layout_rows === -1;
+        const rtl = this.text_direction === Clutter.TextDirection.RTL;
+
+        this._workspaces.forEach((child, index) => {
+            if (rtl && !vertical)
+                index = nWorkspaces - index - 1;
+
+            const x = vertical ? 0 : index * this.width;
+            const y = vertical ? index * this.height : 0;
+
+            child.allocate_available_size(x, y, box.get_width(), box.get_height());
+        });
+
+        this._updateScrollPosition();
     }
 
     _setReservedSlot(window) {
@@ -124,7 +150,7 @@ class WorkspacesView extends WorkspacesViewBase {
             else
                 this._workspaces[w].fadeToOverview();
         }
-        this._updateWorkspaceActors(false);
+        this._updateScrollPosition();
     }
 
     animateFromOverview(animationType) {
@@ -143,49 +169,22 @@ class WorkspacesView extends WorkspacesViewBase {
             this._workspaces[i].syncStacking(stackIndices);
     }
 
-    // Update workspace actors parameters
-    // @showAnimation: iff %true, transition between states
-    _updateWorkspaceActors(showAnimation) {
-        let workspaceManager = global.workspace_manager;
-        let active = workspaceManager.get_active_workspace_index();
+    _scrollToActive() {
+        const { workspaceManager } = global;
+        const active = workspaceManager.get_active_workspace_index();
 
-        this._animating = showAnimation;
+        this._animating = true;
+        this._updateVisibility();
 
-        for (let w = 0; w < this._workspaces.length; w++) {
-            let workspace = this._workspaces[w];
-
-            workspace.remove_all_transitions();
-
-            let params = {};
-            if (workspaceManager.layout_rows == -1)
-                params.translation_y = (w - active) * this._fullGeometry.height;
-            else if (this.text_direction == Clutter.TextDirection.RTL)
-                params.translation_x = (active - w) * this._fullGeometry.width;
-            else
-                params.translation_x = (w - active) * this._fullGeometry.width;
-
-            if (showAnimation) {
-                let easeParams = Object.assign(params, {
-                    duration: WORKSPACE_SWITCH_TIME,
-                    mode: Clutter.AnimationMode.EASE_OUT_CUBIC,
-                });
-                // we have to call _updateVisibility() once before the
-                // animation and once afterwards - it does not really
-                // matter which tween we use, so we pick the first one ...
-                if (w == 0) {
-                    this._updateVisibility();
-                    easeParams.onComplete = () => {
-                        this._animating = false;
-                        this._updateVisibility();
-                    };
-                }
-                workspace.ease(easeParams);
-            } else {
-                workspace.set(params);
-                if (w == 0)
-                    this._updateVisibility();
-            }
-        }
+        this._scrollAdjustment.remove_transition('value');
+        this._scrollAdjustment.ease(active, {
+            duration: WORKSPACE_SWITCH_TIME,
+            mode: Clutter.AnimationMode.EASE_OUT_CUBIC,
+            onComplete: () => {
+                this._animating = false;
+                this._updateVisibility();
+            },
+        });
     }
 
     _updateVisibility() {
@@ -226,15 +225,14 @@ class WorkspacesView extends WorkspacesViewBase {
             }
         }
 
-        if (this._fullGeometry)
-            this._updateWorkspaceActors(false);
+        this._updateScrollPosition();
     }
 
     _activeWorkspaceChanged(_wm, _from, _to, _direction) {
         if (this._scrolling)
             return;
 
-        this._updateWorkspaceActors(true);
+        this._scrollToActive();
     }
 
     _onDestroy() {
@@ -256,21 +254,25 @@ class WorkspacesView extends WorkspacesViewBase {
         this._gestureActive = false;
 
         // Make sure title captions etc are shown as necessary
-        this._updateWorkspaceActors(true);
+        this._scrollToActive();
         this._updateVisibility();
     }
 
     // sync the workspaces' positions to the value of the scroll adjustment
     // and change the active workspace if appropriate
-    _onScroll(adj) {
-        if (adj.get_transition('value') !== null && !this._gestureActive)
+    _updateScrollPosition() {
+        if (!this.has_allocation())
             return;
+
+        const adj = this._scrollAdjustment;
+        const allowSwitch =
+            adj.get_transition('value') === null && !this._gestureActive;
 
         let workspaceManager = global.workspace_manager;
         let active = workspaceManager.get_active_workspace_index();
         let current = Math.round(adj.value);
 
-        if (active != current && !this._gestureActive) {
+        if (allowSwitch && active !== current) {
             if (!this._workspaces[current]) {
                 // The current workspace was destroyed. This could happen
                 // when you are on the last empty workspace, and consolidate
@@ -287,36 +289,16 @@ class WorkspacesView extends WorkspacesViewBase {
         if (adj.upper == 1)
             return;
 
-        let last = this._workspaces.length - 1;
+        const vertical = workspaceManager.layout_rows === -1;
+        const rtl = this.text_direction === Clutter.TextDirection.RTL;
+        const progress = vertical || !rtl
+            ? adj.value : adj.upper - adj.value;
 
-        if (workspaceManager.layout_rows == -1) {
-            let firstWorkspaceY = this._workspaces[0].translation_y;
-            let lastWorkspaceY = this._workspaces[last].translation_y;
-            let workspacesHeight = lastWorkspaceY - firstWorkspaceY;
-
-            let currentY = firstWorkspaceY;
-            let newY = -Math.round(adj.value / (adj.upper - 1) * workspacesHeight);
-
-            let dy = newY - currentY;
-
-            for (let i = 0; i < this._workspaces.length; i++) {
-                this._workspaces[i].visible = Math.abs(i - adj.value) <= 1;
-                this._workspaces[i].translation_y += dy;
-            }
-        } else {
-            let firstWorkspaceX = this._workspaces[0].translation_x;
-            let lastWorkspaceX = this._workspaces[last].translation_x;
-            let workspacesWidth = lastWorkspaceX - firstWorkspaceX;
-
-            let currentX = firstWorkspaceX;
-            let newX = -Math.round(adj.value / (adj.upper - 1) * workspacesWidth);
-
-            let dx = newX - currentX;
-
-            for (let i = 0; i < this._workspaces.length; i++) {
-                this._workspaces[i].visible = Math.abs(i - adj.value) <= 1;
-                this._workspaces[i].translation_x += dx;
-            }
+        for (const ws of this._workspaces) {
+            if (vertical)
+                ws.translation_y = -progress * this.height;
+            else
+                ws.translation_x = -progress * this.width;
         }
     }
 });
@@ -427,7 +409,6 @@ class WorkspacesDisplay extends St.Widget {
         this._syncActualGeometryLater = 0;
 
         this._actualGeometry = null;
-        this._fullGeometry = null;
         this._inWindowDrag = false;
 
         this._gestureActive = false; // touch(pad) gestures
@@ -528,11 +509,8 @@ class WorkspacesDisplay extends St.Widget {
         for (let i = 0; i < this._workspacesViews.length; i++)
             this._workspacesViews[i].startTouchGesture();
 
-        let monitors = Main.layoutManager.monitors;
-        let geometry = monitor === this._primaryIndex
-            ? this._fullGeometry : monitors[monitor];
         let distance = global.workspace_manager.layout_rows === -1
-            ? geometry.height : geometry.width;
+            ? this.height : this.width;
 
         let progress = adjustment.value / adjustment.page_size;
         let points = Array.from(
@@ -579,7 +557,7 @@ class WorkspacesDisplay extends St.Widget {
         this.show();
         this._updateWorkspacesViews();
 
-        if (this._actualGeometry && this._fullGeometry) {
+        if (this._actualGeometry) {
             for (let i = 0; i < this._workspacesViews.length; i++) {
                 let animationType;
                 if (fadeOnPrimary && i == this._primaryIndex)
@@ -602,6 +580,14 @@ class WorkspacesDisplay extends St.Widget {
 
     animateFromOverview(fadeOnPrimary) {
         for (let i = 0; i < this._workspacesViews.length; i++) {
+            const { x, y, width, height } =
+                Main.layoutManager.getWorkAreaForMonitor(i);
+            this._workspacesViews[i].ease({
+                x, y, width, height,
+                duration: ANIMATION_TIME,
+                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            });
+
             let animationType;
             if (fadeOnPrimary && i == this._primaryIndex)
                 animationType = AnimationType.FADE;
@@ -658,8 +644,6 @@ class WorkspacesDisplay extends St.Widget {
             Main.layoutManager.overviewGroup.add_actor(view);
         }
 
-        if (this._fullGeometry)
-            this._syncWorkspacesFullGeometry();
         if (this._actualGeometry)
             this._syncWorkspacesActualGeometry();
     }
@@ -708,25 +692,6 @@ class WorkspacesDisplay extends St.Widget {
         });
     }
 
-    // This geometry should always be the fullest geometry
-    // the workspaces switcher can ever be allocated, as if
-    // the sliding controls were never slid in at all.
-    setWorkspacesFullGeometry(geom) {
-        this._fullGeometry = geom;
-        this._syncWorkspacesFullGeometry();
-    }
-
-    _syncWorkspacesFullGeometry() {
-        if (!this._workspacesViews.length)
-            return;
-
-        let monitors = Main.layoutManager.monitors;
-        for (let i = 0; i < monitors.length; i++) {
-            let geometry = i == this._primaryIndex ? this._fullGeometry : monitors[i];
-            this._workspacesViews[i].setFullGeometry(geometry);
-        }
-    }
-
     _updateWorkspacesActualGeometry() {
         const [x, y] = this.get_transformed_position();
         const width = this.allocation.get_width();
@@ -747,16 +712,15 @@ class WorkspacesDisplay extends St.Widget {
     }
 
     _syncWorkspacesActualGeometry() {
-        if (!this._workspacesViews.length)
+        const primaryView = this._getPrimaryView();
+        if (!primaryView)
             return;
 
-        let monitors = Main.layoutManager.monitors;
-        for (let i = 0; i < monitors.length; i++) {
-            let geometry = i === this._primaryIndex ? this._actualGeometry : monitors[i];
-            const { x, y, width, height } = geometry;
-
-            this._workspacesViews[i].set({ x, y, width, height });
-        }
+        primaryView.ease({
+            ...this._actualGeometry,
+            duration: Main.overview.animationInProgress ? ANIMATION_TIME : 0,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+        });
     }
 
     _onRestacked(overview, stackIndices) {
