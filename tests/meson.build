@@ -19,3 +19,20 @@ endforeach
 
 run_gnome_shell = find_program('run-gnome-shell.py')
 test('run-gnome-shell-wayland', run_gnome_shell)
+
+gnome_shell_installed_tests_datadir = join_paths(
+  datadir, 'installed-tests', 'gnome-shell')
+
+if have_installed_tests
+  installed_tests_cdata = configuration_data()
+  installed_tests_cdata.set('libexecdir', libexecdir)
+
+  install_data('run-gnome-shell.py', install_dir: gnome_shell_installed_tests_datadir)
+
+  configure_file(
+    input: 'gnome-shell-all.test.in',
+    output: 'gnome-shell-all.test',
+    configuration: installed_tests_cdata,
+    install: true,
+    install_dir: gnome_shell_installed_tests_datadir)
+endif
