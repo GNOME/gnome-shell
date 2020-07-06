@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2020-05-12 14:15+0000\n"
-"PO-Revision-Date: 2020-05-12 22:07+0200\n"
+"POT-Creation-Date: 2020-06-30 14:09+0000\n"
+"PO-Revision-Date: 2020-07-06 13:36+0200\n"
 "Last-Translator: Florentina Mușat <florentina.musat.28 [at] gmail [dot] "
 "com>\n"
 "Language-Team: Gnome Romanian Translation Team <gnomero-list@lists."
@@ -22,7 +22,7 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n==0 || (n!=1 && n%100>=1 && n"
 "%100<=19) ? 1 : 2);\n"
 "20)) ? 1: 2);\n"
-"X-Generator: Poedit 2.3\n"
+"X-Generator: Poedit 2.3.1\n"
 "X-Project-Style: gnome\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 
@@ -865,7 +865,7 @@ msgstr "S"
 #. * "%OB" is the new format specifier introduced in glibc 2.27,
 #. * in most cases you should not change it.
 #.
-#: js/ui/calendar.js:371
+#: js/ui/calendar.js:396
 msgid "%OB"
 msgstr "%OB"
 
@@ -878,61 +878,61 @@ msgstr "%OB"
 #. * in most cases you should not use the old "%B" here unless you
 #. * absolutely know what you are doing.
 #.
-#: js/ui/calendar.js:381
+#: js/ui/calendar.js:406
 msgid "%OB %Y"
 msgstr "%OB %Y"
 
-#: js/ui/calendar.js:440
+#: js/ui/calendar.js:465
 msgid "Previous month"
 msgstr "Luna precedentă"
 
-#: js/ui/calendar.js:455
+#: js/ui/calendar.js:480
 msgid "Next month"
 msgstr "Luna viitoare"
 
-#: js/ui/calendar.js:605
+#: js/ui/calendar.js:630
 #, no-javascript-format
 msgctxt "date day number format"
 msgid "%d"
 msgstr "%d"
 
-#: js/ui/calendar.js:661
+#: js/ui/calendar.js:686
 msgid "Week %V"
 msgstr "Săptămâna %V"
 
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
 #.
-#: js/ui/calendar.js:730
+#: js/ui/calendar.js:761
 msgctxt "event list time"
 msgid "All Day"
 msgstr "Toată ziua"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year
-#: js/ui/calendar.js:868
+#: js/ui/calendar.js:899
 msgctxt "calendar heading"
 msgid "%A, %B %-d"
 msgstr "%A, %B %-d"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year
-#: js/ui/calendar.js:871
+#: js/ui/calendar.js:902
 msgctxt "calendar heading"
 msgid "%A, %B %-d, %Y"
 msgstr "%A, %B %-d, %Y"
 
-#: js/ui/calendar.js:1100
+#: js/ui/calendar.js:1132
 msgid "No Notifications"
 msgstr "Nu există notificări"
 
-#: js/ui/calendar.js:1103
+#: js/ui/calendar.js:1135
 msgid "No Events"
 msgstr "Nu există evenimente"
 
-#: js/ui/calendar.js:1157
+#: js/ui/calendar.js:1189
 msgid "Do Not Disturb"
 msgstr "Nu deranjați"
 
-#: js/ui/calendar.js:1176
+#: js/ui/calendar.js:1208
 msgid "Clear"
 msgstr "Curăță"
 
@@ -1118,31 +1118,31 @@ msgstr "%B %-d %Y"
 msgid "%A %B %e %Y"
 msgstr "%A %B %e %Y"
 
-#: js/ui/dateMenu.js:161
+#: js/ui/dateMenu.js:162
 msgid "Add world clocks…"
 msgstr "Adaugă un fus orar…"
 
-#: js/ui/dateMenu.js:162
+#: js/ui/dateMenu.js:163
 msgid "World Clocks"
 msgstr "Fusuri orare"
 
-#: js/ui/dateMenu.js:289
+#: js/ui/dateMenu.js:308
 msgid "Weather"
 msgstr "Vreme"
 
-#: js/ui/dateMenu.js:418
+#: js/ui/dateMenu.js:437
 msgid "Select a location…"
 msgstr "Selectați o locație…"
 
-#: js/ui/dateMenu.js:426
+#: js/ui/dateMenu.js:445
 msgid "Loading…"
 msgstr "Se încarcă…"
 
-#: js/ui/dateMenu.js:436
+#: js/ui/dateMenu.js:455
 msgid "Go online for weather information"
 msgstr "Conectați-vă la internet pentru informații despre vreme"
 
-#: js/ui/dateMenu.js:438
+#: js/ui/dateMenu.js:457
 msgid "Weather information is currently unavailable"
 msgstr "Informațiile despre vreme nu sunt disponibile momentan"
 
@@ -1309,11 +1309,11 @@ msgstr "Instalează extensia"
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "Descărcați și instalați „%s” de la extensions.gnome.org?"
 
-#: js/ui/extensionSystem.js:252
+#: js/ui/extensionSystem.js:253
 msgid "Extension Updates Available"
 msgstr "Sunt disponibile actualizări pentru extensii"
 
-#: js/ui/extensionSystem.js:253
+#: js/ui/extensionSystem.js:254
 msgid "Extension updates are ready to be installed."
 msgstr "Actualizările de extensie sunt gata de instalare."
 
@@ -1487,21 +1487,21 @@ msgstr "Blocarea ecranului necesită managerul de afișaj GNOME."
 msgid "System Information"
 msgstr "Informații despre sistem"
 
-#: js/ui/mpris.js:199
+#: js/ui/mpris.js:204
 msgid "Unknown artist"
 msgstr "Artist necunoscut"
 
-#: js/ui/mpris.js:209
+#: js/ui/mpris.js:214
 msgid "Unknown title"
 msgstr "Titlu necunoscut"
 
-#: js/ui/overview.js:73
+#: js/ui/overview.js:74
 msgid "Undo"
 msgstr "Anulează"
 
 #. Translators: This is the main view to select
 #. activities. See also note for "Activities" string.
-#: js/ui/overview.js:86
+#: js/ui/overview.js:87
 msgid "Overview"
 msgstr "Prezentare generală"
 
@@ -1509,7 +1509,7 @@ msgstr "Prezentare generală"
 #. in the search entry when no search is
 #. active; it should not exceed ~30
 #. characters.
-#: js/ui/overview.js:107
+#: js/ui/overview.js:108
 msgid "Type to search"
 msgstr "Tastați pentru a căuta"
 
@@ -1537,23 +1537,23 @@ msgstr "Alochează tasta apăsată"
 msgid "Done"
 msgstr "Gata"
 
-#: js/ui/padOsd.js:745
+#: js/ui/padOsd.js:732
 msgid "Edit…"
 msgstr "Editează…"
 
-#: js/ui/padOsd.js:787 js/ui/padOsd.js:910
+#: js/ui/padOsd.js:774 js/ui/padOsd.js:891
 msgid "None"
 msgstr "Nespecificat"
 
-#: js/ui/padOsd.js:863
+#: js/ui/padOsd.js:845
 msgid "Press a button to configure"
 msgstr "Apăsați un buton de configurat"
 
-#: js/ui/padOsd.js:864
+#: js/ui/padOsd.js:846
 msgid "Press Esc to exit"
 msgstr "Apăsați Esc pentru a ieși"
 
-#: js/ui/padOsd.js:867
+#: js/ui/padOsd.js:849
 msgid "Press any key to exit"
 msgstr "Apăsați orice tastă pentru a ieși"
 
@@ -2224,13 +2224,13 @@ msgstr "Glisează în sus pentru a debloca"
 
 #: js/ui/unlockDialog.js:378
 msgid "Click or press a key to unlock"
-msgstr "Dați clic sau apăsați o tastă pentru a debloca"
+msgstr "Apăsați clic sau o tastă pentru a debloca"
 
-#: js/ui/unlockDialog.js:550
+#: js/ui/unlockDialog.js:554
 msgid "Unlock Window"
 msgstr "Deblochează fereastră"
 
-#: js/ui/unlockDialog.js:559
+#: js/ui/unlockDialog.js:563
 msgid "Log in as another user"
 msgstr "Intră în sesiune ca utilizator diferit"
 
