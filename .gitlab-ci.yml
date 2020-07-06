@@ -92,8 +92,9 @@ test:
         - dnf remove -y gdm-lib
         - dnf install -y python3-dbus python3-gobject python3-dbusmock libnma gdm
         - ninja -C mutter/build install
+        - ninja -C build install
     script:
-        - dbus-run-session -- xvfb-run meson test -C build --no-rebuild
+        - dbus-run-session -- xvfb-run meson test -t 10 -C build --no-rebuild
     <<: *only_default
     artifacts:
         expire_in: 1 day
