@@ -33,3 +33,9 @@ option('systemd',
   value: true,
   description: 'Enable systemd integration'
 )
+
+option('installed_tests',
+  type: 'boolean',
+  value: true,
+  description: 'Enable installed tests'
+)
