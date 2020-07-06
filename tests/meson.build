@@ -16,3 +16,6 @@ foreach test : ['insertSorted', 'jsParse', 'markup', 'params', 'url']
     env: testenv,
     workdir: meson.current_source_dir())
 endforeach
+
+run_gnome_shell = find_program('run-gnome-shell.py')
+test('run-gnome-shell-wayland', run_gnome_shell)
