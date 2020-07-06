@@ -24,6 +24,7 @@ G_DEFINE_TYPE_WITH_PRIVATE (ShellGLSLEffect, shell_glsl_effect, CLUTTER_TYPE_OFF
 
 static gboolean
 shell_glsl_effect_pre_paint (ClutterEffect       *effect,
+                             ClutterPaintNode    *node,
                              ClutterPaintContext *paint_context)
 {
   ClutterEffectClass *parent_class;
@@ -41,7 +42,7 @@ shell_glsl_effect_pre_paint (ClutterEffect       *effect,
     }
 
   parent_class = CLUTTER_EFFECT_CLASS (shell_glsl_effect_parent_class);
-  return parent_class->pre_paint (effect, paint_context);
+  return parent_class->pre_paint (effect, node, paint_context);
 }
 
 static CoglPipeline *
