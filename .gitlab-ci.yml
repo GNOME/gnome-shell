@@ -90,7 +90,8 @@ test:
         NO_AT_BRIDGE: "1"
     before_script:
         - dnf install -y python3-dbus python3-gobject
-        - ninja -C mutter/build install
+        - ninja -C mutter/build --no-rebuild install
+        - ninja -C build --no-rebuild install
     script:
         - dbus-run-session -- xvfb-run meson test -C build --no-rebuild
     <<: *only_default
