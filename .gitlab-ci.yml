@@ -89,6 +89,7 @@ test:
         XDG_RUNTIME_DIR: "$CI_PROJECT_DIR/runtime-dir"
         NO_AT_BRIDGE: "1"
     before_script:
+        - dnf install -y python3-dbus python3-gobject python3-dbusmock
         - ninja -C mutter/build install
     script:
         - dbus-run-session -- xvfb-run meson test -C build --no-rebuild
