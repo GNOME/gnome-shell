@@ -237,8 +237,6 @@ var WindowPreview = GObject.registerClass({
             this._windowActor.connect('destroy', () => this.destroy());
 
         this._updateAttachedDialogs();
-        this.x = this.boundingBox.x;
-        this.y = this.boundingBox.y;
 
         let clickAction = new Clutter.ClickAction();
         clickAction.connect('clicked', () => this._activate());
@@ -349,6 +347,14 @@ var WindowPreview = GObject.registerClass({
         this.add_child(this._border);
         this.add_child(this._title);
         this.add_child(this._closeButton);
+
+        this.connect('notify::realized', () => {
+            if (!this.realized)
+                return;
+
+            this._border.ensure_style();
+            this._title.ensure_style();
+        });
     }
 
     vfunc_get_preferred_width(forHeight) {
@@ -403,8 +409,6 @@ var WindowPreview = GObject.registerClass({
     }
 
     chromeHeights() {
-        this._border.ensure_style();
-        this._title.ensure_style();
         const [, closeButtonHeight] = this._closeButton.get_preferred_height(-1);
         const [, titleHeight] = this._title.get_preferred_height(-1);
 
@@ -417,7 +421,6 @@ var WindowPreview = GObject.registerClass({
     }
 
     chromeWidths() {
-        this._border.ensure_style();
         const [, closeButtonWidth] = this._closeButton.get_preferred_width(-1);
 
         const leftOversize = this._closeButtonSide === St.Side.LEFT
