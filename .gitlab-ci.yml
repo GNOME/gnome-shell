@@ -91,6 +91,7 @@ test:
     before_script:
         - dnf install -y python3-dbus python3-gobject python3-dbusmock libnma gdm
         - ninja -C mutter/build install
+        - ninja -C build install
     script:
         - dbus-run-session -- xvfb-run meson test -C build --no-rebuild
     <<: *only_default
