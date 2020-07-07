@@ -381,6 +381,8 @@ class WorkspacesDisplay extends St.Widget {
         this._windowDragEndId =
             Main.overview.connect('window-drag-begin',
                 this._windowDragEnd.bind(this));
+        this._overviewShownId = Main.overview.connect('shown',
+            this._syncWorkspacesActualGeometry.bind(this));
 
         this._primaryIndex = Main.layoutManager.primaryIndex;
         this._workspacesViews = [];
@@ -433,6 +435,7 @@ class WorkspacesDisplay extends St.Widget {
         global.workspace_manager.disconnect(this._reorderWorkspacesdId);
         Main.overview.disconnect(this._windowDragBeginId);
         Main.overview.disconnect(this._windowDragEndId);
+        Main.overview.disconnect(this._overviewShownId);
     }
 
     _windowDragBegin() {
@@ -555,6 +558,9 @@ class WorkspacesDisplay extends St.Widget {
                     animationType = AnimationType.ZOOM;
                 this._workspacesViews[i].animateToOverview(animationType);
             }
+
+            if (!fadeOnPrimary)
+                this._syncWorkspacesActualGeometry();
         }
 
         this._restackedNotifyId =
@@ -569,14 +575,6 @@ class WorkspacesDisplay extends St.Widget {
 
     animateFromOverview(fadeOnPrimary) {
         for (let i = 0; i < this._workspacesViews.length; i++) {
-            const { x, y, width, height } =
-                Main.layoutManager.getWorkAreaForMonitor(i);
-            this._workspacesViews[i].ease({
-                x, y, width, height,
-                duration: ANIMATION_TIME,
-                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            });
-
             let animationType;
             if (fadeOnPrimary && i == this._primaryIndex)
                 animationType = AnimationType.FADE;
@@ -584,6 +582,15 @@ class WorkspacesDisplay extends St.Widget {
                 animationType = AnimationType.ZOOM;
             this._workspacesViews[i].animateFromOverview(animationType);
         }
+
+        const { primaryIndex } = Main.layoutManager;
+        const { x, y, width, height } =
+            Main.layoutManager.getWorkAreaForMonitor(primaryIndex);
+        this._getPrimaryView().ease({
+            x, y, width, height,
+            duration: fadeOnPrimary ? 0 : ANIMATION_TIME,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+        });
     }
 
     vfunc_hide() {
@@ -613,6 +620,7 @@ class WorkspacesDisplay extends St.Widget {
             return;
 
         this._updateWorkspacesViews();
+        this._syncWorkspacesActualGeometry();
     }
 
     _updateWorkspacesViews() {
@@ -632,9 +640,6 @@ class WorkspacesDisplay extends St.Widget {
             this._workspacesViews.push(view);
             Main.layoutManager.overviewGroup.add_actor(view);
         }
-
-        if (this._actualGeometry)
-            this._syncWorkspacesActualGeometry();
     }
 
     _getMonitorIndexForEvent(event) {
