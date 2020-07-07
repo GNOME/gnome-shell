@@ -381,6 +381,8 @@ class WorkspacesDisplay extends St.Widget {
         this._windowDragEndId =
             Main.overview.connect('window-drag-begin',
                 this._windowDragEnd.bind(this));
+        this._overviewShownId = Main.overview.connect('shown',
+            this._syncWorkspacesActualGeometry.bind(this));
 
         this._primaryIndex = Main.layoutManager.primaryIndex;
         this._workspacesViews = [];
@@ -433,6 +435,7 @@ class WorkspacesDisplay extends St.Widget {
         global.workspace_manager.disconnect(this._reorderWorkspacesdId);
         Main.overview.disconnect(this._windowDragBeginId);
         Main.overview.disconnect(this._windowDragEndId);
+        Main.overview.disconnect(this._overviewShownId);
     }
 
     _windowDragBegin() {
