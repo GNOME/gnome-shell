@@ -1,3 +1,38 @@
+3.37.3
+======
+* Refactor and clean up window picker
+  [Jonas D., Florian; !1297, !1298, !1305, !1345, !1353]
+* Move calendar events out of notifications list [Florian; !1282]
+* Refine app folder dialogs [Georges; !1301]
+* Hide switch-user button on lock screen if unsupported [Chingkai; #2687]
+* Refactor and clean up app picker pagination [Georges; !1271]
+* Add API to retrieve specified mimetypes from clipboards [Carlos; !1321]
+* Support prepending workspace with horizontal layouts [Florian; #2916]
+* Update microphone icon on input volume changes [fludixx; #2902]
+* Cache labels on GPU [Daniel; !1329]
+* Fix regressions in redesigned modal dialogs [Florian, Jonas D.; #2491, !1336]
+* Use GIcon for all application icons [Florian; !1342]
+* Support pre-authenticated logins in vmware environments [yun341; #1983]
+* Better support sandboxed apps with multiple .desktop files [Florian; #219]
+* Fix on-screen keyboard size in portrait orientation [Florian; #2349]
+* Plugged leaks [Sebastian, Daniel, Florian; !1306, !1319, !1341]
+* Misc. bug fixes and cleanups [Jonas D., Georges, Marco, Florian, Sebastian,
+  MOZGIII, Daniel, Mariana, Jonas Å.; !1296, !1295, #2643, !1300, !1309,
+  !1119, #2901, !1313, !1251, !1285, !1307, !1318, !1310, !1320, !1327, !1315,
+  !1289, !1331, !1332, !1333, !1334, !1340, !1287, !1308, !1346, !1299, !1343,
+  !1351, !1352, !1322]
+
+Contributors:
+  Marco Trevisan (Treviño), Chingkai, Jonas Dreßler, Carlos Garnacho,
+  Sebastian Keller, MOZGIII, Florian Müllner, Georges Basile Stavracas Neto,
+  Mariana Picolo, Daniel van Vugt, fludixx, yun341, Jonas Ådahl
+
+Translators:
+  Daniel Mustieles [es], Boyuan Yang [zh_CN], Yuri Chornoivan [uk],
+  Jordi Mas [ca], sicklylife [ja], Emin Tufan Çetin [tr],
+  Baurzhan Muftakhidinov [kk], Florentina Mușat [ro], Aurimas Černius [lt],
+  Rūdolfs Mazurs [lv]
+
 3.37.2
 ======
 * Add support for "PrefersNonDefaultGPU" desktop key [Bastien; !1226]
