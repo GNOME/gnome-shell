@@ -52,14 +52,12 @@ var WorkspacesViewBase = GObject.registerClass({
         }
     }
 
-    _dragBegin(overview, window) {
+    _dragBegin() {
         this._inDrag = true;
-        this._setReservedSlot(window);
     }
 
     _dragEnd() {
         this._inDrag = false;
-        this._setReservedSlot(null);
     }
 
     vfunc_allocate(box) {
@@ -130,11 +128,6 @@ class WorkspacesView extends WorkspacesViewBase {
         });
 
         this._updateScrollPosition();
-    }
-
-    _setReservedSlot(window) {
-        for (let i = 0; i < this._workspaces.length; i++)
-            this._workspaces[i].setReservedSlot(window);
     }
 
     getActiveWorkspace() {
@@ -309,10 +302,6 @@ class ExtraWorkspaceView extends WorkspacesViewBase {
         super._init(monitorIndex);
         this._workspace = new Workspace.Workspace(null, monitorIndex);
         this.add_actor(this._workspace);
-    }
-
-    _setReservedSlot(window) {
-        this._workspace.setReservedSlot(window);
     }
 
     getActiveWorkspace() {

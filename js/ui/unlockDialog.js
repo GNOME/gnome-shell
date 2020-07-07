@@ -573,11 +573,9 @@ var UnlockDialog = GObject.registerClass({
 
         this._screenSaverSettings = new Gio.Settings({ schema_id: 'org.gnome.desktop.screensaver' });
 
-        this._userSwitchEnabledId = 0;
         this._userSwitchEnabledId = this._screenSaverSettings.connect('changed::user-switch-enabled',
             this._updateUserSwitchVisibility.bind(this));
 
-        this._userLoadedId = 0;
         this._userLoadedId = this._user.connect('notify::is-loaded',
             this._updateUserSwitchVisibility.bind(this));
 
