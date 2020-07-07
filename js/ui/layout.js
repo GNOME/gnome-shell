@@ -312,22 +312,24 @@ var LayoutManager = GObject.registerClass({
     // This is called by Main after everything else is constructed
     init() {
         Main.sessionMode.connect('updated', this._sessionUpdated.bind(this));
+        Main.overview.connect('showing', () => {
+            this._inOverview = true;
+            this._updateVisibility();
+        });
+        Main.overview.connect('hidden', () => {
+            this._inOverview = false;
+            this._updateVisibility();
+        });
 
         this._loadBackground();
     }
 
     showOverview() {
         this.overviewGroup.show();
-
-        this._inOverview = true;
-        this._updateVisibility();
     }
 
     hideOverview() {
         this.overviewGroup.hide();
-
-        this._inOverview = false;
-        this._updateVisibility();
     }
 
     _sessionUpdated() {
