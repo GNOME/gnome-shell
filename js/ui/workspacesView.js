@@ -555,6 +555,7 @@ class WorkspacesDisplay extends St.Widget {
                     animationType = AnimationType.ZOOM;
                 this._workspacesViews[i].animateToOverview(animationType);
             }
+            this._syncWorkspacesActualGeometry();
         }
 
         this._restackedNotifyId =
@@ -614,6 +615,7 @@ class WorkspacesDisplay extends St.Widget {
             return;
 
         this._updateWorkspacesViews();
+        this._syncWorkspacesActualGeometry();
     }
 
     _updateWorkspacesViews() {
@@ -633,9 +635,6 @@ class WorkspacesDisplay extends St.Widget {
             this._workspacesViews.push(view);
             Main.layoutManager.overviewGroup.add_actor(view);
         }
-
-        if (this._actualGeometry)
-            this._syncWorkspacesActualGeometry();
     }
 
     _getMonitorIndexForEvent(event) {
