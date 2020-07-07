@@ -1,3 +1,26 @@
+3.36.4
+======
+* Hide switch-user button on lock screen if unsupported [Chingkai; #2687]
+* Improve world clocks styling [PrOF-kk; #2825]
+* Improve calendar-server performance [Florian, Milan; #1875]
+* Fix regressions in redesigned modal dialogs [Florian, Jonas; #2491, !1336]
+* Better support sandboxed apps with multiple .desktop files [Florian; #219]
+* Fix on-screen keyboard size in portrait orientation [Florian; #2349]
+* Support scrolling anywhere in slider menu items [Peter; #2795]
+* Fixed crash [Marco; #2643]
+* Plugged leaks [Sebastian, Florian; !1306, !1341]
+* Misc. bug fixes and cleanups [Jonas, Daniel, Florian, Sebastian, MOZGIII,
+  Koki; !1119, !1289, !1331, !1192, !1340, !1327, !1279]
+
+Contributors:
+  Marco Trevisan (Treviño), Chingkai, Milan Crha, Jonas Dreßler, Koki Fukuda,
+  Sebastian Keller, MOZGIII, Robert Mader, Florian Müllner, PrOF-kk,
+  Peter Simonyi, Daniel van Vugt
+
+Translators:
+  Matej Urbančič [sl], sicklylife [ja], Fabio Tomat [fur],
+  Baurzhan Muftakhidinov [kk], Daniel Șerbănescu [ro]
+
 3.36.3
 ======
 * Add gnome-shell-extension-prefs wrapper for compatibility [Florian; !1220]
