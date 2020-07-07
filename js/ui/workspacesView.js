@@ -558,7 +558,9 @@ class WorkspacesDisplay extends St.Widget {
                     animationType = AnimationType.ZOOM;
                 this._workspacesViews[i].animateToOverview(animationType);
             }
-            this._syncWorkspacesActualGeometry();
+
+            if (!fadeOnPrimary)
+                this._syncWorkspacesActualGeometry();
         }
 
         this._restackedNotifyId =
@@ -586,7 +588,7 @@ class WorkspacesDisplay extends St.Widget {
             Main.layoutManager.getWorkAreaForMonitor(primaryIndex);
         this._getPrimaryView().ease({
             x, y, width, height,
-            duration: ANIMATION_TIME,
+            duration: fadeOnPrimary ? 0 : ANIMATION_TIME,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
         });
     }
