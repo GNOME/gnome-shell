@@ -601,8 +601,6 @@ var WorkspaceLayout = GObject.registerClass({
             const [x, y, width, height] = this._windowSlots[index];
             const windowInfo = this._windows.get(child);
 
-            child.slotId = index;
-
             if (windowInfo.metaWindow.showing_on_its_workspace()) {
                 workspaceBox.x1 = child.boundingBox.x - this._workarea.x;
                 workspaceBox.x2 = workspaceBox.x1 + child.boundingBox.width;
