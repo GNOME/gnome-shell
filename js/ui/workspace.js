@@ -411,7 +411,7 @@ var WorkspaceLayout = GObject.registerClass({
         this._layout = null;
 
         this._stateAdjustment = new St.Adjustment({
-            value: 1,
+            value: 0,
             lower: 0,
             upper: 1,
         });
@@ -1135,7 +1135,6 @@ class Workspace extends St.Widget {
             this.metaWorkspace === null || this.metaWorkspace.active;
 
         const adj = this.layout_manager.stateAdjustment;
-        adj.value = 0;
         adj.ease(1, {
             duration: animate ? Overview.ANIMATION_TIME : 0,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
