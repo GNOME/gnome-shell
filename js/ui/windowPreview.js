@@ -229,7 +229,6 @@ var WindowPreview = GObject.registerClass({
 
         this._delegate = this;
 
-        this.slotId = 0;
         this._stackAbove = null;
 
         this._windowContainer.layout_manager.connect(
