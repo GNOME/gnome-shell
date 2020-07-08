@@ -23,6 +23,8 @@ class WorkspaceSwitcherPopupList extends St.Widget {
         this.connect('style-changed', () => {
             this._itemSpacing = this.get_theme_node().get_length('spacing');
         });
+
+        this.set_offscreen_redirect(Clutter.OffscreenRedirect.ALWAYS);
     }
 
     _getPreferredSizeForOrientation(_forSize) {
