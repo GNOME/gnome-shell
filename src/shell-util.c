@@ -409,34 +409,6 @@ shell_util_create_pixbuf_from_data (const guchar      *data,
 
 typedef const gchar *(*ShellGLGetString) (GLenum);
 
-static const gchar *
-get_gl_vendor (void)
-{
-  static const gchar *vendor = NULL;
-
-  if (!vendor)
-    {
-      ShellGLGetString gl_get_string;
-      gl_get_string = (ShellGLGetString) cogl_get_proc_address ("glGetString");
-      if (gl_get_string)
-        vendor = gl_get_string (GL_VENDOR);
-    }
-
-  return vendor;
-}
-
-gboolean
-shell_util_need_background_refresh (void)
-{
-  if (!clutter_check_windowing_backend (CLUTTER_WINDOWING_X11))
-    return FALSE;
-
-  if (g_strcmp0 (get_gl_vendor (), "NVIDIA Corporation") == 0)
-    return TRUE;
-
-  return FALSE;
-}
-
 static gboolean
 canvas_draw_cb (ClutterContent *content,
                 cairo_t        *cr,
