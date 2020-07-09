@@ -92,6 +92,12 @@ cairo_surface_t *st_texture_cache_load_file_to_cairo_surface (StTextureCache *ca
                                                               gint            paint_scale,
                                                               gfloat          resource_scale);
 
+void st_texture_cache_add_icon_search_path (StTextureCache *cache,
+                                            const gchar    *path);
+
+void st_texture_cache_add_icon_resource_path (StTextureCache *cache,
+                                              const gchar    *path);
+
 /**
  * StTextureCacheLoader: (skip)
  * @cache: a #StTextureCache

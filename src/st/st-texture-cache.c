@@ -1607,6 +1607,40 @@ st_texture_cache_load_file_to_cairo_surface (StTextureCache *cache,
   return surface;
 }
 
+/**
+ * st_texture_cache_add_icon_search_path:
+ * @cache: A #StTextureCache
+ * @path: A directory name to append to the icon path.
+ *
+ * Append @path to the search path for the icon theme object used by @cache. See
+ * also gtk_icon_theme_set_search_path().
+ */
+void
+st_texture_cache_add_icon_search_path (StTextureCache *cache,
+                                       const gchar    *path)
+{
+  StTextureCachePrivate *priv = cache->priv;
+
+  gtk_icon_theme_append_search_path (priv->icon_theme, path);
+}
+
+/**
+ * st_texture_cache_add_icon_resource_path:
+ * @cache: A #StTextureCache
+ * @path: A resource path
+ *
+ * Add @path to the resource paths for the icon theme object used by @cache. See
+ * also gtk_icon_theme_add_resource_path().
+ */
+void
+st_texture_cache_add_icon_resource_path (StTextureCache *cache,
+                                         const gchar    *path)
+{
+  StTextureCachePrivate *priv = cache->priv;
+
+  gtk_icon_theme_add_resource_path (priv->icon_theme, path);
+}
+
 static StTextureCache *instance = NULL;
 
 /**
