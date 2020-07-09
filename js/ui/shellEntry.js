@@ -1,16 +1,23 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported addContextMenu CapsLockWarning */
 
-const { Clutter, GObject, Pango, Shell, St } = imports.gi;
+const { Clutter, Gio, GObject, Pango, Shell, St } = imports.gi;
 
 const BoxPointer = imports.ui.boxpointer;
 const Main = imports.ui.main;
 const Params = imports.misc.params;
 const PopupMenu = imports.ui.popupMenu;
 
+const LOCKDOWN_SCHEMA = 'org.gnome.desktop.lockdown';
+const DISABLE_SHOW_PASSWORD_KEY = 'disable-show-password';
+
 var EntryMenu = class extends PopupMenu.PopupMenu {
     constructor(entry) {
         super(entry, 0, St.Side.TOP);
+
+        this._lockdownSettings = new Gio.Settings({ schema_id: LOCKDOWN_SCHEMA });
+        this._lockdownSettings.connect(`changed::${DISABLE_SHOW_PASSWORD_KEY}`,
+            this._applyLockdownSettings.bind(this));
 
         this._entry = entry;
         this._clipboard = St.Clipboard.get_default();
@@ -39,6 +46,20 @@ var EntryMenu = class extends PopupMenu.PopupMenu {
         item.connect('activate', this._onPasswordActivated.bind(this));
         this.addMenuItem(item);
         this._passwordItem = item;
+        this._applyLockdownSettings();
+    }
+
+    _applyLockdownSettings() {
+        if (!this._passwordItem)
+            return;
+
+        let passwordDisabled = this._lockdownSettings.get_boolean(DISABLE_SHOW_PASSWORD_KEY);
+
+        this._passwordItem.visible = !passwordDisabled;
+        this._entry.show_peek_icon = !passwordDisabled;
+
+        if (passwordDisabled)
+            this._entry.password_visible = false;
     }
 
     open(animate) {
