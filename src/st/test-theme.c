@@ -26,6 +26,7 @@
 #include <math.h>
 #include <string.h>
 #include <meta/main.h>
+#include <meta/meta-backend.h>
 
 static ClutterActor *stage;
 static StThemeNode *root;
@@ -533,6 +534,7 @@ test_inline_style (void)
 int
 main (int argc, char **argv)
 {
+  MetaBackend *backend;
   StTheme *theme;
   StThemeContext *context;
   PangoFontDescription *font_desc;
@@ -556,7 +558,8 @@ main (int argc, char **argv)
   theme = st_theme_new (file, NULL, NULL);
   g_object_unref (file);
 
-  stage = clutter_stage_new ();
+  backend = meta_get_backend ();
+  stage = meta_backend_get_stage (backend);
   context = st_theme_context_get_for_stage (CLUTTER_STAGE (stage));
   st_theme_context_set_theme (context, theme);
 
