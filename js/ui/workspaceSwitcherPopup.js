@@ -11,7 +11,10 @@ var DISPLAY_TIMEOUT = 600;
 var WorkspaceSwitcherPopupList = GObject.registerClass(
 class WorkspaceSwitcherPopupList extends St.Widget {
     _init() {
-        super._init({ style_class: 'workspace-switcher' });
+        super._init({
+            style_class: 'workspace-switcher',
+            offscreen_redirect: Clutter.OffscreenRedirect.ALWAYS,
+        });
 
         this._itemSpacing = 0;
         this._childHeight = 0;
