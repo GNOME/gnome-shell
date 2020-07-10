@@ -241,6 +241,8 @@ class WorkspacesView extends WorkspacesViewBase {
 
     startTouchGesture() {
         this._gestureActive = true;
+
+        this._updateVisibility();
     }
 
     endTouchGesture() {
