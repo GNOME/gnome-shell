@@ -1027,6 +1027,8 @@ class Workspace extends St.Widget {
         if (this.metaWorkspace !== null && !this.metaWorkspace.active)
             return;
 
+        this.layout_manager.stateAdjustment.value = 0;
+
         // Special case maximized windows, since it doesn't make sense
         // to animate windows below in the stack
         let topMaximizedWindow;
@@ -1078,6 +1080,8 @@ class Workspace extends St.Widget {
 
         if (this.metaWorkspace !== null && !this.metaWorkspace.active)
             return;
+
+        this.layout_manager.stateAdjustment.value = 0;
 
         // Special case maximized windows, since it doesn't make sense
         // to animate windows below in the stack
