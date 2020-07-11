@@ -1194,11 +1194,13 @@ class Workspace extends St.Widget {
 
     _doneLeavingOverview() {
         this.layout_manager.layout_frozen = false;
+        this.layout_manager.stateAdjustment.value = 0;
         this._windows.forEach(w => (w.opacity = 255));
     }
 
     _doneShowingOverview() {
         this.layout_manager.layout_frozen = false;
+        this.layout_manager.stateAdjustment.value = 1;
         this._windows.forEach(w => (w.opacity = 255));
     }
 
