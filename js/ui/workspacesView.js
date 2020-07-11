@@ -551,19 +551,17 @@ class WorkspacesDisplay extends St.Widget {
         this.show();
         this._updateWorkspacesViews();
 
-        if (this._actualGeometry) {
-            for (let i = 0; i < this._workspacesViews.length; i++) {
-                let animationType;
-                if (fadeOnPrimary && i == this._primaryIndex)
-                    animationType = AnimationType.FADE;
-                else
-                    animationType = AnimationType.ZOOM;
-                this._workspacesViews[i].animateToOverview(animationType);
-            }
-
-            if (!fadeOnPrimary)
-                this._syncWorkspacesActualGeometry();
+        for (let i = 0; i < this._workspacesViews.length; i++) {
+            let animationType;
+            if (fadeOnPrimary && i == this._primaryIndex)
+                animationType = AnimationType.FADE;
+            else
+                animationType = AnimationType.ZOOM;
+            this._workspacesViews[i].animateToOverview(animationType);
         }
+
+        if (this._actualGeometry && !fadeOnPrimary)
+            this._syncWorkspacesActualGeometry();
 
         this._restackedNotifyId =
             Main.overview.connect('windows-restacked',
