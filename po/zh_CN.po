@@ -23,8 +23,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2020-05-28 11:29+0000\n"
-"PO-Revision-Date: 2020-05-29 09:03-0400\n"
+"POT-Creation-Date: 2020-07-08 18:33+0000\n"
+"PO-Revision-Date: 2020-07-11 22:10-0400\n"
 "Last-Translator: Boyuan Yang <073plan@gmail.com>\n"
 "Language-Team: Chinese (China) <i18n-zh@googlegroups.com>\n"
 "Language: zh_CN\n"
@@ -444,7 +444,7 @@ msgstr "用户名"
 msgid "Login Window"
 msgstr "登录窗口"
 
-#: js/gdm/util.js:345
+#: js/gdm/util.js:355
 msgid "Authentication error"
 msgstr "认证出错"
 
@@ -453,7 +453,7 @@ msgstr "认证出错"
 #. as a cue to display our own message.
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger instead
-#: js/gdm/util.js:471
+#: js/gdm/util.js:481
 msgid "(or swipe finger)"
 msgstr "（或滑动手指）"
 
@@ -559,7 +559,7 @@ msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "%d 小时前"
 
-#: js/misc/util.js:191
+#: js/misc/util.js:191 js/ui/dateMenu.js:162
 msgid "Yesterday"
 msgstr "昨天"
 
@@ -672,44 +672,44 @@ msgstr "您到热点登录的连接不安全。您在此页面输入的密码或
 
 #. No support for non-modal system dialogs, so ignore the option
 #. let modal = options['modal'] || true;
-#: js/ui/accessDialog.js:39 js/ui/status/location.js:374
+#: js/ui/accessDialog.js:39 js/ui/status/location.js:369
 msgid "Deny Access"
 msgstr "拒绝访问"
 
-#: js/ui/accessDialog.js:40 js/ui/status/location.js:377
+#: js/ui/accessDialog.js:40 js/ui/status/location.js:372
 msgid "Grant Access"
 msgstr "允许访问"
 
-#: js/ui/appDisplay.js:960
+#: js/ui/appDisplay.js:903
 msgid "Unnamed Folder"
 msgstr "未命名文件夹"
 
 #. Translators: This is the heading of a list of open windows
-#: js/ui/appDisplay.js:2219 js/ui/panel.js:75
+#: js/ui/appDisplay.js:2225 js/ui/panel.js:75
 msgid "Open Windows"
 msgstr "打开窗口"
 
-#: js/ui/appDisplay.js:2238 js/ui/panel.js:82
+#: js/ui/appDisplay.js:2244 js/ui/panel.js:82
 msgid "New Window"
 msgstr "新窗口"
 
-#: js/ui/appDisplay.js:2254
+#: js/ui/appDisplay.js:2260
 msgid "Launch using Integrated Graphics Card"
 msgstr "使用集成显卡启动"
 
-#: js/ui/appDisplay.js:2255
+#: js/ui/appDisplay.js:2261
 msgid "Launch using Discrete Graphics Card"
 msgstr "使用独立显卡启动"
 
-#: js/ui/appDisplay.js:2283 js/ui/dash.js:239
+#: js/ui/appDisplay.js:2289 js/ui/dash.js:239
 msgid "Remove from Favorites"
 msgstr "从收藏夹中移除"
 
-#: js/ui/appDisplay.js:2289
+#: js/ui/appDisplay.js:2295
 msgid "Add to Favorites"
 msgstr "添加到收藏夹"
 
-#: js/ui/appDisplay.js:2299 js/ui/panel.js:93
+#: js/ui/appDisplay.js:2305 js/ui/panel.js:93
 msgid "Show Details"
 msgstr "显示细节"
 
@@ -739,7 +739,7 @@ msgstr "耳机"
 msgid "Headset"
 msgstr "耳麦"
 
-#: js/ui/audioDeviceSelection.js:68 js/ui/status/volume.js:273
+#: js/ui/audioDeviceSelection.js:68 js/ui/status/volume.js:272
 msgid "Microphone"
 msgstr "麦克风"
 
@@ -756,7 +756,7 @@ msgid "Settings"
 msgstr "设置"
 
 #. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday).
-#: js/ui/calendar.js:41
+#: js/ui/calendar.js:36
 msgctxt "calendar-no-work"
 msgid "06"
 msgstr "06"
@@ -766,43 +766,43 @@ msgstr "06"
 #. * NOTE: These grid abbreviations are always shown together
 #. * and in order, e.g. "S M T W T F S".
 #.
-#: js/ui/calendar.js:70
+#: js/ui/calendar.js:65
 msgctxt "grid sunday"
 msgid "S"
 msgstr "日"
 
 #. Translators: Calendar grid abbreviation for Monday
-#: js/ui/calendar.js:72
+#: js/ui/calendar.js:67
 msgctxt "grid monday"
 msgid "M"
 msgstr "一"
 
 #. Translators: Calendar grid abbreviation for Tuesday
-#: js/ui/calendar.js:74
+#: js/ui/calendar.js:69
 msgctxt "grid tuesday"
 msgid "T"
 msgstr "二"
 
 #. Translators: Calendar grid abbreviation for Wednesday
-#: js/ui/calendar.js:76
+#: js/ui/calendar.js:71
 msgctxt "grid wednesday"
 msgid "W"
 msgstr "三"
 
 #. Translators: Calendar grid abbreviation for Thursday
-#: js/ui/calendar.js:78
+#: js/ui/calendar.js:73
 msgctxt "grid thursday"
 msgid "T"
 msgstr "四"
 
 #. Translators: Calendar grid abbreviation for Friday
-#: js/ui/calendar.js:80
+#: js/ui/calendar.js:75
 msgctxt "grid friday"
 msgid "F"
 msgstr "五"
 
 #. Translators: Calendar grid abbreviation for Saturday
-#: js/ui/calendar.js:82
+#: js/ui/calendar.js:77
 msgctxt "grid saturday"
 msgid "S"
 msgstr "六"
@@ -813,7 +813,7 @@ msgstr "六"
 #. * "%OB" is the new format specifier introduced in glibc 2.27,
 #. * in most cases you should not change it.
 #.
-#: js/ui/calendar.js:397
+#: js/ui/calendar.js:392
 msgid "%OB"
 msgstr "%OB"
 
@@ -826,61 +826,37 @@ msgstr "%OB"
 #. * in most cases you should not use the old "%B" here unless you
 #. * absolutely know what you are doing.
 #.
-#: js/ui/calendar.js:407
+#: js/ui/calendar.js:402
 msgid "%OB %Y"
 msgstr "%Y %OB"
 
-#: js/ui/calendar.js:466
+#: js/ui/calendar.js:461
 msgid "Previous month"
 msgstr "上个月"
 
-#: js/ui/calendar.js:481
+#: js/ui/calendar.js:476
 msgid "Next month"
 msgstr "下个月"
 
-#: js/ui/calendar.js:631
+#: js/ui/calendar.js:626
 #, no-javascript-format
 msgctxt "date day number format"
 msgid "%d"
 msgstr "%d"
 
-#: js/ui/calendar.js:687
+#: js/ui/calendar.js:682
 msgid "Week %V"
 msgstr "第 %V 个星期"
 
-#. Translators: Shown in calendar event list for all day events
-#. * Keep it short, best if you can use less then 10 characters
-#.
-#: js/ui/calendar.js:762
-msgctxt "event list time"
-msgid "All Day"
-msgstr "全天"
-
-#. Translators: Shown on calendar heading when selected day occurs on current year
-#: js/ui/calendar.js:900
-msgctxt "calendar heading"
-msgid "%A, %B %-d"
-msgstr "%-m月%-d日 %A"
-
-#. Translators: Shown on calendar heading when selected day occurs on different year
-#: js/ui/calendar.js:903
-msgctxt "calendar heading"
-msgid "%A, %B %-d, %Y"
-msgstr "%Y年%-m月%-d日 %A"
-
-#: js/ui/calendar.js:1133
+#: js/ui/calendar.js:895
 msgid "No Notifications"
 msgstr "无通知"
 
-#: js/ui/calendar.js:1136
-msgid "No Events"
-msgstr "无事件"
-
-#: js/ui/calendar.js:1190
+#: js/ui/calendar.js:949
 msgid "Do Not Disturb"
 msgstr "请勿打扰"
 
-#: js/ui/calendar.js:1209
+#: js/ui/calendar.js:968
 msgid "Clear"
 msgstr "清除"
 
@@ -1030,7 +1006,7 @@ msgstr "抱歉，认证失败。请重试。"
 msgid "%s is now known as %s"
 msgstr "%s 现在叫做 %s"
 
-#: js/ui/ctrlAltTab.js:21 js/ui/viewSelector.js:177
+#: js/ui/ctrlAltTab.js:21 js/ui/viewSelector.js:178
 msgid "Windows"
 msgstr "窗口"
 
@@ -1049,7 +1025,7 @@ msgstr "Dash"
 #. * "Tue 9:29 AM").  The string itself should become a full date, e.g.,
 #. * "February 17 2015".
 #.
-#: js/ui/dateMenu.js:75
+#: js/ui/dateMenu.js:79
 msgid "%B %-d %Y"
 msgstr "%Y年%-m月%-d日"
 
@@ -1057,35 +1033,67 @@ msgstr "%Y年%-m月%-d日"
 #. * below the time in the shell; it should combine the weekday and the
 #. * date, e.g. "Tuesday February 17 2015".
 #.
-#: js/ui/dateMenu.js:82
+#: js/ui/dateMenu.js:86
 msgid "%A %B %e %Y"
 msgstr "%Y年%-m月%-d日 %A"
 
-#: js/ui/dateMenu.js:162
+#. Translators: Shown on calendar heading when selected day occurs on current year
+#: js/ui/dateMenu.js:151
+msgctxt "calendar heading"
+msgid "%B %-d"
+msgstr "%-m月%-d日"
+
+#. Translators: Shown on calendar heading when selected day occurs on different year
+#: js/ui/dateMenu.js:154
+msgctxt "calendar heading"
+msgid "%B %-d %Y"
+msgstr "%Y年%-m月%-d日"
+
+#: js/ui/dateMenu.js:160
+msgid "Today"
+msgstr "今天"
+
+#: js/ui/dateMenu.js:164
+msgid "Tomorrow"
+msgstr "明天"
+
+#. Translators: Shown in calendar event list for all day events
+#. * Keep it short, best if you can use less then 10 characters
+#.
+#: js/ui/dateMenu.js:180
+msgctxt "event list time"
+msgid "All Day"
+msgstr "全天"
+
+#: js/ui/dateMenu.js:231
+msgid "No Events"
+msgstr "无事件"
+
+#: js/ui/dateMenu.js:348
 msgid "Add world clocks…"
 msgstr "添加世界时钟…"
 
-#: js/ui/dateMenu.js:163
+#: js/ui/dateMenu.js:349
 msgid "World Clocks"
 msgstr "世界时钟"
 
-#: js/ui/dateMenu.js:443
+#: js/ui/dateMenu.js:629
 msgid "Loading…"
 msgstr "正在载入……"
 
-#: js/ui/dateMenu.js:453
+#: js/ui/dateMenu.js:639
 msgid "Go online for weather information"
 msgstr "通过互联网查看天气信息"
 
-#: js/ui/dateMenu.js:455
+#: js/ui/dateMenu.js:641
 msgid "Weather information is currently unavailable"
 msgstr "天气信息目前不可用"
 
-#: js/ui/dateMenu.js:465
+#: js/ui/dateMenu.js:651
 msgid "Weather"
 msgstr "天气"
 
-#: js/ui/dateMenu.js:467
+#: js/ui/dateMenu.js:653
 msgid "Select weather location…"
 msgstr "选择天气地点…"
 
@@ -1268,11 +1276,11 @@ msgstr "某应用程序希望禁用快捷键"
 msgid "You can restore shortcuts by pressing %s."
 msgstr "按 %s 以恢复快捷键。"
 
-#: js/ui/inhibitShortcutsDialog.js:98
+#: js/ui/inhibitShortcutsDialog.js:100
 msgid "Deny"
 msgstr "拒绝"
 
-#: js/ui/inhibitShortcutsDialog.js:105
+#: js/ui/inhibitShortcutsDialog.js:107
 msgid "Allow"
 msgstr "允许"
 
@@ -1337,7 +1345,7 @@ msgstr "关闭"
 msgid "Leave Off"
 msgstr "保持关闭"
 
-#: js/ui/keyboard.js:207
+#: js/ui/keyboard.js:225
 msgid "Region & Language Settings"
 msgstr "区域与语言设置"
 
@@ -1410,25 +1418,25 @@ msgstr "屏幕锁定已禁用"
 msgid "Screen Locking requires the GNOME display manager."
 msgstr "屏幕锁定需要 GNOME 显示管理器。"
 
-#: js/ui/messageTray.js:1547
+#: js/ui/messageTray.js:1476
 msgid "System Information"
 msgstr "系统信息"
 
-#: js/ui/mpris.js:204
+#: js/ui/mpris.js:203
 msgid "Unknown artist"
 msgstr "未知艺人"
 
-#: js/ui/mpris.js:214
+#: js/ui/mpris.js:213
 msgid "Unknown title"
 msgstr "未知标题"
 
-#: js/ui/overview.js:73
+#: js/ui/overview.js:74
 msgid "Undo"
 msgstr "撤消"
 
 #. Translators: This is the main view to select
 #. activities. See also note for "Activities" string.
-#: js/ui/overview.js:86
+#: js/ui/overview.js:87
 msgid "Overview"
 msgstr "概览"
 
@@ -1436,7 +1444,7 @@ msgstr "概览"
 #. in the search entry when no search is
 #. active; it should not exceed ~30
 #. characters.
-#: js/ui/overview.js:107
+#: js/ui/overview.js:108
 msgid "Type to search"
 msgstr "输入以搜索"
 
@@ -1464,23 +1472,23 @@ msgstr "分配按键"
 msgid "Done"
 msgstr "完成"
 
-#: js/ui/padOsd.js:745
+#: js/ui/padOsd.js:732
 msgid "Edit…"
 msgstr "编辑…"
 
-#: js/ui/padOsd.js:787 js/ui/padOsd.js:910
+#: js/ui/padOsd.js:774 js/ui/padOsd.js:891
 msgid "None"
 msgstr "无"
 
-#: js/ui/padOsd.js:863
+#: js/ui/padOsd.js:845
 msgid "Press a button to configure"
 msgstr "按下按键以配置"
 
-#: js/ui/padOsd.js:864
+#: js/ui/padOsd.js:846
 msgid "Press Esc to exit"
 msgstr "按 Esc 以退出"
 
-#: js/ui/padOsd.js:867
+#: js/ui/padOsd.js:849
 msgid "Press any key to exit"
 msgstr "按任意键退出"
 
@@ -1742,17 +1750,17 @@ msgstr "定位服务已禁用"
 msgid "Enable"
 msgstr "启用"
 
-#: js/ui/status/location.js:355
+#: js/ui/status/location.js:350
 msgid "Allow location access"
 msgstr "允许获取位置信息"
 
 #. Translators: %s is an application name
-#: js/ui/status/location.js:357
+#: js/ui/status/location.js:352
 #, javascript-format
 msgid "The app %s wants to access your location"
 msgstr "应用 %s 想要获取您的位置信息"
 
-#: js/ui/status/location.js:367
+#: js/ui/status/location.js:362
 msgid "Location access can be changed at any time from the privacy settings."
 msgstr "位置访问权限可以随时在隐私设置里更改。"
 
@@ -2081,11 +2089,11 @@ msgstr "Thunderbolt 授权错误"
 msgid "Could not authorize the Thunderbolt device: %s"
 msgstr "无法授权 Thunderbolt 设备：%s"
 
-#: js/ui/status/volume.js:154
+#: js/ui/status/volume.js:155
 msgid "Volume changed"
 msgstr "音量已变更"
 
-#: js/ui/status/volume.js:225
+#: js/ui/status/volume.js:217
 msgid "Volume"
 msgstr "音量"
 
@@ -2131,19 +2139,19 @@ msgstr "向上滑动解锁"
 msgid "Click or press a key to unlock"
 msgstr "单击或按键解锁"
 
-#: js/ui/unlockDialog.js:550
+#: js/ui/unlockDialog.js:555
 msgid "Unlock Window"
 msgstr "解锁窗口"
 
-#: js/ui/unlockDialog.js:559
+#: js/ui/unlockDialog.js:564
 msgid "Log in as another user"
 msgstr "以另一个用户身份登录"
 
-#: js/ui/viewSelector.js:181
+#: js/ui/viewSelector.js:182
 msgid "Applications"
 msgstr "应用程序"
 
-#: js/ui/viewSelector.js:185
+#: js/ui/viewSelector.js:186
 msgid "Search"
 msgstr "搜索"
 
@@ -2269,12 +2277,12 @@ msgstr "使用指定模式，如“gdm”用于登录屏幕"
 msgid "List possible modes"
 msgstr "列出可用的模式"
 
-#: src/shell-app.c:286
+#: src/shell-app.c:268
 msgctxt "program"
 msgid "Unknown"
 msgstr "未知"
 
-#: src/shell-app.c:537
+#: src/shell-app.c:519
 #, c-format
 msgid "Failed to launch “%s”"
 msgstr "启动“%s”失败"
@@ -2846,6 +2854,14 @@ msgstr[0] "%u 个输入"
 #: subprojects/gvc/gvc-mixer-control.c:2766
 msgid "System Sounds"
 msgstr "系统声音"
+
+#~ msgctxt "calendar heading"
+#~ msgid "%A, %B %-d"
+#~ msgstr "%-m月%-d日 %A"
+
+#~ msgctxt "calendar heading"
+#~ msgid "%A, %B %-d, %Y"
+#~ msgstr "%Y年%-m月%-d日 %A"
 
 #~ msgid "Frequently used applications will appear here"
 #~ msgstr "常用的应用程序会出现在这里"
