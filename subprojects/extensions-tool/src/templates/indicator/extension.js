@@ -22,10 +22,8 @@ const GETTEXT_DOMAIN = 'my-indicator-extension';
 
 const { GObject, St } = imports.gi;
 
-const Gettext = imports.gettext.domain(GETTEXT_DOMAIN);
-const _ = Gettext.gettext;
-
 const ExtensionUtils = imports.misc.extensionUtils;
+const Me = ExtensionUtils.getCurrentExtension();
 const Main = imports.ui.main;
 const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
@@ -33,7 +31,7 @@ const PopupMenu = imports.ui.popupMenu;
 const Indicator = GObject.registerClass(
 class Indicator extends PanelMenu.Button {
     _init() {
-        super._init(0.0, _('My Shiny Indicator'));
+        super._init(0.0, Me._('My Shiny Indicator'));
 
         let box = new St.BoxLayout({ style_class: 'panel-status-menu-box' });
         box.add_child(new St.Icon({
@@ -43,9 +41,9 @@ class Indicator extends PanelMenu.Button {
         box.add_child(PopupMenu.arrowIcon(St.Side.BOTTOM));
         this.add_child(box);
 
-        let item = new PopupMenu.PopupMenuItem(_('Show Notification'));
+        let item = new PopupMenu.PopupMenuItem(Me._('Show Notification'));
         item.connect('activate', () => {
-            Main.notify(_('Whatʼs up, folks?'));
+            Main.notify(Me._('Whatʼs up, folks?'));
         });
         this.menu.addMenuItem(item);
     }
