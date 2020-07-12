@@ -23,8 +23,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2020-07-08 18:33+0000\n"
-"PO-Revision-Date: 2020-07-11 22:10-0400\n"
+"POT-Creation-Date: 2020-07-12 02:14+0000\n"
+"PO-Revision-Date: 2020-07-11 22:32-0400\n"
 "Last-Translator: Boyuan Yang <073plan@gmail.com>\n"
 "Language-Team: Chinese (China) <i18n-zh@googlegroups.com>\n"
 "Language: zh_CN\n"
@@ -1578,7 +1578,7 @@ msgstr "隐藏文本"
 
 #: js/ui/shellEntry.js:162
 msgid "Caps lock is on."
-msgstr "大写锁定键已开启。"
+msgstr "大写锁定已开启。"
 
 #: js/ui/shellMountOperation.js:285
 msgid "Hidden Volume"
@@ -2512,7 +2512,7 @@ msgstr "描述"
 
 #: subprojects/extensions-tool/src/command-create.c:443
 msgid "A short description of what the extension does"
-msgstr "简短描述下扩展所做的事情"
+msgstr "扩展功能的简短描述"
 
 #: subprojects/extensions-tool/src/command-create.c:446
 msgid "TEMPLATE"
