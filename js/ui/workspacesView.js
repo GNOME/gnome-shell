@@ -383,8 +383,10 @@ class WorkspacesDisplay extends St.Widget {
         this._windowDragEndId =
             Main.overview.connect('window-drag-begin',
                 this._windowDragEnd.bind(this));
-        this._overviewShownId = Main.overview.connect('shown',
-            this._syncWorkspacesActualGeometry.bind(this));
+        this._overviewShownId = Main.overview.connect('shown', () => {
+            this._inWindowFade = false;
+            this._syncWorkspacesActualGeometry();
+        });
 
         this._primaryIndex = Main.layoutManager.primaryIndex;
         this._workspacesViews = [];
@@ -403,6 +405,7 @@ class WorkspacesDisplay extends St.Widget {
 
         this._actualGeometry = null;
         this._inWindowDrag = false;
+        this._inWindowFade = false;
 
         this._gestureActive = false; // touch(pad) gestures
         this._canScroll = true; // limiting scrolling speed
@@ -551,19 +554,19 @@ class WorkspacesDisplay extends St.Widget {
         this.show();
         this._updateWorkspacesViews();
 
-        if (this._actualGeometry) {
-            for (let i = 0; i < this._workspacesViews.length; i++) {
-                let animationType;
-                if (fadeOnPrimary && i == this._primaryIndex)
-                    animationType = AnimationType.FADE;
-                else
-                    animationType = AnimationType.ZOOM;
-                this._workspacesViews[i].animateToOverview(animationType);
-            }
-
-            if (!fadeOnPrimary)
-                this._syncWorkspacesActualGeometry();
+        for (let i = 0; i < this._workspacesViews.length; i++) {
+            let animationType;
+            if (fadeOnPrimary && i == this._primaryIndex)
+                animationType = AnimationType.FADE;
+            else
+                animationType = AnimationType.ZOOM;
+            this._workspacesViews[i].animateToOverview(animationType);
         }
+
+        this._inWindowFade = fadeOnPrimary;
+
+        if (this._actualGeometry && !fadeOnPrimary)
+            this._syncWorkspacesActualGeometry();
 
         this._restackedNotifyId =
             Main.overview.connect('windows-restacked',
@@ -584,6 +587,8 @@ class WorkspacesDisplay extends St.Widget {
                 animationType = AnimationType.ZOOM;
             this._workspacesViews[i].animateFromOverview(animationType);
         }
+
+        this._inWindowFade = fadeOnPrimary;
 
         const { primaryIndex } = Main.layoutManager;
         const { x, y, width, height } =
@@ -709,7 +714,7 @@ class WorkspacesDisplay extends St.Widget {
 
     _syncWorkspacesActualGeometry() {
         const primaryView = this._getPrimaryView();
-        if (!primaryView)
+        if (!primaryView || this._inWindowFade)
             return;
 
         primaryView.ease({
