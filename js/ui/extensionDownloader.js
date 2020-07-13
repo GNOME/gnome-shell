@@ -132,40 +132,40 @@ function checkForUpdates() {
     if (!Main.extensionManager.updatesSupported)
         return;
 
-    let metadatas = {};
-    Main.extensionManager.getUuids().forEach(uuid => {
-        let extension = Main.extensionManager.lookup(uuid);
-        if (extension.type !== ExtensionUtils.ExtensionType.PER_USER)
-            return;
-        if (extension.hasUpdate)
-            return;
-        metadatas[uuid] = extension.metadata;
-    });
+    const metadatas = Main.extensionManager.getUuids().reduce((filtered, uuid) => {
+        const extension = Main.extensionManager.lookup(uuid);
+        if (extension.type === ExtensionUtils.ExtensionType.PER_USER && !extension.hasUpdate)
+            filtered.push(extension.metadata);
+        return filtered;
+    }, []);
 
-    if (Object.keys(metadatas).length === 0)
+    if (metadatas.length === 0)
         return; // nothing to update
 
-    let versionCheck = global.settings.get_boolean(
+    const versionCheck = global.settings.get_boolean(
         'disable-extension-version-validation');
-    let params = {
-        shell_version: Config.PACKAGE_VERSION,
-        installed: JSON.stringify(metadatas),
-        disable_version_validation: versionCheck.toString(),
-    };
+    const url = REPOSITORY_URL_UPDATE;
 
-    let url = REPOSITORY_URL_UPDATE;
-    let message = Soup.form_request_new_from_hash('GET', url, params);
-    _httpSession.queue_message(message, () => {
-        if (message.status_code != Soup.KnownStatusCode.OK)
-            return;
+    for (const metadata of metadatas) {
+        const params = {
+            shell_version: Config.PACKAGE_VERSION,
+            installed: JSON.stringify({ [metadata.uuid]: metadata }),
+            disable_version_validation: versionCheck.toString(),
+        };
 
-        let operations = JSON.parse(message.response_body.data);
-        for (let uuid in operations) {
-            let operation = operations[uuid];
-            if (operation === 'upgrade' || operation === 'downgrade')
-                downloadExtensionUpdate(uuid);
-        }
-    });
+        const message = Soup.form_request_new_from_hash('GET', url, params);
+        _httpSession.queue_message(message, () => {
+            if (message.status_code !== Soup.KnownStatusCode.OK)
+                return;
+
+            const operations = JSON.parse(message.response_body.data);
+            for (const uuid in operations) {
+                const operation = operations[uuid];
+                if (operation === 'upgrade' || operation === 'downgrade')
+                    downloadExtensionUpdate(uuid);
+            }
+        });
+    }
 }
 
 var InstallExtensionDialog = GObject.registerClass(
