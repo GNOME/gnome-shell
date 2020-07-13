@@ -153,6 +153,10 @@ function checkForUpdates() {
         disable_version_validation: versionCheck.toString(),
     };
 
+    let updateCheck = global.settings.get_boolean(
+        'enable-extension-updates');
+    if (!updateCheck)
+        return;
     let url = REPOSITORY_URL_UPDATE;
     let message = Soup.form_request_new_from_hash('GET', url, params);
     _httpSession.queue_message(message, () => {

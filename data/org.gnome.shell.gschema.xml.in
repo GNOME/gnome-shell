@@ -49,6 +49,14 @@
         load all extensions regardless of the versions they claim to support.
       </description>
     </key>
+    <key name="enable-extension-updates" type="b">
+      <default>true</default>
+      <summary>Enables checking for updates of installed extensions</summary>
+      <description>
+        GNOME Shell will make network connections to https://extensions.gnome.org to
+        check for updates to extensions installed if this is enabled.
+      </description>
+    </key>
     <key name="favorite-apps" type="as">
       <default>[ 'org.gnome.Epiphany.desktop', 'org.gnome.Geary.desktop', 'org.gnome.Calendar.desktop', 'org.gnome.Music.desktop', 'org.gnome.Photos.desktop', 'org.gnome.Nautilus.desktop', 'org.gnome.Software.desktop' ]</default>
       <summary>List of desktop file IDs for favorite applications</summary>
