@@ -68,10 +68,11 @@ $popover_arrow_height: 12px;
 
 // popover submenus
 .popup-sub-menu {
+  $_borders: transparentize($borders_color, 0.2);
   background-color: darken($bg_color, 3%);
   box-shadow: none;
-  border-top: 1px solid transparentize($borders_color, 0.2);
-  border-bottom: 1px solid transparentize($borders_color, 0.2);
+  border-top: 1px solid $_borders;
+  border-bottom: 1px solid $_borders;
 }
 
 // container for radio and check boxes

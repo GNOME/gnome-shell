@@ -1,9 +1,10 @@
 // Links
 .shell-link {
-  color: $link_color;
+  $_tc: $link_color;
+  color: $_tc;
 
   &:hover {
-    color: lighten($link_color, 10%);
+    color: lighten($_tc, 10%);
   }
 }
 

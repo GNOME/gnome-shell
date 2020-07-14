@@ -28,9 +28,10 @@
 .ws-switcher-active-down,
 .ws-switcher-active-left,
 .ws-switcher-active-right {
+  $_bg: $selected_bg_color;
   height: 52px;
-  background-color: $selected_bg_color;
-  border: 1px solid if($variant=='light', darken($selected_bg_color, 8%), lighten($selected_bg_color, 5%));
+  background-color: $_bg;
+  border: 1px solid if($variant=='light', darken($_bg, 8%), lighten($_bg, 5%));
   border-radius: $base_border_radius + 3px;
   color: $selected_fg_color;
 }
