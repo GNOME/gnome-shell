@@ -329,7 +329,10 @@ g_loadable_icon_interface_init (GLoadableIconIface *iface)
  *
  * Creates a new #StImageContent, a simple content for sized images.
  *
- * Return value: (transfer full): the newly created #StImageContent content
+ * See #ClutterImage for setting the actual image to display or #StIcon for
+ * displaying icons.
+ *
+ * Returns: (transfer full): the newly created #StImageContent content
  *   Use g_object_unref() when done.
  */
 ClutterContent *

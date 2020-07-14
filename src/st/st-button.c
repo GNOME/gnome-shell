@@ -484,6 +484,11 @@ st_button_class_init (StButtonClass *klass)
   widget_class->style_changed = st_button_style_changed;
   widget_class->get_accessible_type = st_button_accessible_get_type;
 
+  /**
+   * StButton:label:
+   *
+   * The label of the #StButton.
+   */
   props[PROP_LABEL] =
     g_param_spec_string ("label",
                          "Label",
@@ -491,6 +496,11 @@ st_button_class_init (StButtonClass *klass)
                          NULL,
                          ST_PARAM_READWRITE);
 
+  /**
+   * StButton:button-mask:
+   *
+   * Which buttons will trigger the #StButton::clicked signal.
+   */
   props[PROP_BUTTON_MASK] =
     g_param_spec_flags ("button-mask",
                         "Button mask",
@@ -498,6 +508,11 @@ st_button_class_init (StButtonClass *klass)
                         ST_TYPE_BUTTON_MASK, ST_BUTTON_ONE,
                         ST_PARAM_READWRITE);
 
+  /**
+   * StButton:toggle-mode:
+   *
+   * Whether the #StButton is operating in toggle mode (on/off).
+   */
   props[PROP_TOGGLE_MODE] =
     g_param_spec_boolean ("toggle-mode",
                           "Toggle Mode",
@@ -505,6 +520,15 @@ st_button_class_init (StButtonClass *klass)
                           FALSE,
                           ST_PARAM_READWRITE);
 
+  /**
+   * StButton:checked:
+   *
+   * If #StButton:toggle-mode is %TRUE, indicates if the #StButton is toggled
+   * "on" or "off".
+   *
+   * When the value is %TRUE, the #StButton will have the `checked` CSS
+   * pseudo-class set.
+   */
   props[PROP_CHECKED] =
     g_param_spec_boolean ("checked",
                           "Checked",
@@ -512,6 +536,12 @@ st_button_class_init (StButtonClass *klass)
                           FALSE,
                           ST_PARAM_READWRITE);
 
+  /**
+   * StButton:pressed:
+   *
+   * In contrast to #StButton:checked, this property indicates whether the
+   * #StButton is being actively pressed, rather than just in the "on" state.
+   */
   props[PROP_PRESSED] =
     g_param_spec_boolean ("pressed",
                           "Pressed",
@@ -583,9 +613,10 @@ st_button_new_with_label (const gchar *text)
  * st_button_get_label:
  * @button: a #StButton
  *
- * Get the text displayed on the button
+ * Get the text displayed on the button. If the label is empty, an empty string
+ * will be returned instead of %NULL.
  *
- * Returns: the text for the button. This must not be freed by the application
+ * Returns: (transfer none): the text for the button
  */
 const gchar *
 st_button_get_label (StButton *button)
@@ -598,9 +629,9 @@ st_button_get_label (StButton *button)
 /**
  * st_button_set_label:
  * @button: a #Stbutton
- * @text: text to set the label to
+ * @text: (nullable): text to set the label to
  *
- * Sets the text displayed on the button
+ * Sets the text displayed on the button.
  */
 void
 st_button_set_label (StButton    *button,
@@ -726,7 +757,7 @@ st_button_set_toggle_mode (StButton *button,
  * st_button_get_checked:
  * @button: a #StButton
  *
- * Get the state of the button that is in toggle mode.
+ * Get the #StButton:checked property of a #StButton that is in toggle mode.
  *
  * Returns: %TRUE if the button is checked, or %FALSE if not
  */
@@ -743,8 +774,8 @@ st_button_get_checked (StButton *button)
  * @button: a #Stbutton
  * @checked: %TRUE or %FALSE
  *
- * Sets the pressed state of the button. This is only really useful if the
- * button has #toggle-mode mode set to %TRUE.
+ * Set the #StButton:checked property of the button. This is only really useful
+ * if the button has #StButton:toggle-mode property set to %TRUE.
  */
 void
 st_button_set_checked (StButton *button,
@@ -773,9 +804,9 @@ st_button_set_checked (StButton *button,
  * @button: an #StButton
  *
  * If this widget is holding a pointer grab, this function will
- * will ungrab it, and reset the pressed state.  The effect is
+ * will ungrab it, and reset the #StButton:pressed state.  The effect is
  * similar to if the user had released the mouse button, but without
- * emitting the clicked signal.
+ * emitting the #StButton::clicked signal.
  *
  * This function is useful if for example you want to do something
  * after the user is holding the mouse button for a given period of

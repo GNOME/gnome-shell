@@ -51,6 +51,15 @@ typedef struct _StThemeContext   StThemeContext;
 #define ST_TYPE_THEME_NODE              (st_theme_node_get_type ())
 G_DECLARE_FINAL_TYPE (StThemeNode, st_theme_node, ST, THEME_NODE, GObject)
 
+/**
+ * StSide:
+ * @ST_SIDE_TOP: The top side.
+ * @ST_SIDE_RIGHT: The right side.
+ * @ST_SIDE_BOTTOM: The bottom side.
+ * @ST_SIDE_LEFT: The left side.
+ *
+ * Used to target a particular side of a #StThemeNode element.
+ */
 typedef enum {
     ST_SIDE_TOP,
     ST_SIDE_RIGHT,
@@ -58,6 +67,15 @@ typedef enum {
     ST_SIDE_LEFT
 } StSide;
 
+/**
+ * StCorner:
+ * @ST_CORNER_TOPLEFT: The top-right corner.
+ * @ST_CORNER_TOPRIGHT: The top-right corner.
+ * @ST_CORNER_BOTTOMRIGHT: The bottom-right corner.
+ * @ST_CORNER_BOTTOMLEFT: The bottom-left corner.
+ *
+ * Used to target a particular corner of a #StThemeNode element.
+ */
 typedef enum {
     ST_CORNER_TOPLEFT,
     ST_CORNER_TOPRIGHT,
@@ -66,6 +84,18 @@ typedef enum {
 } StCorner;
 
 /* These are the CSS values; that doesn't mean we have to implement blink... */
+/**
+ * StTextDecoration:
+ * @ST_TEXT_DECORATION_: Text is underlined
+ * @ST_TEXT_DECORATION_OVERLINE: Text is overlined
+ * @ST_TEXT_DECORATION_LINE_THROUGH: Text is striked out
+ * @ST_TEXT_DECORATION_BLINK: Text blinks
+ *
+ * Flags used to determine the decoration of text.
+ *
+ * Not that neither %ST_TEXT_DECORATION_OVERLINE or %ST_TEXT_DECORATION_BLINK
+ * are implemented, currently.
+ */
 typedef enum {
     ST_TEXT_DECORATION_UNDERLINE    = 1 << 0,
     ST_TEXT_DECORATION_OVERLINE     = 1 << 1,
@@ -73,6 +103,15 @@ typedef enum {
     ST_TEXT_DECORATION_BLINK        = 1 << 3
 } StTextDecoration;
 
+/**
+ * StTextAlign:
+ * @ST_TEXT_ALIGN_LEFT: Text is aligned at the beginning of the label.
+ * @ST_TEXT_ALIGN_CENTER: Text is aligned in the middle of the label.
+ * @ST_TEXT_ALIGN_RIGHT: Text is aligned at the end of the label.
+ * @ST_GRADIENT_JUSTIFY: Text is justified in the label.
+ *
+ * Used to align text in a label.
+ */
 typedef enum {
     ST_TEXT_ALIGN_LEFT = PANGO_ALIGN_LEFT,
     ST_TEXT_ALIGN_CENTER = PANGO_ALIGN_CENTER,
@@ -80,6 +119,15 @@ typedef enum {
     ST_TEXT_ALIGN_JUSTIFY
 } StTextAlign;
 
+/**
+ * StGradientType:
+ * @ST_GRADIENT_NONE: No gradient.
+ * @ST_GRADIENT_VERTICAL: A vertical gradient.
+ * @ST_GRADIENT_HORIZONTAL: A horizontal gradient.
+ * @ST_GRADIENT_RADIAL: Lookup the style requested in the icon name.
+ *
+ * Used to specify options when rendering gradients.
+ */
 typedef enum {
   ST_GRADIENT_NONE,
   ST_GRADIENT_VERTICAL,
@@ -87,6 +135,16 @@ typedef enum {
   ST_GRADIENT_RADIAL
 } StGradientType;
 
+/**
+ * StIconStyle:
+ * @ST_ICON_STYLE_REQUESTED: Lookup the style requested in the icon name.
+ * @ST_ICON_STYLE_REGULAR: Try to always load regular icons, even when symbolic
+ *   icon names are given.
+ * @ST_ICON_STYLE_SYMBOLIC: Try to always load symbolic icons, even when regular
+ *   icon names are given.
+ *
+ * Used to specify options when looking up icons.
+ */
 typedef enum {
   ST_ICON_STYLE_REQUESTED,
   ST_ICON_STYLE_REGULAR,

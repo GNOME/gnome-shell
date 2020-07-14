@@ -86,6 +86,40 @@ st_scrollable_default_init (StScrollableInterface *g_iface)
 
   if (!initialized)
     {
+      /**
+       * StScrollable:hadjustment:
+       *
+       * The horizontal #StAdjustment used by the #StScrollable.
+       *
+       * Implementations should override this property to provide read-write
+       * access to the #StAdjustment.
+       *
+       * JavaScript code may override this as demonstrated below:
+       *
+       * |[<!-- language="JavaScript" -->
+       * var MyScrollable = GObject.registerClass({
+       *     Properties: {
+       *         'hadjustment': GObject.ParamSpec.override(
+       *             'hadjustment',
+       *             St.Scrollable
+       *         )
+       *     }
+       * }, class MyScrollable extends St.Scrollable {
+       *
+       *     get hadjustment() {
+       *         return this._hadjustment || null;
+       *     }
+       *
+       *     set hadjustment(adjustment) {
+       *         if (this.hadjustment === adjustment)
+       *             return;
+       *
+       *         this._hadjustment = adjustment;
+       *         this.notify('hadjustment');
+       *     }
+       * });
+       * ]|
+       */
       g_object_interface_install_property (g_iface,
                                            g_param_spec_object ("hadjustment",
                                                                 "StAdjustment",
@@ -93,6 +127,17 @@ st_scrollable_default_init (StScrollableInterface *g_iface)
                                                                 ST_TYPE_ADJUSTMENT,
                                                                 ST_PARAM_READWRITE));
 
+      /**
+       * StScrollable:vadjustment:
+       *
+       * The vertical #StAdjustment used by the #StScrollable.
+       *
+       * Implementations should override this property to provide read-write
+       * access to the #StAdjustment.
+       *
+       * See #StScrollable:hadjustment for an example of how to override this
+       * property in JavaScript code.
+       */
       g_object_interface_install_property (g_iface,
                                            g_param_spec_object ("vadjustment",
                                                                 "StAdjustment",
@@ -104,6 +149,18 @@ st_scrollable_default_init (StScrollableInterface *g_iface)
     }
 }
 
+/**
+ * st_scrollable_set_adjustments:
+ * @scrollable: a #StScrollable
+ * @hadjustment: the horizontal #StAdjustment
+ * @vadjustment: the vertical #StAdjustment
+ *
+ * This method should be implemented by classes implementing the #StScrollable
+ * interface.
+ *
+ * JavaScript code should do this by overriding the `vfunc_set_adjustments()`
+ * method.
+ */
 void
 st_scrollable_set_adjustments (StScrollable *scrollable,
                                StAdjustment *hadjustment,
@@ -116,11 +173,17 @@ st_scrollable_set_adjustments (StScrollable *scrollable,
 
 /**
  * st_scroll_bar_get_adjustments:
- * @hadjustment: (transfer none) (out) (optional) (nullable): location to store the horizontal adjustment, or %NULL
- * @vadjustment: (transfer none) (out) (optional) (nullable): location to store the vertical adjustment, or %NULL
+ * @hadjustment: (transfer none) (out) (optional): location to store the horizontal adjustment, or %NULL
+ * @vadjustment: (transfer none) (out) (optional): location to store the vertical adjustment, or %NULL
  *
  * Gets the adjustment objects that store the offsets of the scrollable widget
  * into its possible scrolling area.
+ *
+ * This method should be implemented by classes implementing the #StScrollable
+ * interface.
+ *
+ * JavaScript code should do this by overriding the `vfunc_get_adjustments()`
+ * method.
  */
 void
 st_scrollable_get_adjustments (StScrollable  *scrollable,
