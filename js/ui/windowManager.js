@@ -883,7 +883,7 @@ var WindowManager = class {
                                                         log(error.message);
                                                 });
 
-        global.display.connect('pad-mode-switch', (display, pad, group, mode) => {
+        global.display.connect('pad-mode-switch', (display, pad, _group, _mode) => {
             let labels = [];
 
             // FIXME: Fix num buttons
@@ -892,10 +892,8 @@ var WindowManager = class {
                 labels.push(str ? str : '');
             }
 
-            if (this._gsdWacomProxy) {
+            if (this._gsdWacomProxy)
                 this._gsdWacomProxy.SetOLEDLabelsRemote(pad.get_device_node(), labels);
-                this._gsdWacomProxy.SetGroupModeLEDRemote(pad.get_device_node(), group, mode);
-            }
         });
 
         global.display.connect('init-xserver', (display, task) => {
