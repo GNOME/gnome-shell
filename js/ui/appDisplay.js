@@ -1479,6 +1479,9 @@ var AppFolderDialog = GObject.registerClass({
             x_expand: true,
             x_align: Clutter.ActorAlign.CENTER,
         });
+        this.actor.connect('destroy', () => {
+            this.view.actor.destroy();
+        });
 
         this._entry.clutter_text.connect('activate', () => {
             this._showFolderLabel();
