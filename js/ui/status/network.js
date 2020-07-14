@@ -1178,6 +1178,13 @@ var NMDeviceWireless = class {
         this._description = '';
 
         this.item = new PopupMenu.PopupSubMenuMenuItem('', true);
+
+        this._knownNetworksSection = new PopupMenu.PopupMenuSection();
+        this.item.menu.addMenuItem(
+            new PopupMenu.PopupSeparatorMenuItem(_('Known Networks')));
+        this.item.menu.addMenuItem(this._knownNetworksSection);
+        this.item.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
+
         this.item.menu.addAction(_("Select Network"), this._showDialog.bind(this));
 
         this._toggleItem = new PopupMenu.PopupMenuItem('');
@@ -1191,6 +1198,10 @@ var NMDeviceWireless = class {
         this._activeApChangedId = this._device.connect('notify::active-access-point', this._activeApChanged.bind(this));
         this._stateChangedId = this._device.connect('state-changed', this._deviceStateChanged.bind(this));
         this._notifyConnectivityId = this._client.connect('notify::connectivity', this._iconChanged.bind(this));
+        this._availableConnectionsId = this._device.connect('notify::available-connection',
+            this._availableConnectionsChanged.bind(this));
+
+        this._availableConnectionsChanged();
 
         this._sync();
     }
@@ -1212,6 +1223,10 @@ var NMDeviceWireless = class {
         if (this._stateChangedId) {
             GObject.signal_handler_disconnect(this._device, this._stateChangedId);
             this._stateChangedId = 0;
+        }
+        if (this._availableConnectionsId) {
+            GObject.signal_handler_disconnect(this._device, this._availableConnectionsId);
+            this._availableConnectionsId = 0;
         }
         if (this._strengthChangedId > 0) {
             this._activeAccessPoint.disconnect(this._strengthChangedId);
@@ -1287,9 +1302,34 @@ var NMDeviceWireless = class {
         this._sync();
     }
 
+    _availableConnectionsChanged() {
+        this._knownNetworksSection.removeAll();
+
+        let { activeConnection } = this._device;
+        let availableConnections = this._device.get_available_connections();
+
+        for (let i = 0; i < availableConnections.length; i++) {
+            let conn = availableConnections[i];
+            let { ssid } = conn.get_setting_wireless();
+            log(`${conn} (${ssid.get_data()})`);
+
+            let item = new PopupMenu.PopupMenuItem(ssidToLabel(ssid));
+            item.setOrnament(
+                activeConnection && activeConnection.connection === conn
+                    ? PopupMenu.Ornament.DOT
+                    : PopupMenu.Ornament.NONE);
+            this._knownNetworksSection.addMenuItem(item);
+        }
+
+        this._sync();
+    }
+
     _sync() {
         this._toggleItem.label.text = this._client.wireless_enabled ? _("Turn Off") : _("Turn On");
         this._toggleItem.visible = this._client.wireless_hardware_enabled;
+
+        this._knownNetworksSection.actor.visible =
+            this._knownNetworksSection.numMenuItems > 1;
 
         this.item.icon.icon_name = this._getMenuIcon();
         this.item.label.text = this._getStatus();
