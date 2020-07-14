@@ -139,7 +139,9 @@ function checkForUpdates() {
             return;
         if (extension.hasUpdate)
             return;
-        metadatas[uuid] = extension.metadata;
+        metadatas[uuid] = {
+            version: extension.metadata.version,
+        };
     });
 
     if (Object.keys(metadatas).length === 0)
