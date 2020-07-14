@@ -439,8 +439,8 @@ cr_utils_read_char_from_utf8_buf (const guchar * a_in,
          */
         guint32 c = 0;
 
-        g_return_val_if_fail (a_in && a_out && a_out
-                              && a_consumed, CR_BAD_PARAM_ERROR);
+        g_return_val_if_fail (a_in && a_out && a_consumed, 
+                              CR_BAD_PARAM_ERROR);
 
         if (a_in_len < 1) {
                 status = CR_OK;
@@ -813,7 +813,7 @@ cr_utils_ucs4_to_utf8 (const guint32 * a_in,
                                 = (0x80 | ((a_in[in_index] >> 12) & 0x3F));
                         a_out[out_index + 4]
                                 = (0x80 | ((a_in[in_index] >> 6) & 0x3F));
-                        a_out[out_index + 4]
+                        a_out[out_index + 5]
                                 = (0x80 | (a_in[in_index] & 0x3F));
                         out_index += 6;
                 } else {

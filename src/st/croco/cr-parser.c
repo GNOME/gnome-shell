@@ -1801,10 +1801,8 @@ cr_parser_parse_simple_selector (CRParser * a_this, CRSimpleSel ** a_sel)
 
                         /*try to parse a pseudo */
 
-                        if (token) {
-                                cr_token_destroy (token);
-                                token = NULL;
-                        }
+                        cr_token_destroy (token);
+                        token = NULL;
 
                         pseudo = cr_pseudo_new ();
 
