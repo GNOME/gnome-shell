@@ -49,8 +49,6 @@ GdkPixbuf *shell_util_create_pixbuf_from_data (const guchar      *data,
                                                int                height,
                                                int                rowstride);
 
-gboolean shell_util_need_background_refresh (void);
-
 ClutterContent * shell_util_get_content_for_window_actor (MetaWindowActor *window_actor,
                                                           MetaRectangle   *window_rect);
 
