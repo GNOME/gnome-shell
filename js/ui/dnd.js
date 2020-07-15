@@ -675,12 +675,13 @@ var _Draggable = class _Draggable {
         this._dragState = DragState.CANCELLED;
 
         if (this._actorDestroyed || wasCancelled) {
+            let dragActor = this._dragActor;
             global.display.set_cursor(Meta.Cursor.DEFAULT);
             if (!this._buttonDown)
                 this._dragComplete();
             this.emit('drag-end', eventTime, false);
-            if (!this._dragOrigParent && this._dragActor)
-                this._dragActor.destroy();
+            if (!this._dragOrigParent && dragActor)
+                dragActor.destroy();
 
             return;
         }
@@ -735,9 +736,12 @@ var _Draggable = class _Draggable {
     }
 
     _onAnimationComplete(dragActor, eventTime) {
+        this.emit('drag-end', eventTime, false);
+        this._finishAnimation();
+
         if (this._dragOrigParent) {
-            Main.uiGroup.remove_child(this._dragActor);
-            this._dragOrigParent.add_actor(this._dragActor);
+            Main.uiGroup.remove_child(dragActor);
+            this._dragOrigParent.add_actor(dragActor);
             dragActor.set_scale(this._dragOrigScale, this._dragOrigScale);
             if (this._dragActorHadFixedPos)
                 dragActor.set_position(this._dragOrigX, this._dragOrigY);
@@ -746,9 +750,6 @@ var _Draggable = class _Draggable {
         } else {
             dragActor.destroy();
         }
-
-        this.emit('drag-end', eventTime, false);
-        this._finishAnimation();
     }
 
     _dragComplete() {
