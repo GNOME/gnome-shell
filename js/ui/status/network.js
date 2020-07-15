@@ -1437,6 +1437,16 @@ var NMVpnConnectionItem = class extends NMConnectionItem {
             this.emit('activation-failed', reason);
         }
 
+        if (newstate === NM.VpnConnectionState.ACTIVATED && ac.banner) {
+            let source = new MessageTray.Source('Network Manager',
+                'network-transmit-receive');
+            source.policy = new MessageTray.NotificationApplicationPolicy('gnome-network-panel');
+            Main.messageTray.add(source);
+
+            let notification = new MessageTray.Notification(source, 'Message from VPN Server', ac.banner);
+            source.notify(notification);
+        }
+
         this.emit('icon-changed');
         super._connectionStateChanged();
     }
