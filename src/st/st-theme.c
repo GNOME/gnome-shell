@@ -126,6 +126,7 @@ stylesheet_unref (CRStyleSheet *stylesheet)
 
   cr_stylesheet_unref (stylesheet);
 }
+G_DEFINE_AUTOPTR_CLEANUP_FUNC (CRStyleSheet, stylesheet_unref);
 
 static void
 st_theme_init (StTheme *theme)
@@ -224,6 +225,10 @@ parse_stylesheet (GFile   *file,
       return NULL;
     }
 
+  /* Styleshet ref cunting starts at 0, normalize it, ensuring it's set at 1 */
+  g_assert_true (stylesheet->ref_count == 0);
+  cr_stylesheet_ref (stylesheet);
+
   return stylesheet;
 }
 
@@ -277,15 +282,12 @@ st_theme_load_stylesheet (StTheme    *theme,
                           GFile      *file,
                           GError    **error)
 {
-  CRStyleSheet *stylesheet;
+  g_autoptr(CRStyleSheet) stylesheet = NULL;
   StyleSheetData *stylesheet_data;
 
   stylesheet = parse_stylesheet (file, error);
   if (!insert_stylesheet (theme, file, stylesheet))
-    {
-      cr_stylesheet_unref (stylesheet);
-      return FALSE;
-    }
+    return FALSE;
 
   stylesheet_data = stylesheet->app_data;
   stylesheet_data->extension_stylesheet = TRUE;
@@ -346,9 +348,9 @@ static void
 st_theme_constructed (GObject *object)
 {
   StTheme *theme = ST_THEME (object);
-  CRStyleSheet *application_stylesheet;
-  CRStyleSheet *theme_stylesheet;
-  CRStyleSheet *default_stylesheet;
+  g_autoptr(CRStyleSheet) application_stylesheet = NULL;
+  g_autoptr(CRStyleSheet) theme_stylesheet = NULL;
+  g_autoptr(CRStyleSheet) default_stylesheet = NULL;
 
   G_OBJECT_CLASS (st_theme_parent_class)->constructed (object);
 
@@ -890,22 +892,14 @@ add_matched_properties (StTheme      *a_this,
 
                 if (import_rule->url->stryng && import_rule->url->stryng->str)
                   {
-                    CRStyleSheet *sheet;
+                    g_autoptr(CRStyleSheet) sheet = NULL;
                     file = _st_theme_resolve_url (a_this,
                                                   a_nodesheet,
                                                   import_rule->url->stryng->str);
                     sheet = parse_stylesheet (file, NULL);
 
                     if (insert_stylesheet (a_this, file, sheet))
-                      {
-                        /* refcount of stylesheets starts off at zero, so we don't
-                         * need to unref! */
-                        import_rule->sheet = sheet;
-                      }
-                    else
-                      {
-                        cr_stylesheet_unref (sheet);
-                      }
+                      import_rule->sheet = g_steal_pointer (&sheet);
                   }
 
                 if (!import_rule->sheet)
