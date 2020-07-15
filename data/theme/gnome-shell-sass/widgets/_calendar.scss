@@ -77,24 +77,23 @@
 
   .pager-button {
     background-color: transparent;
-    height: 32px;
-    width: 32px;
+    height: $base_icon_size * 2;
+    width: $base_icon_size * 2;
     border-radius: $base_border_radius;
     &:hover, &:focus { background-color: lighten($hover_bg_color, 5%); }
     &:active { background-color: $active_bg_color; }
   }
 
-
-  $calendar_day_size: 32px;
+  $calendar_day_size: $base_icon_size * 2;
 
   .calendar-day-base {
-    @include fontsize($base_font_size - 3);
+    @include fontsize($base_font_size * 0.725);
     text-align: center;
-    width: $calendar_day_size;
-    height: $calendar_day_size;
+    width: $calendar_day_size * 1.375;
+    height: $calendar_day_size * 1.375;
     padding: 0;
     margin: 2px;
-    border-radius: $calendar_day_size * 0.5 + 2px;
+    border-radius: 99px;
     border: 1px solid transparent; //avoid jumparound due to today
     font-feature-settings: "tnum";
     &:hover, &:focus { background-color: $hover_bg_color; }
