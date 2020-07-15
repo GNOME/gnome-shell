@@ -1,16 +1,33 @@
 /* Switches */
 
-// these are equal to the size of the SVG assets
-$switch_height: 22px;
-$switch_width: 46px;
+$switch_height: 1.5em;
+$switch_width: 2.86em;
+$switch_handle_border: 0.07em;
 
 .toggle-switch {
-  color: $fg_color;
+  $_handle_size: $switch_height - 2 * $switch_handle_border;
+  $_transition-duration: 250ms;
   height: $switch_height;
   width: $switch_width;
-  background-size: contain;
-  background-image: if($variant == 'light', url("resource:///org/gnome/shell/theme/toggle-off.svg"),url("resource:///org/gnome/shell/theme/toggle-off-dark.svg"));
-  &:checked { 
-    background-image: if($variant == 'light', url("resource:///org/gnome/shell/theme/toggle-on.svg"),url("resource:///org/gnome/shell/theme/toggle-on-dark.svg"));
+  border-radius: $switch_height;
+  background: mix($borders_color, $bg_color, 50%);
+  box-shadow: inset 0 0 0 1px $borders_color;
+  transition-duration: $_transition-duration;
+
+  .handle {
+    width: $_handle_size;
+    height: $_handle_size;
+    border-radius: $_handle_size;
+    background: lighten($bg_color, 3%);
+    border: $switch_handle_border solid darken($bg_color, 14%);
+    transition-duration: $_transition-duration;
+  }
+
+  &:checked {
+    background: $selected_bg_color;
+    box-shadow: inset 0 0 0 1px darken($selected_bg_color, 25%);
+    .handle {
+      @if $variant == 'light' { border-color: darken($selected_bg_color, 15%); }
+    }
   }
 }

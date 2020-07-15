@@ -317,16 +317,31 @@ var Switch = GObject.registerClass({
             GObject.ParamFlags.READWRITE,
             false),
     },
-}, class Switch extends St.Bin {
-    _init(state) {
+}, class Switch extends St.BoxLayout {
+    _init(state, reactive = true) {
         this._state = false;
+        this._dragging = false;
 
         super._init({
             style_class: 'toggle-switch',
             accessible_role: Atk.Role.CHECK_BOX,
             can_focus: true,
-            state,
         });
+
+        this._handle = new St.Widget({
+            style_class: 'handle',
+            reactive,
+        });
+        this._handleAlignConstraint = new Clutter.AlignConstraint({
+            align_axis: Clutter.AlignAxis.X_AXIS,
+            source: this,
+        });
+        this._handle.add_constraint_with_name('align', this._handleAlignConstraint);
+        this._handle.connect('button-press-event', (actor, event) => this._startDragging(event));
+        this._handle.connect('touch-event', this._touchDragging.bind(this));
+        this.add_child(this._handle);
+
+        this.state = state;
     }
 
     get state() {
@@ -334,20 +349,117 @@ var Switch = GObject.registerClass({
     }
 
     set state(state) {
-        if (this._state === state)
-            return;
+        let handleAlignFactor;
+        let duration = this._handle.mapped
+            ? this._handle.get_theme_node().get_transition_duration()
+            : 0;
 
-        if (state)
+        if (state) {
             this.add_style_pseudo_class('checked');
-        else
+            handleAlignFactor = 1.0;
+        } else {
             this.remove_style_pseudo_class('checked');
+            handleAlignFactor = 0.0;
+        }
 
-        this._state = state;
-        this.notify('state');
+        this._handle.ease_property('@constraints.align.factor', handleAlignFactor, {
+            duration,
+        });
+
+        if (this._state !== state) {
+            this._state = state;
+            this.notify('state');
+        }
     }
 
     toggle() {
         this.state = !this.state;
+    }
+
+    _startDragging(event) {
+        if (this._dragging)
+            return Clutter.EVENT_PROPAGATE;
+
+        this._dragging = true;
+        [this._initialGrabX] = event.get_coords();
+        let device = event.get_device();
+        let sequence = event.get_event_sequence();
+
+        if (sequence != null)
+            device.sequence_grab(sequence, this);
+        else
+            device.grab(this);
+
+        this._grabbedDevice = device;
+        this._grabbedSequence = sequence;
+
+        if (sequence == null) {
+            this._releaseId = this.connect('button-release-event', this._endDragging.bind(this));
+            this._motionId = this.connect('motion-event', this._motionEvent.bind(this));
+        }
+
+        return Clutter.EVENT_STOP;
+    }
+
+    _touchDragging(actor, event) {
+        let device = event.get_device();
+        let sequence = event.get_event_sequence();
+
+        if (!this._dragging && event.type() == Clutter.EventType.TOUCH_BEGIN) {
+            return this._startDragging(event);
+        } else if (device.sequence_get_grabbed_actor(sequence) == actor) {
+            if (event.type() == Clutter.EventType.TOUCH_UPDATE)
+                return this._motionEvent(actor, event);
+            else if (event.type() == Clutter.EventType.TOUCH_END ||
+                     event.type() == Clutter.EventType.TOUCH_CANCEL)
+                return this._endDragging();
+        }
+
+        return Clutter.EVENT_PROPAGATE;
+    }
+
+    _endDragging() {
+        if (this._dragging) {
+            if (this._releaseId) {
+                this.disconnect(this._releaseId);
+                this._releaseId = null;
+            }
+            if (this._motionId) {
+                this.disconnect(this._motionId);
+                this._motionId = null;
+            }
+
+            if (this._grabbedSequence != null)
+                this._grabbedDevice.sequence_ungrab(this._grabbedSequence);
+            else
+                this._grabbedDevice.ungrab();
+
+            if (this._dragged == null)
+                this.toggle();
+            else
+                this.state = this._handleAlignConstraint.get_factor() > 0.5;
+
+            this._dragged = null;
+            this._grabbedSequence = null;
+            this._grabbedDevice = null;
+            this._dragging = false;
+        }
+        return Clutter.EVENT_STOP;
+    }
+
+    _motionEvent(actor, event) {
+        this._dragged = true;
+
+        let [absX] = event.get_coords();
+        let factorDiff = (absX - this._initialGrabX) / (this.get_width() - this._handle.get_width());
+        let factor = factorDiff + (this.state ? 1.0 : 0.0);
+
+        factor = Math.max(factor, 0.0);
+        factor = Math.min(factor, 1.0);
+
+        this._handleAlignConstraint.set_factor(factor);
+
+        return Clutter.EVENT_STOP;
     }
 });
 
@@ -358,7 +470,10 @@ var PopupSwitchMenuItem = GObject.registerClass({
         super._init(params);
 
         this.label = new St.Label({ text });
-        this._switch = new Switch(active);
+
+        let switchReactive = params && params.reactive;
+        this._switch = new Switch(active, switchReactive);
+        this._switch.connect('notify::state', this._onToggled.bind(this));
 
         this.accessible_role = Atk.Role.CHECK_MENU_ITEM;
         this.checkAccessibleState();
@@ -408,8 +523,6 @@ var PopupSwitchMenuItem = GObject.registerClass({
 
     toggle() {
         this._switch.toggle();
-        this.emit('toggled', this._switch.state);
-        this.checkAccessibleState();
     }
 
     get state() {
@@ -418,6 +531,11 @@ var PopupSwitchMenuItem = GObject.registerClass({
 
     setToggleState(state) {
         this._switch.state = state;
+        this.checkAccessibleState();
+    }
+
+    _onToggled(sw, state) {
+        this.emit('toggled', state);
         this.checkAccessibleState();
     }
 
