@@ -16,10 +16,10 @@ const PopupMenu = imports.ui.popupMenu;
 const Search = imports.ui.search;
 const SwipeTracker = imports.ui.swipeTracker;
 const Params = imports.misc.params;
-const Util = imports.misc.util;
 const SystemActions = imports.misc.systemActions;
 
 var MENU_POPUP_TIMEOUT = 600;
+var POPDOWN_DIALOG_TIMEOUT = 1500;
 
 var FOLDER_SUBICON_FRACTION = .4;
 
@@ -35,6 +35,8 @@ const FOLDER_DIALOG_ANIMATION_TIME = 200;
 
 const OVERSHOOT_THRESHOLD = 20;
 const OVERSHOOT_TIMEOUT = 1000;
+
+const DELAYED_MOVE_TIMEOUT = 200;
 
 let discreteGpuAvailable = false;
 
@@ -121,6 +123,7 @@ var BaseAppView = GObject.registerClass({
         super._init(params);
 
         this._grid = this._createGrid();
+        this._grid._delegate = this;
         // Standard hack for ClutterBinLayout
         this._grid.x_expand = true;
 
@@ -188,10 +191,27 @@ var BaseAppView = GObject.registerClass({
         this._parentalControlsManager.connect('app-filter-changed', () => {
             this._redisplay();
         });
+
+        // Drag n' Drop
+        this._lastOvershoot = -1;
+        this._lastOvershootTimeoutId = 0;
+        this._delayedMoveId = 0;
+        this._targetDropPosition = null;
+
+        this._dragBeginId = 0;
+        this._dragEndId = 0;
+        this._dragCancelledId = 0;
+
+        this.connect('destroy', this._onDestroy.bind(this));
+    }
+
+    _onDestroy() {
+        this._removeDelayedMove();
+        this._disconnectDnD();
     }
 
     _createGrid() {
-        return new IconGrid.IconGrid();
+        return new IconGrid.IconGrid({ allow_incomplete_pages: true });
     }
 
     _onScroll(actor, event) {
@@ -274,11 +294,275 @@ var BaseAppView = GObject.registerClass({
         });
     }
 
+    _connectDnD() {
+        this._dragBeginId =
+            Main.overview.connect('item-drag-begin', this._onDragBegin.bind(this));
+        this._dragEndId =
+            Main.overview.connect('item-drag-end', this._onDragEnd.bind(this));
+        this._dragCancelledId =
+            Main.overview.connect('item-drag-cancelled', this._onDragCancelled.bind(this));
+    }
+
+    _disconnectDnD() {
+        if (this._dragBeginId > 0) {
+            Main.overview.disconnect(this._dragBeginId);
+            this._dragBeginId = 0;
+        }
+
+        if (this._dragEndId > 0) {
+            Main.overview.disconnect(this._dragEndId);
+            this._dragEndId = 0;
+        }
+
+        if (this._dragCancelledId > 0) {
+            Main.overview.disconnect(this._dragCancelledId);
+            this._dragCancelledId = 0;
+        }
+
+        if (this._dragMonitor) {
+            DND.removeDragMonitor(this._dragMonitor);
+            this._dragMonitor = null;
+        }
+    }
+
+    _maybeMoveItem(dragEvent) {
+        const [success, x, y] =
+            this._grid.transform_stage_point(dragEvent.x, dragEvent.y);
+
+        if (!success)
+            return;
+
+        const { source } = dragEvent;
+        const [page, position, dragLocation] =
+            this._getDropTarget(x, y, source);
+        const item = position !== -1
+            ? this._grid.getItemAt(page, position) : null;
+
+
+        // Dragging over invalid parts of the grid cancels the timeout
+        if (item === source ||
+            dragLocation === IconGrid.DragLocation.INVALID ||
+            dragLocation === IconGrid.DragLocation.ON_ICON) {
+            this._removeDelayedMove();
+            return;
+        }
+
+        const [sourcePage] = this._grid.getItemPosition(source);
+
+        if (!this._targetDropPosition ||
+            this._targetDropPosition.page !== page ||
+            this._targetDropPosition.position !== position) {
+            // Update the item with a small delay
+            this._removeDelayedMove();
+            this._targetDropPosition = { page, position };
+
+            this._delayedMoveId = GLib.timeout_add(GLib.PRIORITY_DEFAULT,
+                DELAYED_MOVE_TIMEOUT, () => {
+                    this._moveItem(source, page, position);
+                    this._targetDropPosition = null;
+                    this._delayedMoveId = 0;
+                    return GLib.SOURCE_REMOVE;
+                });
+        }
+    }
+
+    _removeDelayedMove() {
+        if (this._delayedMoveId > 0) {
+            GLib.source_remove(this._delayedMoveId);
+            this._delayedMoveId = 0;
+        }
+        this._targetDropPosition = null;
+    }
+
+    _resetOvershoot() {
+        if (this._lastOvershootTimeoutId)
+            GLib.source_remove(this._lastOvershootTimeoutId);
+        this._lastOvershootTimeoutId = 0;
+        this._lastOvershoot = -1;
+    }
+
+    _handleDragOvershoot(dragEvent) {
+        const [gridX, gridY] = this.get_transformed_position();
+        const [gridWidth, gridHeight] = this.get_transformed_size();
+
+        const vertical = this._orientation === Clutter.Orientation.VERTICAL;
+        const gridStart = vertical ? gridY : gridX;
+        const gridEnd = vertical
+            ? gridY + gridHeight - OVERSHOOT_THRESHOLD
+            : gridX + gridWidth - OVERSHOOT_THRESHOLD;
+
+        // Already animating
+        if (this._adjustment.get_transition('value') !== null)
+            return;
+
+        // Within the grid boundaries
+        const dragPosition = vertical ? dragEvent.y : dragEvent.x;
+        if (dragPosition > gridStart && dragPosition < gridEnd) {
+            // Check whether we moved out the area of the last switch
+            if (Math.abs(this._lastOvershoot - dragPosition) > OVERSHOOT_THRESHOLD)
+                this._resetOvershoot();
+
+            return;
+        }
+
+        // Still in the area of the previous page switch
+        if (this._lastOvershoot >= 0)
+            return;
+
+        const currentPosition = this._adjustment.value;
+        const maxPosition = this._adjustment.upper - this._adjustment.page_size;
+
+        if (dragPosition <= gridStart && currentPosition > 0)
+            this.goToPage(this._grid.currentPage - 1);
+        else if (dragPosition >= gridEnd && currentPosition < maxPosition)
+            this.goToPage(this._grid.currentPage + 1);
+        else
+            return; // don't go beyond first/last page
+
+        this._lastOvershoot = dragPosition;
+
+        if (this._lastOvershootTimeoutId > 0)
+            GLib.source_remove(this._lastOvershootTimeoutId);
+
+        this._lastOvershootTimeoutId =
+            GLib.timeout_add(GLib.PRIORITY_DEFAULT, OVERSHOOT_TIMEOUT, () => {
+                this._resetOvershoot();
+                this._handleDragOvershoot(dragEvent);
+                return GLib.SOURCE_REMOVE;
+            });
+        GLib.Source.set_name_by_id(this._lastOvershootTimeoutId,
+            '[gnome-shell] this._lastOvershootTimeoutId');
+    }
+
+    _onDragBegin() {
+        this._dragMonitor = {
+            dragMotion: this._onDragMotion.bind(this),
+        };
+        DND.addDragMonitor(this._dragMonitor);
+    }
+
+    _onDragMotion(dragEvent) {
+        if (!(dragEvent.source instanceof AppViewItem))
+            return DND.DragMotionResult.CONTINUE;
+
+        const appIcon = dragEvent.source;
+
+        // Handle the drag overshoot. When dragging to above the
+        // icon grid, move to the page above; when dragging below,
+        // move to the page below.
+        if (appIcon instanceof AppViewItem)
+            this._handleDragOvershoot(dragEvent);
+
+        this._maybeMoveItem(dragEvent);
+
+        return DND.DragMotionResult.CONTINUE;
+    }
+
+    _onDragEnd() {
+        if (this._dragMonitor) {
+            DND.removeDragMonitor(this._dragMonitor);
+            this._dragMonitor = null;
+        }
+
+        this._resetOvershoot();
+    }
+
+    _onDragCancelled() {
+        // At this point, the positions aren't stored yet, thus _redisplay()
+        // will move all items to their original positions
+        this._redisplay();
+    }
+
+    _canAccept(source) {
+        return source instanceof AppViewItem;
+    }
+
+    handleDragOver(source) {
+        if (!this._canAccept(source))
+            return DND.DragMotionResult.NO_DROP;
+
+        return DND.DragMotionResult.MOVE_DROP;
+    }
+
+    acceptDrop(source) {
+        if (!this._canAccept(source))
+            return false;
+
+        // Dropped before the icon was moved
+        if (this._targetDropPosition) {
+            const { page, position } = this._targetDropPosition;
+
+            this._moveItem(source, page, position);
+            this._removeDelayedMove();
+        }
+
+        return true;
+    }
+
+    _findBestPageToAppend(startPage = 1) {
+        for (let i = startPage; i < this._grid.nPages; i++) {
+            const pageItems =
+                this._grid.getItemsAtPage(i).filter(c => c.visible);
+
+            if (pageItems.length < this._grid.itemsPerPage)
+                return i;
+        }
+
+        return -1;
+    }
+
+    _addItem(item, page, position) {
+        let itemIndex = 0;
+
+        if (this._grid.nPages > 0) {
+            // Append icons to the first page with empty slot, starting from
+            // the second page
+            if (this._grid.nPages > 1 && page === -1 && position === -1)
+                page = this._findBestPageToAppend();
+
+            const realPage = page === -1 ? this._grid.nPages - 1 : page;
+
+            itemIndex = position === -1
+                ? this._grid.getItemsAtPage(realPage).filter(c => c.visible).length - 1
+                : position;
+
+            for (let i = 0; i < realPage; i++) {
+                const pageItems = this._grid.getItemsAtPage(i).filter(c => c.visible);
+                itemIndex += pageItems.length;
+            }
+        }
+
+        this._orderedItems.splice(itemIndex, 0, item);
+        this._items.set(item.id, item);
+        this._grid.addItem(item, page, position);
+    }
+
+    _removeItem(item) {
+        const iconIndex = this._orderedItems.indexOf(item);
+
+        this._orderedItems.splice(iconIndex, 1);
+        this._items.delete(item.id);
+        this._grid.removeItem(item);
+    }
+
+    _getItemPosition(item) {
+        const { itemsPerPage } = this._grid;
+
+        let iconIndex = this._orderedItems.indexOf(item);
+        if (iconIndex === -1)
+            iconIndex = this._orderedItems.length - 1;
+
+        const page = Math.floor(iconIndex / itemsPerPage);
+        const position = iconIndex % itemsPerPage;
+
+        return [page, position];
+    }
+
     _redisplay() {
         let oldApps = this._orderedItems.slice();
         let oldAppIds = oldApps.map(icon => icon.id);
 
-        let newApps = this._loadApps().sort(this._compareItems);
+        let newApps = this._loadApps().sort(this._compareItems.bind(this));
         let newAppIds = newApps.map(icon => icon.id);
 
         let addedApps = newApps.filter(icon => !oldAppIds.includes(icon.id));
@@ -286,25 +570,17 @@ var BaseAppView = GObject.registerClass({
 
         // Remove old app icons
         removedApps.forEach(icon => {
-            let iconIndex = this._orderedItems.indexOf(icon);
-            let id = icon.id;
-
-            this._orderedItems.splice(iconIndex, 1);
+            this._removeItem(icon);
             icon.destroy();
-            this._items.delete(id);
         });
 
-        // Add new app icons
-        const { itemsPerPage } = this._grid;
-        addedApps.forEach(icon => {
-            let iconIndex = newApps.indexOf(icon);
-
-            this._orderedItems.splice(iconIndex, 0, icon);
-            this._items.set(icon.id, icon);
-
-            const page = Math.floor(iconIndex / itemsPerPage);
-            const position = iconIndex % itemsPerPage;
-            this._grid.addItem(icon, page, position);
+        // Add new app icons, or move existing ones
+        newApps.forEach(icon => {
+            const [page, position] = this._getItemPosition(icon);
+            if (addedApps.includes(icon))
+                this._addItem(icon, page, position);
+            else if (page !== -1 && position !== -1)
+                this._moveItem(icon, page, position);
         });
 
         this._viewIsReady = true;
@@ -404,6 +680,69 @@ var BaseAppView = GObject.registerClass({
         }
     }
 
+    _getDropTarget(x, y, source) {
+        const { currentPage } = this._grid;
+
+        let [item, dragLocation] = this._grid.getDropTarget(x, y);
+
+        const [sourcePage, sourcePosition] = this._grid.getItemPosition(source);
+        const targetPage = currentPage;
+        let targetPosition = item
+            ? this._grid.getItemPosition(item)[1] : -1;
+
+        // In case we're hovering over the edge of an item but the
+        // reflow will happen in the opposite direction (the drag
+        // can't "naturally push the item away"), we instead set the
+        // drop target to the adjacent item that can be pushed away
+        // in the reflow-direction.
+        //
+        // We must avoid doing that if we're hovering over the first
+        // or last column though, in that case there is no adjacent
+        // icon we could push away.
+        if (dragLocation === IconGrid.DragLocation.START_EDGE &&
+            targetPosition > sourcePosition &&
+            targetPage === sourcePage) {
+            const nColumns = this._grid.layout_manager.columns_per_page;
+            const targetColumn = targetPosition % nColumns;
+
+            if (targetColumn > 0) {
+                targetPosition -= 1;
+                dragLocation = IconGrid.DragLocation.END_EDGE;
+            }
+        } else if (dragLocation === IconGrid.DragLocation.END_EDGE &&
+            (targetPosition < sourcePosition ||
+             targetPage !== sourcePage)) {
+            const nColumns = this._grid.layout_manager.columns_per_page;
+            const targetColumn = targetPosition % nColumns;
+
+            if (targetColumn < nColumns - 1) {
+                targetPosition += 1;
+                dragLocation = IconGrid.DragLocation.START_EDGE;
+            }
+        }
+
+        // Append to the page if dragging over empty area
+        if (dragLocation === IconGrid.DragLocation.EMPTY_SPACE) {
+            const pageItems =
+                this._grid.getItemsAtPage(currentPage).filter(c => c.visible);
+
+            targetPosition = pageItems.length;
+        }
+
+        return [targetPage, targetPosition, dragLocation];
+    }
+
+    _moveItem(item, newPage, newPosition) {
+        const [page, position] = this._grid.getItemPosition(item);
+        if (page === newPage && position === newPosition)
+            return;
+
+        if (page !== -1 && position !== -1)
+            this._removeItem(item);
+
+        this._addItem(item, newPage, newPosition);
+    }
+
     vfunc_allocate(box) {
         const width = box.get_width();
         const height = box.get_height();
@@ -415,12 +754,14 @@ var BaseAppView = GObject.registerClass({
 
     vfunc_map() {
         this._swipeTracker.enabled = true;
+        this._connectDnD();
         super.vfunc_map();
     }
 
     vfunc_unmap() {
         this._swipeTracker.enabled = false;
         this._clearAnimateLater();
+        this._disconnectDnD();
         super.vfunc_unmap();
     }
 
@@ -484,6 +825,61 @@ var BaseAppView = GObject.registerClass({
     }
 });
 
+var PageManager = GObject.registerClass({
+    Signals: { 'layout-changed': {} },
+}, class PageManager extends GObject.Object {
+    _init() {
+        super._init();
+
+        global.settings.connect('changed::app-picker-layout',
+            this._loadPages.bind(this));
+
+        this._loadPages();
+    }
+
+    _loadPages() {
+        const layout = global.settings.get_value('app-picker-layout');
+        this._pages = layout.recursiveUnpack();
+        this.emit('layout-changed');
+    }
+
+    getAppPosition(appId) {
+        let position = -1;
+        let page = -1;
+
+        for (let pageIndex = 0; pageIndex < this._pages.length; pageIndex++) {
+            const pageData = this._pages[pageIndex];
+
+            if (!(appId in pageData))
+                continue;
+
+            page = pageIndex;
+            position = pageData[appId].position;
+        }
+
+        return [page, position];
+    }
+
+    set pages(p) {
+        const packedPages = [];
+
+        // Pack the icon properties as a GVariant
+        for (const page of p) {
+            const pageData = {};
+            for (const [appId, properties] of Object.entries(page))
+                pageData[appId] = new GLib.Variant('a{sv}', properties);
+            packedPages.push(pageData);
+        }
+
+        const variant = new GLib.Variant('aa{sv}', packedPages);
+        global.settings.set_value('app-picker-layout', variant);
+    }
+
+    get pages() {
+        return this._pages;
+    }
+});
+
 var AppDisplay = GObject.registerClass(
 class AppDisplay extends BaseAppView {
     _init() {
@@ -493,7 +889,7 @@ class AppDisplay extends BaseAppView {
             y_expand: true,
         });
 
-        this._grid._delegate = this;
+        this._pageManager = new PageManager();
 
         this._scrollView.add_style_class_name('all-apps');
 
@@ -513,8 +909,7 @@ class AppDisplay extends BaseAppView {
         this._displayingDialog = false;
         this._currentDialogDestroyId = 0;
 
-        this._lastOvershootY = -1;
-        this._lastOvershootTimeoutId = 0;
+        this._placeholder = null;
 
         Main.overview.connect('hidden', () => this.goToPage(0));
 
@@ -529,11 +924,6 @@ class AppDisplay extends BaseAppView {
             this._viewIsReady = false;
             Main.queueDeferredWork(this._redisplayWorkId);
         });
-
-        Main.overview.connect('item-drag-begin', this._onDragBegin.bind(this));
-        Main.overview.connect('item-drag-end', this._onDragEnd.bind(this));
-
-        this.connect('destroy', this._onDestroy.bind(this));
 
         this._switcherooNotifyId = global.connect('notify::switcheroo-control',
             () => this._updateDiscreteGpuAvailable());
@@ -551,6 +941,8 @@ class AppDisplay extends BaseAppView {
     }
 
     _onDestroy() {
+        super._onDestroy();
+
         if (this._scrollTimeoutId !== 0) {
             GLib.source_remove(this._scrollTimeoutId);
             this._scrollTimeoutId = 0;
@@ -580,25 +972,81 @@ class AppDisplay extends BaseAppView {
         super._redisplay();
     }
 
-    _itemNameChanged(item) {
-        // If an item's name changed, we can pluck it out of where it's
-        // supposed to be and reinsert it where it's sorted.
-        let oldIdx = this._orderedItems.indexOf(item);
-        this._orderedItems.splice(oldIdx, 1);
-        let newIdx = Util.insertSorted(this._orderedItems, item, this._compareItems);
+    _savePages() {
+        const pages = [];
 
-        this._grid.removeItem(item);
+        for (let i = 0; i < this._grid.nPages; i++) {
+            const pageItems =
+                this._grid.getItemsAtPage(i).filter(c => c.visible);
+            const pageData = {};
 
-        const { itemsPerPage } = this._grid;
-        const page = Math.floor(newIdx / itemsPerPage);
-        const position = newIdx % itemsPerPage;
-        this._grid.addItem(item, page, position);
+            pageItems.forEach((item, index) => {
+                pageData[item.id] = {
+                    position: GLib.Variant.new_int32(index),
+                };
+            });
+            pages.push(pageData);
+        }
 
-        this.selectApp(item.id);
+        this._pageManager.pages = pages;
+    }
+
+    _ensurePlaceholder(source) {
+        if (this._placeholder)
+            return;
+
+        const appSys = Shell.AppSystem.get_default();
+        const app = appSys.lookup_app(source.id);
+
+        const isDraggable =
+            global.settings.is_writable('favorite-apps') ||
+            global.settings.is_writable('app-picker-layout');
+
+        this._placeholder = new AppIcon(app, { isDraggable });
+        this._placeholder.scaleAndFade();
+        this._redisplay();
+    }
+
+    _removePlaceholder() {
+        if (this._placeholder) {
+            this._placeholder.undoScaleAndFade();
+            this._placeholder = null;
+            this._redisplay();
+        }
     }
 
     getAppInfos() {
         return this._appInfoList;
+    }
+
+    _getItemPosition(item) {
+        if (item === this._placeholder) {
+            let [page, position] = this._grid.getItemPosition(item);
+
+            if (page === -1)
+                page = this._findBestPageToAppend(this._grid.currentPage);
+
+            return [page, position];
+        }
+
+        return this._pageManager.getAppPosition(item.id);
+    }
+
+    _compareItems(a, b) {
+        const [aPage, aPosition] = this._getItemPosition(a);
+        const [bPage, bPosition] = this._getItemPosition(b);
+
+        if (aPage === -1 && bPage === -1)
+            return a.name.localeCompare(b.name);
+        else if (aPage === -1)
+            return 1;
+        else if (bPage === -1)
+            return -1;
+
+        if (aPage !== bPage)
+            return aPage - bPage;
+
+        return aPosition - bPosition;
     }
 
     _loadApps() {
@@ -625,7 +1073,6 @@ class AppDisplay extends BaseAppView {
             let icon = this._items.get(id);
             if (!icon) {
                 icon = new FolderIcon(id, path, this);
-                icon.connect('name-changed', this._itemNameChanged.bind(this));
                 icon.connect('apps-changed', this._redisplay.bind(this));
             }
 
@@ -647,7 +1094,9 @@ class AppDisplay extends BaseAppView {
         // at least on single-monitor setups.
         // This also disables drag-to-launch on multi-monitor setups,
         // but we hope that is not used much.
-        let favoritesWritable = global.settings.is_writable('favorite-apps');
+        const isDraggable =
+            global.settings.is_writable('favorite-apps') ||
+            global.settings.is_writable('app-picker-layout');
 
         apps.forEach(appId => {
             if (appsInsideFolders.has(appId))
@@ -657,13 +1106,15 @@ class AppDisplay extends BaseAppView {
             if (!icon) {
                 let app = appSys.lookup_app(appId);
 
-                icon = new AppIcon(app, {
-                    isDraggable: favoritesWritable,
-                });
+                icon = new AppIcon(app, { isDraggable });
             }
 
             appIcons.push(icon);
         });
+
+        // At last, if there's a placeholder available, add it
+        if (this._placeholder)
+            appIcons.push(this._placeholder);
 
         return appIcons;
     }
@@ -762,116 +1213,56 @@ class AppDisplay extends BaseAppView {
         });
     }
 
-
-    _resetOvershoot() {
-        if (this._lastOvershootTimeoutId)
-            GLib.source_remove(this._lastOvershootTimeoutId);
-        this._lastOvershootTimeoutId = 0;
-        this._lastOvershootY = -1;
-    }
-
-    _handleDragOvershoot(dragEvent) {
-        let [, gridY] = this.get_transformed_position();
-        let [, gridHeight] = this.get_transformed_size();
-        const gridBottom = gridY + gridHeight - OVERSHOOT_THRESHOLD;
-
-        // Already animating
-        if (this._adjustment.get_transition('value') !== null)
-            return;
-
-        // Within the grid boundaries
-        if (dragEvent.y > gridY && dragEvent.y < gridBottom) {
-            // Check whether we moved out the area of the last switch
-            if (Math.abs(this._lastOvershootY - dragEvent.y) > OVERSHOOT_THRESHOLD)
-                this._resetOvershoot();
-
-            return;
-        }
-
-        // Still in the area of the previous page switch
-        if (this._lastOvershootY >= 0)
-            return;
-
-        let currentY = this._adjustment.value;
-        let maxY = this._adjustment.upper - this._adjustment.page_size;
-
-        if (dragEvent.y <= gridY && currentY > 0)
-            this.goToPage(this._grid.currentPage - 1);
-        else if (dragEvent.y >= gridBottom && currentY < maxY)
-            this.goToPage(this._grid.currentPage + 1);
-        else
-            return; // don't go beyond first/last page
-
-        this._lastOvershootY = dragEvent.y;
-
-        if (this._lastOvershootTimeoutId > 0)
-            GLib.source_remove(this._lastOvershootTimeoutId);
-
-        this._lastOvershootTimeoutId =
-            GLib.timeout_add(GLib.PRIORITY_DEFAULT, OVERSHOOT_TIMEOUT, () => {
-                this._resetOvershoot();
-                this._handleDragOvershoot(dragEvent);
-                return GLib.SOURCE_REMOVE;
-            });
-        GLib.Source.set_name_by_id(this._lastOvershootTimeoutId,
-            '[gnome-shell] this._lastOvershootTimeoutId');
-    }
-
-    _onDragBegin() {
-        this._dragMonitor = {
-            dragMotion: this._onDragMotion.bind(this),
+    _maybeMoveItem(dragEvent) {
+        const clonedEvent = {
+            ...dragEvent,
+            source: this._placeholder ? this._placeholder : dragEvent.source,
         };
-        DND.addDragMonitor(this._dragMonitor);
+
+        super._maybeMoveItem(clonedEvent);
+    }
+
+    _onDragBegin(overview, source) {
+        super._onDragBegin(overview, source);
+
+        // When dragging from a folder dialog, the dragged app icon doesn't
+        // exist in AppDisplay. We work around that by adding a placeholder
+        // icon that is either destroyed on cancel, or becomes the effective
+        // new icon when dropped.
+        if (_getViewFromIcon(source) instanceof FolderView)
+            this._ensurePlaceholder(source);
     }
 
     _onDragMotion(dragEvent) {
-        if (!(dragEvent.source instanceof AppIcon))
+        if (this._currentDialog)
             return DND.DragMotionResult.CONTINUE;
 
-        let appIcon = dragEvent.source;
-
-        // Handle the drag overshoot. When dragging to above the
-        // icon grid, move to the page above; when dragging below,
-        // move to the page below.
-        if (this._grid.contains(appIcon))
-            this._handleDragOvershoot(dragEvent);
-
-        return DND.DragMotionResult.CONTINUE;
+        return super._onDragMotion(dragEvent);
     }
 
     _onDragEnd() {
-        if (this._dragMonitor) {
-            DND.removeDragMonitor(this._dragMonitor);
-            this._dragMonitor = null;
-        }
-
-        this._resetOvershoot();
+        super._onDragEnd();
+        this._removePlaceholder();
     }
 
-    _canAccept(source) {
-        if (!(source instanceof AppIcon))
-            return false;
+    _onDragCancelled(overview, source) {
+        const view = _getViewFromIcon(source);
 
-        let view = _getViewFromIcon(source);
-        if (!(view instanceof FolderView))
-            return false;
+        if (view instanceof FolderView)
+            return;
 
-        return true;
-    }
-
-    handleDragOver(source) {
-        if (!this._canAccept(source))
-            return DND.DragMotionResult.NO_DROP;
-
-        return DND.DragMotionResult.MOVE_DROP;
+        super._onDragCancelled(overview, source);
     }
 
     acceptDrop(source) {
-        if (!this._canAccept(source))
+        if (!super.acceptDrop(source))
             return false;
 
+        this._savePages();
+
         let view = _getViewFromIcon(source);
-        view.removeApp(source.app);
+        if (view instanceof FolderView)
+            view.removeApp(source.app);
 
         if (this._currentDialog)
             this._currentDialog.popdown();
@@ -897,6 +1288,11 @@ class AppDisplay extends BaseAppView {
             return false;
         }
 
+        // The hovered AppIcon always passes its own id as the first
+        // one, and this is where we want the folder to be created
+        const [folderPage, folderPosition] =
+            this._grid.getItemPosition(this._items.get(apps[0]));
+
         let appItems = apps.map(id => this._items.get(id).app);
         let folderName = _findBestFolderName(appItems);
         if (!folderName)
@@ -907,7 +1303,12 @@ class AppDisplay extends BaseAppView {
         newFolderSettings.set_strv('apps', apps);
         newFolderSettings.apply();
 
-        this.selectApp(newFolderId);
+        this._redisplay();
+
+        // Move the folder to where the icon target icon was
+        const folderItem = this._items.get(newFolderId);
+        this._moveItem(folderItem, folderPage, folderPosition);
+        this._savePages();
 
         return true;
     }
@@ -1000,6 +1401,162 @@ var AppSearchProvider = class AppSearchProvider {
     }
 };
 
+var AppViewItem = GObject.registerClass(
+class AppViewItem extends St.Button {
+    _init(params = {}, isDraggable = true) {
+        super._init({
+            pivot_point: new Graphene.Point({ x: 0.5, y: 0.5 }),
+            reactive: true,
+            button_mask: St.ButtonMask.ONE | St.ButtonMask.TWO,
+            can_focus: true,
+            ...params,
+        });
+
+        this._delegate = this;
+
+        if (isDraggable) {
+            this._draggable = DND.makeDraggable(this);
+            this._draggable.connect('drag-begin', this._onDragBegin.bind(this));
+            this._draggable.connect('drag-cancelled', this._onDragCancelled.bind(this));
+            this._draggable.connect('drag-end', this._onDragEnd.bind(this));
+        }
+
+        this._otherIconIsHovering = false;
+
+        this.connect('destroy', this._onDestroy.bind(this));
+    }
+
+    _onDestroy() {
+        if (this._dragMonitor) {
+            DND.removeDragMonitor(this._dragMonitor);
+            this._dragMonitor = null;
+        }
+
+        if (this._draggable) {
+            if (this._dragging)
+                Main.overview.endItemDrag(this);
+            this._draggable = null;
+        }
+    }
+
+    _onDragBegin() {
+        this._dragging = true;
+        this.scaleAndFade();
+        Main.overview.beginItemDrag(this);
+    }
+
+    _onDragCancelled() {
+        this._dragging = false;
+        Main.overview.cancelledItemDrag(this);
+    }
+
+    _onDragEnd() {
+        this._dragging = false;
+        this.undoScaleAndFade();
+        Main.overview.endItemDrag(this);
+    }
+
+    scaleIn() {
+        this.scale_x = 0;
+        this.scale_y = 0;
+
+        this.ease({
+            scale_x: 1,
+            scale_y: 1,
+            duration: APP_ICON_SCALE_IN_TIME,
+            delay: APP_ICON_SCALE_IN_DELAY,
+            mode: Clutter.AnimationMode.EASE_OUT_QUINT,
+        });
+    }
+
+    scaleAndFade() {
+        this.reactive = false;
+        this.ease({
+            scale_x: 0.5,
+            scale_y: 0.5,
+            opacity: 0,
+        });
+    }
+
+    undoScaleAndFade() {
+        this.reactive = true;
+        this.ease({
+            scale_x: 1.0,
+            scale_y: 1.0,
+            opacity: 255,
+        });
+    }
+
+    _canAccept(source) {
+        return source !== this;
+    }
+
+    _setHoveringByDnd(hovering) {
+        if (this._otherIconIsHovering === hovering)
+            return;
+
+        this._otherIconIsHovering = hovering;
+
+        if (hovering) {
+            this._dragMonitor = {
+                dragMotion: this._onDragMotion.bind(this),
+            };
+            DND.addDragMonitor(this._dragMonitor);
+        } else {
+            DND.removeDragMonitor(this._dragMonitor);
+        }
+    }
+
+    _onDragMotion(dragEvent) {
+        if (!this.contains(dragEvent.targetActor))
+            this._setHoveringByDnd(false);
+
+        return DND.DragMotionResult.CONTINUE;
+    }
+
+    _withinLeeways(x) {
+        return x < IconGrid.LEFT_DIVIDER_LEEWAY ||
+            x > this.width - IconGrid.RIGHT_DIVIDER_LEEWAY;
+    }
+
+    handleDragOver(source, _actor, x) {
+        if (source === this)
+            return DND.DragMotionResult.NO_DROP;
+
+        if (!this._canAccept(source))
+            return DND.DragMotionResult.CONTINUE;
+
+        if (this._withinLeeways(x)) {
+            this._setHoveringByDnd(false);
+            return DND.DragMotionResult.CONTINUE;
+        }
+
+        this._setHoveringByDnd(true);
+
+        return DND.DragMotionResult.MOVE_DROP;
+    }
+
+    acceptDrop(source, _actor, x) {
+        this._setHoveringByDnd(false);
+
+        if (!this._canAccept(source))
+            return false;
+
+        if (this._withinLeeways(x))
+            return DND.DragMotionResult.CONTINUE;
+
+        return true;
+    }
+
+    get id() {
+        return this._id;
+    }
+
+    get name() {
+        return this._name;
+    }
+});
+
 var FolderGrid = GObject.registerClass(
 class FolderGrid extends IconGrid.IconGrid {
     _init() {
@@ -1056,6 +1613,70 @@ class FolderView extends BaseAppView {
         return new FolderGrid();
     }
 
+    _getFolderApps() {
+        const appIds = [];
+        const excludedApps = this._folder.get_strv('excluded-apps');
+        const appSys = Shell.AppSystem.get_default();
+        const addAppId = appId => {
+            if (excludedApps.includes(appId))
+                return;
+
+            const app = appSys.lookup_app(appId);
+            if (!app)
+                return;
+
+            if (!this._parentalControlsManager.shouldShowApp(app.get_app_info()))
+                return;
+
+            if (appIds.indexOf(appId) !== -1)
+                return;
+
+            appIds.push(appId);
+        };
+
+        const folderApps = this._folder.get_strv('apps');
+        folderApps.forEach(addAppId);
+
+        const folderCategories = this._folder.get_strv('categories');
+        const appInfos = this._parentView.getAppInfos();
+        appInfos.forEach(appInfo => {
+            let appCategories = _getCategories(appInfo);
+            if (!_listsIntersect(folderCategories, appCategories))
+                return;
+
+            addAppId(appInfo.get_id());
+        });
+
+        return appIds;
+    }
+
+    _getItemPosition(item) {
+        const appIds = this._getFolderApps();
+        const appIndex = appIds.indexOf(item.id);
+
+        if (appIndex === -1)
+            return [-1, -1];
+
+        const { itemsPerPage } = this._grid;
+        return [Math.floor(appIndex / itemsPerPage), appIndex % itemsPerPage];
+    }
+
+    _compareItems(a, b) {
+        const appIds = this._getFolderApps();
+
+        const aPosition = appIds.indexOf(a.id);
+        const bPosition = appIds.indexOf(b.id);
+
+        if (aPosition === -1 && bPosition === -1)
+            return a.name.localeCompare(b.name);
+        else if (aPosition === -1)
+            return 1;
+        else if (bPosition === -1)
+            return -1;
+
+        return aPosition - bPosition;
+    }
+
     // Overridden from BaseAppView
     animate(animationDirection) {
         this._grid.animatePulse(animationDirection);
@@ -1100,43 +1721,30 @@ class FolderView extends BaseAppView {
 
     _loadApps() {
         let apps = [];
-        let excludedApps = this._folder.get_strv('excluded-apps');
         let appSys = Shell.AppSystem.get_default();
-        let addAppId = appId => {
-            if (excludedApps.includes(appId))
-                return;
+        const appIds = this._getFolderApps();
 
-            let app = appSys.lookup_app(appId);
-            if (!app)
-                return;
-
-            if (!this._parentalControlsManager.shouldShowApp(app.get_app_info()))
-                return;
-
-            if (apps.some(appIcon => appIcon.id == appId))
-                return;
+        appIds.forEach(appId => {
+            const app = appSys.lookup_app(appId);
 
             let icon = this._items.get(appId);
             if (!icon)
                 icon = new AppIcon(app);
 
             apps.push(icon);
-        };
-
-        let folderApps = this._folder.get_strv('apps');
-        folderApps.forEach(addAppId);
-
-        let folderCategories = this._folder.get_strv('categories');
-        let appInfos = this._parentView.getAppInfos();
-        appInfos.forEach(appInfo => {
-            let appCategories = _getCategories(appInfo);
-            if (!_listsIntersect(folderCategories, appCategories))
-                return;
-
-            addAppId(appInfo.get_id());
         });
 
         return apps;
+    }
+
+    acceptDrop(source) {
+        if (!super.acceptDrop(source))
+            return false;
+
+        const folderApps = this._orderedItems.map(item => item.id);
+        this._folder.set_strv('apps', folderApps);
+
+        return true;
     }
 
     addApp(app) {
@@ -1191,23 +1799,21 @@ class FolderView extends BaseAppView {
 var FolderIcon = GObject.registerClass({
     Signals: {
         'apps-changed': {},
-        'name-changed': {},
     },
-}, class FolderIcon extends St.Button {
+}, class FolderIcon extends AppViewItem {
     _init(id, path, parentView) {
         super._init({
             style_class: 'app-well-app app-folder',
             button_mask: St.ButtonMask.ONE,
             toggle_mode: true,
             can_focus: true,
-        });
-        this.id = id;
-        this.name = '';
+        }, global.settings.is_writable('app-picker-layout'));
+        this._id = id;
+        this._name = '';
         this._parentView = parentView;
 
         this._folder = new Gio.Settings({ schema_id: 'org.gnome.desktop.app-folders.folder',
                                           path });
-        this._delegate = this;
 
         this.icon = new IconGrid.BaseIcon('', {
             createIcon: this._createIcon.bind(this),
@@ -1218,20 +1824,13 @@ var FolderIcon = GObject.registerClass({
 
         this.view = new FolderView(this._folder, id, parentView);
 
-        this._iconIsHovering = false;
-
-        this.connect('destroy', this._onDestroy.bind(this));
-
         this._folderChangedId = this._folder.connect(
             'changed', this._sync.bind(this));
         this._sync();
     }
 
     _onDestroy() {
-        if (this._dragMonitor) {
-            DND.removeDragMonitor(this._dragMonitor);
-            this._dragMonitor = null;
-        }
+        super._onDestroy();
 
         if (this._dialog)
             this._dialog.destroy();
@@ -1266,29 +1865,39 @@ var FolderIcon = GObject.registerClass({
     }
 
     _setHoveringByDnd(hovering) {
-        if (this._iconIsHovering == hovering)
+        if (this._otherIconIsHovering == hovering)
             return;
 
-        this._iconIsHovering = hovering;
+        super._setHoveringByDnd(hovering);
 
-        if (hovering) {
-            this._dragMonitor = {
-                dragMotion: this._onDragMotion.bind(this),
-            };
-            DND.addDragMonitor(this._dragMonitor);
+        if (hovering)
             this.add_style_pseudo_class('drop');
-        } else {
-            DND.removeDragMonitor(this._dragMonitor);
+        else
             this.remove_style_pseudo_class('drop');
-        }
     }
 
     _onDragMotion(dragEvent) {
-        if (!this.contains(dragEvent.targetActor) ||
-            !this._canAccept(dragEvent.source))
+        if (!this._canAccept(dragEvent.source))
             this._setHoveringByDnd(false);
 
-        return DND.DragMotionResult.CONTINUE;
+        return super._onDragMotion(dragEvent);
+    }
+
+    getDragActor() {
+        const iconParams = {
+            createIcon: this._createIcon.bind(this),
+            showLabel: this.icon.label !== null,
+            setSizeManually: false,
+        };
+
+        const icon = new IconGrid.BaseIcon(this.name, iconParams);
+        icon.style_class = this.style_class;
+
+        return icon;
+    }
+
+    getDragActorSource() {
+        return this;
     }
 
     _canAccept(source) {
@@ -1305,19 +1914,10 @@ var FolderIcon = GObject.registerClass({
         return true;
     }
 
-    handleDragOver(source) {
-        if (!this._canAccept(source))
-            return DND.DragMotionResult.NO_DROP;
-
-        this._setHoveringByDnd(true);
-
-        return DND.DragMotionResult.MOVE_DROP;
-    }
-
     acceptDrop(source) {
-        this._setHoveringByDnd(false);
+        const accepted = super.acceptDrop(source);
 
-        if (!this._canAccept(source))
+        if (!accepted)
             return false;
 
         this.view.addApp(source.app);
@@ -1330,9 +1930,8 @@ var FolderIcon = GObject.registerClass({
         if (this.name == name)
             return;
 
-        this.name = name;
+        this._name = name;
         this.icon.label.text = this.name;
-        this.emit('name-changed');
     }
 
     _sync() {
@@ -1437,6 +2036,7 @@ var AppFolderDialog = GObject.registerClass({
         this._grabHelper.addActor(Main.layoutManager.overviewGroup);
         this.connect('destroy', this._onDestroy.bind(this));
 
+        this._dragMonitor = null;
         this._sourceMappedId = 0;
         this._popdownTimeoutId = 0;
         this._needsZoomAndFade = false;
@@ -1650,6 +2250,22 @@ var AppFolderDialog = GObject.registerClass({
         this._needsZoomAndFade = false;
     }
 
+    _removeDragMonitor() {
+        if (!this._dragMonitor)
+            return;
+
+        DND.removeDragMonitor(this._dragMonitor);
+        this._dragMonitor = null;
+    }
+
+    _removePopdownTimeout() {
+        if (this._popdownTimeoutId === 0)
+            return;
+
+        GLib.source_remove(this._popdownTimeoutId);
+        this._popdownTimeoutId = 0;
+    }
+
     _onDestroy() {
         if (this._isOpen) {
             this._isOpen = false;
@@ -1662,10 +2278,8 @@ var AppFolderDialog = GObject.registerClass({
             this._sourceMappedId = 0;
         }
 
-        if (this._popdownTimeoutId > 0) {
-            GLib.source_remove(this._popdownTimeoutId);
-            this._popdownTimeoutId = 0;
-        }
+        this._removePopdownTimeout();
+        this._removeDragMonitor();
     }
 
     vfunc_allocate(box) {
@@ -1732,19 +2346,41 @@ var AppFolderDialog = GObject.registerClass({
             y < childAllocation.y2;
     }
 
+    _setupDragMonitor() {
+        if (this._dragMonitor)
+            return;
+
+        this._dragMonitor = {
+            dragMotion: dragEvent => {
+                if (this._withinDialog(dragEvent.x, dragEvent.y)) {
+                    this._removePopdownTimeout();
+                    this._removeDragMonitor();
+                }
+                return DND.DragMotionResult.CONTINUE;
+            },
+        };
+        DND.addDragMonitor(this._dragMonitor);
+    }
+
+    _setupPopdownTimeout() {
+        if (this._popdownTimeoutId > 0)
+            return;
+
+        this._popdownTimeoutId =
+            GLib.timeout_add(GLib.PRIORITY_DEFAULT, POPDOWN_DIALOG_TIMEOUT, () => {
+                this._popdownTimeoutId = 0;
+                this.popdown();
+                return GLib.SOURCE_REMOVE;
+            });
+    }
+
     handleDragOver(source, actor, x, y) {
         if (this._withinDialog(x, y)) {
-            if (this._popdownTimeoutId > 0) {
-                GLib.source_remove(this._popdownTimeoutId);
-                this._popdownTimeoutId = 0;
-            }
-        } else if (this._popdownTimeoutId === 0) {
-            this._popdownTimeoutId =
-                GLib.timeout_add(GLib.PRIORITY_DEFAULT, MENU_POPUP_TIMEOUT, () => {
-                    this._popdownTimeoutId = 0;
-                    this.popdown();
-                    return GLib.SOURCE_REMOVE;
-                });
+            this._removePopdownTimeout();
+            this._removeDragMonitor();
+        } else {
+            this._setupPopdownTimeout();
+            this._setupDragMonitor();
         }
 
         return DND.DragMotionResult.NO_DROP;
@@ -1793,33 +2429,25 @@ var AppIcon = GObject.registerClass({
         'menu-state-changed': { param_types: [GObject.TYPE_BOOLEAN] },
         'sync-tooltip': {},
     },
-}, class AppIcon extends St.Button {
+}, class AppIcon extends AppViewItem {
     _init(app, iconParams = {}) {
-        super._init({
-            style_class: 'app-well-app',
-            pivot_point: new Graphene.Point({ x: 0.5, y: 0.5 }),
-            reactive: true,
-            button_mask: St.ButtonMask.ONE | St.ButtonMask.TWO,
-            can_focus: true,
-        });
+        // Get the isDraggable property without passing it on to the BaseIcon:
+        const appIconParams = Params.parse(iconParams, { isDraggable: true }, true);
+        const isDraggable = appIconParams['isDraggable'];
+        delete iconParams['isDraggable'];
+
+        super._init({ style_class: 'app-well-app' }, isDraggable);
 
         this.app = app;
-        this.id = app.get_id();
-        this.name = app.get_name();
+        this._id = app.get_id();
+        this._name = app.get_name();
 
         this._iconContainer = new St.Widget({ layout_manager: new Clutter.BinLayout(),
                                               x_expand: true, y_expand: true });
 
         this.set_child(this._iconContainer);
 
-        this._delegate = this;
-
         this._folderPreviewId = 0;
-
-        // Get the isDraggable property without passing it on to the BaseIcon:
-        let appIconParams = Params.parse(iconParams, { isDraggable: true }, true);
-        let isDraggable = appIconParams['isDraggable'];
-        delete iconParams['isDraggable'];
 
         iconParams['createIcon'] = this._createIcon.bind(this);
         iconParams['setSizeManually'] = true;
@@ -1843,37 +2471,16 @@ var AppIcon = GObject.registerClass({
         this._menu = null;
         this._menuManager = new PopupMenu.PopupMenuManager(this);
 
-        if (isDraggable) {
-            this._draggable = DND.makeDraggable(this);
-            this._draggable.connect('drag-begin', () => {
-                this._dragging = true;
-                this.scaleAndFade();
-                this._removeMenuTimeout();
-                Main.overview.beginItemDrag(this);
-            });
-            this._draggable.connect('drag-cancelled', () => {
-                this._dragging = false;
-                Main.overview.cancelledItemDrag(this);
-            });
-            this._draggable.connect('drag-end', () => {
-                this._dragging = false;
-                this.undoScaleAndFade();
-                Main.overview.endItemDrag(this);
-            });
-        }
-
-        this._otherIconIsHovering = false;
-
         this._menuTimeoutId = 0;
         this._stateChangedId = this.app.connect('notify::state', () => {
             this._updateRunningStyle();
         });
         this._updateRunningStyle();
-
-        this.connect('destroy', this._onDestroy.bind(this));
     }
 
     _onDestroy() {
+        super._onDestroy();
+
         if (this._folderPreviewId > 0) {
             GLib.source_remove(this._folderPreviewId);
             this._folderPreviewId = 0;
@@ -1881,18 +2488,13 @@ var AppIcon = GObject.registerClass({
         if (this._stateChangedId > 0)
             this.app.disconnect(this._stateChangedId);
 
-        if (this._dragMonitor) {
-            DND.removeDragMonitor(this._dragMonitor);
-            this._dragMonitor = null;
-        }
-
-        if (this._draggable) {
-            if (this._dragging)
-                Main.overview.endItemDrag(this);
-            this._draggable = null;
-        }
         this._stateChangedId = 0;
         this._removeMenuTimeout();
+    }
+
+    _onDragBegin() {
+        this._removeMenuTimeout();
+        super._onDragBegin();
     }
 
     _createIcon(iconSize) {
@@ -2040,19 +2642,6 @@ var AppIcon = GObject.registerClass({
         this.icon.animateZoomOutAtPos(x, y);
     }
 
-    scaleIn() {
-        this.scale_x = 0;
-        this.scale_y = 0;
-
-        this.ease({
-            scale_x: 1,
-            scale_y: 1,
-            duration: APP_ICON_SCALE_IN_TIME,
-            delay: APP_ICON_SCALE_IN_DELAY,
-            mode: Clutter.AnimationMode.EASE_OUT_QUINT,
-        });
-    }
-
     shellWorkspaceLaunch(params) {
         let { stack } = new Error();
         log('shellWorkspaceLaunch is deprecated, use app.open_new_window() instead\n%s'.format(stack));
@@ -2075,24 +2664,6 @@ var AppIcon = GObject.registerClass({
 
     shouldShowTooltip() {
         return this.hover && (!this._menu || !this._menu.isOpen);
-    }
-
-    scaleAndFade() {
-        this.reactive = false;
-        this.ease({
-            scale_x: 0.75,
-            scale_y: 0.75,
-            opacity: 128,
-        });
-    }
-
-    undoScaleAndFade() {
-        this.reactive = true;
-        this.ease({
-            scale_x: 1.0,
-            scale_y: 1.0,
-            opacity: 255,
-        });
     }
 
     _showFolderPreview() {
@@ -2123,14 +2694,9 @@ var AppIcon = GObject.registerClass({
         if (this._otherIconIsHovering == hovering)
             return;
 
-        this._otherIconIsHovering = hovering;
+        super._setHoveringByDnd(hovering);
 
         if (hovering) {
-            this._dragMonitor = {
-                dragMotion: this._onDragMotion.bind(this),
-            };
-            DND.addDragMonitor(this._dragMonitor);
-
             if (this._folderPreviewId > 0)
                 return;
 
@@ -2142,8 +2708,6 @@ var AppIcon = GObject.registerClass({
                     return GLib.SOURCE_REMOVE;
                 });
         } else {
-            DND.removeDragMonitor(this._dragMonitor);
-
             if (this._folderPreviewId > 0) {
                 GLib.source_remove(this._folderPreviewId);
                 this._folderPreviewId = 0;
@@ -2153,29 +2717,9 @@ var AppIcon = GObject.registerClass({
         }
     }
 
-    _onDragMotion(dragEvent) {
-        if (!this.contains(dragEvent.targetActor))
-            this._setHoveringByDnd(false);
-
-        return DND.DragMotionResult.CONTINUE;
-    }
-
-    handleDragOver(source) {
-        if (source == this)
-            return DND.DragMotionResult.NO_DROP;
-
-        if (!this._canAccept(source))
-            return DND.DragMotionResult.CONTINUE;
-
-        this._setHoveringByDnd(true);
-
-        return DND.DragMotionResult.MOVE_DROP;
-    }
-
-    acceptDrop(source) {
-        this._setHoveringByDnd(false);
-
-        if (!this._canAccept(source))
+    acceptDrop(source, actor, x) {
+        const accepted = super.acceptDrop(source, actor, x);
+        if (!accepted)
             return false;
 
         let view = _getViewFromIcon(this);
