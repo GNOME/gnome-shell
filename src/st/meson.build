@@ -45,7 +45,7 @@ st_h = configure_file(
   configuration: st_h_data
 )
 
-st_inc = include_directories('.', '..')
+st_inc = include_directories('.', '..', '../../subprojects')
 
 # please, keep this sorted alphabetically
 st_private_headers = [
@@ -166,6 +166,7 @@ st_nogir_sources = [glsl_sources]
 
 st_cflags = [
   '-I@0@/src'.format(meson.source_root()),
+  '-I@0@/subprojects'.format(meson.source_root()),
   '-I@0@'.format(meson.build_root()),
   '-DPREFIX="@0@"'.format(prefix),
   '-DLIBDIR="@0@"'.format(libdir),
@@ -176,11 +177,15 @@ st_cflags = [
   '-DPACKAGE_DATA_DIR="@0@"'.format(pkgdatadir)
 ]
 
+thread_dep = dependency('threads')
+libdl_dep = cc.find_library('dl')
+
 # Currently meson requires a shared library for building girs
 libst = shared_library('st-1.0',
   sources: st_gir_sources + st_nogir_sources + croco_sources,
   c_args: st_cflags,
-  dependencies: [clutter_dep, gtk_dep, mutter_dep, libxml_dep, m_dep],
+  dependencies: [clutter_dep, gtk_dep, mutter_dep, libxml_dep, m_dep, thread_dep, libdl_dep],
+  link_with: [libstylish_lib],
   build_rpath: mutter_typelibdir,
   install_rpath: mutter_typelibdir,
   install_dir: pkglibdir,

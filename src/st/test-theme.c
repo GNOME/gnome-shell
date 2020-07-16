@@ -33,13 +33,29 @@ static StThemeNode *group1;
 static StThemeNode *text1;
 static StThemeNode *text2;
 static StThemeNode *group2;
+static StThemeNode *shadows;
 static StThemeNode *text3;
 static StThemeNode *text4;
 static StThemeNode *group3;
-static StThemeNode *group4;
-static StThemeNode *group5;
-static StThemeNode *group6;
 static StThemeNode *button;
+static StThemeNode *outline_longhand;
+static StThemeNode *outline_shorthand;
+static StThemeNode *outline_override1;
+static StThemeNode *outline_override2;
+static StThemeNode *padding_shorthand1;
+static StThemeNode *padding_shorthand2;
+static StThemeNode *padding_shorthand3;
+static StThemeNode *padding_shorthand4;
+static StThemeNode *margin_shorthand1;
+static StThemeNode *margin_shorthand2;
+static StThemeNode *margin_shorthand3;
+static StThemeNode *margin_shorthand4;
+static StThemeNode *border_radius_shorthand1;
+static StThemeNode *border_radius_shorthand2;
+static StThemeNode *border_radius_shorthand3;
+static StThemeNode *border_radius_shorthand4;
+static StThemeNode *border_shorthand1;
+static StThemeNode *border_longhands;
 static gboolean fail;
 
 static const char *test;
@@ -159,6 +175,25 @@ assert_background_color (StThemeNode *node,
     }
 }
 
+static void
+assert_outline_color (StThemeNode *node,
+                      const char  *node_description,
+                      guint32      expected)
+{
+  ClutterColor color;
+  guint32 value;
+
+  st_theme_node_get_outline_color (node, &color);
+  value = clutter_color_to_pixel (&color);
+
+  if (expected != value)
+    {
+      g_print ("%s: %s.outline-color: expected: #%08x, got: #%08x\n",
+	       test, node_description, expected, value);
+      fail = TRUE;
+    }
+}
+
 static const char *
 side_to_string (StSide side)
 {
@@ -247,6 +282,39 @@ test_defaults (void)
 }
 
 static void
+test_double (void)
+{
+  double value;
+
+  test = "double";
+
+  g_assert_cmpfloat (42.0, ==, st_theme_node_get_double (group1, "double-prop"));
+
+  g_assert (st_theme_node_lookup_double (text1, "double-prop", TRUE, &value));
+  g_assert_cmpfloat (value, ==, 42.0);
+}
+
+static void
+test_time (void)
+{
+  double value;
+
+  test = "time";
+
+  value = 0.0;
+  g_assert (st_theme_node_lookup_time (group1, "time-s", FALSE, &value));
+  g_assert_cmpfloat (value, ==, 42000.0);
+
+  value = 0.0;
+  g_assert (st_theme_node_lookup_time (group1, "time-ms", FALSE, &value));
+  g_assert_cmpfloat (value, ==, 42000.0);
+
+  value = 0.0;
+  g_assert (st_theme_node_lookup_time (text1, "time-s", TRUE, &value));
+  g_assert_cmpfloat (value, ==, 42000.0);
+}
+
+static void
 test_lengths (void)
 {
   test = "lengths";
@@ -275,6 +343,34 @@ test_lengths (void)
   /* 1in == 72pt == 96px, at 96dpi */
   assert_length ("group1", "margin-left", 96.,
 		 st_theme_node_get_margin (group1, ST_SIDE_LEFT));
+}
+
+static void
+test_url (void)
+{
+  GFile *file;
+
+  test = "url";
+
+  file = st_theme_node_get_url (group1, "url-prop");
+  g_assert (file != NULL);
+  /* FIXME: test that the relative URL is resolved with respect to the test-theme.css file */
+  g_object_unref (file);
+}
+
+static void
+test_icon_style (void)
+{
+  StIconStyle style;
+
+  test = "icon_style";
+
+  style = st_theme_node_get_icon_style (group1);
+  g_assert (style == ST_ICON_STYLE_SYMBOLIC);
+
+  /* test the default value */
+  style = st_theme_node_get_icon_style (text1);
+  g_assert (style == ST_ICON_STYLE_REQUESTED);
 }
 
 static void
@@ -325,51 +421,75 @@ test_padding (void)
 }
 
 static void
-test_margin (void)
+assert_padding (const char *id, StThemeNode *node, double top, double right, double bottom, double left)
 {
-  test = "margin";
-  /* Test that a 4-sided margin property assigns the right margin to
-   * all sides */
-  assert_length ("group2", "margin-top", 1.,
-		 st_theme_node_get_margin (group2, ST_SIDE_TOP));
-  assert_length ("group2", "margin-right", 2.,
-		 st_theme_node_get_margin (group2, ST_SIDE_RIGHT));
-  assert_length ("group2", "margin-bottom", 3.,
-		 st_theme_node_get_margin (group2, ST_SIDE_BOTTOM));
-  assert_length ("group2", "margin-left", 4.,
-		 st_theme_node_get_margin (group2, ST_SIDE_LEFT));
+  assert_length (id, "padding-top", top,
+                 st_theme_node_get_padding (node, ST_SIDE_TOP));
+  assert_length (id, "padding-right", right,
+                 st_theme_node_get_padding (node, ST_SIDE_RIGHT));
+  assert_length (id, "padding-bottom", bottom,
+                 st_theme_node_get_padding (node, ST_SIDE_BOTTOM));
+  assert_length (id, "padding-left", left,
+                 st_theme_node_get_padding (node, ST_SIDE_LEFT));
+}
 
-  /* Test that a 3-sided margin property assigns the right margin to
-   * all sides */
-  assert_length ("group4", "margin-top", 1.,
-     st_theme_node_get_margin (group4, ST_SIDE_TOP));
-  assert_length ("group4", "margin-right", 2.,
-     st_theme_node_get_margin (group4, ST_SIDE_RIGHT));
-  assert_length ("group4", "margin-bottom", 3.,
-     st_theme_node_get_margin (group4, ST_SIDE_BOTTOM));
-  assert_length ("group4", "margin-left", 2.,
-     st_theme_node_get_margin (group4, ST_SIDE_LEFT));
+static void
+assert_margin (const char *id, StThemeNode *node, double top, double right, double bottom, double left)
+{
+  assert_length (id, "margin-top", top,
+                 st_theme_node_get_margin (node, ST_SIDE_TOP));
+  assert_length (id, "margin-right", right,
+                 st_theme_node_get_margin (node, ST_SIDE_RIGHT));
+  assert_length (id, "margin-bottom", bottom,
+                 st_theme_node_get_margin (node, ST_SIDE_BOTTOM));
+  assert_length (id, "margin-left", left,
+                 st_theme_node_get_margin (node, ST_SIDE_LEFT));
+}
 
-  /* Test that a 2-sided margin property assigns the right margin to
-   * all sides */
-  assert_length ("group5", "margin-top", 1.,
-     st_theme_node_get_margin (group5, ST_SIDE_TOP));
-  assert_length ("group5", "margin-right", 2.,
-     st_theme_node_get_margin (group5, ST_SIDE_RIGHT));
-  assert_length ("group5", "margin-bottom", 1.,
-     st_theme_node_get_margin (group5, ST_SIDE_BOTTOM));
-  assert_length ("group5", "margin-left", 2.,
-     st_theme_node_get_margin (group5, ST_SIDE_LEFT));
+static void
+assert_border_radius (const char *id, StThemeNode *node, double top_left, double top_right, double bottom_right, double bottom_left)
+{
+  assert_length (id, "border-radius-topleft", top_left,
+                 st_theme_node_get_border_radius (node, ST_CORNER_TOPLEFT));
+  assert_length (id, "border-radius-topright", top_right,
+                 st_theme_node_get_border_radius (node, ST_CORNER_TOPRIGHT));
+  assert_length (id, "border-radius-bottomright", bottom_right,
+                 st_theme_node_get_border_radius (node, ST_CORNER_BOTTOMRIGHT));
+  assert_length (id, "border-radius-bottomleft", bottom_left,
+                 st_theme_node_get_border_radius (node, ST_CORNER_BOTTOMLEFT));
+}
 
-  /* Test that all sides have a margin of 0 when not specified */
-  assert_length ("group6", "margin-top", 0.,
-     st_theme_node_get_margin (group6, ST_SIDE_TOP));
-  assert_length ("group6", "margin-right", 0.,
-     st_theme_node_get_margin (group6, ST_SIDE_RIGHT));
-  assert_length ("group6", "margin-bottom", 0.,
-     st_theme_node_get_margin (group6, ST_SIDE_BOTTOM));
-  assert_length ("group6", "margin-left", 0.,
-     st_theme_node_get_margin (group6, ST_SIDE_LEFT));
+static void
+test_padding_shorthand (void)
+{
+  test = "padding_shorthand";
+
+  assert_padding ("padding_shorthand1", padding_shorthand1, 1, 1, 1, 1);
+  assert_padding ("padding_shorthand2", padding_shorthand2, 1, 2, 1, 2);
+  assert_padding ("padding_shorthand3", padding_shorthand3, 1, 2, 3, 2);
+  assert_padding ("padding_shorthand4", padding_shorthand4, 1, 2, 3, 4);
+}
+
+static void
+test_margin_shorthand (void)
+{
+  test = "margin_shorthand";
+
+  assert_margin ("margin_shorthand1", margin_shorthand1, 5, 5, 5, 5);
+  assert_margin ("margin_shorthand2", margin_shorthand2, 5, 6, 5, 6);
+  assert_margin ("margin_shorthand3", margin_shorthand3, 5, 6, 7, 6);
+  assert_margin ("margin_shorthand4", margin_shorthand4, 5, 6, 7, 8);
+}
+
+static void
+test_border_radius_shorthand (void)
+{
+  test = "border_radius_shorthand";
+
+  assert_border_radius ("border_radius_shorthand1", border_radius_shorthand1, 1, 1, 1, 1);
+  assert_border_radius ("border_radius_shorthand2", border_radius_shorthand2, 1, 2, 1, 2);
+  assert_border_radius ("border_radius_shorthand3", border_radius_shorthand3, 1, 2, 3, 2);
+  assert_border_radius ("border_radius_shorthand4", border_radius_shorthand4, 1, 2, 3, 4);
 }
 
 static void
@@ -407,6 +527,56 @@ test_border (void)
 }
 
 static void
+test_border_shorthand (void)
+{
+  test = "border_shorthand";
+
+  assert_length ("border_shorthand1", "border-top-width", 1.,
+		 st_theme_node_get_border_width (border_shorthand1, ST_SIDE_TOP));
+  assert_length ("border_shorthand1", "border-right-width", 1.,
+		 st_theme_node_get_border_width (border_shorthand1, ST_SIDE_RIGHT));
+  assert_length ("border_shorthand1", "border-bottom-width", 1.,
+		 st_theme_node_get_border_width (border_shorthand1, ST_SIDE_BOTTOM));
+  assert_length ("border_shorthand1", "border-left-width", 1.,
+		 st_theme_node_get_border_width (border_shorthand1, ST_SIDE_LEFT));
+}
+
+static void
+test_border_longhands (void)
+{
+  test = "border_longhands";
+
+  assert_length ("border_longhands", "border-top-width", 2.,
+		 st_theme_node_get_border_width (border_longhands, ST_SIDE_TOP));
+  assert_length ("border_longhands", "border-right-width", 3.,
+		 st_theme_node_get_border_width (border_longhands, ST_SIDE_RIGHT));
+  assert_length ("border_longhands", "border-bottom-width", 4.,
+		 st_theme_node_get_border_width (border_longhands, ST_SIDE_BOTTOM));
+  assert_length ("border_longhands", "border-left-width", 5.,
+		 st_theme_node_get_border_width (border_longhands, ST_SIDE_LEFT));
+}
+
+static void
+test_outline (void)
+{
+  test = "outline";
+
+  assert_length ("outline_longhand", "outline-width", 4.,
+                 st_theme_node_get_outline_width (outline_longhand));
+  assert_outline_color (outline_longhand, "outline_longhand", 0xff0000ff);
+
+  assert_length ("outline_shorthand", "outline-width", 4.,
+                 st_theme_node_get_outline_width (outline_shorthand));
+  assert_outline_color (outline_shorthand, "outline_shorthand", 0xff0000ff);
+
+  assert_length ("outline_override1", "outline-width", 0.,
+                 st_theme_node_get_outline_width (outline_override1));
+
+  assert_length ("outline_override2", "outline-width", 0.,
+                 st_theme_node_get_outline_width (outline_override2));
+}
+
+static void
 test_background (void)
 {
   test = "background";
@@ -421,6 +591,46 @@ test_background (void)
   assert_background_image (text2,  "text2",  NULL);
   /* background-image property */
   assert_background_image (group2, "group2", "other-background.png");
+}
+
+static void
+assert_shadow (StThemeNode *node,
+               const char  *prop_name,
+               gboolean     is_none,
+               gboolean     inset,
+               gdouble      xoffset,
+               gdouble      yoffset,
+               gdouble      blur,
+               gdouble      spread,
+               guint32      color)
+{
+  StShadow *shadow = NULL;
+
+  if (st_theme_node_lookup_shadow (node, prop_name, FALSE, &shadow))
+    {
+      g_assert (shadow != NULL);
+      g_assert_cmpfloat (xoffset, ==, shadow->xoffset);
+      g_assert_cmpfloat (yoffset, ==, shadow->yoffset);
+      g_assert_cmpfloat (blur, ==, shadow->blur);
+      g_assert_cmpfloat (spread, ==, shadow->spread);
+      g_assert (inset == shadow->inset);
+
+      st_shadow_unref (shadow);
+    }
+  else
+    {
+      g_assert (is_none);
+    }
+}
+
+static void
+test_shadows (void)
+{
+  test = "shadows";
+  assert_shadow (shadows, "shadow2", FALSE, TRUE, 1.0, 2.0, 0.0, 0.0, 0x00ff00ff);
+  assert_shadow (shadows, "shadow3", FALSE, FALSE, 1.0, 2.0, 3.0, 0.0, 0x00ff00ff);
+  assert_shadow (shadows, "shadow4", FALSE, FALSE, 1.0, 2.0, 3.0, 4.0, 0x00ff00ff);
+  assert_shadow (shadows, "shadownone", TRUE, FALSE, 0.0, 0.0, 0.0, 0.0, 0);
 }
 
 static void
@@ -573,12 +783,8 @@ main (int argc, char **argv)
                               CLUTTER_TYPE_TEXT, "text2", NULL, NULL, NULL);
   group2 = st_theme_node_new (context, root, NULL,
                               CLUTTER_TYPE_ACTOR, "group2", NULL, NULL, NULL);
-  group4 = st_theme_node_new (context, root, NULL,
-                              CLUTTER_TYPE_ACTOR, "group4", NULL, NULL, NULL);
-  group5 = st_theme_node_new (context, root, NULL,
-                              CLUTTER_TYPE_ACTOR, "group5", NULL, NULL, NULL);
-  group6 = st_theme_node_new (context, root, NULL,
-                              CLUTTER_TYPE_ACTOR, "group6", NULL, NULL, NULL);
+  shadows = st_theme_node_new (context, root, NULL,
+                               CLUTTER_TYPE_ACTOR, "shadows", NULL, NULL, NULL);
   text3 = st_theme_node_new  (context, group2, NULL,
                               CLUTTER_TYPE_TEXT, "text3", NULL, NULL,
                               "color: #0000ff; padding-bottom: 12px;");
@@ -588,16 +794,73 @@ main (int argc, char **argv)
                               CLUTTER_TYPE_ACTOR, "group3", NULL, "hover", NULL);
   button = st_theme_node_new (context, root, NULL,
                               ST_TYPE_BUTTON, "button", NULL, NULL, NULL);
+  outline_longhand = st_theme_node_new (context, root, NULL,
+                                        CLUTTER_TYPE_ACTOR, "outline_longhand", NULL, NULL, NULL);
+  outline_shorthand = st_theme_node_new (context, root, NULL,
+                                         CLUTTER_TYPE_ACTOR, "outline_shorthand", NULL, NULL, NULL);
+  outline_override1 = st_theme_node_new (context, root, NULL,
+                                         CLUTTER_TYPE_ACTOR, "outline_override1", NULL, NULL, NULL);
+  outline_override2 = st_theme_node_new (context, root, NULL,
+                                         CLUTTER_TYPE_ACTOR, "outline_override2", NULL, NULL, NULL);
+
+  padding_shorthand1 = st_theme_node_new (context, root, NULL,
+                                          CLUTTER_TYPE_ACTOR, "padding_shorthand1", NULL, NULL, NULL);
+  padding_shorthand2 = st_theme_node_new (context, root, NULL,
+                                          CLUTTER_TYPE_ACTOR, "padding_shorthand2", NULL, NULL, NULL);
+  padding_shorthand3 = st_theme_node_new (context, root, NULL,
+                                          CLUTTER_TYPE_ACTOR, "padding_shorthand3", NULL, NULL, NULL);
+  padding_shorthand4 = st_theme_node_new (context, root, NULL,
+                                          CLUTTER_TYPE_ACTOR, "padding_shorthand4", NULL, NULL, NULL);
+
+  margin_shorthand1 = st_theme_node_new (context, root, NULL,
+                                         CLUTTER_TYPE_ACTOR, "margin_shorthand1", NULL, NULL, NULL);
+  margin_shorthand2 = st_theme_node_new (context, root, NULL,
+                                         CLUTTER_TYPE_ACTOR, "margin_shorthand2", NULL, NULL, NULL);
+  margin_shorthand3 = st_theme_node_new (context, root, NULL,
+                                         CLUTTER_TYPE_ACTOR, "margin_shorthand3", NULL, NULL, NULL);
+  margin_shorthand4 = st_theme_node_new (context, root, NULL,
+                                         CLUTTER_TYPE_ACTOR, "margin_shorthand4", NULL, NULL, NULL);
+
+  border_radius_shorthand1 = st_theme_node_new (context, root, NULL,
+                                                CLUTTER_TYPE_ACTOR, "border_radius_shorthand1",
+                                                NULL, NULL, NULL);
+  border_radius_shorthand2 = st_theme_node_new (context, root, NULL,
+                                                CLUTTER_TYPE_ACTOR, "border_radius_shorthand2",
+                                                NULL, NULL, NULL);
+  border_radius_shorthand3 = st_theme_node_new (context, root, NULL,
+                                                CLUTTER_TYPE_ACTOR, "border_radius_shorthand3",
+                                                NULL, NULL, NULL);
+  border_radius_shorthand4 = st_theme_node_new (context, root, NULL,
+                                                CLUTTER_TYPE_ACTOR, "border_radius_shorthand4",
+                                                NULL, NULL, NULL);
+
+  border_shorthand1 = st_theme_node_new (context, root, NULL,
+                                         CLUTTER_TYPE_ACTOR, "border_shorthand1",
+                                         NULL, NULL, NULL);
+
+  border_longhands = st_theme_node_new (context, root, NULL,
+                                        CLUTTER_TYPE_ACTOR, "border_longhands",
+                                        NULL, NULL, NULL);
 
   test_defaults ();
+  test_double ();
+  test_time ();
   test_lengths ();
+  test_url ();
+  test_icon_style ();
   test_classes ();
   test_type_inheritance ();
   test_adjacent_selector ();
   test_padding ();
-  test_margin ();
+  test_padding_shorthand ();
+  test_margin_shorthand ();
+  test_border_radius_shorthand ();
   test_border ();
+  test_border_shorthand();
+  test_border_longhands();
+  test_outline ();
   test_background ();
+  test_shadows ();
   test_font ();
   test_font_features ();
   test_pseudo_class ();
@@ -607,9 +870,7 @@ main (int argc, char **argv)
   g_object_unref (group1);
   g_object_unref (group2);
   g_object_unref (group3);
-  g_object_unref (group4);
-  g_object_unref (group5);
-  g_object_unref (group6);
+  g_object_unref (shadows);
   g_object_unref (text1);
   g_object_unref (text2);
   g_object_unref (text3);

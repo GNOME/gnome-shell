@@ -30,6 +30,45 @@
 
 G_BEGIN_DECLS
 
+/* Keep this in sync with stylish/src/outline.rs:StOutline */
+typedef struct {
+  ClutterColor color;
+  int width;
+} StOutline;
+
+/* Keep this in sync with stylish/src/sides.rs:StSides */
+/* Note that this matches the order in StSide */
+typedef struct {
+  double top;
+  double right;
+  double bottom;
+  double left;
+} StSides;
+
+/* Note that this matches the order in StSide */
+typedef struct {
+  StOutline top;
+  StOutline right;
+  StOutline bottom;
+  StOutline left;
+} StBorder;
+
+/* Keep this in sync with stylish/src/corners.rs:StCorners */
+/* Note that this matches the order in StCorner */
+typedef struct {
+  int top_left;
+  int top_right;
+  int bottom_right;
+  int bottom_left;
+} StCorners;
+
+typedef enum {
+  ST_BACKGROUND_SIZE_AUTO,
+  ST_BACKGROUND_SIZE_CONTAIN,
+  ST_BACKGROUND_SIZE_COVER,
+  ST_BACKGROUND_SIZE_FIXED
+} StBackgroundSize;
+
 struct _StThemeNode {
   GObject parent;
 
@@ -52,14 +91,12 @@ struct _StThemeNode {
   gint background_size_h;
 
   ClutterColor foreground_color;
-  ClutterColor border_color[4];
-  ClutterColor outline_color;
 
-  int border_width[4];
-  int border_radius[4];
-  int outline_width;
-  guint padding[4];
-  guint margin[4];
+  StOutline outline;
+  StBorder border;
+  StCorners border_radius;
+  StSides padding;
+  StSides margin;
 
   int width;
   int height;

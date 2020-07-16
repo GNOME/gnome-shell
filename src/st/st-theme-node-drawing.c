@@ -284,37 +284,33 @@ st_theme_node_reduce_border_radius (StThemeNode  *node,
   scale = 1.0;
 
   /* top */
-  sum = node->border_radius[ST_CORNER_TOPLEFT]
-    + node->border_radius[ST_CORNER_TOPRIGHT];
+  sum = node->border_radius.top_left + node->border_radius.top_right;
 
   if (sum > 0)
     scale = MIN (width / sum, scale);
 
   /* right */
-  sum = node->border_radius[ST_CORNER_TOPRIGHT]
-    + node->border_radius[ST_CORNER_BOTTOMRIGHT];
+  sum = node->border_radius.top_right + node->border_radius.bottom_right;
 
   if (sum > 0)
     scale = MIN (height / sum, scale);
 
   /* bottom */
-  sum = node->border_radius[ST_CORNER_BOTTOMLEFT]
-    + node->border_radius[ST_CORNER_BOTTOMRIGHT];
+  sum = node->border_radius.bottom_left + node->border_radius.bottom_right;
 
   if (sum > 0)
     scale = MIN (width / sum, scale);
 
   /* left */
-  sum = node->border_radius[ST_CORNER_BOTTOMLEFT]
-    + node->border_radius[ST_CORNER_TOPLEFT];
+  sum = node->border_radius.bottom_left + node->border_radius.top_left;
 
   if (sum > 0)
     scale = MIN (height / sum, scale);
 
-  corners[ST_CORNER_TOPLEFT]     = node->border_radius[ST_CORNER_TOPLEFT]     * scale;
-  corners[ST_CORNER_TOPRIGHT]    = node->border_radius[ST_CORNER_TOPRIGHT]    * scale;
-  corners[ST_CORNER_BOTTOMLEFT]  = node->border_radius[ST_CORNER_BOTTOMLEFT]  * scale;
-  corners[ST_CORNER_BOTTOMRIGHT] = node->border_radius[ST_CORNER_BOTTOMRIGHT] * scale;
+  corners[ST_CORNER_TOPLEFT]     = node->border_radius.top_left     * scale;
+  corners[ST_CORNER_TOPRIGHT]    = node->border_radius.top_right    * scale;
+  corners[ST_CORNER_BOTTOMLEFT]  = node->border_radius.bottom_left  * scale;
+  corners[ST_CORNER_BOTTOMRIGHT] = node->border_radius.bottom_right * scale;
 }
 
 static void
@@ -327,27 +323,27 @@ st_theme_node_get_corner_border_widths (StThemeNode *node,
     {
       case ST_CORNER_TOPLEFT:
         if (border_width_1)
-            *border_width_1 = node->border_width[ST_SIDE_TOP];
+            *border_width_1 = node->border.top.width;
         if (border_width_2)
-            *border_width_2 = node->border_width[ST_SIDE_LEFT];
+            *border_width_2 = node->border.left.width;
         break;
       case ST_CORNER_TOPRIGHT:
         if (border_width_1)
-            *border_width_1 = node->border_width[ST_SIDE_TOP];
+            *border_width_1 = node->border.top.width;
         if (border_width_2)
-            *border_width_2 = node->border_width[ST_SIDE_RIGHT];
+            *border_width_2 = node->border.right.width;
         break;
       case ST_CORNER_BOTTOMRIGHT:
         if (border_width_1)
-            *border_width_1 = node->border_width[ST_SIDE_BOTTOM];
+            *border_width_1 = node->border.bottom.width;
         if (border_width_2)
-            *border_width_2 = node->border_width[ST_SIDE_RIGHT];
+            *border_width_2 = node->border.right.width;
         break;
       case ST_CORNER_BOTTOMLEFT:
         if (border_width_1)
-            *border_width_1 = node->border_width[ST_SIDE_BOTTOM];
+            *border_width_1 = node->border.bottom.width;
         if (border_width_2)
-            *border_width_2 = node->border_width[ST_SIDE_LEFT];
+            *border_width_2 = node->border.left.width;
         break;
       default:
         g_assert_not_reached();
@@ -386,20 +382,20 @@ st_theme_node_lookup_corner (StThemeNode    *node,
   switch (corner_id)
     {
       case ST_CORNER_TOPLEFT:
-        over (&node->border_color[ST_SIDE_TOP], &corner.color, &corner.border_color_1);
-        over (&node->border_color[ST_SIDE_LEFT], &corner.color, &corner.border_color_2);
+        over (&node->border.top.color, &corner.color, &corner.border_color_1);
+        over (&node->border.left.color, &corner.color, &corner.border_color_2);
         break;
       case ST_CORNER_TOPRIGHT:
-        over (&node->border_color[ST_SIDE_TOP], &corner.color, &corner.border_color_1);
-        over (&node->border_color[ST_SIDE_RIGHT], &corner.color, &corner.border_color_2);
+        over (&node->border.top.color, &corner.color, &corner.border_color_1);
+        over (&node->border.right.color, &corner.color, &corner.border_color_2);
         break;
       case ST_CORNER_BOTTOMRIGHT:
-        over (&node->border_color[ST_SIDE_BOTTOM], &corner.color, &corner.border_color_1);
-        over (&node->border_color[ST_SIDE_RIGHT], &corner.color, &corner.border_color_2);
+        over (&node->border.bottom.color, &corner.color, &corner.border_color_1);
+        over (&node->border.right.color, &corner.color, &corner.border_color_2);
         break;
       case ST_CORNER_BOTTOMLEFT:
-        over (&node->border_color[ST_SIDE_BOTTOM], &corner.color, &corner.border_color_1);
-        over (&node->border_color[ST_SIDE_LEFT], &corner.color, &corner.border_color_2);
+        over (&node->border.bottom.color, &corner.color, &corner.border_color_1);
+        over (&node->border.left.color, &corner.color, &corner.border_color_2);
         break;
       default:
         g_assert_not_reached();
@@ -574,16 +570,16 @@ st_theme_node_has_visible_outline (StThemeNode *node)
   if (node->background_gradient_end.alpha > 0)
     return TRUE;
 
-  if (node->border_radius[ST_CORNER_TOPLEFT] > 0 ||
-      node->border_radius[ST_CORNER_TOPRIGHT] > 0 ||
-      node->border_radius[ST_CORNER_BOTTOMLEFT] > 0 ||
-      node->border_radius[ST_CORNER_BOTTOMRIGHT] > 0)
+  if (node->border_radius.top_left > 0 ||
+      node->border_radius.top_right > 0 ||
+      node->border_radius.bottom_left > 0 ||
+      node->border_radius.bottom_right > 0)
     return TRUE;
 
-  if (node->border_width[ST_SIDE_TOP] > 0 ||
-      node->border_width[ST_SIDE_LEFT] > 0 ||
-      node->border_width[ST_SIDE_RIGHT] > 0 ||
-      node->border_width[ST_SIDE_BOTTOM] > 0)
+  if (node->border.top.width > 0 ||
+      node->border.right.width > 0 ||
+      node->border.bottom.width > 0 ||
+      node->border.left.width > 0)
     return TRUE;
 
   return FALSE;
@@ -1501,18 +1497,18 @@ st_theme_node_render_resources (StThemeNodePaintState *state,
   box_shadow_spec = st_theme_node_get_box_shadow (node);
   has_inset_box_shadow = box_shadow_spec && box_shadow_spec->inset;
 
-  if (node->border_width[ST_SIDE_TOP] > 0 ||
-      node->border_width[ST_SIDE_LEFT] > 0 ||
-      node->border_width[ST_SIDE_RIGHT] > 0 ||
-      node->border_width[ST_SIDE_BOTTOM] > 0)
+  if (node->border.top.width > 0 ||
+      node->border.right.width > 0 ||
+      node->border.bottom.width > 0 ||
+      node->border.left.width > 0)
     has_border = TRUE;
   else
     has_border = FALSE;
 
-  if (node->border_radius[ST_CORNER_TOPLEFT] > 0 ||
-      node->border_radius[ST_CORNER_TOPRIGHT] > 0 ||
-      node->border_radius[ST_CORNER_BOTTOMLEFT] > 0 ||
-      node->border_radius[ST_CORNER_BOTTOMRIGHT] > 0)
+  if (node->border_radius.top_left > 0 ||
+      node->border_radius.top_right > 0 ||
+      node->border_radius.bottom_left > 0 ||
+      node->border_radius.bottom_right > 0)
     has_border_radius = TRUE;
   else
     has_border_radius = FALSE;
@@ -2042,17 +2038,17 @@ st_theme_node_paint_sliced_shadow (StThemeNodePaintState *state,
 
   /* Compute input regions parameters */
   s_top = shadow_blur_radius + box_shadow_spec->blur +
-    MAX (node->border_radius[ST_CORNER_TOPLEFT],
-         node->border_radius[ST_CORNER_TOPRIGHT]);
+    MAX (node->border_radius.top_left,
+         node->border_radius.top_right);
   s_bottom = shadow_blur_radius + box_shadow_spec->blur +
-    MAX (node->border_radius[ST_CORNER_BOTTOMLEFT],
-         node->border_radius[ST_CORNER_BOTTOMRIGHT]);
+    MAX (node->border_radius.bottom_left,
+         node->border_radius.bottom_right);
   s_left = shadow_blur_radius + box_shadow_spec->blur +
-    MAX (node->border_radius[ST_CORNER_TOPLEFT],
-         node->border_radius[ST_CORNER_BOTTOMLEFT]);
+    MAX (node->border_radius.top_left,
+         node->border_radius.bottom_left);
   s_right = shadow_blur_radius + box_shadow_spec->blur +
-    MAX (node->border_radius[ST_CORNER_TOPRIGHT],
-         node->border_radius[ST_CORNER_BOTTOMRIGHT]);
+    MAX (node->border_radius.top_right,
+         node->border_radius.bottom_right);
 
   /* Compute output regions parameters */
   xoffset = box->x1 + box_shadow_spec->xoffset - shadow_blur_radius - box_shadow_spec->spread;
@@ -2324,14 +2320,14 @@ st_theme_node_compute_maximum_borders (StThemeNodePaintState *state)
   StThemeNode * node = state->node;
 
   /* Compute maximum borders sizes */
-  max_borders[ST_SIDE_TOP] = MAX (node->border_radius[ST_CORNER_TOPLEFT],
-                                  node->border_radius[ST_CORNER_TOPRIGHT]);
-  max_borders[ST_SIDE_BOTTOM] = MAX (node->border_radius[ST_CORNER_BOTTOMLEFT],
-                                     node->border_radius[ST_CORNER_BOTTOMRIGHT]);
-  max_borders[ST_SIDE_LEFT] = MAX (node->border_radius[ST_CORNER_TOPLEFT],
-                                   node->border_radius[ST_CORNER_BOTTOMLEFT]);
-  max_borders[ST_SIDE_RIGHT] = MAX (node->border_radius[ST_CORNER_TOPRIGHT],
-                                    node->border_radius[ST_CORNER_BOTTOMRIGHT]);
+  max_borders[ST_SIDE_TOP] = MAX (node->border_radius.top_left,
+                                  node->border_radius.top_right);
+  max_borders[ST_SIDE_BOTTOM] = MAX (node->border_radius.bottom_left,
+                                     node->border_radius.bottom_right);
+  max_borders[ST_SIDE_LEFT] = MAX (node->border_radius.top_left,
+                                   node->border_radius.bottom_left);
+  max_borders[ST_SIDE_RIGHT] = MAX (node->border_radius.top_right,
+                                    node->border_radius.bottom_right);
 
   center_radius = (node->box_shadow->blur > 0) ? (2 * node->box_shadow->blur + 1) : 1;
 

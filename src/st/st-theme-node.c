@@ -31,6 +31,15 @@
 #include "st-theme-context.h"
 #include "st-theme-node-private.h"
 
+/* Keep this in sync with stylish/src/c_api.rs:GetFromTermResult */
+typedef enum {
+  VALUE_FOUND,
+  VALUE_NOT_FOUND,
+  VALUE_INHERIT
+} GetFromTermResult;
+
+#include "stylish/stylish.h"
+
 static void st_theme_node_dispose           (GObject                 *object);
 static void st_theme_node_finalize          (GObject                 *object);
 
@@ -450,12 +459,6 @@ ensure_properties (StThemeNode *node)
     }
 }
 
-typedef enum {
-  VALUE_FOUND,
-  VALUE_NOT_FOUND,
-  VALUE_INHERIT
-} GetFromTermResult;
-
 static gboolean
 term_is_inherit (CRTerm *term)
 {
@@ -468,153 +471,6 @@ term_is_none (CRTerm *term)
 {
   return (term->type == TERM_IDENT &&
           strcmp (term->content.str->stryng->str, "none") == 0);
-}
-
-static gboolean
-term_is_transparent (CRTerm *term)
-{
-  return (term->type == TERM_IDENT &&
-          strcmp (term->content.str->stryng->str, "transparent") == 0);
-}
-
-static int
-color_component_from_double (double component)
-{
-  /* We want to spread the range 0-1 equally over 0..255, but
-   * 1.0 should map to 255 not 256, so we need to special-case it.
-   * See http://people.redhat.com/otaylor/pixel-converting.html
-   * for (very) detailed discussion of related issues. */
-  if (component >= 1.0)
-    return 255;
-  else
-    return (int)(component * 256);
-}
-
-static GetFromTermResult
-get_color_from_rgba_term (CRTerm       *term,
-                          ClutterColor *color)
-{
-  CRTerm *arg = term->ext_content.func_param;
-  CRNum *num;
-  double r = 0, g = 0, b = 0, a = 0;
-  int i;
-
-  for (i = 0; i < 4; i++)
-    {
-      double value;
-
-      if (arg == NULL)
-        return VALUE_NOT_FOUND;
-
-      if ((i == 0 && arg->the_operator != NO_OP) ||
-          (i > 0 && arg->the_operator != COMMA))
-        return VALUE_NOT_FOUND;
-
-      if (arg->type != TERM_NUMBER)
-        return VALUE_NOT_FOUND;
-
-      num = arg->content.num;
-
-      /* For simplicity, we convert a,r,g,b to [0,1.0] floats and then
-       * convert them back below. Then when we set them on a cairo content
-       * we convert them back to floats, and then cairo converts them
-       * back to integers to pass them to X, and so forth...
-       */
-      if (i < 3)
-        {
-          if (num->type == NUM_PERCENTAGE)
-            value = num->val / 100;
-          else if (num->type == NUM_GENERIC)
-            value = num->val / 255;
-          else
-            return VALUE_NOT_FOUND;
-        }
-      else
-        {
-          if (num->type != NUM_GENERIC)
-            return VALUE_NOT_FOUND;
-
-          value = num->val;
-        }
-
-      value = CLAMP (value, 0, 1);
-
-      switch (i)
-        {
-        case 0:
-          r = value;
-          break;
-        case 1:
-          g = value;
-          break;
-        case 2:
-          b = value;
-          break;
-        case 3:
-          a = value;
-          break;
-        default:
-          g_assert_not_reached();
-          break;
-        }
-
-      arg = arg->next;
-    }
-
-  color->red = color_component_from_double (r);
-  color->green = color_component_from_double (g);
-  color->blue = color_component_from_double (b);
-  color->alpha = color_component_from_double (a);
-
-  return VALUE_FOUND;
-}
-
-static GetFromTermResult
-get_color_from_term (StThemeNode  *node,
-                     CRTerm       *term,
-                     ClutterColor *color)
-{
-  CRRgb rgb;
-  enum CRStatus status;
-
-  if (term_is_inherit (term))
-    {
-      return VALUE_INHERIT;
-    }
-  /* Since libcroco doesn't know about rgba colors, it can't handle
-   * the transparent keyword
-   */
-  else if (term_is_transparent (term))
-    {
-      *color = TRANSPARENT_COLOR;
-      return VALUE_FOUND;
-    }
-  /* rgba () colors - a CSS3 addition, are not supported by libcroco,
-   * but they are parsed as a "function", so we can emulate the
-   * functionality.
-   */
-  else if (term->type == TERM_FUNCTION &&
-           term->content.str &&
-           term->content.str->stryng &&
-           term->content.str->stryng->str &&
-           strcmp (term->content.str->stryng->str, "rgba") == 0)
-    {
-      return get_color_from_rgba_term (term, color);
-    }
-
-  status = cr_rgb_set_from_term (&rgb, term);
-  if (status != CR_OK)
-    return VALUE_NOT_FOUND;
-
-  if (rgb.is_percentage)
-    cr_rgb_compute_from_percentage (&rgb);
-
-  color->red = rgb.red;
-  color->green = rgb.green;
-  color->blue = rgb.blue;
-  color->alpha = 0xff;
-
-  return VALUE_FOUND;
 }
 
 /**
@@ -655,19 +511,17 @@ st_theme_node_lookup_color (StThemeNode  *node,
     {
       CRDeclaration *decl = node->properties[i];
 
-      if (strcmp (decl->property->stryng->str, property_name) == 0)
+      if (strcmp (cr_declaration_name (decl), property_name) == 0)
         {
-          GetFromTermResult result = get_color_from_term (node, decl->value, color);
+          GetFromTermResult result = stylish_get_color_from_term (decl->value, color);
           if (result == VALUE_FOUND)
             {
               return TRUE;
             }
           else if (result == VALUE_INHERIT)
             {
-              if (node->parent_node)
-                return st_theme_node_lookup_color (node->parent_node, property_name, inherit, color);
-              else
-                break;
+              inherit = TRUE;
+              break;
             }
         }
     }
@@ -745,20 +599,22 @@ st_theme_node_lookup_double (StThemeNode *node,
     {
       CRDeclaration *decl = node->properties[i];
 
-      if (strcmp (decl->property->stryng->str, property_name) == 0)
+      if (strcmp (cr_declaration_name (decl), property_name) == 0)
         {
-          CRTerm *term = decl->value;
-
-          if (term->type != TERM_NUMBER || term->content.num->type != NUM_GENERIC)
-            continue;
-
-          *value = term->content.num->val;
-          result = TRUE;
-          break;
+          GetFromTermResult result = stylish_get_double_from_term (decl->value, value);
+          if (result == VALUE_FOUND)
+            {
+              return TRUE;
+            }
+          else if (result == VALUE_INHERIT)
+            {
+              inherit = TRUE;
+              break;
+            }
         }
     }
 
-  if (!result && inherit && node->parent_node)
+  if (inherit && node->parent_node)
     result = st_theme_node_lookup_double (node->parent_node, property_name, inherit, value);
 
   return result;
@@ -798,28 +654,22 @@ st_theme_node_lookup_time (StThemeNode *node,
     {
       CRDeclaration *decl = node->properties[i];
 
-      if (strcmp (decl->property->stryng->str, property_name) == 0)
+      if (strcmp (cr_declaration_name (decl), property_name) == 0)
         {
-          CRTerm *term = decl->value;
-          int factor = 1;
-
-          if (term->type != TERM_NUMBER)
-            continue;
-
-          if (term->content.num->type != NUM_TIME_S &&
-              term->content.num->type != NUM_TIME_MS)
-            continue;
-
-          if (term->content.num->type == NUM_TIME_S)
-            factor = 1000;
-
-          *value = factor * term->content.num->val;
-          result = TRUE;
-          break;
+          GetFromTermResult result = stylish_get_time_from_term (decl->value, value);
+          if (result == VALUE_FOUND)
+            {
+              return TRUE;
+            }
+          else if (result == VALUE_INHERIT)
+            {
+              inherit = TRUE;
+              break;
+            }
         }
     }
 
-  if (!result && inherit && node->parent_node)
+  if (inherit && node->parent_node)
     result = st_theme_node_lookup_time (node->parent_node, property_name, inherit, value);
 
   return result;
@@ -890,28 +740,34 @@ st_theme_node_lookup_url (StThemeNode  *node,
     {
       CRDeclaration *decl = node->properties[i];
 
-      if (strcmp (decl->property->stryng->str, property_name) == 0)
+      if (strcmp (cr_declaration_name (decl), property_name) == 0)
         {
-          CRTerm *term = decl->value;
-          CRStyleSheet *base_stylesheet;
+          char *value = NULL;
+          GetFromTermResult result = stylish_get_url_from_term (decl->value, &value);
 
-          if (term->type != TERM_URI && term->type != TERM_STRING)
-            continue;
+          if (result == VALUE_FOUND)
+            {
+              CRStyleSheet *base_stylesheet;
 
-          if (decl->parent_statement != NULL)
-            base_stylesheet = decl->parent_statement->parent_sheet;
-          else
-            base_stylesheet = NULL;
+              if (decl->parent_statement != NULL)
+                base_stylesheet = decl->parent_statement->parent_sheet;
+              else
+                base_stylesheet = NULL;
 
-          *file = _st_theme_resolve_url (node->theme,
-                                         base_stylesheet,
-                                         decl->value->content.str->stryng->str);
-          result = TRUE;
-          break;
+              *file = _st_theme_resolve_url (node->theme, base_stylesheet, value);
+              g_free (value);
+
+              return TRUE;
+            }
+          else if (result == VALUE_INHERIT)
+            {
+              inherit = TRUE;
+              break;
+            }
         }
     }
 
-  if (!result && inherit && node->parent_node)
+  if (inherit && node->parent_node)
     result = st_theme_node_lookup_url (node->parent_node, property_name, inherit, file);
 
   return result;
@@ -956,196 +812,48 @@ get_parent_font (StThemeNode *node)
     return st_theme_context_get_font (node->context);
 }
 
-static GetFromTermResult
-get_length_from_term (StThemeNode *node,
-                      CRTerm      *term,
-                      gboolean     use_parent_font,
-                      gdouble     *length)
+static NormalizeParams
+normalize (StThemeNode *node, const PangoFontDescription *desc)
 {
-  CRNum *num;
+  NormalizeParams norm;
+  double resolution;
+  double font_size;
 
-  enum {
-    ABSOLUTE,
-    POINTS,
-    FONT_RELATIVE,
-  } type = ABSOLUTE;
+  resolution = clutter_backend_get_resolution (clutter_get_default_backend ());
 
-  double multiplier = 1.0;
-
-
-  if (term->type != TERM_NUMBER)
+  font_size = (double)pango_font_description_get_size (desc) / PANGO_SCALE;
+  if (!pango_font_description_get_size_is_absolute (desc))
     {
-      g_warning ("Ignoring length property that isn't a number at line %d, col %d",
-                 term->location.line, term->location.column);
-      return VALUE_NOT_FOUND;
+      font_size = font_size * resolution / 72.0;
     }
 
-  num = term->content.num;
+  norm.font_size = font_size;
+  norm.resolution = resolution;
+  norm.scale_factor = node->cached_scale_factor;
 
-  switch (num->type)
-    {
-    case NUM_LENGTH_PX:
-      type = ABSOLUTE;
-      multiplier = 1 * node->cached_scale_factor;
-      break;
-    case NUM_LENGTH_PT:
-      type = POINTS;
-      multiplier = 1;
-      break;
-    case NUM_LENGTH_IN:
-      type = POINTS;
-      multiplier = 72;
-      break;
-    case NUM_LENGTH_CM:
-      type = POINTS;
-      multiplier = 72. / 2.54;
-      break;
-    case NUM_LENGTH_MM:
-      type = POINTS;
-      multiplier = 72. / 25.4;
-      break;
-    case NUM_LENGTH_PC:
-      type = POINTS;
-      multiplier = 12. / 25.4;
-      break;
-    case NUM_LENGTH_EM:
-      {
-        type = FONT_RELATIVE;
-        multiplier = 1;
-        break;
-      }
-    case NUM_LENGTH_EX:
-      {
-        /* Doing better would require actually resolving the font description
-         * to a specific font, and Pango doesn't have an ex metric anyways,
-         * so we'd have to try and synthesize it by complicated means.
-         *
-         * The 0.5em is the CSS spec suggested thing to use when nothing
-         * better is available.
-         */
-        type = FONT_RELATIVE;
-        multiplier = 0.5;
-        break;
-      }
+  return norm;
+}
 
-    case NUM_INHERIT:
-      return VALUE_INHERIT;
-
-    case NUM_AUTO:
-      g_warning ("'auto' not supported for lengths");
-      return VALUE_NOT_FOUND;
-
-    case NUM_GENERIC:
-      {
-        if (num->val != 0)
-          {
-            g_warning ("length values must specify a unit");
-            return VALUE_NOT_FOUND;
-          }
-        else
-          {
-            type = ABSOLUTE;
-            multiplier = 0;
-          }
-        break;
-      }
-
-    case NUM_PERCENTAGE:
-      g_warning ("percentage lengths not currently supported");
-      return VALUE_NOT_FOUND;
-
-    case NUM_ANGLE_DEG:
-    case NUM_ANGLE_RAD:
-    case NUM_ANGLE_GRAD:
-    case NUM_TIME_MS:
-    case NUM_TIME_S:
-    case NUM_FREQ_HZ:
-    case NUM_FREQ_KHZ:
-    case NUM_UNKNOWN_TYPE:
-    case NB_NUM_TYPE:
-    default:
-      g_warning ("Ignoring invalid type of number of length property");
-      return VALUE_NOT_FOUND;
-    }
-
-  switch (type)
-    {
-    case ABSOLUTE:
-      *length = num->val * multiplier;
-      break;
-    case POINTS:
-      {
-        double resolution = clutter_backend_get_resolution (clutter_get_default_backend ());
-        *length = num->val * multiplier * (resolution / 72.);
-      }
-      break;
-    case FONT_RELATIVE:
-      {
-        const PangoFontDescription *desc;
-        double font_size;
-
-        if (use_parent_font)
-          desc = get_parent_font (node);
-        else
-          desc = st_theme_node_get_font (node);
-
-        font_size = (double)pango_font_description_get_size (desc) / PANGO_SCALE;
-
-        if (pango_font_description_get_size_is_absolute (desc))
-          {
-            *length = num->val * multiplier * font_size;
-          }
-        else
-          {
-            double resolution = clutter_backend_get_resolution (clutter_get_default_backend ());
-            *length = num->val * multiplier * (resolution / 72.) * font_size;
-          }
-      }
-      break;
-    default:
-      g_assert_not_reached ();
-    }
-
-  return VALUE_FOUND;
+static NormalizeParams
+normalize_default (StThemeNode *node)
+{
+  return normalize (node, st_theme_node_get_font (node));
 }
 
 static GetFromTermResult
-get_length_from_term_int (StThemeNode *node,
-                          CRTerm      *term,
-                          gboolean     use_parent_font,
-                          gint        *length)
+get_length_from_term_int (CRTerm          *term,
+                          NormalizeParams  norm,
+                          gint            *length)
 {
   double value;
   GetFromTermResult result;
 
-  result = get_length_from_term (node, term, use_parent_font, &value);
+  result = stylish_get_length_from_term (term, norm, &value);
   if (result == VALUE_FOUND)
-    *length = (int) ((value / node->cached_scale_factor) + 0.5) * node->cached_scale_factor;
-  return result;
-}
-
-static GetFromTermResult
-get_length_internal (StThemeNode *node,
-                     const char  *property_name,
-                     gdouble     *length)
-{
-  int i;
-
-  ensure_properties (node);
-
-  for (i = node->n_properties - 1; i >= 0; i--)
     {
-      CRDeclaration *decl = node->properties[i];
-
-      if (strcmp (decl->property->stryng->str, property_name) == 0)
-        {
-          GetFromTermResult result = get_length_from_term (node, decl->value, FALSE, length);
-          if (result != VALUE_NOT_FOUND)
-            return result;
-        }
+      *length = (int) ((value / norm.scale_factor) + 0.5) * norm.scale_factor;
     }
-
-  return VALUE_NOT_FOUND;
+  return result;
 }
 
 /**
@@ -1178,11 +886,30 @@ st_theme_node_lookup_length (StThemeNode *node,
                              gboolean     inherit,
                              gdouble     *length)
 {
-  GetFromTermResult result = get_length_internal (node, property_name, length);
-  if (result == VALUE_FOUND)
-    return TRUE;
-  else if (result == VALUE_INHERIT)
-    inherit = TRUE;
+  int i;
+
+  ensure_properties (node);
+
+  for (i = node->n_properties - 1; i >= 0; i--)
+    {
+      CRDeclaration *decl = node->properties[i];
+
+      if (strcmp (cr_declaration_name (decl), property_name) == 0)
+        {
+          GetFromTermResult result = stylish_get_length_from_term (decl->value,
+                                                                   normalize_default (node),
+                                                                   length);
+          if (result == VALUE_FOUND)
+            {
+              return TRUE;
+            }
+          else if (result == VALUE_INHERIT)
+            {
+              inherit = TRUE;
+              break;
+            }
+        }
+    }
 
   if (inherit && node->parent_node)
     return st_theme_node_lookup_length (node->parent_node, property_name, inherit, length);
@@ -1221,69 +948,35 @@ st_theme_node_get_length (StThemeNode *node,
 }
 
 static void
-do_border_radius_term (StThemeNode *node,
-                       CRTerm      *term,
-                       gboolean     topleft,
-                       gboolean     topright,
-                       gboolean     bottomright,
-                       gboolean     bottomleft)
+get_corner_longhand (StThemeNode *node,
+                     CRTerm      *term,
+                     int         *dest)
 {
   int value;
 
-  if (get_length_from_term_int (node, term, FALSE, &value) != VALUE_FOUND)
+  if (get_length_from_term_int (term, normalize_default (node), &value) != VALUE_FOUND)
     return;
 
-  if (topleft)
-    node->border_radius[ST_CORNER_TOPLEFT] = value;
-  if (topright)
-    node->border_radius[ST_CORNER_TOPRIGHT] = value;
-  if (bottomright)
-    node->border_radius[ST_CORNER_BOTTOMRIGHT] = value;
-  if (bottomleft)
-    node->border_radius[ST_CORNER_BOTTOMLEFT] = value;
+  *dest = value;
 }
 
 static void
 do_border_radius (StThemeNode   *node,
                   CRDeclaration *decl)
 {
-  const char *property_name = decl->property->stryng->str + 13; /* Skip 'border-radius' */
+  const char *property_name = cr_declaration_name (decl) + 13; /* Skip 'border-radius' */
 
   if (strcmp (property_name, "") == 0)
     {
-      /* Slight deviation ... if we don't understand some of the terms and understand others,
-       * then we set the ones we understand and ignore the others instead of ignoring the
-       * whole thing
-       */
-      if (decl->value == NULL) /* 0 values */
-        return;
-      else if (decl->value->next == NULL) /* 1 value */
+      if (decl->value)
         {
-          do_border_radius_term (node, decl->value,       TRUE, TRUE, TRUE, TRUE); /* all corners */
-          return;
-        }
-      else if (decl->value->next->next == NULL) /* 2 values */
-        {
-          do_border_radius_term (node, decl->value,       TRUE,  FALSE,  TRUE,  FALSE);  /* topleft/bottomright */
-          do_border_radius_term (node, decl->value->next, FALSE,  TRUE,   FALSE, TRUE);  /* topright/bottomleft */
-        }
-      else if (decl->value->next->next->next == NULL) /* 3 values */
-        {
-          do_border_radius_term (node, decl->value,             TRUE,  FALSE, FALSE, FALSE); /* topleft */
-          do_border_radius_term (node, decl->value->next,       FALSE, TRUE,  FALSE, TRUE);  /* topright/bottomleft */
-          do_border_radius_term (node, decl->value->next->next, FALSE, FALSE, TRUE,  FALSE);  /* bottomright */
-        }
-      else if (decl->value->next->next->next->next == NULL) /* 4 values */
-        {
-          do_border_radius_term (node, decl->value,                   TRUE,  FALSE, FALSE, FALSE); /* topleft */
-          do_border_radius_term (node, decl->value->next,             FALSE, TRUE,  FALSE, FALSE); /* topright */
-          do_border_radius_term (node, decl->value->next->next,       FALSE, FALSE, TRUE,  FALSE); /* bottomright */
-          do_border_radius_term (node, decl->value->next->next->next, FALSE, FALSE, FALSE, TRUE);  /* bottomleft */
-        }
-      else
-        {
-          g_warning ("Too many values for border-radius property");
-          return;
+          StCorners corners;
+
+          if (stylish_parse_corners_shorthand (decl->value, normalize_default (node), &corners)
+              == VALUE_FOUND)
+            {
+              node->border_radius = corners;
+            }
         }
     }
   else
@@ -1292,13 +985,38 @@ do_border_radius (StThemeNode   *node,
         return;
 
       if (strcmp (property_name, "-topleft") == 0)
-        do_border_radius_term (node, decl->value, TRUE,  FALSE, FALSE, FALSE);
+        get_corner_longhand (node, decl->value, &node->border_radius.top_left);
       else if (strcmp (property_name, "-topright") == 0)
-        do_border_radius_term (node, decl->value, FALSE, TRUE,  FALSE, FALSE);
+        get_corner_longhand (node, decl->value, &node->border_radius.top_right);
       else if (strcmp (property_name, "-bottomright") == 0)
-        do_border_radius_term (node, decl->value, FALSE, FALSE, TRUE,  FALSE);
+        get_corner_longhand (node, decl->value, &node->border_radius.bottom_right);
       else if (strcmp (property_name, "-bottomleft") == 0)
-        do_border_radius_term (node, decl->value, FALSE, FALSE, FALSE, TRUE);
+        get_corner_longhand (node, decl->value, &node->border_radius.bottom_left);
+    }
+}
+
+static StOutline
+st_outline_default (void)
+{
+  StOutline o;
+
+  o.color = TRANSPARENT_COLOR;
+  o.width = 0;
+
+  return o;
+}
+
+static void
+copy_outline (StOutline *dest, const StOutline *src, gboolean copy_color, gboolean copy_width)
+{
+  if (copy_color)
+    {
+      dest->color = src->color;
+    }
+
+  if (copy_width)
+    {
+      dest->width = src->width;
     }
 }
 
@@ -1306,19 +1024,11 @@ static void
 do_border_property (StThemeNode   *node,
                     CRDeclaration *decl)
 {
-  const char *property_name = decl->property->stryng->str + 6; /* Skip 'border' */
+  const char *property_name = cr_declaration_name (decl) + 6; /* Skip 'border' */
   StSide side = (StSide)-1;
-  ClutterColor color;
+  StOutline outline = st_outline_default ();
   gboolean color_set = FALSE;
-  int width = 0; /* suppress warning */
   gboolean width_set = FALSE;
-  int j;
-
-  if (g_str_has_prefix (property_name, "-radius"))
-    {
-      do_border_radius (node, decl);
-      return;
-    }
 
   if (g_str_has_prefix (property_name, "-left"))
     {
@@ -1343,67 +1053,22 @@ do_border_property (StThemeNode   *node,
 
   if (strcmp (property_name, "") == 0)
     {
-      /* Set value for width/color/style in any order */
-      CRTerm *term;
-
-      for (term = decl->value; term; term = term->next)
+      if (decl->value)
         {
-          GetFromTermResult result;
-
-          if (term->type == TERM_IDENT)
+          if (stylish_parse_outline_shorthand (decl->value, normalize_default (node), &outline)
+              == VALUE_FOUND)
             {
-              const char *ident = term->content.str->stryng->str;
-              if (strcmp (ident, "none") == 0 || strcmp (ident, "hidden") == 0)
-                {
-                  width = 0;
-                  width_set = TRUE;
-                  continue;
-                }
-              else if (strcmp (ident, "solid") == 0)
-                {
-                  /* The only thing we support */
-                  continue;
-                }
-              else if (strcmp (ident, "dotted") == 0 ||
-                       strcmp (ident, "dashed") == 0 ||
-                       strcmp (ident, "double") == 0 ||
-                       strcmp (ident, "groove") == 0 ||
-                       strcmp (ident, "ridge") == 0 ||
-                       strcmp (ident, "inset") == 0 ||
-                       strcmp (ident, "outset") == 0)
-                {
-                  /* Treat the same as solid */
-                  continue;
-                }
-
-              /* Presumably a color, fall through */
-            }
-
-          if (term->type == TERM_NUMBER)
-            {
-              result = get_length_from_term_int (node, term, FALSE, &width);
-              if (result != VALUE_NOT_FOUND)
-                {
-                  width_set = result == VALUE_FOUND;
-                  continue;
-                }
-            }
-
-          result = get_color_from_term (node, term, &color);
-          if (result != VALUE_NOT_FOUND)
-            {
-              color_set = result == VALUE_FOUND;
-              continue;
+              color_set = TRUE;
+              width_set = TRUE;
             }
         }
-
     }
   else if (strcmp (property_name, "-color") == 0)
     {
       if (decl->value == NULL || decl->value->next != NULL)
         return;
 
-      if (get_color_from_term (node, decl->value, &color) == VALUE_FOUND)
+      if (stylish_get_color_from_term (decl->value, &outline.color) == VALUE_FOUND)
         /* Ignore inherit */
         color_set = TRUE;
     }
@@ -1412,27 +1077,41 @@ do_border_property (StThemeNode   *node,
       if (decl->value == NULL || decl->value->next != NULL)
         return;
 
-      if (get_length_from_term_int (node, decl->value, FALSE, &width) == VALUE_FOUND)
+      if (get_length_from_term_int (decl->value, normalize_default (node), &outline.width) == VALUE_FOUND)
         /* Ignore inherit */
         width_set = TRUE;
     }
 
   if (side == (StSide)-1)
     {
-      for (j = 0; j < 4; j++)
-        {
-          if (color_set)
-            node->border_color[j] = color;
-          if (width_set)
-            node->border_width[j] = width;
-        }
+      copy_outline (&node->border.top,    &outline, color_set, width_set);
+      copy_outline (&node->border.right,  &outline, color_set, width_set);
+      copy_outline (&node->border.bottom, &outline, color_set, width_set);
+      copy_outline (&node->border.left,   &outline, color_set, width_set);
     }
   else
     {
-      if (color_set)
-        node->border_color[side] = color;
-      if (width_set)
-        node->border_width[side] = width;
+      switch (side)
+        {
+        case ST_SIDE_TOP:
+          copy_outline (&node->border.top, &outline, color_set, width_set);
+          break;
+
+        case ST_SIDE_RIGHT:
+          copy_outline (&node->border.right, &outline, color_set, width_set);
+          break;
+
+        case ST_SIDE_BOTTOM:
+          copy_outline (&node->border.bottom, &outline, color_set, width_set);
+          break;
+
+        case ST_SIDE_LEFT:
+          copy_outline (&node->border.left, &outline, color_set, width_set);
+          break;
+
+        default:
+          g_assert_not_reached ();
+        }
     }
 }
 
@@ -1440,158 +1119,79 @@ static void
 do_outline_property (StThemeNode   *node,
                      CRDeclaration *decl)
 {
-  const char *property_name = decl->property->stryng->str + 7; /* Skip 'outline' */
-  ClutterColor color;
-  gboolean color_set = FALSE;
-  int width = 0; /* suppress warning */
-  gboolean width_set = FALSE;
+  const char *property_name = cr_declaration_name (decl) + 7; /* Skip 'outline' */
 
   if (strcmp (property_name, "") == 0)
     {
-      /* Set value for width/color/style in any order */
-      CRTerm *term;
-
-      for (term = decl->value; term; term = term->next)
+      if (decl->value)
         {
-          GetFromTermResult result;
+          StOutline outline;
 
-          if (term->type == TERM_IDENT)
+          if (stylish_parse_outline_shorthand (decl->value, normalize_default (node), &outline)
+              == VALUE_FOUND)
             {
-              const char *ident = term->content.str->stryng->str;
-              if (strcmp (ident, "none") == 0 || strcmp (ident, "hidden") == 0)
-                {
-                  width = 0;
-                  width_set = TRUE;
-                  continue;
-                }
-              else if (strcmp (ident, "solid") == 0)
-                {
-                  /* The only thing we support */
-                  continue;
-                }
-              else if (strcmp (ident, "dotted") == 0 ||
-                       strcmp (ident, "dashed") == 0 ||
-                       strcmp (ident, "double") == 0 ||
-                       strcmp (ident, "groove") == 0 ||
-                       strcmp (ident, "ridge") == 0 ||
-                       strcmp (ident, "inset") == 0 ||
-                       strcmp (ident, "outset") == 0)
-                {
-                  /* Treat the same as solid */
-                  continue;
-                }
-
-              /* Presumably a color, fall through */
-            }
-
-          if (term->type == TERM_NUMBER)
-            {
-              result = get_length_from_term_int (node, term, FALSE, &width);
-              if (result != VALUE_NOT_FOUND)
-                {
-                  width_set = result == VALUE_FOUND;
-                  continue;
-                }
-            }
-
-          result = get_color_from_term (node, term, &color);
-          if (result != VALUE_NOT_FOUND)
-            {
-              color_set = result == VALUE_FOUND;
-              continue;
+              node->outline = outline;
             }
         }
-
     }
   else if (strcmp (property_name, "-color") == 0)
     {
+      ClutterColor color;
+
       if (decl->value == NULL || decl->value->next != NULL)
         return;
 
-      if (get_color_from_term (node, decl->value, &color) == VALUE_FOUND)
-        /* Ignore inherit */
-        color_set = TRUE;
+      if (stylish_get_color_from_term (decl->value, &color) == VALUE_FOUND)
+        {
+          node->outline.color = color;
+        }
     }
   else if (strcmp (property_name, "-width") == 0)
     {
+      int width;
+
       if (decl->value == NULL || decl->value->next != NULL)
         return;
 
-      if (get_length_from_term_int (node, decl->value, FALSE, &width) == VALUE_FOUND)
-        /* Ignore inherit */
-        width_set = TRUE;
+      if (get_length_from_term_int (decl->value, normalize_default (node), &width) == VALUE_FOUND)
+        {
+          node->outline.width = width;
+        }
     }
-
-  if (color_set)
-    node->outline_color = color;
-  if (width_set)
-    node->outline_width = width;
 }
 
 static void
-do_padding_property_term (StThemeNode *node,
-                          CRTerm      *term,
-                          gboolean     left,
-                          gboolean     right,
-                          gboolean     top,
-                          gboolean     bottom)
+get_side_longhand (StThemeNode *node,
+                   CRTerm      *term,
+                   double      *dest)
 {
   int value;
 
-  if (get_length_from_term_int (node, term, FALSE, &value) != VALUE_FOUND)
+  if (get_length_from_term_int (term, normalize_default (node), &value) != VALUE_FOUND)
     return;
 
-  if (left)
-    node->padding[ST_SIDE_LEFT] = value;
-  if (right)
-    node->padding[ST_SIDE_RIGHT] = value;
-  if (top)
-    node->padding[ST_SIDE_TOP] = value;
-  if (bottom)
-    node->padding[ST_SIDE_BOTTOM] = value;
+  *dest = value;
 }
 
 static void
-do_padding_property (StThemeNode   *node,
-                     CRDeclaration *decl)
+do_side_property (StThemeNode   *node,
+                  CRDeclaration *decl,
+                  const char    *prefix,
+                  StSides       *out_sides)
 {
-  const char *property_name = decl->property->stryng->str + 7; /* Skip 'padding' */
+  const char *property_name = cr_declaration_name (decl) + strlen (prefix); /* Skip prefix */
 
   if (strcmp (property_name, "") == 0)
     {
-      /* Slight deviation ... if we don't understand some of the terms and understand others,
-       * then we set the ones we understand and ignore the others instead of ignoring the
-       * whole thing
-       */
-      if (decl->value == NULL) /* 0 values */
-        return;
-      else if (decl->value->next == NULL) /* 1 value */
+      if (decl->value)
         {
-          do_padding_property_term (node, decl->value, TRUE, TRUE, TRUE, TRUE); /* left/right/top/bottom */
-          return;
-        }
-      else if (decl->value->next->next == NULL) /* 2 values */
-        {
-          do_padding_property_term (node, decl->value,       FALSE, FALSE, TRUE,  TRUE);  /* top/bottom */
-          do_padding_property_term (node, decl->value->next, TRUE, TRUE,   FALSE, FALSE); /* left/right */
-        }
-      else if (decl->value->next->next->next == NULL) /* 3 values */
-        {
-          do_padding_property_term (node, decl->value,             FALSE, FALSE, TRUE,  FALSE); /* top */
-          do_padding_property_term (node, decl->value->next,       TRUE,  TRUE,  FALSE, FALSE); /* left/right */
-          do_padding_property_term (node, decl->value->next->next, FALSE, FALSE, FALSE, TRUE);  /* bottom */
-        }
-      else if (decl->value->next->next->next->next == NULL) /* 4 values */
-        {
-          do_padding_property_term (node, decl->value,                   FALSE, FALSE, TRUE,  FALSE); /* top */
-          do_padding_property_term (node, decl->value->next,             FALSE, TRUE,  FALSE, FALSE); /* right */
-          do_padding_property_term (node, decl->value->next->next,       FALSE, FALSE, FALSE, TRUE);  /* bottom */
-          do_padding_property_term (node, decl->value->next->next->next, TRUE,  FALSE, FALSE, FALSE); /* left */
-        }
-      else
-        {
-          g_warning ("Too many values for padding property");
-          return;
+          StSides sides;
+
+          if (stylish_parse_sides_shorthand (decl->value, normalize_default (node), &sides)
+              == VALUE_FOUND)
+            {
+              *out_sides = sides;
+            }
         }
     }
   else
@@ -1600,95 +1200,13 @@ do_padding_property (StThemeNode   *node,
         return;
 
       if (strcmp (property_name, "-left") == 0)
-        do_padding_property_term (node, decl->value, TRUE,  FALSE, FALSE, FALSE);
+        get_side_longhand (node, decl->value, &out_sides->left);
       else if (strcmp (property_name, "-right") == 0)
-        do_padding_property_term (node, decl->value, FALSE, TRUE,  FALSE, FALSE);
+        get_side_longhand (node, decl->value, &out_sides->right);
       else if (strcmp (property_name, "-top") == 0)
-        do_padding_property_term (node, decl->value, FALSE, FALSE, TRUE,  FALSE);
+        get_side_longhand (node, decl->value, &out_sides->top);
       else if (strcmp (property_name, "-bottom") == 0)
-        do_padding_property_term (node, decl->value, FALSE, FALSE, FALSE, TRUE);
-    }
-}
-
-static void
-do_margin_property_term (StThemeNode *node,
-                         CRTerm      *term,
-                         gboolean     left,
-                         gboolean     right,
-                         gboolean     top,
-                         gboolean     bottom)
-{
-  int value;
-
-  if (get_length_from_term_int (node, term, FALSE, &value) != VALUE_FOUND)
-    return;
-
-  if (left)
-    node->margin[ST_SIDE_LEFT] = value;
-  if (right)
-    node->margin[ST_SIDE_RIGHT] = value;
-  if (top)
-    node->margin[ST_SIDE_TOP] = value;
-  if (bottom)
-    node->margin[ST_SIDE_BOTTOM] = value;
-}
-
-static void
-do_margin_property (StThemeNode   *node,
-                    CRDeclaration *decl)
-{
-  const char *property_name = decl->property->stryng->str + 6; /* Skip 'margin' */
-
-  if (strcmp (property_name, "") == 0)
-    {
-      /* Slight deviation ... if we don't understand some of the terms and understand others,
-       * then we set the ones we understand and ignore the others instead of ignoring the
-       * whole thing
-       */
-      if (decl->value == NULL) /* 0 values */
-        return;
-      else if (decl->value->next == NULL) /* 1 value */
-        {
-          do_margin_property_term (node, decl->value, TRUE, TRUE, TRUE, TRUE); /* left/right/top/bottom */
-          return;
-        }
-      else if (decl->value->next->next == NULL) /* 2 values */
-        {
-          do_margin_property_term (node, decl->value,       FALSE, FALSE, TRUE,  TRUE);  /* top/bottom */
-          do_margin_property_term (node, decl->value->next, TRUE, TRUE,   FALSE, FALSE); /* left/right */
-        }
-      else if (decl->value->next->next->next == NULL) /* 3 values */
-        {
-          do_margin_property_term (node, decl->value,             FALSE, FALSE, TRUE,  FALSE); /* top */
-          do_margin_property_term (node, decl->value->next,       TRUE,  TRUE,  FALSE, FALSE); /* left/right */
-          do_margin_property_term (node, decl->value->next->next, FALSE, FALSE, FALSE, TRUE);  /* bottom */
-        }
-      else if (decl->value->next->next->next->next == NULL) /* 4 values */
-        {
-          do_margin_property_term (node, decl->value,                   FALSE, FALSE, TRUE,  FALSE); /* top */
-          do_margin_property_term (node, decl->value->next,             FALSE, TRUE,  FALSE, FALSE); /* right */
-          do_margin_property_term (node, decl->value->next->next,       FALSE, FALSE, FALSE, TRUE);  /* bottom */
-          do_margin_property_term (node, decl->value->next->next->next, TRUE,  FALSE, FALSE, FALSE); /* left */
-        }
-      else
-        {
-          g_warning ("Too many values for margin property");
-          return;
-        }
-    }
-  else
-    {
-      if (decl->value == NULL || decl->value->next != NULL)
-        return;
-
-      if (strcmp (property_name, "-left") == 0)
-        do_margin_property_term (node, decl->value, TRUE,  FALSE, FALSE, FALSE);
-      else if (strcmp (property_name, "-right") == 0)
-        do_margin_property_term (node, decl->value, FALSE, TRUE,  FALSE, FALSE);
-      else if (strcmp (property_name, "-top") == 0)
-        do_margin_property_term (node, decl->value, FALSE, FALSE, TRUE,  FALSE);
-      else if (strcmp (property_name, "-bottom") == 0)
-        do_margin_property_term (node, decl->value, FALSE, FALSE, FALSE, TRUE);
+        get_side_longhand (node, decl->value, &out_sides->bottom);
     }
 }
 
@@ -1703,13 +1221,13 @@ do_size_property (StThemeNode   *node,
       strcmp (term->content.str->stryng->str, "auto") == 0)
     *node_value = -1;
   else
-    get_length_from_term_int (node, term, FALSE, node_value);
+    get_length_from_term_int (decl->value, normalize_default (node), node_value);
 }
 
 void
 _st_theme_node_ensure_geometry (StThemeNode *node)
 {
-  int i, j;
+  int i;
   int width, height;
 
   if (node->geometry_computed)
@@ -1719,14 +1237,12 @@ _st_theme_node_ensure_geometry (StThemeNode *node)
 
   ensure_properties (node);
 
-  for (j = 0; j < 4; j++)
-    {
-      node->border_width[j] = 0;
-      node->border_color[j] = TRANSPARENT_COLOR;
-    }
+  node->border.top = st_outline_default ();
+  node->border.right = st_outline_default ();
+  node->border.bottom = st_outline_default ();
+  node->border.left = st_outline_default ();
 
-  node->outline_width = 0;
-  node->outline_color = TRANSPARENT_COLOR;
+  node->outline = st_outline_default ();
 
   width = -1;
   height = -1;
@@ -1740,16 +1256,18 @@ _st_theme_node_ensure_geometry (StThemeNode *node)
   for (i = 0; i < node->n_properties; i++)
     {
       CRDeclaration *decl = node->properties[i];
-      const char *property_name = decl->property->stryng->str;
+      const char *property_name = cr_declaration_name (decl);
 
-      if (g_str_has_prefix (property_name, "border"))
+      if (g_str_has_prefix (property_name, "border-radius"))
+        do_border_radius (node, decl);
+      else if (g_str_has_prefix (property_name, "border"))
         do_border_property (node, decl);
       else if (g_str_has_prefix (property_name, "outline"))
         do_outline_property (node, decl);
       else if (g_str_has_prefix (property_name, "padding"))
-        do_padding_property (node, decl);
+        do_side_property (node, decl, "padding", &node->padding);
       else if (g_str_has_prefix (property_name, "margin"))
-        do_margin_property (node, decl);
+        do_side_property (node, decl, "margin", &node->margin);
       else if (strcmp (property_name, "width") == 0)
         do_size_property (node, decl, &width);
       else if (strcmp (property_name, "height") == 0)
@@ -1816,7 +1334,24 @@ st_theme_node_get_border_width (StThemeNode *node,
 
   _st_theme_node_ensure_geometry (node);
 
-  return node->border_width[side];
+  switch (side)
+    {
+    case ST_SIDE_TOP:
+      return node->border.top.width;
+
+    case ST_SIDE_RIGHT:
+      return node->border.right.width;
+
+    case ST_SIDE_BOTTOM:
+      return node->border.bottom.width;
+
+    case ST_SIDE_LEFT:
+      return node->border.left.width;
+
+    default:
+      g_assert_not_reached ();
+      return 0;
+    }
 }
 
 int
@@ -1828,7 +1363,23 @@ st_theme_node_get_border_radius (StThemeNode *node,
 
   _st_theme_node_ensure_geometry (node);
 
-  return node->border_radius[corner];
+  switch (corner) {
+  case ST_CORNER_TOPLEFT:
+    return node->border_radius.top_left;
+
+  case ST_CORNER_TOPRIGHT:
+    return node->border_radius.top_right;
+
+  case ST_CORNER_BOTTOMRIGHT:
+    return node->border_radius.bottom_right;
+
+  case ST_CORNER_BOTTOMLEFT:
+    return node->border_radius.bottom_left;
+
+  default:
+    g_assert_not_reached ();
+    return 0;
+  }
 }
 
 int
@@ -1838,7 +1389,7 @@ st_theme_node_get_outline_width (StThemeNode  *node)
 
   _st_theme_node_ensure_geometry (node);
 
-  return node->outline_width;
+  return node->outline.width;
 }
 
 /**
@@ -1856,7 +1407,7 @@ st_theme_node_get_outline_color (StThemeNode  *node,
 
   _st_theme_node_ensure_geometry (node);
 
-  *color = node->outline_color;
+  *color = node->outline.color;
 }
 
 int
@@ -1917,6 +1468,7 @@ void
 _st_theme_node_ensure_background (StThemeNode *node)
 {
   int i;
+  NormalizeParams norm;
 
   if (node->background_computed)
     return;
@@ -1930,10 +1482,12 @@ _st_theme_node_ensure_background (StThemeNode *node)
 
   ensure_properties (node);
 
+  norm = normalize_default (node);
+
   for (i = 0; i < node->n_properties; i++)
     {
       CRDeclaration *decl = node->properties[i];
-      const char *property_name = decl->property->stryng->str;
+      const char *property_name = cr_declaration_name (decl);
 
       if (g_str_has_prefix (property_name, "background"))
         property_name += 10;
@@ -1957,7 +1511,7 @@ _st_theme_node_ensure_background (StThemeNode *node)
 
           for (term = decl->value; term; term = term->next)
             {
-              GetFromTermResult result = get_color_from_term (node, term, &node->background_color);
+              GetFromTermResult result = stylish_get_color_from_term (term, &node->background_color);
               if (result == VALUE_FOUND)
                 {
                   /* color stored in node->background_color */
@@ -1994,7 +1548,7 @@ _st_theme_node_ensure_background (StThemeNode *node)
         }
       else if (strcmp (property_name, "-position") == 0)
         {
-          GetFromTermResult result = get_length_from_term_int (node, decl->value, FALSE, &node->background_position_x);
+          GetFromTermResult result = get_length_from_term_int (decl->value, norm, &node->background_position_x);
           if (result == VALUE_NOT_FOUND)
             {
               node->background_position_set = FALSE;
@@ -2003,7 +1557,7 @@ _st_theme_node_ensure_background (StThemeNode *node)
           else
             node->background_position_set = TRUE;
 
-          result = get_length_from_term_int (node, decl->value->next, FALSE, &node->background_position_y);
+          result = get_length_from_term_int (decl->value->next, norm, &node->background_position_y);
 
           if (result == VALUE_NOT_FOUND)
             {
@@ -2031,7 +1585,7 @@ _st_theme_node_ensure_background (StThemeNode *node)
                 node->background_size = ST_BACKGROUND_SIZE_COVER;
               else if ((strcmp (decl->value->content.str->stryng->str, "auto") == 0) && (decl->value->next) && (decl->value->next->type == TERM_NUMBER))
                 {
-                  GetFromTermResult result = get_length_from_term_int (node, decl->value->next, FALSE, &node->background_size_h);
+                  GetFromTermResult result = get_length_from_term_int (decl->value->next, norm, &node->background_size_h);
 
                   node->background_size_w = -1;
                   node->background_size = (result == VALUE_FOUND) ? ST_BACKGROUND_SIZE_FIXED : ST_BACKGROUND_SIZE_AUTO;
@@ -2041,7 +1595,7 @@ _st_theme_node_ensure_background (StThemeNode *node)
             }
           else if (decl->value->type == TERM_NUMBER)
             {
-              GetFromTermResult result = get_length_from_term_int (node, decl->value, FALSE, &node->background_size_w);
+              GetFromTermResult result = get_length_from_term_int (decl->value, norm, &node->background_size_w);
               if (result == VALUE_NOT_FOUND)
                 continue;
 
@@ -2049,7 +1603,7 @@ _st_theme_node_ensure_background (StThemeNode *node)
 
               if ((decl->value->next) && (decl->value->next->type == TERM_NUMBER))
                 {
-                  result = get_length_from_term_int (node, decl->value->next, FALSE, &node->background_size_h);
+                  result = get_length_from_term_int (decl->value->next, norm, &node->background_size_h);
 
                   if (result == VALUE_FOUND)
                     continue;
@@ -2066,7 +1620,7 @@ _st_theme_node_ensure_background (StThemeNode *node)
           if (decl->value == NULL || decl->value->next != NULL)
             continue;
 
-          result = get_color_from_term (node, decl->value, &node->background_color);
+          result = stylish_get_color_from_term (decl->value, &node->background_color);
           if (result == VALUE_FOUND)
             {
               /* color stored in node->background_color */
@@ -2133,11 +1687,11 @@ _st_theme_node_ensure_background (StThemeNode *node)
         }
       else if (strcmp (property_name, "-gradient-start") == 0)
         {
-          get_color_from_term (node, decl->value, &node->background_color);
+          stylish_get_color_from_term (decl->value, &node->background_color);
         }
       else if (strcmp (property_name, "-gradient-end") == 0)
         {
-          get_color_from_term (node, decl->value, &node->background_gradient_end);
+          stylish_get_color_from_term (decl->value, &node->background_gradient_end);
         }
     }
 }
@@ -2201,9 +1755,9 @@ st_theme_node_get_foreground_color (StThemeNode  *node,
         {
           CRDeclaration *decl = node->properties[i];
 
-          if (strcmp (decl->property->stryng->str, "color") == 0)
+          if (strcmp (cr_declaration_name (decl), "color") == 0)
             {
-              GetFromTermResult result = get_color_from_term (node, decl->value, &node->foreground_color);
+              GetFromTermResult result = stylish_get_color_from_term (decl->value, &node->foreground_color);
               if (result == VALUE_FOUND)
                 goto out;
               else if (result == VALUE_INHERIT)
@@ -2267,31 +1821,77 @@ st_theme_node_get_border_color (StThemeNode  *node,
 
   _st_theme_node_ensure_geometry (node);
 
-  *color = node->border_color[side];
+  switch (side)
+    {
+    case ST_SIDE_TOP:
+      *color = node->border.top.color;
+      break;
+
+    case ST_SIDE_RIGHT:
+      *color = node->border.right.color;
+      break;
+
+    case ST_SIDE_BOTTOM:
+      *color = node->border.bottom.color;
+      break;
+
+    case ST_SIDE_LEFT:
+      *color = node->border.left.color;
+      break;
+
+    default:
+      g_assert_not_reached ();
+    }
+}
+
+static double
+get_side (StSides *sides,
+          StSide   side)
+{
+  switch (side)
+    {
+    case ST_SIDE_TOP:
+      return sides->top;
+
+    case ST_SIDE_RIGHT:
+      return sides->right;
+
+    case ST_SIDE_BOTTOM:
+      return sides->bottom;
+
+    case ST_SIDE_LEFT:
+      return sides->left;
+
+    default:
+      g_assert_not_reached ();
+      return 0.0;
+    }
+}
+
+static double
+get_side_from_node (StThemeNode *node,
+                    StSides     *sides,
+                    StSide       side)
+{
+  g_return_val_if_fail (ST_IS_THEME_NODE (node), 0.);
+  g_return_val_if_fail (side >= ST_SIDE_TOP && side <= ST_SIDE_LEFT, 0.);
+
+  _st_theme_node_ensure_geometry (node);
+  return get_side (sides, side);
 }
 
 double
 st_theme_node_get_padding (StThemeNode *node,
                            StSide       side)
 {
-  g_return_val_if_fail (ST_IS_THEME_NODE (node), 0.);
-  g_return_val_if_fail (side >= ST_SIDE_TOP && side <= ST_SIDE_LEFT, 0.);
-
-  _st_theme_node_ensure_geometry (node);
-
-  return node->padding[side];
+  return get_side_from_node (node, &node->padding, side);
 }
 
 double
 st_theme_node_get_margin (StThemeNode *node,
                           StSide side)
 {
-  g_return_val_if_fail (ST_IS_THEME_NODE (node), 0.);
-  g_return_val_if_fail (side >= ST_SIDE_TOP && side <= ST_SIDE_LEFT, 0.);
-
-  _st_theme_node_ensure_geometry (node);
-
-  return node->margin[side];
+  return get_side_from_node (node, &node->margin, side);
 }
 
 /**
@@ -2326,8 +1926,10 @@ st_theme_node_get_transition_duration (StThemeNode *node)
   return factor * node->transition_duration;
 }
 
-StIconStyle
-st_theme_node_get_icon_style (StThemeNode *node)
+static gboolean
+st_theme_node_lookup_icon_style (StThemeNode *node,
+                                 gboolean     inherit,
+                                 StIconStyle *style)
 {
   int i;
 
@@ -2337,40 +1939,42 @@ st_theme_node_get_icon_style (StThemeNode *node)
     {
       CRDeclaration *decl = node->properties[i];
 
-      if (strcmp (decl->property->stryng->str, "-st-icon-style") == 0)
+      if (strcmp (cr_declaration_name (decl), "-st-icon-style") == 0)
         {
-          CRTerm *term;
-
-          for (term = decl->value; term; term = term->next)
+          GetFromTermResult result = stylish_get_icon_style_from_term (decl->value, style);
+          if (result == VALUE_FOUND)
             {
-              if (term->type != TERM_IDENT)
-                goto next_decl;
-
-              if (strcmp (term->content.str->stryng->str, "requested") == 0)
-                return ST_ICON_STYLE_REQUESTED;
-              else if (strcmp (term->content.str->stryng->str, "regular") == 0)
-                return ST_ICON_STYLE_REGULAR;
-              else if (strcmp (term->content.str->stryng->str, "symbolic") == 0)
-                return ST_ICON_STYLE_SYMBOLIC;
-              else
-                g_warning ("Unknown -st-icon-style \"%s\"",
-                           term->content.str->stryng->str);
+              return TRUE;
+            }
+          else if (result == VALUE_INHERIT)
+            {
+              inherit = TRUE;
+              break;
             }
         }
-
-    next_decl:
-      ;
     }
 
-  if (node->parent_node)
-    return st_theme_node_get_icon_style (node->parent_node);
+  if (inherit && node->parent_node)
+    return st_theme_node_lookup_icon_style (node->parent_node, inherit, style);
 
-  return ST_ICON_STYLE_REQUESTED;
+  return FALSE;
+}
+
+StIconStyle
+st_theme_node_get_icon_style (StThemeNode *node)
+{
+  StIconStyle style;
+
+  if (st_theme_node_lookup_icon_style (node, FALSE, &style))
+    return style;
+  else
+    return ST_ICON_STYLE_REQUESTED;
 }
 
 StTextDecoration
 st_theme_node_get_text_decoration (StThemeNode *node)
 {
+  StTextDecoration decoration = 0;
   int i;
 
   ensure_properties (node);
@@ -2379,64 +1983,33 @@ st_theme_node_get_text_decoration (StThemeNode *node)
     {
       CRDeclaration *decl = node->properties[i];
 
-      if (strcmp (decl->property->stryng->str, "text-decoration") == 0)
+      if (strcmp (cr_declaration_name (decl), "text-decoration") == 0)
         {
-          CRTerm *term = decl->value;
-          StTextDecoration decoration = 0;
+          GetFromTermResult result = stylish_parse_text_decoration (decl->value, &decoration);
 
-          /* Specification is none | [ underline || overline || line-through || blink ] | inherit
-           *
-           * We're a bit more liberal, and for example treat 'underline none' as the same as
-           * none.
-           */
-          for (; term; term = term->next)
+          if (result == VALUE_FOUND)
             {
-              if (term->type != TERM_IDENT)
-                goto next_decl;
-
-              if (strcmp (term->content.str->stryng->str, "none") == 0)
+              return decoration;
+            }
+          else if (result == VALUE_INHERIT)
+            {
+              if (node->parent_node)
                 {
-                  return 0;
-                }
-              else if (strcmp (term->content.str->stryng->str, "inherit") == 0)
-                {
-                  if (node->parent_node)
-                    return st_theme_node_get_text_decoration (node->parent_node);
-                }
-              else if (strcmp (term->content.str->stryng->str, "underline") == 0)
-                {
-                  decoration |= ST_TEXT_DECORATION_UNDERLINE;
-                }
-              else if (strcmp (term->content.str->stryng->str, "overline") == 0)
-                {
-                  decoration |= ST_TEXT_DECORATION_OVERLINE;
-                }
-              else if (strcmp (term->content.str->stryng->str, "line-through") == 0)
-                {
-                  decoration |= ST_TEXT_DECORATION_LINE_THROUGH;
-                }
-              else if (strcmp (term->content.str->stryng->str, "blink") == 0)
-                {
-                  decoration |= ST_TEXT_DECORATION_BLINK;
-                }
-              else
-                {
-                  goto next_decl;
+                  return st_theme_node_get_text_decoration (node->parent_node);
                 }
             }
 
-          return decoration;
+          break;
         }
-
-    next_decl:
-      ;
     }
 
-  return 0;
+  return decoration;
 }
 
-StTextAlign
-st_theme_node_get_text_align(StThemeNode *node)
+static gboolean
+st_theme_node_lookup_text_align (StThemeNode *node,
+                                 gboolean     inherit,
+                                 StTextAlign *text_align)
 {
   int i;
 
@@ -2446,40 +2019,36 @@ st_theme_node_get_text_align(StThemeNode *node)
     {
       CRDeclaration *decl = node->properties[i];
 
-      if (strcmp(decl->property->stryng->str, "text-align") == 0)
+      if (strcmp (cr_declaration_name (decl), "text-align") == 0)
         {
-          CRTerm *term = decl->value;
-
-          if (term->type != TERM_IDENT || term->next)
-            continue;
-
-          if (strcmp(term->content.str->stryng->str, "inherit") == 0)
+          GetFromTermResult result = stylish_get_text_align_from_term (decl->value, text_align);
+          if (result == VALUE_FOUND)
             {
-              if (node->parent_node)
-                return st_theme_node_get_text_align(node->parent_node);
-              return ST_TEXT_ALIGN_LEFT;
+              return TRUE;
             }
-          else if (strcmp(term->content.str->stryng->str, "left") == 0)
+          else if (result == VALUE_INHERIT)
             {
-              return ST_TEXT_ALIGN_LEFT;
-            }
-          else if (strcmp(term->content.str->stryng->str, "right") == 0)
-            {
-              return ST_TEXT_ALIGN_RIGHT;
-            }
-          else if (strcmp(term->content.str->stryng->str, "center") == 0)
-            {
-              return ST_TEXT_ALIGN_CENTER;
-            }
-          else if (strcmp(term->content.str->stryng->str, "justify") == 0)
-            {
-              return ST_TEXT_ALIGN_JUSTIFY;
+              inherit = TRUE;
+              break;
             }
         }
     }
-  if(node->parent_node)
-    return st_theme_node_get_text_align(node->parent_node);
-  return ST_TEXT_ALIGN_LEFT;
+
+  if (inherit && node->parent_node)
+    return st_theme_node_lookup_text_align (node->parent_node, inherit, text_align);
+
+  return FALSE;
+}
+
+StTextAlign
+st_theme_node_get_text_align (StThemeNode *node)
+{
+  StTextAlign text_align;
+
+  if (st_theme_node_lookup_text_align (node, TRUE, &text_align))
+    return text_align;
+  else
+    return ST_TEXT_ALIGN_LEFT;
 }
 
 /**
@@ -2504,293 +2073,31 @@ st_theme_node_get_letter_spacing (StThemeNode *node)
   return spacing;
 }
 
-static gboolean
-font_family_from_terms (CRTerm *term,
-                        char  **family)
-{
-  GString *family_string;
-  gboolean result = FALSE;
-  gboolean last_was_quoted = FALSE;
-
-  if (!term)
-    return FALSE;
-
-  family_string = g_string_new (NULL);
-
-  while (term)
-    {
-      if (term->type != TERM_STRING && term->type != TERM_IDENT)
-        {
-          goto out;
-        }
-
-      if (family_string->len > 0)
-        {
-          if (term->the_operator != COMMA && term->the_operator != NO_OP)
-            goto out;
-          /* Can concatenate two bare words, but not two quoted strings */
-          if ((term->the_operator == NO_OP && last_was_quoted) || term->type == TERM_STRING)
-            goto out;
-
-          if (term->the_operator == NO_OP)
-            g_string_append (family_string, " ");
-          else
-            g_string_append (family_string, ",");
-        }
-      else
-        {
-          if (term->the_operator != NO_OP)
-            goto out;
-        }
-
-      g_string_append (family_string, term->content.str->stryng->str);
-
-      term = term->next;
-    }
-
-  result = TRUE;
-
- out:
-  if (result)
-    {
-      *family = g_string_free (family_string, FALSE);
-      return TRUE;
-    }
-  else
-    {
-      *family = g_string_free (family_string, TRUE);
-      return FALSE;
-    }
-}
-
-/* In points */
-static int font_sizes[] = {
-  6 * 1024,   /* xx-small */
-  8 * 1024,   /* x-small */
-  10 * 1024,  /* small */
-  12 * 1024,  /* medium */
-  16 * 1024,  /* large */
-  20 * 1024,  /* x-large */
-  24 * 1024,  /* xx-large */
-};
-
-static gboolean
-font_size_from_term (StThemeNode *node,
-                     CRTerm      *term,
-                     double      *size)
-{
-  if (term->type == TERM_IDENT)
-    {
-      double resolution = clutter_backend_get_resolution (clutter_get_default_backend ());
-      /* We work in integers to avoid double comparisons when converting back
-       * from a size in pixels to a logical size.
-       */
-      int size_points = (int)(0.5 + *size * (72. / resolution));
-
-      if (strcmp (term->content.str->stryng->str, "xx-small") == 0)
-        size_points = font_sizes[0];
-      else if (strcmp (term->content.str->stryng->str, "x-small") == 0)
-        size_points = font_sizes[1];
-      else if (strcmp (term->content.str->stryng->str, "small") == 0)
-        size_points = font_sizes[2];
-      else if (strcmp (term->content.str->stryng->str, "medium") == 0)
-        size_points = font_sizes[3];
-      else if (strcmp (term->content.str->stryng->str, "large") == 0)
-        size_points = font_sizes[4];
-      else if (strcmp (term->content.str->stryng->str, "x-large") == 0)
-        size_points = font_sizes[5];
-      else if (strcmp (term->content.str->stryng->str, "xx-large") == 0)
-        size_points = font_sizes[6];
-      else if (strcmp (term->content.str->stryng->str, "smaller") == 0)
-        {
-          /* Find the standard size equal to or smaller than the current size */
-          int i = 0;
-
-          while (i <= 6 && font_sizes[i] < size_points)
-            i++;
-
-          if (i > 6)
-            {
-              /* original size greater than any standard size */
-              size_points = (int)(0.5 + size_points / 1.2);
-            }
-          else
-            {
-              /* Go one smaller than that, if possible */
-              if (i > 0)
-                i--;
-
-              size_points = font_sizes[i];
-            }
-        }
-      else if (strcmp (term->content.str->stryng->str, "larger") == 0)
-        {
-          /* Find the standard size equal to or larger than the current size */
-          int i = 6;
-
-          while (i >= 0 && font_sizes[i] > size_points)
-            i--;
-
-          if (i < 0) /* original size smaller than any standard size */
-            i = 0;
-
-          /* Go one larger than that, if possible */
-          if (i < 6)
-            i++;
-
-          size_points = font_sizes[i];
-        }
-      else
-        {
-          return FALSE;
-        }
-
-      *size = size_points * (resolution / 72.);
-      return TRUE;
-
-    }
-  else if (term->type == TERM_NUMBER && term->content.num->type == NUM_PERCENTAGE)
-    {
-      *size *= term->content.num->val / 100.;
-      return TRUE;
-    }
-  else if (get_length_from_term (node, term, TRUE, size) == VALUE_FOUND)
-    {
-      /* Convert from pixels to Pango units */
-      *size *= 1024;
-      return TRUE;
-    }
-
-  return FALSE;
-}
-
-static gboolean
-font_weight_from_term (CRTerm      *term,
-                       PangoWeight *weight,
-                       gboolean    *weight_absolute)
-{
-  if (term->type == TERM_NUMBER)
-    {
-      int weight_int;
-
-      /* The spec only allows numeric weights from 100-900, though Pango
-       * will handle any number. We just let anything through.
-       */
-      if (term->content.num->type != NUM_GENERIC)
-        return FALSE;
-
-      weight_int = (int)(0.5 + term->content.num->val);
-
-      *weight = weight_int;
-      *weight_absolute = TRUE;
-
-    }
-  else if (term->type == TERM_IDENT)
-    {
-      /* FIXME: handle INHERIT */
-
-      if (strcmp (term->content.str->stryng->str, "bold") == 0)
-        {
-          *weight = PANGO_WEIGHT_BOLD;
-          *weight_absolute = TRUE;
-        }
-      else if (strcmp (term->content.str->stryng->str, "normal") == 0)
-        {
-          *weight = PANGO_WEIGHT_NORMAL;
-          *weight_absolute = TRUE;
-        }
-      else if (strcmp (term->content.str->stryng->str, "bolder") == 0)
-        {
-          *weight = PANGO_WEIGHT_BOLD;
-          *weight_absolute = FALSE;
-        }
-      else if (strcmp (term->content.str->stryng->str, "lighter") == 0)
-        {
-          *weight = PANGO_WEIGHT_LIGHT;
-          *weight_absolute = FALSE;
-        }
-      else
-        {
-          return FALSE;
-        }
-
-    }
-  else
-    {
-      return FALSE;
-    }
-
-  return TRUE;
-}
-
-static gboolean
-font_style_from_term (CRTerm     *term,
-                      PangoStyle *style)
-{
-  if (term->type != TERM_IDENT)
-    return FALSE;
-
-  /* FIXME: handle INHERIT */
-
-  if (strcmp (term->content.str->stryng->str, "normal") == 0)
-    *style = PANGO_STYLE_NORMAL;
-  else if (strcmp (term->content.str->stryng->str, "oblique") == 0)
-    *style = PANGO_STYLE_OBLIQUE;
-  else if (strcmp (term->content.str->stryng->str, "italic") == 0)
-    *style = PANGO_STYLE_ITALIC;
-  else
-    return FALSE;
-
-  return TRUE;
-}
-
-static gboolean
-font_variant_from_term (CRTerm       *term,
-                        PangoVariant *variant)
-{
-  if (term->type != TERM_IDENT)
-    return FALSE;
-
-  /* FIXME: handle INHERIT */
-
-  if (strcmp (term->content.str->stryng->str, "normal") == 0)
-    *variant = PANGO_VARIANT_NORMAL;
-  else if (strcmp (term->content.str->stryng->str, "small-caps") == 0)
-    *variant = PANGO_VARIANT_SMALL_CAPS;
-  else
-    return FALSE;
-
-  return TRUE;
-}
-
 const PangoFontDescription *
 st_theme_node_get_font (StThemeNode *node)
 {
   /* Initialized despite _set flags to suppress compiler warnings */
+  NormalizeParams norm;
   PangoStyle font_style = PANGO_STYLE_NORMAL;
   gboolean font_style_set = FALSE;
   PangoVariant variant = PANGO_VARIANT_NORMAL;
   gboolean variant_set = FALSE;
   PangoWeight weight = PANGO_WEIGHT_NORMAL;
-  gboolean weight_absolute = TRUE;
   gboolean weight_set = FALSE;
   double size = 0.;
   gboolean size_set = FALSE;
 
   char *family = NULL;
-  double parent_size;
+  PangoWeight parent_weight;
   int i;
 
   if (node->font_desc)
     return node->font_desc;
 
   node->font_desc = pango_font_description_copy (get_parent_font (node));
-  parent_size = pango_font_description_get_size (node->font_desc);
-  if (!pango_font_description_get_size_is_absolute (node->font_desc))
-    {
-      double resolution = clutter_backend_get_resolution (clutter_get_default_backend ());
-      parent_size *= (resolution / 72.);
-    }
+  norm = normalize (node, node->font_desc);
+
+  parent_weight = pango_font_description_get_weight (node->font_desc);
 
   ensure_properties (node);
 
@@ -2798,115 +2105,64 @@ st_theme_node_get_font (StThemeNode *node)
     {
       CRDeclaration *decl = node->properties[i];
 
-      if (strcmp (decl->property->stryng->str, "font") == 0)
+      if (strcmp (cr_declaration_name (decl), "font") == 0)
         {
-          PangoStyle tmp_style = PANGO_STYLE_NORMAL;
-          PangoVariant tmp_variant = PANGO_VARIANT_NORMAL;
-          PangoWeight tmp_weight = PANGO_WEIGHT_NORMAL;
-          gboolean tmp_weight_absolute = TRUE;
-          double tmp_size;
-          CRTerm *term = decl->value;
+          StFontSpec spec;
 
-          /* A font specification starts with node/variant/weight
-           * in any order. Each is allowed to be specified only once,
-           * but we don't enforce that.
-           */
-          for (; term; term = term->next)
+          if (stylish_parse_font_shorthand (decl->value, norm, parent_weight, &spec) == VALUE_FOUND)
             {
-              if (font_style_from_term (term, &tmp_style))
-                continue;
-              if (font_variant_from_term (term, &tmp_variant))
-                continue;
-              if (font_weight_from_term (term, &tmp_weight, &tmp_weight_absolute))
-                continue;
+              font_style = spec.style;
+              variant = spec.variant;
+              weight = spec.weight;
+              size = spec.size;
+              family = spec.family;
 
-              break;
+              font_style_set = TRUE;
+              variant_set = TRUE;
+              size_set = TRUE;
+              weight_set = TRUE;
             }
-
-          /* The size is mandatory */
-
-          if (term == NULL || term->type != TERM_NUMBER)
-            {
-              g_warning ("Size missing from font property");
-              continue;
-            }
-
-          tmp_size = parent_size;
-          if (!font_size_from_term (node, term, &tmp_size))
-            {
-              g_warning ("Couldn't parse size in font property");
-              continue;
-            }
-
-          term = term->next;
-
-          if (term != NULL && term->type && TERM_NUMBER && term->the_operator == DIVIDE)
-            {
-              /* Ignore line-height specification */
-              term = term->next;
-            }
-
-          /* the font family is mandatory - it is a comma-separated list of
-           * names.
-           */
-          if (!font_family_from_terms (term, &family))
-            {
-              g_warning ("Couldn't parse family in font property");
-              continue;
-            }
-
-          font_style = tmp_style;
-          font_style_set = TRUE;
-          weight = tmp_weight;
-          weight_absolute = tmp_weight_absolute;
-          weight_set = TRUE;
-          variant = tmp_variant;
-          variant_set = TRUE;
-
-          size = tmp_size;
-          size_set = TRUE;
-
         }
-      else if (strcmp (decl->property->stryng->str, "font-family") == 0)
+      else if (strcmp (cr_declaration_name (decl), "font-family") == 0)
         {
-          if (!font_family_from_terms (decl->value, &family))
+          if (stylish_parse_font_family (decl->value, &family) != VALUE_FOUND)
             {
               g_warning ("Couldn't parse family in font property");
               continue;
             }
         }
-      else if (strcmp (decl->property->stryng->str, "font-weight") == 0)
+      else if (strcmp (cr_declaration_name (decl), "font-weight") == 0)
         {
           if (decl->value == NULL || decl->value->next != NULL)
             continue;
 
-          if (font_weight_from_term (decl->value, &weight, &weight_absolute))
+          if (stylish_parse_font_weight (decl->value, parent_weight, &weight) == VALUE_FOUND)
             weight_set = TRUE;
         }
-      else if (strcmp (decl->property->stryng->str, "font-style") == 0)
+      else if (strcmp (cr_declaration_name (decl), "font-style") == 0)
         {
           if (decl->value == NULL || decl->value->next != NULL)
             continue;
 
-          if (font_style_from_term (decl->value, &font_style))
+          if (stylish_parse_font_style (decl->value, &font_style) == VALUE_FOUND)
             font_style_set = TRUE;
         }
-      else if (strcmp (decl->property->stryng->str, "font-variant") == 0)
+      else if (strcmp (cr_declaration_name (decl), "font-variant") == 0)
         {
           if (decl->value == NULL || decl->value->next != NULL)
             continue;
 
-          if (font_variant_from_term (decl->value, &variant))
+          if (stylish_parse_font_variant (decl->value, &variant) == VALUE_FOUND)
             variant_set = TRUE;
         }
-      else if (strcmp (decl->property->stryng->str, "font-size") == 0)
+      else if (strcmp (cr_declaration_name (decl), "font-size") == 0)
         {
           gdouble tmp_size;
           if (decl->value == NULL || decl->value->next != NULL)
             continue;
 
-          tmp_size = parent_size;
-          if (font_size_from_term (node, decl->value, &tmp_size))
+          tmp_size = norm.font_size;
+          if (stylish_parse_font_size (decl->value, norm, &tmp_size) == VALUE_FOUND)
             {
               size = tmp_size;
               size_set = TRUE;
@@ -2921,35 +2177,14 @@ st_theme_node_get_font (StThemeNode *node)
     }
 
   if (size_set)
-    pango_font_description_set_absolute_size (node->font_desc, size);
+    pango_font_description_set_absolute_size (node->font_desc, size * PANGO_SCALE);
 
   if (weight_set)
-    {
-      if (!weight_absolute)
-        {
-          /* bolder/lighter are supposed to switch between available styles, but with
-           * font substitution, that gets to be a pretty fuzzy concept. So we use
-           * a fixed step of 200. (The spec says 100, but that might not take us from
-           * normal to bold.
-           */
-
-          PangoWeight old_weight = pango_font_description_get_weight (node->font_desc);
-          if (weight == PANGO_WEIGHT_BOLD)
-            weight = old_weight + 200;
-          else
-            weight = old_weight - 200;
-
-          if (weight < 100)
-            weight = 100;
-          if (weight > 900)
-            weight = 900;
-        }
-
-      pango_font_description_set_weight (node->font_desc, weight);
-    }
+    pango_font_description_set_weight (node->font_desc, weight);
 
   if (font_style_set)
     pango_font_description_set_style (node->font_desc, font_style);
+
   if (variant_set)
     pango_font_description_set_variant (node->font_desc, variant);
 
@@ -2967,7 +2202,7 @@ st_theme_node_get_font_features (StThemeNode *node)
     {
       CRDeclaration *decl = node->properties[i];
 
-      if (strcmp (decl->property->stryng->str, "font-feature-settings") == 0)
+      if (strcmp (cr_declaration_name (decl), "font-feature-settings") == 0)
         {
           CRTerm *term = decl->value;
 
@@ -3015,7 +2250,7 @@ st_theme_node_get_border_image (StThemeNode *node)
     {
       CRDeclaration *decl = node->properties[i];
 
-      if (strcmp (decl->property->stryng->str, "border-image") == 0)
+      if (strcmp (cr_declaration_name (decl), "border-image") == 0)
         {
           CRTerm *term = decl->value;
           CRStyleSheet *base_stylesheet;
@@ -3180,122 +2415,6 @@ _st_theme_node_apply_margins (StThemeNode *node,
   clutter_actor_set_margin_bottom (actor, st_theme_node_get_margin(node, ST_SIDE_BOTTOM));
 }
 
-static GetFromTermResult
-parse_shadow_property (StThemeNode       *node,
-                       CRDeclaration     *decl,
-                       ClutterColor      *color,
-                       gdouble           *xoffset,
-                       gdouble           *yoffset,
-                       gdouble           *blur,
-                       gdouble           *spread,
-                       gboolean          *inset,
-                       gboolean          *is_none)
-{
-  GetFromTermResult result;
-  CRTerm *term;
-  int n_offsets = 0;
-  *is_none = FALSE;
-
-  /* default values */
-  color->red = 0x0; color->green = 0x0; color->blue = 0x0; color->alpha = 0xff;
-  *xoffset = 0.;
-  *yoffset = 0.;
-  *blur = 0.;
-  *spread = 0.;
-  *inset = FALSE;
-
-  /* The CSS3 draft of the box-shadow property[0] is a lot stricter
-   * regarding the order of terms:
-   * If the 'inset' keyword is specified, it has to be first or last,
-   * and the color may not be mixed with the lengths; while we parse
-   * length values in the correct order, we allow for arbitrary
-   * placement of the color and 'inset' keyword.
-   *
-   * [0] http://www.w3.org/TR/css3-background/#box-shadow
-   */
-  for (term = decl->value; term; term = term->next)
-    {
-      /* if we found "none", we're all set with the default values */
-      if (term_is_none (term)) {
-        *is_none = TRUE;
-        return VALUE_FOUND;
-      }
-
-      if (term->type == TERM_NUMBER)
-        {
-          gdouble value;
-          gdouble multiplier;
-
-          multiplier = (term->unary_op == MINUS_UOP) ? -1. : 1.;
-          result = get_length_from_term (node, term, FALSE, &value);
-
-          if (result == VALUE_INHERIT)
-            {
-              /* we only allow inherit on the line by itself */
-              if (n_offsets > 0)
-                return VALUE_NOT_FOUND;
-              else
-                return VALUE_INHERIT;
-            }
-          else if (result == VALUE_FOUND)
-            {
-              switch (n_offsets++)
-                {
-                case 0:
-                  *xoffset = multiplier * value;
-                  break;
-                case 1:
-                  *yoffset = multiplier * value;
-                  break;
-                case 2:
-                  if (multiplier < 0)
-                      g_warning ("Negative blur values are "
-                                 "not allowed");
-                  *blur = value;
-                  break;
-                case 3:
-                  if (multiplier < 0)
-                      g_warning ("Negative spread values are "
-                                 "not allowed");
-                  *spread = value;
-                  break;
-                default:
-                  g_warning ("Ignoring excess values in shadow definition");
-                  break;
-                }
-              continue;
-            }
-        }
-      else if (term->type == TERM_IDENT &&
-               strcmp (term->content.str->stryng->str, "inset") == 0)
-        {
-          *inset = TRUE;
-          continue;
-        }
-
-      result = get_color_from_term (node, term, color);
-
-      if (result == VALUE_INHERIT)
-        {
-          if (n_offsets > 0)
-            return VALUE_NOT_FOUND;
-          else
-            return VALUE_INHERIT;
-        }
-      else if (result == VALUE_FOUND)
-        {
-          continue;
-        }
-    }
-
-  /* The only required terms are the x and y offsets
-   */
-  if (n_offsets >= 2)
-    return VALUE_FOUND;
-  else
-    return VALUE_NOT_FOUND;
-}
-
 /**
  * st_theme_node_lookup_shadow:
  * @node: a #StThemeNode
@@ -3327,53 +2446,62 @@ st_theme_node_lookup_shadow (StThemeNode  *node,
                              gboolean      inherit,
                              StShadow    **shadow)
 {
-  ClutterColor color = { 0., };
-  gdouble xoffset = 0.;
-  gdouble yoffset = 0.;
-  gdouble blur = 0.;
-  gdouble spread = 0.;
-  gboolean inset = FALSE;
-  gboolean is_none = FALSE;
-
   int i;
 
   ensure_properties (node);
+
+  *shadow = NULL;
 
   for (i = node->n_properties - 1; i >= 0; i--)
     {
       CRDeclaration *decl = node->properties[i];
 
-      if (strcmp (decl->property->stryng->str, property_name) == 0)
+      if (strcmp (cr_declaration_name (decl), property_name) == 0)
         {
-          GetFromTermResult result = parse_shadow_property (node,
-                                                            decl,
-                                                            &color,
-                                                            &xoffset,
-                                                            &yoffset,
-                                                            &blur,
-                                                            &spread,
-                                                            &inset,
-                                                            &is_none);
-          if (result == VALUE_FOUND)
+          if (decl->value)
             {
-              if (is_none)
-                return FALSE;
+              StParsedShadow parsed;
 
-              *shadow = st_shadow_new (&color,
-                                       xoffset, yoffset,
-                                       blur, spread,
-                                       inset);
-              return TRUE;
+              switch (stylish_parse_shadow (decl->value, normalize_default (node), &parsed))
+                {
+                case VALUE_FOUND:
+                  if (parsed.is_none)
+                    {
+                      return FALSE;
+                    }
+                  else
+                    {
+                      *shadow = st_shadow_new (&parsed.color,
+                                               parsed.xoffset,
+                                               parsed.yoffset,
+                                               parsed.blur,
+                                               parsed.spread,
+                                               parsed.inset);
+                      return TRUE;
+                    }
+                  break;
+
+                case VALUE_NOT_FOUND:
+                  return FALSE;
+
+                case VALUE_INHERIT:
+                  if (node->parent_node)
+                    {
+                      return st_theme_node_lookup_shadow (node->parent_node,
+                                                          property_name,
+                                                          inherit,
+                                                          shadow);
+                    }
+                  break;
+
+                default:
+                  g_assert_not_reached ();
+                  return FALSE;
+                }
             }
-          else if (result == VALUE_INHERIT)
+          else
             {
-              if (node->parent_node)
-                return st_theme_node_lookup_shadow (node->parent_node,
-                                                    property_name,
-                                                    inherit,
-                                                    shadow);
-              else
-                break;
+              return FALSE;
             }
         }
     }
@@ -3593,28 +2721,28 @@ st_theme_node_get_icon_colors (StThemeNode *node)
       guint found = 0;
 
       if ((still_need & FOREGROUND) != 0 &&
-          strcmp (decl->property->stryng->str, "color") == 0)
+          strcmp (cr_declaration_name (decl), "color") == 0)
         {
           found = FOREGROUND;
-          result = get_color_from_term (node, decl->value, &color);
+          result = stylish_get_color_from_term (decl->value, &color);
         }
       else if ((still_need & WARNING) != 0 &&
-               strcmp (decl->property->stryng->str, "warning-color") == 0)
+               strcmp (cr_declaration_name (decl), "warning-color") == 0)
         {
           found = WARNING;
-          result = get_color_from_term (node, decl->value, &color);
+          result = stylish_get_color_from_term (decl->value, &color);
         }
       else if ((still_need & ERROR) != 0 &&
-               strcmp (decl->property->stryng->str, "error-color") == 0)
+               strcmp (cr_declaration_name (decl), "error-color") == 0)
         {
           found = ERROR;
-          result = get_color_from_term (node, decl->value, &color);
+          result = stylish_get_color_from_term (decl->value, &color);
         }
       else if ((still_need & SUCCESS) != 0 &&
-               strcmp (decl->property->stryng->str, "success-color") == 0)
+               strcmp (cr_declaration_name (decl), "success-color") == 0)
         {
           found = SUCCESS;
-          result = get_color_from_term (node, decl->value, &color);
+          result = stylish_get_color_from_term (decl->value, &color);
         }
 
       if (result == VALUE_INHERIT)
@@ -3660,15 +2788,15 @@ st_theme_node_get_icon_colors (StThemeNode *node)
 static float
 get_width_inc (StThemeNode *node)
 {
-  return ((int)(0.5 + node->border_width[ST_SIDE_LEFT]) + node->padding[ST_SIDE_LEFT] +
-          (int)(0.5 + node->border_width[ST_SIDE_RIGHT]) + node->padding[ST_SIDE_RIGHT]);
+  return ((int)(0.5 + node->border.left.width) + node->padding.left +
+          (int)(0.5 + node->border.right.width) + node->padding.right);
 }
 
 static float
 get_height_inc (StThemeNode *node)
 {
-  return ((int)(0.5 + node->border_width[ST_SIDE_TOP]) + node->padding[ST_SIDE_TOP] +
-          (int)(0.5 + node->border_width[ST_SIDE_BOTTOM]) + node->padding[ST_SIDE_BOTTOM]);
+  return ((int)(0.5 + node->border.top.width) + node->padding.top +
+          (int)(0.5 + node->border.bottom.width) + node->padding.bottom);
 }
 
 /**
@@ -3830,10 +2958,10 @@ st_theme_node_get_content_box (StThemeNode           *node,
   avail_width = allocation->x2 - allocation->x1;
   avail_height = allocation->y2 - allocation->y1;
 
-  noncontent_left = node->border_width[ST_SIDE_LEFT] + node->padding[ST_SIDE_LEFT];
-  noncontent_top = node->border_width[ST_SIDE_TOP] + node->padding[ST_SIDE_TOP];
-  noncontent_right = node->border_width[ST_SIDE_RIGHT] + node->padding[ST_SIDE_RIGHT];
-  noncontent_bottom = node->border_width[ST_SIDE_BOTTOM] + node->padding[ST_SIDE_BOTTOM];
+  noncontent_left = node->border.left.width + node->padding.left;
+  noncontent_top = node->border.top.width + node->padding.top;
+  noncontent_right = node->border.right.width + node->padding.right;
+  noncontent_bottom = node->border.bottom.width + node->padding.bottom;
 
   content_box->x1 = (int)(0.5 + noncontent_left);
   content_box->y1 = (int)(0.5 + noncontent_top);
@@ -3946,8 +3074,6 @@ gboolean
 st_theme_node_geometry_equal (StThemeNode *node,
                               StThemeNode *other)
 {
-  StSide side;
-
   g_return_val_if_fail (ST_IS_THEME_NODE (node), FALSE);
 
   if (node == other)
@@ -3961,13 +3087,17 @@ st_theme_node_geometry_equal (StThemeNode *node,
   _st_theme_node_ensure_geometry (node);
   _st_theme_node_ensure_geometry (other);
 
-  for (side = ST_SIDE_TOP; side <= ST_SIDE_LEFT; side++)
-    {
-      if (node->border_width[side] != other->border_width[side])
-        return FALSE;
-      if (node->padding[side] != other->padding[side])
-        return FALSE;
-    }
+  if (node->border.top.width != other->border.top.width
+      || node->border.right.width != other->border.right.width
+      || node->border.bottom.width != other->border.bottom.width
+      || node->border.left.width != other->border.left.width)
+    return FALSE;
+
+  if (node->padding.top != other->padding.top
+      || node->padding.right != other->padding.right
+      || node->padding.bottom != other->padding.bottom
+      || node->padding.left != other->padding.left)
+    return FALSE;
 
   if (node->width != other->width || node->height != other->height)
     return FALSE;
@@ -3997,7 +3127,6 @@ st_theme_node_paint_equal (StThemeNode *node,
 {
   StBorderImage *border_image, *other_border_image;
   StShadow *shadow, *other_shadow;
-  int i;
 
   /* Make sure NULL != NULL */
   if (node == NULL || other == NULL)
@@ -4027,24 +3156,41 @@ st_theme_node_paint_equal (StThemeNode *node,
   _st_theme_node_ensure_geometry (node);
   _st_theme_node_ensure_geometry (other);
 
-  for (i = 0; i < 4; i++)
-    {
-      if (node->border_width[i] != other->border_width[i])
-        return FALSE;
-
-      if (node->border_width[i] > 0 &&
-          !clutter_color_equal (&node->border_color[i], &other->border_color[i]))
-        return FALSE;
-
-      if (node->border_radius[i] != other->border_radius[i])
-        return FALSE;
-    }
-
-  if (node->outline_width != other->outline_width)
+  if (node->border.top.width != other->border.top.width
+      || node->border.right.width != other->border.right.width
+      || node->border.bottom.width != other->border.bottom.width
+      || node->border.left.width != other->border.left.width)
     return FALSE;
 
-  if (node->outline_width > 0 &&
-      !clutter_color_equal (&node->outline_color, &other->outline_color))
+  if (node->border.top.width > 0 &&
+      !clutter_color_equal (&node->border.top.color, &other->border.top.color))
+    return FALSE;
+
+  if (node->border.right.width > 0 &&
+      !clutter_color_equal (&node->border.right.color, &other->border.right.color))
+    return FALSE;
+
+  if (node->border.bottom.width > 0 &&
+      !clutter_color_equal (&node->border.bottom.color, &other->border.bottom.color))
+    return FALSE;
+
+  if (node->border.left.width > 0 &&
+      !clutter_color_equal (&node->border.left.color, &other->border.left.color))
+    return FALSE;
+
+  if (node->border_radius.top_left != other->border_radius.top_left
+      || node->border_radius.top_right != other->border_radius.top_right
+      || node->border_radius.bottom_right != other->border_radius.bottom_right
+      || node->border_radius.bottom_left != other->border_radius.bottom_left)
+    {
+      return FALSE;
+    }
+
+  if (node->outline.width != other->outline.width)
+    return FALSE;
+
+  if (node->outline.width > 0 &&
+      !clutter_color_equal (&node->outline.color, &other->outline.color))
     return FALSE;
 
   border_image = st_theme_node_get_border_image (node);
