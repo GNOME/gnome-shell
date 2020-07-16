@@ -843,7 +843,9 @@ class AppDisplay extends BaseAppView {
         // at least on single-monitor setups.
         // This also disables drag-to-launch on multi-monitor setups,
         // but we hope that is not used much.
-        let favoritesWritable = global.settings.is_writable('favorite-apps');
+        const isDraggable =
+            global.settings.is_writable('favorite-apps') ||
+            global.settings.is_writable('app-picker-layout');
 
         apps.forEach(appId => {
             if (appsInsideFolders.has(appId))
@@ -853,9 +855,7 @@ class AppDisplay extends BaseAppView {
             if (!icon) {
                 let app = appSys.lookup_app(appId);
 
-                icon = new AppIcon(app, {
-                    isDraggable: favoritesWritable,
-                });
+                icon = new AppIcon(app, { isDraggable });
             }
 
             appIcons.push(icon);
