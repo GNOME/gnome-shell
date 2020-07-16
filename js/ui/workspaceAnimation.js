@@ -3,6 +3,8 @@
 
 const { Clutter, GObject, Meta, Shell } = imports.gi;
 
+const Background = imports.ui.background;
+const Layout = imports.ui.layout;
 const Main = imports.ui.main;
 const SwipeTracker = imports.ui.swipeTracker;
 
@@ -85,6 +87,32 @@ class WorkspaceGroup extends Clutter.Actor {
     }
 });
 
+const MonitorGroup = GObject.registerClass(
+class MonitorGroup extends Clutter.Actor {
+    _init(monitor) {
+        super._init();
+
+        const constraint = new Layout.MonitorConstraint({ index: monitor.index });
+        this.add_constraint(constraint);
+
+        const background = new Meta.BackgroundGroup();
+
+        this.add_child(background);
+
+        this._bgManager = new Background.BackgroundManager({
+            container: background,
+            monitorIndex: monitor.index,
+            controlPosition: false,
+        });
+
+        this.connect('destroy', this._onDestroy.bind(this));
+    }
+
+    _onDestroy() {
+        this._bgManager.destroy();
+    }
+});
+
 var WorkspaceAnimationController = class {
     constructor() {
         this._movingWindow = null;
@@ -160,8 +188,13 @@ var WorkspaceAnimationController = class {
 
         switchData.container = new Clutter.Actor();
         switchData.container.add_child(switchData.curGroup);
+        switchData.backgroundGroup = new Clutter.Actor();
 
-        Main.uiGroup.insert_child_above(switchData.container, global.window_group);
+        for (const monitor of Main.layoutManager.monitors)
+            switchData.backgroundGroup.add_child(new MonitorGroup(monitor));
+
+        Main.uiGroup.insert_child_above(switchData.backgroundGroup, global.window_group);
+        Main.uiGroup.insert_child_above(switchData.container, switchData.backgroundGroup);
         Main.uiGroup.insert_child_above(switchData.movingWindowBin, switchData.container);
 
         for (const dir of Object.values(Meta.MotionDirection)) {
@@ -214,6 +247,7 @@ var WorkspaceAnimationController = class {
             switchData.movingWindow = null;
         }
 
+        switchData.backgroundGroup.destroy();
         switchData.container.destroy();
         switchData.movingWindowBin.destroy();
 
