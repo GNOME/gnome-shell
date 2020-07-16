@@ -450,7 +450,6 @@ class WorkspacesDisplay extends St.Widget {
         this._keyPressEventId = 0;
         this._scrollTimeoutId = 0;
 
-        this._actualGeometry = null;
         this._fullGeometry = null;
         this._inWindowDrag = false;
 
@@ -611,16 +610,13 @@ class WorkspacesDisplay extends St.Widget {
 
     show(fadeOnPrimary) {
         this._updateWorkspacesViews();
-
-        if (this._actualGeometry && this._fullGeometry) {
-            for (let i = 0; i < this._workspacesViews.length; i++) {
-                let animationType;
-                if (fadeOnPrimary && i == this._primaryIndex)
-                    animationType = AnimationType.FADE;
-                else
-                    animationType = AnimationType.ZOOM;
-                this._workspacesViews[i].animateToOverview(animationType);
-            }
+        for (let i = 0; i < this._workspacesViews.length; i++) {
+            let animationType;
+            if (fadeOnPrimary && i == this._primaryIndex)
+                animationType = AnimationType.FADE;
+            else
+                animationType = AnimationType.ZOOM;
+            this._workspacesViews[i].animateToOverview(animationType);
         }
 
         this._restackedNotifyId =
@@ -694,10 +690,8 @@ class WorkspacesDisplay extends St.Widget {
 
         this._workspacesViews.forEach(v => v.show());
 
-        if (this._fullGeometry)
-            this._syncWorkspacesFullGeometry();
-        if (this._actualGeometry)
-            this._syncWorkspacesActualGeometry();
+        this._updateWorkspacesFullGeometry();
+        this._updateWorkspacesActualGeometry();
     }
 
     _getMonitorIndexForEvent(event) {
@@ -749,10 +743,10 @@ class WorkspacesDisplay extends St.Widget {
     // the sliding controls were never slid in at all.
     setWorkspacesFullGeometry(geom) {
         this._fullGeometry = geom;
-        this._syncWorkspacesFullGeometry();
+        this._updateWorkspacesFullGeometry();
     }
 
-    _syncWorkspacesFullGeometry() {
+    _updateWorkspacesFullGeometry() {
         if (!this._workspacesViews.length)
             return;
 
@@ -764,21 +758,18 @@ class WorkspacesDisplay extends St.Widget {
     }
 
     _updateWorkspacesActualGeometry() {
-        const [x, y] = this.get_transformed_position();
-        const width = this.allocation.get_width();
-        const height = this.allocation.get_height();
-
-        this._actualGeometry = { x, y, width, height };
-        this._syncWorkspacesActualGeometry();
-    }
-
-    _syncWorkspacesActualGeometry() {
         if (!this._workspacesViews.length)
             return;
 
+        let [x, y] = this.get_transformed_position();
+        let allocation = this.allocation;
+        let width = allocation.x2 - allocation.x1;
+        let height = allocation.y2 - allocation.y1;
+        let primaryGeometry = { x, y, width, height };
+
         let monitors = Main.layoutManager.monitors;
         for (let i = 0; i < monitors.length; i++) {
-            let geometry = i === this._primaryIndex ? this._actualGeometry : monitors[i];
+            let geometry = i == this._primaryIndex ? primaryGeometry : monitors[i];
             this._workspacesViews[i].setActualGeometry(geometry);
         }
     }
