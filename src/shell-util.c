@@ -766,12 +766,11 @@ shell_util_systemd_call (const char           *command,
     }
   else if (res < 0)
     {
-      g_set_error (&error,
-                   G_IO_ERROR,
-                   g_io_error_from_errno (-res),
-                   "Error trying to start systemd unit '%s': %s",
-                   unit, g_strerror (-res));
-      g_task_return_error (task, error);
+      g_task_return_new_error (task,
+                               G_IO_ERROR,
+                               g_io_error_from_errno (-res),
+                               "Error trying to start systemd unit '%s': "%s",
+                               unit, g_strerror (-str));
     }
 
   data = g_new0 (SystemdCall, 1);
