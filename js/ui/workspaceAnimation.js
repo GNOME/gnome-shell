@@ -3,6 +3,7 @@
 
 const { Clutter, GObject, Meta, Shell } = imports.gi;
 
+const Background = imports.ui.background;
 const Main = imports.ui.main;
 const SwipeTracker = imports.ui.swipeTracker;
 
@@ -168,7 +169,10 @@ var WorkspaceAnimationController = class {
         switchData.container = new Clutter.Actor();
         switchData.container.add_child(switchData.curGroup);
 
-        Main.uiGroup.insert_child_above(switchData.container, global.window_group);
+        switchData.background = new Meta.BackgroundGroup();
+
+        Main.uiGroup.insert_child_above(switchData.background, global.window_group);
+        Main.uiGroup.insert_child_above(switchData.container, switchData.background);
         Main.uiGroup.insert_child_above(switchData.movingWindowBin, switchData.container);
 
         for (const dir of Object.values(Meta.MotionDirection)) {
@@ -212,6 +216,11 @@ var WorkspaceAnimationController = class {
                 switchData.movingWindow = null;
             });
         }
+
+        switchData.bgManager = new Background.BackgroundManager({
+            container: switchData.background,
+            monitorIndex: Main.layoutManager.primaryIndex,
+        });
     }
 
     _finishWorkspaceSwitch(switchData) {
@@ -226,6 +235,7 @@ var WorkspaceAnimationController = class {
             switchData.movingWindow = null;
         }
 
+        switchData.background.destroy();
         switchData.container.destroy();
         switchData.movingWindowBin.destroy();
 
