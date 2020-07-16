@@ -763,6 +763,7 @@ shell_util_systemd_call (const char           *command,
     {
       g_debug ("Not systemd-managed, not doing '%s' on '%s'", mode, unit);
       g_task_return_pointer (task, g_strdup ("not-systemd-managed"), g_free);
+      return;
     }
   else if (res < 0)
     {
