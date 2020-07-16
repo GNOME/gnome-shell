@@ -218,8 +218,14 @@ var LayoutManager = GObject.registerClass({
 
         global.stage.add_child(this.uiGroup);
 
+        // super_group is to keep MetaCullable active between window_group and
+        // backgroundGroup, while also separating them so that you can hide
+        // windows without hiding backgrounds (and desktop widgets on those
+        // backgrounds from extensions).
         global.stage.remove_actor(global.window_group);
-        this.uiGroup.add_actor(global.window_group);
+        this.uiGroup.super_group = new Meta.WindowGroup();
+        this.uiGroup.super_group.add_actor(global.window_group);
+        this.uiGroup.add_actor(this.uiGroup.super_group);
 
         // Using addChrome() to add actors to uiGroup will position actors
         // underneath the top_window_group.
@@ -268,8 +274,9 @@ var LayoutManager = GObject.registerClass({
         this.uiGroup.add_actor(feedbackGroup);
 
         this._backgroundGroup = new Meta.BackgroundGroup();
-        global.window_group.add_child(this._backgroundGroup);
-        global.window_group.set_child_below_sibling(this._backgroundGroup, null);
+        this.uiGroup.super_group.add_actor(this._backgroundGroup);
+        this.uiGroup.super_group.set_child_below_sibling(this._backgroundGroup, null);
+
         this._bgManagers = [];
 
         this._interfaceSettings = new Gio.Settings({
