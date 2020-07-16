@@ -21,6 +21,7 @@ const SENSOR_OBJECT_PATH = '/net/hadess/SensorProxy';
 const SensorProxyInterface = loadInterfaceXML('net.hadess.SensorProxy');
 
 const POWER_OFF_ACTION_ID        = 'power-off';
+const RESTART_ACTION_ID          = 'restart';
 const LOCK_SCREEN_ACTION_ID      = 'lock-screen';
 const LOGOUT_ACTION_ID           = 'logout';
 const SUSPEND_ACTION_ID          = 'suspend';
@@ -40,41 +41,38 @@ function getDefault() {
 
 const SystemActions = GObject.registerClass({
     Properties: {
-        'can-power-off': GObject.ParamSpec.boolean('can-power-off',
-                                                   'can-power-off',
-                                                   'can-power-off',
-                                                   GObject.ParamFlags.READABLE,
-                                                   false),
-        'can-suspend': GObject.ParamSpec.boolean('can-suspend',
-                                                 'can-suspend',
-                                                 'can-suspend',
-                                                 GObject.ParamFlags.READABLE,
-                                                 false),
-        'can-lock-screen': GObject.ParamSpec.boolean('can-lock-screen',
-                                                     'can-lock-screen',
-                                                     'can-lock-screen',
-                                                     GObject.ParamFlags.READABLE,
-                                                     false),
-        'can-switch-user': GObject.ParamSpec.boolean('can-switch-user',
-                                                     'can-switch-user',
-                                                     'can-switch-user',
-                                                     GObject.ParamFlags.READABLE,
-                                                     false),
-        'can-logout': GObject.ParamSpec.boolean('can-logout',
-                                                'can-logout',
-                                                'can-logout',
-                                                GObject.ParamFlags.READABLE,
-                                                false),
-        'can-lock-orientation': GObject.ParamSpec.boolean('can-lock-orientation',
-                                                          'can-lock-orientation',
-                                                          'can-lock-orientation',
-                                                          GObject.ParamFlags.READABLE,
-                                                          false),
-        'orientation-lock-icon': GObject.ParamSpec.string('orientation-lock-icon',
-                                                          'orientation-lock-icon',
-                                                          'orientation-lock-icon',
-                                                          GObject.ParamFlags.READWRITE,
-                                                          null),
+        'can-power-off': GObject.ParamSpec.boolean(
+            'can-power-off', 'can-power-off', 'can-power-off',
+            GObject.ParamFlags.READABLE,
+            false),
+        'can-restart': GObject.ParamSpec.boolean(
+            'can-restart', 'can-restart', 'can-restart',
+            GObject.ParamFlags.READABLE,
+            false),
+        'can-suspend': GObject.ParamSpec.boolean(
+            'can-suspend', 'can-suspend', 'can-suspend',
+            GObject.ParamFlags.READABLE,
+            false),
+        'can-lock-screen': GObject.ParamSpec.boolean(
+            'can-lock-screen', 'can-lock-screen', 'can-lock-screen',
+            GObject.ParamFlags.READABLE,
+            false),
+        'can-switch-user': GObject.ParamSpec.boolean(
+            'can-switch-user', 'can-switch-user', 'can-switch-user',
+            GObject.ParamFlags.READABLE,
+            false),
+        'can-logout': GObject.ParamSpec.boolean(
+            'can-logout', 'can-logout', 'can-logout',
+            GObject.ParamFlags.READABLE,
+            false),
+        'can-lock-orientation': GObject.ParamSpec.boolean(
+            'can-lock-orientation', 'can-lock-orientation', 'can-lock-orientation',
+            GObject.ParamFlags.READABLE,
+            false),
+        'orientation-lock-icon': GObject.ParamSpec.string(
+            'orientation-lock-icon', 'orientation-lock-icon', 'orientation-lock-icon',
+            GObject.ParamFlags.READWRITE,
+            null),
     },
 }, class SystemActions extends GObject.Object {
     _init() {
@@ -93,7 +91,15 @@ const SystemActions = GObject.registerClass({
             name: C_("search-result", "Power Off"),
             iconName: 'system-shutdown-symbolic',
             // Translators: A list of keywords that match the power-off action, separated by semicolons
-            keywords: tokenizeKeywords(_('power off;shutdown;reboot;restart;halt;stop')),
+            keywords: tokenizeKeywords(_('power off;shutdown;halt;stop')),
+            available: false,
+        });
+        this._actions.set(RESTART_ACTION_ID, {
+            // Translators: The name of the restart action in search
+            name: C_('search-result', 'Restart'),
+            iconName: 'system-reboot-symbolic',
+            // Translators: A list of keywords that match the restart action, separated by semicolons
+            keywords: tokenizeKeywords(_('reboot;restart;')),
             available: false,
         });
         this._actions.set(LOCK_SCREEN_ACTION_ID, {
@@ -204,6 +210,11 @@ const SystemActions = GObject.registerClass({
     }
 
     // eslint-disable-next-line camelcase
+    get can_restart() {
+        return this._actions.get(RESTART_ACTION_ID).available;
+    }
+
+    // eslint-disable-next-line camelcase
     get can_suspend() {
         return this._actions.get(SUSPEND_ACTION_ID).available;
     }
@@ -306,6 +317,9 @@ const SystemActions = GObject.registerClass({
         case POWER_OFF_ACTION_ID:
             this.activatePowerOff();
             break;
+        case RESTART_ACTION_ID:
+            this.activateRestart();
+            break;
         case LOCK_SCREEN_ACTION_ID:
             this.activateLockScreen();
             break;
@@ -347,6 +361,9 @@ const SystemActions = GObject.registerClass({
                         this._loginScreenSettings.get_boolean(DISABLE_RESTART_KEY));
         this._actions.get(POWER_OFF_ACTION_ID).available = this._canHavePowerOff && !disabled;
         this.notify('can-power-off');
+
+        this._actions.get(RESTART_ACTION_ID).available = this._canHavePowerOff && !disabled;
+        this.notify('can-restart');
     }
 
     _updateHaveSuspend() {
@@ -443,6 +460,13 @@ const SystemActions = GObject.registerClass({
             throw new Error('The power-off action is not available!');
 
         this._session.ShutdownRemote(0);
+    }
+
+    activateRestart() {
+        if (!this._actions.get(RESTART_ACTION_ID).available)
+            throw new Error('The restart action is not available!');
+
+        this._session.RebootRemote();
     }
 
     activateSuspend() {
