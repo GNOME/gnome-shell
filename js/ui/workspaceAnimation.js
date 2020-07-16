@@ -145,7 +145,6 @@ var WorkspaceAnimationController = class {
         if (this._switchData)
             return;
 
-        const wgroup = global.window_group;
         const workspaceManager = global.workspace_manager;
         const curWs = workspaceManager.get_workspace_by_index(from);
 
@@ -162,8 +161,8 @@ var WorkspaceAnimationController = class {
         switchData.container = new Clutter.Actor();
         switchData.container.add_child(switchData.curGroup);
 
-        wgroup.add_child(switchData.movingWindowBin);
-        wgroup.add_child(switchData.container);
+        Main.uiGroup.insert_child_above(switchData.container, global.window_group);
+        Main.uiGroup.insert_child_above(switchData.movingWindowBin, switchData.container);
 
         for (const dir of Object.values(Meta.MotionDirection)) {
             let ws = null;
@@ -186,8 +185,6 @@ var WorkspaceAnimationController = class {
 
             group.set_position(x, y);
         }
-
-        wgroup.set_child_above_sibling(switchData.movingWindowBin, null);
 
         if (this.movingWindow) {
             const windowActor = this.movingWindow.get_compositor_private();
