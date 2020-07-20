@@ -346,8 +346,6 @@ struct _App
 
   GSList *notify_appointments; /* CalendarAppointment *, for EventsAdded */
   GSList *notify_ids; /* gchar *, for EventsRemoved */
-  guint events_added_timeout_id;
-  guint events_removed_timeout_id;
 
   GSList *live_views;
 };
@@ -370,24 +368,19 @@ app_update_timezone (App *app)
     }
 }
 
-static gboolean
-on_app_schedule_events_added_cb (gpointer user_data)
+static void
+app_notify_events_added (App *app)
 {
-  App *app = user_data;
   GVariantBuilder builder, extras_builder;
   GSList *events, *link;
 
-  if (g_source_is_destroyed (g_main_current_source ()))
-    return FALSE;
-
   events = g_slist_reverse (app->notify_appointments);
   app->notify_appointments = NULL;
-  app->events_added_timeout_id = 0;
 
   print_debug ("Emitting EventsAddedOrUpdated with %d events", g_slist_length (events));
 
   if (!events)
-    return FALSE;
+    return;
 
   /* The a{sv} is used as an escape hatch in case we want to provide more
    * information in the future without breaking ABI
@@ -428,41 +421,21 @@ on_app_schedule_events_added_cb (gpointer user_data)
   g_variant_builder_clear (&builder);
 
   g_slist_free_full (events, calendar_appointment_free);
-
-  return FALSE;
 }
 
 static void
-app_schedule_events_added (App *app)
+app_notify_events_removed (App *app)
 {
-  print_debug ("Scheduling EventsAddedOrUpdated");
-  if (app->events_added_timeout_id == 0)
-    {
-      app->events_added_timeout_id = g_timeout_add_seconds (2,
-                                                            on_app_schedule_events_added_cb,
-                                                            app);
-      g_source_set_name_by_id (app->events_added_timeout_id, "[gnome-shell] on_app_schedule_events_added_cb");
-    }
-}
-
-static gboolean
-on_app_schedule_events_removed_cb (gpointer user_data)
-{
-  App *app = user_data;
   GVariantBuilder builder;
   GSList *ids, *link;
 
-  if (g_source_is_destroyed (g_main_current_source ()))
-    return FALSE;
-
   ids = app->notify_ids;
   app->notify_ids = NULL;
-  app->events_removed_timeout_id = 0;
 
   print_debug ("Emitting EventsRemoved with %d ids", g_slist_length (ids));
 
   if (!ids)
-    return FALSE;
+    return;
 
   g_variant_builder_init (&builder, G_VARIANT_TYPE ("as"));
   for (link = ids; link; link = g_slist_next (link))
@@ -483,20 +456,7 @@ on_app_schedule_events_removed_cb (gpointer user_data)
 
   g_slist_free_full (ids, g_free);
 
-  return FALSE;
-}
-
-static void
-app_schedule_events_removed (App *app)
-{
-  print_debug ("Scheduling EventsRemoved");
-  if (app->events_removed_timeout_id == 0)
-    {
-      app->events_removed_timeout_id = g_timeout_add_seconds (2,
-                                                              on_app_schedule_events_removed_cb,
-                                                              app);
-      g_source_set_name_by_id (app->events_removed_timeout_id, "[gnome-shell] on_app_schedule_events_removed_cb");
-    }
+  return;
 }
 
 static void
@@ -546,7 +506,7 @@ app_process_added_modified_objects (App *app,
   g_clear_object (&cal_client);
 
   if (app->notify_appointments)
-    app_schedule_events_added (app);
+    app_notify_events_added (app);
 }
 
 static void
@@ -610,7 +570,7 @@ on_objects_removed (ECalClientView *view,
   g_clear_object (&client);
 
   if (app->notify_ids)
-    app_schedule_events_removed (app);
+    app_notify_events_removed (app);
 }
 
 static gboolean
@@ -865,9 +825,6 @@ static void
 app_free (App *app)
 {
   GSList *ll;
-
-  g_clear_handle_id (&app->events_added_timeout_id, g_source_remove);
-  g_clear_handle_id (&app->events_removed_timeout_id, g_source_remove);
 
   for (ll = app->live_views; ll != NULL; ll = g_slist_next (ll))
     {
