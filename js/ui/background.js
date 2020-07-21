@@ -758,9 +758,18 @@ var BackgroundManager = class BackgroundManager {
             this._updateBackgroundActor();
         });
 
+        let loadedSignalId = background.connect('loaded', () => {
+            background.disconnect(loadedSignalId);
+            loadedSignalId = null;
+            this.emit('loaded');
+        });
+
         backgroundActor.connect('destroy', () => {
             if (changeSignalId)
                 background.disconnect(changeSignalId);
+
+            if (loadedSignalId)
+                background.disconnect(loadedSignalId);
 
             if (backgroundActor.loadedSignalId)
                 background.disconnect(backgroundActor.loadedSignalId);

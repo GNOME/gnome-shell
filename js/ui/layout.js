@@ -470,6 +470,15 @@ var LayoutManager = GObject.registerClass({
         }
     }
 
+    _waitLoaded(bgManager) {
+        return new Promise(resolve => {
+            const id = bgManager.connect('loaded', () => {
+                bgManager.disconnect(id);
+                resolve();
+            });
+        });
+    }
+
     _updateBackgrounds() {
         for (let i = 0; i < this._bgManagers.length; i++)
             this._bgManagers[i].destroy();
@@ -477,7 +486,7 @@ var LayoutManager = GObject.registerClass({
         this._bgManagers = [];
 
         if (Main.sessionMode.isGreeter)
-            return;
+            return Promise.resolve();
 
         for (let i = 0; i < this.monitors.length; i++) {
             let bgManager = this._createBackgroundManager(i);
@@ -486,6 +495,8 @@ var LayoutManager = GObject.registerClass({
             if (i != this.primaryIndex && this._startingUp)
                 bgManager.backgroundActor.hide();
         }
+
+        return Promise.all(this._bgManagers.map(this._waitLoaded));
     }
 
     _updateKeyboardBox() {
@@ -644,7 +655,7 @@ var LayoutManager = GObject.registerClass({
     // When starting a normal user session, we want to grow it out of the middle
     // of the screen.
 
-    _prepareStartupAnimation() {
+    async _prepareStartupAnimation() {
         // During the initial transition, add a simple actor to block all events,
         // so they don't get delivered to X11 windows that have been transformed.
         this._coverPane = new Clutter.Actor({ opacity: 0,
@@ -661,8 +672,6 @@ var LayoutManager = GObject.registerClass({
         } else if (Main.sessionMode.isGreeter) {
             this.panelBox.translation_y = -this.panelBox.height;
         } else {
-            this._updateBackgrounds();
-
             // We need to force an update of the regions now before we scale
             // the UI group to get the correct allocation for the struts.
             this._updateRegions();
@@ -678,6 +687,8 @@ var LayoutManager = GObject.registerClass({
             this.uiGroup.scale_x = this.uiGroup.scale_y = 0.75;
             this.uiGroup.opacity = 0;
             global.window_group.set_clip(monitor.x, monitor.y, monitor.width, monitor.height);
+
+            await this._updateBackgrounds();
         }
 
         this.emit('startup-prepared');
