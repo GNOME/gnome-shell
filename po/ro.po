@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2020-06-09 19:41+0000\n"
-"PO-Revision-Date: 2020-06-17 18:47+0300\n"
+"POT-Creation-Date: 2020-07-21 05:44+0000\n"
+"PO-Revision-Date: 2020-07-21 09:07+0200\n"
 "Last-Translator: Florentina Mușat <florentina [dot] musat [dot] 28 [at] "
 "gmail [dot] com>\n"
 "Language-Team: Gnome Romanian Translation Team <gnomero-list@lists."
@@ -224,95 +224,112 @@ msgid ""
 msgstr ""
 "Activează un API D-Bus care permite introspecția stării aplicației shell."
 
-#: data/org.gnome.shell.gschema.xml.in:119
+#: data/org.gnome.shell.gschema.xml.in:114
+msgid "Layout of the app picker"
+msgstr "Aspectul selectorului de aplicații"
+
+#: data/org.gnome.shell.gschema.xml.in:115
+msgid ""
+"Layout of the app picker. Each entry in the array is a page. Pages are "
+"stored in the order they appear in GNOME Shell. Each page contains an "
+"“application id” → 'data' pair. Currently, the following values are stored "
+"as 'data': • “position”: the position of the application icon in the page"
+msgstr ""
+"Aspectul selectorului de aplicații. Fiecare intrare din matrice este o "
+"pagină. Paginile sunt stocate în ordinea în care apar în GNOME Shell. "
+"Fiecare pagină conține o pereche de „id aplicație” → „date”. Momentan, "
+"următoarele valori sunt stocate ca „data”: • „poziție”: poziția iconiței "
+"aplicației în pagină."
+
+#: data/org.gnome.shell.gschema.xml.in:130
 msgid "Keybinding to open the application menu"
 msgstr "Combinație de taste pentru deschiderea meniului aplicației"
 
-#: data/org.gnome.shell.gschema.xml.in:120
+#: data/org.gnome.shell.gschema.xml.in:131
 msgid "Keybinding to open the application menu."
 msgstr "Combinație de taste pentru deschiderea meniului aplicației."
 
-#: data/org.gnome.shell.gschema.xml.in:126
+#: data/org.gnome.shell.gschema.xml.in:137
 msgid "Keybinding to open the “Show Applications” view"
 msgstr ""
 "Combinație de taste pentru deschiderea modului de afișare „Arată aplicațiile”"
 
-#: data/org.gnome.shell.gschema.xml.in:127
+#: data/org.gnome.shell.gschema.xml.in:138
 msgid ""
 "Keybinding to open the “Show Applications” view of the Activities Overview."
 msgstr ""
 "Combinație de taste pentru deschiderea modului de afișare „Arată "
 "aplicațiile” a prezentării generale a activităților."
 
-#: data/org.gnome.shell.gschema.xml.in:134
+#: data/org.gnome.shell.gschema.xml.in:145
 msgid "Keybinding to open the overview"
 msgstr "Combinație de taste pentru deschiderea prezentării generale"
 
-#: data/org.gnome.shell.gschema.xml.in:135
+#: data/org.gnome.shell.gschema.xml.in:146
 msgid "Keybinding to open the Activities Overview."
 msgstr ""
 "Combinație de taste pentru deschiderea prezentării generale a activităților."
 
-#: data/org.gnome.shell.gschema.xml.in:141
+#: data/org.gnome.shell.gschema.xml.in:152
 msgid "Keybinding to toggle the visibility of the notification list"
 msgstr ""
 "Combinație de taste pentru comutarea vizibilității listei de notificare"
 
-#: data/org.gnome.shell.gschema.xml.in:142
+#: data/org.gnome.shell.gschema.xml.in:153
 msgid "Keybinding to toggle the visibility of the notification list."
 msgstr ""
 "Combinație de taste pentru comutarea vizibilității listei de notificare."
 
-#: data/org.gnome.shell.gschema.xml.in:148
+#: data/org.gnome.shell.gschema.xml.in:159
 msgid "Keybinding to focus the active notification"
 msgstr "Combinație de taste pentru focalizarea notificării active"
 
-#: data/org.gnome.shell.gschema.xml.in:149
+#: data/org.gnome.shell.gschema.xml.in:160
 msgid "Keybinding to focus the active notification."
 msgstr "Combinație de taste pentru focalizarea notificării active."
 
-#: data/org.gnome.shell.gschema.xml.in:155
+#: data/org.gnome.shell.gschema.xml.in:166
 msgid "Switch to application 1"
 msgstr "Comută la aplicația 1"
 
-#: data/org.gnome.shell.gschema.xml.in:159
+#: data/org.gnome.shell.gschema.xml.in:170
 msgid "Switch to application 2"
 msgstr "Comută la aplicația 2"
 
-#: data/org.gnome.shell.gschema.xml.in:163
+#: data/org.gnome.shell.gschema.xml.in:174
 msgid "Switch to application 3"
 msgstr "Comută la aplicația 3"
 
-#: data/org.gnome.shell.gschema.xml.in:167
+#: data/org.gnome.shell.gschema.xml.in:178
 msgid "Switch to application 4"
 msgstr "Comută la aplicația 4"
 
-#: data/org.gnome.shell.gschema.xml.in:171
+#: data/org.gnome.shell.gschema.xml.in:182
 msgid "Switch to application 5"
 msgstr "Comută la aplicația 5"
 
-#: data/org.gnome.shell.gschema.xml.in:175
+#: data/org.gnome.shell.gschema.xml.in:186
 msgid "Switch to application 6"
 msgstr "Comută la aplicația 6"
 
-#: data/org.gnome.shell.gschema.xml.in:179
+#: data/org.gnome.shell.gschema.xml.in:190
 msgid "Switch to application 7"
 msgstr "Comută la aplicația 7"
 
-#: data/org.gnome.shell.gschema.xml.in:183
+#: data/org.gnome.shell.gschema.xml.in:194
 msgid "Switch to application 8"
 msgstr "Comută la aplicația 8"
 
-#: data/org.gnome.shell.gschema.xml.in:187
+#: data/org.gnome.shell.gschema.xml.in:198
 msgid "Switch to application 9"
 msgstr "Comută la aplicația 9"
 
-#: data/org.gnome.shell.gschema.xml.in:196
-#: data/org.gnome.shell.gschema.xml.in:223
+#: data/org.gnome.shell.gschema.xml.in:207
+#: data/org.gnome.shell.gschema.xml.in:234
 msgid "Limit switcher to current workspace."
 msgstr "Limitează comutatorul la spațiul de lucru curent."
 
-#: data/org.gnome.shell.gschema.xml.in:197
+#: data/org.gnome.shell.gschema.xml.in:208
 msgid ""
 "If true, only applications that have windows on the current workspace are "
 "shown in the switcher. Otherwise, all applications are included."
@@ -320,11 +337,11 @@ msgstr ""
 "Dacă este activat, doar aplicațiile care au ferestre în spațiul de lucru "
 "curent sunt arătate în comutator. Altfel, toate aplicațiile sunt incluse."
 
-#: data/org.gnome.shell.gschema.xml.in:214
+#: data/org.gnome.shell.gschema.xml.in:225
 msgid "The application icon mode."
 msgstr "Miniatură și pictograma aplicației."
 
-#: data/org.gnome.shell.gschema.xml.in:215
+#: data/org.gnome.shell.gschema.xml.in:226
 msgid ""
 "Configures how the windows are shown in the switcher. Valid possibilities "
 "are “thumbnail-only” (shows a thumbnail of the window), “app-icon-"
@@ -334,7 +351,7 @@ msgstr ""
 "Posibilități valide sunt „mod miniatură” (arată o miniatură a ferestrei) "
 "„mod iconiță” (arată doar iconița aplicației) sau „ambele”."
 
-#: data/org.gnome.shell.gschema.xml.in:224
+#: data/org.gnome.shell.gschema.xml.in:235
 msgid ""
 "If true, only windows from the current workspace are shown in the switcher. "
 "Otherwise, all windows are included."
@@ -342,59 +359,59 @@ msgstr ""
 "Dacă este activat, doar ferestrele din spațiul de lucru curent sunt arătate "
 "în comutator. Altfel, toate ferestrele sunt incluse."
 
-#: data/org.gnome.shell.gschema.xml.in:234
+#: data/org.gnome.shell.gschema.xml.in:245
 msgid "Locations"
 msgstr "Locații"
 
-#: data/org.gnome.shell.gschema.xml.in:235
+#: data/org.gnome.shell.gschema.xml.in:246
 msgid "The locations to show in world clocks"
 msgstr "Locațiile de arătat în ceasuri globale"
 
-#: data/org.gnome.shell.gschema.xml.in:245
+#: data/org.gnome.shell.gschema.xml.in:256
 msgid "Automatic location"
 msgstr "Locație automată"
 
-#: data/org.gnome.shell.gschema.xml.in:246
+#: data/org.gnome.shell.gschema.xml.in:257
 msgid "Whether to fetch the current location or not"
 msgstr "Dacă să se obțină locația curentă"
 
-#: data/org.gnome.shell.gschema.xml.in:253
+#: data/org.gnome.shell.gschema.xml.in:264
 msgid "Location"
 msgstr "Locație"
 
-#: data/org.gnome.shell.gschema.xml.in:254
+#: data/org.gnome.shell.gschema.xml.in:265
 msgid "The location for which to show a forecast"
 msgstr "Locația pentru care să se arate o prognoză"
 
-#: data/org.gnome.shell.gschema.xml.in:266
+#: data/org.gnome.shell.gschema.xml.in:277
 msgid "Attach modal dialog to the parent window"
 msgstr "Atașează dialogul modal la fereastra părinte"
 
-#: data/org.gnome.shell.gschema.xml.in:267
-#: data/org.gnome.shell.gschema.xml.in:276
-#: data/org.gnome.shell.gschema.xml.in:284
-#: data/org.gnome.shell.gschema.xml.in:292
-#: data/org.gnome.shell.gschema.xml.in:300
+#: data/org.gnome.shell.gschema.xml.in:278
+#: data/org.gnome.shell.gschema.xml.in:287
+#: data/org.gnome.shell.gschema.xml.in:295
+#: data/org.gnome.shell.gschema.xml.in:303
+#: data/org.gnome.shell.gschema.xml.in:311
 msgid ""
 "This key overrides the key in org.gnome.mutter when running GNOME Shell."
 msgstr ""
 "Această cheie suprascrie cheia corespondentă din org.gnome.mutter când "
 "Vizualizatorul activităților GNOME rulează."
 
-#: data/org.gnome.shell.gschema.xml.in:275
+#: data/org.gnome.shell.gschema.xml.in:286
 msgid "Enable edge tiling when dropping windows on screen edges"
 msgstr ""
 "Activează mozaic lateral la plasarea ferestrelor pe marginile ecranului"
 
-#: data/org.gnome.shell.gschema.xml.in:283
+#: data/org.gnome.shell.gschema.xml.in:294
 msgid "Workspaces are managed dynamically"
 msgstr "Spațiile de lucru sunt gestionate în mod dinamic"
 
-#: data/org.gnome.shell.gschema.xml.in:291
+#: data/org.gnome.shell.gschema.xml.in:302
 msgid "Workspaces only on primary monitor"
 msgstr "Spații de lucru doar pe monitorul principal"
 
-#: data/org.gnome.shell.gschema.xml.in:299
+#: data/org.gnome.shell.gschema.xml.in:310
 msgid "Delay focus changes in mouse mode until the pointer stops moving"
 msgstr ""
 "Întârzie schimbările de focalizare în maus până când cursorul încetează să "
@@ -433,7 +450,7 @@ msgstr "Vizitează pagina principală a extensiei"
 
 #: js/gdm/authPrompt.js:135 js/ui/audioDeviceSelection.js:57
 #: js/ui/components/networkAgent.js:110 js/ui/components/polkitAgent.js:139
-#: js/ui/endSessionDialog.js:369 js/ui/extensionDownloader.js:181
+#: js/ui/endSessionDialog.js:369 js/ui/extensionDownloader.js:183
 #: js/ui/shellMountOperation.js:376 js/ui/shellMountOperation.js:386
 #: js/ui/status/network.js:916 subprojects/extensions-app/js/main.js:149
 msgid "Cancel"
@@ -475,7 +492,7 @@ msgstr "Nume de utilizator"
 msgid "Login Window"
 msgstr "Fereastră de autentificare"
 
-#: js/gdm/util.js:345
+#: js/gdm/util.js:355
 msgid "Authentication error"
 msgstr "Eroare de autentificare"
 
@@ -484,7 +501,7 @@ msgstr "Eroare de autentificare"
 #. as a cue to display our own message.
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger instead
-#: js/gdm/util.js:471
+#: js/gdm/util.js:481
 msgid "(or swipe finger)"
 msgstr "(sau treceți degetul peste)"
 
@@ -727,36 +744,36 @@ msgstr "Refuză accesul"
 msgid "Grant Access"
 msgstr "Permite accesul"
 
-#: js/ui/appDisplay.js:902
+#: js/ui/appDisplay.js:1297
 msgid "Unnamed Folder"
 msgstr "Dosar nedenumit"
 
 #. Translators: This is the heading of a list of open windows
-#: js/ui/appDisplay.js:2241 js/ui/panel.js:75
+#: js/ui/appDisplay.js:2767 js/ui/panel.js:75
 msgid "Open Windows"
 msgstr "Ferestre deschise"
 
-#: js/ui/appDisplay.js:2260 js/ui/panel.js:82
+#: js/ui/appDisplay.js:2786 js/ui/panel.js:82
 msgid "New Window"
 msgstr "Fereastră nouă"
 
-#: js/ui/appDisplay.js:2276
+#: js/ui/appDisplay.js:2802
 msgid "Launch using Integrated Graphics Card"
 msgstr "Lansează folosind placa grafică integrată"
 
-#: js/ui/appDisplay.js:2277
+#: js/ui/appDisplay.js:2803
 msgid "Launch using Discrete Graphics Card"
 msgstr "Lansează folosind placa grafică discretă"
 
-#: js/ui/appDisplay.js:2305 js/ui/dash.js:239
+#: js/ui/appDisplay.js:2831 js/ui/dash.js:239
 msgid "Remove from Favorites"
 msgstr "Elimină din favorite"
 
-#: js/ui/appDisplay.js:2311
+#: js/ui/appDisplay.js:2837
 msgid "Add to Favorites"
 msgstr "Adaugă la Favorite"
 
-#: js/ui/appDisplay.js:2321 js/ui/panel.js:93
+#: js/ui/appDisplay.js:2847 js/ui/panel.js:93
 msgid "Show Details"
 msgstr "Arată detaliile"
 
@@ -786,7 +803,7 @@ msgstr "Căști auriculare"
 msgid "Headset"
 msgstr "Căști cu microfon"
 
-#: js/ui/audioDeviceSelection.js:68 js/ui/status/volume.js:273
+#: js/ui/audioDeviceSelection.js:68 js/ui/status/volume.js:272
 msgid "Microphone"
 msgstr "Microfon"
 
@@ -1300,15 +1317,15 @@ msgstr "%s (la distanță)"
 msgid "%s (console)"
 msgstr "%s (consolă)"
 
-#: js/ui/extensionDownloader.js:185
+#: js/ui/extensionDownloader.js:187
 msgid "Install"
 msgstr "Instalează"
 
-#: js/ui/extensionDownloader.js:191
+#: js/ui/extensionDownloader.js:193
 msgid "Install Extension"
 msgstr "Instalează extensia"
 
-#: js/ui/extensionDownloader.js:192
+#: js/ui/extensionDownloader.js:194
 #, javascript-format
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "Descărcați și instalați „%s” de la extensions.gnome.org?"
@@ -1341,11 +1358,11 @@ msgstr "O aplicație vrea să inhibe scurtăturile"
 msgid "You can restore shortcuts by pressing %s."
 msgstr "Puteți restaura scurtăturile apăsând %s."
 
-#: js/ui/inhibitShortcutsDialog.js:98
+#: js/ui/inhibitShortcutsDialog.js:100
 msgid "Deny"
 msgstr "Refuză"
 
-#: js/ui/inhibitShortcutsDialog.js:105
+#: js/ui/inhibitShortcutsDialog.js:107
 msgid "Allow"
 msgstr "Permite"
 
@@ -1414,7 +1431,7 @@ msgstr "Oprește"
 msgid "Leave Off"
 msgstr "Lasă oprit"
 
-#: js/ui/keyboard.js:207
+#: js/ui/keyboard.js:225
 msgid "Region & Language Settings"
 msgstr "Configurări de regiune și limbă"
 
@@ -1488,7 +1505,7 @@ msgstr "Blocarea ecranului este dezactivată"
 msgid "Screen Locking requires the GNOME display manager."
 msgstr "Blocarea ecranului necesită administratorul de afișaj GNOME."
 
-#: js/ui/messageTray.js:1547
+#: js/ui/messageTray.js:1476
 msgid "System Information"
 msgstr "Informații despre sistem"
 
@@ -1500,13 +1517,13 @@ msgstr "Artist necunoscut"
 msgid "Unknown title"
 msgstr "Titlu necunoscut"
 
-#: js/ui/overview.js:73
+#: js/ui/overview.js:74
 msgid "Undo"
 msgstr "Anulează"
 
 #. Translators: This is the main view to select
 #. activities. See also note for "Activities" string.
-#: js/ui/overview.js:86
+#: js/ui/overview.js:87
 msgid "Overview"
 msgstr "Prezentare generală"
 
@@ -1514,7 +1531,7 @@ msgstr "Prezentare generală"
 #. in the search entry when no search is
 #. active; it should not exceed ~30
 #. characters.
-#: js/ui/overview.js:107
+#: js/ui/overview.js:108
 msgid "Type to search"
 msgstr "Tastați pentru a căuta"
 
@@ -2172,11 +2189,11 @@ msgstr "Eroare de autorizare Thunderbolt"
 msgid "Could not authorize the Thunderbolt device: %s"
 msgstr "Nu s-a putut autoriza dispozitivul Thunderbolt: %s"
 
-#: js/ui/status/volume.js:154
+#: js/ui/status/volume.js:155
 msgid "Volume changed"
 msgstr "Volumul a fost schimbat"
 
-#: js/ui/status/volume.js:225
+#: js/ui/status/volume.js:217
 msgid "Volume"
 msgstr "Volum"
 
@@ -2222,11 +2239,11 @@ msgstr "Glisați în sus pentru a debloca"
 msgid "Click or press a key to unlock"
 msgstr "Apăsați clic sau o tastă pentru a debloca"
 
-#: js/ui/unlockDialog.js:550
+#: js/ui/unlockDialog.js:555
 msgid "Unlock Window"
 msgstr "Deblochează fereastră"
 
-#: js/ui/unlockDialog.js:559
+#: js/ui/unlockDialog.js:564
 msgid "Log in as another user"
 msgstr "Intră în sesiune ca utilizator diferit"
 
@@ -2362,12 +2379,12 @@ msgstr "Utilizează un mod specific, de exemplu „gdm” pentru ecranul de loga
 msgid "List possible modes"
 msgstr "Enumeră câmpurile care pot fi afișate"
 
-#: src/shell-app.c:286
+#: src/shell-app.c:268
 msgctxt "program"
 msgid "Unknown"
 msgstr "Necunoscut"
 
-#: src/shell-app.c:537
+#: src/shell-app.c:519
 #, c-format
 msgid "Failed to launch “%s”"
 msgstr "Nu s-a putut lansa „%s”"
