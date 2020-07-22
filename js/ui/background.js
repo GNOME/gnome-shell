@@ -758,11 +758,19 @@ var BackgroundManager = class BackgroundManager {
             this._updateBackgroundActor();
         });
 
-        let loadedSignalId = background.connect('loaded', () => {
-            background.disconnect(loadedSignalId);
-            loadedSignalId = null;
-            this.emit('loaded');
-        });
+        let loadedSignalId;
+        if (background.isLoaded) {
+            GLib.idle_add(GLib.PRIORITY_DEFAULT, () => {
+                this.emit('loaded');
+                return GLib.SOURCE_REMOVE;
+            });
+        } else {
+            loadedSignalId = background.connect('loaded', () => {
+                background.disconnect(loadedSignalId);
+                loadedSignalId = null;
+                this.emit('loaded');
+            });
+        }
 
         backgroundActor.connect('destroy', () => {
             if (changeSignalId)
