@@ -5,7 +5,7 @@ const INTROSPECT_SCHEMA = 'org.gnome.shell';
 const INTROSPECT_KEY = 'introspect';
 const APP_WHITELIST = ['org.freedesktop.impl.portal.desktop.gtk'];
 
-const INTROSPECT_DBUS_API_VERSION = 2;
+const INTROSPECT_DBUS_API_VERSION = 3;
 
 const { loadInterfaceXML } = imports.misc.fileUtils;
 
@@ -59,6 +59,11 @@ var IntrospectService = class {
         this._settings.connect('notify::enable-animations',
             this._syncAnimationsEnabled.bind(this));
         this._syncAnimationsEnabled();
+
+        const monitorManager = Meta.MonitorManager.get();
+        monitorManager.connect('monitors-changed',
+            this._syncScreenSize.bind(this));
+        this._syncScreenSize();
     }
 
     _isStandaloneApp(app) {
@@ -209,8 +214,26 @@ var IntrospectService = class {
         }
     }
 
+    _syncScreenSize() {
+        const oldScreenWidth = this._screenWidth;
+        const oldScreenHeight = this._screenHeight;
+        this._screenWidth = global.screen_width;
+        this._screenHeight = global.screen_height;
+
+        if (oldScreenWidth !== this._screenWidth ||
+            oldScreenHeight !== this._screenHeight) {
+            const variant = new GLib.Variant('(ii)',
+                [this._screenWidth, this._screenHeight]);
+            this._dbusImpl.emit_property_changed('ScreenSize', variant);
+        }
+    }
+
     get AnimationsEnabled() {
         return this._animationsEnabled;
+    }
+
+    get ScreenSize() {
+        return [this._screenWidth, this._screenHeight];
     }
 
     get version() {

@@ -70,6 +70,14 @@
     -->
     <property name="AnimationsEnabled" type="b" access="read"/>
 
+    <!--
+       ScreenSize:
+       @short_description: The size of the screen
+
+       Since: 3
+    -->
+    <property name="ScreenSize" type="(ii)" access="read"/>
+
     <property name="version" type="u" access="read"/>
   </interface>
 </node>
