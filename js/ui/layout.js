@@ -1228,8 +1228,9 @@ class HotCorner extends Clutter.Actor {
             return;
 
         if (Main.overview.shouldToggleByCornerOrButton()) {
-            this._ripples.playAnimation(this._x, this._y);
             Main.overview.toggle();
+            if (Main.overview.animationInProgress)
+                this._ripples.playAnimation(this._x, this._y);
         }
     }
 
