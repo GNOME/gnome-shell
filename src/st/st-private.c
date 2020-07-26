@@ -508,6 +508,8 @@ _st_create_shadow_pipeline_from_actor (StShadow     *shadow_spec,
 
       cogl_color_init_from_4ub (&clear_color, 0, 0, 0, 0);
       clutter_actor_get_position (actor, &x, &y);
+      x *= resource_scale;
+      y *= resource_scale;
 
       cogl_framebuffer_clear (fb, COGL_BUFFER_BIT_COLOR, &clear_color);
       cogl_framebuffer_translate (fb, -x, -y, 0);
