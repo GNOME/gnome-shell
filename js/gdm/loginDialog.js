@@ -953,16 +953,15 @@ var LoginDialog = GObject.registerClass({
         if (this.opacity == 255 && this._authPrompt.verificationStatus == AuthPrompt.AuthPromptStatus.NOT_VERIFYING)
             return;
 
+        if (this._authPrompt.verificationStatus !== AuthPrompt.AuthPromptStatus.NOT_VERIFYING)
+            this._authPrompt.reset();
+
         this._bindOpacity();
         this.ease({
             opacity: 255,
             duration: _FADE_ANIMATION_TIME,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            onComplete: () => {
-                if (this._authPrompt.verificationStatus != AuthPrompt.AuthPromptStatus.NOT_VERIFYING)
-                    this._authPrompt.reset();
-                this._unbindOpacity();
-            },
+            onComplete: () => this._unbindOpacity(),
         });
     }
 
