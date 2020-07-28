@@ -183,10 +183,9 @@ var Button = GObject.registerClass({
     }
 
     _onDestroy() {
-        super._onDestroy();
-
         if (this.menu)
             this.menu.destroy();
+        super._onDestroy();
     }
 });
 
