@@ -1336,6 +1336,10 @@ class FolderView extends BaseAppView {
         this._parentView = parentView;
         this._grid._delegate = this;
 
+        this._relayoutLaterId = 0;
+        this._oldWidth = null;
+        this._oldHeight = null;
+
         this._scrollView = new St.ScrollView({
             overlay_scrollbars: true,
             x_expand: true,
@@ -1356,6 +1360,8 @@ class FolderView extends BaseAppView {
         let action = new Clutter.PanAction({ interpolate: true });
         action.connect('pan', this._onPan.bind(this));
         this._scrollView.add_action(action);
+
+        this.connect('destroy', this._onDestroy.bind(this));
 
         this._redisplay();
     }
@@ -1399,6 +1405,18 @@ class FolderView extends BaseAppView {
         return false;
     }
 
+    _onDestroy() {
+        if (this._relayoutLaterId) {
+            Meta.later_remove(this._relayoutLaterId);
+            this._relayoutLaterId = 0;
+        }
+    }
+
+    _relayoutLater() {
+        this._relayoutLaterId = 0;
+        this._grid.queue_relayout();
+    }
+
     adaptToSize(width, height) {
         this._parentAvailableWidth = width;
         this._parentAvailableHeight = height;
@@ -1418,6 +1436,16 @@ class FolderView extends BaseAppView {
         this._grid.bottomPadding = Math.max(this._grid.bottomPadding, 0);
         this._grid.leftPadding = Math.max(this._grid.leftPadding, 0);
         this._grid.rightPadding = Math.max(this._grid.rightPadding, 0);
+
+        if (width !== this._oldWidth || height !== this._oldHeight) {
+            this._oldWidth = width;
+            this._oldHeight = height;
+
+            if (!this._relayoutLaterId) {
+                this._relayoutLaterId = Meta.later_add(Meta.LaterType.BEFORE_REDRAW,
+                                                       this._relayoutLater.bind(this));
+            }
+        }
     }
 
     _loadApps() {
