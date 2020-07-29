@@ -78,61 +78,6 @@ shell_util_set_hidden_from_pick (ClutterActor *actor,
 }
 
 /**
- * shell_util_get_transformed_allocation:
- * @actor: a #ClutterActor
- * @box: (out): location to store returned box in stage coordinates
- *
- * This function is similar to a combination of clutter_actor_get_transformed_position(),
- * and clutter_actor_get_transformed_size(), but unlike
- * clutter_actor_get_transformed_size(), it always returns a transform
- * of the current allocation, while clutter_actor_get_transformed_size() returns
- * bad values (the transform of the requested size) if a relayout has been
- * queued.
- *
- * This function is more convenient to use than
- * clutter_actor_get_abs_allocation_vertices() if no transformation is in effect
- * and also works around limitations in the GJS binding of arrays.
- */
-void
-shell_util_get_transformed_allocation (ClutterActor    *actor,
-                                       ClutterActorBox *box)
-{
-  /* Code adapted from clutter-actor.c:
-   * Copyright 2006, 2007, 2008 OpenedHand Ltd
-   */
-  graphene_point3d_t v[4];
-  gfloat x_min, x_max, y_min, y_max;
-  guint i;
-
-  g_return_if_fail (CLUTTER_IS_ACTOR (actor));
-
-  clutter_actor_get_abs_allocation_vertices (actor, v);
-
-  x_min = x_max = v[0].x;
-  y_min = y_max = v[0].y;
-
-  for (i = 1; i < G_N_ELEMENTS (v); ++i)
-    {
-      if (v[i].x < x_min)
-	x_min = v[i].x;
-
-      if (v[i].x > x_max)
-	x_max = v[i].x;
-
-      if (v[i].y < y_min)
-	y_min = v[i].y;
-
-      if (v[i].y > y_max)
-	y_max = v[i].y;
-    }
-
-  box->x1 = x_min;
-  box->y1 = y_min;
-  box->x2 = x_max;
-  box->y2 = y_max;
-}
-
-/**
  * shell_util_get_week_start:
  *
  * Gets the first week day for the current locale, expressed as a

@@ -14,9 +14,6 @@ G_BEGIN_DECLS
 void     shell_util_set_hidden_from_pick       (ClutterActor     *actor,
                                                 gboolean          hidden);
 
-void     shell_util_get_transformed_allocation (ClutterActor     *actor,
-                                                ClutterActorBox  *box);
-
 int      shell_util_get_week_start             (void);
 
 const char *shell_util_translate_time_string   (const char *str);

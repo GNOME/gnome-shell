@@ -388,17 +388,16 @@ var _Draggable = class _Draggable {
             const [, newAllocatedWidth] = this._dragActor.get_preferred_width(-1);
             const [, newAllocatedHeight] = this._dragActor.get_preferred_height(-1);
 
-            const transformedAllocation =
-                Shell.util_get_transformed_allocation(this._dragActor);
+            const transformedExtents = this._dragActor.get_transformed_extents();
 
             // Set the actor's scale such that it will keep the same
             // transformed size when it's reparented to the uiGroup
             this._dragActor.set_scale(
-                transformedAllocation.get_width() / newAllocatedWidth,
-                transformedAllocation.get_height() / newAllocatedHeight);
+                transformedExtents.get_width() / newAllocatedWidth,
+                transformedExtents.get_height() / newAllocatedHeight);
 
-            this._dragOffsetX = transformedAllocation.x1 - this._dragStartX;
-            this._dragOffsetY = transformedAllocation.y1 - this._dragStartY;
+            this._dragOffsetX = transformedExtents.origin.x - this._dragStartX;
+            this._dragOffsetY = transformedExtents.origin.y - this._dragStartY;
 
             this._dragOrigParent.remove_actor(this._dragActor);
             Main.uiGroup.add_child(this._dragActor);

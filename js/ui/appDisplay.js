@@ -2335,13 +2335,8 @@ var AppFolderDialog = GObject.registerClass({
     }
 
     _withinDialog(x, y) {
-        const childAllocation =
-            Shell.util_get_transformed_allocation(this.child);
-
-        return x > childAllocation.x1 &&
-            x < childAllocation.x2 &&
-            y > childAllocation.y1 &&
-            y < childAllocation.y2;
+        const childExtents = this.child.get_transformed_extents();
+        return childExtents.contains_point(new Graphene.Point({ x, y }));
     }
 
     _setupDragMonitor() {
