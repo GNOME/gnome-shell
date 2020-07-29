@@ -158,6 +158,23 @@ var LoginManagerSystemd = class {
         });
     }
 
+    canRebootToBootLoaderMenu(asyncCallback) {
+        this._proxy.CanRebootToBootLoaderMenuRemote((result, error) => {
+            if (error) {
+                asyncCallback(false, false);
+            } else {
+                const needsAuth = result[0] === 'challenge';
+                const canRebootToBootLoaderMenu = needsAuth || result[0] === 'yes';
+                asyncCallback(canRebootToBootLoaderMenu, needsAuth);
+            }
+        });
+    }
+
+    setRebootToBootLoaderMenu() {
+        /* Parameter is timeout in usec, show to menu for 60 seconds */
+        this._proxy.SetRebootToBootLoaderMenuRemote(60000000);
+    }
+
     listSessions(asyncCallback) {
         this._proxy.ListSessionsRemote((result, error) => {
             if (error)
@@ -201,6 +218,13 @@ var LoginManagerDummy = class {
 
     canSuspend(asyncCallback) {
         asyncCallback(false, false);
+    }
+
+    canRebootToBootLoaderMenu(asyncCallback) {
+        asyncCallback(false, false);
+    }
+
+    setRebootToBootLoaderMenu() {
     }
 
     listSessions(asyncCallback) {

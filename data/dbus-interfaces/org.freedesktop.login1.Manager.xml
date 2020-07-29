@@ -20,6 +20,12 @@
     <method name="ListSessions">
       <arg name="sessions" type="a(susso)" direction="out"/>
     </method>
+    <method name="CanRebootToBootLoaderMenu">
+      <arg type="s" direction="out"/>
+    </method>
+    <method name="SetRebootToBootLoaderMenu">
+      <arg type="t" direction="in"/>
+    </method>
     <signal name="PrepareForSleep">
       <arg type="b" direction="out"/>
     </signal>
