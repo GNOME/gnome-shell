@@ -18,6 +18,7 @@ StartLimitIntervalSec=15s
 StartLimitBurst=3
 
 [Service]
+Slice=session.slice
 Type=notify
 # NOTE: This can be replaced with ConditionEnvironment=XDG_SESSION_TYPE=%I
 #       with systemd >= 245. Also, the current solution is kind of painful
