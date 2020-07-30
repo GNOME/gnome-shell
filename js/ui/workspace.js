@@ -614,6 +614,11 @@ var WorkspaceLayout = GObject.registerClass({
             }
 
             workspaceBox.scale(allocationScale);
+            // don't allow the scaled floating size to drop below
+            // the target layout size
+            workspaceBox.set_size(
+                Math.max(workspaceBox.get_width(), width),
+                Math.max(workspaceBox.get_height(), height));
 
             layoutBox.x1 = x;
             layoutBox.x2 = layoutBox.x1 + width;
