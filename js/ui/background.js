@@ -347,6 +347,8 @@ var Background = GObject.registerClass({
             this.set_color(color);
         else
             this.set_gradient(shadingType, color, secondColor);
+
+        this._setLoaded();
     }
 
     _watchFile(file) {
