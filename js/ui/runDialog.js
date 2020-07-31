@@ -196,7 +196,7 @@ class RunDialog extends ModalDialog.ModalDialog {
                     let execArg = this._terminalSettings.get_string(EXEC_ARG_KEY);
                     command = '%s %s %s'.format(exec, execArg, input);
                 }
-                Util.trySpawnCommandLine(command);
+                Util.trySpawnAppCommandline(command);
             } catch (e) {
                 // Mmmh, that failed - see if @input matches an existing file
                 let path = null;
