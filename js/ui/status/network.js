@@ -15,6 +15,7 @@ const Util = imports.misc.util;
 
 const { loadInterfaceXML } = imports.misc.fileUtils;
 
+Gio._promisify(Gio.DBusConnection.prototype, 'call', 'call_finish');
 Gio._promisify(NM.Client, 'new_async', 'new_finish');
 Gio._promisify(NM.Client.prototype,
     'check_connectivity_async', 'check_connectivity_finish');
@@ -79,6 +80,30 @@ function ensureActiveConnectionProps(active) {
             let device = devices[0]._delegate;
             active._primaryDevice = device;
         }
+    }
+}
+
+function launchSettingsPanel(panel, ...args) {
+    const param = new GLib.Variant('(sav)',
+        [panel, args.map(s => new GLib.Variant('s', s))]);
+    const platformData = {
+        'desktop-startup-id': new GLib.Variant('s',
+            '_TIME%s'.format(global.get_current_time())),
+    };
+    try {
+        Gio.DBus.session.call(
+            'org.gnome.ControlCenter',
+            '/org/gnome/ControlCenter',
+            'org.freedesktop.Application',
+            'ActivateAction',
+            new GLib.Variant('(sava{sv})',
+                ['launch-panel', [param], platformData]),
+            null,
+            Gio.DBusCallFlags.NONE,
+            -1,
+            null);
+    } catch (e) {
+        log('Failed to launch Settings panel: %s'.format(e.message));
     }
 }
 
@@ -539,8 +564,7 @@ var NMDeviceModem = class extends NMConnectionDevice {
     }
 
     _autoConnect() {
-        Util.spawn(['gnome-control-center', 'network',
-                    'connect-3g', this._device.get_path()]);
+        launchSettingsPanel('network', 'connect-3g', this._device.get_path());
     }
 
     destroy() {
@@ -931,8 +955,8 @@ class NMWirelessDialog extends ModalDialog.ModalDialog {
                 (accessPoints[0]._secType == NMAccessPointSecurity.WPA_ENT)) {
                 // 802.1x-enabled APs require further configuration, so they're
                 // handled in gnome-control-center
-                Util.spawn(['gnome-control-center', 'wifi', 'connect-8021x-wifi',
-                            this._device.get_path(), accessPoints[0].get_path()]);
+                launchSettingsPanel('wifi', 'connect-8021x-wifi',
+                    this._device.get_path(), accessPoints[0].get_path());
             } else {
                 let connection = new NM.SimpleConnection();
                 this._client.add_and_activate_connection_async(connection, this._device, accessPoints[0].get_path(), null, null);
