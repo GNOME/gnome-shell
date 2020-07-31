@@ -86,6 +86,8 @@ class Indicator extends PanelMenu.SystemIndicator {
 
         Main.sessionMode.connect('updated', this._sessionUpdated.bind(this));
         this._sessionUpdated();
+
+        this._sync();
     }
 
     _sessionUpdated() {
