@@ -1,7 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported findUrls, spawn, spawnCommandLine, spawnApp, trySpawnCommandLine,
-            formatTime, formatTimeSpan, createTimeLabel, insertSorted,
-            ensureActorVisibleInScrollView, wiggle */
+/* exported findUrls, spawn, spawnCommandLine, spawnApp, trySpawnAppCommandline,
+            trySpawnCommandLine, formatTime, formatTimeSpan, createTimeLabel,
+            insertSorted, ensureActorVisibleInScrollView, wiggle */
 
 const { Clutter, Gio, GLib, Shell, St, GnomeDesktop } = imports.gi;
 const Gettext = imports.gettext;
@@ -86,18 +86,49 @@ function spawnCommandLine(commandLine) {
     }
 }
 
+// trySpawnAppCommandline:
+// @command: The command to spawn
+//
+// Runs @command as if it was an application, handling startup notification
+// and placing it into a separate systemd scope.
+function trySpawnAppCommandline(command) {
+    const quoted = command.replace(/%/g, '%%');
+
+    // This cannot fail currently
+    const app = Gio.AppInfo.create_from_commandline(quoted, null,
+        Gio.AppInfoCreateFlags.SUPPORTS_STARTUP_NOTIFICATION);
+
+    // Launching applications does not check whether the executable exists,
+    // it'll just log an error later on. So do an explicit check here.
+    const exec = app.get_executable();
+    if (!GLib.find_program_in_path(exec)) {
+        throw new GLib.SpawnError({
+            code: GLib.SpawnError.NOENT,
+            message: _('Command not found'),
+        });
+    }
+
+    try {
+        let context = global.create_app_launch_context(0, -1);
+
+        app.launch([], context);
+    } catch (err) {
+        // Replace "Error invoking global.create_app_launch_context: " with
+        // something nicer
+        err.message = err.message.replace(/[^:]*: /, '%s\n'.format(_('Could not parse command:')));
+        throw err;
+    }
+}
+
 // spawnApp:
 // @argv: an argv array
 //
 // Runs @argv as if it was an application, handling startup notification
+// and placing it into a separate systemd scope.
 function spawnApp(argv) {
     try {
-        let app = Gio.AppInfo.create_from_commandline(argv.join(' '), null,
-                                                      Gio.AppInfoCreateFlags.SUPPORTS_STARTUP_NOTIFICATION);
-
-        let context = global.create_app_launch_context(0, -1);
-        app.launch([], context);
-    } catch (err) {
+        trySpawnAppCommandline(argv.join(' '));
+     } catch (err) {
         _handleSpawnError(argv[0], err);
     }
 }
