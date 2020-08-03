@@ -1541,7 +1541,7 @@ class AppViewItem extends St.Button {
             return false;
 
         if (this._withinLeeways(x))
-            return DND.DragMotionResult.CONTINUE;
+            return false;
 
         return true;
     }
