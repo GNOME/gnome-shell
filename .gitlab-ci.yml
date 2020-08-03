@@ -67,6 +67,7 @@ no_template_check:
 build:
     image: registry.gitlab.gnome.org/gnome/mutter/master:v4
     stage: build
+    needs: []
     before_script:
         - .gitlab-ci/checkout-mutter.sh
         - meson mutter mutter/build --prefix=/usr -Dtests=false
@@ -85,6 +86,7 @@ build:
 test:
     image: registry.gitlab.gnome.org/gnome/mutter/master:v4
     stage: test
+    needs: ["build"]
     variables:
         XDG_RUNTIME_DIR: "$CI_PROJECT_DIR/runtime-dir"
         NO_AT_BRIDGE: "1"
@@ -102,6 +104,7 @@ test:
 test-pot:
     image: registry.gitlab.gnome.org/gnome/mutter/master:v4
     stage: test
+    needs: ["build"]
     before_script:
         - ninja -C mutter/build install
     script:
@@ -117,6 +120,7 @@ test-pot:
 
 flatpak:
     stage: build
+    needs: []
     variables:
         SUBPROJECT: "subprojects/extensions-app"
         # Your manifest path
