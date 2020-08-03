@@ -134,7 +134,14 @@ function _easeActor(actor, params) {
         actor.set_easing_mode(params.mode);
     delete params.mode;
 
-    let cleanup = () => Meta.enable_unredirect_for_display(global.display);
+    const prepare = () => {
+        Meta.disable_unredirect_for_display(global.display);
+        global.begin_work();
+    };
+    const cleanup = () => {
+        Meta.enable_unredirect_for_display(global.display);
+        global.end_work();
+    };
     let callback = _makeEaseCallback(params, cleanup);
 
     // cancel overwritten transitions
@@ -149,9 +156,9 @@ function _easeActor(actor, params) {
         .find(t => t !== null);
 
     if (transition && transition.delay)
-        transition.connect('started', () => Meta.disable_unredirect_for_display(global.display));
+        transition.connect('started', () => prepare());
     else
-        Meta.disable_unredirect_for_display(global.display);
+        prepare();
 
     if (transition) {
         transition.set({ repeatCount, autoReverse });
@@ -191,7 +198,14 @@ function _easeActorProperty(actor, propName, target, params) {
     if (actor instanceof Clutter.Actor && !actor.mapped)
         duration = 0;
 
-    let cleanup = () => Meta.enable_unredirect_for_display(global.display);
+    const prepare = () => {
+        Meta.disable_unredirect_for_display(global.display);
+        global.begin_work();
+    };
+    const cleanup = () => {
+        Meta.enable_unredirect_for_display(global.display);
+        global.end_work();
+    };
     let callback = _makeEaseCallback(params, cleanup);
 
     // cancel overwritten transition
@@ -203,7 +217,7 @@ function _easeActorProperty(actor, propName, target, params) {
         if (!isReversed)
             obj[prop] = target;
 
-        Meta.disable_unredirect_for_display(global.display);
+        prepare();
         callback(true);
 
         return;
@@ -222,9 +236,9 @@ function _easeActorProperty(actor, propName, target, params) {
     transition.set_to(target);
 
     if (transition.delay)
-        transition.connect('started', () => Meta.disable_unredirect_for_display(global.display));
+        transition.connect('started', () => prepare());
     else
-        Meta.disable_unredirect_for_display(global.display);
+        prepare();
 
     transition.connect('stopped', (t, finished) => callback(finished));
 }
