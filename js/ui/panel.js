@@ -18,48 +18,6 @@ var APP_MENU_ICON_MARGIN = 0;
 
 var BUTTON_DND_ACTIVATION_TIMEOUT = 250;
 
-// To make sure the panel corners blend nicely with the panel,
-// we draw background and borders the same way, e.g. drawing
-// them as filled shapes from the outside inwards instead of
-// using cairo stroke(). So in order to give the border the
-// appearance of being drawn on top of the background, we need
-// to blend border and background color together.
-// For that purpose we use the following helper methods, taken
-// from st-theme-node-drawing.c
-function _norm(x) {
-    return Math.round(x / 255);
-}
-
-function _over(srcColor, dstColor) {
-    let src = _premultiply(srcColor);
-    let dst = _premultiply(dstColor);
-    let result = new Clutter.Color();
-
-    result.alpha = src.alpha + _norm((255 - src.alpha) * dst.alpha);
-    result.red = src.red + _norm((255 - src.alpha) * dst.red);
-    result.green = src.green + _norm((255 - src.alpha) * dst.green);
-    result.blue = src.blue + _norm((255 - src.alpha) * dst.blue);
-
-    return _unpremultiply(result);
-}
-
-function _premultiply(color) {
-    return new Clutter.Color({ red: _norm(color.red * color.alpha),
-                               green: _norm(color.green * color.alpha),
-                               blue: _norm(color.blue * color.alpha),
-                               alpha: color.alpha });
-}
-
-function _unpremultiply(color) {
-    if (color.alpha == 0)
-        return new Clutter.Color();
-
-    let red = Math.min((color.red * 255 + 127) / color.alpha, 255);
-    let green = Math.min((color.green * 255 + 127) / color.alpha, 255);
-    let blue = Math.min((color.blue * 255 + 127) / color.alpha, 255);
-    return new Clutter.Color({ red, green, blue, alpha: color.alpha });
-}
-
 class AppMenu extends PopupMenu.PopupMenu {
     constructor(sourceActor) {
         super(sourceActor, 0.5, St.Side.TOP);
@@ -630,15 +588,11 @@ class PanelCorner extends St.DrawingArea {
         let borderWidth = node.get_length('-panel-corner-border-width');
 
         let backgroundColor = node.get_color('-panel-corner-background-color');
-        let borderColor = node.get_color('-panel-corner-border-color');
-
-        let overlap = borderColor.alpha != 0;
-        let offsetY = overlap ? 0 : borderWidth;
 
         let cr = this.get_context();
         cr.setOperator(Cairo.Operator.SOURCE);
 
-        cr.moveTo(0, offsetY);
+        cr.moveTo(0, 0);
         if (this._side == St.Side.LEFT) {
             cr.arc(cornerRadius,
                    borderWidth + cornerRadius,
@@ -648,26 +602,11 @@ class PanelCorner extends St.DrawingArea {
                    borderWidth + cornerRadius,
                    cornerRadius, 3 * Math.PI / 2, 2 * Math.PI);
         }
-        cr.lineTo(cornerRadius, offsetY);
+        cr.lineTo(cornerRadius, 0);
         cr.closePath();
 
-        let savedPath = cr.copyPath();
-
-        let xOffsetDirection = this._side == St.Side.LEFT ? -1 : 1;
-        let over = _over(borderColor, backgroundColor);
-        Clutter.cairo_set_source_color(cr, over);
+        Clutter.cairo_set_source_color(cr, backgroundColor);
         cr.fill();
-
-        if (overlap) {
-            let offset = borderWidth;
-            Clutter.cairo_set_source_color(cr, backgroundColor);
-
-            cr.save();
-            cr.translate(xOffsetDirection * offset, -offset);
-            cr.appendPath(savedPath);
-            cr.fill();
-            cr.restore();
-        }
 
         cr.$dispose();
     }
