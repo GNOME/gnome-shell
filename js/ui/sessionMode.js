@@ -113,10 +113,10 @@ function _loadMode(file, info) {
     }
 
     _modes[modeName] = {};
-    let propBlacklist = ['unlockDialog'];
+    const  excludedProps = ['unlockDialog'];
     for (let prop in _modes[DEFAULT_MODE]) {
         if (newMode[prop] !== undefined &&
-            !propBlacklist.includes(prop))
+            !excludedProps.includes(prop))
             _modes[modeName][prop] = newMode[prop];
     }
     _modes[modeName]['isPrimary'] = true;

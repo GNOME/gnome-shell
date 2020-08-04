@@ -7,7 +7,7 @@ const PermissionStore = imports.misc.permissionStore;
 
 const WAYLAND_KEYBINDINGS_SCHEMA = 'org.gnome.mutter.wayland.keybindings';
 
-const APP_WHITELIST = ['gnome-control-center.desktop'];
+const APP_ALLOWLIST = ['gnome-control-center.desktop'];
 const APP_PERMISSIONS_TABLE = 'gnome';
 const APP_PERMISSIONS_ID = 'shortcuts-inhibitor';
 const GRANTED = 'GRANTED';
@@ -118,7 +118,7 @@ var InhibitShortcutsDialog = GObject.registerClass({
     }
 
     vfunc_show() {
-        if (this._app && APP_WHITELIST.includes(this._app.get_id())) {
+        if (this._app && APP_ALLOWLIST.includes(this._app.get_id())) {
             this._emitResponse(DialogResponse.ALLOW);
             return;
         }

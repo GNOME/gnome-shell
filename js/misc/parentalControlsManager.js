@@ -121,10 +121,10 @@ var ParentalControlsManager = GObject.registerClass({
     // Calculate whether the given app (a Gio.DesktopAppInfo) should be shown
     // on the desktop, in search results, etc. The app should be shown if:
     //  - The .desktop file doesn’t say it should be hidden.
-    //  - The executable from the .desktop file’s Exec line isn’t blacklisted in
+    //  - The executable from the .desktop file’s Exec line isn’t denied in
     //    the user’s parental controls.
     //  - None of the flatpak app IDs from the X-Flatpak and the
-    //    X-Flatpak-RenamedFrom lines are blacklisted in the user’s parental
+    //    X-Flatpak-RenamedFrom lines are denied in the user’s parental
     //    controls.
     shouldShowApp(appInfo) {
         // Quick decision?

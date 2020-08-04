@@ -3,7 +3,7 @@ const { Gio, GLib, Meta, Shell, St } = imports.gi;
 
 const INTROSPECT_SCHEMA = 'org.gnome.shell';
 const INTROSPECT_KEY = 'introspect';
-const APP_WHITELIST = ['org.freedesktop.impl.portal.desktop.gtk'];
+const APP_ALLOWLIST = ['org.freedesktop.impl.portal.desktop.gtk'];
 
 const INTROSPECT_DBUS_API_VERSION = 3;
 
@@ -46,13 +46,13 @@ var IntrospectService = class {
 
         this._syncRunningApplications();
 
-        this._whitelistMap = new Map();
-        APP_WHITELIST.forEach(appName => {
+        this._allowlistMap = new Map();
+        APP_ALLOWLIST.forEach(appName => {
             Gio.DBus.watch_name(Gio.BusType.SESSION,
                 appName,
                 Gio.BusNameWatcherFlags.NONE,
-                (conn, name, owner) => this._whitelistMap.set(name, owner),
-                (conn, name) => this._whitelistMap.delete(name));
+                (conn, name, owner) => this._allowlistMap.set(name, owner),
+                (conn, name) => this._allowlistMap.delete(name));
         });
 
         this._settings = St.Settings.get();
@@ -74,8 +74,8 @@ var IntrospectService = class {
         return this._introspectSettings.get_boolean(INTROSPECT_KEY);
     }
 
-    _isSenderWhitelisted(sender) {
-        return [...this._whitelistMap.values()].includes(sender);
+    _isSenderAllowed(sender) {
+        return [...this._allowlistMap.values()].includes(sender);
     }
 
     _getSandboxedAppId(app) {
@@ -138,7 +138,7 @@ var IntrospectService = class {
         if (this._isIntrospectEnabled())
             return true;
 
-        if (this._isSenderWhitelisted(invocation.get_sender()))
+        if (this._isSenderAllowed(invocation.get_sender()))
             return true;
 
         return false;
