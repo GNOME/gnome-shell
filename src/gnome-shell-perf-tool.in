@@ -51,6 +51,8 @@ def start_shell(perf_output=None):
             args.append('--nested')
         else:
             args.append('--display-server')
+    elif options.x11:
+        args.append('--x11')
 
     return subprocess.Popen(args, env=env)
 
@@ -295,6 +297,8 @@ parser.add_option("-w", "--wayland", action="store_true",
                   help="Run as a Wayland compositor")
 parser.add_option("-n", "--nested", action="store_true",
                   help="Run as a Wayland nested compositor")
+parser.add_option("-x", "--x11", action="store_true",
+                  help="Run as an X11 compositor")
 
 options, args = parser.parse_args()
 
