@@ -77,6 +77,10 @@ $panel_height: 1.86em;
       color: lighten($fg_color, 10%);
       &:focus, &:hover, &:active { color: lighten($fg_color, 10%); }
     }
+
+    &#panelActivities {
+      -natural-hpadding: $base_padding * 3;
+    }
   }
 
   .panel-button {
