@@ -21,7 +21,7 @@ const WorkspaceThumbnail = imports.ui.workspaceThumbnail;
 // Must be less than ANIMATION_TIME, since we switch to
 // or from the overview completely after ANIMATION_TIME,
 // and don't want the shading animation to get cut off
-var SHADE_ANIMATION_TIME = 200;
+var SHADE_ANIMATION_TIME = 240;
 
 var DND_WINDOW_SWITCH_TIMEOUT = 750;
 
