@@ -1092,8 +1092,8 @@ var Keypad = GObject.registerClass({
             { label: '8', keyval: Clutter.KEY_8, left: 1, top: 2 },
             { label: '9', keyval: Clutter.KEY_9, left: 2, top: 2 },
             { label: '0', keyval: Clutter.KEY_0, left: 1, top: 3 },
-            { label: '⌫', keyval: Clutter.KEY_BackSpace, left: 3, top: 0 },
-            { keyval: Clutter.KEY_Return, extraClassName: 'enter-key', left: 3, top: 1, height: 2 },
+            { keyval: Clutter.KEY_BackSpace, icon: 'edit-clear-symbolic', left: 3, top: 0 },
+            { keyval: Clutter.KEY_Return, extraClassName: 'enter-key', icon: 'keyboard-enter-symbolic', left: 3, top: 1, height: 2 },
         ];
 
         super._init({
@@ -1110,7 +1110,7 @@ var Keypad = GObject.registerClass({
 
         for (let i = 0; i < keys.length; i++) {
             let cur = keys[i];
-            let key = new Key(cur.label || "", []);
+            let key = new Key(cur.label || "", [], cur.icon);
 
             if (keys[i].extraClassName)
                 key.keyButton.add_style_class_name(cur.extraClassName);
