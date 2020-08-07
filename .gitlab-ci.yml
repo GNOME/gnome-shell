@@ -9,7 +9,6 @@ stages:
 variables:
     BUNDLE: "extensions-git.flatpak"
     JS_LOG: "js-report.txt"
-    POT_LOG: "pot-update.txt"
 
 .only_default: &only_default
     only:
@@ -100,23 +99,6 @@ test:
         paths:
             - build/meson-logs/testlog.txt
         when: on_failure
-
-test-pot:
-    image: registry.gitlab.gnome.org/gnome/mutter/master:v4
-    stage: test
-    needs: ["build"]
-    before_script:
-        - ninja -C mutter/build install
-    script:
-        # Check that pot files are generated correctly:
-        # https://savannah.gnu.org/bugs/?50920#comment5
-        - ninja -C build gnome-shell-pot 2>&1 | awk '
-            BEGIN { start=0; }
-            start==1 { print $0; }
-            /gnome-shell-pot/ { start=1; }
-          ' | tee $POT_LOG
-        - (! grep -q . $POT_LOG)
-    <<: *only_default
 
 flatpak:
     stage: build
