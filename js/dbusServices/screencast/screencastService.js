@@ -224,7 +224,7 @@ var Recorder = class {
             video/x-raw,max-framerate=${framerate}/1 !
             videoconvert !
             ${this._pipelineString} !
-            filesink location=${this._filePath}`;
+            filesink location="${this._filePath}"`;
         fullPipeline = this._substituteThreadCount(fullPipeline);
 
         this._pipeline = Gst.parse_launch_full(fullPipeline,
