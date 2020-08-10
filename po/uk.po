@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2020-08-08 11:32+0000\n"
-"PO-Revision-Date: 2020-08-08 17:56+0300\n"
+"POT-Creation-Date: 2020-08-10 15:40+0000\n"
+"PO-Revision-Date: 2020-08-10 21:07+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <kde-i18n-uk@kde.org>\n"
 "Language: uk\n"
@@ -431,7 +431,7 @@ msgstr "Відвідати сторінку розширення"
 
 #: js/gdm/authPrompt.js:135 js/ui/audioDeviceSelection.js:57
 #: js/ui/components/networkAgent.js:110 js/ui/components/polkitAgent.js:139
-#: js/ui/endSessionDialog.js:398 js/ui/extensionDownloader.js:183
+#: js/ui/endSessionDialog.js:413 js/ui/extensionDownloader.js:183
 #: js/ui/shellMountOperation.js:376 js/ui/shellMountOperation.js:386
 #: js/ui/status/network.js:940 subprojects/extensions-app/js/main.js:149
 msgid "Cancel"
@@ -487,73 +487,87 @@ msgid "(or swipe finger)"
 msgstr "(або проведіть пальцем)"
 
 #. Translators: The name of the power-off action in search
-#: js/misc/systemActions.js:93
+#: js/misc/systemActions.js:91
 msgctxt "search-result"
 msgid "Power Off"
 msgstr "Вимкнути"
 
 #. Translators: A list of keywords that match the power-off action, separated by semicolons
-#: js/misc/systemActions.js:96
-msgid "power off;shutdown;reboot;restart;halt;stop"
-msgstr "вимкнути;перезавантажити;power off;shutdown;reboot;restart;halt;stop"
+#: js/misc/systemActions.js:94
+#| msgid "power off;shutdown;reboot;restart;halt;stop"
+msgid "power off;shutdown;halt;stop"
+msgstr "вимкнути;перезавантажити;зупинити;power off;shutdown;halt;stop"
+
+#. Translators: The name of the restart action in search
+#: js/misc/systemActions.js:99
+#| msgctxt "button"
+#| msgid "Restart"
+msgctxt "search-result"
+msgid "Restart"
+msgstr "Перезапустити"
+
+#. Translators: A list of keywords that match the restart action, separated by semicolons
+#: js/misc/systemActions.js:102
+msgid "reboot;restart;"
+msgstr "reboot;restart;перезавантаження;перезапуск;"
 
 #. Translators: The name of the lock screen action in search
-#: js/misc/systemActions.js:101
+#: js/misc/systemActions.js:107
 msgctxt "search-result"
 msgid "Lock Screen"
 msgstr "Заблокувати екран"
 
 #. Translators: A list of keywords that match the lock screen action, separated by semicolons
-#: js/misc/systemActions.js:104
+#: js/misc/systemActions.js:110
 msgid "lock screen"
 msgstr "заблокувати екран;lock screen"
 
 #. Translators: The name of the logout action in search
-#: js/misc/systemActions.js:109
+#: js/misc/systemActions.js:115
 msgctxt "search-result"
 msgid "Log Out"
 msgstr "Вийти"
 
 #. Translators: A list of keywords that match the logout action, separated by semicolons
-#: js/misc/systemActions.js:112
+#: js/misc/systemActions.js:118
 msgid "logout;log out;sign off"
 msgstr "вийти;завершити роботу;logout;log out;sign off"
 
 #. Translators: The name of the suspend action in search
-#: js/misc/systemActions.js:117
+#: js/misc/systemActions.js:123
 msgctxt "search-result"
 msgid "Suspend"
 msgstr "Призупинити"
 
 #. Translators: A list of keywords that match the suspend action, separated by semicolons
-#: js/misc/systemActions.js:120
+#: js/misc/systemActions.js:126
 msgid "suspend;sleep"
 msgstr "призупинити;сон;suspend;sleep"
 
 #. Translators: The name of the switch user action in search
-#: js/misc/systemActions.js:125
+#: js/misc/systemActions.js:131
 msgctxt "search-result"
 msgid "Switch User"
 msgstr "Змінити користувача"
 
 #. Translators: A list of keywords that match the switch user action, separated by semicolons
-#: js/misc/systemActions.js:128
+#: js/misc/systemActions.js:134
 msgid "switch user"
 msgstr "змінити користувача;перемкнути;switch user"
 
 #. Translators: A list of keywords that match the lock orientation action, separated by semicolons
-#: js/misc/systemActions.js:135
+#: js/misc/systemActions.js:141
 msgid "lock orientation;unlock orientation;screen;rotation"
 msgstr ""
 "заблокувати орієнтацію;розблокувати орієнтацію;екран;обертання;lock "
 "orientation;unlock orientation;screen;rotation"
 
-#: js/misc/systemActions.js:255
+#: js/misc/systemActions.js:266
 msgctxt "search-result"
 msgid "Unlock Screen Rotation"
 msgstr "Розблокувати обертання екрана"
 
-#: js/misc/systemActions.js:256
+#: js/misc/systemActions.js:267
 msgctxt "search-result"
 msgid "Lock Screen Rotation"
 msgstr "Заблокувати обертання екрана"
@@ -1159,7 +1173,7 @@ msgctxt "title"
 msgid "Log Out"
 msgstr "Завершити сеанс"
 
-#: js/ui/endSessionDialog.js:40
+#: js/ui/endSessionDialog.js:41
 #, javascript-format
 msgid "%s will be logged out automatically in %d second."
 msgid_plural "%s will be logged out automatically in %d seconds."
@@ -1168,7 +1182,7 @@ msgstr[1] "%s вийде автоматично через %d секунди."
 msgstr[2] "%s вийде автоматично через %d секунд."
 msgstr[3] "%s вийде автоматично через %d секунду."
 
-#: js/ui/endSessionDialog.js:45
+#: js/ui/endSessionDialog.js:47
 #, javascript-format
 msgid "You will be logged out automatically in %d second."
 msgid_plural "You will be logged out automatically in %d seconds."
@@ -1177,22 +1191,22 @@ msgstr[1] "Вихід автоматично через %d секунди."
 msgstr[2] "Вихід автоматично через %d секунд."
 msgstr[3] "Вихід автоматично через %d секунду."
 
-#: js/ui/endSessionDialog.js:51
+#: js/ui/endSessionDialog.js:54
 msgctxt "button"
 msgid "Log Out"
 msgstr "Вийти"
 
-#: js/ui/endSessionDialog.js:56
+#: js/ui/endSessionDialog.js:60
 msgctxt "title"
 msgid "Power Off"
 msgstr "Вимкнути"
 
-#: js/ui/endSessionDialog.js:57
+#: js/ui/endSessionDialog.js:61
 msgctxt "title"
 msgid "Install Updates & Power Off"
 msgstr "Установити оновлення і вимкнути"
 
-#: js/ui/endSessionDialog.js:59
+#: js/ui/endSessionDialog.js:64
 #, javascript-format
 msgid "The system will power off automatically in %d second."
 msgid_plural "The system will power off automatically in %d seconds."
@@ -1201,27 +1215,29 @@ msgstr[1] "Система автоматично вимкнеться через
 msgstr[2] "Система автоматично вимкнеться через %d секунд."
 msgstr[3] "Система автоматично вимкнеться через %d секунду."
 
-#: js/ui/endSessionDialog.js:63
+#: js/ui/endSessionDialog.js:68 js/ui/endSessionDialog.js:87
 msgctxt "checkbox"
 msgid "Install pending software updates"
 msgstr "Установити оновлення, які в черзі"
 
-#: js/ui/endSessionDialog.js:66 js/ui/endSessionDialog.js:82
-msgctxt "button"
-msgid "Restart"
-msgstr "Перезапустити"
-
-#: js/ui/endSessionDialog.js:68
+#: js/ui/endSessionDialog.js:72
 msgctxt "button"
 msgid "Power Off"
 msgstr "Вимкнути"
 
-#: js/ui/endSessionDialog.js:74
+#: js/ui/endSessionDialog.js:79
 msgctxt "title"
 msgid "Restart"
 msgstr "Перезапустити"
 
-#: js/ui/endSessionDialog.js:76
+#: js/ui/endSessionDialog.js:80
+#| msgctxt "title"
+#| msgid "Install Updates & Power Off"
+msgctxt "title"
+msgid "Install Updates & Restart"
+msgstr "Установити оновлення і перезапустити"
+
+#: js/ui/endSessionDialog.js:83
 #, javascript-format
 msgid "The system will restart automatically in %d second."
 msgid_plural "The system will restart automatically in %d seconds."
@@ -1230,12 +1246,17 @@ msgstr[1] "Система автоматично перезапуститься 
 msgstr[2] "Система автоматично перезапуститься через %d секунд."
 msgstr[3] "Система автоматично перезапуститься через %d секунду."
 
-#: js/ui/endSessionDialog.js:89
+#: js/ui/endSessionDialog.js:91
+msgctxt "button"
+msgid "Restart"
+msgstr "Перезапустити"
+
+#: js/ui/endSessionDialog.js:99
 msgctxt "title"
 msgid "Restart & Install Updates"
 msgstr "Перезапустити і встановити оновлення"
 
-#: js/ui/endSessionDialog.js:91
+#: js/ui/endSessionDialog.js:102
 #, javascript-format
 msgid "The system will automatically restart and install updates in %d second."
 msgid_plural ""
@@ -1249,22 +1270,22 @@ msgstr[2] ""
 msgstr[3] ""
 "Система автоматично перезапуститься та встановить оновлення через %d секунду."
 
-#: js/ui/endSessionDialog.js:97 js/ui/endSessionDialog.js:116
+#: js/ui/endSessionDialog.js:109 js/ui/endSessionDialog.js:130
 msgctxt "button"
 msgid "Restart &amp; Install"
 msgstr "Перезапустити та встановити"
 
-#: js/ui/endSessionDialog.js:98
+#: js/ui/endSessionDialog.js:111
 msgctxt "button"
 msgid "Install &amp; Power Off"
 msgstr "Установити та вимкнути"
 
-#: js/ui/endSessionDialog.js:99
+#: js/ui/endSessionDialog.js:112
 msgctxt "checkbox"
 msgid "Power off after updates are installed"
 msgstr "Вимкнути після встановлення оновлень"
 
-#: js/ui/endSessionDialog.js:106
+#: js/ui/endSessionDialog.js:119
 msgctxt "title"
 msgid "Restart & Install Upgrade"
 msgstr "Перезапустити і встановити оновлення"
@@ -1272,7 +1293,7 @@ msgstr "Перезапустити і встановити оновлення"
 #. Translators: This is the text displayed for system upgrades in the
 #. shut down dialog. First %s gets replaced with the distro name and
 #. second %s with the distro version to upgrade to
-#: js/ui/endSessionDialog.js:111
+#: js/ui/endSessionDialog.js:124
 #, javascript-format
 msgid ""
 "%s %s will be installed after restart. Upgrade installation can take a long "
@@ -1282,33 +1303,33 @@ msgstr ""
 "переконайтесь, що ви зробили резервні копії та комп'ютер під'єднано до "
 "живлення."
 
-#: js/ui/endSessionDialog.js:267
+#: js/ui/endSessionDialog.js:282
 msgid "Running on battery power: Please plug in before installing updates."
 msgstr ""
 "Працює від заряду батареї: під'єднайте до живлення перед установленням "
 "оновлень."
 
-#: js/ui/endSessionDialog.js:276
+#: js/ui/endSessionDialog.js:291
 msgid "Some applications are busy or have unsaved work"
 msgstr "Деякі програми зайняті або мають незбережені дані"
 
-#: js/ui/endSessionDialog.js:281
+#: js/ui/endSessionDialog.js:296
 msgid "Other users are logged in"
 msgstr "Є інші користувачі з активним сеансом"
 
-#: js/ui/endSessionDialog.js:427
+#: js/ui/endSessionDialog.js:442
 msgctxt "button"
 msgid "Boot Options"
 msgstr "Параметри завантаження"
 
 #. Translators: Remote here refers to a remote session, like a ssh login
-#: js/ui/endSessionDialog.js:645
+#: js/ui/endSessionDialog.js:660
 #, javascript-format
 msgid "%s (remote)"
 msgstr "%s (віддалено)"
 
 #. Translators: Console here refers to a tty like a VT console
-#: js/ui/endSessionDialog.js:648
+#: js/ui/endSessionDialog.js:663
 #, javascript-format
 msgid "%s (console)"
 msgstr "%s (консоль)"
@@ -2124,29 +2145,34 @@ msgstr "Вимкнути"
 msgid "Airplane Mode On"
 msgstr "Режим «у літаку» ввімкнено"
 
-#: js/ui/status/system.js:102
+#: js/ui/status/system.js:104
 msgid "Lock"
 msgstr "Заблокувати"
 
-#: js/ui/status/system.js:115
+#: js/ui/status/system.js:116
 msgid "Power Off / Log Out"
 msgstr "Вимкнути / Вийти"
 
-#: js/ui/status/system.js:118
-msgid "Log Out"
-msgstr "Вийти"
-
-#: js/ui/status/system.js:130
-msgid "Switch User…"
-msgstr "Змінити користувача…"
-
-#: js/ui/status/system.js:144
+#: js/ui/status/system.js:119
 msgid "Suspend"
 msgstr "Призупинити"
 
-#: js/ui/status/system.js:156
+#: js/ui/status/system.js:130
+#| msgid "Restarting…"
+msgid "Restart…"
+msgstr "Перезапуск…"
+
+#: js/ui/status/system.js:141
 msgid "Power Off…"
 msgstr "Вимкнути…"
+
+#: js/ui/status/system.js:154
+msgid "Log Out"
+msgstr "Вийти"
+
+#: js/ui/status/system.js:165
+msgid "Switch User…"
+msgstr "Змінити користувача…"
 
 #: js/ui/status/thunderbolt.js:263
 msgid "Thunderbolt"
