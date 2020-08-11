@@ -1,3 +1,35 @@
+3.37.90
+=======
+* Fix extension updates when many extensions are installed [Jeremias; !1363]
+* Fix missing icons in on-screen keyboard [Emre; #2631, #3007]
+* Fix delay when showing calendar events [Sebastian; #2992]
+* Allow rearranging items in app picker [Georges; !1284]
+* Fix top bar navigation when NumLock is active [Olivier; #550]
+* Delay login animation until wallpaper has loaded [Michael; #734996]
+* Reset auth prompt on login screen on VT switch before fade in [Ray; #2997]
+* Move screencasting into a separate service [Jonas Å.; !1372]
+* Replace loaded terms with more descriptive one [Olivier; !1393]
+* Add "Boot Options" support to restart dialog [Hans; !199]
+* Move "Restart" into a separate menu item/dialog [Florian; #2202]
+* Default to not installing updates on low battery [Michael; #2717]
+* Misc. bug fixes and cleanups [Florian, Daniel V., Georges, Jonas Å.,
+  Daniel G., Carlos, Benjamin, Piotr, Andre, Jonas D., Andy; !1357, !1356,
+  #2969, #2969, !1358, !1371, #3005, !1380, #3022, !1381, !895, !1387, !1386,
+  !1385, #3037, !1389, !1390, !1391, !1383, !1399, #2983, !1403]
+
+Contributors:
+  Jonas Ådahl, Benjamin Berg, Michael Catanzaro, Piotr Drąg, Jonas Dreßler,
+  Olivier Fourdan, Carlos Garnacho, Hans de Goede, Andy Holmes,
+  Sebastian Keller, Andre Moreira Magalhaes, Daniel García Moreno,
+  Florian Müllner, Georges Basile Stavracas Neto, Jeremias Ortega, Ray Strode,
+  Emre Uyguroglu, Daniel van Vugt
+
+Translators:
+  Tim Sabsch [de], Boyuan Yang [zh_CN], Fabio Tomat [fur],
+  Efstathios Iosifidis [el], Rafael Fontenelle [pt_BR], Yuri Chornoivan [uk],
+  Daniel Șerbănescu [ro], Jordi Mas [ca], Daniel Mustieles [es],
+  Emin Tufan Çetin [tr], Asier Sarasua Garmendia [eu]
+
 3.37.3
 ======
 * Refactor and clean up window picker
