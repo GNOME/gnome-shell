@@ -1,5 +1,5 @@
 project('gnome-shell', 'c',
-  version: '3.36.4',
+  version: '3.36.5',
   meson_version: '>= 0.47.0',
   license: 'GPLv2+'
 )

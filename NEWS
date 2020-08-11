@@ -1,3 +1,26 @@
+3.36.5
+======
+* Fix extension updates when many extensions are installed [Jeremias; !1363]
+* Fix missing icons in on-screen keyboard [Emre; #2631, #3007]
+* Fix delay when showing calendar events [Sebastian; #2992]
+* Fix app picker regressions on small displays [Sebastian; #2234, !1375, !1378]
+* Fix top bar navigation when NumLock is active [Olivier; #550]
+* Delay login animation until wallpaper has loaded [Michael; #734996]
+* Revert changes that caused mispositioning in overview in multi-monitor setups
+  [Robert; #2971]
+* Reset auth prompt on login screen on VT switch before fade in [Ray; #2997]
+* Fix stuck grab when destroying open popup menu [Florian; #3022]
+* Misc. bug fixes and cleanups [Florian, Carlos, Andre, Jonas; !1357, !1371,
+  !1381, #3037, #3005, !1386, !1390]
+
+Contributors:
+  Michael Catanzaro, Jonas Dreßler, Olivier Fourdan, Carlos Garnacho,
+  Sebastian Keller, Robert Mader, Andre Moreira Magalhaes, Florian Müllner,
+  Jeremias Ortega, Ray Strode, Emre Uyguroglu
+
+Translators:
+  Boyuan Yang [zh_CN], Rafael Fontenelle [pt_BR]
+
 3.36.4
 ======
 * Hide switch-user button on lock screen if unsupported [Chingkai; #2687]
