@@ -86,7 +86,7 @@ var XdndHandler = class {
         let dragEvent = {
             x,
             y,
-            dragActor: this._cursorWindowClone ? this._cursorWindowClone : this._dummy,
+            dragActor: this._cursorWindowClone ?? this._dummy,
             source: this,
             targetActor: pickedActor,
         };

@@ -676,8 +676,7 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
                 let userAvatar = new UserWidget.Avatar(session.user, { iconSize: _ITEM_ICON_SIZE });
                 userAvatar.update();
 
-                userName = session.user.get_real_name()
-                    ? session.user.get_real_name() : session.username;
+                userName = session.user.get_real_name() ?? session.username;
 
                 let userLabelText;
                 if (session.remote)

@@ -34,7 +34,7 @@ var WindowPreviewLayout = GObject.registerClass({
 
         for (const windowInfo of this._windows.values()) {
             const frame = windowInfo.metaWindow.get_frame_rect();
-            frameRect = frameRect ? frameRect.union(frame) : frame;
+            frameRect = frameRect?.union(frame) ?? frame;
         }
 
         if (!frameRect)

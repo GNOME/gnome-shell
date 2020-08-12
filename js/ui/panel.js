@@ -143,8 +143,8 @@ class AppMenu extends PopupMenu.PopupMenu {
 
         this._updateWindowsSection();
 
-        let appInfo = app ? app.app_info : null;
-        let actions = appInfo ? appInfo.list_actions() : [];
+        const appInfo = app?.app_info;
+        const actions = appInfo?.list_actions() ?? [];
 
         this._actionSection.removeAll();
         actions.forEach(action => {

@@ -427,8 +427,7 @@ class CyclerHighlight extends St.Widget {
         if (this._clone.source)
             this._clone.source.sync_visibility();
 
-        let windowActor = this._window
-            ? this._window.get_compositor_private() : null;
+        const windowActor = this._window?.get_compositor_private();
 
         if (windowActor)
             windowActor.hide();
@@ -532,7 +531,7 @@ class GroupCyclerPopup extends CyclerPopup {
 
     _getWindows() {
         let app = Shell.WindowTracker.get_default().focus_app;
-        let appWindows = app ? app.get_windows() : [];
+        let appWindows = app?.get_windows() ?? [];
 
         if (this._settings.get_boolean('current-workspace-only')) {
             const workspaceManager = global.workspace_manager;

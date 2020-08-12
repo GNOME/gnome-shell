@@ -364,7 +364,7 @@ function init() {
             this.getHours(),
             this.getMinutes(),
             this.getSeconds());
-        return dt ? dt.format(format) : '';
+        return dt?.format(format) ?? '';
     };
 
     let slowdownEnv = GLib.getenv('GNOME_SHELL_SLOWDOWN_FACTOR');

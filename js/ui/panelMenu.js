@@ -96,11 +96,13 @@ var Button = GObject.registerClass({
     Signals: { 'menu-set': {} },
 }, class PanelMenuButton extends ButtonBox {
     _init(menuAlignment, nameText, dontCreateMenu) {
-        super._init({ reactive: true,
-                      can_focus: true,
-                      track_hover: true,
-                      accessible_name: nameText ? nameText : "",
-                      accessible_role: Atk.Role.MENU });
+        super._init({
+            reactive: true,
+            can_focus: true,
+            track_hover: true,
+            accessible_name: nameText ?? '',
+            accessible_role: Atk.Role.MENU,
+        });
 
         if (dontCreateMenu)
             this.menu = new PopupMenu.PopupDummyMenu(this);

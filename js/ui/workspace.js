@@ -1291,9 +1291,7 @@ class Workspace extends St.Widget {
     }
 
     _onCloneSelected(clone, time) {
-        let wsIndex;
-        if (this.metaWorkspace)
-            wsIndex = this.metaWorkspace.index();
+        const wsIndex = this.metaWorkspace?.index();
         Main.activateWindow(clone.metaWindow, time, wsIndex);
     }
 

@@ -124,7 +124,7 @@ var FdoNotificationDaemon = class FdoNotificationDaemon {
             return source;
         }
 
-        let appId = ndata ? ndata.hints['desktop-entry'] || null : null;
+        const appId = ndata?.hints['desktop-entry'];
         source = new FdoNotificationDaemonSource(title, pid, sender, appId);
 
         this._sources.push(source);
@@ -528,10 +528,10 @@ class GtkNotificationDaemonNotification extends MessageTray.Notification {
             });
         }
 
-        this._defaultAction = defaultAction ? defaultAction.unpack() : null;
+        this._defaultAction = defaultAction?.unpack();
         this._defaultActionTarget = defaultActionTarget;
 
-        this.update(title.unpack(), body ? body.unpack() : null,
+        this.update(title.unpack(), body?.unpack(),
                     { gicon: gicon ? Gio.icon_deserialize(gicon) : null,
                       datetime: time ? GLib.DateTime.new_from_unix_local(time.unpack()) : null });
     }

@@ -873,7 +873,7 @@ var SearchResultsView = GObject.registerClass({
             return;
         }
 
-        let from = this._defaultResult ? this._defaultResult : null;
+        const from = this._defaultResult ?? null;
         this.navigate_focus(from, direction, false);
     }
 

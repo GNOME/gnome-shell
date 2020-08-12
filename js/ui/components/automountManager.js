@@ -176,7 +176,7 @@ var AutomountManager = class {
         if (allowAutorun)
             this._allowAutorun(volume);
 
-        let mountOp = operation ? operation.mountOp : null;
+        const mountOp = operation?.mountOp ?? null;
         this._activeOperations.set(volume, operation);
 
         volume.mount(0, mountOp, null,
@@ -226,7 +226,7 @@ var AutomountManager = class {
 
     _reaskPassword(volume) {
         let prevOperation = this._activeOperations.get(volume);
-        let existingDialog = prevOperation ? prevOperation.borrowDialog() : null;
+        const existingDialog = prevOperation?.borrowDialog();
         let operation =
             new ShellMountOperation.ShellMountOperation(volume,
                                                         { existingDialog });

@@ -160,11 +160,12 @@ var GnomeShell = class {
         if (deviceNode)
             params['device-node'] = GLib.Variant.new('s', deviceNode);
 
-        connection.emit_signal(destination,
-                               this._dbusImpl.get_object_path(),
-                               info ? info.name : null,
-                               'AcceleratorActivated',
-                               GLib.Variant.new('(ua{sv})', [action, params]));
+        connection.emit_signal(
+            destination,
+            this._dbusImpl.get_object_path(),
+            info?.name ?? null,
+            'AcceleratorActivated',
+            GLib.Variant.new('(ua{sv})', [action, params]));
     }
 
     _grabAcceleratorForSender(accelerator, modeFlags, grabFlags, sender) {

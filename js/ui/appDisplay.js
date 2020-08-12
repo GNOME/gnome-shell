@@ -972,7 +972,7 @@ class AppDisplay extends BaseAppView {
         this._switcherooProxy = global.get_switcheroo_control();
         if (this._switcherooProxy) {
             let prop = this._switcherooProxy.get_cached_property('HasDualGpu');
-            discreteGpuAvailable = prop ? prop.unpack() : false;
+            discreteGpuAvailable = prop?.unpack() ?? false;
         } else {
             discreteGpuAvailable = false;
         }

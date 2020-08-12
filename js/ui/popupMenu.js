@@ -226,7 +226,7 @@ var PopupBaseMenuItem = GObject.registerClass({
     }
 
     getSensitive() {
-        let parentSensitive = this._parent ? this._parent.sensitive : true;
+        const parentSensitive = this._parent?.sensitive ?? true;
         return this._activatable && this._sensitive && parentSensitive;
     }
 
@@ -504,7 +504,7 @@ var PopupMenuBase = class {
     }
 
     getSensitive() {
-        let parentSensitive = this._parent ? this._parent.sensitive : true;
+        const parentSensitive = this._parent?.sensitive ?? true;
         return this._sensitive && parentSensitive;
     }
 

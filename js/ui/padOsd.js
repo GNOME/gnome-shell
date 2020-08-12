@@ -770,7 +770,7 @@ var PadOsd = GObject.registerClass({
 
     _getActionText(type, number) {
         let str = global.display.get_pad_action_label(this.padDevice, type, number);
-        return str ? str : _("None");
+        return str ?? _('None');
     }
 
     _updateActionLabels() {
@@ -887,7 +887,7 @@ var PadOsd = GObject.registerClass({
             if (this._followUpActionEdition(str))
                 return;
 
-            this._padDiagram.stopEdition(false, str ? str : _("None"));
+            this._padDiagram.stopEdition(false, str ?? _('None'));
             this._editedAction = null;
         }
 

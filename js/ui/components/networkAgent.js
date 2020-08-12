@@ -793,7 +793,7 @@ var NetworkAgent = class {
         }
 
         const prop = plugin.lookup_property('GNOME', 'supports-external-ui-mode');
-        const trimmedProp = prop ? prop.trim().toLowerCase() : '';
+        const trimmedProp = prop?.trim().toLowerCase() ?? '';
 
         return {
             fileName,

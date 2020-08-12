@@ -891,7 +891,7 @@ var WindowManager = class {
             // FIXME: Fix num buttons
             for (let i = 0; i < 50; i++) {
                 let str = display.get_pad_action_label(pad, Meta.PadActionType.BUTTON, i);
-                labels.push(str ? str : '');
+                labels.push(str ?? '');
             }
 
             if (this._gsdWacomProxy) {
