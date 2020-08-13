@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2020-08-11 15:44+0000\n"
-"PO-Revision-Date: 2020-08-13 01:31+0200\n"
+"POT-Creation-Date: 2020-08-10 23:58+0000\n"
+"PO-Revision-Date: 2020-08-14 00:36+0200\n"
 "Last-Translator: Fran Dieguez <frandieguez@gnome.org>\n"
 "Language-Team: Galician <proxecto@trasno.gal>\n"
 "Language: gl\n"
@@ -233,10 +233,10 @@ msgid ""
 "“application id” → 'data' pair. Currently, the following values are stored "
 "as 'data': • “position”: the position of the application icon in the page"
 msgstr ""
-"Disposición do selector de aplicacións. Cada entrada na lista é unha páxina. "
-"As páxinas almacénanse na orde que aparecen en GNOME Shell. Cada páxina "
-"contén o par «id de aplicación» → 'datos'. Actualmente en «data» gárdanse os "
-"seguintes valores: • “posición”: a posición da icona da aplicación na páxina"
+"Disposición do selector de aplicacións. Cada entrada no array é unha páxina. "
+"As páxinas están almacenadas na orde na que aparecen no Shell de GNOME. Cada "
+"páxina contén un par «id de aplicación» → «datos». Actualmente, gárdanse os "
+"seguintes valores: • «position»: A posición da icona da aplicación na páxina"
 
 #: data/org.gnome.shell.gschema.xml.in:130
 msgid "Keybinding to open the application menu"
@@ -505,11 +505,14 @@ msgstr "Apagar"
 
 #. Translators: A list of keywords that match the power-off action, separated by semicolons
 #: js/misc/systemActions.js:94
+#| msgid "power off;shutdown;reboot;restart;halt;stop"
 msgid "power off;shutdown;halt;stop"
 msgstr "apagar;reiniciar;deter;parar"
 
 #. Translators: The name of the restart action in search
 #: js/misc/systemActions.js:99
+#| msgctxt "button"
+#| msgid "Restart"
 msgctxt "search-result"
 msgid "Restart"
 msgstr "Reiniciar"
@@ -517,7 +520,7 @@ msgstr "Reiniciar"
 #. Translators: A list of keywords that match the restart action, separated by semicolons
 #: js/misc/systemActions.js:102
 msgid "reboot;restart;"
-msgstr "Reiniciar;"
+msgstr "reiniciar;"
 
 #. Translators: The name of the lock screen action in search
 #: js/misc/systemActions.js:107
@@ -753,10 +756,12 @@ msgid "New Window"
 msgstr "Xanela nova"
 
 #: js/ui/appDisplay.js:2797
+#| msgid "Launch using Dedicated Graphics Card"
 msgid "Launch using Integrated Graphics Card"
 msgstr "Iniciar usando a Tarxeta Gráfica Integrada"
 
 #: js/ui/appDisplay.js:2798
+#| msgid "Launch using Dedicated Graphics Card"
 msgid "Launch using Discrete Graphics Card"
 msgstr "Iniciar usando a Tarxeta Gráfica Dedicada"
 
@@ -1104,13 +1109,14 @@ msgstr "%A, %e de %B de %Y"
 #: js/ui/dateMenu.js:151
 msgctxt "calendar heading"
 msgid "%B %-d"
-msgstr "%-d de %B"
+msgstr "%e de %B de %Y"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year
 #: js/ui/dateMenu.js:154
+#| msgid "%B %-d %Y"
 msgctxt "calendar heading"
 msgid "%B %-d %Y"
-msgstr "%-d de %B de %Y"
+msgstr "%e de %B de %Y"
 
 #: js/ui/dateMenu.js:160
 msgid "Today"
@@ -1157,8 +1163,9 @@ msgid "Weather"
 msgstr "Tempo"
 
 #: js/ui/dateMenu.js:653
+#| msgid "Select a location…"
 msgid "Select weather location…"
-msgstr "Seleccione a ubicación metereolóxica…"
+msgstr "Seleccione unha ubicación metereolóxica…"
 
 #: js/ui/endSessionDialog.js:39
 #, javascript-format
@@ -1223,6 +1230,8 @@ msgid "Restart"
 msgstr "Reiniciar"
 
 #: js/ui/endSessionDialog.js:82
+#| msgctxt "title"
+#| msgid "Install Updates & Power Off"
 msgctxt "title"
 msgid "Install Updates & Restart"
 msgstr "Instalar actualizacións e reiniciar"
@@ -1290,9 +1299,10 @@ msgstr ""
 "que o seu computador está enchufado."
 
 #: js/ui/endSessionDialog.js:284
+#| msgid "Running on battery power: Please plug in before installing updates."
 msgid "Low battery power: please plug in before installing updates."
 msgstr ""
-"Enerxía da batería baixa: por favor enchufe a corrente antes de instalar "
+"Correndo con batería baixa: por favor conecte a corrente antes de instalar "
 "actualizacións."
 
 #: js/ui/endSessionDialog.js:293
@@ -1778,10 +1788,12 @@ msgid "Bluetooth Settings"
 msgstr "Preferencias do Bluetooth"
 
 #: js/ui/status/bluetooth.js:152
+#| msgid "Bluetooth"
 msgid "Bluetooth Off"
 msgstr "Bluetooth desactivado"
 
 #: js/ui/status/bluetooth.js:154
+#| msgid "Bluetooth"
 msgid "Bluetooth On"
 msgstr "Bluetooth activado"
 
@@ -2141,6 +2153,7 @@ msgid "Suspend"
 msgstr "Suspender"
 
 #: js/ui/status/system.js:130
+#| msgid "Restarting…"
 msgid "Restart…"
 msgstr "Reiniciar…"
 
@@ -2425,9 +2438,8 @@ msgid ""
 "GNOME Extensions handles updating extensions, configuring extension "
 "preferences and removing or disabling unwanted extensions."
 msgstr ""
-"Extensións de GNOME xestiona as actualización de extensións, configuración "
-"das preferencias das mesmas e a desinstalación ou desactivación das "
-"extensións non requiridas."
+"Extensións de GNOME xestiona a actualización de extensions, a súa "
+"configuración, eliminación e a desactivación das extensións que non quere."
 
 #: subprojects/extensions-app/data/org.gnome.Extensions.desktop.in.in:7
 msgid "Configure GNOME Shell Extensions"
@@ -2461,9 +2473,10 @@ msgstr[1] "Vanse actualizar %d extensións no seguinte inicio de sesión."
 
 #: subprojects/extensions-app/js/main.js:461
 msgid "The extension is incompatible with the current GNOME version"
-msgstr "A extensión non é compatíbel coa versión de GNOME actual"
+msgstr "A extensión non é compatíbel coa versión actual de GNOME"
 
 #: subprojects/extensions-app/js/main.js:464
+#| msgid "Show extension info"
 msgid "The extension had an error"
 msgstr "A extensión tivo un erro"
 
@@ -2541,8 +2554,9 @@ msgstr ""
 "que está nunha sesión en GNOME e ténteo de novo."
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:273
+#| msgid "Extension Updates Available"
 msgid "Extension Updates Ready"
-msgstr "Hai actualizacións de extensións listas"
+msgstr "Actualizacións de extensión dispoñíbeis"
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:289
 msgid "Log Out…"
@@ -2590,11 +2604,11 @@ msgstr ""
 
 #: subprojects/extensions-tool/src/command-create.c:366
 msgid "Choose one of the available templates:\n"
-msgstr "Seleccione un dos modelos dispoñíbeis:\n"
+msgstr "Seleccione entre unha das plantillas:\n"
 
 #: subprojects/extensions-tool/src/command-create.c:380
 msgid "Template"
-msgstr "Modelo"
+msgstr "Plantilla"
 
 #: subprojects/extensions-tool/src/command-create.c:435
 msgid "The unique identifier of the new extension"
@@ -2618,11 +2632,12 @@ msgstr "Unha descrición curta do que a súa extensión fai"
 
 #: subprojects/extensions-tool/src/command-create.c:446
 msgid "TEMPLATE"
-msgstr "MODELO"
+msgstr "PLANTILLA"
 
 #: subprojects/extensions-tool/src/command-create.c:447
+#| msgid "The user-visible name of the new extension"
 msgid "The template to use for the new extension"
-msgstr "O modelo a usar para a nova extensión"
+msgstr "A plantilla a usar para a nova extensión"
 
 #: subprojects/extensions-tool/src/command-create.c:453
 msgid "Enter extension information interactively"
@@ -2646,7 +2661,7 @@ msgstr "Requírese o UUID, o nome e a descrición"
 #: subprojects/extensions-tool/src/command-info.c:50
 #: subprojects/extensions-tool/src/command-list.c:64
 msgid "Failed to connect to GNOME Shell\n"
-msgstr "Produciuse un fallo ao conetarse a GNOME Shell\n"
+msgstr "Produciuse un fallo ao contectarse á Shell de GNOME\n"
 
 #: subprojects/extensions-tool/src/command-disable.c:53
 #: subprojects/extensions-tool/src/command-enable.c:53
@@ -2797,6 +2812,7 @@ msgstr "Especificouse máis dun directorio de orixe"
 
 #: subprojects/extensions-tool/src/command-prefs.c:47
 #, c-format
+#| msgid "Show extensions with preferences"
 msgid "Extension “%s” doesn't have preferences\n"
 msgstr "A extensión «%s» non ten preferencias\n"
 
@@ -2809,11 +2825,13 @@ msgid "Reset an extension"
 msgstr "Restabelece unha extensión"
 
 #: subprojects/extensions-tool/src/command-uninstall.c:49
+#| msgid "List installed extensions"
 msgid "Cannot uninstall system extensions\n"
 msgstr "Non é posíbel desinstalar as extensións do sistema\n"
 
 #: subprojects/extensions-tool/src/command-uninstall.c:64
 #, c-format
+#| msgid "Failed to launch “%s”"
 msgid "Failed to uninstall “%s”\n"
 msgstr "Produciuse un erro ao desinstalar «%s»\n"
 
@@ -2823,11 +2841,11 @@ msgstr "Desinstala unha extensión"
 
 #: subprojects/extensions-tool/src/main.c:72
 msgid "Do not print error messages"
-msgstr "Non é posíbel imprimir os mensaxes de erro"
+msgstr "Non imprimir os mensaxes de erro"
 
 #: subprojects/extensions-tool/src/main.c:146
 msgid "Failed to connect to GNOME Shell"
-msgstr "Produciuse un fallo ao conectarse con GNOME Shell"
+msgstr "Produciuse un fallo ao conectarse ao Shell de GNOME"
 
 #: subprojects/extensions-tool/src/main.c:244
 msgid "Path"
@@ -2926,6 +2944,7 @@ msgid "Plain"
 msgstr "Plana"
 
 #: subprojects/extensions-tool/src/templates/00-plain.desktop.in:5
+#| msgid "Reset extension"
 msgid "An empty extension"
 msgstr "Unha extensión baleira"
 
@@ -2935,7 +2954,7 @@ msgstr "Indicador"
 
 #: subprojects/extensions-tool/src/templates/indicator.desktop.in:5
 msgid "Add an icon to the top bar"
-msgstr "Engade unha icona na barra superior"
+msgstr "Engade unha icona á barra superior"
 
 #. translators:
 #. * The number of sound outputs on a particular device
