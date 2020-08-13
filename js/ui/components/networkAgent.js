@@ -494,7 +494,7 @@ var VPNRequestHandler = class {
             return;
         }
 
-        this._vpnChildProcessLineOldStyle(line);
+        this._vpnChildProcessLineOldStyle(ByteArray.toString(line));
 
         // try to read more!
         this._readStdoutOldStyle();
