@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: gnome-shell.master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
 "POT-Creation-Date: 2020-08-10 23:58+0000\n"
-"PO-Revision-Date: 2020-08-13 10:08+0200\n"
+"PO-Revision-Date: 2020-08-13 10:39+0200\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Spanish - Spain <gnome-es-list@gnome.org>\n"
 "Language: es_ES\n"
@@ -1228,6 +1228,7 @@ msgid "Restart"
 msgstr "Reiniciar"
 
 #: js/ui/endSessionDialog.js:82
+#, fuzzy
 #| msgctxt "title"
 #| msgid "Install Updates & Power Off"
 msgctxt "title"
@@ -1297,10 +1298,11 @@ msgstr ""
 "que el equipo está enchufado."
 
 #: js/ui/endSessionDialog.js:284
+#, fuzzy
 #| msgid "Running on battery power: Please plug in before installing updates."
 msgid "Low battery power: please plug in before installing updates."
 msgstr ""
-"Queda poca batería: enchufe el equipo antes de instalar las actualizaciones."
+"Funcionando con batería: conéctese antes de instalar las actualizaciones."
 
 #: js/ui/endSessionDialog.js:293
 msgid "Some applications are busy or have unsaved work"
@@ -1313,7 +1315,7 @@ msgstr "Hay otros usuarios con la sesión iniciada"
 #: js/ui/endSessionDialog.js:467
 msgctxt "button"
 msgid "Boot Options"
-msgstr "Opciones de arranque"
+msgstr ""
 
 #. Translators: Remote here refers to a remote session, like a ssh login
 #: js/ui/endSessionDialog.js:685
@@ -2148,9 +2150,10 @@ msgid "Suspend"
 msgstr "Suspender"
 
 #: js/ui/status/system.js:130
+#, fuzzy
 #| msgid "Restarting…"
 msgid "Restart…"
-msgstr "Reiniciar…"
+msgstr "Reiniciando…"
 
 #: js/ui/status/system.js:141
 msgid "Power Off…"
