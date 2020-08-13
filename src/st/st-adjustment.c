@@ -922,7 +922,7 @@ st_adjustment_get_transition (StAdjustment *adjustment,
  * st_adjustment_add_transition:
  * @adjustment: a #StAdjustment
  * @name: a unique name for the transition
- * @transtion: a #ClutterTransition
+ * @transition: a #ClutterTransition
  *
  * Add a #ClutterTransition for the adjustment. If the transiton stops, it will
  * be automatically removed if #ClutterTransition:remove-on-complete is %TRUE.
