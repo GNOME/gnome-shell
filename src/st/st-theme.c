@@ -254,7 +254,7 @@ insert_stylesheet (StTheme      *theme,
  * st_theme_load_stylesheet:
  * @theme: a #StTheme
  * @file: a #GFile
- * @error: (optional): a #GError
+ * @error: a #GError
  *
  * Load the stylesheet associated with @file.
  *
