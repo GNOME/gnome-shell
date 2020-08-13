@@ -1604,6 +1604,7 @@ class FolderView extends BaseAppView {
         action.connect('pan', this._onPan.bind(this));
         this._scrollView.add_action(action);
 
+        this._appIds = [];
         this._redisplay();
     }
 
@@ -1649,8 +1650,7 @@ class FolderView extends BaseAppView {
     }
 
     _getItemPosition(item) {
-        const appIds = this._getFolderApps();
-        const appIndex = appIds.indexOf(item.id);
+        const appIndex = this._appIds.indexOf(item.id);
 
         if (appIndex === -1)
             return [-1, -1];
@@ -1660,10 +1660,8 @@ class FolderView extends BaseAppView {
     }
 
     _compareItems(a, b) {
-        const appIds = this._getFolderApps();
-
-        const aPosition = appIds.indexOf(a.id);
-        const bPosition = appIds.indexOf(b.id);
+        const aPosition = this._appIds.indexOf(a.id);
+        const bPosition = this._appIds.indexOf(b.id);
 
         if (aPosition === -1 && bPosition === -1)
             return a.name.localeCompare(b.name);
@@ -1720,9 +1718,8 @@ class FolderView extends BaseAppView {
     _loadApps() {
         let apps = [];
         let appSys = Shell.AppSystem.get_default();
-        const appIds = this._getFolderApps();
 
-        appIds.forEach(appId => {
+        this._appIds.forEach(appId => {
             const app = appSys.lookup_app(appId);
 
             let icon = this._items.get(appId);
@@ -1733,6 +1730,13 @@ class FolderView extends BaseAppView {
         });
 
         return apps;
+    }
+
+    _redisplay() {
+        // Keep the app ids list cached
+        this._appIds = this._getFolderApps();
+
+        super._redisplay();
     }
 
     acceptDrop(source) {
