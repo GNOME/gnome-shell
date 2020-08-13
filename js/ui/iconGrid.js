@@ -468,6 +468,12 @@ var IconGridLayout = GObject.registerClass({
             this._unlinkItem(item);
         });
 
+        // Adjust the page indexes of items after this page
+        for (const itemData of this._items.values()) {
+            if (itemData.pageIndex > pageIndex)
+                itemData.pageIndex--;
+        }
+
         this._pages.splice(pageIndex, 1);
         this.emit('pages-changed');
     }
