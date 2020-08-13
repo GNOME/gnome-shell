@@ -2,6 +2,7 @@
 /* exported Component */
 
 const { Clutter, Gio, GLib, GObject, NM, Pango, Shell, St } = imports.gi;
+const ByteArray = imports.byteArray;
 const Signals = imports.signals;
 
 const Dialog = imports.ui.dialog;
@@ -522,13 +523,7 @@ var VPNRequestHandler = class {
         let contentOverride;
 
         try {
-            data = this._dataStdout.peek_buffer();
-
-            if (data instanceof Uint8Array)
-                data = imports.byteArray.toGBytes(data);
-            else
-                data = data.toGBytes();
-
+            data = ByteArray.toGBytes(this._dataStdout.peek_buffer());
             keyfile.load_from_bytes(data, GLib.KeyFileFlags.NONE);
 
             if (keyfile.get_integer(VPN_UI_GROUP, 'Version') != 2)

@@ -2,6 +2,7 @@
 /* exported init connect disconnect */
 
 const { GLib, Gio, GObject, Shell, St } = imports.gi;
+const ByteArray = imports.byteArray;
 const Signals = imports.signals;
 
 const ExtensionDownloader = imports.ui.extensionDownloader;
@@ -282,8 +283,7 @@ var ExtensionManager = class {
         let metadataContents, success_;
         try {
             [success_, metadataContents] = metadataFile.load_contents(null);
-            if (metadataContents instanceof Uint8Array)
-                metadataContents = imports.byteArray.toString(metadataContents);
+            metadataContents = ByteArray.toString(metadataContents);
         } catch (e) {
             throw new Error('Failed to load metadata.json: %s'.format(e.toString()));
         }

@@ -2,6 +2,7 @@
 /* exported KeyboardManager */
 
 const { Clutter, Gio, GLib, GObject, Meta, St } = imports.gi;
+const ByteArray = imports.byteArray;
 const Signals = imports.signals;
 
 const InputSourceManager = imports.ui.status.keyboard;
@@ -532,8 +533,7 @@ var KeyboardModel = class {
     _loadModel(groupName) {
         let file = Gio.File.new_for_uri('resource:///org/gnome/shell/osk-layouts/%s.json'.format(groupName));
         let [success_, contents] = file.load_contents(null);
-        if (contents instanceof Uint8Array)
-            contents = imports.byteArray.toString(contents);
+        contents = ByteArray.toString(contents);
 
         return JSON.parse(contents);
     }
