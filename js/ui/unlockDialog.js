@@ -648,10 +648,14 @@ var UnlockDialog = GObject.registerClass({
         const themeContext = St.ThemeContext.get_for_stage(global.stage);
 
         for (const widget of this._backgroundGroup.get_children()) {
-            widget.get_effect('blur').set({
-                brightness: BLUR_BRIGHTNESS,
-                sigma: BLUR_SIGMA * themeContext.scale_factor,
-            });
+            const effect = widget.get_effect('blur');
+
+            if (effect) {
+                effect.set({
+                    brightness: BLUR_BRIGHTNESS,
+                    sigma: BLUR_SIGMA * themeContext.scale_factor,
+                });
+            }
         }
     }
 
