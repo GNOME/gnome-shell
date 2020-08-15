@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2020-06-25 04:35+0000\n"
-"PO-Revision-Date: 2020-06-27 23:27+0500\n"
+"POT-Creation-Date: 2020-08-14 15:48+0000\n"
+"PO-Revision-Date: 2020-08-15 23:10+0500\n"
 "Last-Translator: Baurzhan Muftakhidinov <baurthefirst@gmail.com>\n"
 "Language-Team: Kazakh <kk_KZ@googlegroups.com>\n"
 "Language: kk\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 2.3.1\n"
+"X-Generator: Poedit 2.4.1\n"
 
 #: data/50-gnome-shell-system.xml:6
 msgid "System"
@@ -215,92 +215,108 @@ msgstr ""
 "Қоршамның қолданба күйін интроспекциялауды мүмкін қылатын D-Bus API іске "
 "қосу."
 
-#: data/org.gnome.shell.gschema.xml.in:119
+#: data/org.gnome.shell.gschema.xml.in:114
+msgid "Layout of the app picker"
+msgstr "Қолданбалар таңдаушысының жаймасы"
+
+#: data/org.gnome.shell.gschema.xml.in:115
+msgid ""
+"Layout of the app picker. Each entry in the array is a page. Pages are "
+"stored in the order they appear in GNOME Shell. Each page contains an "
+"“application id” → 'data' pair. Currently, the following values are stored "
+"as 'data': • “position”: the position of the application icon in the page"
+msgstr ""
+"Қолданбалар таңдаушысының жаймасы. Массивтегі әрбір жазба жеке бет болып "
+"табылады. Беттер GNOME Shell-да көрсетілетін ретімен сақталады. Әр бетте "
+"\"бағдарлама id\" → \"деректер\" жұбы бар. Қазіргі кезде мәндер келесідей "
+"сақталады 'деректер': • \"орын\": беттегі бағдарлама таңбашасының орны"
+
+#: data/org.gnome.shell.gschema.xml.in:130
 msgid "Keybinding to open the application menu"
 msgstr "Қолданбалар мәзірін ашу үшін пернелер комбинациясы"
 
-#: data/org.gnome.shell.gschema.xml.in:120
+#: data/org.gnome.shell.gschema.xml.in:131
 msgid "Keybinding to open the application menu."
 msgstr "Қолданбалар мәзірін ашу үшін пернелер комбинациясы."
 
-#: data/org.gnome.shell.gschema.xml.in:126
+#: data/org.gnome.shell.gschema.xml.in:137
 msgid "Keybinding to open the “Show Applications” view"
 msgstr "\"Қолданбаларды көрсету\" көрінісін ашу үшін пернелер комбинациясы"
 
-#: data/org.gnome.shell.gschema.xml.in:127
+#: data/org.gnome.shell.gschema.xml.in:138
 msgid ""
 "Keybinding to open the “Show Applications” view of the Activities Overview."
 msgstr ""
 "Көрініс ішінен \"Қолданбаларды көрсету\" ашу үшін пернелер комбинациясы."
 
-#: data/org.gnome.shell.gschema.xml.in:134
+#: data/org.gnome.shell.gschema.xml.in:145
 msgid "Keybinding to open the overview"
 msgstr "Шолуды ашу үшін пернелер комбинациясы"
 
-#: data/org.gnome.shell.gschema.xml.in:135
+#: data/org.gnome.shell.gschema.xml.in:146
 msgid "Keybinding to open the Activities Overview."
 msgstr "Көріністі ашу үшін пернелер комбинациясы."
 
-#: data/org.gnome.shell.gschema.xml.in:141
+#: data/org.gnome.shell.gschema.xml.in:152
 msgid "Keybinding to toggle the visibility of the notification list"
 msgstr ""
 "Хабарламалар тізімінің көрінуін іске қосу/сөндіру үшін пернелер комбинациясы"
 
-#: data/org.gnome.shell.gschema.xml.in:142
+#: data/org.gnome.shell.gschema.xml.in:153
 msgid "Keybinding to toggle the visibility of the notification list."
 msgstr ""
 "Хабарламалар тізімінің көрінуін іске қосу/сөндіру үшін пернелер комбинациясы."
 
-#: data/org.gnome.shell.gschema.xml.in:148
+#: data/org.gnome.shell.gschema.xml.in:159
 msgid "Keybinding to focus the active notification"
 msgstr "Белсенді ескертуге фокусты ауыстыру пернелер комбинациясы"
 
-#: data/org.gnome.shell.gschema.xml.in:149
+#: data/org.gnome.shell.gschema.xml.in:160
 msgid "Keybinding to focus the active notification."
 msgstr "Белсенді ескертуге фокусты ауыстыру пернелер комбинациясы."
 
-#: data/org.gnome.shell.gschema.xml.in:155
+#: data/org.gnome.shell.gschema.xml.in:166
 msgid "Switch to application 1"
 msgstr "1-ші қолданбаға ауысу"
 
-#: data/org.gnome.shell.gschema.xml.in:159
+#: data/org.gnome.shell.gschema.xml.in:170
 msgid "Switch to application 2"
 msgstr "2-ші қолданбаға ауысу"
 
-#: data/org.gnome.shell.gschema.xml.in:163
+#: data/org.gnome.shell.gschema.xml.in:174
 msgid "Switch to application 3"
 msgstr "3-ші қолданбаға ауысу"
 
-#: data/org.gnome.shell.gschema.xml.in:167
+#: data/org.gnome.shell.gschema.xml.in:178
 msgid "Switch to application 4"
 msgstr "4-ші қолданбаға ауысу"
 
-#: data/org.gnome.shell.gschema.xml.in:171
+#: data/org.gnome.shell.gschema.xml.in:182
 msgid "Switch to application 5"
 msgstr "5-ші қолданбаға ауысу"
 
-#: data/org.gnome.shell.gschema.xml.in:175
+#: data/org.gnome.shell.gschema.xml.in:186
 msgid "Switch to application 6"
 msgstr "6-шы қолданбаға ауысу"
 
-#: data/org.gnome.shell.gschema.xml.in:179
+#: data/org.gnome.shell.gschema.xml.in:190
 msgid "Switch to application 7"
 msgstr "7-ші қолданбаға ауысу"
 
-#: data/org.gnome.shell.gschema.xml.in:183
+#: data/org.gnome.shell.gschema.xml.in:194
 msgid "Switch to application 8"
 msgstr "8-ші қолданбаға ауысу"
 
-#: data/org.gnome.shell.gschema.xml.in:187
+#: data/org.gnome.shell.gschema.xml.in:198
 msgid "Switch to application 9"
 msgstr "9-шы қолданбаға ауысу"
 
-#: data/org.gnome.shell.gschema.xml.in:196
-#: data/org.gnome.shell.gschema.xml.in:223
+#: data/org.gnome.shell.gschema.xml.in:207
+#: data/org.gnome.shell.gschema.xml.in:234
 msgid "Limit switcher to current workspace."
 msgstr "Ауыстырғышты ағымдағы жұмыс орнымен шектеу."
 
-#: data/org.gnome.shell.gschema.xml.in:197
+#: data/org.gnome.shell.gschema.xml.in:208
 msgid ""
 "If true, only applications that have windows on the current workspace are "
 "shown in the switcher. Otherwise, all applications are included."
@@ -308,11 +324,11 @@ msgstr ""
 "Таңдалса, ауыстырғышта тек ағымдағы жұмыс орнындағы терезелері бар "
 "қолданбалар көрсетіледі. Болмаса, барлық қолданбалар болады."
 
-#: data/org.gnome.shell.gschema.xml.in:214
+#: data/org.gnome.shell.gschema.xml.in:225
 msgid "The application icon mode."
 msgstr "Қолданбаның таңбаша режимі."
 
-#: data/org.gnome.shell.gschema.xml.in:215
+#: data/org.gnome.shell.gschema.xml.in:226
 msgid ""
 "Configures how the windows are shown in the switcher. Valid possibilities "
 "are “thumbnail-only” (shows a thumbnail of the window), “app-icon-"
@@ -322,7 +338,7 @@ msgstr ""
 "\"thumbnail-only\" (терезенің кіші көрінісі көрсетіледі), \"app-icon-only"
 "\" (тек қолданба таңбашасы көрсетіледі) немесе \"both\" (екеуі де)."
 
-#: data/org.gnome.shell.gschema.xml.in:224
+#: data/org.gnome.shell.gschema.xml.in:235
 msgid ""
 "If true, only windows from the current workspace are shown in the switcher. "
 "Otherwise, all windows are included."
@@ -330,60 +346,60 @@ msgstr ""
 "Таңдалса, ауыстырғышта тек ағымдағы жұмыс орнындағы терезелер көрсетіледі. "
 "Болмаса, барлық терезелер болады."
 
-#: data/org.gnome.shell.gschema.xml.in:234
+#: data/org.gnome.shell.gschema.xml.in:245
 msgid "Locations"
 msgstr "Орналасулар"
 
-#: data/org.gnome.shell.gschema.xml.in:235
+#: data/org.gnome.shell.gschema.xml.in:246
 msgid "The locations to show in world clocks"
 msgstr "Дүниежүзілік сағаттарда көрсетілетін орналасулар"
 
-#: data/org.gnome.shell.gschema.xml.in:245
+#: data/org.gnome.shell.gschema.xml.in:256
 msgid "Automatic location"
 msgstr "Автоматты орналасу"
 
-#: data/org.gnome.shell.gschema.xml.in:246
+#: data/org.gnome.shell.gschema.xml.in:257
 msgid "Whether to fetch the current location or not"
 msgstr "Ағымдағы орналасуды алу керек пе, жоқ па"
 
-#: data/org.gnome.shell.gschema.xml.in:253
+#: data/org.gnome.shell.gschema.xml.in:264
 msgid "Location"
 msgstr "Орналасу"
 
-#: data/org.gnome.shell.gschema.xml.in:254
+#: data/org.gnome.shell.gschema.xml.in:265
 msgid "The location for which to show a forecast"
 msgstr "Ауа райы болжамын көрсету үшін орналасу"
 
-#: data/org.gnome.shell.gschema.xml.in:266
+#: data/org.gnome.shell.gschema.xml.in:277
 msgid "Attach modal dialog to the parent window"
 msgstr "Модальды сұхбатты аталық терезесіне жалғау"
 
-#: data/org.gnome.shell.gschema.xml.in:267
-#: data/org.gnome.shell.gschema.xml.in:276
-#: data/org.gnome.shell.gschema.xml.in:284
-#: data/org.gnome.shell.gschema.xml.in:292
-#: data/org.gnome.shell.gschema.xml.in:300
+#: data/org.gnome.shell.gschema.xml.in:278
+#: data/org.gnome.shell.gschema.xml.in:287
+#: data/org.gnome.shell.gschema.xml.in:295
+#: data/org.gnome.shell.gschema.xml.in:303
+#: data/org.gnome.shell.gschema.xml.in:311
 msgid ""
 "This key overrides the key in org.gnome.mutter when running GNOME Shell."
 msgstr ""
 "Бұл кілт GNOME Shell орындалған кезде org.gnome.mutter ішіндегі кілтті "
 "үстінен жазады."
 
-#: data/org.gnome.shell.gschema.xml.in:275
+#: data/org.gnome.shell.gschema.xml.in:286
 msgid "Enable edge tiling when dropping windows on screen edges"
 msgstr ""
 "Терезелерді экран шеттеріне апарған кезде олардың өлшемдерін өзгертуді іске "
 "қосу"
 
-#: data/org.gnome.shell.gschema.xml.in:283
+#: data/org.gnome.shell.gschema.xml.in:294
 msgid "Workspaces are managed dynamically"
 msgstr "Жұмыс орындары динамикалы түрде басқарылады"
 
-#: data/org.gnome.shell.gschema.xml.in:291
+#: data/org.gnome.shell.gschema.xml.in:302
 msgid "Workspaces only on primary monitor"
 msgstr "Жұмыс орындар тек біріншілік мониторда"
 
-#: data/org.gnome.shell.gschema.xml.in:299
+#: data/org.gnome.shell.gschema.xml.in:310
 msgid "Delay focus changes in mouse mode until the pointer stops moving"
 msgstr "Тышқан режиміндегі фокусты ауыстыру курсор тоқтағанша дейін кідірту"
 
@@ -418,18 +434,18 @@ msgid "Visit extension homepage"
 msgstr "Кеңейтудің үй парағын шолу"
 
 #: js/gdm/authPrompt.js:135 js/ui/audioDeviceSelection.js:57
-#: js/ui/components/networkAgent.js:110 js/ui/components/polkitAgent.js:139
-#: js/ui/endSessionDialog.js:369 js/ui/extensionDownloader.js:181
+#: js/ui/components/networkAgent.js:111 js/ui/components/polkitAgent.js:139
+#: js/ui/endSessionDialog.js:438 js/ui/extensionDownloader.js:183
 #: js/ui/shellMountOperation.js:376 js/ui/shellMountOperation.js:386
-#: js/ui/status/network.js:916 subprojects/extensions-app/js/main.js:149
+#: js/ui/status/network.js:940 subprojects/extensions-app/js/main.js:149
 msgid "Cancel"
 msgstr "Бас тарту"
 
 #. Cisco LEAP
-#: js/gdm/authPrompt.js:237 js/ui/components/networkAgent.js:205
-#: js/ui/components/networkAgent.js:221 js/ui/components/networkAgent.js:245
-#: js/ui/components/networkAgent.js:266 js/ui/components/networkAgent.js:286
-#: js/ui/components/networkAgent.js:296 js/ui/components/polkitAgent.js:277
+#: js/gdm/authPrompt.js:237 js/ui/components/networkAgent.js:206
+#: js/ui/components/networkAgent.js:222 js/ui/components/networkAgent.js:246
+#: js/ui/components/networkAgent.js:267 js/ui/components/networkAgent.js:287
+#: js/ui/components/networkAgent.js:297 js/ui/components/polkitAgent.js:277
 #: js/ui/shellMountOperation.js:326
 msgid "Password"
 msgstr "Пароль"
@@ -452,16 +468,16 @@ msgstr "(мыс., пайдаланушы не %s)"
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: js/gdm/loginDialog.js:918 js/ui/components/networkAgent.js:241
-#: js/ui/components/networkAgent.js:264 js/ui/components/networkAgent.js:282
+#: js/gdm/loginDialog.js:918 js/ui/components/networkAgent.js:242
+#: js/ui/components/networkAgent.js:265 js/ui/components/networkAgent.js:283
 msgid "Username"
 msgstr "Пайдаланушы аты"
 
-#: js/gdm/loginDialog.js:1254
+#: js/gdm/loginDialog.js:1253
 msgid "Login Window"
 msgstr "Жүйеге кіру терезесі"
 
-#: js/gdm/util.js:345
+#: js/gdm/util.js:355
 msgid "Authentication error"
 msgstr "Аутентификация қатесі"
 
@@ -470,78 +486,89 @@ msgstr "Аутентификация қатесі"
 #. as a cue to display our own message.
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger instead
-#: js/gdm/util.js:471
+#: js/gdm/util.js:481
 msgid "(or swipe finger)"
 msgstr "(немесе саусағыңызды өткізіңіз)"
 
 #. Translators: The name of the power-off action in search
-#: js/misc/systemActions.js:93
+#: js/misc/systemActions.js:91
 msgctxt "search-result"
 msgid "Power Off"
 msgstr "Сөндіру"
 
 #. Translators: A list of keywords that match the power-off action, separated by semicolons
-#: js/misc/systemActions.js:96
-msgid "power off;shutdown;reboot;restart;halt;stop"
-msgstr "power off;shutdown;reboot;restart;halt;stop;сөндіру;қайта қосу;тоқтату"
+#: js/misc/systemActions.js:94
+msgid "power off;shutdown;halt;stop"
+msgstr "power off;shutdown;halt;stop;сөндіру;қайта қосу;тоқтату"
+
+#. Translators: The name of the restart action in search
+#: js/misc/systemActions.js:99
+msgctxt "search-result"
+msgid "Restart"
+msgstr "Қайта қосу"
+
+#. Translators: A list of keywords that match the restart action, separated by semicolons
+#: js/misc/systemActions.js:102
+msgid "reboot;restart;"
+msgstr "reboot;restart;қайта жүктеу;қайта іске қосу;"
 
 #. Translators: The name of the lock screen action in search
-#: js/misc/systemActions.js:101
+#: js/misc/systemActions.js:107
 msgctxt "search-result"
 msgid "Lock Screen"
 msgstr "Экранды блоктау"
 
 #. Translators: A list of keywords that match the lock screen action, separated by semicolons
-#: js/misc/systemActions.js:104
+#: js/misc/systemActions.js:110
 msgid "lock screen"
 msgstr "экранды блоктау"
 
 #. Translators: The name of the logout action in search
-#: js/misc/systemActions.js:109
+#: js/misc/systemActions.js:115
 msgctxt "search-result"
 msgid "Log Out"
 msgstr "Жүйеден шығу"
 
 #. Translators: A list of keywords that match the logout action, separated by semicolons
-#: js/misc/systemActions.js:112
+#: js/misc/systemActions.js:118
 msgid "logout;log out;sign off"
 msgstr "logout;log out;sign off;шығу;жүйеден шығу"
 
 #. Translators: The name of the suspend action in search
-#: js/misc/systemActions.js:117
+#: js/misc/systemActions.js:123
 msgctxt "search-result"
 msgid "Suspend"
 msgstr "Ұйықтату"
 
 #. Translators: A list of keywords that match the suspend action, separated by semicolons
-#: js/misc/systemActions.js:120
+#: js/misc/systemActions.js:126
 msgid "suspend;sleep"
 msgstr "ұйықтату"
 
 #. Translators: The name of the switch user action in search
-#: js/misc/systemActions.js:125
+#: js/misc/systemActions.js:131
 msgctxt "search-result"
 msgid "Switch User"
 msgstr "Пайдаланушыны ауыстыру"
 
 #. Translators: A list of keywords that match the switch user action, separated by semicolons
-#: js/misc/systemActions.js:128
+#: js/misc/systemActions.js:134
 msgid "switch user"
 msgstr "пайдаланушыны ауыстыру"
 
 #. Translators: A list of keywords that match the lock orientation action, separated by semicolons
-#: js/misc/systemActions.js:135
+#: js/misc/systemActions.js:141
 msgid "lock orientation;unlock orientation;screen;rotation"
 msgstr ""
 "lock orientation;unlock orientation;screen;rotation;бұрылуды құлыптау;экран "
 "бұрылуы"
 
-#: js/misc/systemActions.js:255
+#: js/misc/systemActions.js:266
 msgctxt "search-result"
 msgid "Unlock Screen Rotation"
 msgstr "Экранды бұруды құлыптан босату"
 
-#: js/misc/systemActions.js:256
+#: js/misc/systemActions.js:267
 msgctxt "search-result"
 msgid "Lock Screen Rotation"
 msgstr "Экранды бұруды құлыптау"
@@ -701,36 +728,36 @@ msgstr "Тыйым салу"
 msgid "Grant Access"
 msgstr "Рұқсат ету"
 
-#: js/ui/appDisplay.js:903
+#: js/ui/appDisplay.js:1297
 msgid "Unnamed Folder"
 msgstr "Атаусыз бума"
 
 #. Translators: This is the heading of a list of open windows
-#: js/ui/appDisplay.js:2225 js/ui/panel.js:75
+#: js/ui/appDisplay.js:2766 js/ui/panel.js:75
 msgid "Open Windows"
 msgstr "Ашық терезелер"
 
-#: js/ui/appDisplay.js:2244 js/ui/panel.js:82
+#: js/ui/appDisplay.js:2785 js/ui/panel.js:82
 msgid "New Window"
 msgstr "Жаңа терезе"
 
-#: js/ui/appDisplay.js:2260
+#: js/ui/appDisplay.js:2801
 msgid "Launch using Integrated Graphics Card"
 msgstr "Құрамындағы графикалық картаны пайдаланып жөнелту"
 
-#: js/ui/appDisplay.js:2261
+#: js/ui/appDisplay.js:2802
 msgid "Launch using Discrete Graphics Card"
 msgstr "Бөлек графикалық картаны пайдаланып жөнелту"
 
-#: js/ui/appDisplay.js:2289 js/ui/dash.js:239
+#: js/ui/appDisplay.js:2830 js/ui/dash.js:239
 msgid "Remove from Favorites"
 msgstr "Таңдамалылардан өшіру"
 
-#: js/ui/appDisplay.js:2295
+#: js/ui/appDisplay.js:2836
 msgid "Add to Favorites"
 msgstr "Таңдамалыларға қосу"
 
-#: js/ui/appDisplay.js:2305 js/ui/panel.js:93
+#: js/ui/appDisplay.js:2846 js/ui/panel.js:93
 msgid "Show Details"
 msgstr "Деректерді көрсету"
 
@@ -924,40 +951,40 @@ msgstr "Орнатылған udisks нұсқасы PIM орнатуды қолд
 msgid "Open with %s"
 msgstr "%s көмегімен ашу"
 
-#: js/ui/components/networkAgent.js:92
+#: js/ui/components/networkAgent.js:93
 msgid ""
 "Alternatively you can connect by pushing the “WPS” button on your router."
 msgstr ""
 "Қосымша түрде, сіз роутердегі \"WPS\" батырмасын басу арқылы байланыса "
 "аласыз."
 
-#: js/ui/components/networkAgent.js:104 js/ui/status/network.js:227
-#: js/ui/status/network.js:318 js/ui/status/network.js:919
+#: js/ui/components/networkAgent.js:105 js/ui/status/network.js:252
+#: js/ui/status/network.js:343 js/ui/status/network.js:943
 msgid "Connect"
 msgstr "Байланысу"
 
-#: js/ui/components/networkAgent.js:211
+#: js/ui/components/networkAgent.js:212
 msgid "Key"
 msgstr "Кілт"
 
-#: js/ui/components/networkAgent.js:249 js/ui/components/networkAgent.js:272
+#: js/ui/components/networkAgent.js:250 js/ui/components/networkAgent.js:273
 msgid "Private key password"
 msgstr "Жеке кілт паролі"
 
-#: js/ui/components/networkAgent.js:270
+#: js/ui/components/networkAgent.js:271
 msgid "Identity"
 msgstr "Идентификация"
 
-#: js/ui/components/networkAgent.js:284
+#: js/ui/components/networkAgent.js:285
 msgid "Service"
 msgstr "Қызмет"
 
-#: js/ui/components/networkAgent.js:313 js/ui/components/networkAgent.js:341
-#: js/ui/components/networkAgent.js:680 js/ui/components/networkAgent.js:701
+#: js/ui/components/networkAgent.js:314 js/ui/components/networkAgent.js:342
+#: js/ui/components/networkAgent.js:675 js/ui/components/networkAgent.js:696
 msgid "Authentication required"
 msgstr "Аутентификация керек"
 
-#: js/ui/components/networkAgent.js:314 js/ui/components/networkAgent.js:681
+#: js/ui/components/networkAgent.js:315 js/ui/components/networkAgent.js:676
 #, javascript-format
 msgid ""
 "Passwords or encryption keys are required to access the wireless network "
@@ -965,42 +992,42 @@ msgid ""
 msgstr ""
 "\"%s\" сымсыз желісіне қатынау үшін парольдер не шифрлеу кілттері керек."
 
-#: js/ui/components/networkAgent.js:318 js/ui/components/networkAgent.js:685
+#: js/ui/components/networkAgent.js:319 js/ui/components/networkAgent.js:680
 msgid "Wired 802.1X authentication"
 msgstr "Сымды 802.1X аутентификациясы"
 
-#: js/ui/components/networkAgent.js:320
+#: js/ui/components/networkAgent.js:321
 msgid "Network name"
 msgstr "Желі атауы"
 
-#: js/ui/components/networkAgent.js:325 js/ui/components/networkAgent.js:689
+#: js/ui/components/networkAgent.js:326 js/ui/components/networkAgent.js:684
 msgid "DSL authentication"
 msgstr "DSL аутентификациясы"
 
-#: js/ui/components/networkAgent.js:332 js/ui/components/networkAgent.js:694
+#: js/ui/components/networkAgent.js:333 js/ui/components/networkAgent.js:689
 msgid "PIN code required"
 msgstr "PIN коды керек"
 
-#: js/ui/components/networkAgent.js:333 js/ui/components/networkAgent.js:695
+#: js/ui/components/networkAgent.js:334 js/ui/components/networkAgent.js:690
 msgid "PIN code is needed for the mobile broadband device"
 msgstr "Сымсыз кеңжолақты құрылғы үшін PIN коды керек"
 
-#: js/ui/components/networkAgent.js:334
+#: js/ui/components/networkAgent.js:335
 msgid "PIN"
 msgstr "PIN"
 
-#: js/ui/components/networkAgent.js:342 js/ui/components/networkAgent.js:686
-#: js/ui/components/networkAgent.js:690 js/ui/components/networkAgent.js:702
-#: js/ui/components/networkAgent.js:706
+#: js/ui/components/networkAgent.js:343 js/ui/components/networkAgent.js:681
+#: js/ui/components/networkAgent.js:685 js/ui/components/networkAgent.js:697
+#: js/ui/components/networkAgent.js:701
 #, javascript-format
 msgid "A password is required to connect to “%s”."
 msgstr "\"%s\" үшін байланысты орнату үшін пароль керек."
 
-#: js/ui/components/networkAgent.js:669 js/ui/status/network.js:1694
+#: js/ui/components/networkAgent.js:664 js/ui/status/network.js:1718
 msgid "Network Manager"
 msgstr "Желілер басқарушысы"
 
-#: js/ui/components/networkAgent.js:705
+#: js/ui/components/networkAgent.js:700
 msgid "VPN password"
 msgstr "VPN паролі"
 
@@ -1064,14 +1091,12 @@ msgstr "%A %B %e %Y"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year
 #: js/ui/dateMenu.js:151
-#| msgid "%B %-d %Y"
 msgctxt "calendar heading"
 msgid "%B %-d"
 msgstr "%B %-d"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year
 #: js/ui/dateMenu.js:154
-#| msgid "%B %-d %Y"
 msgctxt "calendar heading"
 msgid "%B %-d %Y"
 msgstr "%B %-d %Y"
@@ -1124,82 +1149,87 @@ msgstr "Ауа райы"
 msgid "Select weather location…"
 msgstr "Ауа райы орнын таңдау…"
 
-#: js/ui/endSessionDialog.js:37
+#: js/ui/endSessionDialog.js:39
 #, javascript-format
 msgctxt "title"
 msgid "Log Out %s"
 msgstr "Шығу: %s"
 
-#: js/ui/endSessionDialog.js:38
+#: js/ui/endSessionDialog.js:40
 msgctxt "title"
 msgid "Log Out"
 msgstr "Шығу"
 
-#: js/ui/endSessionDialog.js:40
+#: js/ui/endSessionDialog.js:43
 #, javascript-format
 msgid "%s will be logged out automatically in %d second."
 msgid_plural "%s will be logged out automatically in %d seconds."
 msgstr[0] "%s жүйеден автоматты түрде %d секундтан кейін шығады."
 
-#: js/ui/endSessionDialog.js:45
+#: js/ui/endSessionDialog.js:49
 #, javascript-format
 msgid "You will be logged out automatically in %d second."
 msgid_plural "You will be logged out automatically in %d seconds."
 msgstr[0] "Сіз жүйеден автоматты түрде %d секундтан кейін шығасыз."
 
-#: js/ui/endSessionDialog.js:51
+#: js/ui/endSessionDialog.js:56
 msgctxt "button"
 msgid "Log Out"
 msgstr "Шығу"
 
-#: js/ui/endSessionDialog.js:56
+#: js/ui/endSessionDialog.js:62
 msgctxt "title"
 msgid "Power Off"
 msgstr "Сөндіру"
 
-#: js/ui/endSessionDialog.js:57
+#: js/ui/endSessionDialog.js:63
 msgctxt "title"
 msgid "Install Updates & Power Off"
 msgstr "Жаңартуларды орнату және сөндіру"
 
-#: js/ui/endSessionDialog.js:59
+#: js/ui/endSessionDialog.js:66
 #, javascript-format
 msgid "The system will power off automatically in %d second."
 msgid_plural "The system will power off automatically in %d seconds."
 msgstr[0] "Жүйе %d секундтан кейін автоматты түрде сөндіріледі."
 
-#: js/ui/endSessionDialog.js:63
+#: js/ui/endSessionDialog.js:70 js/ui/endSessionDialog.js:89
 msgctxt "checkbox"
 msgid "Install pending software updates"
 msgstr "Кезекте тұрған БҚ жаңартуларын орнату"
 
-#: js/ui/endSessionDialog.js:66 js/ui/endSessionDialog.js:82
-msgctxt "button"
-msgid "Restart"
-msgstr "Қайта қосу"
-
-#: js/ui/endSessionDialog.js:68
+#: js/ui/endSessionDialog.js:74
 msgctxt "button"
 msgid "Power Off"
 msgstr "Сөндіру"
 
-#: js/ui/endSessionDialog.js:74
+#: js/ui/endSessionDialog.js:81
 msgctxt "title"
 msgid "Restart"
 msgstr "Қайта қосу"
 
-#: js/ui/endSessionDialog.js:76
+#: js/ui/endSessionDialog.js:82
+msgctxt "title"
+msgid "Install Updates & Restart"
+msgstr "Жаңартуларды орнату және қайта қосу"
+
+#: js/ui/endSessionDialog.js:85
 #, javascript-format
 msgid "The system will restart automatically in %d second."
 msgid_plural "The system will restart automatically in %d seconds."
 msgstr[0] "Жүйе %d секундтан кейін автоматты түрде қайта қосылады."
 
-#: js/ui/endSessionDialog.js:89
+#: js/ui/endSessionDialog.js:93
+msgctxt "button"
+msgid "Restart"
+msgstr "Қайта қосу"
+
+#: js/ui/endSessionDialog.js:101
 msgctxt "title"
 msgid "Restart & Install Updates"
 msgstr "Қайта қосу және жаңартуларды орнату"
 
-#: js/ui/endSessionDialog.js:91
+#: js/ui/endSessionDialog.js:104
 #, javascript-format
 msgid "The system will automatically restart and install updates in %d second."
 msgid_plural ""
@@ -1208,22 +1238,22 @@ msgstr[0] ""
 "Жүйе %d секундтан кейін автоматты түрде қайта қосылады және жаңартуларды "
 "орнатады."
 
-#: js/ui/endSessionDialog.js:97 js/ui/endSessionDialog.js:116
+#: js/ui/endSessionDialog.js:111 js/ui/endSessionDialog.js:132
 msgctxt "button"
 msgid "Restart &amp; Install"
 msgstr "Қайта қосу және орнату"
 
-#: js/ui/endSessionDialog.js:98
+#: js/ui/endSessionDialog.js:113
 msgctxt "button"
 msgid "Install &amp; Power Off"
 msgstr "Орнату және сөндіру"
 
-#: js/ui/endSessionDialog.js:99
+#: js/ui/endSessionDialog.js:114
 msgctxt "checkbox"
 msgid "Power off after updates are installed"
 msgstr "Жаңартулар орнатылғаннан кейін сөндіру"
 
-#: js/ui/endSessionDialog.js:106
+#: js/ui/endSessionDialog.js:121
 msgctxt "title"
 msgid "Restart & Install Upgrade"
 msgstr "Қайта қосу және жаңартуларды орнату"
@@ -1231,7 +1261,7 @@ msgstr "Қайта қосу және жаңартуларды орнату"
 #. Translators: This is the text displayed for system upgrades in the
 #. shut down dialog. First %s gets replaced with the distro name and
 #. second %s with the distro version to upgrade to
-#: js/ui/endSessionDialog.js:111
+#: js/ui/endSessionDialog.js:126
 #, javascript-format
 msgid ""
 "%s %s will be installed after restart. Upgrade installation can take a long "
@@ -1241,50 +1271,55 @@ msgstr ""
 "уақытты алуы мүмкін: деректердің қор көшірмесі бар екеніне және компьютер "
 "эл. желісіне жалғанып тұрғанына көз жеткізіңіз."
 
-#: js/ui/endSessionDialog.js:259
-msgid "Running on battery power: Please plug in before installing updates."
+#: js/ui/endSessionDialog.js:284
+msgid "Low battery power: please plug in before installing updates."
 msgstr ""
-"Батарея қорегінен жұмыс істеуде. Жаңартуларды орнату алдында эл. қорегі "
-"желісіне жалғаңыз."
+"Батарея заряд деңгейі аз: жаңартуларды орнату алдында эл. қорегі желісіне "
+"жалғаңыз."
 
-#: js/ui/endSessionDialog.js:268
+#: js/ui/endSessionDialog.js:293
 msgid "Some applications are busy or have unsaved work"
 msgstr "Кейбір қолданбалар бос емес немесе сақталмаған жұмыстары бар"
 
-#: js/ui/endSessionDialog.js:273
+#: js/ui/endSessionDialog.js:298
 msgid "Other users are logged in"
 msgstr "Басқа пайдаланушылар жүйеге кіріп тұр"
 
+#: js/ui/endSessionDialog.js:467
+msgctxt "button"
+msgid "Boot Options"
+msgstr "Жүктеу параметрлері"
+
 #. Translators: Remote here refers to a remote session, like a ssh login
-#: js/ui/endSessionDialog.js:583
+#: js/ui/endSessionDialog.js:685
 #, javascript-format
 msgid "%s (remote)"
 msgstr "%s (қашықтағы)"
 
 #. Translators: Console here refers to a tty like a VT console
-#: js/ui/endSessionDialog.js:586
+#: js/ui/endSessionDialog.js:688
 #, javascript-format
 msgid "%s (console)"
 msgstr "%s (консоль)"
 
-#: js/ui/extensionDownloader.js:185
+#: js/ui/extensionDownloader.js:187
 msgid "Install"
 msgstr "Орнату"
 
-#: js/ui/extensionDownloader.js:191
+#: js/ui/extensionDownloader.js:193
 msgid "Install Extension"
 msgstr "Кеңейтуді орнату"
 
-#: js/ui/extensionDownloader.js:192
+#: js/ui/extensionDownloader.js:194
 #, javascript-format
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "extensions.gnome.org адресінен \"%s\" жүктеп алып, орнату керек пе?"
 
-#: js/ui/extensionSystem.js:252
+#: js/ui/extensionSystem.js:253
 msgid "Extension Updates Available"
 msgstr "Кеңейту жаңартулары дайын"
 
-#: js/ui/extensionSystem.js:253
+#: js/ui/extensionSystem.js:254
 msgid "Extension updates are ready to be installed."
 msgstr "Кеңейту жаңартулары орнатылуға дайын."
 
@@ -1308,11 +1343,11 @@ msgstr "Қолданба пернелер жарлығын алмастырғы�
 msgid "You can restore shortcuts by pressing %s."
 msgstr "Сіз жарлықтарды %s басу арқылы қалпына келтіре аласыз."
 
-#: js/ui/inhibitShortcutsDialog.js:98
+#: js/ui/inhibitShortcutsDialog.js:100
 msgid "Deny"
 msgstr "Тыйым салу"
 
-#: js/ui/inhibitShortcutsDialog.js:105
+#: js/ui/inhibitShortcutsDialog.js:107
 msgid "Allow"
 msgstr "Рұқсат ету"
 
@@ -1363,15 +1398,15 @@ msgid "Leave On"
 msgstr "Іске қосулы қалдыру"
 
 #: js/ui/kbdA11yDialog.js:55 js/ui/status/bluetooth.js:156
-#: js/ui/status/network.js:1291
+#: js/ui/status/network.js:1315
 msgid "Turn On"
 msgstr "Іске қосу"
 
 #: js/ui/kbdA11yDialog.js:63 js/ui/status/bluetooth.js:156
-#: js/ui/status/network.js:135 js/ui/status/network.js:319
-#: js/ui/status/network.js:1291 js/ui/status/network.js:1403
+#: js/ui/status/network.js:160 js/ui/status/network.js:344
+#: js/ui/status/network.js:1315 js/ui/status/network.js:1427
 #: js/ui/status/nightLight.js:41 js/ui/status/rfkill.js:81
-#: js/ui/status/rfkill.js:108
+#: js/ui/status/rfkill.js:110
 msgid "Turn Off"
 msgstr "Сөндіру"
 
@@ -1379,7 +1414,7 @@ msgstr "Сөндіру"
 msgid "Leave Off"
 msgstr "Сөндірулі қалдыру"
 
-#: js/ui/keyboard.js:207
+#: js/ui/keyboard.js:226
 msgid "Region & Language Settings"
 msgstr "Аймақ және тіл баптаулары"
 
@@ -1432,11 +1467,11 @@ msgstr "Бастапқы кодын қарау"
 msgid "Web Page"
 msgstr "Веб парағы"
 
-#: js/ui/main.js:297
+#: js/ui/main.js:294
 msgid "Logged in as a privileged user"
 msgstr "Привилегияланған пайдаланушы ретінде жүйеге кірген"
 
-#: js/ui/main.js:298
+#: js/ui/main.js:295
 msgid ""
 "Running a session as a privileged user should be avoided for security "
 "reasons. If possible, you should log in as a normal user."
@@ -1445,15 +1480,15 @@ msgstr ""
 "салдарынан аулақ болу керек. Мүмкін болса, қалыпты пайдаланушы ретінде "
 "жүйеге кіріңіз."
 
-#: js/ui/main.js:337
+#: js/ui/main.js:334
 msgid "Screen Lock disabled"
 msgstr "Экранды блоктау сөндірілген"
 
-#: js/ui/main.js:338
+#: js/ui/main.js:335
 msgid "Screen Locking requires the GNOME display manager."
 msgstr "Экранды блоктау GNOME дисплейлер басқарушысын талап етеді."
 
-#: js/ui/messageTray.js:1547
+#: js/ui/messageTray.js:1476
 msgid "System Information"
 msgstr "Жүйелік ақпарат"
 
@@ -1483,27 +1518,27 @@ msgstr "Шолу"
 msgid "Type to search"
 msgstr "Іздеу үшін теріңіз"
 
-#: js/ui/padOsd.js:95
+#: js/ui/padOsd.js:96
 msgid "New shortcut…"
 msgstr "Жаңа жарлық…"
 
-#: js/ui/padOsd.js:142
+#: js/ui/padOsd.js:143
 msgid "Application defined"
 msgstr "Тағайындалған қолданбалар"
 
-#: js/ui/padOsd.js:143
+#: js/ui/padOsd.js:144
 msgid "Show on-screen help"
 msgstr "Экрандағы көмекті көрсету"
 
-#: js/ui/padOsd.js:144
+#: js/ui/padOsd.js:145
 msgid "Switch monitor"
 msgstr "Мониторды ауыстыру"
 
-#: js/ui/padOsd.js:145
+#: js/ui/padOsd.js:146
 msgid "Assign keystroke"
 msgstr "Пернелер жарлығын тағайындау"
 
-#: js/ui/padOsd.js:211
+#: js/ui/padOsd.js:212
 msgid "Done"
 msgstr "Дайын"
 
@@ -1542,7 +1577,7 @@ msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "Жүйелік"
 
-#: js/ui/panel.js:827
+#: js/ui/panel.js:825
 msgid "Top Bar"
 msgstr "Үстідегі панель"
 
@@ -1717,7 +1752,7 @@ msgstr "Үлкен мәтін"
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: js/ui/status/bluetooth.js:49 js/ui/status/network.js:595
+#: js/ui/status/bluetooth.js:49 js/ui/status/network.js:619
 msgid "Bluetooth Settings"
 msgstr "Bluetooth баптаулары"
 
@@ -1801,18 +1836,18 @@ msgstr ""
 "Орналасуыңызға қатынауды кез-кезген кезде жекелік баптауларының ішінен "
 "өзгертуге болады."
 
-#: js/ui/status/network.js:70
+#: js/ui/status/network.js:71
 msgid "<unknown>"
 msgstr "<белгісіз>"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:424 js/ui/status/network.js:1320
+#: js/ui/status/network.js:449 js/ui/status/network.js:1344
 #, javascript-format
 msgid "%s Off"
 msgstr "%s сөндірулі"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:427
+#: js/ui/status/network.js:452
 #, javascript-format
 msgid "%s Connected"
 msgstr "%s байланысқан"
@@ -1820,186 +1855,186 @@ msgstr "%s байланысқан"
 #. Translators: this is for network devices that are physically present but are not
 #. under NetworkManager's control (and thus cannot be used in the menu);
 #. %s is a network identifier
-#: js/ui/status/network.js:432
+#: js/ui/status/network.js:457
 #, javascript-format
 msgid "%s Unmanaged"
 msgstr "%s басқарылмайтын"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:435
+#: js/ui/status/network.js:460
 #, javascript-format
 msgid "%s Disconnecting"
 msgstr "%s  байланысты үзуде"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:442 js/ui/status/network.js:1312
+#: js/ui/status/network.js:467 js/ui/status/network.js:1336
 #, javascript-format
 msgid "%s Connecting"
 msgstr "%s байланысуда"
 
 #. Translators: this is for network connections that require some kind of key or password; %s is a network identifier
-#: js/ui/status/network.js:445
+#: js/ui/status/network.js:470
 #, javascript-format
 msgid "%s Requires Authentication"
 msgstr "%s аутентификацияны талап етеді"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing; %s is a network identifier
-#: js/ui/status/network.js:453
+#: js/ui/status/network.js:478
 #, javascript-format
 msgid "Firmware Missing For %s"
 msgstr "%s үшін бинарлы кодтары жоқ"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage; %s is a network identifier
-#: js/ui/status/network.js:457
+#: js/ui/status/network.js:482
 #, javascript-format
 msgid "%s Unavailable"
 msgstr "%s қолжетерсіз"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:460
+#: js/ui/status/network.js:485
 #, javascript-format
 msgid "%s Connection Failed"
 msgstr "%s байланысын орнату сәтсіз"
 
-#: js/ui/status/network.js:472
+#: js/ui/status/network.js:497
 msgid "Wired Settings"
 msgstr "Сымды желі баптаулары"
 
-#: js/ui/status/network.js:515
+#: js/ui/status/network.js:540
 msgid "Mobile Broadband Settings"
 msgstr "Сымсыз кеңжолақты желісінің баптаулары"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:562 js/ui/status/network.js:1317
+#: js/ui/status/network.js:586 js/ui/status/network.js:1341
 #, javascript-format
 msgid "%s Hardware Disabled"
 msgstr "%s құрылғылық түрде сөндірулі тұр"
 
 #. Translators: this is for a network device that cannot be activated
 #. because it's disabled by rfkill (airplane mode); %s is a network identifier
-#: js/ui/status/network.js:566
+#: js/ui/status/network.js:590
 #, javascript-format
 msgid "%s Disabled"
 msgstr "%s сөндірулі тұр"
 
-#: js/ui/status/network.js:607
+#: js/ui/status/network.js:631
 msgid "Connect to Internet"
 msgstr "Интернетке байланысу"
 
-#: js/ui/status/network.js:811
+#: js/ui/status/network.js:835
 msgid "Airplane Mode is On"
 msgstr "Ұшақтағы режим іске қосылған"
 
-#: js/ui/status/network.js:812
+#: js/ui/status/network.js:836
 msgid "Wi-Fi is disabled when airplane mode is on."
 msgstr "Wi-Fi ұшақтағы режимі кезінде сөндірілген болады."
 
-#: js/ui/status/network.js:813
+#: js/ui/status/network.js:837
 msgid "Turn Off Airplane Mode"
 msgstr "Ұшақтағы режимді сөндіру"
 
-#: js/ui/status/network.js:822
+#: js/ui/status/network.js:846
 msgid "Wi-Fi is Off"
 msgstr "Wi-Fi сөндірілген"
 
-#: js/ui/status/network.js:823
+#: js/ui/status/network.js:847
 msgid "Wi-Fi needs to be turned on in order to connect to a network."
 msgstr "Желіге байланысты орнату үшін Wi-Fi іске қосылған болуы тиіс."
 
-#: js/ui/status/network.js:824
+#: js/ui/status/network.js:848
 msgid "Turn On Wi-Fi"
 msgstr "Wi-Fi іске қосу"
 
-#: js/ui/status/network.js:849
+#: js/ui/status/network.js:873
 msgid "Wi-Fi Networks"
 msgstr "Wi-Fi желілері"
 
-#: js/ui/status/network.js:851
+#: js/ui/status/network.js:875
 msgid "Select a network"
 msgstr "Желіні таңдау"
 
-#: js/ui/status/network.js:883
+#: js/ui/status/network.js:907
 msgid "No Networks"
 msgstr "Желілер жоқ"
 
-#: js/ui/status/network.js:904 js/ui/status/rfkill.js:106
+#: js/ui/status/network.js:928 js/ui/status/rfkill.js:108
 msgid "Use hardware switch to turn off"
 msgstr "Сөндіру үшін құрылғылық қосқышты қолданыңыз"
 
-#: js/ui/status/network.js:1181
+#: js/ui/status/network.js:1205
 msgid "Select Network"
 msgstr "Желіні таңдау"
 
-#: js/ui/status/network.js:1187
+#: js/ui/status/network.js:1211
 msgid "Wi-Fi Settings"
 msgstr "Wi-Fi баптаулары"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1308
+#: js/ui/status/network.js:1332
 #, javascript-format
 msgid "%s Hotspot Active"
 msgstr "%s қатынау нүктесі белсенді"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1323
+#: js/ui/status/network.js:1347
 #, javascript-format
 msgid "%s Not Connected"
 msgstr "%s байланыспаған"
 
-#: js/ui/status/network.js:1420
+#: js/ui/status/network.js:1444
 msgid "connecting…"
 msgstr "байланысты орнату…"
 
 #. Translators: this is for network connections that require some kind of key or password
-#: js/ui/status/network.js:1423
+#: js/ui/status/network.js:1447
 msgid "authentication required"
 msgstr "аутентификация керек"
 
-#: js/ui/status/network.js:1425
+#: js/ui/status/network.js:1449
 msgid "connection failed"
 msgstr "байланысты орнату сәтсіз"
 
-#: js/ui/status/network.js:1476
+#: js/ui/status/network.js:1500
 msgid "VPN Settings"
 msgstr "VPN баптаулары"
 
-#: js/ui/status/network.js:1493
+#: js/ui/status/network.js:1517
 msgid "VPN"
 msgstr "VPN"
 
-#: js/ui/status/network.js:1503
+#: js/ui/status/network.js:1527
 msgid "VPN Off"
 msgstr "VPN сөндірілген"
 
-#: js/ui/status/network.js:1564 js/ui/status/rfkill.js:84
+#: js/ui/status/network.js:1588 js/ui/status/rfkill.js:84
 msgid "Network Settings"
 msgstr "Желі баптаулары"
 
-#: js/ui/status/network.js:1593
+#: js/ui/status/network.js:1617
 #, javascript-format
 msgid "%s Wired Connection"
 msgid_plural "%s Wired Connections"
 msgstr[0] "%s сымды желі байланысы"
 
-#: js/ui/status/network.js:1597
+#: js/ui/status/network.js:1621
 #, javascript-format
 msgid "%s Wi-Fi Connection"
 msgid_plural "%s Wi-Fi Connections"
 msgstr[0] "%s Wi-Fi желі байланысы"
 
-#: js/ui/status/network.js:1601
+#: js/ui/status/network.js:1625
 #, javascript-format
 msgid "%s Modem Connection"
 msgid_plural "%s Modem Connections"
 msgstr[0] "%s модем желі байланысы"
 
-#: js/ui/status/network.js:1735
+#: js/ui/status/network.js:1759
 msgid "Connection failed"
 msgstr "Байланыс орнату сәтсіз"
 
-#: js/ui/status/network.js:1736
+#: js/ui/status/network.js:1760
 msgid "Activation of network connection failed"
 msgstr "Желілік байланысты белсендіру сәтсіз"
 
@@ -2054,11 +2089,11 @@ msgstr "%d∶%02d толық зарядқа дейін (%d %%)"
 msgid "%d %%"
 msgstr "%d %%"
 
-#: js/ui/status/remoteAccess.js:43
+#: js/ui/status/remoteAccess.js:45
 msgid "Screen is Being Shared"
 msgstr "Экранмен бөлісудесіз"
 
-#: js/ui/status/remoteAccess.js:45
+#: js/ui/status/remoteAccess.js:47
 msgid "Turn off"
 msgstr "Сөндіру"
 
@@ -2069,29 +2104,33 @@ msgstr "Сөндіру"
 msgid "Airplane Mode On"
 msgstr "Ұшақтағы режим іске қосулы"
 
-#: js/ui/status/system.js:102
+#: js/ui/status/system.js:104
 msgid "Lock"
 msgstr "Блоктау"
 
-#: js/ui/status/system.js:115
+#: js/ui/status/system.js:116
 msgid "Power Off / Log Out"
 msgstr "Сөндіру / Жүйеден шығу"
 
-#: js/ui/status/system.js:118
-msgid "Log Out"
-msgstr "Жүйеден шығу"
-
-#: js/ui/status/system.js:130
-msgid "Switch User…"
-msgstr "Пайдаланушыны ауыстыру…"
-
-#: js/ui/status/system.js:144
+#: js/ui/status/system.js:119
 msgid "Suspend"
 msgstr "Ұйықтату"
 
-#: js/ui/status/system.js:156
+#: js/ui/status/system.js:130
+msgid "Restart…"
+msgstr "Қайта қосу…"
+
+#: js/ui/status/system.js:141
 msgid "Power Off…"
 msgstr "Сөндіру…"
+
+#: js/ui/status/system.js:154
+msgid "Log Out"
+msgstr "Жүйеден шығу"
+
+#: js/ui/status/system.js:165
+msgid "Switch User…"
+msgstr "Пайдаланушыны ауыстыру…"
 
 #: js/ui/status/thunderbolt.js:263
 msgid "Thunderbolt"
@@ -2177,11 +2216,11 @@ msgstr "Босату үшін жоғары өткізіңіз"
 msgid "Click or press a key to unlock"
 msgstr "Босату үшін шертіңіз немесе пернені басыңыз"
 
-#: js/ui/unlockDialog.js:550
+#: js/ui/unlockDialog.js:555
 msgid "Unlock Window"
 msgstr "Блоктауды алу терезесі"
 
-#: js/ui/unlockDialog.js:559
+#: js/ui/unlockDialog.js:564
 msgid "Log in as another user"
 msgstr "Басқа пайдаланушы ретінде жүйеге кіру"
 
@@ -2199,22 +2238,22 @@ msgid "“%s” is ready"
 msgstr "\"%s\" дайын"
 
 #. Translators: This string should be shorter than 30 characters
-#: js/ui/windowManager.js:55
+#: js/ui/windowManager.js:60
 msgid "Keep these display settings?"
 msgstr "Бұл экран баптауларын сақтауды қалайсыз ба?"
 
 #. Translators: this and the following message should be limited in length,
 #. to avoid ellipsizing the labels.
 #.
-#: js/ui/windowManager.js:64
+#: js/ui/windowManager.js:69
 msgid "Revert Settings"
 msgstr "Баптауларды қалпына келтіру"
 
-#: js/ui/windowManager.js:67
+#: js/ui/windowManager.js:72
 msgid "Keep Changes"
 msgstr "Өзгерістерді сақтау"
 
-#: js/ui/windowManager.js:86
+#: js/ui/windowManager.js:91
 #, javascript-format
 msgid "Settings changes will revert in %d second"
 msgid_plural "Settings changes will revert in %d seconds"
@@ -2222,7 +2261,7 @@ msgstr[0] "Өзгертілген баптаулар %d секундтан ке�
 
 #. Translators: This represents the size of a window. The first number is
 #. * the width of the window and the second is the height.
-#: js/ui/windowManager.js:546
+#: js/ui/windowManager.js:551
 #, javascript-format
 msgid "%d × %d"
 msgstr "%d × %d"
@@ -2315,12 +2354,12 @@ msgstr "Жүйеге кіру экраны үшін арнайы режимді,
 msgid "List possible modes"
 msgstr "Қолжетерлік режимдерді тізіп шығу"
 
-#: src/shell-app.c:286
+#: src/shell-app.c:268
 msgctxt "program"
 msgid "Unknown"
 msgstr "Белгісіз"
 
-#: src/shell-app.c:537
+#: src/shell-app.c:519
 #, c-format
 msgid "Failed to launch “%s”"
 msgstr "\"%s\" жөнелту сәтсіз"
@@ -2728,7 +2767,6 @@ msgstr "Бірден көп қайнар көз бумасы көрсетілг�
 
 #: subprojects/extensions-tool/src/command-prefs.c:47
 #, c-format
-#| msgid "Show extensions with preferences"
 msgid "Extension “%s” doesn't have preferences\n"
 msgstr "\"%s\" кеңейтудің баптаулары жоқ\n"
 
