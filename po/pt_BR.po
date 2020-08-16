@@ -24,8 +24,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2020-08-10 08:53+0000\n"
-"PO-Revision-Date: 2020-08-10 08:51-0300\n"
+"POT-Creation-Date: 2020-08-14 15:48+0000\n"
+"PO-Revision-Date: 2020-08-15 19:27-0300\n"
 "Last-Translator: Rafael Fontenelle <rafaelff@gnome.org>\n"
 "Language-Team: Brazilian Portuguese <gnome-pt_br-list@gnome.org>\n"
 "Language: pt_BR\n"
@@ -457,18 +457,18 @@ msgid "Visit extension homepage"
 msgstr "Visita a página web da extensão"
 
 #: js/gdm/authPrompt.js:135 js/ui/audioDeviceSelection.js:57
-#: js/ui/components/networkAgent.js:110 js/ui/components/polkitAgent.js:139
-#: js/ui/endSessionDialog.js:398 js/ui/extensionDownloader.js:183
+#: js/ui/components/networkAgent.js:111 js/ui/components/polkitAgent.js:139
+#: js/ui/endSessionDialog.js:438 js/ui/extensionDownloader.js:183
 #: js/ui/shellMountOperation.js:376 js/ui/shellMountOperation.js:386
 #: js/ui/status/network.js:940 subprojects/extensions-app/js/main.js:149
 msgid "Cancel"
 msgstr "Cancelar"
 
 #. Cisco LEAP
-#: js/gdm/authPrompt.js:237 js/ui/components/networkAgent.js:205
-#: js/ui/components/networkAgent.js:221 js/ui/components/networkAgent.js:245
-#: js/ui/components/networkAgent.js:266 js/ui/components/networkAgent.js:286
-#: js/ui/components/networkAgent.js:296 js/ui/components/polkitAgent.js:277
+#: js/gdm/authPrompt.js:237 js/ui/components/networkAgent.js:206
+#: js/ui/components/networkAgent.js:222 js/ui/components/networkAgent.js:246
+#: js/ui/components/networkAgent.js:267 js/ui/components/networkAgent.js:287
+#: js/ui/components/networkAgent.js:297 js/ui/components/polkitAgent.js:277
 #: js/ui/shellMountOperation.js:326
 msgid "Password"
 msgstr "Senha"
@@ -491,8 +491,8 @@ msgstr "(ex.: usuário ou %s)"
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: js/gdm/loginDialog.js:918 js/ui/components/networkAgent.js:241
-#: js/ui/components/networkAgent.js:264 js/ui/components/networkAgent.js:282
+#: js/gdm/loginDialog.js:918 js/ui/components/networkAgent.js:242
+#: js/ui/components/networkAgent.js:265 js/ui/components/networkAgent.js:283
 msgid "Username"
 msgstr "Nome de usuário"
 
@@ -514,71 +514,85 @@ msgid "(or swipe finger)"
 msgstr "(ou deslize o dedo)"
 
 #. Translators: The name of the power-off action in search
-#: js/misc/systemActions.js:93
+#: js/misc/systemActions.js:91
 msgctxt "search-result"
 msgid "Power Off"
 msgstr "Desligar"
 
 #. Translators: A list of keywords that match the power-off action, separated by semicolons
-#: js/misc/systemActions.js:96
-msgid "power off;shutdown;reboot;restart;halt;stop"
+#: js/misc/systemActions.js:94
+#| msgid "power off;shutdown;reboot;restart;halt;stop"
+msgid "power off;shutdown;halt;stop"
 msgstr "desligar;desligamento;reinicialização;reiniciar"
 
+#. Translators: The name of the restart action in search
+#: js/misc/systemActions.js:99
+#| msgctxt "button"
+#| msgid "Restart"
+msgctxt "search-result"
+msgid "Restart"
+msgstr "Reiniciar"
+
+#. Translators: A list of keywords that match the restart action, separated by semicolons
+#: js/misc/systemActions.js:102
+msgid "reboot;restart;"
+msgstr "reiniciar;"
+
 #. Translators: The name of the lock screen action in search
-#: js/misc/systemActions.js:101
+#: js/misc/systemActions.js:107
 msgctxt "search-result"
 msgid "Lock Screen"
 msgstr "Bloquear tela"
 
 #. Translators: A list of keywords that match the lock screen action, separated by semicolons
-#: js/misc/systemActions.js:104
+#: js/misc/systemActions.js:110
 msgid "lock screen"
 msgstr "tela de bloqueio"
 
 #. Translators: The name of the logout action in search
-#: js/misc/systemActions.js:109
+#: js/misc/systemActions.js:115
 msgctxt "search-result"
 msgid "Log Out"
 msgstr "Encerrar sessão"
 
 #. Translators: A list of keywords that match the logout action, separated by semicolons
-#: js/misc/systemActions.js:112
+#: js/misc/systemActions.js:118
 msgid "logout;log out;sign off"
 msgstr "encerrar sessão;desconectar;sair"
 
 #. Translators: The name of the suspend action in search
-#: js/misc/systemActions.js:117
+#: js/misc/systemActions.js:123
 msgctxt "search-result"
 msgid "Suspend"
 msgstr "Suspender"
 
 #. Translators: A list of keywords that match the suspend action, separated by semicolons
-#: js/misc/systemActions.js:120
+#: js/misc/systemActions.js:126
 msgid "suspend;sleep"
 msgstr "suspender;dormir"
 
 #. Translators: The name of the switch user action in search
-#: js/misc/systemActions.js:125
+#: js/misc/systemActions.js:131
 msgctxt "search-result"
 msgid "Switch User"
 msgstr "Alternar usuário"
 
 #. Translators: A list of keywords that match the switch user action, separated by semicolons
-#: js/misc/systemActions.js:128
+#: js/misc/systemActions.js:134
 msgid "switch user"
 msgstr "alternar usuário;trocar de usuário"
 
 #. Translators: A list of keywords that match the lock orientation action, separated by semicolons
-#: js/misc/systemActions.js:135
+#: js/misc/systemActions.js:141
 msgid "lock orientation;unlock orientation;screen;rotation"
 msgstr "bloqueio de orientação;desbloqueio de orientação;tela;rotação"
 
-#: js/misc/systemActions.js:255
+#: js/misc/systemActions.js:266
 msgctxt "search-result"
 msgid "Unlock Screen Rotation"
 msgstr "Desbloquear rotação de tela"
 
-#: js/misc/systemActions.js:256
+#: js/misc/systemActions.js:267
 msgctxt "search-result"
 msgid "Lock Screen Rotation"
 msgstr "Bloquear rotação de tela"
@@ -749,31 +763,31 @@ msgid "Unnamed Folder"
 msgstr "Pasta sem nome"
 
 #. Translators: This is the heading of a list of open windows
-#: js/ui/appDisplay.js:2762 js/ui/panel.js:75
+#: js/ui/appDisplay.js:2766 js/ui/panel.js:75
 msgid "Open Windows"
 msgstr "Janelas abertas"
 
-#: js/ui/appDisplay.js:2781 js/ui/panel.js:82
+#: js/ui/appDisplay.js:2785 js/ui/panel.js:82
 msgid "New Window"
 msgstr "Nova janela"
 
-#: js/ui/appDisplay.js:2797
+#: js/ui/appDisplay.js:2801
 msgid "Launch using Integrated Graphics Card"
 msgstr "Iniciar usando placa de vídeo integrada"
 
-#: js/ui/appDisplay.js:2798
+#: js/ui/appDisplay.js:2802
 msgid "Launch using Discrete Graphics Card"
 msgstr "Iniciar usando placa de vídeo dedicada"
 
-#: js/ui/appDisplay.js:2826 js/ui/dash.js:239
+#: js/ui/appDisplay.js:2830 js/ui/dash.js:239
 msgid "Remove from Favorites"
 msgstr "Remover dos favoritos"
 
-#: js/ui/appDisplay.js:2832
+#: js/ui/appDisplay.js:2836
 msgid "Add to Favorites"
 msgstr "Adicionar aos favoritos"
 
-#: js/ui/appDisplay.js:2842 js/ui/panel.js:93
+#: js/ui/appDisplay.js:2846 js/ui/panel.js:93
 msgid "Show Details"
 msgstr "Mostrar detalhes"
 
@@ -967,40 +981,40 @@ msgstr "A versão do udisks instalado não possui suporte à configuração do P
 msgid "Open with %s"
 msgstr "Abrir com %s"
 
-#: js/ui/components/networkAgent.js:92
+#: js/ui/components/networkAgent.js:93
 msgid ""
 "Alternatively you can connect by pushing the “WPS” button on your router."
 msgstr ""
 "Alternativamente, você pode conectar pressionando o botão “WPS” em seu "
 "roteador."
 
-#: js/ui/components/networkAgent.js:104 js/ui/status/network.js:252
+#: js/ui/components/networkAgent.js:105 js/ui/status/network.js:252
 #: js/ui/status/network.js:343 js/ui/status/network.js:943
 msgid "Connect"
 msgstr "Conectar"
 
-#: js/ui/components/networkAgent.js:211
+#: js/ui/components/networkAgent.js:212
 msgid "Key"
 msgstr "Chave"
 
-#: js/ui/components/networkAgent.js:249 js/ui/components/networkAgent.js:272
+#: js/ui/components/networkAgent.js:250 js/ui/components/networkAgent.js:273
 msgid "Private key password"
 msgstr "Senha da chave privada"
 
-#: js/ui/components/networkAgent.js:270
+#: js/ui/components/networkAgent.js:271
 msgid "Identity"
 msgstr "Identidade"
 
-#: js/ui/components/networkAgent.js:284
+#: js/ui/components/networkAgent.js:285
 msgid "Service"
 msgstr "Serviço"
 
-#: js/ui/components/networkAgent.js:313 js/ui/components/networkAgent.js:341
-#: js/ui/components/networkAgent.js:680 js/ui/components/networkAgent.js:701
+#: js/ui/components/networkAgent.js:314 js/ui/components/networkAgent.js:342
+#: js/ui/components/networkAgent.js:675 js/ui/components/networkAgent.js:696
 msgid "Authentication required"
 msgstr "Autenticação necessária"
 
-#: js/ui/components/networkAgent.js:314 js/ui/components/networkAgent.js:681
+#: js/ui/components/networkAgent.js:315 js/ui/components/networkAgent.js:676
 #, javascript-format
 msgid ""
 "Passwords or encryption keys are required to access the wireless network "
@@ -1009,42 +1023,42 @@ msgstr ""
 "Senhas ou chaves criptografadas são necessárias para acessar a rede sem fio "
 "“%s”."
 
-#: js/ui/components/networkAgent.js:318 js/ui/components/networkAgent.js:685
+#: js/ui/components/networkAgent.js:319 js/ui/components/networkAgent.js:680
 msgid "Wired 802.1X authentication"
 msgstr "Autenticação 802.1X cabeada"
 
-#: js/ui/components/networkAgent.js:320
+#: js/ui/components/networkAgent.js:321
 msgid "Network name"
 msgstr "Nome da rede"
 
-#: js/ui/components/networkAgent.js:325 js/ui/components/networkAgent.js:689
+#: js/ui/components/networkAgent.js:326 js/ui/components/networkAgent.js:684
 msgid "DSL authentication"
 msgstr "Autenticação DSL"
 
-#: js/ui/components/networkAgent.js:332 js/ui/components/networkAgent.js:694
+#: js/ui/components/networkAgent.js:333 js/ui/components/networkAgent.js:689
 msgid "PIN code required"
 msgstr "Código PIN requisitado"
 
-#: js/ui/components/networkAgent.js:333 js/ui/components/networkAgent.js:695
+#: js/ui/components/networkAgent.js:334 js/ui/components/networkAgent.js:690
 msgid "PIN code is needed for the mobile broadband device"
 msgstr "O código PIN é necessário para o dispositivo móvel de banda larga"
 
-#: js/ui/components/networkAgent.js:334
+#: js/ui/components/networkAgent.js:335
 msgid "PIN"
 msgstr "PIN"
 
-#: js/ui/components/networkAgent.js:342 js/ui/components/networkAgent.js:686
-#: js/ui/components/networkAgent.js:690 js/ui/components/networkAgent.js:702
-#: js/ui/components/networkAgent.js:706
+#: js/ui/components/networkAgent.js:343 js/ui/components/networkAgent.js:681
+#: js/ui/components/networkAgent.js:685 js/ui/components/networkAgent.js:697
+#: js/ui/components/networkAgent.js:701
 #, javascript-format
 msgid "A password is required to connect to “%s”."
 msgstr "Uma senha é necessária para se conectar a “%s”."
 
-#: js/ui/components/networkAgent.js:669 js/ui/status/network.js:1718
+#: js/ui/components/networkAgent.js:664 js/ui/status/network.js:1718
 msgid "Network Manager"
 msgstr "Gerenciador de rede"
 
-#: js/ui/components/networkAgent.js:705
+#: js/ui/components/networkAgent.js:700
 msgid "VPN password"
 msgstr "Senha de VPN"
 
@@ -1166,86 +1180,93 @@ msgstr "Meteorologia"
 msgid "Select weather location…"
 msgstr "Selecione uma localização meteorológica…"
 
-#: js/ui/endSessionDialog.js:37
+#: js/ui/endSessionDialog.js:39
 #, javascript-format
 msgctxt "title"
 msgid "Log Out %s"
 msgstr "Encerrar sessão de %s"
 
-#: js/ui/endSessionDialog.js:38
+#: js/ui/endSessionDialog.js:40
 msgctxt "title"
 msgid "Log Out"
 msgstr "Encerrar sessão"
 
-#: js/ui/endSessionDialog.js:40
+#: js/ui/endSessionDialog.js:43
 #, javascript-format
 msgid "%s will be logged out automatically in %d second."
 msgid_plural "%s will be logged out automatically in %d seconds."
 msgstr[0] "%s encerrará a sessão automaticamente em %d segundo."
 msgstr[1] "%s encerrará a sessão automaticamente em %d segundos."
 
-#: js/ui/endSessionDialog.js:45
+#: js/ui/endSessionDialog.js:49
 #, javascript-format
 msgid "You will be logged out automatically in %d second."
 msgid_plural "You will be logged out automatically in %d seconds."
 msgstr[0] "Sua sessão será encerrada automaticamente em %d segundo."
 msgstr[1] "Sua sessão será encerrada automaticamente em %d segundos."
 
-#: js/ui/endSessionDialog.js:51
+#: js/ui/endSessionDialog.js:56
 msgctxt "button"
 msgid "Log Out"
 msgstr "Encerrar sessão"
 
-#: js/ui/endSessionDialog.js:56
+#: js/ui/endSessionDialog.js:62
 msgctxt "title"
 msgid "Power Off"
 msgstr "Desligar"
 
-#: js/ui/endSessionDialog.js:57
+#: js/ui/endSessionDialog.js:63
 msgctxt "title"
 msgid "Install Updates & Power Off"
 msgstr "Instalar atualizações & desligar"
 
-#: js/ui/endSessionDialog.js:59
+#: js/ui/endSessionDialog.js:66
 #, javascript-format
 msgid "The system will power off automatically in %d second."
 msgid_plural "The system will power off automatically in %d seconds."
 msgstr[0] "O sistema será desligado automaticamente em %d segundo."
 msgstr[1] "O sistema será desligado automaticamente em %d segundos."
 
-#: js/ui/endSessionDialog.js:63
+#: js/ui/endSessionDialog.js:70 js/ui/endSessionDialog.js:89
 msgctxt "checkbox"
 msgid "Install pending software updates"
 msgstr "Instalar atualizações de software pendentes"
 
-#: js/ui/endSessionDialog.js:66 js/ui/endSessionDialog.js:82
-msgctxt "button"
-msgid "Restart"
-msgstr "Reiniciar"
-
-#: js/ui/endSessionDialog.js:68
+#: js/ui/endSessionDialog.js:74
 msgctxt "button"
 msgid "Power Off"
 msgstr "Desligar"
 
-#: js/ui/endSessionDialog.js:74
+#: js/ui/endSessionDialog.js:81
 msgctxt "title"
 msgid "Restart"
 msgstr "Reiniciar"
 
-#: js/ui/endSessionDialog.js:76
+#: js/ui/endSessionDialog.js:82
+#| msgctxt "title"
+#| msgid "Install Updates & Power Off"
+msgctxt "title"
+msgid "Install Updates & Restart"
+msgstr "Instalar atualizações & reiniciar"
+
+#: js/ui/endSessionDialog.js:85
 #, javascript-format
 msgid "The system will restart automatically in %d second."
 msgid_plural "The system will restart automatically in %d seconds."
 msgstr[0] "O sistema irá reiniciar automaticamente em %d segundo."
 msgstr[1] "O sistema irá reiniciar automaticamente em %d segundos."
 
-#: js/ui/endSessionDialog.js:89
+#: js/ui/endSessionDialog.js:93
+msgctxt "button"
+msgid "Restart"
+msgstr "Reiniciar"
+
+#: js/ui/endSessionDialog.js:101
 msgctxt "title"
 msgid "Restart & Install Updates"
 msgstr "Reiniciar & instalar atualizações"
 
-#: js/ui/endSessionDialog.js:91
+#: js/ui/endSessionDialog.js:104
 #, javascript-format
 msgid "The system will automatically restart and install updates in %d second."
 msgid_plural ""
@@ -1257,22 +1278,22 @@ msgstr[1] ""
 "O sistema irá reiniciar e instalar atualizações automaticamente em %d "
 "segundos."
 
-#: js/ui/endSessionDialog.js:97 js/ui/endSessionDialog.js:116
+#: js/ui/endSessionDialog.js:111 js/ui/endSessionDialog.js:132
 msgctxt "button"
 msgid "Restart &amp; Install"
 msgstr "Reiniciar &amp; instalar"
 
-#: js/ui/endSessionDialog.js:98
+#: js/ui/endSessionDialog.js:113
 msgctxt "button"
 msgid "Install &amp; Power Off"
 msgstr "Instalar &amp; desligar"
 
-#: js/ui/endSessionDialog.js:99
+#: js/ui/endSessionDialog.js:114
 msgctxt "checkbox"
 msgid "Power off after updates are installed"
 msgstr "Desligar após atualizações serem instaladas"
 
-#: js/ui/endSessionDialog.js:106
+#: js/ui/endSessionDialog.js:121
 msgctxt "title"
 msgid "Restart & Install Upgrade"
 msgstr "Reiniciar & instalar atualizações"
@@ -1280,7 +1301,7 @@ msgstr "Reiniciar & instalar atualizações"
 #. Translators: This is the text displayed for system upgrades in the
 #. shut down dialog. First %s gets replaced with the distro name and
 #. second %s with the distro version to upgrade to
-#: js/ui/endSessionDialog.js:111
+#: js/ui/endSessionDialog.js:126
 #, javascript-format
 msgid ""
 "%s %s will be installed after restart. Upgrade installation can take a long "
@@ -1290,32 +1311,32 @@ msgstr ""
 "pode levar um longo tempo: certifique-se de que fez cópia de segurança (back "
 "up) e que o computador esteja ligado na tomada."
 
-#: js/ui/endSessionDialog.js:267
-msgid "Running on battery power: Please plug in before installing updates."
-msgstr ""
-"Funcionando na bateria: conecte na tomada antes de instalar atualizações."
+#: js/ui/endSessionDialog.js:284
+#| msgid "Running on battery power: Please plug in before installing updates."
+msgid "Low battery power: please plug in before installing updates."
+msgstr "Bateria fraca: conecte na tomada antes de instalar atualizações."
 
-#: js/ui/endSessionDialog.js:276
+#: js/ui/endSessionDialog.js:293
 msgid "Some applications are busy or have unsaved work"
 msgstr "Alguns aplicativos estão ocupados ou possuem trabalhos não salvos"
 
-#: js/ui/endSessionDialog.js:281
+#: js/ui/endSessionDialog.js:298
 msgid "Other users are logged in"
 msgstr "Outros usuários estão com sessão aberta"
 
-#: js/ui/endSessionDialog.js:427
+#: js/ui/endSessionDialog.js:467
 msgctxt "button"
 msgid "Boot Options"
 msgstr "Opções de inicialização"
 
 #. Translators: Remote here refers to a remote session, like a ssh login
-#: js/ui/endSessionDialog.js:645
+#: js/ui/endSessionDialog.js:685
 #, javascript-format
 msgid "%s (remote)"
 msgstr "%s (remoto)"
 
 #. Translators: Console here refers to a tty like a VT console
-#: js/ui/endSessionDialog.js:648
+#: js/ui/endSessionDialog.js:688
 #, javascript-format
 msgid "%s (console)"
 msgstr "%s (console)"
@@ -1333,11 +1354,11 @@ msgstr "Instalar extensão"
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "Baixar e instalar “%s” de extensions.gnome.org?"
 
-#: js/ui/extensionSystem.js:252
+#: js/ui/extensionSystem.js:253
 msgid "Extension Updates Available"
 msgstr "Atualizações de extensões disponíveis"
 
-#: js/ui/extensionSystem.js:253
+#: js/ui/extensionSystem.js:254
 msgid "Extension updates are ready to be installed."
 msgstr "Atualizações de extensões estão prontas para serem instaladas."
 
@@ -1434,7 +1455,7 @@ msgstr "Desligar"
 msgid "Leave Off"
 msgstr "Deixar desativado"
 
-#: js/ui/keyboard.js:225
+#: js/ui/keyboard.js:226
 msgid "Region & Language Settings"
 msgstr "Configurações regionais e de idioma"
 
@@ -1537,27 +1558,27 @@ msgstr "Panorama"
 msgid "Type to search"
 msgstr "Digite para pesquisar"
 
-#: js/ui/padOsd.js:95
+#: js/ui/padOsd.js:96
 msgid "New shortcut…"
 msgstr "Novo atalho…"
 
-#: js/ui/padOsd.js:142
+#: js/ui/padOsd.js:143
 msgid "Application defined"
 msgstr "Aplicativo definido"
 
-#: js/ui/padOsd.js:143
+#: js/ui/padOsd.js:144
 msgid "Show on-screen help"
 msgstr "Mostrar ajuda na tela"
 
-#: js/ui/padOsd.js:144
+#: js/ui/padOsd.js:145
 msgid "Switch monitor"
 msgstr "Trocar monitor"
 
-#: js/ui/padOsd.js:145
+#: js/ui/padOsd.js:146
 msgid "Assign keystroke"
 msgstr "Atribuir atalho"
 
-#: js/ui/padOsd.js:211
+#: js/ui/padOsd.js:212
 msgid "Done"
 msgstr "Concluído"
 
@@ -2129,29 +2150,34 @@ msgstr "Desativar"
 msgid "Airplane Mode On"
 msgstr "Modo avião ligado"
 
-#: js/ui/status/system.js:102
+#: js/ui/status/system.js:104
 msgid "Lock"
 msgstr "Bloquear"
 
-#: js/ui/status/system.js:115
+#: js/ui/status/system.js:116
 msgid "Power Off / Log Out"
 msgstr "Desligar / encerrar sessão"
 
-#: js/ui/status/system.js:118
-msgid "Log Out"
-msgstr "Encerrar sessão"
-
-#: js/ui/status/system.js:130
-msgid "Switch User…"
-msgstr "Alternar usuário…"
-
-#: js/ui/status/system.js:144
+#: js/ui/status/system.js:119
 msgid "Suspend"
 msgstr "Suspender"
 
-#: js/ui/status/system.js:156
+#: js/ui/status/system.js:130
+#| msgid "Restarting…"
+msgid "Restart…"
+msgstr "Reiniciar…"
+
+#: js/ui/status/system.js:141
 msgid "Power Off…"
 msgstr "Desligar…"
+
+#: js/ui/status/system.js:154
+msgid "Log Out"
+msgstr "Encerrar sessão"
+
+#: js/ui/status/system.js:165
+msgid "Switch User…"
+msgstr "Alternar usuário…"
 
 #: js/ui/status/thunderbolt.js:263
 msgid "Thunderbolt"
