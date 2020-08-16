@@ -17,8 +17,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2020-08-10 15:40+0000\n"
-"PO-Revision-Date: 2020-08-11 01:10+0300\n"
+"POT-Creation-Date: 2020-08-14 15:48+0000\n"
+"PO-Revision-Date: 2020-08-17 02:24+0300\n"
 "Last-Translator: Emin Tufan Çetin <etcetin@gmail.com>\n"
 "Language-Team: Türkçe <gnome-turk@gnome.org>\n"
 "Language: tr\n"
@@ -445,18 +445,18 @@ msgid "Visit extension homepage"
 msgstr "Uzantı ana sayfasını ziyaret et"
 
 #: js/gdm/authPrompt.js:135 js/ui/audioDeviceSelection.js:57
-#: js/ui/components/networkAgent.js:110 js/ui/components/polkitAgent.js:139
-#: js/ui/endSessionDialog.js:413 js/ui/extensionDownloader.js:183
+#: js/ui/components/networkAgent.js:111 js/ui/components/polkitAgent.js:139
+#: js/ui/endSessionDialog.js:438 js/ui/extensionDownloader.js:183
 #: js/ui/shellMountOperation.js:376 js/ui/shellMountOperation.js:386
 #: js/ui/status/network.js:940 subprojects/extensions-app/js/main.js:149
 msgid "Cancel"
 msgstr "İptal"
 
 #. Cisco LEAP
-#: js/gdm/authPrompt.js:237 js/ui/components/networkAgent.js:205
-#: js/ui/components/networkAgent.js:221 js/ui/components/networkAgent.js:245
-#: js/ui/components/networkAgent.js:266 js/ui/components/networkAgent.js:286
-#: js/ui/components/networkAgent.js:296 js/ui/components/polkitAgent.js:277
+#: js/gdm/authPrompt.js:237 js/ui/components/networkAgent.js:206
+#: js/ui/components/networkAgent.js:222 js/ui/components/networkAgent.js:246
+#: js/ui/components/networkAgent.js:267 js/ui/components/networkAgent.js:287
+#: js/ui/components/networkAgent.js:297 js/ui/components/polkitAgent.js:277
 #: js/ui/shellMountOperation.js:326
 msgid "Password"
 msgstr "Parola"
@@ -479,8 +479,8 @@ msgstr "(örneğin, kullanıcı veya %s)"
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: js/gdm/loginDialog.js:918 js/ui/components/networkAgent.js:241
-#: js/ui/components/networkAgent.js:264 js/ui/components/networkAgent.js:282
+#: js/gdm/loginDialog.js:918 js/ui/components/networkAgent.js:242
+#: js/ui/components/networkAgent.js:265 js/ui/components/networkAgent.js:283
 msgid "Username"
 msgstr "Kullanıcı Adı"
 
@@ -742,31 +742,31 @@ msgid "Unnamed Folder"
 msgstr "Adsız Klasör"
 
 #. Translators: This is the heading of a list of open windows
-#: js/ui/appDisplay.js:2762 js/ui/panel.js:75
+#: js/ui/appDisplay.js:2766 js/ui/panel.js:75
 msgid "Open Windows"
 msgstr "Açık Pencereler"
 
-#: js/ui/appDisplay.js:2781 js/ui/panel.js:82
+#: js/ui/appDisplay.js:2785 js/ui/panel.js:82
 msgid "New Window"
 msgstr "Yeni Pencere"
 
-#: js/ui/appDisplay.js:2797
+#: js/ui/appDisplay.js:2801
 msgid "Launch using Integrated Graphics Card"
 msgstr "Tümleşik Ekran Kartıyla Başlat"
 
-#: js/ui/appDisplay.js:2798
+#: js/ui/appDisplay.js:2802
 msgid "Launch using Discrete Graphics Card"
 msgstr "Ayrık Ekran Kartıyla Başlat"
 
-#: js/ui/appDisplay.js:2826 js/ui/dash.js:239
+#: js/ui/appDisplay.js:2830 js/ui/dash.js:239
 msgid "Remove from Favorites"
 msgstr "Sık Kullanılanlardan Çıkar"
 
-#: js/ui/appDisplay.js:2832
+#: js/ui/appDisplay.js:2836
 msgid "Add to Favorites"
 msgstr "Sık Kullanılanlara Ekle"
 
-#: js/ui/appDisplay.js:2842 js/ui/panel.js:93
+#: js/ui/appDisplay.js:2846 js/ui/panel.js:93
 msgid "Show Details"
 msgstr "Ayrıntıları Göster"
 
@@ -960,40 +960,40 @@ msgstr "Kurulu udisks sürümü PIM ayarını desteklemiyor"
 msgid "Open with %s"
 msgstr "%s ile Aç"
 
-#: js/ui/components/networkAgent.js:92
+#: js/ui/components/networkAgent.js:93
 msgid ""
 "Alternatively you can connect by pushing the “WPS” button on your router."
 msgstr ""
 "Diğer seçenek olarak, yönlendiricinizde “WPS” düğmesini kullanarak "
 "bağlayabilirsiniz."
 
-#: js/ui/components/networkAgent.js:104 js/ui/status/network.js:252
+#: js/ui/components/networkAgent.js:105 js/ui/status/network.js:252
 #: js/ui/status/network.js:343 js/ui/status/network.js:943
 msgid "Connect"
 msgstr "Bağlan"
 
-#: js/ui/components/networkAgent.js:211
+#: js/ui/components/networkAgent.js:212
 msgid "Key"
 msgstr "Anahtar"
 
-#: js/ui/components/networkAgent.js:249 js/ui/components/networkAgent.js:272
+#: js/ui/components/networkAgent.js:250 js/ui/components/networkAgent.js:273
 msgid "Private key password"
 msgstr "Özel anahtar parolası"
 
-#: js/ui/components/networkAgent.js:270
+#: js/ui/components/networkAgent.js:271
 msgid "Identity"
 msgstr "Kimlik"
 
-#: js/ui/components/networkAgent.js:284
+#: js/ui/components/networkAgent.js:285
 msgid "Service"
 msgstr "Hizmet"
 
-#: js/ui/components/networkAgent.js:313 js/ui/components/networkAgent.js:341
-#: js/ui/components/networkAgent.js:680 js/ui/components/networkAgent.js:701
+#: js/ui/components/networkAgent.js:314 js/ui/components/networkAgent.js:342
+#: js/ui/components/networkAgent.js:675 js/ui/components/networkAgent.js:696
 msgid "Authentication required"
 msgstr "Kimlik doğrulama gerekir"
 
-#: js/ui/components/networkAgent.js:314 js/ui/components/networkAgent.js:681
+#: js/ui/components/networkAgent.js:315 js/ui/components/networkAgent.js:676
 #, javascript-format
 msgid ""
 "Passwords or encryption keys are required to access the wireless network "
@@ -1001,42 +1001,42 @@ msgid ""
 msgstr ""
 "“%s” kablosuz ağına erişmek için parola veya şifreleme anahtarları gerekiyor."
 
-#: js/ui/components/networkAgent.js:318 js/ui/components/networkAgent.js:685
+#: js/ui/components/networkAgent.js:319 js/ui/components/networkAgent.js:680
 msgid "Wired 802.1X authentication"
 msgstr "Kablolu 802.1X kimlik doğrulaması"
 
-#: js/ui/components/networkAgent.js:320
+#: js/ui/components/networkAgent.js:321
 msgid "Network name"
 msgstr "Ağ adı"
 
-#: js/ui/components/networkAgent.js:325 js/ui/components/networkAgent.js:689
+#: js/ui/components/networkAgent.js:326 js/ui/components/networkAgent.js:684
 msgid "DSL authentication"
 msgstr "DSL kimlik doğrulama"
 
-#: js/ui/components/networkAgent.js:332 js/ui/components/networkAgent.js:694
+#: js/ui/components/networkAgent.js:333 js/ui/components/networkAgent.js:689
 msgid "PIN code required"
 msgstr "PIN kodu gerekli"
 
-#: js/ui/components/networkAgent.js:333 js/ui/components/networkAgent.js:695
+#: js/ui/components/networkAgent.js:334 js/ui/components/networkAgent.js:690
 msgid "PIN code is needed for the mobile broadband device"
 msgstr "Mobil geniş bant aygıtı için PIN kodu gerekli"
 
-#: js/ui/components/networkAgent.js:334
+#: js/ui/components/networkAgent.js:335
 msgid "PIN"
 msgstr "PIN"
 
-#: js/ui/components/networkAgent.js:342 js/ui/components/networkAgent.js:686
-#: js/ui/components/networkAgent.js:690 js/ui/components/networkAgent.js:702
-#: js/ui/components/networkAgent.js:706
+#: js/ui/components/networkAgent.js:343 js/ui/components/networkAgent.js:681
+#: js/ui/components/networkAgent.js:685 js/ui/components/networkAgent.js:697
+#: js/ui/components/networkAgent.js:701
 #, javascript-format
 msgid "A password is required to connect to “%s”."
 msgstr "“%s”e bağlanmak için parola gerekli."
 
-#: js/ui/components/networkAgent.js:669 js/ui/status/network.js:1718
+#: js/ui/components/networkAgent.js:664 js/ui/status/network.js:1718
 msgid "Network Manager"
 msgstr "Ağ Yöneticisi"
 
-#: js/ui/components/networkAgent.js:705
+#: js/ui/components/networkAgent.js:700
 msgid "VPN password"
 msgstr "VPN parolası"
 
@@ -1158,87 +1158,87 @@ msgstr "Hava Durumu"
 msgid "Select weather location…"
 msgstr "Hava durumu konumu seç…"
 
-#: js/ui/endSessionDialog.js:37
+#: js/ui/endSessionDialog.js:39
 #, javascript-format
 msgctxt "title"
 msgid "Log Out %s"
 msgstr "%s Oturumunu Kapat"
 
-#: js/ui/endSessionDialog.js:38
+#: js/ui/endSessionDialog.js:40
 msgctxt "title"
 msgid "Log Out"
 msgstr "Oturumu Kapat"
 
-#: js/ui/endSessionDialog.js:41
+#: js/ui/endSessionDialog.js:43
 #, javascript-format
 msgid "%s will be logged out automatically in %d second."
 msgid_plural "%s will be logged out automatically in %d seconds."
 msgstr[0] "%s oturumu %d saniye içinde kendiliğinden kapatılacak."
 
-#: js/ui/endSessionDialog.js:47
+#: js/ui/endSessionDialog.js:49
 #, javascript-format
 msgid "You will be logged out automatically in %d second."
 msgid_plural "You will be logged out automatically in %d seconds."
 msgstr[0] "%d saniye içinde oturumunuz kendiliğinden kapatılacak."
 
-#: js/ui/endSessionDialog.js:54
+#: js/ui/endSessionDialog.js:56
 msgctxt "button"
 msgid "Log Out"
 msgstr "Çıkış"
 
-#: js/ui/endSessionDialog.js:60
+#: js/ui/endSessionDialog.js:62
 msgctxt "title"
 msgid "Power Off"
 msgstr "Bilgisayarı Kapat"
 
-#: js/ui/endSessionDialog.js:61
+#: js/ui/endSessionDialog.js:63
 msgctxt "title"
 msgid "Install Updates & Power Off"
 msgstr "Güncelleştirmeleri Kur ve Kapat"
 
-#: js/ui/endSessionDialog.js:64
+#: js/ui/endSessionDialog.js:66
 #, javascript-format
 msgid "The system will power off automatically in %d second."
 msgid_plural "The system will power off automatically in %d seconds."
 msgstr[0] "Sistem %d saniye içinde kendiliğinden kapanacak."
 
-#: js/ui/endSessionDialog.js:68 js/ui/endSessionDialog.js:87
+#: js/ui/endSessionDialog.js:70 js/ui/endSessionDialog.js:89
 msgctxt "checkbox"
 msgid "Install pending software updates"
 msgstr "Beklemede olan yazılım güncelleştirmelerini kur"
 
-#: js/ui/endSessionDialog.js:72
+#: js/ui/endSessionDialog.js:74
 msgctxt "button"
 msgid "Power Off"
 msgstr "Kapat"
 
-#: js/ui/endSessionDialog.js:79
+#: js/ui/endSessionDialog.js:81
 msgctxt "title"
 msgid "Restart"
 msgstr "Bilgisayarı Yeniden Başlat"
 
-#: js/ui/endSessionDialog.js:80
+#: js/ui/endSessionDialog.js:82
 msgctxt "title"
 msgid "Install Updates & Restart"
 msgstr "Güncelleştirmeleri Kur ve Yeniden Başlat"
 
-#: js/ui/endSessionDialog.js:83
+#: js/ui/endSessionDialog.js:85
 #, javascript-format
 msgid "The system will restart automatically in %d second."
 msgid_plural "The system will restart automatically in %d seconds."
 msgstr[0] "Sistem %d saniye içinde kendiliğinden yeniden başlayacak."
 
-#: js/ui/endSessionDialog.js:91
+#: js/ui/endSessionDialog.js:93
 msgctxt "button"
 msgid "Restart"
 msgstr "Yeniden Başlat"
 
-#: js/ui/endSessionDialog.js:99
+#: js/ui/endSessionDialog.js:101
 msgctxt "title"
 msgid "Restart & Install Updates"
 msgstr "Yeniden Başlat ve Güncelleştirmeleri Kur"
 
-#: js/ui/endSessionDialog.js:102
+#: js/ui/endSessionDialog.js:104
 #, javascript-format
 msgid "The system will automatically restart and install updates in %d second."
 msgid_plural ""
@@ -1247,22 +1247,22 @@ msgstr[0] ""
 "Sistem %d saniye içinde kendiliğinden yeniden başlayacak ve "
 "güncelleştirmeleri kuracak."
 
-#: js/ui/endSessionDialog.js:109 js/ui/endSessionDialog.js:130
+#: js/ui/endSessionDialog.js:111 js/ui/endSessionDialog.js:132
 msgctxt "button"
 msgid "Restart &amp; Install"
 msgstr "Yeniden Başlat ve Kur"
 
-#: js/ui/endSessionDialog.js:111
+#: js/ui/endSessionDialog.js:113
 msgctxt "button"
 msgid "Install &amp; Power Off"
 msgstr "Kur ve Kapat"
 
-#: js/ui/endSessionDialog.js:112
+#: js/ui/endSessionDialog.js:114
 msgctxt "checkbox"
 msgid "Power off after updates are installed"
 msgstr "Güncelleştirmeler kurulduktan sonra kapat"
 
-#: js/ui/endSessionDialog.js:119
+#: js/ui/endSessionDialog.js:121
 msgctxt "title"
 msgid "Restart & Install Upgrade"
 msgstr "Yeniden Başlat ve Yükseltmeyi Kur"
@@ -1270,7 +1270,7 @@ msgstr "Yeniden Başlat ve Yükseltmeyi Kur"
 #. Translators: This is the text displayed for system upgrades in the
 #. shut down dialog. First %s gets replaced with the distro name and
 #. second %s with the distro version to upgrade to
-#: js/ui/endSessionDialog.js:124
+#: js/ui/endSessionDialog.js:126
 #, javascript-format
 msgid ""
 "%s %s will be installed after restart. Upgrade installation can take a long "
@@ -1280,32 +1280,31 @@ msgstr ""
 "uzun sürebilir: verilerinizi yedeklediğinizden ve bilgisayarınızın prize "
 "takılı olduğundan emin olun."
 
-#: js/ui/endSessionDialog.js:282
-msgid "Running on battery power: Please plug in before installing updates."
-msgstr ""
-"Pil gücünde çalışıyor: lütfen güncelleştirmeleri kurmadan önce fişi takın."
+#: js/ui/endSessionDialog.js:284
+msgid "Low battery power: please plug in before installing updates."
+msgstr "Düşük pil gücü: lütfen güncelleştirmeleri kurmadan önce fişi takın."
 
-#: js/ui/endSessionDialog.js:291
+#: js/ui/endSessionDialog.js:293
 msgid "Some applications are busy or have unsaved work"
 msgstr "Bazı uygulamalar meşgul ya da kaydedilmemiş verisi var"
 
-#: js/ui/endSessionDialog.js:296
+#: js/ui/endSessionDialog.js:298
 msgid "Other users are logged in"
 msgstr "Diğer kullanıcılar oturum açmış"
 
-#: js/ui/endSessionDialog.js:442
+#: js/ui/endSessionDialog.js:467
 msgctxt "button"
 msgid "Boot Options"
 msgstr "Önyükleme Seçenekleri"
 
 #. Translators: Remote here refers to a remote session, like a ssh login
-#: js/ui/endSessionDialog.js:660
+#: js/ui/endSessionDialog.js:685
 #, javascript-format
 msgid "%s (remote)"
 msgstr "%s (uzak)"
 
 #. Translators: Console here refers to a tty like a VT console
-#: js/ui/endSessionDialog.js:663
+#: js/ui/endSessionDialog.js:688
 #, javascript-format
 msgid "%s (console)"
 msgstr "%s (uçbirim)"
@@ -1316,18 +1315,18 @@ msgstr "Kur"
 
 #: js/ui/extensionDownloader.js:193
 msgid "Install Extension"
-msgstr "Uzantı Yükle"
+msgstr "Uzantı Kur"
 
 #: js/ui/extensionDownloader.js:194
 #, javascript-format
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "“%s” uzantısı extensions.gnome.org üstünden indirilip kurulsun mu?"
 
-#: js/ui/extensionSystem.js:252
+#: js/ui/extensionSystem.js:253
 msgid "Extension Updates Available"
 msgstr "Uzantı Güncellemeleri Var"
 
-#: js/ui/extensionSystem.js:253
+#: js/ui/extensionSystem.js:254
 msgid "Extension updates are ready to be installed."
 msgstr "Uzantı güncellemeleri kuruluma hazır."
 
@@ -1421,7 +1420,7 @@ msgstr "Kapat"
 msgid "Leave Off"
 msgstr "Kapalı Bırak"
 
-#: js/ui/keyboard.js:225
+#: js/ui/keyboard.js:226
 msgid "Region & Language Settings"
 msgstr "Bölge ve Dil Ayarları"
 
@@ -1524,27 +1523,27 @@ msgstr "Genel Görünüm"
 msgid "Type to search"
 msgstr "Aramak için yaz"
 
-#: js/ui/padOsd.js:95
+#: js/ui/padOsd.js:96
 msgid "New shortcut…"
 msgstr "Yeni kısayol…"
 
-#: js/ui/padOsd.js:142
+#: js/ui/padOsd.js:143
 msgid "Application defined"
 msgstr "Uygulama tanımlı"
 
-#: js/ui/padOsd.js:143
+#: js/ui/padOsd.js:144
 msgid "Show on-screen help"
 msgstr "Ekranda yardımı göster"
 
-#: js/ui/padOsd.js:144
+#: js/ui/padOsd.js:145
 msgid "Switch monitor"
 msgstr "Monitör değiştir"
 
-#: js/ui/padOsd.js:145
+#: js/ui/padOsd.js:146
 msgid "Assign keystroke"
 msgstr "Tuş vuruşu ata"
 
-#: js/ui/padOsd.js:211
+#: js/ui/padOsd.js:212
 msgid "Done"
 msgstr "Bitti"
 
@@ -2678,7 +2677,7 @@ msgstr "UZANTI_DEMETİ"
 
 #: subprojects/extensions-tool/src/command-install.c:184
 msgid "Install an extension bundle"
-msgstr "Uzantı demeti yükle"
+msgstr "Uzantı demeti kur"
 
 #: subprojects/extensions-tool/src/command-install.c:202
 msgid "No extension bundle specified"
@@ -2892,7 +2891,7 @@ msgstr "Uzantıyı paketle"
 
 #: subprojects/extensions-tool/src/main.c:328
 msgid "Install extension bundle"
-msgstr "Uzantı demetini yükle"
+msgstr "Uzantı demetini kur"
 
 #: subprojects/extensions-tool/src/main.c:330
 #, c-format
