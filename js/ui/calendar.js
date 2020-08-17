@@ -684,6 +684,7 @@ var Calendar = GObject.registerClass({
                                            style_class: 'calendar-day-base calendar-week-number',
                                            can_focus: true });
                 let weekFormat = Shell.util_translate_time_string(N_("Week %V"));
+                label.clutter_text.y_align = Clutter.ActorAlign.CENTER;
                 label.accessible_name = iter.toLocaleFormat(weekFormat);
                 layout.attach(label, rtl ? 7 : 0, row, 1, 1);
             }
