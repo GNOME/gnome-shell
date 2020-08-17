@@ -44,7 +44,7 @@ var AuthenticationDialog = GObject.registerClass({
         let bodyContent = new Dialog.MessageDialogContent();
 
         if (userNames.length > 1) {
-            log('polkitAuthenticationAgent: Received %d'.format(userNames.length) +
+            log('polkitAuthenticationAgent: Received %d '.format(userNames.length) +
                 'identities that can be used for authentication. Only ' +
                 'considering one.');
         }
