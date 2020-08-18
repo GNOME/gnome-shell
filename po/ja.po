@@ -17,7 +17,7 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
 "POT-Creation-Date: 2020-08-17 22:03+0000\n"
-"PO-Revision-Date: 2020-06-11 19:00+0900\n"
+"PO-Revision-Date: 2020-08-18 18:20+0900\n"
 "Last-Translator: sicklylife <translation@sicklylife.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
 "Language: ja\n"
@@ -494,18 +494,12 @@ msgstr "電源オフ"
 
 #. Translators: A list of keywords that match the power-off action, separated by semicolons
 #: js/misc/systemActions.js:94
-#, fuzzy
-#| msgid "power off;shutdown;reboot;restart;halt;stop"
 msgid "power off;shutdown;halt;stop"
 msgstr ""
-"power off;shutdown;reboot;restart;halt;stop;電源オフ;パワーオフ;シャットダウ"
-"ン;リブート;リスタート;再起動;停止"
+"power off;shutdown;halt;stop;電源オフ;パワーオフ;シャットダウン;停止;"
 
 #. Translators: The name of the restart action in search
 #: js/misc/systemActions.js:99
-#, fuzzy
-#| msgctxt "button"
-#| msgid "Restart"
 msgctxt "search-result"
 msgid "Restart"
 msgstr "再起動"
@@ -513,7 +507,7 @@ msgstr "再起動"
 #. Translators: A list of keywords that match the restart action, separated by semicolons
 #: js/misc/systemActions.js:102
 msgid "reboot;restart;"
-msgstr ""
+msgstr "reboot;restart;リブート;リスタート;再起動;"
 
 #. Translators: The name of the lock screen action in search
 #: js/misc/systemActions.js:107
@@ -1209,12 +1203,9 @@ msgid "Restart"
 msgstr "再起動"
 
 #: js/ui/endSessionDialog.js:82
-#, fuzzy
-#| msgctxt "title"
-#| msgid "Install Updates & Power Off"
 msgctxt "title"
 msgid "Install Updates & Restart"
-msgstr "アップデートをインストールして電源オフ"
+msgstr "アップデートをインストールして再起動"
 
 #: js/ui/endSessionDialog.js:85
 #, javascript-format
@@ -1273,11 +1264,9 @@ msgstr ""
 "ター本体は電源につないでください。"
 
 #: js/ui/endSessionDialog.js:284
-#, fuzzy
-#| msgid "Running on battery power: Please plug in before installing updates."
 msgid "Low battery power: please plug in before installing updates."
 msgstr ""
-"バッテリーで動作中です: アップデートをインストールする前に電源に接続してくだ"
+"バッテリー低下: アップデートをインストールする前に電源に接続してくだ"
 "さい。"
 
 #: js/ui/endSessionDialog.js:293
@@ -1291,7 +1280,7 @@ msgstr "他のユーザーがログインしています"
 #: js/ui/endSessionDialog.js:467
 msgctxt "button"
 msgid "Boot Options"
-msgstr ""
+msgstr "起動オプション"
 
 #. Translators: Remote here refers to a remote session, like a ssh login
 #: js/ui/endSessionDialog.js:685
@@ -2118,10 +2107,8 @@ msgid "Suspend"
 msgstr "サスペンド"
 
 #: js/ui/status/system.js:130
-#, fuzzy
-#| msgid "Restarting…"
 msgid "Restart…"
-msgstr "再起動中…"
+msgstr "再起動…"
 
 #: js/ui/status/system.js:141
 msgid "Power Off…"
@@ -2620,13 +2607,13 @@ msgstr ""
 #: subprojects/extensions-tool/src/command-info.c:50
 #: subprojects/extensions-tool/src/command-list.c:64
 msgid "Failed to connect to GNOME Shell\n"
-msgstr ""
+msgstr "GNOME Shell への接続に失敗しました\n"
 
 #: subprojects/extensions-tool/src/command-disable.c:53
 #: subprojects/extensions-tool/src/command-enable.c:53
 #, c-format
 msgid "Extension “%s” does not exist\n"
-msgstr ""
+msgstr "“%s”拡張機能は存在しません\n"
 
 #: subprojects/extensions-tool/src/command-disable.c:101
 msgid "Disable an extension"
@@ -2658,7 +2645,7 @@ msgstr "拡張機能を有効にします"
 #: subprojects/extensions-tool/src/main.c:155
 #, c-format
 msgid "Extension “%s” doesn't exist\n"
-msgstr ""
+msgstr "“%s”拡張機能は存在しません\n"
 
 #: subprojects/extensions-tool/src/command-info.c:85
 msgid "Show extensions info"
@@ -2772,7 +2759,7 @@ msgstr "ソースディレクトリが複数指定されています"
 #: subprojects/extensions-tool/src/command-prefs.c:47
 #, c-format
 msgid "Extension “%s” doesn't have preferences\n"
-msgstr ""
+msgstr "“%s”拡張機能には設定がありません\n"
 
 #: subprojects/extensions-tool/src/command-prefs.c:79
 msgid "Opens extension preferences"
@@ -2801,7 +2788,7 @@ msgstr ""
 
 #: subprojects/extensions-tool/src/main.c:146
 msgid "Failed to connect to GNOME Shell"
-msgstr ""
+msgstr "GNOME Shell への接続に失敗しました"
 
 #: subprojects/extensions-tool/src/main.c:244
 msgid "Path"
@@ -2905,11 +2892,11 @@ msgstr ""
 
 #: subprojects/extensions-tool/src/templates/indicator.desktop.in:4
 msgid "Indicator"
-msgstr ""
+msgstr "インジケーター"
 
 #: subprojects/extensions-tool/src/templates/indicator.desktop.in:5
 msgid "Add an icon to the top bar"
-msgstr ""
+msgstr "トップバーにアイコンを追加します"
 
 #. translators:
 #. * The number of sound outputs on a particular device
