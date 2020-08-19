@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
 "POT-Creation-Date: 2020-08-17 22:03+0000\n"
-"PO-Revision-Date: 2020-08-20 00:23+0200\n"
+"PO-Revision-Date: 2020-08-20 00:30+0200\n"
 "Last-Translator: gogo <trebelnik2@gmail.com>\n"
 "Language-Team: Croatian <hr@li.org>\n"
 "Language: hr\n"
@@ -2560,7 +2560,7 @@ msgstr ""
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:273
 msgid "Extension Updates Ready"
-msgstr "Nadopuna proširenja je spremna"
+msgstr "Nadopune proširenja su spremne"
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:289
 msgid "Log Out…"
