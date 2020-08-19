@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2020-03-21 18:07+0000\n"
-"PO-Revision-Date: 2020-03-21 22:46+0100\n"
+"POT-Creation-Date: 2020-06-01 20:11+0000\n"
+"PO-Revision-Date: 2020-08-20 00:34+0200\n"
 "Last-Translator: gogo <trebelnik2@gmail.com>\n"
 "Language-Team: Croatian <hr@li.org>\n"
 "Language: hr\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Poedit 2.0.6\n"
+"X-Generator: Poedit 2.4.1\n"
 
 #: data/50-gnome-shell-system.xml:6
 msgid "System"
@@ -391,76 +391,12 @@ msgstr ""
 msgid "Network Login"
 msgstr "Mrežna prijava"
 
-#: js/extensionPrefs/data/metainfo/org.gnome.Extensions.metainfo.xml.in:5
-#: js/extensionPrefs/data/org.gnome.Extensions.desktop.in.in:4
-#: js/extensionPrefs/js/main.js:241
-#: js/extensionPrefs/data/ui/extensions-window.ui:61
-msgid "Extensions"
-msgstr "Proširenja"
-
-#: js/extensionPrefs/data/metainfo/org.gnome.Extensions.metainfo.xml.in:6
-#: js/extensionPrefs/js/main.js:242
-msgid "Manage your GNOME Extensions"
-msgstr "Upravljajte svojim GNOME proširenjima"
-
-#: js/extensionPrefs/data/metainfo/org.gnome.Extensions.metainfo.xml.in:35
-msgid ""
-"GNOME Extensions handles updating extensions, configuring extension "
-"preferences and removing or disabling unwanted extensions."
-msgstr ""
-"GNOME Proširenja rukuje nadopunama proširenja, podešavanjem osobitostima "
-"proširenja i uklanjanjem ili onemogućavanjem neželjenih proširenja."
-
-#: js/extensionPrefs/data/org.gnome.Extensions.desktop.in.in:7
-msgid "Configure GNOME Shell Extensions"
-msgstr "Podesi proširenja GNOME ljuske"
-
-#: js/extensionPrefs/js/main.js:163
-#, javascript-format
-msgid "Remove “%s”?"
-msgstr "Ukloni “%s”?"
-
-#: js/extensionPrefs/js/main.js:164
-msgid ""
-"If you remove the extension, you need to return to download it if you want "
-"to enable it again"
-msgstr ""
-"Ako uklonite ovo proširenje, morate se vratiti kako bi ga preuzeli i ponovno "
-"omogućili"
-
-#: js/extensionPrefs/js/main.js:167 js/gdm/authPrompt.js:135
-#: js/ui/audioDeviceSelection.js:57 js/ui/components/networkAgent.js:109
-#: js/ui/components/polkitAgent.js:139 js/ui/endSessionDialog.js:374
-#: js/ui/extensionDownloader.js:177 js/ui/shellMountOperation.js:376
-#: js/ui/shellMountOperation.js:386 js/ui/status/network.js:913
-msgid "Cancel"
-msgstr "Odustani"
-
-#: js/extensionPrefs/js/main.js:168
-msgid "Remove"
-msgstr "Ukloni"
-
-#: js/extensionPrefs/js/main.js:240
-msgid "translator-credits"
-msgstr ""
-"Launchpad Contributions:\n"
-"  ACT Hacklab https://launchpad.net/~stjepan-amajk\n"
-"  Ante Karamatić https://launchpad.net/~ivoks\n"
-"  Dražen Odobašić https://launchpad.net/~dodobas\n"
-"  Frane https://launchpad.net/~kob4lt\n"
-"  Miro Glavić https://launchpad.net/~klek\n"
-"  Miroslav Matejaš https://launchpad.net/~silverspace+amd64\n"
-"  Saša Teković https://launchpad.net/~hseagle2015\n"
-"  Senko Rasic https://launchpad.net/~senko\n"
-"  Tomislav Krznar https://launchpad.net/~tomislav-krznar\n"
-"  gogo https://launchpad.net/~trebelnik-stefina"
-
-#: js/extensionPrefs/js/main.js:284
-#: js/extensionPrefs/data/ui/extensions-window.ui:223
+#: js/dbusServices/extensions/ui/extension-prefs-dialog.ui:36
+#: subprojects/extensions-app/data/ui/extensions-window.ui:224
 msgid "Something’s gone wrong"
 msgstr "Nešto je pošlo po krivu"
 
-#: js/extensionPrefs/js/main.js:291
+#: js/dbusServices/extensions/ui/extension-prefs-dialog.ui:48
 msgid ""
 "We’re very sorry, but there’s been a problem: the settings for this "
 "extension can’t be displayed. We recommend that you report the issue to the "
@@ -469,106 +405,25 @@ msgstr ""
 "Nažalost došlo je do problema: postavke za ovo proširenje se ne mogu "
 "prikazati. Preporučljivo je da problem prijavite autoru proširenja."
 
-#: js/extensionPrefs/js/main.js:298
+#: js/dbusServices/extensions/ui/extension-prefs-dialog.ui:82
 msgid "Technical Details"
 msgstr "Tehničke pojedinosti"
 
-#: js/extensionPrefs/js/main.js:333
-msgid "Copy Error"
-msgstr "Kopiraj grešku"
-
-#: js/extensionPrefs/js/main.js:360
+#: js/dbusServices/extensions/ui/extension-prefs-dialog.ui:165
 msgid "Homepage"
 msgstr "Naslovnica"
 
-#: js/extensionPrefs/js/main.js:361
+#: js/dbusServices/extensions/ui/extension-prefs-dialog.ui:166
 msgid "Visit extension homepage"
 msgstr "Posjetite naslovnicu proširenja"
 
-#: js/extensionPrefs/js/main.js:478
-#, javascript-format
-msgid "%d extension will be updated on next login."
-msgid_plural "%d extensions will be updated on next login."
-msgstr[0] "%d proširenje će se nadopuniti pri sljedećoj prijavi."
-msgstr[1] "%d proširenja će se nadopuniti pri sljedećoj prijavi."
-msgstr[2] "%d proširenja će se nadopuniti pri sljedećoj prijavi."
-
-#: js/extensionPrefs/data/ui/extension-row.ui:100
-#: subprojects/extensions-tool/src/command-create.c:211
-#: subprojects/extensions-tool/src/main.c:173
-msgid "Description"
-msgstr "Opis"
-
-#: js/extensionPrefs/data/ui/extension-row.ui:123
-#: subprojects/extensions-tool/src/main.c:185
-msgid "Version"
-msgstr "Inačica"
-
-#: js/extensionPrefs/data/ui/extension-row.ui:151
-msgid "Author"
-msgstr "Autor"
-
-#: js/extensionPrefs/data/ui/extension-row.ui:175
-msgid "Website"
-msgstr "Web stranica"
-
-#: js/extensionPrefs/data/ui/extension-row.ui:192
-msgid "Remove…"
-msgstr "Ukloni…"
-
-#: js/extensionPrefs/data/ui/extensions-window.ui:8
-msgid "Help"
-msgstr "Pomoć"
-
-#: js/extensionPrefs/data/ui/extensions-window.ui:12
-msgid "About Extensions"
-msgstr "O proširenju"
-
-#: js/extensionPrefs/data/ui/extensions-window.ui:27
-msgid ""
-"To find and add extensions, visit <a href=\"https://extensions.gnome.org"
-"\">extensions.gnome.org</a>."
-msgstr ""
-"Kako bi pronašli i dodali proširenja, posjetite <a href=\"https://extensions."
-"gnome.org\">extensions.gnome.org</a>."
-
-#: js/extensionPrefs/data/ui/extensions-window.ui:35
-msgid "Warning"
-msgstr "Upozorenje"
-
-#: js/extensionPrefs/data/ui/extensions-window.ui:46
-msgid ""
-"Extensions can cause system issues, including performance problems. If you "
-"encounter problems with your system, it is recommended to disable all "
-"extensions."
-msgstr ""
-"Proširenja mogu prouzrokovati probleme u radu sustava, uključujući probleme "
-"s performansama. Ako se pojave problemi sa sustavom, preporučljivo je "
-"onemogućavanje svih proširenja."
-
-#: js/extensionPrefs/data/ui/extensions-window.ui:134
-msgid "Manually Installed"
-msgstr "Ručno instalirana"
-
-#: js/extensionPrefs/data/ui/extensions-window.ui:158
-msgid "Built-In"
-msgstr "Ugrađena"
-
-#: js/extensionPrefs/data/ui/extensions-window.ui:199
-msgid "No Installed Extensions"
-msgstr "Nema instaliranih proširenja"
-
-#: js/extensionPrefs/data/ui/extensions-window.ui:235
-msgid ""
-"We’re very sorry, but it was not possible to get the list of installed "
-"extensions. Make sure you are logged into GNOME and try again."
-msgstr ""
-"Nažalost, nije moguće dobiti popis instaliranih proširenja. Pobrinite se da "
-"ste prijavljeni u GNOME i pokušajte ponovno."
-
-#: js/extensionPrefs/data/ui/extensions-window.ui:288
-msgid "Log Out…"
-msgstr "Odjava…"
+#: js/gdm/authPrompt.js:135 js/ui/audioDeviceSelection.js:57
+#: js/ui/components/networkAgent.js:109 js/ui/components/polkitAgent.js:139
+#: js/ui/endSessionDialog.js:372 js/ui/extensionDownloader.js:181
+#: js/ui/shellMountOperation.js:376 js/ui/shellMountOperation.js:386
+#: js/ui/status/network.js:913 subprojects/extensions-app/js/main.js:148
+msgid "Cancel"
+msgstr "Odustani"
 
 #. Cisco LEAP
 #: js/gdm/authPrompt.js:237 js/ui/components/networkAgent.js:204
@@ -620,73 +475,73 @@ msgid "(or swipe finger)"
 msgstr "(ili pomakni prst)"
 
 #. Translators: The name of the power-off action in search
-#: js/misc/systemActions.js:89
+#: js/misc/systemActions.js:93
 msgctxt "search-result"
 msgid "Power Off"
 msgstr "Isključivanje"
 
 #. Translators: A list of keywords that match the power-off action, separated by semicolons
-#: js/misc/systemActions.js:92
+#: js/misc/systemActions.js:96
 msgid "power off;shutdown;reboot;restart;halt;stop"
 msgstr ""
 "isključi;isključivanje;ponovno pokreni;ponovno pokretanje;zaustavi;"
 "zaustavljanje"
 
 #. Translators: The name of the lock screen action in search
-#: js/misc/systemActions.js:97
+#: js/misc/systemActions.js:101
 msgctxt "search-result"
 msgid "Lock Screen"
 msgstr "Zaključavanje zaslona"
 
 #. Translators: A list of keywords that match the lock screen action, separated by semicolons
-#: js/misc/systemActions.js:100
+#: js/misc/systemActions.js:104
 msgid "lock screen"
 msgstr "zaključavanje zaslona"
 
 #. Translators: The name of the logout action in search
-#: js/misc/systemActions.js:105
+#: js/misc/systemActions.js:109
 msgctxt "search-result"
 msgid "Log Out"
 msgstr "Odjava"
 
 #. Translators: A list of keywords that match the logout action, separated by semicolons
-#: js/misc/systemActions.js:108
+#: js/misc/systemActions.js:112
 msgid "logout;log out;sign off"
 msgstr "odjava;odjavljivanje"
 
 #. Translators: The name of the suspend action in search
-#: js/misc/systemActions.js:113
+#: js/misc/systemActions.js:117
 msgctxt "search-result"
 msgid "Suspend"
 msgstr "Suspenzija"
 
 #. Translators: A list of keywords that match the suspend action, separated by semicolons
-#: js/misc/systemActions.js:116
+#: js/misc/systemActions.js:120
 msgid "suspend;sleep"
 msgstr "suspendiraj;spavaj"
 
 #. Translators: The name of the switch user action in search
-#: js/misc/systemActions.js:121
+#: js/misc/systemActions.js:125
 msgctxt "search-result"
 msgid "Switch User"
 msgstr "Zamijeni korisnika"
 
 #. Translators: A list of keywords that match the switch user action, separated by semicolons
-#: js/misc/systemActions.js:124
+#: js/misc/systemActions.js:128
 msgid "switch user"
 msgstr "zamjena korisnika"
 
 #. Translators: A list of keywords that match the lock orientation action, separated by semicolons
-#: js/misc/systemActions.js:131
+#: js/misc/systemActions.js:135
 msgid "lock orientation;unlock orientation;screen;rotation"
 msgstr "zaključavanje orjentacije;otključaj orjentaciju;zaslon;zakretanje"
 
-#: js/misc/systemActions.js:251
+#: js/misc/systemActions.js:255
 msgctxt "search-result"
 msgid "Unlock Screen Rotation"
 msgstr "Zakretanje otključanog zaslona"
 
-#: js/misc/systemActions.js:252
+#: js/misc/systemActions.js:256
 msgctxt "search-result"
 msgid "Lock Screen Rotation"
 msgstr "Zakretanje zaključanog zaslona"
@@ -858,53 +713,53 @@ msgstr "Zabrani pristup"
 msgid "Grant Access"
 msgstr "Dopusti pristup"
 
-#: js/ui/appDisplay.js:898
+#: js/ui/appDisplay.js:939
 msgid "Unnamed Folder"
 msgstr "Neimenovana mapa"
 
-#: js/ui/appDisplay.js:921
+#: js/ui/appDisplay.js:962
 msgid "Frequently used applications will appear here"
 msgstr "Najčešće korištene aplikacije će se pojaviti ovdje"
 
-#: js/ui/appDisplay.js:1056
+#: js/ui/appDisplay.js:1097
 msgid "Frequent"
 msgstr "Najčešće"
 
-#: js/ui/appDisplay.js:1063
+#: js/ui/appDisplay.js:1104
 msgid "All"
 msgstr "Sve"
 
 #. Translators: This is the heading of a list of open windows
-#: js/ui/appDisplay.js:2446 js/ui/panel.js:75
+#: js/ui/appDisplay.js:2480 js/ui/panel.js:75
 msgid "Open Windows"
 msgstr "Otvaranje prozora"
 
-#: js/ui/appDisplay.js:2466 js/ui/panel.js:82
+#: js/ui/appDisplay.js:2500 js/ui/panel.js:82
 msgid "New Window"
 msgstr "Novi prozor"
 
-#: js/ui/appDisplay.js:2477
+#: js/ui/appDisplay.js:2511
 msgid "Launch using Dedicated Graphics Card"
 msgstr "Pokreni pomoću namjenske grafičke kartice"
 
-#: js/ui/appDisplay.js:2505 js/ui/dash.js:239
+#: js/ui/appDisplay.js:2539 js/ui/dash.js:239
 msgid "Remove from Favorites"
 msgstr "Ukloni iz omiljenih"
 
-#: js/ui/appDisplay.js:2511
+#: js/ui/appDisplay.js:2545
 msgid "Add to Favorites"
 msgstr "Dodaj u omiljene"
 
-#: js/ui/appDisplay.js:2521 js/ui/panel.js:93
+#: js/ui/appDisplay.js:2555 js/ui/panel.js:93
 msgid "Show Details"
 msgstr "Prikaži pojedinosti"
 
-#: js/ui/appFavorites.js:152
+#: js/ui/appFavorites.js:153
 #, javascript-format
 msgid "%s has been added to your favorites."
 msgstr "%s je dodan u omiljene."
 
-#: js/ui/appFavorites.js:185
+#: js/ui/appFavorites.js:186
 #, javascript-format
 msgid "%s has been removed from your favorites."
 msgstr "%s je uklonjen iz omiljenih."
@@ -925,7 +780,7 @@ msgstr "Slušalice"
 msgid "Headset"
 msgstr "Slušalice s mikrofonom"
 
-#: js/ui/audioDeviceSelection.js:68 js/ui/status/volume.js:269
+#: js/ui/audioDeviceSelection.js:68 js/ui/status/volume.js:270
 msgid "Microphone"
 msgstr "Mikrofon"
 
@@ -1066,7 +921,7 @@ msgstr "Nema događaja"
 msgid "Do Not Disturb"
 msgstr "Ne ometaj"
 
-#: js/ui/calendar.js:1171
+#: js/ui/calendar.js:1176
 msgid "Clear"
 msgstr "Obriši"
 
@@ -1214,7 +1069,7 @@ msgstr "Nažalost, to ne radi. Pokušajte ponovno."
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
-#: js/ui/components/telepathyClient.js:787
+#: js/ui/components/telepathyClient.js:823
 #, javascript-format
 msgid "%s is now known as %s"
 msgstr "%s je poznat kao %s"
@@ -1250,31 +1105,31 @@ msgstr "%-e %b, %Y"
 msgid "%A %B %e %Y"
 msgstr "%A %e %B %Y"
 
-#: js/ui/dateMenu.js:161
+#: js/ui/dateMenu.js:162
 msgid "Add world clocks…"
 msgstr "Dodaj satove iz svijeta…"
 
-#: js/ui/dateMenu.js:162
+#: js/ui/dateMenu.js:163
 msgid "World Clocks"
 msgstr "Svjetski satovi"
 
-#: js/ui/dateMenu.js:289
+#: js/ui/dateMenu.js:308
 msgid "Weather"
 msgstr "Vrijeme"
 
-#: js/ui/dateMenu.js:404
+#: js/ui/dateMenu.js:437
 msgid "Select a location…"
 msgstr "Odaberi lokaciju…"
 
-#: js/ui/dateMenu.js:417
+#: js/ui/dateMenu.js:445
 msgid "Loading…"
 msgstr "Pretraživanje…"
 
-#: js/ui/dateMenu.js:427
+#: js/ui/dateMenu.js:455
 msgid "Go online for weather information"
 msgstr "Posjetite za opširnije vremenske informacije"
 
-#: js/ui/dateMenu.js:429
+#: js/ui/dateMenu.js:457
 msgid "Weather information is currently unavailable"
 msgstr "Vremenske informacije su trenutno nedostupne"
 
@@ -1424,35 +1279,35 @@ msgid "Other users are logged in"
 msgstr "Drugi korisnici su prijavljeni"
 
 #. Translators: Remote here refers to a remote session, like a ssh login
-#: js/ui/endSessionDialog.js:588
+#: js/ui/endSessionDialog.js:586
 #, javascript-format
 msgid "%s (remote)"
 msgstr "%s (udaljeno)"
 
 #. Translators: Console here refers to a tty like a VT console
-#: js/ui/endSessionDialog.js:591
+#: js/ui/endSessionDialog.js:589
 #, javascript-format
 msgid "%s (console)"
 msgstr "%s (konzola)"
 
-#: js/ui/extensionDownloader.js:181
+#: js/ui/extensionDownloader.js:185
 msgid "Install"
 msgstr "Instaliraj"
 
-#: js/ui/extensionDownloader.js:187
+#: js/ui/extensionDownloader.js:191
 msgid "Install Extension"
 msgstr "Instaliraj proširenje"
 
-#: js/ui/extensionDownloader.js:188
+#: js/ui/extensionDownloader.js:192
 #, javascript-format
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "Preuzmi i instaliraj “%s” sa extensions.gnome.org?"
 
-#: js/ui/extensionSystem.js:228
+#: js/ui/extensionSystem.js:252
 msgid "Extension Updates Available"
 msgstr "Nadopuna proširenja je dostupna"
 
-#: js/ui/extensionSystem.js:229
+#: js/ui/extensionSystem.js:253
 msgid "Extension updates are ready to be installed."
 msgstr "Nadopune proširenja su spremne za instalaciju."
 
@@ -1599,11 +1454,11 @@ msgstr "Pogledaj izvor"
 msgid "Web Page"
 msgstr "Web stranica"
 
-#: js/ui/main.js:274
+#: js/ui/main.js:279
 msgid "Logged in as a privileged user"
 msgstr "Prijavljeni ste kao administratorski korisnik"
 
-#: js/ui/main.js:275
+#: js/ui/main.js:280
 msgid ""
 "Running a session as a privileged user should be avoided for security "
 "reasons. If possible, you should log in as a normal user."
@@ -1612,23 +1467,23 @@ msgstr ""
 "izbjegavati iz sigurnosnih razloga. Ako je moguće, trebate se prijaviti kao "
 "normalan korisnik."
 
-#: js/ui/main.js:281
+#: js/ui/main.js:319
 msgid "Screen Lock disabled"
 msgstr "Zaključavanje zaslona je onemogućeno"
 
-#: js/ui/main.js:282
+#: js/ui/main.js:320
 msgid "Screen Locking requires the GNOME display manager."
 msgstr "Zaključavanje zaslona zahtijeva GNOME upravitelja zaslona."
 
-#: js/ui/messageTray.js:1554
+#: js/ui/messageTray.js:1548
 msgid "System Information"
 msgstr "Informacije sustava"
 
-#: js/ui/mpris.js:199
+#: js/ui/mpris.js:204
 msgid "Unknown artist"
 msgstr "Nepoznat izvođač"
 
-#: js/ui/mpris.js:209
+#: js/ui/mpris.js:214
 msgid "Unknown title"
 msgstr "Nepoznat naslov"
 
@@ -1674,23 +1529,23 @@ msgstr "Pošalji pritisak tipke"
 msgid "Done"
 msgstr "Završeno"
 
-#: js/ui/padOsd.js:745
+#: js/ui/padOsd.js:732
 msgid "Edit…"
 msgstr "Uredi…"
 
-#: js/ui/padOsd.js:787 js/ui/padOsd.js:910
+#: js/ui/padOsd.js:774 js/ui/padOsd.js:891
 msgid "None"
 msgstr "Nedodjeljeno"
 
-#: js/ui/padOsd.js:863
+#: js/ui/padOsd.js:845
 msgid "Press a button to configure"
 msgstr "Pritisni tipku za podešavanje"
 
-#: js/ui/padOsd.js:864
+#: js/ui/padOsd.js:846
 msgid "Press Esc to exit"
 msgstr "Pritisni Esc za zatvaranje"
 
-#: js/ui/padOsd.js:867
+#: js/ui/padOsd.js:849
 msgid "Press any key to exit"
 msgstr "Pritisni bilo koju tipku za prekidanje"
 
@@ -1700,16 +1555,16 @@ msgstr "Zatvori"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: js/ui/panel.js:434
+#: js/ui/panel.js:437
 msgid "Activities"
 msgstr "Aktivnosti"
 
-#: js/ui/panel.js:713
+#: js/ui/panel.js:716
 msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "Sustav"
 
-#: js/ui/panel.js:826
+#: js/ui/panel.js:829
 msgid "Top Bar"
 msgstr "Gornja traka"
 
@@ -1740,11 +1595,11 @@ msgstr "GNOME treba zaključati zaslon"
 #.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
-#: js/ui/screenShield.js:244 js/ui/screenShield.js:598
+#: js/ui/screenShield.js:244 js/ui/screenShield.js:601
 msgid "Unable to lock"
 msgstr "Nemoguće zaključavanje"
 
-#: js/ui/screenShield.js:245 js/ui/screenShield.js:599
+#: js/ui/screenShield.js:245 js/ui/screenShield.js:602
 msgid "Lock was blocked by an application"
 msgstr "Zaključavanje je blokirala aplikacija"
 
@@ -1828,13 +1683,13 @@ msgid "The PIM must be a number or empty."
 msgstr "PIM mora biti broj ili prazan."
 
 #. Translators: %s is the Disks application
-#: js/ui/shellMountOperation.js:469
+#: js/ui/shellMountOperation.js:465
 #, javascript-format
 msgid "Unable to start %s"
 msgstr "Nemoguće pokretanje %s"
 
 #. Translators: %s is the Disks application
-#: js/ui/shellMountOperation.js:471
+#: js/ui/shellMountOperation.js:467
 #, javascript-format
 msgid "Couldn’t find the %s application"
 msgstr "Nemoguć pronalazak %s aplikacije"
@@ -2311,11 +2166,11 @@ msgstr "Greška Thunderbolt odobravanja"
 msgid "Could not authorize the Thunderbolt device: %s"
 msgstr "Nemoguće odobravanje Thunderbolt uređaja: %s"
 
-#: js/ui/status/volume.js:150
+#: js/ui/status/volume.js:151
 msgid "Volume changed"
 msgstr "Glasnoća zvuka promijenjena"
 
-#: js/ui/status/volume.js:221
+#: js/ui/status/volume.js:222
 msgid "Volume"
 msgstr "Glasnoća zvuka"
 
@@ -2349,23 +2204,23 @@ msgstr "Samo ugrađeni"
 
 #. Translators: This is a time format for a date in
 #. long format
-#: js/ui/unlockDialog.js:370
+#: js/ui/unlockDialog.js:371
 msgid "%A %B %-d"
 msgstr "%A, %-d. %B"
 
-#: js/ui/unlockDialog.js:376
+#: js/ui/unlockDialog.js:377
 msgid "Swipe up to unlock"
 msgstr "Povuci za otključavanje"
 
-#: js/ui/unlockDialog.js:377
+#: js/ui/unlockDialog.js:378
 msgid "Click or press a key to unlock"
 msgstr "Klikni ili pritisni tipku za otključavanje"
 
-#: js/ui/unlockDialog.js:549
+#: js/ui/unlockDialog.js:550
 msgid "Unlock Window"
 msgstr "Otključaj prozor"
 
-#: js/ui/unlockDialog.js:558
+#: js/ui/unlockDialog.js:559
 msgid "Log in as another user"
 msgstr "Prijavi se kao drugi korisnik"
 
@@ -2398,7 +2253,7 @@ msgstr "Vrati postavke"
 msgid "Keep Changes"
 msgstr "Zadrži promjene"
 
-#: js/ui/windowManager.js:85
+#: js/ui/windowManager.js:86
 #, javascript-format
 msgid "Settings changes will revert in %d second"
 msgid_plural "Settings changes will revert in %d seconds"
@@ -2408,7 +2263,7 @@ msgstr[2] "Promjene postavka će se vratiti za %d sekundi"
 
 #. Translators: This represents the size of a window. The first number is
 #. * the width of the window and the second is the height.
-#: js/ui/windowManager.js:544
+#: js/ui/windowManager.js:546
 #, javascript-format
 msgid "%d × %d"
 msgstr "%d × %d"
@@ -2501,12 +2356,12 @@ msgstr "Koristi određen način, npr. \"gdm\" za zaslon prijave"
 msgid "List possible modes"
 msgstr "Popis mogućih načina"
 
-#: src/shell-app.c:279
+#: src/shell-app.c:286
 msgctxt "program"
 msgid "Unknown"
 msgstr "Nepoznat"
 
-#: src/shell-app.c:530
+#: src/shell-app.c:537
 #, c-format
 msgid "Failed to launch “%s”"
 msgstr "Neuspješno pokretanje “%s”"
@@ -2522,6 +2377,151 @@ msgstr "Lozinka ne može biti prazna"
 #: src/shell-polkit-authentication-agent.c:344
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Dijalog ovjere je prekinut od strane korisnika"
+
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:5
+#: subprojects/extensions-app/data/org.gnome.Extensions.desktop.in.in:4
+#: subprojects/extensions-app/js/main.js:182
+#: subprojects/extensions-app/data/ui/extensions-window.ui:61
+msgid "Extensions"
+msgstr "Proširenja"
+
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:6
+#: subprojects/extensions-app/js/main.js:183
+msgid "Manage your GNOME Extensions"
+msgstr "Upravljajte svojim GNOME proširenjima"
+
+#: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:35
+msgid ""
+"GNOME Extensions handles updating extensions, configuring extension "
+"preferences and removing or disabling unwanted extensions."
+msgstr ""
+"GNOME Proširenja rukuje nadopunama proširenja, podešavanjem osobitostima "
+"proširenja i uklanjanjem ili onemogućavanjem neželjenih proširenja."
+
+#: subprojects/extensions-app/data/org.gnome.Extensions.desktop.in.in:7
+msgid "Configure GNOME Shell Extensions"
+msgstr "Podesi proširenja GNOME ljuske"
+
+#: subprojects/extensions-app/js/main.js:144
+#, javascript-format
+msgid "Remove “%s”?"
+msgstr "Ukloni “%s”?"
+
+#: subprojects/extensions-app/js/main.js:145
+msgid ""
+"If you remove the extension, you need to return to download it if you want "
+"to enable it again"
+msgstr ""
+"Ako uklonite ovo proširenje, morate se vratiti kako bi ga preuzeli i ponovno "
+"omogućili"
+
+#: subprojects/extensions-app/js/main.js:149
+msgid "Remove"
+msgstr "Ukloni"
+
+#: subprojects/extensions-app/js/main.js:181
+msgid "translator-credits"
+msgstr ""
+"Launchpad Contributions:\n"
+"  ACT Hacklab https://launchpad.net/~stjepan-amajk\n"
+"  Ante Karamatić https://launchpad.net/~ivoks\n"
+"  Dražen Odobašić https://launchpad.net/~dodobas\n"
+"  Frane https://launchpad.net/~kob4lt\n"
+"  Miro Glavić https://launchpad.net/~klek\n"
+"  Miroslav Matejaš https://launchpad.net/~silverspace+amd64\n"
+"  Saša Teković https://launchpad.net/~hseagle2015\n"
+"  Senko Rasic https://launchpad.net/~senko\n"
+"  Tomislav Krznar https://launchpad.net/~tomislav-krznar\n"
+"  gogo https://launchpad.net/~trebelnik-stefina"
+
+#: subprojects/extensions-app/js/main.js:316
+#, javascript-format
+msgid "%d extension will be updated on next login."
+msgid_plural "%d extensions will be updated on next login."
+msgstr[0] "%d proširenje će se nadopuniti pri sljedećoj prijavi."
+msgstr[1] "%d proširenja će se nadopuniti pri sljedećoj prijavi."
+msgstr[2] "%d proširenja će se nadopuniti pri sljedećoj prijavi."
+
+#: subprojects/extensions-app/data/ui/extension-row.ui:100
+#: subprojects/extensions-tool/src/command-create.c:211
+#: subprojects/extensions-tool/src/main.c:173
+msgid "Description"
+msgstr "Opis"
+
+#: subprojects/extensions-app/data/ui/extension-row.ui:123
+#: subprojects/extensions-tool/src/main.c:185
+msgid "Version"
+msgstr "Inačica"
+
+#: subprojects/extensions-app/data/ui/extension-row.ui:151
+msgid "Author"
+msgstr "Autor"
+
+#: subprojects/extensions-app/data/ui/extension-row.ui:175
+msgid "Website"
+msgstr "Web stranica"
+
+#: subprojects/extensions-app/data/ui/extension-row.ui:192
+msgid "Remove…"
+msgstr "Ukloni…"
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:8
+msgid "Help"
+msgstr "Pomoć"
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:12
+msgid "About Extensions"
+msgstr "O proširenju"
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:27
+msgid ""
+"To find and add extensions, visit <a href=\"https://extensions.gnome.org"
+"\">extensions.gnome.org</a>."
+msgstr ""
+"Kako bi pronašli i dodali proširenja, posjetite <a href=\"https://extensions."
+"gnome.org\">extensions.gnome.org</a>."
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:35
+msgid "Warning"
+msgstr "Upozorenje"
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:46
+msgid ""
+"Extensions can cause system issues, including performance problems. If you "
+"encounter problems with your system, it is recommended to disable all "
+"extensions."
+msgstr ""
+"Proširenja mogu prouzrokovati probleme u radu sustava, uključujući probleme "
+"s performansama. Ako se pojave problemi sa sustavom, preporučljivo je "
+"onemogućavanje svih proširenja."
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:135
+msgid "Manually Installed"
+msgstr "Ručno instalirana"
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:159
+msgid "Built-In"
+msgstr "Ugrađena"
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:200
+msgid "No Installed Extensions"
+msgstr "Nema instaliranih proširenja"
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:236
+msgid ""
+"We’re very sorry, but it was not possible to get the list of installed "
+"extensions. Make sure you are logged into GNOME and try again."
+msgstr ""
+"Nažalost, nije moguće dobiti popis instaliranih proširenja. Pobrinite se da "
+"ste prijavljeni u GNOME i pokušajte ponovno."
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:273
+msgid "Extension Updates Ready"
+msgstr "Nadopune proširenja su spremne"
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:289
+msgid "Log Out…"
+msgstr "Odjava…"
 
 #. Translators: a file path to an extension directory
 #: subprojects/extensions-tool/src/command-create.c:125
@@ -2860,6 +2860,9 @@ msgstr[2] "%u ulaza"
 #: subprojects/gvc/gvc-mixer-control.c:2766
 msgid "System Sounds"
 msgstr "Zvukovi sustava"
+
+#~ msgid "Copy Error"
+#~ msgstr "Kopiraj grešku"
 
 #~ msgid "Browse in Software"
 #~ msgstr "Pregledaj u Softveru"
