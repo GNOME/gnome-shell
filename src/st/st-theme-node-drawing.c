@@ -2103,9 +2103,9 @@ st_theme_node_paint_sliced_shadow (StThemeNodePaintState *state,
 
   idx = 0;
 
-  if (top > 0)
+  if (yoffset < top)
     {
-      if (left > 0)
+      if (xoffset < left)
         {
           /* Top left corner */
           rectangles[idx++] = xoffset;
@@ -2130,7 +2130,7 @@ st_theme_node_paint_sliced_shadow (StThemeNodePaintState *state,
       rectangles[idx++] = s_right;
       rectangles[idx++] = s_top;
 
-      if (right > 0)
+      if (xend > right)
         {
           /* Top right corner */
           rectangles[idx++] = right;
@@ -2145,7 +2145,7 @@ st_theme_node_paint_sliced_shadow (StThemeNodePaintState *state,
         }
     }
 
-  if (left > 0)
+  if (xoffset < left)
     {
       /* Left middle */
       rectangles[idx++] = xoffset;
@@ -2170,8 +2170,7 @@ st_theme_node_paint_sliced_shadow (StThemeNodePaintState *state,
   rectangles[idx++] = s_right;
   rectangles[idx++] = s_bottom;
 
-
-  if (right > 0)
+  if (xend > right)
     {
       /* Right middle */
       rectangles[idx++] = right;
@@ -2185,9 +2184,9 @@ st_theme_node_paint_sliced_shadow (StThemeNodePaintState *state,
       rectangles[idx++] = s_bottom;
     }
 
-  if (bottom > 0)
+  if (yend > bottom)
     {
-      if (left > 0)
+      if (xoffset < left)
         {
           /* Bottom left corner */
           rectangles[idx++] = xoffset;
@@ -2212,7 +2211,7 @@ st_theme_node_paint_sliced_shadow (StThemeNodePaintState *state,
       rectangles[idx++] = s_right;
       rectangles[idx++] = 1;
 
-      if (right > 0)
+      if (xend > right)
         {
           /* Bottom right corner */
           rectangles[idx++] = right;
