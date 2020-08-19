@@ -101,7 +101,7 @@ shell_glsl_effect_paint_target (ClutterOffscreenEffect *effect,
  * @hook: where to insert the code
  * @declarations: GLSL declarations
  * @code: GLSL code
- * @is_replace: wheter Cogl code should be replaced by the custom shader
+ * @is_replace: whether Cogl code should be replaced by the custom shader
  *
  * Adds a GLSL snippet to the pipeline used for drawing the effect texture.
  * See #CoglSnippet for details.

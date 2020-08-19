@@ -131,7 +131,7 @@ whenever possible, that is when not inheriting from GObjects.
     };
 ```
 
-For GObject inheritence, we use the GObject.registerClass() function provided
+For GObject inheritance, we use the GObject.registerClass() function provided
 by gjs.
 ```javascript
     var MyActor = GObject.registerClass(

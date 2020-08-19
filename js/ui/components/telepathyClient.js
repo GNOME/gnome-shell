@@ -171,7 +171,7 @@ class TelepathyClient extends Tp.BaseClient {
         this.add_approver_filter(filter);
         this.add_handler_filter(filter);
 
-        // Allow other clients (such as Empathy) to pre-empt our channels if
+        // Allow other clients (such as Empathy) to preempt our channels if
         // needed
         this.set_delegated_channels_callback(
             this._delegatedChannelsCb.bind(this));

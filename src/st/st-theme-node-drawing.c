@@ -2231,7 +2231,7 @@ st_theme_node_paint_sliced_shadow (StThemeNodePaintState *state,
                                              rectangles, idx / 8);
 
 #if 0
-  /* Visual feedback on shadow's 9-slice and orignal offscreen buffer,
+  /* Visual feedback on shadow's 9-slice and original offscreen buffer,
      for debug purposes */
   cogl_framebuffer_draw_rectangle (framebuffer, state->box_shadow_pipeline,
                                    xend, yoffset, xend + shadow_width, yoffset + shadow_height);

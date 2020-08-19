@@ -262,7 +262,7 @@ Translators:
 * Handle extension updates [Florian; !945]
 * Animate showing and hiding caps-lock warning [Jonas; !952]
 * Support "auto" lengths in CSS [Florian; !971]
-* Turn extension-prefs into the offical Extensions app [Florian; #1968]
+* Turn extension-prefs into the official Extensions app [Florian; #1968]
 * Sandbox the portal helper [Michael; !983]
 * Misc. bug fixes and cleanups [Florian, Björn, Jakub, Alexander, Daniel V.,
   Jonas, nana-4, Carlos, Sebastian, Daniel G., Georges, Piotr; !918, !917,
@@ -551,7 +551,7 @@ Translators:
 ======
 * Fix keeping actors visible in scrollviews [Marco; #1061]
 * Move some chrome above popup windows [Jonas D.; !358]
-* Include 'sandboxed-app-id' in winodw introspection info [Florian; #1289]
+* Include 'sandboxed-app-id' in window introspection info [Florian; #1289]
 * Port to libecal-2.0 [Milan; !501]
 * Support TCRYPT in mount password dialog [segfault; !126]
 * Misc. bug fixes and cleanups [Florian, Marco, Veerasamy; !517, #745, !499,
@@ -1100,7 +1100,7 @@ Translations:
 * gdm: Fix "Not listed" focus indication [Florian; #784040]
 * Fix missing icons in freedesktop notifications [Florian; #784245]
 * gdm: Disable user list when empty [Xiaoguang; #731320]
-* gdm: Allow empty reponse to PAM messages [Ray; #784360]
+* gdm: Allow empty response to PAM messages [Ray; #784360]
 * Fix blocked clicks in shutdown dialog [Florian; #781738]
 * Show OSD popup when changing volume via scroll wheel [Florian; #781028]
 * Refine list search results [Rares; #749957]
@@ -2560,7 +2560,7 @@ Translations:
 * Merge the wayland branch [Giovanni, Neil; #707467]
 * Make search entry behave better in RTL locales [Matthias, Florian; #705779]
 * Allow to change app pages with pageUp/pageDown keys [Carlos; #707979]
-* Set approriate a11y states on expandable menu items [Alejandro; #708038]
+* Set appropriate a11y states on expandable menu items [Alejandro; #708038]
 * Improve page indicator animation [Carlos; #707565]
 * Misc bug fixes and cleanups [Florian, Olivier, Jasper, Giovanni, Magdalen,
   Adel, Carlos, Rico, Joanmarie; #707308, #707430, #707508, #707557, #707600,
@@ -3844,7 +3844,7 @@ Translations:
 * Update the calendar code to use ECalClient [Giovanni; #671177]
 * Update jhbuild script to use the main moduleset [Owen, Will; #668440]
 * StTextureCache: code cleanup, evict unused icons, merge together
-  simulataneous requests for the same icon [Jasper; #670771, #671656, #672273]
+  simultaneous requests for the same icon [Jasper; #670771, #671656, #672273]
 * Clean up St for recent Clutter changes and fix bugs. StContainer and
   StGroup are removed [Jasper, Florian; #670034, #670640, #670904]
 * Code cleanup [Adel, Jasper, Rui; #613194, #671086, #671103]
@@ -3979,7 +3979,7 @@ Translations:
     [Stefano; #664201]
   - Delay rearranging windows in the overview as long as the pointer
     is over a window [Vit; #645325]
-* Add a GConf => DConf migration file for overriden Mutter settings
+* Add a GConf => DConf migration file for overridden Mutter settings
   [Florian; #667636]
 * When a VPN connection is active, show that as the network icon
   [Giovanni; #665115]
@@ -4226,7 +4226,7 @@ Translations:
   - Add fingerprint reader support [Ray; #657823]
   - Add a power button offering the choice of Suspend/Restart/Power off
     [Ray; #657822]
-  - Remove the option to view the current keyboad layout [Matthias; #659164]
+  - Remove the option to view the current keyboard layout [Matthias; #659164]
   - Make Control-Alt-Tab work for full keyboard access [Ray; #659177]
 * Frequently initiate a full garbage collection; Spidermonkey isn't very good
   at tracking the amount of resources we have allocated so this hopefully will
@@ -4443,7 +4443,7 @@ Translations:
 * Fix selection highlighting for light-on-dark entries [Jasper; #643768]
 * Make control-Return in the overview open a new window [Maxim]
 * Delay showing the alt-Tab switcher to reduce visual noise when
-  flipping betweeen windows [Dan; #652346]
+  flipping between windows [Dan; #652346]
 * When we have vertically stacked monitors, put the message tray
   on the bottom one [Dan; #636963]
 * Fix various problems with keynav and the Activities button
@@ -4594,7 +4594,7 @@ Translations:
   - Fix missing device descriptions with multiple devices of the
     same type [Giovanni]
     https://bugzilla.gnome.org/show_bug.cgi?id=646074
-  - Label ad-hoc neworks with an appropriate icon [Dan]
+  - Label ad-hoc networks with an appropriate icon [Dan]
     https://bugzilla.gnome.org/show_bug.cgi?id=646141
   - Fix displaying some devices states as "invalid" [Dan]
     https://bugzilla.gnome.org/show_bug.cgi?id=646946

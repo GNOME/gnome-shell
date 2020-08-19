@@ -190,11 +190,11 @@ st_clipboard_get_mimetypes (StClipboard     *clipboard,
  * st_clipboard_get_text:
  * @clipboard: A #StCliboard
  * @type: The type of clipboard data you want
- * @callback: (scope async): function to be called when the text is retreived
+ * @callback: (scope async): function to be called when the text is retrieved
  * @user_data: data to be passed to the callback
  *
  * Request the data from the clipboard in text form. @callback is executed
- * when the data is retreived.
+ * when the data is retrieved.
  */
 void
 st_clipboard_get_text (StClipboard            *clipboard,

@@ -866,7 +866,7 @@ add_matched_properties (StTheme      *a_this,
   for (cur_stmt = a_nodesheet->statements; cur_stmt; cur_stmt = cur_stmt->next)
     {
       /*
-       *initialyze the selector list in which we will
+       *initialize the selector list in which we will
        *really perform the search.
        */
       sel_list = NULL;
@@ -960,7 +960,7 @@ add_matched_properties (StTheme      *a_this,
                * thread-safety anyways.)
                *
                * Once we've sorted the properties, the specificity no longer
-               * matters and it can be safely overriden.
+               * matters and it can be safely overridden.
                */
               cr_simple_sel_compute_specificity (cur_sel->simple_sel);
 

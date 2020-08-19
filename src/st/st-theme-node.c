@@ -276,7 +276,7 @@ st_theme_node_get_element_type (StThemeNode *node)
  * st_theme_node_get_element_id:
  * @node: a #StThemeNode
  *
- * Get the unqiue element ID for @node.
+ * Get the unique element ID for @node.
  *
  * Returns: (transfer none): the element's ID
  */
@@ -3290,9 +3290,9 @@ st_theme_node_get_border_image (StThemeNode *node)
  * st_theme_node_get_horizontal_padding:
  * @node: a #StThemeNode
  *
- * Gets the total horizonal padding (left + right padding), in physical pixels.
+ * Gets the total horizontal padding (left + right padding), in physical pixels.
  *
- * Returns: the total horizonal padding in physical pixels
+ * Returns: the total horizontal padding in physical pixels
  */
 double
 st_theme_node_get_horizontal_padding (StThemeNode *node)

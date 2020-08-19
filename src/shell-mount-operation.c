@@ -24,7 +24,7 @@
 /* This is a dummy class; we would like to be able to subclass the
  * object from JS but we can't yet; the default GMountOperation impl
  * automatically calls g_mount_operation_reply(UNHANDLED) after an idle,
- * in interactive methods. We want to handle the reply outselves
+ * in interactive methods. We want to handle the reply ourselves
  * instead, so we just override the default methods with empty ones,
  * except for ask-password, as we don't want to handle that.
  *

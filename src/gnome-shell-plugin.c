@@ -27,7 +27,7 @@
  * meta_plugin_manager_set_plugin_type(), Mutter will call the vfuncs of the
  * plugin at the appropriate time.
  *
- * The funcions in in GnomeShellPlugin are all just stubs, which just call the
+ * The functions in in GnomeShellPlugin are all just stubs, which just call the
  * similar methods in GnomeShellWm.
  */
 

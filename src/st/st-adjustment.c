@@ -689,7 +689,7 @@ st_adjustment_set_page_size (StAdjustment *adjustment,
 
       g_object_notify_by_pspec (G_OBJECT (adjustment), props[PROP_PAGE_SIZE]);
 
-      /* Well explicitely clamp after construction. */
+      /* We'll explicitly clamp after construction. */
       if (!priv->is_constructing)
         st_adjustment_clamp_page (adjustment, priv->lower, priv->upper);
 
@@ -924,7 +924,7 @@ st_adjustment_get_transition (StAdjustment *adjustment,
  * @name: a unique name for the transition
  * @transition: a #ClutterTransition
  *
- * Add a #ClutterTransition for the adjustment. If the transiton stops, it will
+ * Add a #ClutterTransition for the adjustment. If the transition stops, it will
  * be automatically removed if #ClutterTransition:remove-on-complete is %TRUE.
  */
 void
@@ -969,7 +969,7 @@ st_adjustment_add_transition (StAdjustment      *adjustment,
 
 /**
  * st_adjusmtent_remove_transition:
- * @adjusment: a #StAdjustment
+ * @adjustment: a #StAdjustment
  * @name: the name of the transition to remove
  *
  * Remove a #ClutterTransition previously added by st_adjustment_add_transtion()

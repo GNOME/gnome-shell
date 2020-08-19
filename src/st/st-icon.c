@@ -294,7 +294,7 @@ st_icon_class_init (StIconClass *klass)
   /**
    * StIcon:icon-size:
    *
-   * The size of the icon, if greater than `0`. Other the icon sise is derived
+   * The size of the icon, if greater than `0`. Other the icon size is derived
    * from the current style.
    */
   props[PROP_ICON_SIZE] =

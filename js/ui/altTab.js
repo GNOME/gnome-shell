@@ -716,7 +716,7 @@ class AppSwitcher extends SwitcherPopup.SwitcherList {
         let iconSpacing = labelNaturalHeight + iconPadding + iconBorder;
         let totalSpacing = this._list.spacing * (this._items.length - 1);
 
-        // We just assume the whole screen here due to weirdness happing with the passed width
+        // We just assume the whole screen here due to weirdness happening with the passed width
         let primary = Main.layoutManager.primaryMonitor;
         let parentPadding = this.get_parent().get_theme_node().get_horizontal_padding();
         let availWidth = primary.width - parentPadding - this.get_theme_node().get_horizontal_padding();

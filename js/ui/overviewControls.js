@@ -233,7 +233,7 @@ class SlidingControl extends St.Widget {
         // When pageEmpty is received, there's no visible view in the
         // selector; this means we can now safely set the full slide for
         // the next page, since slideIn or slideOut might have been called,
-        // changing the visiblity
+        // changing the visibility
         this.remove_transition('@layout.slide-x');
         this.layout.slide_x = this._getSlide();
         this._updateTranslation();

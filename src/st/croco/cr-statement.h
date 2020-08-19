@@ -129,7 +129,7 @@ struct _CRAtCharsetRule
 	CRString * charset ;
 };
 
-/**The abstaction of the \@font-face rule.*/
+/**The abstraction of the \@font-face rule.*/
 typedef struct _CRAtFontFaceRule CRAtFontFaceRule ;
 struct _CRAtFontFaceRule
 {

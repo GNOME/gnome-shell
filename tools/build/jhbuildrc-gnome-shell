@@ -1,6 +1,6 @@
 # -*- mode: python -*-
 #
-# jhbuildrc for building gnome-shell. Customizations shuld be done in
+# jhbuildrc for building gnome-shell. Customizations should be done in
 # ~/.jhbuildrc-custom
 #
 # Copyright (C) 2008 Red Hat, Inc.

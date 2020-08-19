@@ -27,7 +27,7 @@
  * @short_description: Blur effect for actors
  *
  * #ShellBlurEffect is a moderately fast gaussian blur implementation. It also has
- * an optional brighness property.
+ * an optional brightness property.
  *
  * # Modes
  *

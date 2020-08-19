@@ -60,7 +60,7 @@ def run_shell(perf_output=None):
     # we do no additional supervision of gnome-shell,
     # beyond that of wait
     # in particular, we don't kill the shell upon
-    # receving a KeyboardInterrupt, as we expect to be
+    # receiving a KeyboardInterrupt, as we expect to be
     # in the same process group
     shell = start_shell(perf_output=perf_output)
     shell.wait()

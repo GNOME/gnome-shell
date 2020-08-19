@@ -283,7 +283,7 @@ shell_app_get_description (ShellApp *app)
  * shell_app_is_window_backed:
  *
  * A window backed application is one which represents just an open
- * window, i.e. there's no .desktop file assocation, so we don't know
+ * window, i.e. there's no .desktop file association, so we don't know
  * how to launch it again.
  */
 gboolean

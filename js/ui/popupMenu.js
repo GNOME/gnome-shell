@@ -208,7 +208,7 @@ var PopupBaseMenuItem = GObject.registerClass({
                 // Remove the CSS active state if the user press the button and
                 // while holding moves to another menu item, so we don't paint all items.
                 // The correct behaviour would be to set the new item with the CSS
-                // active state as well, but button-press-event is not trigered,
+                // active state as well, but button-press-event is not triggered,
                 // so we should track it in our own, which would involve some work
                 // in the container
                 this.remove_style_pseudo_class('active');

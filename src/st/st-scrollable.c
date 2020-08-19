@@ -37,8 +37,8 @@ G_DEFINE_INTERFACE (StScrollable, st_scrollable, G_TYPE_OBJECT)
  * for setting the adjustments. The parent container then sets the adjustments
  * back to %NULL when the scrollable is removed.
  *
- * For #StScrollable supporting height-for-width size negotation, size
- * negotation works as follows:
+ * For #StScrollable supporting height-for-width size negotiation, size
+ * negotiation works as follows:
  *
  * In response to get_preferred_width(), the scrollable should report
  * the minimum width at which horizontal scrolling is needed for the

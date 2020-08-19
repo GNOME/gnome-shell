@@ -160,7 +160,7 @@ st_shadow_get_box (StShadow              *shadow,
 
   /* Inset shadows are drawn below the border, so returning
    * the original box is not actually correct; still, it's
-   * good enough for the purpose of determing additional space
+   * good enough for the purpose of determining additional space
    * required outside the actor box.
    */
   if (shadow->inset)

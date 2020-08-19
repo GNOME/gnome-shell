@@ -103,7 +103,7 @@ na_tray_child_style_set (GtkWidget *widget,
 #if 0
 /* This is adapted from code that was commented out in na-tray-manager.c; the
  * code in na-tray-manager.c wouldn't have worked reliably, this will. So maybe
- * it can be reenabled. On other hand, things seem to be working fine without
+ * it can be re-enabled. On other hand, things seem to be working fine without
  * it.
  *
  * If reenabling, you need to hook it up in na_tray_child_class_init().

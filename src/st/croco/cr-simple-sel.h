@@ -68,7 +68,7 @@ typedef struct _CRSimpleSel CRSimpleSel ;
  *then been called 'universal selector')
  *
  *2/An additional selector that "specializes" the preceding type or
- *universal selector. The additionnal selector can be either
+ *universal selector. The additional selector can be either
  *an id selector, or a class selector, or an attribute selector.
  */
 struct _CRSimpleSel
