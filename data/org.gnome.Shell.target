@@ -1,5 +1,5 @@
 [Unit]
-Description=GNOME Shell on Wayland
+Description=GNOME Shell
 DefaultDependencies=no
 
 Requisite=gnome-session-initialized.target
