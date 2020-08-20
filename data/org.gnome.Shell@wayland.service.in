@@ -26,7 +26,7 @@ ExecStart=@bindir@/gnome-shell
 SuccessExitStatus=1
 
 # unset some environment variables that were set by the shell and won't work now that the shell is gone
-ExecStopPost=-systemctl --user unset-environment GNOME_SETUP_DISPLAY WAYLAND_DISPLAY DISPLAY XAUTHORITY
+ExecStopPost=-/bin/sh -c 'test "$SERVICE_RESULT" != "exec-condition" && systemctl --user unset-environment GNOME_SETUP_DISPLAY WAYLAND_DISPLAY DISPLAY XAUTHORITY'
 
 # On wayland we cannot restart
 Restart=no
