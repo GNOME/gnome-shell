@@ -145,7 +145,7 @@ class Indicator extends PanelMenu.SystemIndicator {
 
         if (nConnectedDevices > 1)
             /* Translators: this is the number of connected bluetooth devices */
-            this._item.label.text = ngettext('%d Connected", "%d Connected', nConnectedDevices).format(nConnectedDevices);
+            this._item.label.text = ngettext('%d Connected', '%d Connected', nConnectedDevices).format(nConnectedDevices);
         else if (nConnectedDevices === 1)
             this._item.label.text = connectedDevices[0].name;
         else if (adapter === null)
