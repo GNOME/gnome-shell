@@ -845,10 +845,11 @@ var IconGrid = GObject.registerClass({
     // Note that this is ICON_SIZE as used by BaseIcon, not elsewhere in IconGrid; it's a bit messed up
     _updateIconSizes() {
         this._updateIconSizesLaterId = 0;
-        let extraWidth = Math.max(0, this._hItemSize - ICON_SIZE);
-        let extraHeight = Math.max(0, this._vItemSize - ICON_SIZE);
+        let scaleFactor = St.ThemeContext.get_for_stage(global.stage).scale_factor;
+        let extraWidth = Math.max(0, this._hItemSize - scaleFactor * ICON_SIZE);
+        let extraHeight = Math.max(0, this._vItemSize - scaleFactor * ICON_SIZE);
         let newIconSize = Math.min(this._fixedHItemSize - extraWidth,
-                                   this._fixedVItemSize - extraHeight);
+                                   this._fixedVItemSize - extraHeight) / scaleFactor;
         for (let i in this._items)
             this._items[i].icon.setIconSize(newIconSize);
 
