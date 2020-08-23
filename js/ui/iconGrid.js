@@ -247,6 +247,7 @@ var IconGrid = GObject.registerClass({
         this._spacing = 0;
         this._hItemSize = this._vItemSize = ICON_SIZE;
         this._fixedHItemSize = this._fixedVItemSize = undefined;
+        this._nonIconWidth = this._nonIconHeight = 0;
         this.connect('style-changed', this._onStyleChanged.bind(this));
 
         this.connect('actor-added', this._childAdded.bind(this));
@@ -824,6 +825,10 @@ var IconGrid = GObject.registerClass({
         this._fixedVItemSize = this._vItemSize;
         this._updateSpacingForSize(availWidth, availHeight);
 
+        let scaleFactor = St.ThemeContext.get_for_stage(global.stage).scale_factor;
+        this._nonIconWidth = Math.max(0, this._hItemSize - scaleFactor * ICON_SIZE);
+        this._nonIconHeight = Math.max(0, this._vItemSize - scaleFactor * ICON_SIZE);
+
         if (this.columnsForWidth(availWidth) < this._minColumns || this.rowsForHeight(availHeight) < this._minRows) {
             let neededWidth = this.usedWidthForNColumns(this._minColumns) - availWidth;
             let neededHeight = this.usedHeightForNRows(this._minRows) - availHeight;
@@ -831,8 +836,10 @@ var IconGrid = GObject.registerClass({
             let neededSpacePerItem = neededWidth > neededHeight
                 ? Math.ceil(neededWidth / this._minColumns)
                 : Math.ceil(neededHeight / this._minRows);
-            this._fixedHItemSize = Math.max(this._hItemSize - neededSpacePerItem, MIN_ICON_SIZE);
-            this._fixedVItemSize = Math.max(this._vItemSize - neededSpacePerItem, MIN_ICON_SIZE);
+            this._fixedHItemSize = Math.max(this._hItemSize - neededSpacePerItem,
+                                            this._nonIconWidth + scaleFactor * MIN_ICON_SIZE);
+            this._fixedVItemSize = Math.max(this._vItemSize - neededSpacePerItem,
+                                            this._nonIconHeight + scaleFactor * MIN_ICON_SIZE);
 
             this._updateSpacingForSize(availWidth, availHeight);
         }
@@ -846,10 +853,8 @@ var IconGrid = GObject.registerClass({
     _updateIconSizes() {
         this._updateIconSizesLaterId = 0;
         let scaleFactor = St.ThemeContext.get_for_stage(global.stage).scale_factor;
-        let extraWidth = Math.max(0, this._hItemSize - scaleFactor * ICON_SIZE);
-        let extraHeight = Math.max(0, this._vItemSize - scaleFactor * ICON_SIZE);
-        let newIconSize = Math.min(this._fixedHItemSize - extraWidth,
-                                   this._fixedVItemSize - extraHeight) / scaleFactor;
+        let newIconSize = Math.min(this._fixedHItemSize - this._nonIconWidth,
+                                   this._fixedVItemSize - this._nonIconHeight) / scaleFactor;
         for (let i in this._items)
             this._items[i].icon.setIconSize(newIconSize);
 
