@@ -24,8 +24,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2020-08-14 15:48+0000\n"
-"PO-Revision-Date: 2020-08-15 19:27-0300\n"
+"POT-Creation-Date: 2020-08-24 16:58+0000\n"
+"PO-Revision-Date: 2020-08-24 22:52-0300\n"
 "Last-Translator: Rafael Fontenelle <rafaelff@gnome.org>\n"
 "Language-Team: Brazilian Portuguese <gnome-pt_br-list@gnome.org>\n"
 "Language: pt_BR\n"
@@ -456,7 +456,7 @@ msgstr "Site"
 msgid "Visit extension homepage"
 msgstr "Visita a página web da extensão"
 
-#: js/gdm/authPrompt.js:135 js/ui/audioDeviceSelection.js:57
+#: js/gdm/authPrompt.js:136 js/ui/audioDeviceSelection.js:57
 #: js/ui/components/networkAgent.js:111 js/ui/components/polkitAgent.js:139
 #: js/ui/endSessionDialog.js:438 js/ui/extensionDownloader.js:183
 #: js/ui/shellMountOperation.js:376 js/ui/shellMountOperation.js:386
@@ -465,7 +465,7 @@ msgid "Cancel"
 msgstr "Cancelar"
 
 #. Cisco LEAP
-#: js/gdm/authPrompt.js:237 js/ui/components/networkAgent.js:206
+#: js/gdm/authPrompt.js:238 js/ui/components/networkAgent.js:206
 #: js/ui/components/networkAgent.js:222 js/ui/components/networkAgent.js:246
 #: js/ui/components/networkAgent.js:267 js/ui/components/networkAgent.js:287
 #: js/ui/components/networkAgent.js:297 js/ui/components/polkitAgent.js:277
@@ -521,14 +521,11 @@ msgstr "Desligar"
 
 #. Translators: A list of keywords that match the power-off action, separated by semicolons
 #: js/misc/systemActions.js:94
-#| msgid "power off;shutdown;reboot;restart;halt;stop"
 msgid "power off;shutdown;halt;stop"
 msgstr "desligar;desligamento;reinicialização;reiniciar"
 
 #. Translators: The name of the restart action in search
 #: js/misc/systemActions.js:99
-#| msgctxt "button"
-#| msgid "Restart"
 msgctxt "search-result"
 msgid "Restart"
 msgstr "Reiniciar"
@@ -926,15 +923,15 @@ msgstr "%d"
 msgid "Week %V"
 msgstr "Semana %V"
 
-#: js/ui/calendar.js:895
+#: js/ui/calendar.js:896
 msgid "No Notifications"
 msgstr "Nenhuma notificação"
 
-#: js/ui/calendar.js:949
+#: js/ui/calendar.js:950
 msgid "Do Not Disturb"
 msgstr "Não perturbe"
 
-#: js/ui/calendar.js:968
+#: js/ui/calendar.js:969
 msgid "Clear"
 msgstr "Limpar"
 
@@ -1243,8 +1240,6 @@ msgid "Restart"
 msgstr "Reiniciar"
 
 #: js/ui/endSessionDialog.js:82
-#| msgctxt "title"
-#| msgid "Install Updates & Power Off"
 msgctxt "title"
 msgid "Install Updates & Restart"
 msgstr "Instalar atualizações & reiniciar"
@@ -1312,7 +1307,6 @@ msgstr ""
 "up) e que o computador esteja ligado na tomada."
 
 #: js/ui/endSessionDialog.js:284
-#| msgid "Running on battery power: Please plug in before installing updates."
 msgid "Low battery power: please plug in before installing updates."
 msgstr "Bateria fraca: conecte na tomada antes de instalar atualizações."
 
@@ -1798,6 +1792,14 @@ msgstr "Bluetooth"
 msgid "Bluetooth Settings"
 msgstr "Configurações de Bluetooth"
 
+#. Translators: this is the number of connected bluetooth devices
+#: js/ui/status/bluetooth.js:148
+#, javascript-format
+msgid "%d Connected"
+msgid_plural "%d Connected"
+msgstr[0] "%d conectado"
+msgstr[1] "%d conectados"
+
 #: js/ui/status/bluetooth.js:152
 msgid "Bluetooth Off"
 msgstr "Bluetooth desligado"
@@ -2163,7 +2165,6 @@ msgid "Suspend"
 msgstr "Suspender"
 
 #: js/ui/status/system.js:130
-#| msgid "Restarting…"
 msgid "Restart…"
 msgstr "Reiniciar…"
 
@@ -3001,11 +3002,6 @@ msgstr "Sons do sistema"
 #~ msgctxt "calendar heading"
 #~ msgid "%A, %B %-d, %Y"
 #~ msgstr "%A, %-d de %B de %Y"
-
-#~ msgid "%d Connected"
-#~ msgid_plural "%d Connected"
-#~ msgstr[0] "%d conectado"
-#~ msgstr[1] "%d conectados"
 
 #~ msgid "Off"
 #~ msgstr "Off"
