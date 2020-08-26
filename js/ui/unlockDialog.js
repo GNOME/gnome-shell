@@ -475,7 +475,7 @@ var UnlockDialog = GObject.registerClass({
     _init(parentActor) {
         super._init({
             accessible_role: Atk.Role.WINDOW,
-            style_class: 'login-dialog',
+            style_class: 'unlock-dialog',
             visible: false,
             reactive: true,
         });
