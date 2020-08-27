@@ -462,6 +462,11 @@ var Dash = GObject.registerClass({
             this._syncLabel(item, appIcon);
         });
 
+        item.child.connect('clicked', () => {
+            this._labelShowing = false;
+            item.hideLabel();
+        });
+
         let id = Main.overview.connect('hiding', () => {
             this._labelShowing = false;
             item.hideLabel();
