@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2020-08-18 13:36+0000\n"
-"PO-Revision-Date: 2020-08-19 21:22+0700\n"
+"POT-Creation-Date: 2020-08-26 12:33+0000\n"
+"PO-Revision-Date: 2020-08-26 21:56+0700\n"
 "Last-Translator: Kukuh Syafaat <kukuhsyafaat@gnome.org>\n"
 "Language-Team: Indonesian <gnome-l10n-id@googlegroups.com>\n"
 "Language: id\n"
@@ -220,6 +220,22 @@ msgid ""
 msgstr ""
 "Aktifkan API D-Bus yang memungkinkan untuk mengintrospeksi status aplikasi "
 "shell."
+
+#: data/org.gnome.shell.gschema.xml.in:114
+msgid "Layout of the app picker"
+msgstr "Tata letak pemilih aplikasi"
+
+#: data/org.gnome.shell.gschema.xml.in:115
+msgid ""
+"Layout of the app picker. Each entry in the array is a page. Pages are "
+"stored in the order they appear in GNOME Shell. Each page contains an "
+"“application id” → 'data' pair. Currently, the following values are stored "
+"as 'data': • “position”: the position of the application icon in the page"
+msgstr ""
+"Tata letak pemilih aplikasi. Setiap entri dalam array adalah halaman. "
+"Halaman disimpan dalam urutan yang muncul di GNOME Shell. Setiap halaman "
+"berisi pasangan “application id” → 'data'. Saat ini, nilai berikut disimpan "
+"sebagai 'data': • \"position\": posisi ikon aplikasi di halaman"
 
 #: data/org.gnome.shell.gschema.xml.in:130
 msgid "Keybinding to open the application menu"
@@ -890,15 +906,15 @@ msgstr "%d"
 msgid "Week %V"
 msgstr "Minggu %V"
 
-#: js/ui/calendar.js:895
+#: js/ui/calendar.js:896
 msgid "No Notifications"
 msgstr "Tak Ada Pemberitahuan"
 
-#: js/ui/calendar.js:949
+#: js/ui/calendar.js:950
 msgid "Do Not Disturb"
 msgstr "Jangan Ganggu"
 
-#: js/ui/calendar.js:968
+#: js/ui/calendar.js:969
 msgid "Clear"
 msgstr "Bersihkan"
 
@@ -1756,6 +1772,14 @@ msgstr "Bluetooth"
 #: js/ui/status/bluetooth.js:49 js/ui/status/network.js:619
 msgid "Bluetooth Settings"
 msgstr "Pengaturan Bluetooth"
+
+#. Translators: this is the number of connected bluetooth devices
+#: js/ui/status/bluetooth.js:148
+#, javascript-format
+msgid "%d Connected"
+msgid_plural "%d Connected"
+msgstr[0] "%d Tersambung"
+msgstr[1] "%d Tersambung"
 
 #: js/ui/status/bluetooth.js:152
 msgid "Bluetooth Off"
@@ -2962,11 +2986,6 @@ msgstr "Suara Sistem"
 #~ msgctxt "calendar heading"
 #~ msgid "%A, %B %-d, %Y"
 #~ msgstr "%A, %d %B %Y"
-
-#~ msgid "%d Connected"
-#~ msgid_plural "%d Connected"
-#~ msgstr[0] "%d Tersambung"
-#~ msgstr[1] "%d Tersambung"
 
 #~ msgid "Off"
 #~ msgstr "Mati"
