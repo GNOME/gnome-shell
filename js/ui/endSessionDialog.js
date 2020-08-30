@@ -626,8 +626,9 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
         }
 
         let app = findAppFromInhibitor(inhibitor);
+        const [flags] = app ? inhibitor.GetFlagsSync() : [0];
 
-        if (app) {
+        if (app && flags & GnomeSession.InhibitFlags.LOGOUT) {
             let [description] = inhibitor.GetReasonSync();
             let listItem = new Dialog.ListSectionItem({
                 icon_actor: app.create_icon_texture(_ITEM_ICON_SIZE),
@@ -636,7 +637,8 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
             });
             this._applicationSection.list.add_child(listItem);
         } else {
-            // inhibiting app is a service, not an application
+            // inhibiting app is a service (not an application) or is not
+            // inhibiting logout/shutdown
             this._applications.splice(this._applications.indexOf(inhibitor), 1);
         }
 
