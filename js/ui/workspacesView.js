@@ -74,6 +74,7 @@ class WorkspacesView extends WorkspacesViewBase {
         let workspaceManager = global.workspace_manager;
 
         super._init(monitorIndex);
+        this.clip_to_allocation = true;
 
         this._animating = false; // tweening
         this._gestureActive = false; // touch(pad) gestures
@@ -95,10 +96,6 @@ class WorkspacesView extends WorkspacesViewBase {
                 this._workspaces.forEach(
                     (ws, i) => this.set_child_at_index(ws, i));
             });
-
-        this._overviewShownId = Main.overview.connect('shown', () => {
-            this.clip_to_allocation = true;
-        });
 
         this._switchWorkspaceNotifyId =
             global.window_manager.connect('switch-workspace',
@@ -147,8 +144,6 @@ class WorkspacesView extends WorkspacesViewBase {
     }
 
     animateFromOverview(animationType) {
-        this.clip_to_allocation = false;
-
         for (let w = 0; w < this._workspaces.length; w++) {
             if (animationType == AnimationType.ZOOM)
                 this._workspaces[w].zoomFromOverview();
@@ -232,7 +227,6 @@ class WorkspacesView extends WorkspacesViewBase {
         super._onDestroy();
 
         this._scrollAdjustment.disconnect(this._onScrollId);
-        Main.overview.disconnect(this._overviewShownId);
         global.window_manager.disconnect(this._switchWorkspaceNotifyId);
         let workspaceManager = global.workspace_manager;
         workspaceManager.disconnect(this._updateWorkspacesId);
