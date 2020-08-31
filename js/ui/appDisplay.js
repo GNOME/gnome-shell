@@ -1333,7 +1333,11 @@ var AppSearchProvider = class AppSearchProvider {
                 metas.push({
                     id: app.get_id(),
                     name: app.get_name(),
-                    createIcon: size => app.create_icon_texture(size),
+                    createIcon: size => {
+                        const icon = app.create_icon_texture(size);
+                        icon.add_style_class_name('icon-dropshadow');
+                        return icon;
+                    },
                 });
             } else {
                 let name = this._systemActions.getName(id);
@@ -2495,7 +2499,9 @@ var AppIcon = GObject.registerClass({
     }
 
     _createIcon(iconSize) {
-        return this.app.create_icon_texture(iconSize);
+        const icon = this.app.create_icon_texture(iconSize);
+        icon.add_style_class_name('icon-dropshadow');
+        return icon;
     }
 
     _removeMenuTimeout() {
