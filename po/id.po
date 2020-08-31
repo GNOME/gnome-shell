@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2020-08-26 12:33+0000\n"
-"PO-Revision-Date: 2020-08-26 21:56+0700\n"
+"POT-Creation-Date: 2020-08-27 02:59+0000\n"
+"PO-Revision-Date: 2020-08-31 15:15+0700\n"
 "Last-Translator: Kukuh Syafaat <kukuhsyafaat@gnome.org>\n"
 "Language-Team: Indonesian <gnome-l10n-id@googlegroups.com>\n"
 "Language: id\n"
@@ -1242,7 +1242,7 @@ msgstr "Mulai Ulang"
 #: js/ui/endSessionDialog.js:101
 msgctxt "title"
 msgid "Restart & Install Updates"
-msgstr "Start Ulang & Pasang Pemutakhiran"
+msgstr "Mulai Ulang & Pasang Pemutakhiran"
 
 #: js/ui/endSessionDialog.js:104
 #, javascript-format
@@ -1274,7 +1274,7 @@ msgstr "Matikan daya setelah pemutakhiran dipasang"
 #: js/ui/endSessionDialog.js:121
 msgctxt "title"
 msgid "Restart & Install Upgrade"
-msgstr "Start Ulang & Pasang Peningkatan"
+msgstr "Mulai Ulang & Pasang Peningkatan"
 
 #. Translators: This is the text displayed for system upgrades in the
 #. shut down dialog. First %s gets replaced with the distro name and
@@ -1285,7 +1285,7 @@ msgid ""
 "%s %s will be installed after restart. Upgrade installation can take a long "
 "time: ensure that you have backed up and that the computer is plugged in."
 msgstr ""
-"%s %s akan dipasang setelah start ulang. Instalasi peningkatan bisa makan "
+"%s %s akan dipasang setelah mulai ulang. Instalasi peningkatan bisa makan "
 "waktu lama: pastikan bahwa Anda telah melakukan back up dan komputer "
 "tersambung ke listrik."
 
