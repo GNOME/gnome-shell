@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell.master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2020-08-21 17:50+0000\n"
-"PO-Revision-Date: 2020-08-24 11:52+0200\n"
+"POT-Creation-Date: 2020-08-24 16:58+0000\n"
+"PO-Revision-Date: 2020-09-01 11:00+0200\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Spanish - Spain <gnome-es-list@gnome.org>\n"
 "Language: es_ES\n"
@@ -910,15 +910,15 @@ msgstr "%d"
 msgid "Week %V"
 msgstr "Semana %V"
 
-#: js/ui/calendar.js:895
+#: js/ui/calendar.js:896
 msgid "No Notifications"
 msgstr "No hay notificaciones"
 
-#: js/ui/calendar.js:949
+#: js/ui/calendar.js:950
 msgid "Do Not Disturb"
 msgstr "No molestar"
 
-#: js/ui/calendar.js:968
+#: js/ui/calendar.js:969
 msgid "Clear"
 msgstr "Limpiar"
 
@@ -1226,8 +1226,6 @@ msgid "Restart"
 msgstr "Reiniciar"
 
 #: js/ui/endSessionDialog.js:82
-#| msgctxt "title"
-#| msgid "Install Updates & Power Off"
 msgctxt "title"
 msgid "Install Updates & Restart"
 msgstr "Instalar actualizaciones y reiniciar"
@@ -1295,7 +1293,6 @@ msgstr ""
 "que el equipo está enchufado."
 
 #: js/ui/endSessionDialog.js:284
-#| msgid "Running on battery power: Please plug in before installing updates."
 msgid "Low battery power: please plug in before installing updates."
 msgstr ""
 "Queda poca batería: enchúfe el equipo antes de instalar las actualizaciones."
@@ -1782,6 +1779,14 @@ msgstr "Bluetooth"
 msgid "Bluetooth Settings"
 msgstr "Configuración de Bluetooth"
 
+#. Translators: this is the number of connected bluetooth devices
+#: js/ui/status/bluetooth.js:148
+#, javascript-format
+msgid "%d Connected"
+msgid_plural "%d Connected"
+msgstr[0] "%d conectado"
+msgstr[1] "%d conectados"
+
 #: js/ui/status/bluetooth.js:152
 msgid "Bluetooth Off"
 msgstr "Bluetooth apagado"
@@ -2146,7 +2151,6 @@ msgid "Suspend"
 msgstr "Suspender"
 
 #: js/ui/status/system.js:130
-#| msgid "Restarting…"
 msgid "Restart…"
 msgstr "Reiniciar…"
 
@@ -2987,11 +2991,6 @@ msgstr "Sonidos del sistema"
 
 #~ msgid "Copy Error"
 #~ msgstr "Copiar error"
-
-#~ msgid "%d Connected"
-#~ msgid_plural "%d Connected"
-#~ msgstr[0] "%d conectado"
-#~ msgstr[1] "%d conectados"
 
 #~ msgid "Off"
 #~ msgstr "Desconectado"
