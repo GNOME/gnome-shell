@@ -829,11 +829,12 @@ var PageManager = GObject.registerClass({
     _init() {
         super._init();
 
+        this._updatingPages = false;
+        this._loadPages();
+
         global.settings.connect('changed::app-picker-layout',
             this._loadPages.bind(this));
 
-        this._updatingPages = false;
-        this._loadPages();
     }
 
     _loadPages() {
