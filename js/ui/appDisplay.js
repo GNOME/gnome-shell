@@ -888,6 +888,7 @@ class AppDisplay extends BaseAppView {
         });
 
         this._pageManager = new PageManager();
+        this._pageManager.connect('layout-changed', () => this._redisplay());
 
         this._scrollView.add_style_class_name('all-apps');
 
