@@ -832,13 +832,15 @@ var PageManager = GObject.registerClass({
         global.settings.connect('changed::app-picker-layout',
             this._loadPages.bind(this));
 
+        this._updatingPages = false;
         this._loadPages();
     }
 
     _loadPages() {
         const layout = global.settings.get_value('app-picker-layout');
         this._pages = layout.recursiveUnpack();
-        this.emit('layout-changed');
+        if (!this._updatingPages)
+            this.emit('layout-changed');
     }
 
     getAppPosition(appId) {
@@ -869,8 +871,12 @@ var PageManager = GObject.registerClass({
             packedPages.push(pageData);
         }
 
+        this._updatingPages = true;
+
         const variant = new GLib.Variant('aa{sv}', packedPages);
         global.settings.set_value('app-picker-layout', variant);
+
+        this._updatingPages = false;
     }
 
     get pages() {
