@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell.master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2020-08-24 16:58+0000\n"
-"PO-Revision-Date: 2020-09-01 11:00+0200\n"
+"POT-Creation-Date: 2020-09-01 09:04+0000\n"
+"PO-Revision-Date: 2020-09-02 14:49+0200\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Spanish - Spain <gnome-es-list@gnome.org>\n"
 "Language: es_ES\n"
@@ -747,31 +747,31 @@ msgid "Unnamed Folder"
 msgstr "Carpeta sin nombre"
 
 #. Translators: This is the heading of a list of open windows
-#: js/ui/appDisplay.js:2766 js/ui/panel.js:75
+#: js/ui/appDisplay.js:2772 js/ui/panel.js:75
 msgid "Open Windows"
 msgstr "Ventanas abiertas"
 
-#: js/ui/appDisplay.js:2785 js/ui/panel.js:82
+#: js/ui/appDisplay.js:2791 js/ui/panel.js:82
 msgid "New Window"
 msgstr "Ventana nueva"
 
-#: js/ui/appDisplay.js:2801
+#: js/ui/appDisplay.js:2807
 msgid "Launch using Integrated Graphics Card"
 msgstr "Lanzar usando la tarjeta gráfica integrada"
 
-#: js/ui/appDisplay.js:2802
+#: js/ui/appDisplay.js:2808
 msgid "Launch using Discrete Graphics Card"
 msgstr "Lanzar usando la tarjeta gráfica discreta"
 
-#: js/ui/appDisplay.js:2830 js/ui/dash.js:239
+#: js/ui/appDisplay.js:2836 js/ui/dash.js:239
 msgid "Remove from Favorites"
 msgstr "Quitar de los favoritos"
 
-#: js/ui/appDisplay.js:2836
+#: js/ui/appDisplay.js:2842
 msgid "Add to Favorites"
 msgstr "Añadir a los favoritos"
 
-#: js/ui/appDisplay.js:2846 js/ui/panel.js:93
+#: js/ui/appDisplay.js:2852 js/ui/panel.js:93
 msgid "Show Details"
 msgstr "Mostrar detalles"
 
@@ -1295,7 +1295,7 @@ msgstr ""
 #: js/ui/endSessionDialog.js:284
 msgid "Low battery power: please plug in before installing updates."
 msgstr ""
-"Queda poca batería: enchúfe el equipo antes de instalar las actualizaciones."
+"Queda poca batería: enchufe el equipo antes de instalar las actualizaciones."
 
 #: js/ui/endSessionDialog.js:293
 msgid "Some applications are busy or have unsaved work"
