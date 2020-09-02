@@ -352,7 +352,7 @@ var ScreencastService = class extends ServiceImplementation {
                 sessionPath,
                 0, 0,
                 screenWidth, screenHeight,
-                fileTemplate,
+                filePath,
                 options,
                 invocation,
                 _recorder => this._removeRecorder(sender));
