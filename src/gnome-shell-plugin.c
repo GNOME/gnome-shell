@@ -352,6 +352,48 @@ gnome_shell_plugin_locate_pointer (MetaPlugin *plugin)
   _shell_global_locate_pointer (shell_plugin->global);
 }
 
+#ifdef COGL_HAS_TRACING
+static void
+gnome_shell_plugin_start_profiler (MetaPlugin           *plugin,
+                                   SysprofCaptureWriter *writer)
+{
+  ShellGlobal *global;
+  GjsProfiler *profiler;
+  GjsContext *context;
+
+  global = shell_global_get ();
+  g_return_if_fail (global);
+
+  context = _shell_global_get_gjs_context (global);
+  g_return_if_fail (context);
+
+  profiler = gjs_context_get_profiler (context);
+  g_return_if_fail (profiler);
+
+  gjs_profiler_set_capture_writer (profiler, writer);
+  gjs_profiler_start (profiler);
+}
+
+static void
+gnome_shell_plugin_stop_profiler (MetaPlugin *plugin)
+{
+  ShellGlobal *global;
+  GjsProfiler *profiler;
+  GjsContext *context;
+
+  global = shell_global_get ();
+  g_return_if_fail (global);
+
+  context = _shell_global_get_gjs_context (global);
+  g_return_if_fail (context);
+
+  profiler = gjs_context_get_profiler (context);
+  g_return_if_fail (profiler);
+
+  gjs_profiler_stop (profiler);
+}
+#endif
+
 static void
 gnome_shell_plugin_class_init (GnomeShellPluginClass *klass)
 {
@@ -386,6 +428,11 @@ gnome_shell_plugin_class_init (GnomeShellPluginClass *klass)
   plugin_class->create_inhibit_shortcuts_dialog = gnome_shell_plugin_create_inhibit_shortcuts_dialog;
 
   plugin_class->locate_pointer = gnome_shell_plugin_locate_pointer;
+
+#ifdef COGL_HAS_TRACING
+  plugin_class->start_profiler = gnome_shell_plugin_start_profiler;
+  plugin_class->stop_profiler = gnome_shell_plugin_stop_profiler;
+#endif
 }
 
 static void

@@ -439,6 +439,9 @@ shell_global_init (ShellGlobal *global)
 
   global->js_context = g_object_new (GJS_TYPE_CONTEXT,
                                      "search-path", search_path,
+#ifdef COGL_HAS_TRACING
+                                     "profiler-enabled", TRUE,
+#endif
                                      NULL);
 
   g_strfreev (search_path);
