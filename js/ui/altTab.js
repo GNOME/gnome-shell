@@ -525,9 +525,23 @@ var CyclerPopup = GObject.registerClass({
 
 var GroupCyclerPopup = GObject.registerClass(
 class GroupCyclerPopup extends CyclerPopup {
+    _init() {
+        this._settings = new Gio.Settings({ schema_id: 'org.gnome.shell.app-switcher' });
+        super._init();
+    }
+
     _getWindows() {
         let app = Shell.WindowTracker.get_default().focus_app;
-        return app ? app.get_windows() : [];
+        let appWindows = app ? app.get_windows() : [];
+
+        if (this._settings.get_boolean('current-workspace-only')) {
+            const workspaceManager = global.workspace_manager;
+            const workspace = workspaceManager.get_active_workspace();
+            appWindows = appWindows.filter(
+                window => window.located_on_workspace(workspace));
+        }
+
+        return appWindows;
     }
 
     _keyPressHandler(keysym, action) {
