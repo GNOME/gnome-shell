@@ -54,15 +54,16 @@ const PortalHelperIface = loadInterfaceXML('org.gnome.Shell.PortalHelper');
 const PortalHelperProxy = Gio.DBusProxy.makeProxyWrapper(PortalHelperIface);
 
 function signalToIcon(value) {
-    if (value > 80)
-        return 'excellent';
-    if (value > 55)
-        return 'good';
-    if (value > 30)
-        return 'ok';
-    if (value > 5)
+    if (value < 20)
+        return 'none';
+    else if (value < 40)
         return 'weak';
-    return 'none';
+    else if (value < 50)
+        return 'ok';
+    else if (value < 80)
+        return 'good';
+    else
+        return 'excellent';
 }
 
 function ssidToLabel(ssid) {
