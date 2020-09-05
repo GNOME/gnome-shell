@@ -1,3 +1,22 @@
+3.37.92
+=======
+* Fix screen recorder shortcut [Florian; #3097]
+* Support cycle-group cycling only over windows in the workspac3 [Mitar; #3116]
+* Misc. bug fixes and cleanups [Georges, Daniel, Carlos; !1428, !1423,
+  !1311, #2968]
+
+
+Contributors:
+  Carlos Garnacho, Mitar, Florian Müllner, Georges Basile Stavracas Neto,
+  Daniel van Vugt
+
+Translators:
+  Yuri Chornoivan [uk], Zander Brown [en_GB], Rafael Fontenelle [pt_BR],
+  Nathan Follens [nl], Danial Behzadi [fa], Kukuh Syafaat [id],
+  Aurimas Černius [lt], Marek Černocký [cs], Fabio Tomat [fur],
+  Changwoo Ryu [ko], Марко Костић [sr], Daniel Mustieles [es], Dušan Kazik [sk],
+  Thibault Martin [fr], Jordi Mas [ca]
+
 3.37.91
 =======
 * Fix potential stack overflow in libcroco [Michael; !1404]
