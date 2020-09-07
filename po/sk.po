@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2020-08-24 15:44+0000\n"
-"PO-Revision-Date: 2020-09-02 13:51+0200\n"
+"POT-Creation-Date: 2020-09-06 23:31+0000\n"
+"PO-Revision-Date: 2020-09-07 11:55+0200\n"
 "Last-Translator: Dušan Kazik <prescott66@gmail.com>\n"
 "Language-Team: Slovak <gnome-sk-list@gnome.org>\n"
 "Language: sk\n"
@@ -234,7 +234,7 @@ msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:114
 msgid "Layout of the app picker"
-msgstr ""
+msgstr "Rozloženie nástroja na výber aplikácie"
 
 #: data/org.gnome.shell.gschema.xml.in:115
 msgid ""
@@ -243,6 +243,11 @@ msgid ""
 "“application id” → 'data' pair. Currently, the following values are stored "
 "as 'data': • “position”: the position of the application icon in the page"
 msgstr ""
+"Rozloženie nástroja na výbe raplikácie. Každý záznam v poli je stránkou. "
+"Stránky sú uložené v poradí, v akom sú viditeľné v Shelli prostredia GNOME. "
+"Každá stránka obsahuje pár záznamov „application id“ → „údaje“. Momentálne "
+"sú nasledovné hodnoty uložené ako „údaje“: • “„pozícia“: pozícia ikony "
+"aplikácie na stránke."
 
 #: data/org.gnome.shell.gschema.xml.in:130
 msgid "Keybinding to open the application menu"
@@ -517,85 +522,85 @@ msgid "(or swipe finger)"
 msgstr "(alebo prejdite prstom)"
 
 #. Translators: The name of the power-off action in search
-#: js/misc/systemActions.js:91
+#: js/misc/systemActions.js:82
 msgctxt "search-result"
 msgid "Power Off"
 msgstr "Vypnúť"
 
 #. Translators: A list of keywords that match the power-off action, separated by semicolons
-#: js/misc/systemActions.js:94
+#: js/misc/systemActions.js:85
 msgid "power off;shutdown;halt;stop"
 msgstr "vypnúť;vypnutie;zastaviť;zastavenie"
 
 #. Translators: The name of the restart action in search
-#: js/misc/systemActions.js:99
+#: js/misc/systemActions.js:90
 msgctxt "search-result"
 msgid "Restart"
 msgstr "Reštartovať"
 
 #. Translators: A list of keywords that match the restart action, separated by semicolons
-#: js/misc/systemActions.js:102
+#: js/misc/systemActions.js:93
 msgid "reboot;restart;"
 msgstr "reštartovať;reštart;"
 
 #. Translators: The name of the lock screen action in search
-#: js/misc/systemActions.js:107
+#: js/misc/systemActions.js:98
 msgctxt "search-result"
 msgid "Lock Screen"
 msgstr "Uzamknúť obrazovku"
 
 #. Translators: A list of keywords that match the lock screen action, separated by semicolons
-#: js/misc/systemActions.js:110
+#: js/misc/systemActions.js:101
 msgid "lock screen"
 msgstr "uzamknúť;zámok;obrazovku;obrazovky"
 
 #. Translators: The name of the logout action in search
-#: js/misc/systemActions.js:115
+#: js/misc/systemActions.js:106
 msgctxt "search-result"
 msgid "Log Out"
 msgstr "Odhlásiť sa"
 
 #. Translators: A list of keywords that match the logout action, separated by semicolons
-#: js/misc/systemActions.js:118
+#: js/misc/systemActions.js:109
 msgid "logout;log out;sign off"
 msgstr "odhlásiť;odhlásenie"
 
 #. Translators: The name of the suspend action in search
-#: js/misc/systemActions.js:123
+#: js/misc/systemActions.js:114
 msgctxt "search-result"
 msgid "Suspend"
 msgstr "Uspať"
 
 #. Translators: A list of keywords that match the suspend action, separated by semicolons
-#: js/misc/systemActions.js:126
+#: js/misc/systemActions.js:117
 msgid "suspend;sleep"
 msgstr "uspať;režim;spánku"
 
 #. Translators: The name of the switch user action in search
-#: js/misc/systemActions.js:131
+#: js/misc/systemActions.js:122
 msgctxt "search-result"
 msgid "Switch User"
 msgstr "Prepnúť používateľa"
 
 #. Translators: A list of keywords that match the switch user action, separated by semicolons
-#: js/misc/systemActions.js:134
+#: js/misc/systemActions.js:125
 msgid "switch user"
 msgstr "prepnúť;prepnutie;používateľa"
 
 # action button
 #. Translators: A list of keywords that match the lock orientation action, separated by semicolons
-#: js/misc/systemActions.js:141
+#: js/misc/systemActions.js:132
 msgid "lock orientation;unlock orientation;screen;rotation"
 msgstr "uzamknúť orientáciu;odomknúť orientáciu;obrazovka;otočenie"
 
 # action button
-#: js/misc/systemActions.js:266
+#: js/misc/systemActions.js:240
 msgctxt "search-result"
 msgid "Unlock Screen Rotation"
 msgstr "Odomknúť otočenie obrazovky"
 
 # action button
-#: js/misc/systemActions.js:267
+#: js/misc/systemActions.js:241
 msgctxt "search-result"
 msgid "Lock Screen Rotation"
 msgstr "Uzamknúť otočenie obrazovky"
@@ -770,36 +775,36 @@ msgstr "Odmietnuť prístup"
 msgid "Grant Access"
 msgstr "Udeliť prístup"
 
-#: js/ui/appDisplay.js:1297
+#: js/ui/appDisplay.js:1305
 msgid "Unnamed Folder"
 msgstr "Nepomenovaný priečinok"
 
 #. Translators: This is the heading of a list of open windows
-#: js/ui/appDisplay.js:2766 js/ui/panel.js:75
+#: js/ui/appDisplay.js:2774 js/ui/panel.js:75
 msgid "Open Windows"
 msgstr "Otvorené okná"
 
-#: js/ui/appDisplay.js:2785 js/ui/panel.js:82
+#: js/ui/appDisplay.js:2793 js/ui/panel.js:82
 msgid "New Window"
 msgstr "Nové okno"
 
-#: js/ui/appDisplay.js:2801
+#: js/ui/appDisplay.js:2809
 msgid "Launch using Integrated Graphics Card"
 msgstr "Spustiť pomocou integrovanej grafickej karty"
 
-#: js/ui/appDisplay.js:2802
+#: js/ui/appDisplay.js:2810
 msgid "Launch using Discrete Graphics Card"
 msgstr "Spustiť pomocou diskrétnej grafickej karty"
 
-#: js/ui/appDisplay.js:2830 js/ui/dash.js:239
+#: js/ui/appDisplay.js:2838 js/ui/dash.js:239
 msgid "Remove from Favorites"
 msgstr "Odstrániť z obľúbených"
 
-#: js/ui/appDisplay.js:2836
+#: js/ui/appDisplay.js:2844
 msgid "Add to Favorites"
 msgstr "Pridať do obľúbených"
 
-#: js/ui/appDisplay.js:2846 js/ui/panel.js:93
+#: js/ui/appDisplay.js:2854 js/ui/panel.js:93
 msgid "Show Details"
 msgstr "Zobraziť podrobnosti"
 
