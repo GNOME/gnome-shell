@@ -375,7 +375,8 @@ st_adjustment_class_init (StAdjustmentClass *klass)
    * StAdjustment::changed:
    * @self: the #StAdjustment
    *
-   * Emitted when any of the adjustment values have changed
+   * Emitted when any of the adjustment properties have changed, except for
+   * #StAdjustment:value.
    */
   signals[CHANGED] =
     g_signal_new ("changed",
