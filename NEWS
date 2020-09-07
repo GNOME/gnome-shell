@@ -1,3 +1,14 @@
+3.36.6
+======
+* Fix lock screen on systems without GLSL shader support [Zephaniah; #3071]
+* Fix app icon scaling regression on HiDPI displays [Sebastian; !1420]
+
+Contributors:
+  Sebastian Keller, Zephaniah E. Loss-Cutler-Hull
+
+Translators:
+  Goran Vidović [hr], Balázs Úr [hu]
+
 3.36.5
 ======
 * Fix extension updates when many extensions are installed [Jeremias; !1363]
