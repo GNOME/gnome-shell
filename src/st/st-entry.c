@@ -1312,6 +1312,9 @@ _st_entry_icon_clicked_cb (ClutterClickAction *action,
 {
   StEntryPrivate *priv = ST_ENTRY_PRIV (entry);
 
+  if (!clutter_actor_get_reactive (CLUTTER_ACTOR (entry)))
+    return;
+
   if (actor == priv->primary_icon)
     g_signal_emit (entry, entry_signals[PRIMARY_ICON_CLICKED], 0);
   else
