@@ -25,8 +25,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2020-08-17 22:03+0000\n"
-"PO-Revision-Date: 2020-08-18 22:06+0300\n"
+"POT-Creation-Date: 2020-09-09 13:43+0000\n"
+"PO-Revision-Date: 2020-09-10 00:59+0300\n"
 "Last-Translator: Jiri Grönroos <jiri.gronroos+l10n@iki.fi>\n"
 "Language-Team: suomi <lokalisointi-lista@googlegroups.com>\n"
 "Language: fi\n"
@@ -107,7 +107,6 @@ msgstr ""
 "myös org.gnome.Shell-DBus-metodeilla EnableExtension ja DisableExtension."
 
 #: data/org.gnome.shell.gschema.xml.in:26
-#| msgid "UUIDs of extensions to enable"
 msgid "UUIDs of extensions to force disabling"
 msgstr "Käytöstä pakotetusti estettyjen laajennusten UUID:t"
 
@@ -457,7 +456,7 @@ msgstr "Verkkosivu"
 msgid "Visit extension homepage"
 msgstr "Käy laajennuksen verkkosivulla"
 
-#: js/gdm/authPrompt.js:135 js/ui/audioDeviceSelection.js:57
+#: js/gdm/authPrompt.js:136 js/ui/audioDeviceSelection.js:57
 #: js/ui/components/networkAgent.js:111 js/ui/components/polkitAgent.js:139
 #: js/ui/endSessionDialog.js:438 js/ui/extensionDownloader.js:183
 #: js/ui/shellMountOperation.js:376 js/ui/shellMountOperation.js:386
@@ -466,7 +465,7 @@ msgid "Cancel"
 msgstr "Peru"
 
 #. Cisco LEAP
-#: js/gdm/authPrompt.js:237 js/ui/components/networkAgent.js:206
+#: js/gdm/authPrompt.js:238 js/ui/components/networkAgent.js:206
 #: js/ui/components/networkAgent.js:222 js/ui/components/networkAgent.js:246
 #: js/ui/components/networkAgent.js:267 js/ui/components/networkAgent.js:287
 #: js/ui/components/networkAgent.js:297 js/ui/components/polkitAgent.js:277
@@ -515,84 +514,84 @@ msgid "(or swipe finger)"
 msgstr "(tai pyyhkäise sormella)"
 
 #. Translators: The name of the power-off action in search
-#: js/misc/systemActions.js:91
+#: js/misc/systemActions.js:82
 msgctxt "search-result"
 msgid "Power Off"
 msgstr "Sammuta"
 
 #. Translators: A list of keywords that match the power-off action, separated by semicolons
-#: js/misc/systemActions.js:94
+#: js/misc/systemActions.js:85
 msgid "power off;shutdown;halt;stop"
 msgstr "power off;shutdown;halt;stop;sammuta"
 
 #. Translators: The name of the restart action in search
-#: js/misc/systemActions.js:99
+#: js/misc/systemActions.js:90
 msgctxt "search-result"
 msgid "Restart"
 msgstr "Käynnistä uudelleen"
 
 #. Translators: A list of keywords that match the restart action, separated by semicolons
-#: js/misc/systemActions.js:102
+#: js/misc/systemActions.js:93
 msgid "reboot;restart;"
 msgstr "reboot;restart;uudelleenkäynnistys;käynnistä uudelleen;boottaa;"
 
 #. Translators: The name of the lock screen action in search
-#: js/misc/systemActions.js:107
+#: js/misc/systemActions.js:98
 msgctxt "search-result"
 msgid "Lock Screen"
 msgstr "Lukitse näyttö"
 
 #. Translators: A list of keywords that match the lock screen action, separated by semicolons
-#: js/misc/systemActions.js:110
+#: js/misc/systemActions.js:101
 msgid "lock screen"
 msgstr "lock screen"
 
 #. Translators: The name of the logout action in search
-#: js/misc/systemActions.js:115
+#: js/misc/systemActions.js:106
 msgctxt "search-result"
 msgid "Log Out"
 msgstr "Kirjaudu ulos"
 
 #. Translators: A list of keywords that match the logout action, separated by semicolons
-#: js/misc/systemActions.js:118
+#: js/misc/systemActions.js:109
 msgid "logout;log out;sign off"
 msgstr "logout;log out;sign off;kirjaudu ulos;uloskirjautuminen;poistu"
 
 #. Translators: The name of the suspend action in search
-#: js/misc/systemActions.js:123
+#: js/misc/systemActions.js:114
 msgctxt "search-result"
 msgid "Suspend"
 msgstr "Valmiustila"
 
 #. Translators: A list of keywords that match the suspend action, separated by semicolons
-#: js/misc/systemActions.js:126
+#: js/misc/systemActions.js:117
 msgid "suspend;sleep"
 msgstr "suspend;sleep"
 
 #. Translators: The name of the switch user action in search
-#: js/misc/systemActions.js:131
+#: js/misc/systemActions.js:122
 msgctxt "search-result"
 msgid "Switch User"
 msgstr "Vaihda käyttäjää"
 
 #. Translators: A list of keywords that match the switch user action, separated by semicolons
-#: js/misc/systemActions.js:134
+#: js/misc/systemActions.js:125
 msgid "switch user"
 msgstr "switch user"
 
 #. Translators: A list of keywords that match the lock orientation action, separated by semicolons
-#: js/misc/systemActions.js:141
+#: js/misc/systemActions.js:132
 msgid "lock orientation;unlock orientation;screen;rotation"
 msgstr ""
 "lock orientation;unlock orientation;screen;rotation;lukitse kierto;lukitse "
 "suunta;suunta;kääntö"
 
-#: js/misc/systemActions.js:266
+#: js/misc/systemActions.js:240
 msgctxt "search-result"
 msgid "Unlock Screen Rotation"
 msgstr "Vapauta näytön kierto"
 
-#: js/misc/systemActions.js:267
+#: js/misc/systemActions.js:241
 msgctxt "search-result"
 msgid "Lock Screen Rotation"
 msgstr "Lukitse näytön kierto"
@@ -757,36 +756,36 @@ msgstr "Estä pääsy"
 msgid "Grant Access"
 msgstr "Salli pääsy"
 
-#: js/ui/appDisplay.js:1297
+#: js/ui/appDisplay.js:1305
 msgid "Unnamed Folder"
 msgstr "Nimetön kansio"
 
 #. Translators: This is the heading of a list of open windows
-#: js/ui/appDisplay.js:2766 js/ui/panel.js:75
+#: js/ui/appDisplay.js:2774 js/ui/panel.js:75
 msgid "Open Windows"
 msgstr "Avoimet ikkunat"
 
-#: js/ui/appDisplay.js:2785 js/ui/panel.js:82
+#: js/ui/appDisplay.js:2793 js/ui/panel.js:82
 msgid "New Window"
 msgstr "Uusi ikkuna"
 
-#: js/ui/appDisplay.js:2801
+#: js/ui/appDisplay.js:2809
 msgid "Launch using Integrated Graphics Card"
 msgstr "Käynnistä integroitua näytönohjainta käyttäen"
 
-#: js/ui/appDisplay.js:2802
+#: js/ui/appDisplay.js:2810
 msgid "Launch using Discrete Graphics Card"
 msgstr "Käynnistä erillistä näytönohjainta käyttäen"
 
-#: js/ui/appDisplay.js:2830 js/ui/dash.js:239
+#: js/ui/appDisplay.js:2838 js/ui/dash.js:239
 msgid "Remove from Favorites"
 msgstr "Poista suosikeista"
 
-#: js/ui/appDisplay.js:2836
+#: js/ui/appDisplay.js:2844
 msgid "Add to Favorites"
 msgstr "Lisää suosikkeihin"
 
-#: js/ui/appDisplay.js:2846 js/ui/panel.js:93
+#: js/ui/appDisplay.js:2854 js/ui/panel.js:93
 msgid "Show Details"
 msgstr "Näytä tiedot"
 
@@ -925,15 +924,15 @@ msgstr "%d"
 msgid "Week %V"
 msgstr "Viikko %V"
 
-#: js/ui/calendar.js:895
+#: js/ui/calendar.js:896
 msgid "No Notifications"
 msgstr "Ei ilmoituksia"
 
-#: js/ui/calendar.js:949
+#: js/ui/calendar.js:950
 msgid "Do Not Disturb"
 msgstr "Älä häiritse"
 
-#: js/ui/calendar.js:968
+#: js/ui/calendar.js:969
 msgid "Clear"
 msgstr "Tyhjennä"
 
@@ -1795,6 +1794,14 @@ msgstr "Bluetooth"
 msgid "Bluetooth Settings"
 msgstr "Bluetooth-asetukset"
 
+#. Translators: this is the number of connected bluetooth devices
+#: js/ui/status/bluetooth.js:148
+#, javascript-format
+msgid "%d Connected"
+msgid_plural "%d Connected"
+msgstr[0] "%d yhdistetty"
+msgstr[1] "%d yhdistetty"
+
 #: js/ui/status/bluetooth.js:152
 msgid "Bluetooth Off"
 msgstr "Bluetooth pois"
@@ -2160,7 +2167,7 @@ msgstr "Valmiustila"
 
 #: js/ui/status/system.js:130
 msgid "Restart…"
-msgstr "Käynnistetään uudelleen…"
+msgstr "Käynnistä uudelleen…"
 
 #: js/ui/status/system.js:141
 msgid "Power Off…"
@@ -2813,7 +2820,6 @@ msgstr "Enemmän kuin yksi lähdekansio määritetty"
 
 #: subprojects/extensions-tool/src/command-prefs.c:47
 #, c-format
-#| msgid "Show extensions with preferences"
 msgid "Extension “%s” doesn't have preferences\n"
 msgstr "Laajennuksella “%s” ei ole asetuksia\n"
 
@@ -2826,13 +2832,11 @@ msgid "Reset an extension"
 msgstr "Nollaa laajennus"
 
 #: subprojects/extensions-tool/src/command-uninstall.c:49
-#| msgid "List installed extensions"
 msgid "Cannot uninstall system extensions\n"
 msgstr "Järjestelmän laajennuksia ei voi poistaa\n"
 
 #: subprojects/extensions-tool/src/command-uninstall.c:64
 #, c-format
-#| msgid "Failed to launch “%s”"
 msgid "Failed to uninstall “%s”\n"
 msgstr "Ei voitu poistaa “%s”\n"
 
@@ -2994,11 +2998,6 @@ msgstr "Järjestelmän äänet"
 #~ msgctxt "calendar heading"
 #~ msgid "%A, %B %-d, %Y"
 #~ msgstr "%A, %-d. %Bta %Y"
-
-#~ msgid "%d Connected"
-#~ msgid_plural "%d Connected"
-#~ msgstr[0] "%d yhdistetty"
-#~ msgstr[1] "%d yhdistetty"
 
 #~ msgid "Off"
 #~ msgstr "Pois"
