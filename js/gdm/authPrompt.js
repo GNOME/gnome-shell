@@ -432,6 +432,8 @@ var AuthPrompt = GObject.registerClass({
 
         if (sensitive)
             this._entry.grab_key_focus();
+        else if (this._entry === this._passwordEntry)
+            this._entry.password_visible = false;
     }
 
     vfunc_hide() {
