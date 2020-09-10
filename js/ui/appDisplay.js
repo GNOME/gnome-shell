@@ -851,11 +851,11 @@ var PageManager = GObject.registerClass({
         for (let pageIndex = 0; pageIndex < this._pages.length; pageIndex++) {
             const pageData = this._pages[pageIndex];
 
-            if (!(appId in pageData))
-                continue;
-
-            page = pageIndex;
-            position = pageData[appId].position;
+            if (appId in pageData) {
+                page = pageIndex;
+                position = pageData[appId].position;
+                break;
+            }
         }
 
         return [page, position];
