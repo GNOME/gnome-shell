@@ -23,7 +23,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2020-08-21 18:45+0000\n"
+"POT-Creation-Date: 2020-09-09 13:43+0000\n"
 "PO-Revision-Date: 2020-08-23 11:13-0400\n"
 "Last-Translator: Boyuan Yang <073plan@gmail.com>\n"
 "Language-Team: Chinese (China) <i18n-zh@googlegroups.com>\n"
@@ -473,82 +473,82 @@ msgid "(or swipe finger)"
 msgstr "（或滑动手指）"
 
 #. Translators: The name of the power-off action in search
-#: js/misc/systemActions.js:91
+#: js/misc/systemActions.js:82
 msgctxt "search-result"
 msgid "Power Off"
 msgstr "关机"
 
 #. Translators: A list of keywords that match the power-off action, separated by semicolons
-#: js/misc/systemActions.js:94
+#: js/misc/systemActions.js:85
 msgid "power off;shutdown;halt;stop"
 msgstr "power off;shutdown;halt;stop;关机;断电;挂起;停止"
 
 #. Translators: The name of the restart action in search
-#: js/misc/systemActions.js:99
+#: js/misc/systemActions.js:90
 msgctxt "search-result"
 msgid "Restart"
 msgstr "重启"
 
 #. Translators: A list of keywords that match the restart action, separated by semicolons
-#: js/misc/systemActions.js:102
+#: js/misc/systemActions.js:93
 msgid "reboot;restart;"
 msgstr "reboot;restart;重启;重新启动;"
 
 #. Translators: The name of the lock screen action in search
-#: js/misc/systemActions.js:107
+#: js/misc/systemActions.js:98
 msgctxt "search-result"
 msgid "Lock Screen"
 msgstr "锁屏"
 
 #. Translators: A list of keywords that match the lock screen action, separated by semicolons
-#: js/misc/systemActions.js:110
+#: js/misc/systemActions.js:101
 msgid "lock screen"
 msgstr "lock screen;锁屏"
 
 #. Translators: The name of the logout action in search
-#: js/misc/systemActions.js:115
+#: js/misc/systemActions.js:106
 msgctxt "search-result"
 msgid "Log Out"
 msgstr "注销"
 
 #. Translators: A list of keywords that match the logout action, separated by semicolons
-#: js/misc/systemActions.js:118
+#: js/misc/systemActions.js:109
 msgid "logout;log out;sign off"
 msgstr "logout;log out;sign off;登出;注销;退出"
 
 #. Translators: The name of the suspend action in search
-#: js/misc/systemActions.js:123
+#: js/misc/systemActions.js:114
 msgctxt "search-result"
 msgid "Suspend"
 msgstr "挂起"
 
 #. Translators: A list of keywords that match the suspend action, separated by semicolons
-#: js/misc/systemActions.js:126
+#: js/misc/systemActions.js:117
 msgid "suspend;sleep"
 msgstr "suspend;sleep;挂起;睡眠"
 
 #. Translators: The name of the switch user action in search
-#: js/misc/systemActions.js:131
+#: js/misc/systemActions.js:122
 msgctxt "search-result"
 msgid "Switch User"
 msgstr "切换用户"
 
 #. Translators: A list of keywords that match the switch user action, separated by semicolons
-#: js/misc/systemActions.js:134
+#: js/misc/systemActions.js:125
 msgid "switch user"
 msgstr "switch user;切换用户"
 
 #. Translators: A list of keywords that match the lock orientation action, separated by semicolons
-#: js/misc/systemActions.js:141
+#: js/misc/systemActions.js:132
 msgid "lock orientation;unlock orientation;screen;rotation"
 msgstr "lock orientation;screen;rotation;锁定方向;屏幕;旋转"
 
-#: js/misc/systemActions.js:266
+#: js/misc/systemActions.js:240
 msgctxt "search-result"
 msgid "Unlock Screen Rotation"
 msgstr "解锁屏幕旋转"
 
-#: js/misc/systemActions.js:267
+#: js/misc/systemActions.js:241
 msgctxt "search-result"
 msgid "Lock Screen Rotation"
 msgstr "锁定屏幕旋转"
@@ -705,36 +705,36 @@ msgstr "拒绝访问"
 msgid "Grant Access"
 msgstr "允许访问"
 
-#: js/ui/appDisplay.js:1297
+#: js/ui/appDisplay.js:1305
 msgid "Unnamed Folder"
 msgstr "未命名文件夹"
 
 #. Translators: This is the heading of a list of open windows
-#: js/ui/appDisplay.js:2766 js/ui/panel.js:75
+#: js/ui/appDisplay.js:2774 js/ui/panel.js:75
 msgid "Open Windows"
 msgstr "打开窗口"
 
-#: js/ui/appDisplay.js:2785 js/ui/panel.js:82
+#: js/ui/appDisplay.js:2793 js/ui/panel.js:82
 msgid "New Window"
 msgstr "新窗口"
 
-#: js/ui/appDisplay.js:2801
+#: js/ui/appDisplay.js:2809
 msgid "Launch using Integrated Graphics Card"
 msgstr "使用集成显卡启动"
 
-#: js/ui/appDisplay.js:2802
+#: js/ui/appDisplay.js:2810
 msgid "Launch using Discrete Graphics Card"
 msgstr "使用独立显卡启动"
 
-#: js/ui/appDisplay.js:2830 js/ui/dash.js:239
+#: js/ui/appDisplay.js:2838 js/ui/dash.js:239
 msgid "Remove from Favorites"
 msgstr "从收藏夹中移除"
 
-#: js/ui/appDisplay.js:2836
+#: js/ui/appDisplay.js:2844
 msgid "Add to Favorites"
 msgstr "添加到收藏夹"
 
-#: js/ui/appDisplay.js:2846 js/ui/panel.js:93
+#: js/ui/appDisplay.js:2854 js/ui/panel.js:93
 msgid "Show Details"
 msgstr "显示细节"
 
@@ -1720,6 +1720,13 @@ msgstr "蓝牙"
 #: js/ui/status/bluetooth.js:49 js/ui/status/network.js:619
 msgid "Bluetooth Settings"
 msgstr "蓝牙设置"
+
+#. Translators: this is the number of connected bluetooth devices
+#: js/ui/status/bluetooth.js:148
+#, javascript-format
+msgid "%d Connected"
+msgid_plural "%d Connected"
+msgstr[0] "%d 台设备已连接"
 
 #: js/ui/status/bluetooth.js:152
 msgid "Bluetooth Off"
@@ -2953,10 +2960,6 @@ msgstr "系统声音"
 #~ msgid "%d new notification"
 #~ msgid_plural "%d new notifications"
 #~ msgstr[0] "%d 条新通知"
-
-#~ msgid "%d Connected"
-#~ msgid_plural "%d Connected"
-#~ msgstr[0] "%d 台设备已连接"
 
 #~ msgid "Off"
 #~ msgstr "关"
