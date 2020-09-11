@@ -325,28 +325,24 @@ get_hadjustment_value (StViewport *viewport)
 }
 
 static void
-st_viewport_apply_transform (ClutterActor *actor,
-                             CoglMatrix   *matrix)
+st_viewport_apply_transform (ClutterActor      *actor,
+                             graphene_matrix_t *matrix)
 {
   StViewport *viewport = ST_VIEWPORT (actor);
   StViewportPrivate *priv = st_viewport_get_instance_private (viewport);
   ClutterActorClass *parent_class =
     CLUTTER_ACTOR_CLASS (st_viewport_parent_class);
-  double x, y;
-
-  parent_class->apply_transform (actor, matrix);
+  graphene_point3d_t p = GRAPHENE_POINT3D_INIT_ZERO;
 
   if (priv->hadjustment)
-    x = get_hadjustment_value (viewport);
-  else
-    x = 0;
+    p.x = -get_hadjustment_value (viewport);
 
   if (priv->vadjustment)
-    y = st_adjustment_get_value (priv->vadjustment);
-  else
-    y = 0;
+    p.y = -st_adjustment_get_value (priv->vadjustment);
 
-  cogl_matrix_translate (matrix, (int) -x, (int) -y, 0);
+  graphene_matrix_translate (matrix, &p);
+
+  parent_class->apply_transform (actor, matrix);
 }
 
 /* If we are translated, then we need to translate back before chaining

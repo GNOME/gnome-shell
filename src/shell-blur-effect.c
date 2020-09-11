@@ -330,17 +330,13 @@ setup_projection_matrix (CoglFramebuffer *framebuffer,
                          float            width,
                          float            height)
 {
-  CoglMatrix projection;
+  graphene_matrix_t projection;
 
-  cogl_matrix_init_identity (&projection);
-  cogl_matrix_scale (&projection,
-                     2.0 / width,
-                     -2.0 / height,
-                     1.f);
-  cogl_matrix_translate (&projection,
-                         -width / 2.0,
-                         -height / 2.0,
-                         0);
+  graphene_matrix_init_translate (&projection,
+                                  &GRAPHENE_POINT3D_INIT (-width / 2.0,
+                                                          -height / 2.0,
+                                                          0.f));
+  graphene_matrix_scale (&projection, 2.0 / width, -2.0 / height, 1.f);
 
   cogl_framebuffer_set_projection_matrix (framebuffer, &projection);
 }
