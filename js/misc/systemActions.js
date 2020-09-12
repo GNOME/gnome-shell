@@ -284,6 +284,10 @@ const SystemActions = GObject.registerClass({
         terms = terms.map(
             term => GLib.str_tokenize_and_fold(term, null)[0]).flat(2);
 
+        // tokenizing may return an empty array
+        if (terms.length === 0)
+            return [];
+
         let results = [];
 
         for (let [key, { available, keywords }] of this._actions) {
