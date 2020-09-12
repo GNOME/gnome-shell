@@ -281,7 +281,8 @@ const SystemActions = GObject.registerClass({
 
     getMatchingActions(terms) {
         // terms is a list of strings
-        terms = terms.map(term => GLib.str_tokenize_and_fold(term, null)[0]);
+        terms = terms.map(
+            term => GLib.str_tokenize_and_fold(term, null)[0]).flat(2);
 
         let results = [];
 
