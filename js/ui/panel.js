@@ -740,6 +740,7 @@ class AggregateMenu extends PanelMenu.Button {
         this._nightLight = new imports.ui.status.nightLight.Indicator();
         this._thunderbolt = new imports.ui.status.thunderbolt.Indicator();
 
+        this._indicators.add_child(this._remoteAccess);
         this._indicators.add_child(this._thunderbolt);
         this._indicators.add_child(this._location);
         this._indicators.add_child(this._nightLight);
@@ -747,7 +748,6 @@ class AggregateMenu extends PanelMenu.Button {
             this._indicators.add_child(this._network);
         if (this._bluetooth)
             this._indicators.add_child(this._bluetooth);
-        this._indicators.add_child(this._remoteAccess);
         this._indicators.add_child(this._rfkill);
         this._indicators.add_child(this._volume);
         this._indicators.add_child(this._power);
