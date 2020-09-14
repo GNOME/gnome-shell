@@ -1,7 +1,9 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported ScreencastService */
 
-const { Gio, GLib, Gst } = imports.gi;
+imports.gi.versions.Gtk = '3.0';
+
+const { Gio, GLib, Gst, Gtk } = imports.gi;
 
 const { loadInterfaceXML, loadSubInterfaceXML } = imports.misc.fileUtils;
 const { ServiceImplementation } = imports.dbusService;
@@ -76,6 +78,11 @@ var Recorder = class {
             this._framerate = options['framerate'];
         if ('draw-cursor' in options)
             this._drawCursor = options['draw-cursor'];
+    }
+
+    _addRecentItem() {
+        const file = Gio.File.new_for_path(this._filePath);
+        Gtk.RecentManager.get_default().add_item(file.get_uri());
     }
 
     _watchSender(sender) {
@@ -180,6 +187,7 @@ var Recorder = class {
         switch (message.type) {
         case Gst.MessageType.EOS:
             this._pipeline.set_state(Gst.State.NULL);
+            this._addRecentItem();
 
             switch (this._pipelineState) {
             case PipelineState.FLUSHING:
@@ -238,6 +246,7 @@ var ScreencastService = class extends ServiceImplementation {
         super(ScreencastIface, '/org/gnome/Shell/Screencast');
 
         Gst.init(null);
+        Gtk.init(null);
 
         this._recorders = new Map();
         this._senders = new Map();
