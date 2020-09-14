@@ -39,12 +39,13 @@
   </description>
 
   <releases>
-    <release version="3.37.92" date="2020-09-05"/>
-    <release version="3.37.91" date="2020-08-24"/>
-    <release version="3.37.90" date="2020-08-11"/>
-    <release version="3.37.3" date="2020-07-07"/>
-    <release version="3.37.2" date="2020-06-02"/>
-    <release version="3.37.1" date="2020-04-29"/>
+    <release version="3.38.0" date="2020-09-14">
+      <desciption>
+        <p>
+          Indicate extension errors.
+        </p>
+      </desciption>
+    </release>
   </releases>
 
   <screenshots>
