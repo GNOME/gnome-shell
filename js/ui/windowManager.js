@@ -1118,7 +1118,8 @@ var WindowManager = class {
     }
 
     _shouldAnimate() {
-        return !(Main.overview.visible || this._workspaceAnimation.gestureActive);
+        const overviewOpen = Main.overview.visible && !Main.overview.closing;
+        return !(overviewOpen || this._workspaceAnimation.gestureActive);
     }
 
     _shouldAnimateActor(actor, types) {
