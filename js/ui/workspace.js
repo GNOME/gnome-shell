@@ -1280,7 +1280,8 @@ class Workspace extends St.Widget {
     }
 
     _windowAdded(metaWorkspace, metaWin) {
-        this._doAddWindow(metaWin);
+        if (!Main.overview.closing)
+            this._doAddWindow(metaWin);
     }
 
     _windowRemoved(metaWorkspace, metaWin) {
@@ -1288,7 +1289,7 @@ class Workspace extends St.Widget {
     }
 
     _windowEnteredMonitor(metaDisplay, monitorIndex, metaWin) {
-        if (monitorIndex == this.monitorIndex)
+        if (monitorIndex === this.monitorIndex && !Main.overview.closing)
             this._doAddWindow(metaWin);
     }
 
