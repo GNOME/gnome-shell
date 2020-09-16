@@ -188,9 +188,10 @@ var BaseAppView = GObject.registerClass({
 
         // Filter the apps through the user’s parental controls.
         this._parentalControlsManager = ParentalControlsManager.getDefault();
-        this._parentalControlsManager.connect('app-filter-changed', () => {
-            this._redisplay();
-        });
+        this._appFilterChangedId =
+            this._parentalControlsManager.connect('app-filter-changed', () => {
+                this._redisplay();
+            });
 
         // Drag n' Drop
         this._lastOvershoot = -1;
@@ -206,6 +207,10 @@ var BaseAppView = GObject.registerClass({
     }
 
     _onDestroy() {
+        if (this._appFilterChangedId > 0) {
+            this._parentalControlsManager.disconnect(this._appFilterChangedId);
+            this._appFilterChangedId = 0;
+        }
         this._removeDelayedMove();
         this._disconnectDnD();
     }
