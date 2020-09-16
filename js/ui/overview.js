@@ -145,6 +145,10 @@ var Overview = class {
         return this._visibleTarget;
     }
 
+    get closing() {
+        return this._animationInProgress && !this._visibleTarget;
+    }
+
     _createOverview() {
         if (this._overview)
             return;
