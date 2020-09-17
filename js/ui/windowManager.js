@@ -1446,7 +1446,19 @@ var WindowManager = class {
         dimmer.setDimmed(false, this._shouldAnimate());
     }
 
-    _mapWindow(shellwm, actor) {
+    _waitForOverviewToHide() {
+        if (!Main.overview.visible)
+            return Promise.resolve();
+
+        return new Promise(resolve => {
+            const id = Main.overview.connect('hidden', () => {
+                Main.overview.disconnect(id);
+                resolve();
+            });
+        });
+    }
+
+    async _mapWindow(shellwm, actor) {
         actor._windowType = actor.meta_window.get_window_type();
         actor._notifyWindowTypeSignalId =
             actor.meta_window.connect('notify::window-type', () => {
@@ -1488,6 +1500,7 @@ var WindowManager = class {
             actor.show();
             this._mapping.add(actor);
 
+            await this._waitForOverviewToHide();
             actor.ease({
                 opacity: 255,
                 scale_x: 1,
@@ -1505,6 +1518,7 @@ var WindowManager = class {
             actor.show();
             this._mapping.add(actor);
 
+            await this._waitForOverviewToHide();
             actor.ease({
                 opacity: 255,
                 scale_x: 1,
