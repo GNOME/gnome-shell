@@ -9,22 +9,22 @@
 # Pedro Albuquerque <palbuquerque73@gmail.com>, 2014, 2015.
 # Sérgio Cardeira <cardeira dot sergio at gmail dot com>, 2016.
 # José Vieira <jvieira33@sapo.pt>, 2020.
-# Juliano Camargo <julianosc@pm.me>, 2020.
+# Juliano de Souza Camargo <julianosc@pm.me>, 2020.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: 3.14\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2020-09-10 00:27+0000\n"
-"PO-Revision-Date: 2020-09-15 14:49-0300\n"
-"Last-Translator: Juliano Camargo <julianosc@pm.me>\n"
+"POT-Creation-Date: 2020-09-15 17:51+0000\n"
+"PO-Revision-Date: 2020-09-20 03:37+0100\n"
+"Last-Translator: Juliano de Souza Camargo <julianosc@pm.me>\n"
 "Language-Team: Portuguese <>\n"
 "Language: pt\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"X-Generator: Gtranslator 3.36.0\n"
+"X-Generator: Gtranslator 3.38.0\n"
 "X-Project-Style: gnome\n"
 "X-Language: pt_PT\n"
 "X-Source-Language: C\n"
@@ -180,8 +180,8 @@ msgstr ""
 msgid ""
 "Whether to remember password for mounting encrypted or remote filesystems"
 msgstr ""
-"Se recordar ou não a senha para montar sistemas de ficheiros encriptados ou "
-"remotos"
+"Se recordar ou não a palavra-passe para montar sistemas de ficheiros "
+"encriptados ou remotos"
 
 #: data/org.gnome.shell.gschema.xml.in:87
 msgid ""
@@ -190,10 +190,11 @@ msgid ""
 "“Remember Password” checkbox will be present. This key sets the default "
 "state of the checkbox."
 msgstr ""
-"A interface vai pedir uma senha quando um dispositivo encriptado ou sistema "
-"de ficheiros remoto for montado. Se a senha poder ser gravada para "
-"utilização futura, estará disponível uma caixa de seleção 'Recordar senha'. "
-"Esta chave define o estado predefinido dessa caixa de seleção."
+"A interface vai pedir uma palavra-passe quando um dispositivo encriptado ou "
+"sistema de ficheiros remoto for montado. Se a palavra-passe poder ser "
+"gravada para utilização futura, estará disponível uma caixa de seleção "
+"'Recordar palavra-passe'. Esta chave define o estado predefinido dessa caixa "
+"de seleção."
 
 #: data/org.gnome.shell.gschema.xml.in:96
 msgid ""
@@ -459,7 +460,7 @@ msgstr "Cancelar"
 #: js/ui/components/networkAgent.js:297 js/ui/components/polkitAgent.js:277
 #: js/ui/shellMountOperation.js:326
 msgid "Password"
-msgstr "Senha"
+msgstr "Palavra-passe"
 
 #: js/gdm/loginDialog.js:318
 msgid "Choose Session"
@@ -663,7 +664,6 @@ msgstr "Ontem às %H∶%M"
 #. string in 24h format. i.e. "Monday, 14:30"
 #: js/misc/util.js:249
 #, no-c-format
-#| msgid "%A às %H∶%M"
 msgid "%A, %H∶%M"
 msgstr "%A às %H∶%M"
 
@@ -730,7 +730,7 @@ msgid ""
 "Your connection to this hotspot login is not secure. Passwords or other "
 "information you enter on this page can be viewed by people nearby."
 msgstr ""
-"A ligação a este ponto de acesso não é segura. As senhas e outras "
+"A ligação a este ponto de acesso não é segura. As palavras-passe e outras "
 "informações que inserir nesta página podem ser vistas por pessoas próximas."
 
 #. No support for non-modal system dialogs, so ignore the option
@@ -983,7 +983,7 @@ msgstr "Chave"
 
 #: js/ui/components/networkAgent.js:250 js/ui/components/networkAgent.js:273
 msgid "Private key password"
-msgstr "Senha da chave privada"
+msgstr "Palavra-passe da chave privada"
 
 #: js/ui/components/networkAgent.js:271
 msgid "Identity"
@@ -1004,8 +1004,8 @@ msgid ""
 "Passwords or encryption keys are required to access the wireless network "
 "“%s”."
 msgstr ""
-"São necessárias senhas ou chaves de encriptação para aceder à rede sem fios "
-"“%s”."
+"São necessárias palavras-passe ou chaves de encriptação para aceder à rede "
+"sem fios “%s”."
 
 #: js/ui/components/networkAgent.js:319 js/ui/components/networkAgent.js:680
 msgid "Wired 802.1X authentication"
@@ -1036,7 +1036,7 @@ msgstr "PIN"
 #: js/ui/components/networkAgent.js:701
 #, javascript-format
 msgid "A password is required to connect to “%s”."
-msgstr "É necessária uma senha para se ligar a “%s”."
+msgstr "É necessária uma palavra-passe para se ligar a “%s”."
 
 #: js/ui/components/networkAgent.js:664 js/ui/status/network.js:1718
 msgid "Network Manager"
@@ -1044,7 +1044,7 @@ msgstr "Gestor de rede"
 
 #: js/ui/components/networkAgent.js:700
 msgid "VPN password"
-msgstr "Senha de VPN"
+msgstr "Palavra-passe de VPN"
 
 #: js/ui/components/polkitAgent.js:39
 msgid "Authentication Required"
@@ -1208,8 +1208,8 @@ msgstr "Instalar atualizações e desligar"
 #, javascript-format
 msgid "The system will power off automatically in %d second."
 msgid_plural "The system will power off automatically in %d seconds."
-msgstr[0] "O sistema desligar-se-á automaticamente dentro de %d segundo."
-msgstr[1] "O sistema desligar-se-á automaticamente dentro de %d segundos."
+msgstr[0] "O sistema desligará automaticamente dentro de %d segundo."
+msgstr[1] "O sistema desligará automaticamente dentro de %d segundos."
 
 #: js/ui/endSessionDialog.js:70 js/ui/endSessionDialog.js:89
 msgctxt "checkbox"
@@ -1698,7 +1698,7 @@ msgstr "Número PIM"
 
 #: js/ui/shellMountOperation.js:365
 msgid "Remember Password"
-msgstr "Recordar a senha"
+msgstr "Recordar a palavra-passe"
 
 #: js/ui/shellMountOperation.js:380
 msgid "Unlock"
@@ -2403,11 +2403,11 @@ msgstr "Falha ao iniciar “%s”"
 
 #: src/shell-keyring-prompt.c:731
 msgid "Passwords do not match."
-msgstr "As senhas não coincidem."
+msgstr "As palavras-passe não coincidem."
 
 #: src/shell-keyring-prompt.c:739
 msgid "Password cannot be blank"
-msgstr "A senha não pode ser espaço vazio"
+msgstr "A palavra-passe não pode ser espaço vazio"
 
 #: src/shell-polkit-authentication-agent.c:344
 msgid "Authentication dialog was dismissed by the user"
@@ -2460,7 +2460,16 @@ msgstr "Remover"
 
 #: subprojects/extensions-app/js/main.js:182
 msgid "translator-credits"
-msgstr "créditos de tradução"
+msgstr ""
+"Duarte Loreto <happyguy_pt@hotmail.com>\n"
+"Rui Gouveia <rui.gouveia@gmail.com>\n"
+"António Lima <amrlima@gmail.com>\n"
+"Tiago Santos <tiagofsantos81@sapo.pt>\n"
+"Bruno Ramalhete <bram.512@gmail.com>\n"
+"Pedro Albuquerque <palbuquerque73@gmail.com>\n"
+"Sérgio Cardeira <cardeira dot sergio at gmail dot com>\n"
+"José Vieira <jvieira33@sapo.pt>\n"
+"Juliano de Souza Camargo <julianosc@pm.me>"
 
 #: subprojects/extensions-app/js/main.js:314
 #, javascript-format
@@ -2594,8 +2603,8 @@ msgid ""
 "example.com)\n"
 msgstr ""
 "O UUID é um identificador global único para a extensão.\n"
-"Deve estar no formato de endereço de e-mail (cliqueparafoco@janedoe.example."
-"com)\n"
+"Deve estar no formato de endereço de correio eletrónico "
+"(cliqueparafoco@janedoe.example.com)\n"
 
 #: subprojects/extensions-tool/src/command-create.c:366
 msgid "Choose one of the available templates:\n"
@@ -2664,7 +2673,6 @@ msgid "Extension “%s” does not exist\n"
 msgstr "A extensão “%s” não existe\n"
 
 #: subprojects/extensions-tool/src/command-disable.c:101
-#| msgid "Disable an extension\n"
 msgid "Disable an extension"
 msgstr "Desativar uma extensão"
 
@@ -2836,7 +2844,6 @@ msgid "Do not print error messages"
 msgstr "Não mostrar mensagens de erro"
 
 #: subprojects/extensions-tool/src/main.c:146
-#| msgid "Failed to connect to GNOME Shell\n"
 msgid "Failed to connect to GNOME Shell"
 msgstr "Ligar à Interface GNOME falhou"
 
