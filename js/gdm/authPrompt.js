@@ -7,6 +7,7 @@ const Animation = imports.ui.animation;
 const Batch = imports.gdm.batch;
 const GdmUtil = imports.gdm.util;
 const OVirt = imports.gdm.oVirt;
+const Vmware = imports.gdm.vmware;
 const Params = imports.misc.params;
 const ShellEntry = imports.ui.shellEntry;
 const UserWidget = imports.ui.userWidget;
@@ -486,6 +487,7 @@ var AuthPrompt = GObject.registerClass({
             // respond to the request with the username
             beginRequestType = BeginRequestType.PROVIDE_USERNAME;
         } else if (this._userVerifier.serviceIsForeground(OVirt.SERVICE_NAME) ||
+                   this._userVerifier.serviceIsForeground(Vmware.SERVICE_NAME) ||
                    this._userVerifier.serviceIsForeground(GdmUtil.SMARTCARD_SERVICE_NAME)) {
             // We don't need to know the username if the user preempted the login screen
             // with a smartcard or with preauthenticated oVirt credentials
