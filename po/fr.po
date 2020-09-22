@@ -22,8 +22,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master fr\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2020-09-09 06:07+0000\n"
-"PO-Revision-Date: 2020-08-19 16:39+0200\n"
+"POT-Creation-Date: 2020-09-09 13:43+0000\n"
+"PO-Revision-Date: 2020-09-22 13:47+0200\n"
 "Last-Translator: Thibault Martin <mail@thibaultmart.in>\n"
 "Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
 "Language: fr\n"
@@ -1195,11 +1195,11 @@ msgstr "Aucun évènement"
 
 #: js/ui/dateMenu.js:348
 msgid "Add world clocks…"
-msgstr "Ajouter des horloges locales…"
+msgstr "Ajouter des horloges mondiales…"
 
 #: js/ui/dateMenu.js:349
 msgid "World Clocks"
-msgstr "Horloges locales"
+msgstr "Horloges mondiales"
 
 #: js/ui/dateMenu.js:629
 msgid "Loading…"
