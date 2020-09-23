@@ -746,10 +746,14 @@ var BaseAppView = GObject.registerClass({
         if (page === newPage && position === newPosition)
             return;
 
-        if (page !== -1 && position !== -1)
-            this._removeItem(item);
+        // Update the _orderedItems array
+        let index = this._orderedItems.indexOf(item);
+        this._orderedItems.splice(index, 1);
 
-        this._addItem(item, newPage, newPosition);
+        index = this._getLinearPosition(newPage, newPosition);
+        this._orderedItems.splice(index, 0, item);
+
+        this._grid.moveItem(item, newPage, newPosition);
     }
 
     vfunc_allocate(box) {
