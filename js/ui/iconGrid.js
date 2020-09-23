@@ -848,6 +848,22 @@ var IconGridLayout = GObject.registerClass({
     }
 
     /**
+     * moveItem:
+     * @param {Clutter.Actor} item: item to move
+     * @param {int} newPage: new page of the item
+     * @param {int} newPosition: new page of the item
+     *
+     * Moves @item to the grid. @item must be part of the grid.
+     */
+    moveItem(item, newPage, newPosition) {
+        if (!this._items.has(item))
+            throw new Error(`Item ${item} is not part of the IconGridLayout`);
+
+        this._removeItemData(item);
+        this._addItemToPage(item, newPage, newPosition);
+    }
+
+    /**
      * removeItem:
      * @param {Clutter.Actor} item: item to remove from the grid
      *
@@ -1420,6 +1436,19 @@ var IconGrid = GObject.registerClass({
      */
     appendItem(item) {
         this.layout_manager.appendItem(item);
+    }
+
+    /**
+     * moveItem:
+     * @param {Clutter.Actor} item: item to move
+     * @param {int} newPage: new page of the item
+     * @param {int} newPosition: new page of the item
+     *
+     * Moves @item to the grid. @item must be part of the grid.
+     */
+    moveItem(item, newPage, newPosition) {
+        this.layout_manager.moveItem(item, newPage, newPosition);
+        this.queue_relayout();
     }
 
     /**
