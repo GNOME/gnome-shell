@@ -514,15 +514,10 @@ var BaseAppView = GObject.registerClass({
         return -1;
     }
 
-    _addItem(item, page, position) {
+    _getLinearPosition(page, position) {
         let itemIndex = 0;
 
         if (this._grid.nPages > 0) {
-            // Append icons to the first page with empty slot, starting from
-            // the second page
-            if (this._grid.nPages > 1 && page === -1 && position === -1)
-                page = this._findBestPageToAppend();
-
             const realPage = page === -1 ? this._grid.nPages - 1 : page;
 
             itemIndex = position === -1
@@ -534,6 +529,17 @@ var BaseAppView = GObject.registerClass({
                 itemIndex += pageItems.length;
             }
         }
+
+        return itemIndex;
+    }
+
+    _addItem(item, page, position) {
+        // Append icons to the first page with empty slot, starting from
+        // the second page
+        if (this._grid.nPages > 1 && page === -1 && position === -1)
+            page = this._findBestPageToAppend();
+
+        const itemIndex = this._getLinearPosition(page, position);
 
         this._orderedItems.splice(itemIndex, 0, item);
         this._items.set(item.id, item);
