@@ -2454,7 +2454,18 @@ var AppFolderDialog = GObject.registerClass({
             this._setupDragMonitor();
         }
 
-        return DND.DragMotionResult.NO_DROP;
+        return DND.DragMotionResult.MOVE_DROP;
+    }
+
+    acceptDrop(source) {
+        const appId = source.id;
+
+        this.popdown(() => {
+            this._view.removeApp(source);
+            this._appDisplay.selectApp(appId);
+        });
+
+        return true;
     }
 
     toggle() {
