@@ -1639,6 +1639,7 @@ class FolderView extends BaseAppView {
         action.connect('pan', this._onPan.bind(this));
         this._scrollView.add_action(action);
 
+        this._deletingFolder = false;
         this._appIds = [];
         this._redisplay();
     }
@@ -1809,6 +1810,8 @@ class FolderView extends BaseAppView {
         // Remove the folder if this is the last app icon; otherwise,
         // just remove the icon
         if (folderApps.length == 0) {
+            this._deletingFolder = true;
+
             // Resetting all keys deletes the relocatable schema
             let keys = this._folder.settings_schema.list_keys();
             for (const key of keys)
@@ -1818,6 +1821,8 @@ class FolderView extends BaseAppView {
             let folders = settings.get_strv('folder-children');
             folders.splice(folders.indexOf(this._id), 1);
             settings.set_strv('folder-children', folders);
+
+            this._deletingFolder = false;
         } else {
             // If this is a categories-based folder, also add it to
             // the list of excluded apps
@@ -1830,6 +1835,10 @@ class FolderView extends BaseAppView {
 
             this._folder.set_strv('apps', folderApps);
         }
+    }
+
+    get deletingFolder() {
+        return this._deletingFolder;
     }
 });
 
@@ -1972,6 +1981,9 @@ var FolderIcon = GObject.registerClass({
     }
 
     _sync() {
+        if (this.view.deletingFolder)
+            return;
+
         this.emit('apps-changed');
         this._updateName();
         this.visible = this.view.getAllItems().length > 0;
