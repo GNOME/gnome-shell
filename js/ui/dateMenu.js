@@ -762,15 +762,20 @@ class FreezableBinLayout extends Clutter.BinLayout {
 
 var CalendarColumnLayout = GObject.registerClass(
 class CalendarColumnLayout extends Clutter.BoxLayout {
-    _init(actor) {
+    _init(actors) {
         super._init({ orientation: Clutter.Orientation.VERTICAL });
-        this._calActor = actor;
+        this._colActors = actors;
     }
 
     vfunc_get_preferred_width(container, forHeight) {
-        if (!this._calActor || this._calActor.get_parent() != container)
+        const actors =
+            this._colActors.filter(a => a.get_parent() === container);
+        if (actors.length === 0)
             return super.vfunc_get_preferred_width(container, forHeight);
-        return this._calActor.get_preferred_width(forHeight);
+        return actors.reduce(([minAcc, natAcc], child) => {
+            const [min, nat] = child.get_preferred_width(forHeight);
+            return [Math.max(minAcc, min), Math.max(natAcc, nat)];
+        }, [0, 0]);
     }
 });
 
@@ -821,6 +826,7 @@ class DateMenuButton extends PanelMenu.Button {
             layout.frozen = !_isToday(date);
             this._eventsItem.setDate(date);
         });
+        this._date = new TodayButton(this._calendar);
 
         this.menu.connect('open-state-changed', (menu, isOpen) => {
             // Whenever the menu is opened, select today
@@ -837,15 +843,13 @@ class DateMenuButton extends PanelMenu.Button {
         hbox.add_child(this._messageList);
 
         // Fill up the second column
-        let boxLayout = new CalendarColumnLayout(this._calendar);
+        const boxLayout = new CalendarColumnLayout([this._calendar, this._date]);
         vbox = new St.Widget({ style_class: 'datemenu-calendar-column',
                                layout_manager: boxLayout });
         boxLayout.hookup_style(vbox);
         hbox.add(vbox);
 
-        this._date = new TodayButton(this._calendar);
         vbox.add_actor(this._date);
-
         vbox.add_actor(this._calendar);
 
         this._displaysSection = new St.ScrollView({ style_class: 'datemenu-displays-section vfade',
