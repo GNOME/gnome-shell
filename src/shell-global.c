@@ -1381,31 +1381,32 @@ shell_global_sync_pointer (ShellGlobal *global)
 {
   int x, y;
   ClutterModifierType mods;
-  ClutterMotionEvent event;
+  ClutterEvent *event;
   ClutterSeat *seat;
 
   shell_global_get_pointer (global, &x, &y, &mods);
 
   seat = clutter_backend_get_default_seat (clutter_get_default_backend ());
+  event = clutter_event_new (CLUTTER_MOTION);
 
-  event.type = CLUTTER_MOTION;
-  event.time = shell_global_get_current_time (global);
-  event.flags = CLUTTER_EVENT_FLAG_SYNTHETIC;
-  event.stage = global->stage;
-  event.x = x;
-  event.y = y;
-  event.modifier_state = mods;
-  event.axes = NULL;
-  event.device = clutter_seat_get_pointer (seat);
+  event->motion.time = shell_global_get_current_time (global);
+  event->motion.flags = CLUTTER_EVENT_FLAG_SYNTHETIC;
+  event->motion.stage = global->stage;
+  event->motion.x = x;
+  event->motion.y = y;
+  event->motion.modifier_state = mods;
+  event->motion.axes = NULL;
+  clutter_event_set_device (event, clutter_seat_get_pointer (seat));
 
   /* Leaving event.source NULL will force clutter to look it up, which
    * will generate enter/leave events as a side effect, if they are
    * needed. We need a better way to do this though... see
    * http://bugzilla.clutter-project.org/show_bug.cgi?id=2615.
    */
-  event.source = NULL;
+  clutter_event_set_source_device (event, NULL);
 
-  clutter_event_put ((ClutterEvent *)&event);
+  clutter_event_put (event);
+  clutter_event_free (event);
 }
 
 /**
