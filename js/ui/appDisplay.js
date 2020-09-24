@@ -1314,8 +1314,17 @@ class AppDisplay extends BaseAppView {
 
         // The hovered AppIcon always passes its own id as the first
         // one, and this is where we want the folder to be created
-        const [folderPage, folderPosition] =
+        let [folderPage, folderPosition] =
             this._grid.getItemPosition(this._items.get(apps[0]));
+
+        // Adjust the final position
+        folderPosition -= apps.reduce((counter, appId) => {
+            const [page, position] =
+                this._grid.getItemPosition(this._items.get(appId));
+            if (page === folderPage && position < folderPosition)
+                counter++;
+            return counter;
+        }, 0);
 
         let appItems = apps.map(id => this._items.get(id).app);
         let folderName = _findBestFolderName(appItems);
