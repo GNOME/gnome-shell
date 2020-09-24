@@ -1806,15 +1806,6 @@ class FolderView extends BaseAppView {
         if (index >= 0)
             folderApps.splice(index, 1);
 
-        // If this is a categories-based folder, also add it to
-        // the list of excluded apps
-        let categories = this._folder.get_strv('categories');
-        if (categories.length > 0) {
-            let excludedApps = this._folder.get_strv('excluded-apps');
-            excludedApps.push(app.id);
-            this._folder.set_strv('excluded-apps', excludedApps);
-        }
-
         // Remove the folder if this is the last app icon; otherwise,
         // just remove the icon
         if (folderApps.length == 0) {
@@ -1828,6 +1819,15 @@ class FolderView extends BaseAppView {
             folders.splice(folders.indexOf(this._id), 1);
             settings.set_strv('folder-children', folders);
         } else {
+            // If this is a categories-based folder, also add it to
+            // the list of excluded apps
+            const categories = this._folder.get_strv('categories');
+            if (categories.length > 0) {
+                const excludedApps = this._folder.get_strv('excluded-apps');
+                excludedApps.push(app.id);
+                this._folder.set_strv('excluded-apps', excludedApps);
+            }
+
             this._folder.set_strv('apps', folderApps);
         }
     }
