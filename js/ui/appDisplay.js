@@ -654,7 +654,6 @@ var BaseAppView = GObject.registerClass({
             this.disconnect(this._viewLoadedHandlerId);
             this._viewLoadedHandlerId = 0;
         }
-        this._grid.opacity = 255;
     }
 
     animate(animationDirection, onComplete) {
@@ -666,6 +665,7 @@ var BaseAppView = GObject.registerClass({
         }
 
         this._clearAnimateLater();
+        this._grid.opacity = 255;
 
         if (animationDirection == IconGrid.AnimationDirection.IN) {
             const doSpringAnimationLater = laterType => {
@@ -684,6 +684,7 @@ var BaseAppView = GObject.registerClass({
                 this._viewLoadedHandlerId = this.connect('view-loaded',
                     () => {
                         this._clearAnimateLater();
+                        this._grid.opacity = 255;
                         doSpringAnimationLater(Meta.LaterType.BEFORE_REDRAW);
                     });
             }
