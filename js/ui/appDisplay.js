@@ -199,8 +199,7 @@ var BaseAppView = GObject.registerClass({
         // Drag n' Drop
         this._lastOvershoot = -1;
         this._lastOvershootTimeoutId = 0;
-        this._delayedMoveId = 0;
-        this._targetDropPosition = null;
+        this._delayedMoveData = null;
 
         this._dragBeginId = 0;
         this._dragEndId = 0;
@@ -355,29 +354,40 @@ var BaseAppView = GObject.registerClass({
             return;
         }
 
-        if (!this._targetDropPosition ||
-            this._targetDropPosition.page !== page ||
-            this._targetDropPosition.position !== position) {
+        if (!this._delayedMoveData ||
+            this._delayedMoveData.page !== page ||
+            this._delayedMoveData.position !== position) {
             // Update the item with a small delay
             this._removeDelayedMove();
-            this._targetDropPosition = { page, position };
-
-            this._delayedMoveId = GLib.timeout_add(GLib.PRIORITY_DEFAULT,
-                DELAYED_MOVE_TIMEOUT, () => {
-                    this._moveItem(source, page, position);
-                    this._targetDropPosition = null;
-                    this._delayedMoveId = 0;
-                    return GLib.SOURCE_REMOVE;
-                });
+            this._delayedMoveData = {
+                page,
+                position,
+                source,
+                destroyId: source.connect('destroy', () => this._removeDelayedMove()),
+                timeoutId: GLib.timeout_add(GLib.PRIORITY_DEFAULT,
+                    DELAYED_MOVE_TIMEOUT, () => {
+                        this._moveItem(source, page, position);
+                        this._delayedMoveData.timeoutId = 0;
+                        this._removeDelayedMove();
+                        return GLib.SOURCE_REMOVE;
+                    }),
+            };
         }
     }
 
     _removeDelayedMove() {
-        if (this._delayedMoveId > 0) {
-            GLib.source_remove(this._delayedMoveId);
-            this._delayedMoveId = 0;
-        }
-        this._targetDropPosition = null;
+        if (!this._delayedMoveData)
+            return;
+
+        const { source, destroyId, timeoutId  } = this._delayedMoveData;
+
+        if (timeoutId > 0)
+            GLib.source_remove(timeoutId);
+
+        if (destroyId > 0)
+            source.disconnect(destroyId);
+
+        this._delayedMoveData = null;
     }
 
     _resetOvershoot() {
@@ -495,8 +505,8 @@ var BaseAppView = GObject.registerClass({
             return false;
 
         // Dropped before the icon was moved
-        if (this._targetDropPosition) {
-            const { page, position } = this._targetDropPosition;
+        if (this._delayedMoveData) {
+            const { page, position } = this._delayedMoveData;
 
             this._moveItem(source, page, position);
             this._removeDelayedMove();
