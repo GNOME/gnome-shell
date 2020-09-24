@@ -1820,7 +1820,7 @@ class FolderView extends BaseAppView {
         if (folderApps.length == 0) {
             // Resetting all keys deletes the relocatable schema
             let keys = this._folder.settings_schema.list_keys();
-            for (let key of keys)
+            for (const key of keys)
                 this._folder.reset(key);
 
             let settings = new Gio.Settings({ schema_id: 'org.gnome.desktop.app-folders' });
