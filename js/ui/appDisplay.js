@@ -1097,7 +1097,10 @@ class AppDisplay extends BaseAppView {
             let icon = this._items.get(id);
             if (!icon) {
                 icon = new FolderIcon(id, path, this);
-                icon.connect('apps-changed', this._redisplay.bind(this));
+                icon.connect('apps-changed', () => {
+                    this._redisplay();
+                    this._savePages();
+                });
             }
 
             // Don't try to display empty folders
