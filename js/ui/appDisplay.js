@@ -19,7 +19,7 @@ const Params = imports.misc.params;
 const SystemActions = imports.misc.systemActions;
 
 var MENU_POPUP_TIMEOUT = 600;
-var POPDOWN_DIALOG_TIMEOUT = 1500;
+var POPDOWN_DIALOG_TIMEOUT = 500;
 
 var FOLDER_SUBICON_FRACTION = .4;
 
