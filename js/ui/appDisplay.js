@@ -38,6 +38,9 @@ const OVERSHOOT_TIMEOUT = 1000;
 
 const DELAYED_MOVE_TIMEOUT = 200;
 
+const DIALOG_SHADE_NORMAL = Clutter.Color.from_pixel(0x000000cc);
+const DIALOG_SHADE_HIGHLIGHT = Clutter.Color.from_pixel(0x00000055);
+
 let discreteGpuAvailable = false;
 
 function _getCategories(info) {
@@ -2210,7 +2213,7 @@ var AppFolderDialog = GObject.registerClass({
         });
 
         this.ease({
-            background_color: Clutter.Color.from_pixel(0x000000cc),
+            background_color: DIALOG_SHADE_NORMAL,
             duration: FOLDER_DIALOG_ANIMATION_TIME,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
         });
@@ -2361,6 +2364,18 @@ var AppFolderDialog = GObject.registerClass({
         return this.navigate_focus(null, direction, false);
     }
 
+    _setLighterBackground(lighter) {
+        const backgroundColor = lighter
+            ? DIALOG_SHADE_HIGHLIGHT
+            : DIALOG_SHADE_NORMAL;
+
+        this.ease({
+            backgroundColor,
+            duration: FOLDER_DIALOG_ANIMATION_TIME,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+        });
+    }
+
     _withinDialog(x, y) {
         const childExtents = this.child.get_transformed_extents();
         return childExtents.contains_point(new Graphene.Point({ x, y }));
@@ -2372,7 +2387,12 @@ var AppFolderDialog = GObject.registerClass({
 
         this._dragMonitor = {
             dragMotion: dragEvent => {
-                if (this._withinDialog(dragEvent.x, dragEvent.y)) {
+                const withinDialog =
+                    this._withinDialog(dragEvent.x, dragEvent.y);
+
+                this._setLighterBackground(!withinDialog);
+
+                if (withinDialog) {
                     this._removePopdownTimeout();
                     this._removeDragMonitor();
                 }
@@ -2396,6 +2416,7 @@ var AppFolderDialog = GObject.registerClass({
 
     handleDragOver(source, actor, x, y) {
         if (this._withinDialog(x, y)) {
+            this._setLighterBackground(false);
             this._removePopdownTimeout();
             this._removeDragMonitor();
         } else {
