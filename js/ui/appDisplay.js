@@ -2093,6 +2093,8 @@ var AppFolderDialog = GObject.registerClass({
         this._sourceMappedId = 0;
         this._popdownTimeoutId = 0;
         this._needsZoomAndFade = false;
+
+        this._popdownCallbacks = [];
     }
 
     _addFolderNameEntry() {
@@ -2297,6 +2299,9 @@ var AppFolderDialog = GObject.registerClass({
                     opacity: 255,
                 });
                 this.hide();
+
+                this._popdownCallbacks.forEach(func => func());
+                this._popdownCallbacks = [];
             },
         });
 
@@ -2477,7 +2482,16 @@ var AppFolderDialog = GObject.registerClass({
         this.emit('open-state-changed', true);
     }
 
-    popdown() {
+    popdown(callback) {
+        // Either call the callback right away, or wait for the zoom out
+        // animation to finish
+        if (callback) {
+            if (this.visible)
+                this._popdownCallbacks.push(callback);
+            else
+                callback();
+        }
+
         if (!this._isOpen)
             return;
 
