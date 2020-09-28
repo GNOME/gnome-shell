@@ -676,6 +676,11 @@ var LayoutManager = GObject.registerClass({
             global.window_group.set_clip(monitor.x, monitor.y, monitor.width, monitor.height);
 
             await this._updateBackgrounds();
+
+            if (Main.sessionMode.hasOverview) {
+                this.showOverview();
+                Main.overview.show();
+            }
         }
 
         this.emit('startup-prepared');

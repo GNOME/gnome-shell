@@ -120,7 +120,6 @@ var ViewSelector = GObject.registerClass({
         super._init({
             name: 'viewSelector',
             x_expand: true,
-            visible: false,
         });
 
         this._showAppsButton = showAppsButton;
