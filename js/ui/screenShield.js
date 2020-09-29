@@ -336,6 +336,25 @@ var ScreenShield = class {
         }
     }
 
+    _showPointer() {
+        this._cursorTracker.set_pointer_visible(true);
+
+        if (this._motionId) {
+            global.stage.disconnect(this._motionId);
+            this._motionId = 0;
+        }
+    }
+
+    _hidePointerUntilMotion() {
+        this._motionId = global.stage.connect('captured-event', (stage, event) => {
+            if (event.type() === Clutter.EventType.MOTION)
+                this._showPointer();
+
+            return Clutter.EVENT_PROPAGATE;
+        });
+        this._cursorTracker.set_pointer_visible(false);
+    }
+
     _hideLockScreen(animate) {
         if (this._lockScreenState == MessageTray.State.HIDDEN)
             return;
@@ -364,7 +383,7 @@ var ScreenShield = class {
             this._hideLockScreenComplete();
         }
 
-        this._cursorTracker.set_pointer_visible(true);
+        this._showPointer();
     }
 
     _ensureUnlockDialog(allowCancel) {
@@ -435,15 +454,7 @@ var ScreenShield = class {
     }
 
     _lockScreenShown(params) {
-        let motionId = global.stage.connect('captured-event', (stage, event) => {
-            if (event.type() === Clutter.EventType.MOTION) {
-                this._cursorTracker.set_pointer_visible(true);
-                global.stage.disconnect(motionId);
-            }
-
-            return Clutter.EVENT_PROPAGATE;
-        });
-        this._cursorTracker.set_pointer_visible(false);
+        this._hidePointerUntilMotion();
 
         this._lockScreenState = MessageTray.State.SHOWN;
 
