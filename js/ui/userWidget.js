@@ -36,9 +36,19 @@ var Avatar = new Lang.Class({
                                   width: this._iconSize * scaleFactor,
                                   height: this._iconSize * scaleFactor });
 
+        this.actor.connect('destroy', this._onDestroy.bind(this));
+
         // Monitor the scaling factor to make sure we recreate the avatar when needed.
         let themeContext = St.ThemeContext.get_for_stage(global.stage);
-        themeContext.connect('notify::scale-factor', this.update.bind(this));
+        this._scaleFactorChangedId = themeContext.connect('notify::scale-factor', this.update.bind(this));
+    },
+
+    _onDestroy() {
+        if (this._scaleFactorChangedId != 0) {
+            let themeContext = St.ThemeContext.get_for_stage(global.stage);
+            themeContext.disconnect(this._scaleFactorChangedId);
+            this._scaleFactorChangedId = 0;
+        }
     },
 
     setSensitive(sensitive) {
