@@ -222,6 +222,11 @@ class WorkspacesView extends WorkspacesViewBase {
             }
         }
 
+        for (let j = this._workspaces.length - 1; j >= newNumWorkspaces; j--) {
+            this._workspaces[j].destroy();
+            this._workspaces.splice(j, 1);
+        }
+
         this._updateScrollPosition();
     }
 
