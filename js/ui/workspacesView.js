@@ -3,6 +3,7 @@
 
 const { Clutter, Gio, GLib, GObject, Meta, Shell, St } = imports.gi;
 
+const DND = imports.ui.dnd;
 const Main = imports.ui.main;
 const SwipeTracker = imports.ui.swipeTracker;
 const OverviewControls = imports.ui.overviewControls;
@@ -11,6 +12,7 @@ const Workspace = imports.ui.workspace;
 var { ANIMATION_TIME } = imports.ui.overview;
 var WORKSPACE_SWITCH_TIME = 250;
 var SCROLL_TIMEOUT_TIME = 150;
+var WORKSPACE_KEEP_ALIVE_TIME = 100;
 
 const MUTTER_SCHEMA = 'org.gnome.mutter';
 
@@ -89,6 +91,71 @@ var WorkspacesViewBase = GObject.registerClass({
     }
 });
 
+var WorkspaceDragPlaceholder = GObject.registerClass(
+class WorkspaceDragPlaceholder extends St.Widget {
+    _init(monitorIndex) {
+        super._init({
+            style_class: 'workspace-dnd-placeholder',
+            visible: false,
+        });
+
+        this._monitorIndex = monitorIndex;
+        this._delegate = this;
+        this._position = -1;
+    }
+
+    acceptDrop(source, actor, x, y, time) {
+        if (this._position === -1)
+            return false;
+
+        const newWorkspaceIndex = this._position + 1;
+
+        Main.wm.insertWorkspace(newWorkspaceIndex);
+
+        const { workspaceManager } = global;
+        const workspace =
+            workspaceManager.get_workspace_by_index(newWorkspaceIndex);
+
+        const isWindow = !!source.metaWindow;
+        if (isWindow) {
+            // Move the window to our monitor first if necessary.
+            if (source.metaWindow.get_monitor() !== this._monitorIndex)
+                source.metaWindow.move_to_monitor(this._monitorIndex);
+            source.metaWindow.change_workspace_by_index(newWorkspaceIndex, true);
+            workspace.activate(time);
+        } else if (source.app && source.app.can_open_new_window()) {
+            if (source.animateLaunchAtPos)
+                source.animateLaunchAtPos(actor.x, actor.y);
+            source.app.open_new_window(newWorkspaceIndex);
+        } else if (!source.app && source.shellWorkspaceLaunch) {
+            // While unused in our own drag sources, shellWorkspaceLaunch allows
+            // extensions to define custom actions for their drag sources.
+            source.shellWorkspaceLaunch({
+                workspace: newWorkspaceIndex,
+                timestamp: time,
+            });
+        }
+
+        if (source.app || (!source.app && source.shellWorkspaceLaunch)) {
+            // This new workspace will be automatically removed if the application fails
+            // to open its first window within some time, as tracked by Shell.WindowTracker.
+            // Here, we only add a very brief timeout to avoid the _immediate_ removal of the
+            // workspace while we wait for the startup sequence to load.
+            Main.wm.keepWorkspaceAlive(workspace, WORKSPACE_KEEP_ALIVE_TIME);
+        }
+
+        return isWindow;
+    }
+
+    get position() {
+        return this._position;
+    }
+
+    set position(position) {
+        this._position = position;
+    }
+});
+
 var WorkspacesView = GObject.registerClass(
 class WorkspacesView extends WorkspacesViewBase {
     _init(monitorIndex, scrollAdjustment, snapAdjustment, overviewAdjustment) {
@@ -102,12 +169,17 @@ class WorkspacesView extends WorkspacesViewBase {
             this.queue_relayout();
         });
 
+        this._delegate = this;
+
         this._animating = false; // tweening
         this._gestureActive = false; // touch(pad) gestures
 
         this._scrollAdjustment = scrollAdjustment;
         this._onScrollId = this._scrollAdjustment.connect('notify::value',
             this._onScrollAdjustmentChanged.bind(this));
+
+        this._placeholder = new WorkspaceDragPlaceholder(this._monitorIndex);
+        this.add_child(this._placeholder);
 
         this._workspaces = [];
         this._updateWorkspaces();
@@ -126,6 +198,19 @@ class WorkspacesView extends WorkspacesViewBase {
         this._switchWorkspaceNotifyId =
             global.window_manager.connect('switch-workspace',
                                           this._activeWorkspaceChanged.bind(this));
+    }
+
+    _removeDragMonitor() {
+        if (!this._dragMonitor)
+            return;
+
+        DND.removeDragMonitor(this._dragMonitor);
+        delete this._dragMonitor;
+    }
+
+    _resetDropTarget() {
+        this._placeholder.hide();
+        this._placeholder.position = -1;
     }
 
     _getHorizontalSnapBox(box, spacing, vertical) {
@@ -292,7 +377,7 @@ class WorkspacesView extends WorkspacesViewBase {
         if (rtl)
             workspaces.reverse();
 
-        workspaces.forEach(child => {
+        workspaces.forEach((child, index) => {
             if (snapProgress === 0)
                 box = horizontalBox;
             else if (snapProgress === 1)
@@ -301,6 +386,26 @@ class WorkspacesView extends WorkspacesViewBase {
                 box = horizontalBox.interpolate(verticalBox, snapProgress);
 
             child.allocate_align_fill(box, 0.5, 0.5, false, false);
+
+            // Drop placeholder
+            if (this._placeholder.visible &&
+                this._placeholder.position === index) {
+                const spacing =
+                    Math.interpolate(horizontalSpacing, verticalSpacing, snapProgress);
+                const placeholderBox = box.copy();
+                if (vertical) {
+                    placeholderBox.y1 = box.y2;
+                    placeholderBox.set_size(
+                        box.get_width(),
+                        spacing);
+                } else {
+                    placeholderBox.x1 = box.x2;
+                    placeholderBox.set_size(
+                        spacing,
+                        box.get_height());
+                }
+                this._placeholder.allocate(placeholderBox);
+            }
 
             if (vertical) {
                 verticalBox.set_origin(
@@ -392,8 +497,16 @@ class WorkspacesView extends WorkspacesViewBase {
         this._scrollToActive();
     }
 
+    _dragEnd() {
+        super._dragEnd();
+        this._removeDragMonitor();
+        this._resetDropTarget();
+    }
+
     _onDestroy() {
         super._onDestroy();
+
+        this._removeDragMonitor();
 
         this._scrollAdjustment.disconnect(this._onScrollId);
         this._snapAdjustment.disconnect(this._snapNotifyId);
@@ -411,6 +524,71 @@ class WorkspacesView extends WorkspacesViewBase {
         this._gestureActive = false;
 
         this._scrollToActive();
+    }
+
+    _getWorkspaceTarget(x, y) {
+        if (this.get_n_children() < 2)
+            return [false, -1];
+
+        const vertical = global.workspaceManager.layout_rows === -1;
+        const spacing = Math.interpolate(
+            this._getSpacing(this.allocation, Clutter.Orientation.HORIZONTAL, vertical),
+            this._getSpacing(this.allocation, Clutter.Orientation.VERTICAL, vertical),
+            this._snapAdjustment.value);
+
+        for (let i = 0; i < this._workspaces.length; i++) {
+            const workspace = this._workspaces[i];
+            const { allocation } = workspace;
+
+            const [workspaceWidth, workspaceHeight] = allocation.get_size();
+            const [workspaceX, workspaceY] = allocation.get_origin();
+
+            if (y < workspaceY ||
+                y > workspaceY + workspaceHeight ||
+                x < workspaceX)
+                break;
+
+            if (y >= workspaceY &&
+                y < workspaceY + workspaceHeight &&
+                x > workspaceX + workspaceWidth &&
+                x <= workspaceX + workspaceWidth + spacing)
+                return [true, i];
+        }
+
+        return [false, -1];
+    }
+
+    _updateWorkpaceDropTarget(x, y) {
+        const [isBetween, previousWorkspace] = this._getWorkspaceTarget(x, y);
+        this._placeholder.visible = isBetween;
+        this._placeholder.position = previousWorkspace;
+
+        return isBetween;
+    }
+
+    handleDragOver(source, actor, x, y) {
+        const inBetween = this._updateWorkpaceDropTarget(x, y);
+
+        if (!this._dragMonitor) {
+            this._dragMonitor = {
+                dragMotion: dragEvent => {
+                    const [result, localX, localY] =
+                        this.transform_stage_point(dragEvent.x, dragEvent.y);
+
+                    if (!result)
+                        return DND.DragMotionResult.CONTINUE;
+
+                    if (!this._updateWorkpaceDropTarget(localX, localY))
+                        this._removeDragMonitor();
+                    return DND.DragMotionResult.CONTINUE;
+                },
+            };
+            DND.addDragMonitor(this._dragMonitor);
+        }
+
+        return inBetween
+            ? DND.DragMotionResult.MOVE_DROP
+            : DND.DragMotionResult.CONTINUE;
     }
 
     // sync the workspaces' positions to the value of the scroll adjustment

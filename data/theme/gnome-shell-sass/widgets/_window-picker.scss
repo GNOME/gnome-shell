@@ -58,3 +58,9 @@ $window_clone_border_size: 6px;
     background-color: darken($selected_bg_color, 5%);
   }
 }
+
+// drag and drop indicator
+.workspace-dnd-placeholder {
+  background-image: url("resource:///org/gnome/shell/theme/dash-placeholder.svg");
+  background-position: center;
+}

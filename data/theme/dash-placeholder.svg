@@ -1,14 +1,27 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- Created with Inkscape (http://www.inkscape.org/) -->
-
 <svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:xlink="http://www.w3.org/1999/xlink"
-   width="76"
-   height="27"
+   width="27"
+   height="76"
    id="svg11252"
    version="1.1">
+  <metadata
+     id="metadata19">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
   <defs
      id="defs11254">
     <radialGradient
@@ -55,13 +68,13 @@
   </defs>
   <g
      id="layer1"
-     transform="translate(-337,-518.86218)">
+     transform="rotate(-90,-52.931091,465.93109)">
     <g
        id="g99967"
        style="display:inline"
        transform="translate(326,44.862171)">
       <rect
-         style="opacity:0.49375;color:#000000;fill:url(#radialGradient68155-2-3);fill-opacity:1;stroke:none;stroke-width:1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+         style="color:#000000;display:inline;overflow:visible;visibility:visible;opacity:0.49375;fill:url(#radialGradient68155-2-3);fill-opacity:1;stroke:none;stroke-width:1;marker:none;enable-background:accumulate"
          id="rect99969"
          width="76"
          height="2"
@@ -70,7 +83,7 @@
          rx="0"
          ry="0" />
       <path
-         style="opacity:0.43125;color:#000000;fill:url(#radialGradient68157-0-8);fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+         style="color:#000000;display:inline;overflow:visible;visibility:visible;opacity:0.43125;fill:url(#radialGradient68157-0-8);fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1;marker:none;enable-background:accumulate"
          id="path99971"
          d="M 61,487.5 C 61,493.29899 56.29899,498 50.5,498 44.70101,498 40,493.29899 40,487.5 40,481.70101 44.70101,477 50.5,477 c 5.79899,0 10.5,4.70101 10.5,10.5 z"
          transform="matrix(1.2857143,0,0,1.2857143,-14.428572,-139.28571)" />
@@ -78,7 +91,7 @@
          transform="matrix(0.43589747,0,0,0.43589747,28.487179,275)"
          d="M 61,487.5 C 61,493.29899 56.29899,498 50.5,498 44.70101,498 40,493.29899 40,487.5 40,481.70101 44.70101,477 50.5,477 c 5.79899,0 10.5,4.70101 10.5,10.5 z"
          id="path99973"
-         style="color:#000000;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+         style="color:#000000;display:inline;overflow:visible;visibility:visible;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1;marker:none;enable-background:accumulate" />
     </g>
   </g>
 </svg>
