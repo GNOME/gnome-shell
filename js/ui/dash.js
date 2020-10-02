@@ -31,11 +31,11 @@ class DashIcon extends AppDisplay.AppIcon {
         });
     }
 
-    // Disable all DnD methods
-    _onDragBegin() {
+    // Disable scale-n-fade methods used during DND by parent
+    scaleAndFade() {
     }
 
-    _onDragEnd() {
+    undoScaleAndFade() {
     }
 
     handleDragOver() {
