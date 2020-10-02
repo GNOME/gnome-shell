@@ -141,6 +141,7 @@ class WorkspacesView extends WorkspacesViewBase {
                 this._workspaces[w].fadeToOverview();
         }
         this._updateScrollPosition();
+        this._updateVisibility();
     }
 
     animateFromOverview(animationType) {
