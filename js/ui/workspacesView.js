@@ -339,6 +339,9 @@ class WorkspacesDisplay extends St.Widget {
         });
         this.connect('notify::allocation', this._updateWorkspacesActualGeometry.bind(this));
 
+        Main.overview.connect('relayout',
+            () => this._updateWorkspacesActualGeometry());
+
         let workspaceManager = global.workspace_manager;
         this._scrollAdjustment = scrollAdjustment;
 
