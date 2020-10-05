@@ -193,13 +193,11 @@ function versionCheck(required, current) {
     let currentArray = current.split('.');
     let major = currentArray[0];
     let minor = currentArray[1];
-    let point = currentArray[2];
     for (let i = 0; i < required.length; i++) {
         let requiredArray = required[i].split('.');
-        if (requiredArray[0] == major &&
-            requiredArray[1] == minor &&
-            ((requiredArray[2] === undefined && parseInt(minor) % 2 == 0) ||
-             requiredArray[2] == point))
+        if (requiredArray[0] === major &&
+            (requiredArray[1] === undefined && isFinite(minor) ||
+             requiredArray[1] === minor))
             return true;
     }
     return false;
