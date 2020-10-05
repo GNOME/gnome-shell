@@ -1,3 +1,21 @@
+3.38.1
+======
+* Add screen recordings to recent items [Florian; #3171]
+* Tweak peek-password feature [Florian; #3138]
+* Fix workspace glitches in overview [Florian; #3208, #3211]
+* Improve DND behavior in app picker [Georges; !1447]
+* Misc. bug fixes and cleanups [Florian, Daniel, Georges, Bastien, Christopher,
+  yun341, Carlos; #3169, !1434, !1441, !1444, !379, !1443, #2230, !1448,
+  !1451, #3209]
+
+Contributors:
+  Yacine Bouklif, Christopher Davis, Carlos Garnacho, Daniel García Moreno,
+  Florian Müllner, Georges Basile Stavracas Neto, Bastien Nocera, yun341
+
+Translators:
+  Juliano de Souza Camargo [pt], Yacine Bouklif [kab], Charles Monzat [fr],
+  Cheng-Chia Tseng [zh_TW], Yosef Or Boczko [he]
+
 3.38.0
 ======
 * Misc. bug fixes and cleanups [Andy, Florian; #3147, !1438]
