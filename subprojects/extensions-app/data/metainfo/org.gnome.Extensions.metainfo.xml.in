@@ -39,14 +39,7 @@
   </description>
 
   <releases>
-    <release version="3.38.1" date="2020-10-05"/>
-    <release version="3.38.0" date="2020-09-14">
-      <desciption>
-        <p>
-          Indicate extension errors.
-        </p>
-      </desciption>
-    </release>
+    <release version="40.alpha" type="development" date="2020-10-05"/>
   </releases>
 
   <screenshots>

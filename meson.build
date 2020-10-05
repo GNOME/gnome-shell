@@ -1,5 +1,5 @@
 project('gnome-shell', 'c',
-  version: '3.38.1',
+  version: '40.alpha',
   meson_version: '>= 0.53.0',
   license: 'GPLv2+'
 )
@@ -10,7 +10,7 @@ split_version = meson.project_version().split('.')
 # the Cogl and Clutter libraries also use this API version.
 # The API version is increased automatically each development cycle,
 # starting with 0 in 3.23.x
-api_version = (split_version[1].to_int() - 23) / 2
+api_version = split_version[0].to_int() - 32
 mutter_api_version = '@0@'.format(api_version)
 
 clutter_pc = 'mutter-clutter-' + mutter_api_version
