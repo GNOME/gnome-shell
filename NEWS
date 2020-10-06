@@ -1,3 +1,18 @@
+3.36.7
+======
+* Fix potential stack overflow in libcroco [Michael; !1404]
+* Fix system action search regressions [Florian; #3169]
+* Fix week number alignment when using font-scaling [Joonas; !1415]
+* Misc. bug fixes and cleanups [Bastien, Carlos, Florian, Daniel;
+  !1444, !1451, #2230, !1423]
+
+Contributors:
+  Michael Catanzaro, Carlos Garnacho, Joonas Henriksson, Florian Müllner,
+  Bastien Nocera, Daniel van Vugt
+
+Translators:
+  Marek Černocký [cs]
+
 3.36.6
 ======
 * Fix lock screen on systems without GLSL shader support [Zephaniah; #3071]
