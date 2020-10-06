@@ -192,7 +192,12 @@ var Button = new Lang.Class({
         this.actor.destroy();
 
         this.emit('destroy');
+    },
+
+    _onDestroy() {
+        /* Just a placeholder for newer extension compatibility */
     }
+
 });
 Signals.addSignalMethods(Button.prototype);
 
