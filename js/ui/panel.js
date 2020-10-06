@@ -591,14 +591,19 @@ class PanelCorner extends St.DrawingArea {
             button = this._findRightmostButton(box);
 
         if (button) {
-            if (this._button && this._buttonStyleChangedSignalId) {
-                this._button.disconnect(this._buttonStyleChangedSignalId);
-                this._button.style = null;
+            if (this._button) {
+                if (this._buttonStyleChangedSignalId) {
+                    this._button.disconnect(this._buttonStyleChangedSignalId);
+                    this._button.style = null;
+                }
+
+                if (this._buttonDestroySignalId)
+                    this._button.disconnect(this._buttonDestroySignalId);
             }
 
             this._button = button;
 
-            button.connect('destroy', () => {
+            this._buttonDestroySignalId = button.connect('destroy', () => {
                 if (this._button == button) {
                     this._button = null;
                     this._buttonStyleChangedSignalId = 0;
