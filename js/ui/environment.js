@@ -97,6 +97,8 @@ function _getPropertyTarget(actor, propName) {
         return [actor.get_action(name), prop];
     case '@constraints':
         return [actor.get_constraint(name), prop];
+    case '@content':
+        return [actor.content, name];
     case '@effects':
         return [actor.get_effect(name), prop];
     }
