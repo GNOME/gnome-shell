@@ -65,7 +65,6 @@ var AuthenticationDialog = GObject.registerClass({
 
         this._userAvatar = new UserWidget.Avatar(this._user, {
             iconSize: DIALOG_ICON_SIZE,
-            styleClass: 'polkit-dialog-user-icon',
         });
         this._userAvatar.x_align = Clutter.ActorAlign.CENTER;
         userBox.add_child(this._userAvatar);
