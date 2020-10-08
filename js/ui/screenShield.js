@@ -436,7 +436,7 @@ var ScreenShield = class {
 
     _lockScreenShown(params) {
         let motionId = global.stage.connect('captured-event', (stage, event) => {
-            if (event.type() == Clutter.EventType.MOTION) {
+            if (event.type() === Clutter.EventType.MOTION) {
                 this._cursorTracker.set_pointer_visible(true);
                 global.stage.disconnect(motionId);
             }
