@@ -9,16 +9,16 @@
 # Pedro Albuquerque <palbuquerque73@gmail.com>, 2014, 2015.
 # Sérgio Cardeira <cardeira dot sergio at gmail dot com>, 2016.
 # José Vieira <jvieira33@sapo.pt>, 2020.
-# Juliano de Souza Camargo <julianosc@pm.me>, 2020.
+# Juliano de Souza Camargo <julianosc@protonmail.com>, 2020.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: 3.14\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2020-10-06 15:29+0000\n"
-"PO-Revision-Date: 2020-10-07 11:02+0100\n"
-"Last-Translator: Juliano de Souza Camargo <julianosc@pm.me>\n"
-"Language-Team: Portuguese <>\n"
+"POT-Creation-Date: 2020-10-08 00:42+0000\n"
+"PO-Revision-Date: 2020-10-09 21:06-0300\n"
+"Last-Translator: Juliano de Souza Camargo <julianosc@protonmail.com>\n"
+"Language-Team: Portuguese < >\n"
 "Language: pt\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -665,7 +665,7 @@ msgstr "Ontem às %H∶%M"
 #: js/misc/util.js:249
 #, no-c-format
 msgid "%A, %H∶%M"
-msgstr "%A às %H∶%M"
+msgstr "%A, %H∶%M"
 
 #. Translators: this is the month name and day number
 #. followed by a time string in 24h format.
@@ -673,7 +673,7 @@ msgstr "%A às %H∶%M"
 #: js/misc/util.js:255
 #, no-c-format
 msgid "%B %-d, %H∶%M"
-msgstr "%d de %B às %H∶%M"
+msgstr "%d de %B, %H∶%M"
 
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 24h format.
@@ -681,7 +681,7 @@ msgstr "%d de %B às %H∶%M"
 #: js/misc/util.js:261
 #, no-c-format
 msgid "%B %-d %Y, %H∶%M"
-msgstr "%d de %B de %Y às %H∶%M"
+msgstr "%d de %B de %Y, %H∶%M"
 
 #. Show only the time if date is on today
 #. eslint-disable-line no-lonely-if
@@ -702,7 +702,7 @@ msgstr "Ontem às %l∶%M %p"
 #: js/misc/util.js:278
 #, no-c-format
 msgid "%A, %l∶%M %p"
-msgstr "%A às %l∶%M %p"
+msgstr "%A, %l∶%M %p"
 
 #. Translators: this is the month name and day number
 #. followed by a time string in 12h format.
@@ -710,7 +710,7 @@ msgstr "%A às %l∶%M %p"
 #: js/misc/util.js:284
 #, no-c-format
 msgid "%B %-d, %l∶%M %p"
-msgstr "%d de %B às %l∶%M %p"
+msgstr "%d de %B, %l∶%M %p"
 
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 12h format.
@@ -718,7 +718,7 @@ msgstr "%d de %B às %l∶%M %p"
 #: js/misc/util.js:290
 #, no-c-format
 msgid "%B %-d %Y, %l∶%M %p"
-msgstr "%d de %B de %Y às %l∶%M %p"
+msgstr "%d de %B de %Y, %l∶%M %p"
 
 #. TRANSLATORS: this is the title of the wifi captive portal login window
 #: js/portalHelper/main.js:41
@@ -1592,12 +1592,12 @@ msgstr "Sair"
 msgid "Activities"
 msgstr "Atividades"
 
-#: js/ui/panel.js:714
+#: js/ui/panel.js:719
 msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "Sistema"
 
-#: js/ui/panel.js:825
+#: js/ui/panel.js:830
 msgid "Top Bar"
 msgstr "Barra superior"
 
@@ -2241,7 +2241,7 @@ msgstr "Apenas interno"
 #. long format
 #: js/ui/unlockDialog.js:371
 msgid "%A %B %-d"
-msgstr "%d de %B de %A"
+msgstr "%A, %d de %B"
 
 #: js/ui/unlockDialog.js:377
 msgid "Swipe up to unlock"
