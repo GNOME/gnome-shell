@@ -8,17 +8,17 @@ msgid ""
 msgstr ""
 "Project-Id-Version: unnamed project\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2020-08-14 15:48+0000\n"
-"PO-Revision-Date: 2020-08-15 17:11+0530\n"
+"POT-Creation-Date: 2020-10-08 00:42+0000\n"
+"PO-Revision-Date: 2020-10-11 12:33+0530\n"
 "Last-Translator: Akarshan Biswas <akarshan.biswas@hotmail.com>\n"
-"Language-Team: Bengali (India) <anubad@lists.ankur.org.in>\n"
+"Language-Team: Bengali <anubad@lists.ankur.org.in>\n"
 "Language: bn_IN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 "X-DamnedLies-Scope: partial\n"
-"X-Generator: Gtranslator 3.36.0\n"
+"X-Generator: Gtranslator 3.38.0\n"
 
 #: data/50-gnome-shell-system.xml:6
 msgid "System"
@@ -98,7 +98,6 @@ msgstr ""
 "অগ্রাধিকার নেয়।"
 
 #: data/org.gnome.shell.gschema.xml.in:37
-#| msgid "Disable extension"
 msgid "Disable user extensions"
 msgstr "ব্যবহারকারীর এক্সটেনশনগুলি অক্ষম করুন"
 
@@ -198,7 +197,6 @@ msgstr ""
 "সাথে যুক্ত ডিভাইস না দেখা গেলে এটি পুনরায় সেট করা হবে।"
 
 #: data/org.gnome.shell.gschema.xml.in:106
-#| msgid "Enable an extension"
 msgid "Enable introspection API"
 msgstr "আত্মবিজ্ঞাপন API সক্ষম করুন"
 
@@ -420,7 +418,7 @@ msgstr "হোমপেজ "
 msgid "Visit extension homepage"
 msgstr "এক্সটেনশন হোমপেজে যান"
 
-#: js/gdm/authPrompt.js:135 js/ui/audioDeviceSelection.js:57
+#: js/gdm/authPrompt.js:137 js/ui/audioDeviceSelection.js:57
 #: js/ui/components/networkAgent.js:111 js/ui/components/polkitAgent.js:139
 #: js/ui/endSessionDialog.js:438 js/ui/extensionDownloader.js:183
 #: js/ui/shellMountOperation.js:376 js/ui/shellMountOperation.js:386
@@ -429,7 +427,7 @@ msgid "Cancel"
 msgstr "বাতিল"
 
 #. Cisco LEAP
-#: js/gdm/authPrompt.js:237 js/ui/components/networkAgent.js:206
+#: js/gdm/authPrompt.js:239 js/ui/components/networkAgent.js:206
 #: js/ui/components/networkAgent.js:222 js/ui/components/networkAgent.js:246
 #: js/ui/components/networkAgent.js:267 js/ui/components/networkAgent.js:287
 #: js/ui/components/networkAgent.js:297 js/ui/components/polkitAgent.js:277
@@ -475,88 +473,85 @@ msgstr "অনুমোদন সংক্রান্ত সমস্যা"
 #. to indicate the user can swipe their finger instead
 #: js/gdm/util.js:481
 msgid "(or swipe finger)"
-msgstr "(  আঙুল চালানো)"
+msgstr "(বা আঙুল চালানো)"
 
 #. Translators: The name of the power-off action in search
-#: js/misc/systemActions.js:91
+#: js/misc/systemActions.js:82
 msgctxt "search-result"
 msgid "Power Off"
 msgstr "পাওয়ার বন্ধ"
 
 #. Translators: A list of keywords that match the power-off action, separated by semicolons
-#: js/misc/systemActions.js:94
-#| msgid "power off;shutdown;reboot;restart;halt;stop"
+#: js/misc/systemActions.js:85
 msgid "power off;shutdown;halt;stop"
 msgstr "পাওয়ার অফ;শাটডাউন;থাম;বন্ধ করুন"
 
 #. Translators: The name of the restart action in search
-#: js/misc/systemActions.js:99
-#| msgctxt "button"
-#| msgid "Restart"
+#: js/misc/systemActions.js:90
 msgctxt "search-result"
 msgid "Restart"
 msgstr "পুনরায় আরম্ভ করুন"
 
 #. Translators: A list of keywords that match the restart action, separated by semicolons
-#: js/misc/systemActions.js:102
+#: js/misc/systemActions.js:93
 msgid "reboot;restart;"
 msgstr "রিবুট;পুনরায় আরম্ভ;"
 
 #. Translators: The name of the lock screen action in search
-#: js/misc/systemActions.js:107
+#: js/misc/systemActions.js:98
 msgctxt "search-result"
 msgid "Lock Screen"
 msgstr "লক স্ক্রীন"
 
 #. Translators: A list of keywords that match the lock screen action, separated by semicolons
-#: js/misc/systemActions.js:110
+#: js/misc/systemActions.js:101
 msgid "lock screen"
 msgstr "লক স্ক্রীন"
 
 #. Translators: The name of the logout action in search
-#: js/misc/systemActions.js:115
+#: js/misc/systemActions.js:106
 msgctxt "search-result"
 msgid "Log Out"
 msgstr "লগ আউট"
 
 #. Translators: A list of keywords that match the logout action, separated by semicolons
-#: js/misc/systemActions.js:118
+#: js/misc/systemActions.js:109
 msgid "logout;log out;sign off"
 msgstr "লগআউট; লগ আউট; সাইন অফ"
 
 #. Translators: The name of the suspend action in search
-#: js/misc/systemActions.js:123
+#: js/misc/systemActions.js:114
 msgctxt "search-result"
 msgid "Suspend"
 msgstr "থামানো"
 
 #. Translators: A list of keywords that match the suspend action, separated by semicolons
-#: js/misc/systemActions.js:126
+#: js/misc/systemActions.js:117
 msgid "suspend;sleep"
 msgstr "থামানো; ঘুমানো"
 
 #. Translators: The name of the switch user action in search
-#: js/misc/systemActions.js:131
+#: js/misc/systemActions.js:122
 msgctxt "search-result"
 msgid "Switch User"
 msgstr "ব্যবহারকারী পাল্টান"
 
 #. Translators: A list of keywords that match the switch user action, separated by semicolons
-#: js/misc/systemActions.js:134
+#: js/misc/systemActions.js:125
 msgid "switch user"
 msgstr "ব্যবহারকারী পাল্টান"
 
 #. Translators: A list of keywords that match the lock orientation action, separated by semicolons
-#: js/misc/systemActions.js:141
+#: js/misc/systemActions.js:132
 msgid "lock orientation;unlock orientation;screen;rotation"
 msgstr "লক ওরিয়েন্টেশন; আনলক ওরিয়েন্টেশন; স্ক্রিন; রোটেশন"
 
-#: js/misc/systemActions.js:266
+#: js/misc/systemActions.js:240
 msgctxt "search-result"
 msgid "Unlock Screen Rotation"
 msgstr "স্ক্রিন রোটেশন আনলক করুন"
 
-#: js/misc/systemActions.js:267
+#: js/misc/systemActions.js:241
 msgctxt "search-result"
 msgid "Lock Screen Rotation"
 msgstr "স্ক্রিন রোটেশন লক করুন"
@@ -721,36 +716,36 @@ msgstr "প্রবেশ নিষেধ"
 msgid "Grant Access"
 msgstr "অনুদান অ্যাক্সেস"
 
-#: js/ui/appDisplay.js:1297
+#: js/ui/appDisplay.js:1346
 msgid "Unnamed Folder"
 msgstr "নামহীন ফোল্ডার"
 
 #. Translators: This is the heading of a list of open windows
-#: js/ui/appDisplay.js:2766 js/ui/panel.js:75
+#: js/ui/appDisplay.js:2870 js/ui/panel.js:75
 msgid "Open Windows"
 msgstr "উইন্ডোজ খুলুন"
 
-#: js/ui/appDisplay.js:2785 js/ui/panel.js:82
+#: js/ui/appDisplay.js:2889 js/ui/panel.js:82
 msgid "New Window"
 msgstr "নতুন উইন্ডো"
 
-#: js/ui/appDisplay.js:2801
+#: js/ui/appDisplay.js:2905
 msgid "Launch using Integrated Graphics Card"
 msgstr "ইন্টিগ্রেটেড গ্রাফিক্স কার্ড ব্যবহার করে লঞ্চ করুন"
 
-#: js/ui/appDisplay.js:2802
+#: js/ui/appDisplay.js:2906
 msgid "Launch using Discrete Graphics Card"
 msgstr "বিচ্ছিন্ন গ্রাফিক্স কার্ড ব্যবহার করে চালু করুন"
 
-#: js/ui/appDisplay.js:2830 js/ui/dash.js:239
+#: js/ui/appDisplay.js:2934 js/ui/dash.js:239
 msgid "Remove from Favorites"
 msgstr "পছন্দসই থেকে সরান"
 
-#: js/ui/appDisplay.js:2836
+#: js/ui/appDisplay.js:2940
 msgid "Add to Favorites"
 msgstr "পছন্দসইতে যোগ করুন"
 
-#: js/ui/appDisplay.js:2846 js/ui/panel.js:93
+#: js/ui/appDisplay.js:2950 js/ui/panel.js:93
 msgid "Show Details"
 msgstr "বিবরণ প্রদর্শন করা হবে"
 
@@ -762,7 +757,7 @@ msgstr "%s   আপনার পছন্দসইতে যোগ করা হ
 #: js/ui/appFavorites.js:197
 #, javascript-format
 msgid "%s has been removed from your favorites."
-msgstr "  আপনার পছন্দসই থেকে %s সরানো হয়েছে।"
+msgstr "আপনার পছন্দসই থেকে %s সরানো হয়েছে।"
 
 #: js/ui/audioDeviceSelection.js:41
 msgid "Select Audio Device"
@@ -889,15 +884,15 @@ msgstr "%d"
 msgid "Week %V"
 msgstr "সপ্তাহ %V"
 
-#: js/ui/calendar.js:895
+#: js/ui/calendar.js:896
 msgid "No Notifications"
 msgstr "কোন বিজ্ঞপ্তি নেই"
 
-#: js/ui/calendar.js:949
+#: js/ui/calendar.js:950
 msgid "Do Not Disturb"
 msgstr "বিরক্ত করবেন না"
 
-#: js/ui/calendar.js:968
+#: js/ui/calendar.js:969
 msgid "Clear"
 msgstr "পরিষ্কার"
 
@@ -956,7 +951,7 @@ msgstr "সংযোগ করুন"
 
 #: js/ui/components/networkAgent.js:212
 msgid "Key"
-msgstr "কি"
+msgstr "কী"
 
 #: js/ui/components/networkAgent.js:250 js/ui/components/networkAgent.js:273
 msgid "Private key password"
@@ -1143,31 +1138,31 @@ msgstr "আবহাওয়ার অবস্থান নির্বাচ�
 #, javascript-format
 msgctxt "title"
 msgid "Log Out %s"
-msgstr "%s লগ   আউট করুন"
+msgstr "%s লগ আউট করুন"
 
 #: js/ui/endSessionDialog.js:40
 msgctxt "title"
 msgid "Log Out"
-msgstr "লগ   আউট করুন"
+msgstr "লগ আউট করুন"
 
 #: js/ui/endSessionDialog.js:43
 #, javascript-format
 msgid "%s will be logged out automatically in %d second."
 msgid_plural "%s will be logged out automatically in %d seconds."
-msgstr[0] "%s %d -এর মধ্যে স্বয়ংক্রিয় ভাবে লগ   আউট হবে।"
-msgstr[1] "%s %d সেকেন্ডের মধ্যে স্বয়ংক্রিয় ভাবে লগ   আউট হবে।"
+msgstr[0] "%s %d -এর মধ্যে স্বয়ংক্রিয় ভাবে লগ আউট হবে।"
+msgstr[1] "%s %d সেকেন্ডের মধ্যে স্বয়ংক্রিয় ভাবে লগ আউট হবে।"
 
 #: js/ui/endSessionDialog.js:49
 #, javascript-format
 msgid "You will be logged out automatically in %d second."
 msgid_plural "You will be logged out automatically in %d seconds."
-msgstr[0] "  আপনি %d সেকেন্ডের মধ্যে স্বয়ংক্রিয় ভাবে লগ   আউট হবেন।"
-msgstr[1] "  আপনি %d সেকেন্ডের মধ্যে স্বয়ংক্রিয় ভাবে লগ   আউট হবেন।"
+msgstr[0] "আপনি %d সেকেন্ডের মধ্যে স্বয়ংক্রিয় ভাবে লগ আউট হবেন।"
+msgstr[1] "আপনি %d সেকেন্ডের মধ্যে স্বয়ংক্রিয় ভাবে লগ আউট হবেন।"
 
 #: js/ui/endSessionDialog.js:56
 msgctxt "button"
 msgid "Log Out"
-msgstr "লগ   আউট করুন"
+msgstr "লগ আউট করুন"
 
 #: js/ui/endSessionDialog.js:62
 msgctxt "title"
@@ -1177,7 +1172,7 @@ msgstr "পাওয়ার বন্ধ"
 #: js/ui/endSessionDialog.js:63
 msgctxt "title"
 msgid "Install Updates & Power Off"
-msgstr "  আপডেট ইনস্টল করুন এবং পাওয়ার বন্ধ করুন"
+msgstr "আপডেট ইনস্টল করুন এবং পাওয়ার বন্ধ করুন"
 
 #: js/ui/endSessionDialog.js:66
 #, javascript-format
@@ -1202,8 +1197,6 @@ msgid "Restart"
 msgstr "পুনরায় আরম্ভ করুন"
 
 #: js/ui/endSessionDialog.js:82
-#| msgctxt "title"
-#| msgid "Install Updates & Power Off"
 msgctxt "title"
 msgid "Install Updates & Restart"
 msgstr "আপডেট ইনস্টল করুন এবং পুনরায় আরম্ভ করুন"
@@ -1223,7 +1216,7 @@ msgstr "পুনরায় আরম্ভ করুন"
 #: js/ui/endSessionDialog.js:101
 msgctxt "title"
 msgid "Restart & Install Updates"
-msgstr "  আবার চালু করুন ও   আপডেটগুলি ইনস্টল করুন"
+msgstr "আবার চালু করুন ও আপডেটগুলি ইনস্টল করুন"
 
 #: js/ui/endSessionDialog.js:104
 #, javascript-format
@@ -1238,7 +1231,7 @@ msgstr[1] ""
 #: js/ui/endSessionDialog.js:111 js/ui/endSessionDialog.js:132
 msgctxt "button"
 msgid "Restart &amp; Install"
-msgstr "  আবার চালু করুন ও ইনস্টল করুন"
+msgstr "আবার চালু করুন ও ইনস্টল করুন"
 
 #: js/ui/endSessionDialog.js:113
 msgctxt "button"
@@ -1248,7 +1241,7 @@ msgstr "ইনস্টল করুন ও পাওয়ার বন্ধ ক�
 #: js/ui/endSessionDialog.js:114
 msgctxt "checkbox"
 msgid "Power off after updates are installed"
-msgstr "  আপডেটগুলি ইনস্টল হয়ে যাওয়ার পরে পাওয়ার বন্ধ করুন"
+msgstr "আপডেটগুলি ইনস্টল হয়ে যাওয়ার পরে পাওয়ার বন্ধ করুন"
 
 #: js/ui/endSessionDialog.js:121
 msgctxt "title"
@@ -1268,7 +1261,6 @@ msgstr ""
 "পারে: আপনি ব্যাক আপ নিয়ে এসেছেন এবং কম্পিউটারটি প্লাগ ইন হয়েছে তা নিশ্চিত করুন।"
 
 #: js/ui/endSessionDialog.js:284
-#| msgid "Running on battery power: Please plug in before installing updates."
 msgid "Low battery power: please plug in before installing updates."
 msgstr "লো ব্যাটারি শক্তি: আপডেট ইনস্টল করার আগে প্লাগ ইন করুন।"
 
@@ -1436,7 +1428,7 @@ msgstr "সক্রিয়"
 
 #. translators:
 #. * The device has been disabled
-#: js/ui/lookingGlass.js:741 subprojects/gvc/gvc-mixer-control.c:1892
+#: js/ui/lookingGlass.js:741 subprojects/gvc/gvc-mixer-control.c:1900
 msgid "Disabled"
 msgstr "নিষ্ক্রিয়"
 
@@ -1565,12 +1557,12 @@ msgstr "প্রস্থান"
 msgid "Activities"
 msgstr "ক্রিয়াকলাপ"
 
-#: js/ui/panel.js:714
+#: js/ui/panel.js:719
 msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "সিস্টেম"
 
-#: js/ui/panel.js:825
+#: js/ui/panel.js:830
 msgid "Top Bar"
 msgstr "শীর্ষ দন্ড"
 
@@ -1675,7 +1667,7 @@ msgstr "পাসওয়ার্ড মনে রাখুন"
 
 #: js/ui/shellMountOperation.js:380
 msgid "Unlock"
-msgstr "  আন-লক"
+msgstr "আন-লক"
 
 #. Translators: %s is the Disks application
 #: js/ui/shellMountOperation.js:391
@@ -1750,6 +1742,15 @@ msgstr "ব্লুটুথ"
 #: js/ui/status/bluetooth.js:49 js/ui/status/network.js:619
 msgid "Bluetooth Settings"
 msgstr "ব্লুটুথ সেটিং"
+
+#. Translators: this is the number of connected bluetooth devices
+#: js/ui/status/bluetooth.js:148
+#, javascript-format
+#| msgid "%s Connected"
+msgid "%d Connected"
+msgid_plural "%d Connected"
+msgstr[0] "%d সংযুক্ত"
+msgstr[1] "%d সংযুক্ত"
 
 #: js/ui/status/bluetooth.js:152
 msgid "Bluetooth Off"
@@ -2114,7 +2115,6 @@ msgid "Suspend"
 msgstr "থামানো"
 
 #: js/ui/status/system.js:130
-#| msgid "Restarting…"
 msgid "Restart…"
 msgstr "পুনরায় আরম্ভ করুন..."
 
@@ -2271,7 +2271,7 @@ msgstr "ছোট করুন"
 
 #: js/ui/windowMenu.js:34
 msgid "Unmaximize"
-msgstr "  আন-ম্যাক্সিমাইজ"
+msgstr "আন-ম্যাক্সিমাইজ"
 
 #: js/ui/windowMenu.js:38
 msgid "Maximize"
@@ -2908,7 +2908,7 @@ msgstr "উপরের বারে একটি আইকন যুক্ত �
 
 #. translators:
 #. * The number of sound outputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1899
+#: subprojects/gvc/gvc-mixer-control.c:1907
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -2917,14 +2917,14 @@ msgstr[1] "%u   আউটপুট"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1909
+#: subprojects/gvc/gvc-mixer-control.c:1917
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
 msgstr[0] "%u ইনপুট"
 msgstr[1] "%u ইনপুট"
 
-#: subprojects/gvc/gvc-mixer-control.c:2766
+#: subprojects/gvc/gvc-mixer-control.c:2867
 msgid "System Sounds"
 msgstr "সিস্টেম সাউন্ড"
 
