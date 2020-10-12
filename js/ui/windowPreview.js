@@ -13,6 +13,9 @@ var WINDOW_OVERLAY_FADE_TIME = 200;
 
 var DRAGGING_WINDOW_OPACITY = 100;
 
+const ICON_SIZE = 64;
+const ICON_OVERLAP = 0.7;
+
 var WindowPreviewLayout = GObject.registerClass({
     Properties: {
         'bounding-box': GObject.ParamSpec.boxed(
@@ -309,6 +312,31 @@ var WindowPreview = GObject.registerClass({
         this._border.connect('style-changed',
             this._onBorderStyleChanged.bind(this));
 
+        const tracker = Shell.WindowTracker.get_default();
+        const app = tracker.get_window_app(this.metaWindow);
+        this._icon = app.create_icon_texture(ICON_SIZE);
+        this._icon.add_style_class_name('icon-dropshadow');
+        this._icon.set({
+            reactive: true,
+            pivot_point: new Graphene.Point({ x: 0.5, y: 0.5 }),
+        });
+        this._icon.add_constraint(new Clutter.BindConstraint({
+            source: this._borderCenter,
+            coordinate: Clutter.BindCoordinate.POSITION,
+        }));
+        this._icon.add_constraint(new Clutter.AlignConstraint({
+            source: this._borderCenter,
+            align_axis: Clutter.AlignAxis.X_AXIS,
+            factor: 0.5,
+        }));
+        this._icon.add_constraint(new Clutter.AlignConstraint({
+            source: this._borderCenter,
+            align_axis: Clutter.AlignAxis.Y_AXIS,
+            pivot_point: new Graphene.Point({ x: -1, y: ICON_OVERLAP }),
+            factor: 1,
+        }));
+
+        const { scaleFactor } = St.ThemeContext.get_for_stage(global.stage);
         this._title = new St.Label({
             visible: false,
             style_class: 'window-caption',
@@ -316,18 +344,23 @@ var WindowPreview = GObject.registerClass({
             reactive: true,
         });
         this._title.add_constraint(new Clutter.BindConstraint({
-            source: this._borderCenter,
-            coordinate: Clutter.BindCoordinate.POSITION,
+            source: this._windowContainer,
+            coordinate: Clutter.BindCoordinate.X,
+        }));
+        this._title.add_constraint(new Clutter.BindConstraint({
+            source: this._windowContainer,
+            coordinate: Clutter.BindCoordinate.Y,
+            offset: scaleFactor * ICON_SIZE * ICON_OVERLAP,
         }));
         this._title.add_constraint(new Clutter.AlignConstraint({
-            source: this._borderCenter,
+            source: this._windowContainer,
             align_axis: Clutter.AlignAxis.X_AXIS,
             factor: 0.5,
         }));
         this._title.add_constraint(new Clutter.AlignConstraint({
-            source: this._borderCenter,
+            source: this._windowContainer,
             align_axis: Clutter.AlignAxis.Y_AXIS,
-            pivot_point: new Graphene.Point({ x: -1, y: 0.5 }),
+            pivot_point: new Graphene.Point({ x: -1, y: ICON_OVERLAP }),
             factor: 1,
         }));
         this._title.clutter_text.ellipsize = Pango.EllipsizeMode.END;
@@ -367,6 +400,7 @@ var WindowPreview = GObject.registerClass({
         this.add_child(this._borderCenter);
         this.add_child(this._border);
         this.add_child(this._title);
+        this.add_child(this._icon);
         this.add_child(this._closeButton);
 
         this.connect('notify::realized', () => {
@@ -375,6 +409,7 @@ var WindowPreview = GObject.registerClass({
 
             this._border.ensure_style();
             this._title.ensure_style();
+            this._icon.ensure_style();
         });
     }
 
@@ -433,16 +468,18 @@ var WindowPreview = GObject.registerClass({
         const [, titleHeight] = this._title.get_preferred_height(-1);
 
         const topOverlap = 0;
-        const bottomOverlap = titleHeight / 2;
+        const bottomOverlap = titleHeight;
 
         return [topOverlap, bottomOverlap];
     }
 
     chromeHeights() {
         const [, closeButtonHeight] = this._closeButton.get_preferred_height(-1);
+        const [, iconHeight] = this._icon.get_preferred_height(-1);
 
-        const topOversize = (this._borderSize / 2) + (closeButtonHeight / 2);
-        const bottomOversize = this._borderSize;
+        const topOversize = this._borderSize / 2 + closeButtonHeight / 2;
+        const bottomOversize =
+            this._borderSize / 2 + (1 - ICON_OVERLAP) * iconHeight;
 
         return [topOversize, bottomOversize];
     }
@@ -606,6 +643,18 @@ var WindowPreview = GObject.registerClass({
 
         this._overlayEnabled = enabled;
         this.notify('overlay-enabled');
+
+        this._icon.set({
+            scale_x: enabled ? 0 : 1,
+            scale_y: enabled ? 0 : 1,
+        });
+        this._icon.show();
+        this._icon.ease({
+            scale_x: enabled ? 1.0 : 0,
+            scale_y: enabled ? 1.0 : 0,
+            duration: enabled ? WINDOW_OVERLAY_FADE_TIME : 0,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+        });
 
         if (!enabled)
             this.hideOverlay(false);
