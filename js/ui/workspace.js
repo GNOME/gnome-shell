@@ -469,10 +469,11 @@ var WorkspaceLayout = GObject.registerClass({
             colSpacing += Math.max(leftOversize, rightOversize);
 
         if (containerBox) {
-            containerBox.x1 += leftOversize;
+            const [topOverlap, bottomOverlap] = window.overlapHeights();
+            containerBox.x1 += leftOversize + topOverlap;
             containerBox.x2 -= rightOversize;
             containerBox.y1 += topOversize;
-            containerBox.y2 -= bottomOversize;
+            containerBox.y2 -= bottomOversize + bottomOverlap;
         }
 
         return [rowSpacing, colSpacing, containerBox];

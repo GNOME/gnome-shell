@@ -429,14 +429,20 @@ var WindowPreview = GObject.registerClass({
         return app.get_name();
     }
 
-    chromeHeights() {
-        const [, closeButtonHeight] = this._closeButton.get_preferred_height(-1);
+    overlapHeights() {
         const [, titleHeight] = this._title.get_preferred_height(-1);
 
+        const topOverlap = 0;
+        const bottomOverlap = titleHeight / 2;
+
+        return [topOverlap, bottomOverlap];
+    }
+
+    chromeHeights() {
+        const [, closeButtonHeight] = this._closeButton.get_preferred_height(-1);
+
         const topOversize = (this._borderSize / 2) + (closeButtonHeight / 2);
-        const bottomOversize = Math.max(
-            this._borderSize,
-            (titleHeight / 2) + (this._borderSize / 2));
+        const bottomOversize = this._borderSize;
 
         return [topOversize, bottomOversize];
     }
@@ -462,6 +468,7 @@ var WindowPreview = GObject.registerClass({
             return;
 
         this._overlayShown = true;
+        this._restack();
 
         // If we're supposed to animate and an animation in our direction
         // is already happening, let that one continue
@@ -493,6 +500,7 @@ var WindowPreview = GObject.registerClass({
             return;
 
         this._overlayShown = false;
+        this._restack();
 
         // If we're supposed to animate and an animation in our direction
         // is already happening, let that one continue
@@ -739,6 +747,21 @@ var WindowPreview = GObject.registerClass({
         return true;
     }
 
+    _restack() {
+        // We may not have a parent if DnD completed successfully, in
+        // which case our clone will shortly be destroyed and replaced
+        // with a new one on the target workspace.
+        const parent = this.get_parent();
+        if (parent !== null) {
+            if (this._overlayShown)
+                parent.set_child_above_sibling(this, null);
+            else if (this._stackAbove === null)
+                parent.set_child_below_sibling(this, null);
+            else if (!this._stackAbove._overlayShown)
+                parent.set_child_above_sibling(this, this._stackAbove);
+        }
+    }
+
     _onDragBegin(_draggable, _time) {
         this.inDrag = true;
         this.hideOverlay(false);
@@ -760,16 +783,7 @@ var WindowPreview = GObject.registerClass({
     _onDragEnd(_draggable, _time, _snapback) {
         this.inDrag = false;
 
-        // We may not have a parent if DnD completed successfully, in
-        // which case our clone will shortly be destroyed and replaced
-        // with a new one on the target workspace.
-        let parent = this.get_parent();
-        if (parent !== null) {
-            if (this._stackAbove == null)
-                parent.set_child_below_sibling(this, null);
-            else
-                parent.set_child_above_sibling(this, this._stackAbove);
-        }
+        this._restack();
 
         if (this['has-pointer'])
             this.showOverlay(true);
