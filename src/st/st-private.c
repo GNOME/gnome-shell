@@ -501,7 +501,7 @@ _st_create_shadow_pipeline_from_actor (StShadow     *shadow_spec,
       if (!cogl_framebuffer_allocate (fb, &catch_error))
         {
           g_error_free (catch_error);
-          cogl_object_unref (offscreen);
+          g_object_unref (offscreen);
           cogl_object_unref (buffer);
           return NULL;
         }
@@ -526,7 +526,7 @@ _st_create_shadow_pipeline_from_actor (StShadow     *shadow_spec,
 
       clutter_actor_set_opacity_override (actor, -1);
 
-      cogl_object_unref (fb);
+      g_object_unref (fb);
 
       shadow_pipeline = _st_create_shadow_pipeline (shadow_spec, buffer,
                                                     resource_scale);

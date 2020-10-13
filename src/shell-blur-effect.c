@@ -351,7 +351,7 @@ update_fbo (FramebufferData *data,
     clutter_backend_get_cogl_context (clutter_get_default_backend ());
 
   g_clear_pointer (&data->texture, cogl_object_unref);
-  g_clear_pointer (&data->framebuffer, cogl_object_unref);
+  g_clear_object (&data->framebuffer);
 
   float new_width = floorf (width / downscale_factor);
   float new_height = floorf (height / downscale_factor);
@@ -362,7 +362,8 @@ update_fbo (FramebufferData *data,
 
   cogl_pipeline_set_layer_texture (data->pipeline, 0, data->texture);
 
-  data->framebuffer = cogl_offscreen_new_with_texture (data->texture);
+  data->framebuffer =
+    COGL_FRAMEBUFFER (cogl_offscreen_new_with_texture (data->texture));
   if (!data->framebuffer)
     {
       g_warning ("%s: Unable to create an Offscreen buffer", G_STRLOC);
@@ -451,7 +452,7 @@ static void
 clear_framebuffer_data (FramebufferData *fb_data)
 {
   g_clear_pointer (&fb_data->texture, cogl_object_unref);
-  g_clear_pointer (&fb_data->framebuffer, cogl_object_unref);
+  g_clear_object (&fb_data->framebuffer);
 }
 
 static float

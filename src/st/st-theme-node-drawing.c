@@ -2281,7 +2281,8 @@ st_theme_node_prerender_shadow (StThemeNodePaintState *state)
   CoglContext *ctx;
   int fb_width, fb_height;
   CoglTexture *buffer;
-  CoglFramebuffer *offscreen = NULL;
+  CoglOffscreen *offscreen = NULL;
+  CoglFramebuffer *framebuffer;
   GError *error = NULL;
 
   ctx = clutter_backend_get_cogl_context (clutter_get_default_backend ());
@@ -2294,26 +2295,27 @@ st_theme_node_prerender_shadow (StThemeNodePaintState *state)
     return;
 
   offscreen = cogl_offscreen_new_with_texture (buffer);
+  framebuffer = COGL_FRAMEBUFFER (offscreen);
 
-  if (cogl_framebuffer_allocate (COGL_FRAMEBUFFER (offscreen), &error))
+  if (cogl_framebuffer_allocate (framebuffer, &error))
     {
       ClutterActorBox box = { 0, 0, state->box_shadow_width, state->box_shadow_height};
 
-      cogl_framebuffer_orthographic (offscreen, 0, 0,
+      cogl_framebuffer_orthographic (framebuffer, 0, 0,
                                      fb_width, fb_height, 0, 1.0);
-      cogl_framebuffer_scale (offscreen,
+      cogl_framebuffer_scale (framebuffer,
                               state->resource_scale,
                               state->resource_scale, 1);
-      cogl_framebuffer_clear4f (offscreen, COGL_BUFFER_BIT_COLOR, 0, 0, 0, 0);
+      cogl_framebuffer_clear4f (framebuffer, COGL_BUFFER_BIT_COLOR, 0, 0, 0, 0);
 
-      st_theme_node_paint_borders (state, offscreen, &box, 0xFF);
+      st_theme_node_paint_borders (state, framebuffer, &box, 0xFF);
 
       state->box_shadow_pipeline = _st_create_shadow_pipeline (st_theme_node_get_box_shadow (node),
                                                                buffer, state->resource_scale);
     }
 
   g_clear_error (&error);
-  cogl_clear_object (&offscreen);
+  g_clear_object (&offscreen);
   cogl_clear_object (&buffer);
 }
 
