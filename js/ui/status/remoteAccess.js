@@ -16,13 +16,6 @@ class RemoteAccessApplet extends PanelMenu.SystemIndicator {
         if (!controller)
             return;
 
-        // We can't possibly know about all types of screen sharing on X11, so
-        // showing these controls on X11 might give a false sense of security.
-        // Thus, only enable these controls when using Wayland, where we are
-        // in control of sharing.
-        if (!Meta.is_wayland_compositor())
-            return;
-
         this._handles = new Set();
         this._sharedIndicator = null;
         this._recordingIndicator = null;
@@ -85,6 +78,16 @@ class RemoteAccessApplet extends PanelMenu.SystemIndicator {
     }
 
     _onNewHandle(handle) {
+        // We can't possibly know about all types of screen sharing on X11, so
+        // showing these controls on X11 might give a false sense of security.
+        // Thus, only enable these controls when using Wayland, where we are
+        // in control of sharing.
+        //
+        // We still want to show screen recordings though, to indicate when
+        // the built in screen recorder is active, no matter the session type.
+        if (!Meta.is_wayland_compositor() && !handle.is_recording)
+            return;
+
         this._handles.add(handle);
         handle.connect('stopped', this._onStopped.bind(this));
 
