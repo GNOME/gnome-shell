@@ -297,8 +297,6 @@ var WindowPreview = GObject.registerClass({
             factor: 0.5,
         }));
         this._borderCenter = new Clutter.Actor();
-        this._border.bind_property('visible', this._borderCenter, 'visible',
-            GObject.BindingFlags.SYNC_CREATE);
         this._borderCenterConstraint = new Clutter.BindConstraint({
             source: this._windowContainer,
             coordinate: Clutter.BindCoordinate.SIZE,
