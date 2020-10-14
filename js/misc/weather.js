@@ -31,15 +31,7 @@ var WeatherClient = new Lang.Class({
 
         this._weatherAuthorized = false;
         this._permStore = new PermissionStore.PermissionStore((proxy, error) => {
-            if (error) {
-                log('Failed to connect to permissionStore: ' + error.message);
-                return;
-            }
-
             this._permStore.LookupRemote('gnome', 'geolocation', (res, error) => {
-                if (error)
-                    log('Error looking up permission: ' + error.message);
-
                 let [perms, data] = error ? [{}, null] : res;
                 let  params = ['gnome', 'geolocation', false, data, perms];
                 this._onPermStoreChanged(this._permStore, '', params);
