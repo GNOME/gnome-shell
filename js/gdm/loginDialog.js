@@ -455,6 +455,7 @@ var LoginDialog = new Lang.Class({
         this._authPrompt = new AuthPrompt.AuthPrompt(this._gdmClient, AuthPrompt.AuthPromptMode.UNLOCK_OR_LOG_IN);
         this._authPrompt.connect('prompted', this._onPrompted.bind(this));
         this._authPrompt.connect('reset', this._onReset.bind(this));
+        this._authPrompt.connect('cancelled', this._onCancelled.bind(this));
         this._authPrompt.hide();
         this.actor.add_child(this._authPrompt.actor);
 
@@ -854,6 +855,10 @@ var LoginDialog = new Lang.Class({
         } else {
             this._hideUserListAndBeginVerification();
         }
+    },
+
+    _onCancelled(authPrompt) {
+        this._authPrompt.reset();
     },
 
     _onDefaultSessionChanged(client, sessionId) {

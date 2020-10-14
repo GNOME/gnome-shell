@@ -578,17 +578,15 @@ var AuthPrompt = new Lang.Class({
         this.updateSensitivity(false);
     },
 
-    reset() {
-        let oldStatus = this.verificationStatus;
+    _endActiveRequest() {
         this.verificationStatus = AuthPromptStatus.NOT_VERIFYING;
         this.cancelButton.reactive = true;
         this.nextButton.label = _("Next");
 
         if (this._preemptiveAnswerWatchId) {
             this._idleMonitor.remove_watch(this._preemptiveAnswerWatchId);
+            this._preemptiveAnswerWatchId = 0;
         }
-        this._preemptiveAnswerWatchId = this._idleMonitor.add_idle_watch (500,
-                                                                          this._onUserStoppedTypePreemptiveAnswer.bind(this));
 
         if (this._userVerifier)
             this._userVerifier.cancel();
@@ -598,6 +596,13 @@ var AuthPrompt = new Lang.Class({
         this._message.opacity = 0;
         this.setUser(null);
         this.stopSpinning();
+    },
+
+    reset() {
+        let oldStatus = this.verificationStatus;
+        this._endActiveRequest();
+        this._preemptiveAnswerWatchId = this._idleMonitor.add_idle_watch (500,
+                                                                          this._onUserStoppedTypePreemptiveAnswer.bind(this));
 
         if (oldStatus == AuthPromptStatus.VERIFICATION_FAILED)
             this.emit('failed');
@@ -661,7 +666,7 @@ var AuthPrompt = new Lang.Class({
         if (this.verificationStatus == AuthPromptStatus.VERIFICATION_SUCCEEDED) {
             return;
         }
-        this.reset();
+        this._endActiveRequest();
         this.emit('cancelled');
     }
 });
