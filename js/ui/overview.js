@@ -92,6 +92,7 @@ var Overview = new Lang.Class({
     _init() {
         this._overviewCreated = false;
         this._initCalled = false;
+        this._activationTime = 0;
 
         Main.sessionMode.connect('updated', this._sessionUpdated.bind(this));
         this._sessionUpdated();
