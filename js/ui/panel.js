@@ -844,8 +844,13 @@ var Panel = new Lang.Class({
     },
 
     _onWindowActorRemoved(container, metaWindowActor) {
-        this._trackedWindows.get(metaWindowActor).forEach(id => {
-            metaWindowActor.disconnect(id);
+        let signalIds = this._trackedWindows.get(metaWindowActor);
+
+        if (!signalIds)
+            return;
+
+        signalIds.forEach(id => {
+                metaWindowActor.disconnect(id);
         });
         this._trackedWindows.delete(metaWindowActor);
         this._updateSolidStyle();
