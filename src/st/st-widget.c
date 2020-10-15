@@ -1865,12 +1865,17 @@ void
 st_widget_sync_hover (StWidget *widget)
 {
   ClutterInputDevice *pointer;
+  ClutterActor *stage;
   ClutterActor *pointer_actor;
   ClutterSeat *seat;
 
   seat = clutter_backend_get_default_seat (clutter_get_default_backend ());
   pointer = clutter_seat_get_pointer (seat);
-  pointer_actor = clutter_input_device_get_actor (pointer, NULL);
+  stage = clutter_actor_get_stage (CLUTTER_ACTOR (widget));
+  if (!stage)
+    return;
+
+  pointer_actor = clutter_stage_get_device_actor (CLUTTER_STAGE (stage), pointer, NULL);
   if (pointer_actor && clutter_actor_get_reactive (CLUTTER_ACTOR (widget)))
     st_widget_set_hover (widget, clutter_actor_contains (CLUTTER_ACTOR (widget), pointer_actor));
   else
