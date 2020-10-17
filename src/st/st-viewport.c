@@ -434,19 +434,8 @@ st_viewport_pick (ClutterActor       *actor,
   ClutterActorBox allocation_box;
   ClutterActorBox content_box;
   ClutterActor *child;
-  CoglFramebuffer *fb = clutter_pick_context_get_framebuffer (pick_context);
-
-  get_border_paint_offsets (viewport, &x, &y);
-  if (x != 0 || y != 0)
-    {
-      cogl_framebuffer_push_matrix (fb);
-      cogl_framebuffer_translate (fb, (int)x, (int)y, 0);
-    }
 
   CLUTTER_ACTOR_CLASS (st_viewport_parent_class)->pick (actor, pick_context);
-
-  if (x != 0 || y != 0)
-    cogl_framebuffer_pop_matrix (fb);
 
   if (clutter_actor_get_n_children (actor) == 0)
     return;
@@ -454,19 +443,15 @@ st_viewport_pick (ClutterActor       *actor,
   clutter_actor_get_allocation_box (actor, &allocation_box);
   st_theme_node_get_content_box (theme_node, &allocation_box, &content_box);
 
+  get_border_paint_offsets (viewport, &x, &y);
+
   content_box.x1 += x;
   content_box.y1 += y;
   content_box.x2 += x;
   content_box.y2 += y;
 
   if (priv->hadjustment || priv->vadjustment)
-    {
-      cogl_framebuffer_push_rectangle_clip (fb,
-                                            (int)content_box.x1,
-                                            (int)content_box.y1,
-                                            (int)content_box.x2,
-                                            (int)content_box.y2);
-    }
+    clutter_pick_context_push_clip (pick_context, &content_box);
 
   for (child = clutter_actor_get_first_child (actor);
        child != NULL;
@@ -474,7 +459,7 @@ st_viewport_pick (ClutterActor       *actor,
     clutter_actor_pick (child, pick_context);
 
   if (priv->hadjustment || priv->vadjustment)
-    cogl_framebuffer_pop_clip (fb);
+    clutter_pick_context_pop_clip (pick_context);
 }
 
 static gboolean
