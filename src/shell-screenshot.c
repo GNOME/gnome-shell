@@ -292,6 +292,15 @@ grab_window_screenshot (ShellScreenshot     *screenshot,
 
   priv->image = meta_window_actor_get_image (META_WINDOW_ACTOR (window_actor),
                                              NULL);
+
+  if (!priv->image)
+    {
+      g_task_report_new_error (screenshot, on_screenshot_written, result, NULL,
+                               G_IO_ERROR, G_IO_ERROR_FAILED,
+                               "Capturing window failed");
+      return;
+    }
+
   priv->datetime = g_date_time_new_now_local ();
 
   if (flags & SHELL_SCREENSHOT_FLAG_INCLUDE_CURSOR)
