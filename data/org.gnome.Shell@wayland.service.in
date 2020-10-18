@@ -16,9 +16,9 @@ Before=gnome-session-initialized.target
 [Service]
 Slice=session.slice
 Type=notify
-# NOTE: This can be replaced with ConditionEnvironment=XDG_SESSION_TYPE=%I
-#       with systemd >= 246. Also, the current solution is kind of painful
-#       as systemd had a bug where it retries the condition.
+# NOTE: This can be replaced with ConditionEnvironment=XDG_SESSION_TYPE=%I in
+#       the [Unit] section with systemd >= 246. Also, the current solution is
+#       kind of painful as systemd had a bug where it retries the condition.
 # Only start if the template instance matches the session type.
 ExecCondition=/bin/sh -c 'test "$XDG_SESSION_TYPE" = "%I" || exit 2'
 ExecStart=@bindir@/gnome-shell
