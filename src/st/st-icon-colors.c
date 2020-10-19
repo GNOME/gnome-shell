@@ -33,7 +33,7 @@ st_icon_colors_new (void)
 {
   StIconColors *colors;
 
-  colors = g_slice_new0 (StIconColors);
+  colors = g_new0 (StIconColors, 1);
   colors->ref_count = 1;
 
   return colors;
@@ -72,7 +72,7 @@ st_icon_colors_unref (StIconColors *colors)
   g_return_if_fail (colors->ref_count > 0);
 
   if (g_atomic_int_dec_and_test ((volatile int *)&colors->ref_count))
-    g_slice_free (StIconColors, colors);
+    g_free (colors);
 }
 
 /**

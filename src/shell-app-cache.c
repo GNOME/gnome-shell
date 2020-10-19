@@ -58,7 +58,7 @@ cache_state_free (CacheState *state)
 {
   g_clear_pointer (&state->folders, g_hash_table_unref);
   g_list_free_full (state->app_infos, g_object_unref);
-  g_slice_free (CacheState, state);
+  g_free (state);
 }
 
 static CacheState *
@@ -66,7 +66,7 @@ cache_state_new (void)
 {
   CacheState *state;
 
-  state = g_slice_new0 (CacheState);
+  state = g_new0 (CacheState, 1);
   state->folders = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, g_free);
 
   return g_steal_pointer (&state);

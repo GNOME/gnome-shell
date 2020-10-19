@@ -86,7 +86,7 @@ invocation_data_new (GVariant *params,
 {
   InvocationData *ret;
 
-  ret = g_slice_new0 (InvocationData);
+  ret = g_new0 (InvocationData, 1);
   ret->parameters = g_variant_ref (params);
   ret->invocation = g_object_ref (invocation);
 
@@ -99,7 +99,7 @@ invocation_data_free (InvocationData *data)
   g_variant_unref (data->parameters);
   g_clear_object (&data->invocation);
 
-  g_slice_free (InvocationData, data);
+  g_free (data);
 }
 
 static void

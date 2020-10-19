@@ -59,7 +59,7 @@ st_shadow_new (ClutterColor *color,
 {
   StShadow *shadow;
 
-  shadow = g_slice_new (StShadow);
+  shadow = g_new (StShadow, 1);
 
   shadow->color     = *color;
   shadow->xoffset   = xoffset;
@@ -105,7 +105,7 @@ st_shadow_unref (StShadow *shadow)
   g_return_if_fail (shadow->ref_count > 0);
 
   if (g_atomic_int_dec_and_test (&shadow->ref_count))
-    g_slice_free (StShadow, shadow);
+    g_free (shadow);
 }
 
 /**
@@ -210,7 +210,7 @@ st_shadow_helper_new (StShadow     *shadow)
 {
   StShadowHelper *helper;
 
-  helper = g_slice_new0 (StShadowHelper);
+  helper = g_new0 (StShadowHelper, 1);
   helper->shadow = st_shadow_ref (shadow);
 
   return helper;
@@ -255,7 +255,7 @@ st_shadow_helper_copy (StShadowHelper *helper)
 {
   StShadowHelper *copy;
 
-  copy = g_slice_new (StShadowHelper);
+  copy = g_new (StShadowHelper, 1);
   *copy = *helper;
   if (copy->pipeline)
     cogl_object_ref (copy->pipeline);
@@ -277,7 +277,7 @@ st_shadow_helper_free (StShadowHelper *helper)
     cogl_object_unref (helper->pipeline);
   st_shadow_unref (helper->shadow);
 
-  g_slice_free (StShadowHelper, helper);
+  g_free (helper);
 }
 
 /**

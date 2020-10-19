@@ -81,7 +81,7 @@ shell_agent_request_free (gpointer data)
   g_strfreev (request->hints);
   g_clear_pointer (&request->entries, g_variant_dict_unref);
 
-  g_slice_free (ShellAgentRequest, request);
+  g_free (request);
 }
 
 static void
@@ -360,7 +360,7 @@ shell_network_agent_get_secrets (NMSecretAgentOld                 *agent,
       shell_agent_request_cancel (request);
     }
 
-  request = g_slice_new0 (ShellAgentRequest);
+  request = g_new0 (ShellAgentRequest, 1);
   request->self = g_object_ref (self);
   request->cancellable = g_cancellable_new ();
   request->connection = g_object_ref (connection);
@@ -617,7 +617,7 @@ keyring_request_free (KeyringRequest *r)
   g_object_unref (r->self);
   g_object_unref (r->connection);
 
-  g_slice_free (KeyringRequest, r);
+  g_free (r);
 }
 
 static void
@@ -765,7 +765,7 @@ shell_network_agent_save_secrets (NMSecretAgentOld                *agent,
 {
   KeyringRequest *r;
 
-  r = g_slice_new (KeyringRequest);
+  r = g_new (KeyringRequest, 1);
   r->n_secrets = 0;
   r->self = g_object_ref (agent);
   r->connection = g_object_ref (connection);
@@ -812,7 +812,7 @@ shell_network_agent_delete_secrets (NMSecretAgentOld                  *agent,
   NMSettingConnection *s_con;
   const gchar *uuid;
 
-  r = g_slice_new (KeyringRequest);
+  r = g_new (KeyringRequest, 1);
   r->n_secrets = 0; /* ignored by delete secrets calls */
   r->self = g_object_ref (agent);
   r->connection = g_object_ref (connection);

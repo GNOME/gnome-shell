@@ -76,7 +76,7 @@ free_tray_icon (gpointer data)
                                             0, 0, NULL, NULL, child);
       g_object_unref (child->actor);
     }
-  g_slice_free (ShellTrayManagerChild, child);
+  g_free (child);
 }
 
 static void
@@ -337,7 +337,7 @@ na_tray_icon_added (NaTrayManager *na_manager, GtkWidget *socket,
    * the window we put it in match that as well */
   gtk_widget_set_visual (win, gtk_widget_get_visual (socket));
 
-  child = g_slice_new0 (ShellTrayManagerChild);
+  child = g_new0 (ShellTrayManagerChild, 1);
   child->manager = manager;
   child->window = win;
   child->socket = socket;

@@ -259,7 +259,7 @@ define_event (ShellPerfLog *perf_log,
       return NULL;
     }
 
-  event = g_slice_new (ShellPerfEvent);
+  event = g_new (ShellPerfEvent, 1);
 
   event->id = perf_log->events->len;
   event->name = g_strdup (name);
@@ -501,7 +501,7 @@ shell_perf_log_define_statistic (ShellPerfLog *perf_log,
   if (event == NULL)
     return;
 
-  statistic = g_slice_new (ShellPerfStatistic);
+  statistic = g_new (ShellPerfStatistic, 1);
   statistic->event = event;
 
   statistic->initialized = FALSE;
@@ -598,7 +598,7 @@ shell_perf_log_add_statistics_callback (ShellPerfLog               *perf_log,
                                         gpointer                    user_data,
                                         GDestroyNotify              notify)
 {
-  ShellPerfStatisticsClosure *closure = g_slice_new (ShellPerfStatisticsClosure);
+  ShellPerfStatisticsClosure *closure = g_new (ShellPerfStatisticsClosure, 1);
 
   closure->callback = callback;
   closure->user_data = user_data;

@@ -1453,7 +1453,7 @@ create_running_state (ShellApp *app)
 
   g_assert (app->running_state == NULL);
 
-  app->running_state = g_slice_new0 (ShellAppRunningState);
+  app->running_state = g_new0 (ShellAppRunningState, 1);
   app->running_state->refcount = 1;
   app->running_state->workspace_switch_id =
     g_signal_connect (workspace_manager, "workspace-switched",
@@ -1527,7 +1527,7 @@ unref_running_state (ShellAppRunningState *state)
   g_clear_object (&state->session);
   g_clear_pointer (&state->unique_bus_name, g_free);
 
-  g_slice_free (ShellAppRunningState, state);
+  g_free (state);
 }
 
 /**

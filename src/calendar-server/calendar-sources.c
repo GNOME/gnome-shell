@@ -148,7 +148,7 @@ client_data_free (ClientData *data)
 {
   g_signal_handler_disconnect (data->client, data->backend_died_id);
   g_object_unref (data->client);
-  g_slice_free (ClientData, data);
+  g_free (data);
 }
 
 static void
@@ -378,7 +378,7 @@ calendar_sources_connect_client_sync (CalendarSources *sources,
     }
    else
     {
-      client_data = g_slice_new0 (ClientData);
+      client_data = g_new0 (ClientData, 1);
       client_data->client = E_CAL_CLIENT (g_object_ref (client));
       client_data->backend_died_id = g_signal_connect (client,
                                                        "backend-died",
@@ -406,7 +406,7 @@ async_context_free (gpointer ptr)
   if (ctx)
     {
       g_clear_object (&ctx->source);
-      g_slice_free (AsyncContext, ctx);
+      g_free (ctx);
     }
 }
 
@@ -446,7 +446,7 @@ calendar_sources_connect_client (CalendarSources *sources,
   AsyncContext *ctx;
   g_autoptr (GTask) task = NULL;
 
-  ctx = g_slice_new0 (AsyncContext);
+  ctx = g_new0 (AsyncContext, 1);
   ctx->source = g_object_ref (source);
   ctx->source_type = source_type;
   ctx->wait_for_connected_seconds = wait_for_connected_seconds;

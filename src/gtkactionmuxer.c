@@ -507,7 +507,7 @@ gtk_action_muxer_register_observer (GtkActionObservable *observable,
 
   if (action == NULL)
     {
-      action = g_slice_new (Action);
+      action = g_new (Action, 1);
       action->muxer = muxer;
       action->fullname = g_strdup (name);
       action->watchers = NULL;
@@ -545,7 +545,7 @@ gtk_action_muxer_free_group (gpointer data)
   g_object_unref (group->group);
   g_free (group->prefix);
 
-  g_slice_free (Group, group);
+  g_free (group);
 }
 
 static void
@@ -560,7 +560,7 @@ gtk_action_muxer_free_action (gpointer data)
   g_slist_free (action->watchers);
   g_free (action->fullname);
 
-  g_slice_free (Action, action);
+  g_free (action);
 }
 
 static void
@@ -711,7 +711,7 @@ gtk_action_muxer_insert (GtkActionMuxer *muxer,
   /* TODO: diff instead of ripout and replace */
   gtk_action_muxer_remove (muxer, prefix);
 
-  group = g_slice_new (Group);
+  group = g_new (Group, 1);
   group->muxer = muxer;
   group->group = g_object_ref (action_group);
   group->prefix = g_strdup (prefix);

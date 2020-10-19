@@ -1581,7 +1581,7 @@ run_leisure_functions (gpointer data)
       if (closure->notify)
         closure->notify (closure->user_data);
 
-      g_slice_free (LeisureClosure, closure);
+      g_free (closure);
     }
 
   g_slist_free (closures);
@@ -1670,7 +1670,7 @@ shell_global_run_at_leisure (ShellGlobal         *global,
                              gpointer             user_data,
                              GDestroyNotify       notify)
 {
-  LeisureClosure *closure = g_slice_new (LeisureClosure);
+  LeisureClosure *closure = g_new (LeisureClosure, 1);
   closure->func = func;
   closure->user_data = user_data;
   closure->notify = notify;
