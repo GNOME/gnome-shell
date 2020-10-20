@@ -338,6 +338,8 @@ var _Draggable = class _Draggable {
         this._dragX = this._dragStartX = stageX;
         this._dragY = this._dragStartY = stageY;
 
+        let scaledWidth, scaledHeight;
+
         if (this.actor._delegate && this.actor._delegate.getDragActor) {
             this._dragActor = this.actor._delegate.getDragActor();
             Main.uiGroup.add_child(this._dragActor);
@@ -370,6 +372,8 @@ var _Draggable = class _Draggable {
 
             this._dragOffsetX = this._dragActor.x - this._dragStartX;
             this._dragOffsetY = this._dragActor.y - this._dragStartY;
+
+            [scaledWidth, scaledHeight] = this._dragActor.get_transformed_size();
         } else {
             this._dragActor = this.actor;
 
@@ -398,6 +402,9 @@ var _Draggable = class _Draggable {
 
             this._dragOffsetX = transformedExtents.origin.x - this._dragStartX;
             this._dragOffsetY = transformedExtents.origin.y - this._dragStartY;
+
+            scaledWidth = transformedExtents.get_width();
+            scaledHeight = transformedExtents.get_height();
 
             this._dragOrigParent.remove_actor(this._dragActor);
             Main.uiGroup.add_child(this._dragActor);
@@ -432,7 +439,6 @@ var _Draggable = class _Draggable {
             this._dragY + this._dragOffsetY);
 
         if (this._dragActorMaxSize != undefined) {
-            let [scaledWidth, scaledHeight] = this._dragActor.get_transformed_size();
             let currentSize = Math.max(scaledWidth, scaledHeight);
             if (currentSize > this._dragActorMaxSize) {
                 let scale = this._dragActorMaxSize / currentSize;
