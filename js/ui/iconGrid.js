@@ -66,9 +66,11 @@ var DragLocation = {
 var BaseIcon = GObject.registerClass(
 class BaseIcon extends St.Bin {
     _init(label, params) {
-        params = Params.parse(params, { createIcon: null,
-                                        setSizeManually: false,
-                                        showLabel: true });
+        params = Params.parse(params, {
+            createIcon: null,
+            setSizeManually: false,
+            showLabel: true,
+        });
 
         let styleClass = 'overview-icon';
         if (params.showLabel)
@@ -126,7 +128,7 @@ class BaseIcon extends St.Bin {
         if (!this._setSizeManually)
             throw new Error('setSizeManually has to be set to use setIconsize');
 
-        if (size == this.iconSize)
+        if (size === this.iconSize)
             return;
 
         this._createIconTexture(size);
@@ -156,7 +158,7 @@ class BaseIcon extends St.Bin {
             size = found ? len / scaleFactor : ICON_SIZE;
         }
 
-        if (this.iconSize == size && this._iconBin.child)
+        if (this.iconSize === size && this._iconBin.child)
             return;
 
         this._createIconTexture(size);
@@ -196,8 +198,10 @@ function zoomOutActor(actor) {
 }
 
 function zoomOutActorAtPos(actor, x, y) {
-    let actorClone = new Clutter.Clone({ source: actor,
-                                         reactive: false });
+    const actorClone = new Clutter.Clone({
+        source: actor,
+        reactive: false,
+    });
     let [width, height] = actor.get_transformed_size();
 
     actorClone.set_size(width, height);
@@ -1580,7 +1584,7 @@ var IconGrid = GObject.registerClass({
         this._resetAnimationActors();
 
         let actors = this._getChildrenToAnimate();
-        if (actors.length == 0) {
+        if (actors.length === 0) {
             this._animationDone();
             return;
         }
@@ -1631,8 +1635,8 @@ var IconGrid = GObject.registerClass({
             let [adjustedSourcePositionX, adjustedSourcePositionY] = [sourceCenterX - sourceScaledWidth / 2, sourceCenterY - sourceScaledHeight / 2];
 
             let movementParams, fadeParams;
-            if (animationDirection == AnimationDirection.IN) {
-                let isLastItem = actor._distance == minDist;
+            if (animationDirection === AnimationDirection.IN) {
+                const isLastItem = actor._distance === minDist;
 
                 actorClone.opacity = 0;
                 actorClone.set_scale(scaleX, scaleY);
@@ -1661,7 +1665,7 @@ var IconGrid = GObject.registerClass({
                     delay,
                 };
             } else {
-                let isLastItem = actor._distance == maxDist;
+                const isLastItem = actor._distance === maxDist;
 
                 let [startX, startY]  = actor._transformedPosition;
                 actorClone.set_translation(startX, startY, 0);
