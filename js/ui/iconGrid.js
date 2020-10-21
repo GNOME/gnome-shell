@@ -765,7 +765,6 @@ var IconGridLayout = GObject.registerClass({
             this._calculateSpacing(childSize);
 
         const childBox = new Clutter.ActorBox();
-        childBox.set_size(childSize, childSize);
 
         let nChangedIcons = 0;
 
@@ -801,6 +800,11 @@ var IconGridLayout = GObject.registerClass({
                 }
 
                 childBox.set_origin(x, y);
+
+                const [,, naturalWidth, naturalHeight] = item.get_preferred_size();
+                childBox.set_size(
+                    Math.max(childSize, naturalWidth),
+                    Math.max(childSize, naturalHeight));
 
                 // Only ease icons when the page size didn't change
                 if (this._pageSizeChanged)
