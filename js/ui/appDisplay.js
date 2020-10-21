@@ -1445,16 +1445,19 @@ var AppSearchProvider = class AppSearchProvider {
     }
 
     createResultObject(resultMeta) {
-        if (resultMeta.id.endsWith('.desktop'))
-            return new AppIcon(this._appSys.lookup_app(resultMeta['id']));
-        else
+        if (resultMeta.id.endsWith('.desktop')) {
+            return new AppIcon(this._appSys.lookup_app(resultMeta['id']), {
+                expandTitleOnHover: false,
+            });
+        } else {
             return new SystemActionIcon(this, resultMeta);
+        }
     }
 };
 
 var AppViewItem = GObject.registerClass(
 class AppViewItem extends St.Button {
-    _init(params = {}, isDraggable = true) {
+    _init(params = {}, isDraggable = true, expandTitleOnHover = true) {
         super._init({
             pivot_point: new Graphene.Point({ x: 0.5, y: 0.5 }),
             reactive: true,
@@ -1474,7 +1477,8 @@ class AppViewItem extends St.Button {
 
         this._otherIconIsHovering = false;
 
-        this.connect('notify::hover', this._onHover.bind(this));
+        if (expandTitleOnHover)
+            this.connect('notify::hover', this._onHover.bind(this));
         this.connect('destroy', this._onDestroy.bind(this));
     }
 
@@ -2570,8 +2574,10 @@ var AppIcon = GObject.registerClass({
         const appIconParams = Params.parse(iconParams, { isDraggable: true }, true);
         const isDraggable = appIconParams['isDraggable'];
         delete iconParams['isDraggable'];
+        const expandTitleOnHover = appIconParams['expandTitleOnHover'];
+        delete iconParams['expandTitleOnHover'];
 
-        super._init({ style_class: 'app-well-app' }, isDraggable);
+        super._init({ style_class: 'app-well-app' }, isDraggable, expandTitleOnHover);
 
         this.app = app;
         this._id = app.get_id();
