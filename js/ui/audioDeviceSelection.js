@@ -43,6 +43,7 @@ var AudioDeviceSelectionDialog = GObject.registerClass({
 
         this._selectionBox = new St.BoxLayout({
             style_class: 'audio-selection-box',
+            x_align: Clutter.ActorAlign.CENTER,
             x_expand: true,
         });
         content.add_child(this._selectionBox);
