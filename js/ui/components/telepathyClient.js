@@ -9,7 +9,7 @@ try {
     ({ TelepathyGLib: Tp, TelepathyLogger: Tpl } = imports.gi);
 
     Gio._promisify(Tp.Channel.prototype, 'close_async', 'close_finish');
-    Gio._promisify(Tp.Channel.prototype,
+    Gio._promisify(Tp.TextChannel.prototype,
         'send_message_async', 'send_message_finish');
     Gio._promisify(Tp.ChannelDispatchOperation.prototype,
         'claim_with_async', 'claim_with_finish');
