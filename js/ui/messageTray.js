@@ -134,6 +134,7 @@ var FocusGrabber = class FocusGrabber {
 //
 // A notification without a policy object will inherit the default one.
 var NotificationPolicy = GObject.registerClass({
+    GTypeFlags: GObject.TypeFlags.ABSTRACT,
     Properties: {
         'enable': GObject.ParamSpec.boolean(
             'enable', 'enable', 'enable', GObject.ParamFlags.READABLE, true),
@@ -718,7 +719,7 @@ var Source = GObject.registerClass({
     }
 
     _createPolicy() {
-        return new NotificationPolicy();
+        return new NotificationGenericPolicy();
     }
 
     get narrowestPrivacyScope() {
