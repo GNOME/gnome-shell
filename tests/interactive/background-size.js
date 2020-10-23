@@ -27,49 +27,16 @@ function test() {
     let tbox = null;
 
     function addTestCase(image, size, backgroundSize, useCairo) {
-        // Using a border in CSS forces cairo rendering.
-        // To get a border using cogl, we paint a border using
-        // paint signal hacks.
-
-        let obin = new St.Bin();
-        if (useCairo)
-            obin.style = 'border: 3px solid green;';
-        else
-            obin.connect_after('paint', (actor, paintContext) => {
-                let framebuffer = paintContext.get_framebuffer();
-                let coglContext = framebuffer.get_context();
-
-                let pipeline = new Cogl.Pipeline(coglContext);
-                pipeline.set_color4f(0, 1, 0, 1);
-
-                let alloc = actor.get_allocation_box();
-                let width = 3;
-
-                // clockwise order
-                framebuffer.draw_rectangle(pipeline,
-                                           0, 0, alloc.get_width(), width);
-                framebuffer.draw_rectangle(pipeline,
-                                           alloc.get_width() - width, width,
-                                           alloc.get_width(), alloc.get_height());
-                framebuffer.draw_rectangle(pipeline,
-                                           0,
-                                           alloc.get_height(),
-                                           alloc.get_width() - width,
-                                           alloc.get_height() - width);
-                framebuffer.draw_rectangle(pipeline,
-                                           0,
-                                           alloc.get_height() - width,
-                                           width,
-                                           width);
-            });
+        let obin = new St.Bin({ style: 'border: 3px solid green;' });
         tbox.add(obin);
 
         let [width, height] = size;
         let bin = new St.Bin({ style_class: 'background-image-' + image,
                                width: width,
                                height: height,
-                               style: 'border: 1px solid transparent;'
-                               + 'background-size: ' + backgroundSize + ';',
+                               style: `${useCairo
+                                   ? 'border: 1px solid transparent;' : ''
+                               } background-size: ${backgroundSize};`,
                                x_fill: true,
                                y_fill: true
                              });
@@ -81,7 +48,7 @@ function test() {
                                    }));
     }
 
-    function addTestLine(image, size, useCairo) {
+    function addTestLine(image, size) {
         const backgroundSizes = ["auto", "contain", "cover", "200px 200px", "100px 100px", "100px 200px"];
 
         let [width, height] = size;
