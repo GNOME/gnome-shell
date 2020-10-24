@@ -66,8 +66,8 @@ class MediaMessage extends MessageList.Message {
     }
 
     _update() {
-        this.setTitle(this._player.trackArtists.join(', '));
-        this.setBody(this._player.trackTitle);
+        this.setTitle(this._player.trackTitle);
+        this.setBody(this._player.trackArtists.join(', '));
 
         if (this._player.trackCoverUrl) {
             let file = Gio.File.new_for_uri(this._player.trackCoverUrl);
