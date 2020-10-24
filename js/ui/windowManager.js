@@ -1614,7 +1614,7 @@ var WindowManager = class {
 
     _destroyWindowDone(shellwm, actor) {
         if (this._destroying.delete(actor)) {
-            let parent = actor.get_meta_window().get_transient_for();
+            const parent = actor.get_meta_window()?.get_transient_for();
             if (parent && actor._parentDestroyId) {
                 parent.disconnect(actor._parentDestroyId);
                 actor._parentDestroyId = 0;
