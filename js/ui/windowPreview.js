@@ -500,6 +500,8 @@ var WindowPreview = GObject.registerClass({
 
     _addWindow(metaWindow) {
         const clone = this._windowContainer.layout_manager.addWindow(metaWindow);
+        if (!clone)
+            return;
 
         // We expect this to be used for all interaction rather than
         // the ClutterClone; as the former is reactive and the latter
