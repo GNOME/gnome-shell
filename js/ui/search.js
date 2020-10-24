@@ -422,10 +422,11 @@ var GridSearchResultsLayout = GObject.registerClass({
 
             const [childWidth] = child.get_preferred_width(-1);
             const [childHeight] = child.get_preferred_height(-1);
-            childBox.set_size(childWidth, childHeight);
 
-            if (childBox.x1 + childWidth > width)
-                return;
+            if (childBox.x1 + childWidth <= width)
+                childBox.set_size(childWidth, childHeight);
+            else
+                childBox.set_size(0, 0);
 
             child.allocate(childBox);
 

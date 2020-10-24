@@ -630,6 +630,14 @@ var WorkspaceLayout = GObject.registerClass({
 
             if (windowInfo.currentTransition) {
                 windowInfo.currentTransition.get_interval().set_final(childBox);
+
+                // The timeline of the transition might not have been updated
+                // before this allocation cycle, so make sure the child
+                // still updates needs_allocation to FALSE.
+                // Unfortunately, this relies on the fast paths in
+                // clutter_actor_allocate(), otherwise we'd start a new
+                // transition on the child, replacing the current one.
+                child.allocate(child.allocation);
                 continue;
             }
 
