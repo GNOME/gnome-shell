@@ -1270,6 +1270,9 @@ var ThumbnailsBox = GObject.registerClass({
         let y = box.y1;
 
         if (this._dropPlaceholderPos == -1) {
+            this._dropPlaceholder.allocate_preferred_size(
+                ...this._dropPlaceholder.get_position());
+
             Meta.later_add(Meta.LaterType.BEFORE_REDRAW, () => {
                 this._dropPlaceholder.hide();
             });

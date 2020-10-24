@@ -152,17 +152,21 @@ class UserWidgetLabel extends St.Widget {
 
         let [, , natRealNameWidth] = this._realNameLabel.get_preferred_size();
 
-        if (natRealNameWidth <= availWidth)
+        let childBox = new Clutter.ActorBox();
+
+        let hiddenLabel;
+        if (natRealNameWidth <= availWidth) {
             this._currentLabel = this._realNameLabel;
-        else
+            hiddenLabel = this._userNameLabel;
+        } else {
             this._currentLabel = this._userNameLabel;
+            hiddenLabel = this._realNameLabel;
+        }
         this.label_actor = this._currentLabel;
 
-        let childBox = new Clutter.ActorBox();
-        childBox.x1 = 0;
-        childBox.y1 = 0;
-        childBox.x2 = availWidth;
-        childBox.y2 = availHeight;
+        hiddenLabel.allocate(childBox);
+
+        childBox.set_size(availWidth, availHeight);
 
         this._currentLabel.allocate(childBox);
     }
