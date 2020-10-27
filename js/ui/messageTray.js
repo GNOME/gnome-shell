@@ -784,8 +784,6 @@ var Source = GObject.registerClass({
 
         if (this.policy.showBanners || notification.urgency == Urgency.CRITICAL)
             this.emit('notification-show', notification);
-        else
-            notification.playSound();
     }
 
     notify(propName) {
