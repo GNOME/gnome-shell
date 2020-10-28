@@ -67,6 +67,12 @@ class Application extends Gtk.Application {
             provider,
             Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
 
+        const action = new Gio.SimpleAction({ name: 'quit' });
+        action.connect('activate', () => this._window.close());
+        this.add_action(action);
+
+        this.set_accels_for_action('app.quit', ['<Primary>q']);
+
         this._shellProxy = new GnomeShellProxy(Gio.DBus.session,
             'org.gnome.Shell.Extensions', '/org/gnome/Shell/Extensions');
 
