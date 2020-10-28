@@ -158,20 +158,21 @@ var Magnifier = class Magnifier {
             zoomRegion.setActive(activate);
         });
 
-        if (isActive != activate) {
-            if (activate) {
-                this._updateMouseSprite();
-                this._cursorSpriteChangedId =
-                    this._cursorTracker.connect('cursor-changed',
-                                                this._updateMouseSprite.bind(this));
-                Meta.disable_unredirect_for_display(global.display);
-                this.startTrackingMouse();
-            } else {
-                this._cursorTracker.disconnect(this._cursorSpriteChangedId);
-                this._mouseSprite.content.texture = null;
-                Meta.enable_unredirect_for_display(global.display);
-                this.stopTrackingMouse();
-            }
+        if (isActive === activate)
+            return;
+
+        if (activate) {
+            this._updateMouseSprite();
+            this._cursorSpriteChangedId =
+                this._cursorTracker.connect('cursor-changed',
+                                            this._updateMouseSprite.bind(this));
+            Meta.disable_unredirect_for_display(global.display);
+            this.startTrackingMouse();
+        } else {
+            this._cursorTracker.disconnect(this._cursorSpriteChangedId);
+            this._mouseSprite.content.texture = null;
+            Meta.enable_unredirect_for_display(global.display);
+            this.stopTrackingMouse();
         }
 
         // Make sure system mouse pointer is shown when all zoom regions are
