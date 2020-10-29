@@ -83,8 +83,6 @@ struct _StButtonPrivate
   guint  pressed     : 3;
   guint  grabbed     : 3;
   guint  is_checked  : 1;
-
-  gint   spacing;
 };
 
 static guint button_signals[LAST_SIGNAL] = { 0, };
@@ -111,16 +109,9 @@ static void
 st_button_style_changed (StWidget *widget)
 {
   StButton *button = ST_BUTTON (widget);
-  StButtonPrivate *priv = st_button_get_instance_private (button);
   StButtonClass *button_class = ST_BUTTON_GET_CLASS (button);
-  StThemeNode *theme_node = st_widget_get_theme_node (ST_WIDGET (button));
-  double spacing;
 
   ST_WIDGET_CLASS (st_button_parent_class)->style_changed (widget);
-
-  spacing = 6;
-  st_theme_node_lookup_length (theme_node, "border-spacing", FALSE, &spacing);
-  priv->spacing = (int)(0.5 + spacing);
 
   /* update the label styling */
   st_button_update_label_style (button);
@@ -575,7 +566,6 @@ st_button_init (StButton *button)
 {
   StButtonPrivate *priv = st_button_get_instance_private (button);
 
-  priv->spacing = 6;
   priv->button_mask = ST_BUTTON_ONE;
 
   clutter_actor_set_reactive (CLUTTER_ACTOR (button), TRUE);
