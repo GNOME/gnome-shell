@@ -10,8 +10,8 @@
 msgid ""
 msgstr "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2020-08-10 23:58+0000\n"
-"PO-Revision-Date: 2020-08-11 12:15+0100\n"
+"POT-Creation-Date: 2020-10-19 15:45+0000\n"
+"PO-Revision-Date: 2020-10-31 12:15+0100\n"
 "Last-Translator: Asier Sarasua Garmendia <asiersarasua@ni.eus>\n"
 "Language-Team: Basque <librezale@librezale.eus>\n"
 "Language: eu\n"
@@ -120,38 +120,30 @@ msgid ""
 msgstr "Identifikadore horiei dagozkien aplikazioak bistaratuko dira gogokoen arean."
 
 #: data/org.gnome.shell.gschema.xml.in:62
-msgid "App Picker View"
-msgstr "Aplikazio-hautatzailearen ikuspegia"
-
-#: data/org.gnome.shell.gschema.xml.in:63
-msgid "Index of the currently selected view in the application picker."
-msgstr "Unean hautatutako ikuspegiaren indizea aplikazio-hautatzailean."
-
-#: data/org.gnome.shell.gschema.xml.in:69
 msgid "History for command (Alt-F2) dialog"
 msgstr "Komandoen (Alt-F2) elkarrizketa-koadroaren historia"
 
 #. Translators: looking glass is a debugger and inspector tool, see https://wiki.gnome.org/Projects/GnomeShell/LookingGlass
-#: data/org.gnome.shell.gschema.xml.in:74
+#: data/org.gnome.shell.gschema.xml.in:67
 msgid "History for the looking glass dialog"
 msgstr "Ikuskatzailearen elkarrizketa-koadroaren historia"
 
-#: data/org.gnome.shell.gschema.xml.in:78
+#: data/org.gnome.shell.gschema.xml.in:71
 msgid "Always show the “Log out” menu item in the user menu."
 msgstr "Erakutsi beti erabiltzaile-menuko “Amaitu saioa” menu-elementua."
 
-#: data/org.gnome.shell.gschema.xml.in:79
+#: data/org.gnome.shell.gschema.xml.in:72
 msgid ""
 "This key overrides the automatic hiding of the “Log out” menu item in single-"
 "user, single-session situations."
 msgstr "Gako honek “Amaitu saioa” menu-elementua automatikoki ezkutatzea gainidazten du, saio bakarreko egoeran."
 
-#: data/org.gnome.shell.gschema.xml.in:86
+#: data/org.gnome.shell.gschema.xml.in:79
 msgid ""
 "Whether to remember password for mounting encrypted or remote filesystems"
 msgstr "Zifratutako edo urruneko fitxategi-sistemak muntatzeko pasahitza gogoratuko den ala ez"
 
-#: data/org.gnome.shell.gschema.xml.in:87
+#: data/org.gnome.shell.gschema.xml.in:80
 msgid ""
 "The shell will request a password when an encrypted device or a remote "
 "filesystem is mounted. If the password can be saved for future use a "
@@ -159,12 +151,12 @@ msgid ""
 "state of the checkbox."
 msgstr "Shell-ak pasahitza eskatuko du zifratutako gailu bat edo urruneko fitxategi-sistema bat muntatzen denean. Pasahitza geroago erabiltzeko gorde badaiteke, “Gogoratu pasahitza” kontrol-laukia agertuko da. Gako honek kontrol-laukiaren egoera lehenetsia ezartzen du."
 
-#: data/org.gnome.shell.gschema.xml.in:96
+#: data/org.gnome.shell.gschema.xml.in:89
 msgid ""
 "Whether the default Bluetooth adapter had set up devices associated to it"
 msgstr "Bluetooth lehenetsiaren moldatzaileak berarekin esleitutako gailurik duen ala ez"
 
-#: data/org.gnome.shell.gschema.xml.in:97
+#: data/org.gnome.shell.gschema.xml.in:90
 msgid ""
 "The shell will only show a Bluetooth menu item if a Bluetooth adapter is "
 "powered, or if there were devices set up associated with the default "
@@ -172,21 +164,21 @@ msgid ""
 "devices associated to it."
 msgstr "Shell-ak Bluetooth moldagailu bat entxufatuta dagoenean soilik Bluetooth-aren menua erakutsiko duen, edo moldagailu lehenetsiarekin esleitutako gailuak konfiguratuta daudenean. Hau leheneratu egingo da moldagailu lehenetsiak berarekin esleitutako gailurik ez daukanean."
 
-#: data/org.gnome.shell.gschema.xml.in:106
+#: data/org.gnome.shell.gschema.xml.in:99
 msgid "Enable introspection API"
 msgstr "Gaitu introspekzio APIa"
 
-#: data/org.gnome.shell.gschema.xml.in:107
+#: data/org.gnome.shell.gschema.xml.in:100
 msgid ""
 "Enables a D-Bus API that allows to introspect the application state of the "
 "shell."
 msgstr "Shell-en aplikazio-egoeraren introspekzioa ahalbidetzen duen D-Bus API bat gaitzen du."
 
-#: data/org.gnome.shell.gschema.xml.in:114
+#: data/org.gnome.shell.gschema.xml.in:107
 msgid "Layout of the app picker"
 msgstr "Aplikazio-hautatzailearen diseinua"
 
-#: data/org.gnome.shell.gschema.xml.in:115
+#: data/org.gnome.shell.gschema.xml.in:108
 msgid ""
 "Layout of the app picker. Each entry in the array is a page. Pages are "
 "stored in the order they appear in GNOME Shell. Each page contains an "
@@ -194,161 +186,161 @@ msgid ""
 "as 'data': • “position”: the position of the application icon in the page"
 msgstr "Aplikazio-hautatzailearen diseinua. Matrizeko sarrera bakoitza orri bat da. Orriak GNOME Shell-en agertzen diren ordenan biltegiratzen dira. Orri bakoizak “aplikazioaren ida” → 'datuak' bikote bat du. Une honetan, honako balioak gordetzen dira 'datuak': • “posizioa” moduan: aplikazio-ikonoak orrian duen posizioa."
 
-#: data/org.gnome.shell.gschema.xml.in:130
+#: data/org.gnome.shell.gschema.xml.in:123
 msgid "Keybinding to open the application menu"
 msgstr "Aplikazioen menua irekitzeko laster-tekla"
 
-#: data/org.gnome.shell.gschema.xml.in:131
+#: data/org.gnome.shell.gschema.xml.in:124
 msgid "Keybinding to open the application menu."
 msgstr "Aplikazioen menua irekitzeko laster-tekla."
 
-#: data/org.gnome.shell.gschema.xml.in:137
+#: data/org.gnome.shell.gschema.xml.in:130
 msgid "Keybinding to open the “Show Applications” view"
 msgstr "“Erakutsi aplikazioak” bista irekitzeko laster-tekla"
 
-#: data/org.gnome.shell.gschema.xml.in:138
+#: data/org.gnome.shell.gschema.xml.in:131
 msgid ""
 "Keybinding to open the “Show Applications” view of the Activities Overview."
 msgstr "Jarduerak ikuspegi orokorraren “Erakutsi aplikazioak” ikuspegia irekitzeko laster-tekla."
 
-#: data/org.gnome.shell.gschema.xml.in:145
+#: data/org.gnome.shell.gschema.xml.in:138
 msgid "Keybinding to open the overview"
 msgstr "Ikuspegi orokorra bista irekitzeko laster-tekla"
 
-#: data/org.gnome.shell.gschema.xml.in:146
+#: data/org.gnome.shell.gschema.xml.in:139
 msgid "Keybinding to open the Activities Overview."
 msgstr "Jardueren ikuspegi orokorra irekitzeko laster-tekla"
 
-#: data/org.gnome.shell.gschema.xml.in:152
+#: data/org.gnome.shell.gschema.xml.in:145
 msgid "Keybinding to toggle the visibility of the notification list"
 msgstr "Jakinarazpenen zerrendaren ikusgaitasuna txandakatzeko laster-tekla"
 
-#: data/org.gnome.shell.gschema.xml.in:153
+#: data/org.gnome.shell.gschema.xml.in:146
 msgid "Keybinding to toggle the visibility of the notification list."
 msgstr "Jakinarazpenen zerrendaren ikusgaitasuna txandakatzeko laster-tekla."
 
-#: data/org.gnome.shell.gschema.xml.in:159
+#: data/org.gnome.shell.gschema.xml.in:152
 msgid "Keybinding to focus the active notification"
 msgstr "Jakinarazpen aktiboa fokuratzeko laster-tekla"
 
-#: data/org.gnome.shell.gschema.xml.in:160
+#: data/org.gnome.shell.gschema.xml.in:153
 msgid "Keybinding to focus the active notification."
 msgstr "Jakinarazpen aktiboa fokuratzeko laster-tekla."
 
-#: data/org.gnome.shell.gschema.xml.in:166
+#: data/org.gnome.shell.gschema.xml.in:159
 msgid "Switch to application 1"
 msgstr "Aldatu 1 aplikaziora"
 
-#: data/org.gnome.shell.gschema.xml.in:170
+#: data/org.gnome.shell.gschema.xml.in:163
 msgid "Switch to application 2"
 msgstr "Aldatu 2 aplikaziora"
 
-#: data/org.gnome.shell.gschema.xml.in:174
+#: data/org.gnome.shell.gschema.xml.in:167
 msgid "Switch to application 3"
 msgstr "Aldatu 3 aplikaziora"
 
-#: data/org.gnome.shell.gschema.xml.in:178
+#: data/org.gnome.shell.gschema.xml.in:171
 msgid "Switch to application 4"
 msgstr "Aldatu 4 aplikaziora"
 
-#: data/org.gnome.shell.gschema.xml.in:182
+#: data/org.gnome.shell.gschema.xml.in:175
 msgid "Switch to application 5"
 msgstr "Aldatu 5 aplikaziora"
 
-#: data/org.gnome.shell.gschema.xml.in:186
+#: data/org.gnome.shell.gschema.xml.in:179
 msgid "Switch to application 6"
 msgstr "Aldatu 6 aplikaziora"
 
-#: data/org.gnome.shell.gschema.xml.in:190
+#: data/org.gnome.shell.gschema.xml.in:183
 msgid "Switch to application 7"
 msgstr "Aldatu 7 aplikaziora"
 
-#: data/org.gnome.shell.gschema.xml.in:194
+#: data/org.gnome.shell.gschema.xml.in:187
 msgid "Switch to application 8"
 msgstr "Aldatu 8 aplikaziora"
 
-#: data/org.gnome.shell.gschema.xml.in:198
+#: data/org.gnome.shell.gschema.xml.in:191
 msgid "Switch to application 9"
 msgstr "Aldatu 9 aplikaziora"
 
-#: data/org.gnome.shell.gschema.xml.in:207
-#: data/org.gnome.shell.gschema.xml.in:234
+#: data/org.gnome.shell.gschema.xml.in:200
+#: data/org.gnome.shell.gschema.xml.in:227
 msgid "Limit switcher to current workspace."
 msgstr "Mugatu aldatzailea uneko laneko areara."
 
-#: data/org.gnome.shell.gschema.xml.in:208
+#: data/org.gnome.shell.gschema.xml.in:201
 msgid ""
 "If true, only applications that have windows on the current workspace are "
 "shown in the switcher. Otherwise, all applications are included."
 msgstr "TRUE (egia) bada, uneko laneko arean leihoak dituzten aplikazioak soilik erakutsiko dira aldatzailean. Bestela, aplikazio guztiak egongo dira."
 
-#: data/org.gnome.shell.gschema.xml.in:225
+#: data/org.gnome.shell.gschema.xml.in:218
 msgid "The application icon mode."
 msgstr "Aplikazio-ikonoaren modua."
 
-#: data/org.gnome.shell.gschema.xml.in:226
+#: data/org.gnome.shell.gschema.xml.in:219
 msgid ""
 "Configures how the windows are shown in the switcher. Valid possibilities "
 "are “thumbnail-only” (shows a thumbnail of the window), “app-icon-"
 "only” (shows only the application icon) or “both”."
 msgstr "Leihoak aldatzaileak nola erakusten diren konfiguratzen du. Aukera posibleak “thumbnail-only” (leihoaren miniatura erakustea), “app-icon-only” (aplikazio-ikonoa erakustea soilik) edo “both” (biak)."
 
-#: data/org.gnome.shell.gschema.xml.in:235
+#: data/org.gnome.shell.gschema.xml.in:228
 msgid ""
 "If true, only windows from the current workspace are shown in the switcher. "
 "Otherwise, all windows are included."
 msgstr "TRUE (egia) bada, uneko laneko arean leihoak soilik erakutsiko dira aldatzailean. Bestela, leiho guztiak egongo dira."
 
-#: data/org.gnome.shell.gschema.xml.in:245
+#: data/org.gnome.shell.gschema.xml.in:238
 msgid "Locations"
 msgstr "Kokalekuak"
 
-#: data/org.gnome.shell.gschema.xml.in:246
+#: data/org.gnome.shell.gschema.xml.in:239
 msgid "The locations to show in world clocks"
 msgstr "Munduko ordularietan erakutsiko diren kokalekuak"
 
-#: data/org.gnome.shell.gschema.xml.in:256
+#: data/org.gnome.shell.gschema.xml.in:249
 msgid "Automatic location"
 msgstr "Kokaleku automatikoa"
 
-#: data/org.gnome.shell.gschema.xml.in:257
+#: data/org.gnome.shell.gschema.xml.in:250
 msgid "Whether to fetch the current location or not"
 msgstr "Uneko kokalekua atzituko den ala ez"
 
-#: data/org.gnome.shell.gschema.xml.in:264
+#: data/org.gnome.shell.gschema.xml.in:257
 msgid "Location"
 msgstr "Kokalekua"
 
-#: data/org.gnome.shell.gschema.xml.in:265
+#: data/org.gnome.shell.gschema.xml.in:258
 msgid "The location for which to show a forecast"
 msgstr "Iragarpena erakutsiko zaion kokalekua"
 
-#: data/org.gnome.shell.gschema.xml.in:277
+#: data/org.gnome.shell.gschema.xml.in:270
 msgid "Attach modal dialog to the parent window"
 msgstr "Erantsi elkarrizketa-leiho modala leiho gurasoari"
 
-#: data/org.gnome.shell.gschema.xml.in:278
-#: data/org.gnome.shell.gschema.xml.in:287
-#: data/org.gnome.shell.gschema.xml.in:295
-#: data/org.gnome.shell.gschema.xml.in:303
-#: data/org.gnome.shell.gschema.xml.in:311
+#: data/org.gnome.shell.gschema.xml.in:271
+#: data/org.gnome.shell.gschema.xml.in:280
+#: data/org.gnome.shell.gschema.xml.in:288
+#: data/org.gnome.shell.gschema.xml.in:296
+#: data/org.gnome.shell.gschema.xml.in:304
 msgid ""
 "This key overrides the key in org.gnome.mutter when running GNOME Shell."
 msgstr "Gako honek org.gnome.mutter gakoa gainidazten du GNOME Shell exekutatzean."
 
-#: data/org.gnome.shell.gschema.xml.in:286
+#: data/org.gnome.shell.gschema.xml.in:279
 msgid "Enable edge tiling when dropping windows on screen edges"
 msgstr "Gaitu lauzatzea leihoak pantailaren ertzetan jaregitean"
 
-#: data/org.gnome.shell.gschema.xml.in:294
+#: data/org.gnome.shell.gschema.xml.in:287
 msgid "Workspaces are managed dynamically"
 msgstr "Laneko areak dinamikoki kudeatzen dira"
 
-#: data/org.gnome.shell.gschema.xml.in:302
+#: data/org.gnome.shell.gschema.xml.in:295
 msgid "Workspaces only on primary monitor"
 msgstr "Laneko areak monitore nagusian soilik"
 
-#: data/org.gnome.shell.gschema.xml.in:310
+#: data/org.gnome.shell.gschema.xml.in:303
 msgid "Delay focus changes in mouse mode until the pointer stops moving"
 msgstr "Fokuaren aldaketaren atzerapena saguaren moduan erakusleak mugitzeari utzi arte"
 
@@ -380,8 +372,8 @@ msgstr "Webgune nagusia"
 msgid "Visit extension homepage"
 msgstr "Bisitatu hedapenaren webgunea"
 
-#: js/gdm/authPrompt.js:135 js/ui/audioDeviceSelection.js:57
-#: js/ui/components/networkAgent.js:110 js/ui/components/polkitAgent.js:139
+#: js/gdm/authPrompt.js:137 js/ui/audioDeviceSelection.js:57
+#: js/ui/components/networkAgent.js:111 js/ui/components/polkitAgent.js:138
 #: js/ui/endSessionDialog.js:438 js/ui/extensionDownloader.js:183
 #: js/ui/shellMountOperation.js:376 js/ui/shellMountOperation.js:386
 #: js/ui/status/network.js:940 subprojects/extensions-app/js/main.js:149
@@ -389,10 +381,10 @@ msgid "Cancel"
 msgstr "Utzi"
 
 #. Cisco LEAP
-#: js/gdm/authPrompt.js:237 js/ui/components/networkAgent.js:205
-#: js/ui/components/networkAgent.js:221 js/ui/components/networkAgent.js:245
-#: js/ui/components/networkAgent.js:266 js/ui/components/networkAgent.js:286
-#: js/ui/components/networkAgent.js:296 js/ui/components/polkitAgent.js:277
+#: js/gdm/authPrompt.js:239 js/ui/components/networkAgent.js:206
+#: js/ui/components/networkAgent.js:222 js/ui/components/networkAgent.js:246
+#: js/ui/components/networkAgent.js:267 js/ui/components/networkAgent.js:287
+#: js/ui/components/networkAgent.js:297 js/ui/components/polkitAgent.js:276
 #: js/ui/shellMountOperation.js:326
 msgid "Password"
 msgstr "Pasahitza"
@@ -415,8 +407,8 @@ msgstr "(adib., erabiltzailea edo %s)"
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: js/gdm/loginDialog.js:918 js/ui/components/networkAgent.js:241
-#: js/ui/components/networkAgent.js:264 js/ui/components/networkAgent.js:282
+#: js/gdm/loginDialog.js:918 js/ui/components/networkAgent.js:242
+#: js/ui/components/networkAgent.js:265 js/ui/components/networkAgent.js:283
 msgid "Username"
 msgstr "Erabiltzaile-izena"
 
@@ -438,82 +430,82 @@ msgid "(or swipe finger)"
 msgstr "(edo lerratu hatza)"
 
 #. Translators: The name of the power-off action in search
-#: js/misc/systemActions.js:91
+#: js/misc/systemActions.js:82
 msgctxt "search-result"
 msgid "Power Off"
 msgstr "Itzali"
 
 #. Translators: A list of keywords that match the power-off action, separated by semicolons
-#: js/misc/systemActions.js:94
+#: js/misc/systemActions.js:85
 msgid "power off;shutdown;halt;stop"
 msgstr "itzali;amatatu;gelditu;geratu"
 
 #. Translators: The name of the restart action in search
-#: js/misc/systemActions.js:99
+#: js/misc/systemActions.js:90
 msgctxt "search-result"
 msgid "Restart"
 msgstr "Berrabiarazi"
 
 #. Translators: A list of keywords that match the restart action, separated by semicolons
-#: js/misc/systemActions.js:102
+#: js/misc/systemActions.js:93
 msgid "reboot;restart;"
 msgstr "berrabiarazi;berrekin;"
 
 #. Translators: The name of the lock screen action in search
-#: js/misc/systemActions.js:107
+#: js/misc/systemActions.js:98
 msgctxt "search-result"
 msgid "Lock Screen"
 msgstr "Blokeatu pantaila"
 
 #. Translators: A list of keywords that match the lock screen action, separated by semicolons
-#: js/misc/systemActions.js:110
+#: js/misc/systemActions.js:101
 msgid "lock screen"
 msgstr "blokeatu pantaila"
 
 #. Translators: The name of the logout action in search
-#: js/misc/systemActions.js:115
+#: js/misc/systemActions.js:106
 msgctxt "search-result"
 msgid "Log Out"
 msgstr "Amaitu saioa"
 
 #. Translators: A list of keywords that match the logout action, separated by semicolons
-#: js/misc/systemActions.js:118
+#: js/misc/systemActions.js:109
 msgid "logout;log out;sign off"
 msgstr "amaitu saioa;saioa amaitu;deskonektatu"
 
 #. Translators: The name of the suspend action in search
-#: js/misc/systemActions.js:123
+#: js/misc/systemActions.js:114
 msgctxt "search-result"
 msgid "Suspend"
 msgstr "Eseki"
 
 #. Translators: A list of keywords that match the suspend action, separated by semicolons
-#: js/misc/systemActions.js:126
+#: js/misc/systemActions.js:117
 msgid "suspend;sleep"
 msgstr "eseki;lo"
 
 #. Translators: The name of the switch user action in search
-#: js/misc/systemActions.js:131
+#: js/misc/systemActions.js:122
 msgctxt "search-result"
 msgid "Switch User"
 msgstr "Aldatu erabiltzailea"
 
 #. Translators: A list of keywords that match the switch user action, separated by semicolons
-#: js/misc/systemActions.js:134
+#: js/misc/systemActions.js:125
 msgid "switch user"
 msgstr "aldatu erabiltzailea"
 
 #. Translators: A list of keywords that match the lock orientation action, separated by semicolons
-#: js/misc/systemActions.js:141
+#: js/misc/systemActions.js:132
 msgid "lock orientation;unlock orientation;screen;rotation"
 msgstr "blokeatu orientazioa;desblokeatu orientazioa;pantaila;biraketa"
 
-#: js/misc/systemActions.js:266
+#: js/misc/systemActions.js:240
 msgctxt "search-result"
 msgid "Unlock Screen Rotation"
 msgstr "Desblokeatu pantailaren biraketa"
 
-#: js/misc/systemActions.js:267
+#: js/misc/systemActions.js:241
 msgctxt "search-result"
 msgid "Lock Screen Rotation"
 msgstr "Pantailaren blokeoaren biraketa"
@@ -676,36 +668,36 @@ msgstr "Ukatu sarbidea"
 msgid "Grant Access"
 msgstr "Baimendu sarbidea"
 
-#: js/ui/appDisplay.js:1297
+#: js/ui/appDisplay.js:1346
 msgid "Unnamed Folder"
 msgstr "Izenik gabeko karpeta"
 
 #. Translators: This is the heading of a list of open windows
-#: js/ui/appDisplay.js:2762 js/ui/panel.js:75
+#: js/ui/appDisplay.js:2870 js/ui/panel.js:75
 msgid "Open Windows"
 msgstr "Leiho irekiak"
 
-#: js/ui/appDisplay.js:2781 js/ui/panel.js:82
+#: js/ui/appDisplay.js:2889 js/ui/panel.js:82
 msgid "New Window"
 msgstr "Leiho berria"
 
-#: js/ui/appDisplay.js:2797
+#: js/ui/appDisplay.js:2905
 msgid "Launch using Integrated Graphics Card"
 msgstr "Abiarazi txartel grafiko integratua erabiliz"
 
-#: js/ui/appDisplay.js:2798
+#: js/ui/appDisplay.js:2906
 msgid "Launch using Discrete Graphics Card"
 msgstr "Abiarazi txartel grafiko diskretua erabiliz"
 
-#: js/ui/appDisplay.js:2826 js/ui/dash.js:239
+#: js/ui/appDisplay.js:2934 js/ui/dash.js:239
 msgid "Remove from Favorites"
 msgstr "Kendu gogokoetatik"
 
-#: js/ui/appDisplay.js:2832
+#: js/ui/appDisplay.js:2940
 msgid "Add to Favorites"
 msgstr "Gehitu gogokoei"
 
-#: js/ui/appDisplay.js:2842 js/ui/panel.js:93
+#: js/ui/appDisplay.js:2950 js/ui/panel.js:93
 msgid "Show Details"
 msgstr "Erakutsi xehetasunak"
 
@@ -844,15 +836,15 @@ msgstr "%d"
 msgid "Week %V"
 msgstr "%V. astea"
 
-#: js/ui/calendar.js:895
+#: js/ui/calendar.js:896
 msgid "No Notifications"
 msgstr "Jakinarazpenik ez"
 
-#: js/ui/calendar.js:949
+#: js/ui/calendar.js:950
 msgid "Do Not Disturb"
 msgstr "Ez gogaitu"
 
-#: js/ui/calendar.js:968
+#: js/ui/calendar.js:969
 msgid "Clear"
 msgstr "Garbitu"
 
@@ -897,80 +889,80 @@ msgstr "Instalatutako udisks bertsioak ez du onartzen PIM ezarpena"
 msgid "Open with %s"
 msgstr "Ireki honekin: %s"
 
-#: js/ui/components/networkAgent.js:92
+#: js/ui/components/networkAgent.js:93
 msgid ""
 "Alternatively you can connect by pushing the “WPS” button on your router."
 msgstr "Bestela, zure routerreko \"WPS\" botoia sakatuta konektatu zaitezke."
 
-#: js/ui/components/networkAgent.js:104 js/ui/status/network.js:252
+#: js/ui/components/networkAgent.js:105 js/ui/status/network.js:252
 #: js/ui/status/network.js:343 js/ui/status/network.js:943
 msgid "Connect"
 msgstr "Konektatu"
 
-#: js/ui/components/networkAgent.js:211
+#: js/ui/components/networkAgent.js:212
 msgid "Key"
 msgstr "Gakoa"
 
-#: js/ui/components/networkAgent.js:249 js/ui/components/networkAgent.js:272
+#: js/ui/components/networkAgent.js:250 js/ui/components/networkAgent.js:273
 msgid "Private key password"
 msgstr "Gako pribatuaren pasahitza"
 
-#: js/ui/components/networkAgent.js:270
+#: js/ui/components/networkAgent.js:271
 msgid "Identity"
 msgstr "Identitatea"
 
-#: js/ui/components/networkAgent.js:284
+#: js/ui/components/networkAgent.js:285
 msgid "Service"
 msgstr "Zerbitzua"
 
-#: js/ui/components/networkAgent.js:313 js/ui/components/networkAgent.js:341
-#: js/ui/components/networkAgent.js:680 js/ui/components/networkAgent.js:701
+#: js/ui/components/networkAgent.js:314 js/ui/components/networkAgent.js:342
+#: js/ui/components/networkAgent.js:675 js/ui/components/networkAgent.js:696
 msgid "Authentication required"
 msgstr "Autentifikazioa behar da"
 
-#: js/ui/components/networkAgent.js:314 js/ui/components/networkAgent.js:681
+#: js/ui/components/networkAgent.js:315 js/ui/components/networkAgent.js:676
 #, javascript-format
 msgid ""
 "Passwords or encryption keys are required to access the wireless network "
 "“%s”."
 msgstr "Pasahitzak edo zifratze-gakoak behar dira haririk gabeko '%s' sarera sarbidetzeko."
 
-#: js/ui/components/networkAgent.js:318 js/ui/components/networkAgent.js:685
+#: js/ui/components/networkAgent.js:319 js/ui/components/networkAgent.js:680
 msgid "Wired 802.1X authentication"
 msgstr "Haridun 802.1X autentifikazioa"
 
-#: js/ui/components/networkAgent.js:320
+#: js/ui/components/networkAgent.js:321
 msgid "Network name"
 msgstr "Sarearen izena"
 
-#: js/ui/components/networkAgent.js:325 js/ui/components/networkAgent.js:689
+#: js/ui/components/networkAgent.js:326 js/ui/components/networkAgent.js:684
 msgid "DSL authentication"
 msgstr "DSL autentifikazioa"
 
-#: js/ui/components/networkAgent.js:332 js/ui/components/networkAgent.js:694
+#: js/ui/components/networkAgent.js:333 js/ui/components/networkAgent.js:689
 msgid "PIN code required"
 msgstr "PIN kodea behar da"
 
-#: js/ui/components/networkAgent.js:333 js/ui/components/networkAgent.js:695
+#: js/ui/components/networkAgent.js:334 js/ui/components/networkAgent.js:690
 msgid "PIN code is needed for the mobile broadband device"
 msgstr "PIN kodea behar da banda zabal mugikorreko gailuarentzako"
 
-#: js/ui/components/networkAgent.js:334
+#: js/ui/components/networkAgent.js:335
 msgid "PIN"
 msgstr "PINa"
 
-#: js/ui/components/networkAgent.js:342 js/ui/components/networkAgent.js:686
-#: js/ui/components/networkAgent.js:690 js/ui/components/networkAgent.js:702
-#: js/ui/components/networkAgent.js:706
+#: js/ui/components/networkAgent.js:343 js/ui/components/networkAgent.js:681
+#: js/ui/components/networkAgent.js:685 js/ui/components/networkAgent.js:697
+#: js/ui/components/networkAgent.js:701
 #, javascript-format
 msgid "A password is required to connect to “%s”."
 msgstr "Pasahitza behar da '%s'(e)ra konektatzeko."
 
-#: js/ui/components/networkAgent.js:669 js/ui/status/network.js:1718
+#: js/ui/components/networkAgent.js:664 js/ui/status/network.js:1718
 msgid "Network Manager"
 msgstr "Sarearen kudeatzailea"
 
-#: js/ui/components/networkAgent.js:705
+#: js/ui/components/networkAgent.js:700
 msgid "VPN password"
 msgstr "VPN pasahitza"
 
@@ -978,11 +970,11 @@ msgstr "VPN pasahitza"
 msgid "Authentication Required"
 msgstr "Autentifikazioa behar da"
 
-#: js/ui/components/polkitAgent.js:80
+#: js/ui/components/polkitAgent.js:79
 msgid "Administrator"
 msgstr "Administratzailea"
 
-#: js/ui/components/polkitAgent.js:142
+#: js/ui/components/polkitAgent.js:141
 msgid "Authenticate"
 msgstr "Autentifikatu"
 
@@ -990,7 +982,7 @@ msgstr "Autentifikatu"
 #. * requested authentication was not gained; this can happen
 #. * because of an authentication error (like invalid password),
 #. * for instance.
-#: js/ui/components/polkitAgent.js:254 js/ui/shellMountOperation.js:402
+#: js/ui/components/polkitAgent.js:253 js/ui/shellMountOperation.js:402
 msgid "Sorry, that didn’t work. Please try again."
 msgstr "Huts egin du. Saiatu berriro."
 
@@ -1256,11 +1248,11 @@ msgstr "Instalatu hedapena"
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "Deskargatu eta instalatu “%s” extensions.gnome.org gunetik?"
 
-#: js/ui/extensionSystem.js:252
+#: js/ui/extensionSystem.js:253
 msgid "Extension Updates Available"
 msgstr "Hedapenen eguneratzeak eskuragarri"
 
-#: js/ui/extensionSystem.js:253
+#: js/ui/extensionSystem.js:254
 msgid "Extension updates are ready to be installed."
 msgstr "Hedapenen eguneratzeak instalatzeko prest daude."
 
@@ -1348,7 +1340,7 @@ msgstr "Itzali"
 msgid "Leave Off"
 msgstr "Utzi itzalita"
 
-#: js/ui/keyboard.js:225
+#: js/ui/keyboard.js:226
 msgid "Region & Language Settings"
 msgstr "Eskualdearen eta hizkuntzaren ezarpenak"
 
@@ -1376,7 +1368,7 @@ msgstr "Gaituta"
 
 #. translators:
 #. * The device has been disabled
-#: js/ui/lookingGlass.js:741 subprojects/gvc/gvc-mixer-control.c:1892
+#: js/ui/lookingGlass.js:741 subprojects/gvc/gvc-mixer-control.c:1900
 msgid "Disabled"
 msgstr "Desgaituta"
 
@@ -1449,27 +1441,27 @@ msgstr "Aurkezpen orokorra"
 msgid "Type to search"
 msgstr "Idatzi bilatzeko"
 
-#: js/ui/padOsd.js:95
+#: js/ui/padOsd.js:96
 msgid "New shortcut…"
 msgstr "Laster-tekla berria…"
 
-#: js/ui/padOsd.js:142
+#: js/ui/padOsd.js:143
 msgid "Application defined"
 msgstr "Aplikazioan definituta"
 
-#: js/ui/padOsd.js:143
+#: js/ui/padOsd.js:144
 msgid "Show on-screen help"
 msgstr "Erakutsi pantailako laguntzan"
 
-#: js/ui/padOsd.js:144
+#: js/ui/padOsd.js:145
 msgid "Switch monitor"
 msgstr "Aldatu monitorea"
 
-#: js/ui/padOsd.js:145
+#: js/ui/padOsd.js:146
 msgid "Assign keystroke"
 msgstr "Esleitu tekla-sakatzea"
 
-#: js/ui/padOsd.js:211
+#: js/ui/padOsd.js:212
 msgid "Done"
 msgstr "Eginda"
 
@@ -1487,7 +1479,7 @@ msgstr "Sakatu botoi bat konfiguratzeko"
 
 #: js/ui/padOsd.js:846
 msgid "Press Esc to exit"
-msgstr "Sakatu Ihes irteteko"
+msgstr "Sakatu Esc irteteko"
 
 #: js/ui/padOsd.js:849
 msgid "Press any key to exit"
@@ -1503,12 +1495,12 @@ msgstr "Irten"
 msgid "Activities"
 msgstr "Jarduerak"
 
-#: js/ui/panel.js:714
+#: js/ui/panel.js:719
 msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "Sistema"
 
-#: js/ui/panel.js:825
+#: js/ui/panel.js:830
 msgid "Top Bar"
 msgstr "Goiko barra"
 
@@ -1518,7 +1510,7 @@ msgstr "Exekutatu komando bat"
 
 #: js/ui/runDialog.js:73
 msgid "Press ESC to close"
-msgstr "Sakatu Exc ixteko"
+msgstr "Sakatu Esc ixteko"
 
 #: js/ui/runDialog.js:238
 msgid "Restart is not available on Wayland"
@@ -1539,11 +1531,11 @@ msgstr "GNOMEk pantaila blokeatzea behar du"
 #.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
-#: js/ui/screenShield.js:244 js/ui/screenShield.js:602
+#: js/ui/screenShield.js:244 js/ui/screenShield.js:613
 msgid "Unable to lock"
 msgstr "Ezin da blokeatu"
 
-#: js/ui/screenShield.js:245 js/ui/screenShield.js:603
+#: js/ui/screenShield.js:245 js/ui/screenShield.js:614
 msgid "Lock was blocked by an application"
 msgstr "Beste aplikazio batek blokeatu du"
 
@@ -1686,6 +1678,14 @@ msgstr "Bluetooth"
 #: js/ui/status/bluetooth.js:49 js/ui/status/network.js:619
 msgid "Bluetooth Settings"
 msgstr "Bluetooth ezarpenak"
+
+#. Translators: this is the number of connected bluetooth devices
+#: js/ui/status/bluetooth.js:148
+#, javascript-format
+msgid "%d Connected"
+msgid_plural "%d Connected"
+msgstr[0] "%d konektatuta"
+msgstr[1] "%d konektatuta"
 
 #: js/ui/status/bluetooth.js:152
 msgid "Bluetooth Off"
@@ -2021,11 +2021,11 @@ msgstr "%d∶%02d bete arte (%% %d)"
 msgid "%d %%"
 msgstr "%% %d"
 
-#: js/ui/status/remoteAccess.js:45
+#: js/ui/status/remoteAccess.js:38
 msgid "Screen is Being Shared"
 msgstr "Pantaila partekatzen ari da"
 
-#: js/ui/status/remoteAccess.js:47
+#: js/ui/status/remoteAccess.js:40
 msgid "Turn off"
 msgstr "Desaktibatu"
 
@@ -2827,7 +2827,7 @@ msgstr "Gehitu ikono bat goiko barrari"
 
 #. translators:
 #. * The number of sound outputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1899
+#: subprojects/gvc/gvc-mixer-control.c:1907
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -2836,16 +2836,22 @@ msgstr[1] "%u irteera"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1909
+#: subprojects/gvc/gvc-mixer-control.c:1917
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
 msgstr[0] "Sarrera %u"
 msgstr[1] "%u sarrera"
 
-#: subprojects/gvc/gvc-mixer-control.c:2766
+#: subprojects/gvc/gvc-mixer-control.c:2867
 msgid "System Sounds"
 msgstr "Sistemaren soinuak"
+
+#~ msgid "App Picker View"
+#~ msgstr "Aplikazio-hautatzailearen ikuspegia"
+
+#~ msgid "Index of the currently selected view in the application picker."
+#~ msgstr "Unean hautatutako ikuspegiaren indizea aplikazio-hautatzailean."
 
 #~ msgid "Frequently used applications will appear here"
 #~ msgstr "Maiztasunez erabilitako aplikazioak hemen agertuko dira"
@@ -2863,11 +2869,6 @@ msgstr "Sistemaren soinuak"
 #~ msgctxt "calendar heading"
 #~ msgid "%A, %B %-d, %Y"
 #~ msgstr "%A, %B %-d, %Y"
-
-#~ msgid "%d Connected"
-#~ msgid_plural "%d Connected"
-#~ msgstr[0] "%d konektatuta"
-#~ msgstr[1] "%d konektatuta"
 
 #~ msgid "Off"
 #~ msgstr "Desaktibatuta"
