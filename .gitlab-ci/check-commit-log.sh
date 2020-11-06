@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
 if [ -z "$CI_MERGE_REQUEST_TARGET_BRANCH_NAME" ]; then
-  echo Cannot review non-merge request
-  exit 1
+  echo This is not a merge request, skipping
+  exit 0
 fi
 
 git fetch $CI_MERGE_REQUEST_PROJECT_URL.git $CI_MERGE_REQUEST_TARGET_BRANCH_NAME
