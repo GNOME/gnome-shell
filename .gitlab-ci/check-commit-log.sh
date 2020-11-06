@@ -16,16 +16,16 @@ if [ -z "$commits" ]; then
   exit 1
 fi
 
-function commit_message_has_url() {
+function commit_message_has_mr_url() {
   commit=$1
   commit_message=$(git show -s --format='format:%b' $commit)
-  echo "$commit_message" | grep -qe "\($CI_MERGE_REQUEST_PROJECT_URL/\(-/\)\?\(issues\|merge_requests\)/[0-9]\+\|https://bugzilla.gnome.org/show_bug.cgi?id=[0-9]\+\)"
+  echo "$commit_message" | grep -qe "^$CI_MERGE_REQUEST_PROJECT_URL\/\(-\/\)\?merge_requests\/$CI_MERGE_REQUEST_IID$"
   return $?
 }
 
 for commit in $commits; do
-  if ! commit_message_has_url $commit; then
-    echo "Missing merge request or issue URL on commit $(echo $commit | cut -c -8)"
+  if commit_message_has_mr_url $commit; then
+    echo "Commit $(echo $commit | cut -c -8) message must not contain a link to its own merge request"
     exit 1
   fi
 done
