@@ -9,6 +9,7 @@ stages:
 variables:
     BUNDLE: "extensions-git.flatpak"
     JS_LOG: "js-report.txt"
+    LINT_LOG: "eslint-report.txt"
 
 .only_default: &only_default
     only:
@@ -42,11 +43,12 @@ eslint:
     image: registry.gitlab.gnome.org/gnome/gnome-shell/extension-ci:v2
     stage: review
     script:
-        - ./.gitlab-ci/run-eslint.sh
+        - export NODE_PATH=$(npm root -g)
+        - ./.gitlab-ci/run-eslint --output-file ${LINT_LOG}
     <<: *only_default
     artifacts:
         paths:
-            - reports
+            - ${LINT_LOG}
         when: always
 
 potfile_check:
