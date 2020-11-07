@@ -9,7 +9,7 @@ stages:
 variables:
     BUNDLE: "extensions-git.flatpak"
     JS_LOG: "js-report.txt"
-    LINT_LOG: "eslint-report.txt"
+    LINT_LOG: "eslint-report.xml"
 
 .only_default: &only_default
     only:
@@ -44,11 +44,11 @@ eslint:
     stage: review
     script:
         - export NODE_PATH=$(npm root -g)
-        - ./.gitlab-ci/run-eslint --output-file ${LINT_LOG}
+        - ./.gitlab-ci/run-eslint --output-file ${LINT_LOG} --format junit
     <<: *only_default
     artifacts:
-        paths:
-            - ${LINT_LOG}
+        reports:
+            junit: ${LINT_LOG}
         when: always
 
 potfile_check:

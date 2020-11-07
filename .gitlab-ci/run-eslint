@@ -111,7 +111,7 @@ function getOption(...names) {
     const results = await Promise.all(ops);
     const commonResults = createCommon(...results, branch !== undefined);
 
-    const formatter = await regular.loadFormatter();
+    const formatter = await regular.loadFormatter(getOption('--format', '-f'));
     const resultText = formatter.format(commonResults);
 
     if (outputPath) {
