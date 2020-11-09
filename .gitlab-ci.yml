@@ -10,6 +10,7 @@ variables:
     BUNDLE: "extensions-git.flatpak"
     JS_LOG: "js-report.txt"
     LINT_LOG: "eslint-report.xml"
+    LINT_MR_LOG: "eslint-mr-report.xml"
 
 .only_default: &only_default
     only:
@@ -49,6 +50,21 @@ eslint:
     artifacts:
         reports:
             junit: ${LINT_LOG}
+        when: always
+
+eslint_mr:
+    image: registry.gitlab.gnome.org/gnome/gnome-shell/extension-ci:v2
+    stage: review
+    script:
+        - export NODE_PATH=$(npm root -g)
+        - ./.gitlab-ci/run-eslint --output-file ${LINT_MR_LOG} --format junit
+            --remote ${CI_MERGE_REQUEST_PROJECT_URL}.git
+            --branch ${CI_MERGE_REQUEST_TARGET_BRANCH_NAME}
+    only:
+        - merge_requests
+    artifacts:
+        reports:
+            junit: ${LINT_MR_LOG}
         when: always
 
 potfile_check:
