@@ -89,6 +89,9 @@ var ExtensionsWindow = GObject.registerClass({
         'mainBox',
         'mainStack',
         'scrolledWindow',
+        'searchBar',
+        'searchButton',
+        'searchEntry',
         'updatesBar',
         'updatesLabel',
     ],
@@ -122,11 +125,45 @@ var ExtensionsWindow = GObject.registerClass({
         });
         this.add_action(action);
 
+        const accelGroup = new Gtk.AccelGroup();
+        this._searchButton.add_accelerator('clicked',
+            accelGroup, Gdk.KEY_f, Gdk.ModifierType.CONTROL_MASK, 0);
+        this._searchButton.add_accelerator('clicked',
+            accelGroup, Gdk.KEY_s, Gdk.ModifierType.CONTROL_MASK, 0);
+        this.add_accel_group(accelGroup);
+
+        this.connect('key-press-event',
+            (w, event) => this._searchBar.handle_event(event));
+
+        this._searchTerms = [];
+        this._searchEntry.connect('search-changed', () => {
+            const { text } = this._searchEntry;
+            if (text === '')
+                this._searchTerms = [];
+            else
+                [this._searchTerms] = GLib.str_tokenize_and_fold(text, null);
+
+            this._userList.invalidate_filter();
+            this._systemList.invalidate_filter();
+        });
+
         this._userList.set_sort_func(this._sortList.bind(this));
         this._userList.set_header_func(this._updateHeader.bind(this));
+        this._userList.set_filter_func(this._filterList.bind(this));
+        this._userList.set_placeholder(new Gtk.Label({
+            label: _('No Matches'),
+            margin: 12,
+            visible: true,
+        }));
 
         this._systemList.set_sort_func(this._sortList.bind(this));
         this._systemList.set_header_func(this._updateHeader.bind(this));
+        this._systemList.set_filter_func(this._filterList.bind(this));
+        this._systemList.set_placeholder(new Gtk.Label({
+            label: _('No Matches'),
+            margin: 12,
+            visible: true,
+        }));
 
         this._shellProxy.connectSignal('ExtensionStateChanged',
             this._onExtensionStateChanged.bind(this));
@@ -213,6 +250,11 @@ var ExtensionsWindow = GObject.registerClass({
 
     _sortList(row1, row2) {
         return row1.name.localeCompare(row2.name);
+    }
+
+    _filterList(row) {
+        return this._searchTerms.every(
+            t => row.keywords.some(k => k.startsWith(t)));
     }
 
     _updateHeader(row, before) {
@@ -352,6 +394,8 @@ var ExtensionRow = GObject.registerClass({
         this._extension = extension;
         this._prefsModule = null;
 
+        [this._keywords] = GLib.str_tokenize_and_fold(this.name, null);
+
         this._actionGroup = new Gio.SimpleActionGroup();
         this.insert_action_group('row', this._actionGroup);
 
@@ -468,6 +512,10 @@ var ExtensionRow = GObject.registerClass({
 
         return this._extension.error
             ? this._extension.error : _('The extension had an error');
+    }
+
+    get keywords() {
+        return this._keywords;
     }
 
     _updateState() {

@@ -90,6 +90,22 @@
           </packing>
         </child>
         <child>
+          <object class="GtkToggleButton" id="searchButton">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <child>
+              <object class="GtkImage">
+                <property name="visible">True</property>
+                <property name="icon_name">edit-find-symbolic</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="pack_type">end</property>
+          </packing>
+        </child>
+        <child>
           <object class="GtkSwitch">
             <property name="visible">True</property>
             <property name="action-name">win.user-extensions-enabled</property>
@@ -105,6 +121,21 @@
       <object class="GtkBox">
         <property name="visible">True</property>
         <property name="orientation">vertical</property>
+        <child>
+          <object class="GtkSearchBar" id="searchBar">
+            <property name="visible">True</property>
+            <property name="search-mode-enabled"
+                      bind-source="searchButton"
+                      bind-property="active"
+                      bind-flags="bidirectional"/>
+            <child>
+              <object class="GtkSearchEntry" id="searchEntry">
+                <property name="visible">True</property>
+                <property name="max-width-chars">35</property>
+              </object>
+            </child>
+          </object>
+        </child>
         <child>
           <object class="GtkStack" id="mainStack">
             <property name="visible">True</property>
