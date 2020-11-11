@@ -15,10 +15,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 3.14\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2020-10-08 00:42+0000\n"
-"PO-Revision-Date: 2020-10-09 21:06-0300\n"
+"POT-Creation-Date: 2020-10-21 11:39+0000\n"
+"PO-Revision-Date: 2020-11-11 11:25-0300\n"
 "Last-Translator: Juliano de Souza Camargo <julianosc@protonmail.com>\n"
-"Language-Team: Portuguese < >\n"
+"Language-Team: Portuguese <>\n"
 "Language: pt\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -445,8 +445,8 @@ msgstr "Sítio web"
 msgid "Visit extension homepage"
 msgstr "Visitar o sítio web da extensão"
 
-#: js/gdm/authPrompt.js:137 js/ui/audioDeviceSelection.js:57
-#: js/ui/components/networkAgent.js:111 js/ui/components/polkitAgent.js:139
+#: js/gdm/authPrompt.js:137 js/ui/audioDeviceSelection.js:58
+#: js/ui/components/networkAgent.js:111 js/ui/components/polkitAgent.js:138
 #: js/ui/endSessionDialog.js:438 js/ui/extensionDownloader.js:183
 #: js/ui/shellMountOperation.js:376 js/ui/shellMountOperation.js:386
 #: js/ui/status/network.js:940 subprojects/extensions-app/js/main.js:149
@@ -457,7 +457,7 @@ msgstr "Cancelar"
 #: js/gdm/authPrompt.js:239 js/ui/components/networkAgent.js:206
 #: js/ui/components/networkAgent.js:222 js/ui/components/networkAgent.js:246
 #: js/ui/components/networkAgent.js:267 js/ui/components/networkAgent.js:287
-#: js/ui/components/networkAgent.js:297 js/ui/components/polkitAgent.js:277
+#: js/ui/components/networkAgent.js:297 js/ui/components/polkitAgent.js:276
 #: js/ui/shellMountOperation.js:326
 msgid "Password"
 msgstr "Palavra-passe"
@@ -790,19 +790,19 @@ msgstr "%s foi removida dos favoritos."
 msgid "Select Audio Device"
 msgstr "Selecione o dispositivo de áudio"
 
-#: js/ui/audioDeviceSelection.js:54
+#: js/ui/audioDeviceSelection.js:55
 msgid "Sound Settings"
 msgstr "Definições de som"
 
-#: js/ui/audioDeviceSelection.js:64
+#: js/ui/audioDeviceSelection.js:65
 msgid "Headphones"
 msgstr "Auscultadores"
 
-#: js/ui/audioDeviceSelection.js:66
+#: js/ui/audioDeviceSelection.js:67
 msgid "Headset"
 msgstr "Auscultadores com microfone"
 
-#: js/ui/audioDeviceSelection.js:68 js/ui/status/volume.js:272
+#: js/ui/audioDeviceSelection.js:69 js/ui/status/volume.js:272
 msgid "Microphone"
 msgstr "Microfone"
 
@@ -927,7 +927,7 @@ msgstr "Limpar"
 #: js/ui/closeDialog.js:42
 #, javascript-format
 msgid "“%s” is not responding."
-msgstr "“%s” está a responder."
+msgstr "“%s” não está a responder."
 
 #: js/ui/closeDialog.js:43
 msgid ""
@@ -1050,11 +1050,11 @@ msgstr "Palavra-passe de VPN"
 msgid "Authentication Required"
 msgstr "Necessária autenticação"
 
-#: js/ui/components/polkitAgent.js:80
+#: js/ui/components/polkitAgent.js:79
 msgid "Administrator"
 msgstr "Administrador"
 
-#: js/ui/components/polkitAgent.js:142
+#: js/ui/components/polkitAgent.js:141
 msgid "Authenticate"
 msgstr "Autenticar"
 
@@ -1062,9 +1062,9 @@ msgstr "Autenticar"
 #. * requested authentication was not gained; this can happen
 #. * because of an authentication error (like invalid password),
 #. * for instance.
-#: js/ui/components/polkitAgent.js:254 js/ui/shellMountOperation.js:402
+#: js/ui/components/polkitAgent.js:253 js/ui/shellMountOperation.js:402
 msgid "Sorry, that didn’t work. Please try again."
-msgstr "Não funcionou. Tentar novamente."
+msgstr "Desculpe, mas não funcionou. Tente novamente."
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
@@ -1628,11 +1628,11 @@ msgstr "O GNOME precisa de bloquear o ecrã"
 #.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
-#: js/ui/screenShield.js:244 js/ui/screenShield.js:602
+#: js/ui/screenShield.js:244 js/ui/screenShield.js:613
 msgid "Unable to lock"
 msgstr "Impossível bloquear"
 
-#: js/ui/screenShield.js:245 js/ui/screenShield.js:603
+#: js/ui/screenShield.js:245 js/ui/screenShield.js:614
 msgid "Lock was blocked by an application"
 msgstr "Bloquear foi bloqueado por uma aplicação"
 
@@ -2122,11 +2122,11 @@ msgstr "%d∶%02d até estar cheio (%d%%)"
 msgid "%d %%"
 msgstr "%d%%"
 
-#: js/ui/status/remoteAccess.js:45
+#: js/ui/status/remoteAccess.js:38
 msgid "Screen is Being Shared"
 msgstr "O ecrã está a ser partilhado"
 
-#: js/ui/status/remoteAccess.js:47
+#: js/ui/status/remoteAccess.js:40
 msgid "Turn off"
 msgstr "Desligar"
 
