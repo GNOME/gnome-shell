@@ -844,9 +844,9 @@ var BaseAppView = GObject.registerClass({
             this._pageIndicators.nPages !== this._grid.nPages) {
             Meta.later_add(Meta.LaterType.BEFORE_REDRAW, () => {
                 this._adjustment.value = 0;
-                this._grid.currentPage = 0;
+                this.goToPage(this._grid.currentPage);
                 this._pageIndicators.setNPages(this._grid.nPages);
-                this._pageIndicators.setCurrentPosition(0);
+                this._pageIndicators.setCurrentPosition(this._grid.currentPage);
                 return GLib.SOURCE_REMOVE;
             });
         }
