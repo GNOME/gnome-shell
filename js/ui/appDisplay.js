@@ -1495,7 +1495,7 @@ class AppViewItem extends St.Button {
         }
     }
 
-    _onHover() {
+    _updateMultiline() {
         if (!this.icon.label)
             return;
 
@@ -1522,6 +1522,10 @@ class AppViewItem extends St.Button {
             line_wrap_mode: hover ? Pango.WrapMode.WORD_CHAR : Pango.WrapMode.NONE,
             ellipsize: hover ? Pango.EllipsizeMode.NONE : Pango.EllipsizeMode.END,
         });
+    }
+
+    _onHover() {
+        this._updateMultiline();
     }
 
     _onDragBegin() {
