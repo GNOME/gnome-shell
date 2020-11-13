@@ -9,7 +9,6 @@
 const { Gio, GLib } = imports.gi;
 
 const Gettext = imports.gettext;
-const Lang = imports.lang;
 
 const Config = imports.misc.config;
 
@@ -211,8 +210,7 @@ function isOutOfDate(extension) {
 }
 
 function serializeExtension(extension) {
-    let obj = {};
-    Lang.copyProperties(extension.metadata, obj);
+    let obj = { ...extension.metadata };
 
     SERIALIZED_PROPERTIES.forEach(prop => {
         obj[prop] = extension[prop];
