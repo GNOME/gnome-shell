@@ -20,7 +20,7 @@
             <property name="no_show_all">True</property>
             <property name="icon_name">dialog-error-symbolic</property>
             <style>
-              <class name="error"/>>
+              <class name="error"/>
             </style>
           </object>
         </child>
@@ -29,7 +29,7 @@
             <property name="no_show_all">True</property>
             <property name="icon_name">software-update-available-symbolic</property>
             <style>
-              <class name="warning"/>>
+              <class name="warning"/>
             </style>
           </object>
         </child>
@@ -51,8 +51,8 @@
             <property name="valign">center</property>
             <property name="action-name">row.show-prefs</property>
             <style>
-              <class name="circular"/>>
-              <class name="image-button"/>>
+              <class name="circular"/>
+              <class name="image-button"/>
             </style>
             <child>
               <object class="GtkImage">
