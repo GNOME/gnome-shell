@@ -192,7 +192,10 @@ var ExtensionPrefsDialog = GObject.registerClass({
             this._expanderArrow.icon_name = this._revealer.reveal_child
                 ? 'pan-down-symbolic'
                 : 'pan-end-symbolic';
+            this._syncExpandedStyle();
         });
+        this._revealer.connect('notify::child-revealed',
+            () => this._syncExpandedStyle());
 
         try {
             ExtensionUtils.installImporter(extension);
@@ -209,6 +212,13 @@ var ExtensionPrefsDialog = GObject.registerClass({
         } catch (e) {
             this._setError(e);
         }
+    }
+
+    _syncExpandedStyle() {
+        if (this._revealer.reveal_child)
+            this._expander.get_style_context().add_class('expanded');
+        else if (!this._revealer.child_revealed)
+            this._expander.get_style_context().remove_class('expanded');
     }
 
     _setError(exc) {

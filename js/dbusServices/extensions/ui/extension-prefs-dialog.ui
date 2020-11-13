@@ -53,16 +53,16 @@
                       </object>
                     </child>
                     <child>
-                      <object class="GtkBox">
+                      <object class="GtkFrame">
                         <property name="visible">True</property>
-                        <property name="orientation">vertical</property>
                         <property name="margin-top">12</property>
                         <child>
-                          <object class="GtkFrame" id="expander">
+                          <object class="GtkBox">
                             <property name="visible">True</property>
                             <property name="hexpand">True</property>
+                            <property name="orientation">vertical</property>
                             <child>
-                              <object class="GtkEventBox">
+                              <object class="GtkEventBox" id="expander">
                                 <property name="visible">True</property>
                                 <child>
                                   <object class="GtkBox">
@@ -88,17 +88,9 @@
                                 </child>
                               </object>
                             </child>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="GtkRevealer" id="revealer">
-                            <property name="visible">True</property>
                             <child>
-                              <object class="GtkFrame">
+                              <object class="GtkRevealer" id="revealer">
                                 <property name="visible">True</property>
-                                <style>
-                                  <class name="expander-frame"/>
-                                </style>
                                 <child>
                                   <object class="GtkBox">
                                     <property name="visible">True</property>
