@@ -1512,15 +1512,15 @@ class AppViewItem extends St.Button {
             label.disconnect(id);
         });
 
-        const { hover } = this;
+        const expand = this.hover || this.has_key_focus();
         label.save_easing_state();
-        label.set_easing_duration(hover
+        label.set_easing_duration(expand
             ? APP_ICON_TITLE_EXPAND_TIME
             : APP_ICON_TITLE_COLLAPSE_TIME);
         clutterText.set({
-            line_wrap: hover,
-            line_wrap_mode: hover ? Pango.WrapMode.WORD_CHAR : Pango.WrapMode.NONE,
-            ellipsize: hover ? Pango.EllipsizeMode.NONE : Pango.EllipsizeMode.END,
+            line_wrap: expand,
+            line_wrap_mode: expand ? Pango.WrapMode.WORD_CHAR : Pango.WrapMode.NONE,
+            ellipsize: expand ? Pango.EllipsizeMode.NONE : Pango.EllipsizeMode.END,
         });
     }
 
@@ -1606,6 +1606,16 @@ class AppViewItem extends St.Button {
     _withinLeeways(x) {
         return x < IconGrid.LEFT_DIVIDER_LEEWAY ||
             x > this.width - IconGrid.RIGHT_DIVIDER_LEEWAY;
+    }
+
+    vfunc_key_focus_in() {
+        this._updateMultiline();
+        super.vfunc_key_focus_in();
+    }
+
+    vfunc_key_focus_out() {
+        this._updateMultiline();
+        super.vfunc_key_focus_out();
     }
 
     handleDragOver(source, _actor, x) {
