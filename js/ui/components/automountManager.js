@@ -201,7 +201,6 @@ var AutomountManager = class {
                 e.message.includes('Failed to activate device: Incorrect passphrase') ||
                 // cryptsetup returns EINVAL in many cases, including wrong TCRYPT password/parameters
                 e.message.includes('Failed to load device\'s parameters: Invalid argument')) {
-
                 this._reaskPassword(volume);
             } else {
                 if (e.message.includes('Compiled against a version of libcryptsetup that does not support the VeraCrypt PIM setting')) {

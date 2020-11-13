@@ -33,8 +33,7 @@ class KbdA11yDialog extends GObject.Object {
                 : _("Slow Keys Turned Off");
             description = _('You just held down the Shift key for 8 seconds. This is the shortcut ' +
                             'for the Slow Keys feature, which affects the way your keyboard works.');
-
-        } else  if (whatChanged & Clutter.KeyboardA11yFlags.STICKY_KEYS_ENABLED) {
+        } else if (whatChanged & Clutter.KeyboardA11yFlags.STICKY_KEYS_ENABLED) {
             key = KEY_STICKY_KEYS_ENABLED;
             enabled = (newFlags & Clutter.KeyboardA11yFlags.STICKY_KEYS_ENABLED) > 0;
             title = enabled

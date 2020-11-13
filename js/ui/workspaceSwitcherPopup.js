@@ -172,7 +172,6 @@ class WorkspaceSwitcherPopup extends St.Widget {
                 indicator = new St.Bin({ style_class: 'ws-switcher-box' });
 
             this._list.add_actor(indicator);
-
         }
 
         let workArea = Main.layoutManager.getWorkAreaForMonitor(Main.layoutManager.primaryIndex);

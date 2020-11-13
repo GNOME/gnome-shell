@@ -205,7 +205,6 @@ var Notebook = GObject.registerClass({
     scrollToBottom(index) {
         let tabData = this._tabs[index];
         tabData._scrollToBottom = true;
-
     }
 
     _onAdjustValueChanged(tabData) {

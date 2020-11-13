@@ -222,7 +222,6 @@ class UserWidget extends St.BoxLayout {
                 opacity: 0,
             });
             this.add_child(this._label);
-
         }
 
         this._updateUser();

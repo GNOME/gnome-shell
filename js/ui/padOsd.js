@@ -673,7 +673,6 @@ var PadOsd = GObject.registerClass({
                 // the same group.
                 this._groupPads.splice(this._groupPads.indexOf(device), 1);
                 this._updatePadChooser();
-
             }
         });
 

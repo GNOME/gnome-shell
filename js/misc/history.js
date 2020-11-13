@@ -20,7 +20,6 @@ var HistoryManager = class {
             this._history = global.settings.get_strv(this._key);
             global.settings.connect(`changed::${this._key}`,
                                     this._historyChanged.bind(this));
-
         } else {
             this._history = [];
         }
@@ -72,7 +71,6 @@ var HistoryManager = class {
     addItem(input) {
         if (this._history.length == 0 ||
             this._history[this._history.length - 1] != input) {
-
             this._history = this._history.filter(entry => entry != input);
             this._history.push(input);
             this._save();

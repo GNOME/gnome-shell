@@ -1656,7 +1656,6 @@ var ZoomRegion = class ZoomRegion {
 var Crosshairs = GObject.registerClass(
 class Crosshairs extends Clutter.Actor {
     _init() {
-
         // Set the group containing the crosshairs to three times the desktop
         // size in case the crosshairs need to appear to be infinite in
         // length (i.e., extend beyond the edges of the view they appear in).

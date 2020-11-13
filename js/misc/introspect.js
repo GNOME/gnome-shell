@@ -170,7 +170,6 @@ var IntrospectService = class {
         for (let app of apps) {
             let windows = app.get_windows();
             for (let window of windows) {
-
                 if (!this._isEligibleWindow(window))
                     continue;
 

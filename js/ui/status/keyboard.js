@@ -785,7 +785,6 @@ function getInputSourceManager() {
 
 var InputSourceIndicatorContainer = GObject.registerClass(
 class InputSourceIndicatorContainer extends St.Widget {
-
     vfunc_get_preferred_width(forHeight) {
         // Here, and in vfunc_get_preferred_height, we need to query
         // for the height of all children, but we ignore the results

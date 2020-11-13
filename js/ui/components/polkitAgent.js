@@ -238,7 +238,6 @@ var AuthenticationDialog = GObject.registerClass({
         /* Yay, all done */
         if (gainedAuthorization) {
             this._emitDone(false);
-
         } else {
             /* Unless we are showing an existing error message from the PAM
              * module (the PAM module could be reporting the authentication

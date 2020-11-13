@@ -224,7 +224,6 @@ var MessageDialogContent = GObject.registerClass({
                 return GLib.SOURCE_REMOVE;
             });
         }
-
     }
 
     set title(title) {

@@ -1588,7 +1588,6 @@ var DeviceCategory = class extends PopupMenu.PopupMenuSection {
         this._summaryItem.menu.addSettingsAction(_('Network Settings'),
                                                  'gnome-network-panel.desktop');
         this._summaryItem.hide();
-
     }
 
     _sync() {

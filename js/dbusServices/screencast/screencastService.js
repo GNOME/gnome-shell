@@ -383,7 +383,6 @@ var ScreencastService = class extends ServiceImplementation {
                         this._removeRecorder(sender);
                         invocation.return_value(GLib.Variant.new('(bs)', returnValue));
                     }
-
                 });
         } catch (error) {
             log(`Failed to start recorder: ${error.message}`);
@@ -441,7 +440,6 @@ var ScreencastService = class extends ServiceImplementation {
                         this._removeRecorder(sender);
                         invocation.return_value(GLib.Variant.new('(bs)', returnValue));
                     }
-
                 });
         } catch (error) {
             log(`Failed to start recorder: ${error.message}`);

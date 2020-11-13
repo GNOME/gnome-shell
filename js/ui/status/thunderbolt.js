@@ -77,7 +77,6 @@ var Client = class {
         this.probing = this._proxy.Probing;
         if (this.probing)
             this.emit('probing-changed', this.probing);
-
     }
 
     _onPropertiesChanged(proxy, properties) {

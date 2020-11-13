@@ -201,7 +201,6 @@ function removeLiterals(str) {
 // Returns true if there is reason to think that eval(str)
 // will modify the global scope
 function isUnsafeExpression(str) {
-
     // Check for any sort of assignment
     // The strategy used is dumb: remove any quotes
     // or regexs and comparison operators and see if there is an '=' character.

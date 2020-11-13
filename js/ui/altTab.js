@@ -907,7 +907,6 @@ class ThumbnailSwitcher extends SwitcherPopup.SwitcherList {
             } else {
                 this.addItem(box, null);
             }
-
         }
 
         this.connect('destroy', this._onDestroy.bind(this));

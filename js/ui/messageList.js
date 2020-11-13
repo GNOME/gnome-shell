@@ -291,7 +291,6 @@ var LabelExpanderLayout = GObject.registerClass({
             if (child.visible)
                 child.allocate(box);
         }
-
     }
 });
 

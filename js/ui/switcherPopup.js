@@ -487,7 +487,6 @@ var SwitcherList = GObject.registerClass({
             this._scrollToRight(index);
         else if (this._items[index].allocation.x1 - value < 0)
             this._scrollToLeft(index);
-
     }
 
     _scrollToLeft(index) {

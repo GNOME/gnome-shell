@@ -357,7 +357,6 @@ var WorkspaceTracker = class {
                 workspace._windowAddedId = workspace.connect('window-added', this._queueCheckWorkspaces.bind(this));
                 workspace._windowRemovedId = workspace.connect('window-removed', this._windowRemoved.bind(this));
             }
-
         } else {
             // Assume workspaces are only removed sequentially
             // (e.g. 2,3,4 - not 2,4,7)
@@ -516,7 +515,6 @@ var AppSwitchAction = GObject.registerClass({
     }
 
     vfunc_gesture_progress(_actor) {
-
         if (this.get_n_current_points() == 3) {
             for (let i = 0; i < this.get_n_current_points(); i++) {
                 let [startX, startY] = this.get_press_coords(i);
@@ -526,7 +524,6 @@ var AppSwitchAction = GObject.registerClass({
                     Math.abs(y - startY) > APP_MOTION_THRESHOLD)
                     return false;
             }
-
         }
 
         return true;
