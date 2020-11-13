@@ -48,8 +48,6 @@
                         <property name="label" translatable="yes">We’re very sorry, but there’s been a problem: the settings for this extension can’t be displayed. We recommend that you report the issue to the extension authors.</property>
                         <property name="justify">center</property>
                         <property name="wrap">True</property>
-                        <property name="xalign">0.5</property>
-                        <property name="yalign">0.5</property>
                       </object>
                     </child>
                     <child>
@@ -61,7 +59,6 @@
                           <object class="GtkFrame" id="expander">
                             <property name="visible">True</property>
                             <property name="hexpand">True</property>
-                            <property name="shadow_type">in</property>
                             <child>
                               <object class="GtkEventBox">
                                 <property name="visible">True</property>
@@ -94,7 +91,6 @@
                             <child>
                               <object class="GtkFrame">
                                 <property name="visible">True</property>
-                                <property name="shadow_type">in</property>
                                 <style>
                                   <class name="expander-frame"/>
                                 </style>
