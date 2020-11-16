@@ -1475,6 +1475,7 @@ class AppViewItem extends St.Button {
         }
 
         this._otherIconIsHovering = false;
+        this._expandTitleOnHover = expandTitleOnHover;
 
         if (expandTitleOnHover)
             this.connect('notify::hover', this._onHover.bind(this));
@@ -1495,7 +1496,7 @@ class AppViewItem extends St.Button {
     }
 
     _updateMultiline() {
-        if (!this.icon.label)
+        if (!this._expandTitleOnHover || !this.icon.label)
             return;
 
         const { label } = this.icon;
