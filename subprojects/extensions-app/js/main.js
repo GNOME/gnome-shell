@@ -42,6 +42,8 @@ class Application extends Gtk.Application {
     _init() {
         GLib.set_prgname('gnome-extensions-app');
         super._init({ application_id: 'org.gnome.Extensions' });
+
+        this.connect('window-removed', (a, window) => window.run_dispose());
     }
 
     get shellProxy() {
