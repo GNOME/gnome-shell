@@ -1,8 +1,8 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported AppDisplay, AppSearchProvider */
 
-const { Clutter, Gio, GLib, GObject, Graphene, Meta,
-    Pango, Shell, St } = imports.gi;
+const { AppStreamGlib: AppStream, Clutter, Gio, GLib, GObject, Graphene,
+    Meta, Pango, Shell, St } = imports.gi;
 const Signals = imports.signals;
 
 const AppFavorites = imports.ui.appFavorites;
@@ -18,6 +18,8 @@ const Search = imports.ui.search;
 const SwipeTracker = imports.ui.swipeTracker;
 const Params = imports.misc.params;
 const SystemActions = imports.misc.systemActions;
+
+Gio._promisify(AppStream.Store.prototype, 'load_async', 'load_finish');
 
 var MENU_POPUP_TIMEOUT = 600;
 var POPDOWN_DIALOG_TIMEOUT = 500;
@@ -867,6 +869,52 @@ var PageManager = GObject.registerClass({
 
         global.settings.connect('changed::app-picker-layout',
             this._loadPages.bind(this));
+
+        this._appDataStore = new AppStream.Store();
+        this._appDataStore.connect('changed',
+            this._updateAppIds.bind(this));
+        this._loadAppDataStore();
+    }
+
+    async _loadAppDataStore() {
+        try {
+            const loadFlags =
+                AppStream.StoreLoadFlags.APP_INFO_SYSTEM |
+                AppStream.StoreLoadFlags.APP_INFO_USER |
+                AppStream.StoreLoadFlags.FLATPAK_SYSTEM |
+                AppStream.StoreLoadFlags.FLATPAK_USER |
+                AppStream.StoreLoadFlags.APPDATA |
+                AppStream.StoreLoadFlags.DESKTOP;
+            // emits ::changed if successful
+            await this._appDataStore.load_async(loadFlags, null);
+        } catch (e) {
+            log('Failed to load AppData store: %s'.format(e.message));
+        }
+    }
+
+    _updateAppIds() {
+        const store = this._appDataStore;
+
+        let updated = false;
+        for (let pageIndex = 0; pageIndex < this._pages.length; pageIndex++) {
+            const pageData = this._pages[pageIndex];
+
+            for (const appId of Object.keys(pageData)) {
+                const appData =
+                    store.get_app_by_id_with_fallbacks(appId) ||
+                    store.get_app_by_provide(AppStream.ProvideKind.ID, appId);
+                const newId = appData?.get_id();
+
+                if (newId && newId !== appId) {
+                    pageData[newId] = pageData[appId];
+                    delete pageData[appId];
+                    updated = true;
+                }
+            }
+        }
+
+        if (updated)
+            this.pages = this._pages;
     }
 
     _loadPages() {
