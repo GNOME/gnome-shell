@@ -1,8 +1,10 @@
 include:
     - remote: 'https://gitlab.gnome.org/GNOME/citemplates/raw/master/flatpak/flatpak_ci_initiative.yml'
     - remote: 'https://gitlab.freedesktop.org/freedesktop/ci-templates/-/raw/7ea696055e322cc7aa4bcbe5422b56a198c4bdff/templates/fedora.yml'
+    - remote: "https://gitlab.freedesktop.org/freedesktop/ci-templates/-/raw/7ea696055e322cc7aa4bcbe5422b56a198c4bdff/templates/ci-fairy.yml"
 
 stages:
+ - pre_review
  - prep
  - review
  - build
@@ -51,15 +53,10 @@ image: registry.gitlab.gnome.org/gnome/mutter/fedora/33:2020-11-20.1
 
             dnf clean all
 
-build-fedora-container:
-    extends:
-        - .fdo.container-build@fedora@x86_64
-        - .gnome-shell.fedora:33
-    stage: prep
-    <<: *only_default
-
 check_commit_log:
-    stage: review
+    extends:
+      - .fdo.ci-fairy
+    stage: pre_review
     variables:
         GIT_DEPTH: "100"
     script:
@@ -71,6 +68,13 @@ check_commit_log:
             - commit-message-junit-report.xml
         reports:
             junit: commit-message-junit-report.xml
+
+build-fedora-container:
+    extends:
+        - .fdo.container-build@fedora@x86_64
+        - .gnome-shell.fedora:33
+    stage: prep
+    <<: *only_default
 
 js_check:
     extends:
