@@ -11,6 +11,18 @@ stages:
  - test
  - deploy
 
+default:
+    # Cancel jobs if newer commits are pushed to the branch
+    interruptible: true
+    # Auto-retry jobs in case of infra failures
+    retry:
+        max: 1
+        when:
+            - 'runner_system_failure'
+            - 'stuck_or_timeout_failure'
+            - 'scheduler_failure'
+            - 'api_failure'
+
 variables:
     BUNDLE: "extensions-git.flatpak"
     JS_LOG: "js-report.txt"
@@ -93,7 +105,6 @@ build-fedora-container:
         - .fdo.container-build@fedora@x86_64
         - .gnome-shell.fedora:33
     stage: prep
-    <<: *only_default
 
 js_check:
     extends:
@@ -103,7 +114,6 @@ js_check:
     script:
         - find js -name '*.js' -exec js78 -c '{}' ';' 2>&1 | tee $JS_LOG
         - (! grep -q . $JS_LOG)
-    <<: *only_default
     artifacts:
         paths:
             - ${JS_LOG}
@@ -117,7 +127,6 @@ eslint:
     script:
         - export NODE_PATH=$(npm root -g)
         - ./.gitlab-ci/run-eslint --output-file ${LINT_LOG} --format junit
-    <<: *only_default
     artifacts:
         reports:
             junit: ${LINT_LOG}
@@ -147,7 +156,6 @@ potfile_check:
     stage: review
     script:
         - ./.gitlab-ci/check-potfiles.sh
-    <<: *only_default
 
 no_template_check:
     extends:
@@ -156,7 +164,6 @@ no_template_check:
     stage: review
     script:
         - ./.gitlab-ci/check-template-strings.sh
-    <<: *only_default
 
 build:
     stage: build
@@ -169,7 +176,6 @@ build:
         - meson . build -Dbuiltype=debugoptimized -Dman=false --werror
         - ninja -C build
         - ninja -C build install
-    <<: *only_default
     artifacts:
         expire_in: 1 day
         paths:
@@ -186,7 +192,6 @@ test:
         - ninja -C mutter/build install
     script:
         - dbus-run-session -- xvfb-run meson test -C build --no-rebuild
-    <<: *only_default
     artifacts:
         expire_in: 1 day
         paths:
@@ -204,7 +209,6 @@ flatpak:
         FLATPAK_MODULE: "gnome-extensions-app"
         APP_ID: "org.gnome.Extensions"
     extends: .flatpak
-    <<: *only_default
 
 nightly:
   extends: '.publish_nightly'
