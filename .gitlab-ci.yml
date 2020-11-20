@@ -1,6 +1,6 @@
 include:
     - remote: 'https://gitlab.gnome.org/GNOME/citemplates/raw/master/flatpak/flatpak_ci_initiative.yml'
-    - remote: 'https://gitlab.freedesktop.org/freedesktop/ci-templates/-/raw/5888c7388134cbe4661600222fe9befb10441f6e/templates/fedora.yml'
+    - remote: 'https://gitlab.freedesktop.org/freedesktop/ci-templates/-/raw/97556201e6e0e30554ee93249f5287be826be718/templates/fedora.yml'
 
 stages:
  - prep
