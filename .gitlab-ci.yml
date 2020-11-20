@@ -10,6 +10,8 @@ variables:
     BUNDLE: "extensions-git.flatpak"
     JS_LOG: "js-report.txt"
 
+image: registry.gitlab.gnome.org/gnome/mutter/fedora/33:2020-11-20.1
+
 .only_default: &only_default
     only:
         - branches
@@ -17,7 +19,6 @@ variables:
         - merge_requests
 
 check_commit_log:
-    image: registry.gitlab.gnome.org/gnome/mutter/master:v4
     stage: review
     variables:
         GIT_DEPTH: "100"
@@ -64,7 +65,6 @@ no_template_check:
     <<: *only_default
 
 build:
-    image: registry.gitlab.gnome.org/gnome/mutter/master:v4
     stage: build
     needs: []
     before_script:
@@ -83,7 +83,6 @@ build:
             - build
 
 test:
-    image: registry.gitlab.gnome.org/gnome/mutter/master:v4
     stage: test
     needs: ["build"]
     variables:
