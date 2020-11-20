@@ -38,7 +38,7 @@ function append_passed_test_case() {
 function generate_junit_report() {
   junit_report_file="$1"
   num_tests=$(cat "$JUNIT_REPORT_TESTS_FILE" | wc -l)
-  num_failures=$(grep '<failure />' "$JUNIT_REPORT_TESTS_FILE" | wc -l )
+  num_failures=$(grep '<failure ' "$JUNIT_REPORT_TESTS_FILE" | wc -l )
 
   echo Generating JUnit report \"$(pwd)/$junit_report_file\" with $num_tests tests and $num_failures failures.
 
