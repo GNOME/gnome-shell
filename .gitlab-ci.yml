@@ -31,11 +31,19 @@ variables:
 
 image: registry.gitlab.gnome.org/gnome/mutter/fedora/33:2020-11-20.1
 
-.only_default: &only_default
-    only:
-        - branches
-        - tags
-        - merge_requests
+workflow:
+    rules:
+        - if: '$CI_MERGE_REQUEST_IID'
+        - if: '$CI_COMMIT_TAG'
+        - if: '$CI_COMMIT_BRANCH'
+
+.pipeline_guard: &pipeline_guard
+    rules:
+        - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+        - if: '$CI_COMMIT_TAG'
+        - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+        - if: '$CI_COMMIT_BRANCH =~ /^gnome-[0-9-]+$/'
+        - when: 'manual'
 
 .gnome-shell.fedora:33:
     variables:
@@ -73,7 +81,7 @@ check_commit_log:
         GIT_DEPTH: "100"
     script:
         - ./.gitlab-ci/check-commit-log.sh
-    <<: *only_default
+    <<: *pipeline_guard
     artifacts:
         expire_in: 1 week
         paths:
@@ -92,13 +100,13 @@ check-merge-request:
           else
             echo "Not a merge request" ;
           fi
+    <<: *pipeline_guard
     artifacts:
         expire_in: 1 week
         paths:
             - check-merge-request-report.xml
         reports:
             junit: check-merge-request-report.xml
-    <<: *only_default
 
 build-fedora-container:
     extends:
