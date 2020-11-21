@@ -595,8 +595,11 @@ var WorkspaceLayout = GObject.registerClass({
 
             // The fifth element in the slot array is the WindowPreview
             const index = this._windowSlots.findIndex(s => s[4] === child);
-            if (index === -1)
+            if (index === -1) {
+                log('Couldn\'t find child %s in window slots'.format(child));
+                child.allocate(childBox);
                 continue;
+            }
 
             const [x, y, width, height] = this._windowSlots[index];
             const windowInfo = this._windows.get(child);
