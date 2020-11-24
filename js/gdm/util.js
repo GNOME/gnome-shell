@@ -491,7 +491,9 @@ var ShellUserVerifier = class {
     }
 
     _onProblem(client, serviceName, problem) {
-        if (!this.serviceIsForeground(serviceName))
+        const isFingerprint = this.serviceIsFingerprint(serviceName);
+
+        if (!this.serviceIsForeground(serviceName) && !isFingerprint)
             return;
 
         this._queueMessage(problem, MessageType.ERROR);
