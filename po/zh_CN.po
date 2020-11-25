@@ -17,22 +17,22 @@
 # Aron Xu <aronxu@gnome.org>, 2010, 2011, 2012, 2013, 2015, 2016.
 # liushuyu <liushuyu_011@126.com>, 2015, 2016.
 # Mingcong Bai <jeffbai@aosc.xyz>, 2015, 2016, 2017.
-# Dingzhong Chen <wsxy162@gmail.com>, 2018-2019.
+# Dingzhong Chen <wsxy162@gmail.com>, 2018-2020.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2020-09-09 13:43+0000\n"
-"PO-Revision-Date: 2020-08-23 11:13-0400\n"
-"Last-Translator: Boyuan Yang <073plan@gmail.com>\n"
-"Language-Team: Chinese (China) <i18n-zh@googlegroups.com>\n"
+"POT-Creation-Date: 2020-11-11 14:29+0000\n"
+"PO-Revision-Date: 2020-11-22 02:10+0800\n"
+"Last-Translator: Dingzhong Chen <wsxy162@gmail.com>\n"
+"Language-Team: Chinese - China <i18n-zh@googlegroups.com>\n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 2.4\n"
+"Plural-Forms: nplurals=1; plural=0\n"
+"X-Generator: Gtranslator 3.38.0\n"
 
 #: data/50-gnome-shell-system.xml:6
 msgid "System"
@@ -415,8 +415,8 @@ msgstr "主页"
 msgid "Visit extension homepage"
 msgstr "访问扩展主页"
 
-#: js/gdm/authPrompt.js:136 js/ui/audioDeviceSelection.js:57
-#: js/ui/components/networkAgent.js:111 js/ui/components/polkitAgent.js:139
+#: js/gdm/authPrompt.js:137 js/ui/audioDeviceSelection.js:58
+#: js/ui/components/networkAgent.js:111 js/ui/components/polkitAgent.js:138
 #: js/ui/endSessionDialog.js:438 js/ui/extensionDownloader.js:183
 #: js/ui/shellMountOperation.js:376 js/ui/shellMountOperation.js:386
 #: js/ui/status/network.js:940 subprojects/extensions-app/js/main.js:149
@@ -424,10 +424,10 @@ msgid "Cancel"
 msgstr "取消"
 
 #. Cisco LEAP
-#: js/gdm/authPrompt.js:238 js/ui/components/networkAgent.js:206
+#: js/gdm/authPrompt.js:239 js/ui/components/networkAgent.js:206
 #: js/ui/components/networkAgent.js:222 js/ui/components/networkAgent.js:246
 #: js/ui/components/networkAgent.js:267 js/ui/components/networkAgent.js:287
-#: js/ui/components/networkAgent.js:297 js/ui/components/polkitAgent.js:277
+#: js/ui/components/networkAgent.js:297 js/ui/components/polkitAgent.js:276
 #: js/ui/shellMountOperation.js:326
 msgid "Password"
 msgstr "密码"
@@ -705,36 +705,36 @@ msgstr "拒绝访问"
 msgid "Grant Access"
 msgstr "允许访问"
 
-#: js/ui/appDisplay.js:1305
+#: js/ui/appDisplay.js:1346
 msgid "Unnamed Folder"
 msgstr "未命名文件夹"
 
 #. Translators: This is the heading of a list of open windows
-#: js/ui/appDisplay.js:2774 js/ui/panel.js:75
+#: js/ui/appDisplay.js:2872 js/ui/panel.js:75
 msgid "Open Windows"
 msgstr "打开窗口"
 
-#: js/ui/appDisplay.js:2793 js/ui/panel.js:82
+#: js/ui/appDisplay.js:2891 js/ui/panel.js:82
 msgid "New Window"
 msgstr "新窗口"
 
-#: js/ui/appDisplay.js:2809
+#: js/ui/appDisplay.js:2907
 msgid "Launch using Integrated Graphics Card"
 msgstr "使用集成显卡启动"
 
-#: js/ui/appDisplay.js:2810
+#: js/ui/appDisplay.js:2908
 msgid "Launch using Discrete Graphics Card"
 msgstr "使用独立显卡启动"
 
-#: js/ui/appDisplay.js:2838 js/ui/dash.js:239
+#: js/ui/appDisplay.js:2937 js/ui/dash.js:239
 msgid "Remove from Favorites"
 msgstr "从收藏夹中移除"
 
-#: js/ui/appDisplay.js:2844
+#: js/ui/appDisplay.js:2943
 msgid "Add to Favorites"
 msgstr "添加到收藏夹"
 
-#: js/ui/appDisplay.js:2854 js/ui/panel.js:93
+#: js/ui/appDisplay.js:2953 js/ui/panel.js:93
 msgid "Show Details"
 msgstr "显示细节"
 
@@ -752,19 +752,19 @@ msgstr "%s 已经从您的收藏夹移除。"
 msgid "Select Audio Device"
 msgstr "选择声音设备"
 
-#: js/ui/audioDeviceSelection.js:54
+#: js/ui/audioDeviceSelection.js:55
 msgid "Sound Settings"
 msgstr "声音设置"
 
-#: js/ui/audioDeviceSelection.js:64
+#: js/ui/audioDeviceSelection.js:65
 msgid "Headphones"
 msgstr "耳机"
 
-#: js/ui/audioDeviceSelection.js:66
+#: js/ui/audioDeviceSelection.js:67
 msgid "Headset"
 msgstr "耳麦"
 
-#: js/ui/audioDeviceSelection.js:68 js/ui/status/volume.js:272
+#: js/ui/audioDeviceSelection.js:69 js/ui/status/volume.js:272
 msgid "Microphone"
 msgstr "麦克风"
 
@@ -1007,11 +1007,11 @@ msgstr "VPN 密码"
 msgid "Authentication Required"
 msgstr "需要认证"
 
-#: js/ui/components/polkitAgent.js:80
+#: js/ui/components/polkitAgent.js:79
 msgid "Administrator"
 msgstr "管理员"
 
-#: js/ui/components/polkitAgent.js:142
+#: js/ui/components/polkitAgent.js:141
 msgid "Authenticate"
 msgstr "认证"
 
@@ -1020,7 +1020,7 @@ msgstr "认证"
 #. * requested authentication was not gained; this can happen
 #. * because of an authentication error (like invalid password),
 #. * for instance.
-#: js/ui/components/polkitAgent.js:254 js/ui/shellMountOperation.js:402
+#: js/ui/components/polkitAgent.js:253 js/ui/shellMountOperation.js:402
 msgid "Sorry, that didn’t work. Please try again."
 msgstr "抱歉，认证失败。请重试。"
 
@@ -1408,7 +1408,7 @@ msgstr "已启用"
 
 #. translators:
 #. * The device has been disabled
-#: js/ui/lookingGlass.js:741 subprojects/gvc/gvc-mixer-control.c:1892
+#: js/ui/lookingGlass.js:741 subprojects/gvc/gvc-mixer-control.c:1900
 msgid "Disabled"
 msgstr "已禁用"
 
@@ -1453,7 +1453,7 @@ msgstr "屏幕锁定已禁用"
 msgid "Screen Locking requires the GNOME display manager."
 msgstr "屏幕锁定需要 GNOME 显示管理器。"
 
-#: js/ui/messageTray.js:1476
+#: js/ui/messageTray.js:1474
 msgid "System Information"
 msgstr "系统信息"
 
@@ -1537,12 +1537,12 @@ msgstr "退出"
 msgid "Activities"
 msgstr "活动"
 
-#: js/ui/panel.js:714
+#: js/ui/panel.js:719
 msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "系统"
 
-#: js/ui/panel.js:825
+#: js/ui/panel.js:830
 msgid "Top Bar"
 msgstr "顶栏"
 
@@ -1573,11 +1573,11 @@ msgstr "GNOME 需要锁定屏幕"
 #.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
-#: js/ui/screenShield.js:244 js/ui/screenShield.js:602
+#: js/ui/screenShield.js:244 js/ui/screenShield.js:613
 msgid "Unable to lock"
 msgstr "无法锁定"
 
-#: js/ui/screenShield.js:245 js/ui/screenShield.js:603
+#: js/ui/screenShield.js:245 js/ui/screenShield.js:614
 msgid "Lock was blocked by an application"
 msgstr "一个应用程序阻止了锁定"
 
@@ -2059,11 +2059,11 @@ msgstr "距充满还剩 %d:%02d (%d%%)"
 msgid "%d %%"
 msgstr "%d %%"
 
-#: js/ui/status/remoteAccess.js:45
+#: js/ui/status/remoteAccess.js:38
 msgid "Screen is Being Shared"
 msgstr "正在共享屏幕"
 
-#: js/ui/status/remoteAccess.js:47
+#: js/ui/status/remoteAccess.js:40
 msgid "Turn off"
 msgstr "关闭"
 
@@ -2088,11 +2088,11 @@ msgstr "挂起"
 
 #: js/ui/status/system.js:130
 msgid "Restart…"
-msgstr "重新启动……"
+msgstr "重启…"
 
 #: js/ui/status/system.js:141
 msgid "Power Off…"
-msgstr "关机..."
+msgstr "关机…"
 
 #: js/ui/status/system.js:154
 msgid "Log Out"
@@ -2884,7 +2884,7 @@ msgstr "添加图标到顶栏"
 
 #. translators:
 #. * The number of sound outputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1899
+#: subprojects/gvc/gvc-mixer-control.c:1907
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -2892,13 +2892,13 @@ msgstr[0] "%u 个输出"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1909
+#: subprojects/gvc/gvc-mixer-control.c:1917
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
 msgstr[0] "%u 个输入"
 
-#: subprojects/gvc/gvc-mixer-control.c:2766
+#: subprojects/gvc/gvc-mixer-control.c:2867
 msgid "System Sounds"
 msgstr "系统声音"
 
