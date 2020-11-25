@@ -295,6 +295,10 @@ var IconGridLayout = GObject.registerClass({
             GObject.ParamFlags.READWRITE,
             Clutter.ActorAlign.$gtype,
             Clutter.ActorAlign.FILL),
+        'page-padding': GObject.ParamSpec.boxed('page-padding',
+            'Page padding', 'Page padding',
+            GObject.ParamFlags.READWRITE,
+            Clutter.Margin.$gtype),
         'page-valign': GObject.ParamSpec.enum('page-valign',
             'Vertical page align',
             'Vertical page align',
@@ -325,6 +329,7 @@ var IconGridLayout = GObject.registerClass({
             max_row_spacing: -1,
             orientation: Clutter.Orientation.VERTICAL,
             page_halign: Clutter.ActorAlign.FILL,
+            page_padding: new Clutter.Margin(),
             page_valign: Clutter.ActorAlign.FILL,
             row_spacing: 0,
             rows_per_page: 4,
@@ -339,6 +344,7 @@ var IconGridLayout = GObject.registerClass({
         this._maxRowSpacing = params.max_row_spacing;
         this._orientation = params.orientation;
         this._pageHAlign = params.page_halign;
+        this._pagePadding = params.page_padding;
         this._pageVAlign = params.page_valign;
         this._rowSpacing = params.row_spacing;
         this._rowsPerPage = params.rows_per_page;
@@ -413,9 +419,11 @@ var IconGridLayout = GObject.registerClass({
             }
 
             const emptyHSpace =
-                this._pageWidth - usedWidth - columnSpacingPerPage;
+                this._pageWidth - usedWidth - columnSpacingPerPage -
+                this._pagePadding.left - this._pagePadding.right;
             const emptyVSpace =
-                this._pageHeight - usedHeight -  rowSpacingPerPage;
+                this._pageHeight - usedHeight -  rowSpacingPerPage -
+                this._pagePadding.top - this._pagePadding.bottom;
 
             if (emptyHSpace >= 0 && emptyVSpace > 0) {
                 bestSize = size;
@@ -586,28 +594,30 @@ var IconGridLayout = GObject.registerClass({
         const columnSpacingPerPage = this._columnSpacing * (nColumns - 1);
         const rowSpacingPerPage = this._rowSpacing * (nRows - 1);
 
-        let emptyHSpace = this._pageWidth - usedWidth - columnSpacingPerPage;
-        let emptyVSpace = this._pageHeight - usedHeight -  rowSpacingPerPage;
-        let leftEmptySpace;
-        let topEmptySpace;
+        const emptyHSpace =
+            this._pageWidth - usedWidth - columnSpacingPerPage -
+            this._pagePadding.left - this._pagePadding.right;
+        const emptyVSpace =
+            this._pageHeight - usedHeight -  rowSpacingPerPage -
+            this._pagePadding.top - this._pagePadding.bottom;
+        let leftEmptySpace = this._pagePadding.left;
+        let topEmptySpace = this._pagePadding.top;
         let hSpacing;
         let vSpacing;
 
         switch (this._pageHAlign) {
         case Clutter.ActorAlign.START:
-            leftEmptySpace = 0;
             hSpacing = this._columnSpacing;
             break;
         case Clutter.ActorAlign.CENTER:
-            leftEmptySpace = Math.floor(emptyHSpace / 2);
+            leftEmptySpace += Math.floor(emptyHSpace / 2);
             hSpacing = this._columnSpacing;
             break;
         case Clutter.ActorAlign.END:
-            leftEmptySpace = emptyHSpace;
+            leftEmptySpace += emptyHSpace;
             hSpacing = this._columnSpacing;
             break;
         case Clutter.ActorAlign.FILL:
-            leftEmptySpace = 0;
             hSpacing = this._columnSpacing + emptyHSpace / (nColumns - 1);
 
             // Maybe constraint horizontal spacing
@@ -616,7 +626,7 @@ var IconGridLayout = GObject.registerClass({
                     (this._maxColumnSpacing - this._columnSpacing) * (nColumns - 1);
 
                 hSpacing = this._maxColumnSpacing;
-                leftEmptySpace =
+                leftEmptySpace +=
                     Math.max((emptyHSpace - extraHSpacing) / 2, 0);
             }
             break;
@@ -624,19 +634,17 @@ var IconGridLayout = GObject.registerClass({
 
         switch (this._pageVAlign) {
         case Clutter.ActorAlign.START:
-            topEmptySpace = 0;
             vSpacing = this._rowSpacing;
             break;
         case Clutter.ActorAlign.CENTER:
-            topEmptySpace = Math.floor(emptyVSpace / 2);
+            topEmptySpace += Math.floor(emptyVSpace / 2);
             vSpacing = this._rowSpacing;
             break;
         case Clutter.ActorAlign.END:
-            topEmptySpace = emptyVSpace;
+            topEmptySpace += emptyVSpace;
             vSpacing = this._rowSpacing;
             break;
         case Clutter.ActorAlign.FILL:
-            topEmptySpace = 0;
             vSpacing = this._rowSpacing + emptyVSpace / (nRows - 1);
 
             // Maybe constraint vertical spacing
@@ -645,7 +653,7 @@ var IconGridLayout = GObject.registerClass({
                     (this._maxRowSpacing - this._rowSpacing) * (nRows - 1);
 
                 vSpacing = this._maxRowSpacing;
-                topEmptySpace =
+                topEmptySpace +=
                     Math.max((emptyVSpace - extraVSpacing) / 2, 0);
             }
 
@@ -1194,6 +1202,23 @@ var IconGridLayout = GObject.registerClass({
     }
 
     // eslint-disable-next-line camelcase
+    get page_padding() {
+        return this._pagePadding;
+    }
+
+    // eslint-disable-next-line camelcase
+    set page_padding(padding) {
+        if (this._pagePadding.top === padding.top &&
+            this._pagePadding.right === padding.right &&
+            this._pagePadding.bottom === padding.bottom &&
+            this._pagePadding.left === padding.left)
+            return;
+
+        this._pagePadding = padding;
+        this.notify('page-padding');
+    }
+
+    // eslint-disable-next-line camelcase
     get page_valign() {
         return this._pageVAlign;
     }
@@ -1360,6 +1385,10 @@ var IconGrid = GObject.registerClass({
     }
 
     _findBestModeForSize(width, height) {
+        const { pagePadding } = this.layout_manager;
+        width -= pagePadding.left + pagePadding.right;
+        height -= pagePadding.top + pagePadding.bottom;
+
         const sizeRatio = width / height;
         let closestRatio = Infinity;
         let bestMode = -1;
