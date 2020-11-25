@@ -1303,6 +1303,7 @@ var IconGrid = GObject.registerClass({
             columns_per_page: 6,
             rows_per_page: 4,
             page_halign: Clutter.ActorAlign.CENTER,
+            page_padding: new Clutter.Margin(),
             page_valign: Clutter.ActorAlign.CENTER,
             last_row_align: Clutter.ActorAlign.START,
             column_spacing: 0,
@@ -1434,6 +1435,12 @@ var IconGrid = GObject.registerClass({
 
         [found, value] = node.lookup_length('max-row-spacing', false);
         this.layout_manager.max_row_spacing = found ? value : -1;
+
+        const padding = new Clutter.Margin();
+        ['top', 'right', 'bottom', 'left'].forEach(side => {
+            padding[side] = node.get_length(`page-padding-${side}`);
+        });
+        this.layout_manager.page_padding = padding;
     }
 
     /**
