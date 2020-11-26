@@ -804,7 +804,7 @@ var IconGridLayout = GObject.registerClass({
                     break;
                 }
 
-                childBox.set_origin(x, y);
+                childBox.set_origin(Math.floor(x), Math.floor(y));
 
                 // Only ease icons when the page size didn't change
                 if (this._pageSizeChanged)
