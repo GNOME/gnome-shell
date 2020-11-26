@@ -54,7 +54,8 @@ const TouchpadSwipeGesture = GObject.registerClass({
         this._orientation = Clutter.Orientation.VERTICAL;
         this._enabled = true;
 
-        global.stage.connect('captured-event::touchpad', this._handleEvent.bind(this));
+        this._stageCaptureEvent =
+            global.stage.connect('captured-event::touchpad', this._handleEvent.bind(this));
     }
 
     get enabled() {
@@ -124,6 +125,13 @@ const TouchpadSwipeGesture = GObject.registerClass({
         }
 
         return Clutter.EVENT_STOP;
+    }
+
+    destroy() {
+        if (this._stageCaptureEvent) {
+            global.stage.disconnect(this._stageCaptureEvent);
+            delete this._stageCaptureEvent;
+        }
     }
 });
 
@@ -642,5 +650,17 @@ var SwipeTracker = GObject.registerClass({
 
         this._velocity = 0;
         this._state = State.SCROLLING;
+    }
+
+    destroy() {
+        if (this._touchpadGesture) {
+            this._touchpadGesture.destroy();
+            delete this._touchpadGesture;
+        }
+
+        if (this._touchGesture) {
+            global.stage.remove_action(this._touchGesture);
+            delete this._touchGesture;
+        }
     }
 });

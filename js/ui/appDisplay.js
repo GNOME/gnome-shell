@@ -217,6 +217,12 @@ var BaseAppView = GObject.registerClass({
             this._parentalControlsManager.disconnect(this._appFilterChangedId);
             this._appFilterChangedId = 0;
         }
+
+        if (this._swipeTracker) {
+            this._swipeTracker.destroy();
+            delete this._swipeTracker;
+        }
+
         this._removeDelayedMove();
         this._disconnectDnD();
     }
