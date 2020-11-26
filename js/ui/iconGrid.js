@@ -807,7 +807,7 @@ var IconGridLayout = GObject.registerClass({
                     break;
                 }
 
-                childBox.set_origin(x, y);
+                childBox.set_origin(Math.floor(x), Math.floor(y));
 
                 const [,, naturalWidth, naturalHeight] = item.get_preferred_size();
                 childBox.set_size(
