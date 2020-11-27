@@ -361,24 +361,15 @@ class DashSlider extends SlidingControl {
 });
 
 var DashSpacer = GObject.registerClass(
-class DashSpacer extends St.Widget {
-    _init(params) {
-        super._init(params);
+class DashSpacer extends Clutter.Actor {
+    _init(source) {
+        super._init();
 
-        this._bindConstraint = null;
-    }
-
-    setDashActor(dashActor) {
-        if (this._bindConstraint) {
-            this.remove_constraint(this._bindConstraint);
-            this._bindConstraint = null;
-        }
-
-        if (dashActor) {
-            this._bindConstraint = new Clutter.BindConstraint({ source: dashActor,
-                                                                coordinate: Clutter.BindCoordinate.SIZE });
-            this.add_constraint(this._bindConstraint);
-        }
+        this._bindConstraint = new Clutter.BindConstraint({
+            source,
+            coordinate: Clutter.BindCoordinate.SIZE,
+        });
+        this.add_constraint(this._bindConstraint);
     }
 
     vfunc_get_preferred_width(forHeight) {
@@ -406,8 +397,7 @@ class ControlsManager extends St.Widget {
 
         this.dash = new Dash.Dash();
         this._dashSlider = new DashSlider(this.dash);
-        this._dashSpacer = new DashSpacer();
-        this._dashSpacer.setDashActor(this._dashSlider);
+        this._dashSpacer = new DashSpacer(this._dashSlider);
 
         let workspaceManager = global.workspace_manager;
         let activeWorkspaceIndex = workspaceManager.get_active_workspace_index();
