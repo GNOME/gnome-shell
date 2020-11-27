@@ -394,21 +394,11 @@ class DashSpacer extends St.Widget {
     }
 });
 
-var ControlsLayout = GObject.registerClass({
-    Signals: { 'allocation-changed': {} },
-}, class ControlsLayout extends Clutter.BinLayout {
-    vfunc_allocate(container, box) {
-        super.vfunc_allocate(container, box);
-        this.emit('allocation-changed');
-    }
-});
-
 var ControlsManager = GObject.registerClass(
 class ControlsManager extends St.Widget {
     _init(searchEntry) {
-        let layout = new ControlsLayout();
         super._init({
-            layout_manager: layout,
+            layout_manager: new Clutter.BinLayout(),
             x_expand: true,
             y_expand: true,
             clip_to_allocation: true,
