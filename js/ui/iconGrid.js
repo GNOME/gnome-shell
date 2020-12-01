@@ -429,10 +429,10 @@ var IconGridLayout = GObject.registerClass({
                 this._pageHeight - usedHeight -  rowSpacingPerPage -
                 this._pagePadding.top - this._pagePadding.bottom;
 
-            if (emptyHSpace >= 0 && emptyVSpace > 0) {
-                bestSize = size;
+            bestSize = size;
+
+            if (emptyHSpace >= 0 && emptyVSpace > 0)
                 break;
-            }
         }
 
         return bestSize;
