@@ -403,7 +403,6 @@ var IconGridLayout = GObject.registerClass({
         if (this._fixedIconSize !== -1)
             return this._fixedIconSize;
 
-        let bestSize;
         const iconSizes = Object.values(IconSize).sort((a, b) => b - a);
         for (const size of iconSizes) {
             let usedWidth, usedHeight;
@@ -429,13 +428,11 @@ var IconGridLayout = GObject.registerClass({
                 this._pageHeight - usedHeight -  rowSpacingPerPage -
                 this._pagePadding.top - this._pagePadding.bottom;
 
-            bestSize = size;
-
             if (emptyHSpace >= 0 && emptyVSpace > 0)
-                break;
+                return size;
         }
 
-        return bestSize;
+        return IconSize.TINY;
     }
 
     _getChildrenMaxSize() {
