@@ -39,7 +39,11 @@
   </description>
 
   <releases>
-    <release version="40.alpha" type="development" date="2020-10-05"/>
+    <release version="40.alpha" type="development" date="2020-12-02">
+      <description>
+        <p>It is now possible to search the list of installed extensions.</p>
+      </description>
+    </release>
   </releases>
 
   <screenshots>

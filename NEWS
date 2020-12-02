@@ -1,3 +1,36 @@
+40.alpha
+========
+* Handle @content properties in ease() functions [Andre; !1461]
+* Fix screencast indicator on Xorg [Jonas Å.; !1466]
+* Expand ellipsized app picker labels on hover [Georges; !1477, !1496]
+* Fix inline-replies in chat notifications [Florian; #3226]
+* Refine MPRIS notification layout [Harry; !1480]
+* Improve do-not-disturb support [Florian; #2873, !1511]
+* Fix mobile broadband support [Popax21; #3203]
+* Add extension filtering in Extensions app [Florian; #3382]
+* Improve app picker spacing on larger resolutions [Georges; !1510]
+* Plugged leaks [Ray; !1460, !1459]
+* Fixed crashes [Daniel, Florian; !1453, #3258, !1507]
+* Misc. bug fixes and cleanups [Florian, Georges, Carlos, Joonas, Jan,
+  Jonas Å., Robert, Jonas D., Ian, Daniel, Sebastian, Jordan; !1456, !1436,
+  !1405, !1421, #3252, !1464, !1469, !1465, !1473, !1475, #3307, !1479,
+  !1482, !1470, !1486, #3335, #3342, #3388, !1497, !1498, !1491, !1501,
+  !1492, !1489, !1502, !1505, !1504, !1506, !1503, !1483, !1508, !1481,
+  !1509, !1512, !1417, !1517]
+
+Contributors:
+  Jonas Dreßler, Carlos Garnacho, Joonas Henriksson, Sebastian Keller,
+  Robert Mader, Andre Moreira Magalhaes, Daniel García Moreno, Harry Míchal,
+  Florian Müllner, Georges Basile Stavracas Neto, Jordan Petridis, Popax21,
+  Ian Douglas Scott, Ray Strode, Jan Tojnar, Olav Vitters, Daniel van Vugt,
+  Jonas Ådahl
+
+Translators:
+  Juliano de Souza Camargo [pt], Fabio Tomat [fur], Akarshan Biswas [bn_IN],
+  Carmen Bianca BAKKER [eo], Daniel Mustieles [es],
+  Asier Sarasua Garmendia [eu], Ask Hjorth Larsen [da], Yuri Chornoivan [uk],
+  Anders Jonsson [sv], Kjartan Maraas [nb]
+
 3.38.1
 ======
 * Add screen recordings to recent items [Florian; #3171]
