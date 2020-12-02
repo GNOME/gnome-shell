@@ -391,6 +391,9 @@ var IconGridLayout = GObject.registerClass({
 
         this._containerDestroyedId = 0;
         this._updateIconSizesLaterId = 0;
+
+        this._resolveOnIdleId = 0;
+        this._iconSizeUpdateResolveCbs = [];
     }
 
     _findBestIconSize() {
@@ -701,10 +704,27 @@ var IconGridLayout = GObject.registerClass({
         return isRtl ? rowAlign * -1 : rowAlign;
     }
 
+    _runPostAllocation() {
+        if (this._iconSizeUpdateResolveCbs.length > 0 &&
+            this._resolveOnIdleId === 0) {
+            this._resolveOnIdleId = GLib.idle_add(GLib.PRIORITY_DEFAULT, () => {
+                this._iconSizeUpdateResolveCbs.forEach(cb => cb());
+                this._iconSizeUpdateResolveCbs = [];
+                this._resolveOnIdleId = 0;
+                return GLib.SOURCE_REMOVE;
+            });
+        }
+    }
+
     _onDestroy() {
         if (this._updateIconSizesLaterId >= 0) {
             Meta.later_remove(this._updateIconSizesLaterId);
             this._updateIconSizesLaterId = 0;
+        }
+
+        if (this._resolveOnIdleId > 0) {
+            GLib.source_remove(this._resolveOnIdleId);
+            delete this._resolveOnIdleId;
         }
     }
 
@@ -820,6 +840,8 @@ var IconGridLayout = GObject.registerClass({
         });
 
         this._pageSizeChanged = false;
+
+        this._runPostAllocation();
     }
 
     /**
@@ -962,6 +984,14 @@ var IconGridLayout = GObject.registerClass({
 
         const itemData = this._items.get(item);
         return itemData.pageIndex;
+    }
+
+    ensureIconSizeUpdated() {
+        if (this._updateIconSizesLaterId === 0)
+            return Promise.resolve();
+
+        return new Promise(
+            resolve => this._iconSizeUpdateResolveCbs.push(resolve));
     }
 
     adaptToSize(pageWidth, pageHeight) {
@@ -1617,7 +1647,7 @@ var IconGrid = GObject.registerClass({
         this.layout_manager.adaptToSize(width, height);
     }
 
-    animateSpring(animationDirection, sourceActor) {
+    async animateSpring(animationDirection, sourceActor) {
         this._resetAnimationActors();
 
         let actors = this._getChildrenToAnimate();
@@ -1625,6 +1655,8 @@ var IconGrid = GObject.registerClass({
             this._animationDone();
             return;
         }
+
+        await this.layout_manager.ensureIconSizeUpdated();
 
         let [sourceX, sourceY] = sourceActor.get_transformed_position();
         let [sourceWidth, sourceHeight] = sourceActor.get_size();
