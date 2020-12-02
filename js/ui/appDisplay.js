@@ -138,6 +138,12 @@ var BaseAppView = GObject.registerClass({
         this._grid._delegate = this;
         // Standard hack for ClutterBinLayout
         this._grid.x_expand = true;
+        this._grid.connect('pages-changed', () => {
+            this._adjustment.value = 0;
+            this.goToPage(this._grid.currentPage);
+            this._pageIndicators.setNPages(this._grid.nPages);
+            this._pageIndicators.setCurrentPosition(this._grid.currentPage);
+        });
 
         const vertical = orientation === Clutter.Orientation.VERTICAL;
 
@@ -849,18 +855,6 @@ var BaseAppView = GObject.registerClass({
         const availHeight = box.get_height();
 
         this._grid.adaptToSize(availWidth, availHeight);
-
-        if (this._availWidth !== availWidth ||
-            this._availHeight !== availHeight ||
-            this._pageIndicators.nPages !== this._grid.nPages) {
-            Meta.later_add(Meta.LaterType.BEFORE_REDRAW, () => {
-                this._adjustment.value = 0;
-                this.goToPage(this._grid.currentPage);
-                this._pageIndicators.setNPages(this._grid.nPages);
-                this._pageIndicators.setCurrentPosition(this._grid.currentPage);
-                return GLib.SOURCE_REMOVE;
-            });
-        }
 
         this._availWidth = availWidth;
         this._availHeight = availHeight;
