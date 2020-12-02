@@ -40,6 +40,7 @@ var PageIndicators = GObject.registerClass({
         this._currentPosition = 0;
         this._reactive = true;
         this._reactive = true;
+        this._orientation = orientation;
     }
 
     vfunc_get_preferred_height(forWidth) {
@@ -128,8 +129,8 @@ var PageIndicators = GObject.registerClass({
 
 var AnimatedPageIndicators = GObject.registerClass(
 class AnimatedPageIndicators extends PageIndicators {
-    _init() {
-        super._init();
+    _init(orientation = Clutter.Orientation.VERTICAL) {
+        super._init(orientation);
         this.connect('destroy', this._onDestroy.bind(this));
     }
 
@@ -163,11 +164,12 @@ class AnimatedPageIndicators extends PageIndicators {
         for (let i = 0; i < this._nPages; i++)
             children[i].remove_all_transitions();
 
+        const vertical = this._orientation === Clutter.Orientation.VERTICAL;
         let offset;
         if (this.get_text_direction() == Clutter.TextDirection.RTL)
-            offset = -children[0].width;
+            offset = vertical ? -children[0].width : -children[0].height;
         else
-            offset = children[0].width;
+            offset = vertical ? children[0].width : children[0].height;
 
         let isAnimationIn = animationDirection == AnimationDirection.IN;
         let delay = isAnimationIn
@@ -182,13 +184,21 @@ class AnimatedPageIndicators extends PageIndicators {
             delay -= (totalAnimationTime - maxTime) / this._nPages;
 
         for (let i = 0; i < this._nPages; i++) {
-            children[i].translation_x = isAnimationIn ? offset : 0;
-            children[i].ease({
-                translation_x: isAnimationIn ? 0 : offset,
+            const params = {
                 duration: baseTime + delay * i,
                 mode: Clutter.AnimationMode.EASE_IN_OUT_QUAD,
                 delay: isAnimationIn ? ANIMATION_DELAY : 0,
-            });
+            };
+
+            if (vertical) {
+                children[i].translation_x = isAnimationIn ? offset : 0;
+                params.translation_x = isAnimationIn ? 0 : offset;
+            } else {
+                children[i].translation_y = isAnimationIn ? offset : 0;
+                params.translation_y = isAnimationIn ? 0 : offset;
+            }
+
+            children[i].ease(params);
         }
     }
 });

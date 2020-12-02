@@ -161,7 +161,7 @@ var BaseAppView = GObject.registerClass({
 
         // Page Indicators
         if (vertical)
-            this._pageIndicators = new PageIndicators.AnimatedPageIndicators();
+            this._pageIndicators = new PageIndicators.AnimatedPageIndicators(orientation);
         else
             this._pageIndicators = new PageIndicators.PageIndicators(orientation);
 
