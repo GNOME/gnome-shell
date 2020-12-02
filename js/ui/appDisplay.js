@@ -127,6 +127,11 @@ var BaseAppView = GObject.registerClass({
     },
 }, class BaseAppView extends St.Widget {
     _init(params = {}, orientation = Clutter.Orientation.VERTICAL) {
+        params = Params.parse(params, { animateIndicators: true }, true);
+
+        const animateIndicators = params.animateIndicators;
+        delete params.animateIndicators;
+
         super._init(params);
 
         this._grid = this._createGrid();
@@ -160,7 +165,7 @@ var BaseAppView = GObject.registerClass({
         });
 
         // Page Indicators
-        if (vertical)
+        if (animateIndicators)
             this._pageIndicators = new PageIndicators.AnimatedPageIndicators(orientation);
         else
             this._pageIndicators = new PageIndicators.PageIndicators(orientation);
@@ -1687,6 +1692,7 @@ class FolderView extends BaseAppView {
             layout_manager: new Clutter.BinLayout(),
             x_expand: true,
             y_expand: true,
+            animateIndicators: false,
         }, Clutter.Orientation.HORIZONTAL);
 
         // If it not expand, the parent doesn't take into account its preferred_width when allocating
