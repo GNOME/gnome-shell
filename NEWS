@@ -1,3 +1,26 @@
+3.38.2
+======
+* Handle @content properties in ease() functions [Andre; !1461]
+* Fix screencast indicator on Xorg [Jonas Å.; !1466]
+* Fix inline-replies in chat notifications [Florian; #3226]
+* Improve do-not-disturb support [Florian; #2873, !1511]
+* Fix mobile broadband support [Popax21; #3203]
+* Improve app picker spacing on larger resolutions [Georges; !1510]
+* Plugged leaks [Ray; !1460, !1459]
+* Fixed crashes [Daniel, Florian; !1453, #3258, !1507]
+* Misc. bug fixes and cleanups [Florian, Ian, Jonas D., Carlos, Daniel M.,
+  Sebastian, Daniel, Georges; #3252, #3307, #3342, !1482, !1486, #3388, !1489,
+  !1483, !1481, !1512, !1417, !1518]
+
+Contributors:
+  Jonas Dreßler, Carlos Garnacho, Sebastian Keller, Andre Moreira Magalhaes,
+  Daniel García Moreno, Florian Müllner, Popax21, Ian Douglas Scott, Ray Strode,
+  Daniel van Vugt, Jonas Ådahl
+
+Translators:
+  Juliano de Souza Camargo [pt], Fabio Tomat [fur], Akarshan Biswas [bn_IN],
+  Daniel Mustieles [es], Boyuan Yang [zh_CN], Kjartan Maraas [nb]
+
 3.38.1
 ======
 * Add screen recordings to recent items [Florian; #3171]
