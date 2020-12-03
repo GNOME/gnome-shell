@@ -167,6 +167,7 @@ var BaseAppView = GObject.registerClass({
         const scroll = vertical ?  this._scrollView.vscroll : this._scrollView.hscroll;
         this._adjustment = scroll.adjustment;
         this._adjustment.connect('notify::value', adj => {
+            this._updateFade();
             this._pageIndicators.setCurrentPosition(adj.value / adj.page_size);
         });
 
@@ -236,6 +237,31 @@ var BaseAppView = GObject.registerClass({
 
         this._removeDelayedMove();
         this._disconnectDnD();
+    }
+
+    _updateFade() {
+        const { pagePadding } = this._grid.layout_manager;
+
+        if (pagePadding.top === 0 &&
+            pagePadding.right === 0 &&
+            pagePadding.bottom === 0 &&
+            pagePadding.left === 0)
+            return;
+
+        let hOffset = 0;
+        let vOffset = 0;
+
+        if ((this._adjustment.value % this._adjustment.page_size) !== 0.0) {
+            const vertical = this._orientation === Clutter.Orientation.VERTICAL;
+
+            hOffset = vertical ? 0 : Math.max(pagePadding.left, pagePadding.right);
+            vOffset = vertical ? Math.max(pagePadding.top, pagePadding.bottom) : 0;
+
+            if (hOffset === 0 && vOffset === 0)
+                return;
+        }
+
+        this._scrollView.update_fade_effect(vOffset, hOffset);
     }
 
     _createGrid() {
