@@ -687,7 +687,10 @@ var Extensions = GObject.registerClass({
             this._extensionsList.remove_actor(this._noExtensions);
 
         this._numExtensions++;
-        this._extensionsList.add(extensionDisplay);
+        const { name } = extension.metadata;
+        const pos = [...this._extensionsList].findIndex(
+            dsp => dsp._extension.metadata.name.localeCompare(name) > 0);
+        this._extensionsList.insert_child_at_index(extensionDisplay, pos);
     }
 
     _onViewSource(actor) {
@@ -750,6 +753,7 @@ var Extensions = GObject.registerClass({
 
     _createExtensionDisplay(extension) {
         let box = new St.BoxLayout({ style_class: 'lg-extension', vertical: true });
+        box._extension = extension;
         let name = new St.Label({
             style_class: 'lg-extension-name',
             text: extension.metadata.name,
