@@ -848,6 +848,7 @@ var BaseAppView = GObject.registerClass({
             x2: width,
             y2: height,
         });
+        box = this.get_theme_node().get_content_box(box);
         box = this._scrollView.get_theme_node().get_content_box(box);
         box = this._grid.get_theme_node().get_content_box(box);
 
