@@ -157,9 +157,7 @@ shell_dbus_init (gboolean replace)
 
   shell_dbus_acquire_names (bus,
                             request_name_flags,
-  /* Also grab org.gnome.Panel to replace any existing panel process */
-                            "org.gnome.Panel", TRUE,
-  /* ...and the org.gnome.Magnifier service. */
+  /* Also grab the org.gnome.Magnifier service. */
                             MAGNIFIER_DBUS_SERVICE, FALSE,
                             NULL);
   g_object_unref (bus);
