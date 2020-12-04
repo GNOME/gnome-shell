@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+  <gresource prefix="/org/gnome/ScreenSaver/js">
+    <file>main.js</file>
+    <file>screenSaverService.js</file>
+    <file>dbusService.js</file>
+
+    <file>misc/config.js</file>
+    <file>misc/fileUtils.js</file>
+  </gresource>
+</gresources>

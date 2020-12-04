@@ -367,7 +367,8 @@ var ScreenSaverDBus = class {
         this._dbusImpl = Gio.DBusExportedObject.wrapJSObject(ScreenSaverIface, this);
         this._dbusImpl.export(Gio.DBus.session, '/org/gnome/ScreenSaver');
 
-        Gio.DBus.session.own_name('org.gnome.ScreenSaver', Gio.BusNameOwnerFlags.REPLACE, null, null);
+        Gio.DBus.session.own_name('org.gnome.Shell.ScreenShield',
+            Gio.BusNameOwnerFlags.NONE, null, null);
     }
 
     LockAsync(parameters, invocation) {
