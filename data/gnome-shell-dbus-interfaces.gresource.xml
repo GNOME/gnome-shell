@@ -26,8 +26,6 @@
     <file preprocess="xml-stripblanks">org.freedesktop.realmd.Service.xml</file>
     <file preprocess="xml-stripblanks">org.freedesktop.UPower.Device.xml</file>
     <file preprocess="xml-stripblanks">org.freedesktop.UPower.xml</file>
-    <file preprocess="xml-stripblanks">org.gnome.Magnifier.xml</file>
-    <file preprocess="xml-stripblanks">org.gnome.Magnifier.ZoomRegion.xml</file>
     <file preprocess="xml-stripblanks">org.gnome.Mutter.ScreenCast.xml</file>
     <file preprocess="xml-stripblanks">org.gnome.ScreenSaver.xml</file>
     <file preprocess="xml-stripblanks">org.gnome.SessionManager.EndSessionDialog.xml</file>

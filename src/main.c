@@ -27,7 +27,6 @@
 extern GType gnome_shell_plugin_get_type (void);
 
 #define SHELL_DBUS_SERVICE "org.gnome.Shell"
-#define MAGNIFIER_DBUS_SERVICE "org.gnome.Magnifier"
 
 #define WM_NAME "GNOME Shell"
 #define GNOME_WM_KEYBINDINGS "Mutter,GNOME Shell"
@@ -72,35 +71,6 @@ shell_dbus_acquire_name (GDBusProxy  *bus,
     }
   g_variant_get (request_name_variant, "(u)", request_name_result);
   g_variant_unref (request_name_variant);
-}
-
-static void
-shell_dbus_acquire_names (GDBusProxy  *bus,
-                          guint32      request_name_flags,
-                          const gchar *name,
-                          gboolean     fatal, ...) G_GNUC_NULL_TERMINATED;
-
-static void
-shell_dbus_acquire_names (GDBusProxy  *bus,
-                          guint32      request_name_flags,
-                          const gchar *name,
-                          gboolean     fatal, ...)
-{
-  va_list al;
-  guint32 request_name_result;
-  va_start (al, fatal);
-  for (;;)
-  {
-    shell_dbus_acquire_name (bus,
-                             request_name_flags,
-                             &request_name_result,
-                             name, fatal);
-    name = va_arg (al, gchar *);
-    if (!name)
-      break;
-    fatal = va_arg (al, gboolean);
-  }
-  va_end (al);
 }
 
 static void
@@ -149,17 +119,6 @@ shell_dbus_init (gboolean replace)
       exit (1);
     }
 
-  /*
-   * We always specify REPLACE_EXISTING to ensure we kill off
-   * the existing service if it was running.
-   */
-  request_name_flags |= G_BUS_NAME_OWNER_FLAGS_REPLACE;
-
-  shell_dbus_acquire_names (bus,
-                            request_name_flags,
-  /* Also grab the org.gnome.Magnifier service. */
-                            MAGNIFIER_DBUS_SERVICE, FALSE,
-                            NULL);
   g_object_unref (bus);
   g_object_unref (session);
 }

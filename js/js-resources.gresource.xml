@@ -71,7 +71,6 @@
     <file>ui/locatePointer.js</file>
     <file>ui/lookingGlass.js</file>
     <file>ui/magnifier.js</file>
-    <file>ui/magnifierDBus.js</file>
     <file>ui/main.js</file>
     <file>ui/messageTray.js</file>
     <file>ui/messageList.js</file>

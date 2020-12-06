@@ -7,7 +7,6 @@ const Signals = imports.signals;
 const Background = imports.ui.background;
 const FocusCaretTracker = imports.ui.focusCaretTracker;
 const Main = imports.ui.main;
-const MagnifierDBus = imports.ui.magnifierDBus;
 const Params = imports.misc.params;
 const PointerWatcher = imports.ui.pointerWatcher;
 
@@ -117,8 +116,6 @@ var Magnifier = class Magnifier {
             this.setActive(St.Settings.get().magnifier_active);
         });
 
-        // Export to dbus.
-        new MagnifierDBus.ShellMagnifier();
         this.setActive(St.Settings.get().magnifier_active);
     }
 
