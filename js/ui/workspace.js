@@ -8,7 +8,7 @@ const Main = imports.ui.main;
 const Overview = imports.ui.overview;
 const { WindowPreview } = imports.ui.windowPreview;
 
-var WINDOW_PREVIEW_MAXIMUM_SCALE = 1.0;
+var WINDOW_PREVIEW_MAXIMUM_SCALE = 0.95;
 
 var WINDOW_REPOSITIONING_DELAY = 750;
 
