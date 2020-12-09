@@ -78,6 +78,7 @@ class WorkspacesView extends WorkspacesViewBase {
 
         this._animating = false; // tweening
         this._gestureActive = false; // touch(pad) gestures
+        this._updateScrollPositionId = 0;
 
         this._scrollAdjustment = scrollAdjustment;
         this._onScrollId = this._scrollAdjustment.connect('notify::value',
@@ -124,7 +125,14 @@ class WorkspacesView extends WorkspacesViewBase {
             child.allocate_available_size(x, y, box.get_width(), box.get_height());
         });
 
-        this._updateScrollPosition();
+        // Update scroll position in an idle callback to avoid unintended
+        // side effects (e.g. workspace switch) during layout.
+        this._updateScrollPositionId =
+            GLib.idle_add(GLib.PRIORITY_DEFAULT, () => {
+                this._updateScrollPositionId = 0;
+                this._updateScrollPosition();
+                return GLib.SOURCE_REMOVE;
+            });
     }
 
     getActiveWorkspace() {
@@ -227,6 +235,8 @@ class WorkspacesView extends WorkspacesViewBase {
     _onDestroy() {
         super._onDestroy();
 
+        if (this._updateScrollPositionId)
+            GLib.source_remove(this._updateScrollPositionId);
         this._scrollAdjustment.disconnect(this._onScrollId);
         global.window_manager.disconnect(this._switchWorkspaceNotifyId);
         let workspaceManager = global.workspace_manager;
@@ -253,6 +263,11 @@ class WorkspacesView extends WorkspacesViewBase {
     _updateScrollPosition() {
         if (!this.has_allocation())
             return;
+
+        if (this._updateScrollPositionId) {
+            GLib.source_remove(this._updateScrollPositionId);
+            this._updateScrollPositionId = 0;
+        }
 
         const adj = this._scrollAdjustment;
         const allowSwitch =
