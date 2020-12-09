@@ -180,10 +180,10 @@
 
         Enable an extension.
     -->
-    <method name="EnableExtension"> \
-      <arg type="s" direction="in" name="uuid"/> \
-      <arg type="b" direction="out" name="success"/> \
-    </method> \
+    <method name="EnableExtension">
+      <arg type="s" direction="in" name="uuid"/>
+      <arg type="b" direction="out" name="success"/>
+    </method>
 
     <!--
         DisableExtension:
@@ -192,10 +192,10 @@
 
         Disable an extension.
     -->
-    <method name="DisableExtension"> \
-      <arg type="s" direction="in" name="uuid"/> \
-      <arg type="b" direction="out" name="success"/> \
-    </method> \
+    <method name="DisableExtension">
+      <arg type="s" direction="in" name="uuid"/>
+      <arg type="b" direction="out" name="success"/>
+    </method>
 
     <!--
         LaunchExtensionPrefs:
