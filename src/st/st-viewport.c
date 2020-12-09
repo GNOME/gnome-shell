@@ -435,7 +435,7 @@ st_viewport_pick (ClutterActor       *actor,
   StViewportPrivate *priv = st_viewport_get_instance_private (viewport);
   StThemeNode *theme_node = st_widget_get_theme_node (ST_WIDGET (actor));
   double x, y;
-  ClutterActorBox allocation_box;
+  g_autoptr (ClutterActorBox) allocation_box = NULL;
   ClutterActorBox content_box;
   ClutterActor *child;
   CoglFramebuffer *fb = clutter_pick_context_get_framebuffer (pick_context);
@@ -455,8 +455,8 @@ st_viewport_pick (ClutterActor       *actor,
   if (clutter_actor_get_n_children (actor) == 0)
     return;
 
-  clutter_actor_get_allocation_box (actor, &allocation_box);
-  st_theme_node_get_content_box (theme_node, &allocation_box, &content_box);
+  g_object_get (actor, "allocation", &allocation_box, NULL);
+  st_theme_node_get_content_box (theme_node, allocation_box, &content_box);
 
   content_box.x1 += x;
   content_box.y1 += y;
