@@ -26,7 +26,7 @@
  * SECTION:shell-blur-effect
  * @short_description: Blur effect for actors
  *
- * #ShellBlurEffect is a moderately fast gaussian blur implementation. It also has
+ * #ShellBlurEffect is a blur implementation based on Clutter. It also has
  * an optional brightness property.
  *
  * # Modes
@@ -38,88 +38,7 @@
  * @SHELL_BLUR_MODE_BACKGROUND can be computationally expensive, since the contents
  * beneath the actor cannot be cached, so beware of the performance implications
  * of using this blur mode.
- *
- * # Optimizations
- *
- * There are a number of optimizations in place to make this blur implementation
- * real-time. All in all, the implementation performs best when using large
- * blur-radii that allow downscaling the texture to smaller sizes, at small
- * radii where no downscaling is possible this can easily halve the framerate.
- *
- * ## Multipass
- *
- * It is implemented in 2 passes: vertical and horizontal.
- *
- * ## Downscaling
- *
- * #ShellBlurEffect uses dynamic downscaling to speed up blurring. Downscaling
- * happens in factors of 2 (the image is downscaled either by 2, 4, 8, 16, …) and
- * depends on the blur radius, the actor size, among others.
- *
- * The actor is drawn into a downscaled framebuffer; the blur passes are applied
- * on the downscaled actor contents; and finally, the blurred contents are drawn
- * upscaled again.
- *
- * ## Hardware Interpolation
- *
- * This blur implementation cuts down the number of sampling operations by
- * exploiting the hardware interpolation that is performed when sampling between
- * pixel boundaries. This technique is described at:
- *
- * http://rastergrid.com/blog/2010/09/efficient-gaussian-blur-with-linear-sampling/
- *
- * ## Incremental gauss-factor calculation
- *
- * The kernel values for the gaussian kernel are computed incrementally instead
- * of running the expensive calculations multiple times inside the blur shader.
- * The implementation is based on the algorithm presented by K. Turkowski in
- * GPU Gems 3, chapter 40:
- *
- * https://developer.nvidia.com/gpugems/GPUGems3/gpugems3_ch40.html
- *
  */
-
-static const gchar *gaussian_blur_glsl_declarations =
-"uniform float sigma;                                                      \n"
-"uniform float pixel_step;                                                 \n"
-"uniform int vertical;                                                     \n";
-
-static const gchar *gaussian_blur_glsl =
-"  int horizontal = 1 - vertical;                                          \n"
-"                                                                          \n"
-"  vec2 uv = vec2 (cogl_tex_coord.st);                                     \n"
-"                                                                          \n"
-"  vec3 gauss_coefficient;                                                 \n"
-"  gauss_coefficient.x = 1.0 / (sqrt (2.0 * 3.14159265) * sigma);          \n"
-"  gauss_coefficient.y = exp (-0.5 / (sigma * sigma));                     \n"
-"  gauss_coefficient.z = gauss_coefficient.y * gauss_coefficient.y;        \n"
-"                                                                          \n"
-"  float gauss_coefficient_total = gauss_coefficient.x;                    \n"
-"                                                                          \n"
-"  vec4 ret = texture2D (cogl_sampler, uv) * gauss_coefficient.x;          \n"
-"  gauss_coefficient.xy *= gauss_coefficient.yz;                           \n"
-"                                                                          \n"
-"  int n_steps = int (ceil (3 * sigma));                                   \n"
-"                                                                          \n"
-"  for (int i = 1; i < n_steps; i += 2) {                                  \n"
-"    float coefficient_subtotal = gauss_coefficient.x;                     \n"
-"    gauss_coefficient.xy *= gauss_coefficient.yz;                         \n"
-"    coefficient_subtotal += gauss_coefficient.x;                          \n"
-"                                                                          \n"
-"    float gauss_ratio = gauss_coefficient.x / coefficient_subtotal;       \n"
-"                                                                          \n"
-"    float foffset = float (i) + gauss_ratio;                              \n"
-"    vec2 offset = vec2 (foffset * pixel_step * float (horizontal),        \n"
-"                        foffset * pixel_step * float (vertical));         \n"
-"                                                                          \n"
-"    ret += texture2D (cogl_sampler, uv + offset) * coefficient_subtotal;  \n"
-"    ret += texture2D (cogl_sampler, uv - offset) * coefficient_subtotal;  \n"
-"                                                                          \n"
-"    gauss_coefficient_total += 2.0 * coefficient_subtotal;                \n"
-"    gauss_coefficient.xy *= gauss_coefficient.yz;                         \n"
-"  }                                                                       \n"
-"                                                                          \n"
-"  cogl_texel = ret / gauss_coefficient_total;                             \n";
 
 static const gchar *brightness_glsl_declarations =
 "uniform float brightness;                                                 \n";
@@ -129,12 +48,6 @@ static const gchar *brightness_glsl =
 
 #define MIN_DOWNSCALE_SIZE 256.f
 #define MAX_SIGMA 6.f
-
-typedef enum
-{
-  VERTICAL,
-  HORIZONTAL,
-} BlurType;
 
 typedef enum
 {
@@ -149,22 +62,11 @@ typedef struct
   CoglTexture *texture;
 } FramebufferData;
 
-typedef struct
-{
-  FramebufferData data;
-  BlurType type;
-  int sigma_uniform;
-  int pixel_step_uniform;
-  int vertical_uniform;
-} BlurData;
-
 struct _ShellBlurEffect
 {
   ClutterEffect parent_instance;
 
   ClutterActor *actor;
-
-  BlurData blur[2];
 
   unsigned int tex_width;
   unsigned int tex_height;
@@ -220,29 +122,6 @@ create_base_pipeline (void)
 }
 
 static CoglPipeline*
-create_blur_pipeline (void)
-{
-  static CoglPipeline *blur_pipeline = NULL;
-
-  if (G_UNLIKELY (blur_pipeline == NULL))
-    {
-      CoglSnippet *snippet;
-
-      blur_pipeline = create_base_pipeline ();
-
-      snippet = cogl_snippet_new (COGL_SNIPPET_HOOK_TEXTURE_LOOKUP,
-                                  gaussian_blur_glsl_declarations,
-                                  NULL);
-      cogl_snippet_set_replace (snippet, gaussian_blur_glsl);
-      cogl_pipeline_add_layer_snippet (blur_pipeline, 0, snippet);
-      cogl_object_unref (snippet);
-    }
-
-  return cogl_pipeline_copy (blur_pipeline);
-}
-
-
-static CoglPipeline*
 create_brightness_pipeline (void)
 {
   static CoglPipeline *brightness_pipeline = NULL;
@@ -263,59 +142,17 @@ create_brightness_pipeline (void)
   return cogl_pipeline_copy (brightness_pipeline);
 }
 
-static void
-setup_blur (BlurData *blur,
-            BlurType  type)
-{
-  blur->type = type;
-  blur->data.pipeline = create_blur_pipeline ();
-
-  blur->sigma_uniform =
-    cogl_pipeline_get_uniform_location (blur->data.pipeline, "sigma");
-  blur->pixel_step_uniform =
-    cogl_pipeline_get_uniform_location (blur->data.pipeline, "pixel_step");
-  blur->vertical_uniform =
-    cogl_pipeline_get_uniform_location (blur->data.pipeline, "vertical");
-}
 
 static void
-update_blur_uniforms (ShellBlurEffect *self,
-                      BlurData        *blur)
+update_brightness (ShellBlurEffect *self,
+                   uint8_t          paint_opacity)
 {
-  gboolean is_vertical = blur->type == VERTICAL;
+  cogl_pipeline_set_color4ub (self->brightness_fb.pipeline,
+                              paint_opacity,
+                              paint_opacity,
+                              paint_opacity,
+                              paint_opacity);
 
-  if (blur->pixel_step_uniform > -1)
-    {
-      float pixel_step;
-
-      if (is_vertical)
-        pixel_step = 1.f / cogl_texture_get_height (blur->data.texture);
-      else
-        pixel_step = 1.f / cogl_texture_get_width (blur->data.texture);
-
-      cogl_pipeline_set_uniform_1f (blur->data.pipeline,
-                                    blur->pixel_step_uniform,
-                                    pixel_step);
-    }
-
-  if (blur->sigma_uniform > -1)
-    {
-      cogl_pipeline_set_uniform_1f (blur->data.pipeline,
-                                    blur->sigma_uniform,
-                                    self->sigma / self->downscale_factor);
-    }
-
-  if (blur->vertical_uniform > -1)
-    {
-      cogl_pipeline_set_uniform_1i (blur->data.pipeline,
-                                    blur->vertical_uniform,
-                                    is_vertical);
-    }
-}
-
-static void
-update_brightness_uniform (ShellBlurEffect *self)
-{
   if (self->brightness_uniform > -1)
     {
       cogl_pipeline_set_uniform_1f (self->brightness_fb.pipeline,
@@ -413,26 +250,6 @@ update_brightness_fbo (ShellBlurEffect *self,
 }
 
 static gboolean
-update_blur_fbo (ShellBlurEffect *self,
-                 BlurData        *blur,
-                 unsigned int     width,
-                 unsigned int     height,
-                 float            downscale_factor)
-{
-  if (self->tex_width == width &&
-      self->tex_height == height &&
-      self->downscale_factor == downscale_factor &&
-      blur->data.framebuffer)
-    {
-      return TRUE;
-    }
-
-  return update_fbo (&blur->data,
-                     width, height,
-                     downscale_factor);
-}
-
-static gboolean
 update_background_fbo (ShellBlurEffect *self,
                        unsigned int     width,
                        unsigned int     height)
@@ -496,8 +313,6 @@ shell_blur_effect_set_actor (ClutterActorMeta *meta,
   clear_framebuffer_data (&self->actor_fb);
   clear_framebuffer_data (&self->background_fb);
   clear_framebuffer_data (&self->brightness_fb);
-  clear_framebuffer_data (&self->blur[VERTICAL].data);
-  clear_framebuffer_data (&self->blur[HORIZONTAL].data);
 
   /* we keep a back pointer here, to avoid going through the ActorMeta */
   self->actor = clutter_actor_meta_get_actor (meta);
@@ -543,7 +358,8 @@ update_actor_box (ShellBlurEffect     *self,
 
 static void
 add_blurred_pipeline (ShellBlurEffect  *self,
-                      ClutterPaintNode *node)
+                      ClutterPaintNode *node,
+                      uint8_t           paint_opacity)
 {
   g_autoptr (ClutterPaintNode) pipeline_node = NULL;
   float width, height;
@@ -553,7 +369,7 @@ add_blurred_pipeline (ShellBlurEffect  *self,
    */
   clutter_actor_get_size (self->actor, &width, &height);
 
-  update_brightness_uniform (self);
+  update_brightness (self, paint_opacity);
 
   pipeline_node = clutter_pipeline_node_new (self->brightness_fb.pipeline);
   clutter_paint_node_set_static_name (pipeline_node, "ShellBlurEffect (final)");
@@ -573,26 +389,13 @@ create_blur_nodes (ShellBlurEffect  *self,
                    uint8_t           paint_opacity)
 {
   g_autoptr (ClutterPaintNode) brightness_node = NULL;
-  g_autoptr (ClutterPaintNode) hblur_node = NULL;
-  g_autoptr (ClutterPaintNode) vblur_node = NULL;
-  BlurData *vblur;
-  BlurData *hblur;
+  g_autoptr (ClutterPaintNode) blur_node = NULL;
   float width;
   float height;
 
-  vblur = &self->blur[VERTICAL];
-  hblur = &self->blur[HORIZONTAL];
-
   clutter_actor_get_size (self->actor, &width, &height);
 
-  update_brightness_uniform (self);
-
-  cogl_pipeline_set_color4ub (self->brightness_fb.pipeline,
-                              paint_opacity,
-                              paint_opacity,
-                              paint_opacity,
-                              paint_opacity);
-
+  update_brightness (self, paint_opacity);
   brightness_node = clutter_layer_node_new_to_framebuffer (self->brightness_fb.framebuffer,
                                                            self->brightness_fb.pipeline);
   clutter_paint_node_set_static_name (brightness_node, "ShellBlurEffect (brightness)");
@@ -603,46 +406,21 @@ create_blur_nodes (ShellBlurEffect  *self,
                                       width, height,
                                     });
 
-  /* Horizontal pass:
-   *
-   * This layer node contains the vertically blurred image; draw the it using the
-   * horizontal blur pipeline.
-   */
-  update_blur_uniforms (self, hblur);
-
-  hblur_node = clutter_layer_node_new_to_framebuffer (hblur->data.framebuffer,
-                                                      hblur->data.pipeline);
-  clutter_paint_node_set_static_name (hblur_node, "ShellBlurEffect (horizontal pass)");
-  clutter_paint_node_add_child (brightness_node, hblur_node);
-  clutter_paint_node_add_rectangle (hblur_node,
+  blur_node = clutter_blur_node_new (self->tex_width / self->downscale_factor,
+                                     self->tex_height / self->downscale_factor,
+                                     self->sigma / self->downscale_factor);
+  clutter_paint_node_set_static_name (blur_node, "ShellBlurEffect (blur)");
+  clutter_paint_node_add_child (brightness_node, blur_node);
+  clutter_paint_node_add_rectangle (blur_node,
                                     &(ClutterActorBox) {
                                       0.f, 0.f,
                                       cogl_texture_get_width (self->brightness_fb.texture),
                                       cogl_texture_get_height (self->brightness_fb.texture),
                                     });
 
-  /* Vertical pass:
-   *
-   * Draw the actor contents into the vblur framebuffer using the vertical
-   * blur pipeline, which will output a vertically blurred image that will
-   * be used by the parent node (hblur_node).
-   */
-  update_blur_uniforms (self, vblur);
-
-  vblur_node = clutter_layer_node_new_to_framebuffer (vblur->data.framebuffer,
-                                                      vblur->data.pipeline);
-  clutter_paint_node_set_static_name (vblur_node, "ShellBlurEffect (vertical pass)");
-  clutter_paint_node_add_child (hblur_node, vblur_node);
-  clutter_paint_node_add_rectangle (vblur_node,
-                                    &(ClutterActorBox) {
-                                      0.f, 0.f,
-                                      cogl_texture_get_width (hblur->data.texture),
-                                      cogl_texture_get_height (hblur->data.texture)
-                                    });
-
   self->cache_flags |= BLUR_APPLIED;
 
-  return g_steal_pointer (&vblur_node);
+  return g_steal_pointer (&blur_node);
 }
 
 static void
@@ -706,11 +484,8 @@ update_framebuffers (ShellBlurEffect     *self,
 
   downscale_factor = calculate_downscale_factor (width, height, self->sigma);
 
-  updated =
-    update_actor_fbo (self, width, height, downscale_factor) &&
-    update_blur_fbo (self, &self->blur[VERTICAL], width, height, downscale_factor) &&
-    update_blur_fbo (self, &self->blur[HORIZONTAL], width, height, downscale_factor) &&
-    update_brightness_fbo (self, width, height, downscale_factor);
+  updated = update_actor_fbo (self, width, height, downscale_factor) &&
+            update_brightness_fbo (self, width, height, downscale_factor);
 
   if (self->mode == SHELL_BLUR_MODE_BACKGROUND)
     updated = updated && update_background_fbo (self, width, height);
@@ -831,6 +606,17 @@ shell_blur_effect_paint_node (ClutterEffect           *effect,
     {
       g_autoptr (ClutterPaintNode) blur_node = NULL;
 
+      switch (self->mode)
+        {
+        case SHELL_BLUR_MODE_ACTOR:
+          paint_opacity = clutter_actor_get_paint_opacity (self->actor);
+          break;
+
+        case SHELL_BLUR_MODE_BACKGROUND:
+          paint_opacity = 255;
+          break;
+        }
+
       if (needs_repaint (self, flags))
         {
           ClutterActorBox source_actor_box;
@@ -843,17 +629,15 @@ shell_blur_effect_paint_node (ClutterEffect           *effect,
           if (!update_framebuffers (self, paint_context, &source_actor_box))
             goto fail;
 
+          blur_node = create_blur_nodes (self, node, paint_opacity);
+
           switch (self->mode)
             {
             case SHELL_BLUR_MODE_ACTOR:
-              paint_opacity = clutter_actor_get_paint_opacity (self->actor);
-
-              blur_node = create_blur_nodes (self, node, paint_opacity);
               paint_actor_offscreen (self, blur_node, flags);
               break;
 
             case SHELL_BLUR_MODE_BACKGROUND:
-              blur_node = create_blur_nodes (self, node, 255);
               paint_background (self, blur_node, paint_context, &source_actor_box);
               break;
             }
@@ -861,7 +645,7 @@ shell_blur_effect_paint_node (ClutterEffect           *effect,
       else
         {
           /* Use the cached pipeline if no repaint is needed */
-          add_blurred_pipeline (self, node);
+          add_blurred_pipeline (self, node, paint_opacity);
         }
 
       /* Background blur needs to paint the actor after painting the blurred
@@ -895,14 +679,10 @@ shell_blur_effect_finalize (GObject *object)
   clear_framebuffer_data (&self->actor_fb);
   clear_framebuffer_data (&self->background_fb);
   clear_framebuffer_data (&self->brightness_fb);
-  clear_framebuffer_data (&self->blur[VERTICAL].data);
-  clear_framebuffer_data (&self->blur[HORIZONTAL].data);
 
   g_clear_pointer (&self->actor_fb.pipeline, cogl_object_unref);
   g_clear_pointer (&self->background_fb.pipeline, cogl_object_unref);
   g_clear_pointer (&self->brightness_fb.pipeline, cogl_object_unref);
-  g_clear_pointer (&self->blur[VERTICAL].data.pipeline, cogl_object_unref);
-  g_clear_pointer (&self->blur[HORIZONTAL].data.pipeline, cogl_object_unref);
 
   G_OBJECT_CLASS (shell_blur_effect_parent_class)->finalize (object);
 }
@@ -1013,9 +793,6 @@ shell_blur_effect_init (ShellBlurEffect *self)
   self->brightness_fb.pipeline = create_brightness_pipeline ();
   self->brightness_uniform =
     cogl_pipeline_get_uniform_location (self->brightness_fb.pipeline, "brightness");
-
-  setup_blur (&self->blur[VERTICAL], VERTICAL);
-  setup_blur (&self->blur[HORIZONTAL], HORIZONTAL);
 }
 
 ShellBlurEffect *
