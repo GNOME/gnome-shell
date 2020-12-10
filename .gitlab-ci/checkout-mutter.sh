@@ -1,5 +1,12 @@
 #!/usr/bin/bash
 
+fetch() {
+  local remote=$1
+  local ref=$2
+
+  git fetch --quiet $remote $ref 2>/dev/null
+}
+
 mutter_target=
 
 echo -n Cloning into mutter ...
@@ -17,7 +24,7 @@ if [ "$CI_MERGE_REQUEST_TARGET_BRANCH_NAME" ]; then
   merge_request_branch=$CI_MERGE_REQUEST_SOURCE_BRANCH_NAME
 
   echo -n Looking for $merge_request_branch on remote ...
-  if git fetch -q $merge_request_remote $merge_request_branch 2>/dev/null; then
+  if fetch $merge_request_remote $merge_request_branch; then
     echo \ found
     mutter_target=FETCH_HEAD
   else
@@ -29,12 +36,12 @@ fi
 
 if [ -z "$mutter_target" ]; then
   echo -n Looking for $CI_COMMIT_REF on remote ...
-  mutter_target=$(git branch -r -l origin/$CI_COMMIT_REF_NAME)
-  if [ "$mutter_target" ]; then
+  if fetch origin $CI_COMMIT_REF; then
     echo \ found
+    mutter_target=FETCH_HEAD
   else
     echo \ not found
-    mutter_target=${mutter_target:-origin/master}
+    mutter_target=origin/master
     echo Using $mutter_target instead
   fi
 fi
