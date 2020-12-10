@@ -435,8 +435,6 @@ class ControlsManager extends St.Widget {
         this._group.add_child(this.viewSelector);
         this._group.add_actor(this._thumbnailsSlider);
 
-        Main.overview.connect('showing', this._updateSpacerVisibility.bind(this));
-
         this.connect('destroy', this._onDestroy.bind(this));
     }
 
@@ -482,18 +480,8 @@ class ControlsManager extends St.Widget {
             this._thumbnailsSlider.slideOut();
     }
 
-    _updateSpacerVisibility() {
-        if (Main.overview.animationInProgress && !Main.overview.visibleTarget)
-            return;
-
-        let activePage = this.viewSelector.getActivePage();
-        this._dashSpacer.visible = activePage == ViewSelector.ViewPage.WINDOWS;
-    }
-
     _onPageEmpty() {
         this._dashSlider.pageEmpty();
         this._thumbnailsSlider.pageEmpty();
-
-        this._updateSpacerVisibility();
     }
 });
