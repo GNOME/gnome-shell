@@ -399,6 +399,31 @@ get_border_paint_offsets (StViewport *viewport,
 
 
 static void
+st_viewport_paint_node (ClutterActor     *actor,
+                        ClutterPaintNode *node)
+{
+  StViewport *viewport = ST_VIEWPORT (actor);
+  int x, y;
+
+  get_border_paint_offsets (viewport, &x, &y);
+  if (x != 0 || y != 0)
+    {
+      g_autoptr (ClutterPaintNode) transform_node = NULL;
+      graphene_matrix_t transform;
+
+      graphene_matrix_init_translate (&transform,
+                                      &GRAPHENE_POINT3D_INIT (x, y, 0));
+
+      transform_node = clutter_transform_node_new (&transform);
+      clutter_paint_node_add_child (node, transform_node);
+
+      node = transform_node;
+    }
+
+  st_widget_paint_background (ST_WIDGET (actor), node);
+}
+
+static void
 st_viewport_paint (ClutterActor        *actor,
                    ClutterPaintContext *paint_context)
 {
@@ -411,23 +436,13 @@ st_viewport_paint (ClutterActor        *actor,
   ClutterActor *child;
   CoglFramebuffer *fb = clutter_paint_context_get_framebuffer (paint_context);
 
-  get_border_paint_offsets (viewport, &x, &y);
-  if (x != 0 || y != 0)
-    {
-      cogl_framebuffer_push_matrix (fb);
-      cogl_framebuffer_translate (fb, x, y, 0);
-    }
-
-  st_widget_paint_background (ST_WIDGET (actor), paint_context);
-
-  if (x != 0 || y != 0)
-    cogl_framebuffer_pop_matrix (fb);
-
   if (clutter_actor_get_n_children (actor) == 0)
     return;
 
   clutter_actor_get_allocation_box (actor, &allocation_box);
   st_theme_node_get_content_box (theme_node, &allocation_box, &content_box);
+
+  get_border_paint_offsets (viewport, &x, &y);
 
   content_box.x1 += x;
   content_box.y1 += y;
@@ -564,6 +579,7 @@ st_viewport_class_init (StViewportClass *klass)
   actor_class->allocate = st_viewport_allocate;
   actor_class->apply_transform = st_viewport_apply_transform;
 
+  actor_class->paint_node = st_viewport_paint_node;
   actor_class->paint = st_viewport_paint;
   actor_class->get_paint_volume = st_viewport_get_paint_volume;
   actor_class->pick = st_viewport_pick;

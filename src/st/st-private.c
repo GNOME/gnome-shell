@@ -773,12 +773,13 @@ _st_create_shadow_cairo_pattern (StShadow        *shadow_spec_in,
 }
 
 void
-_st_paint_shadow_with_opacity (StShadow        *shadow_spec,
-                               CoglFramebuffer *framebuffer,
-                               CoglPipeline    *shadow_pipeline,
-                               ClutterActorBox *box,
-                               guint8           paint_opacity)
+_st_paint_shadow_with_opacity (StShadow         *shadow_spec,
+                               ClutterPaintNode *node,
+                               CoglPipeline     *shadow_pipeline,
+                               ClutterActorBox  *box,
+                               guint8            paint_opacity)
 {
+  g_autoptr (ClutterPaintNode) pipeline_node = NULL;
   ClutterActorBox shadow_box;
   CoglColor color;
 
@@ -794,8 +795,8 @@ _st_paint_shadow_with_opacity (StShadow        *shadow_spec,
                            shadow_spec->color.alpha / 255.0 * paint_opacity / 255.0);
   cogl_color_premultiply (&color);
   cogl_pipeline_set_layer_combine_constant (shadow_pipeline, 0, &color);
-  cogl_framebuffer_draw_rectangle (framebuffer,
-                                   shadow_pipeline,
-                                   shadow_box.x1, shadow_box.y1,
-                                   shadow_box.x2, shadow_box.y2);
+
+  pipeline_node = clutter_pipeline_node_new (shadow_pipeline);
+  clutter_paint_node_add_child (node, pipeline_node);
+  clutter_paint_node_add_rectangle (pipeline_node, &shadow_box);
 }

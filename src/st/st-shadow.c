@@ -281,7 +281,7 @@ st_shadow_helper_free (StShadowHelper *helper)
 /**
  * st_shadow_helper_paint:
  * @helper: a #StShadowHelper
- * @framebuffer: a #CoglFramebuffer
+ * @node: a #ClutterPaintNode
  * @actor_box: the bounding box of the shadow
  * @paint_opacity: the opacity at which the shadow is painted
  *
@@ -289,13 +289,13 @@ st_shadow_helper_free (StShadowHelper *helper)
  * be called from the implementation of ClutterActor::paint().
  */
 void
-st_shadow_helper_paint (StShadowHelper  *helper,
-                        CoglFramebuffer *framebuffer,
-                        ClutterActorBox *actor_box,
-                        guint8           paint_opacity)
+st_shadow_helper_paint (StShadowHelper   *helper,
+                        ClutterPaintNode *node,
+                        ClutterActorBox  *actor_box,
+                        uint8_t           paint_opacity)
 {
   _st_paint_shadow_with_opacity (helper->shadow,
-                                 framebuffer,
+                                 node,
                                  helper->pipeline,
                                  actor_box,
                                  paint_opacity);

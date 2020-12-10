@@ -817,13 +817,12 @@ st_entry_leave_event (ClutterActor *actor,
 }
 
 static void
-st_entry_paint (ClutterActor        *actor,
-                ClutterPaintContext *paint_context)
+st_entry_paint_node (ClutterActor     *actor,
+                     ClutterPaintNode *node)
 {
   StEntryPrivate *priv = ST_ENTRY_PRIV (actor);
-  ClutterActorClass *parent_class;
 
-  st_widget_paint_background (ST_WIDGET (actor), paint_context);
+  st_widget_paint_background (ST_WIDGET (actor), node);
 
   if (priv->shadow_spec)
     {
@@ -851,23 +850,13 @@ st_entry_paint (ClutterActor        *actor,
 
       if (priv->text_shadow_material != NULL)
         {
-          CoglFramebuffer *framebuffer =
-            clutter_paint_context_get_framebuffer (paint_context);
-
           _st_paint_shadow_with_opacity (priv->shadow_spec,
-                                         framebuffer,
+                                         node,
                                          priv->text_shadow_material,
                                          &allocation,
                                          clutter_actor_get_paint_opacity (priv->entry));
         }
     }
-
-  /* Since we paint the background ourselves, chain to the parent class
-   * of StWidget, to avoid painting it twice.
-   * This is needed as we still want to paint children.
-   */
-  parent_class = g_type_class_peek_parent (st_entry_parent_class);
-  parent_class->paint (actor, paint_context);
 }
 
 static void
@@ -901,7 +890,7 @@ st_entry_class_init (StEntryClass *klass)
   actor_class->get_preferred_width = st_entry_get_preferred_width;
   actor_class->get_preferred_height = st_entry_get_preferred_height;
   actor_class->allocate = st_entry_allocate;
-  actor_class->paint = st_entry_paint;
+  actor_class->paint_node = st_entry_paint_node;
   actor_class->unmap = st_entry_unmap;
   actor_class->get_paint_volume = st_entry_get_paint_volume;
 

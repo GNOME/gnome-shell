@@ -84,10 +84,10 @@ void            st_shadow_helper_free (StShadowHelper *helper);
 void            st_shadow_helper_update (StShadowHelper *helper,
                                          ClutterActor   *source);
 
-void            st_shadow_helper_paint (StShadowHelper  *helper,
-                                        CoglFramebuffer *framebuffer,
-                                        ClutterActorBox *actor_box,
-                                        guint8           paint_opacity);
+void            st_shadow_helper_paint (StShadowHelper   *helper,
+                                        ClutterPaintNode *node,
+                                        ClutterActorBox  *actor_box,
+                                        uint8_t           paint_opacity);
 
 G_END_DECLS
 

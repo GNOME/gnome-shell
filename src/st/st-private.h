@@ -66,10 +66,10 @@ CoglPipeline * _st_create_shadow_pipeline_from_actor (StShadow     *shadow_spec,
 cairo_pattern_t *_st_create_shadow_cairo_pattern (StShadow        *shadow_spec,
                                                   cairo_pattern_t *src_pattern);
 
-void _st_paint_shadow_with_opacity (StShadow        *shadow_spec,
-                                    CoglFramebuffer *framebuffer,
-                                    CoglPipeline    *shadow_pipeline,
-                                    ClutterActorBox *box,
-                                    guint8           paint_opacity);
+void _st_paint_shadow_with_opacity (StShadow         *shadow_spec,
+                                    ClutterPaintNode *node,
+                                    CoglPipeline     *shadow_pipeline,
+                                    ClutterActorBox  *box,
+                                    guint8            paint_opacity);
 
 #endif /* __ST_PRIVATE_H__ */

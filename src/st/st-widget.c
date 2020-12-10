@@ -418,11 +418,10 @@ st_widget_allocate (ClutterActor          *actor,
  * painting children.
  */
 void
-st_widget_paint_background (StWidget            *widget,
-                            ClutterPaintContext *paint_context)
+st_widget_paint_background (StWidget         *widget,
+                            ClutterPaintNode *node)
 {
   StWidgetPrivate *priv = st_widget_get_instance_private (widget);
-  CoglFramebuffer *framebuffer;
   StThemeNode *theme_node;
   ClutterActorBox allocation;
   float resource_scale;
@@ -430,7 +429,6 @@ st_widget_paint_background (StWidget            *widget,
 
   resource_scale = clutter_actor_get_resource_scale (CLUTTER_ACTOR (widget));
 
-  framebuffer = clutter_paint_context_get_framebuffer (paint_context);
   theme_node = st_widget_get_theme_node (widget);
 
   clutter_actor_get_allocation_box (CLUTTER_ACTOR (widget), &allocation);
@@ -439,27 +437,24 @@ st_widget_paint_background (StWidget            *widget,
 
   if (priv->transition_animation)
     st_theme_node_transition_paint (priv->transition_animation,
-                                    framebuffer,
+                                    node,
                                     &allocation,
                                     opacity,
                                     resource_scale);
   else
     st_theme_node_paint (theme_node,
                          current_paint_state (widget),
-                         framebuffer,
+                         node,
                          &allocation,
                          opacity,
                          resource_scale);
 }
 
 static void
-st_widget_paint (ClutterActor        *actor,
-                 ClutterPaintContext *paint_context)
+st_widget_paint_node (ClutterActor     *actor,
+                      ClutterPaintNode *node)
 {
-  st_widget_paint_background (ST_WIDGET (actor), paint_context);
-
-  /* Chain up so we paint children. */
-  CLUTTER_ACTOR_CLASS (st_widget_parent_class)->paint (actor, paint_context);
+  st_widget_paint_background (ST_WIDGET (actor), node);
 }
 
 static void
@@ -892,7 +887,7 @@ st_widget_class_init (StWidgetClass *klass)
   actor_class->get_preferred_width = st_widget_get_preferred_width;
   actor_class->get_preferred_height = st_widget_get_preferred_height;
   actor_class->allocate = st_widget_allocate;
-  actor_class->paint = st_widget_paint;
+  actor_class->paint_node = st_widget_paint_node;
   actor_class->get_paint_volume = st_widget_get_paint_volume;
   actor_class->parent_set = st_widget_parent_set;
   actor_class->map = st_widget_map;

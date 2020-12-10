@@ -205,12 +205,12 @@ st_label_dispose (GObject   *object)
 }
 
 static void
-st_label_paint (ClutterActor        *actor,
-                ClutterPaintContext *paint_context)
+st_label_paint_node (ClutterActor     *actor,
+                     ClutterPaintNode *node)
 {
   StLabelPrivate *priv = ST_LABEL (actor)->priv;
 
-  st_widget_paint_background (ST_WIDGET (actor), paint_context);
+  st_widget_paint_background (ST_WIDGET (actor), node);
 
   if (priv->shadow_spec)
     {
@@ -241,19 +241,13 @@ st_label_paint (ClutterActor        *actor,
 
       if (priv->text_shadow_pipeline != NULL)
         {
-          CoglFramebuffer *framebuffer;
-
-          framebuffer =
-            clutter_paint_context_get_framebuffer (paint_context);
           _st_paint_shadow_with_opacity (priv->shadow_spec,
-                                         framebuffer,
+                                         node,
                                          priv->text_shadow_pipeline,
                                          &allocation,
                                          clutter_actor_get_paint_opacity (priv->label));
         }
     }
-
-  clutter_actor_paint (priv->label, paint_context);
 }
 
 static void
@@ -278,7 +272,7 @@ st_label_class_init (StLabelClass *klass)
   gobject_class->get_property = st_label_get_property;
   gobject_class->dispose = st_label_dispose;
 
-  actor_class->paint = st_label_paint;
+  actor_class->paint_node = st_label_paint_node;
   actor_class->allocate = st_label_allocate;
   actor_class->get_preferred_width = st_label_get_preferred_width;
   actor_class->get_preferred_height = st_label_get_preferred_height;

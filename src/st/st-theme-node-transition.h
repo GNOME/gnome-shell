@@ -42,7 +42,7 @@ void  st_theme_node_transition_update   (StThemeNodeTransition *transition,
                                          StThemeNode           *new_node);
 
 void  st_theme_node_transition_paint    (StThemeNodeTransition *transition,
-                                         CoglFramebuffer       *framebuffer,
+                                         ClutterPaintNode      *node,
                                          ClutterActorBox       *allocation,
                                          guint8                 paint_opacity,
                                          float                  resource_scale);

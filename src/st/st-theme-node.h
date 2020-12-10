@@ -342,7 +342,7 @@ gboolean st_theme_node_paint_equal    (StThemeNode *node,
  */
 void st_theme_node_paint (StThemeNode            *node,
                           StThemeNodePaintState  *state,
-                          CoglFramebuffer        *framebuffer,
+                          ClutterPaintNode       *root,
                           const ClutterActorBox  *box,
                           guint8                  paint_opacity,
                           float                   resource_scale);
