@@ -382,46 +382,74 @@ _st_create_shadow_pipeline (StShadow    *shadow_spec,
 {
   ClutterBackend *backend = clutter_get_default_backend ();
   CoglContext *ctx = clutter_backend_get_cogl_context (backend);
-  GError *error = NULL;
-
-  static CoglPipeline *shadow_pipeline_template = NULL;
-
+  g_autoptr (ClutterPaintNode) texture_node = NULL;
+  g_autoptr (ClutterPaintNode) blur_node = NULL;
+  g_autoptr (CoglOffscreen) offscreen = NULL;
+  g_autoptr (GError) error = NULL;
+  ClutterPaintContext *paint_context;
+  CoglFramebuffer *fb;
   CoglPipeline *pipeline;
   CoglTexture *texture;
-  guchar *pixels_in, *pixels_out;
-  gint width_in, height_in, rowstride_in;
-  gint width_out, height_out, rowstride_out;
+  double sigma;
+  int src_height, dst_height;
+  int src_width, dst_width;
+  int n_values;
+  int half;
+
+  static CoglPipeline *shadow_pipeline_template = NULL;
 
   g_return_val_if_fail (shadow_spec != NULL, NULL);
   g_return_val_if_fail (src_texture != NULL, NULL);
 
-  width_in  = cogl_texture_get_width  (src_texture);
-  height_in = cogl_texture_get_height (src_texture);
-  rowstride_in = (width_in + 3) & ~3;
+  sigma = shadow_spec->blur / 2.f;
+  n_values = ceil (3 * sigma);
+  half = n_values / 2;
 
-  pixels_in  = g_malloc0 (rowstride_in * height_in);
+  src_width = cogl_texture_get_width (src_texture);
+  src_height = cogl_texture_get_height (src_texture);
+  dst_width = src_width + 2 * half;
+  dst_height = src_height + 2 * half;
 
-  cogl_texture_get_data (src_texture, COGL_PIXEL_FORMAT_A_8,
-                         rowstride_in, pixels_in);
+  texture = cogl_texture_2d_new_with_size (ctx, dst_width, dst_height);
+  if (!texture)
+    return NULL;
 
-  pixels_out = blur_pixels (pixels_in, width_in, height_in, rowstride_in,
-                            shadow_spec->blur * resource_scale,
-                            &width_out, &height_out, &rowstride_out);
-  g_free (pixels_in);
-
-  texture = COGL_TEXTURE (cogl_texture_2d_new_from_data (ctx, width_out, height_out,
-                                                         COGL_PIXEL_FORMAT_A_8,
-                                                         rowstride_out,
-                                                         pixels_out,
-                                                         &error));
-
-  if (error)
+  offscreen = cogl_offscreen_new_with_texture (texture);
+  fb = COGL_FRAMEBUFFER (offscreen);
+  if (!cogl_framebuffer_allocate (fb, &error))
     {
-      g_warning ("Failed to allocate texture: %s", error->message);
-      g_error_free (error);
+      cogl_clear_object (&texture);
+      return NULL;
     }
 
-  g_free (pixels_out);
+  cogl_framebuffer_clear4f (fb, COGL_BUFFER_BIT_COLOR, 0.f, 0.f, 0.f, 0.f);
+  cogl_framebuffer_orthographic (fb, 0, 0, dst_width, dst_height, 0, 1.0);
+  cogl_framebuffer_scale (fb, resource_scale, resource_scale, 1);
+
+  /* Blur */
+  blur_node = clutter_blur_node_new (dst_width, dst_height, sigma);
+  clutter_paint_node_add_rectangle (blur_node,
+                                    &(ClutterActorBox) {
+                                      0.f, 0.f,
+                                      dst_width, dst_height,
+                                    });
+
+  /* Texture */
+  texture_node = clutter_texture_node_new (src_texture,
+                                           0,
+                                           CLUTTER_SCALING_FILTER_NEAREST,
+                                           CLUTTER_SCALING_FILTER_NEAREST);
+  clutter_paint_node_add_child (blur_node, texture_node);
+  clutter_paint_node_add_rectangle (texture_node,
+                                    &(ClutterActorBox) {
+                                      half, half,
+                                      src_width, src_height,
+                                    });
+
+  paint_context =
+    clutter_paint_context_new_for_framebuffer (fb, NULL, CLUTTER_PAINT_FLAG_NONE);
+  clutter_paint_node_paint (blur_node, paint_context);
+  clutter_paint_context_destroy (paint_context);
 
   if (G_UNLIKELY (shadow_pipeline_template == NULL))
     {
@@ -438,8 +466,7 @@ _st_create_shadow_pipeline (StShadow    *shadow_spec,
   pipeline = cogl_pipeline_copy (shadow_pipeline_template);
   cogl_pipeline_set_layer_texture (pipeline, 0, texture);
 
-  if (texture)
-    cogl_object_unref (texture);
+  cogl_clear_object (&texture);
 
   return pipeline;
 }
