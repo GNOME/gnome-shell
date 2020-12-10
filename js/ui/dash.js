@@ -597,7 +597,7 @@ var Dash = GObject.registerClass({
 
         let newIconSize = baseIconSizes[0];
         for (let i = 0; i < iconSizes.length; i++) {
-            if (iconSizes[i] < availSize)
+            if (iconSizes[i] <= availSize)
                 newIconSize = baseIconSizes[i];
         }
 
