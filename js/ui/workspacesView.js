@@ -114,14 +114,17 @@ class WorkspacesView extends WorkspacesViewBase {
         const vertical = workspaceManager.layout_rows === -1;
         const rtl = this.text_direction === Clutter.TextDirection.RTL;
 
+        const [width, height] = box.get_size();
+        const childBox = box.copy();
+
         this._workspaces.forEach((child, index) => {
             if (rtl && !vertical)
                 index = nWorkspaces - index - 1;
 
-            const x = vertical ? 0 : index * this.width;
-            const y = vertical ? index * this.height : 0;
-
-            child.allocate_available_size(x, y, box.get_width(), box.get_height());
+            childBox.set_origin(
+                vertical ? 0 : index * width,
+                vertical ? index * height : 0);
+            child.allocate_align_fill(childBox, 0.5, 0.5, false, false);
         });
 
         this._updateScrollPosition();
