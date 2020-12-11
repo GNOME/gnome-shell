@@ -10,57 +10,8 @@ const Overview = imports.ui.overview;
 
 var SIDE_CONTROLS_ANIMATION_TIME = Overview.ANIMATION_TIME;
 
-var FaderControl = GObject.registerClass(
-class FaderControl extends St.Widget {
-    _init(params) {
-        super._init(params);
-
-        this._inDrag = false;
-
-        Main.overview.connect('item-drag-begin', this._onDragBegin.bind(this));
-        Main.overview.connect('item-drag-end', this._onDragEnd.bind(this));
-        Main.overview.connect('item-drag-cancelled', this._onDragEnd.bind(this));
-
-        Main.overview.connect('window-drag-begin', this._onWindowDragBegin.bind(this));
-        Main.overview.connect('window-drag-cancelled', this._onWindowDragEnd.bind(this));
-        Main.overview.connect('window-drag-end', this._onWindowDragEnd.bind(this));
-    }
-
-    _onWindowDragBegin() {
-        this._onDragBegin();
-    }
-
-    _onWindowDragEnd() {
-        this._onDragEnd();
-    }
-
-    _onDragBegin() {
-        this._inDrag = true;
-    }
-
-    _onDragEnd() {
-        this._inDrag = false;
-    }
-
-    fadeIn() {
-        this.ease({
-            opacity: 255,
-            duration: SIDE_CONTROLS_ANIMATION_TIME / 2,
-            mode: Clutter.AnimationMode.EASE_IN_QUAD,
-        });
-    }
-
-    fadeHalf() {
-        this.ease({
-            opacity: 128,
-            duration: SIDE_CONTROLS_ANIMATION_TIME / 2,
-            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-        });
-    }
-});
-
 var DashFader = GObject.registerClass(
-class DashFader extends FaderControl {
+class DashFader extends St.Widget {
     _init(dash) {
         super._init({
             x_expand: true,
@@ -70,14 +21,26 @@ class DashFader extends FaderControl {
 
         this._dash = dash;
         this.add_child(this._dash);
+
+        Main.overview.connect('window-drag-begin', this._onWindowDragBegin.bind(this));
+        Main.overview.connect('window-drag-cancelled', this._onWindowDragEnd.bind(this));
+        Main.overview.connect('window-drag-end', this._onWindowDragEnd.bind(this));
     }
 
     _onWindowDragBegin() {
-        this.fadeHalf();
+        this.ease({
+            opacity: 128,
+            duration: SIDE_CONTROLS_ANIMATION_TIME / 2,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+        });
     }
 
     _onWindowDragEnd() {
-        this.fadeIn();
+        this.ease({
+            opacity: 255,
+            duration: SIDE_CONTROLS_ANIMATION_TIME / 2,
+            mode: Clutter.AnimationMode.EASE_IN_QUAD,
+        });
     }
 });
 
