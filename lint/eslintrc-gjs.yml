@@ -226,4 +226,4 @@ globals:
   print: readonly
   printerr: readonly
 parserOptions:
-  ecmaVersion: 2019
+  ecmaVersion: 2020
