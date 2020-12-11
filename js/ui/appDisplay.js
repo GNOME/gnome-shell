@@ -661,6 +661,7 @@ var BaseAppView = GObject.registerClass({
     }
 
     _doSpringAnimation(animationDirection) {
+        this._grid.opacity = 255;
         this._grid.animateSpring(
             animationDirection,
             Main.overview.dash.showAppsButton);
@@ -678,16 +679,15 @@ var BaseAppView = GObject.registerClass({
     }
 
     animate(animationDirection, onComplete) {
-        const animationDoneId = this._grid.connect('animation-done', () => {
-            this._grid.disconnect(animationDoneId);
-            this._grid.opacity =
-                animationDirection === IconGrid.AnimationDirection.IN
-                    ? 255 : 0;
-            if (onComplete)
+        if (onComplete) {
+            let animationDoneId = this._grid.connect('animation-done', () => {
+                this._grid.disconnect(animationDoneId);
                 onComplete();
-        });
+            });
+        }
 
         this._clearAnimateLater();
+        this._grid.opacity = 255;
 
         if (animationDirection == IconGrid.AnimationDirection.IN) {
             const doSpringAnimationLater = laterType => {
@@ -699,18 +699,18 @@ var BaseAppView = GObject.registerClass({
                     });
             };
 
-            this._grid.opacity = 0;
             if (this._viewIsReady) {
+                this._grid.opacity = 0;
                 doSpringAnimationLater(Meta.LaterType.IDLE);
             } else {
                 this._viewLoadedHandlerId = this.connect('view-loaded',
                     () => {
                         this._clearAnimateLater();
+                        this._grid.opacity = 255;
                         doSpringAnimationLater(Meta.LaterType.BEFORE_REDRAW);
                     });
             }
         } else {
-            this._grid.opacity = 255;
             this._doSpringAnimation(animationDirection);
         }
     }
