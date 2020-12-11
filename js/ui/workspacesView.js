@@ -118,10 +118,10 @@ class WorkspacesView extends WorkspacesViewBase {
             if (rtl && !vertical)
                 index = nWorkspaces - index - 1;
 
-            const x = vertical ? 0 : index * this.width;
-            const y = vertical ? index * this.height : 0;
-
-            child.allocate_available_size(x, y, box.get_width(), box.get_height());
+            box.set_origin(
+                vertical ? 0 : index * this.width,
+                vertical ? index * this.height : 0);
+            child.allocate_align_fill(box, 0.5, 0.5, false, false);
         });
 
         this._updateScrollPosition();
