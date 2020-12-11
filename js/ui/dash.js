@@ -105,21 +105,16 @@ class DashItemContainer extends St.Widget {
 
         let [stageX, stageY] = this.get_transformed_position();
 
-        let itemHeight = this.allocation.y2 - this.allocation.y1;
+        const itemWidth = this.allocation.get_width();
 
-        let labelHeight = this.label.get_height();
-        let yOffset = Math.floor((itemHeight - labelHeight) / 2);
-
-        let y = stageY + yOffset;
+        const labelWidth = this.label.get_width();
+        const xOffset = Math.floor((itemWidth - labelWidth) / 2);
+        const x = Math.clamp(stageX + xOffset, 0, global.stage.width - labelWidth);
 
         let node = this.label.get_theme_node();
-        let xOffset = node.get_length('-x-offset');
+        const yOffset = node.get_length('-y-offset');
 
-        let x;
-        if (Clutter.get_default_text_direction() == Clutter.TextDirection.RTL)
-            x = stageX - this.label.get_width() - xOffset;
-        else
-            x = stageX + this.get_width() + xOffset;
+        const y = stageY - this.label.height - yOffset;
 
         this.label.set_position(x, y);
         this.label.ease({
@@ -283,51 +278,51 @@ class EmptyDropTargetItem extends DashItemContainer {
 var DashActor = GObject.registerClass(
 class DashActor extends St.Widget {
     _init() {
-        let layout = new Clutter.BoxLayout({ orientation: Clutter.Orientation.VERTICAL });
+        let layout = new Clutter.BoxLayout({ orientation: Clutter.Orientation.HORIZONTAL });
         super._init({
             name: 'dash',
             layout_manager: layout,
             clip_to_allocation: true,
-            y_align: Clutter.ActorAlign.CENTER,
+            x_align: Clutter.ActorAlign.CENTER,
         });
     }
 
     vfunc_allocate(box) {
         let contentBox = this.get_theme_node().get_content_box(box);
-        let availWidth = contentBox.x2 - contentBox.x1;
+        const availHeight = contentBox.get_height();
 
         this.set_allocation(box);
 
         let [appIcons, showAppsButton] = this.get_children();
-        let [, showAppsNatHeight] = showAppsButton.get_preferred_height(availWidth);
+        const [, showAppsNatWidth] = showAppsButton.get_preferred_width(availHeight);
 
         let childBox = new Clutter.ActorBox();
         childBox.x1 = contentBox.x1;
         childBox.y1 = contentBox.y1;
-        childBox.x2 = contentBox.x2;
-        childBox.y2 = contentBox.y2 - showAppsNatHeight;
+        childBox.x2 = contentBox.x2 - showAppsNatWidth;
+        childBox.y2 = contentBox.y2;
         appIcons.allocate(childBox);
 
-        childBox.y1 = contentBox.y2 - showAppsNatHeight;
-        childBox.y2 = contentBox.y2;
+        childBox.x1 = contentBox.x2 - showAppsNatWidth;
+        childBox.x2 = contentBox.x2;
         showAppsButton.allocate(childBox);
     }
 
-    vfunc_get_preferred_height(forWidth) {
-        // We want to request the natural height of all our children
-        // as our natural height, so we chain up to StWidget (which
+    vfunc_get_preferred_width(forHeight) {
+        // We want to request the natural width of all our children
+        // as our natural width, so we chain up to StWidget (which
         // then calls BoxLayout), but we only request the showApps
         // button as the minimum size
 
-        let [, natHeight] = super.vfunc_get_preferred_height(forWidth);
+        const [, natWidth] = super.vfunc_get_preferred_width(forHeight);
 
         let themeNode = this.get_theme_node();
-        let adjustedForWidth = themeNode.adjust_for_width(forWidth);
+        const adjustedForHeight = themeNode.adjust_for_height(forHeight);
         let [, showAppsButton] = this.get_children();
-        let [minHeight] = showAppsButton.get_preferred_height(adjustedForWidth);
-        [minHeight] = themeNode.adjust_preferred_height(minHeight, natHeight);
+        let [minWidth] = showAppsButton.get_preferred_width(adjustedForHeight);
+        [minWidth] = themeNode.adjust_preferred_width(minWidth, natWidth);
 
-        return [minHeight, natHeight];
+        return [minWidth, natWidth];
     }
 });
 
@@ -337,7 +332,7 @@ var Dash = GObject.registerClass({
     Signals: { 'icon-size-changed': {} },
 }, class Dash extends St.Bin {
     _init() {
-        this._maxHeight = -1;
+        this._maxWidth = -1;
         this.iconSize = 64;
         this._shownInitially = false;
 
@@ -349,8 +344,7 @@ var Dash = GObject.registerClass({
         this._labelShowing = false;
 
         this._container = new DashActor();
-        this._box = new St.BoxLayout({ vertical: true,
-                                       clip_to_allocation: true });
+        this._box = new St.BoxLayout({ clip_to_allocation: true });
         this._box._delegate = this;
         this._container.add_actor(this._box);
         this._container.set_offscreen_redirect(Clutter.OffscreenRedirect.ALWAYS);
@@ -365,10 +359,10 @@ var Dash = GObject.registerClass({
         this._container.add_actor(this._showAppsIcon);
 
         super._init({ child: this._container });
-        this.connect('notify::height', () => {
-            if (this._maxHeight != this.height)
+        this.connect('notify::width', () => {
+            if (this._maxWidth !== this.width)
                 this._queueRedisplay();
-            this._maxHeight = this.height;
+            this._maxWidth = this.width;
         });
 
         this._workId = Main.initializeDeferredWork(this._box, this._redisplay.bind(this));
@@ -567,15 +561,18 @@ var Dash = GObject.registerClass({
 
         iconChildren.push(this._showAppsIcon);
 
-        if (this._maxHeight == -1)
+        if (this._maxWidth === -1)
             return;
 
         let themeNode = this._container.get_theme_node();
-        let maxAllocation = new Clutter.ActorBox({ x1: 0, y1: 0,
-                                                   x2: 42 /* whatever */,
-                                                   y2: this._maxHeight });
+        const maxAllocation = new Clutter.ActorBox({
+            x1: 0,
+            y1: 0,
+            x2: this._maxWidth,
+            y2: 42, /* whatever */
+        });
         let maxContent = themeNode.get_content_box(maxAllocation);
-        let availHeight = maxContent.y2 - maxContent.y1;
+        let availWidth = maxContent.x2 - maxContent.x1;
         let spacing = themeNode.get_length('spacing');
 
         let firstButton = iconChildren[0].child;
@@ -583,14 +580,14 @@ var Dash = GObject.registerClass({
 
         // Enforce valid spacings during the size request
         firstIcon.icon.ensure_style();
-        let [, iconHeight] = firstIcon.icon.get_preferred_height(-1);
-        let [, buttonHeight] = firstButton.get_preferred_height(-1);
+        let [, iconWidth] = firstIcon.icon.get_preferred_width(-1);
+        let [, buttonWidth] = firstButton.get_preferred_width(-1);
 
-        // Subtract icon padding and box spacing from the available height
-        availHeight -= iconChildren.length * (buttonHeight - iconHeight) +
+        // Subtract icon padding and box spacing from the available width
+        availWidth -= iconChildren.length * (buttonWidth - iconWidth) +
                        (iconChildren.length - 1) * spacing;
 
-        let availSize = availHeight / iconChildren.length;
+        let availSize = availWidth / iconChildren.length;
 
         let scaleFactor = St.ThemeContext.get_for_stage(global.stage).scale_factor;
         let iconSizes = baseIconSizes.map(s => s * scaleFactor);
@@ -787,7 +784,7 @@ var Dash = GObject.registerClass({
         }
     }
 
-    handleDragOver(source, actor, x, y, _time) {
+    handleDragOver(source, actor, x, _y, _time) {
         let app = getAppFromSource(source);
 
         // Don't allow favoriting of transient apps
@@ -804,19 +801,19 @@ var Dash = GObject.registerClass({
 
         let children = this._box.get_children();
         let numChildren = children.length;
-        let boxHeight = this._box.height;
+        let boxWidth = this._box.width;
 
         // Keep the placeholder out of the index calculation; assuming that
         // the remove target has the same size as "normal" items, we don't
         // need to do the same adjustment there.
         if (this._dragPlaceholder) {
-            boxHeight -= this._dragPlaceholder.height;
+            boxWidth -= this._dragPlaceholder.width;
             numChildren--;
         }
 
         let pos;
         if (!this._emptyDropTarget)
-            pos = Math.floor(y * numChildren / boxHeight);
+            pos = Math.floor(x * numChildren / boxWidth);
         else
             pos = 0; // always insert at the top when dash is empty
 

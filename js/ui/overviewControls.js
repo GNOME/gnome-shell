@@ -339,32 +339,35 @@ class ThumbnailsSlider extends SlidingControl {
     }
 });
 
-var DashSlider = GObject.registerClass(
-class DashSlider extends SlidingControl {
+var DashFader = GObject.registerClass(
+class DashFader extends FaderControl {
     _init(dash) {
-        super._init({ slideDirection: SlideDirection.LEFT });
+        super._init({
+            y_expand: true,
+            x_expand: true,
+            y_align: Clutter.ActorAlign.END,
+        });
 
         this._dash = dash;
-
-        // SlideLayout reads the actor's expand flags to decide
-        // whether to allocate the natural size to its child, or the whole
-        // available allocation
-        this._dash.x_expand = true;
-
-        this.x_expand = true;
-        this.x_align = Clutter.ActorAlign.START;
-        this.y_expand = true;
-
-        this.add_actor(this._dash);
-
-        this._dash.connect('icon-size-changed', this._updateSlide.bind(this));
+        this.add_child(this._dash);
     }
 
-    _getSlide() {
-        if (this._visible || this._inDrag)
-            return 1;
-        else
-            return 0;
+    vfunc_allocate(box) {
+        this.set_allocation(box);
+
+        box = this.get_theme_node().get_content_box(box);
+
+        const availWidth = Math.round(box.get_width());
+        const availHeight = Math.round(box.get_height());
+        const [, natHeight] = this._dash.get_preferred_height(availWidth);
+
+        const actorBox = new Clutter.ActorBox();
+        actorBox.x1 = box.x1;
+        actorBox.x2 = actorBox.x1 + availWidth;
+        actorBox.y1 = box.y1;
+        actorBox.y2 = actorBox.y1 + (this._dash.y_expand ? availHeight : natHeight);
+
+        this._dash.allocate(box);
     }
 
     _onWindowDragBegin() {
@@ -412,8 +415,8 @@ class ControlsManager extends St.Widget {
         });
 
         this.dash = new Dash.Dash();
-        this._dashSlider = new DashSlider(this.dash);
-        this._dashSpacer = new DashSpacer(this._dashSlider);
+        this._dashFader = new DashFader(this.dash);
+        this._dashSpacer = new DashSpacer(this._dashFader);
 
         let workspaceManager = global.workspace_manager;
         let activeWorkspaceIndex = workspaceManager.get_active_workspace_index();
@@ -441,15 +444,25 @@ class ControlsManager extends St.Widget {
         this.viewSelector.connect('page-changed', this._setVisibility.bind(this));
         this.viewSelector.connect('page-empty', this._onPageEmpty.bind(this));
 
-        this._group = new St.BoxLayout({ name: 'overview-group',
-                                         x_expand: true, y_expand: true });
+        this._group = new St.BoxLayout({
+            name: 'overview-group',
+            vertical: true,
+            x_expand: true,
+            y_expand: true,
+        });
         this.add_actor(this._group);
 
-        this.add_actor(this._dashSlider);
+        this.add_actor(this._dashFader);
 
+        const box = new St.BoxLayout({
+            x_expand: true,
+            y_expand: true,
+        });
+        box.add_child(this.viewSelector);
+        box.add_child(this._thumbnailsSlider);
+
+        this._group.add_child(box);
         this._group.add_actor(this._dashSpacer);
-        this._group.add_child(this.viewSelector);
-        this._group.add_actor(this._thumbnailsSlider);
 
         this.connect('destroy', this._onDestroy.bind(this));
     }
@@ -481,14 +494,7 @@ class ControlsManager extends St.Widget {
             return;
 
         let activePage = this.viewSelector.getActivePage();
-        let dashVisible = activePage == ViewSelector.ViewPage.WINDOWS ||
-                           activePage == ViewSelector.ViewPage.APPS;
         let thumbnailsVisible = activePage == ViewSelector.ViewPage.WINDOWS;
-
-        if (dashVisible)
-            this._dashSlider.slideIn();
-        else
-            this._dashSlider.slideOut();
 
         if (thumbnailsVisible)
             this._thumbnailsSlider.slideIn();
@@ -497,7 +503,6 @@ class ControlsManager extends St.Widget {
     }
 
     _onPageEmpty() {
-        this._dashSlider.pageEmpty();
         this._thumbnailsSlider.pageEmpty();
     }
 });
