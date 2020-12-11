@@ -4,13 +4,13 @@ fetch() {
   local remote=$1
   local ref=$2
 
-  git fetch --quiet $remote $ref 2>/dev/null
+  git fetch --quiet --depth=1 $remote $ref 2>/dev/null
 }
 
 mutter_target=
 
 echo -n Cloning into mutter ...
-if git clone --quiet https://gitlab.gnome.org/GNOME/mutter.git; then
+if git clone --quiet --depth=1 https://gitlab.gnome.org/GNOME/mutter.git; then
   echo \ done
 else
   echo \ failed
@@ -29,8 +29,14 @@ if [ "$CI_MERGE_REQUEST_TARGET_BRANCH_NAME" ]; then
     mutter_target=FETCH_HEAD
   else
     echo \ not found
-    mutter_target=origin/$CI_MERGE_REQUEST_TARGET_BRANCH_NAME
-    echo Using $mutter_target instead
+
+    echo -n Looking for $CI_MERGE_REQUEST_TARGET_BRANCH_NAME instead ...
+    if fetch origin $CI_MERGE_REQUEST_TARGET_BRANCH_NAME; then
+      echo \ found
+      mutter_target=FETCH_HEAD
+    else
+      echo \ not found
+    fi
   fi
 fi
 
