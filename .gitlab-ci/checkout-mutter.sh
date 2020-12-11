@@ -41,8 +41,8 @@ if [ "$CI_MERGE_REQUEST_TARGET_BRANCH_NAME" ]; then
 fi
 
 if [ -z "$mutter_target" ]; then
-  echo -n Looking for $CI_COMMIT_REF on remote ...
-  if fetch origin $CI_COMMIT_REF; then
+  echo -n Looking for $CI_COMMIT_REF_NAME on remote ...
+  if fetch origin $CI_COMMIT_REF_NAME; then
     echo \ found
     mutter_target=FETCH_HEAD
   else
