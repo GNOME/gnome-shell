@@ -350,6 +350,7 @@ class WorkspacesDisplay extends St.Widget {
     _init(scrollAdjustment) {
         super._init({
             visible: false,
+            y_expand: true,
             clip_to_allocation: true,
         });
         this.connect('notify::allocation', this._updateWorkspacesActualGeometry.bind(this));
