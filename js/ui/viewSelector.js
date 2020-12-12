@@ -12,15 +12,13 @@ const Search = imports.ui.search;
 const ShellEntry = imports.ui.shellEntry;
 const WorkspacesView = imports.ui.workspacesView;
 const EdgeDragAction = imports.ui.edgeDragAction;
-const IconGrid = imports.ui.iconGrid;
 
 const SHELL_KEYBINDINGS_SCHEMA = 'org.gnome.shell.keybindings';
 var PINCH_GESTURE_THRESHOLD = 0.7;
 
 var ViewPage = {
-    WINDOWS: 1,
-    APPS: 2,
-    SEARCH: 3,
+    ACTIVITIES: 1,
+    SEARCH: 2,
 };
 
 var FocusTrap = GObject.registerClass(
@@ -122,6 +120,84 @@ var ShowOverviewAction = GObject.registerClass({
     }
 });
 
+var ActivitiesContainer = GObject.registerClass(
+class ActivitiesContainer extends St.Widget {
+    _init(workspacesDisplay, appDisplay, showAppsButton) {
+        super._init();
+
+        // 0 for window picker, 1 for app grid
+        this._adjustment = new St.Adjustment({
+            actor: this,
+            value: 0,
+            lower: 0,
+            upper: 1,
+        });
+        this._adjustment.connect('notify::value', () => {
+            this._update();
+            this.queue_relayout();
+        });
+
+        this._showAppsButton = showAppsButton;
+        showAppsButton.connect('notify::checked',
+            this._onShowAppsButtonToggled.bind(this));
+
+        this._appDisplay = appDisplay;
+        this.add_child(appDisplay);
+
+        this._workspacesDisplay = workspacesDisplay;
+        this.add_child(workspacesDisplay);
+
+        this.connect('notify::mapped', () => {
+            workspacesDisplay.setPrimaryWorkspaceVisible(this.mapped);
+        });
+
+        this._update();
+    }
+
+    _onShowAppsButtonToggled() {
+        const checked = this._showAppsButton.checked;
+
+        const value = checked ? 1 : 0;
+        this._adjustment.ease(value, {
+            duration: OverviewControls.SIDE_CONTROLS_ANIMATION_TIME,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+        });
+    }
+
+    _update() {
+        const progress = this._adjustment.value;
+
+        this._appDisplay.opacity = progress * 255;
+        this._appDisplay.visible = progress !== 0;
+    }
+
+    _getWorkspacesBoxes(box) {
+        const initialBox = box.copy();
+
+        const finalBox = box.copy();
+        finalBox.set_size(
+            box.get_width(),
+            Math.round(box.get_height() * 0.15));
+
+        return [initialBox, finalBox];
+    }
+
+    vfunc_allocate(box) {
+        this.set_allocation(box);
+
+        const progress = this._adjustment.value;
+        const [initialBox, finalBox] = this._getWorkspacesBoxes(box);
+        const workspacesBox = initialBox.interpolate(finalBox, progress);
+        this._workspacesDisplay.allocate(workspacesBox);
+
+        if (this._appDisplay.visible) {
+            const appDisplayBox = box.copy();
+            appDisplayBox.y1 += Math.ceil(finalBox.get_height());
+            this._appDisplay.allocate(appDisplayBox);
+        }
+    }
+});
+
 var ViewSelector = GObject.registerClass({
     Signals: {
         'page-changed': {},
@@ -174,12 +250,12 @@ var ViewSelector = GObject.registerClass({
 
         this._workspacesDisplay =
             new WorkspacesView.WorkspacesDisplay(workspaceAdjustment);
-        this._workspacesPage = this._addPage(this._workspacesDisplay,
-                                             _("Windows"), 'focus-windows-symbolic');
-
         this.appDisplay = new AppDisplay.AppDisplay();
-        this._appsPage = this._addPage(this.appDisplay,
-                                       _("Applications"), 'view-app-grid-symbolic');
+
+        const activitiesContainer = new ActivitiesContainer(
+            this._workspacesDisplay, this.appDisplay, showAppsButton);
+        this._activitiesPage =
+            this._addPage(activitiesContainer, _('Activities'), 'view-app-grid-symbolic');
 
         this._searchResults = new Search.SearchResultsView();
         this._searchPage = this._addPage(this._searchResults,
@@ -206,17 +282,6 @@ var ViewSelector = GObject.registerClass({
             if (this._stageKeyPressId != 0) {
                 global.stage.disconnect(this._stageKeyPressId);
                 this._stageKeyPressId = 0;
-            }
-        });
-        Main.overview.connect('shown', () => {
-            // If we were animating from the desktop view to the
-            // apps page the workspace page was visible, allowing
-            // the windows to animate, but now we no longer want to
-            // show it given that we are now on the apps page or
-            // search page.
-            if (this._activePage != this._workspacesPage) {
-                this._workspacesPage.opacity = 0;
-                this._workspacesPage.hide();
             }
         });
 
@@ -277,21 +342,14 @@ var ViewSelector = GObject.registerClass({
         this.reset();
         this._workspacesDisplay.animateToOverview(this._showAppsButton.checked);
         this._activePage = null;
-        if (this._showAppsButton.checked)
-            this._showPage(this._appsPage);
-        else
-            this._showPage(this._workspacesPage);
+        this._showPage(this._activitiesPage);
 
         if (!this._workspacesDisplay.activeWorkspaceHasMaximizedWindows())
             Main.overview.fadeOutDesktop();
     }
 
     animateFromOverview() {
-        // Make sure workspace page is fully visible to allow
-        // workspace.js do the animation of the windows
-        this._workspacesPage.opacity = 255;
-
-        this._workspacesDisplay.animateFromOverview(this._activePage != this._workspacesPage);
+        this._workspacesDisplay.animateFromOverview(false);
 
         this._showAppsButton.checked = false;
 
@@ -348,28 +406,14 @@ var ViewSelector = GObject.registerClass({
 
         this.emit('page-empty');
 
-        this._activePage.show();
-
-        if (this._activePage == this._appsPage && oldPage == this._workspacesPage) {
-            // Restore opacity, in case we animated via _fadePageOut
-            this._activePage.opacity = 255;
-            this.appDisplay.animate(IconGrid.AnimationDirection.IN);
-        } else {
+        if (this._activePage) {
+            this._activePage.show();
             this._fadePageIn();
         }
     }
 
     _animateOut(page) {
-        let oldPage = page;
-        if (page == this._appsPage &&
-            this._activePage == this._workspacesPage &&
-            !Main.overview.animationInProgress) {
-            this.appDisplay.animate(IconGrid.AnimationDirection.OUT, () => {
-                this._animateIn(oldPage);
-            });
-        } else {
-            this._fadePageOut(page);
-        }
+        this._fadePageOut(page);
     }
 
     _showPage(page) {
@@ -390,13 +434,12 @@ var ViewSelector = GObject.registerClass({
     }
 
     _a11yFocusPage(page) {
-        this._showAppsButton.checked = page == this._appsPage;
+        this._showAppsButton.checked = page == this._activitiesPage;
         page.navigate_focus(null, St.DirectionType.TAB_FORWARD, false);
     }
 
     _onShowAppsButtonToggled() {
-        this._showPage(this._showAppsButton.checked
-            ? this._appsPage : this._workspacesPage);
+        this._showPage(this._activitiesPage);
     }
 
     _onStageKeyPress(actor, event) {
@@ -430,9 +473,7 @@ var ViewSelector = GObject.registerClass({
     }
 
     _searchCancelled() {
-        this._showPage(this._showAppsButton.checked
-            ? this._appsPage
-            : this._workspacesPage);
+        this._showPage(this._activitiesPage);
 
         // Leave the entry focused when it doesn't have any text;
         // when replacing a selected search term, Clutter emits
@@ -599,10 +640,8 @@ var ViewSelector = GObject.registerClass({
     }
 
     getActivePage() {
-        if (this._activePage == this._workspacesPage)
-            return ViewPage.WINDOWS;
-        else if (this._activePage == this._appsPage)
-            return ViewPage.APPS;
+        if (this._activePage === this._activitiesPage)
+            return ViewPage.ACTIVITIES;
         else
             return ViewPage.SEARCH;
     }

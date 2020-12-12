@@ -448,7 +448,7 @@ class ControlsManager extends St.Widget {
             return;
 
         let activePage = this.viewSelector.getActivePage();
-        let thumbnailsVisible = activePage == ViewSelector.ViewPage.WINDOWS;
+        let thumbnailsVisible = activePage == ViewSelector.ViewPage.ACTIVITIES;
 
         if (thumbnailsVisible)
             this._thumbnailsSlider.slideIn();
