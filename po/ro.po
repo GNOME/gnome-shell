@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2020-08-10 23:58+0000\n"
+"POT-Creation-Date: 2020-10-21 11:39+0000\n"
 "PO-Revision-Date: 2020-08-14 15:27+0300\n"
 "Last-Translator: Florentina Mușat <florentina.musat.28@gmail.com>\n"
 "Language-Team: Gnome Romanian Translation Team <gnomero-list@lists."
@@ -447,8 +447,8 @@ msgstr "Pagină principală"
 msgid "Visit extension homepage"
 msgstr "Vizitează pagina principală a extensiei"
 
-#: js/gdm/authPrompt.js:135 js/ui/audioDeviceSelection.js:57
-#: js/ui/components/networkAgent.js:110 js/ui/components/polkitAgent.js:139
+#: js/gdm/authPrompt.js:137 js/ui/audioDeviceSelection.js:58
+#: js/ui/components/networkAgent.js:111 js/ui/components/polkitAgent.js:138
 #: js/ui/endSessionDialog.js:438 js/ui/extensionDownloader.js:183
 #: js/ui/shellMountOperation.js:376 js/ui/shellMountOperation.js:386
 #: js/ui/status/network.js:940 subprojects/extensions-app/js/main.js:149
@@ -456,10 +456,10 @@ msgid "Cancel"
 msgstr "Anulează"
 
 #. Cisco LEAP
-#: js/gdm/authPrompt.js:237 js/ui/components/networkAgent.js:205
-#: js/ui/components/networkAgent.js:221 js/ui/components/networkAgent.js:245
-#: js/ui/components/networkAgent.js:266 js/ui/components/networkAgent.js:286
-#: js/ui/components/networkAgent.js:296 js/ui/components/polkitAgent.js:277
+#: js/gdm/authPrompt.js:239 js/ui/components/networkAgent.js:206
+#: js/ui/components/networkAgent.js:222 js/ui/components/networkAgent.js:246
+#: js/ui/components/networkAgent.js:267 js/ui/components/networkAgent.js:287
+#: js/ui/components/networkAgent.js:297 js/ui/components/polkitAgent.js:276
 #: js/ui/shellMountOperation.js:326
 msgid "Password"
 msgstr "Parolă"
@@ -482,8 +482,8 @@ msgstr "(de exemplu, utilizator sau %s)"
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: js/gdm/loginDialog.js:918 js/ui/components/networkAgent.js:241
-#: js/ui/components/networkAgent.js:264 js/ui/components/networkAgent.js:282
+#: js/gdm/loginDialog.js:918 js/ui/components/networkAgent.js:242
+#: js/ui/components/networkAgent.js:265 js/ui/components/networkAgent.js:283
 msgid "Username"
 msgstr "Nume de utilizator"
 
@@ -505,84 +505,84 @@ msgid "(or swipe finger)"
 msgstr "(sau treceți degetul peste)"
 
 #. Translators: The name of the power-off action in search
-#: js/misc/systemActions.js:91
+#: js/misc/systemActions.js:82
 msgctxt "search-result"
 msgid "Power Off"
 msgstr "Oprire"
 
 #. Translators: A list of keywords that match the power-off action, separated by semicolons
-#: js/misc/systemActions.js:94
+#: js/misc/systemActions.js:85
 msgid "power off;shutdown;halt;stop"
 msgstr "power off;shutdown;halt;stop;oprește;închide;blochează"
 
 #. Translators: The name of the restart action in search
-#: js/misc/systemActions.js:99
+#: js/misc/systemActions.js:90
 msgctxt "search-result"
 msgid "Restart"
 msgstr "Repornire"
 
 #. Translators: A list of keywords that match the restart action, separated by semicolons
-#: js/misc/systemActions.js:102
+#: js/misc/systemActions.js:93
 msgid "reboot;restart;"
 msgstr "repornește;restartează;"
 
 #. Translators: The name of the lock screen action in search
-#: js/misc/systemActions.js:107
+#: js/misc/systemActions.js:98
 msgctxt "search-result"
 msgid "Lock Screen"
 msgstr "Blochează ecranul"
 
 #. Translators: A list of keywords that match the lock screen action, separated by semicolons
-#: js/misc/systemActions.js:110
+#: js/misc/systemActions.js:101
 msgid "lock screen"
 msgstr "lock screen;blochează ecranul"
 
 #. Translators: The name of the logout action in search
-#: js/misc/systemActions.js:115
+#: js/misc/systemActions.js:106
 msgctxt "search-result"
 msgid "Log Out"
 msgstr "Ieșire din sesiune"
 
 #. Translators: A list of keywords that match the logout action, separated by semicolons
-#: js/misc/systemActions.js:118
+#: js/misc/systemActions.js:109
 msgid "logout;log out;sign off"
 msgstr "logout;sign off;ieșire din sesiune;deautentificare"
 
 #. Translators: The name of the suspend action in search
-#: js/misc/systemActions.js:123
+#: js/misc/systemActions.js:114
 msgctxt "search-result"
 msgid "Suspend"
 msgstr "Suspendare"
 
 #. Translators: A list of keywords that match the suspend action, separated by semicolons
-#: js/misc/systemActions.js:126
+#: js/misc/systemActions.js:117
 msgid "suspend;sleep"
 msgstr "suspend;sleep;suspendare"
 
 #. Translators: The name of the switch user action in search
-#: js/misc/systemActions.js:131
+#: js/misc/systemActions.js:122
 msgctxt "search-result"
 msgid "Switch User"
 msgstr "Comută utilizatorul"
 
 #. Translators: A list of keywords that match the switch user action, separated by semicolons
-#: js/misc/systemActions.js:134
+#: js/misc/systemActions.js:125
 msgid "switch user"
 msgstr "switch user;comută utilizatorul"
 
 #. Translators: A list of keywords that match the lock orientation action, separated by semicolons
-#: js/misc/systemActions.js:141
+#: js/misc/systemActions.js:132
 msgid "lock orientation;unlock orientation;screen;rotation"
 msgstr ""
 "lock orientation;screen;rotation;blocare orientare;blocare de orientare;"
 "ecran;rotație"
 
-#: js/misc/systemActions.js:266
+#: js/misc/systemActions.js:240
 msgctxt "search-result"
 msgid "Unlock Screen Rotation"
 msgstr "Deblochează rotația ecranului"
 
-#: js/misc/systemActions.js:267
+#: js/misc/systemActions.js:241
 msgctxt "search-result"
 msgid "Lock Screen Rotation"
 msgstr "Rotație de ecran blocat"
@@ -754,36 +754,36 @@ msgstr "Refuză accesul"
 msgid "Grant Access"
 msgstr "Permite accesul"
 
-#: js/ui/appDisplay.js:1297
+#: js/ui/appDisplay.js:1346
 msgid "Unnamed Folder"
 msgstr "Dosar nedenumit"
 
 #. Translators: This is the heading of a list of open windows
-#: js/ui/appDisplay.js:2762 js/ui/panel.js:75
+#: js/ui/appDisplay.js:2870 js/ui/panel.js:75
 msgid "Open Windows"
 msgstr "Ferestre deschise"
 
-#: js/ui/appDisplay.js:2781 js/ui/panel.js:82
+#: js/ui/appDisplay.js:2889 js/ui/panel.js:82
 msgid "New Window"
 msgstr "Fereastră nouă"
 
-#: js/ui/appDisplay.js:2797
+#: js/ui/appDisplay.js:2905
 msgid "Launch using Integrated Graphics Card"
 msgstr "Lansează folosind placa grafică integrată"
 
-#: js/ui/appDisplay.js:2798
+#: js/ui/appDisplay.js:2906
 msgid "Launch using Discrete Graphics Card"
 msgstr "Lansează folosind placa grafică discretă"
 
-#: js/ui/appDisplay.js:2826 js/ui/dash.js:239
+#: js/ui/appDisplay.js:2934 js/ui/dash.js:239
 msgid "Remove from Favorites"
 msgstr "Elimină din favorite"
 
-#: js/ui/appDisplay.js:2832
+#: js/ui/appDisplay.js:2940
 msgid "Add to Favorites"
 msgstr "Adaugă la Favorite"
 
-#: js/ui/appDisplay.js:2842 js/ui/panel.js:93
+#: js/ui/appDisplay.js:2950 js/ui/panel.js:93
 msgid "Show Details"
 msgstr "Arată detaliile"
 
@@ -801,19 +801,19 @@ msgstr "%s a fost eliminat de la favorite."
 msgid "Select Audio Device"
 msgstr "Selectați dispozitivul audio"
 
-#: js/ui/audioDeviceSelection.js:54
+#: js/ui/audioDeviceSelection.js:55
 msgid "Sound Settings"
 msgstr "Configurări de sunet"
 
-#: js/ui/audioDeviceSelection.js:64
+#: js/ui/audioDeviceSelection.js:65
 msgid "Headphones"
 msgstr "Căști auriculare"
 
-#: js/ui/audioDeviceSelection.js:66
+#: js/ui/audioDeviceSelection.js:67
 msgid "Headset"
 msgstr "Căști cu microfon"
 
-#: js/ui/audioDeviceSelection.js:68 js/ui/status/volume.js:272
+#: js/ui/audioDeviceSelection.js:69 js/ui/status/volume.js:272
 msgid "Microphone"
 msgstr "Microfon"
 
@@ -922,15 +922,15 @@ msgstr "%d"
 msgid "Week %V"
 msgstr "Săptămâna %V"
 
-#: js/ui/calendar.js:895
+#: js/ui/calendar.js:896
 msgid "No Notifications"
 msgstr "Nu există notificări"
 
-#: js/ui/calendar.js:949
+#: js/ui/calendar.js:950
 msgid "Do Not Disturb"
 msgstr "Nu deranja"
 
-#: js/ui/calendar.js:968
+#: js/ui/calendar.js:969
 msgid "Clear"
 msgstr "Curăță"
 
@@ -977,40 +977,40 @@ msgstr "Versiunea instalată udisks nu suportă configurarea PIM"
 msgid "Open with %s"
 msgstr "Deschide cu %s"
 
-#: js/ui/components/networkAgent.js:92
+#: js/ui/components/networkAgent.js:93
 msgid ""
 "Alternatively you can connect by pushing the “WPS” button on your router."
 msgstr ""
 "În mod alternativ vă puteți conecta apăsând butonul „WPS” pe routerul "
 "dumneavoastră."
 
-#: js/ui/components/networkAgent.js:104 js/ui/status/network.js:252
+#: js/ui/components/networkAgent.js:105 js/ui/status/network.js:252
 #: js/ui/status/network.js:343 js/ui/status/network.js:943
 msgid "Connect"
 msgstr "Conectare"
 
-#: js/ui/components/networkAgent.js:211
+#: js/ui/components/networkAgent.js:212
 msgid "Key"
 msgstr "Tastă"
 
-#: js/ui/components/networkAgent.js:249 js/ui/components/networkAgent.js:272
+#: js/ui/components/networkAgent.js:250 js/ui/components/networkAgent.js:273
 msgid "Private key password"
 msgstr "Parolă pentru cheia privată"
 
-#: js/ui/components/networkAgent.js:270
+#: js/ui/components/networkAgent.js:271
 msgid "Identity"
 msgstr "Identitate"
 
-#: js/ui/components/networkAgent.js:284
+#: js/ui/components/networkAgent.js:285
 msgid "Service"
 msgstr "Serviciu"
 
-#: js/ui/components/networkAgent.js:313 js/ui/components/networkAgent.js:341
-#: js/ui/components/networkAgent.js:680 js/ui/components/networkAgent.js:701
+#: js/ui/components/networkAgent.js:314 js/ui/components/networkAgent.js:342
+#: js/ui/components/networkAgent.js:675 js/ui/components/networkAgent.js:696
 msgid "Authentication required"
 msgstr "Autentificarea este necesară"
 
-#: js/ui/components/networkAgent.js:314 js/ui/components/networkAgent.js:681
+#: js/ui/components/networkAgent.js:315 js/ui/components/networkAgent.js:676
 #, javascript-format
 msgid ""
 "Passwords or encryption keys are required to access the wireless network "
@@ -1019,42 +1019,42 @@ msgstr ""
 "Sunt necesare parole sau chei de criptare pentru a accesa rețeaua fără fir "
 "„%s”."
 
-#: js/ui/components/networkAgent.js:318 js/ui/components/networkAgent.js:685
+#: js/ui/components/networkAgent.js:319 js/ui/components/networkAgent.js:680
 msgid "Wired 802.1X authentication"
 msgstr "Autentificare 802.1X prin cablu"
 
-#: js/ui/components/networkAgent.js:320
+#: js/ui/components/networkAgent.js:321
 msgid "Network name"
 msgstr "Nume de rețea"
 
-#: js/ui/components/networkAgent.js:325 js/ui/components/networkAgent.js:689
+#: js/ui/components/networkAgent.js:326 js/ui/components/networkAgent.js:684
 msgid "DSL authentication"
 msgstr "Autentificare DSL"
 
-#: js/ui/components/networkAgent.js:332 js/ui/components/networkAgent.js:694
+#: js/ui/components/networkAgent.js:333 js/ui/components/networkAgent.js:689
 msgid "PIN code required"
 msgstr "Este necesar codul PIN"
 
-#: js/ui/components/networkAgent.js:333 js/ui/components/networkAgent.js:695
+#: js/ui/components/networkAgent.js:334 js/ui/components/networkAgent.js:690
 msgid "PIN code is needed for the mobile broadband device"
 msgstr "Este necesar codul PIN pentru dispozitivul mobil de bandă largă"
 
-#: js/ui/components/networkAgent.js:334
+#: js/ui/components/networkAgent.js:335
 msgid "PIN"
 msgstr "PIN"
 
-#: js/ui/components/networkAgent.js:342 js/ui/components/networkAgent.js:686
-#: js/ui/components/networkAgent.js:690 js/ui/components/networkAgent.js:702
-#: js/ui/components/networkAgent.js:706
+#: js/ui/components/networkAgent.js:343 js/ui/components/networkAgent.js:681
+#: js/ui/components/networkAgent.js:685 js/ui/components/networkAgent.js:697
+#: js/ui/components/networkAgent.js:701
 #, javascript-format
 msgid "A password is required to connect to “%s”."
 msgstr "Este necesară o parolă pentru conectarea la „%s”."
 
-#: js/ui/components/networkAgent.js:669 js/ui/status/network.js:1718
+#: js/ui/components/networkAgent.js:664 js/ui/status/network.js:1718
 msgid "Network Manager"
 msgstr "Gestionar de rețea"
 
-#: js/ui/components/networkAgent.js:705
+#: js/ui/components/networkAgent.js:700
 msgid "VPN password"
 msgstr "Parolă VPN"
 
@@ -1062,11 +1062,11 @@ msgstr "Parolă VPN"
 msgid "Authentication Required"
 msgstr "Necesită autentificare"
 
-#: js/ui/components/polkitAgent.js:80
+#: js/ui/components/polkitAgent.js:79
 msgid "Administrator"
 msgstr "Administrator"
 
-#: js/ui/components/polkitAgent.js:142
+#: js/ui/components/polkitAgent.js:141
 msgid "Authenticate"
 msgstr "Autentificare"
 
@@ -1074,7 +1074,7 @@ msgstr "Autentificare"
 #. * requested authentication was not gained; this can happen
 #. * because of an authentication error (like invalid password),
 #. * for instance.
-#: js/ui/components/polkitAgent.js:254 js/ui/shellMountOperation.js:402
+#: js/ui/components/polkitAgent.js:253 js/ui/shellMountOperation.js:402
 msgid "Sorry, that didn’t work. Please try again."
 msgstr "Nu a funcționat. Încercați din nou."
 
@@ -1349,11 +1349,11 @@ msgstr "Instalează extensia"
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "Descărcați și instalați „%s” de la extensions.gnome.org?"
 
-#: js/ui/extensionSystem.js:252
+#: js/ui/extensionSystem.js:253
 msgid "Extension Updates Available"
 msgstr "Actualizări de extensie disponibile"
 
-#: js/ui/extensionSystem.js:253
+#: js/ui/extensionSystem.js:254
 msgid "Extension updates are ready to be installed."
 msgstr "Actualizările de extensie sunt gata de instalat."
 
@@ -1450,7 +1450,7 @@ msgstr "Oprește"
 msgid "Leave Off"
 msgstr "Lasă oprit"
 
-#: js/ui/keyboard.js:225
+#: js/ui/keyboard.js:226
 msgid "Region & Language Settings"
 msgstr "Configurări de regiune și limbă"
 
@@ -1478,7 +1478,7 @@ msgstr "Activat"
 
 #. translators:
 #. * The device has been disabled
-#: js/ui/lookingGlass.js:741 subprojects/gvc/gvc-mixer-control.c:1892
+#: js/ui/lookingGlass.js:741 subprojects/gvc/gvc-mixer-control.c:1900
 msgid "Disabled"
 msgstr "Dezactivat"
 
@@ -1554,27 +1554,27 @@ msgstr "Prezentare generală"
 msgid "Type to search"
 msgstr "Tastați pentru a căuta"
 
-#: js/ui/padOsd.js:95
+#: js/ui/padOsd.js:96
 msgid "New shortcut…"
 msgstr "Scurtătură nouă…"
 
-#: js/ui/padOsd.js:142
+#: js/ui/padOsd.js:143
 msgid "Application defined"
 msgstr "Aplicație definită"
 
-#: js/ui/padOsd.js:143
+#: js/ui/padOsd.js:144
 msgid "Show on-screen help"
 msgstr "Arată ajutorul pe ecran"
 
-#: js/ui/padOsd.js:144
+#: js/ui/padOsd.js:145
 msgid "Switch monitor"
 msgstr "Comută monitorul"
 
-#: js/ui/padOsd.js:145
+#: js/ui/padOsd.js:146
 msgid "Assign keystroke"
 msgstr "Alochează tasta apăsată"
 
-#: js/ui/padOsd.js:211
+#: js/ui/padOsd.js:212
 msgid "Done"
 msgstr "Gata"
 
@@ -1608,12 +1608,12 @@ msgstr "Ieșire"
 msgid "Activities"
 msgstr "Activități"
 
-#: js/ui/panel.js:714
+#: js/ui/panel.js:719
 msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "Sistem"
 
-#: js/ui/panel.js:825
+#: js/ui/panel.js:830
 msgid "Top Bar"
 msgstr "Bara de sus"
 
@@ -1644,11 +1644,11 @@ msgstr "GNOME trebuie să blocheze ecranul"
 #.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
-#: js/ui/screenShield.js:244 js/ui/screenShield.js:602
+#: js/ui/screenShield.js:244 js/ui/screenShield.js:613
 msgid "Unable to lock"
 msgstr "Blocare nereușită"
 
-#: js/ui/screenShield.js:245 js/ui/screenShield.js:603
+#: js/ui/screenShield.js:245 js/ui/screenShield.js:614
 msgid "Lock was blocked by an application"
 msgstr "Blocarea a fost împiedicată de o aplicație"
 
@@ -1794,6 +1794,15 @@ msgstr "Bluetooth"
 #: js/ui/status/bluetooth.js:49 js/ui/status/network.js:619
 msgid "Bluetooth Settings"
 msgstr "Configurări Bluetooth"
+
+#. Translators: this is the number of connected bluetooth devices
+#: js/ui/status/bluetooth.js:148
+#, javascript-format
+msgid "%d Connected"
+msgid_plural "%d Connected"
+msgstr[0] "%d conectată"
+msgstr[1] "%d conectate"
+msgstr[2] "%d conectate"
 
 #: js/ui/status/bluetooth.js:152
 msgid "Bluetooth Off"
@@ -2134,11 +2143,11 @@ msgstr "%d∶%02d până este plină (%d%%)"
 msgid "%d %%"
 msgstr "%d%%"
 
-#: js/ui/status/remoteAccess.js:45
+#: js/ui/status/remoteAccess.js:38
 msgid "Screen is Being Shared"
 msgstr "Ecranul este partajat"
 
-#: js/ui/status/remoteAccess.js:47
+#: js/ui/status/remoteAccess.js:40
 msgid "Turn off"
 msgstr "Oprește"
 
@@ -2962,7 +2971,7 @@ msgstr "Adaugă o iconiță la bara de sus"
 
 #. translators:
 #. * The number of sound outputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1899
+#: subprojects/gvc/gvc-mixer-control.c:1907
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -2972,7 +2981,7 @@ msgstr[2] "%u de rezultate"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1909
+#: subprojects/gvc/gvc-mixer-control.c:1917
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
@@ -2980,7 +2989,7 @@ msgstr[0] "%u intrare"
 msgstr[1] "%u intrări"
 msgstr[2] "%u de intrări"
 
-#: subprojects/gvc/gvc-mixer-control.c:2766
+#: subprojects/gvc/gvc-mixer-control.c:2867
 msgid "System Sounds"
 msgstr "Sunete de sistem"
 
@@ -3046,12 +3055,6 @@ msgstr "Sunete de sistem"
 #~ msgstr[0] "%d notificare"
 #~ msgstr[1] "%d notificări"
 #~ msgstr[2] "%d de notificări"
-
-#~ msgid "%d Connected"
-#~ msgid_plural "%d Connected"
-#~ msgstr[0] "%d conectată"
-#~ msgstr[1] "%d conectate"
-#~ msgstr[2] "%d conectate"
 
 #~ msgid "Off"
 #~ msgstr "Oprit"
