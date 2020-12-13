@@ -1046,10 +1046,11 @@ get_application_proxy (GObject      *source,
 {
   ShellApp *app = user_data;
   ShellOrgGtkApplication *proxy;
+  g_autoptr (GError) error = NULL;
 
   g_assert (SHELL_IS_APP (app));
 
-  proxy = shell_org_gtk_application_proxy_new_finish (result, NULL);
+  proxy = shell_org_gtk_application_proxy_new_finish (result, &error);
   if (proxy != NULL)
     {
       app->running_state->application_proxy = proxy;
@@ -1061,7 +1062,8 @@ get_application_proxy (GObject      *source,
         g_object_notify (G_OBJECT (app), "busy");
     }
 
-  if (app->running_state != NULL)
+  if (app->running_state != NULL &&
+      !g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
     g_clear_object (&app->running_state->cancellable);
 
   g_object_unref (app);
