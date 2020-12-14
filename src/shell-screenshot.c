@@ -32,6 +32,7 @@ struct _ShellScreenshotPrivate
   ShellGlobal *global;
 
   GOutputStream *stream;
+  ShellScreenshotFlag flags;
 
   GDateTime *datetime;
 
@@ -341,6 +342,22 @@ finish_screenshot (ShellScreenshot        *screenshot,
   return TRUE;
 }
 
+static void
+on_after_paint (ClutterStage     *stage,
+                ClutterStageView *view,
+                GTask            *result)
+{
+  ShellScreenshot *screenshot = g_task_get_task_data (result);
+  ShellScreenshotPrivate *priv = screenshot->priv;
+  MetaDisplay *display = shell_global_get_display (priv->global);
+
+  g_signal_handlers_disconnect_by_func (stage, on_after_paint, result);
+
+  grab_screenshot (screenshot, priv->flags, result);
+
+  meta_enable_unredirect_for_display (display);
+}
+
 /**
  * shell_screenshot_screenshot:
  * @screenshot: the #ShellScreenshot
@@ -385,6 +402,7 @@ shell_screenshot_screenshot (ShellScreenshot     *screenshot,
 
   result = g_task_new (screenshot, NULL, callback, user_data);
   g_task_set_source_tag (result, shell_screenshot_screenshot);
+  g_task_set_task_data (result, screenshot, NULL);
 
   priv->stream = g_object_ref (stream);
 
@@ -392,7 +410,21 @@ shell_screenshot_screenshot (ShellScreenshot     *screenshot,
   if (include_cursor)
     flags |= SHELL_SCREENSHOT_FLAG_INCLUDE_CURSOR;
 
-  grab_screenshot (screenshot, flags, result);
+  if (meta_is_wayland_compositor ())
+    {
+      grab_screenshot (screenshot, flags, result);
+    }
+  else
+    {
+      MetaDisplay *display = shell_global_get_display (priv->global);
+      ClutterStage *stage = shell_global_get_stage (priv->global);
+
+      meta_disable_unredirect_for_display (display);
+      clutter_actor_queue_redraw (CLUTTER_ACTOR (stage));
+      priv->flags = flags;
+      g_signal_connect (stage, "after-paint",
+                        G_CALLBACK (on_after_paint), result);
+    }
 }
 
 /**
