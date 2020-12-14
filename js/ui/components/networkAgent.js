@@ -132,8 +132,12 @@ class NetworkSecretDialog extends ModalDialog.ModalDialog {
         for (let i = 0; i < this._content.secrets.length; i++) {
             let secret = this._content.secrets[i];
             valid = valid && secret.valid;
-            if (secret.key != null)
-                this._agent.set_password(this._requestId, secret.key, secret.value);
+            if (secret.key !== null) {
+                if (this._settingName === 'vpn')
+                    this._agent.add_vpn_secret(this._requestId, secret.key, secret.value);
+                else
+                    this._agent.set_password(this._requestId, secret.key, secret.value);
+            }
         }
 
         if (valid) {
@@ -476,7 +480,7 @@ var VPNRequestHandler = class {
                     this._stdin.write('QUIT\n\n', null);
                 } catch (e) { /* ignore broken pipe errors */ }
             } else {
-                this._agent.set_password(this._requestId, this._previousLine, line);
+                this._agent.add_vpn_secret(this._requestId, this._previousLine, line);
                 this._previousLine = undefined;
             }
         } else {
@@ -552,7 +556,7 @@ var VPNRequestHandler = class {
                     if (!value.length) // Ignore empty secrets
                         continue;
 
-                    this._agent.set_password(this._requestId, groups[i], value);
+                    this._agent.add_vpn_secret(this._requestId, groups[i], value);
                 }
             }
         } catch (e) {
