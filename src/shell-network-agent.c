@@ -48,6 +48,7 @@ typedef struct {
   gpointer                          callback_data;
 
   GVariantDict                     *entries;
+  GVariantBuilder                   builder_vpn;
 } ShellAgentRequest;
 
 struct _ShellNetworkAgentPrivate {
@@ -80,6 +81,7 @@ shell_agent_request_free (gpointer data)
   g_free (request->setting_name);
   g_strfreev (request->hints);
   g_clear_pointer (&request->entries, g_variant_dict_unref);
+  g_variant_builder_clear (&request->builder_vpn);
 
   g_slice_free (ShellAgentRequest, request);
 }
@@ -373,6 +375,8 @@ shell_network_agent_get_secrets (NMSecretAgentOld                 *agent,
   request->request_id = request_id;
   g_hash_table_replace (self->priv->requests, request->request_id, request);
 
+  g_variant_builder_init (&request->builder_vpn, G_VARIANT_TYPE ("a{ss}"));
+
   if ((flags & NM_SECRET_AGENT_GET_SECRETS_FLAG_REQUEST_NEW) ||
       ((flags & NM_SECRET_AGENT_GET_SECRETS_FLAG_ALLOW_INTERACTION)
        && is_connection_always_ask (request->connection)))
@@ -392,6 +396,24 @@ shell_network_agent_get_secrets (NMSecretAgentOld                 *agent,
                          request->cancellable, get_secrets_keyring_cb, request);
 
   g_hash_table_unref (attributes);
+}
+
+void
+shell_network_agent_add_vpn_secret (ShellNetworkAgent *self,
+                                    gchar             *request_id,
+                                    gchar             *setting_key,
+                                    gchar             *setting_value)
+{
+  ShellNetworkAgentPrivate *priv;
+  ShellAgentRequest *request;
+
+  g_return_if_fail (SHELL_IS_NETWORK_AGENT (self));
+
+  priv = self->priv;
+  request = g_hash_table_lookup (priv->requests, request_id);
+  g_return_if_fail (request != NULL);
+
+  g_variant_builder_add (&request->builder_vpn, "{ss}", setting_key, setting_value);
 }
 
 void
@@ -420,7 +442,7 @@ shell_network_agent_respond (ShellNetworkAgent         *self,
   ShellNetworkAgentPrivate *priv;
   ShellAgentRequest *request;
   GVariantBuilder builder_connection;
-  GVariant *setting;
+  GVariant *vpn_secrets, *setting;
 
   g_return_if_fail (SHELL_IS_NETWORK_AGENT (self));
 
@@ -453,6 +475,13 @@ shell_network_agent_respond (ShellNetworkAgent         *self,
     }
 
   /* response == SHELL_NETWORK_AGENT_CONFIRMED */
+
+  /* VPN secrets are stored as a hash of secrets in a single setting */
+  vpn_secrets = g_variant_builder_end (&request->builder_vpn);
+  if (g_variant_n_children (vpn_secrets))
+    g_variant_dict_insert_value (request->entries, NM_SETTING_VPN_SECRETS, vpn_secrets);
+  else
+    g_variant_unref (vpn_secrets);
 
   setting = g_variant_dict_end (request->entries);
 
