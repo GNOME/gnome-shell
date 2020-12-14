@@ -243,7 +243,7 @@ get_secrets_keyring_cb (GObject            *source,
   GList *l;
   gboolean secrets_found = FALSE;
   GVariantBuilder builder_setting, builder_connection;
-  GVariant *setting;
+  g_autoptr (GVariant) setting = NULL;
 
   items = secret_service_search_finish (NULL, result, &secret_error);
 
@@ -303,7 +303,7 @@ get_secrets_keyring_cb (GObject            *source,
     }
 
   g_list_free_full (items, g_object_unref);
-  setting = g_variant_builder_end (&builder_setting);
+  setting = g_variant_ref_sink (g_variant_builder_end (&builder_setting));
 
   /* All VPN requests get sent to the VPN's auth dialog, since it knows better
    * than the agent about what secrets are required.  Otherwise, if no secrets
