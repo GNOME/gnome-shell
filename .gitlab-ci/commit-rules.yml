@@ -2,3 +2,12 @@ patterns:
   deny:
     - regex: '^$CI_MERGE_REQUEST_PROJECT_URL/(-/)?merge_requests/$CI_MERGE_REQUEST_IID$'
       message: Commit message must not contain a link to its own merge request
+    - regex: '^(st-|St)'
+      message: Commit message subject should not be prefixed with 'st-' or 'St', use 'st/' instead
+      where: subject
+    - regex: '^[^:]+: [a-z]'
+      message: "Commit message subject should be properly Capitalized. E.g. 'window: Marginalize extradicity'"
+      where: subject
+    - regex: '^\S*\.(js|c|h):'
+      message: Commit message subject prefix should not include .c, .h etc.
+      where: subject
