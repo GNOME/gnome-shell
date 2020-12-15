@@ -1,7 +1,7 @@
 include:
     - remote: 'https://gitlab.gnome.org/GNOME/citemplates/raw/master/flatpak/flatpak_ci_initiative.yml'
     - remote: 'https://gitlab.freedesktop.org/freedesktop/ci-templates/-/raw/7ea696055e322cc7aa4bcbe5422b56a198c4bdff/templates/fedora.yml'
-    - remote: "https://gitlab.freedesktop.org/freedesktop/ci-templates/-/raw/8445ff7af2a68795afb98f486251f2ef8f90621c/templates/ci-fairy.yml"
+    - remote: "https://gitlab.freedesktop.org/freedesktop/ci-templates/-/raw/6f86b8bcb0cd5168c32779c4fea9a893c4a0c046/templates/ci-fairy.yml"
 
 stages:
  - pre_review
@@ -80,7 +80,12 @@ check_commit_log:
     variables:
         GIT_DEPTH: "100"
     script:
-        - ./.gitlab-ci/check-commit-log.sh
+        - if [[ x"$CI_MERGE_REQUEST_TARGET_BRANCH_NAME" != "x" ]] ;
+          then
+            ci-fairy check-commits --junit-xml=commit-message-junit-report.xml ;
+          else
+            echo "Not a merge request" ;
+          fi
     <<: *pipeline_guard
     artifacts:
         expire_in: 1 week
