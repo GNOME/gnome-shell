@@ -37,6 +37,7 @@ gst_req = '>= 0.11.92'
 nm_req = '>= 1.10.4'
 secret_req = '>= 0.18'
 
+fs = import('fs')
 gnome = import('gnome')
 i18n  = import('i18n')
 
@@ -126,8 +127,12 @@ else
 endif
 
 if get_option('man')
-  a2x = find_program('a2x')
-  subdir('man')
+  if fs.exists('man/gnome-shell.1')
+    install_man('man/gnome-shell.1')
+  else
+    a2x = find_program('a2x')
+    subdir('man')
+  endif
 endif
 
 mutter_typelibdir = mutter_dep.get_pkgconfig_variable('typelibdir')
@@ -287,6 +292,7 @@ if get_option('gtk_doc')
 endif
 
 meson.add_install_script('meson/postinstall.py')
+meson.add_dist_script('meson/generate-manpages.py')
 
 summary_options = {
   'networkmanager': get_option('networkmanager'),
