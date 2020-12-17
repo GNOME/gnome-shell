@@ -443,7 +443,8 @@ _st_create_shadow_pipeline (StShadow    *shadow_spec,
   clutter_paint_node_add_rectangle (texture_node,
                                     &(ClutterActorBox) {
                                       half, half,
-                                      src_width, src_height,
+                                      src_width + half,
+                                      src_height + half,
                                     });
 
   paint_context =
