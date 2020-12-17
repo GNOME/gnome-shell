@@ -390,11 +390,10 @@ _st_create_shadow_pipeline (StShadow    *shadow_spec,
   CoglFramebuffer *fb;
   CoglPipeline *pipeline;
   CoglTexture *texture;
-  double sigma;
+  float sampling_radius;
+  float sigma;
   int src_height, dst_height;
   int src_width, dst_width;
-  int n_values;
-  int half;
 
   static CoglPipeline *shadow_pipeline_template = NULL;
 
@@ -402,13 +401,12 @@ _st_create_shadow_pipeline (StShadow    *shadow_spec,
   g_return_val_if_fail (src_texture != NULL, NULL);
 
   sigma = shadow_spec->blur / 2.f;
-  n_values = ceil (3 * sigma);
-  half = n_values / 2;
+  sampling_radius = ceilf (1.5 * sigma) * 2.0;
 
   src_width = cogl_texture_get_width (src_texture);
   src_height = cogl_texture_get_height (src_texture);
-  dst_width = src_width + 2 * half;
-  dst_height = src_height + 2 * half;
+  dst_width = src_width + 2 * sampling_radius;
+  dst_height = src_height + 2 * sampling_radius;
 
   texture = cogl_texture_2d_new_with_size (ctx, dst_width, dst_height);
   if (!texture)
@@ -442,9 +440,10 @@ _st_create_shadow_pipeline (StShadow    *shadow_spec,
   clutter_paint_node_add_child (blur_node, texture_node);
   clutter_paint_node_add_rectangle (texture_node,
                                     &(ClutterActorBox) {
-                                      half, half,
-                                      src_width + half,
-                                      src_height + half,
+                                      .x1 = sampling_radius,
+                                      .y1 = sampling_radius,
+                                      .x2 = src_width + sampling_radius,
+                                      .y2 = src_height + sampling_radius,
                                     });
 
   paint_context =

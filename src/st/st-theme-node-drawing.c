@@ -2035,7 +2035,7 @@ st_theme_node_paint_sliced_shadow (StThemeNodePaintState *state,
   if (box_shadow_spec->blur == 0)
     shadow_blur_radius = 0;
   else
-    shadow_blur_radius = (5 * (box_shadow_spec->blur / 2.0)) / 2;
+    shadow_blur_radius = ceilf (1.5 * box_shadow_spec->blur / 2.0) * 2.0;
 
   shadow_width = state->box_shadow_width + 2 * shadow_blur_radius;
   shadow_height = state->box_shadow_height + 2 * shadow_blur_radius;
