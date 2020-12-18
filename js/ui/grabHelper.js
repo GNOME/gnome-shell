@@ -226,7 +226,6 @@ var GrabHelper = class GrabHelper {
         this._ignoreUntilRelease = false;
 
         Main.popModal(this._owner);
-        global.sync_pointer();
     }
 
     // ignoreRelease:
