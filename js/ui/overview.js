@@ -526,7 +526,6 @@ var Overview = class {
             this._animateNotVisible();
 
         this._syncGrab();
-        global.sync_pointer();
     }
 
     // hide:
