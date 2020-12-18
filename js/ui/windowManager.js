@@ -203,8 +203,6 @@ var WorkspaceTracker = class {
                                this._windowEnteredMonitor.bind(this));
         global.display.connect('window-left-monitor',
                                this._windowLeftMonitor.bind(this));
-        global.display.connect('restacked',
-                               this._windowsRestacked.bind(this));
 
         this._workspaceSettings = new Gio.Settings({ schema_id: 'org.gnome.mutter' });
         this._workspaceSettings.connect('changed::dynamic-workspaces', this._queueCheckWorkspaces.bind(this));
@@ -324,13 +322,6 @@ var WorkspaceTracker = class {
         // might make that workspace non-empty
         if (monitorIndex == Main.layoutManager.primaryIndex)
             this._queueCheckWorkspaces();
-    }
-
-    _windowsRestacked() {
-        // Figure out where the pointer is in case we lost track of
-        // it during a grab. (In particular, if a trayicon popup menu
-        // is dismissed, see if we need to close the message tray.)
-        global.sync_pointer();
     }
 
     _queueCheckWorkspaces() {
