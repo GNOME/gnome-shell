@@ -64,8 +64,6 @@ void shell_global_run_at_leisure (ShellGlobal          *global,
 
 
 /* Misc utilities / Shell API */
-void     shell_global_sync_pointer              (ShellGlobal  *global);
-
 GDBusProxy *
          shell_global_get_switcheroo_control    (ShellGlobal  *global);
 
