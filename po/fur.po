@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: video-subtitles master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2020-10-16 00:43+0000\n"
-"PO-Revision-Date: 2020-10-18 16:47+0200\n"
+"POT-Creation-Date: 2020-12-17 15:26+0000\n"
+"PO-Revision-Date: 2020-12-18 11:06+0100\n"
 "Last-Translator: Fabio Tomat <f.t.public@gmail.com>\n"
 "Language-Team: Friulian <fur@li.org>\n"
 "Language: fur\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.4.1\n"
+"X-Generator: Poedit 2.4.2\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: data/50-gnome-shell-system.xml:6
@@ -401,7 +401,7 @@ msgid "Network Login"
 msgstr "Acès di rêt"
 
 #: js/dbusServices/extensions/ui/extension-prefs-dialog.ui:36
-#: subprojects/extensions-app/data/ui/extensions-window.ui:224
+#: subprojects/extensions-app/data/ui/extensions-window.ui:255
 msgid "Something’s gone wrong"
 msgstr "Alc al è lât stuart"
 
@@ -427,11 +427,11 @@ msgstr "Pagjine principâl"
 msgid "Visit extension homepage"
 msgstr "Visite la pagjine principâl de estension"
 
-#: js/gdm/authPrompt.js:137 js/ui/audioDeviceSelection.js:57
+#: js/gdm/authPrompt.js:137 js/ui/audioDeviceSelection.js:58
 #: js/ui/components/networkAgent.js:111 js/ui/components/polkitAgent.js:138
 #: js/ui/endSessionDialog.js:438 js/ui/extensionDownloader.js:183
 #: js/ui/shellMountOperation.js:376 js/ui/shellMountOperation.js:386
-#: js/ui/status/network.js:940 subprojects/extensions-app/js/main.js:149
+#: js/ui/status/network.js:940 subprojects/extensions-app/js/main.js:192
 msgid "Cancel"
 msgstr "Anule"
 
@@ -439,7 +439,7 @@ msgstr "Anule"
 #: js/gdm/authPrompt.js:239 js/ui/components/networkAgent.js:206
 #: js/ui/components/networkAgent.js:222 js/ui/components/networkAgent.js:246
 #: js/ui/components/networkAgent.js:267 js/ui/components/networkAgent.js:287
-#: js/ui/components/networkAgent.js:297 js/ui/components/polkitAgent.js:276
+#: js/ui/components/networkAgent.js:297 js/ui/components/polkitAgent.js:275
 #: js/ui/shellMountOperation.js:326
 msgid "Password"
 msgstr "Password"
@@ -726,36 +726,36 @@ msgstr "Dinee acès"
 msgid "Grant Access"
 msgstr "Garantìs l'acès"
 
-#: js/ui/appDisplay.js:1346
+#: js/ui/appDisplay.js:1381
 msgid "Unnamed Folder"
 msgstr "Cartele cence non"
 
 #. Translators: This is the heading of a list of open windows
-#: js/ui/appDisplay.js:2870 js/ui/panel.js:75
+#: js/ui/appDisplay.js:2959 js/ui/panel.js:75
 msgid "Open Windows"
 msgstr "Barcons vierts"
 
-#: js/ui/appDisplay.js:2889 js/ui/panel.js:82
+#: js/ui/appDisplay.js:2978 js/ui/panel.js:82
 msgid "New Window"
 msgstr "Gnûf barcon"
 
-#: js/ui/appDisplay.js:2905
+#: js/ui/appDisplay.js:2994
 msgid "Launch using Integrated Graphics Card"
 msgstr "Invie doprant la schede grafiche integrade"
 
-#: js/ui/appDisplay.js:2906
+#: js/ui/appDisplay.js:2995
 msgid "Launch using Discrete Graphics Card"
 msgstr "Invie doprant une schede grafiche discrete"
 
-#: js/ui/appDisplay.js:2934 js/ui/dash.js:239
+#: js/ui/appDisplay.js:3024 js/ui/dash.js:239
 msgid "Remove from Favorites"
 msgstr "Gjave dai preferîts"
 
-#: js/ui/appDisplay.js:2940
+#: js/ui/appDisplay.js:3030
 msgid "Add to Favorites"
 msgstr "Zonte tai preferîts"
 
-#: js/ui/appDisplay.js:2950 js/ui/panel.js:93
+#: js/ui/appDisplay.js:3040 js/ui/panel.js:93
 msgid "Show Details"
 msgstr "Mostre Detais"
 
@@ -773,19 +773,19 @@ msgstr "%s al è stât gjavât dai tiei preferîts."
 msgid "Select Audio Device"
 msgstr "Selezione dispositîf sonôr"
 
-#: js/ui/audioDeviceSelection.js:54
+#: js/ui/audioDeviceSelection.js:55
 msgid "Sound Settings"
 msgstr "Impostazions suns"
 
-#: js/ui/audioDeviceSelection.js:64
+#: js/ui/audioDeviceSelection.js:65
 msgid "Headphones"
 msgstr "Cufis"
 
-#: js/ui/audioDeviceSelection.js:66
+#: js/ui/audioDeviceSelection.js:67
 msgid "Headset"
 msgstr "Cufis cun microfon"
 
-#: js/ui/audioDeviceSelection.js:68 js/ui/status/volume.js:272
+#: js/ui/audioDeviceSelection.js:69 js/ui/status/volume.js:272
 msgid "Microphone"
 msgstr "Microfon"
 
@@ -936,11 +936,11 @@ msgstr "Dispositîf esterni tacât"
 msgid "External drive disconnected"
 msgstr "Dispositîf esterni distacât"
 
-#: js/ui/components/automountManager.js:208
+#: js/ui/components/automountManager.js:207
 msgid "Unable to unlock volume"
 msgstr "Impussibil sblocâ il volum"
 
-#: js/ui/components/automountManager.js:209
+#: js/ui/components/automountManager.js:208
 msgid "The installed udisks version does not support the PIM setting"
 msgstr "La version di udisks instalade no supuarte la impostazion PIM"
 
@@ -1021,7 +1021,7 @@ msgstr "PIN"
 msgid "A password is required to connect to “%s”."
 msgstr "E covente une password par tacâsi a '%s'."
 
-#: js/ui/components/networkAgent.js:664 js/ui/status/network.js:1718
+#: js/ui/components/networkAgent.js:664 js/ui/status/network.js:1717
 msgid "Network Manager"
 msgstr "Ministradôr di rêt"
 
@@ -1045,7 +1045,7 @@ msgstr "Autentiche"
 #. * requested authentication was not gained; this can happen
 #. * because of an authentication error (like invalid password),
 #. * for instance.
-#: js/ui/components/polkitAgent.js:253 js/ui/shellMountOperation.js:402
+#: js/ui/components/polkitAgent.js:252 js/ui/shellMountOperation.js:402
 msgid "Sorry, that didn’t work. Please try again."
 msgstr "Mi displâs, no je lade drete. Prove di gnûf."
 
@@ -1296,13 +1296,13 @@ msgid "Boot Options"
 msgstr "Opzions di inviament"
 
 #. Translators: Remote here refers to a remote session, like a ssh login
-#: js/ui/endSessionDialog.js:685
+#: js/ui/endSessionDialog.js:684
 #, javascript-format
 msgid "%s (remote)"
 msgstr "%s (rimot)"
 
 #. Translators: Console here refers to a tty like a VT console
-#: js/ui/endSessionDialog.js:688
+#: js/ui/endSessionDialog.js:687
 #, javascript-format
 msgid "%s (console)"
 msgstr "%s (locâl vie tastiere)"
@@ -1372,15 +1372,15 @@ msgstr ""
 "Si à apene tignût fracât par 8 seconts il tast Maiusc. Chê e je la scurte pe "
 "funzion tascj lents, che e determine il mût di lavorâ de tastiere."
 
-#: js/ui/kbdA11yDialog.js:41
+#: js/ui/kbdA11yDialog.js:40
 msgid "Sticky Keys Turned On"
 msgstr "Tascj tacadiçs ativâts"
 
-#: js/ui/kbdA11yDialog.js:42
+#: js/ui/kbdA11yDialog.js:41
 msgid "Sticky Keys Turned Off"
 msgstr "Tascj tacadiçs disativâts"
 
-#: js/ui/kbdA11yDialog.js:44
+#: js/ui/kbdA11yDialog.js:43
 msgid ""
 "You just pressed the Shift key 5 times in a row. This is the shortcut for "
 "the Sticky Keys feature, which affects the way your keyboard works."
@@ -1389,7 +1389,7 @@ msgstr ""
 "je la scurte pe funzion Tascj singui/tacadiçs, che e determine il mût di "
 "lavorâ de tastiere."
 
-#: js/ui/kbdA11yDialog.js:46
+#: js/ui/kbdA11yDialog.js:45
 msgid ""
 "You just pressed two keys at once, or pressed the Shift key 5 times in a "
 "row. This turns off the Sticky Keys feature, which affects the way your "
@@ -1399,16 +1399,16 @@ msgstr ""
 "Chest al disative la funzion tascj singui/tacadiçs, che al determine il mût "
 "di lavorâ de tastiere."
 
-#: js/ui/kbdA11yDialog.js:55
+#: js/ui/kbdA11yDialog.js:54
 msgid "Leave On"
 msgstr "Lasse ativât"
 
-#: js/ui/kbdA11yDialog.js:55 js/ui/status/bluetooth.js:156
+#: js/ui/kbdA11yDialog.js:54 js/ui/status/bluetooth.js:156
 #: js/ui/status/network.js:1315
 msgid "Turn On"
 msgstr "Impie"
 
-#: js/ui/kbdA11yDialog.js:63 js/ui/status/bluetooth.js:156
+#: js/ui/kbdA11yDialog.js:62 js/ui/status/bluetooth.js:156
 #: js/ui/status/network.js:160 js/ui/status/network.js:344
 #: js/ui/status/network.js:1315 js/ui/status/network.js:1427
 #: js/ui/status/nightLight.js:41 js/ui/status/rfkill.js:81
@@ -1416,7 +1416,7 @@ msgstr "Impie"
 msgid "Turn Off"
 msgstr "Distude"
 
-#: js/ui/kbdA11yDialog.js:63
+#: js/ui/kbdA11yDialog.js:62
 msgid "Leave Off"
 msgstr "Lasse disativât"
 
@@ -1424,52 +1424,52 @@ msgstr "Lasse disativât"
 msgid "Region & Language Settings"
 msgstr "Impostazions regjon e lenghe"
 
-#: js/ui/lookingGlass.js:664
+#: js/ui/lookingGlass.js:676
 msgid "No extensions installed"
 msgstr "Nissune estension instalade"
 
 #. Translators: argument is an extension UUID.
-#: js/ui/lookingGlass.js:719
+#: js/ui/lookingGlass.js:734
 #, javascript-format
 msgid "%s has not emitted any errors."
 msgstr "%s nol a dât fûr nissun erôr."
 
-#: js/ui/lookingGlass.js:725
+#: js/ui/lookingGlass.js:740
 msgid "Hide Errors"
 msgstr "Tapone Erôrs"
 
-#: js/ui/lookingGlass.js:729 js/ui/lookingGlass.js:794
+#: js/ui/lookingGlass.js:744 js/ui/lookingGlass.js:810
 msgid "Show Errors"
 msgstr "Mostre Erôrs"
 
-#: js/ui/lookingGlass.js:738
+#: js/ui/lookingGlass.js:753
 msgid "Enabled"
 msgstr "Abilitât"
 
 #. translators:
 #. * The device has been disabled
-#: js/ui/lookingGlass.js:741 subprojects/gvc/gvc-mixer-control.c:1900
+#: js/ui/lookingGlass.js:756 subprojects/gvc/gvc-mixer-control.c:1900
 msgid "Disabled"
 msgstr "Disabilitât"
 
-#: js/ui/lookingGlass.js:743
+#: js/ui/lookingGlass.js:758
 #: subprojects/extensions-app/data/ui/extension-row.ui:188
 msgid "Error"
 msgstr "Erôr"
 
-#: js/ui/lookingGlass.js:745
+#: js/ui/lookingGlass.js:760
 msgid "Out of date"
 msgstr "No inzornât"
 
-#: js/ui/lookingGlass.js:747
+#: js/ui/lookingGlass.js:762
 msgid "Downloading"
 msgstr "Daur a scjamâ"
 
-#: js/ui/lookingGlass.js:776
+#: js/ui/lookingGlass.js:792
 msgid "View Source"
 msgstr "Viôt sorzint"
 
-#: js/ui/lookingGlass.js:785
+#: js/ui/lookingGlass.js:801
 msgid "Web Page"
 msgstr "Pagjine Web"
 
@@ -1493,7 +1493,7 @@ msgstr "Bloc dal schermi disabilitât"
 msgid "Screen Locking requires the GNOME display manager."
 msgstr "Il bloc dal schermi al à bisugne dal gjestôr dai visôrs di GNOME."
 
-#: js/ui/messageTray.js:1476
+#: js/ui/messageTray.js:1475
 msgid "System Information"
 msgstr "Informazion di sisteme"
 
@@ -1547,24 +1547,24 @@ msgstr "Assegne batidure"
 msgid "Done"
 msgstr "Fat"
 
-#: js/ui/padOsd.js:732
+#: js/ui/padOsd.js:731
 msgid "Edit…"
 msgstr "Modifiche…"
 
 # masculin o feminin
-#: js/ui/padOsd.js:774 js/ui/padOsd.js:891
+#: js/ui/padOsd.js:773 js/ui/padOsd.js:890
 msgid "None"
 msgstr "Nissune"
 
-#: js/ui/padOsd.js:845
+#: js/ui/padOsd.js:844
 msgid "Press a button to configure"
 msgstr "Frache un boton par configurâ"
 
-#: js/ui/padOsd.js:846
+#: js/ui/padOsd.js:845
 msgid "Press Esc to exit"
 msgstr "Frache Esc par jessî"
 
-#: js/ui/padOsd.js:849
+#: js/ui/padOsd.js:848
 msgid "Press any key to exit"
 msgstr "Frache un tast par jessî"
 
@@ -1623,16 +1623,16 @@ msgstr "Impussibil blocâ"
 msgid "Lock was blocked by an application"
 msgstr "Il bloc al è stât dineât di une aplicazion"
 
-#: js/ui/search.js:823
+#: js/ui/search.js:824
 msgid "Searching…"
 msgstr "Daûr a cirî…"
 
-#: js/ui/search.js:825
+#: js/ui/search.js:826
 msgid "No results."
 msgstr "Nissun risultât."
 
 # o ancjemò %d
-#: js/ui/search.js:951
+#: js/ui/search.js:952
 #, javascript-format
 msgid "%d more"
 msgid_plural "%d more"
@@ -1806,11 +1806,11 @@ msgstr "Clic secondari"
 msgid "Dwell Click"
 msgstr "Clic in polse"
 
-#: js/ui/status/keyboard.js:826
+#: js/ui/status/keyboard.js:825
 msgid "Keyboard"
 msgstr "Tastiere"
 
-#: js/ui/status/keyboard.js:848
+#: js/ui/status/keyboard.js:847
 msgid "Show Keyboard Layout"
 msgstr "Mostre la disposizion de tastiere"
 
@@ -2030,32 +2030,32 @@ msgstr "VPN distudât"
 msgid "Network Settings"
 msgstr "Impostazions rêt"
 
-#: js/ui/status/network.js:1617
+#: js/ui/status/network.js:1616
 #, javascript-format
 msgid "%s Wired Connection"
 msgid_plural "%s Wired Connections"
 msgstr[0] "%s conession cablade"
 msgstr[1] "%s conessions cabladis"
 
-#: js/ui/status/network.js:1621
+#: js/ui/status/network.js:1620
 #, javascript-format
 msgid "%s Wi-Fi Connection"
 msgid_plural "%s Wi-Fi Connections"
 msgstr[0] "%s conession cence fîi"
 msgstr[1] "%s conessions cence fîi"
 
-#: js/ui/status/network.js:1625
+#: js/ui/status/network.js:1624
 #, javascript-format
 msgid "%s Modem Connection"
 msgid_plural "%s Modem Connections"
 msgstr[0] "%s conession modem"
 msgstr[1] "%s conessions modem"
 
-#: js/ui/status/network.js:1759
+#: js/ui/status/network.js:1758
 msgid "Connection failed"
 msgstr "Conession falide"
 
-#: js/ui/status/network.js:1760
+#: js/ui/status/network.js:1759
 msgid "Activation of network connection failed"
 msgstr "Ativazion de conession di rêt falide"
 
@@ -2153,15 +2153,15 @@ msgstr "Jes"
 msgid "Switch User…"
 msgstr "Cambie Utent…"
 
-#: js/ui/status/thunderbolt.js:263
+#: js/ui/status/thunderbolt.js:262
 msgid "Thunderbolt"
 msgstr "Thunderbolt"
 
-#: js/ui/status/thunderbolt.js:325
+#: js/ui/status/thunderbolt.js:324
 msgid "Unknown Thunderbolt device"
 msgstr "Dispositîf Thunderbolt no cognossût"
 
-#: js/ui/status/thunderbolt.js:326
+#: js/ui/status/thunderbolt.js:325
 msgid ""
 "New device has been detected while you were away. Please disconnect and "
 "reconnect the device to start using it."
@@ -2169,22 +2169,22 @@ msgstr ""
 "Un gnûf dispositîf al è stât rilevât intant che tu jeris vie. Par plasê "
 "disconet e torne conet il dispositîf par tacâ a doprâlu."
 
-#: js/ui/status/thunderbolt.js:329
+#: js/ui/status/thunderbolt.js:328
 msgid "Unauthorized Thunderbolt device"
 msgstr "Dispositîf Thunderbolt cence autorizazion"
 
-#: js/ui/status/thunderbolt.js:330
+#: js/ui/status/thunderbolt.js:329
 msgid ""
 "New device has been detected and needs to be authorized by an administrator."
 msgstr ""
 "Al è stât cjatât un gnûf dispositîf e al covente jessi autorizâts di un "
 "aministradôr."
 
-#: js/ui/status/thunderbolt.js:336
+#: js/ui/status/thunderbolt.js:335
 msgid "Thunderbolt authorization error"
 msgstr "Erôr di autorizazion di Thunderbolt"
 
-#: js/ui/status/thunderbolt.js:337
+#: js/ui/status/thunderbolt.js:336
 #, javascript-format
 msgid "Could not authorize the Thunderbolt device: %s"
 msgstr "Impussibil autorizâ il dispositîf Thunderbolt: %s"
@@ -2287,7 +2287,7 @@ msgstr[1] ""
 
 #. Translators: This represents the size of a window. The first number is
 #. * the width of the window and the second is the height.
-#: js/ui/windowManager.js:551
+#: js/ui/windowManager.js:548
 #, javascript-format
 msgid "%d × %d"
 msgstr "%d × %d"
@@ -2364,19 +2364,19 @@ msgstr "Siere"
 msgid "Evolution Calendar"
 msgstr "Calendari di Evolution"
 
-#: src/main.c:458 subprojects/extensions-tool/src/main.c:317
+#: src/main.c:415 subprojects/extensions-tool/src/main.c:317
 msgid "Print version"
 msgstr "Stampe version"
 
-#: src/main.c:464
+#: src/main.c:421
 msgid "Mode used by GDM for login screen"
 msgstr "Modalitât doprade da GDM pe videade di acès"
 
-#: src/main.c:470
+#: src/main.c:427
 msgid "Use a specific mode, e.g. “gdm” for login screen"
 msgstr "Dopre une modalitât specifiche, par esempli “gdm” pe videade di acès"
 
-#: src/main.c:476
+#: src/main.c:433
 msgid "List possible modes"
 msgstr "Liste modalitâts pussibilis"
 
@@ -2404,13 +2404,13 @@ msgstr "Dialic di autenticazion anulât dal utent"
 
 #: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:5
 #: subprojects/extensions-app/data/org.gnome.Extensions.desktop.in.in:4
-#: subprojects/extensions-app/js/main.js:183
+#: subprojects/extensions-app/js/main.js:226
 #: subprojects/extensions-app/data/ui/extensions-window.ui:61
 msgid "Extensions"
 msgstr "Estensions"
 
 #: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:6
-#: subprojects/extensions-app/js/main.js:184
+#: subprojects/extensions-app/js/main.js:227
 msgid "Manage your GNOME Extensions"
 msgstr "Gjestìs lis tôs Estensions di GNOME"
 
@@ -2431,12 +2431,17 @@ msgstr ""
 msgid "Configure GNOME Shell Extensions"
 msgstr "Configure lis estensions di GNOME Shell"
 
-#: subprojects/extensions-app/js/main.js:145
+#: subprojects/extensions-app/js/main.js:154
+#: subprojects/extensions-app/js/main.js:163
+msgid "No Matches"
+msgstr "Nissune corispondence"
+
+#: subprojects/extensions-app/js/main.js:188
 #, javascript-format
 msgid "Remove “%s”?"
 msgstr "Gjavâ “%s”?"
 
-#: subprojects/extensions-app/js/main.js:146
+#: subprojects/extensions-app/js/main.js:189
 msgid ""
 "If you remove the extension, you need to return to download it if you want "
 "to enable it again"
@@ -2444,26 +2449,26 @@ msgstr ""
 "Se tu gjavis la estension tu scugnarâs tornâ a discjariâle se tu desideris "
 "abilitâle di gnûf"
 
-#: subprojects/extensions-app/js/main.js:150
+#: subprojects/extensions-app/js/main.js:193
 msgid "Remove"
 msgstr "Gjave"
 
-#: subprojects/extensions-app/js/main.js:182
+#: subprojects/extensions-app/js/main.js:225
 msgid "translator-credits"
 msgstr "Fabio Tomat <f.t.public@gmail.com>, 2020"
 
-#: subprojects/extensions-app/js/main.js:314
+#: subprojects/extensions-app/js/main.js:362
 #, javascript-format
 msgid "%d extension will be updated on next login."
 msgid_plural "%d extensions will be updated on next login."
 msgstr[0] "%d estension e vignarà inzornade al prossim acès."
 msgstr[1] "%d estensions a vignaran inzornadis al prossim acès."
 
-#: subprojects/extensions-app/js/main.js:461
+#: subprojects/extensions-app/js/main.js:511
 msgid "The extension is incompatible with the current GNOME version"
 msgstr "La estension no je compatibile cu la version atuâl di GNOME"
 
-#: subprojects/extensions-app/js/main.js:464
+#: subprojects/extensions-app/js/main.js:514
 msgid "The extension had an error"
 msgstr "La estension e à vût un erôr"
 
@@ -2520,19 +2525,19 @@ msgstr ""
 "prestazion. Se si verifichin problemis cul vuestri sisteme, si consee di "
 "disabilitâ dutis lis estensions."
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:135
+#: subprojects/extensions-app/data/ui/extensions-window.ui:166
 msgid "Manually Installed"
 msgstr "Instalât a man"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:159
+#: subprojects/extensions-app/data/ui/extensions-window.ui:190
 msgid "Built-In"
 msgstr "Integrade"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:200
+#: subprojects/extensions-app/data/ui/extensions-window.ui:231
 msgid "No Installed Extensions"
 msgstr "Nissune estension instalade"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:236
+#: subprojects/extensions-app/data/ui/extensions-window.ui:267
 msgid ""
 "We’re very sorry, but it was not possible to get the list of installed "
 "extensions. Make sure you are logged into GNOME and try again."
@@ -2540,11 +2545,11 @@ msgstr ""
 "Nus displâs, ma nol è stât pussibil otignî la liste des estensions "
 "instaladis. Controle di jessi jentrât in GNOME e torne prove."
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:273
+#: subprojects/extensions-app/data/ui/extensions-window.ui:304
 msgid "Extension Updates Ready"
 msgstr "Inzornaments di estensions pronts"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:289
+#: subprojects/extensions-app/data/ui/extensions-window.ui:320
 msgid "Log Out…"
 msgstr "Jes…"
 
