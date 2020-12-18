@@ -770,7 +770,6 @@ var _Draggable = class _Draggable {
             Shell.util_set_hidden_from_pick(this._dragActor, false);
 
         this._ungrabEvents();
-        global.sync_pointer();
 
         if (this._updateHoverId) {
             GLib.source_remove(this._updateHoverId);
