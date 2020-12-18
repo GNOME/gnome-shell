@@ -677,12 +677,10 @@ var MessageListSection = GObject.registerClass({
                 mode: Clutter.AnimationMode.EASE_OUT_QUAD,
                 onComplete: () => {
                     listItem.destroy();
-                    global.sync_pointer();
                 },
             });
         } else {
             listItem.destroy();
-            global.sync_pointer();
         }
     }
 
