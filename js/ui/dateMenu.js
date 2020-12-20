@@ -567,7 +567,7 @@ class WeatherSection extends St.Button {
                 ampm: false,
             });
             const [, tempValue] = fc.get_value_temp(GWeather.TemperatureUnit.DEFAULT);
-            const tempPrefix = tempValue >= 0 ? ' ' : '';
+            const tempPrefix = Math.round(tempValue) >= 0 ? ' ' : '';
 
             let time = new St.Label({
                 style_class: 'weather-forecast-time',
@@ -582,7 +582,7 @@ class WeatherSection extends St.Button {
             });
             let temp = new St.Label({
                 style_class: 'weather-forecast-temp',
-                text: '%s%.0f°'.format(tempPrefix, tempValue),
+                text: '%s%d°'.format(tempPrefix, Math.round(tempValue)),
                 x_align: Clutter.ActorAlign.CENTER,
             });
 
