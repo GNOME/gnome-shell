@@ -18,6 +18,13 @@ typedef enum _ShellScreenshotFlag
   SHELL_SCREENSHOT_FLAG_INCLUDE_CURSOR,
 } ShellScreenshotFlag;
 
+typedef enum _ShellScreenshotMode
+{
+  SHELL_SCREENSHOT_SCREEN,
+  SHELL_SCREENSHOT_WINDOW,
+  SHELL_SCREENSHOT_AREA,
+} ShellScreenshotMode;
+
 typedef struct _ShellScreenshotPrivate  ShellScreenshotPrivate;
 
 struct _ShellScreenshot
@@ -33,6 +40,7 @@ struct _ShellScreenshotPrivate
 
   GOutputStream *stream;
   ShellScreenshotFlag flags;
+  ShellScreenshotMode mode;
 
   GDateTime *datetime;
 
@@ -41,13 +49,6 @@ struct _ShellScreenshotPrivate
 
   gboolean include_frame;
 };
-
-typedef enum
-{
-  SHELL_SCREENSHOT_SCREEN,
-  SHELL_SCREENSHOT_WINDOW,
-  SHELL_SCREENSHOT_AREA,
-} ShellScreenshotMode;
 
 G_DEFINE_TYPE_WITH_PRIVATE (ShellScreenshot, shell_screenshot, G_TYPE_OBJECT);
 
@@ -347,10 +348,26 @@ on_after_paint (ClutterStage     *stage,
   ShellScreenshot *screenshot = g_task_get_task_data (result);
   ShellScreenshotPrivate *priv = screenshot->priv;
   MetaDisplay *display = shell_global_get_display (priv->global);
+  GTask *task;
 
   g_signal_handlers_disconnect_by_func (stage, on_after_paint, result);
 
-  grab_screenshot (screenshot, priv->flags, result);
+  if (priv->mode == SHELL_SCREENSHOT_AREA)
+    {
+      do_grab_screenshot (screenshot,
+                          priv->screenshot_area.x,
+                          priv->screenshot_area.y,
+                          priv->screenshot_area.width,
+                          priv->screenshot_area.height,
+                          priv->flags);
+
+      task = g_task_new (screenshot, NULL, on_screenshot_written, result);
+      g_task_run_in_thread (task, write_screenshot_thread);
+    }
+  else
+    {
+      grab_screenshot (screenshot, priv->flags, result);
+    }
 
   meta_enable_unredirect_for_display (display);
 }
@@ -419,6 +436,7 @@ shell_screenshot_screenshot (ShellScreenshot     *screenshot,
       meta_disable_unredirect_for_display (display);
       clutter_actor_queue_redraw (CLUTTER_ACTOR (stage));
       priv->flags = flags;
+      priv->mode = SHELL_SCREENSHOT_SCREEN;
       g_signal_connect (stage, "after-paint",
                         G_CALLBACK (on_after_paint), result);
     }
@@ -501,6 +519,7 @@ shell_screenshot_screenshot_area (ShellScreenshot     *screenshot,
 
   result = g_task_new (screenshot, NULL, callback, user_data);
   g_task_set_source_tag (result, shell_screenshot_screenshot_area);
+  g_task_set_task_data (result, screenshot, NULL);
 
   priv->stream = g_object_ref (stream);
   priv->screenshot_area.x = x;
@@ -508,15 +527,31 @@ shell_screenshot_screenshot_area (ShellScreenshot     *screenshot,
   priv->screenshot_area.width = width;
   priv->screenshot_area.height = height;
 
-  do_grab_screenshot (screenshot,
-                      priv->screenshot_area.x,
-                      priv->screenshot_area.y,
-                      priv->screenshot_area.width,
-                      priv->screenshot_area.height,
-                      SHELL_SCREENSHOT_FLAG_NONE);
 
-  task = g_task_new (screenshot, NULL, on_screenshot_written, result);
-  g_task_run_in_thread (task, write_screenshot_thread);
+  if (meta_is_wayland_compositor ())
+    {
+      do_grab_screenshot (screenshot,
+                          priv->screenshot_area.x,
+                          priv->screenshot_area.y,
+                          priv->screenshot_area.width,
+                          priv->screenshot_area.height,
+                          SHELL_SCREENSHOT_FLAG_NONE);
+
+      task = g_task_new (screenshot, NULL, on_screenshot_written, result);
+      g_task_run_in_thread (task, write_screenshot_thread);
+    }
+  else
+    {
+      MetaDisplay *display = shell_global_get_display (priv->global);
+      ClutterStage *stage = shell_global_get_stage (priv->global);
+
+      meta_disable_unredirect_for_display (display);
+      clutter_actor_queue_redraw (CLUTTER_ACTOR (stage));
+      priv->flags = SHELL_SCREENSHOT_FLAG_NONE;
+      priv->mode = SHELL_SCREENSHOT_AREA;
+      g_signal_connect (stage, "after-paint",
+                        G_CALLBACK (on_after_paint), result);
+    }
 }
 
 /**
