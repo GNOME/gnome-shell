@@ -126,8 +126,7 @@ else
 endif
 
 if get_option('man')
-  xsltproc = find_program('xsltproc')
-
+  a2x = find_program('a2x')
   subdir('man')
 endif
 
