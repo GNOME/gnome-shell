@@ -566,8 +566,13 @@ var WorkspaceLayout = GObject.registerClass({
         this._lastBox = containerBox.copy();
 
         // If the containers size changed, we can no longer keep around
-        // the old windowSlots, so we must unfreeze the layout
-        if (this._layoutFrozen && containerAllocationChanged) {
+        // the old windowSlots, so we must unfreeze the layout.
+        //
+        // However, if the overview animation is in progress, don't unfreeze
+        // the layout. This is needed to prevent windows "snapping" to their
+        // new positions during the overview closing animation when the
+        // allocation subtly expands every frame.
+        if (this._layoutFrozen && containerAllocationChanged && !Main.overview.animationInProgress) {
             this._layoutFrozen = false;
             this.notify('layout-frozen');
         }
