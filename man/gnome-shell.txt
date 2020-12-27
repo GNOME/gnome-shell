@@ -27,6 +27,27 @@ It is started in the window manager phase of the session.
 
 OPTIONS
 -------
+*--wayland*::
+Run as a wayland compositor
+
+*--display-server*::
+Run as a full display server, rather than nested
+
+*--nested*::
+Run as a nested compositor
+
+*--no-x11*::
+Run wayland compositor without starting Xwayland
+
+*--x11*::
+Run with X11 backend
+
+*--wayland-display*='DISPLAY'::
+Wayland display name to use
+
+*-d*, *--display*='DISPLAY'::
+X display to use
+
 *-r*, *--replace*::
 Replace the running window manager
 
@@ -39,20 +60,8 @@ Specify session management 'ID'
 *--sm-save-file*='FILE'::
 Initialize session from 'FILE'
 
-*--screen*='SCREEN'::
-X screen to use
-
-*-d*, *--display*='DISPLAY'::
-X display to use
-
 *--sync*::
 Make X calls synchronous
-
-*--version*::
-Print version and exit
-
-*--help*::
-Display help and exit
 
 *--mode*='MODE'::
 Use a specific mode, e.g. "gdm" for login screen
@@ -60,8 +69,11 @@ Use a specific mode, e.g. "gdm" for login screen
 *--list-modes*::
 List possible modes and exit
 
-*--clutter-display*='DISPLAY'::
-Clutter the option display (otherwise ignored)
+*--version*::
+Print version and exit
+
+*--help*::
+Display help and exit
 
 FILES
 -----
@@ -71,7 +83,7 @@ FILES
 BUGS
 ----
 The bug tracker can be reached by visiting the website
-https://bugzilla.gnome.org/buglist.cgi?product=gnome-shell.
+https://gitlab.gnome.org/GNOME/gnome-shell/issues.
 Before sending a bug report, please verify that you have the latest version
 of gnome-shell. Many bugs (major and minor) are fixed at each release, and
 if yours is out of date, the problem may already have been solved.
