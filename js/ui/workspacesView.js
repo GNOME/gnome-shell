@@ -394,7 +394,7 @@ class WorkspacesDisplay extends St.Widget {
             Main.overview.connect('window-drag-begin',
                 this._windowDragBegin.bind(this));
         this._windowDragEndId =
-            Main.overview.connect('window-drag-begin',
+            Main.overview.connect('window-drag-end',
                 this._windowDragEnd.bind(this));
         this._overviewShownId = Main.overview.connect('shown', () => {
             this._inWindowFade = false;
