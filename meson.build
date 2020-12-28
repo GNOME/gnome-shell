@@ -137,7 +137,6 @@ endif
 
 mutter_typelibdir = mutter_dep.get_pkgconfig_variable('typelibdir')
 python = find_program('python3')
-sassc = find_program('sassc')
 gjs = find_program('gjs')
 
 cc = meson.get_compiler('c')
@@ -293,6 +292,7 @@ endif
 
 meson.add_install_script('meson/postinstall.py')
 meson.add_dist_script('meson/generate-manpages.py')
+meson.add_dist_script('meson/generate-stylesheets.py')
 
 summary_options = {
   'networkmanager': get_option('networkmanager'),

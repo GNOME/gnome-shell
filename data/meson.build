@@ -41,6 +41,7 @@ foreach service_file : service_files
   )
 endforeach
 
+theme_deps = []
 
 subdir('dbus-interfaces')
 subdir('icons')
