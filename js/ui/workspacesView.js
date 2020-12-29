@@ -5,6 +5,7 @@ const { Clutter, Gio, GLib, GObject, Meta, Shell, St } = imports.gi;
 
 const Main = imports.ui.main;
 const SwipeTracker = imports.ui.swipeTracker;
+const Util = imports.misc.util;
 const Workspace = imports.ui.workspace;
 
 var { ANIMATION_TIME } = imports.ui.overview;
@@ -12,6 +13,9 @@ var WORKSPACE_SWITCH_TIME = 250;
 var SCROLL_TIMEOUT_TIME = 150;
 
 const MUTTER_SCHEMA = 'org.gnome.mutter';
+
+const WORKSPACE_MIN_SPACING = 24;
+const WORKSPACE_MAX_SPACING = 80;
 
 var WorkspacesViewBase = GObject.registerClass({
     GTypeFlags: GObject.TypeFlags.ABSTRACT,
@@ -63,13 +67,24 @@ var WorkspacesViewBase = GObject.registerClass({
     }
 });
 
+var FitMode = {
+    SINGLE: 0,
+    ALL: 1,
+};
+
 var WorkspacesView = GObject.registerClass(
 class WorkspacesView extends WorkspacesViewBase {
-    _init(monitorIndex, scrollAdjustment) {
+    _init(monitorIndex, scrollAdjustment, fitModeAdjustment) {
         let workspaceManager = global.workspace_manager;
 
         super._init(monitorIndex);
         this.clip_to_allocation = true;
+
+        this._fitModeAdjustment = fitModeAdjustment;
+        this._fitModeNotifyId = this._fitModeAdjustment.connect('notify::value', () => {
+            this._updateVisibility();
+            this.queue_relayout();
+        });
 
         this._animating = false; // tweening
         this._gestureActive = false; // touch(pad) gestures
@@ -97,29 +112,150 @@ class WorkspacesView extends WorkspacesViewBase {
                                           this._activeWorkspaceChanged.bind(this));
     }
 
+    _getFitAllBox(box, spacing, vertical) {
+        const { nWorkspaces } = global.workspaceManager;
+        const [width, height] = box.get_size();
+        const [workspace] = this._workspaces;
+
+        const fitAllBox = new Clutter.ActorBox();
+
+        let x1 = 0;
+        let y1 = 0;
+
+        // Spacing here is not only the space between workspaces, but also the
+        // space before the first workspace, and after the last one. This prevents
+        // workspaces from touching the edges of the allocation box.
+        if (vertical) {
+            const availableHeight = height - spacing * (nWorkspaces + 1);
+            let workspaceHeight = availableHeight / nWorkspaces;
+            let [, workspaceWidth] =
+                workspace.get_preferred_width(workspaceHeight);
+
+            y1 = spacing;
+            if (workspaceWidth > width) {
+                [, workspaceHeight] = workspace.get_preferred_height(width);
+                y1 += Math.max((availableHeight - workspaceHeight * nWorkspaces) / 2, 0);
+            }
+
+            fitAllBox.set_size(width, workspaceHeight);
+        } else {
+            const availableWidth = width - spacing * (nWorkspaces + 1);
+            let workspaceWidth = availableWidth / nWorkspaces;
+            let [, workspaceHeight] =
+                workspace.get_preferred_height(workspaceWidth);
+
+            x1 = spacing;
+            if (workspaceHeight > height) {
+                [, workspaceWidth] = workspace.get_preferred_width(height);
+                x1 += Math.max((availableWidth - workspaceWidth * nWorkspaces) / 2, 0);
+            }
+
+            fitAllBox.set_size(workspaceWidth, height);
+        }
+
+        fitAllBox.set_origin(x1, y1);
+
+        return fitAllBox;
+    }
+
+    _getFitSingleBox(box, spacing, vertical) {
+        const [width, height] = box.get_size();
+        const [workspace] = this._workspaces;
+
+        // Single fit mode implies centered too
+        let x1 = 0;
+        let y1 = 0;
+        if (vertical) {
+            const [, workspaceHeight] = workspace.get_preferred_height(width);
+            y1 += (height - workspaceHeight) / 2;
+        } else {
+            const [, workspaceWidth] = workspace.get_preferred_width(height);
+            x1 += (width - workspaceWidth) / 2;
+        }
+
+        const fitSingleBox = new Clutter.ActorBox({ x1, y1 });
+
+        if (vertical) {
+            const [, workspaceHeight] = workspace.get_preferred_height(width);
+            fitSingleBox.set_size(width, workspaceHeight);
+        } else {
+            const [, workspaceWidth] = workspace.get_preferred_width(height);
+            fitSingleBox.set_size(workspaceWidth, height);
+        }
+
+        return fitSingleBox;
+    }
+
+    _getSpacing(box, fitMode, vertical) {
+        const [width, height] = box.get_size();
+        const [workspace] = this._workspaces;
+
+        let availableSpace;
+        let workspaceSize;
+        if (vertical) {
+            [, workspaceSize] = workspace.get_preferred_height(width);
+            availableSpace = (height - workspaceSize) / 2;
+        } else {
+            [, workspaceSize] = workspace.get_preferred_width(height);
+            availableSpace = (width - workspaceSize) / 2;
+        }
+
+        const spacing = (availableSpace - workspaceSize * 0.05) * (1 - fitMode);
+
+        return Math.clamp(spacing, WORKSPACE_MIN_SPACING, WORKSPACE_MAX_SPACING);
+    }
+
     vfunc_allocate(box) {
         this.set_allocation(box);
 
         if (this.get_n_children() === 0)
             return;
 
-        const { workspaceManager } = global;
-        const { nWorkspaces } = workspaceManager;
-
-        const vertical = workspaceManager.layout_rows === -1;
+        const vertical = global.workspaceManager.layout_rows === -1;
         const rtl = this.text_direction === Clutter.TextDirection.RTL;
 
-        const [width, height] = box.get_size();
-        const childBox = box.copy();
+        const fitMode = this._fitModeAdjustment.value;
 
-        this._workspaces.forEach((child, index) => {
-            if (rtl && !vertical)
-                index = nWorkspaces - index - 1;
+        const fitSingleSpacing =
+            this._getSpacing(box, FitMode.SINGLE, vertical);
+        const fitSingleBox =
+            this._getFitSingleBox(box, fitSingleSpacing, vertical);
 
-            childBox.set_origin(
-                vertical ? 0 : index * width,
-                vertical ? index * height : 0);
-            child.allocate_align_fill(childBox, 0.5, 0.5, false, false);
+        const fitAllSpacing =
+            this._getSpacing(box, FitMode.ALL, vertical);
+        const fitAllBox =
+            this._getFitAllBox(box, fitAllSpacing, vertical);
+
+        // Account for RTL locales by reversing the list
+        const workspaces = this._workspaces.slice();
+        if (rtl)
+            workspaces.reverse();
+
+        workspaces.forEach(child => {
+            if (fitMode === FitMode.SINGLE)
+                box = fitSingleBox;
+            else if (fitMode === FitMode.ALL)
+                box = fitAllBox;
+            else
+                box = fitSingleBox.interpolate(fitAllBox, fitMode);
+
+            child.allocate_align_fill(box, 0.5, 0.5, false, false);
+
+            if (vertical) {
+                fitSingleBox.set_origin(
+                    fitSingleBox.x1,
+                    fitSingleBox.y1 + fitSingleBox.get_height() + fitSingleSpacing);
+                fitAllBox.set_origin(
+                    fitAllBox.x1,
+                    fitAllBox.y1 + fitAllBox.get_height() + fitAllSpacing);
+            } else {
+                fitSingleBox.set_origin(
+                    fitSingleBox.x1 + fitSingleBox.get_width() + fitSingleSpacing,
+                    fitSingleBox.y1);
+                fitAllBox.set_origin(
+                    fitAllBox.x1 + fitAllBox.get_width() + fitAllSpacing,
+                    fitAllBox.y1);
+            }
         });
 
         this._updateScrollPosition();
@@ -175,10 +311,8 @@ class WorkspacesView extends WorkspacesViewBase {
 
             if (this._animating || this._gestureActive)
                 workspace.show();
-            else if (this._inDrag)
-                workspace.visible = Math.abs(w - active) <= 1;
             else
-                workspace.visible = w == active;
+                workspace.visible = Math.abs(w - active) <= 1;
         }
     }
 
@@ -223,6 +357,7 @@ class WorkspacesView extends WorkspacesViewBase {
         super._onDestroy();
 
         this._scrollAdjustment.disconnect(this._onScrollId);
+        this._fitModeAdjustment.disconnect(this._fitModeNotifyId);
         global.window_manager.disconnect(this._switchWorkspaceNotifyId);
         let workspaceManager = global.workspace_manager;
         workspaceManager.disconnect(this._updateWorkspacesId);
@@ -286,14 +421,28 @@ class WorkspacesView extends WorkspacesViewBase {
         const workspaceManager = global.workspace_manager;
         const vertical = workspaceManager.layout_rows === -1;
         const rtl = this.text_direction === Clutter.TextDirection.RTL;
-        const progress = vertical || !rtl
+        const fitMode = this._fitModeAdjustment.value;
+        let progress = vertical || !rtl
             ? adj.value : adj.upper - adj.value - 1;
+        progress = Util.lerp(progress / (adj.upper - 1), 0, fitMode);
+
+        // Use workspaces geometry to determine the size to offset
+        const firstWorkspaceBox = rtl
+            ? this._workspaces[this._workspaces.length - 1].allocation
+            : this._workspaces[0].allocation;
+        const lastWorkspaceBox = rtl
+            ? this._workspaces[0].allocation
+            : this._workspaces[this._workspaces.length - 1].allocation;
+        const [workspaceWidth, workspaceHeight] = firstWorkspaceBox.get_size();
+        const size = vertical
+            ? lastWorkspaceBox.y2 - firstWorkspaceBox.y1 - workspaceHeight
+            : lastWorkspaceBox.x2 - firstWorkspaceBox.x1 - workspaceWidth;
 
         for (const ws of this._workspaces) {
             if (vertical)
-                ws.translation_y = -progress * this.height;
+                ws.translation_y = -progress * size;
             else
-                ws.translation_x = -progress * this.width;
+                ws.translation_x = -progress * size;
         }
     }
 });
@@ -337,6 +486,13 @@ class WorkspacesDisplay extends St.Widget {
             clip_to_allocation: true,
         });
         this.connect('notify::allocation', this._updateWorkspacesActualGeometry.bind(this));
+
+        this._fitModeAdjustment = new St.Adjustment({
+            actor: this,
+            value: FitMode.SINGLE,
+            lower: FitMode.SINGLE,
+            upper: FitMode.ALL,
+        });
 
         Main.overview.connect('relayout',
             () => this._updateWorkspacesActualGeometry());
@@ -626,7 +782,7 @@ class WorkspacesDisplay extends St.Widget {
             if (this._workspacesOnlyOnPrimary && i != this._primaryIndex)
                 view = new ExtraWorkspaceView(i);
             else
-                view = new WorkspacesView(i, this._scrollAdjustment);
+                view = new WorkspacesView(i, this._scrollAdjustment, this._fitModeAdjustment);
 
             this._workspacesViews.push(view);
             Main.layoutManager.overviewGroup.add_actor(view);
