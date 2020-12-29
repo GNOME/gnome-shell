@@ -566,11 +566,30 @@ class WorkspacesDisplay extends St.Widget {
 
     _windowDragBegin() {
         this._inWindowDrag = true;
+
+        const snapTransition = this._snapAdjustment.get_transition('value');
+        this._previousSnapAxis = snapTransition
+            ? snapTransition.get_interval().peek_final_value()
+            : this._snapAdjustment.value;
+        this._snapAdjustment.ease(Clutter.Orientation.HORIZONTAL, {
+            duration: ANIMATION_TIME,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+        });
+
         this._updateSwipeTracker();
     }
 
     _windowDragEnd() {
         this._inWindowDrag = false;
+
+        const snapAxis = this._previousSnapAxis;
+        delete this._previousSnapAxis;
+
+        this._snapAdjustment.ease(snapAxis, {
+            duration: ANIMATION_TIME,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+        });
+
         this._updateSwipeTracker();
     }
 
