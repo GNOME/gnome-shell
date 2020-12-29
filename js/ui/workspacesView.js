@@ -967,4 +967,8 @@ class WorkspacesDisplay extends St.Widget {
         Main.wm.actionMoveWorkspace(ws);
         return Clutter.EVENT_STOP;
     }
+
+    get fitModeAdjustment() {
+        return this._fitModeAdjustment;
+    }
 });

@@ -181,6 +181,12 @@ class ActivitiesContainer extends St.Widget {
             opacity: Util.lerp(0, 255, 1 - progress),
             visible: (1 - progress) !== 0,
         });
+
+        const { fitModeAdjustment } = this._workspacesDisplay;
+        fitModeAdjustment.value = Util.lerp(
+            WorkspacesView.FitMode.SINGLE,
+            WorkspacesView.FitMode.ALL,
+            progress);
     }
 
     _getWorkspacesBoxes(box, thumbnailsHeight) {
