@@ -126,7 +126,7 @@ var BaseAppView = GObject.registerClass({
         'view-loaded': {},
     },
 }, class BaseAppView extends St.Widget {
-    _init(params = {}, orientation = Clutter.Orientation.HORIZONTAL) {
+    _init(params = {}) {
         params = Params.parse(params, { animateIndicators: true }, true);
 
         const animateIndicators = params.animateIndicators;
@@ -145,8 +145,6 @@ var BaseAppView = GObject.registerClass({
             this._pageIndicators.setCurrentPosition(this._grid.currentPage);
         });
 
-        const vertical = orientation === Clutter.Orientation.VERTICAL;
-
         // Scroll View
         this._scrollView = new St.ScrollView({
             clip_to_allocation: true,
@@ -154,9 +152,7 @@ var BaseAppView = GObject.registerClass({
             y_expand: true,
             reactive: true,
         });
-        this._scrollView.set_policy(
-            vertical ? St.PolicyType.NEVER : St.PolicyType.EXTERNAL,
-            vertical ? St.PolicyType.EXTERNAL : St.PolicyType.NEVER);
+        this._scrollView.set_policy(St.PolicyType.EXTERNAL, St.PolicyType.NEVER);
 
         this._canScroll = true; // limiting scrolling speed
         this._scrollTimeoutId = 0;
@@ -164,7 +160,7 @@ var BaseAppView = GObject.registerClass({
 
         this._scrollView.add_actor(this._grid);
 
-        const scroll = vertical ?  this._scrollView.vscroll : this._scrollView.hscroll;
+        const scroll = this._scrollView.hscroll;
         this._adjustment = scroll.adjustment;
         this._adjustment.connect('notify::value', adj => {
             this._updateFade();
@@ -172,12 +168,13 @@ var BaseAppView = GObject.registerClass({
         });
 
         // Page Indicators
+        const orientation = Clutter.Orientation.HORIZONTAL;
         if (animateIndicators)
             this._pageIndicators = new PageIndicators.AnimatedPageIndicators(orientation);
         else
             this._pageIndicators = new PageIndicators.PageIndicators(orientation);
 
-        this._pageIndicators.y_expand = vertical;
+        this._pageIndicators.y_expand = false;
         this._pageIndicators.connect('page-activated',
             (indicators, pageIndex) => {
                 this.goToPage(pageIndex);
@@ -186,17 +183,25 @@ var BaseAppView = GObject.registerClass({
             this._scrollView.event(event, false);
         });
 
+        this._box = new St.BoxLayout({
+            vertical: true,
+            x_expand: true,
+            y_expand: true,
+        });
+        this._box.add_child(this._scrollView);
+        this._box.add_child(this._pageIndicators);
+
         // Swipe
         this._swipeTracker = new SwipeTracker.SwipeTracker(this._scrollView,
             Shell.ActionMode.OVERVIEW | Shell.ActionMode.POPUP);
-        this._swipeTracker.orientation = orientation;
+        this._swipeTracker.orientation = Clutter.Orientation.HORIZONTAL;
         this._swipeTracker.connect('begin', this._swipeBegin.bind(this));
         this._swipeTracker.connect('update', this._swipeUpdate.bind(this));
         this._swipeTracker.connect('end', this._swipeEnd.bind(this));
 
         this._availWidth = 0;
         this._availHeight = 0;
-        this._orientation = orientation;
+        this._orientation = Clutter.Orientation.HORIZONTAL;
 
         this._items = new Map();
         this._orderedItems = [];
@@ -969,15 +974,7 @@ class AppDisplay extends BaseAppView {
             y_expand: true,
         });
         this.add_actor(this._stack);
-
-        const box = new St.BoxLayout({
-            x_expand: true,
-            y_expand: true,
-            vertical: true,
-        });
-        this._stack.add_child(box);
-        box.add_child(this._scrollView);
-        box.add_child(this._pageIndicators);
+        this._stack.add_child(this._box);
 
         this._folderIcons = [];
 
@@ -1731,21 +1728,12 @@ class FolderView extends BaseAppView {
         // If it not expand, the parent doesn't take into account its preferred_width when allocating
         // the second time it allocates, so we apply the "Standard hack for ClutterBinLayout"
         this._grid.x_expand = true;
-        this._pageIndicators.y_expand = false;
         this._id = id;
         this._folder = folder;
         this._parentView = parentView;
         this._grid._delegate = this;
 
-        const box = new St.BoxLayout({
-            vertical: true,
-            reactive: true,
-            x_expand: true,
-            y_expand: true,
-        });
-        box.add_child(this._scrollView);
-        box.add_child(this._pageIndicators);
-        this.add_child(box);
+        this.add_child(this._box);
 
         let action = new Clutter.PanAction({ interpolate: true });
         action.connect('pan', this._onPan.bind(this));
