@@ -169,6 +169,9 @@ class AppsPageContainer extends St.Widget {
 
         this._appDisplay.opacity = progress * 255;
         this._appDisplay.visible = progress !== 0;
+
+        const { snapAdjustment } = this._workspacesDisplay;
+        snapAdjustment.value = 1 - progress;
     }
 
     _getWorkspacesBoxes(box) {
