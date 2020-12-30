@@ -6,14 +6,23 @@ const { Clutter, GObject, St } = imports.gi;
 const Dash = imports.ui.dash;
 const ViewSelector = imports.ui.viewSelector;
 
+var ControlsState = {
+    HIDDEN: 0,
+    WINDOW_PICKER: 1,
+    APP_GRID: 2,
+};
+
 var ControlsManagerLayout = GObject.registerClass(
 class ControlsManagerLayout extends Clutter.BoxLayout {
-    _init(searchEntry, viewSelector, dash) {
+    _init(searchEntry, viewSelector, dash, stateAdjustment) {
         super._init({ orientation: Clutter.Orientation.VERTICAL });
 
+        this._stateAdjustment = stateAdjustment;
         this._searchEntry = searchEntry;
         this._viewSelector = viewSelector;
         this._dash = dash;
+
+        stateAdjustment.connect('notify::value', () => this.layout_changed());
     }
 
     vfunc_set_container(container) {
@@ -46,9 +55,18 @@ class ControlsManagerLayout extends Clutter.BoxLayout {
         availableHeight -= dashHeight + spacing;
 
         // ViewSelector
+        const initialBox = new Clutter.ActorBox();
+        initialBox.set_origin(0, 0);
+        initialBox.set_size(width, height);
+
         childBox.set_origin(0, searchHeight + spacing);
         childBox.set_size(width, availableHeight);
-        this._viewSelector.allocate(childBox);
+
+        const page = this._viewSelector.getActivePage();
+        const progress = page === ViewSelector.ViewPage.SEARCH
+            ? 1 : Math.min(this._stateAdjustment.value, 1);
+        const viewSelectorBox = initialBox.interpolate(childBox, progress);
+        this._viewSelector.allocate(viewSelectorBox);
     }
 });
 
@@ -93,6 +111,13 @@ class ControlsManager extends St.Widget {
             upper: workspaceManager.n_workspaces,
         });
 
+        this._stateAdjustment = new St.Adjustment({
+            actor: this,
+            value: ControlsState.WINDOW_PICKER,
+            lower: ControlsState.HIDDEN,
+            upper: ControlsState.APP_GRID,
+        });
+
         this._nWorkspacesNotifyId =
             workspaceManager.connect('notify::n-workspaces',
                 this._updateAdjustment.bind(this));
@@ -105,7 +130,7 @@ class ControlsManager extends St.Widget {
         this.add_child(this.viewSelector);
 
         this.layout_manager = new ControlsManagerLayout(searchEntryBin,
-            this.viewSelector, this.dash);
+            this.viewSelector, this.dash, this._stateAdjustment);
 
         this.connect('destroy', this._onDestroy.bind(this));
     }
