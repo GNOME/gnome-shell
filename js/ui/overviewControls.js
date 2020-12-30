@@ -8,12 +8,28 @@ const ViewSelector = imports.ui.viewSelector;
 
 var ControlsManager = GObject.registerClass(
 class ControlsManager extends St.Widget {
-    _init(searchEntry) {
+    _init() {
         super._init({
             layout_manager: new Clutter.BinLayout(),
             x_expand: true,
             y_expand: true,
             clip_to_allocation: true,
+        });
+
+        this._searchEntry = new St.Entry({
+            style_class: 'search-entry',
+            /* Translators: this is the text displayed
+               in the search entry when no search is
+               active; it should not exceed ~30
+               characters. */
+            hint_text: _('Type to search'),
+            track_hover: true,
+            can_focus: true,
+        });
+        this._searchEntry.set_offscreen_redirect(Clutter.OffscreenRedirect.ALWAYS);
+        const searchEntryBin = new St.Bin({
+            child: this._searchEntry,
+            x_align: Clutter.ActorAlign.CENTER,
         });
 
         this.dash = new Dash.Dash();
@@ -35,7 +51,7 @@ class ControlsManager extends St.Widget {
             workspaceManager.connect('notify::n-workspaces',
                 this._updateAdjustment.bind(this));
 
-        this.viewSelector = new ViewSelector.ViewSelector(searchEntry,
+        this.viewSelector = new ViewSelector.ViewSelector(this._searchEntry,
             this._workspaceAdjustment, this.dash.showAppsButton);
 
         this._group = new St.BoxLayout({
@@ -46,6 +62,7 @@ class ControlsManager extends St.Widget {
         });
         this.add_actor(this._group);
 
+        this._group.add_child(searchEntryBin);
         this._group.add_child(this.viewSelector);
         this._group.add_actor(this.dash);
 
@@ -67,5 +84,9 @@ class ControlsManager extends St.Widget {
         // one, causing the adjustment to go out of sync, so update the value
         this._workspaceAdjustment.remove_transition('value');
         this._workspaceAdjustment.value = activeIndex;
+    }
+
+    get searchEntry() {
+        return this._searchEntry;
     }
 });
