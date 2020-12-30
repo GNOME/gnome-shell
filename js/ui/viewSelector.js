@@ -122,7 +122,7 @@ var ShowOverviewAction = GObject.registerClass({
 
 var AppsPageContainer = GObject.registerClass(
 class AppsPageContainer extends St.Widget {
-    _init(workspacesDisplay, appDisplay, showAppsButton) {
+    _init(workspacesDisplay, appDisplay, overviewAdjustment) {
         super._init();
 
         // 0 for window picker, 1 for app grid
@@ -137,9 +137,9 @@ class AppsPageContainer extends St.Widget {
             this.queue_relayout();
         });
 
-        this._showAppsButton = showAppsButton;
-        showAppsButton.connect('notify::checked',
-            this._onShowAppsButtonToggled.bind(this));
+        overviewAdjustment.connect('notify::value', () => {
+            this._adjustment.value = Math.max(overviewAdjustment.value - 1, 0);
+        });
 
         this._appDisplay = appDisplay;
         this.add_child(appDisplay);
@@ -152,16 +152,6 @@ class AppsPageContainer extends St.Widget {
         });
 
         this._update();
-    }
-
-    _onShowAppsButtonToggled() {
-        const checked = this._showAppsButton.checked;
-
-        const value = checked ? 1 : 0;
-        this._adjustment.ease(value, {
-            duration: OverviewControls.SIDE_CONTROLS_ANIMATION_TIME,
-            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-        });
     }
 
     _update() {
@@ -207,7 +197,7 @@ var ViewSelector = GObject.registerClass({
         'page-empty': {},
     },
 }, class ViewSelector extends Shell.Stack {
-    _init(searchEntry, workspaceAdjustment, showAppsButton) {
+    _init(searchEntry, workspaceAdjustment, showAppsButton, overviewAdjustment) {
         super._init({
             name: 'viewSelector',
             x_expand: true,
@@ -256,7 +246,7 @@ var ViewSelector = GObject.registerClass({
         this.appDisplay = new AppDisplay.AppDisplay();
 
         const appsContainer = new AppsPageContainer(
-            this._workspacesDisplay, this.appDisplay, showAppsButton);
+            this._workspacesDisplay, this.appDisplay, overviewAdjustment);
         this._appsPage =
             this._addPage(appsContainer, _('Applications'), 'view-app-grid-symbolic');
 
