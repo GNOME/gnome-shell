@@ -153,15 +153,22 @@ class WorkspacesView extends WorkspacesViewBase {
         const [width, height] = box.get_size();
         const [workspace] = this._workspaces;
 
+        const rtl = this.text_direction === Clutter.TextDirection.RTL;
+        const adj = this._scrollAdjustment;
+        const currentWorkspace = vertical || !rtl
+            ? adj.value : adj.upper - adj.value;
+
         // Snapped in the vertical axis also means horizontally centered
         let x1 = box.x1;
         let y1 = box.y1;
         if (vertical) {
             const [, workspaceHeight] = workspace.get_preferred_height(width);
             y1 += (height - workspaceHeight) / 2;
+            y1 -= currentWorkspace * (workspaceHeight + spacing);
         } else {
             const [, workspaceWidth] = workspace.get_preferred_width(height);
             x1 += (width - workspaceWidth) / 2;
+            x1 -= currentWorkspace * (workspaceWidth + spacing);
         }
 
         const verticalBox = new Clutter.ActorBox({ x1, y1 });
@@ -248,8 +255,6 @@ class WorkspacesView extends WorkspacesViewBase {
                     horizontalBox.y1);
             }
         });
-
-        this._updateScrollPosition();
     }
 
     getActiveWorkspace() {
@@ -261,7 +266,6 @@ class WorkspacesView extends WorkspacesViewBase {
     animateToOverview() {
         for (let w = 0; w < this._workspaces.length; w++)
             this._workspaces[w].zoomToOverview();
-        this._updateScrollPosition();
     }
 
     animateFromOverview() {
@@ -314,8 +318,6 @@ class WorkspacesView extends WorkspacesViewBase {
             this._workspaces[j].destroy();
             this._workspaces.splice(j, 1);
         }
-
-        this._updateScrollPosition();
     }
 
     _activeWorkspaceChanged(_wm, _from, _to, _direction) {
@@ -374,44 +376,7 @@ class WorkspacesView extends WorkspacesViewBase {
             metaWorkspace.activate(global.get_current_time());
         }
 
-        this._updateScrollPosition();
-    }
-
-    _updateScrollPosition() {
-        if (!this.has_allocation())
-            return;
-
-        const adj = this._scrollAdjustment;
-
-        if (adj.upper == 1)
-            return;
-
-        const workspaceManager = global.workspace_manager;
-        const vertical = workspaceManager.layout_rows === -1;
-        const rtl = this.text_direction === Clutter.TextDirection.RTL;
-        const snapProgress = this._snapAdjustment.value;
-        let progress = vertical || !rtl
-            ? adj.value : adj.upper - adj.value;
-        progress = progress / (adj.upper - 1) * snapProgress;
-
-        // Use workspaces geometry to determine the size to offset
-        const firstWorkspaceBox = rtl
-            ? this._workspaces[this._workspaces.length - 1].allocation
-            : this._workspaces[0].allocation;
-        const lastWorkspaceBox = rtl
-            ? this._workspaces[0].allocation
-            : this._workspaces[this._workspaces.length - 1].allocation;
-        const [workspaceWidth, workspaceHeight] = firstWorkspaceBox.get_size();
-        const size = vertical
-            ? lastWorkspaceBox.y2 - firstWorkspaceBox.y1 - workspaceHeight
-            : lastWorkspaceBox.x2 - firstWorkspaceBox.x1 - workspaceWidth;
-
-        for (const ws of this._workspaces) {
-            if (vertical)
-                ws.translation_y = -progress * size;
-            else
-                ws.translation_x = -progress * size;
-        }
+        this.queue_relayout();
     }
 });
 
