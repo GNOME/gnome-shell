@@ -123,7 +123,7 @@ var ShowOverviewAction = GObject.registerClass({
 
 var ActivitiesContainer = GObject.registerClass(
 class ActivitiesContainer extends St.Widget {
-    _init(thumbnailsBox, workspacesDisplay, appDisplay, showAppsButton) {
+    _init(thumbnailsBox, workspacesDisplay, appDisplay, overviewAdjustment) {
         super._init();
 
         // 0 for window picker, 1 for app grid
@@ -138,9 +138,9 @@ class ActivitiesContainer extends St.Widget {
             this.queue_relayout();
         });
 
-        this._showAppsButton = showAppsButton;
-        showAppsButton.connect('notify::checked',
-            this._onShowAppsButtonToggled.bind(this));
+        overviewAdjustment.connect('notify::value', () => {
+            this._adjustment.value = Math.max(overviewAdjustment.value - 1, 0);
+        });
 
         this._thumbnailsBox = thumbnailsBox;
         this.add_child(thumbnailsBox);
@@ -156,16 +156,6 @@ class ActivitiesContainer extends St.Widget {
         });
 
         this._update();
-    }
-
-    _onShowAppsButtonToggled() {
-        const checked = this._showAppsButton.checked;
-
-        const value = checked ? 1 : 0;
-        this._adjustment.ease(value, {
-            duration: OverviewControls.SIDE_CONTROLS_ANIMATION_TIME,
-            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-        });
     }
 
     _update() {
@@ -243,7 +233,7 @@ var ViewSelector = GObject.registerClass({
         'page-empty': {},
     },
 }, class ViewSelector extends Shell.Stack {
-    _init(searchEntry, workspaceAdjustment, showAppsButton) {
+    _init(searchEntry, workspaceAdjustment, showAppsButton, overviewAdjustment) {
         super._init({
             name: 'viewSelector',
             x_expand: true,
@@ -298,7 +288,7 @@ var ViewSelector = GObject.registerClass({
             this._thumbnailsBox,
             this._workspacesDisplay,
             this.appDisplay,
-            showAppsButton);
+            overviewAdjustment);
         this._activitiesPage =
             this._addPage(activitiesContainer, _('Activities'), 'view-app-grid-symbolic');
 

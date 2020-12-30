@@ -4,7 +4,10 @@
 const { Clutter, GObject, St } = imports.gi;
 
 const Dash = imports.ui.dash;
+const Overview = imports.ui.overview;
 const ViewSelector = imports.ui.viewSelector;
+
+var SIDE_CONTROLS_ANIMATION_TIME = Overview.ANIMATION_TIME;
 
 var ControlsState = {
     HIDDEN: 0,
@@ -123,7 +126,9 @@ class ControlsManager extends St.Widget {
                 this._updateAdjustment.bind(this));
 
         this.viewSelector = new ViewSelector.ViewSelector(this._searchEntry,
-            this._workspaceAdjustment, this.dash.showAppsButton);
+            this._workspaceAdjustment,
+            this.dash.showAppsButton,
+            this._stateAdjustment);
 
         this.add_child(searchEntryBin);
         this.add_child(this.dash);
@@ -132,7 +137,22 @@ class ControlsManager extends St.Widget {
         this.layout_manager = new ControlsManagerLayout(searchEntryBin,
             this.viewSelector, this.dash, this._stateAdjustment);
 
+        this.dash.showAppsButton.connect('notify::checked',
+            this._onShowAppsButtonToggled.bind(this));
+
         this.connect('destroy', this._onDestroy.bind(this));
+    }
+
+    _onShowAppsButtonToggled() {
+        const checked = this.dash.showAppsButton.checked;
+
+        const value = checked
+            ? ControlsState.APP_GRID : ControlsState.WINDOW_PICKER;
+        this._stateAdjustment.remove_transition('value');
+        this._stateAdjustment.ease(value, {
+            duration: SIDE_CONTROLS_ANIMATION_TIME,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+        });
     }
 
     _onDestroy() {
