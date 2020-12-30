@@ -220,30 +220,6 @@ get_ical_is_all_day (ECalClient    *cal,
   return retval;
 }
 
-static inline time_t
-get_ical_due_time (ECalClient    *cal,
-                   ICalComponent *icomp,
-                   ICalTimezone  *default_zone)
-{
-  return get_time_from_property (cal,
-                                 icomp,
-                                 I_CAL_DUE_PROPERTY,
-                                 i_cal_property_get_due,
-                                 default_zone);
-}
-
-static inline time_t
-get_ical_completed_time (ECalClient    *cal,
-                         ICalComponent *icomp,
-                         ICalTimezone  *default_zone)
-{
-  return get_time_from_property (cal,
-                                 icomp,
-                                 I_CAL_COMPLETED_PROPERTY,
-                                 i_cal_property_get_completed,
-                                 default_zone);
-}
-
 static CalendarAppointment *
 calendar_appointment_new (ECalClient    *cal,
                           ECalComponent *comp)
