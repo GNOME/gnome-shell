@@ -44,11 +44,56 @@ class DashFader extends St.Widget {
     }
 });
 
+var ControlsManagerLayout = GObject.registerClass(
+class ControlsManagerLayout extends Clutter.BinLayout {
+    _init(searchEntry, viewSelector, dash) {
+        super._init();
+
+        this._searchEntry = searchEntry;
+        this._viewSelector = viewSelector;
+        this._dash = dash;
+    }
+
+    vfunc_set_container(container) {
+        this._container = container;
+    }
+
+    vfunc_allocate(container, box) {
+        const childBox = new Clutter.ActorBox();
+
+        const spacing = container.get_theme_node().get_length('spacing');
+
+        const [width, height] = box.get_size();
+        let availableHeight = height;
+
+        // Search entry
+        const [searchHeight] = this._searchEntry.get_preferred_height(width);
+        childBox.set_origin(0, 0);
+        childBox.set_size(width, searchHeight);
+        this._searchEntry.allocate(childBox);
+
+        availableHeight -= searchHeight + spacing;
+
+        // Dash
+        const [, dashHeight] = this._dash.get_preferred_height(width);
+        childBox.set_origin(0, height - dashHeight);
+        childBox.set_size(width, dashHeight);
+        this._dash.allocate(childBox);
+
+        availableHeight -= dashHeight + spacing;
+
+        // ViewSelector
+        childBox.set_origin(0, searchHeight + spacing);
+        childBox.set_size(width, availableHeight);
+        this._viewSelector.allocate(childBox);
+    }
+});
+
 var ControlsManager = GObject.registerClass(
 class ControlsManager extends St.Widget {
     _init() {
         super._init({
-            layout_manager: new Clutter.BinLayout(),
+            style_class: 'controls-manager',
             x_expand: true,
             y_expand: true,
             clip_to_allocation: true,
@@ -93,23 +138,12 @@ class ControlsManager extends St.Widget {
         this.viewSelector = new ViewSelector.ViewSelector(this._searchEntry,
             this._workspaceAdjustment, this.dash.showAppsButton);
 
-        this._group = new St.BoxLayout({
-            name: 'overview-group',
-            vertical: true,
-            x_expand: true,
-            y_expand: true,
-        });
-        this.add_actor(this._group);
+        this.add_child(searchEntryBin);
+        this.add_child(this._dashFader);
+        this.add_child(this.viewSelector);
 
-        const box = new St.BoxLayout({
-            x_expand: true,
-            y_expand: true,
-        });
-        box.add_child(this.viewSelector);
-
-        this._group.add_actor(searchEntryBin);
-        this._group.add_child(box);
-        this._group.add_actor(this._dashFader);
+        this.layout_manager = new ControlsManagerLayout(searchEntryBin,
+            this.viewSelector, this._dashFader);
 
         this.connect('destroy', this._onDestroy.bind(this));
     }
