@@ -1,7 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported Workspace */
 
-const { Clutter, GLib, GObject, Meta, St } = imports.gi;
+const { Clutter, GLib, GObject, Graphene, Meta, St } = imports.gi;
 
 const Background = imports.ui.background;
 const DND = imports.ui.dnd;
@@ -936,6 +936,7 @@ class Workspace extends St.Widget {
     _init(metaWorkspace, monitorIndex) {
         super._init({
             style_class: 'window-picker',
+            pivot_point: new Graphene.Point({ x: 0.5, y: 0.5 }),
             layout_manager: new WorkspaceLayout(metaWorkspace, monitorIndex),
             reactive: true,
         });
