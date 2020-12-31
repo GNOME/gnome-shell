@@ -16,6 +16,8 @@ const MUTTER_SCHEMA = 'org.gnome.mutter';
 const WORKSPACE_MIN_SPACING = 24;
 const WORKSPACE_MAX_SPACING = 80;
 
+const WORKSPACE_INACTIVE_SCALE = 0.94;
+
 var WorkspacesViewBase = GObject.registerClass({
     GTypeFlags: GObject.TypeFlags.ABSTRACT,
 }, class WorkspacesViewBase extends St.Widget {
@@ -76,6 +78,7 @@ class WorkspacesView extends WorkspacesViewBase {
 
         this._snapAdjustment = snapAdjustment;
         this._snapNotifyId = this._snapAdjustment.connect('notify::value', () => {
+            this._updateWorkspacesState();
             this.queue_relayout();
         });
 
@@ -203,6 +206,20 @@ class WorkspacesView extends WorkspacesViewBase {
         return Math.clamp(spacing, WORKSPACE_MIN_SPACING, WORKSPACE_MAX_SPACING);
     }
 
+    _updateWorkspacesState() {
+        const adj = this._scrollAdjustment;
+
+        // Fade and scale inactive workspaces
+        this._workspaces.forEach((w, index) => {
+            const distanceToCurrentWorkspace = Math.abs(adj.value - index);
+
+            const progress = 1 - Math.clamp(distanceToCurrentWorkspace, 0, 1);
+
+            const scale = Math.interpolate(WORKSPACE_INACTIVE_SCALE, 1, progress);
+            w.set_scale(scale, scale);
+        });
+    }
+
     vfunc_allocate(box) {
         this.set_allocation(box);
 
@@ -318,6 +335,8 @@ class WorkspacesView extends WorkspacesViewBase {
             this._workspaces[j].destroy();
             this._workspaces.splice(j, 1);
         }
+
+        this._updateWorkspacesState();
     }
 
     _activeWorkspaceChanged(_wm, _from, _to, _direction) {
@@ -376,6 +395,7 @@ class WorkspacesView extends WorkspacesViewBase {
             metaWorkspace.activate(global.get_current_time());
         }
 
+        this._updateWorkspacesState();
         this.queue_relayout();
     }
 });
