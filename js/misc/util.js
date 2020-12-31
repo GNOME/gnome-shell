@@ -1,7 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported findUrls, spawn, spawnCommandLine, spawnApp, trySpawnCommandLine,
             formatTime, formatTimeSpan, createTimeLabel, insertSorted,
-            ensureActorVisibleInScrollView, wiggle */
+            ensureActorVisibleInScrollView, wiggle, lerp */
 
 const { Clutter, Gio, GLib, Shell, St, GnomeDesktop } = imports.gi;
 const Gettext = imports.gettext;
@@ -434,4 +434,8 @@ function wiggle(actor, params) {
             });
         },
     });
+}
+
+function lerp(start, end, progress) {
+    return start + progress * (end - start);
 }
