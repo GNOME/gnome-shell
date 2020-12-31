@@ -382,6 +382,10 @@ function init() {
     Math.clamp = function (x, lower, upper) {
         return Math.min(Math.max(x, lower), upper);
     };
+
+    Math.interpolate = function (start, end, progress) {
+        return start + progress * (end - start);
+    };
 }
 
 // adjustAnimationTime:
