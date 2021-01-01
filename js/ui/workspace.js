@@ -1165,7 +1165,7 @@ class Workspace extends St.Widget {
         });
     }
 
-    zoomFromOverview() {
+    prepareToLeaveOverview() {
         for (let i = 0; i < this._windows.length; i++)
             this._windows[i].remove_all_transitions();
 
@@ -1176,6 +1176,10 @@ class Workspace extends St.Widget {
 
         this.layout_manager.layout_frozen = true;
         this._overviewHiddenId = Main.overview.connect('hidden', this._doneLeavingOverview.bind(this));
+    }
+
+    zoomFromOverview() {
+        this.prepareToLeaveOverview();
 
         if (this.metaWorkspace !== null && !this.metaWorkspace.active)
             return;
