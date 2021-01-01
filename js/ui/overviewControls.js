@@ -83,6 +83,8 @@ class ControlsManager extends St.Widget {
             clip_to_allocation: true,
         });
 
+        this._ignoreShowAppsButtonToggle = false;
+
         this._searchEntry = new St.Entry({
             style_class: 'search-entry',
             /* Translators: this is the text displayed
@@ -144,6 +146,9 @@ class ControlsManager extends St.Widget {
     }
 
     _onShowAppsButtonToggled() {
+        if (this._ignoreShowAppsButtonToggle)
+            return;
+
         const checked = this.dash.showAppsButton.checked;
 
         const value = checked
@@ -174,10 +179,27 @@ class ControlsManager extends St.Widget {
 
     animateToOverview() {
         this.viewSelector.animateToOverview();
+
+        this._stateAdjustment.value = ControlsState.HIDDEN;
+        this._stateAdjustment.ease(ControlsState.WINDOW_PICKER, {
+            duration: Overview.ANIMATION_TIME,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+        });
     }
 
     animateFromOverview() {
+        this._ignoreShowAppsButtonToggle = true;
+
         this.viewSelector.animateFromOverview();
+
+        this._stateAdjustment.ease(ControlsState.HIDDEN, {
+            duration: Overview.ANIMATION_TIME,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            onStopped: () => {
+                this.dash.showAppsButton.checked = false;
+                this._ignoreShowAppsButtonToggle = false;
+            },
+        });
     }
 
     get searchEntry() {
