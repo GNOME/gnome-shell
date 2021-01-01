@@ -344,8 +344,6 @@ var ViewSelector = GObject.registerClass({
     animateFromOverview() {
         this._workspacesDisplay.animateFromOverview();
 
-        this._showAppsButton.checked = false;
-
         if (!this._workspacesDisplay.activeWorkspaceHasMaximizedWindows())
             Main.overview.fadeInDesktop();
     }
