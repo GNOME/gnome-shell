@@ -97,26 +97,11 @@ class OverviewActor extends St.BoxLayout {
     }
 
     animateToOverview(onComplete) {
-        this._controls.animateToOverview();
-
-        this.opacity = 255;
-        this.ease({
-            opacity: 255,
-            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            duration: ANIMATION_TIME,
-            onComplete,
-        });
+        this._controls.animateToOverview(onComplete);
     }
 
     animateFromOverview(onComplete) {
-        this._controls.animateFromOverview();
-
-        this.ease({
-            opacity: 0,
-            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            duration: ANIMATION_TIME,
-            onComplete,
-        });
+        this._controls.animateFromOverview(onComplete);
     }
 
     get dash() {
