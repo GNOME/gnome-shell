@@ -217,9 +217,12 @@ class WorkspacesView extends WorkspacesViewBase {
 
     _updateWorkspacesState() {
         const adj = this._scrollAdjustment;
+        const fitMode = this._fitModeAdjustment.value;
 
         // Fade and scale inactive workspaces
         this._workspaces.forEach((w, index) => {
+            w.stateAdjustment.value = Util.lerp(1, 0, fitMode);
+
             const distanceToCurrentWorkspace = Math.abs(adj.value - index);
 
             const progress = 1 - Math.clamp(distanceToCurrentWorkspace, 0, 1);
@@ -290,14 +293,12 @@ class WorkspacesView extends WorkspacesViewBase {
     }
 
     animateToOverview() {
-        for (let w = 0; w < this._workspaces.length; w++)
-            this._workspaces[w].zoomToOverview();
         this._updateVisibility();
     }
 
     animateFromOverview() {
         for (let w = 0; w < this._workspaces.length; w++)
-            this._workspaces[w].zoomFromOverview();
+            this._workspaces[w].prepareToLeaveOverview();
     }
 
     syncStacking(stackIndices) {
