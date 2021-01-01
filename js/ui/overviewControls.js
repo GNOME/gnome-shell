@@ -216,6 +216,14 @@ class ControlsManager extends St.Widget {
         this._workspaceAdjustment.value = activeIndex;
     }
 
+    animateToOverview() {
+        this.viewSelector.animateToOverview();
+    }
+
+    animateFromOverview() {
+        this.viewSelector.animateFromOverview();
+    }
+
     get searchEntry() {
         return this._searchEntry;
     }

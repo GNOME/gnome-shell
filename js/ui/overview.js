@@ -96,6 +96,29 @@ class OverviewActor extends St.BoxLayout {
         this.add_child(this._controls);
     }
 
+    animateToOverview(onComplete) {
+        this._controls.animateToOverview();
+
+        this.opacity = 255;
+        this.ease({
+            opacity: 255,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            duration: ANIMATION_TIME,
+            onComplete,
+        });
+    }
+
+    animateFromOverview(onComplete) {
+        this._controls.animateFromOverview();
+
+        this.ease({
+            opacity: 0,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            duration: ANIMATION_TIME,
+            onComplete,
+        });
+    }
+
     get dash() {
         return this._controls.dash;
     }
@@ -490,15 +513,7 @@ var Overview = class {
         this._activationTime = GLib.get_monotonic_time() / GLib.USEC_PER_SEC;
 
         Meta.disable_unredirect_for_display(global.display);
-        this.viewSelector.animateToOverview();
-
-        this._overview.opacity = 255;
-        this._overview.ease({
-            opacity: 255,
-            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            duration: ANIMATION_TIME,
-            onComplete: () => this._showDone(),
-        });
+        this._overview.animateToOverview(() => this._showDone());
 
         Main.layoutManager.overviewGroup.set_child_above_sibling(
             this._coverPane, null);
@@ -553,15 +568,7 @@ var Overview = class {
         this._animationInProgress = true;
         this._visibleTarget = false;
 
-        this.viewSelector.animateFromOverview();
-
-        // Make other elements fade out.
-        this._overview.ease({
-            opacity: 0,
-            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            duration: ANIMATION_TIME,
-            onComplete: () => this._hideDone(),
-        });
+        this._overview.animateFromOverview(() => this._hideDone());
 
         Main.layoutManager.overviewGroup.set_child_above_sibling(
             this._coverPane, null);
