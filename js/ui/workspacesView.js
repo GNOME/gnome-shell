@@ -294,13 +294,13 @@ class WorkspacesView extends WorkspacesViewBase {
     }
 
     animateToOverview() {
-        for (let w = 0; w < this._workspaces.length; w++)
-            this._workspaces[w].zoomToOverview();
+        // Do nothing since the workspace adjustment is binded to
+        // the snap adjustment
     }
 
     animateFromOverview() {
         for (let w = 0; w < this._workspaces.length; w++)
-            this._workspaces[w].zoomFromOverview();
+            this._workspaces[w].prepareToLeaveOverview();
     }
 
     syncStacking(stackIndices) {
@@ -339,6 +339,10 @@ class WorkspacesView extends WorkspacesViewBase {
                     const index = this._workspaces.indexOf(workspace);
                     this._updateWorkspacesScale(index, true);
                 });
+
+                this._snapAdjustment.bind_property('value',
+                    workspace.stateAdjustment, 'value',
+                    GObject.BindingFlags.SYNC_CREATE);
             } else  {
                 workspace = this._workspaces[j];
 

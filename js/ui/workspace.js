@@ -1424,4 +1424,8 @@ class Workspace extends St.Widget {
 
         return false;
     }
+
+    get stateAdjustment() {
+        return this.layout_manager.stateAdjustment;
+    }
 });
