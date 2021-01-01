@@ -177,17 +177,21 @@ class ControlsManager extends St.Widget {
         this._workspaceAdjustment.value = activeIndex;
     }
 
-    animateToOverview() {
+    animateToOverview(callback) {
         this.viewSelector.animateToOverview();
 
         this._stateAdjustment.value = ControlsState.HIDDEN;
         this._stateAdjustment.ease(ControlsState.WINDOW_PICKER, {
             duration: Overview.ANIMATION_TIME,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            onStopped: () => {
+                if (callback)
+                    callback();
+            },
         });
     }
 
-    animateFromOverview() {
+    animateFromOverview(callback) {
         this._ignoreShowAppsButtonToggle = true;
 
         this.viewSelector.animateFromOverview();
@@ -198,6 +202,9 @@ class ControlsManager extends St.Widget {
             onStopped: () => {
                 this.dash.showAppsButton.checked = false;
                 this._ignoreShowAppsButtonToggle = false;
+
+                if (callback)
+                    callback();
             },
         });
     }

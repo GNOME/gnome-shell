@@ -98,32 +98,11 @@ class OverviewActor extends St.BoxLayout {
     }
 
     animateToOverview(callback) {
-        this._controls.animateToOverview();
-
-        this.opacity = 0;
-        this.ease({
-            opacity: 255,
-            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            duration: ANIMATION_TIME,
-            onStopped: () => {
-                if (callback)
-                    callback();
-            },
-        });
+        this._controls.animateToOverview(callback);
     }
 
     animateFromOverview(callback) {
-        this._controls.animateFromOverview();
-
-        this.ease({
-            opacity: 0,
-            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            duration: ANIMATION_TIME,
-            onStopped: () => {
-                if (callback)
-                    callback();
-            },
-        });
+        this._controls.animateFromOverview(callback);
     }
 
     get dash() {
