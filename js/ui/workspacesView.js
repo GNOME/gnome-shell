@@ -130,6 +130,7 @@ class WorkspacesView extends WorkspacesViewBase {
         this._switchWorkspaceNotifyId =
             global.window_manager.connect('switch-workspace',
                                           this._activeWorkspaceChanged.bind(this));
+        this._updateVisibility();
     }
 
     _getFitAllBox(box, spacing, vertical) {
@@ -320,11 +321,7 @@ class WorkspacesView extends WorkspacesViewBase {
         return this._workspaces[active];
     }
 
-    animateToOverview() {
-        this._updateVisibility();
-    }
-
-    animateFromOverview() {
+    prepareToLeaveOverview() {
         for (let w = 0; w < this._workspaces.length; w++)
             this._workspaces[w].prepareToLeaveOverview();
     }
@@ -487,10 +484,7 @@ class ExtraWorkspaceView extends WorkspacesViewBase {
         return this._workspace;
     }
 
-    animateToOverview() {
-    }
-
-    animateFromOverview() {
+    prepareToLeaveOverview() {
         this._workspace.prepareToLeaveOverview();
     }
 
@@ -709,12 +703,9 @@ class WorkspacesDisplay extends St.Widget {
             primaryWorkspace.visible = visible;
     }
 
-    animateToOverview() {
+    prepareToEnterOverview() {
         this.show();
         this._updateWorkspacesViews();
-
-        for (let i = 0; i < this._workspacesViews.length; i++)
-            this._workspacesViews[i].animateToOverview();
 
         this._restackedNotifyId =
             Main.overview.connect('windows-restacked',
@@ -726,9 +717,9 @@ class WorkspacesDisplay extends St.Widget {
             this._keyPressEventId = global.stage.connect('key-press-event', this._onKeyPressEvent.bind(this));
     }
 
-    animateFromOverview() {
+    prepareToLeaveOverview() {
         for (let i = 0; i < this._workspacesViews.length; i++)
-            this._workspacesViews[i].animateFromOverview();
+            this._workspacesViews[i].prepareToLeaveOverview();
 
         this._leavingOverview = true;
         this._updateSwipeTracker();

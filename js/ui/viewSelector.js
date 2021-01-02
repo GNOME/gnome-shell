@@ -403,10 +403,10 @@ var ViewSelector = GObject.registerClass({
         Main.overview.show();
     }
 
-    animateToOverview() {
+    prepareToEnterOverview() {
         this.show();
         this.reset();
-        this._workspacesDisplay.animateToOverview();
+        this._workspacesDisplay.prepareToEnterOverview();
         this._activePage = null;
         this._showPage(this._activitiesPage);
 
@@ -414,8 +414,8 @@ var ViewSelector = GObject.registerClass({
             Main.overview.fadeOutDesktop();
     }
 
-    animateFromOverview() {
-        this._workspacesDisplay.animateFromOverview();
+    prepareToLeaveOverview() {
+        this._workspacesDisplay.prepareToLeaveOverview();
 
         if (!this._workspacesDisplay.activeWorkspaceHasMaximizedWindows())
             Main.overview.fadeInDesktop();
