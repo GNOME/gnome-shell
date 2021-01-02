@@ -222,7 +222,7 @@ class ControlsManager extends St.Widget {
     }
 
     animateToOverview(onComplete) {
-        this.viewSelector.animateToOverview();
+        this.viewSelector.prepareToEnterOverview();
 
         this._adjustment.value = ControlsState.HIDDEN;
         this._adjustment.ease(ControlsState.WINDOW_PICKER, {
@@ -235,7 +235,7 @@ class ControlsManager extends St.Widget {
     animateFromOverview(onComplete) {
         this._animating = true;
 
-        this.viewSelector.animateFromOverview();
+        this.viewSelector.prepareToLeaveOverview();
 
         this._adjustment.ease(ControlsState.HIDDEN, {
             duration: SIDE_CONTROLS_ANIMATION_TIME,

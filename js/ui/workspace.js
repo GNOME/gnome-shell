@@ -6,7 +6,6 @@ const { Clutter, GLib, GObject, Graphene, Meta, St } = imports.gi;
 const Background = imports.ui.background;
 const DND = imports.ui.dnd;
 const Main = imports.ui.main;
-const Overview = imports.ui.overview;
 const { WindowPreview } = imports.ui.windowPreview;
 
 var WINDOW_PREVIEW_MAXIMUM_SCALE = 0.95;
@@ -1225,17 +1224,6 @@ class Workspace extends St.Widget {
         return false;
     }
 
-    zoomToOverview() {
-        const animate =
-            this.metaWorkspace === null || this.metaWorkspace.active;
-
-        const adj = this.layout_manager.stateAdjustment;
-        adj.ease(1, {
-            duration: animate ? Overview.ANIMATION_TIME : 0,
-            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-        });
-    }
-
     prepareToLeaveOverview() {
         for (let i = 0; i < this._windows.length; i++)
             this._windows[i].remove_all_transitions();
@@ -1247,18 +1235,6 @@ class Workspace extends St.Widget {
 
         this.layout_manager.layout_frozen = true;
         this._overviewHiddenId = Main.overview.connect('hidden', this._doneLeavingOverview.bind(this));
-    }
-
-    zoomFromOverview() {
-        this.prepareToLeaveOverview();
-
-        if (this.metaWorkspace !== null && !this.metaWorkspace.active)
-            return;
-
-        this.layout_manager.stateAdjustment.ease(0, {
-            duration: Overview.ANIMATION_TIME,
-            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-        });
     }
 
     _onDestroy() {
