@@ -1,12 +1,13 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported ControlsManager */
 
-const { Clutter, GObject, St } = imports.gi;
+const { Clutter, Gio, GObject, Meta, Shell, St } = imports.gi;
 
 const Dash = imports.ui.dash;
 const Main = imports.ui.main;
 const ViewSelector = imports.ui.viewSelector;
 const Overview = imports.ui.overview;
+const WindowManager = imports.ui.windowManager;
 
 var SIDE_CONTROLS_ANIMATION_TIME = Overview.ANIMATION_TIME;
 
@@ -186,6 +187,13 @@ class ControlsManager extends St.Widget {
         this.dash.showAppsButton.connect('notify::checked',
             this._onShowAppsButtonToggled.bind(this));
 
+        Main.wm.addKeybinding(
+            'toggle-application-view',
+            new Gio.Settings({ schema_id: WindowManager.SHELL_KEYBINDINGS_SCHEMA }),
+            Meta.KeyBindingFlags.IGNORE_AUTOREPEAT,
+            Shell.ActionMode.NORMAL | Shell.ActionMode.OVERVIEW,
+            this._toggleAppsPage.bind(this));
+
         this.connect('destroy', this._onDestroy.bind(this));
     }
 
@@ -202,6 +210,15 @@ class ControlsManager extends St.Widget {
             duration: SIDE_CONTROLS_ANIMATION_TIME,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
         });
+    }
+
+    _toggleAppsPage() {
+        if (Main.overview.visible) {
+            const checked = this.dash.showAppsButton.checked;
+            this.dash.showAppsButton.checked = !checked;
+        } else {
+            Main.overview.showApps();
+        }
     }
 
     _onDestroy() {

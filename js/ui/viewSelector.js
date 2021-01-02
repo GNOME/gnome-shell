@@ -1,7 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported ViewSelector */
 
-const { Clutter, Gio, GObject, Meta, Shell, St } = imports.gi;
+const { Clutter, GObject, Meta, Shell, St } = imports.gi;
 const Signals = imports.signals;
 
 const AppDisplay = imports.ui.appDisplay;
@@ -13,7 +13,6 @@ const ShellEntry = imports.ui.shellEntry;
 const WorkspacesView = imports.ui.workspacesView;
 const EdgeDragAction = imports.ui.edgeDragAction;
 
-const SHELL_KEYBINDINGS_SCHEMA = 'org.gnome.shell.keybindings';
 var PINCH_GESTURE_THRESHOLD = 0.7;
 
 var ViewPage = {
@@ -282,13 +281,6 @@ var ViewSelector = GObject.registerClass({
             }
         });
 
-        Main.wm.addKeybinding('toggle-application-view',
-                              new Gio.Settings({ schema_id: SHELL_KEYBINDINGS_SCHEMA }),
-                              Meta.KeyBindingFlags.IGNORE_AUTOREPEAT,
-                              Shell.ActionMode.NORMAL |
-                              Shell.ActionMode.OVERVIEW,
-                              this._toggleAppsPage.bind(this));
-
         let side;
         if (Clutter.get_default_text_direction() == Clutter.TextDirection.RTL)
             side = St.Side.RIGHT;
@@ -315,11 +307,6 @@ var ViewSelector = GObject.registerClass({
     _pinchGestureActivated(action, scale) {
         if (scale < PINCH_GESTURE_THRESHOLD)
             Main.overview.show();
-    }
-
-    _toggleAppsPage() {
-        this._showAppsButton.checked = !this._showAppsButton.checked;
-        Main.overview.show();
     }
 
     prepareToEnterOverview() {
