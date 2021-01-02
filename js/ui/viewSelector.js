@@ -300,7 +300,7 @@ var ViewSelector = GObject.registerClass({
             if (Main.overview.visible)
                 Main.overview.hide();
             else
-                this.showApps();
+                Main.overview.showApps();
         });
         global.stage.add_action(gesture);
 
@@ -319,11 +319,6 @@ var ViewSelector = GObject.registerClass({
 
     _toggleAppsPage() {
         this._showAppsButton.checked = !this._showAppsButton.checked;
-        Main.overview.show();
-    }
-
-    showApps() {
-        this._showAppsButton.checked = true;
         Main.overview.show();
     }
 

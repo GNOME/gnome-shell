@@ -222,6 +222,8 @@ class ControlsManager extends St.Widget {
     }
 
     animateToOverview(state, onComplete) {
+        this._animating = true;
+
         this.viewSelector.prepareToEnterOverview();
 
         this._adjustment.value = ControlsState.HIDDEN;
@@ -230,6 +232,11 @@ class ControlsManager extends St.Widget {
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
             onComplete,
         });
+
+        this.dash.showAppsButton.checked =
+            state === ControlsState.APP_GRID;
+
+        this._animating = false;
     }
 
     animateFromOverview(onComplete) {

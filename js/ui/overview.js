@@ -603,6 +603,10 @@ var Overview = class {
             this.show();
     }
 
+    showApps() {
+        this._show(OverviewControls.ControlsState.APP_GRID);
+    }
+
     getShowAppsButton() {
         logError(new Error('Usage of Overview.\'getShowAppsButton\' is deprecated, ' +
             'use \'dash.showAppsButton\' property instead'));
