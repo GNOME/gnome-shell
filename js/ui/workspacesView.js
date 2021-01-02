@@ -772,14 +772,21 @@ class WorkspacesDisplay extends St.Widget {
             return Clutter.EVENT_PROPAGATE;
 
         let workspaceManager = global.workspace_manager;
+        const vertical = workspaceManager.layout_rows === -1;
         let activeWs = workspaceManager.get_active_workspace();
         let ws;
         switch (event.get_scroll_direction()) {
         case Clutter.ScrollDirection.UP:
-            ws = activeWs.get_neighbor(Meta.MotionDirection.UP);
+            if (vertical)
+                ws = activeWs.get_neighbor(Meta.MotionDirection.UP);
+            else
+                ws = activeWs.get_neighbor(Meta.MotionDirection.LEFT);
             break;
         case Clutter.ScrollDirection.DOWN:
-            ws = activeWs.get_neighbor(Meta.MotionDirection.DOWN);
+            if (vertical)
+                ws = activeWs.get_neighbor(Meta.MotionDirection.DOWN);
+            else
+                ws = activeWs.get_neighbor(Meta.MotionDirection.RIGHT);
             break;
         case Clutter.ScrollDirection.LEFT:
             ws = activeWs.get_neighbor(Meta.MotionDirection.LEFT);
