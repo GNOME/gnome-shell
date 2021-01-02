@@ -221,11 +221,11 @@ class ControlsManager extends St.Widget {
         this._workspaceAdjustment.value = activeIndex;
     }
 
-    animateToOverview(onComplete) {
+    animateToOverview(state, onComplete) {
         this.viewSelector.prepareToEnterOverview();
 
         this._adjustment.value = ControlsState.HIDDEN;
-        this._adjustment.ease(ControlsState.WINDOW_PICKER, {
+        this._adjustment.ease(state, {
             duration: SIDE_CONTROLS_ANIMATION_TIME,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
             onComplete,

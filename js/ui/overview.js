@@ -97,8 +97,8 @@ class OverviewActor extends St.BoxLayout {
         this.add_child(this._controls);
     }
 
-    animateToOverview(onComplete) {
-        this._controls.animateToOverview(onComplete);
+    animateToOverview(state, onComplete) {
+        this._controls.animateToOverview(state, onComplete);
     }
 
     animateFromOverview(onComplete) {
@@ -481,6 +481,10 @@ var Overview = class {
     //
     // Animates the overview visible and grabs mouse and keyboard input
     show() {
+        this._show(OverviewControls.ControlsState.WINDOW_PICKER);
+    }
+
+    _show(state) {
         if (this.isDummy)
             return;
         if (this._shown)
@@ -491,11 +495,11 @@ var Overview = class {
             return;
 
         Main.layoutManager.showOverview();
-        this._animateVisible();
+        this._animateVisible(state);
     }
 
 
-    _animateVisible() {
+    _animateVisible(state) {
         if (this._visible || this._animationInProgress)
             return;
 
@@ -505,7 +509,7 @@ var Overview = class {
         this._activationTime = GLib.get_monotonic_time() / GLib.USEC_PER_SEC;
 
         Meta.disable_unredirect_for_display(global.display);
-        this._overview.animateToOverview(() => this._showDone());
+        this._overview.animateToOverview(state, () => this._showDone());
 
         Main.layoutManager.overviewGroup.set_child_above_sibling(
             this._coverPane, null);
