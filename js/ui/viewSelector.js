@@ -139,7 +139,14 @@ class ActivitiesContainer extends St.Widget {
         });
 
         overviewAdjustment.connect('notify::value', () => {
-            this._adjustment.value = Math.max(overviewAdjustment.value - 1, 0);
+            const { ControlsState } = OverviewControls;
+
+            const overviewState = overviewAdjustment.value;
+
+            this._appDisplay.visible =
+                overviewState >= ControlsState.WINDOW_PICKER;
+            this._adjustment.value = Math.max(0,
+                overviewAdjustment.value - ControlsState.WINDOW_PICKER);
         });
 
         this._thumbnailsBox = thumbnailsBox;
@@ -162,7 +169,6 @@ class ActivitiesContainer extends St.Widget {
         const progress = this._adjustment.value;
 
         this._appDisplay.opacity = progress * 255;
-        this._appDisplay.visible = progress !== 0;
 
         this._thumbnailsBox.set({
             scale_x: Util.lerp(1, 0.5, progress),
@@ -281,7 +287,7 @@ var ViewSelector = GObject.registerClass({
         this._thumbnailsBox =
             new WorkspaceThumbnail.ThumbnailsBox(workspaceAdjustment);
         this._workspacesDisplay =
-            new WorkspacesView.WorkspacesDisplay(workspaceAdjustment);
+            new WorkspacesView.WorkspacesDisplay(workspaceAdjustment, overviewAdjustment);
         this.appDisplay = new AppDisplay.AppDisplay();
 
         const activitiesContainer = new ActivitiesContainer(

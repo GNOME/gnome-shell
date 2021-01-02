@@ -4,6 +4,7 @@
 const { Clutter, Gio, GObject, Meta, Shell, St } = imports.gi;
 
 const Main = imports.ui.main;
+const OverviewControls = imports.ui.overviewControls;
 const SwipeTracker = imports.ui.swipeTracker;
 const Util = imports.misc.util;
 const Workspace = imports.ui.workspace;
@@ -20,7 +21,7 @@ const WORKSPACE_INACTIVE_SCALE = 0.94;
 var WorkspacesViewBase = GObject.registerClass({
     GTypeFlags: GObject.TypeFlags.ABSTRACT,
 }, class WorkspacesViewBase extends St.Widget {
-    _init(monitorIndex) {
+    _init(monitorIndex, overviewAdjustment) {
         super._init({
             style_class: 'workspaces-view',
             clip_to_allocation: true,
@@ -35,6 +36,11 @@ var WorkspacesViewBase = GObject.registerClass({
         this._inDrag = false;
         this._windowDragBeginId = Main.overview.connect('window-drag-begin', this._dragBegin.bind(this));
         this._windowDragEndId = Main.overview.connect('window-drag-end', this._dragEnd.bind(this));
+
+        this._overviewAdjustment = overviewAdjustment;
+        this._overviewId = overviewAdjustment.connect('notify::value', () => {
+            this._updateWorkspaceMode();
+        });
     }
 
     _onDestroy() {
@@ -48,6 +54,10 @@ var WorkspacesViewBase = GObject.registerClass({
             Main.overview.disconnect(this._windowDragEndId);
             this._windowDragEndId = 0;
         }
+        if (this._overviewId > 0) {
+            this._overviewAdjustment.disconnect(this._overviewId);
+            delete this._overviewId;
+        }
     }
 
     _dragBegin() {
@@ -56,6 +66,9 @@ var WorkspacesViewBase = GObject.registerClass({
 
     _dragEnd() {
         this._inDrag = false;
+    }
+
+    _updateWorkspaceMode() {
     }
 
     vfunc_allocate(box) {
@@ -81,10 +94,10 @@ var FitMode = {
 
 var WorkspacesView = GObject.registerClass(
 class WorkspacesView extends WorkspacesViewBase {
-    _init(monitorIndex, scrollAdjustment, fitModeAdjustment) {
+    _init(monitorIndex, scrollAdjustment, fitModeAdjustment, overviewAdjustment) {
         let workspaceManager = global.workspace_manager;
 
-        super._init(monitorIndex);
+        super._init(monitorIndex, overviewAdjustment);
 
         this._fitModeAdjustment = fitModeAdjustment;
         this._fitModeNotifyId = this._fitModeAdjustment.connect('notify::value', () => {
@@ -220,12 +233,19 @@ class WorkspacesView extends WorkspacesViewBase {
     }
 
     _updateWorkspacesState() {
+        const { ControlsState } = OverviewControls;
+
         const adj = this._scrollAdjustment;
         const fitMode = this._fitModeAdjustment.value;
+        const overviewState = this._overviewAdjustment.value;
+
+        const normalizedWorkspaceState = 1 -
+            Math.abs(ControlsState.WINDOW_PICKER - overviewState);
+        const workspaceMode = Util.lerp(normalizedWorkspaceState, 0, fitMode);
 
         // Fade and scale inactive workspaces
         this._workspaces.forEach((w, index) => {
-            w.stateAdjustment.value = Util.lerp(1, 0, fitMode);
+            w.stateAdjustment.value = workspaceMode;
 
             const distanceToCurrentWorkspace = Math.abs(adj.value - index);
 
@@ -234,6 +254,10 @@ class WorkspacesView extends WorkspacesViewBase {
             const scale = Util.lerp(WORKSPACE_INACTIVE_SCALE, 1, progress);
             w.set_scale(scale, scale);
         });
+    }
+
+    _updateWorkspaceMode() {
+        this._updateWorkspacesState();
     }
 
     vfunc_allocate(box) {
@@ -443,10 +467,20 @@ class WorkspacesView extends WorkspacesViewBase {
 
 var ExtraWorkspaceView = GObject.registerClass(
 class ExtraWorkspaceView extends WorkspacesViewBase {
-    _init(monitorIndex) {
-        super._init(monitorIndex);
+    _init(monitorIndex, overviewAdjustment) {
+        super._init(monitorIndex, overviewAdjustment);
         this._workspace = new Workspace.Workspace(null, monitorIndex);
         this.add_actor(this._workspace);
+    }
+
+    _updateWorkspaceMode() {
+        const overviewState = this._overviewAdjustment.value;
+
+        const progress = Math.clamp(overviewState,
+            OverviewControls.ControlsState.HIDDEN,
+            OverviewControls.ControlsState.WINDOW_PICKER);
+
+        this._workspace.stateAdjustment.value = progress;
     }
 
     getActiveWorkspace() {
@@ -454,11 +488,10 @@ class ExtraWorkspaceView extends WorkspacesViewBase {
     }
 
     animateToOverview() {
-        this._workspace.zoomToOverview();
     }
 
     animateFromOverview() {
-        this._workspace.zoomFromOverview();
+        this._workspace.prepareToLeaveOverview();
     }
 
     syncStacking(stackIndices) {
@@ -474,13 +507,14 @@ class ExtraWorkspaceView extends WorkspacesViewBase {
 
 var WorkspacesDisplay = GObject.registerClass(
 class WorkspacesDisplay extends St.Widget {
-    _init(scrollAdjustment) {
+    _init(scrollAdjustment, overviewAdjustment) {
         super._init({
             visible: false,
             clip_to_allocation: true,
             layout_manager: new Clutter.BinLayout(),
         });
 
+        this._overviewAdjustment = overviewAdjustment;
         this._fitModeAdjustment = new St.Adjustment({
             actor: this,
             value: FitMode.SINGLE,
@@ -740,10 +774,12 @@ class WorkspacesDisplay extends St.Widget {
         let monitors = Main.layoutManager.monitors;
         for (let i = 0; i < monitors.length; i++) {
             let view;
-            if (this._workspacesOnlyOnPrimary && i != this._primaryIndex)
-                view = new ExtraWorkspaceView(i);
-            else
-                view = new WorkspacesView(i, this._scrollAdjustment, this._fitModeAdjustment);
+            if (this._workspacesOnlyOnPrimary && i !== this._primaryIndex) {
+                view = new ExtraWorkspaceView(i, this._overviewAdjustment);
+            } else {
+                view = new WorkspacesView(i, this._scrollAdjustment,
+                    this._fitModeAdjustment, this._overviewAdjustment);
+            }
 
             this._workspacesViews.push(view);
 
