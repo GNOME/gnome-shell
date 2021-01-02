@@ -289,13 +289,6 @@ var ViewSelector = GObject.registerClass({
                               Shell.ActionMode.OVERVIEW,
                               this._toggleAppsPage.bind(this));
 
-        Main.wm.addKeybinding('toggle-overview',
-                              new Gio.Settings({ schema_id: SHELL_KEYBINDINGS_SCHEMA }),
-                              Meta.KeyBindingFlags.IGNORE_AUTOREPEAT,
-                              Shell.ActionMode.NORMAL |
-                              Shell.ActionMode.OVERVIEW,
-                              Main.overview.toggle.bind(Main.overview));
-
         let side;
         if (Clutter.get_default_text_direction() == Clutter.TextDirection.RTL)
             side = St.Side.RIGHT;

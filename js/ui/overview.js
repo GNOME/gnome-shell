@@ -1,7 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported Overview */
 
-const { Clutter, GLib, GObject, Meta, Shell, St } = imports.gi;
+const { Clutter, Gio, GLib, GObject, Meta, Shell, St } = imports.gi;
 const Signals = imports.signals;
 
 // Time for initial animation going into Overview mode;
@@ -14,6 +14,7 @@ const Main = imports.ui.main;
 const MessageTray = imports.ui.messageTray;
 const OverviewControls = imports.ui.overviewControls;
 const Params = imports.misc.params;
+const WindowManager = imports.ui.windowManager;
 
 var DND_WINDOW_SWITCH_TIMEOUT = 750;
 
@@ -228,6 +229,13 @@ var Overview = class {
 
         Main.layoutManager.connect('monitors-changed', this._relayout.bind(this));
         this._relayout();
+
+        Main.wm.addKeybinding(
+            'toggle-overview',
+            new Gio.Settings({ schema_id: WindowManager.SHELL_KEYBINDINGS_SCHEMA }),
+            Meta.KeyBindingFlags.IGNORE_AUTOREPEAT,
+            Shell.ActionMode.NORMAL | Shell.ActionMode.OVERVIEW,
+            this.toggle.bind(this));
     }
 
     addSearchProvider(provider) {
