@@ -178,6 +178,8 @@ class ControlsManager extends St.Widget {
     }
 
     animateToOverview(state, callback) {
+        this._ignoreShowAppsButtonToggle = true;
+
         this.viewSelector.prepareToEnterOverview();
 
         this._stateAdjustment.value = ControlsState.HIDDEN;
@@ -189,6 +191,11 @@ class ControlsManager extends St.Widget {
                     callback();
             },
         });
+
+        this.dash.showAppsButton.checked =
+            state === ControlsState.APP_GRID;
+
+        this._ignoreShowAppsButtonToggle = false;
     }
 
     animateFromOverview(callback) {

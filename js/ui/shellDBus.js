@@ -10,6 +10,7 @@ const Main = imports.ui.main;
 const Screenshot = imports.ui.screenshot;
 
 const { loadInterfaceXML } = imports.misc.fileUtils;
+const { ControlsState } = imports.ui.overviewControls;
 
 const GnomeShellIface = loadInterfaceXML('org.gnome.Shell');
 const ScreenSaverIface = loadInterfaceXML('org.gnome.ScreenSaver');
@@ -104,7 +105,7 @@ var GnomeShell = class {
     }
 
     ShowApplications() {
-        Main.overview.viewSelector.showApps();
+        Main.overview.show(ControlsState.APP_GRID);
     }
 
     GrabAcceleratorAsync(params, invocation) {
