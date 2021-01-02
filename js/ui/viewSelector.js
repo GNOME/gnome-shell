@@ -138,7 +138,12 @@ class AppsPageContainer extends St.Widget {
         });
 
         overviewAdjustment.connect('notify::value', () => {
-            this._adjustment.value = Math.max(overviewAdjustment.value - 1, 0);
+            const overviewState = overviewAdjustment.value;
+
+            this._appDisplay.visible =
+                overviewState >= OverviewControls.ControlsState.WINDOW_PICKER;
+            this._adjustment.value = Math.max(overviewAdjustment.value -
+                OverviewControls.ControlsState.WINDOW_PICKER, 0);
         });
 
         this._appDisplay = appDisplay;
@@ -158,7 +163,6 @@ class AppsPageContainer extends St.Widget {
         const progress = this._adjustment.value;
 
         this._appDisplay.opacity = progress * 255;
-        this._appDisplay.visible = progress !== 0;
 
         const { snapAdjustment } = this._workspacesDisplay;
         snapAdjustment.value = 1 - progress;
@@ -242,7 +246,7 @@ var ViewSelector = GObject.registerClass({
         this._capturedEventId = 0;
 
         this._workspacesDisplay =
-            new WorkspacesView.WorkspacesDisplay(workspaceAdjustment);
+            new WorkspacesView.WorkspacesDisplay(workspaceAdjustment, overviewAdjustment);
         this.appDisplay = new AppDisplay.AppDisplay();
 
         const appsContainer = new AppsPageContainer(
