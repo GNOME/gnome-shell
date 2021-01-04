@@ -498,9 +498,9 @@ var ViewSelector = GObject.registerClass({
     }
 
     getActivePage() {
-        if (this._activePage === this._appsPage)
-            return ViewPage.APPS;
-        else
+        if (this._activePage === this._searchPage)
             return ViewPage.SEARCH;
+        else
+            return ViewPage.APPS;
     }
 });
