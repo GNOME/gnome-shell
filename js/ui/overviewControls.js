@@ -583,6 +583,47 @@ class ControlsManager extends St.Widget {
         return this.layoutManager.getWorkspacesBoxForState(state);
     }
 
+    gestureBegin(tracker) {
+        const baseDistance = global.screen_height;
+        const progress = this._stateAdjustment.value;
+        const points = [
+            ControlsState.HIDDEN,
+            ControlsState.WINDOW_PICKER,
+            ControlsState.APP_GRID,
+        ];
+
+        const transition = this._stateAdjustment.get_transition('value');
+        const cancelProgress = transition
+            ? transition.get_interval().peek_final_value()
+            : Math.round(progress);
+
+        tracker.confirmSwipe(baseDistance, points, progress, cancelProgress);
+        this._workspacesDisplay.prepareToEnterOverview();
+        this._searchController.prepareToEnterOverview();
+        this._stateAdjustment.gestureInProgress = true;
+    }
+
+    gestureProgress(progress) {
+        this._stateAdjustment.value = progress;
+    }
+
+    gestureEnd(target, duration, onComplete) {
+        if (target === ControlsState.HIDDEN)
+            this._workspacesDisplay.prepareToLeaveOverview();
+
+        this.dash.showAppsButton.checked =
+            target === ControlsState.APP_GRID;
+
+        this._stateAdjustment.remove_transition('value');
+        this._stateAdjustment.ease(target, {
+            duration,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            onComplete,
+        });
+
+        this._stateAdjustment.gestureInProgress = false;
+    }
+
     get searchEntry() {
         return this._searchEntry;
     }

@@ -14,6 +14,7 @@ const Main = imports.ui.main;
 const MessageTray = imports.ui.messageTray;
 const OverviewControls = imports.ui.overviewControls;
 const Params = imports.misc.params;
+const SwipeTracker = imports.ui.swipeTracker;
 const WindowManager = imports.ui.windowManager;
 const WorkspaceThumbnail = imports.ui.workspaceThumbnail;
 
@@ -116,6 +117,10 @@ class OverviewActor extends St.BoxLayout {
 
     get viewSelector() {
         return this._controls.viewSelector;
+    }
+
+    get controls() {
+        return this._controls;
     }
 });
 
@@ -233,6 +238,15 @@ var Overview = class {
             Meta.KeyBindingFlags.IGNORE_AUTOREPEAT,
             Shell.ActionMode.NORMAL | Shell.ActionMode.OVERVIEW,
             this.toggle.bind(this));
+
+        const swipeTracker = new SwipeTracker.SwipeTracker(global.stage,
+            Shell.ActionMode.NORMAL | Shell.ActionMode.OVERVIEW,
+            { allowDrag: false, allowScroll: false });
+        swipeTracker.orientation = Clutter.Orientation.VERTICAL;
+        swipeTracker.connect('begin', this._gestureBegin.bind(this));
+        swipeTracker.connect('update', this._gestureUpdate.bind(this));
+        swipeTracker.connect('end', this._gestureEnd.bind(this));
+        this._swipeTracker = swipeTracker;
     }
 
     addSearchProvider(provider) {
@@ -363,6 +377,44 @@ var Overview = class {
         }
 
         this.emit('windows-restacked', stackIndices);
+    }
+
+    _gestureBegin(tracker) {
+        this._overview.controls.gestureBegin(tracker);
+    }
+
+    _gestureUpdate(tracker, progress) {
+        if (!this._shown) {
+            Meta.disable_unredirect_for_display(global.display);
+
+            this._shown = true;
+            this._visible = true;
+            this._visibleTarget = true;
+            this._animationInProgress = true;
+
+            Main.layoutManager.overviewGroup.set_child_above_sibling(
+                this._coverPane, null);
+            this._coverPane.show();
+            this.emit('showing');
+
+            Main.layoutManager.showOverview();
+            this._syncGrab();
+        }
+
+        this._overview.controls.gestureProgress(progress);
+    }
+
+    _gestureEnd(tracker, duration, endProgress) {
+        let onComplete;
+        if (endProgress === 0) {
+            this._shown = false;
+            this.emit('hiding');
+            onComplete = () => this._hideDone();
+        } else {
+            onComplete = () => this._showDone();
+        }
+
+        this._overview.controls.gestureEnd(endProgress, duration, onComplete);
     }
 
     beginItemDrag(source) {
