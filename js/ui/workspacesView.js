@@ -487,6 +487,7 @@ var WorkspacesDisplay = GObject.registerClass(
 class WorkspacesDisplay extends St.Widget {
     _init(scrollAdjustment, overviewAdjustment) {
         super._init({
+            reactive: true,
             visible: false,
             y_expand: true,
             layout_manager: new Clutter.BinLayout(),
