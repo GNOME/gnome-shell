@@ -873,7 +873,10 @@ class WorkspacesDisplay extends St.Widget {
     }
 
     activeWorkspaceHasMaximizedWindows() {
-        return this._getPrimaryView().getActiveWorkspace().hasMaximizedWindows();
+        const primaryView = this._getPrimaryView();
+        return primaryView
+            ? primaryView.getActiveWorkspace().hasMaximizedWindows()
+            : false;
     }
 
     _onRestacked(overview, stackIndices) {
