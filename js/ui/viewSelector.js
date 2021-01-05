@@ -1,8 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported ViewSelector */
 
-const { Clutter, GObject, Meta, Shell, St } = imports.gi;
-const Signals = imports.signals;
+const { Clutter, GObject, Shell, St } = imports.gi;
 
 const AppDisplay = imports.ui.appDisplay;
 const Main = imports.ui.main;
@@ -12,9 +11,6 @@ const ShellEntry = imports.ui.shellEntry;
 const Util = imports.misc.util;
 const WorkspaceThumbnail = imports.ui.workspaceThumbnail;
 const WorkspacesView = imports.ui.workspacesView;
-
-const SHELL_KEYBINDINGS_SCHEMA = 'org.gnome.shell.keybindings';
-var PINCH_GESTURE_THRESHOLD = 0.7;
 
 var ViewPage = {
     ACTIVITIES: 1,
@@ -40,85 +36,6 @@ function getTermsForSearchString(searchString) {
     return terms;
 }
 
-var TouchpadShowOverviewAction = class {
-    constructor(actor) {
-        actor.connect('captured-event::touchpad', this._handleEvent.bind(this));
-    }
-
-    _handleEvent(actor, event) {
-        if (event.type() != Clutter.EventType.TOUCHPAD_PINCH)
-            return Clutter.EVENT_PROPAGATE;
-
-        if (event.get_touchpad_gesture_finger_count() != 3)
-            return Clutter.EVENT_PROPAGATE;
-
-        if (event.get_gesture_phase() == Clutter.TouchpadGesturePhase.END)
-            this.emit('activated', event.get_gesture_pinch_scale());
-
-        return Clutter.EVENT_STOP;
-    }
-};
-Signals.addSignalMethods(TouchpadShowOverviewAction.prototype);
-
-var ShowOverviewAction = GObject.registerClass({
-    Signals: { 'activated': { param_types: [GObject.TYPE_DOUBLE] } },
-}, class ShowOverviewAction extends Clutter.GestureAction {
-    _init() {
-        super._init();
-        this.set_n_touch_points(3);
-
-        global.display.connect('grab-op-begin', () => {
-            this.cancel();
-        });
-    }
-
-    vfunc_gesture_prepare(_actor) {
-        return Main.actionMode == Shell.ActionMode.NORMAL &&
-               this.get_n_current_points() == this.get_n_touch_points();
-    }
-
-    _getBoundingRect(motion) {
-        let minX, minY, maxX, maxY;
-
-        for (let i = 0; i < this.get_n_current_points(); i++) {
-            let x, y;
-
-            if (motion == true)
-                [x, y] = this.get_motion_coords(i);
-            else
-                [x, y] = this.get_press_coords(i);
-
-            if (i == 0) {
-                minX = maxX = x;
-                minY = maxY = y;
-            } else {
-                minX = Math.min(minX, x);
-                minY = Math.min(minY, y);
-                maxX = Math.max(maxX, x);
-                maxY = Math.max(maxY, y);
-            }
-        }
-
-        return new Meta.Rectangle({ x: minX,
-                                    y: minY,
-                                    width: maxX - minX,
-                                    height: maxY - minY });
-    }
-
-    vfunc_gesture_begin(_actor) {
-        this._initialRect = this._getBoundingRect(false);
-        return true;
-    }
-
-    vfunc_gesture_end(_actor) {
-        let rect = this._getBoundingRect(true);
-        let oldArea = this._initialRect.width * this._initialRect.height;
-        let newArea = rect.width * rect.height;
-        let areaDiff = newArea / oldArea;
-
-        this.emit('activated', areaDiff);
-    }
-});
 
 var ActivitiesContainer = GObject.registerClass(
 class ActivitiesContainer extends St.Widget {
@@ -349,18 +266,6 @@ var ViewSelector = GObject.registerClass({
                 this._stageKeyPressId = 0;
             }
         });
-
-        let gesture = new ShowOverviewAction();
-        gesture.connect('activated', this._pinchGestureActivated.bind(this));
-        global.stage.add_action(gesture);
-
-        gesture = new TouchpadShowOverviewAction(global.stage);
-        gesture.connect('activated', this._pinchGestureActivated.bind(this));
-    }
-
-    _pinchGestureActivated(action, scale) {
-        if (scale < PINCH_GESTURE_THRESHOLD)
-            Main.overview.show();
     }
 
     prepareToEnterOverview() {
