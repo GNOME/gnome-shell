@@ -398,6 +398,7 @@ var WorkspaceLayout = GObject.registerClass({
         this._layoutFrozen = false;
 
         this._monitorIndex = monitorIndex;
+        this._metaWorkspace = metaWorkspace;
         this._workarea = metaWorkspace
             ? metaWorkspace.get_work_area_for_monitor(this._monitorIndex)
             : Main.layoutManager.getWorkAreaForMonitor(this._monitorIndex);
@@ -591,6 +592,9 @@ var WorkspaceLayout = GObject.registerClass({
         if (this._background)
             this._background.allocate(box);
 
+        if (this._cover)
+            this._cover.allocate(box);
+
         const allocationScale = containerBox.get_width() / this._workarea.width;
 
         const workspaceBox = new Clutter.ActorBox();
@@ -598,7 +602,9 @@ var WorkspaceLayout = GObject.registerClass({
         let childBox = new Clutter.ActorBox();
 
         for (const child of container) {
-            if (!child.visible || child === this._background)
+            if (!child.visible ||
+                child === this._background ||
+                child === this._cover)
                 continue;
 
             // The fifth element in the slot array is the WindowPreview
@@ -760,6 +766,16 @@ var WorkspaceLayout = GObject.registerClass({
             this._container.add_child(this._background);
     }
 
+    setCover(cover) {
+        if (this._cover)
+            this._container.remove_child(this._cover);
+
+        this._cover = cover;
+
+        if (this._cover)
+            this._container.add_child(this._cover);
+    }
+
     syncStacking(stackIndices) {
         const windows = [...this._windows.keys()];
         windows.sort((a, b) => {
@@ -775,8 +791,21 @@ var WorkspaceLayout = GObject.registerClass({
             lastWindow = window;
         }
 
+        this.restackCover();
+
         this._layout = null;
         this.layout_changed();
+    }
+
+    restackCover() {
+        const workspaceManager = global.workspace_manager;
+        const isActiveWorkspace = this._metaWorkspace
+            ? this._metaWorkspace === workspaceManager.get_active_workspace()
+            : true;
+
+        this._container.set_child_above_sibling(
+            this._cover,
+            isActiveWorkspace ? this._background : null);
     }
 
     /**
@@ -969,6 +998,38 @@ class Workspace extends St.Widget {
         this._background = new WorkspaceBackground(monitorIndex);
         this.layout_manager.setBackground(this._background);
 
+        // Cover
+        this._cover = new Clutter.Actor({ reactive: true });
+        this.layout_manager.setCover(this._cover);
+
+        // Click action
+        const workspaceManager = global.workspace_manager;
+
+        const clickAction = new Clutter.ClickAction({ name: 'click' });
+        clickAction.connect('clicked', () => {
+            if (!this.metaWorkspace)
+                return;
+
+            if (clickAction.get_button() !== 1 && clickAction.get_button() !== 0)
+                return;
+
+            const workspaceIndex = this.metaWorkspace.index();
+
+            if (workspaceIndex !== workspaceManager.get_active_workspace_index())
+                Main.wm.actionMoveWorkspace(this.metaWorkspace);
+            else
+                Main.overview.hide();
+        });
+        this._cover.add_action(clickAction);
+
+        this._switchWorkspaceId =
+            global.window_manager.connect('switch-workspace',
+                this._updateCover.bind(this));
+
+        this._reorderWorkspacesdId =
+            workspaceManager.connect('workspaces-reordered',
+                this._updateCover.bind(this));
+
         this.connect('style-changed', this._onStyleChanged.bind(this));
         this.connect('destroy', this._onDestroy.bind(this));
 
@@ -996,8 +1057,14 @@ class Workspace extends St.Widget {
                                                            this._windowLeftMonitor.bind(this));
         this._layoutFrozenId = 0;
 
+        this._updateCover();
+
         // DND requires this to be set
         this._delegate = this;
+    }
+
+    _updateCover() {
+        this.layout_manager.restackCover();
     }
 
     vfunc_get_focus_chain() {
@@ -1196,6 +1263,16 @@ class Workspace extends St.Widget {
             this._overviewHiddenId = 0;
         }
 
+        if (this._switchWorkspaceId) {
+            global.window_manager.disconnect(this._switchWorkspaceId);
+            delete this._switchWorkspaceId;
+        }
+
+        if (this._reorderWorkspacesdId) {
+            global.workspace_manager.disconnect(this._reorderWorkspacesdId);
+            delete this._reorderWorkspacesdId;
+        }
+
         if (this.metaWorkspace) {
             this.metaWorkspace.disconnect(this._windowAddedId);
             this.metaWorkspace.disconnect(this._windowRemovedId);
@@ -1242,9 +1319,11 @@ class Workspace extends St.Widget {
         });
         clone.connect('drag-cancelled', () => {
             Main.overview.cancelledWindowDrag(metaWindow);
+            this._updateCover();
         });
         clone.connect('drag-end', () => {
             Main.overview.endWindowDrag(metaWindow);
+            this._updateCover();
         });
         clone.connect('show-chrome', () => {
             let focus = global.stage.key_focus;
