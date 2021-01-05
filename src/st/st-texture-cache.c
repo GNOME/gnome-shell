@@ -974,7 +974,6 @@ st_texture_cache_load_gicon (StTextureCache    *cache,
   g_autofree char *key = NULL;
   float actor_size;
   GtkIconTheme *theme;
-  GtkIconInfo *info;
   StTextureCachePolicy policy;
   StIconColors *colors = NULL;
   StIconStyle icon_style = ST_ICON_STYLE_REQUESTED;
@@ -1014,11 +1013,6 @@ st_texture_cache_load_gicon (StTextureCache    *cache,
     lookup_flags |= GTK_ICON_LOOKUP_DIR_LTR;
 
   scale = ceilf (paint_scale * resource_scale);
-  info = gtk_icon_theme_lookup_by_gicon_for_scale (theme, icon,
-                                                   size, scale,
-                                                   lookup_flags);
-  if (info == NULL)
-    return NULL;
 
   gicon_string = g_icon_to_string (icon);
   /* A return value of NULL indicates that the icon can not be serialized,
@@ -1046,14 +1040,21 @@ st_texture_cache_load_gicon (StTextureCache    *cache,
 
   actor = create_invisible_actor ();
   clutter_actor_set_size (actor, actor_size, actor_size);
-  if (ensure_request (cache, key, policy, &request, actor))
-    {
-      /* If there's an outstanding request, we've just added ourselves to it */
-      g_object_unref (info);
-    }
-  else
+  if (!ensure_request (cache, key, policy, &request, actor))
     {
       /* Else, make a new request */
+      GtkIconInfo *info;
+
+      info = gtk_icon_theme_lookup_by_gicon_for_scale (theme, icon,
+                                                       size, scale,
+                                                       lookup_flags);
+      if (info == NULL)
+        {
+          g_hash_table_remove (cache->priv->outstanding_requests, key);
+          texture_load_data_free (request);
+          g_object_unref (actor);
+          return NULL;
+        }
 
       request->cache = cache;
       /* Transfer ownership of key */
