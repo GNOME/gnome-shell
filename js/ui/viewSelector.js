@@ -12,7 +12,6 @@ const ShellEntry = imports.ui.shellEntry;
 const Util = imports.misc.util;
 const WorkspaceThumbnail = imports.ui.workspaceThumbnail;
 const WorkspacesView = imports.ui.workspacesView;
-const EdgeDragAction = imports.ui.edgeDragAction;
 
 const SHELL_KEYBINDINGS_SCHEMA = 'org.gnome.shell.keybindings';
 var PINCH_GESTURE_THRESHOLD = 0.7;
@@ -351,22 +350,7 @@ var ViewSelector = GObject.registerClass({
             }
         });
 
-        let side;
-        if (Clutter.get_default_text_direction() == Clutter.TextDirection.RTL)
-            side = St.Side.RIGHT;
-        else
-            side = St.Side.LEFT;
-        let gesture = new EdgeDragAction.EdgeDragAction(side,
-                                                        Shell.ActionMode.NORMAL);
-        gesture.connect('activated', () => {
-            if (Main.overview.visible)
-                Main.overview.hide();
-            else
-                Main.overview.show(ControlsState.APP_GRID);
-        });
-        global.stage.add_action(gesture);
-
-        gesture = new ShowOverviewAction();
+        let gesture = new ShowOverviewAction();
         gesture.connect('activated', this._pinchGestureActivated.bind(this));
         global.stage.add_action(gesture);
 
