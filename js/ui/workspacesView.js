@@ -17,6 +17,7 @@ const WORKSPACE_MIN_SPACING = 24;
 const WORKSPACE_MAX_SPACING = 80;
 
 const WORKSPACE_INACTIVE_SCALE = 0.94;
+const WORKSPACE_HOVER_SCALE = 0.98;
 
 var WorkspacesViewBase = GObject.registerClass({
     GTypeFlags: GObject.TypeFlags.ABSTRACT,
@@ -206,17 +207,29 @@ class WorkspacesView extends WorkspacesViewBase {
         return Math.clamp(spacing, WORKSPACE_MIN_SPACING, WORKSPACE_MAX_SPACING);
     }
 
-    _updateWorkspacesState() {
+    _updateWorkspacesScale(index, animate = false) {
+        const workspace = this._workspaces[index];
         const adj = this._scrollAdjustment;
+        const distanceToCurrentWorkspace = Math.abs(adj.value - index);
 
-        // Fade and scale inactive workspaces
+        const progress = 1 - Math.clamp(distanceToCurrentWorkspace, 0, 1);
+
+        let scale = Math.interpolate(WORKSPACE_INACTIVE_SCALE, 1, progress);
+        if (workspace.hover)
+            scale = Math.max(scale, WORKSPACE_HOVER_SCALE);
+
+        workspace.ease({
+            scale_x: scale,
+            scale_y: scale,
+            duration: animate ? WORKSPACE_SWITCH_TIME : 0,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+        });
+    }
+
+    _updateWorkspacesState() {
         this._workspaces.forEach((w, index) => {
-            const distanceToCurrentWorkspace = Math.abs(adj.value - index);
-
-            const progress = 1 - Math.clamp(distanceToCurrentWorkspace, 0, 1);
-
-            const scale = Math.interpolate(WORKSPACE_INACTIVE_SCALE, 1, progress);
-            w.set_scale(scale, scale);
+            // Fade and scale inactive workspaces
+            this._updateWorkspacesScale(index);
         });
     }
 
@@ -321,6 +334,11 @@ class WorkspacesView extends WorkspacesViewBase {
                 workspace = new Workspace.Workspace(metaWorkspace, this._monitorIndex);
                 this.add_actor(workspace);
                 this._workspaces[j] = workspace;
+
+                workspace.connect('notify::hover', () => {
+                    const index = this._workspaces.indexOf(workspace);
+                    this._updateWorkspacesScale(index, true);
+                });
             } else  {
                 workspace = this._workspaces[j];
 
