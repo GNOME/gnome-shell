@@ -9,6 +9,7 @@ const Signals = imports.signals;
 var ANIMATION_TIME = 250;
 
 const DND = imports.ui.dnd;
+const EdgeDragAction = imports.ui.edgeDragAction;
 const LayoutManager = imports.ui.layout;
 const Main = imports.ui.main;
 const MessageTray = imports.ui.messageTray;
@@ -236,6 +237,24 @@ var Overview = class {
             Meta.KeyBindingFlags.IGNORE_AUTOREPEAT,
             Shell.ActionMode.NORMAL | Shell.ActionMode.OVERVIEW,
             this.toggle.bind(this));
+
+
+        let side;
+        if (Clutter.get_default_text_direction() === Clutter.TextDirection.RTL)
+            side = St.Side.RIGHT;
+        else
+            side = St.Side.LEFT;
+
+        const gesture =
+            new EdgeDragAction.EdgeDragAction(side, Shell.ActionMode.NORMAL);
+
+        gesture.connect('activated', () => {
+            if (Main.overview.visible)
+                this.hide();
+            else
+                this.showApps();
+        });
+        global.stage.add_action(gesture);
     }
 
     addSearchProvider(provider) {
