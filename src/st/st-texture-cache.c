@@ -971,7 +971,7 @@ st_texture_cache_load_gicon (StTextureCache    *cache,
   ClutterActor *actor;
   gint scale;
   char *gicon_string;
-  char *key;
+  g_autofree char *key = NULL;
   float actor_size;
   GtkIconTheme *theme;
   GtkIconInfo *info;
@@ -1050,7 +1050,6 @@ st_texture_cache_load_gicon (StTextureCache    *cache,
     {
       /* If there's an outstanding request, we've just added ourselves to it */
       g_object_unref (info);
-      g_free (key);
     }
   else
     {
@@ -1058,7 +1057,7 @@ st_texture_cache_load_gicon (StTextureCache    *cache,
 
       request->cache = cache;
       /* Transfer ownership of key */
-      request->key = key;
+      request->key = g_steal_pointer (&key);
       request->policy = policy;
       request->colors = colors ? st_icon_colors_ref (colors) : NULL;
       request->icon_info = info;
