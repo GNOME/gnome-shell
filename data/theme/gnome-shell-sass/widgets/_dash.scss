@@ -49,7 +49,7 @@ $dash_border_radius: $modal_radius * 1.5;
   &:focus,
   &:checked {
     .overview-icon {
-      background-color: darken($osd_bg_color,10%);
+      background-color: transparentize($osd_bg_color,0.5);
       color: $fg_color;
     }
   }
