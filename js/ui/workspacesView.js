@@ -674,7 +674,8 @@ class WorkspacesDisplay extends St.Widget {
             this._workspacesViews[i].startTouchGesture();
 
         let distance = global.workspace_manager.layout_rows === -1
-            ? this.height : this.width;
+            ? this.allocation.get_width()
+            : this.allocation.get_height();
 
         let progress = adjustment.value / adjustment.page_size;
         let points = Array.from(
