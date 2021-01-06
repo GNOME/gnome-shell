@@ -756,6 +756,9 @@ class WorkspacesDisplay extends St.Widget {
         if (!this._canScroll)
             return Clutter.EVENT_PROPAGATE;
 
+        if (event.is_pointer_emulated())
+            return Clutter.EVENT_PROPAGATE;
+
         let workspaceManager = global.workspace_manager;
         let activeWs = workspaceManager.get_active_workspace();
         let ws;
