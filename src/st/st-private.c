@@ -400,7 +400,7 @@ _st_create_shadow_pipeline (StShadow    *shadow_spec,
   g_return_val_if_fail (shadow_spec != NULL, NULL);
   g_return_val_if_fail (src_texture != NULL, NULL);
 
-  sigma = shadow_spec->blur / 2.f;
+  sigma = resource_scale * shadow_spec->blur / 2.f;
   sampling_radius = ceilf (1.5 * sigma) * 2.0;
 
   src_width = cogl_texture_get_width (src_texture);
@@ -422,7 +422,6 @@ _st_create_shadow_pipeline (StShadow    *shadow_spec,
 
   cogl_framebuffer_clear4f (fb, COGL_BUFFER_BIT_COLOR, 0.f, 0.f, 0.f, 0.f);
   cogl_framebuffer_orthographic (fb, 0, 0, dst_width, dst_height, 0, 1.0);
-  cogl_framebuffer_scale (fb, resource_scale, resource_scale, 1);
 
   /* Blur */
   blur_node = clutter_blur_node_new (dst_width, dst_height, sigma);
