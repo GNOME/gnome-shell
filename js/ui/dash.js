@@ -31,6 +31,10 @@ class DashIcon extends AppDisplay.AppIcon {
         });
     }
 
+    popupMenu() {
+        super.popupMenu(St.Side.BOTTOM);
+    }
+
     // Disable scale-n-fade methods used during DND by parent
     scaleAndFade() {
     }

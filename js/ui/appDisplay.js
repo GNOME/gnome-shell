@@ -2756,7 +2756,7 @@ var AppIcon = GObject.registerClass({
         return this.app.get_id();
     }
 
-    popupMenu() {
+    popupMenu(side = St.Side.LEFT) {
         this._removeMenuTimeout();
         this.fake_release();
 
@@ -2764,7 +2764,7 @@ var AppIcon = GObject.registerClass({
             this._draggable.fakeRelease();
 
         if (!this._menu) {
-            this._menu = new AppIconMenu(this);
+            this._menu = new AppIconMenu(this, side);
             this._menu.connect('activate-window', (menu, window) => {
                 this.activateWindow(window);
             });
@@ -2920,10 +2920,13 @@ var AppIcon = GObject.registerClass({
 });
 
 var AppIconMenu = class AppIconMenu extends PopupMenu.PopupMenu {
-    constructor(source) {
-        let side = St.Side.LEFT;
-        if (Clutter.get_default_text_direction() == Clutter.TextDirection.RTL)
-            side = St.Side.RIGHT;
+    constructor(source, side) {
+        if (Clutter.get_default_text_direction() === Clutter.TextDirection.RTL) {
+            if (side === St.Side.LEFT)
+                side = St.Side.RIGHT;
+            else if (side === St.Side.RIGHT)
+                side = St.Side.LEFT;
+        }
 
         super(source, 0.5, side);
 
