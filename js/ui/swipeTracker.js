@@ -412,7 +412,7 @@ var SwipeTracker = GObject.registerClass({
         this.bind_property('orientation', this._touchpadGesture, 'orientation', 0);
 
         this._touchGesture = new TouchSwipeGesture(allowedModes, 4,
-            Clutter.GestureTriggerEdge.NONE);
+            Clutter.GestureTriggerEdge.AFTER);
         this._touchGesture.connect('begin', this._beginTouchSwipe.bind(this));
         this._touchGesture.connect('update', this._updateGesture.bind(this));
         this._touchGesture.connect('end', this._endGesture.bind(this));
