@@ -23,6 +23,8 @@ const VELOCITY_THRESHOLD = 0.4;
 const DURATION_MULTIPLIER = 3;
 const ANIMATION_BASE_VELOCITY = 0.002;
 
+const GESTURE_FINGER_COUNT = 3;
+
 const State = {
     NONE: 0,
     SCROLLING: 1,
@@ -86,7 +88,7 @@ const TouchpadSwipeGesture = GObject.registerClass({
         if (event.type() !== Clutter.EventType.TOUCHPAD_SWIPE)
             return Clutter.EVENT_PROPAGATE;
 
-        if (event.get_touchpad_gesture_finger_count() !== 4)
+        if (event.get_touchpad_gesture_finger_count() !== GESTURE_FINGER_COUNT)
             return Clutter.EVENT_PROPAGATE;
 
         if ((this._allowedModes & Main.actionMode) === 0)
@@ -411,7 +413,8 @@ var SwipeTracker = GObject.registerClass({
         this.bind_property('enabled', this._touchpadGesture, 'enabled', 0);
         this.bind_property('orientation', this._touchpadGesture, 'orientation', 0);
 
-        this._touchGesture = new TouchSwipeGesture(allowedModes, 4,
+        this._touchGesture = new TouchSwipeGesture(allowedModes,
+            GESTURE_FINGER_COUNT,
             Clutter.GestureTriggerEdge.AFTER);
         this._touchGesture.connect('begin', this._beginTouchSwipe.bind(this));
         this._touchGesture.connect('update', this._updateGesture.bind(this));
