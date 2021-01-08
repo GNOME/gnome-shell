@@ -275,6 +275,7 @@ var WindowPreview = GObject.registerClass({
 
         this._selected = false;
         this._overlayEnabled = true;
+        this._overlayShown = false;
         this._closeRequested = false;
         this._idleHideOverlayId = 0;
 
@@ -457,14 +458,14 @@ var WindowPreview = GObject.registerClass({
         if (!this._overlayEnabled)
             return;
 
-        const ongoingTransition = this._border.get_transition('opacity');
-
-        // Don't do anything if we're fully visible already
-        if (this._border.visible && !ongoingTransition)
+        if (this._overlayShown)
             return;
+
+        this._overlayShown = true;
 
         // If we're supposed to animate and an animation in our direction
         // is already happening, let that one continue
+        const ongoingTransition = this._border.get_transition('opacity');
         if (animate &&
             ongoingTransition &&
             ongoingTransition.get_interval().peek_final_value() === 255)
@@ -488,14 +489,14 @@ var WindowPreview = GObject.registerClass({
     }
 
     hideOverlay(animate) {
-        const ongoingTransition = this._border.get_transition('opacity');
-
-        // Don't do anything if we're fully hidden already
-        if (!this._border.visible && !ongoingTransition)
+        if (!this._overlayShown)
             return;
+
+        this._overlayShown = false;
 
         // If we're supposed to animate and an animation in our direction
         // is already happening, let that one continue
+        const ongoingTransition = this._border.get_transition('opacity');
         if (animate &&
             ongoingTransition &&
             ongoingTransition.get_interval().peek_final_value() === 0)
