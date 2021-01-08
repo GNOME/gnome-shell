@@ -527,7 +527,9 @@ class WorkspacesDisplay extends St.Widget {
         this._clickAction = clickAction;
 
         this._swipeTracker = new SwipeTracker.SwipeTracker(
-            Main.layoutManager.overviewGroup, Shell.ActionMode.OVERVIEW);
+            Main.layoutManager.overviewGroup,
+            Shell.ActionMode.OVERVIEW,
+            { allowDrag: false });
         this._swipeTracker.connect('begin', this._switchWorkspaceBegin.bind(this));
         this._swipeTracker.connect('update', this._switchWorkspaceUpdate.bind(this));
         this._swipeTracker.connect('end', this._switchWorkspaceEnd.bind(this));
