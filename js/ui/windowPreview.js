@@ -11,6 +11,9 @@ var WINDOW_DND_SIZE = 256;
 var WINDOW_OVERLAY_IDLE_HIDE_TIMEOUT = 750;
 var WINDOW_OVERLAY_FADE_TIME = 200;
 
+var WINDOW_SCALE_TIME = 200;
+var WINDOW_ACTIVE_SCALE = 1.02;
+
 var DRAGGING_WINDOW_OPACITY = 100;
 
 const ICON_SIZE = 64;
@@ -220,7 +223,11 @@ var WindowPreview = GObject.registerClass({
             offscreen_redirect: Clutter.OffscreenRedirect.AUTOMATIC_FOR_OPACITY,
         });
 
-        this._windowContainer = new Clutter.Actor();
+        this._windowContainer = new Clutter.Actor({
+            pivot_point: new Graphene.Point({ x: 0.5, y: 0.5 }),
+        });
+        this._windowContainer.connect('notify::scale-x',
+            () => this._adjustOverlayOffsets());
         // gjs currently can't handle setting an actors layout manager during
         // the initialization of the actor if that layout manager keeps track
         // of its container, so set the layout manager after creating the
@@ -282,34 +289,6 @@ var WindowPreview = GObject.registerClass({
         this._closeRequested = false;
         this._idleHideOverlayId = 0;
 
-        this._border = new St.Widget({
-            visible: false,
-            style_class: 'window-clone-border',
-        });
-        this._borderConstraint = new Clutter.BindConstraint({
-            source: this._windowContainer,
-            coordinate: Clutter.BindCoordinate.SIZE,
-        });
-        this._border.add_constraint(this._borderConstraint);
-        this._border.add_constraint(new Clutter.AlignConstraint({
-            source: this._windowContainer,
-            align_axis: Clutter.AlignAxis.BOTH,
-            factor: 0.5,
-        }));
-        this._borderCenter = new Clutter.Actor();
-        this._borderCenterConstraint = new Clutter.BindConstraint({
-            source: this._windowContainer,
-            coordinate: Clutter.BindCoordinate.SIZE,
-        });
-        this._borderCenter.add_constraint(this._borderCenterConstraint);
-        this._borderCenter.add_constraint(new Clutter.AlignConstraint({
-            source: this._windowContainer,
-            align_axis: Clutter.AlignAxis.BOTH,
-            factor: 0.5,
-        }));
-        this._border.connect('style-changed',
-            this._onBorderStyleChanged.bind(this));
-
         const tracker = Shell.WindowTracker.get_default();
         const app = tracker.get_window_app(this.metaWindow);
         this._icon = app.create_icon_texture(ICON_SIZE);
@@ -319,16 +298,16 @@ var WindowPreview = GObject.registerClass({
             pivot_point: new Graphene.Point({ x: 0.5, y: 0.5 }),
         });
         this._icon.add_constraint(new Clutter.BindConstraint({
-            source: this._borderCenter,
+            source: this._windowContainer,
             coordinate: Clutter.BindCoordinate.POSITION,
         }));
         this._icon.add_constraint(new Clutter.AlignConstraint({
-            source: this._borderCenter,
+            source: this._windowContainer,
             align_axis: Clutter.AlignAxis.X_AXIS,
             factor: 0.5,
         }));
         this._icon.add_constraint(new Clutter.AlignConstraint({
-            source: this._borderCenter,
+            source: this._windowContainer,
             align_axis: Clutter.AlignAxis.Y_AXIS,
             pivot_point: new Graphene.Point({ x: -1, y: ICON_OVERLAP }),
             factor: 1,
@@ -378,25 +357,23 @@ var WindowPreview = GObject.registerClass({
             child: new St.Icon({ icon_name: 'window-close-symbolic' }),
         });
         this._closeButton.add_constraint(new Clutter.BindConstraint({
-            source: this._borderCenter,
+            source: this._windowContainer,
             coordinate: Clutter.BindCoordinate.POSITION,
         }));
         this._closeButton.add_constraint(new Clutter.AlignConstraint({
-            source: this._borderCenter,
+            source: this._windowContainer,
             align_axis: Clutter.AlignAxis.X_AXIS,
             pivot_point: new Graphene.Point({ x: 0.5, y: -1 }),
             factor: this._closeButtonSide === St.Side.LEFT ? 0 : 1,
         }));
         this._closeButton.add_constraint(new Clutter.AlignConstraint({
-            source: this._borderCenter,
+            source: this._windowContainer,
             align_axis: Clutter.AlignAxis.Y_AXIS,
             pivot_point: new Graphene.Point({ x: -1, y: 0.5 }),
             factor: 0,
         }));
         this._closeButton.connect('clicked', () => this._deleteAll());
 
-        this.add_child(this._borderCenter);
-        this.add_child(this._border);
         this.add_child(this._title);
         this.add_child(this._icon);
         this.add_child(this._closeButton);
@@ -405,7 +382,6 @@ var WindowPreview = GObject.registerClass({
             if (!this.realized)
                 return;
 
-            this._border.ensure_style();
             this._title.ensure_style();
             this._icon.ensure_style();
         });
@@ -438,16 +414,6 @@ var WindowPreview = GObject.registerClass({
             child.allocate_available_size(0, 0, box.get_width(), box.get_height());
     }
 
-    _onBorderStyleChanged() {
-        let borderNode = this._border.get_theme_node();
-        this._borderSize = borderNode.get_border_width(St.Side.TOP);
-
-        // Increase the size of the border actor so the border outlines
-        // the bounding box
-        this._borderConstraint.offset = this._borderSize * 2;
-        this._borderCenterConstraint.offset = this._borderSize;
-    }
-
     _windowCanClose() {
         return this.metaWindow.can_close() &&
                !this._hasAttachedDialogs();
@@ -475,9 +441,8 @@ var WindowPreview = GObject.registerClass({
         const [, closeButtonHeight] = this._closeButton.get_preferred_height(-1);
         const [, iconHeight] = this._icon.get_preferred_height(-1);
 
-        const topOversize = this._borderSize / 2 + closeButtonHeight / 2;
-        const bottomOversize =
-            this._borderSize / 2 + (1 - ICON_OVERLAP) * iconHeight;
+        const topOversize = closeButtonHeight / 2;
+        const bottomOversize = (1 - ICON_OVERLAP) * iconHeight;
 
         return [topOversize, bottomOversize];
     }
@@ -486,11 +451,11 @@ var WindowPreview = GObject.registerClass({
         const [, closeButtonWidth] = this._closeButton.get_preferred_width(-1);
 
         const leftOversize = this._closeButtonSide === St.Side.LEFT
-            ? (this._borderSize / 2) + (closeButtonWidth / 2)
-            : this._borderSize;
+            ? closeButtonWidth / 2
+            : 0;
         const rightOversize = this._closeButtonSide === St.Side.LEFT
-            ? this._borderSize
-            : (this._borderSize / 2) + (closeButtonWidth / 2);
+            ? 0
+            : closeButtonWidth / 2;
 
         return [leftOversize, rightOversize];
     }
@@ -507,15 +472,15 @@ var WindowPreview = GObject.registerClass({
 
         // If we're supposed to animate and an animation in our direction
         // is already happening, let that one continue
-        const ongoingTransition = this._border.get_transition('opacity');
+        const ongoingTransition = this._title.get_transition('opacity');
         if (animate &&
             ongoingTransition &&
             ongoingTransition.get_interval().peek_final_value() === 255)
             return;
 
         const toShow = this._windowCanClose()
-            ? [this._border, this._title, this._closeButton]
-            : [this._border, this._title];
+            ? [this._title, this._closeButton]
+            : [this._title];
 
         toShow.forEach(a => {
             a.opacity = 0;
@@ -525,6 +490,13 @@ var WindowPreview = GObject.registerClass({
                 duration: animate ? WINDOW_OVERLAY_FADE_TIME : 0,
                 mode: Clutter.AnimationMode.EASE_OUT_QUAD,
             });
+        });
+
+        this._windowContainer.ease({
+            scale_x: WINDOW_ACTIVE_SCALE,
+            scale_y: WINDOW_ACTIVE_SCALE,
+            duration: animate ? WINDOW_SCALE_TIME : 0,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
         });
 
         this.emit('show-chrome');
@@ -539,13 +511,13 @@ var WindowPreview = GObject.registerClass({
 
         // If we're supposed to animate and an animation in our direction
         // is already happening, let that one continue
-        const ongoingTransition = this._border.get_transition('opacity');
+        const ongoingTransition = this._title.get_transition('opacity');
         if (animate &&
             ongoingTransition &&
             ongoingTransition.get_interval().peek_final_value() === 0)
             return;
 
-        [this._border, this._title, this._closeButton].forEach(a => {
+        [this._title, this._closeButton].forEach(a => {
             a.opacity = 255;
             a.ease({
                 opacity: 0,
@@ -553,6 +525,36 @@ var WindowPreview = GObject.registerClass({
                 mode: Clutter.AnimationMode.EASE_OUT_QUAD,
                 onComplete: () => a.hide(),
             });
+        });
+
+        this._windowContainer.ease({
+            scale_x: 1,
+            scale_y: 1,
+            duration: animate ? WINDOW_SCALE_TIME : 0,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+        });
+    }
+
+    _adjustOverlayOffsets() {
+        // Assume that scale-x and scale-y update always set
+        // in lock-step; that allows us to not use separate
+        // handlers for horizontal and vertical offsets
+        const previewScale = this._windowContainer.scale_x;
+        const [previewWidth, previewHeight] =
+            this._windowContainer.allocation.get_size();
+
+        const heightIncrease =
+            Math.floor(previewHeight * (previewScale - 1) / 2);
+        const widthIncrease =
+            Math.floor(previewWidth * (previewScale - 1) / 2);
+
+        const closeAlign = this._closeButtonSide === St.Side.LEFT ? -1 : 1;
+
+        this._icon.translation_y = heightIncrease;
+        this._title.translation_y = heightIncrease;
+        this._closeButton.set({
+            translation_x: closeAlign * widthIncrease,
+            translation_y: -heightIncrease,
         });
     }
 
