@@ -292,7 +292,7 @@ class WorkspacesView extends WorkspacesViewBase {
         const vertical = workspaceManager.layout_rows === -1;
         const rtl = this.text_direction === Clutter.TextDirection.RTL;
         const progress = vertical || !rtl
-            ? adj.value : adj.upper - adj.value;
+            ? adj.value : adj.upper - adj.value - 1;
 
         for (const ws of this._workspaces) {
             if (vertical)
