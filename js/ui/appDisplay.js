@@ -128,11 +128,6 @@ var BaseAppView = GObject.registerClass({
     },
 }, class BaseAppView extends St.Widget {
     _init(params = {}) {
-        params = Params.parse(params, { animateIndicators: true }, true);
-
-        const animateIndicators = params.animateIndicators;
-        delete params.animateIndicators;
-
         super._init(params);
 
         this._grid = this._createGrid();
@@ -170,11 +165,8 @@ var BaseAppView = GObject.registerClass({
         });
 
         // Page Indicators
-        const orientation = Clutter.Orientation.HORIZONTAL;
-        if (animateIndicators)
-            this._pageIndicators = new PageIndicators.AnimatedPageIndicators(orientation);
-        else
-            this._pageIndicators = new PageIndicators.PageIndicators(orientation);
+        this._pageIndicators =
+            new PageIndicators.PageIndicators(Clutter.Orientation.HORIZONTAL);
 
         this._pageIndicators.y_expand = false;
         this._pageIndicators.connect('page-activated',
@@ -1227,13 +1219,10 @@ class AppDisplay extends BaseAppView {
         };
 
         if (animationDirection == IconGrid.AnimationDirection.OUT &&
-            this._displayingDialog && this._currentDialog) {
+            this._displayingDialog && this._currentDialog)
             this._currentDialog.popdown();
-        } else {
+        else
             super.animate(animationDirection, completionFunc);
-            if (animationDirection == IconGrid.AnimationDirection.OUT)
-                this._pageIndicators.animateIndicators(animationDirection);
-        }
     }
 
     animateSwitch(animationDirection) {
@@ -1248,9 +1237,6 @@ class AppDisplay extends BaseAppView {
                 onComplete: () => (this.opacity = 255),
             });
         }
-
-        if (animationDirection == IconGrid.AnimationDirection.OUT)
-            this._pageIndicators.animateIndicators(animationDirection);
     }
 
     goToPage(pageNumber, animate = true) {
@@ -1739,7 +1725,6 @@ class FolderView extends BaseAppView {
             layout_manager: new Clutter.BinLayout(),
             x_expand: true,
             y_expand: true,
-            animateIndicators: false,
         });
 
         // If it not expand, the parent doesn't take into account its preferred_width when allocating
