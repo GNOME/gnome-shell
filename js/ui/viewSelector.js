@@ -311,8 +311,6 @@ var ViewSelector = GObject.registerClass({
         if (symbol === Clutter.KEY_Escape) {
             if (this._searchActive)
                 this.reset();
-            else if (this._showAppsButton.checked)
-                this._showAppsButton.checked = false;
             else
                 Main.overview.hide();
             return Clutter.EVENT_STOP;
