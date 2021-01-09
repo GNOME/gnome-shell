@@ -316,9 +316,13 @@ var WorkspaceAnimationController = class {
 
             switchData.monitors.push(group);
         }
+
+        Meta.disable_unredirect_for_display(global.display);
     }
 
     _finishWorkspaceSwitch(switchData) {
+        Meta.enable_unredirect_for_display(global.display);
+
         this._switchData = null;
 
         switchData.monitors.forEach(m => m.destroy());
