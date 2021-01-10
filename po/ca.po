@@ -1147,7 +1147,7 @@ msgstr "S'està carregant…"
 
 #: js/ui/dateMenu.js:639
 msgid "Go online for weather information"
-msgstr "Vés en línia per a informació sobre el temps"
+msgstr "Ves en línia per a informació sobre el temps"
 
 #: js/ui/dateMenu.js:641
 msgid "Weather information is currently unavailable"
