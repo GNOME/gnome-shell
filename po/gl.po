@@ -3,17 +3,17 @@
 # This file is distributed under the same license as the gnome-shell package.
 # Proxecto Trasno - Adaptación do software libre á lingua galega:  Se desexas
 # colaborar connosco, podes atopar máis información en http://www.trasno.net
+#
 # Antón Méixome <meixome@certima.net>, 2009.
 # Fran Diéguez <frandieguez@gnome.org>, 2009, 2010, 2011, 2012.
 # Leandro Regueiro <leandro.regueiro@gmail.com>, 2012.
 # Fran Dieguez <frandieguez@gnome.org>, 2012-2021.
-#
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2020-12-27 22:18+0000\n"
-"PO-Revision-Date: 2021-01-04 23:49+0100\n"
+"POT-Creation-Date: 2021-01-04 22:50+0000\n"
+"PO-Revision-Date: 2021-01-12 01:10+0100\n"
 "Last-Translator: Fran Dieguez <frandieguez@gnome.org>\n"
 "Language-Team: Galician <proxecto@trasno.gal>\n"
 "Language: gl\n"
@@ -21,7 +21,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"X-Generator: Gtranslator 3.38.0\n"
+"X-Generator: Lokalize 20.12.1\n"
 "X-Project-Style: gnome\n"
 
 #: data/50-gnome-shell-system.xml:6
@@ -369,7 +369,7 @@ msgstr "Localización"
 
 #: data/org.gnome.shell.gschema.xml.in:258
 msgid "The location for which to show a forecast"
-msgstr "A localización para cal obter a predición metereolóxica"
+msgstr "A localización para cal obter a predición meteorolóxica"
 
 #: data/org.gnome.shell.gschema.xml.in:270
 msgid "Attach modal dialog to the parent window"
@@ -719,7 +719,7 @@ msgid ""
 msgstr ""
 "A súa conexión a este inicio de sesión de hotspot non é segura. Os "
 "contrasinais e outra información que escriba nesta páxina pode ser vista "
-"porque persoas cercanas."
+"porque persoas próximas."
 
 #. No support for non-modal system dialogs, so ignore the option
 #. let modal = options['modal'] || true;
@@ -731,36 +731,36 @@ msgstr "Denegar acceso"
 msgid "Grant Access"
 msgstr "Conceder acceso"
 
-#: js/ui/appDisplay.js:1381
+#: js/ui/appDisplay.js:1391
 msgid "Unnamed Folder"
 msgstr "Cartafol sen nome"
 
 #. Translators: This is the heading of a list of open windows
-#: js/ui/appDisplay.js:2959 js/ui/panel.js:75
+#: js/ui/appDisplay.js:2960 js/ui/panel.js:75
 msgid "Open Windows"
 msgstr "Abrir Xanelas"
 
-#: js/ui/appDisplay.js:2978 js/ui/panel.js:82
+#: js/ui/appDisplay.js:2979 js/ui/panel.js:82
 msgid "New Window"
 msgstr "Xanela nova"
 
-#: js/ui/appDisplay.js:2994
+#: js/ui/appDisplay.js:2995
 msgid "Launch using Integrated Graphics Card"
 msgstr "Iniciar usando a Tarxeta Gráfica Integrada"
 
-#: js/ui/appDisplay.js:2995
+#: js/ui/appDisplay.js:2996
 msgid "Launch using Discrete Graphics Card"
 msgstr "Iniciar usando a Tarxeta Gráfica Dedicada"
 
-#: js/ui/appDisplay.js:3024 js/ui/dash.js:239
+#: js/ui/appDisplay.js:3025 js/ui/dash.js:239
 msgid "Remove from Favorites"
 msgstr "Retirar dos marcadores"
 
-#: js/ui/appDisplay.js:3030
+#: js/ui/appDisplay.js:3031
 msgid "Add to Favorites"
 msgstr "Engadir aos favoritos"
 
-#: js/ui/appDisplay.js:3040 js/ui/panel.js:93
+#: js/ui/appDisplay.js:3041 js/ui/panel.js:93
 msgid "Show Details"
 msgstr "Mostrar detalles"
 
@@ -1110,7 +1110,7 @@ msgstr "Hoxe"
 
 #: js/ui/dateMenu.js:164
 msgid "Tomorrow"
-msgstr "Mañán"
+msgstr "Mañá"
 
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
@@ -1150,7 +1150,7 @@ msgstr "Tempo"
 
 #: js/ui/dateMenu.js:653
 msgid "Select weather location…"
-msgstr "Seleccione unha ubicación metereolóxica…"
+msgstr "Seleccione unha localización meteorolóxica…"
 
 #: js/ui/endSessionDialog.js:39
 #, javascript-format
@@ -1202,7 +1202,7 @@ msgstr[1] "O sistema apagarase automaticamente en %d segundos."
 #: js/ui/endSessionDialog.js:70 js/ui/endSessionDialog.js:89
 msgctxt "checkbox"
 msgid "Install pending software updates"
-msgstr "Instalar actualizacóns de software pendentes"
+msgstr "Instalar actualizacións de software pendentes"
 
 #: js/ui/endSessionDialog.js:74
 msgctxt "button"
@@ -1401,7 +1401,7 @@ msgid ""
 "row. This turns off the Sticky Keys feature, which affects the way your "
 "keyboard works."
 msgstr ""
-"Acabas de premer dúas teclas á vez, ou presionado a tecla Maiús 5 veces "
+"Acabas de premer dúas teclas á vez, ou premendo a tecla Maiús 5 veces "
 "seguidas. Isto é un atallo para a característica de Teclas persistentes, o "
 "cal afecta á forma na que funciona o teclado."
 
@@ -1970,7 +1970,7 @@ msgstr "Activar Wifi"
 
 #: js/ui/status/network.js:873
 msgid "Wi-Fi Networks"
-msgstr "Redes WiFi"
+msgstr "Redes Wifi"
 
 #: js/ui/status/network.js:875
 msgid "Select a network"
@@ -1990,7 +1990,7 @@ msgstr "Seleccione unha rede"
 
 #: js/ui/status/network.js:1211
 msgid "Wi-Fi Settings"
-msgstr "Preferencias da WiFi"
+msgstr "Preferencias da Wifi"
 
 #. Translators: %s is a network identifier
 #: js/ui/status/network.js:1332
@@ -2076,7 +2076,7 @@ msgstr "Reiniciar"
 
 #: js/ui/status/nightLight.js:67
 msgid "Disable Until Tomorrow"
-msgstr "Desactivar ate mañán"
+msgstr "Desactivar ate mañá"
 
 #: js/ui/status/power.js:47
 msgid "Power Settings"
@@ -2588,7 +2588,7 @@ msgid ""
 "This should be in the format of an email address (clicktofocus@janedoe."
 "example.com)\n"
 msgstr ""
-"UUID é un identificador único gloal para a súa extensión.\n"
+"UUID é un identificador único global para a súa extensión.\n"
 "Isto debería estar no formato de enderezo de correo (clicktofocus@pepiño."
 "souto.com)\n"
 
@@ -2650,7 +2650,7 @@ msgstr "Requírese o UUID, o nome e a descrición"
 #: subprojects/extensions-tool/src/command-info.c:50
 #: subprojects/extensions-tool/src/command-list.c:64
 msgid "Failed to connect to GNOME Shell\n"
-msgstr "Produciuse un fallo ao contectarse á Shell de GNOME\n"
+msgstr "Produciuse un fallo ao conectarse á Shell de GNOME\n"
 
 #: subprojects/extensions-tool/src/command-disable.c:53
 #: subprojects/extensions-tool/src/command-enable.c:53
@@ -2760,7 +2760,7 @@ msgstr "ESQUEMA"
 
 #: subprojects/extensions-tool/src/command-pack.c:455
 msgid "A GSettings schema that should be included"
-msgstr "Un esquema de GSettings que debería incluirse"
+msgstr "Un esquema de GSettings que debería incluírse"
 
 #: subprojects/extensions-tool/src/command-pack.c:457
 #: subprojects/extensions-tool/src/command-pack.c:468
