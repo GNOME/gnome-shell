@@ -68,11 +68,10 @@ var WeatherClient = class {
 
         this._world = GWeather.Location.get_world();
 
-        this._providers = GWeather.Provider.METAR |
-                          GWeather.Provider.YR_NO |
-                          GWeather.Provider.OWM;
-
-        this._weatherInfo = new GWeather.Info({ enabled_providers: 0 });
+        let providers = GWeather.Provider.METAR |
+                        GWeather.Provider.YR_NO |
+                        GWeather.Provider.OWM;
+        this._weatherInfo = new GWeather.Info({ enabled_providers: providers });
         this._weatherInfo.connect_after('updated', () => {
             this._lastUpdate = GLib.DateTime.new_now_local();
             this.emit('changed');
@@ -215,8 +214,6 @@ var WeatherClient = class {
         this._weatherInfo.abort();
         this._weatherInfo.set_location(location);
         this._locationValid = location != null;
-
-        this._weatherInfo.set_enabled_providers(location ? this._providers : 0);
 
         if (location)
             this._loadInfo();
