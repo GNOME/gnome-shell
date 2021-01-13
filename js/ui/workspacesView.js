@@ -419,6 +419,7 @@ class WorkspacesDisplay extends St.Widget {
         this._actualGeometry = null;
         this._inWindowDrag = false;
         this._inWindowFade = false;
+        this._leavingOverview = false;
 
         this._gestureActive = false; // touch(pad) gestures
         this._canScroll = true; // limiting scrolling speed
@@ -467,7 +468,10 @@ class WorkspacesDisplay extends St.Widget {
     }
 
     _updateSwipeTracker() {
-        this._swipeTracker.enabled = this.mapped && !this._inWindowDrag;
+        this._swipeTracker.enabled =
+            this.mapped &&
+            !this._inWindowDrag &&
+            !this._leavingOverview;
     }
 
     _workspacesReordered() {
@@ -603,6 +607,9 @@ class WorkspacesDisplay extends St.Widget {
 
         this._inWindowFade = fadeOnPrimary;
 
+        this._leavingOverview = true;
+        this._updateSwipeTracker();
+
         const { primaryIndex } = Main.layoutManager;
         const { x, y, width, height } =
             Main.layoutManager.getWorkAreaForMonitor(primaryIndex);
@@ -629,6 +636,8 @@ class WorkspacesDisplay extends St.Widget {
         for (let i = 0; i < this._workspacesViews.length; i++)
             this._workspacesViews[i].destroy();
         this._workspacesViews = [];
+
+        this._leavingOverview = false;
 
         super.vfunc_hide();
     }
