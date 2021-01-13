@@ -464,6 +464,7 @@ var LoginDialog = GObject.registerClass({
             child: notListedLabel,
             reactive: true,
             x_align: Clutter.ActorAlign.START,
+            label_actor: notListedLabel,
         });
 
         this._notListedButton.connect('clicked', this._hideUserListAskForUsernameAndBeginVerification.bind(this));
