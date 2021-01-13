@@ -11,6 +11,11 @@ const Slider = imports.ui.slider;
 
 const ALLOW_AMPLIFIED_VOLUME_KEY = 'allow-volume-above-100-percent';
 
+const VolumeType = {
+    OUTPUT: 0,
+    INPUT: 1,
+};
+
 // Each Gvc.MixerControl is a connection to PulseAudio,
 // so it's better to make it a singleton
 let _mixerControl;
@@ -342,8 +347,10 @@ var VolumeMenu = class extends PopupMenu.PopupMenuSection {
         this._onControlStateChanged();
     }
 
-    scroll(event) {
-        return this._output.scroll(event);
+    scroll(type, event) {
+        return type === VolumeType.INPUT
+            ? this._input.scroll(event)
+            : this._output.scroll(event);
     }
 
     _onControlStateChanged() {
@@ -363,20 +370,22 @@ var VolumeMenu = class extends PopupMenu.PopupMenuSection {
         this._input.stream = this._control.get_default_source();
     }
 
-    getOutputIcon() {
-        return this._output.getIcon();
+    getIcon(type) {
+        return type === VolumeType.INPUT
+            ? this._input.getIcon()
+            : this._output.getIcon();
     }
 
-    getInputIcon() {
-        return this._input.getIcon();
+    getLevel(type) {
+        return type === VolumeType.INPUT
+            ? this._input.getLevel()
+            : this._output.getLevel();
     }
 
-    getLevel() {
-        return this._output.getLevel();
-    }
-
-    getMaxLevel() {
-        return this._output.getMaxLevel();
+    getMaxLevel(type) {
+        return type === VolumeType.INPUT
+            ? this._input.getMaxLevel()
+            : this._output.getMaxLevel();
     }
 
     getInputVisible() {
@@ -392,10 +401,18 @@ class Indicator extends PanelMenu.SystemIndicator {
         this._primaryIndicator = this._addIndicator();
         this._inputIndicator = this._addIndicator();
 
+        this._primaryIndicator.reactive = true;
+        this._inputIndicator.reactive = true;
+
+        this._primaryIndicator.connect('scroll-event',
+            (actor, event) => this._handleScrollEvent(VolumeType.OUTPUT, event));
+        this._inputIndicator.connect('scroll-event',
+            (actor, event) => this._handleScrollEvent(VolumeType.INPUT, event));
+
         this._control = getMixerControl();
         this._volumeMenu = new VolumeMenu(this._control);
         this._volumeMenu.connect('output-icon-changed', () => {
-            let icon = this._volumeMenu.getOutputIcon();
+            let icon = this._volumeMenu.getIcon(VolumeType.OUTPUT);
 
             if (icon != null)
                 this._primaryIndicator.icon_name = icon;
@@ -407,7 +424,7 @@ class Indicator extends PanelMenu.SystemIndicator {
             this._inputIndicator.visible = this._volumeMenu.getInputVisible();
         });
         this._volumeMenu.connect('input-icon-changed', () => {
-            let icon = this._volumeMenu.getInputIcon();
+            let icon = this._volumeMenu.getIcon(VolumeType.INPUT);
 
             if (icon !== null)
                 this._inputIndicator.icon_name = icon;
@@ -416,14 +433,14 @@ class Indicator extends PanelMenu.SystemIndicator {
         this.menu.addMenuItem(this._volumeMenu);
     }
 
-    vfunc_scroll_event() {
-        let result = this._volumeMenu.scroll(Clutter.get_current_event());
+    _handleScrollEvent(type, event) {
+        const result = this._volumeMenu.scroll(type, event);
         if (result == Clutter.EVENT_PROPAGATE || this.menu.actor.mapped)
             return result;
 
-        let gicon = new Gio.ThemedIcon({ name: this._volumeMenu.getOutputIcon() });
-        let level = this._volumeMenu.getLevel();
-        let maxLevel = this._volumeMenu.getMaxLevel();
+        const gicon = new Gio.ThemedIcon({ name: this._volumeMenu.getIcon(type) });
+        const level = this._volumeMenu.getLevel(type);
+        const maxLevel = this._volumeMenu.getMaxLevel(type);
         Main.osdWindowManager.show(-1, gicon, null, level, maxLevel);
         return result;
     }
