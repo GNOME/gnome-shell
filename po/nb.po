@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell 3.38.x\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2020-10-06 15:29+0000\n"
-"PO-Revision-Date: 2020-11-30 13:59+0100\n"
+"POT-Creation-Date: 2020-12-27 22:27+0000\n"
+"PO-Revision-Date: 2021-01-13 15:27+0100\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian bokmål <i18n-nb@lister.ping.uio.no>\n"
 "Language: nb\n"
@@ -419,8 +419,8 @@ msgstr "Hjemmeside"
 msgid "Visit extension homepage"
 msgstr "Gå til hjemmesiden for utvidelsen"
 
-#: js/gdm/authPrompt.js:137 js/ui/audioDeviceSelection.js:57
-#: js/ui/components/networkAgent.js:111 js/ui/components/polkitAgent.js:139
+#: js/gdm/authPrompt.js:137 js/ui/audioDeviceSelection.js:58
+#: js/ui/components/networkAgent.js:111 js/ui/components/polkitAgent.js:138
 #: js/ui/endSessionDialog.js:438 js/ui/extensionDownloader.js:183
 #: js/ui/shellMountOperation.js:376 js/ui/shellMountOperation.js:386
 #: js/ui/status/network.js:940 subprojects/extensions-app/js/main.js:149
@@ -428,10 +428,10 @@ msgid "Cancel"
 msgstr "Avbryt"
 
 #. Cisco LEAP
-#: js/gdm/authPrompt.js:239 js/ui/components/networkAgent.js:206
-#: js/ui/components/networkAgent.js:222 js/ui/components/networkAgent.js:246
-#: js/ui/components/networkAgent.js:267 js/ui/components/networkAgent.js:287
-#: js/ui/components/networkAgent.js:297 js/ui/components/polkitAgent.js:277
+#: js/gdm/authPrompt.js:239 js/ui/components/networkAgent.js:210
+#: js/ui/components/networkAgent.js:226 js/ui/components/networkAgent.js:250
+#: js/ui/components/networkAgent.js:271 js/ui/components/networkAgent.js:291
+#: js/ui/components/networkAgent.js:301 js/ui/components/polkitAgent.js:276
 #: js/ui/shellMountOperation.js:326
 msgid "Password"
 msgstr "Passord"
@@ -454,8 +454,8 @@ msgstr "(f.eks. bruker eller %s)"
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: js/gdm/loginDialog.js:918 js/ui/components/networkAgent.js:242
-#: js/ui/components/networkAgent.js:265 js/ui/components/networkAgent.js:283
+#: js/gdm/loginDialog.js:918 js/ui/components/networkAgent.js:246
+#: js/ui/components/networkAgent.js:269 js/ui/components/networkAgent.js:287
 msgid "Username"
 msgstr "Brukernavn"
 
@@ -722,31 +722,31 @@ msgid "Unnamed Folder"
 msgstr "Mappe uten navn"
 
 #. Translators: This is the heading of a list of open windows
-#: js/ui/appDisplay.js:2870 js/ui/panel.js:75
+#: js/ui/appDisplay.js:2872 js/ui/panel.js:75
 msgid "Open Windows"
 msgstr "Åpne vinduer"
 
-#: js/ui/appDisplay.js:2889 js/ui/panel.js:82
+#: js/ui/appDisplay.js:2891 js/ui/panel.js:82
 msgid "New Window"
 msgstr "Nytt vindu"
 
-#: js/ui/appDisplay.js:2905
+#: js/ui/appDisplay.js:2907
 msgid "Launch using Integrated Graphics Card"
 msgstr "Start med integrert skjermkort"
 
-#: js/ui/appDisplay.js:2906
+#: js/ui/appDisplay.js:2908
 msgid "Launch using Discrete Graphics Card"
 msgstr "Start med dedikert skjermkort"
 
-#: js/ui/appDisplay.js:2934 js/ui/dash.js:239
+#: js/ui/appDisplay.js:2937 js/ui/dash.js:239
 msgid "Remove from Favorites"
 msgstr "Fjern fra favoritter"
 
-#: js/ui/appDisplay.js:2940
+#: js/ui/appDisplay.js:2943
 msgid "Add to Favorites"
 msgstr "Legg til i favoritter"
 
-#: js/ui/appDisplay.js:2950 js/ui/panel.js:93
+#: js/ui/appDisplay.js:2953 js/ui/panel.js:93
 msgid "Show Details"
 msgstr "Vis detaljer"
 
@@ -764,19 +764,19 @@ msgstr "%s ble fjernet fra favoritter."
 msgid "Select Audio Device"
 msgstr "Velg lydenhet"
 
-#: js/ui/audioDeviceSelection.js:54
+#: js/ui/audioDeviceSelection.js:55
 msgid "Sound Settings"
 msgstr "Innstillinger for lyd"
 
-#: js/ui/audioDeviceSelection.js:64
+#: js/ui/audioDeviceSelection.js:65
 msgid "Headphones"
 msgstr "Hodetelefoner"
 
-#: js/ui/audioDeviceSelection.js:66
+#: js/ui/audioDeviceSelection.js:67
 msgid "Headset"
 msgstr "Headset"
 
-#: js/ui/audioDeviceSelection.js:68 js/ui/status/volume.js:272
+#: js/ui/audioDeviceSelection.js:69 js/ui/status/volume.js:272
 msgid "Microphone"
 msgstr "Mikrofon"
 
@@ -951,28 +951,28 @@ msgstr ""
 msgid "Connect"
 msgstr "Koble til"
 
-#: js/ui/components/networkAgent.js:212
+#: js/ui/components/networkAgent.js:216
 msgid "Key"
 msgstr "Nøkkel"
 
-#: js/ui/components/networkAgent.js:250 js/ui/components/networkAgent.js:273
+#: js/ui/components/networkAgent.js:254 js/ui/components/networkAgent.js:277
 msgid "Private key password"
 msgstr "Passord for privat nøkkel"
 
-#: js/ui/components/networkAgent.js:271
+#: js/ui/components/networkAgent.js:275
 msgid "Identity"
 msgstr "Identitet"
 
-#: js/ui/components/networkAgent.js:285
+#: js/ui/components/networkAgent.js:289
 msgid "Service"
 msgstr "Tjeneste"
 
-#: js/ui/components/networkAgent.js:314 js/ui/components/networkAgent.js:342
-#: js/ui/components/networkAgent.js:675 js/ui/components/networkAgent.js:696
+#: js/ui/components/networkAgent.js:318 js/ui/components/networkAgent.js:346
+#: js/ui/components/networkAgent.js:679 js/ui/components/networkAgent.js:700
 msgid "Authentication required"
 msgstr "Autentisering kreves"
 
-#: js/ui/components/networkAgent.js:315 js/ui/components/networkAgent.js:676
+#: js/ui/components/networkAgent.js:319 js/ui/components/networkAgent.js:680
 #, javascript-format
 msgid ""
 "Passwords or encryption keys are required to access the wireless network "
@@ -981,42 +981,42 @@ msgstr ""
 "Passord eller krypteringsnøkler kreves for å koble til trådløst nettverk "
 "«%s»."
 
-#: js/ui/components/networkAgent.js:319 js/ui/components/networkAgent.js:680
+#: js/ui/components/networkAgent.js:323 js/ui/components/networkAgent.js:684
 msgid "Wired 802.1X authentication"
 msgstr "802.1X autentisering for trådbundet nettverk"
 
-#: js/ui/components/networkAgent.js:321
+#: js/ui/components/networkAgent.js:325
 msgid "Network name"
 msgstr "Navn på nettverk"
 
-#: js/ui/components/networkAgent.js:326 js/ui/components/networkAgent.js:684
+#: js/ui/components/networkAgent.js:330 js/ui/components/networkAgent.js:688
 msgid "DSL authentication"
 msgstr "DSL-autentisering"
 
-#: js/ui/components/networkAgent.js:333 js/ui/components/networkAgent.js:689
+#: js/ui/components/networkAgent.js:337 js/ui/components/networkAgent.js:693
 msgid "PIN code required"
 msgstr "PIN-kode kreves"
 
-#: js/ui/components/networkAgent.js:334 js/ui/components/networkAgent.js:690
+#: js/ui/components/networkAgent.js:338 js/ui/components/networkAgent.js:694
 msgid "PIN code is needed for the mobile broadband device"
 msgstr "PIN-kode kreves for mobil bredbåndsenhet"
 
-#: js/ui/components/networkAgent.js:335
+#: js/ui/components/networkAgent.js:339
 msgid "PIN"
 msgstr "PIN"
 
-#: js/ui/components/networkAgent.js:343 js/ui/components/networkAgent.js:681
-#: js/ui/components/networkAgent.js:685 js/ui/components/networkAgent.js:697
-#: js/ui/components/networkAgent.js:701
+#: js/ui/components/networkAgent.js:347 js/ui/components/networkAgent.js:685
+#: js/ui/components/networkAgent.js:689 js/ui/components/networkAgent.js:701
+#: js/ui/components/networkAgent.js:705
 #, javascript-format
 msgid "A password is required to connect to “%s”."
 msgstr "Du må oppgi et passord for å koble til «%s»."
 
-#: js/ui/components/networkAgent.js:664 js/ui/status/network.js:1718
+#: js/ui/components/networkAgent.js:668 js/ui/status/network.js:1718
 msgid "Network Manager"
 msgstr "Nettverkshåndtering"
 
-#: js/ui/components/networkAgent.js:700
+#: js/ui/components/networkAgent.js:704
 msgid "VPN password"
 msgstr "Passord for VPN"
 
@@ -1024,11 +1024,11 @@ msgstr "Passord for VPN"
 msgid "Authentication Required"
 msgstr "Autentisering kreves"
 
-#: js/ui/components/polkitAgent.js:80
+#: js/ui/components/polkitAgent.js:79
 msgid "Administrator"
 msgstr "Administrator"
 
-#: js/ui/components/polkitAgent.js:142
+#: js/ui/components/polkitAgent.js:141
 msgid "Authenticate"
 msgstr "Autentiser"
 
@@ -1036,7 +1036,7 @@ msgstr "Autentiser"
 #. * requested authentication was not gained; this can happen
 #. * because of an authentication error (like invalid password),
 #. * for instance.
-#: js/ui/components/polkitAgent.js:254 js/ui/shellMountOperation.js:402
+#: js/ui/components/polkitAgent.js:253 js/ui/shellMountOperation.js:402
 msgid "Sorry, that didn’t work. Please try again."
 msgstr "Beklager, det virket ikke. Prøv igjen."
 
@@ -1268,7 +1268,8 @@ msgstr ""
 
 #: js/ui/endSessionDialog.js:284
 msgid "Low battery power: please plug in before installing updates."
-msgstr "Lite batteristrøm: vennligst koble til strøm før oppdateringer installeres."
+msgstr ""
+"Lite batteristrøm: vennligst koble til strøm før oppdateringer installeres."
 
 #: js/ui/endSessionDialog.js:293
 msgid "Some applications are busy or have unsaved work"
@@ -1356,7 +1357,9 @@ msgstr "Trege taster slått av"
 msgid ""
 "You just held down the Shift key for 8 seconds. This is the shortcut for the "
 "Slow Keys feature, which affects the way your keyboard works."
-msgstr "Du holdt nede Shift-tasten i 8 sekunder. Dette er snarveien for trege taster funksjonen som påvirker hvordan tastaturet virker."
+msgstr ""
+"Du holdt nede Shift-tasten i 8 sekunder. Dette er snarveien for trege taster "
+"funksjonen som påvirker hvordan tastaturet virker."
 
 #: js/ui/kbdA11yDialog.js:41
 msgid "Sticky Keys Turned On"
@@ -1370,14 +1373,14 @@ msgstr "Klebrige taster er slått av"
 msgid ""
 "You just pressed the Shift key 5 times in a row. This is the shortcut for "
 "the Sticky Keys feature, which affects the way your keyboard works."
-msgstr ""
+msgstr "Du trykket på Shift tasten fem ganger på rad. Dette er snarveien for å aktivere klebrige taster og påvirker hvordan tastaturet virker."
 
 #: js/ui/kbdA11yDialog.js:46
 msgid ""
 "You just pressed two keys at once, or pressed the Shift key 5 times in a "
 "row. This turns off the Sticky Keys feature, which affects the way your "
 "keyboard works."
-msgstr ""
+msgstr "Du trykket på to taster samtidig eller trykket ned Shift tasten fem ganger på rad. Dette slår av funksjonen klebrige taster og påvirker måten tastaturet virker."
 
 #: js/ui/kbdA11yDialog.js:55
 msgid "Leave On"
@@ -1461,7 +1464,7 @@ msgstr "Logget inn som en priviligert bruker"
 msgid ""
 "Running a session as a privileged user should be avoided for security "
 "reasons. If possible, you should log in as a normal user."
-msgstr ""
+msgstr "Du bør unngå å kjøre en økt som en priviligert bruker av sikkerhetshensyn. Du bør logge inn som en vanlig bruker hvis mulig."
 
 #: js/ui/main.js:334
 msgid "Screen Lock disabled"
@@ -1469,9 +1472,9 @@ msgstr "Skjermlås er deaktivert"
 
 #: js/ui/main.js:335
 msgid "Screen Locking requires the GNOME display manager."
-msgstr ""
+msgstr "Skjermlåsing krever GNOME skjermhåndterer."
 
-#: js/ui/messageTray.js:1476
+#: js/ui/messageTray.js:1475
 msgid "System Information"
 msgstr "Systeminformasjon"
 
@@ -1555,12 +1558,12 @@ msgstr "Avslutt"
 msgid "Activities"
 msgstr "Aktiviteter"
 
-#: js/ui/panel.js:714
+#: js/ui/panel.js:719
 msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "System"
 
-#: js/ui/panel.js:825
+#: js/ui/panel.js:830
 msgid "Top Bar"
 msgstr "Topp-panel"
 
@@ -1591,23 +1594,23 @@ msgstr "GNOME må låse skjermen"
 #.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
-#: js/ui/screenShield.js:244 js/ui/screenShield.js:602
+#: js/ui/screenShield.js:244 js/ui/screenShield.js:613
 msgid "Unable to lock"
 msgstr "Klarte ikke å låse"
 
-#: js/ui/screenShield.js:245 js/ui/screenShield.js:603
+#: js/ui/screenShield.js:245 js/ui/screenShield.js:614
 msgid "Lock was blocked by an application"
 msgstr "Låsing ble stoppet av et program"
 
-#: js/ui/search.js:823
+#: js/ui/search.js:824
 msgid "Searching…"
 msgstr "Søker …"
 
-#: js/ui/search.js:825
+#: js/ui/search.js:826
 msgid "No results."
 msgstr "Ingen resultater."
 
-#: js/ui/search.js:951
+#: js/ui/search.js:952
 #, javascript-format
 msgid "%d more"
 msgid_plural "%d more"
@@ -2085,11 +2088,11 @@ msgstr "%d:%02d til batteriet er fullt (%d %%)"
 msgid "%d %%"
 msgstr "%d %%"
 
-#: js/ui/status/remoteAccess.js:45
+#: js/ui/status/remoteAccess.js:38
 msgid "Screen is Being Shared"
 msgstr "Skjermen er delt"
 
-#: js/ui/status/remoteAccess.js:47
+#: js/ui/status/remoteAccess.js:40
 msgid "Turn off"
 msgstr "Slå av"
 
@@ -2153,12 +2156,12 @@ msgstr ""
 
 #: js/ui/status/thunderbolt.js:336
 msgid "Thunderbolt authorization error"
-msgstr ""
+msgstr "Feil ved autorisering av Thunderbolt"
 
 #: js/ui/status/thunderbolt.js:337
 #, javascript-format
 msgid "Could not authorize the Thunderbolt device: %s"
-msgstr ""
+msgstr "Kunne ikke autorisere Thunderbolt-enhet: %s"
 
 #: js/ui/status/volume.js:155
 msgid "Volume changed"
@@ -2406,7 +2409,7 @@ msgstr "Fjerne «%s»?"
 msgid ""
 "If you remove the extension, you need to return to download it if you want "
 "to enable it again"
-msgstr ""
+msgstr "Hvis du fjerner utvidelsen må du laste den ned på nytt hvis du ønsker å aktivere den igjen."
 
 #: subprojects/extensions-app/js/main.js:150
 msgid "Remove"
@@ -2466,7 +2469,9 @@ msgstr "Om utvidelser"
 msgid ""
 "To find and add extensions, visit <a href=\"https://extensions.gnome.org"
 "\">extensions.gnome.org</a>."
-msgstr "Du kan finne og legge til utvidelser på <a href=\"https://extensions.gnome.org\">extensions.gnome.org</a>."
+msgstr ""
+"Du kan finne og legge til utvidelser på <a href=\"https://extensions.gnome."
+"org\">extensions.gnome.org</a>."
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:35
 msgid "Warning"
@@ -2541,15 +2546,15 @@ msgstr ""
 
 #: subprojects/extensions-tool/src/command-create.c:366
 msgid "Choose one of the available templates:\n"
-msgstr ""
+msgstr "Velg en av de tilgjengelige malene:\n"
 
 #: subprojects/extensions-tool/src/command-create.c:380
 msgid "Template"
-msgstr ""
+msgstr "Mal"
 
 #: subprojects/extensions-tool/src/command-create.c:435
 msgid "The unique identifier of the new extension"
-msgstr ""
+msgstr "Unik identifikator for den nye utvidelsen"
 
 #: subprojects/extensions-tool/src/command-create.c:438
 msgid "NAME"
@@ -2557,7 +2562,7 @@ msgstr "NAVN"
 
 #: subprojects/extensions-tool/src/command-create.c:439
 msgid "The user-visible name of the new extension"
-msgstr ""
+msgstr "Brukersynlig navn på den nye utvidelsen"
 
 #: subprojects/extensions-tool/src/command-create.c:441
 msgid "DESCRIPTION"
@@ -2565,7 +2570,7 @@ msgstr "BESKRIVELSE"
 
 #: subprojects/extensions-tool/src/command-create.c:443
 msgid "A short description of what the extension does"
-msgstr ""
+msgstr "En kort beskrivelse av hva utvidelsen gjør"
 
 #: subprojects/extensions-tool/src/command-create.c:446
 msgid "TEMPLATE"
@@ -2662,16 +2667,12 @@ msgid "More than one extension bundle specified"
 msgstr "Mer enn en utvidelsespakke oppgitt"
 
 #: subprojects/extensions-tool/src/command-list.c:128
-#, fuzzy
-#| msgid "Shell Extensions"
 msgid "Show user-installed extensions"
-msgstr "Utvidelser for GNOME Shell"
+msgstr "Vis utvidelser installert av bruker"
 
 #: subprojects/extensions-tool/src/command-list.c:131
-#, fuzzy
-#| msgid "Shell Extensions"
 msgid "Show system-installed extensions"
-msgstr "Utvidelser for GNOME Shell"
+msgstr "Vis utvidelser installert av systemet"
 
 #: subprojects/extensions-tool/src/command-list.c:134
 msgid "Show enabled extensions"
@@ -2736,37 +2737,36 @@ msgstr "Overskriv en eksisterende pakke"
 
 #: subprojects/extensions-tool/src/command-pack.c:470
 msgid "The directory where the pack should be created"
-msgstr ""
+msgstr "Katalogen hvor pakken skal lages"
 
 #: subprojects/extensions-tool/src/command-pack.c:472
 msgid "SOURCE_DIRECTORY"
-msgstr ""
+msgstr "KILDEKATALOG"
 
 #: subprojects/extensions-tool/src/command-pack.c:481
 msgid "Create an extension bundle"
-msgstr ""
+msgstr "Lag en utvidelsespakke"
 
 #: subprojects/extensions-tool/src/command-pack.c:501
 msgid "More than one source directory specified"
-msgstr ""
+msgstr "Mer enn en kildekatalog oppgitt"
 
 #: subprojects/extensions-tool/src/command-prefs.c:47
 #, c-format
 msgid "Extension “%s” doesn't have preferences\n"
-msgstr ""
+msgstr "Utvidelse «%s» har ikke brukervalg\n"
 
 #: subprojects/extensions-tool/src/command-prefs.c:79
 msgid "Opens extension preferences"
-msgstr ""
+msgstr "Åpner brukervalg for utvidelser"
 
 #: subprojects/extensions-tool/src/command-reset.c:58
 msgid "Reset an extension"
 msgstr "Nullstill en utvidelse"
 
 #: subprojects/extensions-tool/src/command-uninstall.c:49
-#, fuzzy
 msgid "Cannot uninstall system extensions\n"
-msgstr "Slå av brukerutvideleser"
+msgstr "Kan ikke avinstallere systemutvidelser\n"
 
 #: subprojects/extensions-tool/src/command-uninstall.c:64
 #, c-format
@@ -2803,7 +2803,7 @@ msgstr "Tilstand"
 
 #: subprojects/extensions-tool/src/main.c:290
 msgid "“version” takes no arguments"
-msgstr ""
+msgstr "«version» tar ingen argumenter"
 
 #: subprojects/extensions-tool/src/main.c:292
 #: subprojects/extensions-tool/src/main.c:312
@@ -2812,7 +2812,7 @@ msgstr "Bruk:"
 
 #: subprojects/extensions-tool/src/main.c:295
 msgid "Print version information and exit."
-msgstr ""
+msgstr "Skriv versjonsinformasjon og avslutt."
 
 #: subprojects/extensions-tool/src/main.c:310
 #: subprojects/extensions-tool/src/main.c:313
@@ -2821,7 +2821,7 @@ msgstr "KOMMANDO"
 
 #: subprojects/extensions-tool/src/main.c:313
 msgid "[ARGS…]"
-msgstr ""
+msgstr "[ARG …]"
 
 #: subprojects/extensions-tool/src/main.c:315
 msgid "Commands:"
@@ -2844,16 +2844,12 @@ msgid "Reset extension"
 msgstr "Nullstill utvidelese"
 
 #: subprojects/extensions-tool/src/main.c:321
-#, fuzzy
-#| msgid "Disable user extensions"
 msgid "Uninstall extension"
-msgstr "Slå av brukerutvideleser"
+msgstr "Avinstaller utvidelse"
 
 #: subprojects/extensions-tool/src/main.c:322
-#, fuzzy
-#| msgid "Disable user extensions"
 msgid "List extensions"
-msgstr "Slå av brukerutvideleser"
+msgstr "Vis utvidelser"
 
 #: subprojects/extensions-tool/src/main.c:323
 #: subprojects/extensions-tool/src/main.c:324
@@ -2869,15 +2865,12 @@ msgid "Create extension"
 msgstr "Lag utvidelse"
 
 #: subprojects/extensions-tool/src/main.c:327
-#, fuzzy
 msgid "Package extension"
-msgstr "Utvidelser for GNOME Shell"
+msgstr "Pakk utvidelse"
 
 #: subprojects/extensions-tool/src/main.c:328
-#, fuzzy
-#| msgid "UUIDs of extensions to enable"
 msgid "Install extension bundle"
-msgstr "UUID-er for utvidelser som skal slås på"
+msgstr "Installer utvidelsespakke"
 
 #: subprojects/extensions-tool/src/main.c:330
 #, c-format
