@@ -1,3 +1,14 @@
+3.36.8
+======
+* Improve login screen accessibility [Mike; !1567]
+* Plugged leaks [Ray; !1460]
+* Fixed crashes [Florian; #3258]
+* Misc. bug fixes and cleanups [Florian, Ivan; !1548, !1551]
+
+Contributors:
+  Mike Gerow, Ivan Molodetskikh, Florian Müllner, Ray Strode
+
+
 3.36.7
 ======
 * Fix potential stack overflow in libcroco [Michael; !1404]
