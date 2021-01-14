@@ -467,17 +467,22 @@ var WorkspaceLayout = GObject.registerClass({
         const [topOversize, bottomOversize] = window.chromeHeights();
         const [leftOversize, rightOversize] = window.chromeWidths();
 
+        const oversize =
+            Math.max(topOversize, bottomOversize, leftOversize, rightOversize);
+
         if (rowSpacing !== null)
-            rowSpacing += topOversize + bottomOversize;
+            rowSpacing += oversize;
         if (colSpacing !== null)
-            colSpacing += Math.max(leftOversize, rightOversize);
+            colSpacing += oversize;
 
         if (containerBox) {
             const [topOverlap, bottomOverlap] = window.overlapHeights();
-            containerBox.x1 += leftOversize;
-            containerBox.x2 -= rightOversize;
-            containerBox.y1 += topOversize + topOverlap;
-            containerBox.y2 -= bottomOversize + bottomOverlap;
+            const overlap = Math.max(topOverlap, bottomOverlap);
+
+            containerBox.x1 += oversize;
+            containerBox.x2 -= oversize;
+            containerBox.y1 += oversize + overlap;
+            containerBox.y2 -= oversize + overlap;
         }
 
         return [rowSpacing, colSpacing, containerBox];
