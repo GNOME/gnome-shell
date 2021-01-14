@@ -1,3 +1,22 @@
+3.38.3
+======
+* Fix disappearing app grid [Georges; !1532]
+* Fix screenshots of unredirected fullscreen windows on X11
+  [Jonas, LuK1337; !1536, !1552]
+* Fix storing VPN secrets [Sebastian; !1535]
+* Fix glitches in overview transitions [Jonas, Ivan; !1564, !1550]
+* Improve login screen accessibility [Mike; !1567]
+* Fixed crashes [Jonas; !1540]
+* Misc. bug fixes and cleanups [Florian, Jonas, Ivan;
+  !1530, !1531, !1541, !1548, !1551]
+
+Contributors:
+  Jonas Ådahl, Mike Gerow, Sebastian Keller, LuK1337, Ivan Molodetskikh,
+  Florian Müllner, Georges Basile Stavracas Neto
+
+Translators:
+  Florentina Mușat [ro], Kjartan Maraas [nb]
+
 3.38.2
 ======
 * Handle @content properties in ease() functions [Andre; !1461]
