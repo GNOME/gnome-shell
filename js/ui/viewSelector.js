@@ -3,13 +3,11 @@
 
 const { Clutter, GObject, Shell, St } = imports.gi;
 
-const AppDisplay = imports.ui.appDisplay;
 const Main = imports.ui.main;
 const OverviewControls = imports.ui.overviewControls;
 const Params = imports.misc.params;
 const Search = imports.ui.search;
 const ShellEntry = imports.ui.shellEntry;
-const WorkspacesView = imports.ui.workspacesView;
 
 var ViewPage = {
     APPS: 1,
@@ -35,88 +33,13 @@ function getTermsForSearchString(searchString) {
     return terms;
 }
 
-var AppsPageContainer = GObject.registerClass(
-class AppsPageContainer extends St.Widget {
-    _init(workspacesDisplay, appDisplay, overviewAdjustment) {
-        super._init();
-
-        // 0 for window picker, 1 for app grid
-        this._adjustment = new St.Adjustment({
-            actor: this,
-            value: 0,
-            lower: 0,
-            upper: 1,
-        });
-        this._adjustment.connect('notify::value', () => {
-            this._update();
-            this.queue_relayout();
-        });
-
-        overviewAdjustment.connect('notify::value', () => {
-            const overviewState = overviewAdjustment.value;
-
-            this._appDisplay.visible =
-                overviewState >= OverviewControls.ControlsState.WINDOW_PICKER;
-            this._adjustment.value = Math.max(overviewAdjustment.value -
-                OverviewControls.ControlsState.WINDOW_PICKER, 0);
-        });
-
-        this._appDisplay = appDisplay;
-        this.add_child(appDisplay);
-
-        this._workspacesDisplay = workspacesDisplay;
-        this.add_child(workspacesDisplay);
-
-        this.connect('notify::mapped', () => {
-            workspacesDisplay.setPrimaryWorkspaceVisible(this.mapped);
-        });
-
-        this._update();
-    }
-
-    _update() {
-        const progress = this._adjustment.value;
-
-        this._appDisplay.opacity = progress * 255;
-
-        const { snapAdjustment } = this._workspacesDisplay;
-        snapAdjustment.value = 1 - progress;
-    }
-
-    _getWorkspacesBoxes(box) {
-        const initialBox = box.copy();
-
-        const finalBox = box.copy();
-        finalBox.set_size(
-            box.get_width(),
-            Math.round(box.get_height() * 0.15));
-
-        return [initialBox, finalBox];
-    }
-
-    vfunc_allocate(box) {
-        this.set_allocation(box);
-
-        const progress = this._adjustment.value;
-        const [initialBox, finalBox] = this._getWorkspacesBoxes(box);
-        const workspacesBox = initialBox.interpolate(finalBox, progress);
-        this._workspacesDisplay.allocate(workspacesBox);
-
-        if (this._appDisplay.visible) {
-            const appDisplayBox = box.copy();
-            appDisplayBox.y1 += Math.ceil(finalBox.get_height());
-            this._appDisplay.allocate(appDisplayBox);
-        }
-    }
-});
-
 var ViewSelector = GObject.registerClass({
     Signals: {
         'page-changed': {},
         'page-empty': {},
     },
 }, class ViewSelector extends Shell.Stack {
-    _init(searchEntry, workspaceAdjustment, showAppsButton, overviewAdjustment) {
+    _init(searchEntry, showAppsButton) {
         super._init({
             name: 'viewSelector',
             x_expand: true,
@@ -159,14 +82,9 @@ var ViewSelector = GObject.registerClass({
         this._iconClickedId = 0;
         this._capturedEventId = 0;
 
-        this._workspacesDisplay =
-            new WorkspacesView.WorkspacesDisplay(workspaceAdjustment, overviewAdjustment);
-        this.appDisplay = new AppDisplay.AppDisplay();
-
-        const appsContainer = new AppsPageContainer(
-            this._workspacesDisplay, this.appDisplay, overviewAdjustment);
+        const dummy = new Clutter.Actor();
         this._appsPage =
-            this._addPage(appsContainer, _('Applications'), 'view-app-grid-symbolic');
+            this._addPage(dummy, _('Applications'), 'view-app-grid-symbolic');
 
         this._searchResults = new Search.SearchResultsView();
         this._searchPage = this._addPage(this._searchResults,
@@ -198,28 +116,15 @@ var ViewSelector = GObject.registerClass({
     }
 
     prepareToEnterOverview() {
-        this.show();
         this.reset();
-        this._workspacesDisplay.prepareToEnterOverview();
         this._activePage = null;
         this._showPage(this._appsPage);
-
-        if (!this._workspacesDisplay.activeWorkspaceHasMaximizedWindows())
-            Main.overview.fadeOutDesktop();
     }
 
-    prepareToLeaveOverview() {
-        this._workspacesDisplay.prepareToLeaveOverview();
-
-        if (!this._workspacesDisplay.activeWorkspaceHasMaximizedWindows())
-            Main.overview.fadeInDesktop();
-    }
-
-    vfunc_hide() {
+    vfunc_unmap() {
         this.reset();
-        this._workspacesDisplay.hide();
 
-        super.vfunc_hide();
+        super.vfunc_unmap();
     }
 
     _addPage(actor, name, a11yIcon, params) {

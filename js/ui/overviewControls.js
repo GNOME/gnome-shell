@@ -3,11 +3,13 @@
 
 const { Clutter, Gio, GObject, Meta, Shell, St } = imports.gi;
 
+const AppDisplay = imports.ui.appDisplay;
 const Dash = imports.ui.dash;
 const Main = imports.ui.main;
 const ViewSelector = imports.ui.viewSelector;
 const Overview = imports.ui.overview;
 const WindowManager = imports.ui.windowManager;
+const WorkspacesView = imports.ui.workspacesView;
 
 var SIDE_CONTROLS_ANIMATION_TIME = Overview.ANIMATION_TIME;
 
@@ -58,15 +60,40 @@ class DashFader extends St.Bin {
 
 var ControlsManagerLayout = GObject.registerClass(
 class ControlsManagerLayout extends Clutter.BinLayout {
-    _init(searchEntry, viewSelector, dash, adjustment) {
+    _init(searchEntry, appDisplay, workspacesDisplay, viewSelector, dash, adjustment) {
         super._init();
 
+        this._appDisplay = appDisplay;
+        this._workspacesDisplay = workspacesDisplay;
         this._adjustment = adjustment;
         this._searchEntry = searchEntry;
         this._viewSelector = viewSelector;
         this._dash = dash;
 
         adjustment.connect('notify::value', () => this.layout_changed());
+    }
+
+    _getWorkspacesBoxForState(state, params) {
+        const workspaceBox = params.box.copy();
+        const [width, height] = workspaceBox.get_size();
+
+        switch (state) {
+        case ControlsState.HIDDEN:
+            break;
+        case ControlsState.WINDOW_PICKER:
+            workspaceBox.set_origin(0, params.searchHeight + params.spacing);
+            workspaceBox.set_size(width,
+                height -
+                params.dashHeight - params.spacing -
+                params.searchHeight - params.spacing);
+            break;
+        case ControlsState.APP_GRID:
+            workspaceBox.set_origin(0, params.searchHeight + params.spacing);
+            workspaceBox.set_size(width, Math.round(Math.max(height * 0.15)));
+            break;
+        }
+
+        return workspaceBox;
     }
 
     vfunc_set_container(container) {
@@ -101,19 +128,41 @@ class ControlsManagerLayout extends Clutter.BinLayout {
 
         availableHeight -= dashHeight + spacing;
 
-        // ViewSelector
-        const initialBox = new Clutter.ActorBox();
-        initialBox.set_origin(0, 0);
-        initialBox.set_size(width, height);
+        // Workspaces
+        const params = { box, searchHeight, dashHeight, spacing };
+        const workspaceBoxes = [
+            this._getWorkspacesBoxForState(ControlsState.HIDDEN, params),
+            this._getWorkspacesBoxForState(ControlsState.WINDOW_PICKER, params),
+            this._getWorkspacesBoxForState(ControlsState.APP_GRID, params),
+        ];
+        const [state, initialState, finalState, progress] =
+            this._adjustment.getState();
+        if (initialState === finalState) {
+            const workspacesBox = workspaceBoxes[state];
+            this._workspacesDisplay.allocate(workspacesBox);
+        } else {
+            const initialBox = workspaceBoxes[initialState];
+            const finalBox = workspaceBoxes[finalState];
 
+            this._workspacesDisplay.allocate(initialBox.interpolate(finalBox, progress));
+        }
+
+        // AppDisplay
+        const appGridBox = workspaceBoxes[ControlsState.APP_GRID];
+
+        childBox.set_origin(0, searchHeight + spacing + appGridBox.get_height());
+        childBox.set_size(width,
+            height -
+            searchHeight - spacing -
+            appGridBox.get_height() - spacing -
+            dashHeight);
+
+        this._appDisplay.allocate(childBox);
+
+        // ViewSelector
         childBox.set_origin(0, searchHeight + spacing);
         childBox.set_size(width, availableHeight);
-
-        const page = this._viewSelector.getActivePage();
-        const progress = page === ViewSelector.ViewPage.SEARCH
-            ? 1 : Math.min(this._adjustment.value, 1);
-        const viewSelectorBox = initialBox.interpolate(childBox, progress);
-        this._viewSelector.allocate(viewSelectorBox);
+        this._viewSelector.allocate(childBox);
     }
 });
 
@@ -201,22 +250,33 @@ class ControlsManager extends St.Widget {
         });
 
         this._adjustment = new OverviewAdjustment(this);
+        this._adjustment.connect('notify::value', this._update.bind(this));
 
         this._nWorkspacesNotifyId =
             workspaceManager.connect('notify::n-workspaces',
                 this._updateAdjustment.bind(this));
 
         this.viewSelector = new ViewSelector.ViewSelector(this._searchEntry,
+            this.dash.showAppsButton);
+        this.viewSelector.connect('page-empty', this._onPageEmpty.bind(this));
+
+        this._workspacesDisplay = new WorkspacesView.WorkspacesDisplay(
             this._workspaceAdjustment,
-            this.dash.showAppsButton,
             this._adjustment);
+        this._appDisplay = new AppDisplay.AppDisplay();
 
         this.add_child(searchEntryBin);
+        this.add_child(this._appDisplay);
         this.add_child(this._dashFader);
         this.add_child(this.viewSelector);
+        this.add_child(this._workspacesDisplay);
 
         this.layout_manager = new ControlsManagerLayout(searchEntryBin,
-            this.viewSelector, this._dashFader, this._adjustment);
+            this._appDisplay,
+            this._workspacesDisplay,
+            this.viewSelector,
+            this._dashFader,
+            this._adjustment);
 
         this.dash.showAppsButton.connect('notify::checked',
             this._onShowAppsButtonToggled.bind(this));
@@ -229,6 +289,59 @@ class ControlsManager extends St.Widget {
             this._toggleAppsPage.bind(this));
 
         this.connect('destroy', this._onDestroy.bind(this));
+
+        this._update();
+    }
+
+    _getSnapForState(state) {
+        switch (state) {
+        case ControlsState.HIDDEN:
+        case ControlsState.WINDOW_PICKER:
+            return Clutter.Orientation.VERTICAL;
+        case ControlsState.APP_GRID:
+            return Clutter.Orientation.HORIZONTAL;
+        default:
+            return Clutter.Orientation.VERTICAL;
+        }
+    }
+
+    _update() {
+        const [, initialState, finalState, progress] = this._adjustment.getState();
+
+        const snapAxis = Math.interpolate(
+            this._getSnapForState(initialState),
+            this._getSnapForState(finalState),
+            progress);
+
+        const { snapAdjustment } = this._workspacesDisplay;
+        snapAdjustment.value = snapAxis;
+    }
+
+    _onPageEmpty() {
+        const page = this.viewSelector.getActivePage();
+        const isApps = page === ViewSelector.ViewPage.APPS;
+
+        if (isApps) {
+            this._appDisplay.show();
+            this._workspacesDisplay.reactive = true;
+            this._workspacesDisplay.setPrimaryWorkspaceVisible(true);
+        }
+
+        this._appDisplay.ease({
+            opacity: isApps ? 255 : 0,
+            duration: SIDE_CONTROLS_ANIMATION_TIME,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            onComplete: () => (this._appDisplay.visible = isApps),
+        });
+        this._workspacesDisplay.ease({
+            opacity: isApps ? 255 : 0,
+            duration: SIDE_CONTROLS_ANIMATION_TIME,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            onComplete: () => {
+                this._workspacesDisplay.reactive = isApps;
+                this._workspacesDisplay.setPrimaryWorkspaceVisible(isApps);
+            },
+        });
     }
 
     _onShowAppsButtonToggled() {
@@ -272,10 +385,18 @@ class ControlsManager extends St.Widget {
         this._workspaceAdjustment.value = activeIndex;
     }
 
+    vfunc_unmap() {
+        this._workspacesDisplay.hide();
+        super.vfunc_unmap();
+    }
+
     animateToOverview(state, onComplete) {
         this._animating = true;
 
         this.viewSelector.prepareToEnterOverview();
+        this._workspacesDisplay.prepareToEnterOverview();
+        if (!this._workspacesDisplay.activeWorkspaceHasMaximizedWindows())
+            Main.overview.fadeOutDesktop();
 
         this._adjustment.value = ControlsState.HIDDEN;
         this._adjustment.ease(state, {
@@ -293,7 +414,9 @@ class ControlsManager extends St.Widget {
     animateFromOverview(onComplete) {
         this._animating = true;
 
-        this.viewSelector.prepareToLeaveOverview();
+        this._workspacesDisplay.prepareToLeaveOverview();
+        if (!this._workspacesDisplay.activeWorkspaceHasMaximizedWindows())
+            Main.overview.fadeInDesktop();
 
         this._adjustment.ease(ControlsState.HIDDEN, {
             duration: SIDE_CONTROLS_ANIMATION_TIME,
@@ -326,6 +449,9 @@ class ControlsManager extends St.Widget {
 
         tracker.confirmSwipe(baseDistance, points, progress, cancelProgress);
         this.viewSelector.prepareToEnterOverview();
+        this._workspacesDisplay.prepareToEnterOverview();
+        if (!this._workspacesDisplay.activeWorkspaceHasMaximizedWindows())
+            Main.overview.fadeInDesktop();
     }
 
     gestureProgress(progress) {
@@ -335,8 +461,11 @@ class ControlsManager extends St.Widget {
     gestureEnd(target, duration, onComplete) {
         this._animating = true;
 
-        if (target === ControlsState.HIDDEN)
-            this.viewSelector.prepareToLeaveOverview();
+        if (target === ControlsState.HIDDEN) {
+            this._workspacesDisplay.prepareToLeaveOverview();
+            if (!this._workspacesDisplay.activeWorkspaceHasMaximizedWindows())
+                Main.overview.fadeInDesktop();
+        }
 
         this._adjustment.ease(target, {
             duration,
@@ -347,5 +476,9 @@ class ControlsManager extends St.Widget {
         this.dash.showAppsButton.checked =
             target === ControlsState.APP_GRID;
         this._animating = false;
+    }
+
+    get appDisplay() {
+        return this._appDisplay;
     }
 });

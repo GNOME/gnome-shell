@@ -143,10 +143,6 @@ var Overview = class {
         return this.dash.iconSize;
     }
 
-    get viewSelector() {
-        return this._overview.viewSelector;
-    }
-
     get animationInProgress() {
         return this._animationInProgress;
     }
@@ -271,11 +267,11 @@ var Overview = class {
     }
 
     addSearchProvider(provider) {
-        this.viewSelector.addSearchProvider(provider);
+        this._overview.viewSelector.addSearchProvider(provider);
     }
 
     removeSearchProvider(provider) {
-        this.viewSelector.removeSearchProvider(provider);
+        this._overview.viewSelector.removeSearchProvider(provider);
     }
 
     //
@@ -646,7 +642,6 @@ var Overview = class {
         // Re-enable unredirection
         Meta.enable_unredirect_for_display(global.display);
 
-        this.viewSelector.hide();
         this._desktopFade.hide();
         this._coverPane.hide();
 

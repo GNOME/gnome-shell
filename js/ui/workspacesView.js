@@ -666,7 +666,6 @@ class WorkspacesDisplay extends St.Widget {
     _init(scrollAdjustment, overviewAdjustment) {
         super._init({
             reactive: true,
-            visible: false,
             y_expand: true,
             layout_manager: new Clutter.BinLayout(),
         });
@@ -983,6 +982,7 @@ class WorkspacesDisplay extends St.Widget {
 
             if (i === this._primaryIndex) {
                 view.visible = this._primaryVisible;
+                this.bind_property('opacity', view, 'opacity', GObject.BindingFlags.SYNC_CREATE);
                 this.add_child(view);
             } else {
                 const { x, y, width, height } =
