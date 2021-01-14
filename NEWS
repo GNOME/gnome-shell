@@ -1,3 +1,40 @@
+40.alpha.1
+==========
+* Restore app picker fade during swipes [Georges, Florian; !1519, !1569]
+* Sort extensions in Looking Glass alphabetically [Florijan; !1516]
+* Fix screenshots of unredirected fullscreen windows on X11
+  [Jonas Å., LuK1337; !1534, !1549]
+* Use GPU to render (most) shadows [Georges; !1539]
+* Refine avatar styling [Joonas; !1490]
+* Fix storing VPN secrets [Sebastian; !1535]
+* Don't depend on asciidoc and sassc when building from tarball
+  [Florian; !1553, !1555]
+* Use horizontal pages in app picker [Georges; !1554]
+* Avoid costly icon theme lookups unless when needed [Ivan; !1558]
+* Properly expose locked state to logind [Florian; !1561]
+* Use 3 fingers for system swipe gestures [Georges; !1562]
+* Fix glitches in overview transitions [Jonas Å., Ivan; !1545, !1550]
+* Improve login screen accessibility [Mike; !1567]
+* Overhaul top bar styling [Jonas D.; !1397]
+* Allow changing input volume by scrolling over microphone icon [Razze; !1566]
+* Port Extensions app and portal to GTK4 [Florian; !1495]
+* Fixed crashes [Jonas Å.; !1527]
+* Misc. bug fixes and cleanups [Georges, Florian, Tom, Hans, Jonas D., Ivan,
+  Sebastian, Daniel; !1518, !1521, !1523, !1525, !1520, !1526, !1472, !1339,
+  !1529, !1531, !1532, !1533, !1528, !1350] !1542, !1537, !1548, !1551, !1557,
+  !1543, !1560, !1544, !1565]
+
+Contributors:
+  Jonas Ådahl, Jonas Dreßler, Mike Gerow, Florijan Hamzic, Joonas Henriksson,
+  Sebastian Keller, Tom Levy, LuK1337, Ivan Molodetskikh, Florian Müllner,
+  Georges Basile Stavracas Neto, Hans Ulrich Niedermann, Razze, Daniel van Vugt
+
+Translators:
+  Florentina Mușat [ro], Fabio Tomat [fur], Hugo Carvalho [pt],
+  Jordi Mas i Hernandez [ca], Philipp Kiemle [de], Fran Dieguez [gl],
+  Jordi Mas [ca], Kukuh Syafaat [id], Kjartan Maraas [nb],
+  Daniel Șerbănescu [ro], Matej Urbančič [sl]
+
 40.alpha
 ========
 * Handle @content properties in ease() functions [Andre; !1461]
