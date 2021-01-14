@@ -3,14 +3,10 @@
 
 const { Clutter, GObject, Shell, St } = imports.gi;
 
-const AppDisplay = imports.ui.appDisplay;
 const Main = imports.ui.main;
 const OverviewControls = imports.ui.overviewControls;
 const Search = imports.ui.search;
 const ShellEntry = imports.ui.shellEntry;
-const Util = imports.misc.util;
-const WorkspaceThumbnail = imports.ui.workspaceThumbnail;
-const WorkspacesView = imports.ui.workspacesView;
 
 var ViewPage = {
     ACTIVITIES: 1,
@@ -36,126 +32,13 @@ function getTermsForSearchString(searchString) {
     return terms;
 }
 
-
-var ActivitiesContainer = GObject.registerClass(
-class ActivitiesContainer extends St.Widget {
-    _init(thumbnailsBox, workspacesDisplay, appDisplay, overviewAdjustment) {
-        super._init();
-
-        // 0 for window picker, 1 for app grid
-        this._adjustment = new St.Adjustment({
-            actor: this,
-            value: 0,
-            lower: 0,
-            upper: 1,
-        });
-        this._adjustment.connect('notify::value', () => {
-            this._update();
-            this.queue_relayout();
-        });
-
-        overviewAdjustment.connect('notify::value', () => {
-            const { ControlsState } = OverviewControls;
-
-            const overviewState = overviewAdjustment.value;
-
-            this._appDisplay.visible =
-                overviewState >= ControlsState.WINDOW_PICKER;
-            this._adjustment.value = Math.max(0,
-                overviewAdjustment.value - ControlsState.WINDOW_PICKER);
-        });
-
-        this._thumbnailsBox = thumbnailsBox;
-        this.add_child(thumbnailsBox);
-
-        this._appDisplay = appDisplay;
-        this.add_child(appDisplay);
-
-        this._workspacesDisplay = workspacesDisplay;
-        this.add_child(workspacesDisplay);
-
-        this.connect('notify::mapped', () => {
-            workspacesDisplay.setPrimaryWorkspaceVisible(this.mapped);
-        });
-
-        this._update();
-    }
-
-    _update() {
-        const progress = this._adjustment.value;
-
-        this._appDisplay.opacity = progress * 255;
-
-        this._thumbnailsBox.set({
-            scale_x: Util.lerp(1, 0.5, progress),
-            scale_y: Util.lerp(1, 0.5, progress),
-            translation_y: Util.lerp(0, this._thumbnailsBox.height, progress),
-            opacity: Util.lerp(0, 255, 1 - progress),
-            visible: (1 - progress) !== 0,
-        });
-
-        const { fitModeAdjustment } = this._workspacesDisplay;
-        fitModeAdjustment.value = Util.lerp(
-            WorkspacesView.FitMode.SINGLE,
-            WorkspacesView.FitMode.ALL,
-            progress);
-    }
-
-    _getWorkspacesBoxes(box, thumbnailsHeight) {
-        const initialBox = box.copy();
-        initialBox.y1 += thumbnailsHeight;
-
-        const finalBox = box.copy();
-        finalBox.set_size(
-            box.get_width(),
-            Math.round(box.get_height() * 0.15));
-
-        return [initialBox, finalBox];
-    }
-
-    vfunc_allocate(box) {
-        this.set_allocation(box);
-
-        // Workspace Thumbnails
-        let thumbnailsHeight = 0;
-        if (this._thumbnailsBox.visible) {
-            const maxThumbnailScale = WorkspaceThumbnail.MAX_THUMBNAIL_SCALE;
-            const primaryMonitor = Main.layoutManager.primaryMonitor;
-            const [width, height] = box.get_size();
-
-            [, thumbnailsHeight] =
-                this._thumbnailsBox.get_preferred_height(width);
-            thumbnailsHeight = Math.min(
-                thumbnailsHeight,
-                (primaryMonitor ? primaryMonitor.height : height) * maxThumbnailScale);
-
-            const thumbnailsBox = new Clutter.ActorBox();
-            thumbnailsBox.set_origin(0, 0);
-            thumbnailsBox.set_size(width, thumbnailsHeight);
-            this._thumbnailsBox.allocate(thumbnailsBox);
-        }
-
-        const progress = this._adjustment.value;
-        const [initialBox, finalBox] =
-            this._getWorkspacesBoxes(box, thumbnailsHeight);
-        const workspacesBox = initialBox.interpolate(finalBox, progress);
-        this._workspacesDisplay.allocate(workspacesBox);
-
-        if (this._appDisplay.visible) {
-            const appDisplayBox = box.copy();
-            appDisplayBox.y1 += Math.ceil(finalBox.get_height());
-            this._appDisplay.allocate(appDisplayBox);
-        }
-    }
-});
-
 var ViewSelector = GObject.registerClass({
     Signals: {
         'page-changed': {},
         'page-empty': {},
     },
 }, class ViewSelector extends Shell.Stack {
-    _init(searchEntry, workspaceAdjustment, showAppsButton, overviewAdjustment) {
+    _init(searchEntry, showAppsButton) {
         super._init({
             name: 'viewSelector',
             x_expand: true,
@@ -200,45 +83,9 @@ var ViewSelector = GObject.registerClass({
         this._iconClickedId = 0;
         this._capturedEventId = 0;
 
-        this._thumbnailsBox =
-            new WorkspaceThumbnail.ThumbnailsBox(workspaceAdjustment);
-        this._workspacesDisplay =
-            new WorkspacesView.WorkspacesDisplay(workspaceAdjustment, overviewAdjustment);
-        this.appDisplay = new AppDisplay.AppDisplay();
-
-        const activitiesContainer = new ActivitiesContainer(
-            this._thumbnailsBox,
-            this._workspacesDisplay,
-            this.appDisplay,
-            overviewAdjustment);
+        const dummy = new St.Widget();
         this._activitiesPage =
-            this._addPage(activitiesContainer, _('Activities'), 'view-app-grid-symbolic');
-
-        Main.ctrlAltTabManager.addGroup(
-            this.appDisplay,
-            _('Applications'),
-            'edit-find-symbolic', {
-                proxy: this,
-                focusCallback: () => {
-                    this._showPage(this._activitiesPage);
-                    this._showAppsButton.checked = true;
-                    this.appDisplay.navigate_focus(
-                        null, St.DirectionType.TAB_FORWARD, false);
-                },
-            });
-
-        Main.ctrlAltTabManager.addGroup(
-            this._workspacesDisplay,
-            _('Windows'),
-            'focus-windows-symbolic', {
-                proxy: this,
-                focusCallback: () => {
-                    this._showPage(this._activitiesPage);
-                    this._showAppsButton.checked = false;
-                    this._workspacesDisplay.navigate_focus(
-                        null, St.DirectionType.TAB_FORWARD, false);
-                },
-            });
+            this._addPage(dummy, _('Activities'), 'view-app-grid-symbolic');
 
         this._searchResults = new Search.SearchResultsView();
         this._searchPage = this._addPage(this._searchResults);
@@ -269,28 +116,15 @@ var ViewSelector = GObject.registerClass({
     }
 
     prepareToEnterOverview() {
-        this.show();
         this.reset();
-        this._workspacesDisplay.prepareToEnterOverview();
         this._activePage = null;
         this._showPage(this._activitiesPage);
-
-        if (!this._workspacesDisplay.activeWorkspaceHasMaximizedWindows())
-            Main.overview.fadeOutDesktop();
     }
 
-    prepareToLeaveOverview() {
-        this._workspacesDisplay.prepareToLeaveOverview();
-
-        if (!this._workspacesDisplay.activeWorkspaceHasMaximizedWindows())
-            Main.overview.fadeInDesktop();
-    }
-
-    vfunc_hide() {
+    vfunc_unmap() {
         this.reset();
-        this._workspacesDisplay.hide();
 
-        super.vfunc_hide();
+        super.vfunc_unmap();
     }
 
     _addPage(actor) {
