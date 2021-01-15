@@ -453,6 +453,7 @@ class ControlsManager extends St.Widget {
     animateFromOverview(onComplete) {
         this._animating = true;
 
+        this._searchController.reset();
         this._workspacesDisplay.prepareToLeaveOverview();
         if (!this._workspacesDisplay.activeWorkspaceHasMaximizedWindows())
             Main.overview.fadeInDesktop();
@@ -501,6 +502,7 @@ class ControlsManager extends St.Widget {
         this._animating = true;
 
         if (target === ControlsState.HIDDEN) {
+            this._searchController.reset();
             this._workspacesDisplay.prepareToLeaveOverview();
             if (!this._workspacesDisplay.activeWorkspaceHasMaximizedWindows())
                 Main.overview.fadeInDesktop();
