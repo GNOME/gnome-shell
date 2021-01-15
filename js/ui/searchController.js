@@ -1,5 +1,5 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported ViewSelector */
+/* exported SearchController */
 
 const { Clutter, GObject, St } = imports.gi;
 
@@ -26,17 +26,17 @@ function getTermsForSearchString(searchString) {
     return terms;
 }
 
-var ViewSelector = GObject.registerClass({
+var SearchController = GObject.registerClass({
     Properties: {
         'search-active': GObject.ParamSpec.boolean(
             'search-active', 'search-active', 'search-active',
             GObject.ParamFlags.READABLE,
             false),
     },
-}, class ViewSelector extends St.Widget {
+}, class SearchController extends St.Widget {
     _init(searchEntry, showAppsButton) {
         super._init({
-            name: 'viewSelector',
+            name: 'searchController',
             layout_manager: new Clutter.BinLayout(),
             x_expand: true,
             y_expand: true,

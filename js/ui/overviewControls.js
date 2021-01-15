@@ -7,8 +7,8 @@ const AppDisplay = imports.ui.appDisplay;
 const Dash = imports.ui.dash;
 const Main = imports.ui.main;
 const Overview = imports.ui.overview;
+const SearchController = imports.ui.searchController;
 const Util = imports.misc.util;
-const ViewSelector = imports.ui.viewSelector;
 const WindowManager = imports.ui.windowManager;
 const WorkspaceThumbnail = imports.ui.workspaceThumbnail;
 const WorkspacesView = imports.ui.workspacesView;
@@ -26,7 +26,7 @@ var ControlsState = {
 var ControlsManagerLayout = GObject.registerClass(
 class ControlsManagerLayout extends Clutter.BoxLayout {
     _init(searchEntry, appDisplay, workspacesDisplay, workspacesThumbnails,
-        viewSelector, dash, stateAdjustment) {
+        searchController, dash, stateAdjustment) {
         super._init({ orientation: Clutter.Orientation.VERTICAL });
 
         this._appDisplay = appDisplay;
@@ -34,7 +34,7 @@ class ControlsManagerLayout extends Clutter.BoxLayout {
         this._workspacesThumbnails = workspacesThumbnails;
         this._stateAdjustment = stateAdjustment;
         this._searchEntry = searchEntry;
-        this._viewSelector = viewSelector;
+        this._searchController = searchController;
         this._dash = dash;
 
         this._cachedWorkspaceBoxes = new Map();
@@ -178,11 +178,11 @@ class ControlsManagerLayout extends Clutter.BoxLayout {
         }
         this._appDisplay.allocate(appDisplayBox);
 
-        // ViewSelector
+        // Search
         childBox.set_origin(0, searchHeight + spacing);
         childBox.set_size(width, availableHeight);
 
-        this._viewSelector.allocate(childBox);
+        this._searchController.allocate(childBox);
     }
 
     getWorkspacesBoxForState(state) {
@@ -285,9 +285,10 @@ class ControlsManager extends St.Widget {
             workspaceManager.connect('notify::n-workspaces',
                 this._updateAdjustment.bind(this));
 
-        this.viewSelector = new ViewSelector.ViewSelector(this._searchEntry,
+        this._searchController = new SearchController.SearchController(
+            this._searchEntry,
             this.dash.showAppsButton);
-        this.viewSelector.connect('notify::search-active', this._onSearchChanged.bind(this));
+        this._searchController.connect('notify::search-active', this._onSearchChanged.bind(this));
 
         this._thumbnailsBox =
             new WorkspaceThumbnail.ThumbnailsBox(this._workspaceAdjustment);
@@ -300,7 +301,7 @@ class ControlsManager extends St.Widget {
         this.add_child(searchEntryBin);
         this.add_child(this._appDisplay);
         this.add_child(this.dash);
-        this.add_child(this.viewSelector);
+        this.add_child(this._searchController);
         this.add_child(this._thumbnailsBox);
         this.add_child(this._workspacesDisplay);
 
@@ -308,7 +309,7 @@ class ControlsManager extends St.Widget {
             this._appDisplay,
             this._workspacesDisplay,
             this._thumbnailsBox,
-            this.viewSelector,
+            this._searchController,
             this.dash,
             this._stateAdjustment);
 
@@ -402,7 +403,7 @@ class ControlsManager extends St.Widget {
     }
 
     _updateThumbnailsBox(animate = false) {
-        const { searchActive } = this.viewSelector;
+        const { searchActive } = this._searchController;
         const [opacity, scale, translationY] = this._getThumbnailsBoxParams();
 
         const thumbnailsBoxVisible = !searchActive && opacity !== 0;
@@ -442,14 +443,14 @@ class ControlsManager extends St.Widget {
     }
 
     _onSearchChanged() {
-        const { searchActive } = this.viewSelector;
+        const { searchActive } = this._searchController;
 
         if (!searchActive) {
             this._appDisplay.show();
             this._workspacesDisplay.reactive = true;
             this._workspacesDisplay.setPrimaryWorkspaceVisible(true);
         } else {
-            this.viewSelector.show();
+            this._searchController.show();
         }
 
         this._updateThumbnailsBox(true);
@@ -469,11 +470,11 @@ class ControlsManager extends St.Widget {
                 this._workspacesDisplay.setPrimaryWorkspaceVisible(!searchActive);
             },
         });
-        this.viewSelector.ease({
+        this._searchController.ease({
             opacity: searchActive ? 255 : 0,
             duration: SIDE_CONTROLS_ANIMATION_TIME,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            onComplete: () => (this.viewSelector.visible = searchActive),
+            onComplete: () => (this._searchController.visible = searchActive),
         });
     }
 
@@ -526,7 +527,7 @@ class ControlsManager extends St.Widget {
     animateToOverview(state, callback) {
         this._ignoreShowAppsButtonToggle = true;
 
-        this.viewSelector.prepareToEnterOverview();
+        this._searchController.prepareToEnterOverview();
         this._workspacesDisplay.prepareToEnterOverview();
         if (!this._workspacesDisplay.activeWorkspaceHasMaximizedWindows())
             Main.overview.fadeOutDesktop();
