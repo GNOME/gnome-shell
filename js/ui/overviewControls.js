@@ -287,7 +287,7 @@ class ControlsManager extends St.Widget {
 
         this.viewSelector = new ViewSelector.ViewSelector(this._searchEntry,
             this.dash.showAppsButton);
-        this.viewSelector.connect('page-empty', this._onPageEmpty.bind(this));
+        this.viewSelector.connect('notify::search-active', this._onSearchChanged.bind(this));
 
         this._thumbnailsBox =
             new WorkspaceThumbnail.ThumbnailsBox(this._workspaceAdjustment);
@@ -402,24 +402,23 @@ class ControlsManager extends St.Widget {
     }
 
     _updateThumbnailsBox(animate = false) {
-        const page = this.viewSelector.getActivePage();
-        const searching = page === ViewSelector.ViewPage.SEARCH;
+        const { searchActive } = this.viewSelector;
         const [opacity, scale, translationY] = this._getThumbnailsBoxParams();
 
-        const thumbnailsBoxVisible = !searching && opacity !== 0;
+        const thumbnailsBoxVisible = !searchActive && opacity !== 0;
         if (thumbnailsBoxVisible) {
             this._thumbnailsBox.opacity = 0;
             this._thumbnailsBox.visible = thumbnailsBoxVisible;
         }
 
         const params = {
-            opacity: searching ? 0 : opacity,
+            opacity: searchActive ? 0 : opacity,
             duration: animate ? SIDE_CONTROLS_ANIMATION_TIME : 0,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
             onComplete: () => (this._thumbnailsBox.visible = thumbnailsBoxVisible),
         };
 
-        if (!searching) {
+        if (!searchActive) {
             params.scale_x = scale;
             params.scale_y = scale;
             params.translation_y = translationY;
@@ -442,11 +441,10 @@ class ControlsManager extends St.Widget {
         this._updateThumbnailsBox();
     }
 
-    _onPageEmpty() {
-        const page = this.viewSelector.getActivePage();
-        const isActivities = page === ViewSelector.ViewPage.ACTIVITIES;
+    _onSearchChanged() {
+        const { searchActive } = this.viewSelector;
 
-        if (isActivities) {
+        if (!searchActive) {
             this._appDisplay.show();
             this._workspacesDisplay.reactive = true;
             this._workspacesDisplay.setPrimaryWorkspaceVisible(true);
@@ -457,25 +455,25 @@ class ControlsManager extends St.Widget {
         this._updateThumbnailsBox(true);
 
         this._appDisplay.ease({
-            opacity: isActivities ? 255 : 0,
+            opacity: searchActive ? 0 : 255,
             duration: SIDE_CONTROLS_ANIMATION_TIME,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            onComplete: () => (this._appDisplay.visible = isActivities),
+            onComplete: () => (this._appDisplay.visible = !searchActive),
         });
         this._workspacesDisplay.ease({
-            opacity: isActivities ? 255 : 0,
+            opacity: searchActive ? 0 : 255,
             duration: SIDE_CONTROLS_ANIMATION_TIME,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
             onComplete: () => {
-                this._workspacesDisplay.reactive = isActivities;
-                this._workspacesDisplay.setPrimaryWorkspaceVisible(isActivities);
+                this._workspacesDisplay.reactive = !searchActive;
+                this._workspacesDisplay.setPrimaryWorkspaceVisible(!searchActive);
             },
         });
         this.viewSelector.ease({
-            opacity: isActivities ? 0 : 255,
+            opacity: searchActive ? 255 : 0,
             duration: SIDE_CONTROLS_ANIMATION_TIME,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            onComplete: () => (this.viewSelector.visible = !isActivities),
+            onComplete: () => (this.viewSelector.visible = searchActive),
         });
     }
 

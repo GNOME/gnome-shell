@@ -1,17 +1,11 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported ViewSelector */
 
-const { Clutter, GObject, Shell, St } = imports.gi;
+const { Clutter, GObject, St } = imports.gi;
 
 const Main = imports.ui.main;
-const OverviewControls = imports.ui.overviewControls;
 const Search = imports.ui.search;
 const ShellEntry = imports.ui.shellEntry;
-
-var ViewPage = {
-    ACTIVITIES: 1,
-    SEARCH: 2,
-};
 
 var FocusTrap = GObject.registerClass(
 class FocusTrap extends St.Widget {
@@ -33,14 +27,17 @@ function getTermsForSearchString(searchString) {
 }
 
 var ViewSelector = GObject.registerClass({
-    Signals: {
-        'page-changed': {},
-        'page-empty': {},
+    Properties: {
+        'search-active': GObject.ParamSpec.boolean(
+            'search-active', 'search-active', 'search-active',
+            GObject.ParamFlags.READABLE,
+            false),
     },
-}, class ViewSelector extends Shell.Stack {
+}, class ViewSelector extends St.Widget {
     _init(searchEntry, showAppsButton) {
         super._init({
             name: 'viewSelector',
+            layout_manager: new Clutter.BinLayout(),
             x_expand: true,
             y_expand: true,
             visible: false,
@@ -83,12 +80,8 @@ var ViewSelector = GObject.registerClass({
         this._iconClickedId = 0;
         this._capturedEventId = 0;
 
-        const dummy = new St.Widget();
-        this._activitiesPage =
-            this._addPage(dummy, _('Activities'), 'view-app-grid-symbolic');
-
         this._searchResults = new Search.SearchResultsView();
-        this._searchPage = this._addPage(this._searchResults);
+        this.add_child(this._searchResults);
         Main.ctrlAltTabManager.addGroup(this._entry, _('Search'), 'edit-find-symbolic');
 
         // Since the entry isn't inside the results container we install this
@@ -117,8 +110,7 @@ var ViewSelector = GObject.registerClass({
 
     prepareToEnterOverview() {
         this.reset();
-        this._activePage = null;
-        this._showPage(this._activitiesPage);
+        this._setSearchActive(false);
     }
 
     vfunc_unmap() {
@@ -127,66 +119,16 @@ var ViewSelector = GObject.registerClass({
         super.vfunc_unmap();
     }
 
-    _addPage(actor) {
-        let page = new St.Bin({ child: actor });
-        page.hide();
-        this.add_actor(page);
-        return page;
-    }
-
-    _fadePageIn() {
-        this._activePage.ease({
-            opacity: 255,
-            duration: OverviewControls.SIDE_CONTROLS_ANIMATION_TIME,
-            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-        });
-    }
-
-    _fadePageOut(page) {
-        let oldPage = page;
-        page.ease({
-            opacity: 0,
-            duration: OverviewControls.SIDE_CONTROLS_ANIMATION_TIME,
-            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            onStopped: () => this._animateIn(oldPage),
-        });
-    }
-
-    _animateIn(oldPage) {
-        if (oldPage)
-            oldPage.hide();
-
-        this.emit('page-empty');
-
-        if (this._activePage) {
-            this._activePage.show();
-            this._fadePageIn();
-        }
-    }
-
-    _animateOut(page) {
-        this._fadePageOut(page);
-    }
-
-    _showPage(page) {
-        if (!Main.overview.visible)
+    _setSearchActive(searchActive) {
+        if (this._searchActive === searchActive)
             return;
 
-        if (page == this._activePage)
-            return;
-
-        let oldPage = this._activePage;
-        this._activePage = page;
-        this.emit('page-changed');
-
-        if (oldPage)
-            this._animateOut(oldPage);
-        else
-            this._animateIn();
+        this._searchActive = searchActive;
+        this.notify('search-active');
     }
 
     _onShowAppsButtonToggled() {
-        this._showPage(this._activitiesPage);
+        this._setSearchActive(false);
     }
 
     _onStageKeyPress(actor, event) {
@@ -220,7 +162,7 @@ var ViewSelector = GObject.registerClass({
     }
 
     _searchCancelled() {
-        this._showPage(this._activitiesPage);
+        this._setSearchActive(false);
 
         // Leave the entry focused when it doesn't have any text;
         // when replacing a selected search term, Clutter emits
@@ -306,11 +248,11 @@ var ViewSelector = GObject.registerClass({
     _onTextChanged() {
         let terms = getTermsForSearchString(this._entry.get_text());
 
-        this._searchActive = terms.length > 0;
+        const searchActive = terms.length > 0;
         this._searchResults.setTerms(terms);
 
-        if (this._searchActive) {
-            this._showPage(this._searchPage);
+        if (searchActive) {
+            this._setSearchActive(true);
 
             this._entry.set_secondary_icon(this._clearIcon);
 
@@ -386,10 +328,7 @@ var ViewSelector = GObject.registerClass({
         return Clutter.EVENT_PROPAGATE;
     }
 
-    getActivePage() {
-        if (this._activePage === this._activitiesPage)
-            return ViewPage.ACTIVITIES;
-        else
-            return ViewPage.SEARCH;
+    get searchActive() {
+        return this._searchActive;
     }
 });
