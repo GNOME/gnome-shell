@@ -358,7 +358,7 @@ st_settings_init (StSettings *settings)
   g_signal_connect (settings->interface_settings, "changed",
                     G_CALLBACK (on_interface_settings_changed), settings);
 
-  settings->mouse_settings = g_settings_new ("org.gnome.settings-daemon.peripherals.mouse");
+  settings->mouse_settings = g_settings_new ("org.gnome.desktop.peripherals.mouse");
   g_signal_connect (settings->interface_settings, "changed",
                     G_CALLBACK (on_mouse_settings_changed), settings);
 
