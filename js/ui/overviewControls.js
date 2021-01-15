@@ -117,6 +117,45 @@ class ControlsManagerLayout extends Clutter.BinLayout {
     }
 });
 
+var OverviewAdjustment = GObject.registerClass(
+class OverviewAdjustment extends St.Adjustment {
+    _init(actor) {
+        super._init({
+            actor,
+            value: ControlsState.WINDOW_PICKER,
+            lower: ControlsState.HIDDEN,
+            upper: ControlsState.APP_GRID,
+        });
+    }
+
+    getState() {
+        const state = this.value;
+
+        const transition = this.get_transition('value');
+        let initialState = transition
+            ? transition.get_interval().peek_initial_value()
+            : state;
+        let finalState = transition
+            ? transition.get_interval().peek_final_value()
+            : state;
+
+        if (initialState > finalState) {
+            initialState = Math.ceil(initialState);
+            finalState = Math.floor(finalState);
+        } else {
+            initialState = Math.floor(initialState);
+            finalState = Math.ceil(finalState);
+        }
+
+        const length = Math.abs(finalState - initialState);
+        const progress = length > 0
+            ? Math.abs((state - initialState) / length)
+            : 1;
+
+        return [state, initialState, finalState, progress];
+    }
+});
+
 var ControlsManager = GObject.registerClass(
 class ControlsManager extends St.Widget {
     _init() {
@@ -161,12 +200,7 @@ class ControlsManager extends St.Widget {
             upper: workspaceManager.n_workspaces,
         });
 
-        this._adjustment = new St.Adjustment({
-            actor: this,
-            value: ControlsState.WINDOW_PICKER,
-            lower: ControlsState.HIDDEN,
-            upper: ControlsState.APP_GRID,
-        });
+        this._adjustment = new OverviewAdjustment(this);
 
         this._nWorkspacesNotifyId =
             workspaceManager.connect('notify::n-workspaces',
