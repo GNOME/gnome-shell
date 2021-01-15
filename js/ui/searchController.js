@@ -1,7 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported ViewSelector */
+/* exported SearchController */
 
-const { Clutter, GObject, Shell, St } = imports.gi;
+const { Clutter, GObject, St } = imports.gi;
 
 const Main = imports.ui.main;
 const Search = imports.ui.search;
@@ -10,8 +10,8 @@ const ShellEntry = imports.ui.shellEntry;
 var FocusTrap = GObject.registerClass(
 class FocusTrap extends St.Widget {
     vfunc_navigate_focus(from, direction) {
-        if (direction == St.DirectionType.TAB_FORWARD ||
-            direction == St.DirectionType.TAB_BACKWARD)
+        if (direction === St.DirectionType.TAB_FORWARD ||
+            direction === St.DirectionType.TAB_BACKWARD)
             return super.vfunc_navigate_focus(from, direction);
         return false;
     }
@@ -19,25 +19,26 @@ class FocusTrap extends St.Widget {
 
 function getTermsForSearchString(searchString) {
     searchString = searchString.replace(/^\s+/g, '').replace(/\s+$/g, '');
-    if (searchString == '')
+    if (searchString === '')
         return [];
-
-    let terms = searchString.split(/\s+/);
-    return terms;
+    return searchString.split(/\s+/);
 }
 
-var ViewSelector = GObject.registerClass({
+var SearchController = GObject.registerClass({
     Properties: {
         'searching': GObject.ParamSpec.boolean(
             'searching', 'searching', 'searching',
             GObject.ParamFlags.READABLE,
             false),
     },
-}, class ViewSelector extends Shell.Stack {
+}, class SearchController extends St.Widget {
     _init(searchEntry, showAppsButton) {
         super._init({
-            name: 'viewSelector',
+            name: 'searchController',
+            layout_manager: new Clutter.BinLayout(),
+            visible: false,
             x_expand: true,
+            y_expand: true,
         });
 
         this._showAppsButton = showAppsButton;
@@ -69,10 +70,14 @@ var ViewSelector = GObject.registerClass({
         this._entry.connect('notify::mapped', this._onMapped.bind(this));
         global.stage.connect('notify::key-focus', this._onStageKeyFocusChanged.bind(this));
 
-        this._entry.set_primary_icon(new St.Icon({ style_class: 'search-entry-icon',
-                                                   icon_name: 'edit-find-symbolic' }));
-        this._clearIcon = new St.Icon({ style_class: 'search-entry-icon',
-                                        icon_name: 'edit-clear-symbolic' });
+        this._entry.set_primary_icon(new St.Icon({
+            style_class: 'search-entry-icon',
+            icon_name: 'edit-find-symbolic',
+        }));
+        this._clearIcon = new St.Icon({
+            style_class: 'search-entry-icon',
+            icon_name: 'edit-clear-symbolic',
+        });
 
         this._iconClickedId = 0;
         this._capturedEventId = 0;
@@ -94,11 +99,11 @@ var ViewSelector = GObject.registerClass({
 
         this._stageKeyPressId = 0;
         Main.overview.connect('showing', () => {
-            this._stageKeyPressId = global.stage.connect('key-press-event',
-                                                         this._onStageKeyPress.bind(this));
+            this._stageKeyPressId =
+                global.stage.connect('key-press-event', this._onStageKeyPress.bind(this));
         });
         Main.overview.connect('hiding', () => {
-            if (this._stageKeyPressId != 0) {
+            if (this._stageKeyPressId !== 0) {
                 global.stage.disconnect(this._stageKeyPressId);
                 this._stageKeyPressId = 0;
             }
@@ -172,7 +177,7 @@ var ViewSelector = GObject.registerClass({
         // text and one for the new one - the second one is handled
         // incorrectly when we remove focus
         // (https://bugzilla.gnome.org/show_bug.cgi?id=636341) */
-        if (this._text.text != '')
+        if (this._text.text !== '')
             this.reset();
     }
 
@@ -205,8 +210,8 @@ var ViewSelector = GObject.registerClass({
     _onMapped() {
         if (this._entry.mapped) {
             // Enable 'find-as-you-type'
-            this._capturedEventId = global.stage.connect('captured-event',
-                                                         this._onCapturedEvent.bind(this));
+            this._capturedEventId =
+                global.stage.connect('captured-event', this._onCapturedEvent.bind(this));
             this._text.set_cursor_visible(true);
             this._text.set_selection(0, 0);
         } else {
@@ -225,7 +230,7 @@ var ViewSelector = GObject.registerClass({
             return true;
 
         let unicode = Clutter.keysym_to_unicode(symbol);
-        if (unicode == 0)
+        if (unicode === 0)
             return false;
 
         if (getTermsForSearchString(String.fromCharCode(unicode)).length > 0)
@@ -244,7 +249,7 @@ var ViewSelector = GObject.registerClass({
 
     // the entry does not show the hint
     _isActivated() {
-        return this._text.text == this._entry.get_text();
+        return this._text.text === this._entry.get_text();
     }
 
     _onTextChanged() {
@@ -258,9 +263,9 @@ var ViewSelector = GObject.registerClass({
 
             this._entry.set_secondary_icon(this._clearIcon);
 
-            if (this._iconClickedId == 0) {
-                this._iconClickedId = this._entry.connect('secondary-icon-clicked',
-                                                          this.reset.bind(this));
+            if (this._iconClickedId === 0) {
+                this._iconClickedId =
+                    this._entry.connect('secondary-icon-clicked', this.reset.bind(this));
             }
         } else {
             if (this._iconClickedId > 0) {
@@ -282,7 +287,7 @@ var ViewSelector = GObject.registerClass({
             }
         } else if (this._searchActive) {
             let arrowNext, nextDirection;
-            if (entry.get_text_direction() == Clutter.TextDirection.RTL) {
+            if (entry.get_text_direction() === Clutter.TextDirection.RTL) {
                 arrowNext = Clutter.KEY_Left;
                 nextDirection = St.DirectionType.LEFT;
             } else {
@@ -301,7 +306,7 @@ var ViewSelector = GObject.registerClass({
             } else if (symbol === Clutter.KEY_Down) {
                 this._searchResults.navigateFocus(St.DirectionType.DOWN);
                 return Clutter.EVENT_STOP;
-            } else if (symbol == arrowNext && this._text.position == -1) {
+            } else if (symbol === arrowNext && this._text.position === -1) {
                 this._searchResults.navigateFocus(nextDirection);
                 return Clutter.EVENT_STOP;
             } else if (symbol === Clutter.KEY_Return || symbol === Clutter.KEY_KP_Enter) {
@@ -313,11 +318,11 @@ var ViewSelector = GObject.registerClass({
     }
 
     _onCapturedEvent(actor, event) {
-        if (event.type() == Clutter.EventType.BUTTON_PRESS) {
+        if (event.type() === Clutter.EventType.BUTTON_PRESS) {
             let source = event.get_source();
-            if (source != this._text &&
+            if (source !== this._text &&
                 this._text.has_key_focus() &&
-                this._text.text == '' &&
+                this._text.text === '' &&
                 !this._text.has_preedit() &&
                 !Main.layoutManager.keyboardBox.contains(source)) {
                 // the user clicked outside after activating the entry, but

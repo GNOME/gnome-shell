@@ -6,8 +6,8 @@ const { Clutter, Gio, GObject, Meta, Shell, St } = imports.gi;
 const AppDisplay = imports.ui.appDisplay;
 const Dash = imports.ui.dash;
 const Main = imports.ui.main;
-const ViewSelector = imports.ui.viewSelector;
 const Overview = imports.ui.overview;
+const SearchController = imports.ui.searchController;
 const WindowManager = imports.ui.windowManager;
 const WorkspacesView = imports.ui.workspacesView;
 
@@ -60,14 +60,14 @@ class DashFader extends St.Bin {
 
 var ControlsManagerLayout = GObject.registerClass(
 class ControlsManagerLayout extends Clutter.BinLayout {
-    _init(searchEntry, appDisplay, workspacesDisplay, viewSelector, dash, adjustment) {
+    _init(searchEntry, appDisplay, workspacesDisplay, searchController, dash, adjustment) {
         super._init();
 
         this._appDisplay = appDisplay;
         this._workspacesDisplay = workspacesDisplay;
         this._adjustment = adjustment;
         this._searchEntry = searchEntry;
-        this._viewSelector = viewSelector;
+        this._searchController = searchController;
         this._dash = dash;
 
         adjustment.connect('notify::value', () => this.layout_changed());
@@ -190,10 +190,10 @@ class ControlsManagerLayout extends Clutter.BinLayout {
             this._appDisplay.allocate(initialBox.interpolate(finalBox, progress));
         }
 
-        // ViewSelector
+        // Search
         childBox.set_origin(0, searchHeight + spacing);
         childBox.set_size(width, availableHeight);
-        this._viewSelector.allocate(childBox);
+        this._searchController.allocate(childBox);
     }
 });
 
@@ -287,9 +287,10 @@ class ControlsManager extends St.Widget {
             workspaceManager.connect('notify::n-workspaces',
                 this._updateAdjustment.bind(this));
 
-        this.viewSelector = new ViewSelector.ViewSelector(this._searchEntry,
+        this._searchController = new SearchController.SearchController(
+            this._searchEntry,
             this.dash.showAppsButton);
-        this.viewSelector.connect('notify::searching', this._onSearchChanged.bind(this));
+        this._searchController.connect('notify::searching', this._onSearchChanged.bind(this));
 
         this._workspacesDisplay = new WorkspacesView.WorkspacesDisplay(
             this._workspaceAdjustment,
@@ -299,13 +300,13 @@ class ControlsManager extends St.Widget {
         this.add_child(searchEntryBin);
         this.add_child(this._appDisplay);
         this.add_child(this._dashFader);
-        this.add_child(this.viewSelector);
+        this.add_child(this._searchController);
         this.add_child(this._workspacesDisplay);
 
         this.layout_manager = new ControlsManagerLayout(searchEntryBin,
             this._appDisplay,
             this._workspacesDisplay,
-            this.viewSelector,
+            this._searchController,
             this._dashFader,
             this._adjustment);
 
@@ -349,14 +350,14 @@ class ControlsManager extends St.Widget {
     }
 
     _onSearchChanged() {
-        const { searching } = this.viewSelector;
+        const { searching } = this._searchController;
 
         if (!searching) {
             this._appDisplay.show();
             this._workspacesDisplay.reactive = true;
             this._workspacesDisplay.setPrimaryWorkspaceVisible(true);
         } else {
-            this.viewSelector.show();
+            this._searchController.show();
         }
 
         this._appDisplay.ease({
@@ -374,11 +375,11 @@ class ControlsManager extends St.Widget {
                 this._workspacesDisplay.setPrimaryWorkspaceVisible(!searching);
             },
         });
-        this.viewSelector.ease({
+        this._searchController.ease({
             opacity: searching ? 255 : 0,
             duration: SIDE_CONTROLS_ANIMATION_TIME,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            onComplete: () => (this.viewSelector.visible = searching),
+            onComplete: () => (this._searchController.visible = searching),
         });
     }
 
@@ -431,7 +432,7 @@ class ControlsManager extends St.Widget {
     animateToOverview(state, onComplete) {
         this._animating = true;
 
-        this.viewSelector.prepareToEnterOverview();
+        this._searchController.prepareToEnterOverview();
         this._workspacesDisplay.prepareToEnterOverview();
         if (!this._workspacesDisplay.activeWorkspaceHasMaximizedWindows())
             Main.overview.fadeOutDesktop();
@@ -486,7 +487,7 @@ class ControlsManager extends St.Widget {
             : Math.round(progress);
 
         tracker.confirmSwipe(baseDistance, points, progress, cancelProgress);
-        this.viewSelector.prepareToEnterOverview();
+        this._searchController.prepareToEnterOverview();
         this._workspacesDisplay.prepareToEnterOverview();
         if (!this._workspacesDisplay.activeWorkspaceHasMaximizedWindows())
             Main.overview.fadeInDesktop();

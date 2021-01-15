@@ -48,6 +48,7 @@ js/ui/popupMenu.js
 js/ui/runDialog.js
 js/ui/screenShield.js
 js/ui/search.js
+js/ui/searchController.js
 js/ui/shellEntry.js
 js/ui/shellMountOperation.js
 js/ui/status/accessibility.js
@@ -66,7 +67,6 @@ js/ui/status/thunderbolt.js
 js/ui/status/volume.js
 js/ui/switchMonitor.js
 js/ui/unlockDialog.js
-js/ui/viewSelector.js
 js/ui/windowAttentionHandler.js
 js/ui/windowManager.js
 js/ui/windowMenu.js
