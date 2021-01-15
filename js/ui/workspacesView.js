@@ -330,13 +330,28 @@ class WorkspacesView extends WorkspacesViewBase {
         });
     }
 
+    _getWorkspaceModeForOverviewState(state) {
+        switch (state) {
+        case OverviewControls.ControlsState.HIDDEN:
+            return 0;
+        case OverviewControls.ControlsState.WINDOW_PICKER:
+            return 1;
+        case OverviewControls.ControlsState.APP_GRID:
+            return 0;
+        }
+
+        return 0;
+    }
+
     _updateWorkspacesState() {
         const snapProgress = this._snapAdjustment.value;
-        const overviewState = this._overviewAdjustment.value;
+        const [, initialState, finalState, progress] =
+            this._overviewAdjustment.getState();
 
-        const normalizedWorkspaceState = 1 - Math.min(1,
-            Math.abs(OverviewControls.ControlsState.WINDOW_PICKER - overviewState));
-        const workspaceMode = Math.interpolate(0, normalizedWorkspaceState, snapProgress);
+        const workspaceMode = snapProgress * Math.interpolate(
+            this._getWorkspaceModeForOverviewState(initialState),
+            this._getWorkspaceModeForOverviewState(finalState),
+            progress);
 
         this._workspaces.forEach((w, index) => {
             // Workspace mode
