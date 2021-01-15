@@ -75,6 +75,51 @@ class ControlsManagerLayout extends Clutter.BoxLayout {
     }
 });
 
+var OverviewAdjustment = GObject.registerClass(
+class OverviewAdjustment extends St.Adjustment {
+    _init(actor) {
+        super._init({
+            actor,
+            value: ControlsState.WINDOW_PICKER,
+            lower: ControlsState.HIDDEN,
+            upper: ControlsState.APP_GRID,
+        });
+    }
+
+    getStateTransitionParams() {
+        const currentState = this.value;
+
+        const transition = this.get_transition('value');
+        let initialState = transition
+            ? transition.get_interval().peek_initial_value()
+            : currentState;
+        let finalState = transition
+            ? transition.get_interval().peek_final_value()
+            : currentState;
+
+        if (initialState > finalState) {
+            initialState = Math.ceil(initialState);
+            finalState = Math.floor(finalState);
+        } else {
+            initialState = Math.floor(initialState);
+            finalState = Math.ceil(finalState);
+        }
+
+        const length = Math.abs(finalState - initialState);
+        const progress = length > 0
+            ? Math.abs((currentState - initialState) / length)
+            : 1;
+
+        return {
+            transitioning: transition !== null,
+            currentState,
+            initialState,
+            finalState,
+            progress,
+        };
+    }
+});
+
 var ControlsManager = GObject.registerClass(
 class ControlsManager extends St.Widget {
     _init() {
@@ -118,12 +163,7 @@ class ControlsManager extends St.Widget {
             upper: workspaceManager.n_workspaces,
         });
 
-        this._stateAdjustment = new St.Adjustment({
-            actor: this,
-            value: ControlsState.WINDOW_PICKER,
-            lower: ControlsState.HIDDEN,
-            upper: ControlsState.APP_GRID,
-        });
+        this._stateAdjustment = new OverviewAdjustment(this);
 
         this._nWorkspacesNotifyId =
             workspaceManager.connect('notify::n-workspaces',
