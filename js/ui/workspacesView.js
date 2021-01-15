@@ -233,16 +233,32 @@ class WorkspacesView extends WorkspacesViewBase {
         return Math.clamp(spacing, WORKSPACE_MIN_SPACING, WORKSPACE_MAX_SPACING);
     }
 
-    _updateWorkspacesState() {
+    _getWorkspaceModeForOverviewState(state) {
         const { ControlsState } = OverviewControls;
 
+        switch (state) {
+        case ControlsState.HIDDEN:
+            return 0;
+        case ControlsState.WINDOW_PICKER:
+            return 1;
+        case ControlsState.APP_GRID:
+            return 0;
+        }
+
+        return 0;
+    }
+
+    _updateWorkspacesState() {
         const adj = this._scrollAdjustment;
         const fitMode = this._fitModeAdjustment.value;
-        const overviewState = this._overviewAdjustment.value;
 
-        const normalizedWorkspaceState = 1 -
-            Math.abs(ControlsState.WINDOW_PICKER - overviewState);
-        const workspaceMode = Util.lerp(normalizedWorkspaceState, 0, fitMode);
+        const { initialState, finalState, progress } =
+            this._overviewAdjustment.getStateTransitionParams();
+
+        const workspaceMode = (1 - fitMode) * Util.lerp(
+            this._getWorkspaceModeForOverviewState(initialState),
+            this._getWorkspaceModeForOverviewState(finalState),
+            progress);
 
         // Fade and scale inactive workspaces
         this._workspaces.forEach((w, index) => {
@@ -250,9 +266,9 @@ class WorkspacesView extends WorkspacesViewBase {
 
             const distanceToCurrentWorkspace = Math.abs(adj.value - index);
 
-            const progress = 1 - Math.clamp(distanceToCurrentWorkspace, 0, 1);
+            const scaleProgress = 1 - Math.clamp(distanceToCurrentWorkspace, 0, 1);
 
-            const scale = Util.lerp(WORKSPACE_INACTIVE_SCALE, 1, progress);
+            const scale = Util.lerp(WORKSPACE_INACTIVE_SCALE, 1, scaleProgress);
             w.set_scale(scale, scale);
         });
     }
