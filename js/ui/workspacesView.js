@@ -550,7 +550,6 @@ class WorkspacesDisplay extends St.Widget {
                                this._workspacesOnlyOnPrimaryChanged.bind(this));
         this._workspacesOnlyOnPrimaryChanged();
 
-        this._notifyOpacityId = 0;
         this._restackedNotifyId = 0;
         this._scrollEventId = 0;
         this._keyPressEventId = 0;
@@ -564,13 +563,6 @@ class WorkspacesDisplay extends St.Widget {
     }
 
     _onDestroy() {
-        if (this._notifyOpacityId) {
-            let parent = this.get_parent();
-            if (parent)
-                parent.disconnect(this._notifyOpacityId);
-            this._notifyOpacityId = 0;
-        }
-
         if (this._parentSetLater) {
             Meta.later_remove(this._parentSetLater);
             this._parentSetLater = 0;
@@ -800,34 +792,6 @@ class WorkspacesDisplay extends St.Widget {
 
     activeWorkspaceHasMaximizedWindows() {
         return this._getPrimaryView().getActiveWorkspace().hasMaximizedWindows();
-    }
-
-    vfunc_parent_set(oldParent) {
-        if (oldParent && this._notifyOpacityId)
-            oldParent.disconnect(this._notifyOpacityId);
-        this._notifyOpacityId = 0;
-
-        if (this._parentSetLater)
-            return;
-
-        this._parentSetLater = Meta.later_add(Meta.LaterType.BEFORE_REDRAW, () => {
-            this._parentSetLater = 0;
-            let newParent = this.get_parent();
-            if (!newParent)
-                return;
-
-            // This is kinda hackish - we want the primary view to
-            // appear as parent of this, though in reality it
-            // is added directly to Main.layoutManager.overviewGroup
-            this._notifyOpacityId = newParent.connect('notify::opacity', () => {
-                let opacity = this.get_parent().opacity;
-                let primaryView = this._getPrimaryView();
-                if (!primaryView)
-                    return;
-                primaryView.opacity = opacity;
-                primaryView.visible = opacity != 0;
-            });
-        });
     }
 
     _onRestacked(overview, stackIndices) {
