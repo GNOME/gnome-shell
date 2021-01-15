@@ -289,7 +289,7 @@ class ControlsManager extends St.Widget {
 
         this.viewSelector = new ViewSelector.ViewSelector(this._searchEntry,
             this.dash.showAppsButton);
-        this.viewSelector.connect('page-empty', this._onPageEmpty.bind(this));
+        this.viewSelector.connect('notify::searching', this._onSearchChanged.bind(this));
 
         this._workspacesDisplay = new WorkspacesView.WorkspacesDisplay(
             this._workspaceAdjustment,
@@ -348,30 +348,37 @@ class ControlsManager extends St.Widget {
         snapAdjustment.value = snapAxis;
     }
 
-    _onPageEmpty() {
-        const page = this.viewSelector.getActivePage();
-        const isApps = page === ViewSelector.ViewPage.APPS;
+    _onSearchChanged() {
+        const { searching } = this.viewSelector;
 
-        if (isApps) {
+        if (!searching) {
             this._appDisplay.show();
             this._workspacesDisplay.reactive = true;
             this._workspacesDisplay.setPrimaryWorkspaceVisible(true);
+        } else {
+            this.viewSelector.show();
         }
 
         this._appDisplay.ease({
-            opacity: isApps ? 255 : 0,
+            opacity: searching ? 0 : 255,
             duration: SIDE_CONTROLS_ANIMATION_TIME,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            onComplete: () => (this._appDisplay.visible = isApps),
+            onComplete: () => (this._appDisplay.visible = !searching),
         });
         this._workspacesDisplay.ease({
-            opacity: isApps ? 255 : 0,
+            opacity: searching ? 0 : 255,
             duration: SIDE_CONTROLS_ANIMATION_TIME,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
             onComplete: () => {
-                this._workspacesDisplay.reactive = isApps;
-                this._workspacesDisplay.setPrimaryWorkspaceVisible(isApps);
+                this._workspacesDisplay.reactive = !searching;
+                this._workspacesDisplay.setPrimaryWorkspaceVisible(!searching);
             },
+        });
+        this.viewSelector.ease({
+            opacity: searching ? 255 : 0,
+            duration: SIDE_CONTROLS_ANIMATION_TIME,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            onComplete: () => (this.viewSelector.visible = searching),
         });
     }
 

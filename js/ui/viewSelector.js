@@ -4,15 +4,8 @@
 const { Clutter, GObject, Shell, St } = imports.gi;
 
 const Main = imports.ui.main;
-const OverviewControls = imports.ui.overviewControls;
-const Params = imports.misc.params;
 const Search = imports.ui.search;
 const ShellEntry = imports.ui.shellEntry;
-
-var ViewPage = {
-    APPS: 1,
-    SEARCH: 2,
-};
 
 var FocusTrap = GObject.registerClass(
 class FocusTrap extends St.Widget {
@@ -34,9 +27,11 @@ function getTermsForSearchString(searchString) {
 }
 
 var ViewSelector = GObject.registerClass({
-    Signals: {
-        'page-changed': {},
-        'page-empty': {},
+    Properties: {
+        'searching': GObject.ParamSpec.boolean(
+            'searching', 'searching', 'searching',
+            GObject.ParamFlags.READABLE,
+            false),
     },
 }, class ViewSelector extends Shell.Stack {
     _init(searchEntry, showAppsButton) {
@@ -82,14 +77,9 @@ var ViewSelector = GObject.registerClass({
         this._iconClickedId = 0;
         this._capturedEventId = 0;
 
-        const dummy = new Clutter.Actor();
-        this._appsPage =
-            this._addPage(dummy, _('Applications'), 'view-app-grid-symbolic');
-
         this._searchResults = new Search.SearchResultsView();
         this._searchPage = this._addPage(this._searchResults,
-                                         _("Search"), 'edit-find-symbolic',
-                                         { a11yFocus: this._entry });
+            _('Search'), 'edit-find-symbolic', this._entry);
 
         // Since the entry isn't inside the results container we install this
         // dummy widget as the last results container child so that we can
@@ -117,8 +107,7 @@ var ViewSelector = GObject.registerClass({
 
     prepareToEnterOverview() {
         this.reset();
-        this._activePage = null;
-        this._showPage(this._appsPage);
+        this._setSearching(false);
     }
 
     vfunc_unmap() {
@@ -127,82 +116,23 @@ var ViewSelector = GObject.registerClass({
         super.vfunc_unmap();
     }
 
-    _addPage(actor, name, a11yIcon, params) {
-        params = Params.parse(params, { a11yFocus: null });
-
+    _addPage(actor, name, a11yIcon, a11yFocus) {
+        Main.ctrlAltTabManager.addGroup(a11yFocus, name, a11yIcon);
         let page = new St.Bin({ child: actor });
-
-        if (params.a11yFocus) {
-            Main.ctrlAltTabManager.addGroup(params.a11yFocus, name, a11yIcon);
-        } else {
-            Main.ctrlAltTabManager.addGroup(actor, name, a11yIcon, {
-                proxy: this,
-                focusCallback: () => this._a11yFocusPage(page),
-            });
-        }
-        page.hide();
         this.add_actor(page);
         return page;
     }
 
-    _fadePageIn() {
-        this._activePage.ease({
-            opacity: 255,
-            duration: OverviewControls.SIDE_CONTROLS_ANIMATION_TIME,
-            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-        });
-    }
-
-    _fadePageOut(page) {
-        let oldPage = page;
-        page.ease({
-            opacity: 0,
-            duration: OverviewControls.SIDE_CONTROLS_ANIMATION_TIME,
-            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            onStopped: () => this._animateIn(oldPage),
-        });
-    }
-
-    _animateIn(oldPage) {
-        if (oldPage)
-            oldPage.hide();
-
-        this.emit('page-empty');
-
-        if (this._activePage) {
-            this._activePage.show();
-            this._fadePageIn();
-        }
-    }
-
-    _animateOut(page) {
-        this._fadePageOut(page);
-    }
-
-    _showPage(page) {
-        if (!Main.overview.visible)
+    _setSearching(searching) {
+        if (this._searchActive === searching)
             return;
 
-        if (page == this._activePage)
-            return;
-
-        let oldPage = this._activePage;
-        this._activePage = page;
-        this.emit('page-changed');
-
-        if (oldPage)
-            this._animateOut(oldPage);
-        else
-            this._animateIn();
-    }
-
-    _a11yFocusPage(page) {
-        this._showAppsButton.checked = page == this._appsPage;
-        page.navigate_focus(null, St.DirectionType.TAB_FORWARD, false);
+        this._searchActive = searching;
+        this.notify('searching');
     }
 
     _onShowAppsButtonToggled() {
-        this._showPage(this._appsPage);
+        this._setSearching(false);
     }
 
     _onStageKeyPress(actor, event) {
@@ -234,7 +164,7 @@ var ViewSelector = GObject.registerClass({
     }
 
     _searchCancelled() {
-        this._showPage(this._appsPage);
+        this._setSearching(false);
 
         // Leave the entry focused when it doesn't have any text;
         // when replacing a selected search term, Clutter emits
@@ -320,11 +250,11 @@ var ViewSelector = GObject.registerClass({
     _onTextChanged() {
         let terms = getTermsForSearchString(this._entry.get_text());
 
-        this._searchActive = terms.length > 0;
+        const searchActive = terms.length > 0;
         this._searchResults.setTerms(terms);
 
-        if (this._searchActive) {
-            this._showPage(this._searchPage);
+        if (searchActive) {
+            this._setSearching(true);
 
             this._entry.set_secondary_icon(this._clearIcon);
 
@@ -400,10 +330,7 @@ var ViewSelector = GObject.registerClass({
         return Clutter.EVENT_PROPAGATE;
     }
 
-    getActivePage() {
-        if (this._activePage === this._searchPage)
-            return ViewPage.SEARCH;
-        else
-            return ViewPage.APPS;
+    get searching() {
+        return this._searchActive;
     }
 });
