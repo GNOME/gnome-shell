@@ -773,12 +773,12 @@ msgstr "Zobrazit podrobnosti"
 #: js/ui/appFavorites.js:164
 #, javascript-format
 msgid "%s has been added to your favorites."
-msgstr "%s byl přidán mezi oblíbené."
+msgstr "Aplikace %s byla přidána mezi oblíbené."
 
 #: js/ui/appFavorites.js:197
 #, javascript-format
 msgid "%s has been removed from your favorites."
-msgstr "%s byl odstraněn z oblíbených."
+msgstr "Aplikace %s byla odstraněna z oblíbených."
 
 #: js/ui/audioDeviceSelection.js:41
 msgid "Select Audio Device"
