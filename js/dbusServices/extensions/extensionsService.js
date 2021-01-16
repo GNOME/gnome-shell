@@ -120,15 +120,15 @@ var ExtensionsService = class extends ServiceImplementation {
             const extension = ExtensionUtils.deserializeExtension(serialized);
 
             const window = new ExtensionPrefsDialog(extension);
-            window.realize();
+            window.connect('realize', () => {
+                let externalWindow = null;
 
-            let externalWindow = null;
+                if (parentWindow)
+                    externalWindow = Shew.ExternalWindow.new_from_handle(parentWindow);
 
-            if (parentWindow)
-                externalWindow = Shew.ExternalWindow.new_from_handle(parentWindow);
-
-            if (externalWindow)
-                externalWindow.set_parent_of(window.get_surface());
+                if (externalWindow)
+                    externalWindow.set_parent_of(window.get_surface());
+            });
 
             if (options.modal)
                 window.modal = options.modal.get_boolean();
