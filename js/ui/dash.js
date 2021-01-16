@@ -295,16 +295,27 @@ class DashActor extends St.Widget {
 
         let [appIcons, showAppsButton] = this.get_children();
         const [, showAppsNatWidth] = showAppsButton.get_preferred_width(availHeight);
+        const rtl = this.text_direction === Clutter.TextDirection.RTL;
 
         let childBox = new Clutter.ActorBox();
-        childBox.x1 = contentBox.x1;
         childBox.y1 = contentBox.y1;
-        childBox.x2 = contentBox.x2 - showAppsNatWidth;
         childBox.y2 = contentBox.y2;
+        if (rtl) {
+            childBox.x1 = contentBox.x1 + showAppsNatWidth;
+            childBox.x2 = contentBox.x2;
+        } else {
+            childBox.x1 = contentBox.x1;
+            childBox.x2 = contentBox.x2 - showAppsNatWidth;
+        }
         appIcons.allocate(childBox);
 
-        childBox.x1 = contentBox.x2 - showAppsNatWidth;
-        childBox.x2 = contentBox.x2;
+        if (rtl) {
+            childBox.x1 = contentBox.x1;
+            childBox.x2 = contentBox.x1 + showAppsNatWidth;
+        } else {
+            childBox.x1 = contentBox.x2 - showAppsNatWidth;
+            childBox.x2 = contentBox.x2;
+        }
         showAppsButton.allocate(childBox);
     }
 
