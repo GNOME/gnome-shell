@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: video-subtitles master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2020-12-17 15:26+0000\n"
-"PO-Revision-Date: 2020-12-18 11:06+0100\n"
+"POT-Creation-Date: 2021-01-16 09:49+0000\n"
+"PO-Revision-Date: 2021-01-17 14:38+0100\n"
 "Last-Translator: Fabio Tomat <f.t.public@gmail.com>\n"
 "Language-Team: Friulian <fur@li.org>\n"
 "Language: fur\n"
@@ -161,7 +161,7 @@ msgstr ""
 msgid ""
 "Whether to remember password for mounting encrypted or remote filesystems"
 msgstr ""
-"Specifiche se visâsi la password par montâ i filesystem rimots o cifrâts"
+"Specifiche se visâsi la password par montâ i filesystem lontans o cifrâts"
 
 #: data/org.gnome.shell.gschema.xml.in:80
 msgid ""
@@ -171,7 +171,7 @@ msgid ""
 "state of the checkbox."
 msgstr ""
 "La shell e domandarà une password cuant che un dispositîf cifrât o un "
-"filesystem rimot al ven montât. Se le password e pues jessi salvade par un "
+"filesystem lontan al ven montât. Se le password e pues jessi salvade par un "
 "ûs futûr, une casele di selezion “Visasi Password” e sarà presinte. Cheste "
 "clâf e stabilìs il valôr predefinît di cheste casele di selezion."
 
@@ -400,12 +400,12 @@ msgstr ""
 msgid "Network Login"
 msgstr "Acès di rêt"
 
-#: js/dbusServices/extensions/ui/extension-prefs-dialog.ui:36
-#: subprojects/extensions-app/data/ui/extensions-window.ui:255
+#: js/dbusServices/extensions/ui/extension-prefs-dialog.ui:28
+#: subprojects/extensions-app/data/ui/extensions-window.ui:241
 msgid "Something’s gone wrong"
 msgstr "Alc al è lât stuart"
 
-#: js/dbusServices/extensions/ui/extension-prefs-dialog.ui:48
+#: js/dbusServices/extensions/ui/extension-prefs-dialog.ui:39
 msgid ""
 "We’re very sorry, but there’s been a problem: the settings for this "
 "extension can’t be displayed. We recommend that you report the issue to the "
@@ -415,15 +415,15 @@ msgstr ""
 "puedin jessi mostradis. Si consee di segnalâ il probleme ai autôrs de "
 "estension."
 
-#: js/dbusServices/extensions/ui/extension-prefs-dialog.ui:82
+#: js/dbusServices/extensions/ui/extension-prefs-dialog.ui:64
 msgid "Technical Details"
 msgstr "Detais tecnics"
 
-#: js/dbusServices/extensions/ui/extension-prefs-dialog.ui:165
+#: js/dbusServices/extensions/ui/extension-prefs-dialog.ui:106
 msgid "Homepage"
 msgstr "Pagjine principâl"
 
-#: js/dbusServices/extensions/ui/extension-prefs-dialog.ui:166
+#: js/dbusServices/extensions/ui/extension-prefs-dialog.ui:107
 msgid "Visit extension homepage"
 msgstr "Visite la pagjine principâl de estension"
 
@@ -431,15 +431,15 @@ msgstr "Visite la pagjine principâl de estension"
 #: js/ui/components/networkAgent.js:111 js/ui/components/polkitAgent.js:138
 #: js/ui/endSessionDialog.js:438 js/ui/extensionDownloader.js:183
 #: js/ui/shellMountOperation.js:376 js/ui/shellMountOperation.js:386
-#: js/ui/status/network.js:940 subprojects/extensions-app/js/main.js:192
+#: js/ui/status/network.js:940 subprojects/extensions-app/js/main.js:183
 msgid "Cancel"
 msgstr "Anule"
 
 #. Cisco LEAP
-#: js/gdm/authPrompt.js:239 js/ui/components/networkAgent.js:206
-#: js/ui/components/networkAgent.js:222 js/ui/components/networkAgent.js:246
-#: js/ui/components/networkAgent.js:267 js/ui/components/networkAgent.js:287
-#: js/ui/components/networkAgent.js:297 js/ui/components/polkitAgent.js:275
+#: js/gdm/authPrompt.js:239 js/ui/components/networkAgent.js:210
+#: js/ui/components/networkAgent.js:226 js/ui/components/networkAgent.js:250
+#: js/ui/components/networkAgent.js:271 js/ui/components/networkAgent.js:291
+#: js/ui/components/networkAgent.js:301 js/ui/components/polkitAgent.js:275
 #: js/ui/shellMountOperation.js:326
 msgid "Password"
 msgstr "Password"
@@ -454,7 +454,7 @@ msgstr "No in liste?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: js/gdm/loginDialog.js:913
+#: js/gdm/loginDialog.js:914
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(p.e., utent o %s)"
@@ -462,12 +462,12 @@ msgstr "(p.e., utent o %s)"
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: js/gdm/loginDialog.js:918 js/ui/components/networkAgent.js:242
-#: js/ui/components/networkAgent.js:265 js/ui/components/networkAgent.js:283
+#: js/gdm/loginDialog.js:919 js/ui/components/networkAgent.js:246
+#: js/ui/components/networkAgent.js:269 js/ui/components/networkAgent.js:287
 msgid "Username"
 msgstr "Non utent"
 
-#: js/gdm/loginDialog.js:1253
+#: js/gdm/loginDialog.js:1254
 msgid "Login Window"
 msgstr "Barcon di acès"
 
@@ -726,36 +726,36 @@ msgstr "Dinee acès"
 msgid "Grant Access"
 msgstr "Garantìs l'acès"
 
-#: js/ui/appDisplay.js:1381
+#: js/ui/appDisplay.js:1392
 msgid "Unnamed Folder"
 msgstr "Cartele cence non"
 
 #. Translators: This is the heading of a list of open windows
-#: js/ui/appDisplay.js:2959 js/ui/panel.js:75
+#: js/ui/appDisplay.js:2961 js/ui/panel.js:33
 msgid "Open Windows"
 msgstr "Barcons vierts"
 
-#: js/ui/appDisplay.js:2978 js/ui/panel.js:82
+#: js/ui/appDisplay.js:2980 js/ui/panel.js:40
 msgid "New Window"
 msgstr "Gnûf barcon"
 
-#: js/ui/appDisplay.js:2994
+#: js/ui/appDisplay.js:2996
 msgid "Launch using Integrated Graphics Card"
 msgstr "Invie doprant la schede grafiche integrade"
 
-#: js/ui/appDisplay.js:2995
+#: js/ui/appDisplay.js:2997
 msgid "Launch using Discrete Graphics Card"
 msgstr "Invie doprant une schede grafiche discrete"
 
-#: js/ui/appDisplay.js:3024 js/ui/dash.js:239
+#: js/ui/appDisplay.js:3026 js/ui/dash.js:239
 msgid "Remove from Favorites"
 msgstr "Gjave dai preferîts"
 
-#: js/ui/appDisplay.js:3030
+#: js/ui/appDisplay.js:3032
 msgid "Add to Favorites"
 msgstr "Zonte tai preferîts"
 
-#: js/ui/appDisplay.js:3040 js/ui/panel.js:93
+#: js/ui/appDisplay.js:3042 js/ui/panel.js:51
 msgid "Show Details"
 msgstr "Mostre Detais"
 
@@ -785,7 +785,7 @@ msgstr "Cufis"
 msgid "Headset"
 msgstr "Cufis cun microfon"
 
-#: js/ui/audioDeviceSelection.js:69 js/ui/status/volume.js:272
+#: js/ui/audioDeviceSelection.js:69 js/ui/status/volume.js:277
 msgid "Microphone"
 msgstr "Microfon"
 
@@ -960,28 +960,28 @@ msgstr ""
 msgid "Connect"
 msgstr "Conet"
 
-#: js/ui/components/networkAgent.js:212
+#: js/ui/components/networkAgent.js:216
 msgid "Key"
 msgstr "Clâf"
 
-#: js/ui/components/networkAgent.js:250 js/ui/components/networkAgent.js:273
+#: js/ui/components/networkAgent.js:254 js/ui/components/networkAgent.js:277
 msgid "Private key password"
 msgstr "Password clâf privade"
 
-#: js/ui/components/networkAgent.js:271
+#: js/ui/components/networkAgent.js:275
 msgid "Identity"
 msgstr "Identitât"
 
-#: js/ui/components/networkAgent.js:285
+#: js/ui/components/networkAgent.js:289
 msgid "Service"
 msgstr "Servizi"
 
-#: js/ui/components/networkAgent.js:314 js/ui/components/networkAgent.js:342
-#: js/ui/components/networkAgent.js:675 js/ui/components/networkAgent.js:696
+#: js/ui/components/networkAgent.js:318 js/ui/components/networkAgent.js:346
+#: js/ui/components/networkAgent.js:679 js/ui/components/networkAgent.js:700
 msgid "Authentication required"
 msgstr "Autenticazion necessarie"
 
-#: js/ui/components/networkAgent.js:315 js/ui/components/networkAgent.js:676
+#: js/ui/components/networkAgent.js:319 js/ui/components/networkAgent.js:680
 #, javascript-format
 msgid ""
 "Passwords or encryption keys are required to access the wireless network "
@@ -990,42 +990,42 @@ msgstr ""
 "Si scugne meti une password o une clâf di cifradure par jentrâ te rêt cence "
 "fîl \"%s\"."
 
-#: js/ui/components/networkAgent.js:319 js/ui/components/networkAgent.js:680
+#: js/ui/components/networkAgent.js:323 js/ui/components/networkAgent.js:684
 msgid "Wired 802.1X authentication"
 msgstr "Autenticazion vie fîl 802.1X"
 
-#: js/ui/components/networkAgent.js:321
+#: js/ui/components/networkAgent.js:325
 msgid "Network name"
 msgstr "Non rêt"
 
-#: js/ui/components/networkAgent.js:326 js/ui/components/networkAgent.js:684
+#: js/ui/components/networkAgent.js:330 js/ui/components/networkAgent.js:688
 msgid "DSL authentication"
 msgstr "Autenticazion DSL"
 
-#: js/ui/components/networkAgent.js:333 js/ui/components/networkAgent.js:689
+#: js/ui/components/networkAgent.js:337 js/ui/components/networkAgent.js:693
 msgid "PIN code required"
 msgstr "Si pretint un codiç PIN"
 
-#: js/ui/components/networkAgent.js:334 js/ui/components/networkAgent.js:690
+#: js/ui/components/networkAgent.js:338 js/ui/components/networkAgent.js:694
 msgid "PIN code is needed for the mobile broadband device"
 msgstr "Si scugne meti un codiç PIN pal dispositîf a bande largje mobil"
 
-#: js/ui/components/networkAgent.js:335
+#: js/ui/components/networkAgent.js:339
 msgid "PIN"
 msgstr "PIN"
 
-#: js/ui/components/networkAgent.js:343 js/ui/components/networkAgent.js:681
-#: js/ui/components/networkAgent.js:685 js/ui/components/networkAgent.js:697
-#: js/ui/components/networkAgent.js:701
+#: js/ui/components/networkAgent.js:347 js/ui/components/networkAgent.js:685
+#: js/ui/components/networkAgent.js:689 js/ui/components/networkAgent.js:701
+#: js/ui/components/networkAgent.js:705
 #, javascript-format
 msgid "A password is required to connect to “%s”."
 msgstr "E covente une password par tacâsi a '%s'."
 
-#: js/ui/components/networkAgent.js:664 js/ui/status/network.js:1717
+#: js/ui/components/networkAgent.js:668 js/ui/status/network.js:1717
 msgid "Network Manager"
 msgstr "Ministradôr di rêt"
 
-#: js/ui/components/networkAgent.js:700
+#: js/ui/components/networkAgent.js:704
 msgid "VPN password"
 msgstr "Password VPN"
 
@@ -1299,7 +1299,7 @@ msgstr "Opzions di inviament"
 #: js/ui/endSessionDialog.js:684
 #, javascript-format
 msgid "%s (remote)"
-msgstr "%s (rimot)"
+msgstr "%s (esterni)"
 
 #. Translators: Console here refers to a tty like a VT console
 #: js/ui/endSessionDialog.js:687
@@ -1453,7 +1453,7 @@ msgid "Disabled"
 msgstr "Disabilitât"
 
 #: js/ui/lookingGlass.js:758
-#: subprojects/extensions-app/data/ui/extension-row.ui:188
+#: subprojects/extensions-app/data/ui/extension-row.ui:158
 msgid "Error"
 msgstr "Erôr"
 
@@ -1568,22 +1568,22 @@ msgstr "Frache Esc par jessî"
 msgid "Press any key to exit"
 msgstr "Frache un tast par jessî"
 
-#: js/ui/panel.js:107
+#: js/ui/panel.js:65
 msgid "Quit"
 msgstr "Jes"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: js/ui/panel.js:435
+#: js/ui/panel.js:393
 msgid "Activities"
 msgstr "Ativitâts"
 
-#: js/ui/panel.js:719
+#: js/ui/panel.js:664
 msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "Sisteme"
 
-#: js/ui/panel.js:830
+#: js/ui/panel.js:775
 msgid "Top Bar"
 msgstr "Sbare parsore"
 
@@ -1604,7 +1604,7 @@ msgstr "Il tornâ a inviâ nol è disponibil in Wayland"
 msgid "Restarting…"
 msgstr "Daûr a tornâ a inviâ…"
 
-#: js/ui/screenShield.js:203
+#: js/ui/screenShield.js:211
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME al à di blocâ il visôr"
 
@@ -1615,11 +1615,11 @@ msgstr "GNOME al à di blocâ il visôr"
 #.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
-#: js/ui/screenShield.js:244 js/ui/screenShield.js:613
+#: js/ui/screenShield.js:252 js/ui/screenShield.js:620
 msgid "Unable to lock"
 msgstr "Impussibil blocâ"
 
-#: js/ui/screenShield.js:245 js/ui/screenShield.js:614
+#: js/ui/screenShield.js:253 js/ui/screenShield.js:621
 msgid "Lock was blocked by an application"
 msgstr "Il bloc al è stât dineât di une aplicazion"
 
@@ -2189,11 +2189,11 @@ msgstr "Erôr di autorizazion di Thunderbolt"
 msgid "Could not authorize the Thunderbolt device: %s"
 msgstr "Impussibil autorizâ il dispositîf Thunderbolt: %s"
 
-#: js/ui/status/volume.js:155
+#: js/ui/status/volume.js:160
 msgid "Volume changed"
 msgstr "Volum modificât"
 
-#: js/ui/status/volume.js:217
+#: js/ui/status/volume.js:222
 msgid "Volume"
 msgstr "Volum"
 
@@ -2404,13 +2404,13 @@ msgstr "Dialic di autenticazion anulât dal utent"
 
 #: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:5
 #: subprojects/extensions-app/data/org.gnome.Extensions.desktop.in.in:4
-#: subprojects/extensions-app/js/main.js:226
-#: subprojects/extensions-app/data/ui/extensions-window.ui:61
+#: subprojects/extensions-app/js/main.js:217
+#: subprojects/extensions-app/data/ui/extensions-window.ui:56
 msgid "Extensions"
 msgstr "Estensions"
 
 #: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:6
-#: subprojects/extensions-app/js/main.js:227
+#: subprojects/extensions-app/js/main.js:218
 msgid "Manage your GNOME Extensions"
 msgstr "Gjestìs lis tôs Estensions di GNOME"
 
@@ -2431,17 +2431,17 @@ msgstr ""
 msgid "Configure GNOME Shell Extensions"
 msgstr "Configure lis estensions di GNOME Shell"
 
-#: subprojects/extensions-app/js/main.js:154
-#: subprojects/extensions-app/js/main.js:163
+#: subprojects/extensions-app/js/main.js:142
+#: subprojects/extensions-app/js/main.js:152
 msgid "No Matches"
 msgstr "Nissune corispondence"
 
-#: subprojects/extensions-app/js/main.js:188
+#: subprojects/extensions-app/js/main.js:179
 #, javascript-format
 msgid "Remove “%s”?"
 msgstr "Gjavâ “%s”?"
 
-#: subprojects/extensions-app/js/main.js:189
+#: subprojects/extensions-app/js/main.js:180
 msgid ""
 "If you remove the extension, you need to return to download it if you want "
 "to enable it again"
@@ -2449,57 +2449,57 @@ msgstr ""
 "Se tu gjavis la estension tu scugnarâs tornâ a discjariâle se tu desideris "
 "abilitâle di gnûf"
 
-#: subprojects/extensions-app/js/main.js:193
+#: subprojects/extensions-app/js/main.js:184
 msgid "Remove"
 msgstr "Gjave"
 
-#: subprojects/extensions-app/js/main.js:225
+#: subprojects/extensions-app/js/main.js:216
 msgid "translator-credits"
 msgstr "Fabio Tomat <f.t.public@gmail.com>, 2020"
 
-#: subprojects/extensions-app/js/main.js:362
+#: subprojects/extensions-app/js/main.js:344
 #, javascript-format
 msgid "%d extension will be updated on next login."
 msgid_plural "%d extensions will be updated on next login."
 msgstr[0] "%d estension e vignarà inzornade al prossim acès."
 msgstr[1] "%d estensions a vignaran inzornadis al prossim acès."
 
-#: subprojects/extensions-app/js/main.js:511
+#: subprojects/extensions-app/js/main.js:493
 msgid "The extension is incompatible with the current GNOME version"
 msgstr "La estension no je compatibile cu la version atuâl di GNOME"
 
-#: subprojects/extensions-app/js/main.js:514
+#: subprojects/extensions-app/js/main.js:496
 msgid "The extension had an error"
 msgstr "La estension e à vût un erôr"
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:109
+#: subprojects/extensions-app/data/ui/extension-row.ui:83
 #: subprojects/extensions-tool/src/command-create.c:325
 #: subprojects/extensions-tool/src/main.c:241
 msgid "Description"
 msgstr "Descrizion"
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:132
+#: subprojects/extensions-app/data/ui/extension-row.ui:104
 #: subprojects/extensions-tool/src/main.c:253
 msgid "Version"
 msgstr "Version"
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:160
+#: subprojects/extensions-app/data/ui/extension-row.ui:131
 msgid "Author"
 msgstr "Autôr"
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:216
+#: subprojects/extensions-app/data/ui/extension-row.ui:185
 msgid "Website"
 msgstr "Sît web"
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:233
+#: subprojects/extensions-app/data/ui/extension-row.ui:201
 msgid "Remove…"
 msgstr "Gjave…"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:8
+#: subprojects/extensions-app/data/ui/extensions-window.ui:7
 msgid "Help"
 msgstr "Jutori"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:12
+#: subprojects/extensions-app/data/ui/extensions-window.ui:11
 msgid "About Extensions"
 msgstr "Informazions su Estensions"
 
@@ -2511,11 +2511,11 @@ msgstr ""
 "Par cirî e zontâ estensions, visite <a href=\"https://extensions.gnome.org"
 "\">extensions.gnome.org</a>."
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:35
+#: subprojects/extensions-app/data/ui/extensions-window.ui:34
 msgid "Warning"
 msgstr "Avertiment"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:46
+#: subprojects/extensions-app/data/ui/extensions-window.ui:44
 msgid ""
 "Extensions can cause system issues, including performance problems. If you "
 "encounter problems with your system, it is recommended to disable all "
@@ -2525,19 +2525,19 @@ msgstr ""
 "prestazion. Se si verifichin problemis cul vuestri sisteme, si consee di "
 "disabilitâ dutis lis estensions."
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:166
+#: subprojects/extensions-app/data/ui/extensions-window.ui:150
 msgid "Manually Installed"
 msgstr "Instalât a man"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:190
+#: subprojects/extensions-app/data/ui/extensions-window.ui:174
 msgid "Built-In"
 msgstr "Integrade"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:231
+#: subprojects/extensions-app/data/ui/extensions-window.ui:217
 msgid "No Installed Extensions"
 msgstr "Nissune estension instalade"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:267
+#: subprojects/extensions-app/data/ui/extensions-window.ui:252
 msgid ""
 "We’re very sorry, but it was not possible to get the list of installed "
 "extensions. Make sure you are logged into GNOME and try again."
@@ -2545,11 +2545,11 @@ msgstr ""
 "Nus displâs, ma nol è stât pussibil otignî la liste des estensions "
 "instaladis. Controle di jessi jentrât in GNOME e torne prove."
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:304
+#: subprojects/extensions-app/data/ui/extensions-window.ui:288
 msgid "Extension Updates Ready"
 msgstr "Inzornaments di estensions pronts"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:320
+#: subprojects/extensions-app/data/ui/extensions-window.ui:303
 msgid "Log Out…"
 msgstr "Jes…"
 
