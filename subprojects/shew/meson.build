@@ -1,5 +1,5 @@
 project('shew', 'c',
-  version: '40.beta',
+  version: '40.alpha.1.1',
   meson_version: '>= 0.53.0',
   license: 'LGPLv2+',
 )

@@ -1,3 +1,14 @@
+40.alpha.1.1
+============
+* Adapt to settings moving to gsettings-desktop-schemas [Florian; !1573]
+* Misc. bug fixes [Georges, Florian; !1571, !1574]
+
+Contributors:
+  Florian Müllner, Georges Basile Stavracas Neto
+
+Translators:
+  Марко Костић [sr], Marek Černocký [cs], Fabio Tomat [fur]
+
 40.alpha.1
 ==========
 * Restore app picker fade during swipes [Georges, Florian; !1519, !1569]
