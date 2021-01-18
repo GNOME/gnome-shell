@@ -343,31 +343,12 @@ var DashFader = GObject.registerClass(
 class DashFader extends FaderControl {
     _init(dash) {
         super._init({
-            y_expand: true,
             x_expand: true,
-            y_align: Clutter.ActorAlign.END,
+            x_align: Clutter.ActorAlign.CENTER,
         });
 
         this._dash = dash;
         this.add_child(this._dash);
-    }
-
-    vfunc_allocate(box) {
-        this.set_allocation(box);
-
-        box = this.get_theme_node().get_content_box(box);
-
-        const availWidth = Math.round(box.get_width());
-        const availHeight = Math.round(box.get_height());
-        const [, natHeight] = this._dash.get_preferred_height(availWidth);
-
-        const actorBox = new Clutter.ActorBox();
-        actorBox.x1 = box.x1;
-        actorBox.x2 = actorBox.x1 + availWidth;
-        actorBox.y1 = box.y1;
-        actorBox.y2 = actorBox.y1 + (this._dash.y_expand ? availHeight : natHeight);
-
-        this._dash.allocate(box);
     }
 
     _onWindowDragBegin() {
@@ -376,31 +357,6 @@ class DashFader extends FaderControl {
 
     _onWindowDragEnd() {
         this.fadeIn();
-    }
-});
-
-var DashSpacer = GObject.registerClass(
-class DashSpacer extends Clutter.Actor {
-    _init(source) {
-        super._init();
-
-        this._bindConstraint = new Clutter.BindConstraint({
-            source,
-            coordinate: Clutter.BindCoordinate.SIZE,
-        });
-        this.add_constraint(this._bindConstraint);
-    }
-
-    vfunc_get_preferred_width(forHeight) {
-        if (this._bindConstraint)
-            return this._bindConstraint.source.get_preferred_width(forHeight);
-        return super.vfunc_get_preferred_width(forHeight);
-    }
-
-    vfunc_get_preferred_height(forWidth) {
-        if (this._bindConstraint)
-            return this._bindConstraint.source.get_preferred_height(forWidth);
-        return super.vfunc_get_preferred_height(forWidth);
     }
 });
 
@@ -416,7 +372,6 @@ class ControlsManager extends St.Widget {
 
         this.dash = new Dash.Dash();
         this._dashFader = new DashFader(this.dash);
-        this._dashSpacer = new DashSpacer(this._dashFader);
 
         let workspaceManager = global.workspace_manager;
         let activeWorkspaceIndex = workspaceManager.get_active_workspace_index();
@@ -452,8 +407,6 @@ class ControlsManager extends St.Widget {
         });
         this.add_actor(this._group);
 
-        this.add_actor(this._dashFader);
-
         const box = new St.BoxLayout({
             x_expand: true,
             y_expand: true,
@@ -462,7 +415,7 @@ class ControlsManager extends St.Widget {
         box.add_child(this._thumbnailsSlider);
 
         this._group.add_child(box);
-        this._group.add_actor(this._dashSpacer);
+        this._group.add_actor(this._dashFader);
 
         this.connect('destroy', this._onDestroy.bind(this));
     }
