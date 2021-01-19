@@ -345,6 +345,7 @@ class DashFader extends FaderControl {
         super._init({
             x_expand: true,
             x_align: Clutter.ActorAlign.CENTER,
+            y_align: Clutter.ActorAlign.END,
         });
 
         this._dash = dash;
