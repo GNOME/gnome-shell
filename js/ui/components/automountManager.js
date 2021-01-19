@@ -19,7 +19,6 @@ var AUTORUN_EXPIRE_TIMEOUT_SECS = 10;
 var AutomountManager = class {
     constructor() {
         this._settings = new Gio.Settings({ schema_id: SETTINGS_SCHEMA });
-        this._volumeQueue = [];
         this._activeOperations = new Map();
         this._session = new GnomeSession.SessionManager();
         this._session.connectSignal('InhibitorAdded',
@@ -220,8 +219,6 @@ var AutomountManager = class {
             GLib.source_remove(volume._allowAutorunExpireId);
             delete volume._allowAutorunExpireId;
         }
-        this._volumeQueue =
-            this._volumeQueue.filter(element => element != volume);
     }
 
     _reaskPassword(volume) {
