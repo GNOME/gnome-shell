@@ -279,65 +279,17 @@ class EmptyDropTargetItem extends DashItemContainer {
     }
 });
 
-var DashActor = GObject.registerClass(
-class DashActor extends St.Widget {
+const DashIconsLayout = GObject.registerClass(
+class DashIconsLayout extends Clutter.BoxLayout {
     _init() {
-        let layout = new Clutter.BoxLayout({ orientation: Clutter.Orientation.HORIZONTAL });
         super._init({
-            name: 'dash',
-            layout_manager: layout,
-            clip_to_allocation: true,
-            x_align: Clutter.ActorAlign.CENTER,
+            orientation: Clutter.Orientation.HORIZONTAL,
         });
     }
 
-    vfunc_allocate(box) {
-        let contentBox = this.get_theme_node().get_content_box(box);
-        const availHeight = contentBox.get_height();
-
-        this.set_allocation(box);
-
-        let [appIcons, showAppsButton] = this.get_children();
-        const [, showAppsNatWidth] = showAppsButton.get_preferred_width(availHeight);
-        const rtl = this.text_direction === Clutter.TextDirection.RTL;
-
-        let childBox = new Clutter.ActorBox();
-        childBox.y1 = contentBox.y1;
-        childBox.y2 = contentBox.y2;
-        if (rtl) {
-            childBox.x1 = contentBox.x1 + showAppsNatWidth;
-            childBox.x2 = contentBox.x2;
-        } else {
-            childBox.x1 = contentBox.x1;
-            childBox.x2 = contentBox.x2 - showAppsNatWidth;
-        }
-        appIcons.allocate(childBox);
-
-        if (rtl) {
-            childBox.x1 = contentBox.x1;
-            childBox.x2 = contentBox.x1 + showAppsNatWidth;
-        } else {
-            childBox.x1 = contentBox.x2 - showAppsNatWidth;
-            childBox.x2 = contentBox.x2;
-        }
-        showAppsButton.allocate(childBox);
-    }
-
-    vfunc_get_preferred_width(forHeight) {
-        // We want to request the natural width of all our children
-        // as our natural width, so we chain up to StWidget (which
-        // then calls BoxLayout), but we only request the showApps
-        // button as the minimum size
-
-        const [, natWidth] = super.vfunc_get_preferred_width(forHeight);
-
-        let themeNode = this.get_theme_node();
-        const adjustedForHeight = themeNode.adjust_for_height(forHeight);
-        let [, showAppsButton] = this.get_children();
-        let [minWidth] = showAppsButton.get_preferred_width(adjustedForHeight);
-        [minWidth] = themeNode.adjust_preferred_width(minWidth, natWidth);
-
-        return [minWidth, natWidth];
+    vfunc_get_preferred_width(container, forHeight) {
+        const [, natWidth] = super.vfunc_get_preferred_width(container, forHeight);
+        return [0, natWidth];
     }
 });
 
@@ -345,7 +297,7 @@ const baseIconSizes = [16, 22, 24, 32, 48, 64];
 
 var Dash = GObject.registerClass({
     Signals: { 'icon-size-changed': {} },
-}, class Dash extends St.Bin {
+}, class Dash extends St.BoxLayout {
     _init() {
         this._maxWidth = -1;
         this.iconSize = 64;
@@ -358,22 +310,29 @@ var Dash = GObject.registerClass({
         this._resetHoverTimeoutId = 0;
         this._labelShowing = false;
 
-        this._container = new DashActor();
-        this._box = new St.BoxLayout({ clip_to_allocation: true });
+        super._init({
+            name: 'dash',
+            offscreen_redirect: Clutter.OffscreenRedirect.ALWAYS,
+            x_align: Clutter.ActorAlign.CENTER,
+        });
+
+        this._box = new St.Widget({
+            clip_to_allocation: true,
+            layout_manager: new DashIconsLayout(),
+            x_expand: true,
+            x_align: Clutter.ActorAlign.CENTER,
+        });
         this._box._delegate = this;
-        this._container.add_actor(this._box);
-        this._container.set_offscreen_redirect(Clutter.OffscreenRedirect.ALWAYS);
+        this.add_child(this._box);
 
         this._showAppsIcon = new ShowAppsIcon();
         this._showAppsIcon.show(false);
         this._showAppsIcon.icon.setIconSize(this.iconSize);
         this._hookUpLabel(this._showAppsIcon);
+        this.add_child(this._showAppsIcon);
 
         this.showAppsButton = this._showAppsIcon.toggleButton;
 
-        this._container.add_actor(this._showAppsIcon);
-
-        super._init({ child: this._container });
         this.connect('notify::width', () => {
             if (this._maxWidth !== this.width)
                 this._queueRedisplay();
@@ -579,7 +538,7 @@ var Dash = GObject.registerClass({
         if (this._maxWidth === -1)
             return;
 
-        let themeNode = this._container.get_theme_node();
+        const themeNode = this.get_theme_node();
         const maxAllocation = new Clutter.ActorBox({
             x1: 0,
             y1: 0,
