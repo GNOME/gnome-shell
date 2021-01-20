@@ -96,6 +96,31 @@ class ControlsManagerLayout extends Clutter.BinLayout {
         return workspaceBox;
     }
 
+    _getAppDisplayBoxForState(state, params, appGridBox) {
+        const { box, searchHeight, dashHeight, spacing } = params;
+        const [width, height] = box.get_size();
+        const appDisplayBox = new Clutter.ActorBox();
+
+        switch (state) {
+        case ControlsState.HIDDEN:
+        case ControlsState.WINDOW_PICKER:
+            appDisplayBox.set_origin(0, box.y2);
+            break;
+        case ControlsState.APP_GRID:
+            appDisplayBox.set_origin(0,
+                searchHeight + spacing + appGridBox.get_height());
+            break;
+        }
+
+        appDisplayBox.set_size(width,
+            height -
+            searchHeight - spacing -
+            appGridBox.get_height() - spacing -
+            dashHeight);
+
+        return appDisplayBox;
+    }
+
     vfunc_set_container(container) {
         this._container = container;
     }
@@ -149,15 +174,21 @@ class ControlsManagerLayout extends Clutter.BinLayout {
 
         // AppDisplay
         const appGridBox = workspaceBoxes[ControlsState.APP_GRID];
+        const appDisplayBoxes = [
+            this._getAppDisplayBoxForState(ControlsState.HIDDEN, params, appGridBox),
+            this._getAppDisplayBoxForState(ControlsState.WINDOW_PICKER, params, appGridBox),
+            this._getAppDisplayBoxForState(ControlsState.APP_GRID, params, appGridBox),
+        ];
 
-        childBox.set_origin(0, searchHeight + spacing + appGridBox.get_height());
-        childBox.set_size(width,
-            height -
-            searchHeight - spacing -
-            appGridBox.get_height() - spacing -
-            dashHeight);
+        if (initialState === finalState) {
+            const appDisplayBox = appDisplayBoxes[state];
+            this._appDisplay.allocate(appDisplayBox);
+        } else {
+            const initialBox = appDisplayBoxes[initialState];
+            const finalBox = appDisplayBoxes[finalState];
 
-        this._appDisplay.allocate(childBox);
+            this._appDisplay.allocate(initialBox.interpolate(finalBox, progress));
+        }
 
         // ViewSelector
         childBox.set_origin(0, searchHeight + spacing);
