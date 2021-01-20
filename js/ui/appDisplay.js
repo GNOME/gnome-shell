@@ -1830,13 +1830,16 @@ class FolderView extends BaseAppView {
     }
 
     createFolderIcon(size) {
-        let layout = new Clutter.GridLayout();
+        const layout = new Clutter.GridLayout({
+            row_homogeneous: true,
+            column_homogeneous: true,
+        });
         let icon = new St.Widget({
             layout_manager: layout,
-            style_class: 'app-folder-icon',
             x_align: Clutter.ActorAlign.CENTER,
+            style: 'width: %dpx; height: %dpx;'.format(size, size),
         });
-        layout.hookup_style(icon);
+
         let subSize = Math.floor(FOLDER_SUBICON_FRACTION * size);
 
         let numItems = this._orderedItems.length;
