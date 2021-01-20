@@ -69,6 +69,31 @@ class ControlsManagerLayout extends Clutter.BoxLayout {
         return workspaceBox;
     }
 
+    _getAppDisplayBoxForState(state, box, searchHeight, dashHeight, appGridBox) {
+        const [width, height] = box.get_size();
+        const appDisplayBox = new Clutter.ActorBox();
+        const { spacing } = this;
+
+        switch (state) {
+        case ControlsState.HIDDEN:
+        case ControlsState.WINDOW_PICKER:
+            appDisplayBox.set_origin(0, box.y2);
+            break;
+        case ControlsState.APP_GRID:
+            appDisplayBox.set_origin(0,
+                searchHeight + spacing + appGridBox.get_height());
+            break;
+        }
+
+        appDisplayBox.set_size(width,
+            height -
+            searchHeight - spacing -
+            appGridBox.get_height() - spacing -
+            dashHeight);
+
+        return appDisplayBox;
+    }
+
     vfunc_set_container(container) {
         this._container = container;
         this.hookup_style(container);
@@ -112,7 +137,7 @@ class ControlsManagerLayout extends Clutter.BoxLayout {
         }
 
         // Workspaces
-        const params = [box, searchHeight, dashHeight, thumbnailsHeight];
+        let params = [box, searchHeight, dashHeight, thumbnailsHeight];
         const transitionParams = this._stateAdjustment.getStateTransitionParams();
 
         let workspacesBox;
@@ -133,14 +158,20 @@ class ControlsManagerLayout extends Clutter.BoxLayout {
         const workspaceAppGridBox =
             this._getWorkspacesBoxForState(ControlsState.APP_GRID, ...params);
 
-        childBox.set_origin(0, searchHeight + spacing + workspaceAppGridBox.get_height());
-        childBox.set_size(width,
-            height -
-            searchHeight - spacing -
-            workspaceAppGridBox.get_height() - spacing -
-            dashHeight);
+        params = [box, searchHeight, dashHeight, workspaceAppGridBox];
+        let appDisplayBox;
+        if (!transitionParams.transitioning) {
+            appDisplayBox =
+                this._getAppDisplayBoxForState(transitionParams.currentState, ...params);
+        } else {
+            const initialBox =
+                this._getAppDisplayBoxForState(transitionParams.initialState, ...params);
+            const finalBox =
+                this._getAppDisplayBoxForState(transitionParams.finalState, ...params);
 
-        this._appDisplay.allocate(childBox);
+            appDisplayBox = initialBox.interpolate(finalBox, transitionParams.progress);
+        }
+        this._appDisplay.allocate(appDisplayBox);
 
         // ViewSelector
         childBox.set_origin(0, searchHeight + spacing);
