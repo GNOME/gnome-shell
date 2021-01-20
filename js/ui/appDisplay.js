@@ -218,6 +218,11 @@ var BaseAppView = GObject.registerClass({
                 this._redisplay();
             });
 
+        // Don't duplicate favorites
+        this._appFavorites = AppFavorites.getAppFavorites();
+        this._appFavoritesChangedId =
+            this._appFavorites.connect('changed', () => this._redisplay());
+
         // Drag n' Drop
         this._lastOvershoot = -1;
         this._lastOvershootTimeoutId = 0;
@@ -234,6 +239,11 @@ var BaseAppView = GObject.registerClass({
         if (this._appFilterChangedId > 0) {
             this._parentalControlsManager.disconnect(this._appFilterChangedId);
             this._appFilterChangedId = 0;
+        }
+
+        if (this._appFavoritesChangedId > 0) {
+            this._appFavorites.disconnect(this._appFavoritesChangedId);
+            this._appFavoritesChangedId = 0;
         }
 
         if (this._swipeTracker) {
@@ -1138,7 +1148,8 @@ class AppDisplay extends BaseAppView {
             } catch (e) {
                 return false;
             }
-            return this._parentalControlsManager.shouldShowApp(appInfo);
+            return !this._appFavorites.isFavorite(appInfo.get_id()) &&
+                this._parentalControlsManager.shouldShowApp(appInfo);
         });
 
         let apps = this._appInfoList.map(app => app.get_id());
@@ -1755,6 +1766,9 @@ class FolderView extends BaseAppView {
         const appSys = Shell.AppSystem.get_default();
         const addAppId = appId => {
             if (excludedApps.includes(appId))
+                return;
+
+            if (this._appFavorites.isFavorite(appId))
                 return;
 
             const app = appSys.lookup_app(appId);
