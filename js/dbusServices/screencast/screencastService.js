@@ -1,7 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported ScreencastService */
 
-imports.gi.versions.Gtk = '3.0';
+imports.gi.versions.Gtk = '4.0';
 
 const { Gio, GLib, Gst, Gtk } = imports.gi;
 
@@ -246,7 +246,7 @@ var ScreencastService = class extends ServiceImplementation {
         super(ScreencastIface, '/org/gnome/Shell/Screencast');
 
         Gst.init(null);
-        Gtk.init(null);
+        Gtk.init();
 
         this._recorders = new Map();
         this._senders = new Map();
