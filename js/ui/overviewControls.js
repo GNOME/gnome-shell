@@ -9,6 +9,7 @@ const Main = imports.ui.main;
 const Overview = imports.ui.overview;
 const SearchController = imports.ui.searchController;
 const WindowManager = imports.ui.windowManager;
+const WorkspaceThumbnail = imports.ui.workspaceThumbnail;
 const WorkspacesView = imports.ui.workspacesView;
 
 var SIDE_CONTROLS_ANIMATION_TIME = Overview.ANIMATION_TIME;
@@ -60,11 +61,13 @@ class DashFader extends St.Bin {
 
 var ControlsManagerLayout = GObject.registerClass(
 class ControlsManagerLayout extends Clutter.BinLayout {
-    _init(searchEntry, appDisplay, workspacesDisplay, searchController, dash, adjustment) {
+    _init(searchEntry, appDisplay, workspacesDisplay, workspacesThumbnails,
+        searchController, dash, adjustment) {
         super._init();
 
         this._appDisplay = appDisplay;
         this._workspacesDisplay = workspacesDisplay;
+        this._workspacesThumbnails = workspacesThumbnails;
         this._adjustment = adjustment;
         this._searchEntry = searchEntry;
         this._searchController = searchController;
@@ -81,11 +84,14 @@ class ControlsManagerLayout extends Clutter.BinLayout {
         case ControlsState.HIDDEN:
             break;
         case ControlsState.WINDOW_PICKER:
-            workspaceBox.set_origin(0, params.searchHeight + params.spacing);
+            workspaceBox.set_origin(0,
+                params.searchHeight + params.spacing +
+                (params.thumbnailsHeight > 0 ? params.thumbnailsHeight + params.spacing : 0));
             workspaceBox.set_size(width,
                 height -
                 params.dashHeight - params.spacing -
-                params.searchHeight - params.spacing);
+                params.searchHeight - params.spacing -
+                (params.thumbnailsHeight > 0 ? params.thumbnailsHeight + params.spacing : 0));
             break;
         case ControlsState.APP_GRID:
             workspaceBox.set_origin(0, params.searchHeight + params.spacing);
@@ -153,8 +159,19 @@ class ControlsManagerLayout extends Clutter.BinLayout {
 
         availableHeight -= dashHeight + spacing;
 
+        // Workspace Thumbnails
+        let thumbnailsHeight = 0;
+        if (this._workspacesThumbnails.visible) {
+            [thumbnailsHeight] =
+                this._workspacesThumbnails.get_preferred_height(width);
+            thumbnailsHeight = Math.min(thumbnailsHeight, height * 0.06);
+            childBox.set_origin(0, searchHeight + spacing);
+            childBox.set_size(width, thumbnailsHeight);
+            this._workspacesThumbnails.allocate_align_fill(childBox, 0.5, 0.5, false, true);
+        }
+
         // Workspaces
-        const params = { box, searchHeight, dashHeight, spacing };
+        const params = { box, searchHeight, dashHeight, thumbnailsHeight, spacing };
         const workspaceBoxes = [
             this._getWorkspacesBoxForState(ControlsState.HIDDEN, params),
             this._getWorkspacesBoxForState(ControlsState.WINDOW_PICKER, params),
@@ -292,6 +309,8 @@ class ControlsManager extends St.Widget {
             this.dash.showAppsButton);
         this._searchController.connect('notify::searching', this._onSearchChanged.bind(this));
 
+        this._thumbnailsBox =
+            new WorkspaceThumbnail.ThumbnailsBox(this._workspaceAdjustment);
         this._workspacesDisplay = new WorkspacesView.WorkspacesDisplay(
             this._workspaceAdjustment,
             this._adjustment);
@@ -301,11 +320,13 @@ class ControlsManager extends St.Widget {
         this.add_child(this._appDisplay);
         this.add_child(this._dashFader);
         this.add_child(this._searchController);
+        this.add_child(this._thumbnailsBox);
         this.add_child(this._workspacesDisplay);
 
         this.layout_manager = new ControlsManagerLayout(searchEntryBin,
             this._appDisplay,
             this._workspacesDisplay,
+            this._thumbnailsBox,
             this._searchController,
             this._dashFader,
             this._adjustment);
@@ -337,6 +358,63 @@ class ControlsManager extends St.Widget {
         }
     }
 
+    _getThumbnailsBoxParams() {
+        const [state, initialState, finalState, progress] = this._adjustment.getState();
+
+        const opacityForState = s => {
+            switch (s) {
+            case ControlsState.HIDDEN:
+            case ControlsState.WINDOW_PICKER:
+                return [255, 1, 0];
+            case ControlsState.APP_GRID:
+                return [0, 0.66, this._thumbnailsBox.height / 2];
+            default:
+                return [255, 1, 0];
+            }
+        };
+
+        if (initialState === finalState)
+            return opacityForState(state);
+
+        const [initialOpacity, initialScale, initialTranslationY] =
+            opacityForState(initialState);
+
+        const [finalOpacity, finalScale, finalTranslationY] =
+            opacityForState(finalState);
+
+        return [
+            Math.interpolate(initialOpacity, finalOpacity, progress),
+            Math.interpolate(initialScale, finalScale, progress),
+            Math.interpolate(initialTranslationY, finalTranslationY, progress),
+        ];
+    }
+
+    _updateThumbnailsBox(animate = false) {
+        const { searching } = this._searchController;
+        const [opacity, scale, translationY] = this._getThumbnailsBoxParams();
+
+        const thumbnailsBoxVisible = !searching && opacity !== 0;
+        if (thumbnailsBoxVisible) {
+            this._thumbnailsBox.opacity = 0;
+            this._thumbnailsBox.visible = thumbnailsBoxVisible;
+        }
+
+        const params = {
+            opacity: searching ? 0 : opacity,
+            duration: animate ? SIDE_CONTROLS_ANIMATION_TIME : 0,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            onComplete: () => (this._thumbnailsBox.visible = thumbnailsBoxVisible),
+        };
+
+        if (!searching) {
+            params.scale_x = scale;
+            params.scale_y = scale;
+            params.translation_y = translationY;
+        }
+
+        this._thumbnailsBox.ease(params);
+    }
+
     _update() {
         const [, initialState, finalState, progress] = this._adjustment.getState();
 
@@ -347,6 +425,8 @@ class ControlsManager extends St.Widget {
 
         const { snapAdjustment } = this._workspacesDisplay;
         snapAdjustment.value = snapAxis;
+
+        this._updateThumbnailsBox();
     }
 
     _onSearchChanged() {
@@ -359,6 +439,8 @@ class ControlsManager extends St.Widget {
         } else {
             this._searchController.show();
         }
+
+        this._updateThumbnailsBox(true);
 
         this._appDisplay.ease({
             opacity: searching ? 0 : 255,

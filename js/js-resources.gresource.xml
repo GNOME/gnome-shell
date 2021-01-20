@@ -112,6 +112,7 @@
     <file>ui/windowPreview.js</file>
     <file>ui/workspace.js</file>
     <file>ui/workspaceSwitcherPopup.js</file>
+    <file>ui/workspaceThumbnail.js</file>
     <file>ui/workspacesView.js</file>
     <file>ui/xdndHandler.js</file>
 
