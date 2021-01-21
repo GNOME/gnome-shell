@@ -1,11 +1,12 @@
 /* Dash */
 
+$dash_background_color: #3b3b3b;
 $dash_placeholder_size: 32px;
 $dash_spacing: $base_padding + 4px;
 $dash_border_radius: $modal_radius * 1.5;
 
 #dash {
-  @extend %overview_panel;
+  background-color: $dash_background_color;
   @include fontsize($base_font_size - 2);
   margin: $base_margin * 4 $base_margin * 2;
   padding: ($dash_spacing / 2) 0;
