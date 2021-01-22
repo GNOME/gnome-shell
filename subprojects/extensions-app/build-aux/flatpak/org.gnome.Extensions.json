@@ -1,5 +1,5 @@
 {
-  "app-id": "org.gnome.Extensions",
+  "app-id": "org.gnome.Extensions.Devel",
   "runtime": "org.gnome.Platform",
   "runtime-version": "master",
   "sdk": "org.gnome.Sdk",
@@ -20,6 +20,7 @@
       "buildsystem": "meson",
       "builddir": true,
       "subdir": "subprojects/extensions-app",
+      "config-opts": ["-Dprofile=development"],
       "sources": [
         {
           "type": "git",

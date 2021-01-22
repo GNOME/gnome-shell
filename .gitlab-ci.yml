@@ -220,7 +220,7 @@ flatpak:
         MANIFEST_PATH: "$SUBPROJECT/build-aux/flatpak/org.gnome.Extensions.json"
         RUNTIME_REPO: "https://nightly.gnome.org/gnome-nightly.flatpakrepo"
         FLATPAK_MODULE: "gnome-extensions-app"
-        APP_ID: "org.gnome.Extensions"
+        APP_ID: "org.gnome.Extensions.Devel"
     extends: .flatpak
 
 nightly:
