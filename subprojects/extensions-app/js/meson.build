@@ -1,7 +1,11 @@
 launcherconf = configuration_data()
 launcherconf.set('app_id', app_id)
 launcherconf.set('PACKAGE_NAME', package_name)
-launcherconf.set('PACKAGE_VERSION', meson.project_version())
+if vcs_tag != ''
+  launcherconf.set('PACKAGE_VERSION', '@0@ (@1@)'.format(package_version, vcs_tag))
+else
+  launcherconf.set('PACKAGE_VERSION', package_version)
+endif
 launcherconf.set('prefix', prefix)
 launcherconf.set('libdir', libdir)
 launcherconf.set('pkgdatadir', pkgdatadir)

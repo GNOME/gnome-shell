@@ -6,8 +6,10 @@ project('gnome-extensions-app',
 
 if get_option('profile') == 'development'
   profile = '.Devel'
+  vcs_tag = run_command('git', 'rev-parse', '--short', '@').stdout().strip()
 else
   profile = ''
+  vcs_tag = ''
 endif
 
 base_id = 'org.gnome.Extensions'
