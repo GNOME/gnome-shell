@@ -41,7 +41,7 @@ var Application = GObject.registerClass(
 class Application extends Gtk.Application {
     _init() {
         GLib.set_prgname('gnome-extensions-app');
-        super._init({ application_id: 'org.gnome.Extensions' });
+        super._init({ application_id: Package.name });
 
         this.connect('window-removed', (a, window) => window.run_dispose());
     }
@@ -217,8 +217,8 @@ var ExtensionsWindow = GObject.registerClass({
             program_name: _('Extensions'),
             comments: _('Manage your GNOME Extensions'),
             license_type: Gtk.License.GPL_2_0,
-            logo_icon_name: 'org.gnome.Extensions',
-            version: imports.package.version,
+            logo_icon_name: Package.name,
+            version: Package.version,
 
             transient_for: this,
             modal: true,
