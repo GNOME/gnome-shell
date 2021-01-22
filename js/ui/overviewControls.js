@@ -16,8 +16,7 @@ class DashFader extends St.Bin {
         super._init({
             child: dash,
             x_expand: true,
-            x_align: Clutter.ActorAlign.CENTER,
-            y_align: Clutter.ActorAlign.END,
+            y_expand: true,
         });
 
         this._dash = dash;

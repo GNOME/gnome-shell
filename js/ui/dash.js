@@ -288,6 +288,7 @@ class DashActor extends St.Widget {
             layout_manager: layout,
             clip_to_allocation: true,
             x_align: Clutter.ActorAlign.CENTER,
+            y_align: Clutter.ActorAlign.CENTER,
         });
     }
 
