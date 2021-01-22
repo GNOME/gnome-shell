@@ -11,16 +11,16 @@ const Overview = imports.ui.overview;
 var SIDE_CONTROLS_ANIMATION_TIME = Overview.ANIMATION_TIME;
 
 var DashFader = GObject.registerClass(
-class DashFader extends St.Widget {
+class DashFader extends St.Bin {
     _init(dash) {
         super._init({
+            child: dash,
             x_expand: true,
             x_align: Clutter.ActorAlign.CENTER,
             y_align: Clutter.ActorAlign.END,
         });
 
         this._dash = dash;
-        this.add_child(this._dash);
 
         Main.overview.connect('window-drag-begin', this._onWindowDragBegin.bind(this));
         Main.overview.connect('window-drag-cancelled', this._onWindowDragEnd.bind(this));
