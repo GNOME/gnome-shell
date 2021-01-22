@@ -307,6 +307,7 @@ var Dash = GObject.registerClass({
 }, class Dash extends St.Widget {
     _init() {
         this._maxWidth = -1;
+        this._maxHeight = -1;
         this.iconSize = 64;
         this._shownInitially = false;
 
@@ -346,7 +347,7 @@ var Dash = GObject.registerClass({
 
         this.showAppsButton = this._showAppsIcon.toggleButton;
 
-        const background = new St.Widget({
+        this._background = new St.Widget({
             style_class: 'dash-background',
         });
 
@@ -359,16 +360,10 @@ var Dash = GObject.registerClass({
             source: this._dashContainer,
             coordinate: Clutter.BindCoordinate.WIDTH,
         }));
-        background.add_child(sizerBox);
+        this._background.add_child(sizerBox);
 
-        this.add_child(background);
+        this.add_child(this._background);
         this.add_child(this._dashContainer);
-
-        this.connect('notify::width', () => {
-            if (this._maxWidth !== this.width)
-                this._queueRedisplay();
-            this._maxWidth = this.width;
-        });
 
         this._workId = Main.initializeDeferredWork(this._box, this._redisplay.bind(this));
 
@@ -588,7 +583,7 @@ var Dash = GObject.registerClass({
 
         iconChildren.push(this._showAppsIcon);
 
-        if (this._maxWidth === -1)
+        if (this._maxWidth === -1 || this._maxHeight === -1)
             return;
 
         const themeNode = this.get_theme_node();
@@ -607,21 +602,26 @@ var Dash = GObject.registerClass({
 
         // Enforce valid spacings during the size request
         firstIcon.icon.ensure_style();
-        let [, iconWidth] = firstIcon.icon.get_preferred_width(-1);
-        let [, buttonWidth] = firstButton.get_preferred_width(-1);
+        const [, , iconWidth, iconHeight] = firstIcon.icon.get_preferred_size();
+        const [, , buttonWidth, buttonHeight] = firstButton.get_preferred_size();
 
         // Subtract icon padding and box spacing from the available width
         availWidth -= iconChildren.length * (buttonWidth - iconWidth) +
                        (iconChildren.length - 1) * spacing;
 
-        let availSize = availWidth / iconChildren.length;
+        let availHeight = this._maxHeight;
+        availHeight -= this._background.get_theme_node().get_vertical_padding();
+        availHeight -= themeNode.get_vertical_padding();
+        availHeight -= buttonHeight - iconHeight;
+
+        const maxIconSize = Math.min(availWidth / iconChildren.length, availHeight);
 
         let scaleFactor = St.ThemeContext.get_for_stage(global.stage).scale_factor;
         let iconSizes = baseIconSizes.map(s => s * scaleFactor);
 
         let newIconSize = baseIconSizes[0];
         for (let i = 0; i < iconSizes.length; i++) {
-            if (iconSizes[i] <= availSize)
+            if (iconSizes[i] <= maxIconSize)
                 newIconSize = baseIconSizes[i];
         }
 
@@ -969,5 +969,15 @@ var Dash = GObject.registerClass({
         });
 
         return true;
+    }
+
+    setMaxSize(maxWidth, maxHeight) {
+        if (this._maxWidth === maxWidth &&
+            this._maxHeight === maxHeight)
+            return;
+
+        this._maxWidth = maxWidth;
+        this._maxHeight = maxHeight;
+        this._queueRedisplay();
     }
 });

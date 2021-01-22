@@ -14,6 +14,7 @@ const WorkspaceThumbnail = imports.ui.workspaceThumbnail;
 const WorkspacesView = imports.ui.workspacesView;
 
 const SMALL_WORKSPACE_RATIO = 0.15;
+const DASH_MAX_HEIGHT_RATIO = 0.15;
 
 var SIDE_CONTROLS_ANIMATION_TIME = Overview.ANIMATION_TIME;
 
@@ -118,7 +119,11 @@ class ControlsManagerLayout extends Clutter.BoxLayout {
         availableHeight -= searchHeight + spacing;
 
         // Dash
-        const [, dashHeight] = this._dash.get_preferred_height(width);
+        const maxDashHeight = Math.round(box.get_height() * DASH_MAX_HEIGHT_RATIO);
+        this._dash.setMaxSize(width, maxDashHeight);
+
+        let [, dashHeight] = this._dash.get_preferred_height(width);
+        dashHeight = Math.min(dashHeight, maxDashHeight);
         childBox.set_origin(0, height - dashHeight);
         childBox.set_size(width, dashHeight);
         this._dash.allocate(childBox);
