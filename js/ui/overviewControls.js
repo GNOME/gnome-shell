@@ -10,6 +10,8 @@ const Overview = imports.ui.overview;
 
 var SIDE_CONTROLS_ANIMATION_TIME = Overview.ANIMATION_TIME;
 
+const DASH_HEIGHT_PERCENTAGE = 0.15;
+
 var DashFader = GObject.registerClass(
 class DashFader extends St.Bin {
     _init(dash) {
@@ -40,6 +42,10 @@ class DashFader extends St.Bin {
             duration: SIDE_CONTROLS_ANIMATION_TIME / 2,
             mode: Clutter.AnimationMode.EASE_IN_QUAD,
         });
+    }
+
+    setMaxHeight(maxHeight) {
+        this._dash.setMaxHeight(maxHeight);
     }
 });
 
@@ -74,7 +80,11 @@ class ControlsManagerLayout extends Clutter.BinLayout {
         availableHeight -= searchHeight + spacing;
 
         // Dash
-        const [, dashHeight] = this._dash.get_preferred_height(width);
+        const maxDashHeight = Math.round(box.get_height() * DASH_HEIGHT_PERCENTAGE);
+        this._dash.setMaxHeight(maxDashHeight);
+
+        let [, dashHeight] = this._dash.get_preferred_height(width);
+        dashHeight = Math.min(dashHeight, maxDashHeight);
         childBox.set_origin(0, height - dashHeight);
         childBox.set_size(width, dashHeight);
         this._dash.allocate(childBox);

@@ -349,6 +349,7 @@ var Dash = GObject.registerClass({
 }, class Dash extends St.Bin {
     _init() {
         this._maxWidth = -1;
+        this._maxHeight = -1;
         this.iconSize = 64;
         this._shownInitially = false;
 
@@ -604,6 +605,19 @@ var Dash = GObject.registerClass({
                        (iconChildren.length - 1) * spacing;
 
         let availSize = availWidth / iconChildren.length;
+
+        if (this._maxHeight !== -1) {
+            const [, iconHeight] = firstIcon.icon.get_preferred_height(-1);
+            const [, buttonHeight] = firstButton.get_preferred_height(-1);
+
+            let availHeight = this._maxHeight;
+            availHeight -= this.get_theme_node().get_vertical_padding();
+            availHeight -= themeNode.get_margin(St.Side.TOP) + themeNode.get_margin(St.Side.BOTTOM);
+            availHeight -= themeNode.get_vertical_padding();
+            availHeight -= buttonHeight - iconHeight;
+
+            availSize = Math.min(availSize, availHeight);
+        }
 
         let scaleFactor = St.ThemeContext.get_for_stage(global.stage).scale_factor;
         let iconSizes = baseIconSizes.map(s => s * scaleFactor);
@@ -923,5 +937,13 @@ var Dash = GObject.registerClass({
         });
 
         return true;
+    }
+
+    setMaxHeight(maxHeight) {
+        if (this._maxHeight === maxHeight)
+            return;
+
+        this._maxHeight = maxHeight;
+        this._queueRedisplay();
     }
 });
