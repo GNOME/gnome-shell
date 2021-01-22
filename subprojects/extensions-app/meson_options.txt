@@ -2,3 +2,11 @@ option('package_name',
   type: 'string',
   description: 'The gettext domain name',
 )
+option('profile',
+  type: 'combo',
+  choices: [
+    'default',
+    'development'
+  ],
+  value: 'default'
+)

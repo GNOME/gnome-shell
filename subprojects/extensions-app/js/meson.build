@@ -16,7 +16,7 @@ configure_file(
 )
 
 configure_file(
-  input: app_id + '.in',
+  input: base_id + '.in',
   output: app_id,
   configuration: launcherconf,
   install_dir: pkgdatadir,
@@ -24,7 +24,11 @@ configure_file(
 
 gnome.compile_resources(
   app_id + '.src',
-  app_id + '.src.gresource.xml',
+  configure_file(
+    input: base_id + '.src.gresource.xml.in',
+    output: app_id + '.src.gresource.xml',
+    configuration: {'profile': '/'.join(profile.split('.')) },
+  ),
   source_dir: ['.', '../../../js'],
   gresource_bundle: true,
   install: true,

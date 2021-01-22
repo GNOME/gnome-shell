@@ -1,6 +1,6 @@
 gnome.compile_resources(
   app_id + '.data',
-  app_id + '.data.gresource.xml',
+  base_id + '.data.gresource.xml',
   gresource_bundle: true,
   install: true,
   install_dir: pkgdatadir
@@ -16,7 +16,7 @@ desktopconf.set('prgname', prgname)
 
 i18n.merge_file('desktop',
   input: configure_file(
-    input: desktop_file + '.in.in',
+    input: base_id + '.desktop.in.in',
     output: desktop_file + '.in',
     configuration: desktopconf
   ),
@@ -36,7 +36,7 @@ if (desktop_file_validate.found())
 endif
 
 configure_file(
-  input: app_id + '.service.in',
+  input: base_id + '.service.in',
   output: app_id + '.service',
   configuration: desktopconf,
   install_dir: servicedir,

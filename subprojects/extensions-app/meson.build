@@ -4,7 +4,14 @@ project('gnome-extensions-app',
   license: 'GPLv2+'
 )
 
-app_id = 'org.gnome.Extensions'
+if get_option('profile') == 'development'
+  profile = '.Devel'
+else
+  profile = ''
+endif
+
+base_id = 'org.gnome.Extensions'
+app_id = base_id + profile
 prgname = 'gnome-extensions-app'
 
 gnome = import('gnome')
