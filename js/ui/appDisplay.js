@@ -6,6 +6,7 @@ const { Clutter, Gio, GLib, GObject, Graphene, Meta,
 const Signals = imports.signals;
 
 const AppFavorites = imports.ui.appFavorites;
+const BoxPointer = imports.ui.boxpointer;
 const DND = imports.ui.dnd;
 const GrabHelper = imports.ui.grabHelper;
 const IconGrid = imports.ui.iconGrid;
@@ -3091,7 +3092,7 @@ var AppIconMenu = class AppIconMenu extends PopupMenu.PopupMenu {
 
     popup(_activatingButton) {
         this._rebuildMenu();
-        this.open();
+        this.open(BoxPointer.PopupAnimation.FULL);
     }
 };
 Signals.addSignalMethods(AppIconMenu.prototype);
