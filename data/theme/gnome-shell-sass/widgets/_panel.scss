@@ -72,6 +72,12 @@ $panel_transition_duration: 250ms; // same as the overview transition duration
       }
     }
 
+    // single indicator
+    .single-indicator {
+      margin-left: $base_margin + 3px;
+      margin-right: $base_margin + 3px;
+    }
+
     // status area icons
     .system-status-icon {
       icon-size: $base_icon_size;

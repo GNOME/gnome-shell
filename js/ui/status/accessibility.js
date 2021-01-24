@@ -34,12 +34,10 @@ class ATIndicator extends PanelMenu.Button {
     _init() {
         super._init(0.5, _("Accessibility"));
 
-        this._hbox = new St.BoxLayout({ style_class: 'panel-status-menu-box' });
-        this._hbox.add_child(new St.Icon({ style_class: 'system-status-icon',
-                                           icon_name: 'preferences-desktop-accessibility-symbolic' }));
-        this._hbox.add_child(PopupMenu.arrowIcon(St.Side.BOTTOM));
-
-        this.add_child(this._hbox);
+        this.add_child(new St.Icon({
+            style_class: 'single-indicator system-status-icon',
+            icon_name: 'preferences-desktop-accessibility-symbolic',
+        }));
 
         this._a11ySettings = new Gio.Settings({ schema_id: A11Y_SCHEMA });
         this._a11ySettings.connect('changed::%s'.format(KEY_ALWAYS_SHOW), this._queueSyncMenuVisibility.bind(this));
