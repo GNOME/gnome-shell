@@ -570,6 +570,7 @@ shell_util_get_uid (void)
   return getuid ();
 }
 
+#ifdef HAVE_SYSTEMD
 typedef struct {
   GDBusConnection *connection;
   gchar           *command;
@@ -692,6 +693,7 @@ on_systemd_job_removed_cb (GDBusConnection *connection,
 
   g_object_unref (task);
 }
+#endif /* HAVE_SYSTEMD */
 
 static void
 shell_util_systemd_call (const char           *command,
