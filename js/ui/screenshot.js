@@ -36,10 +36,15 @@ var ScreenshotService = class {
             lockedDown = this._lockdownSettings.get_boolean('disable-save-to-disk');
 
         let sender = invocation.get_sender();
-        if (this._screenShooter.has(sender) || lockedDown) {
+        if (this._screenShooter.has(sender)) {
             invocation.return_error_literal(
                 Gio.IOErrorEnum, Gio.IOErrorEnum.BUSY,
                 'There is an ongoing operation for this sender');
+            return null;
+        } else if (lockedDown) {
+            invocation.return_error_literal(
+                Gio.IOErrorEnum, Gio.IOErrorEnum.PERMISSION_DENIED,
+                'Saving to disk is disabled');
             return null;
         }
 
