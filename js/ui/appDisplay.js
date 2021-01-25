@@ -2153,10 +2153,7 @@ var AppFolderDialog = GObject.registerClass({
             reactive: true,
         });
 
-        this.add_constraint(new Layout.MonitorConstraint({
-            primary: true,
-            work_area: true,
-        }));
+        this.add_constraint(new Layout.MonitorConstraint({ primary: true }));
 
         const clickAction = new Clutter.ClickAction();
         clickAction.connect('clicked', () => {
