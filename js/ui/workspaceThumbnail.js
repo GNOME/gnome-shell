@@ -318,8 +318,7 @@ var WorkspaceThumbnail = GObject.registerClass({
     }
 
     setPorthole(x, y, width, height) {
-        this.set_size(width, height);
-        this._contents.set_position(-x, -y);
+        this._contents.set_size(width, height);
     }
 
     _lookupIndex(metaWindow) {
@@ -611,6 +610,10 @@ var WorkspaceThumbnail = GObject.registerClass({
 
         return false;
     }
+
+    setScale(scale) {
+        this._contents.set_scale(scale, scale);
+    }
 });
 
 
@@ -727,10 +730,7 @@ var ThumbnailsBox = GObject.registerClass({
     _activateThumbnailAtPoint(stageX, stageY, time) {
         const [r_, x] = this.transform_stage_point(stageX, stageY);
 
-        const thumbnail = this._thumbnails.find(t => {
-            const [w] = t.get_transformed_size();
-            return x >= t.x && x <= t.x + w;
-        });
+        const thumbnail = this._thumbnails.find(t => x >= t.x && x <= t.x + t.width);
         if (thumbnail)
             thumbnail.activate(time);
     }
@@ -801,8 +801,7 @@ var ThumbnailsBox = GObject.registerClass({
         let targetX2;
 
         if (rtl) {
-            const [r_, w] = workspace.get_transformed_size();
-            const baseX = workspace.x + w;
+            const baseX = workspace.x + workspace.width;
             targetX1 = baseX - WORKSPACE_CUT_SIZE;
             targetX2 = baseX + spacing + WORKSPACE_CUT_SIZE;
         } else {
@@ -1358,15 +1357,15 @@ var ThumbnailsBox = GObject.registerClass({
             // of the actor, but x2/y2 are increased by the *unscaled* size.
             if (rtl) {
                 childBox.x2 = box.x2 - x1;
-                childBox.x1 = box.x2 - (x1 + portholeWidth);
+                childBox.x1 = box.x2 - (x1 + thumbnailWidth);
             } else {
                 childBox.x1 = x1;
-                childBox.x2 = x1 + portholeWidth;
+                childBox.x2 = x1 + thumbnailWidth;
             }
             childBox.y1 = y1;
-            childBox.y2 = y1 + portholeHeight;
+            childBox.y2 = y1 + thumbnailHeight;
 
-            thumbnail.set_scale(roundedHScale, roundedVScale);
+            thumbnail.setScale(roundedHScale, roundedVScale);
             thumbnail.allocate(childBox);
 
             if (i === indicatorUpperWs) {
