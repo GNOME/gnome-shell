@@ -9,6 +9,8 @@ const Main = imports.ui.main;
 const OverviewControls = imports.ui.overviewControls;
 const Search = imports.ui.search;
 const ShellEntry = imports.ui.shellEntry;
+const Util = imports.misc.util;
+const WorkspaceThumbnail = imports.ui.workspaceThumbnail;
 const WorkspacesView = imports.ui.workspacesView;
 const EdgeDragAction = imports.ui.edgeDragAction;
 
@@ -121,7 +123,7 @@ var ShowOverviewAction = GObject.registerClass({
 
 var ActivitiesContainer = GObject.registerClass(
 class ActivitiesContainer extends St.Widget {
-    _init(workspacesDisplay, appDisplay, showAppsButton) {
+    _init(thumbnailsBox, workspacesDisplay, appDisplay, showAppsButton) {
         super._init();
 
         // 0 for window picker, 1 for app grid
@@ -139,6 +141,9 @@ class ActivitiesContainer extends St.Widget {
         this._showAppsButton = showAppsButton;
         showAppsButton.connect('notify::checked',
             this._onShowAppsButtonToggled.bind(this));
+
+        this._thumbnailsBox = thumbnailsBox;
+        this.add_child(thumbnailsBox);
 
         this._appDisplay = appDisplay;
         this.add_child(appDisplay);
@@ -168,10 +173,19 @@ class ActivitiesContainer extends St.Widget {
 
         this._appDisplay.opacity = progress * 255;
         this._appDisplay.visible = progress !== 0;
+
+        this._thumbnailsBox.set({
+            scale_x: Util.lerp(1, 0.5, progress),
+            scale_y: Util.lerp(1, 0.5, progress),
+            translation_y: Util.lerp(0, this._thumbnailsBox.height, progress),
+            opacity: Util.lerp(0, 255, 1 - progress),
+            visible: (1 - progress) !== 0,
+        });
     }
 
-    _getWorkspacesBoxes(box) {
+    _getWorkspacesBoxes(box, thumbnailsHeight) {
         const initialBox = box.copy();
+        initialBox.y1 += thumbnailsHeight;
 
         const finalBox = box.copy();
         finalBox.set_size(
@@ -184,8 +198,28 @@ class ActivitiesContainer extends St.Widget {
     vfunc_allocate(box) {
         this.set_allocation(box);
 
+        // Workspace Thumbnails
+        let thumbnailsHeight = 0;
+        if (this._thumbnailsBox.visible) {
+            const maxThumbnailScale = WorkspaceThumbnail.MAX_THUMBNAIL_SCALE;
+            const primaryMonitor = Main.layoutManager.primaryMonitor;
+            const [width, height] = box.get_size();
+
+            [, thumbnailsHeight] =
+                this._thumbnailsBox.get_preferred_height(width);
+            thumbnailsHeight = Math.min(
+                thumbnailsHeight,
+                (primaryMonitor ? primaryMonitor.height : height) * maxThumbnailScale);
+
+            const thumbnailsBox = new Clutter.ActorBox();
+            thumbnailsBox.set_origin(0, 0);
+            thumbnailsBox.set_size(width, thumbnailsHeight);
+            this._thumbnailsBox.allocate(thumbnailsBox);
+        }
+
         const progress = this._adjustment.value;
-        const [initialBox, finalBox] = this._getWorkspacesBoxes(box);
+        const [initialBox, finalBox] =
+            this._getWorkspacesBoxes(box, thumbnailsHeight);
         const workspacesBox = initialBox.interpolate(finalBox, progress);
         this._workspacesDisplay.allocate(workspacesBox);
 
@@ -247,12 +281,17 @@ var ViewSelector = GObject.registerClass({
         this._iconClickedId = 0;
         this._capturedEventId = 0;
 
+        this._thumbnailsBox =
+            new WorkspaceThumbnail.ThumbnailsBox(workspaceAdjustment);
         this._workspacesDisplay =
             new WorkspacesView.WorkspacesDisplay(workspaceAdjustment);
         this.appDisplay = new AppDisplay.AppDisplay();
 
         const activitiesContainer = new ActivitiesContainer(
-            this._workspacesDisplay, this.appDisplay, showAppsButton);
+            this._thumbnailsBox,
+            this._workspacesDisplay,
+            this.appDisplay,
+            showAppsButton);
         this._activitiesPage =
             this._addPage(activitiesContainer, _('Activities'), 'view-app-grid-symbolic');
 

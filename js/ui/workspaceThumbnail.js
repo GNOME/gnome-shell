@@ -9,7 +9,7 @@ const Main = imports.ui.main;
 const Workspace = imports.ui.workspace;
 
 // The maximum size of a thumbnail is 1/10 the width and height of the screen
-let MAX_THUMBNAIL_SCALE = 1 / 10.;
+var MAX_THUMBNAIL_SCALE = 1 / 10.;
 
 var RESCALE_ANIMATION_TIME = 200;
 var SLIDE_ANIMATION_TIME = 200;
