@@ -627,9 +627,11 @@ var ThumbnailsBox = GObject.registerClass({
     },
 }, class ThumbnailsBox extends St.Widget {
     _init(scrollAdjustment) {
-        super._init({ reactive: true,
-                      style_class: 'workspace-thumbnails',
-                      request_mode: Clutter.RequestMode.WIDTH_FOR_HEIGHT });
+        super._init({
+            style_class: 'workspace-thumbnails',
+            reactive: true,
+            x_align: Clutter.ActorAlign.CENTER,
+        });
 
         this._delegate = this;
 
@@ -723,11 +725,11 @@ var ThumbnailsBox = GObject.registerClass({
     }
 
     _activateThumbnailAtPoint(stageX, stageY, time) {
-        let [r_, x_, y] = this.transform_stage_point(stageX, stageY);
+        const [r_, x] = this.transform_stage_point(stageX, stageY);
 
-        let thumbnail = this._thumbnails.find(t => {
-            let [, h] = t.get_transformed_size();
-            return y >= t.y && y <= t.y + h;
+        const thumbnail = this._thumbnails.find(t => {
+            const [w] = t.get_transformed_size();
+            return x >= t.x && x <= t.x + w;
         });
         if (thumbnail)
             thumbnail.activate(time);
@@ -792,6 +794,57 @@ var ThumbnailsBox = GObject.registerClass({
         this.queue_relayout();
     }
 
+    _getPlaceholderTarget(index, spacing, rtl) {
+        const workspace = this._thumbnails[index];
+
+        let targetX1;
+        let targetX2;
+
+        if (rtl) {
+            const [r_, w] = workspace.get_transformed_size();
+            const baseX = workspace.x + w;
+            targetX1 = baseX - WORKSPACE_CUT_SIZE;
+            targetX2 = baseX + spacing + WORKSPACE_CUT_SIZE;
+        } else {
+            targetX1 = workspace.x - spacing - WORKSPACE_CUT_SIZE;
+            targetX2 = workspace.x + WORKSPACE_CUT_SIZE;
+        }
+
+        if (index === 0) {
+            if (rtl)
+                targetX2 -= spacing + WORKSPACE_CUT_SIZE;
+            else
+                targetX1 += spacing + WORKSPACE_CUT_SIZE;
+        }
+
+        if (index === this._dropPlaceholderPos) {
+            const placeholderWidth = this._dropPlaceholder.get_width() + spacing;
+            if (rtl)
+                targetX2 += placeholderWidth;
+            else
+                targetX1 -= placeholderWidth;
+        }
+
+        return [targetX1, targetX2];
+    }
+
+    _withinWorkspace(x, index, rtl) {
+        const length = this._thumbnails.length;
+        const workspace = this._thumbnails[index];
+
+        let workspaceX1 = workspace.x + WORKSPACE_CUT_SIZE;
+        let workspaceX2 = workspace.x + workspace.width - WORKSPACE_CUT_SIZE;
+
+        if (index === length - 1) {
+            if (rtl)
+                workspaceX1 -= WORKSPACE_CUT_SIZE;
+            else
+                workspaceX2 += WORKSPACE_CUT_SIZE;
+        }
+
+        return x > workspaceX1 && x <= workspaceX2;
+    }
+
     // Draggable target interface
     handleDragOver(source, actor, x, y, time) {
         if (!source.metaWindow &&
@@ -800,41 +853,30 @@ var ThumbnailsBox = GObject.registerClass({
             source != Main.xdndHandler)
             return DND.DragMotionResult.CONTINUE;
 
+        const rtl = Clutter.get_default_text_direction() === Clutter.TextDirection.RTL;
         let canCreateWorkspaces = Meta.prefs_get_dynamic_workspaces();
         let spacing = this.get_theme_node().get_length('spacing');
 
         this._dropWorkspace = -1;
         let placeholderPos = -1;
-        let targetBase;
-        if (this._dropPlaceholderPos == 0)
-            targetBase = this._dropPlaceholder.y;
-        else
-            targetBase = this._thumbnails[0].y;
-        let targetTop = targetBase - spacing - WORKSPACE_CUT_SIZE;
         let length = this._thumbnails.length;
         for (let i = 0; i < length; i++) {
-            // Allow the reorder target to have a 10px "cut" into
-            // each side of the thumbnail, to make dragging onto the
-            // placeholder easier
-            let [, h] = this._thumbnails[i].get_transformed_size();
-            let targetBottom = targetBase + WORKSPACE_CUT_SIZE;
-            let nextTargetBase = targetBase + h + spacing;
-            let nextTargetTop =  nextTargetBase - spacing - (i == length - 1 ? 0 : WORKSPACE_CUT_SIZE);
+            const index = rtl ? length - i - 1 : i;
 
-            // Expand the target to include the placeholder, if it exists.
-            if (i == this._dropPlaceholderPos)
-                targetBottom += this._dropPlaceholder.get_height();
+            if (canCreateWorkspaces && source !== Main.xdndHandler) {
+                const [targetStart, targetEnd] =
+                    this._getPlaceholderTarget(index, spacing, rtl);
 
-            if (y > targetTop && y <= targetBottom && source != Main.xdndHandler && canCreateWorkspaces) {
-                placeholderPos = i;
-                break;
-            } else if (y > targetBottom && y <= nextTargetTop) {
-                this._dropWorkspace = i;
-                break;
+                if (x > targetStart && x <= targetEnd) {
+                    placeholderPos = index;
+                    break;
+                }
             }
 
-            targetBase = nextTargetBase;
-            targetTop = nextTargetTop;
+            if (this._withinWorkspace(x, index, rtl)) {
+                this._dropWorkspace = index;
+                break;
+            }
         }
 
         if (this._dropPlaceholderPos != placeholderPos) {
@@ -1156,8 +1198,27 @@ var ThumbnailsBox = GObject.registerClass({
         this._stateUpdateQueued = true;
     }
 
-    vfunc_get_preferred_height(_forWidth) {
-        // Note that for getPreferredWidth/Height we cheat a bit and skip propagating
+    vfunc_get_preferred_height(forWidth) {
+        let workspaceManager = global.workspace_manager;
+        let themeNode = this.get_theme_node();
+
+        forWidth = themeNode.adjust_for_width(forWidth);
+
+        let spacing = themeNode.get_length('spacing');
+        let nWorkspaces = workspaceManager.n_workspaces;
+        let totalSpacing = (nWorkspaces - 1) * spacing;
+
+        const avail = forWidth - totalSpacing;
+
+        let scale = (avail / nWorkspaces) / this._porthole.width;
+        scale = Math.min(scale, MAX_THUMBNAIL_SCALE);
+
+        const height = Math.round(this._porthole.height * scale);
+        return themeNode.adjust_preferred_height(height, height);
+    }
+
+    vfunc_get_preferred_width(_forHeight) {
+        // Note that for getPreferredHeight/Width we cheat a bit and skip propagating
         // the size request to our children because we know how big they are and know
         // that the actors aren't depending on the virtual functions being called.
         let workspaceManager = global.workspace_manager;
@@ -1167,29 +1228,9 @@ var ThumbnailsBox = GObject.registerClass({
         let nWorkspaces = workspaceManager.n_workspaces;
         let totalSpacing = (nWorkspaces - 1) * spacing;
 
-        let naturalHeight = totalSpacing + nWorkspaces * this._porthole.height * MAX_THUMBNAIL_SCALE;
-
-        return themeNode.adjust_preferred_height(totalSpacing, naturalHeight);
-    }
-
-    vfunc_get_preferred_width(forHeight) {
-        let workspaceManager = global.workspace_manager;
-        let themeNode = this.get_theme_node();
-
-        forHeight = themeNode.adjust_for_height(forHeight);
-
-        let spacing = themeNode.get_length('spacing');
-        let nWorkspaces = workspaceManager.n_workspaces;
-        let totalSpacing = (nWorkspaces - 1) * spacing;
-
-        let avail = forHeight - totalSpacing;
-
-        let scale = (avail / nWorkspaces) / this._porthole.height;
-        scale = Math.min(scale, MAX_THUMBNAIL_SCALE);
-
-        let width = Math.round(this._porthole.width * scale);
-
-        return themeNode.adjust_preferred_width(width, width);
+        const naturalWidth =
+            totalSpacing + nWorkspaces * this._porthole.width * MAX_THUMBNAIL_SCALE;
+        return themeNode.adjust_preferred_width(totalSpacing, naturalWidth);
     }
 
     _updatePorthole() {
@@ -1216,17 +1257,18 @@ var ThumbnailsBox = GObject.registerClass({
 
         box = themeNode.get_content_box(box);
 
-        let portholeWidth = this._porthole.width;
-        let portholeHeight = this._porthole.height;
-        let spacing = themeNode.get_length('spacing');
+        const portholeWidth = this._porthole.width;
+        const portholeHeight = this._porthole.height;
+        const spacing = themeNode.get_length('spacing');
 
         // Compute the scale we'll need once everything is updated
         let nWorkspaces = workspaceManager.n_workspaces;
         let totalSpacing = (nWorkspaces - 1) * spacing;
-        let avail = (box.y2 - box.y1) - totalSpacing;
+        const availableWidth = (box.get_width() - totalSpacing) / nWorkspaces;
 
-        let newScale = (avail / nWorkspaces) / portholeHeight;
-        newScale = Math.min(newScale, MAX_THUMBNAIL_SCALE);
+        const hScale = availableWidth / portholeWidth;
+        const vScale = box.get_height() / portholeHeight;
+        const newScale = Math.min(hScale, vScale);
 
         if (newScale != this._targetScale) {
             if (this._targetScale > 0) {
@@ -1242,24 +1284,19 @@ var ThumbnailsBox = GObject.registerClass({
             this._queueUpdateStates();
         }
 
-        let thumbnailHeight = portholeHeight * this._scale;
-        let thumbnailWidth = Math.round(portholeWidth * this._scale);
-        let roundedHScale = thumbnailWidth / portholeWidth;
-
-        let slideOffset; // X offset when thumbnail is fully slid offscreen
-        if (rtl)
-            slideOffset = -(thumbnailWidth + themeNode.get_padding(St.Side.LEFT));
-        else
-            slideOffset = thumbnailWidth + themeNode.get_padding(St.Side.RIGHT);
+        const ratio = portholeWidth / portholeHeight;
+        const thumbnailHeight = Math.round(portholeHeight * this._scale);
+        const thumbnailWidth = Math.round(thumbnailHeight * ratio);
+        const roundedVScale = thumbnailHeight / portholeHeight;
 
         let indicatorValue = this._scrollAdjustment.value;
         let indicatorUpperWs = Math.ceil(indicatorValue);
         let indicatorLowerWs = Math.floor(indicatorValue);
 
-        let indicatorLowerY1 = 0;
-        let indicatorLowerY2 = 0;
-        let indicatorUpperY1 = 0;
-        let indicatorUpperY2 = 0;
+        let indicatorLowerX1 = 0;
+        let indicatorLowerX2 = 0;
+        let indicatorUpperX1 = 0;
+        let indicatorUpperX2 = 0;
 
         let indicatorThemeNode = this._indicator.get_theme_node();
         let indicatorTopFullBorder = indicatorThemeNode.get_padding(St.Side.TOP) + indicatorThemeNode.get_border_width(St.Side.TOP);
@@ -1267,7 +1304,7 @@ var ThumbnailsBox = GObject.registerClass({
         let indicatorLeftFullBorder = indicatorThemeNode.get_padding(St.Side.LEFT) + indicatorThemeNode.get_border_width(St.Side.LEFT);
         let indicatorRightFullBorder = indicatorThemeNode.get_padding(St.Side.RIGHT) + indicatorThemeNode.get_border_width(St.Side.RIGHT);
 
-        let y = box.y1;
+        let x = box.x1;
 
         if (this._dropPlaceholderPos == -1) {
             this._dropPlaceholder.allocate_preferred_size(
@@ -1281,82 +1318,84 @@ var ThumbnailsBox = GObject.registerClass({
         let childBox = new Clutter.ActorBox();
 
         for (let i = 0; i < this._thumbnails.length; i++) {
-            let thumbnail = this._thumbnails[i];
-
+            const thumbnail = this._thumbnails[i];
             if (i > 0)
-                y += spacing - Math.round(thumbnail.collapse_fraction * spacing);
+                x += spacing - Math.round(thumbnail.collapse_fraction * spacing);
 
-            let x1, x2;
-            if (rtl) {
-                x1 = box.x1 + slideOffset * thumbnail.slide_position;
-                x2 = x1 + thumbnailWidth;
-            } else {
-                x1 = box.x2 - thumbnailWidth + slideOffset * thumbnail.slide_position;
-                x2 = x1 + thumbnailWidth;
-            }
+            const y1 = box.y1;
+            const y2 = y1 + thumbnailHeight;
 
-            if (i == this._dropPlaceholderPos) {
-                let [, placeholderHeight] = this._dropPlaceholder.get_preferred_height(-1);
-                childBox.x1 = x1;
-                childBox.x2 = x2;
-                childBox.y1 = Math.round(y);
-                childBox.y2 = Math.round(y + placeholderHeight);
+            if (i === this._dropPlaceholderPos) {
+                const [, placeholderWidth] = this._dropPlaceholder.get_preferred_width(-1);
+                childBox.y1 = y1;
+                childBox.y2 = y2;
+
+                if (rtl) {
+                    childBox.x2 = box.x2 - Math.round(x);
+                    childBox.x1 = box.x2 - Math.round(x + placeholderWidth);
+                } else {
+                    childBox.x1 = Math.round(x);
+                    childBox.x2 = Math.round(x + placeholderWidth);
+                }
+
                 this._dropPlaceholder.allocate(childBox);
+
                 Meta.later_add(Meta.LaterType.BEFORE_REDRAW, () => {
                     this._dropPlaceholder.show();
                 });
-                y += placeholderHeight + spacing;
+                x += placeholderWidth + spacing;
             }
 
-            // We might end up with thumbnailHeight being something like 99.33
-            // pixels. To make this work and not end up with a gap at the bottom,
-            // we need some thumbnails to be 99 pixels and some 100 pixels height;
+            // We might end up with thumbnailWidth being something like 99.33
+            // pixels. To make this work and not end up with a gap at the end,
+            // we need some thumbnails to be 99 pixels and some 100 pixels width;
             // we compute an actual scale separately for each thumbnail.
-            let y1 = Math.round(y);
-            let y2 = Math.round(y + thumbnailHeight);
-            let roundedVScale = (y2 - y1) / portholeHeight;
-
-            if (i === indicatorUpperWs) {
-                indicatorUpperY1 = y1;
-                indicatorUpperY2 = y2;
-            }
-            if (i === indicatorLowerWs) {
-                indicatorLowerY1 = y1;
-                indicatorLowerY2 = y2;
-            }
+            const x1 = Math.round(x);
+            const x2 = Math.round(x + thumbnailWidth);
+            const roundedHScale = (x2 - x1) / portholeWidth;
 
             // Allocating a scaled actor is funny - x1/y1 correspond to the origin
             // of the actor, but x2/y2 are increased by the *unscaled* size.
-            childBox.x1 = x1;
-            childBox.x2 = x1 + portholeWidth;
+            if (rtl) {
+                childBox.x2 = box.x2 - x1;
+                childBox.x1 = box.x2 - (x1 + portholeWidth);
+            } else {
+                childBox.x1 = x1;
+                childBox.x2 = x1 + portholeWidth;
+            }
             childBox.y1 = y1;
             childBox.y2 = y1 + portholeHeight;
 
             thumbnail.set_scale(roundedHScale, roundedVScale);
             thumbnail.allocate(childBox);
 
+            if (i === indicatorUpperWs) {
+                indicatorUpperX1 = childBox.x1;
+                indicatorUpperX2 = childBox.x2;
+            }
+            if (i === indicatorLowerWs) {
+                indicatorLowerX1 = childBox.x1;
+                indicatorLowerX2 = childBox.x2;
+            }
+
             // We round the collapsing portion so that we don't get thumbnails resizing
             // during an animation due to differences in rounded, but leave the uncollapsed
             // portion unrounded so that non-animating we end up with the right total
-            y += thumbnailHeight - Math.round(thumbnailHeight * thumbnail.collapse_fraction);
+            x += thumbnailWidth - Math.round(thumbnailWidth * thumbnail.collapse_fraction);
         }
 
-        if (rtl) {
-            childBox.x1 = box.x1;
-            childBox.x2 = box.x1 + thumbnailWidth;
-        } else {
-            childBox.x1 = box.x2 - thumbnailWidth;
-            childBox.x2 = box.x2;
-        }
-        let indicatorY1 = indicatorLowerY1 +
-            (indicatorUpperY1 - indicatorLowerY1) * (indicatorValue % 1);
-        let indicatorY2 = indicatorLowerY2 +
-            (indicatorUpperY2 - indicatorLowerY2) * (indicatorValue % 1);
+        childBox.y1 = box.y1;
+        childBox.y2 = box.y1 + thumbnailHeight;
 
-        childBox.x1 -= indicatorLeftFullBorder;
-        childBox.x2 += indicatorRightFullBorder;
-        childBox.y1 = indicatorY1 - indicatorTopFullBorder;
-        childBox.y2 = indicatorY2 + indicatorBottomFullBorder;
+        const indicatorX1 = indicatorLowerX1 +
+            (indicatorUpperX1 - indicatorLowerX1) * (indicatorValue % 1);
+        const indicatorX2 = indicatorLowerX2 +
+            (indicatorUpperX2 - indicatorLowerX2) * (indicatorValue % 1);
+
+        childBox.x1 = indicatorX1 - indicatorLeftFullBorder;
+        childBox.x2 = indicatorX2 + indicatorRightFullBorder;
+        childBox.y1 -= indicatorTopFullBorder;
+        childBox.y2 += indicatorBottomFullBorder;
         this._indicator.allocate(childBox);
     }
 });
