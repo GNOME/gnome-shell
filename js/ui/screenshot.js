@@ -109,6 +109,7 @@ var ScreenshotService = class {
                 return [stream, file];
             } catch (e) {
                 invocation.return_gerror(e);
+                this._removeShooterForSender(invocation.get_sender());
                 return [null, null];
             }
         }
@@ -126,6 +127,7 @@ var ScreenshotService = class {
         }
 
         invocation.return_gerror(err);
+        this._removeShooterForSender(invocation.get_sender());
         return [null, null];
     }
 
