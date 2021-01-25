@@ -108,22 +108,24 @@ var ScreenshotService = class {
                 let stream = file.replace(null, false, Gio.FileCreateFlags.NONE, null);
                 return [stream, file];
             } catch (e) {
-                invocation.return_value(GLib.Variant.new('(bs)', [false, '']));
+                invocation.return_gerror(e);
                 return [null, null];
             }
         }
 
+        let err;
         for (let file of this._resolveRelativeFilename(filename)) {
             try {
                 let stream = file.create(Gio.FileCreateFlags.NONE, null);
                 return [stream, file];
             } catch (e) {
+                err = e;
                 if (!e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.EXISTS))
                     break;
             }
         }
 
-        invocation.return_value(GLib.Variant.new('(bs)', [false, '']));
+        invocation.return_gerror(err);
         return [null, null];
     }
 
