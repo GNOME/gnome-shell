@@ -252,6 +252,8 @@ var ExtensionManager = class {
             let notification = new MessageTray.Notification(source,
                 _('Extension Updates Available'),
                 _('Extension updates are ready to be installed.'));
+            notification.connect('activated',
+                () => source.open());
             source.showNotification(notification);
         }
     }
