@@ -3,7 +3,6 @@
 
 const { Clutter, Gio, GLib, GObject, Meta, Shell, St } = imports.gi;
 
-const Background = imports.ui.background;
 const DND = imports.ui.dnd;
 const Main = imports.ui.main;
 const Workspace = imports.ui.workspace;
@@ -271,8 +270,6 @@ var WorkspaceThumbnail = GObject.registerClass({
 
         this.connect('destroy', this._onDestroy.bind(this));
 
-        this._createBackground();
-
         let workArea = Main.layoutManager.getWorkAreaForMonitor(this.monitorIndex);
         this.setPorthole(workArea.x, workArea.y, workArea.width, workArea.height);
 
@@ -311,12 +308,6 @@ var WorkspaceThumbnail = GObject.registerClass({
         this._collapseFraction = 0; // Not collapsed
     }
 
-    _createBackground() {
-        this._bgManager = new Background.BackgroundManager({ monitorIndex: Main.layoutManager.primaryIndex,
-                                                             container: this._contents,
-                                                             vignette: false });
-    }
-
     setPorthole(x, y, width, height) {
         this._contents.set_size(width, height);
     }
@@ -332,14 +323,10 @@ var WorkspaceThumbnail = GObject.registerClass({
             return indexA - indexB;
         });
 
-        for (let i = 0; i < this._windows.length; i++) {
+        for (let i = 1; i < this._windows.length; i++) {
             let clone = this._windows[i];
-            if (i == 0) {
-                clone.setStackAbove(this._bgManager.backgroundActor);
-            } else {
-                let previousClone = this._windows[i - 1];
-                clone.setStackAbove(previousClone);
-            }
+            const previousClone = this._windows[i - 1];
+            clone.setStackAbove(previousClone);
         }
     }
 
@@ -480,12 +467,6 @@ var WorkspaceThumbnail = GObject.registerClass({
 
     _onDestroy() {
         this.workspaceRemoved();
-
-        if (this._bgManager) {
-            this._bgManager.destroy();
-            this._bgManager = null;
-        }
-
         this._windows = [];
     }
 
@@ -523,9 +504,7 @@ var WorkspaceThumbnail = GObject.registerClass({
         });
         this._contents.add_actor(clone);
 
-        if (this._windows.length == 0)
-            clone.setStackAbove(this._bgManager.backgroundActor);
-        else
+        if (this._windows.length > 0)
             clone.setStackAbove(this._windows[this._windows.length - 1]);
 
         this._windows.push(clone);
