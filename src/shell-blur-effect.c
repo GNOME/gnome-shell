@@ -615,6 +615,10 @@ shell_blur_effect_paint_node (ClutterEffect           *effect,
         case SHELL_BLUR_MODE_BACKGROUND:
           paint_opacity = 255;
           break;
+
+        default:
+          g_assert_not_reached();
+          break;
         }
 
       if (needs_repaint (self, flags))
