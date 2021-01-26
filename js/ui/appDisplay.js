@@ -1325,7 +1325,8 @@ class AppDisplay extends BaseAppView {
         // exist in AppDisplay. We work around that by adding a placeholder
         // icon that is either destroyed on cancel, or becomes the effective
         // new icon when dropped.
-        if (_getViewFromIcon(source) instanceof FolderView)
+        if (_getViewFromIcon(source) instanceof FolderView ||
+            this._appFavorites.isFavorite(source.id))
             this._ensurePlaceholder(source);
     }
 
@@ -1362,6 +1363,9 @@ class AppDisplay extends BaseAppView {
 
         if (this._currentDialog)
             this._currentDialog.popdown();
+
+        if (this._appFavorites.isFavorite(source.id))
+            this._appFavorites.removeFavorite(source.id);
 
         return true;
     }
