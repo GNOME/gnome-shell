@@ -1,7 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported WorkspaceThumbnail, ThumbnailsBox */
 
-const { Clutter, Gio, GLib, GObject, Meta, Shell, St } = imports.gi;
+const { Clutter, Gio, GLib, GObject, Graphene, Meta, Shell, St } = imports.gi;
 
 const DND = imports.ui.dnd;
 const Main = imports.ui.main;
@@ -613,6 +613,7 @@ var ThumbnailsBox = GObject.registerClass({
             style_class: 'workspace-thumbnails',
             reactive: true,
             x_align: Clutter.ActorAlign.CENTER,
+            pivot_point: new Graphene.Point({ x: 0.5, y: 0.5 }),
         });
 
         this._delegate = this;
