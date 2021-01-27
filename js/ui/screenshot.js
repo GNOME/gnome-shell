@@ -322,14 +322,16 @@ class SelectArea extends St.Widget {
         Main.uiGroup.set_child_above_sibling(this, null);
         this.show();
 
-        await this._grabHelper.grabAsync({ actor: this });
+        try {
+            await this._grabHelper.grabAsync({ actor: this });
+        } finally {
+            global.display.set_cursor(Meta.Cursor.DEFAULT);
 
-        global.display.set_cursor(Meta.Cursor.DEFAULT);
-
-        GLib.idle_add(GLib.PRIORITY_DEFAULT, () => {
-            this.destroy();
-            return GLib.SOURCE_REMOVE;
-        });
+            GLib.idle_add(GLib.PRIORITY_DEFAULT, () => {
+                this.destroy();
+                return GLib.SOURCE_REMOVE;
+            });
+        }
 
         return this._result;
     }
@@ -561,15 +563,17 @@ class PickPixel extends St.Widget {
 
         this._pickColor(...global.get_pointer());
 
-        await this._grabHelper.grabAsync({ actor: this });
+        try {
+            await this._grabHelper.grabAsync({ actor: this });
+        } finally {
+            global.display.set_cursor(Meta.Cursor.DEFAULT);
+            this._previewCursor.destroy();
 
-        global.display.set_cursor(Meta.Cursor.DEFAULT);
-        this._previewCursor.destroy();
-
-        GLib.idle_add(GLib.PRIORITY_DEFAULT, () => {
-            this.destroy();
-            return GLib.SOURCE_REMOVE;
-        });
+            GLib.idle_add(GLib.PRIORITY_DEFAULT, () => {
+                this.destroy();
+                return GLib.SOURCE_REMOVE;
+            });
+        }
 
         return this._result;
     }
