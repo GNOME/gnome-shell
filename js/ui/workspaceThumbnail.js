@@ -1178,13 +1178,12 @@ var ThumbnailsBox = GObject.registerClass({
     }
 
     vfunc_get_preferred_height(forWidth) {
-        let workspaceManager = global.workspace_manager;
         let themeNode = this.get_theme_node();
 
         forWidth = themeNode.adjust_for_width(forWidth);
 
         let spacing = themeNode.get_length('spacing');
-        let nWorkspaces = workspaceManager.n_workspaces;
+        let nWorkspaces = this._thumbnails.length;
         let totalSpacing = (nWorkspaces - 1) * spacing;
 
         const avail = forWidth - totalSpacing;
@@ -1200,11 +1199,10 @@ var ThumbnailsBox = GObject.registerClass({
         // Note that for getPreferredHeight/Width we cheat a bit and skip propagating
         // the size request to our children because we know how big they are and know
         // that the actors aren't depending on the virtual functions being called.
-        let workspaceManager = global.workspace_manager;
         let themeNode = this.get_theme_node();
 
         let spacing = themeNode.get_length('spacing');
-        let nWorkspaces = workspaceManager.n_workspaces;
+        let nWorkspaces = this._thumbnails.length;
         let totalSpacing = (nWorkspaces - 1) * spacing;
 
         const naturalWidth =
