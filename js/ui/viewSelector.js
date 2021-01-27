@@ -7,7 +7,6 @@ const Signals = imports.signals;
 const AppDisplay = imports.ui.appDisplay;
 const Main = imports.ui.main;
 const OverviewControls = imports.ui.overviewControls;
-const Params = imports.misc.params;
 const Search = imports.ui.search;
 const ShellEntry = imports.ui.shellEntry;
 const WorkspacesView = imports.ui.workspacesView;
@@ -257,10 +256,35 @@ var ViewSelector = GObject.registerClass({
         this._activitiesPage =
             this._addPage(activitiesContainer, _('Activities'), 'view-app-grid-symbolic');
 
+        Main.ctrlAltTabManager.addGroup(
+            this.appDisplay,
+            _('Applications'),
+            'edit-find-symbolic', {
+                proxy: this,
+                focusCallback: () => {
+                    this._showPage(this._activitiesPage);
+                    this._showAppsButton.checked = true;
+                    this.appDisplay.navigate_focus(
+                        null, St.DirectionType.TAB_FORWARD, false);
+                },
+            });
+
+        Main.ctrlAltTabManager.addGroup(
+            this._workspacesDisplay,
+            _('Windows'),
+            'focus-windows-symbolic', {
+                proxy: this,
+                focusCallback: () => {
+                    this._showPage(this._activitiesPage);
+                    this._showAppsButton.checked = false;
+                    this._workspacesDisplay.navigate_focus(
+                        null, St.DirectionType.TAB_FORWARD, false);
+                },
+            });
+
         this._searchResults = new Search.SearchResultsView();
-        this._searchPage = this._addPage(this._searchResults,
-                                         _("Search"), 'edit-find-symbolic',
-                                         { a11yFocus: this._entry });
+        this._searchPage = this._addPage(this._searchResults);
+        Main.ctrlAltTabManager.addGroup(this._entry, _('Search'), 'edit-find-symbolic');
 
         // Since the entry isn't inside the results container we install this
         // dummy widget as the last results container child so that we can
@@ -364,19 +388,8 @@ var ViewSelector = GObject.registerClass({
         super.vfunc_hide();
     }
 
-    _addPage(actor, name, a11yIcon, params) {
-        params = Params.parse(params, { a11yFocus: null });
-
+    _addPage(actor) {
         let page = new St.Bin({ child: actor });
-
-        if (params.a11yFocus) {
-            Main.ctrlAltTabManager.addGroup(params.a11yFocus, name, a11yIcon);
-        } else {
-            Main.ctrlAltTabManager.addGroup(actor, name, a11yIcon, {
-                proxy: this,
-                focusCallback: () => this._a11yFocusPage(page),
-            });
-        }
         page.hide();
         this.add_actor(page);
         return page;
@@ -431,11 +444,6 @@ var ViewSelector = GObject.registerClass({
             this._animateOut(oldPage);
         else
             this._animateIn();
-    }
-
-    _a11yFocusPage(page) {
-        this._showAppsButton.checked = page == this._activitiesPage;
-        page.navigate_focus(null, St.DirectionType.TAB_FORWARD, false);
     }
 
     _onShowAppsButtonToggled() {
