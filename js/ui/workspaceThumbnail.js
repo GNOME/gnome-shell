@@ -5,6 +5,7 @@ const { Clutter, Gio, GLib, GObject, Graphene, Meta, Shell, St } = imports.gi;
 
 const DND = imports.ui.dnd;
 const Main = imports.ui.main;
+const Util = imports.misc.util;
 const Workspace = imports.ui.workspace;
 
 // The maximum size of a thumbnail is 5% the width and height of the screen
@@ -257,6 +258,7 @@ var WorkspaceThumbnail = GObject.registerClass({
         super._init({
             clip_to_allocation: true,
             style_class: 'workspace-thumbnail',
+            pivot_point: new Graphene.Point({ x: 0.5, y: 0.5 }),
         });
         this._delegate = this;
 
@@ -334,6 +336,11 @@ var WorkspaceThumbnail = GObject.registerClass({
     set slide_position(slidePosition) {
         if (this._slidePosition == slidePosition)
             return;
+
+        const scale = Util.lerp(1, 0.75, slidePosition);
+        this.set_scale(scale, scale);
+        this.opacity = Util.lerp(255, 0, slidePosition);
+
         this._slidePosition = slidePosition;
         this.notify('slide-position');
         this.queue_relayout();
@@ -1205,8 +1212,19 @@ var ThumbnailsBox = GObject.registerClass({
         let nWorkspaces = this._thumbnails.length;
         let totalSpacing = (nWorkspaces - 1) * spacing;
 
-        const naturalWidth =
-            totalSpacing + nWorkspaces * this._porthole.width * MAX_THUMBNAIL_SCALE;
+        const naturalWidth = this._thumbnails.reduce((accumulator, thumbnail, index) => {
+            let workspaceSpacing = 0;
+
+            if (index > 0)
+                workspaceSpacing += spacing / 2;
+            if (index < this._thumbnails.length - 1)
+                workspaceSpacing += spacing / 2;
+
+            const progress = 1 - thumbnail.collapse_fraction;
+            const width = (this._porthole.width * MAX_THUMBNAIL_SCALE + workspaceSpacing) * progress;
+            return accumulator + width;
+        }, 0);
+
         return themeNode.adjust_preferred_width(totalSpacing, naturalWidth);
     }
 
