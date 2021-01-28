@@ -303,6 +303,7 @@ var Dash = GObject.registerClass({
         this.iconSize = 64;
         this._shownInitially = false;
 
+        this._separator = null;
         this._dragPlaceholder = null;
         this._dragPlaceholderPos = -1;
         this._animatingPlaceholdersCount = 0;
@@ -608,6 +609,14 @@ var Dash = GObject.registerClass({
                 mode: Clutter.AnimationMode.EASE_OUT_QUAD,
             });
         }
+
+        if (this._separator) {
+            this._separator.ease({
+                height: this.iconSize,
+                duration: DASH_ANIMATION_TIME,
+                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            });
+        }
     }
 
     _redisplay() {
@@ -734,6 +743,26 @@ var Dash = GObject.registerClass({
         for (let i = 0; i < addedItems.length; i++)
             addedItems[i].item.show(animate);
 
+        // Update separator
+        const nFavorites = Object.keys(favorites).length;
+        if (nFavorites > 0) {
+            if (!this._separator) {
+                this._separator = new St.Widget({
+                    style_class: 'dash-separator',
+                    y_align: Clutter.ActorAlign.CENTER,
+                    height: this.iconSize,
+                });
+                this._box.add_child(this._separator);
+            }
+            let pos = nFavorites;
+            if (this._dragPlaceholder)
+                pos++;
+            this._box.set_child_at_index(this._separator, pos);
+        } else if (this._separator) {
+            this._separator.destroy();
+            this._separator = null;
+        }
+
         // Workaround for https://bugzilla.gnome.org/show_bug.cgi?id=692744
         // Without it, StBoxLayout may use a stale size cache
         this._box.queue_relayout();
@@ -782,6 +811,12 @@ var Dash = GObject.registerClass({
         // need to do the same adjustment there.
         if (this._dragPlaceholder) {
             boxWidth -= this._dragPlaceholder.width;
+            numChildren--;
+        }
+
+        // Same with the separator
+        if (this._separator) {
+            boxWidth -= this._separator.width;
             numChildren--;
         }
 
