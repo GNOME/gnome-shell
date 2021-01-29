@@ -862,6 +862,16 @@ var WindowManager = class {
                            Shell.ActionMode.OVERVIEW,
                            this._switchToApplication.bind(this));
 
+        global.stage.connect('scroll-event', (stage, event) => {
+            if (this._workspaceAnimation.canHandleScrollEvent(event))
+                return Clutter.EVENT_PROPAGATE;
+
+            if ((event.get_state() & global.display.compositor_modifiers) === 0)
+                return Clutter.EVENT_PROPAGATE;
+
+            return this.handleWorkspaceScroll(event);
+        });
+
         global.display.connect('show-resize-popup', this._showResizePopup.bind(this));
         global.display.connect('show-pad-osd', this._showPadOsd.bind(this));
         global.display.connect('show-osd', (display, monitorIndex, iconName, label) => {

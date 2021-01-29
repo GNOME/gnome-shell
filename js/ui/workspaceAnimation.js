@@ -284,11 +284,15 @@ var WorkspaceAnimationController = class {
         });
 
         const swipeTracker = new SwipeTracker.SwipeTracker(global.stage,
-            Shell.ActionMode.NORMAL, { allowDrag: false, allowScroll: false });
+            Shell.ActionMode.NORMAL, { allowDrag: false });
         swipeTracker.connect('begin', this._switchWorkspaceBegin.bind(this));
         swipeTracker.connect('update', this._switchWorkspaceUpdate.bind(this));
         swipeTracker.connect('end', this._switchWorkspaceEnd.bind(this));
         this._swipeTracker = swipeTracker;
+
+        global.display.bind_property('compositor-modifiers',
+            this._swipeTracker, 'scroll-modifiers',
+            GObject.BindingFlags.SYNC_CREATE);
     }
 
     _prepareWorkspaceSwitch(workspaceIndices) {
@@ -388,6 +392,10 @@ var WorkspaceAnimationController = class {
 
             monitorGroup.ease_property('progress', progress, params);
         }
+    }
+
+    canHandleScrollEvent(event) {
+        return this._swipeTracker.canHandleScrollEvent(event);
     }
 
     _findMonitorGroup(monitorIndex) {
