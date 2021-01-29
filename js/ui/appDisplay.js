@@ -117,12 +117,6 @@ function _findBestFolderName(apps) {
 
 var BaseAppView = GObject.registerClass({
     GTypeFlags: GObject.TypeFlags.ABSTRACT,
-    Properties: {
-        'use-pagination': GObject.ParamSpec.boolean(
-            'use-pagination', 'use-pagination', 'use-pagination',
-            GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
-            false),
-    },
     Signals: {
         'view-loaded': {},
     },
