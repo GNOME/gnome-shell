@@ -10,7 +10,6 @@ const Workspace = imports.ui.workspace;
 
 var { ANIMATION_TIME } = imports.ui.overview;
 var WORKSPACE_SWITCH_TIME = 250;
-var SCROLL_TIMEOUT_TIME = 150;
 
 const MUTTER_SCHEMA = 'org.gnome.mutter';
 
@@ -527,7 +526,6 @@ class WorkspacesDisplay extends St.Widget {
         this._restackedNotifyId = 0;
         this._scrollEventId = 0;
         this._keyPressEventId = 0;
-        this._scrollTimeoutId = 0;
         this._syncActualGeometryLater = 0;
 
         this._actualGeometry = null;
@@ -535,7 +533,6 @@ class WorkspacesDisplay extends St.Widget {
         this._leavingOverview = false;
 
         this._gestureActive = false; // touch(pad) gestures
-        this._canScroll = true; // limiting scrolling speed
         this._animating = false;
 
         this.connect('destroy', this._onDestroy.bind(this));
@@ -557,11 +554,6 @@ class WorkspacesDisplay extends St.Widget {
         if (this._syncActualGeometryLater) {
             Meta.later_remove(this._syncActualGeometryLater);
             this._syncActualGeometryLater = 0;
-        }
-
-        if (this._scrollTimeoutId !== 0) {
-            GLib.source_remove(this._scrollTimeoutId);
-            this._scrollTimeoutId = 0;
         }
 
         global.window_manager.disconnect(this._switchWorkspaceId);
@@ -882,70 +874,7 @@ class WorkspacesDisplay extends St.Widget {
             this._getMonitorIndexForEvent(event) != this._primaryIndex)
             return Clutter.EVENT_PROPAGATE;
 
-        if (!this._canScroll)
-            return Clutter.EVENT_PROPAGATE;
-
-        if (event.is_pointer_emulated())
-            return Clutter.EVENT_PROPAGATE;
-
-        let direction = event.get_scroll_direction();
-        if (direction === Clutter.ScrollDirection.SMOOTH) {
-            const [dx, dy] = event.get_scroll_delta();
-            if (Math.abs(dx) > Math.abs(dy)) {
-                direction = dx < 0
-                    ? Clutter.ScrollDirection.RIGHT
-                    : Clutter.ScrollDirection.LEFT;
-            } else if (Math.abs(dy) > Math.abs(dx)) {
-                direction = dy < 0
-                    ? Clutter.ScrollDirection.UP
-                    : Clutter.ScrollDirection.DOWN;
-            } else {
-                return Clutter.EVENT_PROPAGATE;
-            }
-        }
-
-        let workspaceManager = global.workspace_manager;
-        const vertical = workspaceManager.layout_rows === -1;
-        const rtl = this.text_direction === Clutter.TextDirection.RTL;
-        let activeWs = workspaceManager.get_active_workspace();
-        let ws;
-        switch (direction) {
-        case Clutter.ScrollDirection.UP:
-            if (vertical)
-                ws = activeWs.get_neighbor(Meta.MotionDirection.UP);
-            else if (rtl)
-                ws = activeWs.get_neighbor(Meta.MotionDirection.RIGHT);
-            else
-                ws = activeWs.get_neighbor(Meta.MotionDirection.LEFT);
-            break;
-        case Clutter.ScrollDirection.DOWN:
-            if (vertical)
-                ws = activeWs.get_neighbor(Meta.MotionDirection.DOWN);
-            else if (rtl)
-                ws = activeWs.get_neighbor(Meta.MotionDirection.LEFT);
-            else
-                ws = activeWs.get_neighbor(Meta.MotionDirection.RIGHT);
-            break;
-        case Clutter.ScrollDirection.LEFT:
-            ws = activeWs.get_neighbor(Meta.MotionDirection.LEFT);
-            break;
-        case Clutter.ScrollDirection.RIGHT:
-            ws = activeWs.get_neighbor(Meta.MotionDirection.RIGHT);
-            break;
-        default:
-            return Clutter.EVENT_PROPAGATE;
-        }
-        Main.wm.actionMoveWorkspace(ws);
-
-        this._canScroll = false;
-        this._scrollTimeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT,
-            SCROLL_TIMEOUT_TIME, () => {
-                this._canScroll = true;
-                this._scrollTimeoutId = 0;
-                return GLib.SOURCE_REMOVE;
-            });
-
-        return Clutter.EVENT_STOP;
+        return Main.wm.handleWorkspaceScroll(event);
     }
 
     _onKeyPressEvent(actor, event) {

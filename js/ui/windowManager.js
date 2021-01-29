@@ -27,6 +27,7 @@ var DIALOG_SHOW_WINDOW_ANIMATION_TIME = 100;
 var DESTROY_WINDOW_ANIMATION_TIME = 150;
 var DIALOG_DESTROY_WINDOW_ANIMATION_TIME = 100;
 var WINDOW_ANIMATION_TIME = 250;
+var SCROLL_TIMEOUT_TIME = 150;
 var DIM_BRIGHTNESS = -0.3;
 var DIM_TIME = 500;
 var UNDIM_TIME = 250;
@@ -571,6 +572,7 @@ var WindowManager = class {
         this._allowedKeybindings = {};
 
         this._isWorkspacePrepended = false;
+        this._canScroll = true; // limiting scrolling speed
 
         this._shellwm.connect('kill-window-effects', (shellwm, actor) => {
             this._minimizeWindowDone(shellwm, actor);
@@ -1844,6 +1846,75 @@ var WindowManager = class {
             global.display.clear_mouse_mode();
             workspace.activate_with_focus(window, global.get_current_time());
         }
+    }
+
+    handleWorkspaceScroll(event) {
+        if (!this._canScroll)
+            return Clutter.EVENT_PROPAGATE;
+
+        if (event.type() !== Clutter.EventType.SCROLL)
+            return Clutter.EVENT_PROPAGATE;
+
+        if (event.is_pointer_emulated())
+            return Clutter.EVENT_PROPAGATE;
+
+        let direction = event.get_scroll_direction();
+        if (direction === Clutter.ScrollDirection.SMOOTH) {
+            const [dx, dy] = event.get_scroll_delta();
+            if (Math.abs(dx) > Math.abs(dy)) {
+                direction = dx < 0
+                    ? Clutter.ScrollDirection.RIGHT
+                    : Clutter.ScrollDirection.LEFT;
+            } else if (Math.abs(dy) > Math.abs(dx)) {
+                direction = dy < 0
+                    ? Clutter.ScrollDirection.UP
+                    : Clutter.ScrollDirection.DOWN;
+            } else {
+                return Clutter.EVENT_PROPAGATE;
+            }
+        }
+
+        const workspaceManager = global.workspace_manager;
+        const vertical = workspaceManager.layout_rows === -1;
+        const rtl = this.text_direction === Clutter.TextDirection.RTL;
+        const activeWs = workspaceManager.get_active_workspace();
+        let ws;
+        switch (direction) {
+        case Clutter.ScrollDirection.UP:
+            if (vertical)
+                ws = activeWs.get_neighbor(Meta.MotionDirection.UP);
+            else if (rtl)
+                ws = activeWs.get_neighbor(Meta.MotionDirection.RIGHT);
+            else
+                ws = activeWs.get_neighbor(Meta.MotionDirection.LEFT);
+            break;
+        case Clutter.ScrollDirection.DOWN:
+            if (vertical)
+                ws = activeWs.get_neighbor(Meta.MotionDirection.DOWN);
+            else if (rtl)
+                ws = activeWs.get_neighbor(Meta.MotionDirection.LEFT);
+            else
+                ws = activeWs.get_neighbor(Meta.MotionDirection.RIGHT);
+            break;
+        case Clutter.ScrollDirection.LEFT:
+            ws = activeWs.get_neighbor(Meta.MotionDirection.LEFT);
+            break;
+        case Clutter.ScrollDirection.RIGHT:
+            ws = activeWs.get_neighbor(Meta.MotionDirection.RIGHT);
+            break;
+        default:
+            return Clutter.EVENT_PROPAGATE;
+        }
+        this.actionMoveWorkspace(ws);
+
+        this._canScroll = false;
+        GLib.timeout_add(GLib.PRIORITY_DEFAULT,
+            SCROLL_TIMEOUT_TIME, () => {
+                this._canScroll = true;
+                return GLib.SOURCE_REMOVE;
+            });
+
+        return Clutter.EVENT_STOP;
     }
 
     _confirmDisplayChange() {
