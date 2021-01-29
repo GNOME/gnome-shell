@@ -85,13 +85,7 @@ class ControlsManager extends St.Widget {
         });
         this.add_actor(this._group);
 
-        const box = new St.BoxLayout({
-            x_expand: true,
-            y_expand: true,
-        });
-        box.add_child(this.viewSelector);
-
-        this._group.add_child(box);
+        this._group.add_child(this.viewSelector);
         this._group.add_actor(this._dashFader);
 
         this.connect('destroy', this._onDestroy.bind(this));
