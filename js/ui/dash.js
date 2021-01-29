@@ -745,7 +745,8 @@ var Dash = GObject.registerClass({
 
         // Update separator
         const nFavorites = Object.keys(favorites).length;
-        if (nFavorites > 0) {
+        const nIcons = children.length - removedActors.length;
+        if (nFavorites > 0 && nFavorites < nIcons) {
             if (!this._separator) {
                 this._separator = new St.Widget({
                     style_class: 'dash-separator',
