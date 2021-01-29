@@ -230,13 +230,15 @@ var WindowClone = GObject.registerClass({
 
 var ThumbnailState = {
     NEW:            0,
-    ANIMATING_IN:   1,
-    NORMAL:         2,
-    REMOVING:       3,
-    ANIMATING_OUT:  4,
-    ANIMATED_OUT:   5,
-    COLLAPSING:     6,
-    DESTROYED:      7,
+    EXPANDING:      1,
+    EXPANDED:       2,
+    ANIMATING_IN:   3,
+    NORMAL:         4,
+    REMOVING:       5,
+    ANIMATING_OUT:  6,
+    ANIMATED_OUT:   7,
+    COLLAPSING:     8,
+    DESTROYED:      9,
 };
 
 /**
@@ -928,6 +930,7 @@ var ThumbnailsBox = GObject.registerClass({
             let thumbnail = this._thumbnails[newWorkspaceIndex];
             this._setThumbnailState(thumbnail, ThumbnailState.NEW);
             thumbnail.slide_position = 1;
+            thumbnail.collapse_fraction = 1;
 
             this._queueUpdateStates();
 
@@ -1034,6 +1037,7 @@ var ThumbnailsBox = GObject.registerClass({
                 // not the initial fill, and not splicing via DND
                 thumbnail.state = ThumbnailState.NEW;
                 thumbnail.slide_position = 1; // start slid out
+                thumbnail.collapse_fraction = 1; // start fully collapsed
                 this._haveNewThumbnails = true;
             } else {
                 thumbnail.state = ThumbnailState.NORMAL;
@@ -1129,7 +1133,8 @@ var ThumbnailsBox = GObject.registerClass({
         if (this._stateCounts[ThumbnailState.ANIMATING_OUT] > 0)
             return;
 
-        // Once that's complete, we can start scaling to the new size and collapse any removed thumbnails
+        // Once that's complete, we can start scaling to the new size,
+        // collapse any removed thumbnails and expand added ones
         this._iterateStateThumbnails(ThumbnailState.ANIMATED_OUT, thumbnail => {
             this._setThumbnailState(thumbnail, ThumbnailState.COLLAPSING);
             thumbnail.ease_property('collapse-fraction', 1, {
@@ -1148,6 +1153,17 @@ var ThumbnailsBox = GObject.registerClass({
             });
         });
 
+        this._iterateStateThumbnails(ThumbnailState.NEW, thumbnail => {
+            this._setThumbnailState(thumbnail, ThumbnailState.EXPANDING);
+            thumbnail.ease_property('collapse-fraction', 0, {
+                duration: SLIDE_ANIMATION_TIME,
+                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+                onComplete: () => {
+                    this._setThumbnailState(thumbnail, ThumbnailState.EXPANDED);
+                },
+            });
+        });
+
         if (this._pendingScaleUpdate) {
             this.ease_property('scale', this._targetScale, {
                 mode: Clutter.AnimationMode.EASE_OUT_QUAD,
@@ -1158,11 +1174,13 @@ var ThumbnailsBox = GObject.registerClass({
         }
 
         // Wait until that's done
-        if (this._scale != this._targetScale || this._stateCounts[ThumbnailState.COLLAPSING] > 0)
+        if (this._scale !== this._targetScale ||
+            this._stateCounts[ThumbnailState.COLLAPSING] > 0 ||
+            this._stateCounts[ThumbnailState.EXPANDING] > 0)
             return;
 
         // And then slide in any new thumbnails
-        this._iterateStateThumbnails(ThumbnailState.NEW, thumbnail => {
+        this._iterateStateThumbnails(ThumbnailState.EXPANDED, thumbnail => {
             this._setThumbnailState(thumbnail, ThumbnailState.ANIMATING_IN);
             thumbnail.ease_property('slide-position', 0, {
                 duration: SLIDE_ANIMATION_TIME,
