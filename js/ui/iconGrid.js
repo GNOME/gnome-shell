@@ -266,7 +266,7 @@ var IconGridLayout = GObject.registerClass({
         'columns-per-page': GObject.ParamSpec.int('columns-per-page',
             'Columns per page', 'Columns per page',
             GObject.ParamFlags.READWRITE,
-            1, GLib.MAXINT32, 1),
+            1, GLib.MAXINT32, 6),
         'fixed-icon-size': GObject.ParamSpec.int('fixed-icon-size',
             'Fixed icon size', 'Fixed icon size',
             GObject.ParamFlags.READWRITE,
@@ -316,7 +316,7 @@ var IconGridLayout = GObject.registerClass({
         'rows-per-page': GObject.ParamSpec.int('rows-per-page',
             'Rows per page', 'Rows per page',
             GObject.ParamFlags.READWRITE,
-            1, GLib.MAXINT32, 1),
+            1, GLib.MAXINT32, 4),
     },
     Signals: {
         'pages-changed': {},
