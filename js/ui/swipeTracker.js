@@ -211,6 +211,10 @@ const ScrollGesture = GObject.registerClass({
             'orientation', 'orientation', 'orientation',
             GObject.ParamFlags.READWRITE,
             Clutter.Orientation, Clutter.Orientation.VERTICAL),
+        'scroll-modifiers': GObject.ParamSpec.flags(
+            'scroll-modifiers', 'scroll-modifiers', 'scroll-modifiers',
+            GObject.ParamFlags.READWRITE,
+            Clutter.ModifierType, 0),
     },
     Signals: {
         'begin':  { param_types: [GObject.TYPE_UINT, GObject.TYPE_DOUBLE, GObject.TYPE_DOUBLE] },
@@ -253,6 +257,10 @@ const ScrollGesture = GObject.registerClass({
             return false;
 
         if ((this._allowedModes & Main.actionMode) === 0)
+            return false;
+
+        if (this.scrollModifiers !== 0 &&
+            (event.get_state() & this.scrollModifiers) === 0)
             return false;
 
         return true;
@@ -336,6 +344,10 @@ var SwipeTracker = GObject.registerClass({
             'distance', 'distance', 'distance',
             GObject.ParamFlags.READWRITE,
             0, Infinity, 0),
+        'scroll-modifiers': GObject.ParamSpec.flags(
+            'scroll-modifiers', 'scroll-modifiers', 'scroll-modifiers',
+            GObject.ParamFlags.READWRITE,
+            Clutter.ModifierType, 0),
     },
     Signals: {
         'begin':  { param_types: [GObject.TYPE_UINT] },
@@ -394,6 +406,8 @@ var SwipeTracker = GObject.registerClass({
             this._scrollGesture.connect('end', this._endGesture.bind(this));
             this.bind_property('enabled', this._scrollGesture, 'enabled', 0);
             this.bind_property('orientation', this._scrollGesture, 'orientation', 0);
+            this.bind_property('scroll-modifiers',
+                this._scrollGesture, 'scroll-modifiers', 0);
         } else {
             this._scrollGesture = null;
         }
