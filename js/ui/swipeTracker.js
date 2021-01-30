@@ -53,35 +53,9 @@ const TouchpadSwipeGesture = GObject.registerClass({
         this._touchpadSettings = new Gio.Settings({
             schema_id: 'org.gnome.desktop.peripherals.touchpad',
         });
-        this._orientation = Clutter.Orientation.VERTICAL;
-        this._enabled = true;
 
         this._stageCaptureEvent =
             global.stage.connect('captured-event::touchpad', this._handleEvent.bind(this));
-    }
-
-    get enabled() {
-        return this._enabled;
-    }
-
-    set enabled(enabled) {
-        if (this._enabled === enabled)
-            return;
-
-        this._enabled = enabled;
-        this.notify('enabled');
-    }
-
-    get orientation() {
-        return this._orientation;
-    }
-
-    set orientation(orientation) {
-        if (this._orientation === orientation)
-            return;
-
-        this._orientation = orientation;
-        this.notify('orientation');
     }
 
     _handleEvent(actor, event) {
@@ -103,7 +77,7 @@ const TouchpadSwipeGesture = GObject.registerClass({
         let [dx, dy] = event.get_gesture_motion_delta();
 
         let delta;
-        if (this._orientation === Clutter.Orientation.VERTICAL)
+        if (this.orientation === Clutter.Orientation.VERTICAL)
             delta = dy / TOUCHPAD_BASE_HEIGHT;
         else
             delta = dx / TOUCHPAD_BASE_WIDTH;
@@ -162,7 +136,6 @@ const TouchSwipeGesture = GObject.registerClass({
 
         this._allowedModes = allowedModes;
         this._distance = global.screen_height;
-        this._orientation = Clutter.Orientation.VERTICAL;
 
         global.display.connect('grab-op-begin', () => {
             this.cancel();
@@ -183,18 +156,6 @@ const TouchSwipeGesture = GObject.registerClass({
         this.notify('distance');
     }
 
-    get orientation() {
-        return this._orientation;
-    }
-
-    set orientation(orientation) {
-        if (this._orientation === orientation)
-            return;
-
-        this._orientation = orientation;
-        this.notify('orientation');
-    }
-
     vfunc_gesture_prepare(actor) {
         if (!super.vfunc_gesture_prepare(actor))
             return false;
@@ -207,7 +168,7 @@ const TouchSwipeGesture = GObject.registerClass({
         let [x, y] = this.get_motion_coords(0);
 
         this._lastPosition =
-            this._orientation === Clutter.Orientation.VERTICAL ? y : x;
+            this.orientation === Clutter.Orientation.VERTICAL ? y : x;
 
         this.emit('begin', time, xPress, yPress);
         return true;
@@ -215,7 +176,7 @@ const TouchSwipeGesture = GObject.registerClass({
 
     vfunc_gesture_progress(_actor) {
         let [x, y] = this.get_motion_coords(0);
-        let pos = this._orientation === Clutter.Orientation.VERTICAL ? y : x;
+        let pos = this.orientation === Clutter.Orientation.VERTICAL ? y : x;
 
         let delta = pos - this._lastPosition;
         this._lastPosition = pos;
@@ -262,7 +223,6 @@ const ScrollGesture = GObject.registerClass({
         this._allowedModes = allowedModes;
         this._began = false;
         this._enabled = true;
-        this._orientation = Clutter.Orientation.VERTICAL;
 
         actor.connect('scroll-event', this._handleEvent.bind(this));
     }
@@ -279,18 +239,6 @@ const ScrollGesture = GObject.registerClass({
         this._began = false;
 
         this.notify('enabled');
-    }
-
-    get orientation() {
-        return this._orientation;
-    }
-
-    set orientation(orientation) {
-        if (this._orientation === orientation)
-            return;
-
-        this._orientation = orientation;
-        this.notify('orientation');
     }
 
     canHandleEvent(event) {
@@ -332,7 +280,7 @@ const ScrollGesture = GObject.registerClass({
         }
 
         let delta;
-        if (this._orientation === Clutter.Orientation.VERTICAL)
+        if (this.orientation === Clutter.Orientation.VERTICAL)
             delta = dy / TOUCHPAD_BASE_HEIGHT;
         else
             delta = dx / TOUCHPAD_BASE_WIDTH;
@@ -401,7 +349,6 @@ var SwipeTracker = GObject.registerClass({
 
         this._allowedModes = allowedModes;
         this._enabled = true;
-        this._orientation = Clutter.Orientation.VERTICAL;
         this._distance = global.screen_height;
 
         this._reset();
@@ -479,18 +426,6 @@ var SwipeTracker = GObject.registerClass({
         if (!enabled && this._state === State.SCROLLING)
             this._interrupt();
         this.notify('enabled');
-    }
-
-    get orientation() {
-        return this._orientation;
-    }
-
-    set orientation(orientation) {
-        if (this._orientation === orientation)
-            return;
-
-        this._orientation = orientation;
-        this.notify('orientation');
     }
 
     get distance() {

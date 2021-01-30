@@ -323,40 +323,15 @@ var IconGridLayout = GObject.registerClass({
     },
 }, class IconGridLayout extends Clutter.LayoutManager {
     _init(params = {}) {
-        params = Params.parse(params, {
-            allow_incomplete_pages: true,
-            column_spacing: 0,
-            columns_per_page: 6,
-            fixed_icon_size: -1,
-            last_row_align: Clutter.ActorAlign.FILL,
-            max_column_spacing: -1,
-            max_row_spacing: -1,
-            orientation: Clutter.Orientation.VERTICAL,
-            page_halign: Clutter.ActorAlign.FILL,
-            page_padding: new Clutter.Margin(),
-            page_valign: Clutter.ActorAlign.FILL,
-            row_spacing: 0,
-            rows_per_page: 4,
-        });
-
-        this._allowIncompletePages = params.allow_incomplete_pages;
-        this._columnSpacing = params.column_spacing;
-        this._columnsPerPage = params.columns_per_page;
-        this._fixedIconSize = params.fixed_icon_size;
-        this._lastRowAlign = params.last_row_align;
-        this._maxColumnSpacing = params.max_column_spacing;
-        this._maxRowSpacing = params.max_row_spacing;
-        this._orientation = params.orientation;
-        this._pageHAlign = params.page_halign;
-        this._pagePadding = params.page_padding;
-        this._pageVAlign = params.page_valign;
-        this._rowSpacing = params.row_spacing;
-        this._rowsPerPage = params.rows_per_page;
+        this._orientation = params.orientation ?? Clutter.Orientation.VERTICAL;
 
         super._init(params);
 
-        this._iconSize = this._fixedIconSize !== -1
-            ? this._fixedIconSize
+        if (!this.pagePadding)
+            this.pagePadding = new Clutter.Margin();
+
+        this._iconSize = this.fixedIconSize !== -1
+            ? this.fixedIconSize
             : IconSize.LARGE;
 
         this._pageSizeChanged = false;
@@ -397,14 +372,14 @@ var IconGridLayout = GObject.registerClass({
     }
 
     _findBestIconSize() {
-        const nColumns = this._columnsPerPage;
-        const nRows = this._rowsPerPage;
-        const columnSpacingPerPage = this._columnSpacing * (nColumns - 1);
-        const rowSpacingPerPage = this._rowSpacing * (nRows - 1);
+        const nColumns = this.columnsPerPage;
+        const nRows = this.rowsPerPage;
+        const columnSpacingPerPage = this.columnSpacing * (nColumns - 1);
+        const rowSpacingPerPage = this.rowSpacing * (nRows - 1);
         const [firstItem] = this._container;
 
-        if (this._fixedIconSize !== -1)
-            return this._fixedIconSize;
+        if (this.fixedIconSize !== -1)
+            return this.fixedIconSize;
 
         const iconSizes = Object.values(IconSize).sort((a, b) => b - a);
         for (const size of iconSizes) {
@@ -426,10 +401,10 @@ var IconGridLayout = GObject.registerClass({
 
             const emptyHSpace =
                 this._pageWidth - usedWidth - columnSpacingPerPage -
-                this._pagePadding.left - this._pagePadding.right;
+                this.pagePadding.left - this.pagePadding.right;
             const emptyVSpace =
                 this._pageHeight - usedHeight -  rowSpacingPerPage -
-                this._pagePadding.top - this._pagePadding.bottom;
+                this.pagePadding.top - this.pagePadding.bottom;
 
             if (emptyHSpace >= 0 && emptyVSpace > 0)
                 return size;
@@ -495,7 +470,7 @@ var IconGridLayout = GObject.registerClass({
             return;
 
         const visiblePageItems = this._getVisibleChildrenForPage(pageIndex);
-        const itemsPerPage = this._columnsPerPage * this._rowsPerPage;
+        const itemsPerPage = this.columnsPerPage * this.rowsPerPage;
 
         // No reduce needed
         if (visiblePageItems.length === itemsPerPage)
@@ -528,13 +503,13 @@ var IconGridLayout = GObject.registerClass({
         if (visibleItems.length === 0)
             this._removePage(pageIndex);
 
-        if (!this._allowIncompletePages)
+        if (!this.allowIncompletePages)
             this._fillItemVacancies(pageIndex);
     }
 
     _relocateSurplusItems(pageIndex) {
         const visiblePageItems = this._getVisibleChildrenForPage(pageIndex);
-        const itemsPerPage = this._columnsPerPage * this._rowsPerPage;
+        const itemsPerPage = this.columnsPerPage * this.rowsPerPage;
 
         // No overflow needed
         if (visiblePageItems.length <= itemsPerPage)
@@ -579,7 +554,7 @@ var IconGridLayout = GObject.registerClass({
 
                 if (item.visible)
                     this._relocateSurplusItems(itemData.pageIndex);
-                else if (!this._allowIncompletePages)
+                else if (!this.allowIncompletePages)
                     this._fillItemVacancies(itemData.pageIndex);
             }),
         });
@@ -591,72 +566,72 @@ var IconGridLayout = GObject.registerClass({
     }
 
     _calculateSpacing(childSize) {
-        const nColumns = this._columnsPerPage;
-        const nRows = this._rowsPerPage;
+        const nColumns = this.columnsPerPage;
+        const nRows = this.rowsPerPage;
         const usedWidth = childSize * nColumns;
         const usedHeight = childSize * nRows;
-        const columnSpacingPerPage = this._columnSpacing * (nColumns - 1);
-        const rowSpacingPerPage = this._rowSpacing * (nRows - 1);
+        const columnSpacingPerPage = this.columnSpacing * (nColumns - 1);
+        const rowSpacingPerPage = this.rowSpacing * (nRows - 1);
 
         const emptyHSpace =
             this._pageWidth - usedWidth - columnSpacingPerPage -
-            this._pagePadding.left - this._pagePadding.right;
+            this.pagePadding.left - this.pagePadding.right;
         const emptyVSpace =
             this._pageHeight - usedHeight -  rowSpacingPerPage -
-            this._pagePadding.top - this._pagePadding.bottom;
-        let leftEmptySpace = this._pagePadding.left;
-        let topEmptySpace = this._pagePadding.top;
+            this.pagePadding.top - this.pagePadding.bottom;
+        let leftEmptySpace = this.pagePadding.left;
+        let topEmptySpace = this.pagePadding.top;
         let hSpacing;
         let vSpacing;
 
-        switch (this._pageHAlign) {
+        switch (this.pageHalign) {
         case Clutter.ActorAlign.START:
-            hSpacing = this._columnSpacing;
+            hSpacing = this.columnSpacing;
             break;
         case Clutter.ActorAlign.CENTER:
             leftEmptySpace += Math.floor(emptyHSpace / 2);
-            hSpacing = this._columnSpacing;
+            hSpacing = this.columnSpacing;
             break;
         case Clutter.ActorAlign.END:
             leftEmptySpace += emptyHSpace;
-            hSpacing = this._columnSpacing;
+            hSpacing = this.columnSpacing;
             break;
         case Clutter.ActorAlign.FILL:
-            hSpacing = this._columnSpacing + emptyHSpace / (nColumns - 1);
+            hSpacing = this.columnSpacing + emptyHSpace / (nColumns - 1);
 
             // Maybe constraint horizontal spacing
-            if (this._maxColumnSpacing !== -1 && hSpacing > this._maxColumnSpacing) {
+            if (this.maxColumnSpacing !== -1 && hSpacing > this.maxColumnSpacing) {
                 const extraHSpacing =
-                    (this._maxColumnSpacing - this._columnSpacing) * (nColumns - 1);
+                    (this.maxColumnSpacing - this.columnSpacing) * (nColumns - 1);
 
-                hSpacing = this._maxColumnSpacing;
+                hSpacing = this.maxColumnSpacing;
                 leftEmptySpace +=
                     Math.max((emptyHSpace - extraHSpacing) / 2, 0);
             }
             break;
         }
 
-        switch (this._pageVAlign) {
+        switch (this.pageValign) {
         case Clutter.ActorAlign.START:
-            vSpacing = this._rowSpacing;
+            vSpacing = this.rowSpacing;
             break;
         case Clutter.ActorAlign.CENTER:
             topEmptySpace += Math.floor(emptyVSpace / 2);
-            vSpacing = this._rowSpacing;
+            vSpacing = this.rowSpacing;
             break;
         case Clutter.ActorAlign.END:
             topEmptySpace += emptyVSpace;
-            vSpacing = this._rowSpacing;
+            vSpacing = this.rowSpacing;
             break;
         case Clutter.ActorAlign.FILL:
-            vSpacing = this._rowSpacing + emptyVSpace / (nRows - 1);
+            vSpacing = this.rowSpacing + emptyVSpace / (nRows - 1);
 
             // Maybe constraint vertical spacing
-            if (this._maxRowSpacing !== -1 && vSpacing > this._maxRowSpacing) {
+            if (this.maxRowSpacing !== -1 && vSpacing > this.maxRowSpacing) {
                 const extraVSpacing =
-                    (this._maxRowSpacing - this._rowSpacing) * (nRows - 1);
+                    (this.maxRowSpacing - this.rowSpacing) * (nRows - 1);
 
-                vSpacing = this._maxRowSpacing;
+                vSpacing = this.maxRowSpacing;
                 topEmptySpace +=
                     Math.max((emptyVSpace - extraVSpacing) / 2, 0);
             }
@@ -668,25 +643,25 @@ var IconGridLayout = GObject.registerClass({
     }
 
     _getRowPadding(items, itemIndex, childSize, spacing) {
-        const nRows = Math.ceil(items.length / this._columnsPerPage);
+        const nRows = Math.ceil(items.length / this.columnsPerPage);
 
         let rowAlign = 0;
-        const row = Math.floor(itemIndex / this._columnsPerPage);
+        const row = Math.floor(itemIndex / this.columnsPerPage);
 
         // Only apply to the last row
         if (row < nRows - 1)
             return 0;
 
-        const rowStart = row * this._columnsPerPage;
-        const rowEnd = Math.min((row + 1) * this._columnsPerPage - 1, items.length - 1);
+        const rowStart = row * this.columnsPerPage;
+        const rowEnd = Math.min((row + 1) * this.columnsPerPage - 1, items.length - 1);
         const itemsInThisRow = rowEnd - rowStart + 1;
-        const nEmpty = this._columnsPerPage - itemsInThisRow;
+        const nEmpty = this.columnsPerPage - itemsInThisRow;
         const availableWidth = nEmpty * (spacing + childSize);
 
         const isRtl =
             Clutter.get_default_text_direction() === Clutter.TextDirection.RTL;
 
-        switch (this._lastRowAlign) {
+        switch (this.lastRowAlign) {
         case Clutter.ActorAlign.START:
             rowAlign = 0;
             break;
@@ -801,11 +776,11 @@ var IconGridLayout = GObject.registerClass({
                 pageIndex = swap(pageIndex, this._pages.length);
 
             visibleItems.forEach((item, itemIndex) => {
-                const row = Math.floor(itemIndex / this._columnsPerPage);
-                let column = itemIndex % this._columnsPerPage;
+                const row = Math.floor(itemIndex / this.columnsPerPage);
+                let column = itemIndex % this.columnsPerPage;
 
                 if (isRtl)
-                    column = swap(column, this._columnsPerPage);
+                    column = swap(column, this.columnsPerPage);
 
                 const rowPadding = this._getRowPadding(visibleItems, itemIndex,
                     childSize, hSpacing);
@@ -1060,11 +1035,11 @@ var IconGridLayout = GObject.registerClass({
             return [null, DragLocation.INVALID];
 
         const gridWidth =
-            childSize * this._columnsPerPage +
-            hSpacing * (this._columnsPerPage - 1);
+            childSize * this.columnsPerPage +
+            hSpacing * (this.columnsPerPage - 1);
         const gridHeight =
-            childSize * this._rowsPerPage +
-            vSpacing * (this._rowsPerPage - 1);
+            childSize * this.rowsPerPage +
+            vSpacing * (this.rowsPerPage - 1);
 
         if (x > leftEmptySpace + gridWidth || y > topEmptySpace + gridHeight)
             return [null, DragLocation.INVALID];
@@ -1116,183 +1091,12 @@ var IconGridLayout = GObject.registerClass({
     }
 
     // eslint-disable-next-line camelcase
-    get allow_incomplete_pages() {
-        return this._allowIncompletePages;
-    }
-
-    // eslint-disable-next-line camelcase
-    set allow_incomplete_pages(v) {
-        if (this._allowIncompletePages === v)
-            return;
-
-        this._allowIncompletePages = v;
-        this.notify('allow-incomplete-pages');
-    }
-
-    // eslint-disable-next-line camelcase
-    get column_spacing() {
-        return this._columnSpacing;
-    }
-
-    // eslint-disable-next-line camelcase
-    set column_spacing(v) {
-        if (this._columnSpacing === v)
-            return;
-
-        this._columnSpacing = v;
-        this.notify('column-spacing');
-    }
-
-    // eslint-disable-next-line camelcase
-    get columns_per_page() {
-        return this._columnsPerPage;
-    }
-
-    // eslint-disable-next-line camelcase
-    set columns_per_page(v) {
-        if (this._columnsPerPage === v)
-            return;
-
-        this._columnsPerPage = v;
-        this.notify('columns-per-page');
-    }
-
-    // eslint-disable-next-line camelcase
-    get fixed_icon_size() {
-        return this._fixedIconSize;
-    }
-
-    // eslint-disable-next-line camelcase
-    set fixed_icon_size(v) {
-        if (this._fixedIconSize === v)
-            return;
-
-        this._fixedIconSize = v;
-        this.notify('fixed-icon-size');
-    }
-
-    // eslint-disable-next-line camelcase
     get icon_size() {
         return this._iconSize;
     }
 
-    // eslint-disable-next-line camelcase
-    get last_row_align() {
-        return this._lastRowAlign;
-    }
-
-    // eslint-disable-next-line camelcase
-    get max_column_spacing() {
-        return this._maxColumnSpacing;
-    }
-
-    // eslint-disable-next-line camelcase
-    set max_column_spacing(v) {
-        if (this._maxColumnSpacing === v)
-            return;
-
-        this._maxColumnSpacing = v;
-        this.notify('max-column-spacing');
-    }
-
-    // eslint-disable-next-line camelcase
-    get max_row_spacing() {
-        return this._maxRowSpacing;
-    }
-
-    // eslint-disable-next-line camelcase
-    set max_row_spacing(v) {
-        if (this._maxRowSpacing === v)
-            return;
-
-        this._maxRowSpacing = v;
-        this.notify('max-row-spacing');
-    }
-
-    // eslint-disable-next-line camelcase
-    set last_row_align(v) {
-        if (this._lastRowAlign === v)
-            return;
-
-        this._lastRowAlign = v;
-        this.notify('last-row-align');
-    }
-
     get nPages() {
         return this._pages.length;
-    }
-
-    // eslint-disable-next-line camelcase
-    get page_halign() {
-        return this._pageHAlign;
-    }
-
-    // eslint-disable-next-line camelcase
-    set page_halign(v) {
-        if (this._pageHAlign === v)
-            return;
-
-        this._pageHAlign = v;
-        this.notify('page-halign');
-    }
-
-    // eslint-disable-next-line camelcase
-    get page_padding() {
-        return this._pagePadding;
-    }
-
-    // eslint-disable-next-line camelcase
-    set page_padding(padding) {
-        if (this._pagePadding.top === padding.top &&
-            this._pagePadding.right === padding.right &&
-            this._pagePadding.bottom === padding.bottom &&
-            this._pagePadding.left === padding.left)
-            return;
-
-        this._pagePadding = padding;
-        this.notify('page-padding');
-    }
-
-    // eslint-disable-next-line camelcase
-    get page_valign() {
-        return this._pageVAlign;
-    }
-
-    // eslint-disable-next-line camelcase
-    set page_valign(v) {
-        if (this._pageVAlign === v)
-            return;
-
-        this._pageVAlign = v;
-        this.notify('page-valign');
-    }
-
-    // eslint-disable-next-line camelcase
-    get row_spacing() {
-        return this._rowSpacing;
-    }
-
-    // eslint-disable-next-line camelcase
-    set row_spacing(v) {
-        if (this._rowSpacing === v)
-            return;
-
-        this._rowSpacing = v;
-        this.notify('row-spacing');
-    }
-
-    // eslint-disable-next-line camelcase
-    get rows_per_page() {
-        return this._rowsPerPage;
-    }
-
-    // eslint-disable-next-line camelcase
-    set rows_per_page(v) {
-        if (this._rowsPerPage === v)
-            return;
-
-        this._rowsPerPage = v;
-        this.notify('rows-per-page');
     }
 
     get orientation() {

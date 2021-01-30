@@ -369,7 +369,6 @@ var Notification = GObject.registerClass({
         this.isTransient = false;
         this.privacyScope = PrivacyScope.USER;
         this.forFeedback = false;
-        this._acknowledged = false;
         this.bannerBodyText = null;
         this.bannerBodyMarkup = false;
         this._soundName = null;
@@ -436,17 +435,6 @@ var Notification = GObject.registerClass({
     // @callback: the callback for the action
     addAction(label, callback) {
         this.actions.push({ label, callback });
-    }
-
-    get acknowledged() {
-        return this._acknowledged;
-    }
-
-    set acknowledged(v) {
-        if (this._acknowledged == v)
-            return;
-        this._acknowledged = v;
-        this.notify('acknowledged');
     }
 
     setUrgency(urgency) {

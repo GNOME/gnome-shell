@@ -307,16 +307,6 @@ var PadDiagram = GObject.registerClass({
         super._init(params);
     }
 
-    // eslint-disable-next-line camelcase
-    get left_handed() {
-        return this._leftHanded;
-    }
-
-    // eslint-disable-next-line camelcase
-    set left_handed(leftHanded) {
-        this._leftHanded = leftHanded;
-    }
-
     get image() {
         return this._imagePath;
     }
@@ -404,8 +394,7 @@ var PadDiagram = GObject.registerClass({
         istream.add_bytes(new GLib.Bytes(svgData));
 
         return Rsvg.Handle.new_from_stream_sync(istream,
-                                                Gio.File.new_for_path(this._imagePath),
-                                                0, null);
+            Gio.File.new_for_path(this._imagePath), 0, null);
     }
 
     _updateDiagramScale() {
@@ -471,7 +460,7 @@ var PadDiagram = GObject.registerClass({
         cr.save();
         cr.translate(width / 2, height / 2);
         cr.scale(this._scale, this._scale);
-        if (this._leftHanded)
+        if (this.leftHanded)
             cr.rotate(Math.PI);
         cr.translate(-dimensions.width / 2, -dimensions.height / 2);
         this._handle.render_cairo(cr);
@@ -500,7 +489,7 @@ var PadDiagram = GObject.registerClass({
         else
             direction = RTL;
 
-        if (this._leftHanded) {
+        if (this.leftHanded) {
             direction = 1 - direction;
             pos.x = this._imageWidth - pos.x;
             pos.y = this._imageHeight - pos.y;
