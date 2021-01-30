@@ -15,6 +15,8 @@ const SmartcardManager = imports.misc.smartcardManager;
 
 const FprintManagerIface = loadInterfaceXML('net.reactivated.Fprint.Manager');
 const FprintManagerProxy = Gio.DBusProxy.makeProxyWrapper(FprintManagerIface);
+const FprintDeviceIface = loadInterfaceXML('net.reactivated.Fprint.Device');
+const FprintDeviceProxy = Gio.DBusProxy.makeProxyWrapper(FprintDeviceIface);
 
 Gio._promisify(Gdm.Client.prototype,
     'open_reauthentication_channel', 'open_reauthentication_channel_finish');
@@ -50,6 +52,12 @@ var MessageType = {
     ERROR: 1,
     INFO: 2,
     HINT: 3,
+};
+
+const FingerprintReaderType = {
+    NONE: 0,
+    PRESS: 1,
+    SWIPE: 2,
 };
 
 function fadeInActor(actor) {
@@ -312,7 +320,7 @@ var ShellUserVerifier = class {
     }
 
     _checkForFingerprintReader() {
-        this._haveFingerprintReader = false;
+        this._fingerprintReaderType = FingerprintReaderType.NONE;
 
         if (!this._settings.get_boolean(FINGERPRINT_AUTHENTICATION_KEY) ||
             this._fprintManager == null) {
@@ -321,9 +329,17 @@ var ShellUserVerifier = class {
         }
 
         this._fprintManager.GetDefaultDeviceRemote(Gio.DBusCallFlags.NONE, this._cancellable,
-            (device, error) => {
-                if (!error && device) {
-                    this._haveFingerprintReader = true;
+            (params, error) => {
+                if (!error && params) {
+                    const [device] = params;
+                    const fprintDeviceProxy = new FprintDeviceProxy(Gio.DBus.system,
+                        'net.reactivated.Fprint',
+                        device);
+                    const fprintDeviceType = fprintDeviceProxy['scan-type'];
+
+                    this._fingerprintReaderType = fprintDeviceType === 'swipe'
+                        ? FingerprintReaderType.SWIPE
+                        : FingerprintReaderType.PRESS;
                     this._updateDefaultService();
                 }
             });
@@ -438,7 +454,7 @@ var ShellUserVerifier = class {
             this._defaultService = PASSWORD_SERVICE_NAME;
         else if (this._settings.get_boolean(SMARTCARD_AUTHENTICATION_KEY))
             this._defaultService = SMARTCARD_SERVICE_NAME;
-        else if (this._haveFingerprintReader)
+        else if (this._fingerprintReaderType !== FingerprintReaderType.NONE)
             this._defaultService = FINGERPRINT_SERVICE_NAME;
 
         if (!this._defaultService) {
@@ -471,7 +487,9 @@ var ShellUserVerifier = class {
     _beginVerification() {
         this._startService(this._getForegroundService());
 
-        if (this._userName && this._haveFingerprintReader && !this.serviceIsForeground(FINGERPRINT_SERVICE_NAME))
+        if (this._userName &&
+            this._fingerprintReaderType !== FingerprintReaderType.NONE &&
+            !this.serviceIsForeground(FINGERPRINT_SERVICE_NAME))
             this._startService(FINGERPRINT_SERVICE_NAME);
     }
 
@@ -479,14 +497,19 @@ var ShellUserVerifier = class {
         if (this.serviceIsForeground(serviceName)) {
             this._queueMessage(info, MessageType.INFO);
         } else if (serviceName == FINGERPRINT_SERVICE_NAME &&
-            this._haveFingerprintReader) {
+            this._fingerprintReaderType !== FingerprintReaderType.NONE) {
             // We don't show fingerprint messages directly since it's
             // not the main auth service. Instead we use the messages
             // as a cue to display our own message.
-
-            // Translators: this message is shown below the password entry field
-            // to indicate the user can swipe their finger instead
-            this._queueMessage(_("(or swipe finger)"), MessageType.HINT);
+            if (this._fingerprintReaderType === FingerprintReaderType.SWIPE) {
+                // Translators: this message is shown below the password entry field
+                // to indicate the user can swipe their finger on the fingerprint reader
+                this._queueMessage(_('(or swipe finger across reader)'), MessageType.HINT);
+            } else {
+                // Translators: this message is shown below the password entry field
+                // to indicate the user can place their finger on the fingerprint reader instead
+                this._queueMessage(_('(or place finger on reader)'), MessageType.HINT);
+            }
         }
     }
 
