@@ -27,6 +27,7 @@ var AuthPromptStatus = {
     VERIFYING: 1,
     VERIFICATION_FAILED: 2,
     VERIFICATION_SUCCEEDED: 3,
+    VERIFICATION_CANCELLED: 4,
 };
 
 var BeginRequestType = {
@@ -475,12 +476,16 @@ var AuthPrompt = GObject.registerClass({
 
         if (oldStatus == AuthPromptStatus.VERIFICATION_FAILED)
             this.emit('failed');
+        else if (oldStatus === AuthPromptStatus.VERIFICATION_CANCELLED)
+            this.emit('cancelled');
 
         let beginRequestType;
 
         if (this._mode == AuthPromptMode.UNLOCK_ONLY) {
             // The user is constant at the unlock screen, so it will immediately
             // respond to the request with the username
+            if (oldStatus === AuthPromptStatus.VERIFICATION_CANCELLED)
+                return;
             beginRequestType = BeginRequestType.PROVIDE_USERNAME;
         } else if (this._userVerifier.serviceIsForeground(GdmUtil.OVIRT_SERVICE_NAME) ||
                    this._userVerifier.serviceIsForeground(GdmUtil.SMARTCARD_SERVICE_NAME)) {
@@ -535,7 +540,7 @@ var AuthPrompt = GObject.registerClass({
         if (this.verificationStatus == AuthPromptStatus.VERIFICATION_SUCCEEDED)
             return;
 
+        this.verificationStatus = AuthPromptStatus.VERIFICATION_CANCELLED;
         this.reset();
-        this.emit('cancelled');
     }
 });
