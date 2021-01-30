@@ -79,13 +79,11 @@ var MonitorConstraint = GObject.registerClass({
         this.notify('index');
     }
 
-    // eslint-disable-next-line camelcase
-    get work_area() {
+    get workArea() {
         return this._workArea;
     }
 
-    // eslint-disable-next-line camelcase
-    set work_area(v) {
+    set workArea(v) {
         if (v == this._workArea)
             return;
         this._workArea = v;

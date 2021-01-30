@@ -851,13 +851,11 @@ var WorkspaceLayout = GObject.registerClass({
         this.layout_changed();
     }
 
-    // eslint-disable-next-line camelcase
-    get layout_frozen() {
+    get layoutFrozen() {
         return this._layoutFrozen;
     }
 
-    // eslint-disable-next-line camelcase
-    set layout_frozen(f) {
+    set layoutFrozen(f) {
         if (this._layoutFrozen === f)
             return;
 

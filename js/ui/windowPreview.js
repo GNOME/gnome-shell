@@ -188,8 +188,7 @@ var WindowPreviewLayout = GObject.registerClass({
         return [...this._windows.values()].map(i => i.metaWindow);
     }
 
-    // eslint-disable-next-line camelcase
-    get bounding_box() {
+    get boundingBox() {
         return this._boundingBox;
     }
 });
@@ -631,13 +630,11 @@ var WindowPreview = GObject.registerClass({
         };
     }
 
-    // eslint-disable-next-line camelcase
-    get overlay_enabled() {
+    get overlayEnabled() {
         return this._overlayEnabled;
     }
 
-    // eslint-disable-next-line camelcase
-    set overlay_enabled(enabled) {
+    set overlayEnabled(enabled) {
         if (this._overlayEnabled === enabled)
             return;
 

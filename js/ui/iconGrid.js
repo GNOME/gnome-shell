@@ -1090,8 +1090,7 @@ var IconGridLayout = GObject.registerClass({
         return [null, DragLocation.EMPTY_SPACE];
     }
 
-    // eslint-disable-next-line camelcase
-    get icon_size() {
+    get iconSize() {
         return this._iconSize;
     }
 

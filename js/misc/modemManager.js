@@ -117,13 +117,11 @@ var ModemBase = GObject.registerClass({
         this._signalQuality = 0;
     }
 
-    // eslint-disable-next-line camelcase
-    get operator_name() {
+    get operatorName() {
         return this._operatorName;
     }
 
-    // eslint-disable-next-line camelcase
-    get signal_quality() {
+    get signalQuality() {
         return this._signalQuality;
     }
 

@@ -322,13 +322,11 @@ var PadDiagram = GObject.registerClass({
         this._initLabels();
     }
 
-    // eslint-disable-next-line camelcase
-    get editor_actor() {
+    get editorActor() {
         return this._editorActor;
     }
 
-    // eslint-disable-next-line camelcase
-    set editor_actor(actor) {
+    set editorActor(actor) {
         actor.hide();
         this._editorActor = actor;
         this.add_actor(actor);

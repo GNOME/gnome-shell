@@ -334,8 +334,7 @@ var WorkspaceThumbnail = GObject.registerClass({
         }
     }
 
-    // eslint-disable-next-line camelcase
-    set slide_position(slidePosition) {
+    set slidePosition(slidePosition) {
         if (this._slidePosition == slidePosition)
             return;
 
@@ -348,13 +347,11 @@ var WorkspaceThumbnail = GObject.registerClass({
         this.queue_relayout();
     }
 
-    // eslint-disable-next-line camelcase
-    get slide_position() {
+    get slidePosition() {
         return this._slidePosition;
     }
 
-    // eslint-disable-next-line camelcase
-    set collapse_fraction(collapseFraction) {
+    set collapseFraction(collapseFraction) {
         if (this._collapseFraction == collapseFraction)
             return;
         this._collapseFraction = collapseFraction;
@@ -362,8 +359,7 @@ var WorkspaceThumbnail = GObject.registerClass({
         this.queue_relayout();
     }
 
-    // eslint-disable-next-line camelcase
-    get collapse_fraction() {
+    get collapseFraction() {
         return this._collapseFraction;
     }
 

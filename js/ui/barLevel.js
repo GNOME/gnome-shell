@@ -60,13 +60,11 @@ var BarLevel = GObject.registerClass({
         this.queue_repaint();
     }
 
-    // eslint-disable-next-line camelcase
-    get maximum_value() {
+    get maximumValue() {
         return this._maxValue;
     }
 
-    // eslint-disable-next-line camelcase
-    set maximum_value(value) {
+    set maximumValue(value) {
         value = Math.max(value, 1);
 
         if (this._maxValue == value)
@@ -78,13 +76,11 @@ var BarLevel = GObject.registerClass({
         this.queue_repaint();
     }
 
-    // eslint-disable-next-line camelcase
-    get overdrive_start() {
+    get overdriveStart() {
         return this._overdriveStart;
     }
 
-    // eslint-disable-next-line camelcase
-    set overdrive_start(value) {
+    set overdriveStart(value) {
         if (this._overdriveStart == value)
             return;
 

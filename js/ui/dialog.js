@@ -336,13 +336,11 @@ var ListSectionItem = GObject.registerClass({
         this.add_child(textLayout);
     }
 
-    // eslint-disable-next-line camelcase
-    get icon_actor() {
+    get iconActor() {
         return this._iconActorBin.get_child();
     }
 
-    // eslint-disable-next-line camelcase
-    set icon_actor(actor) {
+    set iconActor(actor) {
         this._iconActorBin.set_child(actor);
         this.notify('icon-actor');
     }
