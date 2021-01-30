@@ -607,10 +607,6 @@ var WorkspaceThumbnail = GObject.registerClass({
 
 var ThumbnailsBox = GObject.registerClass({
     Properties: {
-        'indicator-y': GObject.ParamSpec.double(
-            'indicator-y', 'indicator-y', 'indicator-y',
-            GObject.ParamFlags.READWRITE,
-            0, Infinity, 0),
         'scale': GObject.ParamSpec.double(
             'scale', 'scale', 'scale',
             GObject.ParamFlags.READWRITE,
