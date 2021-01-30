@@ -220,7 +220,7 @@ var ShellUserVerifier = class {
     }
 
     destroy() {
-        this.clear();
+        this.cancel();
 
         this._settings.run_dispose();
         this._settings = null;
