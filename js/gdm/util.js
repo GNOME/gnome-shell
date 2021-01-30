@@ -6,12 +6,15 @@ const { Clutter, Gdm, Gio, GLib } = imports.gi;
 const Signals = imports.signals;
 
 const Batch = imports.gdm.batch;
-const Fprint = imports.gdm.fingerprint;
 const OVirt = imports.gdm.oVirt;
 const Vmware = imports.gdm.vmware;
 const Main = imports.ui.main;
+const { loadInterfaceXML } = imports.misc.fileUtils;
 const Params = imports.misc.params;
 const SmartcardManager = imports.misc.smartcardManager;
+
+const FprintManagerIface = loadInterfaceXML('net.reactivated.Fprint.Manager');
+const FprintManagerProxy = Gio.DBusProxy.makeProxyWrapper(FprintManagerIface);
 
 Gio._promisify(Gdm.Client.prototype,
     'open_reauthentication_channel', 'open_reauthentication_channel_finish');
@@ -138,7 +141,12 @@ var ShellUserVerifier = class {
                                this._updateDefaultService.bind(this));
         this._updateDefaultService();
 
-        this._fprintManager = Fprint.FprintManager();
+        this._fprintManager = new FprintManagerProxy(Gio.DBus.system,
+            'net.reactivated.Fprint',
+            '/net/reactivated/Fprint/Manager',
+            null,
+            null,
+            Gio.DBusProxyFlags.DO_NOT_LOAD_PROPERTIES);
         this._smartcardManager = SmartcardManager.getSmartcardManager();
 
         // We check for smartcards right away, since an inserted smartcard

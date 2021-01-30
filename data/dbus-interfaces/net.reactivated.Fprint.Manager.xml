@@ -1,0 +1,18 @@
+<!DOCTYPE node PUBLIC
+"-//freedesktop//DTD D-BUS Object Introspection 1.0//EN"
+"http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd">
+<node>
+	<interface name="net.reactivated.Fprint.Manager">
+
+		<method name="GetDevices">
+			<arg type="ao" name="devices" direction="out">
+			</arg>
+		</method>
+
+		<method name="GetDefaultDevice">
+			<arg type="o" name="device" direction="out">
+			</arg>
+		</method>
+
+	</interface>
+</node>
