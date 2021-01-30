@@ -12,6 +12,7 @@ const Util = imports.misc.util;
 const { WindowPreview } = imports.ui.windowPreview;
 
 var WINDOW_PREVIEW_MAXIMUM_SCALE = 0.95;
+var MAXIMUM_PREVIEW_AREA = 0.98;
 
 var WINDOW_REPOSITIONING_DELAY = 750;
 
@@ -469,6 +470,14 @@ var WorkspaceLayout = GObject.registerClass({
             colSpacing += Math.max(leftOversize, rightOversize);
 
         if (containerBox) {
+            // add some padding around preview area
+            const [width, height] = containerBox.get_size();
+            containerBox.set_size(
+                width * MAXIMUM_PREVIEW_AREA,
+                height * MAXIMUM_PREVIEW_AREA);
+            containerBox.x1 += width * (1 - MAXIMUM_PREVIEW_AREA) / 2;
+            containerBox.y1 += height * (1 - MAXIMUM_PREVIEW_AREA) / 2;
+
             const [topOverlap, bottomOverlap] = window.overlapHeights();
             containerBox.x1 += leftOversize + topOverlap;
             containerBox.x2 -= rightOversize;
