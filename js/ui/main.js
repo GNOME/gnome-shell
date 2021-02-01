@@ -29,6 +29,7 @@ const PadOsd = imports.ui.padOsd;
 const Panel = imports.ui.panel;
 const Params = imports.misc.params;
 const RunDialog = imports.ui.runDialog;
+const WelcomeDialog = imports.ui.welcomeDialog;
 const Layout = imports.ui.layout;
 const LoginManager = imports.misc.loginManager;
 const LookingGlass = imports.ui.lookingGlass;
@@ -58,6 +59,7 @@ var panel = null;
 var overview = null;
 var runDialog = null;
 var lookingGlass = null;
+var welcomeDialog = null;
 var wm = null;
 var messageTray = null;
 var screenShield = null;
@@ -120,6 +122,8 @@ function _sessionUpdated() {
             runDialog.close();
         if (lookingGlass)
             lookingGlass.close();
+        if (welcomeDialog)
+            welcomeDialog.close();
     }
 
     let remoteAccessController = global.backend.get_remote_access_controller();
@@ -640,6 +644,13 @@ function openRunDialog() {
         runDialog = new RunDialog.RunDialog();
 
     runDialog.open();
+}
+
+function openWelcomeDialog() {
+    if (welcomeDialog === null)
+        welcomeDialog = new WelcomeDialog.WelcomeDialog();
+
+    welcomeDialog.open();
 }
 
 /**

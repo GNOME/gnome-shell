@@ -67,6 +67,7 @@ js/ui/status/volume.js
 js/ui/switchMonitor.js
 js/ui/unlockDialog.js
 js/ui/viewSelector.js
+js/ui/welcomeDialog.js
 js/ui/windowAttentionHandler.js
 js/ui/windowManager.js
 js/ui/windowMenu.js
