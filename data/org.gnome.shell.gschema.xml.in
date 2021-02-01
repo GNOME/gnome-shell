@@ -94,6 +94,16 @@
         adapter is ever seen not to have devices associated to it.
       </description>
     </key>
+    <key name="welcome-dialog-last-shown-version" type="s">
+      <default>''</default>
+      <summary>The last version the “Welcome to GNOME” dialogue was shown for</summary>
+      <description>
+        This key determines when the “Welcome to GNOME” dialog was last shown for.
+        An empty string represents the oldest possible version, and huge number will
+        represents versions that do not exist yet, and should be used to disable the
+        dialogue should that be needed.
+      </description>
+    </key>
     <key name="introspect" type="b">
       <default>false</default>
       <summary>Enable introspection API</summary>

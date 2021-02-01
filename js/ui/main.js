@@ -47,9 +47,15 @@ const KbdA11yDialog = imports.ui.kbdA11yDialog;
 const LocatePointer = imports.ui.locatePointer;
 const PointerA11yTimeout = imports.ui.pointerA11yTimeout;
 const ParentalControlsManager = imports.misc.parentalControlsManager;
+const Config = imports.misc.config;
+const Util = imports.misc.util;
 
 const A11Y_SCHEMA = 'org.gnome.desktop.a11y.keyboard';
 const STICKY_KEYS_ENABLE = 'stickykeys-enable';
+const WELCOME_DIALOG_LAST_SHOWN_VERSION = 'welcome-dialog-last-shown-version';
+// Make sure to mention the point release, otherwise it will show every time
+// until this version is current
+const WELCOME_DIALOG_LAST_TOUR_CHANGE = '40.beta';
 const LOG_DOMAIN = 'GNOME Shell';
 const GNOMESHELL_STARTED_MESSAGE_ID = 'f3ea493c22934e26811cd62abe8e203a';
 
@@ -297,6 +303,9 @@ function _initializeUI() {
         if (credentials.get_unix_user() === 0) {
             notify(_('Logged in as a privileged user'),
                    _('Running a session as a privileged user should be avoided for security reasons. If possible, you should log in as a normal user.'));
+        } else if (sessionMode.currentMode !== 'gdm' &&
+                   sessionMode.currentMode !== 'initial-setup') {
+            _handleShowWelcomeScreen();
         }
 
         if (sessionMode.currentMode !== 'gdm' &&
@@ -312,6 +321,14 @@ function _initializeUI() {
             Scripting.runPerfScript(module, perfOutput);
         }
     });
+}
+
+function _handleShowWelcomeScreen() {
+    const lastShownVersion = global.settings.get_string(WELCOME_DIALOG_LAST_SHOWN_VERSION);
+    if (Util.GNOMEversionCompare(WELCOME_DIALOG_LAST_TOUR_CHANGE, lastShownVersion) > 0) {
+        openWelcomeDialog();
+        global.settings.set_string(WELCOME_DIALOG_LAST_SHOWN_VERSION, Config.PACKAGE_VERSION);
+    }
 }
 
 async function _handleLockScreenWarning() {
