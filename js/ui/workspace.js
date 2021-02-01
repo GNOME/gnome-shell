@@ -122,14 +122,15 @@ var LayoutStrategy = class {
         throw new GObject.NotImplementedError(`computeLayout in ${this.constructor.name}`);
     }
 
-    // Given @layout, compute the overall scale and space of the layout.
+    // Given @layout and @area, compute the overall scale of the layout and
+    // space occupied by the layout.
     //
-    // This method does not return anything, but instead installs
-    // the properties "scale" and "space" on @layout directly.
+    // This method returns an array where the first element is the scale and
+    // the second element is the space.
     //
-    // Make sure to call this methods before calling computeWindowSlots(),
-    // as it depends on the scale property installed in @layout here.
-    computeScaleAndSpace(_layout) {
+    // This method must be called before calling computeWindowSlots(), as it
+    // sets the fixed overall scale of the layout.
+    computeScaleAndSpace(_layout, _area) {
         throw new GObject.NotImplementedError(`computeScaleAndSpace in ${this.constructor.name}`);
     }
 
@@ -272,9 +273,7 @@ var UnalignedLayoutStrategy = class extends LayoutStrategy {
         };
     }
 
-    computeScaleAndSpace(layout) {
-        let area = layout.area;
-
+    computeScaleAndSpace(layout, area) {
         let hspacing = (layout.maxColumns - 1) * this._columnSpacing;
         let vspacing = (layout.numRows - 1) * this._rowSpacing;
 
@@ -293,7 +292,8 @@ var UnalignedLayoutStrategy = class extends LayoutStrategy {
         let space = (scaledLayoutWidth * scaledLayoutHeight) / (area.width * area.height);
 
         layout.scale = scale;
-        layout.space = space;
+
+        return [scale, space];
     }
 
     computeWindowSlots(layout, area) {
@@ -436,20 +436,17 @@ var WorkspaceLayout = GObject.registerClass({
         });
     }
 
-    _isBetterLayout(oldLayout, newLayout) {
-        if (oldLayout.scale === undefined)
-            return true;
+    _isBetterScaleAndSpace(oldScale, oldSpace, scale, space) {
+        let spacePower = (space - oldSpace) * LAYOUT_SPACE_WEIGHT;
+        let scalePower = (scale - oldScale) * LAYOUT_SCALE_WEIGHT;
 
-        let spacePower = (newLayout.space - oldLayout.space) * LAYOUT_SPACE_WEIGHT;
-        let scalePower = (newLayout.scale - oldLayout.scale) * LAYOUT_SCALE_WEIGHT;
-
-        if (newLayout.scale > oldLayout.scale && newLayout.space > oldLayout.space) {
+        if (scale > oldScale && space > oldSpace) {
             // Win win -- better scale and better space
             return true;
-        } else if (newLayout.scale > oldLayout.scale && newLayout.space <= oldLayout.space) {
+        } else if (scale > oldScale && space <= oldSpace) {
             // Keep new layout only if scale gain outweighs aspect space loss
             return scalePower > spacePower;
-        } else if (newLayout.scale <= oldLayout.scale && newLayout.space > oldLayout.space) {
+        } else if (scale <= oldScale && space > oldSpace) {
             // Keep new layout only if aspect space gain outweighs scale loss
             return spacePower > scalePower;
         } else {
@@ -498,6 +495,8 @@ var WorkspaceLayout = GObject.registerClass({
 
         let lastLayout = null;
         let lastNumColumns = -1;
+        let lastScale = 0;
+        let lastSpace = 0;
 
         for (let numRows = 1; ; numRows++) {
             const numColumns = Math.ceil(this._sortedWindows.length / numRows);
@@ -511,16 +510,17 @@ var WorkspaceLayout = GObject.registerClass({
             const layout = strategy.computeLayout(this._sortedWindows, {
                 numRows,
             });
-            layout.area = area;
             layout.strategy = strategy;
 
-            strategy.computeScaleAndSpace(layout);
+            const [scale, space] = strategy.computeScaleAndSpace(layout, area);
 
-            if (!this._isBetterLayout(lastLayout, layout))
+            if (!this._isBetterScaleAndSpace(lastScale, lastSpace, scale, space))
                 break;
 
             lastLayout = layout;
             lastNumColumns = numColumns;
+            lastScale = scale;
+            lastSpace = space;
         }
 
         return lastLayout;
