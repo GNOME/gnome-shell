@@ -1302,6 +1302,13 @@ var ThumbnailsBox = GObject.registerClass({
         const thumbnailWidth = Math.round(thumbnailHeight * ratio);
         const roundedVScale = thumbnailHeight / portholeHeight;
 
+        // We always request size for MAX_THUMBNAIL_SCALE, distribute
+        // space evently if we use smaller thumbnails
+        const extraWidth =
+            (MAX_THUMBNAIL_SCALE * portholeWidth - thumbnailWidth) * nWorkspaces;
+        box.x1 += Math.round(extraWidth / 2);
+        box.x2 -= Math.round(extraWidth / 2);
+
         let indicatorValue = this._scrollAdjustment.value;
         let indicatorUpperWs = Math.ceil(indicatorValue);
         let indicatorLowerWs = Math.floor(indicatorValue);
