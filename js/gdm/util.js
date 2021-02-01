@@ -556,6 +556,12 @@ var ShellUserVerifier = class {
             return;
 
         this._queueMessage(problem, MessageType.ERROR);
+        if (isFingerprint) {
+            this._failCounter++;
+
+            if (!this._canRetry())
+                this._verificationFailed(serviceName, false);
+        }
     }
 
     _onInfoQuery(client, serviceName, question) {
@@ -604,15 +610,18 @@ var ShellUserVerifier = class {
         this._startService(serviceName);
     }
 
+    _canRetry() {
+        return this._userName &&
+            (this._reauthOnly || this._failCounter < this.allowedFailures);
+    }
+
     _verificationFailed(serviceName, retry) {
         // For Not Listed / enterprise logins, immediately reset
         // the dialog
         // Otherwise, when in login mode we allow ALLOWED_FAILURES attempts.
         // After that, we go back to the welcome screen.
 
-        let canRetry = retry && this._userName &&
-            (this._reauthOnly ||
-             this._failCounter < this._settings.get_int(ALLOWED_FAILURES_KEY));
+        const canRetry = retry && this._canRetry();
 
         this._disconnectSignals();
 
