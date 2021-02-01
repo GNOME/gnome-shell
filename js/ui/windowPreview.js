@@ -231,8 +231,22 @@ var WindowPreview = GObject.registerClass({
 
         this._stackAbove = null;
 
+        this._cachedBoundingBox = {
+            x: this._windowContainer.layout_manager.bounding_box.x1,
+            y: this._windowContainer.layout_manager.bounding_box.y1,
+            width: this._windowContainer.layout_manager.bounding_box.get_width(),
+            height: this._windowContainer.layout_manager.bounding_box.get_height(),
+        };
+
         this._windowContainer.layout_manager.connect(
             'notify::bounding-box', layout => {
+                this._cachedBoundingBox = {
+                    x: layout.bounding_box.x1,
+                    y: layout.bounding_box.y1,
+                    width: layout.bounding_box.get_width(),
+                    height: layout.bounding_box.get_height(),
+                };
+
                 // A bounding box of 0x0 means all windows were removed
                 if (layout.bounding_box.get_area() > 0)
                     this.emit('size-changed');
@@ -561,23 +575,14 @@ var WindowPreview = GObject.registerClass({
     }
 
     get boundingBox() {
-        const box = this._windowContainer.layout_manager.bounding_box;
-
-        return {
-            x: box.x1,
-            y: box.y1,
-            width: box.get_width(),
-            height: box.get_height(),
-        };
+        return { ...this._cachedBoundingBox };
     }
 
     get windowCenter() {
-        const box = this._windowContainer.layout_manager.bounding_box;
-
-        return new Graphene.Point({
-            x: box.get_x() + box.get_width() / 2,
-            y: box.get_y() + box.get_height() / 2,
-        });
+        return {
+            x: this._cachedBoundingBox.x + this._cachedBoundingBox.width / 2,
+            y: this._cachedBoundingBox.y + this._cachedBoundingBox.height / 2,
+        };
     }
 
     // eslint-disable-next-line camelcase
