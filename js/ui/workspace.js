@@ -487,7 +487,7 @@ var WorkspaceLayout = GObject.registerClass({
 
         // We look for the largest scale that allows us to fit the
         // largest row/tallest column on the workspace.
-        const strategy = new UnalignedLayoutStrategy({
+        this._layoutStrategy = new UnalignedLayoutStrategy({
             monitor: Main.layoutManager.monitors[this._monitorIndex],
             rowSpacing,
             columnSpacing,
@@ -507,12 +507,11 @@ var WorkspaceLayout = GObject.registerClass({
             if (numColumns === lastNumColumns)
                 break;
 
-            const layout = strategy.computeLayout(this._sortedWindows, {
+            const layout = this._layoutStrategy.computeLayout(this._sortedWindows, {
                 numRows,
             });
-            layout.strategy = strategy;
 
-            const [scale, space] = strategy.computeScaleAndSpace(layout, area);
+            const [scale, space] = this._layoutStrategy.computeScaleAndSpace(layout, area);
 
             if (!this._isBetterScaleAndSpace(lastScale, lastSpace, scale, space))
                 break;
@@ -537,7 +536,7 @@ var WorkspaceLayout = GObject.registerClass({
             height: parseInt(containerBox.get_height()),
         };
 
-        return this._layout.strategy.computeWindowSlots(this._layout, availArea);
+        return this._layoutStrategy.computeWindowSlots(this._layout, availArea);
     }
 
     _getAdjustedWorkarea(container) {
