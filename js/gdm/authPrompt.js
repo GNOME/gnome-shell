@@ -432,10 +432,14 @@ var AuthPrompt = GObject.registerClass({
 
         this._entry.reactive = sensitive;
 
-        if (sensitive)
+        if (sensitive) {
             this._entry.grab_key_focus();
-        else if (this._entry === this._passwordEntry)
-            this._entry.password_visible = false;
+        } else {
+            this.grab_key_focus();
+
+            if (this._entry === this._passwordEntry)
+                this._entry.password_visible = false;
+        }
     }
 
     vfunc_hide() {
