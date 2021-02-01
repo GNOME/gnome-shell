@@ -2,7 +2,6 @@
 const { Clutter, Gio, GLib, GObject, St } = imports.gi;
 
 const PanelMenu = imports.ui.panelMenu;
-const PopupMenu = imports.ui.popupMenu;
 
 const MOUSE_A11Y_SCHEMA       = 'org.gnome.desktop.a11y.mouse';
 const KEY_DWELL_CLICK_ENABLED = 'dwell-click-enabled';
@@ -36,13 +35,9 @@ class DwellClickIndicator extends PanelMenu.Button {
     _init() {
         super._init(0.5, _("Dwell Click"));
 
-        this._hbox = new St.BoxLayout({ style_class: 'panel-status-menu-box' });
         this._icon = new St.Icon({ style_class: 'system-status-icon',
                                    icon_name: 'pointer-primary-click-symbolic' });
-        this._hbox.add_child(this._icon);
-        this._hbox.add_child(PopupMenu.arrowIcon(St.Side.BOTTOM));
-
-        this.add_child(this._hbox);
+        this.add_child(this._icon);
 
         this._a11ySettings = new Gio.Settings({ schema_id: MOUSE_A11Y_SCHEMA });
         this._a11ySettings.connect('changed::%s'.format(KEY_DWELL_CLICK_ENABLED), this._syncMenuVisibility.bind(this));
