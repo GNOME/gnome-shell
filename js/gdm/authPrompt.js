@@ -430,6 +430,10 @@ var AuthPrompt = GObject.registerClass({
         } else {
             this._message.opacity = 0;
         }
+
+        if (type === GdmUtil.MessageType.ERROR &&
+            this._userVerifier.serviceIsFingerprint(serviceName))
+            Util.wiggle(this._message);
     }
 
     updateSensitivity(sensitive) {
