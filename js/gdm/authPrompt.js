@@ -279,6 +279,7 @@ var AuthPrompt = GObject.registerClass({
     }
 
     _onVerificationFailed(userVerifier, serviceName, canRetry) {
+        const wasQueryingService = this._queryingService === serviceName;
         this._queryingService = null;
         this.clear();
 
@@ -286,7 +287,8 @@ var AuthPrompt = GObject.registerClass({
         this.setActorInDefaultButtonWell(null);
         this.verificationStatus = AuthPromptStatus.VERIFICATION_FAILED;
 
-        Util.wiggle(this._entry);
+        if (wasQueryingService)
+            Util.wiggle(this._entry);
     }
 
     _onVerificationComplete() {
