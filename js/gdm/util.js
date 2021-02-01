@@ -192,6 +192,10 @@ var ShellUserVerifier = class {
         }
     }
 
+    get allowedFailures() {
+        return this._settings.get_int(ALLOWED_FAILURES_KEY);
+    }
+
     begin(userName, hold) {
         this._cancellable = new Gio.Cancellable();
         this._hold = hold;

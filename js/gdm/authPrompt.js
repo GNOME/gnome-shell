@@ -30,11 +30,13 @@ var AuthPromptStatus = {
     VERIFICATION_FAILED: 2,
     VERIFICATION_SUCCEEDED: 3,
     VERIFICATION_CANCELLED: 4,
+    VERIFICATION_IN_PROGRESS: 5,
 };
 
 var BeginRequestType = {
     PROVIDE_USERNAME: 0,
     DONT_PROVIDE_USERNAME: 1,
+    REUSE_USERNAME: 2,
 };
 
 var AuthPrompt = GObject.registerClass({
@@ -59,6 +61,7 @@ var AuthPrompt = GObject.registerClass({
         this._gdmClient = gdmClient;
         this._mode = mode;
         this._defaultButtonWellActor = null;
+        this._cancelledRetries = 0;
 
         let reauthenticationOnly;
         if (this._mode == AuthPromptMode.UNLOCK_ONLY)
@@ -196,6 +199,7 @@ var AuthPrompt = GObject.registerClass({
     }
 
     _activateNext(shouldSpin) {
+        this.verificationStatus = AuthPromptStatus.VERIFICATION_IN_PROGRESS;
         this.updateSensitivity(false);
 
         if (shouldSpin)
@@ -501,6 +505,9 @@ var AuthPrompt = GObject.registerClass({
             // We don't need to know the username if the user preempted the login screen
             // with a smartcard or with preauthenticated oVirt credentials
             beginRequestType = BeginRequestType.DONT_PROVIDE_USERNAME;
+        } else if (oldStatus === AuthPromptStatus.VERIFICATION_IN_PROGRESS) {
+            // We're going back to retry with current user
+            beginRequestType = BeginRequestType.REUSE_USERNAME;
         } else {
             // In all other cases, we should get the username up front.
             beginRequestType = BeginRequestType.PROVIDE_USERNAME;
@@ -549,7 +556,14 @@ var AuthPrompt = GObject.registerClass({
         if (this.verificationStatus == AuthPromptStatus.VERIFICATION_SUCCEEDED)
             return;
 
-        this.verificationStatus = AuthPromptStatus.VERIFICATION_CANCELLED;
+        if (this.verificationStatus === AuthPromptStatus.VERIFICATION_IN_PROGRESS) {
+            this._cancelledRetries++;
+            if (this._cancelledRetries > this._userVerifier.allowedFailures)
+                this.verificationStatus = AuthPromptStatus.VERIFICATION_FAILED;
+        } else {
+            this.verificationStatus = AuthPromptStatus.VERIFICATION_CANCELLED;
+        }
+
         this.reset();
     }
 });

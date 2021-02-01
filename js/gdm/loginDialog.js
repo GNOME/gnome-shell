@@ -855,6 +855,7 @@ var LoginDialog = GObject.registerClass({
         this._resetGreeterProxy();
         this._sessionMenuButton.updateSensitivity(true);
 
+        const previousUser = this._user;
         this._user = null;
 
         if (this._nextSignalId) {
@@ -862,7 +863,11 @@ var LoginDialog = GObject.registerClass({
             this._nextSignalId = 0;
         }
 
-        if (beginRequest == AuthPrompt.BeginRequestType.PROVIDE_USERNAME) {
+        if (previousUser && beginRequest === AuthPrompt.BeginRequestType.REUSE_USERNAME) {
+            this._user = previousUser;
+            this._authPrompt.setUser(this._user);
+            this._authPrompt.begin({ userName: previousUser.get_user_name() });
+        } else if (beginRequest === AuthPrompt.BeginRequestType.PROVIDE_USERNAME) {
             if (!this._disableUserList)
                 this._showUserList();
             else
