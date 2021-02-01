@@ -114,6 +114,38 @@ var LayoutStrategy = class {
         this._columnSpacing = params.columnSpacing;
     }
 
+    // Compute strategy-specific window slots for each window in
+    // @windows, given the @layout. The strategy may also use @layout
+    // as strategy-specific storage.
+    //
+    // This must calculate:
+    //  * maxColumns - The maximum number of columns used by the layout.
+    //  * gridWidth - The total width used by the grid, unscaled, unspaced.
+    //  * gridHeight - The totial height used by the grid, unscaled, unspaced.
+    //  * rows - A list of rows, which should be instantiated by _newRow.
+    computeLayout(_windows, _layout) {
+        throw new GObject.NotImplementedError(`computeLayout in ${this.constructor.name}`);
+    }
+
+    // Given @layout, compute the overall scale and space of the layout.
+    //
+    // This method does not return anything, but instead installs
+    // the properties "scale" and "space" on @layout directly.
+    //
+    // Make sure to call this methods before calling computeWindowSlots(),
+    // as it depends on the scale property installed in @layout here.
+    computeScaleAndSpace(_layout) {
+        throw new GObject.NotImplementedError(`computeScaleAndSpace in ${this.constructor.name}`);
+    }
+
+    // Returns an array with final position and size information for each
+    // window of the layout, given a bounding area that it will be inside of.
+    computeWindowSlots(_layout, _area) {
+        throw new GObject.NotImplementedError(`computeWindowSlots in ${this.constructor.name}`);
+    }
+};
+
+var UnalignedLayoutStrategy = class extends LayoutStrategy {
     _newRow() {
         // Row properties:
         //
@@ -150,37 +182,91 @@ var LayoutStrategy = class {
         return _interpolate(1.5, 1, ratio);
     }
 
-    // Compute the size of each row, by assigning to the properties
-    // row.width, row.height, row.fullWidth, row.fullHeight, and
-    // (optionally) for each row in @layout.rows. This method is
-    // intended to be called by subclasses.
-    _computeRowSizes(_layout) {
-        throw new GObject.NotImplementedError(`_computeRowSizes in ${this.constructor.name}`);
+    _computeRowSizes(layout) {
+        let { rows, scale } = layout;
+        for (let i = 0; i < rows.length; i++) {
+            let row = rows[i];
+            row.width = row.fullWidth * scale + (row.windows.length - 1) * this._columnSpacing;
+            row.height = row.fullHeight * scale;
+        }
     }
 
-    // Compute strategy-specific window slots for each window in
-    // @windows, given the @layout. The strategy may also use @layout
-    // as strategy-specific storage.
-    //
-    // This must calculate:
-    //  * maxColumns - The maximum number of columns used by the layout.
-    //  * gridWidth - The total width used by the grid, unscaled, unspaced.
-    //  * gridHeight - The totial height used by the grid, unscaled, unspaced.
-    //  * rows - A list of rows, which should be instantiated by _newRow.
-    computeLayout(_windows, _layout) {
-        throw new GObject.NotImplementedError(`computeLayout in ${this.constructor.name}`);
+    _keepSameRow(row, window, width, idealRowWidth) {
+        if (row.fullWidth + width <= idealRowWidth)
+            return true;
+
+        let oldRatio = row.fullWidth / idealRowWidth;
+        let newRatio = (row.fullWidth + width) / idealRowWidth;
+
+        if (Math.abs(1 - newRatio) < Math.abs(1 - oldRatio))
+            return true;
+
+        return false;
     }
 
-    // Given @layout, compute the overall scale and space of the layout.
-    // The scale is the individual, non-fancy scale of each window, and
-    // the space is the percentage of the available area eventually
-    // used by the layout.
+    _sortRow(row) {
+        // Sort windows horizontally to minimize travel distance.
+        // This affects in what order the windows end up in a row.
+        row.windows.sort((a, b) => a.windowCenter.x - b.windowCenter.x);
+    }
 
-    // This method does not return anything, but instead installs
-    // the properties "scale" and "space" on @layout directly.
-    //
-    // Make sure to call this methods before calling computeWindowSlots(),
-    // as it depends on the scale property installed in @layout here.
+    computeLayout(windows, layout) {
+        let numRows = layout.numRows;
+
+        let rows = [];
+        let totalWidth = 0;
+        for (let i = 0; i < windows.length; i++) {
+            let window = windows[i];
+            let s = this._computeWindowScale(window);
+            totalWidth += window.boundingBox.width * s;
+        }
+
+        let idealRowWidth = totalWidth / numRows;
+
+        // Sort windows vertically to minimize travel distance.
+        // This affects what rows the windows get placed in.
+        let sortedWindows = windows.slice();
+        sortedWindows.sort((a, b) => a.windowCenter.y - b.windowCenter.y);
+
+        let windowIdx = 0;
+        for (let i = 0; i < numRows; i++) {
+            let row = this._newRow();
+            rows.push(row);
+
+            for (; windowIdx < sortedWindows.length; windowIdx++) {
+                let window = sortedWindows[windowIdx];
+                let s = this._computeWindowScale(window);
+                let width = window.boundingBox.width * s;
+                let height = window.boundingBox.height * s;
+                row.fullHeight = Math.max(row.fullHeight, height);
+
+                // either new width is < idealWidth or new width is nearer from idealWidth then oldWidth
+                if (this._keepSameRow(row, window, width, idealRowWidth) || (i === numRows - 1)) {
+                    row.windows.push(window);
+                    row.fullWidth += width;
+                } else {
+                    break;
+                }
+            }
+        }
+
+        let gridHeight = 0;
+        let maxRow;
+        for (let i = 0; i < numRows; i++) {
+            let row = rows[i];
+            this._sortRow(row);
+
+            if (!maxRow || row.fullWidth > maxRow.fullWidth)
+                maxRow = row;
+            gridHeight += row.fullHeight;
+        }
+
+        layout.rows = rows;
+        layout.maxColumns = maxRow.windows.length;
+        layout.gridWidth = maxRow.fullWidth;
+        layout.gridHeight = gridHeight;
+    }
+
     computeScaleAndSpace(layout) {
         let area = layout.area;
 
@@ -279,93 +365,6 @@ var LayoutStrategy = class {
             }
         }
         return slots;
-    }
-};
-
-var UnalignedLayoutStrategy = class extends LayoutStrategy {
-    _computeRowSizes(layout) {
-        let { rows, scale } = layout;
-        for (let i = 0; i < rows.length; i++) {
-            let row = rows[i];
-            row.width = row.fullWidth * scale + (row.windows.length - 1) * this._columnSpacing;
-            row.height = row.fullHeight * scale;
-        }
-    }
-
-    _keepSameRow(row, window, width, idealRowWidth) {
-        if (row.fullWidth + width <= idealRowWidth)
-            return true;
-
-        let oldRatio = row.fullWidth / idealRowWidth;
-        let newRatio = (row.fullWidth + width) / idealRowWidth;
-
-        if (Math.abs(1 - newRatio) < Math.abs(1 - oldRatio))
-            return true;
-
-        return false;
-    }
-
-    _sortRow(row) {
-        // Sort windows horizontally to minimize travel distance.
-        // This affects in what order the windows end up in a row.
-        row.windows.sort((a, b) => a.windowCenter.x - b.windowCenter.x);
-    }
-
-    computeLayout(windows, layout) {
-        let numRows = layout.numRows;
-
-        let rows = [];
-        let totalWidth = 0;
-        for (let i = 0; i < windows.length; i++) {
-            let window = windows[i];
-            let s = this._computeWindowScale(window);
-            totalWidth += window.boundingBox.width * s;
-        }
-
-        let idealRowWidth = totalWidth / numRows;
-
-        // Sort windows vertically to minimize travel distance.
-        // This affects what rows the windows get placed in.
-        let sortedWindows = windows.slice();
-        sortedWindows.sort((a, b) => a.windowCenter.y - b.windowCenter.y);
-
-        let windowIdx = 0;
-        for (let i = 0; i < numRows; i++) {
-            let row = this._newRow();
-            rows.push(row);
-
-            for (; windowIdx < sortedWindows.length; windowIdx++) {
-                let window = sortedWindows[windowIdx];
-                let s = this._computeWindowScale(window);
-                let width = window.boundingBox.width * s;
-                let height = window.boundingBox.height * s;
-                row.fullHeight = Math.max(row.fullHeight, height);
-
-                // either new width is < idealWidth or new width is nearer from idealWidth then oldWidth
-                if (this._keepSameRow(row, window, width, idealRowWidth) || (i == numRows - 1)) {
-                    row.windows.push(window);
-                    row.fullWidth += width;
-                } else {
-                    break;
-                }
-            }
-        }
-
-        let gridHeight = 0;
-        let maxRow;
-        for (let i = 0; i < numRows; i++) {
-            let row = rows[i];
-            this._sortRow(row);
-
-            if (!maxRow || row.fullWidth > maxRow.fullWidth)
-                maxRow = row;
-            gridHeight += row.fullHeight;
-        }
-
-        layout.rows = rows;
-        layout.maxColumns = maxRow.windows.length;
-        layout.gridWidth = maxRow.fullWidth;
-        layout.gridHeight = gridHeight;
     }
 };
 
