@@ -7,6 +7,7 @@ const Background = imports.ui.background;
 const DND = imports.ui.dnd;
 const Main = imports.ui.main;
 const Overview = imports.ui.overview;
+const Params = imports.misc.params;
 const { WindowPreview } = imports.ui.windowPreview;
 
 var WINDOW_PREVIEW_MAXIMUM_SCALE = 0.95;
@@ -98,13 +99,19 @@ function _interpolate(start, end, step) {
 // and center it horizontally, and align it to the bottom vertically.
 
 var LayoutStrategy = class {
-    constructor(monitor, rowSpacing, columnSpacing) {
-        if (this.constructor === LayoutStrategy)
-            throw new TypeError(`Cannot instantiate abstract type ${this.constructor.name}`);
+    constructor(params) {
+        params = Params.parse(params, {
+            monitor: null,
+            rowSpacing: 0,
+            columnSpacing: 0,
+        });
 
-        this._monitor = monitor;
-        this._rowSpacing = rowSpacing;
-        this._columnSpacing = columnSpacing;
+        if (!params.monitor)
+            throw new Error(`No monitor param passed to ${this.constructor.name}`);
+
+        this._monitor = params.monitor;
+        this._rowSpacing = params.rowSpacing;
+        this._columnSpacing = params.columnSpacing;
     }
 
     _newRow() {
@@ -474,15 +481,16 @@ var WorkspaceLayout = GObject.registerClass({
     }
 
     _createBestLayout(area) {
-        const [rowSpacing, colSpacing] =
+        const [rowSpacing, columnSpacing] =
             this._adjustSpacingAndPadding(this._spacing, this._spacing, null);
 
         // We look for the largest scale that allows us to fit the
         // largest row/tallest column on the workspace.
-        const strategy = new UnalignedLayoutStrategy(
-            Main.layoutManager.monitors[this._monitorIndex],
+        const strategy = new UnalignedLayoutStrategy({
+            monitor: Main.layoutManager.monitors[this._monitorIndex],
             rowSpacing,
-            colSpacing);
+            columnSpacing,
+        });
 
         let lastLayout = {};
 
