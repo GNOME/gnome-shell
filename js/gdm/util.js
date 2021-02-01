@@ -260,9 +260,11 @@ var ShellUserVerifier = class {
         if (!this.hasPendingMessages) {
             this._userVerifier.call_answer_query(serviceName, answer, this._cancellable, null);
         } else {
+            const cancellable = this._cancellable;
             let signalId = this.connect('no-more-messages', () => {
                 this.disconnect(signalId);
-                this._userVerifier.call_answer_query(serviceName, answer, this._cancellable, null);
+                if (!cancellable.is_cancelled())
+                    this._userVerifier.call_answer_query(serviceName, answer, cancellable, null);
             });
         }
     }
@@ -583,9 +585,10 @@ var ShellUserVerifier = class {
             if (!this.hasPendingMessages) {
                 this._retry();
             } else {
+                const cancellable = this._cancellable;
                 let signalId = this.connect('no-more-messages', () => {
                     this.disconnect(signalId);
-                    if (this._cancellable && !this._cancellable.is_cancelled())
+                    if (!cancellable.is_cancelled())
                         this._retry();
                 });
             }
@@ -594,9 +597,11 @@ var ShellUserVerifier = class {
             if (!this.hasPendingMessages) {
                 this._cancelAndReset();
             } else {
+                const cancellable = this._cancellable;
                 let signalId = this.connect('no-more-messages', () => {
                     this.disconnect(signalId);
-                    this._cancelAndReset();
+                    if (!cancellable.is_cancelled())
+                        this._cancelAndReset();
                 });
             }
         }
