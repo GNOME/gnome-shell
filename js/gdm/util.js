@@ -379,12 +379,12 @@ var ShellUserVerifier = class {
         }
     }
 
-    _reportInitError(where, error) {
+    _reportInitError(where, error, serviceName) {
         logError(error, where);
         this._hold.release();
 
         this._queueMessage(_("Authentication error"), MessageType.ERROR);
-        this._verificationFailed(false);
+        this._verificationFailed(serviceName, false);
     }
 
     async _openReauthenticationChannel(userName) {
@@ -508,7 +508,8 @@ var ShellUserVerifier = class {
             }
             this._reportInitError(this._userName
                 ? 'Failed to start %s verification for user'.format(serviceName)
-                : 'Failed to start %s verification'.format(serviceName), e);
+                : 'Failed to start %s verification'.format(serviceName), e,
+            serviceName);
             return;
         }
         this._hold.release();
@@ -595,7 +596,7 @@ var ShellUserVerifier = class {
         this.begin(this._userName, new Batch.Hold());
     }
 
-    _verificationFailed(retry) {
+    _verificationFailed(serviceName, retry) {
         // For Not Listed / enterprise logins, immediately reset
         // the dialog
         // Otherwise, when in login mode we allow ALLOWED_FAILURES attempts.
@@ -645,7 +646,7 @@ var ShellUserVerifier = class {
         if (foregroundService) {
             this._credentialManagers[foregroundService].token = null;
             this._preemptingService = null;
-            this._verificationFailed(false);
+            this._verificationFailed(serviceName, false);
             return;
         }
 
@@ -653,7 +654,7 @@ var ShellUserVerifier = class {
         // But if, e.g., fingerprint fails, still give
         // password authentication a chance to succeed
         if (this.serviceIsForeground(serviceName))
-            this._verificationFailed(true);
+            this._verificationFailed(serviceName, true);
     }
 };
 Signals.addSignalMethods(ShellUserVerifier.prototype);
