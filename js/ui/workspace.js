@@ -8,6 +8,7 @@ const DND = imports.ui.dnd;
 const Main = imports.ui.main;
 const Overview = imports.ui.overview;
 const Params = imports.misc.params;
+const Util = imports.misc.util;
 const { WindowPreview } = imports.ui.windowPreview;
 
 var WINDOW_PREVIEW_MAXIMUM_SCALE = 0.95;
@@ -23,10 +24,6 @@ var LAYOUT_SCALE_WEIGHT = 1;
 var LAYOUT_SPACE_WEIGHT = 0.1;
 
 var WINDOW_ANIMATION_MAX_NUMBER_BLENDING = 3;
-
-function _interpolate(start, end, step) {
-    return start + (end - start) * step;
-}
 
 // Window Thumbnail Layout Algorithm
 // =================================
@@ -175,7 +172,7 @@ var UnalignedLayoutStrategy = class extends LayoutStrategy {
         // good. We'll use a multiplier of 1.5 for this.
 
         // Map from [0, 1] to [1.5, 1]
-        return _interpolate(1.5, 1, ratio);
+        return Util.lerp(1.5, 1, ratio);
     }
 
     _computeRowSizes(layout) {
