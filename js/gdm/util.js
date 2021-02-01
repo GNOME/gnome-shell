@@ -296,7 +296,7 @@ var ShellUserVerifier = class {
 
         let message = this._messageQueue.shift();
 
-        this.emit('show-message', message.text, message.type);
+        this.emit('show-message', message.serviceName, message.text, message.type);
 
         this._messageQueueTimeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT,
                                                        message.interval,
@@ -308,11 +308,11 @@ var ShellUserVerifier = class {
         GLib.Source.set_name_by_id(this._messageQueueTimeoutId, '[gnome-shell] this._queueMessageTimeout');
     }
 
-    _queueMessage(message, messageType) {
+    _queueMessage(serviceName, message, messageType) {
         let interval = this._getIntervalForMessage(message);
 
         this.hasPendingMessages = true;
-        this._messageQueue.push({ text: message, type: messageType, interval });
+        this._messageQueue.push({ serviceName, text: message, type: messageType, interval });
         this._queueMessageTimeout();
     }
 
@@ -323,7 +323,7 @@ var ShellUserVerifier = class {
             GLib.source_remove(this._messageQueueTimeoutId);
             this._messageQueueTimeoutId = 0;
         }
-        this.emit('show-message', null, MessageType.NONE);
+        this.emit('show-message', null, null, MessageType.NONE);
     }
 
     _checkForFingerprintReader() {
@@ -383,7 +383,7 @@ var ShellUserVerifier = class {
         logError(error, where);
         this._hold.release();
 
-        this._queueMessage(_("Authentication error"), MessageType.ERROR);
+        this._queueMessage(serviceName, _('Authentication error'), MessageType.ERROR);
         this._failCounter++;
         this._verificationFailed(serviceName, false);
     }
@@ -532,7 +532,7 @@ var ShellUserVerifier = class {
 
     _onInfo(client, serviceName, info) {
         if (this.serviceIsForeground(serviceName)) {
-            this._queueMessage(info, MessageType.INFO);
+            this._queueMessage(serviceName, info, MessageType.INFO);
         } else if (this.serviceIsFingerprint(serviceName)) {
             // We don't show fingerprint messages directly since it's
             // not the main auth service. Instead we use the messages
@@ -540,11 +540,13 @@ var ShellUserVerifier = class {
             if (this._fingerprintReaderType === FingerprintReaderType.SWIPE) {
                 // Translators: this message is shown below the password entry field
                 // to indicate the user can swipe their finger on the fingerprint reader
-                this._queueMessage(_('(or swipe finger across reader)'), MessageType.HINT);
+                this._queueMessage(serviceName, _('(or swipe finger across reader)'),
+                    MessageType.HINT);
             } else {
                 // Translators: this message is shown below the password entry field
                 // to indicate the user can place their finger on the fingerprint reader instead
-                this._queueMessage(_('(or place finger on reader)'), MessageType.HINT);
+                this._queueMessage(serviceName, _('(or place finger on reader)'),
+                    MessageType.HINT);
             }
         }
     }
@@ -555,7 +557,7 @@ var ShellUserVerifier = class {
         if (!this.serviceIsForeground(serviceName) && !isFingerprint)
             return;
 
-        this._queueMessage(problem, MessageType.ERROR);
+        this._queueMessage(serviceName, problem, MessageType.ERROR);
         if (isFingerprint) {
             this._failCounter++;
 
@@ -650,7 +652,7 @@ var ShellUserVerifier = class {
             }
         }
 
-        this.emit('verification-failed', canRetry);
+        this.emit('verification-failed', serviceName, canRetry);
     }
 
     _onConversationStopped(client, serviceName) {

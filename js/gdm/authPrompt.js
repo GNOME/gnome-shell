@@ -273,12 +273,12 @@ var AuthPrompt = GObject.registerClass({
             this.reset();
     }
 
-    _onShowMessage(userVerifier, message, type) {
-        this.setMessage(message, type);
+    _onShowMessage(_userVerifier, serviceName, message, type) {
+        this.setMessage(serviceName, message, type);
         this.emit('prompted');
     }
 
-    _onVerificationFailed(userVerifier, canRetry) {
+    _onVerificationFailed(userVerifier, serviceName, canRetry) {
         this._queryingService = null;
         this.clear();
 
@@ -410,7 +410,7 @@ var AuthPrompt = GObject.registerClass({
         });
     }
 
-    setMessage(message, type) {
+    setMessage(serviceName, message, type) {
         if (type == GdmUtil.MessageType.ERROR)
             this._message.add_style_class_name('login-dialog-message-warning');
         else
