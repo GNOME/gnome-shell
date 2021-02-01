@@ -114,16 +114,11 @@ var LayoutStrategy = class {
         this._columnSpacing = params.columnSpacing;
     }
 
-    // Compute strategy-specific window slots for each window in
-    // @windows, given the @layout. The strategy may also use @layout
-    // as strategy-specific storage.
+    // Compute a strategy-specific overall layout given a list of WindowPreviews
+    // @windows and the strategy-specific @layoutParams.
     //
-    // This must calculate:
-    //  * maxColumns - The maximum number of columns used by the layout.
-    //  * gridWidth - The total width used by the grid, unscaled, unspaced.
-    //  * gridHeight - The totial height used by the grid, unscaled, unspaced.
-    //  * rows - A list of rows, which should be instantiated by _newRow.
-    computeLayout(_windows, _layout) {
+    // Returns a strategy-specific layout object that is opaque to the user.
+    computeLayout(_windows, _layoutParams) {
         throw new GObject.NotImplementedError(`computeLayout in ${this.constructor.name}`);
     }
 
@@ -210,8 +205,15 @@ var UnalignedLayoutStrategy = class extends LayoutStrategy {
         row.windows.sort((a, b) => a.windowCenter.x - b.windowCenter.x);
     }
 
-    computeLayout(windows, layout) {
-        let numRows = layout.numRows;
+    computeLayout(windows, layoutParams) {
+        layoutParams = Params.parse(layoutParams, {
+            numRows: 0,
+        });
+
+        if (layoutParams.numRows === 0)
+            throw new Error(`${this.constructor.name}: No numRows given in layout params`);
+
+        const numRows = layoutParams.numRows;
 
         let rows = [];
         let totalWidth = 0;
@@ -261,10 +263,13 @@ var UnalignedLayoutStrategy = class extends LayoutStrategy {
             gridHeight += row.fullHeight;
         }
 
-        layout.rows = rows;
-        layout.maxColumns = maxRow.windows.length;
-        layout.gridWidth = maxRow.fullWidth;
-        layout.gridHeight = gridHeight;
+        return {
+            numRows,
+            rows,
+            maxColumns: maxRow.windows.length,
+            gridWidth: maxRow.fullWidth,
+            gridHeight,
+        };
     }
 
     computeScaleAndSpace(layout) {
@@ -491,25 +496,31 @@ var WorkspaceLayout = GObject.registerClass({
             columnSpacing,
         });
 
-        let lastLayout = {};
+        let lastLayout = null;
+        let lastNumColumns = -1;
 
         for (let numRows = 1; ; numRows++) {
-            let numColumns = Math.ceil(this._sortedWindows.length / numRows);
+            const numColumns = Math.ceil(this._sortedWindows.length / numRows);
 
             // If adding a new row does not change column count just stop
             // (for instance: 9 windows, with 3 rows -> 3 columns, 4 rows ->
             // 3 columns as well => just use 3 rows then)
-            if (numColumns === lastLayout.numColumns)
+            if (numColumns === lastNumColumns)
                 break;
 
-            let layout = { area, strategy, numRows, numColumns };
-            strategy.computeLayout(this._sortedWindows, layout);
+            const layout = strategy.computeLayout(this._sortedWindows, {
+                numRows,
+            });
+            layout.area = area;
+            layout.strategy = strategy;
+
             strategy.computeScaleAndSpace(layout);
 
             if (!this._isBetterLayout(lastLayout, layout))
                 break;
 
             lastLayout = layout;
+            lastNumColumns = numColumns;
         }
 
         return lastLayout;
