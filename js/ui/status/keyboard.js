@@ -829,7 +829,7 @@ class InputSourceIndicator extends PanelMenu.Button {
         this._menuItems = {};
         this._indicatorLabels = {};
 
-        this._container = new InputSourceIndicatorContainer({ style_class: 'single-indicator' });
+        this._container = new InputSourceIndicatorContainer({ style_class: 'system-status-icon' });
         this.add_child(this._container);
 
         this._propSeparator = new PopupMenu.PopupSeparatorMenuItem();
