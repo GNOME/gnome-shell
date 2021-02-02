@@ -591,9 +591,10 @@ var ShellUserVerifier = class {
         this._onReset();
     }
 
-    _retry() {
-        this.cancel();
-        this.begin(this._userName, new Batch.Hold());
+    _retry(serviceName) {
+        this._hold = new Batch.Hold();
+        this._connectSignals();
+        this._startService(serviceName);
     }
 
     _verificationFailed(serviceName, retry) {
@@ -611,13 +612,13 @@ var ShellUserVerifier = class {
 
         if (canRetry) {
             if (!this.hasPendingMessages) {
-                this._retry();
+                this._retry(serviceName);
             } else {
                 const cancellable = this._cancellable;
                 let signalId = this.connect('no-more-messages', () => {
                     this.disconnect(signalId);
                     if (!cancellable.is_cancelled())
-                        this._retry();
+                        this._retry(serviceName);
                 });
             }
         } else {
