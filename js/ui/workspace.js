@@ -982,17 +982,17 @@ class Workspace extends St.Widget {
                 this._addWindowClone(windows[i]);
         }
 
-        // Track window changes
+        // Track window changes, but let the window tracker process them first
         if (this.metaWorkspace) {
-            this._windowAddedId = this.metaWorkspace.connect('window-added',
-                                                             this._windowAdded.bind(this));
-            this._windowRemovedId = this.metaWorkspace.connect('window-removed',
-                                                               this._windowRemoved.bind(this));
+            this._windowAddedId = this.metaWorkspace.connect_after(
+                'window-added', this._windowAdded.bind(this));
+            this._windowRemovedId = this.metaWorkspace.connect_after(
+                'window-removed', this._windowRemoved.bind(this));
         }
-        this._windowEnteredMonitorId = global.display.connect('window-entered-monitor',
-                                                              this._windowEnteredMonitor.bind(this));
-        this._windowLeftMonitorId = global.display.connect('window-left-monitor',
-                                                           this._windowLeftMonitor.bind(this));
+        this._windowEnteredMonitorId = global.display.connect_after(
+            'window-entered-monitor', this._windowEnteredMonitor.bind(this));
+        this._windowLeftMonitorId = global.display.connect_after(
+            'window-left-monitor', this._windowLeftMonitor.bind(this));
         this._layoutFrozenId = 0;
 
         // DND requires this to be set
