@@ -42,7 +42,7 @@ class ControlsManagerLayout extends Clutter.BoxLayout {
         stateAdjustment.connect('notify::value', () => this.layout_changed());
     }
 
-    _getWorkspacesBoxForState(state, box, searchHeight, dashHeight, thumbnailsHeight) {
+    _computeWorkspacesBoxForState(state, box, searchHeight, dashHeight, thumbnailsHeight) {
         const workspaceBox = box.copy();
         const [width, height] = workspaceBox.get_size();
         const { spacing } = this;
@@ -145,7 +145,7 @@ class ControlsManagerLayout extends Clutter.BoxLayout {
         // Update cached boxes
         for (const state of Object.values(ControlsState)) {
             this._cachedWorkspaceBoxes.set(
-                state, this._getWorkspacesBoxForState(state, ...params));
+                state, this._computeWorkspacesBoxForState(state, ...params));
         }
 
         let workspacesBox;
@@ -183,6 +183,10 @@ class ControlsManagerLayout extends Clutter.BoxLayout {
         childBox.set_size(width, availableHeight);
 
         this._viewSelector.allocate(childBox);
+    }
+
+    getWorkspacesBoxForState(state) {
+        return this._cachedWorkspaceBoxes.get(state);
     }
 });
 
@@ -288,6 +292,7 @@ class ControlsManager extends St.Widget {
         this._thumbnailsBox =
             new WorkspaceThumbnail.ThumbnailsBox(this._workspaceAdjustment);
         this._workspacesDisplay = new WorkspacesView.WorkspacesDisplay(
+            this,
             this._workspaceAdjustment,
             this._stateAdjustment);
         this._appDisplay = new AppDisplay.AppDisplay();
@@ -562,6 +567,10 @@ class ControlsManager extends St.Widget {
                     callback();
             },
         });
+    }
+
+    getWorkspacesBoxForState(state) {
+        return this.layoutManager.getWorkspacesBoxForState(state);
     }
 
     get searchEntry() {

@@ -94,11 +94,12 @@ var FitMode = {
 
 var WorkspacesView = GObject.registerClass(
 class WorkspacesView extends WorkspacesViewBase {
-    _init(monitorIndex, scrollAdjustment, fitModeAdjustment, overviewAdjustment) {
+    _init(monitorIndex, controls, scrollAdjustment, fitModeAdjustment, overviewAdjustment) {
         let workspaceManager = global.workspace_manager;
 
         super._init(monitorIndex, overviewAdjustment);
 
+        this._controls = controls;
         this._fitModeAdjustment = fitModeAdjustment;
         this._fitModeNotifyId = this._fitModeAdjustment.connect('notify::value', () => {
             this._updateVisibility();
@@ -133,15 +134,14 @@ class WorkspacesView extends WorkspacesViewBase {
         this._updateVisibility();
     }
 
-    _getFitAllBox(box, spacing, vertical) {
+    _getFirstFitAllWorkspaceBox(box, spacing, vertical) {
         const { nWorkspaces } = global.workspaceManager;
         const [width, height] = box.get_size();
         const [workspace] = this._workspaces;
 
         const fitAllBox = new Clutter.ActorBox();
 
-        let x1 = 0;
-        let y1 = 0;
+        let [x1, y1] = box.get_origin();
 
         // Spacing here is not only the space between workspaces, but also the
         // space before the first workspace, and after the last one. This prevents
@@ -179,7 +179,7 @@ class WorkspacesView extends WorkspacesViewBase {
         return fitAllBox;
     }
 
-    _getFitSingleBox(box, spacing, vertical) {
+    _getFirstFitSingleWorkspaceBox(box, spacing, vertical) {
         const [width, height] = box.get_size();
         const [workspace] = this._workspaces;
 
@@ -189,8 +189,7 @@ class WorkspacesView extends WorkspacesViewBase {
             ? adj.value : adj.upper - adj.value - 1;
 
         // Single fit mode implies centered too
-        let x1 = 0;
-        let y1 = 0;
+        let [x1, y1] = box.get_origin();
         if (vertical) {
             const [, workspaceHeight] = workspace.get_preferred_height(width);
             y1 += (height - workspaceHeight) / 2;
@@ -273,6 +272,64 @@ class WorkspacesView extends WorkspacesViewBase {
         });
     }
 
+    _getFitModeForState(state) {
+        const { ControlsState } = OverviewControls;
+
+        switch (state) {
+        case ControlsState.HIDDEN:
+        case ControlsState.WINDOW_PICKER:
+            return FitMode.SINGLE;
+        case ControlsState.APP_GRID:
+            return FitMode.ALL;
+        default:
+            return FitMode.SINGLE;
+        }
+    }
+
+    _getInitialBoxes(box) {
+        const offsetBox = new Clutter.ActorBox();
+        offsetBox.set_size(...box.get_size());
+
+        let fitSingleBox = offsetBox;
+        let fitAllBox = offsetBox;
+
+        const { transitioning, initialState, finalState } =
+            this._overviewAdjustment.getStateTransitionParams();
+
+        const isPrimary = Main.layoutManager.primaryIndex === this._monitorIndex;
+
+        if (isPrimary && transitioning) {
+            const initialFitMode = this._getFitModeForState(initialState);
+            const finalFitMode = this._getFitModeForState(finalState);
+
+            // Only use the relative boxes when the overview is in a state
+            // transition, and the corresponding fit modes are different.
+            if (initialFitMode !== finalFitMode) {
+                const initialBox =
+                    this._controls.getWorkspacesBoxForState(initialState).copy();
+                const finalBox =
+                    this._controls.getWorkspacesBoxForState(finalState).copy();
+
+                // Boxes are relative to ControlsManager, transform them;
+                //   this.apply_relative_transform_to_point(controls,
+                //       new Graphene.Point3D());
+                // would be more correct, but also more expensive
+                const [parentOffsetX, parentOffsetY] =
+                    this.get_parent().allocation.get_origin();
+                [initialBox, finalBox].forEach(b => {
+                    b.set_origin(b.x1 - parentOffsetX, b.y1 - parentOffsetY);
+                });
+
+                if (initialFitMode === FitMode.SINGLE)
+                    [fitSingleBox, fitAllBox] = [initialBox, finalBox];
+                else
+                    [fitAllBox, fitSingleBox] = [initialBox, finalBox];
+            }
+        }
+
+        return [fitSingleBox, fitAllBox];
+    }
+
     _updateWorkspaceMode() {
         this._updateWorkspacesState();
     }
@@ -288,15 +345,16 @@ class WorkspacesView extends WorkspacesViewBase {
 
         const fitMode = this._fitModeAdjustment.value;
 
+        let [fitSingleBox, fitAllBox] = this._getInitialBoxes(box);
         const fitSingleSpacing =
-            this._getSpacing(box, FitMode.SINGLE, vertical);
-        const fitSingleBox =
-            this._getFitSingleBox(box, fitSingleSpacing, vertical);
+            this._getSpacing(fitSingleBox, FitMode.SINGLE, vertical);
+        fitSingleBox =
+            this._getFirstFitSingleWorkspaceBox(fitSingleBox, fitSingleSpacing, vertical);
 
         const fitAllSpacing =
-            this._getSpacing(box, FitMode.ALL, vertical);
-        const fitAllBox =
-            this._getFitAllBox(box, fitAllSpacing, vertical);
+            this._getSpacing(fitAllBox, FitMode.ALL, vertical);
+        fitAllBox =
+            this._getFirstFitAllWorkspaceBox(fitAllBox, fitAllSpacing, vertical);
 
         // Account for RTL locales by reversing the list
         const workspaces = this._workspaces.slice();
@@ -517,12 +575,13 @@ class ExtraWorkspaceView extends WorkspacesViewBase {
 
 var WorkspacesDisplay = GObject.registerClass(
 class WorkspacesDisplay extends St.Widget {
-    _init(scrollAdjustment, overviewAdjustment) {
+    _init(controls, scrollAdjustment, overviewAdjustment) {
         super._init({
             clip_to_allocation: true,
             layout_manager: new Clutter.BinLayout(),
         });
 
+        this._controls = controls;
         this._overviewAdjustment = overviewAdjustment;
         this._fitModeAdjustment = new St.Adjustment({
             actor: this,
@@ -775,8 +834,11 @@ class WorkspacesDisplay extends St.Widget {
             if (this._workspacesOnlyOnPrimary && i !== this._primaryIndex) {
                 view = new ExtraWorkspaceView(i, this._overviewAdjustment);
             } else {
-                view = new WorkspacesView(i, this._scrollAdjustment,
-                    this._fitModeAdjustment, this._overviewAdjustment);
+                view = new WorkspacesView(i,
+                    this._controls,
+                    this._scrollAdjustment,
+                    this._fitModeAdjustment,
+                    this._overviewAdjustment);
             }
 
             this._workspacesViews.push(view);
