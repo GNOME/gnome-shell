@@ -224,6 +224,7 @@ var ShellUserVerifier = class {
 
     _clearUserVerifier() {
         if (this._userVerifier) {
+            this._disconnectSignals();
             this._userVerifier.run_dispose();
             this._userVerifier = null;
         }
@@ -431,13 +432,31 @@ var ShellUserVerifier = class {
     }
 
     _connectSignals() {
-        this._userVerifier.connect('info', this._onInfo.bind(this));
-        this._userVerifier.connect('problem', this._onProblem.bind(this));
-        this._userVerifier.connect('info-query', this._onInfoQuery.bind(this));
-        this._userVerifier.connect('secret-info-query', this._onSecretInfoQuery.bind(this));
-        this._userVerifier.connect('conversation-stopped', this._onConversationStopped.bind(this));
-        this._userVerifier.connect('reset', this._onReset.bind(this));
-        this._userVerifier.connect('verification-complete', this._onVerificationComplete.bind(this));
+        this._disconnectSignals();
+        this._signalIds = [];
+
+        let id = this._userVerifier.connect('info', this._onInfo.bind(this));
+        this._signalIds.push(id);
+        id = this._userVerifier.connect('problem', this._onProblem.bind(this));
+        this._signalIds.push(id);
+        id = this._userVerifier.connect('info-query', this._onInfoQuery.bind(this));
+        this._signalIds.push(id);
+        id = this._userVerifier.connect('secret-info-query', this._onSecretInfoQuery.bind(this));
+        this._signalIds.push(id);
+        id = this._userVerifier.connect('conversation-stopped', this._onConversationStopped.bind(this));
+        this._signalIds.push(id);
+        id = this._userVerifier.connect('reset', this._onReset.bind(this));
+        this._signalIds.push(id);
+        id = this._userVerifier.connect('verification-complete', this._onVerificationComplete.bind(this));
+        this._signalIds.push(id);
+    }
+
+    _disconnectSignals() {
+        if (!this._signalIds || !this._userVerifier)
+            return;
+
+        this._signalIds.forEach(s => this._userVerifier.disconnect(s));
+        this._signalIds = [];
     }
 
     _getForegroundService() {
@@ -580,6 +599,8 @@ var ShellUserVerifier = class {
         let canRetry = retry && this._userName &&
             (this._reauthOnly ||
              this._failCounter < this._settings.get_int(ALLOWED_FAILURES_KEY));
+
+        this._disconnectSignals();
 
         if (canRetry) {
             if (!this.hasPendingMessages) {
