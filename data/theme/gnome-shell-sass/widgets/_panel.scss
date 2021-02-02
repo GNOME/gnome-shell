@@ -86,8 +86,6 @@ $panel_transition_duration: 250ms; // same as the overview transition duration
 
     // app menu icon
     .app-menu-icon {
-      margin-left: $base_margin;
-      margin-right: $base_margin;
       -st-icon-style: symbolic;
       // dimensions of the icon are hardcoded
     }
@@ -136,4 +134,9 @@ $panel_transition_duration: 250ms; // same as the overview transition duration
 #appMenu {
   spacing: $base_spacing;
   .label-shadow { color: transparent; }
+}
+
+#appMenu .panel-status-menu-box {
+  padding: 0 $base_padding;
+  spacing: $base_spacing;
 }
