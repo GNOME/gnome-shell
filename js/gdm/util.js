@@ -507,8 +507,8 @@ var ShellUserVerifier = class {
                 return;
             }
             this._reportInitError(this._userName
-                ? 'Failed to start verification for user'
-                : 'Failed to start verification', e);
+                ? 'Failed to start %s verification for user'.format(serviceName)
+                : 'Failed to start %s verification'.format(serviceName), e);
             return;
         }
         this._hold.release();
