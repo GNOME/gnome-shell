@@ -537,6 +537,7 @@ var ShellUserVerifier = class {
     }
 
     _retry() {
+        this.cancel();
         this.begin(this._userName, new Batch.Hold());
     }
 
