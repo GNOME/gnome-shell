@@ -27,9 +27,21 @@ $dash_border_radius: $modal_radius * 1.5;
 }
 
 // Dash Items
-.dash-item-container > StWidget {
-  padding: ($dash_spacing / 2) $dash_spacing;
+.dash-item-container {
+  & > StWidget {
+     padding: ($dash_spacing / 2) 0; //all compact
+  }
 }
+
+.app-well-app:first-child {
+  padding-left: $dash_spacing; //first one padded
+}
+.show-apps:last-child { //last one padded slightly from the favorites
+  padding: ($dash_spacing / 2) $dash_spacing ($dash_spacing / 2) ($dash_spacing / 2);
+}
+
+
+//.overview-icon {}
 
 // OSD Tooltip
 .dash-label {
