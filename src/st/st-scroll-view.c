@@ -164,42 +164,41 @@ st_scroll_view_get_property (GObject    *object,
 /**
  * st_scroll_view_update_fade_effect:
  * @scroll: a #StScrollView
- * @vfade_offset: The length of the vertical fade effect, in pixels.
- * @hfade_offset: The length of the horizontal fade effect, in pixels.
+ * @fade_margins: a #ClutterMargin defining the vertical fade effects, in pixels.
  *
- * Sets the height of the fade area area in pixels. A value of 0
+ * Sets the fade effects in all four edges of the view. A value of 0
  * disables the effect.
  */
 void
-st_scroll_view_update_fade_effect (StScrollView *scroll,
-                                   float         vfade_offset,
-                                   float         hfade_offset)
+st_scroll_view_update_fade_effect (StScrollView  *scroll,
+                                   ClutterMargin *fade_margins)
 {
   StScrollViewPrivate *priv = ST_SCROLL_VIEW (scroll)->priv;
 
-  /* A fade amount of more than 0 enables the effect. */
-  if (vfade_offset > 0. || hfade_offset > 0.)
+  /* A fade amount of other than 0 enables the effect. */
+  if (fade_margins->left != 0. || fade_margins->right != 0. ||
+      fade_margins->top != 0. || fade_margins->bottom != 0.)
     {
-      if (priv->fade_effect == NULL) {
-        priv->fade_effect = g_object_new (ST_TYPE_SCROLL_VIEW_FADE, NULL);
+      if (priv->fade_effect == NULL)
+        {
+          priv->fade_effect = g_object_new (ST_TYPE_SCROLL_VIEW_FADE, NULL);
 
-        clutter_actor_add_effect_with_name (CLUTTER_ACTOR (scroll), "fade",
-                                            CLUTTER_EFFECT (priv->fade_effect));
-      }
+          clutter_actor_add_effect_with_name (CLUTTER_ACTOR (scroll), "fade",
+                                              CLUTTER_EFFECT (priv->fade_effect));
+        }
 
       g_object_set (priv->fade_effect,
-                    "vfade-offset", vfade_offset,
-                    NULL);
-      g_object_set (priv->fade_effect,
-                    "hfade-offset", hfade_offset,
+                    "fade-margins", fade_margins,
                     NULL);
     }
    else
     {
-      if (priv->fade_effect != NULL) {
-        clutter_actor_remove_effect (CLUTTER_ACTOR (scroll), CLUTTER_EFFECT (priv->fade_effect));
-        priv->fade_effect = NULL;
-      }
+      if (priv->fade_effect != NULL)
+        {
+          clutter_actor_remove_effect (CLUTTER_ACTOR (scroll),
+                                       CLUTTER_EFFECT (priv->fade_effect));
+          priv->fade_effect = NULL;
+        }
     }
 
   clutter_actor_queue_redraw (CLUTTER_ACTOR (scroll));
@@ -744,7 +743,13 @@ st_scroll_view_style_changed (StWidget *widget)
   StThemeNode *theme_node = st_widget_get_theme_node (widget);
   gdouble vfade_offset = st_theme_node_get_length (theme_node, "-st-vfade-offset");
   gdouble hfade_offset = st_theme_node_get_length (theme_node, "-st-hfade-offset");
-  st_scroll_view_update_fade_effect (self, vfade_offset, hfade_offset);
+  st_scroll_view_update_fade_effect (self,
+                                     &(ClutterMargin) {
+                                       .top = vfade_offset,
+                                       .bottom = vfade_offset,
+                                       .left = hfade_offset,
+                                       .right = hfade_offset,
+                                     });
 
   st_widget_style_changed (ST_WIDGET (priv->hscroll));
   st_widget_style_changed (ST_WIDGET (priv->vscroll));

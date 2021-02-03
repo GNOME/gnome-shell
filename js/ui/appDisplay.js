@@ -264,7 +264,13 @@ var BaseAppView = GObject.registerClass({
                 return;
         }
 
-        this._scrollView.update_fade_effect(vOffset, hOffset);
+        this._scrollView.update_fade_effect(
+            new Clutter.Margin({
+                left: hOffset,
+                right: hOffset,
+                top: vOffset,
+                bottom: vOffset,
+            }));
     }
 
     _createGrid() {
