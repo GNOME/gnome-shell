@@ -55,6 +55,7 @@ static void st_viewport_scrollable_interface_init (StScrollableInterface *iface)
 
 enum {
   PROP_0,
+  PROP_CLIP_TO_VIEW,
   PROP_HADJUST,
   PROP_VADJUST
 };
@@ -63,6 +64,7 @@ typedef struct
 {
   StAdjustment *hadjustment;
   StAdjustment *vadjustment;
+  gboolean clip_to_view;
 } StViewportPrivate;
 
 G_DEFINE_TYPE_WITH_CODE (StViewport, st_viewport, ST_TYPE_WIDGET,
@@ -164,11 +166,27 @@ st_viewport_scrollable_interface_init (StScrollableInterface *iface)
 }
 
 static void
+st_viewport_set_clip_to_view (StViewport *viewport,
+                              gboolean    clip_to_view)
+{
+  StViewportPrivate *priv =
+    st_viewport_get_instance_private (viewport);
+
+  if (!!priv->clip_to_view != !!clip_to_view)
+    {
+      priv->clip_to_view = clip_to_view;
+      clutter_actor_queue_redraw (CLUTTER_ACTOR (viewport));
+    }
+}
+
+static void
 st_viewport_get_property (GObject    *object,
                           guint       property_id,
                           GValue     *value,
                           GParamSpec *pspec)
 {
+  StViewportPrivate *priv =
+    st_viewport_get_instance_private (ST_VIEWPORT (object));
   StAdjustment *adjustment;
 
   switch (property_id)
@@ -181,6 +199,10 @@ st_viewport_get_property (GObject    *object,
     case PROP_VADJUST:
       scrollable_get_adjustments (ST_SCROLLABLE (object), NULL, &adjustment);
       g_value_set_object (value, adjustment);
+      break;
+
+    case PROP_CLIP_TO_VIEW:
+      g_value_set_boolean (value, priv->clip_to_view);
       break;
 
     default:
@@ -210,6 +232,10 @@ st_viewport_set_property (GObject      *object,
       scrollable_set_adjustments (ST_SCROLLABLE (object),
                                   priv->hadjustment,
                                   g_value_get_object (value));
+      break;
+
+    case PROP_CLIP_TO_VIEW:
+      st_viewport_set_clip_to_view (viewport, g_value_get_boolean (value));
       break;
 
     default:
@@ -405,7 +431,7 @@ st_viewport_paint (ClutterActor        *actor,
   /* The content area forms the viewport into the scrolled contents, while
    * the borders and background stay in place; after drawing the borders and
    * background, we clip to the content area */
-  if (priv->hadjustment || priv->vadjustment)
+  if (priv->clip_to_view && (priv->hadjustment || priv->vadjustment))
     {
       cogl_framebuffer_push_rectangle_clip (fb,
                                             (int)content_box.x1,
@@ -419,7 +445,7 @@ st_viewport_paint (ClutterActor        *actor,
        child = clutter_actor_get_next_sibling (child))
     clutter_actor_paint (child, paint_context);
 
-  if (priv->hadjustment || priv->vadjustment)
+  if (priv->clip_to_view && (priv->hadjustment || priv->vadjustment))
     cogl_framebuffer_pop_clip (fb);
 }
 
@@ -477,6 +503,9 @@ st_viewport_get_paint_volume (ClutterActor       *actor,
   /* Setting the paint volume does not make sense when we don't have any allocation */
   if (!clutter_actor_has_allocation (actor))
     return FALSE;
+
+  if (!priv->clip_to_view)
+    return CLUTTER_ACTOR_CLASS (st_viewport_parent_class)->get_paint_volume (actor, volume);
 
   /* When have an adjustment we are clipped to the content box, so base
    * our paint volume on that. */
@@ -558,6 +587,14 @@ st_viewport_class_init (StViewportClass *klass)
   actor_class->get_paint_volume = st_viewport_get_paint_volume;
   actor_class->pick = st_viewport_pick;
 
+  g_object_class_install_property (object_class,
+                                   PROP_CLIP_TO_VIEW,
+                                   g_param_spec_boolean ("clip-to-view",
+                                                         "Clip to view",
+                                                         "Clip to view",
+                                                         TRUE,
+                                                         ST_PARAM_READWRITE));
+
   /* StScrollable properties */
   g_object_class_override_property (object_class,
                                     PROP_HADJUST,
@@ -566,10 +603,13 @@ st_viewport_class_init (StViewportClass *klass)
   g_object_class_override_property (object_class,
                                     PROP_VADJUST,
                                     "vadjustment");
-
 }
 
 static void
 st_viewport_init (StViewport *self)
 {
+  StViewportPrivate *priv =
+    st_viewport_get_instance_private (self);
+
+  priv->clip_to_view = TRUE;
 }
