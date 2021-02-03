@@ -455,18 +455,27 @@ var _Draggable = class _Draggable {
                     scale_y: scale * origScale,
                     duration: SCALE_ANIMATION_TIME,
                     mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+                    onComplete: () => {
+                        this._updateActorPosition(origScale,
+                            origDragOffsetX, origDragOffsetY, transX, transY);
+                    },
                 });
 
                 this._dragActor.get_transition('scale-x').connect('new-frame', () => {
-                    let currentScale = this._dragActor.scale_x / origScale;
-                    this._dragOffsetX = currentScale * origDragOffsetX - transX;
-                    this._dragOffsetY = currentScale * origDragOffsetY - transY;
-                    this._dragActor.set_position(
-                        this._dragX + this._dragOffsetX,
-                        this._dragY + this._dragOffsetY);
+                    this._updateActorPosition(origScale,
+                        origDragOffsetX, origDragOffsetY, transX, transY);
                 });
             }
         }
+    }
+
+    _updateActorPosition(origScale, origDragOffsetX, origDragOffsetY, transX, transY) {
+        const currentScale = this._dragActor.scale_x / origScale;
+        this._dragOffsetX = currentScale * origDragOffsetX - transX;
+        this._dragOffsetY = currentScale * origDragOffsetY - transY;
+        this._dragActor.set_position(
+            this._dragX + this._dragOffsetX,
+            this._dragY + this._dragOffsetY);
     }
 
     _maybeStartDrag(event) {
