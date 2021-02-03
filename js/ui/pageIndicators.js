@@ -1,26 +1,12 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported PageIndicators, AnimatedPageIndicators */
+/* exported PageIndicators */
 
-const { Clutter, GLib, Graphene, GObject, Meta, St } = imports.gi;
-
-const { ANIMATION_TIME_OUT, ANIMATION_MAX_DELAY_OUT_FOR_ITEM, AnimationDirection } = imports.ui.iconGrid;
+const { Clutter, Graphene, GObject, St } = imports.gi;
 
 const INDICATOR_INACTIVE_OPACITY = 128;
 const INDICATOR_INACTIVE_OPACITY_HOVER = 255;
 const INDICATOR_INACTIVE_SCALE = 2 / 3;
 const INDICATOR_INACTIVE_SCALE_PRESSED = 0.5;
-
-var INDICATORS_BASE_TIME = 250;
-var INDICATORS_BASE_TIME_OUT = 125;
-var INDICATORS_ANIMATION_DELAY = 125;
-var INDICATORS_ANIMATION_DELAY_OUT = 62.5;
-var INDICATORS_ANIMATION_MAX_TIME = 750;
-var SWITCH_TIME = 400;
-var INDICATORS_ANIMATION_MAX_TIME_OUT =
-    Math.min(SWITCH_TIME,
-             ANIMATION_TIME_OUT + ANIMATION_MAX_DELAY_OUT_FOR_ITEM);
-
-var ANIMATION_DELAY = 100;
 
 var PageIndicators = GObject.registerClass({
     Signals: { 'page-activated': { param_types: [GObject.TYPE_INT] } },
@@ -124,81 +110,5 @@ var PageIndicators = GObject.registerClass({
 
     get nPages() {
         return this._nPages;
-    }
-});
-
-var AnimatedPageIndicators = GObject.registerClass(
-class AnimatedPageIndicators extends PageIndicators {
-    _init(orientation = Clutter.Orientation.VERTICAL) {
-        super._init(orientation);
-        this.connect('destroy', this._onDestroy.bind(this));
-    }
-
-    _onDestroy() {
-        if (this.animateLater) {
-            Meta.later_remove(this.animateLater);
-            this.animateLater = 0;
-        }
-    }
-
-    vfunc_map() {
-        super.vfunc_map();
-
-        // Implicit animations are skipped for unmapped actors, and our
-        // children aren't mapped yet, so defer to a later handler
-        this.animateLater = Meta.later_add(Meta.LaterType.BEFORE_REDRAW, () => {
-            this.animateLater = 0;
-            this.animateIndicators(AnimationDirection.IN);
-            return GLib.SOURCE_REMOVE;
-        });
-    }
-
-    animateIndicators(animationDirection) {
-        if (!this.mapped)
-            return;
-
-        let children = this.get_children();
-        if (children.length == 0)
-            return;
-
-        for (let i = 0; i < this._nPages; i++)
-            children[i].remove_all_transitions();
-
-        const vertical = this._orientation === Clutter.Orientation.VERTICAL;
-        let offset;
-        if (this.get_text_direction() == Clutter.TextDirection.RTL)
-            offset = vertical ? -children[0].width : -children[0].height;
-        else
-            offset = vertical ? children[0].width : children[0].height;
-
-        let isAnimationIn = animationDirection == AnimationDirection.IN;
-        let delay = isAnimationIn
-            ? INDICATORS_ANIMATION_DELAY
-            : INDICATORS_ANIMATION_DELAY_OUT;
-        let baseTime = isAnimationIn ? INDICATORS_BASE_TIME : INDICATORS_BASE_TIME_OUT;
-        let totalAnimationTime = baseTime + delay * this._nPages;
-        let maxTime = isAnimationIn
-            ? INDICATORS_ANIMATION_MAX_TIME
-            : INDICATORS_ANIMATION_MAX_TIME_OUT;
-        if (totalAnimationTime > maxTime)
-            delay -= (totalAnimationTime - maxTime) / this._nPages;
-
-        for (let i = 0; i < this._nPages; i++) {
-            const params = {
-                duration: baseTime + delay * i,
-                mode: Clutter.AnimationMode.EASE_IN_OUT_QUAD,
-                delay: isAnimationIn ? ANIMATION_DELAY : 0,
-            };
-
-            if (vertical) {
-                children[i].translation_x = isAnimationIn ? offset : 0;
-                params.translation_x = isAnimationIn ? 0 : offset;
-            } else {
-                children[i].translation_y = isAnimationIn ? offset : 0;
-                params.translation_y = isAnimationIn ? 0 : offset;
-            }
-
-            children[i].ease(params);
-        }
     }
 });
