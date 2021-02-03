@@ -136,3 +136,17 @@ $app_grid_fg_color: #fff;
   border-radius: 99px;
   icon-size: $app_icon_size * 0.5;
 }
+
+.page-navigation-hint {
+  background: rgba(255, 255, 255, 0.05);
+  width: 88px;
+
+  &.next {
+    &:ltr { border-radius: 15px 0px 0px 15px; }
+    &:rtl { border-radius: 0px 15px 15px 0px; }
+  }
+  &.previous {
+    &:ltr { border-radius: 0px 15px 15px 0px; }
+    &:rtl { border-radius: 15px 0px 0px 15px; }
+  }
+}

@@ -38,6 +38,10 @@ var APP_ICON_TITLE_COLLAPSE_TIME = 100;
 
 const FOLDER_DIALOG_ANIMATION_TIME = 200;
 
+const PAGE_PREVIEW_ANIMATION_TIME = 150;
+const PAGE_PREVIEW_FADE_EFFECT_OFFSET = 160;
+const PAGE_INDICATOR_FADE_TIME = 200;
+
 const OVERSHOOT_THRESHOLD = 20;
 const OVERSHOOT_TIMEOUT = 1000;
 
@@ -47,6 +51,12 @@ const DIALOG_SHADE_NORMAL = Clutter.Color.from_pixel(0x000000cc);
 const DIALOG_SHADE_HIGHLIGHT = Clutter.Color.from_pixel(0x00000055);
 
 let discreteGpuAvailable = false;
+
+var SidePages = {
+    NONE: 0,
+    PREVIOUS: 1 << 0,
+    NEXT: 1 << 1,
+};
 
 function _getCategories(info) {
     let categoriesStr = info.get_categories();
@@ -149,6 +159,10 @@ var BaseAppView = GObject.registerClass({
         this._canScroll = true; // limiting scrolling speed
         this._scrollTimeoutId = 0;
         this._scrollView.connect('scroll-event', this._onScroll.bind(this));
+        this._scrollView.connect('motion-event', this._onMotion.bind(this));
+        this._scrollView.connect('enter-event', this._onMotion.bind(this));
+        this._scrollView.connect('leave-event', this._onLeave.bind(this));
+        this._scrollView.connect('button-press-event', this._onButtonPress.bind(this));
 
         this._scrollView.add_actor(this._grid);
 
@@ -172,12 +186,44 @@ var BaseAppView = GObject.registerClass({
             this._scrollView.event(event, false);
         });
 
+        // Navigation indicators
+        this._nextPageIndicator = new St.Widget({
+            style_class: 'page-navigation-hint next',
+            opacity: 0,
+            visible: false,
+            reactive: false,
+            x_expand: true,
+            y_expand: true,
+            x_align: Clutter.ActorAlign.END,
+            y_align: Clutter.ActorAlign.FILL,
+        });
+
+        this._prevPageIndicator = new St.Widget({
+            style_class: 'page-navigation-hint previous',
+            opacity: 0,
+            visible: false,
+            reactive: false,
+            x_expand: true,
+            y_expand: true,
+            x_align: Clutter.ActorAlign.START,
+            y_align: Clutter.ActorAlign.FILL,
+        });
+
+        const scrollContainer = new St.Widget({
+            layout_manager: new Clutter.BinLayout(),
+            clip_to_allocation: true,
+            y_expand: true,
+        });
+        scrollContainer.add_child(this._prevPageIndicator);
+        scrollContainer.add_child(this._nextPageIndicator);
+        scrollContainer.add_child(this._scrollView);
+
         this._box = new St.BoxLayout({
             vertical: true,
             x_expand: true,
             y_expand: true,
         });
-        this._box.add_child(this._scrollView);
+        this._box.add_child(scrollContainer);
         this._box.add_child(this._pageIndicators);
 
         // Swipe
@@ -221,6 +267,8 @@ var BaseAppView = GObject.registerClass({
         this._dragCancelledId = 0;
 
         this.connect('destroy', this._onDestroy.bind(this));
+
+        this._previewedPages = new Map();
     }
 
     _onDestroy() {
@@ -243,8 +291,20 @@ var BaseAppView = GObject.registerClass({
         this._disconnectDnD();
     }
 
+    _updateFadeForNavigation() {
+        const fadeMargin = new Clutter.Margin();
+        fadeMargin.right = (this._pagesShown & SidePages.NEXT) !== 0
+            ? -PAGE_PREVIEW_FADE_EFFECT_OFFSET : 0;
+        fadeMargin.left = (this._pagesShown & SidePages.PREVIOUS) !== 0
+            ? -PAGE_PREVIEW_FADE_EFFECT_OFFSET : 0;
+        this._scrollView.update_fade_effect(fadeMargin);
+    }
+
     _updateFade() {
         const { pagePadding } = this._grid.layout_manager;
+
+        if (this._pagesShown)
+            return;
 
         if (pagePadding.top === 0 &&
             pagePadding.right === 0 &&
@@ -327,6 +387,41 @@ var BaseAppView = GObject.registerClass({
         return Clutter.EVENT_STOP;
     }
 
+    _pageForCoords(x, y) {
+        const rtl = this.get_text_direction() === Clutter.TextDirection.RTL;
+        const { allocation } = this._grid;
+
+        const [success, pointerX] = this._scrollView.transform_stage_point(x, y);
+        if (!success)
+            return SidePages.NONE;
+
+        if (pointerX < allocation.x1)
+            return rtl ? SidePages.NEXT : SidePages.PREVIOUS;
+        else if (pointerX > allocation.x2)
+            return rtl ? SidePages.PREVIOUS : SidePages.NEXT;
+
+        return SidePages.NONE;
+    }
+
+    _onMotion(actor, event) {
+        const page = this._pageForCoords(...event.get_coords());
+        this._slideSidePages(page);
+
+        return Clutter.EVENT_PROPAGATE;
+    }
+
+    _onButtonPress(actor, event) {
+        const page = this._pageForCoords(...event.get_coords());
+        if (page === SidePages.NEXT)
+            this.goToPage(this._grid.currentPage + 1);
+        else if (page === SidePages.PREVIOUS)
+            this.goToPage(this._grid.currentPage - 1);
+    }
+
+    _onLeave() {
+        this._slideSidePages(SidePages.NONE);
+    }
+
     _swipeBegin(tracker, monitor) {
         if (monitor !== Main.layoutManager.primaryIndex)
             return;
@@ -350,6 +445,8 @@ var BaseAppView = GObject.registerClass({
     _swipeEnd(tracker, duration, endProgress) {
         const adjustment = this._adjustment;
         const value = endProgress * adjustment.page_size;
+
+        this._syncPageHints(endProgress);
 
         adjustment.ease(value, {
             mode: Clutter.AnimationMode.EASE_OUT_CUBIC,
@@ -868,12 +965,37 @@ var BaseAppView = GObject.registerClass({
         this._grid.ease(params);
     }
 
+    _syncPageHints(pageNumber, animate = true) {
+        const showingNextPage = this._pagesShown & SidePages.NEXT;
+        const showingPrevPage = this._pagesShown & SidePages.PREVIOUS;
+        const duration = animate ? PAGE_INDICATOR_FADE_TIME : 0;
+
+        if (showingPrevPage) {
+            const opacity = pageNumber === 0 ? 0 : 255;
+            this._prevPageIndicator.visible = true;
+            this._prevPageIndicator.ease({
+                opacity,
+                duration,
+            });
+        }
+
+        if (showingNextPage) {
+            const opacity = pageNumber === this._grid.nPages - 1 ? 0 : 255;
+            this._nextPageIndicator.visible = true;
+            this._nextPageIndicator.ease({
+                opacity,
+                duration,
+            });
+        }
+    }
+
     goToPage(pageNumber, animate = true) {
         pageNumber = Math.clamp(pageNumber, 0, this._grid.nPages - 1);
 
         if (this._grid.currentPage === pageNumber)
             return;
 
+        this._syncPageHints(pageNumber, animate);
         this._grid.goToPage(pageNumber, animate);
     }
 
@@ -893,6 +1015,121 @@ var BaseAppView = GObject.registerClass({
 
         this._availWidth = availWidth;
         this._availHeight = availHeight;
+    }
+
+    _getPagePreviewAdjustment(page) {
+        const previewedPage = this._previewedPages.get(page);
+        return previewedPage?.adjustment;
+    }
+
+    _syncClip() {
+        const nextPageAdjustment = this._getPagePreviewAdjustment(1);
+        const prevPageAdjustment = this._getPagePreviewAdjustment(-1);
+        this._grid.clip_to_view =
+            (!prevPageAdjustment || prevPageAdjustment.value === 0) &&
+            (!nextPageAdjustment || nextPageAdjustment.value === 0);
+    }
+
+    _setupPagePreview(page, state) {
+        if (this._previewedPages.has(page))
+            return this._previewedPages.get(page).adjustment;
+
+        const adjustment = new St.Adjustment({
+            actor: this,
+            lower: 0,
+            upper: 1,
+        });
+
+        const indicator = page > 0
+            ? this._nextPageIndicator : this._prevPageIndicator;
+        const rtl = this.get_text_direction() === Clutter.TextDirection.RTL;
+
+        const notifyId = adjustment.connect('notify::value', () => {
+            let translationX = (1 - adjustment.value) * 100 * page;
+            translationX = rtl ? -translationX : translationX;
+            const nextPage = this._grid.currentPage + page;
+            if (nextPage >= 0 &&
+                nextPage < this._grid.nPages - 1) {
+                const items = this._grid.getItemsAtPage(nextPage);
+                items.forEach(item => (item.translation_x = translationX));
+                indicator.set({
+                    visible: true,
+                    opacity: adjustment.value * 255,
+                    translationX,
+                });
+            }
+            this._syncClip();
+        });
+
+        this._previewedPages.set(page, {
+            adjustment,
+            notifyId,
+        });
+
+        return adjustment;
+    }
+
+    _teardownPagePreview(page) {
+        const previewedPage = this._previewedPages.get(page);
+        if (!previewedPage)
+            return;
+
+        previewedPage.adjustment.value = 1;
+        previewedPage.adjustment.disconnect(previewedPage.notifyId);
+        this._previewedPages.delete(page);
+    }
+
+    _slideSidePages(state) {
+        if (this._pagesShown === state)
+            return;
+        this._pagesShown = state;
+        const showingNextPage = state & SidePages.NEXT;
+        const showingPrevPage = state & SidePages.PREVIOUS;
+        let adjustment;
+
+        adjustment = this._getPagePreviewAdjustment(1);
+        if (showingNextPage) {
+            adjustment = this._setupPagePreview(1, state);
+
+            adjustment.ease(1, {
+                duration: PAGE_PREVIEW_ANIMATION_TIME,
+                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            });
+            this._updateFadeForNavigation();
+        } else if (adjustment) {
+            adjustment.ease(0, {
+                duration: PAGE_PREVIEW_ANIMATION_TIME,
+                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+                onComplete: () => {
+                    this._teardownPagePreview(1);
+                    this._syncClip();
+                    this._nextPageIndicator.visible = false;
+                    this._updateFadeForNavigation();
+                },
+            });
+        }
+
+        adjustment = this._getPagePreviewAdjustment(-1);
+        if (showingPrevPage) {
+            adjustment = this._setupPagePreview(-1, state);
+
+            adjustment.ease(1, {
+                duration: PAGE_PREVIEW_ANIMATION_TIME,
+                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            });
+            this._updateFadeForNavigation();
+        } else if (adjustment) {
+            adjustment.ease(0, {
+                duration: PAGE_PREVIEW_ANIMATION_TIME,
+                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+                onComplete: () => {
+                    this._teardownPagePreview(-1);
+                    this._syncClip();
+                    this._prevPageIndicator.visible = false;
+                    this._updateFadeForNavigation();
+                },
+            });
+        }
     }
 });
 
