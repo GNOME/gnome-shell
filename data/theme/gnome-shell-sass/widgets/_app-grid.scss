@@ -141,6 +141,10 @@ $app_grid_fg_color: #fff;
   background: rgba(255, 255, 255, 0.05);
   width: 88px;
 
+  &.dnd {
+    background: rgba(255, 255, 255, 0.1);
+  }
+
   &.next {
     &:ltr { border-radius: 15px 0px 0px 15px; }
     &:rtl { border-radius: 0px 15px 15px 0px; }

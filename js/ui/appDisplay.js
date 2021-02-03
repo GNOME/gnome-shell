@@ -56,6 +56,7 @@ var SidePages = {
     NONE: 0,
     PREVIOUS: 1 << 0,
     NEXT: 1 << 1,
+    DND: 1 << 2,
 };
 
 function _getCategories(info) {
@@ -155,6 +156,7 @@ var BaseAppView = GObject.registerClass({
             enable_mouse_scrolling: false,
         });
         this._scrollView.set_policy(St.PolicyType.EXTERNAL, St.PolicyType.NEVER);
+        this._scrollView._delegate = this;
 
         this._canScroll = true; // limiting scrolling speed
         this._scrollTimeoutId = 0;
@@ -607,6 +609,7 @@ var BaseAppView = GObject.registerClass({
             dragMotion: this._onDragMotion.bind(this),
         };
         DND.addDragMonitor(this._dragMonitor);
+        this._slideSidePages(SidePages.PREVIOUS | SidePages.NEXT | SidePages.DND);
     }
 
     _onDragMotion(dragEvent) {
@@ -614,6 +617,14 @@ var BaseAppView = GObject.registerClass({
             return DND.DragMotionResult.CONTINUE;
 
         const appIcon = dragEvent.source;
+
+        this._dropPage = this._pageForCoords(dragEvent.x, dragEvent.y);
+        if (this._dropPage &&
+            this._dropPage === SidePages.PREVIOUS &&
+            this._grid.currentPage === 0) {
+            delete this._dropPage;
+            return DND.DragMotionResult.NO_DROP;
+        }
 
         // Handle the drag overshoot. When dragging to above the
         // icon grid, move to the page above; when dragging below,
@@ -633,12 +644,15 @@ var BaseAppView = GObject.registerClass({
         }
 
         this._resetOvershoot();
+        this._slideSidePages(SidePages.NONE);
+        delete this._dropPage;
     }
 
     _onDragCancelled() {
         // At this point, the positions aren't stored yet, thus _redisplay()
         // will move all items to their original positions
         this._redisplay();
+        this._slideSidePages(SidePages.NONE);
     }
 
     _canAccept(source) {
@@ -656,8 +670,16 @@ var BaseAppView = GObject.registerClass({
         if (!this._canAccept(source))
             return false;
 
-        // Dropped before the icon was moved
-        if (this._delayedMoveData) {
+        if (this._dropPage) {
+            const increment = this._dropPage === SidePages.NEXT ? 1 : -1;
+            const { currentPage, nPages } = this._grid;
+            const page = Math.min(currentPage + increment, nPages);
+            const position = page < nPages ? -1 : 0;
+
+            this._moveItem(source, page, position);
+            this.goToPage(page);
+        } else if (this._delayedMoveData) {
+            // Dropped before the icon was moved
             const { page, position } = this._delayedMoveData;
 
             this._moveItem(source, page, position);
@@ -1048,10 +1070,17 @@ var BaseAppView = GObject.registerClass({
             let translationX = (1 - adjustment.value) * 100 * page;
             translationX = rtl ? -translationX : translationX;
             const nextPage = this._grid.currentPage + page;
-            if (nextPage >= 0 &&
-                nextPage < this._grid.nPages - 1) {
+            const hasFollowingPage = nextPage >= 0 &&
+                nextPage < this._grid.nPages;
+
+            if (hasFollowingPage) {
                 const items = this._grid.getItemsAtPage(nextPage);
                 items.forEach(item => (item.translation_x = translationX));
+            }
+            if (hasFollowingPage ||
+                (page > 0 &&
+                 this._grid.layout_manager.allow_incomplete_pages &&
+                 (state & SidePages.DND) !== 0)) {
                 indicator.set({
                     visible: true,
                     opacity: adjustment.value * 255,
@@ -1085,7 +1114,16 @@ var BaseAppView = GObject.registerClass({
         this._pagesShown = state;
         const showingNextPage = state & SidePages.NEXT;
         const showingPrevPage = state & SidePages.PREVIOUS;
+        const dnd = state & SidePages.DND;
         let adjustment;
+
+        if (dnd) {
+            this._nextPageIndicator.add_style_class_name('dnd');
+            this._prevPageIndicator.add_style_class_name('dnd');
+        } else {
+            this._nextPageIndicator.remove_style_class_name('dnd');
+            this._prevPageIndicator.remove_style_class_name('dnd');
+        }
 
         adjustment = this._getPagePreviewAdjustment(1);
         if (showingNextPage) {
