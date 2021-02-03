@@ -247,6 +247,12 @@ const TouchSwipeGesture = GObject.registerClass({
         let time = this.get_last_event(0).get_time();
         let [xPress, yPress] = this.get_press_coords(0);
         let [x, y] = this.get_motion_coords(0);
+        const [xDelta, yDelta] = [x - xPress, y - yPress];
+        const swipeOrientation = Math.abs(xDelta) > Math.abs(yDelta)
+            ? Clutter.Orientation.HORIZONTAL : Clutter.Orientation.VERTICAL;
+
+        if (swipeOrientation !== this.orientation)
+            return false;
 
         this._lastPosition =
             this.orientation === Clutter.Orientation.VERTICAL ? y : x;
