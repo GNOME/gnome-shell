@@ -137,6 +137,7 @@ var BaseAppView = GObject.registerClass({
 
         // Scroll View
         this._scrollView = new St.ScrollView({
+            style_class: 'apps-scroll-view',
             clip_to_allocation: true,
             x_expand: true,
             y_expand: true,
@@ -967,8 +968,6 @@ class AppDisplay extends BaseAppView {
 
         this._pageManager = new PageManager();
         this._pageManager.connect('layout-changed', () => this._redisplay());
-
-        this._scrollView.add_style_class_name('all-apps');
 
         this._stack = new St.Widget({
             layout_manager: new Clutter.BinLayout(),
