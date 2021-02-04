@@ -28,6 +28,10 @@ class MediaMessage extends MessageList.Message {
         this._icon = new St.Icon({ style_class: 'media-message-cover-icon' });
         this.setIcon(this._icon);
 
+        // reclaim space used by unused elements
+        this._secondaryBin.hide();
+        this._closeButton.hide();
+
         this._prevButton = this.addMediaControl('media-skip-backward-symbolic',
             () => {
                 this._player.previous();
