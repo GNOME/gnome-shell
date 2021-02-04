@@ -2489,8 +2489,10 @@ var AppFolderDialog = GObject.registerClass({
         if (this._isOpen)
             return;
 
-        this._isOpen = this._grabHelper.grab({ actor: this,
-                                               onUngrab: this.popdown.bind(this) });
+        this._isOpen = this._grabHelper.grab({
+            actor: this,
+            onUngrab: () => this.popdown(),
+        });
 
         if (!this._isOpen)
             return;
