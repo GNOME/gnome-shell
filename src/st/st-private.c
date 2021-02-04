@@ -278,7 +278,7 @@ blur_pixels (guchar  *pixels_in,
              gdouble  blur,
              gint    *width_out,
              gint    *height_out,
-             gint    *rowstride_out)
+             size_t  *rowstride_out)
 {
   guchar *pixels_out;
   gdouble sigma;
@@ -295,7 +295,7 @@ blur_pixels (guchar  *pixels_in,
       *width_out  = width_in;
       *height_out = height_in;
       *rowstride_out = rowstride_in;
-      pixels_out = g_memdup (pixels_in, *rowstride_out * *height_out);
+      pixels_out = g_memdup2 (pixels_in, *rowstride_out * *height_out);
     }
   else
     {
@@ -593,7 +593,8 @@ _st_create_shadow_cairo_pattern (StShadow        *shadow_spec_in,
   cairo_pattern_t *dst_pattern;
   guchar          *pixels_in, *pixels_out;
   gint             width_in, height_in, rowstride_in;
-  gint             width_out, height_out, rowstride_out;
+  gint             width_out, height_out;
+  size_t           rowstride_out;
   cairo_matrix_t   shadow_matrix;
   double           xscale_in, yscale_in;
   int i, j;
