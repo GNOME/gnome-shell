@@ -1237,7 +1237,7 @@ class Workspace extends St.Widget {
 
     // Create a clone of a (non-desktop) window and add it to the window list
     _addWindowClone(metaWindow) {
-        let clone = new WindowPreview(metaWindow, this);
+        let clone = new WindowPreview(metaWindow, this, this._overviewAdjustment);
 
         clone.connect('selected',
                       this._onCloneSelected.bind(this));

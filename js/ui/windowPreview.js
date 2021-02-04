@@ -5,6 +5,7 @@ const { Atk, Clutter, GLib, GObject,
         Graphene, Meta, Pango, Shell, St } = imports.gi;
 
 const DND = imports.ui.dnd;
+const OverviewControls = imports.ui.overviewControls;
 
 var WINDOW_DND_SIZE = 256;
 
@@ -209,11 +210,12 @@ var WindowPreview = GObject.registerClass({
         'size-changed': {},
     },
 }, class WindowPreview extends St.Widget {
-    _init(metaWindow, workspace) {
+    _init(metaWindow, workspace, overviewAdjustment) {
         this.metaWindow = metaWindow;
         this.metaWindow._delegate = this;
         this._windowActor = metaWindow.get_compositor_private();
         this._workspace = workspace;
+        this._overviewAdjustment = overviewAdjustment;
 
         super._init({
             reactive: true,
@@ -377,6 +379,12 @@ var WindowPreview = GObject.registerClass({
         this.add_child(this._icon);
         this.add_child(this._closeButton);
 
+        this._adjustmentChangedId =
+            this._overviewAdjustment.connect('notify::value', () => {
+                this._updateIconScale();
+            });
+        this._updateIconScale();
+
         this.connect('notify::realized', () => {
             if (!this.realized)
                 return;
@@ -411,6 +419,22 @@ var WindowPreview = GObject.registerClass({
 
         for (const child of this)
             child.allocate_available_size(0, 0, box.get_width(), box.get_height());
+    }
+
+    _updateIconScale() {
+        const { ControlsState } = OverviewControls;
+        const { currentState, initialState, finalState } =
+            this._overviewAdjustment.getStateTransitionParams();
+        const visible =
+            initialState === ControlsState.WINDOW_PICKER ||
+            finalState === ControlsState.WINDOW_PICKER;
+        const scale = visible
+            ? 1 - Math.abs(ControlsState.WINDOW_PICKER - currentState) : 0;
+
+        this._icon.set({
+            scale_x: scale,
+            scale_y: scale,
+        });
     }
 
     _windowCanClose() {
@@ -641,18 +665,6 @@ var WindowPreview = GObject.registerClass({
         this._overlayEnabled = enabled;
         this.notify('overlay-enabled');
 
-        this._icon.set({
-            scale_x: enabled ? 0 : 1,
-            scale_y: enabled ? 0 : 1,
-        });
-        this._icon.show();
-        this._icon.ease({
-            scale_x: enabled ? 1.0 : 0,
-            scale_y: enabled ? 1.0 : 0,
-            duration: enabled ? WINDOW_OVERLAY_FADE_TIME : 0,
-            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-        });
-
         if (!enabled)
             this.hideOverlay(false);
         else if (this['has-pointer'] || global.stage.key_focus === this)
@@ -704,6 +716,11 @@ var WindowPreview = GObject.registerClass({
         if (this._idleHideOverlayId > 0) {
             GLib.source_remove(this._idleHideOverlayId);
             this._idleHideOverlayId = 0;
+        }
+
+        if (this._adjustmentChangedId > 0) {
+            this._overviewAdjustment.disconnect(this._adjustmentChangedId);
+            this._adjustmentChangedId = 0;
         }
 
         if (this.inDrag) {
