@@ -1,7 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported findUrls, spawn, spawnCommandLine, spawnApp, trySpawnCommandLine,
             formatTime, formatTimeSpan, createTimeLabel, insertSorted,
-            ensureActorVisibleInScrollView, wiggle, lerp */
+            ensureActorVisibleInScrollView, wiggle, lerp, GNOMEversionCompare */
 
 const { Clutter, Gio, GLib, Shell, St, GnomeDesktop } = imports.gi;
 const Gettext = imports.gettext;
@@ -438,4 +438,42 @@ function wiggle(actor, params) {
 
 function lerp(start, end, progress) {
     return start + progress * (end - start);
+}
+
+// _GNOMEversionToNumber:
+// @version: a GNOME version element
+//
+// Like Number() but returns sortable values for special-cases
+// 'alpha' and 'beta'. Returns NaN for unhandled 'versions'.
+function _GNOMEversionToNumber(version) {
+    let ret = Number(version);
+    if (!isNaN(ret))
+        return ret;
+    if (version === 'alpha')
+        return -2;
+    if (version === 'beta')
+        return -1;
+    return ret;
+}
+
+// GNOMEversionCompare:
+// @version1: a string containing a GNOME version
+// @version2: a string containing another GNOME version
+//
+// Returns an integer less than, equal to, or greater than
+// zero, if version1 is older, equal or newer than version2
+function GNOMEversionCompare(version1, version2) {
+    const v1Array = version1.split('.');
+    const v2Array = version2.split('.');
+
+    for (let i = 0; i < Math.max(v1Array.length, v2Array.length); i++) {
+        let elemV1 = _GNOMEversionToNumber(v1Array[i] || '0');
+        let elemV2 = _GNOMEversionToNumber(v2Array[i] || '0');
+        if (elemV1 < elemV2)
+            return -1;
+        if (elemV1 > elemV2)
+            return 1;
+    }
+
+    return 0;
 }
