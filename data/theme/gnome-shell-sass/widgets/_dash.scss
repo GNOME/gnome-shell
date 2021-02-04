@@ -2,15 +2,17 @@
 
 $dash_background_color: #3b3b3b;
 $dash_placeholder_size: 32px;
-$dash_spacing: $base_padding + 4px;
+$dash_padding: $base_padding + 4px; // 10px
+$dash_spacing: $base_padding / 4;
+
+
 $dash_border_radius: $modal_radius * 1.5;
 
 #dash {
   background-color: $dash_background_color;
   @include fontsize($base_font_size - 2);
   margin: $base_margin * 4 $base_margin * 2;
-  padding: ($dash_spacing / 2) 0;
-
+  padding: 0 $dash_padding;
   border-radius: $dash_border_radius;
 
   .placeholder {
@@ -24,20 +26,21 @@ $dash_border_radius: $modal_radius * 1.5;
     width: $dash_placeholder_size;
     height: $dash_placeholder_size;
   }
-}
 
-// Dash Items
-.dash-item-container {
-  & > StWidget {
-     padding: ($dash_spacing / 2) 0; //all compact
+  .overview-icon {
+    padding: $dash_padding / 2;
   }
 }
 
-.app-well-app:first-child {
-  padding-left: $dash_spacing; //first one padded
+// Dash Items
+.dash-item-container > StWidget {
+  padding: $dash_padding $dash_spacing;
 }
-.show-apps:last-child { //last one padded slightly from the favorites
-  padding: ($dash_spacing / 2) $dash_spacing ($dash_spacing / 2) ($dash_spacing / 2);
+
+.dash-separator {
+  width: 1px;
+  margin: 0 ($dash_spacing + ($dash_padding / 2));
+  background-color: transparentize($osd_fg_color,0.7);
 }
 
 // OSD Tooltip
@@ -64,4 +67,3 @@ $dash_border_radius: $modal_radius * 1.5;
     }
   }
 }
-
