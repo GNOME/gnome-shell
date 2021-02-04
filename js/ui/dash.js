@@ -468,6 +468,7 @@ var Dash = GObject.registerClass({
         item.setLabelText(app.get_name());
 
         appIcon.icon.setIconSize(this.iconSize);
+        appIcon.icon.add_style_class_name('icon-dropshadow');
         this._hookUpLabel(item, appIcon);
 
         return item;
