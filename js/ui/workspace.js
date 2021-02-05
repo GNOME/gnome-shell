@@ -6,6 +6,7 @@ const { Clutter, GLib, GObject, Graphene, Meta, St } = imports.gi;
 const Background = imports.ui.background;
 const DND = imports.ui.dnd;
 const Main = imports.ui.main;
+const OverviewControls = imports.ui.overviewControls;
 const Params = imports.misc.params;
 const Util = imports.misc.util;
 const { WindowPreview } = imports.ui.windowPreview;
@@ -932,7 +933,7 @@ class WorkspaceBackground extends St.Widget {
  */
 var Workspace = GObject.registerClass(
 class Workspace extends St.Widget {
-    _init(metaWorkspace, monitorIndex) {
+    _init(metaWorkspace, monitorIndex, overviewAdjustment) {
         super._init({
             style_class: 'window-picker',
             pivot_point: new Graphene.Point({ x: 0.5, y: 0.5 }),
@@ -942,6 +943,7 @@ class Workspace extends St.Widget {
 
         this.metaWorkspace = metaWorkspace;
 
+        this._overviewAdjustment = overviewAdjustment;
         this.monitorIndex = monitorIndex;
         this._monitor = Main.layoutManager.monitors[this.monitorIndex];
 
@@ -954,12 +956,15 @@ class Workspace extends St.Widget {
 
         const clickAction = new Clutter.ClickAction();
         clickAction.connect('clicked', action => {
-            // Only switch to the workspace when there's no application
-            // windows open. The problem is that it's too easy to miss
-            // an app window and get the wrong one focused.
-            if ((action.get_button() === 1 || action.get_button() === 0) &&
-                this.isEmpty())
-                Main.overview.hide();
+            // Switch to the workspace when not the active one, leave the
+            // overview otherwise.
+            if (action.get_button() === 1 || action.get_button() === 0) {
+                const leaveOverview = this._shouldLeaveOverview();
+
+                this.metaWorkspace?.activate(global.get_current_time());
+                if (leaveOverview)
+                    Main.overview.hide();
+            }
         });
         this.bind_property('mapped', clickAction, 'enabled', GObject.BindingFlags.SYNC_CREATE);
         this.add_action(clickAction);
@@ -993,6 +998,14 @@ class Workspace extends St.Widget {
 
         // DND requires this to be set
         this._delegate = this;
+    }
+
+    _shouldLeaveOverview() {
+        if (!this.metaWorkspace || this.metaWorkspace.active)
+            return true;
+
+        const overviewState = this._overviewAdjustment.value;
+        return overviewState > OverviewControls.ControlsState.WINDOW_PICKER;
     }
 
     vfunc_get_focus_chain() {
@@ -1267,7 +1280,11 @@ class Workspace extends St.Widget {
 
     _onCloneSelected(clone, time) {
         const wsIndex = this.metaWorkspace?.index();
-        Main.activateWindow(clone.metaWindow, time, wsIndex);
+
+        if (this._shouldLeaveOverview())
+            Main.activateWindow(clone.metaWindow, time, wsIndex);
+        else
+            this.metaWorkspace?.activate(time);
     }
 
     // Draggable target interface

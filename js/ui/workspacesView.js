@@ -449,7 +449,10 @@ class WorkspacesView extends WorkspacesViewBase {
             let workspace;
 
             if (j >= this._workspaces.length) { /* added */
-                workspace = new Workspace.Workspace(metaWorkspace, this._monitorIndex);
+                workspace = new Workspace.Workspace(
+                    metaWorkspace,
+                    this._monitorIndex,
+                    this._overviewAdjustment);
                 this.add_actor(workspace);
                 this._workspaces[j] = workspace;
             } else  {
@@ -540,7 +543,8 @@ var ExtraWorkspaceView = GObject.registerClass(
 class ExtraWorkspaceView extends WorkspacesViewBase {
     _init(monitorIndex, overviewAdjustment) {
         super._init(monitorIndex, overviewAdjustment);
-        this._workspace = new Workspace.Workspace(null, monitorIndex);
+        this._workspace =
+            new Workspace.Workspace(null, monitorIndex, overviewAdjustment);
         this.add_actor(this._workspace);
     }
 
