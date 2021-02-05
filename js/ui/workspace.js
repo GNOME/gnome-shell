@@ -406,6 +406,7 @@ var WorkspaceLayout = GObject.registerClass({
         this._spacing = 20;
         this._layoutFrozen = false;
 
+        this._metaWorkspace = metaWorkspace;
         this._monitorIndex = monitorIndex;
         this._workarea = metaWorkspace
             ? metaWorkspace.get_work_area_for_monitor(this._monitorIndex)
@@ -426,8 +427,7 @@ var WorkspaceLayout = GObject.registerClass({
         });
 
         this._stateAdjustment.connect('notify::value', () => {
-            [...this._windows.keys()].forEach(
-                preview => this._syncOverlay(preview));
+            this.syncOverlays();
             this.layout_changed();
         });
     }
@@ -697,7 +697,17 @@ var WorkspaceLayout = GObject.registerClass({
     }
 
     _syncOverlay(preview) {
-        preview.overlay_enabled = this._stateAdjustment.value === 1;
+        const active = this._metaWorkspace?.active ?? true;
+        preview.overlayEnabled = active && this._stateAdjustment.value === 1;
+    }
+
+    /**
+     * syncOverlays:
+     *
+     * Synchronizes the overlay state of all window previews.
+     */
+    syncOverlays() {
+        [...this._windows.keys()].forEach(preview => this._syncOverlay(preview));
     }
 
     /**
@@ -942,6 +952,10 @@ class Workspace extends St.Widget {
         });
 
         this.metaWorkspace = metaWorkspace;
+        this._activeWorkspaceChangedId =
+            this.metaWorkspace?.connect('notify::active', () => {
+                this.layoutManager.syncOverlays();
+            });
 
         this._overviewAdjustment = overviewAdjustment;
         this.monitorIndex = monitorIndex;
@@ -1188,6 +1202,7 @@ class Workspace extends St.Widget {
         if (this.metaWorkspace) {
             this.metaWorkspace.disconnect(this._windowAddedId);
             this.metaWorkspace.disconnect(this._windowRemovedId);
+            this.metaWorkspace.disconnect(this._activeWorkspaceChangedId);
         }
         global.display.disconnect(this._windowEnteredMonitorId);
         global.display.disconnect(this._windowLeftMonitorId);
