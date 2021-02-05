@@ -42,7 +42,6 @@ var UserListItem = GObject.registerClass({
     _init(user) {
         let layout = new St.BoxLayout({
             vertical: true,
-            x_align: Clutter.ActorAlign.START,
         });
         super._init({
             style_class: 'login-dialog-user-list-item',
