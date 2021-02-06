@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2021-01-14 20:39+0000\n"
-"PO-Revision-Date: 2021-01-15 12:38+0100\n"
+"POT-Creation-Date: 2021-02-05 15:37+0000\n"
+"PO-Revision-Date: 2021-02-06 08:15+0100\n"
 "Last-Translator: Petr Kovar <pknbe@volny.cz>\n"
 "Language-Team: čeština <gnome-cs-list@gnome.org>\n"
 "Language: cs\n"
@@ -197,10 +197,26 @@ msgstr ""
 "přiřazená žádná zařízení."
 
 #: data/org.gnome.shell.gschema.xml.in:99
+msgid "The last version the “Welcome to GNOME” dialog was shown for"
+msgstr "Poslední verze „Vítá vás GNOME“ nabídnutá v dialogovém okně"
+
+#: data/org.gnome.shell.gschema.xml.in:100
+msgid ""
+"This key determines for which version the “Welcome to GNOME” dialog was last "
+"shown. An empty string represents the oldest possible version, and a huge "
+"number will represent versions that do not exist yet. This huge number can "
+"be used to effectively disable the dialog."
+msgstr ""
+"Klíč určuje, pro kterou verzi „Vítá vás GNOME“ bylo naposledy zobrazeno "
+"dialogové okno. Prázdný řetězec představuje nejstarší možnou verzi a velmi "
+"vysoké číslo představuje verzi, které doposud neexistuje. Takovýmto číslem se "
+"dá dialogové okno jednoduše zakázat."
+
+#: data/org.gnome.shell.gschema.xml.in:109
 msgid "Enable introspection API"
 msgstr "Povolit API introspekce"
 
-#: data/org.gnome.shell.gschema.xml.in:100
+#: data/org.gnome.shell.gschema.xml.in:110
 msgid ""
 "Enables a D-Bus API that allows to introspect the application state of the "
 "shell."
@@ -208,11 +224,11 @@ msgstr ""
 "Povolit API na sběrnici D-Bus, které umožňuje introspekci stavu aplikace v "
 "shellu."
 
-#: data/org.gnome.shell.gschema.xml.in:107
+#: data/org.gnome.shell.gschema.xml.in:117
 msgid "Layout of the app picker"
 msgstr "Rozvržení výběru aplikace"
 
-#: data/org.gnome.shell.gschema.xml.in:108
+#: data/org.gnome.shell.gschema.xml.in:118
 msgid ""
 "Layout of the app picker. Each entry in the array is a page. Pages are "
 "stored in the order they appear in GNOME Shell. Each page contains an "
@@ -224,90 +240,90 @@ msgstr ""
 "obsahuje pár „id aplikace“ → „data“. V současnosti se jako „data“ ukládají "
 "následující hodnoty: • „pozice“: pozice ikony aplikace na stránce."
 
-#: data/org.gnome.shell.gschema.xml.in:123
+#: data/org.gnome.shell.gschema.xml.in:133
 msgid "Keybinding to open the application menu"
 msgstr "Klávesová zkratka otevírající nabidku aplikací"
 
-#: data/org.gnome.shell.gschema.xml.in:124
+#: data/org.gnome.shell.gschema.xml.in:134
 msgid "Keybinding to open the application menu."
 msgstr "Klávesová zkratka sloužící k otevření nabídky aplikací."
 
-#: data/org.gnome.shell.gschema.xml.in:130
+#: data/org.gnome.shell.gschema.xml.in:140
 msgid "Keybinding to open the “Show Applications” view"
 msgstr "Klávesová zkratka otevírající zobrazení aplikací"
 
-#: data/org.gnome.shell.gschema.xml.in:131
+#: data/org.gnome.shell.gschema.xml.in:141
 msgid ""
 "Keybinding to open the “Show Applications” view of the Activities Overview."
 msgstr ""
 "Klávesová zkratka sloužící k otevření seznamu aplikací v Přehledu činností."
 
-#: data/org.gnome.shell.gschema.xml.in:138
+#: data/org.gnome.shell.gschema.xml.in:148
 msgid "Keybinding to open the overview"
 msgstr "Klávesová zkratka otevírající přehled"
 
-#: data/org.gnome.shell.gschema.xml.in:139
+#: data/org.gnome.shell.gschema.xml.in:149
 msgid "Keybinding to open the Activities Overview."
 msgstr "Klávesová zkratka sloužící k otevření přehledu činností."
 
-#: data/org.gnome.shell.gschema.xml.in:145
+#: data/org.gnome.shell.gschema.xml.in:155
 msgid "Keybinding to toggle the visibility of the notification list"
 msgstr "Klávesová zkratka přepínající viditelnost seznamu upozornění"
 
-#: data/org.gnome.shell.gschema.xml.in:146
+#: data/org.gnome.shell.gschema.xml.in:156
 msgid "Keybinding to toggle the visibility of the notification list."
 msgstr "Klávesová zkratka sloužící k přepnutí viditelnosti seznamu upozornění."
 
-#: data/org.gnome.shell.gschema.xml.in:152
+#: data/org.gnome.shell.gschema.xml.in:162
 msgid "Keybinding to focus the active notification"
 msgstr "Klávesová zkratka zaměřující aktivního upozornění"
 
-#: data/org.gnome.shell.gschema.xml.in:153
+#: data/org.gnome.shell.gschema.xml.in:163
 msgid "Keybinding to focus the active notification."
 msgstr "Klávesová zkratka sloužící k zaměření aktivního upozornění."
 
-#: data/org.gnome.shell.gschema.xml.in:159
+#: data/org.gnome.shell.gschema.xml.in:169
 msgid "Switch to application 1"
 msgstr "Přepnout do aplikace 1"
 
-#: data/org.gnome.shell.gschema.xml.in:163
+#: data/org.gnome.shell.gschema.xml.in:173
 msgid "Switch to application 2"
 msgstr "Přepnout do aplikace 2"
 
-#: data/org.gnome.shell.gschema.xml.in:167
+#: data/org.gnome.shell.gschema.xml.in:177
 msgid "Switch to application 3"
 msgstr "Přepnout do aplikace 3"
 
-#: data/org.gnome.shell.gschema.xml.in:171
+#: data/org.gnome.shell.gschema.xml.in:181
 msgid "Switch to application 4"
 msgstr "Přepnout do aplikace 4"
 
-#: data/org.gnome.shell.gschema.xml.in:175
+#: data/org.gnome.shell.gschema.xml.in:185
 msgid "Switch to application 5"
 msgstr "Přepnout do aplikace 5"
 
-#: data/org.gnome.shell.gschema.xml.in:179
+#: data/org.gnome.shell.gschema.xml.in:189
 msgid "Switch to application 6"
 msgstr "Přepnout do aplikace 6"
 
-#: data/org.gnome.shell.gschema.xml.in:183
+#: data/org.gnome.shell.gschema.xml.in:193
 msgid "Switch to application 7"
 msgstr "Přepnout do aplikace 7"
 
-#: data/org.gnome.shell.gschema.xml.in:187
+#: data/org.gnome.shell.gschema.xml.in:197
 msgid "Switch to application 8"
 msgstr "Přepnout do aplikace 8"
 
-#: data/org.gnome.shell.gschema.xml.in:191
+#: data/org.gnome.shell.gschema.xml.in:201
 msgid "Switch to application 9"
 msgstr "Přepnout do aplikace 9"
 
-#: data/org.gnome.shell.gschema.xml.in:200
-#: data/org.gnome.shell.gschema.xml.in:227
+#: data/org.gnome.shell.gschema.xml.in:210
+#: data/org.gnome.shell.gschema.xml.in:237
 msgid "Limit switcher to current workspace."
 msgstr "Omezit přepínání jen na aktuální plochu."
 
-#: data/org.gnome.shell.gschema.xml.in:201
+#: data/org.gnome.shell.gschema.xml.in:211
 msgid ""
 "If true, only applications that have windows on the current workspace are "
 "shown in the switcher. Otherwise, all applications are included."
@@ -315,11 +331,11 @@ msgstr ""
 "Je-li zapnuto, objeví se v přepínači aplikací jen ty, co jsou na aktuální "
 "pracovní ploše. V opačném případě jsou zahrnuty všechny aplikace."
 
-#: data/org.gnome.shell.gschema.xml.in:218
+#: data/org.gnome.shell.gschema.xml.in:228
 msgid "The application icon mode."
 msgstr "Režim ikon aplikací."
 
-#: data/org.gnome.shell.gschema.xml.in:219
+#: data/org.gnome.shell.gschema.xml.in:229
 msgid ""
 "Configures how the windows are shown in the switcher. Valid possibilities "
 "are “thumbnail-only” (shows a thumbnail of the window), “app-icon-"
@@ -329,7 +345,7 @@ msgstr ""
 "only“ (zobrazí náhled okna), „app-icon-only“ (zobrazí pouze ikonu aplikace) "
 "a „both“ (zobrazí náhled i ikonu)."
 
-#: data/org.gnome.shell.gschema.xml.in:228
+#: data/org.gnome.shell.gschema.xml.in:238
 msgid ""
 "If true, only windows from the current workspace are shown in the switcher. "
 "Otherwise, all windows are included."
@@ -337,56 +353,56 @@ msgstr ""
 "Je-li zapnuto, objeví se v přepínači oken jen ty, co jsou na aktuální "
 "pracovní ploše. V opačném případě jsou zahrnuta všechna okna."
 
-#: data/org.gnome.shell.gschema.xml.in:238
+#: data/org.gnome.shell.gschema.xml.in:248
 msgid "Locations"
 msgstr "Místa"
 
-#: data/org.gnome.shell.gschema.xml.in:239
+#: data/org.gnome.shell.gschema.xml.in:249
 msgid "The locations to show in world clocks"
 msgstr "Místa, která se mají zobrazovat ve světových časech"
 
-#: data/org.gnome.shell.gschema.xml.in:249
+#: data/org.gnome.shell.gschema.xml.in:259
 msgid "Automatic location"
 msgstr "Automatické místo"
 
-#: data/org.gnome.shell.gschema.xml.in:250
+#: data/org.gnome.shell.gschema.xml.in:260
 msgid "Whether to fetch the current location or not"
 msgstr "Zda si zjistit, či ne, aktuální místo"
 
-#: data/org.gnome.shell.gschema.xml.in:257
+#: data/org.gnome.shell.gschema.xml.in:267
 msgid "Location"
 msgstr "Místo"
 
-#: data/org.gnome.shell.gschema.xml.in:258
+#: data/org.gnome.shell.gschema.xml.in:268
 msgid "The location for which to show a forecast"
 msgstr "Místo, pro které se má zobrazovat předpověď počasí"
 
-#: data/org.gnome.shell.gschema.xml.in:270
+#: data/org.gnome.shell.gschema.xml.in:280
 msgid "Attach modal dialog to the parent window"
 msgstr "Modální dialogová okna připojovat k rodičovskému oknu"
 
-#: data/org.gnome.shell.gschema.xml.in:271
-#: data/org.gnome.shell.gschema.xml.in:280
-#: data/org.gnome.shell.gschema.xml.in:288
-#: data/org.gnome.shell.gschema.xml.in:296
-#: data/org.gnome.shell.gschema.xml.in:304
+#: data/org.gnome.shell.gschema.xml.in:281
+#: data/org.gnome.shell.gschema.xml.in:290
+#: data/org.gnome.shell.gschema.xml.in:298
+#: data/org.gnome.shell.gschema.xml.in:306
+#: data/org.gnome.shell.gschema.xml.in:314
 msgid ""
 "This key overrides the key in org.gnome.mutter when running GNOME Shell."
 msgstr "Když běží GNOME Shell, tento klíč přepíše klíč v org.gnome.mutter."
 
-#: data/org.gnome.shell.gschema.xml.in:279
+#: data/org.gnome.shell.gschema.xml.in:289
 msgid "Enable edge tiling when dropping windows on screen edges"
 msgstr "Okna upuštěná u okraje obrazovky nechat řadit jako dlaždice"
 
-#: data/org.gnome.shell.gschema.xml.in:287
+#: data/org.gnome.shell.gschema.xml.in:297
 msgid "Workspaces are managed dynamically"
 msgstr "Pracovní plochy jsou spravovány dynamicky"
 
-#: data/org.gnome.shell.gschema.xml.in:295
+#: data/org.gnome.shell.gschema.xml.in:305
 msgid "Workspaces only on primary monitor"
 msgstr "Pracovní plochy jen na hlavním monitoru"
 
-#: data/org.gnome.shell.gschema.xml.in:303
+#: data/org.gnome.shell.gschema.xml.in:313
 msgid "Delay focus changes in mouse mode until the pointer stops moving"
 msgstr "Se změnou zaměření v režimu myši čekat na zastavení pohybu ukazatele"
 
@@ -561,12 +577,12 @@ msgstr ""
 "otočení;odemknutí orientace;odemčení otočení;odemčení orientace;obrazovka;"
 "otočení;orientace;"
 
-#: js/misc/systemActions.js:240
+#: js/misc/systemActions.js:232
 msgctxt "search-result"
 msgid "Unlock Screen Rotation"
 msgstr "Odemknout otočení obrazovky"
 
-#: js/misc/systemActions.js:241
+#: js/misc/systemActions.js:233
 msgctxt "search-result"
 msgid "Lock Screen Rotation"
 msgstr "Zamknout otočení obrazovky"
@@ -737,36 +753,36 @@ msgstr "Zamítnout přístup"
 msgid "Grant Access"
 msgstr "Schválit přístup"
 
-#: js/ui/appDisplay.js:1392
+#: js/ui/appDisplay.js:1388
 msgid "Unnamed Folder"
 msgstr "Nepojmenovaná složka"
 
 #. Translators: This is the heading of a list of open windows
-#: js/ui/appDisplay.js:2961 js/ui/panel.js:33
+#: js/ui/appDisplay.js:2964 js/ui/panel.js:33
 msgid "Open Windows"
 msgstr "Otevřená okna"
 
-#: js/ui/appDisplay.js:2980 js/ui/panel.js:40
+#: js/ui/appDisplay.js:2983 js/ui/panel.js:40
 msgid "New Window"
 msgstr "Nové okno"
 
-#: js/ui/appDisplay.js:2996
+#: js/ui/appDisplay.js:2999
 msgid "Launch using Integrated Graphics Card"
 msgstr "Spustit pomocí integrované grafické karty"
 
-#: js/ui/appDisplay.js:2997
+#: js/ui/appDisplay.js:3000
 msgid "Launch using Discrete Graphics Card"
 msgstr "Spustit pomocí samostatné grafické karty"
 
-#: js/ui/appDisplay.js:3026 js/ui/dash.js:239
+#: js/ui/appDisplay.js:3029 js/ui/dash.js:238
 msgid "Remove from Favorites"
 msgstr "Odstranit z oblíbených"
 
-#: js/ui/appDisplay.js:3032
+#: js/ui/appDisplay.js:3035
 msgid "Add to Favorites"
 msgstr "Přidat mezi oblíbené"
 
-#: js/ui/appDisplay.js:3042 js/ui/panel.js:51
+#: js/ui/appDisplay.js:3045 js/ui/panel.js:51
 msgid "Show Details"
 msgstr "Zobrazit podrobnosti"
 
@@ -939,19 +955,19 @@ msgstr "Vynutit ukončení"
 msgid "Wait"
 msgstr "Počkat"
 
-#: js/ui/components/automountManager.js:86
+#: js/ui/components/automountManager.js:85
 msgid "External drive connected"
 msgstr "Externí svazek připojen"
 
-#: js/ui/components/automountManager.js:98
+#: js/ui/components/automountManager.js:97
 msgid "External drive disconnected"
 msgstr "Externí svazek odpojen"
 
-#: js/ui/components/automountManager.js:207
+#: js/ui/components/automountManager.js:206
 msgid "Unable to unlock volume"
 msgstr "Nelze uzamknout svazek"
 
-#: js/ui/components/automountManager.js:208
+#: js/ui/components/automountManager.js:207
 msgid "The installed udisks version does not support the PIM setting"
 msgstr "Nainstalovaná verze udisks nepodporuje nastavení PIM"
 
@@ -1066,17 +1082,17 @@ msgstr "Ověření bohužel nebylo úspěšné. Zkuste to prosím znovu."
 msgid "%s is now known as %s"
 msgstr "%s je teď znám jako %s"
 
-#: js/ui/ctrlAltTab.js:21 js/ui/viewSelector.js:178
+#: js/ui/ctrlAltTab.js:21 js/ui/viewSelector.js:320
 msgid "Windows"
 msgstr "Okna"
 
-#: js/ui/dash.js:200 js/ui/dash.js:241
+#: js/ui/dash.js:199 js/ui/dash.js:240
 msgid "Show Applications"
 msgstr "Zobrazit aplikace"
 
 #. Translators: this is the name of the dock/favorites area on
 #. the left of the overview
-#: js/ui/dash.js:394
+#: js/ui/dash.js:363
 msgid "Dash"
 msgstr "Oblíbené"
 
@@ -1493,11 +1509,11 @@ msgstr "Zobrazit zdroj"
 msgid "Web Page"
 msgstr "Webová stránka"
 
-#: js/ui/main.js:294
+#: js/ui/main.js:304
 msgid "Logged in as a privileged user"
 msgstr "Přihlášeni jako privilegovaný uživatel"
 
-#: js/ui/main.js:295
+#: js/ui/main.js:305
 msgid ""
 "Running a session as a privileged user should be avoided for security "
 "reasons. If possible, you should log in as a normal user."
@@ -1506,33 +1522,33 @@ msgstr ""
 "bezpečnostních důvodů vyhýbat. Pokud je to možné, přihlaste se jako běžný "
 "uživatel."
 
-#: js/ui/main.js:334
+#: js/ui/main.js:355
 msgid "Screen Lock disabled"
 msgstr "Zamykání obrazovky zakázáno"
 
-#: js/ui/main.js:335
+#: js/ui/main.js:356
 msgid "Screen Locking requires the GNOME display manager."
 msgstr "Zamykání obrazovky vyžaduje správce displejů GNOME."
 
-#: js/ui/messageTray.js:1475
+#: js/ui/messageTray.js:1463
 msgid "System Information"
 msgstr "Informace o systému"
 
-#: js/ui/mpris.js:203
+#: js/ui/mpris.js:207
 msgid "Unknown artist"
 msgstr "Neznámý umělec"
 
-#: js/ui/mpris.js:213
+#: js/ui/mpris.js:217
 msgid "Unknown title"
 msgstr "Neznámý název"
 
-#: js/ui/overview.js:74
+#: js/ui/overview.js:67
 msgid "Undo"
 msgstr "Zpět"
 
 #. Translators: This is the main view to select
 #. activities. See also note for "Activities" string.
-#: js/ui/overview.js:87
+#: js/ui/overview.js:80
 msgid "Overview"
 msgstr "Přehled"
 
@@ -1540,7 +1556,7 @@ msgstr "Přehled"
 #. in the search entry when no search is
 #. active; it should not exceed ~30
 #. characters.
-#: js/ui/overview.js:108
+#: js/ui/overview.js:101
 msgid "Type to search"
 msgstr "vyhledávejte psaním"
 
@@ -1568,23 +1584,23 @@ msgstr "Přířadit klávesu"
 msgid "Done"
 msgstr "Hotovo"
 
-#: js/ui/padOsd.js:731
+#: js/ui/padOsd.js:718
 msgid "Edit…"
 msgstr "Upravit…"
 
-#: js/ui/padOsd.js:773 js/ui/padOsd.js:890
+#: js/ui/padOsd.js:760 js/ui/padOsd.js:877
 msgid "None"
 msgstr "Źádná"
 
-#: js/ui/padOsd.js:844
+#: js/ui/padOsd.js:831
 msgid "Press a button to configure"
 msgstr "Zmáčkněte tlačítko pro nastavení"
 
-#: js/ui/padOsd.js:845
+#: js/ui/padOsd.js:832
 msgid "Press Esc to exit"
 msgstr "Zmáčknutím Esc ukončíte"
 
-#: js/ui/padOsd.js:848
+#: js/ui/padOsd.js:835
 msgid "Press any key to exit"
 msgstr "Zmáčknutím klávesy ukončíte"
 
@@ -1594,16 +1610,16 @@ msgstr "Ukončit"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: js/ui/panel.js:393
+#: js/ui/panel.js:391 js/ui/viewSelector.js:303
 msgid "Activities"
 msgstr "Činnosti"
 
-#: js/ui/panel.js:664
+#: js/ui/panel.js:662
 msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "Systém"
 
-#: js/ui/panel.js:775
+#: js/ui/panel.js:772
 msgid "Top Bar"
 msgstr "Horní lišta"
 
@@ -1737,43 +1753,43 @@ msgstr "Nezdařilo se najít aplikaci %s"
 msgid "Accessibility"
 msgstr "Zpřístupnění"
 
-#: js/ui/status/accessibility.js:50
+#: js/ui/status/accessibility.js:48
 msgid "Zoom"
 msgstr "Zvětšení"
 
-#: js/ui/status/accessibility.js:57
+#: js/ui/status/accessibility.js:55
 msgid "Screen Reader"
 msgstr "Čtečka obrazovky"
 
-#: js/ui/status/accessibility.js:61
+#: js/ui/status/accessibility.js:59
 msgid "Screen Keyboard"
 msgstr "Klávesnice na obrazovce"
 
-#: js/ui/status/accessibility.js:65
+#: js/ui/status/accessibility.js:63
 msgid "Visual Alerts"
 msgstr "Vizuální upozornění"
 
-#: js/ui/status/accessibility.js:68
+#: js/ui/status/accessibility.js:66
 msgid "Sticky Keys"
 msgstr "Lepící klávesy"
 
-#: js/ui/status/accessibility.js:71
+#: js/ui/status/accessibility.js:69
 msgid "Slow Keys"
 msgstr "Pomalé klávesy"
 
-#: js/ui/status/accessibility.js:74
+#: js/ui/status/accessibility.js:72
 msgid "Bounce Keys"
 msgstr "Vícenásobné stisky kláves"
 
-#: js/ui/status/accessibility.js:77
+#: js/ui/status/accessibility.js:75
 msgid "Mouse Keys"
 msgstr "Myš klávesnicí"
 
-#: js/ui/status/accessibility.js:136
+#: js/ui/status/accessibility.js:134
 msgid "High Contrast"
 msgstr "Vysoký kontrast"
 
-#: js/ui/status/accessibility.js:178
+#: js/ui/status/accessibility.js:176
 msgid "Large Text"
 msgstr "Styl velkého textu"
 
@@ -1806,23 +1822,23 @@ msgstr "Bluetooth je zapnuto"
 msgid "Brightness"
 msgstr "Jas"
 
-#: js/ui/status/dwellClick.js:13
+#: js/ui/status/dwellClick.js:12
 msgid "Single Click"
 msgstr "Jednoduché kliknutí"
 
-#: js/ui/status/dwellClick.js:18
+#: js/ui/status/dwellClick.js:17
 msgid "Double Click"
 msgstr "Dvojité kliknutí"
 
-#: js/ui/status/dwellClick.js:23
+#: js/ui/status/dwellClick.js:22
 msgid "Drag"
 msgstr "Tažení"
 
-#: js/ui/status/dwellClick.js:28
+#: js/ui/status/dwellClick.js:27
 msgid "Secondary Click"
 msgstr "Druhé kliknutí"
 
-#: js/ui/status/dwellClick.js:37
+#: js/ui/status/dwellClick.js:36
 msgid "Dwell Click"
 msgstr "Kliknutí posečkáním"
 
@@ -1830,7 +1846,7 @@ msgstr "Kliknutí posečkáním"
 msgid "Keyboard"
 msgstr "Klávesnice"
 
-#: js/ui/status/keyboard.js:847
+#: js/ui/status/keyboard.js:842
 msgid "Show Keyboard Layout"
 msgstr "Zobrazit rozložení klávesnice"
 
@@ -2268,13 +2284,30 @@ msgstr "Odemykací okno"
 msgid "Log in as another user"
 msgstr "Přihlásit se jako jiný uživatel"
 
-#: js/ui/viewSelector.js:182
+#: js/ui/viewSelector.js:307
 msgid "Applications"
 msgstr "Aplikace"
 
-#: js/ui/viewSelector.js:186
+#: js/ui/viewSelector.js:333
 msgid "Search"
 msgstr "Hledat"
+
+#: js/ui/welcomeDialog.js:35
+#, javascript-format
+msgid "Welcome to GNOME %s"
+msgstr "Vítá vás GNOME %s"
+
+#: js/ui/welcomeDialog.js:36
+msgid "If you want to learn your way around, check out the tour."
+msgstr "Jestli se potřebujete zorientovat, nabízíme vám úvodní prohlídku."
+
+#: js/ui/welcomeDialog.js:44
+msgid "No Thanks"
+msgstr "Ne, děkuji"
+
+#: js/ui/welcomeDialog.js:49
+msgid "Take Tour"
+msgstr "Začít prohlídku"
 
 #: js/ui/windowAttentionHandler.js:20
 #, javascript-format
@@ -2282,22 +2315,22 @@ msgid "“%s” is ready"
 msgstr "Připraveno „%s“"
 
 #. Translators: This string should be shorter than 30 characters
-#: js/ui/windowManager.js:60
+#: js/ui/windowManager.js:61
 msgid "Keep these display settings?"
 msgstr "Zachovat toto nastavení displeje?"
 
 #. Translators: this and the following message should be limited in length,
 #. to avoid ellipsizing the labels.
 #.
-#: js/ui/windowManager.js:69
+#: js/ui/windowManager.js:70
 msgid "Revert Settings"
 msgstr "Obnovit původní"
 
-#: js/ui/windowManager.js:72
+#: js/ui/windowManager.js:73
 msgid "Keep Changes"
 msgstr "Zachovat"
 
-#: js/ui/windowManager.js:91
+#: js/ui/windowManager.js:92
 #, javascript-format
 msgid "Settings changes will revert in %d second"
 msgid_plural "Settings changes will revert in %d seconds"
@@ -2307,7 +2340,7 @@ msgstr[2] "Nastavení se obnoví na původní za %d sekund"
 
 #. Translators: This represents the size of a window. The first number is
 #. * the width of the window and the second is the height.
-#: js/ui/windowManager.js:548
+#: js/ui/windowManager.js:549
 #, javascript-format
 msgid "%d × %d"
 msgstr "%d × %d"
