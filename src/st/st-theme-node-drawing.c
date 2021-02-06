@@ -928,7 +928,7 @@ paint_inset_box_shadow_to_cairo_context (StThemeNode     *node,
   shrunk_extents_x2 = extents_x2 + shadow_spec->xoffset - shadow_spec->spread;
   shrunk_extents_y2 = extents_y2 + shadow_spec->yoffset - shadow_spec->spread;
 
-  if (shrunk_extents_x1 >= shrunk_extents_x2 || shrunk_extents_y1 >= shrunk_extents_x2)
+  if (shrunk_extents_x1 >= shrunk_extents_x2 || shrunk_extents_y1 >= shrunk_extents_y2)
     {
       /* Shadow occupies entire area within border */
       shadow_pattern = cairo_pattern_create_rgb (0., 0., 0.);
