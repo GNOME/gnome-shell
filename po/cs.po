@@ -1005,7 +1005,7 @@ msgstr "Služba"
 #: js/ui/components/networkAgent.js:318 js/ui/components/networkAgent.js:346
 #: js/ui/components/networkAgent.js:679 js/ui/components/networkAgent.js:700
 msgid "Authentication required"
-msgstr "Je požadováno ověření"
+msgstr "Vyžaduje ověření"
 
 #: js/ui/components/networkAgent.js:319 js/ui/components/networkAgent.js:680
 #, javascript-format
@@ -1057,7 +1057,7 @@ msgstr "Heslo k VPN"
 
 #: js/ui/components/polkitAgent.js:39
 msgid "Authentication Required"
-msgstr "Je vyžadováno ověření"
+msgstr "Vyžaduje ověření"
 
 #: js/ui/components/polkitAgent.js:79
 msgid "Administrator"
@@ -2044,7 +2044,7 @@ msgstr "připojuje se…"
 #. Translators: this is for network connections that require some kind of key or password
 #: js/ui/status/network.js:1447
 msgid "authentication required"
-msgstr "je požadováno ověření"
+msgstr "vyžaduje ověření"
 
 #: js/ui/status/network.js:1449
 msgid "connection failed"
