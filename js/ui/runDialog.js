@@ -180,7 +180,8 @@ class RunDialog extends ModalDialog.ModalDialog {
     _run(input, inTerminal) {
         let command = input;
 
-        this._history.addItem(input);
+        if (input)
+            this._history.addItem(input);
         this._commandError = false;
         let f;
         if (this._enableInternalCommands)
