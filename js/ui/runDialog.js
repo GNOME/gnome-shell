@@ -178,6 +178,7 @@ class RunDialog extends ModalDialog.ModalDialog {
     }
 
     _run(input, inTerminal) {
+        input = input.trim();
         let command = input;
 
         if (input)
