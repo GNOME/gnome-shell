@@ -13,6 +13,8 @@ const Params = imports.misc.params;
 const TOUCHPAD_BASE_HEIGHT = 300;
 const TOUCHPAD_BASE_WIDTH = 400;
 
+const EVENT_HISTORY_THRESHOLD_MS = 150;
+
 const SCROLL_MULTIPLIER = 10;
 const SWIPE_MULTIPLIER = 0.5;
 
@@ -28,6 +30,45 @@ const GESTURE_FINGER_COUNT = 3;
 const State = {
     NONE: 0,
     SCROLLING: 1,
+};
+
+const EventHistory = class {
+    constructor() {
+        this.reset();
+    }
+
+    reset() {
+        this._data = [];
+    }
+
+    trim(time) {
+        const thresholdTime = time - EVENT_HISTORY_THRESHOLD_MS;
+        const index = this._data.findIndex(r => r.time >= thresholdTime);
+
+        this._data.splice(0, index);
+    }
+
+    append(time, delta) {
+        this.trim(time);
+
+        this._data.push({ time, delta });
+    }
+
+    calculateVelocity() {
+        if (this._data.length < 2)
+            return 0;
+
+        const firstTime = this._data[0].time;
+        const lastTime = this._data[this._data.length - 1].time;
+
+        if (firstTime === lastTime)
+            return 0;
+
+        const totalDelta = this._data.slice(1).map(a => a.delta).reduce((a, b) => a + b);
+        const period = lastTime - firstTime;
+
+        return totalDelta / period;
+    }
 };
 
 const TouchpadSwipeGesture = GObject.registerClass({
@@ -362,7 +403,7 @@ var SwipeTracker = GObject.registerClass({
         this._allowedModes = allowedModes;
         this._enabled = true;
         this._distance = global.screen_height;
-
+        this._history = new EventHistory();
         this._reset();
 
         this._touchpadGesture = new TouchpadSwipeGesture(allowedModes);
@@ -464,10 +505,9 @@ var SwipeTracker = GObject.registerClass({
         this._prevOffset = 0;
         this._progress = 0;
 
-        this._prevTime = 0;
-        this._velocity = 0;
-
         this._cancelled = false;
+
+        this._history.reset();
     }
 
     _interrupt() {
@@ -486,7 +526,7 @@ var SwipeTracker = GObject.registerClass({
         if (this._state === State.SCROLLING)
             return;
 
-        this._prevTime = time;
+        this._history.append(time, 0);
 
         let rect = new Meta.Rectangle({ x, y, width: 1, height: 1 });
         let monitor = global.display.get_monitor_index_for_rect(rect);
@@ -508,9 +548,7 @@ var SwipeTracker = GObject.registerClass({
             delta = -delta;
 
         this._progress += delta;
-
-        if (time !== this._prevTime)
-            this._velocity = delta / (time - this._prevTime);
+        this._history.append(time, delta);
 
         let firstPoint = this._snapPoints[0];
         let lastPoint = this._snapPoints[this._snapPoints.length - 1];
@@ -519,8 +557,6 @@ var SwipeTracker = GObject.registerClass({
             this._initialProgress - 1, this._initialProgress + 1);
 
         this.emit('update', this._progress);
-
-        this._prevTime = time;
     }
 
     _getClosestSnapPoints() {
@@ -529,7 +565,7 @@ var SwipeTracker = GObject.registerClass({
         return [lower, upper];
     }
 
-    _getEndProgress() {
+    _getEndProgress(velocity) {
         if (this._cancelled)
             return this._cancelProgress;
 
@@ -537,15 +573,15 @@ var SwipeTracker = GObject.registerClass({
         let middle = (upper + lower) / 2;
 
         if (this._progress > middle) {
-            let thresholdMet = this._velocity * this._distance > -VELOCITY_THRESHOLD;
+            const thresholdMet = velocity * this._distance > -VELOCITY_THRESHOLD;
             return thresholdMet || this._initialProgress > upper ? upper : lower;
         } else {
-            let thresholdMet = this._velocity * this._distance < VELOCITY_THRESHOLD;
+            const thresholdMet = velocity * this._distance < VELOCITY_THRESHOLD;
             return thresholdMet || this._initialProgress < lower ? lower : upper;
         }
     }
 
-    _endGesture(_gesture, _time) {
+    _endGesture(_gesture, time) {
         if (this._state !== State.SCROLLING)
             return;
 
@@ -554,11 +590,13 @@ var SwipeTracker = GObject.registerClass({
             return;
         }
 
-        let endProgress = this._getEndProgress();
+        this._history.trim(time);
 
-        let velocity = ANIMATION_BASE_VELOCITY;
-        if ((endProgress - this._progress) * this._velocity > 0)
-            velocity = this._velocity;
+        let velocity = this._history.calculateVelocity();
+        const endProgress = this._getEndProgress(velocity);
+
+        if ((endProgress - this._progress) * velocity <= 0)
+            velocity = ANIMATION_BASE_VELOCITY;
 
         let duration = Math.abs((this._progress - endProgress) / velocity * DURATION_MULTIPLIER);
         if (duration > 0) {
@@ -600,7 +638,6 @@ var SwipeTracker = GObject.registerClass({
         this._progress = currentProgress;
         this._cancelProgress = cancelProgress;
 
-        this._velocity = 0;
         this._state = State.SCROLLING;
     }
 
