@@ -189,7 +189,7 @@ class RunDialog extends ModalDialog.ModalDialog {
             f = null;
         if (f) {
             f();
-        } else if (input) {
+        } else {
             try {
                 if (inTerminal) {
                     let exec = this._terminalSettings.get_string(EXEC_KEY);
@@ -202,13 +202,13 @@ class RunDialog extends ModalDialog.ModalDialog {
                 let path = null;
                 if (input.charAt(0) == '/') {
                     path = input;
-                } else {
+                } else if (input) {
                     if (input.charAt(0) == '~')
                         input = input.slice(1);
                     path = '%s/%s'.format(GLib.get_home_dir(), input);
                 }
 
-                if (GLib.file_test(path, GLib.FileTest.EXISTS)) {
+                if (path && GLib.file_test(path, GLib.FileTest.EXISTS)) {
                     let file = Gio.file_new_for_path(path);
                     try {
                         Gio.app_info_launch_default_for_uri(file.get_uri(),
