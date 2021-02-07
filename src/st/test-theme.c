@@ -465,8 +465,6 @@ test_pseudo_class (void)
 
   /* Test the StWidget add/remove pseudo_class interfaces */
   label = st_label_new ("foo");
-  /* Make reactive, so we don't get the automatic :insensitive style */
-  clutter_actor_set_reactive (CLUTTER_ACTOR (label), TRUE);
   clutter_actor_add_child (stage, CLUTTER_ACTOR (label));
 
   labelNode = st_widget_get_theme_node (label);
@@ -515,12 +513,16 @@ test_pseudo_class (void)
                  st_theme_node_get_border_width (labelNode, ST_SIDE_TOP));
 
   st_widget_remove_style_pseudo_class (label, "boxed");
-  g_assert (st_widget_get_style_pseudo_class (label) == NULL);
+  g_assert (!st_widget_has_style_pseudo_class (label, "boxed"));
+  g_assert (st_widget_has_style_pseudo_class (label, "insensitive"));
   labelNode = st_widget_get_theme_node (label);
   assert_foreground_color (labelNode, "label", 0x000000ff);
   assert_text_decoration  (labelNode, "label", 0);
   assert_length ("label", "border-width", 0.,
                  st_theme_node_get_border_width (labelNode, ST_SIDE_TOP));
+
+  clutter_actor_set_reactive (CLUTTER_ACTOR (label), TRUE);
+  g_assert (st_widget_get_style_pseudo_class (label) == NULL);
 }
 
 static void
