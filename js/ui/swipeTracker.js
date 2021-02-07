@@ -389,6 +389,10 @@ var SwipeTracker = GObject.registerClass({
             'distance', 'distance', 'distance',
             GObject.ParamFlags.READWRITE,
             0, Infinity, 0),
+        'allow-long-swipes': GObject.ParamSpec.boolean(
+            'allow-long-swipes', 'allow-long-swipes', 'allow-long-swipes',
+            GObject.ParamFlags.READWRITE,
+            false),
         'scroll-modifiers': GObject.ParamSpec.flags(
             'scroll-modifiers', 'scroll-modifiers', 'scroll-modifiers',
             GObject.ParamFlags.READWRITE,
@@ -406,6 +410,7 @@ var SwipeTracker = GObject.registerClass({
 
         this._allowedModes = allowedModes;
         this._enabled = true;
+        this._allowLongSwipes = false;
         this._distance = global.screen_height;
         this._history = new EventHistory();
         this._reset();
@@ -597,8 +602,11 @@ var SwipeTracker = GObject.registerClass({
         this._progress += delta / distance;
         this._history.append(time, delta);
 
-        this._progress = Math.clamp(this._progress,
-            ...this._getBounds(this._initialProgress));
+        const [lower, upper] = this.allowLongSwipes
+            ? [this._snapPoints[0], this._snapPoints[this._snapPoints.length - 1]]
+            : this._getBounds(this._initialProgress);
+
+        this._progress = Math.clamp(this._progress, lower, upper);
 
         this.emit('update', this._progress);
     }
@@ -628,7 +636,9 @@ var SwipeTracker = GObject.registerClass({
         }
 
         pos = pos * Math.sign(velocity) + this._progress;
-        pos = Math.clamp(pos, ...this._getBounds(this._initialProgress));
+
+        if (!this.allowLongSwipes)
+            pos = Math.clamp(pos, ...this._getBounds(this._initialProgress));
 
         const index = this._findPointForProjection(pos, velocity);
 
