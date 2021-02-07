@@ -143,6 +143,15 @@ static AtkObject * st_widget_get_accessible (ClutterActor *actor);
 static gboolean    st_widget_has_accessible (ClutterActor *actor);
 
 static void
+st_widget_update_insensitive (StWidget *widget)
+{
+  if (clutter_actor_get_reactive (CLUTTER_ACTOR (widget)))
+    st_widget_remove_style_pseudo_class (widget, "insensitive");
+  else
+    st_widget_add_style_pseudo_class (widget, "insensitive");
+}
+
+static void
 st_widget_set_property (GObject      *gobject,
                         guint         prop_id,
                         const GValue *value,
@@ -245,6 +254,14 @@ st_widget_get_property (GObject    *gobject,
       G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
       break;
     }
+}
+
+static void
+st_widget_constructed (GObject *gobject)
+{
+  G_OBJECT_CLASS (st_widget_parent_class)->constructed (gobject);
+
+  st_widget_update_insensitive (ST_WIDGET (gobject));
 }
 
 static void
@@ -840,6 +857,7 @@ st_widget_class_init (StWidgetClass *klass)
 
   gobject_class->set_property = st_widget_set_property;
   gobject_class->get_property = st_widget_get_property;
+  gobject_class->constructed = st_widget_constructed;
   gobject_class->dispose = st_widget_dispose;
   gobject_class->finalize = st_widget_finalize;
 
@@ -1471,10 +1489,7 @@ st_widget_reactive_notify (StWidget   *widget,
 {
   StWidgetPrivate *priv = st_widget_get_instance_private (widget);
 
-  if (clutter_actor_get_reactive (CLUTTER_ACTOR (widget)))
-    st_widget_remove_style_pseudo_class (widget, "insensitive");
-  else
-    st_widget_add_style_pseudo_class (widget, "insensitive");
+  st_widget_update_insensitive (widget);
 
   if (priv->track_hover)
     st_widget_sync_hover(widget);

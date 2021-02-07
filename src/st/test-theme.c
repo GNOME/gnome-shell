@@ -465,6 +465,8 @@ test_pseudo_class (void)
 
   /* Test the StWidget add/remove pseudo_class interfaces */
   label = st_label_new ("foo");
+  /* Make reactive, so we don't get the automatic :insensitive style */
+  clutter_actor_set_reactive (CLUTTER_ACTOR (label), TRUE);
   clutter_actor_add_child (stage, CLUTTER_ACTOR (label));
 
   labelNode = st_widget_get_theme_node (label);
