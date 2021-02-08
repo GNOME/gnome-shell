@@ -24,6 +24,8 @@ var WINDOW_REPOSITIONING_DELAY = 750;
 var LAYOUT_SCALE_WEIGHT = 1;
 var LAYOUT_SPACE_WEIGHT = 0.1;
 
+const BACKGROUND_CORNER_RADIUS_PIXELS = 30;
+
 // Window Thumbnail Layout Algorithm
 // =================================
 //
@@ -612,8 +614,14 @@ var WorkspaceLayout = GObject.registerClass({
                 this._windowSlots = this._getWindowSlots(box.copy());
         }
 
-        if (this._background)
+        if (this._background) {
+            const { scaleFactor } = St.ThemeContext.get_for_stage(global.stage);
+            const cornerRadius = scaleFactor * BACKGROUND_CORNER_RADIUS_PIXELS;
+            this._background.cornerRadius =
+                Util.lerp(0, cornerRadius, this._stateAdjustment.value);
+
             this._background.allocate(box);
+        }
 
         const allocationScale = containerBox.get_width() / this._workarea.width;
 
@@ -924,6 +932,14 @@ class WorkspaceBackground extends St.Widget {
         const yOff = (contentHeight / this._workarea.height) *
             (this._workarea.y - monitor.y);
 
+        const rect = new Graphene.Rect();
+        rect.origin.x = this._workarea.x - monitor.x;
+        rect.origin.y = this._workarea.y - monitor.y;
+        rect.size.width = this._workarea.width;
+        rect.size.height = this._workarea.height;
+
+        this._bgManager.backgroundActor.content.set_rounded_clip_bounds(rect);
+
         contentBox.x1 -= xOff;
         contentBox.y1 -= yOff;
         contentBox.set_size(xOff + contentWidth, yOff + contentHeight);
@@ -935,6 +951,10 @@ class WorkspaceBackground extends St.Widget {
             this._bgManager.destroy();
             this._bgManager = null;
         }
+    }
+
+    set cornerRadius(radius) {
+        this._bgManager.backgroundActor.content.rounded_clip_radius = radius;
     }
 });
 
