@@ -285,6 +285,11 @@ var ShellUserVerifier = class {
         this.emit('no-more-messages');
     }
 
+    increaseCurrentMessageTimeout(interval) {
+        if (!this._messageQueueTimeoutId && interval > 0)
+            this._currentMessageExtraInterval = interval;
+    }
+
     _queueMessageTimeout() {
         if (this._messageQueue.length == 0) {
             this.finishMessageQueue();
@@ -296,10 +301,11 @@ var ShellUserVerifier = class {
 
         let message = this._messageQueue.shift();
 
+        delete this._currentMessageExtraInterval;
         this.emit('show-message', message.serviceName, message.text, message.type);
 
         this._messageQueueTimeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT,
-                                                       message.interval,
+            message.interval + (this._currentMessageExtraInterval | 0),
                                                        () => {
                                                            this._messageQueueTimeoutId = 0;
                                                            this._queueMessageTimeout();

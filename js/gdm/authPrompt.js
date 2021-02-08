@@ -432,8 +432,16 @@ var AuthPrompt = GObject.registerClass({
         }
 
         if (type === GdmUtil.MessageType.ERROR &&
-            this._userVerifier.serviceIsFingerprint(serviceName))
-            Util.wiggle(this._message);
+            this._userVerifier.serviceIsFingerprint(serviceName)) {
+            // TODO: Use Await for wiggle to be over before unfreezing the user verifier queue
+            const wiggleParameters = {
+                duration: 65,
+                wiggleCount: 3,
+            };
+            this._userVerifier.increaseCurrentMessageTimeout(
+                wiggleParameters.duration * (wiggleParameters.wiggleCount + 2));
+            Util.wiggle(this._message, wiggleParameters);
+        }
     }
 
     updateSensitivity(sensitive) {
