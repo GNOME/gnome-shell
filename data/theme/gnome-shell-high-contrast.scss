@@ -33,3 +33,10 @@ stage {
   }
 }
 
+//thumbnail app icons no dropshadow and forced color
+.window-picker .icon-dropshadow {
+  icon-shadow: none;
+  background-color: $osd_bg_color;
+  padding: $base_padding * 2;
+  border-radius: $modal_radius;
+}
