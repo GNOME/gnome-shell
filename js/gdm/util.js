@@ -474,6 +474,11 @@ var ShellUserVerifier = class {
         return serviceName == this._defaultService;
     }
 
+    serviceIsFingerprint(serviceName) {
+        return this._fingerprintReaderType !== FingerprintReaderType.NONE &&
+            serviceName === FINGERPRINT_SERVICE_NAME;
+    }
+
     _updateDefaultService() {
         if (this._settings.get_boolean(PASSWORD_AUTHENTICATION_KEY))
             this._defaultService = PASSWORD_SERVICE_NAME;
@@ -527,8 +532,7 @@ var ShellUserVerifier = class {
     _onInfo(client, serviceName, info) {
         if (this.serviceIsForeground(serviceName)) {
             this._queueMessage(info, MessageType.INFO);
-        } else if (serviceName == FINGERPRINT_SERVICE_NAME &&
-            this._fingerprintReaderType !== FingerprintReaderType.NONE) {
+        } else if (this.serviceIsFingerprint(serviceName)) {
             // We don't show fingerprint messages directly since it's
             // not the main auth service. Instead we use the messages
             // as a cue to display our own message.
