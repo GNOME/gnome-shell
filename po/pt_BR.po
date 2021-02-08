@@ -24,8 +24,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2021-01-26 20:29+0000\n"
-"PO-Revision-Date: 2021-01-30 12:00-0300\n"
+"POT-Creation-Date: 2021-02-05 15:37+0000\n"
+"PO-Revision-Date: 2021-02-08 08:31-0300\n"
 "Last-Translator: Rafael Fontenelle <rafaelff@gnome.org>\n"
 "Language-Team: Brazilian Portuguese <gnome-pt_br-list@gnome.org>\n"
 "Language: pt_BR\n"
@@ -217,10 +217,29 @@ msgstr ""
 "sempre seja visto sem possuir dispositivos associados a ele."
 
 #: data/org.gnome.shell.gschema.xml.in:99
+msgid "The last version the “Welcome to GNOME” dialog was shown for"
+msgstr ""
+"A última versão para qual a caixa de diálogo “Bem-vindo ao GNOME” foi "
+"exibida"
+
+#: data/org.gnome.shell.gschema.xml.in:100
+msgid ""
+"This key determines for which version the “Welcome to GNOME” dialog was last "
+"shown. An empty string represents the oldest possible version, and a huge "
+"number will represent versions that do not exist yet. This huge number can "
+"be used to effectively disable the dialog."
+msgstr ""
+"Esta chave determina para qual versão a caixa de diálogo “Bem-vindo ao "
+"GNOME” foi exibida pela última vez. Uma string vazia representa a versão "
+"mais antiga possível, e um grande número representará versões que ainda não "
+"existem. Este grande número pode ser usado para desativar efetivamente o "
+"diálogo."
+
+#: data/org.gnome.shell.gschema.xml.in:109
 msgid "Enable introspection API"
 msgstr "Habilitar API de introspecção"
 
-#: data/org.gnome.shell.gschema.xml.in:100
+#: data/org.gnome.shell.gschema.xml.in:110
 msgid ""
 "Enables a D-Bus API that allows to introspect the application state of the "
 "shell."
@@ -228,11 +247,11 @@ msgstr ""
 "Habilita uma API de D-Bus que permite introspectar o estado do aplicativo do "
 "shell."
 
-#: data/org.gnome.shell.gschema.xml.in:107
+#: data/org.gnome.shell.gschema.xml.in:117
 msgid "Layout of the app picker"
 msgstr "Layout do seletor de aplicativo"
 
-#: data/org.gnome.shell.gschema.xml.in:108
+#: data/org.gnome.shell.gschema.xml.in:118
 msgid ""
 "Layout of the app picker. Each entry in the array is a page. Pages are "
 "stored in the order they appear in GNOME Shell. Each page contains an "
@@ -245,92 +264,92 @@ msgstr ""
 "são armazenados como “dados”: • “posição”: a posição do ícone do aplicativo "
 "na página"
 
-#: data/org.gnome.shell.gschema.xml.in:123
+#: data/org.gnome.shell.gschema.xml.in:133
 msgid "Keybinding to open the application menu"
 msgstr "Atalho de teclado para abrir um menu de aplicativo"
 
-#: data/org.gnome.shell.gschema.xml.in:124
+#: data/org.gnome.shell.gschema.xml.in:134
 msgid "Keybinding to open the application menu."
 msgstr "Atalho de teclado para abrir um menu de aplicativo."
 
-#: data/org.gnome.shell.gschema.xml.in:130
+#: data/org.gnome.shell.gschema.xml.in:140
 msgid "Keybinding to open the “Show Applications” view"
 msgstr "Atalho de teclado para abrir a visualização “Mostrar aplicativos”"
 
-#: data/org.gnome.shell.gschema.xml.in:131
+#: data/org.gnome.shell.gschema.xml.in:141
 msgid ""
 "Keybinding to open the “Show Applications” view of the Activities Overview."
 msgstr ""
 "Atalho de teclado para abrir a visualização “Mostrar aplicativos” do "
 "panorama de atividades."
 
-#: data/org.gnome.shell.gschema.xml.in:138
+#: data/org.gnome.shell.gschema.xml.in:148
 msgid "Keybinding to open the overview"
 msgstr "Atalho de teclado para abrir o panorama"
 
-#: data/org.gnome.shell.gschema.xml.in:139
+#: data/org.gnome.shell.gschema.xml.in:149
 msgid "Keybinding to open the Activities Overview."
 msgstr "Atalho de teclado para abrir o panorama de atividades."
 
-#: data/org.gnome.shell.gschema.xml.in:145
+#: data/org.gnome.shell.gschema.xml.in:155
 msgid "Keybinding to toggle the visibility of the notification list"
 msgstr "Atalho de teclado para alternar a visibilidade da lista de notificação"
 
-#: data/org.gnome.shell.gschema.xml.in:146
+#: data/org.gnome.shell.gschema.xml.in:156
 msgid "Keybinding to toggle the visibility of the notification list."
 msgstr ""
 "Atalho de teclado para alternar a visibilidade da lista de notificação."
 
-#: data/org.gnome.shell.gschema.xml.in:152
+#: data/org.gnome.shell.gschema.xml.in:162
 msgid "Keybinding to focus the active notification"
 msgstr "Atalho de teclado para ativar a notificação ativa"
 
-#: data/org.gnome.shell.gschema.xml.in:153
+#: data/org.gnome.shell.gschema.xml.in:163
 msgid "Keybinding to focus the active notification."
 msgstr "Atalho de teclado para ativar a notificação ativa."
 
-#: data/org.gnome.shell.gschema.xml.in:159
+#: data/org.gnome.shell.gschema.xml.in:169
 msgid "Switch to application 1"
 msgstr "Alternar para o aplicativo 1"
 
-#: data/org.gnome.shell.gschema.xml.in:163
+#: data/org.gnome.shell.gschema.xml.in:173
 msgid "Switch to application 2"
 msgstr "Alternar para o aplicativo 2"
 
-#: data/org.gnome.shell.gschema.xml.in:167
+#: data/org.gnome.shell.gschema.xml.in:177
 msgid "Switch to application 3"
 msgstr "Alternar para o aplicativo 3"
 
-#: data/org.gnome.shell.gschema.xml.in:171
+#: data/org.gnome.shell.gschema.xml.in:181
 msgid "Switch to application 4"
 msgstr "Alternar para o aplicativo 4"
 
-#: data/org.gnome.shell.gschema.xml.in:175
+#: data/org.gnome.shell.gschema.xml.in:185
 msgid "Switch to application 5"
 msgstr "Alternar para o aplicativo 5"
 
-#: data/org.gnome.shell.gschema.xml.in:179
+#: data/org.gnome.shell.gschema.xml.in:189
 msgid "Switch to application 6"
 msgstr "Alternar para o aplicativo 6"
 
-#: data/org.gnome.shell.gschema.xml.in:183
+#: data/org.gnome.shell.gschema.xml.in:193
 msgid "Switch to application 7"
 msgstr "Alternar para o aplicativo 7"
 
-#: data/org.gnome.shell.gschema.xml.in:187
+#: data/org.gnome.shell.gschema.xml.in:197
 msgid "Switch to application 8"
 msgstr "Alternar para o aplicativo 8"
 
-#: data/org.gnome.shell.gschema.xml.in:191
+#: data/org.gnome.shell.gschema.xml.in:201
 msgid "Switch to application 9"
 msgstr "Alternar para o aplicativo 9"
 
-#: data/org.gnome.shell.gschema.xml.in:200
-#: data/org.gnome.shell.gschema.xml.in:227
+#: data/org.gnome.shell.gschema.xml.in:210
+#: data/org.gnome.shell.gschema.xml.in:237
 msgid "Limit switcher to current workspace."
 msgstr "Limitar o alternador ao espaço de trabalho atual."
 
-#: data/org.gnome.shell.gschema.xml.in:201
+#: data/org.gnome.shell.gschema.xml.in:211
 msgid ""
 "If true, only applications that have windows on the current workspace are "
 "shown in the switcher. Otherwise, all applications are included."
@@ -339,11 +358,11 @@ msgstr ""
 "janelas no espaço de trabalho atual. Caso contrário, todos os aplicativos "
 "serão incluídos."
 
-#: data/org.gnome.shell.gschema.xml.in:218
+#: data/org.gnome.shell.gschema.xml.in:228
 msgid "The application icon mode."
 msgstr "O modo ícone do aplicativo."
 
-#: data/org.gnome.shell.gschema.xml.in:219
+#: data/org.gnome.shell.gschema.xml.in:229
 msgid ""
 "Configures how the windows are shown in the switcher. Valid possibilities "
 "are “thumbnail-only” (shows a thumbnail of the window), “app-icon-"
@@ -353,7 +372,7 @@ msgstr ""
 "válidas são “thumbnail-only” (mostra uma miniatura da janela), “app-icon-"
 "only” (mostra apenas o ícone do aplicativo) ou “both”."
 
-#: data/org.gnome.shell.gschema.xml.in:228
+#: data/org.gnome.shell.gschema.xml.in:238
 msgid ""
 "If true, only windows from the current workspace are shown in the switcher. "
 "Otherwise, all windows are included."
@@ -361,58 +380,58 @@ msgstr ""
 "Se verdadeiro, o alternador mostrará somente as janelas do espaço de "
 "trabalho atual. Caso contrário, todos as janelas serão incluídas."
 
-#: data/org.gnome.shell.gschema.xml.in:238
+#: data/org.gnome.shell.gschema.xml.in:248
 msgid "Locations"
 msgstr "Localizações"
 
-#: data/org.gnome.shell.gschema.xml.in:239
+#: data/org.gnome.shell.gschema.xml.in:249
 msgid "The locations to show in world clocks"
 msgstr "As localizações para mostrar nos relógios mundiais"
 
-#: data/org.gnome.shell.gschema.xml.in:249
+#: data/org.gnome.shell.gschema.xml.in:259
 msgid "Automatic location"
 msgstr "Localização automática"
 
-#: data/org.gnome.shell.gschema.xml.in:250
+#: data/org.gnome.shell.gschema.xml.in:260
 msgid "Whether to fetch the current location or not"
 msgstr "Se deve-se obter a localização atual ou não"
 
-#: data/org.gnome.shell.gschema.xml.in:257
+#: data/org.gnome.shell.gschema.xml.in:267
 msgid "Location"
 msgstr "Localização"
 
-#: data/org.gnome.shell.gschema.xml.in:258
+#: data/org.gnome.shell.gschema.xml.in:268
 msgid "The location for which to show a forecast"
 msgstr "A localização para a qual deve-se mostrar uma previsão do tempo"
 
-#: data/org.gnome.shell.gschema.xml.in:270
+#: data/org.gnome.shell.gschema.xml.in:280
 msgid "Attach modal dialog to the parent window"
 msgstr "Anexar diálogo modal à janela pai"
 
-#: data/org.gnome.shell.gschema.xml.in:271
-#: data/org.gnome.shell.gschema.xml.in:280
-#: data/org.gnome.shell.gschema.xml.in:288
-#: data/org.gnome.shell.gschema.xml.in:296
-#: data/org.gnome.shell.gschema.xml.in:304
+#: data/org.gnome.shell.gschema.xml.in:281
+#: data/org.gnome.shell.gschema.xml.in:290
+#: data/org.gnome.shell.gschema.xml.in:298
+#: data/org.gnome.shell.gschema.xml.in:306
+#: data/org.gnome.shell.gschema.xml.in:314
 msgid ""
 "This key overrides the key in org.gnome.mutter when running GNOME Shell."
 msgstr ""
 "Esta chave sobrescreve a chave em org.gnome.mutter ao executar o GNOME Shell."
 
-#: data/org.gnome.shell.gschema.xml.in:279
+#: data/org.gnome.shell.gschema.xml.in:289
 msgid "Enable edge tiling when dropping windows on screen edges"
 msgstr ""
 "Habilitar contorno ladrilhado ao arrastar janelas sobre as bordas da tela"
 
-#: data/org.gnome.shell.gschema.xml.in:287
+#: data/org.gnome.shell.gschema.xml.in:297
 msgid "Workspaces are managed dynamically"
 msgstr "Espaços de trabalho são gerenciados dinamicamente"
 
-#: data/org.gnome.shell.gschema.xml.in:295
+#: data/org.gnome.shell.gschema.xml.in:305
 msgid "Workspaces only on primary monitor"
 msgstr "Espaços de trabalho apenas no monitor primário"
 
-#: data/org.gnome.shell.gschema.xml.in:303
+#: data/org.gnome.shell.gschema.xml.in:313
 msgid "Delay focus changes in mouse mode until the pointer stops moving"
 msgstr "Atrasar foco altera o modo do mouse até o ponteiro parar de mover"
 
@@ -575,12 +594,12 @@ msgstr "alternar usuário;trocar de usuário"
 msgid "lock orientation;unlock orientation;screen;rotation"
 msgstr "bloqueio de orientação;desbloqueio de orientação;tela;rotação"
 
-#: js/misc/systemActions.js:240
+#: js/misc/systemActions.js:232
 msgctxt "search-result"
 msgid "Unlock Screen Rotation"
 msgstr "Desbloquear rotação de tela"
 
-#: js/misc/systemActions.js:241
+#: js/misc/systemActions.js:233
 msgctxt "search-result"
 msgid "Lock Screen Rotation"
 msgstr "Bloquear rotação de tela"
@@ -746,36 +765,36 @@ msgstr "Negar acesso"
 msgid "Grant Access"
 msgstr "Conceder acesso"
 
-#: js/ui/appDisplay.js:1408
+#: js/ui/appDisplay.js:1388
 msgid "Unnamed Folder"
 msgstr "Pasta sem nome"
 
 #. Translators: This is the heading of a list of open windows
-#: js/ui/appDisplay.js:2983 js/ui/panel.js:33
+#: js/ui/appDisplay.js:2964 js/ui/panel.js:33
 msgid "Open Windows"
 msgstr "Janelas abertas"
 
-#: js/ui/appDisplay.js:3002 js/ui/panel.js:40
+#: js/ui/appDisplay.js:2983 js/ui/panel.js:40
 msgid "New Window"
 msgstr "Nova janela"
 
-#: js/ui/appDisplay.js:3018
+#: js/ui/appDisplay.js:2999
 msgid "Launch using Integrated Graphics Card"
 msgstr "Iniciar usando placa de vídeo integrada"
 
-#: js/ui/appDisplay.js:3019
+#: js/ui/appDisplay.js:3000
 msgid "Launch using Discrete Graphics Card"
 msgstr "Iniciar usando placa de vídeo dedicada"
 
-#: js/ui/appDisplay.js:3048 js/ui/dash.js:238
+#: js/ui/appDisplay.js:3029 js/ui/dash.js:238
 msgid "Remove from Favorites"
 msgstr "Remover dos favoritos"
 
-#: js/ui/appDisplay.js:3054
+#: js/ui/appDisplay.js:3035
 msgid "Add to Favorites"
 msgstr "Adicionar aos favoritos"
 
-#: js/ui/appDisplay.js:3064 js/ui/panel.js:51
+#: js/ui/appDisplay.js:3045 js/ui/panel.js:51
 msgid "Show Details"
 msgstr "Mostrar detalhes"
 
@@ -1077,7 +1096,7 @@ msgstr "Desculpe, isto não funcionou. Por favor, tente novamente."
 msgid "%s is now known as %s"
 msgstr "%s agora é conhecido como %s"
 
-#: js/ui/ctrlAltTab.js:21 js/ui/viewSelector.js:178
+#: js/ui/ctrlAltTab.js:21 js/ui/viewSelector.js:320
 msgid "Windows"
 msgstr "Janelas"
 
@@ -1087,7 +1106,7 @@ msgstr "Mostrar aplicativos"
 
 #. Translators: this is the name of the dock/favorites area on
 #. the left of the overview
-#: js/ui/dash.js:362
+#: js/ui/dash.js:363
 msgid "Dash"
 msgstr "Dash"
 
@@ -1493,11 +1512,11 @@ msgstr "Ver fonte"
 msgid "Web Page"
 msgstr "Página web"
 
-#: js/ui/main.js:294
+#: js/ui/main.js:304
 msgid "Logged in as a privileged user"
 msgstr "Sessão aberta como um usuário privilegiado"
 
-#: js/ui/main.js:295
+#: js/ui/main.js:305
 msgid ""
 "Running a session as a privileged user should be avoided for security "
 "reasons. If possible, you should log in as a normal user."
@@ -1505,33 +1524,33 @@ msgstr ""
 "Usar uma sessão como um usuário privilegiado deve ser evitado por motivos de "
 "segurança. Se possível, você deve abrir uma sessão como um usuário normal."
 
-#: js/ui/main.js:334
+#: js/ui/main.js:355
 msgid "Screen Lock disabled"
 msgstr "Bloqueio de tela desabilitado"
 
-#: js/ui/main.js:335
+#: js/ui/main.js:356
 msgid "Screen Locking requires the GNOME display manager."
 msgstr "O bloqueio de tela requer o gerenciador de exibição do GNOME."
 
-#: js/ui/messageTray.js:1475
+#: js/ui/messageTray.js:1463
 msgid "System Information"
 msgstr "Informações do sistema"
 
-#: js/ui/mpris.js:203
+#: js/ui/mpris.js:207
 msgid "Unknown artist"
 msgstr "Artista desconhecido"
 
-#: js/ui/mpris.js:213
+#: js/ui/mpris.js:217
 msgid "Unknown title"
 msgstr "Título desconhecido"
 
-#: js/ui/overview.js:74
+#: js/ui/overview.js:67
 msgid "Undo"
 msgstr "Desfazer"
 
 #. Translators: This is the main view to select
 #. activities. See also note for "Activities" string.
-#: js/ui/overview.js:87
+#: js/ui/overview.js:80
 msgid "Overview"
 msgstr "Panorama"
 
@@ -1539,7 +1558,7 @@ msgstr "Panorama"
 #. in the search entry when no search is
 #. active; it should not exceed ~30
 #. characters.
-#: js/ui/overview.js:108
+#: js/ui/overview.js:101
 msgid "Type to search"
 msgstr "Digite para pesquisar"
 
@@ -1567,23 +1586,23 @@ msgstr "Atribuir atalho"
 msgid "Done"
 msgstr "Concluído"
 
-#: js/ui/padOsd.js:731
+#: js/ui/padOsd.js:718
 msgid "Edit…"
 msgstr "Editar…"
 
-#: js/ui/padOsd.js:773 js/ui/padOsd.js:890
+#: js/ui/padOsd.js:760 js/ui/padOsd.js:877
 msgid "None"
 msgstr "Nenhum"
 
-#: js/ui/padOsd.js:844
+#: js/ui/padOsd.js:831
 msgid "Press a button to configure"
 msgstr "Pressione um botão para configurar"
 
-#: js/ui/padOsd.js:845
+#: js/ui/padOsd.js:832
 msgid "Press Esc to exit"
 msgstr "Pressione Esc para sair"
 
-#: js/ui/padOsd.js:848
+#: js/ui/padOsd.js:835
 msgid "Press any key to exit"
 msgstr "Pressione qualquer tecla para sair"
 
@@ -1593,7 +1612,7 @@ msgstr "Sair"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: js/ui/panel.js:391
+#: js/ui/panel.js:391 js/ui/viewSelector.js:303
 msgid "Activities"
 msgstr "Atividades"
 
@@ -1803,23 +1822,23 @@ msgstr "Bluetooth ligado"
 msgid "Brightness"
 msgstr "Brilho"
 
-#: js/ui/status/dwellClick.js:13
+#: js/ui/status/dwellClick.js:12
 msgid "Single Click"
 msgstr "Clique único"
 
-#: js/ui/status/dwellClick.js:18
+#: js/ui/status/dwellClick.js:17
 msgid "Double Click"
 msgstr "Clique duplo"
 
-#: js/ui/status/dwellClick.js:23
+#: js/ui/status/dwellClick.js:22
 msgid "Drag"
 msgstr "Arrastar"
 
-#: js/ui/status/dwellClick.js:28
+#: js/ui/status/dwellClick.js:27
 msgid "Secondary Click"
 msgstr "Clique secundário"
 
-#: js/ui/status/dwellClick.js:37
+#: js/ui/status/dwellClick.js:36
 msgid "Dwell Click"
 msgstr "Clique de permanência"
 
@@ -2265,13 +2284,30 @@ msgstr "Desbloquear janela"
 msgid "Log in as another user"
 msgstr "Iniciar sessão como outro usuário"
 
-#: js/ui/viewSelector.js:182
+#: js/ui/viewSelector.js:307
 msgid "Applications"
 msgstr "Aplicativos"
 
-#: js/ui/viewSelector.js:186
+#: js/ui/viewSelector.js:333
 msgid "Search"
 msgstr "Pesquisar"
+
+#: js/ui/welcomeDialog.js:35
+#, javascript-format
+msgid "Welcome to GNOME %s"
+msgstr "Bem-vindo ao GNOME %s"
+
+#: js/ui/welcomeDialog.js:36
+msgid "If you want to learn your way around, check out the tour."
+msgstr "Se você quiser se familiarizar, confira o tour."
+
+#: js/ui/welcomeDialog.js:44
+msgid "No Thanks"
+msgstr "Não, obrigado"
+
+#: js/ui/welcomeDialog.js:49
+msgid "Take Tour"
+msgstr "Fazer tour"
 
 #: js/ui/windowAttentionHandler.js:20
 #, javascript-format
@@ -2281,22 +2317,22 @@ msgstr "“%s” está pronto"
 # Título de janela de confirmação; Se grande demais, pode ser exibida com "..."
 # Vide: https://bugzilla.gnome.org/show_bug.cgi?id=786331
 #. Translators: This string should be shorter than 30 characters
-#: js/ui/windowManager.js:60
+#: js/ui/windowManager.js:61
 msgid "Keep these display settings?"
 msgstr "Manter essas configurações da tela?"
 
 #. Translators: this and the following message should be limited in length,
 #. to avoid ellipsizing the labels.
 #.
-#: js/ui/windowManager.js:69
+#: js/ui/windowManager.js:70
 msgid "Revert Settings"
 msgstr "Reverter configurações"
 
-#: js/ui/windowManager.js:72
+#: js/ui/windowManager.js:73
 msgid "Keep Changes"
 msgstr "Manter alterações"
 
-#: js/ui/windowManager.js:91
+#: js/ui/windowManager.js:92
 #, javascript-format
 msgid "Settings changes will revert in %d second"
 msgid_plural "Settings changes will revert in %d seconds"
@@ -2305,7 +2341,7 @@ msgstr[1] "Alterações nas configurações serão revertidas em %d segundos"
 
 #. Translators: This represents the size of a window. The first number is
 #. * the width of the window and the second is the height.
-#: js/ui/windowManager.js:548
+#: js/ui/windowManager.js:549
 #, javascript-format
 msgid "%d × %d"
 msgstr "%d × %d"
