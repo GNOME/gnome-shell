@@ -384,6 +384,7 @@ var ShellUserVerifier = class {
         this._hold.release();
 
         this._queueMessage(_("Authentication error"), MessageType.ERROR);
+        this._failCounter++;
         this._verificationFailed(serviceName, false);
     }
 
@@ -609,7 +610,6 @@ var ShellUserVerifier = class {
         // Otherwise, when in login mode we allow ALLOWED_FAILURES attempts.
         // After that, we go back to the welcome screen.
 
-        this._failCounter++;
         let canRetry = retry && this._userName &&
             (this._reauthOnly ||
              this._failCounter < this._settings.get_int(ALLOWED_FAILURES_KEY));
@@ -660,8 +660,10 @@ var ShellUserVerifier = class {
         // if the password service fails, then cancel everything.
         // But if, e.g., fingerprint fails, still give
         // password authentication a chance to succeed
-        if (this.serviceIsForeground(serviceName))
+        if (this.serviceIsForeground(serviceName)) {
+            this._failCounter++;
             this._verificationFailed(serviceName, true);
+        }
     }
 };
 Signals.addSignalMethods(ShellUserVerifier.prototype);
