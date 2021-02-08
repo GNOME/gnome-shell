@@ -463,9 +463,9 @@ var WorkspaceLayout = GObject.registerClass({
         const [topOversize, bottomOversize] = window.chromeHeights();
         const [leftOversize, rightOversize] = window.chromeWidths();
 
-        if (rowSpacing)
+        if (rowSpacing !== null)
             rowSpacing += topOversize + bottomOversize;
-        if (colSpacing)
+        if (colSpacing !== null)
             colSpacing += Math.max(leftOversize, rightOversize);
 
         if (containerBox) {
