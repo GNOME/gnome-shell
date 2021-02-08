@@ -69,21 +69,24 @@ var HistoryManager = class {
     }
 
     addItem(input) {
-        if (this._history.length === 0 ||
-            this._history[this._history.length - 1] !== input) {
+        input = input.trim();
+        if (input &&
+            (this._history.length === 0 ||
+             this._history[this._history.length - 1] !== input)) {
             this._history = this._history.filter(entry => entry !== input);
             this._history.push(input);
             this._save();
         }
         this._historyIndex = this._history.length;
+        return input; // trimmed
     }
 
     _onEntryKeyPress(entry, event) {
         let symbol = event.get_key_symbol();
         if (symbol === Clutter.KEY_Up)
-            return this._setPrevItem(entry.get_text());
+            return this._setPrevItem(entry.get_text().trim());
         else if (symbol === Clutter.KEY_Down)
-            return this._setNextItem(entry.get_text());
+            return this._setNextItem(entry.get_text().trim());
 
         return Clutter.EVENT_PROPAGATE;
     }
