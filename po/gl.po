@@ -13,8 +13,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2021-02-05 15:37+0000\n"
-"PO-Revision-Date: 2021-02-07 01:06+0100\n"
+"POT-Creation-Date: 2021-02-08 21:39+0000\n"
+"PO-Revision-Date: 2021-02-08 23:43+0100\n"
 "Last-Translator: Fran Dieguez <frandieguez@gnome.org>\n"
 "Language-Team: Galician <proxecto@trasno.gal>\n"
 "Language: gl\n"
@@ -493,18 +493,23 @@ msgstr "Nome de usuario"
 msgid "Login Window"
 msgstr "Xanela de inicio de sesión"
 
-#: js/gdm/util.js:355
+#: js/gdm/util.js:379
 msgid "Authentication error"
 msgstr "Erro de autenticación"
 
-#. We don't show fingerprint messages directly since it's
-#. not the main auth service. Instead we use the messages
-#. as a cue to display our own message.
 #. Translators: this message is shown below the password entry field
-#. to indicate the user can swipe their finger instead
-#: js/gdm/util.js:481
-msgid "(or swipe finger)"
-msgstr "(ou pase o dedo)"
+#. to indicate the user can swipe their finger on the fingerprint reader
+#: js/gdm/util.js:507
+#| msgid "(or swipe finger)"
+msgid "(or swipe finger across reader)"
+msgstr "(ou pase o dedo sobre o lector)"
+
+#. Translators: this message is shown below the password entry field
+#. to indicate the user can place their finger on the fingerprint reader instead
+#: js/gdm/util.js:511
+#| msgid "(or swipe finger)"
+msgid "(or place finger on reader)"
+msgstr "(ou pouse o dedo sobre o lector)"
 
 #. Translators: The name of the power-off action in search
 #: js/misc/systemActions.js:82
@@ -1617,11 +1622,11 @@ msgstr "Executar unha orde"
 msgid "Press ESC to close"
 msgstr "Prema ESC para saír"
 
-#: js/ui/runDialog.js:238
+#: js/ui/runDialog.js:240
 msgid "Restart is not available on Wayland"
 msgstr "Reiniciar non está dispoñíbel en Wayland"
 
-#: js/ui/runDialog.js:243
+#: js/ui/runDialog.js:245
 msgid "Restarting…"
 msgstr "Reiniciando…"
 
