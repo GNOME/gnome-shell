@@ -466,15 +466,22 @@ var WindowPreview = GObject.registerClass({
     chromeHeights() {
         const [, closeButtonHeight] = this._closeButton.get_preferred_height(-1);
         const [, iconHeight] = this._icon.get_preferred_height(-1);
+        const { scaleFactor } = St.ThemeContext.get_for_stage(global.stage);
+        const activeExtraSize = WINDOW_ACTIVE_SIZE_INC * scaleFactor;
 
         const topOversize = closeButtonHeight / 2;
         const bottomOversize = (1 - ICON_OVERLAP) * iconHeight;
 
-        return [topOversize, bottomOversize];
+        return [
+            topOversize + activeExtraSize,
+            bottomOversize + activeExtraSize,
+        ];
     }
 
     chromeWidths() {
         const [, closeButtonWidth] = this._closeButton.get_preferred_width(-1);
+        const { scaleFactor } = St.ThemeContext.get_for_stage(global.stage);
+        const activeExtraSize = WINDOW_ACTIVE_SIZE_INC * scaleFactor;
 
         const leftOversize = this._closeButtonSide === St.Side.LEFT
             ? closeButtonWidth / 2
@@ -483,7 +490,10 @@ var WindowPreview = GObject.registerClass({
             ? 0
             : closeButtonWidth / 2;
 
-        return [leftOversize, rightOversize];
+        return [
+            leftOversize + activeExtraSize,
+            rightOversize  + activeExtraSize,
+        ];
     }
 
     showOverlay(animate) {
