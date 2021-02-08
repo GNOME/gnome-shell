@@ -13,7 +13,7 @@ var WINDOW_OVERLAY_IDLE_HIDE_TIMEOUT = 750;
 var WINDOW_OVERLAY_FADE_TIME = 200;
 
 var WINDOW_SCALE_TIME = 200;
-var WINDOW_ACTIVE_SCALE = 1.02;
+var WINDOW_ACTIVE_SIZE_INC = 5; // in each direction
 
 var DRAGGING_WINDOW_OPACITY = 100;
 
@@ -518,9 +518,14 @@ var WindowPreview = GObject.registerClass({
             });
         });
 
+        const { width } = this._windowContainer;
+        const { scaleFactor } = St.ThemeContext.get_for_stage(global.stage);
+        const activeExtraSize = WINDOW_ACTIVE_SIZE_INC * 2 * scaleFactor;
+        const scale = (width + activeExtraSize) / width;
+
         this._windowContainer.ease({
-            scale_x: WINDOW_ACTIVE_SCALE,
-            scale_y: WINDOW_ACTIVE_SCALE,
+            scale_x: scale,
+            scale_y: scale,
             duration: animate ? WINDOW_SCALE_TIME : 0,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
         });
