@@ -381,6 +381,13 @@ var AuthenticationDialog = GObject.registerClass({
         }
     }
 
+    close(timestamp) {
+        // Ensure cleanup if the dialog was never shown
+        if (this.state === ModalDialog.State.CLOSED)
+            this._onDialogClosed();
+        super.close(timestamp);
+    }
+
     cancel() {
         this.close(global.get_current_time());
         this._emitDone(true);
