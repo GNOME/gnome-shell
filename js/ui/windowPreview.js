@@ -20,6 +20,8 @@ var DRAGGING_WINDOW_OPACITY = 100;
 const ICON_SIZE = 64;
 const ICON_OVERLAP = 0.7;
 
+const ICON_TITLE_SPACING = 6;
+
 var WindowPreviewLayout = GObject.registerClass({
     Properties: {
         'bounding-box': GObject.ParamSpec.boxed(
@@ -325,10 +327,11 @@ var WindowPreview = GObject.registerClass({
             source: this._windowContainer,
             coordinate: Clutter.BindCoordinate.X,
         }));
+        const iconBottomOverlap = ICON_SIZE * (1 - ICON_OVERLAP);
         this._title.add_constraint(new Clutter.BindConstraint({
             source: this._windowContainer,
             coordinate: Clutter.BindCoordinate.Y,
-            offset: scaleFactor * ICON_SIZE * ICON_OVERLAP,
+            offset: scaleFactor * (iconBottomOverlap + ICON_TITLE_SPACING),
         }));
         this._title.add_constraint(new Clutter.AlignConstraint({
             source: this._windowContainer,
@@ -338,7 +341,7 @@ var WindowPreview = GObject.registerClass({
         this._title.add_constraint(new Clutter.AlignConstraint({
             source: this._windowContainer,
             align_axis: Clutter.AlignAxis.Y_AXIS,
-            pivot_point: new Graphene.Point({ x: -1, y: ICON_OVERLAP }),
+            pivot_point: new Graphene.Point({ x: -1, y: 0 }),
             factor: 1,
         }));
         this._title.clutter_text.ellipsize = Pango.EllipsizeMode.END;
@@ -455,7 +458,7 @@ var WindowPreview = GObject.registerClass({
         const [, titleHeight] = this._title.get_preferred_height(-1);
 
         const topOverlap = 0;
-        const bottomOverlap = titleHeight;
+        const bottomOverlap = ICON_TITLE_SPACING + titleHeight;
 
         return [topOverlap, bottomOverlap];
     }
