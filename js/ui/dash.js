@@ -57,13 +57,15 @@ class DashIcon extends AppDisplay.AppIcon {
 var DashItemContainer = GObject.registerClass(
 class DashItemContainer extends St.Widget {
     _init() {
-        super._init({ style_class: 'dash-item-container',
-                      pivot_point: new Graphene.Point({ x: .5, y: .5 }),
-                      scale_x: 0,
-                      scale_y: 0,
-                      opacity: 0,
-                      x_expand: true,
-                      x_align: Clutter.ActorAlign.CENTER });
+        super._init({
+            style_class: 'dash-item-container',
+            pivot_point: new Graphene.Point({ x: .5, y: .5 }),
+            scale_x: 0,
+            scale_y: 0,
+            opacity: 0,
+            x_expand: true,
+            x_align: Clutter.ActorAlign.CENTER,
+        });
 
         this._labelText = "";
         this.label = new St.Label({ style_class: 'dash-label' });
