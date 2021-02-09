@@ -4,45 +4,7 @@
 const { Clutter, GObject, St } = imports.gi;
 
 const Dash = imports.ui.dash;
-const Main = imports.ui.main;
 const ViewSelector = imports.ui.viewSelector;
-const Overview = imports.ui.overview;
-
-var SIDE_CONTROLS_ANIMATION_TIME = Overview.ANIMATION_TIME;
-
-var DashFader = GObject.registerClass(
-class DashFader extends St.Widget {
-    _init(dash) {
-        super._init({
-            x_expand: true,
-            x_align: Clutter.ActorAlign.CENTER,
-            y_align: Clutter.ActorAlign.END,
-        });
-
-        this._dash = dash;
-        this.add_child(this._dash);
-
-        Main.overview.connect('window-drag-begin', this._onWindowDragBegin.bind(this));
-        Main.overview.connect('window-drag-cancelled', this._onWindowDragEnd.bind(this));
-        Main.overview.connect('window-drag-end', this._onWindowDragEnd.bind(this));
-    }
-
-    _onWindowDragBegin() {
-        this.ease({
-            opacity: 128,
-            duration: SIDE_CONTROLS_ANIMATION_TIME / 2,
-            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-        });
-    }
-
-    _onWindowDragEnd() {
-        this.ease({
-            opacity: 255,
-            duration: SIDE_CONTROLS_ANIMATION_TIME / 2,
-            mode: Clutter.AnimationMode.EASE_IN_QUAD,
-        });
-    }
-});
 
 var ControlsManager = GObject.registerClass(
 class ControlsManager extends St.Widget {
@@ -55,7 +17,6 @@ class ControlsManager extends St.Widget {
         });
 
         this.dash = new Dash.Dash();
-        this._dashFader = new DashFader(this.dash);
 
         let workspaceManager = global.workspace_manager;
         let activeWorkspaceIndex = workspaceManager.get_active_workspace_index();
@@ -86,7 +47,7 @@ class ControlsManager extends St.Widget {
         this.add_actor(this._group);
 
         this._group.add_child(this.viewSelector);
-        this._group.add_actor(this._dashFader);
+        this._group.add_actor(this.dash);
 
         this.connect('destroy', this._onDestroy.bind(this));
     }

@@ -9,6 +9,7 @@ const AppFavorites = imports.ui.appFavorites;
 const DND = imports.ui.dnd;
 const IconGrid = imports.ui.iconGrid;
 const Main = imports.ui.main;
+const Overview = imports.ui.overview;
 
 var DASH_ANIMATION_TIME = 200;
 var DASH_ITEM_LABEL_SHOW_TIME = 150;
@@ -352,21 +353,27 @@ var Dash = GObject.registerClass({
         this._appSystem.connect('app-state-changed', this._queueRedisplay.bind(this));
 
         Main.overview.connect('item-drag-begin',
-                              this._onDragBegin.bind(this));
+            this._onItemDragBegin.bind(this));
         Main.overview.connect('item-drag-end',
-                              this._onDragEnd.bind(this));
+            this._onItemDragEnd.bind(this));
         Main.overview.connect('item-drag-cancelled',
-                              this._onDragCancelled.bind(this));
+            this._onItemDragCancelled.bind(this));
+        Main.overview.connect('window-drag-begin',
+            this._onWindowDragBegin.bind(this));
+        Main.overview.connect('window-drag-cancelled',
+            this._onWindowDragEnd.bind(this));
+        Main.overview.connect('window-drag-end',
+            this._onWindowDragEnd.bind(this));
 
         // Translators: this is the name of the dock/favorites area on
         // the left of the overview
         Main.ctrlAltTabManager.addGroup(this, _("Dash"), 'user-bookmarks-symbolic');
     }
 
-    _onDragBegin() {
+    _onItemDragBegin() {
         this._dragCancelled = false;
         this._dragMonitor = {
-            dragMotion: this._onDragMotion.bind(this),
+            dragMotion: this._onItemDragMotion.bind(this),
         };
         DND.addDragMonitor(this._dragMonitor);
 
@@ -377,26 +384,26 @@ var Dash = GObject.registerClass({
         }
     }
 
-    _onDragCancelled() {
+    _onItemDragCancelled() {
         this._dragCancelled = true;
-        this._endDrag();
+        this._endItemDrag();
     }
 
-    _onDragEnd() {
+    _onItemDragEnd() {
         if (this._dragCancelled)
             return;
 
-        this._endDrag();
+        this._endItemDrag();
     }
 
-    _endDrag() {
+    _endItemDrag() {
         this._clearDragPlaceholder();
         this._clearEmptyDropTarget();
         this._showAppsIcon.setDragApp(null);
         DND.removeDragMonitor(this._dragMonitor);
     }
 
-    _onDragMotion(dragEvent) {
+    _onItemDragMotion(dragEvent) {
         let app = getAppFromSource(dragEvent.source);
         if (app == null)
             return DND.DragMotionResult.CONTINUE;
@@ -413,6 +420,22 @@ var Dash = GObject.registerClass({
             this._showAppsIcon.setDragApp(null);
 
         return DND.DragMotionResult.CONTINUE;
+    }
+
+    _onWindowDragBegin() {
+        this.ease({
+            opacity: 128,
+            duration: Overview.ANIMATION_TIME / 2,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+        });
+    }
+
+    _onWindowDragEnd() {
+        this.ease({
+            opacity: 255,
+            duration: Overview.ANIMATION_TIME / 2,
+            mode: Clutter.AnimationMode.EASE_IN_QUAD,
+        });
     }
 
     _appIdListToHash(apps) {
