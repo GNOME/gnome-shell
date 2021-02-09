@@ -167,7 +167,7 @@ class WorkspacesView extends WorkspacesViewBase {
         const rtl = this.text_direction === Clutter.TextDirection.RTL;
         const adj = this._scrollAdjustment;
         const currentWorkspace = vertical || !rtl
-            ? adj.value : adj.upper - adj.value;
+            ? adj.value : adj.upper - adj.value - 1;
 
         // Single fit mode implies centered too
         let x1 = 0;
