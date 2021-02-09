@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2021-02-05 15:37+0000\n"
-"PO-Revision-Date: 2021-02-05 22:22+0200\n"
+"POT-Creation-Date: 2021-02-08 21:39+0000\n"
+"PO-Revision-Date: 2021-02-09 08:46+0200\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <kde-i18n-uk@kde.org>\n"
 "Language: uk\n"
@@ -199,8 +199,7 @@ msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:99
 msgid "The last version the “Welcome to GNOME” dialog was shown for"
-msgstr ""
-"Останню версію вікна «Вітаємо у GNOME» було показано для"
+msgstr "Останню версію вікна «Вітаємо у GNOME» було показано для"
 
 #: data/org.gnome.shell.gschema.xml.in:100
 msgid ""
@@ -209,7 +208,10 @@ msgid ""
 "number will represent versions that do not exist yet. This huge number can "
 "be used to effectively disable the dialog."
 msgstr ""
-"Цей ключ визначає, для якої версії було востаннє показано вікно «Вітаємо у GNOME». Порожній рядок відповідає найстарішій доступній версії, а дуже велике число — версіям, яких іще не існує. Таким великим числом можна скористатися для того, щоб вимкнути показ вікна."
+"Цей ключ визначає, для якої версії було востаннє показано вікно «Вітаємо у "
+"GNOME». Порожній рядок відповідає найстарішій доступній версії, а дуже "
+"велике число — версіям, яких іще не існує. Таким великим числом можна "
+"скористатися для того, щоб вимкнути показ вікна."
 
 #: data/org.gnome.shell.gschema.xml.in:109
 msgid "Enable introspection API"
@@ -478,18 +480,23 @@ msgstr "Користувач"
 msgid "Login Window"
 msgstr "Вікно входу"
 
-#: js/gdm/util.js:355
+#: js/gdm/util.js:379
 msgid "Authentication error"
 msgstr "Помилка розпізнавання"
 
-#. We don't show fingerprint messages directly since it's
-#. not the main auth service. Instead we use the messages
-#. as a cue to display our own message.
 #. Translators: this message is shown below the password entry field
-#. to indicate the user can swipe their finger instead
-#: js/gdm/util.js:481
-msgid "(or swipe finger)"
-msgstr "(або проведіть пальцем)"
+#. to indicate the user can swipe their finger on the fingerprint reader
+#: js/gdm/util.js:507
+#| msgid "(or swipe finger)"
+msgid "(or swipe finger across reader)"
+msgstr "(або проведіть пальцем на зчитувачі)"
+
+#. Translators: this message is shown below the password entry field
+#. to indicate the user can place their finger on the fingerprint reader instead
+#: js/gdm/util.js:511
+#| msgid "(or swipe finger)"
+msgid "(or place finger on reader)"
+msgstr "(або розташуйте палець на зчитувачі)"
 
 #. Translators: The name of the power-off action in search
 #: js/misc/systemActions.js:82
@@ -1618,11 +1625,11 @@ msgstr "Виконати команду"
 msgid "Press ESC to close"
 msgstr "Натисніть клавішу «Esc», щоб закрити"
 
-#: js/ui/runDialog.js:238
+#: js/ui/runDialog.js:240
 msgid "Restart is not available on Wayland"
 msgstr "Перезапускання недоступне в сеансі Wayland"
 
-#: js/ui/runDialog.js:243
+#: js/ui/runDialog.js:245
 msgid "Restarting…"
 msgstr "Перезапускання…"
 
@@ -2285,8 +2292,7 @@ msgstr "Пошук"
 #: js/ui/welcomeDialog.js:35
 #, javascript-format
 msgid "Welcome to GNOME %s"
-msgstr ""
-"Вітаємо у GNOME %s"
+msgstr "Вітаємо у GNOME %s"
 
 #: js/ui/welcomeDialog.js:36
 msgid "If you want to learn your way around, check out the tour."
@@ -2295,13 +2301,11 @@ msgstr ""
 
 #: js/ui/welcomeDialog.js:44
 msgid "No Thanks"
-msgstr ""
-"Ні, дякую"
+msgstr "Ні, дякую"
 
 #: js/ui/welcomeDialog.js:49
 msgid "Take Tour"
-msgstr ""
-"Здійснити тур"
+msgstr "Здійснити тур"
 
 #: js/ui/windowAttentionHandler.js:20
 #, javascript-format
