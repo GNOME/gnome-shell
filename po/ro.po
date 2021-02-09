@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2021-02-05 15:37+0000\n"
-"PO-Revision-Date: 2021-02-07 15:07+0100\n"
+"POT-Creation-Date: 2021-02-08 21:39+0000\n"
+"PO-Revision-Date: 2021-02-09 11:30+0200\n"
 "Last-Translator: Florentina Mușat <florentina.musat.28@gmail.com>\n"
 "Language-Team: Gnome Romanian Translation Team <gnomero-list@lists."
 "sourceforge.net>\n"
@@ -501,18 +501,21 @@ msgstr "Nume de utilizator"
 msgid "Login Window"
 msgstr "Fereastră de autentificare"
 
-#: js/gdm/util.js:355
+#: js/gdm/util.js:379
 msgid "Authentication error"
 msgstr "Eroare de autentificare"
 
-#. We don't show fingerprint messages directly since it's
-#. not the main auth service. Instead we use the messages
-#. as a cue to display our own message.
 #. Translators: this message is shown below the password entry field
-#. to indicate the user can swipe their finger instead
-#: js/gdm/util.js:481
-msgid "(or swipe finger)"
-msgstr "(sau treceți degetul peste)"
+#. to indicate the user can swipe their finger on the fingerprint reader
+#: js/gdm/util.js:507
+msgid "(or swipe finger across reader)"
+msgstr "(sau treceți cu degetul peste cititor)"
+
+#. Translators: this message is shown below the password entry field
+#. to indicate the user can place their finger on the fingerprint reader instead
+#: js/gdm/util.js:511
+msgid "(or place finger on reader)"
+msgstr "(sau plasați degetul pe cititor)"
 
 #. Translators: The name of the power-off action in search
 #: js/misc/systemActions.js:82
@@ -1635,11 +1638,11 @@ msgstr "Rulează o comandă"
 msgid "Press ESC to close"
 msgstr "Apăsați ESC pentru a închide"
 
-#: js/ui/runDialog.js:238
+#: js/ui/runDialog.js:240
 msgid "Restart is not available on Wayland"
 msgstr "Repornirea nu este disponibilă în Wayland"
 
-#: js/ui/runDialog.js:243
+#: js/ui/runDialog.js:245
 msgid "Restarting…"
 msgstr "Se repornește…"
 
@@ -2513,7 +2516,8 @@ msgstr "Elimină"
 #: subprojects/extensions-app/js/main.js:216
 msgid "translator-credits"
 msgstr ""
-"Florentina Mușat <florentina [dot] musat [dot] 28 [at] gmail [dot] com>, 2020"
+"Florentina Mușat <florentina [dot] musat [dot] 28 [at] gmail [dot] com>, "
+"2020-2021"
 
 #: subprojects/extensions-app/js/main.js:344
 #, javascript-format
