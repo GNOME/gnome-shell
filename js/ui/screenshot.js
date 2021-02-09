@@ -200,10 +200,10 @@ var ScreenshotService = class {
                 screenshot.screenshot_area(x, y, width, height, stream),
             ]);
             this._onScreenshotComplete(stream, file, invocation);
-            this._removeShooterForSender(invocation.get_sender());
         } catch (e) {
-            this._removeShooterForSender(invocation.get_sender());
             invocation.return_value(new GLib.Variant('(bs)', [false, '']));
+        } finally {
+            this._removeShooterForSender(invocation.get_sender());
         }
     }
 
@@ -223,10 +223,10 @@ var ScreenshotService = class {
                 screenshot.screenshot_window(includeFrame, includeCursor, stream),
             ]);
             this._onScreenshotComplete(stream, file, invocation);
-            this._removeShooterForSender(invocation.get_sender());
         } catch (e) {
-            this._removeShooterForSender(invocation.get_sender());
             invocation.return_value(new GLib.Variant('(bs)', [false, '']));
+        } finally {
+            this._removeShooterForSender(invocation.get_sender());
         }
     }
 
@@ -246,10 +246,10 @@ var ScreenshotService = class {
                 screenshot.screenshot(includeCursor, stream),
             ]);
             this._onScreenshotComplete(stream, file, invocation);
-            this._removeShooterForSender(invocation.get_sender());
         } catch (e) {
-            this._removeShooterForSender(invocation.get_sender());
             invocation.return_value(new GLib.Variant('(bs)', [false, '']));
+        } finally {
+            this._removeShooterForSender(invocation.get_sender());
         }
     }
 
