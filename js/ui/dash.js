@@ -60,6 +60,7 @@ class DashItemContainer extends St.Widget {
         super._init({
             style_class: 'dash-item-container',
             pivot_point: new Graphene.Point({ x: .5, y: .5 }),
+            layout_manager: new Clutter.BinLayout(),
             scale_x: 0,
             scale_y: 0,
             opacity: 0,
@@ -152,6 +153,7 @@ class DashItemContainer extends St.Widget {
         this.destroy_all_children();
 
         this.child = actor;
+        this.child.y_expand = true;
         this.add_actor(this.child);
     }
 
@@ -203,6 +205,8 @@ class ShowAppsIcon extends DashItemContainer {
                                           { setSizeManually: true,
                                             showLabel: false,
                                             createIcon: this._createIcon.bind(this) });
+        this.icon.y_align = Clutter.ActorAlign.CENTER;
+
         this.toggleButton.add_actor(this.icon);
         this.toggleButton._delegate = this;
 
@@ -300,7 +304,7 @@ const baseIconSizes = [16, 22, 24, 32, 48, 64];
 
 var Dash = GObject.registerClass({
     Signals: { 'icon-size-changed': {} },
-}, class Dash extends St.BoxLayout {
+}, class Dash extends St.Widget {
     _init() {
         this._maxWidth = -1;
         this.iconSize = 64;
@@ -317,25 +321,48 @@ var Dash = GObject.registerClass({
         super._init({
             name: 'dash',
             offscreen_redirect: Clutter.OffscreenRedirect.ALWAYS,
+            layout_manager: new Clutter.BinLayout(),
+        });
+
+        this._dashContainer = new St.BoxLayout({
             x_align: Clutter.ActorAlign.CENTER,
+            y_expand: true,
         });
 
         this._box = new St.Widget({
             clip_to_allocation: true,
             layout_manager: new DashIconsLayout(),
-            x_expand: true,
-            x_align: Clutter.ActorAlign.CENTER,
+            y_expand: true,
         });
         this._box._delegate = this;
-        this.add_child(this._box);
+
+        this._dashContainer.add_child(this._box);
 
         this._showAppsIcon = new ShowAppsIcon();
         this._showAppsIcon.show(false);
         this._showAppsIcon.icon.setIconSize(this.iconSize);
         this._hookUpLabel(this._showAppsIcon);
-        this.add_child(this._showAppsIcon);
+        this._dashContainer.add_child(this._showAppsIcon);
 
         this.showAppsButton = this._showAppsIcon.toggleButton;
+
+        const background = new St.Widget({
+            style_class: 'dash-background',
+        });
+
+        const sizerBox = new Clutter.Actor();
+        sizerBox.add_constraint(new Clutter.BindConstraint({
+            source: this._showAppsIcon.icon,
+            coordinate: Clutter.BindCoordinate.HEIGHT,
+        }));
+        sizerBox.add_constraint(new Clutter.BindConstraint({
+            source: this._dashContainer,
+            coordinate: Clutter.BindCoordinate.WIDTH,
+        }));
+        background.add_child(sizerBox);
+
+        this.add_child(background);
+        this.add_child(this._dashContainer);
 
         this.connect('notify::width', () => {
             if (this._maxWidth !== this.width)
