@@ -25,6 +25,15 @@ typedef enum _ShellScreenshotMode
   SHELL_SCREENSHOT_AREA,
 } ShellScreenshotMode;
 
+enum
+{
+  SCREENSHOT_TAKEN,
+
+  LAST_SIGNAL
+};
+
+static guint signals[LAST_SIGNAL] = { 0, };
+
 typedef struct _ShellScreenshotPrivate  ShellScreenshotPrivate;
 
 struct _ShellScreenshot
@@ -55,7 +64,15 @@ G_DEFINE_TYPE_WITH_PRIVATE (ShellScreenshot, shell_screenshot, G_TYPE_OBJECT);
 static void
 shell_screenshot_class_init (ShellScreenshotClass *screenshot_class)
 {
-  (void) screenshot_class;
+  signals[SCREENSHOT_TAKEN] =
+    g_signal_new ("screenshot-taken",
+                  G_TYPE_FROM_CLASS(screenshot_class),
+                  G_SIGNAL_RUN_LAST,
+                  0,
+                  NULL, NULL, NULL,
+                  G_TYPE_NONE,
+                  1,
+                  META_TYPE_RECTANGLE);
 }
 
 static void
@@ -321,6 +338,8 @@ grab_window_screenshot (ShellScreenshot     *screenshot,
       draw_cursor_image (priv->image, priv->screenshot_area);
     }
 
+  g_signal_emit (screenshot, signals[SCREENSHOT_TAKEN], 0, &rect);
+
   task = g_task_new (screenshot, NULL, on_screenshot_written, result);
   g_task_run_in_thread (task, write_screenshot_thread);
   g_object_unref (task);
@@ -371,6 +390,9 @@ on_after_paint (ClutterStage     *stage,
     {
       grab_screenshot (screenshot, priv->flags, result);
     }
+
+  g_signal_emit (screenshot, signals[SCREENSHOT_TAKEN], 0,
+                 (cairo_rectangle_int_t *) &priv->screenshot_area);
 
   meta_enable_unredirect_for_display (display);
 }
@@ -430,6 +452,9 @@ shell_screenshot_screenshot (ShellScreenshot     *screenshot,
   if (meta_is_wayland_compositor ())
     {
       grab_screenshot (screenshot, flags, result);
+
+      g_signal_emit (screenshot, signals[SCREENSHOT_TAKEN], 0,
+                     (cairo_rectangle_int_t *) &priv->screenshot_area);
     }
   else
     {
@@ -539,6 +564,9 @@ shell_screenshot_screenshot_area (ShellScreenshot     *screenshot,
                           priv->screenshot_area.width,
                           priv->screenshot_area.height,
                           SHELL_SCREENSHOT_FLAG_NONE);
+
+      g_signal_emit (screenshot, signals[SCREENSHOT_TAKEN], 0,
+                     (cairo_rectangle_int_t *) &priv->screenshot_area);
 
       task = g_task_new (screenshot, NULL, on_screenshot_written, result);
       g_task_run_in_thread (task, write_screenshot_thread);

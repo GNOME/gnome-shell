@@ -131,16 +131,19 @@ var ScreenshotService = class {
         return [null, null];
     }
 
-    _onScreenshotComplete(area, stream, file, flash, invocation) {
-        if (flash) {
-            let flashspot = new Flashspot(area);
-            flashspot.fire(() => {
-                this._removeShooterForSender(invocation.get_sender());
-            });
-        } else {
-            this._removeShooterForSender(invocation.get_sender());
-        }
+    _flashAsync(shooter) {
+        return new Promise((resolve, _reject) => {
+            shooter.connect('screenshot_taken', (s, area) => {
+                const flashspot = new Flashspot(area);
+                flashspot.fire(resolve);
 
+                global.display.get_sound_player().play_from_theme(
+                    'screen-capture', _('Screenshot taken'), null);
+            });
+        });
+    }
+
+    _onScreenshotComplete(stream, file, invocation) {
         stream.close(null);
 
         let filenameUsed = '';
@@ -192,9 +195,12 @@ var ScreenshotService = class {
             return;
 
         try {
-            let [area] =
-                await screenshot.screenshot_area(x, y, width, height, stream);
-            this._onScreenshotComplete(area, stream, file, flash, invocation);
+            await Promise.all([
+                flash ? this._flashAsync(screenshot) : null,
+                screenshot.screenshot_area(x, y, width, height, stream),
+            ]);
+            this._onScreenshotComplete(stream, file, invocation);
+            this._removeShooterForSender(invocation.get_sender());
         } catch (e) {
             this._removeShooterForSender(invocation.get_sender());
             invocation.return_value(new GLib.Variant('(bs)', [false, '']));
@@ -212,9 +218,12 @@ var ScreenshotService = class {
             return;
 
         try {
-            let [area] =
-                await screenshot.screenshot_window(includeFrame, includeCursor, stream);
-            this._onScreenshotComplete(area, stream, file, flash, invocation);
+            await Promise.all([
+                flash ? this._flashAsync(screenshot) : null,
+                screenshot.screenshot_window(includeFrame, includeCursor, stream),
+            ]);
+            this._onScreenshotComplete(stream, file, invocation);
+            this._removeShooterForSender(invocation.get_sender());
         } catch (e) {
             this._removeShooterForSender(invocation.get_sender());
             invocation.return_value(new GLib.Variant('(bs)', [false, '']));
@@ -232,8 +241,12 @@ var ScreenshotService = class {
             return;
 
         try {
-            let [area] = await screenshot.screenshot(includeCursor, stream);
-            this._onScreenshotComplete(area, stream, file, flash, invocation);
+            await Promise.all([
+                flash ? this._flashAsync(screenshot) : null,
+                screenshot.screenshot(includeCursor, stream),
+            ]);
+            this._onScreenshotComplete(stream, file, invocation);
+            this._removeShooterForSender(invocation.get_sender());
         } catch (e) {
             this._removeShooterForSender(invocation.get_sender());
             invocation.return_value(new GLib.Variant('(bs)', [false, '']));
