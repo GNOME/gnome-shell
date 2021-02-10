@@ -37,6 +37,8 @@ class ControlsManagerLayout extends Clutter.BoxLayout {
         this._viewSelector = viewSelector;
         this._dash = dash;
 
+        this._cachedWorkspaceBoxes = new Map();
+
         stateAdjustment.connect('notify::value', () => this.layout_changed());
     }
 
@@ -140,15 +142,18 @@ class ControlsManagerLayout extends Clutter.BoxLayout {
         let params = [box, searchHeight, dashHeight, thumbnailsHeight];
         const transitionParams = this._stateAdjustment.getStateTransitionParams();
 
+        // Update cached boxes
+        for (const state of Object.values(ControlsState)) {
+            this._cachedWorkspaceBoxes.set(
+                state, this._getWorkspacesBoxForState(state, ...params));
+        }
+
         let workspacesBox;
         if (!transitionParams.transitioning) {
-            workspacesBox =
-                this._getWorkspacesBoxForState(transitionParams.currentState, ...params);
+            workspacesBox = this._cachedWorkspaceBoxes.get(transitionParams.currentState);
         } else {
-            const initialBox =
-                this._getWorkspacesBoxForState(transitionParams.initialState, ...params);
-            const finalBox =
-                this._getWorkspacesBoxForState(transitionParams.finalState, ...params);
+            const initialBox = this._cachedWorkspaceBoxes.get(transitionParams.initialState);
+            const finalBox = this._cachedWorkspaceBoxes.get(transitionParams.finalState);
             workspacesBox = initialBox.interpolate(finalBox, transitionParams.progress);
         }
 
@@ -156,7 +161,7 @@ class ControlsManagerLayout extends Clutter.BoxLayout {
 
         // AppDisplay
         const workspaceAppGridBox =
-            this._getWorkspacesBoxForState(ControlsState.APP_GRID, ...params);
+            this._cachedWorkspaceBoxes.get(ControlsState.APP_GRID);
 
         params = [box, searchHeight, dashHeight, workspaceAppGridBox];
         let appDisplayBox;
