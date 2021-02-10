@@ -15,8 +15,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 3.14\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2021-02-05 15:37+0000\n"
-"PO-Revision-Date: 2021-02-06 21:45+0000\n"
+"POT-Creation-Date: 2021-02-09 19:29+0000\n"
+"PO-Revision-Date: 2021-02-10 19:02+0000\n"
 "Last-Translator: Hugo Carvalho <hugokarvalho@hotmail.com>\n"
 "Language-Team: Portuguese <>\n"
 "Language: pt\n"
@@ -24,7 +24,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 2.4.2\n"
+"X-Generator: Poedit 2.4.1\n"
 "X-Project-Style: gnome\n"
 "X-Language: pt_PT\n"
 "X-Source-Language: C\n"
@@ -470,17 +470,17 @@ msgstr "Cancelar"
 msgid "Password"
 msgstr "Palavra-passe"
 
-#: js/gdm/loginDialog.js:318
+#: js/gdm/loginDialog.js:317
 msgid "Choose Session"
 msgstr "Escolher sessão"
 
-#: js/gdm/loginDialog.js:457
+#: js/gdm/loginDialog.js:456
 msgid "Not listed?"
 msgstr "Não está listado?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: js/gdm/loginDialog.js:914
+#: js/gdm/loginDialog.js:913
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(por ex., utilizador ou %s)"
@@ -488,27 +488,30 @@ msgstr "(por ex., utilizador ou %s)"
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: js/gdm/loginDialog.js:919 js/ui/components/networkAgent.js:246
+#: js/gdm/loginDialog.js:918 js/ui/components/networkAgent.js:246
 #: js/ui/components/networkAgent.js:269 js/ui/components/networkAgent.js:287
 msgid "Username"
 msgstr "Utilizador"
 
-#: js/gdm/loginDialog.js:1254
+#: js/gdm/loginDialog.js:1253
 msgid "Login Window"
 msgstr "Janela de início de sessão"
 
-#: js/gdm/util.js:355
+#: js/gdm/util.js:379
 msgid "Authentication error"
 msgstr "Erro de autenticação"
 
-#. We don't show fingerprint messages directly since it's
-#. not the main auth service. Instead we use the messages
-#. as a cue to display our own message.
 #. Translators: this message is shown below the password entry field
-#. to indicate the user can swipe their finger instead
-#: js/gdm/util.js:481
-msgid "(or swipe finger)"
-msgstr "(ou utilize a impressão digital)"
+#. to indicate the user can swipe their finger on the fingerprint reader
+#: js/gdm/util.js:507
+msgid "(or swipe finger across reader)"
+msgstr "(ou passe o dedo pelo leitor)"
+
+#. Translators: this message is shown below the password entry field
+#. to indicate the user can place their finger on the fingerprint reader instead
+#: js/gdm/util.js:511
+msgid "(or place finger on reader)"
+msgstr "(ou coloque o dedo no leitor)"
 
 #. Translators: The name of the power-off action in search
 #: js/misc/systemActions.js:82
@@ -1617,11 +1620,11 @@ msgstr "Executar um comando"
 msgid "Press ESC to close"
 msgstr "Premir Esc para fechar"
 
-#: js/ui/runDialog.js:238
+#: js/ui/runDialog.js:240
 msgid "Restart is not available on Wayland"
 msgstr "Reiniciar não está disponível no Wayland"
 
-#: js/ui/runDialog.js:243
+#: js/ui/runDialog.js:245
 msgid "Restarting…"
 msgstr "A reiniciar…"
 
