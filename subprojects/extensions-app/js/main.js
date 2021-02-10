@@ -421,8 +421,9 @@ var ExtensionRow = GObject.registerClass({
 
         this._nameLabel.label = this.name;
 
-        let desc = this._extension.metadata.description.split('\n')[0];
+        const desc = this._extension.metadata.description.split('\n')[0];
         this._descriptionLabel.label = desc;
+        this._descriptionLabel.tooltip_text = desc;
 
         this._revealButton.connect('clicked', () => {
             this._revealer.reveal_child = !this._revealer.reveal_child;
