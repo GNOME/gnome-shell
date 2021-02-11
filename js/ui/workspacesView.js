@@ -613,6 +613,10 @@ class WorkspacesDisplay extends St.Widget {
         this._swipeTracker.connect('end', this._switchWorkspaceEnd.bind(this));
         this.connect('notify::mapped', this._updateSwipeTracker.bind(this));
 
+        this._layoutRowsNotifyId = workspaceManager.connect(
+            'notify::layout-rows', this._updateTrackerOrientation.bind(this));
+        this._updateTrackerOrientation();
+
         this._windowDragBeginId =
             Main.overview.connect('window-drag-begin',
                 this._windowDragBegin.bind(this));
@@ -649,6 +653,7 @@ class WorkspacesDisplay extends St.Widget {
 
         global.window_manager.disconnect(this._switchWorkspaceId);
         global.workspace_manager.disconnect(this._reorderWorkspacesdId);
+        global.workspace_manager.disconnect(this._layoutRowsNotifyId);
         Main.overview.disconnect(this._windowDragBeginId);
         Main.overview.disconnect(this._windowDragEndId);
     }
@@ -687,6 +692,13 @@ class WorkspacesDisplay extends St.Widget {
         });
     }
 
+    _updateTrackerOrientation() {
+        const { layoutRows } = global.workspace_manager;
+        this._swipeTracker.orientation = layoutRows !== -1
+            ? Clutter.Orientation.HORIZONTAL
+            : Clutter.Orientation.VERTICAL;
+    }
+
     _directionForProgress(progress) {
         if (global.workspace_manager.layout_rows === -1) {
             return progress > 0
@@ -711,10 +723,6 @@ class WorkspacesDisplay extends St.Widget {
         let adjustment = this._scrollAdjustment;
         if (this._gestureActive)
             adjustment.remove_transition('value');
-
-        tracker.orientation = workspaceManager.layout_rows !== -1
-            ? Clutter.Orientation.HORIZONTAL
-            : Clutter.Orientation.VERTICAL;
 
         const distance = global.workspace_manager.layout_rows === -1
             ? this.height : this.width;
