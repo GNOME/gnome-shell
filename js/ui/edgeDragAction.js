@@ -9,7 +9,10 @@ var EDGE_THRESHOLD = 20;
 var DRAG_DISTANCE = 80;
 
 var EdgeDragAction = GObject.registerClass({
-    Signals: { 'activated': {} },
+    Signals: {
+        'activated': {},
+        'progress': { param_types: [GObject.TYPE_DOUBLE] },
+    },
 }, class EdgeDragAction extends Clutter.GestureAction {
     _init(side, allowedModes) {
         super._init();
@@ -59,6 +62,12 @@ var EdgeDragAction = GObject.registerClass({
             this.cancel();
             return false;
         }
+
+        if (this._side === St.Side.TOP ||
+            this._side === St.Side.BOTTOM)
+            this.emit('progress', offsetY);
+        else
+            this.emit('progress', offsetX);
 
         return true;
     }
