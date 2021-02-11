@@ -1856,6 +1856,10 @@ var Keyboard = GObject.registerClass({
 
     _windowSlideAnimationComplete(window, delta) {
         // Synchronize window positions again.
+        const windowActor = window.get_compositor_private();
+        if (windowActor)
+            windowActor.translation_y = 0;
+
         let frameRect = window.get_frame_rect();
         frameRect.y += delta;
         window.move_frame(true, frameRect.x, frameRect.y);
@@ -1869,7 +1873,7 @@ var Keyboard = GObject.registerClass({
 
         if (show) {
             windowActor.ease({
-                y: windowActor.y - deltaY,
+                translation_y: -deltaY,
                 duration: KEYBOARD_ANIMATION_TIME,
                 mode: Clutter.AnimationMode.EASE_OUT_QUAD,
                 onComplete: () => {
@@ -1878,7 +1882,7 @@ var Keyboard = GObject.registerClass({
             });
         } else {
             windowActor.ease({
-                y: windowActor.y + deltaY,
+                translation_y: deltaY,
                 duration: KEYBOARD_ANIMATION_TIME,
                 mode: Clutter.AnimationMode.EASE_IN_QUAD,
                 onComplete: () => {
