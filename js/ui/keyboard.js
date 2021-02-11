@@ -1150,11 +1150,8 @@ var KeyboardManager = class KeyBoardManager {
         bottomDragAction.connect('activated', () => {
             this.open(Main.layoutManager.bottomIndex);
         });
-        Main.layoutManager.connect('keyboard-visible-changed', (_manager, visible) => {
-            bottomDragAction.cancel();
-            bottomDragAction.set_enabled(!visible);
-        });
         global.stage.add_action(bottomDragAction);
+        this._bottomDragAction = bottomDragAction;
 
         this._syncEnabled();
     }
@@ -1177,10 +1174,14 @@ var KeyboardManager = class KeyBoardManager {
 
         if (enabled && !this._keyboard) {
             this._keyboard = new Keyboard();
+            this._keyboard.connect('visibility-changed', () => {
+                this._bottomDragAction.enabled = !this._keyboard.visible;
+            });
         } else if (!enabled && this._keyboard) {
             this._keyboard.setCursorLocation(null);
             this._keyboard.destroy();
             this._keyboard = null;
+            this._bottomDragAction.enabled = true;
         }
     }
 
@@ -1222,8 +1223,11 @@ var KeyboardManager = class KeyBoardManager {
     }
 };
 
-var Keyboard = GObject.registerClass(
-class Keyboard extends St.BoxLayout {
+var Keyboard = GObject.registerClass({
+    Signals: {
+        'visibility-changed': {},
+    },
+}, class Keyboard extends St.BoxLayout {
     _init() {
         super._init({ name: 'keyboard', reactive: true, vertical: true });
         this._focusInExtendedKeys = false;
@@ -1260,9 +1264,6 @@ class Keyboard extends St.BoxLayout {
         this._showIdleId = 0;
 
         this._keyboardVisible = false;
-        this._connectSignal(Main.layoutManager, 'keyboard-visible-changed', (_lm, visible) => {
-            this._keyboardVisible = visible;
-        });
         this._keyboardRequested = false;
         this._keyboardRestingId = 0;
 
@@ -1802,7 +1803,8 @@ class Keyboard extends St.BoxLayout {
                 this._animateShowComplete();
             },
         });
-        Main.layoutManager.emit('keyboard-visible-changed', true);
+        this._keyboardVisible = true;
+        this.emit('visibility-changed');
     }
 
     _animateShowComplete() {
@@ -1830,7 +1832,8 @@ class Keyboard extends St.BoxLayout {
             },
         });
 
-        Main.layoutManager.emit('keyboard-visible-changed', false);
+        this._keyboardVisible = false;
+        this.emit('visibility-changed');
     }
 
     _animateHideComplete() {

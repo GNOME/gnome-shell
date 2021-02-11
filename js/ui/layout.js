@@ -181,12 +181,13 @@ const defaultParams = {
 };
 
 var LayoutManager = GObject.registerClass({
-    Signals: { 'hot-corners-changed': {},
-               'startup-complete': {},
-               'startup-prepared': {},
-               'monitors-changed': {},
-               'system-modal-opened': {},
-               'keyboard-visible-changed': { param_types: [GObject.TYPE_BOOLEAN] } },
+    Signals: {
+        'hot-corners-changed': {},
+        'startup-complete': {},
+        'startup-prepared': {},
+        'monitors-changed': {},
+        'system-modal-opened': {},
+    },
 }, class LayoutManager extends GObject.Object {
     _init() {
         super._init();
