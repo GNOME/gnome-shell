@@ -1148,7 +1148,10 @@ var KeyboardManager = class KeyBoardManager {
         const mode = Shell.ActionMode.ALL & ~Shell.ActionMode.LOCK_SCREEN;
         const bottomDragAction = new EdgeDragAction.EdgeDragAction(St.Side.BOTTOM, mode);
         bottomDragAction.connect('activated', () => {
-            this.open(Main.layoutManager.bottomIndex);
+            this._keyboard.gestureActivate(Main.layoutManager.bottomIndex);
+        });
+        bottomDragAction.connect('progress', (_action, progress) => {
+            this._keyboard.gestureProgress(progress);
         });
         global.stage.add_action(bottomDragAction);
         this._bottomDragAction = bottomDragAction;
@@ -1725,12 +1728,17 @@ var Keyboard = GObject.registerClass({
         this._keyboardRestingId = 0;
     }
 
-    open() {
+    open(immediate = false) {
         this._clearShowIdle();
         this._keyboardRequested = true;
 
         if (this._keyboardVisible) {
             this._relayout();
+            return;
+        }
+
+        if (immediate) {
+            this._open();
             return;
         }
 
@@ -1833,6 +1841,21 @@ var Keyboard = GObject.registerClass({
 
     _animateHideComplete() {
         Main.layoutManager.keyboardBox.hide();
+    }
+
+    gestureProgress(delta) {
+        Main.layoutManager.keyboardBox.show();
+        let progress = Math.min(delta, this.height) / this.height;
+        this.translation_y = -this.height * progress;
+        this.opacity = 255 * progress;
+        if (this._focusWindow) {
+            const windowActor = this._focusWindow.get_compositor_private();
+            windowActor.translation_y = -this.height * progress;
+        }
+    }
+
+    gestureActivate() {
+        this.open(true);
     }
 
     resetSuggestions() {
