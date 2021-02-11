@@ -1234,9 +1234,7 @@ var Keyboard = GObject.registerClass({
         this._emojiActive = false;
 
         this._languagePopup = null;
-        this._currentFocusWindow = null;
-        this._animFocusedWindow = null;
-        this._delayedAnimFocusWindow = null;
+        this._focusWindow = null;
 
         this._latched = false; // current level is latched
 
@@ -1247,9 +1245,7 @@ var Keyboard = GObject.registerClass({
         this._connectSignal(this._focusTracker, 'position-changed',
             this._onFocusPositionChanged.bind(this));
         this._connectSignal(this._focusTracker, 'reset', () => {
-            this._delayedAnimFocusWindow = null;
-            this._animFocusedWindow = null;
-            this._oskFocusWindow = null;
+            this._setFocusWindow(null);
         });
         // Valid only for X11
         if (!Meta.is_wayland_compositor()) {
@@ -1759,11 +1755,6 @@ var Keyboard = GObject.registerClass({
         this.animateShow();
 
         this._setEmojiActive(false);
-
-        if (this._delayedAnimFocusWindow) {
-            this._setAnimationWindow(this._delayedAnimFocusWindow);
-            this._delayedAnimFocusWindow = null;
-        }
     }
 
     close() {
@@ -1793,6 +1784,9 @@ var Keyboard = GObject.registerClass({
     }
 
     animateShow() {
+        if (this._focusWindow)
+            this._animateWindow(this._focusWindow, true);
+
         Main.layoutManager.keyboardBox.show();
         this.ease({
             translation_y: -this.height,
@@ -1818,6 +1812,9 @@ var Keyboard = GObject.registerClass({
     }
 
     animateHide(immediate) {
+        if (this._focusWindow)
+            this._animateWindow(this._focusWindow, false);
+
         if (this._keyboardHeightNotifyId) {
             Main.layoutManager.keyboardBox.disconnect(this._keyboardHeightNotifyId);
             this._keyboardHeightNotifyId = 0;
@@ -1893,16 +1890,18 @@ var Keyboard = GObject.registerClass({
         }
     }
 
-    _setAnimationWindow(window) {
-        if (this._animFocusedWindow == window)
+    _setFocusWindow(window) {
+        if (this._focusWindow === window)
             return;
 
-        if (this._animFocusedWindow)
-            this._animateWindow(this._animFocusedWindow, false);
-        if (window)
-            this._animateWindow(window, true);
+        if (this._keyboardVisible) {
+            if (this._focusWindow)
+                this._animateWindow(this._focusWindow, false);
+            if (window)
+                this._animateWindow(window, true);
+        }
 
-        this._animFocusedWindow = window;
+        this._focusWindow = window;
     }
 
     setCursorLocation(window, x, y, w, h) {
@@ -1911,20 +1910,13 @@ var Keyboard = GObject.registerClass({
         if (window && monitor) {
             let keyboardHeight = Main.layoutManager.keyboardBox.height;
 
-            if (y + h >= monitor.y + monitor.height - keyboardHeight) {
-                if (this._keyboardVisible)
-                    this._setAnimationWindow(window);
-                else
-                    this._delayedAnimFocusWindow = window;
-            } else if (y < keyboardHeight) {
-                this._delayedAnimFocusWindow = null;
-                this._setAnimationWindow(null);
-            }
+            if (y + h >= monitor.y + monitor.height - keyboardHeight)
+                this._setFocusWindow(window);
+            else if (y < keyboardHeight)
+                this._setFocusWindow(null);
         } else {
-            this._setAnimationWindow(null);
+            this._setFocusWindow(null);
         }
-
-        this._oskFocusWindow = window;
     }
 });
 
