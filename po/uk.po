@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2021-02-08 21:39+0000\n"
-"PO-Revision-Date: 2021-02-09 08:46+0200\n"
+"POT-Creation-Date: 2021-02-11 18:56+0000\n"
+"PO-Revision-Date: 2021-02-11 22:39+0200\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <kde-i18n-uk@kde.org>\n"
 "Language: uk\n"
@@ -453,17 +453,17 @@ msgstr "Скасувати"
 msgid "Password"
 msgstr "Пароль"
 
-#: js/gdm/loginDialog.js:318
+#: js/gdm/loginDialog.js:317
 msgid "Choose Session"
 msgstr "Виберіть сеанс"
 
-#: js/gdm/loginDialog.js:457
+#: js/gdm/loginDialog.js:456
 msgid "Not listed?"
 msgstr "Немає в переліку?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: js/gdm/loginDialog.js:914
+#: js/gdm/loginDialog.js:913
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(наприклад, користувач або %s)"
@@ -471,12 +471,12 @@ msgstr "(наприклад, користувач або %s)"
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: js/gdm/loginDialog.js:919 js/ui/components/networkAgent.js:246
+#: js/gdm/loginDialog.js:918 js/ui/components/networkAgent.js:246
 #: js/ui/components/networkAgent.js:269 js/ui/components/networkAgent.js:287
 msgid "Username"
 msgstr "Користувач"
 
-#: js/gdm/loginDialog.js:1254
+#: js/gdm/loginDialog.js:1253
 msgid "Login Window"
 msgstr "Вікно входу"
 
@@ -487,14 +487,12 @@ msgstr "Помилка розпізнавання"
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger on the fingerprint reader
 #: js/gdm/util.js:507
-#| msgid "(or swipe finger)"
 msgid "(or swipe finger across reader)"
 msgstr "(або проведіть пальцем на зчитувачі)"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can place their finger on the fingerprint reader instead
 #: js/gdm/util.js:511
-#| msgid "(or swipe finger)"
 msgid "(or place finger on reader)"
 msgstr "(або розташуйте палець на зчитувачі)"
 
@@ -774,7 +772,7 @@ msgstr "Запустити через інтегровану графічну п
 msgid "Launch using Discrete Graphics Card"
 msgstr "Запустити через дискретну графічну плату"
 
-#: js/ui/appDisplay.js:3029 js/ui/dash.js:238
+#: js/ui/appDisplay.js:3029 js/ui/dash.js:245
 msgid "Remove from Favorites"
 msgstr "Вилучити з улюбленого"
 
@@ -1080,17 +1078,17 @@ msgstr "Вибачте, це не спрацювало. Спробуйте ще.
 msgid "%s is now known as %s"
 msgstr "%s тепер відомий як %s"
 
-#: js/ui/ctrlAltTab.js:21 js/ui/viewSelector.js:320
+#: js/ui/ctrlAltTab.js:21 js/ui/overviewControls.js:332
 msgid "Windows"
 msgstr "Вікна"
 
-#: js/ui/dash.js:199 js/ui/dash.js:240
+#: js/ui/dash.js:204 js/ui/dash.js:247
 msgid "Show Applications"
 msgstr "Показати програми"
 
 #. Translators: this is the name of the dock/favorites area on
 #. the left of the overview
-#: js/ui/dash.js:363
+#: js/ui/dash.js:399
 msgid "Dash"
 msgstr "Риска"
 
@@ -1536,23 +1534,27 @@ msgstr "Невідомий виконавець"
 msgid "Unknown title"
 msgstr "Невідома назва"
 
-#: js/ui/overview.js:67
+#. Translators: this is the text displayed
+#. in the search entry when no search is
+#. active; it should not exceed ~30
+#. characters.
+#: js/ui/overviewControls.js:256
+msgid "Type to search"
+msgstr "Введіть текст для пошуку"
+
+#: js/ui/overviewControls.js:320
+msgid "Applications"
+msgstr "Програми"
+
+#: js/ui/overview.js:68
 msgid "Undo"
 msgstr "Повернути"
 
 #. Translators: This is the main view to select
 #. activities. See also note for "Activities" string.
-#: js/ui/overview.js:80
+#: js/ui/overview.js:81
 msgid "Overview"
 msgstr "Огляд"
-
-#. Translators: this is the text displayed
-#. in the search entry when no search is
-#. active; it should not exceed ~30
-#. characters.
-#: js/ui/overview.js:101
-msgid "Type to search"
-msgstr "Введіть текст для пошуку"
 
 #: js/ui/padOsd.js:96
 msgid "New shortcut…"
@@ -1604,7 +1606,7 @@ msgstr "Вийти"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: js/ui/panel.js:391 js/ui/viewSelector.js:303
+#: js/ui/panel.js:391 js/ui/viewSelector.js:88
 msgid "Activities"
 msgstr "Діяльність"
 
@@ -1651,6 +1653,11 @@ msgstr "Неможливо заблокувати"
 #: js/ui/screenShield.js:253 js/ui/screenShield.js:621
 msgid "Lock was blocked by an application"
 msgstr "Блокування заборонено програмою"
+
+#: js/ui/screenshot.js:141
+#| msgid "Screen Reader"
+msgid "Screenshot taken"
+msgstr "Знімок зроблено"
 
 #: js/ui/search.js:824
 msgid "Searching…"
@@ -2281,11 +2288,7 @@ msgstr "Розблокувати вікно"
 msgid "Log in as another user"
 msgstr "Увійти як інший користувач"
 
-#: js/ui/viewSelector.js:307
-msgid "Applications"
-msgstr "Програми"
-
-#: js/ui/viewSelector.js:333
+#: js/ui/viewSelector.js:92
 msgid "Search"
 msgstr "Пошук"
 
@@ -2520,11 +2523,11 @@ msgstr[1] "Під час наступного входу до системи б�
 msgstr[2] "Під час наступного входу до системи буде оновлено %d розширень."
 msgstr[3] "Під час наступного входу до системи буде оновлено одне розширення."
 
-#: subprojects/extensions-app/js/main.js:493
+#: subprojects/extensions-app/js/main.js:494
 msgid "The extension is incompatible with the current GNOME version"
 msgstr "Розширення є несумісним із поточною версією GNOME"
 
-#: subprojects/extensions-app/js/main.js:496
+#: subprojects/extensions-app/js/main.js:497
 msgid "The extension had an error"
 msgstr "У розширенні сталася помилка"
 
