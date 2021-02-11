@@ -1873,8 +1873,8 @@ var WindowManager = class {
             const [dx, dy] = event.get_scroll_delta();
             if (Math.abs(dx) > Math.abs(dy)) {
                 direction = dx < 0
-                    ? Clutter.ScrollDirection.RIGHT
-                    : Clutter.ScrollDirection.LEFT;
+                    ? Clutter.ScrollDirection.LEFT
+                    : Clutter.ScrollDirection.RIGHT;
             } else if (Math.abs(dy) > Math.abs(dx)) {
                 direction = dy < 0
                     ? Clutter.ScrollDirection.UP
