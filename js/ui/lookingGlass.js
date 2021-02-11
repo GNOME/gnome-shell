@@ -1129,10 +1129,6 @@ class LookingGlass extends St.BoxLayout {
             // Ensure we don't get newlines in the command; the history file is
             // newline-separated.
             text = text.replace('\n', ' ');
-            // Strip leading and trailing whitespace
-            text = text.replace(/^\s+/g, '').replace(/\s+$/g, '');
-            if (text == '')
-                return true;
             this._evaluate(text);
             return true;
         });
@@ -1240,7 +1236,9 @@ class LookingGlass extends St.BoxLayout {
     }
 
     _evaluate(command) {
-        this._history.addItem(command);
+        command = this._history.addItem(command); // trims command
+        if (!command)
+            return;
 
         let lines = command.split(';');
         lines.push('return %s'.format(lines.pop()));
