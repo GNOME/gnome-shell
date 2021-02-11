@@ -1194,8 +1194,10 @@ var KeyboardManager = class KeyBoardManager {
     }
 
     open(monitor) {
+        Main.layoutManager.keyboardIndex = monitor;
+
         if (this._keyboard)
-            this._keyboard.open(monitor);
+            this._keyboard.open();
     }
 
     close() {
@@ -1723,15 +1725,12 @@ var Keyboard = GObject.registerClass({
         this._keyboardRestingId = 0;
     }
 
-    open(monitor) {
+    open() {
         this._clearShowIdle();
         this._keyboardRequested = true;
 
         if (this._keyboardVisible) {
-            if (monitor != Main.layoutManager.keyboardIndex) {
-                Main.layoutManager.keyboardIndex = monitor;
-                this._relayout();
-            }
+            this._relayout();
             return;
         }
 
@@ -1740,17 +1739,16 @@ var Keyboard = GObject.registerClass({
             KEYBOARD_REST_TIME,
             () => {
                 this._clearKeyboardRestTimer();
-                this._open(monitor);
+                this._open();
                 return GLib.SOURCE_REMOVE;
             });
         GLib.Source.set_name_by_id(this._keyboardRestingId, '[gnome-shell] this._clearKeyboardRestTimer');
     }
 
-    _open(monitor) {
+    _open() {
         if (!this._keyboardRequested)
             return;
 
-        Main.layoutManager.keyboardIndex = monitor;
         this._relayout();
         this.animateShow();
 
