@@ -90,11 +90,11 @@ var ScreenshotService = class {
             return null;
 
         yield Gio.File.new_for_path(
-            GLib.build_filenamev([path, `${filename}.png`]));
+            GLib.build_filenamev([path, '%s.png'.format(filename)]));
 
         for (let idx = 1; ; idx++) {
             yield Gio.File.new_for_path(
-                GLib.build_filenamev([path, `${filename}-${idx}.png`]));
+                GLib.build_filenamev([path, '%s-%s.png'.format(filename, idx)]));
         }
     }
 
