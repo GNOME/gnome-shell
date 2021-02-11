@@ -195,8 +195,14 @@ class ControlsManagerLayout extends Clutter.BoxLayout {
     }
 });
 
-var OverviewAdjustment = GObject.registerClass(
-class OverviewAdjustment extends St.Adjustment {
+var OverviewAdjustment = GObject.registerClass({
+    Properties: {
+        'gesture-in-progress': GObject.ParamSpec.boolean(
+            'gesture-in-progress', 'Gesture in progress', 'Gesture in progress',
+            GObject.ParamFlags.READWRITE,
+            false),
+    },
+}, class OverviewAdjustment extends St.Adjustment {
     _init(actor) {
         super._init({
             actor,
@@ -231,7 +237,7 @@ class OverviewAdjustment extends St.Adjustment {
             : 1;
 
         return {
-            transitioning: transition !== null,
+            transitioning: transition !== null || this.gestureInProgress,
             currentState,
             initialState,
             finalState,
