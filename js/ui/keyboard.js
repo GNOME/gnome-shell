@@ -1,10 +1,11 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported KeyboardManager */
 
-const { Clutter, Gio, GLib, GObject, Meta, St } = imports.gi;
+const { Clutter, Gio, GLib, GObject, Meta, Shell, St } = imports.gi;
 const ByteArray = imports.byteArray;
 const Signals = imports.signals;
 
+const EdgeDragAction = imports.ui.edgeDragAction;
 const InputSourceManager = imports.ui.status.keyboard;
 const IBusManager = imports.misc.ibusManager;
 const BoxPointer = imports.ui.boxpointer;
@@ -1143,6 +1144,18 @@ var KeyboardManager = class KeyBoardManager {
             this._lastDevice = device;
             this._syncEnabled();
         });
+
+        const mode = Shell.ActionMode.ALL & ~Shell.ActionMode.LOCK_SCREEN;
+        const bottomDragAction = new EdgeDragAction.EdgeDragAction(St.Side.BOTTOM, mode);
+        bottomDragAction.connect('activated', () => {
+            this.open(Main.layoutManager.bottomIndex);
+        });
+        Main.layoutManager.connect('keyboard-visible-changed', (_manager, visible) => {
+            bottomDragAction.cancel();
+            bottomDragAction.set_enabled(!visible);
+        });
+        global.stage.add_action(bottomDragAction);
+
         this._syncEnabled();
     }
 

@@ -932,16 +932,6 @@ var WindowManager = class {
         global.stage.add_action(appSwitchAction);
 
         let mode = Shell.ActionMode.ALL & ~Shell.ActionMode.LOCK_SCREEN;
-        let bottomDragAction = new EdgeDragAction.EdgeDragAction(St.Side.BOTTOM, mode);
-        bottomDragAction.connect('activated', () => {
-            Main.keyboard.open(Main.layoutManager.bottomIndex);
-        });
-        Main.layoutManager.connect('keyboard-visible-changed', (manager, visible) => {
-            bottomDragAction.cancel();
-            bottomDragAction.set_enabled(!visible);
-        });
-        global.stage.add_action(bottomDragAction);
-
         let topDragAction = new EdgeDragAction.EdgeDragAction(St.Side.TOP, mode);
         topDragAction.connect('activated',  () => {
             let currentWindow = global.display.focus_window;
