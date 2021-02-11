@@ -8,12 +8,12 @@ const Signals = imports.signals;
 const InputSourceManager = imports.ui.status.keyboard;
 const IBusManager = imports.misc.ibusManager;
 const BoxPointer = imports.ui.boxpointer;
-const Layout = imports.ui.layout;
 const Main = imports.ui.main;
 const PageIndicators = imports.ui.pageIndicators;
 const PopupMenu = imports.ui.popupMenu;
 
-var KEYBOARD_REST_TIME = Layout.KEYBOARD_ANIMATION_TIME * 2;
+var KEYBOARD_ANIMATION_TIME = 150;
+var KEYBOARD_REST_TIME = KEYBOARD_ANIMATION_TIME * 2;
 var KEY_LONG_PRESS_TIME = 250;
 var PANEL_SWITCH_ANIMATION_TIME = 500;
 var PANEL_SWITCH_RELATIVE_DISTANCE = 1 / 3; /* A third of the actor width */
@@ -1168,7 +1168,6 @@ var KeyboardManager = class KeyBoardManager {
             this._keyboard.setCursorLocation(null);
             this._keyboard.destroy();
             this._keyboard = null;
-            Main.layoutManager.hideKeyboard(true);
         }
     }
 
@@ -1213,7 +1212,7 @@ var KeyboardManager = class KeyBoardManager {
 var Keyboard = GObject.registerClass(
 class Keyboard extends St.BoxLayout {
     _init() {
-        super._init({ name: 'keyboard', vertical: true });
+        super._init({ name: 'keyboard', reactive: true, vertical: true });
         this._focusInExtendedKeys = false;
         this._emojiActive = false;
 
@@ -1294,6 +1293,7 @@ class Keyboard extends St.BoxLayout {
 
         Main.layoutManager.untrackChrome(this);
         Main.layoutManager.keyboardBox.remove_actor(this);
+        Main.layoutManager.keyboardBox.hide();
 
         if (this._languagePopup) {
             this._languagePopup.destroy();
@@ -1742,7 +1742,7 @@ class Keyboard extends St.BoxLayout {
 
         Main.layoutManager.keyboardIndex = monitor;
         this._relayout();
-        Main.layoutManager.showKeyboard();
+        this.animateShow();
 
         this._setEmojiActive(false);
 
@@ -1774,8 +1774,54 @@ class Keyboard extends St.BoxLayout {
         if (this._keyboardRequested)
             return;
 
-        Main.layoutManager.hideKeyboard();
+        this.animateHide();
         this.setCursorLocation(null);
+    }
+
+    animateShow() {
+        Main.layoutManager.keyboardBox.show();
+        this.ease({
+            translation_y: -this.height,
+            opacity: 255,
+            duration: KEYBOARD_ANIMATION_TIME,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            onComplete: () => {
+                this._animateShowComplete();
+            },
+        });
+        Main.layoutManager.emit('keyboard-visible-changed', true);
+    }
+
+    _animateShowComplete() {
+        let keyboardBox = Main.layoutManager.keyboardBox;
+        this._keyboardHeightNotifyId = keyboardBox.connect('notify::height', () => {
+            this.translation_y = -this.height;
+        });
+
+        // Queue a relayout so the keyboardBox can update its chrome region.
+        keyboardBox.queue_relayout();
+    }
+
+    animateHide(immediate) {
+        if (this._keyboardHeightNotifyId) {
+            Main.layoutManager.keyboardBox.disconnect(this._keyboardHeightNotifyId);
+            this._keyboardHeightNotifyId = 0;
+        }
+        this.ease({
+            translation_y: 0,
+            opacity: 0,
+            duration: immediate ? 0 : KEYBOARD_ANIMATION_TIME,
+            mode: Clutter.AnimationMode.EASE_IN_QUAD,
+            onComplete: () => {
+                this._animateHideComplete();
+            },
+        });
+
+        Main.layoutManager.emit('keyboard-visible-changed', false);
+    }
+
+    _animateHideComplete() {
+        Main.layoutManager.keyboardBox.hide();
     }
 
     resetSuggestions() {
@@ -1813,7 +1859,7 @@ class Keyboard extends St.BoxLayout {
         if (show) {
             windowActor.ease({
                 y: windowActor.y - deltaY,
-                duration: Layout.KEYBOARD_ANIMATION_TIME,
+                duration: KEYBOARD_ANIMATION_TIME,
                 mode: Clutter.AnimationMode.EASE_OUT_QUAD,
                 onComplete: () => {
                     this._windowSlideAnimationComplete(window, -deltaY);
@@ -1822,7 +1868,7 @@ class Keyboard extends St.BoxLayout {
         } else {
             windowActor.ease({
                 y: windowActor.y + deltaY,
-                duration: Layout.KEYBOARD_ANIMATION_TIME,
+                duration: KEYBOARD_ANIMATION_TIME,
                 mode: Clutter.AnimationMode.EASE_IN_QUAD,
                 onComplete: () => {
                     this._windowSlideAnimationComplete(window, deltaY);

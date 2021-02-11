@@ -13,7 +13,6 @@ const Params = imports.misc.params;
 const Ripples = imports.ui.ripples;
 
 var STARTUP_ANIMATION_TIME = 500;
-var KEYBOARD_ANIMATION_TIME = 150;
 var BACKGROUND_FADE_ANIMATION_TIME = 1000;
 
 var HOT_CORNER_PRESSURE_THRESHOLD = 100; // pixels
@@ -729,53 +728,6 @@ var LayoutManager = GObject.registerClass({
         this._queueUpdateRegions();
 
         this.emit('startup-complete');
-    }
-
-    showKeyboard() {
-        this.keyboardBox.show();
-        this.keyboardBox.ease({
-            translation_y: -this.keyboardBox.height,
-            opacity: 255,
-            duration: KEYBOARD_ANIMATION_TIME,
-            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            onComplete: () => {
-                this._showKeyboardComplete();
-            },
-        });
-        this.emit('keyboard-visible-changed', true);
-    }
-
-    _showKeyboardComplete() {
-        // Poke Chrome to update the input shape; it doesn't notice
-        // anchor point changes
-        this._updateRegions();
-
-        this._keyboardHeightNotifyId = this.keyboardBox.connect('notify::height', () => {
-            this.keyboardBox.translation_y = -this.keyboardBox.height;
-        });
-    }
-
-    hideKeyboard(immediate) {
-        if (this._keyboardHeightNotifyId) {
-            this.keyboardBox.disconnect(this._keyboardHeightNotifyId);
-            this._keyboardHeightNotifyId = 0;
-        }
-        this.keyboardBox.ease({
-            translation_y: 0,
-            opacity: 0,
-            duration: immediate ? 0 : KEYBOARD_ANIMATION_TIME,
-            mode: Clutter.AnimationMode.EASE_IN_QUAD,
-            onComplete: () => {
-                this._hideKeyboardComplete();
-            },
-        });
-
-        this.emit('keyboard-visible-changed', false);
-    }
-
-    _hideKeyboardComplete() {
-        this.keyboardBox.hide();
-        this._updateRegions();
     }
 
     // setDummyCursorGeometry:
