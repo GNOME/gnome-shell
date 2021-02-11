@@ -60,7 +60,7 @@ var HistoryManager = class {
     }
 
     lastItem() {
-        if (this._historyIndex != this._history.length) {
+        if (this._historyIndex !== this._history.length) {
             this._historyIndex = this._history.length;
             this._indexChanged();
         }
@@ -69,9 +69,9 @@ var HistoryManager = class {
     }
 
     addItem(input) {
-        if (this._history.length == 0 ||
-            this._history[this._history.length - 1] != input) {
-            this._history = this._history.filter(entry => entry != input);
+        if (this._history.length === 0 ||
+            this._history[this._history.length - 1] !== input) {
+            this._history = this._history.filter(entry => entry !== input);
             this._history.push(input);
             this._save();
         }
@@ -80,9 +80,9 @@ var HistoryManager = class {
 
     _onEntryKeyPress(entry, event) {
         let symbol = event.get_key_symbol();
-        if (symbol == Clutter.KEY_Up)
+        if (symbol === Clutter.KEY_Up)
             return this._setPrevItem(entry.get_text());
-        else if (symbol == Clutter.KEY_Down)
+        else if (symbol === Clutter.KEY_Down)
             return this._setNextItem(entry.get_text());
 
         return Clutter.EVENT_PROPAGATE;
