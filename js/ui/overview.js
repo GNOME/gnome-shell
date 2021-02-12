@@ -115,10 +115,6 @@ class OverviewActor extends St.BoxLayout {
         return this._controls.searchEntry;
     }
 
-    get viewSelector() {
-        return this._controls.viewSelector;
-    }
-
     get controls() {
         return this._controls;
     }
@@ -247,14 +243,6 @@ var Overview = class {
         swipeTracker.connect('update', this._gestureUpdate.bind(this));
         swipeTracker.connect('end', this._gestureEnd.bind(this));
         this._swipeTracker = swipeTracker;
-    }
-
-    addSearchProvider(provider) {
-        this._overview.viewSelector.addSearchProvider(provider);
-    }
-
-    removeSearchProvider(provider) {
-        this._overview.viewSelector.removeSearchProvider(provider);
     }
 
     //
