@@ -16,24 +16,24 @@
 # Felipe Braga <fbobraga@gmail.com>, 2015.
 # Artur de Aquino Morais <artur.morais93@outlook.com>, 2016.
 # Enrico Nicoletto <liverig@gmail.com>, 2013-2019.
-# Bruno Lopes da Silva <brunolopesbldsb@gmail.com>, 2018.
 # Ricardo Silva Veloso <ricvelozo@gmail.com>, 2019.
 # Rafael Fontenelle <rafaelff@gnome.org>, 2013-2021.
+# Bruno Lopes <brunolopesdsilv@gmail.com>, 2018, 2021.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2021-02-05 15:37+0000\n"
-"PO-Revision-Date: 2021-02-08 08:31-0300\n"
-"Last-Translator: Rafael Fontenelle <rafaelff@gnome.org>\n"
+"POT-Creation-Date: 2021-02-09 19:29+0000\n"
+"PO-Revision-Date: 2021-02-10 18:09-0300\n"
+"Last-Translator: Bruno Lopes <brunolopesdsilv@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <gnome-pt_br-list@gnome.org>\n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1)\n"
-"X-Generator: Gtranslator 3.38.0\n"
+"X-Generator: Gtranslator 3.36.0\n"
 "X-Project-Style: gnome\n"
 
 #: data/50-gnome-shell-system.xml:6
@@ -219,8 +219,7 @@ msgstr ""
 #: data/org.gnome.shell.gschema.xml.in:99
 msgid "The last version the “Welcome to GNOME” dialog was shown for"
 msgstr ""
-"A última versão para qual a caixa de diálogo “Bem-vindo ao GNOME” foi "
-"exibida"
+"A última versão para qual a caixa de diálogo “Bem-vindo ao GNOME” foi exibida"
 
 #: data/org.gnome.shell.gschema.xml.in:100
 msgid ""
@@ -483,17 +482,17 @@ msgstr "Cancelar"
 msgid "Password"
 msgstr "Senha"
 
-#: js/gdm/loginDialog.js:318
+#: js/gdm/loginDialog.js:317
 msgid "Choose Session"
 msgstr "Escolher sessão"
 
-#: js/gdm/loginDialog.js:457
+#: js/gdm/loginDialog.js:456
 msgid "Not listed?"
 msgstr "Não está listado?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: js/gdm/loginDialog.js:914
+#: js/gdm/loginDialog.js:913
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(ex.: usuário ou %s)"
@@ -501,27 +500,32 @@ msgstr "(ex.: usuário ou %s)"
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: js/gdm/loginDialog.js:919 js/ui/components/networkAgent.js:246
+#: js/gdm/loginDialog.js:918 js/ui/components/networkAgent.js:246
 #: js/ui/components/networkAgent.js:269 js/ui/components/networkAgent.js:287
 msgid "Username"
 msgstr "Nome de usuário"
 
-#: js/gdm/loginDialog.js:1254
+#: js/gdm/loginDialog.js:1253
 msgid "Login Window"
 msgstr "Janela de sessão"
 
-#: js/gdm/util.js:355
+#: js/gdm/util.js:379
 msgid "Authentication error"
 msgstr "Erro de autenticação"
 
-#. We don't show fingerprint messages directly since it's
-#. not the main auth service. Instead we use the messages
-#. as a cue to display our own message.
 #. Translators: this message is shown below the password entry field
-#. to indicate the user can swipe their finger instead
-#: js/gdm/util.js:481
-msgid "(or swipe finger)"
-msgstr "(ou deslize o dedo)"
+#. to indicate the user can swipe their finger on the fingerprint reader
+#: js/gdm/util.js:507
+#| msgid "(or swipe finger)"
+msgid "(or swipe finger across reader)"
+msgstr "(ou deslize o dedo pelo leitor)"
+
+#. Translators: this message is shown below the password entry field
+#. to indicate the user can place their finger on the fingerprint reader instead
+#: js/gdm/util.js:511
+#| msgid "(or swipe finger)"
+msgid "(or place finger on reader)"
+msgstr "(ou coloque o dedo no leitor)"
 
 #. Translators: The name of the power-off action in search
 #: js/misc/systemActions.js:82
@@ -1633,11 +1637,11 @@ msgstr "Executar um comando"
 msgid "Press ESC to close"
 msgstr "Pressione Esc para fechar"
 
-#: js/ui/runDialog.js:238
+#: js/ui/runDialog.js:240
 msgid "Restart is not available on Wayland"
 msgstr "Reinício não está disponível no Wayland"
 
-#: js/ui/runDialog.js:243
+#: js/ui/runDialog.js:245
 msgid "Restarting…"
 msgstr "Reiniciando…"
 
