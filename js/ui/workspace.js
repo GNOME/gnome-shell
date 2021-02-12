@@ -476,13 +476,18 @@ var WorkspaceLayout = GObject.registerClass({
             colSpacing += oversize;
 
         if (containerBox) {
-            const [topOverlap, bottomOverlap] = window.overlapHeights();
-            const overlap = Math.max(topOverlap, bottomOverlap);
+            const monitor = Main.layoutManager.monitors[this._monitorIndex];
 
-            containerBox.x1 += oversize;
-            containerBox.x2 -= oversize;
-            containerBox.y1 += oversize + overlap;
-            containerBox.y2 -= oversize + overlap;
+            const bottomPoint = new Graphene.Point3D({ y: containerBox.y2 });
+            const transformedBottomPoint =
+                this._container.apply_transform_to_point(bottomPoint);
+            const bottomFreeSpace =
+                (monitor.y + monitor.height) - transformedBottomPoint.y;
+
+            const [, bottomOverlap] = window.overlapHeights();
+
+            if ((bottomOverlap + oversize) > bottomFreeSpace)
+                containerBox.y2 -= (bottomOverlap + oversize) - bottomFreeSpace;
         }
 
         return [rowSpacing, colSpacing, containerBox];
