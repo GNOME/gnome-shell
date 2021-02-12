@@ -13,8 +13,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2021-02-08 21:39+0000\n"
-"PO-Revision-Date: 2021-02-08 23:43+0100\n"
+"POT-Creation-Date: 2021-02-11 18:56+0000\n"
+"PO-Revision-Date: 2021-02-12 20:09+0100\n"
 "Last-Translator: Fran Dieguez <frandieguez@gnome.org>\n"
 "Language-Team: Galician <proxecto@trasno.gal>\n"
 "Language: gl\n"
@@ -466,17 +466,17 @@ msgstr "Cancelar"
 msgid "Password"
 msgstr "Contrasinal"
 
-#: js/gdm/loginDialog.js:318
+#: js/gdm/loginDialog.js:317
 msgid "Choose Session"
 msgstr "Escolla unha sesión"
 
-#: js/gdm/loginDialog.js:457
+#: js/gdm/loginDialog.js:456
 msgid "Not listed?"
 msgstr "Non está na lista?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: js/gdm/loginDialog.js:914
+#: js/gdm/loginDialog.js:913
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(p.ex., usuario ou %s)"
@@ -484,12 +484,12 @@ msgstr "(p.ex., usuario ou %s)"
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: js/gdm/loginDialog.js:919 js/ui/components/networkAgent.js:246
+#: js/gdm/loginDialog.js:918 js/ui/components/networkAgent.js:246
 #: js/ui/components/networkAgent.js:269 js/ui/components/networkAgent.js:287
 msgid "Username"
 msgstr "Nome de usuario"
 
-#: js/gdm/loginDialog.js:1254
+#: js/gdm/loginDialog.js:1253
 msgid "Login Window"
 msgstr "Xanela de inicio de sesión"
 
@@ -500,14 +500,12 @@ msgstr "Erro de autenticación"
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger on the fingerprint reader
 #: js/gdm/util.js:507
-#| msgid "(or swipe finger)"
 msgid "(or swipe finger across reader)"
 msgstr "(ou pase o dedo sobre o lector)"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can place their finger on the fingerprint reader instead
 #: js/gdm/util.js:511
-#| msgid "(or swipe finger)"
 msgid "(or place finger on reader)"
 msgstr "(ou pouse o dedo sobre o lector)"
 
@@ -774,7 +772,7 @@ msgstr "Iniciar usando a Tarxeta Gráfica Integrada"
 msgid "Launch using Discrete Graphics Card"
 msgstr "Iniciar usando a Tarxeta Gráfica Dedicada"
 
-#: js/ui/appDisplay.js:3029 js/ui/dash.js:238
+#: js/ui/appDisplay.js:3029 js/ui/dash.js:245
 msgid "Remove from Favorites"
 msgstr "Retirar dos marcadores"
 
@@ -1083,17 +1081,17 @@ msgstr "Desculpe, iso non funcionou. Ténteo de novo."
 msgid "%s is now known as %s"
 msgstr "Agora %s chámase %s"
 
-#: js/ui/ctrlAltTab.js:21 js/ui/viewSelector.js:320
+#: js/ui/ctrlAltTab.js:21 js/ui/overviewControls.js:332
 msgid "Windows"
 msgstr "Xanelas"
 
-#: js/ui/dash.js:199 js/ui/dash.js:240
+#: js/ui/dash.js:204 js/ui/dash.js:247
 msgid "Show Applications"
 msgstr "Mostrar aplicacións"
 
 #. Translators: this is the name of the dock/favorites area on
 #. the left of the overview
-#: js/ui/dash.js:363
+#: js/ui/dash.js:399
 msgid "Dash"
 msgstr "Taboleiro"
 
@@ -1533,23 +1531,27 @@ msgstr "Artista descoñecido"
 msgid "Unknown title"
 msgstr "Título descoñecido"
 
-#: js/ui/overview.js:67
+#. Translators: this is the text displayed
+#. in the search entry when no search is
+#. active; it should not exceed ~30
+#. characters.
+#: js/ui/overviewControls.js:256
+msgid "Type to search"
+msgstr "Escriba para buscar"
+
+#: js/ui/overviewControls.js:320
+msgid "Applications"
+msgstr "Aplicacións"
+
+#: js/ui/overview.js:68
 msgid "Undo"
 msgstr "Desfacer"
 
 #. Translators: This is the main view to select
 #. activities. See also note for "Activities" string.
-#: js/ui/overview.js:80
+#: js/ui/overview.js:81
 msgid "Overview"
 msgstr "Vista xeral"
-
-#. Translators: this is the text displayed
-#. in the search entry when no search is
-#. active; it should not exceed ~30
-#. characters.
-#: js/ui/overview.js:101
-msgid "Type to search"
-msgstr "Escriba para buscar"
 
 #: js/ui/padOsd.js:96
 msgid "New shortcut…"
@@ -1601,7 +1603,7 @@ msgstr "Saír"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: js/ui/panel.js:391 js/ui/viewSelector.js:303
+#: js/ui/panel.js:391 js/ui/viewSelector.js:88
 msgid "Activities"
 msgstr "Actividades"
 
@@ -1648,6 +1650,11 @@ msgstr "Non foi posíbel bloquear"
 #: js/ui/screenShield.js:253 js/ui/screenShield.js:621
 msgid "Lock was blocked by an application"
 msgstr "Unha aplicación impediu o bloqueo"
+
+#: js/ui/screenshot.js:141
+#| msgid "Screen Reader"
+msgid "Screenshot taken"
+msgstr "Captura de pantalla realizada"
 
 #: js/ui/search.js:824
 msgid "Searching…"
@@ -2271,11 +2278,7 @@ msgstr "Desbloquear xanela"
 msgid "Log in as another user"
 msgstr "Iniciar sesión como outro usuario"
 
-#: js/ui/viewSelector.js:307
-msgid "Applications"
-msgstr "Aplicacións"
-
-#: js/ui/viewSelector.js:333
+#: js/ui/viewSelector.js:92
 msgid "Search"
 msgstr "Buscar"
 
@@ -2502,11 +2505,11 @@ msgid_plural "%d extensions will be updated on next login."
 msgstr[0] "Vaise actualizar %d extensión no seguinte inicio de sesión."
 msgstr[1] "Vanse actualizar %d extensións no seguinte inicio de sesión."
 
-#: subprojects/extensions-app/js/main.js:493
+#: subprojects/extensions-app/js/main.js:494
 msgid "The extension is incompatible with the current GNOME version"
 msgstr "A extensión non é compatíbel coa versión actual de GNOME"
 
-#: subprojects/extensions-app/js/main.js:496
+#: subprojects/extensions-app/js/main.js:497
 msgid "The extension had an error"
 msgstr "A extensión tivo un erro"
 
