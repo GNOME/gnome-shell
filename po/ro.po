@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2021-02-08 21:39+0000\n"
-"PO-Revision-Date: 2021-02-09 11:30+0200\n"
+"POT-Creation-Date: 2021-02-11 18:56+0000\n"
+"PO-Revision-Date: 2021-02-12 11:19+0100\n"
 "Last-Translator: Florentina Mușat <florentina.musat.28@gmail.com>\n"
 "Language-Team: Gnome Romanian Translation Team <gnomero-list@lists."
 "sourceforge.net>\n"
@@ -474,17 +474,17 @@ msgstr "Anulează"
 msgid "Password"
 msgstr "Parolă"
 
-#: js/gdm/loginDialog.js:318
+#: js/gdm/loginDialog.js:317
 msgid "Choose Session"
 msgstr "Alegeți o sesiune"
 
-#: js/gdm/loginDialog.js:457
+#: js/gdm/loginDialog.js:456
 msgid "Not listed?"
 msgstr "Nelistat?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: js/gdm/loginDialog.js:914
+#: js/gdm/loginDialog.js:913
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(de exemplu, utilizator sau %s)"
@@ -492,12 +492,12 @@ msgstr "(de exemplu, utilizator sau %s)"
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: js/gdm/loginDialog.js:919 js/ui/components/networkAgent.js:246
+#: js/gdm/loginDialog.js:918 js/ui/components/networkAgent.js:246
 #: js/ui/components/networkAgent.js:269 js/ui/components/networkAgent.js:287
 msgid "Username"
 msgstr "Nume de utilizator"
 
-#: js/gdm/loginDialog.js:1254
+#: js/gdm/loginDialog.js:1253
 msgid "Login Window"
 msgstr "Fereastră de autentificare"
 
@@ -537,7 +537,7 @@ msgstr "Repornire"
 #. Translators: A list of keywords that match the restart action, separated by semicolons
 #: js/misc/systemActions.js:93
 msgid "reboot;restart;"
-msgstr "repornește;restartează;"
+msgstr "reboot;restart;repornește;restartează;"
 
 #. Translators: The name of the lock screen action in search
 #: js/misc/systemActions.js:98
@@ -788,7 +788,7 @@ msgstr "Lansează folosind placa grafică integrată"
 msgid "Launch using Discrete Graphics Card"
 msgstr "Lansează folosind placa grafică discretă"
 
-#: js/ui/appDisplay.js:3029 js/ui/dash.js:238
+#: js/ui/appDisplay.js:3029 js/ui/dash.js:245
 msgid "Remove from Favorites"
 msgstr "Elimină din favorite"
 
@@ -1098,17 +1098,17 @@ msgstr "Nu a funcționat. Încercați din nou."
 msgid "%s is now known as %s"
 msgstr "%s este acum cunoscut ca %s"
 
-#: js/ui/ctrlAltTab.js:21 js/ui/viewSelector.js:320
+#: js/ui/ctrlAltTab.js:21 js/ui/overviewControls.js:332
 msgid "Windows"
 msgstr "Ferestre"
 
-#: js/ui/dash.js:199 js/ui/dash.js:240
+#: js/ui/dash.js:204 js/ui/dash.js:247
 msgid "Show Applications"
 msgstr "Arată aplicațiile"
 
 #. Translators: this is the name of the dock/favorites area on
 #. the left of the overview
-#: js/ui/dash.js:363
+#: js/ui/dash.js:399
 msgid "Dash"
 msgstr "Dash"
 
@@ -1549,23 +1549,27 @@ msgstr "Artist necunoscut"
 msgid "Unknown title"
 msgstr "Titlu necunoscut"
 
-#: js/ui/overview.js:67
+#. Translators: this is the text displayed
+#. in the search entry when no search is
+#. active; it should not exceed ~30
+#. characters.
+#: js/ui/overviewControls.js:256
+msgid "Type to search"
+msgstr "Tastați pentru a căuta"
+
+#: js/ui/overviewControls.js:320
+msgid "Applications"
+msgstr "Aplicații"
+
+#: js/ui/overview.js:68
 msgid "Undo"
 msgstr "Anulează"
 
 #. Translators: This is the main view to select
 #. activities. See also note for "Activities" string.
-#: js/ui/overview.js:80
+#: js/ui/overview.js:81
 msgid "Overview"
 msgstr "Prezentare generală"
-
-#. Translators: this is the text displayed
-#. in the search entry when no search is
-#. active; it should not exceed ~30
-#. characters.
-#: js/ui/overview.js:101
-msgid "Type to search"
-msgstr "Tastați pentru a căuta"
 
 #: js/ui/padOsd.js:96
 msgid "New shortcut…"
@@ -1617,7 +1621,7 @@ msgstr "Ieșire"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: js/ui/panel.js:391 js/ui/viewSelector.js:303
+#: js/ui/panel.js:391 js/ui/viewSelector.js:88
 msgid "Activities"
 msgstr "Activități"
 
@@ -1664,6 +1668,10 @@ msgstr "Blocare nereușită"
 #: js/ui/screenShield.js:253 js/ui/screenShield.js:621
 msgid "Lock was blocked by an application"
 msgstr "Blocarea a fost împiedicată de o aplicație"
+
+#: js/ui/screenshot.js:141
+msgid "Screenshot taken"
+msgstr "Captură de ecran efectuată"
 
 #: js/ui/search.js:824
 msgid "Searching…"
@@ -2292,11 +2300,7 @@ msgstr "Deblochează fereastră"
 msgid "Log in as another user"
 msgstr "Intră în sesiune ca utilizator diferit"
 
-#: js/ui/viewSelector.js:307
-msgid "Applications"
-msgstr "Aplicații"
-
-#: js/ui/viewSelector.js:333
+#: js/ui/viewSelector.js:92
 msgid "Search"
 msgstr "Caută"
 
@@ -2527,11 +2531,11 @@ msgstr[0] "%d extensie va fi actualizată la următoarea autentificare."
 msgstr[1] "%d extensii vor fi actualizate la următoarea autentificare."
 msgstr[2] "%d de extensii vor fi actualizate la următoarea autentificare."
 
-#: subprojects/extensions-app/js/main.js:493
+#: subprojects/extensions-app/js/main.js:494
 msgid "The extension is incompatible with the current GNOME version"
 msgstr "Extensia nu este compatibilă cu versiunea GNOME curentă"
 
-#: subprojects/extensions-app/js/main.js:496
+#: subprojects/extensions-app/js/main.js:497
 msgid "The extension had an error"
 msgstr "Extensia a avut o eroare"
 
@@ -3423,9 +3427,6 @@ msgstr "Sunete de sistem"
 
 #~ msgid "OK"
 #~ msgstr "OK"
-
-#~ msgid "Screenshots"
-#~ msgstr "Capturi de ecran"
 
 #~ msgid "Framerate used for recording screencasts."
 #~ msgstr "Frecvența de cadre utilizată pentru înregistrările de ecran."
