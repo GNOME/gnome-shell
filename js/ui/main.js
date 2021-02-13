@@ -755,7 +755,8 @@ export function popModal(grab, timestamp) {
         if (record.prevFocus)
             record.prevFocus.disconnect(record.prevFocusDestroyId);
         actionMode = record.actionMode;
-        global.stage.set_key_focus(record.prevFocus);
+        if (global.stage.key_focus === record.actor)
+            global.stage.set_key_focus(record.prevFocus);
     } else {
         // If we have:
         //     global.stage.set_focus(a);
