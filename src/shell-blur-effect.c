@@ -531,7 +531,6 @@ update_actor_box (ShellBlurEffect     *self,
   float box_scale_factor = 1.0f;
   float origin_x, origin_y;
   float width, height;
-  cairo_rectangle_int_t stage_view_layout;
 
   switch (self->mode)
     {
@@ -541,14 +540,26 @@ update_actor_box (ShellBlurEffect     *self,
 
     case SHELL_BLUR_MODE_BACKGROUND:
       stage_view = clutter_paint_context_get_stage_view (paint_context);
-      box_scale_factor = clutter_stage_view_get_scale (stage_view);
-      clutter_stage_view_get_layout (stage_view, &stage_view_layout);
 
       clutter_actor_get_transformed_position (self->actor, &origin_x, &origin_y);
       clutter_actor_get_transformed_size (self->actor, &width, &height);
 
-      origin_x -= stage_view_layout.x;
-      origin_y -= stage_view_layout.y;
+      if (stage_view)
+        {
+          cairo_rectangle_int_t stage_view_layout;
+
+          box_scale_factor = clutter_stage_view_get_scale (stage_view);
+          clutter_stage_view_get_layout (stage_view, &stage_view_layout);
+
+          origin_x -= stage_view_layout.x;
+          origin_y -= stage_view_layout.y;
+        }
+      else
+        {
+          /* If we're drawing off stage, just assume scale = 1, this won't work
+           * with stage-view scaling though.
+           */
+        }
 
       clutter_actor_box_set_origin (source_actor_box, origin_x, origin_y);
       clutter_actor_box_set_size (source_actor_box, width, height);
