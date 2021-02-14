@@ -82,5 +82,7 @@ var EdgeDragAction = GObject.registerClass({
             (this._side == St.Side.LEFT && x > monitorRect.x + DRAG_DISTANCE) ||
             (this._side == St.Side.RIGHT && x < monitorRect.x + monitorRect.width - DRAG_DISTANCE))
             this.emit('activated');
+        else
+            this.cancel();
     }
 });

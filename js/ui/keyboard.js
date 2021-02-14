@@ -1148,10 +1148,16 @@ var KeyboardManager = class KeyBoardManager {
         const mode = Shell.ActionMode.ALL & ~Shell.ActionMode.LOCK_SCREEN;
         const bottomDragAction = new EdgeDragAction.EdgeDragAction(St.Side.BOTTOM, mode);
         bottomDragAction.connect('activated', () => {
-            this._keyboard.gestureActivate(Main.layoutManager.bottomIndex);
+            if (this._keyboard)
+                this._keyboard.gestureActivate(Main.layoutManager.bottomIndex);
         });
         bottomDragAction.connect('progress', (_action, progress) => {
-            this._keyboard.gestureProgress(progress);
+            if (this._keyboard)
+                this._keyboard.gestureProgress(progress);
+        });
+        bottomDragAction.connect('gesture-cancel', () => {
+            if (this._keyboard)
+                this._keyboard.gestureCancel();
         });
         global.stage.add_action(bottomDragAction);
         this._bottomDragAction = bottomDragAction;
@@ -1844,6 +1850,7 @@ var Keyboard = GObject.registerClass({
     }
 
     gestureProgress(delta) {
+        this._gestureInProgress = true;
         Main.layoutManager.keyboardBox.show();
         let progress = Math.min(delta, this.height) / this.height;
         this.translation_y = -this.height * progress;
@@ -1856,6 +1863,13 @@ var Keyboard = GObject.registerClass({
 
     gestureActivate() {
         this.open(true);
+        this._gestureInProgress = false;
+    }
+
+    gestureCancel() {
+        if (this._gestureInProgress)
+            this.animateHide();
+        this._gestureInProgress = false;
     }
 
     resetSuggestions() {
