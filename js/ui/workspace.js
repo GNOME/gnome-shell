@@ -905,7 +905,27 @@ class WorkspaceBackground extends St.Widget {
             useContentSize: false,
         });
 
+        this._workareasChangedId =
+            global.display.connect('workareas-changed', () => {
+                this._workarea = Main.layoutManager.getWorkAreaForMonitor(monitorIndex);
+                this._updateRoundedClipBounds();
+                this.queue_relayout();
+            });
+        this._updateRoundedClipBounds();
+
         this.connect('destroy', this._onDestroy.bind(this));
+    }
+
+    _updateRoundedClipBounds() {
+        const monitor = Main.layoutManager.monitors[this._monitorIndex];
+
+        const rect = new Graphene.Rect();
+        rect.origin.x = this._workarea.x - monitor.x;
+        rect.origin.y = this._workarea.y - monitor.y;
+        rect.size.width = this._workarea.width;
+        rect.size.height = this._workarea.height;
+
+        this._bgManager.backgroundActor.content.set_rounded_clip_bounds(rect);
     }
 
     vfunc_allocate(box) {
@@ -923,14 +943,6 @@ class WorkspaceBackground extends St.Widget {
         const yOff = (contentHeight / this._workarea.height) *
             (this._workarea.y - monitor.y);
 
-        const rect = new Graphene.Rect();
-        rect.origin.x = this._workarea.x - monitor.x;
-        rect.origin.y = this._workarea.y - monitor.y;
-        rect.size.width = this._workarea.width;
-        rect.size.height = this._workarea.height;
-
-        this._bgManager.backgroundActor.content.set_rounded_clip_bounds(rect);
-
         contentBox.x1 -= xOff;
         contentBox.y1 -= yOff;
         contentBox.set_size(xOff + contentWidth, yOff + contentHeight);
@@ -941,6 +953,11 @@ class WorkspaceBackground extends St.Widget {
         if (this._bgManager) {
             this._bgManager.destroy();
             this._bgManager = null;
+        }
+
+        if (this._workareasChangedId) {
+            global.display.disconnect(this._workareasChangedId);
+            delete this._workareasChangedId;
         }
     }
 
