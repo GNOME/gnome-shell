@@ -664,13 +664,18 @@ var LayoutManager = GObject.registerClass({
             this.keyboardBox.hide();
 
             let monitor = this.primaryMonitor;
-            let x = monitor.x + monitor.width / 2.0;
-            let y = monitor.y + monitor.height / 2.0;
 
-            this.uiGroup.set_pivot_point(x / global.screen_width,
-                                         y / global.screen_height);
-            this.uiGroup.scale_x = this.uiGroup.scale_y = 0.75;
-            this.uiGroup.opacity = 0;
+            if (!Main.sessionMode.hasOverview) {
+                const x = monitor.x + monitor.width / 2.0;
+                const y = monitor.y + monitor.height / 2.0;
+
+                this.uiGroup.set_pivot_point(
+                    x / global.screen_width,
+                    y / global.screen_height);
+                this.uiGroup.scale_x = this.uiGroup.scale_y = 0.75;
+                this.uiGroup.opacity = 0;
+            }
+
             global.window_group.set_clip(monitor.x, monitor.y, monitor.width, monitor.height);
 
             await this._updateBackgrounds();
@@ -700,14 +705,19 @@ var LayoutManager = GObject.registerClass({
     }
 
     _startupAnimationSession() {
-        this.uiGroup.ease({
-            scale_x: 1,
-            scale_y: 1,
-            opacity: 255,
-            duration: STARTUP_ANIMATION_TIME,
-            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            onComplete: () => this._startupAnimationComplete(),
-        });
+        const onComplete = () => this._startupAnimationComplete();
+        if (Main.sessionMode.hasOverview) {
+            Main.overview.runStartupAnimation(onComplete);
+        } else {
+            this.uiGroup.ease({
+                scale_x: 1,
+                scale_y: 1,
+                opacity: 255,
+                duration: STARTUP_ANIMATION_TIME,
+                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+                onComplete,
+            });
+        }
     }
 
     _startupAnimationComplete() {

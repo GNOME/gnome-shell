@@ -107,6 +107,10 @@ class OverviewActor extends St.BoxLayout {
         this._controls.animateFromOverview(callback);
     }
 
+    runStartupAnimation(callback) {
+        this._controls.runStartupAnimation(callback);
+    }
+
     get dash() {
         return this._controls.dash;
     }
@@ -645,6 +649,23 @@ var Overview = class {
 
     showApps() {
         this._show(OverviewControls.ControlsState.APP_GRID);
+    }
+
+    runStartupAnimation(callback) {
+        this._shown = true;
+        this._visible = true;
+        this._visibleTarget = true;
+        Main.layoutManager.showOverview();
+        this._syncGrab();
+
+        Meta.disable_unredirect_for_display(global.display);
+
+        this.emit('showing');
+
+        this._overview.runStartupAnimation(() => {
+            this.emit('shown');
+            callback();
+        });
     }
 
     getShowAppsButton() {

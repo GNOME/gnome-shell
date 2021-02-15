@@ -5,6 +5,7 @@ const { Clutter, Gio, GObject, Meta, Shell, St } = imports.gi;
 
 const AppDisplay = imports.ui.appDisplay;
 const Dash = imports.ui.dash;
+const Layout = imports.ui.layout;
 const Main = imports.ui.main;
 const Overview = imports.ui.overview;
 const SearchController = imports.ui.searchController;
@@ -41,6 +42,7 @@ class ControlsManagerLayout extends Clutter.BoxLayout {
         this._dash = dash;
 
         this._cachedWorkspaceBoxes = new Map();
+        this._postAllocationCallbacks = [];
 
         stateAdjustment.connect('notify::value', () => this.layout_changed());
     }
@@ -98,6 +100,14 @@ class ControlsManagerLayout extends Clutter.BoxLayout {
             dashHeight);
 
         return appDisplayBox;
+    }
+
+    _runPostAllocation() {
+        if (this._postAllocationCallbacks.length === 0)
+            return;
+
+        this._postAllocationCallbacks.forEach(cb => cb());
+        this._postAllocationCallbacks = [];
     }
 
     vfunc_set_container(container) {
@@ -192,6 +202,14 @@ class ControlsManagerLayout extends Clutter.BoxLayout {
         childBox.set_size(width, availableHeight);
 
         this._searchController.allocate(childBox);
+
+        this._runPostAllocation();
+    }
+
+    ensureAllocation() {
+        this.layout_changed();
+        return new Promise(
+            resolve => this._postAllocationCallbacks.push(resolve));
     }
 
     getWorkspacesBoxForState(state) {
@@ -693,6 +711,60 @@ class ControlsManager extends St.Widget {
         });
 
         this._stateAdjustment.gestureInProgress = false;
+    }
+
+    async runStartupAnimation(callback) {
+        this._ignoreShowAppsButtonToggle = true;
+
+        this._searchController.prepareToEnterOverview();
+        this._workspacesDisplay.prepareToEnterOverview();
+
+        this._stateAdjustment.value = ControlsState.HIDDEN;
+        this._stateAdjustment.ease(ControlsState.WINDOW_PICKER, {
+            duration: Overview.ANIMATION_TIME,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+        });
+
+        this.dash.showAppsButton.checked = false;
+        this._ignoreShowAppsButtonToggle = false;
+
+        // Set the opacity here to avoid a 1-frame flicker
+        this.opacity = 0;
+
+        // We can't run the animation before the first allocation happens
+        await this.layout_manager.ensureAllocation();
+
+        const { STARTUP_ANIMATION_TIME } = Layout;
+
+        // Opacity
+        this.ease({
+            opacity: 255,
+            duration: STARTUP_ANIMATION_TIME,
+            mode: Clutter.AnimationMode.LINEAR,
+        });
+
+        // Search bar falls from the ceiling
+        const { primaryMonitor } = Main.layoutManager;
+        const [, y] = this._searchEntryBin.get_transformed_position();
+        const yOffset = y - primaryMonitor.y;
+
+        this._searchEntryBin.translation_y = -(yOffset + this._searchEntryBin.height);
+        this._searchEntryBin.ease({
+            translation_y: 0,
+            duration: STARTUP_ANIMATION_TIME,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+        });
+
+        // The Dash rises from the bottom. This is the last animation to finish,
+        // so run the callback there.
+        this.dash.translation_y = this.dash.height;
+        this.dash.ease({
+            translation_y: 0,
+            delay: STARTUP_ANIMATION_TIME,
+            duration: STARTUP_ANIMATION_TIME,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            onComplete: () => callback(),
+        });
     }
 
     get searchEntry() {
