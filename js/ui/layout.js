@@ -957,13 +957,9 @@ var LayoutManager = GObject.registerClass({
             delete this._updateRegionIdle;
         }
 
-        // No need to update when we have a modal.
-        if (Main.modalCount > 0)
-            return GLib.SOURCE_REMOVE;
-
         let rects = [], struts = [], i;
         let isPopupMenuVisible = global.top_window_group.get_children().some(isPopupMetaWindow);
-        let wantsInputRegion = !isPopupMenuVisible;
+        const wantsInputRegion = !isPopupMenuVisible && Main.modalCount === 0;
 
         for (i = 0; i < this._trackedActors.length; i++) {
             let actorData = this._trackedActors[i];
@@ -1034,7 +1030,9 @@ var LayoutManager = GObject.registerClass({
             }
         }
 
-        global.set_stage_input_region(rects);
+        if (wantsInputRegion)
+            global.set_stage_input_region(rects);
+
         this._isPopupWindowVisible = isPopupMenuVisible;
 
         let workspaceManager = global.workspace_manager;
