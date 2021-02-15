@@ -273,7 +273,7 @@ class ControlsManager extends St.Widget {
             can_focus: true,
         });
         this._searchEntry.set_offscreen_redirect(Clutter.OffscreenRedirect.ALWAYS);
-        const searchEntryBin = new St.Bin({
+        this._searchEntryBin = new St.Bin({
             child: this._searchEntry,
             x_align: Clutter.ActorAlign.CENTER,
         });
@@ -323,14 +323,15 @@ class ControlsManager extends St.Widget {
             this._stateAdjustment);
         this._appDisplay = new AppDisplay.AppDisplay();
 
-        this.add_child(searchEntryBin);
+        this.add_child(this._searchEntryBin);
         this.add_child(this._appDisplay);
         this.add_child(this.dash);
         this.add_child(this._searchController);
         this.add_child(this._thumbnailsBox);
         this.add_child(this._workspacesDisplay);
 
-        this.layout_manager = new ControlsManagerLayout(searchEntryBin,
+        this.layout_manager = new ControlsManagerLayout(
+            this._searchEntryBin,
             this._appDisplay,
             this._workspacesDisplay,
             this._thumbnailsBox,
