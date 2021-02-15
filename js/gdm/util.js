@@ -175,6 +175,7 @@ var ShellUserVerifier = class {
         this.reauthenticating = false;
 
         this._failCounter = 0;
+        this._unavailableServices = new Set();
 
         this._credentialManagers = {};
         this._credentialManagers[OVirt.SERVICE_NAME] = OVirt.getOVirtCredentialsManager();
@@ -452,6 +453,8 @@ var ShellUserVerifier = class {
         this._signalIds.push(id);
         id = this._userVerifier.connect('conversation-stopped', this._onConversationStopped.bind(this));
         this._signalIds.push(id);
+        id = this._userVerifier.connect('service-unavailable', this._onServiceUnavailable.bind(this));
+        this._signalIds.push(id);
         id = this._userVerifier.connect('reset', this._onReset.bind(this));
         this._signalIds.push(id);
         id = this._userVerifier.connect('verification-complete', this._onVerificationComplete.bind(this));
@@ -598,6 +601,7 @@ var ShellUserVerifier = class {
     _onReset() {
         // Clear previous attempts to authenticate
         this._failCounter = 0;
+        this._unavailableServices.clear();
         this._updateDefaultService();
 
         this.emit('reset');
@@ -661,6 +665,16 @@ var ShellUserVerifier = class {
         this.emit('verification-failed', serviceName, canRetry);
     }
 
+    _onServiceUnavailable(_client, serviceName, errorMessage) {
+        this._unavailableServices.add(serviceName);
+
+        if (!errorMessage)
+            return;
+
+        if (this.serviceIsForeground(serviceName) || this.serviceIsFingerprint(serviceName))
+            this._queueMessage(serviceName, errorMessage, MessageType.ERROR);
+    }
+
     _onConversationStopped(client, serviceName) {
         // If the login failed with the preauthenticated oVirt credentials
         // then discard the credentials and revert to default authentication
@@ -673,6 +687,9 @@ var ShellUserVerifier = class {
             this._verificationFailed(serviceName, false);
             return;
         }
+
+        if (this._unavailableServices.has(serviceName))
+            return;
 
         // if the password service fails, then cancel everything.
         // But if, e.g., fingerprint fails, still give
