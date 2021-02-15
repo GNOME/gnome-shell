@@ -382,23 +382,17 @@ var _Draggable = class _Draggable {
             this._dragActorHadFixedPos = this._dragActor.fixed_position_set;
             this._dragOrigX = this._dragActor.allocation.x1;
             this._dragOrigY = this._dragActor.allocation.y1;
+            this._dragActorHadNatWidth = this._dragActor.natural_width_set;
+            this._dragActorHadNatHeight = this._dragActor.natural_height_set;
             this._dragOrigWidth = this._dragActor.allocation.get_width();
             this._dragOrigHeight = this._dragActor.allocation.get_height();
             this._dragOrigScale = this._dragActor.scale_x;
 
-            // When the actor gets reparented to the uiGroup, it will be
-            // allocated its preferred size, so use that size instead of the
-            // current allocation size.
-            const [, newAllocatedWidth] = this._dragActor.get_preferred_width(-1);
-            const [, newAllocatedHeight] = this._dragActor.get_preferred_height(-1);
+            // Ensure actors with an allocation smaller than their natural size
+            // retain their size
+            this._dragActor.set_size(...this._dragActor.allocation.get_size());
 
             const transformedExtents = this._dragActor.get_transformed_extents();
-
-            // Set the actor's scale such that it will keep the same
-            // transformed size when it's reparented to the uiGroup
-            this._dragActor.set_scale(
-                transformedExtents.get_width() / newAllocatedWidth,
-                transformedExtents.get_height() / newAllocatedHeight);
 
             this._dragOffsetX = transformedExtents.origin.x - this._dragStartX;
             this._dragOffsetY = transformedExtents.origin.y - this._dragStartY;
@@ -757,6 +751,10 @@ var _Draggable = class _Draggable {
                 dragActor.set_position(this._dragOrigX, this._dragOrigY);
             else
                 dragActor.fixed_position_set = false;
+            if (this._dragActorHadNatWidth)
+                this._dragActor.set_width(-1);
+            if (this._dragActorHadNatHeight)
+                this._dragActor.set_height(-1);
         } else {
             dragActor.destroy();
         }
