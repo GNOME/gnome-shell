@@ -518,7 +518,7 @@ var WorkspaceLayout = GObject.registerClass({
 
             const [scale, space] = this._layoutStrategy.computeScaleAndSpace(layout, area);
 
-            if (!this._isBetterScaleAndSpace(lastScale, lastSpace, scale, space))
+            if (lastLayout && !this._isBetterScaleAndSpace(lastScale, lastSpace, scale, space))
                 break;
 
             lastLayout = layout;
