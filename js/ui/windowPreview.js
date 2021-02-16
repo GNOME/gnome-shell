@@ -595,7 +595,9 @@ var WindowPreview = GObject.registerClass({
     }
 
     vfunc_has_overlaps() {
-        return this._hasAttachedDialogs();
+        return this._hasAttachedDialogs() ||
+            this._icon.visible ||
+            this._closeButton.visible;
     }
 
     _deleteAll() {
