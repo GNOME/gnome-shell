@@ -603,7 +603,8 @@ var ShellUserVerifier = class {
         if (!this.serviceIsForeground(serviceName) && !isFingerprint)
             return;
 
-        this._queueMessage(serviceName, problem, MessageType.ERROR);
+        this._queuePriorityMessage(serviceName, problem, MessageType.ERROR);
+
         if (isFingerprint) {
             // pam_fprintd allows the user to retry multiple (maybe even infinite!
             // times before failing the authentication conversation.
