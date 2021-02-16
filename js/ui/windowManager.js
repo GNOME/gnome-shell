@@ -35,6 +35,8 @@ var APP_MOTION_THRESHOLD = 30;
 
 var ONE_SECOND = 1000; // in ms
 
+var MIN_NUM_WORKSPACES = 2;
+
 const GSD_WACOM_BUS_NAME = 'org.gnome.SettingsDaemon.Wacom';
 const GSD_WACOM_OBJECT_PATH = '/org/gnome/SettingsDaemon/Wacom';
 
@@ -269,6 +271,12 @@ var WorkspaceTracker = class {
             emptyWorkspaces.push(true);
         }
 
+        // Enforce minimum number of workspaces
+        while (emptyWorkspaces.length < MIN_NUM_WORKSPACES) {
+            workspaceManager.append_new_workspace(false, global.get_current_time());
+            emptyWorkspaces.push(true);
+        }
+
         let lastIndex = emptyWorkspaces.length - 1;
         let lastEmptyIndex = emptyWorkspaces.lastIndexOf(false) + 1;
         let activeWorkspaceIndex = workspaceManager.get_active_workspace_index();
@@ -277,6 +285,8 @@ var WorkspaceTracker = class {
         // Delete empty workspaces except for the last one; do it from the end
         // to avoid index changes
         for (i = lastIndex; i >= 0; i--) {
+            if (workspaceManager.n_workspaces === MIN_NUM_WORKSPACES)
+                break;
             if (emptyWorkspaces[i] && i != lastEmptyIndex)
                 workspaceManager.remove_workspace(this._workspaces[i], global.get_current_time());
         }
