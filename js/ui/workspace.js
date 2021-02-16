@@ -402,7 +402,7 @@ var WorkspaceLayout = GObject.registerClass({
             false),
     },
 }, class WorkspaceLayout extends Clutter.LayoutManager {
-    _init(metaWorkspace, monitorIndex) {
+    _init(metaWorkspace, monitorIndex, overviewAdjustment) {
         super._init();
 
         this._spacing = 20;
@@ -413,6 +413,7 @@ var WorkspaceLayout = GObject.registerClass({
         this._workarea = metaWorkspace
             ? metaWorkspace.get_work_area_for_monitor(this._monitorIndex)
             : Main.layoutManager.getWorkAreaForMonitor(this._monitorIndex);
+        this._overviewAdjustment = overviewAdjustment;
 
         this._container = null;
         this._windows = new Map();
@@ -611,6 +612,10 @@ var WorkspaceLayout = GObject.registerClass({
         const layoutBox = new Clutter.ActorBox();
         let childBox = new Clutter.ActorBox();
 
+        const { ControlsState } = OverviewControls;
+        const inSessionTransition =
+            this._overviewAdjustment.value <= ControlsState.WINDOW_PICKER;
+
         for (const child of container) {
             if (!child.visible)
                 continue;
@@ -639,11 +644,17 @@ var WorkspaceLayout = GObject.registerClass({
             }
 
             workspaceBox.scale(allocationScale);
-            // don't allow the scaled floating size to drop below
-            // the target layout size
-            workspaceBox.set_size(
-                Math.max(workspaceBox.get_width(), width),
-                Math.max(workspaceBox.get_height(), height));
+
+            // Don't allow the scaled floating size to drop below
+            // the target layout size.
+            // We only want to apply this when the scaled floating size is
+            // actually larger than the target layout size, that is while
+            // animating between the session and the window picker.
+            if (inSessionTransition) {
+                workspaceBox.set_size(
+                    Math.max(workspaceBox.get_width(), width),
+                    Math.max(workspaceBox.get_height(), height));
+            }
 
             layoutBox.x1 = x;
             layoutBox.x2 = layoutBox.x1 + width;
@@ -986,7 +997,8 @@ class Workspace extends St.Widget {
             layout_manager: new Clutter.BinLayout(),
         });
 
-        const layoutManager = new WorkspaceLayout(metaWorkspace, monitorIndex);
+        const layoutManager = new WorkspaceLayout(metaWorkspace, monitorIndex,
+            overviewAdjustment);
 
         // Background
         this._background =
