@@ -172,7 +172,6 @@ var ShellUserVerifier = class {
 
         this._messageQueue = [];
         this._messageQueueTimeoutId = 0;
-        this.hasPendingMessages = false;
         this.reauthenticating = false;
 
         this._failCounter = 0;
@@ -194,8 +193,16 @@ var ShellUserVerifier = class {
         }
     }
 
+    get hasPendingMessages() {
+        return !!this._messageQueue.length;
+    }
+
     get allowedFailures() {
         return this._settings.get_int(ALLOWED_FAILURES_KEY);
+    }
+
+    get currentMessage() {
+        return this._messageQueue ? this._messageQueue[0] : null;
     }
 
     begin(userName, hold) {
@@ -283,7 +290,6 @@ var ShellUserVerifier = class {
 
         this._messageQueue = [];
 
-        this.hasPendingMessages = false;
         this.emit('no-more-messages');
     }
 
@@ -293,33 +299,33 @@ var ShellUserVerifier = class {
     }
 
     _queueMessageTimeout() {
-        if (this._messageQueue.length == 0) {
-            this.finishMessageQueue();
-            return;
-        }
-
         if (this._messageQueueTimeoutId != 0)
             return;
 
-        let message = this._messageQueue.shift();
+        const message = this.currentMessage;
 
         delete this._currentMessageExtraInterval;
         this.emit('show-message', message.serviceName, message.text, message.type);
 
         this._messageQueueTimeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT,
-            message.interval + (this._currentMessageExtraInterval | 0),
-                                                       () => {
-                                                           this._messageQueueTimeoutId = 0;
-                                                           this._queueMessageTimeout();
-                                                           return GLib.SOURCE_REMOVE;
-                                                       });
+            message.interval + (this._currentMessageExtraInterval | 0), () => {
+                this._messageQueueTimeoutId = 0;
+
+                if (this._messageQueue.length > 1) {
+                    this._messageQueue.shift();
+                    this._queueMessageTimeout();
+                } else {
+                    this.finishMessageQueue();
+                }
+
+                return GLib.SOURCE_REMOVE;
+            });
         GLib.Source.set_name_by_id(this._messageQueueTimeoutId, '[gnome-shell] this._queueMessageTimeout');
     }
 
     _queueMessage(serviceName, message, messageType) {
         let interval = this._getIntervalForMessage(message);
 
-        this.hasPendingMessages = true;
         this._messageQueue.push({ serviceName, text: message, type: messageType, interval });
         this._queueMessageTimeout();
     }
