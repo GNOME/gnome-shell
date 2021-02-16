@@ -49,10 +49,11 @@ var USER_READ_TIME = 48;
 const FINGERPRINT_ERROR_TIMEOUT_WAIT = 15;
 
 var MessageType = {
+    // Keep messages in order by priority
     NONE: 0,
-    ERROR: 1,
+    HINT: 1,
     INFO: 2,
-    HINT: 3,
+    ERROR: 3,
 };
 
 const FingerprintReaderType = {
@@ -328,6 +329,20 @@ var ShellUserVerifier = class {
 
         this._messageQueue.push({ serviceName, text: message, type: messageType, interval });
         this._queueMessageTimeout();
+    }
+
+    _queuePriorityMessage(serviceName, message, messageType) {
+        const newQueue = this._messageQueue.filter(m => {
+            if (m.serviceName !== serviceName || m.type >= messageType)
+                return m.text !== message;
+            return false;
+        });
+
+        if (!newQueue.includes(this.currentMessage))
+            this._clearMessageQueue();
+
+        this._messageQueue = newQueue;
+        this._queueMessage(serviceName, message, messageType);
     }
 
     _clearMessageQueue() {
