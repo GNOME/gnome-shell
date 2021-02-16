@@ -603,6 +603,10 @@ var WorkspaceThumbnail = GObject.registerClass({
 
 var ThumbnailsBox = GObject.registerClass({
     Properties: {
+        'expand-fraction': GObject.ParamSpec.double(
+            'expand-fraction', 'expand-fraction', 'expand-fraction',
+            GObject.ParamFlags.READWRITE,
+            0, 1, 1),
         'scale': GObject.ParamSpec.double(
             'scale', 'scale', 'scale',
             GObject.ParamFlags.READWRITE,
@@ -643,6 +647,7 @@ var ThumbnailsBox = GObject.registerClass({
 
         this._targetScale = 0;
         this._scale = 0;
+        this._expandFraction = 1;
         this._pendingScaleUpdate = false;
         this._stateUpdateQueued = false;
         this._animatingIndicator = false;
@@ -1298,8 +1303,9 @@ var ThumbnailsBox = GObject.registerClass({
         }
 
         const ratio = portholeWidth / portholeHeight;
-        const thumbnailHeight = Math.round(portholeHeight * this._scale);
-        const thumbnailWidth = Math.round(thumbnailHeight * ratio);
+        const thumbnailFullHeight = Math.round(portholeHeight * this._scale);
+        const thumbnailWidth = Math.round(thumbnailFullHeight * ratio);
+        const thumbnailHeight = thumbnailFullHeight * this._expandFraction;
         const roundedVScale = thumbnailHeight / portholeHeight;
 
         // We always request size for MAX_THUMBNAIL_SCALE, distribute
@@ -1421,5 +1427,17 @@ var ThumbnailsBox = GObject.registerClass({
 
     get shouldShow() {
         return this._shouldShow;
+    }
+
+    set expandFraction(expandFraction) {
+        if (this._expandFraction === expandFraction)
+            return;
+        this._expandFraction = expandFraction;
+        this.notify('expand-fraction');
+        this.queue_relayout();
+    }
+
+    get expandFraction() {
+        return this._expandFraction;
     }
 });

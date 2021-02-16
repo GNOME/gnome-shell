@@ -47,6 +47,7 @@ class ControlsManagerLayout extends Clutter.BoxLayout {
         const workspaceBox = box.copy();
         const [width, height] = workspaceBox.get_size();
         const { spacing } = this;
+        const { expandFraction } = this._workspacesThumbnails;
 
         switch (state) {
         case ControlsState.HIDDEN:
@@ -54,12 +55,12 @@ class ControlsManagerLayout extends Clutter.BoxLayout {
         case ControlsState.WINDOW_PICKER:
             workspaceBox.set_origin(0,
                 searchHeight + spacing +
-                (thumbnailsHeight > 0 ? thumbnailsHeight + spacing : 0));
+                thumbnailsHeight + spacing * expandFraction);
             workspaceBox.set_size(width,
                 height -
                 dashHeight - spacing -
                 searchHeight - spacing -
-                (thumbnailsHeight > 0 ? thumbnailsHeight + spacing : 0));
+                thumbnailsHeight - spacing * expandFraction);
             break;
         case ControlsState.APP_GRID:
             workspaceBox.set_origin(0, searchHeight + spacing);
@@ -133,10 +134,11 @@ class ControlsManagerLayout extends Clutter.BoxLayout {
         // Workspace Thumbnails
         let thumbnailsHeight = 0;
         if (this._workspacesThumbnails.visible) {
+            const { expandFraction } = this._workspacesThumbnails;
             [thumbnailsHeight] =
                 this._workspacesThumbnails.get_preferred_height(width);
             thumbnailsHeight = Math.min(
-                thumbnailsHeight,
+                thumbnailsHeight * expandFraction,
                 height * WorkspaceThumbnail.MAX_THUMBNAIL_SCALE);
             childBox.set_origin(0, searchHeight + spacing);
             childBox.set_size(width, thumbnailsHeight);
@@ -303,8 +305,15 @@ class ControlsManager extends St.Widget {
 
         this._thumbnailsBox =
             new WorkspaceThumbnail.ThumbnailsBox(this._workspaceAdjustment);
-        this._thumbnailsBox.connect('notify::should-show',
-            () => this._updateThumbnailsBox());
+        this._thumbnailsBox.connect('notify::should-show', () => {
+            this._thumbnailsBox.show();
+            this._thumbnailsBox.ease_property('expand-fraction',
+                this._thumbnailsBox.should_show ? 1 : 0, {
+                    duration: SIDE_CONTROLS_ANIMATION_TIME,
+                    mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+                    onComplete: () => this._updateThumbnailsBox(),
+                });
+        });
 
         this._workspacesDisplay = new WorkspacesView.WorkspacesDisplay(
             this,
