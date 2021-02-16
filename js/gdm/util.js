@@ -281,6 +281,9 @@ var ShellUserVerifier = class {
     }
 
     _getIntervalForMessage(message) {
+        if (!message)
+            return 0;
+
         // We probably could be smarter here
         return message.length * USER_READ_TIME;
     }
@@ -297,6 +300,18 @@ var ShellUserVerifier = class {
     increaseCurrentMessageTimeout(interval) {
         if (!this._messageQueueTimeoutId && interval > 0)
             this._currentMessageExtraInterval = interval;
+    }
+
+    _serviceHasPendingMessages(serviceName) {
+        return this._messageQueue.some(m => m.serviceName === serviceName);
+    }
+
+    _filterServiceMessages(serviceName, messageType) {
+        // This function allows to remove queued messages for the @serviceName
+        // whose type has lower priority than @messageType, replacing them
+        // with a null message that will lead to clearing the prompt once done.
+        if (this._serviceHasPendingMessages(serviceName))
+            this._queuePriorityMessage(serviceName, null, messageType);
     }
 
     _queueMessageTimeout() {
@@ -678,6 +693,7 @@ var ShellUserVerifier = class {
         const canRetry = retry && this._canRetry();
 
         this._disconnectSignals();
+        this._filterServiceMessages(serviceName, MessageType.ERROR);
 
         if (canRetry) {
             if (!this.hasPendingMessages) {
@@ -729,6 +745,8 @@ var ShellUserVerifier = class {
             this._verificationFailed(serviceName, false);
             return;
         }
+
+        this._filterServiceMessages(serviceName, MessageType.ERROR);
 
         if (this._unavailableServices.has(serviceName))
             return;
