@@ -1430,10 +1430,12 @@ var AppSearchProvider = class AppSearchProvider {
                 let name = this._systemActions.getName(id);
                 let iconName = this._systemActions.getIconName(id);
 
-                let createIcon = size => new St.Icon({ icon_name: iconName,
-                                                       width: size,
-                                                       height: size,
-                                                       style_class: 'system-action-icon' });
+                const createIcon = size => new St.Icon({
+                    icon_name: iconName,
+                    width: size,
+                    height: size,
+                    style_class: 'system-action-icon',
+                });
 
                 metas.push({ id, name, createIcon });
             }
