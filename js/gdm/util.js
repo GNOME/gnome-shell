@@ -46,6 +46,7 @@ var DISABLE_USER_LIST_KEY = 'disable-user-list';
 
 // Give user 48ms to read each character of a PAM message
 var USER_READ_TIME = 48;
+const FINGERPRINT_ERROR_TIMEOUT_WAIT = 15;
 
 var MessageType = {
     NONE: 0,
@@ -568,10 +569,30 @@ var ShellUserVerifier = class {
 
         this._queueMessage(serviceName, problem, MessageType.ERROR);
         if (isFingerprint) {
+            // pam_fprintd allows the user to retry multiple (maybe even infinite!
+            // times before failing the authentication conversation.
+            // We don't want this behavior to bypass the max-tries setting the user has set,
+            // so we count the problem messages to know how many times the user has failed.
+            // Once we hit the max number of failures we allow, it's time to failure the
+            // conversation from our side. We can't do that right away, however, because
+            // we may drop pending messages coming from pam_fprintd. In order to make sure
+            // the user sees everything, we queue the failure up to get handled in the
+            // near future, after we've finished up the current round of messages.
             this._failCounter++;
 
-            if (!this._canRetry())
-                this._verificationFailed(serviceName, false);
+            if (!this._canRetry()) {
+                if (this._fingerprintFailedId)
+                    GLib.source_remove(this._fingerprintFailedId);
+
+                const cancellable = this._cancellable;
+                this._fingerprintFailedId = GLib.timeout_add(GLib.PRIORITY_DEFAULT,
+                    FINGERPRINT_ERROR_TIMEOUT_WAIT, () => {
+                        this._fingerprintFailedId = 0;
+                        if (!cancellable.is_cancelled())
+                            this._verificationFailed(serviceName, false);
+                        return GLib.SOURCE_REMOVE;
+                    });
+            }
         }
     }
 
