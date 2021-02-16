@@ -595,8 +595,8 @@ var WorkspaceThumbnail = GObject.registerClass({
         return false;
     }
 
-    setScale(scale) {
-        this._contents.set_scale(scale, scale);
+    setScale(scaleX, scaleY) {
+        this._contents.set_scale(scaleX, scaleY);
     }
 });
 
