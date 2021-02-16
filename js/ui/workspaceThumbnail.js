@@ -1040,7 +1040,7 @@ var ThumbnailsBox = GObject.registerClass({
             this._thumbnails.push(thumbnail);
             this.add_actor(thumbnail);
 
-            if (start > 0 && this._spliceIndex == -1) {
+            if (this._shouldShow && start > 0 && this._spliceIndex === -1) {
                 // not the initial fill, and not splicing via DND
                 thumbnail.state = ThumbnailState.NEW;
                 thumbnail.slide_position = 1; // start slid out
