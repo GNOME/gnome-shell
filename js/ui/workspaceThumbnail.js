@@ -8,6 +8,8 @@ const Main = imports.ui.main;
 const Util = imports.misc.util;
 const Workspace = imports.ui.workspace;
 
+const NUM_WORKSPACES_THRESHOLD = 2;
+
 // The maximum size of a thumbnail is 5% the width and height of the screen
 var MAX_THUMBNAIL_SCALE = 0.05;
 
@@ -718,8 +720,9 @@ var ThumbnailsBox = GObject.registerClass({
 
     _updateShouldShow() {
         const { nWorkspaces } = global.workspace_manager;
-        const shouldShow =
-            this._settings.get_boolean('dynamic-workspaces') || nWorkspaces > 1;
+        const shouldShow = this._settings.get_boolean('dynamic-workspaces')
+            ? nWorkspaces > NUM_WORKSPACES_THRESHOLD
+            : nWorkspaces > 1;
 
         if (this._shouldShow === shouldShow)
             return;
