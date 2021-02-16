@@ -397,6 +397,7 @@ var Overview = class {
         if (endProgress === 0) {
             this._shown = false;
             this.emit('hiding');
+            Main.panel.style = 'transition-duration: %dms;'.format(duration);
             onComplete = () => this._hideDone();
         } else {
             onComplete = () => this._showDone();
@@ -625,6 +626,8 @@ var Overview = class {
             this._animateVisible();
         else
             Main.layoutManager.hideOverview();
+
+        Main.panel.style = null;
 
         this._syncGrab();
     }
