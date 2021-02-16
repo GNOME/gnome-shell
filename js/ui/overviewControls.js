@@ -303,6 +303,9 @@ class ControlsManager extends St.Widget {
 
         this._thumbnailsBox =
             new WorkspaceThumbnail.ThumbnailsBox(this._workspaceAdjustment);
+        this._thumbnailsBox.connect('notify::should-show',
+            () => this._updateThumbnailsBox());
+
         this._workspacesDisplay = new WorkspacesView.WorkspacesDisplay(
             this,
             this._workspaceAdjustment,
@@ -426,10 +429,11 @@ class ControlsManager extends St.Widget {
     }
 
     _updateThumbnailsBox(animate = false) {
+        const { shouldShow } = this._thumbnailsBox;
         const { searchActive } = this._searchController;
         const [opacity, scale, translationY] = this._getThumbnailsBoxParams();
 
-        const thumbnailsBoxVisible = !searchActive && opacity !== 0;
+        const thumbnailsBoxVisible = shouldShow && !searchActive && opacity !== 0;
         if (thumbnailsBoxVisible) {
             this._thumbnailsBox.opacity = 0;
             this._thumbnailsBox.visible = thumbnailsBoxVisible;

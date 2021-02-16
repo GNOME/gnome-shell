@@ -607,6 +607,10 @@ var ThumbnailsBox = GObject.registerClass({
             'scale', 'scale', 'scale',
             GObject.ParamFlags.READWRITE,
             0, Infinity, 0),
+        'should-show': GObject.ParamSpec.boolean(
+            'should-show', 'should-show', 'should-show',
+            GObject.ParamFlags.READABLE,
+            true),
     },
 }, class ThumbnailsBox extends St.Widget {
     _init(scrollAdjustment) {
@@ -643,6 +647,8 @@ var ThumbnailsBox = GObject.registerClass({
         this._stateUpdateQueued = false;
         this._animatingIndicator = false;
 
+        this._shouldShow = true;
+
         this._stateCounts = {};
         for (let key in ThumbnailState)
             this._stateCounts[ThumbnailState[key]] = 0;
@@ -669,7 +675,7 @@ var ThumbnailsBox = GObject.registerClass({
 
         this._settings = new Gio.Settings({ schema_id: MUTTER_SCHEMA });
         this._settings.connect('changed::dynamic-workspaces',
-            this._updateSwitcherVisibility.bind(this));
+            () => this._updateShouldShow());
 
         Main.layoutManager.connect('monitors-changed', () => {
             this._destroyThumbnails();
@@ -700,12 +706,16 @@ var ThumbnailsBox = GObject.registerClass({
         });
     }
 
-    _updateSwitcherVisibility() {
-        let workspaceManager = global.workspace_manager;
+    _updateShouldShow() {
+        const { nWorkspaces } = global.workspace_manager;
+        const shouldShow =
+            this._settings.get_boolean('dynamic-workspaces') || nWorkspaces > 1;
 
-        this.visible =
-            this._settings.get_boolean('dynamic-workspaces') ||
-                workspaceManager.n_workspaces > 1;
+        if (this._shouldShow === shouldShow)
+            return;
+
+        this._shouldShow = shouldShow;
+        this.notify('should-show');
     }
 
     _activateThumbnailAtPoint(stageX, stageY, time) {
@@ -960,7 +970,7 @@ var ThumbnailsBox = GObject.registerClass({
 
         this.addThumbnails(0, workspaceManager.n_workspaces);
 
-        this._updateSwitcherVisibility();
+        this._updateShouldShow();
     }
 
     _destroyThumbnails() {
@@ -1011,7 +1021,7 @@ var ThumbnailsBox = GObject.registerClass({
             this.removeThumbnails(removedIndex, removedNum);
         }
 
-        this._updateSwitcherVisibility();
+        this._updateShouldShow();
     }
 
     addThumbnails(start, count) {
@@ -1407,5 +1417,9 @@ var ThumbnailsBox = GObject.registerClass({
         childBox.y1 -= indicatorTopFullBorder;
         childBox.y2 += indicatorBottomFullBorder;
         this._indicator.allocate(childBox);
+    }
+
+    get shouldShow() {
+        return this._shouldShow;
     }
 });
