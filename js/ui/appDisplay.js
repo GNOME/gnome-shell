@@ -1432,8 +1432,7 @@ var AppSearchProvider = class AppSearchProvider {
 
                 const createIcon = size => new St.Icon({
                     icon_name: iconName,
-                    width: size,
-                    height: size,
+                    icon_size: size,
                     style_class: 'system-action-icon',
                 });
 
