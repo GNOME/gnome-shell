@@ -716,11 +716,11 @@ class WorkspacesDisplay extends St.Widget {
             ? Clutter.Orientation.HORIZONTAL
             : Clutter.Orientation.VERTICAL;
 
+        const distance = global.workspace_manager.layout_rows === -1
+            ? this.height : this.width;
+
         for (let i = 0; i < this._workspacesViews.length; i++)
             this._workspacesViews[i].startTouchGesture();
-
-        let distance = global.workspace_manager.layout_rows === -1
-            ? this.height : this.width;
 
         let progress = adjustment.value / adjustment.page_size;
         let points = Array.from(
