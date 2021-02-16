@@ -51,12 +51,10 @@ $dash_border_radius: $modal_radius * 1.5;
 
 // OSD Tooltip
 .dash-label {
-  background-color: transparentize($osd_bg_color,0.05);
-  border-radius: $base_border_radius + 2px;
-  border:none;
-  box-shadow:0 0 0 1px $osd_outer_borders_color;
   color: $osd_fg_color;
-  padding: $base_padding $base_padding + 2px;
+  background-color: $osd_bg_color;
+  border-radius: 99px;
+  padding: $base_padding $base_padding * 2;
   text-align: center;
   -y-offset: $base_margin * 3; // distance from the dash edge
 }
