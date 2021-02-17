@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2021-02-09 19:29+0000\n"
-"PO-Revision-Date: 2021-02-09 21:43+0100\n"
+"POT-Creation-Date: 2021-02-17 16:27+0000\n"
+"PO-Revision-Date: 2021-02-17 19:53+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: sl\n"
@@ -437,7 +437,7 @@ msgstr "Spletna stran"
 msgid "Visit extension homepage"
 msgstr "Odpri spletno stran razširitev"
 
-#: js/gdm/authPrompt.js:137 js/ui/audioDeviceSelection.js:58
+#: js/gdm/authPrompt.js:141 js/ui/audioDeviceSelection.js:58
 #: js/ui/components/networkAgent.js:111 js/ui/components/polkitAgent.js:138
 #: js/ui/endSessionDialog.js:438 js/ui/extensionDownloader.js:183
 #: js/ui/shellMountOperation.js:376 js/ui/shellMountOperation.js:386
@@ -446,7 +446,7 @@ msgid "Cancel"
 msgstr "Prekliči"
 
 #. Cisco LEAP
-#: js/gdm/authPrompt.js:239 js/ui/components/networkAgent.js:210
+#: js/gdm/authPrompt.js:244 js/ui/components/networkAgent.js:210
 #: js/ui/components/networkAgent.js:226 js/ui/components/networkAgent.js:250
 #: js/ui/components/networkAgent.js:271 js/ui/components/networkAgent.js:291
 #: js/ui/components/networkAgent.js:301 js/ui/components/polkitAgent.js:275
@@ -464,7 +464,7 @@ msgstr "Ali vašega uporabniškega imena ni na seznamu?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: js/gdm/loginDialog.js:913
+#: js/gdm/loginDialog.js:918
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(na primer, uporabnika ali %s)"
@@ -472,28 +472,28 @@ msgstr "(na primer, uporabnika ali %s)"
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: js/gdm/loginDialog.js:918 js/ui/components/networkAgent.js:246
+#: js/gdm/loginDialog.js:923 js/ui/components/networkAgent.js:246
 #: js/ui/components/networkAgent.js:269 js/ui/components/networkAgent.js:287
 msgid "Username"
 msgstr "Uporabniško ime"
 
-#: js/gdm/loginDialog.js:1253
+#: js/gdm/loginDialog.js:1258
 msgid "Login Window"
 msgstr "Prijavno okno"
 
-#: js/gdm/util.js:379
+#: js/gdm/util.js:430
 msgid "Authentication error"
 msgstr "Napaka overitve"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger on the fingerprint reader
-#: js/gdm/util.js:507
+#: js/gdm/util.js:589
 msgid "(or swipe finger across reader)"
 msgstr "(ali pa povlecite prst prek bralnika)"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can place their finger on the fingerprint reader instead
-#: js/gdm/util.js:511
+#: js/gdm/util.js:594
 msgid "(or place finger on reader)"
 msgstr "(ali pa povlecite prst po bralniku)"
 
@@ -756,31 +756,31 @@ msgid "Unnamed Folder"
 msgstr "Neimenovana mapa"
 
 #. Translators: This is the heading of a list of open windows
-#: js/ui/appDisplay.js:2964 js/ui/panel.js:33
+#: js/ui/appDisplay.js:2965 js/ui/panel.js:33
 msgid "Open Windows"
 msgstr "Odpri okna"
 
-#: js/ui/appDisplay.js:2983 js/ui/panel.js:40
+#: js/ui/appDisplay.js:2984 js/ui/panel.js:40
 msgid "New Window"
 msgstr "Novo okno"
 
-#: js/ui/appDisplay.js:2999
+#: js/ui/appDisplay.js:3000
 msgid "Launch using Integrated Graphics Card"
 msgstr "Zaženi z uporabo vgrajene grafične kartice"
 
-#: js/ui/appDisplay.js:3000
+#: js/ui/appDisplay.js:3001
 msgid "Launch using Discrete Graphics Card"
 msgstr "Zaženi z uporabo določene grafične kartice"
 
-#: js/ui/appDisplay.js:3029 js/ui/dash.js:238
+#: js/ui/appDisplay.js:3030 js/ui/dash.js:245
 msgid "Remove from Favorites"
 msgstr "Odstrani iz priljubljenih"
 
-#: js/ui/appDisplay.js:3035
+#: js/ui/appDisplay.js:3036
 msgid "Add to Favorites"
 msgstr "Dodaj med priljubljene"
 
-#: js/ui/appDisplay.js:3045 js/ui/panel.js:51
+#: js/ui/appDisplay.js:3046 js/ui/panel.js:51
 msgid "Show Details"
 msgstr "Pokaži podrobnosti"
 
@@ -1080,17 +1080,17 @@ msgstr "Overitev je spodletela.. Poskusite znova."
 msgid "%s is now known as %s"
 msgstr "%s je sedaj znan kot v %s"
 
-#: js/ui/ctrlAltTab.js:21 js/ui/viewSelector.js:320
+#: js/ui/ctrlAltTab.js:21 js/ui/overviewControls.js:344
 msgid "Windows"
 msgstr "Okna"
 
-#: js/ui/dash.js:199 js/ui/dash.js:240
+#: js/ui/dash.js:204 js/ui/dash.js:247
 msgid "Show Applications"
 msgstr "Pokaži programe"
 
 #. Translators: this is the name of the dock/favorites area on
 #. the left of the overview
-#: js/ui/dash.js:363
+#: js/ui/dash.js:394
 msgid "Dash"
 msgstr "Pregledna plošča"
 
@@ -1454,7 +1454,7 @@ msgstr "Onemogoči"
 msgid "Leave Off"
 msgstr "Pusti onemogočeno"
 
-#: js/ui/keyboard.js:226
+#: js/ui/keyboard.js:227
 msgid "Region & Language Settings"
 msgstr "Nastavitve območja in jezika"
 
@@ -1528,7 +1528,7 @@ msgid "Screen Locking requires the GNOME display manager."
 msgstr ""
 "Zaklepanje zaslona zahteva namestitev upravljalnika zaslona za okolje GNOME."
 
-#: js/ui/messageTray.js:1463
+#: js/ui/messageTray.js:1452
 msgid "System Information"
 msgstr "Podrobnosti sistema"
 
@@ -1540,23 +1540,27 @@ msgstr "Neznan izvajalec"
 msgid "Unknown title"
 msgstr "Neznan naslov"
 
-#: js/ui/overview.js:67
+#. Translators: this is the text displayed
+#. in the search entry when no search is
+#. active; it should not exceed ~30
+#. characters.
+#: js/ui/overviewControls.js:267
+msgid "Type to search"
+msgstr "Poišči …"
+
+#: js/ui/overviewControls.js:332
+msgid "Applications"
+msgstr "Programi"
+
+#: js/ui/overview.js:69
 msgid "Undo"
 msgstr "Razveljavi"
 
 #. Translators: This is the main view to select
 #. activities. See also note for "Activities" string.
-#: js/ui/overview.js:80
+#: js/ui/overview.js:82
 msgid "Overview"
 msgstr "Pregled"
-
-#. Translators: this is the text displayed
-#. in the search entry when no search is
-#. active; it should not exceed ~30
-#. characters.
-#: js/ui/overview.js:101
-msgid "Type to search"
-msgstr "Poišči …"
 
 #: js/ui/padOsd.js:96
 msgid "New shortcut…"
@@ -1608,7 +1612,7 @@ msgstr "Končaj"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: js/ui/panel.js:391 js/ui/viewSelector.js:303
+#: js/ui/panel.js:391
 msgid "Activities"
 msgstr "Dejavnosti"
 
@@ -1629,11 +1633,11 @@ msgstr "Zaženi ukaz"
 msgid "Press ESC to close"
 msgstr "Pritisnite tipko Esc za končanje"
 
-#: js/ui/runDialog.js:240
+#: js/ui/runDialog.js:238
 msgid "Restart is not available on Wayland"
 msgstr "Na sistemu Wayland je na voljo ponovni zagon"
 
-#: js/ui/runDialog.js:245
+#: js/ui/runDialog.js:243
 msgid "Restarting…"
 msgstr "Poteka ponovno zaganjanje …"
 
@@ -1656,6 +1660,10 @@ msgstr "Zaklep ni mogoč"
 msgid "Lock was blocked by an application"
 msgstr "Zaklep je preprečil program"
 
+#: js/ui/screenshot.js:141
+msgid "Screenshot taken"
+msgstr "Zaslonska slika je zajeta"
+
 #: js/ui/search.js:824
 msgid "Searching…"
 msgstr "Iskanje …"
@@ -1672,6 +1680,10 @@ msgstr[0] "še %d"
 msgstr[1] "še %d"
 msgstr[2] "še %d"
 msgstr[3] "še %d"
+
+#: js/ui/searchController.js:87
+msgid "Search"
+msgstr "Poišči"
 
 #: js/ui/shellEntry.js:20
 msgid "Copy"
@@ -2287,14 +2299,6 @@ msgstr "Odkleni okno"
 msgid "Log in as another user"
 msgstr "Prijavi z drugim uporabniškim imenom"
 
-#: js/ui/viewSelector.js:307
-msgid "Applications"
-msgstr "Programi"
-
-#: js/ui/viewSelector.js:333
-msgid "Search"
-msgstr "Poišči"
-
 #: js/ui/welcomeDialog.js:35
 #, javascript-format
 msgid "Welcome to GNOME %s"
@@ -2344,7 +2348,7 @@ msgstr[3] "Spremembe nastavitev bodo povrnjene v %d sekundah."
 
 #. Translators: This represents the size of a window. The first number is
 #. * the width of the window and the second is the height.
-#: js/ui/windowManager.js:549
+#: js/ui/windowManager.js:540
 #, javascript-format
 msgid "%d × %d"
 msgstr "%d × %d"
@@ -2522,11 +2526,11 @@ msgstr[1] "Ob naslednji prijavi bo posodobljena %d razširitev."
 msgstr[2] "Ob naslednji prijavi bosta posodobljeni %d razširitvi."
 msgstr[3] "Ob naslednji prijavi bodo posodobljene %d razširitve."
 
-#: subprojects/extensions-app/js/main.js:493
+#: subprojects/extensions-app/js/main.js:494
 msgid "The extension is incompatible with the current GNOME version"
 msgstr "Razširitev ni skladna s trenutno nameščeno različico okolja GNOME."
 
-#: subprojects/extensions-app/js/main.js:496
+#: subprojects/extensions-app/js/main.js:497
 msgid "The extension had an error"
 msgstr "Razširitev javlja napake"
 
@@ -3602,9 +3606,6 @@ msgstr "Sistemski zvoki"
 
 #~ msgid "Shutting down might cause them to lose unsaved work."
 #~ msgstr "Z izklopom je njihovo delo lahko izgubljeno."
-
-#~ msgid "Screenshots"
-#~ msgstr "Zajete slike"
 
 #~ msgid "Record a screencast"
 #~ msgstr "Shrani zaslonski posnetek"
