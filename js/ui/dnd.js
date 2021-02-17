@@ -400,6 +400,9 @@ var _Draggable = class _Draggable {
             scaledWidth = transformedExtents.get_width();
             scaledHeight = transformedExtents.get_height();
 
+            this._dragActor.scale_x = scaledWidth / this._dragOrigWidth;
+            this._dragActor.scale_y = scaledHeight / this._dragOrigHeight;
+
             this._dragOrigParent.remove_actor(this._dragActor);
             Main.uiGroup.add_child(this._dragActor);
             Main.uiGroup.set_child_above_sibling(this._dragActor, null);
