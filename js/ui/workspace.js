@@ -975,14 +975,22 @@ class Workspace extends St.Widget {
         super._init({
             style_class: 'window-picker',
             pivot_point: new Graphene.Point({ x: 0.5, y: 0.5 }),
-            layout_manager: new WorkspaceLayout(metaWorkspace, monitorIndex),
-            reactive: true,
+            layout_manager: new Clutter.BinLayout(),
         });
+
+        const layoutManager = new WorkspaceLayout(metaWorkspace, monitorIndex);
+        this._container = new Clutter.Actor({
+            reactive: true,
+            x_expand: true,
+            y_expand: true,
+        });
+        this._container.layout_manager = layoutManager;
+        this.add_child(this._container);
 
         this.metaWorkspace = metaWorkspace;
         this._activeWorkspaceChangedId =
             this.metaWorkspace?.connect('notify::active', () => {
-                this.layoutManager.syncOverlays();
+                layoutManager.syncOverlays();
             });
 
         this._overviewAdjustment = overviewAdjustment;
@@ -994,7 +1002,7 @@ class Workspace extends St.Widget {
 
         // Background
         this._background = new WorkspaceBackground(monitorIndex);
-        this.layout_manager.setBackground(this._background);
+        layoutManager.setBackground(this._background);
 
         const clickAction = new Clutter.ClickAction();
         clickAction.connect('clicked', action => {
@@ -1009,7 +1017,7 @@ class Workspace extends St.Widget {
             }
         });
         this.bind_property('mapped', clickAction, 'enabled', GObject.BindingFlags.SYNC_CREATE);
-        this.add_action(clickAction);
+        this._container.add_action(clickAction);
 
         this.connect('style-changed', this._onStyleChanged.bind(this));
         this.connect('destroy', this._onDestroy.bind(this));
@@ -1051,7 +1059,7 @@ class Workspace extends St.Widget {
     }
 
     vfunc_get_focus_chain() {
-        return this.layout_manager.getFocusChain();
+        return this._container.layout_manager.getFocusChain();
     }
 
     _lookupIndex(metaWindow) {
@@ -1067,7 +1075,7 @@ class Workspace extends St.Widget {
     }
 
     syncStacking(stackIndices) {
-        this.layout_manager.syncStacking(stackIndices);
+        this._container.layout_manager.syncStacking(stackIndices);
     }
 
     _doRemoveWindow(metaWin) {
@@ -1082,7 +1090,7 @@ class Workspace extends St.Widget {
         // around while the user is interacting with the workspace, we delay
         // the positioning until the pointer remains still for at least 750 ms
         // or is moved outside the workspace
-        this.layout_manager.layout_frozen = true;
+        this._container.layout_manager.layout_frozen = true;
 
         if (this._layoutFrozenId > 0) {
             GLib.source_remove(this._layoutFrozenId);
@@ -1107,7 +1115,7 @@ class Workspace extends St.Widget {
                     return GLib.SOURCE_CONTINUE;
                 }
 
-                this.layout_manager.layout_frozen = false;
+                this._container.layout_manager.layout_frozen = false;
                 this._layoutFrozenId = 0;
                 return GLib.SOURCE_REMOVE;
             });
@@ -1171,7 +1179,7 @@ class Workspace extends St.Widget {
         if (this._layoutFrozenId > 0) {
             // If a window was closed before, unfreeze the layout to ensure
             // the new window is immediately shown
-            this.layout_manager.layout_frozen = false;
+            this._container.layout_manager.layout_frozen = false;
 
             GLib.source_remove(this._layoutFrozenId);
             this._layoutFrozenId = 0;
@@ -1217,7 +1225,7 @@ class Workspace extends St.Widget {
             this._layoutFrozenId = 0;
         }
 
-        this.layout_manager.layout_frozen = true;
+        this._container.layout_manager.layout_frozen = true;
         this._overviewHiddenId = Main.overview.connect('hidden', this._doneLeavingOverview.bind(this));
     }
 
@@ -1244,11 +1252,11 @@ class Workspace extends St.Widget {
     }
 
     _doneLeavingOverview() {
-        this.layout_manager.layout_frozen = false;
+        this._container.layout_manager.layout_frozen = false;
     }
 
     _doneShowingOverview() {
-        this.layout_manager.layout_frozen = false;
+        this._container.layout_manager.layout_frozen = false;
     }
 
     _isMyWindow(window) {
@@ -1292,7 +1300,7 @@ class Workspace extends St.Widget {
             this._doRemoveWindow(metaWindow);
         });
 
-        this.layout_manager.addWindow(clone, metaWindow);
+        this._container.layout_manager.addWindow(clone, metaWindow);
 
         if (this._windows.length == 0)
             clone.setStackAbove(this._background);
@@ -1311,14 +1319,14 @@ class Workspace extends St.Widget {
         if (index == -1)
             return null;
 
-        this.layout_manager.removeWindow(this._windows[index]);
+        this._container.layout_manager.removeWindow(this._windows[index]);
 
         return this._windows.splice(index, 1).pop();
     }
 
     _onStyleChanged() {
         const themeNode = this.get_theme_node();
-        this.layout_manager.spacing = themeNode.get_length('spacing');
+        this._container.layout_manager.spacing = themeNode.get_length('spacing');
     }
 
     _onCloneSelected(clone, time) {
@@ -1379,6 +1387,6 @@ class Workspace extends St.Widget {
     }
 
     get stateAdjustment() {
-        return this.layout_manager.stateAdjustment;
+        return this._container.layout_manager.stateAdjustment;
     }
 });
