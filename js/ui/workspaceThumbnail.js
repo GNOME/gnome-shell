@@ -1288,27 +1288,31 @@ var ThumbnailsBox = GObject.registerClass({
         const portholeHeight = this._porthole.height;
         const spacing = themeNode.get_length('spacing');
 
-        // Compute the scale we'll need once everything is updated
         const nWorkspaces = this._thumbnails.length;
-        let totalSpacing = (nWorkspaces - 1) * spacing;
-        const availableWidth = (box.get_width() - totalSpacing) / nWorkspaces;
 
-        const hScale = availableWidth / portholeWidth;
-        const vScale = box.get_height() / portholeHeight;
-        const newScale = Math.min(hScale, vScale);
+        // Compute the scale we'll need once everything is updated,
+        // unless we are currently transitioning
+        if (this._expandFraction === 1) {
+            const totalSpacing = (nWorkspaces - 1) * spacing;
+            const availableWidth = (box.get_width() - totalSpacing) / nWorkspaces;
 
-        if (newScale != this._targetScale) {
-            if (this._targetScale > 0) {
-                // We don't do the tween immediately because we need to observe the ordering
-                // in queueUpdateStates - if workspaces have been removed we need to slide them
-                // out as the first thing.
-                this._targetScale = newScale;
-                this._pendingScaleUpdate = true;
-            } else {
-                this._targetScale = this._scale = newScale;
+            const hScale = availableWidth / portholeWidth;
+            const vScale = box.get_height() / portholeHeight;
+            const newScale = Math.min(hScale, vScale);
+
+            if (newScale !== this._targetScale) {
+                if (this._targetScale > 0) {
+                    // We don't ease immediately because we need to observe the
+                    // ordering in queueUpdateStates - if workspaces have been
+                    // removed we need to slide them out as the first thing.
+                    this._targetScale = newScale;
+                    this._pendingScaleUpdate = true;
+                } else {
+                    this._targetScale = this._scale = newScale;
+                }
+
+                this._queueUpdateStates();
             }
-
-            this._queueUpdateStates();
         }
 
         const ratio = portholeWidth / portholeHeight;
