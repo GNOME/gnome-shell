@@ -416,7 +416,6 @@ var WorkspaceLayout = GObject.registerClass({
         this._container = null;
         this._windows = new Map();
         this._sortedWindows = [];
-        this._background = null;
         this._lastBox = null;
         this._windowSlots = [];
         this._layout = null;
@@ -605,15 +604,6 @@ var WorkspaceLayout = GObject.registerClass({
                 this._windowSlots = this._getWindowSlots(box.copy());
         }
 
-        if (this._background) {
-            const { scaleFactor } = St.ThemeContext.get_for_stage(global.stage);
-            const cornerRadius = scaleFactor * BACKGROUND_CORNER_RADIUS_PIXELS;
-            this._background.cornerRadius =
-                Util.lerp(0, cornerRadius, this._stateAdjustment.value);
-
-            this._background.allocate(box);
-        }
-
         const allocationScale = containerBox.get_width() / this._workarea.width;
 
         const workspaceBox = new Clutter.ActorBox();
@@ -621,7 +611,7 @@ var WorkspaceLayout = GObject.registerClass({
         let childBox = new Clutter.ActorBox();
 
         for (const child of container) {
-            if (!child.visible || child === this._background)
+            if (!child.visible)
                 continue;
 
             // The fifth element in the slot array is the WindowPreview
@@ -783,16 +773,6 @@ var WorkspaceLayout = GObject.registerClass({
         this.layout_changed();
     }
 
-    setBackground(background) {
-        if (this._background)
-            this._container.remove_child(this._background);
-
-        this._background = background;
-
-        if (this._background)
-            this._container.add_child(this._background);
-    }
-
     syncStacking(stackIndices) {
         const windows = [...this._windows.keys()];
         windows.sort((a, b) => {
@@ -802,7 +782,7 @@ var WorkspaceLayout = GObject.registerClass({
             return stackIndices[seqA] - stackIndices[seqB];
         });
 
-        let lastWindow = this._background;
+        let lastWindow = null;
         for (const window of windows) {
             window.setStackAbove(lastWindow);
             lastWindow = window;
@@ -880,6 +860,8 @@ class WorkspaceBackground extends St.Widget {
         super._init({
             style_class: 'workspace-background',
             layout_manager: new Clutter.BinLayout(),
+            x_expand: true,
+            y_expand: true,
         });
 
         this._monitorIndex = monitorIndex;
@@ -978,6 +960,11 @@ class Workspace extends St.Widget {
             layout_manager: new Clutter.BinLayout(),
         });
 
+        // Background
+        this._background = new WorkspaceBackground(monitorIndex);
+        this.add_child(this._background);
+
+        // Window previews
         const layoutManager = new WorkspaceLayout(metaWorkspace, monitorIndex);
         this._container = new Clutter.Actor({
             reactive: true,
@@ -999,10 +986,6 @@ class Workspace extends St.Widget {
 
         if (monitorIndex != Main.layoutManager.primaryIndex)
             this.add_style_class_name('external-monitor');
-
-        // Background
-        this._background = new WorkspaceBackground(monitorIndex);
-        layoutManager.setBackground(this._background);
 
         const clickAction = new Clutter.ClickAction();
         clickAction.connect('clicked', action => {
@@ -1048,6 +1031,17 @@ class Workspace extends St.Widget {
 
         // DND requires this to be set
         this._delegate = this;
+
+        layoutManager.stateAdjustment.connect('notify::value',
+            () => this._updateBackgroundBorderRadius());
+    }
+
+    _updateBackgroundBorderRadius() {
+        const { scaleFactor } = St.ThemeContext.get_for_stage(global.stage);
+        const cornerRadius = scaleFactor * BACKGROUND_CORNER_RADIUS_PIXELS;
+        const { stateAdjustment } = this._container.layout_manager;
+        this._background.cornerRadius =
+            Util.lerp(0, cornerRadius, stateAdjustment.value);
     }
 
     _shouldLeaveOverview() {
@@ -1303,7 +1297,7 @@ class Workspace extends St.Widget {
         this._container.layout_manager.addWindow(clone, metaWindow);
 
         if (this._windows.length == 0)
-            clone.setStackAbove(this._background);
+            clone.setStackAbove(null);
         else
             clone.setStackAbove(this._windows[this._windows.length - 1]);
 
