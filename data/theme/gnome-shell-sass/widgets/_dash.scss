@@ -40,7 +40,7 @@ $dash_border_radius: $modal_radius * 1.5;
 
 // Dash Items
 .dash-item-container .app-well-app, .show-apps {
-  padding: 0 $dash_spacing $dash_bottom_margin;
+  padding: $dash_padding $dash_spacing $dash_padding + $dash_bottom_margin;
 }
 
 .dash-separator {
