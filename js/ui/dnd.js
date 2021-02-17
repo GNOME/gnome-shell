@@ -661,15 +661,9 @@ var _Draggable = class _Draggable {
             if (parentWidth != 0)
                 parentScale = parentScaledWidth / parentWidth;
 
-            // Also adjust for the difference in the original actor width
-            // and the width it is now (children of uiGroup always get
-            // allocated their preferred size)
-            const childScaleX =
-                this._dragOrigWidth / this._dragActor.allocation.get_width();
-
             x = parentX + parentScale * this._dragOrigX;
             y = parentY + parentScale * this._dragOrigY;
-            scale = this._dragOrigScale * parentScale * childScaleX;
+            scale = this._dragOrigScale * parentScale;
         } else {
             // Snap back actor to its original stage position
             x = this._snapBackX;
