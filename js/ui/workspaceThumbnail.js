@@ -1257,9 +1257,7 @@ var ThumbnailsBox = GObject.registerClass({
         if (this._thumbnails.length == 0) // not visible
             return;
 
-        let workspaceManager = global.workspace_manager;
         let themeNode = this.get_theme_node();
-
         box = themeNode.get_content_box(box);
 
         const portholeWidth = this._porthole.width;
@@ -1267,7 +1265,7 @@ var ThumbnailsBox = GObject.registerClass({
         const spacing = themeNode.get_length('spacing');
 
         // Compute the scale we'll need once everything is updated
-        let nWorkspaces = workspaceManager.n_workspaces;
+        const nWorkspaces = this._thumbnails.length;
         let totalSpacing = (nWorkspaces - 1) * spacing;
         const availableWidth = (box.get_width() - totalSpacing) / nWorkspaces;
 
