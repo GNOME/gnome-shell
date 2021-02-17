@@ -24,6 +24,7 @@ var LAYOUT_SCALE_WEIGHT = 1;
 var LAYOUT_SPACE_WEIGHT = 0.1;
 
 const BACKGROUND_CORNER_RADIUS_PIXELS = 30;
+const BACKGROUND_SCALE = 0.94;
 
 // Window Thumbnail Layout Algorithm
 // =================================
@@ -868,7 +869,10 @@ class WorkspaceBackground extends St.Widget {
         this._workarea = Main.layoutManager.getWorkAreaForMonitor(monitorIndex);
 
         this._stateAdjustment = stateAdjustment;
-        stateAdjustment.connect('notify::value', () => this._updateBorderRadius());
+        stateAdjustment.connect('notify::value', () => {
+            this._updateBorderRadius();
+            this.queue_relayout();
+        });
 
         this._bin = new Clutter.Actor({
             layout_manager: new Clutter.BinLayout(),
@@ -923,6 +927,21 @@ class WorkspaceBackground extends St.Widget {
     }
 
     vfunc_allocate(box) {
+        const scaledBox = box.copy();
+        scaledBox.scale(BACKGROUND_SCALE);
+
+        const [scaledWidth, scaledHeight] = scaledBox.get_size();
+        scaledBox.set_origin(
+            box.x1 + (box.get_width() - scaledWidth) / 2,
+            box.y1 + (box.get_height() - scaledHeight) / 2);
+
+        const progress = this._stateAdjustment.value;
+
+        if (progress === 1)
+            box = scaledBox;
+        else if (progress !== 0)
+            box = box.interpolate(scaledBox, progress);
+
         this.set_allocation(box);
 
         const themeNode = this.get_theme_node();
@@ -937,8 +956,7 @@ class WorkspaceBackground extends St.Widget {
         const yOff = (contentHeight / this._workarea.height) *
             (this._workarea.y - monitor.y);
 
-        contentBox.x1 -= xOff;
-        contentBox.y1 -= yOff;
+        contentBox.set_origin(-xOff, -yOff);
         contentBox.set_size(xOff + contentWidth, yOff + contentHeight);
         this._backgroundGroup.allocate(contentBox);
     }
