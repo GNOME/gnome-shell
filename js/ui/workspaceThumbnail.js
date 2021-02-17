@@ -691,6 +691,11 @@ var ThumbnailsBox = GObject.registerClass({
         global.display.connect('workareas-changed',
                                this._updatePorthole.bind(this));
 
+        this.connect('notify::visible', () => {
+            if (!this.visible)
+                this._queueUpdateStates();
+        });
+
         this._switchWorkspaceNotifyId = 0;
         this._nWorkspacesNotifyId = 0;
         this._syncStackingId = 0;
@@ -1120,6 +1125,10 @@ var ThumbnailsBox = GObject.registerClass({
 
         // If we are animating the indicator, wait
         if (this._animatingIndicator)
+            return;
+
+        // Likewise if we are in the process of hiding
+        if (!this._shouldShow && this.visible)
             return;
 
         // Then slide out any thumbnails that have been destroyed
