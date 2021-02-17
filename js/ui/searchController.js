@@ -151,14 +151,6 @@ var SearchController = GObject.registerClass({
             return Clutter.EVENT_STOP;
         } else if (this._shouldTriggerSearch(symbol)) {
             this.startSearch(event);
-        } else if (!this._searchActive && !global.stage.key_focus) {
-            if (symbol === Clutter.KEY_Tab || symbol === Clutter.KEY_Down) {
-                this._activePage.navigate_focus(null, St.DirectionType.TAB_FORWARD, false);
-                return Clutter.EVENT_STOP;
-            } else if (symbol === Clutter.KEY_ISO_Left_Tab) {
-                this._activePage.navigate_focus(null, St.DirectionType.TAB_BACKWARD, false);
-                return Clutter.EVENT_STOP;
-            }
         }
         return Clutter.EVENT_PROPAGATE;
     }
