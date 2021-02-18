@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2021-02-17 16:27+0000\n"
-"PO-Revision-Date: 2021-02-17 19:53+0100\n"
+"POT-Creation-Date: 2021-02-18 20:00+0000\n"
+"PO-Revision-Date: 2021-02-18 21:23+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: sl\n"
@@ -246,81 +246,96 @@ msgid "Keybinding to open the application menu."
 msgstr "Tipkovna bližnjica, ki odpre meni programov."
 
 #: data/org.gnome.shell.gschema.xml.in:140
+#: data/org.gnome.shell.gschema.xml.in:147
+msgid "Keybinding to shift between overview states"
+msgstr "Tipkovna bližnjica za preklop med stanji pregleda"
+
+#: data/org.gnome.shell.gschema.xml.in:141
+msgid "Keybinding to shift between session, window picker and app grid"
+msgstr ""
+"Tipkovna bližnjica za preklop med sejo, izbirniki oken in programsko mrežo"
+
+#: data/org.gnome.shell.gschema.xml.in:148
+msgid "Keybinding to shift between app grid, window picker and session"
+msgstr ""
+"Tipkovna bližnjica za preklop med programsko mrežo, izbirniki oken in sejo"
+
+#: data/org.gnome.shell.gschema.xml.in:154
 msgid "Keybinding to open the “Show Applications” view"
 msgstr "Tipkovna bližnjica, ki odpre pogled »Pokaži programe«"
 
-#: data/org.gnome.shell.gschema.xml.in:141
+#: data/org.gnome.shell.gschema.xml.in:155
 msgid ""
 "Keybinding to open the “Show Applications” view of the Activities Overview."
 msgstr ""
 "Tipkovna bližnjica, ki odpre pogled »Pokaži programe« v pregledu dejavnosti."
 
-#: data/org.gnome.shell.gschema.xml.in:148
+#: data/org.gnome.shell.gschema.xml.in:162
 msgid "Keybinding to open the overview"
 msgstr "Tipkovna bližnjica, ki odpre pogled pregleda"
 
-#: data/org.gnome.shell.gschema.xml.in:149
+#: data/org.gnome.shell.gschema.xml.in:163
 msgid "Keybinding to open the Activities Overview."
 msgstr "Tipkovna bližnjica, ki odpre pogled pregleda dejavnosti."
 
-#: data/org.gnome.shell.gschema.xml.in:155
+#: data/org.gnome.shell.gschema.xml.in:169
 msgid "Keybinding to toggle the visibility of the notification list"
 msgstr "Tipkovna bližnjica za preklop vidnosti seznama obvestil"
 
-#: data/org.gnome.shell.gschema.xml.in:156
+#: data/org.gnome.shell.gschema.xml.in:170
 msgid "Keybinding to toggle the visibility of the notification list."
 msgstr "Tipkovna bližnjica za preklop vidnosti seznama obvestil."
 
-#: data/org.gnome.shell.gschema.xml.in:162
+#: data/org.gnome.shell.gschema.xml.in:176
 msgid "Keybinding to focus the active notification"
 msgstr "Tipkovna bližnjica za prikaz dejavnega obvestila"
 
-#: data/org.gnome.shell.gschema.xml.in:163
+#: data/org.gnome.shell.gschema.xml.in:177
 msgid "Keybinding to focus the active notification."
 msgstr "Tipkovna bližnjica za prikaz dejavnega obvestila."
 
-#: data/org.gnome.shell.gschema.xml.in:169
+#: data/org.gnome.shell.gschema.xml.in:183
 msgid "Switch to application 1"
 msgstr "Preklopi na program 1"
 
-#: data/org.gnome.shell.gschema.xml.in:173
+#: data/org.gnome.shell.gschema.xml.in:187
 msgid "Switch to application 2"
 msgstr "Preklopi na program 2"
 
-#: data/org.gnome.shell.gschema.xml.in:177
+#: data/org.gnome.shell.gschema.xml.in:191
 msgid "Switch to application 3"
 msgstr "Preklopi na program 3"
 
-#: data/org.gnome.shell.gschema.xml.in:181
+#: data/org.gnome.shell.gschema.xml.in:195
 msgid "Switch to application 4"
 msgstr "Preklopi na program 4"
 
-#: data/org.gnome.shell.gschema.xml.in:185
+#: data/org.gnome.shell.gschema.xml.in:199
 msgid "Switch to application 5"
 msgstr "Preklopi na program 5"
 
-#: data/org.gnome.shell.gschema.xml.in:189
+#: data/org.gnome.shell.gschema.xml.in:203
 msgid "Switch to application 6"
 msgstr "Preklopi na program 6"
 
-#: data/org.gnome.shell.gschema.xml.in:193
+#: data/org.gnome.shell.gschema.xml.in:207
 msgid "Switch to application 7"
 msgstr "Preklopi na program 7"
 
-#: data/org.gnome.shell.gschema.xml.in:197
+#: data/org.gnome.shell.gschema.xml.in:211
 msgid "Switch to application 8"
 msgstr "Preklopi na program 8"
 
-#: data/org.gnome.shell.gschema.xml.in:201
+#: data/org.gnome.shell.gschema.xml.in:215
 msgid "Switch to application 9"
 msgstr "Preklopi na program 9"
 
-#: data/org.gnome.shell.gschema.xml.in:210
-#: data/org.gnome.shell.gschema.xml.in:237
+#: data/org.gnome.shell.gschema.xml.in:224
+#: data/org.gnome.shell.gschema.xml.in:251
 msgid "Limit switcher to current workspace."
 msgstr "Omeji preklopnik na trenutno delovno površino."
 
-#: data/org.gnome.shell.gschema.xml.in:211
+#: data/org.gnome.shell.gschema.xml.in:225
 msgid ""
 "If true, only applications that have windows on the current workspace are "
 "shown in the switcher. Otherwise, all applications are included."
@@ -329,11 +344,11 @@ msgstr ""
 "v izbrani delovni površini v preklopniku. V nasprotnem primeru so prikazana "
 "vsa okna."
 
-#: data/org.gnome.shell.gschema.xml.in:228
+#: data/org.gnome.shell.gschema.xml.in:242
 msgid "The application icon mode."
 msgstr "Ikonski način programa."
 
-#: data/org.gnome.shell.gschema.xml.in:229
+#: data/org.gnome.shell.gschema.xml.in:243
 msgid ""
 "Configures how the windows are shown in the switcher. Valid possibilities "
 "are “thumbnail-only” (shows a thumbnail of the window), “app-icon-"
@@ -343,7 +358,7 @@ msgstr ""
 "sličice»« (pokaže le sličice oken), »le ikona« (pokaže ikono programa) in pa "
 "možnost »oboje«."
 
-#: data/org.gnome.shell.gschema.xml.in:238
+#: data/org.gnome.shell.gschema.xml.in:252
 msgid ""
 "If true, only windows from the current workspace are shown in the switcher. "
 "Otherwise, all windows are included."
@@ -351,57 +366,57 @@ msgstr ""
 "Izbrana možnost določa, da bodo v trenutnem pogledu prikazana le okna v "
 "preklopniku. V nasprotnem primeru so prikazana vsa okna."
 
-#: data/org.gnome.shell.gschema.xml.in:248
+#: data/org.gnome.shell.gschema.xml.in:262
 msgid "Locations"
 msgstr "Mesta"
 
-#: data/org.gnome.shell.gschema.xml.in:249
+#: data/org.gnome.shell.gschema.xml.in:263
 msgid "The locations to show in world clocks"
 msgstr "Mesta, za katere naj bodo prikazani svetovni časi"
 
-#: data/org.gnome.shell.gschema.xml.in:259
+#: data/org.gnome.shell.gschema.xml.in:273
 msgid "Automatic location"
 msgstr "Samodejno določanje mesta"
 
-#: data/org.gnome.shell.gschema.xml.in:260
+#: data/org.gnome.shell.gschema.xml.in:274
 msgid "Whether to fetch the current location or not"
 msgstr "Ali naj program pridobi trenutno mesto ali ne"
 
-#: data/org.gnome.shell.gschema.xml.in:267
+#: data/org.gnome.shell.gschema.xml.in:281
 msgid "Location"
 msgstr "Trenutno mesto"
 
-#: data/org.gnome.shell.gschema.xml.in:268
+#: data/org.gnome.shell.gschema.xml.in:282
 msgid "The location for which to show a forecast"
 msgstr "Mesto, za katero naj bo pokazana napoved"
 
-#: data/org.gnome.shell.gschema.xml.in:280
+#: data/org.gnome.shell.gschema.xml.in:294
 msgid "Attach modal dialog to the parent window"
 msgstr "Pripni modalno pogovorno okno na glavno okno"
 
-#: data/org.gnome.shell.gschema.xml.in:281
-#: data/org.gnome.shell.gschema.xml.in:290
-#: data/org.gnome.shell.gschema.xml.in:298
-#: data/org.gnome.shell.gschema.xml.in:306
-#: data/org.gnome.shell.gschema.xml.in:314
+#: data/org.gnome.shell.gschema.xml.in:295
+#: data/org.gnome.shell.gschema.xml.in:304
+#: data/org.gnome.shell.gschema.xml.in:312
+#: data/org.gnome.shell.gschema.xml.in:320
+#: data/org.gnome.shell.gschema.xml.in:328
 msgid ""
 "This key overrides the key in org.gnome.mutter when running GNOME Shell."
 msgstr ""
 "Ključ prepiše vrednost v org.gnome.mutter med zaganjanjem lupine GNOME."
 
-#: data/org.gnome.shell.gschema.xml.in:289
+#: data/org.gnome.shell.gschema.xml.in:303
 msgid "Enable edge tiling when dropping windows on screen edges"
 msgstr "Omogoči utripanje črte med spuščanjem okna na robove zaslona"
 
-#: data/org.gnome.shell.gschema.xml.in:297
+#: data/org.gnome.shell.gschema.xml.in:311
 msgid "Workspaces are managed dynamically"
 msgstr "Delovne površine se obravnavajo dinamično"
 
-#: data/org.gnome.shell.gschema.xml.in:305
+#: data/org.gnome.shell.gschema.xml.in:319
 msgid "Workspaces only on primary monitor"
 msgstr "Delovne površine so le na osnovnem zaslonu"
 
-#: data/org.gnome.shell.gschema.xml.in:313
+#: data/org.gnome.shell.gschema.xml.in:327
 msgid "Delay focus changes in mouse mode until the pointer stops moving"
 msgstr ""
 "Zamik žarišča se v načinu miške spreminja, dokler se kazalnik ne neha "
