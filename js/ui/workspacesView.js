@@ -24,7 +24,7 @@ var WorkspacesViewBase = GObject.registerClass({
     _init(monitorIndex, overviewAdjustment) {
         super._init({
             style_class: 'workspaces-view',
-            clip_to_allocation: true,
+            clip_to_allocation: monitorIndex !== Main.layoutManager.primaryIndex,
             x_expand: true,
             y_expand: true,
         });
@@ -581,7 +581,6 @@ var WorkspacesDisplay = GObject.registerClass(
 class WorkspacesDisplay extends St.Widget {
     _init(controls, scrollAdjustment, overviewAdjustment) {
         super._init({
-            clip_to_allocation: true,
             layout_manager: new Clutter.BinLayout(),
         });
 
