@@ -17,23 +17,23 @@
 # Artur de Aquino Morais <artur.morais93@outlook.com>, 2016.
 # Enrico Nicoletto <liverig@gmail.com>, 2013-2019.
 # Ricardo Silva Veloso <ricvelozo@gmail.com>, 2019.
-# Rafael Fontenelle <rafaelff@gnome.org>, 2013-2021.
 # Bruno Lopes <brunolopesdsilv@gmail.com>, 2018, 2021.
+# Rafael Fontenelle <rafaelff@gnome.org>, 2013-2021.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2021-02-09 19:29+0000\n"
-"PO-Revision-Date: 2021-02-10 18:09-0300\n"
-"Last-Translator: Bruno Lopes <brunolopesdsilv@gmail.com>\n"
+"POT-Creation-Date: 2021-02-16 00:37+0000\n"
+"PO-Revision-Date: 2021-02-17 22:30-0300\n"
+"Last-Translator: Rafael Fontenelle <rafaelff@gnome.org>\n"
 "Language-Team: Brazilian Portuguese <gnome-pt_br-list@gnome.org>\n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1)\n"
-"X-Generator: Gtranslator 3.36.0\n"
+"X-Generator: Gtranslator 3.38.0\n"
 "X-Project-Style: gnome\n"
 
 #: data/50-gnome-shell-system.xml:6
@@ -465,7 +465,7 @@ msgstr "Site"
 msgid "Visit extension homepage"
 msgstr "Visita a página web da extensão"
 
-#: js/gdm/authPrompt.js:137 js/ui/audioDeviceSelection.js:58
+#: js/gdm/authPrompt.js:141 js/ui/audioDeviceSelection.js:58
 #: js/ui/components/networkAgent.js:111 js/ui/components/polkitAgent.js:138
 #: js/ui/endSessionDialog.js:438 js/ui/extensionDownloader.js:183
 #: js/ui/shellMountOperation.js:376 js/ui/shellMountOperation.js:386
@@ -474,7 +474,7 @@ msgid "Cancel"
 msgstr "Cancelar"
 
 #. Cisco LEAP
-#: js/gdm/authPrompt.js:239 js/ui/components/networkAgent.js:210
+#: js/gdm/authPrompt.js:244 js/ui/components/networkAgent.js:210
 #: js/ui/components/networkAgent.js:226 js/ui/components/networkAgent.js:250
 #: js/ui/components/networkAgent.js:271 js/ui/components/networkAgent.js:291
 #: js/ui/components/networkAgent.js:301 js/ui/components/polkitAgent.js:275
@@ -492,7 +492,7 @@ msgstr "Não está listado?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: js/gdm/loginDialog.js:913
+#: js/gdm/loginDialog.js:918
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(ex.: usuário ou %s)"
@@ -500,30 +500,28 @@ msgstr "(ex.: usuário ou %s)"
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: js/gdm/loginDialog.js:918 js/ui/components/networkAgent.js:246
+#: js/gdm/loginDialog.js:923 js/ui/components/networkAgent.js:246
 #: js/ui/components/networkAgent.js:269 js/ui/components/networkAgent.js:287
 msgid "Username"
 msgstr "Nome de usuário"
 
-#: js/gdm/loginDialog.js:1253
+#: js/gdm/loginDialog.js:1258
 msgid "Login Window"
 msgstr "Janela de sessão"
 
-#: js/gdm/util.js:379
+#: js/gdm/util.js:392
 msgid "Authentication error"
 msgstr "Erro de autenticação"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger on the fingerprint reader
-#: js/gdm/util.js:507
-#| msgid "(or swipe finger)"
+#: js/gdm/util.js:549
 msgid "(or swipe finger across reader)"
 msgstr "(ou deslize o dedo pelo leitor)"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can place their finger on the fingerprint reader instead
-#: js/gdm/util.js:511
-#| msgid "(or swipe finger)"
+#: js/gdm/util.js:554
 msgid "(or place finger on reader)"
 msgstr "(ou coloque o dedo no leitor)"
 
@@ -790,7 +788,7 @@ msgstr "Iniciar usando placa de vídeo integrada"
 msgid "Launch using Discrete Graphics Card"
 msgstr "Iniciar usando placa de vídeo dedicada"
 
-#: js/ui/appDisplay.js:3029 js/ui/dash.js:238
+#: js/ui/appDisplay.js:3029 js/ui/dash.js:245
 msgid "Remove from Favorites"
 msgstr "Remover dos favoritos"
 
@@ -1100,17 +1098,17 @@ msgstr "Desculpe, isto não funcionou. Por favor, tente novamente."
 msgid "%s is now known as %s"
 msgstr "%s agora é conhecido como %s"
 
-#: js/ui/ctrlAltTab.js:21 js/ui/viewSelector.js:320
+#: js/ui/ctrlAltTab.js:21 js/ui/overviewControls.js:338
 msgid "Windows"
 msgstr "Janelas"
 
-#: js/ui/dash.js:199 js/ui/dash.js:240
+#: js/ui/dash.js:204 js/ui/dash.js:247
 msgid "Show Applications"
 msgstr "Mostrar aplicativos"
 
 #. Translators: this is the name of the dock/favorites area on
 #. the left of the overview
-#: js/ui/dash.js:363
+#: js/ui/dash.js:394
 msgid "Dash"
 msgstr "Dash"
 
@@ -1536,7 +1534,7 @@ msgstr "Bloqueio de tela desabilitado"
 msgid "Screen Locking requires the GNOME display manager."
 msgstr "O bloqueio de tela requer o gerenciador de exibição do GNOME."
 
-#: js/ui/messageTray.js:1463
+#: js/ui/messageTray.js:1452
 msgid "System Information"
 msgstr "Informações do sistema"
 
@@ -1548,23 +1546,27 @@ msgstr "Artista desconhecido"
 msgid "Unknown title"
 msgstr "Título desconhecido"
 
-#: js/ui/overview.js:67
+#. Translators: this is the text displayed
+#. in the search entry when no search is
+#. active; it should not exceed ~30
+#. characters.
+#: js/ui/overviewControls.js:261
+msgid "Type to search"
+msgstr "Digite para pesquisar"
+
+#: js/ui/overviewControls.js:326
+msgid "Applications"
+msgstr "Aplicativos"
+
+#: js/ui/overview.js:68
 msgid "Undo"
 msgstr "Desfazer"
 
 #. Translators: This is the main view to select
 #. activities. See also note for "Activities" string.
-#: js/ui/overview.js:80
+#: js/ui/overview.js:81
 msgid "Overview"
 msgstr "Panorama"
-
-#. Translators: this is the text displayed
-#. in the search entry when no search is
-#. active; it should not exceed ~30
-#. characters.
-#: js/ui/overview.js:101
-msgid "Type to search"
-msgstr "Digite para pesquisar"
 
 #: js/ui/padOsd.js:96
 msgid "New shortcut…"
@@ -1616,7 +1618,7 @@ msgstr "Sair"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: js/ui/panel.js:391 js/ui/viewSelector.js:303
+#: js/ui/panel.js:391
 msgid "Activities"
 msgstr "Atividades"
 
@@ -1637,11 +1639,11 @@ msgstr "Executar um comando"
 msgid "Press ESC to close"
 msgstr "Pressione Esc para fechar"
 
-#: js/ui/runDialog.js:240
+#: js/ui/runDialog.js:238
 msgid "Restart is not available on Wayland"
 msgstr "Reinício não está disponível no Wayland"
 
-#: js/ui/runDialog.js:245
+#: js/ui/runDialog.js:243
 msgid "Restarting…"
 msgstr "Reiniciando…"
 
@@ -1664,6 +1666,11 @@ msgstr "Não foi possível bloquear"
 msgid "Lock was blocked by an application"
 msgstr "O bloqueio foi impedido por um aplicativo"
 
+#: js/ui/screenshot.js:141
+#| msgid "Screen Reader"
+msgid "Screenshot taken"
+msgstr "Captura de tela obtida"
+
 #: js/ui/search.js:824
 msgid "Searching…"
 msgstr "Pesquisando…"
@@ -1678,6 +1685,10 @@ msgid "%d more"
 msgid_plural "%d more"
 msgstr[0] "%d mais"
 msgstr[1] "%d mais"
+
+#: js/ui/searchController.js:87
+msgid "Search"
+msgstr "Pesquisar"
 
 #: js/ui/shellEntry.js:20
 msgid "Copy"
@@ -2288,14 +2299,6 @@ msgstr "Desbloquear janela"
 msgid "Log in as another user"
 msgstr "Iniciar sessão como outro usuário"
 
-#: js/ui/viewSelector.js:307
-msgid "Applications"
-msgstr "Aplicativos"
-
-#: js/ui/viewSelector.js:333
-msgid "Search"
-msgstr "Pesquisar"
-
 #: js/ui/welcomeDialog.js:35
 #, javascript-format
 msgid "Welcome to GNOME %s"
@@ -2345,7 +2348,7 @@ msgstr[1] "Alterações nas configurações serão revertidas em %d segundos"
 
 #. Translators: This represents the size of a window. The first number is
 #. * the width of the window and the second is the height.
-#: js/ui/windowManager.js:549
+#: js/ui/windowManager.js:540
 #, javascript-format
 msgid "%d × %d"
 msgstr "%d × %d"
@@ -2523,11 +2526,11 @@ msgid_plural "%d extensions will be updated on next login."
 msgstr[0] "%d extensão será atualizada na próxima sessão."
 msgstr[1] "%d extensões serão atualizadas na próxima sessão."
 
-#: subprojects/extensions-app/js/main.js:493
+#: subprojects/extensions-app/js/main.js:494
 msgid "The extension is incompatible with the current GNOME version"
 msgstr "A extensão é incompatível com a versão atual do GNOME"
 
-#: subprojects/extensions-app/js/main.js:496
+#: subprojects/extensions-app/js/main.js:497
 msgid "The extension had an error"
 msgstr "A extensão apresentou um erro"
 
