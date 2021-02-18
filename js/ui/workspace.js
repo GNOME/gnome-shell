@@ -856,7 +856,7 @@ var WorkspaceLayout = GObject.registerClass({
 
 var WorkspaceBackground = GObject.registerClass(
 class WorkspaceBackground extends St.Widget {
-    _init(monitorIndex) {
+    _init(monitorIndex, stateAdjustment) {
         super._init({
             style_class: 'workspace-background',
             layout_manager: new Clutter.BinLayout(),
@@ -866,6 +866,9 @@ class WorkspaceBackground extends St.Widget {
 
         this._monitorIndex = monitorIndex;
         this._workarea = Main.layoutManager.getWorkAreaForMonitor(monitorIndex);
+
+        this._stateAdjustment = stateAdjustment;
+        stateAdjustment.connect('notify::value', () => this._updateBorderRadius());
 
         this._bin = new Clutter.Actor({
             layout_manager: new Clutter.BinLayout(),
@@ -896,6 +899,15 @@ class WorkspaceBackground extends St.Widget {
         this._updateRoundedClipBounds();
 
         this.connect('destroy', this._onDestroy.bind(this));
+    }
+
+    _updateBorderRadius() {
+        const { scaleFactor } = St.ThemeContext.get_for_stage(global.stage);
+        const cornerRadius = scaleFactor * BACKGROUND_CORNER_RADIUS_PIXELS;
+
+        const backgroundContent = this._bgManager.backgroundActor.content;
+        backgroundContent.rounded_clip_radius =
+            Util.lerp(0, cornerRadius, this._stateAdjustment.value);
     }
 
     _updateRoundedClipBounds() {
@@ -942,10 +954,6 @@ class WorkspaceBackground extends St.Widget {
             delete this._workareasChangedId;
         }
     }
-
-    set cornerRadius(radius) {
-        this._bgManager.backgroundActor.content.rounded_clip_radius = radius;
-    }
 });
 
 /**
@@ -960,12 +968,14 @@ class Workspace extends St.Widget {
             layout_manager: new Clutter.BinLayout(),
         });
 
+        const layoutManager = new WorkspaceLayout(metaWorkspace, monitorIndex);
+
         // Background
-        this._background = new WorkspaceBackground(monitorIndex);
+        this._background =
+            new WorkspaceBackground(monitorIndex, layoutManager.stateAdjustment);
         this.add_child(this._background);
 
         // Window previews
-        const layoutManager = new WorkspaceLayout(metaWorkspace, monitorIndex);
         this._container = new Clutter.Actor({
             reactive: true,
             x_expand: true,
@@ -1031,17 +1041,6 @@ class Workspace extends St.Widget {
 
         // DND requires this to be set
         this._delegate = this;
-
-        layoutManager.stateAdjustment.connect('notify::value',
-            () => this._updateBackgroundBorderRadius());
-    }
-
-    _updateBackgroundBorderRadius() {
-        const { scaleFactor } = St.ThemeContext.get_for_stage(global.stage);
-        const cornerRadius = scaleFactor * BACKGROUND_CORNER_RADIUS_PIXELS;
-        const { stateAdjustment } = this._container.layout_manager;
-        this._background.cornerRadius =
-            Util.lerp(0, cornerRadius, stateAdjustment.value);
     }
 
     _shouldLeaveOverview() {
