@@ -561,7 +561,7 @@ var FocusTracker = class {
         global.display.connect('grab-op-begin', (display, window, op) => {
             if (window == this._currentWindow &&
                 (op == Meta.GrabOp.MOVING || op == Meta.GrabOp.KEYBOARD_MOVING))
-                this.emit('reset');
+                this.emit('window-grabbed');
         });
 
         /* Valid for wayland clients */
@@ -1255,7 +1255,7 @@ var Keyboard = GObject.registerClass({
         this._focusTracker = new FocusTracker();
         this._connectSignal(this._focusTracker, 'position-changed',
             this._onFocusPositionChanged.bind(this));
-        this._connectSignal(this._focusTracker, 'reset', () => {
+        this._connectSignal(this._focusTracker, 'window-grabbed', () => {
             this._setFocusWindow(null);
         });
         // Valid only for X11
