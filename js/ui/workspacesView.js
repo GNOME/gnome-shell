@@ -231,7 +231,7 @@ class WorkspacesView extends WorkspacesViewBase {
             availableSpace = (width - workspaceSize) / 2;
         }
 
-        const spacing = (availableSpace - workspaceSize * 0.05) * (1 - fitMode);
+        const spacing = (availableSpace - workspaceSize * 0.4) * (1 - fitMode);
         const { scaleFactor } = St.ThemeContext.get_for_stage(global.stage);
 
         return Math.clamp(spacing, WORKSPACE_MIN_SPACING * scaleFactor,
