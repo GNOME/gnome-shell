@@ -5,6 +5,7 @@ const { Clutter, GObject, Shell, St } = imports.gi;
 
 const Config = imports.misc.config;
 const Dialog = imports.ui.dialog;
+const Main = imports.ui.main;
 const ModalDialog = imports.ui.modalDialog;
 
 var DialogResponse = {
@@ -51,8 +52,10 @@ class WelcomeDialog extends ModalDialog.ModalDialog {
     }
 
     _sendResponse(response) {
-        if (response === DialogResponse.TAKE_TOUR)
+        if (response === DialogResponse.TAKE_TOUR) {
             this._tourAppInfo.launch(0, -1, Shell.AppLaunchGpu.APP_PREF);
+            Main.overview.hide();
+        }
 
         this.close();
     }
