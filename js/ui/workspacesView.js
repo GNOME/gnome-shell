@@ -3,6 +3,7 @@
 
 const { Clutter, Gio, GObject, Meta, Shell, St } = imports.gi;
 
+const Layout = imports.ui.layout;
 const Main = imports.ui.main;
 const OverviewControls = imports.ui.overviewControls;
 const SwipeTracker = imports.ui.swipeTracker;
@@ -591,6 +592,85 @@ class ExtraWorkspaceView extends WorkspacesViewBase {
     }
 });
 
+const SecondaryMonitorDisplay = GObject.registerClass(
+class SecondaryMonitorDisplay extends St.Widget {
+    _init(monitorIndex, controls, scrollAdjustment, fitModeAdjustment, overviewAdjustment) {
+        this._monitorIndex = monitorIndex;
+        this._controls = controls;
+        this._scrollAdjustment = scrollAdjustment;
+        this._fitModeAdjustment = fitModeAdjustment;
+        this._overviewAdjustment = overviewAdjustment;
+
+        super._init({
+            constraints: new Layout.MonitorConstraint({
+                index: this._monitorIndex,
+                work_area: true,
+            }),
+        });
+
+        this.connect('destroy', () => this._onDestroy());
+
+        this._settings = new Gio.Settings({ schema_id: MUTTER_SCHEMA });
+        this._settings.connect('changed::workspaces-only-on-primary',
+            () => this._updateWorkspacesView());
+        this._updateWorkspacesView();
+    }
+
+    vfunc_allocate(box) {
+        this.set_allocation(box);
+
+        const themeNode = this.get_theme_node();
+        const contentBox = themeNode.get_content_box(box);
+
+        this._workspacesView.allocate(contentBox);
+    }
+
+    _onDestroy() {
+        if (this._settings)
+            this._settings.run_dispose();
+        this._settings = null;
+    }
+
+    _updateWorkspacesView() {
+        if (this._workspacesView)
+            this._workspacesView.destroy();
+
+        if (this._settings.get_boolean('workspaces-only-on-primary')) {
+            this._workspacesView = new ExtraWorkspaceView(
+                this._monitorIndex,
+                this._overviewAdjustment);
+        } else {
+            this._workspacesView = new WorkspacesView(
+                this._monitorIndex,
+                this._controls,
+                this._scrollAdjustment,
+                this._fitModeAdjustment,
+                this._overviewAdjustment);
+        }
+        this.add_child(this._workspacesView);
+    }
+
+    getActiveWorkspace() {
+        return this._workspacesView.getActiveWorkspace();
+    }
+
+    prepareToLeaveOverview() {
+        this._workspacesView.prepareToLeaveOverview();
+    }
+
+    syncStacking(stackIndices) {
+        this._workspacesView.syncStacking(stackIndices);
+    }
+
+    startTouchGesture() {
+        this._workspacesView.startTouchGesture();
+    }
+
+    endTouchGesture() {
+        this._workspacesView.endTouchGesture();
+    }
+});
+
 var WorkspacesDisplay = GObject.registerClass(
 class WorkspacesDisplay extends St.Widget {
     _init(controls, scrollAdjustment, overviewAdjustment) {
@@ -644,9 +724,6 @@ class WorkspacesDisplay extends St.Widget {
         this._workspacesViews = [];
 
         this._settings = new Gio.Settings({ schema_id: MUTTER_SCHEMA });
-        this._settings.connect('changed::workspaces-only-on-primary',
-                               this._workspacesOnlyOnPrimaryChanged.bind(this));
-        this._workspacesOnlyOnPrimaryChanged();
 
         this._restackedNotifyId = 0;
         this._scrollEventId = 0;
@@ -840,15 +917,6 @@ class WorkspacesDisplay extends St.Widget {
         super.vfunc_hide();
     }
 
-    _workspacesOnlyOnPrimaryChanged() {
-        this._workspacesOnlyOnPrimary = this._settings.get_boolean('workspaces-only-on-primary');
-
-        if (!Main.overview.visible)
-            return;
-
-        this._updateWorkspacesViews();
-    }
-
     _updateWorkspacesViews() {
         for (let i = 0; i < this._workspacesViews.length; i++)
             this._workspacesViews[i].destroy();
@@ -858,28 +926,26 @@ class WorkspacesDisplay extends St.Widget {
         let monitors = Main.layoutManager.monitors;
         for (let i = 0; i < monitors.length; i++) {
             let view;
-            if (this._workspacesOnlyOnPrimary && i !== this._primaryIndex) {
-                view = new ExtraWorkspaceView(i, this._overviewAdjustment);
-            } else {
+            if (i === this._primaryIndex) {
                 view = new WorkspacesView(i,
                     this._controls,
                     this._scrollAdjustment,
                     this._fitModeAdjustment,
                     this._overviewAdjustment);
-            }
 
-            this._workspacesViews.push(view);
-
-            if (i === this._primaryIndex) {
                 view.visible = this._primaryVisible;
                 this.bind_property('opacity', view, 'opacity', GObject.BindingFlags.SYNC_CREATE);
                 this.add_child(view);
             } else {
-                const { x, y, width, height } =
-                    Main.layoutManager.getWorkAreaForMonitor(i);
-                view.set({ x, y, width, height });
+                view = new SecondaryMonitorDisplay(i,
+                    this._controls,
+                    this._scrollAdjustment,
+                    this._fitModeAdjustment,
+                    this._overviewAdjustment);
                 Main.layoutManager.overviewGroup.add_actor(view);
             }
+
+            this._workspacesViews.push(view);
         }
     }
 
@@ -939,6 +1005,10 @@ class WorkspacesDisplay extends St.Widget {
         }
         Main.wm.actionMoveWorkspace(ws);
         return Clutter.EVENT_STOP;
+    }
+
+    get _workspacesOnlyOnPrimary() {
+        return this._settings.get_boolean('workspaces-only-on-primary');
     }
 
     get fitModeAdjustment() {
