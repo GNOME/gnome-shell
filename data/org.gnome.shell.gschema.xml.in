@@ -50,7 +50,7 @@
       </description>
     </key>
     <key name="favorite-apps" type="as">
-      <default>[ 'org.gnome.Epiphany.desktop', 'org.gnome.Geary.desktop', 'org.gnome.Calendar.desktop', 'org.gnome.Music.desktop', 'org.gnome.Photos.desktop', 'org.gnome.Nautilus.desktop', 'org.gnome.Software.desktop' ]</default>
+      <default>[ 'org.gnome.Epiphany.desktop', 'org.gnome.Calendar.desktop', 'org.gnome.Music.desktop', 'org.gnome.Nautilus.desktop', 'org.gnome.Software.desktop' ]</default>
       <summary>List of desktop file IDs for favorite applications</summary>
       <description>
         The applications corresponding to these identifiers
@@ -113,7 +113,31 @@
       </description>
     </key>
     <key name="app-picker-layout" type="aa{sv}">
-      <default>[]</default>
+      <default><![CDATA[
+        [{
+          'org.gnome.Geary.desktop': <{'position': <0>}>,
+          'org.gnome.Contacts.desktop': <{'position': <1>}>,
+          'org.gnome.Weather.desktop': <{'position': <2>}>,
+          'org.gnome.clocks.desktop': <{'position': <3>}>,
+          'org.gnome.Maps.desktop': <{'position': <4>}>,
+          'org.gnome.Books.desktop': <{'position': <5>}>,
+          'org.gnome.Photos.desktop': <{'position': <6>}>,
+          'org.gnome.Totem.desktop': <{'position': <7>}>,
+          'org.gnome.Calculator.desktop': <{'position': <8>}>,
+          'org.gnome.gedit.desktop': <{'position': <9>}>,
+          'simple-scan.desktop': <{'position': <10>}>,
+          'gnome-control-center.desktop': <{'position': <11>}>,
+          'gnome-system-monitor.desktop': <{'position': <12>}>,
+          'org.gnome.Boxes.desktop': <{'position': <13>}>,
+          'org.gnome.Terminal.desktop': <{'position': <14>}>,
+          'Utilities': <{'position': <15>}>,
+          'org.gnome.Characters.desktop': <{'position': <16>}>,
+          'yelp.desktop': <{'position': <17>}>,
+          'org.gnome.Screenshot.desktop': <{'position': <18>}>,
+          'org.gnome.Cheese.desktop': <{'position': <19>}>,
+          'org.gnome.font-viewer.desktop': <{'position': <20>}>
+        }]
+      ]]></default>
       <summary>Layout of the app picker</summary>
       <description>
         Layout of the app picker. Each entry in the array is a page. Pages are
