@@ -125,10 +125,8 @@ $app_grid_fg_color: #fff;
   }
 }
 
-// Some hacks I don't even know
 .apps-scroll-view {
-  // horizontal padding to make sure scrollbars or dash don't overlap content
-  padding: 0 88px;
+  padding: 0;
 }
 
 // shutdown and other actions in the grid
@@ -140,20 +138,26 @@ $app_grid_fg_color: #fff;
 }
 
 .page-navigation-hint {
-  background: rgba(255, 255, 255, 0.05);
-  width: 88px;
+  width: 300px;
 
   &.dnd {
     background: rgba(255, 255, 255, 0.1);
   }
 
-  &.next {
-    &:ltr { border-radius: 15px 0px 0px 15px; }
-    &:rtl { border-radius: 0px 15px 15px 0px; }
+  &.next:ltr,
+  &.previous:rtl {
+    background-gradient-start: rgba(255, 255, 255, 0.05);
+    background-gradient-end: transparent;
+    background-gradient-direction: horizontal;
+    border-radius: 15px 0px 0px 15px;
   }
-  &.previous {
-    &:ltr { border-radius: 0px 15px 15px 0px; }
-    &:rtl { border-radius: 15px 0px 0px 15px; }
+
+  &.previous:ltr,
+  &.next:rtl {
+    background-gradient-start: transparent;
+    background-gradient-end: rgba(255, 255, 255, 0.05);
+    background-gradient-direction: horizontal;
+    border-radius: 0px 15px 15px 0px;
   }
 }
 

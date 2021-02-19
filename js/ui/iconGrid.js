@@ -1223,7 +1223,7 @@ var IconGrid = GObject.registerClass({
         }
     }
 
-    _findBestModeForSize(width, height) {
+    findBestModeForSize(width, height) {
         const { pagePadding } = this.layout_manager;
         width -= pagePadding.left + pagePadding.right;
         height -= pagePadding.top + pagePadding.bottom;
@@ -1446,7 +1446,6 @@ var IconGrid = GObject.registerClass({
     }
 
     adaptToSize(width, height) {
-        this._findBestModeForSize(width, height);
         this.layout_manager.adaptToSize(width, height);
     }
 
