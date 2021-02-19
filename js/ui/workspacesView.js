@@ -228,8 +228,10 @@ class WorkspacesView extends WorkspacesViewBase {
         }
 
         const spacing = (availableSpace - workspaceSize * 0.05) * (1 - fitMode);
+        const { scaleFactor } = St.ThemeContext.get_for_stage(global.stage);
 
-        return Math.clamp(spacing, WORKSPACE_MIN_SPACING, WORKSPACE_MAX_SPACING);
+        return Math.clamp(spacing, WORKSPACE_MIN_SPACING * scaleFactor,
+            WORKSPACE_MAX_SPACING * scaleFactor);
     }
 
     _getWorkspaceModeForOverviewState(state) {
