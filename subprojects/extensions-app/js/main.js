@@ -41,7 +41,10 @@ var Application = GObject.registerClass(
 class Application extends Gtk.Application {
     _init() {
         GLib.set_prgname('gnome-extensions-app');
-        super._init({ application_id: Package.name });
+        super._init({
+            application_id: Package.name,
+            flags: Gio.ApplicationFlags.HANDLES_OPEN,
+        });
 
         this.connect('window-removed', (a, window) => window.run_dispose());
     }
@@ -53,6 +56,49 @@ class Application extends Gtk.Application {
     vfunc_activate() {
         this._shellProxy.CheckForUpdatesRemote();
         this._window.present();
+    }
+
+    vfunc_open(files) {
+        this.activate();
+
+        let fileUris = files.map(f => f.get_uri());
+        if (fileUris.length !== 1)
+            return;
+
+        const [fileUri] = fileUris;
+
+        try {
+            const uri = GLib.Uri.parse(fileUri, GLib.UriFlags.NONE);
+
+            const scheme = uri.get_scheme();
+            const host = uri.get_host();
+            const params = GLib.Uri.parse_params(uri.get_query(), -1, ';', GLib.UriFlags.NONE);
+
+            if (scheme !== 'gnome-extensions') {
+                log(`Invalid protocol: ${scheme}`);
+                return;
+            }
+
+            if (host === 'install' && 'uuid' in params) {
+                const uuid = params['uuid'];
+                this._shellProxy.InstallRemoteExtensionRemote(uuid, (res, error) => {
+                    if (res.toString() === 'successful' && !error)
+                        log(`Installed ${uuid}`);
+
+                    if (!error)
+                        return;
+
+                    if (error.message.endsWith('404'))
+                        log(`Extension not found: ${uuid}`);
+                    else
+                        log(`Failed to install ${uuid}: ${error.message}`);
+                });
+            } else {
+                log(`Unsupported action or missing parameters: ${host}`);
+            }
+        } catch (e) {
+            logError(e, `Failed to open ${fileUri}`);
+        }
     }
 
     vfunc_startup() {
