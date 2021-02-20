@@ -9,6 +9,7 @@ const OverviewControls = imports.ui.overviewControls;
 const SwipeTracker = imports.ui.swipeTracker;
 const Util = imports.misc.util;
 const Workspace = imports.ui.workspace;
+const { ThumbnailsBox, MAX_THUMBNAIL_SCALE } = imports.ui.workspaceThumbnail;
 
 var WORKSPACE_SWITCH_TIME = 250;
 
@@ -604,6 +605,7 @@ class SecondaryMonitorDisplay extends St.Widget {
         this._overviewAdjustment = overviewAdjustment;
 
         super._init({
+            style_class: 'secondary-monitor-workspaces',
             constraints: new Layout.MonitorConstraint({
                 index: this._monitorIndex,
                 work_area: true,
@@ -612,13 +614,58 @@ class SecondaryMonitorDisplay extends St.Widget {
 
         this.connect('destroy', () => this._onDestroy());
 
+        this._thumbnails = new ThumbnailsBox(
+            this._scrollAdjustment, monitorIndex);
+        this.add_child(this._thumbnails);
+
+        this._thumbnails.connect('notify::should-show',
+            () => this._updateThumbnailVisibility());
+
+        this._stateChangedId = this._overviewAdjustment.connect('notify::value',
+            () => this._updateThumbnailParams());
+
         this._settings = new Gio.Settings({ schema_id: MUTTER_SCHEMA });
         this._settings.connect('changed::workspaces-only-on-primary',
-            () => this._updateWorkspacesView());
-        this._updateWorkspacesView();
+            () => this._workspacesOnPrimaryChanged());
+        this._workspacesOnPrimaryChanged();
     }
 
-    _getWorkspacesBoxForState(state, box, padding) {
+    _getThumbnailParamsForState(state) {
+        const { ControlsState } = OverviewControls;
+
+        let opacity, scale;
+        switch (state) {
+        case ControlsState.HIDDEN:
+        case ControlsState.WINDOW_PICKER:
+            opacity = 255;
+            scale = 1;
+            break;
+        case ControlsState.APP_GRID:
+            opacity = 0;
+            scale = 0.5;
+            break;
+        default:
+            opacity = 255;
+            scale = 1;
+            break;
+        }
+
+        return { opacity, scale };
+    }
+
+    _getThumbnailsHeight(box) {
+        if (!this._thumbnails.visible)
+            return 0;
+
+        const [width, height] = box.get_size();
+        const { expandFraction } = this._thumbnails;
+        const [thumbnailsHeight] = this._thumbnails.get_preferred_height(width);
+        return Math.min(
+            thumbnailsHeight * expandFraction,
+            height * MAX_THUMBNAIL_SCALE);
+    }
+
+    _getWorkspacesBoxForState(state, box, padding, thumbnailsHeight, spacing) {
         const { ControlsState } = OverviewControls;
         const workspaceBox = box.copy();
         const [width, height] = workspaceBox.get_size();
@@ -627,6 +674,11 @@ class SecondaryMonitorDisplay extends St.Widget {
         case ControlsState.HIDDEN:
             break;
         case ControlsState.WINDOW_PICKER:
+            workspaceBox.set_origin(0, padding + thumbnailsHeight + spacing);
+            workspaceBox.set_size(
+                width,
+                height - 2 * padding - thumbnailsHeight - spacing);
+            break;
         case ControlsState.APP_GRID:
             workspaceBox.set_origin(0, padding);
             workspaceBox.set_size(
@@ -643,16 +695,27 @@ class SecondaryMonitorDisplay extends St.Widget {
 
         const themeNode = this.get_theme_node();
         const contentBox = themeNode.get_content_box(box);
-        const [, height] = contentBox.get_size();
+        const [width, height] = contentBox.get_size();
+        const { expandFraction } = this._thumbnails;
+        const spacing = themeNode.get_length('spacing') * expandFraction;
         const padding =
             Math.round((1 - SECONDARY_WORKSPACE_SCALE) * height / 2);
+
+        const thumbnailsHeight = this._getThumbnailsHeight(contentBox);
+
+        if (this._thumbnails.visible) {
+            const childBox = new Clutter.ActorBox();
+            childBox.set_origin(0, padding);
+            childBox.set_size(width, thumbnailsHeight);
+            this._thumbnails.allocate(childBox);
+        }
 
         const {
             currentState, initialState, finalState, transitioning, progress,
         } = this._overviewAdjustment.getStateTransitionParams();
 
         let workspacesBox;
-        const workspaceParams = [contentBox, padding];
+        const workspaceParams = [contentBox, padding, thumbnailsHeight, spacing];
         if (!transitioning) {
             workspacesBox =
                 this._getWorkspacesBoxForState(currentState, ...workspaceParams);
@@ -670,6 +733,15 @@ class SecondaryMonitorDisplay extends St.Widget {
         if (this._settings)
             this._settings.run_dispose();
         this._settings = null;
+
+        if (this._stateChangedId)
+            this._overviewAdjustment.disconnect(this._stateChangedId);
+        this._stateChangedId = 0;
+    }
+
+    _workspacesOnPrimaryChanged() {
+        this._updateWorkspacesView();
+        this._updateThumbnailVisibility();
     }
 
     _updateWorkspacesView() {
@@ -689,6 +761,41 @@ class SecondaryMonitorDisplay extends St.Widget {
                 this._overviewAdjustment);
         }
         this.add_child(this._workspacesView);
+    }
+
+    _updateThumbnailVisibility() {
+        const visible =
+            this._thumbnails.should_show &&
+            !this._settings.get_boolean('workspaces-only-on-primary');
+
+        if (this._thumbnails.visible === visible)
+            return;
+
+        this._thumbnails.show();
+        this._thumbnails.ease_property('expand-fraction', visible ? 1 : 0, {
+            duration: OverviewControls.SIDE_CONTROLS_ANIMATION_TIME,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            onComplete: () => (this._thumbnails.visible = visible),
+        });
+    }
+
+    _updateThumbnailParams() {
+        const { initialState, finalState, progress } =
+            this._overviewAdjustment.getStateTransitionParams();
+
+        const initialParams = this._getThumbnailParamsForState(initialState);
+        const finalParams = this._getThumbnailParamsForState(finalState);
+
+        const opacity =
+            Util.lerp(initialParams.opacity, finalParams.opacity, progress);
+        const scale =
+            Util.lerp(initialParams.scale, finalParams.scale, progress);
+
+        this._thumbnails.set({
+            opacity,
+            scale_x: scale,
+            scale_y: scale,
+        });
     }
 
     getActiveWorkspace() {
