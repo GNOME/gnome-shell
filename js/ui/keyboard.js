@@ -1798,7 +1798,7 @@ var Keyboard = GObject.registerClass({
         this._setEmojiActive(false);
     }
 
-    close() {
+    close(immediate = false) {
         this._clearShowIdle();
         this._keyboardRequested = false;
 
@@ -1806,6 +1806,12 @@ var Keyboard = GObject.registerClass({
             return;
 
         this._clearKeyboardRestTimer();
+
+        if (immediate) {
+            this._close();
+            return;
+        }
+
         this._keyboardRestingId = GLib.timeout_add(GLib.PRIORITY_DEFAULT,
             KEYBOARD_REST_TIME,
             () => {
