@@ -684,6 +684,7 @@ var ThumbnailsBox = GObject.registerClass({
         this._settings = new Gio.Settings({ schema_id: MUTTER_SCHEMA });
         this._settings.connect('changed::dynamic-workspaces',
             () => this._updateShouldShow());
+        this._updateShouldShow();
 
         this._monitorsChangedId =
             Main.layoutManager.connect('monitors-changed', () => {
@@ -1010,8 +1011,6 @@ var ThumbnailsBox = GObject.registerClass({
             this._stateCounts[ThumbnailState[key]] = 0;
 
         this.addThumbnails(0, workspaceManager.n_workspaces);
-
-        this._updateShouldShow();
     }
 
     _destroyThumbnails() {
