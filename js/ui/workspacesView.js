@@ -19,6 +19,8 @@ const WORKSPACE_MAX_SPACING = 80;
 
 const WORKSPACE_INACTIVE_SCALE = 0.94;
 
+const SECONDARY_WORKSPACE_SCALE = 0.70;
+
 var WorkspacesViewBase = GObject.registerClass({
     GTypeFlags: GObject.TypeFlags.ABSTRACT,
 }, class WorkspacesViewBase extends St.Widget {
@@ -616,13 +618,52 @@ class SecondaryMonitorDisplay extends St.Widget {
         this._updateWorkspacesView();
     }
 
+    _getWorkspacesBoxForState(state, box, padding) {
+        const { ControlsState } = OverviewControls;
+        const workspaceBox = box.copy();
+        const [width, height] = workspaceBox.get_size();
+
+        switch (state) {
+        case ControlsState.HIDDEN:
+            break;
+        case ControlsState.WINDOW_PICKER:
+        case ControlsState.APP_GRID:
+            workspaceBox.set_origin(0, padding);
+            workspaceBox.set_size(
+                width,
+                height - 2 * padding);
+            break;
+        }
+
+        return workspaceBox;
+    }
+
     vfunc_allocate(box) {
         this.set_allocation(box);
 
         const themeNode = this.get_theme_node();
         const contentBox = themeNode.get_content_box(box);
+        const [, height] = contentBox.get_size();
+        const padding =
+            Math.round((1 - SECONDARY_WORKSPACE_SCALE) * height / 2);
 
-        this._workspacesView.allocate(contentBox);
+        const {
+            currentState, initialState, finalState, transitioning, progress,
+        } = this._overviewAdjustment.getStateTransitionParams();
+
+        let workspacesBox;
+        const workspaceParams = [contentBox, padding];
+        if (!transitioning) {
+            workspacesBox =
+                this._getWorkspacesBoxForState(currentState, ...workspaceParams);
+        } else {
+            const initialBox =
+                this._getWorkspacesBoxForState(initialState, ...workspaceParams);
+            const finalBox =
+                this._getWorkspacesBoxForState(finalState, ...workspaceParams);
+            workspacesBox = initialBox.interpolate(finalBox, progress);
+        }
+        this._workspacesView.allocate(workspacesBox);
     }
 
     _onDestroy() {
