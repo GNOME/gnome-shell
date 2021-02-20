@@ -1765,7 +1765,7 @@ var Keyboard = GObject.registerClass({
             return;
 
         this._relayout();
-        this.animateShow();
+        this._animateShow();
 
         this._setEmojiActive(false);
     }
@@ -1792,11 +1792,11 @@ var Keyboard = GObject.registerClass({
         if (this._keyboardRequested)
             return;
 
-        this.animateHide();
+        this._animateHide();
         this.setCursorLocation(null);
     }
 
-    animateShow() {
+    _animateShow() {
         if (this._focusWindow)
             this._animateWindow(this._focusWindow, true);
 
@@ -1824,7 +1824,7 @@ var Keyboard = GObject.registerClass({
         keyboardBox.queue_relayout();
     }
 
-    animateHide(immediate) {
+    _animateHide(immediate) {
         if (this._focusWindow)
             this._animateWindow(this._focusWindow, false);
 
@@ -1869,7 +1869,7 @@ var Keyboard = GObject.registerClass({
 
     gestureCancel() {
         if (this._gestureInProgress)
-            this.animateHide();
+            this._animateHide();
         this._gestureInProgress = false;
     }
 
