@@ -1265,6 +1265,7 @@ var Keyboard = GObject.registerClass({
 
         this._languagePopup = null;
         this._focusWindow = null;
+        this._focusWindowStartY = null;
 
         this._latched = false; // current level is latched
 
@@ -1890,10 +1891,9 @@ var Keyboard = GObject.registerClass({
         let progress = Math.min(delta, this.height) / this.height;
         this.translation_y = -this.height * progress;
         this.opacity = 255 * progress;
-        if (this._focusWindow) {
-            const windowActor = this._focusWindow.get_compositor_private();
-            windowActor.translation_y = -this.height * progress;
-        }
+        const windowActor = this._focusWindow?.get_compositor_private();
+        if (windowActor)
+            windowActor.y = this._focusWindowStartY - (this.height * progress);
     }
 
     gestureActivate() {
@@ -1926,54 +1926,50 @@ var Keyboard = GObject.registerClass({
         this._showIdleId = 0;
     }
 
-    _windowSlideAnimationComplete(window, delta) {
+    _windowSlideAnimationComplete(window, finalY) {
         // Synchronize window positions again.
-        const windowActor = window.get_compositor_private();
-        if (windowActor)
-            windowActor.translation_y = 0;
+        const frameRect = window.get_frame_rect();
+        const bufferRect = window.get_buffer_rect();
 
-        let frameRect = window.get_frame_rect();
-        frameRect.y += delta;
+        finalY += frameRect.y - bufferRect.y;
+
+        frameRect.y = finalY;
         window.move_frame(true, frameRect.x, frameRect.y);
     }
 
     _animateWindow(window, show) {
         let windowActor = window.get_compositor_private();
-        let deltaY = Main.layoutManager.keyboardBox.height;
         if (!windowActor)
             return;
 
-        if (show) {
-            windowActor.ease({
-                translation_y: -deltaY,
-                duration: KEYBOARD_ANIMATION_TIME,
-                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-                onComplete: () => {
-                    this._windowSlideAnimationComplete(window, -deltaY);
-                },
-            });
-        } else {
-            windowActor.ease({
-                translation_y: deltaY,
-                duration: KEYBOARD_ANIMATION_TIME,
-                mode: Clutter.AnimationMode.EASE_IN_QUAD,
-                onComplete: () => {
-                    this._windowSlideAnimationComplete(window, deltaY);
-                },
-            });
-        }
+        const finalY = show
+            ? this._focusWindowStartY - Main.layoutManager.keyboardBox.height
+            : this._focusWindowStartY;
+
+        windowActor.ease({
+            y: finalY,
+            duration: KEYBOARD_ANIMATION_TIME,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            onStopped: () => {
+                windowActor.y = finalY;
+                this._windowSlideAnimationComplete(window, finalY);
+            },
+        });
     }
 
     _setFocusWindow(window) {
         if (this._focusWindow === window)
             return;
 
-        if (this._keyboardVisible) {
-            if (this._focusWindow)
-                this._animateWindow(this._focusWindow, false);
-            if (window)
-                this._animateWindow(window, true);
-        }
+        if (this._keyboardVisible && this._focusWindow)
+            this._animateWindow(this._focusWindow, false);
+
+        const windowActor = window?.get_compositor_private();
+        windowActor?.remove_transition('y');
+        this._focusWindowStartY = windowActor ? windowActor.y : null;
+
+        if (this._keyboardVisible && window)
+            this._animateWindow(window, true);
 
         this._focusWindow = window;
     }
