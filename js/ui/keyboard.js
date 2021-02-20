@@ -2014,11 +2014,19 @@ var Keyboard = GObject.registerClass({
         let monitor = Main.layoutManager.keyboardMonitor;
 
         if (window && monitor) {
-            let keyboardHeight = Main.layoutManager.keyboardBox.height;
+            const keyboardHeight = Main.layoutManager.keyboardBox.height;
+            const keyboardY1 = (monitor.y + monitor.height) - keyboardHeight;
 
-            if (y + h >= monitor.y + monitor.height - keyboardHeight)
+            if (this._focusWindow === window) {
+                if (y + h + keyboardHeight < keyboardY1)
+                    this._setFocusWindow(null);
+
+                return;
+            }
+
+            if (y + h >= keyboardY1)
                 this._setFocusWindow(window);
-            else if (y < keyboardHeight)
+            else
                 this._setFocusWindow(null);
         } else {
             this._setFocusWindow(null);
