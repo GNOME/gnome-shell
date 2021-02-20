@@ -1743,12 +1743,13 @@ var Keyboard = GObject.registerClass({
             return;
         }
 
+        this._clearKeyboardRestTimer();
+
         if (immediate) {
             this._open();
             return;
         }
 
-        this._clearKeyboardRestTimer();
         this._keyboardRestingId = GLib.timeout_add(GLib.PRIORITY_DEFAULT,
             KEYBOARD_REST_TIME,
             () => {
