@@ -654,8 +654,8 @@ var ThumbnailsBox = GObject.registerClass({
         this._targetScale = 0;
         this._scale = 0;
         this._expandFraction = 1;
+        this._updateStateId = 0;
         this._pendingScaleUpdate = false;
-        this._stateUpdateQueued = false;
         this._animatingIndicator = false;
 
         this._shouldShow = true;
@@ -666,60 +666,86 @@ var ThumbnailsBox = GObject.registerClass({
 
         this._thumbnails = [];
 
-        Main.overview.connect('showing',
-                              this._createThumbnails.bind(this));
-        Main.overview.connect('hidden',
-                              this._destroyThumbnails.bind(this));
-
-        Main.overview.connect('item-drag-begin',
-                              this._onDragBegin.bind(this));
-        Main.overview.connect('item-drag-end',
-                              this._onDragEnd.bind(this));
-        Main.overview.connect('item-drag-cancelled',
-                              this._onDragCancelled.bind(this));
-        Main.overview.connect('window-drag-begin',
-                              this._onDragBegin.bind(this));
-        Main.overview.connect('window-drag-end',
-                              this._onDragEnd.bind(this));
-        Main.overview.connect('window-drag-cancelled',
-                              this._onDragCancelled.bind(this));
+        this._overviewSignals = [
+            Main.overview.connect('showing',
+                () => this._createThumbnails()),
+            Main.overview.connect('hidden',
+                () => this._destroyThumbnails()),
+            Main.overview.connect('item-drag-begin',
+                () => this._onDragBegin()),
+            Main.overview.connect('item-drag-end',
+                () => this._onDragEnd()),
+            Main.overview.connect('item-drag-cancelled',
+                () => this._onDragCancelled()),
+            Main.overview.connect('window-drag-begin',
+                () => this._onDragBegin()),
+            Main.overview.connect('window-drag-end',
+                () => this._onDragEnd()),
+            Main.overview.connect('window-drag-cancelled',
+                () => this._onDragCancelled()),
+        ];
 
         this._settings = new Gio.Settings({ schema_id: MUTTER_SCHEMA });
         this._settings.connect('changed::dynamic-workspaces',
             () => this._updateShouldShow());
 
-        Main.layoutManager.connect('monitors-changed', () => {
-            this._destroyThumbnails();
-            if (Main.overview.visible)
-                this._createThumbnails();
-        });
+        this._monitorsChangedId =
+            Main.layoutManager.connect('monitors-changed', () => {
+                this._destroyThumbnails();
+                if (Main.overview.visible)
+                    this._createThumbnails();
+            });
 
-        global.display.connect('workareas-changed',
-                               this._updatePorthole.bind(this));
+        this._workareasChangedId = global.display.connect('workareas-changed',
+            () => this._updatePorthole());
 
         this.connect('notify::visible', () => {
             if (!this.visible)
                 this._queueUpdateStates();
         });
+        this.connect('destroy', () => this._onDestroy());
 
         this._switchWorkspaceNotifyId = 0;
         this._nWorkspacesNotifyId = 0;
         this._syncStackingId = 0;
-        this._workareasChangedId = 0;
 
         this._scrollAdjustment = scrollAdjustment;
 
-        this._scrollAdjustment.connect('notify::value', adj => {
-            let workspaceManager = global.workspace_manager;
-            let activeIndex = workspaceManager.get_active_workspace_index();
+        this._scrollValueId = this._scrollAdjustment.connect('notify::value',
+            adj => {
+                const { workspaceManager } = global;
+                const activeIndex = workspaceManager.get_active_workspace_index();
 
-            this._animatingIndicator = adj.value !== activeIndex;
+                this._animatingIndicator = adj.value !== activeIndex;
 
-            if (!this._animatingIndicator)
-                this._queueUpdateStates();
+                if (!this._animatingIndicator)
+                    this._queueUpdateStates();
 
-            this.queue_relayout();
-        });
+                this.queue_relayout();
+            });
+    }
+
+    _onDestroy() {
+        this._unqueueUpdateStates();
+
+        if (this._scrollValueId)
+            this._scrollAdjustment.disconnect(this._scrollValueId);
+        this._scrollValueId = 0;
+
+        if (this._monitorsChangedId)
+            Main.layoutManager.disconnect(this._monitorsChangedId);
+        this._monitorsChangedId = 0;
+
+        if (this._workareasChangedId)
+            global.display.disconnect(this._workareasChangedId);
+        this._workareasChangedId = 0;
+
+        this._overviewSignals.forEach(id => Main.overview.disconnect(id));
+        this._overviewSignals = [];
+
+        if (this._settings)
+            this._settings.run_dispose();
+        this._settings = null;
     }
 
     _updateShouldShow() {
@@ -979,7 +1005,7 @@ var ThumbnailsBox = GObject.registerClass({
         this._targetScale = 0;
         this._scale = 0;
         this._pendingScaleUpdate = false;
-        this._stateUpdateQueued = false;
+        this._unqueueUpdateStates();
 
         this._stateCounts = {};
         for (let key in ThumbnailState)
@@ -1128,7 +1154,7 @@ var ThumbnailsBox = GObject.registerClass({
     }
 
     _updateStates() {
-        this._stateUpdateQueued = false;
+        this._updateStateId = 0;
 
         // If we are animating the indicator, wait
         if (this._animatingIndicator)
@@ -1216,13 +1242,17 @@ var ThumbnailsBox = GObject.registerClass({
     }
 
     _queueUpdateStates() {
-        if (this._stateUpdateQueued)
+        if (this._updateStateId > 0)
             return;
 
-        Meta.later_add(Meta.LaterType.BEFORE_REDRAW,
-                       this._updateStates.bind(this));
+        this._updateStateId = Meta.later_add(
+            Meta.LaterType.BEFORE_REDRAW, () => this._updateStates());
+    }
 
-        this._stateUpdateQueued = true;
+    _unqueueUpdateStates() {
+        if (this._updateStateId)
+            Meta.later_remove(this._updateStateId);
+        this._updateStateId = 0;
     }
 
     vfunc_get_preferred_height(forWidth) {
