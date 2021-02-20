@@ -1275,7 +1275,11 @@ var Keyboard = GObject.registerClass({
         this._connectSignal(this._focusTracker, 'position-changed',
             this._onFocusPositionChanged.bind(this));
         this._connectSignal(this._focusTracker, 'window-grabbed', () => {
-            this._setFocusWindow(null);
+            // Don't use _setFocusWindow() here because that would move the
+            // window while the user has grabbed it. Instead we simply "let go"
+            // of the window.
+            this._focusWindow = null;
+            this._focusWindowStartY = null;
         });
         // Valid only for X11
         if (!Meta.is_wayland_compositor()) {
