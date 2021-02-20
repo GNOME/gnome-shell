@@ -560,6 +560,18 @@ class ExtraWorkspaceView extends WorkspacesViewBase {
         this._workspace.stateAdjustment.value = progress;
     }
 
+    vfunc_allocate(box) {
+        this.set_allocation(box);
+
+        const [width, height] = box.get_size();
+        const [, childWidth] = this._workspace.get_preferred_width(height);
+
+        const childBox = new Clutter.ActorBox();
+        childBox.set_origin(Math.round((width - childWidth) / 2), 0);
+        childBox.set_size(childWidth, height);
+        this._workspace.allocate(childBox);
+    }
+
     getActiveWorkspace() {
         return this._workspace;
     }
