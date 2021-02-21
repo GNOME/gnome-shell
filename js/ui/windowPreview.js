@@ -528,10 +528,11 @@ var WindowPreview = GObject.registerClass({
             });
         });
 
-        const { width } = this._windowContainer;
+        const [width, height] = this._windowContainer.get_size();
         const { scaleFactor } = St.ThemeContext.get_for_stage(global.stage);
         const activeExtraSize = WINDOW_ACTIVE_SIZE_INC * 2 * scaleFactor;
-        const scale = (width + activeExtraSize) / width;
+        const origSize = Math.max(width, height);
+        const scale = (origSize + activeExtraSize) / origSize;
 
         this._windowContainer.ease({
             scale_x: scale,
