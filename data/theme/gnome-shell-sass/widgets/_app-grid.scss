@@ -34,15 +34,14 @@ $app_grid_fg_color: #fff;
 
 /* App Folders */
 .app-well-app.app-folder {
-  background-color: transparentize($osd_bg_color, 0.8);
+  background-color: darken($system_bg_color, 3%);
   border-radius: $base_border_radius + 4px; // same as %icon_tile
 }
 
 // expanded folder
-.app-folder-dialog {
+.app-folder-dialog { //style like the dash
   border-radius: $modal_radius * 1.5;
-  border: 1px solid $osd_outer_borders_color;
-  background-color: transparentize(darken($osd_bg_color,10%), 0.05);
+  background-color: $dash_background_color;
   padding: 12px;
 
   & .folder-name-container {
