@@ -1,3 +1,71 @@
+40.beta
+=======
+* Overview redesign
+ - Move dash to the bottom [Georges, Abderrahim, Jakub; !1559]
+ - Do not duplicate dash icons in app grid [Florian; !1580]
+ - Separate favorites from running apps in dash [Florian; !1606, !1610, !1659]
+ - Change to a horizontal workspace layout [Georges; !1593, !1603]
+ - Move background to workspaces [Georges, Florian, Jakub; !1599]
+ - Overhaul window preview style [Florian, Jakub; !1605, !1654, !1657]
+ - Rework workspace switching animation [Alexander; !1326]
+ - Show workspace side-by-side [Georges; !1613]
+ - Allow switching workspaces with super+scroll on wayland [Florian; !1612]
+ - Allow swiping through more than one workspace at a time [Alexander; !1647]
+ - Extend active dash area to the screen edge [Florian; !1660]
+ - Change overall overview layout [Georges, Florian; !1624]
+ - Refine workspace activation in overview [Georges; !1645]
+ - Add vertical swipe gesture to shift through overview [Carlos; !1643]
+ - Add shortcuts for shifting through overview [Florian; !1695]
+ - Round background corners in overview [Jonas D.; !1651, !1697]
+ - Hide workspace minimap when using less than two workspaces [Florian; !1696]
+ - Scale down backgrounds in window picker [Georges; !1691]
+ - Minor improvements and bug fixes [Florian, Abderrahim, Georges, Sebastian,
+   Jakub, Pascal, Jonas D.; !1594, !1609, !1608, !1620, !1629, !1625, !1634,
+   !1640, #3669, !1636, !1655, !1656, !1665, !1667, !1638, !1680, !1682, !1684,
+   !1681, !1687, !1693, !1694, !1692]
+* Fix glitch in app folder icons on smaller displays [Sebastian; !1581]
+* Remove arrows from top bar menus [Doan, Florian, Razze; !1583, !1618, !1615]
+* Fix stuck grab after failed area screenshots [Sebastian; !1600]
+* Prefer image-data hint over app-icon in notifications [Guilherme; !1616]
+* Fix drag actor position when animations are turned off [Sebastian; !1627]
+* Improve spacing in MPRIS notifications with small text [Sebastian; !1632]
+* Add Welcome dialog after major updates [Bastien; !1619]
+* Do not save empty commands in run dialog history [Lucas; !1442, !1653]
+* Consider device type for fingerprint hint on login screen [Razze; !1572]
+* Add tooltip to Extensions app to view unellipsized description [Leleat; !1663]
+* Fix stuck polkit dialog when using non-password auth [Florian; !1662]
+* Provide screenshot feedback (flash, shutter) before writing file to disk
+  [Brion, Jonas; !1658]
+* Improve Thai layout in on-screen keyboard [Panawat; !1427]
+* Improve error handling for fingerprint auth [Marco; !1652]
+* Handle a large number of window previews more gracefully [Sebastian; !1685]
+* Follow swipe gesture when bringing up on-screen keyboard [Carlos; !1668]
+* Disable out-of-date extensions by default (again) [Evan; !1706]
+* Fixed crashes [Jonas D., Carlos; !1673, !1672]
+* Misc. bug fixes and cleanups [Florian, Sebastian, Razze, Georges, Daniel,
+  Robert, Jonas D., Jonas Å., Marco, Bastien, TerraAr, Carlos; !1575, !1579,
+  !1577, !1578, !1585, !1587, !1588, !1590, !1591, !1592, !1595, !1596, !1597,
+  !1598, !1582, !1589, !1617, !1611, !1637, !1635, !1641, !1646, !1546, !1648,
+  !1650, !1649, !1644, !1661, !1622, !1075, !1674, !1556, !1686, !1683, !1688,
+  !1699, !1698, !1701, !1709]
+
+Contributors:
+  Jonas Ådahl, Jonas Dreßler, Carlos Garnacho, Sebastian Keller,
+  Abderrahim Kitouni, Leleat, Robert Mader, Alexander Mikhaylenko,
+  Florian Müllner, Georges Basile Stavracas Neto, Bastien Nocera, Pascal Nowack,
+  Razze, Guilherme Silva, Jakub Steiner, TerraAr, Marco Trevisan (Treviño),
+  Brion Vibber, Doan Nam Long Vu, Daniel van Vugt, Evan Welsh,
+  Lucas Werkmeister, Panawat Wong-kleaw
+
+Translators:
+  Balázs Úr [hu], Danial Behzadi [fa], Rafael Fontenelle [pt_BR], A S Alam [pa],
+  Anders Jonsson [sv], Yuri Chornoivan [uk], Marek Černocký [cs],
+  Hugo Carvalho [pt], Fran Dieguez [gl], Daniel Șerbănescu [ro],
+  Florentina Mușat [ro], Daniel Mustieles [es], Jordi Mas [ca],
+  Matej Urbančič [sl], Kukuh Syafaat [id], Bruno Lopes da Silva [pt_BR],
+  Аляксей [be], Balázs Meskó [hu], Марко Костић [sr], Enrico Nicoletto [pt_BR],
+  Emin Tufan Çetin [tr], Jiri Grönroos [fi], Aurimas Černius [lt]
+
 40.alpha.1.1
 ============
 * Adapt to settings moving to gsettings-desktop-schemas [Florian; !1573]
