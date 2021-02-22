@@ -66,7 +66,7 @@ class ControlsManagerLayout extends Clutter.BoxLayout {
             workspaceBox.set_origin(0, searchHeight + spacing);
             workspaceBox.set_size(
                 width,
-                Math.round(Math.max(height * SMALL_WORKSPACE_RATIO)));
+                Math.round(height * SMALL_WORKSPACE_RATIO));
             break;
         }
 
