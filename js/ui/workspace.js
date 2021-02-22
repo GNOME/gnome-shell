@@ -24,7 +24,7 @@ var LAYOUT_SCALE_WEIGHT = 1;
 var LAYOUT_SPACE_WEIGHT = 0.1;
 
 const BACKGROUND_CORNER_RADIUS_PIXELS = 30;
-const BACKGROUND_SCALE = 0.94;
+const BACKGROUND_MARGIN = 12;
 
 // Window Thumbnail Layout Algorithm
 // =================================
@@ -938,13 +938,16 @@ class WorkspaceBackground extends St.Widget {
     }
 
     vfunc_allocate(box) {
-        const scaledBox = box.copy();
-        scaledBox.scale(BACKGROUND_SCALE);
+        const [width, height] = box.get_size();
+        const { scaleFactor } = St.ThemeContext.get_for_stage(global.stage);
+        const scaledHeight = height - (BACKGROUND_MARGIN * 2 * scaleFactor);
+        const scaledWidth = (scaledHeight / height) * width;
 
-        const [scaledWidth, scaledHeight] = scaledBox.get_size();
+        const scaledBox = box.copy();
         scaledBox.set_origin(
-            box.x1 + (box.get_width() - scaledWidth) / 2,
-            box.y1 + (box.get_height() - scaledHeight) / 2);
+            box.x1 + (width - scaledWidth) / 2,
+            box.y1 + (height - scaledHeight) / 2);
+        scaledBox.set_size(scaledWidth, scaledHeight);
 
         const progress = this._stateAdjustment.value;
 
