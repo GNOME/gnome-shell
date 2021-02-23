@@ -437,8 +437,9 @@ var IconGridLayout = GObject.registerClass({
         return this._childrenMaxSize;
     }
 
-    _getVisibleChildrenForPage(pageIndex) {
-        return this._pages[pageIndex].children.filter(actor => actor.visible);
+    _updateVisibleChildrenForPage(pageIndex) {
+        this._pages[pageIndex].visibleChildren =
+            this._pages[pageIndex].children.filter(actor => actor.visible);
     }
 
     _updatePages() {
@@ -476,14 +477,14 @@ var IconGridLayout = GObject.registerClass({
         if (pageIndex >= this._pages.length - 1)
             return;
 
-        const visiblePageItems = this._getVisibleChildrenForPage(pageIndex);
+        const visiblePageItems = this._pages[pageIndex].visibleChildren;
         const itemsPerPage = this.columnsPerPage * this.rowsPerPage;
 
         // No reduce needed
         if (visiblePageItems.length === itemsPerPage)
             return;
 
-        const visibleNextPageItems = this._getVisibleChildrenForPage(pageIndex + 1);
+        const visibleNextPageItems = this._pages[pageIndex + 1].visibleChildren;
         const nMissingItems = Math.min(itemsPerPage - visiblePageItems.length, visibleNextPageItems.length);
 
         // Append to the current page the first items of the next page
@@ -505,8 +506,10 @@ var IconGridLayout = GObject.registerClass({
 
         page.children.splice(itemIndex, 1);
 
+        this._updateVisibleChildrenForPage(pageIndex);
+
         // Delete the page if this is the last icon in it
-        const visibleItems = this._getVisibleChildrenForPage(pageIndex);
+        const visibleItems = this._pages[pageIndex].visibleChildren;
         if (visibleItems.length === 0)
             this._removePage(pageIndex);
 
@@ -515,7 +518,7 @@ var IconGridLayout = GObject.registerClass({
     }
 
     _relocateSurplusItems(pageIndex) {
-        const visiblePageItems = this._getVisibleChildrenForPage(pageIndex);
+        const visiblePageItems = this._pages[pageIndex].visibleChildren;
         const itemsPerPage = this.columnsPerPage * this.rowsPerPage;
 
         // No overflow needed
@@ -559,6 +562,8 @@ var IconGridLayout = GObject.registerClass({
             visibleId: item.connect('notify::visible', () => {
                 const itemData = this._items.get(item);
 
+                this._updateVisibleChildrenForPage(itemData.pageIndex);
+
                 if (item.visible)
                     this._relocateSurplusItems(itemData.pageIndex);
                 else if (!this.allowIncompletePages)
@@ -572,6 +577,7 @@ var IconGridLayout = GObject.registerClass({
         item.icon.setIconSize(this._iconSize);
 
         this._pages[pageIndex].children.splice(index, 0, item);
+        this._updateVisibleChildrenForPage(pageIndex);
         this._relocateSurplusItems(pageIndex);
     }
 
@@ -779,21 +785,18 @@ var IconGridLayout = GObject.registerClass({
         let nChangedIcons = 0;
 
         this._pages.forEach((page, pageIndex) => {
-            const visibleItems =
-                page.children.filter(actor => actor.visible);
-
             if (isRtl && this._orientation === Clutter.Orientation.HORIZONTAL)
                 pageIndex = swap(pageIndex, this._pages.length);
 
-            visibleItems.forEach((item, itemIndex) => {
+            page.visibleChildren.forEach((item, itemIndex) => {
                 const row = Math.floor(itemIndex / this.columnsPerPage);
                 let column = itemIndex % this.columnsPerPage;
 
                 if (isRtl)
                     column = swap(column, this.columnsPerPage);
 
-                const rowPadding = this._getRowPadding(visibleItems, itemIndex,
-                    childSize, hSpacing);
+                const rowPadding = this._getRowPadding(page.visibleChildren,
+                    itemIndex, childSize, hSpacing);
 
                 // Icon position
                 let x = leftEmptySpace + rowPadding + column * (childSize + hSpacing);
@@ -929,7 +932,7 @@ var IconGridLayout = GObject.registerClass({
             return [-1, -1];
 
         const itemData = this._items.get(item);
-        const visibleItems = this._getVisibleChildrenForPage(itemData.pageIndex);
+        const visibleItems = this._pages[itemData.pageIndex].visibleChildren;
 
         return [itemData.pageIndex, visibleItems.indexOf(item)];
     }
@@ -947,7 +950,7 @@ var IconGridLayout = GObject.registerClass({
         if (page < 0 || page >= this._pages.length)
             return null;
 
-        const visibleItems = this._getVisibleChildrenForPage(page);
+        const visibleItems = this._pages[page].visibleChildren;
 
         if (position < 0 || position >= visibleItems.length)
             return null;
@@ -1056,7 +1059,7 @@ var IconGridLayout = GObject.registerClass({
 
         const halfHSpacing = hSpacing / 2;
         const halfVSpacing = vSpacing / 2;
-        const visibleItems = this._getVisibleChildrenForPage(page);
+        const visibleItems = this._pages[page].visibleChildren;
 
         for (const item of visibleItems) {
             const childBox = item.allocation.copy();
