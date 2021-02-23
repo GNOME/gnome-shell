@@ -369,6 +369,8 @@ var IconGridLayout = GObject.registerClass({
 
         this._resolveOnIdleId = 0;
         this._iconSizeUpdateResolveCbs = [];
+
+        this._childrenMaxSize = -1;
     }
 
     _findBestIconSize() {
@@ -414,21 +416,25 @@ var IconGridLayout = GObject.registerClass({
     }
 
     _getChildrenMaxSize() {
-        let minWidth = 0;
-        let minHeight = 0;
+        if (this._childrenMaxSize === -1) {
+            let minWidth = 0;
+            let minHeight = 0;
 
-        for (const child of this._container) {
-            if (!child.visible)
-                continue;
+            for (const child of this._container) {
+                if (!child.visible)
+                    continue;
 
-            const [childMinHeight] = child.get_preferred_height(-1);
-            const [childMinWidth] = child.get_preferred_width(-1);
+                const [childMinHeight] = child.get_preferred_height(-1);
+                const [childMinWidth] = child.get_preferred_width(-1);
 
-            minWidth = Math.max(minWidth, childMinWidth);
-            minHeight = Math.max(minHeight, childMinHeight);
+                minWidth = Math.max(minWidth, childMinWidth);
+                minHeight = Math.max(minHeight, childMinHeight);
+            }
+
+            this._childrenMaxSize = Math.max(minWidth, minHeight);
         }
 
-        return Math.max(minWidth, minHeight);
+        return this._childrenMaxSize;
     }
 
     _getVisibleChildrenForPage(pageIndex) {
@@ -445,6 +451,7 @@ var IconGridLayout = GObject.registerClass({
 
         item.disconnect(itemData.destroyId);
         item.disconnect(itemData.visibleId);
+        item.disconnect(itemData.queueRelayoutId);
 
         this._items.delete(item);
     }
@@ -556,6 +563,9 @@ var IconGridLayout = GObject.registerClass({
                     this._relocateSurplusItems(itemData.pageIndex);
                 else if (!this.allowIncompletePages)
                     this._fillItemVacancies(itemData.pageIndex);
+            }),
+            queueRelayoutId: item.connect('queue-relayout', () => {
+                this._childrenMaxSize = -1;
             }),
         });
 
