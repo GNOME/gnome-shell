@@ -775,8 +775,6 @@ var IconGridLayout = GObject.registerClass({
         if (this._pageWidth === 0 || this._pageHeight === 0)
             throw new Error('IconGridLayout.adaptToSize wasn\'t called before allocation');
 
-        this._updatePages();
-
         const isRtl =
             Clutter.get_default_text_direction() === Clutter.TextDirection.RTL;
         const childSize = this._getChildrenMaxSize();
