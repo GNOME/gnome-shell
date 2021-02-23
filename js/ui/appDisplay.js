@@ -143,7 +143,6 @@ var BaseAppView = GObject.registerClass({
         // Standard hack for ClutterBinLayout
         this._grid.x_expand = true;
         this._grid.connect('pages-changed', () => {
-            this._adjustment.value = 0;
             this.goToPage(this._grid.currentPage);
             this._pageIndicators.setNPages(this._grid.nPages);
             this._pageIndicators.setCurrentPosition(this._grid.currentPage);
