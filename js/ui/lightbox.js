@@ -35,13 +35,16 @@ var RadialShaderEffect = GObject.registerClass({
     },
 }, class RadialShaderEffect extends Shell.GLSLEffect {
     _init(params) {
+        this._brightness = undefined;
+        this._sharpness = undefined;
+
         super._init(params);
 
         this._brightnessLocation = this.get_uniform_location('brightness');
         this._sharpnessLocation = this.get_uniform_location('vignette_sharpness');
 
-        this._setBrightnessUniform();
-        this._setSharpnessUniform();
+        this.brightness = 1.0;
+        this.sharpness = 0.0;
     }
 
     vfunc_build_pipeline() {
@@ -49,14 +52,30 @@ var RadialShaderEffect = GObject.registerClass({
                               VIGNETTE_DECLARATIONS, VIGNETTE_CODE, true);
     }
 
-    _setBrightnessUniform() {
-        this.set_uniform_float(this._brightnessLocation,
-            1, [this.brightness]);
+    get brightness() {
+        return this._brightness;
     }
 
-    _setSharpnessUniform() {
+    set brightness(v) {
+        if (this._brightness === v)
+            return;
+        this._brightness = v;
+        this.set_uniform_float(this._brightnessLocation,
+            1, [this._brightness]);
+        this.notify('brightness');
+    }
+
+    get sharpness() {
+        return this._sharpness;
+    }
+
+    set sharpness(v) {
+        if (this._sharpness === v)
+            return;
+        this._sharpness = v;
         this.set_uniform_float(this._sharpnessLocation,
-            1, [this.sharpness]);
+            1, [this._sharpness]);
+        this.notify('sharpness');
     }
 });
 
