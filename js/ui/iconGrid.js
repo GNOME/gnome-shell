@@ -790,6 +790,7 @@ var IconGridLayout = GObject.registerClass({
         const pageHeight = this._pageHeight;
         const pageSizeChanged = this._pageSizeChanged;
         const lastRowAlign = this.lastRowAlign;
+        const shouldEaseItems = this._shouldEaseItems;
 
         this._pages.forEach((page, pageIndex) => {
             if (isRtl && orientation === Clutter.Orientation.HORIZONTAL)
@@ -826,8 +827,7 @@ var IconGridLayout = GObject.registerClass({
                     Math.max(childSize, naturalWidth),
                     Math.max(childSize, naturalHeight));
 
-                // Only ease icons when the page size didn't change
-                if (pageSizeChanged)
+                if (!shouldEaseItems || pageSizeChanged)
                     item.allocate(childBox);
                 else if (animateIconPosition(item, childBox, nChangedIcons))
                     nChangedIcons++;
@@ -835,6 +835,7 @@ var IconGridLayout = GObject.registerClass({
         });
 
         this._pageSizeChanged = false;
+        this._shouldEaseItems = false;
 
         this._runPostAllocation();
     }
@@ -863,6 +864,8 @@ var IconGridLayout = GObject.registerClass({
         if (!this._container)
             return;
 
+        this._shouldEaseItems = true;
+
         this._container.add_child(item);
         this._addItemToPage(item, page, index);
     }
@@ -889,6 +892,8 @@ var IconGridLayout = GObject.registerClass({
         if (!this._items.has(item))
             throw new Error(`Item ${item} is not part of the IconGridLayout`);
 
+        this._shouldEaseItems = true;
+
         this._removeItemData(item);
         this._addItemToPage(item, newPage, newPosition);
     }
@@ -905,6 +910,8 @@ var IconGridLayout = GObject.registerClass({
 
         if (!this._container)
             return;
+
+        this._shouldEaseItems = true;
 
         this._container.remove_child(item);
         this._removeItemData(item);
