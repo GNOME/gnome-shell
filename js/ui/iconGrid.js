@@ -663,6 +663,10 @@ var IconGridLayout = GObject.registerClass({
     }
 
     _getRowPadding(items, itemIndex, childSize, spacing) {
+        if (this.lastRowAlign === Clutter.ActorAlign.START ||
+            this.lastRowAlign === Clutter.ActorAlign.FILL)
+            return 0;
+
         const nRows = Math.ceil(items.length / this.columnsPerPage);
 
         let rowAlign = 0;
@@ -682,18 +686,13 @@ var IconGridLayout = GObject.registerClass({
             Clutter.get_default_text_direction() === Clutter.TextDirection.RTL;
 
         switch (this.lastRowAlign) {
-        case Clutter.ActorAlign.START:
-            rowAlign = 0;
-            break;
         case Clutter.ActorAlign.CENTER:
             rowAlign = availableWidth / 2;
             break;
         case Clutter.ActorAlign.END:
             rowAlign = availableWidth;
             break;
-        case Clutter.ActorAlign.FILL:
-            rowAlign = 0;
-            break;
+        // START and FILL align are handled at the beginning of the function
         }
 
         return isRtl ? rowAlign * -1 : rowAlign;
