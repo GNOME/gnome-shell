@@ -1208,6 +1208,7 @@ var ThumbnailsBox = GObject.registerClass({
                 mode: Clutter.AnimationMode.EASE_OUT_QUAD,
                 onComplete: () => {
                     this._setThumbnailState(thumbnail, ThumbnailState.EXPANDED);
+                    this._queueUpdateStates();
                 },
             });
         });
