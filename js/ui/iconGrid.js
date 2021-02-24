@@ -662,9 +662,9 @@ var IconGridLayout = GObject.registerClass({
         return [leftEmptySpace, topEmptySpace, hSpacing, vSpacing];
     }
 
-    _getRowPadding(items, itemIndex, childSize, spacing) {
-        if (this.lastRowAlign === Clutter.ActorAlign.START ||
-            this.lastRowAlign === Clutter.ActorAlign.FILL)
+    _getRowPadding(align, items, itemIndex, childSize, spacing) {
+        if (align === Clutter.ActorAlign.START ||
+            align === Clutter.ActorAlign.FILL)
             return 0;
 
         const nRows = Math.ceil(items.length / this.columnsPerPage);
@@ -685,7 +685,7 @@ var IconGridLayout = GObject.registerClass({
         const isRtl =
             Clutter.get_default_text_direction() === Clutter.TextDirection.RTL;
 
-        switch (this.lastRowAlign) {
+        switch (align) {
         case Clutter.ActorAlign.CENTER:
             rowAlign = availableWidth / 2;
             break;
@@ -784,32 +784,38 @@ var IconGridLayout = GObject.registerClass({
         const childBox = new Clutter.ActorBox();
 
         let nChangedIcons = 0;
+        const columnsPerPage = this.columnsPerPage;
+        const orientation = this._orientation;
+        const pageWidth = this._pageWidth;
+        const pageHeight = this._pageHeight;
+        const pageSizeChanged = this._pageSizeChanged;
+        const lastRowAlign = this.lastRowAlign;
 
         this._pages.forEach((page, pageIndex) => {
-            if (isRtl && this._orientation === Clutter.Orientation.HORIZONTAL)
+            if (isRtl && orientation === Clutter.Orientation.HORIZONTAL)
                 pageIndex = swap(pageIndex, this._pages.length);
 
             page.visibleChildren.forEach((item, itemIndex) => {
-                const row = Math.floor(itemIndex / this.columnsPerPage);
-                let column = itemIndex % this.columnsPerPage;
+                const row = Math.floor(itemIndex / columnsPerPage);
+                let column = itemIndex % columnsPerPage;
 
                 if (isRtl)
-                    column = swap(column, this.columnsPerPage);
+                    column = swap(column, columnsPerPage);
 
-                const rowPadding = this._getRowPadding(page.visibleChildren,
-                    itemIndex, childSize, hSpacing);
+                const rowPadding = this._getRowPadding(lastRowAlign,
+                    page.visibleChildren, itemIndex, childSize, hSpacing);
 
                 // Icon position
                 let x = leftEmptySpace + rowPadding + column * (childSize + hSpacing);
                 let y = topEmptySpace + row * (childSize + vSpacing);
 
                 // Page start
-                switch (this._orientation) {
+                switch (orientation) {
                 case Clutter.Orientation.HORIZONTAL:
-                    x += pageIndex * this._pageWidth;
+                    x += pageIndex * pageWidth;
                     break;
                 case Clutter.Orientation.VERTICAL:
-                    y += pageIndex * this._pageHeight;
+                    y += pageIndex * pageHeight;
                     break;
                 }
 
@@ -821,7 +827,7 @@ var IconGridLayout = GObject.registerClass({
                     Math.max(childSize, naturalHeight));
 
                 // Only ease icons when the page size didn't change
-                if (this._pageSizeChanged)
+                if (pageSizeChanged)
                     item.allocate(childBox);
                 else if (animateIconPosition(item, childBox, nChangedIcons))
                     nChangedIcons++;
