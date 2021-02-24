@@ -819,8 +819,10 @@ var WindowPreview = GObject.registerClass({
             // run - make sure to not start a drag in that case
             this._longPressLater = Meta.later_add(Meta.LaterType.BEFORE_REDRAW, () => {
                 delete this._longPressLater;
-                if (this._selected)
+                if (this._selected) {
+                    this._selected = false;
                     return;
+                }
                 let [x, y] = action.get_coords();
                 action.release();
                 this._draggable.startDrag(x, y, global.get_current_time(), this._dragTouchSequence, event.get_device());
