@@ -776,11 +776,10 @@ st_texture_cache_reset_texture (StTextureCachePropertyBind *bind,
       if (error)
         g_warning ("Failed to allocate texture: %s", error->message);
     }
-  else
-    bind->image = g_object_new (ST_TYPE_IMAGE_CONTENT,
-                                "preferred-width", 0, /* tough luck */
-                                "preferred-height", 0,
-                                NULL);
+  else if (!bind->image)
+    {
+      bind->image = st_image_content_new_with_preferred_size (0, 0);
+    }
 }
 
 static void
