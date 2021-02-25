@@ -609,7 +609,12 @@ var WorkspaceLayout = GObject.registerClass({
                 this._windowSlots = this._getWindowSlots(box.copy());
         }
 
-        const allocationScale = containerBox.get_width() / this._workarea.width;
+        const workareaX = this._workarea.x;
+        const workareaY = this._workarea.y;
+        const workareaWidth = this._workarea.width;
+        const stateAdjustementValue = this._stateAdjustment.value;
+
+        const allocationScale = containerBox.get_width() / workareaWidth;
 
         const workspaceBox = new Clutter.ActorBox();
         const layoutBox = new Clutter.ActorBox();
@@ -628,16 +633,16 @@ var WorkspaceLayout = GObject.registerClass({
 
             if (windowInfo.metaWindow.showing_on_its_workspace()) {
                 workspaceBox.set_origin(
-                    child.boundingBox.x - this._workarea.x,
-                    child.boundingBox.y - this._workarea.y);
+                    child.boundingBox.x - workareaX,
+                    child.boundingBox.y - workareaY);
                 workspaceBox.set_size(
                     child.boundingBox.width,
                     child.boundingBox.height);
             } else {
-                workspaceBox.set_origin(this._workarea.x, this._workarea.y);
+                workspaceBox.set_origin(workareaX, workareaY);
                 workspaceBox.set_size(0, 0);
 
-                child.opacity = this._stateAdjustment.value * 255;
+                child.opacity = stateAdjustementValue * 255;
             }
 
             workspaceBox.scale(allocationScale);
@@ -657,7 +662,7 @@ var WorkspaceLayout = GObject.registerClass({
             layoutBox.set_size(width, height);
 
             const childBox = workspaceBox.interpolate(layoutBox,
-                this._stateAdjustment.value);
+                stateAdjustementValue);
 
             if (windowInfo.currentTransition) {
                 windowInfo.currentTransition.get_interval().set_final(childBox);
