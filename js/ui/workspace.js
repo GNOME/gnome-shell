@@ -616,8 +616,7 @@ var WorkspaceLayout = GObject.registerClass({
 
         const allocationScale = containerBox.get_width() / workareaWidth;
 
-        const workspaceBox = new Clutter.ActorBox();
-        const layoutBox = new Clutter.ActorBox();
+        const childBox = new Clutter.ActorBox();
 
         const { ControlsState } = OverviewControls;
         const inSessionTransition =
@@ -625,27 +624,28 @@ var WorkspaceLayout = GObject.registerClass({
 
         const nSlots = this._windowSlots.length;
         for (let i = 0; i < nSlots; i++) {
-            const [x, y, width, height, child] = this._windowSlots[i];
+            let [x, y, width, height, child] = this._windowSlots[i];
             if (!child.visible)
                 continue;
 
             const windowInfo = this._windows.get(child);
 
+            let workspaceBoxX, workspaceBoxY;
+            let workspaceBoxWidth, workspaceBoxHeight;
+
             if (windowInfo.metaWindow.showing_on_its_workspace()) {
-                workspaceBox.set_origin(
-                    child.boundingBox.x - workareaX,
-                    child.boundingBox.y - workareaY);
-                workspaceBox.set_size(
-                    child.boundingBox.width,
-                    child.boundingBox.height);
+                workspaceBoxX = (child.boundingBox.x - workareaX) * allocationScale;
+                workspaceBoxY = (child.boundingBox.y - workareaY) * allocationScale;
+                workspaceBoxWidth = child.boundingBox.width * allocationScale;
+                workspaceBoxHeight = child.boundingBox.height * allocationScale;
             } else {
-                workspaceBox.set_origin(workareaX, workareaY);
-                workspaceBox.set_size(0, 0);
+                workspaceBoxX = workareaX * allocationScale;
+                workspaceBoxY = workareaY * allocationScale;
+                workspaceBoxWidth = 0;
+                workspaceBoxHeight = 0;
 
                 child.opacity = stateAdjustementValue * 255;
             }
-
-            workspaceBox.scale(allocationScale);
 
             // Don't allow the scaled floating size to drop below
             // the target layout size.
@@ -653,16 +653,17 @@ var WorkspaceLayout = GObject.registerClass({
             // actually larger than the target layout size, that is while
             // animating between the session and the window picker.
             if (inSessionTransition) {
-                workspaceBox.set_size(
-                    Math.max(workspaceBox.get_width(), width),
-                    Math.max(workspaceBox.get_height(), height));
+                workspaceBoxWidth = Math.max(workspaceBoxWidth, width);
+                workspaceBoxHeight = Math.max(workspaceBoxHeight, height);
             }
 
-            layoutBox.set_origin(x, y);
-            layoutBox.set_size(width, height);
+            x = Util.lerp(workspaceBoxX, x, stateAdjustementValue);
+            y = Util.lerp(workspaceBoxY, y, stateAdjustementValue);
+            width = Util.lerp(workspaceBoxWidth, width, stateAdjustementValue);
+            height = Util.lerp(workspaceBoxHeight, height, stateAdjustementValue);
 
-            const childBox = workspaceBox.interpolate(layoutBox,
-                stateAdjustementValue);
+            childBox.set_origin(x, y);
+            childBox.set_size(width, height);
 
             if (windowInfo.currentTransition) {
                 windowInfo.currentTransition.get_interval().set_final(childBox);
