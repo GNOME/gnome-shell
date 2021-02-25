@@ -382,13 +382,6 @@ var UnalignedLayoutStrategy = class extends LayoutStrategy {
 };
 
 function animateAllocation(actor, box) {
-    if (actor.allocation.equal(box) ||
-        actor.allocation.get_width() === 0 ||
-        actor.allocation.get_height() === 0) {
-        actor.allocate(box);
-        return null;
-    }
-
     actor.save_easing_state();
     actor.set_easing_mode(Clutter.AnimationMode.EASE_OUT_QUAD);
     actor.set_easing_duration(200);
