@@ -635,10 +635,12 @@ var WorkspaceLayout = GObject.registerClass({
             const windowInfo = this._windows.get(child);
 
             if (windowInfo.metaWindow.showing_on_its_workspace()) {
-                workspaceBox.x1 = child.boundingBox.x - this._workarea.x;
-                workspaceBox.x2 = workspaceBox.x1 + child.boundingBox.width;
-                workspaceBox.y1 = child.boundingBox.y - this._workarea.y;
-                workspaceBox.y2 = workspaceBox.y1 + child.boundingBox.height;
+                workspaceBox.set_origin(
+                    child.boundingBox.x - this._workarea.x,
+                    child.boundingBox.y - this._workarea.y);
+                workspaceBox.set_size(
+                    child.boundingBox.width,
+                    child.boundingBox.height);
             } else {
                 workspaceBox.set_origin(this._workarea.x, this._workarea.y);
                 workspaceBox.set_size(0, 0);
@@ -659,10 +661,8 @@ var WorkspaceLayout = GObject.registerClass({
                     Math.max(workspaceBox.get_height(), height));
             }
 
-            layoutBox.x1 = x;
-            layoutBox.x2 = layoutBox.x1 + width;
-            layoutBox.y1 = y;
-            layoutBox.y2 = layoutBox.y1 + height;
+            layoutBox.set_origin(x, y);
+            layoutBox.set_size(width, height);
 
             childBox = workspaceBox.interpolate(layoutBox,
                 this._stateAdjustment.value);
