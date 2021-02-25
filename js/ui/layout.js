@@ -918,9 +918,6 @@ var LayoutManager = GObject.registerClass({
     }
 
     _queueUpdateRegions() {
-        if (this._startingUp)
-            return;
-
         if (!this._updateRegionIdle) {
             this._updateRegionIdle = Meta.later_add(Meta.LaterType.BEFORE_REDRAW,
                                                     this._updateRegions.bind(this));
@@ -960,6 +957,7 @@ var LayoutManager = GObject.registerClass({
         let rects = [], struts = [], i;
         let isPopupMenuVisible = global.top_window_group.get_children().some(isPopupMetaWindow);
         const wantsInputRegion =
+            !this._startingUp &&
             !isPopupMenuVisible &&
             Main.modalCount === 0 &&
             !Meta.is_wayland_compositor();
