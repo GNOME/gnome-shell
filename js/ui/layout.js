@@ -959,7 +959,10 @@ var LayoutManager = GObject.registerClass({
 
         let rects = [], struts = [], i;
         let isPopupMenuVisible = global.top_window_group.get_children().some(isPopupMetaWindow);
-        const wantsInputRegion = !isPopupMenuVisible && Main.modalCount === 0;
+        const wantsInputRegion =
+            !isPopupMenuVisible &&
+            Main.modalCount === 0 &&
+            !Meta.is_wayland_compositor();
 
         for (i = 0; i < this._trackedActors.length; i++) {
             let actorData = this._trackedActors[i];
