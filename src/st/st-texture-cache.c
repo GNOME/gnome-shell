@@ -822,7 +822,7 @@ st_texture_cache_free_bind (gpointer data)
  * If the source object is destroyed, the texture will continue to show the last
  * value of the property.
  *
- * Returns: (transfer none): A new #GIcon
+ * Returns: (transfer full): A new #GIcon
  */
 GIcon *
 st_texture_cache_bind_cairo_surface_property (StTextureCache    *cache,
