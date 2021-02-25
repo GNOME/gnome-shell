@@ -626,19 +626,12 @@ var WorkspaceLayout = GObject.registerClass({
         const inSessionTransition =
             this._overviewAdjustment.value <= ControlsState.WINDOW_PICKER;
 
-        for (const child of container) {
+        const nSlots = this._windowSlots.length;
+        for (let i = 0; i < nSlots; i++) {
+            const [x, y, width, height, child] = this._windowSlots[i];
             if (!child.visible)
                 continue;
 
-            // The fifth element in the slot array is the WindowPreview
-            const index = this._windowSlots.findIndex(s => s[4] === child);
-            if (index === -1) {
-                log('Couldn\'t find child %s in window slots'.format(child));
-                child.allocate(childBox);
-                continue;
-            }
-
-            const [x, y, width, height] = this._windowSlots[index];
             const windowInfo = this._windows.get(child);
 
             if (windowInfo.metaWindow.showing_on_its_workspace()) {
