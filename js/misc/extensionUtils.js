@@ -173,40 +173,9 @@ function openPrefs() {
     }
 }
 
-/**
- * versionCheck:
- * @param {string[]} required - an array of versions we're compatible with
- * @param {string} current - the version we have
- * @returns {bool} - true if @current is compatible with @required
- *
- * Check if a component is compatible for an extension.
- * @required is an array, and at least one version must match.
- * @current must be in the format <major>.<minor>.<point>.<micro>
- * <micro> is always ignored
- * <point> is ignored if <minor> is even (so you can target the
- * whole stable release)
- * <minor> and <major> must match
- * Each target version must be at least <major> and <minor>
- */
-function versionCheck(required, current) {
-    let currentArray = current.split('.');
-    let major = currentArray[0];
-    let minor = currentArray[1];
-    for (let i = 0; i < required.length; i++) {
-        let requiredArray = required[i].split('.');
-        if (requiredArray[0] === major &&
-            (requiredArray[1] === undefined && isFinite(minor) ||
-             requiredArray[1] === minor))
-            return true;
-    }
-    return false;
-}
-
 function isOutOfDate(extension) {
-    if (!versionCheck(extension.metadata['shell-version'], Config.PACKAGE_VERSION))
-        return true;
-
-    return false;
+    const [major] = Config.PACKAGE_VERSION.split('.');
+    return !extension.metadata['shell-version'].some(v => v.startsWith(major));
 }
 
 function serializeExtension(extension) {
