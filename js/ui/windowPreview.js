@@ -37,7 +37,7 @@ var WindowPreview = GObject.registerClass({
         'show-chrome': {},
         'size-changed': {},
     },
-}, class WindowPreview extends St.Widget {
+}, class WindowPreview extends Shell.WindowPreview {
     _init(metaWindow, workspace, overviewAdjustment) {
         this.metaWindow = metaWindow;
         this.metaWindow._delegate = this;
@@ -52,17 +52,19 @@ var WindowPreview = GObject.registerClass({
             offscreen_redirect: Clutter.OffscreenRedirect.AUTOMATIC_FOR_OPACITY,
         });
 
-        this._windowContainer = new Clutter.Actor({
+        const windowContainer = new Clutter.Actor({
             pivot_point: new Graphene.Point({ x: 0.5, y: 0.5 }),
         });
-        this._windowContainer.connect('notify::scale-x',
+        this.window_container = windowContainer;
+
+        windowContainer.connect('notify::scale-x',
             () => this._adjustOverlayOffsets());
         // gjs currently can't handle setting an actors layout manager during
         // the initialization of the actor if that layout manager keeps track
         // of its container, so set the layout manager after creating the
         // container
-        this._windowContainer.layout_manager = new Shell.WindowPreviewLayout();
-        this.add_child(this._windowContainer);
+        windowContainer.layout_manager = new Shell.WindowPreviewLayout();
+        this.add_child(windowContainer);
 
         this._addWindow(metaWindow);
 
@@ -71,13 +73,13 @@ var WindowPreview = GObject.registerClass({
         this._stackAbove = null;
 
         this._cachedBoundingBox = {
-            x: this._windowContainer.layout_manager.bounding_box.x1,
-            y: this._windowContainer.layout_manager.bounding_box.y1,
-            width: this._windowContainer.layout_manager.bounding_box.get_width(),
-            height: this._windowContainer.layout_manager.bounding_box.get_height(),
+            x: windowContainer.layout_manager.bounding_box.x1,
+            y: windowContainer.layout_manager.bounding_box.y1,
+            width: windowContainer.layout_manager.bounding_box.get_width(),
+            height: windowContainer.layout_manager.bounding_box.get_height(),
         };
 
-        this._windowContainer.layout_manager.connect(
+        windowContainer.layout_manager.connect(
             'notify::bounding-box', layout => {
                 this._cachedBoundingBox = {
                     x: layout.bounding_box.x1,
@@ -127,16 +129,16 @@ var WindowPreview = GObject.registerClass({
             pivot_point: new Graphene.Point({ x: 0.5, y: 0.5 }),
         });
         this._icon.add_constraint(new Clutter.BindConstraint({
-            source: this._windowContainer,
+            source: windowContainer,
             coordinate: Clutter.BindCoordinate.POSITION,
         }));
         this._icon.add_constraint(new Clutter.AlignConstraint({
-            source: this._windowContainer,
+            source: windowContainer,
             align_axis: Clutter.AlignAxis.X_AXIS,
             factor: 0.5,
         }));
         this._icon.add_constraint(new Clutter.AlignConstraint({
-            source: this._windowContainer,
+            source: windowContainer,
             align_axis: Clutter.AlignAxis.Y_AXIS,
             pivot_point: new Graphene.Point({ x: -1, y: ICON_OVERLAP }),
             factor: 1,
@@ -150,22 +152,22 @@ var WindowPreview = GObject.registerClass({
             reactive: true,
         });
         this._title.add_constraint(new Clutter.BindConstraint({
-            source: this._windowContainer,
+            source: windowContainer,
             coordinate: Clutter.BindCoordinate.X,
         }));
         const iconBottomOverlap = ICON_SIZE * (1 - ICON_OVERLAP);
         this._title.add_constraint(new Clutter.BindConstraint({
-            source: this._windowContainer,
+            source: windowContainer,
             coordinate: Clutter.BindCoordinate.Y,
             offset: scaleFactor * (iconBottomOverlap + ICON_TITLE_SPACING),
         }));
         this._title.add_constraint(new Clutter.AlignConstraint({
-            source: this._windowContainer,
+            source: windowContainer,
             align_axis: Clutter.AlignAxis.X_AXIS,
             factor: 0.5,
         }));
         this._title.add_constraint(new Clutter.AlignConstraint({
-            source: this._windowContainer,
+            source: windowContainer,
             align_axis: Clutter.AlignAxis.Y_AXIS,
             pivot_point: new Graphene.Point({ x: -1, y: 0 }),
             factor: 1,
@@ -187,17 +189,17 @@ var WindowPreview = GObject.registerClass({
             child: new St.Icon({ icon_name: 'preview-close-symbolic' }),
         });
         this._closeButton.add_constraint(new Clutter.BindConstraint({
-            source: this._windowContainer,
+            source: windowContainer,
             coordinate: Clutter.BindCoordinate.POSITION,
         }));
         this._closeButton.add_constraint(new Clutter.AlignConstraint({
-            source: this._windowContainer,
+            source: windowContainer,
             align_axis: Clutter.AlignAxis.X_AXIS,
             pivot_point: new Graphene.Point({ x: 0.5, y: -1 }),
             factor: this._closeButtonSide === St.Side.LEFT ? 0 : 1,
         }));
         this._closeButton.add_constraint(new Clutter.AlignConstraint({
-            source: this._windowContainer,
+            source: windowContainer,
             align_axis: Clutter.AlignAxis.Y_AXIS,
             pivot_point: new Graphene.Point({ x: -1, y: 0.5 }),
             factor: 0,
@@ -221,33 +223,6 @@ var WindowPreview = GObject.registerClass({
             this._title.ensure_style();
             this._icon.ensure_style();
         });
-    }
-
-    vfunc_get_preferred_width(forHeight) {
-        const themeNode = this.get_theme_node();
-
-        // Only include window previews in size request, not chrome
-        const [minWidth, natWidth] =
-            this._windowContainer.get_preferred_width(
-                themeNode.adjust_for_height(forHeight));
-
-        return themeNode.adjust_preferred_width(minWidth, natWidth);
-    }
-
-    vfunc_get_preferred_height(forWidth) {
-        const themeNode = this.get_theme_node();
-        const [minHeight, natHeight] =
-            this._windowContainer.get_preferred_height(
-                themeNode.adjust_for_width(forWidth));
-
-        return themeNode.adjust_preferred_height(minHeight, natHeight);
-    }
-
-    vfunc_allocate(box) {
-        this.set_allocation(box);
-
-        for (const child of this)
-            child.allocate_available_size(0, 0, box.get_width(), box.get_height());
     }
 
     _updateIconScale() {
@@ -354,13 +329,13 @@ var WindowPreview = GObject.registerClass({
             });
         });
 
-        const [width, height] = this._windowContainer.get_size();
+        const [width, height] = this.window_container.get_size();
         const { scaleFactor } = St.ThemeContext.get_for_stage(global.stage);
         const activeExtraSize = WINDOW_ACTIVE_SIZE_INC * 2 * scaleFactor;
         const origSize = Math.max(width, height);
         const scale = (origSize + activeExtraSize) / origSize;
 
-        this._windowContainer.ease({
+        this.window_container.ease({
             scale_x: scale,
             scale_y: scale,
             duration: animate ? WINDOW_SCALE_TIME : 0,
@@ -395,7 +370,7 @@ var WindowPreview = GObject.registerClass({
             });
         });
 
-        this._windowContainer.ease({
+        this.window_container.ease({
             scale_x: 1,
             scale_y: 1,
             duration: animate ? WINDOW_SCALE_TIME : 0,
@@ -407,9 +382,9 @@ var WindowPreview = GObject.registerClass({
         // Assume that scale-x and scale-y update always set
         // in lock-step; that allows us to not use separate
         // handlers for horizontal and vertical offsets
-        const previewScale = this._windowContainer.scale_x;
+        const previewScale = this.window_container.scale_x;
         const [previewWidth, previewHeight] =
-            this._windowContainer.allocation.get_size();
+            this.window_container.allocation.get_size();
 
         const heightIncrease =
             Math.floor(previewHeight * (previewScale - 1) / 2);
@@ -427,7 +402,7 @@ var WindowPreview = GObject.registerClass({
     }
 
     _addWindow(metaWindow) {
-        const clone = this._windowContainer.layout_manager.add_window(metaWindow);
+        const clone = this.window_container.layout_manager.add_window(metaWindow);
         if (!clone)
             return;
 
@@ -446,7 +421,7 @@ var WindowPreview = GObject.registerClass({
     }
 
     _deleteAll() {
-        const windows = this._windowContainer.layout_manager.get_windows();
+        const windows = this.window_container.layout_manager.get_windows();
 
         // Delete all windows, starting from the bottom-most (most-modal) one
         for (const window of windows.reverse())
@@ -471,7 +446,7 @@ var WindowPreview = GObject.registerClass({
     }
 
     _hasAttachedDialogs() {
-        return this._windowContainer.layout_manager.get_windows().length > 1;
+        return this.window_container.layout_manager.get_windows().length > 1;
     }
 
     _updateAttachedDialogs() {
