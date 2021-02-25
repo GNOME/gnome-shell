@@ -49,11 +49,8 @@ get_shell_version (GError **error)
   if (variant == NULL)
     return NULL;
 
-  split_version = g_strsplit (g_variant_get_string (variant, NULL), ".", 3);
-  if (g_ascii_strtoll (split_version[1], NULL, 10) % 2 == 0)
-    g_clear_pointer (&split_version[2], g_free);
-
-  return g_strjoinv (".", split_version);
+  split_version = g_strsplit (g_variant_get_string (variant, NULL), ".", 2);
+  return g_steal_pointer(&split_version[0]);
 }
 
 static GDesktopAppInfo *
