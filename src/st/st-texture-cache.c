@@ -797,10 +797,6 @@ st_texture_cache_bind_weak_notify (gpointer     data,
 {
   StTextureCachePropertyBind *bind = data;
   bind->weakref_active = FALSE;
-  if (G_OBJECT (bind->image) != source_location)
-    g_object_weak_unref (G_OBJECT (bind->image), st_texture_cache_bind_weak_notify, bind);
-  if (bind->source != source_location)
-    g_object_weak_unref (G_OBJECT (bind->source), st_texture_cache_bind_weak_notify, bind);
   g_signal_handler_disconnect (bind->source, bind->notify_signal_id);
 }
 
@@ -808,13 +804,8 @@ static void
 st_texture_cache_free_bind (gpointer data)
 {
   StTextureCachePropertyBind *bind = data;
-
   if (bind->weakref_active)
-    {
-      g_object_weak_unref (G_OBJECT (bind->image), st_texture_cache_bind_weak_notify, bind);
-      g_object_weak_unref (G_OBJECT (bind->source), st_texture_cache_bind_weak_notify, bind);
-    }
-
+    g_object_weak_unref (G_OBJECT (bind->image), st_texture_cache_bind_weak_notify, bind);
   g_slice_free (StTextureCachePropertyBind, bind);
 }
 
@@ -848,7 +839,6 @@ st_texture_cache_bind_cairo_surface_property (StTextureCache    *cache,
   st_texture_cache_reset_texture (bind, property_name);
 
   g_object_weak_ref (G_OBJECT (bind->image), st_texture_cache_bind_weak_notify, bind);
-  g_object_weak_ref (G_OBJECT (bind->source), st_texture_cache_bind_weak_notify, bind);
   bind->weakref_active = TRUE;
 
   notify_key = g_strdup_printf ("notify::%s", property_name);
