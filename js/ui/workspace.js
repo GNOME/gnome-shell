@@ -613,7 +613,6 @@ var WorkspaceLayout = GObject.registerClass({
 
         const workspaceBox = new Clutter.ActorBox();
         const layoutBox = new Clutter.ActorBox();
-        let childBox = new Clutter.ActorBox();
 
         const { ControlsState } = OverviewControls;
         const inSessionTransition =
@@ -657,7 +656,7 @@ var WorkspaceLayout = GObject.registerClass({
             layoutBox.set_origin(x, y);
             layoutBox.set_size(width, height);
 
-            childBox = workspaceBox.interpolate(layoutBox,
+            const childBox = workspaceBox.interpolate(layoutBox,
                 this._stateAdjustment.value);
 
             if (windowInfo.currentTransition) {
