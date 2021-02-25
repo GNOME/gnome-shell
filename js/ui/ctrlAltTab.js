@@ -93,9 +93,10 @@ var CtrlAltTabManager = class CtrlAltTabManager {
                     if (app) {
                         icon = app.create_icon_texture(POPUP_APPICON_SIZE);
                     } else {
-                        icon = textureCache.bind_cairo_surface_property(windows[i],
-                                                                        'icon',
-                                                                        POPUP_APPICON_SIZE);
+                        icon = new St.Icon({
+                            gicon: textureCache.bind_cairo_surface_property(windows[i], 'icon'),
+                            icon_size: POPUP_APPICON_SIZE,
+                        });
                     }
                 }
 
