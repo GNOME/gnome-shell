@@ -420,15 +420,19 @@ var IconGridLayout = GObject.registerClass({
             let minWidth = 0;
             let minHeight = 0;
 
-            for (const child of this._container) {
-                if (!child.visible)
-                    continue;
+            const nPages = this._pages.length;
+            for (let pageIndex = 0; pageIndex < nPages; pageIndex++) {
+                const page = this._pages[pageIndex];
+                const nVisibleItems = page.visibleChildren.length;
+                for (let itemIndex = 0; itemIndex < nVisibleItems; itemIndex++) {
+                    const item = page.visibleChildren[itemIndex];
 
-                const [childMinHeight] = child.get_preferred_height(-1);
-                const [childMinWidth] = child.get_preferred_width(-1);
+                    const childMinHeight = item.get_preferred_height(-1)[0];
+                    const childMinWidth = item.get_preferred_width(-1)[0];
 
-                minWidth = Math.max(minWidth, childMinWidth);
-                minHeight = Math.max(minHeight, childMinHeight);
+                    minWidth = Math.max(minWidth, childMinWidth);
+                    minHeight = Math.max(minHeight, childMinHeight);
+                }
             }
 
             this._childrenMaxSize = Math.max(minWidth, minHeight);
