@@ -1875,7 +1875,7 @@ var WindowManager = class {
 
         const workspaceManager = global.workspace_manager;
         const vertical = workspaceManager.layout_rows === -1;
-        const rtl = this.text_direction === Clutter.TextDirection.RTL;
+        const rtl = Clutter.get_default_text_direction() === Clutter.TextDirection.RTL;
         const activeWs = workspaceManager.get_active_workspace();
         let ws;
         switch (direction) {
