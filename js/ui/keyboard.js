@@ -550,13 +550,14 @@ var KeyboardModel = class {
 
 var FocusTracker = class {
     constructor() {
-        this._currentWindow = null;
         this._rect = null;
 
         this._notifyFocusId = global.display.connect('notify::focus-window', () => {
             this._setCurrentWindow(global.display.focus_window);
             this.emit('window-changed', this._currentWindow);
         });
+
+        this._setCurrentWindow(global.display.focus_window);
 
         this._grabOpBeginId = global.display.connect('grab-op-begin', (display, window, op) => {
             if (window == this._currentWindow &&
