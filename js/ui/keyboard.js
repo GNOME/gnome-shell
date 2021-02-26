@@ -1824,7 +1824,7 @@ var Keyboard = GObject.registerClass({
         keyboardBox.queue_relayout();
     }
 
-    _animateHide(immediate) {
+    _animateHide() {
         if (this._focusWindow)
             this._animateWindow(this._focusWindow, false);
 
@@ -1835,7 +1835,7 @@ var Keyboard = GObject.registerClass({
         this.ease({
             translation_y: 0,
             opacity: 0,
-            duration: immediate ? 0 : KEYBOARD_ANIMATION_TIME,
+            duration: KEYBOARD_ANIMATION_TIME,
             mode: Clutter.AnimationMode.EASE_IN_QUAD,
             onComplete: () => {
                 this._animateHideComplete();
