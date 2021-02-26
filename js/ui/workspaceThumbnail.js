@@ -271,8 +271,11 @@ var WorkspaceThumbnail = GObject.registerClass({
 
         this._removed = false;
 
+        this._viewport = new Clutter.Actor();
+        this.add_child(this._viewport);
+
         this._contents = new Clutter.Actor();
-        this.add_child(this._contents);
+        this._viewport.add_child(this._contents);
 
         this.connect('destroy', this._onDestroy.bind(this));
 
@@ -315,7 +318,8 @@ var WorkspaceThumbnail = GObject.registerClass({
     }
 
     setPorthole(x, y, width, height) {
-        this._contents.set_size(width, height);
+        this._viewport.set_size(width, height);
+        this._contents.set_position(-x, -y);
     }
 
     _lookupIndex(metaWindow) {
@@ -598,7 +602,7 @@ var WorkspaceThumbnail = GObject.registerClass({
     }
 
     setScale(scaleX, scaleY) {
-        this._contents.set_scale(scaleX, scaleY);
+        this._viewport.set_scale(scaleX, scaleY);
     }
 });
 
