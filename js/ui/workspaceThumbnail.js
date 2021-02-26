@@ -258,7 +258,7 @@ var WorkspaceThumbnail = GObject.registerClass({
             0, 1, 0),
     },
 }, class WorkspaceThumbnail extends St.Widget {
-    _init(metaWorkspace) {
+    _init(metaWorkspace, monitorIndex) {
         super._init({
             clip_to_allocation: true,
             style_class: 'workspace-thumbnail',
@@ -267,7 +267,7 @@ var WorkspaceThumbnail = GObject.registerClass({
         this._delegate = this;
 
         this.metaWorkspace = metaWorkspace;
-        this.monitorIndex = Main.layoutManager.primaryIndex;
+        this.monitorIndex = monitorIndex;
 
         this._removed = false;
 
@@ -623,7 +623,7 @@ var ThumbnailsBox = GObject.registerClass({
             true),
     },
 }, class ThumbnailsBox extends St.Widget {
-    _init(scrollAdjustment) {
+    _init(scrollAdjustment, monitorIndex) {
         super._init({
             style_class: 'workspace-thumbnails',
             reactive: true,
@@ -640,6 +640,8 @@ var ThumbnailsBox = GObject.registerClass({
 
         this._indicator = indicator;
         this.add_actor(indicator);
+
+        this._monitorIndex = monitorIndex;
 
         this._dropWorkspace = -1;
         this._dropPlaceholderPos = -1;
@@ -1069,7 +1071,7 @@ var ThumbnailsBox = GObject.registerClass({
 
         for (let k = start; k < start + count; k++) {
             let metaWorkspace = workspaceManager.get_workspace_by_index(k);
-            let thumbnail = new WorkspaceThumbnail(metaWorkspace);
+            let thumbnail = new WorkspaceThumbnail(metaWorkspace, this._monitorIndex);
             thumbnail.setPorthole(this._porthole.x, this._porthole.y,
                                   this._porthole.width, this._porthole.height);
             this._thumbnails.push(thumbnail);
@@ -1297,11 +1299,12 @@ var ThumbnailsBox = GObject.registerClass({
     }
 
     _updatePorthole() {
-        if (!Main.layoutManager.primaryMonitor) {
-            this._porthole = { width: global.stage.width, height: global.stage.height,
-                               x: global.stage.x, y: global.stage.y };
+        if (!Main.layoutManager.monitors[this._monitorIndex]) {
+            const { x, y, width, height } = global.stage;
+            this._porthole = { x, y, width, height };
         } else {
-            this._porthole = Main.layoutManager.getWorkAreaForMonitor(Main.layoutManager.primaryIndex);
+            this._porthole =
+                Main.layoutManager.getWorkAreaForMonitor(this._monitorIndex);
         }
 
         this.queue_relayout();

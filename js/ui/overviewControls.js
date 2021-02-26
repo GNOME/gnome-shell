@@ -305,8 +305,8 @@ class ControlsManager extends St.Widget {
             this.dash.showAppsButton);
         this._searchController.connect('notify::search-active', this._onSearchChanged.bind(this));
 
-        this._thumbnailsBox =
-            new WorkspaceThumbnail.ThumbnailsBox(this._workspaceAdjustment);
+        this._thumbnailsBox = new WorkspaceThumbnail.ThumbnailsBox(
+            this._workspaceAdjustment, Main.layoutManager.primaryIndex);
         this._thumbnailsBox.connect('notify::should-show', () => {
             this._thumbnailsBox.show();
             this._thumbnailsBox.ease_property('expand-fraction',
