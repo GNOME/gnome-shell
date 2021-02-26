@@ -592,6 +592,11 @@ var FocusTracker = class {
     }
 
     destroy() {
+        if (this._currentWindow) {
+            this._currentWindow.disconnect(this._currentWindowPositionChangedId);
+            delete this._currentWindowPositionChangedId;
+        }
+
         global.display.disconnect(this._notifyFocusId);
         global.display.disconnect(this._grabOpBeginId);
         Main.inputMethod.disconnect(this._cursorLocationChangedId);
@@ -605,7 +610,18 @@ var FocusTracker = class {
     }
 
     _setCurrentWindow(window) {
+        if (this._currentWindow) {
+            this._currentWindow.disconnect(this._currentWindowPositionChangedId);
+            delete this._currentWindowPositionChangedId;
+        }
+
         this._currentWindow = window;
+
+        if (this._currentWindow) {
+            this._currentWindowPositionChangedId =
+                this._currentWindow.connect('position-changed', () =>
+                    this.emit('window-moved'));
+        }
     }
 
     _setCurrentRect(rect) {
@@ -1275,13 +1291,12 @@ var Keyboard = GObject.registerClass({
         this._focusTracker = new FocusTracker();
         this._connectSignal(this._focusTracker, 'position-changed',
             this._onFocusPositionChanged.bind(this));
-        this._connectSignal(this._focusTracker, 'window-grabbed', () => {
-            // Don't use _setFocusWindow() here because that would move the
-            // window while the user has grabbed it. Instead we simply "let go"
-            // of the window.
-            this._focusWindow = null;
-            this._focusWindowStartY = null;
-        });
+        this._connectSignal(this._focusTracker, 'window-grabbed',
+            this._onFocusWindowMoving.bind(this));
+
+        this._windowMovedId = this._focusTracker.connect('window-moved',
+            this._onFocusWindowMoving.bind(this));
+
         // Valid only for X11
         if (!Meta.is_wayland_compositor()) {
             this._connectSignal(this._focusTracker, 'focus-changed', (_tracker, focused) => {
@@ -1328,6 +1343,11 @@ var Keyboard = GObject.registerClass({
     }
 
     _onDestroy() {
+        if (this._windowMovedId) {
+            this._focusTracker.disconnect(this._windowMovedId);
+            delete this._windowMovedId;
+        }
+
         if (this._focusTracker) {
             this._focusTracker.destroy();
             delete this._focusTracker;
@@ -1934,7 +1954,11 @@ var Keyboard = GObject.registerClass({
         finalY += frameRect.y - bufferRect.y;
 
         frameRect.y = finalY;
+
+        this._focusTracker.disconnect(this._windowMovedId);
         window.move_frame(true, frameRect.x, frameRect.y);
+        this._windowMovedId = this._focusTracker.connect('window-moved',
+            this._onFocusWindowMoving.bind(this));
     }
 
     _animateWindow(window, show) {
@@ -1955,6 +1979,18 @@ var Keyboard = GObject.registerClass({
                 this._windowSlideAnimationComplete(window, finalY);
             },
         });
+    }
+
+    _onFocusWindowMoving() {
+        if (this._focusTracker.currentWindow === this._focusWindow) {
+            // Don't use _setFocusWindow() here because that would move the
+            // window while the user has grabbed it. Instead we simply "let go"
+            // of the window.
+            this._focusWindow = null;
+            this._focusWindowStartY = null;
+        }
+
+        this.close(true);
     }
 
     _setFocusWindow(window) {
