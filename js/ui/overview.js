@@ -396,6 +396,7 @@ var Overview = class {
         let onComplete;
         if (endProgress === 0) {
             this._shown = false;
+            this._visibleTarget = false;
             this.emit('hiding');
             Main.panel.style = 'transition-duration: %dms;'.format(duration);
             onComplete = () => this._hideDone();
