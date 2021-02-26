@@ -553,37 +553,48 @@ var FocusTracker = class {
         this._currentWindow = null;
         this._rect = null;
 
-        global.display.connect('notify::focus-window', () => {
+        this._notifyFocusId = global.display.connect('notify::focus-window', () => {
             this._setCurrentWindow(global.display.focus_window);
             this.emit('window-changed', this._currentWindow);
         });
 
-        global.display.connect('grab-op-begin', (display, window, op) => {
+        this._grabOpBeginId = global.display.connect('grab-op-begin', (display, window, op) => {
             if (window == this._currentWindow &&
                 (op == Meta.GrabOp.MOVING || op == Meta.GrabOp.KEYBOARD_MOVING))
                 this.emit('window-grabbed');
         });
 
         /* Valid for wayland clients */
-        Main.inputMethod.connect('cursor-location-changed', (o, rect) => {
-            let newRect = { x: rect.get_x(), y: rect.get_y(), width: rect.get_width(), height: rect.get_height() };
-            this._setCurrentRect(newRect);
-        });
+        this._cursorLocationChangedId =
+            Main.inputMethod.connect('cursor-location-changed', (o, rect) => {
+                let newRect = { x: rect.get_x(), y: rect.get_y(), width: rect.get_width(), height: rect.get_height() };
+                this._setCurrentRect(newRect);
+            });
 
         this._ibusManager = IBusManager.getIBusManager();
-        this._ibusManager.connect('set-cursor-location', (manager, rect) => {
-            /* Valid for X11 clients only */
-            if (Main.inputMethod.currentFocus)
-                return;
+        this._setCursorLocationId =
+            this._ibusManager.connect('set-cursor-location', (manager, rect) => {
+                /* Valid for X11 clients only */
+                if (Main.inputMethod.currentFocus)
+                    return;
 
-            this._setCurrentRect(rect);
-        });
-        this._ibusManager.connect('focus-in', () => {
+                this._setCurrentRect(rect);
+            });
+        this._focusInId = this._ibusManager.connect('focus-in', () => {
             this.emit('focus-changed', true);
         });
-        this._ibusManager.connect('focus-out', () => {
+        this._focusOutId = this._ibusManager.connect('focus-out', () => {
             this.emit('focus-changed', false);
         });
+    }
+
+    destroy() {
+        global.display.disconnect(this._notifyFocusId);
+        global.display.disconnect(this._grabOpBeginId);
+        Main.inputMethod.disconnect(this._cursorLocationChangedId);
+        this._ibusManager.disconnect(this._setCursorLocationId);
+        this._ibusManager.disconnect(this._focusInId);
+        this._ibusManager.disconnect(this._focusOutId);
     }
 
     get currentWindow() {
@@ -1304,6 +1315,11 @@ var Keyboard = GObject.registerClass({
     }
 
     _onDestroy() {
+        if (this._focusTracker) {
+            this._focusTracker.destroy();
+            delete this._focusTracker;
+        }
+
         for (let [obj, id] of this._connectionsIDs)
             obj.disconnect(id);
         delete this._connectionsIDs;
