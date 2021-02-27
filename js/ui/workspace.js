@@ -736,8 +736,9 @@ var WorkspaceLayout = GObject.registerClass({
 
         // The layout might be frozen and we might not update the windowSlots
         // on the next allocation, so remove the slot now already
-        this._windowSlots.splice(
-            this._windowSlots.findIndex(s => s[4] === window), 1);
+        const index = this._windowSlots.findIndex(s => s[4] === window);
+        if (index !== -1)
+            this._windowSlots.splice(index, 1);
 
         // The window might have been reparented by DND
         if (window.get_parent() === this._container)
