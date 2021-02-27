@@ -609,11 +609,21 @@ var FocusTracker = class {
     }
 
     _setCurrentRect(rect) {
+        // Some clients give us 0-sized rects, in that case set size to 1
+        if (rect.size.width <= 0)
+            rect.size.width = 1;
+        if (rect.size.height <= 0)
+            rect.size.height = 1;
+
         if (this._currentWindow) {
             const frameRect = this._currentWindow.get_frame_rect();
             const grapheneFrameRect = new Graphene.Rect();
             grapheneFrameRect.init(frameRect.x, frameRect.y,
                 frameRect.width, frameRect.height);
+
+            const rectInsideFrameRect = grapheneFrameRect.intersection(rect)[0];
+            if (!rectInsideFrameRect)
+                return;
 
             rect.offset(-frameRect.x, -frameRect.y);
         }
