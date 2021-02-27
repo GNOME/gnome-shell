@@ -94,7 +94,7 @@ st_scroll_view_fade_paint_target (ClutterOffscreenEffect *effect,
   gdouble value, lower, upper, page_size;
   ClutterActor *vscroll = st_scroll_view_get_vscroll_bar (ST_SCROLL_VIEW (self->actor));
   ClutterActor *hscroll = st_scroll_view_get_hscroll_bar (ST_SCROLL_VIEW (self->actor));
-  gboolean h_scroll_visible, v_scroll_visible;
+  gboolean h_scroll_visible, v_scroll_visible, rtl;
 
   ClutterActorBox allocation, content_box, paint_box;
   ClutterMargin *content_padding;
@@ -158,8 +158,15 @@ st_scroll_view_fade_paint_target (ClutterOffscreenEffect *effect,
 
   st_adjustment_get_values (self->hadjustment, &value, &lower, &upper, NULL, NULL, &page_size);
   value = (value - lower) / (upper - page_size - lower);
-  clutter_shader_effect_set_uniform (shader, "fade_edges_left", G_TYPE_INT, 1, self->fade_edges ? value >= 0.0 : value > 0.0);
-  clutter_shader_effect_set_uniform (shader, "fade_edges_right", G_TYPE_INT, 1, self->fade_edges ? value <= 1.0 : value < 1.0);
+  rtl = clutter_actor_get_text_direction (self->actor) == CLUTTER_TEXT_DIRECTION_RTL;
+  clutter_shader_effect_set_uniform (shader, "fade_edges_left", G_TYPE_INT, 1,
+                                     self->fade_edges ?
+                                     value >= 0.0 :
+                                     (rtl ? value < 1.0 : value > 0.0));
+  clutter_shader_effect_set_uniform (shader, "fade_edges_right", G_TYPE_INT, 1,
+                                     self->fade_edges ?
+                                     value <= 1.0 :
+                                     (rtl ? value > 0.0 : value < 1.0));
 
   clutter_shader_effect_set_uniform (shader, "fade_offset_top", G_TYPE_FLOAT, 1, ABS (self->fade_margins.top));
   clutter_shader_effect_set_uniform (shader, "fade_offset_bottom", G_TYPE_FLOAT, 1, ABS (self->fade_margins.bottom));
