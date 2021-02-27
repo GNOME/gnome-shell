@@ -624,8 +624,6 @@ var FocusTracker = class {
             const rectInsideFrameRect = grapheneFrameRect.intersection(rect)[0];
             if (!rectInsideFrameRect)
                 return;
-
-            rect.offset(-frameRect.x, -frameRect.y);
         }
 
         if (this._rect && this._rect.equal(rect))
@@ -642,12 +640,6 @@ var FocusTracker = class {
             width: this._rect.size.width,
             height: this._rect.size.height,
         };
-
-        if (this._currentWindow) {
-            let frameRect = this._currentWindow.get_frame_rect();
-            rect.x += frameRect.x;
-            rect.y += frameRect.y;
-        }
 
         return rect;
     }
