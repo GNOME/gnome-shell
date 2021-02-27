@@ -1,7 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported KeyboardManager */
 
-const { Clutter, Gio, GLib, GObject, Meta, Shell, St } = imports.gi;
+const { Clutter, Gio, GLib, GObject, Graphene, Meta, Shell, St } = imports.gi;
 const ByteArray = imports.byteArray;
 const Signals = imports.signals;
 
@@ -568,8 +568,7 @@ var FocusTracker = class {
         /* Valid for wayland clients */
         this._cursorLocationChangedId =
             Main.inputMethod.connect('cursor-location-changed', (o, rect) => {
-                let newRect = { x: rect.get_x(), y: rect.get_y(), width: rect.get_width(), height: rect.get_height() };
-                this._setCurrentRect(newRect);
+                this._setCurrentRect(rect);
             });
 
         this._ibusManager = IBusManager.getIBusManager();
@@ -579,7 +578,10 @@ var FocusTracker = class {
                 if (Main.inputMethod.currentFocus)
                     return;
 
-                this._setCurrentRect(rect);
+                const grapheneRect = new Graphene.Rect();
+                grapheneRect.init(rect.x, rect.y, rect.width, rect.height);
+
+                this._setCurrentRect(grapheneRect);
             });
         this._focusInId = this._ibusManager.connect('focus-in', () => {
             this.emit('focus-changed', true);
@@ -608,16 +610,15 @@ var FocusTracker = class {
 
     _setCurrentRect(rect) {
         if (this._currentWindow) {
-            let frameRect = this._currentWindow.get_frame_rect();
-            rect.x -= frameRect.x;
-            rect.y -= frameRect.y;
+            const frameRect = this._currentWindow.get_frame_rect();
+            const grapheneFrameRect = new Graphene.Rect();
+            grapheneFrameRect.init(frameRect.x, frameRect.y,
+                frameRect.width, frameRect.height);
+
+            rect.offset(-frameRect.x, -frameRect.y);
         }
 
-        if (this._rect &&
-            this._rect.x == rect.x &&
-            this._rect.y == rect.y &&
-            this._rect.width == rect.width &&
-            this._rect.height == rect.height)
+        if (this._rect && this._rect.equal(rect))
             return;
 
         this._rect = rect;
@@ -625,8 +626,12 @@ var FocusTracker = class {
     }
 
     getCurrentRect() {
-        let rect = { x: this._rect.x, y: this._rect.y,
-                     width: this._rect.width, height: this._rect.height };
+        const rect = {
+            x: this._rect.origin.x,
+            y: this._rect.origin.y,
+            width: this._rect.size.width,
+            height: this._rect.size.height,
+        };
 
         if (this._currentWindow) {
             let frameRect = this._currentWindow.get_frame_rect();
