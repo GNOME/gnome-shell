@@ -26,6 +26,7 @@ const DECELERATION_TOUCH = 0.998;
 const DECELERATION_TOUCHPAD = 0.997;
 const VELOCITY_CURVE_THRESHOLD = 2;
 const DECELERATION_PARABOLA_MULTIPLIER = 0.35;
+const DRAG_THRESHOLD_DISTANCE = 16;
 
 // Derivative of easeOutCubic at t=0
 const DURATION_MULTIPLIER = 3;
@@ -41,8 +42,9 @@ const State = {
 
 const TouchpadState = {
     NONE: 0,
-    HANDLING: 1,
-    IGNORED: 2,
+    PENDING: 1,
+    HANDLING: 2,
+    IGNORED: 3,
 };
 
 const EventHistory = class {
@@ -105,6 +107,8 @@ const TouchpadSwipeGesture = GObject.registerClass({
         super._init();
         this._allowedModes = allowedModes;
         this._state = TouchpadState.NONE;
+        this._cumulativeX = 0;
+        this._cumulativeY = 0;
         this._touchpadSettings = new Gio.Settings({
             schema_id: 'org.gnome.desktop.peripherals.touchpad',
         });
@@ -134,24 +138,44 @@ const TouchpadSwipeGesture = GObject.registerClass({
 
         let time = event.get_time();
 
-        let [x, y] = event.get_coords();
+        const [x, y] = event.get_coords();
         let [dx, dy] = event.get_gesture_motion_delta();
 
-        if (this._state === TouchpadState.NONE && dx === 0 && dy === 0)
-            return Clutter.EVENT_PROPAGATE;
+        if (this._state === TouchpadState.NONE) {
+            if (dx === 0 && dy === 0)
+                return Clutter.EVENT_PROPAGATE;
 
-        let gestureOrientation = -1;
-        if (dx !== dy) {
-            gestureOrientation = Math.abs(dx) > Math.abs(dy)
-                ? Clutter.Orientation.HORIZONTAL
-                : Clutter.Orientation.VERTICAL;
+            this._cumulativeX = 0;
+            this._cumulativeY = 0;
+            this._state = TouchpadState.PENDING;
         }
 
-        if (this._state === TouchpadState.NONE &&
-            gestureOrientation >= 0 &&
-            gestureOrientation !== this.orientation) {
-            this._state = TouchpadState.IGNORED;
-            return Clutter.EVENT_PROPAGATE;
+        if (this._state === TouchpadState.PENDING) {
+            this._cumulativeX += dx * SWIPE_MULTIPLIER;
+            this._cumulativeY += dy * SWIPE_MULTIPLIER;
+
+            const cdx = this._cumulativeX;
+            const cdy = this._cumulativeY;
+            const distance = Math.sqrt(cdx * cdx + cdy * cdy);
+
+            if (distance >= DRAG_THRESHOLD_DISTANCE) {
+                const gestureOrientation = Math.abs(cdx) > Math.abs(cdy)
+                    ? Clutter.Orientation.HORIZONTAL
+                    : Clutter.Orientation.VERTICAL;
+
+                this._cumulativeX = 0;
+                this._cumulativeY = 0;
+
+                if (gestureOrientation === this.orientation) {
+                    this._state = TouchpadState.HANDLING;
+                    this.emit('begin', time, x, y);
+                } else {
+                    this._state = TouchpadState.IGNORED;
+                    return Clutter.EVENT_PROPAGATE;
+                }
+            } else {
+                return Clutter.EVENT_PROPAGATE;
+            }
         }
 
         const vertical = this.orientation === Clutter.Orientation.VERTICAL;
@@ -161,11 +185,6 @@ const TouchpadSwipeGesture = GObject.registerClass({
         switch (event.get_gesture_phase()) {
         case Clutter.TouchpadGesturePhase.BEGIN:
         case Clutter.TouchpadGesturePhase.UPDATE:
-            if (this._state === TouchpadState.NONE) {
-                this.emit('begin', time, x, y);
-                this._state = TouchpadState.HANDLING;
-            }
-
             if (this._touchpadSettings.get_boolean('natural-scroll'))
                 delta = -delta;
 
