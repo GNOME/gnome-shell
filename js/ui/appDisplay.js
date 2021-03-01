@@ -475,13 +475,11 @@ var BaseAppView = GObject.registerClass({
         if (this._lastOvershoot >= 0)
             return;
 
-        const currentPosition = this._adjustment.value;
-        const maxPosition = this._adjustment.upper - this._adjustment.page_size;
-
-        if (dragPosition <= gridStart && currentPosition > 0)
-            this.goToPage(this._grid.currentPage - 1);
-        else if (dragPosition >= gridEnd && currentPosition < maxPosition)
-            this.goToPage(this._grid.currentPage + 1);
+        const rtl = this.get_text_direction() === Clutter.TextDirection.RTL;
+        if (dragPosition <= gridStart)
+            this.goToPage(this._grid.currentPage + (rtl ? 1 : -1));
+        else if (dragPosition >= gridEnd)
+            this.goToPage(this._grid.currentPage + (rtl ? -1 : 1));
         else
             return; // don't go beyond first/last page
 
