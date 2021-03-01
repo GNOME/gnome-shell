@@ -635,6 +635,9 @@ var SwipeTracker = GObject.registerClass({
     }
 
     _getBounds(pos) {
+        if (this.allowLongSwipes)
+            return [this._snapPoints[0], this._snapPoints[this._snapPoints.length - 1]];
+
         const closest = this._findClosestPoint(pos);
 
         let prev, next;
@@ -667,11 +670,7 @@ var SwipeTracker = GObject.registerClass({
         this._progress += delta / distance;
         this._history.append(time, delta);
 
-        const [lower, upper] = this.allowLongSwipes
-            ? [this._snapPoints[0], this._snapPoints[this._snapPoints.length - 1]]
-            : this._getBounds(this._initialProgress);
-
-        this._progress = Math.clamp(this._progress, lower, upper);
+        this._progress = Math.clamp(this._progress, ...this._getBounds(this._initialProgress));
 
         this.emit('update', this._progress);
     }
@@ -701,9 +700,7 @@ var SwipeTracker = GObject.registerClass({
         }
 
         pos = pos * Math.sign(velocity) + this._progress;
-
-        if (!this.allowLongSwipes)
-            pos = Math.clamp(pos, ...this._getBounds(this._initialProgress));
+        pos = Math.clamp(pos, ...this._getBounds(this._initialProgress));
 
         const index = this._findPointForProjection(pos, velocity);
 
