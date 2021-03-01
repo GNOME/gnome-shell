@@ -244,11 +244,8 @@ var AppMenuButton = GObject.registerClass({
         });
     }
 
-    _syncIcon() {
-        if (!this._targetApp)
-            return;
-
-        let icon = this._targetApp.create_icon_texture(PANEL_ICON_SIZE - APP_MENU_ICON_MARGIN);
+    _syncIcon(app) {
+        const icon = app.create_icon_texture(PANEL_ICON_SIZE - APP_MENU_ICON_MARGIN);
         this._iconBox.set_child(icon);
     }
 
@@ -256,7 +253,8 @@ var AppMenuButton = GObject.registerClass({
         if (this._iconBox.child == null)
             return;
 
-        this._syncIcon();
+        if (this._targetApp)
+            this._syncIcon(this._targetApp);
     }
 
     stopAnimation() {
@@ -324,6 +322,8 @@ var AppMenuButton = GObject.registerClass({
                 this._busyNotifyId = this._targetApp.connect('notify::busy', this._sync.bind(this));
                 this._label.set_text(this._targetApp.get_name());
                 this.set_accessible_name(this._targetApp.get_name());
+
+                this._syncIcon(this._targetApp);
             }
         }
 
@@ -343,7 +343,6 @@ var AppMenuButton = GObject.registerClass({
 
         this.reactive = visible && !isBusy;
 
-        this._syncIcon();
         this.menu.setApp(this._targetApp);
         this.emit('changed');
     }
