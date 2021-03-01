@@ -848,6 +848,7 @@ class WorkspacesDisplay extends St.Widget {
 
         this._swipeTracker = new SwipeTracker.SwipeTracker(
             Main.layoutManager.overviewGroup,
+            Clutter.Orientation.HORIZONTAL,
             Shell.ActionMode.OVERVIEW,
             { allowDrag: false });
         this._swipeTracker.allowLongSwipes = true;

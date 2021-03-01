@@ -284,7 +284,9 @@ var WorkspaceAnimationController = class {
         });
 
         const swipeTracker = new SwipeTracker.SwipeTracker(global.stage,
-            Shell.ActionMode.NORMAL, { allowDrag: false });
+            Clutter.Orientation.HORIZONTAL,
+            Shell.ActionMode.NORMAL,
+            { allowDrag: false });
         swipeTracker.connect('begin', this._switchWorkspaceBegin.bind(this));
         swipeTracker.connect('update', this._switchWorkspaceUpdate.bind(this));
         swipeTracker.connect('end', this._switchWorkspaceEnd.bind(this));

@@ -240,6 +240,7 @@ var Overview = class {
             this.toggle.bind(this));
 
         const swipeTracker = new SwipeTracker.SwipeTracker(global.stage,
+            Clutter.Orientation.VERTICAL,
             Shell.ActionMode.NORMAL | Shell.ActionMode.OVERVIEW,
             { allowDrag: false, allowScroll: false });
         swipeTracker.orientation = Clutter.Orientation.VERTICAL;
