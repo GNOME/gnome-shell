@@ -222,7 +222,6 @@ var AppMenuButton = GObject.registerClass({
 
         this._visible = true;
         this.reactive = true;
-        this.show();
         this.remove_all_transitions();
         this.ease({
             opacity: 255,
@@ -242,7 +241,6 @@ var AppMenuButton = GObject.registerClass({
             opacity: 0,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
             duration: Overview.ANIMATION_TIME,
-            onComplete: () => this.hide(),
         });
     }
 
