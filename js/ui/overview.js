@@ -652,6 +652,8 @@ var Overview = class {
     }
 
     runStartupAnimation(callback) {
+        Main.panel.style = 'transition-duration: 0ms;';
+
         this._shown = true;
         this._visible = true;
         this._visibleTarget = true;
@@ -663,6 +665,7 @@ var Overview = class {
         this.emit('showing');
 
         this._overview.runStartupAnimation(() => {
+            Main.panel.style = null;
             this.emit('shown');
             callback();
         });
