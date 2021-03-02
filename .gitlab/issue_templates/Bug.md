@@ -8,7 +8,7 @@ first to ensure that you create a clear and specific issue.
 <!--
 Provide at least the following information:
 * Your OS and version
-* Affected GNOME Shell version
+* Affected GNOME Shell version (see https://wiki.gnome.org/Schedule for currently supported versions)
 * Does this issue appear in XOrg and/or Wayland
 -->
 

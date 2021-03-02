@@ -10,6 +10,7 @@ to build GNOME Shell from source and how to get involved with the project,
 see the [project wiki][project-wiki].
 
 Bugs should be reported to the GNOME [bug tracking system][bug-tracker].
+Please refer to the [*Schedule* wiki page][schedule] to see the supported versions.
 
 ## Contributing
 
@@ -25,4 +26,5 @@ version 2 or later. See the [COPYING][license] file for details.
 
 [project-wiki]: https://wiki.gnome.org/Projects/GnomeShell
 [bug-tracker]: https://gitlab.gnome.org/GNOME/gnome-shell/issues
+[schedule]: https://wiki.gnome.org/Schedule
 [license]: COPYING
