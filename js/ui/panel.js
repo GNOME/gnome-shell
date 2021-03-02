@@ -756,9 +756,11 @@ class Panel extends St.Widget {
         this.add_child(this._rightBox);
 
         this._leftCorner = new PanelCorner(St.Side.LEFT);
+        this.bind_property('style', this._leftCorner, 'style', GObject.BindingFlags.SYNC_CREATE);
         this.add_child(this._leftCorner);
 
         this._rightCorner = new PanelCorner(St.Side.RIGHT);
+        this.bind_property('style', this._rightCorner, 'style', GObject.BindingFlags.SYNC_CREATE);
         this.add_child(this._rightCorner);
 
         Main.overview.connect('showing', () => {
