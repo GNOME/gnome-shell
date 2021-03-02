@@ -1,7 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported BaseIcon, IconGrid, IconGridLayout */
 
-const { Clutter, GLib, GObject, Meta, St } = imports.gi;
+const { Clutter, GLib, GObject, Meta, Shell, St } = imports.gi;
 
 const Params = imports.misc.params;
 const Main = imports.ui.main;
@@ -64,7 +64,7 @@ var DragLocation = {
 };
 
 var BaseIcon = GObject.registerClass(
-class BaseIcon extends St.Bin {
+class BaseIcon extends Shell.SquareBin {
     _init(label, params) {
         params = Params.parse(params, {
             createIcon: null,
@@ -111,11 +111,6 @@ class BaseIcon extends St.Bin {
 
         let cache = St.TextureCache.get_default();
         this._iconThemeChangedId = cache.connect('icon-theme-changed', this._onIconThemeChanged.bind(this));
-    }
-
-    vfunc_get_preferred_width(_forHeight) {
-        // Return the actual height to keep the squared aspect
-        return this.get_preferred_height(-1);
     }
 
     // This can be overridden by a subclass, or by the createIcon
