@@ -23,9 +23,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2021-02-26 17:59+0000\n"
-"PO-Revision-Date: 2021-02-26 22:23+0100\n"
-"Last-Translator: Philipp Kiemle <philipp.kiemle@gmail.com>\n"
+"POT-Creation-Date: 2021-02-26 23:00+0000\n"
+"PO-Revision-Date: 2021-02-28 13:23+0100\n"
+"Last-Translator: Tim Sabsch <tim@sabsch.com>\n"
 "Language-Team: Deutsch <gnome-de@gnome.org>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
@@ -268,7 +268,6 @@ msgstr "Tastenkombination zum Öffnen des Anwendungsmenüs."
 
 #: data/org.gnome.shell.gschema.xml.in:164
 #: data/org.gnome.shell.gschema.xml.in:171
-#, fuzzy
 msgid "Keybinding to shift between overview states"
 msgstr "Tastenkürzel, um zwischen Übersichts-Modi zu wechseln"
 
@@ -2567,7 +2566,7 @@ msgid "The extension had an error"
 msgstr "Die Erweiterung hatte einen Fehler"
 
 #: subprojects/extensions-app/data/ui/extension-row.ui:83
-#: subprojects/extensions-tool/src/command-create.c:325
+#: subprojects/extensions-tool/src/command-create.c:322
 #: subprojects/extensions-tool/src/main.c:241
 msgid "Description"
 msgstr "Beschreibung"
@@ -2649,12 +2648,12 @@ msgid "Log Out…"
 msgstr "Abmelden …"
 
 #. Translators: a file path to an extension directory
-#: subprojects/extensions-tool/src/command-create.c:226
+#: subprojects/extensions-tool/src/command-create.c:223
 #, c-format
 msgid "The new extension was successfully created in %s.\n"
 msgstr "Die neue Erweiterung wurde erfolgreich in %s erstellt.\n"
 
-#: subprojects/extensions-tool/src/command-create.c:299
+#: subprojects/extensions-tool/src/command-create.c:296
 #, c-format
 msgid ""
 "Name should be a very short (ideally descriptive) string.\n"
@@ -2664,12 +2663,12 @@ msgstr ""
 "sein.\n"
 "Beispiele sind: %s"
 
-#: subprojects/extensions-tool/src/command-create.c:305
+#: subprojects/extensions-tool/src/command-create.c:302
 #: subprojects/extensions-tool/src/main.c:238
 msgid "Name"
 msgstr "Name"
 
-#: subprojects/extensions-tool/src/command-create.c:319
+#: subprojects/extensions-tool/src/command-create.c:316
 #, c-format
 msgid ""
 "Description is a single-sentence explanation of what your extension does.\n"
@@ -2678,7 +2677,7 @@ msgstr ""
 "Die Beschreibung erklärt in einem Satz, was Ihre Erweiterung beinhaltet.\n"
 "Beispiele sind: %s"
 
-#: subprojects/extensions-tool/src/command-create.c:339
+#: subprojects/extensions-tool/src/command-create.c:336
 msgid ""
 "UUID is a globally-unique identifier for your extension.\n"
 "This should be in the format of an email address (clicktofocus@janedoe."
@@ -2688,56 +2687,56 @@ msgstr ""
 "Sie sollte das Format einer E-Mail-Adresse besitzen "
 "(klickfokus@maxmustermann.beispiel.de)\n"
 
-#: subprojects/extensions-tool/src/command-create.c:366
+#: subprojects/extensions-tool/src/command-create.c:363
 msgid "Choose one of the available templates:\n"
 msgstr "Wählen Sie eine der verfügbaren Vorlagen:\n"
 
-#: subprojects/extensions-tool/src/command-create.c:380
+#: subprojects/extensions-tool/src/command-create.c:377
 msgid "Template"
 msgstr "Vorlage"
 
-#: subprojects/extensions-tool/src/command-create.c:435
+#: subprojects/extensions-tool/src/command-create.c:432
 msgid "The unique identifier of the new extension"
 msgstr "Die eindeutige Kennung der neuen Erweiterung"
 
-#: subprojects/extensions-tool/src/command-create.c:438
+#: subprojects/extensions-tool/src/command-create.c:435
 msgid "NAME"
 msgstr "NAME"
 
-#: subprojects/extensions-tool/src/command-create.c:439
+#: subprojects/extensions-tool/src/command-create.c:436
 msgid "The user-visible name of the new extension"
 msgstr "Der sichtbare Name der neuen Erweiterung"
 
-#: subprojects/extensions-tool/src/command-create.c:441
+#: subprojects/extensions-tool/src/command-create.c:438
 msgid "DESCRIPTION"
 msgstr "BESCHREIBUNG"
 
-#: subprojects/extensions-tool/src/command-create.c:443
+#: subprojects/extensions-tool/src/command-create.c:440
 msgid "A short description of what the extension does"
 msgstr "Eine kurze Beschreibung der Erweiterung"
 
-#: subprojects/extensions-tool/src/command-create.c:446
+#: subprojects/extensions-tool/src/command-create.c:443
 msgid "TEMPLATE"
 msgstr "VORLAGE"
 
-#: subprojects/extensions-tool/src/command-create.c:447
+#: subprojects/extensions-tool/src/command-create.c:444
 msgid "The template to use for the new extension"
 msgstr "Die Vorlage für eine neue Erweiterung"
 
-#: subprojects/extensions-tool/src/command-create.c:453
+#: subprojects/extensions-tool/src/command-create.c:450
 msgid "Enter extension information interactively"
 msgstr "Informationen zur Erweiterung interaktiv eingeben"
 
-#: subprojects/extensions-tool/src/command-create.c:461
+#: subprojects/extensions-tool/src/command-create.c:458
 msgid "Create a new extension"
 msgstr "Eine neue Erweiterung erstellen"
 
-#: subprojects/extensions-tool/src/command-create.c:479
+#: subprojects/extensions-tool/src/command-create.c:476
 #: subprojects/extensions-tool/src/command-list.c:172
 msgid "Unknown arguments"
 msgstr "Unbekannte Argumente"
 
-#: subprojects/extensions-tool/src/command-create.c:504
+#: subprojects/extensions-tool/src/command-create.c:501
 msgid "UUID, name and description are required"
 msgstr "Es werden eine UUID, ein Name und eine Beschreibung benötigt"
 
