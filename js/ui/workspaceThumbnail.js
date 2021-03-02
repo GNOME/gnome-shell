@@ -706,24 +706,13 @@ var ThumbnailsBox = GObject.registerClass({
         });
         this.connect('destroy', () => this._onDestroy());
 
-        this._switchWorkspaceNotifyId = 0;
         this._nWorkspacesNotifyId = 0;
+        this._activeWorkspaceChangedId = 0;
         this._syncStackingId = 0;
 
         this._scrollAdjustment = scrollAdjustment;
-
         this._scrollValueId = this._scrollAdjustment.connect('notify::value',
-            adj => {
-                const { workspaceManager } = global;
-                const activeIndex = workspaceManager.get_active_workspace_index();
-
-                this._animatingIndicator = adj.value !== activeIndex;
-
-                if (!this._animatingIndicator)
-                    this._queueUpdateStates();
-
-                this.queue_relayout();
-            });
+            () => this._updateIndicator());
     }
 
     _onDestroy() {
@@ -760,6 +749,19 @@ var ThumbnailsBox = GObject.registerClass({
 
         this._shouldShow = shouldShow;
         this.notify('should-show');
+    }
+
+    _updateIndicator() {
+        const { value } = this._scrollAdjustment;
+        const { workspaceManager } = global;
+        const activeIndex = workspaceManager.get_active_workspace_index();
+
+        this._animatingIndicator = value !== activeIndex;
+
+        if (!this._animatingIndicator)
+            this._queueUpdateStates();
+
+        this.queue_relayout();
     }
 
     _activateThumbnailAtPoint(stageX, stageY, time) {
@@ -992,6 +994,9 @@ var ThumbnailsBox = GObject.registerClass({
         this._nWorkspacesNotifyId =
             workspaceManager.connect('notify::n-workspaces',
                                      this._workspacesChanged.bind(this));
+        this._activeWorkspaceChangedId =
+            workspaceManager.connect('active-workspace-changed',
+                () => this._updateIndicator());
         this._workspacesReorderedId =
             workspaceManager.connect('workspaces-reordered', () => {
                 this._thumbnails.sort((a, b) => {
@@ -1019,13 +1024,17 @@ var ThumbnailsBox = GObject.registerClass({
         if (this._thumbnails.length == 0)
             return;
 
+        const { workspaceManager } = global;
+
         if (this._nWorkspacesNotifyId > 0) {
-            let workspaceManager = global.workspace_manager;
             workspaceManager.disconnect(this._nWorkspacesNotifyId);
             this._nWorkspacesNotifyId = 0;
         }
+        if (this._activeWorkspaceChangedId > 0) {
+            workspaceManager.disconnect(this._activeWorkspaceChangedId);
+            this._activeWorkspaceChangedId = 0;
+        }
         if (this._workspacesReorderedId > 0) {
-            let workspaceManager = global.workspace_manager;
             workspaceManager.disconnect(this._workspacesReorderedId);
             this._workspacesReorderedId = 0;
         }
