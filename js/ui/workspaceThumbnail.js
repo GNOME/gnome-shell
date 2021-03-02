@@ -641,10 +641,6 @@ var ThumbnailsBox = GObject.registerClass({
         this._indicator = indicator;
         this.add_actor(indicator);
 
-        // The porthole is the part of the screen we're showing in the thumbnails
-        this._porthole = { width: global.stage.width, height: global.stage.height,
-                           x: global.stage.x, y: global.stage.y };
-
         this._dropWorkspace = -1;
         this._dropPlaceholderPos = -1;
         this._dropPlaceholder = new St.Bin({ style_class: 'placeholder' });
@@ -696,8 +692,10 @@ var ThumbnailsBox = GObject.registerClass({
                     this._createThumbnails();
             });
 
+        // The porthole is the part of the screen we're showing in the thumbnails
         this._workareasChangedId = global.display.connect('workareas-changed',
             () => this._updatePorthole());
+        this._updatePorthole();
 
         this.connect('notify::visible', () => {
             if (!this.visible)
