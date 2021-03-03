@@ -28,7 +28,6 @@ var WorkspacesViewBase = GObject.registerClass({
     _init(monitorIndex, overviewAdjustment) {
         super._init({
             style_class: 'workspaces-view',
-            clip_to_allocation: monitorIndex !== Main.layoutManager.primaryIndex,
             x_expand: true,
             y_expand: true,
         });
@@ -615,6 +614,7 @@ class SecondaryMonitorDisplay extends St.Widget {
                 index: this._monitorIndex,
                 work_area: true,
             }),
+            clip_to_allocation: true,
         });
 
         this.connect('destroy', () => this._onDestroy());
