@@ -465,7 +465,7 @@ var WorkspaceLayout = GObject.registerClass({
 
     _adjustSpacingAndPadding(rowSpacing, colSpacing, containerBox) {
         if (this._sortedWindows.length === 0)
-            return [colSpacing, rowSpacing, containerBox];
+            return [rowSpacing, colSpacing, containerBox];
 
         // All of the overlays have the same chrome sizes,
         // so just pick the first one.
