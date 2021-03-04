@@ -1018,6 +1018,8 @@ var ThumbnailsBox = GObject.registerClass({
             this._stateCounts[ThumbnailState[key]] = 0;
 
         this.addThumbnails(0, workspaceManager.n_workspaces);
+
+        this._updateShouldShow();
     }
 
     _destroyThumbnails() {
