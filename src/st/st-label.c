@@ -62,6 +62,8 @@ struct _StLabelPrivate
 {
   ClutterActor *label;
 
+  StShadow *shadow_spec;
+
   CoglPipeline *text_shadow_pipeline;
   float         shadow_width;
   float         shadow_height;
@@ -119,8 +121,21 @@ static void
 st_label_style_changed (StWidget *self)
 {
   StLabelPrivate *priv = ST_LABEL(self)->priv;
+  StThemeNode *theme_node;
+  StShadow *shadow_spec;
 
-  g_clear_pointer (&priv->text_shadow_pipeline, cogl_object_unref);
+  theme_node = st_widget_get_theme_node (self);
+
+  shadow_spec = st_theme_node_get_text_shadow (theme_node);
+  if (!priv->shadow_spec || !shadow_spec ||
+      !st_shadow_equal (shadow_spec, priv->shadow_spec))
+    {
+      g_clear_pointer (&priv->text_shadow_pipeline, cogl_object_unref);
+
+      g_clear_pointer (&priv->shadow_spec, st_shadow_unref);
+      if (shadow_spec)
+        priv->shadow_spec = st_shadow_ref (shadow_spec);
+    }
 
   _st_set_text_from_style ((ClutterText *)priv->label, st_widget_get_theme_node (self));
 
@@ -194,12 +209,10 @@ st_label_paint (ClutterActor        *actor,
                 ClutterPaintContext *paint_context)
 {
   StLabelPrivate *priv = ST_LABEL (actor)->priv;
-  StThemeNode *theme_node = st_widget_get_theme_node (ST_WIDGET (actor));
-  StShadow *shadow_spec = st_theme_node_get_text_shadow (theme_node);
 
   st_widget_paint_background (ST_WIDGET (actor), paint_context);
 
-  if (shadow_spec)
+  if (priv->shadow_spec)
     {
       ClutterActorBox allocation;
       float width, height;
@@ -222,7 +235,7 @@ st_label_paint (ClutterActor        *actor,
           priv->shadow_width = width;
           priv->shadow_height = height;
           priv->text_shadow_pipeline =
-            _st_create_shadow_pipeline_from_actor (shadow_spec,
+            _st_create_shadow_pipeline_from_actor (priv->shadow_spec,
                                                    priv->label);
         }
 
@@ -232,7 +245,7 @@ st_label_paint (ClutterActor        *actor,
 
           framebuffer =
             clutter_paint_context_get_framebuffer (paint_context);
-          _st_paint_shadow_with_opacity (shadow_spec,
+          _st_paint_shadow_with_opacity (priv->shadow_spec,
                                          framebuffer,
                                          priv->text_shadow_pipeline,
                                          &allocation,
