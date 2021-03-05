@@ -126,6 +126,9 @@ st_shadow_equal (StShadow *shadow,
   g_return_val_if_fail (shadow != NULL, FALSE);
   g_return_val_if_fail (other != NULL, FALSE);
 
+  if (shadow == other)
+    return TRUE;
+
   /* We use strict equality to compare double quantities; this means
    * that, for example, a shadow offset of 0.25in does not necessarily
    * compare equal to a shadow offset of 18pt in this test. Assume
