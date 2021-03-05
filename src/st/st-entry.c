@@ -539,7 +539,11 @@ static void
 clutter_text_cursor_changed (ClutterText *text,
                              StEntry     *entry)
 {
+  StEntryPrivate *priv = ST_ENTRY_PRIV (entry);
+
   st_entry_update_hint_visibility (entry);
+
+  g_clear_pointer (&priv->text_shadow_material, cogl_object_unref);
 }
 
 static void
