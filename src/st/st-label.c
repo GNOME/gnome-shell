@@ -302,6 +302,16 @@ st_label_class_init (StLabelClass *klass)
 }
 
 static void
+invalidate_shadow_pipeline (GObject    *object,
+                            GParamSpec *pspec,
+                            StLabel    *label)
+{
+  StLabelPrivate *priv = st_label_get_instance_private (label);
+
+  g_clear_pointer (&priv->text_shadow_pipeline, cogl_object_unref);
+}
+
+static void
 st_label_init (StLabel *label)
 {
   ClutterActor *actor = CLUTTER_ACTOR (label);
@@ -315,6 +325,19 @@ st_label_init (StLabel *label)
   label->priv->text_shadow_pipeline = NULL;
   label->priv->shadow_width = -1.;
   label->priv->shadow_height = -1.;
+
+  /* These properties might get set from CSS using _st_set_text_from_style */
+  g_signal_connect (priv->label, "notify::font-description",
+                    G_CALLBACK (invalidate_shadow_pipeline), label);
+
+  g_signal_connect (priv->label, "notify::attributes",
+                    G_CALLBACK (invalidate_shadow_pipeline), label);
+
+  g_signal_connect (priv->label, "notify::justify",
+                    G_CALLBACK (invalidate_shadow_pipeline), label);
+
+  g_signal_connect (priv->label, "notify::line-alignment",
+                    G_CALLBACK (invalidate_shadow_pipeline), label);
 
   clutter_actor_add_child (actor, priv->label);
 
