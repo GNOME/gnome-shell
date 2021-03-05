@@ -563,6 +563,16 @@ clutter_text_changed_cb (GObject    *object,
 }
 
 static void
+invalidate_shadow_pipeline (GObject    *object,
+                            GParamSpec *pspec,
+                            StEntry    *entry)
+{
+  StEntryPrivate *priv = ST_ENTRY_PRIV (entry);
+
+  g_clear_pointer (&priv->text_shadow_material, cogl_object_unref);
+}
+
+static void
 st_entry_clipboard_callback (StClipboard *clipboard,
                              const gchar *text,
                              gpointer     data)
@@ -1057,6 +1067,20 @@ st_entry_init (StEntry *entry)
 
   g_signal_connect (priv->entry, "notify::text",
                     G_CALLBACK (clutter_text_changed_cb), entry);
+
+  /* These properties might get set from CSS using _st_set_text_from_style */
+  g_signal_connect (priv->entry, "notify::font-description",
+                    G_CALLBACK (invalidate_shadow_pipeline), entry);
+
+  g_signal_connect (priv->entry, "notify::attributes",
+                    G_CALLBACK (invalidate_shadow_pipeline), entry);
+
+  g_signal_connect (priv->entry, "notify::justify",
+                    G_CALLBACK (invalidate_shadow_pipeline), entry);
+
+  g_signal_connect (priv->entry, "notify::line-alignment",
+                    G_CALLBACK (invalidate_shadow_pipeline), entry);
+
 
   priv->spacing = 6.0f;
 
