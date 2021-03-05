@@ -105,6 +105,8 @@ struct _StEntryPrivate
 
   gboolean      has_ibeam;
 
+  StShadow     *shadow_spec;
+
   CoglPipeline *text_shadow_material;
   gfloat        shadow_width;
   gfloat        shadow_height;
@@ -242,12 +244,22 @@ st_entry_style_changed (StWidget *self)
 {
   StEntryPrivate *priv = ST_ENTRY_PRIV (self);
   StThemeNode *theme_node;
+  StShadow *shadow_spec;
   ClutterColor color;
   gdouble size;
 
-  cogl_clear_object (&priv->text_shadow_material);
-
   theme_node = st_widget_get_theme_node (self);
+
+  shadow_spec = st_theme_node_get_text_shadow (theme_node);
+  if (!priv->shadow_spec || !shadow_spec ||
+      !st_shadow_equal (shadow_spec, priv->shadow_spec))
+    {
+      g_clear_pointer (&priv->text_shadow_material, cogl_object_unref);
+
+      g_clear_pointer (&priv->shadow_spec, st_shadow_unref);
+      if (shadow_spec)
+        priv->shadow_spec = st_shadow_ref (shadow_spec);
+    }
 
   _st_set_text_from_style (CLUTTER_TEXT (priv->entry), theme_node);
 
@@ -799,13 +811,11 @@ st_entry_paint (ClutterActor        *actor,
                 ClutterPaintContext *paint_context)
 {
   StEntryPrivate *priv = ST_ENTRY_PRIV (actor);
-  StThemeNode *theme_node = st_widget_get_theme_node (ST_WIDGET (actor));
-  StShadow *shadow_spec = st_theme_node_get_text_shadow (theme_node);
   ClutterActorClass *parent_class;
 
   st_widget_paint_background (ST_WIDGET (actor), paint_context);
 
-  if (shadow_spec)
+  if (priv->shadow_spec)
     {
       ClutterActorBox allocation;
       float width, height;
@@ -821,7 +831,7 @@ st_entry_paint (ClutterActor        *actor,
 
           cogl_clear_object (&priv->text_shadow_material);
 
-          material = _st_create_shadow_pipeline_from_actor (shadow_spec,
+          material = _st_create_shadow_pipeline_from_actor (priv->shadow_spec,
                                                             priv->entry);
 
           priv->shadow_width = width;
@@ -834,7 +844,7 @@ st_entry_paint (ClutterActor        *actor,
           CoglFramebuffer *framebuffer =
             clutter_paint_context_get_framebuffer (paint_context);
 
-          _st_paint_shadow_with_opacity (shadow_spec,
+          _st_paint_shadow_with_opacity (priv->shadow_spec,
                                          framebuffer,
                                          priv->text_shadow_material,
                                          &allocation,
