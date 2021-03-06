@@ -5,33 +5,34 @@
 # workspace - Arbeitsfläche
 #
 # Hendrik Brandt <heb@gnome-de.org>, 2009.
-# Hendrik Richter <hendrikr@gnome.org>, 2009-2011.
-# Mario Blättermann <mario.blaettermann@gmail.com>, 2009-2013, 2015-2018.
 # Mario Klug <mario@klug.me>, 2010.
 # Jakob Kramer <jakob.kramer@gmx.de>, 2010.
+# Hendrik Richter <hendrikr@gnome.org>, 2009-2011.
 # Paul Seyfert <pseyfert@mathphys.fsk.uni-heidelberg.de>, 2010-2011.
-# Wolfgang Stöggl <c72578@yahoo.de>, 2012, 2014, 2017-2018, 2020.
 # Christian Kirbach <christian.kirbach@gmail.com>, 2009-2013.
 # Tobias Endrigkeit <tobiasendrigkeit@outlook.com>, 2012-2013.
 # Benjamin Steinwender <b@stbe.at>, 2013-2014.
-# Bernd Homuth <dev@hmt.im>, 2014-2015, 2016, 2019.
 # Franco Della-Monica <franco.della.monica@gmail.com>, 2016.
+# Mario Blättermann <mario.blaettermann@gmail.com>, 2009-2013, 2015-2018.
+# Bernd Homuth <dev@hmt.im>, 2014-2015, 2016, 2019.
+# Wolfgang Stöggl <c72578@yahoo.de>, 2012, 2014, 2017-2018, 2020.
 # Tim Sabsch <tim@sabsch.com>, 2018-2020.
+# Philipp Kiemle <philipp.kiemle@gmail.com>, 2021.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2020-05-15 03:04+0000\n"
-"PO-Revision-Date: 2020-05-24 00:19+0200\n"
-"Last-Translator: Christian Kirbach <christian.kirbach@gmail.com>\n"
+"POT-Creation-Date: 2021-02-15 12:40+0000\n"
+"PO-Revision-Date: 2021-03-06 15:56+0100\n"
+"Last-Translator: Philipp Kiemle <philipp.kiemle@gmail.com>\n"
 "Language-Team: Deutsch <gnome-de@gnome.org>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 2.3\n"
+"X-Generator: Poedit 2.4.1\n"
 
 #: data/50-gnome-shell-system.xml:6
 msgid "System"
@@ -438,7 +439,7 @@ msgstr "Internetseite der Erweiterung besuchen"
 
 #: js/gdm/authPrompt.js:135 js/ui/audioDeviceSelection.js:57
 #: js/ui/components/networkAgent.js:109 js/ui/components/polkitAgent.js:139
-#: js/ui/endSessionDialog.js:372 js/ui/extensionDownloader.js:181
+#: js/ui/endSessionDialog.js:372 js/ui/extensionDownloader.js:183
 #: js/ui/shellMountOperation.js:376 js/ui/shellMountOperation.js:386
 #: js/ui/status/network.js:913 subprojects/extensions-app/js/main.js:148
 msgid "Cancel"
@@ -463,7 +464,7 @@ msgstr "Nicht aufgeführt?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: js/gdm/loginDialog.js:912
+#: js/gdm/loginDialog.js:913
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(z.B. Benutzer oder %s)"
@@ -471,7 +472,7 @@ msgstr "(z.B. Benutzer oder %s)"
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: js/gdm/loginDialog.js:917 js/ui/components/networkAgent.js:240
+#: js/gdm/loginDialog.js:918 js/ui/components/networkAgent.js:240
 #: js/ui/components/networkAgent.js:263 js/ui/components/networkAgent.js:281
 msgid "Username"
 msgstr "Benutzername"
@@ -742,27 +743,27 @@ msgstr "Alle"
 
 # Fensterüberschrift
 #. Translators: This is the heading of a list of open windows
-#: js/ui/appDisplay.js:2480 js/ui/panel.js:75
+#: js/ui/appDisplay.js:2508 js/ui/panel.js:75
 msgid "Open Windows"
 msgstr "Offene Fenster"
 
-#: js/ui/appDisplay.js:2500 js/ui/panel.js:82
+#: js/ui/appDisplay.js:2528 js/ui/panel.js:82
 msgid "New Window"
 msgstr "Neues Fenster"
 
-#: js/ui/appDisplay.js:2511
+#: js/ui/appDisplay.js:2539
 msgid "Launch using Dedicated Graphics Card"
 msgstr "Mit dedizierter Grafikkarte starten"
 
-#: js/ui/appDisplay.js:2539 js/ui/dash.js:239
+#: js/ui/appDisplay.js:2567 js/ui/dash.js:239
 msgid "Remove from Favorites"
 msgstr "Aus Favoriten entfernen"
 
-#: js/ui/appDisplay.js:2545
+#: js/ui/appDisplay.js:2573
 msgid "Add to Favorites"
 msgstr "Zu Favoriten hinzufügen"
 
-#: js/ui/appDisplay.js:2555 js/ui/panel.js:93
+#: js/ui/appDisplay.js:2583 js/ui/panel.js:93
 msgid "Show Details"
 msgstr "Details anzeigen"
 
@@ -792,7 +793,7 @@ msgstr "Kopfhörer"
 msgid "Headset"
 msgstr "Headset"
 
-#: js/ui/audioDeviceSelection.js:68 js/ui/status/volume.js:270
+#: js/ui/audioDeviceSelection.js:68 js/ui/status/volume.js:273
 msgid "Microphone"
 msgstr "Mikrofon"
 
@@ -866,7 +867,7 @@ msgstr "S"
 #. * "%OB" is the new format specifier introduced in glibc 2.27,
 #. * in most cases you should not change it.
 #.
-#: js/ui/calendar.js:371
+#: js/ui/calendar.js:396
 msgid "%OB"
 msgstr "%OB"
 
@@ -879,61 +880,61 @@ msgstr "%OB"
 #. * in most cases you should not use the old "%B" here unless you
 #. * absolutely know what you are doing.
 #.
-#: js/ui/calendar.js:381
+#: js/ui/calendar.js:406
 msgid "%OB %Y"
 msgstr "%OB %Y"
 
-#: js/ui/calendar.js:440
+#: js/ui/calendar.js:465
 msgid "Previous month"
 msgstr "Vorheriger Monat"
 
-#: js/ui/calendar.js:455
+#: js/ui/calendar.js:480
 msgid "Next month"
 msgstr "Nächster Monat"
 
-#: js/ui/calendar.js:605
+#: js/ui/calendar.js:630
 #, no-javascript-format
 msgctxt "date day number format"
 msgid "%d"
 msgstr "%d"
 
-#: js/ui/calendar.js:661
+#: js/ui/calendar.js:686
 msgid "Week %V"
 msgstr "Woche %V"
 
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
 #.
-#: js/ui/calendar.js:730
+#: js/ui/calendar.js:762
 msgctxt "event list time"
 msgid "All Day"
 msgstr "Ganztägig"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year
-#: js/ui/calendar.js:868
+#: js/ui/calendar.js:900
 msgctxt "calendar heading"
 msgid "%A, %B %-d"
 msgstr "%A, %d. %B"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year
-#: js/ui/calendar.js:871
+#: js/ui/calendar.js:903
 msgctxt "calendar heading"
 msgid "%A, %B %-d, %Y"
 msgstr "%A, %d. %B %Y"
 
-#: js/ui/calendar.js:1100
+#: js/ui/calendar.js:1133
 msgid "No Notifications"
 msgstr "Keine Benachrichtigungen"
 
-#: js/ui/calendar.js:1103
+#: js/ui/calendar.js:1136
 msgid "No Events"
 msgstr "Keine Termine"
 
-#: js/ui/calendar.js:1157
+#: js/ui/calendar.js:1190
 msgid "Do Not Disturb"
 msgstr "Nicht stören"
 
-#: js/ui/calendar.js:1176
+#: js/ui/calendar.js:1209
 msgid "Clear"
 msgstr "Leeren"
 
@@ -1123,31 +1124,31 @@ msgstr "%e. %B %Y"
 msgid "%A %B %e %Y"
 msgstr "%A, %e. %B %Y"
 
-#: js/ui/dateMenu.js:161
+#: js/ui/dateMenu.js:162
 msgid "Add world clocks…"
 msgstr "Weltuhren hinzufügen …"
 
-#: js/ui/dateMenu.js:162
+#: js/ui/dateMenu.js:163
 msgid "World Clocks"
 msgstr "Weltuhren"
 
-#: js/ui/dateMenu.js:289
+#: js/ui/dateMenu.js:308
 msgid "Weather"
 msgstr "Wetter"
 
-#: js/ui/dateMenu.js:418
+#: js/ui/dateMenu.js:437
 msgid "Select a location…"
 msgstr "Ort auswählen …"
 
-#: js/ui/dateMenu.js:426
+#: js/ui/dateMenu.js:445
 msgid "Loading…"
 msgstr "Wird geladen …"
 
-#: js/ui/dateMenu.js:436
+#: js/ui/dateMenu.js:455
 msgid "Go online for weather information"
 msgstr "Gehen Sie Online, um Wetterinformationen beziehen zu können"
 
-#: js/ui/dateMenu.js:438
+#: js/ui/dateMenu.js:457
 msgid "Weather information is currently unavailable"
 msgstr "Wetterinformationen sind momentan nicht verfügbar"
 
@@ -1299,24 +1300,24 @@ msgstr "%s (Entfernt)"
 msgid "%s (console)"
 msgstr "%s (Konsole)"
 
-#: js/ui/extensionDownloader.js:185
+#: js/ui/extensionDownloader.js:187
 msgid "Install"
 msgstr "Installieren"
 
-#: js/ui/extensionDownloader.js:191
+#: js/ui/extensionDownloader.js:193
 msgid "Install Extension"
 msgstr "Erweiterung installieren"
 
-#: js/ui/extensionDownloader.js:192
+#: js/ui/extensionDownloader.js:194
 #, javascript-format
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "»%s« von extensions.gnome.org herunterladen und installieren?"
 
-#: js/ui/extensionSystem.js:252
+#: js/ui/extensionSystem.js:253
 msgid "Extension Updates Available"
 msgstr "Aktualisierungen für Erweiterungen verfügbar"
 
-#: js/ui/extensionSystem.js:253
+#: js/ui/extensionSystem.js:254
 msgid "Extension updates are ready to be installed."
 msgstr "Aktualisierungen für Erweiterungen stehen bereit zur Installation."
 
@@ -1340,11 +1341,11 @@ msgstr "Eine Anwendung möchte Tastenkombinationen sperren"
 msgid "You can restore shortcuts by pressing %s."
 msgstr "Sie können Tastenkombinationen durch Drücken von %s wiederherstellen."
 
-#: js/ui/inhibitShortcutsDialog.js:98
+#: js/ui/inhibitShortcutsDialog.js:100
 msgid "Deny"
 msgstr "Ablehnen"
 
-#: js/ui/inhibitShortcutsDialog.js:105
+#: js/ui/inhibitShortcutsDialog.js:107
 msgid "Allow"
 msgstr "Zulassen"
 
@@ -1405,7 +1406,7 @@ msgstr "Einschalten"
 #: js/ui/status/network.js:131 js/ui/status/network.js:315
 #: js/ui/status/network.js:1288 js/ui/status/network.js:1400
 #: js/ui/status/nightLight.js:41 js/ui/status/rfkill.js:81
-#: js/ui/status/rfkill.js:108
+#: js/ui/status/rfkill.js:110
 msgid "Turn Off"
 msgstr "Ausschalten"
 
@@ -1413,7 +1414,7 @@ msgstr "Ausschalten"
 msgid "Leave Off"
 msgstr "Ausgeschaltet lassen"
 
-#: js/ui/keyboard.js:207
+#: js/ui/keyboard.js:225
 msgid "Region & Language Settings"
 msgstr "Regions- und Spracheinstellungen"
 
@@ -1441,7 +1442,7 @@ msgstr "Eingeschaltet"
 
 #. translators:
 #. * The device has been disabled
-#: js/ui/lookingGlass.js:742 subprojects/gvc/gvc-mixer-control.c:1892
+#: js/ui/lookingGlass.js:742 subprojects/gvc/gvc-mixer-control.c:1900
 msgid "Disabled"
 msgstr "Ausgeschaltet"
 
@@ -1498,13 +1499,13 @@ msgstr "Unbekannter Künstler"
 msgid "Unknown title"
 msgstr "Unbekannter Titel"
 
-#: js/ui/overview.js:73
+#: js/ui/overview.js:74
 msgid "Undo"
 msgstr "Rückgängig"
 
 #. Translators: This is the main view to select
 #. activities. See also note for "Activities" string.
-#: js/ui/overview.js:86
+#: js/ui/overview.js:87
 msgid "Overview"
 msgstr "Übersicht"
 
@@ -1512,7 +1513,7 @@ msgstr "Übersicht"
 #. in the search entry when no search is
 #. active; it should not exceed ~30
 #. characters.
-#: js/ui/overview.js:107
+#: js/ui/overview.js:108
 msgid "Type to search"
 msgstr "Suchbegriff eingeben"
 
@@ -1540,23 +1541,23 @@ msgstr "Tastenkombination zuweisen"
 msgid "Done"
 msgstr "Erledigt"
 
-#: js/ui/padOsd.js:745
+#: js/ui/padOsd.js:732
 msgid "Edit…"
 msgstr "Bearbeiten …"
 
-#: js/ui/padOsd.js:787 js/ui/padOsd.js:910
+#: js/ui/padOsd.js:774 js/ui/padOsd.js:891
 msgid "None"
 msgstr "Keine"
 
-#: js/ui/padOsd.js:863
+#: js/ui/padOsd.js:845
 msgid "Press a button to configure"
 msgstr "Klicken Sie auf einen Knopf zum Einrichten"
 
-#: js/ui/padOsd.js:864
+#: js/ui/padOsd.js:846
 msgid "Press Esc to exit"
 msgstr "Drücken Sie Esc zum Abbrechen"
 
-#: js/ui/padOsd.js:867
+#: js/ui/padOsd.js:849
 msgid "Press any key to exit"
 msgstr "Drücken Sie eine beliebige Taste zum Beenden"
 
@@ -1570,12 +1571,12 @@ msgstr "Beenden"
 msgid "Activities"
 msgstr "Aktivitäten"
 
-#: js/ui/panel.js:716
+#: js/ui/panel.js:721
 msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "System"
 
-#: js/ui/panel.js:829
+#: js/ui/panel.js:834
 msgid "Top Bar"
 msgstr "Oberes Panel"
 
@@ -1817,9 +1818,10 @@ msgstr "Ausschalten"
 msgid "Privacy Settings"
 msgstr "Einstellungen zur Privatsphäre"
 
+# Siehe https://mail.gnome.org/archives/gnome-de/2021-March/msg00080.html
 #: js/ui/status/location.js:173
 msgid "Location In Use"
-msgstr "Verwendeter Standort"
+msgstr "Standort wird verwendet"
 
 #: js/ui/status/location.js:177
 msgid "Location Disabled"
@@ -1975,7 +1977,7 @@ msgstr "Wählen Sie ein Netzwerk"
 msgid "No Networks"
 msgstr "Keine Netzwerke"
 
-#: js/ui/status/network.js:901 js/ui/status/rfkill.js:106
+#: js/ui/status/network.js:901 js/ui/status/rfkill.js:108
 msgid "Use hardware switch to turn off"
 msgstr "Benutzen Sie zum Ausschalten den Gehäuseschalter"
 
@@ -2183,11 +2185,11 @@ msgstr "Thunderbolt-Legitimierungsfehler"
 msgid "Could not authorize the Thunderbolt device: %s"
 msgstr "Das Thunderbolt-Gerät %s konnte nicht legitimiert werden"
 
-#: js/ui/status/volume.js:151
+#: js/ui/status/volume.js:154
 msgid "Volume changed"
 msgstr "Lautstärke geändert"
 
-#: js/ui/status/volume.js:222
+#: js/ui/status/volume.js:225
 msgid "Volume"
 msgstr "Lautstärke"
 
@@ -2233,11 +2235,11 @@ msgstr "Nach oben wischen zum Entsperren"
 msgid "Click or press a key to unlock"
 msgstr "Durch Mausklick oder Tastendruck entsperren"
 
-#: js/ui/unlockDialog.js:550
+#: js/ui/unlockDialog.js:554
 msgid "Unlock Window"
 msgstr "Fenster entsperren"
 
-#: js/ui/unlockDialog.js:559
+#: js/ui/unlockDialog.js:563
 msgid "Log in as another user"
 msgstr "Als anderer Benutzer anmelden"
 
@@ -2443,7 +2445,8 @@ msgstr "Entfernen"
 msgid "translator-credits"
 msgstr ""
 "Tim Sabsch <tim@sabsch.com>\n"
-"Christian Kirbach <christian.kirbach@gmail.com>, 2020"
+"Christian Kirbach <christian.kirbach@gmail.com>, 2020\n"
+"Philipp Kiemle <philipp.kiemle@gmail.com>, 2021"
 
 #: subprojects/extensions-app/js/main.js:316
 #, javascript-format
@@ -2453,7 +2456,7 @@ msgstr[0] "%d Erweiterung wird bei der nächsten Anmeldung aktualisiert."
 msgstr[1] "%d Erweiterungen werden bei der nächsten Anmeldung aktualisiert."
 
 #: subprojects/extensions-app/data/ui/extension-row.ui:100
-#: subprojects/extensions-tool/src/command-create.c:211
+#: subprojects/extensions-tool/src/command-create.c:235
 #: subprojects/extensions-tool/src/main.c:173
 msgid "Description"
 msgstr "Beschreibung"
@@ -2535,12 +2538,12 @@ msgid "Log Out…"
 msgstr "Abmelden …"
 
 #. Translators: a file path to an extension directory
-#: subprojects/extensions-tool/src/command-create.c:125
+#: subprojects/extensions-tool/src/command-create.c:149
 #, c-format
 msgid "The new extension was successfully created in %s.\n"
 msgstr "Die neue Erweiterung wurde erfolgreich in %s erstellt.\n"
 
-#: subprojects/extensions-tool/src/command-create.c:194
+#: subprojects/extensions-tool/src/command-create.c:218
 #, c-format
 msgid ""
 "Name should be a very short (ideally descriptive) string.\n"
@@ -2550,12 +2553,12 @@ msgstr ""
 "sein.\n"
 "Beispiele sind: %s"
 
-#: subprojects/extensions-tool/src/command-create.c:197
+#: subprojects/extensions-tool/src/command-create.c:221
 #: subprojects/extensions-tool/src/main.c:170
 msgid "Name"
 msgstr "Name"
 
-#: subprojects/extensions-tool/src/command-create.c:208
+#: subprojects/extensions-tool/src/command-create.c:232
 #, c-format
 msgid ""
 "Description is a single-sentence explanation of what your extension does.\n"
@@ -2564,7 +2567,7 @@ msgstr ""
 "Die Beschreibung erklärt in einem Satz, was Ihre Erweiterung beinhaltet.\n"
 "Beispiele sind: %s"
 
-#: subprojects/extensions-tool/src/command-create.c:222
+#: subprojects/extensions-tool/src/command-create.c:246
 msgid ""
 "UUID is a globally-unique identifier for your extension.\n"
 "This should be in the format of an email address (clicktofocus@janedoe."
@@ -2574,40 +2577,40 @@ msgstr ""
 "Sie sollte das Format einer E-Mail-Adresse besitzen "
 "(klickfokus@maxmustermann.beispiel.de)\n"
 
-#: subprojects/extensions-tool/src/command-create.c:244
+#: subprojects/extensions-tool/src/command-create.c:268
 msgid "The unique identifier of the new extension"
 msgstr "Die eindeutige Kennung der neuen Erweiterung"
 
-#: subprojects/extensions-tool/src/command-create.c:247
+#: subprojects/extensions-tool/src/command-create.c:271
 msgid "NAME"
 msgstr "NAME"
 
-#: subprojects/extensions-tool/src/command-create.c:248
+#: subprojects/extensions-tool/src/command-create.c:272
 msgid "The user-visible name of the new extension"
 msgstr "Der sichtbare Name der neuen Erweiterung"
 
-#: subprojects/extensions-tool/src/command-create.c:250
+#: subprojects/extensions-tool/src/command-create.c:274
 msgid "DESCRIPTION"
 msgstr "BESCHREIBUNG"
 
-#: subprojects/extensions-tool/src/command-create.c:252
+#: subprojects/extensions-tool/src/command-create.c:276
 msgid "A short description of what the extension does"
 msgstr "Eine kurze Beschreibung der Erweiterung"
 
-#: subprojects/extensions-tool/src/command-create.c:255
+#: subprojects/extensions-tool/src/command-create.c:279
 msgid "Enter extension information interactively"
 msgstr "Informationen zur Erweiterung interaktiv eingeben"
 
-#: subprojects/extensions-tool/src/command-create.c:263
+#: subprojects/extensions-tool/src/command-create.c:287
 msgid "Create a new extension"
 msgstr "Eine neue Erweiterung erstellen"
 
-#: subprojects/extensions-tool/src/command-create.c:280
+#: subprojects/extensions-tool/src/command-create.c:304
 #: subprojects/extensions-tool/src/command-list.c:168
 msgid "Unknown arguments"
 msgstr "Unbekannte Argumente"
 
-#: subprojects/extensions-tool/src/command-create.c:289
+#: subprojects/extensions-tool/src/command-create.c:313
 msgid "UUID, name and description are required"
 msgstr "Es werden eine UUID, ein Name und eine Beschreibung benötigt"
 
@@ -2852,7 +2855,7 @@ msgstr "Verwenden Sie »%s«, um detaillierte Hilfe zu erhalten.\n"
 
 #. translators:
 #. * The number of sound outputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1899
+#: subprojects/gvc/gvc-mixer-control.c:1907
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -2861,14 +2864,14 @@ msgstr[1] "%u Ausgänge"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: subprojects/gvc/gvc-mixer-control.c:1909
+#: subprojects/gvc/gvc-mixer-control.c:1917
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
 msgstr[0] "%u Eingang"
 msgstr[1] "%u Eingänge"
 
-#: subprojects/gvc/gvc-mixer-control.c:2766
+#: subprojects/gvc/gvc-mixer-control.c:2867
 msgid "System Sounds"
 msgstr "Systemklänge"
 
