@@ -1081,10 +1081,6 @@ _shell_app_add_window (ShellApp        *app,
   if (!app->running_state)
       create_running_state (app);
 
-  if (app->started_on_workspace >= 0)
-    meta_window_change_workspace_by_index (window, app->started_on_workspace, FALSE);
-  app->started_on_workspace = -1;
-
   app->running_state->window_sort_stale = TRUE;
   app->running_state->windows = g_slist_prepend (app->running_state->windows, g_object_ref (window));
   g_signal_connect_object (window, "unmanaged", G_CALLBACK(shell_app_on_unmanaged), app, 0);
@@ -1097,6 +1093,10 @@ _shell_app_add_window (ShellApp        *app,
   if (!meta_window_is_skip_taskbar (window))
     app->running_state->interesting_windows++;
   shell_app_sync_running_state (app);
+
+  if (app->started_on_workspace >= 0)
+    meta_window_change_workspace_by_index (window, app->started_on_workspace, FALSE);
+  app->started_on_workspace = -1;
 
   g_object_thaw_notify (G_OBJECT (app));
 
