@@ -864,6 +864,10 @@ var WindowManager = class {
                            this._switchToApplication.bind(this));
 
         global.stage.connect('scroll-event', (stage, event) => {
+            const allowedModes = Shell.ActionMode.NORMAL;
+            if ((allowedModes & Main.actionMode) === 0)
+                return Clutter.EVENT_PROPAGATE;
+
             if (this._workspaceAnimation.canHandleScrollEvent(event))
                 return Clutter.EVENT_PROPAGATE;
 
