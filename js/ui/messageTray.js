@@ -703,7 +703,7 @@ var Source = GObject.registerClass({
     }
 
     countUpdated() {
-        super.notify('count');
+        this.notify('count');
     }
 
     _createPolicy() {
@@ -773,21 +773,6 @@ var Source = GObject.registerClass({
 
         if (this.policy.showBanners || notification.urgency == Urgency.CRITICAL)
             this.emit('notification-show', notification);
-    }
-
-    notify(propName) {
-        if (propName instanceof Notification) {
-            try {
-                throw new Error('Source.notify() has been moved to Source.showNotification()' +
-                                'this code will break in the future');
-            } catch (e) {
-                logError(e);
-                this.showNotification(propName);
-                return;
-            }
-        }
-
-        super.notify(propName);
     }
 
     destroy(reason) {
