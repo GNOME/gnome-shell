@@ -179,23 +179,26 @@ class ControlsManagerLayout extends Clutter.BoxLayout {
         this._workspacesDisplay.allocate(workspacesBox);
 
         // AppDisplay
-        const workspaceAppGridBox =
-            this._cachedWorkspaceBoxes.get(ControlsState.APP_GRID);
+        if (this._appDisplay.visible) {
+            const workspaceAppGridBox =
+                this._cachedWorkspaceBoxes.get(ControlsState.APP_GRID);
 
-        params = [box, searchHeight, dashHeight, workspaceAppGridBox];
-        let appDisplayBox;
-        if (!transitionParams.transitioning) {
-            appDisplayBox =
-                this._getAppDisplayBoxForState(transitionParams.currentState, ...params);
-        } else {
-            const initialBox =
-                this._getAppDisplayBoxForState(transitionParams.initialState, ...params);
-            const finalBox =
-                this._getAppDisplayBoxForState(transitionParams.finalState, ...params);
+            params = [box, searchHeight, dashHeight, workspaceAppGridBox];
+            let appDisplayBox;
+            if (!transitionParams.transitioning) {
+                appDisplayBox =
+                    this._getAppDisplayBoxForState(transitionParams.currentState, ...params);
+            } else {
+                const initialBox =
+                    this._getAppDisplayBoxForState(transitionParams.initialState, ...params);
+                const finalBox =
+                    this._getAppDisplayBoxForState(transitionParams.finalState, ...params);
 
-            appDisplayBox = initialBox.interpolate(finalBox, transitionParams.progress);
+                appDisplayBox = initialBox.interpolate(finalBox, transitionParams.progress);
+            }
+
+            this._appDisplay.allocate(appDisplayBox);
         }
-        this._appDisplay.allocate(appDisplayBox);
 
         // Search
         childBox.set_origin(0, searchHeight + spacing);
@@ -500,6 +503,12 @@ class ControlsManager extends St.Widget {
         this._thumbnailsBox.ease(params);
     }
 
+    _updateAppDisplayVisibility() {
+        this._appDisplay.visible =
+            this._stateAdjustment.value > ControlsState.WINDOW_PICKER &&
+            !this._searchController.searchActive;
+    }
+
     _update() {
         const params = this._stateAdjustment.getStateTransitionParams();
 
@@ -512,13 +521,14 @@ class ControlsManager extends St.Widget {
         fitModeAdjustment.value = fitMode;
 
         this._updateThumbnailsBox();
+        this._updateAppDisplayVisibility();
     }
 
     _onSearchChanged() {
         const { searchActive } = this._searchController;
 
         if (!searchActive) {
-            this._appDisplay.show();
+            this._updateAppDisplayVisibility();
             this._workspacesDisplay.reactive = true;
             this._workspacesDisplay.setPrimaryWorkspaceVisible(true);
         } else {
@@ -531,7 +541,7 @@ class ControlsManager extends St.Widget {
             opacity: searchActive ? 0 : 255,
             duration: SIDE_CONTROLS_ANIMATION_TIME,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            onComplete: () => (this._appDisplay.visible = !searchActive),
+            onComplete: () => this._updateAppDisplayVisibility(),
         });
         this._workspacesDisplay.ease({
             opacity: searchActive ? 0 : 255,
