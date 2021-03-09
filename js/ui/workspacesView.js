@@ -367,6 +367,11 @@ class WorkspacesView extends WorkspacesViewBase {
         if (rtl)
             workspaces.reverse();
 
+        const [fitSingleX1, fitSingleY1] = fitSingleBox.get_origin();
+        const [fitSingleWidth, fitSingleHeight] = fitSingleBox.get_size();
+        const [fitAllX1, fitAllY1] = fitAllBox.get_origin();
+        const [fitAllWidth, fitAllHeight] = fitAllBox.get_size();
+
         workspaces.forEach(child => {
             if (fitMode === FitMode.SINGLE)
                 box = fitSingleBox;
@@ -379,18 +384,18 @@ class WorkspacesView extends WorkspacesViewBase {
 
             if (vertical) {
                 fitSingleBox.set_origin(
-                    fitSingleBox.x1,
-                    fitSingleBox.y1 + fitSingleBox.get_height() + fitSingleSpacing);
+                    fitSingleX1,
+                    fitSingleBox.y1 + fitSingleHeight + fitSingleSpacing);
                 fitAllBox.set_origin(
-                    fitAllBox.x1,
-                    fitAllBox.y1 + fitAllBox.get_height() + fitAllSpacing);
+                    fitAllX1,
+                    fitAllBox.y1 + fitAllHeight + fitAllSpacing);
             } else {
                 fitSingleBox.set_origin(
-                    fitSingleBox.x1 + fitSingleBox.get_width() + fitSingleSpacing,
-                    fitSingleBox.y1);
+                    fitSingleBox.x1 + fitSingleWidth + fitSingleSpacing,
+                    fitSingleY1);
                 fitAllBox.set_origin(
-                    fitAllBox.x1 + fitAllBox.get_width() + fitAllSpacing,
-                    fitAllBox.y1);
+                    fitAllBox.x1 + fitAllWidth + fitAllSpacing,
+                    fitAllY1);
             }
         });
     }
