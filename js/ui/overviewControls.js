@@ -47,7 +47,7 @@ class ControlsManagerLayout extends Clutter.BoxLayout {
         stateAdjustment.connect('notify::value', () => this.layout_changed());
     }
 
-    _computeWorkspacesBoxForState(state, box, searchHeight, dashHeight, thumbnailsHeight) {
+    _computeWorkspacesBoxForState(state, box, startY, searchHeight, dashHeight, thumbnailsHeight) {
         const workspaceBox = box.copy();
         const [width, height] = workspaceBox.get_size();
         const { spacing } = this;
@@ -58,7 +58,7 @@ class ControlsManagerLayout extends Clutter.BoxLayout {
             break;
         case ControlsState.WINDOW_PICKER:
             workspaceBox.set_origin(0,
-                searchHeight + spacing +
+                startY + searchHeight + spacing +
                 thumbnailsHeight + spacing * expandFraction);
             workspaceBox.set_size(width,
                 height -
@@ -67,7 +67,7 @@ class ControlsManagerLayout extends Clutter.BoxLayout {
                 thumbnailsHeight - spacing * expandFraction);
             break;
         case ControlsState.APP_GRID:
-            workspaceBox.set_origin(0, searchHeight + spacing);
+            workspaceBox.set_origin(0, startY + searchHeight + spacing);
             workspaceBox.set_size(
                 width,
                 Math.round(height * SMALL_WORKSPACE_RATIO));
@@ -77,7 +77,7 @@ class ControlsManagerLayout extends Clutter.BoxLayout {
         return workspaceBox;
     }
 
-    _getAppDisplayBoxForState(state, box, searchHeight, dashHeight, appGridBox) {
+    _getAppDisplayBoxForState(state, box, startY, searchHeight, dashHeight, appGridBox) {
         const [width, height] = box.get_size();
         const appDisplayBox = new Clutter.ActorBox();
         const { spacing } = this;
@@ -89,7 +89,7 @@ class ControlsManagerLayout extends Clutter.BoxLayout {
             break;
         case ControlsState.APP_GRID:
             appDisplayBox.set_origin(0,
-                searchHeight + spacing + appGridBox.get_height());
+                startY + searchHeight + spacing + appGridBox.get_height());
             break;
         }
 
@@ -130,12 +130,17 @@ class ControlsManagerLayout extends Clutter.BoxLayout {
 
         const { spacing } = this;
 
+        let startY = 0;
+        if (Main.layoutManager.panelBox.y === Main.layoutManager.primaryMonitor.y) {
+            startY = Main.layoutManager.panelBox.height;
+            box.y1 += startY;
+        }
         const [width, height] = box.get_size();
         let availableHeight = height;
 
         // Search entry
-        const [searchHeight] = this._searchEntry.get_preferred_height(width);
-        childBox.set_origin(0, 0);
+        let [searchHeight] = this._searchEntry.get_preferred_height(width);
+        childBox.set_origin(0, startY);
         childBox.set_size(width, searchHeight);
         this._searchEntry.allocate(childBox);
 
@@ -147,7 +152,7 @@ class ControlsManagerLayout extends Clutter.BoxLayout {
 
         let [, dashHeight] = this._dash.get_preferred_height(width);
         dashHeight = Math.min(dashHeight, maxDashHeight);
-        childBox.set_origin(0, height - dashHeight);
+        childBox.set_origin(0, startY + height - dashHeight);
         childBox.set_size(width, dashHeight);
         this._dash.allocate(childBox);
 
@@ -162,13 +167,13 @@ class ControlsManagerLayout extends Clutter.BoxLayout {
             thumbnailsHeight = Math.min(
                 thumbnailsHeight * expandFraction,
                 height * WorkspaceThumbnail.MAX_THUMBNAIL_SCALE);
-            childBox.set_origin(0, searchHeight + spacing);
+            childBox.set_origin(0, startY + searchHeight + spacing);
             childBox.set_size(width, thumbnailsHeight);
             this._workspacesThumbnails.allocate(childBox);
         }
 
         // Workspaces
-        let params = [box, searchHeight, dashHeight, thumbnailsHeight];
+        let params = [box, startY, searchHeight, dashHeight, thumbnailsHeight];
         const transitionParams = this._stateAdjustment.getStateTransitionParams();
 
         // Update cached boxes
@@ -193,7 +198,7 @@ class ControlsManagerLayout extends Clutter.BoxLayout {
             const workspaceAppGridBox =
                 this._cachedWorkspaceBoxes.get(ControlsState.APP_GRID);
 
-            params = [box, searchHeight, dashHeight, workspaceAppGridBox];
+            params = [box, startY, searchHeight, dashHeight, workspaceAppGridBox];
             let appDisplayBox;
             if (!transitionParams.transitioning) {
                 appDisplayBox =
@@ -211,7 +216,7 @@ class ControlsManagerLayout extends Clutter.BoxLayout {
         }
 
         // Search
-        childBox.set_origin(0, searchHeight + spacing);
+        childBox.set_origin(0, startY + searchHeight + spacing);
         childBox.set_size(width, availableHeight);
 
         this._searchController.allocate(childBox);
