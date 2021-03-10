@@ -983,6 +983,7 @@ st_texture_cache_load_gicon (StTextureCache    *cache,
   if (ST_IS_IMAGE_CONTENT (icon))
     {
       return g_object_new (CLUTTER_TYPE_ACTOR,
+                           "content-gravity", CLUTTER_CONTENT_GRAVITY_RESIZE_ASPECT,
                            "width", actor_size,
                            "height", actor_size,
                            "content", CLUTTER_CONTENT (icon),
@@ -1037,6 +1038,7 @@ st_texture_cache_load_gicon (StTextureCache    *cache,
   g_free (gicon_string);
 
   actor = create_invisible_actor ();
+  clutter_actor_set_content_gravity  (actor, CLUTTER_CONTENT_GRAVITY_RESIZE_ASPECT);
   clutter_actor_set_size (actor, actor_size, actor_size);
   if (!ensure_request (cache, key, policy, &request, actor))
     {
