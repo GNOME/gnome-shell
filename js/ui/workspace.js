@@ -592,6 +592,7 @@ var WorkspaceLayout = GObject.registerClass({
 
     vfunc_allocate(container, box) {
         const containerBox = container.allocation;
+        const [containerWidth, containerHeight] = containerBox.get_size();
         const containerAllocationChanged =
             this._lastBox === null || !this._lastBox.equal(containerBox);
         this._lastBox = containerBox.copy();
@@ -606,6 +607,27 @@ var WorkspaceLayout = GObject.registerClass({
         if (this._layoutFrozen && containerAllocationChanged && !Main.overview.animationInProgress) {
             this._layoutFrozen = false;
             this.notify('layout-frozen');
+        }
+
+        const { ControlsState } = OverviewControls;
+        const inSessionTransition =
+            this._overviewAdjustment.value <= ControlsState.WINDOW_PICKER;
+
+        const window = this._sortedWindows[0];
+
+        if (inSessionTransition || !window) {
+            container.remove_clip();
+        } else {
+            const [, bottomOversize] = window.chromeHeights();
+            const [containerX, containerY] = containerBox.get_origin();
+
+            const extraHeightProgress = this._overviewAdjustment.value -
+                OverviewControls.ControlsState.WINDOW_PICKER;
+
+            const extraClipHeight = bottomOversize * (1 - extraHeightProgress);
+
+            container.set_clip(containerX, containerY,
+                containerWidth, containerHeight + extraClipHeight);
         }
 
         let layoutChanged = false;
@@ -624,13 +646,9 @@ var WorkspaceLayout = GObject.registerClass({
         const workareaWidth = this._workarea.width;
         const stateAdjustementValue = this._stateAdjustment.value;
 
-        const allocationScale = containerBox.get_width() / workareaWidth;
+        const allocationScale = containerWidth / workareaWidth;
 
         const childBox = new Clutter.ActorBox();
-
-        const { ControlsState } = OverviewControls;
-        const inSessionTransition =
-            this._overviewAdjustment.value <= ControlsState.WINDOW_PICKER;
 
         const nSlots = this._windowSlots.length;
         for (let i = 0; i < nSlots; i++) {
@@ -1036,15 +1054,6 @@ class Workspace extends St.Widget {
             });
 
         this._overviewAdjustment = overviewAdjustment;
-        this._overviewStateId = overviewAdjustment.connect('notify::value', () => {
-            const overviewState = overviewAdjustment.value;
-
-            // We want windows not to spill out when the overview is in
-            // APP_GRID state, but HIDDEN and WINDOW_PICKER should allow
-            // them to eventually draw outside the workspace.
-            this._container.clip_to_allocation =
-                overviewState > OverviewControls.ControlsState.WINDOW_PICKER;
-        });
 
         this.monitorIndex = monitorIndex;
         this._monitor = Main.layoutManager.monitors[this.monitorIndex];
@@ -1294,11 +1303,6 @@ class Workspace extends St.Widget {
         if (this._layoutFrozenId > 0) {
             GLib.source_remove(this._layoutFrozenId);
             this._layoutFrozenId = 0;
-        }
-
-        if (this._overviewStateId > 0) {
-            this._overviewAdjustment.disconnect(this._overviewStateId);
-            delete this._overviewStateId;
         }
 
         this._windows = [];
