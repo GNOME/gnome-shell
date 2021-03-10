@@ -99,7 +99,7 @@ static const gchar *gaussian_blur_glsl =
 "  vec4 ret = texture2D (cogl_sampler, uv) * gauss_coefficient.x;          \n"
 "  gauss_coefficient.xy *= gauss_coefficient.yz;                           \n"
 "                                                                          \n"
-"  int n_steps = int (ceil (3 * sigma));                                   \n"
+"  int n_steps = int (ceil (3.0 * sigma));                                 \n"
 "                                                                          \n"
 "  for (int i = 1; i < n_steps; i += 2) {                                  \n"
 "    float coefficient_subtotal = gauss_coefficient.x;                     \n"
