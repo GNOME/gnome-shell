@@ -471,7 +471,6 @@ var SwipeTracker = GObject.registerClass({
         this.orientation = orientation;
         this._allowedModes = allowedModes;
         this._enabled = true;
-        this._allowLongSwipes = false;
         this._distance = global.screen_height;
         this._history = new EventHistory();
         this._reset();
