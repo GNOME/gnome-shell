@@ -115,6 +115,16 @@ class ControlsManagerLayout extends Clutter.BoxLayout {
         this.hookup_style(container);
     }
 
+    vfunc_get_preferred_width(_container, _forHeight) {
+        // The MonitorConstraint will allocate us a fixed size anyway
+        return [0, 0];
+    }
+
+    vfunc_get_preferred_height(_container, _forWidth) {
+        // The MonitorConstraint will allocate us a fixed size anyway
+        return [0, 0];
+    }
+
     vfunc_allocate(container, box) {
         const childBox = new Clutter.ActorBox();
 
