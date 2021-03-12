@@ -983,6 +983,15 @@ st_texture_cache_load_gicon (StTextureCache    *cache,
 
   if (ST_IS_IMAGE_CONTENT (icon))
     {
+      int width, height;
+
+      g_object_get (G_OBJECT (icon),
+                    "preferred-width", &width,
+                    "preferred-height", &height,
+                    NULL);
+      if (width == 0 && height == 0)
+        return NULL;
+
       return g_object_new (CLUTTER_TYPE_ACTOR,
                            "request-mode", CLUTTER_REQUEST_CONTENT_SIZE,
                            "width", actor_size,
