@@ -1722,6 +1722,8 @@ st_widget_recompute_style (StWidget    *widget,
 
   if (!paint_equal)
     {
+      clutter_actor_invalidate_paint_volume (CLUTTER_ACTOR (widget));
+
       next_paint_state (widget);
 
       if (!st_theme_node_paint_equal (new_theme_node, current_paint_state (widget)->node))
