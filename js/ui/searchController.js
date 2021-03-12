@@ -116,6 +116,10 @@ var SearchController = GObject.registerClass({
         this._setSearchActive(false);
     }
 
+    prepareToLeaveOverview() {
+        this._setSearchActive(false);
+    }
+
     vfunc_unmap() {
         this.reset();
 
