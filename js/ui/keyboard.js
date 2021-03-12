@@ -326,7 +326,7 @@ var Key = GObject.registerClass({
     }
 
     _getKeyval(key) {
-        let unicode = key.charCodeAt(0);
+        let unicode = key.length ? key.charCodeAt(0) : undefined;
         return Clutter.unicode_to_keysym(unicode);
     }
 
