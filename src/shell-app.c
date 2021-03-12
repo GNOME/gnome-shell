@@ -93,6 +93,7 @@ enum {
   PROP_ID,
   PROP_DBUS_ID,
   PROP_ACTION_GROUP,
+  PROP_ICON,
   PROP_APP_INFO
 };
 
@@ -126,6 +127,9 @@ shell_app_get_property (GObject    *gobject,
       break;
     case PROP_ID:
       g_value_set_string (value, shell_app_get_id (app));
+      break;
+    case PROP_ICON:
+      g_value_set_object (value, shell_app_get_icon (app));
       break;
     case PROP_ACTION_GROUP:
       if (app->running_state)
@@ -1640,6 +1644,19 @@ shell_app_class_init(ShellAppClass *klass)
                                                         "Application id",
                                                         "The desktop file id of this ShellApp",
                                                         NULL,
+                                                        G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
+
+  /**
+   * ShellApp:icon:
+   *
+   * The #GIcon representing this ShellApp
+   */
+  g_object_class_install_property (gobject_class,
+                                   PROP_ICON,
+                                   g_param_spec_object ("icon",
+                                                        "GIcon",
+                                                        "The GIcon representing this app",
+                                                        G_TYPE_ICON,
                                                         G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
 
   /**
