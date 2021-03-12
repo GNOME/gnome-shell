@@ -67,6 +67,9 @@ st_texture_cache_load_sliced_image (StTextureCache *cache,
 GIcon *st_texture_cache_bind_cairo_surface_property (StTextureCache    *cache,
                                                      GObject           *object,
                                                      const char *property_name);
+GIcon *
+st_texture_cache_load_cairo_surface_to_gicon (StTextureCache  *cache,
+                                              cairo_surface_t *surface);
 
 ClutterActor *st_texture_cache_load_gicon (StTextureCache *cache,
                                            StThemeNode    *theme_node,
