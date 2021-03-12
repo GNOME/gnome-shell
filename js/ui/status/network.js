@@ -936,7 +936,7 @@ class NMWirelessDialog extends ModalDialog.ModalDialog {
 
         this.contentLayout.add_child(this._stack);
 
-        this._disconnectButton = this.addButton({ action: this.close.bind(this),
+        this._disconnectButton = this.addButton({ action: () => this.close(),
                                                   label: _("Cancel"),
                                                   key: Clutter.KEY_Escape });
         this._connectButton = this.addButton({ action: this._connect.bind(this),
