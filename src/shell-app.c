@@ -38,6 +38,8 @@ typedef struct {
   /* Signal connection to dirty window sort list on workspace changes */
   gulong workspace_switch_id;
 
+  gulong icon_changed_id;
+
   GSList *windows;
 
   guint interesting_windows;
@@ -185,6 +187,32 @@ window_backed_app_get_window (ShellApp     *app)
     return NULL;
 }
 
+static GIcon *
+x11_window_create_fallback_gicon (MetaWindow *window)
+{
+  StTextureCache *texture_cache;
+  cairo_surface_t *surface;
+
+  g_object_get (window, "icon", &surface, NULL);
+
+  texture_cache = st_texture_cache_get_default ();
+  return st_texture_cache_load_cairo_surface_to_gicon (texture_cache, surface);
+}
+
+static void
+on_window_icon_changed (GObject          *object,
+                        const GParamSpec *pspec,
+                        gpointer          user_data)
+{
+  MetaWindow *window = META_WINDOW (object);
+  ShellApp *app = user_data;
+
+  g_clear_object (&app->fallback_icon);
+  app->fallback_icon = x11_window_create_fallback_gicon (window);
+
+  g_object_notify (G_OBJECT (app), "icon");
+}
+
 /**
  * shell_app_get_icon:
  *
@@ -215,10 +243,10 @@ shell_app_get_icon (ShellApp *app)
   if (window &&
       meta_window_get_client_type (window) == META_WINDOW_CLIENT_TYPE_X11)
     {
-      app->fallback_icon =
-        st_texture_cache_bind_cairo_surface_property (st_texture_cache_get_default (),
-                                                      G_OBJECT (window),
-                                                      "icon");
+      app->fallback_icon = x11_window_create_fallback_gicon (window);
+      app->running_state->icon_changed_id =
+        g_signal_connect (G_OBJECT (window),
+                         "notify::icon", G_CALLBACK (on_window_icon_changed), app);
     }
   else
     {
@@ -240,15 +268,13 @@ ClutterActor *
 shell_app_create_icon_texture (ShellApp   *app,
                                int         size)
 {
-  GIcon *icon;
   ClutterActor *ret;
 
   ret = st_icon_new ();
   st_icon_set_icon_size (ST_ICON (ret), size);
   st_icon_set_fallback_icon_name (ST_ICON (ret), "application-x-executable");
 
-  icon = shell_app_get_icon (app);
-  st_icon_set_gicon (ST_ICON (ret), icon);
+  g_object_bind_property (app, "icon", ret, "gicon", G_BINDING_SYNC_CREATE);
 
   if (shell_app_is_window_backed (app))
     st_widget_add_style_class_name (ST_WIDGET (ret), "fallback-app-icon");
@@ -1116,6 +1142,8 @@ _shell_app_remove_window (ShellApp   *app,
   g_signal_handlers_disconnect_by_func (window, G_CALLBACK(shell_app_on_user_time_changed), app);
   g_signal_handlers_disconnect_by_func (window, G_CALLBACK(shell_app_on_skip_taskbar_changed), app);
   app->running_state->windows = g_slist_remove (app->running_state->windows, window);
+
+  g_clear_signal_handler (&app->running_state->icon_changed_id, window);
 
   if (!meta_window_is_skip_taskbar (window))
     app->running_state->interesting_windows--;
