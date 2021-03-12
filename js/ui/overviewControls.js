@@ -720,6 +720,7 @@ class ControlsManager extends St.Widget {
     }
 
     prepareToLeaveOverview() {
+        this._searchController.prepareToLeaveOverview();
         this._workspacesDisplay.prepareToLeaveOverview();
     }
 
