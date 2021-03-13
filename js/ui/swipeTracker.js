@@ -741,8 +741,8 @@ var SwipeTracker = GObject.registerClass({
         if (duration > 0)
             duration = Math.clamp(duration, MIN_ANIMATION_DURATION, maxDuration);
 
-        this.emit('end', duration, endProgress);
         this._reset();
+        this.emit('end', duration, endProgress);
     }
 
     _cancelTouchGesture(_gesture, time, distance) {
