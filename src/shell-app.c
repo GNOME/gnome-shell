@@ -1111,12 +1111,13 @@ _shell_app_remove_window (ShellApp   *app,
   g_signal_handlers_disconnect_by_func (window, G_CALLBACK(shell_app_on_unmanaged), app);
   g_signal_handlers_disconnect_by_func (window, G_CALLBACK(shell_app_on_user_time_changed), app);
   g_signal_handlers_disconnect_by_func (window, G_CALLBACK(shell_app_on_skip_taskbar_changed), app);
-  g_object_unref (window);
   app->running_state->windows = g_slist_remove (app->running_state->windows, window);
 
   if (!meta_window_is_skip_taskbar (window))
     app->running_state->interesting_windows--;
   shell_app_sync_running_state (app);
+
+  g_object_unref (window);
 
   if (app->running_state->windows == NULL)
     g_clear_pointer (&app->running_state, unref_running_state);
