@@ -639,7 +639,7 @@ var Overview = class {
     }
 
     showApps() {
-        this._show(OverviewControls.ControlsState.APP_GRID);
+        this.show(OverviewControls.ControlsState.APP_GRID);
     }
 
     runStartupAnimation(callback) {
