@@ -1050,8 +1050,10 @@ var IconGridLayout = GObject.registerClass({
             page = swap(page, this._pages.length);
 
         // Page-relative coordinates from now on
-        x %= this._pageWidth;
-        y %= this._pageHeight;
+        if (this._orientation === Clutter.Orientation.HORIZONTAL)
+            x %= this._pageWidth;
+        else
+            y %= this._pageHeight;
 
         if (x < leftEmptySpace || y < topEmptySpace)
             return [null, DragLocation.INVALID];
