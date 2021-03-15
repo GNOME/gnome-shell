@@ -772,6 +772,10 @@ var InputSourceManager = class {
     get inputSources() {
         return this._inputSources;
     }
+
+    get keyboardManager() {
+        return this._keyboardManager;
+    }
 };
 Signals.addSignalMethods(InputSourceManager.prototype);
 
@@ -1058,6 +1062,14 @@ class InputSourceIndicator extends PanelMenu.Button {
             if (engineDesc) {
                 xkbLayout = engineDesc.get_layout();
                 xkbVariant = engineDesc.get_layout_variant();
+            }
+
+            // The `default` layout from ibus engine means to
+            // use the current keyboard layout.
+            if (xkbLayout === 'default') {
+                const current = this._inputSourceManager.keyboardManager.currentLayout;
+                xkbLayout = current.layout;
+                xkbVariant = current.variant;
             }
         }
 

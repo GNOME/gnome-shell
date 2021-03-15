@@ -156,4 +156,8 @@ var KeyboardManager = class {
         let options = this._xkbOptions.join(',');
         return options;
     }
+
+    get currentLayout() {
+        return this._current;
+    }
 };
