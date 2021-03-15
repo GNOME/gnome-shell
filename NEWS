@@ -1,3 +1,15 @@
+3.36.9
+======
+* Prefer image-data hint over app-icon in notifications [Guilherme; !1616]
+* Fixed crashes [Daniel, Jonas; !1507, !1673]
+* Misc. bug fixes and cleanups [Florian; !1595]
+
+Contributors:
+  Jonas Dreßler, Florian Müllner, Guilherme Silva, Daniel van Vugt
+
+Translators:
+  Marek Černocký [cs], Philipp Kiemle [de]
+
 3.36.8
 ======
 * Improve login screen accessibility [Mike; !1567]
