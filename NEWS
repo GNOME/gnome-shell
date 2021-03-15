@@ -1,3 +1,24 @@
+3.38.4
+======
+* Fix stuck grab after failed area screenshots [Sebastian; !1600]
+* Prefer image-data hint over app-icon in notifications [Guilherme; !1616]
+* Make sure fullscreen apps can't block the workspace switch animation
+  [Razze; #3636]
+* Fix stuck polkit dialog when using non-password auth [Florian; !1662]
+* Fix glitch after dragging window preview from second monitor [Ivan; !1727]
+* Fix missing X11 fallback icons [Florian; !1761]
+* Fixed crashes [Jonas D., Carlos, Sebastian; !1673, !1672, !1718]
+* Misc. bug fixes and cleanups [Florian, Marco, Abderrahim, Frederic; !1595,
+  !1598, !1635, !1725, !1750]
+
+Contributors:
+  Frederic Crozat, Jonas Dreßler, Carlos Garnacho, Sebastian Keller,
+  Abderrahim Kitouni, Ivan Molodetskikh, Florian Müllner, Razze,
+  Guilherme Silva, Marco Trevisan (Treviño)
+
+Translators:
+  Philipp Kiemle [de]
+
 3.38.3
 ======
 * Fix disappearing app grid [Georges; !1532]
