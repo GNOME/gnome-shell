@@ -45,12 +45,18 @@ def start_shell(perf_output=None):
     if options.replace:
         args.append('--replace')
 
-    if options.wayland or options.nested:
+    if options.wayland or options.nested or options.headless:
         args.append('--wayland')
         if options.nested:
             args.append('--nested')
+        elif options.headless:
+            args.append('--headless')
+            args.append('--virtual-monitor')
+            args.append('1280x720')
         else:
             args.append('--display-server')
+        args.append('--wayland-display')
+        args.append('gnome-shell-test-display')
     elif options.x11:
         args.append('--x11')
 
@@ -299,6 +305,8 @@ parser.add_option("-n", "--nested", action="store_true",
                   help="Run as a Wayland nested compositor")
 parser.add_option("-x", "--x11", action="store_true",
                   help="Run as an X11 compositor")
+parser.add_option("", "--headless", action="store_true",
+                  help="Run as a headless Wayland compositor")
 
 options, args = parser.parse_args()
 
