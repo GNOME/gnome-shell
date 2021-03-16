@@ -320,7 +320,7 @@ if args:
 
 normal_exit = run_performance_test()
 if normal_exit:
-    if not options.hwtest:
+    if not options.hwtest and options.replace:
         restore_shell()
 else:
     sys.exit(1)
