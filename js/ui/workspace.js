@@ -413,9 +413,6 @@ var WorkspaceLayout = GObject.registerClass({
 
         this._metaWorkspace = metaWorkspace;
         this._monitorIndex = monitorIndex;
-        this._workarea = metaWorkspace
-            ? metaWorkspace.get_work_area_for_monitor(this._monitorIndex)
-            : Main.layoutManager.getWorkAreaForMonitor(this._monitorIndex);
         this._overviewAdjustment = overviewAdjustment;
 
         this._container = null;
@@ -435,6 +432,9 @@ var WorkspaceLayout = GObject.registerClass({
             this.syncOverlays();
             this.layout_changed();
         });
+
+        this._workarea = null;
+        this._workareasChangedId = 0;
     }
 
     _isBetterScaleAndSpace(oldScale, oldSpace, scale, space) {
@@ -563,8 +563,25 @@ var WorkspaceLayout = GObject.registerClass({
         return workarea;
     }
 
+    _syncWorkareaTracking() {
+        if (this._container) {
+            if (this._workAreaChangedId)
+                return;
+            this._workarea = Main.layoutManager.getWorkAreaForMonitor(this._monitorIndex);
+            this._workareasChangedId =
+                global.display.connect('workareas-changed', () => {
+                    this._workarea = Main.layoutManager.getWorkAreaForMonitor(this._monitorIndex);
+                    this.layout_changed();
+                });
+        } else if (this._workareasChangedId) {
+            global.display.disconnect(this._workareasChangedId);
+            this._workareasChangedId = 0;
+        }
+    }
+
     vfunc_set_container(container) {
         this._container = container;
+        this._syncWorkareaTracking();
         this._stateAdjustment.actor = container;
     }
 
