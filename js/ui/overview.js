@@ -619,7 +619,7 @@ var Overview = class {
         this.emit('hidden');
         // Handle any calls to show* while we were hiding
         if (this._shown)
-            this._animateVisible();
+            this._animateVisible(OverviewControls.ControlsState.WINDOW_PICKER);
         else
             Main.layoutManager.hideOverview();
 
