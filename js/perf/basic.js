@@ -16,6 +16,8 @@ const Scripting = imports.ui.scripting;
 var METRICS = {};
 
 async function run() {
+    console.debug('Running basic perf test');
+
     /* eslint-disable no-await-in-loop */
     Scripting.defineScriptEvent('topBarNavStart', 'Starting to navigate the top bar');
     Scripting.defineScriptEvent('topBarNavDone', 'Done navigating the top bar');
@@ -34,6 +36,8 @@ async function run() {
     await Scripting.sleep(1000);
 
     // navigate through top bar
+
+    console.debug('Navigate through top bar');
     Scripting.scriptEvent('topBarNavStart');
     Main.panel.statusArea.aggregateMenu.menu.open();
     await Scripting.sleep(400);
@@ -48,6 +52,7 @@ async function run() {
     await Scripting.sleep(1000);
 
     // notification
+    console.debug('Show notification message');
     const source = new MessageTray.SystemNotificationSource();
     Main.messageTray.add(source);
 
@@ -60,6 +65,7 @@ async function run() {
     source.showNotification(notification);
     await Scripting.sleep(400);
 
+    console.debug('Show date menu');
     Main.panel.statusArea.dateMenu.menu.open();
     await Scripting.sleep(400);
 
@@ -67,9 +73,11 @@ async function run() {
     notification.connect('destroy',
         () => Scripting.scriptEvent('notificationCloseDone'));
 
+    console.debug('Destroy notification message');
     notification.destroy();
     await Scripting.sleep(400);
 
+    console.debug('Close date menu');
     Main.panel.statusArea.dateMenu.menu.close();
     await Scripting.waitLeisure();
 
@@ -85,21 +93,27 @@ async function run() {
     await Scripting.sleep(1000);
 
     // overview (app picker)
+    console.debug('Showing overview');
     Main.overview.show();
     await Scripting.waitLeisure();
 
     Scripting.scriptEvent('applicationsShowStart');
+    console.debug('Showing applications');
     // eslint-disable-next-line require-atomic-updates
     Main.overview.dash.showAppsButton.checked = true;
     await Scripting.waitLeisure();
     Scripting.scriptEvent('applicationsShowDone');
+    console.debug('Hiding applications');
     // eslint-disable-next-line require-atomic-updates
     Main.overview.dash.showAppsButton.checked = false;
     await Scripting.waitLeisure();
 
+    console.debug('Hiding overview');
     Main.overview.hide();
     await Scripting.waitLeisure();
     /* eslint-enable no-await-in-loop */
+
+    console.debug('Finished basic perf test');
 }
 
 let topBarNav = false;
