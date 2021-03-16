@@ -269,7 +269,7 @@ print_debug (const gchar *format, ...)
   g_autofree char *timestamp = NULL;
   va_list ap;
   g_autoptr (GDateTime) now = NULL;
-  static volatile gsize once_init_value = 0;
+  static size_t once_init_value = 0;
   static gboolean show_debug = FALSE;
   static guint pid = 0;
 
