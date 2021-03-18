@@ -1748,6 +1748,7 @@ class AppDisplay extends BaseAppView {
     _onDragEnd() {
         super._onDragEnd();
         this._removePlaceholder();
+        this._savePages();
     }
 
     _onDragCancelled(overview, source) {
