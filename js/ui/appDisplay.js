@@ -495,6 +495,11 @@ var BaseAppView = GObject.registerClass({
         if (monitor !== Main.layoutManager.primaryIndex)
             return;
 
+        if (this._dragFocus) {
+            this._dragFocus.cancelActions();
+            this._dragFocus = null;
+        }
+
         const adjustment = this._adjustment;
         adjustment.remove_transition('value');
 
@@ -677,6 +682,8 @@ var BaseAppView = GObject.registerClass({
         };
         DND.addDragMonitor(this._dragMonitor);
         this._slideSidePages(SidePages.PREVIOUS | SidePages.NEXT | SidePages.DND);
+        this._dragFocus = null;
+        this._swipeTracker.enabled = false;
     }
 
     _onDragMotion(dragEvent) {
@@ -713,6 +720,7 @@ var BaseAppView = GObject.registerClass({
         this._resetOvershoot();
         this._slideSidePages(SidePages.NONE);
         delete this._dropPage;
+        this._swipeTracker.enabled = true;
     }
 
     _onDragCancelled() {
@@ -720,6 +728,7 @@ var BaseAppView = GObject.registerClass({
         // will move all items to their original positions
         this._redisplay();
         this._slideSidePages(SidePages.NONE);
+        this._swipeTracker.enabled = true;
     }
 
     _canAccept(source) {
@@ -1331,6 +1340,10 @@ var BaseAppView = GObject.registerClass({
             });
         }
     }
+
+    updateDragFocus(dragFocus) {
+        this._dragFocus = dragFocus;
+    }
 });
 
 var PageManager = GObject.registerClass({
@@ -1522,6 +1535,10 @@ class AppDisplay extends BaseAppView {
             global.settings.is_writable('app-picker-layout');
 
         this._placeholder = new AppIcon(app, { isDraggable });
+        this._placeholder.connect('notify::pressed', () => {
+            if (this._placeholder.pressed)
+                this.updateDragFocus(this._placeholder);
+        });
         this._placeholder.scaleAndFade();
         this._redisplay();
     }
@@ -1597,6 +1614,10 @@ class AppDisplay extends BaseAppView {
                     this._redisplay();
                     this._savePages();
                 });
+                icon.connect('notify::pressed', () => {
+                    if (icon.pressed)
+                        this.updateDragFocus(icon);
+                });
             }
 
             // Don't try to display empty folders
@@ -1630,6 +1651,10 @@ class AppDisplay extends BaseAppView {
                 let app = appSys.lookup_app(appId);
 
                 icon = new AppIcon(app, { isDraggable });
+                icon.connect('notify::pressed', () => {
+                    if (icon.pressed)
+                        this.updateDragFocus(icon);
+                });
             }
 
             appIcons.push(icon);
@@ -1952,7 +1977,8 @@ class AppViewItem extends St.Button {
         this._delegate = this;
 
         if (isDraggable) {
-            this._draggable = DND.makeDraggable(this);
+            this._draggable = DND.makeDraggable(this, { timeoutThreshold: 200 });
+
             this._draggable.connect('drag-begin', this._onDragBegin.bind(this));
             this._draggable.connect('drag-cancelled', this._onDragCancelled.bind(this));
             this._draggable.connect('drag-end', this._onDragEnd.bind(this));
@@ -2129,6 +2155,12 @@ class AppViewItem extends St.Button {
             return false;
 
         return true;
+    }
+
+    cancelActions() {
+        if (this._draggable)
+            this._draggable.fakeRelease();
+        this.fake_release();
     }
 
     get id() {
@@ -3128,6 +3160,8 @@ var AppIcon = GObject.registerClass({
     }
 
     _onDragBegin() {
+        if (this._menu)
+            this._menu.close(true);
         this._removeMenuTimeout();
         super._onDragBegin();
     }
@@ -3204,9 +3238,6 @@ var AppIcon = GObject.registerClass({
     popupMenu(side = St.Side.LEFT) {
         this._removeMenuTimeout();
         this.fake_release();
-
-        if (this._draggable)
-            this._draggable.fakeRelease();
 
         if (!this._menu) {
             this._menu = new AppIconMenu(this, side);
@@ -3361,6 +3392,13 @@ var AppIcon = GObject.registerClass({
         let apps = [this.id, source.id];
 
         return view.createFolder(apps);
+    }
+
+    cancelActions() {
+        if (this._menu)
+            this._menu.close(true);
+        this._removeMenuTimeout();
+        super.cancelActions();
     }
 });
 
