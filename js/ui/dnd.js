@@ -80,10 +80,13 @@ function removeDragMonitor(monitor) {
 
 var _Draggable = class _Draggable {
     constructor(actor, params) {
-        params = Params.parse(params, { manualMode: false,
-                                        restoreOnSuccess: false,
-                                        dragActorMaxSize: undefined,
-                                        dragActorOpacity: undefined });
+        params = Params.parse(params, {
+            manualMode: false,
+            timeoutThreshold: 0,
+            restoreOnSuccess: false,
+            dragActorMaxSize: undefined,
+            dragActorOpacity: undefined,
+        });
 
         this.actor = actor;
         this._dragState = DragState.INIT;
@@ -108,6 +111,7 @@ var _Draggable = class _Draggable {
         this._restoreOnSuccess = params.restoreOnSuccess;
         this._dragActorMaxSize = params.dragActorMaxSize;
         this._dragActorOpacity = params.dragActorOpacity;
+        this._dragTimeoutThreshold = params.timeoutThreshold;
 
         this._buttonDown = false; // The mouse button has been pressed and has not yet been released.
         this._animationInProgress = false; // The drag is over and the item is in the process of animating to its original position (snapping back or reverting).
@@ -127,6 +131,8 @@ var _Draggable = class _Draggable {
         let [stageX, stageY] = event.get_coords();
         this._dragStartX = stageX;
         this._dragStartY = stageY;
+        this._dragStartTime = event.get_time();
+        this._dragThresholdIgnored = false;
 
         return Clutter.EVENT_PROPAGATE;
     }
@@ -148,6 +154,8 @@ var _Draggable = class _Draggable {
 
         this._buttonDown = true;
         this._grabActor(event.get_device(), event.get_event_sequence());
+        this._dragStartTime = event.get_time();
+        this._dragThresholdIgnored = false;
 
         let [stageX, stageY] = event.get_coords();
         this._dragStartX = stageX;
@@ -491,14 +499,23 @@ var _Draggable = class _Draggable {
     _maybeStartDrag(event) {
         let [stageX, stageY] = event.get_coords();
 
+        if (this._dragThresholdIgnored)
+            return Clutter.EVENT_PROPAGATE;
+
         // See if the user has moved the mouse enough to trigger a drag
         let scaleFactor = St.ThemeContext.get_for_stage(global.stage).scale_factor;
         let threshold = St.Settings.get().drag_threshold * scaleFactor;
         if (!currentDraggable &&
             (Math.abs(stageX - this._dragStartX) > threshold ||
              Math.abs(stageY - this._dragStartY) > threshold)) {
-            this.startDrag(stageX, stageY, event.get_time(), this._touchSequence, event.get_device());
-            this._updateDragPosition(event);
+            if ((event.get_time() - this._dragStartTime) > this._dragTimeoutThreshold) {
+                this.startDrag(stageX, stageY, event.get_time(), this._touchSequence, event.get_device());
+                this._updateDragPosition(event);
+            } else {
+                this._dragThresholdIgnored = true;
+                this._ungrabActor();
+                return Clutter.EVENT_PROPAGATE;
+            }
         }
 
         return true;
