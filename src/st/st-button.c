@@ -432,7 +432,7 @@ st_button_get_property (GObject    *gobject,
       g_value_set_boolean (value, priv->is_checked);
       break;
     case PROP_PRESSED:
-      g_value_set_boolean (value, priv->pressed != 0);
+      g_value_set_boolean (value, priv->pressed != 0 || priv->press_sequence != NULL);
       break;
 
 
