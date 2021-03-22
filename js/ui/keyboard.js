@@ -347,7 +347,7 @@ var Key = GObject.registerClass({
                     this.emit('long-press');
 
                     if (this._extendedKeys.length > 0) {
-                        this._touchPressed = false;
+                        this._touchPressSlot = null;
                         this._ensureExtendedKeysPopup();
                         this.keyButton.set_hover(false);
                         this.keyButton.fake_release();
@@ -378,7 +378,7 @@ var Key = GObject.registerClass({
             GLib.source_remove(this._pressTimeoutId);
             this._pressTimeoutId = 0;
         }
-        this._touchPressed = false;
+        this._touchPressSlot = null;
         this.keyButton.set_hover(false);
         this.keyButton.fake_release();
     }
@@ -459,14 +459,19 @@ var Key = GObject.registerClass({
             if (!Meta.is_wayland_compositor())
                 return Clutter.EVENT_PROPAGATE;
 
-            if (!this._touchPressed &&
+            const slot = event.get_event_sequence().get_slot();
+
+            if (!this._touchPressSlot &&
                 event.type() == Clutter.EventType.TOUCH_BEGIN) {
-                this._touchPressed = true;
+                this._touchPressSlot = slot;
                 this._press(key);
-            } else if (this._touchPressed &&
-                       event.type() == Clutter.EventType.TOUCH_END) {
-                this._touchPressed = false;
-                this._release(key);
+            } else if (event.type() === Clutter.EventType.TOUCH_END) {
+                if (!this._touchPressSlot ||
+                    this._touchPressSlot === slot)
+                    this._release(key);
+
+                if (this._touchPressSlot === slot)
+                    this._touchPressSlot = null;
             }
             return Clutter.EVENT_PROPAGATE;
         });
