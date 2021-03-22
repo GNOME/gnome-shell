@@ -1855,6 +1855,7 @@ var AppSearchProvider = class AppSearchProvider {
     }
 
     getResultMetas(apps, callback) {
+        const { scaleFactor } = St.ThemeContext.get_for_stage(global.stage);
         let metas = [];
         for (let id of apps) {
             if (id.endsWith('.desktop')) {
@@ -1871,7 +1872,8 @@ var AppSearchProvider = class AppSearchProvider {
 
                 const createIcon = size => new St.Icon({
                     icon_name: iconName,
-                    icon_size: size,
+                    width: size * scaleFactor,
+                    height: size * scaleFactor,
                     style_class: 'system-action-icon',
                 });
 
