@@ -16,7 +16,7 @@ msgstr ""
 "Project-Id-Version: 3.14\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
 "POT-Creation-Date: 2021-03-16 17:36+0000\n"
-"PO-Revision-Date: 2021-03-27 22:33+0000\n"
+"PO-Revision-Date: 2021-03-27 22:41+0000\n"
 "Last-Translator: Hugo Carvalho <hugokarvalho@hotmail.com>\n"
 "Language-Team: Portuguese <>\n"
 "Language: pt\n"
@@ -1993,7 +1993,7 @@ msgstr "Ligar à Internet"
 
 #: js/ui/status/network.js:836
 msgid "Airplane Mode is On"
-msgstr "Modo Avião está ligado"
+msgstr "Modo avião está ligado"
 
 #: js/ui/status/network.js:837
 msgid "Wi-Fi is disabled when airplane mode is on."
@@ -2001,7 +2001,7 @@ msgstr "O Wi-Fi é desativado quando o modo de avião é ligado."
 
 #: js/ui/status/network.js:838
 msgid "Turn Off Airplane Mode"
-msgstr "Desligar modo Avião"
+msgstr "Desligar modo avião"
 
 #: js/ui/status/network.js:847
 msgid "Wi-Fi is Off"
@@ -2216,8 +2216,8 @@ msgid ""
 "New device has been detected while you were away. Please disconnect and "
 "reconnect the device to start using it."
 msgstr ""
-"Um novo dispositivo foi detectado enquanto estava ausente. Desligue e volte "
-"a ligar o dispositivo para começar a usá-lo."
+"Um novo dispositivo foi detetado enquanto estava ausente. Desligue e volte a "
+"ligar o dispositivo para começar a usá-lo."
 
 #: js/ui/status/thunderbolt.js:328
 msgid "Unauthorized Thunderbolt device"
@@ -2227,7 +2227,7 @@ msgstr "Dispositivo Thunderbolt não autorizado"
 msgid ""
 "New device has been detected and needs to be authorized by an administrator."
 msgstr ""
-"Um novo dispositivo foi detectado e precisa ser autorizado por um "
+"Um novo dispositivo foi detetado e precisa ser autorizado por um "
 "administrador."
 
 #: js/ui/status/thunderbolt.js:335
@@ -2519,7 +2519,7 @@ msgstr ""
 "Tiago Santos <tiagofsantos81@sapo.pt>\n"
 "Bruno Ramalhete <bram.512@gmail.com>\n"
 "Pedro Albuquerque <palbuquerque73@gmail.com>\n"
-"Sérgio Cardeira <cardeira dot sergio at gmail dot com>\n"
+"Sérgio Cardeira <cardeira.sergio@gmail.com>\n"
 "José Vieira <jvieira33@sapo.pt>\n"
 "Juliano de Souza Camargo <julianosc@pm.me>\n"
 "Hugo Carvalho <hugokarvalho@hotmail.com>"
@@ -2556,7 +2556,7 @@ msgstr "Autor"
 
 #: subprojects/extensions-app/data/ui/extension-row.ui:185
 msgid "Website"
-msgstr "Sítio web"
+msgstr "Website"
 
 #: subprojects/extensions-app/data/ui/extension-row.ui:201
 msgid "Remove…"
