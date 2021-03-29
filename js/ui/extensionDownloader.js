@@ -151,12 +151,19 @@ function checkForUpdates() {
         'disable-extension-version-validation');
     let params = {
         shell_version: Config.PACKAGE_VERSION,
-        installed: JSON.stringify(metadatas),
         disable_version_validation: versionCheck.toString(),
     };
 
-    let url = REPOSITORY_URL_UPDATE;
-    let message = Soup.form_request_new_from_hash('GET', url, params);
+    const uri = Soup.URI.new(REPOSITORY_URL_UPDATE);
+    uri.set_query_from_form(params);
+
+    const message = Soup.Message.new_from_uri('POST', uri);
+    message.set_request(
+        'application/json',
+        Soup.MemoryUse.COPY,
+        JSON.stringify(metadatas)
+    );
+
     _httpSession.queue_message(message, () => {
         if (message.status_code != Soup.KnownStatusCode.OK)
             return;
