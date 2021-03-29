@@ -9,17 +9,18 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2021-03-16 17:36+0000\n"
-"PO-Revision-Date: 2021-03-29 00:16+0300\n"
-"Last-Translator: Yosef Or Boczko <yoseforb@gmail.com>\n"
+"POT-Creation-Date: 2021-03-28 21:18+0000\n"
+"PO-Revision-Date: 2021-03-30 01:23+0300\n"
+"Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: Hebrew <yoseforb@gmail.com>\n"
 "Language: he\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=n==1 ? 0 : (n>2||n==0) ? 1 : 2\n"
+"Plural-Forms: nplurals=4; plural=(n==1 ? 0 : n==2 ? 1 : n>10 && n%10==0 ? "
+"2 : 3);\n"
 "X-Poedit-SourceCharset: UTF-8\n"
-"X-Generator: Gtranslator 3.38.0\n"
+"X-Generator: Poedit 2.4.2\n"
 
 #: data/50-gnome-shell-system.xml:6
 msgid "System"
@@ -249,7 +250,6 @@ msgstr "Keybinding to open the application menu."
 
 #: data/org.gnome.shell.gschema.xml.in:164
 #: data/org.gnome.shell.gschema.xml.in:171
-#| msgid "Keybinding to open the overview"
 msgid "Keybinding to shift between overview states"
 msgstr "Keybinding to shift between overview states"
 
@@ -501,14 +501,12 @@ msgstr "שגיאת אימות"
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger on the fingerprint reader
 #: js/gdm/util.js:589
-#| msgid "(or swipe finger)"
 msgid "(or swipe finger across reader)"
 msgstr "(או להחליק אצבע על הקורא)"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can place their finger on the fingerprint reader instead
 #: js/gdm/util.js:594
-#| msgid "(or swipe finger)"
 msgid "(or place finger on reader)"
 msgstr "(או לשים אצבע על הקורא)"
 
@@ -521,7 +519,7 @@ msgstr "כיבוי"
 #. Translators: A list of keywords that match the power-off action, separated by semicolons
 #: js/misc/systemActions.js:85
 msgid "power off;shutdown;halt;stop"
-msgstr "כיבוי;סגירה;יציאה;הפעלה מחדש;עצירה;הפסקה;"
+msgstr "כיבוי;סגירה;יציאה;הפעלה מחדש;עצירה;הפסקה"
 
 #. Translators: The name of the restart action in search
 #: js/misc/systemActions.js:90
@@ -554,7 +552,7 @@ msgstr "יציאה"
 #. Translators: A list of keywords that match the logout action, separated by semicolons
 #: js/misc/systemActions.js:109
 msgid "logout;log out;sign off"
-msgstr "יציאה;התנתקות;התנתק;"
+msgstr "יציאה;התנתקות;התנתק;ניתוק;הינתקות;הנתקות"
 
 #. Translators: The name of the suspend action in search
 #: js/misc/systemActions.js:114
@@ -565,7 +563,7 @@ msgstr "השהיה"
 #. Translators: A list of keywords that match the suspend action, separated by semicolons
 #: js/misc/systemActions.js:117
 msgid "suspend;sleep"
-msgstr "השהיה;שינה;"
+msgstr "השהיה;שינה;תרדמת"
 
 #. Translators: The name of the switch user action in search
 #: js/misc/systemActions.js:122
@@ -581,7 +579,7 @@ msgstr "החלפת משתמש"
 #. Translators: A list of keywords that match the lock orientation action, separated by semicolons
 #: js/misc/systemActions.js:132
 msgid "lock orientation;unlock orientation;screen;rotation"
-msgstr "נעילת כיוון;שחרור נעילת כיוון;מסך;סיבוב;כיוון;"
+msgstr "נעילת כיוון;שחרור נעילת כיוון;מסך;סיבוב;כיוון;הטיה;היפוך"
 
 #: js/misc/systemActions.js:232
 msgctxt "search-result"
@@ -617,16 +615,18 @@ msgstr "רק עכשיו"
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "לפני דקה"
-msgstr[1] "לפני %d דקות"
-msgstr[2] "לפני שתי דקות"
+msgstr[1] "לפני שתי דקות"
+msgstr[2] "לפני %d דקות"
+msgstr[3] "‫לפני %d דקות"
 
 #: js/misc/util.js:187
 #, javascript-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "לפני שעה"
-msgstr[1] "לפני %d שעות"
-msgstr[2] "לפני שעתיים"
+msgstr[1] "לפני שעתיים"
+msgstr[2] "‫לפני %d שעות"
+msgstr[3] "‫לפני %d שעות"
 
 #: js/misc/util.js:191 js/ui/dateMenu.js:162
 msgid "Yesterday"
@@ -636,33 +636,37 @@ msgstr "אתמול"
 #, javascript-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
-msgstr[0] "לפני יום"
-msgstr[1] "לפני %d ימים"
-msgstr[2] "לפני יומיים"
+msgstr[0] "אתמול"
+msgstr[1] "שלשום"
+msgstr[2] "‫לפני %d ימים"
+msgstr[3] "‫לפני %d ימים"
 
 #: js/misc/util.js:197
 #, javascript-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
 msgstr[0] "לפני שבוע"
-msgstr[1] "לפני %d שבועות"
-msgstr[2] "לפני שבועיים"
+msgstr[1] "לפני שבועיים"
+msgstr[2] "‫לפני %d שבועות"
+msgstr[3] "‫לפני %d שבועות"
 
 #: js/misc/util.js:201
 #, javascript-format
 msgid "%d month ago"
 msgid_plural "%d months ago"
 msgstr[0] "לפני חודש"
-msgstr[1] "לפני %d חודשים"
-msgstr[2] "לפני חודשיים"
+msgstr[1] "לפני חודשיים"
+msgstr[2] "‫לפני %d חודשים"
+msgstr[3] "‫לפני %d חודשים"
 
 #: js/misc/util.js:204
 #, javascript-format
 msgid "%d year ago"
 msgid_plural "%d years ago"
 msgstr[0] "לפני שנה"
-msgstr[1] "לפני %d שנים"
-msgstr[2] "לפני שנתיים"
+msgstr[1] "לפני שנתיים"
+msgstr[2] "‫לפני %d שנים"
+msgstr[3] "‫לפני %d שנים"
 
 #. Translators: Time in 24h format
 #: js/misc/util.js:237
@@ -943,7 +947,7 @@ msgstr "ניקוי"
 #: js/ui/closeDialog.js:42
 #, javascript-format
 msgid "“%s” is not responding."
-msgstr "‏„%s” לא מגיב"
+msgstr "‏„%s” לא מגיב."
 
 #: js/ui/closeDialog.js:43
 msgid ""
@@ -1016,7 +1020,7 @@ msgstr "נדרש אימות"
 msgid ""
 "Passwords or encryption keys are required to access the wireless network "
 "“%s”."
-msgstr "ססמאות או מפתחות הצפנה נדרשים כדי לגשת לרשת האלחוטית „%s”"
+msgstr "ססמאות או מפתחות הצפנה נדרשים כדי לגשת לרשת האלחוטית „%s”."
 
 #: js/ui/components/networkAgent.js:323 js/ui/components/networkAgent.js:684
 msgid "Wired 802.1X authentication"
@@ -1047,7 +1051,7 @@ msgstr "PIN"
 #: js/ui/components/networkAgent.js:705
 #, javascript-format
 msgid "A password is required to connect to “%s”."
-msgstr "נדרשת ססמה כדי להתחבר אל „%s”"
+msgstr "נדרשת ססמה כדי להתחבר אל „%s”."
 
 #: js/ui/components/networkAgent.js:668 js/ui/status/network.js:1718
 msgid "Network Manager"
@@ -1190,17 +1194,19 @@ msgstr "יציאה"
 #, javascript-format
 msgid "%s will be logged out automatically in %d second."
 msgid_plural "%s will be logged out automatically in %d seconds."
-msgstr[0] "המשתמש %s ייצא אוטומטית בעוד שנייה."
-msgstr[1] "המשתמש %s ייצא אוטומטית בעוד %d שניות."
-msgstr[2] "המשתמש %s ייצא אוטומטית בעוד %d שניות."
+msgstr[0] "המשתמש %s יצא אוטומטית בעוד שנייה."
+msgstr[1] "המשתמש %s יצא אוטומטית בעוד שתי שניות."
+msgstr[2] "המשתמש %s יצא אוטומטית בעוד %d שניות."
+msgstr[3] "‫המשתמש %s יצא אוטומטית בעוד %d שניות."
 
 #: js/ui/endSessionDialog.js:49
 #, javascript-format
 msgid "You will be logged out automatically in %d second."
 msgid_plural "You will be logged out automatically in %d seconds."
-msgstr[0] "אתה תצא אוטומטית בעוד שנייה."
-msgstr[1] "אתה תצא אוטומטית בעוד %d שניות."
-msgstr[2] "אתה תצא אוטומטית בעוד %d שניות."
+msgstr[0] "המשתמש שלך יצא אוטומטית מהמערכת בעוד שנייה."
+msgstr[1] "‫המשתמש שלך יצא אוטומטית מהמערכת בעוד שתי שניות."
+msgstr[2] "‫‫המשתמש שלך יצא אוטומטית מהמערכת בעוד %d שניות."
+msgstr[3] "‫‫‫המשתמש שלך יצא אוטומטית מהמערכת בעוד %d שניות."
 
 #: js/ui/endSessionDialog.js:56
 msgctxt "button"
@@ -1222,8 +1228,9 @@ msgstr "התקנת עדכונים וכיבוי"
 msgid "The system will power off automatically in %d second."
 msgid_plural "The system will power off automatically in %d seconds."
 msgstr[0] "המערכת תכבה אוטומטית בעוד שנייה."
-msgstr[1] "המערכת תכבה אוטומטית בעוד %d שניות."
+msgstr[1] "המערכת תכבה אוטומטית בעוד שתי שניות."
 msgstr[2] "המערכת תכבה אוטומטית בעוד %d שניות."
+msgstr[3] "‫המערכת תכבה אוטומטית בעוד %d שניות."
 
 #: js/ui/endSessionDialog.js:70 js/ui/endSessionDialog.js:89
 msgctxt "checkbox"
@@ -1249,9 +1256,10 @@ msgstr "התקנת עדכונים והפעלה מחדש"
 #, javascript-format
 msgid "The system will restart automatically in %d second."
 msgid_plural "The system will restart automatically in %d seconds."
-msgstr[0] "המערכת תופעל מחדש בעוד שנייה."
-msgstr[1] "המערכת תופעל מחדש בעוד %d שניות."
-msgstr[2] "המערכת תופעל מחדש בעוד %d שניות."
+msgstr[0] "המערכת תופעל אוטומטית מחדש בעוד שנייה."
+msgstr[1] "‫המערכת תופעל אוטומטית מחדש בעוד שתי שניות."
+msgstr[2] "המערכת תופעל אוטומטית מחדש בעוד %d שניות."
+msgstr[3] "‫המערכת תופעל אוטומטית מחדש בעוד %d שניות."
 
 #: js/ui/endSessionDialog.js:93
 msgctxt "button"
@@ -1269,8 +1277,9 @@ msgid "The system will automatically restart and install updates in %d second."
 msgid_plural ""
 "The system will automatically restart and install updates in %d seconds."
 msgstr[0] "המערכת תופעל מחדש ותתקין עדכונים בעוד שנייה."
-msgstr[1] "המערכת תופעל מחדש ותקין עדכונים בעוד %d שניות."
+msgstr[1] "המערכת תופעל מחדש ותקין עדכונים בעוד שתי שניות."
 msgstr[2] "המערכת תופעל מחדש ותקין עדכונים בעוד %d שניות."
+msgstr[3] "‫המערכת תופעל מחדש ותתקין עדכונים בעוד %d שניות."
 
 #: js/ui/endSessionDialog.js:111 js/ui/endSessionDialog.js:132
 msgctxt "button"
@@ -1650,7 +1659,6 @@ msgid "Lock was blocked by an application"
 msgstr "הנעילה נחסמה ע״י היישום"
 
 #: js/ui/screenshot.js:141
-#| msgid "Screenshots"
 msgid "Screenshot taken"
 msgstr "המסך צולם"
 
@@ -1667,8 +1675,9 @@ msgstr "אין תוצאות."
 msgid "%d more"
 msgid_plural "%d more"
 msgstr[0] "עוד אחד"
-msgstr[1] "עוד %d"
+msgstr[1] "עוד שניים"
 msgstr[2] "עוד %d"
+msgstr[3] "‫עוד %d"
 
 #: js/ui/searchController.js:87
 msgid "Search"
@@ -1703,17 +1712,15 @@ msgid "Windows System Volume"
 msgstr "מחיצת המערכת"
 
 #: js/ui/shellMountOperation.js:291
-#, fuzzy
-#| msgid "Mouse Keys"
 msgid "Uses Keyfiles"
-msgstr "מקשי עכבר"
+msgstr "משתמש בקובצי מפתחות"
 
 #. Translators: %s is the Disks application
 #: js/ui/shellMountOperation.js:298
 #, javascript-format
 msgid ""
 "To unlock a volume that uses keyfiles, use the <i>%s</i> utility instead."
-msgstr ""
+msgstr "כדי לשחרר נעילה שמשתמשת בקובצי מפתחות יש להשתמש בכלי <i>%s</i> במקום."
 
 #: js/ui/shellMountOperation.js:306
 msgid "PIM Number"
@@ -1807,8 +1814,9 @@ msgstr "הגדרות בלוטות'"
 msgid "%d Connected"
 msgid_plural "%d Connected"
 msgstr[0] "אחד מחובר"
-msgstr[1] "%d מחוברים"
-msgstr[2] "שניים מחוברים"
+msgstr[1] "‫שניים מחוברים"
+msgstr[2] "‫%d מחוברים"
+msgstr[3] "‫‫%d מחוברים"
 
 #: js/ui/status/bluetooth.js:152
 msgid "Bluetooth Off"
@@ -1840,7 +1848,7 @@ msgstr "לחיצה משנית"
 
 #: js/ui/status/dwellClick.js:36
 msgid "Dwell Click"
-msgstr ""
+msgstr "לחיצה בהשהיה"
 
 #: js/ui/status/keyboard.js:825
 msgid "Keyboard"
@@ -2068,25 +2076,28 @@ msgstr "הגדרות הרשת"
 #, javascript-format
 msgid "%s Wired Connection"
 msgid_plural "%s Wired Connections"
-msgstr[0] "‏%s התחברות קווית"
-msgstr[1] "‏%s התחברויות קוויות"
-msgstr[2] "‏%s התחברויות קוויות"
+msgstr[0] "התחברות קווית %s"
+msgstr[1] "התחברויות קוויות %s"
+msgstr[2] "התחברויות קוויות %s"
+msgstr[3] "התחברויות קויות %s"
 
 #: js/ui/status/network.js:1621
 #, javascript-format
 msgid "%s Wi-Fi Connection"
 msgid_plural "%s Wi-Fi Connections"
 msgstr[0] "‏%s התחברות אלחוטית"
-msgstr[1] "‏%s התחברויות אלחוטיות"
+msgstr[1] "שתי התחברויות אלחוטיות"
 msgstr[2] "‏%s התחברויות אלחוטיות"
+msgstr[3] "‫‏%s התחברויות אלחוטיות"
 
 #: js/ui/status/network.js:1625
 #, javascript-format
 msgid "%s Modem Connection"
 msgid_plural "%s Modem Connections"
-msgstr[0] "‏%s התחברות מודם"
-msgstr[1] "‏%s התחברויות מודמים"
-msgstr[2] "‏%s התחברויות מודמים"
+msgstr[0] "התחברות מודם %s"
+msgstr[1] "התחברויות מודם %s"
+msgstr[2] "‫התחברויות מודם %s"
+msgstr[3] "‫התחברויות מודם %s"
 
 #: js/ui/status/network.js:1759
 msgid "Connection failed"
@@ -2325,9 +2336,10 @@ msgstr "שמירת שינויים"
 #, javascript-format
 msgid "Settings changes will revert in %d second"
 msgid_plural "Settings changes will revert in %d seconds"
-msgstr[0] "שינויי הגדרות ישוחזרו בעוד שנייה"
-msgstr[1] "שינויי הגדרות ישוחזרו בעוד %d שניות"
+msgstr[0] "‫שינויי הגדרות ישוחזרו בעוד שנייה"
+msgstr[1] "שינויי הגדרות ישוחזרו בעוד שתי שניות"
 msgstr[2] "שינויי הגדרות ישוחזרו בעוד %d שניות"
+msgstr[3] "‫שינויי הגדרות ישוחזרו בעוד %d שניות"
 
 #. Translators: This represents the size of a window. The first number is
 #. * the width of the window and the second is the height.
@@ -2476,7 +2488,6 @@ msgstr "הגדרת הרחבות GNOME Shell"
 
 #: subprojects/extensions-app/js/main.js:142
 #: subprojects/extensions-app/js/main.js:152
-#| msgid "Matches"
 msgid "No Matches"
 msgstr "אין התאמות"
 
@@ -2503,9 +2514,10 @@ msgstr "יוסף אור בוצ׳קו <yoseforb@gmail.com>"
 #, javascript-format
 msgid "%d extension will be updated on next login."
 msgid_plural "%d extensions will be updated on next login."
-msgstr[0] "הרחבה אחת תעודכן בהתחברות הבאה."
-msgstr[1] "‏%d הרחבות תעודכנה בהתחברות הבאה."
-msgstr[2] "‏%d הרחבות תעודכנה בהתחברות הבאה."
+msgstr[0] "הרחבה אחת תעודכן בכניסה הבאה למערכת."
+msgstr[1] "שתי הרחבות תעודכנה בכניסה הבאה למערכת."
+msgstr[2] "‏%d הרחבות תעודכנה בכניסה הבאה למערכת."
+msgstr[3] "‫‏%d הרחבות תעודכנה בכניסה הבאה למערכת."
 
 #: subprojects/extensions-app/js/main.js:494
 msgid "The extension is incompatible with the current GNOME version"
@@ -2989,9 +3001,10 @@ msgstr "הוספת סמליל לסרגל העליון"
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
-msgstr[0] "פלט אחד"
-msgstr[1] "%u פלטים"
-msgstr[2] "שני פלטים"
+msgstr[0] "ערוץ פלט אחד"
+msgstr[1] "שני ערוצי פלט"
+msgstr[2] "‫%u ערוצי פלט"
+msgstr[3] "‏‫%u ערוצי פלט"
 
 #. translators:
 #. * The number of sound inputs on a particular device
@@ -2999,9 +3012,10 @@ msgstr[2] "שני פלטים"
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
-msgstr[0] "קלט אחד"
-msgstr[1] "%u קלטים"
-msgstr[2] "שני קלטים"
+msgstr[0] "ערוץ קלט אחד"
+msgstr[1] "שני ערוצי קלט"
+msgstr[2] "‫%u ערוצי קלט"
+msgstr[3] "‏‫%u ערוצי קלט"
 
 #: subprojects/gvc/gvc-mixer-control.c:2867
 msgid "System Sounds"
