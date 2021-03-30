@@ -128,6 +128,11 @@ var NMConnectionItem = class {
     }
 
     destroy() {
+        if (this._activeConnectionChangedId) {
+            this._activeConnection.disconnect(this._activeConnectionChangedId);
+            this._activeConnectionChangedId = 0;
+        }
+
         this.labelItem.destroy();
         this.radioItem.destroy();
     }
