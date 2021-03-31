@@ -32,11 +32,6 @@
 #define GNOME_DESKTOP_USE_UNSTABLE_API
 #include <libgnome-desktop/gnome-systemd.h>
 
-/* Memory report bits */
-#ifdef HAVE_MALLINFO
-#include <malloc.h>
-#endif
-
 #if defined __OpenBSD__ || defined __FreeBSD__
 #include <sys/sysctl.h>
 #endif
