@@ -56,6 +56,15 @@ function _getEventHandlerActor() {
     return eventHandlerActor;
 }
 
+function _getRealActorScale(actor) {
+    let scale = 1.0;
+    while (actor) {
+        scale *= actor.scale_x;
+        actor = actor.get_parent();
+    }
+    return scale;
+}
+
 function addDragMonitor(monitor) {
     dragMonitors.push(monitor);
 }
@@ -659,11 +668,7 @@ var _Draggable = class _Draggable {
             // its parent, adjusting for the fact that the parent
             // may have been moved or scaled
             let [parentX, parentY] = this._dragOrigParent.get_transformed_position();
-            let [parentWidth] = this._dragOrigParent.get_size();
-            let [parentScaledWidth] = this._dragOrigParent.get_transformed_size();
-            let parentScale = 1.0;
-            if (parentWidth != 0)
-                parentScale = parentScaledWidth / parentWidth;
+            let parentScale = _getRealActorScale(this._dragOrigParent);
 
             x = parentX + parentScale * this._dragOrigX;
             y = parentY + parentScale * this._dragOrigY;
