@@ -13,6 +13,9 @@
 /* Define to 1 if you have the `mallinfo' function. */
 #mesondefine HAVE_MALLINFO
 
+/* Define to 1 if you have the `mallinfo2' function. */
+#mesondefine HAVE_MALLINFO2
+
 /* Define to 1 fi you have the <sys/resource.h> header file. */
 #mesondefine HAVE_SYS_RESOURCE_H
 
