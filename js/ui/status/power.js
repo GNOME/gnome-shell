@@ -134,11 +134,7 @@ class Indicator extends PanelMenu.SystemIndicator {
         this._item.icon.fallback_icon_name = fallbackIcon;
 
         // The icon label
-        let label;
-        if (this._proxy.State == UPower.DeviceState.FULLY_CHARGED)
-            label = _("%d\u2009%%").format(100);
-        else
-            label = _("%d\u2009%%").format(this._proxy.Percentage);
+        const label = _('%d\u2009%%').format(this._proxy.Percentage);
         this._percentageLabel.text = label;
 
         // The status label
