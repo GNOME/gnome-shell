@@ -292,6 +292,15 @@ var LayoutManager = GObject.registerClass({
         monitorManager.connect('monitors-changed',
                                this._monitorsChanged.bind(this));
         this._monitorsChanged();
+
+        const fileName = GLib.build_filenamev([
+            GLib.get_user_config_dir(),
+            'gnome-shell',
+            'prevent-overview',
+        ]);
+        this._startupIntoOverview =
+            Main.sessionMode.hasOverview &&
+            !GLib.file_test(fileName, GLib.FileTest.EXISTS);
     }
 
     // This is called by Main after everything else is constructed
@@ -665,7 +674,7 @@ var LayoutManager = GObject.registerClass({
 
             let monitor = this.primaryMonitor;
 
-            if (!Main.sessionMode.hasOverview) {
+            if (!this._startupIntoOverview) {
                 const x = monitor.x + monitor.width / 2.0;
                 const y = monitor.y + monitor.height / 2.0;
 
@@ -706,7 +715,7 @@ var LayoutManager = GObject.registerClass({
 
     _startupAnimationSession() {
         const onComplete = () => this._startupAnimationComplete();
-        if (Main.sessionMode.hasOverview) {
+        if (this._startupIntoOverview) {
             Main.overview.runStartupAnimation(onComplete);
         } else {
             this.uiGroup.ease({
