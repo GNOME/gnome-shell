@@ -8,7 +8,7 @@
 # Reinout van Schouwen <reinouts@gnome.org>, 2010, 2013, 2014.
 # Wouter Bolsterlee <wbolster@gnome.org>, 2011–2014.
 # Erwin Poeze <donnut@outlook.com>, 2013.
-# Nathan Follens <nthn@unseen.is>, 2015-2020.
+# Nathan Follens <nthn@unseen.is>, 2015-2021.
 # Hannie Dumoleyn <hannie@ubuntu-nl.org>, 2015, 2017, 2018, 2021.
 # Justin van Steijn <jvs@fsfe.org>, 2016, 2018.
 # Philip Goto <philip.goto@gmail.com>, 2018.
@@ -16,16 +16,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2021-03-25 02:36+0000\n"
-"PO-Revision-Date: 2021-03-25 17:47+0100\n"
-"Last-Translator: Hannie Dumoleyn <hannie@ubuntu-nl.org>\n"
+"POT-Creation-Date: 2021-03-25 16:48+0000\n"
+"PO-Revision-Date: 2021-04-01 20:36+0200\n"
+"Last-Translator: Nathan Follens <nthn@unseen.is>\n"
 "Language-Team: Dutch <gnome-nl-list@gnome.org>\n"
 "Language: nl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 19.12.3\n"
+"X-Generator: Poedit 2.4.2\n"
 "X-DamnedLies-Scope: partial\n"
 "X-Project-Style: gnome\n"
 
@@ -207,6 +207,24 @@ msgstr ""
 "met de standaardadapter. Dit zal opnieuw ingesteld worden indien de "
 "standaardadapter geen apparaten met zich geassocieerd blijkt te hebben."
 
+#: data/org.gnome.shell.gschema.xml.in:99
+msgid "The last version the “Welcome to GNOME” dialog was shown for"
+msgstr ""
+"De laatste versie waarvoor het dialoogvenster ‘Welkom bij Gnome’ werd getoond"
+
+#: data/org.gnome.shell.gschema.xml.in:100
+msgid ""
+"This key determines for which version the “Welcome to GNOME” dialog was last "
+"shown. An empty string represents the oldest possible version, and a huge "
+"number will represent versions that do not exist yet. This huge number can "
+"be used to effectively disable the dialog."
+msgstr ""
+"Deze sleutelt bepaalt voor welke versie het dialoogvenster ‘Welkom bij "
+"Gnome’ voor het laatst werd getoond. Een lege tekenreeks stelt de oudst "
+"mogelijke versie voor, en een groot getal stelt versies die nog niet bestaan "
+"voor. Dit grote getal kan gebruikt worden om het dialoogvenster in de "
+"praktijk uit te schakelen."
+
 #: data/org.gnome.shell.gschema.xml.in:109
 msgid "Enable introspection API"
 msgstr "Introspectie-API inschakelen"
@@ -251,12 +269,10 @@ msgid "Keybinding to shift between overview states"
 msgstr "Sneltoets om te schakelen tussen overzichtsstatussen"
 
 #: data/org.gnome.shell.gschema.xml.in:165
-#| msgid "Keybinding to shift between overview states"
 msgid "Keybinding to shift between session, window picker and app grid"
 msgstr "Sneltoets om te schakelen tussen sessie, vensterkiezer en app-raster"
 
 #: data/org.gnome.shell.gschema.xml.in:172
-#| msgid "Keybinding to shift between overview states"
 msgid "Keybinding to shift between app grid, window picker and session"
 msgstr "Sneltoets om te schakelen tussen app-raster, vensterkiezer en sessie"
 
