@@ -296,7 +296,6 @@ var Key = GObject.registerClass({
 
         this._capturedEventId = 0;
         this._unmapId = 0;
-        this._longPress = false;
     }
 
     _onDestroy() {
@@ -334,14 +333,13 @@ var Key = GObject.registerClass({
     _press(key) {
         this.emit('activated');
 
-        if (key !== this.key || this._extendedKeys.length === 0)
+        if (this._extendedKeys.length === 0)
             this.emit('pressed', this._getKeyval(key), key);
 
         if (key == this.key) {
             this._pressTimeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT,
                 KEY_LONG_PRESS_TIME,
                 () => {
-                    this._longPress = true;
                     this._pressTimeoutId = 0;
 
                     this.emit('long-press');
@@ -365,12 +363,11 @@ var Key = GObject.registerClass({
             this._pressTimeoutId = 0;
         }
 
-        if (!this._longPress && key === this.key && this._extendedKeys.length > 0)
+        if (this._extendedKeys.length > 0)
             this.emit('pressed', this._getKeyval(key), key);
 
         this.emit('released', this._getKeyval(key), key);
         this._hideSubkeys();
-        this._longPress = false;
     }
 
     cancel() {
