@@ -19,6 +19,7 @@ const _modes = {
         themeResourceName: 'gnome-shell-theme.gresource',
         hasOverview: false,
         showCalendarEvents: false,
+        showWelcomeDialog: false,
         allowSettings: false,
         allowExtensions: false,
         allowScreencast: false,
@@ -70,6 +71,7 @@ const _modes = {
     'user': {
         hasOverview: true,
         showCalendarEvents: true,
+        showWelcomeDialog: true,
         allowSettings: true,
         allowExtensions: true,
         allowScreencast: true,
