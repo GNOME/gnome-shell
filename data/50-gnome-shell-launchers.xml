@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<KeyListEntries schema="org.gnome.shell.keybindings"
+                group="system"
+                name="Launchers"
+                wm_name="GNOME Shell"
+                package="gnome-shell">
+
+	<KeyListEntry name="switch-to-application-1"
+                      description="Activate favorite application 1"
+                      hidden="true"/>
+
+	<KeyListEntry name="switch-to-application-2"
+                      description="Activate favorite application 2"
+                      hidden="true"/>
+
+	<KeyListEntry name="switch-to-application-3"
+                      description="Activate favorite application 3"
+                      hidden="true"/>
+
+	<KeyListEntry name="switch-to-application-4"
+                      description="Activate favorite application 4"
+                      hidden="true"/>
+
+	<KeyListEntry name="switch-to-application-5"
+                      description="Activate favorite application 5"
+                      hidden="true"/>
+
+	<KeyListEntry name="switch-to-application-6"
+                      description="Activate favorite application 6"
+                      hidden="true"/>
+
+	<KeyListEntry name="switch-to-application-7"
+                      description="Activate favorite application 7"
+                      hidden="true"/>
+
+	<KeyListEntry name="switch-to-application-8"
+                      description="Activate favorite application 8"
+                      hidden="true"/>
+
+	<KeyListEntry name="switch-to-application-9"
+                      description="Activate favorite application 9"
+                      hidden="true"/>
+
+</KeyListEntries>
+

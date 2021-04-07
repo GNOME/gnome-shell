@@ -1,5 +1,6 @@
 # List of source files containing translatable strings.
 # Please keep this file sorted alphabetically.
+data/50-gnome-shell-launchers.xml
 data/50-gnome-shell-system.xml
 data/org.gnome.Shell.desktop.in.in
 data/org.gnome.shell.gschema.xml.in
