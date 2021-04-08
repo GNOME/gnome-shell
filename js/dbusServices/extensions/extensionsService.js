@@ -252,8 +252,8 @@ var ExtensionPrefsDialog = GObject.registerClass({
             enabled: false,
         });
         action.connect('activate', () => {
-            const clipboard = Gtk.Clipboard.get_default(this.get_display());
-            clipboard.set_text(this._errorMarkdown, -1);
+            const clipboard = this.get_display().get_clipboard();
+            clipboard.set_text(this._errorMarkdown);
         });
         this._actionGroup.add_action(action);
 
