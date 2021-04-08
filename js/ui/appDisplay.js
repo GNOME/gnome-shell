@@ -1122,43 +1122,53 @@ var BaseAppView = GObject.registerClass({
         if (spaceRatio > gridRatio * 1.1) {
             // Enough room for some preview
             pageHeight = availHeight;
-            pageWidth = availHeight * gridRatio;
+            pageWidth = Math.ceil(availHeight * gridRatio);
 
             if (spaceRatio > gridRatio * 1.5) {
                 // Ultra-wide layout, give some extra space for
                 // the page area, but up to an extent.
                 const extraPageSpace = Math.min(
-                    (availWidth - pageWidth) / 2, MAX_PAGE_PADDING);
+                    Math.floor((availWidth - pageWidth) / 2), MAX_PAGE_PADDING);
                 pageWidth += extraPageSpace;
-                this._grid.layout_manager.pagePadding.left = extraPageSpace / 2;
-                this._grid.layout_manager.pagePadding.right = extraPageSpace / 2;
+                this._grid.layout_manager.pagePadding.left =
+                    Math.floor(extraPageSpace / 2);
+                this._grid.layout_manager.pagePadding.right =
+                    Math.ceil(extraPageSpace / 2);
             }
         } else {
             // Not enough room, needs to shrink horizontally
-            pageWidth = availWidth * 0.8;
+            pageWidth = Math.ceil(availWidth * 0.8);
             pageHeight = availHeight;
-            this._grid.layout_manager.pagePadding.left = availWidth * 0.02;
-            this._grid.layout_manager.pagePadding.right = availWidth * 0.02;
+            this._grid.layout_manager.pagePadding.left =
+                Math.floor(availWidth * 0.02);
+            this._grid.layout_manager.pagePadding.right =
+                Math.ceil(availWidth * 0.02);
         }
 
         this._grid.adaptToSize(pageWidth, pageHeight);
 
-        const horizontalPadding = (availWidth - this._grid.layout_manager.pageWidth) / 2;
-        const verticalPadding = (availHeight - this._grid.layout_manager.pageHeight) / 2;
+        const leftPadding = Math.floor(
+            (availWidth - this._grid.layout_manager.pageWidth) / 2);
+        const rightPadding = Math.ceil(
+            (availWidth - this._grid.layout_manager.pageWidth) / 2);
+        const topPadding = Math.floor(
+            (availHeight - this._grid.layout_manager.pageHeight) / 2);
+        const bottomPadding = Math.ceil(
+            (availHeight - this._grid.layout_manager.pageHeight) / 2);
 
         this._scrollView.content_padding = new Clutter.Margin({
-            left: horizontalPadding,
-            right: horizontalPadding,
-            top: verticalPadding,
-            bottom: verticalPadding,
+            left: leftPadding,
+            right: rightPadding,
+            top: topPadding,
+            bottom: bottomPadding,
         });
 
         this._availWidth = availWidth;
         this._availHeight = availHeight;
 
-        this._pageIndicatorOffset = horizontalPadding;
+        this._pageIndicatorOffset = leftPadding;
         this._pageArrowOffset = Math.max(
-            horizontalPadding - PAGE_PREVIEW_MAX_ARROW_OFFSET, 0);
+            leftPadding - PAGE_PREVIEW_MAX_ARROW_OFFSET, 0);
     }
 
     _getIndicatorOffset(page, progress, baseOffset) {
