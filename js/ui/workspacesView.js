@@ -1142,7 +1142,8 @@ class WorkspacesDisplay extends St.Widget {
     }
 
     _onKeyPressEvent(actor, event) {
-        if (!this.mapped)
+        const { ControlsState } = OverviewControls;
+        if (this._overviewAdjustment.value !== ControlsState.WINDOW_PICKER)
             return Clutter.EVENT_PROPAGATE;
 
         const { workspaceManager } = global;
