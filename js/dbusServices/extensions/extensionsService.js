@@ -253,7 +253,7 @@ var ExtensionPrefsDialog = GObject.registerClass({
         });
         action.connect('activate', () => {
             const clipboard = this.get_display().get_clipboard();
-            clipboard.set_text(this._errorMarkdown);
+            clipboard.set(this._errorMarkdown);
         });
         this._actionGroup.add_action(action);
 
