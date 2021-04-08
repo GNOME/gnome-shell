@@ -1144,20 +1144,36 @@ class WorkspacesDisplay extends St.Widget {
     _onKeyPressEvent(actor, event) {
         if (!this.mapped)
             return Clutter.EVENT_PROPAGATE;
-        let workspaceManager = global.workspace_manager;
-        let activeWs = workspaceManager.get_active_workspace();
-        let ws;
+
+        const { workspaceManager } = global;
+        const vertical = workspaceManager.layout_rows === -1;
+        const rtl = this.get_text_direction() === Clutter.TextDirection.RTL;
+
+        let dir;
         switch (event.get_key_symbol()) {
         case Clutter.KEY_Page_Up:
-            ws = activeWs.get_neighbor(Meta.MotionDirection.UP);
+            if (vertical)
+                dir = Meta.MotionDirection.UP;
+            else if (rtl)
+                dir = Meta.MotionDirection.RIGHT;
+            else
+                dir = Meta.MotionDirection.LEFT;
             break;
         case Clutter.KEY_Page_Down:
-            ws = activeWs.get_neighbor(Meta.MotionDirection.DOWN);
+            if (vertical)
+                dir = Meta.MotionDirection.DOWN;
+            else if (rtl)
+                dir = Meta.MotionDirection.LEFT;
+            else
+                dir = Meta.MotionDirection.RIGHT;
             break;
         default:
             return Clutter.EVENT_PROPAGATE;
         }
-        Main.wm.actionMoveWorkspace(ws);
+
+        const ws = workspaceManager.get_active_workspace().get_neighbor(dir);
+        if (ws)
+            Main.wm.actionMoveWorkspace(ws);
         return Clutter.EVENT_STOP;
     }
 
