@@ -18,7 +18,7 @@ msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
 "POT-Creation-Date: 2021-04-08 19:37+0000\n"
-"PO-Revision-Date: 2021-04-09 10:36+0300\n"
+"PO-Revision-Date: 2021-04-09 10:41+0300\n"
 "Last-Translator: Emin Tufan Çetin <etcetin@gmail.com>\n"
 "Language-Team: Türkçe <gnome-turk@gnome.org>\n"
 "Language: tr\n"
@@ -2308,7 +2308,7 @@ msgstr "Bu görüntü ayarları saklansın mı?"
 #.
 #: js/ui/windowManager.js:72
 msgid "Revert Settings"
-msgstr "Ayarları Eski Haline Getir"
+msgstr "Ayarları Eskisine Döndür"
 
 #: js/ui/windowManager.js:75
 msgid "Keep Changes"
@@ -2318,7 +2318,7 @@ msgstr "Değişiklikleri Sakla"
 #, javascript-format
 msgid "Settings changes will revert in %d second"
 msgid_plural "Settings changes will revert in %d seconds"
-msgstr[0] "Ayarlardaki değişiklikler %d saniye içinde eski haline döndürülecek"
+msgstr[0] "Ayarlardaki değişiklikler %d saniye içinde eskisine döndürülecek"
 
 #. Translators: This represents the size of a window. The first number is
 #. * the width of the window and the second is the height.
