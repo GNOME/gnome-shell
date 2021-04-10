@@ -370,7 +370,7 @@ function ensureActorVisibleInScrollView(scrollView, actor) {
     let offset = 0;
     let vfade = scrollView.get_effect("fade");
     if (vfade)
-        offset = vfade.vfade_offset;
+        offset = vfade.fade_margins.top;
 
     let box = actor.get_allocation_box();
     let y1 = box.y1, y2 = box.y2;
