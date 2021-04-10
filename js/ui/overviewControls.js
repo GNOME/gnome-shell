@@ -518,9 +518,15 @@ class ControlsManager extends St.Widget {
         this._thumbnailsBox.ease(params);
     }
 
-    _updateAppDisplayVisibility() {
+    _updateAppDisplayVisibility(stateTransitionParams = null) {
+        if (!stateTransitionParams)
+            stateTransitionParams = this._stateAdjustment.getStateTransitionParams();
+
+        const { currentState, finalState } = stateTransitionParams;
+        const state = Math.max(currentState, finalState);
+
         this._appDisplay.visible =
-            this._stateAdjustment.value > ControlsState.WINDOW_PICKER &&
+            state > ControlsState.WINDOW_PICKER &&
             !this._searchController.searchActive;
     }
 
@@ -536,7 +542,7 @@ class ControlsManager extends St.Widget {
         fitModeAdjustment.value = fitMode;
 
         this._updateThumbnailsBox();
-        this._updateAppDisplayVisibility();
+        this._updateAppDisplayVisibility(params);
     }
 
     _onSearchChanged() {
