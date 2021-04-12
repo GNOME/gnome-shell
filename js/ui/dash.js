@@ -807,7 +807,7 @@ var Dash = GObject.registerClass({
                 });
                 this._box.add_child(this._separator);
             }
-            let pos = nFavorites;
+            let pos = nFavorites + this._animatingPlaceholdersCount;
             if (this._dragPlaceholder)
                 pos++;
             this._box.set_child_at_index(this._separator, pos);
