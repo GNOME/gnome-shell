@@ -180,7 +180,7 @@ st_cflags = [
 libst = shared_library('st-1.0',
   sources: st_gir_sources + st_nogir_sources + croco_sources,
   c_args: st_cflags,
-  dependencies: [clutter_dep, gtk_dep, mutter_dep, libxml_dep, m_dep],
+  dependencies: [clutter_dep, gmodule_dep, gtk_dep, mutter_dep, libxml_dep, m_dep],
   build_rpath: mutter_typelibdir,
   install_rpath: mutter_typelibdir,
   install_dir: pkglibdir,
