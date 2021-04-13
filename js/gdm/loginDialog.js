@@ -762,6 +762,9 @@ var LoginDialog = GObject.registerClass({
 
             if (this._authPrompt.verificationStatus == AuthPrompt.AuthPromptStatus.NOT_VERIFYING)
                 this._authPrompt.reset();
+
+            if (this._disableUserList && this._timedLoginUserListHold)
+                this._timedLoginUserListHold.release();
         }
     }
 
@@ -1049,16 +1052,29 @@ var LoginDialog = GObject.registerClass({
         let animationTime;
 
         let tasks = [
-            () => this._waitForItemForUser(userName),
+            () => {
+                if (this._disableUserList)
+                    return;
+
+                this._timedLoginUserListHold = this._waitForItemForUser(userName);
+            },
 
             () => {
-                loginItem = this._userList.getItemFromUserName(userName);
+                this._timedLoginUserListHold = null;
+
+                if (this._disableUserList)
+                    loginItem = this._authPrompt;
+                else
+                    loginItem = this._userList.getItemFromUserName(userName);
 
                 // If there is an animation running on the item, reset it.
                 loginItem.hideTimedLoginIndicator();
             },
 
             () => {
+                if (this._disableUserList)
+                    return;
+
                 // If we're just starting out, start on the right item.
                 if (!this._userManager.is_loaded)
                     this._userList.jumpToItem(loginItem);
@@ -1080,6 +1096,9 @@ var LoginDialog = GObject.registerClass({
             },
 
             () => {
+                if (this._disableUserList)
+                    return;
+
                 // If idle timeout is done, make sure the timed login indicator is shown
                 if (delay > _TIMED_LOGIN_IDLE_THRESHOLD &&
                     this._authPrompt.visible)
