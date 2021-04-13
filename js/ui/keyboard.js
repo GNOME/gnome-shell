@@ -198,7 +198,7 @@ class Suggestions extends St.BoxLayout {
     add(word, callback) {
         let button = new St.Button({ label: word });
         button.connect('clicked', callback);
-        this.add(button);
+        this.add_child(button);
     }
 
     clear() {
