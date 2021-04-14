@@ -715,6 +715,10 @@ var ThumbnailsBox = GObject.registerClass({
             () => this._updateIndicator());
     }
 
+    setMonitorIndex(monitorIndex) {
+        this._monitorIndex = monitorIndex;
+    }
+
     _onDestroy() {
         this._unqueueUpdateStates();
 

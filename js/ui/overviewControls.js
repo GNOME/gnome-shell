@@ -341,6 +341,9 @@ class ControlsManager extends St.Widget {
             this.dash.showAppsButton);
         this._searchController.connect('notify::search-active', this._onSearchChanged.bind(this));
 
+        Main.layoutManager.connect('monitors-changed', () => {
+            this._thumbnailsBox.setMonitorIndex(Main.layoutManager.primaryIndex);
+        });
         this._thumbnailsBox = new WorkspaceThumbnail.ThumbnailsBox(
             this._workspaceAdjustment, Main.layoutManager.primaryIndex);
         this._thumbnailsBox.connect('notify::should-show', () => {
