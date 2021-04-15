@@ -649,13 +649,20 @@ var Overview = class {
         this._visible = true;
         this._visibleTarget = true;
         Main.layoutManager.showOverview();
-        this._syncGrab();
+        // We should call this._syncGrab() here, but moved it to happen after
+        // the animation because of a race in the xserver where the grab
+        // fails when requested very early during startup.
 
         Meta.disable_unredirect_for_display(global.display);
 
         this.emit('showing');
 
         this._overview.runStartupAnimation(() => {
+            if (!this._syncGrab()) {
+                callback();
+                return;
+            }
+
             Main.panel.style = null;
             this.emit('shown');
             callback();
