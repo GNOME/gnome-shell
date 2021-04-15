@@ -1,7 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported ControlsManager */
 
-const { Clutter, Gio, GObject, Meta, Shell, St } = imports.gi;
+const { Clutter, Gio, GLib, GObject, Meta, Shell, St } = imports.gi;
 
 const AppDisplay = imports.ui.appDisplay;
 const Dash = imports.ui.dash;
@@ -407,6 +407,7 @@ class ControlsManager extends St.Widget {
 
         this._a11ySettings = new Gio.Settings({ schema_id: A11Y_SCHEMA });
 
+        this._lastOverlayKeyTime = 0;
         global.display.connect('overlay-key', () => {
             if (this._a11ySettings.get_boolean('stickykeys-enable'))
                 return;
@@ -414,7 +415,15 @@ class ControlsManager extends St.Widget {
             const { initialState, finalState, transitioning } =
                 this._stateAdjustment.getStateTransitionParams();
 
-            if (transitioning && finalState > initialState)
+            const time = GLib.get_monotonic_time() / 1000;
+            const timeDiff = time - this._lastOverlayKeyTime;
+            this._lastOverlayKeyTime = time;
+
+            const shouldShift = St.Settings.get().enable_animations
+                ? transitioning && finalState > initialState
+                : Main.overview.visible && timeDiff < Overview.ANIMATION_TIME;
+
+            if (shouldShift)
                 this._shiftState(Meta.MotionDirection.UP);
             else
                 Main.overview.toggle();
