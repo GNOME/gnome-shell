@@ -101,6 +101,8 @@ const LoginManager = imports.misc.loginManager;
 const Main = imports.ui.main;
 const Params = imports.misc.params;
 
+Gio._promisify(Gio._LocalFilePrototype, 'query_info_async', 'query_info_finish');
+
 var DEFAULT_BACKGROUND_COLOR = Clutter.Color.from_pixel(0x2e3436ff);
 
 const BACKGROUND_SCHEMA = 'org.gnome.desktop.background';
@@ -479,8 +481,15 @@ var Background = GObject.registerClass({
         }
     }
 
-    _loadFile(file) {
-        if (file.get_basename().endsWith('.xml'))
+    async _loadFile(file) {
+        const info = await file.query_info_async(
+            Gio.FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE,
+            Gio.FileQueryInfoFlags.NONE,
+            0,
+            null);
+
+        const contentType = info.get_content_type();
+        if (contentType === 'application/xml')
             this._loadAnimation(file);
         else
             this._loadImage(file);
