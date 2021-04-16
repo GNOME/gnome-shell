@@ -70,6 +70,6 @@ void main ()
 
         cogl_color_out *= ratio;
     } else {
-        cogl_color_out *= 0;
+        cogl_color_out *= 0.0;
     }
 }
