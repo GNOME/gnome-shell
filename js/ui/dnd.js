@@ -407,6 +407,10 @@ var _Draggable = class _Draggable {
             Main.uiGroup.add_child(this._dragActor);
             Main.uiGroup.set_child_above_sibling(this._dragActor, null);
             Shell.util_set_hidden_from_pick(this._dragActor, true);
+
+            this._dragOrigParentDestroyId = this._dragOrigParent.connect('destroy', () => {
+                this._dragOrigParent = null;
+            });
         }
 
         this._dragActorDestroyId = this._dragActor.connect('destroy', () => {
@@ -774,6 +778,11 @@ var _Draggable = class _Draggable {
         if (this._dragActor) {
             this._dragActor.disconnect(this._dragActorDestroyId);
             this._dragActor = null;
+        }
+
+        if (this._dragOrigParent) {
+            this._dragOrigParent.disconnect(this._dragOrigParentDestroyId);
+            this._dragOrigParent = null;
         }
 
         this._dragState = DragState.INIT;
