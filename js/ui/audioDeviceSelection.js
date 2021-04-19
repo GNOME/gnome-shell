@@ -57,7 +57,7 @@ var AudioDeviceSelectionDialog = GObject.registerClass({
             });
         }
         this.addButton({
-            action: this.close.bind(this),
+            action: () => this.close(),
             label: _('Cancel'),
             key: Clutter.KEY_Escape,
         });
