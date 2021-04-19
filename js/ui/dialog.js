@@ -133,7 +133,7 @@ class Dialog extends St.Widget {
             y_expand: true,
             label,
         });
-        button.connect('clicked', action);
+        button.connect('clicked', () => action());
 
         buttonInfo['button'] = button;
 
