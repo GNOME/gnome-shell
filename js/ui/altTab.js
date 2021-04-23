@@ -427,7 +427,7 @@ class CyclerHighlight extends St.Widget {
         if (this._clone.source)
             this._clone.source.sync_visibility();
 
-        const windowActor = this._window?.get_compositor_private();
+        const windowActor = this._window?.get_compositor_private() ?? null;
 
         if (windowActor)
             windowActor.hide();
