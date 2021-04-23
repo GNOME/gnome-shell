@@ -151,6 +151,7 @@ var WindowPreview = GObject.registerClass({
             text: this._getCaption(),
             reactive: true,
         });
+        this._title.clutter_text.single_line_mode = true;
         this._title.add_constraint(new Clutter.BindConstraint({
             source: windowContainer,
             coordinate: Clutter.BindCoordinate.X,
