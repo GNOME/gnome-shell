@@ -827,6 +827,12 @@ var ZoomRegion = class ZoomRegion {
         let scaleFactor = St.ThemeContext.get_for_stage(global.stage).scale_factor;
         let [xCaret, yCaret] = [extents.x * scaleFactor, extents.y * scaleFactor];
 
+        // Ignore event(s) if the caret size is none (0x0). This happens a lot if
+        // the cursor offset can't be translated into a location. This is a work
+        // around.
+        if (extents.width === 0 && extents.height === 0)
+            return;
+
         if (this._xCaret !== xCaret || this._yCaret !== yCaret) {
             [this._xCaret, this._yCaret] = [xCaret, yCaret];
             this._centerFromCaretPosition();
