@@ -13,6 +13,8 @@ var ScreenSaverService = class extends ServiceImplementation {
     constructor() {
         super(ScreenSaverIface, '/org/gnome/ScreenSaver');
 
+        this._autoShutdown = false;
+
         this._proxy = new ScreenSaverProxy(Gio.DBus.session,
             'org.gnome.Shell.ScreenShield',
             '/org/gnome/ScreenSaver',
