@@ -690,13 +690,13 @@ var ShellUserVerifier = class {
         // the dialog
         // Otherwise, when in login mode we allow ALLOWED_FAILURES attempts.
         // After that, we go back to the welcome screen.
-        this._disconnectSignals();
-
         this._filterServiceMessages(serviceName, MessageType.ERROR);
 
         const doneTrying = !shouldRetry || !this._canRetry();
 
         if (doneTrying) {
+            this._disconnectSignals();
+
             // eslint-disable-next-line no-lonely-if
             if (!this.hasPendingMessages) {
                 this._cancelAndReset();
