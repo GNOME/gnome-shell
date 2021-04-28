@@ -30,7 +30,8 @@ class AppMenu extends PopupMenu.PopupMenu {
         this._windowsChangedId = 0;
 
         /* Translators: This is the heading of a list of open windows */
-        this.addMenuItem(new PopupMenu.PopupSeparatorMenuItem(_("Open Windows")));
+        this._openWindowsHeader = new PopupMenu.PopupSeparatorMenuItem(_('Open Windows'));
+        this.addMenuItem(this._openWindowsHeader);
 
         this._windowSection = new PopupMenu.PopupMenuSection();
         this.addMenuItem(this._windowSection);
@@ -118,11 +119,17 @@ class AppMenu extends PopupMenu.PopupMenu {
 
     _updateWindowsSection() {
         this._windowSection.removeAll();
+        this._openWindowsHeader.hide();
 
         if (!this._app)
             return;
 
         let windows = this._app.get_windows();
+        if (windows.length < 2)
+            return;
+
+        this._openWindowsHeader.show();
+
         windows.forEach(window => {
             let title = window.title || this._app.get_name();
             let item = this._windowSection.addAction(title, event => {
