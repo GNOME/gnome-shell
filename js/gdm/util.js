@@ -686,6 +686,11 @@ var ShellUserVerifier = class {
     }
 
     _verificationFailed(serviceName, shouldRetry) {
+        if (serviceName === FINGERPRINT_SERVICE_NAME) {
+            if (this._fingerprintFailedId)
+                GLib.source_remove(this._fingerprintFailedId);
+        }
+
         // For Not Listed / enterprise logins, immediately reset
         // the dialog
         // Otherwise, when in login mode we allow ALLOWED_FAILURES attempts.
