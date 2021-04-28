@@ -329,7 +329,9 @@ var AuthPrompt = GObject.registerClass({
 
         this.updateSensitivity(canRetry);
         this.setActorInDefaultButtonWell(null);
-        this.verificationStatus = AuthPromptStatus.VERIFICATION_FAILED;
+
+        if (!canRetry)
+            this.verificationStatus = AuthPromptStatus.VERIFICATION_FAILED;
 
         if (wasQueryingService)
             Util.wiggle(this._entry);
