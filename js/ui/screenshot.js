@@ -393,6 +393,9 @@ class SelectArea extends St.Widget {
     }
 
     vfunc_button_release_event() {
+        if (this._startX === -1 || this._startY === -1)
+            return Clutter.EVENT_PROPAGATE;
+
         this._result = this._getGeometry();
         this.ease({
             opacity: 0,
