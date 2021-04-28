@@ -685,29 +685,18 @@ var ShellUserVerifier = class {
             (this._reauthOnly || this._failCounter < this.allowedFailures);
     }
 
-    _verificationFailed(serviceName, retry) {
+    _verificationFailed(serviceName, shouldRetry) {
         // For Not Listed / enterprise logins, immediately reset
         // the dialog
         // Otherwise, when in login mode we allow ALLOWED_FAILURES attempts.
         // After that, we go back to the welcome screen.
-
-        const canRetry = retry && this._canRetry();
-
         this._disconnectSignals();
+
         this._filterServiceMessages(serviceName, MessageType.ERROR);
 
-        if (canRetry) {
-            if (!this.hasPendingMessages) {
-                this._retry(serviceName);
-            } else {
-                const cancellable = this._cancellable;
-                let signalId = this.connect('no-more-messages', () => {
-                    this.disconnect(signalId);
-                    if (!cancellable.is_cancelled())
-                        this._retry(serviceName);
-                });
-            }
-        } else {
+        const doneTrying = !shouldRetry || !this._canRetry();
+
+        if (doneTrying) {
             // eslint-disable-next-line no-lonely-if
             if (!this.hasPendingMessages) {
                 this._cancelAndReset();
@@ -721,7 +710,18 @@ var ShellUserVerifier = class {
             }
         }
 
-        this.emit('verification-failed', serviceName, canRetry);
+        this.emit('verification-failed', serviceName, !doneTrying);
+
+        if (!this.hasPendingMessages) {
+            this._retry(serviceName);
+        } else {
+            const cancellable = this._cancellable;
+            let signalId = this.connect('no-more-messages', () => {
+                this.disconnect(signalId);
+                if (!cancellable.is_cancelled())
+                    this._retry(serviceName);
+            });
+        }
     }
 
     _onServiceUnavailable(_client, serviceName, errorMessage) {
