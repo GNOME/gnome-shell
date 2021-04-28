@@ -321,8 +321,11 @@ var AuthPrompt = GObject.registerClass({
 
     _onVerificationFailed(userVerifier, serviceName, canRetry) {
         const wasQueryingService = this._queryingService === serviceName;
-        this._queryingService = null;
-        this.clear();
+
+        if (wasQueryingService) {
+            this._queryingService = null;
+            this.clear();
+        }
 
         this.updateSensitivity(canRetry);
         this.setActorInDefaultButtonWell(null);
