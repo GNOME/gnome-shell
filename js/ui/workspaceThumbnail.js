@@ -993,6 +993,9 @@ var ThumbnailsBox = GObject.registerClass({
     }
 
     _createThumbnails() {
+        if (this._thumbnails.length > 0)
+            return;
+
         let workspaceManager = global.workspace_manager;
 
         this._nWorkspacesNotifyId =
