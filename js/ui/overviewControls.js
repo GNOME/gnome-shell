@@ -728,6 +728,7 @@ class ControlsManager extends St.Widget {
         const cancelProgress = transition
             ? transition.get_interval().peek_final_value()
             : Math.round(progress);
+        this._stateAdjustment.remove_transition('value');
 
         tracker.confirmSwipe(baseDistance, points, progress, cancelProgress);
         this._workspacesDisplay.prepareToEnterOverview();
