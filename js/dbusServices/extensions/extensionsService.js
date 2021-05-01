@@ -211,6 +211,7 @@ var ExtensionPrefsDialog = GObject.registerClass({
             this._stack.visible_child = widget;
         } catch (e) {
             this._setError(e);
+            logError(e, 'Failed to open preferences');
         }
     }
 
