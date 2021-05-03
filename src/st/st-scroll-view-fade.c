@@ -45,6 +45,7 @@ struct _StScrollViewFade
   StAdjustment *hadjustment;
 
   guint fade_edges : 1;
+  guint extend_fade_area: 1;
 
   ClutterMargin fade_margins;
 };
@@ -58,6 +59,7 @@ enum {
 
   PROP_FADE_MARGINS,
   PROP_FADE_EDGES,
+  PROP_EXTEND_FADE_AREA,
 
   N_PROPS
 };
@@ -168,6 +170,7 @@ st_scroll_view_fade_paint_target (ClutterOffscreenEffect *effect,
                                      value <= 1.0 :
                                      (rtl ? value > 0.0 : value < 1.0));
 
+  clutter_shader_effect_set_uniform (shader, "extend_fade_area", G_TYPE_INT, 1, self->extend_fade_area);
   clutter_shader_effect_set_uniform (shader, "fade_offset_top", G_TYPE_FLOAT, 1, ABS (self->fade_margins.top));
   clutter_shader_effect_set_uniform (shader, "fade_offset_bottom", G_TYPE_FLOAT, 1, ABS (self->fade_margins.bottom));
   clutter_shader_effect_set_uniform (shader, "fade_offset_left", G_TYPE_FLOAT, 1, ABS (self->fade_margins.left));
@@ -326,6 +329,21 @@ st_scroll_view_fade_set_fade_edges (StScrollViewFade *self,
 }
 
 static void
+st_scroll_view_fade_set_extend_fade_area (StScrollViewFade *self,
+                                          gboolean          extend_fade_area)
+{
+  if (self->extend_fade_area == extend_fade_area)
+    return;
+
+  self->extend_fade_area = extend_fade_area;
+
+  if (self->actor != NULL)
+    clutter_actor_queue_redraw (self->actor);
+
+  g_object_notify_by_pspec (G_OBJECT (self), props[PROP_EXTEND_FADE_AREA]);
+}
+
+static void
 st_scroll_view_fade_set_property (GObject *object,
                                   guint prop_id,
                                   const GValue *value,
@@ -340,6 +358,9 @@ st_scroll_view_fade_set_property (GObject *object,
       break;
     case PROP_FADE_EDGES:
       st_scroll_view_fade_set_fade_edges (self, g_value_get_boolean (value));
+      break;
+    case PROP_EXTEND_FADE_AREA:
+      st_scroll_view_fade_set_extend_fade_area (self, g_value_get_boolean (value));
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -362,6 +383,9 @@ st_scroll_view_fade_get_property (GObject *object,
       break;
     case PROP_FADE_EDGES:
       g_value_set_boolean (value, self->fade_edges);
+      break;
+    case PROP_EXTEND_FADE_AREA:
+      g_value_set_boolean (value, self->extend_fade_area);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -411,6 +435,18 @@ st_scroll_view_fade_class_init (StScrollViewFadeClass *klass)
     g_param_spec_boolean ("fade-edges",
                           "Fade Edges",
                           "Whether the faded area should extend to the edges",
+                          FALSE,
+                          ST_PARAM_READWRITE);
+
+  /**
+   * StScrollViewFade:extend-fade-area:
+   *
+   * Whether faded edges should extend beyond the faded area of the #StScrollViewFade.
+   */
+  props[PROP_EXTEND_FADE_AREA] =
+    g_param_spec_boolean ("extend-fade-area",
+                          "Extend Fade Area",
+                          "Whether faded edges should extend beyond the faded area",
                           FALSE,
                           ST_PARAM_READWRITE);
 

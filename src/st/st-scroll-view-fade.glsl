@@ -28,6 +28,7 @@ uniform bool  fade_edges_top;
 uniform bool  fade_edges_right;
 uniform bool  fade_edges_bottom;
 uniform bool  fade_edges_left;
+uniform bool  extend_fade_area;
 
 uniform vec2 fade_area_topleft;
 uniform vec2 fade_area_bottomright;
@@ -38,11 +39,11 @@ void main ()
 
     float y = height * cogl_tex_coord_in[0].y;
     float x = width * cogl_tex_coord_in[0].x;
+    float ratio = 1.0;
 
     if (x > fade_area_topleft[0] && x < fade_area_bottomright[0] &&
         y > fade_area_topleft[1] && y < fade_area_bottomright[1])
     {
-        float ratio = 1.0;
         float fade_top_start = fade_area_topleft[1] + fade_offset_top;
         float fade_left_start = fade_area_topleft[0] + fade_offset_left;
         float fade_bottom_start = fade_area_bottomright[1] - fade_offset_bottom;
@@ -67,9 +68,14 @@ void main ()
         if (fade_right) {
             ratio *= (fade_area_bottomright[0] - x) / (fade_area_bottomright[0] - fade_right_start);
         }
-
-        cogl_color_out *= ratio;
-    } else {
-        cogl_color_out *= 0.0;
+    } else if (extend_fade_area) {
+        if (x <= fade_area_topleft[0] && fade_edges_left ||
+            x >= fade_area_bottomright[0] && fade_edges_right ||
+            y <= fade_area_topleft[1] && fade_edges_top ||
+            y >= fade_area_bottomright[1] && fade_edges_bottom) {
+            ratio = 0.0;
+        }
     }
+
+    cogl_color_out *= ratio;
 }
