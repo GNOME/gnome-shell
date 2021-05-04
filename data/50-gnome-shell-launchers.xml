@@ -41,5 +41,41 @@
                       description="Activate pinned app 9"
                       hidden="true"/>
 
+	<KeyListEntry name="open-new-window-application-1"
+                      description="Open new window of pinned app 1"
+                      hidden="true"/>
+
+	<KeyListEntry name="open-new-window-application-2"
+                      description="Open new window of pinned app 2"
+                      hidden="true"/>
+
+	<KeyListEntry name="open-new-window-application-3"
+                      description="Open new window of pinned app 3"
+                      hidden="true"/>
+
+	<KeyListEntry name="open-new-window-application-4"
+                      description="Open new window of pinned app 4"
+                      hidden="true"/>
+
+	<KeyListEntry name="open-new-window-application-5"
+                      description="Open new window of pinned app 5"
+                      hidden="true"/>
+
+	<KeyListEntry name="open-new-window-application-6"
+                      description="Open new window of pinned app 6"
+                      hidden="true"/>
+
+	<KeyListEntry name="open-new-window-application-7"
+                      description="Open new window of pinned app 7"
+                      hidden="true"/>
+
+	<KeyListEntry name="open-new-window-application-8"
+                      description="Open new window of pinned app 8"
+                      hidden="true"/>
+
+	<KeyListEntry name="open-new-window-application-9"
+                      description="Open new window of pinned app 9"
+                      hidden="true"/>
+
 </KeyListEntries>
 

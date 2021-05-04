@@ -819,6 +819,60 @@ export class WindowManager {
             Shell.ActionMode.NORMAL | Shell.ActionMode.OVERVIEW,
             this._switchToApplication.bind(this));
 
+        this.addKeybinding('open-new-window-application-1',
+            new Gio.Settings({schema_id: SHELL_KEYBINDINGS_SCHEMA}),
+            Meta.KeyBindingFlags.IGNORE_AUTOREPEAT,
+            Shell.ActionMode.NORMAL | Shell.ActionMode.OVERVIEW,
+            this._openNewApplicationWindow.bind(this));
+
+        this.addKeybinding('open-new-window-application-2',
+            new Gio.Settings({schema_id: SHELL_KEYBINDINGS_SCHEMA}),
+            Meta.KeyBindingFlags.IGNORE_AUTOREPEAT,
+            Shell.ActionMode.NORMAL | Shell.ActionMode.OVERVIEW,
+            this._openNewApplicationWindow.bind(this));
+
+        this.addKeybinding('open-new-window-application-3',
+            new Gio.Settings({schema_id: SHELL_KEYBINDINGS_SCHEMA}),
+            Meta.KeyBindingFlags.IGNORE_AUTOREPEAT,
+            Shell.ActionMode.NORMAL | Shell.ActionMode.OVERVIEW,
+            this._openNewApplicationWindow.bind(this));
+
+        this.addKeybinding('open-new-window-application-4',
+            new Gio.Settings({schema_id: SHELL_KEYBINDINGS_SCHEMA}),
+            Meta.KeyBindingFlags.IGNORE_AUTOREPEAT,
+            Shell.ActionMode.NORMAL | Shell.ActionMode.OVERVIEW,
+            this._openNewApplicationWindow.bind(this));
+
+        this.addKeybinding('open-new-window-application-5',
+            new Gio.Settings({schema_id: SHELL_KEYBINDINGS_SCHEMA}),
+            Meta.KeyBindingFlags.IGNORE_AUTOREPEAT,
+            Shell.ActionMode.NORMAL | Shell.ActionMode.OVERVIEW,
+            this._openNewApplicationWindow.bind(this));
+
+        this.addKeybinding('open-new-window-application-6',
+            new Gio.Settings({schema_id: SHELL_KEYBINDINGS_SCHEMA}),
+            Meta.KeyBindingFlags.IGNORE_AUTOREPEAT,
+            Shell.ActionMode.NORMAL | Shell.ActionMode.OVERVIEW,
+            this._openNewApplicationWindow.bind(this));
+
+        this.addKeybinding('open-new-window-application-7',
+            new Gio.Settings({schema_id: SHELL_KEYBINDINGS_SCHEMA}),
+            Meta.KeyBindingFlags.IGNORE_AUTOREPEAT,
+            Shell.ActionMode.NORMAL | Shell.ActionMode.OVERVIEW,
+            this._openNewApplicationWindow.bind(this));
+
+        this.addKeybinding('open-new-window-application-8',
+            new Gio.Settings({schema_id: SHELL_KEYBINDINGS_SCHEMA}),
+            Meta.KeyBindingFlags.IGNORE_AUTOREPEAT,
+            Shell.ActionMode.NORMAL | Shell.ActionMode.OVERVIEW,
+            this._openNewApplicationWindow.bind(this));
+
+        this.addKeybinding('open-new-window-application-9',
+            new Gio.Settings({schema_id: SHELL_KEYBINDINGS_SCHEMA}),
+            Meta.KeyBindingFlags.IGNORE_AUTOREPEAT,
+            Shell.ActionMode.NORMAL | Shell.ActionMode.OVERVIEW,
+            this._openNewApplicationWindow.bind(this));
+
         global.stage.connect('scroll-event', (stage, event) => {
             const allowedModes = Shell.ActionMode.NORMAL;
             if ((allowedModes & Main.actionMode) === 0)
@@ -1656,17 +1710,28 @@ export class WindowManager {
         return Main.sessionMode.hasOverview;
     }
 
-    _switchToApplication(display, window, binding) {
+    _getNthFavoriteApp(n) {
         if (!this._allowFavoriteShortcuts())
-            return;
+            return null;
 
-        let [, , , target] = binding.get_name().split('-');
-        let apps = AppFavorites.getAppFavorites().getFavorites();
-        let app = apps[target - 1];
+        const apps = AppFavorites.getAppFavorites().getFavorites();
+        return apps[n];
+    }
+
+    _switchToApplication(display, window, binding) {
+        const [, , , target] = binding.get_name().split('-');
+        const app = this._getNthFavoriteApp(target - 1);
         if (app) {
             Main.overview.hide();
             app.activate();
         }
+    }
+
+    _openNewApplicationWindow(display, window, binding) {
+        const [, , , , target] = binding.get_name().split('-');
+        const app = this._getNthFavoriteApp(target - 1);
+        if (app)
+            app.open_new_window(-1);
     }
 
     _toggleCalendar() {
