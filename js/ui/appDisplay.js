@@ -364,6 +364,9 @@ var BaseAppView = GObject.registerClass({
         }
 
         this._scrollView.update_fade_effect(fadeMargin);
+        const effect = this._scrollView.get_effect('fade');
+        if (effect)
+            effect.extend_fade_area = true;
     }
 
     _updateFade() {
