@@ -9,6 +9,7 @@ const Layout = imports.ui.layout;
 const Main = imports.ui.main;
 const MessageTray = imports.ui.messageTray;
 const SwipeTracker = imports.ui.swipeTracker;
+const SystemActions = imports.misc.systemActions;
 
 const AuthPrompt = imports.gdm.authPrompt;
 
@@ -483,6 +484,7 @@ var UnlockDialog = GObject.registerClass({
         parentActor.add_child(this);
 
         this._gdmClient = new Gdm.Client();
+        this._systemActions = new SystemActions.getDefault();
 
         this._adjustment = new St.Adjustment({
             actor: this,
@@ -577,7 +579,7 @@ var UnlockDialog = GObject.registerClass({
         this._userSwitchEnabledId = this._screenSaverSettings.connect('changed::user-switch-enabled',
             this._updateUserSwitchVisibility.bind(this));
 
-        this._userLoadedId = this._user.connect('notify::is-loaded',
+        this._canSwitchUserId = this._systemActions.connect('notify::can-switch-user',
             this._updateUserSwitchVisibility.bind(this));
 
         this._updateUserSwitchVisibility();
@@ -845,9 +847,9 @@ var UnlockDialog = GObject.registerClass({
             delete this._gdmClient;
         }
 
-        if (this._userLoadedId) {
-            this._user.disconnect(this._userLoadedId);
-            this._userLoadedId = 0;
+        if (this._canSwitchUserId) {
+            this._systemActions.disconnect(this._canSwitchUserId);
+            this._canSwitchUserId = 0;
         }
 
         if (this._userSwitchEnabledId) {
@@ -857,7 +859,7 @@ var UnlockDialog = GObject.registerClass({
     }
 
     _updateUserSwitchVisibility() {
-        this._otherUserButton.visible = this._userManager.can_switch() &&
+        this._otherUserButton.visible = this._systemActions.can_switch_user &&
             this._screenSaverSettings.get_boolean('user-switch-enabled');
     }
 
