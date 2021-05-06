@@ -577,6 +577,10 @@ var UnlockDialog = GObject.registerClass({
         this._userSwitchEnabledId = this._screenSaverSettings.connect('changed::user-switch-enabled',
             this._updateUserSwitchVisibility.bind(this));
 
+        this._lockdownSettings = new Gio.Settings({ schema_id: 'org.gnome.desktop.lockdown' });
+        this._lockdownSettings.connect('changed::disable-user-switching',
+            this._updateUserSwitchVisibility.bind(this));
+
         this._userLoadedId = this._user.connect('notify::is-loaded',
             this._updateUserSwitchVisibility.bind(this));
 
@@ -858,7 +862,8 @@ var UnlockDialog = GObject.registerClass({
 
     _updateUserSwitchVisibility() {
         this._otherUserButton.visible = this._userManager.can_switch() &&
-            this._screenSaverSettings.get_boolean('user-switch-enabled');
+            this._screenSaverSettings.get_boolean('user-switch-enabled') &&
+            !this._lockdownSettings.get_boolean('disable-user-switching');
     }
 
     cancel() {
