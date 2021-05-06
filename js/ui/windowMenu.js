@@ -24,14 +24,14 @@ var WindowMenu = class extends PopupMenu.PopupMenu {
 
         let item;
 
-        item = this.addAction(_("Minimize"), () => {
+        item = this.addAction(_('Hide'), () => {
             window.minimize();
         });
         if (!window.can_minimize())
             item.setSensitive(false);
 
         if (window.get_maximized()) {
-            item = this.addAction(_("Unmaximize"), () => {
+            item = this.addAction(_('Restore'), () => {
                 window.unmaximize(Meta.MaximizeFlags.BOTH);
             });
         } else {
