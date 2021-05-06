@@ -13,7 +13,7 @@
 #include <gtk/gtk.h>
 #include <glib/gi18n-lib.h>
 #include <girepository.h>
-#include <meta/main.h>
+#include <meta/meta-context.h>
 #include <meta/meta-plugin.h>
 #include <meta/prefs.h>
 #include <atk-bridge.h>
@@ -442,33 +442,35 @@ GOptionEntry gnome_shell_options[] = {
 int
 main (int argc, char **argv)
 {
-  GOptionContext *ctx;
+  g_autoptr (MetaContext) context = NULL;
   GError *error = NULL;
-  int ecode;
+  int ecode = EXIT_SUCCESS;
 
   bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
   bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
   textdomain (GETTEXT_PACKAGE);
 
+  context = meta_create_context (WM_NAME);
+  meta_context_add_option_entries (context, gnome_shell_options,
+                                   GETTEXT_PACKAGE);
+  meta_context_add_option_group (context, g_irepository_get_option_group ());
+
   session_mode = (char *) g_getenv ("GNOME_SHELL_SESSION_MODE");
 
-  ctx = meta_get_option_context ();
-  g_option_context_add_main_entries (ctx, gnome_shell_options, GETTEXT_PACKAGE);
-  g_option_context_add_group (ctx, g_irepository_get_option_group ());
-  if (!g_option_context_parse (ctx, &argc, &argv, &error))
+  if (!meta_context_configure (context, &argc, &argv, &error))
     {
-      g_printerr ("%s: %s\n", argv[0], error->message);
-      exit (1);
+      g_printerr ("Failed to configure: %s", error->message);
+      return EXIT_FAILURE;
     }
 
-  g_option_context_free (ctx);
+  meta_context_set_plugin_gtype (context, gnome_shell_plugin_get_type ());
+  meta_context_set_gnome_wm_keybindings (context, GNOME_WM_KEYBINDINGS);
 
-  meta_plugin_manager_set_plugin_type (gnome_shell_plugin_get_type ());
-
-  meta_set_wm_name (WM_NAME);
-  meta_set_gnome_wm_keybindings (GNOME_WM_KEYBINDINGS);
-
-  meta_init ();
+  if (!meta_context_setup (context, &error))
+    {
+      g_printerr ("Failed to setup: %s", error->message);
+      return EXIT_FAILURE;
+    }
 
   /* FIXME: Add gjs API to set this stuff and don't depend on the
    * environment.  These propagate to child processes.
@@ -478,7 +480,7 @@ main (int argc, char **argv)
 
   shell_init_debug (g_getenv ("SHELL_DEBUG"));
 
-  shell_dbus_init (meta_get_replace_current_wm ());
+  shell_dbus_init (meta_context_is_replacing (context));
   shell_a11y_init ();
   shell_perf_log_init ();
   shell_introspection_init ();
@@ -504,7 +506,21 @@ main (int argc, char **argv)
     }
 
   shell_profiler_init ();
-  ecode = meta_run ();
+
+  if (!meta_context_start (context, &error))
+    {
+      g_printerr ("GNOME Shell failed to start: %s", error->message);
+      return EXIT_FAILURE;
+    }
+
+  if (!meta_context_run_main_loop (context, &error))
+    {
+      g_printerr ("GNOME Shell terminated with an error: %s", error->message);
+      ecode = EXIT_FAILURE;
+    }
+
+  meta_context_destroy (g_steal_pointer (&context));
+
   shell_profiler_shutdown ();
 
   g_debug ("Doing final cleanup");

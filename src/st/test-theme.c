@@ -25,7 +25,7 @@
 #include "st-button.h"
 #include <math.h>
 #include <string.h>
-#include <meta/main.h>
+#include <meta-test/meta-context-test.h>
 #include <meta/meta-backend.h>
 
 static ClutterActor *stage;
@@ -538,6 +538,8 @@ test_inline_style (void)
 int
 main (int argc, char **argv)
 {
+  MetaContext *context;
+  g_autoptr (GError) error = NULL;
   MetaBackend *backend;
   StTheme *theme;
   StThemeContext *theme_context;
@@ -550,7 +552,13 @@ main (int argc, char **argv)
   /* meta_init() cds to $HOME */
   cwd = g_get_current_dir ();
 
-  meta_test_init ();
+  context = meta_create_test_context (META_CONTEXT_TEST_TYPE_NESTED,
+                                      META_CONTEXT_TEST_FLAG_NONE);
+  if (!meta_context_configure (context, &argc, &argv, &error))
+    g_error ("Failed to configure: %s", error->message);
+
+  if (!meta_context_setup (context, &error))
+    g_error ("Failed to setup: %s", error->message);
 
   if (chdir (cwd) < 0)
     g_error ("chdir('%s') failed: %s", cwd, g_strerror (errno));
@@ -623,7 +631,7 @@ main (int argc, char **argv)
   g_object_unref (text4);
   g_object_unref (theme);
 
-  clutter_actor_destroy (stage);
+  g_object_unref (context);
 
   return fail ? 1 : 0;
 }

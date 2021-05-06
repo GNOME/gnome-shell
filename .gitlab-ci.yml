@@ -180,7 +180,7 @@ build:
     needs: ["check_commit_log"]
     before_script:
         - .gitlab-ci/checkout-mutter.sh
-        - meson mutter mutter/build --prefix=/usr -Dtests=false
+        - meson mutter mutter/build --prefix=/usr
         - ninja -C mutter/build install
     script:
         - meson . build -Dbuildtype=debugoptimized -Dman=false --werror

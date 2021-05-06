@@ -17,6 +17,7 @@ clutter_pc = 'mutter-clutter-' + mutter_api_version
 cogl_pc = 'mutter-cogl-' + mutter_api_version
 cogl_pango_pc = 'mutter-cogl-pango-' + mutter_api_version
 libmutter_pc = 'libmutter-' + mutter_api_version
+libmutter_test_pc = 'libmutter-test-' + mutter_api_version
 
 ecal_req = '>= 3.33.1'
 eds_req = '>= 3.33.1'
@@ -87,6 +88,7 @@ clutter_dep = dependency(clutter_pc, version: mutter_req)
 cogl_dep = dependency(cogl_pc, version: mutter_req)
 cogl_pango_dep = dependency(cogl_pango_pc, version: mutter_req)
 mutter_dep = dependency(libmutter_pc, version: mutter_req)
+mutter_test_dep = dependency(libmutter_test_pc, version: mutter_req)
 polkit_dep = dependency('polkit-agent-1', version: polkit_req)
 startup_dep = dependency('libstartup-notification-1.0', version: startup_req)
 ibus_dep = dependency('ibus-1.0', version: ibus_req)
