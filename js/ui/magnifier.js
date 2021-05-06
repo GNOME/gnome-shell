@@ -750,7 +750,7 @@ var ZoomRegion = class ZoomRegion {
         this._xCaret = 0;
         this._yCaret = 0;
 
-        this._pointerIdleMonitor = Meta.IdleMonitor.get_core();
+        this._pointerIdleMonitor = global.backend.get_core_idle_monitor();
         this._scrollContentsTimerId = 0;
     }
 

@@ -855,7 +855,7 @@ var MessageTray = GObject.registerClass({
 
         this._userActiveWhileNotificationShown = false;
 
-        this.idleMonitor = Meta.IdleMonitor.get_core();
+        this.idleMonitor = global.backend.get_core_idle_monitor();
 
         this._useLongerNotificationLeftTimeout = false;
 

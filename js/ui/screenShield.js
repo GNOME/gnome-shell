@@ -138,7 +138,7 @@ var ScreenShield = class {
                                                       fadeFactor: 1 });
         this._shortLightbox.connect('notify::active', this._onShortLightbox.bind(this));
 
-        this.idleMonitor = Meta.IdleMonitor.get_core();
+        this.idleMonitor = global.backend.get_core_idle_monitor();
         this._cursorTracker = Meta.CursorTracker.get_for_display(global.display);
 
         this._syncInhibitor();

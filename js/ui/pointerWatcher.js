@@ -1,7 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported getPointerWatcher */
 
-const { GLib, Meta } = imports.gi;
+const { GLib } = imports.gi;
 
 // We stop polling if the user is idle for more than this amount of time
 var IDLE_TIME = 1000;
@@ -35,7 +35,7 @@ var PointerWatch = class {
 
 var PointerWatcher = class {
     constructor() {
-        this._idleMonitor = Meta.IdleMonitor.get_core();
+        this._idleMonitor = global.backend.get_core_idle_monitor();
         this._idleMonitor.add_idle_watch(IDLE_TIME, this._onIdleMonitorBecameIdle.bind(this));
         this._idle = this._idleMonitor.get_idletime() > IDLE_TIME;
         this._watches = [];
