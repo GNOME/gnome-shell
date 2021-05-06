@@ -973,6 +973,7 @@ var WindowManager = class {
     }
 
     async _startX11Services(task, cancellable) {
+        let status = true;
         try {
             await Shell.util_start_systemd_unit(
                 'gnome-session-x11-services-ready.target', 'fail', cancellable);
@@ -983,8 +984,9 @@ var WindowManager = class {
             // Note that we do log cancellation from here.
             if (!e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.NOT_SUPPORTED))
                 log('Error starting X11 services: %s'.format(e.message));
+            status = false;
         } finally {
-            task.return_boolean(true);
+            task.return_boolean(status);
         }
     }
 
