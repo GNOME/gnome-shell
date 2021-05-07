@@ -164,6 +164,7 @@ class AppSwitcherPopup extends SwitcherPopup.SwitcherPopup {
     }
 
     _keyPressHandler(keysym, action) {
+        const rtl = Clutter.get_default_text_direction() === Clutter.TextDirection.RTL;
         if (action == Meta.KeyBindingAction.SWITCH_GROUP) {
             if (!this._thumbnailsFocused)
                 this._select(this._selectedIndex, 0);
@@ -179,9 +180,9 @@ class AppSwitcherPopup extends SwitcherPopup.SwitcherPopup {
             this._quitApplication(this._selectedIndex);
         } else if (this._thumbnailsFocused) {
             if (keysym === Clutter.KEY_Left)
-                this._select(this._selectedIndex, this._previousWindow());
+                this._select(this._selectedIndex, rtl ? this._nextWindow() : this._previousWindow());
             else if (keysym === Clutter.KEY_Right)
-                this._select(this._selectedIndex, this._nextWindow());
+                this._select(this._selectedIndex, rtl ? this._previousWindow() : this._nextWindow());
             else if (keysym === Clutter.KEY_Up)
                 this._select(this._selectedIndex, null, true);
             else if (keysym === Clutter.KEY_w || keysym === Clutter.KEY_W || keysym === Clutter.KEY_F4)
@@ -189,9 +190,9 @@ class AppSwitcherPopup extends SwitcherPopup.SwitcherPopup {
             else
                 return Clutter.EVENT_PROPAGATE;
         } else if (keysym == Clutter.KEY_Left) {
-            this._select(this._previous());
+            this._select(rtl ? this._next() : this._previous());
         } else if (keysym == Clutter.KEY_Right) {
-            this._select(this._next());
+            this._select(rtl ? this._previous() : this._next());
         } else if (keysym == Clutter.KEY_Down) {
             this._select(this._selectedIndex, 0);
         } else {
@@ -589,14 +590,15 @@ class WindowSwitcherPopup extends SwitcherPopup.SwitcherPopup {
     }
 
     _keyPressHandler(keysym, action) {
+        const rtl = Clutter.get_default_text_direction() === Clutter.TextDirection.RTL;
         if (action == Meta.KeyBindingAction.SWITCH_WINDOWS)
             this._select(this._next());
         else if (action == Meta.KeyBindingAction.SWITCH_WINDOWS_BACKWARD)
             this._select(this._previous());
         else if (keysym == Clutter.KEY_Left)
-            this._select(this._previous());
+            this._select(rtl ? this._next() : this._previous());
         else if (keysym == Clutter.KEY_Right)
-            this._select(this._next());
+            this._select(rtl ? this._previous() : this._next());
         else if (keysym === Clutter.KEY_w || keysym === Clutter.KEY_W || keysym === Clutter.KEY_F4)
             this._closeWindow(this._selectedIndex);
         else
