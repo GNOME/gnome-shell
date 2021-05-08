@@ -1714,8 +1714,10 @@ var WindowManager = class {
         let [, , , target] = binding.get_name().split('-');
         let apps = AppFavorites.getAppFavorites().getFavorites();
         let app = apps[target - 1];
-        if (app)
+        if (app) {
+            Main.overview.hide();
             app.activate();
+        }
     }
 
     _toggleAppMenu() {
