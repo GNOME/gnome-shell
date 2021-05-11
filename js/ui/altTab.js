@@ -402,6 +402,7 @@ class CyclerHighlight extends St.Widget {
     _init() {
         super._init({ layout_manager: new Clutter.BinLayout() });
         this._window = null;
+        this._sizeChangedId = 0;
 
         this._clone = new Clutter.Clone();
         this.add_actor(this._clone);
@@ -415,13 +416,15 @@ class CyclerHighlight extends St.Widget {
 
         this.add_constraint(constraint);
 
-        this.connect('notify::allocation', this._onAllocationChanged.bind(this));
         this.connect('destroy', this._onDestroy.bind(this));
     }
 
     set window(w) {
         if (this._window == w)
             return;
+
+        if (this._sizeChangedId)
+            this._window.disconnect(this._sizeChangedId);
 
         this._window = w;
 
@@ -434,19 +437,25 @@ class CyclerHighlight extends St.Widget {
             windowActor.hide();
 
         this._clone.source = windowActor;
-    }
 
-    _onAllocationChanged() {
-        if (!this._window) {
+        if (this._window) {
+            this._onSizeChanged();
+            this._sizeChangedId = this._window.connect('size-changed',
+                this._onSizeChanged.bind(this));
+        } else {
             this._highlight.set_size(0, 0);
             this._highlight.hide();
-        } else {
-            let [x, y] = this.allocation.get_origin();
-            let rect = this._window.get_frame_rect();
-            this._highlight.set_size(rect.width, rect.height);
-            this._highlight.set_position(rect.x - x, rect.y - y);
-            this._highlight.show();
         }
+    }
+
+    _onSizeChanged() {
+        const bufferRect = this._window.get_buffer_rect();
+        const rect = this._window.get_frame_rect();
+        this._highlight.set_size(rect.width, rect.height);
+        this._highlight.set_position(
+            rect.x - bufferRect.x,
+            rect.y - bufferRect.y);
+        this._highlight.show();
     }
 
     _onDestroy() {
