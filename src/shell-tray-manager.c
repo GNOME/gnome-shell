@@ -3,7 +3,6 @@
 #include "config.h"
 
 #include <clutter/clutter.h>
-#include <clutter/x11/clutter-x11.h>
 #include <girepository.h>
 #include <gtk/gtk.h>
 #include <meta/display.h>

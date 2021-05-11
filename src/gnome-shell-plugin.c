@@ -37,10 +37,10 @@
 #include <string.h>
 
 #include <clutter/clutter.h>
-#include <clutter/x11/clutter-x11.h>
 #include <gjs/gjs.h>
 #include <meta/display.h>
 #include <meta/meta-plugin.h>
+#include <meta/meta-x11-display.h>
 #include <meta/util.h>
 
 #include "shell-global-private.h"
@@ -74,6 +74,8 @@ gnome_shell_plugin_has_swap_event (GnomeShellPlugin *shell_plugin)
   CoglRenderer *renderer = cogl_display_get_renderer (cogl_display);
   const char * (* query_extensions_string) (Display *dpy, int screen);
   Bool (* query_extension) (Display *dpy, int *error, int *event);
+  MetaDisplay *display = meta_plugin_get_display (META_PLUGIN (shell_plugin));
+  MetaX11Display *x11_display = meta_display_get_x11_display (display);
   Display *xdisplay;
   int screen_number;
   const char *glx_extensions;
@@ -82,7 +84,7 @@ gnome_shell_plugin_has_swap_event (GnomeShellPlugin *shell_plugin)
   if (cogl_renderer_get_winsys_id (renderer) != COGL_WINSYS_ID_GLX)
     return FALSE;
 
-  xdisplay = clutter_x11_get_default_display ();
+  xdisplay = meta_x11_display_get_xdisplay (x11_display);
 
   query_extensions_string =
     (void *) cogl_get_proc_address ("glXQueryExtensionsString");

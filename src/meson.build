@@ -213,7 +213,6 @@ libshell_dep = declare_dependency(link_with: libshell)
 
 libshell_gir_includes = [
   'Clutter-@0@'.format(mutter_api_version),
-  'ClutterX11-@0@'.format(mutter_api_version),
   'Meta-@0@'.format(mutter_api_version),
   'Gcr-3',
   'PolkitAgent-1.0'

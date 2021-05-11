@@ -16,7 +16,6 @@
 #include <locale.h>
 
 #include <X11/extensions/Xfixes.h>
-#include <clutter/x11/clutter-x11.h>
 #include <gdk/gdkx.h>
 #include <gio/gio.h>
 #include <girepository.h>

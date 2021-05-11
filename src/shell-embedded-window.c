@@ -3,7 +3,6 @@
 #include "config.h"
 
 #include <gdk/gdkx.h>
-#include <clutter/x11/clutter-x11.h>
 
 #include "shell-embedded-window-private.h"
 
