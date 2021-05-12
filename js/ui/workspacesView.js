@@ -627,7 +627,10 @@ class SecondaryMonitorDisplay extends St.Widget {
             () => this._updateThumbnailVisibility());
 
         this._stateChangedId = this._overviewAdjustment.connect('notify::value',
-            () => this._updateThumbnailParams());
+            () => {
+                this._updateThumbnailParams();
+                this.queue_relayout();
+            });
 
         this._settings = new Gio.Settings({ schema_id: MUTTER_SCHEMA });
         this._settings.connect('changed::workspaces-only-on-primary',
