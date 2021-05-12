@@ -20,7 +20,7 @@ const WORKSPACE_MAX_SPACING = 80;
 
 const WORKSPACE_INACTIVE_SCALE = 0.94;
 
-const SECONDARY_WORKSPACE_SCALE = 0.70;
+const SECONDARY_WORKSPACE_SCALE = 0.80;
 
 var WorkspacesViewBase = GObject.registerClass({
     GTypeFlags: GObject.TypeFlags.ABSTRACT,
