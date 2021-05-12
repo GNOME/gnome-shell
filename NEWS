@@ -1,3 +1,51 @@
+40.1
+====
+* Fix keyboard preview for IM that use 'default' layout [Peng; !1756]
+* extensions: Fix copying technical details on prefs crash [Jan; !1795, !1796]
+* Make window previews as large as possible [Jonas D.; !1670, !1813]
+* Fix PgUp/PgDown handling in overview [Florian; !1798]
+* Fix scroll view following keyboard focus [Andrew; !1802]
+* Fix word suggestions in on-screen keyboard [Jia; !1806]
+* Support animated backgrounds set via the wallpaper portal  [Alexander; !1816]
+* Fix freeze after cancelling (some) system-modal dialogs [Florian; !1819]
+* Support double-super when animations are disabled [Florian; !1811]
+* gdm: Allow timed login with disabled user list [Ray; !1809]
+* status: Report real battery percentage when full [Prajna; !1787]
+* Allow tap-drag-release to select variants in OSK [Carlos; !1789]
+* Fix password authentication after fingerprint failure [Ray, Benjamin; !1821]
+* Fix screen blanking on idle [Florian; !1824]
+* Fix oversized system action icons in search [Sebastian; !1777]
+* Only show 'Open Windows' in app menus if there are multiple [Leleat; !1827]
+* Fix duplicated workspaces in minimap [Sebastian; !1828]
+* Fix repeated letters in type-to-find overview search [Sebastian; !1828]
+* Improve workspace placeholder in overview minimap [Joonas; !1801]
+* screencasts: Improve default gstreamer pipeline [Jonas D.; !1633]
+* Leave overview when activating app via shortcut [Nishal; !1839]
+* Fix invisible scroll bars in faded views [Florian; !1831]
+* Correct arrow navigation in alt-tab switcher in RTL locales [Leleat; !1835]
+* Improve touch interaction of app grid actions [Carlos; !1774]
+* Fixed crashes [Jonas Å., Sebastian; !1810, !1817]
+* Misc. bug fixes and cleanups [Carlos, Yuri, Sebastian, Suryashankar, Zander,
+  arushsharma24, Florian, Georges, Jonas D., Frederic, Leleat, Jakub,
+  theRealPadster, Simon, Olivier; !1770, !1781, !1782, !1775, !1769, !1791,
+  !1764, !1793, !1799, !1805, !1484, !1815, !1820, !1807, !1825, !1822, !1800,
+  !1818, !1830, !1790, !1812, !1771, !1844, !1845, !1837, !1842]
+
+Contributors:
+  Jonas Ådahl, arushsharma24, Benjamin Berg, Zander Brown, Jia Chao,
+  Frederic Crozat, Suryashankar Das, Jonas Dreßler, Olivier Fourdan,
+  Carlos Garnacho, Joonas Henriksson, Sebastian Keller, Yuri Konotopov,
+  Nishal Kulkarni, Leleat, Alexander Mikhaylenko, Florian Müllner,
+  Georges Basile Stavracas Neto, Prajna Sariputra, Simon Schneegans,
+  Jakub Steiner, Ray Strode, theRealPadster, Jan Tojnar, Peng Wu, Andrew Zaech
+
+Translators:
+  Timo Jyrinki [fi], Boyuan Yang [zh_CN], Hannie Dumoleyn [nl], Dz Chen [zh_CN],
+  Ngọc Quân Trần [vi], Hugo Carvalho [pt], Yosef Or Boczko [he],
+  Yaron Shahrabani [he], Nathan Follens [nl], Cédric Valmary [oc],
+  Carmen Bianca BAKKER [eo], Emin Tufan Çetin [tr], Dušan Kazik [sk],
+  Stas Solovey [ru], Pawan Chitrakar [ne], Jordi Mas [ca], Quentin PAGÈS [oc]
+
 40.0
 ====
 
