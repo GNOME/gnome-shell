@@ -777,6 +777,7 @@ class SecondaryMonitorDisplay extends St.Widget {
             return;
 
         this._thumbnails.show();
+        this._updateThumbnailParams();
         this._thumbnails.ease_property('expand-fraction', visible ? 1 : 0, {
             duration: OverviewControls.SIDE_CONTROLS_ANIMATION_TIME,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
@@ -785,6 +786,9 @@ class SecondaryMonitorDisplay extends St.Widget {
     }
 
     _updateThumbnailParams() {
+        if (!this._thumbnails.visible)
+            return;
+
         const { initialState, finalState, progress } =
             this._overviewAdjustment.getStateTransitionParams();
 
