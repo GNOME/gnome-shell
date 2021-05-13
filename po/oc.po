@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master fr\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2021-04-16 15:13+0000\n"
-"PO-Revision-Date: 2021-05-09 20:46+0200\n"
+"POT-Creation-Date: 2021-05-09 18:48+0000\n"
+"PO-Revision-Date: 2021-05-13 15:46+0200\n"
 "Last-Translator: Quentin PAGÈS\n"
 "Language-Team: Tot En Òc\n"
 "Language: oc\n"
@@ -207,6 +207,7 @@ msgstr ""
 #: data/org.gnome.shell.gschema.xml.in:99
 msgid "The last version the “Welcome to GNOME” dialog was shown for"
 msgstr ""
+"La darrièra version de la fenèstra de « Benvenguda a GNOME » èra mostrada per"
 
 #: data/org.gnome.shell.gschema.xml.in:100
 msgid ""
@@ -459,7 +460,7 @@ msgstr "Pagina d'acuèlh"
 msgid "Visit extension homepage"
 msgstr "Consultar la pagina de las extensions"
 
-#: js/gdm/authPrompt.js:141 js/ui/audioDeviceSelection.js:58
+#: js/gdm/authPrompt.js:141 js/ui/audioDeviceSelection.js:61
 #: js/ui/components/networkAgent.js:111 js/ui/components/polkitAgent.js:138
 #: js/ui/endSessionDialog.js:438 js/ui/extensionDownloader.js:190
 #: js/ui/shellMountOperation.js:376 js/ui/shellMountOperation.js:386
@@ -468,7 +469,7 @@ msgid "Cancel"
 msgstr "Anullar"
 
 #. Cisco LEAP
-#: js/gdm/authPrompt.js:244 js/ui/components/networkAgent.js:210
+#: js/gdm/authPrompt.js:285 js/ui/components/networkAgent.js:210
 #: js/ui/components/networkAgent.js:226 js/ui/components/networkAgent.js:250
 #: js/ui/components/networkAgent.js:271 js/ui/components/networkAgent.js:291
 #: js/ui/components/networkAgent.js:301 js/ui/components/polkitAgent.js:275
@@ -486,7 +487,7 @@ msgstr "Absent de la lista ?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: js/gdm/loginDialog.js:918
+#: js/gdm/loginDialog.js:921
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(per ex. utilizaire o %s)"
@@ -494,12 +495,12 @@ msgstr "(per ex. utilizaire o %s)"
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: js/gdm/loginDialog.js:923 js/ui/components/networkAgent.js:246
+#: js/gdm/loginDialog.js:926 js/ui/components/networkAgent.js:246
 #: js/ui/components/networkAgent.js:269 js/ui/components/networkAgent.js:287
 msgid "Username"
 msgstr "Nom d'utilizaire"
 
-#: js/gdm/loginDialog.js:1258
+#: js/gdm/loginDialog.js:1279
 msgid "Login Window"
 msgstr "Fenèstra de connexion"
 
@@ -770,31 +771,31 @@ msgid "Unnamed Folder"
 msgstr "Dossièr sens nom"
 
 #. Translators: This is the heading of a list of open windows
-#: js/ui/appDisplay.js:3404 js/ui/panel.js:33
+#: js/ui/appDisplay.js:3406 js/ui/panel.js:33
 msgid "Open Windows"
 msgstr "Fenèstras dobèrtas"
 
-#: js/ui/appDisplay.js:3423 js/ui/panel.js:40
+#: js/ui/appDisplay.js:3425 js/ui/panel.js:41
 msgid "New Window"
 msgstr "Novèla fenèstra"
 
-#: js/ui/appDisplay.js:3439
+#: js/ui/appDisplay.js:3441
 msgid "Launch using Integrated Graphics Card"
 msgstr "Aviar en utilizant la carta grafica integrada"
 
-#: js/ui/appDisplay.js:3440
+#: js/ui/appDisplay.js:3442
 msgid "Launch using Discrete Graphics Card"
 msgstr "Aviar en utilizant la carta grafica dedicada"
 
-#: js/ui/appDisplay.js:3469 js/ui/dash.js:245
+#: js/ui/appDisplay.js:3471 js/ui/dash.js:245
 msgid "Remove from Favorites"
 msgstr "Levar dels favorits"
 
-#: js/ui/appDisplay.js:3475
+#: js/ui/appDisplay.js:3477
 msgid "Add to Favorites"
 msgstr "Apondre als favorits"
 
-#: js/ui/appDisplay.js:3485 js/ui/panel.js:51
+#: js/ui/appDisplay.js:3487 js/ui/panel.js:52
 msgid "Show Details"
 msgstr "Afichar los detalhs"
 
@@ -812,19 +813,19 @@ msgstr "%s es estat suprimit de vòstres favorits."
 msgid "Select Audio Device"
 msgstr "Seleccionar lo perfieric àudio"
 
-#: js/ui/audioDeviceSelection.js:55
+#: js/ui/audioDeviceSelection.js:56
 msgid "Sound Settings"
 msgstr "Paramètres del son"
 
-#: js/ui/audioDeviceSelection.js:65
+#: js/ui/audioDeviceSelection.js:69
 msgid "Headphones"
 msgstr "Casc àudio"
 
-#: js/ui/audioDeviceSelection.js:67
+#: js/ui/audioDeviceSelection.js:71
 msgid "Headset"
 msgstr "Microcasc"
 
-#: js/ui/audioDeviceSelection.js:69 js/ui/status/volume.js:277
+#: js/ui/audioDeviceSelection.js:73 js/ui/status/volume.js:277
 msgid "Microphone"
 msgstr "Microfòn"
 
@@ -1647,22 +1648,22 @@ msgstr "Quichatz sus Escap. per quitar"
 msgid "Press any key to exit"
 msgstr "Quichatz sus una tòca per quitar"
 
-#: js/ui/panel.js:65
+#: js/ui/panel.js:66
 msgid "Quit"
 msgstr "Quitar"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: js/ui/panel.js:388
+#: js/ui/panel.js:395
 msgid "Activities"
 msgstr "Activitats"
 
-#: js/ui/panel.js:659
+#: js/ui/panel.js:666
 msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "Sistèma"
 
-#: js/ui/panel.js:771
+#: js/ui/panel.js:778
 msgid "Top Bar"
 msgstr "Barra superiora"
 
@@ -2190,7 +2191,8 @@ msgstr "%d∶%02d restant (%d %%)"
 msgid "%d∶%02d Until Full (%d %%)"
 msgstr "%d∶%02d abans cargament complet (%d %%)"
 
-#: js/ui/status/power.js:139 js/ui/status/power.js:141
+#. The icon label
+#: js/ui/status/power.js:137
 #, javascript-format
 msgid "%d %%"
 msgstr "%d %%"
@@ -2515,6 +2517,9 @@ msgid ""
 "GNOME Extensions handles updating extensions, configuring extension "
 "preferences and removing or disabling unwanted extensions."
 msgstr ""
+"GNOME Extensions gerís las mesas a jorn d'extensions, lo parametratge de la "
+"preferéncias d'extensions e la supression o desactivacion de las extensions "
+"pas volguda."
 
 #: subprojects/extensions-app/data/org.gnome.Extensions.desktop.in.in:7
 msgid "Configure GNOME Shell Extensions"
@@ -2535,6 +2540,8 @@ msgid ""
 "If you remove the extension, you need to return to download it if you want "
 "to enable it again"
 msgstr ""
+"Se suprimissètz l'extension, vos calrà la tornar telecargar se la volètz "
+"tornar activar"
 
 #: subprojects/extensions-app/js/main.js:184
 msgid "Remove"
@@ -2647,6 +2654,8 @@ msgid ""
 "Name should be a very short (ideally descriptive) string.\n"
 "Examples are: %s"
 msgstr ""
+"Lo nom deu èsser plan cort (l'idèa seriá descriptiu).\n"
+"Per exemple : %s"
 
 #: subprojects/extensions-tool/src/command-create.c:302
 #: subprojects/extensions-tool/src/main.c:238
@@ -2659,6 +2668,9 @@ msgid ""
 "Description is a single-sentence explanation of what your extension does.\n"
 "Examples are: %s"
 msgstr ""
+"La descripcion son una sola frasa explicativa per dire çò que fa vòstra "
+"extension.\n"
+"Per exemple : %s"
 
 #: subprojects/extensions-tool/src/command-create.c:336
 msgid ""
