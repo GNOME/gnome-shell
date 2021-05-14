@@ -39,7 +39,8 @@
   </description>
 
   <releases>
-    <release version="40.1" date="2021-03-20"/>
+    <release version="40.2" date="2021-05-14"/>
+    <release version="40.1" date="2021-05-13"/>
     <release version="40.0" date="2021-03-15">
       <description>
         <p>It is now possible to search the list of installed extensions.</p>
