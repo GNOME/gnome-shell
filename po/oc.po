@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master fr\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2021-05-09 18:48+0000\n"
+"POT-Creation-Date: 2021-05-14 16:20+0000\n"
 "PO-Revision-Date: 2021-05-13 15:46+0200\n"
 "Last-Translator: Quentin PAGÈS\n"
 "Language-Team: Tot En Òc\n"
@@ -766,36 +766,36 @@ msgstr "Refusar l'accès"
 msgid "Grant Access"
 msgstr "Acordar l'accès"
 
-#: js/ui/appDisplay.js:1827
+#: js/ui/appDisplay.js:1860
 msgid "Unnamed Folder"
 msgstr "Dossièr sens nom"
 
 #. Translators: This is the heading of a list of open windows
-#: js/ui/appDisplay.js:3406 js/ui/panel.js:33
+#: js/ui/appDisplay.js:3453 js/ui/panel.js:33
 msgid "Open Windows"
 msgstr "Fenèstras dobèrtas"
 
-#: js/ui/appDisplay.js:3425 js/ui/panel.js:41
+#: js/ui/appDisplay.js:3472 js/ui/panel.js:41
 msgid "New Window"
 msgstr "Novèla fenèstra"
 
-#: js/ui/appDisplay.js:3441
+#: js/ui/appDisplay.js:3488
 msgid "Launch using Integrated Graphics Card"
 msgstr "Aviar en utilizant la carta grafica integrada"
 
-#: js/ui/appDisplay.js:3442
+#: js/ui/appDisplay.js:3489
 msgid "Launch using Discrete Graphics Card"
 msgstr "Aviar en utilizant la carta grafica dedicada"
 
-#: js/ui/appDisplay.js:3471 js/ui/dash.js:245
+#: js/ui/appDisplay.js:3518 js/ui/dash.js:245
 msgid "Remove from Favorites"
 msgstr "Levar dels favorits"
 
-#: js/ui/appDisplay.js:3477
+#: js/ui/appDisplay.js:3524
 msgid "Add to Favorites"
 msgstr "Apondre als favorits"
 
-#: js/ui/appDisplay.js:3487 js/ui/panel.js:52
+#: js/ui/appDisplay.js:3534 js/ui/panel.js:52
 msgid "Show Details"
 msgstr "Afichar los detalhs"
 
@@ -2654,7 +2654,7 @@ msgid ""
 "Name should be a very short (ideally descriptive) string.\n"
 "Examples are: %s"
 msgstr ""
-"Lo nom deu èsser plan cort (l'idèa seriá descriptiu).\n"
+"Lo nom deu èsser plan cort (l'idèal lo nom seriá descriptiu).\n"
 "Per exemple : %s"
 
 #: subprojects/extensions-tool/src/command-create.c:302
