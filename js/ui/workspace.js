@@ -627,8 +627,9 @@ var WorkspaceLayout = GObject.registerClass({
         }
 
         const { ControlsState } = OverviewControls;
-        const inSessionTransition =
-            this._overviewAdjustment.value <= ControlsState.WINDOW_PICKER;
+        const { currentState, transitioning } =
+            this._overviewAdjustment.getStateTransitionParams();
+        const inSessionTransition = currentState <= ControlsState.WINDOW_PICKER;
 
         const window = this._sortedWindows[0];
 
@@ -638,8 +639,8 @@ var WorkspaceLayout = GObject.registerClass({
             const [, bottomOversize] = window.chromeHeights();
             const [containerX, containerY] = containerBox.get_origin();
 
-            const extraHeightProgress = this._overviewAdjustment.value -
-                OverviewControls.ControlsState.WINDOW_PICKER;
+            const extraHeightProgress =
+                currentState - OverviewControls.ControlsState.WINDOW_PICKER;
 
             const extraClipHeight = bottomOversize * (1 - extraHeightProgress);
 
@@ -689,7 +690,8 @@ var WorkspaceLayout = GObject.registerClass({
                 workspaceBoxWidth = 0;
                 workspaceBoxHeight = 0;
 
-                child.opacity = stateAdjustementValue * 255;
+                if (transitioning)
+                    child.opacity = stateAdjustementValue * 255;
             }
 
             // Don't allow the scaled floating size to drop below
