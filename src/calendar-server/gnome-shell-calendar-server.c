@@ -381,8 +381,7 @@ app_notify_events_added (App *app)
                                  (gboolean) appt->is_all_day,
                                  (gint64) start_time,
                                  (gint64) end_time,
-                                 extras_builder);
-          g_variant_builder_clear (&extras_builder);
+                                 &extras_builder);
         }
     }
 
