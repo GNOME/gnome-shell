@@ -982,9 +982,10 @@ var WindowManager = class {
             // managed and gnome-session will have taken care of everything
             // already.
             // Note that we do log cancellation from here.
-            if (!e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.NOT_SUPPORTED))
+            if (!e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.NOT_SUPPORTED)) {
                 log('Error starting X11 services: %s'.format(e.message));
-            status = false;
+                status = false;
+            }
         } finally {
             task.return_boolean(status);
         }
