@@ -8,6 +8,7 @@
   "finish-args": [
     "--share=ipc", "--socket=fallback-x11",
     "--socket=wayland",
+    "--device=dri",
     "--talk-name=org.gnome.SessionManager",
     "--talk-name=org.gnome.Shell.Extensions"
   ],
