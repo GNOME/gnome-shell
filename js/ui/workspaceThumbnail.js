@@ -720,6 +720,7 @@ var ThumbnailsBox = GObject.registerClass({
     }
 
     _onDestroy() {
+        this._destroyThumbnails();
         this._unqueueUpdateStates();
 
         if (this._scrollValueId)
