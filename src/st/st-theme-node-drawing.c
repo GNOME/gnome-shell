@@ -2021,6 +2021,8 @@ st_theme_node_paint_sliced_shadow (StThemeNodePaintState *state,
   gfloat shadow_blur_radius, x_spread_factor, y_spread_factor;
   float rectangles[8 * 9];
   gint idx;
+  ClutterColor background_color;
+  static const ClutterColor invisible_occluded = {3, 2, 1, 0};
 
   if (paint_opacity == 0)
     return;
@@ -2178,16 +2180,23 @@ st_theme_node_paint_sliced_shadow (StThemeNodePaintState *state,
       rectangles[idx++] = s_bottom;
     }
 
-  /* Center middle */
-  rectangles[idx++] = left;
-  rectangles[idx++] = top;
-  rectangles[idx++] = right;
-  rectangles[idx++] = bottom;
+  /* Center middle is not definitely occluded? */
+  st_theme_node_get_background_color (node, &background_color);
+  if (!clutter_color_equal (&background_color, &invisible_occluded) ||
+      paint_opacity < 255 ||
+      xoffset > shadow_blur_radius || left < 0 ||
+      yoffset > shadow_blur_radius || top < 0)
+    {
+      rectangles[idx++] = left;
+      rectangles[idx++] = top;
+      rectangles[idx++] = right;
+      rectangles[idx++] = bottom;
 
-  rectangles[idx++] = s_left;
-  rectangles[idx++] = s_top;
-  rectangles[idx++] = s_right;
-  rectangles[idx++] = s_bottom;
+      rectangles[idx++] = s_left;
+      rectangles[idx++] = s_top;
+      rectangles[idx++] = s_right;
+      rectangles[idx++] = s_bottom;
+    }
 
   if (xend > right)
     {
