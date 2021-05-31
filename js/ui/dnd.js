@@ -508,7 +508,9 @@ var _Draggable = class _Draggable {
         if (!currentDraggable &&
             (Math.abs(stageX - this._dragStartX) > threshold ||
              Math.abs(stageY - this._dragStartY) > threshold)) {
-            if ((event.get_time() - this._dragStartTime) > this._dragTimeoutThreshold) {
+            const ellapsedTime = event.get_time() - this._dragStartTime;
+
+            if (ellapsedTime > this._dragTimeoutThreshold) {
                 this.startDrag(stageX, stageY, event.get_time(), this._touchSequence, event.get_device());
                 this._updateDragPosition(event);
             } else {
