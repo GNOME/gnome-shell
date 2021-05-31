@@ -508,9 +508,14 @@ var _Draggable = class _Draggable {
         if (!currentDraggable &&
             (Math.abs(stageX - this._dragStartX) > threshold ||
              Math.abs(stageY - this._dragStartY) > threshold)) {
+            const deviceType = event.get_source_device().get_device_type();
+            const isPointerOrTouchpad =
+                deviceType === Clutter.InputDeviceType.POINTER_DEVICE ||
+                deviceType === Clutter.InputDeviceType.TOUCHPAD_DEVICE;
             const ellapsedTime = event.get_time() - this._dragStartTime;
 
-            if (ellapsedTime > this._dragTimeoutThreshold) {
+            // Pointer devices (e.g. mouse) start the drag immediately
+            if (isPointerOrTouchpad || ellapsedTime > this._dragTimeoutThreshold) {
                 this.startDrag(stageX, stageY, event.get_time(), this._touchSequence, event.get_device());
                 this._updateDragPosition(event);
             } else {
