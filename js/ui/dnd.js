@@ -518,7 +518,7 @@ var _Draggable = class _Draggable {
             }
         }
 
-        return true;
+        return Clutter.EVENT_STOP;
     }
 
     _pickTargetActor() {
