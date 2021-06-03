@@ -359,7 +359,8 @@ st_icon_update_shadow_pipeline (StIcon *icon)
       ClutterActorBox box;
       float width, height;
 
-      clutter_actor_get_allocation_box (CLUTTER_ACTOR (icon), &box);
+      clutter_actor_get_allocation_box (CLUTTER_ACTOR (priv->icon_texture),
+                                        &box);
       clutter_actor_box_get_size (&box, &width, &height);
 
       if (priv->shadow_pipeline == NULL ||
