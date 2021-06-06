@@ -1283,7 +1283,7 @@ var WindowManager = class {
     _prepareAnimationInfo(shellwm, actor, oldFrameRect, _change) {
         // Position a clone of the window on top of the old position,
         // while actor updates are frozen.
-        let actorContent = Shell.util_get_content_for_window_actor(actor, oldFrameRect);
+        let actorContent = actor.paint_to_content(oldFrameRect);
         let actorClone = new St.Widget({ content: actorContent });
         actorClone.set_offscreen_redirect(Clutter.OffscreenRedirect.ALWAYS);
         actorClone.set_position(oldFrameRect.x, oldFrameRect.y);
