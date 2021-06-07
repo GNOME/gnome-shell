@@ -9,6 +9,7 @@ stages:
  - review
  - build
  - test
+ - docs
  - deploy
 
 default:
@@ -29,7 +30,7 @@ variables:
     LINT_LOG: "eslint-report.xml"
     LINT_MR_LOG: "eslint-mr-report.xml"
 
-image: registry.gitlab.gnome.org/gnome/mutter/fedora/33:x86_64-2021-02-04.2
+image: registry.gitlab.gnome.org/gnome/mutter/fedora/33:x86_64-2021-06-11.0
 
 workflow:
     rules:
@@ -227,3 +228,31 @@ nightly:
   extends: '.publish_nightly'
   variables:
     BUNDLES: '$BUNDLE'
+
+reference:
+    stage: docs
+    needs: ["check_commit_log"]
+    before_script:
+        - .gitlab-ci/checkout-mutter.sh
+        - meson mutter mutter/build --prefix=/usr -Dtests=false
+        - ninja -C mutter/build install
+    script:
+        - meson -Dman=false -Dgtk_doc=true build
+        - ninja -C build docs/St docs/Shell
+        - mkdir -p reference/
+        - mv build/docs/St/ reference/
+        - mv build/docs/Shell/ reference/
+    artifacts:
+        paths:
+            - reference
+
+pages:
+    stage: deploy
+    needs: ['reference']
+    script:
+        - mv reference/ public/
+    artifacts:
+        paths:
+             - public
+    only:
+        - master
