@@ -10,6 +10,7 @@ stages:
   - build
   - test
   - analyze
+  - docs
   - deploy
 
 default:
@@ -177,7 +178,7 @@ build:
     - meson mutter mutter/build --prefix=/usr
     - sudo meson install -C mutter/build
   script:
-    - meson setup . build -Dbuildtype=debugoptimized -Dman=false --werror --fatal-meson-warnings
+    - meson setup . build -Dbuildtype=debugoptimized -Dman=false -Dgtk_doc=true --werror --fatal-meson-warnings
     - meson compile -C build
     - sudo meson install -C build
   artifacts:
@@ -274,6 +275,27 @@ dist-tarball:
       - build/meson-dist/$CI_PROJECT_NAME-$CI_COMMIT_TAG.tar.xz
   rules:
     - if: '$CI_COMMIT_TAG'
+
+reference:
+  stage: docs
+  needs: ["build"]
+  script:
+    - mkdir -p reference/
+    - mv build/docs/reference/{shell/shell,st/st} reference/
+  artifacts:
+    paths:
+      - reference
+
+pages:
+  stage: deploy
+  needs: ['reference']
+  script:
+    - mv reference/ public/
+  artifacts:
+    paths:
+      - public
+  only:
+    - master
 
 build-toolbox:
   image: quay.io/freedesktop.org/ci-templates:container-build-base-2021-07-29.0
