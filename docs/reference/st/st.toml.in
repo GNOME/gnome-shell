@@ -1,0 +1,36 @@
+[library]
+namespace = "St"
+version = "@MUTTER_API_VERSION@"
+browse_url = "https://gitlab.gnome.org/GNOME/gnome-shell/"
+repository_url = "https://gitlab.gnome.org/GNOME/gnome-shell.git"
+website_url = "https://www.gnome.org"
+license = "LGPL-2.0-or-later"
+description = "Shell Toolkit"
+dependencies = ["GObject-2.0", "Gio-2.0", "Clutter-@MUTTER_API_VERSION@"]
+devhelp = true
+search_index = true
+
+  [dependencies."GObject-2.0"]
+  name = "GObject"
+  description = "The base type system library"
+  docs_url = "https://docs.gtk.org/gobject"
+
+  [dependencies."Gio-2.0"]
+  name = "Gio"
+  description = "GObject Interfaces and Objects, Networking, IPC, and I/O"
+  docs_url = "https://docs.gtk.org/gio"
+
+  [dependencies."Clutter-@MUTTER_API_VERSION@"]
+  name = "Clutter"
+  description = "An OpenGL based 'interactive canvas' library"
+  docs_url = "https://gnome.pages.gitlab.gnome.org/mutter/clutter/"
+
+[theme]
+name = "basic"
+show_index_summary = true
+
+[source-location]
+base_url = "https://gitlab.gnome.org/GNOME/gnome-shell/-/blob/HEAD/"
+
+[extra]
+urlmap_file = "urlmap.js"

@@ -1,51 +1,25 @@
-private_headers = [
-  'gactionmuxer.h',
-  'gactionobservable.h',
-  'gactionobserver.h',
-  'shell-network-agent.h',
-]
-
-exclude_directories = [
-  'calendar-server',
-  'hotplug-sniffer',
-  'st',
-  'tray'
-]
-
-ifaces = [
-  ['org.gnome.Shell.Screenshot', 'org.gnome.Shell.Screenshot.xml'],
-  ['org.gnome.ShellSearchProvider', 'org.gnome.Shell.SearchProvider.xml'],
-  ['org.gnome.ShellSearchProvider2', 'org.gnome.Shell.SearchProvider2.xml']
-]
-foreach iface : ifaces
-  custom_target(iface[0] + ' docs',
-    input: '../../../data/dbus-interfaces/@0@.xml'.format(iface[0]),
-    output: 'doc-gen-' + iface[1],
-    command: [
-      'gdbus-codegen',
-      '--interface-prefix=@0@.'.format(iface[0]),
-      '--generate-docbook', 'doc-gen',
-      '--output-directory', '@OUTDIR@',
-      '@INPUT@'
-    ],
-    build_by_default: true
-  )
-endforeach
-
-configure_file(
-  input: 'version.xml.in',
-  output: 'version.xml',
-  configuration: version_conf
+shell_toml = configure_file(
+  input: 'shell.toml.in',
+  output: 'shell.toml',
+  configuration: doc_conf
 )
 
-gnome.gtkdoc('shell',
-  main_sgml: 'shell-docs.sgml',
-  src_dir: [
-    join_paths(meson.project_source_root(), 'src'),
-    join_paths(meson.project_build_root(), 'src')
+custom_target('shell-doc',
+  input: [shell_toml, libshell_gir[0]],
+  output: 'shell',
+  command: [
+    gidocgen,
+    'generate',
+    gi_docgen_common_args,
+    '--add-include-path=@0@'.format(meson.current_build_dir() / '../../../src'),
+    '--add-include-path=@0@'.format(meson.current_build_dir() / '../../../src/st'),
+    '--add-include-path=@0@'.format(mutter_dep.get_variable('girdir')),
+    '--add-include-path=@0@'.format(meson.current_build_dir() / '../../../subprojects/gvc'),
+    '--config=@INPUT0@',
+    '--output-dir=@OUTPUT@',
+    '--content-dir=@0@'.format(meson.current_source_dir()),
+    '@INPUT1@',
   ],
-  scan_args: [
-    '--ignore-headers=' + ' '.join(private_headers + exclude_directories)
-  ],
-  install: true
+  install: true,
+  install_dir: docs_dir,
 )

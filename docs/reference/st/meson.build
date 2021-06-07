@@ -1,23 +1,24 @@
-private_headers = [
-  'st-private.h',
-  'st-theme-node-private.h'
-]
-
-configure_file(
-  input: 'version.xml.in',
-  output: 'version.xml',
-  configuration: version_conf
+st_toml = configure_file(
+  input: 'st.toml.in',
+  output: 'st.toml',
+  configuration: doc_conf
 )
 
-gnome.gtkdoc('st',
-  main_sgml: 'st-docs.sgml',
-  src_dir: [
-    join_paths(meson.project_source_root(), 'src', 'st'),
-    join_paths(meson.project_build_root(), 'src', 'st')
+custom_target('st-doc',
+  input: [st_toml, libst_gir[0]],
+  output: 'st',
+  command: [
+    gidocgen,
+    'generate',
+    gi_docgen_common_args,
+    '--add-include-path=@0@'.format(meson.current_build_dir() / '../../../src'),
+    '--add-include-path=@0@'.format(meson.current_build_dir() / '../../../src/st'),
+    '--add-include-path=@0@'.format(mutter_dep.get_variable('girdir')),
+    '--config=@INPUT0@',
+    '--output-dir=@OUTPUT@',
+    '--content-dir=@0@'.format(meson.current_source_dir()),
+    '@INPUT1@',
   ],
-  scan_args: [
-    '--ignore-headers=' + ' '.join(private_headers),
-    '--rebuild-sections'
-  ],
-  install: true
+  install: true,
+  install_dir: docs_dir,
 )
