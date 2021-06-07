@@ -277,6 +277,9 @@ if get_option('extensions_app')
   )
 endif
 
+gidocgen_dep = dependency('gi-docgen', version: '>= 2021.1',
+                          fallback: ['gi-docgen', 'dummy_dep'],
+                          required: get_option('gtk_doc'))
 
 po_dir = join_paths(meson.current_source_dir(), 'po')
 
@@ -288,7 +291,7 @@ subdir('tests')
 subdir('tools')
 
 if get_option('gtk_doc')
-  subdir('docs/reference')
+  subdir('docs')
 endif
 
 meson.add_install_script('meson/postinstall.py')

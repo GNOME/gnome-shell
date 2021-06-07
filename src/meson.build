@@ -228,7 +228,7 @@ libshell_gir_includes += [
   libst_gir[0]
 ]
 
-gnome.generate_gir(libshell,
+libshell_gir = gnome.generate_gir(libshell,
   sources: libshell_gir_sources,
   nsversion: '0.1',
   namespace: 'Shell',
