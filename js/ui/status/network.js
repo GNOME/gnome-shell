@@ -1,6 +1,6 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported NMApplet */
-const { Clutter, Gio, GLib, GObject, Meta, NM, St } = imports.gi;
+const { Clutter, Gio, GLib, GObject, Meta, NM, Polkit, St } = imports.gi;
 const Signals = imports.signals;
 
 const Animation = imports.ui.animation;
@@ -1750,12 +1750,23 @@ class Indicator extends PanelMenu.SystemIndicator {
         this._client.connect('connection-added', this._connectionAdded.bind(this));
         this._client.connect('connection-removed', this._connectionRemoved.bind(this));
 
+        try {
+            this._configPermission = await Polkit.Permission.new(
+                'org.freedesktop.NetworkManager.network-control', null, null);
+        } catch (e) {
+            log('No permission to control network connections: %s'.format(e.toString()));
+            this._configPermission = null;
+        }
+
         Main.sessionMode.connect('updated', this._sessionUpdated.bind(this));
         this._sessionUpdated();
     }
 
     _sessionUpdated() {
-        let sensitive = !Main.sessionMode.isLocked && !Main.sessionMode.isGreeter;
+        const sensitive =
+            !Main.sessionMode.isLocked &&
+            !Main.sessionMode.isGreeter &&
+            this._configPermission && this._configPermission.allowed;
         this.menu.setSensitive(sensitive);
     }
 
