@@ -563,6 +563,10 @@ var NMDeviceModem = class extends NMConnectionDevice {
                 this._iconChanged();
             });
         }
+
+        this._sessionUpdatedId =
+            Main.sessionMode.connect('updated', this._sessionUpdated.bind(this));
+        this._sessionUpdated();
     }
 
     get category() {
@@ -573,6 +577,10 @@ var NMDeviceModem = class extends NMConnectionDevice {
         launchSettingsPanel('network', 'connect-3g', this._device.get_path());
     }
 
+    _sessionUpdated() {
+        this._autoConnectItem.sensitive = Main.sessionMode.hasWindows;
+    }
+
     destroy() {
         if (this._operatorNameId) {
             this._mobileDevice.disconnect(this._operatorNameId);
@@ -581,6 +589,10 @@ var NMDeviceModem = class extends NMConnectionDevice {
         if (this._signalQualityId) {
             this._mobileDevice.disconnect(this._signalQualityId);
             this._signalQualityId = 0;
+        }
+        if (this._sessionUpdatedId) {
+            Main.sessionMode.disconnect(this._sessionUpdatedId);
+            this._sessionUpdatedId = 0;
         }
 
         super.destroy();
