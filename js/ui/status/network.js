@@ -1,6 +1,6 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported NMApplet */
-const { Clutter, Gio, GLib, GObject, NM, St } = imports.gi;
+const { Clutter, Gio, GLib, GObject, Meta, NM, St } = imports.gi;
 const Signals = imports.signals;
 
 const Animation = imports.ui.animation;
@@ -816,6 +816,11 @@ class NMWirelessDialog extends ModalDialog.ModalDialog {
             GLib.source_remove(this._scanTimeoutId);
             this._scanTimeoutId = 0;
         }
+
+        if (this._syncVisibilityId) {
+            Meta.later_remove(this._syncVisibilityId);
+            this._syncVisibilityId = 0;
+        }
     }
 
     _onScanTimeout() {
@@ -1149,7 +1154,30 @@ class NMWirelessDialog extends ModalDialog.ModalDialog {
             this._itemBox.insert_child_at_index(network.item, newPos);
         }
 
+        this._queueSyncItemVisibility();
         this._syncView();
+    }
+
+    _queueSyncItemVisibility() {
+        if (this._syncVisibilityId)
+            return;
+
+        this._syncVisibilityId = Meta.later_add(
+            Meta.LaterType.BEFORE_REDRAW,
+            () => {
+                const { hasWindows } = Main.sessionMode;
+                const { WPA2_ENT, WPA_ENT } = NMAccessPointSecurity;
+
+                for (const network of this._networks) {
+                    const [firstAp] = network.accessPoints;
+                    network.item.visible =
+                        hasWindows ||
+                        network.connections.length > 0 ||
+                        (firstAp._secType !== WPA2_ENT && firstAp._secType !== WPA_ENT);
+                }
+                this._syncVisibilityId = 0;
+                return GLib.SOURCE_REMOVE;
+            });
     }
 
     _accessPointRemoved(device, accessPoint) {
@@ -1200,6 +1228,7 @@ class NMWirelessDialog extends ModalDialog.ModalDialog {
     _createNetworkItem(network) {
         network.item = new NMWirelessDialogItem(network);
         network.item.setActive(network == this._selectedNetwork);
+        network.item.hide();
         network.item.connect('selected', () => {
             Util.ensureActorVisibleInScrollView(this._scrollView, network.item);
             this._selectNetwork(network);
