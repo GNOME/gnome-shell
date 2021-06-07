@@ -1765,7 +1765,6 @@ class Indicator extends PanelMenu.SystemIndicator {
     _sessionUpdated() {
         const sensitive =
             !Main.sessionMode.isLocked &&
-            !Main.sessionMode.isGreeter &&
             this._configPermission && this._configPermission.allowed;
         this.menu.setSensitive(sensitive);
     }
