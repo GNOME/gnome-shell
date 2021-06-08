@@ -1850,11 +1850,11 @@ msgstr[1] "%d Connectats"
 
 #: js/ui/status/bluetooth.js:152
 msgid "Bluetooth Off"
-msgstr "Bluetooth desactivat"
+msgstr "Bluetooth apagat"
 
 #: js/ui/status/bluetooth.js:154
 msgid "Bluetooth On"
-msgstr "Bluetooth activat"
+msgstr "Bluetooth encès"
 
 #: js/ui/status/brightness.js:39
 msgid "Brightness"
