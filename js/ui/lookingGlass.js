@@ -1368,8 +1368,6 @@ class LookingGlass extends St.BoxLayout {
 
         this.setBorderPaintTarget(null);
 
-        Main.popModal(this._entry);
-
         let settings = St.Settings.get();
         let duration = Math.min(LG_ANIMATION_TIME / settings.slow_down_factor,
                                 LG_ANIMATION_TIME);
@@ -1377,7 +1375,10 @@ class LookingGlass extends St.BoxLayout {
             y: this._hiddenY,
             duration,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            onComplete: () => this.hide(),
+            onComplete: () => {
+                Main.popModal(this._entry);
+                this.hide();
+            },
         });
     }
 
