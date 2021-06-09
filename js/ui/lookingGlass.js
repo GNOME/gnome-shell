@@ -513,7 +513,7 @@ class RedBorderEffect extends Clutter.Effect {
         pipelineNode.add_rectangle(box);
 
         box.set_origin(alloc.get_width() - width, width);
-        box.set_size(width, alloc.get_height());
+        box.set_size(width, alloc.get_height() - width);
         pipelineNode.add_rectangle(box);
 
         box.set_origin(0, alloc.get_height() - width);
