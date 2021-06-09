@@ -136,7 +136,8 @@ var Recorder = class {
     }
 
     _startPipeline(nodeId) {
-        this._ensurePipeline(nodeId);
+        if (!this._ensurePipeline(nodeId))
+            return;
 
         const bus = this._pipeline.get_bus();
         bus.add_watch(bus, this._onBusMessage.bind(this));
@@ -234,9 +235,15 @@ var Recorder = class {
             filesink location="${this._filePath}"`;
         fullPipeline = this._substituteThreadCount(fullPipeline);
 
-        this._pipeline = Gst.parse_launch_full(fullPipeline,
-            null,
-            Gst.ParseFlags.FATAL_ERRORS);
+        try {
+            this._pipeline = Gst.parse_launch_full(fullPipeline,
+                null,
+                Gst.ParseFlags.FATAL_ERRORS);
+        }  catch (e) {
+            log(`Failed to create pipeline: ${e}`);
+            this._notifyStopped();
+        }
+        return !!this._pipeline;
     }
 };
 
