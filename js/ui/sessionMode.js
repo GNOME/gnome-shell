@@ -47,7 +47,9 @@ const _modes = {
         isGreeter: true,
         isPrimary: true,
         unlockDialog: imports.gdm.loginDialog.LoginDialog,
-        components: ['polkitAgent'],
+        components: Config.HAVE_NETWORKMANAGER
+            ? ['networkAgent', 'polkitAgent']
+            : ['polkitAgent'],
         panel: {
             left: [],
             center: ['dateMenu'],
