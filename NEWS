@@ -1,3 +1,19 @@
+3.38.5
+======
+* Improve handling of authentication cancellation at login [Marco; !1783]
+* Fix word suggestions in on-screen keyboard [Jia; !1806]
+* Fix freeze after cancelling (some) system-modal dialogs
+  [Daniel, Florian; !1757, !1819]
+* Fixed crashes [Gustavo; !1848]
+* Misc. bug fixes [Daniel; !1758]
+
+Contributors:
+  Jia Chao, Florian Müllner, Gustavo Noronha Silva, Marco Trevisan (Treviño),
+  Daniel van Vugt
+
+Translators:
+  Emin Tufan Çetin [tr]
+
 3.38.4
 ======
 * Fix stuck grab after failed area screenshots [Sebastian; !1600]
