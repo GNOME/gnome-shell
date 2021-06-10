@@ -1,3 +1,20 @@
+40.2
+====
+* Unbreak Xwayland apps when not using systemd in user session [Olivier; !1850]
+* Fix distributed man pages [Florian; !1859]
+* Avoid unnecessary icon shadow changes [Daniel; !1869]
+* Immediately start app grid drags for non-touch devices [Georges; !1872]
+* Handle screencast failures more gracefully [Florian; !1878]
+* Fixed crashes [Gustavo; !1848]
+* Misc. bug fixes [Georges, Florian, Daniel; !1867, !1854, !1860, !1876]
+
+Contributors:
+  Olivier Fourdan, Florian Müllner, Georges Basile Stavracas Neto,
+  Gustavo Noronha Silva, Daniel van Vugt
+
+Translators:
+  Quentin PAGÈS [oc], Cheng-Chia Tseng [zh_TW], Hugo Carvalho [pt]
+
 40.1
 ====
 * Fix keyboard preview for IM that use 'default' layout [Peng; !1756]
