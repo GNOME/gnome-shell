@@ -534,8 +534,8 @@ class ControlsManager extends St.Widget {
         if (!stateTransitionParams)
             stateTransitionParams = this._stateAdjustment.getStateTransitionParams();
 
-        const { currentState, finalState } = stateTransitionParams;
-        const state = Math.max(currentState, finalState);
+        const { initialState, finalState } = stateTransitionParams;
+        const state = Math.max(initialState, finalState);
 
         this._appDisplay.visible =
             state > ControlsState.WINDOW_PICKER &&
