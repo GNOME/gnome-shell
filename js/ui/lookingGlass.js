@@ -1045,7 +1045,7 @@ class LookingGlass extends St.BoxLayout {
 
         let toolbar = new St.BoxLayout({ name: 'Toolbar' });
         this.add_actor(toolbar);
-        let inspectIcon = new St.Icon({ icon_name: 'gtk-color-picker',
+        let inspectIcon = new St.Icon({ icon_name: 'find-location-symbolic',
                                         icon_size: 24 });
         toolbar.add_actor(inspectIcon);
         inspectIcon.reactive = true;
@@ -1062,19 +1062,22 @@ class LookingGlass extends St.BoxLayout {
             return Clutter.EVENT_STOP;
         });
 
-        let gcIcon = new St.Icon({ icon_name: 'user-trash-full',
+        let gcIcon = new St.Icon({ icon_name: 'user-trash-full-symbolic',
                                    icon_size: 24 });
         toolbar.add_actor(gcIcon);
         gcIcon.reactive = true;
         gcIcon.connect('button-press-event', () => {
-            gcIcon.icon_name = 'user-trash';
+            gcIcon.icon_name = 'user-trash-symbolic';
             System.gc();
             this._timeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, 500, () => {
-                gcIcon.icon_name = 'user-trash-full';
+                gcIcon.icon_name = 'user-trash-full-symbolic';
                 this._timeoutId = 0;
                 return GLib.SOURCE_REMOVE;
             });
-            GLib.Source.set_name_by_id(this._timeoutId, '[gnome-shell] gcIcon.icon_name = \'user-trash-full\'');
+            GLib.Source.set_name_by_id(
+                this._timeoutId,
+                '[gnome-shell] gcIcon.icon_name = \'user-trash-full-symbolic\''
+            );
             return Clutter.EVENT_PROPAGATE;
         });
 
