@@ -907,14 +907,7 @@ var WindowManager = class {
         global.display.connect('init-xserver', (display, task) => {
             IBusManager.getIBusManager().restartDaemon(['--xim']);
 
-            /* Timeout waiting for start job completion after 5 seconds */
-            let cancellable = new Gio.Cancellable();
-            GLib.timeout_add_seconds(GLib.PRIORITY_DEFAULT, 5, () => {
-                cancellable.cancel();
-                return GLib.SOURCE_REMOVE;
-            });
-
-            this._startX11Services(task, cancellable);
+            this._startX11Services(task);
 
             return true;
         });
@@ -972,11 +965,11 @@ var WindowManager = class {
         });
     }
 
-    async _startX11Services(task, cancellable) {
+    async _startX11Services(task) {
         let status = true;
         try {
             await Shell.util_start_systemd_unit(
-                'gnome-session-x11-services-ready.target', 'fail', cancellable);
+                'gnome-session-x11-services-ready.target', 'fail', null);
         } catch (e) {
             // Ignore NOT_SUPPORTED error, which indicates we are not systemd
             // managed and gnome-session will have taken care of everything
