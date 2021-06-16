@@ -54,7 +54,7 @@ var GnomeShell = class {
      *
      */
     Eval(code) {
-        if (!global.settings.get_boolean('development-tools'))
+        if (!global.context.unsafe_mode)
             return [false, ''];
 
         let returnValue;
