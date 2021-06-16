@@ -9,6 +9,7 @@ const APP_ALLOWLIST = [
 const INTROSPECT_DBUS_API_VERSION = 3;
 
 const { loadInterfaceXML } = imports.misc.fileUtils;
+const { DBusSenderChecker } = imports.misc.util;
 
 const IntrospectDBusIface = loadInterfaceXML('org.gnome.Shell.Introspect');
 
@@ -43,14 +44,7 @@ var IntrospectService = class {
 
         this._syncRunningApplications();
 
-        this._allowlistMap = new Map();
-        APP_ALLOWLIST.forEach(appName => {
-            Gio.DBus.watch_name(Gio.BusType.SESSION,
-                appName,
-                Gio.BusNameWatcherFlags.NONE,
-                (conn, name, owner) => this._allowlistMap.set(name, owner),
-                (conn, name) => this._allowlistMap.delete(name));
-        });
+        this._senderChecker = new DBusSenderChecker(APP_ALLOWLIST);
 
         this._settings = St.Settings.get();
         this._settings.connect('notify::enable-animations',
@@ -65,10 +59,6 @@ var IntrospectService = class {
 
     _isStandaloneApp(app) {
         return app.get_windows().some(w => w.transient_for == null);
-    }
-
-    _isSenderAllowed(sender) {
-        return [...this._allowlistMap.values()].includes(sender);
     }
 
     _getSandboxedAppId(app) {
@@ -127,21 +117,9 @@ var IntrospectService = class {
                 type == Meta.WindowType.UTILITY;
     }
 
-    _checkInvocation(invocation) {
-        if (global.context.unsafe_mode)
-            return;
-
-        if (this._isSenderAllowed(invocation.get_sender()))
-            return;
-
-        throw new GLib.Error(Gio.DBusError,
-            Gio.DBusError.ACCESS_DENIED,
-            'App introspection not allowed');
-    }
-
     GetRunningApplicationsAsync(params, invocation) {
         try {
-            this._checkInvocation(invocation);
+            this._senderChecker.checkInvocation(invocation);
         } catch (e) {
             invocation.return_gerror(e);
             return;
@@ -156,7 +134,7 @@ var IntrospectService = class {
         let windowsList = {};
 
         try {
-            this._checkInvocation(invocation);
+            this._senderChecker.checkInvocation(invocation);
         } catch (e) {
             invocation.return_gerror(e);
             return;
