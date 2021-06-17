@@ -54,7 +54,6 @@ pkgdatadir = join_paths(datadir, meson.project_name())
 pkglibdir = join_paths(libdir, meson.project_name())
 
 autostartdir = join_paths(sysconfdir, 'xdg', 'autostart')
-convertdir = join_paths(datadir, 'GConf', 'gsettings')
 desktopdir = join_paths(datadir, 'applications')
 icondir = join_paths(datadir, 'icons')
 ifacedir = join_paths(datadir, 'dbus-1', 'interfaces')

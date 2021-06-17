@@ -127,5 +127,3 @@ custom_target('compile-schemas',
   output: 'gschemas.compiled',
   command: [find_program('glib-compile-schemas'), meson.current_build_dir()],
   build_by_default: true)
-
-install_data('gnome-shell-overrides.convert', install_dir: convertdir)
