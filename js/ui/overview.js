@@ -642,6 +642,11 @@ var Overview = class {
         this.show(OverviewControls.ControlsState.APP_GRID);
     }
 
+    selectApp(id) {
+        this.showApps();
+        this._overview.controls.appDisplay.selectApp(id);
+    }
+
     runStartupAnimation(callback) {
         Main.panel.style = 'transition-duration: 0ms;';
 
