@@ -100,8 +100,7 @@ var GnomeShell = class {
     }
 
     FocusApp(id) {
-        this.ShowApplications();
-        Main.overview.appDisplay.selectApp(id);
+        Main.overview.selectApp(id);
     }
 
     ShowApplications() {
