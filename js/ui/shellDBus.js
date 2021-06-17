@@ -10,6 +10,7 @@ const Main = imports.ui.main;
 const Screenshot = imports.ui.screenshot;
 
 const { loadInterfaceXML } = imports.misc.fileUtils;
+const { DBusSenderChecker } = imports.misc.util;
 const { ControlsState } = imports.ui.overviewControls;
 
 const GnomeShellIface = loadInterfaceXML('org.gnome.Shell');
@@ -19,6 +20,11 @@ var GnomeShell = class {
     constructor() {
         this._dbusImpl = Gio.DBusExportedObject.wrapJSObject(GnomeShellIface, this);
         this._dbusImpl.export(Gio.DBus.session, '/org/gnome/Shell');
+
+        this._senderChecker = new DBusSenderChecker([
+            'org.gnome.ControlCenter',
+            'org.gnome.SettingsDaemon.MediaKeys',
+        ]);
 
         this._extensionsService = new GnomeShellExtensions();
         this._screenshotService = new Screenshot.ScreenshotService();
@@ -80,6 +86,13 @@ var GnomeShell = class {
      * @returns {void}
      */
     FocusSearchAsync(params, invocation) {
+        try {
+            this._senderChecker.checkInvocation(invocation);
+        } catch (e) {
+            invocation.return_gerror(e);
+            return;
+        }
+
         Main.overview.focusSearch();
         invocation.return_value(null);
     }
@@ -92,6 +105,13 @@ var GnomeShell = class {
      * @returns {void}
      */
     ShowOSDAsync([params], invocation) {
+        try {
+            this._senderChecker.checkInvocation(invocation);
+        } catch (e) {
+            invocation.return_gerror(e);
+            return;
+        }
+
         for (let param in params)
             params[param] = params[param].deep_unpack();
 
@@ -123,6 +143,13 @@ var GnomeShell = class {
      * @returns {void}
      */
     FocusAppAsync([id], invocation) {
+        try {
+            this._senderChecker.checkInvocation(invocation);
+        } catch (e) {
+            invocation.return_gerror(e);
+            return;
+        }
+
         Main.overview.selectApp(id);
         invocation.return_value(null);
     }
@@ -135,11 +162,25 @@ var GnomeShell = class {
      * @returns {void}
      */
     ShowApplicationsAsync(params, invocation) {
+        try {
+            this._senderChecker.checkInvocation(invocation);
+        } catch (e) {
+            invocation.return_gerror(e);
+            return;
+        }
+
         Main.overview.show(ControlsState.APP_GRID);
         invocation.return_value(null);
     }
 
     GrabAcceleratorAsync(params, invocation) {
+        try {
+            this._senderChecker.checkInvocation(invocation);
+        } catch (e) {
+            invocation.return_gerror(e);
+            return;
+        }
+
         let [accel, modeFlags, grabFlags] = params;
         let sender = invocation.get_sender();
         let bindingAction = this._grabAcceleratorForSender(accel, modeFlags, grabFlags, sender);
@@ -147,6 +188,13 @@ var GnomeShell = class {
     }
 
     GrabAcceleratorsAsync(params, invocation) {
+        try {
+            this._senderChecker.checkInvocation(invocation);
+        } catch (e) {
+            invocation.return_gerror(e);
+            return;
+        }
+
         let [accels] = params;
         let sender = invocation.get_sender();
         let bindingActions = [];
@@ -158,6 +206,13 @@ var GnomeShell = class {
     }
 
     UngrabAcceleratorAsync(params, invocation) {
+        try {
+            this._senderChecker.checkInvocation(invocation);
+        } catch (e) {
+            invocation.return_gerror(e);
+            return;
+        }
+
         let [action] = params;
         let sender = invocation.get_sender();
         let ungrabSucceeded = this._ungrabAcceleratorForSender(action, sender);
@@ -166,6 +221,13 @@ var GnomeShell = class {
     }
 
     UngrabAcceleratorsAsync(params, invocation) {
+        try {
+            this._senderChecker.checkInvocation(invocation);
+        } catch (e) {
+            invocation.return_gerror(e);
+            return;
+        }
+
         let [actions] = params;
         let sender = invocation.get_sender();
         let ungrabSucceeded = true;
@@ -246,6 +308,13 @@ var GnomeShell = class {
     }
 
     ShowMonitorLabelsAsync(params, invocation) {
+        try {
+            this._senderChecker.checkInvocation(invocation);
+        } catch (e) {
+            invocation.return_gerror(e);
+            return;
+        }
+
         let sender = invocation.get_sender();
         let [dict] = params;
         Main.osdMonitorLabeler.show(sender, dict);
@@ -253,6 +322,13 @@ var GnomeShell = class {
     }
 
     HideMonitorLabelsAsync(params, invocation) {
+        try {
+            this._senderChecker.checkInvocation(invocation);
+        } catch (e) {
+            invocation.return_gerror(e);
+            return;
+        }
+
         let sender = invocation.get_sender();
         Main.osdMonitorLabeler.hide(sender);
         invocation.return_value(null);
