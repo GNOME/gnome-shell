@@ -111,7 +111,7 @@ var GnomeShell = class {
         let [accel, modeFlags, grabFlags] = params;
         let sender = invocation.get_sender();
         let bindingAction = this._grabAcceleratorForSender(accel, modeFlags, grabFlags, sender);
-        return invocation.return_value(GLib.Variant.new('(u)', [bindingAction]));
+        invocation.return_value(GLib.Variant.new('(u)', [bindingAction]));
     }
 
     GrabAcceleratorsAsync(params, invocation) {
@@ -122,7 +122,7 @@ var GnomeShell = class {
             let [accel, modeFlags, grabFlags] = accels[i];
             bindingActions.push(this._grabAcceleratorForSender(accel, modeFlags, grabFlags, sender));
         }
-        return invocation.return_value(GLib.Variant.new('(au)', [bindingActions]));
+        invocation.return_value(GLib.Variant.new('(au)', [bindingActions]));
     }
 
     UngrabAcceleratorAsync(params, invocation) {
@@ -130,7 +130,7 @@ var GnomeShell = class {
         let sender = invocation.get_sender();
         let ungrabSucceeded = this._ungrabAcceleratorForSender(action, sender);
 
-        return invocation.return_value(GLib.Variant.new('(b)', [ungrabSucceeded]));
+        invocation.return_value(GLib.Variant.new('(b)', [ungrabSucceeded]));
     }
 
     UngrabAcceleratorsAsync(params, invocation) {
@@ -141,7 +141,7 @@ var GnomeShell = class {
         for (let i = 0; i < actions.length; i++)
             ungrabSucceeded &= this._ungrabAcceleratorForSender(actions[i], sender);
 
-        return invocation.return_value(GLib.Variant.new('(b)', [ungrabSucceeded]));
+        invocation.return_value(GLib.Variant.new('(b)', [ungrabSucceeded]));
     }
 
     _emitAcceleratorActivated(action, device, timestamp) {
