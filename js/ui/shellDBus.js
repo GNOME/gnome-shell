@@ -217,11 +217,13 @@ var GnomeShell = class {
         let sender = invocation.get_sender();
         let [dict] = params;
         Main.osdMonitorLabeler.show(sender, dict);
+        invocation.return_value(null);
     }
 
     HideMonitorLabelsAsync(params, invocation) {
         let sender = invocation.get_sender();
         Main.osdMonitorLabeler.hide(sender);
+        invocation.return_value(null);
     }
 
     _checkOverviewVisibleChanged() {
