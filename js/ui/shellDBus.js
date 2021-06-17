@@ -72,11 +72,26 @@ var GnomeShell = class {
         return [success, returnValue];
     }
 
-    FocusSearch() {
+    /**
+     * Focus the overview's search entry
+     *
+     * @param {...any} params - method parameters
+     * @param {Gio.DBusMethodInvocation} invocation - the invocation
+     * @returns {void}
+     */
+    FocusSearchAsync(params, invocation) {
         Main.overview.focusSearch();
+        invocation.return_value(null);
     }
 
-    ShowOSD(params) {
+    /**
+     * Show OSD with the specified parameters
+     *
+     * @param {...any} params - method parameters
+     * @param {Gio.DBusMethodInvocation} invocation - the invocation
+     * @returns {void}
+     */
+    ShowOSDAsync([params], invocation) {
         for (let param in params)
             params[param] = params[param].deep_unpack();
 
@@ -97,14 +112,31 @@ var GnomeShell = class {
             icon = Gio.Icon.new_for_string(serializedIcon);
 
         Main.osdWindowManager.show(monitorIndex, icon, label, level, maxLevel);
+        invocation.return_value(null);
     }
 
-    FocusApp(id) {
+    /**
+     * Focus specified app in the overview's app grid
+     *
+     * @param {string} id - an application ID
+     * @param {Gio.DBusMethodInvocation} invocation - the invocation
+     * @returns {void}
+     */
+    FocusAppAsync([id], invocation) {
         Main.overview.selectApp(id);
+        invocation.return_value(null);
     }
 
-    ShowApplications() {
+    /**
+     * Show the overview's app grid
+     *
+     * @param {...any} params - method parameters
+     * @param {Gio.DBusMethodInvocation} invocation - the invocation
+     * @returns {void}
+     */
+    ShowApplicationsAsync(params, invocation) {
         Main.overview.show(ControlsState.APP_GRID);
+        invocation.return_value(null);
     }
 
     GrabAcceleratorAsync(params, invocation) {
