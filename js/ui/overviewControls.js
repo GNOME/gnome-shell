@@ -131,11 +131,10 @@ class ControlsManagerLayout extends Clutter.BoxLayout {
 
         const { spacing } = this;
 
-        let startY = 0;
-        if (Main.layoutManager.panelBox.y === Main.layoutManager.primaryMonitor.y) {
-            startY = Main.layoutManager.panelBox.height;
-            box.y1 += startY;
-        }
+        const monitor = Main.layoutManager.findMonitorForActor(this._container);
+        const workArea = Main.layoutManager.getWorkAreaForMonitor(monitor.index);
+        const startY = workArea.y - monitor.y;
+        box.y1 += startY;
         const [width, height] = box.get_size();
         let availableHeight = height;
 
