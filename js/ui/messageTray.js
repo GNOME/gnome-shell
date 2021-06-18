@@ -771,6 +771,9 @@ var Source = GObject.registerClass({
         notification.acknowledged = false;
         this.pushNotification(notification);
 
+        if (notification.urgency === Urgency.LOW)
+            return;
+
         if (this.policy.showBanners || notification.urgency == Urgency.CRITICAL)
             this.emit('notification-show', notification);
     }
