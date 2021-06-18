@@ -1012,13 +1012,21 @@ class WorkspaceBackground extends St.Widget {
 
         const [contentWidth, contentHeight] = contentBox.get_size();
         const monitor = Main.layoutManager.monitors[this._monitorIndex];
-        const xOff = (contentWidth / this._workarea.width) *
-            (this._workarea.x - monitor.x);
-        const yOff = (contentHeight / this._workarea.height) *
-            (this._workarea.y - monitor.y);
+        const [mX1, mX2] = [monitor.x, monitor.x + monitor.width];
+        const [mY1, mY2] = [monitor.y, monitor.y + monitor.height];
+        const [wX1, wX2] = [this._workarea.x, this._workarea.x + this._workarea.width];
+        const [wY1, wY2] = [this._workarea.y, this._workarea.y + this._workarea.height];
+        const xScale = contentWidth / this._workarea.width;
+        const yScale = contentHeight / this._workarea.height;
+        const leftOffset = wX1 - mX1;
+        const topOffset = wY1 - mY1;
+        const rightOffset = mX2 - wX2;
+        const bottomOffset = mY2 - wY2;
 
-        contentBox.set_origin(-xOff, -yOff);
-        contentBox.set_size(xOff + contentWidth, yOff + contentHeight);
+        contentBox.set_origin(-leftOffset * xScale, -topOffset * yScale);
+        contentBox.set_size(
+            contentWidth + (leftOffset + rightOffset) * xScale,
+            contentHeight + (topOffset + bottomOffset) * yScale);
         this._backgroundGroup.allocate(contentBox);
     }
 
