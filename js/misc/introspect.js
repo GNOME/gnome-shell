@@ -3,7 +3,10 @@ const { Gio, GLib, Meta, Shell, St } = imports.gi;
 
 const INTROSPECT_SCHEMA = 'org.gnome.shell';
 const INTROSPECT_KEY = 'introspect';
-const APP_ALLOWLIST = ['org.freedesktop.impl.portal.desktop.gtk'];
+const APP_ALLOWLIST = [
+    'org.freedesktop.impl.portal.desktop.gtk',
+    'org.freedesktop.impl.portal.desktop.gnome',
+];
 
 const INTROSPECT_DBUS_API_VERSION = 3;
 
