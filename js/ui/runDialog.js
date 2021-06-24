@@ -6,6 +6,7 @@ const { Clutter, Gio, GLib, GObject, Meta, Shell, St } = imports.gi;
 const Dialog = imports.ui.dialog;
 const Main = imports.ui.main;
 const ModalDialog = imports.ui.modalDialog;
+const ParentalControlsManager = imports.misc.parentalControlsManager;
 const ShellEntry = imports.ui.shellEntry;
 const Util = imports.misc.util;
 const History = imports.misc.history;
@@ -196,7 +197,10 @@ class RunDialog extends ModalDialog.ModalDialog {
                     let execArg = this._terminalSettings.get_string(EXEC_ARG_KEY);
                     command = '%s %s %s'.format(exec, execArg, input);
                 }
-                Util.trySpawnCommandLine(command);
+
+		let app_info = Gio.AppInfo.create_from_commandline(command, null, Gio.AppInfoCreateFlags.SUPPORTS_STARTUP_NOTIFICATION);
+		if (ParentalControlsManager.getDefault().shouldShowApp(app_info))
+                    Util.trySpawnCommandLine(command);
             } catch (e) {
                 // Mmmh, that failed - see if @input matches an existing file
                 let path = null;
