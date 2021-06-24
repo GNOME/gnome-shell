@@ -400,8 +400,9 @@ _st_create_shadow_pipeline (StShadow    *shadow_spec,
   g_return_val_if_fail (shadow_spec != NULL, NULL);
   g_return_val_if_fail (src_texture != NULL, NULL);
 
-  sigma = resource_scale * shadow_spec->blur / 2.f;
-  sampling_radius = ceilf (1.5 * sigma) * 2.0;
+  sampling_radius = resource_scale * shadow_spec->blur;
+  sigma = sampling_radius / 2.f;
+  sampling_radius = ceilf (sampling_radius);
 
   src_width = cogl_texture_get_width (src_texture);
   src_height = cogl_texture_get_height (src_texture);
