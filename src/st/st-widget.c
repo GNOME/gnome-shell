@@ -794,6 +794,16 @@ st_widget_get_paint_volume (ClutterActor *self,
   if (!clutter_actor_get_clip_to_allocation (self))
     {
       ClutterActor *child;
+      StShadow *shadow_spec = st_theme_node_get_text_shadow (theme_node);
+
+      if (shadow_spec)
+        {
+          ClutterActorBox shadow_box;
+
+          st_shadow_get_box (shadow_spec, &alloc_box, &shadow_box);
+          clutter_paint_volume_union_box (volume, &shadow_box);
+        }
+
       /* Based on ClutterGroup/ClutterBox; include the children's
        * paint volumes, since they may paint outside our allocation.
        */
