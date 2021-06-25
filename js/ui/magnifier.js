@@ -856,6 +856,7 @@ var ZoomRegion = class ZoomRegion {
             this._updateMousePosition();
             this._connectSignals();
         } else {
+            Main.uiGroup.set_opacity(255);
             this._disconnectSignals();
             this._destroyActors();
         }
@@ -1404,6 +1405,9 @@ var ZoomRegion = class ZoomRegion {
 
         if (this.isActive() && this._isMouseOverRegion())
             this._magnifier.hideSystemCursor();
+
+        const uiGroupIsOccluded = this.isActive() && this._isFullScreen();
+        Main.uiGroup.set_opacity(uiGroupIsOccluded ? 0 : 255);
     }
 
     _changeROI(params) {
