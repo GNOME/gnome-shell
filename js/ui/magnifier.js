@@ -1166,6 +1166,8 @@ var ZoomRegion = class ZoomRegion {
                 this._yDelayed = null;
             }
 
+            this._scrollContentsTimerId = 0;
+
             return GLib.SOURCE_REMOVE;
         });
 
