@@ -172,6 +172,9 @@ var Magnifier = class Magnifier {
             this.stopTrackingMouse();
         }
 
+        if (this._crossHairs)
+            this._crossHairs.setEnabled(activate);
+
         // Make sure system mouse pointer is shown when all zoom regions are
         // invisible.
         if (!activate)
@@ -1677,14 +1680,22 @@ class Crosshairs extends Clutter.Actor {
         this._clipSize = [0, 0];
         this._clones = [];
         this.reCenter();
-
-        Main.layoutManager.connect('monitors-changed',
-                                   this._monitorsChanged.bind(this));
+        this._monitorsChangedId = 0;
     }
 
     _monitorsChanged() {
         this.set_size(global.screen_width * 3, global.screen_height * 3);
         this.reCenter();
+    }
+
+    setEnabled(enabled) {
+        if (enabled && this._monitorsChangedId === 0) {
+            this._monitorsChangedId = Main.layoutManager.connect(
+                'monitors-changed', this._monitorsChanged.bind(this));
+        } else if (!enabled && this._monitorsChangedId !== 0) {
+            Main.layoutManager.disconnect(this._monitorsChangedId);
+            this._monitorsChangedId = 0;
+        }
     }
 
     /**
