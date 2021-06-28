@@ -22,29 +22,34 @@ class Indicator extends PanelMenu.SystemIndicator {
     _init() {
         super._init();
 
-        this._desktopSettings = new Gio.Settings({ schema_id: 'org.gnome.desktop.interface' });
-        this._desktopSettings.connect('changed::%s'.format(SHOW_BATTERY_PERCENTAGE),
-                                      this._sync.bind(this));
+        this._desktopSettings = new Gio.Settings({
+            schema_id: 'org.gnome.desktop.interface',
+        });
+        this._desktopSettings.connect(
+            'changed::%s'.format(SHOW_BATTERY_PERCENTAGE), this._sync.bind(this));
 
         this._indicator = this._addIndicator();
-        this._percentageLabel = new St.Label({ y_expand: true,
-                                               y_align: Clutter.ActorAlign.CENTER });
+        this._percentageLabel = new St.Label({
+            y_expand: true,
+            y_align: Clutter.ActorAlign.CENTER,
+        });
         this.add_child(this._percentageLabel);
         this.add_style_class_name('power-status');
 
         this._proxy = new PowerManagerProxy(Gio.DBus.system, BUS_NAME, OBJECT_PATH,
-                                            (proxy, error) => {
-                                                if (error) {
-                                                    log(error.message);
-                                                    return;
-                                                }
-                                                this._proxy.connect('g-properties-changed',
-                                                                    this._sync.bind(this));
-                                                this._sync();
-                                            });
+            (proxy, error) => {
+                if (error) {
+                    log(error.message);
+                    return;
+                }
+                this._proxy.connect('g-properties-changed',
+                    this._sync.bind(this));
+                this._sync();
+            });
 
-        this._item = new PopupMenu.PopupSubMenuMenuItem("", true);
-        this._item.menu.addSettingsAction(_("Power Settings"), 'gnome-power-panel.desktop');
+        this._item = new PopupMenu.PopupSubMenuMenuItem('', true);
+        this._item.menu.addSettingsAction(_('Power Settings'),
+            'gnome-power-panel.desktop');
         this.menu.addMenuItem(this._item);
 
         Main.sessionMode.connect('updated', this._sessionUpdated.bind(this));
@@ -59,36 +64,38 @@ class Indicator extends PanelMenu.SystemIndicator {
     _getStatus() {
         let seconds = 0;
 
-        if (this._proxy.State == UPower.DeviceState.FULLY_CHARGED)
-            return _("Fully Charged");
-        else if (this._proxy.State == UPower.DeviceState.CHARGING)
+        if (this._proxy.State === UPower.DeviceState.FULLY_CHARGED)
+            return _('Fully Charged');
+        else if (this._proxy.State === UPower.DeviceState.CHARGING)
             seconds = this._proxy.TimeToFull;
-        else if (this._proxy.State == UPower.DeviceState.DISCHARGING)
+        else if (this._proxy.State === UPower.DeviceState.DISCHARGING)
             seconds = this._proxy.TimeToEmpty;
-        else if (this._proxy.State == UPower.DeviceState.PENDING_CHARGE)
-            return _("Not Charging");
+        else if (this._proxy.State === UPower.DeviceState.PENDING_CHARGE)
+            return _('Not Charging');
         // state is PENDING_DISCHARGE
         else
-            return _("Estimating…");
+            return _('Estimating…');
 
         let time = Math.round(seconds / 60);
-        if (time == 0) {
+        if (time === 0) {
             // 0 is reported when UPower does not have enough data
             // to estimate battery life
-            return _("Estimating…");
+            return _('Estimating…');
         }
 
         let minutes = time % 60;
         let hours = Math.floor(time / 60);
 
-        if (this._proxy.State == UPower.DeviceState.DISCHARGING) {
+        if (this._proxy.State === UPower.DeviceState.DISCHARGING) {
             // Translators: this is <hours>:<minutes> Remaining (<percentage>)
-            return _("%d\u2236%02d Remaining (%d\u2009%%)").format(hours, minutes, this._proxy.Percentage);
+            return _('%d\u2236%02d Remaining (%d\u2009%%)').format(
+                hours, minutes, this._proxy.Percentage);
         }
 
-        if (this._proxy.State == UPower.DeviceState.CHARGING) {
+        if (this._proxy.State === UPower.DeviceState.CHARGING) {
             // Translators: this is <hours>:<minutes> Until Full (<percentage>)
-            return _("%d\u2236%02d Until Full (%d\u2009%%)").format(hours, minutes, this._proxy.Percentage);
+            return _('%d\u2236%02d Until Full (%d\u2009%%)').format(
+                hours, minutes, this._proxy.Percentage);
         }
 
         return null;
@@ -99,7 +106,8 @@ class Indicator extends PanelMenu.SystemIndicator {
         let visible = this._proxy.IsPresent;
         if (visible) {
             this._item.show();
-            this._percentageLabel.visible = this._desktopSettings.get_boolean(SHOW_BATTERY_PERCENTAGE);
+            this._percentageLabel.visible =
+                this._desktopSettings.get_boolean(SHOW_BATTERY_PERCENTAGE);
         } else {
             // If there's no battery, then we use the power icon.
             this._item.hide();
@@ -109,7 +117,7 @@ class Indicator extends PanelMenu.SystemIndicator {
         }
 
         // The icons
-        let chargingState = this._proxy.State == UPower.DeviceState.CHARGING
+        let chargingState = this._proxy.State === UPower.DeviceState.CHARGING
             ? '-charging' : '';
         let fillLevel = 10 * Math.floor(this._proxy.Percentage / 10);
         const charged =
