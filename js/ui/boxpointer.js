@@ -1,7 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported BoxPointer */
 
-const { Clutter, GObject, St } = imports.gi;
+const { Clutter, GObject, Meta, St } = imports.gi;
 
 const Main = imports.ui.main;
 
@@ -47,6 +47,13 @@ var BoxPointer = GObject.registerClass({
         this.set_child_above_sibling(this.bin, this._border);
         this._sourceAlignment = 0.5;
         this._muteInput = true;
+
+        this.connect('notify::visible', () => {
+            if (this.visible)
+                Meta.disable_unredirect_for_display(global.display);
+            else
+                Meta.enable_unredirect_for_display(global.display);
+        });
 
         this.connect('destroy', this._onDestroy.bind(this));
     }
