@@ -40,10 +40,10 @@ class Indicator extends PanelMenu.SystemIndicator {
             (proxy, error) => {
                 if (error) {
                     log(error.message);
-                    return;
+                } else {
+                    this._proxy.connect('g-properties-changed',
+                        this._sync.bind(this));
                 }
-                this._proxy.connect('g-properties-changed',
-                    this._sync.bind(this));
                 this._sync();
             });
 
