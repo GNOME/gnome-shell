@@ -464,8 +464,10 @@ var BoxPointer = GObject.registerClass({
         this._workArea = Main.layoutManager.getWorkAreaForMonitor(monitorIndex);
 
         // Position correctly relative to the sourceActor
-        let sourceNode = sourceActor.get_theme_node();
-        let sourceContentBox = sourceNode.get_content_box(sourceActor.get_allocation_box());
+        const sourceAllocation = sourceActor.get_allocation_box();
+        const sourceContentBox = sourceActor instanceof St.Widget
+            ? sourceActor.get_theme_node().get_content_box(sourceAllocation)
+            : sourceAllocation;
         let sourceTopLeft = this._sourceExtents.get_top_left();
         let sourceBottomRight = this._sourceExtents.get_bottom_right();
         let sourceCenterX = sourceTopLeft.x + sourceContentBox.x1 + (sourceContentBox.x2 - sourceContentBox.x1) * this._sourceAlignment;
