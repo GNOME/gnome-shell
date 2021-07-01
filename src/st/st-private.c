@@ -391,7 +391,7 @@ _st_create_shadow_pipeline (StShadow    *shadow_spec,
   CoglPipeline *pipeline;
   CoglTexture *texture;
   float sampling_radius;
-  float sigma;
+  float radius;
   int src_height, dst_height;
   int src_width, dst_width;
   CoglPipeline *texture_pipeline;
@@ -403,9 +403,8 @@ _st_create_shadow_pipeline (StShadow    *shadow_spec,
   g_return_val_if_fail (shadow_spec != NULL, NULL);
   g_return_val_if_fail (src_texture != NULL, NULL);
 
-  sampling_radius = resource_scale * shadow_spec->blur;
-  sigma = sampling_radius / 2.f;
-  sampling_radius = ceilf (sampling_radius);
+  radius = resource_scale * shadow_spec->blur;
+  sampling_radius = ceilf (radius);
 
   src_width = cogl_texture_get_width (src_texture);
   src_height = cogl_texture_get_height (src_texture);
@@ -428,7 +427,7 @@ _st_create_shadow_pipeline (StShadow    *shadow_spec,
   cogl_framebuffer_orthographic (fb, 0, 0, dst_width, dst_height, 0, 1.0);
 
   /* Blur */
-  blur_node = clutter_blur_node_new (dst_width, dst_height, sigma);
+  blur_node = clutter_blur_node_new (dst_width, dst_height, radius);
   clutter_paint_node_add_rectangle (blur_node,
                                     &(ClutterActorBox) {
                                       0.f, 0.f,

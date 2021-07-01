@@ -42,9 +42,9 @@ G_DECLARE_FINAL_TYPE (ShellBlurEffect, shell_blur_effect, SHELL, BLUR_EFFECT, Cl
 
 ShellBlurEffect *shell_blur_effect_new (void);
 
-int shell_blur_effect_get_sigma (ShellBlurEffect *self);
-void shell_blur_effect_set_sigma (ShellBlurEffect *self,
-                                  int              sigma);
+int shell_blur_effect_get_radius (ShellBlurEffect *self);
+void shell_blur_effect_set_radius (ShellBlurEffect *self,
+                                   int              radius);
 
 float shell_blur_effect_get_brightness (ShellBlurEffect *self);
 void shell_blur_effect_set_brightness (ShellBlurEffect *self,

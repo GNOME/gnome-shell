@@ -30,7 +30,7 @@ const FADE_OUT_TRANSLATION = 200;
 const FADE_OUT_SCALE = 0.3;
 
 const BLUR_BRIGHTNESS = 0.65;
-const BLUR_SIGMA = 45;
+const BLUR_RADIUS = 90;
 
 const SUMMARY_ICON_SIZE = 32;
 
@@ -668,7 +668,7 @@ export const UnlockDialog = GObject.registerClass({
             if (effect) {
                 effect.set({
                     brightness: BLUR_BRIGHTNESS,
-                    sigma: BLUR_SIGMA * themeContext.scale_factor,
+                    radius: BLUR_RADIUS * themeContext.scale_factor,
                 });
             }
         }

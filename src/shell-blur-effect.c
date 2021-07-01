@@ -49,7 +49,7 @@ static const gchar *brightness_glsl =
 "  cogl_color_out.rgb *= brightness;                                       \n";
 
 #define MIN_DOWNSCALE_SIZE 256.f
-#define MAX_SIGMA 6.f
+#define MAX_RADIUS 12.f
 
 typedef enum
 {
@@ -84,14 +84,14 @@ struct _ShellBlurEffect
   ShellBlurMode mode;
   float downscale_factor;
   float brightness;
-  int sigma;
+  int radius;
 };
 
 G_DEFINE_TYPE (ShellBlurEffect, shell_blur_effect, CLUTTER_TYPE_EFFECT)
 
 enum {
   PROP_0,
-  PROP_SIGMA,
+  PROP_RADIUS,
   PROP_BRIGHTNESS,
   PROP_MODE,
   N_PROPS
@@ -276,18 +276,18 @@ clear_framebuffer_data (FramebufferData *fb_data)
 static float
 calculate_downscale_factor (float width,
                             float height,
-                            float sigma)
+                            float radius)
 {
   float downscale_factor = 1.0;
   float scaled_width = width;
   float scaled_height = height;
-  float scaled_sigma = sigma;
+  float scaled_radius = radius;
 
   /* This is the algorithm used by Firefox; keep downscaling until either the
    * blur radius is lower than the threshold, or the downscaled texture is too
    * small.
    */
-  while (scaled_sigma > MAX_SIGMA &&
+  while (scaled_radius > MAX_RADIUS &&
          scaled_width > MIN_DOWNSCALE_SIZE &&
          scaled_height > MIN_DOWNSCALE_SIZE)
     {
@@ -295,7 +295,7 @@ calculate_downscale_factor (float width,
 
       scaled_width = width / downscale_factor;
       scaled_height = height / downscale_factor;
-      scaled_sigma = sigma / downscale_factor;
+      scaled_radius = radius / downscale_factor;
     }
 
   return downscale_factor;
@@ -421,7 +421,7 @@ create_blur_nodes (ShellBlurEffect  *self,
 
   blur_node = clutter_blur_node_new (self->tex_width / self->downscale_factor,
                                      self->tex_height / self->downscale_factor,
-                                     self->sigma / self->downscale_factor);
+                                     self->radius / self->downscale_factor);
   clutter_paint_node_set_static_name (blur_node, "ShellBlurEffect (blur)");
   clutter_paint_node_add_child (brightness_node, blur_node);
   clutter_paint_node_add_rectangle (blur_node,
@@ -495,7 +495,7 @@ update_framebuffers (ShellBlurEffect     *self,
 
   clutter_actor_box_get_size (source_actor_box, &width, &height);
 
-  downscale_factor = calculate_downscale_factor (width, height, self->sigma);
+  downscale_factor = calculate_downscale_factor (width, height, self->radius);
 
   updated = update_actor_fbo (self, width, height, downscale_factor) &&
             update_brightness_fbo (self, width, height, downscale_factor);
@@ -615,7 +615,7 @@ shell_blur_effect_paint_node (ClutterEffect           *effect,
 
   g_assert (self->actor != NULL);
 
-  if (self->sigma > 0)
+  if (self->radius > 0)
     {
       g_autoptr (ClutterPaintNode) blur_node = NULL;
 
@@ -714,8 +714,8 @@ shell_blur_effect_get_property (GObject    *object,
 
   switch (prop_id)
     {
-    case PROP_SIGMA:
-      g_value_set_int (value, self->sigma);
+    case PROP_RADIUS:
+      g_value_set_int (value, self->radius);
       break;
 
     case PROP_BRIGHTNESS:
@@ -741,8 +741,8 @@ shell_blur_effect_set_property (GObject      *object,
 
   switch (prop_id)
     {
-    case PROP_SIGMA:
-      shell_blur_effect_set_sigma (self, g_value_get_int (value));
+    case PROP_RADIUS:
+      shell_blur_effect_set_radius (self, g_value_get_int (value));
       break;
 
     case PROP_BRIGHTNESS:
@@ -773,10 +773,10 @@ shell_blur_effect_class_init (ShellBlurEffectClass *klass)
 
   effect_class->paint_node = shell_blur_effect_paint_node;
 
-  properties[PROP_SIGMA] =
-    g_param_spec_int ("sigma",
-                      "Sigma",
-                      "Sigma",
+  properties[PROP_RADIUS] =
+    g_param_spec_int ("radius",
+                      "Radius",
+                      "Radius in pixels",
                       0, G_MAXINT, 0,
                       G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS | G_PARAM_EXPLICIT_NOTIFY);
 
@@ -802,7 +802,7 @@ static void
 shell_blur_effect_init (ShellBlurEffect *self)
 {
   self->mode = SHELL_BLUR_MODE_ACTOR;
-  self->sigma = 0;
+  self->radius = 0;
   self->brightness = 1.f;
 
   self->actor_fb.pipeline = create_base_pipeline ();
@@ -819,29 +819,29 @@ shell_blur_effect_new (void)
 }
 
 int
-shell_blur_effect_get_sigma (ShellBlurEffect *self)
+shell_blur_effect_get_radius (ShellBlurEffect *self)
 {
   g_return_val_if_fail (SHELL_IS_BLUR_EFFECT (self), -1);
 
-  return self->sigma;
+  return self->radius;
 }
 
 void
-shell_blur_effect_set_sigma (ShellBlurEffect *self,
-                             int              sigma)
+shell_blur_effect_set_radius (ShellBlurEffect *self,
+                              int              radius)
 {
   g_return_if_fail (SHELL_IS_BLUR_EFFECT (self));
 
-  if (self->sigma == sigma)
+  if (self->radius == radius)
     return;
 
-  self->sigma = sigma;
+  self->radius = radius;
   self->cache_flags &= ~BLUR_APPLIED;
 
   if (self->actor)
     clutter_effect_queue_repaint (CLUTTER_EFFECT (self));
 
-  g_object_notify_by_pspec (G_OBJECT (self), properties[PROP_SIGMA]);
+  g_object_notify_by_pspec (G_OBJECT (self), properties[PROP_RADIUS]);
 }
 
 float
