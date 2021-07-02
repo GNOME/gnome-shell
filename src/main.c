@@ -11,6 +11,7 @@
 #include <cogl-pango/cogl-pango.h>
 #include <clutter/clutter.h>
 #include <gtk/gtk.h>
+#include <glib-unix.h>
 #include <glib/gi18n-lib.h>
 #include <girepository.h>
 #include <meta/meta-context.h>
@@ -439,6 +440,49 @@ GOptionEntry gnome_shell_options[] = {
   { NULL }
 };
 
+static gboolean
+on_sigterm (gpointer user_data)
+{
+  MetaContext *context = META_CONTEXT (user_data);
+
+  meta_context_terminate (context);
+
+  return G_SOURCE_REMOVE;
+}
+
+static void
+init_signal_handlers (MetaContext *context)
+{
+  struct sigaction act = { 0 };
+  sigset_t empty_mask;
+
+  sigemptyset (&empty_mask);
+  act.sa_handler = SIG_IGN;
+  act.sa_mask = empty_mask;
+  act.sa_flags = 0;
+  if (sigaction (SIGPIPE,  &act, NULL) < 0)
+    g_warning ("Failed to register SIGPIPE handler: %s", g_strerror (errno));
+#ifdef SIGXFSZ
+  if (sigaction (SIGXFSZ,  &act, NULL) < 0)
+    g_warning ("Failed to register SIGXFSZ handler: %s", g_strerror (errno));
+#endif
+
+  g_unix_signal_add (SIGTERM, on_sigterm, context);
+}
+
+static void
+change_to_home_directory (void)
+{
+  const char *home_dir;
+
+  home_dir = g_get_home_dir ();
+  if (!home_dir)
+    return;
+
+  if (chdir (home_dir) < 0)
+    g_warning ("Could not change to home directory %s", home_dir);
+}
+
 int
 main (int argc, char **argv)
 {
@@ -465,6 +509,9 @@ main (int argc, char **argv)
 
   meta_context_set_plugin_gtype (context, gnome_shell_plugin_get_type ());
   meta_context_set_gnome_wm_keybindings (context, GNOME_WM_KEYBINDINGS);
+
+  init_signal_handlers (context);
+  change_to_home_directory ();
 
   if (!meta_context_setup (context, &error))
     {
