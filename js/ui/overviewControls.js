@@ -112,7 +112,8 @@ class ControlsManagerLayout extends Clutter.BoxLayout {
 
     vfunc_set_container(container) {
         this._container = container;
-        this.hookup_style(container);
+        if (container)
+            this.hookup_style(container);
     }
 
     vfunc_get_preferred_width(_container, _forHeight) {
