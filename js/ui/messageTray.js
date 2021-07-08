@@ -1022,17 +1022,20 @@ var MessageTray = GObject.registerClass({
     }
 
     _onNotificationDestroy(notification) {
-        if (this._notification == notification && (this._notificationState == State.SHOWN || this._notificationState == State.SHOWING)) {
-            this._updateNotificationTimeout(0);
-            this._notificationRemoved = true;
-            this._updateState();
-            return;
-        }
+        this._notificationRemoved = this._notification === notification;
 
-        let index = this._notificationQueue.indexOf(notification);
-        if (index != -1) {
-            this._notificationQueue.splice(index, 1);
-            this.emit('queue-changed');
+        if (this._notificationRemoved) {
+            if (this._notificationState === State.SHOWN ||
+                this._notificationState === State.SHOWING) {
+                this._updateNotificationTimeout(0);
+                this._updateState();
+            }
+        } else {
+            const index = this._notificationQueue.indexOf(notification);
+            if (index !== -1) {
+                this._notificationQueue.splice(index, 1);
+                this.emit('queue-changed');
+            }
         }
     }
 
