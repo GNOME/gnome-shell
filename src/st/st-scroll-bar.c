@@ -633,7 +633,7 @@ move_slider (StScrollBar *bar,
                             &page_size);
 
   direction = clutter_actor_get_text_direction (CLUTTER_ACTOR (bar));
-  if (direction == CLUTTER_TEXT_DIRECTION_RTL)
+  if (!priv->vertical && direction == CLUTTER_TEXT_DIRECTION_RTL)
     pos = size - pos;
 
   position = ((pos / size)
@@ -778,7 +778,7 @@ trough_paging_cb (StScrollBar *self)
                                        &tx, &ty);
 
   direction = clutter_actor_get_text_direction (CLUTTER_ACTOR (self));
-  if (direction == CLUTTER_TEXT_DIRECTION_RTL)
+  if (!priv->vertical && direction == CLUTTER_TEXT_DIRECTION_RTL)
     page_increment *= -1;
 
   if (priv->vertical)
