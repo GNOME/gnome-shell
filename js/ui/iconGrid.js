@@ -1172,7 +1172,8 @@ var IconGrid = GObject.registerClass({
             row_spacing: 0,
         });
         const layoutManager = new IconGridLayout(layoutParams);
-        layoutManager.connect('pages-changed', () => this.emit('pages-changed'));
+        const pagesChangedId = layoutManager.connect('pages-changed',
+            () => this.emit('pages-changed'));
 
         super._init({
             style_class: 'icon-grid',
@@ -1188,6 +1189,7 @@ var IconGrid = GObject.registerClass({
 
         this.connect('actor-added', this._childAdded.bind(this));
         this.connect('actor-removed', this._childRemoved.bind(this));
+        this.connect('destroy', () => layoutManager.disconnect(pagesChangedId));
     }
 
     _getChildrenToAnimate() {
