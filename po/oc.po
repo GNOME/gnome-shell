@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master fr\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2021-05-14 16:20+0000\n"
-"PO-Revision-Date: 2021-05-13 15:46+0200\n"
+"POT-Creation-Date: 2021-06-16 08:21+0000\n"
+"PO-Revision-Date: 2021-07-08 21:42+0200\n"
 "Last-Translator: Quentin PAGÈS\n"
 "Language-Team: Tot En Òc\n"
 "Language: oc\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 2.4.3\n"
+"X-Generator: Poedit 3.0\n"
 "X-Project-Style: gnome\n"
 
 #: data/50-gnome-shell-system.xml:6
@@ -87,12 +87,6 @@ msgid "UUIDs of extensions to force disabling"
 msgstr "Identificants UUID de las extensions de desactivar de fòrça"
 
 #: data/org.gnome.shell.gschema.xml.in:27
-#, fuzzy
-#| msgid ""
-#| "GNOME Shell extensions have a UUID property; this key lists extensions "
-#| "which should be loaded. Any extension that wants to be loaded needs to be "
-#| "in this list. You can also manipulate this list with the EnableExtension "
-#| "and DisableExtension D-Bus methods on org.gnome.Shell."
 msgid ""
 "GNOME Shell extensions have a UUID property; this key lists extensions which "
 "should be disabled, even if loaded as part of the current mode. You can also "
@@ -100,11 +94,11 @@ msgid ""
 "methods on org.gnome.Shell. This key takes precedence over the “enabled-"
 "extensions” setting."
 msgstr ""
-"Las extensions GNOME Shell an una proprietat UUID. Aquesta clau enumèra las "
-"extensions que devon èsser cargadas. Tota extension que voldriá èsser "
-"cargada deu èsser aponduda dins aquesta lista. Podètz tanben manipular "
-"aquesta lista amb los metòdes DBus EnableExtension e DisableExtension de org."
-"gnome.Shell."
+"Las extensions GNOME Shell an una proprietat UUID. Aquesta clau lista las "
+"extensions que devon èsser desactivadas, encara que fòrmen part del mòde "
+"actual. Podètz tanben manipular aquesta lista amb los metòdes "
+"EnableExtension e DisableExtension D-Bus methods de org.gnome.Shell. Aquesta "
+"clau subrecarga lo paramètre « enabled-extensions »."
 
 #: data/org.gnome.shell.gschema.xml.in:37
 msgid "Disable user extensions"
@@ -250,18 +244,20 @@ msgstr "Combinason de tòcas per dobrir lo menú de l'aplicacion."
 
 #: data/org.gnome.shell.gschema.xml.in:164
 #: data/org.gnome.shell.gschema.xml.in:171
-#, fuzzy
-#| msgid "Keybinding to open the overview"
 msgid "Keybinding to shift between overview states"
-msgstr "Combinason de tòcas per dobrir la vista d'ensemble"
+msgstr "Combinason de tòcas per alternar los estats de la la vista"
 
 #: data/org.gnome.shell.gschema.xml.in:165
 msgid "Keybinding to shift between session, window picker and app grid"
 msgstr ""
+"Combinason de tòcas per bascular entre la session, lo selector de fenèstra e "
+"la grasilha d'aplicacions"
 
 #: data/org.gnome.shell.gschema.xml.in:172
 msgid "Keybinding to shift between app grid, window picker and session"
 msgstr ""
+"Combinason de tòcas per bascular entre la grasilha d'aplicacions, lo "
+"selector de fenèstra e la session"
 
 #: data/org.gnome.shell.gschema.xml.in:178
 msgid "Keybinding to open the “Show Applications” view"
@@ -511,18 +507,14 @@ msgstr "Error d'autentificacion"
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger on the fingerprint reader
 #: js/gdm/util.js:589
-#, fuzzy
-#| msgid "(or swipe finger)"
 msgid "(or swipe finger across reader)"
-msgstr "(o fasètz lisar lo det)"
+msgstr "(o fasètz lisar lo det pel lector)"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can place their finger on the fingerprint reader instead
 #: js/gdm/util.js:594
-#, fuzzy
-#| msgid "(or swipe finger)"
 msgid "(or place finger on reader)"
-msgstr "(o fasètz lisar lo det)"
+msgstr "(o pausatz lo det sul lector)"
 
 #. Translators: The name of the power-off action in search
 #: js/misc/systemActions.js:82
@@ -1754,10 +1746,8 @@ msgid "Windows System Volume"
 msgstr "Volum sistèma Windows"
 
 #: js/ui/shellMountOperation.js:291
-#, fuzzy
-#| msgid "Mouse Keys"
 msgid "Uses Keyfiles"
-msgstr "Tòcas de la mirga"
+msgstr "Utiliza de fichièrs de claus"
 
 #. Translators: %s is the Disks application
 #: js/ui/shellMountOperation.js:298
@@ -1765,6 +1755,8 @@ msgstr "Tòcas de la mirga"
 msgid ""
 "To unlock a volume that uses keyfiles, use the <i>%s</i> utility instead."
 msgstr ""
+"Per desverrolhar un volum qu’utiliza los fichièrs de clau, emplegatz "
+"l’utilitari <i>%s</i> puslèu."
 
 #: js/ui/shellMountOperation.js:306
 msgid "PIM Number"
@@ -2341,7 +2333,7 @@ msgstr "Benvenguda al GNOME %s"
 
 #: js/ui/welcomeDialog.js:37
 msgid "If you want to learn your way around, check out the tour."
-msgstr ""
+msgstr "Se volètz vos assabentar, anatz far la visita."
 
 #: js/ui/welcomeDialog.js:45
 msgid "No Thanks"
@@ -2717,7 +2709,7 @@ msgstr "Lo modèl d’utilizar per l’extension novèla"
 
 #: subprojects/extensions-tool/src/command-create.c:450
 msgid "Enter extension information interactively"
-msgstr ""
+msgstr "Picatz d’un biais interactiu las informacions de l’extension"
 
 #: subprojects/extensions-tool/src/command-create.c:458
 msgid "Create a new extension"
@@ -2787,23 +2779,19 @@ msgstr "Remplaçar una extension existenta"
 
 #: subprojects/extensions-tool/src/command-install.c:175
 msgid "EXTENSION_BUNDLE"
-msgstr ""
+msgstr "EXTENSION_EMPAQUETADA"
 
 #: subprojects/extensions-tool/src/command-install.c:184
-#, fuzzy
-#| msgid "UUIDs of extensions to enable"
 msgid "Install an extension bundle"
-msgstr "Identificants UUID de las extensions d'activar"
+msgstr "Installar una extension empaquetada"
 
 #: subprojects/extensions-tool/src/command-install.c:202
-#, fuzzy
-#| msgid "No extensions installed"
 msgid "No extension bundle specified"
-msgstr "Cap d'extension pas installada"
+msgstr "Cap d'extension empaquetadas especificadas"
 
 #: subprojects/extensions-tool/src/command-install.c:208
 msgid "More than one extension bundle specified"
-msgstr ""
+msgstr "Mai d’una extension empaquetada especificada"
 
 #: subprojects/extensions-tool/src/command-list.c:128
 msgid "Show user-installed extensions"
@@ -2843,7 +2831,7 @@ msgstr "FICHIÈR"
 
 #: subprojects/extensions-tool/src/command-pack.c:451
 msgid "Additional source to include in the bundle"
-msgstr ""
+msgstr "Font addicionala d’inclure al paquet"
 
 #: subprojects/extensions-tool/src/command-pack.c:454
 msgid "SCHEMA"
@@ -2884,7 +2872,7 @@ msgstr "REPERTÒRI_FONT"
 
 #: subprojects/extensions-tool/src/command-pack.c:481
 msgid "Create an extension bundle"
-msgstr ""
+msgstr "Crear una extension empaquetada"
 
 #: subprojects/extensions-tool/src/command-pack.c:501
 msgid "More than one source directory specified"
@@ -2956,11 +2944,11 @@ msgstr "Afichar las informacions de version e quitar."
 #: subprojects/extensions-tool/src/main.c:310
 #: subprojects/extensions-tool/src/main.c:313
 msgid "COMMAND"
-msgstr ""
+msgstr "COMANDA"
 
 #: subprojects/extensions-tool/src/main.c:313
 msgid "[ARGS…]"
-msgstr ""
+msgstr "[PARAMS...]"
 
 #: subprojects/extensions-tool/src/main.c:315
 msgid "Commands:"
@@ -3008,10 +2996,8 @@ msgid "Package extension"
 msgstr "Paquet de l’extension"
 
 #: subprojects/extensions-tool/src/main.c:328
-#, fuzzy
-#| msgid "UUIDs of extensions to enable"
 msgid "Install extension bundle"
-msgstr "Identificants UUID de las extensions d'activar"
+msgstr "Installar l’extension empaquetada"
 
 #: subprojects/extensions-tool/src/main.c:330
 #, c-format
