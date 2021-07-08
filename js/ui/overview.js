@@ -25,16 +25,6 @@ var OVERVIEW_ACTIVATION_TIMEOUT = 0.5;
 var ShellInfo = class {
     constructor() {
         this._source = null;
-        this._undoCallback = null;
-    }
-
-    _onUndoClicked() {
-        if (this._undoCallback)
-            this._undoCallback();
-        this._undoCallback = null;
-
-        if (this._source)
-            this._source.destroy();
     }
 
     setMessage(text, options) {
@@ -64,9 +54,8 @@ var ShellInfo = class {
             notification.update(text, null, { clear: true });
         }
 
-        this._undoCallback = undoCallback;
         if (undoCallback)
-            notification.addAction(_("Undo"), this._onUndoClicked.bind(this));
+            notification.addAction(_('Undo'), () => undoCallback());
 
         this._source.showNotification(notification);
     }
