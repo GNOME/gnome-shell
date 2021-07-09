@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 3.14\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2021-05-19 16:34+0000\n"
+"POT-Creation-Date: 2021-07-08 19:44+0000\n"
 "PO-Revision-Date: 2021-06-09 18:24+0100\n"
 "Last-Translator: Hugo Carvalho <hugokarvalho@hotmail.com>\n"
 "Language-Team: Português <@>\n"
@@ -1831,11 +1831,11 @@ msgstr[1] "%d ligados"
 
 #: js/ui/status/bluetooth.js:152
 msgid "Bluetooth Off"
-msgstr "Bluetooth ligado"
+msgstr "Bluetooth desligado"
 
 #: js/ui/status/bluetooth.js:154
 msgid "Bluetooth On"
-msgstr "Bluetooth desligado"
+msgstr "Bluetooth ligado"
 
 #: js/ui/status/brightness.js:39
 msgid "Brightness"
