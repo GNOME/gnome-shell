@@ -16,8 +16,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 3.14\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2021-07-05 18:50+0000\n"
-"PO-Revision-Date: 2021-07-07 14:32+0100\n"
+"POT-Creation-Date: 2021-07-08 23:16+0000\n"
+"PO-Revision-Date: 2021-07-09 15:53+0100\n"
 "Last-Translator: Hugo Carvalho <hugokarvalho@hotmail.com>\n"
 "Language-Team: Português <https://l10n.gnome.org/teams/pt/>\n"
 "Language: pt\n"
@@ -1871,11 +1871,11 @@ msgstr[1] "%d ligados"
 
 #: js/ui/status/bluetooth.js:152
 msgid "Bluetooth Off"
-msgstr "Bluetooth ligado"
+msgstr "Bluetooth desligado"
 
 #: js/ui/status/bluetooth.js:154
 msgid "Bluetooth On"
-msgstr "Bluetooth desligado"
+msgstr "Bluetooth ligado"
 
 #: js/ui/status/brightness.js:39
 msgid "Brightness"
@@ -2467,20 +2467,20 @@ msgstr "Fechar"
 msgid "Evolution Calendar"
 msgstr "Calendário do Evolution"
 
-#: src/main.c:414 subprojects/extensions-tool/src/main.c:317
+#: src/main.c:418 subprojects/extensions-tool/src/main.c:317
 msgid "Print version"
 msgstr "Mostrar versão"
 
-#: src/main.c:420
+#: src/main.c:424
 msgid "Mode used by GDM for login screen"
 msgstr "Modo utilizado pelo GDM para o ecrã de início de sessão"
 
-#: src/main.c:426
+#: src/main.c:430
 msgid "Use a specific mode, e.g. “gdm” for login screen"
 msgstr ""
 "Usar um modo específico, por ex. \"gdm\" para o ecrã de início de sessão"
 
-#: src/main.c:432
+#: src/main.c:436
 msgid "List possible modes"
 msgstr "Listar modos possíveis"
 
