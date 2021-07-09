@@ -15,16 +15,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 3.14\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2020-10-21 11:39+0000\n"
-"PO-Revision-Date: 2020-11-11 11:25-0300\n"
-"Last-Translator: Juliano de Souza Camargo <julianosc@protonmail.com>\n"
+"POT-Creation-Date: 2021-06-10 19:12+0000\n"
+"PO-Revision-Date: 2021-07-09 15:57+0100\n"
+"Last-Translator: Hugo Carvalho <hugokarvalho@hotmail.com>\n"
 "Language-Team: Portuguese <>\n"
 "Language: pt\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"X-Generator: Gtranslator 3.38.0\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 3.0\n"
 "X-Project-Style: gnome\n"
 "X-Language: pt_PT\n"
 "X-Source-Language: C\n"
@@ -445,7 +445,7 @@ msgstr "Sítio web"
 msgid "Visit extension homepage"
 msgstr "Visitar o sítio web da extensão"
 
-#: js/gdm/authPrompt.js:137 js/ui/audioDeviceSelection.js:58
+#: js/gdm/authPrompt.js:138 js/ui/audioDeviceSelection.js:61
 #: js/ui/components/networkAgent.js:111 js/ui/components/polkitAgent.js:138
 #: js/ui/endSessionDialog.js:438 js/ui/extensionDownloader.js:183
 #: js/ui/shellMountOperation.js:376 js/ui/shellMountOperation.js:386
@@ -454,19 +454,19 @@ msgid "Cancel"
 msgstr "Cancelar"
 
 #. Cisco LEAP
-#: js/gdm/authPrompt.js:239 js/ui/components/networkAgent.js:206
-#: js/ui/components/networkAgent.js:222 js/ui/components/networkAgent.js:246
-#: js/ui/components/networkAgent.js:267 js/ui/components/networkAgent.js:287
-#: js/ui/components/networkAgent.js:297 js/ui/components/polkitAgent.js:276
+#: js/gdm/authPrompt.js:240 js/ui/components/networkAgent.js:210
+#: js/ui/components/networkAgent.js:226 js/ui/components/networkAgent.js:250
+#: js/ui/components/networkAgent.js:271 js/ui/components/networkAgent.js:291
+#: js/ui/components/networkAgent.js:301 js/ui/components/polkitAgent.js:276
 #: js/ui/shellMountOperation.js:326
 msgid "Password"
 msgstr "Palavra-passe"
 
-#: js/gdm/loginDialog.js:318
+#: js/gdm/loginDialog.js:317
 msgid "Choose Session"
 msgstr "Escolher sessão"
 
-#: js/gdm/loginDialog.js:457
+#: js/gdm/loginDialog.js:456
 msgid "Not listed?"
 msgstr "Não está listado?"
 
@@ -480,8 +480,8 @@ msgstr "(por ex., utilizador ou %s)"
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: js/gdm/loginDialog.js:918 js/ui/components/networkAgent.js:242
-#: js/ui/components/networkAgent.js:265 js/ui/components/networkAgent.js:283
+#: js/gdm/loginDialog.js:918 js/ui/components/networkAgent.js:246
+#: js/ui/components/networkAgent.js:269 js/ui/components/networkAgent.js:287
 msgid "Username"
 msgstr "Utilizador"
 
@@ -489,7 +489,7 @@ msgstr "Utilizador"
 msgid "Login Window"
 msgstr "Janela de início de sessão"
 
-#: js/gdm/util.js:355
+#: js/gdm/util.js:358
 msgid "Authentication error"
 msgstr "Erro de autenticação"
 
@@ -498,7 +498,7 @@ msgstr "Erro de autenticação"
 #. as a cue to display our own message.
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger instead
-#: js/gdm/util.js:481
+#: js/gdm/util.js:494
 msgid "(or swipe finger)"
 msgstr "(ou utilize a impressão digital)"
 
@@ -721,11 +721,11 @@ msgid "%B %-d %Y, %l∶%M %p"
 msgstr "%d de %B de %Y, %l∶%M %p"
 
 #. TRANSLATORS: this is the title of the wifi captive portal login window
-#: js/portalHelper/main.js:41
+#: js/portalHelper/main.js:42
 msgid "Hotspot Login"
 msgstr "Sessão na rede"
 
-#: js/portalHelper/main.js:87
+#: js/portalHelper/main.js:88
 msgid ""
 "Your connection to this hotspot login is not secure. Passwords or other "
 "information you enter on this page can be viewed by people nearby."
@@ -748,31 +748,31 @@ msgid "Unnamed Folder"
 msgstr "Pasta sem nome"
 
 #. Translators: This is the heading of a list of open windows
-#: js/ui/appDisplay.js:2870 js/ui/panel.js:75
+#: js/ui/appDisplay.js:2874 js/ui/panel.js:75
 msgid "Open Windows"
 msgstr "Janelas abertas"
 
-#: js/ui/appDisplay.js:2889 js/ui/panel.js:82
+#: js/ui/appDisplay.js:2893 js/ui/panel.js:82
 msgid "New Window"
 msgstr "Nova janela"
 
-#: js/ui/appDisplay.js:2905
+#: js/ui/appDisplay.js:2909
 msgid "Launch using Integrated Graphics Card"
 msgstr "Iniciar usando placa de vídeo integrada"
 
-#: js/ui/appDisplay.js:2906
+#: js/ui/appDisplay.js:2910
 msgid "Launch using Discrete Graphics Card"
 msgstr "Iniciar usando placa de vídeo dedicada"
 
-#: js/ui/appDisplay.js:2934 js/ui/dash.js:239
+#: js/ui/appDisplay.js:2939 js/ui/dash.js:239
 msgid "Remove from Favorites"
 msgstr "Remover dos favoritos"
 
-#: js/ui/appDisplay.js:2940
+#: js/ui/appDisplay.js:2945
 msgid "Add to Favorites"
 msgstr "Adicionar aos favoritos"
 
-#: js/ui/appDisplay.js:2950 js/ui/panel.js:93
+#: js/ui/appDisplay.js:2955 js/ui/panel.js:93
 msgid "Show Details"
 msgstr "Mostrar detalhes"
 
@@ -790,19 +790,19 @@ msgstr "%s foi removida dos favoritos."
 msgid "Select Audio Device"
 msgstr "Selecione o dispositivo de áudio"
 
-#: js/ui/audioDeviceSelection.js:55
+#: js/ui/audioDeviceSelection.js:56
 msgid "Sound Settings"
 msgstr "Definições de som"
 
-#: js/ui/audioDeviceSelection.js:65
+#: js/ui/audioDeviceSelection.js:69
 msgid "Headphones"
 msgstr "Auscultadores"
 
-#: js/ui/audioDeviceSelection.js:67
+#: js/ui/audioDeviceSelection.js:71
 msgid "Headset"
 msgstr "Auscultadores com microfone"
 
-#: js/ui/audioDeviceSelection.js:69 js/ui/status/volume.js:272
+#: js/ui/audioDeviceSelection.js:73 js/ui/status/volume.js:272
 msgid "Microphone"
 msgstr "Microfone"
 
@@ -977,28 +977,28 @@ msgstr ""
 msgid "Connect"
 msgstr "Ligar"
 
-#: js/ui/components/networkAgent.js:212
+#: js/ui/components/networkAgent.js:216
 msgid "Key"
 msgstr "Chave"
 
-#: js/ui/components/networkAgent.js:250 js/ui/components/networkAgent.js:273
+#: js/ui/components/networkAgent.js:254 js/ui/components/networkAgent.js:277
 msgid "Private key password"
 msgstr "Palavra-passe da chave privada"
 
-#: js/ui/components/networkAgent.js:271
+#: js/ui/components/networkAgent.js:275
 msgid "Identity"
 msgstr "Identidade"
 
-#: js/ui/components/networkAgent.js:285
+#: js/ui/components/networkAgent.js:289
 msgid "Service"
 msgstr "Serviço"
 
-#: js/ui/components/networkAgent.js:314 js/ui/components/networkAgent.js:342
-#: js/ui/components/networkAgent.js:675 js/ui/components/networkAgent.js:696
+#: js/ui/components/networkAgent.js:318 js/ui/components/networkAgent.js:346
+#: js/ui/components/networkAgent.js:679 js/ui/components/networkAgent.js:700
 msgid "Authentication required"
 msgstr "Autenticação necessária"
 
-#: js/ui/components/networkAgent.js:315 js/ui/components/networkAgent.js:676
+#: js/ui/components/networkAgent.js:319 js/ui/components/networkAgent.js:680
 #, javascript-format
 msgid ""
 "Passwords or encryption keys are required to access the wireless network "
@@ -1007,42 +1007,42 @@ msgstr ""
 "São necessárias palavras-passe ou chaves de encriptação para aceder à rede "
 "sem fios “%s”."
 
-#: js/ui/components/networkAgent.js:319 js/ui/components/networkAgent.js:680
+#: js/ui/components/networkAgent.js:323 js/ui/components/networkAgent.js:684
 msgid "Wired 802.1X authentication"
 msgstr "Autenticação para 802.1X por cabo"
 
-#: js/ui/components/networkAgent.js:321
+#: js/ui/components/networkAgent.js:325
 msgid "Network name"
 msgstr "Nome da rede"
 
-#: js/ui/components/networkAgent.js:326 js/ui/components/networkAgent.js:684
+#: js/ui/components/networkAgent.js:330 js/ui/components/networkAgent.js:688
 msgid "DSL authentication"
 msgstr "Autenticação DSL"
 
-#: js/ui/components/networkAgent.js:333 js/ui/components/networkAgent.js:689
+#: js/ui/components/networkAgent.js:337 js/ui/components/networkAgent.js:693
 msgid "PIN code required"
 msgstr "Necessário código PIN"
 
-#: js/ui/components/networkAgent.js:334 js/ui/components/networkAgent.js:690
+#: js/ui/components/networkAgent.js:338 js/ui/components/networkAgent.js:694
 msgid "PIN code is needed for the mobile broadband device"
 msgstr "É necessário o código PIN para o dispositivo de banda larga móvel"
 
-#: js/ui/components/networkAgent.js:335
+#: js/ui/components/networkAgent.js:339
 msgid "PIN"
 msgstr "PIN"
 
-#: js/ui/components/networkAgent.js:343 js/ui/components/networkAgent.js:681
-#: js/ui/components/networkAgent.js:685 js/ui/components/networkAgent.js:697
-#: js/ui/components/networkAgent.js:701
+#: js/ui/components/networkAgent.js:347 js/ui/components/networkAgent.js:685
+#: js/ui/components/networkAgent.js:689 js/ui/components/networkAgent.js:701
+#: js/ui/components/networkAgent.js:705
 #, javascript-format
 msgid "A password is required to connect to “%s”."
 msgstr "É necessária uma palavra-passe para se ligar a “%s”."
 
-#: js/ui/components/networkAgent.js:664 js/ui/status/network.js:1718
+#: js/ui/components/networkAgent.js:668 js/ui/status/network.js:1718
 msgid "Network Manager"
 msgstr "Gestor de rede"
 
-#: js/ui/components/networkAgent.js:700
+#: js/ui/components/networkAgent.js:704
 msgid "VPN password"
 msgstr "Palavra-passe de VPN"
 
@@ -1138,7 +1138,7 @@ msgstr "Sem eventos"
 
 #: js/ui/dateMenu.js:348
 msgid "Add world clocks…"
-msgstr "Adicionar relógios do mundo"
+msgstr "Adicionar relógios do mundo…"
 
 #: js/ui/dateMenu.js:349
 msgid "World Clocks"
@@ -1303,7 +1303,7 @@ msgstr "Algumas aplicações estão ocupadas ou têm trabalho não gravado"
 
 #: js/ui/endSessionDialog.js:298
 msgid "Other users are logged in"
-msgstr "Há outros utilizadores com sessões ativas."
+msgstr "Há outros utilizadores com sessões ativas"
 
 #: js/ui/endSessionDialog.js:467
 msgctxt "button"
@@ -1508,7 +1508,7 @@ msgstr "Bloqueio de ecrã desligado"
 msgid "Screen Locking requires the GNOME display manager."
 msgstr "O bloqueio de ecrã requer o gestor de exibição do GNOME."
 
-#: js/ui/messageTray.js:1476
+#: js/ui/messageTray.js:1475
 msgid "System Information"
 msgstr "Informação do sistema"
 
@@ -1536,7 +1536,7 @@ msgstr "Visão geral"
 #. characters.
 #: js/ui/overview.js:108
 msgid "Type to search"
-msgstr "Escrever para procurar…"
+msgstr "Escrever para procurar"
 
 #: js/ui/padOsd.js:96
 msgid "New shortcut…"
@@ -1636,15 +1636,15 @@ msgstr "Impossível bloquear"
 msgid "Lock was blocked by an application"
 msgstr "Bloquear foi bloqueado por uma aplicação"
 
-#: js/ui/search.js:823
+#: js/ui/search.js:824
 msgid "Searching…"
 msgstr "A procurar…"
 
-#: js/ui/search.js:825
+#: js/ui/search.js:826
 msgid "No results."
 msgstr "Nenhum resultado."
 
-#: js/ui/search.js:951
+#: js/ui/search.js:952
 #, javascript-format
 msgid "%d more"
 msgid_plural "%d more"
@@ -1788,11 +1788,11 @@ msgstr[1] "%d ligados"
 
 #: js/ui/status/bluetooth.js:152
 msgid "Bluetooth Off"
-msgstr "Bluetooth ligado"
+msgstr "Bluetooth desligado"
 
 #: js/ui/status/bluetooth.js:154
 msgid "Bluetooth On"
-msgstr "Bluetooth desligado"
+msgstr "Bluetooth ligado"
 
 #: js/ui/status/brightness.js:39
 msgid "Brightness"
@@ -2391,12 +2391,12 @@ msgstr ""
 msgid "List possible modes"
 msgstr "Listar modos possíveis"
 
-#: src/shell-app.c:268
+#: src/shell-app.c:298
 msgctxt "program"
 msgid "Unknown"
 msgstr "Desconhecida"
 
-#: src/shell-app.c:519
+#: src/shell-app.c:549
 #, c-format
 msgid "Failed to launch “%s”"
 msgstr "Falha ao iniciar “%s”"
@@ -2469,7 +2469,8 @@ msgstr ""
 "Pedro Albuquerque <palbuquerque73@gmail.com>\n"
 "Sérgio Cardeira <cardeira dot sergio at gmail dot com>\n"
 "José Vieira <jvieira33@sapo.pt>\n"
-"Juliano de Souza Camargo <julianosc@pm.me>"
+"Juliano de Souza Camargo <julianosc@pm.me>\n"
+"Hugo Carvalho <hugokarvalho@hotmail.com>"
 
 #: subprojects/extensions-app/js/main.js:314
 #, javascript-format
