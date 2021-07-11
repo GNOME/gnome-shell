@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2021-06-28 10:32+0000\n"
-"PO-Revision-Date: 2021-07-04 14:46+0200\n"
+"POT-Creation-Date: 2021-07-09 14:55+0000\n"
+"PO-Revision-Date: 2021-07-11 10:27+0200\n"
 "Last-Translator: Alexander Shopov <ash@kambanaria.org>\n"
 "Language-Team: Bulgarian <dict@fsa-bg.org>\n"
 "Language: bg\n"
@@ -19,6 +19,46 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: data/50-gnome-shell-launchers.xml:6
+msgid "Launchers"
+msgstr "Стартери"
+
+#: data/50-gnome-shell-launchers.xml:10
+msgid "Activate favorite application 1"
+msgstr "Стартиране на любима програма 1"
+
+#: data/50-gnome-shell-launchers.xml:14
+msgid "Activate favorite application 2"
+msgstr "Стартиране на любима програма 2"
+
+#: data/50-gnome-shell-launchers.xml:18
+msgid "Activate favorite application 3"
+msgstr "Стартиране на любима програма 3"
+
+#: data/50-gnome-shell-launchers.xml:22
+msgid "Activate favorite application 4"
+msgstr "Стартиране на любима програма 4"
+
+#: data/50-gnome-shell-launchers.xml:26
+msgid "Activate favorite application 5"
+msgstr "Стартиране на любима програма 5"
+
+#: data/50-gnome-shell-launchers.xml:30
+msgid "Activate favorite application 6"
+msgstr "Стартиране на любима програма 6"
+
+#: data/50-gnome-shell-launchers.xml:34
+msgid "Activate favorite application 7"
+msgstr "Стартиране на любима програма 7"
+
+#: data/50-gnome-shell-launchers.xml:38
+msgid "Activate favorite application 8"
+msgstr "Стартиране на любима програма 8"
+
+#: data/50-gnome-shell-launchers.xml:42
+msgid "Activate favorite application 9"
+msgstr "Стартиране на любима програма 9"
 
 #: data/50-gnome-shell-system.xml:6
 msgid "System"
@@ -1095,7 +1135,7 @@ msgstr "Неуспешно действие. Опитайте отново."
 msgid "%s is now known as %s"
 msgstr "„%s“ в момента е познат като „%s“"
 
-#: js/ui/ctrlAltTab.js:21 js/ui/overviewControls.js:398
+#: js/ui/ctrlAltTab.js:21 js/ui/overviewControls.js:399
 msgid "Windows"
 msgstr "Прозорци"
 
@@ -1549,11 +1589,11 @@ msgstr "Неизвестно заглавие"
 #. in the search entry when no search is
 #. active; it should not exceed ~30
 #. characters.
-#: js/ui/overviewControls.js:307
+#: js/ui/overviewControls.js:308
 msgid "Type to search"
 msgstr "Текст за търсене"
 
-#: js/ui/overviewControls.js:386
+#: js/ui/overviewControls.js:387
 msgid "Applications"
 msgstr "Програми"
 
@@ -2123,38 +2163,38 @@ msgstr "Включване наново"
 msgid "Disable Until Tomorrow"
 msgstr "Изключване до утре сутрин"
 
-#: js/ui/status/power.js:47
+#: js/ui/status/power.js:51
 msgid "Power Settings"
 msgstr "Настройки на захранването"
 
-#: js/ui/status/power.js:63
+#: js/ui/status/power.js:68
 msgid "Fully Charged"
 msgstr "Пълно зареждане"
 
-#: js/ui/status/power.js:69
+#: js/ui/status/power.js:74
 msgid "Not Charging"
 msgstr "Не се зарежда"
 
 #. 0 is reported when UPower does not have enough data
 #. to estimate battery life
-#: js/ui/status/power.js:72 js/ui/status/power.js:78
+#: js/ui/status/power.js:77 js/ui/status/power.js:83
 msgid "Estimating…"
 msgstr "Приблизително…"
 
 #. Translators: this is <hours>:<minutes> Remaining (<percentage>)
-#: js/ui/status/power.js:86
+#: js/ui/status/power.js:91
 #, javascript-format
 msgid "%d∶%02d Remaining (%d %%)"
 msgstr "%d:%02d до разреждане (%d %%)"
 
 #. Translators: this is <hours>:<minutes> Until Full (<percentage>)
-#: js/ui/status/power.js:91
+#: js/ui/status/power.js:97
 #, javascript-format
 msgid "%d∶%02d Until Full (%d %%)"
 msgstr "%d:%02d до зареждане (%d %%)"
 
 #. The icon label
-#: js/ui/status/power.js:137
+#: js/ui/status/power.js:145
 #, javascript-format
 msgid "%d %%"
 msgstr "%d %%"
@@ -2419,19 +2459,19 @@ msgstr "Затваряне"
 msgid "Evolution Calendar"
 msgstr "Календар на Evolution"
 
-#: src/main.c:415 subprojects/extensions-tool/src/main.c:317
+#: src/main.c:418 subprojects/extensions-tool/src/main.c:317
 msgid "Print version"
 msgstr "Показване на версията"
 
-#: src/main.c:421
+#: src/main.c:424
 msgid "Mode used by GDM for login screen"
 msgstr "Режим на GDM за екрана за влизане"
 
-#: src/main.c:427
+#: src/main.c:430
 msgid "Use a specific mode, e.g. “gdm” for login screen"
 msgstr "Използване на определен режим за екрана за идентификация, напр. „gdm“"
 
-#: src/main.c:433
+#: src/main.c:436
 msgid "List possible modes"
 msgstr "Списък на достъпните режими"
 
@@ -2510,12 +2550,17 @@ msgstr "Премахване"
 #: subprojects/extensions-app/js/main.js:216
 msgid "translator-credits"
 msgstr ""
-"Ивайло Вълков <ivaylo@e-valkov.org>\n"
-"Александър Шопов <ash@kambanaria.org>\n"
+"Ивайло Вълков &lt;<a href='mailto:ivaylo@e-valkov.org'>ivaylo@e-valkov.org</"
+"a>&gt;\n"
+"Александър Шопов &lt;<a href='mailto:ash@kambanaria.org'>ash@kambanaria.org</"
+"a>&gt;\n"
+"\n"
 "\n"
 "Проектът за превод на GNOME има нужда от подкрепа.\n"
-"Научете повече за нас на https://fsa-bg.org/project/gtp\n"
-"Докладвайте за грешки на https://fsa-bg.org/project/gtp/newticket"
+"Научете повече за нас на <a href='https://fsa-bg.org/project/gtp'>уеб сайта</"
+"a> ни.\n"
+"Докладвайте за грешки в превода в <a href='https://fsa-bg.org/project/gtp/"
+"newticket'>съответния раздел</a>."
 
 #: subprojects/extensions-app/js/main.js:344
 #, javascript-format
@@ -3021,115 +3066,3 @@ msgstr[1] "%u входа"
 #: subprojects/gvc/gvc-mixer-control.c:2867
 msgid "System Sounds"
 msgstr "Системни звуци"
-
-#~ msgid "App Picker View"
-#~ msgstr "Изглед за избор на програми"
-
-#~ msgid "Index of the currently selected view in the application picker."
-#~ msgstr "Индексът на избрания обект в изгледа за избор на програми."
-
-#~ msgid ""
-#~ "Keybinding that pauses and resumes all running tweens, for debugging "
-#~ "purposes"
-#~ msgstr ""
-#~ "Клавишна комбинация, която поставя на пауза и възстановява всички активни "
-#~ "анимации. Използва се за отстраняване на грешки."
-
-#~ msgid "Which keyboard to use"
-#~ msgstr "Коя клавиатура да се ползва"
-
-#~ msgid "The type of keyboard to use."
-#~ msgstr "Видът на клавиатурата, която да се ползва."
-
-#~ msgid "network-workgroup"
-#~ msgstr "network-workgroup"
-
-#~ msgid "There was an error loading the preferences dialog for %s:"
-#~ msgstr "Грешка при зареждане на прозореца с настройки за „%s“"
-
-#~ msgid "Next"
-#~ msgstr "Напред"
-
-#~ msgctxt "button"
-#~ msgid "Sign In"
-#~ msgstr "Вписване"
-
-#~ msgctxt "search-result"
-#~ msgid "Power off"
-#~ msgstr "Изключване"
-
-#~ msgctxt "search-result"
-#~ msgid "Log out"
-#~ msgstr "Изход"
-
-#~ msgctxt "search-result"
-#~ msgid "Switch user"
-#~ msgstr "Смяна на потребител"
-
-#~ msgid "Frequently used applications will appear here"
-#~ msgstr "Списък с често използваните програми"
-
-#~ msgid "Frequent"
-#~ msgstr "Често стартирани"
-
-#~ msgid "All"
-#~ msgstr "Всички"
-
-#~ msgctxt "calendar heading"
-#~ msgid "%A, %B %d, %Y"
-#~ msgstr "%A, %e %B %Y"
-
-#~ msgid "Password:"
-#~ msgstr "Парола:"
-
-#~ msgid "Type again:"
-#~ msgstr "Въведете отново:"
-
-#~ msgid "Password: "
-#~ msgstr "Парола: "
-
-#~ msgid "Authentication required by wireless network"
-#~ msgstr "Изисква се удостоверяване за безжична мрежа"
-
-#~ msgid "Mobile broadband network password"
-#~ msgstr "Парола за мобилна широколентова връзка"
-
-#~ msgid "%s all day."
-#~ msgstr "%s цял ден."
-
-#~ msgid "%s, then %s later."
-#~ msgstr "%s. След това — %s."
-
-#~ msgid "%s, then %s, followed by %s later."
-#~ msgstr "%s. След това — %s и %s по-късно."
-
-#~ msgid "Feels like %s."
-#~ msgstr "Усеща се като %s."
-
-#~ msgid "toggle-switch-us"
-#~ msgstr "toggle-switch-intl"
-
-#~ msgid "%d new message"
-#~ msgid_plural "%d new messages"
-#~ msgstr[0] "%d ново съобщение"
-#~ msgstr[1] "%d нови съобщения"
-
-#~ msgid "%d new notification"
-#~ msgid_plural "%d new notifications"
-#~ msgstr[0] "%d ново известие"
-#~ msgstr[1] "%d нови известия"
-
-#~ msgid "Off"
-#~ msgstr "Изключен"
-
-#~ msgid "On"
-#~ msgstr "Включено"
-
-#~ msgid "Account Settings"
-#~ msgstr "Настройки на регистрацията"
-
-#~ msgid "Orientation Lock"
-#~ msgstr "Заключване на завъртането на екрана"
-
-#~ msgid "evolution"
-#~ msgstr "evolution"
