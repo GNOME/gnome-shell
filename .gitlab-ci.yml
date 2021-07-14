@@ -9,6 +9,7 @@ stages:
  - review
  - build
  - test
+ - analyze
  - deploy
 
 default:
@@ -29,7 +30,7 @@ variables:
     LINT_LOG: "eslint-report.xml"
     LINT_MR_LOG: "eslint-mr-report.xml"
 
-image: registry.gitlab.gnome.org/gnome/mutter/fedora/34:x86_64-2021-07-07.1
+image: registry.gitlab.gnome.org/gnome/mutter/fedora/34:x86_64-2021-07-09.1
 
 workflow:
     rules:
@@ -207,6 +208,30 @@ test:
         paths:
             - build/meson-logs/testlog.txt
         when: on_failure
+
+test-coverity:
+    rules:
+        - if: '$CI_PIPELINE_SOURCE == "schedule" && $GNOME_SHELL_SCHEDULED_JOB == "coverity"'
+          when: always
+        - when: manual
+    needs: ["build"]
+    stage: analyze
+    allow_failure: true
+    before_script:
+        - ninja -C mutter/build install
+    script:
+        - .gitlab-ci/download-coverity-tarball.sh
+        - CC=clang meson coverity-build -Dman=false
+        - ./coverity/cov-analysis-linux64-*/bin/cov-build --fs-capture-search js --dir cov-int ninja -C coverity-build
+        - tar czf cov-int.tar.gz cov-int
+        - curl https://scan.coverity.com/builds?project=GNOME+Shell
+          --form token=$COVERITY_TOKEN --form email=carlosg@gnome.org
+          --form file=@cov-int.tar.gz --form version="`git describe --tags`"
+          --form description="GitLab CI build"
+    cache:
+        key: coverity-tarball
+        paths:
+            - coverity
 
 flatpak:
     stage: build
