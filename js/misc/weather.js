@@ -74,7 +74,7 @@ var WeatherClient = class {
             GWeather.Provider.OWM;
         this._weatherInfo = new GWeather.Info({
             application_id: 'org.gnome.Shell',
-            contact_info: 'https://gitlab.gnome.org/GNOME/gnome-shell/-/raw/master/gnome-shell.doap',
+            contact_info: 'https://gitlab.gnome.org/GNOME/gnome-shell/-/raw/HEAD/gnome-shell.doap',
             enabled_providers: providers,
         });
         this._weatherInfo.connect_after('updated', () => {
