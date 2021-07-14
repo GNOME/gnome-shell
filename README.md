@@ -20,6 +20,19 @@ Commit messages should follow the [GNOME commit message
 guidelines](https://wiki.gnome.org/Git/CommitMessages). We require an URL
 to either an issue or a merge request in each commit.
 
+## Default branch
+
+The default development branch is `main`. If you still have a local
+checkout under the old name, use:
+```sh
+git checkout master
+git branch -m master main
+git fetch
+git branch --unset-upstream
+git branch -u origin/main
+git symbolic-ref refs/remotes/origin/HEAD refs/remotes/origin/main
+```
+
 ## License
 GNOME Shell is distributed under the terms of the GNU General Public License,
 version 2 or later. See the [COPYING][license] file for details.
