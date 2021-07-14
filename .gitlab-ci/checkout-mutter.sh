@@ -47,7 +47,7 @@ if [ -z "$mutter_target" ]; then
     mutter_target=FETCH_HEAD
   else
     echo \ not found
-    mutter_target=origin/master
+    mutter_target=HEAD
     echo Using $mutter_target instead
   fi
 fi
