@@ -76,7 +76,7 @@ class KeyringDialog extends ModalDialog.ModalDialog {
             warning.opacity = this.prompt.warning_visible ? 255 : 0;
         });
         this.prompt.connect('notify::warning', () => {
-            if (this._passwordEntry && warning !== '')
+            if (this._passwordEntry && this.prompt.warning !== '')
                 Util.wiggle(this._passwordEntry);
         });
         warningBox.add_child(warning);

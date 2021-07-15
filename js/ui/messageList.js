@@ -22,7 +22,7 @@ function _fixMarkup(text, allowMarkup) {
         _text = _text.replace(/<(?!\/?[biu]>)/g, '&lt;');
 
         try {
-            Pango.parse_markup(_text, -1, '');
+            Pango.parse_markup(_text, -1, 0);
             return _text;
         } catch (e) {}
     }

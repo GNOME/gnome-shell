@@ -560,7 +560,7 @@ var FocusTracker = class {
 
         this._setCurrentWindow(global.display.focus_window);
 
-        this._grabOpBeginId = global.display.connect('grab-op-begin', (display, window, op) => {
+        this._grabOpBeginId = global.display.connect('grab-op-begin', (_, display, window, op) => {
             if (window == this._currentWindow &&
                 (op == Meta.GrabOp.MOVING || op == Meta.GrabOp.KEYBOARD_MOVING))
                 this.emit('window-grabbed');

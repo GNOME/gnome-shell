@@ -177,7 +177,7 @@ var BackgroundCache = class BackgroundCache {
 
         animation = new Animation({ file: params.file });
 
-        animation.load(() => {
+        animation.loadAsync(() => {
             this._animations[params.settingsSchema] = animation;
 
             if (params.onLoaded) {
@@ -634,7 +634,7 @@ class Animation extends GnomeDesktop.BGSlideShow {
         this.loaded = false;
     }
 
-    load(callback) {
+    loadAsync(callback) {
         this.load_async(null, () => {
             this.loaded = true;
             if (callback)
