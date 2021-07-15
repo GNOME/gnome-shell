@@ -484,9 +484,6 @@ class WorkspacesView extends WorkspacesViewBase {
     }
 
     _activeWorkspaceChanged(_wm, _from, _to, _direction) {
-        if (this._scrolling)
-            return;
-
         this._scrollToActive();
     }
 

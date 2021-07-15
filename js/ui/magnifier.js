@@ -221,7 +221,7 @@ var Magnifier = class Magnifier {
      * @returns {bool} whether the magnifier is currently tracking the mouse
      */
     isTrackingMouse() {
-        return !!this._mouseTrackingId;
+        return !!this._pointerWatch;
     }
 
     /**
@@ -367,20 +367,6 @@ var Magnifier = class Magnifier {
         if (this._crossHairs) {
             let [res_, clutterColor] = Clutter.Color.from_string(color);
             this._crossHairs.setColor(clutterColor);
-        }
-    }
-
-    /**
-     * getCrosshairsColor:
-     * Get the color of the crosshairs.
-     * @returns {string} The color as a string, e.g. '#0000ffff' or 'blue'.
-     */
-    getCrosshairsColor() {
-        if (this._crossHairs) {
-            let clutterColor = this._crossHairs.getColor();
-            return clutterColor.to_string();
-        } else {
-            return '#00000000';
         }
     }
 
@@ -1763,15 +1749,6 @@ class Crosshairs extends Clutter.Actor {
         this._horizRightHair.background_color = clutterColor;
         this._vertTopHair.background_color = clutterColor;
         this._vertBottomHair.background_color = clutterColor;
-    }
-
-    /**
-     * getColor:
-     * Get the color of the crosshairs.
-     * @returns {ClutterColor} the crosshairs color
-     */
-    getColor() {
-        return this._horizLeftHair.get_color();
     }
 
     /**

@@ -2292,8 +2292,7 @@ class FolderView extends BaseAppView {
     }
 
     // Overridden from BaseAppView
-    animate(animationDirection) {
-        this._grid.animatePulse(animationDirection);
+    animate(_animationDirection) {
     }
 
     createFolderIcon(size) {
