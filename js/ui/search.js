@@ -429,6 +429,7 @@ var GridSearchResultsLayout = GObject.registerClass({
                 childBox.set_size(0, 0);
 
             child.allocate(childBox);
+            child.can_focus = childBox.get_area() > 0;
 
             childBox.x1 += childWidth;
         }
