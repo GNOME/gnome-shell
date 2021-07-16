@@ -97,6 +97,12 @@ let _cssStylesheet = null;
 let _themeResource = null;
 let _oskResource = null;
 
+// Redefine _LocalFilePrototype in case it points to the wrong prototype.
+// See https://gitlab.gnome.org/GNOME/gjs/-/merge_requests/595
+const localFileGType = GObject.type_from_name('GLocalFile');
+if (Gio._LocalFilePrototype.constructor.$gtype !== localFileGType)
+    Gio._LocalFilePrototype = Gio.File.new_for_path('/').constructor.prototype;
+
 Gio._promisify(Gio._LocalFilePrototype, 'delete_async', 'delete_finish');
 Gio._promisify(Gio._LocalFilePrototype, 'touch_async', 'touch_finish');
 
