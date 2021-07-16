@@ -8,7 +8,6 @@ const { Clutter, Gio, GLib, Shell, St, GnomeDesktop } = imports.gi;
 const Gettext = imports.gettext;
 
 const Main = imports.ui.main;
-const Params = imports.misc.params;
 
 var SCROLL_TIME = 100;
 
@@ -206,7 +205,7 @@ function formatTimeSpan(date) {
                             "%d years ago", yearsAgo).format(yearsAgo);
 }
 
-function formatTime(time, params) {
+function formatTime(time, params = {}) {
     let date;
     // HACK: The built-in Date type sucks at timezones, which we need for the
     //       world clock; it's often more convenient though, so allow either
@@ -226,14 +225,14 @@ function formatTime(time, params) {
         _desktopSettings = new Gio.Settings({ schema_id: 'org.gnome.desktop.interface' });
     let clockFormat = _desktopSettings.get_string('clock-format');
 
-    params = Params.parse(params, {
-        timeOnly: false,
-        ampm: true,
-    });
+    const {
+        timeOnly = false,
+        ampm = true,
+    } = params;
 
     if (clockFormat == '24h') {
         // Show only the time if date is on today
-        if (daysAgo < 1 || params.timeOnly)
+        if (daysAgo < 1 || timeOnly)
             /* Translators: Time in 24h format */
             format = N_("%H\u2236%M");
         // Show the word "Yesterday" and time if date is on yesterday
@@ -262,7 +261,7 @@ function formatTime(time, params) {
             format = N_("%B %-d %Y, %H\u2236%M");
     } else {
         // Show only the time if date is on today
-        if (daysAgo < 1 || params.timeOnly) // eslint-disable-line no-lonely-if
+        if (daysAgo < 1 || timeOnly) // eslint-disable-line no-lonely-if
             /* Translators: Time in 12h format */
             format = N_("%l\u2236%M %p");
         // Show the word "Yesterday" and time if date is on yesterday
@@ -293,7 +292,7 @@ function formatTime(time, params) {
 
     // Time in short 12h format, without the equivalent of "AM" or "PM"; used
     // when it is clear from the context
-    if (!params.ampm)
+    if (!ampm)
         format = format.replace(/\s*%p/g, '');
 
     let formattedTime = date.format(Shell.util_translate_time_string(format));
@@ -400,35 +399,35 @@ function ensureActorVisibleInScrollView(scrollView, actor) {
     });
 }
 
-function wiggle(actor, params) {
+function wiggle(actor, params = {}) {
     if (!St.Settings.get().enable_animations)
         return;
 
-    params = Params.parse(params, {
-        offset: WIGGLE_OFFSET,
-        duration: WIGGLE_DURATION,
-        wiggleCount: N_WIGGLES,
-    });
+    const {
+        offset = WIGGLE_OFFSET,
+        duration = WIGGLE_DURATION,
+        wiggleCount = N_WIGGLES,
+    } = params;
     actor.translation_x = 0;
 
     // Accelerate before wiggling
     actor.ease({
-        translation_x: -params.offset,
-        duration: params.duration,
+        translation_x: -offset,
+        duration: WIGGLE_DURATION,
         mode: Clutter.AnimationMode.EASE_OUT_QUAD,
         onComplete: () => {
             // Wiggle
             actor.ease({
-                translation_x: params.offset,
-                duration: params.duration,
+                translation_x: offset,
+                duration,
                 mode: Clutter.AnimationMode.LINEAR,
-                repeatCount: params.wiggleCount,
+                repeatCount: wiggleCount,
                 autoReverse: true,
                 onComplete: () => {
                     // Decelerate and return to the original position
                     actor.ease({
                         translation_x: 0,
-                        duration: params.duration,
+                        duration,
                         mode: Clutter.AnimationMode.EASE_IN_QUAD,
                     });
                 },

@@ -7,7 +7,6 @@ const Dialog = imports.ui.dialog;
 const Layout = imports.ui.layout;
 const Lightbox = imports.ui.lightbox;
 const Main = imports.ui.main;
-const Params = imports.misc.params;
 
 var OPEN_AND_CLOSE_TIME = 100;
 var FADE_OUT_DIALOG_TIME = 1000;
@@ -30,26 +29,27 @@ var ModalDialog = GObject.registerClass({
     },
     Signals: { 'opened': {}, 'closed': {} },
 }, class ModalDialog extends St.Widget {
-    _init(params) {
+    _init(params = {}) {
         super._init({ visible: false,
                       x: 0,
                       y: 0,
                       accessible_role: Atk.Role.DIALOG });
 
-        params = Params.parse(params, { shellReactive: false,
-                                        styleClass: null,
-                                        actionMode: Shell.ActionMode.SYSTEM_MODAL,
-                                        shouldFadeIn: true,
-                                        shouldFadeOut: true,
-                                        destroyOnClose: true });
+        const {
+            shellReactive = false,
+            actionMode = Shell.ActionMode.SYSTEM_MODAL,
+            shouldFadeIn = true,
+            shouldFadeOut = true,
+            destroyOnClose = true,
+        } = params;
 
         this._state = State.CLOSED;
         this._hasModal = false;
-        this._actionMode = params.actionMode;
-        this._shellReactive = params.shellReactive;
-        this._shouldFadeIn = params.shouldFadeIn;
-        this._shouldFadeOut = params.shouldFadeOut;
-        this._destroyOnClose = params.destroyOnClose;
+        this._actionMode = actionMode;
+        this._shellReactive = shellReactive;
+        this._shouldFadeIn = shouldFadeIn;
+        this._shouldFadeOut = shouldFadeOut;
+        this._destroyOnClose = destroyOnClose;
 
         Main.layoutManager.modalDialogGroup.add_actor(this);
 

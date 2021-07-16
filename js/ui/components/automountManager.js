@@ -2,7 +2,6 @@
 /* exported Component */
 
 const { Gio, GLib } = imports.gi;
-const Params = imports.misc.params;
 
 const GnomeSession = imports.misc.gnomeSession;
 const Main = imports.ui.main;
@@ -131,12 +130,14 @@ var AutomountManager = class {
         this._checkAndMountVolume(volume);
     }
 
-    _checkAndMountVolume(volume, params) {
-        params = Params.parse(params, { checkSession: true,
-                                        useMountOp: true,
-                                        allowAutorun: true });
+    _checkAndMountVolume(volume, params = {}) {
+        const {
+            checkSession = true,
+            useMountOp = true,
+            allowAutorun = true,
+        } = params;
 
-        if (params.checkSession) {
+        if (checkSession) {
             // if we're not in the current ConsoleKit session,
             // don't attempt automount
             if (!this._session.SessionIsActive)
@@ -163,11 +164,11 @@ var AutomountManager = class {
             return;
         }
 
-        if (params.useMountOp) {
+        if (useMountOp) {
             let operation = new ShellMountOperation.ShellMountOperation(volume);
-            this._mountVolume(volume, operation, params.allowAutorun);
+            this._mountVolume(volume, operation, allowAutorun);
         } else {
-            this._mountVolume(volume, null, params.allowAutorun);
+            this._mountVolume(volume, null, allowAutorun);
         }
     }
 

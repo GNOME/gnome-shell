@@ -23,7 +23,6 @@ const History = imports.misc.history;
 const Main = imports.ui.main;
 const MessageList = imports.ui.messageList;
 const MessageTray = imports.ui.messageTray;
-const Params = imports.misc.params;
 const Util = imports.misc.util;
 
 const HAVE_TP = Tp != null && Tpl != null;
@@ -760,15 +759,12 @@ var ChatNotification = HAVE_TP ? GObject.registerClass({
      *  {number} props.timestamp: The timestamp of the message.
      *  {bool} props.noTimestamp: suppress timestamp signal?
      */
-    _append(props) {
+    _append(props = {}) {
         let currentTime = Date.now() / 1000;
-        props = Params.parse(props, { body: null,
-                                      group: null,
-                                      styles: [],
-                                      timestamp: currentTime,
-                                      noTimestamp: false });
-        const { noTimestamp } = props;
-        delete props.noTimestamp;
+        const {
+            noTimestamp = currentTime,
+            ...messageProps
+        } = props;
 
         // Reset the old message timeout
         if (this._timestampTimeoutId)
@@ -778,7 +774,10 @@ var ChatNotification = HAVE_TP ? GObject.registerClass({
         let message = new ChatNotificationMessage({
             realMessage: props.group !== 'meta',
             showTimestamp: false,
-            ...props,
+            body: null,
+            group: null,
+            styles: [],
+            ...messageProps,
         });
 
         this.messages.unshift(message);

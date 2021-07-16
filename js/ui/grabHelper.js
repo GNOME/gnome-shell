@@ -4,7 +4,6 @@
 const { Clutter, St } = imports.gi;
 
 const Main = imports.ui.main;
-const Params = imports.misc.params;
 
 let _capturedEventId = 0;
 let _grabHelperStack = [];
@@ -165,27 +164,35 @@ var GrabHelper = class GrabHelper {
     // to that actor instead of navigating in @params.actor. This is for
     // use cases like menus, where we want to grab the menu actor, but keep
     // focus on the clicked on menu item.
-    grab(params) {
-        params = Params.parse(params, { actor: null,
-                                        focus: null,
-                                        onUngrab: null });
+    grab(params = {}) {
+        const {
+            actor = null,
+            focus = null,
+            onUngrab = null,
+        } = params;
 
-        let focus = global.stage.key_focus;
-        let hadFocus = focus && this._isWithinGrabbedActor(focus);
-        let newFocus = params.actor;
+        const keyFocus = global.stage.key_focus;
+        let hadFocus = keyFocus && this._isWithinGrabbedActor(keyFocus);
+        let newFocus = actor;
 
-        if (this.isActorGrabbed(params.actor))
+        if (this.isActorGrabbed(actor))
             return true;
 
-        params.savedFocus = focus;
+        const stackParams = {
+            ...params,
+            savedFocus: keyFocus,
+            actor,
+            focus,
+            onUngrab,
+        };
 
         if (!this._takeModalGrab())
             return false;
 
-        this._grabStack.push(params);
+        this._grabStack.push(stackParams);
 
-        if (params.focus) {
-            params.focus.grab_key_focus();
+        if (focus) {
+            focus.grab_key_focus();
         } else if (newFocus && hadFocus) {
             if (!newFocus.navigate_focus(null, St.DirectionType.TAB_FORWARD, false))
                 newFocus.grab_key_focus();
@@ -249,11 +256,13 @@ var GrabHelper = class GrabHelper {
     // popped until the grabbed actor is at the top of the grab stack.
     // The onUngrab callback for every grab is called for every popped
     // grab with the parameter %false.
-    ungrab(params) {
-        params = Params.parse(params, { actor: this.currentGrab.actor,
-                                        isUser: false });
+    ungrab(params = {}) {
+        const {
+            actor = this.currentGrab.actor,
+            isUser = false,
+        } = params;
 
-        let grabStackIndex = this._findStackIndex(params.actor);
+        let grabStackIndex = this._findStackIndex(actor);
         if (grabStackIndex < 0)
             return;
 
@@ -269,7 +278,7 @@ var GrabHelper = class GrabHelper {
             let poppedGrab = poppedGrabs[i];
 
             if (poppedGrab.onUngrab)
-                poppedGrab.onUngrab(params.isUser);
+                poppedGrab.onUngrab(isUser);
 
             this._releaseModalGrab();
         }

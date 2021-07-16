@@ -3,7 +3,6 @@
 
 const { Clutter, GLib, GObject, Meta, Shell, St } = imports.gi;
 
-const Params = imports.misc.params;
 const Main = imports.ui.main;
 
 var ICON_SIZE = 96;
@@ -65,15 +64,15 @@ var DragLocation = {
 
 var BaseIcon = GObject.registerClass(
 class BaseIcon extends Shell.SquareBin {
-    _init(label, params) {
-        params = Params.parse(params, {
-            createIcon: null,
-            setSizeManually: false,
-            showLabel: true,
-        });
+    _init(label, params = {}) {
+        const {
+            createIcon = null,
+            setSizeManually = false,
+            showLabel = true,
+        } = params;
 
         let styleClass = 'overview-icon';
-        if (params.showLabel)
+        if (showLabel)
             styleClass += ' overview-icon-with-label';
 
         super._init({ style_class: styleClass });
@@ -92,7 +91,7 @@ class BaseIcon extends Shell.SquareBin {
 
         this._box.add_actor(this._iconBin);
 
-        if (params.showLabel) {
+        if (showLabel) {
             this.label = new St.Label({ text: label });
             this.label.clutter_text.set({
                 x_align: Clutter.ActorAlign.CENTER,
@@ -103,9 +102,9 @@ class BaseIcon extends Shell.SquareBin {
             this.label = null;
         }
 
-        if (params.createIcon)
-            this.createIcon = params.createIcon;
-        this._setSizeManually = params.setSizeManually;
+        if (createIcon)
+            this.createIcon = createIcon;
+        this._setSizeManually = setSizeManually;
 
         this.icon = null;
 
@@ -1162,7 +1161,7 @@ var IconGrid = GObject.registerClass({
     },
 }, class IconGrid extends St.Viewport {
     _init(layoutParams = {}) {
-        layoutParams = Params.parse(layoutParams, {
+        const iconGridLayoutParams = {
             allow_incomplete_pages: false,
             orientation: Clutter.Orientation.HORIZONTAL,
             columns_per_page: 6,
@@ -1173,8 +1172,9 @@ var IconGrid = GObject.registerClass({
             last_row_align: Clutter.ActorAlign.START,
             column_spacing: 0,
             row_spacing: 0,
-        });
-        const layoutManager = new IconGridLayout(layoutParams);
+            ...layoutParams,
+        };
+        const layoutManager = new IconGridLayout(iconGridLayoutParams);
         const pagesChangedId = layoutManager.connect('pages-changed',
             () => this.emit('pages-changed'));
 

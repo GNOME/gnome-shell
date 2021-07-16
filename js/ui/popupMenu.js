@@ -9,7 +9,6 @@ const Signals = imports.signals;
 const BoxPointer = imports.ui.boxpointer;
 const GrabHelper = imports.ui.grabHelper;
 const Main = imports.ui.main;
-const Params = imports.misc.params;
 
 var Ornament = {
     NONE: 0,
@@ -70,18 +69,19 @@ var PopupBaseMenuItem = GObject.registerClass({
         'activate': { param_types: [Clutter.Event.$gtype] },
     },
 }, class PopupBaseMenuItem extends St.BoxLayout {
-    _init(params) {
-        params = Params.parse(params, {
-            reactive: true,
-            activate: true,
-            hover: true,
-            style_class: null,
-            can_focus: true,
-        });
+    _init(params = {}) {
+        const {
+            reactive = true,
+            activate = true,
+            hover = true,
+            style_class: styleClass = null,
+            can_focus = true,
+        } = params;
+
         super._init({ style_class: 'popup-menu-item',
-                      reactive: params.reactive,
-                      track_hover: params.reactive,
-                      can_focus: params.can_focus,
+                      reactive,
+                      track_hover: reactive,
+                      can_focus,
                       accessible_role: Atk.Role.MENU_ITEM });
         this._delegate = this;
 
@@ -91,16 +91,16 @@ var PopupBaseMenuItem = GObject.registerClass({
 
         this._parent = null;
         this._active = false;
-        this._activatable = params.reactive && params.activate;
+        this._activatable = reactive && activate;
         this._sensitive = true;
 
         if (!this._activatable)
             this.add_style_class_name('popup-inactive-menu-item');
 
-        if (params.style_class)
-            this.add_style_class_name(params.style_class);
+        if (styleClass)
+            this.add_style_class_name(styleClass);
 
-        if (params.reactive && params.hover)
+        if (reactive && hover)
             this.bind_property('hover', this, 'active', GObject.BindingFlags.SYNC_CREATE);
     }
 
@@ -1286,10 +1286,11 @@ class PopupSubMenuMenuItem extends PopupBaseMenuItem {
  * Call addMenu to add menus
  */
 var PopupMenuManager = class {
-    constructor(owner, grabParams) {
-        grabParams = Params.parse(grabParams,
-                                  { actionMode: Shell.ActionMode.POPUP });
-        this._grabHelper = new GrabHelper.GrabHelper(owner, grabParams);
+    constructor(owner, grabParams = {}) {
+        this._grabHelper = new GrabHelper.GrabHelper(owner, {
+            actionMode: Shell.ActionMode.POPUP,
+            ...grabParams,
+        });
         this._menus = [];
     }
 

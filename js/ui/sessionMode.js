@@ -5,7 +5,6 @@ const GLib = imports.gi.GLib;
 const Signals = imports.signals;
 
 const FileUtils = imports.misc.fileUtils;
-const Params = imports.misc.params;
 
 const Config = imports.misc.config;
 
@@ -181,12 +180,17 @@ var SessionMode = class {
         let params = _modes[this.currentMode];
         let defaults;
         if (params.parentMode) {
-            defaults = Params.parse(_modes[params.parentMode],
-                                    _modes[DEFAULT_MODE]);
+            defaults = {
+                ..._modes[DEFAULT_MODE],
+                ..._modes[params.parentMode],
+            };
         } else {
-            defaults = _modes[DEFAULT_MODE];
+            defaults = {
+                ..._modes[DEFAULT_MODE],
+            };
         }
-        params = Params.parse(params, defaults);
+
+        params = { ...defaults, ...params };
 
         // A simplified version of Lang.copyProperties, handles
         // undefined as a special case for "no change / inherit from previous mode"

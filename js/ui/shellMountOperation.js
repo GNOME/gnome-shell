@@ -9,7 +9,6 @@ const Dialog = imports.ui.dialog;
 const Main = imports.ui.main;
 const MessageTray = imports.ui.messageTray;
 const ModalDialog = imports.ui.modalDialog;
-const Params = imports.misc.params;
 const ShellEntry = imports.ui.shellEntry;
 
 const { loadInterfaceXML } = imports.misc.fileUtils;
@@ -50,12 +49,12 @@ function _setLabelsForMessage(content, message) {
 /* -------------------------------------------------------- */
 
 var ShellMountOperation = class {
-    constructor(source, params) {
-        params = Params.parse(params, { existingDialog: null });
+    constructor(source, params = {}) {
+        const { existingDialog = null } = params;
 
         this._dialog = null;
         this._dialogId = 0;
-        this._existingDialog = params.existingDialog;
+        this._existingDialog = existingDialog;
         this._processesDialog = null;
 
         this.mountOp = new Shell.MountOperation();

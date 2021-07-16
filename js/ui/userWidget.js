@@ -5,7 +5,6 @@
 
 const { Clutter, GLib, GObject, St } = imports.gi;
 
-const Params = imports.misc.params;
 
 var AVATAR_ICON_SIZE = 64;
 
@@ -16,22 +15,22 @@ var AVATAR_ICON_SIZE = 64;
 
 var Avatar = GObject.registerClass(
 class Avatar extends St.Bin {
-    _init(user, params) {
+    _init(user, params = {}) {
         let themeContext = St.ThemeContext.get_for_stage(global.stage);
-        params = Params.parse(params, {
-            styleClass: 'user-icon',
-            reactive: false,
-            iconSize: AVATAR_ICON_SIZE,
-        });
+        const {
+            styleClass = 'user-icon',
+            reactive = false,
+            iconSize = AVATAR_ICON_SIZE,
+        } = params;
 
         super._init({
-            style_class: params.styleClass,
-            reactive: params.reactive,
-            width: params.iconSize * themeContext.scaleFactor,
-            height: params.iconSize * themeContext.scaleFactor,
+            style_class: styleClass,
+            reactive,
+            width: iconSize * themeContext.scaleFactor,
+            height: iconSize * themeContext.scaleFactor,
         });
 
-        this._iconSize = params.iconSize;
+        this._iconSize = iconSize;
         this._user = user;
 
         this.bind_property('reactive', this, 'track-hover',

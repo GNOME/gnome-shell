@@ -99,7 +99,6 @@ const Signals = imports.signals;
 
 const LoginManager = imports.misc.loginManager;
 const Main = imports.ui.main;
-const Params = imports.misc.params;
 
 Gio._promisify(Gio._LocalFilePrototype, 'query_info_async', 'query_info_finish');
 
@@ -158,34 +157,36 @@ var BackgroundCache = class BackgroundCache {
         this._fileMonitors[key] = monitor;
     }
 
-    getAnimation(params) {
-        params = Params.parse(params, { file: null,
-                                        settingsSchema: null,
-                                        onLoaded: null });
+    getAnimation(params = {}) {
+        const {
+            file = null,
+            settingsSchema = null,
+            onLoaded = null,
+        } = params;
 
-        let animation = this._animations[params.settingsSchema];
-        if (animation && _fileEqual0(animation.file, params.file)) {
-            if (params.onLoaded) {
+        let animation = this._animations[settingsSchema];
+        if (animation && _fileEqual0(animation.file, file)) {
+            if (onLoaded) {
                 let id = GLib.idle_add(GLib.PRIORITY_DEFAULT, () => {
-                    params.onLoaded(this._animations[params.settingsSchema]);
+                    onLoaded(this._animations[settingsSchema]);
                     return GLib.SOURCE_REMOVE;
                 });
-                GLib.Source.set_name_by_id(id, '[gnome-shell] params.onLoaded');
+                GLib.Source.set_name_by_id(id, '[gnome-shell] onLoaded');
             }
             return;
         }
 
-        animation = new Animation({ file: params.file });
+        animation = new Animation({ file });
 
         animation.loadAsync(() => {
             this._animations[params.settingsSchema] = animation;
 
-            if (params.onLoaded) {
+            if (onLoaded) {
                 let id = GLib.idle_add(GLib.PRIORITY_DEFAULT, () => {
-                    params.onLoaded(this._animations[params.settingsSchema]);
+                    onLoaded(this._animations[settingsSchema]);
                     return GLib.SOURCE_REMOVE;
                 });
-                GLib.Source.set_name_by_id(id, '[gnome-shell] params.onLoaded');
+                GLib.Source.set_name_by_id(id, '[gnome-shell] onLoaded');
             }
         });
     }
@@ -226,20 +227,22 @@ function getBackgroundCache() {
 var Background = GObject.registerClass({
     Signals: { 'loaded': {}, 'bg-changed': {} },
 }, class Background extends Meta.Background {
-    _init(params) {
-        params = Params.parse(params, { monitorIndex: 0,
-                                        layoutManager: Main.layoutManager,
-                                        settings: null,
-                                        file: null,
-                                        style: null });
+    _init(params = {}) {
+        const {
+            monitorIndex =  0,
+            layoutManager = Main.layoutManager,
+            settings =  null,
+            file = null,
+            style = null,
+        } = params;
 
         super._init({ meta_display: global.display });
 
-        this._settings = params.settings;
-        this._file = params.file;
-        this._style = params.style;
-        this._monitorIndex = params.monitorIndex;
-        this._layoutManager = params.layoutManager;
+        this._settings = settings;
+        this._file = file;
+        this._style = style;
+        this._monitorIndex = monitorIndex;
+        this._layoutManager = layoutManager;
         this._fileWatches = {};
         this._cancellable = new Gio.Cancellable();
         this.isLoaded = false;
@@ -663,27 +666,27 @@ class Animation extends GnomeDesktop.BGSlideShow {
 });
 
 var BackgroundManager = class BackgroundManager {
-    constructor(params) {
-        params = Params.parse(params, {
-            container: null,
-            layoutManager: Main.layoutManager,
-            monitorIndex: null,
-            vignette: false,
-            controlPosition: true,
-            settingsSchema: BACKGROUND_SCHEMA,
-            useContentSize: true,
-        });
+    constructor(params = {}) {
+        const {
+            container = null,
+            layoutManager = Main.layoutManager,
+            monitorIndex = null,
+            vignette = false,
+            controlPosition = true,
+            settingsSchema = BACKGROUND_SCHEMA,
+            useContentSize = true,
+        } = params;
 
         let cache = getBackgroundCache();
-        this._settingsSchema = params.settingsSchema;
-        this._backgroundSource = cache.getBackgroundSource(params.layoutManager, params.settingsSchema);
+        this._settingsSchema = settingsSchema;
+        this._backgroundSource = cache.getBackgroundSource(layoutManager, settingsSchema);
 
-        this._container = params.container;
-        this._layoutManager = params.layoutManager;
-        this._vignette = params.vignette;
-        this._monitorIndex = params.monitorIndex;
-        this._controlPosition = params.controlPosition;
-        this._useContentSize = params.useContentSize;
+        this._container = container;
+        this._layoutManager = layoutManager;
+        this._vignette = vignette;
+        this._monitorIndex = monitorIndex;
+        this._controlPosition = controlPosition;
+        this._useContentSize = useContentSize;
 
         this.backgroundActor = this._createBackgroundActor();
         this._newBackgroundActor = null;

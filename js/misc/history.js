@@ -2,18 +2,19 @@
 
 const Signals = imports.signals;
 const Clutter = imports.gi.Clutter;
-const Params = imports.misc.params;
 
 var DEFAULT_LIMIT = 512;
 
 var HistoryManager = class {
-    constructor(params) {
-        params = Params.parse(params, { gsettingsKey: null,
-                                        limit: DEFAULT_LIMIT,
-                                        entry: null });
+    constructor(params = {}) {
+        const {
+            gsettingsKey = null,
+            limit = DEFAULT_LIMIT,
+            entry = null,
+        } = params;
 
-        this._key = params.gsettingsKey;
-        this._limit = params.limit;
+        this._key = gsettingsKey;
+        this._limit = limit;
 
         this._historyIndex = 0;
         if (this._key) {
@@ -24,7 +25,7 @@ var HistoryManager = class {
             this._history = [];
         }
 
-        this._entry = params.entry;
+        this._entry = entry;
 
         if (this._entry) {
             this._entry.connect('key-press-event',

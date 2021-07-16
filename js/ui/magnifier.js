@@ -7,7 +7,6 @@ const Signals = imports.signals;
 const Background = imports.ui.background;
 const FocusCaretTracker = imports.ui.focusCaretTracker;
 const Main = imports.ui.main;
-const Params = imports.misc.params;
 const PointerWatcher = imports.ui.pointerWatcher;
 
 var CROSSHAIRS_CLIP_SIZE = [100, 100];
@@ -1396,44 +1395,46 @@ var ZoomRegion = class ZoomRegion {
         Main.uiGroup.set_opacity(uiGroupIsOccluded ? 0 : 255);
     }
 
-    _changeROI(params) {
+    _changeROI(params = {}) {
         // Updates the area we are viewing; the magnification factors
         // and center can be set explicitly, or we can recompute
         // the position based on the mouse cursor position
 
-        params = Params.parse(params, { xMagFactor: this._xMagFactor,
-                                        yMagFactor: this._yMagFactor,
-                                        xCenter: this._xCenter,
-                                        yCenter: this._yCenter,
-                                        redoCursorTracking: false,
-                                        animate: false });
+        let {
+            xMagFactor = this._xMagFactor,
+            yMagFactor = this._yMagFactor,
+            xCenter = this._xCenter,
+            yCenter = this._yCenter,
+            redoCursorTracking = false,
+            animate = false,
+        } = params;
 
-        if (params.xMagFactor <= 0)
-            params.xMagFactor = this._xMagFactor;
-        if (params.yMagFactor <= 0)
-            params.yMagFactor = this._yMagFactor;
+        if (xMagFactor <= 0)
+            xMagFactor = this._xMagFactor;
+        if (yMagFactor <= 0)
+            yMagFactor = this._yMagFactor;
 
-        this._xMagFactor = params.xMagFactor;
-        this._yMagFactor = params.yMagFactor;
+        this._xMagFactor = xMagFactor;
+        this._yMagFactor = yMagFactor;
 
-        if (params.redoCursorTracking &&
+        if (redoCursorTracking &&
             this._mouseTrackingMode != GDesktopEnums.MagnifierMouseTrackingMode.NONE) {
             // This depends on this.xMagFactor/yMagFactor already being updated
-            [params.xCenter, params.yCenter] = this._centerFromMousePosition();
+            [xCenter, yCenter] = this._centerFromMousePosition();
         }
 
         if (this._clampScrollingAtEdges) {
             let roiWidth = this._viewPortWidth / this._xMagFactor;
             let roiHeight = this._viewPortHeight / this._yMagFactor;
 
-            params.xCenter = Math.min(params.xCenter, global.screen_width - roiWidth / 2);
-            params.xCenter = Math.max(params.xCenter, roiWidth / 2);
-            params.yCenter = Math.min(params.yCenter, global.screen_height - roiHeight / 2);
-            params.yCenter = Math.max(params.yCenter, roiHeight / 2);
+            xCenter = Math.min(xCenter, global.screen_width - roiWidth / 2);
+            xCenter = Math.max(xCenter, roiWidth / 2);
+            yCenter = Math.min(yCenter, global.screen_height - roiHeight / 2);
+            yCenter = Math.max(yCenter, roiHeight / 2);
         }
 
-        this._xCenter = params.xCenter;
-        this._yCenter = params.yCenter;
+        this._xCenter = xCenter;
+        this._yCenter = yCenter;
 
         // If in lens mode, move the magnified view such that it is centered
         // over the actual mouse. However, in full screen mode, the "lens" is
@@ -1445,7 +1446,7 @@ var ZoomRegion = class ZoomRegion {
                                 height: this._viewPortHeight }, true);
         }
 
-        this._updateCloneGeometry(params.animate);
+        this._updateCloneGeometry(animate);
     }
 
     _isMouseOverRegion() {

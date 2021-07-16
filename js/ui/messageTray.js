@@ -9,7 +9,6 @@ const Calendar = imports.ui.calendar;
 const GnomeSession = imports.misc.gnomeSession;
 const Layout = imports.ui.layout;
 const Main = imports.ui.main;
-const Params = imports.misc.params;
 
 const SHELL_KEYBINDINGS_SCHEMA = 'org.gnome.shell.keybindings';
 
@@ -393,41 +392,43 @@ var Notification = GObject.registerClass({
     // Updates the notification by regenerating its icon and updating
     // the title/banner. If @params.clear is %true, it will also
     // remove any additional actors/action buttons previously added.
-    update(title, banner, params) {
-        params = Params.parse(params, { gicon: null,
-                                        secondaryGIcon: null,
-                                        bannerMarkup: false,
-                                        clear: false,
-                                        datetime: null,
-                                        soundName: null,
-                                        soundFile: null });
+    update(title, banner, params = {}) {
+        const {
+            gicon = null,
+            secondaryGIcon = null,
+            bannerMarkup = false,
+            clear = false,
+            datetime = null,
+            soundName = null,
+            soundFile = null,
+        } = params;
 
         this.title = title;
         this.bannerBodyText = banner;
-        this.bannerBodyMarkup = params.bannerMarkup;
+        this.bannerBodyMarkup = bannerMarkup;
 
-        if (params.datetime)
-            this.datetime = params.datetime;
+        if (datetime)
+            this.datetime = datetime;
         else
             this.datetime = GLib.DateTime.new_now_local();
 
-        if (params.gicon || params.clear)
-            this.gicon = params.gicon;
+        if (gicon || clear)
+            this.gicon = gicon;
 
-        if (params.secondaryGIcon || params.clear)
-            this.secondaryGIcon = params.secondaryGIcon;
+        if (secondaryGIcon || clear)
+            this.secondaryGIcon = secondaryGIcon;
 
-        if (params.clear)
+        if (clear)
             this.actions = [];
 
-        if (this._soundName != params.soundName ||
-            this._soundFile != params.soundFile) {
-            this._soundName = params.soundName;
-            this._soundFile = params.soundFile;
+        if (this._soundName != soundName ||
+            this._soundFile != soundFile) {
+            this._soundName = soundName;
+            this._soundFile = soundFile;
             this._soundPlayed = false;
         }
 
-        this.emit('updated', params.clear);
+        this.emit('updated', clear);
     }
 
     // addAction:

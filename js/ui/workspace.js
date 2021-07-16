@@ -7,7 +7,6 @@ const Background = imports.ui.background;
 const DND = imports.ui.dnd;
 const Main = imports.ui.main;
 const OverviewControls = imports.ui.overviewControls;
-const Params = imports.misc.params;
 const Util = imports.misc.util;
 const { WindowPreview } = imports.ui.windowPreview;
 
@@ -97,19 +96,19 @@ const BACKGROUND_MARGIN = 12;
 // and center it horizontally, and align it to the bottom vertically.
 
 var LayoutStrategy = class {
-    constructor(params) {
-        params = Params.parse(params, {
-            monitor: null,
-            rowSpacing: 0,
-            columnSpacing: 0,
-        });
+    constructor(params = {}) {
+        const {
+            monitor = null,
+            rowSpacing = 0,
+            columnSpacing = 0,
+        } = params;
 
-        if (!params.monitor)
+        if (!monitor)
             throw new Error(`No monitor param passed to ${this.constructor.name}`);
 
-        this._monitor = params.monitor;
-        this._rowSpacing = params.rowSpacing;
-        this._columnSpacing = params.columnSpacing;
+        this._monitor = monitor;
+        this._rowSpacing = rowSpacing;
+        this._columnSpacing = columnSpacing;
     }
 
     // Compute a strategy-specific overall layout given a list of WindowPreviews
@@ -204,15 +203,11 @@ var UnalignedLayoutStrategy = class extends LayoutStrategy {
         row.windows.sort((a, b) => a.windowCenter.x - b.windowCenter.x);
     }
 
-    computeLayout(windows, layoutParams) {
-        layoutParams = Params.parse(layoutParams, {
-            numRows: 0,
-        });
+    computeLayout(windows, layoutParams = {}) {
+        const { numRows = 0 } = layoutParams;
 
-        if (layoutParams.numRows === 0)
+        if (numRows === 0)
             throw new Error(`${this.constructor.name}: No numRows given in layout params`);
-
-        const numRows = layoutParams.numRows;
 
         let rows = [];
         let totalWidth = 0;

@@ -1,7 +1,6 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
 const { Gio, GLib } = imports.gi;
-const Params = imports.misc.params;
 const Signals = imports.signals;
 
 // Specified in the D-Bus specification here:
@@ -26,18 +25,20 @@ const ObjectManagerIface = `
 const ObjectManagerInfo = Gio.DBusInterfaceInfo.new_for_xml(ObjectManagerIface);
 
 var ObjectManager = class {
-    constructor(params) {
-        params = Params.parse(params, { connection: null,
-                                        name: null,
-                                        objectPath: null,
-                                        knownInterfaces: null,
-                                        cancellable: null,
-                                        onLoaded: null });
+    constructor(params = {}) {
+        const {
+            connection = null,
+            name = null,
+            objectPath = null,
+            knownInterfaces = null,
+            cancellable = null,
+            onLoaded = null,
+        } = params;
 
-        this._connection = params.connection;
-        this._serviceName = params.name;
-        this._managerPath = params.objectPath;
-        this._cancellable = params.cancellable;
+        this._connection = connection;
+        this._serviceName = name;
+        this._managerPath = objectPath;
+        this._cancellable = cancellable;
 
         this._managerProxy = new Gio.DBusProxy({ g_connection: this._connection,
                                                  g_interface_name: ObjectManagerInfo.name,
@@ -49,10 +50,10 @@ var ObjectManager = class {
         this._interfaceInfos = {};
         this._objects = {};
         this._interfaces = {};
-        this._onLoaded = params.onLoaded;
+        this._onLoaded = onLoaded;
 
-        if (params.knownInterfaces)
-            this._registerInterfaces(params.knownInterfaces);
+        if (knownInterfaces)
+            this._registerInterfaces(knownInterfaces);
 
         // Start out inhibiting load until at least the proxy
         // manager is loaded and the remote objects are fetched

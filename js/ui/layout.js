@@ -9,7 +9,6 @@ const BackgroundMenu = imports.ui.backgroundMenu;
 
 const DND = imports.ui.dnd;
 const Main = imports.ui.main;
-const Params = imports.misc.params;
 const Ripples = imports.ui.ripples;
 
 var STARTUP_ANIMATION_TIME = 500;
@@ -849,11 +848,11 @@ var LayoutManager = GObject.registerClass({
         return -1;
     }
 
-    _trackActor(actor, params) {
+    _trackActor(actor, params = {}) {
         if (this._findActor(actor) != -1)
             throw new Error('trying to re-track existing chrome actor');
 
-        let actorData = Params.parse(params, defaultParams);
+        let actorData = { ...defaultParams, ...params };
         actorData.actor = actor;
         actorData.visibleId = actor.connect('notify::visible',
                                             this._queueUpdateRegions.bind(this));

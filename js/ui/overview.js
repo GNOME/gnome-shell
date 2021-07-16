@@ -13,7 +13,6 @@ const LayoutManager = imports.ui.layout;
 const Main = imports.ui.main;
 const MessageTray = imports.ui.messageTray;
 const OverviewControls = imports.ui.overviewControls;
-const Params = imports.misc.params;
 const SwipeTracker = imports.ui.swipeTracker;
 const WindowManager = imports.ui.windowManager;
 const WorkspaceThumbnail = imports.ui.workspaceThumbnail;
@@ -27,14 +26,11 @@ var ShellInfo = class {
         this._source = null;
     }
 
-    setMessage(text, options) {
-        options = Params.parse(options, {
-            undoCallback: null,
-            forFeedback: false,
-        });
-
-        let undoCallback = options.undoCallback;
-        let forFeedback = options.forFeedback;
+    setMessage(text, options = {}) {
+        const {
+            undoCallback = null,
+            forFeedback = false,
+        } = options;
 
         if (this._source == null) {
             this._source = new MessageTray.SystemNotificationSource();

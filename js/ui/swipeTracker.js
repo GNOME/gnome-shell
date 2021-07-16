@@ -4,7 +4,6 @@
 const { Clutter, Gio, GObject, Meta } = imports.gi;
 
 const Main = imports.ui.main;
-const Params = imports.misc.params;
 
 // FIXME: ideally these values matches physical touchpad size. We can get the
 // correct values for gnome-shell specifically, since mutter uses libinput
@@ -463,9 +462,9 @@ var SwipeTracker = GObject.registerClass({
         'end':    { param_types: [GObject.TYPE_UINT64, GObject.TYPE_DOUBLE] },
     },
 }, class SwipeTracker extends GObject.Object {
-    _init(actor, orientation, allowedModes, params) {
+    _init(actor, orientation, allowedModes, params = {}) {
         super._init();
-        params = Params.parse(params, { allowDrag: true, allowScroll: true });
+        const { allowDrag = true, allowScroll = true } = params;
 
         this.orientation = orientation;
         this._allowedModes = allowedModes;
@@ -495,7 +494,7 @@ var SwipeTracker = GObject.registerClass({
         this.bind_property('distance', this._touchGesture, 'distance', 0);
         global.stage.add_action(this._touchGesture);
 
-        if (params.allowDrag) {
+        if (allowDrag) {
             this._dragGesture = new TouchSwipeGesture(allowedModes, 1,
                 Clutter.GestureTriggerEdge.AFTER);
             this._dragGesture.connect('begin', this._beginGesture.bind(this));
@@ -511,7 +510,7 @@ var SwipeTracker = GObject.registerClass({
             this._dragGesture = null;
         }
 
-        if (params.allowScroll) {
+        if (allowScroll) {
             this._scrollGesture = new ScrollGesture(actor, allowedModes);
             this._scrollGesture.connect('begin', this._beginGesture.bind(this));
             this._scrollGesture.connect('update', this._updateGesture.bind(this));

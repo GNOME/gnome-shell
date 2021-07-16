@@ -5,7 +5,6 @@ const { Clutter, GObject, Meta, Shell, St } = imports.gi;
 
 const Main = imports.ui.main;
 const SwitcherPopup = imports.ui.switcherPopup;
-const Params = imports.misc.params;
 
 var POPUP_APPICON_SIZE = 96;
 
@@ -23,14 +22,21 @@ var CtrlAltTabManager = class CtrlAltTabManager {
                                                   focusCallback: this._focusWindows.bind(this) });
     }
 
-    addGroup(root, name, icon, params) {
-        let item = Params.parse(params, { sortGroup: SortGroup.MIDDLE,
-                                          proxy: root,
-                                          focusCallback: null });
+    addGroup(root, name, icon, params = {}) {
+        const {
+            sortGroup = SortGroup.MIDDLE,
+            proxy = root,
+            focusCallback = null,
+        } = params;
 
-        item.root = root;
-        item.name = name;
-        item.iconName = icon;
+        const item = {
+            name,
+            root,
+            sortGroup,
+            proxy,
+            focusCallback,
+            iconName: icon,
+        };
 
         this._items.push(item);
         root.connect('destroy', () => this.removeGroup(root));

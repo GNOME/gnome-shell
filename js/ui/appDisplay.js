@@ -17,7 +17,6 @@ const ParentalControlsManager = imports.misc.parentalControlsManager;
 const PopupMenu = imports.ui.popupMenu;
 const Search = imports.ui.search;
 const SwipeTracker = imports.ui.swipeTracker;
-const Params = imports.misc.params;
 const SystemActions = imports.misc.systemActions;
 
 var MENU_POPUP_TIMEOUT = 600;
@@ -3088,11 +3087,7 @@ var AppIcon = GObject.registerClass({
 }, class AppIcon extends AppViewItem {
     _init(app, iconParams = {}) {
         // Get the isDraggable property without passing it on to the BaseIcon:
-        const appIconParams = Params.parse(iconParams, { isDraggable: true }, true);
-        const isDraggable = appIconParams['isDraggable'];
-        delete iconParams['isDraggable'];
-        const expandTitleOnHover = appIconParams['expandTitleOnHover'];
-        delete iconParams['expandTitleOnHover'];
+        const { isDraggable = true, expandTitleOnHover } = iconParams;
 
         super._init({ style_class: 'app-well-app' }, isDraggable, expandTitleOnHover);
 
@@ -3297,14 +3292,13 @@ var AppIcon = GObject.registerClass({
         this.icon.animateZoomOutAtPos(x, y);
     }
 
-    shellWorkspaceLaunch(params) {
+    shellWorkspaceLaunch(params = {}) {
         let { stack } = new Error();
         log('shellWorkspaceLaunch is deprecated, use app.open_new_window() instead\n%s'.format(stack));
 
-        params = Params.parse(params, { workspace: -1,
-                                        timestamp: 0 });
+        const { workspace = -1 } = params;
 
-        this.app.open_new_window(params.workspace);
+        this.app.open_new_window(workspace);
     }
 
     getDragActor() {

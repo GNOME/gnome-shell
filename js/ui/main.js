@@ -27,7 +27,6 @@ const OsdMonitorLabeler = imports.ui.osdMonitorLabeler;
 const Overview = imports.ui.overview;
 const PadOsd = imports.ui.padOsd;
 const Panel = imports.ui.panel;
-const Params = imports.misc.params;
 const RunDialog = imports.ui.runDialog;
 const WelcomeDialog = imports.ui.welcomeDialog;
 const Layout = imports.ui.layout;
@@ -518,13 +517,15 @@ function _findModal(actor) {
  *
  * @returns {bool}: true iff we successfully acquired a grab or already had one
  */
-function pushModal(actor, params) {
-    params = Params.parse(params, { timestamp: global.get_current_time(),
-                                    options: 0,
-                                    actionMode: Shell.ActionMode.NONE });
+function pushModal(actor, params = {}) {
+    const {
+        timestamp = global.get_current_time(),
+        options = 0,
+        actionMode: modalActionMode = Shell.ActionMode.NONE,
+    } = params;
 
     if (modalCount == 0) {
-        if (!global.begin_modal(params.timestamp, params.options)) {
+        if (!global.begin_modal(timestamp, options)) {
             log('pushModal: invocation of begin_modal failed');
             return false;
         }
@@ -555,7 +556,7 @@ function pushModal(actor, params) {
                                 prevFocusDestroyId,
                                 actionMode });
 
-    actionMode = params.actionMode;
+    actionMode = modalActionMode;
     global.stage.set_key_focus(actor);
     return true;
 }

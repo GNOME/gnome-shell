@@ -10,7 +10,6 @@ const OVirt = imports.gdm.oVirt;
 const Vmware = imports.gdm.vmware;
 const Main = imports.ui.main;
 const { loadInterfaceXML } = imports.misc.fileUtils;
-const Params = imports.misc.params;
 const SmartcardManager = imports.misc.smartcardManager;
 
 const FprintManagerIface = loadInterfaceXML('net.reactivated.Fprint.Manager');
@@ -137,9 +136,9 @@ function cloneAndFadeOutActor(actor) {
 }
 
 var ShellUserVerifier = class {
-    constructor(client, params) {
-        params = Params.parse(params, { reauthenticationOnly: false });
-        this._reauthOnly = params.reauthenticationOnly;
+    constructor(client, params = {}) {
+        const { reauthenticationOnly = false } = params;
+        this._reauthOnly = reauthenticationOnly;
 
         this._client = client;
 

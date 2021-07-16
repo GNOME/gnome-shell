@@ -6,7 +6,6 @@ const { GdkPixbuf, Gio, GLib, GObject, Shell, St } = imports.gi;
 const Config = imports.misc.config;
 const Main = imports.ui.main;
 const MessageTray = imports.ui.messageTray;
-const Params = imports.misc.params;
 
 const { loadInterfaceXML } = imports.misc.fileUtils;
 
@@ -136,7 +135,7 @@ var FdoNotificationDaemon = class FdoNotificationDaemon {
             hints[hint] = hints[hint].deep_unpack();
         }
 
-        hints = Params.parse(hints, { urgency: Urgency.NORMAL }, true);
+        hints = { urgency: Urgency.NORMAL, ...hints };
 
         // Filter out chat, presence, calls and invitation notifications from
         // Empathy, since we handle that information from telepathyClient.js

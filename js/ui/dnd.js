@@ -5,7 +5,6 @@ const { Clutter, GLib, Meta, Shell, St } = imports.gi;
 const Signals = imports.signals;
 
 const Main = imports.ui.main;
-const Params = imports.misc.params;
 
 // Time to scale down to maxDragActorSize
 var SCALE_ANIMATION_TIME = 250;
@@ -79,19 +78,19 @@ function removeDragMonitor(monitor) {
 }
 
 var _Draggable = class _Draggable {
-    constructor(actor, params) {
-        params = Params.parse(params, {
-            manualMode: false,
-            timeoutThreshold: 0,
-            restoreOnSuccess: false,
-            dragActorMaxSize: undefined,
-            dragActorOpacity: undefined,
-        });
+    constructor(actor, params = {}) {
+        const {
+            manualMode = false,
+            timeoutThreshold = 0,
+            restoreOnSuccess = false,
+            dragActorMaxSize = undefined,
+            dragActorOpacity = undefined,
+        } = params;
 
         this.actor = actor;
         this._dragState = DragState.INIT;
 
-        if (!params.manualMode) {
+        if (!manualMode) {
             this.actor.connect('button-press-event',
                                this._onButtonPress.bind(this));
             this.actor.connect('touch-event',
@@ -108,10 +107,10 @@ var _Draggable = class _Draggable {
         this._onEventId = null;
         this._touchSequence = null;
 
-        this._restoreOnSuccess = params.restoreOnSuccess;
-        this._dragActorMaxSize = params.dragActorMaxSize;
-        this._dragActorOpacity = params.dragActorOpacity;
-        this._dragTimeoutThreshold = params.timeoutThreshold;
+        this._restoreOnSuccess = restoreOnSuccess;
+        this._dragActorMaxSize = dragActorMaxSize;
+        this._dragActorOpacity = dragActorOpacity;
+        this._dragTimeoutThreshold = timeoutThreshold;
 
         this._buttonDown = false; // The mouse button has been pressed and has not yet been released.
         this._animationInProgress = false; // The drag is over and the item is in the process of animating to its original position (snapping back or reverting).

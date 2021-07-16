@@ -3,7 +3,6 @@
 
 const { Clutter, GObject, Shell, St } = imports.gi;
 
-const Params = imports.misc.params;
 
 var DEFAULT_FADE_FACTOR = 0.4;
 var VIGNETTE_BRIGHTNESS = 0.5;
@@ -109,27 +108,27 @@ var Lightbox = GObject.registerClass({
             'active', 'active', 'active', GObject.ParamFlags.READABLE, false),
     },
 }, class Lightbox extends St.Bin {
-    _init(container, params) {
-        params = Params.parse(params, {
-            inhibitEvents: false,
-            width: null,
-            height: null,
-            fadeFactor: DEFAULT_FADE_FACTOR,
-            radialEffect: false,
-        });
+    _init(container, params = {}) {
+        const {
+            inhibitEvents = false,
+            width = null,
+            height = null,
+            fadeFactor = DEFAULT_FADE_FACTOR,
+            radialEffect = false,
+        } = params;
 
         super._init({
-            reactive: params.inhibitEvents,
-            width: params.width,
-            height: params.height,
+            reactive: inhibitEvents,
+            width,
+            height,
             visible: false,
         });
 
         this._active = false;
         this._container = container;
         this._children = container.get_children();
-        this._fadeFactor = params.fadeFactor;
-        this._radialEffect = params.radialEffect;
+        this._fadeFactor = fadeFactor;
+        this._radialEffect = Clutter.feature_available(Clutter.FeatureFlags.SHADERS_GLSL) && radialEffect;
 
         if (this._radialEffect)
             this.add_effect(new RadialShaderEffect({ name: 'radial' }));
@@ -141,7 +140,7 @@ var Lightbox = GObject.registerClass({
 
         this.connect('destroy', this._onDestroy.bind(this));
 
-        if (!params.width || !params.height) {
+        if (!width || !height) {
             this.add_constraint(new Clutter.BindConstraint({
                 source: container,
                 coordinate: Clutter.BindCoordinate.ALL,

@@ -5,7 +5,6 @@ const { Clutter, GObject, Pango, Shell, St } = imports.gi;
 
 const BoxPointer = imports.ui.boxpointer;
 const Main = imports.ui.main;
-const Params = imports.misc.params;
 const PopupMenu = imports.ui.popupMenu;
 
 var EntryMenu = class extends PopupMenu.PopupMenu {
@@ -127,15 +126,15 @@ function _onPopup(actor, entry) {
     entry.menu.open(BoxPointer.PopupAnimation.FULL);
 }
 
-function addContextMenu(entry, params) {
+function addContextMenu(entry, params = {}) {
     if (entry.menu)
         return;
 
-    params = Params.parse(params, { actionMode: Shell.ActionMode.POPUP });
+    const { actionMode = Shell.ActionMode.POPUP } = params;
 
     entry.menu = new EntryMenu(entry);
     entry._menuManager = new PopupMenu.PopupMenuManager(entry,
-                                                        { actionMode: params.actionMode });
+                                                        { actionMode });
     entry._menuManager.addMenu(entry.menu);
 
     // Add an event handler to both the entry and its clutter_text; the former
