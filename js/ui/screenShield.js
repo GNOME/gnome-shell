@@ -324,8 +324,10 @@ var ScreenShield = class {
     showDialog() {
         if (!this._becomeModal()) {
             // In the login screen, this is a hard error. Fail-whale
-            log('Could not acquire modal grab for the login screen. Aborting login process.');
-            Meta.quit(Meta.ExitCode.ERROR);
+            const error = new GLib.Error(
+                Gio.IOErrorEnum, Gio.IOErrorEnum.FAILED,
+                'Could not acquire modal grab for the login screen. Aborting login process.');
+            global.context.terminate_with_error(error);
         }
 
         this.actor.show();
