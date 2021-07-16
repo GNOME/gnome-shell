@@ -394,7 +394,10 @@ _st_create_shadow_pipeline (StShadow    *shadow_spec,
   float sigma;
   int src_height, dst_height;
   int src_width, dst_width;
+  CoglPipeline *texture_pipeline;
 
+  static CoglPipelineKey texture_pipeline_key =
+    "st-create-shadow-pipeline-saturate-alpha";
   static CoglPipeline *shadow_pipeline_template = NULL;
 
   g_return_val_if_fail (shadow_spec != NULL, NULL);
@@ -433,10 +436,34 @@ _st_create_shadow_pipeline (StShadow    *shadow_spec,
                                     });
 
   /* Texture */
-  texture_node = clutter_texture_node_new (src_texture,
-                                           0,
-                                           CLUTTER_SCALING_FILTER_NEAREST,
-                                           CLUTTER_SCALING_FILTER_NEAREST);
+  texture_pipeline = cogl_context_get_named_pipeline (ctx,
+                                                      &texture_pipeline_key);
+
+  if (G_UNLIKELY (texture_pipeline == NULL))
+    {
+      CoglSnippet *snippet;
+
+      snippet = cogl_snippet_new (COGL_SNIPPET_HOOK_FRAGMENT,
+                                  "",
+                                  "if (cogl_color_out.a > 0.0)\n"
+                                  "  cogl_color_out.a = 1.0;");
+
+      texture_pipeline = cogl_pipeline_new (ctx);
+      cogl_pipeline_add_snippet (texture_pipeline, snippet);
+      cogl_object_unref (snippet);
+
+      cogl_context_set_named_pipeline (ctx,
+                                       &texture_pipeline_key,
+                                       texture_pipeline);
+    }
+
+  /* No need to unref texture_pipeline since the named pipeline hash
+   * doesn't change its ref count from 1. Also no need to copy texture_pipeline
+   * since we'll be completely finished with it after clutter_paint_node_paint.
+   */
+
+  cogl_pipeline_set_layer_texture (texture_pipeline, 0, src_texture);
+  texture_node = clutter_pipeline_node_new (texture_pipeline);
   clutter_paint_node_add_child (blur_node, texture_node);
   clutter_paint_node_add_rectangle (texture_node,
                                     &(ClutterActorBox) {
