@@ -20,6 +20,7 @@
 #include <gio/gio.h>
 #include <girepository.h>
 #include <meta/meta-backend.h>
+#include <meta/meta-context.h>
 #include <meta/display.h>
 #include <meta/util.h>
 #include <meta/meta-shaped-texture.h>
@@ -52,6 +53,7 @@ struct _ShellGlobal {
   ClutterStage *stage;
 
   MetaBackend *backend;
+  MetaContext *meta_context;
   MetaDisplay *meta_display;
   MetaWorkspaceManager *workspace_manager;
   Display *xdisplay;
@@ -91,6 +93,7 @@ enum {
 
   PROP_SESSION_MODE,
   PROP_BACKEND,
+  PROP_CONTEXT,
   PROP_DISPLAY,
   PROP_WORKSPACE_MANAGER,
   PROP_SCREEN_WIDTH,
@@ -233,6 +236,9 @@ shell_global_get_property(GObject         *object,
       break;
     case PROP_BACKEND:
       g_value_set_object (value, global->backend);
+      break;
+    case PROP_CONTEXT:
+      g_value_set_object (value, global->meta_context);
       break;
     case PROP_DISPLAY:
       g_value_set_object (value, global->meta_display);
@@ -512,6 +518,13 @@ shell_global_class_init (ShellGlobalClass *klass)
                                                         "Backend",
                                                         "MetaBackend object",
                                                         META_TYPE_BACKEND,
+                                                        G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
+  g_object_class_install_property (gobject_class,
+                                   PROP_CONTEXT,
+                                   g_param_spec_object ("context",
+                                                        "Context",
+                                                        "MetaContext object",
+                                                        META_TYPE_CONTEXT,
                                                         G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
   g_object_class_install_property (gobject_class,
                                    PROP_DISPLAY,
@@ -995,6 +1008,7 @@ _shell_global_set_plugin (ShellGlobal *global,
 
   display = meta_plugin_get_display (plugin);
   global->meta_display = display;
+  global->meta_context = meta_display_get_context (display);
   global->workspace_manager = meta_display_get_workspace_manager (display);
 
   global->stage = CLUTTER_STAGE (meta_get_stage_for_display (display));
