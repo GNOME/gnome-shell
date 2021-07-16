@@ -42,7 +42,14 @@ const GeoclueManager = Gio.DBusProxy.makeProxyWrapper(GeoclueIface);
 
 var AgentIface = loadInterfaceXML('org.freedesktop.GeoClue2.Agent');
 
-var Indicator = GObject.registerClass({
+let _geoclueAgent = null;
+function _getGeoclueAgent() {
+    if (_geoclueAgent === null)
+        _geoclueAgent = new GeoclueAgent();
+    return _geoclueAgent;
+}
+
+var GeoclueAgent = GObject.registerClass({
     Properties: {
         'enabled': GObject.ParamSpec.boolean(
             'enabled', 'Enabled', 'Enabled',
@@ -57,7 +64,7 @@ var Indicator = GObject.registerClass({
             GObject.ParamFlags.READABLE,
             0, 8, 0),
     },
-}, class Indicator extends PanelMenu.SystemIndicator {
+}, class GeoclueAgent extends GObject.Object {
     _init() {
         super._init();
 
@@ -67,34 +74,16 @@ var Indicator = GObject.registerClass({
         this._settings.connect('changed::%s'.format(MAX_ACCURACY_LEVEL),
             this._onMaxAccuracyLevelChanged.bind(this));
 
-        this._indicator = this._addIndicator();
-        this._indicator.icon_name = 'find-location-symbolic';
-        this.bind_property('in-use', this._indicator, 'visible', GObject.BindingFlags.SYNC_CREATE);
-
-        this._item = new PopupMenu.PopupSubMenuMenuItem('', true);
-        this._item.icon.icon_name = 'find-location-symbolic';
-        this.bind_property('in-use', this._item, 'visible', GObject.BindingFlags.SYNC_CREATE);
-
         this._agent = Gio.DBusExportedObject.wrapJSObject(AgentIface, this);
         this._agent.export(Gio.DBus.system, '/org/freedesktop/GeoClue2/Agent');
 
-        this._item.label.text = _("Location Enabled");
-        this._onOffAction = this._item.menu.addAction(_("Disable"), this._onOnOffAction.bind(this));
-        this._item.menu.addSettingsAction(_('Privacy Settings'), 'gnome-location-panel.desktop');
-
-        this.menu.addMenuItem(this._item);
-
         this.connect('notify::enabled', this._onMaxAccuracyLevelChanged.bind(this));
-        this.connect('notify::in-use', this._updateMenuLabels.bind(this));
-        this.connect('notify::max-accuracy-level', this._updateMenuLabels.bind(this));
 
         this._watchId = Gio.bus_watch_name(Gio.BusType.SYSTEM,
                                            'org.freedesktop.GeoClue2',
                                            0,
                                            this._connectToGeoclue.bind(this),
                                            this._onGeoclueVanished.bind(this));
-        Main.sessionMode.connect('updated', this._onSessionUpdated.bind(this));
-        this._onSessionUpdated();
         this._onMaxAccuracyLevelChanged();
         this._connectToGeoclue();
         this._connectToPermissionStore();
@@ -186,27 +175,6 @@ var Indicator = GObject.registerClass({
         this.notify('in-use');
     }
 
-    _onOnOffAction() {
-        this.enabled = !this.enabled;
-    }
-
-    _onSessionUpdated() {
-        let sensitive = !Main.sessionMode.isLocked && !Main.sessionMode.isGreeter;
-        this.menu.setSensitive(sensitive);
-    }
-
-    _updateMenuLabels() {
-        if (this.enabled) {
-            this._item.label.text = this._indicator.visible
-                ? _("Location In Use")
-                : _("Location Enabled");
-            this._onOffAction.label.text = _("Disable");
-        } else {
-            this._item.label.text = _("Location Disabled");
-            this._onOffAction.label.text = _("Enable");
-        }
-    }
-
     _onMaxAccuracyLevelChanged() {
         this.notify('max-accuracy-level');
 
@@ -239,6 +207,69 @@ var Indicator = GObject.registerClass({
         }
 
         this._permStoreProxy = proxy;
+    }
+});
+
+var Indicator = GObject.registerClass(
+class Indicator extends PanelMenu.SystemIndicator {
+    _init() {
+        super._init();
+
+        this._agent = _getGeoclueAgent();
+
+        this._indicator = this._addIndicator();
+        this._indicator.icon_name = 'find-location-symbolic';
+        this._agent.bind_property('in-use',
+            this._indicator,
+            'visible',
+            GObject.BindingFlags.SYNC_CREATE);
+
+        this._item = new PopupMenu.PopupSubMenuMenuItem('', true);
+        this._item.icon.icon_name = 'find-location-symbolic';
+        this._agent.bind_property('in-use',
+            this._item,
+            'visible',
+            GObject.BindingFlags.SYNC_CREATE);
+
+        this._item.label.text = _('Location Enabled');
+        this._onOffAction = this._item.menu.addAction(_('Disable'), this._onOnOffAction.bind(this));
+        this._item.menu.addSettingsAction(_('Privacy Settings'), 'gnome-location-panel.desktop');
+
+        this.menu.addMenuItem(this._item);
+
+        this._inUseId = this._agent.connect('notify::in-use', this._updateMenuLabels.bind(this));
+        this._maxAccuracyId = this._agent.connect('notify::max-accuracy-level', this._updateMenuLabels.bind(this));
+
+        this.connect('destroy', this._onDestroy.bind(this));
+
+        Main.sessionMode.connect('updated', this._onSessionUpdated.bind(this));
+        this._onSessionUpdated();
+    }
+
+    _onDestroy() {
+        this._agent.disconnect(this._inUseId);
+        this._agent.disconnect(this._maxAccuracyId);
+    }
+
+    _onOnOffAction() {
+        this.enabled = !this.enabled;
+    }
+
+    _onSessionUpdated() {
+        let sensitive = !Main.sessionMode.isLocked && !Main.sessionMode.isGreeter;
+        this.menu.setSensitive(sensitive);
+    }
+
+    _updateMenuLabels() {
+        if (this.enabled) {
+            this._item.label.text = this._indicator.visible
+                ? _('Location In Use')
+                : _('Location Enabled');
+            this._onOffAction.label.text = _('Disable');
+        } else {
+            this._item.label.text = _('Location Disabled');
+            this._onOffAction.label.text = _('Enable');
+        }
     }
 });
 
