@@ -1,7 +1,7 @@
 include:
     - remote: 'https://gitlab.gnome.org/GNOME/citemplates/raw/HEAD/flatpak/flatpak_ci_initiative.yml'
-    - remote: 'https://gitlab.freedesktop.org/freedesktop/ci-templates/-/raw/3d03cccd770c04e63b40325b42223495274d6a1d/templates/fedora.yml'
-    - remote: 'https://gitlab.freedesktop.org/freedesktop/ci-templates/-/raw/3d03cccd770c04e63b40325b42223495274d6a1d/templates/ci-fairy.yml'
+    - remote: 'https://gitlab.freedesktop.org/freedesktop/ci-templates/-/raw/bbe5232986c9b98eb1efe62484e07216f7d1a4df/templates/fedora.yml'
+    - remote: 'https://gitlab.freedesktop.org/freedesktop/ci-templates/-/raw/bbe5232986c9b98eb1efe62484e07216f7d1a4df/templates/ci-fairy.yml'
 
 stages:
  - pre_review
