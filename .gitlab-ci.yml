@@ -25,6 +25,7 @@ default:
             - 'api_failure'
 
 variables:
+    FDO_UPSTREAM_REPO: GNOME/gnome-shell
     BUNDLE: "extensions-git.flatpak"
     JS_LOG: "js-report.txt"
     LINT_LOG: "eslint-report.xml"
@@ -50,7 +51,6 @@ workflow:
     variables:
         FDO_DISTRIBUTION_VERSION: 34
         FDO_DISTRIBUTION_TAG: '2021-07-07.1'
-        FDO_UPSTREAM_REPO: GNOME/gnome-shell
         FDO_DISTRIBUTION_PACKAGES: >
             findutils mozjs78-devel nodejs npm meson
             pkgconfig(gio-2.0) pkgconfig(gio-unix-2.0)
