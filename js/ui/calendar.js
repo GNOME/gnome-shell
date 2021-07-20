@@ -954,10 +954,12 @@ class CalendarMessageList extends St.Widget {
 
         this._dndSwitch = new DoNotDisturbSwitch();
         this._dndButton = new St.Button({
+            style_class: 'dnd-button',
             can_focus: true,
             toggle_mode: true,
             child: this._dndSwitch,
             label_actor: dndLabel,
+            y_align: Clutter.ActorAlign.CENTER,
         });
         this._dndSwitch.bind_property('state',
             this._dndButton, 'checked',
