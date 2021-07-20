@@ -324,7 +324,6 @@ var Switch = GObject.registerClass({
         super._init({
             style_class: 'toggle-switch',
             accessible_role: Atk.Role.CHECK_BOX,
-            can_focus: true,
             state,
         });
     }
