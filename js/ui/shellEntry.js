@@ -39,6 +39,10 @@ var EntryMenu = class extends PopupMenu.PopupMenu {
         item.connect('activate', this._onPasswordActivated.bind(this));
         this.addMenuItem(item);
         this._passwordItem = item;
+
+        this._entry.bind_property('show-peek-icon',
+            this._passwordItem, 'visible',
+            GObject.BindingFlags.SYNC_CREATE);
     }
 
     open(animate) {
