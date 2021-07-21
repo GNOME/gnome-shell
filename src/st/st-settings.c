@@ -27,13 +27,13 @@
 #include "st-private.h"
 #include "st-settings.h"
 
-#define KEY_ENABLE_ANIMATIONS "enable-animations"
-#define KEY_PRIMARY_PASTE     "gtk-enable-primary-paste"
-#define KEY_DRAG_THRESHOLD    "drag-threshold"
-#define KEY_FONT_NAME         "font-name"
-#define KEY_GTK_THEME         "gtk-theme"
-#define KEY_GTK_ICON_THEME    "icon-theme"
-#define KEY_MAGNIFIER_ACTIVE "screen-magnifier-enabled"
+#define KEY_ENABLE_ANIMATIONS     "enable-animations"
+#define KEY_PRIMARY_PASTE         "gtk-enable-primary-paste"
+#define KEY_DRAG_THRESHOLD        "drag-threshold"
+#define KEY_FONT_NAME             "font-name"
+#define KEY_GTK_THEME             "gtk-theme"
+#define KEY_GTK_ICON_THEME        "icon-theme"
+#define KEY_MAGNIFIER_ACTIVE      "screen-magnifier-enabled"
 
 enum {
   PROP_0,
