@@ -20,6 +20,7 @@
 #include "st-private.h"
 #include "st-password-entry.h"
 #include "st-icon.h"
+#include "st-settings.h"
 
 #define BLACK_CIRCLE 9679
 
@@ -54,6 +55,16 @@ static GParamSpec *props[N_PROPS] = { NULL, };
 
 G_DEFINE_TYPE_WITH_PRIVATE (StPasswordEntry, st_password_entry, ST_TYPE_ENTRY);
 
+static gboolean
+show_password_locked_down (StPasswordEntry *entry)
+{
+  gboolean disable_show_password = FALSE;
+
+  g_object_get (st_settings_get (), "disable-show-password", &disable_show_password, NULL);
+
+  return disable_show_password;
+}
+
 static void
 st_password_entry_secondary_icon_clicked (StEntry *entry)
 {
@@ -69,6 +80,7 @@ st_password_entry_get_property (GObject    *gobject,
                                 GValue     *value,
                                 GParamSpec *pspec)
 {
+  StPasswordEntry *entry = ST_PASSWORD_ENTRY (gobject);
   StPasswordEntryPrivate *priv = ST_PASSWORD_ENTRY_PRIV (gobject);
 
   switch (prop_id)
@@ -78,7 +90,7 @@ st_password_entry_get_property (GObject    *gobject,
       break;
 
     case PROP_SHOW_PEEK_ICON:
-      g_value_set_boolean (value, priv->show_peek_icon);
+      g_value_set_boolean (value, st_password_entry_get_show_peek_icon (entry));
       break;
 
     default:
@@ -160,6 +172,35 @@ st_password_entry_class_init (StPasswordEntryClass *klass)
 }
 
 static void
+update_peek_icon (StPasswordEntry *entry)
+{
+  StPasswordEntryPrivate *priv = ST_PASSWORD_ENTRY_PRIV (entry);
+  gboolean show_peek_icon;
+
+  show_peek_icon = st_password_entry_get_show_peek_icon (entry);
+
+  if (show_peek_icon)
+    st_entry_set_secondary_icon (ST_ENTRY (entry), priv->peek_password_icon);
+  else
+    st_entry_set_secondary_icon (ST_ENTRY (entry), NULL);
+}
+
+static void
+on_disable_show_password_changed (GObject    *object,
+                                  GParamSpec *pspec,
+                                  gpointer    user_data)
+{
+  StPasswordEntry *entry = ST_PASSWORD_ENTRY (user_data);
+
+  if (show_password_locked_down (entry))
+    st_password_entry_set_password_visible (entry, FALSE);
+
+  update_peek_icon (entry);
+
+  g_object_notify_by_pspec (G_OBJECT (entry), props[PROP_SHOW_PEEK_ICON]);
+}
+
+static void
 clutter_text_password_char_cb (GObject    *object,
                                GParamSpec *pspec,
                                gpointer    user_data)
@@ -186,7 +227,12 @@ st_password_entry_init (StPasswordEntry *entry)
                                            NULL);
   st_entry_set_secondary_icon (ST_ENTRY (entry), priv->peek_password_icon);
 
-  priv->show_peek_icon = TRUE;
+  st_password_entry_set_show_peek_icon (entry, TRUE);
+
+  g_signal_connect (st_settings_get (),
+                    "notify::disable-show-password",
+                    G_CALLBACK (on_disable_show_password_changed),
+                    entry);
 
   clutter_text = st_entry_get_clutter_text (ST_ENTRY (entry));
   clutter_text_set_password_char (CLUTTER_TEXT (clutter_text), BLACK_CIRCLE);
@@ -232,12 +278,11 @@ st_password_entry_set_show_peek_icon (StPasswordEntry *entry,
     return;
 
   priv->show_peek_icon = value;
-  if (priv->show_peek_icon)
-    st_entry_set_secondary_icon (ST_ENTRY (entry), priv->peek_password_icon);
-  else
-    st_entry_set_secondary_icon (ST_ENTRY (entry), NULL);
 
-  g_object_notify_by_pspec (G_OBJECT (entry), props[PROP_SHOW_PEEK_ICON]);
+  update_peek_icon (entry);
+
+  if (st_password_entry_get_show_peek_icon (entry) != value)
+    g_object_notify_by_pspec (G_OBJECT (entry), props[PROP_SHOW_PEEK_ICON]);
 }
 
 /**
@@ -256,7 +301,7 @@ st_password_entry_get_show_peek_icon (StPasswordEntry *entry)
   g_return_val_if_fail (ST_IS_PASSWORD_ENTRY (entry), TRUE);
 
   priv = ST_PASSWORD_ENTRY_PRIV (entry);
-  return priv->show_peek_icon;
+  return priv->show_peek_icon && !show_password_locked_down (entry);
 }
 
 /**
