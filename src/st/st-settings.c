@@ -34,6 +34,7 @@
 #define KEY_GTK_THEME             "gtk-theme"
 #define KEY_GTK_ICON_THEME        "icon-theme"
 #define KEY_MAGNIFIER_ACTIVE      "screen-magnifier-enabled"
+#define KEY_DISABLE_SHOW_PASSWORD "disable-show-password"
 
 enum {
   PROP_0,
@@ -45,6 +46,7 @@ enum {
   PROP_GTK_ICON_THEME,
   PROP_MAGNIFIER_ACTIVE,
   PROP_SLOW_DOWN_FACTOR,
+  PROP_DISABLE_SHOW_PASSWORD,
   N_PROPS
 };
 
@@ -56,6 +58,7 @@ struct _StSettings
   GSettings *interface_settings;
   GSettings *mouse_settings;
   GSettings *a11y_settings;
+  GSettings *lockdown_settings;
 
   gchar *font_name;
   gchar *gtk_theme;
@@ -64,6 +67,7 @@ struct _StSettings
   gboolean enable_animations;
   gboolean primary_paste;
   gboolean magnifier_active;
+  gboolean disable_show_password;
   gint drag_threshold;
   double slow_down_factor;
 };
@@ -126,6 +130,7 @@ st_settings_finalize (GObject *object)
   g_object_unref (settings->interface_settings);
   g_object_unref (settings->mouse_settings);
   g_object_unref (settings->a11y_settings);
+  g_object_unref (settings->lockdown_settings);
   g_free (settings->font_name);
   g_free (settings->gtk_theme);
   g_free (settings->gtk_icon_theme);
@@ -184,6 +189,9 @@ st_settings_get_property (GObject    *object,
       break;
     case PROP_SLOW_DOWN_FACTOR:
       g_value_set_double (value, settings->slow_down_factor);
+      break;
+    case PROP_DISABLE_SHOW_PASSWORD:
+      g_value_set_boolean (value, settings->disable_show_password);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -288,6 +296,17 @@ st_settings_class_init (StSettingsClass *klass)
                                                       EPSILON, G_MAXDOUBLE, 1.0,
                                                       ST_PARAM_READWRITE);
 
+  /**
+   * StSettings:disable-show-password:
+   *
+   *  Whether password showing can be locked down
+   */
+  props[PROP_DISABLE_SHOW_PASSWORD] = g_param_spec_boolean("disable-show-password",
+                                                           "'Show Password' is disabled",
+                                                           "Whether user can request to see their password",
+                                                           FALSE,
+                                                           ST_PARAM_READABLE);
+
   g_object_class_install_properties (object_class, N_PROPS, props);
 }
 
@@ -352,6 +371,18 @@ on_a11y_settings_changed (GSettings   *g_settings,
 }
 
 static void
+on_lockdown_settings_changed (GSettings   *g_settings,
+                              const gchar *key,
+                              StSettings  *settings)
+{
+  if (g_str_equal (key, KEY_DISABLE_SHOW_PASSWORD))
+    {
+      settings->disable_show_password = g_settings_get_boolean (g_settings, key);
+      g_object_notify_by_pspec (G_OBJECT (settings), props[PROP_DISABLE_SHOW_PASSWORD]);
+    }
+}
+
+static void
 st_settings_init (StSettings *settings)
 {
   settings->interface_settings = g_settings_new ("org.gnome.desktop.interface");
@@ -365,6 +396,10 @@ st_settings_init (StSettings *settings)
   settings->a11y_settings = g_settings_new ("org.gnome.desktop.a11y.applications");
   g_signal_connect (settings->a11y_settings, "changed",
                     G_CALLBACK (on_a11y_settings_changed), settings);
+
+  settings->lockdown_settings = g_settings_new ("org.gnome.desktop.lockdown");
+  g_signal_connect (settings->lockdown_settings, "changed",
+                    G_CALLBACK (on_lockdown_settings_changed), settings);
 
   settings->enable_animations = g_settings_get_boolean (settings->interface_settings,
                                                         KEY_ENABLE_ANIMATIONS);
@@ -381,6 +416,7 @@ st_settings_init (StSettings *settings)
   settings->magnifier_active = g_settings_get_boolean (settings->a11y_settings,
                                                        KEY_MAGNIFIER_ACTIVE);
   settings->slow_down_factor = 1.;
+  settings->disable_show_password = g_settings_get_boolean (settings->lockdown_settings, KEY_DISABLE_SHOW_PASSWORD);
 }
 
 /**
