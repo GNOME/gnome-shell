@@ -10,13 +10,12 @@ $search_entry_height: 36px;
   border-radius: $search_entry_height * 0.5; // half the height
   color: transparentize($fg_color,0.3);
   background-color: $bg_color;
-  border-color: $borders_color;
+  border-color: transparent;
   margin-top: $base_spacing * 2;
   margin-bottom: $base_spacing;
 
   &:hover {
     background-color: $hover_bg_color;
-    border-color: $hover_borders_color;
     color: $hover_fg_color;
   }
 
