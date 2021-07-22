@@ -2125,12 +2125,12 @@ var KeyboardController = class {
     }
 
     keyvalPress(keyval) {
-        this._virtualDevice.notify_keyval(Clutter.get_current_event_time(),
+        this._virtualDevice.notify_keyval(Clutter.get_current_event_time() * 1000,
                                           keyval, Clutter.KeyState.PRESSED);
     }
 
     keyvalRelease(keyval) {
-        this._virtualDevice.notify_keyval(Clutter.get_current_event_time(),
+        this._virtualDevice.notify_keyval(Clutter.get_current_event_time() * 1000,
                                           keyval, Clutter.KeyState.RELEASED);
     }
 };
