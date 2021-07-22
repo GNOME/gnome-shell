@@ -17,7 +17,7 @@ var PresenceStatus = {
 var PresenceProxy = Gio.DBusProxy.makeProxyWrapper(PresenceIface);
 function Presence(initCallback, cancellable) {
     return new PresenceProxy(Gio.DBus.session, 'org.gnome.SessionManager',
-                             '/org/gnome/SessionManager/Presence', initCallback, cancellable);
+                         '/org/gnome/SessionManager/Presence', initCallback, cancellable);
 }
 
 // Note inhibitors are immutable objects, so they don't
@@ -26,14 +26,14 @@ function Presence(initCallback, cancellable) {
 const InhibitorIface = loadInterfaceXML('org.gnome.SessionManager.Inhibitor');
 var InhibitorProxy = Gio.DBusProxy.makeProxyWrapper(InhibitorIface);
 function Inhibitor(objectPath, initCallback, cancellable) {
-    return new InhibitorProxy(Gio.DBus.session, 'org.gnome.SessionManager', objectPath, initCallback, cancellable);
+    return InhibitorProxy(Gio.DBus.session, 'org.gnome.SessionManager', objectPath, initCallback, cancellable);
 }
 
 // Not the full interface, only the methods we use
 const SessionManagerIface = loadInterfaceXML('org.gnome.SessionManager');
 var SessionManagerProxy = Gio.DBusProxy.makeProxyWrapper(SessionManagerIface);
 function SessionManager(initCallback, cancellable) {
-    return new SessionManagerProxy(Gio.DBus.session, 'org.gnome.SessionManager', '/org/gnome/SessionManager', initCallback, cancellable);
+    return SessionManagerProxy(Gio.DBus.session, 'org.gnome.SessionManager', '/org/gnome/SessionManager', initCallback, cancellable);
 }
 
 var InhibitFlags = {

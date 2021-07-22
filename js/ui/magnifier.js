@@ -1,8 +1,9 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
+/* exported Magnifier */
 
 const { Atspi, Clutter, GDesktopEnums,
         Gio, GLib, GObject, Meta, Shell, St } = imports.gi;
-const Signals = imports.signals;
+const Signals = imports.misc.signals;
 
 const Background = imports.ui.background;
 const FocusCaretTracker = imports.ui.focusCaretTracker;
@@ -86,8 +87,10 @@ var MouseSpriteContent = GObject.registerClass({
     }
 });
 
-var Magnifier = class Magnifier {
+var Magnifier = class Magnifier extends Signals.EventEmitter {
     constructor() {
+        super();
+
         // Magnifier is a manager of ZoomRegions.
         this._zoomRegions = [];
 
@@ -694,7 +697,6 @@ var Magnifier = class Magnifier {
         }
     }
 };
-Signals.addSignalMethods(Magnifier.prototype);
 
 var ZoomRegion = class ZoomRegion {
     constructor(magnifier, mouseSourceActor) {

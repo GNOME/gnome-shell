@@ -1,7 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported NMApplet */
 const { Clutter, Gio, GLib, GObject, Meta, NM, Polkit, St } = imports.gi;
-const Signals = imports.signals;
+const Signals = imports.misc.signals;
 
 const Animation = imports.ui.animation;
 const Main = imports.ui.main;
@@ -108,8 +108,10 @@ function launchSettingsPanel(panel, ...args) {
     }
 }
 
-var NMConnectionItem = class {
+var NMConnectionItem = class extends Signals.EventEmitter {
     constructor(section, connection) {
+        super();
+
         this._section = section;
         this._connection = connection;
         this._activeConnection = null;
@@ -204,10 +206,11 @@ var NMConnectionItem = class {
         this._sync();
     }
 };
-Signals.addSignalMethods(NMConnectionItem.prototype);
 
-var NMConnectionSection = class NMConnectionSection {
+var NMConnectionSection = class NMConnectionSection extends Signals.EventEmitter {
     constructor(client) {
+        super();
+
         if (this.constructor === NMConnectionSection)
             throw new TypeError('Cannot instantiate abstract type %s'.format(this.constructor.name));
 
@@ -334,7 +337,6 @@ var NMConnectionSection = class NMConnectionSection {
         this._sync();
     }
 };
-Signals.addSignalMethods(NMConnectionSection.prototype);
 
 var NMConnectionDevice = class NMConnectionDevice extends NMConnectionSection {
     constructor(client, device) {
@@ -1256,8 +1258,10 @@ class NMWirelessDialog extends ModalDialog.ModalDialog {
     }
 });
 
-var NMDeviceWireless = class {
+var NMDeviceWireless = class extends Signals.EventEmitter {
     constructor(client, device) {
+        super();
+
         this._client = client;
         this._device = device;
 
@@ -1466,7 +1470,6 @@ var NMDeviceWireless = class {
             return 'network-wireless-no-route-symbolic';
     }
 };
-Signals.addSignalMethods(NMDeviceWireless.prototype);
 
 var NMVpnConnectionItem = class extends NMConnectionItem {
     isActive() {
@@ -1628,7 +1631,6 @@ var NMVpnSection = class extends NMConnectionSection {
         return '';
     }
 };
-Signals.addSignalMethods(NMVpnSection.prototype);
 
 var DeviceCategory = class extends PopupMenu.PopupMenuSection {
     constructor(category) {
@@ -2128,18 +2130,18 @@ class Indicator extends PanelMenu.SystemIndicator {
         if (this._portalHelperProxy) {
             this._portalHelperProxy.AuthenticateRemote(path, '', timestamp);
         } else {
-            new PortalHelperProxy(Gio.DBus.session, 'org.gnome.Shell.PortalHelper',
-                                  '/org/gnome/Shell/PortalHelper', (proxy, error) => {
-                                      if (error) {
-                                          log('Error launching the portal helper: %s'.format(error));
-                                          return;
-                                      }
+            PortalHelperProxy(Gio.DBus.session, 'org.gnome.Shell.PortalHelper',
+                              '/org/gnome/Shell/PortalHelper', (proxy, error) => {
+                                  if (error) {
+                                      log('Error launching the portal helper: %s'.format(error));
+                                      return;
+                                  }
 
-                                      this._portalHelperProxy = proxy;
-                                      proxy.connectSignal('Done', this._portalHelperDone.bind(this));
+                                  this._portalHelperProxy = proxy;
+                                  proxy.connectSignal('Done', this._portalHelperDone.bind(this));
 
-                                      proxy.AuthenticateRemote(path, '', timestamp);
-                                  });
+                                  proxy.AuthenticateRemote(path, '', timestamp);
+                              });
         }
 
         this._connectivityQueue.push(path);

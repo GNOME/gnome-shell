@@ -1,6 +1,6 @@
 /* exported MediaSection */
 const { Gio, GObject, Shell, St } = imports.gi;
-const Signals = imports.signals;
+const Signals = imports.misc.signals;
 
 const Main = imports.ui.main;
 const MessageList = imports.ui.messageList;
@@ -93,14 +93,16 @@ class MediaMessage extends MessageList.Message {
     }
 });
 
-var MprisPlayer = class MprisPlayer {
+var MprisPlayer = class MprisPlayer extends Signals.EventEmitter {
     constructor(busName) {
+        super();
+
         this._mprisProxy = new MprisProxy(Gio.DBus.session, busName,
-                                          '/org/mpris/MediaPlayer2',
-                                          this._onMprisProxyReady.bind(this));
+                                      '/org/mpris/MediaPlayer2',
+                                      this._onMprisProxyReady.bind(this));
         this._playerProxy = new MprisPlayerProxy(Gio.DBus.session, busName,
-                                                 '/org/mpris/MediaPlayer2',
-                                                 this._onPlayerProxyReady.bind(this));
+                                             '/org/mpris/MediaPlayer2',
+                                             this._onPlayerProxyReady.bind(this));
 
         this._visible = false;
         this._trackArtists = [];
@@ -240,7 +242,6 @@ var MprisPlayer = class MprisPlayer {
         }
     }
 };
-Signals.addSignalMethods(MprisPlayer.prototype);
 
 var MediaSection = GObject.registerClass(
 class MediaSection extends MessageList.MessageListSection {

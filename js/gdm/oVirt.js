@@ -2,7 +2,6 @@
 /* exported getOVirtCredentialsManager */
 
 const Gio = imports.gi.Gio;
-const Signals = imports.signals;
 const Credential = imports.gdm.credentialManager;
 
 var SERVICE_NAME = 'gdm-ovirtcred';
@@ -41,7 +40,6 @@ var OVirtCredentialsManager = class OVirtCredentialsManager extends Credential.C
             });
     }
 };
-Signals.addSignalMethods(OVirtCredentialsManager.prototype);
 
 function getOVirtCredentialsManager() {
     if (!_oVirtCredentialsManager)

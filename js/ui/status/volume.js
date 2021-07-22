@@ -2,7 +2,7 @@
 /* exported Indicator */
 
 const { Clutter, Gio, GLib, GObject, Gvc, St } = imports.gi;
-const Signals = imports.signals;
+const Signals = imports.misc.signals;
 
 const Main = imports.ui.main;
 const PanelMenu = imports.ui.panelMenu;
@@ -29,8 +29,10 @@ function getMixerControl() {
     return _mixerControl;
 }
 
-var StreamSlider = class {
+var StreamSlider = class extends Signals.EventEmitter {
     constructor(control) {
+        super();
+
         this._control = control;
 
         this.item = new PopupMenu.PopupBaseMenuItem({ activate: false });
@@ -214,7 +216,6 @@ var StreamSlider = class {
         return maxVolume / this._control.get_vol_max_norm();
     }
 };
-Signals.addSignalMethods(StreamSlider.prototype);
 
 var OutputStreamSlider = class extends StreamSlider {
     constructor(control) {

@@ -4,7 +4,7 @@
 // the following is a modified version of bolt/contrib/js/client.js
 
 const { Gio, GLib, GObject, Polkit, Shell } = imports.gi;
-const Signals = imports.signals;
+const Signals = imports.misc.signals;
 
 const Main = imports.ui.main;
 const MessageTray = imports.ui.messageTray;
@@ -49,8 +49,10 @@ const BOLT_DBUS_CLIENT_IFACE = 'org.freedesktop.bolt1.Manager';
 const BOLT_DBUS_NAME = 'org.freedesktop.bolt';
 const BOLT_DBUS_PATH = '/org/freedesktop/bolt';
 
-var Client = class {
+var Client = class extends Signals.EventEmitter {
     constructor() {
+        super();
+
         this._proxy = null;
         this.probing = false;
         this._getProxy();
@@ -90,9 +92,9 @@ var Client = class {
 
     _onDeviceAdded(proxy, emitter, params) {
         let [path] = params;
-        let device = new BoltDeviceProxy(Gio.DBus.system,
-                                         BOLT_DBUS_NAME,
-                                         path);
+        let device = BoltDeviceProxy(Gio.DBus.system,
+                                     BOLT_DBUS_NAME,
+                                     path);
         this.emit('device-added', device);
     }
 
@@ -115,9 +117,9 @@ var Client = class {
             }
 
             let [path] = res;
-            let device = new BoltDeviceProxy(Gio.DBus.system,
-                                             BOLT_DBUS_NAME,
-                                             path);
+            let device = BoltDeviceProxy(Gio.DBus.system,
+                                         BOLT_DBUS_NAME,
+                                         path);
             callback(device, null);
         });
     }
@@ -126,11 +128,12 @@ var Client = class {
         return this._proxy.AuthMode;
     }
 };
-Signals.addSignalMethods(Client.prototype);
 
 /* helper class to automatically authorize new devices */
-var AuthRobot = class {
+var AuthRobot = class extends Signals.EventEmitter {
     constructor(client) {
+        super();
+
         this._client = client;
 
         this._devicesToEnroll = [];
@@ -216,7 +219,6 @@ var AuthRobot = class {
         return GLib.SOURCE_REMOVE;
     }
 };
-Signals.addSignalMethods(AuthRobot.prototype);
 
 /* eof client.js  */
 

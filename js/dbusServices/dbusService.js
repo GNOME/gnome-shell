@@ -2,12 +2,14 @@
 
 const { Gio, GLib } = imports.gi;
 
-const Signals = imports.signals;
+const Signals = imports.misc.signals;
 
 const IDLE_SHUTDOWN_TIME = 2; // s
 
-var ServiceImplementation = class {
+var ServiceImplementation = class extends Signals.SignalEmitter {
     constructor(info, objectPath) {
+        super();
+
         this._objectPath = objectPath;
         this._dbusImpl = Gio.DBusExportedObject.wrapJSObject(info, this);
 
@@ -146,7 +148,6 @@ var ServiceImplementation = class {
         };
     }
 };
-Signals.addSignalMethods(ServiceImplementation.prototype);
 
 var DBusService = class {
     constructor(name, service) {

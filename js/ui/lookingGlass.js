@@ -3,7 +3,7 @@
 
 const { Clutter, Cogl, Gio, GLib, GObject,
         Graphene, Meta, Pango, Shell, St } = imports.gi;
-const Signals = imports.signals;
+const Signals = imports.misc.signals;
 const System = imports.system;
 
 const History = imports.misc.history;
@@ -45,8 +45,10 @@ function _getAutoCompleteGlobalKeywords() {
     return keywords.concat(windowProperties).concat(headerProperties);
 }
 
-var AutoComplete = class AutoComplete {
+var AutoComplete = class AutoComplete extends Signals.EventEmitter {
     constructor(entry) {
+        super();
+
         this._entry = entry;
         this._entry.connect('key-press-event', this._entryKeyPressEvent.bind(this));
         this._lastTabTime = global.get_current_time();
@@ -106,7 +108,6 @@ var AutoComplete = class AutoComplete {
         this._entry.clutter_text.insert_text(additionalCompletionText, cursorPos);
     }
 };
-Signals.addSignalMethods(AutoComplete.prototype);
 
 
 var Notebook = GObject.registerClass({

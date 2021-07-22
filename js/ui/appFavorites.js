@@ -3,7 +3,7 @@
 
 const Shell = imports.gi.Shell;
 const ParentalControlsManager = imports.misc.parentalControlsManager;
-const Signals = imports.signals;
+const Signals = imports.misc.signals;
 
 const Main = imports.ui.main;
 
@@ -64,8 +64,10 @@ const RENAMED_DESKTOP_IDS = {
     'evince.desktop': 'org.gnome.Evince.desktop',
 };
 
-class AppFavorites {
+class AppFavorites extends Signals.EventEmitter {
     constructor() {
+        super();
+
         // Filter the apps through the user’s parental controls.
         this._parentalControlsManager = ParentalControlsManager.getDefault();
         this._parentalControlsManager.connect('app-filter-changed', () => {
@@ -201,7 +203,6 @@ class AppFavorites {
         });
     }
 }
-Signals.addSignalMethods(AppFavorites.prototype);
 
 var appFavoritesInstance = null;
 function getAppFavorites() {

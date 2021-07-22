@@ -1,13 +1,16 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
+/* exported XdndHandler */
 
 const { Clutter } = imports.gi;
-const Signals = imports.signals;
+const Signals = imports.misc.signals;
 
 const DND = imports.ui.dnd;
 const Main = imports.ui.main;
 
-var XdndHandler = class {
+var XdndHandler = class extends Signals.EventEmitter {
     constructor() {
+        super();
+
         // Used to display a clone of the cursor window when the
         // window group is hidden (like it happens in the overview)
         this._cursorWindowClone = null;
@@ -115,4 +118,3 @@ var XdndHandler = class {
         }
     }
 };
-Signals.addSignalMethods(XdndHandler.prototype);

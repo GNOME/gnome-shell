@@ -1,8 +1,8 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported init connect disconnect */
+/* exported init connect disconnect ExtensionManager */
 
 const { GLib, Gio, GObject, Shell, St } = imports.gi;
-const Signals = imports.signals;
+const Signals = imports.misc.signals;
 
 const ExtensionDownloader = imports.ui.extensionDownloader;
 const ExtensionUtils = imports.misc.extensionUtils;
@@ -19,8 +19,10 @@ const EXTENSION_DISABLE_VERSION_CHECK_KEY = 'disable-extension-version-validatio
 
 const UPDATE_CHECK_TIMEOUT = 24 * 60 * 60; // 1 day in seconds
 
-var ExtensionManager = class {
+var ExtensionManager = class extends Signals.EventEmitter {
     constructor() {
+        super();
+
         this._initialized = false;
         this._enabled = false;
         this._updateNotified = false;
@@ -630,7 +632,6 @@ var ExtensionManager = class {
         }
     }
 };
-Signals.addSignalMethods(ExtensionManager.prototype);
 
 const ExtensionUpdateSource = GObject.registerClass(
 class ExtensionUpdateSource extends MessageTray.Source {

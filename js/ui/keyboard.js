@@ -2,7 +2,7 @@
 /* exported KeyboardManager */
 
 const { Clutter, Gio, GLib, GObject, Graphene, Meta, Shell, St } = imports.gi;
-const Signals = imports.signals;
+const Signals = imports.misc.signals;
 
 const EdgeDragAction = imports.ui.edgeDragAction;
 const InputSourceManager = imports.ui.status.keyboard;
@@ -549,8 +549,10 @@ var KeyboardModel = class {
     }
 };
 
-var FocusTracker = class {
+var FocusTracker = class extends Signals.EventEmitter {
     constructor() {
+        super();
+
         this._rect = null;
 
         this._notifyFocusId = global.display.connect('notify::focus-window', () => {
@@ -661,7 +663,6 @@ var FocusTracker = class {
         return rect;
     }
 };
-Signals.addSignalMethods(FocusTracker.prototype);
 
 var EmojiPager = GObject.registerClass({
     Properties: {
@@ -2036,8 +2037,10 @@ var Keyboard = GObject.registerClass({
     }
 });
 
-var KeyboardController = class {
+var KeyboardController = class extends Signals.EventEmitter {
     constructor() {
+        super();
+
         let seat = Clutter.get_default_backend().get_default_seat();
         this._virtualDevice = seat.create_virtual_device(Clutter.InputDeviceType.KEYBOARD_DEVICE);
 
@@ -2134,4 +2137,3 @@ var KeyboardController = class {
                                           keyval, Clutter.KeyState.RELEASED);
     }
 };
-Signals.addSignalMethods(KeyboardController.prototype);

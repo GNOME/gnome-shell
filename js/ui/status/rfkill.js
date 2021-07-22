@@ -2,7 +2,7 @@
 /* exported Indicator */
 
 const { Gio, GObject } = imports.gi;
-const Signals = imports.signals;
+const Signals = imports.misc.signals;
 
 const Main = imports.ui.main;
 const PanelMenu = imports.ui.panelMenu;
@@ -16,18 +16,20 @@ const OBJECT_PATH = '/org/gnome/SettingsDaemon/Rfkill';
 const RfkillManagerInterface = loadInterfaceXML('org.gnome.SettingsDaemon.Rfkill');
 const RfkillManagerProxy = Gio.DBusProxy.makeProxyWrapper(RfkillManagerInterface);
 
-var RfkillManager = class {
+var RfkillManager = class extends Signals.EventEmitter {
     constructor() {
+        super();
+
         this._proxy = new RfkillManagerProxy(Gio.DBus.session, BUS_NAME, OBJECT_PATH,
-                                             (proxy, error) => {
-                                                 if (error) {
-                                                     log(error.message);
-                                                     return;
-                                                 }
-                                                 this._proxy.connect('g-properties-changed',
-                                                                     this._changed.bind(this));
-                                                 this._changed();
-                                             });
+                                         (proxy, error) => {
+                                             if (error) {
+                                                 log(error.message);
+                                                 return;
+                                             }
+                                             this._proxy.connect('g-properties-changed',
+                                                                 this._changed.bind(this));
+                                             this._changed();
+                                         });
     }
 
     get airplaneMode() {
@@ -50,7 +52,6 @@ var RfkillManager = class {
         this.emit('airplane-mode-changed');
     }
 };
-Signals.addSignalMethods(RfkillManager.prototype);
 
 var _manager;
 function getRfkillManager() {

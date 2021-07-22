@@ -3,7 +3,7 @@
 
 const { Atk, Clutter, GDesktopEnums, Gio,
         GLib, GObject, Gtk, Meta, Pango, Rsvg, St } = imports.gi;
-const Signals = imports.signals;
+const Signals = imports.misc.signals;
 
 const Main = imports.ui.main;
 const PopupMenu = imports.ui.popupMenu;
@@ -944,8 +944,10 @@ var PadOsd = GObject.registerClass({
 
 const PadOsdIface = loadInterfaceXML('org.gnome.Shell.Wacom.PadOsd');
 
-var PadOsdService = class {
+var PadOsdService = class extends Signals.EventEmitter {
     constructor() {
+        super();
+
         this._dbusImpl = Gio.DBusExportedObject.wrapJSObject(PadOsdIface, this);
         this._dbusImpl.export(Gio.DBus.session, '/org/gnome/Shell/Wacom');
         Gio.DBus.session.own_name('org.gnome.Shell.Wacom.PadOsd', Gio.BusNameOwnerFlags.REPLACE, null, null);
@@ -974,4 +976,3 @@ var PadOsdService = class {
         invocation.return_value(null);
     }
 };
-Signals.addSignalMethods(PadOsdService.prototype);

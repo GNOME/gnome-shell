@@ -2,7 +2,7 @@
 /* exported SessionMode, listModes */
 
 const GLib = imports.gi.GLib;
-const Signals = imports.signals;
+const Signals = imports.misc.signals;
 
 const FileUtils = imports.misc.fileUtils;
 
@@ -143,8 +143,10 @@ function listModes() {
     loop.run();
 }
 
-var SessionMode = class {
+var SessionMode = class extends Signals.EventEmitter {
     constructor() {
+        super();
+
         _loadModes();
         let isPrimary = _modes[global.session_mode] &&
                          _modes[global.session_mode].isPrimary;
@@ -202,4 +204,3 @@ var SessionMode = class {
         this.emit('updated');
     }
 };
-Signals.addSignalMethods(SessionMode.prototype);
