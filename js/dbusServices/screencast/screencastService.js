@@ -129,7 +129,7 @@ var Recorder = class {
     }
 
     _initSession(sessionPath) {
-        this._sessionProxy = new ScreenCastSessionProxy(Gio.DBus.session,
+        this._sessionProxy = ScreenCastSessionProxy(Gio.DBus.session,
             'org.gnome.Mutter.ScreenCast',
             sessionPath);
         this._sessionProxy.connectSignal('Closed', this._onSessionClosed.bind(this));
@@ -160,7 +160,7 @@ var Recorder = class {
                 'cursor-mode': GLib.Variant.new('u', this._drawCursor ? 1 : 0),
             });
 
-        this._streamProxy = new ScreenCastStreamProxy(Gio.DBus.session,
+        this._streamProxy = ScreenCastStreamProxy(Gio.DBus.session,
             'org.gnome.ScreenCast.Stream',
             streamPath);
 
@@ -261,11 +261,11 @@ var ScreencastService = class extends ServiceImplementation {
             schema_id: 'org.gnome.desktop.lockdown',
         });
 
-        this._proxy = new ScreenCastProxy(Gio.DBus.session,
+        this._proxy = ScreenCastProxy(Gio.DBus.session,
             'org.gnome.Mutter.ScreenCast',
             '/org/gnome/Mutter/ScreenCast');
 
-        this._introspectProxy = new IntrospectProxy(Gio.DBus.session,
+        this._introspectProxy = IntrospectProxy(Gio.DBus.session,
             'org.gnome.Shell.Introspect',
             '/org/gnome/Shell/Introspect');
     }

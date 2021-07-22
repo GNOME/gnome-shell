@@ -19,16 +19,16 @@ var Indicator = GObject.registerClass(
 class Indicator extends PanelMenu.SystemIndicator {
     _init() {
         super._init();
-        this._proxy = new BrightnessProxy(Gio.DBus.session, BUS_NAME, OBJECT_PATH,
-                                          (proxy, error) => {
-                                              if (error) {
-                                                  log(error.message);
-                                                  return;
-                                              }
+        this._proxy = BrightnessProxy(Gio.DBus.session, BUS_NAME, OBJECT_PATH,
+                                      (proxy, error) => {
+                                          if (error) {
+                                              log(error.message);
+                                              return;
+                                          }
 
-                                              this._proxy.connect('g-properties-changed', this._sync.bind(this));
-                                              this._sync();
-                                          });
+                                          this._proxy.connect('g-properties-changed', this._sync.bind(this));
+                                          this._sync();
+                                      });
 
         this._item = new PopupMenu.PopupBaseMenuItem({ activate: false });
         this.menu.addMenuItem(this._item);

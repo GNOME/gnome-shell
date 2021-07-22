@@ -75,9 +75,9 @@ function startAppForMount(app, mount) {
 const HotplugSnifferIface = loadInterfaceXML('org.gnome.Shell.HotplugSniffer');
 const HotplugSnifferProxy = Gio.DBusProxy.makeProxyWrapper(HotplugSnifferIface);
 function HotplugSniffer() {
-    return new HotplugSnifferProxy(Gio.DBus.session,
-                                   'org.gnome.Shell.HotplugSniffer',
-                                   '/org/gnome/Shell/HotplugSniffer');
+    return HotplugSnifferProxy(Gio.DBus.session,
+                               'org.gnome.Shell.HotplugSniffer',
+                               '/org/gnome/Shell/HotplugSniffer');
 }
 
 var ContentTypeDiscoverer = class {
@@ -113,7 +113,7 @@ var ContentTypeDiscoverer = class {
         } else {
             let root = mount.get_root();
 
-            let hotplugSniffer = new HotplugSniffer();
+            let hotplugSniffer = HotplugSniffer();
             hotplugSniffer.SniffURIRemote(root.get_uri(),
                 result => {
                     [contentTypes] = result;

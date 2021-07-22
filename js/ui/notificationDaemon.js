@@ -579,7 +579,7 @@ class GtkNotificationDaemonAppSource extends MessageTray.Source {
     }
 
     _createApp(callback) {
-        return new FdoApplicationProxy(Gio.DBus.session, this._appId, this._objectPath, callback);
+        return FdoApplicationProxy(Gio.DBus.session, this._appId, this._objectPath, callback);
     }
 
     _createNotification(params) {

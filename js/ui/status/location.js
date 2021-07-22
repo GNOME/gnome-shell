@@ -197,7 +197,7 @@ var GeoclueAgent = GObject.registerClass({
 
     _connectToPermissionStore() {
         this._permStoreProxy = null;
-        new PermissionStore.PermissionStore(this._onPermStoreProxyReady.bind(this));
+        PermissionStore.PermissionStore(this._onPermStoreProxyReady.bind(this));
     }
 
     _onPermStoreProxyReady(proxy, error) {

@@ -26,15 +26,15 @@ class Indicator extends PanelMenu.SystemIndicator {
         this._indicator.icon_name = 'bluetooth-active-symbolic';
         this._hadSetupDevices = global.settings.get_boolean(HAD_BLUETOOTH_DEVICES_SETUP);
 
-        this._proxy = new RfkillManagerProxy(Gio.DBus.session, BUS_NAME, OBJECT_PATH,
-                                             (proxy, error) => {
-                                                 if (error) {
-                                                     log(error.message);
-                                                     return;
-                                                 }
+        this._proxy = RfkillManagerProxy(Gio.DBus.session, BUS_NAME, OBJECT_PATH,
+                                         (proxy, error) => {
+                                             if (error) {
+                                                 log(error.message);
+                                                 return;
+                                             }
 
-                                                 this._sync();
-                                             });
+                                             this._sync();
+                                         });
         this._proxy.connect('g-properties-changed', this._queueSync.bind(this));
 
         this._item = new PopupMenu.PopupSubMenuMenuItem(_("Bluetooth"), true);

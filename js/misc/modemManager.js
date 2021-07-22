@@ -144,7 +144,7 @@ var ModemGsm = GObject.registerClass(
 class ModemGsm extends ModemBase {
     _init(path) {
         super._init();
-        this._proxy = new ModemGsmNetworkProxy(Gio.DBus.system, 'org.freedesktop.ModemManager', path);
+        this._proxy = ModemGsmNetworkProxy(Gio.DBus.system, 'org.freedesktop.ModemManager', path);
 
         // Code is duplicated because the function have different signatures
         this._proxy.connectSignal('SignalQuality', (proxy, sender, [quality]) => {
@@ -178,7 +178,7 @@ var ModemCdma = GObject.registerClass(
 class ModemCdma extends ModemBase {
     _init(path) {
         super._init();
-        this._proxy = new ModemCdmaProxy(Gio.DBus.system, 'org.freedesktop.ModemManager', path);
+        this._proxy = ModemCdmaProxy(Gio.DBus.system, 'org.freedesktop.ModemManager', path);
 
         this._proxy.connectSignal('SignalQuality', (proxy, sender, params) => {
             this._setSignalQuality(params[0]);
@@ -237,9 +237,9 @@ var BroadbandModem = GObject.registerClass({
 }, class BroadbandModem extends ModemBase {
     _init(path, capabilities) {
         super._init({ capabilities });
-        this._proxy = new BroadbandModemProxy(Gio.DBus.system, 'org.freedesktop.ModemManager1', path);
-        this._proxy_3gpp = new BroadbandModem3gppProxy(Gio.DBus.system, 'org.freedesktop.ModemManager1', path);
-        this._proxy_cdma = new BroadbandModemCdmaProxy(Gio.DBus.system, 'org.freedesktop.ModemManager1', path);
+        this._proxy = BroadbandModemProxy(Gio.DBus.system, 'org.freedesktop.ModemManager1', path);
+        this._proxy_3gpp = BroadbandModem3gppProxy(Gio.DBus.system, 'org.freedesktop.ModemManager1', path);
+        this._proxy_cdma = BroadbandModemCdmaProxy(Gio.DBus.system, 'org.freedesktop.ModemManager1', path);
 
         this._proxy.connect('g-properties-changed', (proxy, properties) => {
             if ('SignalQuality' in properties.deep_unpack())

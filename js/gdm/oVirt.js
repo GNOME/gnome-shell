@@ -33,7 +33,7 @@ function OVirtCredentials() {
 var OVirtCredentialsManager = class OVirtCredentialsManager extends Credential.CredentialManager {
     constructor() {
         super(SERVICE_NAME);
-        this._credentials = new OVirtCredentials();
+        this._credentials = OVirtCredentials();
         this._credentials.connectSignal('UserAuthenticated',
             (proxy, sender, [token]) => {
                 this.token = token;

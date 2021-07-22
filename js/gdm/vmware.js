@@ -36,7 +36,7 @@ function VmwareCredentials() {
 var VmwareCredentialsManager = class VmwareCredentialsManager extends Credential.CredentialManager {
     constructor() {
         super(SERVICE_NAME);
-        this._credentials = new VmwareCredentials();
+        this._credentials = VmwareCredentials();
         this._credentials.connectSignal('UserAuthenticated',
             (proxy, sender, [token]) => {
                 this.token = token;

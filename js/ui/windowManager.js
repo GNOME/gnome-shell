@@ -884,12 +884,12 @@ var WindowManager = class {
             Main.osdWindowManager.show(monitorIndex, icon, label, null);
         });
 
-        this._gsdWacomProxy = new GsdWacomProxy(Gio.DBus.session, GSD_WACOM_BUS_NAME,
-                                                GSD_WACOM_OBJECT_PATH,
-                                                (proxy, error) => {
-                                                    if (error)
-                                                        log(error.message);
-                                                });
+        this._gsdWacomProxy = GsdWacomProxy(Gio.DBus.session, GSD_WACOM_BUS_NAME,
+                                            GSD_WACOM_OBJECT_PATH,
+                                            (proxy, error) => {
+                                                if (error)
+                                                    log(error.message);
+                                            });
 
         global.display.connect('pad-mode-switch', (display, pad, _group, _mode) => {
             let labels = [];

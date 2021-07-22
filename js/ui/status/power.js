@@ -36,7 +36,7 @@ class Indicator extends PanelMenu.SystemIndicator {
         this.add_child(this._percentageLabel);
         this.add_style_class_name('power-status');
 
-        this._proxy = new PowerManagerProxy(Gio.DBus.system, BUS_NAME, OBJECT_PATH,
+        this._proxy = PowerManagerProxy(Gio.DBus.system, BUS_NAME, OBJECT_PATH,
             (proxy, error) => {
                 if (error) {
                     log(error.message);

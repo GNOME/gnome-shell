@@ -97,10 +97,10 @@ var MprisPlayer = class MprisPlayer extends Signals.EventEmitter {
     constructor(busName) {
         super();
 
-        this._mprisProxy = new MprisProxy(Gio.DBus.session, busName,
+        this._mprisProxy = MprisProxy(Gio.DBus.session, busName,
                                       '/org/mpris/MediaPlayer2',
                                       this._onMprisProxyReady.bind(this));
-        this._playerProxy = new MprisPlayerProxy(Gio.DBus.session, busName,
+        this._playerProxy = MprisPlayerProxy(Gio.DBus.session, busName,
                                              '/org/mpris/MediaPlayer2',
                                              this._onPlayerProxyReady.bind(this));
 

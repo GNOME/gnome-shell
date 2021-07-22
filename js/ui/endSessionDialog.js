@@ -239,23 +239,23 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
         this._user = this._userManager.get_user(GLib.get_user_name());
         this._updatesPermission = null;
 
-        this._pkOfflineProxy = new PkOfflineProxy(Gio.DBus.system,
-                                                  'org.freedesktop.PackageKit',
-                                                  '/org/freedesktop/PackageKit',
-                                                  this._onPkOfflineProxyCreated.bind(this));
+        this._pkOfflineProxy = PkOfflineProxy(Gio.DBus.system,
+                                              'org.freedesktop.PackageKit',
+                                              '/org/freedesktop/PackageKit',
+                                              this._onPkOfflineProxyCreated.bind(this));
 
-        this._powerProxy = new UPowerProxy(Gio.DBus.system,
-                                           'org.freedesktop.UPower',
-                                           '/org/freedesktop/UPower/devices/DisplayDevice',
-                                           (proxy, error) => {
-                                               if (error) {
-                                                   log(error.message);
-                                                   return;
-                                               }
-                                               this._powerProxy.connect('g-properties-changed',
-                                                                        this._sync.bind(this));
-                                               this._sync();
-                                           });
+        this._powerProxy = UPowerProxy(Gio.DBus.system,
+                                       'org.freedesktop.UPower',
+                                       '/org/freedesktop/UPower/devices/DisplayDevice',
+                                       (proxy, error) => {
+                                           if (error) {
+                                               log(error.message);
+                                               return;
+                                           }
+                                           this._powerProxy.connect('g-properties-changed',
+                                                                    this._sync.bind(this));
+                                           this._sync();
+                                       });
 
         this._secondsLeft = 0;
         this._totalSecondsToStayOpen = 0;

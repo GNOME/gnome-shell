@@ -22,16 +22,16 @@ class Indicator extends PanelMenu.SystemIndicator {
 
         this._indicator = this._addIndicator();
         this._indicator.icon_name = 'night-light-symbolic';
-        this._proxy = new ColorProxy(Gio.DBus.session, BUS_NAME, OBJECT_PATH,
-                                     (proxy, error) => {
-                                         if (error) {
-                                             log(error.message);
-                                             return;
-                                         }
-                                         this._proxy.connect('g-properties-changed',
-                                                             this._sync.bind(this));
-                                         this._sync();
-                                     });
+        this._proxy = ColorProxy(Gio.DBus.session, BUS_NAME, OBJECT_PATH,
+                                 (proxy, error) => {
+                                     if (error) {
+                                         log(error.message);
+                                         return;
+                                     }
+                                     this._proxy.connect('g-properties-changed',
+                                                         this._sync.bind(this));
+                                     this._sync();
+                                 });
 
         this._item = new PopupMenu.PopupSubMenuMenuItem("", true);
         this._item.icon.icon_name = 'night-light-symbolic';

@@ -385,7 +385,7 @@ var ShellUserVerifier = class extends Signals.EventEmitter {
             (params, error) => {
                 if (!error && params) {
                     const [device] = params;
-                    const fprintDeviceProxy = new FprintDeviceProxy(Gio.DBus.system,
+                    const fprintDeviceProxy = FprintDeviceProxy(Gio.DBus.system,
                         'net.reactivated.Fprint',
                         device);
                     const fprintDeviceType = fprintDeviceProxy['scan-type'];

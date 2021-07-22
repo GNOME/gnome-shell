@@ -64,13 +64,13 @@ function waitLeisure() {
 const PerfHelperIface = loadInterfaceXML('org.gnome.Shell.PerfHelper');
 var PerfHelperProxy = Gio.DBusProxy.makeProxyWrapper(PerfHelperIface);
 function PerfHelper() {
-    return new PerfHelperProxy(Gio.DBus.session, 'org.gnome.Shell.PerfHelper', '/org/gnome/Shell/PerfHelper');
+    return PerfHelperProxy(Gio.DBus.session, 'org.gnome.Shell.PerfHelper', '/org/gnome/Shell/PerfHelper');
 }
 
 let _perfHelper = null;
 function _getPerfHelper() {
     if (_perfHelper == null)
-        _perfHelper = new PerfHelper();
+        _perfHelper = PerfHelper();
 
     return _perfHelper;
 }

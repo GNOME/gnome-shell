@@ -293,7 +293,7 @@ class WorldClocksSection extends St.Button {
         this.child = this._grid;
 
         this._clocksApp = null;
-        this._clocksProxy = new ClocksProxy(
+        this._clocksProxy = ClocksProxy(
             Gio.DBus.session,
             'org.gnome.clocks',
             '/org/gnome/clocks',

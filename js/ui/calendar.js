@@ -193,7 +193,7 @@ class DBusEventSource extends EventSourceBase {
         this._isLoading = false;
 
         this._initialized = false;
-        this._dbusProxy = new CalendarServer();
+        this._dbusProxy = CalendarServer();
         this._initProxy();
     }
 

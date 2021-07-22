@@ -15,7 +15,7 @@ var ExtensionsService = class extends ServiceImplementation {
     constructor() {
         super(ExtensionsIface, '/org/gnome/Shell/Extensions');
 
-        this._proxy = new ExtensionsProxy(Gio.DBus.session,
+        this._proxy = ExtensionsProxy(Gio.DBus.session,
             'org.gnome.Shell', '/org/gnome/Shell');
 
         this._proxy.connectSignal('ExtensionStateChanged',

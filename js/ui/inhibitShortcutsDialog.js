@@ -130,7 +130,7 @@ var InhibitShortcutsDialog = GObject.registerClass({
 
         /* Check with the permission store */
         let appId = this._app.get_id();
-        this._permStore = new PermissionStore.PermissionStore((proxy, error) => {
+        this._permStore = PermissionStore.PermissionStore((proxy, error) => {
             if (error) {
                 log(error.message);
                 this._dialog.open();
