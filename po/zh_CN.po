@@ -23,16 +23,56 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2021-03-25 02:36+0000\n"
-"PO-Revision-Date: 2021-03-25 19:16+0800\n"
-"Last-Translator: Dingzhong Chen <wsxy162@gmail.com>\n"
+"POT-Creation-Date: 2021-07-22 06:15+0000\n"
+"PO-Revision-Date: 2021-07-22 18:47+0800\n"
+"Last-Translator: mars <gzhqyz@gmail.com>\n"
 "Language-Team: Chinese - China <i18n-zh@googlegroups.com>\n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0\n"
-"X-Generator: Gtranslator 3.38.0\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Poedit 3.0\n"
+
+#: data/50-gnome-shell-launchers.xml:6
+msgid "Launchers"
+msgstr "启动器"
+
+#: data/50-gnome-shell-launchers.xml:10
+msgid "Activate favorite application 1"
+msgstr "激活收藏夹应用程序 1"
+
+#: data/50-gnome-shell-launchers.xml:14
+msgid "Activate favorite application 2"
+msgstr "激活收藏夹应用程序 2"
+
+#: data/50-gnome-shell-launchers.xml:18
+msgid "Activate favorite application 3"
+msgstr "激活收藏夹应用程序 3"
+
+#: data/50-gnome-shell-launchers.xml:22
+msgid "Activate favorite application 4"
+msgstr "激活收藏夹应用程序 4"
+
+#: data/50-gnome-shell-launchers.xml:26
+msgid "Activate favorite application 5"
+msgstr "激活收藏夹应用程序 5"
+
+#: data/50-gnome-shell-launchers.xml:30
+msgid "Activate favorite application 6"
+msgstr "激活收藏夹应用程序 6"
+
+#: data/50-gnome-shell-launchers.xml:34
+msgid "Activate favorite application 7"
+msgstr "激活收藏夹应用程序 7"
+
+#: data/50-gnome-shell-launchers.xml:38
+msgid "Activate favorite application 8"
+msgstr "激活收藏夹应用程序 8"
+
+#: data/50-gnome-shell-launchers.xml:42
+msgid "Activate favorite application 9"
+msgstr "激活收藏夹应用程序 9"
 
 #: data/50-gnome-shell-system.xml:6
 msgid "System"
@@ -435,16 +475,16 @@ msgstr "主页"
 msgid "Visit extension homepage"
 msgstr "访问扩展主页"
 
-#: js/gdm/authPrompt.js:141 js/ui/audioDeviceSelection.js:58
+#: js/gdm/authPrompt.js:141 js/ui/audioDeviceSelection.js:61
 #: js/ui/components/networkAgent.js:111 js/ui/components/polkitAgent.js:138
-#: js/ui/endSessionDialog.js:438 js/ui/extensionDownloader.js:183
+#: js/ui/endSessionDialog.js:438 js/ui/extensionDownloader.js:190
 #: js/ui/shellMountOperation.js:376 js/ui/shellMountOperation.js:386
-#: js/ui/status/network.js:941 subprojects/extensions-app/js/main.js:183
+#: js/ui/status/network.js:963 subprojects/extensions-app/js/main.js:183
 msgid "Cancel"
 msgstr "取消"
 
 #. Cisco LEAP
-#: js/gdm/authPrompt.js:244 js/ui/components/networkAgent.js:210
+#: js/gdm/authPrompt.js:285 js/ui/components/networkAgent.js:210
 #: js/ui/components/networkAgent.js:226 js/ui/components/networkAgent.js:250
 #: js/ui/components/networkAgent.js:271 js/ui/components/networkAgent.js:291
 #: js/ui/components/networkAgent.js:301 js/ui/components/polkitAgent.js:275
@@ -462,7 +502,7 @@ msgstr "未列出？"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: js/gdm/loginDialog.js:918
+#: js/gdm/loginDialog.js:921
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "（如 user 或 %s）"
@@ -470,12 +510,12 @@ msgstr "（如 user 或 %s）"
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: js/gdm/loginDialog.js:923 js/ui/components/networkAgent.js:246
+#: js/gdm/loginDialog.js:926 js/ui/components/networkAgent.js:246
 #: js/ui/components/networkAgent.js:269 js/ui/components/networkAgent.js:287
 msgid "Username"
 msgstr "用户名"
 
-#: js/gdm/loginDialog.js:1258
+#: js/gdm/loginDialog.js:1279
 msgid "Login Window"
 msgstr "登录窗口"
 
@@ -720,44 +760,44 @@ msgstr "您到热点登录的连接不安全。您在此页面输入的密码或
 
 #. No support for non-modal system dialogs, so ignore the option
 #. let modal = options['modal'] || true;
-#: js/ui/accessDialog.js:39 js/ui/status/location.js:369
+#: js/ui/accessDialog.js:39 js/ui/status/location.js:417
 msgid "Deny Access"
 msgstr "拒绝访问"
 
-#: js/ui/accessDialog.js:40 js/ui/status/location.js:372
+#: js/ui/accessDialog.js:40 js/ui/status/location.js:420
 msgid "Grant Access"
 msgstr "允许访问"
 
-#: js/ui/appDisplay.js:1816
+#: js/ui/appDisplay.js:1860
 msgid "Unnamed Folder"
 msgstr "未命名文件夹"
 
 #. Translators: This is the heading of a list of open windows
-#: js/ui/appDisplay.js:3393 js/ui/panel.js:33
+#: js/ui/appDisplay.js:3453 js/ui/panel.js:33
 msgid "Open Windows"
 msgstr "打开的窗口"
 
-#: js/ui/appDisplay.js:3412 js/ui/panel.js:40
+#: js/ui/appDisplay.js:3472 js/ui/panel.js:41
 msgid "New Window"
 msgstr "新建窗口"
 
-#: js/ui/appDisplay.js:3428
+#: js/ui/appDisplay.js:3488
 msgid "Launch using Integrated Graphics Card"
 msgstr "使用集成显卡启动"
 
-#: js/ui/appDisplay.js:3429
+#: js/ui/appDisplay.js:3489
 msgid "Launch using Discrete Graphics Card"
 msgstr "使用独立显卡启动"
 
-#: js/ui/appDisplay.js:3458 js/ui/dash.js:245
+#: js/ui/appDisplay.js:3518 js/ui/dash.js:245
 msgid "Remove from Favorites"
 msgstr "从收藏夹中移除"
 
-#: js/ui/appDisplay.js:3464
+#: js/ui/appDisplay.js:3524
 msgid "Add to Favorites"
 msgstr "添加到收藏夹"
 
-#: js/ui/appDisplay.js:3474 js/ui/panel.js:51
+#: js/ui/appDisplay.js:3534 js/ui/panel.js:52
 msgid "Show Details"
 msgstr "显示细节"
 
@@ -775,19 +815,19 @@ msgstr "%s 已经从您的收藏夹移除。"
 msgid "Select Audio Device"
 msgstr "选择声音设备"
 
-#: js/ui/audioDeviceSelection.js:55
+#: js/ui/audioDeviceSelection.js:56
 msgid "Sound Settings"
 msgstr "声音设置"
 
-#: js/ui/audioDeviceSelection.js:65
+#: js/ui/audioDeviceSelection.js:69
 msgid "Headphones"
 msgstr "耳机"
 
-#: js/ui/audioDeviceSelection.js:67
+#: js/ui/audioDeviceSelection.js:71
 msgid "Headset"
 msgstr "耳麦"
 
-#: js/ui/audioDeviceSelection.js:69 js/ui/status/volume.js:277
+#: js/ui/audioDeviceSelection.js:73 js/ui/status/volume.js:277
 msgid "Microphone"
 msgstr "麦克风"
 
@@ -904,7 +944,7 @@ msgstr "无通知"
 msgid "Do Not Disturb"
 msgstr "请勿打扰"
 
-#: js/ui/calendar.js:969
+#: js/ui/calendar.js:971
 msgid "Clear"
 msgstr "清除"
 
@@ -954,8 +994,8 @@ msgid ""
 "Alternatively you can connect by pushing the “WPS” button on your router."
 msgstr "此外，您也可以通过按下您路由器的“WPS”按钮来连接。"
 
-#: js/ui/components/networkAgent.js:105 js/ui/status/network.js:253
-#: js/ui/status/network.js:344 js/ui/status/network.js:944
+#: js/ui/components/networkAgent.js:105 js/ui/status/network.js:258
+#: js/ui/status/network.js:349 js/ui/status/network.js:966
 msgid "Connect"
 msgstr "连接"
 
@@ -1018,7 +1058,7 @@ msgstr "PIN"
 msgid "A password is required to connect to “%s”."
 msgstr "连接到“%s”需要密码。"
 
-#: js/ui/components/networkAgent.js:668 js/ui/status/network.js:1718
+#: js/ui/components/networkAgent.js:668 js/ui/status/network.js:1774
 msgid "Network Manager"
 msgstr "网络管理器"
 
@@ -1054,7 +1094,7 @@ msgstr "抱歉，认证失败。请重试。"
 msgid "%s is now known as %s"
 msgstr "%s 现在叫做 %s"
 
-#: js/ui/ctrlAltTab.js:21 js/ui/overviewControls.js:395
+#: js/ui/ctrlAltTab.js:21 js/ui/overviewControls.js:404
 msgid "Windows"
 msgstr "窗口"
 
@@ -1293,15 +1333,15 @@ msgstr "%s（远程）"
 msgid "%s (console)"
 msgstr "%s（控制台）"
 
-#: js/ui/extensionDownloader.js:187
+#: js/ui/extensionDownloader.js:194
 msgid "Install"
 msgstr "安装"
 
-#: js/ui/extensionDownloader.js:193
+#: js/ui/extensionDownloader.js:200
 msgid "Install Extension"
 msgstr "安装扩展"
 
-#: js/ui/extensionDownloader.js:194
+#: js/ui/extensionDownloader.js:201
 #, javascript-format
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "从 extensions.gnome.org 下载并安装“%s”？"
@@ -1387,13 +1427,13 @@ msgid "Leave On"
 msgstr "保持开启"
 
 #: js/ui/kbdA11yDialog.js:54 js/ui/status/bluetooth.js:156
-#: js/ui/status/network.js:1316
+#: js/ui/status/network.js:1362
 msgid "Turn On"
 msgstr "开启"
 
 #: js/ui/kbdA11yDialog.js:62 js/ui/status/bluetooth.js:156
-#: js/ui/status/network.js:161 js/ui/status/network.js:345
-#: js/ui/status/network.js:1316 js/ui/status/network.js:1428
+#: js/ui/status/network.js:166 js/ui/status/network.js:350
+#: js/ui/status/network.js:1362 js/ui/status/network.js:1474
 #: js/ui/status/nightLight.js:41 js/ui/status/rfkill.js:81
 #: js/ui/status/rfkill.js:110
 msgid "Turn Off"
@@ -1468,15 +1508,15 @@ msgstr ""
 "出于安全原因，应避免以特权用户身份运行会话。如有可能，你应该以正常用户身份登"
 "录。"
 
-#: js/ui/main.js:345
+#: js/ui/main.js:344
 msgid "Screen Lock disabled"
 msgstr "屏幕锁定已禁用"
 
-#: js/ui/main.js:346
+#: js/ui/main.js:345
 msgid "Screen Locking requires the GNOME display manager."
 msgstr "屏幕锁定需要 GNOME 显示管理器。"
 
-#: js/ui/messageTray.js:1437
+#: js/ui/messageTray.js:1440
 msgid "System Information"
 msgstr "系统信息"
 
@@ -1492,21 +1532,21 @@ msgstr "未知标题"
 #. in the search entry when no search is
 #. active; it should not exceed ~30
 #. characters.
-#: js/ui/overviewControls.js:307
+#: js/ui/overviewControls.js:313
 msgid "Type to search"
 msgstr "输入以搜索"
 
-#: js/ui/overviewControls.js:383
+#: js/ui/overviewControls.js:392
 msgid "Applications"
 msgstr "应用程序"
 
-#: js/ui/overview.js:69
+#: js/ui/overview.js:58
 msgid "Undo"
 msgstr "撤消"
 
 #. Translators: This is the main view to select
 #. activities. See also note for "Activities" string.
-#: js/ui/overview.js:82
+#: js/ui/overview.js:71
 msgid "Overview"
 msgstr "概览"
 
@@ -1554,22 +1594,22 @@ msgstr "按 Esc 以退出"
 msgid "Press any key to exit"
 msgstr "按任意键退出"
 
-#: js/ui/panel.js:65
+#: js/ui/panel.js:66
 msgid "Quit"
 msgstr "退出"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: js/ui/panel.js:388
+#: js/ui/panel.js:395
 msgid "Activities"
 msgstr "活动"
 
-#: js/ui/panel.js:659
+#: js/ui/panel.js:666
 msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "系统"
 
-#: js/ui/panel.js:771
+#: js/ui/panel.js:778
 msgid "Top Bar"
 msgstr "顶栏"
 
@@ -1600,11 +1640,11 @@ msgstr "GNOME 需要锁定屏幕"
 #.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
-#: js/ui/screenShield.js:252 js/ui/screenShield.js:620
+#: js/ui/screenShield.js:252 js/ui/screenShield.js:622
 msgid "Unable to lock"
 msgstr "无法锁定"
 
-#: js/ui/screenShield.js:253 js/ui/screenShield.js:621
+#: js/ui/screenShield.js:253 js/ui/screenShield.js:623
 msgid "Lock was blocked by an application"
 msgstr "一个应用程序阻止了锁定"
 
@@ -1612,15 +1652,15 @@ msgstr "一个应用程序阻止了锁定"
 msgid "Screenshot taken"
 msgstr "已获取屏幕截图"
 
-#: js/ui/search.js:824
+#: js/ui/search.js:825
 msgid "Searching…"
 msgstr "正在搜索…"
 
-#: js/ui/search.js:826
+#: js/ui/search.js:827
 msgid "No results."
 msgstr "无结果。"
 
-#: js/ui/search.js:952
+#: js/ui/search.js:953
 #, javascript-format
 msgid "%d more"
 msgid_plural "%d more"
@@ -1752,7 +1792,7 @@ msgstr "大号文本"
 msgid "Bluetooth"
 msgstr "蓝牙"
 
-#: js/ui/status/bluetooth.js:49 js/ui/status/network.js:620
+#: js/ui/status/bluetooth.js:49 js/ui/status/network.js:637
 msgid "Bluetooth Settings"
 msgstr "蓝牙设置"
 
@@ -1795,49 +1835,49 @@ msgstr "副键点击"
 msgid "Dwell Click"
 msgstr "悬停点击"
 
-#: js/ui/status/keyboard.js:825
+#: js/ui/status/keyboard.js:829
 msgid "Keyboard"
 msgstr "键盘"
 
-#: js/ui/status/keyboard.js:842
+#: js/ui/status/keyboard.js:846
 msgid "Show Keyboard Layout"
 msgstr "显示键盘布局"
 
-#: js/ui/status/location.js:65 js/ui/status/location.js:174
+#: js/ui/status/location.js:234 js/ui/status/location.js:267
 msgid "Location Enabled"
 msgstr "定位服务已启用"
 
-#: js/ui/status/location.js:66 js/ui/status/location.js:175
+#: js/ui/status/location.js:235 js/ui/status/location.js:268
 msgid "Disable"
 msgstr "禁用"
 
-#: js/ui/status/location.js:67
+#: js/ui/status/location.js:236
 msgid "Privacy Settings"
 msgstr "隐私设置"
 
-#: js/ui/status/location.js:173
+#: js/ui/status/location.js:266
 msgid "Location In Use"
 msgstr "定位服务使用中"
 
-#: js/ui/status/location.js:177
+#: js/ui/status/location.js:270
 msgid "Location Disabled"
 msgstr "定位服务已禁用"
 
-#: js/ui/status/location.js:178
+#: js/ui/status/location.js:271
 msgid "Enable"
 msgstr "启用"
 
-#: js/ui/status/location.js:350
+#: js/ui/status/location.js:398
 msgid "Allow location access"
 msgstr "允许获取位置信息"
 
 #. Translators: %s is an application name
-#: js/ui/status/location.js:352
+#: js/ui/status/location.js:400
 #, javascript-format
 msgid "The app %s wants to access your location"
 msgstr "应用 %s 想要获取您的位置信息"
 
-#: js/ui/status/location.js:362
+#: js/ui/status/location.js:410
 msgid "Location access can be changed at any time from the privacy settings."
 msgstr "位置访问权限可以随时在隐私设置里更改。"
 
@@ -1846,13 +1886,13 @@ msgid "<unknown>"
 msgstr "<未知>"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:450 js/ui/status/network.js:1345
+#: js/ui/status/network.js:455 js/ui/status/network.js:1391
 #, javascript-format
 msgid "%s Off"
 msgstr "%s 已关闭"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:453
+#: js/ui/status/network.js:458
 #, javascript-format
 msgid "%s Connected"
 msgstr "%s 已连接"
@@ -1860,186 +1900,186 @@ msgstr "%s 已连接"
 #. Translators: this is for network devices that are physically present but are not
 #. under NetworkManager's control (and thus cannot be used in the menu);
 #. %s is a network identifier
-#: js/ui/status/network.js:458
+#: js/ui/status/network.js:463
 #, javascript-format
 msgid "%s Unmanaged"
 msgstr "%s 未托管"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:461
+#: js/ui/status/network.js:466
 #, javascript-format
 msgid "%s Disconnecting"
 msgstr "%s 正在断开"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:468 js/ui/status/network.js:1337
+#: js/ui/status/network.js:473 js/ui/status/network.js:1383
 #, javascript-format
 msgid "%s Connecting"
 msgstr "%s 正在连接"
 
 #. Translators: this is for network connections that require some kind of key or password; %s is a network identifier
-#: js/ui/status/network.js:471
+#: js/ui/status/network.js:476
 #, javascript-format
 msgid "%s Requires Authentication"
 msgstr "%s 需要认证"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing; %s is a network identifier
-#: js/ui/status/network.js:479
+#: js/ui/status/network.js:484
 #, javascript-format
 msgid "Firmware Missing For %s"
 msgstr "%s 的固件缺失"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage; %s is a network identifier
-#: js/ui/status/network.js:483
+#: js/ui/status/network.js:488
 #, javascript-format
 msgid "%s Unavailable"
 msgstr "%s 不可用"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:486
+#: js/ui/status/network.js:491
 #, javascript-format
 msgid "%s Connection Failed"
 msgstr "%s 连接失败"
 
-#: js/ui/status/network.js:498
+#: js/ui/status/network.js:503
 msgid "Wired Settings"
 msgstr "有线设置"
 
-#: js/ui/status/network.js:541
+#: js/ui/status/network.js:546
 msgid "Mobile Broadband Settings"
 msgstr "移动宽带设置"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:587 js/ui/status/network.js:1342
+#: js/ui/status/network.js:604 js/ui/status/network.js:1388
 #, javascript-format
 msgid "%s Hardware Disabled"
 msgstr "%s 硬件开关关闭"
 
 #. Translators: this is for a network device that cannot be activated
 #. because it's disabled by rfkill (airplane mode); %s is a network identifier
-#: js/ui/status/network.js:591
+#: js/ui/status/network.js:608
 #, javascript-format
 msgid "%s Disabled"
 msgstr "%s 已禁用"
 
-#: js/ui/status/network.js:632
+#: js/ui/status/network.js:649
 msgid "Connect to Internet"
 msgstr "连接到互联网"
 
-#: js/ui/status/network.js:836
+#: js/ui/status/network.js:858
 msgid "Airplane Mode is On"
 msgstr "飞行模式已开启"
 
-#: js/ui/status/network.js:837
+#: js/ui/status/network.js:859
 msgid "Wi-Fi is disabled when airplane mode is on."
 msgstr "启用飞行模式时 Wi-Fi 会关闭。"
 
-#: js/ui/status/network.js:838
+#: js/ui/status/network.js:860
 msgid "Turn Off Airplane Mode"
 msgstr "关闭飞行模式"
 
-#: js/ui/status/network.js:847
+#: js/ui/status/network.js:869
 msgid "Wi-Fi is Off"
 msgstr "Wi-Fi 已关闭"
 
-#: js/ui/status/network.js:848
+#: js/ui/status/network.js:870
 msgid "Wi-Fi needs to be turned on in order to connect to a network."
 msgstr "连接网络需要开启 Wi-Fi。"
 
-#: js/ui/status/network.js:849
+#: js/ui/status/network.js:871
 msgid "Turn On Wi-Fi"
 msgstr "开启 Wi-Fi"
 
-#: js/ui/status/network.js:874
+#: js/ui/status/network.js:896
 msgid "Wi-Fi Networks"
 msgstr "Wi-Fi 网络"
 
-#: js/ui/status/network.js:876
+#: js/ui/status/network.js:898
 msgid "Select a network"
 msgstr "选择网络"
 
-#: js/ui/status/network.js:908
+#: js/ui/status/network.js:930
 msgid "No Networks"
 msgstr "无网络"
 
-#: js/ui/status/network.js:929 js/ui/status/rfkill.js:108
+#: js/ui/status/network.js:951 js/ui/status/rfkill.js:108
 msgid "Use hardware switch to turn off"
 msgstr "使用硬件开关关闭"
 
-#: js/ui/status/network.js:1206
+#: js/ui/status/network.js:1252
 msgid "Select Network"
 msgstr "选择网络"
 
-#: js/ui/status/network.js:1212
+#: js/ui/status/network.js:1258
 msgid "Wi-Fi Settings"
 msgstr "Wi-Fi 设置"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1333
+#: js/ui/status/network.js:1379
 #, javascript-format
 msgid "%s Hotspot Active"
 msgstr "%s 热点已激活"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1348
+#: js/ui/status/network.js:1394
 #, javascript-format
 msgid "%s Not Connected"
 msgstr "%s 未连接"
 
-#: js/ui/status/network.js:1445
+#: js/ui/status/network.js:1491
 msgid "connecting…"
 msgstr "正在连接…"
 
 #. Translators: this is for network connections that require some kind of key or password
-#: js/ui/status/network.js:1448
+#: js/ui/status/network.js:1494
 msgid "authentication required"
 msgstr "需要认证"
 
-#: js/ui/status/network.js:1450
+#: js/ui/status/network.js:1496
 msgid "connection failed"
 msgstr "连接失败"
 
-#: js/ui/status/network.js:1501
+#: js/ui/status/network.js:1547
 msgid "VPN Settings"
 msgstr "VPN 设置"
 
-#: js/ui/status/network.js:1518
+#: js/ui/status/network.js:1564
 msgid "VPN"
 msgstr "VPN"
 
-#: js/ui/status/network.js:1528
+#: js/ui/status/network.js:1574
 msgid "VPN Off"
 msgstr "VPN 已关闭"
 
-#: js/ui/status/network.js:1589 js/ui/status/rfkill.js:84
+#: js/ui/status/network.js:1635 js/ui/status/rfkill.js:84
 msgid "Network Settings"
 msgstr "网络设置"
 
-#: js/ui/status/network.js:1617
+#: js/ui/status/network.js:1663
 #, javascript-format
 msgid "%s Wired Connection"
 msgid_plural "%s Wired Connections"
 msgstr[0] "%s 个有线连接"
 
-#: js/ui/status/network.js:1621
+#: js/ui/status/network.js:1667
 #, javascript-format
 msgid "%s Wi-Fi Connection"
 msgid_plural "%s Wi-Fi Connections"
 msgstr[0] "%s 个 Wi-Fi 连接"
 
-#: js/ui/status/network.js:1625
+#: js/ui/status/network.js:1671
 #, javascript-format
 msgid "%s Modem Connection"
 msgid_plural "%s Modem Connections"
 msgstr[0] "%s 个调制解调器连接"
 
-#: js/ui/status/network.js:1759
+#: js/ui/status/network.js:1815
 msgid "Connection failed"
 msgstr "连接失败"
 
-#: js/ui/status/network.js:1760
+#: js/ui/status/network.js:1816
 msgid "Activation of network connection failed"
 msgstr "网络连接激活失败"
 
@@ -2059,37 +2099,38 @@ msgstr "继续使用"
 msgid "Disable Until Tomorrow"
 msgstr "明天前禁用"
 
-#: js/ui/status/power.js:47
+#: js/ui/status/power.js:51
 msgid "Power Settings"
 msgstr "电源设置"
 
-#: js/ui/status/power.js:63
+#: js/ui/status/power.js:68
 msgid "Fully Charged"
 msgstr "已充满电"
 
-#: js/ui/status/power.js:69
+#: js/ui/status/power.js:74
 msgid "Not Charging"
 msgstr "未在充电"
 
 #. 0 is reported when UPower does not have enough data
 #. to estimate battery life
-#: js/ui/status/power.js:72 js/ui/status/power.js:78
+#: js/ui/status/power.js:77 js/ui/status/power.js:83
 msgid "Estimating…"
 msgstr "正在估计…"
 
 #. Translators: this is <hours>:<minutes> Remaining (<percentage>)
-#: js/ui/status/power.js:86
+#: js/ui/status/power.js:91
 #, javascript-format
 msgid "%d∶%02d Remaining (%d %%)"
 msgstr "剩余 %d:%02d (%d%%)"
 
 #. Translators: this is <hours>:<minutes> Until Full (<percentage>)
-#: js/ui/status/power.js:91
+#: js/ui/status/power.js:97
 #, javascript-format
 msgid "%d∶%02d Until Full (%d %%)"
 msgstr "距充满还剩 %d:%02d (%d%%)"
 
-#: js/ui/status/power.js:139 js/ui/status/power.js:141
+#. The icon label
+#: js/ui/status/power.js:145
 #, javascript-format
 msgid "%d %%"
 msgstr "%d %%"
@@ -2351,19 +2392,19 @@ msgstr "关闭"
 msgid "Evolution Calendar"
 msgstr "Evolution 日历"
 
-#: src/main.c:415 subprojects/extensions-tool/src/main.c:317
+#: src/main.c:419 subprojects/extensions-tool/src/main.c:317
 msgid "Print version"
 msgstr "打印版本"
 
-#: src/main.c:421
+#: src/main.c:425
 msgid "Mode used by GDM for login screen"
 msgstr "GDM 用于登录屏幕的模式"
 
-#: src/main.c:427
+#: src/main.c:431
 msgid "Use a specific mode, e.g. “gdm” for login screen"
 msgstr "使用指定模式，如“gdm”用于登录屏幕"
 
-#: src/main.c:433
+#: src/main.c:437
 msgid "List possible modes"
 msgstr "列出可用的模式"
 
@@ -2545,7 +2586,7 @@ msgid "Log Out…"
 msgstr "注销…"
 
 #. Translators: a file path to an extension directory
-#: subprojects/extensions-tool/src/command-create.c:223
+#: subprojects/extensions-tool/src/command-create.c:222
 #, c-format
 msgid "The new extension was successfully created in %s.\n"
 msgstr "新扩展已成功创建在目录 %s。\n"
