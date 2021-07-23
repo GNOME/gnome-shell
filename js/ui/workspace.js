@@ -1106,6 +1106,7 @@ class Workspace extends St.Widget {
         this.connect('style-changed', this._onStyleChanged.bind(this));
         this.connect('destroy', this._onDestroy.bind(this));
 
+        this._skipTaskbarSignals = new Map();
         const windows = global.get_window_actors().map(a => a.meta_window)
             .filter(this._isMyWindow, this);
 
@@ -1232,6 +1233,14 @@ class Workspace extends St.Widget {
         if (!this._isMyWindow(metaWin))
             return;
 
+        this._skipTaskbarSignals.set(metaWin,
+            metaWin.connect('notify::skip-taskbar', () => {
+                if (metaWin.skip_taskbar)
+                    this._doRemoveWindow(metaWin);
+                else
+                    this._doAddWindow(metaWin);
+            }));
+
         if (!this._isOverviewWindow(metaWin)) {
             if (metaWin.get_transient_for() == null)
                 return;
@@ -1300,7 +1309,15 @@ class Workspace extends St.Widget {
         return false;
     }
 
+    _clearSkipTaskbarSignals() {
+        for (const [metaWin, id] of this._skipTaskbarSignals)
+            metaWin.disconnect(id);
+        this._skipTaskbarSignals.clear();
+    }
+
     prepareToLeaveOverview() {
+        this._clearSkipTaskbarSignals();
+
         for (let i = 0; i < this._windows.length; i++)
             this._windows[i].remove_all_transitions();
 
@@ -1314,6 +1331,8 @@ class Workspace extends St.Widget {
     }
 
     _onDestroy() {
+        this._clearSkipTaskbarSignals();
+
         if (this._overviewHiddenId) {
             Main.overview.disconnect(this._overviewHiddenId);
             this._overviewHiddenId = 0;
