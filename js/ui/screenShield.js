@@ -122,6 +122,7 @@ var ScreenShield = class {
         this._isActive = false;
         this._isLocked = false;
         this._inUnlockAnimation = false;
+        this._inhibited = false;
         this._activationTime = 0;
         this._becameActiveId = 0;
         this._lockTimeoutId = 0;
@@ -203,20 +204,29 @@ var ScreenShield = class {
     }
 
     _syncInhibitor() {
-        let lockEnabled = this._settings.get_boolean(LOCK_ENABLED_KEY);
-        let lockLocked = this._lockSettings.get_boolean(DISABLE_LOCK_KEY);
-        let inhibit = this._loginSession && this._loginSession.Active &&
-                       !this._isActive && lockEnabled && !lockLocked && Main.sessionMode.unlockDialog;
+        const lockEnabled = this._settings.get_boolean(LOCK_ENABLED_KEY);
+        const lockLocked = this._lockSettings.get_boolean(DISABLE_LOCK_KEY);
+        const inhibit = !!this._loginSession && this._loginSession.Active &&
+                         !this._isActive && lockEnabled && !lockLocked &&
+                         !!Main.sessionMode.unlockDialog;
+
+        if (inhibit === this._inhibited)
+            return;
+
+        this._inhibited = inhibit;
+
         if (inhibit) {
-            this._loginManager.inhibit(_("GNOME needs to lock the screen"),
+            this._loginManager.inhibit(_('GNOME needs to lock the screen'),
                 inhibitor => {
-                    if (this._inhibitor)
-                        this._inhibitor.close(null);
-                    this._inhibitor = inhibitor;
+                    if (inhibitor) {
+                        if (this._inhibitor)
+                            inhibitor.close(null);
+                        else
+                            this._inhibitor = inhibitor;
+                    }
                 });
         } else {
-            if (this._inhibitor)
-                this._inhibitor.close(null);
+            this._inhibitor?.close(null);
             this._inhibitor = null;
         }
     }
