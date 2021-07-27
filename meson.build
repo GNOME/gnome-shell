@@ -30,7 +30,7 @@ mutter_req = '>= 41.beta'
 polkit_req = '>= 0.100'
 schemas_req = '>= 41.alpha'
 startup_req = '>= 0.11'
-ibus_req = '>= 1.5.2'
+ibus_req = '>= 1.5.19'
 gnome_desktop_req = '>= 3.35.90'
 
 bt_req = '>= 3.9.0'

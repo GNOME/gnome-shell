@@ -62,9 +62,10 @@ class InputMethod extends Clutter.InputMethod {
             return;
         }
 
+        this._context.set_client_commit_preedit(true);
         this._context.connect('commit-text', this._onCommitText.bind(this));
         this._context.connect('delete-surrounding-text', this._onDeleteSurroundingText.bind(this));
-        this._context.connect('update-preedit-text', this._onUpdatePreeditText.bind(this));
+        this._context.connect('update-preedit-text-with-mode', this._onUpdatePreeditText.bind(this));
         this._context.connect('show-preedit-text', this._onShowPreeditText.bind(this));
         this._context.connect('hide-preedit-text', this._onHidePreeditText.bind(this));
         this._context.connect('forward-key-event', this._onForwardKeyEvent.bind(this));
@@ -105,29 +106,30 @@ class InputMethod extends Clutter.InputMethod {
         }
     }
 
-    _onUpdatePreeditText(_context, text, pos, visible) {
+    _onUpdatePreeditText(_context, text, pos, visible, mode) {
         if (text == null)
             return;
 
         let preedit = text.get_text();
 
         if (visible)
-            this.set_preedit_text(preedit, pos);
+            this.set_preedit_text(preedit, pos, mode);
         else if (this._preeditVisible)
-            this.set_preedit_text(null, pos);
+            this.set_preedit_text(null, pos, mode);
 
         this._preeditStr = preedit;
         this._preeditPos = pos;
         this._preeditVisible = visible;
+        this._preeditCommitMode = mode;
     }
 
     _onShowPreeditText() {
         this._preeditVisible = true;
-        this.set_preedit_text(this._preeditStr, this._preeditPos);
+        this.set_preedit_text(this._preeditStr, this._preeditPos, this._preeditCommitMode);
     }
 
     _onHidePreeditText() {
-        this.set_preedit_text(null, this._preeditPos);
+        this.set_preedit_text(null, this._preeditPos, this._preeditCommitMode);
         this._preeditVisible = false;
     }
 
@@ -165,7 +167,7 @@ class InputMethod extends Clutter.InputMethod {
 
         if (this._preeditStr) {
             // Unset any preedit text
-            this.set_preedit_text(null, 0);
+            this.set_preedit_text(null, 0, this._preeditCommitMode);
             this._preeditStr = null;
         }
 
@@ -177,15 +179,15 @@ class InputMethod extends Clutter.InputMethod {
     }
 
     vfunc_reset() {
+        if (this._preeditStr !== null) {
+            // Unset any preedit text
+            this.set_preedit_text(null, 0, Clutter.PreeditResetMode.CLEAR);
+            this._preeditStr = null;
+        }
+
         if (this._context) {
             this._context.reset();
             this._emitRequestSurrounding();
-        }
-
-        if (this._preeditStr) {
-            // Unset any preedit text
-            this.set_preedit_text(null, 0);
-            this._preeditStr = null;
         }
     }
 
