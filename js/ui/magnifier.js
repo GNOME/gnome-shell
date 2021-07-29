@@ -228,7 +228,6 @@ var Magnifier = class Magnifier {
      * scrollToMousePos:
      * Position all zoom regions' ROI relative to the current location of the
      * system pointer.
-     * @returns {bool} true.
      */
     scrollToMousePos(...args) {
         const [xMouse, yMouse] = args.length ? args : global.get_pointer();
@@ -247,7 +246,6 @@ var Magnifier = class Magnifier {
             else
                 this.showSystemCursor();
         }
-        return true;
     }
 
     /**
