@@ -3,6 +3,7 @@
   <gresource prefix="/org/gnome/Shell/Extensions/js">
     <file>main.js</file>
     <file>extensionsService.js</file>
+    <file>extensionPrefsDialog.js</file>
     <file>dbusService.js</file>
 
     <file>misc/config.js</file>
