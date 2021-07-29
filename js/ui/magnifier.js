@@ -232,20 +232,21 @@ var Magnifier = class Magnifier {
     scrollToMousePos() {
         let [xMouse, yMouse] = global.get_pointer();
 
-        if (xMouse != this.xMouse || yMouse != this.yMouse) {
-            this.xMouse = xMouse;
-            this.yMouse = yMouse;
+        if (xMouse === this.xMouse && yMouse === this.yMouse)
+            return;
 
-            let sysMouseOverAny = false;
-            this._zoomRegions.forEach(zoomRegion => {
-                if (zoomRegion.scrollToMousePos())
-                    sysMouseOverAny = true;
-            });
-            if (sysMouseOverAny)
-                this.hideSystemCursor();
-            else
-                this.showSystemCursor();
-        }
+        this.xMouse = xMouse;
+        this.yMouse = yMouse;
+
+        let sysMouseOverAny = false;
+        this._zoomRegions.forEach(zoomRegion => {
+            if (zoomRegion.scrollToMousePos())
+                sysMouseOverAny = true;
+        });
+        if (sysMouseOverAny)
+            this.hideSystemCursor();
+        else
+            this.showSystemCursor();
     }
 
     /**
