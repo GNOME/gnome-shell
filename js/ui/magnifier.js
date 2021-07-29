@@ -230,8 +230,8 @@ var Magnifier = class Magnifier {
      * system pointer.
      * @returns {bool} true.
      */
-    scrollToMousePos() {
-        let [xMouse, yMouse] = global.get_pointer();
+    scrollToMousePos(...args) {
+        const [xMouse, yMouse] = args.length ? args : global.get_pointer();
 
         if (xMouse != this.xMouse || yMouse != this.yMouse) {
             this.xMouse = xMouse;
