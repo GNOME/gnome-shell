@@ -44,19 +44,32 @@ const ExtensionPrefsErrorPage = GObject.registerClass({
         'errorView',
     ],
 }, class ExtensionPrefsErrorPage extends Gtk.Widget {
+    static _classInit(klass) {
+        super._classInit(klass);
+
+        klass.install_action('page.copy-error',
+            null,
+            self => {
+                const clipboard = self.get_display().get_clipboard();
+                clipboard.set(self._errorMarkdown);
+            });
+        klass.install_action('page.show-url',
+            null,
+            self => Gtk.show_uri(self.get_root(), self._url, Gdk.CURRENT_TIME));
+
+        return klass;
+    }
+
     _init(extension, error) {
         super._init({
             layout_manager: new Gtk.BinLayout(),
         });
+        this._addCustomStylesheet();
 
         this._uuid = extension.uuid;
         this._url = extension.metadata.url || '';
 
-        this._actionGroup = new Gio.SimpleActionGroup();
-        this.insert_action_group('page', this._actionGroup);
-
-        this._initActions();
-        this._addCustomStylesheet();
+        this.action_set_enabled('page.show-url', this._url !== '');
 
         this._gesture = new Gtk.GestureClick({
             button: 0,
@@ -104,27 +117,6 @@ const ExtensionPrefsErrorPage = GObject.registerClass({
             this._expander.add_css_class('expanded');
         else if (!this._revealer.child_revealed)
             this._expander.remove_css_class('expanded');
-    }
-
-    _initActions() {
-        let action;
-
-        action = new Gio.SimpleAction({ name: 'copy-error' });
-        action.connect('activate', () => {
-            const clipboard = this.get_display().get_clipboard();
-            clipboard.set(this._errorMarkdown);
-        });
-        this._actionGroup.add_action(action);
-
-        action = new Gio.SimpleAction({
-            name: 'show-url',
-            enabled: this._url !== '',
-        });
-        action.connect('activate', () => {
-            Gio.AppInfo.launch_default_for_uri(this._url,
-                this.get_display().get_app_launch_context());
-        });
-        this._actionGroup.add_action(action);
     }
 
     _addCustomStylesheet() {
