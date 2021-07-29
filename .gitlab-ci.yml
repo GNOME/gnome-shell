@@ -31,7 +31,7 @@ variables:
     LINT_LOG: "eslint-report.xml"
     LINT_MR_LOG: "eslint-mr-report.xml"
 
-image: registry.gitlab.gnome.org/gnome/mutter/fedora/34:x86_64-2021-07-09.1
+image: registry.gitlab.gnome.org/gnome/mutter/fedora/34:x86_64-2021-07-22.0
 
 workflow:
     rules:
