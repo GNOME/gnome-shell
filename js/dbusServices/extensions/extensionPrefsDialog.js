@@ -7,25 +7,53 @@ const ExtensionUtils = imports.misc.extensionUtils;
 
 var ExtensionPrefsDialog = GObject.registerClass({
     GTypeName: 'ExtensionPrefsDialog',
-    Template: 'resource:///org/gnome/Shell/Extensions/ui/extension-prefs-dialog.ui',
+}, class ExtensionPrefsDialog extends Gtk.Window {
+    _init(extension) {
+        super._init({
+            title: extension.metadata.name,
+            default_width: 600,
+            default_height: 400,
+        });
+        this.set_titlebar(new Gtk.HeaderBar());
+
+        try {
+            ExtensionUtils.installImporter(extension);
+
+            // give extension prefs access to their own extension object
+            ExtensionUtils.getCurrentExtension = () => extension;
+
+            const prefsModule = extension.imports.prefs;
+            prefsModule.init(extension.metadata);
+
+            const widget = prefsModule.buildPrefsWidget();
+            this.set_child(widget);
+        } catch (e) {
+            this.set_child(new ExtensionPrefsErrorPage(extension, e));
+            logError(e, 'Failed to open preferences');
+        }
+    }
+});
+
+const ExtensionPrefsErrorPage = GObject.registerClass({
+    GTypeName: 'ExtensionPrefsErrorPage',
+    Template: 'resource:///org/gnome/Shell/Extensions/ui/extension-error-page.ui',
     InternalChildren: [
-        'stack',
         'expander',
         'expanderArrow',
         'revealer',
         'errorView',
     ],
-}, class ExtensionPrefsDialog extends Gtk.Window {
-    _init(extension) {
+}, class ExtensionPrefsErrorPage extends Gtk.Widget {
+    _init(extension, error) {
         super._init({
-            title: extension.metadata.name,
+            layout_manager: new Gtk.BinLayout(),
         });
 
         this._uuid = extension.uuid;
         this._url = extension.metadata.url || '';
 
         this._actionGroup = new Gio.SimpleActionGroup();
-        this.insert_action_group('win', this._actionGroup);
+        this.insert_action_group('page', this._actionGroup);
 
         this._initActions();
         this._addCustomStylesheet();
@@ -50,22 +78,25 @@ var ExtensionPrefsDialog = GObject.registerClass({
         this._revealer.connect('notify::child-revealed',
             () => this._syncExpandedStyle());
 
-        try {
-            ExtensionUtils.installImporter(extension);
+        this._errorView.buffer.text = `${error}\n\nStack trace:\n`;
+        // Indent stack trace.
+        this._errorView.buffer.text +=
+            error.stack.split('\n').map(line => `  ${line}`).join('\n');
 
-            // give extension prefs access to their own extension object
-            ExtensionUtils.getCurrentExtension = () => extension;
-
-            const prefsModule = extension.imports.prefs;
-            prefsModule.init(extension.metadata);
-
-            const widget = prefsModule.buildPrefsWidget();
-            this._stack.add_named(widget, 'prefs');
-            this._stack.visible_child = widget;
-        } catch (e) {
-            this._setError(e);
-            logError(e, 'Failed to open preferences');
-        }
+        // markdown for pasting in gitlab issues
+        let lines = [
+            `The settings of extension ${this._uuid} had an error:`,
+            '```',
+            `${error}`,
+            '```',
+            '',
+            'Stack trace:',
+            '```',
+            error.stack.replace(/\n$/, ''), // stack without trailing newline
+            '```',
+            '',
+        ];
+        this._errorMarkdown = lines.join('\n');
     }
 
     _syncExpandedStyle() {
@@ -75,36 +106,10 @@ var ExtensionPrefsDialog = GObject.registerClass({
             this._expander.remove_css_class('expanded');
     }
 
-    _setError(exc) {
-        this._errorView.buffer.text = `${exc}\n\nStack trace:\n`;
-        // Indent stack trace.
-        this._errorView.buffer.text +=
-            exc.stack.split('\n').map(line => `  ${line}`).join('\n');
-
-        // markdown for pasting in gitlab issues
-        let lines = [
-            `The settings of extension ${this._uuid} had an error:`,
-            '```',
-            `${exc}`,
-            '```',
-            '',
-            'Stack trace:',
-            '```',
-            exc.stack.replace(/\n$/, ''), // stack without trailing newline
-            '```',
-            '',
-        ];
-        this._errorMarkdown = lines.join('\n');
-        this._actionGroup.lookup('copy-error').enabled = true;
-    }
-
     _initActions() {
         let action;
 
-        action = new Gio.SimpleAction({
-            name: 'copy-error',
-            enabled: false,
-        });
+        action = new Gio.SimpleAction({ name: 'copy-error' });
         action.connect('activate', () => {
             const clipboard = this.get_display().get_clipboard();
             clipboard.set(this._errorMarkdown);
@@ -135,4 +140,3 @@ var ExtensionPrefsDialog = GObject.registerClass({
             Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
     }
 });
-

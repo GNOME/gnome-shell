@@ -14,6 +14,6 @@
 
   <gresource prefix="/org/gnome/Shell/Extensions">
     <file>css/application.css</file>
-    <file>ui/extension-prefs-dialog.ui</file>
+    <file>ui/extension-error-page.ui</file>
   </gresource>
 </gresources>
