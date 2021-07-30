@@ -23,9 +23,16 @@ var ExtensionPrefsDialog = GObject.registerClass({
             const prefsModule = extension.imports.prefs;
             prefsModule.init(extension.metadata);
 
-            const widget = prefsModule.buildPrefsWidget();
-            const page = this._wrapWidget(widget);
-            this.add(page);
+            if (prefsModule.fillPreferencesWindow) {
+                prefsModule.fillPreferencesWindow(this);
+
+                if (!this.visible_page)
+                    throw new Error('Extension did not provide any UI');
+            } else {
+                const widget = prefsModule.buildPrefsWidget();
+                const page = this._wrapWidget(widget);
+                this.add(page);
+            }
         } catch (e) {
             this._showErrorPage(e);
             logError(e, 'Failed to open preferences');
