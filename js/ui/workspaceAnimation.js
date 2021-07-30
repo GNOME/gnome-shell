@@ -287,7 +287,6 @@ var WorkspaceAnimationController = class {
             Clutter.Orientation.HORIZONTAL,
             Shell.ActionMode.NORMAL,
             { allowDrag: false });
-        swipeTracker.allowLongSwipes = true;
         swipeTracker.connect('begin', this._switchWorkspaceBegin.bind(this));
         swipeTracker.connect('update', this._switchWorkspaceUpdate.bind(this));
         swipeTracker.connect('end', this._switchWorkspaceEnd.bind(this));
