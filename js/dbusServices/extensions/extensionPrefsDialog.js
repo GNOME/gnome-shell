@@ -1,20 +1,20 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported ExtensionPrefsDialog */
 
-const { Gdk, Gio, GObject, Gtk } = imports.gi;
+const { Adw, Gdk, Gio, GLib, GObject, Gtk } = imports.gi;
 
 const ExtensionUtils = imports.misc.extensionUtils;
 
 var ExtensionPrefsDialog = GObject.registerClass({
     GTypeName: 'ExtensionPrefsDialog',
-}, class ExtensionPrefsDialog extends Gtk.Window {
+}, class ExtensionPrefsDialog extends Adw.PreferencesWindow {
     _init(extension) {
         super._init({
             title: extension.metadata.name,
             default_width: 600,
             default_height: 400,
+            search_enabled: false,
         });
-        this.set_titlebar(new Gtk.HeaderBar());
 
         try {
             ExtensionUtils.installImporter(extension);
@@ -26,11 +26,51 @@ var ExtensionPrefsDialog = GObject.registerClass({
             prefsModule.init(extension.metadata);
 
             const widget = prefsModule.buildPrefsWidget();
-            this.set_child(widget);
+            const page = this._wrapWidget(widget);
+            this.add(page);
         } catch (e) {
-            this.set_child(new ExtensionPrefsErrorPage(extension, e));
+            this._showErrorPage(e);
             logError(e, 'Failed to open preferences');
         }
+    }
+
+    set titlebar(w) {
+        this.set_titlebar(w);
+    }
+
+    // eslint-disable-next-line camelcase
+    set_titlebar() {
+        // intercept fatal libadwaita error, show error page instead
+        GLib.idle_add(GLib.PRIORITY_DEFAULT, () => {
+            this._showErrorPage(
+                new Error('set_titlebar() is not supported for Adw.Window'));
+            return GLib.SOURCE_REMOVE;
+        });
+    }
+
+    _showErrorPage(e) {
+        while (this.visible_page)
+            this.remove(this.visible_page);
+
+        const extension = ExtensionUtils.getCurrentExtension();
+        this.add(new ExtensionPrefsErrorPage(extension, e));
+    }
+
+    _wrapWidget(widget) {
+        if (widget instanceof Adw.PreferencesPage)
+            return widget;
+
+        const page = new Adw.PreferencesPage();
+        if (widget instanceof Adw.PreferencesGroup) {
+            page.add(widget);
+            return page;
+        }
+
+        const group = new Adw.PreferencesGroup();
+        group.add(widget);
+        page.add(group);
+
+        return page;
     }
 });
 
@@ -43,7 +83,7 @@ const ExtensionPrefsErrorPage = GObject.registerClass({
         'revealer',
         'errorView',
     ],
-}, class ExtensionPrefsErrorPage extends Gtk.Widget {
+}, class ExtensionPrefsErrorPage extends Adw.PreferencesPage {
     static _classInit(klass) {
         super._classInit(klass);
 
@@ -61,9 +101,8 @@ const ExtensionPrefsErrorPage = GObject.registerClass({
     }
 
     _init(extension, error) {
-        super._init({
-            layout_manager: new Gtk.BinLayout(),
-        });
+        super._init();
+
         this._addCustomStylesheet();
 
         this._uuid = extension.uuid;
