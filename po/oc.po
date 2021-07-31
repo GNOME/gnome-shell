@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master fr\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2021-07-12 18:58+0000\n"
-"PO-Revision-Date: 2021-07-31 15:40+0200\n"
+"POT-Creation-Date: 2021-07-31 13:43+0000\n"
+"PO-Revision-Date: 2021-07-31 15:45+0200\n"
 "Last-Translator: Quentin PAGÈS\n"
 "Language-Team: Tot En Òc\n"
 "Language: oc\n"
@@ -18,6 +18,46 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Poedit 3.0\n"
 "X-Project-Style: gnome\n"
+
+#: data/50-gnome-shell-launchers.xml:6
+msgid "Launchers"
+msgstr "Aviadors"
+
+#: data/50-gnome-shell-launchers.xml:10
+msgid "Activate favorite application 1"
+msgstr "Activar l’aplicacion favorita 1"
+
+#: data/50-gnome-shell-launchers.xml:14
+msgid "Activate favorite application 2"
+msgstr "Activar l’aplicacion favorita 2"
+
+#: data/50-gnome-shell-launchers.xml:18
+msgid "Activate favorite application 3"
+msgstr "Activar l’aplicacion favorita 3"
+
+#: data/50-gnome-shell-launchers.xml:22
+msgid "Activate favorite application 4"
+msgstr "Activar l’aplicacion favorita 4"
+
+#: data/50-gnome-shell-launchers.xml:26
+msgid "Activate favorite application 5"
+msgstr "Activar l’aplicacion favorita 5"
+
+#: data/50-gnome-shell-launchers.xml:30
+msgid "Activate favorite application 6"
+msgstr "Activar l’aplicacion favorita 6"
+
+#: data/50-gnome-shell-launchers.xml:34
+msgid "Activate favorite application 7"
+msgstr "Activar l’aplicacion favorita 7"
+
+#: data/50-gnome-shell-launchers.xml:38
+msgid "Activate favorite application 8"
+msgstr "Activar l’aplicacion favorita 8"
+
+#: data/50-gnome-shell-launchers.xml:42
+msgid "Activate favorite application 9"
+msgstr "Activar l’aplicacion favorita 10"
 
 #: data/50-gnome-shell-system.xml:6
 msgid "System"
@@ -474,7 +514,7 @@ msgstr "Consultar la pagina de las extensions"
 #: js/ui/components/networkAgent.js:111 js/ui/components/polkitAgent.js:138
 #: js/ui/endSessionDialog.js:438 js/ui/extensionDownloader.js:190
 #: js/ui/shellMountOperation.js:376 js/ui/shellMountOperation.js:386
-#: js/ui/status/network.js:946 subprojects/extensions-app/js/main.js:183
+#: js/ui/status/network.js:963 subprojects/extensions-app/js/main.js:183
 msgid "Cancel"
 msgstr "Anullar"
 
@@ -764,11 +804,11 @@ msgstr ""
 
 #. No support for non-modal system dialogs, so ignore the option
 #. let modal = options['modal'] || true;
-#: js/ui/accessDialog.js:39 js/ui/status/location.js:369
+#: js/ui/accessDialog.js:39 js/ui/status/location.js:417
 msgid "Deny Access"
 msgstr "Refusar l'accès"
 
-#: js/ui/accessDialog.js:40 js/ui/status/location.js:372
+#: js/ui/accessDialog.js:40 js/ui/status/location.js:420
 msgid "Grant Access"
 msgstr "Acordar l'accès"
 
@@ -948,7 +988,7 @@ msgstr "Pas cap de notificacion"
 msgid "Do Not Disturb"
 msgstr "Destorbar pas"
 
-#: js/ui/calendar.js:969
+#: js/ui/calendar.js:971
 msgid "Clear"
 msgstr "Escafar"
 
@@ -1000,7 +1040,7 @@ msgid ""
 msgstr "Autrament podètz quichatz lo boton « WPS » sul router."
 
 #: js/ui/components/networkAgent.js:105 js/ui/status/network.js:258
-#: js/ui/status/network.js:349 js/ui/status/network.js:949
+#: js/ui/status/network.js:349 js/ui/status/network.js:966
 msgid "Connect"
 msgstr "Se connectar"
 
@@ -1064,7 +1104,7 @@ msgstr "PIN"
 msgid "A password is required to connect to “%s”."
 msgstr "Un senhal es requesit per se connectar a « %s »."
 
-#: js/ui/components/networkAgent.js:668 js/ui/status/network.js:1723
+#: js/ui/components/networkAgent.js:668 js/ui/status/network.js:1774
 msgid "Network Manager"
 msgstr "Gestionari de ret"
 
@@ -1099,7 +1139,7 @@ msgstr "Fracàs de l’autentificacion. Ensajar tornamai."
 msgid "%s is now known as %s"
 msgstr "%s es ara conegut jol nom de %s"
 
-#: js/ui/ctrlAltTab.js:21 js/ui/overviewControls.js:399
+#: js/ui/ctrlAltTab.js:21 js/ui/overviewControls.js:404
 msgid "Windows"
 msgstr "Fenèstras"
 
@@ -1486,13 +1526,13 @@ msgid "Leave On"
 msgstr "Daissar activat"
 
 #: js/ui/kbdA11yDialog.js:54 js/ui/status/bluetooth.js:156
-#: js/ui/status/network.js:1321
+#: js/ui/status/network.js:1362
 msgid "Turn On"
 msgstr "Activar"
 
 #: js/ui/kbdA11yDialog.js:62 js/ui/status/bluetooth.js:156
 #: js/ui/status/network.js:166 js/ui/status/network.js:350
-#: js/ui/status/network.js:1321 js/ui/status/network.js:1433
+#: js/ui/status/network.js:1362 js/ui/status/network.js:1474
 #: js/ui/status/nightLight.js:41 js/ui/status/rfkill.js:81
 #: js/ui/status/rfkill.js:110
 msgid "Turn Off"
@@ -1576,7 +1616,7 @@ msgstr "Verrolhatge d’ecran desactivat"
 msgid "Screen Locking requires the GNOME display manager."
 msgstr "Lo verrolhatge d’ecran requerís lo gestionari d’afichatge GNOME."
 
-#: js/ui/messageTray.js:1437
+#: js/ui/messageTray.js:1440
 msgid "System Information"
 msgstr "Informacions del sistèma"
 
@@ -1592,21 +1632,21 @@ msgstr "Títol desconegut"
 #. in the search entry when no search is
 #. active; it should not exceed ~30
 #. characters.
-#: js/ui/overviewControls.js:308
+#: js/ui/overviewControls.js:313
 msgid "Type to search"
 msgstr "Picatz per recercar"
 
-#: js/ui/overviewControls.js:387
+#: js/ui/overviewControls.js:392
 msgid "Applications"
 msgstr "Aplicacions"
 
-#: js/ui/overview.js:69
+#: js/ui/overview.js:58
 msgid "Undo"
 msgstr "Anullar"
 
 #. Translators: This is the main view to select
 #. activities. See also note for "Activities" string.
-#: js/ui/overview.js:82
+#: js/ui/overview.js:71
 msgid "Overview"
 msgstr "Vista d'ensemble"
 
@@ -1700,11 +1740,11 @@ msgstr "GNOME a besonh de verrolhar l'ecran"
 #.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
-#: js/ui/screenShield.js:252 js/ui/screenShield.js:620
+#: js/ui/screenShield.js:252 js/ui/screenShield.js:622
 msgid "Unable to lock"
 msgstr "Impossible de verrolhar"
 
-#: js/ui/screenShield.js:253 js/ui/screenShield.js:621
+#: js/ui/screenShield.js:253 js/ui/screenShield.js:623
 msgid "Lock was blocked by an application"
 msgstr "Lo verrolhatge es estat blocat per una aplicacion"
 
@@ -1712,15 +1752,15 @@ msgstr "Lo verrolhatge es estat blocat per una aplicacion"
 msgid "Screenshot taken"
 msgstr "Captura d'ecran efectuada"
 
-#: js/ui/search.js:824
+#: js/ui/search.js:825
 msgid "Searching…"
 msgstr "Recèrca en cors…"
 
-#: js/ui/search.js:826
+#: js/ui/search.js:827
 msgid "No results."
 msgstr "Pas cap de resultat."
 
-#: js/ui/search.js:952
+#: js/ui/search.js:953
 #, javascript-format
 msgid "%d more"
 msgid_plural "%d more"
@@ -1739,15 +1779,15 @@ msgstr "Copiar"
 msgid "Paste"
 msgstr "Pegar"
 
-#: js/ui/shellEntry.js:73
+#: js/ui/shellEntry.js:77
 msgid "Show Text"
 msgstr "Afichar lo tèxte"
 
-#: js/ui/shellEntry.js:75
+#: js/ui/shellEntry.js:79
 msgid "Hide Text"
 msgstr "Amagar lo tèxte"
 
-#: js/ui/shellEntry.js:162
+#: js/ui/shellEntry.js:166
 msgid "Caps lock is on."
 msgstr "Verr. maj. es activat."
 
@@ -1854,7 +1894,7 @@ msgstr "Grand tèxte"
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: js/ui/status/bluetooth.js:49 js/ui/status/network.js:625
+#: js/ui/status/bluetooth.js:49 js/ui/status/network.js:637
 msgid "Bluetooth Settings"
 msgstr "Paramètres Bluetooth"
 
@@ -1906,41 +1946,41 @@ msgstr "Clavièr"
 msgid "Show Keyboard Layout"
 msgstr "Afichar la disposicion del clavièr"
 
-#: js/ui/status/location.js:65 js/ui/status/location.js:174
+#: js/ui/status/location.js:234 js/ui/status/location.js:267
 msgid "Location Enabled"
 msgstr "Localizacion activada"
 
-#: js/ui/status/location.js:66 js/ui/status/location.js:175
+#: js/ui/status/location.js:235 js/ui/status/location.js:268
 msgid "Disable"
 msgstr "Desactivar"
 
-#: js/ui/status/location.js:67
+#: js/ui/status/location.js:236
 msgid "Privacy Settings"
 msgstr "Paramètres de confidencialitat"
 
-#: js/ui/status/location.js:173
+#: js/ui/status/location.js:266
 msgid "Location In Use"
 msgstr "Localizacion activada"
 
-#: js/ui/status/location.js:177
+#: js/ui/status/location.js:270
 msgid "Location Disabled"
 msgstr "Localizacion desactivada"
 
-#: js/ui/status/location.js:178
+#: js/ui/status/location.js:271
 msgid "Enable"
 msgstr "Activar"
 
-#: js/ui/status/location.js:350
+#: js/ui/status/location.js:398
 msgid "Allow location access"
 msgstr "Autorizar l’accès a la localizacion"
 
 #. Translators: %s is an application name
-#: js/ui/status/location.js:352
+#: js/ui/status/location.js:400
 #, javascript-format
 msgid "The app %s wants to access your location"
 msgstr "L’aplicacion %s vòl accedir a vòstra localizacion"
 
-#: js/ui/status/location.js:362
+#: js/ui/status/location.js:410
 msgid "Location access can be changed at any time from the privacy settings."
 msgstr ""
 "Las règlas d’accès a la localizacion pòdon a tot moment èsser modificadas "
@@ -1951,7 +1991,7 @@ msgid "<unknown>"
 msgstr "<desconegut>"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:455 js/ui/status/network.js:1350
+#: js/ui/status/network.js:455 js/ui/status/network.js:1391
 #, javascript-format
 msgid "%s Off"
 msgstr "%s atudat"
@@ -1977,7 +2017,7 @@ msgid "%s Disconnecting"
 msgstr "Desconnexion de %s en cors"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:473 js/ui/status/network.js:1342
+#: js/ui/status/network.js:473 js/ui/status/network.js:1383
 #, javascript-format
 msgid "%s Connecting"
 msgstr "Connexion de %s en cors"
@@ -2017,137 +2057,137 @@ msgid "Mobile Broadband Settings"
 msgstr "Paramètres del telefòn mobil de benda larga"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:592 js/ui/status/network.js:1347
+#: js/ui/status/network.js:604 js/ui/status/network.js:1388
 #, javascript-format
 msgid "%s Hardware Disabled"
 msgstr "Equipament %s desactivat"
 
 #. Translators: this is for a network device that cannot be activated
 #. because it's disabled by rfkill (airplane mode); %s is a network identifier
-#: js/ui/status/network.js:596
+#: js/ui/status/network.js:608
 #, javascript-format
 msgid "%s Disabled"
 msgstr "%s desactivat"
 
-#: js/ui/status/network.js:637
+#: js/ui/status/network.js:649
 msgid "Connect to Internet"
 msgstr "Se connectar a Internet"
 
-#: js/ui/status/network.js:841
+#: js/ui/status/network.js:858
 msgid "Airplane Mode is On"
 msgstr "Lo mòde avion es activat"
 
-#: js/ui/status/network.js:842
+#: js/ui/status/network.js:859
 msgid "Wi-Fi is disabled when airplane mode is on."
 msgstr "Lo Wi-Fi es desactivat quand lo mòde avion es activat."
 
-#: js/ui/status/network.js:843
+#: js/ui/status/network.js:860
 msgid "Turn Off Airplane Mode"
 msgstr "Desactivar lo mòde avion"
 
-#: js/ui/status/network.js:852
+#: js/ui/status/network.js:869
 msgid "Wi-Fi is Off"
 msgstr "Lo Wi-fi es desactivat"
 
-#: js/ui/status/network.js:853
+#: js/ui/status/network.js:870
 msgid "Wi-Fi needs to be turned on in order to connect to a network."
 msgstr "Lo Wi-Fi a besonh d'èsser activat per se connectar a una ret."
 
-#: js/ui/status/network.js:854
+#: js/ui/status/network.js:871
 msgid "Turn On Wi-Fi"
 msgstr "Activar lo Wi-Fi"
 
-#: js/ui/status/network.js:879
+#: js/ui/status/network.js:896
 msgid "Wi-Fi Networks"
 msgstr "Rets Wi-Fi"
 
-#: js/ui/status/network.js:881
+#: js/ui/status/network.js:898
 msgid "Select a network"
 msgstr "Causir una ret"
 
-#: js/ui/status/network.js:913
+#: js/ui/status/network.js:930
 msgid "No Networks"
 msgstr "Cap de ret pas disponibla"
 
-#: js/ui/status/network.js:934 js/ui/status/rfkill.js:108
+#: js/ui/status/network.js:951 js/ui/status/rfkill.js:108
 msgid "Use hardware switch to turn off"
 msgstr "Utilizar l'interruptor material per atudar"
 
-#: js/ui/status/network.js:1211
+#: js/ui/status/network.js:1252
 msgid "Select Network"
 msgstr "Seleccionar una ret"
 
-#: js/ui/status/network.js:1217
+#: js/ui/status/network.js:1258
 msgid "Wi-Fi Settings"
 msgstr "Paramètres del Wifi"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1338
+#: js/ui/status/network.js:1379
 #, javascript-format
 msgid "%s Hotspot Active"
 msgstr "Hotspot %s activat"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1353
+#: js/ui/status/network.js:1394
 #, javascript-format
 msgid "%s Not Connected"
 msgstr "%s desconnectat"
 
-#: js/ui/status/network.js:1450
+#: js/ui/status/network.js:1491
 msgid "connecting…"
 msgstr "connexion…"
 
 #. Translators: this is for network connections that require some kind of key or password
-#: js/ui/status/network.js:1453
+#: js/ui/status/network.js:1494
 msgid "authentication required"
 msgstr "autentificacion necessària"
 
-#: js/ui/status/network.js:1455
+#: js/ui/status/network.js:1496
 msgid "connection failed"
 msgstr "fracàs de connexion"
 
-#: js/ui/status/network.js:1506
+#: js/ui/status/network.js:1547
 msgid "VPN Settings"
 msgstr "Paramètres VPN"
 
-#: js/ui/status/network.js:1523
+#: js/ui/status/network.js:1564
 msgid "VPN"
 msgstr "VPN"
 
-#: js/ui/status/network.js:1533
+#: js/ui/status/network.js:1574
 msgid "VPN Off"
 msgstr "VPN atudat"
 
-#: js/ui/status/network.js:1594 js/ui/status/rfkill.js:84
+#: js/ui/status/network.js:1635 js/ui/status/rfkill.js:84
 msgid "Network Settings"
 msgstr "Paramètres de la ret"
 
-#: js/ui/status/network.js:1622
+#: js/ui/status/network.js:1663
 #, javascript-format
 msgid "%s Wired Connection"
 msgid_plural "%s Wired Connections"
 msgstr[0] "%s connexion filària"
 msgstr[1] "%s connexions filàrias"
 
-#: js/ui/status/network.js:1626
+#: js/ui/status/network.js:1667
 #, javascript-format
 msgid "%s Wi-Fi Connection"
 msgid_plural "%s Wi-Fi Connections"
 msgstr[0] "%s connexion Wi-Fi"
 msgstr[1] "%s connexions Wi-Fi"
 
-#: js/ui/status/network.js:1630
+#: js/ui/status/network.js:1671
 #, javascript-format
 msgid "%s Modem Connection"
 msgid_plural "%s Modem Connections"
 msgstr[0] "%s connexion a un modèm"
 msgstr[1] "%s connexions a de modèm"
 
-#: js/ui/status/network.js:1764
+#: js/ui/status/network.js:1815
 msgid "Connection failed"
 msgstr "Fracàs de connexion"
 
-#: js/ui/status/network.js:1765
+#: js/ui/status/network.js:1816
 msgid "Activation of network connection failed"
 msgstr "L'activacion de la connexion a la ret a fracassat"
 
@@ -2654,7 +2694,7 @@ msgid "Log Out…"
 msgstr "Tampar la session…"
 
 #. Translators: a file path to an extension directory
-#: subprojects/extensions-tool/src/command-create.c:223
+#: subprojects/extensions-tool/src/command-create.c:222
 #, c-format
 msgid "The new extension was successfully created in %s.\n"
 msgstr "La nòva extension es estada corrèctament creada dins %s.\n"
