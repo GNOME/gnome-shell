@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master fr\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2021-06-16 08:21+0000\n"
-"PO-Revision-Date: 2021-07-08 21:42+0200\n"
+"POT-Creation-Date: 2021-07-12 18:58+0000\n"
+"PO-Revision-Date: 2021-07-31 15:40+0200\n"
 "Last-Translator: Quentin PAGÈS\n"
 "Language-Team: Tot En Òc\n"
 "Language: oc\n"
@@ -210,6 +210,11 @@ msgid ""
 "number will represent versions that do not exist yet. This huge number can "
 "be used to effectively disable the dialog."
 msgstr ""
+"Aquesta clau determina la version de la fenèstra « la Benvenguda de GNOME » "
+"darrièrament afichada. Una cadena de tèxt voida indica la version mai "
+"anciana possibla, e un grand nombre representa una version qu'existís pas "
+"encara. Un grand nombre pòt servir a desactivar d’un biais efectiu la "
+"fenèstra."
 
 #: data/org.gnome.shell.gschema.xml.in:109
 msgid "Enable introspection API"
@@ -233,6 +238,12 @@ msgid ""
 "“application id” → 'data' pair. Currently, the following values are stored "
 "as 'data': • “position”: the position of the application icon in the page"
 msgstr ""
+"Disposicion del selector d’aplicacions. Cada entrada del tablèu es una "
+"pagina. Las paginas son gardadas dins l’òrdre qu'apareisson dins Shell de "
+"GNOME. Cada pagina conten un parelh « identificant d’aplicacion » → "
+"« donadas ». Actualament, las valors seguentas son gardadas coma "
+"« donadas » : • « posicion » : la posicion de l’icòna de l’aplicacion sus la "
+"pagina"
 
 #: data/org.gnome.shell.gschema.xml.in:157
 msgid "Keybinding to open the application menu"
@@ -443,6 +454,9 @@ msgid ""
 "extension can’t be displayed. We recommend that you report the issue to the "
 "extension authors."
 msgstr ""
+"O planhèm, mas i a un problèmas : los paramètres d’aquesta extensions se "
+"pòdon pas afichar. Vos recomandam de senhalar aqueste problèma als autors de "
+"l’extension."
 
 #: js/dbusServices/extensions/ui/extension-prefs-dialog.ui:64
 msgid "Technical Details"
@@ -1085,7 +1099,7 @@ msgstr "Fracàs de l’autentificacion. Ensajar tornamai."
 msgid "%s is now known as %s"
 msgstr "%s es ara conegut jol nom de %s"
 
-#: js/ui/ctrlAltTab.js:21 js/ui/overviewControls.js:398
+#: js/ui/ctrlAltTab.js:21 js/ui/overviewControls.js:399
 msgid "Windows"
 msgstr "Fenèstras"
 
@@ -1578,11 +1592,11 @@ msgstr "Títol desconegut"
 #. in the search entry when no search is
 #. active; it should not exceed ~30
 #. characters.
-#: js/ui/overviewControls.js:307
+#: js/ui/overviewControls.js:308
 msgid "Type to search"
 msgstr "Picatz per recercar"
 
-#: js/ui/overviewControls.js:386
+#: js/ui/overviewControls.js:387
 msgid "Applications"
 msgstr "Aplicacions"
 
@@ -2153,38 +2167,38 @@ msgstr "Reprene"
 msgid "Disable Until Tomorrow"
 msgstr "Desactivar fins a deman"
 
-#: js/ui/status/power.js:47
+#: js/ui/status/power.js:51
 msgid "Power Settings"
 msgstr "Paramètres de gestion de l'energia"
 
-#: js/ui/status/power.js:63
+#: js/ui/status/power.js:68
 msgid "Fully Charged"
 msgstr "Carga completa"
 
-#: js/ui/status/power.js:69
+#: js/ui/status/power.js:74
 msgid "Not Charging"
 msgstr "Pas en carga"
 
 #. 0 is reported when UPower does not have enough data
 #. to estimate battery life
-#: js/ui/status/power.js:72 js/ui/status/power.js:78
+#: js/ui/status/power.js:77 js/ui/status/power.js:83
 msgid "Estimating…"
 msgstr "Estimacion en cors…"
 
 #. Translators: this is <hours>:<minutes> Remaining (<percentage>)
-#: js/ui/status/power.js:86
+#: js/ui/status/power.js:91
 #, javascript-format
 msgid "%d∶%02d Remaining (%d %%)"
 msgstr "%d∶%02d restant (%d %%)"
 
 #. Translators: this is <hours>:<minutes> Until Full (<percentage>)
-#: js/ui/status/power.js:91
+#: js/ui/status/power.js:97
 #, javascript-format
 msgid "%d∶%02d Until Full (%d %%)"
 msgstr "%d∶%02d abans cargament complet (%d %%)"
 
 #. The icon label
-#: js/ui/status/power.js:137
+#: js/ui/status/power.js:145
 #, javascript-format
 msgid "%d %%"
 msgstr "%d %%"
@@ -2450,19 +2464,19 @@ msgstr "Tampar"
 msgid "Evolution Calendar"
 msgstr "Agenda d'Evolution"
 
-#: src/main.c:415 subprojects/extensions-tool/src/main.c:317
+#: src/main.c:419 subprojects/extensions-tool/src/main.c:317
 msgid "Print version"
 msgstr "Aficha la version"
 
-#: src/main.c:421
+#: src/main.c:425
 msgid "Mode used by GDM for login screen"
 msgstr "Mòde utilizat per GDM per l'ecran de connexion"
 
-#: src/main.c:427
+#: src/main.c:431
 msgid "Use a specific mode, e.g. “gdm” for login screen"
 msgstr "Utilizar un mòde particular, per ex. « gdm » per l’ecran de connexion"
 
-#: src/main.c:433
+#: src/main.c:437
 msgid "List possible modes"
 msgstr "Far la lista dels mòdes possibles"
 
@@ -2607,6 +2621,9 @@ msgid ""
 "encounter problems with your system, it is recommended to disable all "
 "extensions."
 msgstr ""
+"Las extensions pòdon menar a de problèmas sistèma, inclutz per la "
+"performança. Se pensatz qu’es vòstre cas, se recomanda de desactivar totas "
+"las extensions."
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:150
 msgid "Manually Installed"
@@ -2625,6 +2642,8 @@ msgid ""
 "We’re very sorry, but it was not possible to get the list of installed "
 "extensions. Make sure you are logged into GNOME and try again."
 msgstr ""
+"O planhèm, es pas possible d’obténer la lista de las extensions installadas. "
+"Verificatz que sètz ben connectat a GNOME e tornatz ensajar."
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:288
 msgid "Extension Updates Ready"
@@ -2670,6 +2689,9 @@ msgid ""
 "This should be in the format of an email address (clicktofocus@janedoe."
 "example.com)\n"
 msgstr ""
+"L’UUID es un identificant globalament unica per vòstra extension.\n"
+"Son format deu correspondre al format d’una adreça electronica "
+"(clicperfocus@joanmiquel.com)\n"
 
 #: subprojects/extensions-tool/src/command-create.c:363
 msgid "Choose one of the available templates:\n"
