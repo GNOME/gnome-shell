@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2021-07-05 18:50+0000\n"
-"PO-Revision-Date: 2021-07-06 07:01+0300\n"
+"POT-Creation-Date: 2021-08-02 15:15+0000\n"
+"PO-Revision-Date: 2021-08-02 19:35+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <kde-i18n-uk@kde.org>\n"
 "Language: uk\n"
@@ -24,51 +24,41 @@ msgstr ""
 
 #: data/50-gnome-shell-launchers.xml:6
 msgid "Launchers"
-msgstr ""
-"Пускачі"
+msgstr "Пускачі"
 
 #: data/50-gnome-shell-launchers.xml:10
-#| msgid "Switch to application 1"
 msgid "Activate favorite application 1"
 msgstr "Активувати улюблену програму 1"
 
 #: data/50-gnome-shell-launchers.xml:14
-#| msgid "Switch to application 2"
 msgid "Activate favorite application 2"
 msgstr "Активувати улюблену програму 2"
 
 #: data/50-gnome-shell-launchers.xml:18
-#| msgid "Switch to application 3"
 msgid "Activate favorite application 3"
 msgstr "Активувати улюблену програму 3"
 
 #: data/50-gnome-shell-launchers.xml:22
-#| msgid "Switch to application 4"
 msgid "Activate favorite application 4"
 msgstr "Активувати улюблену програму 4"
 
 #: data/50-gnome-shell-launchers.xml:26
-#| msgid "Switch to application 5"
 msgid "Activate favorite application 5"
 msgstr "Активувати улюблену програму 5"
 
 #: data/50-gnome-shell-launchers.xml:30
-#| msgid "Switch to application 6"
 msgid "Activate favorite application 6"
 msgstr "Активувати улюблену програму 6"
 
 #: data/50-gnome-shell-launchers.xml:34
-#| msgid "Switch to application 7"
 msgid "Activate favorite application 7"
 msgstr "Активувати улюблену програму 7"
 
 #: data/50-gnome-shell-launchers.xml:38
-#| msgid "Switch to application 8"
 msgid "Activate favorite application 8"
 msgstr "Активувати улюблену програму 8"
 
 #: data/50-gnome-shell-launchers.xml:42
-#| msgid "Switch to application 9"
 msgid "Activate favorite application 9"
 msgstr "Активувати улюблену програму 9"
 
@@ -507,7 +497,7 @@ msgstr "Відвідати сторінку розширення"
 #: js/ui/components/networkAgent.js:111 js/ui/components/polkitAgent.js:138
 #: js/ui/endSessionDialog.js:438 js/ui/extensionDownloader.js:190
 #: js/ui/shellMountOperation.js:376 js/ui/shellMountOperation.js:386
-#: js/ui/status/network.js:946 subprojects/extensions-app/js/main.js:183
+#: js/ui/status/network.js:963 subprojects/extensions-app/js/main.js:183
 msgid "Cancel"
 msgstr "Скасувати"
 
@@ -810,11 +800,11 @@ msgstr ""
 
 #. No support for non-modal system dialogs, so ignore the option
 #. let modal = options['modal'] || true;
-#: js/ui/accessDialog.js:39 js/ui/status/location.js:369
+#: js/ui/accessDialog.js:39 js/ui/status/location.js:417
 msgid "Deny Access"
 msgstr "Заборонити доступ"
 
-#: js/ui/accessDialog.js:40 js/ui/status/location.js:372
+#: js/ui/accessDialog.js:40 js/ui/status/location.js:420
 msgid "Grant Access"
 msgstr "Надати доступ"
 
@@ -994,7 +984,7 @@ msgstr "Немає сповіщень"
 msgid "Do Not Disturb"
 msgstr "Не турбувати"
 
-#: js/ui/calendar.js:969
+#: js/ui/calendar.js:971
 msgid "Clear"
 msgstr "Очистити"
 
@@ -1047,7 +1037,7 @@ msgstr ""
 "Також можете під'єднатися, натиснувши кнопку «WPS» на вашому маршрутизаторі."
 
 #: js/ui/components/networkAgent.js:105 js/ui/status/network.js:258
-#: js/ui/status/network.js:349 js/ui/status/network.js:949
+#: js/ui/status/network.js:349 js/ui/status/network.js:966
 msgid "Connect"
 msgstr "З'єднатись"
 
@@ -1110,7 +1100,7 @@ msgstr "Пін-код"
 msgid "A password is required to connect to “%s”."
 msgstr "Пароль потрібен для з'єднання з «%s»."
 
-#: js/ui/components/networkAgent.js:668 js/ui/status/network.js:1723
+#: js/ui/components/networkAgent.js:668 js/ui/status/network.js:1774
 msgid "Network Manager"
 msgstr "Керування мережею"
 
@@ -1145,7 +1135,7 @@ msgstr "Вибачте, це не спрацювало. Спробуйте ще.
 msgid "%s is now known as %s"
 msgstr "%s тепер відомий як %s"
 
-#: js/ui/ctrlAltTab.js:21 js/ui/overviewControls.js:398
+#: js/ui/ctrlAltTab.js:21 js/ui/overviewControls.js:404
 msgid "Windows"
 msgstr "Вікна"
 
@@ -1500,13 +1490,13 @@ msgid "Leave On"
 msgstr "Залишити"
 
 #: js/ui/kbdA11yDialog.js:54 js/ui/status/bluetooth.js:156
-#: js/ui/status/network.js:1321
+#: js/ui/status/network.js:1362
 msgid "Turn On"
 msgstr "Увімкнути"
 
 #: js/ui/kbdA11yDialog.js:62 js/ui/status/bluetooth.js:156
 #: js/ui/status/network.js:166 js/ui/status/network.js:350
-#: js/ui/status/network.js:1321 js/ui/status/network.js:1433
+#: js/ui/status/network.js:1362 js/ui/status/network.js:1474
 #: js/ui/status/nightLight.js:41 js/ui/status/rfkill.js:81
 #: js/ui/status/rfkill.js:110
 msgid "Turn Off"
@@ -1589,7 +1579,7 @@ msgstr "Блокування екрана вимкнено"
 msgid "Screen Locking requires the GNOME display manager."
 msgstr "Блокування екрана потребує керування входом GNOME."
 
-#: js/ui/messageTray.js:1437
+#: js/ui/messageTray.js:1440
 msgid "System Information"
 msgstr "Інформація про систему"
 
@@ -1605,21 +1595,21 @@ msgstr "Невідома назва"
 #. in the search entry when no search is
 #. active; it should not exceed ~30
 #. characters.
-#: js/ui/overviewControls.js:307
+#: js/ui/overviewControls.js:313
 msgid "Type to search"
 msgstr "Введіть текст для пошуку"
 
-#: js/ui/overviewControls.js:386
+#: js/ui/overviewControls.js:392
 msgid "Applications"
 msgstr "Програми"
 
-#: js/ui/overview.js:69
+#: js/ui/overview.js:58
 msgid "Undo"
 msgstr "Повернути"
 
 #. Translators: This is the main view to select
 #. activities. See also note for "Activities" string.
-#: js/ui/overview.js:82
+#: js/ui/overview.js:71
 msgid "Overview"
 msgstr "Огляд"
 
@@ -1682,7 +1672,7 @@ msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "Система"
 
-#: js/ui/panel.js:778
+#: js/ui/panel.js:782
 msgid "Top Bar"
 msgstr "Верхня панель"
 
@@ -1713,11 +1703,11 @@ msgstr "GNOME потребує заблокувати екран"
 #.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
-#: js/ui/screenShield.js:252 js/ui/screenShield.js:620
+#: js/ui/screenShield.js:252 js/ui/screenShield.js:622
 msgid "Unable to lock"
 msgstr "Неможливо заблокувати"
 
-#: js/ui/screenShield.js:253 js/ui/screenShield.js:621
+#: js/ui/screenShield.js:253 js/ui/screenShield.js:623
 msgid "Lock was blocked by an application"
 msgstr "Блокування заборонено програмою"
 
@@ -1725,15 +1715,15 @@ msgstr "Блокування заборонено програмою"
 msgid "Screenshot taken"
 msgstr "Знімок зроблено"
 
-#: js/ui/search.js:824
+#: js/ui/search.js:825
 msgid "Searching…"
 msgstr "Пошуки…"
 
-#: js/ui/search.js:826
+#: js/ui/search.js:827
 msgid "No results."
 msgstr "Безрезультатно."
 
-#: js/ui/search.js:952
+#: js/ui/search.js:953
 #, javascript-format
 msgid "%d more"
 msgid_plural "%d more"
@@ -1754,15 +1744,15 @@ msgstr "Копіювати"
 msgid "Paste"
 msgstr "Вставити"
 
-#: js/ui/shellEntry.js:73
+#: js/ui/shellEntry.js:77
 msgid "Show Text"
 msgstr "Показати текст"
 
-#: js/ui/shellEntry.js:75
+#: js/ui/shellEntry.js:79
 msgid "Hide Text"
 msgstr "Сховати текст"
 
-#: js/ui/shellEntry.js:162
+#: js/ui/shellEntry.js:166
 msgid "Caps lock is on."
 msgstr "Caps lock активовано."
 
@@ -1867,7 +1857,7 @@ msgstr "Більший текст"
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: js/ui/status/bluetooth.js:49 js/ui/status/network.js:625
+#: js/ui/status/bluetooth.js:49 js/ui/status/network.js:637
 msgid "Bluetooth Settings"
 msgstr "Параметри Bluetooth"
 
@@ -1921,41 +1911,41 @@ msgstr "Клавіатура"
 msgid "Show Keyboard Layout"
 msgstr "Показати розкладку клавіатури"
 
-#: js/ui/status/location.js:65 js/ui/status/location.js:174
+#: js/ui/status/location.js:234 js/ui/status/location.js:267
 msgid "Location Enabled"
 msgstr "Місцевість залучено"
 
-#: js/ui/status/location.js:66 js/ui/status/location.js:175
+#: js/ui/status/location.js:235 js/ui/status/location.js:268
 msgid "Disable"
 msgstr "Вимкнути"
 
-#: js/ui/status/location.js:67
+#: js/ui/status/location.js:236
 msgid "Privacy Settings"
 msgstr "Параметри конфіденційності"
 
-#: js/ui/status/location.js:173
+#: js/ui/status/location.js:266
 msgid "Location In Use"
 msgstr "Місцевість використовується"
 
-#: js/ui/status/location.js:177
+#: js/ui/status/location.js:270
 msgid "Location Disabled"
 msgstr "Місцевість вимкнено"
 
-#: js/ui/status/location.js:178
+#: js/ui/status/location.js:271
 msgid "Enable"
 msgstr "Увімкнути"
 
-#: js/ui/status/location.js:350
+#: js/ui/status/location.js:398
 msgid "Allow location access"
 msgstr "Дозволити доступ до даних перебування"
 
 #. Translators: %s is an application name
-#: js/ui/status/location.js:352
+#: js/ui/status/location.js:400
 #, javascript-format
 msgid "The app %s wants to access your location"
 msgstr "Програмі %s потрібен доступ до даних щодо місця вашого перебування"
 
-#: js/ui/status/location.js:362
+#: js/ui/status/location.js:410
 msgid "Location access can be changed at any time from the privacy settings."
 msgstr ""
 "Доступ до місця перебування можна змінити в будь-яку мить у параметрах "
@@ -1966,7 +1956,7 @@ msgid "<unknown>"
 msgstr "<невідомо>"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:455 js/ui/status/network.js:1350
+#: js/ui/status/network.js:455 js/ui/status/network.js:1391
 #, javascript-format
 msgid "%s Off"
 msgstr "%s вимкнено"
@@ -1992,7 +1982,7 @@ msgid "%s Disconnecting"
 msgstr "%s від'єднується"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:473 js/ui/status/network.js:1342
+#: js/ui/status/network.js:473 js/ui/status/network.js:1383
 #, javascript-format
 msgid "%s Connecting"
 msgstr "%s під'єднується"
@@ -2032,112 +2022,112 @@ msgid "Mobile Broadband Settings"
 msgstr "параметри мобільної радіомережі"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:592 js/ui/status/network.js:1347
+#: js/ui/status/network.js:604 js/ui/status/network.js:1388
 #, javascript-format
 msgid "%s Hardware Disabled"
 msgstr "%s вимкнено апаратно"
 
 #. Translators: this is for a network device that cannot be activated
 #. because it's disabled by rfkill (airplane mode); %s is a network identifier
-#: js/ui/status/network.js:596
+#: js/ui/status/network.js:608
 #, javascript-format
 msgid "%s Disabled"
 msgstr "%s вимкнено"
 
-#: js/ui/status/network.js:637
+#: js/ui/status/network.js:649
 msgid "Connect to Internet"
 msgstr "Під'єднатись до інтернету"
 
-#: js/ui/status/network.js:841
+#: js/ui/status/network.js:858
 msgid "Airplane Mode is On"
 msgstr "Режим «у літаку» ввімкнено"
 
-#: js/ui/status/network.js:842
+#: js/ui/status/network.js:859
 msgid "Wi-Fi is disabled when airplane mode is on."
 msgstr "Wi-Fi вимкнено, коли режим «у літаку» ввімкнено."
 
-#: js/ui/status/network.js:843
+#: js/ui/status/network.js:860
 msgid "Turn Off Airplane Mode"
 msgstr "Вимкнути режим «у літаку»"
 
-#: js/ui/status/network.js:852
+#: js/ui/status/network.js:869
 msgid "Wi-Fi is Off"
 msgstr "Wi-Fi вимкнено"
 
-#: js/ui/status/network.js:853
+#: js/ui/status/network.js:870
 msgid "Wi-Fi needs to be turned on in order to connect to a network."
 msgstr "Wi-Fi потрібно ввімкнути, щоб з'єднатись з мережею."
 
-#: js/ui/status/network.js:854
+#: js/ui/status/network.js:871
 msgid "Turn On Wi-Fi"
 msgstr "Увімкнути Wi-Fi"
 
-#: js/ui/status/network.js:879
+#: js/ui/status/network.js:896
 msgid "Wi-Fi Networks"
 msgstr "Мережі Wi-Fi"
 
-#: js/ui/status/network.js:881
+#: js/ui/status/network.js:898
 msgid "Select a network"
 msgstr "Вибрати мережу"
 
-#: js/ui/status/network.js:913
+#: js/ui/status/network.js:930
 msgid "No Networks"
 msgstr "Немає мереж"
 
-#: js/ui/status/network.js:934 js/ui/status/rfkill.js:108
+#: js/ui/status/network.js:951 js/ui/status/rfkill.js:108
 msgid "Use hardware switch to turn off"
 msgstr "Натисніть апаратну кнопку, щоб вимкнути"
 
-#: js/ui/status/network.js:1211
+#: js/ui/status/network.js:1252
 msgid "Select Network"
 msgstr "Виберіть мережу"
 
-#: js/ui/status/network.js:1217
+#: js/ui/status/network.js:1258
 msgid "Wi-Fi Settings"
 msgstr "Параметри Wi-Fi"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1338
+#: js/ui/status/network.js:1379
 #, javascript-format
 msgid "%s Hotspot Active"
 msgstr "%s точка доступу"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1353
+#: js/ui/status/network.js:1394
 #, javascript-format
 msgid "%s Not Connected"
 msgstr "%s не під'єднано"
 
-#: js/ui/status/network.js:1450
+#: js/ui/status/network.js:1491
 msgid "connecting…"
 msgstr "З'єднання…"
 
 #. Translators: this is for network connections that require some kind of key or password
-#: js/ui/status/network.js:1453
+#: js/ui/status/network.js:1494
 msgid "authentication required"
 msgstr "Потрібна аутентифікація"
 
-#: js/ui/status/network.js:1455
+#: js/ui/status/network.js:1496
 msgid "connection failed"
 msgstr "не вдалось з'єднатись"
 
-#: js/ui/status/network.js:1506
+#: js/ui/status/network.js:1547
 msgid "VPN Settings"
 msgstr "Параметри VPN"
 
-#: js/ui/status/network.js:1523
+#: js/ui/status/network.js:1564
 msgid "VPN"
 msgstr "VPN"
 
-#: js/ui/status/network.js:1533
+#: js/ui/status/network.js:1574
 msgid "VPN Off"
 msgstr "VPN вимкнено"
 
-#: js/ui/status/network.js:1594 js/ui/status/rfkill.js:84
+#: js/ui/status/network.js:1635 js/ui/status/rfkill.js:84
 msgid "Network Settings"
 msgstr "Налаштування мережі"
 
-#: js/ui/status/network.js:1622
+#: js/ui/status/network.js:1663
 #, javascript-format
 msgid "%s Wired Connection"
 msgid_plural "%s Wired Connections"
@@ -2146,7 +2136,7 @@ msgstr[1] "%s з'єднання через дріт"
 msgstr[2] "%s з'єднань через дріт"
 msgstr[3] "%s з'єднання через дріт"
 
-#: js/ui/status/network.js:1626
+#: js/ui/status/network.js:1667
 #, javascript-format
 msgid "%s Wi-Fi Connection"
 msgid_plural "%s Wi-Fi Connections"
@@ -2155,7 +2145,7 @@ msgstr[1] "%s з'єднання через Wi-Fi"
 msgstr[2] "%s з'єднань через Wi-Fi"
 msgstr[3] "%s з'єднання через Wi-Fi"
 
-#: js/ui/status/network.js:1630
+#: js/ui/status/network.js:1671
 #, javascript-format
 msgid "%s Modem Connection"
 msgid_plural "%s Modem Connections"
@@ -2164,11 +2154,11 @@ msgstr[1] "%s з'єднання через модем"
 msgstr[2] "%s з'єднань через модем"
 msgstr[3] "%s з'єднання через модем"
 
-#: js/ui/status/network.js:1764
+#: js/ui/status/network.js:1815
 msgid "Connection failed"
 msgstr "Не вдалось з'єднатись"
 
-#: js/ui/status/network.js:1765
+#: js/ui/status/network.js:1816
 msgid "Activation of network connection failed"
 msgstr "Не вдалось увімкнути мережеве з'єднання"
 
@@ -2188,7 +2178,7 @@ msgstr "Повторити"
 msgid "Disable Until Tomorrow"
 msgstr "Вимкнути до завтра"
 
-#: js/ui/status/power.js:51
+#: js/ui/status/power.js:51 js/ui/status/powerProfiles.js:57
 msgid "Power Settings"
 msgstr "Енергетичні параметри"
 
@@ -2223,6 +2213,21 @@ msgstr "Зарядиться через %d∶%02d (%d %%)"
 #, javascript-format
 msgid "%d %%"
 msgstr "%d %%"
+
+#: js/ui/status/powerProfiles.js:19
+msgid "Performance Mode"
+msgstr ""
+"Режим швидкодії"
+
+#: js/ui/status/powerProfiles.js:20
+msgid "Balanced Power"
+msgstr ""
+"Збалансоване споживання"
+
+#: js/ui/status/powerProfiles.js:21
+#| msgid "Power Settings"
+msgid "Power Saver"
+msgstr "Заощадження енергії"
 
 #: js/ui/status/remoteAccess.js:38
 msgid "Screen is Being Shared"
@@ -2486,19 +2491,19 @@ msgstr "Закрити"
 msgid "Evolution Calendar"
 msgstr "Календар Evolution"
 
-#: src/main.c:414 subprojects/extensions-tool/src/main.c:317
+#: src/main.c:419 subprojects/extensions-tool/src/main.c:317
 msgid "Print version"
 msgstr "Показати версію"
 
-#: src/main.c:420
+#: src/main.c:425
 msgid "Mode used by GDM for login screen"
 msgstr "Використовуваний режим GDM для екрану входу"
 
-#: src/main.c:426
+#: src/main.c:431
 msgid "Use a specific mode, e.g. “gdm” for login screen"
 msgstr "Використовувати вказаний режим, приклад, «gdm» для вікна входу"
 
-#: src/main.c:432
+#: src/main.c:437
 msgid "List possible modes"
 msgstr "Перелік можливих режимів"
 
