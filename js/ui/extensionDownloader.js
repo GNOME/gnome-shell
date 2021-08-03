@@ -252,5 +252,5 @@ class InstallExtensionDialog extends ModalDialog.ModalDialog {
 });
 
 function init() {
-    _httpSession = new Soup.Session({ ssl_use_system_ca_file: true });
+    _httpSession = new Soup.Session();
 }
