@@ -20,8 +20,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2021-07-19 15:58+0000\n"
-"PO-Revision-Date: 2021-07-20 13:05+0300\n"
+"POT-Creation-Date: 2021-08-02 16:37+0000\n"
+"PO-Revision-Date: 2021-08-02 20:13+0300\n"
 "Last-Translator: Alexey Rubtsov <rushills@gmail.com>\n"
 "Language-Team: Russian <gnome-cyr@gnome.org>\n"
 "Language: ru\n"
@@ -994,7 +994,7 @@ msgstr "Уведомлений нет"
 msgid "Do Not Disturb"
 msgstr "Не беспокоить"
 
-#: js/ui/calendar.js:969
+#: js/ui/calendar.js:971
 msgid "Clear"
 msgstr "Очистить"
 
@@ -1686,7 +1686,7 @@ msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "Система"
 
-#: js/ui/panel.js:778
+#: js/ui/panel.js:782
 msgid "Top Bar"
 msgstr "Верхняя панель"
 
@@ -1757,15 +1757,15 @@ msgstr "Копировать"
 msgid "Paste"
 msgstr "Вставить"
 
-#: js/ui/shellEntry.js:73
+#: js/ui/shellEntry.js:77
 msgid "Show Text"
 msgstr "Показать текст"
 
-#: js/ui/shellEntry.js:75
+#: js/ui/shellEntry.js:79
 msgid "Hide Text"
 msgstr "Скрыть текст"
 
-#: js/ui/shellEntry.js:162
+#: js/ui/shellEntry.js:166
 msgid "Caps lock is on."
 msgstr "Включён Caps Lock."
 
@@ -2223,7 +2223,7 @@ msgstr "Продолжить"
 msgid "Disable Until Tomorrow"
 msgstr "Отключить до завтра"
 
-#: js/ui/status/power.js:51
+#: js/ui/status/power.js:51 js/ui/status/powerProfiles.js:57
 msgid "Power Settings"
 msgstr "Параметры питания"
 
@@ -2264,6 +2264,18 @@ msgstr ""
 #, javascript-format
 msgid "%d %%"
 msgstr "%d %%"
+
+#: js/ui/status/powerProfiles.js:19
+msgid "Performance Mode"
+msgstr "Режим высокой производительности"
+
+#: js/ui/status/powerProfiles.js:20
+msgid "Balanced Power"
+msgstr "Сбалансированный режим"
+
+#: js/ui/status/powerProfiles.js:21
+msgid "Power Saver"
+msgstr "Режим пониженного энергопотребления"
 
 #: js/ui/status/remoteAccess.js:38
 msgid "Screen is Being Shared"
@@ -3316,6 +3328,3 @@ msgstr "Системные звуки"
 
 #~ msgid "Battery"
 #~ msgstr "Батарея"
-
-#~ msgid "Airplane Mode"
-#~ msgstr "Режим авиаперелёта"
