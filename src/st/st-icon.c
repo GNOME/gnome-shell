@@ -456,11 +456,11 @@ st_icon_update (StIcon *icon)
       return;
     }
 
-  resource_scale = clutter_actor_get_resource_scale (CLUTTER_ACTOR (icon));
-
   theme_node = st_widget_peek_theme_node (ST_WIDGET (icon));
   if (theme_node == NULL)
     return;
+
+  resource_scale = clutter_actor_get_resource_scale (CLUTTER_ACTOR (icon));
 
   stage = clutter_actor_get_stage (CLUTTER_ACTOR (icon));
   context = st_theme_context_get_for_stage (CLUTTER_STAGE (stage));
