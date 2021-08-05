@@ -215,6 +215,8 @@ test:
         expire_in: 1 day
         paths:
             - build/meson-logs/testlog.txt
+        reports:
+            junit: build/meson-logs/testlog.junit.xml
         when: on_failure
 
 test-coverity:
