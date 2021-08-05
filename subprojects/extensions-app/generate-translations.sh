@@ -13,7 +13,7 @@ done
 builddir=$(mktemp -d -p.)
 
 meson $builddir
-ninja -C $builddir gnome-extensions-app-pot
-ninja -C $builddir gnome-extensions-app-update-po
+meson compile -C $builddir gnome-extensions-app-pot
+meson compile -C $builddir gnome-extensions-app-update-po
 
 rm -rf $builddir
