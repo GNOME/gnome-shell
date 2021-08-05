@@ -224,6 +224,12 @@ var ScreenShield = class {
                         else
                             this._inhibitor = inhibitor;
                     }
+
+                    // Handle uninhibits that happened after the start
+                    if (!this._inhibited) {
+                        this._inhibitor?.close(null);
+                        this._inhibitor = null;
+                    }
                 });
         } else {
             this._inhibitor?.close(null);
