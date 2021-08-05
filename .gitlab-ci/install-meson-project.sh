@@ -28,7 +28,7 @@ pushd "$REPO_DIR"
 pushd "$SUBDIR"
 sh -c "$PREPARE"
 meson --prefix=/usr _build "${MESON_OPTIONS[@]}"
-ninja -C _build install
+meson install -C _build
 popd
 popd
 rm -rf "$REPO_DIR"

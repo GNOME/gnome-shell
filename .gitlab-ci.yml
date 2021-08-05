@@ -190,11 +190,11 @@ build:
     before_script:
         - .gitlab-ci/checkout-mutter.sh
         - meson mutter mutter/build --prefix=/usr
-        - ninja -C mutter/build install
+        - meson install -C mutter/build
     script:
         - meson . build -Dbuildtype=debugoptimized -Dman=false --werror
-        - ninja -C build
-        - ninja -C build install
+        - meson compile -C build
+        - meson install -C build
     artifacts:
         expire_in: 1 day
         paths:
@@ -208,7 +208,7 @@ test:
         XDG_RUNTIME_DIR: "$CI_PROJECT_DIR/runtime-dir"
         NO_AT_BRIDGE: "1"
     before_script:
-        - ninja -C mutter/build install
+        - meson install -C mutter/build
     script:
         - dbus-run-session -- xvfb-run meson test -C build --no-rebuild
     artifacts:
@@ -226,11 +226,11 @@ test-coverity:
     stage: analyze
     allow_failure: true
     before_script:
-        - ninja -C mutter/build install
+        - meson compile -C mutter/build
     script:
         - .gitlab-ci/download-coverity-tarball.sh
         - CC=clang meson coverity-build -Dman=false
-        - ./coverity/cov-analysis-linux64-*/bin/cov-build --fs-capture-search js --dir cov-int ninja -C coverity-build
+        - ./coverity/cov-analysis-linux64-*/bin/cov-build --fs-capture-search js --dir cov-int meson compile -C coverity-build
         - tar czf cov-int.tar.gz cov-int
         - curl https://scan.coverity.com/builds?project=GNOME+Shell
           --form token=$COVERITY_TOKEN --form email=carlosg@gnome.org
