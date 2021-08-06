@@ -16,9 +16,9 @@ const PowerProfilesIface = loadInterfaceXML('net.hadess.PowerProfiles');
 const PowerProfilesProxy = Gio.DBusProxy.makeProxyWrapper(PowerProfilesIface);
 
 const PROFILE_LABELS = {
-    'performance': _('Performance Mode'),
-    'balanced': _('Balanced Power'),
-    'power-saver': _('Power Saver'),
+    'performance': C_('Power profile', 'Performance'),
+    'balanced': C_('Power profile', 'Balanced'),
+    'power-saver': C_('Power profile', 'Power Saver'),
 };
 const PROFILE_ICONS = {
     'performance': 'power-profile-performance-symbolic',
