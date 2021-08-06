@@ -10,6 +10,13 @@ const FileUtils = imports.misc.fileUtils;
 const Main = imports.ui.main;
 const ModalDialog = imports.ui.modalDialog;
 
+Gio._promisify(Gio.OutputStream.prototype,
+    'write_bytes_async', 'write_bytes_finish');
+Gio._promisify(Gio.IOStream.prototype,
+    'close_async', 'close_finish');
+Gio._promisify(Gio.Subprocess.prototype,
+    'wait_check_async', 'wait_check_finish');
+
 var REPOSITORY_URL_DOWNLOAD = 'https://extensions.gnome.org/download-extension/%s.shell-extension.zip';
 var REPOSITORY_URL_INFO     = 'https://extensions.gnome.org/extension-info/';
 var REPOSITORY_URL_UPDATE   = 'https://extensions.gnome.org/update-info/';
@@ -25,17 +32,9 @@ function installExtension(uuid, invocation) {
     let message = Soup.form_request_new_from_hash('GET', REPOSITORY_URL_INFO, params);
 
     _httpSession.queue_message(message, () => {
-        const { statusCode } = message;
-        if (statusCode !== Soup.KnownStatusCode.OK) {
-            const msg = 'Unexpected response: %s'
-                .format(Soup.Status.get_phrase(statusCode));
-            Main.extensionManager.logExtensionError(uuid, msg);
-            invocation.return_dbus_error('org.gnome.Shell.ExtensionError', msg);
-            return;
-        }
-
         let info;
         try {
+            checkResponse(message);
             info = JSON.parse(message.response_body.data);
         } catch (e) {
             Main.extensionManager.logExtensionError(uuid, e);
@@ -74,44 +73,38 @@ function uninstallExtension(uuid) {
     return true;
 }
 
-function gotExtensionZipFile(session, message, uuid, dir, callback, errback) {
-    if (message.status_code !== Soup.KnownStatusCode.OK) {
-        errback('Unexpected response: %s'
-            .format(Soup.Status.get_phrase(message.status_code)));
-        return;
-    }
+/**
+ * Check return status of reponse
+ *
+ * @param {Soup.Message} message - an http response
+ * @returns {void}
+ * @throws
+ */
+function checkResponse(message) {
+    const { statusCode } = message;
+    const phrase = Soup.Status.get_phrase(statusCode);
+    if (statusCode !== Soup.KnownStatusCode.OK)
+        throw new Error('Unexpected response: %s'.format(phrase));
+}
 
-    try {
-        if (!dir.query_exists(null))
-            dir.make_directory_with_parents(null);
-    } catch (e) {
-        errback(e.message);
-        return;
-    }
+/**
+ * @param {GLib.Bytes} bytes - archive data
+ * @param {Gio.File} dir - target directory
+ * @returns {void}
+ */
+async function extractExtensionArchive(bytes, dir) {
+    if (!dir.query_exists(null))
+        dir.make_directory_with_parents(null);
 
-    let [file, stream] = Gio.File.new_tmp('XXXXXX.shell-extension.zip');
-    let contents = message.response_body.flatten().get_as_bytes();
-    stream.output_stream.write_bytes(contents, null);
-    stream.close(null);
-    let [success, pid] = GLib.spawn_async(null,
+    const [file, stream] = Gio.File.new_tmp('XXXXXX.shell-extension.zip');
+    await stream.output_stream.write_bytes_async(bytes,
+        GLib.PRIORITY_DEFAULT, null);
+    stream.close_async(GLib.PRIORITY_DEFAULT, null);
+
+    const unzip = Gio.Subprocess.new(
         ['unzip', '-uod', dir.get_path(), '--', file.get_path()],
-        null,
-        GLib.SpawnFlags.SEARCH_PATH | GLib.SpawnFlags.DO_NOT_REAP_CHILD,
-        null);
-
-    if (!success) {
-        errback('Failed to extract extension');
-        return;
-    }
-
-    GLib.child_watch_add(GLib.PRIORITY_DEFAULT, pid, (o, status) => {
-        GLib.spawn_close_pid(pid);
-
-        if (status !== 0)
-            errback('Failed to extract extension');
-        else
-            callback();
-    });
+        Gio.SubprocessFlags.NONE);
+    await unzip.wait_check_async(null);
 }
 
 function downloadExtensionUpdate(uuid) {
@@ -126,12 +119,17 @@ function downloadExtensionUpdate(uuid) {
     let url = REPOSITORY_URL_DOWNLOAD.format(uuid);
     let message = Soup.form_request_new_from_hash('GET', url, params);
 
-    _httpSession.queue_message(message, session => {
-        gotExtensionZipFile(session, message, uuid, dir, () => {
+    _httpSession.queue_message(message, async () => {
+        try {
+            checkResponse(message);
+
+            const bytes = message.response_body.flatten().get_as_bytes();
+            await extractExtensionArchive(bytes, dir);
             Main.extensionManager.notifyExtensionUpdate(uuid);
-        }, msg => {
-            log('Error while downloading update for extension %s: %s'.format(uuid, msg));
-        });
+        } catch (e) {
+            log('Error while downloading update for extension %s: %s'
+                .format(uuid, e.message));
+        }
     });
 }
 
@@ -226,28 +224,27 @@ class InstallExtensionDialog extends ModalDialog.ModalDialog {
             [global.userdatadir, 'extensions', this._uuid]));
         let uuid = this._uuid;
         let invocation = this._invocation;
-        function errback(msg) {
-            log('Error while installing %s: %s'.format(uuid, msg));
-            invocation.return_dbus_error('org.gnome.Shell.ExtensionError', msg);
-        }
 
-        function callback() {
+        _httpSession.queue_message(message, async () => {
             try {
-                let extension = Main.extensionManager.createExtensionObject(uuid, dir, ExtensionUtils.ExtensionType.PER_USER);
+                checkResponse(message);
+
+                const bytes = message.response_body.flatten().get_as_bytes();
+                await extractExtensionArchive(bytes, dir);
+
+                const extension = Main.extensionManager.createExtensionObject(
+                    uuid, dir, ExtensionUtils.ExtensionType.PER_USER);
                 Main.extensionManager.loadExtension(extension);
                 if (!Main.extensionManager.enableExtension(uuid))
                     throw new Error('Cannot add %s to enabled extensions gsettings key'.format(uuid));
+
+                invocation.return_value(GLib.Variant.new('(s)', ['successful']));
             } catch (e) {
+                log('Error while installing %s: %s'.format(uuid, e.message));
                 uninstallExtension(uuid);
-                errback(e.message);
-                return;
+                invocation.return_dbus_error(
+                    'org.gnome.Shell.ExtensionError', e.message);
             }
-
-            invocation.return_value(GLib.Variant.new('(s)', ['successful']));
-        }
-
-        _httpSession.queue_message(message, session => {
-            gotExtensionZipFile(session, message, uuid, dir, callback, errback);
         });
 
         this.close();
