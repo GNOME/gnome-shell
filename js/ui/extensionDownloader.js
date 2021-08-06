@@ -17,13 +17,15 @@ var REPOSITORY_URL_UPDATE   = 'https://extensions.gnome.org/update-info/';
 let _httpSession;
 
 function installExtension(uuid, invocation) {
-    let params = { uuid,
-                   shell_version: Config.PACKAGE_VERSION };
+    const params = {
+        uuid,
+        shell_version: Config.PACKAGE_VERSION,
+    };
 
     let message = Soup.form_request_new_from_hash('GET', REPOSITORY_URL_INFO, params);
 
     _httpSession.queue_message(message, () => {
-        if (message.status_code != Soup.KnownStatusCode.OK) {
+        if (message.status_code !== Soup.KnownStatusCode.OK) {
             Main.extensionManager.logExtensionError(uuid, 'downloading info: %d'.format(message.status_code));
             invocation.return_dbus_error('org.gnome.Shell.DownloadInfoError', message.status_code.toString());
             return;
@@ -49,7 +51,7 @@ function uninstallExtension(uuid) {
         return false;
 
     // Don't try to uninstall system extensions
-    if (extension.type != ExtensionUtils.ExtensionType.PER_USER)
+    if (extension.type !== ExtensionUtils.ExtensionType.PER_USER)
         return false;
 
     if (!Main.extensionManager.unloadExtension(extension))
@@ -69,7 +71,7 @@ function uninstallExtension(uuid) {
 }
 
 function gotExtensionZipFile(session, message, uuid, dir, callback, errback) {
-    if (message.status_code != Soup.KnownStatusCode.OK) {
+    if (message.status_code !== Soup.KnownStatusCode.OK) {
         errback('DownloadExtensionError', message.status_code);
         return;
     }
@@ -87,10 +89,10 @@ function gotExtensionZipFile(session, message, uuid, dir, callback, errback) {
     stream.output_stream.write_bytes(contents, null);
     stream.close(null);
     let [success, pid] = GLib.spawn_async(null,
-                                          ['unzip', '-uod', dir.get_path(), '--', file.get_path()],
-                                          null,
-                                          GLib.SpawnFlags.SEARCH_PATH | GLib.SpawnFlags.DO_NOT_REAP_CHILD,
-                                          null);
+        ['unzip', '-uod', dir.get_path(), '--', file.get_path()],
+        null,
+        GLib.SpawnFlags.SEARCH_PATH | GLib.SpawnFlags.DO_NOT_REAP_CHILD,
+        null);
 
     if (!success) {
         errback('ExtractExtensionError');
@@ -100,7 +102,7 @@ function gotExtensionZipFile(session, message, uuid, dir, callback, errback) {
     GLib.child_watch_add(GLib.PRIORITY_DEFAULT, pid, (o, status) => {
         GLib.spawn_close_pid(pid);
 
-        if (status != 0)
+        if (status !== 0)
             errback('ExtractExtensionError');
         else
             callback();
@@ -111,10 +113,10 @@ function downloadExtensionUpdate(uuid) {
     if (!Main.extensionManager.updatesSupported)
         return;
 
-    let dir = Gio.File.new_for_path(
+    const dir = Gio.File.new_for_path(
         GLib.build_filenamev([global.userdatadir, 'extension-updates', uuid]));
 
-    let params = { shell_version: Config.PACKAGE_VERSION };
+    const params = { shell_version: Config.PACKAGE_VERSION };
 
     let url = REPOSITORY_URL_DOWNLOAD.format(uuid);
     let message = Soup.form_request_new_from_hash('GET', url, params);
@@ -147,9 +149,9 @@ function checkForUpdates() {
     if (Object.keys(metadatas).length === 0)
         return; // nothing to update
 
-    let versionCheck = global.settings.get_boolean(
+    const versionCheck = global.settings.get_boolean(
         'disable-extension-version-validation');
-    let params = {
+    const params = {
         shell_version: Config.PACKAGE_VERSION,
         disable_version_validation: versionCheck.toString(),
     };
@@ -165,7 +167,7 @@ function checkForUpdates() {
     );
 
     _httpSession.queue_message(message, () => {
-        if (message.status_code != Soup.KnownStatusCode.OK)
+        if (message.status_code !== Soup.KnownStatusCode.OK)
             return;
 
         let operations = JSON.parse(message.response_body.data);
@@ -187,11 +189,11 @@ class InstallExtensionDialog extends ModalDialog.ModalDialog {
         this._invocation = invocation;
 
         this.setButtons([{
-            label: _("Cancel"),
+            label: _('Cancel'),
             action: this._onCancelButtonPressed.bind(this),
             key: Clutter.KEY_Escape,
         }, {
-            label: _("Install"),
+            label: _('Install'),
             action: this._onInstallButtonPressed.bind(this),
             default: true,
         }]);
@@ -210,13 +212,14 @@ class InstallExtensionDialog extends ModalDialog.ModalDialog {
     }
 
     _onInstallButtonPressed() {
-        let params = { shell_version: Config.PACKAGE_VERSION };
+        const params = { shell_version: Config.PACKAGE_VERSION };
 
         let url = REPOSITORY_URL_DOWNLOAD.format(this._uuid);
         let message = Soup.form_request_new_from_hash('GET', url, params);
 
+        const dir = Gio.File.new_for_path(GLib.build_filenamev(
+            [global.userdatadir, 'extensions', this._uuid]));
         let uuid = this._uuid;
-        let dir = Gio.File.new_for_path(GLib.build_filenamev([global.userdatadir, 'extensions', uuid]));
         let invocation = this._invocation;
         function errback(code, msg) {
             log('Error while installing %s: %s (%s)'.format(uuid, code, msg));
