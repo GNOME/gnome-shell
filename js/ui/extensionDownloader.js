@@ -25,9 +25,12 @@ function installExtension(uuid, invocation) {
     let message = Soup.form_request_new_from_hash('GET', REPOSITORY_URL_INFO, params);
 
     _httpSession.queue_message(message, () => {
-        if (message.status_code !== Soup.KnownStatusCode.OK) {
-            Main.extensionManager.logExtensionError(uuid, 'downloading info: %d'.format(message.status_code));
-            invocation.return_dbus_error('org.gnome.Shell.DownloadInfoError', message.status_code.toString());
+        const { statusCode } = message;
+        if (statusCode !== Soup.KnownStatusCode.OK) {
+            const msg = 'Unexpected response: %s'
+                .format(Soup.Status.get_phrase(statusCode));
+            Main.extensionManager.logExtensionError(uuid, msg);
+            invocation.return_dbus_error('org.gnome.Shell.ExtensionError', msg);
             return;
         }
 
@@ -35,8 +38,9 @@ function installExtension(uuid, invocation) {
         try {
             info = JSON.parse(message.response_body.data);
         } catch (e) {
-            Main.extensionManager.logExtensionError(uuid, 'parsing info: %s'.format(e.toString()));
-            invocation.return_dbus_error('org.gnome.Shell.ParseInfoError', e.toString());
+            Main.extensionManager.logExtensionError(uuid, e);
+            invocation.return_dbus_error(
+                'org.gnome.Shell.ExtensionError', e.message);
             return;
         }
 
@@ -72,7 +76,8 @@ function uninstallExtension(uuid) {
 
 function gotExtensionZipFile(session, message, uuid, dir, callback, errback) {
     if (message.status_code !== Soup.KnownStatusCode.OK) {
-        errback('DownloadExtensionError', message.status_code);
+        errback('Unexpected response: %s'
+            .format(Soup.Status.get_phrase(message.status_code)));
         return;
     }
 
@@ -80,7 +85,7 @@ function gotExtensionZipFile(session, message, uuid, dir, callback, errback) {
         if (!dir.query_exists(null))
             dir.make_directory_with_parents(null);
     } catch (e) {
-        errback('CreateExtensionDirectoryError', e);
+        errback(e.message);
         return;
     }
 
@@ -95,7 +100,7 @@ function gotExtensionZipFile(session, message, uuid, dir, callback, errback) {
         null);
 
     if (!success) {
-        errback('ExtractExtensionError');
+        errback('Failed to extract extension');
         return;
     }
 
@@ -103,7 +108,7 @@ function gotExtensionZipFile(session, message, uuid, dir, callback, errback) {
         GLib.spawn_close_pid(pid);
 
         if (status !== 0)
-            errback('ExtractExtensionError');
+            errback('Failed to extract extension');
         else
             callback();
     });
@@ -124,8 +129,8 @@ function downloadExtensionUpdate(uuid) {
     _httpSession.queue_message(message, session => {
         gotExtensionZipFile(session, message, uuid, dir, () => {
             Main.extensionManager.notifyExtensionUpdate(uuid);
-        }, (code, msg) => {
-            log('Error while downloading update for extension %s: %s (%s)'.format(uuid, code, msg));
+        }, msg => {
+            log('Error while downloading update for extension %s: %s'.format(uuid, msg));
         });
     });
 }
@@ -221,9 +226,9 @@ class InstallExtensionDialog extends ModalDialog.ModalDialog {
             [global.userdatadir, 'extensions', this._uuid]));
         let uuid = this._uuid;
         let invocation = this._invocation;
-        function errback(code, msg) {
-            log('Error while installing %s: %s (%s)'.format(uuid, code, msg));
-            invocation.return_dbus_error('org.gnome.Shell.%s'.format(code), msg || '');
+        function errback(msg) {
+            log('Error while installing %s: %s'.format(uuid, msg));
+            invocation.return_dbus_error('org.gnome.Shell.ExtensionError', msg);
         }
 
         function callback() {
@@ -234,7 +239,7 @@ class InstallExtensionDialog extends ModalDialog.ModalDialog {
                     throw new Error('Cannot add %s to enabled extensions gsettings key'.format(uuid));
             } catch (e) {
                 uninstallExtension(uuid);
-                errback('LoadExtensionError', e);
+                errback(e.message);
                 return;
             }
 
