@@ -1,10 +1,9 @@
 /* exported main */
 imports.gi.versions.Gtk = '3.0';
-imports.gi.versions.Soup = '2.4';
 
 const Format = imports.format;
 const Gettext = imports.gettext;
-const { Gio, GLib, GObject, Gtk, Pango, Soup, WebKit2: WebKit } = imports.gi;
+const { Gio, GLib, GObject, Gtk, Pango, WebKit2: WebKit } = imports.gi;
 
 const _ = Gettext.gettext;
 
@@ -22,6 +21,14 @@ const PortalHelperSecurityLevel = {
     SECURE: 1,
     INSECURE: 2,
 };
+
+const HTTP_URI_FLAGS =
+    GLib.UriFlags.HAS_PASSWORD |
+    GLib.UriFlags.ENCODED_PATH |
+    GLib.UriFlags.ENCODED_QUERY |
+    GLib.UriFlags.ENCODED_FRAGMENT |
+    GLib.UriFlags.SCHEME_NORMALIZE |
+    GLib.UriFlags.PARSE_RELAXED;
 
 const CONNECTIVITY_CHECK_HOST = 'nmcheck.gnome.org';
 const CONNECTIVITY_RECHECK_RATELIMIT_TIMEOUT = 30 * GLib.USEC_PER_SEC;
@@ -108,7 +115,7 @@ class PortalWindow extends Gtk.ApplicationWindow {
         } else {
             this._originalUrlWasGnome = false;
         }
-        this._uri = new Soup.URI(url);
+        this._uri = GLib.Uri.parse(url, HTTP_URI_FLAGS);
         this._everSeenRedirect = false;
         this._originalUrl = url;
         this._doneCallback = doneCallback;
@@ -186,7 +193,7 @@ class PortalWindow extends Gtk.ApplicationWindow {
 
     _onLoadFailedWithTlsErrors(view, failingURI, certificate, _errors) {
         this._headerBar.setSecurityIcon(PortalHelperSecurityLevel.INSECURE);
-        let uri = new Soup.URI(failingURI);
+        let uri = GLib.Uri.parse(failingURI, HTTP_URI_FLAGS);
         this._webContext.allow_tls_certificate_for_host(certificate, uri.get_host());
         this._webView.load_uri(failingURI);
         return true;
@@ -214,9 +221,9 @@ class PortalWindow extends Gtk.ApplicationWindow {
             return false;
 
         let request = decision.get_request();
-        let uri = new Soup.URI(request.get_uri());
+        const uri = GLib.Uri.parse(request.get_uri(), HTTP_URI_FLAGS);
 
-        if (!uri.host_equal(this._uri) && this._originalUrlWasGnome) {
+        if (uri.get_host() !== this._uri.get_host() && this._originalUrlWasGnome) {
             if (uri.get_host() == CONNECTIVITY_CHECK_HOST && this._everSeenRedirect) {
                 // Yay, we got to gnome!
                 decision.ignore();
