@@ -1,10 +1,9 @@
 #!/usr/bin/env bash
 
-srcdirs="js src subprojects/extensions-tool"
-globs=('*.js' '*.c')
+srcdirs="src subprojects/extensions-tool"
 
 # find source files that contain gettext keywords
-files=$(grep -lR ${globs[@]/#/--include=} '\(gettext\|[^I_)]_\)(' $srcdirs)
+files=$(grep -lR --include='*.c' '\(gettext\|[^I_)]_\)(' $srcdirs)
 
 # filter out excluded files
 if [ -f po/POTFILES.skip ]; then
