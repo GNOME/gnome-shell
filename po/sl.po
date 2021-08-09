@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2021-07-13 12:44+0000\n"
-"PO-Revision-Date: 2021-07-13 21:28+0200\n"
+"POT-Creation-Date: 2021-08-09 14:40+0000\n"
+"PO-Revision-Date: 2021-08-09 21:11+0200\n"
 "Last-Translator: Matej Urbančič <mateju@src.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: sl\n"
@@ -496,7 +496,7 @@ msgstr "Odpri spletno stran razširitev"
 #: js/ui/components/networkAgent.js:111 js/ui/components/polkitAgent.js:138
 #: js/ui/endSessionDialog.js:438 js/ui/extensionDownloader.js:190
 #: js/ui/shellMountOperation.js:376 js/ui/shellMountOperation.js:386
-#: js/ui/status/network.js:946 subprojects/extensions-app/js/main.js:183
+#: js/ui/status/network.js:963 subprojects/extensions-app/js/main.js:183
 msgid "Cancel"
 msgstr "Prekliči"
 
@@ -798,11 +798,11 @@ msgstr ""
 
 #. No support for non-modal system dialogs, so ignore the option
 #. let modal = options['modal'] || true;
-#: js/ui/accessDialog.js:39 js/ui/status/location.js:369
+#: js/ui/accessDialog.js:39 js/ui/status/location.js:417
 msgid "Deny Access"
 msgstr "Zavrni dostop"
 
-#: js/ui/accessDialog.js:40 js/ui/status/location.js:372
+#: js/ui/accessDialog.js:40 js/ui/status/location.js:420
 msgid "Grant Access"
 msgstr "Dovoli dostop"
 
@@ -982,7 +982,7 @@ msgstr "Ni obvestil"
 msgid "Do Not Disturb"
 msgstr "Ne moti"
 
-#: js/ui/calendar.js:969
+#: js/ui/calendar.js:971
 msgid "Clear"
 msgstr "Počisti"
 
@@ -1035,7 +1035,7 @@ msgid ""
 msgstr "Vzpostavitev povezave je mogoča tudi z gumbom »WPS« na usmerjevalniku."
 
 #: js/ui/components/networkAgent.js:105 js/ui/status/network.js:258
-#: js/ui/status/network.js:349 js/ui/status/network.js:949
+#: js/ui/status/network.js:349 js/ui/status/network.js:966
 msgid "Connect"
 msgstr "Poveži"
 
@@ -1100,7 +1100,7 @@ msgstr "Koda PIN"
 msgid "A password is required to connect to “%s”."
 msgstr "Za povezavo z omrežjem »%s« je zahtevano geslo."
 
-#: js/ui/components/networkAgent.js:668 js/ui/status/network.js:1723
+#: js/ui/components/networkAgent.js:668 js/ui/status/network.js:1774
 msgid "Network Manager"
 msgstr "Upravljalnik omrežij"
 
@@ -1135,7 +1135,7 @@ msgstr "Overitev je spodletela.. Poskusite znova."
 msgid "%s is now known as %s"
 msgstr "%s je sedaj znan kot v %s"
 
-#: js/ui/ctrlAltTab.js:21 js/ui/overviewControls.js:399
+#: js/ui/ctrlAltTab.js:21 js/ui/overviewControls.js:404
 msgid "Windows"
 msgstr "Okna"
 
@@ -1493,13 +1493,13 @@ msgid "Leave On"
 msgstr "Pusti omogočeno"
 
 #: js/ui/kbdA11yDialog.js:54 js/ui/status/bluetooth.js:156
-#: js/ui/status/network.js:1321
+#: js/ui/status/network.js:1362
 msgid "Turn On"
 msgstr "Omogoči"
 
 #: js/ui/kbdA11yDialog.js:62 js/ui/status/bluetooth.js:156
 #: js/ui/status/network.js:166 js/ui/status/network.js:350
-#: js/ui/status/network.js:1321 js/ui/status/network.js:1433
+#: js/ui/status/network.js:1362 js/ui/status/network.js:1474
 #: js/ui/status/nightLight.js:41 js/ui/status/rfkill.js:81
 #: js/ui/status/rfkill.js:110
 msgid "Turn Off"
@@ -1599,11 +1599,11 @@ msgstr "Neznan naslov"
 #. in the search entry when no search is
 #. active; it should not exceed ~30
 #. characters.
-#: js/ui/overviewControls.js:308
+#: js/ui/overviewControls.js:313
 msgid "Type to search"
 msgstr "Poišči …"
 
-#: js/ui/overviewControls.js:387
+#: js/ui/overviewControls.js:392
 msgid "Applications"
 msgstr "Programi"
 
@@ -1676,7 +1676,7 @@ msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "Sistem"
 
-#: js/ui/panel.js:778
+#: js/ui/panel.js:782
 msgid "Top Bar"
 msgstr "Vrhnja vrstica"
 
@@ -1707,11 +1707,11 @@ msgstr "Zakleniti je treba zaslon"
 #.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
-#: js/ui/screenShield.js:252 js/ui/screenShield.js:620
+#: js/ui/screenShield.js:252 js/ui/screenShield.js:622
 msgid "Unable to lock"
 msgstr "Zaklep ni mogoč"
 
-#: js/ui/screenShield.js:253 js/ui/screenShield.js:621
+#: js/ui/screenShield.js:253 js/ui/screenShield.js:623
 msgid "Lock was blocked by an application"
 msgstr "Zaklep je preprečil program"
 
@@ -1719,15 +1719,15 @@ msgstr "Zaklep je preprečil program"
 msgid "Screenshot taken"
 msgstr "Zaslonska slika je zajeta"
 
-#: js/ui/search.js:824
+#: js/ui/search.js:825
 msgid "Searching…"
 msgstr "Iskanje …"
 
-#: js/ui/search.js:826
+#: js/ui/search.js:827
 msgid "No results."
 msgstr "Ni najdenih zadetkov."
 
-#: js/ui/search.js:952
+#: js/ui/search.js:953
 #, javascript-format
 msgid "%d more"
 msgid_plural "%d more"
@@ -1748,15 +1748,15 @@ msgstr "Kopiraj"
 msgid "Paste"
 msgstr "Prilepi"
 
-#: js/ui/shellEntry.js:73
+#: js/ui/shellEntry.js:77
 msgid "Show Text"
 msgstr "Pokaži besedilo"
 
-#: js/ui/shellEntry.js:75
+#: js/ui/shellEntry.js:79
 msgid "Hide Text"
 msgstr "Skrij besedilo"
 
-#: js/ui/shellEntry.js:162
+#: js/ui/shellEntry.js:166
 msgid "Caps lock is on."
 msgstr "Vključena je tipka zaklepa velikosti črk."
 
@@ -1863,7 +1863,7 @@ msgstr "Veliko besedilo"
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: js/ui/status/bluetooth.js:49 js/ui/status/network.js:625
+#: js/ui/status/bluetooth.js:49 js/ui/status/network.js:637
 msgid "Bluetooth Settings"
 msgstr "Nastavitve za Bluetooth"
 
@@ -1917,41 +1917,41 @@ msgstr "Tipkovnica"
 msgid "Show Keyboard Layout"
 msgstr "Pokaži razporeditev tipkovnice"
 
-#: js/ui/status/location.js:65 js/ui/status/location.js:174
+#: js/ui/status/location.js:234 js/ui/status/location.js:267
 msgid "Location Enabled"
 msgstr "Določevanje mesta je omogočeno"
 
-#: js/ui/status/location.js:66 js/ui/status/location.js:175
+#: js/ui/status/location.js:235 js/ui/status/location.js:268
 msgid "Disable"
 msgstr "Onemogoči"
 
-#: js/ui/status/location.js:67
+#: js/ui/status/location.js:236
 msgid "Privacy Settings"
 msgstr "Nastavitve zasebnosti"
 
-#: js/ui/status/location.js:173
+#: js/ui/status/location.js:266
 msgid "Location In Use"
 msgstr "Določevanje mesta je v uporabi"
 
-#: js/ui/status/location.js:177
+#: js/ui/status/location.js:270
 msgid "Location Disabled"
 msgstr "Določevanje mesta je onemogočeno"
 
-#: js/ui/status/location.js:178
+#: js/ui/status/location.js:271
 msgid "Enable"
 msgstr "Omogoči"
 
-#: js/ui/status/location.js:350
+#: js/ui/status/location.js:398
 msgid "Allow location access"
 msgstr "Odobri dostop do trenutnega mesta"
 
 #. Translators: %s is an application name
-#: js/ui/status/location.js:352
+#: js/ui/status/location.js:400
 #, javascript-format
 msgid "The app %s wants to access your location"
 msgstr "Program %s zahteva dostop do podatkov trenutnega mesta"
 
-#: js/ui/status/location.js:362
+#: js/ui/status/location.js:410
 msgid "Location access can be changed at any time from the privacy settings."
 msgstr ""
 "Dostop do trenutnega mesta je mogoče spremeniti kadarkoli med nastavitvami "
@@ -1962,7 +1962,7 @@ msgid "<unknown>"
 msgstr "<neznano>"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:455 js/ui/status/network.js:1350
+#: js/ui/status/network.js:455 js/ui/status/network.js:1391
 #, javascript-format
 msgid "%s Off"
 msgstr "%s izklopljeno"
@@ -1988,7 +1988,7 @@ msgid "%s Disconnecting"
 msgstr "%s poteka prekinjanje povezave"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:473 js/ui/status/network.js:1342
+#: js/ui/status/network.js:473 js/ui/status/network.js:1383
 #, javascript-format
 msgid "%s Connecting"
 msgstr "%s poteka vzpostavljanje povezave"
@@ -2028,112 +2028,112 @@ msgid "Mobile Broadband Settings"
 msgstr "Nastavitve mobilnega širokopasovnega dostopa"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:592 js/ui/status/network.js:1347
+#: js/ui/status/network.js:604 js/ui/status/network.js:1388
 #, javascript-format
 msgid "%s Hardware Disabled"
 msgstr "%s strojno onemogočeno"
 
 #. Translators: this is for a network device that cannot be activated
 #. because it's disabled by rfkill (airplane mode); %s is a network identifier
-#: js/ui/status/network.js:596
+#: js/ui/status/network.js:608
 #, javascript-format
 msgid "%s Disabled"
 msgstr "%s onemogočeno"
 
-#: js/ui/status/network.js:637
+#: js/ui/status/network.js:649
 msgid "Connect to Internet"
 msgstr "Poveži na internet"
 
-#: js/ui/status/network.js:841
+#: js/ui/status/network.js:858
 msgid "Airplane Mode is On"
 msgstr "Omogoči način letala"
 
-#: js/ui/status/network.js:842
+#: js/ui/status/network.js:859
 msgid "Wi-Fi is disabled when airplane mode is on."
 msgstr "Naprava Wi-Fi je v načinu letala onemogočena."
 
-#: js/ui/status/network.js:843
+#: js/ui/status/network.js:860
 msgid "Turn Off Airplane Mode"
 msgstr "Onemogoči način letala"
 
-#: js/ui/status/network.js:852
+#: js/ui/status/network.js:869
 msgid "Wi-Fi is Off"
 msgstr "Wi-Fi je onemogočen"
 
-#: js/ui/status/network.js:853
+#: js/ui/status/network.js:870
 msgid "Wi-Fi needs to be turned on in order to connect to a network."
 msgstr "Napravo Wi-Fi je treba pred povezovanjem najprej omogočiti."
 
-#: js/ui/status/network.js:854
+#: js/ui/status/network.js:871
 msgid "Turn On Wi-Fi"
 msgstr "Omogoči Wi-Fi"
 
-#: js/ui/status/network.js:879
+#: js/ui/status/network.js:896
 msgid "Wi-Fi Networks"
 msgstr "Omrežja Wi-Fi"
 
-#: js/ui/status/network.js:881
+#: js/ui/status/network.js:898
 msgid "Select a network"
 msgstr "Izbor omrežja"
 
-#: js/ui/status/network.js:913
+#: js/ui/status/network.js:930
 msgid "No Networks"
 msgstr "Ni zaznanih omrežij"
 
-#: js/ui/status/network.js:934 js/ui/status/rfkill.js:108
+#: js/ui/status/network.js:951 js/ui/status/rfkill.js:108
 msgid "Use hardware switch to turn off"
 msgstr "Uporabite strojni gumb za izklop"
 
-#: js/ui/status/network.js:1211
+#: js/ui/status/network.js:1252
 msgid "Select Network"
 msgstr "Izbor omrežja"
 
-#: js/ui/status/network.js:1217
+#: js/ui/status/network.js:1258
 msgid "Wi-Fi Settings"
 msgstr "Nastavitve Wi-Fi"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1338
+#: js/ui/status/network.js:1379
 #, javascript-format
 msgid "%s Hotspot Active"
 msgstr "%s vroča točka je dejavna"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1353
+#: js/ui/status/network.js:1394
 #, javascript-format
 msgid "%s Not Connected"
 msgstr "%s brez povezave"
 
-#: js/ui/status/network.js:1450
+#: js/ui/status/network.js:1491
 msgid "connecting…"
 msgstr "vzpostavljanje povezave …"
 
 #. Translators: this is for network connections that require some kind of key or password
-#: js/ui/status/network.js:1453
+#: js/ui/status/network.js:1494
 msgid "authentication required"
 msgstr "zahtevana je overitev"
 
-#: js/ui/status/network.js:1455
+#: js/ui/status/network.js:1496
 msgid "connection failed"
 msgstr "povezovanje je spodletelo"
 
-#: js/ui/status/network.js:1506
+#: js/ui/status/network.js:1547
 msgid "VPN Settings"
 msgstr "Nastavitve VPN"
 
-#: js/ui/status/network.js:1523
+#: js/ui/status/network.js:1564
 msgid "VPN"
 msgstr "VPN"
 
-#: js/ui/status/network.js:1533
+#: js/ui/status/network.js:1574
 msgid "VPN Off"
 msgstr "Onemogočen VPN"
 
-#: js/ui/status/network.js:1594 js/ui/status/rfkill.js:84
+#: js/ui/status/network.js:1635 js/ui/status/rfkill.js:84
 msgid "Network Settings"
 msgstr "Omrežne nastavitve"
 
-#: js/ui/status/network.js:1622
+#: js/ui/status/network.js:1663
 #, javascript-format
 msgid "%s Wired Connection"
 msgid_plural "%s Wired Connections"
@@ -2142,7 +2142,7 @@ msgstr[1] "%s žična povezava"
 msgstr[2] "%s žični povezavi"
 msgstr[3] "%s žične povezave"
 
-#: js/ui/status/network.js:1626
+#: js/ui/status/network.js:1667
 #, javascript-format
 msgid "%s Wi-Fi Connection"
 msgid_plural "%s Wi-Fi Connections"
@@ -2151,7 +2151,7 @@ msgstr[1] "%s povezava Wi-Fi"
 msgstr[2] "%s povezavi Wi-Fi"
 msgstr[3] "%s povezave Wi-Fi"
 
-#: js/ui/status/network.js:1630
+#: js/ui/status/network.js:1671
 #, javascript-format
 msgid "%s Modem Connection"
 msgid_plural "%s Modem Connections"
@@ -2160,11 +2160,11 @@ msgstr[1] "%s modemska povezava"
 msgstr[2] "%s modemski povezavi"
 msgstr[3] "%s modemske povezave"
 
-#: js/ui/status/network.js:1764
+#: js/ui/status/network.js:1815
 msgid "Connection failed"
 msgstr "Povezovanje je spodletelo"
 
-#: js/ui/status/network.js:1765
+#: js/ui/status/network.js:1816
 msgid "Activation of network connection failed"
 msgstr "Omogočanje omrežne povezave je spodletelo."
 
@@ -2184,7 +2184,7 @@ msgstr "Nadaljuj"
 msgid "Disable Until Tomorrow"
 msgstr "Onemogoči do jutri"
 
-#: js/ui/status/power.js:51
+#: js/ui/status/power.js:51 js/ui/status/powerProfiles.js:57
 msgid "Power Settings"
 msgstr "Upravljanje napajanja"
 
@@ -2219,6 +2219,21 @@ msgstr "%d∶%02d do polnosti (%d %%)"
 #, javascript-format
 msgid "%d %%"
 msgstr "%d %%"
+
+#: js/ui/status/powerProfiles.js:19
+msgctxt "Power profile"
+msgid "Performance"
+msgstr "Zmogljivo"
+
+#: js/ui/status/powerProfiles.js:20
+msgctxt "Power profile"
+msgid "Balanced"
+msgstr "Uravnoteženo"
+
+#: js/ui/status/powerProfiles.js:21
+msgctxt "Power profile"
+msgid "Power Saver"
+msgstr "Varčno"
 
 #: js/ui/status/remoteAccess.js:38
 msgid "Screen is Being Shared"
@@ -2481,19 +2496,19 @@ msgstr "Zapri"
 msgid "Evolution Calendar"
 msgstr "Koledar Evolution"
 
-#: src/main.c:418 subprojects/extensions-tool/src/main.c:317
+#: src/main.c:419 subprojects/extensions-tool/src/main.c:317
 msgid "Print version"
 msgstr "Izpiši različico"
 
-#: src/main.c:424
+#: src/main.c:425
 msgid "Mode used by GDM for login screen"
 msgstr "Način, uporabljen v upravljalniku GDM kot prijavni zaslon"
 
-#: src/main.c:430
+#: src/main.c:431
 msgid "Use a specific mode, e.g. “gdm” for login screen"
 msgstr "Uporabi poseben način, na primer »gdm« za prijavni zaslon"
 
-#: src/main.c:436
+#: src/main.c:437
 msgid "List possible modes"
 msgstr "Seznam mogočih načinov"
 
