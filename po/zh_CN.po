@@ -23,9 +23,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2021-07-22 06:15+0000\n"
-"PO-Revision-Date: 2021-07-22 18:47+0800\n"
-"Last-Translator: mars <gzhqyz@gmail.com>\n"
+"POT-Creation-Date: 2021-08-09 14:06+0000\n"
+"PO-Revision-Date: 2021-08-09 15:47-0400\n"
+"Last-Translator: Boyuan Yang <073plan@gmail.com>\n"
 "Language-Team: Chinese - China <i18n-zh@googlegroups.com>\n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
@@ -328,7 +328,7 @@ msgstr "用于聚焦到活动通知的快捷键。"
 
 #: data/org.gnome.shell.gschema.xml.in:207
 msgid "Switch to application 1"
-msgstr "切换到应用程序 11"
+msgstr "切换到应用程序 1"
 
 #: data/org.gnome.shell.gschema.xml.in:211
 msgid "Switch to application 2"
@@ -1609,7 +1609,7 @@ msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "系统"
 
-#: js/ui/panel.js:778
+#: js/ui/panel.js:782
 msgid "Top Bar"
 msgstr "顶栏"
 
@@ -1678,15 +1678,15 @@ msgstr "复制"
 msgid "Paste"
 msgstr "粘贴"
 
-#: js/ui/shellEntry.js:73
+#: js/ui/shellEntry.js:77
 msgid "Show Text"
 msgstr "显示文本"
 
-#: js/ui/shellEntry.js:75
+#: js/ui/shellEntry.js:79
 msgid "Hide Text"
 msgstr "隐藏文本"
 
-#: js/ui/shellEntry.js:162
+#: js/ui/shellEntry.js:166
 msgid "Caps lock is on."
 msgstr "大写锁定已开启。"
 
@@ -2099,7 +2099,7 @@ msgstr "继续使用"
 msgid "Disable Until Tomorrow"
 msgstr "明天前禁用"
 
-#: js/ui/status/power.js:51
+#: js/ui/status/power.js:51 js/ui/status/powerProfiles.js:57
 msgid "Power Settings"
 msgstr "电源设置"
 
@@ -2134,6 +2134,21 @@ msgstr "距充满还剩 %d:%02d (%d%%)"
 #, javascript-format
 msgid "%d %%"
 msgstr "%d %%"
+
+#: js/ui/status/powerProfiles.js:19
+msgctxt "Power profile"
+msgid "Performance"
+msgstr "性能"
+
+#: js/ui/status/powerProfiles.js:20
+msgctxt "Power profile"
+msgid "Balanced"
+msgstr "平衡"
+
+#: js/ui/status/powerProfiles.js:21
+msgctxt "Power profile"
+msgid "Power Saver"
+msgstr "节电"
 
 #: js/ui/status/remoteAccess.js:38
 msgid "Screen is Being Shared"
