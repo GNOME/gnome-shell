@@ -543,7 +543,11 @@ var NMDeviceModem = class extends NMConnectionDevice {
     constructor(client, device) {
         super(client, device);
 
-        this.item.menu.addSettingsAction(_("Mobile Broadband Settings"), 'gnome-network-panel.desktop');
+        const settingsPanel = this._useWwanPanel()
+            ? 'gnome-wwan-panel.desktop'
+            : 'gnome-network-panel.desktop';
+
+        this.item.menu.addSettingsAction(_('Mobile Broadband Settings'), settingsPanel);
 
         this._mobileDevice = null;
 
@@ -573,8 +577,19 @@ var NMDeviceModem = class extends NMConnectionDevice {
         return NMConnectionCategory.WWAN;
     }
 
+    _useWwanPanel() {
+        // Currently, wwan panel doesn't support CDMA_EVDO modems
+        const supportedCaps =
+            NM.DeviceModemCapabilities.GSM_UMTS |
+            NM.DeviceModemCapabilities.LTE;
+        return this._device.current_capabilities & supportedCaps;
+    }
+
     _autoConnect() {
-        launchSettingsPanel('network', 'connect-3g', this._device.get_path());
+        if (this._useWwanPanel())
+            launchSettingsPanel('wwan', 'show-device', this._device.udi);
+        else
+            launchSettingsPanel('network', 'connect-3g', this._device.get_path());
     }
 
     _sessionUpdated() {
