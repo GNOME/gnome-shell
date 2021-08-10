@@ -22,7 +22,6 @@ const UPDATE_CHECK_TIMEOUT = 24 * 60 * 60; // 1 day in seconds
 var ExtensionManager = class {
     constructor() {
         this._initialized = false;
-        this._enabled = false;
         this._updateNotified = false;
 
         this._extensions = new Map();
@@ -589,9 +588,6 @@ var ExtensionManager = class {
     }
 
     _enableAllExtensions() {
-        if (this._enabled)
-            return;
-
         if (!this._initialized) {
             this._loadExtensions();
             this._initialized = true;
@@ -600,20 +596,14 @@ var ExtensionManager = class {
                 this._callExtensionEnable(uuid);
             });
         }
-        this._enabled = true;
     }
 
     _disableAllExtensions() {
-        if (!this._enabled)
-            return;
-
         if (this._initialized) {
             this._extensionOrder.slice().reverse().forEach(uuid => {
                 this._callExtensionDisable(uuid);
             });
         }
-
-        this._enabled = false;
     }
 
     _sessionUpdated() {
