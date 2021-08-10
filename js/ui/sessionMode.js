@@ -42,6 +42,7 @@ const _modes = {
     },
 
     'gdm': {
+        allowExtensions: true,
         hasNotifications: true,
         isGreeter: true,
         isPrimary: true,
@@ -58,6 +59,7 @@ const _modes = {
     },
 
     'unlock-dialog': {
+        allowExtensions: true,
         isLocked: true,
         unlockDialog: undefined,
         components: ['polkitAgent', 'telepathyClient'],

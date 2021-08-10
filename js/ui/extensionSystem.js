@@ -74,7 +74,7 @@ var ExtensionManager = class {
     }
 
     _extensionSupportsSessionMode(uuid) {
-        let extension = this.lookup(uuid);
+        const extension = this.lookup(uuid);
 
         if (!extension)
             return false;
