@@ -24,8 +24,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2021-08-02 16:37+0000\n"
-"PO-Revision-Date: 2021-08-04 20:19-0300\n"
+"POT-Creation-Date: 2021-08-09 14:06+0000\n"
+"PO-Revision-Date: 2021-08-10 09:40-0300\n"
 "Last-Translator: Rafael Fontenelle <rafaelff@gnome.org>\n"
 "Language-Team: Brazilian Portuguese <gnome-pt_br-list@gnome.org>\n"
 "Language: pt_BR\n"
@@ -2220,16 +2220,20 @@ msgid "%d %%"
 msgstr "%d %%"
 
 #: js/ui/status/powerProfiles.js:19
-#| msgid "Airplane Mode"
-msgid "Performance Mode"
-msgstr "Modo desempenho"
+#| msgid "Performance Mode"
+msgctxt "Power profile"
+msgid "Performance"
+msgstr "Desempenho"
 
 #: js/ui/status/powerProfiles.js:20
-msgid "Balanced Power"
-msgstr "Energia balanceada"
+#| msgid "Balanced Power"
+msgctxt "Power profile"
+msgid "Balanced"
+msgstr "Balanceado"
 
 #: js/ui/status/powerProfiles.js:21
-#| msgid "Power Settings"
+#| msgid "Power Saver"
+msgctxt "Power profile"
 msgid "Power Saver"
 msgstr "Economia de energia"
 
