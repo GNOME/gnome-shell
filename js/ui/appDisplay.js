@@ -3430,16 +3430,6 @@ var AppIconMenu = class AppIconMenu extends PopupMenu.PopupMenu {
 
         this.actor.add_style_class_name('app-well-menu');
 
-        // Chain our visibility and lifecycle to that of the source
-        this._sourceMappedId = source.connect('notify::mapped', () => {
-            if (!source.mapped)
-                this.close();
-        });
-        source.connect('destroy', () => {
-            source.disconnect(this._sourceMappedId);
-            this.destroy();
-        });
-
         Main.uiGroup.add_actor(this.actor);
     }
 
