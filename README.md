@@ -1,5 +1,5 @@
 # GNOME Shell
-GNOME Shell provides core user interface functions for the GNOME 3 desktop,
+GNOME Shell provides core user interface functions for the GNOME desktop,
 like switching to windows and launching applications. GNOME Shell takes
 advantage of the capabilities of modern graphics hardware and introduces
 innovative user interface concepts to provide a visually attractive and
