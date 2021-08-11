@@ -2,14 +2,17 @@
 /* exported AppMenu */
 const { Clutter, Gio, GLib, Meta, Shell, St } = imports.gi;
 
-const PopupMenu = imports.ui.popupMenu;
+const AppFavorites = imports.ui.appFavorites;
 const Main = imports.ui.main;
+const ParentalControlsManager = imports.misc.parentalControlsManager;
+const PopupMenu = imports.ui.popupMenu;
 
 var AppMenu = class AppMenu extends PopupMenu.PopupMenu {
     /**
      * @param {Clutter.Actor} sourceActor - actor the menu is attached to
      * @param {St.Side} side - arrow side
      * @param {object} params - options
+     * @param {bool} params.favoritesSection - show items to add/remove favorite
      * @param {bool} params.showSingleWindow - show window section for a single window
      */
     constructor(sourceActor, side = St.Side.TOP, params = {}) {
@@ -25,11 +28,15 @@ var AppMenu = class AppMenu extends PopupMenu.PopupMenu {
         this.actor.add_style_class_name('app-menu');
 
         const {
+            favoritesSection = false,
             showSingleWindows = false,
         } = params;
 
         this._app = null;
         this._appSystem = Shell.AppSystem.get_default();
+        this._parentalControlsManager = ParentalControlsManager.getDefault();
+        this._appFavorites = AppFavorites.getAppFavorites();
+        this._enableFavorites = favoritesSection;
         this._showSingleWindows = showSingleWindows;
 
         this._windowsChangedId = 0;
@@ -54,6 +61,16 @@ var AppMenu = class AppMenu extends PopupMenu.PopupMenu {
 
         this._actionSection = new PopupMenu.PopupMenuSection();
         this.addMenuItem(this._actionSection);
+
+        this.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
+
+        this._toggleFavoriteItem = this.addAction('', () => {
+            const appId = this._app.get_id();
+            if (this._appFavorites.isFavorite(appId))
+                this._appFavorites.removeFavorite(appId);
+            else
+                this._appFavorites.addFavorite(appId);
+        });
 
         this.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
 
@@ -83,8 +100,21 @@ var AppMenu = class AppMenu extends PopupMenu.PopupMenu {
             this._appSystem,
             this._appSystem.connect('app-state-changed',
                 this._onAppStateChanged.bind(this)),
+        ], [
+            this._parentalControlsManager,
+            this._parentalControlsManager.connect('app-filter-changed',
+                () => this._updateFavoriteItem()),
+        ], [
+            this._appFavorites,
+            this._appFavorites.connect('changed',
+                () => this._updateFavoriteItem()),
+        ], [
+            global.settings,
+            global.settings.connect('writable-changed::favorite-apps',
+                () => this._updateFavoriteItem()),
         ]);
         this._updateQuitItem();
+        this._updateFavoriteItem();
         this._updateDetailsVisibility();
     }
 
@@ -104,6 +134,24 @@ var AppMenu = class AppMenu extends PopupMenu.PopupMenu {
         const actions = this._app?.appInfo?.list_actions() ?? [];
         this._newWindowItem.visible =
             this._app?.can_open_new_window() && !actions.includes('new-window');
+    }
+
+    _updateFavoriteItem() {
+        const appInfo = this._app?.app_info;
+        const canFavorite = appInfo &&
+            this._enableFavorites &&
+            global.settings.is_writable('favorite-apps') &&
+            this._parentalControlsManager.shouldShowApp(appInfo);
+
+        this._toggleFavoriteItem.visible = canFavorite;
+
+        if (!canFavorite)
+            return;
+
+        const { id } = this._app;
+        this._toggleFavoriteItem.label.text = this._appFavorites.isFavorite(id)
+            ? _('Remove from Favorites')
+            : _('Add to Favorites');
     }
 
     _updateDetailsVisibility() {
@@ -173,6 +221,7 @@ var AppMenu = class AppMenu extends PopupMenu.PopupMenu {
 
         this._updateQuitItem();
         this._updateNewWindowItem();
+        this._updateFavoriteItem();
     }
 
     _queueUpdateWindowsSection() {
