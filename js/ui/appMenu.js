@@ -57,8 +57,6 @@ var AppMenu = class AppMenu extends PopupMenu.PopupMenu {
             Main.overview.hide();
         });
 
-        this.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
-
         this._actionSection = new PopupMenu.PopupMenuSection();
         this.addMenuItem(this._actionSection);
 
