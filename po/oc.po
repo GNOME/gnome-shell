@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master fr\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2021-07-12 18:58+0000\n"
-"PO-Revision-Date: 2021-07-31 15:40+0200\n"
+"POT-Creation-Date: 2021-08-02 15:23+0000\n"
+"PO-Revision-Date: 2021-08-11 17:53+0200\n"
 "Last-Translator: Quentin PAGÈS\n"
 "Language-Team: Tot En Òc\n"
 "Language: oc\n"
@@ -1555,11 +1555,11 @@ msgstr "Afichar la font"
 msgid "Web Page"
 msgstr "Pagina Web"
 
-#: js/ui/main.js:294
+#: js/ui/main.js:300
 msgid "Logged in as a privileged user"
 msgstr "Connectat coma utilizaire amb privilègis"
 
-#: js/ui/main.js:295
+#: js/ui/main.js:301
 msgid ""
 "Running a session as a privileged user should be avoided for security "
 "reasons. If possible, you should log in as a normal user."
@@ -1568,11 +1568,11 @@ msgstr ""
 "per de rasons de seguretat. Vos caldriá, se es possible, de vos connectar "
 "coma utilizaire normal."
 
-#: js/ui/main.js:344
+#: js/ui/main.js:350
 msgid "Screen Lock disabled"
 msgstr "Verrolhatge d’ecran desactivat"
 
-#: js/ui/main.js:345
+#: js/ui/main.js:351
 msgid "Screen Locking requires the GNOME display manager."
 msgstr "Lo verrolhatge d’ecran requerís lo gestionari d’afichatge GNOME."
 
@@ -2556,6 +2556,9 @@ msgstr "Levar"
 #: subprojects/extensions-app/js/main.js:216
 msgid "translator-credits"
 msgstr ""
+"Launchpad Contributions:\n"
+"Cédric VALMARY (Tot en òc) https://launchpad.net/~cvalmary\n"
+"Quentin PAGÈS https://launchpad.net/~kwentin"
 
 #: subprojects/extensions-app/js/main.js:344
 #, javascript-format
