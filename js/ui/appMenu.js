@@ -38,6 +38,7 @@ var AppMenu = class AppMenu extends PopupMenu.PopupMenu {
         this.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
 
         this._newWindowItem = this.addAction(_('New Window'), () => {
+            this._animateLaunch();
             this._app.open_new_window(-1);
             Main.overview.hide();
         });
@@ -77,6 +78,11 @@ var AppMenu = class AppMenu extends PopupMenu.PopupMenu {
     _updateDetailsVisibility() {
         const sw = this._appSystem.lookup_app('org.gnome.Software.desktop');
         this._detailsItem.visible = sw !== null;
+    }
+
+    _animateLaunch() {
+        if (this.sourceActor.animateLaunch)
+            this.sourceActor.animateLaunch();
     }
 
     /** */
@@ -126,6 +132,9 @@ var AppMenu = class AppMenu extends PopupMenu.PopupMenu {
         actions.forEach(action => {
             const label = appInfo.get_action_name(action);
             this._actionSection.addAction(label, event => {
+                if (action === 'new-window')
+                    this._animateLaunch();
+
                 this._app.launch_action(action, event.get_time(), -1);
                 Main.overview.hide();
             });
