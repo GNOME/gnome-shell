@@ -1,10 +1,11 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported Panel */
 
-const { Atk, Clutter, Gio, GLib, GObject, Meta, Shell, St } = imports.gi;
+const { Atk, Clutter, GLib, GObject, Meta, Shell, St } = imports.gi;
 const Cairo = imports.cairo;
 
 const Animation = imports.ui.animation;
+const { AppMenu } = imports.ui.appMenu;
 const Config = imports.misc.config;
 const CtrlAltTab = imports.ui.ctrlAltTab;
 const DND = imports.ui.dnd;
@@ -17,131 +18,6 @@ var PANEL_ICON_SIZE = 16;
 var APP_MENU_ICON_MARGIN = 0;
 
 var BUTTON_DND_ACTIVATION_TIMEOUT = 250;
-
-class AppMenu extends PopupMenu.PopupMenu {
-    constructor(sourceActor) {
-        super(sourceActor, 0.5, St.Side.TOP);
-
-        this.actor.add_style_class_name('app-menu');
-
-        this._app = null;
-        this._appSystem = Shell.AppSystem.get_default();
-
-        this._windowsChangedId = 0;
-
-        /* Translators: This is the heading of a list of open windows */
-        this._openWindowsHeader = new PopupMenu.PopupSeparatorMenuItem(_('Open Windows'));
-        this.addMenuItem(this._openWindowsHeader);
-
-        this._windowSection = new PopupMenu.PopupMenuSection();
-        this.addMenuItem(this._windowSection);
-
-        this.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
-
-        this._newWindowItem = this.addAction(_("New Window"), () => {
-            this._app.open_new_window(-1);
-        });
-
-        this.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
-
-        this._actionSection = new PopupMenu.PopupMenuSection();
-        this.addMenuItem(this._actionSection);
-
-        this.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
-
-        this._detailsItem = this.addAction(_('Show Details'), async () => {
-            let id = this._app.get_id();
-            let args = GLib.Variant.new('(ss)', [id, '']);
-            const bus = await Gio.DBus.get(Gio.BusType.SESSION, null);
-            bus.call(
-                'org.gnome.Software',
-                '/org/gnome/Software',
-                'org.gtk.Actions', 'Activate',
-                new GLib.Variant('(sava{sv})', ['details', [args], null]),
-                null, 0, -1, null);
-        });
-
-        this.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
-
-        this.addAction(_("Quit"), () => {
-            this._app.request_quit();
-        });
-
-        this._appSystem.connect('installed-changed', () => {
-            this._updateDetailsVisibility();
-        });
-        this._updateDetailsVisibility();
-    }
-
-    _updateDetailsVisibility() {
-        let sw = this._appSystem.lookup_app('org.gnome.Software.desktop');
-        this._detailsItem.visible = sw != null;
-    }
-
-    isEmpty() {
-        if (!this._app)
-            return true;
-        return super.isEmpty();
-    }
-
-    setApp(app) {
-        if (this._app == app)
-            return;
-
-        if (this._windowsChangedId)
-            this._app.disconnect(this._windowsChangedId);
-        this._windowsChangedId = 0;
-
-        this._app = app;
-
-        if (app) {
-            this._windowsChangedId = app.connect('windows-changed', () => {
-                this._updateWindowsSection();
-            });
-        }
-
-        this._updateWindowsSection();
-
-        const appInfo = app?.app_info;
-        const actions = appInfo?.list_actions() ?? [];
-
-        this._actionSection.removeAll();
-        actions.forEach(action => {
-            let label = appInfo.get_action_name(action);
-            this._actionSection.addAction(label, event => {
-                this._app.launch_action(action, event.get_time(), -1);
-            });
-        });
-
-        this._newWindowItem.visible =
-            app && app.can_open_new_window() && !actions.includes('new-window');
-    }
-
-    _updateWindowsSection() {
-        this._windowSection.removeAll();
-        this._openWindowsHeader.hide();
-
-        if (!this._app)
-            return;
-
-        let windows = this._app.get_windows();
-        if (windows.length < 2)
-            return;
-
-        this._openWindowsHeader.show();
-
-        windows.forEach(window => {
-            let title = window.title || this._app.get_name();
-            let item = this._windowSection.addAction(title, event => {
-                Main.activateWindow(window, event.get_time());
-            });
-            let id = window.connect('notify::title', () => {
-                item.label.text = window.title || this._app.get_name();
-            });
-            item.connect('destroy', () => window.disconnect(id));
-        });
-    }
-}
 
 /**
  * AppMenuButton:

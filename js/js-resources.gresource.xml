@@ -40,6 +40,7 @@
     <file>ui/animation.js</file>
     <file>ui/appDisplay.js</file>
     <file>ui/appFavorites.js</file>
+    <file>ui/appMenu.js</file>
     <file>ui/audioDeviceSelection.js</file>
     <file>ui/backgroundMenu.js</file>
     <file>ui/background.js</file>

@@ -15,6 +15,7 @@ js/portalHelper/main.js
 js/ui/accessDialog.js
 js/ui/appDisplay.js
 js/ui/appFavorites.js
+js/ui/appMenu.js
 js/ui/audioDeviceSelection.js
 js/ui/backgroundMenu.js
 js/ui/calendar.js
