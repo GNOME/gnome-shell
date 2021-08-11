@@ -1,6 +1,6 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported AppMenu */
-const { Gio, GLib, Meta, Shell, St } = imports.gi;
+const { Clutter, Gio, GLib, Meta, Shell, St } = imports.gi;
 
 const PopupMenu = imports.ui.popupMenu;
 const Main = imports.ui.main;
@@ -8,9 +8,17 @@ const Main = imports.ui.main;
 var AppMenu = class AppMenu extends PopupMenu.PopupMenu {
     /**
      * @param {Clutter.Actor} sourceActor - actor the menu is attached to
+     * @param {St.Side} side - arrow side
      */
-    constructor(sourceActor) {
-        super(sourceActor, 0.5, St.Side.TOP);
+    constructor(sourceActor, side = St.Side.TOP) {
+        if (Clutter.get_default_text_direction() === Clutter.TextDirection.RTL) {
+            if (side === St.Side.LEFT)
+                side = St.Side.RIGHT;
+            else if (side === St.Side.RIGHT)
+                side = St.Side.LEFT;
+        }
+
+        super(sourceActor, 0.5, side);
 
         this.actor.add_style_class_name('app-menu');
 
