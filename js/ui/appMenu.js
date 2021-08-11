@@ -60,6 +60,12 @@ var AppMenu = class AppMenu extends PopupMenu.PopupMenu {
         this._actionSection = new PopupMenu.PopupMenuSection();
         this.addMenuItem(this._actionSection);
 
+        this._onGpuMenuItem = this.addAction('', () => {
+            this._animateLaunch();
+            this._app.launch(0, -1, this._getNonDefaultLaunchGpu());
+            Main.overview.hide();
+        });
+
         this.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
 
         this._toggleFavoriteItem = this.addAction('', () => {
@@ -110,9 +116,14 @@ var AppMenu = class AppMenu extends PopupMenu.PopupMenu {
             global.settings,
             global.settings.connect('writable-changed::favorite-apps',
                 () => this._updateFavoriteItem()),
+        ], [
+            global,
+            global.connect('notify::switcheroo-control',
+                () => this._updateGpuItem()),
         ]);
         this._updateQuitItem();
         this._updateFavoriteItem();
+        this._updateGpuItem();
         this._updateDetailsVisibility();
     }
 
@@ -122,6 +133,7 @@ var AppMenu = class AppMenu extends PopupMenu.PopupMenu {
 
         this._updateQuitItem();
         this._updateNewWindowItem();
+        this._updateGpuItem();
     }
 
     _updateQuitItem() {
@@ -152,6 +164,24 @@ var AppMenu = class AppMenu extends PopupMenu.PopupMenu {
             : _('Add to Favorites');
     }
 
+    _updateGpuItem() {
+        const proxy = global.get_switcheroo_control();
+        const hasDualGpu = proxy?.get_cached_property('HasDualGpu')?.unpack();
+
+        const showItem =
+            this._app?.state === Shell.AppState.STOPPED && hasDualGpu;
+
+        this._onGpuMenuItem.visible = showItem;
+
+        if (!showItem)
+            return;
+
+        const launchGpu = this._getNonDefaultLaunchGpu();
+        this._onGpuMenuItem.label.text = launchGpu === Shell.AppLaunchGpu.DEFAULT
+            ? _('Launch using Integrated Graphics Card')
+            : _('Launch using Discrete Graphics Card');
+    }
+
     _updateDetailsVisibility() {
         const sw = this._appSystem.lookup_app('org.gnome.Software.desktop');
         this._detailsItem.visible = sw !== null;
@@ -160,6 +190,12 @@ var AppMenu = class AppMenu extends PopupMenu.PopupMenu {
     _animateLaunch() {
         if (this.sourceActor.animateLaunch)
             this.sourceActor.animateLaunch();
+    }
+
+    _getNonDefaultLaunchGpu() {
+        return this._app.appInfo.get_boolean('PrefersNonDefaultGPU')
+            ? Shell.AppLaunchGpu.DEFAULT
+            : Shell.AppLaunchGpu.DISCRETE;
     }
 
     /** */
@@ -220,6 +256,7 @@ var AppMenu = class AppMenu extends PopupMenu.PopupMenu {
         this._updateQuitItem();
         this._updateNewWindowItem();
         this._updateFavoriteItem();
+        this._updateGpuItem();
     }
 
     _queueUpdateWindowsSection() {
