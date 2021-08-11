@@ -55,14 +55,29 @@ var AppMenu = class AppMenu extends PopupMenu.PopupMenu {
 
         this.addAction(_('Quit'), () => this._app.request_quit());
 
-        this._appSystem.connect('installed-changed',
-            () => this._updateDetailsVisibility());
+        this._signals = [];
+        this._signals.push([
+            this._appSystem,
+            this._appSystem.connect('installed-changed',
+                () => this._updateDetailsVisibility()),
+        ]);
         this._updateDetailsVisibility();
     }
 
     _updateDetailsVisibility() {
         const sw = this._appSystem.lookup_app('org.gnome.Software.desktop');
         this._detailsItem.visible = sw !== null;
+    }
+
+    /** */
+    destroy() {
+        super.destroy();
+
+        for (const [obj, id] of this._signals)
+            obj.disconnect(id);
+        this._signals = [];
+
+        this.setApp(null);
     }
 
     /**
