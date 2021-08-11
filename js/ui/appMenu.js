@@ -39,6 +39,7 @@ var AppMenu = class AppMenu extends PopupMenu.PopupMenu {
 
         this._newWindowItem = this.addAction(_('New Window'), () => {
             this._app.open_new_window(-1);
+            Main.overview.hide();
         });
 
         this.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
@@ -126,6 +127,7 @@ var AppMenu = class AppMenu extends PopupMenu.PopupMenu {
             const label = appInfo.get_action_name(action);
             this._actionSection.addAction(label, event => {
                 this._app.launch_action(action, event.get_time(), -1);
+                Main.overview.hide();
             });
         });
 
