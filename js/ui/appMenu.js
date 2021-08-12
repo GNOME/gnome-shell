@@ -93,10 +93,17 @@ var AppMenu = class AppMenu extends PopupMenu.PopupMenu {
             return;
 
         this._updateQuitItem();
+        this._updateNewWindowItem();
     }
 
     _updateQuitItem() {
         this._quitItem.visible = this._app?.state === Shell.AppState.RUNNING;
+    }
+
+    _updateNewWindowItem() {
+        const actions = this._app?.appInfo?.list_actions() ?? [];
+        this._newWindowItem.visible =
+            this._app?.can_open_new_window() && !actions.includes('new-window');
     }
 
     _updateDetailsVisibility() {
@@ -164,9 +171,8 @@ var AppMenu = class AppMenu extends PopupMenu.PopupMenu {
             });
         });
 
-        this._newWindowItem.visible =
-            app && app.can_open_new_window() && !actions.includes('new-window');
         this._updateQuitItem();
+        this._updateNewWindowItem();
     }
 
     _queueUpdateWindowsSection() {
