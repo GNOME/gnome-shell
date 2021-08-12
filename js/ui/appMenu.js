@@ -166,7 +166,7 @@ var AppMenu = class AppMenu extends PopupMenu.PopupMenu {
         if (!this._app)
             return;
 
-        const windows = this._app.get_windows();
+        const windows = this._app.get_windows().filter(w => !w.skip_taskbar);
         if (windows.length < 2)
             return;
 
