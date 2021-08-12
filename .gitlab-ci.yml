@@ -50,14 +50,14 @@ workflow:
 .gnome-shell.fedora:34:
     variables:
         FDO_DISTRIBUTION_VERSION: 34
-        FDO_DISTRIBUTION_TAG: '2021-07-07.1'
+        FDO_DISTRIBUTION_TAG: '2021-08-12.0'
         FDO_DISTRIBUTION_PACKAGES: >
             findutils mozjs78-devel nodejs npm meson
             pkgconfig(gio-2.0) pkgconfig(gio-unix-2.0)
             pkgconfig(gnome-autoar-0) pkgconfig(json-glib-1.0)
         FDO_DISTRIBUTION_EXEC: |
             # For static analysis with eslint
-            npm install -g eslint &&
+            npm install -g eslint eslint-plugin-jsdoc &&
 
             dnf group install -y 'Development Tools' \
                                  'C Development Tools and Libraries' &&
