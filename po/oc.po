@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master fr\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2021-07-31 13:43+0000\n"
-"PO-Revision-Date: 2021-07-31 15:45+0200\n"
+"POT-Creation-Date: 2021-08-11 16:17+0000\n"
+"PO-Revision-Date: 2021-08-12 23:18+0200\n"
 "Last-Translator: Quentin PAGÈS\n"
 "Language-Team: Tot En Òc\n"
 "Language: oc\n"
@@ -1709,7 +1709,7 @@ msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "Sistèma"
 
-#: js/ui/panel.js:778
+#: js/ui/panel.js:782
 msgid "Top Bar"
 msgstr "Barra superiora"
 
@@ -2207,7 +2207,7 @@ msgstr "Reprene"
 msgid "Disable Until Tomorrow"
 msgstr "Desactivar fins a deman"
 
-#: js/ui/status/power.js:51
+#: js/ui/status/power.js:51 js/ui/status/powerProfiles.js:57
 msgid "Power Settings"
 msgstr "Paramètres de gestion de l'energia"
 
@@ -2242,6 +2242,21 @@ msgstr "%d∶%02d abans cargament complet (%d %%)"
 #, javascript-format
 msgid "%d %%"
 msgstr "%d %%"
+
+#: js/ui/status/powerProfiles.js:19
+msgctxt "Power profile"
+msgid "Performance"
+msgstr "Performança"
+
+#: js/ui/status/powerProfiles.js:20
+msgctxt "Power profile"
+msgid "Balanced"
+msgstr "Equilibri"
+
+#: js/ui/status/powerProfiles.js:21
+msgctxt "Power profile"
+msgid "Power Saver"
+msgstr "Estalviador d'energia"
 
 #: js/ui/status/remoteAccess.js:38
 msgid "Screen is Being Shared"
@@ -2595,7 +2610,7 @@ msgstr "Levar"
 
 #: subprojects/extensions-app/js/main.js:216
 msgid "translator-credits"
-msgstr ""
+msgstr "Cédric Valmary (totenoc.eu) <cvalmary@yahoo.fr>"
 
 #: subprojects/extensions-app/js/main.js:344
 #, javascript-format
