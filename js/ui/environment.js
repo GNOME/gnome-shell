@@ -86,8 +86,6 @@ function _patchLayoutClass(layoutClass, styleProps) {
  * @returns {void}
  */
 function _injectSoup3Compat(Soup) {
-    const ByteArray = imports.byteArray;
-
     Soup.StatusCode = Soup.KnownStatusCode;
 
     Soup.Message.new_from_encoded_form =
@@ -101,7 +99,7 @@ function _injectSoup3Compat(Soup) {
             this.set_request(
                 contentType,
                 Soup.MemoryUse.COPY,
-                ByteArray.toString(bytes.get_data()));
+                new TextDecoder().decode(bytes.get_data()));
         };
 
     Soup.Session.prototype.send_and_read_async =

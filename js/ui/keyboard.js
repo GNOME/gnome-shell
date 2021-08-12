@@ -2,7 +2,6 @@
 /* exported KeyboardManager */
 
 const { Clutter, Gio, GLib, GObject, Graphene, Meta, Shell, St } = imports.gi;
-const ByteArray = imports.byteArray;
 const Signals = imports.signals;
 
 const EdgeDragAction = imports.ui.edgeDragAction;
@@ -536,9 +535,9 @@ var KeyboardModel = class {
     _loadModel(groupName) {
         let file = Gio.File.new_for_uri('resource:///org/gnome/shell/osk-layouts/%s.json'.format(groupName));
         let [success_, contents] = file.load_contents(null);
-        contents = ByteArray.toString(contents);
 
-        return JSON.parse(contents);
+        const decoder = new TextDecoder();
+        return JSON.parse(decoder.decode(contents));
     }
 
     getLevels() {
@@ -1039,9 +1038,7 @@ var EmojiSelection = GObject.registerClass({
         let file = Gio.File.new_for_uri('resource:///org/gnome/shell/osk-layouts/emoji.json');
         let [success_, contents] = file.load_contents(null);
 
-        if (contents instanceof Uint8Array)
-            contents = imports.byteArray.toString(contents);
-        let emoji = JSON.parse(contents);
+        let emoji = JSON.parse(new TextDecoder().decode(contents));
 
         let variants = [];
         let currentKey = 0;

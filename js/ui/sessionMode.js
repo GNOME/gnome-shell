@@ -1,7 +1,6 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported SessionMode, listModes */
 
-const ByteArray = imports.byteArray;
 const GLib = imports.gi.GLib;
 const Signals = imports.signals;
 
@@ -110,8 +109,8 @@ function _loadMode(file, info) {
     let fileContent, success_, newMode;
     try {
         [success_, fileContent] = file.load_contents(null);
-        fileContent = ByteArray.toString(fileContent);
-        newMode = JSON.parse(fileContent);
+        const decoder = new TextDecoder();
+        newMode = JSON.parse(decoder.decode(fileContent));
     } catch (e) {
         return;
     }

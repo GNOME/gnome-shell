@@ -3,8 +3,6 @@
 
 const { Clutter, Gio, GLib, GObject, Soup } = imports.gi;
 
-const ByteArray = imports.byteArray;
-
 const Config = imports.misc.config;
 const Dialog = imports.ui.dialog;
 const ExtensionUtils = imports.misc.extensionUtils;
@@ -49,7 +47,8 @@ async function installExtension(uuid, invocation) {
             GLib.PRIORITY_DEFAULT,
             null);
         checkResponse(message);
-        info = JSON.parse(ByteArray.toString(bytes.get_data()));
+        const decoder = new TextDecoder();
+        info = JSON.parse(decoder.decode(bytes.get_data()));
     } catch (e) {
         Main.extensionManager.logExtensionError(uuid, e);
         invocation.return_dbus_error(
@@ -181,8 +180,7 @@ async function checkForUpdates() {
         shell_version: Config.PACKAGE_VERSION,
         disable_version_validation: versionCheck.toString(),
     };
-    const requestBody = new GLib.Bytes(
-        ByteArray.fromString(JSON.stringify(metadatas)));
+    const requestBody = new GLib.Bytes(JSON.stringify(metadatas));
 
     const message = Soup.Message.new('POST',
         '%s?%s'.format(REPOSITORY_URL_UPDATE, Soup.form_encode_hash(params)));
@@ -195,7 +193,7 @@ async function checkForUpdates() {
             GLib.PRIORITY_DEFAULT,
             null);
         checkResponse(message);
-        json = ByteArray.toString(bytes.get_data());
+        json = new TextDecoder().decode(bytes.get_data());
     } catch (e) {
         log('Update check failed: %s'.format(e.message));
         return;
