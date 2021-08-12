@@ -1,6 +1,6 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported AppMenu */
-const { Gio, GLib, Shell, St } = imports.gi;
+const { Gio, GLib, Meta, Shell, St } = imports.gi;
 
 const PopupMenu = imports.ui.popupMenu;
 const Main = imports.ui.main;
@@ -18,6 +18,7 @@ var AppMenu = class AppMenu extends PopupMenu.PopupMenu {
         this._appSystem = Shell.AppSystem.get_default();
 
         this._windowsChangedId = 0;
+        this._updateWindowsLaterId = 0;
 
         /* Translators: This is the heading of a list of open windows */
         this._openWindowsHeader = new PopupMenu.PopupSeparatorMenuItem(_('Open Windows'));
@@ -103,9 +104,8 @@ var AppMenu = class AppMenu extends PopupMenu.PopupMenu {
         this._app = app;
 
         if (app) {
-            this._windowsChangedId = app.connect('windows-changed', () => {
-                this._updateWindowsSection();
-            });
+            this._windowsChangedId = app.connect('windows-changed',
+                () => this._queueUpdateWindowsSection());
         }
 
         this._updateWindowsSection();
@@ -125,7 +125,22 @@ var AppMenu = class AppMenu extends PopupMenu.PopupMenu {
             app && app.can_open_new_window() && !actions.includes('new-window');
     }
 
+    _queueUpdateWindowsSection() {
+        if (this._updateWindowsLaterId)
+            return;
+
+        this._updateWindowsLaterId = Meta.later_add(
+            Meta.LaterType.BEFORE_REDRAW, () => {
+                this._updateWindowsSection();
+                return GLib.SOURCE_REMOVE;
+            });
+    }
+
     _updateWindowsSection() {
+        if (this._updateWindowsLaterId)
+            Meta.later_remove(this._updateWindowsLaterId);
+        this._updateWindowsLaterId = 0;
+
         this._windowSection.removeAll();
         this._openWindowsHeader.hide();
 
