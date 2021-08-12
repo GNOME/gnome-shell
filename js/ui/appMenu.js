@@ -9,8 +9,10 @@ var AppMenu = class AppMenu extends PopupMenu.PopupMenu {
     /**
      * @param {Clutter.Actor} sourceActor - actor the menu is attached to
      * @param {St.Side} side - arrow side
+     * @param {object} params - options
+     * @param {bool} params.showSingleWindow - show window section for a single window
      */
-    constructor(sourceActor, side = St.Side.TOP) {
+    constructor(sourceActor, side = St.Side.TOP, params = {}) {
         if (Clutter.get_default_text_direction() === Clutter.TextDirection.RTL) {
             if (side === St.Side.LEFT)
                 side = St.Side.RIGHT;
@@ -22,8 +24,13 @@ var AppMenu = class AppMenu extends PopupMenu.PopupMenu {
 
         this.actor.add_style_class_name('app-menu');
 
+        const {
+            showSingleWindows = false,
+        } = params;
+
         this._app = null;
         this._appSystem = Shell.AppSystem.get_default();
+        this._showSingleWindows = showSingleWindows;
 
         this._windowsChangedId = 0;
         this._updateWindowsLaterId = 0;
@@ -166,8 +173,9 @@ var AppMenu = class AppMenu extends PopupMenu.PopupMenu {
         if (!this._app)
             return;
 
+        const minWindows = this._showSingleWindows ? 1 : 2;
         const windows = this._app.get_windows().filter(w => !w.skip_taskbar);
-        if (windows.length < 2)
+        if (windows.length < minWindows)
             return;
 
         this._openWindowsHeader.show();
