@@ -71,15 +71,32 @@ var AppMenu = class AppMenu extends PopupMenu.PopupMenu {
 
         this.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
 
-        this.addAction(_('Quit'), () => this._app.request_quit());
+        this._quitItem =
+            this.addAction(_('Quit'), () => this._app.request_quit());
 
         this._signals = [];
         this._signals.push([
             this._appSystem,
             this._appSystem.connect('installed-changed',
                 () => this._updateDetailsVisibility()),
+        ], [
+            this._appSystem,
+            this._appSystem.connect('app-state-changed',
+                this._onAppStateChanged.bind(this)),
         ]);
+        this._updateQuitItem();
         this._updateDetailsVisibility();
+    }
+
+    _onAppStateChanged(sys, app) {
+        if (this._app !== app)
+            return;
+
+        this._updateQuitItem();
+    }
+
+    _updateQuitItem() {
+        this._quitItem.visible = this._app?.state === Shell.AppState.RUNNING;
     }
 
     _updateDetailsVisibility() {
@@ -149,6 +166,7 @@ var AppMenu = class AppMenu extends PopupMenu.PopupMenu {
 
         this._newWindowItem.visible =
             app && app.can_open_new_window() && !actions.includes('new-window');
+        this._updateQuitItem();
     }
 
     _queueUpdateWindowsSection() {
