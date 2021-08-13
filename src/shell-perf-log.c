@@ -862,7 +862,7 @@ replay_to_json (gint64      time,
                 gpointer    user_data)
 {
   ReplayToJsonClosure *closure = user_data;
-  char *event_str;
+  g_autofree char *event_str = NULL;
 
   if (closure->error != NULL)
     return;

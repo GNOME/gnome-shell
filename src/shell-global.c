@@ -1236,7 +1236,7 @@ shell_global_reexec_self (ShellGlobal *global)
   char *buf;
   char *buf_p;
   char *buf_end;
-  GError *error = NULL;
+  g_autoptr (GError) error = NULL;
 
   if (!g_file_get_contents ("/proc/self/cmdline", &buf, &len, &error))
     {
