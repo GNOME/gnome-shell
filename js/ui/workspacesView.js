@@ -1019,7 +1019,7 @@ class WorkspacesDisplay extends St.Widget {
     }
 
     vfunc_navigate_focus(from, direction) {
-        return this._getPrimaryView().navigate_focus(from, direction, false);
+        return this._getPrimaryView()?.navigate_focus(from, direction, false);
     }
 
     setPrimaryWorkspaceVisible(visible) {
