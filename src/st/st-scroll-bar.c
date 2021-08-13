@@ -200,23 +200,11 @@ scroll_bar_allocate_children (StScrollBar           *bar,
 
   st_theme_node_get_content_box (theme_node, box, &content_box);
 
-  if (priv->vertical)
-    {
-      trough_box.x1 = content_box.x1;
-      trough_box.y1 = content_box.y1;
-      trough_box.x2 = content_box.x2;
-      trough_box.y2 = content_box.y2;
-      clutter_actor_allocate (priv->trough, &trough_box);
-    }
-  else
-    {
-      trough_box.x1 = content_box.x1;
-      trough_box.y1 = content_box.y1;
-      trough_box.x2 = content_box.x2;
-      trough_box.y2 = content_box.y2;
-      clutter_actor_allocate (priv->trough, &trough_box);
-    }
-
+  trough_box.x1 = content_box.x1;
+  trough_box.y1 = content_box.y1;
+  trough_box.x2 = content_box.x2;
+  trough_box.y2 = content_box.y2;
+  clutter_actor_allocate (priv->trough, &trough_box);
 
   if (priv->adjustment)
     {
