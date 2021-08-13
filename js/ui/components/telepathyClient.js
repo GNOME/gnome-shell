@@ -415,7 +415,7 @@ class ChatSource extends MessageTray.Source {
 
     _updateAvatarIcon() {
         this.iconUpdated();
-        if (this._notifiction) {
+        if (this._notification) {
             this._notification.update(this._notification.title,
                                       this._notification.bannerBodyText,
                                       { gicon: this.getIcon() });
