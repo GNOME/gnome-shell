@@ -16,8 +16,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 3.14\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2021-08-02 16:37+0000\n"
-"PO-Revision-Date: 2021-08-04 18:05+0100\n"
+"POT-Creation-Date: 2021-08-11 16:17+0000\n"
+"PO-Revision-Date: 2021-08-13 11:07+0100\n"
 "Last-Translator: Hugo Carvalho <hugokarvalho@hotmail.com>\n"
 "Language-Team: Português <https://l10n.gnome.org/teams/pt/>\n"
 "Language: pt\n"
@@ -2207,14 +2207,17 @@ msgid "%d %%"
 msgstr "%d%%"
 
 #: js/ui/status/powerProfiles.js:19
-msgid "Performance Mode"
-msgstr "Modo de desempenho"
+msgctxt "Power profile"
+msgid "Performance"
+msgstr "Desempenho"
 
 #: js/ui/status/powerProfiles.js:20
-msgid "Balanced Power"
-msgstr "Energia equilibrada"
+msgctxt "Power profile"
+msgid "Balanced"
+msgstr "Equilibrado"
 
 #: js/ui/status/powerProfiles.js:21
+msgctxt "Power profile"
 msgid "Power Saver"
 msgstr "Poupança de energia"
 
