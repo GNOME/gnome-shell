@@ -1831,11 +1831,13 @@ class AppDisplay extends BaseAppView {
 
         // Create the new folder
         let newFolderPath = this._folderSettings.path.concat('folders/', newFolderId, '/');
-        let newFolderSettings = new Gio.Settings({
-            schema_id: 'org.gnome.desktop.app-folders.folder',
-            path: newFolderPath,
-        });
-        if (!newFolderSettings) {
+        let newFolderSettings;
+        try {
+            newFolderSettings = new Gio.Settings({
+                schema_id: 'org.gnome.desktop.app-folders.folder',
+                path: newFolderPath,
+            });
+        } catch (e) {
             log('Error creating new folder');
             return false;
         }
