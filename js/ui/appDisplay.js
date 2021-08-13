@@ -3399,7 +3399,7 @@ var AppIcon = GObject.registerClass({
         let view = _getViewFromIcon(this);
         let apps = [this.id, source.id];
 
-        return view.createFolder(apps);
+        return view?.createFolder(apps);
     }
 
     cancelActions() {
