@@ -193,6 +193,10 @@ function zoomOutActor(actor) {
 }
 
 function zoomOutActorAtPos(actor, x, y) {
+    const monitor = Main.layoutManager.findMonitorForActor(actor);
+    if (!monitor)
+        return;
+
     const actorClone = new Clutter.Clone({
         source: actor,
         reactive: false,
@@ -207,7 +211,6 @@ function zoomOutActorAtPos(actor, x, y) {
     Main.uiGroup.add_actor(actorClone);
 
     // Avoid monitor edges to not zoom outside the current monitor
-    let monitor = Main.layoutManager.findMonitorForActor(actor);
     let scaledWidth = width * APPICON_ANIMATION_OUT_SCALE;
     let scaledHeight = height * APPICON_ANIMATION_OUT_SCALE;
     let scaledX = x - (scaledWidth - width) / 2;
