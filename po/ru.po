@@ -20,8 +20,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2021-08-02 16:37+0000\n"
-"PO-Revision-Date: 2021-08-02 20:13+0300\n"
+"POT-Creation-Date: 2021-08-11 16:17+0000\n"
+"PO-Revision-Date: 2021-08-12 14:57+0300\n"
 "Last-Translator: Alexey Rubtsov <rushills@gmail.com>\n"
 "Language-Team: Russian <gnome-cyr@gnome.org>\n"
 "Language: ru\n"
@@ -2266,16 +2266,19 @@ msgid "%d %%"
 msgstr "%d %%"
 
 #: js/ui/status/powerProfiles.js:19
-msgid "Performance Mode"
-msgstr "Режим высокой производительности"
+msgctxt "Power profile"
+msgid "Performance"
+msgstr "Производительный"
 
 #: js/ui/status/powerProfiles.js:20
-msgid "Balanced Power"
-msgstr "Сбалансированный режим"
+msgctxt "Power profile"
+msgid "Balanced"
+msgstr "Сбалансированный"
 
 #: js/ui/status/powerProfiles.js:21
+msgctxt "Power profile"
 msgid "Power Saver"
-msgstr "Режим пониженного энергопотребления"
+msgstr "Энергосберегающий"
 
 #: js/ui/status/remoteAccess.js:38
 msgid "Screen is Being Shared"
