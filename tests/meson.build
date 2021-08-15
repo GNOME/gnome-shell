@@ -16,6 +16,7 @@ tests = [
     'jsParse',
     'markup',
     'params',
+    'signalTracker',
     'url',
     'versionCompare',
 ]
