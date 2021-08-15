@@ -188,19 +188,14 @@ var LoginManagerSystemd = class {
         this._proxy.SuspendRemote(true);
     }
 
-    async inhibit(reason, callback) {
-        try {
-            const inVariant = new GLib.Variant('(ssss)',
-                ['sleep', 'GNOME Shell', reason, 'delay']);
-            const [outVariant_, fdList] =
-                await this._proxy.call_with_unix_fd_list('Inhibit',
-                    inVariant, 0, -1, null, null);
-            const [fd] = fdList.steal_fds();
-            callback(new Gio.UnixInputStream({ fd }));
-        } catch (e) {
-            logError(e, 'Error getting systemd inhibitor');
-            callback(null);
-        }
+    async inhibit(reason, cancellable) {
+        const inVariant = new GLib.Variant('(ssss)',
+            ['sleep', 'GNOME Shell', reason, 'delay']);
+        const [outVariant_, fdList] =
+            await this._proxy.call_with_unix_fd_list('Inhibit',
+                inVariant, 0, -1, null, cancellable);
+        const [fd] = fdList.steal_fds();
+        return new Gio.UnixInputStream({ fd });
     }
 
     _prepareForSleep(proxy, sender, [aboutToSuspend]) {
@@ -236,8 +231,9 @@ var LoginManagerDummy = class {
         this.emit('prepare-for-sleep', false);
     }
 
-    inhibit(reason, callback) {
-        callback(null);
+    /* eslint-disable-next-line require-await */
+    async inhibit() {
+        return null;
     }
 };
 Signals.addSignalMethods(LoginManagerDummy.prototype);
