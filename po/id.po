@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2021-08-02 16:37+0000\n"
-"PO-Revision-Date: 2021-08-08 20:26+0700\n"
+"POT-Creation-Date: 2021-08-11 16:17+0000\n"
+"PO-Revision-Date: 2021-08-15 18:57+0700\n"
 "Last-Translator: Kukuh Syafaat <kukuhsyafaat@gnome.org>\n"
 "Language-Team: Indonesian <gnome-l10n-id@googlegroups.com>\n"
 "Language: id\n"
@@ -2197,14 +2197,17 @@ msgid "%d %%"
 msgstr "%d %%"
 
 #: js/ui/status/powerProfiles.js:19
-msgid "Performance Mode"
-msgstr "Mode Kinerja"
+msgctxt "Power profile"
+msgid "Performance"
+msgstr "Performa"
 
 #: js/ui/status/powerProfiles.js:20
-msgid "Balanced Power"
-msgstr "Daya Seimbang"
+msgctxt "Power profile"
+msgid "Balanced"
+msgstr "Seimbang"
 
 #: js/ui/status/powerProfiles.js:21
+msgctxt "Power profile"
 msgid "Power Saver"
 msgstr "Penghemat Daya"
 
