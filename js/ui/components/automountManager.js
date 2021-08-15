@@ -31,22 +31,19 @@ var AutomountManager = class {
     }
 
     enable() {
-        this._volumeAddedId = this._volumeMonitor.connect('volume-added', this._onVolumeAdded.bind(this));
-        this._volumeRemovedId = this._volumeMonitor.connect('volume-removed', this._onVolumeRemoved.bind(this));
-        this._driveConnectedId = this._volumeMonitor.connect('drive-connected', this._onDriveConnected.bind(this));
-        this._driveDisconnectedId = this._volumeMonitor.connect('drive-disconnected', this._onDriveDisconnected.bind(this));
-        this._driveEjectButtonId = this._volumeMonitor.connect('drive-eject-button', this._onDriveEjectButton.bind(this));
+        this._volumeMonitor.connectObject(
+            'volume-added', this._onVolumeAdded.bind(this),
+            'volume-removed', this._onVolumeRemoved.bind(this),
+            'drive-connected', this._onDriveConnected.bind(this),
+            'drive-disconnected', this._onDriveDisconnected.bind(this),
+            'drive-eject-button', this._onDriveEjectButton.bind(this), this);
 
         this._mountAllId = GLib.idle_add(GLib.PRIORITY_DEFAULT, this._startupMountAll.bind(this));
         GLib.Source.set_name_by_id(this._mountAllId, '[gnome-shell] this._startupMountAll');
     }
 
     disable() {
-        this._volumeMonitor.disconnect(this._volumeAddedId);
-        this._volumeMonitor.disconnect(this._volumeRemovedId);
-        this._volumeMonitor.disconnect(this._driveConnectedId);
-        this._volumeMonitor.disconnect(this._driveDisconnectedId);
-        this._volumeMonitor.disconnect(this._driveEjectButtonId);
+        this._volumeMonitor.disconnectObject(this);
 
         if (this._mountAllId > 0) {
             GLib.source_remove(this._mountAllId);

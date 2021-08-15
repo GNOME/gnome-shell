@@ -891,12 +891,10 @@ var LayoutManager = GObject.registerClass({
 
         let actorData = Params.parse(params, defaultParams);
         actorData.actor = actor;
-        actorData.visibleId = actor.connect('notify::visible',
-                                            this._queueUpdateRegions.bind(this));
-        actorData.allocationId = actor.connect('notify::allocation',
-                                               this._queueUpdateRegions.bind(this));
-        actorData.destroyId = actor.connect('destroy',
-                                            this._untrackActor.bind(this));
+        actor.connectObject(
+            'notify::visible', this._queueUpdateRegions.bind(this),
+            'notify::allocation', this._queueUpdateRegions.bind(this),
+            'destroy', this._untrackActor.bind(this), this);
         // Note that destroying actor will unset its parent, so we don't
         // need to connect to 'destroy' too.
 
@@ -910,12 +908,9 @@ var LayoutManager = GObject.registerClass({
 
         if (i == -1)
             return;
-        let actorData = this._trackedActors[i];
 
         this._trackedActors.splice(i, 1);
-        actor.disconnect(actorData.visibleId);
-        actor.disconnect(actorData.allocationId);
-        actor.disconnect(actorData.destroyId);
+        actor.disconnectObject(this);
 
         this._queueUpdateRegions();
     }

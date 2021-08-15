@@ -338,9 +338,8 @@ class ControlsManager extends St.Widget {
         this._stateAdjustment = new OverviewAdjustment(this);
         this._stateAdjustment.connect('notify::value', this._update.bind(this));
 
-        this._nWorkspacesNotifyId =
-            workspaceManager.connect('notify::n-workspaces',
-                this._updateAdjustment.bind(this));
+        workspaceManager.connectObject(
+            'notify::n-workspaces', () => this._updateAdjustment(), this);
 
         this._searchController = new SearchController.SearchController(
             this._searchEntry,
@@ -488,8 +487,6 @@ class ControlsManager extends St.Widget {
             Meta.KeyBindingFlags.IGNORE_AUTOREPEAT,
             Shell.ActionMode.NORMAL | Shell.ActionMode.OVERVIEW,
             () => this._shiftState(Meta.MotionDirection.DOWN));
-
-        this.connect('destroy', this._onDestroy.bind(this));
 
         this._update();
     }
@@ -684,10 +681,6 @@ class ControlsManager extends St.Widget {
                 },
             });
         }
-    }
-
-    _onDestroy() {
-        global.workspace_manager.disconnect(this._nWorkspacesNotifyId);
     }
 
     _updateAdjustment() {

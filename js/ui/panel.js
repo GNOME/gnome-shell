@@ -38,7 +38,6 @@ var AppMenuButton = GObject.registerClass({
 
         this._menuManager = panel.menuManager;
         this._targetApp = null;
-        this._busyNotifyId = 0;
 
         let bin = new St.Bin({ name: 'appMenu' });
         this.add_actor(bin);
@@ -75,8 +74,9 @@ var AppMenuButton = GObject.registerClass({
         this._visible = !Main.overview.visible;
         if (!this._visible)
             this.hide();
-        this._overviewHidingId = Main.overview.connect('hiding', this._sync.bind(this));
-        this._overviewShowingId = Main.overview.connect('showing', this._sync.bind(this));
+        Main.overview.connectObject(
+            'hiding', this._sync.bind(this),
+            'showing', this._sync.bind(this), this);
 
         this._spinner = new Animation.Spinner(PANEL_ICON_SIZE, {
             animate: true,
@@ -88,14 +88,12 @@ var AppMenuButton = GObject.registerClass({
         this.setMenu(menu);
         this._menuManager.addMenu(menu);
 
-        let tracker = Shell.WindowTracker.get_default();
-        let appSys = Shell.AppSystem.get_default();
-        this._focusAppNotifyId =
-            tracker.connect('notify::focus-app', this._focusAppChanged.bind(this));
-        this._appStateChangedSignalId =
-            appSys.connect('app-state-changed', this._onAppStateChanged.bind(this));
-        this._switchWorkspaceNotifyId =
-            global.window_manager.connect('switch-workspace', this._sync.bind(this));
+        Shell.WindowTracker.get_default().connectObject('notify::focus-app',
+            this._focusAppChanged.bind(this), this);
+        Shell.AppSystem.get_default().connectObject('app-state-changed',
+            this._onAppStateChanged.bind(this), this);
+        global.window_manager.connectObject('switch-workspace',
+            this._sync.bind(this), this);
 
         this._sync();
     }
@@ -195,15 +193,12 @@ var AppMenuButton = GObject.registerClass({
         let targetApp = this._findTargetApp();
 
         if (this._targetApp != targetApp) {
-            if (this._busyNotifyId) {
-                this._targetApp.disconnect(this._busyNotifyId);
-                this._busyNotifyId = 0;
-            }
+            this._targetApp?.disconnectObject(this);
 
             this._targetApp = targetApp;
 
             if (this._targetApp) {
-                this._busyNotifyId = this._targetApp.connect('notify::busy', this._sync.bind(this));
+                this._targetApp.connectObject('notify::busy', this._sync.bind(this), this);
                 this._label.set_text(this._targetApp.get_name());
                 this.set_accessible_name(this._targetApp.get_name());
 
@@ -229,33 +224,6 @@ var AppMenuButton = GObject.registerClass({
 
         this.menu.setApp(this._targetApp);
         this.emit('changed');
-    }
-
-    _onDestroy() {
-        if (this._appStateChangedSignalId > 0) {
-            let appSys = Shell.AppSystem.get_default();
-            appSys.disconnect(this._appStateChangedSignalId);
-            this._appStateChangedSignalId = 0;
-        }
-        if (this._focusAppNotifyId > 0) {
-            let tracker = Shell.WindowTracker.get_default();
-            tracker.disconnect(this._focusAppNotifyId);
-            this._focusAppNotifyId = 0;
-        }
-        if (this._overviewHidingId > 0) {
-            Main.overview.disconnect(this._overviewHidingId);
-            this._overviewHidingId = 0;
-        }
-        if (this._overviewShowingId > 0) {
-            Main.overview.disconnect(this._overviewShowingId);
-            this._overviewShowingId = 0;
-        }
-        if (this._switchWorkspaceNotifyId > 0) {
-            global.window_manager.disconnect(this._switchWorkspaceNotifyId);
-            this._switchWorkspaceNotifyId = 0;
-        }
-
-        super._onDestroy();
     }
 });
 

@@ -269,13 +269,12 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
         this._rebootButton = null;
         this._rebootButtonAlt = null;
 
-        this.connect('destroy',
-                     this._onDestroy.bind(this));
         this.connect('opened',
                      this._onOpened.bind(this));
 
-        this._userLoadedId = this._user.connect('notify::is-loaded', this._sync.bind(this));
-        this._userChangedId = this._user.connect('changed', this._sync.bind(this));
+        this._user.connectObject(
+            'notify::is-loaded', this._sync.bind(this),
+            'changed', this._sync.bind(this), this);
 
         this._messageDialogContent = new Dialog.MessageDialogContent();
 
@@ -328,11 +327,6 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
         } catch (e) {
             log(`No permission to trigger offline updates: ${e}`);
         }
-    }
-
-    _onDestroy() {
-        this._user.disconnect(this._userLoadedId);
-        this._user.disconnect(this._userChangedId);
     }
 
     _isDischargingBattery() {

@@ -79,8 +79,6 @@ class ListSearchResult extends SearchResult {
         });
         this.set_child(content);
 
-        this._termsChangedId = 0;
-
         let titleBox = new St.BoxLayout({
             style_class: 'list-search-result-title',
             y_align: Clutter.ActorAlign.CENTER,
@@ -108,14 +106,11 @@ class ListSearchResult extends SearchResult {
             });
             content.add_child(this._descriptionLabel);
 
-            this._termsChangedId =
-                this._resultsView.connect('terms-changed',
-                                          this._highlightTerms.bind(this));
+            this._resultsView.connectObject(
+                'terms-changed', this._highlightTerms.bind(this), this);
 
             this._highlightTerms();
         }
-
-        this.connect('destroy', this._onDestroy.bind(this));
     }
 
     get ICON_SIZE() {
@@ -125,12 +120,6 @@ class ListSearchResult extends SearchResult {
     _highlightTerms() {
         let markup = this._resultsView.highlightTerms(this.metaInfo['description'].split('\n')[0]);
         this._descriptionLabel.clutter_text.set_markup(markup);
-    }
-
-    _onDestroy() {
-        if (this._termsChangedId)
-            this._resultsView.disconnect(this._termsChangedId);
-        this._termsChangedId = 0;
     }
 });
 

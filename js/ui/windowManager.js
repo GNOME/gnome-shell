@@ -356,9 +356,9 @@ var WorkspaceTracker = class {
                 this._workspaces[w] = workspaceManager.get_workspace_by_index(w);
 
             for (w = oldNumWorkspaces; w < newNumWorkspaces; w++) {
-                let workspace = this._workspaces[w];
-                workspace._windowAddedId = workspace.connect('window-added', this._queueCheckWorkspaces.bind(this));
-                workspace._windowRemovedId = workspace.connect('window-removed', this._windowRemoved.bind(this));
+                this._workspaces[w].connectObject(
+                    'window-added', this._queueCheckWorkspaces.bind(this),
+                    'window-removed', this._windowRemoved.bind(this), this);
             }
         } else {
             // Assume workspaces are only removed sequentially
@@ -374,10 +374,7 @@ var WorkspaceTracker = class {
             }
 
             let lostWorkspaces = this._workspaces.splice(removedIndex, removedNum);
-            lostWorkspaces.forEach(workspace => {
-                workspace.disconnect(workspace._windowAddedId);
-                workspace.disconnect(workspace._windowRemovedId);
-            });
+            lostWorkspaces.forEach(workspace => workspace.disconnectObject(this));
         }
 
         this._queueCheckWorkspaces();
@@ -1307,16 +1304,14 @@ var WindowManager = class {
             this._shellwm.completed_size_change(actor);
         }
 
-        let destroyId = actor.connect('destroy', () => {
-            this._clearAnimationInfo(actor);
-        });
+        actor.connectObject('destroy',
+            () => this._clearAnimationInfo(actor), actorClone);
 
         this._resizePending.add(actor);
         actor.__animationInfo = {
             clone: actorClone,
             oldRect: oldFrameRect,
             frozen: true,
-            destroyId,
         };
     }
 
@@ -1381,7 +1376,6 @@ var WindowManager = class {
     _clearAnimationInfo(actor) {
         if (actor.__animationInfo) {
             actor.__animationInfo.clone.destroy();
-            actor.disconnect(actor.__animationInfo.destroyId);
             if (actor.__animationInfo.frozen)
                 actor.thaw();
 
@@ -1457,20 +1451,19 @@ var WindowManager = class {
 
     async _mapWindow(shellwm, actor) {
         actor._windowType = actor.meta_window.get_window_type();
-        actor._notifyWindowTypeSignalId =
-            actor.meta_window.connect('notify::window-type', () => {
-                let type = actor.meta_window.get_window_type();
-                if (type == actor._windowType)
-                    return;
-                if (type == Meta.WindowType.MODAL_DIALOG ||
-                    actor._windowType == Meta.WindowType.MODAL_DIALOG) {
-                    let parent = actor.get_meta_window().get_transient_for();
-                    if (parent)
-                        this._checkDimming(parent);
-                }
+        actor.meta_window.connectObject('notify::window-type', () => {
+            let type = actor.meta_window.get_window_type();
+            if (type === actor._windowType)
+                return;
+            if (type === Meta.WindowType.MODAL_DIALOG ||
+                actor._windowType === Meta.WindowType.MODAL_DIALOG) {
+                let parent = actor.get_meta_window().get_transient_for();
+                if (parent)
+                    this._checkDimming(parent);
+            }
 
-                actor._windowType = type;
-            });
+            actor._windowType = type;
+        }, actor);
         actor.meta_window.connect('unmanaged', window => {
             let parent = window.get_transient_for();
             if (parent)
@@ -1547,10 +1540,7 @@ var WindowManager = class {
 
     _destroyWindow(shellwm, actor) {
         let window = actor.meta_window;
-        if (actor._notifyWindowTypeSignalId) {
-            window.disconnect(actor._notifyWindowTypeSignalId);
-            actor._notifyWindowTypeSignalId = 0;
-        }
+        window.disconnectObject(actor);
         if (window._dimmed) {
             this._dimmedWindows =
                 this._dimmedWindows.filter(win => win != window);
@@ -1590,10 +1580,10 @@ var WindowManager = class {
 
             if (window.is_attached_dialog()) {
                 let parent = window.get_transient_for();
-                actor._parentDestroyId = parent.connect('unmanaged', () => {
+                parent.connectObject('unmanaged', () => {
                     actor.remove_all_transitions();
                     this._destroyWindowDone(shellwm, actor);
-                });
+                }, actor);
             }
 
             actor.ease({
@@ -1611,10 +1601,7 @@ var WindowManager = class {
     _destroyWindowDone(shellwm, actor) {
         if (this._destroying.delete(actor)) {
             const parent = actor.get_meta_window()?.get_transient_for();
-            if (parent && actor._parentDestroyId) {
-                parent.disconnect(actor._parentDestroyId);
-                actor._parentDestroyId = 0;
-            }
+            parent?.disconnectObject(actor);
             shellwm.completed_destroy(actor);
         }
     }

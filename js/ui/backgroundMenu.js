@@ -56,14 +56,12 @@ function addBackgroundMenu(actor, layoutManager) {
     });
     actor.add_action(clickAction);
 
-    let grabOpBeginId = global.display.connect('grab-op-begin', () => {
-        clickAction.release();
-    });
+    global.display.connectObject('grab-op-begin',
+        () => clickAction.release(), actor);
 
     actor.connect('destroy', () => {
         actor._backgroundMenu.destroy();
         actor._backgroundMenu = null;
         actor._backgroundManager = null;
-        global.display.disconnect(grabOpBeginId);
     });
 }

@@ -38,11 +38,9 @@ class WorkspaceSwitcherPopup extends Clutter.Actor {
         this.hide();
 
         let workspaceManager = global.workspace_manager;
-        this._workspaceManagerSignals = [];
-        this._workspaceManagerSignals.push(workspaceManager.connect('workspace-added',
-                                                                    this._redisplay.bind(this)));
-        this._workspaceManagerSignals.push(workspaceManager.connect('workspace-removed',
-                                                                    this._redisplay.bind(this)));
+        workspaceManager.connectObject(
+            'workspace-added', this._redisplay.bind(this),
+            'workspace-removed', this._redisplay.bind(this), this);
 
         this.connect('destroy', this._onDestroy.bind(this));
     }
@@ -99,11 +97,5 @@ class WorkspaceSwitcherPopup extends Clutter.Actor {
         if (this._timeoutId)
             GLib.source_remove(this._timeoutId);
         this._timeoutId = 0;
-
-        let workspaceManager = global.workspace_manager;
-        for (let i = 0; i < this._workspaceManagerSignals.length; i++)
-            workspaceManager.disconnect(this._workspaceManagerSignals[i]);
-
-        this._workspaceManagerSignals = [];
     }
 });

@@ -91,15 +91,13 @@ var StreamSlider = class {
     }
 
     _disconnectStream(stream) {
-        stream.disconnect(this._mutedChangedId);
-        this._mutedChangedId = 0;
-        stream.disconnect(this._volumeChangedId);
-        this._volumeChangedId = 0;
+        stream.disconnectObject(this);
     }
 
     _connectStream(stream) {
-        this._mutedChangedId = stream.connect('notify::is-muted', this._updateVolume.bind(this));
-        this._volumeChangedId = stream.connect('notify::volume', this._updateVolume.bind(this));
+        stream.connectObject(
+            'notify::is-muted', this._updateVolume.bind(this),
+            'notify::volume', this._updateVolume.bind(this), this);
     }
 
     _shouldBeVisible() {
@@ -231,7 +229,8 @@ var OutputStreamSlider = class extends StreamSlider {
 
     _connectStream(stream) {
         super._connectStream(stream);
-        this._portChangedId = stream.connect('notify::port', this._portChanged.bind(this));
+        stream.connectObject('notify::port',
+            this._portChanged.bind(this), this);
         this._portChanged();
     }
 
@@ -248,12 +247,6 @@ var OutputStreamSlider = class extends StreamSlider {
             return sink.get_port().port.includes('headphone');
 
         return false;
-    }
-
-    _disconnectStream(stream) {
-        super._disconnectStream(stream);
-        stream.disconnect(this._portChangedId);
-        this._portChangedId = 0;
     }
 
     _updateSliderIcon() {

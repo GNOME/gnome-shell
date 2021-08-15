@@ -400,7 +400,6 @@ class CyclerHighlight extends St.Widget {
     _init() {
         super._init({ layout_manager: new Clutter.BinLayout() });
         this._window = null;
-        this._sizeChangedId = 0;
 
         this._clone = new Clutter.Clone();
         this.add_actor(this._clone);
@@ -421,8 +420,7 @@ class CyclerHighlight extends St.Widget {
         if (this._window == w)
             return;
 
-        if (this._sizeChangedId)
-            this._window.disconnect(this._sizeChangedId);
+        this._window?.disconnectObject(this);
 
         this._window = w;
 
@@ -438,8 +436,8 @@ class CyclerHighlight extends St.Widget {
 
         if (this._window) {
             this._onSizeChanged();
-            this._sizeChangedId = this._window.connect('size-changed',
-                this._onSizeChanged.bind(this));
+            this._window.connectObject('size-changed',
+                this._onSizeChanged.bind(this), this);
         } else {
             this._highlight.set_size(0, 0);
             this._highlight.hide();
@@ -723,9 +721,8 @@ class AppSwitcher extends SwitcherPopup.SwitcherList {
         if (this._mouseTimeOutId != 0)
             GLib.source_remove(this._mouseTimeOutId);
 
-        this.icons.forEach(icon => {
-            icon.app.disconnect(icon._stateChangedId);
-        });
+        this.icons.forEach(
+            icon => icon.app.disconnectObject(this));
     }
 
     _setIconSize() {
@@ -868,10 +865,10 @@ class AppSwitcher extends SwitcherPopup.SwitcherList {
         this.icons.push(appIcon);
         let item = this.addItem(appIcon, appIcon.label);
 
-        appIcon._stateChangedId = appIcon.app.connect('notify::state', app => {
+        appIcon.app.connectObject('notify::state', app => {
             if (app.state != Shell.AppState.RUNNING)
                 this._removeIcon(app);
-        });
+        }, this);
 
         let arrow = new St.DrawingArea({ style_class: 'switcher-arrow' });
         arrow.connect('repaint', () => SwitcherPopup.drawArrow(arrow, St.Side.BOTTOM));
@@ -962,9 +959,8 @@ class ThumbnailSwitcher extends SwitcherPopup.SwitcherList {
             this._thumbnailBins[i].set_height(binHeight);
             this._thumbnailBins[i].add_actor(clone);
 
-            clone._destroyId = mutterWindow.connect('destroy', source => {
-                this._removeThumbnail(source, clone);
-            });
+            mutterWindow.connectObject('destroy',
+                source => this._removeThumbnail(source, clone), this);
             this._clones.push(clone);
         }
 
@@ -989,10 +985,8 @@ class ThumbnailSwitcher extends SwitcherPopup.SwitcherList {
     }
 
     _onDestroy() {
-        this._clones.forEach(clone => {
-            if (clone.source)
-                clone.source.disconnect(clone._destroyId);
-        });
+        this._clones.forEach(
+            clone => clone?.source.disconnectObject(this));
     }
 });
 
@@ -1077,18 +1071,16 @@ class WindowSwitcher extends SwitcherPopup.SwitcherList {
             this.addItem(icon, icon.label);
             this.icons.push(icon);
 
-            icon._unmanagedSignalId = icon.window.connect('unmanaged', window => {
-                this._removeWindow(window);
-            });
+            icon.window.connectObject('unmanaged',
+                window => this._removeWindow(window), this);
         }
 
         this.connect('destroy', this._onDestroy.bind(this));
     }
 
     _onDestroy() {
-        this.icons.forEach(icon => {
-            icon.window.disconnect(icon._unmanagedSignalId);
-        });
+        this.icons.forEach(
+            icon => icon.window.disconnectObject(this));
     }
 
     vfunc_get_preferred_height(forWidth) {

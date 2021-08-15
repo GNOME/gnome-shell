@@ -40,10 +40,7 @@ class Avatar extends St.Bin {
             GObject.BindingFlags.SYNC_CREATE);
 
         // Monitor the scaling factor to make sure we recreate the avatar when needed.
-        this._scaleFactorChangeId =
-            themeContext.connect('notify::scale-factor', this.update.bind(this));
-
-        this.connect('destroy', this._onDestroy.bind(this));
+        themeContext.connectObject('notify::scale-factor', this.update.bind(this), this);
     }
 
     vfunc_style_changed() {
@@ -61,14 +58,6 @@ class Avatar extends St.Bin {
         // need unscaled
         this._iconSize = iconSize / themeContext.scaleFactor;
         this.update();
-    }
-
-    _onDestroy() {
-        if (this._scaleFactorChangeId) {
-            let themeContext = St.ThemeContext.get_for_stage(global.stage);
-            themeContext.disconnect(this._scaleFactorChangeId);
-            delete this._scaleFactorChangeId;
-        }
     }
 
     setSensitive(sensitive) {
@@ -125,28 +114,10 @@ class UserWidgetLabel extends St.Widget {
 
         this._currentLabel = null;
 
-        this._userLoadedId = this._user.connect('notify::is-loaded', this._updateUser.bind(this));
-        this._userChangedId = this._user.connect('changed', this._updateUser.bind(this));
+        this._user.connectObject(
+            'notify::is-loaded', this._updateUser.bind(this),
+            'changed', this._updateUser.bind(this), this);
         this._updateUser();
-
-        // We can't override the destroy vfunc because that might be called during
-        // object finalization, and we can't call any JS inside a GC finalize callback,
-        // so we use a signal, that will be disconnected by GObject the first time
-        // the actor is destroyed (which is guaranteed to be as part of a normal
-        // destroy() call from JS, possibly from some ancestor)
-        this.connect('destroy', this._onDestroy.bind(this));
-    }
-
-    _onDestroy() {
-        if (this._userLoadedId != 0) {
-            this._user.disconnect(this._userLoadedId);
-            this._userLoadedId = 0;
-        }
-
-        if (this._userChangedId != 0) {
-            this._user.disconnect(this._userChangedId);
-            this._userChangedId = 0;
-        }
     }
 
     vfunc_allocate(box) {
@@ -207,8 +178,6 @@ class UserWidget extends St.BoxLayout {
             xAlign,
         });
 
-        this.connect('destroy', this._onDestroy.bind(this));
-
         this._avatar = new Avatar(user);
         this._avatar.x_align = Clutter.ActorAlign.CENTER;
         this.add_child(this._avatar);
@@ -222,8 +191,9 @@ class UserWidget extends St.BoxLayout {
             this._label.bind_property('label-actor', this, 'label-actor',
                                       GObject.BindingFlags.SYNC_CREATE);
 
-            this._userLoadedId = this._user.connect('notify::is-loaded', this._updateUser.bind(this));
-            this._userChangedId = this._user.connect('changed', this._updateUser.bind(this));
+            this._user.connectObject(
+                'notify::is-loaded', this._updateUser.bind(this),
+                'changed', this._updateUser.bind(this), this);
         } else {
             this._label = new St.Label({
                 style_class: 'user-widget-label',
@@ -234,18 +204,6 @@ class UserWidget extends St.BoxLayout {
         }
 
         this._updateUser();
-    }
-
-    _onDestroy() {
-        if (this._userLoadedId != 0) {
-            this._user.disconnect(this._userLoadedId);
-            this._userLoadedId = 0;
-        }
-
-        if (this._userChangedId != 0) {
-            this._user.disconnect(this._userChangedId);
-            this._userChangedId = 0;
-        }
     }
 
     _updateUser() {

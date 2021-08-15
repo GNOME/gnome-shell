@@ -69,10 +69,10 @@ var GeoclueAgent = GObject.registerClass({
         super._init();
 
         this._settings = new Gio.Settings({ schema_id: LOCATION_SCHEMA });
-        this._settings.connect(`changed::${ENABLED}`,
-            () => this.notify('enabled'));
-        this._settings.connect(`changed::${MAX_ACCURACY_LEVEL}`,
-            this._onMaxAccuracyLevelChanged.bind(this));
+        this._settings.connectObject(
+            `changed::${ENABLED}`, () => this.notify('enabled'),
+            `changed::${MAX_ACCURACY_LEVEL}`, () => this._onMaxAccuracyLevelChanged(),
+            this);
 
         this._agent = Gio.DBusExportedObject.wrapJSObject(AgentIface, this);
         this._agent.export(Gio.DBus.system, '/org/freedesktop/GeoClue2/Agent');
@@ -149,8 +149,8 @@ var GeoclueAgent = GObject.registerClass({
         }
 
         this._managerProxy = proxy;
-        this._propertiesChangedId = this._managerProxy.connect('g-properties-changed',
-                                                               this._onGeocluePropsChanged.bind(this));
+        this._managerProxy.connectObject('g-properties-changed',
+            this._onGeocluePropsChanged.bind(this), this);
 
         this.notify('in-use');
 
@@ -166,10 +166,7 @@ var GeoclueAgent = GObject.registerClass({
     }
 
     _onGeoclueVanished() {
-        if (this._propertiesChangedId) {
-            this._managerProxy.disconnect(this._propertiesChangedId);
-            this._propertiesChangedId = 0;
-        }
+        this._managerProxy.disconnectObject(this);
         this._managerProxy = null;
 
         this.notify('in-use');
@@ -238,20 +235,12 @@ class Indicator extends PanelMenu.SystemIndicator {
 
         this.menu.addMenuItem(this._item);
 
-        this._agentSignals = [
-            this._agent.connect('notify::enabled', () => this._sync()),
-            this._agent.connect('notify::in-use', () => this._sync()),
-        ];
-
-        this.connect('destroy', this._onDestroy.bind(this));
+        this._agent.connectObject(
+            'notify::enabled', () => this._sync(),
+            'notify::in-use', () => this._sync(), this);
 
         Main.sessionMode.connect('updated', this._onSessionUpdated.bind(this));
         this._onSessionUpdated();
-    }
-
-    _onDestroy() {
-        this._agentSignals.forEach(id => this._agent.disconnect(id));
-        this._agentSignals = [];
     }
 
     _onSessionUpdated() {

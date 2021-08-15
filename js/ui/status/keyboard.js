@@ -349,8 +349,6 @@ var InputSourceManager = class {
 
         this._sourcesPerWindow = false;
         this._focusWindowNotifyId = 0;
-        this._overviewShowingId = 0;
-        this._overviewHiddenId = 0;
         this._settings.connect('per-window-changed', this._sourcesPerWindowChanged.bind(this));
         this._sourcesPerWindowChanged();
         this._disableIBus = false;
@@ -731,17 +729,13 @@ var InputSourceManager = class {
         if (this._sourcesPerWindow && this._focusWindowNotifyId == 0) {
             this._focusWindowNotifyId = global.display.connect('notify::focus-window',
                                                                this._setPerWindowInputSource.bind(this));
-            this._overviewShowingId = Main.overview.connect('showing',
-                                                            this._setPerWindowInputSource.bind(this));
-            this._overviewHiddenId = Main.overview.connect('hidden',
-                                                           this._setPerWindowInputSource.bind(this));
+            Main.overview.connectObject(
+                'showing', this._setPerWindowInputSource.bind(this),
+                'hidden', this._setPerWindowInputSource.bind(this), this);
         } else if (!this._sourcesPerWindow && this._focusWindowNotifyId != 0) {
             global.display.disconnect(this._focusWindowNotifyId);
             this._focusWindowNotifyId = 0;
-            Main.overview.disconnect(this._overviewShowingId);
-            this._overviewShowingId = 0;
-            Main.overview.disconnect(this._overviewHiddenId);
-            this._overviewHiddenId = 0;
+            Main.overview.disconnectObject(this);
 
             let windows = global.get_window_actors().map(w => w.meta_window);
             for (let i = 0; i < windows.length; ++i) {
@@ -853,19 +847,14 @@ class InputSourceIndicator extends PanelMenu.Button {
         this._sessionUpdated();
 
         this._inputSourceManager = getInputSourceManager();
-        this._inputSourceManagerSourcesChangedId =
-            this._inputSourceManager.connect('sources-changed', this._sourcesChanged.bind(this));
-        this._inputSourceManagerCurrentSourceChangedId =
-            this._inputSourceManager.connect('current-source-changed', this._currentSourceChanged.bind(this));
+        this._inputSourceManager.connectObject(
+            'sources-changed', this._sourcesChanged.bind(this),
+            'current-source-changed', this._currentSourceChanged.bind(this), this);
         this._inputSourceManager.reload();
     }
 
     _onDestroy() {
-        if (this._inputSourceManager) {
-            this._inputSourceManager.disconnect(this._inputSourceManagerSourcesChangedId);
-            this._inputSourceManager.disconnect(this._inputSourceManagerCurrentSourceChangedId);
-            this._inputSourceManager = null;
-        }
+        this._inputSourceManager = null;
     }
 
     _sessionUpdated() {

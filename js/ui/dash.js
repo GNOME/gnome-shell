@@ -487,13 +487,10 @@ var Dash = GObject.registerClass({
             item.hideLabel();
         });
 
-        let id = Main.overview.connect('hiding', () => {
+        Main.overview.connectObject('hiding', () => {
             this._labelShowing = false;
             item.hideLabel();
-        });
-        item.child.connect('destroy', () => {
-            Main.overview.disconnect(id);
-        });
+        }, item.child);
 
         if (appIcon) {
             appIcon.connect('sync-tooltip', () => {

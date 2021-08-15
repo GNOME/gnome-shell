@@ -255,26 +255,25 @@ var Background = GObject.registerClass({
         this._interfaceSettings = new Gio.Settings({ schema_id: INTERFACE_SCHEMA });
 
         this._clock = new GnomeDesktop.WallClock();
-        this._timezoneChangedId = this._clock.connect('notify::timezone',
+        this._clock.connectObject('notify::timezone',
             () => {
                 if (this._animation)
                     this._loadAnimation(this._animation.file);
-            });
+            }, this);
 
         let loginManager = LoginManager.getLoginManager();
-        this._prepareForSleepId = loginManager.connect('prepare-for-sleep',
+        loginManager.connectObject('prepare-for-sleep',
             (lm, aboutToSuspend) => {
                 if (aboutToSuspend)
                     return;
                 this._refreshAnimation();
-            });
+            }, this);
 
-        this._settingsChangedSignalId =
-            this._settings.connect('changed', this._emitChangedSignal.bind(this));
+        this._settings.connectObject('changed',
+            this._emitChangedSignal.bind(this), this);
 
-        this._colorSchemeChangedSignalId =
-            this._interfaceSettings.connect(`changed::${COLOR_SCHEME_KEY}`,
-                this._emitChangedSignal.bind(this));
+        this._interfaceSettings.connectObject(`changed::${COLOR_SCHEME_KEY}`,
+            this._emitChangedSignal.bind(this), this);
 
         this._load();
     }
@@ -290,23 +289,12 @@ var Background = GObject.registerClass({
 
         this._fileWatches = null;
 
-        if (this._timezoneChangedId != 0)
-            this._clock.disconnect(this._timezoneChangedId);
-        this._timezoneChangedId = 0;
-
+        this._clock.disconnectObject(this);
         this._clock = null;
 
-        if (this._prepareForSleepId != 0)
-            LoginManager.getLoginManager().disconnect(this._prepareForSleepId);
-        this._prepareForSleepId = 0;
-
-        if (this._settingsChangedSignalId != 0)
-            this._settings.disconnect(this._settingsChangedSignalId);
-        this._settingsChangedSignalId = 0;
-
-        if (this._colorSchemeChangedSignalId !== 0)
-            this._interfaceSettings.disconnect(this._colorSchemeChangedSignalId);
-        this._colorSchemeChangedSignalId = 0;
+        LoginManager.getLoginManager().disconnectObject(this);
+        this._settings.disconnectObject(this);
+        this._interfaceSettings.disconnectObject(this);
 
         if (this._changedIdleId) {
             GLib.source_remove(this._changedIdleId);

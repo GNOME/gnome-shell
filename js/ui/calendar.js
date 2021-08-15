@@ -753,14 +753,13 @@ class NotificationMessage extends MessageList.Message {
             if (this.notification)
                 this.notification.destroy(MessageTray.NotificationDestroyedReason.DISMISSED);
         });
-        this._destroyId = notification.connect('destroy', () => {
-            this._disconnectNotificationSignals();
-            this.notification = null;
-            if (!this._closed)
-                this.close();
-        });
-        this._updatedId =
-            notification.connect('updated', this._onUpdated.bind(this));
+        notification.connectObject(
+            'updated', this._onUpdated.bind(this),
+            'destroy', () => {
+                this.notification = null;
+                if (!this._closed)
+                    this.close();
+            }, this);
     }
 
     _getIcon() {
@@ -783,21 +782,6 @@ class NotificationMessage extends MessageList.Message {
 
     vfunc_clicked() {
         this.notification.activate();
-    }
-
-    _onDestroy() {
-        super._onDestroy();
-        this._disconnectNotificationSignals();
-    }
-
-    _disconnectNotificationSignals() {
-        if (this._updatedId)
-            this.notification.disconnect(this._updatedId);
-        this._updatedId = 0;
-
-        if (this._destroyId)
-            this.notification.disconnect(this._destroyId);
-        this._destroyId = 0;
     }
 
     canClose() {
@@ -827,7 +811,6 @@ class NotificationSection extends MessageList.MessageListSection {
     _init() {
         super._init();
 
-        this._sources = new Map();
         this._nUrgent = 0;
 
         Main.messageTray.connect('source-added', this._sourceAdded.bind(this));
@@ -842,18 +825,8 @@ class NotificationSection extends MessageList.MessageListSection {
     }
 
     _sourceAdded(tray, source) {
-        let obj = {
-            destroyId: 0,
-            notificationAddedId: 0,
-        };
-
-        obj.destroyId = source.connect('destroy', () => {
-            this._onSourceDestroy(source, obj);
-        });
-        obj.notificationAddedId = source.connect('notification-added',
-            this._onNotificationAdded.bind(this));
-
-        this._sources.set(source, obj);
+        source.connectObject('notification-added',
+            this._onNotificationAdded.bind(this), this);
     }
 
     _onNotificationAdded(source, notification) {
@@ -862,16 +835,15 @@ class NotificationSection extends MessageList.MessageListSection {
 
         let isUrgent = notification.urgency == MessageTray.Urgency.CRITICAL;
 
-        let updatedId = notification.connect('updated', () => {
-            message.setSecondaryActor(new TimeLabel(notification.datetime));
-            this.moveMessage(message, isUrgent ? 0 : this._nUrgent, this.mapped);
-        });
-        let destroyId = notification.connect('destroy', () => {
-            notification.disconnect(destroyId);
-            notification.disconnect(updatedId);
-            if (isUrgent)
-                this._nUrgent--;
-        });
+        notification.connectObject(
+            'destroy', () => {
+                if (isUrgent)
+                    this._nUrgent--;
+            },
+            'updated', () => {
+                message.setSecondaryActor(new TimeLabel(notification.datetime));
+                this.moveMessage(message, isUrgent ? 0 : this._nUrgent, this.mapped);
+            }, this);
 
         if (isUrgent) {
             // Keep track of urgent notifications to keep them on top
@@ -885,13 +857,6 @@ class NotificationSection extends MessageList.MessageListSection {
 
         let index = isUrgent ? 0 : this._nUrgent;
         this.addMessageAtIndex(message, index, this.mapped);
-    }
-
-    _onSourceDestroy(source, obj) {
-        source.disconnect(obj.destroyId);
-        source.disconnect(obj.notificationAddedId);
-
-        this._sources.delete(source);
     }
 
     vfunc_map() {
@@ -1025,21 +990,14 @@ class CalendarMessageList extends St.Widget {
     }
 
     _addSection(section) {
-        let connectionsIds = [];
-
-        for (let prop of ['visible', 'empty', 'can-clear']) {
-            connectionsIds.push(
-                section.connect(`notify::${prop}`, this._sync.bind(this)));
-        }
-        connectionsIds.push(section.connect('message-focused', (_s, messageActor) => {
-            Util.ensureActorVisibleInScrollView(this._scrollView, messageActor);
-        }));
-
-        connectionsIds.push(section.connect('destroy', () => {
-            connectionsIds.forEach(id => section.disconnect(id));
-            this._sectionList.remove_actor(section);
-        }));
-
+        section.connectObject(
+            'notify::visible', this._sync.bind(this),
+            'notify::empty', this._sync.bind(this),
+            'notify::can-clear', this._sync.bind(this),
+            'destroy', () => this._sectionList.remove_actor(section),
+            'message-focused', (_s, messageActor) => {
+                Util.ensureActorVisibleInScrollView(this._scrollView, messageActor);
+            }, this);
         this._sectionList.add_actor(section);
     }
 

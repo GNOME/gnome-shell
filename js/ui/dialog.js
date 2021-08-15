@@ -20,7 +20,6 @@ class Dialog extends St.Widget {
         this.connect('destroy', this._onDestroy.bind(this));
 
         this._initialKeyFocus = null;
-        this._initialKeyFocusDestroyId = 0;
         this._pressedKey = null;
         this._buttonKeys = {};
         this._createDialog();
@@ -61,9 +60,7 @@ class Dialog extends St.Widget {
     }
 
     makeInactive() {
-        if (this._eventId != 0)
-            this._parentActor.disconnect(this._eventId);
-        this._eventId = 0;
+        this._parentActor.disconnectObject(this);
 
         this.buttonLayout.get_children().forEach(c => c.set_reactive(false));
     }
@@ -99,15 +96,12 @@ class Dialog extends St.Widget {
     }
 
     _setInitialKeyFocus(actor) {
-        if (this._initialKeyFocus)
-            this._initialKeyFocus.disconnect(this._initialKeyFocusDestroyId);
+        this._initialKeyFocus?.disconnectObject(this);
 
         this._initialKeyFocus = actor;
 
-        this._initialKeyFocusDestroyId = actor.connect('destroy', () => {
-            this._initialKeyFocus = null;
-            this._initialKeyFocusDestroyId = 0;
-        });
+        actor.connectObject('destroy',
+            () => (this._initialKeyFocus = null), this);
     }
 
     get initialKeyFocus() {

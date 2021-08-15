@@ -21,16 +21,11 @@ var XdndHandler = class {
         dnd.connect('dnd-enter', this._onEnter.bind(this));
         dnd.connect('dnd-position-change', this._onPositionChanged.bind(this));
         dnd.connect('dnd-leave', this._onLeave.bind(this));
-
-        this._windowGroupVisibilityHandlerId = 0;
     }
 
     // Called when the user cancels the drag (i.e release the button)
     _onLeave() {
-        if (this._windowGroupVisibilityHandlerId != 0) {
-            global.window_group.disconnect(this._windowGroupVisibilityHandlerId);
-            this._windowGroupVisibilityHandlerId = 0;
-        }
+        global.window_group.disconnectObject(this);
         if (this._cursorWindowClone) {
             this._cursorWindowClone.destroy();
             this._cursorWindowClone = null;
@@ -40,9 +35,8 @@ var XdndHandler = class {
     }
 
     _onEnter() {
-        this._windowGroupVisibilityHandlerId =
-            global.window_group.connect('notify::visible',
-                this._onWindowGroupVisibilityChanged.bind(this));
+        global.window_group.connectObject('notify::visible',
+            this._onWindowGroupVisibilityChanged.bind(this), this);
 
         this.emit('drag-begin', global.get_current_time());
     }

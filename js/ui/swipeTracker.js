@@ -112,8 +112,8 @@ const TouchpadSwipeGesture = GObject.registerClass({
             schema_id: 'org.gnome.desktop.peripherals.touchpad',
         });
 
-        this._stageCaptureEvent =
-            global.stage.connect('captured-event::touchpad', this._handleEvent.bind(this));
+        global.stage.connectObject(
+            'captured-event::touchpad', this._handleEvent.bind(this), this);
     }
 
     _handleEvent(actor, event) {
@@ -203,10 +203,7 @@ const TouchpadSwipeGesture = GObject.registerClass({
     }
 
     destroy() {
-        if (this._stageCaptureEvent) {
-            global.stage.disconnect(this._stageCaptureEvent);
-            delete this._stageCaptureEvent;
-        }
+        global.stage.disconnectObject(this);
     }
 });
 

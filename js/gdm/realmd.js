@@ -23,11 +23,11 @@ var Manager = class {
         this._realms = {};
         this._loginFormat = null;
 
-        this._signalId = this._aggregateProvider.connect('g-properties-changed',
+        this._aggregateProvider.connectObject('g-properties-changed',
             (proxy, properties) => {
                 if ('Realms' in properties.deep_unpack())
                     this._reloadRealms();
-            });
+            }, this);
     }
 
     _reloadRealms() {
@@ -100,7 +100,7 @@ var Manager = class {
                 'org.freedesktop.realmd',
                 '/org/freedesktop/realmd',
                 service => service.ReleaseRemote());
-        this._aggregateProvider.disconnect(this._signalId);
+        this._aggregateProvider.disconnectObject(this);
         this._realms = { };
         this._updateLoginFormat();
     }

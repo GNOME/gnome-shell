@@ -95,32 +95,25 @@ var AppMenu = class AppMenu extends PopupMenu.PopupMenu {
         this._quitItem =
             this.addAction(_('Quit'), () => this._app.request_quit());
 
-        this._signals = [];
-        this._signals.push([
-            this._appSystem,
-            this._appSystem.connect('installed-changed',
-                () => this._updateDetailsVisibility()),
-        ], [
-            this._appSystem,
-            this._appSystem.connect('app-state-changed',
-                this._onAppStateChanged.bind(this)),
-        ], [
-            this._parentalControlsManager,
-            this._parentalControlsManager.connect('app-filter-changed',
-                () => this._updateFavoriteItem()),
-        ], [
-            this._appFavorites,
-            this._appFavorites.connect('changed',
-                () => this._updateFavoriteItem()),
-        ], [
-            global.settings,
-            global.settings.connect('writable-changed::favorite-apps',
-                () => this._updateFavoriteItem()),
-        ], [
-            global,
-            global.connect('notify::switcheroo-control',
-                () => this._updateGpuItem()),
-        ]);
+        this._appSystem.connectObject(
+            'installed-changed', () => this._updateDetailsVisibility(),
+            'app-state-changed', this._onAppStateChanged.bind(this),
+            this.actor);
+
+        this._parentalControlsManager.connectObject(
+            'app-filter-changed', () => this._updateFavoriteItem(), this.actor);
+
+        this._appFavorites.connectObject(
+            'changed', () => this._updateFavoriteItem(), this.actor);
+
+        global.settings.connectObject(
+            'writable-changed::favorite-apps', () => this._updateFavoriteItem(),
+            this.actor);
+
+        global.connectObject(
+            'notify::switcheroo-control', () => this._updateGpuItem(),
+            this.actor);
+
         this._updateQuitItem();
         this._updateFavoriteItem();
         this._updateGpuItem();
@@ -202,10 +195,6 @@ var AppMenu = class AppMenu extends PopupMenu.PopupMenu {
     destroy() {
         super.destroy();
 
-        for (const [obj, id] of this._signals)
-            obj.disconnect(id);
-        this._signals = [];
-
         this.setApp(null);
     }
 
@@ -225,16 +214,12 @@ var AppMenu = class AppMenu extends PopupMenu.PopupMenu {
         if (this._app === app)
             return;
 
-        if (this._windowsChangedId)
-            this._app.disconnect(this._windowsChangedId);
-        this._windowsChangedId = 0;
+        this._app?.disconnectObject(this);
 
         this._app = app;
 
-        if (app) {
-            this._windowsChangedId = app.connect('windows-changed',
-                () => this._queueUpdateWindowsSection());
-        }
+        this._app?.connectObject('windows-changed',
+            () => this._queueUpdateWindowsSection(), this);
 
         this._updateWindowsSection();
 
@@ -293,10 +278,9 @@ var AppMenu = class AppMenu extends PopupMenu.PopupMenu {
             const item = this._windowSection.addAction(title, event => {
                 Main.activateWindow(window, event.get_time());
             });
-            const id = window.connect('notify::title', () => {
+            window.connectObject('notify::title', () => {
                 item.label.text = window.title || this._app.get_name();
-            });
-            item.connect('destroy', () => window.disconnect(id));
+            }, item);
         });
     }
 };

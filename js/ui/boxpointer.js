@@ -55,8 +55,6 @@ var BoxPointer = GObject.registerClass({
             else
                 Meta.enable_unredirect_for_display(global.display);
         });
-
-        this.connect('destroy', this._onDestroy.bind(this));
     }
 
     vfunc_captured_event(event) {
@@ -72,13 +70,6 @@ var BoxPointer = GObject.registerClass({
             return Clutter.EVENT_STOP;
 
         return Clutter.EVENT_PROPAGATE;
-    }
-
-    _onDestroy() {
-        if (this._sourceActorDestroyId) {
-            this._sourceActor.disconnect(this._sourceActorDestroyId);
-            delete this._sourceActorDestroyId;
-        }
     }
 
     get arrowSide() {
@@ -439,19 +430,12 @@ var BoxPointer = GObject.registerClass({
 
     setPosition(sourceActor, alignment) {
         if (!this._sourceActor || sourceActor != this._sourceActor) {
-            if (this._sourceActorDestroyId) {
-                this._sourceActor.disconnect(this._sourceActorDestroyId);
-                delete this._sourceActorDestroyId;
-            }
+            this._sourceActor?.disconnectObject(this);
 
             this._sourceActor = sourceActor;
 
-            if (this._sourceActor) {
-                this._sourceActorDestroyId = this._sourceActor.connect('destroy', () => {
-                    this._sourceActor = null;
-                    delete this._sourceActorDestroyId;
-                });
-            }
+            this._sourceActor?.connectObject('destroy',
+                () => (this._sourceActor = null), this);
         }
 
         this._arrowAlignment = alignment;

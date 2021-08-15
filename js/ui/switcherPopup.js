@@ -48,8 +48,8 @@ var SwitcherPopup = GObject.registerClass({
 
         Main.uiGroup.add_actor(this);
 
-        this._systemModalOpenedId =
-            Main.layoutManager.connect('system-modal-opened', () => this.destroy());
+        Main.layoutManager.connectObject(
+            'system-modal-opened', () => this.destroy(), this);
 
         this._haveModal = false;
         this._modifierMask = 0;
@@ -336,8 +336,6 @@ var SwitcherPopup = GObject.registerClass({
 
     _onDestroy() {
         this._popModal();
-
-        Main.layoutManager.disconnect(this._systemModalOpenedId);
 
         if (this._motionTimeoutId != 0)
             GLib.source_remove(this._motionTimeoutId);

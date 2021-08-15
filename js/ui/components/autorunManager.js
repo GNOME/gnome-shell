@@ -151,13 +151,13 @@ var AutorunManager = class {
     }
 
     enable() {
-        this._mountAddedId = this._volumeMonitor.connect('mount-added', this._onMountAdded.bind(this));
-        this._mountRemovedId = this._volumeMonitor.connect('mount-removed', this._onMountRemoved.bind(this));
+        this._volumeMonitor.connectObject(
+            'mount-added', this._onMountAdded.bind(this),
+            'mount-removed', this._onMountRemoved.bind(this), this);
     }
 
     disable() {
-        this._volumeMonitor.disconnect(this._mountAddedId);
-        this._volumeMonitor.disconnect(this._mountRemovedId);
+        this._volumeMonitor.disconnectObject(this);
     }
 
     _onMountAdded(monitor, mount) {

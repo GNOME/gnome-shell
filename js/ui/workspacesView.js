@@ -37,30 +37,17 @@ var WorkspacesViewBase = GObject.registerClass({
         this._monitorIndex = monitorIndex;
 
         this._inDrag = false;
-        this._windowDragBeginId = Main.overview.connect('window-drag-begin', this._dragBegin.bind(this));
-        this._windowDragEndId = Main.overview.connect('window-drag-end', this._dragEnd.bind(this));
+        Main.overview.connectObject(
+            'window-drag-begin', this._dragBegin.bind(this),
+            'window-drag-end', this._dragEnd.bind(this), this);
 
         this._overviewAdjustment = overviewAdjustment;
-        this._overviewId = overviewAdjustment.connect('notify::value', () => {
-            this._updateWorkspaceMode();
-        });
+        overviewAdjustment.connectObject('notify::value',
+            () => this._updateWorkspaceMode(), this);
     }
 
     _onDestroy() {
         this._dragEnd();
-
-        if (this._windowDragBeginId > 0) {
-            Main.overview.disconnect(this._windowDragBeginId);
-            this._windowDragBeginId = 0;
-        }
-        if (this._windowDragEndId > 0) {
-            Main.overview.disconnect(this._windowDragEndId);
-            this._windowDragEndId = 0;
-        }
-        if (this._overviewId > 0) {
-            this._overviewAdjustment.disconnect(this._overviewId);
-            delete this._overviewId;
-        }
     }
 
     _dragBegin() {
@@ -104,36 +91,33 @@ class WorkspacesView extends WorkspacesViewBase {
 
         this._controls = controls;
         this._fitModeAdjustment = fitModeAdjustment;
-        this._fitModeNotifyId = this._fitModeAdjustment.connect('notify::value', () => {
+        this._fitModeAdjustment.connectObject('notify::value', () => {
             this._updateVisibility();
             this._updateWorkspacesState();
             this.queue_relayout();
-        });
+        }, this);
 
         this._animating = false; // tweening
         this._gestureActive = false; // touch(pad) gestures
 
         this._scrollAdjustment = scrollAdjustment;
-        this._onScrollId = this._scrollAdjustment.connect('notify::value',
-            this._onScrollAdjustmentChanged.bind(this));
+        this._scrollAdjustment.connectObject('notify::value',
+            this._onScrollAdjustmentChanged.bind(this), this);
 
         this._workspaces = [];
         this._updateWorkspaces();
-        this._updateWorkspacesId =
-            workspaceManager.connect('notify::n-workspaces',
-                                     this._updateWorkspaces.bind(this));
-        this._reorderWorkspacesId =
-            workspaceManager.connect('workspaces-reordered', () => {
+        workspaceManager.connectObject(
+            'notify::n-workspaces', this._updateWorkspaces.bind(this),
+            'workspaces-reordered', () => {
                 this._workspaces.sort((a, b) => {
                     return a.metaWorkspace.index() - b.metaWorkspace.index();
                 });
                 this._workspaces.forEach(
                     (ws, i) => this.set_child_at_index(ws, i));
-            });
+            }, this);
 
-        this._switchWorkspaceNotifyId =
-            global.window_manager.connect('switch-workspace',
-                                          this._activeWorkspaceChanged.bind(this));
+        global.window_manager.connectObject('switch-workspace',
+            this._activeWorkspaceChanged.bind(this), this);
         this._updateVisibility();
     }
 
@@ -491,12 +475,6 @@ class WorkspacesView extends WorkspacesViewBase {
         super._onDestroy();
 
         this._workspaces = [];
-        this._scrollAdjustment.disconnect(this._onScrollId);
-        this._fitModeAdjustment.disconnect(this._fitModeNotifyId);
-        global.window_manager.disconnect(this._switchWorkspaceNotifyId);
-        let workspaceManager = global.workspace_manager;
-        workspaceManager.disconnect(this._updateWorkspacesId);
-        workspaceManager.disconnect(this._reorderWorkspacesId);
     }
 
     startTouchGesture() {
@@ -623,11 +601,10 @@ class SecondaryMonitorDisplay extends St.Widget {
         this._thumbnails.connect('notify::should-show',
             () => this._updateThumbnailVisibility());
 
-        this._stateChangedId = this._overviewAdjustment.connect('notify::value',
-            () => {
-                this._updateThumbnailParams();
-                this.queue_relayout();
-            });
+        this._overviewAdjustment.connectObject('notify::value', () => {
+            this._updateThumbnailParams();
+            this.queue_relayout();
+        }, this);
 
         this._settings = new Gio.Settings({ schema_id: MUTTER_SCHEMA });
         this._settings.connect('changed::workspaces-only-on-primary',
@@ -738,10 +715,6 @@ class SecondaryMonitorDisplay extends St.Widget {
         if (this._settings)
             this._settings.run_dispose();
         this._settings = null;
-
-        if (this._stateChangedId)
-            this._overviewAdjustment.disconnect(this._stateChangedId);
-        this._stateChangedId = 0;
     }
 
     _workspacesOnPrimaryChanged() {
@@ -848,13 +821,8 @@ class WorkspacesDisplay extends St.Widget {
         let workspaceManager = global.workspace_manager;
         this._scrollAdjustment = scrollAdjustment;
 
-        this._switchWorkspaceId =
-            global.window_manager.connect('switch-workspace',
-                this._activeWorkspaceChanged.bind(this));
-
-        this._reorderWorkspacesdId =
-            workspaceManager.connect('workspaces-reordered',
-                this._workspacesReordered.bind(this));
+        global.window_manager.connectObject('switch-workspace',
+            this._activeWorkspaceChanged.bind(this), this);
 
         this._swipeTracker = new SwipeTracker.SwipeTracker(
             Main.layoutManager.overviewGroup,
@@ -867,26 +835,20 @@ class WorkspacesDisplay extends St.Widget {
         this._swipeTracker.connect('end', this._switchWorkspaceEnd.bind(this));
         this.connect('notify::mapped', this._updateSwipeTracker.bind(this));
 
-        this._layoutRowsNotifyId = workspaceManager.connect(
-            'notify::layout-rows', this._updateTrackerOrientation.bind(this));
+        workspaceManager.connectObject(
+            'workspaces-reordered', this._workspacesReordered.bind(this),
+            'notify::layout-rows', this._updateTrackerOrientation.bind(this), this);
         this._updateTrackerOrientation();
 
-        this._windowDragBeginId =
-            Main.overview.connect('window-drag-begin',
-                this._windowDragBegin.bind(this));
-        this._windowDragEndId =
-            Main.overview.connect('window-drag-end',
-                this._windowDragEnd.bind(this));
+        Main.overview.connectObject(
+            'window-drag-begin', this._windowDragBegin.bind(this),
+            'window-drag-end', this._windowDragEnd.bind(this), this);
 
         this._primaryVisible = true;
         this._primaryIndex = Main.layoutManager.primaryIndex;
         this._workspacesViews = [];
 
         this._settings = new Gio.Settings({ schema_id: MUTTER_SCHEMA });
-
-        this._restackedNotifyId = 0;
-        this._scrollEventId = 0;
-        this._keyPressEventId = 0;
 
         this._inWindowDrag = false;
         this._leavingOverview = false;
@@ -901,12 +863,6 @@ class WorkspacesDisplay extends St.Widget {
             Meta.later_remove(this._parentSetLater);
             this._parentSetLater = 0;
         }
-
-        global.window_manager.disconnect(this._switchWorkspaceId);
-        global.workspace_manager.disconnect(this._reorderWorkspacesdId);
-        global.workspace_manager.disconnect(this._layoutRowsNotifyId);
-        Main.overview.disconnect(this._windowDragBeginId);
-        Main.overview.disconnect(this._windowDragEndId);
     }
 
     _windowDragBegin() {
@@ -1036,14 +992,12 @@ class WorkspacesDisplay extends St.Widget {
         this.show();
         this._updateWorkspacesViews();
 
-        this._restackedNotifyId =
-            Main.overview.connect('windows-restacked',
-                                  this._onRestacked.bind(this));
-        if (this._scrollEventId == 0)
-            this._scrollEventId = Main.overview.connect('scroll-event', this._onScrollEvent.bind(this));
+        Main.overview.connectObject(
+            'windows-restacked', this._onRestacked.bind(this),
+            'scroll-event', this._onScrollEvent.bind(this), this);
 
-        if (this._keyPressEventId == 0)
-            this._keyPressEventId = global.stage.connect('key-press-event', this._onKeyPressEvent.bind(this));
+        global.stage.connectObject(
+            'key-press-event', this._onKeyPressEvent.bind(this), this);
     }
 
     prepareToLeaveOverview() {
@@ -1055,18 +1009,9 @@ class WorkspacesDisplay extends St.Widget {
     }
 
     vfunc_hide() {
-        if (this._restackedNotifyId > 0) {
-            Main.overview.disconnect(this._restackedNotifyId);
-            this._restackedNotifyId = 0;
-        }
-        if (this._scrollEventId > 0) {
-            Main.overview.disconnect(this._scrollEventId);
-            this._scrollEventId = 0;
-        }
-        if (this._keyPressEventId > 0) {
-            global.stage.disconnect(this._keyPressEventId);
-            this._keyPressEventId = 0;
-        }
+        Main.overview.disconnectObject(this);
+        global.stage.disconnectObject(this);
+
         for (let i = 0; i < this._workspacesViews.length; i++)
             this._workspacesViews[i].destroy();
         this._workspacesViews = [];

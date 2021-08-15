@@ -152,8 +152,9 @@ var Lightbox = GObject.registerClass({
             }));
         }
 
-        this._actorAddedSignalId = container.connect('actor-added', this._actorAdded.bind(this));
-        this._actorRemovedSignalId = container.connect('actor-removed', this._actorRemoved.bind(this));
+        container.connectObject(
+            'actor-added', this._actorAdded.bind(this),
+            'actor-removed', this._actorRemoved.bind(this), this);
 
         this._highlighted = null;
     }
@@ -283,15 +284,6 @@ var Lightbox = GObject.registerClass({
      * by destroying its container or by explicitly calling this.destroy().
      */
     _onDestroy() {
-        if (this._actorAddedSignalId) {
-            this._container.disconnect(this._actorAddedSignalId);
-            this._actorAddedSignalId = 0;
-        }
-        if (this._actorRemovedSignalId) {
-            this._container.disconnect(this._actorRemovedSignalId);
-            this._actorRemovedSignalId = 0;
-        }
-
         this.highlight(null);
     }
 });

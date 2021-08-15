@@ -64,14 +64,14 @@ var WindowClone = GObject.registerClass({
         this.realWindow = realWindow;
         this.metaWindow = realWindow.meta_window;
 
-        clone._updateId = this.realWindow.connect('notify::position',
-                                                  this._onPositionChanged.bind(this));
-        clone._destroyId = this.realWindow.connect('destroy', () => {
-            // First destroy the clone and then destroy everything
-            // This will ensure that we never see it in the _disconnectSignals loop
-            clone.destroy();
-            this.destroy();
-        });
+        this.realWindow.connectObject(
+            'notify::position', this._onPositionChanged.bind(this),
+            'destroy', () => {
+                // First destroy the clone and then destroy everything
+                // This will ensure that we never see it in the _disconnectSignals loop
+                clone.destroy();
+                this.destroy();
+            }, this);
         this._onPositionChanged();
 
         this.connect('destroy', this._onDestroy.bind(this));
@@ -142,12 +142,9 @@ var WindowClone = GObject.registerClass({
         let clone = new Clutter.Clone({ source: realDialog });
         this._updateDialogPosition(realDialog, clone);
 
-        clone._updateId = realDialog.connect('notify::position', dialog => {
-            this._updateDialogPosition(dialog, clone);
-        });
-        clone._destroyId = realDialog.connect('destroy', () => {
-            clone.destroy();
-        });
+        realDialog.connectObject(
+            'notify::position', dialog => this._updateDialogPosition(dialog, clone),
+            'destroy', () => clone.destroy(), this);
         this.add_child(clone);
     }
 
@@ -163,18 +160,7 @@ var WindowClone = GObject.registerClass({
         this.set_position(this.realWindow.x, this.realWindow.y);
     }
 
-    _disconnectSignals() {
-        this.get_children().forEach(child => {
-            let realWindow = child.source;
-
-            realWindow.disconnect(child._updateId);
-            realWindow.disconnect(child._destroyId);
-        });
-    }
-
     _onDestroy() {
-        this._disconnectSignals();
-
         this._delegate = null;
 
         if (this.inDrag) {
@@ -291,27 +277,22 @@ var WorkspaceThumbnail = GObject.registerClass({
         // Create clones for windows that should be visible in the Overview
         this._windows = [];
         this._allWindows = [];
-        this._minimizedChangedIds = [];
         for (let i = 0; i < windows.length; i++) {
-            let minimizedChangedId =
-                windows[i].meta_window.connect('notify::minimized',
-                                               this._updateMinimized.bind(this));
+            windows[i].meta_window.connectObject('notify::minimized',
+                this._updateMinimized.bind(this), this);
             this._allWindows.push(windows[i].meta_window);
-            this._minimizedChangedIds.push(minimizedChangedId);
 
             if (this._isMyWindow(windows[i]) && this._isOverviewWindow(windows[i]))
                 this._addWindowClone(windows[i]);
         }
 
         // Track window changes
-        this._windowAddedId = this.metaWorkspace.connect('window-added',
-                                                         this._windowAdded.bind(this));
-        this._windowRemovedId = this.metaWorkspace.connect('window-removed',
-                                                           this._windowRemoved.bind(this));
-        this._windowEnteredMonitorId = global.display.connect('window-entered-monitor',
-                                                              this._windowEnteredMonitor.bind(this));
-        this._windowLeftMonitorId = global.display.connect('window-left-monitor',
-                                                           this._windowLeftMonitor.bind(this));
+        this.metaWorkspace.connectObject(
+            'window-added', this._windowAdded.bind(this),
+            'window-removed', this._windowRemoved.bind(this), this);
+        global.display.connectObject(
+            'window-entered-monitor', this._windowEnteredMonitor.bind(this),
+            'window-left-monitor', this._windowLeftMonitor.bind(this), this);
 
         this.state = ThumbnailState.NORMAL;
         this._slidePosition = 0; // Fully slid in
@@ -397,10 +378,9 @@ var WorkspaceThumbnail = GObject.registerClass({
         }
 
         if (!this._allWindows.includes(metaWin)) {
-            let minimizedChangedId = metaWin.connect('notify::minimized',
-                                                     this._updateMinimized.bind(this));
+            metaWin.connectObject('notify::minimized',
+                this._updateMinimized.bind(this), this);
             this._allWindows.push(metaWin);
-            this._minimizedChangedIds.push(minimizedChangedId);
         }
 
         // We might have the window in our list already if it was on all workspaces and
@@ -437,9 +417,8 @@ var WorkspaceThumbnail = GObject.registerClass({
     _windowRemoved(metaWorkspace, metaWin) {
         let index = this._allWindows.indexOf(metaWin);
         if (index != -1) {
-            metaWin.disconnect(this._minimizedChangedIds[index]);
+            metaWin.disconnectObject(this);
             this._allWindows.splice(index, 1);
-            this._minimizedChangedIds.splice(index, 1);
         }
 
         this._doRemoveWindow(metaWin);
@@ -468,13 +447,9 @@ var WorkspaceThumbnail = GObject.registerClass({
 
         this._removed = true;
 
-        this.metaWorkspace.disconnect(this._windowAddedId);
-        this.metaWorkspace.disconnect(this._windowRemovedId);
-        global.display.disconnect(this._windowEnteredMonitorId);
-        global.display.disconnect(this._windowLeftMonitorId);
-
-        for (let i = 0; i < this._allWindows.length; i++)
-            this._allWindows[i].disconnect(this._minimizedChangedIds[i]);
+        this.metaWorkspace.disconnectObject(this);
+        global.display.disconnectObject(this);
+        this._allWindows.forEach(w => w.disconnectObject(this));
     }
 
     _onDestroy() {
@@ -667,40 +642,30 @@ var ThumbnailsBox = GObject.registerClass({
 
         this._thumbnails = [];
 
-        this._overviewSignals = [
-            Main.overview.connect('showing',
-                () => this._createThumbnails()),
-            Main.overview.connect('hidden',
-                () => this._destroyThumbnails()),
-            Main.overview.connect('item-drag-begin',
-                () => this._onDragBegin()),
-            Main.overview.connect('item-drag-end',
-                () => this._onDragEnd()),
-            Main.overview.connect('item-drag-cancelled',
-                () => this._onDragCancelled()),
-            Main.overview.connect('window-drag-begin',
-                () => this._onDragBegin()),
-            Main.overview.connect('window-drag-end',
-                () => this._onDragEnd()),
-            Main.overview.connect('window-drag-cancelled',
-                () => this._onDragCancelled()),
-        ];
+        Main.overview.connectObject(
+            'showing', () => this._createThumbnails(),
+            'hidden', () => this._destroyThumbnails(),
+            'item-drag-begin', () => this._onDragBegin(),
+            'item-drag-end', () => this._onDragEnd(),
+            'item-drag-cancelled', () => this._onDragCancelled(),
+            'window-drag-begin', () => this._onDragBegin(),
+            'window-drag-end', () => this._onDragEnd(),
+            'window-drag-cancelled', () => this._onDragCancelled(), this);
 
         this._settings = new Gio.Settings({ schema_id: MUTTER_SCHEMA });
         this._settings.connect('changed::dynamic-workspaces',
             () => this._updateShouldShow());
         this._updateShouldShow();
 
-        this._monitorsChangedId =
-            Main.layoutManager.connect('monitors-changed', () => {
-                this._destroyThumbnails();
-                if (Main.overview.visible)
-                    this._createThumbnails();
-            });
+        Main.layoutManager.connectObject('monitors-changed', () => {
+            this._destroyThumbnails();
+            if (Main.overview.visible)
+                this._createThumbnails();
+        }, this);
 
         // The porthole is the part of the screen we're showing in the thumbnails
-        this._workareasChangedId = global.display.connect('workareas-changed',
-            () => this._updatePorthole());
+        global.display.connectObject('workareas-changed',
+            () => this._updatePorthole(), this);
         this._updatePorthole();
 
         this.connect('notify::visible', () => {
@@ -714,8 +679,8 @@ var ThumbnailsBox = GObject.registerClass({
         this._syncStackingId = 0;
 
         this._scrollAdjustment = scrollAdjustment;
-        this._scrollValueId = this._scrollAdjustment.connect('notify::value',
-            () => this._updateIndicator());
+        this._scrollAdjustment.connectObject('notify::value',
+            () => this._updateIndicator(), this);
     }
 
     setMonitorIndex(monitorIndex) {
@@ -725,21 +690,6 @@ var ThumbnailsBox = GObject.registerClass({
     _onDestroy() {
         this._destroyThumbnails();
         this._unqueueUpdateStates();
-
-        if (this._scrollValueId)
-            this._scrollAdjustment.disconnect(this._scrollValueId);
-        this._scrollValueId = 0;
-
-        if (this._monitorsChangedId)
-            Main.layoutManager.disconnect(this._monitorsChangedId);
-        this._monitorsChangedId = 0;
-
-        if (this._workareasChangedId)
-            global.display.disconnect(this._workareasChangedId);
-        this._workareasChangedId = 0;
-
-        this._overviewSignals.forEach(id => Main.overview.disconnect(id));
-        this._overviewSignals = [];
 
         if (this._settings)
             this._settings.run_dispose();
@@ -1002,24 +952,18 @@ var ThumbnailsBox = GObject.registerClass({
         if (this._thumbnails.length > 0)
             return;
 
-        let workspaceManager = global.workspace_manager;
-
-        this._nWorkspacesNotifyId =
-            workspaceManager.connect('notify::n-workspaces',
-                                     this._workspacesChanged.bind(this));
-        this._activeWorkspaceChangedId =
-            workspaceManager.connect('active-workspace-changed',
-                () => this._updateIndicator());
-        this._workspacesReorderedId =
-            workspaceManager.connect('workspaces-reordered', () => {
+        const { workspaceManager } = global;
+        workspaceManager.connectObject(
+            'notify::n-workspaces', this._workspacesChanged.bind(this),
+            'active-workspace-changed', () => this._updateIndicator(),
+            'workspaces-reordered', () => {
                 this._thumbnails.sort((a, b) => {
                     return a.metaWorkspace.index() - b.metaWorkspace.index();
                 });
                 this.queue_relayout();
-            });
-        this._syncStackingId =
-            Main.overview.connect('windows-restacked',
-                                  this._syncStacking.bind(this));
+            }, this);
+        Main.overview.connectObject('windows-restacked',
+            this._syncStacking.bind(this), this);
 
         this._targetScale = 0;
         this._scale = 0;
@@ -1039,25 +983,8 @@ var ThumbnailsBox = GObject.registerClass({
         if (this._thumbnails.length == 0)
             return;
 
-        const { workspaceManager } = global;
-
-        if (this._nWorkspacesNotifyId > 0) {
-            workspaceManager.disconnect(this._nWorkspacesNotifyId);
-            this._nWorkspacesNotifyId = 0;
-        }
-        if (this._activeWorkspaceChangedId > 0) {
-            workspaceManager.disconnect(this._activeWorkspaceChangedId);
-            this._activeWorkspaceChangedId = 0;
-        }
-        if (this._workspacesReorderedId > 0) {
-            workspaceManager.disconnect(this._workspacesReorderedId);
-            this._workspacesReorderedId = 0;
-        }
-
-        if (this._syncStackingId > 0) {
-            Main.overview.disconnect(this._syncStackingId);
-            this._syncStackingId = 0;
-        }
+        global.workspace_manager.disconnectObject(this);
+        Main.overview.disconnectObject(this);
 
         for (let w = 0; w < this._thumbnails.length; w++)
             this._thumbnails[w].destroy();

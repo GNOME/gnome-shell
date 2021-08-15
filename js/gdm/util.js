@@ -165,10 +165,9 @@ var ShellUserVerifier = class {
         this.smartcardDetected = false;
         this._checkForSmartcard();
 
-        this._smartcardInsertedId = this._smartcardManager.connect('smartcard-inserted',
-                                                                   this._checkForSmartcard.bind(this));
-        this._smartcardRemovedId = this._smartcardManager.connect('smartcard-removed',
-                                                                  this._checkForSmartcard.bind(this));
+        this._smartcardManager.connectObject(
+            'smartcard-inserted', this._checkForSmartcard.bind(this),
+            'smartcard-removed', this._checkForSmartcard.bind(this), this);
 
         this._messageQueue = [];
         this._messageQueueTimeoutId = 0;
@@ -187,9 +186,8 @@ var ShellUserVerifier = class {
                     this._credentialManagers[service].token);
             }
 
-            this._credentialManagers[service]._authenticatedSignalId =
-                this._credentialManagers[service].connect('user-authenticated',
-                                                          this._onCredentialManagerAuthenticated.bind(this));
+            this._credentialManagers[service].connectObject('user-authenticated',
+                this._onCredentialManagerAuthenticated.bind(this), this);
         }
     }
 
@@ -259,13 +257,12 @@ var ShellUserVerifier = class {
         this._settings.run_dispose();
         this._settings = null;
 
-        this._smartcardManager.disconnect(this._smartcardInsertedId);
-        this._smartcardManager.disconnect(this._smartcardRemovedId);
+        this._smartcardManager.disconnectObject(this);
         this._smartcardManager = null;
 
         for (let service in this._credentialManagers) {
             let credentialManager = this._credentialManagers[service];
-            credentialManager.disconnect(credentialManager._authenticatedSignalId);
+            credentialManager.disconnectObject(this);
             credentialManager = null;
         }
     }
@@ -495,35 +492,26 @@ var ShellUserVerifier = class {
 
     _connectSignals() {
         this._disconnectSignals();
-        this._signalIds = [];
 
-        let id = this._userVerifier.connect('info', this._onInfo.bind(this));
-        this._signalIds.push(id);
-        id = this._userVerifier.connect('problem', this._onProblem.bind(this));
-        this._signalIds.push(id);
-        id = this._userVerifier.connect('info-query', this._onInfoQuery.bind(this));
-        this._signalIds.push(id);
-        id = this._userVerifier.connect('secret-info-query', this._onSecretInfoQuery.bind(this));
-        this._signalIds.push(id);
-        id = this._userVerifier.connect('conversation-stopped', this._onConversationStopped.bind(this));
-        this._signalIds.push(id);
-        id = this._userVerifier.connect('service-unavailable', this._onServiceUnavailable.bind(this));
-        this._signalIds.push(id);
-        id = this._userVerifier.connect('reset', this._onReset.bind(this));
-        this._signalIds.push(id);
-        id = this._userVerifier.connect('verification-complete', this._onVerificationComplete.bind(this));
-        this._signalIds.push(id);
+        this._userVerifier.connectObject(
+            'info', this._onInfo.bind(this),
+            'problem', this._onProblem.bind(this),
+            'info-query', this._onInfoQuery.bind(this),
+            'secret-info-query', this._onSecretInfoQuery.bind(this),
+            'conversation-stopped', this._onConversationStopped.bind(this),
+            'service-unavailable', this._onServiceUnavailable.bind(this),
+            'reset', this._onReset.bind(this),
+            'verification-complete', this._onVerificationComplete.bind(this),
+            this);
 
-        if (this._userVerifierChoiceList)
-            this._userVerifierChoiceList.connect('choice-query', this._onChoiceListQuery.bind(this));
+        if (this._userVerifierChoiceList) {
+            this._userVerifierChoiceList.connectObject('choice-query',
+                this._onChoiceListQuery.bind(this), this);
+        }
     }
 
     _disconnectSignals() {
-        if (!this._signalIds || !this._userVerifier)
-            return;
-
-        this._signalIds.forEach(s => this._userVerifier.disconnect(s));
-        this._signalIds = [];
+        this._userVerifier?.disconnectObject(this);
     }
 
     _getForegroundService() {

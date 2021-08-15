@@ -22,11 +22,11 @@ class Animation extends St.Bin {
         this.connect('resource-scale-changed',
             this._loadFile.bind(this, file, width, height));
 
-        this._scaleChangedId = themeContext.connect('notify::scale-factor',
+        themeContext.connectObject('notify::scale-factor',
             () => {
                 this._loadFile(file, width, height);
                 this.set_size(width * themeContext.scale_factor, height * themeContext.scale_factor);
-            });
+            }, this);
 
         this._speed = speed;
 
@@ -122,11 +122,6 @@ class Animation extends St.Bin {
 
     _onDestroy() {
         this.stop();
-
-        let themeContext = St.ThemeContext.get_for_stage(global.stage);
-        if (this._scaleChangedId)
-            themeContext.disconnect(this._scaleChangedId);
-        this._scaleChangedId = 0;
     }
 });
 

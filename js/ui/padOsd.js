@@ -652,24 +652,25 @@ var PadOsd = GObject.registerClass({
         this._padChooser = null;
 
         let seat = Clutter.get_default_backend().get_default_seat();
-        this._deviceAddedId = seat.connect('device-added', (_seat, device) => {
-            if (device.get_device_type() == Clutter.InputDeviceType.PAD_DEVICE &&
-                this.padDevice.is_grouped(device)) {
-                this._groupPads.push(device);
-                this._updatePadChooser();
-            }
-        });
-        this._deviceRemovedId = seat.connect('device-removed', (_seat, device) => {
-            // If the device is being removed, destroy the padOsd.
-            if (device == this.padDevice) {
-                this.destroy();
-            } else if (this._groupPads.includes(device)) {
-                // Or update the pad chooser if the device belongs to
-                // the same group.
-                this._groupPads.splice(this._groupPads.indexOf(device), 1);
-                this._updatePadChooser();
-            }
-        });
+        seat.connectObject(
+            'device-added', (_seat, device) => {
+                if (device.get_device_type() === Clutter.InputDeviceType.PAD_DEVICE &&
+                    this.padDevice.is_grouped(device)) {
+                    this._groupPads.push(device);
+                    this._updatePadChooser();
+                }
+            },
+            'device-removed', (_seat, device) => {
+                // If the device is being removed, destroy the padOsd.
+                if (device === this.padDevice) {
+                    this.destroy();
+                } else if (this._groupPads.includes(device)) {
+                    // Or update the pad chooser if the device belongs to
+                    // the same group.
+                    this._groupPads.splice(this._groupPads.indexOf(device), 1);
+                    this._updatePadChooser();
+                }
+            }, this);
 
         seat.list_devices().forEach(device => {
             if (device != this.padDevice &&
@@ -943,16 +944,6 @@ var PadOsd = GObject.registerClass({
         Main.popModal(this._grab);
         this._grab = null;
         this._actionEditor.close();
-
-        let seat = Clutter.get_default_backend().get_default_seat();
-        if (this._deviceRemovedId != 0) {
-            seat.disconnect(this._deviceRemovedId);
-            this._deviceRemovedId = 0;
-        }
-        if (this._deviceAddedId != 0) {
-            seat.disconnect(this._deviceAddedId);
-            this._deviceAddedId = 0;
-        }
 
         this.emit('closed');
     }

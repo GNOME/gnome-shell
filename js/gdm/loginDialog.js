@@ -55,10 +55,8 @@ var UserListItem = GObject.registerClass({
         });
 
         this.user = user;
-        this._userChangedId = this.user.connect('changed',
-                                                this._onUserChanged.bind(this));
+        this.user.connectObject('changed', this._onUserChanged.bind(this), this);
 
-        this.connect('destroy', this._onDestroy.bind(this));
         this.connect('notify::hover', () => {
             this._setSelected(this.hover);
         });
@@ -98,10 +96,6 @@ var UserListItem = GObject.registerClass({
             this.add_style_pseudo_class('logged-in');
         else
             this.remove_style_pseudo_class('logged-in');
-    }
-
-    _onDestroy() {
-        this.user.disconnect(this._userChangedId);
     }
 
     vfunc_clicked() {
@@ -441,8 +435,8 @@ var LoginDialog = GObject.registerClass({
                                this._updateLogo.bind(this));
 
         this._textureCache = St.TextureCache.get_default();
-        this._updateLogoTextureId = this._textureCache.connect('texture-file-changed',
-                                                               this._updateLogoTexture.bind(this));
+        this._textureCache.connectObject('texture-file-changed',
+            this._updateLogoTexture.bind(this), this);
 
         this._userSelectionBox = new St.BoxLayout({
             style_class: 'login-dialog-user-selection-box',
@@ -533,16 +527,16 @@ var LoginDialog = GObject.registerClass({
         this._userListLoaded = false;
 
         this._realmManager = new Realmd.Manager();
-        this._realmSignalId = this._realmManager.connect('login-format-changed',
-                                                         this._showRealmLoginHint.bind(this));
+        this._realmManager.connectObject('login-format-changed',
+            this._showRealmLoginHint.bind(this), this);
 
         LoginManager.getLoginManager().getCurrentSessionProxy(this._gotGreeterSessionProxy.bind(this));
 
         // If the user list is enabled, it should take key focus; make sure the
         // screen shield is initialized first to prevent it from stealing the
         // focus later
-        this._startupCompleteId = Main.layoutManager.connect('startup-complete',
-                                                             this._updateDisableUserList.bind(this));
+        Main.layoutManager.connectObject('startup-complete',
+            this._updateDisableUserList.bind(this), this);
     }
 
     _getBannerAllocation(dialogBox) {
@@ -755,12 +749,11 @@ var LoginDialog = GObject.registerClass({
 
     _ensureUserListLoaded() {
         if (!this._userManager.is_loaded) {
-            this._userManagerLoadedId = this._userManager.connect('notify::is-loaded',
+            this._userManager.connectObject('notify::is-loaded',
                 () => {
                     if (this._userManager.is_loaded) {
+                        this._userManager.disconnectObject(this);
                         this._loadUserList();
-                        this._userManager.disconnect(this._userManagerLoadedId);
-                        this._userManagerLoadedId = 0;
                     }
                 });
         } else {
@@ -864,12 +857,10 @@ var LoginDialog = GObject.registerClass({
 
             this._greeter = this._gdmClient.get_greeter_sync(null);
 
-            this._defaultSessionChangedId = this._greeter.connect('default-session-name-changed',
-                                                                  this._onDefaultSessionChanged.bind(this));
-            this._sessionOpenedId = this._greeter.connect('session-opened',
-                                                          this._onSessionOpened.bind(this));
-            this._timedLoginRequestedId = this._greeter.connect('timed-login-requested',
-                                                                this._onTimedLoginRequested.bind(this));
+            this._greeter.connectObject(
+                'default-session-name-changed', this._onDefaultSessionChanged.bind(this),
+                'session-opened', this._onSessionOpened.bind(this),
+                'timed-login-requested', this._onTimedLoginRequested.bind(this), this);
         }
     }
 
@@ -994,11 +985,10 @@ var LoginDialog = GObject.registerClass({
 
     _gotGreeterSessionProxy(proxy) {
         this._greeterSessionProxy = proxy;
-        this._greeterSessionProxyChangedId =
-            proxy.connect('g-properties-changed', () => {
-                if (proxy.Active)
-                    this._loginScreenSessionActivated();
-            });
+        proxy.connectObject('g-properties-changed', () => {
+            if (proxy.Active)
+                this._loginScreenSessionActivated();
+        }, this);
     }
 
     _startSession(serviceName) {
@@ -1214,44 +1204,14 @@ var LoginDialog = GObject.registerClass({
     }
 
     _onDestroy() {
-        if (this._userManagerLoadedId) {
-            this._userManager.disconnect(this._userManagerLoadedId);
-            this._userManagerLoadedId = 0;
-        }
-        if (this._userAddedId) {
-            this._userManager.disconnect(this._userAddedId);
-            this._userAddedId = 0;
-        }
-        if (this._userRemovedId) {
-            this._userManager.disconnect(this._userRemovedId);
-            this._userRemovedId = 0;
-        }
-        if (this._userChangedId) {
-            this._userManager.disconnect(this._userChangedId);
-            this._userChangedId = 0;
-        }
-        this._textureCache.disconnect(this._updateLogoTextureId);
-        Main.layoutManager.disconnect(this._startupCompleteId);
         if (this._settings) {
             this._settings.run_dispose();
             this._settings = null;
         }
-        if (this._greeter) {
-            this._greeter.disconnect(this._defaultSessionChangedId);
-            this._greeter.disconnect(this._sessionOpenedId);
-            this._greeter.disconnect(this._timedLoginRequestedId);
-            this._greeter = null;
-        }
-        if (this._greeterSessionProxy) {
-            this._greeterSessionProxy.disconnect(this._greeterSessionProxyChangedId);
-            this._greeterSessionProxy = null;
-        }
-        if (this._realmManager) {
-            this._realmManager.disconnect(this._realmSignalId);
-            this._realmSignalId = 0;
-            this._realmManager.release();
-            this._realmManager = null;
-        }
+        this._greeter = null;
+        this._greeterSessionProxy = null;
+        this._realmManager?.release();
+        this._realmManager = null;
     }
 
     _loadUserList() {
@@ -1267,26 +1227,22 @@ var LoginDialog = GObject.registerClass({
 
         this._updateDisableUserList();
 
-        this._userAddedId = this._userManager.connect('user-added',
-            (userManager, user) => {
+        this._userManager.connectObject(
+            'user-added', (userManager, user) => {
                 this._userList.addUser(user);
                 this._updateDisableUserList();
-            });
-
-        this._userRemovedId = this._userManager.connect('user-removed',
-            (userManager, user) => {
+            },
+            'user-removed', (userManager, user) => {
                 this._userList.removeUser(user);
                 this._updateDisableUserList();
-            });
-
-        this._userChangedId = this._userManager.connect('user-changed',
-            (userManager, user) => {
+            },
+            'user-changed', (userManager, user) => {
                 if (this._userList.containsUser(user) && user.locked)
                     this._userList.removeUser(user);
                 else if (!this._userList.containsUser(user) && !user.locked)
                     this._userList.addUser(user);
                 this._updateDisableUserList();
-            });
+            }, this);
 
         return GLib.SOURCE_REMOVE;
     }

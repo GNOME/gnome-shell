@@ -58,17 +58,13 @@ var NotificationsBox = GObject.registerClass({
         });
         this._updateVisibility();
 
-        this._sourceAddedId = Main.messageTray.connect('source-added', this._sourceAdded.bind(this));
+        Main.messageTray.connectObject('source-added',
+            this._sourceAdded.bind(this), this);
 
         this.connect('destroy', this._onDestroy.bind(this));
     }
 
     _onDestroy() {
-        if (this._sourceAddedId) {
-            Main.messageTray.disconnect(this._sourceAddedId);
-            this._sourceAddedId = 0;
-        }
-
         let items = this._sources.entries();
         for (let [source, obj] of items)
             this._removeSource(source, obj);
@@ -194,10 +190,6 @@ var NotificationsBox = GObject.registerClass({
         let obj = {
             visible: source.policy.showInLockScreen,
             detailed: this._shouldShowDetails(source),
-            sourceDestroyId: 0,
-            sourceCountChangedId: 0,
-            sourceTitleChangedId: 0,
-            sourceUpdatedId: 0,
             sourceBox: null,
             titleLabel: null,
             countLabel: null,
@@ -211,20 +203,18 @@ var NotificationsBox = GObject.registerClass({
         this._showSource(source, obj, obj.sourceBox);
         this._notificationBox.add_child(obj.sourceBox);
 
-        obj.sourceCountChangedId = source.connect('notify::count', () => {
-            this._countChanged(source, obj);
-        });
-        obj.sourceTitleChangedId = source.connect('notify::title', () => {
-            this._titleChanged(source, obj);
-        });
+        source.connectObject(
+            'notify::count', () => this._countChanged(source, obj),
+            'notify::title', () => this._titleChanged(source, obj),
+            'destroy', () => {
+                this._removeSource(source, obj);
+                this._updateVisibility();
+            }, this);
         obj.policyChangedId = source.policy.connect('notify', (policy, pspec) => {
             if (pspec.name === 'show-in-lock-screen')
                 this._visibleChanged(source, obj);
             else
                 this._detailedChanged(source, obj);
-        });
-        obj.sourceDestroyId = source.connect('destroy', () => {
-            this._onSourceDestroy(source, obj);
         });
 
         this._sources.set(source, obj);
@@ -307,18 +297,10 @@ var NotificationsBox = GObject.registerClass({
         this._showSource(source, obj, obj.sourceBox);
     }
 
-    _onSourceDestroy(source, obj) {
-        this._removeSource(source, obj);
-        this._updateVisibility();
-    }
-
     _removeSource(source, obj) {
         obj.sourceBox.destroy();
         obj.sourceBox = obj.titleLabel = obj.countLabel = null;
 
-        source.disconnect(obj.sourceDestroyId);
-        source.disconnect(obj.sourceCountChangedId);
-        source.disconnect(obj.sourceTitleChangedId);
         source.policy.disconnect(obj.policyChangedId);
 
         this._sources.delete(source);
@@ -352,12 +334,12 @@ class UnlockDialogClock extends St.BoxLayout {
         this._wallClock.connect('notify::clock', this._updateClock.bind(this));
 
         this._seat = Clutter.get_default_backend().get_default_seat();
-        this._touchModeChangedId = this._seat.connect('notify::touch-mode',
-            this._updateHint.bind(this));
+        this._seat.connectObject('notify::touch-mode',
+            this._updateHint.bind(this), this);
 
         this._monitorManager = Meta.MonitorManager.get();
-        this._powerModeChangedId = this._monitorManager.connect(
-            'power-save-mode-changed', () => (this._hint.opacity = 0));
+        this._monitorManager.connectObject('power-save-mode-changed',
+            () => (this._hint.opacity = 0), this);
 
         this._idleMonitor = global.backend.get_core_idle_monitor();
         this._idleWatchId = this._idleMonitor.add_idle_watch(HINT_TIMEOUT * 1000, () => {
@@ -392,9 +374,7 @@ class UnlockDialogClock extends St.BoxLayout {
     _onDestroy() {
         this._wallClock.run_dispose();
 
-        this._seat.disconnect(this._touchModeChangedId);
         this._idleMonitor.remove_watch(this._idleWatchId);
-        this._monitorManager.disconnect(this._powerModeChangedId);
     }
 });
 
@@ -545,12 +525,12 @@ var UnlockDialog = GObject.registerClass({
         this._bgManagers = [];
 
         const themeContext = St.ThemeContext.get_for_stage(global.stage);
-        this._scaleChangedId = themeContext.connect('notify::scale-factor',
-            () => this._updateBackgroundEffects());
+        themeContext.connectObject('notify::scale-factor',
+            () => this._updateBackgroundEffects(), this);
 
         this._updateBackgrounds();
-        this._monitorsChangedId =
-            Main.layoutManager.connect('monitors-changed', this._updateBackgrounds.bind(this));
+        Main.layoutManager.connectObject('monitors-changed',
+            this._updateBackgrounds.bind(this), this);
 
         this._userManager = AccountsService.UserManager.get_default();
         this._userName = GLib.get_user_name();
@@ -593,15 +573,15 @@ var UnlockDialog = GObject.registerClass({
 
         this._screenSaverSettings = new Gio.Settings({ schema_id: 'org.gnome.desktop.screensaver' });
 
-        this._userSwitchEnabledId = this._screenSaverSettings.connect('changed::user-switch-enabled',
-            this._updateUserSwitchVisibility.bind(this));
+        this._screenSaverSettings.connectObject('changed::user-switch-enabled',
+            this._updateUserSwitchVisibility.bind(this), this);
 
         this._lockdownSettings = new Gio.Settings({ schema_id: 'org.gnome.desktop.lockdown' });
         this._lockdownSettings.connect('changed::disable-user-switching',
             this._updateUserSwitchVisibility.bind(this));
 
-        this._userLoadedId = this._user.connect('notify::is-loaded',
-            this._updateUserSwitchVisibility.bind(this));
+        this._user.connectObject('notify::is-loaded',
+            this._updateUserSwitchVisibility.bind(this), this);
 
         this._updateUserSwitchVisibility();
 
@@ -850,30 +830,9 @@ var UnlockDialog = GObject.registerClass({
             this._idleWatchId = 0;
         }
 
-        if (this._monitorsChangedId) {
-            Main.layoutManager.disconnect(this._monitorsChangedId);
-            delete this._monitorsChangedId;
-        }
-
-        let themeContext = St.ThemeContext.get_for_stage(global.stage);
-        if (this._scaleChangedId) {
-            themeContext.disconnect(this._scaleChangedId);
-            delete this._scaleChangedId;
-        }
-
         if (this._gdmClient) {
             this._gdmClient = null;
             delete this._gdmClient;
-        }
-
-        if (this._userLoadedId) {
-            this._user.disconnect(this._userLoadedId);
-            this._userLoadedId = 0;
-        }
-
-        if (this._userSwitchEnabledId) {
-            this._screenSaverSettings.disconnect(this._userSwitchEnabledId);
-            this._userSwitchEnabledId = 0;
         }
     }
 

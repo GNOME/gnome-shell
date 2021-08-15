@@ -76,7 +76,6 @@ var FocusGrabber = class FocusGrabber {
     constructor(actor) {
         this._actor = actor;
         this._prevKeyFocusActor = null;
-        this._focusActorChangedId = 0;
         this._focused = false;
     }
 
@@ -86,7 +85,8 @@ var FocusGrabber = class FocusGrabber {
 
         this._prevKeyFocusActor = global.stage.get_key_focus();
 
-        this._focusActorChangedId = global.stage.connect('notify::key-focus', this._focusActorChanged.bind(this));
+        global.stage.connectObject('notify::key-focus',
+            this._focusActorChanged.bind(this), this);
 
         if (!this._actor.navigate_focus(null, St.DirectionType.TAB_FORWARD, false))
             this._actor.grab_key_focus();
@@ -98,10 +98,7 @@ var FocusGrabber = class FocusGrabber {
         if (!this._focused)
             return false;
 
-        if (this._focusActorChangedId > 0) {
-            global.stage.disconnect(this._focusActorChangedId);
-            this._focusActorChangedId = 0;
-        }
+        global.stage.disconnectObject(this);
 
         this._focused = false;
         return true;
@@ -445,15 +442,6 @@ var Notification = GObject.registerClass({
 
     setResident(resident) {
         this.resident = resident;
-
-        if (this.resident) {
-            if (this._activatedId) {
-                this.disconnect(this._activatedId);
-                this._activatedId = 0;
-            }
-        } else if (!this._activatedId) {
-            this._activatedId = this.connect_after('activated', () => this.destroy());
-        }
     }
 
     setTransient(isTransient) {
@@ -495,14 +483,12 @@ var Notification = GObject.registerClass({
 
     activate() {
         this.emit('activated');
+
+        if (!this.resident)
+            this.destroy();
     }
 
     destroy(reason = NotificationDestroyedReason.DISMISSED) {
-        if (this._activatedId) {
-            this.disconnect(this._activatedId);
-            delete this._activatedId;
-        }
-
         this.emit('destroy', reason);
         this.run_dispose();
     }
@@ -525,21 +511,13 @@ var NotificationBanner = GObject.registerClass({
         this._addActions();
         this._addSecondaryIcon();
 
-        this._activatedId = this.notification.connect('activated', () => {
+        this.notification.connectObject('activated', () => {
             // We hide all types of notifications once the user clicks on
             // them because the common outcome of clicking should be the
             // relevant window being brought forward and the user's
             // attention switching to the window.
             this.emit('done-displaying');
-        });
-    }
-
-    _disconnectNotificationSignals() {
-        super._disconnectNotificationSignals();
-
-        if (this._activatedId)
-            this.notification.disconnect(this._activatedId);
-        this._activatedId = 0;
+        }, this);
     }
 
     _onUpdated(n, clear) {
@@ -621,10 +599,8 @@ class SourceActor extends St.Widget {
         this._source = source;
         this._size = size;
 
-        this.connect('destroy', () => {
-            this._source.disconnect(this._iconUpdatedId);
-            this._actorDestroyed = true;
-        });
+        this.connect('destroy',
+            () => (this._actorDestroyed = true));
         this._actorDestroyed = false;
 
         let scaleFactor = St.ThemeContext.get_for_stage(global.stage).scale_factor;
@@ -636,7 +612,8 @@ class SourceActor extends St.Widget {
 
         this.add_actor(this._iconBin);
 
-        this._iconUpdatedId = this._source.connect('icon-updated', this._updateIcon.bind(this));
+        this._source.connectObject('icon-updated',
+            this._updateIcon.bind(this), this);
         this._updateIcon();
     }
 
@@ -868,7 +845,6 @@ var MessageTray = GObject.registerClass({
         this._notificationQueue = [];
         this._notification = null;
         this._banner = null;
-        this._bannerClickedId = 0;
 
         this._userActiveWhileNotificationShown = false;
 
@@ -924,7 +900,7 @@ var MessageTray = GObject.registerClass({
                               Shell.ActionMode.OVERVIEW,
                               this._expandActiveNotification.bind(this));
 
-        this._sources = new Map();
+        this._sources = new Set();
 
         this._sessionUpdated();
     }
@@ -995,26 +971,18 @@ var MessageTray = GObject.registerClass({
     }
 
     _addSource(source) {
-        let obj = {
-            showId: 0,
-            destroyId: 0,
-        };
+        this._sources.add(source);
 
-        this._sources.set(source, obj);
-
-        obj.showId = source.connect('notification-show', this._onNotificationShow.bind(this));
-        obj.destroyId = source.connect('destroy', this._onSourceDestroy.bind(this));
+        source.connectObject(
+            'notification-show', this._onNotificationShow.bind(this),
+            'destroy', () => this._removeSource(source), this);
 
         this.emit('source-added', source);
     }
 
     _removeSource(source) {
-        let obj = this._sources.get(source);
         this._sources.delete(source);
-
-        source.disconnect(obj.showId);
-        source.disconnect(obj.destroyId);
-
+        source.disconnectObject(this);
         this.emit('source-removed', source);
     }
 
@@ -1032,10 +1000,6 @@ var MessageTray = GObject.registerClass({
             else
                 this._removeSource(source);
         }
-    }
-
-    _onSourceDestroy(source) {
-        this._removeSource(source);
     }
 
     _onNotificationDestroy(notification) {
@@ -1264,11 +1228,9 @@ var MessageTray = GObject.registerClass({
         }
 
         this._banner = this._notification.createBanner();
-        this._bannerClickedId = this._banner.connect('done-displaying',
-                                                     this._escapeTray.bind(this));
-        this._bannerUnfocusedId = this._banner.connect('unfocused', () => {
-            this._updateState();
-        });
+        this._banner.connectObject(
+            'done-displaying', this._escapeTray.bind(this),
+            'unfocused', () => this._updateState(), this);
 
         this._bannerBin.add_actor(this._banner);
 
@@ -1381,14 +1343,7 @@ var MessageTray = GObject.registerClass({
     _hideNotification(animate) {
         this._notificationFocusGrabber.ungrabFocus();
 
-        if (this._bannerClickedId) {
-            this._banner.disconnect(this._bannerClickedId);
-            this._bannerClickedId = 0;
-        }
-        if (this._bannerUnfocusedId) {
-            this._banner.disconnect(this._bannerUnfocusedId);
-            this._bannerUnfocusedId = 0;
-        }
+        this._banner.disconnectObject(this);
 
         this._resetNotificationLeftTimeout();
         this._bannerBin.remove_all_transitions();

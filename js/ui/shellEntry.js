@@ -174,19 +174,13 @@ class CapsLockWarning extends St.Label {
 
         this.connect('notify::mapped', () => {
             if (this.is_mapped()) {
-                this._stateChangedId = this._keymap.connect('state-changed',
-                    () => this._sync(true));
+                this._keymap.connectObject(
+                    'state-changed', () => this._sync(true), this);
             } else {
-                this._keymap.disconnect(this._stateChangedId);
-                this._stateChangedId = 0;
+                this._keymap.disconnectObject(this);
             }
 
             this._sync(false);
-        });
-
-        this.connect('destroy', () => {
-            if (this._stateChangedId)
-                this._keymap.disconnect(this._stateChangedId);
         });
     }
 

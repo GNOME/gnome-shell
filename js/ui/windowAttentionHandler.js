@@ -9,10 +9,10 @@ const MessageTray = imports.ui.messageTray;
 var WindowAttentionHandler = class {
     constructor() {
         this._tracker = Shell.WindowTracker.get_default();
-        this._windowDemandsAttentionId = global.display.connect('window-demands-attention',
-                                                                this._onWindowDemandsAttention.bind(this));
-        this._windowMarkedUrgentId = global.display.connect('window-marked-urgent',
-                                                            this._onWindowDemandsAttention.bind(this));
+        global.display.connectObject(
+            'window-demands-attention', this._onWindowDemandsAttention.bind(this),
+            'window-marked-urgent', this._onWindowDemandsAttention.bind(this),
+            this);
     }
 
     _getTitleAndBanner(app, window) {
@@ -47,10 +47,10 @@ var WindowAttentionHandler = class {
 
         source.showNotification(notification);
 
-        source.signalIDs.push(window.connect('notify::title', () => {
+        window.connectObject('notify::title', () => {
             [title, banner] = this._getTitleAndBanner(app, window);
             notification.update(title, banner);
-        }));
+        }, source);
     }
 };
 
@@ -62,15 +62,11 @@ class WindowAttentionSource extends MessageTray.Source {
 
         super._init(app.get_name());
 
-        this.signalIDs = [];
-        this.signalIDs.push(this._window.connect('notify::demands-attention',
-                                                 this._sync.bind(this)));
-        this.signalIDs.push(this._window.connect('notify::urgent',
-                                                 this._sync.bind(this)));
-        this.signalIDs.push(this._window.connect('focus',
-                                                 () => this.destroy()));
-        this.signalIDs.push(this._window.connect('unmanaged',
-                                                 () => this.destroy()));
+        this._window.connectObject(
+            'notify::demands-attention', this._sync.bind(this),
+            'notify::urgent', this._sync.bind(this),
+            'focus', () => this.destroy(),
+            'unmanaged', () => this.destroy(), this);
     }
 
     _sync() {
@@ -93,9 +89,7 @@ class WindowAttentionSource extends MessageTray.Source {
     }
 
     destroy(params) {
-        for (let i = 0; i < this.signalIDs.length; i++)
-            this._window.disconnect(this.signalIDs[i]);
-        this.signalIDs = [];
+        this._window.disconnectObject(this);
 
         super.destroy(params);
     }

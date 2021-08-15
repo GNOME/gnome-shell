@@ -47,17 +47,10 @@ class MediaMessage extends MessageList.Message {
                 this._player.next();
             });
 
-        this._updateHandlerId =
-            this._player.connect('changed', this._update.bind(this));
-        this._closedHandlerId =
-            this._player.connect('closed', this.close.bind(this));
+        this._player.connectObject(
+            'changed', this._update.bind(this),
+            'closed', this.close.bind(this), this);
         this._update();
-    }
-
-    _onDestroy() {
-        super._onDestroy();
-        this._player.disconnect(this._updateHandlerId);
-        this._player.disconnect(this._closedHandlerId);
     }
 
     vfunc_clicked() {
@@ -161,21 +154,21 @@ var MprisPlayer = class MprisPlayer {
     }
 
     _close() {
-        this._mprisProxy.disconnect(this._ownerNotifyId);
+        this._mprisProxy.disconnectObject(this);
         this._mprisProxy = null;
 
-        this._playerProxy.disconnect(this._propsChangedId);
+        this._playerProxy.disconnectObject(this);
         this._playerProxy = null;
 
         this.emit('closed');
     }
 
     _onMprisProxyReady() {
-        this._ownerNotifyId = this._mprisProxy.connect('notify::g-name-owner',
+        this._mprisProxy.connectObject('notify::g-name-owner',
             () => {
                 if (!this._mprisProxy.g_name_owner)
                     this._close();
-            });
+            }, this);
         // It is possible for the bus to disappear before the previous signal
         // is connected, so we must ensure that the bus still exists at this
         // point.
@@ -184,8 +177,8 @@ var MprisPlayer = class MprisPlayer {
     }
 
     _onPlayerProxyReady() {
-        this._propsChangedId = this._playerProxy.connect('g-properties-changed',
-                                                         this._updateState.bind(this));
+        this._playerProxy.connectObject(
+            'g-properties-changed', () => this._updateState(), this);
         this._updateState();
     }
 

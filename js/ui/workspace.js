@@ -941,10 +941,10 @@ class WorkspaceBackground extends St.Widget {
         this._workarea = Main.layoutManager.getWorkAreaForMonitor(monitorIndex);
 
         this._stateAdjustment = stateAdjustment;
-        this._adjustmentId = stateAdjustment.connect('notify::value', () => {
+        this._stateAdjustment.connectObject('notify::value', () => {
             this._updateBorderRadius();
             this.queue_relayout();
-        });
+        }, this);
 
         this._bin = new Clutter.Actor({
             layout_manager: new Clutter.BinLayout(),
@@ -966,12 +966,11 @@ class WorkspaceBackground extends St.Widget {
             useContentSize: false,
         });
 
-        this._workareasChangedId =
-            global.display.connect('workareas-changed', () => {
-                this._workarea = Main.layoutManager.getWorkAreaForMonitor(monitorIndex);
-                this._updateRoundedClipBounds();
-                this.queue_relayout();
-            });
+        global.display.connectObject('workareas-changed', () => {
+            this._workarea = Main.layoutManager.getWorkAreaForMonitor(monitorIndex);
+            this._updateRoundedClipBounds();
+            this.queue_relayout();
+        }, this);
         this._updateRoundedClipBounds();
 
         this._updateBorderRadius();
@@ -1051,16 +1050,6 @@ class WorkspaceBackground extends St.Widget {
             this._bgManager.destroy();
             this._bgManager = null;
         }
-
-        if (this._workareasChangedId) {
-            global.display.disconnect(this._workareasChangedId);
-            delete this._workareasChangedId;
-        }
-
-        if (this._adjustmentId) {
-            this._stateAdjustment.disconnect(this._adjustmentId);
-            delete this._adjustmentId;
-        }
     }
 });
 
@@ -1094,10 +1083,6 @@ class Workspace extends St.Widget {
         this.add_child(this._container);
 
         this.metaWorkspace = metaWorkspace;
-        this._activeWorkspaceChangedId =
-            this.metaWorkspace?.connect('notify::active', () => {
-                layoutManager.syncOverlays();
-            });
 
         this._overviewAdjustment = overviewAdjustment;
 
@@ -1138,16 +1123,14 @@ class Workspace extends St.Widget {
         }
 
         // Track window changes, but let the window tracker process them first
-        if (this.metaWorkspace) {
-            this._windowAddedId = this.metaWorkspace.connect_after(
-                'window-added', this._windowAdded.bind(this));
-            this._windowRemovedId = this.metaWorkspace.connect_after(
-                'window-removed', this._windowRemoved.bind(this));
-        }
-        this._windowEnteredMonitorId = global.display.connect_after(
-            'window-entered-monitor', this._windowEnteredMonitor.bind(this));
-        this._windowLeftMonitorId = global.display.connect_after(
-            'window-left-monitor', this._windowLeftMonitor.bind(this));
+        this.metaWorkspace?.connectObject(
+            'window-added', this._windowAdded.bind(this), GObject.ConnectFlags.AFTER,
+            'window-removed', this._windowRemoved.bind(this), GObject.ConnectFlags.AFTER,
+            'notify::active', () => layoutManager.syncOverlays(), this);
+        global.display.connectObject(
+            'window-entered-monitor', this._windowEnteredMonitor.bind(this), GObject.ConnectFlags.AFTER,
+            'window-left-monitor', this._windowLeftMonitor.bind(this), GObject.ConnectFlags.AFTER,
+            this);
         this._layoutFrozenId = 0;
 
         // DND requires this to be set
@@ -1347,24 +1330,12 @@ class Workspace extends St.Widget {
         }
 
         this._container.layout_manager.layout_frozen = true;
-        this._overviewHiddenId = Main.overview.connect('hidden', this._doneLeavingOverview.bind(this));
+        Main.overview.connectObject(
+            'hidden', this._doneLeavingOverview.bind(this), this);
     }
 
     _onDestroy() {
         this._clearSkipTaskbarSignals();
-
-        if (this._overviewHiddenId) {
-            Main.overview.disconnect(this._overviewHiddenId);
-            this._overviewHiddenId = 0;
-        }
-
-        if (this.metaWorkspace) {
-            this.metaWorkspace.disconnect(this._windowAddedId);
-            this.metaWorkspace.disconnect(this._windowRemovedId);
-            this.metaWorkspace.disconnect(this._activeWorkspaceChangedId);
-        }
-        global.display.disconnect(this._windowEnteredMonitorId);
-        global.display.disconnect(this._windowLeftMonitorId);
 
         if (this._layoutFrozenId > 0) {
             GLib.source_remove(this._layoutFrozenId);

@@ -171,21 +171,14 @@ class ScaleLayout extends Clutter.BinLayout {
         if (this._container == container)
             return;
 
-        if (this._container) {
-            for (let id of this._signals)
-                this._container.disconnect(id);
-        }
+        this._container?.disconnectObject(this);
 
         this._container = container;
-        this._signals = [];
 
         if (this._container) {
-            for (let signal of ['notify::scale-x', 'notify::scale-y']) {
-                let id = this._container.connect(signal, () => {
-                    this.layout_changed();
-                });
-                this._signals.push(id);
-            }
+            this._container.connectObject(
+                'notify::scale-x', () => this.layout_changed(),
+                'notify::scale-y', () => this.layout_changed(), this);
         }
     }
 
@@ -586,11 +579,8 @@ var MessageListSection = GObject.registerClass({
         this._list.connect('actor-added', this._sync.bind(this));
         this._list.connect('actor-removed', this._sync.bind(this));
 
-        let id = Main.sessionMode.connect('updated',
-                                          this._sync.bind(this));
-        this.connect('destroy', () => {
-            Main.sessionMode.disconnect(id);
-        });
+        Main.sessionMode.connectObject(
+            'updated', () => this._sync(), this);
 
         this._empty = true;
         this._canClear = false;

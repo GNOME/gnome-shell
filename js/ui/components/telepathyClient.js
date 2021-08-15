@@ -316,19 +316,21 @@ class ChatSource extends MessageTray.Source {
 
         this._conn = conn;
         this._channel = channel;
-        this._closedId = this._channel.connect('invalidated', this._channelClosed.bind(this));
 
         this._notifyTimeoutId = 0;
 
         this._presence = contact.get_presence_type();
 
-        this._sentId = this._channel.connect('message-sent', this._messageSent.bind(this));
-        this._receivedId = this._channel.connect('message-received', this._messageReceived.bind(this));
-        this._pendingId = this._channel.connect('pending-message-removed', this._pendingRemoved.bind(this));
+        this._channel.connectObject(
+            'invalidated', this._channelClosed.bind(this),
+            'message-sent', this._messageSent.bind(this),
+            'message-received', this._messageReceived.bind(this),
+            'pending-message-removed', this._pendingRemoved.bind(this), this);
 
-        this._notifyAliasId = this._contact.connect('notify::alias', this._updateAlias.bind(this));
-        this._notifyAvatarId = this._contact.connect('notify::avatar-file', this._updateAvatarIcon.bind(this));
-        this._presenceChangedId = this._contact.connect('presence-changed', this._presenceChanged.bind(this));
+        this._contact.connectObject(
+            'notify::alias', this._updateAlias.bind(this),
+            'notify::avatar-file', this._updateAvatarIcon.bind(this),
+            'presence-changed', this._presenceChanged.bind(this), this);
 
         // Add ourselves as a source.
         Main.messageTray.add(this);
@@ -341,14 +343,13 @@ class ChatSource extends MessageTray.Source {
             return;
 
         this._notification = new ChatNotification(this);
-        this._notification.connect('activated', this.open.bind(this));
-        this._notification.connect('updated', () => {
-            if (this._banner && this._banner.expanded)
-                this._ackMessages();
-        });
-        this._notification.connect('destroy', () => {
-            this._notification = null;
-        });
+        this._notification.connectObject(
+            'activated', this.open.bind(this),
+            'destroy', () => (this._notification = null),
+            'updated', () => {
+                if (this._banner && this._banner.expanded)
+                    this._ackMessages();
+            }, this);
         this.pushNotification(this._notification);
     }
 
@@ -362,11 +363,9 @@ class ChatSource extends MessageTray.Source {
         this._banner = new ChatNotificationBanner(this._notification);
 
         // We ack messages when the user expands the new notification
-        let id = this._banner.connect('expanded', this._ackMessages.bind(this));
-        this._banner.connect('destroy', () => {
-            this._banner.disconnect(id);
-            this._banner = null;
-        });
+        this._banner.connectObject(
+            'expanded', this._ackMessages.bind(this),
+            'destroy', () => (this._banner = null), this);
 
         return this._banner;
     }
@@ -535,14 +534,8 @@ class ChatSource extends MessageTray.Source {
             return;
 
         this._destroyed = true;
-        this._channel.disconnect(this._closedId);
-        this._channel.disconnect(this._receivedId);
-        this._channel.disconnect(this._pendingId);
-        this._channel.disconnect(this._sentId);
-
-        this._contact.disconnect(this._notifyAliasId);
-        this._contact.disconnect(this._notifyAvatarId);
-        this._contact.disconnect(this._presenceChangedId);
+        this._channel.disconnectObject(this);
+        this._contact.disconnectObject(this);
 
         super.destroy(reason);
     }
@@ -907,30 +900,17 @@ class ChatNotificationBanner extends MessageTray.NotificationBanner {
 
         this._messageActors = new Map();
 
-        this._messageAddedId = this.notification.connect('message-added',
-            (n, message) => {
-                this._addMessage(message);
-            });
-        this._messageRemovedId = this.notification.connect('message-removed',
-            (n, message) => {
+        this.notification.connectObject(
+            'timestamp-changed', (n, message) => this._updateTimestamp(message),
+            'message-added', (n, message) => this._addMessage(message),
+            'message-removed', (n, message) => {
                 let actor = this._messageActors.get(message);
                 if (this._messageActors.delete(message))
                     actor.destroy();
-            });
-        this._timestampChangedId = this.notification.connect('timestamp-changed',
-            (n, message) => {
-                this._updateTimestamp(message);
-            });
+            }, this);
 
         for (let i = this.notification.messages.length - 1; i >= 0; i--)
             this._addMessage(this.notification.messages[i]);
-    }
-
-    _onDestroy() {
-        super._onDestroy();
-        this.notification.disconnect(this._messageAddedId);
-        this.notification.disconnect(this._messageRemovedId);
-        this.notification.disconnect(this._timestampChangedId);
     }
 
     scrollTo(side) {

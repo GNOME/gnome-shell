@@ -67,8 +67,6 @@ class BaseIcon extends Shell.SquareBin {
 
         super._init({ style_class: styleClass });
 
-        this.connect('destroy', this._onDestroy.bind(this));
-
         this._box = new St.BoxLayout({
             vertical: true,
             x_expand: true,
@@ -99,7 +97,8 @@ class BaseIcon extends Shell.SquareBin {
         this.icon = null;
 
         let cache = St.TextureCache.get_default();
-        this._iconThemeChangedId = cache.connect('icon-theme-changed', this._onIconThemeChanged.bind(this));
+        cache.connectObject(
+            'icon-theme-changed', this._onIconThemeChanged.bind(this), this);
     }
 
     // This can be overridden by a subclass, or by the createIcon
@@ -146,14 +145,6 @@ class BaseIcon extends Shell.SquareBin {
             return;
 
         this._createIconTexture(size);
-    }
-
-    _onDestroy() {
-        if (this._iconThemeChangedId > 0) {
-            let cache = St.TextureCache.get_default();
-            cache.disconnect(this._iconThemeChangedId);
-            this._iconThemeChangedId = 0;
-        }
     }
 
     _onIconThemeChanged() {
@@ -690,13 +681,12 @@ var IconGridLayout = GObject.registerClass({
     }
 
     vfunc_set_container(container) {
-        if (this._container)
-            this._container.disconnect(this._containerDestroyedId);
+        this._container?.disconnectObject(this);
 
         this._container = container;
 
         if (this._container)
-            this._containerDestroyedId = this._container.connect('destroy', this._onDestroy.bind(this));
+            this._container.connectObject('destroy', this._onDestroy.bind(this), this);
     }
 
     vfunc_get_preferred_width(_container, _forHeight) {

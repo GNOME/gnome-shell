@@ -154,15 +154,12 @@ var ModalDialog = GObject.registerClass({
     }
 
     setInitialKeyFocus(actor) {
-        if (this._initialKeyFocusDestroyId)
-            this._initialKeyFocus.disconnect(this._initialKeyFocusDestroyId);
+        this._initialKeyFocus?.disconnectObject(this);
 
         this._initialKeyFocus = actor;
 
-        this._initialKeyFocusDestroyId = actor.connect('destroy', () => {
-            this._initialKeyFocus = null;
-            this._initialKeyFocusDestroyId = 0;
-        });
+        actor.connectObject('destroy',
+            () => (this._initialKeyFocus = null), this);
     }
 
     open(timestamp, onPrimary) {

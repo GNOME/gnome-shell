@@ -71,7 +71,8 @@ var Client = class {
             log(`error creating bolt proxy: ${e.message}`);
             return;
         }
-        this._propsChangedId = this._proxy.connect('g-properties-changed', this._onPropertiesChanged.bind(this));
+        this._proxy.connectObject('g-properties-changed',
+            this._onPropertiesChanged.bind(this), this);
         this._deviceAddedId = this._proxy.connectSignal('DeviceAdded', this._onDeviceAdded.bind(this));
 
         this.probing = this._proxy.Probing;
@@ -102,7 +103,7 @@ var Client = class {
             return;
 
         this._proxy.disconnectSignal(this._deviceAddedId);
-        this._proxy.disconnect(this._propsChangedId);
+        this._proxy.disconnectObject(this);
         this._proxy = null;
     }
 
