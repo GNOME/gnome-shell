@@ -8,6 +8,8 @@
   }
 }
 
+$screenshot_ui_button_red: #e01b24;
+
 .screenshot-ui-panel {
   background-color: $osd_bg_color;
   border-radius: 12px + 21px;
@@ -67,6 +69,48 @@
     .screenshot-ui-capture-button-circle {
       background-color: darken(white, 50%);
     }
+  }
+
+  &:cast {
+    .screenshot-ui-capture-button-circle {
+      background-color: $screenshot_ui_button_red;
+    }
+
+    &:hover, &:focus {
+      .screenshot-ui-capture-button-circle {
+        background-color: darken($screenshot_ui_button_red, 15%);
+      }
+    }
+
+    &:active {
+      .screenshot-ui-capture-button-circle {
+        background-color: darken($screenshot_ui_button_red, 30%);
+      }
+    }
+  }
+}
+
+.screenshot-ui-shot-cast-container {
+  background-color: $hover_bg_color;
+  border-radius: 12px;
+  padding: $base_padding / 2;
+  spacing: $base_padding / 2;
+
+  &:ltr { margin-left: 3px; }
+  &:rtl { margin-right: 3px; }
+}
+
+.screenshot-ui-shot-cast-button {
+  padding: $base_padding $base_padding * 1.5;
+  background-color: transparent;
+  &:hover, &:focus { background-color: lighten($hover_bg_color, 5%); }
+  &:active { background-color: $active_bg_color; }
+  &:checked { background-color: white; color: black; }
+
+  border-radius: 12px - 3px;
+
+  StIcon {
+    icon-size: $base_icon_size;
   }
 }
 
