@@ -70,6 +70,28 @@
   }
 }
 
+.screenshot-ui-area-indicator-shade {
+  background-color: rgba(0, 0, 0, .3);
+}
+
+.screenshot-ui-area-selector {
+  .screenshot-ui-area-indicator-shade {
+    background-color: rgba(0, 0, 0, .5);
+  }
+
+  .screenshot-ui-area-indicator-selection {
+    border: 2px white;
+  }
+}
+
+.screenshot-ui-area-selector-handle {
+  border-radius: 99px;
+  background-color: white;
+  box-shadow: 0 1px 3px 2px rgba(0, 0, 0, 0.2);
+  width: 24px;
+  height: 24px;
+}
+
 .screenshot-ui-screen-selector {
   transition-duration: 200ms;
   background-color: rgba(0, 0, 0, .5);

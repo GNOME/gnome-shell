@@ -44,6 +44,594 @@ class IconLabelButton extends St.Button {
     }
 });
 
+var UIAreaIndicator = GObject.registerClass(
+class UIAreaIndicator extends St.Widget {
+    _init(params) {
+        super._init(params);
+
+        this._topRect = new St.Widget({ style_class: 'screenshot-ui-area-indicator-shade' });
+        this._topRect.add_constraint(new Clutter.BindConstraint({
+            source: this,
+            coordinate: Clutter.BindCoordinate.WIDTH,
+        }));
+        this._topRect.add_constraint(new Clutter.SnapConstraint({
+            source: this,
+            from_edge: Clutter.SnapEdge.TOP,
+            to_edge: Clutter.SnapEdge.TOP,
+        }));
+        this._topRect.add_constraint(new Clutter.SnapConstraint({
+            source: this,
+            from_edge: Clutter.SnapEdge.LEFT,
+            to_edge: Clutter.SnapEdge.LEFT,
+        }));
+        this.add_child(this._topRect);
+
+        this._bottomRect = new St.Widget({ style_class: 'screenshot-ui-area-indicator-shade' });
+        this._bottomRect.add_constraint(new Clutter.BindConstraint({
+            source: this,
+            coordinate: Clutter.BindCoordinate.WIDTH,
+        }));
+        this._bottomRect.add_constraint(new Clutter.SnapConstraint({
+            source: this,
+            from_edge: Clutter.SnapEdge.BOTTOM,
+            to_edge: Clutter.SnapEdge.BOTTOM,
+        }));
+        this._bottomRect.add_constraint(new Clutter.SnapConstraint({
+            source: this,
+            from_edge: Clutter.SnapEdge.LEFT,
+            to_edge: Clutter.SnapEdge.LEFT,
+        }));
+        this.add_child(this._bottomRect);
+
+        this._leftRect = new St.Widget({ style_class: 'screenshot-ui-area-indicator-shade' });
+        this._leftRect.add_constraint(new Clutter.SnapConstraint({
+            source: this,
+            from_edge: Clutter.SnapEdge.LEFT,
+            to_edge: Clutter.SnapEdge.LEFT,
+        }));
+        this._leftRect.add_constraint(new Clutter.SnapConstraint({
+            source: this._topRect,
+            from_edge: Clutter.SnapEdge.TOP,
+            to_edge: Clutter.SnapEdge.BOTTOM,
+        }));
+        this._leftRect.add_constraint(new Clutter.SnapConstraint({
+            source: this._bottomRect,
+            from_edge: Clutter.SnapEdge.BOTTOM,
+            to_edge: Clutter.SnapEdge.TOP,
+        }));
+        this.add_child(this._leftRect);
+
+        this._rightRect = new St.Widget({ style_class: 'screenshot-ui-area-indicator-shade' });
+        this._rightRect.add_constraint(new Clutter.SnapConstraint({
+            source: this,
+            from_edge: Clutter.SnapEdge.RIGHT,
+            to_edge: Clutter.SnapEdge.RIGHT,
+        }));
+        this._rightRect.add_constraint(new Clutter.SnapConstraint({
+            source: this._topRect,
+            from_edge: Clutter.SnapEdge.TOP,
+            to_edge: Clutter.SnapEdge.BOTTOM,
+        }));
+        this._rightRect.add_constraint(new Clutter.SnapConstraint({
+            source: this._bottomRect,
+            from_edge: Clutter.SnapEdge.BOTTOM,
+            to_edge: Clutter.SnapEdge.TOP,
+        }));
+        this.add_child(this._rightRect);
+
+        this._selectionRect = new St.Widget({ style_class: 'screenshot-ui-area-indicator-selection' });
+        this.add_child(this._selectionRect);
+
+        this._topRect.add_constraint(new Clutter.SnapConstraint({
+            source: this._selectionRect,
+            from_edge: Clutter.SnapEdge.BOTTOM,
+            to_edge: Clutter.SnapEdge.TOP,
+        }));
+
+        this._bottomRect.add_constraint(new Clutter.SnapConstraint({
+            source: this._selectionRect,
+            from_edge: Clutter.SnapEdge.TOP,
+            to_edge: Clutter.SnapEdge.BOTTOM,
+        }));
+
+        this._leftRect.add_constraint(new Clutter.SnapConstraint({
+            source: this._selectionRect,
+            from_edge: Clutter.SnapEdge.RIGHT,
+            to_edge: Clutter.SnapEdge.LEFT,
+        }));
+
+        this._rightRect.add_constraint(new Clutter.SnapConstraint({
+            source: this._selectionRect,
+            from_edge: Clutter.SnapEdge.LEFT,
+            to_edge: Clutter.SnapEdge.RIGHT,
+        }));
+    }
+
+    setSelectionRect(x, y, width, height) {
+        this._selectionRect.set_position(x, y);
+        this._selectionRect.set_size(width, height);
+    }
+});
+
+var UIAreaSelector = GObject.registerClass({
+    Signals: { 'drag-started': {}, 'drag-ended': {} },
+}, class UIAreaSelector extends St.Widget {
+    _init(params) {
+        super._init(params);
+
+        // During a drag, this can be Clutter.BUTTON_PRIMARY,
+        // Clutter.BUTTON_SECONDARY or the string "touch" to identify the source
+        // of the drag operation.
+        this._dragButton = 0;
+        this._dragDevice = null;
+        this._dragSequence = null;
+
+        this._areaIndicator = new UIAreaIndicator();
+        this._areaIndicator.add_constraint(new Clutter.BindConstraint({
+            source: this,
+            coordinate: Clutter.BindCoordinate.ALL,
+        }));
+        this.add_child(this._areaIndicator);
+
+        this._topLeftHandle = new St.Widget({ style_class: 'screenshot-ui-area-selector-handle' });
+        this.add_child(this._topLeftHandle);
+        this._topRightHandle = new St.Widget({ style_class: 'screenshot-ui-area-selector-handle' });
+        this.add_child(this._topRightHandle);
+        this._bottomLeftHandle = new St.Widget({ style_class: 'screenshot-ui-area-selector-handle' });
+        this.add_child(this._bottomLeftHandle);
+        this._bottomRightHandle = new St.Widget({ style_class: 'screenshot-ui-area-selector-handle' });
+        this.add_child(this._bottomRightHandle);
+
+        // This will be updated before the first drawn frame.
+        this._handleSize = 0;
+        this._topLeftHandle.connect('style-changed', widget => {
+            this._handleSize = widget.get_theme_node().get_width();
+            this._updateSelectionRect();
+        });
+
+        this.connect('notify::mapped', () => {
+            if (this.mapped) {
+                const [x, y] = global.get_pointer();
+                this._updateCursor(x, y);
+            }
+        });
+
+        // Initialize area to out of bounds so reset() below resets it.
+        this._startX = -1;
+        this._startY = 0;
+        this._lastX = 0;
+        this._lastY = 0;
+
+        this.reset();
+    }
+
+    reset() {
+        this.stopDrag();
+        global.display.set_cursor(Meta.Cursor.DEFAULT);
+
+        // Preserve area selection if possible. If the area goes out of bounds,
+        // the monitors might have changed, so reset the area.
+        const [x, y, w, h] = this.getGeometry();
+        if (x < 0 || y < 0 || x + w > this.width || y + h > this.height) {
+            // Initialize area to out of bounds so if there's no monitor,
+            // the area will be reset once a monitor does appear.
+            this._startX = -1;
+            this._startY = 0;
+            this._lastX = 0;
+            this._lastY = 0;
+
+            // This can happen when running headless without any monitors.
+            if (Main.layoutManager.primaryIndex !== -1) {
+                const monitor =
+                    Main.layoutManager.monitors[Main.layoutManager.primaryIndex];
+
+                this._startX = monitor.x + Math.floor(monitor.width * 3 / 8);
+                this._startY = monitor.y + Math.floor(monitor.height * 3 / 8);
+                this._lastX = monitor.x + Math.floor(monitor.width * 5 / 8) - 1;
+                this._lastY = monitor.y + Math.floor(monitor.height * 5 / 8) - 1;
+            }
+
+            this._updateSelectionRect();
+        }
+    }
+
+    getGeometry() {
+        const leftX = Math.min(this._startX, this._lastX);
+        const topY = Math.min(this._startY, this._lastY);
+        const rightX = Math.max(this._startX, this._lastX);
+        const bottomY = Math.max(this._startY, this._lastY);
+
+        return [leftX, topY, rightX - leftX + 1, bottomY - topY + 1];
+    }
+
+    _updateSelectionRect() {
+        const [x, y, w, h] = this.getGeometry();
+        this._areaIndicator.setSelectionRect(x, y, w, h);
+
+        const offset = this._handleSize / 2;
+        this._topLeftHandle.set_position(x - offset, y - offset);
+        this._topRightHandle.set_position(x + w - 1 - offset, y - offset);
+        this._bottomLeftHandle.set_position(x - offset, y + h - 1 - offset);
+        this._bottomRightHandle.set_position(x + w - 1 - offset, y + h - 1 - offset);
+    }
+
+    _computeCursorType(cursorX, cursorY) {
+        const [leftX, topY, width, height] = this.getGeometry();
+        const [rightX, bottomY] = [leftX + width - 1, topY + height - 1];
+        const [x, y] = [cursorX, cursorY];
+
+        // Check if the cursor overlaps the handles first.
+        const limit = (this._handleSize / 2) ** 2;
+        if ((leftX - x) ** 2 + (topY - y) ** 2 <= limit)
+            return Meta.Cursor.NW_RESIZE;
+        else if ((rightX - x) ** 2 + (topY - y) ** 2 <= limit)
+            return Meta.Cursor.NE_RESIZE;
+        else if ((leftX - x) ** 2 + (bottomY - y) ** 2 <= limit)
+            return Meta.Cursor.SW_RESIZE;
+        else if ((rightX - x) ** 2 + (bottomY - y) ** 2 <= limit)
+            return Meta.Cursor.SE_RESIZE;
+
+        // Now check the rest of the rectangle.
+        const threshold =
+            10 * St.ThemeContext.get_for_stage(global.stage).scaleFactor;
+
+        if (leftX - x >= 0 && leftX - x <= threshold) {
+            if (topY - y >= 0 && topY - y <= threshold)
+                return Meta.Cursor.NW_RESIZE;
+            else if (y - bottomY >= 0 && y - bottomY <= threshold)
+                return Meta.Cursor.SW_RESIZE;
+            else if (topY - y < 0 && y - bottomY < 0)
+                return Meta.Cursor.WEST_RESIZE;
+        } else if (x - rightX >= 0 && x - rightX <= threshold) {
+            if (topY - y >= 0 && topY - y <= threshold)
+                return Meta.Cursor.NE_RESIZE;
+            else if (y - bottomY >= 0 && y - bottomY <= threshold)
+                return Meta.Cursor.SE_RESIZE;
+            else if (topY - y < 0 && y - bottomY < 0)
+                return Meta.Cursor.EAST_RESIZE;
+        } else if (leftX - x < 0 && x - rightX < 0) {
+            if (topY - y >= 0 && topY - y <= threshold)
+                return Meta.Cursor.NORTH_RESIZE;
+            else if (y - bottomY >= 0 && y - bottomY <= threshold)
+                return Meta.Cursor.SOUTH_RESIZE;
+            else if (topY - y < 0 && y - bottomY < 0)
+                return Meta.Cursor.MOVE_OR_RESIZE_WINDOW;
+        }
+
+        return Meta.Cursor.CROSSHAIR;
+    }
+
+    stopDrag() {
+        if (!this._dragButton)
+            return;
+
+        if (this._dragSequence)
+            this._dragDevice.sequence_ungrab(this._dragSequence);
+        else
+            this._dragDevice.ungrab();
+
+        this._dragButton = 0;
+        this._dragDevice = null;
+        this._dragSequence = null;
+
+        if (this._dragCursor === Meta.Cursor.CROSSHAIR &&
+            this._lastX === this._startX && this._lastY === this._startY) {
+            // The user clicked without dragging. Make up a larger selection
+            // to reduce confusion.
+            const offset =
+                20 * St.ThemeContext.get_for_stage(global.stage).scaleFactor;
+            this._startX -= offset;
+            this._startY -= offset;
+            this._lastX += offset;
+            this._lastY += offset;
+
+            // Keep the coordinates inside the stage.
+            if (this._startX < 0) {
+                this._lastX -= this._startX;
+                this._startX = 0;
+            } else if (this._lastX >= this.width) {
+                this._startX -= this._lastX - this.width + 1;
+                this._lastX = this.width - 1;
+            }
+
+            if (this._startY < 0) {
+                this._lastY -= this._startY;
+                this._startY = 0;
+            } else if (this._lastY >= this.height) {
+                this._startY -= this._lastY - this.height + 1;
+                this._lastY = this.height - 1;
+            }
+
+            this._updateSelectionRect();
+        }
+
+        this.emit('drag-ended');
+    }
+
+    _updateCursor(x, y) {
+        const cursor = this._computeCursorType(x, y);
+        global.display.set_cursor(cursor);
+    }
+
+    _onPress(event, button, sequence) {
+        if (this._dragButton)
+            return Clutter.EVENT_PROPAGATE;
+
+        const cursor = this._computeCursorType(event.x, event.y);
+
+        // Clicking outside of the selection, or using the right mouse button,
+        // or with Ctrl results in dragging a new selection from scratch.
+        if (cursor === Meta.Cursor.CROSSHAIR ||
+            button === Clutter.BUTTON_SECONDARY ||
+            (event.modifier_state & Clutter.ModifierType.CONTROL_MASK)) {
+            this._dragButton = button;
+
+            this._dragCursor = Meta.Cursor.CROSSHAIR;
+            global.display.set_cursor(Meta.Cursor.CROSSHAIR);
+
+            [this._startX, this._startY] = [event.x, event.y];
+            this._lastX = this._startX = Math.floor(this._startX);
+            this._lastY = this._startY = Math.floor(this._startY);
+
+            this._updateSelectionRect();
+        } else {
+            // This is a move or resize operation.
+            this._dragButton = button;
+
+            this._dragCursor = cursor;
+            this._dragStartX = event.x;
+            this._dragStartY = event.y;
+
+            const [leftX, topY, width, height] = this.getGeometry();
+            const rightX = leftX + width - 1;
+            const bottomY = topY + height - 1;
+
+            // For moving, start X and Y are the top left corner, while
+            // last X and Y are the bottom right corner.
+            if (cursor === Meta.Cursor.MOVE_OR_RESIZE_WINDOW) {
+                this._startX = leftX;
+                this._startY = topY;
+                this._lastX = rightX;
+                this._lastY = bottomY;
+            }
+
+            // Start X and Y are set to the stationary sides, while last X
+            // and Y are set to the moving sides.
+            if (cursor === Meta.Cursor.NW_RESIZE ||
+                cursor === Meta.Cursor.WEST_RESIZE ||
+                cursor === Meta.Cursor.SW_RESIZE) {
+                this._startX = rightX;
+                this._lastX = leftX;
+            }
+            if (cursor === Meta.Cursor.NE_RESIZE ||
+                cursor === Meta.Cursor.EAST_RESIZE ||
+                cursor === Meta.Cursor.SE_RESIZE) {
+                this._startX = leftX;
+                this._lastX = rightX;
+            }
+            if (cursor === Meta.Cursor.NW_RESIZE ||
+                cursor === Meta.Cursor.NORTH_RESIZE ||
+                cursor === Meta.Cursor.NE_RESIZE) {
+                this._startY = bottomY;
+                this._lastY = topY;
+            }
+            if (cursor === Meta.Cursor.SW_RESIZE ||
+                cursor === Meta.Cursor.SOUTH_RESIZE ||
+                cursor === Meta.Cursor.SE_RESIZE) {
+                this._startY = topY;
+                this._lastY = bottomY;
+            }
+        }
+
+        if (this._dragButton) {
+            const device = event.device;
+            if (sequence)
+                device.sequence_grab(sequence, this);
+            else
+                device.grab(this);
+
+            this._dragDevice = device;
+            this._dragSequence = sequence;
+
+            this.emit('drag-started');
+
+            return Clutter.EVENT_STOP;
+        }
+
+        return Clutter.EVENT_PROPAGATE;
+    }
+
+    _onRelease(event, button, sequence) {
+        if (this._dragButton !== button ||
+            this._dragSequence?.get_slot() !== sequence?.get_slot())
+            return Clutter.EVENT_PROPAGATE;
+
+        this.stopDrag();
+
+        // We might have finished creating a new selection, so we need to
+        // update the cursor.
+        this._updateCursor(event.x, event.y);
+
+        return Clutter.EVENT_STOP;
+    }
+
+    _onMotion(event, sequence) {
+        if (!this._dragButton) {
+            this._updateCursor(event.x, event.y);
+            return Clutter.EVENT_PROPAGATE;
+        }
+
+        if (sequence?.get_slot() !== this._dragSequence?.get_slot())
+            return Clutter.EVENT_PROPAGATE;
+
+        if (this._dragCursor === Meta.Cursor.CROSSHAIR) {
+            [this._lastX, this._lastY] = [event.x, event.y];
+            this._lastX = Math.floor(this._lastX);
+            this._lastY = Math.floor(this._lastY);
+        } else {
+            let dx = Math.round(event.x - this._dragStartX);
+            let dy = Math.round(event.y - this._dragStartY);
+
+            if (this._dragCursor === Meta.Cursor.MOVE_OR_RESIZE_WINDOW) {
+                const [,, selectionWidth, selectionHeight] = this.getGeometry();
+
+                let newStartX = this._startX + dx;
+                let newStartY = this._startY + dy;
+                let newLastX = this._lastX + dx;
+                let newLastY = this._lastY + dy;
+
+                let overshootX = 0;
+                let overshootY = 0;
+
+                // Keep the size intact if we bumped into the stage edge.
+                if (newStartX < 0) {
+                    overshootX = 0 - newStartX;
+                    newStartX = 0;
+                    newLastX = newStartX + (selectionWidth - 1);
+                } else if (newLastX > this.width - 1) {
+                    overshootX = (this.width - 1) - newLastX;
+                    newLastX = this.width - 1;
+                    newStartX = newLastX - (selectionWidth - 1);
+                }
+
+                if (newStartY < 0) {
+                    overshootY = 0 - newStartY;
+                    newStartY = 0;
+                    newLastY = newStartY + (selectionHeight - 1);
+                } else if (newLastY > this.height - 1) {
+                    overshootY = (this.height - 1) - newLastY;
+                    newLastY = this.height - 1;
+                    newStartY = newLastY - (selectionHeight - 1);
+                }
+
+                // Add the overshoot to the delta to create a "rubberbanding"
+                // behavior of the pointer when dragging.
+                dx += overshootX;
+                dy += overshootY;
+
+                this._startX = newStartX;
+                this._startY = newStartY;
+                this._lastX = newLastX;
+                this._lastY = newLastY;
+            } else {
+                if (this._dragCursor === Meta.Cursor.WEST_RESIZE ||
+                    this._dragCursor === Meta.Cursor.EAST_RESIZE)
+                    dy = 0;
+                if (this._dragCursor === Meta.Cursor.NORTH_RESIZE ||
+                    this._dragCursor === Meta.Cursor.SOUTH_RESIZE)
+                    dx = 0;
+
+                // Make sure last X and Y are clamped between 0 and size - 1,
+                // while always preserving the cursor dragging position relative
+                // to the selection rectangle.
+                this._lastX += dx;
+                if (this._lastX >= this.width) {
+                    dx -= this._lastX - this.width + 1;
+                    this._lastX = this.width - 1;
+                } else if (this._lastX < 0) {
+                    dx -= this._lastX;
+                    this._lastX = 0;
+                }
+
+                this._lastY += dy;
+                if (this._lastY >= this.height) {
+                    dy -= this._lastY - this.height + 1;
+                    this._lastY = this.height - 1;
+                } else if (this._lastY < 0) {
+                    dy -= this._lastY;
+                    this._lastY = 0;
+                }
+
+                // If we drag the handle past a selection side, update which
+                // handles are which.
+                if (this._lastX > this._startX) {
+                    if (this._dragCursor === Meta.Cursor.NW_RESIZE)
+                        this._dragCursor = Meta.Cursor.NE_RESIZE;
+                    else if (this._dragCursor === Meta.Cursor.SW_RESIZE)
+                        this._dragCursor = Meta.Cursor.SE_RESIZE;
+                    else if (this._dragCursor === Meta.Cursor.WEST_RESIZE)
+                        this._dragCursor = Meta.Cursor.EAST_RESIZE;
+                } else {
+                    // eslint-disable-next-line no-lonely-if
+                    if (this._dragCursor === Meta.Cursor.NE_RESIZE)
+                        this._dragCursor = Meta.Cursor.NW_RESIZE;
+                    else if (this._dragCursor === Meta.Cursor.SE_RESIZE)
+                        this._dragCursor = Meta.Cursor.SW_RESIZE;
+                    else if (this._dragCursor === Meta.Cursor.EAST_RESIZE)
+                        this._dragCursor = Meta.Cursor.WEST_RESIZE;
+                }
+
+                if (this._lastY > this._startY) {
+                    if (this._dragCursor === Meta.Cursor.NW_RESIZE)
+                        this._dragCursor = Meta.Cursor.SW_RESIZE;
+                    else if (this._dragCursor === Meta.Cursor.NE_RESIZE)
+                        this._dragCursor = Meta.Cursor.SE_RESIZE;
+                    else if (this._dragCursor === Meta.Cursor.NORTH_RESIZE)
+                        this._dragCursor = Meta.Cursor.SOUTH_RESIZE;
+                } else {
+                    // eslint-disable-next-line no-lonely-if
+                    if (this._dragCursor === Meta.Cursor.SW_RESIZE)
+                        this._dragCursor = Meta.Cursor.NW_RESIZE;
+                    else if (this._dragCursor === Meta.Cursor.SE_RESIZE)
+                        this._dragCursor = Meta.Cursor.NE_RESIZE;
+                    else if (this._dragCursor === Meta.Cursor.SOUTH_RESIZE)
+                        this._dragCursor = Meta.Cursor.NORTH_RESIZE;
+                }
+
+                global.display.set_cursor(this._dragCursor);
+            }
+
+            this._dragStartX += dx;
+            this._dragStartY += dy;
+        }
+
+        this._updateSelectionRect();
+
+        return Clutter.EVENT_STOP;
+    }
+
+    vfunc_button_press_event(event) {
+        if (event.button === Clutter.BUTTON_PRIMARY ||
+            event.button === Clutter.BUTTON_SECONDARY)
+            return this._onPress(event, event.button, null);
+
+        return Clutter.EVENT_PROPAGATE;
+    }
+
+    vfunc_button_release_event(event) {
+        if (event.button === Clutter.BUTTON_PRIMARY ||
+            event.button === Clutter.BUTTON_SECONDARY)
+            return this._onRelease(event, event.button, null);
+
+        return Clutter.EVENT_PROPAGATE;
+    }
+
+    vfunc_motion_event(event) {
+        return this._onMotion(event, null);
+    }
+
+    vfunc_touch_event(event) {
+        if (event.type === Clutter.EventType.TOUCH_BEGIN)
+            return this._onPress(event, 'touch', event.sequence);
+        else if (event.type === Clutter.EventType.TOUCH_END)
+            return this._onRelease(event, 'touch', event.sequence);
+        else if (event.type === Clutter.EventType.TOUCH_UPDATE)
+            return this._onMotion(event, event.sequence);
+
+        return Clutter.EVENT_PROPAGATE;
+    }
+
+    vfunc_leave_event(event) {
+        // If we're dragging and go over the panel we still get a leave event
+        // for some reason, even though we have a grab. We don't want to switch
+        // the cursor when we're dragging.
+        if (!this._dragButton)
+            global.display.set_cursor(Meta.Cursor.DEFAULT);
+
+        return super.vfunc_leave_event(event);
+    }
+});
+
 var ScreenshotUI = GObject.registerClass(
 class ScreenshotUI extends St.Widget {
     _init() {
@@ -82,6 +670,14 @@ class ScreenshotUI extends St.Widget {
             actionMode: Shell.ActionMode.POPUP,
         });
 
+        this._areaSelector = new UIAreaSelector({
+            style_class: 'screenshot-ui-area-selector',
+            x_expand: true,
+            y_expand: true,
+            reactive: true,
+        });
+        this.add_child(this._areaSelector);
+
         this._primaryMonitorBin = new St.Widget({ layout_manager: new Clutter.BinLayout() });
         this._primaryMonitorBin.add_constraint(
             new Layout.MonitorConstraint({ 'primary': true }));
@@ -106,6 +702,31 @@ class ScreenshotUI extends St.Widget {
         this._closeButton.connect('clicked', () => this.close());
         this._primaryMonitorBin.add_child(this._closeButton);
 
+        this._areaSelector.connect('drag-started', () => {
+            this._panel.ease({
+                opacity: 100,
+                duration: 200,
+                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            });
+            this._closeButton.ease({
+                opacity: 100,
+                duration: 200,
+                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            });
+        });
+        this._areaSelector.connect('drag-ended', () => {
+            this._panel.ease({
+                opacity: 255,
+                duration: 200,
+                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            });
+            this._closeButton.ease({
+                opacity: 255,
+                duration: 200,
+                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            });
+        });
+
         this._typeButtonContainer = new St.Widget({
             style_class: 'screenshot-ui-type-button-container',
             layout_manager: new Clutter.BoxLayout({
@@ -115,9 +736,18 @@ class ScreenshotUI extends St.Widget {
         });
         this._panel.add_child(this._typeButtonContainer);
 
-        this._screenButton = new IconLabelButton('video-display-symbolic', _('Screen'), {
+        this._selectionButton = new IconLabelButton('input-mouse-symbolic', _('Selection'), {
             style_class: 'screenshot-ui-type-button',
             checked: true,
+            x_expand: true,
+        });
+        this._selectionButton.connect('notify::checked',
+            this._onSelectionButtonToggled.bind(this));
+        this._typeButtonContainer.add_child(this._selectionButton);
+
+        this._screenButton = new IconLabelButton('video-display-symbolic', _('Screen'), {
+            style_class: 'screenshot-ui-type-button',
+            toggle_mode: true,
             x_expand: true,
         });
         this._screenButton.connect('notify::checked',
@@ -271,6 +901,8 @@ class ScreenshotUI extends St.Widget {
         this._stageScreenshotContainer.hide();
 
         this._stageScreenshot.set_content(null);
+
+        this._areaSelector.reset();
     }
 
     close(instantly = false) {
@@ -290,9 +922,40 @@ class ScreenshotUI extends St.Widget {
         });
     }
 
+    _onSelectionButtonToggled() {
+        if (this._selectionButton.checked) {
+            this._selectionButton.toggle_mode = false;
+            this._screenButton.checked = false;
+
+            this._areaSelector.show();
+            this._areaSelector.remove_all_transitions();
+            this._areaSelector.reactive = true;
+            this._areaSelector.ease({
+                opacity: 255,
+                duration: 200,
+                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            });
+        } else {
+            this._selectionButton.toggle_mode = true;
+
+            this._areaSelector.stopDrag();
+            global.display.set_cursor(Meta.Cursor.DEFAULT);
+
+            this._areaSelector.remove_all_transitions();
+            this._areaSelector.reactive = false;
+            this._areaSelector.ease({
+                opacity: 0,
+                duration: 200,
+                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+                onComplete: () => this._areaSelector.hide(),
+            });
+        }
+    }
+
     _onScreenButtonToggled() {
         if (this._screenButton.checked) {
             this._screenButton.toggle_mode = false;
+            this._selectionButton.checked = false;
 
             for (const selector of this._screenSelectors) {
                 selector.show();
@@ -318,11 +981,35 @@ class ScreenshotUI extends St.Widget {
         }
     }
 
+    _getSelectedGeometry() {
+        let x, y, w, h;
+
+        if (this._selectionButton.checked) {
+            [x, y, w, h] = this._areaSelector.getGeometry();
+        } else if (this._screenButton.checked) {
+            const index =
+                this._screenSelectors.findIndex(screen => screen.checked);
+            const monitor = Main.layoutManager.monitors[index];
+
+            x = monitor.x;
+            y = monitor.y;
+            w = monitor.width;
+            h = monitor.height;
+        }
+
+        x *= this._scale;
+        y *= this._scale;
+        w *= this._scale;
+        h *= this._scale;
+
+        return [x, y, w, h];
+    }
+
     _onCaptureButtonClicked() {
         global.display.get_sound_player().play_from_theme(
             'screen-capture', _('Screenshot taken'), null);
 
-        if (this._screenButton.checked) {
+        if (this._selectionButton.checked || this._screenButton.checked) {
             const content = this._stageScreenshot.get_content();
             if (!content) {
                 // Failed to capture the screenshot for some reason.
@@ -333,14 +1020,7 @@ class ScreenshotUI extends St.Widget {
             const texture = content.get_texture();
             const stream = Gio.MemoryOutputStream.new_resizable();
 
-            const index =
-                this._screenSelectors.findIndex(screen => screen.checked);
-            const monitor = Main.layoutManager.monitors[index];
-
-            const x = monitor.x * this._scale;
-            const y = monitor.y * this._scale;
-            const w = monitor.width * this._scale;
-            const h = monitor.height * this._scale;
+            const [x, y, w, h] = this._getSelectedGeometry();
 
             Shell.Screenshot.composite_to_stream(
                 texture,
