@@ -1,0 +1,9 @@
+// Screenshot UI
+.screenshot-ui-panel {
+  background-color: $osd_bg_color;
+  border-radius: 12px + 21px;
+  padding: 18px;
+  padding-bottom: 18px - 6px;
+  margin-bottom: $base_margin * 8;
+  spacing: $base_padding * 2;
+}

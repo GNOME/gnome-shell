@@ -4,6 +4,7 @@
 const { Clutter, Gio, GObject, GLib, Meta, Shell, St } = imports.gi;
 
 const GrabHelper = imports.ui.grabHelper;
+const Layout = imports.ui.layout;
 const Lightbox = imports.ui.lightbox;
 const Main = imports.ui.main;
 
@@ -38,6 +39,19 @@ class ScreenshotUI extends St.Widget {
         this._grabHelper = new GrabHelper.GrabHelper(this, {
             actionMode: Shell.ActionMode.POPUP,
         });
+
+        this._primaryMonitorBin = new St.Widget({ layout_manager: new Clutter.BinLayout() });
+        this._primaryMonitorBin.add_constraint(
+            new Layout.MonitorConstraint({ 'primary': true }));
+        this.add_child(this._primaryMonitorBin);
+
+        this._panel = new St.BoxLayout({
+            style_class: 'screenshot-ui-panel',
+            y_align: Clutter.ActorAlign.END,
+            y_expand: true,
+            vertical: true,
+        });
+        this._primaryMonitorBin.add_child(this._panel);
 
         Main.layoutManager.connect('monitors-changed', () => {
             // Nope, not dealing with monitor changes.
