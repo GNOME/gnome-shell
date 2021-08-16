@@ -68,6 +68,46 @@
       background-color: darken(white, 50%);
     }
   }
+
+  &:cast {
+    .screenshot-ui-capture-button-circle {
+      background-color: red;
+    }
+
+    &:hover, &:focus {
+      .screenshot-ui-capture-button-circle {
+        background-color: darken(red, 15%);
+      }
+    }
+
+    &:active {
+      .screenshot-ui-capture-button-circle {
+        background-color: darken(red, 50%);
+      }
+    }
+  }
+}
+
+.screenshot-ui-shot-cast-container {
+  background-color: $hover_bg_color;
+  border-radius: 12px;
+  padding: $base_padding / 2;
+  margin-left: 3px;
+  spacing: $base_padding / 2;
+}
+
+.screenshot-ui-shot-cast-button {
+  padding: $base_padding $base_padding * 1.5;
+  background-color: transparent;
+  &:hover, &:focus { background-color: lighten($hover_bg_color, 5%); }
+  &:active { background-color: $active_bg_color; }
+  &:checked { background-color: white; color: black; }
+
+  border-radius: 12px - 3px;
+
+  StIcon {
+    icon-size: $base_icon_size;
+  }
 }
 
 .screenshot-ui-show-pointer-button {

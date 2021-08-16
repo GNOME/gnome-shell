@@ -1155,6 +1155,46 @@ class ScreenshotUI extends St.Widget {
         this._bottomRowContainer = new St.Widget({ layout_manager: new Clutter.BinLayout() });
         this._panel.add_child(this._bottomRowContainer);
 
+        this._shotCastContainer = new St.BoxLayout({
+            style_class: 'screenshot-ui-shot-cast-container',
+            x_align: Clutter.ActorAlign.START,
+            x_expand: true,
+        });
+        this._bottomRowContainer.add_child(this._shotCastContainer);
+
+        this._shotButton = new St.Button({
+            style_class: 'screenshot-ui-shot-cast-button',
+            checked: true,
+        });
+        this._shotButton.set_child(new St.Icon({ icon_name: 'camera-photo-symbolic' }));
+        this._shotButton.connect('notify::checked',
+            this._onShotButtonToggled.bind(this));
+        this._shotCastContainer.add_child(this._shotButton);
+
+        this._castButton = new St.Button({
+            style_class: 'screenshot-ui-shot-cast-button',
+            toggle_mode: true,
+        });
+        this._castButton.set_child(new St.Icon({ icon_name: 'camera-web-symbolic' }));
+        this._castButton.connect('notify::checked',
+            this._onCastButtonToggled.bind(this));
+        this._shotCastContainer.add_child(this._castButton);
+
+        this._shotCastTooltip = new Tooltip(this._shotCastContainer, {
+            text: _('Screenshot / Screencast'),
+            style_class: 'screenshot-ui-tooltip',
+            visible: false,
+        });
+        const shotCastCallback = () => {
+            if (this._shotButton.hover || this._castButton.hover)
+                this._shotCastTooltip.open();
+            else
+                this._shotCastTooltip.close();
+        };
+        this._shotButton.connect('notify::hover', shotCastCallback);
+        this._castButton.connect('notify::hover', shotCastCallback);
+        this.add_child(this._shotCastTooltip);
+
         this._captureButton = new St.Button({ style_class: 'screenshot-ui-capture-button' });
         this._captureButton.set_child(new St.Widget({
             style_class: 'screenshot-ui-capture-button-circle',
@@ -1309,7 +1349,8 @@ class ScreenshotUI extends St.Widget {
                 });
             }
 
-            this._windowButton.reactive = windows.length > 0;
+            this._windowButton.reactive =
+                windows.length > 0 && !this._castButton.checked;
             if (!this._windowButton.reactive)
                 this._selectionButton.checked = true;
 
@@ -1378,6 +1419,9 @@ class ScreenshotUI extends St.Widget {
         this.hide();
 
         this._shooter = null;
+
+        // Switch back to screenshot mode.
+        this._shotButton.checked = true;
 
         this._stageScreenshotContainer.get_parent().remove_child(
             this._stageScreenshotContainer);
@@ -1501,6 +1545,54 @@ class ScreenshotUI extends St.Widget {
         }
     }
 
+    _onShotButtonToggled() {
+        if (this._shotButton.checked) {
+            this._shotButton.toggle_mode = false;
+            this._castButton.checked = false;
+
+            this._stageScreenshotContainer.show();
+            this._stageScreenshotContainer.remove_all_transitions();
+            this._stageScreenshotContainer.ease({
+                opacity: 255,
+                duration: 200,
+                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            });
+        } else {
+            this._shotButton.toggle_mode = true;
+        }
+    }
+
+    _onCastButtonToggled() {
+        if (this._castButton.checked) {
+            this._castButton.toggle_mode = false;
+            this._shotButton.checked = false;
+
+            this._captureButton.add_style_pseudo_class('cast');
+
+            this._stageScreenshotContainer.remove_all_transitions();
+            this._stageScreenshotContainer.ease({
+                opacity: 0,
+                duration: 200,
+                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+                onComplete: () => this._stageScreenshotContainer.hide(),
+            });
+
+            // Screen recording doesn't support window selection yet.
+            if (this._windowButton.checked)
+                this._selectionButton.checked = true;
+
+            this._windowButton.reactive = false;
+        } else {
+            this._castButton.toggle_mode = true;
+
+            this._captureButton.remove_style_pseudo_class('cast');
+
+            const windows =
+                this._windowSelectors.flatMap(selector => selector.windows());
+            this._windowButton.reactive = windows.length > 0;
+        }
+    }
+
     _getSelectedGeometry() {
         let x, y, w, h;
 
@@ -1526,7 +1618,8 @@ class ScreenshotUI extends St.Widget {
     }
 
     _onCaptureButtonClicked() {
-        this._saveScreenshot();
+        if (this._shotButton.checked)
+            this._saveScreenshot();
 
         // TODO: screencasting.
 
