@@ -59,6 +59,9 @@ struct _ShellScreenshotPrivate
   gboolean include_frame;
 
   float scale;
+  ClutterContent *cursor_content;
+  graphene_point_t cursor_point;
+  float cursor_scale;
 };
 
 G_DEFINE_TYPE_WITH_PRIVATE (ShellScreenshot, shell_screenshot, G_TYPE_OBJECT);
@@ -305,6 +308,9 @@ grab_screenshot_content (ShellScreenshot *screenshot,
   float scale;
   g_autoptr (GError) error = NULL;
   g_autoptr (ClutterContent) content = NULL;
+  MetaCursorTracker *tracker;
+  CoglTexture *cursor_texture;
+  int cursor_hot_x, cursor_hot_y;
 
   display = shell_global_get_display (priv->global);
   meta_display_get_size (display, &width, &height);
@@ -331,6 +337,80 @@ grab_screenshot_content (ShellScreenshot *screenshot,
     {
       g_task_return_error (result, g_steal_pointer (&error));
       return;
+    }
+
+  tracker = meta_cursor_tracker_get_for_display (display);
+  cursor_texture = meta_cursor_tracker_get_sprite (tracker);
+
+  // If the cursor is invisible, the texture is NULL.
+  if (cursor_texture)
+    {
+      unsigned int width, height;
+      CoglContext *ctx;
+      CoglPipeline *pipeline;
+      CoglTexture2D *texture;
+      CoglOffscreen *offscreen;
+      ClutterStageView *view;
+
+      // Copy the texture to prevent it from changing shortly after.
+      width = cogl_texture_get_width (cursor_texture);
+      height = cogl_texture_get_height (cursor_texture);
+
+      ctx = clutter_backend_get_cogl_context (clutter_get_default_backend ());
+
+      texture = cogl_texture_2d_new_with_size (ctx, width, height);
+      offscreen = cogl_offscreen_new_with_texture (texture);
+      cogl_framebuffer_clear4f (COGL_FRAMEBUFFER (offscreen),
+                                COGL_BUFFER_BIT_COLOR,
+                                0, 0, 0, 0);
+
+      pipeline = cogl_pipeline_new (ctx);
+      cogl_pipeline_set_layer_texture (pipeline, 0, cursor_texture);
+
+      cogl_framebuffer_draw_textured_rectangle (COGL_FRAMEBUFFER (offscreen),
+                                                pipeline,
+                                                -1, 1, 1, -1,
+                                                0, 0, 1, 1);
+      cogl_object_unref (pipeline);
+      g_object_unref (offscreen);
+
+      priv->cursor_content =
+        clutter_texture_content_new_from_texture (texture, NULL);
+      cogl_object_unref (texture);
+
+      priv->cursor_scale = meta_cursor_tracker_get_scale (tracker);
+
+      meta_cursor_tracker_get_pointer (tracker, &priv->cursor_point, NULL);
+
+      view = clutter_stage_get_view_at (stage,
+                                        priv->cursor_point.x,
+                                        priv->cursor_point.y);
+
+      meta_cursor_tracker_get_hot (tracker, &cursor_hot_x, &cursor_hot_y);
+      priv->cursor_point.x -= cursor_hot_x * priv->cursor_scale;
+      priv->cursor_point.y -= cursor_hot_y * priv->cursor_scale;
+
+      // Align the coordinates to the pixel grid the same way it's done in
+      // MetaCursorRenderer.
+      if (view)
+        {
+          cairo_rectangle_int_t view_layout;
+          float view_scale;
+
+          clutter_stage_view_get_layout (view, &view_layout);
+          view_scale = clutter_stage_view_get_scale (view);
+
+          priv->cursor_point.x -= view_layout.x;
+          priv->cursor_point.y -= view_layout.y;
+
+          priv->cursor_point.x =
+              floorf (priv->cursor_point.x * view_scale) / view_scale;
+          priv->cursor_point.y =
+              floorf (priv->cursor_point.y * view_scale) / view_scale;
+
+          priv->cursor_point.x += view_layout.x;
+          priv->cursor_point.y += view_layout.y;
+        }
     }
 
   g_task_return_pointer (result, g_steal_pointer (&content), g_object_unref);
@@ -610,6 +690,10 @@ shell_screenshot_screenshot_stage_to_content (ShellScreenshot     *screenshot,
  * @screenshot: the #ShellScreenshot
  * @result: the #GAsyncResult that was provided to the callback
  * @scale: (out) (optional): location to store the content scale
+ * @cursor_content: (out) (optional): location to store the cursor content
+ * @cursor_point: (out) (optional): location to store the point at which to
+ * draw the cursor content
+ * @cursor_scale: (out) (optional): location to store the cursor scale
  * @error: #GError for error reporting
  *
  * Finish the asynchronous operation started by
@@ -619,10 +703,13 @@ shell_screenshot_screenshot_stage_to_content (ShellScreenshot     *screenshot,
  *
  */
 ClutterContent *
-shell_screenshot_screenshot_stage_to_content_finish (ShellScreenshot  *screenshot,
-                                                     GAsyncResult     *result,
-                                                     float            *scale,
-                                                     GError          **error)
+shell_screenshot_screenshot_stage_to_content_finish (ShellScreenshot   *screenshot,
+                                                     GAsyncResult      *result,
+                                                     float             *scale,
+                                                     ClutterContent   **cursor_content,
+                                                     graphene_point_t  *cursor_point,
+                                                     float             *cursor_scale,
+                                                     GError           **error)
 {
   ShellScreenshotPrivate *priv = screenshot->priv;
   ClutterContent *content;
@@ -639,6 +726,17 @@ shell_screenshot_screenshot_stage_to_content_finish (ShellScreenshot  *screensho
 
   if (scale)
     *scale = priv->scale;
+
+  if (cursor_content)
+    *cursor_content = g_steal_pointer (&priv->cursor_content);
+  else
+    g_clear_pointer (&priv->cursor_content, g_object_unref);
+
+  if (cursor_point)
+    *cursor_point = priv->cursor_point;
+
+  if (cursor_scale)
+    *cursor_scale = priv->cursor_scale;
 
   return content;
 }
@@ -973,6 +1071,13 @@ composite_to_stream_on_png_saved (GObject      *source,
  * @y: y coordinate of the rectangle
  * @width: width of the rectangle, or -1 to use the full texture
  * @height: height of the rectangle, or -1 to use the full texture
+ * @scale: scale of the source texture
+ * @cursor: (nullable): the cursor texture
+ * @cursor_x: x coordinate to put the cursor texture at, relative to the full
+ * source texture
+ * @cursor_y: y coordinate to put the cursor texture at, relative to the full
+ * source texture
+ * @cursor_scale: scale of the cursor texture
  * @stream: the stream to write the PNG image into
  * @callback: (scope async): function to call returning success or failure
  * @user_data: the data to pass to callback function
@@ -987,6 +1092,11 @@ shell_screenshot_composite_to_stream (CoglTexture         *texture,
                                       int                  y,
                                       int                  width,
                                       int                  height,
+                                      float                scale,
+                                      CoglTexture         *cursor,
+                                      int                  cursor_x,
+                                      int                  cursor_y,
+                                      float                cursor_scale,
                                       GOutputStream       *stream,
                                       GAsyncReadyCallback  callback,
                                       gpointer             user_data)
@@ -994,6 +1104,8 @@ shell_screenshot_composite_to_stream (CoglTexture         *texture,
   CoglContext *ctx;
   CoglTexture *sub_texture;
   cairo_surface_t *surface;
+  cairo_surface_t *cursor_surface;
+  cairo_t *cr;
   g_autoptr (GTask) task = NULL;
   g_autoptr (GdkPixbuf) pixbuf = NULL;
   g_autofree char *creation_time = NULL;
@@ -1023,6 +1135,34 @@ shell_screenshot_composite_to_stream (CoglTexture         *texture,
   cairo_surface_mark_dirty (surface);
 
   cogl_object_unref (sub_texture);
+
+  cairo_surface_set_device_scale (surface, scale, scale);
+
+  if (cursor != NULL)
+    {
+      // Paint the cursor on top.
+      cursor_surface =
+        cairo_image_surface_create (CAIRO_FORMAT_ARGB32,
+                                    cogl_texture_get_width (cursor),
+                                    cogl_texture_get_height (cursor));
+      cogl_texture_get_data (cursor, CLUTTER_CAIRO_FORMAT_ARGB32,
+                             cairo_image_surface_get_stride (cursor_surface),
+                             cairo_image_surface_get_data (cursor_surface));
+      cairo_surface_mark_dirty (cursor_surface);
+
+      cairo_surface_set_device_scale (cursor_surface,
+                                      1 / cursor_scale,
+                                      1 / cursor_scale);
+
+      cr = cairo_create (surface);
+      cairo_set_source_surface (cr, cursor_surface,
+                                (cursor_x - x) / scale,
+                                (cursor_y - y) / scale);
+      cairo_paint (cr);
+      cairo_destroy (cr);
+
+      cairo_surface_destroy (cursor_surface);
+    }
 
   // Save to an image.
   pixbuf = gdk_pixbuf_get_from_surface (surface,

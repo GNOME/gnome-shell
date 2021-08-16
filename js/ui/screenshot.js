@@ -726,6 +726,10 @@ class UIWindowSelectorWindow extends St.Button {
             y_align: Clutter.ActorAlign.CENTER,
         });
 
+        this._cursor = null;
+        this._cursorPoint = { x: 0, y: 0 };
+        this._shouldShowCursor = actor.get_children().some(c => c.has_pointer);
+
         this.connect('destroy', this._onDestroy.bind(this));
     }
 
@@ -753,6 +757,13 @@ class UIWindowSelectorWindow extends St.Button {
         return [0, 0];
     }
 
+    get cursorPoint() {
+        return {
+            x: this._cursorPoint.x + this._boundingBox.x - this._bufferRect.x,
+            y: this._cursorPoint.y + this._boundingBox.y - this._bufferRect.y,
+        };
+    }
+
     get bufferScale() {
         return this._bufferScale;
     }
@@ -768,6 +779,12 @@ class UIWindowSelectorWindow extends St.Button {
         this.remove_child(this._border);
         this._border.destroy();
         this._border = null;
+
+        if (this._cursor) {
+            this.remove_child(this._cursor);
+            this._cursor.destroy();
+            this._cursor = null;
+        }
     }
 
     vfunc_allocate(box) {
@@ -799,6 +816,53 @@ class UIWindowSelectorWindow extends St.Button {
             windowH * yScale / this._bufferScale
         );
         this._actor.allocate(actorBox);
+
+        // Allocate the cursor if we have one.
+        if (!this._cursor)
+            return;
+
+        let [, , w, h] = this._cursor.get_preferred_size();
+        w *= this._cursorScale;
+        h *= this._cursorScale;
+
+        const cursorBox = new Clutter.ActorBox({
+            x1: this._cursorPoint.x,
+            y1: this._cursorPoint.y,
+            x2: this._cursorPoint.x + w,
+            y2: this._cursorPoint.y + h,
+        });
+        cursorBox.x1 *= xScale;
+        cursorBox.x2 *= xScale;
+        cursorBox.y1 *= yScale;
+        cursorBox.y2 *= yScale;
+
+        this._cursor.allocate(cursorBox);
+    }
+
+    addCursorTexture(content, point, scale) {
+        if (!this._shouldShowCursor)
+            return;
+
+        // Add the cursor.
+        this._cursor = new St.Widget({
+            content,
+            request_mode: Clutter.RequestMode.CONTENT_SIZE,
+        });
+
+        this._cursorPoint = {
+            x: point.x - this._boundingBox.x,
+            y: point.y - this._boundingBox.y,
+        };
+        this._cursorScale = scale;
+
+        this.insert_child_below(this._cursor, this._border);
+    }
+
+    setCursorVisible(visible) {
+        if (!this._cursor)
+            return;
+
+        this._cursor.visible = visible;
     }
 });
 
@@ -897,6 +961,9 @@ class ScreenshotUI extends St.Widget {
             coordinate: Clutter.BindCoordinate.ALL,
         }));
         this._stageScreenshotContainer.add_child(this._stageScreenshot);
+
+        this._cursor = new St.Widget();
+        this._stageScreenshotContainer.add_child(this._cursor);
 
         this._openingCoroutineInProgress = false;
         this._grabHelper = new GrabHelper.GrabHelper(this, {
@@ -1006,6 +1073,30 @@ class ScreenshotUI extends St.Widget {
         this._captureButton.connect('clicked',
             this._onCaptureButtonClicked.bind(this));
         this._bottomRowContainer.add_child(this._captureButton);
+
+        this._showPointerButtonContainer = new St.BoxLayout({
+            x_align: Clutter.ActorAlign.END,
+            x_expand: true,
+        });
+        this._bottomRowContainer.add_child(this._showPointerButtonContainer);
+
+        this._showPointerButton = new St.Button({
+            style_class: 'screenshot-ui-show-pointer-button',
+            toggle_mode: true,
+        });
+        this._showPointerButton.set_child(new St.Icon({ icon_name: 'select-mode-symbolic' }));
+        this._showPointerButtonContainer.add_child(this._showPointerButton);
+
+        this._showPointerButton.connect('notify::checked', () => {
+            const state = this._showPointerButton.checked;
+            this._cursor.visible = state;
+
+            const windows =
+                this._windowSelectors.flatMap(selector => selector.windows());
+            for (const window of windows)
+                window.setCursorVisible(state);
+        });
+        this._cursor.visible = false;
 
         this._monitorBins = [];
         this._windowSelectors = [];
@@ -1131,10 +1222,27 @@ class ScreenshotUI extends St.Widget {
 
             this._openingCoroutineInProgress = true;
             try {
-                const [content, scale] =
+                const [content, scale, cursorContent, cursorPoint, cursorScale] =
                     await this._shooter.screenshot_stage_to_content();
                 this._stageScreenshot.set_content(content);
                 this._scale = scale;
+
+                if (cursorContent !== null) {
+                    this._cursor.set_content(cursorContent);
+                    this._cursor.set_position(cursorPoint.x, cursorPoint.y);
+
+                    let [, w, h] = cursorContent.get_preferred_size();
+                    w *= cursorScale;
+                    h *= cursorScale;
+                    this._cursor.set_size(w, h);
+
+                    this._cursorScale = cursorScale;
+
+                    for (const window of windows) {
+                        window.addCursorTexture(cursorContent, cursorPoint, cursorScale);
+                        window.setCursorVisible(this._showPointerButton.checked);
+                    }
+                }
 
                 this._stageScreenshotContainer.show();
             } catch (e) {
@@ -1183,6 +1291,7 @@ class ScreenshotUI extends St.Widget {
         this._stageScreenshotContainer.hide();
 
         this._stageScreenshot.set_content(null);
+        this._cursor.set_content(null);
 
         this._areaSelector.reset();
         for (const selector of this._windowSelectors)
@@ -1338,9 +1447,18 @@ class ScreenshotUI extends St.Widget {
 
             const [x, y, w, h] = this._getSelectedGeometry();
 
+            let cursorTexture = this._cursor.content?.get_texture();
+            if (!this._cursor.visible)
+                cursorTexture = null;
+
             Shell.Screenshot.composite_to_stream(
                 texture,
                 x, y, w, h,
+                this._scale,
+                cursorTexture ?? null,
+                this._cursor.x * this._scale,
+                this._cursor.y * this._scale,
+                this._cursorScale,
                 stream
             ).then(() => {
                 stream.close(null);
@@ -1370,9 +1488,18 @@ class ScreenshotUI extends St.Widget {
             const texture = content.get_texture();
             const stream = Gio.MemoryOutputStream.new_resizable();
 
+            let cursorTexture = this._cursor.content?.get_texture();
+            if (!this._cursor.visible)
+                cursorTexture = null;
+
             Shell.Screenshot.composite_to_stream(
                 texture,
                 0, 0, -1, -1,
+                window.bufferScale,
+                cursorTexture ?? null,
+                window.cursorPoint.x * window.bufferScale,
+                window.cursorPoint.y * window.bufferScale,
+                this._cursorScale,
                 stream
             ).then(() => {
                 stream.close(null);
@@ -1413,6 +1540,11 @@ class ScreenshotUI extends St.Widget {
         if (this._windowButton.reactive &&
             (symbol === Clutter.KEY_w || symbol === Clutter.KEY_W)) {
             this._windowButton.checked = true;
+            return Clutter.EVENT_STOP;
+        }
+
+        if (symbol === Clutter.KEY_p || symbol === Clutter.KEY_P) {
+            this._showPointerButton.checked = !this._showPointerButton.checked;
             return Clutter.EVENT_STOP;
         }
 

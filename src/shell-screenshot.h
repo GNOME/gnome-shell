@@ -53,10 +53,13 @@ gboolean shell_screenshot_screenshot_finish   (ShellScreenshot        *screensho
 void     shell_screenshot_screenshot_stage_to_content (ShellScreenshot     *screenshot,
                                                        GAsyncReadyCallback  callback,
                                                        gpointer             user_data);
-ClutterContent *shell_screenshot_screenshot_stage_to_content_finish (ShellScreenshot  *screenshot,
-                                                                     GAsyncResult     *result,
-                                                                     float            *scale,
-                                                                     GError          **error);
+ClutterContent *shell_screenshot_screenshot_stage_to_content_finish (ShellScreenshot   *screenshot,
+                                                                     GAsyncResult      *result,
+                                                                     float             *scale,
+                                                                     ClutterContent   **cursor_content,
+                                                                     graphene_point_t  *cursor_point,
+                                                                     float             *cursor_scale,
+                                                                     GError           **error);
 
 void     shell_screenshot_pick_color        (ShellScreenshot      *screenshot,
                                              int                   x,
@@ -73,6 +76,11 @@ void shell_screenshot_composite_to_stream (CoglTexture         *texture,
                                            int                  y,
                                            int                  width,
                                            int                  height,
+                                           float                scale,
+                                           CoglTexture         *cursor,
+                                           int                  cursor_x,
+                                           int                  cursor_y,
+                                           float                cursor_scale,
                                            GOutputStream       *stream,
                                            GAsyncReadyCallback  callback,
                                            gpointer             user_data);

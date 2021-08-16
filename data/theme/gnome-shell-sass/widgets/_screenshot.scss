@@ -70,6 +70,19 @@
   }
 }
 
+.screenshot-ui-show-pointer-button {
+  padding: $base_padding * 2;
+  border-radius: 99px;
+  background-color: $hover_bg_color;
+  &:hover, &:focus { background-color: lighten($hover_bg_color, 5%); }
+  &:active { background-color: $active_bg_color; }
+  &:checked { background-color: darken($hover_bg_color, 10%); }
+
+  StIcon {
+    icon-size: $base_icon_size;
+  }
+}
+
 .screenshot-ui-area-indicator-shade {
   background-color: rgba(0, 0, 0, .3);
 }
