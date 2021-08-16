@@ -20,6 +20,25 @@ const { DBusSenderChecker } = imports.misc.util;
 
 const ScreenshotIface = loadInterfaceXML('org.gnome.Shell.Screenshot');
 
+var IconLabelButton = GObject.registerClass(
+class IconLabelButton extends St.Button {
+    _init(iconName, label, params) {
+        super._init(params);
+
+        this._container = new St.BoxLayout({
+            vertical: true,
+            style_class: 'icon-label-button-container',
+        });
+        this.set_child(this._container);
+
+        this._container.add_child(new St.Icon({ icon_name: iconName }));
+        this._container.add_child(new St.Label({
+            text: label,
+            x_align: Clutter.ActorAlign.CENTER,
+        }));
+    }
+});
+
 var ScreenshotUI = GObject.registerClass(
 class ScreenshotUI extends St.Widget {
     _init() {

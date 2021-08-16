@@ -1,4 +1,13 @@
 // Screenshot UI
+.icon-label-button-container {
+  spacing: $base_spacing;
+  font-size: $base_font_size - 3pt;
+
+  StIcon {
+    icon-size: 32px;
+  }
+}
+
 .screenshot-ui-panel {
   background-color: $osd_bg_color;
   border-radius: 12px + 21px;
