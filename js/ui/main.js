@@ -6,7 +6,7 @@
             screenSaverDBus, uiGroup, magnifier, xdndHandler, keyboard,
             kbdA11yDialog, introspectService, start, pushModal, popModal,
             activateWindow, createLookingGlass, initializeDeferredWork,
-            getThemeStylesheet, setThemeStylesheet */
+            getThemeStylesheet, setThemeStylesheet, screenshotUI */
 
 const { Clutter, Gio, GLib, GObject, Meta, Shell, St } = imports.gi;
 
@@ -35,6 +35,7 @@ const LoginManager = imports.misc.loginManager;
 const LookingGlass = imports.ui.lookingGlass;
 const NotificationDaemon = imports.ui.notificationDaemon;
 const WindowAttentionHandler = imports.ui.windowAttentionHandler;
+const Screenshot = imports.ui.screenshot;
 const ScreenShield = imports.ui.screenShield;
 const Scripting = imports.ui.scripting;
 const SessionMode = imports.ui.sessionMode;
@@ -74,6 +75,7 @@ var padOsdService = null;
 var osdWindowManager = null;
 var osdMonitorLabeler = null;
 var sessionMode = null;
+var screenshotUI = null;
 var shellAccessDialogDBusService = null;
 var shellAudioSelectionDBusService = null;
 var shellDBusService = null;
@@ -223,6 +225,8 @@ function _initializeUI() {
     notificationDaemon = new NotificationDaemon.NotificationDaemon();
     windowAttentionHandler = new WindowAttentionHandler.WindowAttentionHandler();
     componentManager = new Components.ComponentManager();
+
+    screenshotUI = new Screenshot.ScreenshotUI();
 
     introspectService = new Introspect.IntrospectService();
 

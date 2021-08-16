@@ -256,6 +256,12 @@ var LayoutManager = GObject.registerClass({
         this.addTopChrome(this.keyboardBox);
         this._keyboardHeightNotifyId = 0;
 
+        this.screenshotUIGroup = new St.Widget({
+            name: 'screenshotUIGroup',
+            layout_manager: new Clutter.BinLayout(),
+        });
+        this.addTopChrome(this.screenshotUIGroup);
+
         // A dummy actor that tracks the mouse or text cursor, based on the
         // position and size set in setDummyCursorGeometry.
         this.dummyCursor = new St.Widget({ width: 0, height: 0, opacity: 0 });

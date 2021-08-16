@@ -1,5 +1,5 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported ScreenshotService */
+/* exported ScreenshotService, ScreenshotUI, showScreenshotUI */
 
 const { Clutter, Gio, GObject, GLib, Meta, Shell, St } = imports.gi;
 
@@ -18,6 +18,97 @@ const { loadInterfaceXML } = imports.misc.fileUtils;
 const { DBusSenderChecker } = imports.misc.util;
 
 const ScreenshotIface = loadInterfaceXML('org.gnome.Shell.Screenshot');
+
+var ScreenshotUI = GObject.registerClass(
+class ScreenshotUI extends St.Widget {
+    _init() {
+        super._init({
+            name: 'screenshot-ui',
+            constraints: new Clutter.BindConstraint({
+                source: global.stage,
+                coordinate: Clutter.BindCoordinate.ALL,
+            }),
+            layout_manager: new Clutter.BinLayout(),
+            opacity: 0,
+            visible: false,
+        });
+
+        Main.layoutManager.screenshotUIGroup.add_child(this);
+
+        this._grabHelper = new GrabHelper.GrabHelper(this, {
+            actionMode: Shell.ActionMode.POPUP,
+        });
+
+        Main.layoutManager.connect('monitors-changed', () => {
+            // Nope, not dealing with monitor changes.
+            this.close(true);
+        });
+
+        Main.wm.addKeybinding(
+            'show-screenshot-ui',
+            new Gio.Settings({ schema_id: 'org.gnome.shell.keybindings' }),
+            Meta.KeyBindingFlags.IGNORE_AUTOREPEAT,
+            Shell.ActionMode.NORMAL |
+            Shell.ActionMode.OVERVIEW |
+            Shell.ActionMode.SYSTEM_MODAL |
+            Shell.ActionMode.LOOKING_GLASS |
+            Shell.ActionMode.POPUP,
+            showScreenshotUI
+        );
+    }
+
+    open() {
+        // Get rid of any popup menus.
+        // We already have them captured on the screenshot anyway.
+        //
+        // This needs to happen before the grab below as closing menus will
+        // pop their grabs.
+        Main.layoutManager.emit('system-modal-opened');
+
+        const grabResult = this._grabHelper.grab({
+            actor: this,
+            onUngrab: () => this.close(),
+        });
+        if (!grabResult)
+            return;
+
+        this.remove_all_transitions();
+        this.visible = true;
+        this.ease({
+            opacity: 255,
+            duration: 200,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+        });
+    }
+
+    _finishClosing() {
+        this.hide();
+    }
+
+    close(instantly = false) {
+        this._grabHelper.ungrab();
+
+        if (instantly) {
+            this._finishClosing();
+            return;
+        }
+
+        this.remove_all_transitions();
+        this.ease({
+            opacity: 0,
+            duration: 200,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            onComplete: this._finishClosing.bind(this),
+        });
+    }
+});
+
+/**
+ * Shows the screenshot UI.
+ */
+function showScreenshotUI() {
+    Main.screenshotUI.open();
+}
 
 var ScreenshotService = class {
     constructor() {

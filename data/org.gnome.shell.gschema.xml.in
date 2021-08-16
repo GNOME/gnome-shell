@@ -230,6 +230,10 @@
       <default>["&lt;Super&gt;9"]</default>
       <summary>Switch to application 9</summary>
     </key>
+    <key name="show-screenshot-ui" type="as">
+      <default>["Print"]</default>
+      <summary>Show screenshot UI</summary>
+    </key>
   </schema>
 
   <schema id="org.gnome.shell.app-switcher"
