@@ -362,6 +362,18 @@ class ScreenshotUI extends St.Widget {
 
         this.close();
     }
+
+    vfunc_key_press_event(event) {
+        const symbol = event.keyval;
+        if (symbol === Clutter.KEY_Return || symbol === Clutter.KEY_space ||
+            ((event.modifier_state & Clutter.ModifierType.CONTROL_MASK) &&
+             (symbol === Clutter.KEY_c || symbol === Clutter.KEY_C))) {
+            this._onCaptureButtonClicked();
+            return Clutter.EVENT_STOP;
+        }
+
+        return super.vfunc_key_press_event(event);
+    }
 });
 
 /**
