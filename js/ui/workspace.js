@@ -962,6 +962,8 @@ class WorkspaceBackground extends St.Widget {
             });
         this._updateRoundedClipBounds();
 
+        this._updateBorderRadius();
+
         this.connect('destroy', this._onDestroy.bind(this));
     }
 
