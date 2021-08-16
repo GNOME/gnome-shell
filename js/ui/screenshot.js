@@ -7,6 +7,7 @@ const GrabHelper = imports.ui.grabHelper;
 const Layout = imports.ui.layout;
 const Lightbox = imports.ui.lightbox;
 const Main = imports.ui.main;
+const Workspace = imports.ui.workspace;
 
 Gio._promisify(Shell.Screenshot.prototype, 'pick_color', 'pick_color_finish');
 Gio._promisify(Shell.Screenshot.prototype, 'screenshot', 'screenshot_finish');
@@ -632,6 +633,231 @@ var UIAreaSelector = GObject.registerClass({
     }
 });
 
+var UIWindowSelectorLayout = GObject.registerClass(
+class UIWindowSelectorLayout extends Workspace.WorkspaceLayout {
+    _init(monitorIndex) {
+        super._init(null, monitorIndex, null);
+    }
+
+    vfunc_set_container(container) {
+        this._container = container;
+        this._syncWorkareaTracking();
+    }
+
+    vfunc_allocate(container, box) {
+        const containerBox = container.allocation;
+        const containerAllocationChanged =
+            this._lastBox === null || !this._lastBox.equal(containerBox);
+        this._lastBox = containerBox.copy();
+
+        let layoutChanged = false;
+        if (this._layout === null) {
+            this._layout = this._createBestLayout(this._workarea);
+            layoutChanged = true;
+        }
+
+        if (layoutChanged || containerAllocationChanged)
+            this._windowSlots = this._getWindowSlots(box.copy());
+
+        const childBox = new Clutter.ActorBox();
+
+        const nSlots = this._windowSlots.length;
+        for (let i = 0; i < nSlots; i++) {
+            let [x, y, width, height, child] = this._windowSlots[i];
+
+            childBox.set_origin(x, y);
+            childBox.set_size(width, height);
+
+            child.allocate(childBox);
+        }
+    }
+
+    addWindow(window) {
+        if (this._sortedWindows.includes(window))
+            return;
+
+        this._sortedWindows.push(window);
+
+        this._container.add_child(window);
+
+        this._layout = null;
+        this.layout_changed();
+    }
+
+    reset() {
+        for (const window of this._sortedWindows)
+            window.destroy();
+
+        this._sortedWindows = [];
+        this._windowSlots = [];
+        this._layout = null;
+    }
+
+    get windows() {
+        return this._sortedWindows;
+    }
+});
+
+var UIWindowSelectorWindow = GObject.registerClass(
+class UIWindowSelectorWindow extends St.Button {
+    _init(actor, params) {
+        super._init(params);
+
+        const window = actor.metaWindow;
+        this._boundingBox = window.get_frame_rect();
+        this._bufferRect = window.get_buffer_rect();
+        this._bufferScale = actor.get_resource_scale();
+        this._actor = new Clutter.Actor({
+            content: actor.paint_to_content(null),
+        });
+        this.add_child(this._actor);
+
+        this._border = new St.Bin({ style_class: 'screenshot-ui-window-selector-window-border' });
+        this._border.connect('style-changed', () => {
+            this._borderSize =
+                this._border.get_theme_node().get_border_width(St.Side.TOP);
+        });
+        this.add_child(this._border);
+
+        this.connect('destroy', this._onDestroy.bind(this));
+    }
+
+    get boundingBox() {
+        return this._boundingBox;
+    }
+
+    get windowCenter() {
+        const boundingBox = this.boundingBox;
+        return {
+            x: boundingBox.x + boundingBox.width / 2,
+            y: boundingBox.y + boundingBox.height / 2,
+        };
+    }
+
+    chromeHeights() {
+        return [0, 0];
+    }
+
+    chromeWidths() {
+        return [0, 0];
+    }
+
+    overlapHeights() {
+        return [0, 0];
+    }
+
+    get bufferScale() {
+        return this._bufferScale;
+    }
+
+    get windowContent() {
+        return this._actor.content;
+    }
+
+    _onDestroy() {
+        this.remove_child(this._actor);
+        this._actor.destroy();
+        this._actor = null;
+        this.remove_child(this._border);
+        this._border.destroy();
+        this._border = null;
+    }
+
+    vfunc_allocate(box) {
+        this.set_allocation(box);
+
+        // Border goes around the window.
+        const borderBox = box.copy();
+        borderBox.set_origin(0, 0);
+        borderBox.x1 -= this._borderSize;
+        borderBox.y1 -= this._borderSize;
+        borderBox.x2 += this._borderSize;
+        borderBox.y2 += this._borderSize;
+        this._border.allocate(borderBox);
+
+        // box should contain this._boundingBox worth of window. Compute
+        // origin and size for the actor box to satisfy that.
+        const xScale = box.get_width() / this._boundingBox.width;
+        const yScale = box.get_height() / this._boundingBox.height;
+
+        const [, windowW, windowH] = this._actor.content.get_preferred_size();
+
+        const actorBox = new Clutter.ActorBox();
+        actorBox.set_origin(
+            (this._bufferRect.x - this._boundingBox.x) * xScale,
+            (this._bufferRect.y - this._boundingBox.y) * yScale
+        );
+        actorBox.set_size(
+            windowW * xScale / this._bufferScale,
+            windowH * yScale / this._bufferScale
+        );
+        this._actor.allocate(actorBox);
+    }
+});
+
+var UIWindowSelector = GObject.registerClass(
+class UIWindowSelector extends St.Widget {
+    _init(monitorIndex, params) {
+        super._init(params);
+        super.layout_manager = new Clutter.BinLayout();
+
+        this._monitorIndex = monitorIndex;
+
+        this._layoutManager = new UIWindowSelectorLayout(monitorIndex);
+
+        // Window screenshots
+        this._container = new St.Widget({
+            style_class: 'screenshot-ui-window-selector-window-container',
+            x_expand: true,
+            y_expand: true,
+        });
+        this._container.layout_manager = this._layoutManager;
+        this.add_child(this._container);
+    }
+
+    capture() {
+        for (const actor of global.get_window_actors()) {
+            let window = actor.metaWindow;
+            let workspaceManager = global.workspace_manager;
+            let activeWorkspace = workspaceManager.get_active_workspace();
+            if (window.is_override_redirect() ||
+                !window.located_on_workspace(activeWorkspace) ||
+                window.get_monitor() !== this._monitorIndex)
+                continue;
+
+            const widget = new UIWindowSelectorWindow(
+                actor,
+                {
+                    style_class: 'screenshot-ui-window-selector-window',
+                    reactive: true,
+                    can_focus: true,
+                    toggle_mode: true,
+                }
+            );
+
+            widget.connect('key-focus-in', win => {
+                Main.screenshotUI.grab_key_focus();
+                win.checked = true;
+            });
+
+            if (window.has_focus()) {
+                widget.checked = true;
+                widget.toggle_mode = false;
+            }
+
+            this._layoutManager.addWindow(widget);
+        }
+    }
+
+    reset() {
+        this._layoutManager.reset();
+    }
+
+    windows() {
+        return this._layoutManager.windows;
+    }
+});
+
 var ScreenshotUI = GObject.registerClass(
 class ScreenshotUI extends St.Widget {
     _init() {
@@ -754,6 +980,15 @@ class ScreenshotUI extends St.Widget {
             this._onScreenButtonToggled.bind(this));
         this._typeButtonContainer.add_child(this._screenButton);
 
+        this._windowButton = new IconLabelButton('focus-windows-symbolic', _('Window'), {
+            style_class: 'screenshot-ui-type-button',
+            toggle_mode: true,
+            x_expand: true,
+        });
+        this._windowButton.connect('notify::checked',
+            this._onWindowButtonToggled.bind(this));
+        this._typeButtonContainer.add_child(this._windowButton);
+
         this._bottomRowContainer = new St.Widget({ layout_manager: new Clutter.BinLayout() });
         this._panel.add_child(this._bottomRowContainer);
 
@@ -766,6 +1001,7 @@ class ScreenshotUI extends St.Widget {
         this._bottomRowContainer.add_child(this._captureButton);
 
         this._monitorBins = [];
+        this._windowSelectors = [];
         this._rebuildMonitorBins();
 
         Main.layoutManager.connect('monitors-changed', () => {
@@ -792,6 +1028,7 @@ class ScreenshotUI extends St.Widget {
             bin.destroy();
 
         this._monitorBins = [];
+        this._windowSelectors = [];
         this._screenSelectors = [];
 
         for (let i = 0; i < Main.layoutManager.monitors.length; i++) {
@@ -801,6 +1038,18 @@ class ScreenshotUI extends St.Widget {
             bin.add_constraint(new Layout.MonitorConstraint({ 'index': i }));
             this.insert_child_below(bin, this._primaryMonitorBin);
             this._monitorBins.push(bin);
+
+            const windowSelector = new UIWindowSelector(i, {
+                style_class: 'screenshot-ui-window-selector',
+                x_expand: true,
+                y_expand: true,
+                visible: this._windowButton.checked,
+            });
+            if (i === Main.layoutManager.primaryIndex)
+                windowSelector.add_style_pseudo_class('primary-monitor');
+
+            bin.add_child(windowSelector);
+            this._windowSelectors.push(windowSelector);
 
             const screenSelector = new St.Button({
                 style_class: 'screenshot-ui-screen-selector',
@@ -845,6 +1094,32 @@ class ScreenshotUI extends St.Widget {
         if (!this.visible) {
             // Screenshot UI is opening from completely closed state
             // (rather than opening back from in process of closing).
+            for (const selector of this._windowSelectors)
+                selector.capture();
+
+            const windows =
+                this._windowSelectors.flatMap(selector => selector.windows());
+            for (const window of windows) {
+                window.connect('notify::checked', () => {
+                    if (!window.checked)
+                        return;
+
+                    window.toggle_mode = false;
+
+                    for (const otherWindow of windows) {
+                        if (window === otherWindow)
+                            continue;
+
+                        otherWindow.toggle_mode = true;
+                        otherWindow.checked = false;
+                    }
+                });
+            }
+
+            this._windowButton.reactive = windows.length > 0;
+            if (!this._windowButton.reactive)
+                this._selectionButton.checked = true;
+
             this._shooter = new Shell.Screenshot();
 
             this._openingCoroutineInProgress = true;
@@ -903,6 +1178,8 @@ class ScreenshotUI extends St.Widget {
         this._stageScreenshot.set_content(null);
 
         this._areaSelector.reset();
+        for (const selector of this._windowSelectors)
+            selector.reset();
     }
 
     close(instantly = false) {
@@ -925,6 +1202,7 @@ class ScreenshotUI extends St.Widget {
     _onSelectionButtonToggled() {
         if (this._selectionButton.checked) {
             this._selectionButton.toggle_mode = false;
+            this._windowButton.checked = false;
             this._screenButton.checked = false;
 
             this._areaSelector.show();
@@ -956,6 +1234,7 @@ class ScreenshotUI extends St.Widget {
         if (this._screenButton.checked) {
             this._screenButton.toggle_mode = false;
             this._selectionButton.checked = false;
+            this._windowButton.checked = false;
 
             for (const selector of this._screenSelectors) {
                 selector.show();
@@ -970,6 +1249,36 @@ class ScreenshotUI extends St.Widget {
             this._screenButton.toggle_mode = true;
 
             for (const selector of this._screenSelectors) {
+                selector.remove_all_transitions();
+                selector.ease({
+                    opacity: 0,
+                    duration: 200,
+                    mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+                    onComplete: () => selector.hide(),
+                });
+            }
+        }
+    }
+
+    _onWindowButtonToggled() {
+        if (this._windowButton.checked) {
+            this._windowButton.toggle_mode = false;
+            this._selectionButton.checked = false;
+            this._screenButton.checked = false;
+
+            for (const selector of this._windowSelectors) {
+                selector.show();
+                selector.remove_all_transitions();
+                selector.ease({
+                    opacity: 255,
+                    duration: 200,
+                    mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+                });
+            }
+        } else {
+            this._windowButton.toggle_mode = true;
+
+            for (const selector of this._windowSelectors) {
                 selector.remove_all_transitions();
                 selector.ease({
                     opacity: 0,
@@ -1025,6 +1334,38 @@ class ScreenshotUI extends St.Widget {
             Shell.Screenshot.composite_to_stream(
                 texture,
                 x, y, w, h,
+                stream
+            ).then(() => {
+                stream.close(null);
+
+                const clipboard = St.Clipboard.get_default();
+                clipboard.set_content(
+                    St.ClipboardType.CLIPBOARD,
+                    'image/png',
+                    stream.steal_as_bytes()
+                );
+            }).catch(err => {
+                logError(err, 'Error capturing screenshot');
+            });
+        } else if (this._windowButton.checked) {
+            const window =
+                this._windowSelectors.flatMap(selector => selector.windows())
+                                     .find(win => win.checked);
+            if (!window)
+                return;
+
+            const content = window.windowContent;
+            if (!content) {
+                this.close();
+                return;
+            }
+
+            const texture = content.get_texture();
+            const stream = Gio.MemoryOutputStream.new_resizable();
+
+            Shell.Screenshot.composite_to_stream(
+                texture,
+                0, 0, -1, -1,
                 stream
             ).then(() => {
                 stream.close(null);

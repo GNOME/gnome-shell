@@ -92,6 +92,41 @@
   height: 24px;
 }
 
+.screenshot-ui-window-selector {
+  background-color: $system_bg_color;
+
+  .screenshot-ui-window-selector-window-container {
+    margin: 100px;
+  }
+
+  &:primary-monitor {
+    .screenshot-ui-window-selector-window-container {
+      // Make some room for the panel.
+      margin-bottom: 200px;
+    }
+  }
+}
+
+.screenshot-ui-window-selector-window-border {
+  transition-duration: 200ms;
+  border-radius: 18px;
+  border: 6px transparent;
+}
+
+.screenshot-ui-window-selector-window {
+  &:hover {
+    .screenshot-ui-window-selector-window-border {
+      border-color: darken($selected_bg_color, 15%);
+    }
+  }
+  &:checked {
+    .screenshot-ui-window-selector-window-border {
+      border-color: $selected_bg_color;
+      background-color: transparentize($selected_bg_color, 0.8);
+    }
+  }
+}
+
 .screenshot-ui-screen-selector {
   transition-duration: 200ms;
   background-color: rgba(0, 0, 0, .5);
