@@ -1874,8 +1874,11 @@ var Keyboard = GObject.registerClass({
             this.translation_y = -this.height;
         });
 
-        // Queue a relayout so the keyboardBox can update its chrome region.
-        keyboardBox.queue_relayout();
+        // Toggle visibility so the keyboardBox can update its chrome region.
+        if (!Meta.is_wayland_compositor()) {
+            keyboardBox.hide();
+            keyboardBox.show();
+        }
     }
 
     _animateHide() {
