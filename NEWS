@@ -1,3 +1,60 @@
+41.beta
+=======
+* Unbreak Xwayland apps when not using systemd in user session [Olivier; !1850]
+* extension-tool: Always print location on successful creation [Leleat; !1856]
+* Fix distributed man pages [Florian; !1859]
+* Immediately start app grid drags for non-touch devices [Georges; !1866]
+* Avoid unnecessary icon shadow changes [Daniel; !1869]
+* Handle screencast failures more gracefully [Florian; !1878]
+* Fix glitch in app grid → session transition [Harshad; !1886]
+* Use symbolic icons in looking glass toolbar [Chris; !1671]
+* Fix IM popup visibility when in fullscreen [Florian; !1900]
+* magnifier: Fix view jumps when using caret tracking [Lee; !1823]
+* Fix shadow rendering glitches [Daniel; !1897]
+* Allow overriding super+number shortcuts in Settings [Florian; #1250]
+* Fix vertical scrollbars in RTL locales [Florian; !1910]
+* Don't include hidden search results in keynav [Florian; #4470]
+* Use anaccelerated deltas in swipe tracker [Alexander; !1763]
+* status/network: Do not disable on login screen [Florian; !1874]
+* Always take workarea into account when allocating workspaces [Marco; !1892]
+* location: Split out geoclue agent from indicator [Ian; !1919]
+* Add focus indication for switches [vanadiae; !1920]
+* Honor switch-user lockdown settings in unlock screen [Ray; !1833]
+* Fix glitch when dragging window preview in overview [Sebastian; #4292]
+* Lock down "Show Text" in password entries [Ray; !687]
+* Add power mode selection to status menu [Florian; !1907]
+* workspace: Handle skip-taskbar changes [Daniel; !1925]
+* status/network: Use WWan settings panel for GSM/LTE modems [Mohammed; !1942]
+* extensionUtils: Add gettext convenience helpers [Florian; !1941]
+* screenShield: Fix suspend inhibitor accounting [Sebastian; !1927, !1952]
+* Unify app context menus [Florian; !1948]
+* Use consistent terminology in window menu [nitinosiris; !1834]
+* Fixed crashes [Gustavo, Florian; !1848, !1885, !1935]
+* Misc. bug fixes and cleanups [Jonas Å., Florian, Georges, Daniel, Olivier,
+  Carlos, Robert, Sebastian, Jakub, Jonas D., Fionn; !1838, !1854, !1860,
+  !1872, !1876, !1880, !1888, !1890, !1891, !1894, !1902, !1901, !1903,
+  !1841, !1904, !1786, !1906, !1909, !1908, !1840, !1913, !1917, !1914,
+  !1857, !1922, !1924, !1931, !1926, !953, !1932, !1939, !1938, !1944,
+  !1936, !1947, !1945, !1950]
+
+Contributors:
+  Marco Trevisan (Treviño), Jonas Dreßler, Olivier Fourdan, Carlos Garnacho,
+  Harshad Gavali, Tjipke van der Heide, Fionn Kelleher, Sebastian Keller, Lee,
+  Leleat, Robert Mader, Chris Mayo, Alexander Mikhaylenko, Florian Müllner,
+  Georges Basile Stavracas Neto, nitinosiris, Mohammed Sadiq, Ian Douglas Scott,
+  Gustavo Noronha Silva, Jakub Steiner, Ray Strode, Daniel van Vugt, vanadiae,
+  Jonas Ådahl
+
+Translators:
+  Quentin PAGÈS [oc], Cheng-Chia Tseng [zh_TW], Jordi Mas [ca],
+  Hugo Carvalho [pt], Julia Dronova [ru], Efstathios Iosifidis [el],
+  Alexander Shopov [bg], Florentina Mușat [ro], Yuri Chornoivan [uk],
+  Alexey Rubtsov [ru], Rafael Fontenelle [pt_BR], Yaron Shahrabani [he],
+  Daniel Mustieles [es], Matej Urbančič [sl], Danial Behzadi [fa],
+  Kukuh Syafaat [id], Fran Dieguez [gl], Boyuan Yang [zh_CN], Fabio Tomat [fur],
+  Tjipke van der Heide [fy], Emin Tufan Çetin [tr], Luna Jernberg [sv],
+  Daniel Șerbănescu [ro]
+
 40.1
 ====
 * Fix keyboard preview for IM that use 'default' layout [Peng; !1756]
