@@ -3,6 +3,7 @@
 
 const { GObject, Meta } = imports.gi;
 
+const Main = imports.ui.main;
 const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
 
@@ -50,6 +51,15 @@ class RemoteAccessApplet extends PanelMenu.SystemIndicator {
         this._recordingIndicator = this._addIndicator();
         this._recordingIndicator.icon_name = 'media-record-symbolic';
         this._recordingIndicator.add_style_class_name('screencast-indicator');
+
+        this._recordingItem = new PopupMenu.PopupSubMenuMenuItem(
+            _('Screen Recording in Progress'),
+            true
+        );
+        this._recordingItem.menu.addAction(_('Stop'),
+            () => Main.screenshotUI.stopScreencast());
+        this._recordingItem.icon.icon_name = 'media-record-symbolic';
+        this.menu.addMenuItem(this._recordingItem);
     }
 
     _isScreenShared() {
@@ -70,6 +80,7 @@ class RemoteAccessApplet extends PanelMenu.SystemIndicator {
         }
 
         this._recordingIndicator.visible = this._isRecording();
+        this._recordingItem.visible = Main.screenshotUI.screencastInProgress;
     }
 
     _onStopped(handle) {
