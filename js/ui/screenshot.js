@@ -1523,16 +1523,21 @@ class ScreenshotUI extends St.Widget {
     }
 
     _onCaptureButtonClicked() {
+        this._saveScreenshot();
+
+        // TODO: screencasting.
+
+        this.close();
+    }
+
+    _saveScreenshot() {
         global.display.get_sound_player().play_from_theme(
             'screen-capture', _('Screenshot taken'), null);
 
         if (this._selectionButton.checked || this._screenButton.checked) {
             const content = this._stageScreenshot.get_content();
-            if (!content) {
-                // Failed to capture the screenshot for some reason.
-                this.close();
-                return;
-            }
+            if (!content)
+                return; // Failed to capture the screenshot for some reason.
 
             const texture = content.get_texture();
             const stream = Gio.MemoryOutputStream.new_resizable();
@@ -1572,10 +1577,8 @@ class ScreenshotUI extends St.Widget {
                 return;
 
             const content = window.windowContent;
-            if (!content) {
-                this.close();
+            if (!content)
                 return;
-            }
 
             const texture = content.get_texture();
             const stream = Gio.MemoryOutputStream.new_resizable();
@@ -1606,8 +1609,6 @@ class ScreenshotUI extends St.Widget {
                 logError(err, 'Error capturing screenshot');
             });
         }
-
-        this.close();
     }
 
     vfunc_key_press_event(event) {
