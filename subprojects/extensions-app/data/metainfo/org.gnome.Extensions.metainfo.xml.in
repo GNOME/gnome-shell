@@ -39,6 +39,7 @@
   </description>
 
   <releases>
+    <release version="3.38.6" date="2021-08-18"/>
     <release version="3.38.5" date="2021-06-10"/>
     <release version="3.38.4" date="2021-03-15"/>
     <release version="3.38.3" date="2021-01-14"/>
