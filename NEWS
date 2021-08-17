@@ -1,3 +1,22 @@
+40.4
+====
+* Don't include hidden search results in keynav [Florian; #4470]
+* Always take workarea into account when allocating workspaces [Marco; !1892]
+* Add focus indication for switches [vanadiae; !1920]
+* Fix glitch when dragging window preview in overview [Sebastian; !1847]
+* workspace: Handle skip-taskbar changes  [Daniel; !1925]
+* screenShield: Fix suspend inhibitor accounting [Sebastian; !1927]
+* Fixed crash [Florian; !1935]
+* Misc. bug fixes and cleanups [Florian, Sebastian; !1921, !1926, !1932,
+  !1938, !1945, !1950]
+
+Contributors:
+  Marco Trevisan (Treviño), Sebastian Keller, Florian Müllner, Daniel van Vugt,
+  vanadiae
+
+Translators:
+  Quentin PAGÈS [oc]
+
 40.3
 ====
 * Fix glitch in app grid → session transition [Harshad; !1886]
