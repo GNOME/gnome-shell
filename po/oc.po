@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master fr\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2021-08-11 16:17+0000\n"
-"PO-Revision-Date: 2021-08-12 23:18+0200\n"
+"POT-Creation-Date: 2021-08-17 23:56+0000\n"
+"PO-Revision-Date: 2021-08-18 11:11+0200\n"
 "Last-Translator: Quentin PAGÈS\n"
 "Language-Team: Tot En Òc\n"
 "Language: oc\n"
@@ -514,7 +514,7 @@ msgstr "Consultar la pagina de las extensions"
 #: js/ui/components/networkAgent.js:111 js/ui/components/polkitAgent.js:138
 #: js/ui/endSessionDialog.js:438 js/ui/extensionDownloader.js:190
 #: js/ui/shellMountOperation.js:376 js/ui/shellMountOperation.js:386
-#: js/ui/status/network.js:963 subprojects/extensions-app/js/main.js:183
+#: js/ui/status/network.js:978 subprojects/extensions-app/js/main.js:183
 msgid "Cancel"
 msgstr "Anullar"
 
@@ -812,38 +812,9 @@ msgstr "Refusar l'accès"
 msgid "Grant Access"
 msgstr "Acordar l'accès"
 
-#: js/ui/appDisplay.js:1860
+#: js/ui/appDisplay.js:1846
 msgid "Unnamed Folder"
 msgstr "Dossièr sens nom"
-
-#. Translators: This is the heading of a list of open windows
-#: js/ui/appDisplay.js:3453 js/ui/panel.js:33
-msgid "Open Windows"
-msgstr "Fenèstras dobèrtas"
-
-#: js/ui/appDisplay.js:3472 js/ui/panel.js:41
-msgid "New Window"
-msgstr "Novèla fenèstra"
-
-#: js/ui/appDisplay.js:3488
-msgid "Launch using Integrated Graphics Card"
-msgstr "Aviar en utilizant la carta grafica integrada"
-
-#: js/ui/appDisplay.js:3489
-msgid "Launch using Discrete Graphics Card"
-msgstr "Aviar en utilizant la carta grafica dedicada"
-
-#: js/ui/appDisplay.js:3518 js/ui/dash.js:245
-msgid "Remove from Favorites"
-msgstr "Levar dels favorits"
-
-#: js/ui/appDisplay.js:3524
-msgid "Add to Favorites"
-msgstr "Apondre als favorits"
-
-#: js/ui/appDisplay.js:3534 js/ui/panel.js:52
-msgid "Show Details"
-msgstr "Afichar los detalhs"
 
 #: js/ui/appFavorites.js:164
 #, javascript-format
@@ -854,6 +825,39 @@ msgstr "%s es estat apondut a vòstres favorits."
 #, javascript-format
 msgid "%s has been removed from your favorites."
 msgstr "%s es estat suprimit de vòstres favorits."
+
+#. Translators: This is the heading of a list of open windows
+#: js/ui/appMenu.js:46
+msgid "Open Windows"
+msgstr "Fenèstras dobèrtas"
+
+#: js/ui/appMenu.js:54
+msgid "New Window"
+msgstr "Novèla fenèstra"
+
+#: js/ui/appMenu.js:81
+msgid "Show Details"
+msgstr "Afichar los detalhs"
+
+#: js/ui/appMenu.js:96
+msgid "Quit"
+msgstr "Quitar"
+
+#: js/ui/appMenu.js:163 js/ui/dash.js:245
+msgid "Remove from Favorites"
+msgstr "Levar dels favorits"
+
+#: js/ui/appMenu.js:164
+msgid "Add to Favorites"
+msgstr "Apondre als favorits"
+
+#: js/ui/appMenu.js:181
+msgid "Launch using Integrated Graphics Card"
+msgstr "Aviar en utilizant la carta grafica integrada"
+
+#: js/ui/appMenu.js:182
+msgid "Launch using Discrete Graphics Card"
+msgstr "Aviar en utilizant la carta grafica dedicada"
 
 #: js/ui/audioDeviceSelection.js:41
 msgid "Select Audio Device"
@@ -1040,7 +1044,7 @@ msgid ""
 msgstr "Autrament podètz quichatz lo boton « WPS » sul router."
 
 #: js/ui/components/networkAgent.js:105 js/ui/status/network.js:258
-#: js/ui/status/network.js:349 js/ui/status/network.js:966
+#: js/ui/status/network.js:349 js/ui/status/network.js:981
 msgid "Connect"
 msgstr "Se connectar"
 
@@ -1104,7 +1108,7 @@ msgstr "PIN"
 msgid "A password is required to connect to “%s”."
 msgstr "Un senhal es requesit per se connectar a « %s »."
 
-#: js/ui/components/networkAgent.js:668 js/ui/status/network.js:1774
+#: js/ui/components/networkAgent.js:668 js/ui/status/network.js:1789
 msgid "Network Manager"
 msgstr "Gestionari de ret"
 
@@ -1526,13 +1530,13 @@ msgid "Leave On"
 msgstr "Daissar activat"
 
 #: js/ui/kbdA11yDialog.js:54 js/ui/status/bluetooth.js:156
-#: js/ui/status/network.js:1362
+#: js/ui/status/network.js:1377
 msgid "Turn On"
 msgstr "Activar"
 
 #: js/ui/kbdA11yDialog.js:62 js/ui/status/bluetooth.js:156
 #: js/ui/status/network.js:166 js/ui/status/network.js:350
-#: js/ui/status/network.js:1362 js/ui/status/network.js:1474
+#: js/ui/status/network.js:1377 js/ui/status/network.js:1489
 #: js/ui/status/nightLight.js:41 js/ui/status/rfkill.js:81
 #: js/ui/status/rfkill.js:110
 msgid "Turn Off"
@@ -1694,22 +1698,18 @@ msgstr "Quichatz sus Escap. per quitar"
 msgid "Press any key to exit"
 msgstr "Quichatz sus una tòca per quitar"
 
-#: js/ui/panel.js:66
-msgid "Quit"
-msgstr "Quitar"
-
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: js/ui/panel.js:395
+#: js/ui/panel.js:271
 msgid "Activities"
 msgstr "Activitats"
 
-#: js/ui/panel.js:666
+#: js/ui/panel.js:542
 msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "Sistèma"
 
-#: js/ui/panel.js:782
+#: js/ui/panel.js:658
 msgid "Top Bar"
 msgstr "Barra superiora"
 
@@ -1729,7 +1729,7 @@ msgstr "La reaviada es pas disponibla sus Wayland"
 msgid "Restarting…"
 msgstr "Reaviada en cors…"
 
-#: js/ui/screenShield.js:211
+#: js/ui/screenShield.js:224
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME a besonh de verrolhar l'ecran"
 
@@ -1740,11 +1740,11 @@ msgstr "GNOME a besonh de verrolhar l'ecran"
 #.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
-#: js/ui/screenShield.js:252 js/ui/screenShield.js:622
+#: js/ui/screenShield.js:264 js/ui/screenShield.js:634
 msgid "Unable to lock"
 msgstr "Impossible de verrolhar"
 
-#: js/ui/screenShield.js:253 js/ui/screenShield.js:623
+#: js/ui/screenShield.js:265 js/ui/screenShield.js:635
 msgid "Lock was blocked by an application"
 msgstr "Lo verrolhatge es estat blocat per una aplicacion"
 
@@ -1894,7 +1894,7 @@ msgstr "Grand tèxte"
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: js/ui/status/bluetooth.js:49 js/ui/status/network.js:637
+#: js/ui/status/bluetooth.js:49 js/ui/status/network.js:652
 msgid "Bluetooth Settings"
 msgstr "Paramètres Bluetooth"
 
@@ -1991,7 +1991,7 @@ msgid "<unknown>"
 msgstr "<desconegut>"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:455 js/ui/status/network.js:1391
+#: js/ui/status/network.js:455 js/ui/status/network.js:1406
 #, javascript-format
 msgid "%s Off"
 msgstr "%s atudat"
@@ -2017,7 +2017,7 @@ msgid "%s Disconnecting"
 msgstr "Desconnexion de %s en cors"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:473 js/ui/status/network.js:1383
+#: js/ui/status/network.js:473 js/ui/status/network.js:1398
 #, javascript-format
 msgid "%s Connecting"
 msgstr "Connexion de %s en cors"
@@ -2052,142 +2052,142 @@ msgstr "Fracàs de connexion a %s"
 msgid "Wired Settings"
 msgstr "Paramètres de la connexion filara"
 
-#: js/ui/status/network.js:546
+#: js/ui/status/network.js:550
 msgid "Mobile Broadband Settings"
 msgstr "Paramètres del telefòn mobil de benda larga"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:604 js/ui/status/network.js:1388
+#: js/ui/status/network.js:619 js/ui/status/network.js:1403
 #, javascript-format
 msgid "%s Hardware Disabled"
 msgstr "Equipament %s desactivat"
 
 #. Translators: this is for a network device that cannot be activated
 #. because it's disabled by rfkill (airplane mode); %s is a network identifier
-#: js/ui/status/network.js:608
+#: js/ui/status/network.js:623
 #, javascript-format
 msgid "%s Disabled"
 msgstr "%s desactivat"
 
-#: js/ui/status/network.js:649
+#: js/ui/status/network.js:664
 msgid "Connect to Internet"
 msgstr "Se connectar a Internet"
 
-#: js/ui/status/network.js:858
+#: js/ui/status/network.js:873
 msgid "Airplane Mode is On"
 msgstr "Lo mòde avion es activat"
 
-#: js/ui/status/network.js:859
+#: js/ui/status/network.js:874
 msgid "Wi-Fi is disabled when airplane mode is on."
 msgstr "Lo Wi-Fi es desactivat quand lo mòde avion es activat."
 
-#: js/ui/status/network.js:860
+#: js/ui/status/network.js:875
 msgid "Turn Off Airplane Mode"
 msgstr "Desactivar lo mòde avion"
 
-#: js/ui/status/network.js:869
+#: js/ui/status/network.js:884
 msgid "Wi-Fi is Off"
 msgstr "Lo Wi-fi es desactivat"
 
-#: js/ui/status/network.js:870
+#: js/ui/status/network.js:885
 msgid "Wi-Fi needs to be turned on in order to connect to a network."
 msgstr "Lo Wi-Fi a besonh d'èsser activat per se connectar a una ret."
 
-#: js/ui/status/network.js:871
+#: js/ui/status/network.js:886
 msgid "Turn On Wi-Fi"
 msgstr "Activar lo Wi-Fi"
 
-#: js/ui/status/network.js:896
+#: js/ui/status/network.js:911
 msgid "Wi-Fi Networks"
 msgstr "Rets Wi-Fi"
 
-#: js/ui/status/network.js:898
+#: js/ui/status/network.js:913
 msgid "Select a network"
 msgstr "Causir una ret"
 
-#: js/ui/status/network.js:930
+#: js/ui/status/network.js:945
 msgid "No Networks"
 msgstr "Cap de ret pas disponibla"
 
-#: js/ui/status/network.js:951 js/ui/status/rfkill.js:108
+#: js/ui/status/network.js:966 js/ui/status/rfkill.js:108
 msgid "Use hardware switch to turn off"
 msgstr "Utilizar l'interruptor material per atudar"
 
-#: js/ui/status/network.js:1252
+#: js/ui/status/network.js:1267
 msgid "Select Network"
 msgstr "Seleccionar una ret"
 
-#: js/ui/status/network.js:1258
+#: js/ui/status/network.js:1273
 msgid "Wi-Fi Settings"
 msgstr "Paramètres del Wifi"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1379
+#: js/ui/status/network.js:1394
 #, javascript-format
 msgid "%s Hotspot Active"
 msgstr "Hotspot %s activat"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1394
+#: js/ui/status/network.js:1409
 #, javascript-format
 msgid "%s Not Connected"
 msgstr "%s desconnectat"
 
-#: js/ui/status/network.js:1491
+#: js/ui/status/network.js:1506
 msgid "connecting…"
 msgstr "connexion…"
 
 #. Translators: this is for network connections that require some kind of key or password
-#: js/ui/status/network.js:1494
+#: js/ui/status/network.js:1509
 msgid "authentication required"
 msgstr "autentificacion necessària"
 
-#: js/ui/status/network.js:1496
+#: js/ui/status/network.js:1511
 msgid "connection failed"
 msgstr "fracàs de connexion"
 
-#: js/ui/status/network.js:1547
+#: js/ui/status/network.js:1562
 msgid "VPN Settings"
 msgstr "Paramètres VPN"
 
-#: js/ui/status/network.js:1564
+#: js/ui/status/network.js:1579
 msgid "VPN"
 msgstr "VPN"
 
-#: js/ui/status/network.js:1574
+#: js/ui/status/network.js:1589
 msgid "VPN Off"
 msgstr "VPN atudat"
 
-#: js/ui/status/network.js:1635 js/ui/status/rfkill.js:84
+#: js/ui/status/network.js:1650 js/ui/status/rfkill.js:84
 msgid "Network Settings"
 msgstr "Paramètres de la ret"
 
-#: js/ui/status/network.js:1663
+#: js/ui/status/network.js:1678
 #, javascript-format
 msgid "%s Wired Connection"
 msgid_plural "%s Wired Connections"
 msgstr[0] "%s connexion filària"
 msgstr[1] "%s connexions filàrias"
 
-#: js/ui/status/network.js:1667
+#: js/ui/status/network.js:1682
 #, javascript-format
 msgid "%s Wi-Fi Connection"
 msgid_plural "%s Wi-Fi Connections"
 msgstr[0] "%s connexion Wi-Fi"
 msgstr[1] "%s connexions Wi-Fi"
 
-#: js/ui/status/network.js:1671
+#: js/ui/status/network.js:1686
 #, javascript-format
 msgid "%s Modem Connection"
 msgid_plural "%s Modem Connections"
 msgstr[0] "%s connexion a un modèm"
 msgstr[1] "%s connexions a de modèm"
 
-#: js/ui/status/network.js:1815
+#: js/ui/status/network.js:1830
 msgid "Connection failed"
 msgstr "Fracàs de connexion"
 
-#: js/ui/status/network.js:1816
+#: js/ui/status/network.js:1831
 msgid "Activation of network connection failed"
 msgstr "L'activacion de la connexion a la ret a fracassat"
 
@@ -2448,12 +2448,12 @@ msgid "%d × %d"
 msgstr "%d × %d"
 
 #: js/ui/windowMenu.js:27
-msgid "Minimize"
-msgstr "Minimizar"
+msgid "Hide"
+msgstr "Amagar"
 
 #: js/ui/windowMenu.js:34
-msgid "Unmaximize"
-msgstr "Reduire"
+msgid "Restore"
+msgstr "Restablir"
 
 #: js/ui/windowMenu.js:38
 msgid "Maximize"
@@ -3118,6 +3118,12 @@ msgstr[1] "%u entradas"
 #: subprojects/gvc/gvc-mixer-control.c:2867
 msgid "System Sounds"
 msgstr "Sons sistèma"
+
+#~ msgid "Minimize"
+#~ msgstr "Minimizar"
+
+#~ msgid "Unmaximize"
+#~ msgstr "Reduire"
 
 #~ msgid "App Picker View"
 #~ msgstr "Vista del selector d'aplicacions"
