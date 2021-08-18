@@ -189,10 +189,9 @@ the expected location in the user's *$HOME*, so that it
 will be loaded in the next session.
 +
 It is mainly intended for testing, not as a replacement for
-GNOME Software or the extension website. As extensions have
-privileged access to the user's session, it is advised to
-never load extensions from untrusted sources without carefully
-reviewing their content.
+the extension website. As extensions have privileged access
+to the user's session, it is advised to never load extensions
+from untrusted sources without carefully reviewing their content.
 +
 .Options
   *--force*:::
