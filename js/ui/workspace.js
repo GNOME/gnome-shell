@@ -429,12 +429,24 @@ var WorkspaceLayout = GObject.registerClass({
         });
 
         this._stateAdjustment.connect('notify::value', () => {
+            this._syncOpacities();
             this.syncOverlays();
             this.layout_changed();
         });
 
         this._workarea = null;
         this._workareasChangedId = 0;
+    }
+
+    _syncOpacity(actor, metaWindow) {
+        if (!metaWindow.showing_on_its_workspace())
+            actor.opacity = this._stateAdjustment.value * 255;
+    }
+
+    _syncOpacities() {
+        this._windows.forEach(({ metaWindow }, actor) => {
+            this._syncOpacity(actor, metaWindow);
+        });
     }
 
     _isBetterScaleAndSpace(oldScale, oldSpace, scale, space) {
@@ -627,7 +639,7 @@ var WorkspaceLayout = GObject.registerClass({
         }
 
         const { ControlsState } = OverviewControls;
-        const { currentState, transitioning } =
+        const { currentState } =
             this._overviewAdjustment.getStateTransitionParams();
         const inSessionTransition = currentState <= ControlsState.WINDOW_PICKER;
 
@@ -689,9 +701,6 @@ var WorkspaceLayout = GObject.registerClass({
                 workspaceBoxY = workareaY * allocationScale;
                 workspaceBoxWidth = 0;
                 workspaceBoxHeight = 0;
-
-                if (transitioning)
-                    child.opacity = stateAdjustementValue * 255;
             }
 
             // Don't allow the scaled floating size to drop below
@@ -792,6 +801,7 @@ var WorkspaceLayout = GObject.registerClass({
             return winA.get_stable_sequence() - winB.get_stable_sequence();
         });
 
+        this._syncOpacity(window, metaWindow);
         this._syncOverlay(window);
         this._container.add_child(window);
 
