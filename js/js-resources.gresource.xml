@@ -64,6 +64,7 @@
     <file>ui/ibusCandidatePopup.js</file>
     <file>ui/iconGrid.js</file>
     <file>ui/inhibitShortcutsDialog.js</file>
+    <file>ui/init.js</file>
     <file>ui/kbdA11yDialog.js</file>
     <file>ui/keyboard.js</file>
     <file>ui/layout.js</file>

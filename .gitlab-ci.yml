@@ -123,7 +123,7 @@ js_check:
         - .gnome-shell.fedora:34
     stage: review
     script:
-        - find js -name '*.js' -exec js78 -c '{}' ';' 2>&1 | tee $JS_LOG
+        - find js -name '*.js' $(printf "! -wholename %s " $(cat .jscheckignore)) -exec js78 -c '{}' ';' 2>&1 | tee $JS_LOG
         - (! grep -q . $JS_LOG)
     artifacts:
         paths:

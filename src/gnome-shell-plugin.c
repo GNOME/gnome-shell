@@ -106,7 +106,7 @@ gnome_shell_plugin_start (MetaPlugin *plugin)
 {
   GnomeShellPlugin *shell_plugin = GNOME_SHELL_PLUGIN (plugin);
   GError *error = NULL;
-  int status;
+  uint8_t status;
   GjsContext *gjs_context;
   ClutterBackend *backend;
 
@@ -126,13 +126,10 @@ gnome_shell_plugin_start (MetaPlugin *plugin)
 
   gjs_context = _shell_global_get_gjs_context (shell_plugin->global);
 
-  if (!gjs_context_eval (gjs_context,
-                         "imports.ui.environment.init();"
-                         "imports.ui.main.start();",
-                         -1,
-                         "<main>",
-                         &status,
-                         &error))
+  if (!gjs_context_eval_module_file (gjs_context,
+                                     "resource:///org/gnome/shell/ui/init.js",
+                                     &status,
+                                     &error))
     {
       g_message ("Execution of main.js threw exception: %s", error->message);
       g_error_free (error);
