@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2021-08-16 01:27+0000\n"
-"PO-Revision-Date: 2021-08-16 17:14+0430\n"
+"POT-Creation-Date: 2021-08-17 23:56+0000\n"
+"PO-Revision-Date: 2021-08-21 15:55+0430\n"
 "Last-Translator: Danial Behzadi <dani.behzi@ubuntu.com>\n"
 "Language-Team: Persian <>\n"
 "Language: fa\n"
@@ -190,7 +190,7 @@ msgid ""
 "This key overrides the automatic hiding of the “Log out” menu item in single-"
 "user, single-session situations."
 msgstr ""
-"این کلید مخفی‌سازی خودکار «خروج» در فهرست را در حالت‌های تک‌کاربر، تک‌نشست بازنویسی "
+"این کلید، نهفتن خودکار «خروج» در فهرست را در حالت‌های تک‌کاربر، تک‌نشست بازنویسی "
 "می‌کند."
 
 #: data/org.gnome.shell.gschema.xml.in:79
@@ -769,38 +769,9 @@ msgstr "رد دسترسی"
 msgid "Grant Access"
 msgstr "پذیرفتن دسترسی"
 
-#: js/ui/appDisplay.js:1862
+#: js/ui/appDisplay.js:1846
 msgid "Unnamed Folder"
 msgstr "پوشهٔ بی‌نام"
-
-#. Translators: This is the heading of a list of open windows
-#: js/ui/appDisplay.js:3455 js/ui/panel.js:33
-msgid "Open Windows"
-msgstr "پنجره‌های باز"
-
-#: js/ui/appDisplay.js:3474 js/ui/panel.js:41
-msgid "New Window"
-msgstr "پنجرهٔ جدید"
-
-#: js/ui/appDisplay.js:3490
-msgid "Launch using Integrated Graphics Card"
-msgstr "اجرا با کارت گرافیک یکپارچه"
-
-#: js/ui/appDisplay.js:3491
-msgid "Launch using Discrete Graphics Card"
-msgstr "اجرا با کارت گرافیک جداگانه"
-
-#: js/ui/appDisplay.js:3520 js/ui/dash.js:245
-msgid "Remove from Favorites"
-msgstr "حذف از مورد پسندها"
-
-#: js/ui/appDisplay.js:3526
-msgid "Add to Favorites"
-msgstr "افزودن به مورد پسندها"
-
-#: js/ui/appDisplay.js:3536 js/ui/panel.js:52
-msgid "Show Details"
-msgstr "نمایش جزییات"
 
 #: js/ui/appFavorites.js:164
 #, javascript-format
@@ -811,6 +782,39 @@ msgstr "%s به مورد پسندهایتان اضافه شد."
 #, javascript-format
 msgid "%s has been removed from your favorites."
 msgstr "%s ازمورد پسندهایتان حذف شد."
+
+#. Translators: This is the heading of a list of open windows
+#: js/ui/appMenu.js:46
+msgid "Open Windows"
+msgstr "پنجره‌های باز"
+
+#: js/ui/appMenu.js:54
+msgid "New Window"
+msgstr "پنجرهٔ جدید"
+
+#: js/ui/appMenu.js:81
+msgid "Show Details"
+msgstr "نمایش جزییات"
+
+#: js/ui/appMenu.js:96
+msgid "Quit"
+msgstr "خروج"
+
+#: js/ui/appMenu.js:163 js/ui/dash.js:245
+msgid "Remove from Favorites"
+msgstr "حذف از مورد پسندها"
+
+#: js/ui/appMenu.js:164
+msgid "Add to Favorites"
+msgstr "افزودن به مورد پسندها"
+
+#: js/ui/appMenu.js:181
+msgid "Launch using Integrated Graphics Card"
+msgstr "اجرا با کارت گرافیک یکپارچه"
+
+#: js/ui/appMenu.js:182
+msgid "Launch using Discrete Graphics Card"
+msgstr "اجرا با کارت گرافیک جداگانه"
 
 #: js/ui/audioDeviceSelection.js:41
 msgid "Select Audio Device"
@@ -1468,7 +1472,7 @@ msgstr "افزونه %s هیچ خطایی منتشر نکرده است."
 
 #: js/ui/lookingGlass.js:740
 msgid "Hide Errors"
-msgstr "مخفی کردن خطاها"
+msgstr "نهفتن خطاها"
 
 #: js/ui/lookingGlass.js:744 js/ui/lookingGlass.js:810
 msgid "Show Errors"
@@ -1602,22 +1606,18 @@ msgstr "برای خروج گریز را بزنید"
 msgid "Press any key to exit"
 msgstr "برای خروج، هر کلیدی را بزنید"
 
-#: js/ui/panel.js:66
-msgid "Quit"
-msgstr "خروج"
-
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: js/ui/panel.js:395
+#: js/ui/panel.js:271
 msgid "Activities"
 msgstr "فعّالیت‌ها"
 
-#: js/ui/panel.js:666
+#: js/ui/panel.js:542
 msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "سامانه"
 
-#: js/ui/panel.js:782
+#: js/ui/panel.js:658
 msgid "Top Bar"
 msgstr "نوار بالا"
 
@@ -1685,7 +1685,7 @@ msgstr "رونوشت"
 
 #: js/ui/shellEntry.js:25
 msgid "Paste"
-msgstr "چسباندن"
+msgstr "جای‌گذاری"
 
 #: js/ui/shellEntry.js:77
 msgid "Show Text"
@@ -1693,7 +1693,7 @@ msgstr "نمایش متن"
 
 #: js/ui/shellEntry.js:79
 msgid "Hide Text"
-msgstr "مخفی‌کردن متن"
+msgstr "نهفتن متن"
 
 #: js/ui/shellEntry.js:166
 msgid "Caps lock is on."
@@ -2350,12 +2350,12 @@ msgid "%d × %d"
 msgstr "%Id × %Id"
 
 #: js/ui/windowMenu.js:27
-msgid "Minimize"
-msgstr "کمینه کردن"
+msgid "Hide"
+msgstr "نهفتن"
 
 #: js/ui/windowMenu.js:34
-msgid "Unmaximize"
-msgstr "نابیشینه کردن"
+msgid "Restore"
+msgstr "بازآوری"
 
 #: js/ui/windowMenu.js:38
 msgid "Maximize"
@@ -3013,6 +3013,12 @@ msgstr[1] "%Iu ورودی"
 #: subprojects/gvc/gvc-mixer-control.c:2867
 msgid "System Sounds"
 msgstr "صداهای سامانه"
+
+#~ msgid "Minimize"
+#~ msgstr "کمینه کردن"
+
+#~ msgid "Unmaximize"
+#~ msgstr "نابیشینه کردن"
 
 #~ msgid "App Picker View"
 #~ msgstr "نمای گزینش برنامه"
