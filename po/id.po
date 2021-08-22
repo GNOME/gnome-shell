@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2021-08-11 16:17+0000\n"
-"PO-Revision-Date: 2021-08-15 18:57+0700\n"
+"POT-Creation-Date: 2021-08-17 23:56+0000\n"
+"PO-Revision-Date: 2021-08-22 11:44+0700\n"
 "Last-Translator: Kukuh Syafaat <kukuhsyafaat@gnome.org>\n"
 "Language-Team: Indonesian <gnome-l10n-id@googlegroups.com>\n"
 "Language: id\n"
@@ -508,7 +508,7 @@ msgstr "Kunjungi halaman web ekstensi"
 #: js/ui/components/networkAgent.js:111 js/ui/components/polkitAgent.js:138
 #: js/ui/endSessionDialog.js:438 js/ui/extensionDownloader.js:190
 #: js/ui/shellMountOperation.js:376 js/ui/shellMountOperation.js:386
-#: js/ui/status/network.js:963 subprojects/extensions-app/js/main.js:183
+#: js/ui/status/network.js:978 subprojects/extensions-app/js/main.js:183
 msgid "Cancel"
 msgstr "Batal"
 
@@ -806,38 +806,9 @@ msgstr "Tolak Akses"
 msgid "Grant Access"
 msgstr "Beri Akses"
 
-#: js/ui/appDisplay.js:1860
+#: js/ui/appDisplay.js:1846
 msgid "Unnamed Folder"
 msgstr "Folder Tanpa Nama"
-
-#. Translators: This is the heading of a list of open windows
-#: js/ui/appDisplay.js:3453 js/ui/panel.js:33
-msgid "Open Windows"
-msgstr "Buka Jendela"
-
-#: js/ui/appDisplay.js:3472 js/ui/panel.js:41
-msgid "New Window"
-msgstr "Jendela Baru"
-
-#: js/ui/appDisplay.js:3488
-msgid "Launch using Integrated Graphics Card"
-msgstr "Luncurkan menggunakan Kartu Grafis Terintegrasi"
-
-#: js/ui/appDisplay.js:3489
-msgid "Launch using Discrete Graphics Card"
-msgstr "Luncurkan menggunakan Kartu Grafis Diskrit"
-
-#: js/ui/appDisplay.js:3518 js/ui/dash.js:245
-msgid "Remove from Favorites"
-msgstr "Hapus dari Favorit"
-
-#: js/ui/appDisplay.js:3524
-msgid "Add to Favorites"
-msgstr "Tambah ke Favorit"
-
-#: js/ui/appDisplay.js:3534 js/ui/panel.js:52
-msgid "Show Details"
-msgstr "Tampilkan Rincian"
 
 #: js/ui/appFavorites.js:164
 #, javascript-format
@@ -848,6 +819,39 @@ msgstr "%s telah ditambahkan ke favorit Anda."
 #, javascript-format
 msgid "%s has been removed from your favorites."
 msgstr "%s telah dihapus dari favorit Anda."
+
+#. Translators: This is the heading of a list of open windows
+#: js/ui/appMenu.js:46
+msgid "Open Windows"
+msgstr "Buka Jendela"
+
+#: js/ui/appMenu.js:54
+msgid "New Window"
+msgstr "Jendela Baru"
+
+#: js/ui/appMenu.js:81
+msgid "Show Details"
+msgstr "Tampilkan Rincian"
+
+#: js/ui/appMenu.js:96
+msgid "Quit"
+msgstr "Keluar"
+
+#: js/ui/appMenu.js:163 js/ui/dash.js:245
+msgid "Remove from Favorites"
+msgstr "Hapus dari Favorit"
+
+#: js/ui/appMenu.js:164
+msgid "Add to Favorites"
+msgstr "Tambah ke Favorit"
+
+#: js/ui/appMenu.js:181
+msgid "Launch using Integrated Graphics Card"
+msgstr "Luncurkan menggunakan Kartu Grafis Terintegrasi"
+
+#: js/ui/appMenu.js:182
+msgid "Launch using Discrete Graphics Card"
+msgstr "Luncurkan menggunakan Kartu Grafis Diskrit"
 
 #: js/ui/audioDeviceSelection.js:41
 msgid "Select Audio Device"
@@ -1037,7 +1041,7 @@ msgstr ""
 "router Anda."
 
 #: js/ui/components/networkAgent.js:105 js/ui/status/network.js:258
-#: js/ui/status/network.js:349 js/ui/status/network.js:966
+#: js/ui/status/network.js:349 js/ui/status/network.js:981
 msgid "Connect"
 msgstr "Sambung"
 
@@ -1102,7 +1106,7 @@ msgstr "PIN"
 msgid "A password is required to connect to “%s”."
 msgstr "Perlu suatu kata sandi untuk menyambung ke \"%s\"."
 
-#: js/ui/components/networkAgent.js:668 js/ui/status/network.js:1774
+#: js/ui/components/networkAgent.js:668 js/ui/status/network.js:1789
 msgid "Network Manager"
 msgstr "Manajer Jaringan"
 
@@ -1482,13 +1486,13 @@ msgid "Leave On"
 msgstr "Biarkan Menyala"
 
 #: js/ui/kbdA11yDialog.js:54 js/ui/status/bluetooth.js:156
-#: js/ui/status/network.js:1362
+#: js/ui/status/network.js:1377
 msgid "Turn On"
 msgstr "Nyalakan"
 
 #: js/ui/kbdA11yDialog.js:62 js/ui/status/bluetooth.js:156
 #: js/ui/status/network.js:166 js/ui/status/network.js:350
-#: js/ui/status/network.js:1362 js/ui/status/network.js:1474
+#: js/ui/status/network.js:1377 js/ui/status/network.js:1489
 #: js/ui/status/nightLight.js:41 js/ui/status/rfkill.js:81
 #: js/ui/status/rfkill.js:110
 msgid "Turn Off"
@@ -1649,22 +1653,18 @@ msgstr "Tekan Esc untuk keluar"
 msgid "Press any key to exit"
 msgstr "Tekan tombol apa saja untuk keluar"
 
-#: js/ui/panel.js:66
-msgid "Quit"
-msgstr "Keluar"
-
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: js/ui/panel.js:395
+#: js/ui/panel.js:271
 msgid "Activities"
 msgstr "Aktivitas"
 
-#: js/ui/panel.js:666
+#: js/ui/panel.js:542
 msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "Sistem"
 
-#: js/ui/panel.js:782
+#: js/ui/panel.js:658
 msgid "Top Bar"
 msgstr "Bar Atas"
 
@@ -1684,7 +1684,7 @@ msgstr "Memulai ulang tidak tersedia di Wayland"
 msgid "Restarting…"
 msgstr "Memulai ulang…"
 
-#: js/ui/screenShield.js:211
+#: js/ui/screenShield.js:224
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME perlu mengunci layar"
 
@@ -1695,11 +1695,11 @@ msgstr "GNOME perlu mengunci layar"
 #.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
-#: js/ui/screenShield.js:252 js/ui/screenShield.js:622
+#: js/ui/screenShield.js:264 js/ui/screenShield.js:634
 msgid "Unable to lock"
 msgstr "Tak bisa mengunci"
 
-#: js/ui/screenShield.js:253 js/ui/screenShield.js:623
+#: js/ui/screenShield.js:265 js/ui/screenShield.js:635
 msgid "Lock was blocked by an application"
 msgstr "Kunci diblokir oleh suatu aplikasi"
 
@@ -1849,7 +1849,7 @@ msgstr "Teks Besar"
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: js/ui/status/bluetooth.js:49 js/ui/status/network.js:637
+#: js/ui/status/bluetooth.js:49 js/ui/status/network.js:652
 msgid "Bluetooth Settings"
 msgstr "Pengaturan Bluetooth"
 
@@ -1944,7 +1944,7 @@ msgid "<unknown>"
 msgstr "<tak dikenal>"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:455 js/ui/status/network.js:1391
+#: js/ui/status/network.js:455 js/ui/status/network.js:1406
 #, javascript-format
 msgid "%s Off"
 msgstr "%s Mati"
@@ -1970,7 +1970,7 @@ msgid "%s Disconnecting"
 msgstr "%s Memutus"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:473 js/ui/status/network.js:1383
+#: js/ui/status/network.js:473 js/ui/status/network.js:1398
 #, javascript-format
 msgid "%s Connecting"
 msgstr "%s Menyambung"
@@ -2005,142 +2005,142 @@ msgstr "Koneksi %s Gagal"
 msgid "Wired Settings"
 msgstr "Pengaturan Kabel"
 
-#: js/ui/status/network.js:546
+#: js/ui/status/network.js:550
 msgid "Mobile Broadband Settings"
 msgstr "Pengaturan Data Seluler"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:604 js/ui/status/network.js:1388
+#: js/ui/status/network.js:619 js/ui/status/network.js:1403
 #, javascript-format
 msgid "%s Hardware Disabled"
 msgstr "%s Perangkat Keras Dinonaktifkan"
 
 #. Translators: this is for a network device that cannot be activated
 #. because it's disabled by rfkill (airplane mode); %s is a network identifier
-#: js/ui/status/network.js:608
+#: js/ui/status/network.js:623
 #, javascript-format
 msgid "%s Disabled"
 msgstr "%s Dinonaktifkan"
 
-#: js/ui/status/network.js:649
+#: js/ui/status/network.js:664
 msgid "Connect to Internet"
 msgstr "Sambungkan ke Internet"
 
-#: js/ui/status/network.js:858
+#: js/ui/status/network.js:873
 msgid "Airplane Mode is On"
 msgstr "Mode Pesawat Terbang Menyala"
 
-#: js/ui/status/network.js:859
+#: js/ui/status/network.js:874
 msgid "Wi-Fi is disabled when airplane mode is on."
 msgstr "Wi-Fi dinonaktifkan ketika mode pesawat terbang menyala."
 
-#: js/ui/status/network.js:860
+#: js/ui/status/network.js:875
 msgid "Turn Off Airplane Mode"
 msgstr "Matikan Mode Pesawat Terbang"
 
-#: js/ui/status/network.js:869
+#: js/ui/status/network.js:884
 msgid "Wi-Fi is Off"
 msgstr "Wi-Fi Mati"
 
-#: js/ui/status/network.js:870
+#: js/ui/status/network.js:885
 msgid "Wi-Fi needs to be turned on in order to connect to a network."
 msgstr "Wi-Fi perlu dinyalakan untuk menyambung ke suatu jaringan."
 
-#: js/ui/status/network.js:871
+#: js/ui/status/network.js:886
 msgid "Turn On Wi-Fi"
 msgstr "Nyalakan Wi-Fi"
 
-#: js/ui/status/network.js:896
+#: js/ui/status/network.js:911
 msgid "Wi-Fi Networks"
 msgstr "Jaringan Wi-Fi"
 
-#: js/ui/status/network.js:898
+#: js/ui/status/network.js:913
 msgid "Select a network"
 msgstr "Pilih jaringan"
 
-#: js/ui/status/network.js:930
+#: js/ui/status/network.js:945
 msgid "No Networks"
 msgstr "Tiada Jaringan"
 
-#: js/ui/status/network.js:951 js/ui/status/rfkill.js:108
+#: js/ui/status/network.js:966 js/ui/status/rfkill.js:108
 msgid "Use hardware switch to turn off"
 msgstr "Pakai saklar perangkat keras untuk mematikan"
 
-#: js/ui/status/network.js:1252
+#: js/ui/status/network.js:1267
 msgid "Select Network"
 msgstr "Pilih Jaringan"
 
-#: js/ui/status/network.js:1258
+#: js/ui/status/network.js:1273
 msgid "Wi-Fi Settings"
 msgstr "Pengaturan Wi-Fi"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1379
+#: js/ui/status/network.js:1394
 #, javascript-format
 msgid "%s Hotspot Active"
 msgstr "%s Hotspot Aktif"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1394
+#: js/ui/status/network.js:1409
 #, javascript-format
 msgid "%s Not Connected"
 msgstr "%s Tak Tersambung"
 
-#: js/ui/status/network.js:1491
+#: js/ui/status/network.js:1506
 msgid "connecting…"
 msgstr "menyambung…"
 
 #. Translators: this is for network connections that require some kind of key or password
-#: js/ui/status/network.js:1494
+#: js/ui/status/network.js:1509
 msgid "authentication required"
 msgstr "diperlukan autentikasi"
 
-#: js/ui/status/network.js:1496
+#: js/ui/status/network.js:1511
 msgid "connection failed"
 msgstr "koneksi gagal"
 
-#: js/ui/status/network.js:1547
+#: js/ui/status/network.js:1562
 msgid "VPN Settings"
 msgstr "Pengaturan VPN"
 
-#: js/ui/status/network.js:1564
+#: js/ui/status/network.js:1579
 msgid "VPN"
 msgstr "VPN"
 
-#: js/ui/status/network.js:1574
+#: js/ui/status/network.js:1589
 msgid "VPN Off"
 msgstr "VPN Mati"
 
-#: js/ui/status/network.js:1635 js/ui/status/rfkill.js:84
+#: js/ui/status/network.js:1650 js/ui/status/rfkill.js:84
 msgid "Network Settings"
 msgstr "Pengaturan Jaringan"
 
-#: js/ui/status/network.js:1663
+#: js/ui/status/network.js:1678
 #, javascript-format
 msgid "%s Wired Connection"
 msgid_plural "%s Wired Connections"
 msgstr[0] "%s Koneksi Kabel"
 msgstr[1] "%s Koneksi Kabel"
 
-#: js/ui/status/network.js:1667
+#: js/ui/status/network.js:1682
 #, javascript-format
 msgid "%s Wi-Fi Connection"
 msgid_plural "%s Wi-Fi Connections"
 msgstr[0] "%s Koneksi Wi-Fi"
 msgstr[1] "%s Koneksi Wi-Fi"
 
-#: js/ui/status/network.js:1671
+#: js/ui/status/network.js:1686
 #, javascript-format
 msgid "%s Modem Connection"
 msgid_plural "%s Modem Connections"
 msgstr[0] "%s Koneksi Modem"
 msgstr[1] "%s Koneksi Modem"
 
-#: js/ui/status/network.js:1815
+#: js/ui/status/network.js:1830
 msgid "Connection failed"
 msgstr "Koneksi gagal"
 
-#: js/ui/status/network.js:1816
+#: js/ui/status/network.js:1831
 msgid "Activation of network connection failed"
 msgstr "Aktivasi koneksi jaringan gagal"
 
@@ -2406,12 +2406,12 @@ msgid "%d × %d"
 msgstr "%d × %d"
 
 #: js/ui/windowMenu.js:27
-msgid "Minimize"
-msgstr "Minimalkan"
+msgid "Hide"
+msgstr "Sembunyikan"
 
 #: js/ui/windowMenu.js:34
-msgid "Unmaximize"
-msgstr "Tak Maksimalkan"
+msgid "Restore"
+msgstr "Pulihkan"
 
 #: js/ui/windowMenu.js:38
 msgid "Maximize"
@@ -3079,6 +3079,12 @@ msgstr[1] "%u Masukan"
 #: subprojects/gvc/gvc-mixer-control.c:2867
 msgid "System Sounds"
 msgstr "Suara Sistem"
+
+#~ msgid "Minimize"
+#~ msgstr "Minimalkan"
+
+#~ msgid "Unmaximize"
+#~ msgstr "Tak Maksimalkan"
 
 #~ msgid "App Picker View"
 #~ msgstr "Tilikan Penyomot App"
