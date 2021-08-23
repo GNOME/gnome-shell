@@ -1871,24 +1871,9 @@ var WindowManager = class {
         if (event.type() !== Clutter.EventType.SCROLL)
             return Clutter.EVENT_PROPAGATE;
 
-        if (event.is_pointer_emulated())
+        const direction = event.get_scroll_direction();
+        if (direction === Clutter.ScrollDirection.SMOOTH)
             return Clutter.EVENT_PROPAGATE;
-
-        let direction = event.get_scroll_direction();
-        if (direction === Clutter.ScrollDirection.SMOOTH) {
-            const [dx, dy] = event.get_scroll_delta();
-            if (Math.abs(dx) > Math.abs(dy)) {
-                direction = dx < 0
-                    ? Clutter.ScrollDirection.LEFT
-                    : Clutter.ScrollDirection.RIGHT;
-            } else if (Math.abs(dy) > Math.abs(dx)) {
-                direction = dy < 0
-                    ? Clutter.ScrollDirection.UP
-                    : Clutter.ScrollDirection.DOWN;
-            } else {
-                return Clutter.EVENT_PROPAGATE;
-            }
-        }
 
         const workspaceManager = global.workspace_manager;
         const vertical = workspaceManager.layout_rows === -1;
