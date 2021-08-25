@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell.master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2021-08-16 01:27+0000\n"
-"PO-Revision-Date: 2021-08-17 13:27+0200\n"
+"POT-Creation-Date: 2021-08-17 23:56+0000\n"
+"PO-Revision-Date: 2021-08-25 16:54+0200\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Spanish - Spain <gnome-es-list@gnome.org>\n"
 "Language: es_ES\n"
@@ -810,38 +810,9 @@ msgstr "Denegar acceso"
 msgid "Grant Access"
 msgstr "Conceder acceso"
 
-#: js/ui/appDisplay.js:1862
+#: js/ui/appDisplay.js:1846
 msgid "Unnamed Folder"
 msgstr "Carpeta sin nombre"
-
-#. Translators: This is the heading of a list of open windows
-#: js/ui/appDisplay.js:3455 js/ui/panel.js:33
-msgid "Open Windows"
-msgstr "Ventanas abiertas"
-
-#: js/ui/appDisplay.js:3474 js/ui/panel.js:41
-msgid "New Window"
-msgstr "Ventana nueva"
-
-#: js/ui/appDisplay.js:3490
-msgid "Launch using Integrated Graphics Card"
-msgstr "Lanzar usando la tarjeta gráfica integrada"
-
-#: js/ui/appDisplay.js:3491
-msgid "Launch using Discrete Graphics Card"
-msgstr "Lanzar usando la tarjeta gráfica discreta"
-
-#: js/ui/appDisplay.js:3520 js/ui/dash.js:245
-msgid "Remove from Favorites"
-msgstr "Quitar de los favoritos"
-
-#: js/ui/appDisplay.js:3526
-msgid "Add to Favorites"
-msgstr "Añadir a los favoritos"
-
-#: js/ui/appDisplay.js:3536 js/ui/panel.js:52
-msgid "Show Details"
-msgstr "Mostrar detalles"
 
 #: js/ui/appFavorites.js:164
 #, javascript-format
@@ -852,6 +823,39 @@ msgstr "Se ha añadido %s a sus favoritos."
 #, javascript-format
 msgid "%s has been removed from your favorites."
 msgstr "Se ha quitado %s de sus favoritos."
+
+#. Translators: This is the heading of a list of open windows
+#: js/ui/appMenu.js:46
+msgid "Open Windows"
+msgstr "Ventanas abiertas"
+
+#: js/ui/appMenu.js:54
+msgid "New Window"
+msgstr "Ventana nueva"
+
+#: js/ui/appMenu.js:81
+msgid "Show Details"
+msgstr "Mostrar detalles"
+
+#: js/ui/appMenu.js:96
+msgid "Quit"
+msgstr "Salir"
+
+#: js/ui/appMenu.js:163 js/ui/dash.js:245
+msgid "Remove from Favorites"
+msgstr "Quitar de los favoritos"
+
+#: js/ui/appMenu.js:164
+msgid "Add to Favorites"
+msgstr "Añadir a los favoritos"
+
+#: js/ui/appMenu.js:181
+msgid "Launch using Integrated Graphics Card"
+msgstr "Lanzar usando la tarjeta gráfica integrada"
+
+#: js/ui/appMenu.js:182
+msgid "Launch using Discrete Graphics Card"
+msgstr "Lanzar usando la tarjeta gráfica discreta"
 
 #: js/ui/audioDeviceSelection.js:41
 msgid "Select Audio Device"
@@ -1655,22 +1659,18 @@ msgstr "Pulse Esc para salir"
 msgid "Press any key to exit"
 msgstr "Pulse cualquier tecla para salir"
 
-#: js/ui/panel.js:66
-msgid "Quit"
-msgstr "Salir"
-
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: js/ui/panel.js:395
+#: js/ui/panel.js:271
 msgid "Activities"
 msgstr "Actividades"
 
-#: js/ui/panel.js:666
+#: js/ui/panel.js:542
 msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "Sistema"
 
-#: js/ui/panel.js:782
+#: js/ui/panel.js:658
 msgid "Top Bar"
 msgstr "Barra superior"
 
@@ -2215,7 +2215,6 @@ msgid "Balanced"
 msgstr "Balanceado"
 
 #: js/ui/status/powerProfiles.js:21
-#| msgid "Power Settings"
 msgctxt "Power profile"
 msgid "Power Saver"
 msgstr "Ahorro de energía"
@@ -2409,12 +2408,15 @@ msgid "%d × %d"
 msgstr "%d × %d"
 
 #: js/ui/windowMenu.js:27
-msgid "Minimize"
-msgstr "Minimizar"
+#| msgid "Hide Text"
+msgid "Hide"
+msgstr "Ocultar"
 
 #: js/ui/windowMenu.js:34
-msgid "Unmaximize"
-msgstr "Desmaximizar"
+#| msgctxt "search-result"
+#| msgid "Restart"
+msgid "Restore"
+msgstr "Restaurar"
 
 #: js/ui/windowMenu.js:38
 msgid "Maximize"
@@ -3082,6 +3084,12 @@ msgstr[1] "%u entradas"
 #: subprojects/gvc/gvc-mixer-control.c:2867
 msgid "System Sounds"
 msgstr "Sonidos del sistema"
+
+#~ msgid "Minimize"
+#~ msgstr "Minimizar"
+
+#~ msgid "Unmaximize"
+#~ msgstr "Desmaximizar"
 
 #~ msgid "App Picker View"
 #~ msgstr "Visor del selector de aplicaciones"
