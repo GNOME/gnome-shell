@@ -14,8 +14,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2021-07-19 15:58+0000\n"
-"PO-Revision-Date: 2021-07-22 07:50+0200\n"
+"POT-Creation-Date: 2021-08-17 23:56+0000\n"
+"PO-Revision-Date: 2021-08-25 07:36+0200\n"
 "Last-Translator: Fran Dieguez <frandieguez@gnome.org>\n"
 "Language-Team: Galician <Proxecto Trasno <proxecto@trasno.gal>>\n"
 "Language: gl\n"
@@ -25,53 +25,49 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 "X-Generator: Gtranslator 40.0\n"
 "X-Project-Style: gnome\n"
+"X-DL-Team: gl\n"
+"X-DL-Module: gnome-shell\n"
+"X-DL-Branch: main\n"
+"X-DL-Domain: po\n"
+"X-DL-State: Translating\n"
 
 #: data/50-gnome-shell-launchers.xml:6
 msgid "Launchers"
 msgstr "Iniciadores"
 
 #: data/50-gnome-shell-launchers.xml:10
-#| msgid "Switch to application 1"
 msgid "Activate favorite application 1"
 msgstr "Activar aplicación favorita 1"
 
 #: data/50-gnome-shell-launchers.xml:14
-#| msgid "Switch to application 2"
 msgid "Activate favorite application 2"
 msgstr "Activar aplicación favorita 2"
 
 #: data/50-gnome-shell-launchers.xml:18
-#| msgid "Switch to application 3"
 msgid "Activate favorite application 3"
 msgstr "Activar aplicación favorita 3"
 
 #: data/50-gnome-shell-launchers.xml:22
-#| msgid "Switch to application 4"
 msgid "Activate favorite application 4"
 msgstr "Activar aplicación favorita 4"
 
 #: data/50-gnome-shell-launchers.xml:26
-#| msgid "Switch to application 5"
 msgid "Activate favorite application 5"
 msgstr "Activar aplicación favorita 4"
 
 #: data/50-gnome-shell-launchers.xml:30
-#| msgid "Switch to application 6"
 msgid "Activate favorite application 6"
 msgstr "Activar aplicación favorita 6"
 
 #: data/50-gnome-shell-launchers.xml:34
-#| msgid "Switch to application 7"
 msgid "Activate favorite application 7"
 msgstr "Activar aplicación favorita 7"
 
 #: data/50-gnome-shell-launchers.xml:38
-#| msgid "Switch to application 8"
 msgid "Activate favorite application 8"
 msgstr "Activar aplicación favorita 8"
 
 #: data/50-gnome-shell-launchers.xml:42
-#| msgid "Switch to application 9"
 msgid "Activate favorite application 9"
 msgstr "Activar aplicación favorita 9"
 
@@ -520,7 +516,7 @@ msgstr "Visitar o sitio web da extensión"
 #: js/ui/components/networkAgent.js:111 js/ui/components/polkitAgent.js:138
 #: js/ui/endSessionDialog.js:438 js/ui/extensionDownloader.js:190
 #: js/ui/shellMountOperation.js:376 js/ui/shellMountOperation.js:386
-#: js/ui/status/network.js:963 subprojects/extensions-app/js/main.js:183
+#: js/ui/status/network.js:978 subprojects/extensions-app/js/main.js:183
 msgid "Cancel"
 msgstr "Cancelar"
 
@@ -818,38 +814,9 @@ msgstr "Denegar acceso"
 msgid "Grant Access"
 msgstr "Conceder acceso"
 
-#: js/ui/appDisplay.js:1860
+#: js/ui/appDisplay.js:1846
 msgid "Unnamed Folder"
 msgstr "Cartafol sen nome"
-
-#. Translators: This is the heading of a list of open windows
-#: js/ui/appDisplay.js:3453 js/ui/panel.js:33
-msgid "Open Windows"
-msgstr "Abrir Xanelas"
-
-#: js/ui/appDisplay.js:3472 js/ui/panel.js:41
-msgid "New Window"
-msgstr "Xanela nova"
-
-#: js/ui/appDisplay.js:3488
-msgid "Launch using Integrated Graphics Card"
-msgstr "Iniciar usando a Tarxeta Gráfica Integrada"
-
-#: js/ui/appDisplay.js:3489
-msgid "Launch using Discrete Graphics Card"
-msgstr "Iniciar usando a Tarxeta Gráfica Dedicada"
-
-#: js/ui/appDisplay.js:3518 js/ui/dash.js:245
-msgid "Remove from Favorites"
-msgstr "Retirar dos marcadores"
-
-#: js/ui/appDisplay.js:3524
-msgid "Add to Favorites"
-msgstr "Engadir aos favoritos"
-
-#: js/ui/appDisplay.js:3534 js/ui/panel.js:52
-msgid "Show Details"
-msgstr "Mostrar detalles"
 
 #: js/ui/appFavorites.js:164
 #, javascript-format
@@ -860,6 +827,39 @@ msgstr "%s foi engadido aos seus favoritos."
 #, javascript-format
 msgid "%s has been removed from your favorites."
 msgstr "%s retirouse dos seus marcadores."
+
+#. Translators: This is the heading of a list of open windows
+#: js/ui/appMenu.js:46
+msgid "Open Windows"
+msgstr "Abrir Xanelas"
+
+#: js/ui/appMenu.js:54
+msgid "New Window"
+msgstr "Xanela nova"
+
+#: js/ui/appMenu.js:81
+msgid "Show Details"
+msgstr "Mostrar detalles"
+
+#: js/ui/appMenu.js:96
+msgid "Quit"
+msgstr "Saír"
+
+#: js/ui/appMenu.js:163 js/ui/dash.js:245
+msgid "Remove from Favorites"
+msgstr "Retirar dos marcadores"
+
+#: js/ui/appMenu.js:164
+msgid "Add to Favorites"
+msgstr "Engadir aos favoritos"
+
+#: js/ui/appMenu.js:181
+msgid "Launch using Integrated Graphics Card"
+msgstr "Iniciar usando a Tarxeta Gráfica Integrada"
+
+#: js/ui/appMenu.js:182
+msgid "Launch using Discrete Graphics Card"
+msgstr "Iniciar usando a Tarxeta Gráfica Dedicada"
 
 #: js/ui/audioDeviceSelection.js:41
 msgid "Select Audio Device"
@@ -994,7 +994,7 @@ msgstr "Non hai notificacións"
 msgid "Do Not Disturb"
 msgstr "Non molestar"
 
-#: js/ui/calendar.js:969
+#: js/ui/calendar.js:971
 msgid "Clear"
 msgstr "Limpar"
 
@@ -1048,7 +1048,7 @@ msgstr ""
 "De forma alternativa pode conectarse premendo o botón «WPS» do seu enrutador."
 
 #: js/ui/components/networkAgent.js:105 js/ui/status/network.js:258
-#: js/ui/status/network.js:349 js/ui/status/network.js:966
+#: js/ui/status/network.js:349 js/ui/status/network.js:981
 msgid "Connect"
 msgstr "Conectar"
 
@@ -1113,7 +1113,7 @@ msgstr "PIN"
 msgid "A password is required to connect to “%s”."
 msgstr "Requírese un contrasinal para conectarse a «%s»."
 
-#: js/ui/components/networkAgent.js:668 js/ui/status/network.js:1774
+#: js/ui/components/networkAgent.js:668 js/ui/status/network.js:1789
 msgid "Network Manager"
 msgstr "Xestor da rede"
 
@@ -1497,13 +1497,13 @@ msgid "Leave On"
 msgstr "Deixar activado"
 
 #: js/ui/kbdA11yDialog.js:54 js/ui/status/bluetooth.js:156
-#: js/ui/status/network.js:1362
+#: js/ui/status/network.js:1377
 msgid "Turn On"
 msgstr "Activar"
 
 #: js/ui/kbdA11yDialog.js:62 js/ui/status/bluetooth.js:156
 #: js/ui/status/network.js:166 js/ui/status/network.js:350
-#: js/ui/status/network.js:1362 js/ui/status/network.js:1474
+#: js/ui/status/network.js:1377 js/ui/status/network.js:1489
 #: js/ui/status/nightLight.js:41 js/ui/status/rfkill.js:81
 #: js/ui/status/rfkill.js:110
 msgid "Turn Off"
@@ -1664,22 +1664,18 @@ msgstr "Prema Esc para saír"
 msgid "Press any key to exit"
 msgstr "Prema calquera tecla para saír"
 
-#: js/ui/panel.js:66
-msgid "Quit"
-msgstr "Saír"
-
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: js/ui/panel.js:395
+#: js/ui/panel.js:271
 msgid "Activities"
 msgstr "Actividades"
 
-#: js/ui/panel.js:666
+#: js/ui/panel.js:542
 msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "Sistema"
 
-#: js/ui/panel.js:778
+#: js/ui/panel.js:658
 msgid "Top Bar"
 msgstr "Barra superior"
 
@@ -1699,7 +1695,7 @@ msgstr "Reiniciar non está dispoñíbel en Wayland"
 msgid "Restarting…"
 msgstr "Reiniciando…"
 
-#: js/ui/screenShield.js:211
+#: js/ui/screenShield.js:224
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME precisa bloquear a pantalla"
 
@@ -1710,11 +1706,11 @@ msgstr "GNOME precisa bloquear a pantalla"
 #.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
-#: js/ui/screenShield.js:252 js/ui/screenShield.js:622
+#: js/ui/screenShield.js:264 js/ui/screenShield.js:634
 msgid "Unable to lock"
 msgstr "Non foi posíbel bloquear"
 
-#: js/ui/screenShield.js:253 js/ui/screenShield.js:623
+#: js/ui/screenShield.js:265 js/ui/screenShield.js:635
 msgid "Lock was blocked by an application"
 msgstr "Unha aplicación impediu o bloqueo"
 
@@ -1749,15 +1745,15 @@ msgstr "Copiar"
 msgid "Paste"
 msgstr "Pegar"
 
-#: js/ui/shellEntry.js:73
+#: js/ui/shellEntry.js:77
 msgid "Show Text"
 msgstr "Mostrar texto"
 
-#: js/ui/shellEntry.js:75
+#: js/ui/shellEntry.js:79
 msgid "Hide Text"
 msgstr "Ocultar texto"
 
-#: js/ui/shellEntry.js:162
+#: js/ui/shellEntry.js:166
 msgid "Caps lock is on."
 msgstr "O bloqueo de maiúsculas está activado."
 
@@ -1864,7 +1860,7 @@ msgstr "Texto grande"
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: js/ui/status/bluetooth.js:49 js/ui/status/network.js:637
+#: js/ui/status/bluetooth.js:49 js/ui/status/network.js:652
 msgid "Bluetooth Settings"
 msgstr "Preferencias do Bluetooth"
 
@@ -1961,7 +1957,7 @@ msgid "<unknown>"
 msgstr "<descoñecido>"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:455 js/ui/status/network.js:1391
+#: js/ui/status/network.js:455 js/ui/status/network.js:1406
 #, javascript-format
 msgid "%s Off"
 msgstr "%s apagado"
@@ -1987,7 +1983,7 @@ msgid "%s Disconnecting"
 msgstr "%s desconectando"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:473 js/ui/status/network.js:1383
+#: js/ui/status/network.js:473 js/ui/status/network.js:1398
 #, javascript-format
 msgid "%s Connecting"
 msgstr "%s conectando"
@@ -2022,142 +2018,142 @@ msgstr "%s conexión fallada"
 msgid "Wired Settings"
 msgstr "Preferencias da rede con fíos"
 
-#: js/ui/status/network.js:546
+#: js/ui/status/network.js:550
 msgid "Mobile Broadband Settings"
 msgstr "Preferencias da banda larga móbil"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:604 js/ui/status/network.js:1388
+#: js/ui/status/network.js:619 js/ui/status/network.js:1403
 #, javascript-format
 msgid "%s Hardware Disabled"
 msgstr "%s hardware desactivado"
 
 #. Translators: this is for a network device that cannot be activated
 #. because it's disabled by rfkill (airplane mode); %s is a network identifier
-#: js/ui/status/network.js:608
+#: js/ui/status/network.js:623
 #, javascript-format
 msgid "%s Disabled"
 msgstr "%s desactivado"
 
-#: js/ui/status/network.js:649
+#: js/ui/status/network.js:664
 msgid "Connect to Internet"
 msgstr "Conectarse a internet"
 
-#: js/ui/status/network.js:858
+#: js/ui/status/network.js:873
 msgid "Airplane Mode is On"
 msgstr "Modo avión activado"
 
-#: js/ui/status/network.js:859
+#: js/ui/status/network.js:874
 msgid "Wi-Fi is disabled when airplane mode is on."
 msgstr "A Wifi está desactivada cando o modo avión está activo."
 
-#: js/ui/status/network.js:860
+#: js/ui/status/network.js:875
 msgid "Turn Off Airplane Mode"
 msgstr "Desactivar o modo avión"
 
-#: js/ui/status/network.js:869
+#: js/ui/status/network.js:884
 msgid "Wi-Fi is Off"
 msgstr "Wifi desactivada"
 
-#: js/ui/status/network.js:870
+#: js/ui/status/network.js:885
 msgid "Wi-Fi needs to be turned on in order to connect to a network."
 msgstr "A Wifi precisa activarse para poder conectarse á rede."
 
-#: js/ui/status/network.js:871
+#: js/ui/status/network.js:886
 msgid "Turn On Wi-Fi"
 msgstr "Activar Wifi"
 
-#: js/ui/status/network.js:896
+#: js/ui/status/network.js:911
 msgid "Wi-Fi Networks"
 msgstr "Redes Wifi"
 
-#: js/ui/status/network.js:898
+#: js/ui/status/network.js:913
 msgid "Select a network"
 msgstr "Seleccione unha rede"
 
-#: js/ui/status/network.js:930
+#: js/ui/status/network.js:945
 msgid "No Networks"
 msgstr "Sen redes"
 
-#: js/ui/status/network.js:951 js/ui/status/rfkill.js:108
+#: js/ui/status/network.js:966 js/ui/status/rfkill.js:108
 msgid "Use hardware switch to turn off"
 msgstr "Usar interruptor hardware para apagar"
 
-#: js/ui/status/network.js:1252
+#: js/ui/status/network.js:1267
 msgid "Select Network"
 msgstr "Seleccione unha rede"
 
-#: js/ui/status/network.js:1258
+#: js/ui/status/network.js:1273
 msgid "Wi-Fi Settings"
 msgstr "Preferencias da Wifi"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1379
+#: js/ui/status/network.js:1394
 #, javascript-format
 msgid "%s Hotspot Active"
 msgstr "%s punto wifi activo"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1394
+#: js/ui/status/network.js:1409
 #, javascript-format
 msgid "%s Not Connected"
 msgstr "%s non conectado"
 
-#: js/ui/status/network.js:1491
+#: js/ui/status/network.js:1506
 msgid "connecting…"
 msgstr "conectando…"
 
 #. Translators: this is for network connections that require some kind of key or password
-#: js/ui/status/network.js:1494
+#: js/ui/status/network.js:1509
 msgid "authentication required"
 msgstr "requírese autenticación"
 
-#: js/ui/status/network.js:1496
+#: js/ui/status/network.js:1511
 msgid "connection failed"
 msgstr "conexión fallada"
 
-#: js/ui/status/network.js:1547
+#: js/ui/status/network.js:1562
 msgid "VPN Settings"
 msgstr "Preferencias de VPN"
 
-#: js/ui/status/network.js:1564
+#: js/ui/status/network.js:1579
 msgid "VPN"
 msgstr "VPN"
 
-#: js/ui/status/network.js:1574
+#: js/ui/status/network.js:1589
 msgid "VPN Off"
 msgstr "VPN desactivada"
 
-#: js/ui/status/network.js:1635 js/ui/status/rfkill.js:84
+#: js/ui/status/network.js:1650 js/ui/status/rfkill.js:84
 msgid "Network Settings"
 msgstr "Preferencias da rede"
 
-#: js/ui/status/network.js:1663
+#: js/ui/status/network.js:1678
 #, javascript-format
 msgid "%s Wired Connection"
 msgid_plural "%s Wired Connections"
 msgstr[0] "%s conectando con fíos"
 msgstr[1] "%s conectando con fíos"
 
-#: js/ui/status/network.js:1667
+#: js/ui/status/network.js:1682
 #, javascript-format
 msgid "%s Wi-Fi Connection"
 msgid_plural "%s Wi-Fi Connections"
 msgstr[0] "%s conectando sen fíos"
 msgstr[1] "%s con fíos conectando"
 
-#: js/ui/status/network.js:1671
+#: js/ui/status/network.js:1686
 #, javascript-format
 msgid "%s Modem Connection"
 msgid_plural "%s Modem Connections"
 msgstr[0] "%s con módem conectando"
 msgstr[1] "%s conectando sen fíos"
 
-#: js/ui/status/network.js:1815
+#: js/ui/status/network.js:1830
 msgid "Connection failed"
 msgstr "Produciuse un fallo na conexión"
 
-#: js/ui/status/network.js:1816
+#: js/ui/status/network.js:1831
 msgid "Activation of network connection failed"
 msgstr "Produciuse un fallo na activación da conexión de rede"
 
@@ -2177,7 +2173,7 @@ msgstr "Reiniciar"
 msgid "Disable Until Tomorrow"
 msgstr "Desactivar ate mañá"
 
-#: js/ui/status/power.js:51
+#: js/ui/status/power.js:51 js/ui/status/powerProfiles.js:57
 msgid "Power Settings"
 msgstr "Preferencias de enerxía"
 
@@ -2212,6 +2208,22 @@ msgstr "%d∶%02d ate cargado (%d %%)"
 #, javascript-format
 msgid "%d %%"
 msgstr "%d %%"
+
+#: js/ui/status/powerProfiles.js:19
+msgctxt "Power profile"
+msgid "Performance"
+msgstr "Rendemento"
+
+#: js/ui/status/powerProfiles.js:20
+msgctxt "Power profile"
+msgid "Balanced"
+msgstr "Balanceado"
+
+#: js/ui/status/powerProfiles.js:21
+#| msgid "Power Settings"
+msgctxt "Power profile"
+msgid "Power Saver"
+msgstr "Aforro de enerxía"
 
 #: js/ui/status/remoteAccess.js:38
 msgid "Screen is Being Shared"
@@ -2402,11 +2414,14 @@ msgid "%d × %d"
 msgstr "%d × %d"
 
 #: js/ui/windowMenu.js:27
-msgid "Minimize"
-msgstr "Minimizar"
+#| msgid "Hide Text"
+msgid "Hide"
+msgstr "Ocultar"
 
 #: js/ui/windowMenu.js:34
-msgid "Unmaximize"
+#| msgctxt "search-result"
+#| msgid "Restart"
+msgid "Restore"
 msgstr "Restaurar"
 
 #: js/ui/windowMenu.js:38
@@ -3071,6 +3086,12 @@ msgstr[1] "%u entradas"
 #: subprojects/gvc/gvc-mixer-control.c:2867
 msgid "System Sounds"
 msgstr "Sons do sistema"
+
+#~ msgid "Minimize"
+#~ msgstr "Minimizar"
+
+#~ msgid "Unmaximize"
+#~ msgstr "Restaurar"
 
 #~ msgid "App Picker View"
 #~ msgstr "Visualización da selección de aplicacións"
