@@ -682,11 +682,11 @@ var NetworkAgent = class {
         }
         case '802-3-ethernet':
             title = _("Wired 802.1X authentication");
-            body = _("A password is required to connect to “%s”.".format(connection.get_id()));
+            body = _('A password is required to connect to “%s”.').format(connection.get_id());
             break;
         case 'pppoe':
             title = _("DSL authentication");
-            body = _("A password is required to connect to “%s”.".format(connection.get_id()));
+            body = _('A password is required to connect to “%s”.').format(connection.get_id());
             break;
         case 'gsm':
             if (hints.includes('pin')) {
