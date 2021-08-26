@@ -7,6 +7,7 @@ const GrabHelper = imports.ui.grabHelper;
 const Layout = imports.ui.layout;
 const Lightbox = imports.ui.lightbox;
 const Main = imports.ui.main;
+const MessageTray = imports.ui.messageTray;
 const Workspace = imports.ui.workspace;
 
 Gio._promisify(Shell.Screenshot.prototype, 'pick_color', 'pick_color_finish');
@@ -1584,6 +1585,49 @@ class ScreenshotUI extends St.Widget {
                     throw e;
             }
         }
+
+        // Show a notification.
+        const source = new MessageTray.Source(
+            // Translators: notification source name.
+            _('Screenshot'),
+            'applets-screenshooter'
+        );
+        const notification = new MessageTray.Notification(
+            source,
+            // Translators: notification title.
+            _('Screenshot captured'),
+            // Translators: notification body when a screenshot was captured.
+            _('You can paste the image from the clipboard.'),
+            {
+                datetime: time,
+                gicon: Gio.BytesIcon.new(bytes),
+            }
+        );
+        // Translators: button on the screenshot notification.
+        notification.addAction(_('Show in Files'), () => {
+            const app =
+                Gio.app_info_get_default_for_type('inode/directory', false);
+
+            if (app === null) {
+                // It may be null e.g. in a toolbox without nautilus.
+                log('Error showing in files: no default app set for inode/directory');
+                return;
+            }
+
+            app.launch([file], global.create_app_launch_context(0, -1));
+        });
+        notification.connect('activated', () => {
+            try {
+                Gio.app_info_launch_default_for_uri(
+                    file.get_uri(), global.create_app_launch_context(0, -1));
+            } catch (err) {
+                logError(err, 'Error opening screenshot');
+            }
+        });
+        notification.setTransient(true);
+
+        Main.messageTray.add(source);
+        source.showNotification(notification);
     }
 
     _saveScreenshot() {
