@@ -1530,6 +1530,62 @@ class ScreenshotUI extends St.Widget {
         this.close();
     }
 
+    _storeScreenshot(bytes) {
+        // Store to the clipboard first in case storing to file fails.
+        const clipboard = St.Clipboard.get_default();
+        clipboard.set_content(St.ClipboardType.CLIPBOARD, 'image/png', bytes);
+
+        const dir = Gio.File.new_for_path(GLib.build_filenamev([
+            GLib.get_user_special_dir(GLib.UserDirectory.DIRECTORY_PICTURES),
+            // Translators: name of the folder under ~/Pictures for screenshots.
+            _('Screenshots'),
+        ]));
+
+        try {
+            dir.make_directory_with_parents(null);
+        } catch (e) {
+            if (!e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.EXISTS))
+                throw e;
+        }
+
+        const time = GLib.DateTime.new_now_local();
+        const timestamp = time.format('%Y-%m-%d %H-%M-%S');
+        // Translators: this is the name of the file that the screenshot is
+        // saved to. The placeholder is a timestamp, e.g. "2017-05-21 12-24-03".
+        const name = _('Screenshot from %s').format(timestamp);
+
+        // If the target file already exists, try appending a suffix with an
+        // increasing number to it.
+
+        /**
+         * Returns a filename suffix with an increasingly large index.
+         *
+         * @returns {Generator<string|*, void, *>} suffix string
+         */
+        function *suffixes() {
+            yield '';
+
+            for (let i = 1; ; i++)
+                yield '-%s'.format(i);
+        }
+
+        let file;
+        for (const suffix of suffixes()) {
+            file = Gio.File.new_for_path(GLib.build_filenamev([
+                dir.get_path(), '%s%s.png'.format(name, suffix),
+            ]));
+
+            try {
+                const stream = file.create(Gio.FileCreateFlags.NONE, null);
+                stream.write_bytes(bytes, null);
+                break;
+            } catch (e) {
+                if (!e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.EXISTS))
+                    throw e;
+            }
+        }
+    }
+
     _saveScreenshot() {
         global.display.get_sound_player().play_from_theme(
             'screen-capture', _('Screenshot taken'), null);
@@ -1559,13 +1615,7 @@ class ScreenshotUI extends St.Widget {
                 stream
             ).then(() => {
                 stream.close(null);
-
-                const clipboard = St.Clipboard.get_default();
-                clipboard.set_content(
-                    St.ClipboardType.CLIPBOARD,
-                    'image/png',
-                    stream.steal_as_bytes()
-                );
+                this._storeScreenshot(stream.steal_as_bytes());
             }).catch(err => {
                 logError(err, 'Error capturing screenshot');
             });
@@ -1598,13 +1648,7 @@ class ScreenshotUI extends St.Widget {
                 stream
             ).then(() => {
                 stream.close(null);
-
-                const clipboard = St.Clipboard.get_default();
-                clipboard.set_content(
-                    St.ClipboardType.CLIPBOARD,
-                    'image/png',
-                    stream.steal_as_bytes()
-                );
+                this._storeScreenshot(stream.steal_as_bytes());
             }).catch(err => {
                 logError(err, 'Error capturing screenshot');
             });
