@@ -25,17 +25,6 @@ var Urgency = {
     CRITICAL: 2,
 };
 
-const rewriteRules = {
-    'XChat': [
-        { pattern:     /^XChat: Private message from: (\S*) \(.*\)$/,
-          replacement: '<$1>' },
-        { pattern:     /^XChat: New public message from: (\S*) \((.*)\)$/,
-          replacement: '$2 <$1>' },
-        { pattern:     /^XChat: Highlighted message from: (\S*) \((.*)\)$/,
-          replacement: '$2 <$1>' },
-    ],
-};
-
 var FdoNotificationDaemon = class FdoNotificationDaemon {
     constructor() {
         this._dbusImpl = Gio.DBusExportedObject.wrapJSObject(FdoNotificationsIface, this);
@@ -164,15 +153,6 @@ var FdoNotificationDaemon = class FdoNotificationDaemon {
             });
             GLib.Source.set_name_by_id(idleId, '[gnome-shell] this._emitNotificationClosed');
             return invocation.return_value(GLib.Variant.new('(u)', [id]));
-        }
-
-        let rewrites = rewriteRules[appName];
-        if (rewrites) {
-            for (let i = 0; i < rewrites.length; i++) {
-                let rule = rewrites[i];
-                if (summary.search(rule.pattern) != -1)
-                    summary = summary.replace(rule.pattern, rule.replacement);
-            }
         }
 
         // Be compatible with the various hints for image data and image path
