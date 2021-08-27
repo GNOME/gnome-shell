@@ -1,5 +1,5 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported ScreenshotService, ScreenshotUI, showScreenshotUI */
+/* exported ScreenshotService, ScreenshotUI, showScreenshotUI, captureScreenshot */
 
 const { Clutter, Cogl, Gio, GObject, GLib, Graphene, Gtk, Meta, Shell, St } = imports.gi;
 
@@ -1681,166 +1681,28 @@ var ScreenshotUI = GObject.registerClass({
         }
     }
 
-    _storeScreenshot(bytes, pixbuf) {
-        // Store to the clipboard first in case storing to file fails.
-        const clipboard = St.Clipboard.get_default();
-        clipboard.set_content(St.ClipboardType.CLIPBOARD, 'image/png', bytes);
-
-        const time = GLib.DateTime.new_now_local();
-
-        // This will be set in the first save to disk branch and then accessed
-        // in the second save to disk branch, so we need to declare it outside.
-        let file;
-
-        // The function is declared here rather than inside the condition to
-        // satisfy eslint.
-
-        /**
-         * Returns a filename suffix with an increasingly large index.
-         *
-         * @returns {Generator<string|*, void, *>} suffix string
-         */
-        function* suffixes() {
-            yield '';
-
-            for (let i = 1; ; i++)
-                yield '-%s'.format(i);
-        }
-
-        const disableSaveToDisk =
-            this._lockdownSettings.get_boolean('disable-save-to-disk');
-
-        if (!disableSaveToDisk) {
-            const dir = Gio.File.new_for_path(GLib.build_filenamev([
-                GLib.get_user_special_dir(GLib.UserDirectory.DIRECTORY_PICTURES),
-                // Translators: name of the folder under ~/Pictures for screenshots.
-                _('Screenshots'),
-            ]));
-
-            try {
-                dir.make_directory_with_parents(null);
-            } catch (e) {
-                if (!e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.EXISTS))
-                    throw e;
-            }
-
-            const timestamp = time.format('%Y-%m-%d %H-%M-%S');
-            // Translators: this is the name of the file that the screenshot is
-            // saved to. The placeholder is a timestamp, e.g. "2017-05-21 12-24-03".
-            const name = _('Screenshot from %s').format(timestamp);
-
-            // If the target file already exists, try appending a suffix with an
-            // increasing number to it.
-            for (const suffix of suffixes()) {
-                file = Gio.File.new_for_path(GLib.build_filenamev([
-                    dir.get_path(), '%s%s.png'.format(name, suffix),
-                ]));
-
-                try {
-                    const stream = file.create(Gio.FileCreateFlags.NONE, null);
-                    stream.write_bytes(bytes, null);
-                    break;
-                } catch (e) {
-                    if (!e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.EXISTS))
-                        throw e;
-                }
-            }
-
-            // Add it to recent files.
-            Gtk.RecentManager.get_default().add_item(file.get_uri());
-        }
-
-        // Create a St.ImageContent icon for the notification. We want
-        // St.ImageContent specifically because it preserves the aspect ratio when
-        // shown in a notification.
-        const pixels = pixbuf.read_pixel_bytes();
-        const content =
-            St.ImageContent.new_with_preferred_size(pixbuf.width, pixbuf.height);
-        content.set_bytes(
-            pixels,
-            Cogl.PixelFormat.RGBA_8888,
-            pixbuf.width,
-            pixbuf.height,
-            pixbuf.rowstride
-        );
-
-        // Show a notification.
-        const source = new MessageTray.Source(
-            // Translators: notification source name.
-            _('Screenshot'),
-            'applets-screenshooter'
-        );
-        const notification = new MessageTray.Notification(
-            source,
-            // Translators: notification title.
-            _('Screenshot captured'),
-            // Translators: notification body when a screenshot was captured.
-            _('You can paste the image from the clipboard.'),
-            { datetime: time, gicon: content }
-        );
-
-        if (!disableSaveToDisk) {
-            // Translators: button on the screenshot notification.
-            notification.addAction(_('Show in Files'), () => {
-                const app =
-                    Gio.app_info_get_default_for_type('inode/directory', false);
-
-                if (app === null) {
-                    // It may be null e.g. in a toolbox without nautilus.
-                    log('Error showing in files: no default app set for inode/directory');
-                    return;
-                }
-
-                app.launch([file], global.create_app_launch_context(0, -1));
-            });
-            notification.connect('activated', () => {
-                try {
-                    Gio.app_info_launch_default_for_uri(
-                        file.get_uri(), global.create_app_launch_context(0, -1));
-                } catch (err) {
-                    logError(err, 'Error opening screenshot');
-                }
-            });
-        }
-
-        notification.setTransient(true);
-        Main.messageTray.add(source);
-        source.showNotification(notification);
-    }
-
     _saveScreenshot() {
-        global.display.get_sound_player().play_from_theme(
-            'screen-capture', _('Screenshot taken'), null);
-
         if (this._selectionButton.checked || this._screenButton.checked) {
             const content = this._stageScreenshot.get_content();
             if (!content)
                 return; // Failed to capture the screenshot for some reason.
 
             const texture = content.get_texture();
-            const stream = Gio.MemoryOutputStream.new_resizable();
-
-            const [x, y, w, h] = this._getSelectedGeometry(true);
+            const geometry = this._getSelectedGeometry(true);
 
             let cursorTexture = this._cursor.content?.get_texture();
             if (!this._cursor.visible)
                 cursorTexture = null;
 
-            Shell.Screenshot.composite_to_stream(
-                texture,
-                x, y, w, h,
-                this._scale,
-                cursorTexture ?? null,
-                this._cursor.x * this._scale,
-                this._cursor.y * this._scale,
-                this._cursorScale,
-                stream
-            ).then(pixbuf => {
-                stream.close(null);
-                this._storeScreenshot(stream.steal_as_bytes(), pixbuf);
-            }).catch(err => {
-                logError(err, 'Error capturing screenshot');
-            });
+            captureScreenshot(
+                texture, geometry, this._scale,
+                {
+                    texture: cursorTexture ?? null,
+                    x: this._cursor.x * this._scale,
+                    y: this._cursor.y * this._scale,
+                    scale: this._cursorScale,
+                }
+            );
         } else if (this._windowButton.checked) {
             const window =
                 this._windowSelectors.flatMap(selector => selector.windows())
@@ -1853,27 +1715,22 @@ var ScreenshotUI = GObject.registerClass({
                 return;
 
             const texture = content.get_texture();
-            const stream = Gio.MemoryOutputStream.new_resizable();
 
             let cursorTexture = this._cursor.content?.get_texture();
             if (!this._cursor.visible)
                 cursorTexture = null;
 
-            Shell.Screenshot.composite_to_stream(
+            captureScreenshot(
                 texture,
-                0, 0, -1, -1,
+                null,
                 window.bufferScale,
-                cursorTexture ?? null,
-                window.cursorPoint.x * window.bufferScale,
-                window.cursorPoint.y * window.bufferScale,
-                this._cursorScale,
-                stream
-            ).then(pixbuf => {
-                stream.close(null);
-                this._storeScreenshot(stream.steal_as_bytes(), pixbuf);
-            }).catch(err => {
-                logError(err, 'Error capturing screenshot');
-            });
+                {
+                    texture: cursorTexture ?? null,
+                    x: window.cursorPoint.x * window.bufferScale,
+                    y: window.cursorPoint.y * window.bufferScale,
+                    scale: this._cursorScale,
+                }
+            );
         }
     }
 
@@ -2108,6 +1965,178 @@ var ScreenshotUI = GObject.registerClass({
         return super.vfunc_key_press_event(event);
     }
 });
+
+/**
+ * Stores a PNG-encoded screenshot into the clipboard and a file, and shows a
+ * notification.
+ *
+ * @param {GLib.Bytes} bytes - The PNG-encoded screenshot.
+ * @param {GdkPixbuf.Pixbuf} pixbuf - The Pixbuf with the screenshot.
+ */
+function _storeScreenshot(bytes, pixbuf) {
+    // Store to the clipboard first in case storing to file fails.
+    const clipboard = St.Clipboard.get_default();
+    clipboard.set_content(St.ClipboardType.CLIPBOARD, 'image/png', bytes);
+
+    const time = GLib.DateTime.new_now_local();
+
+    // This will be set in the first save to disk branch and then accessed
+    // in the second save to disk branch, so we need to declare it outside.
+    let file;
+
+    // The function is declared here rather than inside the condition to
+    // satisfy eslint.
+
+    /**
+     * Returns a filename suffix with an increasingly large index.
+     *
+     * @returns {Generator<string|*, void, *>} suffix string
+     */
+    function* suffixes() {
+        yield '';
+
+        for (let i = 1; ; i++)
+            yield '-%s'.format(i);
+    }
+
+    const lockdownSettings =
+        new Gio.Settings({ schema_id: 'org.gnome.desktop.lockdown' });
+    const disableSaveToDisk =
+        lockdownSettings.get_boolean('disable-save-to-disk');
+
+    if (!disableSaveToDisk) {
+        const dir = Gio.File.new_for_path(GLib.build_filenamev([
+            GLib.get_user_special_dir(GLib.UserDirectory.DIRECTORY_PICTURES),
+            // Translators: name of the folder under ~/Pictures for screenshots.
+            _('Screenshots'),
+        ]));
+
+        try {
+            dir.make_directory_with_parents(null);
+        } catch (e) {
+            if (!e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.EXISTS))
+                throw e;
+        }
+
+        const timestamp = time.format('%Y-%m-%d %H-%M-%S');
+        // Translators: this is the name of the file that the screenshot is
+        // saved to. The placeholder is a timestamp, e.g. "2017-05-21 12-24-03".
+        const name = _('Screenshot from %s').format(timestamp);
+
+        // If the target file already exists, try appending a suffix with an
+        // increasing number to it.
+        for (const suffix of suffixes()) {
+            file = Gio.File.new_for_path(GLib.build_filenamev([
+                dir.get_path(), '%s%s.png'.format(name, suffix),
+            ]));
+
+            try {
+                const stream = file.create(Gio.FileCreateFlags.NONE, null);
+                stream.write_bytes(bytes, null);
+                break;
+            } catch (e) {
+                if (!e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.EXISTS))
+                    throw e;
+            }
+        }
+
+        // Add it to recent files.
+        Gtk.RecentManager.get_default().add_item(file.get_uri());
+    }
+
+    // Create a St.ImageContent icon for the notification. We want
+    // St.ImageContent specifically because it preserves the aspect ratio when
+    // shown in a notification.
+    const pixels = pixbuf.read_pixel_bytes();
+    const content =
+        St.ImageContent.new_with_preferred_size(pixbuf.width, pixbuf.height);
+    content.set_bytes(
+        pixels,
+        Cogl.PixelFormat.RGBA_8888,
+        pixbuf.width,
+        pixbuf.height,
+        pixbuf.rowstride
+    );
+
+    // Show a notification.
+    const source = new MessageTray.Source(
+        // Translators: notification source name.
+        _('Screenshot'),
+        'applets-screenshooter'
+    );
+    const notification = new MessageTray.Notification(
+        source,
+        // Translators: notification title.
+        _('Screenshot captured'),
+        // Translators: notification body when a screenshot was captured.
+        _('You can paste the image from the clipboard.'),
+        { datetime: time, gicon: content }
+    );
+
+    if (!disableSaveToDisk) {
+        // Translators: button on the screenshot notification.
+        notification.addAction(_('Show in Files'), () => {
+            const app =
+                Gio.app_info_get_default_for_type('inode/directory', false);
+
+            if (app === null) {
+                // It may be null e.g. in a toolbox without nautilus.
+                log('Error showing in files: no default app set for inode/directory');
+                return;
+            }
+
+            app.launch([file], global.create_app_launch_context(0, -1));
+        });
+        notification.connect('activated', () => {
+            try {
+                Gio.app_info_launch_default_for_uri(
+                    file.get_uri(), global.create_app_launch_context(0, -1));
+            } catch (err) {
+                logError(err, 'Error opening screenshot');
+            }
+        });
+    }
+
+    notification.setTransient(true);
+    Main.messageTray.add(source);
+    source.showNotification(notification);
+}
+
+/**
+ * Captures a screenshot from a texture, given a region, scale and optional
+ * cursor data.
+ *
+ * @param {Cogl.Texture} texture - The texture to take the screenshot from.
+ * @param {number[4]} [geometry] - The region to use: x, y, width and height.
+ * @param {number} scale - The texture scale.
+ * @param {Object} [cursor] - Cursor data to include in the screenshot.
+ * @param {Cogl.Texture} cursor.texture - The cursor texture.
+ * @param {number} cursor.x - The cursor x coordinate.
+ * @param {number} cursor.y - The cursor y coordinate.
+ * @param {number} cursor.scale - The cursor texture scale.
+ */
+function captureScreenshot(texture, geometry, scale, cursor) {
+    const stream = Gio.MemoryOutputStream.new_resizable();
+    const [x, y, w, h] = geometry ?? [0, 0, -1, -1];
+    if (cursor === null)
+        cursor = { texture: null, x: 0, y: 0, scale: 1 };
+
+    global.display.get_sound_player().play_from_theme(
+        'screen-capture', _('Screenshot taken'), null);
+
+    Shell.Screenshot.composite_to_stream(
+        texture,
+        x, y, w, h,
+        scale,
+        cursor.texture, cursor.x, cursor.y, cursor.scale,
+        stream
+    ).then(pixbuf => {
+        stream.close(null);
+        _storeScreenshot(stream.steal_as_bytes(), pixbuf);
+    }).catch(err => {
+        logError(err, 'Error capturing screenshot');
+    });
+}
 
 /**
  * Shows the screenshot UI.
