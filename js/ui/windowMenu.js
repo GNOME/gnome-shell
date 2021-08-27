@@ -6,6 +6,7 @@ const { GLib, Meta, St } = imports.gi;
 const BoxPointer = imports.ui.boxpointer;
 const Main = imports.ui.main;
 const PopupMenu = imports.ui.popupMenu;
+const Screenshot = imports.ui.screenshot;
 
 var WindowMenu = class extends PopupMenu.PopupMenu {
     constructor(window, sourceActor) {
@@ -23,6 +24,19 @@ var WindowMenu = class extends PopupMenu.PopupMenu {
         let type = window.get_window_type();
 
         let item;
+
+        // Translators: entry in the window right click menu.
+        item = this.addAction(_('Take Screenshot'), async () => {
+            try {
+                const actor = window.get_compositor_private();
+                const content = actor.paint_to_content(null);
+                const texture = content.get_texture();
+
+                await Screenshot.captureScreenshot(texture, null, 1, null);
+            } catch (e) {
+                logError(e, 'Error capturing screenshot');
+            }
+        });
 
         item = this.addAction(_('Hide'), () => {
             window.minimize();
