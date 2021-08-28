@@ -73,6 +73,31 @@ var ExtensionManager = class {
         return [...this._extensions.keys()];
     }
 
+    _extensionSupportsSessionMode(uuid) {
+        let extension = this.lookup(uuid);
+
+        if (!extension)
+            return false;
+
+        if (extension.sessionModes.includes(Main.sessionMode.currentMode))
+            return true;
+
+        if (extension.sessionModes.includes(Main.sessionMode.parentMode))
+            return true;
+
+        return false;
+    }
+
+    _sessionModeCanUseExtension(uuid) {
+        if (!Main.sessionMode.allowExtensions)
+            return false;
+
+        if (!this._extensionSupportsSessionMode(uuid))
+            return false;
+
+        return true;
+    }
+
     _callExtensionDisable(uuid) {
         let extension = this.lookup(uuid);
         if (!extension)
@@ -132,7 +157,7 @@ var ExtensionManager = class {
     }
 
     _callExtensionEnable(uuid) {
-        if (!Main.sessionMode.allowExtensions)
+        if (!this._sessionModeCanUseExtension(uuid))
             return;
 
         let extension = this.lookup(uuid);
@@ -314,6 +339,7 @@ var ExtensionManager = class {
             hasPrefs: dir.get_child('prefs.js').query_exists(null),
             hasUpdate: false,
             canChange: false,
+            sessionModes: meta['session-modes'] ? meta['session-modes'] : ['user'],
         };
         this._extensions.set(uuid, extension);
 
@@ -398,7 +424,7 @@ var ExtensionManager = class {
     }
 
     _callExtensionInit(uuid) {
-        if (!Main.sessionMode.allowExtensions)
+        if (!this._sessionModeCanUseExtension(uuid))
             return false;
 
         let extension = this.lookup(uuid);
@@ -487,13 +513,15 @@ var ExtensionManager = class {
         // Find and enable all the newly enabled extensions: UUIDs found in the
         // new setting, but not in the old one.
         newEnabledExtensions
-            .filter(uuid => !this._enabledExtensions.includes(uuid))
+            .filter(uuid => !this._enabledExtensions.includes(uuid) &&
+                             this._extensionSupportsSessionMode(uuid))
             .forEach(uuid => this._callExtensionEnable(uuid));
 
         // Find and disable all the newly disabled extensions: UUIDs found in the
         // old setting, but not in the new one.
         this._extensionOrder
-            .filter(uuid => !newEnabledExtensions.includes(uuid))
+            .filter(uuid => !newEnabledExtensions.includes(uuid) ||
+                            !this._extensionSupportsSessionMode(uuid))
             .reverse().forEach(uuid => this._callExtensionDisable(uuid));
 
         this._enabledExtensions = newEnabledExtensions;
