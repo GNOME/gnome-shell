@@ -12,6 +12,8 @@ imports.gi.versions.TelepathyGLib = '0.12';
 imports.gi.versions.TelepathyLogger = '0.2';
 
 try {
+    if (Config.HAVE_SOUP2)
+        throw new Error('Soup3 support not enabled');
     const Soup_ = imports.gi.Soup;
 } catch (e) {
     imports.gi.versions.Soup = '2.4';

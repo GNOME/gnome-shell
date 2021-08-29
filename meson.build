@@ -128,6 +128,8 @@ else
   have_systemd = false
 endif
 
+have_soup2 = get_option('soup2')
+
 if get_option('man')
   if fs.exists('man/gnome-shell.1')
     install_man('man/gnome-shell.1')
