@@ -1,259 +1,259 @@
 include:
-    - remote: 'https://gitlab.gnome.org/GNOME/citemplates/raw/HEAD/flatpak/flatpak_ci_initiative.yml'
-    - remote: 'https://gitlab.freedesktop.org/freedesktop/ci-templates/-/raw/bbe5232986c9b98eb1efe62484e07216f7d1a4df/templates/fedora.yml'
-    - remote: 'https://gitlab.freedesktop.org/freedesktop/ci-templates/-/raw/bbe5232986c9b98eb1efe62484e07216f7d1a4df/templates/ci-fairy.yml'
+  - remote: 'https://gitlab.gnome.org/GNOME/citemplates/raw/HEAD/flatpak/flatpak_ci_initiative.yml'
+  - remote: 'https://gitlab.freedesktop.org/freedesktop/ci-templates/-/raw/bbe5232986c9b98eb1efe62484e07216f7d1a4df/templates/fedora.yml'
+  - remote: 'https://gitlab.freedesktop.org/freedesktop/ci-templates/-/raw/bbe5232986c9b98eb1efe62484e07216f7d1a4df/templates/ci-fairy.yml'
 
 stages:
- - pre_review
- - prep
- - review
- - build
- - test
- - analyze
- - deploy
+  - pre_review
+  - prep
+  - review
+  - build
+  - test
+  - analyze
+  - deploy
 
 default:
-    # Cancel jobs if newer commits are pushed to the branch
-    interruptible: true
-    # Auto-retry jobs in case of infra failures
-    retry:
-        max: 1
-        when:
-            - 'runner_system_failure'
-            - 'stuck_or_timeout_failure'
-            - 'scheduler_failure'
-            - 'api_failure'
+  # Cancel jobs if newer commits are pushed to the branch
+  interruptible: true
+  # Auto-retry jobs in case of infra failures
+  retry:
+    max: 1
+    when:
+      - 'runner_system_failure'
+      - 'stuck_or_timeout_failure'
+      - 'scheduler_failure'
+      - 'api_failure'
 
 variables:
-    FDO_UPSTREAM_REPO: GNOME/gnome-shell
-    BUNDLE: "extensions-git.flatpak"
-    JS_LOG: "js-report.txt"
-    LINT_LOG: "eslint-report.xml"
-    LINT_MR_LOG: "eslint-mr-report.xml"
+  FDO_UPSTREAM_REPO: GNOME/gnome-shell
+  BUNDLE: "extensions-git.flatpak"
+  JS_LOG: "js-report.txt"
+  LINT_LOG: "eslint-report.xml"
+  LINT_MR_LOG: "eslint-mr-report.xml"
 
 image: registry.gitlab.gnome.org/gnome/mutter/fedora/34:x86_64-2021-08-25.0
 
 workflow:
-    rules:
-        - if: '$CI_MERGE_REQUEST_IID'
-        - if: '$CI_COMMIT_TAG'
-        - if: '$CI_COMMIT_BRANCH'
+  rules:
+    - if: '$CI_MERGE_REQUEST_IID'
+    - if: '$CI_COMMIT_TAG'
+    - if: '$CI_COMMIT_BRANCH'
 
 .pipeline_guard: &pipeline_guard
-    rules:
-        - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
-        - if: '$CI_COMMIT_TAG'
-        - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
-        - if: '$CI_COMMIT_BRANCH =~ /^gnome-[0-9-]+$/'
-        - when: 'manual'
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_COMMIT_TAG'
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+    - if: '$CI_COMMIT_BRANCH =~ /^gnome-[0-9-]+$/'
+    - when: 'manual'
 
 .gnome-shell.fedora:34:
-    variables:
-        FDO_DISTRIBUTION_VERSION: 34
-        FDO_DISTRIBUTION_TAG: '2021-08-12.0'
-        FDO_DISTRIBUTION_PACKAGES: >
-            findutils mozjs78-devel nodejs npm meson
-            pkgconfig(gio-2.0) pkgconfig(gio-unix-2.0)
-            pkgconfig(gnome-autoar-0) pkgconfig(json-glib-1.0)
-        FDO_DISTRIBUTION_EXEC: |
-            # For static analysis with eslint
-            npm install -g eslint eslint-plugin-jsdoc &&
+  variables:
+    FDO_DISTRIBUTION_VERSION: 34
+    FDO_DISTRIBUTION_TAG: '2021-08-12.0'
+    FDO_DISTRIBUTION_PACKAGES: >
+      findutils mozjs78-devel nodejs npm meson
+      pkgconfig(gio-2.0) pkgconfig(gio-unix-2.0)
+      pkgconfig(gnome-autoar-0) pkgconfig(json-glib-1.0)
+    FDO_DISTRIBUTION_EXEC: |
+      # For static analysis with eslint
+      npm install -g eslint eslint-plugin-jsdoc &&
 
-            dnf group install -y 'Development Tools' \
-                                 'C Development Tools and Libraries' &&
+      dnf group install -y 'Development Tools' \
+                 'C Development Tools and Libraries' &&
 
-            ./.gitlab-ci/install-meson-project.sh \
-                -Dman=false \
-                https://gitlab.gnome.org/GNOME/gnome-shell.git \
-                3.38.0 \
-                subprojects/extensions-tool/ \
-                ./generate-translations.sh &&
+      ./.gitlab-ci/install-meson-project.sh \
+        -Dman=false \
+        https://gitlab.gnome.org/GNOME/gnome-shell.git \
+        3.38.0 \
+        subprojects/extensions-tool/ \
+        ./generate-translations.sh &&
 
-            dnf clean all
+      dnf clean all
 
 check_commit_log:
-    extends:
-      - .fdo.ci-fairy
-    stage: pre_review
-    variables:
-        GIT_DEPTH: "100"
-    script:
-        - if [[ x"$CI_MERGE_REQUEST_TARGET_BRANCH_NAME" != "x" ]] ;
-          then
-            ci-fairy check-commits --junit-xml=commit-message-junit-report.xml ;
-          else
-            echo "Not a merge request" ;
-          fi
-    <<: *pipeline_guard
-    artifacts:
-        expire_in: 1 week
-        paths:
-            - commit-message-junit-report.xml
-        reports:
-            junit: commit-message-junit-report.xml
+  extends:
+    - .fdo.ci-fairy
+  stage: pre_review
+  variables:
+    GIT_DEPTH: "100"
+  script:
+    - if [[ x"$CI_MERGE_REQUEST_TARGET_BRANCH_NAME" != "x" ]] ;
+      then
+        ci-fairy check-commits --junit-xml=commit-message-junit-report.xml ;
+      else
+        echo "Not a merge request" ;
+      fi
+  <<: *pipeline_guard
+  artifacts:
+    expire_in: 1 week
+    paths:
+      - commit-message-junit-report.xml
+    reports:
+      junit: commit-message-junit-report.xml
 
 check-merge-request:
-    extends:
-        - .fdo.ci-fairy
-    stage: pre_review
-    script:
-        - if [[ x"$CI_MERGE_REQUEST_TARGET_BRANCH_NAME" != "x" ]] ;
-          then
-            ci-fairy check-merge-request --require-allow-collaboration --junit-xml=check-merge-request-report.xml ;
-          else
-            echo "Not a merge request" ;
-          fi
-    <<: *pipeline_guard
-    artifacts:
-        expire_in: 1 week
-        paths:
-            - check-merge-request-report.xml
-        reports:
-            junit: check-merge-request-report.xml
+  extends:
+    - .fdo.ci-fairy
+  stage: pre_review
+  script:
+    - if [[ x"$CI_MERGE_REQUEST_TARGET_BRANCH_NAME" != "x" ]] ;
+      then
+        ci-fairy check-merge-request --require-allow-collaboration --junit-xml=check-merge-request-report.xml ;
+      else
+        echo "Not a merge request" ;
+      fi
+  <<: *pipeline_guard
+  artifacts:
+    expire_in: 1 week
+    paths:
+      - check-merge-request-report.xml
+    reports:
+      junit: check-merge-request-report.xml
 
 build-fedora-container:
-    extends:
-        - .fdo.container-build@fedora@x86_64
-        - .gnome-shell.fedora:34
-    stage: prep
+  extends:
+    - .fdo.container-build@fedora@x86_64
+    - .gnome-shell.fedora:34
+  stage: prep
 
 js_check:
-    extends:
-        - .fdo.distribution-image@fedora
-        - .gnome-shell.fedora:34
-    stage: review
-    script:
-        - find js -name '*.js' $(printf "! -wholename %s " $(cat .jscheckignore)) -exec js78 -c '{}' ';' 2>&1 | tee $JS_LOG
-        - (! grep -q . $JS_LOG)
-    artifacts:
-        paths:
-            - ${JS_LOG}
-        when: on_failure
+  extends:
+      - .fdo.distribution-image@fedora
+      - .gnome-shell.fedora:34
+  stage: review
+  script:
+      - find js -name '*.js' $(printf "! -wholename %s " $(cat .jscheckignore)) -exec js78 -c '{}' ';' 2>&1 | tee $JS_LOG
+      - (! grep -q . $JS_LOG)
+  artifacts:
+      paths:
+          - ${JS_LOG}
+      when: on_failure
 
 eslint:
-    extends:
-        - .fdo.distribution-image@fedora
-        - .gnome-shell.fedora:34
-    stage: review
-    script:
-        - export NODE_PATH=$(npm root -g)
-        - ./.gitlab-ci/run-eslint --output-file ${LINT_LOG} --format junit
-    artifacts:
-        reports:
-            junit: ${LINT_LOG}
-        when: always
+  extends:
+    - .fdo.distribution-image@fedora
+    - .gnome-shell.fedora:34
+  stage: review
+  script:
+    - export NODE_PATH=$(npm root -g)
+    - ./.gitlab-ci/run-eslint --output-file ${LINT_LOG} --format junit
+  artifacts:
+    reports:
+      junit: ${LINT_LOG}
+    when: always
 
 eslint_mr:
-    extends:
-        - .fdo.distribution-image@fedora
-        - .gnome-shell.fedora:34
-    stage: review
-    script:
-        - export NODE_PATH=$(npm root -g)
-        - ./.gitlab-ci/run-eslint --output-file ${LINT_MR_LOG} --format junit
-            --remote ${CI_MERGE_REQUEST_PROJECT_URL}.git
-            --branch ${CI_MERGE_REQUEST_TARGET_BRANCH_NAME}
-    only:
-        - merge_requests
-    artifacts:
-        reports:
-            junit: ${LINT_MR_LOG}
-        when: always
+  extends:
+    - .fdo.distribution-image@fedora
+    - .gnome-shell.fedora:34
+  stage: review
+  script:
+    - export NODE_PATH=$(npm root -g)
+    - ./.gitlab-ci/run-eslint --output-file ${LINT_MR_LOG} --format junit
+      --remote ${CI_MERGE_REQUEST_PROJECT_URL}.git
+      --branch ${CI_MERGE_REQUEST_TARGET_BRANCH_NAME}
+  only:
+    - merge_requests
+  artifacts:
+    reports:
+      junit: ${LINT_MR_LOG}
+    when: always
 
 potfile_c_check:
-    extends:
-        - .fdo.distribution-image@fedora
-        - .gnome-shell.fedora:34
-    stage: review
-    script:
-        - ./.gitlab-ci/check-potfiles.sh
+  extends:
+    - .fdo.distribution-image@fedora
+    - .gnome-shell.fedora:34
+  stage: review
+  script:
+    - ./.gitlab-ci/check-potfiles.sh
 
 potfile_js_check:
-    extends:
-        - .fdo.distribution-image@fedora
-        - .gnome-shell.fedora:34
-    stage: review
-    script:
-        - js78 -m .gitlab-ci/check-potfiles.js
+  extends:
+    - .fdo.distribution-image@fedora
+    - .gnome-shell.fedora:34
+  stage: review
+  script:
+    - js78 -m .gitlab-ci/check-potfiles.js
 
 no_template_check:
-    extends:
-        - .fdo.distribution-image@fedora
-        - .gnome-shell.fedora:34
-    stage: review
-    script:
-        - ./.gitlab-ci/check-template-strings.sh
+  extends:
+    - .fdo.distribution-image@fedora
+    - .gnome-shell.fedora:34
+  stage: review
+  script:
+    - ./.gitlab-ci/check-template-strings.sh
 
 build:
-    stage: build
-    needs: ["check_commit_log"]
-    before_script:
-        - .gitlab-ci/checkout-mutter.sh
-        - meson mutter mutter/build --prefix=/usr
-        - meson install -C mutter/build
-    script:
-        - meson . build -Dbuildtype=debugoptimized -Dman=false --werror
-        - meson compile -C build
-        - meson install -C build
-    artifacts:
-        expire_in: 1 day
-        paths:
-            - mutter
-            - build
+  stage: build
+  needs: ["check_commit_log"]
+  before_script:
+    - .gitlab-ci/checkout-mutter.sh
+    - meson mutter mutter/build --prefix=/usr
+    - meson install -C mutter/build
+  script:
+    - meson . build -Dbuildtype=debugoptimized -Dman=false --werror
+    - meson compile -C build
+    - meson install -C build
+  artifacts:
+    expire_in: 1 day
+    paths:
+      - mutter
+      - build
 
 test:
-    stage: test
-    needs: ["build"]
-    variables:
-        XDG_RUNTIME_DIR: "$CI_PROJECT_DIR/runtime-dir"
-        NO_AT_BRIDGE: "1"
-    before_script:
-        - meson install -C mutter/build
-    script:
-        - dbus-run-session -- xvfb-run meson test -C build --no-rebuild
-    artifacts:
-        expire_in: 1 day
-        paths:
-            - build/meson-logs/testlog.txt
-        reports:
-            junit: build/meson-logs/testlog.junit.xml
-        when: on_failure
+  stage: test
+  needs: ["build"]
+  variables:
+    XDG_RUNTIME_DIR: "$CI_PROJECT_DIR/runtime-dir"
+    NO_AT_BRIDGE: "1"
+  before_script:
+    - meson install -C mutter/build
+  script:
+    - dbus-run-session -- xvfb-run meson test -C build --no-rebuild
+  artifacts:
+    expire_in: 1 day
+    paths:
+      - build/meson-logs/testlog.txt
+    reports:
+      junit: build/meson-logs/testlog.junit.xml
+    when: on_failure
 
 test-coverity:
-    rules:
-        - if: '$CI_PIPELINE_SOURCE == "schedule" && $GNOME_SHELL_SCHEDULED_JOB == "coverity"'
-          when: always
-        - when: manual
-    needs: ["build"]
-    stage: analyze
-    allow_failure: true
-    before_script:
-        - meson compile -C mutter/build
-    script:
-        - .gitlab-ci/download-coverity-tarball.sh
-        - CC=clang meson coverity-build -Dman=false
-        - ./coverity/cov-analysis-linux64-*/bin/cov-build --fs-capture-search js --dir cov-int meson compile -C coverity-build
-        - tar czf cov-int.tar.gz cov-int
-        - curl https://scan.coverity.com/builds?project=GNOME+Shell
-          --form token=$COVERITY_TOKEN --form email=carlosg@gnome.org
-          --form file=@cov-int.tar.gz --form version="`git describe --tags`"
-          --form description="GitLab CI build"
-    cache:
-        key: coverity-tarball
-        paths:
-            - coverity
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "schedule" && $GNOME_SHELL_SCHEDULED_JOB == "coverity"'
+      when: always
+    - when: manual
+  needs: ["build"]
+  stage: analyze
+  allow_failure: true
+  before_script:
+    - meson compile -C mutter/build
+  script:
+    - .gitlab-ci/download-coverity-tarball.sh
+    - CC=clang meson coverity-build -Dman=false
+    - ./coverity/cov-analysis-linux64-*/bin/cov-build --fs-capture-search js --dir cov-int meson compile -C coverity-build
+    - tar czf cov-int.tar.gz cov-int
+    - curl https://scan.coverity.com/builds?project=GNOME+Shell
+      --form token=$COVERITY_TOKEN --form email=carlosg@gnome.org
+      --form file=@cov-int.tar.gz --form version="`git describe --tags`"
+      --form description="GitLab CI build"
+  cache:
+    key: coverity-tarball
+    paths:
+      - coverity
 
 flatpak:
-    stage: build
-    needs: ["check_commit_log"]
-    variables:
-        SUBPROJECT: "subprojects/extensions-app"
-        # Your manifest path
-        MANIFEST_PATH: "$SUBPROJECT/build-aux/flatpak/org.gnome.Extensions.json"
-        RUNTIME_REPO: "https://nightly.gnome.org/gnome-nightly.flatpakrepo"
-        FLATPAK_MODULE: "gnome-extensions-app"
-        APP_ID: "org.gnome.Extensions.Devel"
-    extends: .flatpak
+  stage: build
+  needs: ["check_commit_log"]
+  variables:
+    SUBPROJECT: "subprojects/extensions-app"
+    # Your manifest path
+    MANIFEST_PATH: "$SUBPROJECT/build-aux/flatpak/org.gnome.Extensions.json"
+    RUNTIME_REPO: "https://nightly.gnome.org/gnome-nightly.flatpakrepo"
+    FLATPAK_MODULE: "gnome-extensions-app"
+    APP_ID: "org.gnome.Extensions.Devel"
+  extends: .flatpak
 
 nightly:
   extends: '.publish_nightly'
