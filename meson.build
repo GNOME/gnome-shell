@@ -298,6 +298,7 @@ endif
 meson.add_install_script('meson/postinstall.py')
 meson.add_dist_script('meson/generate-manpages.py')
 meson.add_dist_script('meson/generate-stylesheets.py')
+meson.add_dist_script('meson/check-version.py', meson.project_version(), 'NEWS')
 
 summary_options = {
   'networkmanager': get_option('networkmanager'),
