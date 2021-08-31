@@ -31,7 +31,7 @@ variables:
   LINT_LOG: "eslint-report.xml"
   LINT_MR_LOG: "eslint-mr-report.xml"
 
-image: registry.gitlab.gnome.org/gnome/mutter/fedora/34:x86_64-2021-08-25.0
+image: registry.gitlab.gnome.org/gnome/mutter/fedora/34:x86_64-2021-09-04.1
 
 workflow:
   rules:
@@ -259,3 +259,30 @@ nightly:
   extends: '.publish_nightly'
   variables:
     BUNDLES: '$BUNDLE'
+
+dist:
+  variables:
+    XDG_RUNTIME_DIR: "$CI_PROJECT_DIR/runtime-dir"
+    NO_AT_BRIDGE: "1"
+  stage: deploy
+  needs: ["build"]
+  before_script:
+    - meson install -C mutter/build
+    - mkdir -m 700 $XDG_RUNTIME_DIR
+  script:
+    - dbus-run-session xvfb-run meson dist -C build
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+      changes:
+        - "**/meson.build"
+        - meson/*
+
+
+dist-tarball:
+  extends: dist
+  artifacts:
+    expose_as: 'Get tarball here'
+    paths:
+      - build/meson-dist/$CI_PROJECT_NAME-$CI_COMMIT_TAG.tar.xz
+  rules:
+    - if: '$CI_COMMIT_TAG'
