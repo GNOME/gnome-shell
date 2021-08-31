@@ -62,6 +62,13 @@ if not meson.is_subproject()
 
   meson.add_install_script('build-aux/meson/postinstall.py')
 
+  if appstream_util.found()
+    meson.add_dist_script('build-aux/meson/check-version.py',
+      meson.project_version(),
+      '--type=metainfo',
+      'data/metainfo/org.gnome.Extensions.metainfo.xml.in')
+  endif
+
   summary_dirs = {
     'prefix': get_option('prefix'),
     'bindir': get_option('bindir'),
