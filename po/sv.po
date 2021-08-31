@@ -12,16 +12,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2021-08-14 10:45+0000\n"
-"PO-Revision-Date: 2021-08-15 16:48+0200\n"
-"Last-Translator: Anders Jonsson <anders.jonsson@norsjovallen.se>\n"
+"POT-Creation-Date: 2021-08-17 23:56+0000\n"
+"PO-Revision-Date: 2021-08-18 12:41+0200\n"
+"Last-Translator: Luna Jernberg <droidbittin@gmail.com>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "Language: sv\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 2.4.2\n"
+"X-Generator: Poedit 3.0\n"
 
 #: data/50-gnome-shell-launchers.xml:6
 msgid "Launchers"
@@ -798,38 +798,9 @@ msgstr "Neka åtkomst"
 msgid "Grant Access"
 msgstr "Bevilja åtkomst"
 
-#: js/ui/appDisplay.js:1862
+#: js/ui/appDisplay.js:1846
 msgid "Unnamed Folder"
 msgstr "Namnlös mapp"
-
-#. Translators: This is the heading of a list of open windows
-#: js/ui/appDisplay.js:3455 js/ui/panel.js:33
-msgid "Open Windows"
-msgstr "Öppna fönster"
-
-#: js/ui/appDisplay.js:3474 js/ui/panel.js:41
-msgid "New Window"
-msgstr "Nytt fönster"
-
-#: js/ui/appDisplay.js:3490
-msgid "Launch using Integrated Graphics Card"
-msgstr "Kör med integrerat grafikkort"
-
-#: js/ui/appDisplay.js:3491
-msgid "Launch using Discrete Graphics Card"
-msgstr "Kör med diskret grafikkort"
-
-#: js/ui/appDisplay.js:3520 js/ui/dash.js:245
-msgid "Remove from Favorites"
-msgstr "Ta bort från favoriter"
-
-#: js/ui/appDisplay.js:3526
-msgid "Add to Favorites"
-msgstr "Lägg till som favorit"
-
-#: js/ui/appDisplay.js:3536 js/ui/panel.js:52
-msgid "Show Details"
-msgstr "Visa detaljer"
 
 #: js/ui/appFavorites.js:164
 #, javascript-format
@@ -840,6 +811,39 @@ msgstr "%s har lagts till i dina favoriter."
 #, javascript-format
 msgid "%s has been removed from your favorites."
 msgstr "%s har tagits bort från dina favoriter."
+
+#. Translators: This is the heading of a list of open windows
+#: js/ui/appMenu.js:46
+msgid "Open Windows"
+msgstr "Öppna fönster"
+
+#: js/ui/appMenu.js:54
+msgid "New Window"
+msgstr "Nytt fönster"
+
+#: js/ui/appMenu.js:81
+msgid "Show Details"
+msgstr "Visa detaljer"
+
+#: js/ui/appMenu.js:96
+msgid "Quit"
+msgstr "Avsluta"
+
+#: js/ui/appMenu.js:163 js/ui/dash.js:245
+msgid "Remove from Favorites"
+msgstr "Ta bort från favoriter"
+
+#: js/ui/appMenu.js:164
+msgid "Add to Favorites"
+msgstr "Lägg till som favorit"
+
+#: js/ui/appMenu.js:181
+msgid "Launch using Integrated Graphics Card"
+msgstr "Kör med integrerat grafikkort"
+
+#: js/ui/appMenu.js:182
+msgid "Launch using Discrete Graphics Card"
+msgstr "Kör med diskret grafikkort"
 
 #: js/ui/audioDeviceSelection.js:41
 msgid "Select Audio Device"
@@ -1642,22 +1646,18 @@ msgstr "Tryck Esc för att avsluta"
 msgid "Press any key to exit"
 msgstr "Tryck på valfri tangent för att avsluta"
 
-#: js/ui/panel.js:66
-msgid "Quit"
-msgstr "Avsluta"
-
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: js/ui/panel.js:395
+#: js/ui/panel.js:271
 msgid "Activities"
 msgstr "Aktiviteter"
 
-#: js/ui/panel.js:666
+#: js/ui/panel.js:542
 msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "System"
 
-#: js/ui/panel.js:782
+#: js/ui/panel.js:658
 msgid "Top Bar"
 msgstr "Systemrad"
 
@@ -1677,7 +1677,7 @@ msgstr "Omstart är inte tillgänglig i Wayland"
 msgid "Restarting…"
 msgstr "Startar om…"
 
-#: js/ui/screenShield.js:211
+#: js/ui/screenShield.js:224
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME behöver låsa skärmen"
 
@@ -1688,11 +1688,11 @@ msgstr "GNOME behöver låsa skärmen"
 #.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
-#: js/ui/screenShield.js:252 js/ui/screenShield.js:622
+#: js/ui/screenShield.js:264 js/ui/screenShield.js:634
 msgid "Unable to lock"
 msgstr "Kunde inte låsa"
 
-#: js/ui/screenShield.js:253 js/ui/screenShield.js:623
+#: js/ui/screenShield.js:265 js/ui/screenShield.js:635
 msgid "Lock was blocked by an application"
 msgstr "Låsning hindrades av ett program"
 
@@ -2394,12 +2394,12 @@ msgid "%d × %d"
 msgstr "%d × %d"
 
 #: js/ui/windowMenu.js:27
-msgid "Minimize"
-msgstr "Minimera"
+msgid "Hide"
+msgstr "Dölj"
 
 #: js/ui/windowMenu.js:34
-msgid "Unmaximize"
-msgstr "Avmaximera"
+msgid "Restore"
+msgstr "Återställ"
 
 #: js/ui/windowMenu.js:38
 msgid "Maximize"
@@ -3066,6 +3066,12 @@ msgstr[1] "%u ingångar"
 #: subprojects/gvc/gvc-mixer-control.c:2867
 msgid "System Sounds"
 msgstr "Systemljud"
+
+#~ msgid "Minimize"
+#~ msgstr "Minimera"
+
+#~ msgid "Unmaximize"
+#~ msgstr "Avmaximera"
 
 #~ msgid "App Picker View"
 #~ msgstr "Programväljarvy"
