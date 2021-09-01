@@ -467,7 +467,10 @@ var BoxPointer = GObject.registerClass({
         const sourceAllocation = sourceActor.get_allocation_box();
         const sourceContentBox = sourceActor instanceof St.Widget
             ? sourceActor.get_theme_node().get_content_box(sourceAllocation)
-            : sourceAllocation;
+            : new Clutter.ActorBox({
+                x2: sourceAllocation.get_width(),
+                y2: sourceAllocation.get_height(),
+            });
         let sourceTopLeft = this._sourceExtents.get_top_left();
         let sourceBottomRight = this._sourceExtents.get_bottom_right();
         let sourceCenterX = sourceTopLeft.x + sourceContentBox.x1 + (sourceContentBox.x2 - sourceContentBox.x1) * this._sourceAlignment;
