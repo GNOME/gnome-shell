@@ -1,8 +1,6 @@
 /* exported IntrospectService */
 const { Gio, GLib, Meta, Shell, St } = imports.gi;
 
-const INTROSPECT_SCHEMA = 'org.gnome.shell';
-const INTROSPECT_KEY = 'introspect';
 const APP_ALLOWLIST = [
     'org.freedesktop.impl.portal.desktop.gtk',
     'org.freedesktop.impl.portal.desktop.gnome',
@@ -36,10 +34,6 @@ var IntrospectService = class {
                                     this._syncRunningApplications();
                                 });
 
-        this._introspectSettings = new Gio.Settings({
-            schema_id: INTROSPECT_SCHEMA,
-        });
-
         let tracker = Shell.WindowTracker.get_default();
         tracker.connect('notify::focus-app',
                         () => {
@@ -71,10 +65,6 @@ var IntrospectService = class {
 
     _isStandaloneApp(app) {
         return app.get_windows().some(w => w.transient_for == null);
-    }
-
-    _isIntrospectEnabled() {
-        return this._introspectSettings.get_boolean(INTROSPECT_KEY);
     }
 
     _isSenderAllowed(sender) {
@@ -138,7 +128,7 @@ var IntrospectService = class {
     }
 
     _checkInvocation(invocation) {
-        if (this._isIntrospectEnabled())
+        if (global.context.unsafe_mode)
             return;
 
         if (this._isSenderAllowed(invocation.get_sender()))
