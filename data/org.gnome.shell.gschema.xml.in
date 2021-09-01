@@ -104,14 +104,6 @@
         number can be used to effectively disable the dialog.
       </description>
     </key>
-    <key name="introspect" type="b">
-      <default>false</default>
-      <summary>Enable introspection API</summary>
-      <description>
-        Enables a D-Bus API that allows to introspect the application state of
-        the shell.
-      </description>
-    </key>
     <key name="app-picker-layout" type="aa{sv}">
       <default><![CDATA[
         [{
