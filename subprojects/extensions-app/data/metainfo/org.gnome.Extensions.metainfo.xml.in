@@ -39,6 +39,7 @@
   </description>
 
   <releases>
+    <release version="41.rc" type="development" date="2021-09-04"/>
     <release version="41.beta" type="development" date="2021-08-18"/>
     <release version="41.alpha" type="development" date="2021-05-13"/>
   </releases>
