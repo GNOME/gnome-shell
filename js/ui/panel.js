@@ -507,6 +507,20 @@ class PanelCorner extends St.DrawingArea {
     }
 });
 
+const UnsafeModeIndicator = GObject.registerClass(
+class UnsafeModeIndicator extends PanelMenu.SystemIndicator {
+    _init() {
+        super._init();
+
+        this._indicator = this._addIndicator();
+        this._indicator.icon_name = 'channel-insecure-symbolic';
+
+        global.context.bind_property('unsafe-mode',
+            this._indicator, 'visible',
+            GObject.BindingFlags.SYNC_CREATE);
+    }
+});
+
 var AggregateLayout = GObject.registerClass(
 class AggregateLayout extends Clutter.BoxLayout {
     _init(params = {}) {
@@ -568,6 +582,7 @@ class AggregateMenu extends PanelMenu.Button {
         this._location = new imports.ui.status.location.Indicator();
         this._nightLight = new imports.ui.status.nightLight.Indicator();
         this._thunderbolt = new imports.ui.status.thunderbolt.Indicator();
+        this._unsafeMode = new UnsafeModeIndicator();
 
         this._indicators.add_child(this._remoteAccess);
         this._indicators.add_child(this._thunderbolt);
@@ -579,6 +594,7 @@ class AggregateMenu extends PanelMenu.Button {
             this._indicators.add_child(this._bluetooth);
         this._indicators.add_child(this._rfkill);
         this._indicators.add_child(this._volume);
+        this._indicators.add_child(this._unsafeMode);
         this._indicators.add_child(this._power);
         this._indicators.add_child(this._powerProfiles);
 
