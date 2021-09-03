@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2021-08-17 23:56+0000\n"
-"PO-Revision-Date: 2021-08-21 15:55+0430\n"
+"POT-Creation-Date: 2021-08-21 11:27+0000\n"
+"PO-Revision-Date: 2021-09-03 15:16+0430\n"
 "Last-Translator: Danial Behzadi <dani.behzi@ubuntu.com>\n"
 "Language-Team: Persian <>\n"
 "Language: fa\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
 "X-Poedit-SourceCharset: utf-8\n"
-"X-Generator: Poedit 2.4.2\n"
+"X-Generator: Poedit 3.0\n"
 
 #: data/50-gnome-shell-launchers.xml:6
 msgid "Launchers"
@@ -781,7 +781,7 @@ msgstr "%s به مورد پسندهایتان اضافه شد."
 #: js/ui/appFavorites.js:197
 #, javascript-format
 msgid "%s has been removed from your favorites."
-msgstr "%s ازمورد پسندهایتان حذف شد."
+msgstr "%s از محبوب‌هایتان برداشته شد."
 
 #. Translators: This is the heading of a list of open windows
 #: js/ui/appMenu.js:46
@@ -802,7 +802,7 @@ msgstr "خروج"
 
 #: js/ui/appMenu.js:163 js/ui/dash.js:245
 msgid "Remove from Favorites"
-msgstr "حذف از مورد پسندها"
+msgstr "برداشتن از محبوب‌ها"
 
 #: js/ui/appMenu.js:164
 msgid "Add to Favorites"
@@ -2505,7 +2505,7 @@ msgstr "اگر افزونه را بردارید، باید برای به کار 
 
 #: subprojects/extensions-app/js/main.js:184
 msgid "Remove"
-msgstr "حذف"
+msgstr "برداشتن"
 
 #: subprojects/extensions-app/js/main.js:216
 msgid "translator-credits"
