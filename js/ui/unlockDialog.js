@@ -572,6 +572,7 @@ var UnlockDialog = GObject.registerClass({
         this._otherUserButton = new St.Button({
             style_class: 'modal-dialog-button button switch-user-button',
             accessible_name: _('Log in as another user'),
+            button_mask: St.ButtonMask.ONE | St.ButtonMask.THREE,
             reactive: false,
             opacity: 0,
             x_align: Clutter.ActorAlign.END,
