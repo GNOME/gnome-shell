@@ -16,4 +16,4 @@ for stylesheet in stylesheets:
     stylesheet_path = PurePath(stylesheet)
     src = PurePath(sourceroot, stylesheet_path.with_suffix('.scss'))
     dst = PurePath(distroot, stylesheet_path)
-    subprocess.call(['sassc', '-a', src, dst])
+    subprocess.run(['sassc', '-a', src, dst], check=True)
