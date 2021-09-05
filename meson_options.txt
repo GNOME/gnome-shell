@@ -22,6 +22,12 @@ option('man',
   description: 'Generate man pages'
 )
 
+option('tests',
+  type: 'boolean',
+  value: true,
+  description: 'Enable tests'
+)
+
 option('networkmanager',
   type: 'boolean',
   value: true,
