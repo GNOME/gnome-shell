@@ -824,7 +824,17 @@ export const Dash = GObject.registerClass({
                 });
                 this._box.add_child(this._separator);
             }
-            let pos = nFavorites + this._animatingPlaceholdersCount;
+            let pos = nFavorites;
+            let itemsBeforeSeparator = 0;
+            for (const item of this._box.get_children()) {
+                if (item.animatingOut)
+                    pos++;
+                itemsBeforeSeparator++;
+                // Assuming only one icon is moved at a time
+                // Or else we need to track removed favorite items
+                if (itemsBeforeSeparator > nFavorites)
+                    break;
+            }
             if (this._dragPlaceholder)
                 pos++;
             this._box.set_child_at_index(this._separator, pos);
