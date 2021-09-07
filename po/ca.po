@@ -2073,7 +2073,7 @@ msgstr "Paràmetres de la xarxa sense fil"
 #: js/ui/status/network.js:1332
 #, javascript-format
 msgid "%s Hotspot Active"
-msgstr "Hostpot %s actiu"
+msgstr "Punt d'accés Wi-Fi %s actiu"
 
 #. Translators: %s is a network identifier
 #: js/ui/status/network.js:1347
