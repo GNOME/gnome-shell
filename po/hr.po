@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
 "POT-Creation-Date: 2021-09-03 21:44+0000\n"
-"PO-Revision-Date: 2021-09-07 21:47+0200\n"
+"PO-Revision-Date: 2021-09-07 21:49+0200\n"
 "Last-Translator: gogo <trebelnik2@gmail.com>\n"
 "Language-Team: Croatian <hr@li.org>\n"
 "Language: hr\n"
@@ -25,39 +25,39 @@ msgstr "Pokretači"
 
 #: data/50-gnome-shell-launchers.xml:10
 msgid "Activate favorite application 1"
-msgstr "Aktiviraj omiljenu na aplikaciju 1"
+msgstr "Aktiviraj omiljenu aplikaciju 1"
 
 #: data/50-gnome-shell-launchers.xml:14
 msgid "Activate favorite application 2"
-msgstr "Aktiviraj omiljenu na aplikaciju 2"
+msgstr "Aktiviraj omiljenu aplikaciju 2"
 
 #: data/50-gnome-shell-launchers.xml:18
 msgid "Activate favorite application 3"
-msgstr "Aktiviraj omiljenu na aplikaciju 3"
+msgstr "Aktiviraj omiljenu aplikaciju 3"
 
 #: data/50-gnome-shell-launchers.xml:22
 msgid "Activate favorite application 4"
-msgstr "Aktiviraj omiljenu na aplikaciju 4"
+msgstr "Aktiviraj omiljenu aplikaciju 4"
 
 #: data/50-gnome-shell-launchers.xml:26
 msgid "Activate favorite application 5"
-msgstr "Aktiviraj omiljenu na aplikaciju 5"
+msgstr "Aktiviraj omiljenu aplikaciju 5"
 
 #: data/50-gnome-shell-launchers.xml:30
 msgid "Activate favorite application 6"
-msgstr "Aktiviraj omiljenu na aplikaciju 6"
+msgstr "Aktiviraj omiljenu aplikaciju 6"
 
 #: data/50-gnome-shell-launchers.xml:34
 msgid "Activate favorite application 7"
-msgstr "Aktiviraj omiljenu na aplikaciju 7"
+msgstr "Aktiviraj omiljenu aplikaciju 7"
 
 #: data/50-gnome-shell-launchers.xml:38
 msgid "Activate favorite application 8"
-msgstr "Aktiviraj omiljenu na aplikaciju 8"
+msgstr "Aktiviraj omiljenu aplikaciju 8"
 
 #: data/50-gnome-shell-launchers.xml:42
 msgid "Activate favorite application 9"
-msgstr "Aktiviraj omiljenu na aplikaciju 9"
+msgstr "Aktiviraj omiljenu aplikaciju 9"
 
 #: data/50-gnome-shell-system.xml:6
 msgid "System"
