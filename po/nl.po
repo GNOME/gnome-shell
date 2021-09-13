@@ -8,7 +8,7 @@
 # Reinout van Schouwen <reinouts@gnome.org>, 2010, 2013, 2014.
 # Wouter Bolsterlee <wbolster@gnome.org>, 2011–2014.
 # Erwin Poeze <donnut@outlook.com>, 2013.
-# Nathan Follens <nthn@unseen.is>, 2015-2021.
+# Nathan Follens <nfollens@gnome.org>, 2015-2021.
 # Hannie Dumoleyn <hannie@ubuntu-nl.org>, 2015, 2017, 2018, 2021.
 # Justin van Steijn <jvs@fsfe.org>, 2016, 2018.
 # Philip Goto <philip.goto@gmail.com>, 2018.
@@ -16,18 +16,58 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2021-03-25 16:48+0000\n"
-"PO-Revision-Date: 2021-04-01 20:36+0200\n"
-"Last-Translator: Nathan Follens <nthn@unseen.is>\n"
+"POT-Creation-Date: 2021-08-17 23:56+0000\n"
+"PO-Revision-Date: 2021-09-02 16:10+0200\n"
+"Last-Translator: Nathan Follens <nfollens@gnome.org>\n"
 "Language-Team: Dutch <gnome-nl-list@gnome.org>\n"
 "Language: nl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 2.4.2\n"
+"X-Generator: Poedit 3.0\n"
 "X-DamnedLies-Scope: partial\n"
 "X-Project-Style: gnome\n"
+
+#: data/50-gnome-shell-launchers.xml:6
+msgid "Launchers"
+msgstr "Starters"
+
+#: data/50-gnome-shell-launchers.xml:10
+msgid "Activate favorite application 1"
+msgstr "Favoriete toepassing 1 inschakelen"
+
+#: data/50-gnome-shell-launchers.xml:14
+msgid "Activate favorite application 2"
+msgstr "Favoriete toepassing 2 inschakelen"
+
+#: data/50-gnome-shell-launchers.xml:18
+msgid "Activate favorite application 3"
+msgstr "Favoriete toepassing 3 inschakelen"
+
+#: data/50-gnome-shell-launchers.xml:22
+msgid "Activate favorite application 4"
+msgstr "Favoriete toepassing 4 inschakelen"
+
+#: data/50-gnome-shell-launchers.xml:26
+msgid "Activate favorite application 5"
+msgstr "Favoriete toepassing 5 inschakelen"
+
+#: data/50-gnome-shell-launchers.xml:30
+msgid "Activate favorite application 6"
+msgstr "Favoriete toepassing 6 inschakelen"
+
+#: data/50-gnome-shell-launchers.xml:34
+msgid "Activate favorite application 7"
+msgstr "Favoriete toepassing 7 inschakelen"
+
+#: data/50-gnome-shell-launchers.xml:38
+msgid "Activate favorite application 8"
+msgstr "Favoriete toepassing 8 inschakelen"
+
+#: data/50-gnome-shell-launchers.xml:42
+msgid "Activate favorite application 9"
+msgstr "Favoriete toepassing 9 inschakelen"
 
 #: data/50-gnome-shell-system.xml:6
 msgid "System"
@@ -467,16 +507,16 @@ msgstr "Startpagina"
 msgid "Visit extension homepage"
 msgstr "Website van uitbreiding openen"
 
-#: js/gdm/authPrompt.js:141 js/ui/audioDeviceSelection.js:58
+#: js/gdm/authPrompt.js:141 js/ui/audioDeviceSelection.js:61
 #: js/ui/components/networkAgent.js:111 js/ui/components/polkitAgent.js:138
-#: js/ui/endSessionDialog.js:438 js/ui/extensionDownloader.js:183
+#: js/ui/endSessionDialog.js:438 js/ui/extensionDownloader.js:190
 #: js/ui/shellMountOperation.js:376 js/ui/shellMountOperation.js:386
-#: js/ui/status/network.js:941 subprojects/extensions-app/js/main.js:183
+#: js/ui/status/network.js:978 subprojects/extensions-app/js/main.js:183
 msgid "Cancel"
 msgstr "Annuleren"
 
 #. Cisco LEAP
-#: js/gdm/authPrompt.js:244 js/ui/components/networkAgent.js:210
+#: js/gdm/authPrompt.js:285 js/ui/components/networkAgent.js:210
 #: js/ui/components/networkAgent.js:226 js/ui/components/networkAgent.js:250
 #: js/ui/components/networkAgent.js:271 js/ui/components/networkAgent.js:291
 #: js/ui/components/networkAgent.js:301 js/ui/components/polkitAgent.js:275
@@ -494,7 +534,7 @@ msgstr "Niet in de lijst?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: js/gdm/loginDialog.js:918
+#: js/gdm/loginDialog.js:921
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(bijv. gebruiker of %s)"
@@ -502,12 +542,12 @@ msgstr "(bijv. gebruiker of %s)"
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: js/gdm/loginDialog.js:923 js/ui/components/networkAgent.js:246
+#: js/gdm/loginDialog.js:926 js/ui/components/networkAgent.js:246
 #: js/ui/components/networkAgent.js:269 js/ui/components/networkAgent.js:287
 msgid "Username"
 msgstr "Gebruikersnaam"
 
-#: js/gdm/loginDialog.js:1258
+#: js/gdm/loginDialog.js:1279
 msgid "Login Window"
 msgstr "Aanmeldvenster"
 
@@ -764,48 +804,17 @@ msgstr ""
 
 #. No support for non-modal system dialogs, so ignore the option
 #. let modal = options['modal'] || true;
-#: js/ui/accessDialog.js:39 js/ui/status/location.js:369
+#: js/ui/accessDialog.js:39 js/ui/status/location.js:417
 msgid "Deny Access"
 msgstr "Toegang weigeren"
 
-#: js/ui/accessDialog.js:40 js/ui/status/location.js:372
+#: js/ui/accessDialog.js:40 js/ui/status/location.js:420
 msgid "Grant Access"
 msgstr "Toegang verlenen"
 
-#: js/ui/appDisplay.js:1816
+#: js/ui/appDisplay.js:1846
 msgid "Unnamed Folder"
 msgstr "Naamloze map"
-
-#. Translators: This is the heading of a list of open windows
-#: js/ui/appDisplay.js:3393 js/ui/panel.js:33
-msgid "Open Windows"
-msgstr "Open vensters"
-
-#: js/ui/appDisplay.js:3412 js/ui/panel.js:40
-msgid "New Window"
-msgstr "Nieuw venster"
-
-# Dedicated niet vertaald
-#: js/ui/appDisplay.js:3428
-msgid "Launch using Integrated Graphics Card"
-msgstr "Met geïntegreerde grafische kaart opstarten"
-
-# Dedicated niet vertaald
-#: js/ui/appDisplay.js:3429
-msgid "Launch using Discrete Graphics Card"
-msgstr "Met discrete grafische kaart opstarten"
-
-#: js/ui/appDisplay.js:3458 js/ui/dash.js:245
-msgid "Remove from Favorites"
-msgstr "Uit favorieten verwijderen"
-
-#: js/ui/appDisplay.js:3464
-msgid "Add to Favorites"
-msgstr "Aan favorieten toevoegen"
-
-#: js/ui/appDisplay.js:3474 js/ui/panel.js:51
-msgid "Show Details"
-msgstr "Details tonen"
 
 #: js/ui/appFavorites.js:164
 #, javascript-format
@@ -817,23 +826,58 @@ msgstr "%s is toegevoegd aan uw favorieten."
 msgid "%s has been removed from your favorites."
 msgstr "%s is verwijderd uit uw favorieten."
 
+#. Translators: This is the heading of a list of open windows
+#: js/ui/appMenu.js:46
+msgid "Open Windows"
+msgstr "Open vensters"
+
+#: js/ui/appMenu.js:54
+msgid "New Window"
+msgstr "Nieuw venster"
+
+#: js/ui/appMenu.js:81
+msgid "Show Details"
+msgstr "Details tonen"
+
+#: js/ui/appMenu.js:96
+msgid "Quit"
+msgstr "Afsluiten"
+
+#: js/ui/appMenu.js:163 js/ui/dash.js:245
+msgid "Remove from Favorites"
+msgstr "Uit favorieten verwijderen"
+
+#: js/ui/appMenu.js:164
+msgid "Add to Favorites"
+msgstr "Aan favorieten toevoegen"
+
+# Dedicated niet vertaald
+#: js/ui/appMenu.js:181
+msgid "Launch using Integrated Graphics Card"
+msgstr "Met geïntegreerde grafische kaart opstarten"
+
+# Dedicated niet vertaald
+#: js/ui/appMenu.js:182
+msgid "Launch using Discrete Graphics Card"
+msgstr "Met discrete grafische kaart opstarten"
+
 #: js/ui/audioDeviceSelection.js:41
 msgid "Select Audio Device"
 msgstr "Kies audioapparaat"
 
-#: js/ui/audioDeviceSelection.js:55
+#: js/ui/audioDeviceSelection.js:56
 msgid "Sound Settings"
 msgstr "Geluidsinstellingen"
 
-#: js/ui/audioDeviceSelection.js:65
+#: js/ui/audioDeviceSelection.js:69
 msgid "Headphones"
 msgstr "Hoofdtelefoon"
 
-#: js/ui/audioDeviceSelection.js:67
+#: js/ui/audioDeviceSelection.js:71
 msgid "Headset"
 msgstr "Headset"
 
-#: js/ui/audioDeviceSelection.js:69 js/ui/status/volume.js:277
+#: js/ui/audioDeviceSelection.js:73 js/ui/status/volume.js:277
 msgid "Microphone"
 msgstr "Microfoon"
 
@@ -950,7 +994,7 @@ msgstr "Geen notificaties"
 msgid "Do Not Disturb"
 msgstr "Niet storen"
 
-#: js/ui/calendar.js:969
+#: js/ui/calendar.js:971
 msgid "Clear"
 msgstr "Wissen"
 
@@ -1005,8 +1049,8 @@ msgid ""
 msgstr ""
 "U kunt ook verbinding maken door op de ‘WPS’-knop op uw router te drukken."
 
-#: js/ui/components/networkAgent.js:105 js/ui/status/network.js:253
-#: js/ui/status/network.js:344 js/ui/status/network.js:944
+#: js/ui/components/networkAgent.js:105 js/ui/status/network.js:258
+#: js/ui/status/network.js:349 js/ui/status/network.js:981
 msgid "Connect"
 msgstr "Verbinden"
 
@@ -1071,7 +1115,7 @@ msgstr "Pincode"
 msgid "A password is required to connect to “%s”."
 msgstr "Er is een wachtwoord nodig om met ‘%s’ te verbinden."
 
-#: js/ui/components/networkAgent.js:668 js/ui/status/network.js:1718
+#: js/ui/components/networkAgent.js:668 js/ui/status/network.js:1789
 msgid "Network Manager"
 msgstr "Netwerk-manager"
 
@@ -1107,7 +1151,7 @@ msgstr "Helaas, dat werkte niet. Probeer het opnieuw."
 msgid "%s is now known as %s"
 msgstr "%s heet vanaf nu %s"
 
-#: js/ui/ctrlAltTab.js:21 js/ui/overviewControls.js:395
+#: js/ui/ctrlAltTab.js:21 js/ui/overviewControls.js:404
 msgid "Windows"
 msgstr "Vensters"
 
@@ -1357,15 +1401,15 @@ msgstr "%s (op afstand)"
 msgid "%s (console)"
 msgstr "%s (console)"
 
-#: js/ui/extensionDownloader.js:187
+#: js/ui/extensionDownloader.js:194
 msgid "Install"
 msgstr "Installeren"
 
-#: js/ui/extensionDownloader.js:193
+#: js/ui/extensionDownloader.js:200
 msgid "Install Extension"
 msgstr "Uitbreiding installeren"
 
-#: js/ui/extensionDownloader.js:194
+#: js/ui/extensionDownloader.js:201
 #, javascript-format
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "‘%s’ downloaden van extensions.gnome.org en daarna installeren?"
@@ -1455,13 +1499,13 @@ msgid "Leave On"
 msgstr "Aan laten"
 
 #: js/ui/kbdA11yDialog.js:54 js/ui/status/bluetooth.js:156
-#: js/ui/status/network.js:1316
+#: js/ui/status/network.js:1377
 msgid "Turn On"
 msgstr "Inschakelen"
 
 #: js/ui/kbdA11yDialog.js:62 js/ui/status/bluetooth.js:156
-#: js/ui/status/network.js:161 js/ui/status/network.js:345
-#: js/ui/status/network.js:1316 js/ui/status/network.js:1428
+#: js/ui/status/network.js:166 js/ui/status/network.js:350
+#: js/ui/status/network.js:1377 js/ui/status/network.js:1489
 #: js/ui/status/nightLight.js:41 js/ui/status/rfkill.js:81
 #: js/ui/status/rfkill.js:110
 msgid "Turn Off"
@@ -1537,15 +1581,15 @@ msgstr ""
 "als gebruiker met extra rechten vermijdt. Meld u, indien mogelijk, aan als "
 "een normale gebruiker."
 
-#: js/ui/main.js:345
+#: js/ui/main.js:344
 msgid "Screen Lock disabled"
 msgstr "Schermvergrendeling uitgeschakeld"
 
-#: js/ui/main.js:346
+#: js/ui/main.js:345
 msgid "Screen Locking requires the GNOME display manager."
 msgstr "Schermvergrendeling vereist de Gnome-displaymanager."
 
-#: js/ui/messageTray.js:1437
+#: js/ui/messageTray.js:1440
 msgid "System Information"
 msgstr "Systeeminformatie"
 
@@ -1561,21 +1605,21 @@ msgstr "Onbekend nummer"
 #. in the search entry when no search is
 #. active; it should not exceed ~30
 #. characters.
-#: js/ui/overviewControls.js:307
+#: js/ui/overviewControls.js:313
 msgid "Type to search"
 msgstr "Typ om te zoeken"
 
-#: js/ui/overviewControls.js:383
+#: js/ui/overviewControls.js:392
 msgid "Applications"
 msgstr "Toepassingen"
 
-#: js/ui/overview.js:69
+#: js/ui/overview.js:58
 msgid "Undo"
 msgstr "Ongedaan maken"
 
 #. Translators: This is the main view to select
 #. activities. See also note for "Activities" string.
-#: js/ui/overview.js:82
+#: js/ui/overview.js:71
 msgid "Overview"
 msgstr "Overzicht"
 
@@ -1623,22 +1667,18 @@ msgstr "Druk op Esc om af te sluiten"
 msgid "Press any key to exit"
 msgstr "Druk op een willekeurige toets om af te sluiten"
 
-#: js/ui/panel.js:65
-msgid "Quit"
-msgstr "Afsluiten"
-
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: js/ui/panel.js:388
+#: js/ui/panel.js:271
 msgid "Activities"
 msgstr "Activiteiten"
 
-#: js/ui/panel.js:659
+#: js/ui/panel.js:542
 msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "Systeem"
 
-#: js/ui/panel.js:771
+#: js/ui/panel.js:658
 msgid "Top Bar"
 msgstr "Menubalk"
 
@@ -1658,7 +1698,7 @@ msgstr "Herstarten is niet beschikbaar op Wayland"
 msgid "Restarting…"
 msgstr "Herstarten…"
 
-#: js/ui/screenShield.js:211
+#: js/ui/screenShield.js:224
 msgid "GNOME needs to lock the screen"
 msgstr "Gnome moet het scherm vergrendelen"
 
@@ -1669,11 +1709,11 @@ msgstr "Gnome moet het scherm vergrendelen"
 #.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
-#: js/ui/screenShield.js:252 js/ui/screenShield.js:620
+#: js/ui/screenShield.js:264 js/ui/screenShield.js:634
 msgid "Unable to lock"
 msgstr "Kon niet vergrendelen"
 
-#: js/ui/screenShield.js:253 js/ui/screenShield.js:621
+#: js/ui/screenShield.js:265 js/ui/screenShield.js:635
 msgid "Lock was blocked by an application"
 msgstr "Vergrendelen is door een toepassing voorkomen"
 
@@ -1681,15 +1721,15 @@ msgstr "Vergrendelen is door een toepassing voorkomen"
 msgid "Screenshot taken"
 msgstr "Schermafdruk gemaakt"
 
-#: js/ui/search.js:824
+#: js/ui/search.js:825
 msgid "Searching…"
 msgstr "Zoeken…"
 
-#: js/ui/search.js:826
+#: js/ui/search.js:827
 msgid "No results."
 msgstr "Geen resultaten."
 
-#: js/ui/search.js:952
+#: js/ui/search.js:953
 #, javascript-format
 msgid "%d more"
 msgid_plural "%d more"
@@ -1708,15 +1748,15 @@ msgstr "Kopiëren"
 msgid "Paste"
 msgstr "Plakken"
 
-#: js/ui/shellEntry.js:73
+#: js/ui/shellEntry.js:77
 msgid "Show Text"
 msgstr "Tekst tonen"
 
-#: js/ui/shellEntry.js:75
+#: js/ui/shellEntry.js:79
 msgid "Hide Text"
 msgstr "Tekst verbergen"
 
-#: js/ui/shellEntry.js:162
+#: js/ui/shellEntry.js:166
 msgid "Caps lock is on."
 msgstr "Caps lock staat aan."
 
@@ -1823,7 +1863,7 @@ msgstr "Grote tekst"
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: js/ui/status/bluetooth.js:49 js/ui/status/network.js:620
+#: js/ui/status/bluetooth.js:49 js/ui/status/network.js:652
 msgid "Bluetooth Settings"
 msgstr "Bluetooth-instellingen"
 
@@ -1867,49 +1907,49 @@ msgstr "Tweede klik"
 msgid "Dwell Click"
 msgstr "Hangklik"
 
-#: js/ui/status/keyboard.js:825
+#: js/ui/status/keyboard.js:829
 msgid "Keyboard"
 msgstr "Toetsenbord"
 
-#: js/ui/status/keyboard.js:842
+#: js/ui/status/keyboard.js:846
 msgid "Show Keyboard Layout"
 msgstr "Toetsenbordindeling tonen"
 
-#: js/ui/status/location.js:65 js/ui/status/location.js:174
+#: js/ui/status/location.js:234 js/ui/status/location.js:267
 msgid "Location Enabled"
 msgstr "Locatie ingeschakeld"
 
-#: js/ui/status/location.js:66 js/ui/status/location.js:175
+#: js/ui/status/location.js:235 js/ui/status/location.js:268
 msgid "Disable"
 msgstr "Uitschakelen"
 
-#: js/ui/status/location.js:67
+#: js/ui/status/location.js:236
 msgid "Privacy Settings"
 msgstr "Privacyinstellingen"
 
-#: js/ui/status/location.js:173
+#: js/ui/status/location.js:266
 msgid "Location In Use"
 msgstr "Locatie in gebruik"
 
-#: js/ui/status/location.js:177
+#: js/ui/status/location.js:270
 msgid "Location Disabled"
 msgstr "Locatie uitgeschakeld"
 
-#: js/ui/status/location.js:178
+#: js/ui/status/location.js:271
 msgid "Enable"
 msgstr "Inschakelen"
 
-#: js/ui/status/location.js:350
+#: js/ui/status/location.js:398
 msgid "Allow location access"
 msgstr "Toegang verlenen tot locatie"
 
 #. Translators: %s is an application name
-#: js/ui/status/location.js:352
+#: js/ui/status/location.js:400
 #, javascript-format
 msgid "The app %s wants to access your location"
 msgstr "De toepassing %s wil toegang tot uw locatie"
 
-#: js/ui/status/location.js:362
+#: js/ui/status/location.js:410
 msgid "Location access can be changed at any time from the privacy settings."
 msgstr ""
 "Locatietoegang kan op elk moment worden gewijzigd in de privacyinstellingen."
@@ -1919,13 +1959,13 @@ msgid "<unknown>"
 msgstr "<onbekend>"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:450 js/ui/status/network.js:1345
+#: js/ui/status/network.js:455 js/ui/status/network.js:1406
 #, javascript-format
 msgid "%s Off"
 msgstr "%s uit"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:453
+#: js/ui/status/network.js:458
 #, javascript-format
 msgid "%s Connected"
 msgstr "%s verbonden"
@@ -1933,189 +1973,189 @@ msgstr "%s verbonden"
 #. Translators: this is for network devices that are physically present but are not
 #. under NetworkManager's control (and thus cannot be used in the menu);
 #. %s is a network identifier
-#: js/ui/status/network.js:458
+#: js/ui/status/network.js:463
 #, javascript-format
 msgid "%s Unmanaged"
 msgstr "%s onbeheerd"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:461
+#: js/ui/status/network.js:466
 #, javascript-format
 msgid "%s Disconnecting"
 msgstr "%s verbinding verbreken"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:468 js/ui/status/network.js:1337
+#: js/ui/status/network.js:473 js/ui/status/network.js:1398
 #, javascript-format
 msgid "%s Connecting"
 msgstr "%s verbinden"
 
 #. Translators: this is for network connections that require some kind of key or password; %s is a network identifier
-#: js/ui/status/network.js:471
+#: js/ui/status/network.js:476
 #, javascript-format
 msgid "%s Requires Authentication"
 msgstr "%s vereist authenticatie"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing; %s is a network identifier
-#: js/ui/status/network.js:479
+#: js/ui/status/network.js:484
 #, javascript-format
 msgid "Firmware Missing For %s"
 msgstr "Firmware ontbreekt voor %s"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage; %s is a network identifier
-#: js/ui/status/network.js:483
+#: js/ui/status/network.js:488
 #, javascript-format
 msgid "%s Unavailable"
 msgstr "%s niet beschikbaar"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:486
+#: js/ui/status/network.js:491
 #, javascript-format
 msgid "%s Connection Failed"
 msgstr "Verbinding van %s is mislukt"
 
-#: js/ui/status/network.js:498
+#: js/ui/status/network.js:503
 msgid "Wired Settings"
 msgstr "Instellingen voor bekabeld netwerk"
 
-#: js/ui/status/network.js:541
+#: js/ui/status/network.js:550
 msgid "Mobile Broadband Settings"
 msgstr "Instellingen voor mobiel breedband"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:587 js/ui/status/network.js:1342
+#: js/ui/status/network.js:619 js/ui/status/network.js:1403
 #, javascript-format
 msgid "%s Hardware Disabled"
 msgstr "%s uitgeschakeld in hardware"
 
 #. Translators: this is for a network device that cannot be activated
 #. because it's disabled by rfkill (airplane mode); %s is a network identifier
-#: js/ui/status/network.js:591
+#: js/ui/status/network.js:623
 #, javascript-format
 msgid "%s Disabled"
 msgstr "%s uitgeschakeld"
 
-#: js/ui/status/network.js:632
+#: js/ui/status/network.js:664
 msgid "Connect to Internet"
 msgstr "Met internet verbinden"
 
-#: js/ui/status/network.js:836
+#: js/ui/status/network.js:873
 msgid "Airplane Mode is On"
 msgstr "Vliegtuigstand is aan"
 
-#: js/ui/status/network.js:837
+#: js/ui/status/network.js:874
 msgid "Wi-Fi is disabled when airplane mode is on."
 msgstr "Wifi is uitgeschakeld in vliegtuigstand."
 
-#: js/ui/status/network.js:838
+#: js/ui/status/network.js:875
 msgid "Turn Off Airplane Mode"
 msgstr "Vliegtuigstand uitschakelen"
 
-#: js/ui/status/network.js:847
+#: js/ui/status/network.js:884
 msgid "Wi-Fi is Off"
 msgstr "Wifi is uitgeschakeld"
 
-#: js/ui/status/network.js:848
+#: js/ui/status/network.js:885
 msgid "Wi-Fi needs to be turned on in order to connect to a network."
 msgstr "Wifi moet ingeschakeld zijn om met een netwerk te kunnen verbinden."
 
-#: js/ui/status/network.js:849
+#: js/ui/status/network.js:886
 msgid "Turn On Wi-Fi"
 msgstr "Wifi inschakelen"
 
-#: js/ui/status/network.js:874
+#: js/ui/status/network.js:911
 msgid "Wi-Fi Networks"
 msgstr "Wifi-netwerken"
 
-#: js/ui/status/network.js:876
+#: js/ui/status/network.js:913
 msgid "Select a network"
 msgstr "Selecteer een netwerk"
 
-#: js/ui/status/network.js:908
+#: js/ui/status/network.js:945
 msgid "No Networks"
 msgstr "Geen netwerken"
 
-#: js/ui/status/network.js:929 js/ui/status/rfkill.js:108
+#: js/ui/status/network.js:966 js/ui/status/rfkill.js:108
 msgid "Use hardware switch to turn off"
 msgstr "Gebruik de hardware-schakelaar om uit te schakelen"
 
-#: js/ui/status/network.js:1206
+#: js/ui/status/network.js:1267
 msgid "Select Network"
 msgstr "Netwerk selecteren"
 
-#: js/ui/status/network.js:1212
+#: js/ui/status/network.js:1273
 msgid "Wi-Fi Settings"
 msgstr "Wifi-instellingen"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1333
+#: js/ui/status/network.js:1394
 #, javascript-format
 msgid "%s Hotspot Active"
 msgstr "%s-hotspot actief"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1348
+#: js/ui/status/network.js:1409
 #, javascript-format
 msgid "%s Not Connected"
 msgstr "%s niet verbonden"
 
-#: js/ui/status/network.js:1445
+#: js/ui/status/network.js:1506
 msgid "connecting…"
 msgstr "verbinden…"
 
 #. Translators: this is for network connections that require some kind of key or password
-#: js/ui/status/network.js:1448
+#: js/ui/status/network.js:1509
 msgid "authentication required"
 msgstr "authenticatie nodig"
 
-#: js/ui/status/network.js:1450
+#: js/ui/status/network.js:1511
 msgid "connection failed"
 msgstr "verbinding mislukt"
 
-#: js/ui/status/network.js:1501
+#: js/ui/status/network.js:1562
 msgid "VPN Settings"
 msgstr "VPN-instellingen"
 
-#: js/ui/status/network.js:1518
+#: js/ui/status/network.js:1579
 msgid "VPN"
 msgstr "VPN"
 
-#: js/ui/status/network.js:1528
+#: js/ui/status/network.js:1589
 msgid "VPN Off"
 msgstr "VPN uit"
 
-#: js/ui/status/network.js:1589 js/ui/status/rfkill.js:84
+#: js/ui/status/network.js:1650 js/ui/status/rfkill.js:84
 msgid "Network Settings"
 msgstr "Netwerkinstellingen"
 
-#: js/ui/status/network.js:1617
+#: js/ui/status/network.js:1678
 #, javascript-format
 msgid "%s Wired Connection"
 msgid_plural "%s Wired Connections"
 msgstr[0] "%s bekabelde verbinding"
 msgstr[1] "%s bekabelde verbindingen"
 
-#: js/ui/status/network.js:1621
+#: js/ui/status/network.js:1682
 #, javascript-format
 msgid "%s Wi-Fi Connection"
 msgid_plural "%s Wi-Fi Connections"
 msgstr[0] "%s wifi-verbinding"
 msgstr[1] "%s wifi-verbindingen"
 
-#: js/ui/status/network.js:1625
+#: js/ui/status/network.js:1686
 #, javascript-format
 msgid "%s Modem Connection"
 msgid_plural "%s Modem Connections"
 msgstr[0] "%s modemverbinding"
 msgstr[1] "%s modemverbindingen"
 
-#: js/ui/status/network.js:1759
+#: js/ui/status/network.js:1830
 msgid "Connection failed"
 msgstr "Verbinding mislukt"
 
-#: js/ui/status/network.js:1760
+#: js/ui/status/network.js:1831
 msgid "Activation of network connection failed"
 msgstr "Activeren van netwerkverbinding mislukt"
 
@@ -2135,40 +2175,56 @@ msgstr "Hervatten"
 msgid "Disable Until Tomorrow"
 msgstr "Uitschakelen tot morgen"
 
-#: js/ui/status/power.js:47
+#: js/ui/status/power.js:51 js/ui/status/powerProfiles.js:57
 msgid "Power Settings"
 msgstr "Energie-instellingen"
 
-#: js/ui/status/power.js:63
+#: js/ui/status/power.js:68
 msgid "Fully Charged"
 msgstr "Volledig opgeladen"
 
-#: js/ui/status/power.js:69
+#: js/ui/status/power.js:74
 msgid "Not Charging"
 msgstr "Niet aan het opladen"
 
 #. 0 is reported when UPower does not have enough data
 #. to estimate battery life
-#: js/ui/status/power.js:72 js/ui/status/power.js:78
+#: js/ui/status/power.js:77 js/ui/status/power.js:83
 msgid "Estimating…"
 msgstr "Schatten…"
 
 #. Translators: this is <hours>:<minutes> Remaining (<percentage>)
-#: js/ui/status/power.js:86
+#: js/ui/status/power.js:91
 #, javascript-format
 msgid "%d∶%02d Remaining (%d %%)"
 msgstr "%d:%02d resterend (%d %%)"
 
 #. Translators: this is <hours>:<minutes> Until Full (<percentage>)
-#: js/ui/status/power.js:91
+#: js/ui/status/power.js:97
 #, javascript-format
 msgid "%d∶%02d Until Full (%d %%)"
 msgstr "%d:%02d tot opgeladen (%d %%)"
 
-#: js/ui/status/power.js:139 js/ui/status/power.js:141
+#. The icon label
+#: js/ui/status/power.js:145
 #, javascript-format
 msgid "%d %%"
 msgstr "%d %%"
+
+#: js/ui/status/powerProfiles.js:19
+msgctxt "Power profile"
+msgid "Performance"
+msgstr "Prestaties"
+
+#: js/ui/status/powerProfiles.js:20
+msgctxt "Power profile"
+msgid "Balanced"
+msgstr "Gebalanceerd"
+
+#: js/ui/status/powerProfiles.js:21
+msgctxt "Power profile"
+msgid "Power Saver"
+msgstr "Energie besparen"
 
 #: js/ui/status/remoteAccess.js:38
 msgid "Screen is Being Shared"
@@ -2360,11 +2416,11 @@ msgid "%d × %d"
 msgstr "%d × %d"
 
 #: js/ui/windowMenu.js:27
-msgid "Minimize"
-msgstr "Minimaliseren"
+msgid "Hide"
+msgstr "Verbergen"
 
 #: js/ui/windowMenu.js:34
-msgid "Unmaximize"
+msgid "Restore"
 msgstr "Herstellen"
 
 #: js/ui/windowMenu.js:38
@@ -2431,19 +2487,19 @@ msgstr "Sluiten"
 msgid "Evolution Calendar"
 msgstr "Evolution-agenda"
 
-#: src/main.c:415 subprojects/extensions-tool/src/main.c:317
+#: src/main.c:419 subprojects/extensions-tool/src/main.c:317
 msgid "Print version"
 msgstr "Versie weergeven"
 
-#: src/main.c:421
+#: src/main.c:425
 msgid "Mode used by GDM for login screen"
 msgstr "De modus die door GDM voor het aanmeldscherm gebruikt wordt"
 
-#: src/main.c:427
+#: src/main.c:431
 msgid "Use a specific mode, e.g. “gdm” for login screen"
 msgstr "Specifieke modus gebruiken, bijv. ‘gdm’ voor het aanmeldscherm"
 
-#: src/main.c:433
+#: src/main.c:437
 msgid "List possible modes"
 msgstr "Mogelijke modi tonen"
 
@@ -2523,7 +2579,7 @@ msgstr "Verwijderen"
 #: subprojects/extensions-app/js/main.js:216
 msgid "translator-credits"
 msgstr ""
-"Nathan Follens <nthn@unseen.is>\n"
+"Nathan Follens <nfollens@gnome.org>\n"
 "\n"
 "Meer info over Gnome-NL http://nl.gnome.org"
 
@@ -2624,7 +2680,7 @@ msgid "Log Out…"
 msgstr "Afmelden…"
 
 #. Translators: a file path to an extension directory
-#: subprojects/extensions-tool/src/command-create.c:223
+#: subprojects/extensions-tool/src/command-create.c:222
 #, c-format
 msgid "The new extension was successfully created in %s.\n"
 msgstr "De nieuwe uitbreiding is aangemaakt in %s.\n"
@@ -3032,6 +3088,12 @@ msgstr[1] "%u invoerkanalen"
 #: subprojects/gvc/gvc-mixer-control.c:2867
 msgid "System Sounds"
 msgstr "Systeemgeluiden"
+
+#~ msgid "Minimize"
+#~ msgstr "Minimaliseren"
+
+#~ msgid "Unmaximize"
+#~ msgstr "Herstellen"
 
 #~ msgid "App Picker View"
 #~ msgstr "Toepassingskiezer-weergave"
