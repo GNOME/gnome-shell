@@ -228,7 +228,7 @@ test-coverity:
   stage: analyze
   allow_failure: true
   before_script:
-    - meson compile -C mutter/build
+    - meson install -C mutter/build
   script:
     - .gitlab-ci/download-coverity-tarball.sh
     - CC=clang meson coverity-build -Dman=false
