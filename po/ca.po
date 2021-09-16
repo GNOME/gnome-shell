@@ -263,7 +263,7 @@ msgstr ""
 "Aquesta clau determina per a quina versió es va mostrar per última vegada "
 "del diàleg «Us donem la benvinguda al GNOME». Una cadena buida representa la"
 " versió més antiga possible, i un nombre enorme representarà versions que "
-"encara no existeixen. Aquest nombre enorme es pot utilitzar per desactivar "
+"encara no existeixen. Aquest nombre enorme es pot utilitzar per a desactivar "
 "el diàleg."
 
 #: data/org.gnome.shell.gschema.xml.in:109
@@ -2244,7 +2244,7 @@ msgstr "Equilibrat"
 #: js/ui/status/powerProfiles.js:21
 msgctxt "Power profile"
 msgid "Power Saver"
-msgstr "Estalviador d'energia"
+msgstr "Estalvi d'energia"
 
 #: js/ui/status/remoteAccess.js:38
 msgid "Screen is Being Shared"
@@ -2664,7 +2664,7 @@ msgid ""
 "encounter problems with your system, it is recommended to disable all "
 "extensions."
 msgstr ""
-"Les extensions poden causar problemes de sistema, incloent problemes de "
+"Les extensions poden causar problemes de sistema, incloent-hi problemes de "
 "rendiment. Si us trobeu amb problemes amb el sistema, us recomanem "
 "inhabilitar totes les extensions."
 
