@@ -672,10 +672,13 @@ var WorkspaceLayout = GObject.registerClass({
                 layoutChanged = true;
             }
 
-            if (layoutChanged || containerAllocationChanged)
-                this._windowSlots = this._getWindowSlots(box.copy());
+            if (layoutChanged || containerAllocationChanged) {
+                this._windowSlotsBox = box.copy();
+                this._windowSlots = this._getWindowSlots(this._windowSlotsBox);
+            }
         }
 
+        const slotsScale = box.get_width() / this._windowSlotsBox.get_width();
         const workareaX = this._workarea.x;
         const workareaY = this._workarea.y;
         const workareaWidth = this._workarea.width;
@@ -690,6 +693,11 @@ var WorkspaceLayout = GObject.registerClass({
             let [x, y, width, height, child] = this._windowSlots[i];
             if (!child.visible)
                 continue;
+
+            x *= slotsScale;
+            y *= slotsScale;
+            width *= slotsScale;
+            height *= slotsScale;
 
             const windowInfo = this._windows.get(child);
 
