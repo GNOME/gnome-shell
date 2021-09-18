@@ -3,32 +3,38 @@
    NotificationApplicationPolicy, Source, SourceActor,
    SystemNotificationSource, MessageTray */
 
-const { Clutter, Gio, GLib, GObject, Meta, Shell, St } = imports.gi;
+import Clutter from 'gi://Clutter';
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
+import Meta from 'gi://Meta';
+import Shell from 'gi://Shell';
+import St from 'gi://St';
 
-const Calendar = imports.ui.calendar;
-const GnomeSession = imports.misc.gnomeSession;
-const Layout = imports.ui.layout;
-const Main = imports.ui.main;
+import * as Calendar from './calendar.js';
+import * as GnomeSession from '../misc/gnomeSession.js';
+import * as Layout from './layout.js';
+import Main from './main.js';
 
 const SHELL_KEYBINDINGS_SCHEMA = 'org.gnome.shell.keybindings';
 
-var ANIMATION_TIME = 200;
-var NOTIFICATION_TIMEOUT = 4000;
+export let  ANIMATION_TIME = 200;
+export let  NOTIFICATION_TIMEOUT = 4000;
 
-var HIDE_TIMEOUT = 200;
-var LONGER_HIDE_TIMEOUT = 600;
+export let  HIDE_TIMEOUT = 200;
+export let  LONGER_HIDE_TIMEOUT = 600;
 
-var MAX_NOTIFICATIONS_IN_QUEUE = 3;
-var MAX_NOTIFICATIONS_PER_SOURCE = 3;
-var MAX_NOTIFICATION_BUTTONS = 3;
+export let  MAX_NOTIFICATIONS_IN_QUEUE = 3;
+export let  MAX_NOTIFICATIONS_PER_SOURCE = 3;
+export let  MAX_NOTIFICATION_BUTTONS = 3;
 
 // We delay hiding of the tray if the mouse is within MOUSE_LEFT_ACTOR_THRESHOLD
 // range from the point where it left the tray.
-var MOUSE_LEFT_ACTOR_THRESHOLD = 20;
+export let  MOUSE_LEFT_ACTOR_THRESHOLD = 20;
 
-var IDLE_TIME = 1000;
+export let  IDLE_TIME = 1000;
 
-var State = {
+export const State = {
     HIDDEN:  0,
     SHOWING: 1,
     SHOWN:   2,
@@ -42,7 +48,8 @@ var State = {
 // notifications that were requested to be destroyed by the associated source,
 // and REPLACED for notifications that were destroyed as a consequence of a
 // newer version having replaced them.
-var NotificationDestroyedReason = {
+/** @enum {number} */
+export const NotificationDestroyedReason = {
     EXPIRED: 1,
     DISMISSED: 2,
     SOURCE_CLOSED: 3,
@@ -53,7 +60,8 @@ var NotificationDestroyedReason = {
 // urgency values map to the corresponding values for the notifications received
 // through the notification daemon. HIGH urgency value is used for chats received
 // through the Telepathy client.
-var Urgency = {
+/** @enum {number} */
+export const Urgency = {
     LOW: 0,
     NORMAL: 1,
     HIGH: 2,
@@ -66,12 +74,13 @@ var Urgency = {
 // contain information private to the physical system (for example, battery
 // status) and hence the same for every user. This affects whether the content
 // of a notification is shown on the lock screen.
-var PrivacyScope = {
+/** @enum {number} */
+export const PrivacyScope = {
     USER: 0,
     SYSTEM: 1,
 };
 
-var FocusGrabber = class FocusGrabber {
+export class FocusGrabber {
     constructor(actor) {
         this._actor = actor;
         this._prevKeyFocusActor = null;
@@ -132,7 +141,7 @@ var FocusGrabber = class FocusGrabber {
 // source, such as whether to play sound or honour the critical bit.
 //
 // A notification without a policy object will inherit the default one.
-var NotificationPolicy = GObject.registerClass({
+export const NotificationPolicy = GObject.registerClass({
     GTypeFlags: GObject.TypeFlags.ABSTRACT,
     Properties: {
         'enable': GObject.ParamSpec.boolean(
@@ -187,7 +196,7 @@ var NotificationPolicy = GObject.registerClass({
     }
 });
 
-var NotificationGenericPolicy = GObject.registerClass({
+export const NotificationGenericPolicy = GObject.registerClass({
 }, class NotificationGenericPolicy extends NotificationPolicy {
     _init() {
         super._init();
@@ -204,6 +213,7 @@ var NotificationGenericPolicy = GObject.registerClass({
     }
 
     _changed(settings, key) {
+        // @ts-expect-error this.constructor cannot be statically analyzed.
         if (this.constructor.find_property(key))
             this.notify(key);
     }
@@ -217,7 +227,7 @@ var NotificationGenericPolicy = GObject.registerClass({
     }
 });
 
-var NotificationApplicationPolicy = GObject.registerClass({
+export const NotificationApplicationPolicy = GObject.registerClass({
 }, class NotificationApplicationPolicy extends NotificationPolicy {
     _init(id) {
         super._init();
@@ -253,6 +263,8 @@ var NotificationApplicationPolicy = GObject.registerClass({
     }
 
     _changed(settings, key) {
+        // FIXME
+        // @ts-expect-error
         if (this.constructor.find_property(key))
             this.notify(key);
     }
@@ -345,7 +357,7 @@ var NotificationApplicationPolicy = GObject.registerClass({
 // @source allows playing sounds).
 //
 // [1] https://developer.gnome.org/notification-spec/#markup
-var Notification = GObject.registerClass({
+export const Notification = GObject.registerClass({
     Properties: {
         'acknowledged': GObject.ParamSpec.boolean(
             'acknowledged', 'acknowledged', 'acknowledged',
@@ -358,6 +370,12 @@ var Notification = GObject.registerClass({
         'updated': { param_types: [GObject.TYPE_BOOLEAN] },
     },
 }, class Notification extends GObject.Object {
+    /**
+     * @param {*} source 
+     * @param {*} title 
+     * @param {*} banner 
+     * @param {*} params 
+     */
     _init(source, title, banner, params) {
         super._init();
 
@@ -375,6 +393,8 @@ var Notification = GObject.registerClass({
         this._soundPlayed = false;
         this.actions = [];
         this.setResident(false);
+
+        this.answered = false;
 
         // If called with only one argument we assume the caller
         // will call .update() later on. This is the case of
@@ -507,7 +527,7 @@ var Notification = GObject.registerClass({
     }
 });
 
-var NotificationBanner = GObject.registerClass({
+export const NotificationBanner = GObject.registerClass({
     Signals: {
         'done-displaying': {},
         'unfocused': {},
@@ -606,7 +626,7 @@ var NotificationBanner = GObject.registerClass({
     }
 });
 
-var SourceActor = GObject.registerClass(
+export const SourceActor = GObject.registerClass(
 class SourceActor extends St.Widget {
     _init(source, size) {
         super._init();
@@ -645,7 +665,13 @@ class SourceActor extends St.Widget {
     }
 });
 
-var Source = GObject.registerClass({
+/** 
+ * @typedef {object} SourceParams
+ * @property {string} [title]
+ * @property {string} [iconName]
+ */
+
+export const Source = GObject.registerClass({
     Properties: {
         'count': GObject.ParamSpec.int(
             'count', 'count', 'count',
@@ -707,6 +733,9 @@ var Source = GObject.registerClass({
         this.notify('count');
     }
 
+    /**
+     * @returns {NotificationPolicy["prototype"]}
+     */
     _createPolicy() {
         return new NotificationGenericPolicy();
     }
@@ -737,6 +766,9 @@ var Source = GObject.registerClass({
                              icon_size: size });
     }
 
+    /**
+     * @returns {Gio.Icon}
+     */
     getIcon() {
         return new Gio.ThemedIcon({ name: this.iconName });
     }
@@ -808,7 +840,7 @@ var Source = GObject.registerClass({
     }
 });
 
-var MessageTray = GObject.registerClass({
+export const MessageTray = GObject.registerClass({
     Signals: {
         'queue-changed': {},
         'source-added': { param_types: [Source.$gtype] },
@@ -822,7 +854,7 @@ var MessageTray = GObject.registerClass({
             layout_manager: new Clutter.BinLayout(),
         });
 
-        this._presence = new GnomeSession.Presence((proxy, _error) => {
+        this._presence = GnomeSession.Presence((proxy, _error) => {
             this._onStatusChanged(proxy.status);
         });
         this._busy = false;
@@ -1438,10 +1470,10 @@ var MessageTray = GObject.registerClass({
     }
 });
 
-var SystemNotificationSource = GObject.registerClass(
+export const SystemNotificationSource = GObject.registerClass(
 class SystemNotificationSource extends Source {
     _init() {
-        super._init(_("System Information"), 'dialog-information-symbolic');
+        super._init({ title: _("System Information"), iconName: 'dialog-information-symbolic' });
     }
 
     open() {

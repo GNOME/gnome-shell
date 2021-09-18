@@ -1,39 +1,66 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported WindowManager */
 
-const { Clutter, Gio, GLib, GObject, Meta, Shell, St } = imports.gi;
+import Clutter from 'gi://Clutter';
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
+import Meta from 'gi://Meta';
+import Shell from 'gi://Shell';
+import St from 'gi://St';
 
-const AltTab = imports.ui.altTab;
-const AppFavorites = imports.ui.appFavorites;
-const Dialog = imports.ui.dialog;
-const WorkspaceSwitcherPopup = imports.ui.workspaceSwitcherPopup;
-const InhibitShortcutsDialog = imports.ui.inhibitShortcutsDialog;
-const Main = imports.ui.main;
-const ModalDialog = imports.ui.modalDialog;
-const WindowMenu = imports.ui.windowMenu;
-const PadOsd = imports.ui.padOsd;
-const EdgeDragAction = imports.ui.edgeDragAction;
-const CloseDialog = imports.ui.closeDialog;
-const SwitchMonitor = imports.ui.switchMonitor;
-const IBusManager = imports.misc.ibusManager;
-const WorkspaceAnimation = imports.ui.workspaceAnimation;
 
-const { loadInterfaceXML } = imports.misc.fileUtils;
+import * as AltTab from './altTab.js';
+import * as AppFavorites from './appFavorites.js';
+import * as Dialog from './dialog.js';
+import * as WorkspaceSwitcherPopup from './workspaceSwitcherPopup.js';
+import * as InhibitShortcutsDialog from './inhibitShortcutsDialog.js';
+import Main from './main.js';
+import * as ModalDialog from './modalDialog.js';
+import * as WindowMenu from './windowMenu.js';
+import * as PadOsd from './padOsd.js';
+import * as EdgeDragAction from './edgeDragAction.js';
+import * as CloseDialog from './closeDialog.js';
+import * as SwipeTracker from './swipeTracker.js';
+import * as SwitchMonitor from './switchMonitor.js';
+import * as IBusManager from '../misc/ibusManager.js';
+import * as WorkspaceAnimation from './workspaceAnimation.js';
 
-var SHELL_KEYBINDINGS_SCHEMA = 'org.gnome.shell.keybindings';
-var MINIMIZE_WINDOW_ANIMATION_TIME = 200;
-var SHOW_WINDOW_ANIMATION_TIME = 150;
-var DIALOG_SHOW_WINDOW_ANIMATION_TIME = 100;
-var DESTROY_WINDOW_ANIMATION_TIME = 150;
-var DIALOG_DESTROY_WINDOW_ANIMATION_TIME = 100;
-var WINDOW_ANIMATION_TIME = 250;
-var SCROLL_TIMEOUT_TIME = 150;
-var DIM_BRIGHTNESS = -0.3;
-var DIM_TIME = 500;
-var UNDIM_TIME = 250;
-var APP_MOTION_THRESHOLD = 30;
+import { loadInterfaceXML } from '../misc/fileUtilsModule.js';
 
-var ONE_SECOND = 1000; // in ms
+export const SHELL_KEYBINDINGS_SCHEMA = 'org.gnome.shell.keybindings';
+export const MINIMIZE_WINDOW_ANIMATION_TIME = 200;
+export const SHOW_WINDOW_ANIMATION_TIME = 150;
+export const DIALOG_SHOW_WINDOW_ANIMATION_TIME = 100;
+export const DESTROY_WINDOW_ANIMATION_TIME = 150;
+export const DIALOG_DESTROY_WINDOW_ANIMATION_TIME = 100;
+export const WINDOW_ANIMATION_TIME = 250;
+export const SCROLL_TIMEOUT_TIME = 150;
+export const DIM_BRIGHTNESS = -0.3;
+export const DIM_TIME = 500;
+export const UNDIM_TIME = 250;
+export const APP_MOTION_THRESHOLD = 30;
+
+export const ONE_SECOND = 1000; // in ms
+
+const MOTION_DIRECTIONS = [
+    Meta.MotionDirection.UP,
+    Meta.MotionDirection.DOWN,
+    Meta.MotionDirection.LEFT,
+    Meta.MotionDirection.RIGHT,
+    Meta.MotionDirection.UP_LEFT,
+    Meta.MotionDirection.UP_RIGHT,
+    Meta.MotionDirection.DOWN_LEFT,
+    Meta.MotionDirection.DOWN_RIGHT,
+];
+
+/*
+ * When the last window closed on a workspace is a dialog or splash
+ * screen, we assume that it might be an initial window shown before
+ * the main window of an application, and give the app a grace period
+ * where it can map another window before we remove the workspace.
+ */
+export let LAST_WINDOW_GRACE_TIME = 1000;
 
 var MIN_NUM_WORKSPACES = 2;
 
@@ -50,8 +77,12 @@ Gio._promisify(Shell,
 Gio._promisify(Shell,
     'util_stop_systemd_unit', 'util_stop_systemd_unit_finish');
 
-var DisplayChangeDialog = GObject.registerClass(
+export const DisplayChangeDialog = GObject.registerClass(
 class DisplayChangeDialog extends ModalDialog.ModalDialog {
+    /**
+     * 
+     * @param {Shell.WM | any} wm 
+     */
     _init(wm) {
         super._init();
 
@@ -122,7 +153,7 @@ class DisplayChangeDialog extends ModalDialog.ModalDialog {
     }
 });
 
-var WindowDimmer = GObject.registerClass(
+export const WindowDimmer = GObject.registerClass(
 class WindowDimmer extends Clutter.BrightnessContrastEffect {
     _init() {
         super._init({
@@ -159,7 +190,7 @@ class WindowDimmer extends Clutter.BrightnessContrastEffect {
     }
 });
 
-function getWindowDimmer(actor) {
+export function getWindowDimmer(actor) {
     let enabled = Meta.prefs_get_attach_modal_dialogs();
     let effect = actor.get_effect(WINDOW_DIMMER_EFFECT_NAME);
 
@@ -172,15 +203,8 @@ function getWindowDimmer(actor) {
     return effect;
 }
 
-/*
- * When the last window closed on a workspace is a dialog or splash
- * screen, we assume that it might be an initial window shown before
- * the main window of an application, and give the app a grace period
- * where it can map another window before we remove the workspace.
- */
-var LAST_WINDOW_GRACE_TIME = 1000;
 
-var WorkspaceTracker = class {
+export class WorkspaceTracker {
     constructor(wm) {
         this._wm = wm;
 
@@ -385,7 +409,7 @@ var WorkspaceTracker = class {
     }
 };
 
-var TilePreview = GObject.registerClass(
+export const TilePreview = GObject.registerClass(
 class TilePreview extends St.Widget {
     _init() {
         super._init();
@@ -471,7 +495,7 @@ class TilePreview extends St.Widget {
     }
 });
 
-var AppSwitchAction = GObject.registerClass({
+export const AppSwitchAction = GObject.registerClass({
     Signals: { 'activated': {} },
 }, class AppSwitchAction extends Clutter.GestureAction {
     _init() {
@@ -532,7 +556,7 @@ var AppSwitchAction = GObject.registerClass({
     }
 });
 
-var ResizePopup = GObject.registerClass(
+export const ResizePopup = GObject.registerClass(
 class ResizePopup extends St.Widget {
     _init() {
         super._init({ layout_manager: new Clutter.BinLayout() });
@@ -555,7 +579,7 @@ class ResizePopup extends St.Widget {
     }
 });
 
-var WindowManager = class {
+export class WindowManager {
     constructor() {
         this._shellwm =  global.window_manager;
 
@@ -1398,7 +1422,7 @@ var WindowManager = class {
     }
 
     _hasAttachedDialogs(window, ignoreWindow) {
-        var count = 0;
+        let count = 0;
         window.foreach_transient(win => {
             if (win != ignoreWindow &&
                 win.is_attached_dialog() &&

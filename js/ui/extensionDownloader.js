@@ -1,14 +1,18 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported init, installExtension, uninstallExtension, checkForUpdates */
 
-const { Clutter, Gio, GLib, GObject, Soup } = imports.gi;
+import Clutter from 'gi://Clutter';
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
+import Soup from 'gi://Soup';
 
 const Config = imports.misc.config;
-const Dialog = imports.ui.dialog;
-const ExtensionUtils = imports.misc.extensionUtils;
-const FileUtils = imports.misc.fileUtils;
-const Main = imports.ui.main;
-const ModalDialog = imports.ui.modalDialog;
+import * as Dialog from './dialog.js';
+import * as ExtensionUtils from '../misc/extensionUtils.js';
+import * as FileUtils from '../misc/fileUtilsModule.js';
+import Main from './main.js';
+import * as ModalDialog from './modalDialog.js';
 
 Gio._promisify(Soup.Session.prototype,
     'send_and_read_async', 'send_and_read_finish');
@@ -19,10 +23,10 @@ Gio._promisify(Gio.IOStream.prototype,
 Gio._promisify(Gio.Subprocess.prototype,
     'wait_check_async', 'wait_check_finish');
 
-var REPOSITORY_URL_DOWNLOAD = 'https://extensions.gnome.org/download-extension/%s.shell-extension.zip';
-var REPOSITORY_URL_INFO     = 'https://extensions.gnome.org/extension-info/';
-var REPOSITORY_URL_UPDATE   = 'https://extensions.gnome.org/update-info/';
-
+export const REPOSITORY_URL_DOWNLOAD = 'https://extensions.gnome.org/download-extension/%s.shell-extension.zip';
+export const REPOSITORY_URL_INFO     = 'https://extensions.gnome.org/extension-info/';
+export const REPOSITORY_URL_UPDATE   = 'https://extensions.gnome.org/update-info/';
+    
 let _httpSession;
 
 /**
@@ -60,7 +64,7 @@ async function installExtension(uuid, invocation) {
     dialog.open(global.get_current_time());
 }
 
-function uninstallExtension(uuid) {
+export function uninstallExtension(uuid) {
     let extension = Main.extensionManager.lookup(uuid);
     if (!extension)
         return false;
@@ -215,7 +219,7 @@ async function checkForUpdates() {
     }
 }
 
-var InstallExtensionDialog = GObject.registerClass(
+export const InstallExtensionDialog = GObject.registerClass(
 class InstallExtensionDialog extends ModalDialog.ModalDialog {
     _init(uuid, info, invocation) {
         super._init({ styleClass: 'extension-dialog' });

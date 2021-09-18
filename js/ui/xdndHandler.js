@@ -1,13 +1,12 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported XdndHandler */
 
-const { Clutter } = imports.gi;
-const Signals = imports.misc.signals;
+import Clutter from 'gi://Clutter';
+import Main from './main.js';
+import * as Signals from '../misc/signals.js';
+import * as DND from './dnd.js';
 
-const DND = imports.ui.dnd;
-const Main = imports.ui.main;
-
-var XdndHandler = class extends Signals.EventEmitter {
+export class XdndHandler extends Signals.EventEmitter {
     constructor() {
         super();
 
@@ -104,7 +103,7 @@ var XdndHandler = class extends Signals.EventEmitter {
         }
 
         while (pickedActor) {
-            if (pickedActor._delegate && pickedActor._delegate.handleDragOver) {
+            if (pickedActor._delegate && DND.handlesDragOver(pickedActor._delegate)) {
                 let [r_, targX, targY] = pickedActor.transform_stage_point(x, y);
                 let result = pickedActor._delegate.handleDragOver(this,
                                                                   dragEvent.dragActor,

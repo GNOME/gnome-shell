@@ -1,13 +1,17 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported Indicator */
 
-const { Gio, GLib, GnomeBluetooth, GObject } = imports.gi;
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
+import GnomeBluetooth from 'gi://GnomeBluetooth';
+import GObject from 'gi://GObject';
 
-const Main = imports.ui.main;
-const PanelMenu = imports.ui.panelMenu;
-const PopupMenu = imports.ui.popupMenu;
 
-const { loadInterfaceXML } = imports.misc.fileUtils;
+import Main from '../main.js';
+import * as PanelMenu from '../panelMenu.js';
+import * as PopupMenu from '../popupMenu.js';
+
+import { loadInterfaceXML } from '../../misc/fileUtilsModule.js';
 
 const BUS_NAME = 'org.gnome.SettingsDaemon.Rfkill';
 const OBJECT_PATH = '/org/gnome/SettingsDaemon/Rfkill';
@@ -17,7 +21,7 @@ const RfkillManagerProxy = Gio.DBusProxy.makeProxyWrapper(RfkillManagerInterface
 
 const HAD_BLUETOOTH_DEVICES_SETUP = 'had-bluetooth-devices-setup';
 
-var Indicator = GObject.registerClass(
+export const Indicator = GObject.registerClass(
 class Indicator extends PanelMenu.SystemIndicator {
     _init() {
         super._init();
@@ -73,10 +77,10 @@ class Indicator extends PanelMenu.SystemIndicator {
     _getDefaultAdapter() {
         let [ret, iter] = this._model.get_iter_first();
         while (ret) {
-            let isDefault = this._model.get_value(iter,
-                                                  GnomeBluetooth.Column.DEFAULT);
-            let isPowered = this._model.get_value(iter,
-                                                  GnomeBluetooth.Column.POWERED);
+            /** @type {boolean} */
+            let isDefault = (this._model.get_value(iter, GnomeBluetooth.Column.DEFAULT));
+            /** @type {boolean} */
+            let isPowered = (this._model.get_value(iter, GnomeBluetooth.Column.POWERED));
             if (isDefault && isPowered)
                 return iter;
             ret = this._model.iter_next(iter);
@@ -91,17 +95,19 @@ class Indicator extends PanelMenu.SystemIndicator {
         let deviceInfos = [];
         let [ret, iter] = this._model.iter_children(adapter);
         while (ret) {
-            const isPaired = this._model.get_value(iter,
-                GnomeBluetooth.Column.PAIRED);
-            const isTrusted = this._model.get_value(iter,
-                GnomeBluetooth.Column.TRUSTED);
+            /** @type {boolean} */
+            const isPaired = (this._model.get_value(iter,
+                GnomeBluetooth.Column.PAIRED));
+            /** @type {boolean} */
+            const isTrusted = (this._model.get_value(iter,
+                GnomeBluetooth.Column.TRUSTED));
 
             if (isPaired || isTrusted) {
                 deviceInfos.push({
-                    connected: this._model.get_value(iter,
-                        GnomeBluetooth.Column.CONNECTED),
-                    name: this._model.get_value(iter,
-                        GnomeBluetooth.Column.ALIAS),
+                    connected: /** @type {boolean} */ (this._model.get_value(iter,
+                        GnomeBluetooth.Column.CONNECTED)),
+                    name: /** @type {string} */ (this._model.get_value(iter,
+                        GnomeBluetooth.Column.ALIAS)),
                 });
             }
 

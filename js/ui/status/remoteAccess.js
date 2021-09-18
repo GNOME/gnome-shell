@@ -1,12 +1,13 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported RemoteAccessApplet */
 
-const { GObject, Meta } = imports.gi;
+import GObject from 'gi://GObject';
+import Meta from 'gi://Meta';
 
-const PanelMenu = imports.ui.panelMenu;
-const PopupMenu = imports.ui.popupMenu;
+import * as PanelMenu from '../panelMenu.js';
+import * as PopupMenu from '../popupMenu.js';
 
-var RemoteAccessApplet = GObject.registerClass(
+export const RemoteAccessApplet = GObject.registerClass(
 class RemoteAccessApplet extends PanelMenu.SystemIndicator {
     _init() {
         super._init();

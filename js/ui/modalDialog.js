@@ -1,17 +1,22 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported ModalDialog */
 
-const { Atk, Clutter, GObject, Shell, St } = imports.gi;
+import Atk from 'gi://Atk';
+import Clutter from 'gi://Clutter';
+import GObject from 'gi://GObject';
+import Shell from 'gi://Shell';
+import St from 'gi://St';
 
-const Dialog = imports.ui.dialog;
-const Layout = imports.ui.layout;
-const Lightbox = imports.ui.lightbox;
-const Main = imports.ui.main;
+import * as Dialog from './dialog.js';
+import * as Layout from './layout.js';
+import * as Lightbox from './lightbox.js';
+import Main from './main.js';
 
-var OPEN_AND_CLOSE_TIME = 100;
-var FADE_OUT_DIALOG_TIME = 1000;
+export let OPEN_AND_CLOSE_TIME = 100;
+export let FADE_OUT_DIALOG_TIME = 1000;
 
-var State = {
+/** @enum {number} */
+export const State = {
     OPENED: 0,
     CLOSED: 1,
     OPENING: 2,
@@ -19,7 +24,17 @@ var State = {
     FADED_OUT: 4,
 };
 
-var ModalDialog = GObject.registerClass({
+/** 
+ * @typedef {object} ModalDialogParams
+ * @property {boolean} shellReactive
+ * @property {string | null} styleClass
+ * @property {Shell.ActionMode} actionMode
+ * @property {boolean} shouldFadeIn
+ * @property {boolean} shouldFadeOut
+ * @property {boolean} destroyOnClose
+ */
+
+export const ModalDialog = GObject.registerClass({
     Properties: {
         'state': GObject.ParamSpec.int('state', 'Dialog state', 'state',
                                        GObject.ParamFlags.READABLE,
@@ -29,7 +44,7 @@ var ModalDialog = GObject.registerClass({
     },
     Signals: { 'opened': {}, 'closed': {} },
 }, class ModalDialog extends St.Widget {
-    _init(params = {}) {
+    _init(params = {}, ...args) {
         super._init({ visible: false,
                       x: 0,
                       y: 0,
@@ -258,7 +273,7 @@ var ModalDialog = GObject.registerClass({
             opacity: 0,
             duration: FADE_OUT_DIALOG_TIME,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            onComplete: () => (this.state = State.FADED_OUT),
+            onComplete: () => (this._setState(State.FADED_OUT)),
         });
     }
 });

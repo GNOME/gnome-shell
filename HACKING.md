@@ -66,7 +66,7 @@ library. These headers are not installed, distributed or introspected.
 Use UpperCamelCase when importing modules to distinguish them from ordinary
 variables, e.g.
 ```javascript
-    const GLib = imports.gi.GLib;
+    import GLib from 'gi://GLib';
 ```
 Imports should be categorized into one of two places. The top-most import block
 should contain only "environment imports". These are either modules from
@@ -118,7 +118,7 @@ See [What's new in JavaScript 1.7](https://developer.mozilla.org/en/JavaScript/N
 There are many approaches to classes in JavaScript. We use standard ES6 classes
 whenever possible, that is when not inheriting from GObjects.
 ```javascript
-    var IconLabelMenuItem = class extends PopupMenu.PopupMenuBaseItem {
+    export class IconLabelMenuItem extends PopupMenu.PopupMenuBaseItem {
         constructor(icon, label) {
             super({ reactive: false });
             this.actor.add_child(icon);

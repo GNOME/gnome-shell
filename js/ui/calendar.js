@@ -1,23 +1,28 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported Calendar, CalendarMessageList, DBusEventSource */
 
-const { Clutter, Gio, GLib, GObject, Shell, St } = imports.gi;
+import Clutter from 'gi://Clutter';
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
+import Shell from 'gi://Shell';
+import St from 'gi://St';
 
-const Main = imports.ui.main;
-const MessageList = imports.ui.messageList;
-const MessageTray = imports.ui.messageTray;
-const Mpris = imports.ui.mpris;
-const PopupMenu = imports.ui.popupMenu;
-const Util = imports.misc.util;
+import Main from './main.js';
+import * as MessageList from './messageList.js';
+import * as MessageTray from './messageTray.js';
+import * as Mpris from './mpris.js';
+import * as PopupMenu from './popupMenu.js';
+import * as Util from '../misc/util.js';
 
-const { loadInterfaceXML } = imports.misc.fileUtils;
+import { loadInterfaceXML } from '../misc/fileUtilsModule.js';
 
-var MSECS_IN_DAY = 24 * 60 * 60 * 1000;
-var SHOW_WEEKDATE_KEY = 'show-weekdate';
+const MSECS_IN_DAY = 24 * 60 * 60 * 1000;
+const SHOW_WEEKDATE_KEY = 'show-weekdate';
 
-var MESSAGE_ICON_SIZE = -1; // pick up from CSS
+export let MESSAGE_ICON_SIZE = -1; // pick up from CSS
 
-var NC_ = (context, str) => '%s\u0004%s'.format(context, str);
+export const NC_ = (context, str) => '%s\u0004%s'.format(context, str);
 
 function sameYear(dateA, dateB) {
     return dateA.getYear() == dateB.getYear();
@@ -81,7 +86,7 @@ function _getCalendarDayAbbreviation(dayNumber) {
 
 // Abstraction for an appointment/event in a calendar
 
-var CalendarEvent = class CalendarEvent {
+export class CalendarEvent {
     constructor(id, date, end, summary, allDay) {
         this.id = id;
         this.date = date;
@@ -94,7 +99,7 @@ var CalendarEvent = class CalendarEvent {
 // Interface for appointments/events - e.g. the contents of a calendar
 //
 
-var EventSourceBase = GObject.registerClass({
+export const EventSourceBase = GObject.registerClass({
     GTypeFlags: GObject.TypeFlags.ABSTRACT,
     Properties: {
         'has-calendars': GObject.ParamSpec.boolean(
@@ -108,10 +113,16 @@ var EventSourceBase = GObject.registerClass({
     },
     Signals: { 'changed': {} },
 }, class EventSourceBase extends GObject.Object {
+    /**
+     * @returns {boolean}
+     */
     get isLoading() {
         throw new GObject.NotImplementedError('isLoading in %s'.format(this.constructor.name));
     }
 
+    /**
+     * @returns {boolean}
+     */
     get hasCalendars() {
         throw new GObject.NotImplementedError('hasCalendars in %s'.format(this.constructor.name));
     }
@@ -123,16 +134,22 @@ var EventSourceBase = GObject.registerClass({
         throw new GObject.NotImplementedError('requestRange in %s'.format(this.constructor.name));
     }
 
+    /**
+     * @returns {any[]}
+     */
     getEvents(_begin, _end) {
         throw new GObject.NotImplementedError('getEvents in %s'.format(this.constructor.name));
     }
 
+    /**
+     * @returns {boolean}
+     */
     hasEvents(_day) {
         throw new GObject.NotImplementedError('hasEvents in %s'.format(this.constructor.name));
     }
 });
 
-var EmptyEventSource = GObject.registerClass(
+export const EmptyEventSource = GObject.registerClass(
 class EmptyEventSource extends EventSourceBase {
     get isLoading() {
         return false;
@@ -185,7 +202,7 @@ function _dateIntervalsOverlap(a0, a1, b0, b1) {
 }
 
 // an implementation that reads data from a session bus service
-var DBusEventSource = GObject.registerClass(
+export const DBusEventSource = GObject.registerClass(
 class DBusEventSource extends EventSourceBase {
     _init() {
         super._init();
@@ -373,9 +390,11 @@ class DBusEventSource extends EventSourceBase {
     }
 });
 
-var Calendar = GObject.registerClass({
+export const Calendar = GObject.registerClass({
     Signals: { 'selected-date-changed': { param_types: [GLib.DateTime.$gtype] } },
-}, class Calendar extends St.Widget {
+},
+/** @extends {St.Widget<Clutter.GridLayout>} */
+class Calendar extends St.Widget {
     _init() {
         this._weekStart = Shell.util_get_week_start();
         this._settings = new Gio.Settings({ schema_id: 'org.gnome.desktop.calendar' });
@@ -719,7 +738,7 @@ var Calendar = GObject.registerClass({
     }
 });
 
-var NotificationMessage = GObject.registerClass(
+export const NotificationMessage = GObject.registerClass(
 class NotificationMessage extends MessageList.Message {
     _init(notification) {
         super._init(notification.title, notification.bannerBodyText);
@@ -784,7 +803,7 @@ class NotificationMessage extends MessageList.Message {
     }
 });
 
-var TimeLabel = GObject.registerClass(
+export const TimeLabel = GObject.registerClass(
 class NotificationTimeLabel extends St.Label {
     _init(datetime) {
         super._init({
@@ -801,7 +820,7 @@ class NotificationTimeLabel extends St.Label {
     }
 });
 
-var NotificationSection = GObject.registerClass(
+export const NotificationSection = GObject.registerClass(
 class NotificationSection extends MessageList.MessageListSection {
     _init() {
         super._init();
@@ -882,7 +901,7 @@ class NotificationSection extends MessageList.MessageListSection {
     }
 });
 
-var Placeholder = GObject.registerClass(
+export const Placeholder = GObject.registerClass(
 class Placeholder extends St.BoxLayout {
     _init() {
         super._init({ style_class: 'message-list-placeholder', vertical: true });
@@ -918,7 +937,7 @@ class DoNotDisturbSwitch extends PopupMenu.Switch {
     }
 });
 
-var CalendarMessageList = GObject.registerClass(
+export const CalendarMessageList = GObject.registerClass(
 class CalendarMessageList extends St.Widget {
     _init() {
         super._init({
@@ -982,6 +1001,7 @@ class CalendarMessageList extends St.Widget {
             this._clearButton, 'visible',
             GObject.BindingFlags.INVERT_BOOLEAN);
 
+        /** @type {St.BoxLayout<MessageList.MessageListSection["prototype"]>} */
         this._sectionList = new St.BoxLayout({ style_class: 'message-list-sections',
                                                vertical: true,
                                                x_expand: true,

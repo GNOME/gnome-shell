@@ -1,9 +1,12 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported ModemBase, ModemGsm, ModemCdma, BroadbandModem  */
 
-const { Gio, GObject, NM, NMA } = imports.gi;
+import Gio from 'gi://Gio';
+import GObject from 'gi://GObject';
+import NM from 'gi://NM';
+import NMA from 'gi://NMA';
 
-const { loadInterfaceXML } = imports.misc.fileUtils;
+import { loadInterfaceXML } from "./fileUtilsModule.js";
 
 // _getMobileProvidersDatabase:
 //
@@ -98,7 +101,7 @@ const ModemGsmNetworkProxy = Gio.DBusProxy.makeProxyWrapper(ModemGsmNetworkInter
 const ModemCdmaInterface = loadInterfaceXML('org.freedesktop.ModemManager.Modem.Cdma');
 const ModemCdmaProxy = Gio.DBusProxy.makeProxyWrapper(ModemCdmaInterface);
 
-var ModemBase = GObject.registerClass({
+export const ModemBase = GObject.registerClass({
     GTypeFlags: GObject.TypeFlags.ABSTRACT,
     Properties: {
         'operator-name': GObject.ParamSpec.string(
@@ -111,8 +114,8 @@ var ModemBase = GObject.registerClass({
             0, 100, 0),
     },
 }, class ModemBase extends GObject.Object {
-    _init() {
-        super._init();
+    _init(...args) {
+        super._init(...args);
         this._operatorName = null;
         this._signalQuality = 0;
     }
@@ -140,7 +143,7 @@ var ModemBase = GObject.registerClass({
     }
 });
 
-var ModemGsm = GObject.registerClass(
+export const ModemGsm = GObject.registerClass(
 class ModemGsm extends ModemBase {
     _init(path) {
         super._init();
@@ -174,7 +177,7 @@ class ModemGsm extends ModemBase {
     }
 });
 
-var ModemCdma = GObject.registerClass(
+export const ModemCdma = GObject.registerClass(
 class ModemCdma extends ModemBase {
     _init(path) {
         super._init();
@@ -226,7 +229,7 @@ const BroadbandModem3gppProxy = Gio.DBusProxy.makeProxyWrapper(BroadbandModem3gp
 const BroadbandModemCdmaInterface = loadInterfaceXML('org.freedesktop.ModemManager1.Modem.ModemCdma');
 const BroadbandModemCdmaProxy = Gio.DBusProxy.makeProxyWrapper(BroadbandModemCdmaInterface);
 
-var BroadbandModem = GObject.registerClass({
+export const BroadbandModem = GObject.registerClass({
     Properties: {
         'capabilities': GObject.ParamSpec.flags(
             'capabilities', 'capabilities', 'capabilities',

@@ -3,14 +3,18 @@
 
 // the following is a modified version of bolt/contrib/js/client.js
 
-const { Gio, GLib, GObject, Polkit, Shell } = imports.gi;
-const Signals = imports.misc.signals;
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
+import Polkit from 'gi://Polkit';
+import Shell from 'gi://Shell';
+import * as Signals from '../../misc/signals.js';
 
-const Main = imports.ui.main;
-const MessageTray = imports.ui.messageTray;
-const PanelMenu = imports.ui.panelMenu;
+import Main from '../main.js';
+import * as MessageTray from '../messageTray.js';
+import * as PanelMenu from '../panelMenu.js';
 
-const { loadInterfaceXML } = imports.misc.fileUtils;
+import { loadInterfaceXML } from '../../misc/fileUtilsModule.js';
 
 /* Keep in sync with data/org.freedesktop.bolt.xml */
 
@@ -21,7 +25,7 @@ const BoltDeviceProxy = Gio.DBusProxy.makeProxyWrapper(BoltDeviceInterface);
 
 /*  */
 
-var Status = {
+export const Status = {
     DISCONNECTED: 'disconnected',
     CONNECTING: 'connecting',
     CONNECTED: 'connected',
@@ -30,17 +34,17 @@ var Status = {
     AUTHORIZED: 'authorized',
 };
 
-var Policy = {
+export const Policy = {
     DEFAULT: 'default',
     MANUAL: 'manual',
     AUTO: 'auto',
 };
 
-var AuthCtrl = {
+export const AuthCtrl = {
     NONE: 'none',
 };
 
-var AuthMode = {
+export const AuthMode = {
     DISABLED: 'disabled',
     ENABLED: 'enabled',
 };
@@ -49,7 +53,7 @@ const BOLT_DBUS_CLIENT_IFACE = 'org.freedesktop.bolt1.Manager';
 const BOLT_DBUS_NAME = 'org.freedesktop.bolt';
 const BOLT_DBUS_PATH = '/org/freedesktop/bolt';
 
-var Client = class extends Signals.EventEmitter {
+export class Client extends Signals.EventEmitter {
     constructor() {
         super();
 
@@ -130,7 +134,7 @@ var Client = class extends Signals.EventEmitter {
 };
 
 /* helper class to automatically authorize new devices */
-var AuthRobot = class extends Signals.EventEmitter {
+export class AuthRobot extends Signals.EventEmitter {
     constructor(client) {
         super();
 
@@ -222,7 +226,7 @@ var AuthRobot = class extends Signals.EventEmitter {
 
 /* eof client.js  */
 
-var Indicator = GObject.registerClass(
+export const Indicator = GObject.registerClass(
 class Indicator extends PanelMenu.SystemIndicator {
     _init() {
         super._init();

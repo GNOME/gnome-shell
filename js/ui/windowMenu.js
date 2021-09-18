@@ -1,13 +1,16 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*
 /* exported WindowMenuManager */
 
-const { GLib, Meta, St } = imports.gi;
+import GLib from 'gi://GLib';
+import Meta from 'gi://Meta';
+import St from 'gi://St';
 
-const BoxPointer = imports.ui.boxpointer;
-const Main = imports.ui.main;
-const PopupMenu = imports.ui.popupMenu;
 
-var WindowMenu = class extends PopupMenu.PopupMenu {
+import * as BoxPointer from './boxpointer.js';
+import Main from './main.js';
+import * as PopupMenu from './popupMenu.js';
+
+export class WindowMenu extends PopupMenu.PopupMenu {
     constructor(window, sourceActor) {
         super(sourceActor, 0, St.Side.TOP);
 
@@ -192,7 +195,7 @@ var WindowMenu = class extends PopupMenu.PopupMenu {
     }
 };
 
-var WindowMenuManager = class {
+export class WindowMenuManager {
     constructor() {
         this._manager = new PopupMenu.PopupMenuManager(Main.layoutManager.dummyCursor);
 

@@ -1,14 +1,21 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported Component */
 
-const { Clutter, Gio, GLib, GObject, NM, Pango, Shell, St } = imports.gi;
-const Signals = imports.misc.signals;
+import Clutter from 'gi://Clutter';
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
+import NM from 'gi://NM';
+import Pango from 'gi://Pango';
+import Shell from 'gi://Shell';
+import St from 'gi://St';
+import * as Signals from '../../misc/signals.js';
 
-const Dialog = imports.ui.dialog;
-const Main = imports.ui.main;
-const MessageTray = imports.ui.messageTray;
-const ModalDialog = imports.ui.modalDialog;
-const ShellEntry = imports.ui.shellEntry;
+import * as Dialog from './../dialog.js';
+import Main from './../main.js';
+import * as MessageTray from './../messageTray.js';
+import * as ModalDialog from './../modalDialog.js';
+import * as ShellEntry from './../shellEntry.js';
 
 Gio._promisify(Shell.NetworkAgent.prototype, 'init_async', 'init_finish');
 Gio._promisify(Shell.NetworkAgent.prototype,
@@ -16,11 +23,21 @@ Gio._promisify(Shell.NetworkAgent.prototype,
 
 const VPN_UI_GROUP = 'VPN Plugin UI';
 
-var NetworkSecretDialog = GObject.registerClass(
+export const NetworkSecretDialog = GObject.registerClass(
 class NetworkSecretDialog extends ModalDialog.ModalDialog {
+    /**
+     * @param {any | Shell.NetworkAgent} agent 
+     * @param {string} requestId 
+     * @param {NM.Connection} connection 
+     * @param {string} settingName 
+     * @param {string[]} hints 
+     * @param {number} flags 
+     * @param {{ title: string, message: string, secrets: string[] }} [contentOverride]
+     */
     _init(agent, requestId, connection, settingName, hints, flags, contentOverride) {
         super._init({ styleClass: 'prompt-dialog' });
 
+        /** @type {Shell.NetworkAgent} */
         this._agent = agent;
         this._requestId = requestId;
         this._connection = connection;
@@ -213,7 +230,7 @@ class NetworkSecretDialog extends ModalDialog.ModalDialog {
         case 'none': // static WEP
             secrets.push({
                 label: _('Key'),
-                key: 'wep-key%s'.format(wirelessSecuritySetting.wep_tx_keyidx),
+                key: 'wep-key%s'.format(wirelessSecuritySetting.wep_tx_keyidx.toFixed(0)),
                 value: wirelessSecuritySetting.get_wep_key(wirelessSecuritySetting.wep_tx_keyidx) || '',
                 wep_key_type: wirelessSecuritySetting.wep_key_type,
                 validate: this._validateStaticWep,
@@ -298,7 +315,8 @@ class NetworkSecretDialog extends ModalDialog.ModalDialog {
         else
             setting = this._connection.get_setting_by_name(connectionType);
         secrets.push({ label: _('Password'), key: 'password',
-                       value: setting.value || '', password: true });
+        // TODO: Does not exist: setting.value on NM.Setting
+                       value: '', password: true });
     }
 
     _getContent() {
@@ -354,7 +372,7 @@ class NetworkSecretDialog extends ModalDialog.ModalDialog {
     }
 });
 
-var VPNRequestHandler = class extends Signals.EventEmitter {
+export class VPNRequestHandler extends Signals.EventEmitter {
     constructor(agent, requestId, authHelper, serviceType, connection, hints, flags) {
         super();
 
@@ -527,7 +545,6 @@ var VPNRequestHandler = class extends Signals.EventEmitter {
         let keyfile = new GLib.KeyFile();
         let data;
         let contentOverride;
-
         try {
             data = new GLib.Bytes(this._dataStdout.peek_buffer());
             keyfile.load_from_bytes(data, GLib.KeyFileFlags.NONE);
@@ -563,7 +580,7 @@ var VPNRequestHandler = class extends Signals.EventEmitter {
             }
         } catch (e) {
             // No output is a valid case it means "both secrets are stored"
-            if (data.length > 0) {
+            if (data.get_size() > 0) {
                 logError(e, 'error while reading VPN plugin output keyfile');
 
                 this._agent.respond(this._requestId, Shell.NetworkAgentResponse.INTERNAL_ERROR);
@@ -604,7 +621,7 @@ var VPNRequestHandler = class extends Signals.EventEmitter {
     }
 };
 
-var NetworkAgent = class {
+export class NetworkAgent {
     constructor() {
         this._native = new Shell.NetworkAgent({
             identifier: 'org.gnome.Shell.NetworkAgent',
@@ -807,4 +824,4 @@ var NetworkAgent = class {
         };
     }
 };
-var Component = NetworkAgent;
+export let Component = NetworkAgent;

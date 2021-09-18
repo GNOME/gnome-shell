@@ -1,28 +1,35 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported WindowPreview */
 
-const { Atk, Clutter, GLib, GObject,
-        Graphene, Meta, Pango, Shell, St } = imports.gi;
+import Atk from 'gi://Atk';
+import Clutter from 'gi://Clutter';
+import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
+import Graphene from 'gi://Graphene';
+import Meta from 'gi://Meta';
+import Pango from 'gi://Pango';
+import Shell from 'gi://Shell';
+import St from 'gi://St';
 
-const DND = imports.ui.dnd;
-const OverviewControls = imports.ui.overviewControls;
+import * as DND from './dnd.js';
+import * as OverviewControls from './overviewControls.js';
 
-var WINDOW_DND_SIZE = 256;
+export let WINDOW_DND_SIZE = 256;
 
-var WINDOW_OVERLAY_IDLE_HIDE_TIMEOUT = 750;
-var WINDOW_OVERLAY_FADE_TIME = 200;
+export let WINDOW_OVERLAY_IDLE_HIDE_TIMEOUT = 750;
+export let WINDOW_OVERLAY_FADE_TIME = 200;
 
-var WINDOW_SCALE_TIME = 200;
-var WINDOW_ACTIVE_SIZE_INC = 5; // in each direction
+export let WINDOW_SCALE_TIME = 200;
+export let WINDOW_ACTIVE_SIZE_INC = 5; // in each direction
 
-var DRAGGING_WINDOW_OPACITY = 100;
+export let DRAGGING_WINDOW_OPACITY = 100;
 
 const ICON_SIZE = 64;
 const ICON_OVERLAP = 0.7;
 
 const ICON_TITLE_SPACING = 6;
 
-var WindowPreview = GObject.registerClass({
+export const WindowPreview = GObject.registerClass({
     Properties: {
         'overlay-enabled': GObject.ParamSpec.boolean(
             'overlay-enabled', 'overlay-enabled', 'overlay-enabled',
@@ -38,6 +45,17 @@ var WindowPreview = GObject.registerClass({
         'size-changed': {},
     },
 }, class WindowPreview extends Shell.WindowPreview {
+    /** @returns {Clutter.Actor<Shell.WindowPreviewLayout>} */
+    get window_container() {
+        // Cast the window_container to the appropriate type...
+
+        return  /** @type {Clutter.Actor<Shell.WindowPreviewLayout>} */ (super.window_container);
+    }
+    
+    set window_container(window_container) {
+        super.window_container = window_container;
+    }
+
     _init(metaWindow, workspace, overviewAdjustment) {
         this.metaWindow = metaWindow;
         this.metaWindow._delegate = this;
@@ -54,6 +72,7 @@ var WindowPreview = GObject.registerClass({
 
         const windowContainer = new Clutter.Actor({
             pivot_point: new Graphene.Point({ x: 0.5, y: 0.5 }),
+            layout_manager: /** @type {Shell.WindowPreviewLayout} */ (null),
         });
         this.window_container = windowContainer;
 
@@ -628,6 +647,8 @@ var WindowPreview = GObject.registerClass({
                 let [x, y] = action.get_coords();
                 action.release();
                 this._draggable.startDrag(x, y, global.get_current_time(), this._dragTouchSequence, event.get_device());
+                
+                return false;
             });
         } else {
             this.showOverlay(true);

@@ -3,18 +3,32 @@
 // A widget showing the user avatar and name
 /* exported UserWidget */
 
-const { Clutter, GLib, GObject, St } = imports.gi;
+import Clutter from 'gi://Clutter';
+import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
+import St from 'gi://St';
 
-
-var AVATAR_ICON_SIZE = 64;
+export let AVATAR_ICON_SIZE = 64;
 
 // Adapted from gdm/gui/user-switch-applet/applet.c
 //
 // Copyright (C) 2004-2005 James M. Cape <jcape@ignore-your.tv>.
 // Copyright (C) 2008,2009 Red Hat, Inc.
 
-var Avatar = GObject.registerClass(
+/** 
+ * @typedef {object} AvatarProps: An object with the properties:
+ * @property {string} [styleClass]
+ * @property {boolean} [reactive]
+ * @property {number} [iconSize]
+ */
+
+export const Avatar = GObject.registerClass(
 class Avatar extends St.Bin {
+    /**
+     * _init:
+     * @param {import('gi://AccountsService').User} user
+     * @param {Partial<AvatarProps>} [params]
+     */
     _init(user, params = {}) {
         let themeContext = St.ThemeContext.get_for_stage(global.stage);
         const {
@@ -103,8 +117,11 @@ class Avatar extends St.Bin {
     }
 });
 
-var UserWidgetLabel = GObject.registerClass(
+export const UserWidgetLabel = GObject.registerClass(
 class UserWidgetLabel extends St.Widget {
+    /**
+     * @param {*} user 
+     */
     _init(user) {
         super._init({ layout_manager: new Clutter.BinLayout() });
 
@@ -186,8 +203,12 @@ class UserWidgetLabel extends St.Widget {
     }
 });
 
-var UserWidget = GObject.registerClass(
+export const UserWidget = GObject.registerClass(
 class UserWidget extends St.BoxLayout {
+    /**
+     * @param {*} user 
+     * @param {*} orientation 
+     */
     _init(user, orientation = Clutter.Orientation.HORIZONTAL) {
         // If user is null, that implies a username-based login authorization.
         this._user = user;

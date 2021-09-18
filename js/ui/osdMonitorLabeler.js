@@ -1,11 +1,16 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported OsdMonitorLabeler */
 
-const { Clutter, Gio, GObject, Meta, St } = imports.gi;
+import Clutter from 'gi://Clutter';
+import Gio from 'gi://Gio';
+import GObject from 'gi://GObject';
+import Meta from 'gi://Meta';
+import St from 'gi://St';
 
-const Main = imports.ui.main;
 
-var OsdMonitorLabel = GObject.registerClass(
+import Main from './main.js';
+
+export const OsdMonitorLabel = GObject.registerClass(
 class OsdMonitorLabel extends St.Widget {
     _init(monitor, label) {
         super._init({ x_expand: true, y_expand: true });
@@ -42,7 +47,7 @@ class OsdMonitorLabel extends St.Widget {
     }
 });
 
-var OsdMonitorLabeler = class {
+export class OsdMonitorLabeler {
     constructor() {
         this._monitorManager = Meta.MonitorManager.get();
         this._client = null;

@@ -1,14 +1,15 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported Indicator */
 
-const { Gio, GObject } = imports.gi;
-const Signals = imports.misc.signals;
+import Gio from 'gi://Gio';
+import GObject from 'gi://GObject';
+import * as Signals from '../../misc/signals.js';
 
-const Main = imports.ui.main;
-const PanelMenu = imports.ui.panelMenu;
-const PopupMenu = imports.ui.popupMenu;
+import Main from '../main.js';
+import * as PanelMenu from '../panelMenu.js';
+import * as PopupMenu from '../popupMenu.js';
 
-const { loadInterfaceXML } = imports.misc.fileUtils;
+import { loadInterfaceXML } from '../../misc/fileUtilsModule.js';
 
 const BUS_NAME = 'org.gnome.SettingsDaemon.Rfkill';
 const OBJECT_PATH = '/org/gnome/SettingsDaemon/Rfkill';
@@ -54,7 +55,7 @@ var RfkillManager = class extends Signals.EventEmitter {
 };
 
 var _manager;
-function getRfkillManager() {
+export function getRfkillManager() {
     if (_manager != null)
         return _manager;
 
@@ -62,7 +63,7 @@ function getRfkillManager() {
     return _manager;
 }
 
-var Indicator = GObject.registerClass(
+export const Indicator = GObject.registerClass(
 class Indicator extends PanelMenu.SystemIndicator {
     _init() {
         super._init();

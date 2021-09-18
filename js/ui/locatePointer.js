@@ -1,14 +1,14 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported LocatePointer */
 
-const { Gio } = imports.gi;
-const Ripples = imports.ui.ripples;
-const Main = imports.ui.main;
+import Gio from 'gi://Gio';
+import * as Ripples from './ripples.js';
+import Main from './main.js';
 
 const LOCATE_POINTER_KEY = "locate-pointer";
 const LOCATE_POINTER_SCHEMA = "org.gnome.desktop.interface";
 
-var LocatePointer = class {
+export class LocatePointer {
     constructor() {
         this._settings = new Gio.Settings({ schema_id: LOCATE_POINTER_SCHEMA });
         this._settings.connect(`changed::${LOCATE_POINTER_KEY}`, () => this._syncEnabled());

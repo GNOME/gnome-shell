@@ -1,14 +1,18 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported init connect disconnect ExtensionManager */
 
-const { GLib, Gio, GObject, Shell, St } = imports.gi;
-const Signals = imports.misc.signals;
+import GLib from 'gi://GLib';
+import Gio from 'gi://Gio';
+import GObject from 'gi://GObject';
+import Shell from 'gi://Shell';
+import St from 'gi://St';
+import * as Signals from '../misc/signals.js';
 
-const ExtensionDownloader = imports.ui.extensionDownloader;
-const ExtensionUtils = imports.misc.extensionUtils;
-const FileUtils = imports.misc.fileUtils;
-const Main = imports.ui.main;
-const MessageTray = imports.ui.messageTray;
+import * as ExtensionDownloader from './extensionDownloader.js';
+import * as ExtensionUtils from '../misc/extensionUtils.js';
+import * as FileUtils from '../misc/fileUtilsModule.js';
+import Main from './main.js';
+import * as MessageTray from './messageTray.js';
 
 const { ExtensionState, ExtensionType } = ExtensionUtils;
 
@@ -19,7 +23,7 @@ const EXTENSION_DISABLE_VERSION_CHECK_KEY = 'disable-extension-version-validatio
 
 const UPDATE_CHECK_TIMEOUT = 24 * 60 * 60; // 1 day in seconds
 
-var ExtensionManager = class extends Signals.EventEmitter {
+export class ExtensionManager extends Signals.EventEmitter {
     constructor() {
         super();
 
@@ -418,35 +422,36 @@ var ExtensionManager = class extends Signals.EventEmitter {
         let extensionModule;
         let extensionState = null;
 
-        ExtensionUtils.installImporter(extension);
+        // TODO: Fix extension initialization.
+        // ExtensionUtils.installImporter(extension);
         try {
-            extensionModule = extension.imports.extension;
+        //    extensionModule = extension.imports.extension;
         } catch (e) {
             this.logExtensionError(uuid, e);
             return false;
         }
 
-        if (extensionModule.init) {
-            try {
-                extensionState = extensionModule.init(extension);
-            } catch (e) {
-                this.logExtensionError(uuid, e);
-                return false;
-            }
-        }
+        // if (extensionModule.init) {
+        //     try {
+        //         extensionState = extensionModule.init(extension);
+        //     } catch (e) {
+        //         this.logExtensionError(uuid, e);
+        //         return false;
+        //     }
+        // }
 
-        if (!extensionState)
-            extensionState = extensionModule;
-        extension.stateObj = extensionState;
+        // if (!extensionState)
+        //     extensionState = extensionModule;
+        // extension.stateObj = extensionState;
 
-        extension.state = ExtensionState.DISABLED;
-        this.emit('extension-loaded', uuid);
-        return true;
+        // extension.state = ExtensionState.DISABLED;
+        // this.emit('extension-loaded', uuid);
+        return false;
     }
 
     _getModeExtensions() {
-        if (Array.isArray(Main.sessionMode.enabledExtensions))
-            return Main.sessionMode.enabledExtensions;
+        // if (Array.isArray(Main.sessionMode.enabledExtensions))
+        //     return Main.sessionMode.enabledExtensions;
         return [];
     }
 
@@ -499,7 +504,7 @@ var ExtensionManager = class extends Signals.EventEmitter {
             .filter(uuid => !newEnabledExtensions.includes(uuid))
             .reverse().forEach(uuid => this._callExtensionDisable(uuid));
 
-        this._enabledExtensions = newEnabledExtensions;
+        this._enabledExtensions = []; //newEnabledExtensions;
     }
 
     _onSettingsWritableChanged() {
@@ -625,10 +630,10 @@ var ExtensionManager = class extends Signals.EventEmitter {
         // from allowExtensions in the future
         if (Main.sessionMode.allowExtensions) {
             // Take care of added or removed sessionMode extensions
-            this._onEnabledExtensionsChanged();
-            this._enableAllExtensions();
+            // this._onEnabledExtensionsChanged();
+            // this._enableAllExtensions();
         } else {
-            this._disableAllExtensions();
+            // this._disableAllExtensions();
         }
     }
 };
@@ -639,7 +644,7 @@ class ExtensionUpdateSource extends MessageTray.Source {
         let appSys = Shell.AppSystem.get_default();
         this._app = appSys.lookup_app('org.gnome.Extensions.desktop');
 
-        super._init(this._app.get_name());
+        super._init({ title: this._app.get_name() });
     }
 
     getIcon() {

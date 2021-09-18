@@ -1,22 +1,29 @@
 /* exported AccessDialogDBus */
-const { Clutter, Gio, GLib, GObject, Shell, St } = imports.gi;
+import Clutter from 'gi://Clutter';
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
+import Shell from 'gi://Shell';
+import St from 'gi://St';
 
-const CheckBox = imports.ui.checkBox;
-const Dialog = imports.ui.dialog;
-const ModalDialog = imports.ui.modalDialog;
 
-const { loadInterfaceXML } = imports.misc.fileUtils;
+import * as CheckBox from './checkBox.js';
+import * as Dialog from './dialog.js';
+import * as ModalDialog from './modalDialog.js';
+
+import { loadInterfaceXML } from '../misc/fileUtilsModule.js';
 
 const RequestIface = loadInterfaceXML('org.freedesktop.impl.portal.Request');
 const AccessIface = loadInterfaceXML('org.freedesktop.impl.portal.Access');
 
-var DialogResponse = {
+/** @enum {number} */
+export const DialogResponse = {
     OK: 0,
     CANCEL: 1,
     CLOSED: 2,
 };
 
-var AccessDialog = GObject.registerClass(
+export const AccessDialog = GObject.registerClass(
 class AccessDialog extends ModalDialog.ModalDialog {
     _init(invocation, handle, title, description, body, options) {
         super._init({ styleClass: 'access-dialog' });
@@ -100,6 +107,7 @@ class AccessDialog extends ModalDialog.ModalDialog {
             this._request.unexport();
         this._requestExported = false;
 
+        /** @type {{ [key: string]: GLib.Variant<'s'> }} */
         let results = {};
         if (response == DialogResponse.OK) {
             for (let [id, check] of this._choices) {
@@ -117,7 +125,7 @@ class AccessDialog extends ModalDialog.ModalDialog {
     }
 });
 
-var AccessDialogDBus = class {
+export class AccessDialogDBus {
     constructor() {
         this._accessDialog = null;
 

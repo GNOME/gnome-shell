@@ -1,16 +1,24 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported LookingGlass */
 
-const { Clutter, Cogl, Gio, GLib, GObject,
-        Graphene, Meta, Pango, Shell, St } = imports.gi;
-const Signals = imports.misc.signals;
-const System = imports.system;
+import Clutter from 'gi://Clutter';
+import Cogl from 'gi://Cogl';
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
+import Graphene from 'gi://Graphene';
+import Meta from 'gi://Meta';
+import Pango from 'gi://Pango';
+import Shell from 'gi://Shell';
+import St from 'gi://St';
+import * as Signals from '../misc/signals.js';
+import System from 'system';
 
-const History = imports.misc.history;
-const ExtensionUtils = imports.misc.extensionUtils;
-const ShellEntry = imports.ui.shellEntry;
-const Main = imports.ui.main;
-const JsParse = imports.misc.jsParse;
+import * as History from '../misc/history.js';
+import * as ExtensionUtils from '../misc/extensionUtils.js';
+import * as ShellEntry from './shellEntry.js';
+import Main from './main.js';
+import * as JsParse from '../misc/jsParse.js';
 
 const { ExtensionState } = ExtensionUtils;
 
@@ -18,7 +26,7 @@ const CHEVRON = '>>> ';
 
 /* Imports...feel free to add here as needed */
 var commandHeader = 'const { Clutter, Gio, GLib, GObject, Meta, Shell, St } = imports.gi; ' +
-                    'const Main = imports.ui.main; ' +
+                    'const Main = getMain(); ' +
                     /* Utility functions...we should probably be able to use these
                      * in the shell core code too. */
                     'const stage = global.stage; ' +
@@ -29,9 +37,10 @@ var commandHeader = 'const { Clutter, Gio, GLib, GObject, Meta, Shell, St } = im
 
 const HISTORY_KEY = 'looking-glass-history';
 // Time between tabs for them to count as a double-tab event
-var AUTO_COMPLETE_DOUBLE_TAB_DELAY = 500;
-var AUTO_COMPLETE_SHOW_COMPLETION_ANIMATION_DURATION = 200;
-var AUTO_COMPLETE_GLOBAL_KEYWORDS = _getAutoCompleteGlobalKeywords();
+
+export let AUTO_COMPLETE_DOUBLE_TAB_DELAY = 500;
+export let AUTO_COMPLETE_SHOW_COMPLETION_ANIMATION_DURATION = 200;
+export let AUTO_COMPLETE_GLOBAL_KEYWORDS = _getAutoCompleteGlobalKeywords();
 
 const LG_ANIMATION_TIME = 500;
 
@@ -45,7 +54,7 @@ function _getAutoCompleteGlobalKeywords() {
     return keywords.concat(windowProperties).concat(headerProperties);
 }
 
-var AutoComplete = class AutoComplete extends Signals.EventEmitter {
+export class AutoComplete extends Signals.EventEmitter {
     constructor(entry) {
         super();
 
@@ -109,8 +118,7 @@ var AutoComplete = class AutoComplete extends Signals.EventEmitter {
     }
 };
 
-
-var Notebook = GObject.registerClass({
+export const Notebook = GObject.registerClass({
     Signals: { 'selection': { param_types: [Clutter.Actor.$gtype] } },
 }, class Notebook extends St.BoxLayout {
     _init() {
@@ -253,8 +261,14 @@ function objectToString(o) {
     }
 }
 
-var ObjLink = GObject.registerClass(
+export const ObjLink = GObject.registerClass(
+/** @extends {St.Button<Clutter.Text>} */
 class ObjLink extends St.Button {
+    /**
+     * @param {*} lookingGlass 
+     * @param {*} o 
+     * @param {*} title 
+     */
     _init(lookingGlass, o, title) {
         let text;
         if (title)
@@ -281,8 +295,14 @@ class ObjLink extends St.Button {
     }
 });
 
-var Result = GObject.registerClass(
+export const Result = GObject.registerClass(
 class Result extends St.BoxLayout {
+    /**
+     * @param {*} lookingGlass 
+     * @param {*} command 
+     * @param {*} o 
+     * @param {*} index 
+     */
     _init(lookingGlass, command, o, index) {
         super._init({ vertical: true });
 
@@ -304,8 +324,11 @@ class Result extends St.BoxLayout {
     }
 });
 
-var WindowList = GObject.registerClass({
+export const WindowList = GObject.registerClass({
 }, class WindowList extends St.BoxLayout {
+    /**
+     * @param {*} lookingGlass 
+     */
     _init(lookingGlass) {
         super._init({ name: 'Windows', vertical: true, style: 'spacing: 8px' });
         let tracker = Shell.WindowTracker.get_default();
@@ -357,8 +380,11 @@ var WindowList = GObject.registerClass({
     }
 });
 
-var ObjInspector = GObject.registerClass(
+export const ObjInspector = GObject.registerClass(
 class ObjInspector extends St.ScrollView {
+    /**
+     * @param {*} lookingGlass 
+     */
     _init(lookingGlass) {
         super._init({
             pivot_point: new Graphene.Point({ x: 0.5, y: 0.5 }),
@@ -397,7 +423,8 @@ class ObjInspector extends St.ScrollView {
             text: 'Inspecting: %s: %s'.format(typeof obj, objectToString(obj)),
             x_expand: true,
         });
-        label.single_line_mode = true;
+        // TODO: Is this the intended code?
+        label.clutterText.single_line_mode = true;
         hbox.add_child(label);
         let button = new St.Button({ label: 'Insert', style_class: 'lg-obj-inspector-button' });
         button.connect('clicked', this._onInsert.bind(this));
@@ -475,7 +502,7 @@ class ObjInspector extends St.ScrollView {
     }
 });
 
-var RedBorderEffect = GObject.registerClass(
+export const RedBorderEffect = GObject.registerClass(
 class RedBorderEffect extends Clutter.Effect {
     _init() {
         super._init();
@@ -527,7 +554,7 @@ class RedBorderEffect extends Clutter.Effect {
     }
 });
 
-var Inspector = GObject.registerClass({
+export const Inspector = GObject.registerClass({
     Signals: { 'closed': {},
                'target': { param_types: [Clutter.Actor.$gtype, GObject.TYPE_DOUBLE, GObject.TYPE_DOUBLE] } },
 }, class Inspector extends Clutter.Actor {
@@ -667,7 +694,7 @@ var Inspector = GObject.registerClass({
     }
 });
 
-var Extensions = GObject.registerClass({
+export const Extensions = GObject.registerClass({
 }, class Extensions extends St.BoxLayout {
     _init(lookingGlass) {
         super._init({ vertical: true, name: 'lookingGlassExtensions' });
@@ -820,7 +847,7 @@ var Extensions = GObject.registerClass({
 });
 
 
-var ActorLink = GObject.registerClass({
+export const ActorLink = GObject.registerClass({
     Signals: {
         'inspect-actor': {},
     },
@@ -877,7 +904,7 @@ var ActorLink = GObject.registerClass({
     }
 });
 
-var ActorTreeViewer = GObject.registerClass(
+export const ActorTreeViewer = GObject.registerClass(
 class ActorTreeViewer extends St.BoxLayout {
     _init(lookingGlass) {
         super._init();
@@ -1004,7 +1031,7 @@ class ActorTreeViewer extends St.BoxLayout {
     }
 });
 
-var LookingGlass = GObject.registerClass(
+export const LookingGlass = GObject.registerClass(
 class LookingGlass extends St.BoxLayout {
     _init() {
         super._init({
@@ -1093,6 +1120,7 @@ class LookingGlass extends St.BoxLayout {
         this._evalBox = new St.BoxLayout({ name: 'EvalBox', vertical: true });
         notebook.appendPage('Evaluator', this._evalBox);
 
+        /** @type {St.BoxLayout<Result["prototype"]>} */
         this._resultsArea = new St.BoxLayout({
             name: 'ResultsArea',
             vertical: true,
@@ -1270,7 +1298,7 @@ class LookingGlass extends St.BoxLayout {
 
     getResult(idx) {
         try {
-            return this._resultsArea.get_child_at_index(idx - this._offset).o;
+            return /** @type {Result["prototype"]} */ (this._resultsArea.get_child_at_index(idx - this._offset)).o;
         } catch (e) {
             throw new Error('Unknown result at index %d'.format(idx));
         }

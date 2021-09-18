@@ -1,22 +1,24 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported GnomeShell, ScreenSaverDBus */
 
-const { Gio, GLib, Meta } = imports.gi;
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
+import Meta from 'gi://Meta';
+
 
 const Config = imports.misc.config;
-const ExtensionDownloader = imports.ui.extensionDownloader;
-const ExtensionUtils = imports.misc.extensionUtils;
-const Main = imports.ui.main;
-const Screenshot = imports.ui.screenshot;
-
-const { loadInterfaceXML } = imports.misc.fileUtils;
-const { DBusSenderChecker } = imports.misc.util;
-const { ControlsState } = imports.ui.overviewControls;
+import * as ExtensionDownloader from './extensionDownloader.js';
+import * as ExtensionUtils from '../misc/extensionUtils.js';
+import Main from './main.js';
+import * as Screenshot from './screenshot.js';
+import { ControlsState } from './overviewControls.js';
+import { DBusSenderChecker } from '../misc/util.js';
+import { loadInterfaceXML } from '../misc/fileUtilsModule.js';
 
 const GnomeShellIface = loadInterfaceXML('org.gnome.Shell');
 const ScreenSaverIface = loadInterfaceXML('org.gnome.ScreenSaver');
 
-var GnomeShell = class {
+export class GnomeShell {
     constructor() {
         this._dbusImpl = Gio.DBusExportedObject.wrapJSObject(GnomeShellIface, this);
         this._dbusImpl.export(Gio.DBus.session, '/org/gnome/Shell');
@@ -39,9 +41,9 @@ var GnomeShell = class {
 
         this._cachedOverviewVisible = false;
         Main.overview.connect('showing',
-                              this._checkOverviewVisibleChanged.bind(this));
+            this._checkOverviewVisibleChanged.bind(this));
         Main.overview.connect('hidden',
-                              this._checkOverviewVisibleChanged.bind(this));
+            this._checkOverviewVisibleChanged.bind(this));
     }
 
     /**
@@ -116,10 +118,10 @@ var GnomeShell = class {
             params[param] = params[param].deep_unpack();
 
         let { connector,
-              label,
-              level,
-              max_level: maxLevel,
-              icon: serializedIcon } = params;
+            label,
+            level,
+            max_level: maxLevel,
+            icon: serializedIcon } = params;
 
         let monitorIndex = -1;
         if (connector) {
@@ -233,7 +235,7 @@ var GnomeShell = class {
         let ungrabSucceeded = true;
 
         for (let i = 0; i < actions.length; i++)
-            ungrabSucceeded &= this._ungrabAcceleratorForSender(actions[i], sender);
+            ungrabSucceeded = ungrabSucceeded && this._ungrabAcceleratorForSender(actions[i], sender);
 
         invocation.return_value(GLib.Variant.new('(b)', [ungrabSucceeded]));
     }
@@ -274,7 +276,7 @@ var GnomeShell = class {
 
         if (!this._grabbers.has(sender)) {
             let id = Gio.bus_watch_name(Gio.BusType.SESSION, sender, 0, null,
-                                        this._onGrabberBusNameVanished.bind(this));
+                this._onGrabberBusNameVanished.bind(this));
             this._grabbers.set(sender, id);
         }
 
@@ -363,7 +365,7 @@ var GnomeShell = class {
 
 const GnomeShellExtensionsIface = loadInterfaceXML('org.gnome.Shell.Extensions');
 
-var GnomeShellExtensions = class {
+export class GnomeShellExtensions {
     constructor() {
         this._dbusImpl = Gio.DBusExportedObject.wrapJSObject(GnomeShellExtensionsIface, this);
         this._dbusImpl.export(Gio.DBus.session, '/org/gnome/Shell');
@@ -378,8 +380,8 @@ var GnomeShellExtensions = class {
                 new GLib.Variant('b', this._userExtensionsEnabled));
         });
 
-        Main.extensionManager.connect('extension-state-changed',
-                                      this._extensionStateChanged.bind(this));
+        // Main.extensionManager.connect('extension-state-changed',
+        //     this._extensionStateChanged.bind(this));
     }
 
     ListExtensions() {
@@ -460,11 +462,11 @@ var GnomeShellExtensions = class {
             new GLib.Variant('(sa{sv})', [newState.uuid, state]));
 
         this._dbusImpl.emit_signal('ExtensionStatusChanged',
-                                   GLib.Variant.new('(sis)', [newState.uuid, newState.state, newState.error]));
+            GLib.Variant.new('(sis)', [newState.uuid, newState.state, newState.error]));
     }
 };
 
-var ScreenSaverDBus = class {
+export class ScreenSaverDBus {
     constructor(screenShield) {
         this._screenShield = screenShield;
         screenShield.connect('active-changed', shield => {

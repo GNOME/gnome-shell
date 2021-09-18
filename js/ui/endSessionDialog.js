@@ -17,17 +17,26 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
-const { AccountsService, Clutter, Gio,
-        GLib, GObject, Pango, Polkit, Shell, St, UPowerGlib: UPower }  = imports.gi;
+import Clutter from 'gi://Clutter';
+import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
+import Gio from 'gi://Gio';
 
-const CheckBox = imports.ui.checkBox;
-const Dialog = imports.ui.dialog;
-const GnomeSession = imports.misc.gnomeSession;
-const LoginManager = imports.misc.loginManager;
-const ModalDialog = imports.ui.modalDialog;
-const UserWidget = imports.ui.userWidget;
+import AccountsService from 'gi://AccountsService';
+import Pango from 'gi://Pango';
+import Polkit from 'gi://Polkit';
+import Shell from 'gi://Shell';
+import St from 'gi://St';
+import UPower from 'gi://UPowerGlib';
 
-const { loadInterfaceXML } = imports.misc.fileUtils;
+import * as CheckBox from './checkBox.js';
+import * as Dialog from './dialog.js';
+import * as GnomeSession from '../misc/gnomeSession.js';
+import * as LoginManager from '../misc/loginManager.js';
+import * as ModalDialog from './modalDialog.js';
+import * as UserWidget from './userWidget.js';
+
+import { loadInterfaceXML } from '../misc/fileUtilsModule.js';
 
 const _ITEM_ICON_SIZE = 64;
 
@@ -151,7 +160,7 @@ const DialogContent = {
     4 /* DialogType.UPGRADE_RESTART */: restartUpgradeDialogContent,
 };
 
-var MAX_USERS_IN_SESSION_DIALOG = 5;
+export let MAX_USERS_IN_SESSION_DIALOG = 5;
 
 const LogindSessionIface = loadInterfaceXML('org.freedesktop.login1.Session');
 const LogindSession = Gio.DBusProxy.makeProxyWrapper(LogindSessionIface);
@@ -216,14 +225,22 @@ function _setCheckBoxLabel(checkBox, text) {
     }
 }
 
-function init() {
+export function init() {
     // This always returns the same singleton object
     // By instantiating it initially, we register the
     // bus object, etc.
     new EndSessionDialog();
 }
 
-var EndSessionDialog = GObject.registerClass(
+/** @typedef {{ name?: string; version?: string; }} PreparedUpgradeInfo */
+/** @typedef {{
+    UpdateTriggered: boolean,
+    UpdatePrepared: boolean,
+    UpgradeTriggered: boolean,
+    PreparedUpgrade: PreparedUpgradeInfo }
+} UpdateInfo */
+
+export const EndSessionDialog = GObject.registerClass(
 class EndSessionDialog extends ModalDialog.ModalDialog {
     _init() {
         super._init({ styleClass: 'end-session-dialog',
@@ -650,7 +667,7 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
             let n = 0;
             for (let i = 0; i < result.length; i++) {
                 let [id_, uid_, userName, seat_, sessionPath] = result[i];
-                let proxy = new LogindSession(Gio.DBus.system, 'org.freedesktop.login1', sessionPath);
+                let proxy = LogindSession(Gio.DBus.system, 'org.freedesktop.login1', sessionPath);
 
                 if (proxy.Class != 'user')
                     continue;
@@ -662,7 +679,7 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
                 if (!sessionId) {
                     this._loginManager.getCurrentSessionProxy(currentSessionProxy => {
                         sessionId = currentSessionProxy.Id;
-                        log('endSessionDialog: No XDG_SESSION_ID, fetched from logind: %d'.format(sessionId));
+                        log('endSessionDialog: No XDG_SESSION_ID, fetched from logind: %s'.format(sessionId));
                     });
                 }
 
@@ -706,6 +723,9 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
         });
     }
 
+    /**
+     * @returns {Promise<UpdateInfo>}
+     */
     async _getUpdateInfo() {
         const connection = this._pkOfflineProxy.get_connection();
         const reply = await connection.call(
@@ -714,12 +734,14 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
             'org.freedesktop.DBus.Properties',
             'GetAll',
             new GLib.Variant('(s)', [this._pkOfflineProxy.g_interface_name]),
-            null,
+            new GLib.VariantType('(a{sv})'),
             Gio.DBusCallFlags.NONE,
             -1,
             null);
+
         const [info] = reply.recursiveUnpack();
-        return info;
+
+        return /** @type {UpdateInfo} */ (info);
     }
 
     async OpenAsync(parameters, invocation) {
@@ -764,7 +786,7 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
         let dialogContent = DialogContent[this._type];
 
         for (let i = 0; i < inhibitorObjectPaths.length; i++) {
-            let inhibitor = new GnomeSession.Inhibitor(inhibitorObjectPaths[i], proxy => {
+            let inhibitor = GnomeSession.Inhibitor(inhibitorObjectPaths[i], proxy => {
                 this._onInhibitorLoaded(proxy);
             });
 

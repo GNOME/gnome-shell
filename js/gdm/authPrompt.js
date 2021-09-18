@@ -1,29 +1,34 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported AuthPrompt */
 
-const { Clutter, GLib, GObject, Pango, Shell, St } = imports.gi;
+const { Clutter, GLib, GObject, Pango, Shell } = imports.gi;
 
-const Animation = imports.ui.animation;
-const Batch = imports.gdm.batch;
-const GdmUtil = imports.gdm.util;
-const OVirt = imports.gdm.oVirt;
-const Vmware = imports.gdm.vmware;
-const ShellEntry = imports.ui.shellEntry;
-const UserWidget = imports.ui.userWidget;
-const Util = imports.misc.util;
+import St from 'gi://St';
+import Gdm from 'gi://Gdm';
 
-var DEFAULT_BUTTON_WELL_ICON_SIZE = 16;
-var DEFAULT_BUTTON_WELL_ANIMATION_DELAY = 1000;
-var DEFAULT_BUTTON_WELL_ANIMATION_TIME = 300;
+import * as Animation from '../ui/animation.js';
+import * as Batch from './batch.js';
+import * as GdmUtil from './util.js';
+import * as OVirt from './oVirt.js';
+import * as Vmware from './vmware.js';
+import * as ShellEntry from '../ui/shellEntry.js';
+import * as UserWidget from '../ui/userWidget.js';
+import * as Util from '../misc/util.js';
 
-var MESSAGE_FADE_OUT_ANIMATION_TIME = 500;
+export let DEFAULT_BUTTON_WELL_ICON_SIZE = 16;
+export let DEFAULT_BUTTON_WELL_ANIMATION_DELAY = 1000;
+export let DEFAULT_BUTTON_WELL_ANIMATION_TIME = 300;
 
-var AuthPromptMode = {
+export let MESSAGE_FADE_OUT_ANIMATION_TIME = 500;
+
+/** @enum {number} */
+export const AuthPromptMode = {
     UNLOCK_ONLY: 0,
     UNLOCK_OR_LOG_IN: 1,
 };
 
-var AuthPromptStatus = {
+/** @enum {number} */
+export const AuthPromptStatus = {
     NOT_VERIFYING: 0,
     VERIFYING: 1,
     VERIFICATION_FAILED: 2,
@@ -32,13 +37,14 @@ var AuthPromptStatus = {
     VERIFICATION_IN_PROGRESS: 5,
 };
 
-var BeginRequestType = {
+/** @enum {number} */
+export const BeginRequestType = {
     PROVIDE_USERNAME: 0,
     DONT_PROVIDE_USERNAME: 1,
     REUSE_USERNAME: 2,
 };
 
-var AuthPrompt = GObject.registerClass({
+export const AuthPrompt = GObject.registerClass({
     Signals: {
         'cancelled': {},
         'failed': {},
@@ -47,6 +53,10 @@ var AuthPrompt = GObject.registerClass({
         'reset': { param_types: [GObject.TYPE_UINT] },
     },
 }, class AuthPrompt extends St.BoxLayout {
+    /**
+     * @param {Gdm.Client} gdmClient
+     * @param {AuthPromptMode} mode 
+     */
     _init(gdmClient, mode) {
         super._init({
             style_class: 'login-dialog-prompt-layout',
@@ -583,6 +593,9 @@ var AuthPrompt = GObject.registerClass({
         this._entry.clutter_text.insert_unichar(unichar);
     }
 
+    /**
+     * @param {{ userName?: string | null, hold?: Batch.Hold | null }} [params] 
+     */
     begin(params = {}) {
         let { userName = null, hold = null } = params;
 

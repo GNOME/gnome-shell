@@ -1,18 +1,23 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported BoxPointer */
 
-const { Clutter, GObject, Meta, St } = imports.gi;
+import Clutter from 'gi://Clutter';
+import GObject from 'gi://GObject';
+import Meta from 'gi://Meta';
+import St from 'gi://St';
 
-const Main = imports.ui.main;
 
-var PopupAnimation = {
+import Main from './main.js';
+
+/** @enum {number} */
+export const PopupAnimation = {
     NONE:  0,
     SLIDE: 1 << 0,
     FADE:  1 << 1,
     FULL:  ~0,
 };
 
-var POPUP_ANIMATION_TIME = 150;
+export let POPUP_ANIMATION_TIME = 150;
 
 /**
  * BoxPointer:
@@ -27,9 +32,13 @@ var POPUP_ANIMATION_TIME = 150;
  * totally inside the monitor workarea if possible.
  *
  */
-var BoxPointer = GObject.registerClass({
+export const BoxPointer = GObject.registerClass({
     Signals: { 'arrow-side-changed': {} },
 }, class BoxPointer extends St.Widget {
+    /**
+     * @param {*} arrowSide 
+     * @param {*} binProperties 
+     */
     _init(arrowSide, binProperties) {
         super._init();
 
@@ -167,6 +176,12 @@ var BoxPointer = GObject.registerClass({
         });
     }
 
+    /**
+     * @param {boolean} isWidth 
+     * @param {number} minSize 
+     * @param {number} natSize
+     * @returns {[number, number]} 
+     */
     _adjustAllocationForArrow(isWidth, minSize, natSize) {
         let themeNode = this.get_theme_node();
         let borderWidth = themeNode.get_length('-arrow-border-width');
@@ -182,6 +197,9 @@ var BoxPointer = GObject.registerClass({
         return [minSize, natSize];
     }
 
+    /**
+     * @returns {[number, number]} 
+     */
     vfunc_get_preferred_width(forHeight) {
         let themeNode = this.get_theme_node();
         forHeight = themeNode.adjust_for_height(forHeight);

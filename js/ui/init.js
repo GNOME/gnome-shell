@@ -2,5 +2,15 @@ import { setConsoleLogDomain } from 'console';
 
 setConsoleLogDomain('GNOME Shell');
 
-imports.ui.environment.init();
-imports.ui.main.start();
+import "./environment.js";
+
+import("./main.js")
+  .then(({ main }) => {
+    main.start();
+  })
+  .catch((error) => {
+    logError(error);
+  })
+  .finally(() => {
+    log("Main imported.");
+  });

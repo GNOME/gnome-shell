@@ -1,30 +1,37 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported NotificationDaemon */
 
-const { GdkPixbuf, Gio, GLib, GObject, Shell, St } = imports.gi;
+import GdkPixbuf from 'gi://GdkPixbuf';
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
+import Shell from 'gi://Shell';
+import St from 'gi://St';
 
 const Config = imports.misc.config;
-const Main = imports.ui.main;
-const MessageTray = imports.ui.messageTray;
+import Main from './main.js';
+import * as MessageTray from './messageTray.js';
 
-const { loadInterfaceXML } = imports.misc.fileUtils;
+import { loadInterfaceXML } from '../misc/fileUtilsModule.js';
 
 const FdoNotificationsIface = loadInterfaceXML('org.freedesktop.Notifications');
 
-var NotificationClosedReason = {
+/** @enum {number} */
+export const NotificationClosedReason = {
     EXPIRED: 1,
     DISMISSED: 2,
     APP_CLOSED: 3,
     UNDEFINED: 4,
 };
 
-var Urgency = {
+/** @enum {number} */
+export const Urgency = {
     LOW: 0,
     NORMAL: 1,
     CRITICAL: 2,
 };
 
-var FdoNotificationDaemon = class FdoNotificationDaemon {
+export class FdoNotificationDaemon {
     constructor() {
         this._dbusImpl = Gio.DBusExportedObject.wrapJSObject(FdoNotificationsIface, this);
         this._dbusImpl.export(Gio.DBus.session, '/org/freedesktop/Notifications');
@@ -187,7 +194,8 @@ var FdoNotificationDaemon = class FdoNotificationDaemon {
         let sender = invocation.get_sender();
         let pid = hints['sender-pid'];
 
-        let source = this._getSource(appName, pid, ndata, sender, null);
+        // FIXME
+        let source = this._getSource(appName, pid, ndata, sender);
         this._notifyForSource(source, ndata);
 
         return invocation.return_value(GLib.Variant.new('(u)', [id]));
@@ -342,7 +350,15 @@ var FdoNotificationDaemon = class FdoNotificationDaemon {
     }
 };
 
-var FdoNotificationDaemonSource = GObject.registerClass(
+/**
+ * @typedef {object} FdoNotificationDaemonSourceParams
+ * @property {string} title
+ * @property {number} pid
+ * @property {string} sender
+ * @property {string} appId
+ */
+
+export const FdoNotificationDaemonSource = GObject.registerClass(
 class FdoNotificationDaemonSource extends MessageTray.Source {
     _init(title, pid, sender, appId) {
         this.pid = pid;
@@ -466,8 +482,12 @@ const PRIORITY_URGENCY_MAP = {
     urgent: MessageTray.Urgency.CRITICAL,
 };
 
-var GtkNotificationDaemonNotification = GObject.registerClass(
+export const GtkNotificationDaemonNotification = GObject.registerClass(
 class GtkNotificationDaemonNotification extends MessageTray.Notification {
+    /**
+     * @param {*} source 
+     * @param {*} notification 
+     */
     _init(source, notification) {
         super._init(source);
         this._serialized = GLib.Variant.new('a{sv}', notification);
@@ -542,14 +562,19 @@ function objectPathFromAppId(appId) {
     return '/' + appId.replace(/\./g, '/').replace(/-/g, '_');
 }
 
-function getPlatformData() {
-    let startupId = GLib.Variant.new('s', '_TIME%s'.format(global.get_current_time()));
+export function getPlatformData() {
+    let startupId = GLib.Variant.new('s', '_TIME%d'.format(global.get_current_time()));
     return { "desktop-startup-id": startupId };
 }
 
 function InvalidAppError() {}
 
-var GtkNotificationDaemonAppSource = GObject.registerClass(
+/**
+ * @typedef {object} GtkNotificationDaemonAppSourceParams
+ * @property {string} appId
+ */
+
+export const GtkNotificationDaemonAppSource = GObject.registerClass(
 class GtkNotificationDaemonAppSource extends MessageTray.Source {
     _init(appId) {
         let objectPath = objectPathFromAppId(appId);
@@ -651,7 +676,7 @@ class GtkNotificationDaemonAppSource extends MessageTray.Source {
 
 const GtkNotificationsIface = loadInterfaceXML('org.gtk.Notifications');
 
-var GtkNotificationDaemon = class GtkNotificationDaemon {
+export class GtkNotificationDaemon {
     constructor() {
         this._sources = {};
 
@@ -756,7 +781,7 @@ var GtkNotificationDaemon = class GtkNotificationDaemon {
     }
 };
 
-var NotificationDaemon = class NotificationDaemon {
+export class NotificationDaemon {
     constructor() {
         this._fdoNotificationDaemon = new FdoNotificationDaemon();
         this._gtkNotificationDaemon = new GtkNotificationDaemon();

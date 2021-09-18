@@ -1,17 +1,21 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported OsdWindowManager */
 
-const { Clutter, GLib, GObject, Meta, St } = imports.gi;
+import Clutter from 'gi://Clutter';
+import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
+import Meta from 'gi://Meta';
+import St from 'gi://St';
 
-const BarLevel = imports.ui.barLevel;
-const Layout = imports.ui.layout;
-const Main = imports.ui.main;
+import * as BarLevel from './barLevel.js';
+import * as Layout from './layout.js';
+import Main from './main.js';
 
-var HIDE_TIMEOUT = 1500;
-var FADE_TIME = 100;
-var LEVEL_ANIMATION_TIME = 100;
+export let HIDE_TIMEOUT = 1500;
+export let FADE_TIME = 100;
+export let LEVEL_ANIMATION_TIME = 100;
 
-var OsdWindowConstraint = GObject.registerClass(
+export const OsdWindowConstraint = GObject.registerClass(
 class OsdWindowConstraint extends Clutter.Constraint {
     _init(props) {
         this._minSize = 0;
@@ -41,7 +45,7 @@ class OsdWindowConstraint extends Clutter.Constraint {
     }
 });
 
-var OsdWindow = GObject.registerClass(
+export const OsdWindow = GObject.registerClass(
 class OsdWindow extends St.Widget {
     _init(monitorIndex) {
         super._init({
@@ -199,7 +203,7 @@ class OsdWindow extends St.Widget {
     }
 });
 
-var OsdWindowManager = class {
+export class OsdWindowManager {
     constructor() {
         this._osdWindows = [];
         Main.layoutManager.connect('monitors-changed',

@@ -1,16 +1,22 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported KeyboardManager */
+import Clutter from 'gi://Clutter';
+import St from 'gi://St';
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
+import Shell from 'gi://Shell';
+import Meta from 'gi://Meta';
+import Graphene from 'gi://Graphene';
+import * as Signals from '../misc/signals.js';
 
-const { Clutter, Gio, GLib, GObject, Graphene, Meta, Shell, St } = imports.gi;
-const Signals = imports.misc.signals;
-
-const EdgeDragAction = imports.ui.edgeDragAction;
-const InputSourceManager = imports.ui.status.keyboard;
-const IBusManager = imports.misc.ibusManager;
-const BoxPointer = imports.ui.boxpointer;
-const Main = imports.ui.main;
-const PageIndicators = imports.ui.pageIndicators;
-const PopupMenu = imports.ui.popupMenu;
+import * as EdgeDragAction from './edgeDragAction.js';
+import * as InputSourceManager from './status/keyboard.js';
+import * as IBusManager from '../misc/ibusManager.js';
+import * as BoxPointer from './boxpointer.js';
+import Main from './main.js';
+import * as PageIndicators from './pageIndicators.js';
+import * as PopupMenu from './popupMenu.js';
 
 var KEYBOARD_ANIMATION_TIME = 150;
 var KEYBOARD_REST_TIME = KEYBOARD_ANIMATION_TIME * 2;
@@ -50,7 +56,7 @@ const defaultKeysPost = [
      [{ action: 'emoji', icon: 'face-smile-symbolic' }, { action: 'languageMenu', extraClassName: 'layout-key', icon: 'keyboard-layout-filled-symbolic' }, { action: 'hide', extraClassName: 'hide-key', icon: 'go-down-symbolic' }]],
 ];
 
-var AspectContainer = GObject.registerClass(
+export const AspectContainer = GObject.registerClass(
 class AspectContainer extends St.Widget {
     _init(params) {
         super._init(params);
@@ -62,6 +68,9 @@ class AspectContainer extends St.Widget {
         this.queue_relayout();
     }
 
+    /**
+     * @returns {[number, number]}
+     */
     vfunc_get_preferred_width(forHeight) {
         let [min, nat] = super.vfunc_get_preferred_width(forHeight);
 
@@ -71,6 +80,9 @@ class AspectContainer extends St.Widget {
         return [min, nat];
     }
 
+    /**
+     * @returns {[number, number]}
+     */
     vfunc_get_preferred_height(forWidth) {
         let [min, nat] = super.vfunc_get_preferred_height(forWidth);
 
@@ -102,7 +114,7 @@ class AspectContainer extends St.Widget {
     }
 });
 
-var KeyContainer = GObject.registerClass(
+export const KeyContainer = GObject.registerClass(
 class KeyContainer extends St.Widget {
     _init() {
         let gridLayout = new Clutter.GridLayout({ orientation: Clutter.Orientation.HORIZONTAL,
@@ -120,6 +132,8 @@ class KeyContainer extends St.Widget {
 
         this._currentRow = null;
         this._rows = [];
+
+        this.shiftKeys = [];
     }
 
     appendRow() {
@@ -183,7 +197,7 @@ class KeyContainer extends St.Widget {
     }
 });
 
-var Suggestions = GObject.registerClass(
+export const Suggestions = GObject.registerClass(
 class Suggestions extends St.BoxLayout {
     _init() {
         super._init({
@@ -205,7 +219,7 @@ class Suggestions extends St.BoxLayout {
     }
 });
 
-var LanguageSelectionPopup = class extends PopupMenu.PopupMenu {
+export class LanguageSelectionPopup extends PopupMenu.PopupMenu {
     constructor(actor) {
         super(actor, 0.5, St.Side.BOTTOM);
 
@@ -268,7 +282,7 @@ var LanguageSelectionPopup = class extends PopupMenu.PopupMenu {
     }
 };
 
-var Key = GObject.registerClass({
+export const Key = GObject.registerClass({
     Signals: {
         'activated': {},
         'long-press': {},
@@ -288,6 +302,7 @@ var Key = GObject.registerClass({
         this.add_child(this.keyButton);
         this.connect('destroy', this._onDestroy.bind(this));
 
+        this._keyvalPress = false;
         this._extendedKeys = extendedKeys;
         this._extendedKeyboard = null;
         this._pressTimeoutId = 0;
@@ -516,7 +531,7 @@ var Key = GObject.registerClass({
     }
 });
 
-var KeyboardModel = class {
+export class KeyboardModel {
     constructor(groupName) {
         let names = [groupName];
         if (groupName.includes('+'))
@@ -549,7 +564,7 @@ var KeyboardModel = class {
     }
 };
 
-var FocusTracker = class extends Signals.EventEmitter {
+export class FocusTracker extends Signals.EventEmitter {
     constructor() {
         super();
 
@@ -664,7 +679,7 @@ var FocusTracker = class extends Signals.EventEmitter {
     }
 };
 
-var EmojiPager = GObject.registerClass({
+export const EmojiPager = GObject.registerClass({
     Properties: {
         'delta': GObject.ParamSpec.int(
             'delta', 'delta', 'delta',
@@ -952,7 +967,7 @@ var EmojiPager = GObject.registerClass({
     }
 });
 
-var EmojiSelection = GObject.registerClass({
+export const EmojiSelection = GObject.registerClass({
     Signals: {
         'emoji-selected': { param_types: [GObject.TYPE_STRING] },
         'close-request': {},
@@ -1110,7 +1125,7 @@ var EmojiSelection = GObject.registerClass({
     }
 });
 
-var Keypad = GObject.registerClass({
+export const Keypad = GObject.registerClass({
     Signals: {
         'keyval': { param_types: [GObject.TYPE_UINT] },
     },
@@ -1162,7 +1177,7 @@ var Keypad = GObject.registerClass({
     }
 });
 
-var KeyboardManager = class KeyBoardManager {
+export class KeyboardManager {
     constructor() {
         this._keyboard = null;
         this._a11yApplicationsSettings = new Gio.Settings({ schema_id: A11Y_APPLICATIONS_SCHEMA });
@@ -1269,7 +1284,7 @@ var KeyboardManager = class KeyBoardManager {
     }
 };
 
-var Keyboard = GObject.registerClass({
+export const Keyboard = GObject.registerClass({
     Signals: {
         'visibility-changed': {},
     },
@@ -1301,7 +1316,7 @@ var Keyboard = GObject.registerClass({
         if (!Meta.is_wayland_compositor()) {
             this._connectSignal(this._focusTracker, 'focus-changed', (_tracker, focused) => {
                 if (focused)
-                    this.open(Main.layoutManager.focusIndex);
+                    this.open(!!Main.layoutManager.focusIndex);
                 else
                     this.close();
             });
@@ -1441,7 +1456,7 @@ var Keyboard = GObject.registerClass({
         // Showing an extended key popup and clicking a key from the extended keys
         // will grab focus, but ignore that
         let extendedKeysWereFocused = this._focusInExtendedKeys;
-        this._focusInExtendedKeys = focus && (focus._extendedKeys || focus.extendedKey);
+        this._focusInExtendedKeys = focus && (focus instanceof St.Button && (focus._extendedKeys || focus.extendedKey));
         if (this._focusInExtendedKeys || extendedKeysWereFocused)
             return;
 
@@ -1452,7 +1467,7 @@ var Keyboard = GObject.registerClass({
 
         if (!this._showIdleId) {
             this._showIdleId = GLib.idle_add(GLib.PRIORITY_DEFAULT_IDLE, () => {
-                this.open(Main.layoutManager.focusIndex);
+                this.open(!!Main.layoutManager.focusIndex);
                 this._showIdleId = 0;
                 return GLib.SOURCE_REMOVE;
             });
@@ -1473,7 +1488,6 @@ var Keyboard = GObject.registerClass({
             let level = i >= 1 && levels.length == 3 ? i + 1 : i;
 
             let layout = new KeyContainer();
-            layout.shiftKeys = [];
 
             this._loadRows(currentLevel, level, levels.length, layout);
             layers[level] = layout;
@@ -1655,6 +1669,12 @@ var Keyboard = GObject.registerClass({
             this._loadDefaultKeys(post, layout, numLevels, row.length);
     }
 
+    /**
+     * @param {*} model 
+     * @param {number} level 
+     * @param {number} numLevels 
+     * @param {KeyContainer["prototype"]} layout 
+     */
     _loadRows(model, level, numLevels, layout) {
         let rows = model.rows;
         for (let i = 0; i < rows.length; ++i) {
@@ -1708,8 +1728,7 @@ var Keyboard = GObject.registerClass({
     }
 
     _onKeyboardGroupsChanged() {
-        let nonGroupActors = [this._emojiSelection, this._keypad];
-        this._aspectContainer.get_children().filter(c => !nonGroupActors.includes(c)).forEach(c => {
+        this._aspectContainer.get_children().filter(c => c !== this._emojiSelection && c !== this._keypad).forEach(c => {
             c.destroy();
         });
 
@@ -1747,7 +1766,7 @@ var Keyboard = GObject.registerClass({
             return;
 
         if (enabled)
-            this.open(Main.layoutManager.focusIndex);
+            this.open(!!Main.layoutManager.focusIndex);
         else
             this.close();
     }
@@ -2037,7 +2056,7 @@ var Keyboard = GObject.registerClass({
     }
 });
 
-var KeyboardController = class extends Signals.EventEmitter {
+export class KeyboardController extends Signals.EventEmitter {
     constructor() {
         super();
 

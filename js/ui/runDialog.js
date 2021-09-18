@@ -1,14 +1,20 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported RunDialog */
 
-const { Clutter, Gio, GLib, GObject, Meta, Shell, St } = imports.gi;
+import Clutter from 'gi://Clutter';
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
+import Meta from 'gi://Meta';
+import Shell from 'gi://Shell';
+import St from 'gi://St';
 
-const Dialog = imports.ui.dialog;
-const Main = imports.ui.main;
-const ModalDialog = imports.ui.modalDialog;
-const ShellEntry = imports.ui.shellEntry;
-const Util = imports.misc.util;
-const History = imports.misc.history;
+import * as Dialog from './dialog.js';
+import Main from './main.js';
+import * as ModalDialog from './modalDialog.js';
+import * as ShellEntry from './shellEntry.js';
+import * as Util from '../misc/util.js';
+import * as History from '../misc/history.js';
 
 const HISTORY_KEY = 'command-history';
 
@@ -19,7 +25,7 @@ const TERMINAL_SCHEMA = 'org.gnome.desktop.default-applications.terminal';
 const EXEC_KEY = 'exec';
 const EXEC_ARG_KEY = 'exec-arg';
 
-var RunDialog = GObject.registerClass(
+export const RunDialog = GObject.registerClass(
 class RunDialog extends ModalDialog.ModalDialog {
     _init() {
         super._init({
@@ -251,6 +257,6 @@ class RunDialog extends ModalDialog.ModalDialog {
         if (this._lockdownSettings.get_boolean(DISABLE_COMMAND_LINE_KEY))
             return;
 
-        super.open();
+        return super.open();
     }
 });

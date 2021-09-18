@@ -1,7 +1,13 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported Dialog, MessageDialogContent, ListSection, ListSectionItem */
 
-const { Clutter, GLib, GObject, Meta, Pango, St } = imports.gi;
+import Clutter from 'gi://Clutter';
+import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
+import Meta from 'gi://Meta';
+import Pango from 'gi://Pango';
+import St from 'gi://St';
+
 
 function _setLabel(label, value) {
     label.set({
@@ -10,8 +16,12 @@ function _setLabel(label, value) {
     });
 }
 
-var Dialog = GObject.registerClass(
+export const Dialog = GObject.registerClass(
 class Dialog extends St.Widget {
+    /**
+     * @param {*} parentActor 
+     * @param {*} styleClass 
+     */
     _init(parentActor, styleClass) {
         super._init({ layout_manager: new Clutter.BinLayout() });
         this.connect('destroy', this._onDestroy.bind(this));
@@ -157,7 +167,7 @@ class Dialog extends St.Widget {
     }
 });
 
-var MessageDialogContent = GObject.registerClass({
+export const MessageDialogContent = GObject.registerClass({
     Properties: {
         'title': GObject.ParamSpec.string(
             'title', 'title', 'title',
@@ -171,6 +181,9 @@ var MessageDialogContent = GObject.registerClass({
             null),
     },
 }, class MessageDialogContent extends St.BoxLayout {
+    /**
+     * @param {*} params 
+     */
     _init(params) {
         this._title = new St.Label({ style_class: 'message-dialog-title' });
         this._description = new St.Label({ style_class: 'message-dialog-description' });
@@ -247,7 +260,7 @@ var MessageDialogContent = GObject.registerClass({
     }
 });
 
-var ListSection = GObject.registerClass({
+export const ListSection = GObject.registerClass({
     Properties: {
         'title': GObject.ParamSpec.string(
             'title', 'title', 'title',
@@ -256,6 +269,9 @@ var ListSection = GObject.registerClass({
             null),
     },
 }, class ListSection extends St.BoxLayout {
+    /**
+     * @param {*} params 
+     */
     _init(params) {
         this._title = new St.Label({ style_class: 'dialog-list-title' });
 
@@ -292,7 +308,7 @@ var ListSection = GObject.registerClass({
     }
 });
 
-var ListSectionItem = GObject.registerClass({
+export const ListSectionItem = GObject.registerClass({
     Properties: {
         'icon-actor':  GObject.ParamSpec.object(
             'icon-actor', 'icon-actor', 'Icon actor',
@@ -310,6 +326,9 @@ var ListSectionItem = GObject.registerClass({
             null),
     },
 }, class ListSectionItem extends St.BoxLayout {
+    /**
+     * @param {*} params 
+     */
     _init(params) {
         this._iconActorBin = new St.Bin();
 

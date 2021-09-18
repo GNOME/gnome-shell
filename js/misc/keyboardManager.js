@@ -1,42 +1,43 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported getKeyboardManager, holdKeyboard, releaseKeyboard */
 
-const { GLib, GnomeDesktop } = imports.gi;
+import GLib from 'gi://GLib';
+import GnomeDesktop from 'gi://GnomeDesktop';
 
-const Main = imports.ui.main;
+import Main from "../ui/main.js";
 
-var DEFAULT_LOCALE = 'en_US';
-var DEFAULT_LAYOUT = 'us';
-var DEFAULT_VARIANT = '';
+export let DEFAULT_LOCALE = 'en_US';
+export let DEFAULT_LAYOUT = 'us';
+export let DEFAULT_VARIANT = '';
 
 let _xkbInfo = null;
 
-function getXkbInfo() {
+export function getXkbInfo() {
     if (_xkbInfo == null)
         _xkbInfo = new GnomeDesktop.XkbInfo();
     return _xkbInfo;
 }
 
+/** @type {KeyboardManager | null} */
 let _keyboardManager = null;
 
-function getKeyboardManager() {
+export function getKeyboardManager() {
     if (_keyboardManager == null)
         _keyboardManager = new KeyboardManager();
     return _keyboardManager;
 }
 
-function releaseKeyboard() {
+export function releaseKeyboard() {
     if (Main.modalCount > 0)
         global.display.unfreeze_keyboard(global.get_current_time());
     else
         global.display.ungrab_keyboard(global.get_current_time());
 }
 
-function holdKeyboard() {
+export function holdKeyboard() {
     global.display.freeze_keyboard(global.get_current_time());
 }
 
-var KeyboardManager = class {
+export class KeyboardManager {
     constructor() {
         // The XKB protocol doesn't allow for more that 4 layouts in a
         // keymap. Wayland doesn't impose this limit and libxkbcommon can

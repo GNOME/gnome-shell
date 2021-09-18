@@ -1,13 +1,18 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported Indicator */
 
-const { Clutter, Gio, GLib, GObject, Gvc, St } = imports.gi;
-const Signals = imports.misc.signals;
+import Clutter from 'gi://Clutter';
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
+import Gvc from 'gi://Gvc';
+import St from 'gi://St';
+import * as Signals from '../../misc/signals.js';
 
-const Main = imports.ui.main;
-const PanelMenu = imports.ui.panelMenu;
-const PopupMenu = imports.ui.popupMenu;
-const Slider = imports.ui.slider;
+import Main from '../main.js';
+import * as PanelMenu from '../panelMenu.js';
+import * as PopupMenu from '../popupMenu.js';
+import * as Slider from '../slider.js';
 
 const ALLOW_AMPLIFIED_VOLUME_KEY = 'allow-volume-above-100-percent';
 
@@ -19,7 +24,7 @@ const VolumeType = {
 // Each Gvc.MixerControl is a connection to PulseAudio,
 // so it's better to make it a singleton
 let _mixerControl;
-function getMixerControl() {
+export function getMixerControl() {
     if (_mixerControl)
         return _mixerControl;
 
@@ -29,7 +34,7 @@ function getMixerControl() {
     return _mixerControl;
 }
 
-var StreamSlider = class extends Signals.EventEmitter {
+export class StreamSlider extends Signals.EventEmitter {
     constructor(control) {
         super();
 
@@ -217,7 +222,7 @@ var StreamSlider = class extends Signals.EventEmitter {
     }
 };
 
-var OutputStreamSlider = class extends StreamSlider {
+export class OutputStreamSlider extends StreamSlider {
     constructor(control) {
         super(control);
         this._slider.accessible_name = _("Volume");
@@ -272,7 +277,7 @@ var OutputStreamSlider = class extends StreamSlider {
     }
 };
 
-var InputStreamSlider = class extends StreamSlider {
+export class InputStreamSlider extends StreamSlider {
     constructor(control) {
         super(control);
         this._slider.accessible_name = _("Microphone");
@@ -317,7 +322,7 @@ var InputStreamSlider = class extends StreamSlider {
     }
 };
 
-var VolumeMenu = class extends PopupMenu.PopupMenuSection {
+export class VolumeMenu extends PopupMenu.PopupMenuSection {
     constructor(control) {
         super();
 
@@ -394,7 +399,7 @@ var VolumeMenu = class extends PopupMenu.PopupMenuSection {
     }
 };
 
-var Indicator = GObject.registerClass(
+export const Indicator = GObject.registerClass(
 class Indicator extends PanelMenu.SystemIndicator {
     _init() {
         super._init();

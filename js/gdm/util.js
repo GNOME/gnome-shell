@@ -3,15 +3,18 @@
             DISABLE_USER_LIST_KEY, fadeInActor, fadeOutActor, cloneAndFadeOutActor,
             ShellUserVerifier */
 
-const { Clutter, Gdm, Gio, GLib } = imports.gi;
-const Signals = imports.misc.signals;
+import Clutter from 'gi://Clutter';
+import Gdm from 'gi://Gdm';
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
+import * as Signals from '../misc/signals.js';
 
-const Batch = imports.gdm.batch;
-const OVirt = imports.gdm.oVirt;
-const Vmware = imports.gdm.vmware;
-const Main = imports.ui.main;
-const { loadInterfaceXML } = imports.misc.fileUtils;
-const SmartcardManager = imports.misc.smartcardManager;
+import * as Batch from './batch.js';
+import * as OVirt from './oVirt.js';
+import * as Vmware from './vmware.js';
+import Main from '../ui/main.js';
+import { loadInterfaceXML } from '../misc/fileUtilsModule.js';
+import * as SmartcardManager from '../misc/smartcardManager.js';
 
 const FprintManagerIface = loadInterfaceXML('net.reactivated.Fprint.Manager');
 const FprintManagerProxy = Gio.DBusProxy.makeProxyWrapper(FprintManagerIface);
@@ -27,29 +30,29 @@ Gio._promisify(Gdm.UserVerifierProxy.prototype,
 Gio._promisify(Gdm.UserVerifierProxy.prototype,
     'call_begin_verification', 'call_begin_verification_finish');
 
-var PASSWORD_SERVICE_NAME = 'gdm-password';
-var FINGERPRINT_SERVICE_NAME = 'gdm-fingerprint';
-var SMARTCARD_SERVICE_NAME = 'gdm-smartcard';
-var FADE_ANIMATION_TIME = 160;
-var CLONE_FADE_ANIMATION_TIME = 250;
+export const PASSWORD_SERVICE_NAME = 'gdm-password';
+export const FINGERPRINT_SERVICE_NAME = 'gdm-fingerprint';
+export const SMARTCARD_SERVICE_NAME = 'gdm-smartcard';
+export const FADE_ANIMATION_TIME = 160;
+export const CLONE_FADE_ANIMATION_TIME = 250;
 
-var LOGIN_SCREEN_SCHEMA = 'org.gnome.login-screen';
-var PASSWORD_AUTHENTICATION_KEY = 'enable-password-authentication';
-var FINGERPRINT_AUTHENTICATION_KEY = 'enable-fingerprint-authentication';
-var SMARTCARD_AUTHENTICATION_KEY = 'enable-smartcard-authentication';
-var BANNER_MESSAGE_KEY = 'banner-message-enable';
-var BANNER_MESSAGE_TEXT_KEY = 'banner-message-text';
-var ALLOWED_FAILURES_KEY = 'allowed-failures';
+export const LOGIN_SCREEN_SCHEMA = 'org.gnome.login-screen';
+export const PASSWORD_AUTHENTICATION_KEY = 'enable-password-authentication';
+export const FINGERPRINT_AUTHENTICATION_KEY = 'enable-fingerprint-authentication';
+export const SMARTCARD_AUTHENTICATION_KEY = 'enable-smartcard-authentication';
+export const BANNER_MESSAGE_KEY = 'banner-message-enable';
+export const BANNER_MESSAGE_TEXT_KEY = 'banner-message-text';
+export const ALLOWED_FAILURES_KEY = 'allowed-failures';
 
-var LOGO_KEY = 'logo';
-var DISABLE_USER_LIST_KEY = 'disable-user-list';
+export const LOGO_KEY = 'logo';
+export const DISABLE_USER_LIST_KEY = 'disable-user-list';
 
 // Give user 48ms to read each character of a PAM message
-var USER_READ_TIME = 48;
+export const USER_READ_TIME = 48;
 const FINGERPRINT_ERROR_TIMEOUT_WAIT = 15;
 
-var MessageType = {
-    // Keep messages in order by priority
+/** @enum {number} */
+export const MessageType = {
     NONE: 0,
     HINT: 1,
     INFO: 2,
@@ -62,7 +65,7 @@ const FingerprintReaderType = {
     SWIPE: 2,
 };
 
-function fadeInActor(actor) {
+export function fadeInActor(actor) {
     if (actor.opacity == 255 && actor.visible)
         return null;
 
@@ -86,7 +89,7 @@ function fadeInActor(actor) {
     return hold;
 }
 
-function fadeOutActor(actor) {
+export function fadeOutActor(actor) {
     if (!actor.visible || actor.opacity == 0) {
         actor.opacity = 0;
         actor.hide();
@@ -108,7 +111,7 @@ function fadeOutActor(actor) {
     return hold;
 }
 
-function cloneAndFadeOutActor(actor) {
+export function cloneAndFadeOutActor(actor) {
     // Immediately hide actor so its sibling can have its space
     // and position, but leave a non-reactive clone on-screen,
     // so from the user's point of view it smoothly fades away
@@ -136,7 +139,7 @@ function cloneAndFadeOutActor(actor) {
     return hold;
 }
 
-var ShellUserVerifier = class extends Signals.EventEmitter {
+export class ShellUserVerifier extends Signals.EventEmitter {
     constructor(client, params = {}) {
         super();
 

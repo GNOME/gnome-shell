@@ -1,19 +1,29 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported WorkspacesView, WorkspacesDisplay */
 
-const { Clutter, Gio, GObject, Meta, Shell, St } = imports.gi;
+import Clutter from 'gi://Clutter';
+import Gio from 'gi://Gio';
+import GObject from 'gi://GObject';
+import Meta from 'gi://Meta';
+import Shell from 'gi://Shell';
+import St from 'gi://St';
 
-const Layout = imports.ui.layout;
-const Main = imports.ui.main;
-const OverviewControls = imports.ui.overviewControls;
-const SwipeTracker = imports.ui.swipeTracker;
-const Util = imports.misc.util;
-const Workspace = imports.ui.workspace;
-const { ThumbnailsBox, MAX_THUMBNAIL_SCALE } = imports.ui.workspaceThumbnail;
 
-var WORKSPACE_SWITCH_TIME = 250;
+import { ThumbnailsBox, MAX_THUMBNAIL_SCALE } from './workspaceThumbnail.js';
 
-const MUTTER_SCHEMA = 'org.gnome.mutter';
+import * as Util from '../misc/util.js';
+import * as SwipeTracker from './swipeTracker.js';
+import * as Workspace from './workspace.js';
+import * as OverviewControls from './overviewControls.js';
+import * as Layout from './layout.js';
+
+import Main from './main.js'
+
+import { ANIMATION_TIME } from '../ui/overview.js';
+
+export var WORKSPACE_SWITCH_TIME = 250;
+
+export const MUTTER_SCHEMA = 'org.gnome.mutter';
 
 const WORKSPACE_MIN_SPACING = 24;
 const WORKSPACE_MAX_SPACING = 80;
@@ -81,21 +91,27 @@ var WorkspacesViewBase = GObject.registerClass({
             child.allocate_available_size(0, 0, box.get_width(), box.get_height());
     }
 
+    /**
+     * @returns {[number, number]}
+     */
     vfunc_get_preferred_width() {
         return [0, 0];
     }
 
+    /**
+     * @returns {[number, number]}
+     */
     vfunc_get_preferred_height() {
         return [0, 0];
     }
 });
 
-var FitMode = {
+export const FitMode = {
     SINGLE: 0,
     ALL: 1,
 };
 
-var WorkspacesView = GObject.registerClass(
+export const WorkspacesView = GObject.registerClass(
 class WorkspacesView extends WorkspacesViewBase {
     _init(monitorIndex, controls, scrollAdjustment, fitModeAdjustment, overviewAdjustment) {
         let workspaceManager = global.workspace_manager;
@@ -291,6 +307,9 @@ class WorkspacesView extends WorkspacesViewBase {
         }
     }
 
+    /**
+     * @param {Clutter.ActorBox} box 
+     */
     _getInitialBoxes(box) {
         const offsetBox = new Clutter.ActorBox();
         offsetBox.set_size(...box.get_size());
@@ -546,7 +565,7 @@ class WorkspacesView extends WorkspacesViewBase {
     }
 });
 
-var ExtraWorkspaceView = GObject.registerClass(
+export const ExtraWorkspaceView = GObject.registerClass(
 class ExtraWorkspaceView extends WorkspacesViewBase {
     _init(monitorIndex, overviewAdjustment) {
         super._init(monitorIndex, overviewAdjustment);
@@ -828,7 +847,7 @@ class SecondaryMonitorDisplay extends St.Widget {
     }
 });
 
-var WorkspacesDisplay = GObject.registerClass(
+export const WorkspacesDisplay = GObject.registerClass(
 class WorkspacesDisplay extends St.Widget {
     _init(controls, scrollAdjustment, overviewAdjustment) {
         super._init({

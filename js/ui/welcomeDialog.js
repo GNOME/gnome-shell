@@ -1,19 +1,20 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported WelcomeDialog */
 
-const { Clutter, GObject, Shell, St } = imports.gi;
-
+import Clutter from 'gi://Clutter';
+import GObject from 'gi://GObject';
+import Shell from 'gi://Shell';
+import St from 'gi://St';
+import * as ModalDialog from './modalDialog.js';
+import Main from './main.js';
 const Config = imports.misc.config;
-const Dialog = imports.ui.dialog;
-const Main = imports.ui.main;
-const ModalDialog = imports.ui.modalDialog;
-
+import * as Dialog from './dialog.js';
 var DialogResponse = {
     NO_THANKS: 0,
     TAKE_TOUR: 1,
 };
 
-var WelcomeDialog = GObject.registerClass(
+export const WelcomeDialog = GObject.registerClass(
 class WelcomeDialog extends ModalDialog.ModalDialog {
     _init() {
         super._init({ styleClass: 'welcome-dialog' });
@@ -26,9 +27,9 @@ class WelcomeDialog extends ModalDialog.ModalDialog {
 
     open() {
         if (!this._tourAppInfo)
-            return;
+            return false;
 
-        super.open();
+        return super.open();
     }
 
     _buildLayout() {

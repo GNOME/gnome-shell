@@ -2,7 +2,12 @@
 
 const UI = imports.testcommon.ui;
 
-const { Clutter, GObject, Gtk, Shell, St } = imports.gi;
+import Clutter from 'gi://Clutter';
+import GObject from 'gi://GObject';
+import Gtk from 'gi://Gtk';
+import Shell from 'gi://Shell';
+import St from 'gi://St';
+
 
 // This is an interactive test of the sizing behavior of StScrollView. It
 // may be interesting in the future to split out the two classes at the
@@ -28,7 +33,7 @@ const BOX_WIDTHS = [
 
 const SPACING = 10;
 
-var FlowedBoxes = GObject.registerClass(
+export const FlowedBoxes = GObject.registerClass(
 class FlowedBoxes extends St.Widget {
     _init() {
         super._init();
@@ -117,7 +122,7 @@ class FlowedBoxes extends St.Widget {
 //
 // This is currently only written for the case where the child is height-for-width
 
-var SizingIllustrator = GObject.registerClass(
+export const SizingIllustrator = GObject.registerClass(
 class SizingIllustrator extends St.Widget {
     _init() {
         super._init();

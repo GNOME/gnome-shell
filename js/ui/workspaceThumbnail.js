@@ -1,50 +1,69 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported WorkspaceThumbnail, ThumbnailsBox */
 
-const { Clutter, Gio, GLib, GObject, Graphene, Meta, Shell, St } = imports.gi;
+import Clutter from 'gi://Clutter';
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
+import Meta from 'gi://Meta';
+import Shell from 'gi://Shell';
+import St from 'gi://St';
+import Graphene from 'gi://Graphene';
 
-const DND = imports.ui.dnd;
-const Main = imports.ui.main;
-const Util = imports.misc.util;
-const Workspace = imports.ui.workspace;
+
+
+import * as DND from './dnd.js';
+import Main from './main.js';
+import * as WindowPreview from './windowPreview.js';
+import * as Util from '../misc/util.js'
 
 const NUM_WORKSPACES_THRESHOLD = 2;
 
 // The maximum size of a thumbnail is 5% the width and height of the screen
-var MAX_THUMBNAIL_SCALE = 0.05;
+export const MAX_THUMBNAIL_SCALE = 0.05;
 
-var RESCALE_ANIMATION_TIME = 200;
-var SLIDE_ANIMATION_TIME = 200;
+
+export let RESCALE_ANIMATION_TIME = 200;
+export let  SLIDE_ANIMATION_TIME = 200;
 
 // When we create workspaces by dragging, we add a "cut" into the top and
 // bottom of each workspace so that the user doesn't have to hit the
 // placeholder exactly.
-var WORKSPACE_CUT_SIZE = 10;
+export let  WORKSPACE_CUT_SIZE = 10;
 
-var WORKSPACE_KEEP_ALIVE_TIME = 100;
+export let  WORKSPACE_KEEP_ALIVE_TIME = 100;
 
-var MUTTER_SCHEMA = 'org.gnome.mutter';
+const MUTTER_SCHEMA = 'org.gnome.mutter';
 
 /* A layout manager that requests size only for primary_actor, but then allocates
    all using a fixed layout */
-var PrimaryActorLayout = GObject.registerClass(
+export const PrimaryActorLayout = GObject.registerClass(
 class PrimaryActorLayout extends Clutter.FixedLayout {
+    /**
+     * @param {Clutter.Actor} primaryActor 
+     */
     _init(primaryActor) {
         super._init();
 
         this.primaryActor = primaryActor;
     }
 
-    vfunc_get_preferred_width(container, forHeight) {
+    /**
+     * @param {number} forHeight 
+     */
+    vfunc_get_preferred_width(_, forHeight) {
         return this.primaryActor.get_preferred_width(forHeight);
     }
 
-    vfunc_get_preferred_height(container, forWidth) {
+    /**
+     * @param {number} forWidth 
+     */
+    vfunc_get_preferred_height(_, forWidth) {
         return this.primaryActor.get_preferred_height(forWidth);
     }
 });
 
-var WindowClone = GObject.registerClass({
+export const WindowClone = GObject.registerClass({
     Signals: {
         'drag-begin': {},
         'drag-cancelled': {},
@@ -52,6 +71,9 @@ var WindowClone = GObject.registerClass({
         'selected': { param_types: [GObject.TYPE_UINT] },
     },
 }, class WindowClone extends Clutter.Actor {
+    /**
+     * @param {Meta.WindowActor} realWindow 
+     */
     _init(realWindow) {
         let clone = new Clutter.Clone({ source: realWindow });
         super._init({
@@ -78,14 +100,15 @@ var WindowClone = GObject.registerClass({
 
         this._draggable = DND.makeDraggable(this,
                                             { restoreOnSuccess: true,
-                                              dragActorMaxSize: Workspace.WINDOW_DND_SIZE,
-                                              dragActorOpacity: Workspace.DRAGGING_WINDOW_OPACITY });
+                                              dragActorMaxSize: WindowPreview.WINDOW_DND_SIZE,
+                                              dragActorOpacity: WindowPreview.DRAGGING_WINDOW_OPACITY });
         this._draggable.connect('drag-begin', this._onDragBegin.bind(this));
         this._draggable.connect('drag-cancelled', this._onDragCancelled.bind(this));
         this._draggable.connect('drag-end', this._onDragEnd.bind(this));
         this.inDrag = false;
 
         let iter = win => {
+            /** @type {Meta.Window} */
             let actor = win.get_compositor_private();
 
             if (!actor)
@@ -163,7 +186,8 @@ var WindowClone = GObject.registerClass({
     }
 
     _disconnectSignals() {
-        this.get_children().forEach(child => {
+        /** @type {Clutter.Clone[]} */
+        (this.get_children()).forEach(child => {
             let realWindow = child.source;
 
             realWindow.disconnect(child._updateId);
@@ -230,7 +254,7 @@ var WindowClone = GObject.registerClass({
 });
 
 
-var ThumbnailState = {
+export const ThumbnailState = {
     NEW:            0,
     EXPANDING:      1,
     EXPANDED:       2,
@@ -246,7 +270,7 @@ var ThumbnailState = {
 /**
  * @metaWorkspace: a #Meta.Workspace
  */
-var WorkspaceThumbnail = GObject.registerClass({
+export const WorkspaceThumbnail = GObject.registerClass({
     Properties: {
         'collapse-fraction': GObject.ParamSpec.double(
             'collapse-fraction', 'collapse-fraction', 'collapse-fraction',
@@ -607,7 +631,7 @@ var WorkspaceThumbnail = GObject.registerClass({
 });
 
 
-var ThumbnailsBox = GObject.registerClass({
+export const ThumbnailsBox = GObject.registerClass({
     Properties: {
         'expand-fraction': GObject.ParamSpec.double(
             'expand-fraction', 'expand-fraction', 'expand-fraction',
@@ -1258,6 +1282,8 @@ var ThumbnailsBox = GObject.registerClass({
                 },
             });
         });
+
+        return false;
     }
 
     _queueUpdateStates() {
@@ -1408,6 +1434,8 @@ var ThumbnailsBox = GObject.registerClass({
 
             Meta.later_add(Meta.LaterType.BEFORE_REDRAW, () => {
                 this._dropPlaceholder.hide();
+
+                return false;
             });
         }
 
@@ -1438,6 +1466,8 @@ var ThumbnailsBox = GObject.registerClass({
 
                 Meta.later_add(Meta.LaterType.BEFORE_REDRAW, () => {
                     this._dropPlaceholder.show();
+
+                    return false;
                 });
                 x += placeholderWidth + spacing;
             }

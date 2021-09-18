@@ -1,13 +1,18 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported addContextMenu CapsLockWarning */
 
-const { Clutter, GObject, Pango, Shell, St } = imports.gi;
+import Clutter from 'gi://Clutter';
+import GObject from 'gi://GObject';
+import Pango from 'gi://Pango';
+import Shell from 'gi://Shell';
+import St from 'gi://St';
 
-const BoxPointer = imports.ui.boxpointer;
-const Main = imports.ui.main;
-const PopupMenu = imports.ui.popupMenu;
 
-var EntryMenu = class extends PopupMenu.PopupMenu {
+import * as BoxPointer from './boxpointer.js';
+import Main from './main.js';
+import * as PopupMenu from './popupMenu.js';
+
+export class EntryMenu extends PopupMenu.PopupMenu {
     constructor(entry) {
         super(entry, 0, St.Side.TOP);
 
@@ -126,7 +131,7 @@ function _onPopup(actor, entry) {
     entry.menu.open(BoxPointer.PopupAnimation.FULL);
 }
 
-function addContextMenu(entry, params = {}) {
+export function addContextMenu(entry, params = {}) {
     if (entry.menu)
         return;
 
@@ -156,7 +161,7 @@ function addContextMenu(entry, params = {}) {
     });
 }
 
-var CapsLockWarning = GObject.registerClass(
+export const CapsLockWarning = GObject.registerClass(
 class CapsLockWarning extends St.Label {
     _init(params) {
         let defaultParams = { style_class: 'caps-lock-warning-label' };

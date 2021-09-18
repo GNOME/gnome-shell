@@ -1,7 +1,11 @@
 /* exported DwellClickIndicator */
-const { Clutter, Gio, GLib, GObject, St } = imports.gi;
+import Clutter from 'gi://Clutter';
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
+import St from 'gi://St';
 
-const PanelMenu = imports.ui.panelMenu;
+import * as PanelMenu from '../panelMenu.js';
 
 const MOUSE_A11Y_SCHEMA       = 'org.gnome.desktop.a11y.mouse';
 const KEY_DWELL_CLICK_ENABLED = 'dwell-click-enabled';
@@ -30,7 +34,7 @@ const DWELL_CLICK_MODES = {
     },
 };
 
-var DwellClickIndicator = GObject.registerClass(
+export const DwellClickIndicator = GObject.registerClass(
 class DwellClickIndicator extends PanelMenu.Button {
     _init() {
         super._init(0.5, _("Dwell Click"));

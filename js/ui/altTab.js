@@ -2,24 +2,33 @@
 /* exported AppSwitcherPopup, GroupCyclerPopup, WindowSwitcherPopup,
             WindowCyclerPopup */
 
-const { Atk, Clutter, Gio, GLib, GObject, Meta, Shell, St } = imports.gi;
+import Atk from 'gi://Atk';
+import Clutter from 'gi://Clutter';
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
+import Meta from 'gi://Meta';
+import Shell from 'gi://Shell';
+import St from 'gi://St';
 
-const Main = imports.ui.main;
-const SwitcherPopup = imports.ui.switcherPopup;
 
-var APP_ICON_HOVER_TIMEOUT = 200; // milliseconds
+import Main from './main.js';
+import * as SwitcherPopup from './switcherPopup.js';
 
-var THUMBNAIL_DEFAULT_SIZE = 256;
-var THUMBNAIL_POPUP_TIME = 500; // milliseconds
-var THUMBNAIL_FADE_TIME = 100; // milliseconds
+export let APP_ICON_HOVER_TIMEOUT = 200; // milliseconds
 
-var WINDOW_PREVIEW_SIZE = 128;
-var APP_ICON_SIZE = 96;
-var APP_ICON_SIZE_SMALL = 48;
+export let THUMBNAIL_DEFAULT_SIZE = 256;
+export let THUMBNAIL_POPUP_TIME = 500; // milliseconds
+export let THUMBNAIL_FADE_TIME = 100; // milliseconds
+
+export let WINDOW_PREVIEW_SIZE = 128;
+export let APP_ICON_SIZE = 96;
+export let APP_ICON_SIZE_SMALL = 48;
 
 const baseIconSizes = [96, 64, 48, 32, 22];
 
-var AppIconMode = {
+/** @enum {number} */
+export const AppIconMode = {
     THUMBNAIL_ONLY: 1,
     APP_ICON_ONLY: 2,
     BOTH: 3,
@@ -38,7 +47,7 @@ function _createWindowClone(window, size) {
                                y_expand: true });
 }
 
-function getWindows(workspace) {
+export function getWindows(workspace) {
     // We ignore skip-taskbar windows in switchers, but if they are attached
     // to their parent, their position in the MRU list may be more appropriate
     // than the parent; so start with the complete list ...
@@ -51,7 +60,7 @@ function getWindows(workspace) {
     }).filter((w, i, a) => !w.skip_taskbar && a.indexOf(w) == i);
 }
 
-var AppSwitcherPopup = GObject.registerClass(
+export const AppSwitcherPopup = GObject.registerClass(
 class AppSwitcherPopup extends SwitcherPopup.SwitcherPopup {
     _init() {
         super._init();
@@ -290,8 +299,8 @@ class AppSwitcherPopup extends SwitcherPopup.SwitcherPopup {
     /**
      * _select:
      * @param {number} app: index of the app to select
-     * @param {number=} window: index of which of @app's windows to select
-     * @param {bool} forceAppFocus: optional flag, see below
+     * @param {number} [window]: index of which of @app's windows to select
+     * @param {boolean} [forceAppFocus]: optional flag, see below
      *
      * Selects the indicated @app, and optional @window, and sets
      * this._thumbnailsFocused appropriately to indicate whether the
@@ -397,13 +406,14 @@ class AppSwitcherPopup extends SwitcherPopup.SwitcherPopup {
     }
 });
 
-var CyclerHighlight = GObject.registerClass(
+export const CyclerHighlight = GObject.registerClass(
 class CyclerHighlight extends St.Widget {
     _init() {
         super._init({ layout_manager: new Clutter.BinLayout() });
         this._window = null;
         this._sizeChangedId = 0;
 
+        /** @type {Clutter.Clone<Meta.WindowActor>} */
         this._clone = new Clutter.Clone();
         this.add_actor(this._clone);
 
@@ -465,7 +475,7 @@ class CyclerHighlight extends St.Widget {
 
 // We don't show an actual popup, so just provide what SwitcherPopup
 // expects instead of inheriting from SwitcherList
-var CyclerList = GObject.registerClass({
+export const CyclerList = GObject.registerClass({
     Signals: { 'item-activated': { param_types: [GObject.TYPE_INT] },
                'item-entered': { param_types: [GObject.TYPE_INT] },
                'item-removed': { param_types: [GObject.TYPE_INT] },
@@ -476,7 +486,7 @@ var CyclerList = GObject.registerClass({
     }
 });
 
-var CyclerPopup = GObject.registerClass({
+export const CyclerPopup = GObject.registerClass({
     GTypeFlags: GObject.TypeFlags.ABSTRACT,
 }, class CyclerPopup extends SwitcherPopup.SwitcherPopup {
     _init() {
@@ -491,6 +501,13 @@ var CyclerPopup = GObject.registerClass({
         this._switcherList.connect('item-highlighted', (list, index) => {
             this._highlightItem(index);
         });
+    }
+
+    /**
+     * @returns {Meta.Window[]}
+     */
+    _getWindows() {
+        throw new GObject.NotImplementedError(`_getWindows in ${this.constructor.name}`);
     }
 
     _highlightItem(index, _justOutline) {
@@ -532,7 +549,7 @@ var CyclerPopup = GObject.registerClass({
 });
 
 
-var GroupCyclerPopup = GObject.registerClass(
+export const GroupCyclerPopup = GObject.registerClass(
 class GroupCyclerPopup extends CyclerPopup {
     _init() {
         this._settings = new Gio.Settings({ schema_id: 'org.gnome.shell.app-switcher' });
@@ -565,7 +582,7 @@ class GroupCyclerPopup extends CyclerPopup {
     }
 });
 
-var WindowSwitcherPopup = GObject.registerClass(
+export const WindowSwitcherPopup = GObject.registerClass(
 class WindowSwitcherPopup extends SwitcherPopup.SwitcherPopup {
     _init() {
         super._init();
@@ -623,7 +640,7 @@ class WindowSwitcherPopup extends SwitcherPopup.SwitcherPopup {
     }
 });
 
-var WindowCyclerPopup = GObject.registerClass(
+export const WindowCyclerPopup = GObject.registerClass(
 class WindowCyclerPopup extends CyclerPopup {
     _init() {
         this._settings = new Gio.Settings({ schema_id: 'org.gnome.shell.window-switcher' });
@@ -654,11 +671,14 @@ class WindowCyclerPopup extends CyclerPopup {
     }
 });
 
-var AppIcon = GObject.registerClass(
+export const AppIcon = GObject.registerClass(
 class AppIcon extends St.BoxLayout {
     _init(app) {
         super._init({ style_class: 'alt-tab-app',
                       vertical: true });
+
+        /** @type {Meta.Window[]} */
+        this.cachedWindows = [];
 
         this.app = app;
         this.icon = null;
@@ -679,7 +699,7 @@ class AppIcon extends St.BoxLayout {
     }
 });
 
-var AppSwitcher = GObject.registerClass(
+export const AppSwitcher = GObject.registerClass(
 class AppSwitcher extends SwitcherPopup.SwitcherList {
     _init(apps, altTabPopup) {
         super._init(true);
@@ -814,6 +834,8 @@ class AppSwitcher extends SwitcherPopup.SwitcherList {
         } else {
             this._itemEntered(index);
         }
+
+        return false;
     }
 
     _enterItem(index) {
@@ -884,7 +906,7 @@ class AppSwitcher extends SwitcherPopup.SwitcherList {
     }
 });
 
-var ThumbnailSwitcher = GObject.registerClass(
+export const ThumbnailSwitcher = GObject.registerClass(
 class ThumbnailSwitcher extends SwitcherPopup.SwitcherList {
     _init(windows) {
         super._init(false);
@@ -892,6 +914,7 @@ class ThumbnailSwitcher extends SwitcherPopup.SwitcherList {
         this._labels = [];
         this._thumbnailBins = [];
         this._clones = [];
+        /** @type {Meta.Window[]} */
         this._windows = windows;
 
         for (let i = 0; i < windows.length; i++) {
@@ -979,13 +1002,15 @@ class ThumbnailSwitcher extends SwitcherPopup.SwitcherList {
     }
 });
 
-var WindowIcon = GObject.registerClass(
+export const WindowIcon = GObject.registerClass(
 class WindowIcon extends St.BoxLayout {
     _init(window, mode) {
         super._init({ style_class: 'alt-tab-app',
                       vertical: true });
 
         this.window = window;
+
+        this._unmanagedSignalId = -1;
 
         this._icon = new St.Widget({ layout_manager: new Clutter.BinLayout() });
 
@@ -1037,7 +1062,7 @@ class WindowIcon extends St.BoxLayout {
     }
 });
 
-var WindowSwitcher = GObject.registerClass(
+export const WindowSwitcher = GObject.registerClass(
 class WindowSwitcher extends SwitcherPopup.SwitcherList {
     _init(windows, mode) {
         super._init(true);
@@ -1070,6 +1095,9 @@ class WindowSwitcher extends SwitcherPopup.SwitcherList {
         });
     }
 
+    /**
+     * @returns {[number, number]}
+     */
     vfunc_get_preferred_height(forWidth) {
         let [minHeight, natHeight] = super.vfunc_get_preferred_height(forWidth);
 

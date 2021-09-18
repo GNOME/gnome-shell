@@ -2,7 +2,9 @@
 
 const UI = imports.testcommon.ui;
 
-const { Clutter, St } = imports.gi;
+import Clutter from 'gi://Clutter';
+import St from 'gi://St';
+
 
 function test() {
     let stage = new Clutter.Stage({ width: 400, height: 400 });

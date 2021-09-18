@@ -1,27 +1,33 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported Overview */
 
-const { Clutter, Gio, GLib, GObject, Meta, Shell, St } = imports.gi;
-const Signals = imports.misc.signals;
+import Clutter from 'gi://Clutter';
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
+import Meta from 'gi://Meta';
+import Shell from 'gi://Shell';
+import St from 'gi://St';
+import * as Signals from '../misc/signals.js';
 
 // Time for initial animation going into Overview mode;
 // this is defined here to make it available in imports.
-var ANIMATION_TIME = 250;
+export let ANIMATION_TIME = 250;
 
-const DND = imports.ui.dnd;
-const LayoutManager = imports.ui.layout;
-const Main = imports.ui.main;
-const MessageTray = imports.ui.messageTray;
-const OverviewControls = imports.ui.overviewControls;
-const SwipeTracker = imports.ui.swipeTracker;
-const WindowManager = imports.ui.windowManager;
-const WorkspaceThumbnail = imports.ui.workspaceThumbnail;
+import * as DND from './dnd.js';
+import * as LayoutManager from './layout.js';
+import Main from './main.js';
+import * as MessageTray from './messageTray.js';
+import * as OverviewControls from './overviewControls.js';
+import * as SwipeTracker from './swipeTracker.js';
+import * as WindowManager from './windowManager.js';
+import * as WorkspaceThumbnail from './workspaceThumbnail.js';
 
-var DND_WINDOW_SWITCH_TIMEOUT = 750;
+export let DND_WINDOW_SWITCH_TIMEOUT = 750;
 
-var OVERVIEW_ACTIVATION_TIMEOUT = 0.5;
+export let OVERVIEW_ACTIVATION_TIMEOUT = 0.5;
 
-var ShellInfo = class {
+export class ShellInfo {
     constructor() {
         this._source = null;
     }
@@ -57,7 +63,7 @@ var ShellInfo = class {
     }
 };
 
-var OverviewActor = GObject.registerClass(
+export const OverviewActor = GObject.registerClass(
 class OverviewActor extends St.BoxLayout {
     _init() {
         super._init({
@@ -83,6 +89,7 @@ class OverviewActor extends St.BoxLayout {
     }
 
     runStartupAnimation(callback) {
+        log('animating...');
         this._controls.runStartupAnimation(callback);
     }
 
@@ -99,7 +106,7 @@ class OverviewActor extends St.BoxLayout {
     }
 });
 
-var Overview = class extends Signals.EventEmitter {
+export class Overview extends Signals.EventEmitter {
     constructor() {
         super();
 
@@ -641,6 +648,7 @@ var Overview = class extends Signals.EventEmitter {
     }
 
     runStartupAnimation(callback) {
+        log('trackin')
         Main.panel.style = 'transition-duration: 0ms;';
 
         this._shown = true;
@@ -654,6 +662,7 @@ var Overview = class extends Signals.EventEmitter {
         Meta.disable_unredirect_for_display(global.display);
 
         this.emit('showing');
+        log('SHOWING');
 
         this._overview.runStartupAnimation(() => {
             if (!this._syncGrab()) {

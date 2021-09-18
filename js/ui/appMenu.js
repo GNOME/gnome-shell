@@ -2,12 +2,12 @@
 /* exported AppMenu */
 const { Clutter, Gio, GLib, Meta, Shell, St } = imports.gi;
 
-const AppFavorites = imports.ui.appFavorites;
-const Main = imports.ui.main;
-const ParentalControlsManager = imports.misc.parentalControlsManager;
-const PopupMenu = imports.ui.popupMenu;
+import * as AppFavorites from './appFavorites.js';
+import Main from './main.js';
+import * as ParentalControlsManager from '../misc/parentalControlsManager.js';
+import * as PopupMenu from './popupMenu.js';
 
-var AppMenu = class AppMenu extends PopupMenu.PopupMenu {
+export class AppMenu extends PopupMenu.PopupMenu {
     /**
      * @param {Clutter.Actor} sourceActor - actor the menu is attached to
      * @param {St.Side} side - arrow side

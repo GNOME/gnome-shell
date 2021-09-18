@@ -15,7 +15,7 @@
 //
 // Return value: a new object, containing the merged parameters from
 // @params and @defaults
-function parse(params = {}, defaults, allowExtras) {
+export function parse(params = {}, defaults, allowExtras) {
     if (!allowExtras) {
         for (let prop in params) {
             if (!(prop in defaults))

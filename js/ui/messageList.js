@@ -1,14 +1,22 @@
 /* exported MessageListSection */
-const { Atk, Clutter, Gio, GLib,
-        GObject, Graphene, Meta, Pango, St } = imports.gi;
-const Main = imports.ui.main;
-const MessageTray = imports.ui.messageTray;
+import Atk from 'gi://Atk';
+import Clutter from 'gi://Clutter';
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
+import Graphene from 'gi://Graphene';
+import Meta from 'gi://Meta';
+import Pango from 'gi://Pango';
+import St from 'gi://St';
 
-const Util = imports.misc.util;
+import Main from './main.js';
+import * as MessageTray from './messageTray.js';
 
-var MESSAGE_ANIMATION_TIME = 100;
+import * as Util from '../misc/util.js';
 
-var DEFAULT_EXPAND_LINES = 6;
+export let MESSAGE_ANIMATION_TIME = 100;
+
+export let  DEFAULT_EXPAND_LINES = 6;
 
 function _fixMarkup(text, allowMarkup) {
     if (allowMarkup) {
@@ -31,7 +39,7 @@ function _fixMarkup(text, allowMarkup) {
     return GLib.markup_escape_text(text, -1);
 }
 
-var URLHighlighter = GObject.registerClass(
+export const URLHighlighter = GObject.registerClass(
 class URLHighlighter extends St.Label {
     _init(text = '', lineWrap, allowMarkup) {
         super._init({
@@ -159,7 +167,7 @@ class URLHighlighter extends St.Label {
     }
 });
 
-var ScaleLayout = GObject.registerClass(
+export const ScaleLayout = GObject.registerClass(
 class ScaleLayout extends Clutter.BinLayout {
     _init(params) {
         this._container = null;
@@ -188,6 +196,9 @@ class ScaleLayout extends Clutter.BinLayout {
         }
     }
 
+    /**
+     * @returns {[number, number]}
+     */
     vfunc_get_preferred_width(container, forHeight) {
         this._connectContainer(container);
 
@@ -196,6 +207,9 @@ class ScaleLayout extends Clutter.BinLayout {
                 Math.floor(nat * container.scale_x)];
     }
 
+    /**
+     * @returns {[number, number]}
+     */
     vfunc_get_preferred_height(container, forWidth) {
         this._connectContainer(container);
 
@@ -205,7 +219,7 @@ class ScaleLayout extends Clutter.BinLayout {
     }
 });
 
-var LabelExpanderLayout = GObject.registerClass({
+export const LabelExpanderLayout = GObject.registerClass({
     Properties: {
         'expansion': GObject.ParamSpec.double('expansion',
                                               'Expansion',
@@ -215,6 +229,9 @@ var LabelExpanderLayout = GObject.registerClass({
                                               0, 1, 0),
     },
 }, class LabelExpanderLayout extends Clutter.LayoutManager {
+    /**
+     * @param {*} params 
+     */
     _init(params) {
         this._expansion = 0;
         this._expandLines = DEFAULT_EXPAND_LINES;
@@ -251,6 +268,9 @@ var LabelExpanderLayout = GObject.registerClass({
         this._container = container;
     }
 
+    /**
+     * @returns {[number, number]}
+     */
     vfunc_get_preferred_width(container, forHeight) {
         let [min, nat] = [0, 0];
 
@@ -266,6 +286,9 @@ var LabelExpanderLayout = GObject.registerClass({
         return [min, nat];
     }
 
+    /**
+     * @returns {[number, number]}
+     */
     vfunc_get_preferred_height(container, forWidth) {
         let [min, nat] = [0, 0];
 
@@ -295,13 +318,17 @@ var LabelExpanderLayout = GObject.registerClass({
 });
 
 
-var Message = GObject.registerClass({
+export const Message = GObject.registerClass({
     Signals: {
         'close': {},
         'expanded': {},
         'unexpanded': {},
     },
 }, class Message extends St.Button {
+    /**
+     * @param {*} title 
+     * @param {*} body 
+     */
     _init(title, body) {
         super._init({
             style_class: 'message',
@@ -313,6 +340,7 @@ var Message = GObject.registerClass({
 
         this.expanded = false;
         this._useBodyMarkup = false;
+        this.notification = null;
 
         let vbox = new St.BoxLayout({
             vertical: true,
@@ -361,11 +389,11 @@ var Message = GObject.registerClass({
         });
         titleBox.add_actor(this._closeButton);
 
-        this._bodyStack = new St.Widget({ x_expand: true });
-        this._bodyStack.layout_manager = new LabelExpanderLayout();
+        this._bodyStack = new St.Widget({ x_expand: true, layout_manager: new LabelExpanderLayout() });
+       
         contentBox.add_actor(this._bodyStack);
 
-        this.bodyLabel = new URLHighlighter('', false, this._useBodyMarkup);
+        this.bodyLabel = new URLHighlighter({ text: '', lineWrap: false, allowMarkup: this._useBodyMarkup });
         this.bodyLabel.add_style_class_name('message-body');
         this._bodyStack.add_actor(this.bodyLabel);
         this.setBody(body);
@@ -532,7 +560,7 @@ var Message = GObject.registerClass({
     }
 });
 
-var MessageListSection = GObject.registerClass({
+export const MessageListSection = GObject.registerClass({
     Properties: {
         'can-clear': GObject.ParamSpec.boolean(
             'can-clear', 'can-clear', 'can-clear',
@@ -557,6 +585,7 @@ var MessageListSection = GObject.registerClass({
             x_expand: true,
         });
 
+        /** @type {St.BoxLayout<St.Bin<Message["prototype"]>>} */
         this._list = new St.BoxLayout({ style_class: 'message-list-section-list',
                                         vertical: true });
         this.add_actor(this._list);

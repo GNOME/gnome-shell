@@ -1,12 +1,14 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported WindowAttentionHandler */
 
-const { GObject, Shell } = imports.gi;
+import GObject from 'gi://GObject';
+import Shell from 'gi://Shell';
 
-const Main = imports.ui.main;
-const MessageTray = imports.ui.messageTray;
 
-var WindowAttentionHandler = class {
+import Main from './main.js';
+import * as MessageTray from './messageTray.js';
+
+export class WindowAttentionHandler {
     constructor() {
         this._tracker = Shell.WindowTracker.get_default();
         this._windowDemandsAttentionId = global.display.connect('window-demands-attention',
@@ -34,7 +36,7 @@ var WindowAttentionHandler = class {
             return;
 
         let app = this._tracker.get_window_app(window);
-        let source = new WindowAttentionSource(app, window);
+        let source = new WindowAttentionSource({ app, window });
         Main.messageTray.add(source);
 
         let [title, banner] = this._getTitleAndBanner(app, window);
@@ -54,13 +56,24 @@ var WindowAttentionHandler = class {
     }
 };
 
-var WindowAttentionSource = GObject.registerClass(
+/**
+ * @typedef {object} WindowAttentionSourceParams
+ * @property {Shell.App} app
+ * @property {import('gi://Meta').Window} window
+ */
+
+export const WindowAttentionSource = GObject.registerClass(
 class WindowAttentionSource extends MessageTray.Source {
-    _init(app, window) {
+    /**
+     * @param {import('./messageTray.js').SourceParams & WindowAttentionSourceParams} params
+     */
+    _init(params) {
+        const { window, app } = params;
+
         this._window = window;
         this._app = app;
 
-        super._init(app.get_name());
+        super._init({ title: app.get_name() });
 
         this.signalIDs = [];
         this.signalIDs.push(this._window.connect('notify::demands-attention',

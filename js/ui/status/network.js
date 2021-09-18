@@ -1,25 +1,33 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported NMApplet */
-const { Clutter, Gio, GLib, GObject, Meta, NM, Polkit, St } = imports.gi;
-const Signals = imports.misc.signals;
+import Clutter from 'gi://Clutter';
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
+import NM from 'gi://NM';
+import St from 'gi://St';
+import Polkit from 'gi://Polkit';
+import Meta from 'gi://Meta';
+import * as Signals from '../../misc/signals.js';
 
-const Animation = imports.ui.animation;
-const Main = imports.ui.main;
-const PanelMenu = imports.ui.panelMenu;
-const PopupMenu = imports.ui.popupMenu;
-const MessageTray = imports.ui.messageTray;
-const ModalDialog = imports.ui.modalDialog;
-const ModemManager = imports.misc.modemManager;
-const Rfkill = imports.ui.status.rfkill;
-const Util = imports.misc.util;
+import * as Animation from '../animation.js';
+import Main from '../main.js';
+import * as PanelMenu from '../panelMenu.js';
+import * as PopupMenu from '../popupMenu.js';
+import * as MessageTray from '../messageTray.js';
+import * as ModalDialog from '../modalDialog.js';
+import * as ModemManager from '../../misc/modemManager.js';
+import * as Rfkill from './rfkill.js';
+import * as Util from '../../misc/util.js';
 
-const { loadInterfaceXML } = imports.misc.fileUtils;
+import { loadInterfaceXML } from '../../misc/fileUtilsModule.js';
 
 Gio._promisify(Gio.DBusConnection.prototype, 'call', 'call_finish');
 Gio._promisify(NM.Client, 'new_async', 'new_finish');
 Gio._promisify(NM.Client.prototype,
     'check_connectivity_async', 'check_connectivity_finish');
 
+/** @enum {string} */
 const NMConnectionCategory = {
     INVALID: 'invalid',
     WIRED: 'wired',
@@ -28,6 +36,7 @@ const NMConnectionCategory = {
     VPN: 'vpn',
 };
 
+/** @enum {number} */
 const NMAccessPointSecurity = {
     NONE: 1,
     WEP: 2,
@@ -37,14 +46,15 @@ const NMAccessPointSecurity = {
     WPA2_ENT: 6,
 };
 
-var MAX_DEVICE_ITEMS = 4;
+export let MAX_DEVICE_ITEMS = 4;
 
 // small optimization, to avoid using [] all the time
 const NM80211Mode = NM['80211Mode'];
 const NM80211ApFlags = NM['80211ApFlags'];
 const NM80211ApSecurityFlags = NM['80211ApSecurityFlags'];
 
-var PortalHelperResult = {
+/** @enum {number} */
+export const PortalHelperResult = {
     CANCELLED: 0,
     COMPLETED: 1,
     RECHECK: 2,
@@ -73,6 +83,9 @@ function ssidToLabel(ssid) {
     return label;
 }
 
+/**
+ * @param {NM.ActiveConnection} active 
+ */
 function ensureActiveConnectionProps(active) {
     if (!active._primaryDevice) {
         let devices = active.get_devices();
@@ -89,7 +102,7 @@ function launchSettingsPanel(panel, ...args) {
         [panel, args.map(s => new GLib.Variant('s', s))]);
     const platformData = {
         'desktop-startup-id': new GLib.Variant('s',
-            '_TIME%s'.format(global.get_current_time())),
+            '_TIME%s'.format(global.get_current_time().toFixed(0))),
     };
     try {
         Gio.DBus.session.call(
@@ -108,7 +121,7 @@ function launchSettingsPanel(panel, ...args) {
     }
 }
 
-var NMConnectionItem = class extends Signals.EventEmitter {
+export class NMConnectionItem extends Signals.EventEmitter {
     constructor(section, connection) {
         super();
 
@@ -200,14 +213,14 @@ var NMConnectionItem = class extends Signals.EventEmitter {
 
         if (this._activeConnection) {
             this._activeConnectionChangedId = this._activeConnection.connect('notify::state',
-                                                                             this._connectionStateChanged.bind(this));
+                this._connectionStateChanged.bind(this));
         }
 
         this._sync();
     }
 };
 
-var NMConnectionSection = class NMConnectionSection extends Signals.EventEmitter {
+export class NMConnectionSection extends Signals.EventEmitter {
     constructor(client) {
         super();
 
@@ -253,10 +266,27 @@ var NMConnectionSection = class NMConnectionSection extends Signals.EventEmitter
         this.item.icon.icon_name = this._getMenuIcon();
     }
 
+    /** 
+     * @return {string}
+     */
+    _getStatus() {
+        throw new GObject.NotImplementedError(`_getStatus in ${this.constructor.name}`);
+    }
+
+    /** 
+     * @return {string}
+     */
+    getIndicatorIcon() {
+        throw new GObject.NotImplementedError(`getIndicatorIcon in ${this.constructor.name}`);
+    }
+
     _getMenuIcon() {
         return this.getIndicatorIcon();
     }
 
+    /**
+     * @returns {string}
+     */
     getConnectLabel() {
         return _("Connect");
     }
@@ -338,7 +368,12 @@ var NMConnectionSection = class NMConnectionSection extends Signals.EventEmitter
     }
 };
 
-var NMConnectionDevice = class NMConnectionDevice extends NMConnectionSection {
+
+export class NMConnectionDevice extends NMConnectionSection {
+    /**
+     * @param {NM.Client} client 
+     * @param {NM.Device} device 
+     */
     constructor(client, device) {
         super(client);
 
@@ -498,7 +533,11 @@ var NMConnectionDevice = class NMConnectionDevice extends NMConnectionSection {
     }
 };
 
-var NMDeviceWired = class extends NMConnectionDevice {
+export class NMDeviceWired extends NMConnectionDevice {
+    /**
+     * @param {NM.Client} client 
+     * @param {NM.Device} device 
+     */ 
     constructor(client, device) {
         super(client, device);
 
@@ -541,7 +580,11 @@ var NMDeviceWired = class extends NMConnectionDevice {
     }
 };
 
-var NMDeviceModem = class extends NMConnectionDevice {
+export class NMDeviceModem extends NMConnectionDevice {
+    /**
+     * @param {NM.Client} client 
+     * @param {NM.DeviceModem} device 
+     */
     constructor(client, device) {
         super(client, device);
 
@@ -647,9 +690,15 @@ var NMDeviceModem = class extends NMConnectionDevice {
     }
 };
 
-var NMDeviceBluetooth = class extends NMConnectionDevice {
+export class NMDeviceBluetooth extends NMConnectionDevice {
+    /**
+     * @param {NM.Client} client 
+     * @param {NM.DeviceBt} device 
+     */
     constructor(client, device) {
         super(client, device);
+
+        this._device = device;
 
         this.item.menu.addSettingsAction(_("Bluetooth Settings"), 'gnome-network-panel.desktop');
     }
@@ -681,7 +730,7 @@ var NMDeviceBluetooth = class extends NMConnectionDevice {
     }
 };
 
-var NMWirelessDialogItem = GObject.registerClass({
+export const NMWirelessDialogItem = GObject.registerClass({
     Signals: {
         'selected': {},
     },
@@ -708,7 +757,7 @@ var NMWirelessDialogItem = GObject.registerClass({
         this.add_child(this._label);
 
         this._selectedIcon = new St.Icon({ style_class: 'nm-dialog-icon',
-                                           icon_name: 'object-select-symbolic' });
+                                           icon_name: 'object-select-symbolic' })
         this.add(this._selectedIcon);
 
         this._icons = new St.BoxLayout({
@@ -755,7 +804,7 @@ var NMWirelessDialogItem = GObject.registerClass({
     }
 });
 
-var NMWirelessDialog = GObject.registerClass(
+export const NMWirelessDialog = GObject.registerClass(
 class NMWirelessDialog extends ModalDialog.ModalDialog {
     _init(client, device) {
         super._init({ styleClass: 'nm-dialog' });
@@ -1155,15 +1204,16 @@ class NMWirelessDialog extends ModalDialog.ModalDialog {
 
             this._resortItems();
         } else {
+            const ssid = accessPoint.get_ssid();
             network = {
-                ssid: accessPoint.get_ssid(),
+                ssid: ssid,
+                ssidText: ssidToLabel(ssid),
                 mode: accessPoint.mode,
                 security: this._getApSecurityType(accessPoint),
                 connections: [],
                 item: null,
                 accessPoints: [accessPoint],
             };
-            network.ssidText = ssidToLabel(network.ssid);
             this._checkConnections(network, accessPoint);
 
             let newPos = Util.insertSorted(this._networks, network, this._networkSortFunction);
@@ -1258,7 +1308,7 @@ class NMWirelessDialog extends ModalDialog.ModalDialog {
     }
 });
 
-var NMDeviceWireless = class extends Signals.EventEmitter {
+export class NMDeviceWireless extends Signals.EventEmitter {
     constructor(client, device) {
         super();
 
@@ -1471,7 +1521,7 @@ var NMDeviceWireless = class extends Signals.EventEmitter {
     }
 };
 
-var NMVpnConnectionItem = class extends NMConnectionItem {
+export class NMVpnConnectionItem extends NMConnectionItem {
     isActive() {
         if (this._activeConnection == null)
             return false;
@@ -1490,6 +1540,9 @@ var NMVpnConnectionItem = class extends NMConnectionItem {
     _sync() {
         let isActive = this.isActive();
         this.labelItem.label.text = isActive ? _("Turn Off") : this._section.getConnectLabel();
+        
+        assertType(this.radioItem, PopupMenu.PopupSwitchMenuItem);
+        
         this.radioItem.setToggleState(isActive);
         this.radioItem.setStatus(this._getStatus());
         this.emit('icon-changed');
@@ -1558,7 +1611,7 @@ var NMVpnConnectionItem = class extends NMConnectionItem {
     }
 };
 
-var NMVpnSection = class extends NMConnectionSection {
+export class NMVpnSection extends NMConnectionSection {
     constructor(client) {
         super(client);
 
@@ -1632,7 +1685,7 @@ var NMVpnSection = class extends NMConnectionSection {
     }
 };
 
-var DeviceCategory = class extends PopupMenu.PopupMenuSection {
+class DeviceCategory extends PopupMenu.PopupMenuSection {
     constructor(category) {
         super();
 
@@ -1693,7 +1746,7 @@ var DeviceCategory = class extends PopupMenu.PopupMenuSection {
     }
 };
 
-var NMApplet = GObject.registerClass(
+export const NMApplet = GObject.registerClass(
 class Indicator extends PanelMenu.SystemIndicator {
     _init() {
         super._init();
@@ -1803,7 +1856,7 @@ class Indicator extends PanelMenu.SystemIndicator {
             try {
                 this._deviceAdded(this._client, devices[i], true);
             } catch (e) {
-                log('Failed to add device %s: %s'.format(devices[i], e.toString()));
+                log('Failed to add device %s: %s'.format(devices[i].toString(), e.toString()));
             }
         }
         this._syncDeviceNames();

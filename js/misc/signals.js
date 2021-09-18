@@ -1,5 +1,6 @@
+/** @type {import("environment").SignalsNamespace} */
 const Signals = imports.signals;
 
-var EventEmitter = class EventEmitter {};
+export class EventEmitter {}
 
 Signals.addSignalMethods(EventEmitter.prototype);

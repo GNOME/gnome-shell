@@ -1,22 +1,35 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported InputSourceIndicator */
 
-const { Clutter, Gio, GLib, GObject, IBus, Meta, Shell, St } = imports.gi;
-const Gettext = imports.gettext;
-const Signals = imports.misc.signals;
+import Clutter from 'gi://Clutter';
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
+import IBus from 'gi://IBus';
+import Meta from 'gi://Meta';
+import Shell from 'gi://Shell';
+import St from 'gi://St';
+import * as Gettext from 'gettext';
+import * as Signals from '../../misc/signals.js';
 
-const IBusManager = imports.misc.ibusManager;
-const KeyboardManager = imports.misc.keyboardManager;
-const Main = imports.ui.main;
-const PopupMenu = imports.ui.popupMenu;
-const PanelMenu = imports.ui.panelMenu;
-const SwitcherPopup = imports.ui.switcherPopup;
-const Util = imports.misc.util;
+import * as IBusManager from '../../misc/ibusManager.js';
+import * as KeyboardManager from '../../misc/keyboardManager.js';
+import Main from '../main.js';
+import * as PopupMenu from '../popupMenu.js';
+import * as PanelMenu from '../panelMenu.js';
+import * as SwitcherPopup from '../switcherPopup.js';
+import * as Util from '../../misc/util.js';
 
-var INPUT_SOURCE_TYPE_XKB = 'xkb';
-var INPUT_SOURCE_TYPE_IBUS = 'ibus';
+export let INPUT_SOURCE_TYPE_XKB = 'xkb';
+export let INPUT_SOURCE_TYPE_IBUS = 'ibus';
 
-var LayoutMenuItem = GObject.registerClass(
+/** 
+ * @typedef {object} LayoutMenuItemParams
+ * @property {string} displayName
+ * @property {string} shortName
+ */
+
+export const LayoutMenuItem = GObject.registerClass(
 class LayoutMenuItem extends PopupMenu.PopupBaseMenuItem {
     _init(displayName, shortName) {
         super._init();
@@ -32,7 +45,7 @@ class LayoutMenuItem extends PopupMenu.PopupBaseMenuItem {
     }
 });
 
-var InputSource = class extends Signals.EventEmitter {
+export class InputSource extends Signals.EventEmitter {
     constructor(type, id, displayName, shortName, index) {
         super();
 
@@ -72,8 +85,13 @@ var InputSource = class extends Signals.EventEmitter {
     }
 };
 
-var InputSourcePopup = GObject.registerClass(
+export const InputSourcePopup = GObject.registerClass(
 class InputSourcePopup extends SwitcherPopup.SwitcherPopup {
+    /**
+     * @param {*} items 
+     * @param {*} action 
+     * @param {*} actionBackward 
+     */
     _init(items, action, actionBackward) {
         super._init(items);
 
@@ -105,10 +123,13 @@ class InputSourcePopup extends SwitcherPopup.SwitcherPopup {
     }
 });
 
-var InputSourceSwitcher = GObject.registerClass(
+export const InputSourceSwitcher = GObject.registerClass(
 class InputSourceSwitcher extends SwitcherPopup.SwitcherList {
+    /**
+     * @param {*} items 
+     */
     _init(items) {
-        super._init(true);
+        super._init({ squareItems: true });
 
         for (let i = 0; i < items.length; i++)
             this._addIcon(items[i]);
@@ -136,7 +157,7 @@ class InputSourceSwitcher extends SwitcherPopup.SwitcherList {
     }
 });
 
-var InputSourceSettings = class extends Signals.EventEmitter {
+export class InputSourceSettings extends Signals.EventEmitter {
     constructor() {
         super();
 
@@ -177,7 +198,7 @@ var InputSourceSettings = class extends Signals.EventEmitter {
     }
 };
 
-var InputSourceSystemSettings = class extends InputSourceSettings {
+export class InputSourceSystemSettings extends InputSourceSettings {
     constructor() {
         super();
 
@@ -202,6 +223,7 @@ var InputSourceSystemSettings = class extends InputSourceSettings {
     }
 
     async _reload() {
+        /** @type {{ [key: string]: GLib.Variant }} */
         let props;
         try {
             const result = await Gio.DBus.system.call(
@@ -211,15 +233,19 @@ var InputSourceSystemSettings = class extends InputSourceSettings {
                 'GetAll',
                 new GLib.Variant('(s)', [this._BUS_IFACE]),
                 null, Gio.DBusCallFlags.NONE, -1, null);
-            [props] = result.deep_unpack();
+            /** @type {[{ [key: string]: GLib.Variant }]} */
+            [props] = (result.deep_unpack());
         } catch (e) {
             log('Could not get properties from %s'.format(this._BUS_NAME));
             return;
         }
 
-        const layouts = props['X11Layout'].unpack();
-        const variants = props['X11Variant'].unpack();
-        const options = props['X11Options'].unpack();
+        /** @type {string} */
+        const layouts = (props['X11Layout'].unpack());
+        /** @type {string} */
+        const variants = (props['X11Variant'].unpack());
+        /** @type {string} */
+        const options = (props['X11Options'].unpack());
 
         if (layouts !== this._layouts ||
             variants !== this._variants) {
@@ -252,7 +278,7 @@ var InputSourceSystemSettings = class extends InputSourceSettings {
     }
 };
 
-var InputSourceSessionSettings = class extends InputSourceSettings {
+export class InputSourceSessionSettings extends InputSourceSettings {
     constructor() {
         super();
 
@@ -269,12 +295,14 @@ var InputSourceSessionSettings = class extends InputSourceSettings {
     }
 
     _getSourcesList(key) {
+        /** @type {{ type: string, id: number }[]} */
         let sourcesList = [];
         let sources = this._settings.get_value(key);
         let nSources = sources.n_children();
 
         for (let i = 0; i < nSources; i++) {
-            let [type, id] = sources.get_child_value(i).deep_unpack();
+            /** @type {[string, number]} */
+            let [type, id] = (sources.get_child_value(i).deep_unpack());
             sourcesList.push({ type, id });
         }
         return sourcesList;
@@ -289,7 +317,8 @@ var InputSourceSessionSettings = class extends InputSourceSettings {
     }
 
     set mruSources(sourcesList) {
-        let sources = GLib.Variant.new('a(ss)', sourcesList);
+        let list = sourcesList.map(/** @returns {[string, string]} */ ({type, id}) => [type, id.toFixed(0)]);
+        let sources = GLib.Variant.new('a(ss)', list);
         this._settings.set_value(this._KEY_MRU_SOURCES, sources);
     }
 
@@ -302,7 +331,7 @@ var InputSourceSessionSettings = class extends InputSourceSettings {
     }
 };
 
-var InputSourceManager = class extends Signals.EventEmitter {
+export class InputSourceManager extends Signals.EventEmitter {
     constructor() {
         super();
 
@@ -782,16 +811,20 @@ var InputSourceManager = class extends Signals.EventEmitter {
     }
 };
 
+/** @type {InputSourceManager | null} */
 let _inputSourceManager = null;
 
-function getInputSourceManager() {
+export function getInputSourceManager() {
     if (_inputSourceManager == null)
         _inputSourceManager = new InputSourceManager();
     return _inputSourceManager;
 }
 
-var InputSourceIndicatorContainer = GObject.registerClass(
+export const InputSourceIndicatorContainer = GObject.registerClass(
 class InputSourceIndicatorContainer extends St.Widget {
+    /**
+     * @returns {[number, number]}
+     */
     vfunc_get_preferred_width(forHeight) {
         // Here, and in vfunc_get_preferred_height, we need to query
         // for the height of all children, but we ignore the results
@@ -803,6 +836,9 @@ class InputSourceIndicatorContainer extends St.Widget {
         }, [0, 0]);
     }
 
+    /**
+     * @returns {[number, number]}
+     */
     vfunc_get_preferred_height(forWidth) {
         return this.get_children().reduce((maxHeight, child) => {
             let height = child.get_preferred_height(forWidth);
@@ -826,7 +862,7 @@ class InputSourceIndicatorContainer extends St.Widget {
     }
 });
 
-var InputSourceIndicator = GObject.registerClass(
+export const InputSourceIndicator = GObject.registerClass(
 class InputSourceIndicator extends PanelMenu.Button {
     _init() {
         super._init(0.5, _("Keyboard"));

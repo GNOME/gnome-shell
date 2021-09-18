@@ -1,11 +1,18 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported ScreenshotService */
 
-const { Clutter, Gio, GObject, GLib, Meta, Shell, St } = imports.gi;
+import Clutter from 'gi://Clutter';
+import Gio from 'gi://Gio';
+import GObject from 'gi://GObject';
+import GLib from 'gi://GLib';
+import Meta from 'gi://Meta';
+import Shell from 'gi://Shell';
+import St from 'gi://St';
 
-const GrabHelper = imports.ui.grabHelper;
-const Lightbox = imports.ui.lightbox;
-const Main = imports.ui.main;
+
+import * as GrabHelper from './grabHelper.js';
+import * as Lightbox from './lightbox.js';
+import Main from './main.js';
 
 Gio._promisify(Shell.Screenshot.prototype, 'pick_color', 'pick_color_finish');
 Gio._promisify(Shell.Screenshot.prototype, 'screenshot', 'screenshot_finish');
@@ -14,12 +21,12 @@ Gio._promisify(Shell.Screenshot.prototype,
 Gio._promisify(Shell.Screenshot.prototype,
     'screenshot_area', 'screenshot_area_finish');
 
-const { loadInterfaceXML } = imports.misc.fileUtils;
-const { DBusSenderChecker } = imports.misc.util;
+import { loadInterfaceXML } from '../misc/fileUtilsModule.js';
+import { DBusSenderChecker } from '../misc/util.js';
 
 const ScreenshotIface = loadInterfaceXML('org.gnome.Shell.Screenshot');
 
-var ScreenshotService = class {
+export class ScreenshotService {
     constructor() {
         this._dbusImpl = Gio.DBusExportedObject.wrapJSObject(ScreenshotIface, this);
         this._dbusImpl.export(Gio.DBus.session, '/org/gnome/Shell/Screenshot');
@@ -108,10 +115,13 @@ var ScreenshotService = class {
 
         for (let idx = 1; ; idx++) {
             yield Gio.File.new_for_path(
-                GLib.build_filenamev([path, '%s-%s.png'.format(filename, idx)]));
+                GLib.build_filenamev([path, '%s-%s.png'.format(filename, idx.toFixed(0))]));
         }
     }
 
+    /**
+     * @returns {[Gio.OutputStream, Gio.File | null] | [null, null]}
+     */
     _createStream(filename, invocation) {
         if (filename == '')
             return [Gio.MemoryOutputStream.new_resizable(), null];
@@ -182,6 +192,15 @@ var ScreenshotService = class {
         return [x, y, width, height];
     }
 
+    // FIXME
+    /**
+     * 
+     * @param {number} x 
+     * @param {number} y 
+     * @param {number} width 
+     * @param {number} height 
+     * @returns {[number, number, number, number]}
+     */
     _unscaleArea(x, y, width, height) {
         let scaleFactor = St.ThemeContext.get_for_stage(global.stage).scale_factor;
         x /= scaleFactor;
@@ -337,7 +356,7 @@ var ScreenshotService = class {
     }
 };
 
-var SelectArea = GObject.registerClass(
+export const SelectArea = GObject.registerClass(
 class SelectArea extends St.Widget {
     _init() {
         this._startX = -1;
@@ -438,7 +457,7 @@ class SelectArea extends St.Widget {
     }
 });
 
-var RecolorEffect = GObject.registerClass({
+export const RecolorEffect = GObject.registerClass({
     Properties: {
         color: GObject.ParamSpec.boxed(
             'color', 'color', 'replacement color',
@@ -567,7 +586,7 @@ var RecolorEffect = GObject.registerClass({
     }
 });
 
-var PickPixel = GObject.registerClass(
+export const PickPixel = GObject.registerClass(
 class PickPixel extends St.Widget {
     _init(screenshot) {
         super._init({ visible: false, reactive: true });
@@ -657,9 +676,9 @@ class PickPixel extends St.Widget {
     }
 });
 
-var FLASHSPOT_ANIMATION_OUT_TIME = 500; // milliseconds
+export const FLASHSPOT_ANIMATION_OUT_TIME = 500; // milliseconds
 
-var Flashspot = GObject.registerClass(
+export const Flashspot = GObject.registerClass(
 class Flashspot extends Lightbox.Lightbox {
     _init(area) {
         super._init(Main.uiGroup, {

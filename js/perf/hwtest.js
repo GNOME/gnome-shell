@@ -7,11 +7,14 @@
             script_geditLaunch, script_geditFirstFrame,
             clutter_stagePaintStart, clutter_paintCompletedTimestamp */
 /* eslint camelcase: ["error", { properties: "never", allow: ["^script_", "^clutter"] }] */
-const { Clutter, Gio, Shell } = imports.gi;
-const Main = imports.ui.main;
-const Scripting = imports.ui.scripting;
+import Clutter from 'gi://Clutter';
+import Gio from 'gi://Gio';
+import Shell from 'gi://Shell';
 
-var METRICS = {
+import Main from "../ui/main.js";
+import * as Scripting from "../ui/scripting.js";
+
+export const METRICS = {
     timeToDesktop:
     { description: "Time from starting graphical.target to desktop showing",
       units: "us" },

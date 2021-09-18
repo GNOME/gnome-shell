@@ -2,7 +2,10 @@
 
 const UI = imports.testcommon.ui;
 
-const { Clutter, GLib, St } = imports.gi;
+import Clutter from 'gi://Clutter';
+import GLib from 'gi://GLib';
+import St from 'gi://St';
+
 
 const DELAY = 2000;
 
@@ -22,7 +25,7 @@ function resize_animated(label) {
     }
 }
 
-function get_css_style(shadow_style)
+export function get_css_style(shadow_style)
 {
     return 'border: 20px solid black;' +
         'border-radius: 20px;' +

@@ -1,10 +1,10 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported canLock, getLoginManager, registerSessionWithGDM */
 
-const { GLib, Gio } = imports.gi;
-const Signals = imports.misc.signals;
+import GLib from 'gi://GLib';
+import Gio from 'gi://Gio';
+import * as Signals from './signals.js';
 
-const { loadInterfaceXML } = imports.misc.fileUtils;
+import { loadInterfaceXML } from "./fileUtilsModule.js";
 
 const SystemdLoginManagerIface = loadInterfaceXML('org.freedesktop.login1.Manager');
 const SystemdLoginSessionIface = loadInterfaceXML('org.freedesktop.login1.Session');
@@ -32,7 +32,7 @@ function versionCompare(required, reference) {
     return true;
 }
 
-function canLock() {
+export function canLock() {
     try {
         let params = GLib.Variant.new('(ss)', ['org.gnome.DisplayManager.Manager', 'Version']);
         let result = Gio.DBus.system.call_sync('org.gnome.DisplayManager',
@@ -49,8 +49,7 @@ function canLock() {
     }
 }
 
-
-async function registerSessionWithGDM() {
+export async function registerSessionWithGDM() {
     log("Registering session with GDM");
     try {
         await Gio.DBus.system.call(
@@ -68,6 +67,7 @@ async function registerSessionWithGDM() {
     }
 }
 
+/** @type {LoginManagerSystemd | LoginManagerDummy | null} */
 let _loginManager = null;
 
 /**
@@ -76,7 +76,7 @@ let _loginManager = null;
  * @returns {object} - the LoginManager singleton
  *
  */
-function getLoginManager() {
+export function getLoginManager() {
     if (_loginManager == null) {
         if (haveSystemd())
             _loginManager = new LoginManagerSystemd();
@@ -87,7 +87,7 @@ function getLoginManager() {
     return _loginManager;
 }
 
-var LoginManagerSystemd = class extends Signals.EventEmitter {
+export class LoginManagerSystemd extends Signals.EventEmitter {
     constructor() {
         super();
 
@@ -205,7 +205,7 @@ var LoginManagerSystemd = class extends Signals.EventEmitter {
     }
 };
 
-var LoginManagerDummy = class extends Signals.EventEmitter  {
+export class LoginManagerDummy extends Signals.EventEmitter {
     getCurrentSessionProxy(_callback) {
         // we could return a DummySession object that fakes whatever callers
         // expect (at the time of writing: connect() and connectSignal()

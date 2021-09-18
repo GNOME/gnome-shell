@@ -1,9 +1,11 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported GrabHelper */
 
-const { Clutter, St } = imports.gi;
+import Clutter from 'gi://Clutter';
+import St from 'gi://St';
 
-const Main = imports.ui.main;
+
+import Main from './main.js';
 
 let _capturedEventId = 0;
 let _grabHelperStack = [];
@@ -30,6 +32,8 @@ function _popGrabHelper(grabHelper) {
     }
 }
 
+/** @typedef {{ actor: St.Widget, focus?: St.Widget, savedFocus?: Clutter.Actor, onUngrab: (isUser: boolean) => void }} Grab */
+
 // GrabHelper:
 // @owner: the actor that owns the GrabHelper
 // @params: optional parameters to pass to Main.pushModal()
@@ -41,7 +45,7 @@ function _popGrabHelper(grabHelper) {
 // your code just needs to deal with it; you shouldn't adjust behavior directly
 // after you call ungrab(), but instead pass an 'onUngrab' callback when you
 // call grab().
-var GrabHelper = class GrabHelper {
+export class GrabHelper {
     constructor(owner, params) {
         if (!(owner instanceof Clutter.Actor))
             throw new Error('GrabHelper owner must be a Clutter.Actor');

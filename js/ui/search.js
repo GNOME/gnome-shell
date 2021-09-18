@@ -1,20 +1,26 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported SearchResultsView */
 
-const { Clutter, Gio, GLib, GObject, Meta, Shell, St } = imports.gi;
+import Clutter from 'gi://Clutter';
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
+import Meta from 'gi://Meta';
+import Shell from 'gi://Shell';
+import St from 'gi://St';
 
-const AppDisplay = imports.ui.appDisplay;
-const IconGrid = imports.ui.iconGrid;
-const Main = imports.ui.main;
-const ParentalControlsManager = imports.misc.parentalControlsManager;
-const RemoteSearch = imports.ui.remoteSearch;
-const Util = imports.misc.util;
+import * as AppDisplay from './appDisplay.js';
+import * as IconGrid from './iconGrid.js';
+import Main from './main.js';
+import * as ParentalControlsManager from '../misc/parentalControlsManager.js';
+import * as RemoteSearch from './remoteSearch.js';
+import * as Util from '../misc/util.js';
 
 const SEARCH_PROVIDERS_SCHEMA = 'org.gnome.desktop.search-providers';
 
-var MAX_LIST_SEARCH_RESULTS_ROWS = 5;
+export let MAX_LIST_SEARCH_RESULTS_ROWS = 5;
 
-var MaxWidthBox = GObject.registerClass(
+export const MaxWidthBox = GObject.registerClass(
 class MaxWidthBox extends St.BoxLayout {
     vfunc_allocate(box) {
         let themeNode = this.get_theme_node();
@@ -32,7 +38,7 @@ class MaxWidthBox extends St.BoxLayout {
     }
 });
 
-var SearchResult = GObject.registerClass(
+export const SearchResult = GObject.registerClass(
 class SearchResult extends St.Button {
     _init(provider, metaInfo, resultsView) {
         this.provider = provider;
@@ -61,8 +67,13 @@ class SearchResult extends St.Button {
     }
 });
 
-var ListSearchResult = GObject.registerClass(
+export const ListSearchResult = GObject.registerClass(
 class ListSearchResult extends SearchResult {
+    /**
+     * @param {*} provider 
+     * @param {*} metaInfo 
+     * @param {*} resultsView 
+     */
     _init(provider, metaInfo, resultsView) {
         super._init(provider, metaInfo, resultsView);
 
@@ -132,7 +143,7 @@ class ListSearchResult extends SearchResult {
     }
 });
 
-var GridSearchResult = GObject.registerClass(
+export const GridSearchResult = GObject.registerClass(
 class GridSearchResult extends SearchResult {
     _init(provider, metaInfo, resultsView) {
         super._init(provider, metaInfo, resultsView);
@@ -152,7 +163,7 @@ class GridSearchResult extends SearchResult {
     }
 });
 
-var SearchResultsBase = GObject.registerClass({
+export const SearchResultsBase = GObject.registerClass({
     GTypeFlags: GObject.TypeFlags.ABSTRACT,
     Properties: {
         'focus-child': GObject.ParamSpec.object(
@@ -192,6 +203,24 @@ var SearchResultsBase = GObject.registerClass({
             return this.provider.createResultObject(meta, this._resultsView);
 
         return null;
+    }
+
+    _clearResultDisplay() {
+        throw new GObject.NotImplementedError(`_clearResultDisplay in ${this.constructor.name}`);
+    }
+
+    /**
+     * @returns {number}
+     */
+    _getMaxDisplayedResults() {
+        throw new GObject.NotImplementedError(`_getMaxDisplayedResults in ${this.constructor.name}`);
+    }
+
+    /**
+     * @param {*} display 
+     */
+    _addItem(display) {
+        throw new GObject.NotImplementedError(`_addItem in ${this.constructor.name}`);
     }
 
     clear() {
@@ -293,7 +322,7 @@ var SearchResultsBase = GObject.registerClass({
     }
 });
 
-var ListSearchResults = GObject.registerClass(
+export const ListSearchResults = GObject.registerClass(
 class ListSearchResults extends SearchResultsBase {
     _init(provider, resultsView) {
         super._init(provider, resultsView);
@@ -348,7 +377,7 @@ class ListSearchResults extends SearchResultsBase {
     }
 });
 
-var GridSearchResultsLayout = GObject.registerClass({
+export const GridSearchResultsLayout = GObject.registerClass({
     Properties: {
         'spacing': GObject.ParamSpec.int('spacing', 'Spacing', 'Spacing',
             GObject.ParamFlags.READWRITE, 0, GLib.MAXINT32, 0),
@@ -363,6 +392,9 @@ var GridSearchResultsLayout = GObject.registerClass({
         this._container = container;
     }
 
+    /**
+     * @returns {[number, number]}
+     */
     vfunc_get_preferred_width(container, forHeight) {
         let minWidth = 0;
         let natWidth = 0;
@@ -386,6 +418,9 @@ var GridSearchResultsLayout = GObject.registerClass({
         return [minWidth, natWidth];
     }
 
+    /**
+     * @returns {[number, number]}
+     */
     vfunc_get_preferred_height(container, forWidth) {
         let minHeight = 0;
         let natHeight = 0;
@@ -467,12 +502,12 @@ var GridSearchResultsLayout = GObject.registerClass({
     }
 });
 
-var GridSearchResults = GObject.registerClass(
+export const GridSearchResults = GObject.registerClass(
 class GridSearchResults extends SearchResultsBase {
     _init(provider, resultsView) {
         super._init(provider, resultsView);
 
-        this._grid = new St.Widget({ style_class: 'grid-search-results' });
+        this._grid = new St.Widget({ style_class: 'grid-search-results', layout_manager: /** @type {GridSearchResultsLayout["prototype"]} */ (null) });
         this._grid.layout_manager = new GridSearchResultsLayout();
 
         this._grid.connect('style-changed', () => {
@@ -548,7 +583,7 @@ class GridSearchResults extends SearchResultsBase {
     }
 });
 
-var SearchResultsView = GObject.registerClass({
+export const SearchResultsView = GObject.registerClass({
     Signals: { 'terms-changed': {} },
 }, class SearchResultsView extends St.BoxLayout {
     _init() {
@@ -901,7 +936,7 @@ var SearchResultsView = GObject.registerClass({
     }
 });
 
-var ProviderInfo = GObject.registerClass(
+export const ProviderInfo = GObject.registerClass(
 class ProviderInfo extends St.Button {
     _init(provider) {
         this.provider = provider;

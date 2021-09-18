@@ -1,21 +1,23 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported Indicator */
 
-const { GObject, Shell, St } = imports.gi;
+import GObject from 'gi://GObject';
+import Shell from 'gi://Shell';
+import St from 'gi://St';
 
-const BoxPointer = imports.ui.boxpointer;
-const SystemActions = imports.misc.systemActions;
-const Main = imports.ui.main;
-const PanelMenu = imports.ui.panelMenu;
-const PopupMenu = imports.ui.popupMenu;
+import * as BoxPointer from '../boxpointer.js';
+import * as SystemActions from '../../misc/systemActions.js';
+import Main from '../main.js';
+import * as PanelMenu from '../panelMenu.js';
+import * as PopupMenu from '../popupMenu.js';
 
 
-var Indicator = GObject.registerClass(
+export const Indicator = GObject.registerClass(
 class Indicator extends PanelMenu.SystemIndicator {
     _init() {
         super._init();
 
-        this._systemActions = new SystemActions.getDefault();
+        this._systemActions = SystemActions.getDefault();
 
         this._createSubMenu();
 

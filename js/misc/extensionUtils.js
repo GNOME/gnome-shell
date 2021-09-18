@@ -7,18 +7,19 @@
 // Common utils for the extension system and the extension
 // preferences tool
 
-const { Gio, GLib } = imports.gi;
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
 
-const Gettext = imports.gettext;
+import * as Gettext from 'gettext';
 
 const Config = imports.misc.config;
 
-var ExtensionType = {
+export const ExtensionType = {
     SYSTEM: 1,
     PER_USER: 2,
 };
 
-var ExtensionState = {
+export const ExtensionState = {
     ENABLED: 1,
     DISABLED: 2,
     ERROR: 3,
@@ -41,13 +42,36 @@ const SERIALIZED_PROPERTIES = [
     'canChange',
 ];
 
+let extension;
+/** @type {typeof import('../ui/main.js').default} */
+let Main;
+
+export function _setCurrentExtension(currentExtension) {
+    extension = currentExtension;
+}
+
+/** @param {typeof import('../ui/main.js').default} main */
+export function _setMain(main) {
+    Main = main;
+}
+
+/** @typedef {object} Extension */
+
 /**
  * getCurrentExtension:
  *
- * @returns {?object} - The current extension, or null if not called from
+ * @returns {Extension} - The current extension, or null if not called from
  * an extension.
  */
-function getCurrentExtension() {
+export function getCurrentExtension() {
+    if (extension) {
+        return extension;
+    }
+
+    if (!Main) {
+        throw new Error(`getCurrentExtension cannot be called before ExtensionUtils._setMain`);
+    }
+
     let stack = new Error().stack.split('\n');
     let extensionStackLine;
 
@@ -74,7 +98,6 @@ function getCurrentExtension() {
 
     // local import, as the module is used from outside the gnome-shell process
     // as well (not this function though)
-    let extensionManager = imports.ui.main.extensionManager;
 
     let path = match[1];
     let file = Gio.File.new_for_path(path);
@@ -82,7 +105,7 @@ function getCurrentExtension() {
     // Walk up the directory tree, looking for an extension with
     // the same UUID as a directory name.
     while (file != null) {
-        let extension = extensionManager.lookup(file.get_basename());
+        let extension = Main.extensionManager.lookup(file.get_basename());
         if (extension !== undefined)
             return extension;
         file = file.get_parent();
@@ -98,7 +121,7 @@ function getCurrentExtension() {
  * Initialize Gettext to load translations from extensionsdir/locale.
  * If @domain is not provided, it will be taken from metadata['gettext-domain']
  */
-function initTranslations(domain) {
+export function initTranslations(domain) {
     let extension = getCurrentExtension();
 
     if (!extension)
@@ -176,13 +199,13 @@ function callExtensionGettextFunc(func, ...args) {
 /**
  * getSettings:
  * @param {string=} schema - the GSettings schema id
- * @returns {Gio.Settings} - a new settings object for @schema
+ * @returns {import("gi://Gio").Settings} - a new settings object for @schema
  *
  * Builds and returns a GSettings schema for @schema, using schema files
  * in extensionsdir/schemas. If @schema is omitted, it is taken from
  * metadata['settings-schema'].
  */
-function getSettings(schema) {
+export function getSettings(schema) {
     let extension = getCurrentExtension();
 
     if (!extension)
@@ -198,8 +221,8 @@ function getSettings(schema) {
     let schemaSource;
     if (schemaDir.query_exists(null)) {
         schemaSource = GioSSS.new_from_directory(schemaDir.get_path(),
-                                                 GioSSS.get_default(),
-                                                 false);
+            GioSSS.get_default(),
+            false);
     } else {
         schemaSource = GioSSS.get_default();
     }
@@ -216,15 +239,14 @@ function getSettings(schema) {
  *
  * Open the preference dialog of the current extension
  */
-function openPrefs() {
+export function openPrefs() {
     const extension = getCurrentExtension();
 
     if (!extension)
         throw new Error('openPrefs() can only be called from extensions');
 
     try {
-        const extensionManager = imports.ui.main.extensionManager;
-        extensionManager.openExtensionPrefs(extension.uuid, '', {});
+        Main.extensionManager.openExtensionPrefs(extension.uuid, '', {});
     } catch (e) {
         if (e.name === 'ImportError')
             throw new Error('openPrefs() cannot be called from preferences');
@@ -232,34 +254,37 @@ function openPrefs() {
     }
 }
 
-function isOutOfDate(extension) {
+export function isOutOfDate(extension) {
     const [major] = Config.PACKAGE_VERSION.split('.');
     return !extension.metadata['shell-version'].some(v => v.startsWith(major));
 }
 
-function serializeExtension(extension) {
-    let obj = { ...extension.metadata };
+export function serializeExtension(extension) {
+    let obj = {};
+    Object.assign(obj, extension.metadata);
 
     SERIALIZED_PROPERTIES.forEach(prop => {
         obj[prop] = extension[prop];
     });
 
+    /** @type {{ [key: string]: GLib.Variant<'b' | 's' | 'd'>}} */
     let res = {};
     for (let key in obj) {
         let val = obj[key];
+        /** @type {'s' | 'd' | 'b'} */
         let type;
         switch (typeof val) {
-        case 'string':
-            type = 's';
-            break;
-        case 'number':
-            type = 'd';
-            break;
-        case 'boolean':
-            type = 'b';
-            break;
-        default:
-            continue;
+            case 'string':
+                type = 's';
+                break;
+            case 'number':
+                type = 'd';
+                break;
+            case 'boolean':
+                type = 'b';
+                break;
+            default:
+                continue;
         }
         res[key] = GLib.Variant.new(type, val);
     }
@@ -267,7 +292,7 @@ function serializeExtension(extension) {
     return res;
 }
 
-function deserializeExtension(variant) {
+export function deserializeExtension(variant) {
     let res = { metadata: {} };
     for (let prop in variant) {
         let val = variant[prop].unpack();
@@ -282,11 +307,4 @@ function deserializeExtension(variant) {
     return res;
 }
 
-function installImporter(extension) {
-    let oldSearchPath = imports.searchPath.slice();  // make a copy
-    imports.searchPath = [extension.dir.get_parent().get_path()];
-    // importing a "subdir" creates a new importer object that doesn't affect
-    // the global one
-    extension.imports = imports[extension.uuid];
-    imports.searchPath = oldSearchPath;
-}
+// extension.dir.get_parent().get_path()

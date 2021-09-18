@@ -1,39 +1,45 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported AppDisplay, AppSearchProvider */
 
-const { Clutter, Gio, GLib, GObject, Graphene, Meta,
-    Pango, Shell, St } = imports.gi;
+import Clutter from 'gi://Clutter';
+import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
+import Gio from 'gi://Gio';
 
-const AppFavorites = imports.ui.appFavorites;
-const { AppMenu } = imports.ui.appMenu;
-const BoxPointer = imports.ui.boxpointer;
-const DND = imports.ui.dnd;
-const GrabHelper = imports.ui.grabHelper;
-const IconGrid = imports.ui.iconGrid;
-const Layout = imports.ui.layout;
-const Main = imports.ui.main;
-const PageIndicators = imports.ui.pageIndicators;
-const ParentalControlsManager = imports.misc.parentalControlsManager;
-const PopupMenu = imports.ui.popupMenu;
-const Search = imports.ui.search;
-const SwipeTracker = imports.ui.swipeTracker;
-const SystemActions = imports.misc.systemActions;
+import Graphene from 'gi://Graphene';
+import Pango from 'gi://Pango';
+import Meta from 'gi://Meta';
+import Shell from 'gi://Shell';
+import St from 'gi://St';
 
-var MENU_POPUP_TIMEOUT = 600;
-var POPDOWN_DIALOG_TIMEOUT = 500;
+import * as AppFavorites from './appFavorites.js';
+import * as DND from './dnd.js';
+import * as GrabHelper from './grabHelper.js';
+import * as IconGrid from './iconGrid.js';
+import * as Layout from './layout.js';
+import Main from './main.js';
+import * as PageIndicators from './pageIndicators.js';
+import * as ParentalControlsManager from '../misc/parentalControlsManager.js';
+import * as PopupMenu from './popupMenu.js';
+import * as Search from './search.js';
+import * as SwipeTracker from './swipeTracker.js';
+import * as SystemActions from '../misc/systemActions.js';
 
-var FOLDER_SUBICON_FRACTION = .4;
+export const MENU_POPUP_TIMEOUT = 600;
+export const POPDOWN_DIALOG_TIMEOUT = 500;
 
-var VIEWS_SWITCH_TIME = 400;
-var VIEWS_SWITCH_ANIMATION_DELAY = 100;
+export const FOLDER_SUBICON_FRACTION = .4;
 
-var SCROLL_TIMEOUT_TIME = 150;
+export const VIEWS_SWITCH_TIME = 400;
+export const VIEWS_SWITCH_ANIMATION_DELAY = 100;
 
-var APP_ICON_SCALE_IN_TIME = 500;
-var APP_ICON_SCALE_IN_DELAY = 700;
+export const SCROLL_TIMEOUT_TIME = 150;
 
-var APP_ICON_TITLE_EXPAND_TIME = 200;
-var APP_ICON_TITLE_COLLAPSE_TIME = 100;
+export const APP_ICON_SCALE_IN_TIME = 500;
+export const APP_ICON_SCALE_IN_DELAY = 700;
+
+export const APP_ICON_TITLE_EXPAND_TIME = 200;
+export const APP_ICON_TITLE_COLLAPSE_TIME = 100;
 
 const FOLDER_DIALOG_ANIMATION_TIME = 200;
 
@@ -86,14 +92,9 @@ function _getFolderName(folder) {
     return name;
 }
 
-function _getViewFromIcon(icon) {
-    for (let parent = icon.get_parent(); parent; parent = parent.get_parent()) {
-        if (parent instanceof BaseAppView)
-            return parent;
-    }
-    return null;
-}
-
+/**
+ * @param {readonly Shell.App[]} apps 
+ */
 function _findBestFolderName(apps) {
     let appInfos = apps.map(app => app.get_app_info());
 
@@ -126,7 +127,7 @@ function _findBestFolderName(apps) {
     return null;
 }
 
-var BaseAppView = GObject.registerClass({
+export const BaseAppView = GObject.registerClass({
     GTypeFlags: GObject.TypeFlags.ABSTRACT,
     Properties: {
         'gesture-modes': GObject.ParamSpec.flags(
@@ -283,8 +284,9 @@ var BaseAppView = GObject.registerClass({
         this._box.add_child(this._pageIndicators);
 
         // Swipe
+        // FIXME
         this._swipeTracker = new SwipeTracker.SwipeTracker(this._scrollView,
-            Clutter.Orientation.HORIZONTAL, this.gestureModes);
+            Clutter.Orientation.HORIZONTAL);
         this._swipeTracker.orientation = Clutter.Orientation.HORIZONTAL;
         this._swipeTracker.connect('begin', this._swipeBegin.bind(this));
         this._swipeTracker.connect('update', this._swipeUpdate.bind(this));
@@ -395,7 +397,7 @@ var BaseAppView = GObject.registerClass({
             if (hOffset === 0 && vOffset === 0)
                 return;
         }
-
+        // @ts-expect-error
         this._scrollView.update_fade_effect(
             new Clutter.Margin({
                 left: hOffset,
@@ -725,7 +727,7 @@ var BaseAppView = GObject.registerClass({
         this._swipeTracker.enabled = true;
     }
 
-    _onDragCancelled() {
+    _onDragCancelled(overview, source) {
         // At this point, the positions aren't stored yet, thus _redisplay()
         // will move all items to their original positions
         this._redisplay();
@@ -830,6 +832,13 @@ var BaseAppView = GObject.registerClass({
         const position = iconIndex % itemsPerPage;
 
         return [page, position];
+    }
+
+    /**
+     * @returns {AppViewItem["prototype"][]}
+     */
+    _loadApps() {
+        throw new GObject.NotImplementedError(`_loadApps in ${this.constructor.name}`);
     }
 
     _redisplay() {
@@ -1348,7 +1357,7 @@ var BaseAppView = GObject.registerClass({
     }
 });
 
-var PageManager = GObject.registerClass({
+export const PageManager = GObject.registerClass({
     Signals: { 'layout-changed': {} },
 }, class PageManager extends GObject.Object {
     _init() {
@@ -1362,8 +1371,10 @@ var PageManager = GObject.registerClass({
     }
 
     _loadPages() {
+        /** @type {GLib.Variant<'aa{sv}'>} */
         const layout = global.settings.get_value('app-picker-layout');
-        this._pages = layout.recursiveUnpack();
+        /** @type { { [key: string]: { [key: string]: number } }[] } */
+        this._pages = (layout.recursiveUnpack());
         if (!this._updatingPages)
             this.emit('layout-changed');
     }
@@ -1385,11 +1396,16 @@ var PageManager = GObject.registerClass({
         return [page, position];
     }
 
-    set pages(p) {
+    /**
+     * @param {{ [key: string]: { [key: string]: GLib.Variant<'i'> } }[]} p
+     */
+    updatePages(p) {
+        /** @type {{ [key: string]: GLib.Variant<'a{sv}'> }[]} */
         const packedPages = [];
 
         // Pack the icon properties as a GVariant
         for (const page of p) {
+            /** @type {{ [key: string]: GLib.Variant<'a{sv}'> }} */
             const pageData = {};
             for (const [appId, properties] of Object.entries(page))
                 pageData[appId] = new GLib.Variant('a{sv}', properties);
@@ -1409,7 +1425,7 @@ var PageManager = GObject.registerClass({
     }
 });
 
-var AppDisplay = GObject.registerClass(
+export const AppDisplay = GObject.registerClass(
 class AppDisplay extends BaseAppView {
     _init() {
         super._init({
@@ -1493,11 +1509,13 @@ class AppDisplay extends BaseAppView {
     }
 
     _savePages() {
+        /** @type {{ [key: string]: { [key: string]: GLib.Variant<'i'> } }[]} */
         const pages = [];
 
         for (let i = 0; i < this._grid.nPages; i++) {
             const pageItems =
                 this._grid.getItemsAtPage(i).filter(c => c.visible);
+            /** @type {{ [key: string]: { [key: string]: GLib.Variant<'i'> } }} */
             const pageData = {};
 
             pageItems.forEach((item, index) => {
@@ -1508,7 +1526,7 @@ class AppDisplay extends BaseAppView {
             pages.push(pageData);
         }
 
-        this._pageManager.pages = pages;
+        this._pageManager.updatePages(pages);
     }
 
     _ensurePlaceholder(source) {
@@ -1752,8 +1770,8 @@ class AppDisplay extends BaseAppView {
         super._maybeMoveItem(clonedEvent);
     }
 
-    _onDragBegin(overview, source) {
-        super._onDragBegin(overview, source);
+    _onDragBegin(_overview, source) {
+        super._onDragBegin();
 
         // When dragging from a folder dialog, the dragged app icon doesn't
         // exist in AppDisplay. We work around that by adding a placeholder
@@ -1778,7 +1796,7 @@ class AppDisplay extends BaseAppView {
     }
 
     _onDragCancelled(overview, source) {
-        const view = _getViewFromIcon(source);
+        const view = source._getView();
 
         if (view instanceof FolderView)
             return;
@@ -1792,7 +1810,7 @@ class AppDisplay extends BaseAppView {
 
         this._savePages();
 
-        let view = _getViewFromIcon(source);
+        let view = source._getView();
         if (view instanceof FolderView)
             view.removeApp(source.app);
 
@@ -1860,7 +1878,7 @@ class AppDisplay extends BaseAppView {
     }
 });
 
-var AppSearchProvider = class AppSearchProvider {
+export class AppSearchProvider {
     constructor() {
         this._appSys = Shell.AppSystem.get_default();
         this.id = 'applications';
@@ -1953,16 +1971,37 @@ var AppSearchProvider = class AppSearchProvider {
     }
 };
 
-var AppViewItem = GObject.registerClass(
+/** 
+ * @typedef {object} ViewParams
+ * @property {boolean} [isDraggable]
+ * @property {boolean} [expandTitleOnHover]
+ */
+
+export const AppViewItem = GObject.registerClass(
 class AppViewItem extends St.Button {
-    _init(params = {}, isDraggable = true, expandTitleOnHover = true) {
+    /**
+     * @param {Partial<St.Button.ConstructorProperties> & ViewParams} [params] 
+     * @param {...any} _args
+     */
+    _init(params = {}, ..._args) {
+        const {
+            isDraggable = true,
+            expandTitleOnHover = true,
+            ...buttonParams
+        } = params;
+
         super._init({
             pivot_point: new Graphene.Point({ x: 0.5, y: 0.5 }),
             reactive: true,
             button_mask: St.ButtonMask.ONE | St.ButtonMask.TWO,
             can_focus: true,
-            ...params,
+            ...buttonParams,
         });
+
+        this._name = '';
+        this._id = '';
+        /** @type {IconGrid.BaseIcon["prototype"] | null} */
+        this.icon = null;
 
         this._delegate = this;
 
@@ -2162,7 +2201,7 @@ class AppViewItem extends St.Button {
     }
 });
 
-var FolderGrid = GObject.registerClass(
+export const FolderGrid = GObject.registerClass(
 class FolderGrid extends IconGrid.IconGrid {
     _init() {
         super._init({
@@ -2179,7 +2218,14 @@ class FolderGrid extends IconGrid.IconGrid {
     }
 });
 
-var FolderView = GObject.registerClass(
+/**
+ * @typedef {object} FolderViewParams
+ * @property {import('gi://Gio').Settings} folder
+ * @property {string} id
+ * @property {*} parentView
+ */ 
+
+export const FolderView = GObject.registerClass(
 class FolderView extends BaseAppView {
     _init(folder, id, parentView) {
         super._init({
@@ -2411,7 +2457,7 @@ class FolderView extends BaseAppView {
     }
 });
 
-var FolderIcon = GObject.registerClass({
+export const FolderIcon = GObject.registerClass({
     Signals: {
         'apps-changed': {},
     },
@@ -2519,7 +2565,7 @@ var FolderIcon = GObject.registerClass({
         if (!(source instanceof AppIcon))
             return false;
 
-        let view = _getViewFromIcon(source);
+        let view = source._getView();
         if (!view || !(view instanceof AppDisplay))
             return false;
 
@@ -2590,7 +2636,7 @@ var FolderIcon = GObject.registerClass({
     }
 });
 
-var AppFolderDialog = GObject.registerClass({
+export const AppFolderDialog = GObject.registerClass({
     Signals: {
         'open-state-changed': { param_types: [GObject.TYPE_BOOLEAN] },
     },
@@ -3079,15 +3125,22 @@ var AppFolderDialog = GObject.registerClass({
     }
 });
 
-var AppIcon = GObject.registerClass({
+/** 
+ * @typedef {ViewParams} AppIconParams */
+
+export const AppIcon = GObject.registerClass({
     Signals: {
         'menu-state-changed': { param_types: [GObject.TYPE_BOOLEAN] },
         'sync-tooltip': {},
     },
 }, class AppIcon extends AppViewItem {
-    _init(app, iconParams = {}) {
+    /**
+     * @param {Shell.App} app 
+     * @param {AppIconParams} params 
+     */
+    _init(app, params = {}) {
         // Get the isDraggable property without passing it on to the BaseIcon:
-        const { isDraggable = true, expandTitleOnHover } = iconParams;
+        const { isDraggable = true, expandTitleOnHover } = params;
 
         super._init({ style_class: 'app-well-app' }, isDraggable, expandTitleOnHover);
 
@@ -3102,8 +3155,11 @@ var AppIcon = GObject.registerClass({
 
         this._folderPreviewId = 0;
 
-        iconParams['createIcon'] = this._createIcon.bind(this);
-        iconParams['setSizeManually'] = true;
+        const iconParams = {
+            ...params,
+            createIcon: this._createIcon.bind(this),
+            setSizeManually: true,
+        };
         this.icon = new IconGrid.BaseIcon(app.get_name(), iconParams);
         this._iconContainer.add_child(this.icon);
 
@@ -3292,6 +3348,15 @@ var AppIcon = GObject.registerClass({
         this.icon.animateZoomOutAtPos(x, y);
     }
 
+    /** 
+     * @typedef {object} WorkspaceLaunchParams
+     * @property {number} workspace
+     * @property {number} timestamp
+     */
+    
+    /**
+     * @param {Partial<WorkspaceLaunchParams>} params
+     */
     shellWorkspaceLaunch(params = {}) {
         let { stack } = new Error();
         log('shellWorkspaceLaunch is deprecated, use app.open_new_window() instead\n%s'.format(stack));
@@ -3332,7 +3397,7 @@ var AppIcon = GObject.registerClass({
     }
 
     _canAccept(source) {
-        let view = _getViewFromIcon(source);
+        let view = source._getView();
 
         return source != this &&
                (source instanceof this.constructor) &&
@@ -3366,12 +3431,20 @@ var AppIcon = GObject.registerClass({
         }
     }
 
+    _getView() {
+        for (let parent = this.get_parent(); parent; parent = parent.get_parent()) {
+            if (parent instanceof BaseAppView)
+                return parent;
+        }
+        return null;
+    }
+
     acceptDrop(source, actor, x) {
         const accepted = super.acceptDrop(source, actor, x);
         if (!accepted)
             return false;
 
-        let view = _getViewFromIcon(this);
+        let view = this._getView();
         let apps = [this.id, source.id];
 
         return view?.createFolder(apps);

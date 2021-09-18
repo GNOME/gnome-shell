@@ -1,21 +1,27 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported MonitorConstraint, LayoutManager */
 
-const { Clutter, Gio, GLib, GObject, Meta, Shell, St } = imports.gi;
-const Signals = imports.misc.signals;
+import Clutter from 'gi://Clutter';
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
+import Meta from 'gi://Meta';
+import Shell from 'gi://Shell';
+import St from 'gi://St';
+import * as Signals from '../misc/signals.js';
 
-const Background = imports.ui.background;
-const BackgroundMenu = imports.ui.backgroundMenu;
+import * as Background from './background.js';
+import * as BackgroundMenu from './backgroundMenu.js';
 
-const DND = imports.ui.dnd;
-const Main = imports.ui.main;
-const Ripples = imports.ui.ripples;
+import * as DND from './dnd.js';
+import Main from './main.js';
+import * as Ripples from './ripples.js';
 
-var STARTUP_ANIMATION_TIME = 500;
-var BACKGROUND_FADE_ANIMATION_TIME = 1000;
+export let STARTUP_ANIMATION_TIME = 500;
+export let BACKGROUND_FADE_ANIMATION_TIME = 1000;
 
-var HOT_CORNER_PRESSURE_THRESHOLD = 100; // pixels
-var HOT_CORNER_PRESSURE_TIMEOUT = 1000; // ms
+export let HOT_CORNER_PRESSURE_THRESHOLD = 100; // pixels
+export let HOT_CORNER_PRESSURE_TIMEOUT = 1000; // ms
 
 function isPopupMetaWindow(actor) {
     switch (actor.meta_window.get_window_type()) {
@@ -28,7 +34,7 @@ function isPopupMetaWindow(actor) {
     }
 }
 
-var MonitorConstraint = GObject.registerClass({
+export const MonitorConstraint = GObject.registerClass({
     Properties: {
         'primary': GObject.ParamSpec.boolean('primary',
                                              'Primary', 'Track primary monitor',
@@ -44,6 +50,9 @@ var MonitorConstraint = GObject.registerClass({
                                                false),
     },
 }, class MonitorConstraint extends Clutter.Constraint {
+    /**
+     * @param {*} props 
+     */
     _init(props) {
         this._primary = false;
         this._index = -1;
@@ -145,7 +154,7 @@ var MonitorConstraint = GObject.registerClass({
     }
 });
 
-var Monitor = class Monitor {
+export class Monitor {
     constructor(index, geometry, geometryScale) {
         this.index = index;
         this.x = geometry.x;
@@ -162,11 +171,17 @@ var Monitor = class Monitor {
 
 const UiActor = GObject.registerClass(
 class UiActor extends St.Widget {
+    /**
+     * @returns {[number, number]}
+     */
     vfunc_get_preferred_width(_forHeight) {
         let width = global.stage.width;
         return [width, width];
     }
 
+    /**
+     * @returns {[number, number]}
+     */
     vfunc_get_preferred_height(_forWidth) {
         let height = global.stage.height;
         return [height, height];
@@ -179,7 +194,7 @@ const defaultParams = {
     affectsInputRegion: true,
 };
 
-var LayoutManager = GObject.registerClass({
+export const LayoutManager = GObject.registerClass({
     Signals: {
         'hot-corners-changed': {},
         'startup-complete': {},
@@ -244,7 +259,7 @@ var LayoutManager = GObject.registerClass({
                                         trackFullscreen: true });
         this.panelBox.connect('notify::allocation',
                               this._panelBoxChanged.bind(this));
-
+        log('initing?');
         this.modalDialogGroup = new St.Widget({ name: 'modalDialogGroup',
                                                 layout_manager: new Clutter.BinLayout() });
         this.uiGroup.add_actor(this.modalDialogGroup);
@@ -296,7 +311,7 @@ var LayoutManager = GObject.registerClass({
     // This is called by Main after everything else is constructed
     init() {
         Main.sessionMode.connect('updated', this._sessionUpdated.bind(this));
-
+        log('testing?');
         this._loadBackground();
     }
 
@@ -503,6 +518,7 @@ var LayoutManager = GObject.registerClass({
     }
 
     _panelBoxChanged() {
+        log('panel box changed')
         this._updatePanelBarrier();
 
         let size = this.panelBox.height;
@@ -532,6 +548,7 @@ var LayoutManager = GObject.registerClass({
     }
 
     _monitorsChanged() {
+        log('monitor?');
         this._updateMonitors();
         this._updateBoxes();
         this._updateHotCorners();
@@ -606,8 +623,9 @@ var LayoutManager = GObject.registerClass({
         this._systemBackground.add_constraint(constraint);
 
         let signalId = this._systemBackground.connect('loaded', () => {
+            log('loaded!');
             this._systemBackground.disconnect(signalId);
-
+log('p2');
             // We're mostly prepared for the startup animation
             // now, but since a lot is going on asynchronously
             // during startup, let's defer the startup animation
@@ -615,6 +633,7 @@ var LayoutManager = GObject.registerClass({
             // This helps to prevent us from running the animation
             // when the system is bogged down
             const id = GLib.idle_add(GLib.PRIORITY_LOW, () => {
+                log('idling...');
                 this._systemBackground.show();
                 global.stage.show();
                 this._prepareStartupAnimation();
@@ -640,6 +659,7 @@ var LayoutManager = GObject.registerClass({
     // of the screen.
 
     async _prepareStartupAnimation() {
+        log('preparing...');
         // During the initial transition, add a simple actor to block all events,
         // so they don't get delivered to X11 windows that have been transformed.
         this._coverPane = new Clutter.Actor({ opacity: 0,
@@ -676,9 +696,11 @@ var LayoutManager = GObject.registerClass({
             }
 
             global.window_group.set_clip(monitor.x, monitor.y, monitor.width, monitor.height);
-
+log('update backgrounds?');
             await this._updateBackgrounds();
         }
+
+        log('prepared?');
 
         this.emit('startup-prepared');
 
@@ -686,15 +708,19 @@ var LayoutManager = GObject.registerClass({
     }
 
     _startupAnimation() {
-        if (Meta.is_restart())
+        if (Meta.is_restart()) {
+            log('testing')
             this._startupAnimationComplete();
-        else if (Main.sessionMode.isGreeter)
+        } else if (Main.sessionMode.isGreeter)
             this._startupAnimationGreeter();
-        else
+        else {
+            log ('test 213');
             this._startupAnimationSession();
+        }
     }
 
     _startupAnimationGreeter() {
+        log('greet start');
         this.panelBox.ease({
             translation_y: 0,
             duration: STARTUP_ANIMATION_TIME,
@@ -704,6 +730,7 @@ var LayoutManager = GObject.registerClass({
     }
 
     _startupAnimationSession() {
+        log('greet sesh start');
         const onComplete = () => this._startupAnimationComplete();
         if (Main.sessionMode.hasOverview) {
             Main.overview.runStartupAnimation(onComplete);
@@ -720,6 +747,7 @@ var LayoutManager = GObject.registerClass({
     }
 
     _startupAnimationComplete() {
+        log('Animation compl')
         this._coverPane.destroy();
         this._coverPane = null;
 
@@ -852,14 +880,15 @@ var LayoutManager = GObject.registerClass({
         if (this._findActor(actor) != -1)
             throw new Error('trying to re-track existing chrome actor');
 
-        let actorData = { ...defaultParams, ...params };
-        actorData.actor = actor;
-        actorData.visibleId = actor.connect('notify::visible',
-                                            this._queueUpdateRegions.bind(this));
-        actorData.allocationId = actor.connect('notify::allocation',
-                                               this._queueUpdateRegions.bind(this));
-        actorData.destroyId = actor.connect('destroy',
-                                            this._untrackActor.bind(this));
+        let actorData = { ...defaultParams, ...params,
+      actor: actor,
+        isibleId : actor.connect('notify::visible',
+                                            this._queueUpdateRegions.bind(this)),
+      allocationId : actor.connect('notify::allocation',
+                                               this._queueUpdateRegions.bind(this)),
+      destroyId: actor.connect('destroy',
+                                            this._untrackActor.bind(this)),
+        };
         // Note that destroying actor will unset its parent, so we don't
         // need to connect to 'destroy' too.
 
@@ -1069,7 +1098,7 @@ var LayoutManager = GObject.registerClass({
 //
 // This class manages a "hot corner" that can toggle switching to
 // overview.
-var HotCorner = GObject.registerClass(
+export const HotCorner = GObject.registerClass(
 class HotCorner extends Clutter.Actor {
     _init(layoutManager, monitor, x, y) {
         super._init();
@@ -1227,7 +1256,7 @@ class HotCorner extends Clutter.Actor {
     }
 });
 
-var PressureBarrier = class PressureBarrier extends Signals.EventEmitter {
+export class PressureBarrier extends Signals.EventEmitter {
     constructor(threshold, timeout, actionMode) {
         super();
 

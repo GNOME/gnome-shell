@@ -1,12 +1,14 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
-const Config = imports.misc.config;
+import 'gi://Clutter?version=9';
+import 'gi://Gtk?version=3.0';
 
-imports.gi.versions = { Clutter: Config.LIBMUTTER_API_VERSION, Gtk: '3.0' };
+import Clutter from 'gi://Clutter';
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
+import St from 'gi://St';
 
-const { Clutter, Gio, GLib, St } = imports.gi;
-
-const Environment = imports.ui.environment;
+import * as Environment from '../../js/ui/environment.js';
 
 function init(stage) {
     Environment.init();

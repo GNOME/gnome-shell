@@ -1,12 +1,15 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported Lightbox */
 
-const { Clutter, GObject, Shell, St } = imports.gi;
+import Clutter from 'gi://Clutter';
+import GObject from 'gi://GObject';
+import Shell from 'gi://Shell';
+import St from 'gi://St';
 
 
-var DEFAULT_FADE_FACTOR = 0.4;
-var VIGNETTE_BRIGHTNESS = 0.5;
-var VIGNETTE_SHARPNESS = 0.7;
+export let DEFAULT_FADE_FACTOR = 0.4;
+export let VIGNETTE_BRIGHTNESS = 0.5;
+export let VIGNETTE_SHARPNESS = 0.7;
 
 const VIGNETTE_DECLARATIONS = '\
 uniform float brightness;\n\
@@ -21,7 +24,7 @@ t = clamp(t, 0.0, 1.0);\n\
 float pixel_brightness = mix(1.0, 1.0 - vignette_sharpness, t);\n\
 cogl_color_out.a = cogl_color_out.a * (1 - pixel_brightness * brightness);';
 
-var RadialShaderEffect = GObject.registerClass({
+export const RadialShaderEffect = GObject.registerClass({
     Properties: {
         'brightness': GObject.ParamSpec.float(
             'brightness', 'brightness', 'brightness',
@@ -102,7 +105,7 @@ var RadialShaderEffect = GObject.registerClass({
  * @container and will track any changes in its size. You can override
  * this by passing an explicit width and height in @params.
  */
-var Lightbox = GObject.registerClass({
+export const Lightbox = GObject.registerClass({
     Properties: {
         'active': GObject.ParamSpec.boolean(
             'active', 'active', 'active', GObject.ParamFlags.READABLE, false),

@@ -3,13 +3,17 @@
             destroyTestWindows, defineScriptEvent, scriptEvent,
             collectStatistics, runPerfScript */
 
-const { Gio, GLib, Meta, Shell } = imports.gi;
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
+import Meta from 'gi://Meta';
+import Shell from 'gi://Shell';
+
 
 const Config = imports.misc.config;
-const Main = imports.ui.main;
-const Util = imports.misc.util;
+import Main from './main.js';
+import * as Util from '../misc/util.js';
 
-const { loadInterfaceXML } = imports.misc.fileUtils;
+import { loadInterfaceXML } from '../misc/fileUtilsModule.js';
 
 // This module provides functionality for driving the shell user interface
 // in an automated fashion. The primary current use case for this is
@@ -20,7 +24,7 @@ const { loadInterfaceXML } = imports.misc.fileUtils;
 // When scripting an automated test we want to make a series of calls
 // in a linear fashion, but we also want to be able to let the main
 // loop run so actions can finish. For this reason we write the script
-// as an async function that uses await when it wants to let the main
+// as an async export function that uses await when it wants to let the main
 // loop run.
 //
 //    await Scripting.sleep(1000);
@@ -37,7 +41,7 @@ const { loadInterfaceXML } = imports.misc.fileUtils;
  * current script for the specified amount of time. Use as
  * 'yield Scripting.sleep(500);'
  */
-function sleep(milliseconds) {
+export function sleep(milliseconds) {
     return new Promise(resolve => {
         let id = GLib.timeout_add(GLib.PRIORITY_DEFAULT, milliseconds, () => {
             resolve();
@@ -55,33 +59,33 @@ function sleep(milliseconds) {
  * current script until the shell is completely idle. Use as
  * 'yield Scripting.waitLeisure();'
  */
-function waitLeisure() {
+export function waitLeisure() {
     return new Promise(resolve => {
         global.run_at_leisure(resolve);
     });
 }
 
 const PerfHelperIface = loadInterfaceXML('org.gnome.Shell.PerfHelper');
-var PerfHelperProxy = Gio.DBusProxy.makeProxyWrapper(PerfHelperIface);
-function PerfHelper() {
+export const PerfHelperProxy = Gio.DBusProxy.makeProxyWrapper(PerfHelperIface);
+export function PerfHelper() {
     return PerfHelperProxy(Gio.DBus.session, 'org.gnome.Shell.PerfHelper', '/org/gnome/Shell/PerfHelper');
 }
 
 let _perfHelper = null;
-function _getPerfHelper() {
+export function _getPerfHelper() {
     if (_perfHelper == null)
         _perfHelper = PerfHelper();
 
     return _perfHelper;
 }
 
-function _spawnPerfHelper() {
+export function _spawnPerfHelper() {
     let path = Config.LIBEXECDIR;
     let command = `${path}/gnome-shell-perf-helper`;
     Util.trySpawnCommandLine(command);
 }
 
-function _callRemote(obj, method, ...args) {
+export function _callRemote(obj, method, ...args) {
     return new Promise((resolve, reject) => {
         args.push((result, excp) => {
             if (excp)
@@ -99,18 +103,18 @@ function _callRemote(obj, method, ...args) {
  * @param {Object} params: options for window creation.
  *   {number} [params.width=640] - width of window, in pixels
  *   {number} [params.height=480] - height of window, in pixels
- *   {bool} [params.alpha=false] - whether the window should have an alpha channel
- *   {bool} [params.maximized=false] - whether the window should be created maximized
- *   {bool} [params.redraws=false] - whether the window should continually redraw itself
+ *   {boolean} [params.alpha=false] - whether the window should have an alpha channel
+ *   {boolean} [params.maximized=false] - whether the window should be created maximized
+ *   {boolean} [params.redraws=false] - whether the window should continually redraw itself
  * @returns {Promise}
  *
  * Creates a window using gnome-shell-perf-helper for testing purposes.
- * While this function can be used with yield in an automation
+ * While this export function can be used with yield in an automation
  * script to pause until the D-Bus call to the helper process returns,
  * because of the normal X asynchronous mapping process, to actually wait
  * until the window has been mapped and exposed, use waitTestWindows().
  */
-function createTestWindow(params = {}) {
+export function createTestWindow(params = {}) {
     const {
         width = 640,
         height = 480,
@@ -132,7 +136,7 @@ function createTestWindow(params = {}) {
  * Used within an automation script to pause until all windows previously
  * created with createTestWindow have been mapped and exposed.
  */
-function waitTestWindows() {
+export function waitTestWindows() {
     let perfHelper = _getPerfHelper();
     return _callRemote(perfHelper, perfHelper.WaitWindowsRemote);
 }
@@ -142,12 +146,12 @@ function waitTestWindows() {
  * @returns {Promise}
  *
  * Destroys all windows previously created with createTestWindow().
- * While this function can be used with yield in an automation
+ * While this export function can be used with yield in an automation
  * script to pause until the D-Bus call to the helper process returns,
  * this doesn't guarantee that Mutter has actually finished the destroy
  * process because of normal X asynchronicity.
  */
-function destroyTestWindows() {
+export function destroyTestWindows() {
     let perfHelper = _getPerfHelper();
     return _callRemote(perfHelper, perfHelper.DestroyWindowsRemote);
 }
@@ -161,7 +165,7 @@ function destroyTestWindows() {
  * within the 'script' namespace that is reserved for events defined locally
  * within a performance automation script
  */
-function defineScriptEvent(name, description) {
+export function defineScriptEvent(name, description) {
     Shell.PerfLog.get_default().define_event(`script.${name}`,
                                              description,
                                              "");
@@ -174,7 +178,7 @@ function defineScriptEvent(name, description) {
  * Convenience function to record a script-local performance event
  * previously defined with defineScriptEvent
  */
-function scriptEvent(name) {
+export function scriptEvent(name) {
     Shell.PerfLog.get_default().event(`script.${name}`);
 }
 
@@ -183,11 +187,11 @@ function scriptEvent(name) {
  *
  * Convenience function to trigger statistics collection
  */
-function collectStatistics() {
+export function collectStatistics() {
     Shell.PerfLog.get_default().collect_statistics();
 }
 
-function _collect(scriptModule, outputFile) {
+export function _collect(scriptModule, outputFile) {
     let eventHandlers = {};
 
     for (let f in scriptModule) {
@@ -282,7 +286,7 @@ function _collect(scriptModule, outputFile) {
     }
 }
 
-async function _runPerfScript(scriptModule, outputFile) {
+export async function _runPerfScript(scriptModule, outputFile) {
     try {
         await scriptModule.run();
     } catch (err) {
@@ -340,7 +344,7 @@ async function _runPerfScript(scriptModule, outputFile) {
  * After running the script and collecting statistics from the
  * event log, GNOME Shell will exit.
  **/
-function runPerfScript(scriptModule, outputFile) {
+export function runPerfScript(scriptModule, outputFile) {
     Shell.PerfLog.get_default().set_enabled(true);
     _spawnPerfHelper();
 

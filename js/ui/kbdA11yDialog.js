@@ -1,14 +1,18 @@
 /* exported KbdA11yDialog */
-const { Clutter, Gio, GObject } = imports.gi;
+import Meta from 'gi://Meta';
+import Clutter from 'gi://Clutter';
+import Gio from 'gi://Gio';
+import GObject from 'gi://GObject';
 
-const Dialog = imports.ui.dialog;
-const ModalDialog = imports.ui.modalDialog;
+
+import * as Dialog from './dialog.js';
+import * as ModalDialog from './modalDialog.js';
 
 const KEYBOARD_A11Y_SCHEMA    = 'org.gnome.desktop.a11y.keyboard';
 const KEY_STICKY_KEYS_ENABLED = 'stickykeys-enable';
 const KEY_SLOW_KEYS_ENABLED   = 'slowkeys-enable';
 
-var KbdA11yDialog = GObject.registerClass(
+export const KbdA11yDialog = GObject.registerClass(
 class KbdA11yDialog extends GObject.Object {
     _init() {
         super._init();
@@ -25,17 +29,23 @@ class KbdA11yDialog extends GObject.Object {
         let title, description;
         let key, enabled;
 
-        if (whatChanged & Clutter.KeyboardA11yFlags.SLOW_KEYS_ENABLED) {
+        const META_A11Y_SLOW_KEYS_ENABLED = 1 << 3;
+        const META_A11Y_STICKY_KEYS_ENABLED = 1 << 10;
+        // FIXME:
+        // This change https://github.com/GNOME/mutter/commit/c3acaeb25127a7520ecc0d3edbb3d0cc53b5634e#diff-8da73b762bc44dbbfb6a00938e37693e5e3fc3266673275502117ea932cf7675R55
+        // made Clutter.KeyboardA11yFlags turn into Meta.KeyboardA11yFlags but
+        // also removed it from introspection.
+        if (whatChanged & /* Meta.KeyboardA11yFlags */ META_A11Y_SLOW_KEYS_ENABLED) {
             key = KEY_SLOW_KEYS_ENABLED;
-            enabled = (newFlags & Clutter.KeyboardA11yFlags.SLOW_KEYS_ENABLED) > 0;
+            enabled = (newFlags & META_A11Y_SLOW_KEYS_ENABLED) > 0;
             title = enabled
                 ? _("Slow Keys Turned On")
                 : _("Slow Keys Turned Off");
             description = _('You just held down the Shift key for 8 seconds. This is the shortcut ' +
                             'for the Slow Keys feature, which affects the way your keyboard works.');
-        } else if (whatChanged & Clutter.KeyboardA11yFlags.STICKY_KEYS_ENABLED) {
+        } else if (whatChanged & META_A11Y_STICKY_KEYS_ENABLED) {
             key = KEY_STICKY_KEYS_ENABLED;
-            enabled = (newFlags & Clutter.KeyboardA11yFlags.STICKY_KEYS_ENABLED) > 0;
+            enabled = (newFlags & META_A11Y_STICKY_KEYS_ENABLED) > 0;
             title = enabled
                 ? _("Sticky Keys Turned On")
                 : _("Sticky Keys Turned Off");

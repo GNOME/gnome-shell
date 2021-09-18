@@ -1,9 +1,12 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported SwipeTracker */
 
-const { Clutter, Gio, GObject, Meta } = imports.gi;
+import Clutter from 'gi://Clutter';
+import Gio from 'gi://Gio';
+import GObject from 'gi://GObject';
+import Meta from 'gi://Meta';
 
-const Main = imports.ui.main;
+import Main from './main.js';
 
 // FIXME: ideally these values matches physical touchpad size. We can get the
 // correct values for gnome-shell specifically, since mutter uses libinput
@@ -33,6 +36,7 @@ const EPSILON = 0.005;
 
 const GESTURE_FINGER_COUNT = 3;
 
+/** @enum {number} */
 const State = {
     NONE: 0,
     SCROLLING: 1,
@@ -107,6 +111,12 @@ const TouchpadSwipeGesture = GObject.registerClass({
         this._state = TouchpadState.NONE;
         this._cumulativeX = 0;
         this._cumulativeY = 0;
+
+        /** @type {Clutter.Orientation} */
+        this.orientation;
+        /** @type {boolean} */
+        this.enabled;
+
         this._touchpadSettings = new Gio.Settings({
             schema_id: 'org.gnome.desktop.peripherals.touchpad',
         });
@@ -232,6 +242,9 @@ const TouchSwipeGesture = GObject.registerClass({
         this.set_n_touch_points(nTouchPoints);
         this.set_threshold_trigger_edge(thresholdTriggerEdge);
 
+        /** @type {Clutter.Orientation} */
+        this.orientation;
+
         this._allowedModes = allowedModes;
         this._distance = global.screen_height;
 
@@ -331,6 +344,11 @@ const ScrollGesture = GObject.registerClass({
         this._allowedModes = allowedModes;
         this._began = false;
         this._enabled = true;
+
+        /** @type {Clutter.Orientation} */
+        this.orientation;
+        /** @type {Clutter.ModifierType} */
+        this.scrollModifiers;
 
         actor.connect('scroll-event', this._handleEvent.bind(this));
     }
@@ -432,8 +450,14 @@ const ScrollGesture = GObject.registerClass({
 //   NOTE: duration can be 0 in some cases, in this case it should finish
 //   instantly.
 
+/** 
+ * @typedef {object} SwipeTrackerParams
+ * @property {boolean} allowDrag
+ * @property {boolean} allowScroll
+ */
+
 /** A class for handling swipe gestures */
-var SwipeTracker = GObject.registerClass({
+export const SwipeTracker = GObject.registerClass({
     Properties: {
         'enabled': GObject.ParamSpec.boolean(
             'enabled', 'enabled', 'enabled',
@@ -465,6 +489,9 @@ var SwipeTracker = GObject.registerClass({
     _init(actor, orientation, allowedModes, params = {}) {
         super._init();
         const { allowDrag = true, allowScroll = true } = params;
+
+        /** @type {boolean} */
+        this.allowLongSwipes
 
         this.orientation = orientation;
         this._allowedModes = allowedModes;
@@ -528,7 +555,7 @@ var SwipeTracker = GObject.registerClass({
     /**
      * canHandleScrollEvent:
      * @param {Clutter.Event} scrollEvent: an event to check
-     * @returns {bool} whether the event can be handled by the tracker
+     * @returns {boolean} whether the event can be handled by the tracker
      *
      * This function can be used to combine swipe gesture and mouse
      * scrolling.
@@ -631,6 +658,9 @@ var SwipeTracker = GObject.registerClass({
         return this._findClosestPoint(pos);
     }
 
+    /**
+     * @returns {[number, number]} 
+     */
     _getBounds(pos) {
         if (this.allowLongSwipes)
             return [this._snapPoints[0], this._snapPoints[this._snapPoints.length - 1]];

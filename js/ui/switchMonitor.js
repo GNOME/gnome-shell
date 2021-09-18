@@ -1,13 +1,17 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported SwitchMonitorPopup */
 
-const { Clutter, GObject, Meta, St } = imports.gi;
+import Clutter from 'gi://Clutter';
+import GObject from 'gi://GObject';
+import Meta from 'gi://Meta';
+import St from 'gi://St';
 
-const SwitcherPopup = imports.ui.switcherPopup;
 
-var APP_ICON_SIZE = 96;
+import * as SwitcherPopup from './switcherPopup.js';
 
-var SwitchMonitorPopup = GObject.registerClass(
+export let APP_ICON_SIZE = 96;
+
+export const SwitchMonitorPopup = GObject.registerClass(
 class SwitchMonitorPopup extends SwitcherPopup.SwitcherPopup {
     _init() {
         let items = [{ icon: 'view-mirror-symbolic',
@@ -69,10 +73,13 @@ class SwitchMonitorPopup extends SwitcherPopup.SwitcherPopup {
     }
 });
 
-var SwitchMonitorSwitcher = GObject.registerClass(
+export const SwitchMonitorSwitcher = GObject.registerClass(
 class SwitchMonitorSwitcher extends SwitcherPopup.SwitcherList {
+    /**
+     * @param {*} items 
+     */
     _init(items) {
-        super._init(true);
+        super._init({ squareItems: true });
 
         for (let i = 0; i < items.length; i++)
             this._addIcon(items[i]);

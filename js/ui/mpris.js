@@ -1,11 +1,14 @@
 /* exported MediaSection */
-const { Gio, GObject, Shell, St } = imports.gi;
-const Signals = imports.misc.signals;
+import Gio from 'gi://Gio';
+import GObject from 'gi://GObject';
+import Shell from 'gi://Shell';
+import St from 'gi://St';
+import * as Signals from '../misc/signals.js';
 
-const Main = imports.ui.main;
-const MessageList = imports.ui.messageList;
+import Main from './main.js';
+import * as MessageList from './messageList.js';
 
-const { loadInterfaceXML } = imports.misc.fileUtils;
+import { loadInterfaceXML } from '../misc/fileUtilsModule.js';
 
 const DBusIface = loadInterfaceXML('org.freedesktop.DBus');
 const DBusProxy = Gio.DBusProxy.makeProxyWrapper(DBusIface);
@@ -18,8 +21,11 @@ const MprisPlayerProxy = Gio.DBusProxy.makeProxyWrapper(MprisPlayerIface);
 
 const MPRIS_PLAYER_PREFIX = 'org.mpris.MediaPlayer2.';
 
-var MediaMessage = GObject.registerClass(
+export const MediaMessage = GObject.registerClass(
 class MediaMessage extends MessageList.Message {
+    /**
+     * @param {*} player 
+     */
     _init(player) {
         super._init('', '');
 
@@ -93,7 +99,7 @@ class MediaMessage extends MessageList.Message {
     }
 });
 
-var MprisPlayer = class MprisPlayer extends Signals.EventEmitter {
+export class MprisPlayer extends Signals.EventEmitter {
     constructor(busName) {
         super();
 
@@ -243,7 +249,7 @@ var MprisPlayer = class MprisPlayer extends Signals.EventEmitter {
     }
 };
 
-var MediaSection = GObject.registerClass(
+export const MediaSection = GObject.registerClass(
 class MediaSection extends MessageList.MessageListSection {
     _init() {
         super._init();

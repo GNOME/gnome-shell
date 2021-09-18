@@ -1,19 +1,24 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported SwitcherPopup, SwitcherList */
 
-const { Clutter, GLib, GObject, Meta, St } = imports.gi;
+import Clutter from 'gi://Clutter';
+import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
+import Meta from 'gi://Meta';
+import St from 'gi://St';
 
-const Main = imports.ui.main;
 
-var POPUP_DELAY_TIMEOUT = 150; // milliseconds
+import Main from './main.js';
 
-var POPUP_SCROLL_TIME = 100; // milliseconds
-var POPUP_FADE_OUT_TIME = 100; // milliseconds
+export let POPUP_DELAY_TIMEOUT = 150; // milliseconds
 
-var DISABLE_HOVER_TIMEOUT = 500; // milliseconds
-var NO_MODS_TIMEOUT = 1500; // milliseconds
+export let POPUP_SCROLL_TIME = 100; // milliseconds
+export let POPUP_FADE_OUT_TIME = 100; // milliseconds
 
-function mod(a, b) {
+export let DISABLE_HOVER_TIMEOUT = 500; // milliseconds
+export let NO_MODS_TIMEOUT = 1500; // milliseconds
+
+export function mod(a, b) {
     return (a + b) % b;
 }
 
@@ -29,10 +34,10 @@ function primaryModifier(mask) {
     return primary;
 }
 
-var SwitcherPopup = GObject.registerClass({
+export const SwitcherPopup = GObject.registerClass({
     GTypeFlags: GObject.TypeFlags.ABSTRACT,
 }, class SwitcherPopup extends St.Widget {
-    _init(items) {
+    _init(items, ..._) {
         super._init({ style_class: 'switcher-popup',
                       reactive: true,
                       visible: false });
@@ -168,6 +173,11 @@ var SwitcherPopup = GObject.registerClass({
         return mod(this._selectedIndex - 1, this._items.length);
     }
 
+    /**
+     * @param {*} _keysym 
+     * @param {*} _action 
+     * @returns {boolean}
+     */
     _keyPressHandler(_keysym, _action) {
         throw new GObject.NotImplementedError(`_keyPressHandler in ${this.constructor.name}`);
     }
@@ -353,7 +363,7 @@ var SwitcherPopup = GObject.registerClass({
     }
 });
 
-var SwitcherButton = GObject.registerClass(
+export const SwitcherButton = GObject.registerClass(
 class SwitcherButton extends St.Button {
     _init(square) {
         super._init({ style_class: 'item-box',
@@ -370,7 +380,7 @@ class SwitcherButton extends St.Button {
     }
 });
 
-var SwitcherList = GObject.registerClass({
+export const SwitcherList = GObject.registerClass({
     Signals: { 'item-activated': { param_types: [GObject.TYPE_INT] },
                'item-entered': { param_types: [GObject.TYPE_INT] },
                'item-removed': { param_types: [GObject.TYPE_INT] } },
@@ -627,7 +637,7 @@ var SwitcherList = GObject.registerClass({
     }
 });
 
-function drawArrow(area, side) {
+export function drawArrow(area, side) {
     let themeNode = area.get_theme_node();
     let borderColor = themeNode.get_border_color(side);
     let bodyColor = themeNode.get_foreground_color();

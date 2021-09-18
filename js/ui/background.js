@@ -94,15 +94,22 @@
 //     MetaBackgroundImage         MetaBackgroundImage
 //     MetaBackgroundImage         MetaBackgroundImage
 
-const { Clutter, GDesktopEnums, Gio, GLib, GObject, GnomeDesktop, Meta } = imports.gi;
-const Signals = imports.misc.signals;
+import Clutter from 'gi://Clutter';
+import GDesktopEnums from 'gi://GDesktopEnums';
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
+import GnomeDesktop from 'gi://GnomeDesktop';
+import Meta from 'gi://Meta';
 
-const LoginManager = imports.misc.loginManager;
-const Main = imports.ui.main;
+import * as Signals from '../misc/signals.js';
+
+import * as LoginManager from '../misc/loginManager.js';
+import Main from './main.js';
 
 Gio._promisify(Gio._LocalFilePrototype, 'query_info_async', 'query_info_finish');
 
-var DEFAULT_BACKGROUND_COLOR = Clutter.Color.from_pixel(0x2e3436ff);
+export const DEFAULT_BACKGROUND_COLOR = Clutter.Color.from_pixel(0x2e3436ff);
 
 const BACKGROUND_SCHEMA = 'org.gnome.desktop.background';
 const PRIMARY_COLOR_KEY = 'primary-color';
@@ -111,14 +118,14 @@ const COLOR_SHADING_TYPE_KEY = 'color-shading-type';
 const BACKGROUND_STYLE_KEY = 'picture-options';
 const PICTURE_URI_KEY = 'picture-uri';
 
-var FADE_ANIMATION_TIME = 1000;
+export let FADE_ANIMATION_TIME = 1000;
 
-// These parameters affect how often we redraw.
-// The first is how different (percent crossfaded) the slide show
-// has to look before redrawing and the second is the minimum
-// frequency (in seconds) we're willing to wake up
-var ANIMATION_OPACITY_STEP_INCREMENT = 4.0;
-var ANIMATION_MIN_WAKEUP_INTERVAL = 1.0;
+    // These parameters affect how often we redraw.
+    // The first is how different (percent crossfaded) the slide show
+    // has to look before redrawing and the second is the minimum
+    // frequency (in seconds) we're willing to wake up
+export let ANIMATION_OPACITY_STEP_INCREMENT = 4.0;
+export let ANIMATION_MIN_WAKEUP_INTERVAL = 1.0;
 
 let _backgroundCache = null;
 
@@ -132,12 +139,13 @@ function _fileEqual0(file1, file2) {
     return file1.equal(file2);
 }
 
-var BackgroundCache = class BackgroundCache extends Signals.EventEmitter {
+export class BackgroundCache extends Signals.EventEmitter {
     constructor() {
         super();
 
         this._fileMonitors = {};
         this._backgroundSources = {};
+        /** @type {{ [key: string]: Animation["prototype"] }} */
         this._animations = {};
     }
 
@@ -159,6 +167,16 @@ var BackgroundCache = class BackgroundCache extends Signals.EventEmitter {
         this._fileMonitors[key] = monitor;
     }
 
+    /** 
+     * @typedef {object} AnimationParams
+     * @property {Gio.File} file
+     * @property {string} settingsSchema
+     * @property {((animation: Animation["prototype"]) => void) | null} onLoaded
+     */
+    
+    /**
+     * @param {Partial<AnimationParams>} [params]
+     */
     getAnimation(params = {}) {
         const {
             file = null,
@@ -219,13 +237,13 @@ var BackgroundCache = class BackgroundCache extends Signals.EventEmitter {
     }
 };
 
-function getBackgroundCache() {
+export function getBackgroundCache() {
     if (!_backgroundCache)
         _backgroundCache = new BackgroundCache();
     return _backgroundCache;
 }
 
-var Background = GObject.registerClass({
+export const Background = GObject.registerClass({
     Signals: { 'loaded': {}, 'bg-changed': {} },
 }, class Background extends Meta.Background {
     _init(params = {}) {
@@ -248,6 +266,8 @@ var Background = GObject.registerClass({
         this._cancellable = new Gio.Cancellable();
         this.isLoaded = false;
 
+        this._changedId = -1;
+
         this._clock = new GnomeDesktop.WallClock();
         this._timezoneChangedId = this._clock.connect('notify::timezone',
             () => {
@@ -267,6 +287,17 @@ var Background = GObject.registerClass({
             this._settings.connect('changed', this._emitChangedSignal.bind(this));
 
         this._load();
+    }
+
+    /**
+     * @param {(background: Background) => void} callback 
+     */
+    onNextChange(callback) {
+        this._changedId = this.connect('bg-changed', (background) => {
+            background.disconnect(this._changedId);
+
+            callback(background);
+        });
     }
 
     destroy() {
@@ -515,7 +546,7 @@ var Background = GObject.registerClass({
 
 let _systemBackground;
 
-var SystemBackground = GObject.registerClass({
+export const SystemBackground = GObject.registerClass({
     Signals: { 'loaded': {} },
 }, class SystemBackground extends Meta.BackgroundActor {
     _init() {
@@ -538,7 +569,7 @@ var SystemBackground = GObject.registerClass({
     }
 });
 
-var BackgroundSource = class BackgroundSource {
+export class BackgroundSource {
     constructor(layoutManager, settingsSchema) {
         // Allow override the background image setting for performance testing
         this._layoutManager = layoutManager;
@@ -601,9 +632,9 @@ var BackgroundSource = class BackgroundSource {
                 style,
             });
 
-            background._changedId = background.connect('bg-changed', () => {
-                background.disconnect(background._changedId);
-                background.destroy();
+            background.onNextChange((bg) => {
+                bg.destroy();
+
                 delete this._backgrounds[monitorIndex];
             });
 
@@ -627,8 +658,11 @@ var BackgroundSource = class BackgroundSource {
     }
 };
 
-var Animation = GObject.registerClass(
+export const Animation = GObject.registerClass(
 class Animation extends GnomeDesktop.BGSlideShow {
+    /**
+     * @param {*} params 
+     */
     _init(params) {
         super._init(params);
 
@@ -638,6 +672,16 @@ class Animation extends GnomeDesktop.BGSlideShow {
         this.loaded = false;
     }
 
+    /**
+     * @returns {false}
+     */
+    load() {
+        throw new GObject.NotImplementedError(`Animation.prototype.load is not supported. Use loadAsync.`);
+    }
+
+    /**
+     * @param {() => void} callback 
+     */
     loadAsync(callback) {
         this.load_async(null, () => {
             this.loaded = true;
@@ -666,7 +710,7 @@ class Animation extends GnomeDesktop.BGSlideShow {
     }
 });
 
-var BackgroundManager = class BackgroundManager extends Signals.EventEmitter {
+export class BackgroundManager extends Signals.EventEmitter {
     constructor(params = {}) {
         super();
 
@@ -746,7 +790,7 @@ var BackgroundManager = class BackgroundManager extends Signals.EventEmitter {
 
         const { background } = newBackgroundActor.content;
 
-        if (background.isLoaded) {
+        if (background instanceof Background && background.isLoaded) {
             this._swapBackgroundActor();
         } else {
             newBackgroundActor.loadedSignalId = background.connect('loaded',

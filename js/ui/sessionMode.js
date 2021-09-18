@@ -1,14 +1,17 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported SessionMode, listModes */
 
-const GLib = imports.gi.GLib;
-const Signals = imports.misc.signals;
+import GLib from 'gi://GLib';
+import * as Signals from '../misc/signals.js';
 
-const FileUtils = imports.misc.fileUtils;
+import * as FileUtils from '../misc/fileUtilsModule.js';
 
 const Config = imports.misc.config;
 
 const DEFAULT_MODE = 'restrictive';
+
+import { LoginDialog }  from "../gdm/loginDialog.js";
+import { UnlockDialog } from "../ui/unlockDialog.js";
 
 const _modes = {
     'restrictive': {
@@ -44,7 +47,7 @@ const _modes = {
         hasNotifications: true,
         isGreeter: true,
         isPrimary: true,
-        unlockDialog: imports.gdm.loginDialog.LoginDialog,
+        unlockDialog: LoginDialog,
         components: Config.HAVE_NETWORKMANAGER
             ? ['networkAgent', 'polkitAgent']
             : ['polkitAgent'],
@@ -82,7 +85,7 @@ const _modes = {
         hasNotifications: true,
         isLocked: false,
         isPrimary: true,
-        unlockDialog: imports.ui.unlockDialog.UnlockDialog,
+        unlockDialog: UnlockDialog,
         components: Config.HAVE_NETWORKMANAGER
             ? ['networkAgent', 'polkitAgent', 'telepathyClient',
                'keyring', 'autorunManager', 'automountManager']
@@ -125,10 +128,12 @@ function _loadMode(file, info) {
 }
 
 function _loadModes() {
+    log('load modes...')
     FileUtils.collectFromDatadirs('modes', false, _loadMode);
 }
 
-function listModes() {
+export function listModes() {
+    log('list modes...')
     _loadModes();
     let loop = new GLib.MainLoop(null, false);
     let id = GLib.idle_add(GLib.PRIORITY_DEFAULT, () => {
@@ -138,12 +143,14 @@ function listModes() {
                 print(names[i]);
         }
         loop.quit();
+
+        return false;
     });
     GLib.Source.set_name_by_id(id, '[gnome-shell] listModes');
     loop.run();
 }
 
-var SessionMode = class extends Signals.EventEmitter {
+export class SessionMode extends Signals.EventEmitter {
     constructor() {
         super();
 

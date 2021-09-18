@@ -1,9 +1,13 @@
 /* -*- mode: js2; js2-basic-offset: 4; indent-tabs-mode: nil -*- */
 /* exported BarLevel */
 
-const { Atk, Clutter, GObject, St } = imports.gi;
+import Atk from 'gi://Atk';
+import Clutter from 'gi://Clutter';
+import GObject from 'gi://GObject';
+import St from 'gi://St';
 
-var BarLevel = GObject.registerClass({
+
+export const BarLevel = GObject.registerClass({
     Properties: {
         'value': GObject.ParamSpec.double(
             'value', 'value', 'value',
@@ -19,6 +23,9 @@ var BarLevel = GObject.registerClass({
             1, 2, 1),
     },
 }, class BarLevel extends St.DrawingArea {
+    /**
+     * @param {*} params 
+     */
     _init(params) {
         this._maxValue = 1;
         this._value = 0;

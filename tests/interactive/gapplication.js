@@ -1,8 +1,14 @@
 #!/usr/bin/env gjs
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
-imports.gi.versions = { Gdk: '3.0', Gtk: '3.0' };
-const { Gdk, Gio, GLib, Gtk } = imports.gi;
+import 'gi://Gtk?version=3.0';
+import 'gi://Gdk?version=3.0';
+
+import Gdk from 'gi://Gdk';
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
+import Gtk from 'gi://Gtk';
+
 
 function do_action(action, parameter) {
     print ("Action '" + action.name + "' invoked");

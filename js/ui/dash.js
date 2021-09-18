@@ -1,29 +1,34 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported Dash */
 
-const { Clutter, GLib, GObject,
-        Graphene, Meta, Shell, St } = imports.gi;
+import Clutter from 'gi://Clutter';
+import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
+import Graphene from 'gi://Graphene';
+import Meta from 'gi://Meta';
+import Shell from 'gi://Shell';
+import St from 'gi://St';
 
-const AppDisplay = imports.ui.appDisplay;
-const AppFavorites = imports.ui.appFavorites;
-const DND = imports.ui.dnd;
-const IconGrid = imports.ui.iconGrid;
-const Main = imports.ui.main;
-const Overview = imports.ui.overview;
+import * as AppDisplay from './appDisplay.js';
+import * as AppFavorites from './appFavorites.js';
+import * as DND from './dnd.js';
+import * as IconGrid from './iconGrid.js';
+import * as Overview from './overview.js';
+import Main from './main.js';
 
-var DASH_ANIMATION_TIME = 200;
-var DASH_ITEM_LABEL_SHOW_TIME = 150;
-var DASH_ITEM_LABEL_HIDE_TIME = 100;
-var DASH_ITEM_HOVER_TIMEOUT = 300;
+export const DASH_ANIMATION_TIME = 200;
+export const DASH_ITEM_LABEL_SHOW_TIME = 150;
+export const DASH_ITEM_LABEL_HIDE_TIME = 100;
+export const DASH_ITEM_HOVER_TIMEOUT = 300;
 
-function getAppFromSource(source) {
+export function getAppFromSource(source) {
     if (source instanceof AppDisplay.AppIcon)
         return source.app;
     else
         return null;
 }
 
-var DashIcon = GObject.registerClass(
+export const DashIcon = GObject.registerClass(
 class DashIcon extends AppDisplay.AppIcon {
     _init(app) {
         super._init(app, {
@@ -54,7 +59,7 @@ class DashIcon extends AppDisplay.AppIcon {
 
 // A container like StBin, but taking the child's scale into account
 // when requesting a size
-var DashItemContainer = GObject.registerClass(
+export const DashItemContainer = GObject.registerClass(
 class DashItemContainer extends St.Widget {
     _init() {
         super._init({
@@ -74,6 +79,7 @@ class DashItemContainer extends St.Widget {
         Main.layoutManager.addChrome(this.label);
         this.label_actor = this.label;
 
+        /** @type {St.Bin | null} */
         this.child = null;
         this.animatingOut = false;
 
@@ -146,6 +152,9 @@ class DashItemContainer extends St.Widget {
         });
     }
 
+    /**
+     * @param {St.Bin} actor 
+     */
     setChild(actor) {
         if (this.child == actor)
             return;
@@ -191,7 +200,7 @@ class DashItemContainer extends St.Widget {
     }
 });
 
-var ShowAppsIcon = GObject.registerClass(
+export const ShowAppsIcon = GObject.registerClass(
 class ShowAppsIcon extends DashItemContainer {
     _init() {
         super._init();
@@ -270,7 +279,7 @@ class ShowAppsIcon extends DashItemContainer {
     }
 });
 
-var DragPlaceholderItem = GObject.registerClass(
+export const DragPlaceholderItem = GObject.registerClass(
 class DragPlaceholderItem extends DashItemContainer {
     _init() {
         super._init();
@@ -278,7 +287,7 @@ class DragPlaceholderItem extends DashItemContainer {
     }
 });
 
-var EmptyDropTargetItem = GObject.registerClass(
+export const EmptyDropTargetItem = GObject.registerClass(
 class EmptyDropTargetItem extends DashItemContainer {
     _init() {
         super._init();
@@ -294,6 +303,7 @@ class DashIconsLayout extends Clutter.BoxLayout {
         });
     }
 
+    /** @returns {[number, number]} */
     vfunc_get_preferred_width(container, forHeight) {
         const [, natWidth] = super.vfunc_get_preferred_width(container, forHeight);
         return [0, natWidth];
@@ -302,7 +312,7 @@ class DashIconsLayout extends Clutter.BoxLayout {
 
 const baseIconSizes = [16, 22, 24, 32, 48, 64];
 
-var Dash = GObject.registerClass({
+export const Dash = GObject.registerClass({
     Signals: { 'icon-size-changed': {} },
 }, class Dash extends St.Widget {
     _init() {
@@ -330,6 +340,7 @@ var Dash = GObject.registerClass({
             y_expand: true,
         });
 
+        /** @type {St.Widget<DashIconsLayout["prototype"], Clutter.Content, St.Widget | DashItemContainer["prototype"]>} */
         this._box = new St.Widget({
             clip_to_allocation: true,
             layout_manager: new DashIconsLayout(),
@@ -507,6 +518,10 @@ var Dash = GObject.registerClass({
                         });
 
         let item = new DashItemContainer();
+
+        // TODO: I don't know why this type error is occuring.
+        //       I'm guessing it is an issue with the complicated inheritance.
+        // @ts-expect-error
         item.setChild(appIcon);
 
         // Override default AppIcon label_actor, now the
@@ -574,9 +589,16 @@ var Dash = GObject.registerClass({
         // icons (i.e. ignoring drag placeholders) and which are not
         // animating out (which means they will be destroyed at the end of
         // the animation)
-        let iconChildren = this._box.get_children().filter(actor => {
-            return actor.child &&
+        let iconChildren = this._box.get_children().filter(
+            /**
+             * @param {Clutter.Actor} actor 
+             * @returns {actor is DashItemContainer["prototype"]}
+             */
+            (actor) => {
+            return actor instanceof DashItemContainer && 
+                   actor.child &&
                    actor.child._delegate &&
+                   // @ts-expect-error
                    actor.child._delegate.icon &&
                    !actor.animatingOut;
         });
@@ -598,7 +620,7 @@ var Dash = GObject.registerClass({
         let spacing = themeNode.get_length('spacing');
 
         let firstButton = iconChildren[0].child;
-        let firstIcon = firstButton._delegate.icon;
+        let firstIcon = /** @type {typeof AppDisplay.AppIcon["prototype"]} */ (firstButton._delegate).icon;
 
         // Enforce valid spacings during the size request
         firstIcon.icon.ensure_style();
@@ -634,7 +656,7 @@ var Dash = GObject.registerClass({
 
         let scale = oldIconSize / newIconSize;
         for (let i = 0; i < iconChildren.length; i++) {
-            let icon = iconChildren[i].child._delegate.icon;
+            let icon = /** @type {typeof AppDisplay.AppIcon["prototype"]} */ (iconChildren[i].child._delegate).icon;
 
             // Set the new size immediately, to keep the icons' sizes
             // in sync with this.iconSize
@@ -676,13 +698,20 @@ var Dash = GObject.registerClass({
 
         let running = this._appSystem.get_running();
 
+        // FIXME
         let children = this._box.get_children().filter(actor => {
-            return actor.child &&
-                   actor.child._delegate &&
-                   actor.child._delegate.app;
+            return 'child' in actor && actor.child &&
+                   /** @type {typeof AppDisplay.AppIcon["prototype"]} */ (actor.child._delegate).app &&
+                   /** @type {typeof AppDisplay.AppIcon["prototype"]} */ (actor.child._delegate).app;
+                   
         });
         // Apps currently in the dash
-        let oldApps = children.map(actor => actor.child._delegate.app);
+        let oldApps = children.map(actor => 'child' in actor ? actor.child._delegate : null).filter(
+            /**
+             * @param {unknown} delegate '
+             * @returns {delegate is typeof AppDisplay.AppIcon["prototype"]}
+             */
+            delegate => delegate instanceof AppDisplay.AppIcon).map(d => d.app);
         // Apps supposed to be in the dash
         let newApps = [];
 
@@ -749,7 +778,8 @@ var Dash = GObject.registerClass({
                 ? newApps[newIndex + 1] : null;
             let insertHere = nextApp && nextApp == oldApp;
             let alreadyRemoved = removedActors.reduce((result, actor) => {
-                let removedApp = actor.child._delegate.app;
+                let removedApp = /** @type {typeof AppDisplay.AppIcon["prototype"]} */ (actor.child._delegate).app;
+
                 return result || removedApp == newApp;
             }, false);
 
@@ -773,9 +803,10 @@ var Dash = GObject.registerClass({
         for (let i = 0; i < removedActors.length; i++) {
             let item = removedActors[i];
 
+            // FIXME
             // Don't animate item removal when the overview is transitioning
             // or hidden
-            if (Main.overview.visible && !Main.overview.animationInProgress)
+            if (Main.overview.visible && !Main.overview.animationInProgress && 'animateOutAndDestroy' in item)
                 item.animateOutAndDestroy();
             else
                 item.destroy();
@@ -947,7 +978,7 @@ var Dash = GObject.registerClass({
                 children[i] == this._dragPlaceholder)
                 continue;
 
-            let childId = children[i].child._delegate.app.get_id();
+            let childId = /** @type {typeof AppDisplay.AppIcon["prototype"]} */ (children[i].child._delegate).app.get_id();
             if (childId == id)
                 continue;
             if (childId in favorites)

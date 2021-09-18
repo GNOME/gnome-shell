@@ -1,9 +1,13 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported loadRemoteSearchProviders */
 
-const { GdkPixbuf, Gio, GLib, Shell, St } = imports.gi;
+import GdkPixbuf from 'gi://GdkPixbuf';
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
+import Shell from 'gi://Shell';
+import St from 'gi://St';
 
-const FileUtils = imports.misc.fileUtils;
+import * as FileUtils from '../misc/fileUtilsModule.js';
 
 const KEY_FILE_GROUP = 'Shell Search Provider';
 
@@ -57,10 +61,10 @@ const SearchProvider2Iface = `
 </interface>
 </node>`;
 
-var SearchProviderProxyInfo = Gio.DBusInterfaceInfo.new_for_xml(SearchProviderIface);
-var SearchProvider2ProxyInfo = Gio.DBusInterfaceInfo.new_for_xml(SearchProvider2Iface);
+export const SearchProviderProxyInfo = Gio.DBusInterfaceInfo.new_for_xml(SearchProviderIface);
+export const SearchProvider2ProxyInfo = Gio.DBusInterfaceInfo.new_for_xml(SearchProvider2Iface);
 
-function loadRemoteSearchProviders(searchSettings, callback) {
+export function loadRemoteSearchProviders(searchSettings, callback) {
     let objectPaths = {};
     let loadedProviders = [];
 
@@ -104,9 +108,9 @@ function loadRemoteSearchProviders(searchSettings, callback) {
                 // ignore error
             }
 
-            let version = '1';
+            let version = 1;
             try {
-                version = keyfile.get_string(group, 'Version');
+                version = Number.parseInt(keyfile.get_string(group, 'Version'), 10);
             } catch (e) {
                 // ignore error
             }
@@ -187,7 +191,7 @@ function loadRemoteSearchProviders(searchSettings, callback) {
     callback(loadedProviders);
 }
 
-var RemoteSearchProvider = class {
+export class RemoteSearchProvider {
     constructor(appInfo, dbusName, dbusPath, autoStart, proxyInfo) {
         if (!proxyInfo)
             proxyInfo = SearchProviderProxyInfo;
@@ -210,6 +214,7 @@ var RemoteSearchProvider = class {
         this.id = appInfo.get_id();
         this.isRemoteProvider = true;
         this.canLaunchSearch = false;
+        this.defaultEnabled = false;
     }
 
     createIcon(size, meta) {
@@ -318,7 +323,7 @@ var RemoteSearchProvider = class {
     }
 };
 
-var RemoteSearchProvider2 = class extends RemoteSearchProvider {
+export class RemoteSearchProvider2 extends RemoteSearchProvider {
     constructor(appInfo, dbusName, dbusPath, autoStart) {
         super(appInfo, dbusName, dbusPath, autoStart, SearchProvider2ProxyInfo);
 

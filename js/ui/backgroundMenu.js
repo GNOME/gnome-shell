@@ -1,13 +1,14 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported addBackgroundMenu */
 
-const { Clutter, St } = imports.gi;
+import Clutter from 'gi://Clutter';
+import St from 'gi://St';
 
-const BoxPointer = imports.ui.boxpointer;
-const Main = imports.ui.main;
-const PopupMenu = imports.ui.popupMenu;
+import * as BoxPointer from './boxpointer.js';
+import Main from './main.js';
+import * as PopupMenu from './popupMenu.js';
 
-var BackgroundMenu = class BackgroundMenu extends PopupMenu.PopupMenu {
+export class BackgroundMenu extends PopupMenu.PopupMenu {
     constructor(layoutManager) {
         super(layoutManager.dummyCursor, 0, St.Side.TOP);
 
@@ -23,7 +24,7 @@ var BackgroundMenu = class BackgroundMenu extends PopupMenu.PopupMenu {
     }
 };
 
-function addBackgroundMenu(actor, layoutManager) {
+export function addBackgroundMenu(actor, layoutManager) {
     actor.reactive = true;
     actor._backgroundMenu = new BackgroundMenu(layoutManager);
     actor._backgroundManager = new PopupMenu.PopupMenuManager(actor);

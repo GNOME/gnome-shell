@@ -393,8 +393,8 @@ list_modes (const char  *option_name,
 
   shell_introspection_init ();
 
-  script = "imports.ui.environment.init();"
-           "imports.ui.sessionMode.listModes();";
+  script = ""
+           "";
   if (!gjs_context_eval (context, script, -1, "<main>", &status, NULL))
       g_message ("Retrieving list of available modes failed.");
 

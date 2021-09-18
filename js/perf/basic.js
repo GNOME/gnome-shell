@@ -5,15 +5,16 @@
 */
 /* eslint camelcase: ["error", { properties: "never", allow: ["^script_"] }] */
 
-const { St } = imports.gi;
+import St from 'gi://St';
 
-const Main = imports.ui.main;
-const MessageTray = imports.ui.messageTray;
-const Scripting = imports.ui.scripting;
+import Main from "../ui/main.js";
+
+import * as MessageTray from "../ui/messageTray.js";
+import * as Scripting from "../ui/scripting.js";
 
 // This script tests the most important (basic) functionality of the shell.
 
-var METRICS = {};
+export const METRICS = {};
 
 async function run() {
     /* eslint-disable no-await-in-loop */

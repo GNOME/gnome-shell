@@ -1,24 +1,24 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported getPointerWatcher */
 
-const { GLib } = imports.gi;
+import GLib from 'gi://GLib';
 
 // We stop polling if the user is idle for more than this amount of time
-var IDLE_TIME = 1000;
+export const IDLE_TIME = 1000;
 
 // This file implements a reasonably efficient system for tracking the position
 // of the mouse pointer. We simply query the pointer from the X server in a loop,
 // but we turn off the polling when the user is idle.
 
 let _pointerWatcher = null;
-function getPointerWatcher() {
+export function getPointerWatcher() {
     if (_pointerWatcher == null)
         _pointerWatcher = new PointerWatcher();
 
     return _pointerWatcher;
 }
 
-var PointerWatch = class {
+export class PointerWatch {
     constructor(watcher, interval, callback) {
         this.watcher = watcher;
         this.interval = interval;
@@ -33,7 +33,7 @@ var PointerWatch = class {
     }
 };
 
-var PointerWatcher = class {
+export class PointerWatcher {
     constructor() {
         this._idleMonitor = global.backend.get_core_idle_monitor();
         this._idleMonitor.add_idle_watch(IDLE_TIME, this._onIdleMonitorBecameIdle.bind(this));

@@ -1,8 +1,9 @@
 #!/usr/bin/env gjs
 
-imports.gi.versions.Gtk = '3.0';
+import 'gi://Gtk?version=3.0';
 
-const { GLib, Gtk } = imports.gi;
+import GLib from 'gi://GLib';
+import Gtk from 'gi://Gtk';
 
 function nextTitle() {
     let length = Math.random() * 20;

@@ -1,10 +1,14 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported ATIndicator */
 
-const { Gio, GLib, GObject, St } = imports.gi;
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
+import St from 'gi://St';
 
-const PanelMenu = imports.ui.panelMenu;
-const PopupMenu = imports.ui.popupMenu;
+
+import * as PanelMenu from '../panelMenu.js';
+import * as PopupMenu from '../popupMenu.js';
 
 const A11Y_SCHEMA                   = 'org.gnome.desktop.a11y';
 const KEY_ALWAYS_SHOW               = 'always-show-universal-access-status';
@@ -29,7 +33,7 @@ const KEY_TEXT_SCALING_FACTOR       = 'text-scaling-factor';
 
 const HIGH_CONTRAST_THEME           = 'HighContrast';
 
-var ATIndicator = GObject.registerClass(
+export const ATIndicator = GObject.registerClass(
 class ATIndicator extends PanelMenu.Button {
     _init() {
         super._init(0.5, _("Accessibility"));
@@ -97,6 +101,12 @@ class ATIndicator extends PanelMenu.Button {
         GLib.Source.set_name_by_id(this._syncMenuVisibilityIdle, '[gnome-shell] this._syncMenuVisibility');
     }
 
+    /**
+     * @param {string} string 
+     * @param {boolean} initialValue 
+     * @param {boolean} writable 
+     * @param {(state: boolean) => void} onSet 
+     */
     _buildItemExtended(string, initialValue, writable, onSet) {
         let widget = new PopupMenu.PopupSwitchMenuItem(string, initialValue);
         if (!writable) {

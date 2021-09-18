@@ -1,5 +1,9 @@
 /* exported IntrospectService */
-const { Gio, GLib, Meta, Shell, St } = imports.gi;
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
+import Meta from 'gi://Meta';
+import Shell from 'gi://Shell';
+import St from 'gi://St';
 
 const APP_ALLOWLIST = [
     'org.freedesktop.impl.portal.desktop.gtk',
@@ -8,12 +12,12 @@ const APP_ALLOWLIST = [
 
 const INTROSPECT_DBUS_API_VERSION = 3;
 
-const { loadInterfaceXML } = imports.misc.fileUtils;
-const { DBusSenderChecker } = imports.misc.util;
+import { loadInterfaceXML } from "./fileUtilsModule.js";
+import { DBusSenderChecker } from "./util.js";
 
 const IntrospectDBusIface = loadInterfaceXML('org.gnome.Shell.Introspect');
 
-var IntrospectService = class {
+export class IntrospectService {
     constructor() {
         this._dbusImpl = Gio.DBusExportedObject.wrapJSObject(IntrospectDBusIface,
                                                              this);
@@ -131,6 +135,7 @@ var IntrospectService = class {
     GetWindowsAsync(params, invocation) {
         let focusWindow = global.display.get_focus_window();
         let apps = this._appSystem.get_running();
+        /** @type {{ [key: number]: { [key: string]: GLib.Variant }}} */
         let windowsList = {};
 
         try {

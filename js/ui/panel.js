@@ -1,23 +1,29 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported Panel */
 
-const { Atk, Clutter, GLib, GObject, Meta, Shell, St } = imports.gi;
-const Cairo = imports.cairo;
+import Atk from 'gi://Atk';
+import Clutter from 'gi://Clutter';
+import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
+import Meta from 'gi://Meta';
+import Shell from 'gi://Shell';
+import St from 'gi://St';
+import Cairo from 'cairo';
 
-const Animation = imports.ui.animation;
-const { AppMenu } = imports.ui.appMenu;
+import * as Animation from './animation.js';
+import { AppMenu } from './appMenu.js';
 const Config = imports.misc.config;
-const CtrlAltTab = imports.ui.ctrlAltTab;
-const DND = imports.ui.dnd;
-const Overview = imports.ui.overview;
-const PopupMenu = imports.ui.popupMenu;
-const PanelMenu = imports.ui.panelMenu;
-const Main = imports.ui.main;
+import * as CtrlAltTab from './ctrlAltTab.js';
+import * as DND from './dnd.js';
+import * as Overview from './overview.js';
+import * as PopupMenu from './popupMenu.js';
+import * as PanelMenu from './panelMenu.js';
+import Main from './main.js';
 
-var PANEL_ICON_SIZE = 16;
-var APP_MENU_ICON_MARGIN = 0;
+export let PANEL_ICON_SIZE = 16;
+export let APP_MENU_ICON_MARGIN = 0;
 
-var BUTTON_DND_ACTIVATION_TIMEOUT = 250;
+export let BUTTON_DND_ACTIVATION_TIMEOUT = 250;
 
 /**
  * AppMenuButton:
@@ -27,7 +33,7 @@ var BUTTON_DND_ACTIVATION_TIMEOUT = 250;
  * this menu also handles startup notification for it.  So when we
  * have an active startup notification, we switch modes to display that.
  */
-var AppMenuButton = GObject.registerClass({
+export const AppMenuButton = GObject.registerClass({
     Signals: { 'changed': {} },
 }, class AppMenuButton extends PanelMenu.Button {
     _init(panel) {
@@ -258,7 +264,7 @@ var AppMenuButton = GObject.registerClass({
     }
 });
 
-var ActivitiesButton = GObject.registerClass(
+export const ActivitiesButton = GObject.registerClass(
 class ActivitiesButton extends PanelMenu.Button {
     _init() {
         super._init(0.0, null, true);
@@ -294,6 +300,8 @@ class ActivitiesButton extends PanelMenu.Button {
             GLib.source_remove(this._xdndTimeOut);
         this._xdndTimeOut = GLib.timeout_add(GLib.PRIORITY_DEFAULT, BUTTON_DND_ACTIVATION_TIMEOUT, () => {
             this._xdndToggleOverview();
+
+            return false;
         });
         GLib.Source.set_name_by_id(this._xdndTimeOut, '[gnome-shell] this._xdndToggleOverview');
 
@@ -344,7 +352,7 @@ class ActivitiesButton extends PanelMenu.Button {
     }
 });
 
-var PanelCorner = GObject.registerClass(
+export const PanelCorner = GObject.registerClass(
 class PanelCorner extends St.DrawingArea {
     _init(side) {
         this._side = side;
@@ -535,6 +543,9 @@ class AggregateLayout extends Clutter.BoxLayout {
         this.layout_changed();
     }
 
+    /**
+     * @returns {[number, number]} 
+     */
     vfunc_get_preferred_width(container, forHeight) {
         let themeNode = container.get_theme_node();
         let minWidth = themeNode.get_min_width();
@@ -550,38 +561,44 @@ class AggregateLayout extends Clutter.BoxLayout {
     }
 });
 
-var AggregateMenu = GObject.registerClass(
+
+
+export const AggregateMenu = GObject.registerClass(
 class AggregateMenu extends PanelMenu.Button {
     _init() {
         super._init(0.0, C_("System menu in the top bar", "System"), false);
         this.menu.actor.add_style_class_name('aggregate-menu');
 
-        let menuLayout = new AggregateLayout();
-        this.menu.box.set_layout_manager(menuLayout);
+        this._menuLayout = new AggregateLayout();
+        this.menu.box.set_layout_manager(this._menuLayout);
 
         this._indicators = new St.BoxLayout({ style_class: 'panel-status-indicators-box' });
         this.add_child(this._indicators);
+    }
 
+    async _asyncInit() {
         if (Config.HAVE_NETWORKMANAGER)
-            this._network = new imports.ui.status.network.NMApplet();
+            this._network = new ((await import('./status/network.js')).NMApplet)();
         else
             this._network = null;
 
         if (Config.HAVE_BLUETOOTH)
-            this._bluetooth = new imports.ui.status.bluetooth.Indicator();
+            this._bluetooth = new ((await import('./status/bluetooth.js')).Indicator)();
         else
             this._bluetooth = null;
 
-        this._remoteAccess = new imports.ui.status.remoteAccess.RemoteAccessApplet();
-        this._power = new imports.ui.status.power.Indicator();
-        this._powerProfiles = new imports.ui.status.powerProfiles.Indicator();
-        this._rfkill = new imports.ui.status.rfkill.Indicator();
-        this._volume = new imports.ui.status.volume.Indicator();
-        this._brightness = new imports.ui.status.brightness.Indicator();
-        this._system = new imports.ui.status.system.Indicator();
-        this._location = new imports.ui.status.location.Indicator();
-        this._nightLight = new imports.ui.status.nightLight.Indicator();
-        this._thunderbolt = new imports.ui.status.thunderbolt.Indicator();
+        const menuLayout = this._menuLayout;
+
+        this._remoteAccess = new ((await import('./status/remoteAccess.js')).RemoteAccessApplet)();
+        this._powerProfiles = new ((await import('./status/powerProfiles.js')).Indicator)();
+        this._power = new ((await import('./status/power.js')).Indicator)();
+        this._rfkill = new ((await import('./status/rfkill.js')).Indicator)();
+        this._volume = new ((await import('./status/volume.js')).Indicator)();
+        this._brightness = new ((await import('./status/brightness.js')).Indicator)();
+        this._system = new ((await import('./status/system.js')).Indicator)();
+        this._location = new ((await import('./status/location.js')).Indicator)();
+        this._nightLight = new ((await import('./status/nightLight.js')).Indicator)();
+        this._thunderbolt = new ((await import('./status/thunderbolt.js')).Indicator)();
         this._unsafeMode = new UnsafeModeIndicator();
 
         this._indicators.add_child(this._remoteAccess);
@@ -624,17 +641,22 @@ class AggregateMenu extends PanelMenu.Button {
     }
 });
 
+import {DateMenuButton} from './dateMenu.js';
+import {ATIndicator} from './status/accessibility.js';
+import {InputSourceIndicator} from './status/keyboard.js';
+import {DwellClickIndicator} from './status/dwellClick.js';
+
 const PANEL_ITEM_IMPLEMENTATIONS = {
     'activities': ActivitiesButton,
     'aggregateMenu': AggregateMenu,
     'appMenu': AppMenuButton,
-    'dateMenu': imports.ui.dateMenu.DateMenuButton,
-    'a11y': imports.ui.status.accessibility.ATIndicator,
-    'keyboard': imports.ui.status.keyboard.InputSourceIndicator,
-    'dwellClick': imports.ui.status.dwellClick.DwellClickIndicator,
+    'dateMenu': DateMenuButton,
+    'a11y': ATIndicator,
+    'keyboard': InputSourceIndicator,
+    'dwellClick': DwellClickIndicator,
 };
 
-var Panel = GObject.registerClass(
+export const Panel = GObject.registerClass(
 class Panel extends St.Widget {
     _init() {
         super._init({ name: 'panel',
@@ -673,13 +695,26 @@ class Panel extends St.Widget {
         Main.layoutManager.panelBox.add(this);
         Main.ctrlAltTabManager.addGroup(this, _("Top Bar"), 'focus-top-bar-symbolic',
                                         { sortGroup: CtrlAltTab.SortGroup.TOP });
-
-        Main.sessionMode.connect('updated', this._updatePanel.bind(this));
+        log('updating panel...');
+        Main.sessionMode.connect('updated', () => {
+            this._updatePanel().then(() => {
+                log('Panel Updated!');
+            }).catch(err => {
+                logError(err)
+            });
+        });
 
         global.display.connect('workareas-changed', () => this.queue_relayout());
-        this._updatePanel();
+        this._updatePanel().then(() => {
+            log('Panel Updated! (1)');
+        }).catch(err => {
+            logError(err)
+        });
     }
 
+    /**
+     * @returns {[number, number]} 
+     */
     vfunc_get_preferred_width(_forHeight) {
         let primaryMonitor = Main.layoutManager.primaryMonitor;
 
@@ -863,12 +898,14 @@ class Panel extends St.Widget {
         return this._leftBox.opacity;
     }
 
-    _updatePanel() {
+    async _updatePanel() {
+        try {
+            log('Updating panel...');
         let panel = Main.sessionMode.panel;
         this._hideIndicators();
-        this._updateBox(panel.left, this._leftBox);
-        this._updateBox(panel.center, this._centerBox);
-        this._updateBox(panel.right, this._rightBox);
+        await this._updateBox(panel.left, this._leftBox);
+        await this._updateBox(panel.center, this._centerBox);
+        await this._updateBox(panel.right, this._rightBox);
 
         if (panel.left.includes('dateMenu'))
             Main.messageTray.bannerAlignment = Clutter.ActorAlign.START;
@@ -892,6 +929,10 @@ class Panel extends St.Widget {
             this._leftCorner.setStyleParent(this._leftBox);
             this._rightCorner.setStyleParent(this._rightBox);
         }
+    }catch(error) {
+        log('FAILED TO UPDATE PANEL...');
+        logError(error);
+    }
     }
 
     _hideIndicators() {
@@ -903,7 +944,7 @@ class Panel extends St.Widget {
         }
     }
 
-    _ensureIndicator(role) {
+    async _ensureIndicator(role) {
         let indicator = this.statusArea[role];
         if (!indicator) {
             let constructor = PANEL_ITEM_IMPLEMENTATIONS[role];
@@ -912,17 +953,22 @@ class Panel extends St.Widget {
                 return null;
             }
             indicator = new constructor(this);
+
+            // TODO
+            if (indicator._asyncInit)
+               await indicator._asyncInit();
+
             this.statusArea[role] = indicator;
         }
         return indicator;
     }
 
-    _updateBox(elements, box) {
+    async _updateBox(elements, box) {
         let nChildren = box.get_n_children();
 
         for (let i = 0; i < elements.length; i++) {
             let role = elements[i];
-            let indicator = this._ensureIndicator(role);
+            let indicator = await this._ensureIndicator(role);
             if (indicator == null)
                 continue;
 

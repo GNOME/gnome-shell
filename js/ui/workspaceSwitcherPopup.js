@@ -1,14 +1,19 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported WorkspaceSwitcherPopup */
 
-const { Clutter, GLib, GObject, Meta, St } = imports.gi;
+import Clutter from 'gi://Clutter';
+import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
+import Meta from 'gi://Meta';
+import St from 'gi://St';
 
-const Main = imports.ui.main;
 
-var ANIMATION_TIME = 100;
-var DISPLAY_TIMEOUT = 600;
+import Main from './main.js';
 
-var WorkspaceSwitcherPopupList = GObject.registerClass(
+ export let  ANIMATION_TIME = 100;
+ export let  DISPLAY_TIMEOUT = 600;
+
+export const WorkspaceSwitcherPopupList = GObject.registerClass(
 class WorkspaceSwitcherPopupList extends St.Widget {
     _init() {
         super._init({
@@ -63,6 +68,9 @@ class WorkspaceSwitcherPopupList extends St.Widget {
         }
     }
 
+    /**
+     * @return {[number, number]}
+     */
     _getSizeForOppositeOrientation() {
         let workArea = Main.layoutManager.getWorkAreaForMonitor(Main.layoutManager.primaryIndex);
 
@@ -119,7 +127,7 @@ class WorkspaceSwitcherPopupList extends St.Widget {
     }
 });
 
-var WorkspaceSwitcherPopup = GObject.registerClass(
+export const WorkspaceSwitcherPopup = GObject.registerClass(
 class WorkspaceSwitcherPopup extends St.Widget {
     _init() {
         super._init({ x: 0,

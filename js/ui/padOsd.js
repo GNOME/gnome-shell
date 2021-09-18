@@ -1,15 +1,24 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported PadOsd, PadOsdService */
 
-const { Atk, Clutter, GDesktopEnums, Gio,
-        GLib, GObject, Gtk, Meta, Pango, Rsvg, St } = imports.gi;
-const Signals = imports.misc.signals;
+import Atk from 'gi://Atk';
+import Clutter from 'gi://Clutter';
+import GDesktopEnums from 'gi://GDesktopEnums';
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
+import Gtk from 'gi://Gtk';
+import Meta from 'gi://Meta';
+import Pango from 'gi://Pango';
+import Rsvg from 'gi://Rsvg';
+import St from 'gi://St';
+import * as Signals from '../misc/signals.js';
 
-const Main = imports.ui.main;
-const PopupMenu = imports.ui.popupMenu;
-const Layout = imports.ui.layout;
+import Main from './main.js';
+import * as PopupMenu from './popupMenu.js';
+import * as Layout from './layout.js';
 
-const { loadInterfaceXML } = imports.misc.fileUtils;
+import { loadInterfaceXML } from '../misc/fileUtilsModule.js';
 
 const ACTIVE_COLOR = "#729fcf";
 
@@ -22,9 +31,13 @@ const CCW = 1;
 const UP = 0;
 const DOWN = 1;
 
-var PadChooser = GObject.registerClass({
+export const PadChooser = GObject.registerClass({
     Signals: { 'pad-selected': { param_types: [Clutter.InputDevice.$gtype] } },
 }, class PadChooser extends St.Button {
+    /**
+     * @param {*} device 
+     * @param {*} groupDevices 
+     */
     _init(device, groupDevices) {
         super._init({
             style_class: 'pad-chooser-button',
@@ -88,7 +101,7 @@ var PadChooser = GObject.registerClass({
     }
 });
 
-var KeybindingEntry = GObject.registerClass({
+export const KeybindingEntry = GObject.registerClass({
     Signals: { 'keybinding-edited': { param_types: [GObject.TYPE_STRING] } },
 }, class KeybindingEntry extends St.Entry {
     _init() {
@@ -109,7 +122,7 @@ var KeybindingEntry = GObject.registerClass({
     }
 });
 
-var ActionComboBox = GObject.registerClass({
+export const ActionComboBox = GObject.registerClass({
     Signals: { 'action-selected': { param_types: [GObject.TYPE_INT] } },
 }, class ActionComboBox extends St.Button {
     _init() {
@@ -191,7 +204,7 @@ var ActionComboBox = GObject.registerClass({
     }
 });
 
-var ActionEditor = GObject.registerClass({
+export const ActionEditor = GObject.registerClass({
     Signals: { 'done': {} },
 }, class ActionEditor extends St.Widget {
     _init() {
@@ -275,7 +288,7 @@ var ActionEditor = GObject.registerClass({
     }
 });
 
-var PadDiagram = GObject.registerClass({
+export const PadDiagram = GObject.registerClass({
     Properties: {
         'left-handed': GObject.ParamSpec.boolean('left-handed',
                                                  'left-handed', 'Left handed',
@@ -368,7 +381,7 @@ var PadDiagram = GObject.registerClass({
         let css = this._css;
 
         for (let i = 0; i < this._activeButtons.length; i++) {
-            let ch = String.fromCharCode('A'.charCodeAt() + this._activeButtons[i]);
+            let ch = String.fromCharCode('A'.charCodeAt(0) + this._activeButtons[i]);
             css += '.%s.Leader { stroke: %s !important; }'.format(ch, ACTIVE_COLOR);
             css += '.%s.Button { stroke: %s !important; fill: %s !important; }'.format(ch, ACTIVE_COLOR, ACTIVE_COLOR);
         }
@@ -387,7 +400,8 @@ var PadDiagram = GObject.registerClass({
         svgData += this._wrappingSvgFooter();
 
         let istream = new Gio.MemoryInputStream();
-        istream.add_bytes(new GLib.Bytes(svgData));
+        // FIXME
+        istream.add_bytes(imports.byteArray.fromString(svgData));
 
         return Rsvg.Handle.new_from_stream_sync(istream,
             Gio.File.new_for_path(this._imagePath), 0, null);
@@ -495,7 +509,7 @@ var PadDiagram = GObject.registerClass({
     }
 
     _getButtonLabels(button) {
-        let ch = String.fromCharCode('A'.charCodeAt() + button);
+        let ch = String.fromCharCode('A'.charCodeAt(0) + button);
         let labelName = 'Label%s'.format(ch);
         let leaderName = 'Leader%s'.format(ch);
         return [labelName, leaderName];
@@ -618,12 +632,19 @@ var PadDiagram = GObject.registerClass({
     }
 });
 
-var PadOsd = GObject.registerClass({
+export const PadOsd = GObject.registerClass({
     Signals: {
         'pad-selected': { param_types: [Clutter.InputDevice.$gtype] },
         'closed': {},
     },
 }, class PadOsd extends St.BoxLayout {
+    /**
+     * @param {*} padDevice 
+     * @param {*} settings 
+     * @param {*} imagePath 
+     * @param {*} editionMode 
+     * @param {*} monitorIndex 
+     */
     _init(padDevice, settings, imagePath, editionMode, monitorIndex) {
         super._init({
             style_class: 'pad-osd-window',
@@ -894,19 +915,19 @@ var PadOsd = GObject.registerClass({
     }
 
     _startButtonActionEdition(button) {
-        let ch = String.fromCharCode('A'.charCodeAt() + button);
+        let ch = String.fromCharCode('A'.charCodeAt(0) + button);
         let key = 'button%s'.format(ch);
         this._startActionEdition(key, Meta.PadActionType.BUTTON, button);
     }
 
     _startRingActionEdition(ring, dir, mode) {
-        let ch = String.fromCharCode('A'.charCodeAt() + ring);
+        let ch = String.fromCharCode('A'.charCodeAt(0) + ring);
         let key = 'ring%s-%s-mode-%d'.format(ch, dir == CCW ? 'ccw' : 'cw', mode);
         this._startActionEdition(key, Meta.PadActionType.RING, ring, dir, mode);
     }
 
     _startStripActionEdition(strip, dir, mode) {
-        let ch = String.fromCharCode('A'.charCodeAt() + strip);
+        let ch = String.fromCharCode('A'.charCodeAt(0) + strip);
         let key = 'strip%s-%s-mode-%d'.format(ch, dir == UP ? 'up' : 'down', mode);
         this._startActionEdition(key, Meta.PadActionType.STRIP, strip, dir, mode);
     }
@@ -944,7 +965,7 @@ var PadOsd = GObject.registerClass({
 
 const PadOsdIface = loadInterfaceXML('org.gnome.Shell.Wacom.PadOsd');
 
-var PadOsdService = class extends Signals.EventEmitter {
+export class PadOsdService extends Signals.EventEmitter {
     constructor() {
         super();
 

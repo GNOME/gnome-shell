@@ -1,43 +1,87 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported addDragMonitor, removeDragMonitor, makeDraggable */
 
-const { Clutter, GLib, Meta, Shell, St } = imports.gi;
-const Signals = imports.misc.signals;
+import Clutter from 'gi://Clutter';
+import GLib from 'gi://GLib';
+import Meta from 'gi://Meta';
+import Shell from 'gi://Shell';
+import St from 'gi://St';
 
-const Main = imports.ui.main;
+import * as Signals from '../misc/signals.js';
+
+import Main from './main.js';
 
 // Time to scale down to maxDragActorSize
-var SCALE_ANIMATION_TIME = 250;
+export let SCALE_ANIMATION_TIME = 250;
 // Time to animate to original position on cancel
-var SNAP_BACK_ANIMATION_TIME = 250;
+export let SNAP_BACK_ANIMATION_TIME = 250;
 // Time to animate to original position on success
-var REVERT_ANIMATION_TIME = 750;
+export let REVERT_ANIMATION_TIME = 750;
 
-var DragMotionResult = {
+/** @typedef {{ getDragActor<T extends Clutter.Actor = Clutter.Actor>(): T }} DragActorContainer */
+/** @typedef {{ getDragActorSource<T extends Clutter.Actor = Clutter.Actor>(): T }} DragActorSourceContainer */
+/** @typedef {{ handleDragOver(source: Clutter.Actor | Signals.EventEmitter, actor: Clutter.Actor, x: number, y: number, time: number): DragMotionResult }} DragOverTarget */
+/** @typedef {{ acceptDrop(source: Clutter.Actor | Signals.EventEmitter, actor: Clutter.Actor, x: number, y: number, time: number): boolean }} DropTarget */
+
+/**
+ * @param {unknown} delegate
+ * @returns {delegate is DragActorContainer} 
+ */
+function hasDragActor(delegate) {
+    return !!(/** @type {DragActorContainer} */ (delegate).getDragActor);
+}
+
+/**
+ * @param {unknown} delegate
+ * @returns {delegate is DragActorSourceContainer} 
+ */
+function hasDragActorSource(delegate) {
+    return !!(/** @type {DragActorSourceContainer} */ (delegate).getDragActorSource);
+}
+
+/**
+ * @param {unknown} delegate
+ * @returns {delegate is DragOverTarget} 
+ */
+export function handlesDragOver(delegate) {
+    return !!(/** @type {DragOverTarget} */ (delegate).handleDragOver);
+}
+
+/**
+ * @param {unknown} delegate
+ * @returns {delegate is DropTarget} 
+ */
+function isDropTarget(delegate) {
+    return !!(/** @type {DropTarget} */ (delegate).acceptDrop);
+}
+
+/** @enum {number} */
+export const DragMotionResult = {
     NO_DROP:   0,
     COPY_DROP: 1,
     MOVE_DROP: 2,
     CONTINUE:  3,
 };
 
-var DragState = {
+/** @enum {number} */
+export const DragState = {
     INIT:      0,
     DRAGGING:  1,
     CANCELLED: 2,
 };
 
-var DRAG_CURSOR_MAP = {
+export const DRAG_CURSOR_MAP = {
     0: Meta.Cursor.DND_UNSUPPORTED_TARGET,
     1: Meta.Cursor.DND_COPY,
     2: Meta.Cursor.DND_MOVE,
 };
 
-var DragDropResult = {
+export const DragDropResult = {
     FAILURE:  0,
     SUCCESS:  1,
     CONTINUE: 2,
 };
-var dragMonitors = [];
+export let dragMonitors = [];
 
 let eventHandlerActor = null;
 let currentDraggable = null;
@@ -64,11 +108,11 @@ function _getRealActorScale(actor) {
     return scale;
 }
 
-function addDragMonitor(monitor) {
+export function addDragMonitor(monitor) {
     dragMonitors.push(monitor);
 }
 
-function removeDragMonitor(monitor) {
+export function removeDragMonitor(monitor) {
     for (let i = 0; i < dragMonitors.length; i++) {
         if (dragMonitors[i] == monitor) {
             dragMonitors.splice(i, 1);
@@ -77,7 +121,20 @@ function removeDragMonitor(monitor) {
     }
 }
 
-var _Draggable = class _Draggable extends Signals.EventEmitter {
+// FIXME
+/**
+ * @typedef {object} _DraggableParams
+ * @property {boolean} [manualMode]
+ * @property {number} [timeoutThreshold]
+ * @property {boolean} [restoreOnSuccess]
+ * @property {number} [dragActorMaxSize]
+ * @property {number} [dragActorOpacity]
+ */
+export class _Draggable extends Signals.EventEmitter {
+    /**
+     * @param {Clutter.Actor} actor
+     * @param {Partial<_DraggableParams>} [params]
+     */
     constructor(actor, params = {}) {
         super();
 
@@ -358,7 +415,7 @@ var _Draggable = class _Draggable extends Signals.EventEmitter {
 
         let scaledWidth, scaledHeight;
 
-        if (this.actor._delegate && this.actor._delegate.getDragActor) {
+        if (this.actor._delegate && hasDragActor(this.actor._delegate)) {
             this._dragActor = this.actor._delegate.getDragActor();
             Main.uiGroup.add_child(this._dragActor);
             Main.uiGroup.set_child_above_sibling(this._dragActor, null);
@@ -367,7 +424,7 @@ var _Draggable = class _Draggable extends Signals.EventEmitter {
             // Drag actor does not always have to be the same as actor. For example drag actor
             // can be an image that's part of the actor. So to perform "snap back" correctly we need
             // to know what was the drag actor source.
-            if (this.actor._delegate.getDragActorSource) {
+            if (hasDragActorSource(this.actor._delegate)) {
                 this._dragActorSource = this.actor._delegate.getDragActorSource();
                 // If the user dragged from the source, then position
                 // the dragActor over it. Otherwise, center it
@@ -570,7 +627,7 @@ var _Draggable = class _Draggable extends Signals.EventEmitter {
         dragEvent.targetActor.disconnect(targetActorDestroyHandlerId);
 
         while (target) {
-            if (target._delegate && target._delegate.handleDragOver) {
+            if (target._delegate && handlesDragOver(target._delegate)) {
                 let [r_, targX, targY] = target.transform_stage_point(this._dragX, this._dragY);
                 // We currently loop through all parents on drag-over even if one of the children has handled it.
                 // We can check the return value of the function and break the loop if it's true if we don't want
@@ -643,7 +700,7 @@ var _Draggable = class _Draggable extends Signals.EventEmitter {
         this._dragCancellable = false;
 
         while (target) {
-            if (target._delegate && target._delegate.acceptDrop) {
+            if (target._delegate && isDropTarget(target._delegate)) {
                 let [r_, targX, targY] = target.transform_stage_point(dropX, dropY);
                 let accepted = false;
                 try {
@@ -842,6 +899,6 @@ var _Draggable = class _Draggable extends Signals.EventEmitter {
  * target wants to reuse the actor, it's up to the drop target to
  * reset these values.
  */
-function makeDraggable(actor, params) {
+export function makeDraggable(actor, params) {
     return new _Draggable(actor, params);
 }

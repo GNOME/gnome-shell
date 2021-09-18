@@ -3,12 +3,11 @@
 // Test cases for MessageList markup parsing
 
 const JsUnit = imports.jsUnit;
-const Pango = imports.gi.Pango;
+import Pango from 'gi://Pango';
 
 const Environment = imports.ui.environment;
 Environment.init();
 
-const Main = imports.ui.main; // unused, but needed to break dependency loop
 const MessageList = imports.ui.messageList;
 
 // Assert that @input, assumed to be markup, gets "fixed" to @output,

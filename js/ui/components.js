@@ -1,7 +1,7 @@
 /* exported ComponentManager */
-const Main = imports.ui.main;
+import Main from './main.js';
 
-var ComponentManager = class {
+export class ComponentManager {
     constructor() {
         this._allComponents = {};
         this._enabledComponents = [];
@@ -10,12 +10,12 @@ var ComponentManager = class {
         this._sessionUpdated();
     }
 
-    _sessionUpdated() {
+    async _sessionUpdated() {
         let newEnabledComponents = Main.sessionMode.components;
 
-        newEnabledComponents
+        await Promise.all([...newEnabledComponents
             .filter(name => !this._enabledComponents.includes(name))
-            .forEach(name => this._enableComponent(name));
+            .map(name => this._enableComponent(name))]);
 
         this._enabledComponents
             .filter(name => !newEnabledComponents.includes(name))
@@ -24,12 +24,12 @@ var ComponentManager = class {
         this._enabledComponents = newEnabledComponents;
     }
 
-    _importComponent(name) {
-        let module = imports.ui.components[name];
+    async _importComponent(name) {
+        let module = await import(`./components/${name}.js`);
         return module.Component;
     }
 
-    _ensureComponent(name) {
+    async _ensureComponent(name) {
         let component = this._allComponents[name];
         if (component)
             return component;
@@ -37,14 +37,14 @@ var ComponentManager = class {
         if (Main.sessionMode.isLocked)
             return null;
 
-        let constructor = this._importComponent(name);
+        let constructor = await this._importComponent(name);
         component = new constructor();
         this._allComponents[name] = component;
         return component;
     }
 
-    _enableComponent(name) {
-        let component = this._ensureComponent(name);
+    async _enableComponent(name) {
+        let component = await this._ensureComponent(name);
         if (component)
             component.enable();
     }

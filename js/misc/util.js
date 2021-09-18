@@ -4,12 +4,18 @@
             ensureActorVisibleInScrollView, wiggle, lerp, GNOMEversionCompare,
             DBusSenderChecker */
 
-const { Clutter, Gio, GLib, Shell, St, GnomeDesktop } = imports.gi;
-const Gettext = imports.gettext;
+import Clutter from 'gi://Clutter';
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
+import Shell from 'gi://Shell';
+import St from 'gi://St';
+import GnomeDesktop from 'gi://GnomeDesktop';
 
-const Main = imports.ui.main;
+import Main from "../ui/main.js";
 
-var SCROLL_TIME = 100;
+import * as Gettext from 'gettext';
+
+export let SCROLL_TIME = 100;
 
 const WIGGLE_OFFSET = 6;
 const WIGGLE_DURATION = 65;
@@ -52,7 +58,7 @@ let _desktopSettings = null;
 // the position within @str where the URL was found.
 //
 // Return value: the list of match objects, as described above
-function findUrls(str) {
+export function findUrls(str) {
     let res = [], match;
     while ((match = _urlRegexp.exec(str)))
         res.push({ url: match[2], pos: match.index + match[1].length });
@@ -64,7 +70,7 @@ function findUrls(str) {
 //
 // Runs @argv in the background, handling any errors that occur
 // when trying to start the program.
-function spawn(argv) {
+export function spawn(argv) {
     try {
         trySpawn(argv);
     } catch (err) {
@@ -77,7 +83,7 @@ function spawn(argv) {
 //
 // Runs @commandLine in the background, handling any errors that
 // occur when trying to parse or start the program.
-function spawnCommandLine(commandLine) {
+export function spawnCommandLine(commandLine) {
     try {
         let [success_, argv] = GLib.shell_parse_argv(commandLine);
         trySpawn(argv);
@@ -90,7 +96,7 @@ function spawnCommandLine(commandLine) {
 // @argv: an argv array
 //
 // Runs @argv as if it was an application, handling startup notification
-function spawnApp(argv) {
+export function spawnApp(argv) {
     try {
         let app = Gio.AppInfo.create_from_commandline(argv.join(' '), null,
                                                       Gio.AppInfoCreateFlags.SUPPORTS_STARTUP_NOTIFICATION);
@@ -108,7 +114,7 @@ function spawnApp(argv) {
 // Runs @argv in the background. If launching @argv fails,
 // this will throw an error.
 function trySpawn(argv) {
-    var success_, pid;
+    let success_, pid;
     try {
         [success_, pid] = GLib.spawn_async(null, argv, null,
                                            GLib.SpawnFlags.SEARCH_PATH | GLib.SpawnFlags.DO_NOT_REAP_CHILD,
@@ -145,7 +151,7 @@ function trySpawn(argv) {
 //
 // Runs @commandLine in the background. If launching @commandLine
 // fails, this will throw an error.
-function trySpawnCommandLine(commandLine) {
+export function trySpawnCommandLine(commandLine) {
     let success_, argv;
 
     try {
@@ -165,7 +171,7 @@ function _handleSpawnError(command, err) {
     Main.notifyError(title, err.message);
 }
 
-function formatTimeSpan(date) {
+export function formatTimeSpan(date) {
     let now = GLib.DateTime.new_now_local();
 
     let timespan = now.difference(date);
@@ -205,7 +211,17 @@ function formatTimeSpan(date) {
                             "%d years ago", yearsAgo).format(yearsAgo);
 }
 
-function formatTime(time, params = {}) {
+/** 
+ * @typedef {object} FormatTimeProps
+ * @property {boolean} timeOnly
+ * @property {boolean} ampm
+ */
+
+/**
+ * @param {GLib.DateTime | Date} time
+ * @param {Partial<FormatTimeProps>} params
+ */
+export function formatTime(time, params) {
     let date;
     // HACK: The built-in Date type sucks at timezones, which we need for the
     //       world clock; it's often more convenient though, so allow either
@@ -300,7 +316,7 @@ function formatTime(time, params = {}) {
     return formattedTime.replace(/([:\u2236])/g, '\u200e$1');
 }
 
-function createTimeLabel(date, params) {
+export function createTimeLabel(date, params) {
     if (_desktopSettings == null)
         _desktopSettings = new Gio.Settings({ schema_id: 'org.gnome.desktop.interface' });
 
@@ -356,14 +372,14 @@ function lowerBound(array, val, cmp) {
 // Inserts @val into @array, preserving the
 // sorting invariants.
 // Returns the position at which it was inserted
-function insertSorted(array, val, cmp) {
+export function insertSorted(array, val, cmp) {
     let pos = lowerBound(array, val, cmp);
     array.splice(pos, 0, val);
 
     return pos;
 }
 
-function ensureActorVisibleInScrollView(scrollView, actor) {
+export function ensureActorVisibleInScrollView(scrollView, actor) {
     let adjustment = scrollView.vscroll.adjustment;
     let [value, lower_, upper, stepIncrement_, pageIncrement_, pageSize] = adjustment.get_values();
 
@@ -399,7 +415,18 @@ function ensureActorVisibleInScrollView(scrollView, actor) {
     });
 }
 
-function wiggle(actor, params = {}) {
+/** 
+ * @typedef {object} WiggleProps
+ * @property {number} offset
+ * @property {number} duration
+ * @property {number} wiggleCount
+ */
+
+/**
+ * @param {Clutter.Actor} actor
+ * @param {Partial<WiggleProps>} [params]
+ */
+export function wiggle(actor, params = {}) {
     if (!St.Settings.get().enable_animations)
         return;
 
@@ -436,7 +463,7 @@ function wiggle(actor, params = {}) {
     });
 }
 
-function lerp(start, end, progress) {
+export function lerp(start, end, progress) {
     return start + progress * (end - start);
 }
 
@@ -462,7 +489,7 @@ function _GNOMEversionToNumber(version) {
 //
 // Returns an integer less than, equal to, or greater than
 // zero, if version1 is older, equal or newer than version2
-function GNOMEversionCompare(version1, version2) {
+export function GNOMEversionCompare(version1, version2) {
     const v1Array = version1.split('.');
     const v2Array = version2.split('.');
 
@@ -478,7 +505,7 @@ function GNOMEversionCompare(version1, version2) {
     return 0;
 }
 
-var DBusSenderChecker = class {
+export class DBusSenderChecker {
     /**
      * @param {string[]} allowList - list of allowed well-known names
      */

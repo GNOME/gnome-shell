@@ -1,5 +1,4 @@
 /* -*- mode: js2; js2-basic-offset: 4; indent-tabs-mode: nil -*- */
-/* exported getCompletions, getCommonPrefix, getDeclaredConstants */
 
 // Returns a list of potential completions for text. Completions either
 // follow a dot (e.g. foo.ba -> bar) or they are picked from globalCompletionList (e.g. fo -> foo)
@@ -7,7 +6,7 @@
 // consist of global constants that might not carry over from the calling environment.
 //
 // This function is likely the one you want to call from external modules
-function getCompletions(text, commandHeader, globalCompletionList) {
+export function getCompletions(text, commandHeader, globalCompletionList) {
     let methods = [];
     let expr_, base;
     let attrHead = '';
@@ -108,7 +107,7 @@ function findTheBrace(expr, offset, ...braces) {
 // There is no guarantee of correct javascript syntax between the return
 // value and offset.  This function is meant to take a string like
 // "foo(Obj.We.Are.Completing" and allow you to extract "Obj.We.Are.Completing"
-function getExpressionOffset(expr, offset) {
+export function getExpressionOffset(expr, offset) {
     while (offset >= 0) {
         let currChar = expr.charAt(offset);
 
@@ -132,7 +131,7 @@ function isValidPropertyName(w) {
 
 // To get all properties (enumerable and not), we need to walk
 // the prototype chain ourselves
-function getAllProps(obj) {
+export function getAllProps(obj) {
     if (obj === null || obj === undefined)
         return [];
 
@@ -144,7 +143,7 @@ function getAllProps(obj) {
 // e.g., expr="({ foo: null, bar: null, 4: null })" will
 // return ["foo", "bar", ...] but the list will not include "4",
 // since methods accessed with '.' notation must star with a letter or _.
-function getPropertyNamesFromExpression(expr, commandHeader = '') {
+export function getPropertyNamesFromExpression(expr, commandHeader = '') {
     let obj = {};
     if (!isUnsafeExpression(expr)) {
         try {
@@ -170,7 +169,7 @@ function getPropertyNamesFromExpression(expr, commandHeader = '') {
 }
 
 // Given a list of words, returns the longest prefix they all have in common
-function getCommonPrefix(words) {
+export function getCommonPrefix(words) {
     let word = words[0];
     for (let i = 0; i < word.length; i++) {
         for (let w = 1; w < words.length; w++) {
@@ -221,7 +220,7 @@ function isUnsafeExpression(str) {
 }
 
 // Returns a list of global keywords derived from str
-function getDeclaredConstants(str) {
+export function getDeclaredConstants(str) {
     let ret = [];
     str.split(';').forEach(s => {
         let base_, keyword;

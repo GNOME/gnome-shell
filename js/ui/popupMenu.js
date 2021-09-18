@@ -3,14 +3,21 @@
             PopupImageMenuItem, PopupMenu, PopupDummyMenu, PopupSubMenu,
             PopupMenuSection, PopupSubMenuMenuItem, PopupMenuManager */
 
-const { Atk, Clutter, Gio, GObject, Graphene, Shell, St } = imports.gi;
-const Signals = imports.misc.signals;
+import Atk from 'gi://Atk';
+import Clutter from 'gi://Clutter';
+import Gio from 'gi://Gio';
+import GObject from 'gi://GObject';
+import Graphene from 'gi://Graphene';
+import Shell from 'gi://Shell';
+import St from 'gi://St';
+import * as Signals from '../misc/signals.js';
 
-const BoxPointer = imports.ui.boxpointer;
-const GrabHelper = imports.ui.grabHelper;
-const Main = imports.ui.main;
+import * as BoxPointer from './boxpointer.js';
+import * as GrabHelper from './grabHelper.js';
+import Main from './main.js';
 
-var Ornament = {
+/** @enum {number} */
+export const Ornament = {
     NONE: 0,
     DOT: 1,
     CHECK: 2,
@@ -30,7 +37,7 @@ function isPopupMenuItemVisible(child) {
  * @param {St.Side} side - Side to which the arrow points.
  * @returns {St.Icon} a new arrow icon
  */
-function arrowIcon(side) {
+export function arrowIcon(side) {
     let iconName;
     switch (side) {
     case St.Side.TOP:
@@ -56,7 +63,9 @@ function arrowIcon(side) {
     return arrow;
 }
 
-var PopupBaseMenuItem = GObject.registerClass({
+/** @typedef {{active?: boolean} & Partial<Pick<St.BoxLayout.ConstructorProperties, 'style_class' | 'can_focus' | 'hover' | 'activate' | 'reactive'>>} PopupBaseMenuItemParams */
+
+export const PopupBaseMenuItem = GObject.registerClass({
     Properties: {
         'active': GObject.ParamSpec.boolean('active', 'active', 'active',
                                             GObject.ParamFlags.READWRITE,
@@ -69,7 +78,7 @@ var PopupBaseMenuItem = GObject.registerClass({
         'activate': { param_types: [Clutter.Event.$gtype] },
     },
 }, class PopupBaseMenuItem extends St.BoxLayout {
-    _init(params = {}) {
+    _init(params = {}, ..._) {
         const {
             reactive = true,
             activate = true,
@@ -84,6 +93,11 @@ var PopupBaseMenuItem = GObject.registerClass({
                       can_focus,
                       accessible_role: Atk.Role.MENU_ITEM });
         this._delegate = this;
+
+        /** @type {any} */
+        this.prop
+        /** @type {any} */
+        this.radioGroup
 
         this._ornament = Ornament.NONE;
         this._ornamentLabel = new St.Label({ style_class: 'popup-menu-ornament' });
@@ -267,9 +281,18 @@ var PopupBaseMenuItem = GObject.registerClass({
     }
 });
 
-var PopupMenuItem = GObject.registerClass(
+/** 
+ * @typedef {object} PopupMenuItemParams
+ * @property {string} [text]
+ * @property {boolean} [active]
+ */
+
+export const PopupMenuItem = GObject.registerClass(
 class PopupMenuItem extends PopupBaseMenuItem {
-    _init(text, params) {
+    /**
+     * @param {PopupMenuItemParams & PopupBaseMenuItemParams} [params]
+     */
+     _init(text, params) {
         super._init(params);
 
         this.label = new St.Label({ text });
@@ -279,8 +302,11 @@ class PopupMenuItem extends PopupBaseMenuItem {
 });
 
 
-var PopupSeparatorMenuItem = GObject.registerClass(
+export const PopupSeparatorMenuItem = GObject.registerClass(
 class PopupSeparatorMenuItem extends PopupBaseMenuItem {
+    /**
+     * @param {string | any} text 
+     */
     _init(text) {
         super._init({
             style_class: 'popup-separator-menu-item',
@@ -310,7 +336,7 @@ class PopupSeparatorMenuItem extends PopupBaseMenuItem {
     }
 });
 
-var Switch = GObject.registerClass({
+export const Switch = GObject.registerClass({
     Properties: {
         'state': GObject.ParamSpec.boolean(
             'state', 'state', 'state',
@@ -350,10 +376,10 @@ var Switch = GObject.registerClass({
     }
 });
 
-var PopupSwitchMenuItem = GObject.registerClass({
+export const PopupSwitchMenuItem = GObject.registerClass({
     Signals: { 'toggled': { param_types: [GObject.TYPE_BOOLEAN] } },
 }, class PopupSwitchMenuItem extends PopupBaseMenuItem {
-    _init(text, active, params) {
+     _init(text, active, params) {
         super._init(params);
 
         this.label = new St.Label({ text });
@@ -434,8 +460,13 @@ var PopupSwitchMenuItem = GObject.registerClass({
     }
 });
 
-var PopupImageMenuItem = GObject.registerClass(
+export const PopupImageMenuItem = GObject.registerClass(
 class PopupImageMenuItem extends PopupBaseMenuItem {
+    /**
+     * @param {string | any} text
+     * @param {string | Gio.Icon} [icon]
+     * @param {PopupBaseMenuItemParams} [params]
+     */
     _init(text, icon, params) {
         super._init(params);
 
@@ -446,9 +477,14 @@ class PopupImageMenuItem extends PopupBaseMenuItem {
         this.add_child(this.label);
         this.label_actor = this.label;
 
-        this.setIcon(icon);
+        if (icon) {
+            this.setIcon(icon);
+        }
     }
 
+    /**
+     * @param {string | Gio.Icon} icon 
+     */
     setIcon(icon) {
         // The 'icon' parameter can be either a Gio.Icon or a string.
         if (icon instanceof GObject.Object && GObject.type_is_a(icon, Gio.Icon))
@@ -458,7 +494,7 @@ class PopupImageMenuItem extends PopupBaseMenuItem {
     }
 });
 
-var PopupMenuBase = class extends Signals.EventEmitter {
+export class PopupMenuBase extends Signals.EventEmitter {
     constructor(sourceActor, styleClass) {
         super();
 
@@ -467,6 +503,10 @@ var PopupMenuBase = class extends Signals.EventEmitter {
 
         this.sourceActor = sourceActor;
         this.focusActor = sourceActor;
+
+        /** @type {St.Widget} */
+        this.actor;
+
         this._parent = null;
 
         this.box = new St.BoxLayout({
@@ -695,6 +735,10 @@ var PopupMenuBase = class extends Signals.EventEmitter {
         }
     }
 
+    /**
+     * @param {PopupMenuBase | PopupBaseMenuItem["prototype"]} menuItem 
+     * @param {number} [position] 
+     */
     addMenuItem(menuItem, position) {
         let beforeItem = null;
         if (position == undefined) {
@@ -774,9 +818,12 @@ var PopupMenuBase = class extends Signals.EventEmitter {
     }
 
     _getMenuItems() {
-        return this.box.get_children().map(a => a._delegate).filter(item => {
-            return item instanceof PopupBaseMenuItem || item instanceof PopupMenuSection;
-        });
+        return this.box.get_children().map(a => a._delegate).filter(
+            /**
+             * @returns {item is PopupMenuBase | PopupMenuSection}
+             */
+            item =>  item instanceof PopupBaseMenuItem || item instanceof PopupMenuSection
+        );
     }
 
     get firstMenuItem() {
@@ -789,6 +836,20 @@ var PopupMenuBase = class extends Signals.EventEmitter {
 
     get numMenuItems() {
         return this._getMenuItems().length;
+    }
+
+    /**
+     * @param {BoxPointer.PopupAnimation} _animation
+     */
+    open(_animation) {
+        throw new GObject.NotImplementedError(`open in ${this.constructor.name}`);
+    }
+
+    /**
+     * @param {BoxPointer.PopupAnimation} [_animation]
+     */
+    close(_animation) {
+        throw new GObject.NotImplementedError(`close in ${this.constructor.name}`);
     }
 
     removeAll() {
@@ -818,7 +879,7 @@ var PopupMenuBase = class extends Signals.EventEmitter {
     }
 };
 
-var PopupMenu = class extends PopupMenuBase {
+export class PopupMenu extends PopupMenuBase {
     constructor(sourceActor, arrowAlignment, arrowSide) {
         super(sourceActor, 'popup-menu-content');
 
@@ -969,7 +1030,7 @@ var PopupMenu = class extends PopupMenuBase {
     }
 };
 
-var PopupDummyMenu = class extends Signals.EventEmitter {
+export class PopupDummyMenu extends Signals.EventEmitter {
     constructor(sourceActor) {
         super();
 
@@ -1001,7 +1062,7 @@ var PopupDummyMenu = class extends Signals.EventEmitter {
     }
 };
 
-var PopupSubMenu = class extends PopupMenuBase {
+export class PopupSubMenu extends PopupMenuBase {
     constructor(sourceActor, sourceArrow) {
         super(sourceActor);
 
@@ -1146,7 +1207,7 @@ var PopupSubMenu = class extends PopupMenuBase {
  * can add it to another menu), but is completely transparent
  * to the user
  */
-var PopupMenuSection = class extends PopupMenuBase {
+export class PopupMenuSection extends PopupMenuBase {
     constructor() {
         super();
 
@@ -1166,7 +1227,7 @@ var PopupMenuSection = class extends PopupMenuBase {
     }
 };
 
-var PopupSubMenuMenuItem = GObject.registerClass(
+export const PopupSubMenuMenuItem = GObject.registerClass(
 class PopupSubMenuMenuItem extends PopupBaseMenuItem {
     _init(text, wantIcon) {
         super._init();
@@ -1287,7 +1348,7 @@ class PopupSubMenuMenuItem extends PopupBaseMenuItem {
 /* Basic implementation of a menu manager.
  * Call addMenu to add menus
  */
-var PopupMenuManager = class {
+export class PopupMenuManager {
     constructor(owner, grabParams = {}) {
         this._grabHelper = new GrabHelper.GrabHelper(owner, {
             actionMode: Shell.ActionMode.POPUP,

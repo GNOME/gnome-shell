@@ -1,17 +1,24 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported DateMenuButton */
 
-const { Clutter, Gio, GLib, GnomeDesktop,
-        GObject, GWeather, Pango, Shell, St } = imports.gi;
+import Clutter from 'gi://Clutter';
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
+import GnomeDesktop from 'gi://GnomeDesktop';
+import GObject from 'gi://GObject';
+import GWeather from 'gi://GWeather';
+import Pango from 'gi://Pango';
+import Shell from 'gi://Shell';
+import St from 'gi://St';
 
-const Util = imports.misc.util;
-const Main = imports.ui.main;
-const PanelMenu = imports.ui.panelMenu;
-const Calendar = imports.ui.calendar;
-const Weather = imports.misc.weather;
-const System = imports.system;
+import * as Util from '../misc/util.js';
+import Main from './main.js';
+import * as PanelMenu from './panelMenu.js';
+import * as Calendar from './calendar.js';
+import * as Weather from '../misc/weather.js';
+import System from 'system';
 
-const { loadInterfaceXML } = imports.misc.fileUtils;
+import { loadInterfaceXML } from '../misc/fileUtilsModule.js';
 
 const NC_ = (context, str) => '%s\u0004%s'.format(context, str);
 const T_ = Shell.util_translate_time_string;
@@ -24,7 +31,7 @@ const ClocksProxy = Gio.DBusProxy.makeProxyWrapper(ClocksIntegrationIface);
 
 function _isToday(date) {
     let now = new Date();
-    return now.getYear() == date.getYear() &&
+    return now.getFullYear() == date.getFullYear() &&
            now.getMonth() == date.getMonth() &&
            now.getDate() == date.getDate();
 }
@@ -33,8 +40,11 @@ function _gDateTimeToDate(datetime) {
     return new Date(datetime.to_unix() * 1000 + datetime.get_microsecond() / 1000);
 }
 
-var TodayButton = GObject.registerClass(
+export const TodayButton = GObject.registerClass(
 class TodayButton extends St.Button {
+    /**
+     * @param {*} calendar 
+     */
     _init(calendar) {
         // Having the ability to go to the current date if the user is already
         // on the current date can be confusing. So don't make the button reactive
@@ -88,7 +98,7 @@ class TodayButton extends St.Button {
     }
 });
 
-var EventsSection = GObject.registerClass(
+export const EventsSection = GObject.registerClass(
 class EventsSection extends St.Button {
     _init() {
         super._init({
@@ -126,7 +136,11 @@ class EventsSection extends St.Button {
         this._appInstalledChanged();
     }
 
+    /**
+     * @param {Date} date 
+     */
     setDate(date) {
+        /** @type {[number, number, number]} */
         const day = [date.getFullYear(), date.getMonth(), date.getDate()];
         this._startDate = new Date(...day);
         this._endDate = new Date(...day, 23, 59, 59, 999);
@@ -158,9 +172,9 @@ class EventsSection extends St.Button {
 
         if (this._startDate <= now && now <= this._endDate)
             this._title.text = _('Today');
-        else if (this._endDate < now && now - this._endDate < timeSpanDay)
+        else if (this._endDate < now && now.getTime() - this._endDate.getTime() < timeSpanDay)
             this._title.text = _('Yesterday');
-        else if (this._startDate > now && this._startDate - now < timeSpanDay)
+        else if (this._startDate > now && this._startDate.getTime() - now.getTime() < timeSpanDay)
             this._title.text = _('Tomorrow');
         else if (this._startDate.getFullYear() === now.getFullYear())
             this._title.text = this._startDate.toLocaleFormat(sameYearFormat);
@@ -270,7 +284,7 @@ class EventsSection extends St.Button {
     }
 });
 
-var WorldClocksSection = GObject.registerClass(
+export const WorldClocksSection = GObject.registerClass(
 class WorldClocksSection extends St.Button {
     _init() {
         super._init({
@@ -331,7 +345,7 @@ class WorldClocksSection extends St.Button {
         this._locations = [];
 
         let world = GWeather.Location.get_world();
-        let clocks = this._settings.get_value('locations').deep_unpack();
+        let clocks = /** @type {GLib.Variant<'av'>} */ (this._settings.get_value('locations')).deep_unpack();
         for (let i = 0; i < clocks.length; i++) {
             let l = world.deserialize(clocks[i]);
             if (l && l.get_timezone() != null)
@@ -466,7 +480,7 @@ class WorldClocksSection extends St.Button {
     }
 });
 
-var WeatherSection = GObject.registerClass(
+export const WeatherSection = GObject.registerClass(
 class WeatherSection extends St.Button {
     _init() {
         super._init({
@@ -602,6 +616,9 @@ class WeatherSection extends St.Button {
         layout.attach(label, 0, 0, 1, 1);
     }
 
+    /**
+     * @param {GWeather.Location} loc 
+     */
     _findBestLocationName(loc) {
         const locName = loc.get_name();
 
@@ -659,7 +676,7 @@ class WeatherSection extends St.Button {
     }
 });
 
-var MessagesIndicator = GObject.registerClass(
+export const MessagesIndicator = GObject.registerClass(
 class MessagesIndicator extends St.Icon {
     _init() {
         super._init({
@@ -720,13 +737,17 @@ class MessagesIndicator extends St.Icon {
     }
 });
 
-var FreezableBinLayout = GObject.registerClass(
+export const FreezableBinLayout = GObject.registerClass(
 class FreezableBinLayout extends Clutter.BinLayout {
     _init() {
         super._init();
 
         this._frozen = false;
+        
+        /** @type {[number, number]} */
         this._savedWidth = [NaN, NaN];
+        
+        /** @type {[number, number]} */
         this._savedHeight = [NaN, NaN];
     }
 
@@ -739,6 +760,9 @@ class FreezableBinLayout extends Clutter.BinLayout {
             this.layout_changed();
     }
 
+    /**
+     * @returns {[number, number]} 
+     */
     vfunc_get_preferred_width(container, forHeight) {
         if (!this._frozen || this._savedWidth.some(isNaN))
             return super.vfunc_get_preferred_width(container, forHeight);
@@ -760,8 +784,11 @@ class FreezableBinLayout extends Clutter.BinLayout {
     }
 });
 
-var CalendarColumnLayout = GObject.registerClass(
+export const CalendarColumnLayout = GObject.registerClass(
 class CalendarColumnLayout extends Clutter.BoxLayout {
+    /**
+     * @param {*} actors 
+     */
     _init(actors) {
         super._init({ orientation: Clutter.Orientation.VERTICAL });
         this._colActors = actors;
@@ -779,7 +806,7 @@ class CalendarColumnLayout extends Clutter.BoxLayout {
     }
 });
 
-var DateMenuButton = GObject.registerClass(
+export const DateMenuButton = GObject.registerClass(
 class DateMenuButton extends PanelMenu.Button {
     _init() {
         let hbox;

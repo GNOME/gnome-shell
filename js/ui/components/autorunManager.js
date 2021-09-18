@@ -1,13 +1,17 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported Component */
 
-const { Clutter, Gio, GObject, St } = imports.gi;
+import Clutter from 'gi://Clutter';
+import Gio from 'gi://Gio';
+import GObject from 'gi://GObject';
+import St from 'gi://St';
 
-const GnomeSession = imports.misc.gnomeSession;
-const Main = imports.ui.main;
-const MessageTray = imports.ui.messageTray;
 
-const { loadInterfaceXML } = imports.misc.fileUtils;
+import * as GnomeSession from '../../misc/gnomeSession.js';
+import Main from './../main.js';
+import * as MessageTray from './../messageTray.js';
+
+import { loadInterfaceXML } from '../../misc/fileUtilsModule.js';
 
 // GSettings keys
 const SETTINGS_SCHEMA = 'org.gnome.desktop.media-handling';
@@ -16,7 +20,8 @@ const SETTING_START_APP = 'autorun-x-content-start-app';
 const SETTING_IGNORE = 'autorun-x-content-ignore';
 const SETTING_OPEN_FOLDER = 'autorun-x-content-open-folder';
 
-var AutorunSetting = {
+/** @enum {number} */
+export const AutorunSetting = {
     RUN: 0,
     IGNORE: 1,
     FILES: 2,
@@ -80,7 +85,7 @@ function HotplugSniffer() {
                                '/org/gnome/Shell/HotplugSniffer');
 }
 
-var ContentTypeDiscoverer = class {
+export class ContentTypeDiscoverer {
     constructor(callback) {
         this._callback = callback;
         this._settings = new Gio.Settings({ schema_id: SETTINGS_SCHEMA });
@@ -142,9 +147,9 @@ var ContentTypeDiscoverer = class {
     }
 };
 
-var AutorunManager = class {
+export class AutorunManager {
     constructor() {
-        this._session = new GnomeSession.SessionManager();
+        this._session = GnomeSession.SessionManager();
         this._volumeMonitor = Gio.VolumeMonitor.get();
 
         this._dispatcher = new AutorunDispatcher(this);
@@ -160,7 +165,10 @@ var AutorunManager = class {
         this._volumeMonitor.disconnect(this._mountRemovedId);
     }
 
-    _onMountAdded(monitor, mount) {
+    /**
+     * @param {Gio.Mount} mount 
+     */
+    _onMountAdded(_, mount) {
         // don't do anything if our session is not the currently
         // active one
         if (!this._session.SessionIsActive)
@@ -177,7 +185,10 @@ var AutorunManager = class {
     }
 };
 
-var AutorunDispatcher = class {
+export class AutorunDispatcher {
+    /**
+     * @param {AutorunManager} manager 
+     */
     constructor(manager) {
         this._manager = manager;
         this._sources = [];
@@ -212,6 +223,10 @@ var AutorunDispatcher = class {
         return null;
     }
 
+    /**
+     * @param {Gio.Mount} mount
+     * @param {Gio.Application[]} apps
+     */
     _addSource(mount, apps) {
         // if we already have a source showing for this
         // mount, return
@@ -222,6 +237,10 @@ var AutorunDispatcher = class {
         this._sources.push(new AutorunSource(this._manager, mount, apps));
     }
 
+    /**
+     * @param {Gio.Mount} mount
+     * @param {Gio.Application[]} apps
+     */
     addMount(mount, apps, contentTypes) {
         // if autorun is disabled globally, return
         if (this._settings.get_boolean(SETTING_DISABLE_AUTORUN))
@@ -271,7 +290,14 @@ var AutorunDispatcher = class {
     }
 };
 
-var AutorunSource = GObject.registerClass(
+/**
+ * @typedef {object} AutorunSourceParams
+ * @property {AutorunManager} manager
+ * @property {Gio.Mount} mount
+ * @property {Gio.Application[]} apps
+ */
+
+export const AutorunSource = GObject.registerClass(
 class AutorunSource extends MessageTray.Source {
     _init(manager, mount, apps) {
         super._init(mount.get_name());
@@ -296,8 +322,12 @@ class AutorunSource extends MessageTray.Source {
     }
 });
 
-var AutorunNotification = GObject.registerClass(
+export const AutorunNotification = GObject.registerClass(
 class AutorunNotification extends MessageTray.Notification {
+    /**
+     * @param {*} manager 
+     * @param {*} source 
+     */
     _init(manager, source) {
         super._init(source, source.title);
 
@@ -356,4 +386,4 @@ class AutorunNotification extends MessageTray.Notification {
     }
 });
 
-var Component = AutorunManager;
+export let Component = AutorunManager;

@@ -1,12 +1,17 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported WorkspaceAnimationController */
 
-const { Clutter, GObject, Meta, Shell, St } = imports.gi;
+import Clutter from 'gi://Clutter';
+import GObject from 'gi://GObject';
+import Meta from 'gi://Meta';
+import Shell from 'gi://Shell';
+import St from 'gi://St';
 
-const Background = imports.ui.background;
-const Layout = imports.ui.layout;
-const Main = imports.ui.main;
-const SwipeTracker = imports.ui.swipeTracker;
+import * as Background from './background.js';
+import * as Layout from './layout.js';
+import * as SwipeTracker from './swipeTracker.js';
+
+import Main from './main.js';
 
 const WINDOW_ANIMATION_TIME = 250;
 const WORKSPACE_SPACING = 100;
@@ -267,7 +272,7 @@ const MonitorGroup = GObject.registerClass({
     }
 });
 
-var WorkspaceAnimationController = class {
+export class WorkspaceAnimationController {
     constructor() {
         this._movingWindow = null;
         this._switchData = null;

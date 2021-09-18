@@ -1,9 +1,17 @@
 /* exported InhibitShortcutsDialog */
-const { Clutter, Gio, GLib, GObject, Gtk, Meta, Pango, Shell, St } = imports.gi;
+import Clutter from 'gi://Clutter';
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
+import Gtk from 'gi://Gtk';
+import Meta from 'gi://Meta';
+import Pango from 'gi://Pango';
+import Shell from 'gi://Shell';
+import St from 'gi://St';
 
-const Dialog = imports.ui.dialog;
-const ModalDialog = imports.ui.modalDialog;
-const PermissionStore = imports.misc.permissionStore;
+import * as Dialog from './dialog.js';
+import * as ModalDialog from './modalDialog.js';
+import * as PermissionStore from '../misc/permissionStore.js';
 
 const WAYLAND_KEYBINDINGS_SCHEMA = 'org.gnome.mutter.wayland.keybindings';
 
@@ -13,14 +21,17 @@ const APP_PERMISSIONS_ID = 'shortcuts-inhibitor';
 const GRANTED = 'GRANTED';
 const DENIED = 'DENIED';
 
-var DialogResponse = Meta.InhibitShortcutsDialogResponse;
+export const DialogResponse = Meta.InhibitShortcutsDialogResponse;
 
-var InhibitShortcutsDialog = GObject.registerClass({
+export const InhibitShortcutsDialog = GObject.registerClass({
     Implements: [Meta.InhibitShortcutsDialog],
     Properties: {
         'window': GObject.ParamSpec.override('window', Meta.InhibitShortcutsDialog),
     },
 }, class InhibitShortcutsDialog extends GObject.Object {
+    /**
+     * @param {*} window 
+     */
     _init(window) {
         super._init();
         this._window = window;
@@ -59,7 +70,7 @@ var InhibitShortcutsDialog = GObject.registerClass({
 
         let permissions = {};
         permissions[this._app.get_id()] = [grant];
-        let data = GLib.Variant.new('av', {});
+        let data = GLib.Variant.new('av', []);
 
         this._permStore.SetRemote(APP_PERMISSIONS_TABLE,
                                   true,

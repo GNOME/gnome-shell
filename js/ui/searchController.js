@@ -1,13 +1,16 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported SearchController */
 
-const { Clutter, GObject, St } = imports.gi;
+import Clutter from 'gi://Clutter';
+import GObject from 'gi://GObject';
+import St from 'gi://St';
 
-const Main = imports.ui.main;
-const Search = imports.ui.search;
-const ShellEntry = imports.ui.shellEntry;
 
-var FocusTrap = GObject.registerClass(
+import Main from './main.js';
+import * as Search from './search.js';
+import * as ShellEntry from './shellEntry.js';
+
+export const FocusTrap = GObject.registerClass(
 class FocusTrap extends St.Widget {
     vfunc_navigate_focus(from, direction) {
         if (direction === St.DirectionType.TAB_FORWARD ||
@@ -24,7 +27,7 @@ function getTermsForSearchString(searchString) {
     return searchString.split(/\s+/);
 }
 
-var SearchController = GObject.registerClass({
+export const SearchController = GObject.registerClass({
     Properties: {
         'search-active': GObject.ParamSpec.boolean(
             'search-active', 'search-active', 'search-active',

@@ -1,16 +1,21 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported Indicator */
 
-const { Clutter, Gio, GLib, GObject, Shell, St } = imports.gi;
+import Clutter from 'gi://Clutter';
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
+import Shell from 'gi://Shell';
+import St from 'gi://St';
 
-const Dialog = imports.ui.dialog;
-const Main = imports.ui.main;
-const PanelMenu = imports.ui.panelMenu;
-const PopupMenu = imports.ui.popupMenu;
-const ModalDialog = imports.ui.modalDialog;
-const PermissionStore = imports.misc.permissionStore;
+import * as Dialog from '../dialog.js';
+import Main from '../main.js';
+import * as PanelMenu from '../panelMenu.js';
+import * as PopupMenu from '../popupMenu.js';
+import * as ModalDialog from '../modalDialog.js';
+import * as PermissionStore from '../../misc/permissionStore.js';
 
-const { loadInterfaceXML } = imports.misc.fileUtils;
+import { loadInterfaceXML } from '../../misc/fileUtilsModule.js';
 
 const LOCATION_SCHEMA = 'org.gnome.system.location';
 const MAX_ACCURACY_LEVEL = 'max-accuracy-level';
@@ -19,7 +24,8 @@ const ENABLED = 'enabled';
 const APP_PERMISSIONS_TABLE = 'location';
 const APP_PERMISSIONS_ID = 'location';
 
-var GeoclueAccuracyLevel = {
+/** @enum {number} */
+export const GeoclueAccuracyLevel = {
     NONE: 0,
     COUNTRY: 1,
     CITY: 4,
@@ -37,10 +43,10 @@ function accuracyLevelToString(accuracyLevel) {
     return 'NONE';
 }
 
-var GeoclueIface = loadInterfaceXML('org.freedesktop.GeoClue2.Manager');
+export const GeoclueIface = loadInterfaceXML('org.freedesktop.GeoClue2.Manager');
 const GeoclueManager = Gio.DBusProxy.makeProxyWrapper(GeoclueIface);
 
-var AgentIface = loadInterfaceXML('org.freedesktop.GeoClue2.Agent');
+export const AgentIface = loadInterfaceXML('org.freedesktop.GeoClue2.Agent');
 
 let _geoclueAgent = null;
 function _getGeoclueAgent() {
@@ -210,7 +216,7 @@ var GeoclueAgent = GObject.registerClass({
     }
 });
 
-var Indicator = GObject.registerClass(
+export const Indicator = GObject.registerClass(
 class Indicator extends PanelMenu.SystemIndicator {
     _init() {
         super._init();
@@ -373,7 +379,8 @@ var AppAuthorizer = class {
         let dateStr = Math.round(Date.now() / 1000).toString();
         this._permissions[this.desktopId] = [levelStr, dateStr];
 
-        let data = GLib.Variant.new('av', {});
+        // FIXME
+        let data = GLib.Variant.new('av', []);
 
         this._permStoreProxy.SetRemote(APP_PERMISSIONS_TABLE,
                                        true,
@@ -387,7 +394,7 @@ var AppAuthorizer = class {
     }
 };
 
-var GeolocationDialog = GObject.registerClass({
+export const GeolocationDialog = GObject.registerClass({
     Signals: { 'response': { param_types: [GObject.TYPE_UINT] } },
 }, class GeolocationDialog extends ModalDialog.ModalDialog {
     _init(name, reason, reqAccuracyLevel) {

@@ -1,12 +1,15 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported Button, SystemIndicator */
 
-const { Atk, Clutter, GObject, St } = imports.gi;
+import Atk from 'gi://Atk';
+import Clutter from 'gi://Clutter';
+import GObject from 'gi://GObject';
+import St from 'gi://St';
 
-const Main = imports.ui.main;
-const PopupMenu = imports.ui.popupMenu;
+import Main from './main.js';
+import * as PopupMenu from './popupMenu.js';
 
-var ButtonBox = GObject.registerClass(
+export const ButtonBox = GObject.registerClass(
 class ButtonBox extends St.Widget {
     _init(params) {
         const {
@@ -34,6 +37,9 @@ class ButtonBox extends St.Widget {
         this._natHPadding = themeNode.get_length('-natural-hpadding');
     }
 
+    /**
+     * @returns {[number, number]}
+     */
     vfunc_get_preferred_width(_forHeight) {
         let child = this.get_first_child();
         let minimumSize, naturalSize;
@@ -49,6 +55,9 @@ class ButtonBox extends St.Widget {
         return [minimumSize, naturalSize];
     }
 
+    /**
+     * @returns {[number, number]}
+     */
     vfunc_get_preferred_height(_forWidth) {
         let child = this.get_first_child();
 
@@ -91,7 +100,7 @@ class ButtonBox extends St.Widget {
     }
 });
 
-var Button = GObject.registerClass({
+export const Button = GObject.registerClass({
     Signals: { 'menu-set': {} },
 }, class PanelMenuButton extends ButtonBox {
     _init(menuAlignment, nameText, dontCreateMenu) {
@@ -106,7 +115,7 @@ var Button = GObject.registerClass({
         if (dontCreateMenu)
             this.menu = new PopupMenu.PopupDummyMenu(this);
         else
-            this.setMenu(new PopupMenu.PopupMenu(this, menuAlignment, St.Side.TOP, 0));
+            this.setMenu(new PopupMenu.PopupMenu(this, menuAlignment, St.Side.TOP));
     }
 
     setSensitive(sensitive) {
@@ -180,7 +189,7 @@ var Button = GObject.registerClass({
         // measures are in logical pixels, so make sure to consider the scale
         // factor when computing max-height
         let maxHeight = Math.round((workArea.height - verticalMargins) / scaleFactor);
-        this.menu.actor.style = 'max-height: %spx;'.format(maxHeight);
+        this.menu.actor.style = 'max-height: %spx;'.format(maxHeight.toFixed(0));
     }
 
     _onDestroy() {
@@ -197,7 +206,7 @@ var Button = GObject.registerClass({
  * of an icon and a menu section, which will be composed into the
  * aggregate menu.
  */
-var SystemIndicator = GObject.registerClass(
+export const SystemIndicator = GObject.registerClass(
 class SystemIndicator extends St.BoxLayout {
     _init() {
         super._init({

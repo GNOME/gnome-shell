@@ -1,21 +1,30 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported CloseDialog */
 
-const { Clutter, GLib, GObject, Meta, Shell, St } = imports.gi;
+import Clutter from 'gi://Clutter';
+import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
+import Meta from 'gi://Meta';
+import Shell from 'gi://Shell';
+import St from 'gi://St';
 
-const Dialog = imports.ui.dialog;
-const Main = imports.ui.main;
 
-var FROZEN_WINDOW_BRIGHTNESS = -0.3;
-var DIALOG_TRANSITION_TIME = 150;
-var ALIVE_TIMEOUT = 5000;
+import * as Dialog from './dialog.js';
+import Main from './main.js';
 
-var CloseDialog = GObject.registerClass({
+export let FROZEN_WINDOW_BRIGHTNESS = -0.3;
+export let DIALOG_TRANSITION_TIME = 150;
+export let ALIVE_TIMEOUT = 5000;
+
+export const CloseDialog = GObject.registerClass({
     Implements: [Meta.CloseDialog],
     Properties: {
         'window': GObject.ParamSpec.override('window', Meta.CloseDialog),
     },
 }, class CloseDialog extends GObject.Object {
+    /**
+     * @param {Meta.Window} window
+     */
     _init(window) {
         super._init();
         this._window = window;
@@ -30,6 +39,9 @@ var CloseDialog = GObject.registerClass({
         return this._window;
     }
 
+    /**
+     * @param {Meta.Window} window
+     */
     set window(window) {
         this._window = window;
     }
@@ -61,6 +73,7 @@ var CloseDialog = GObject.registerClass({
         if (this._dialog)
             return;
 
+        /** @type {Meta.WindowActor} */
         let windowActor = this._window.get_compositor_private();
         this._dialog = new Dialog.Dialog(windowActor, 'close-dialog');
         this._dialog.width = windowActor.width;
@@ -86,6 +99,7 @@ var CloseDialog = GObject.registerClass({
         // We set the effect on the surface actor, so the dialog itself
         // (which is a child of the MetaWindowActor) does not get the
         // effect applied itself.
+        /** @type {Meta.WindowActor} */
         let windowActor = this._window.get_compositor_private();
         let surfaceActor = windowActor.get_first_child();
         let effect = new Clutter.BrightnessContrastEffect();
@@ -94,15 +108,22 @@ var CloseDialog = GObject.registerClass({
     }
 
     _removeWindowEffect() {
+        /** @type {Meta.WindowActor} */
         let windowActor = this._window.get_compositor_private();
         let surfaceActor = windowActor.get_first_child();
         surfaceActor.remove_effect_by_name("gnome-shell-frozen-window");
     }
 
+    /**
+     * @this {Meta.CloseDialog}
+     */
     _onWait() {
         this.response(Meta.CloseDialogResponse.WAIT);
     }
 
+    /**
+     * @this {Meta.CloseDialog}
+     */
     _onClose() {
         this.response(Meta.CloseDialogResponse.FORCE_CLOSE);
     }

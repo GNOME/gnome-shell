@@ -1,17 +1,21 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported CandidatePopup */
 
-const { Clutter, GObject, IBus, St } = imports.gi;
+import Clutter from 'gi://Clutter';
+import GObject from 'gi://GObject';
+import IBus from 'gi://IBus';
+import St from 'gi://St';
 
-const BoxPointer = imports.ui.boxpointer;
-const Main = imports.ui.main;
 
-var MAX_CANDIDATES_PER_PAGE = 16;
+import * as BoxPointer from './boxpointer.js';
+import Main from './main.js';
 
-var DEFAULT_INDEX_LABELS = ['1', '2', '3', '4', '5', '6', '7', '8',
+export let MAX_CANDIDATES_PER_PAGE = 16;
+
+export let DEFAULT_INDEX_LABELS = ['1', '2', '3', '4', '5', '6', '7', '8',
                             '9', '0', 'a', 'b', 'c', 'd', 'e', 'f'];
 
-var CandidateArea = GObject.registerClass({
+export const CandidateArea = GObject.registerClass({
     Signals: {
         'candidate-clicked': { param_types: [GObject.TYPE_UINT,
                                              GObject.TYPE_UINT,
@@ -98,12 +102,20 @@ var CandidateArea = GObject.registerClass({
             this.vertical = false;
             this.remove_style_class_name('vertical');
             this.add_style_class_name('horizontal');
+
+            assertType(this._previousButton.child, St.Icon);
+            assertType(this._nextButton.child, St.Icon);
+
             this._previousButton.child.icon_name = 'go-previous-symbolic';
             this._nextButton.child.icon_name = 'go-next-symbolic';
         } else {                // VERTICAL || SYSTEM
             this.vertical = true;
             this.add_style_class_name('vertical');
             this.remove_style_class_name('horizontal');
+
+            assertType(this._previousButton.child, St.Icon);
+            assertType(this._nextButton.child, St.Icon);
+
             this._previousButton.child.icon_name = 'go-up-symbolic';
             this._nextButton.child.icon_name = 'go-down-symbolic';
         }
@@ -139,7 +151,7 @@ var CandidateArea = GObject.registerClass({
     }
 });
 
-var CandidatePopup = GObject.registerClass(
+export const CandidatePopup = GObject.registerClass(
 class IbusCandidatePopup extends BoxPointer.BoxPointer {
     _init() {
         super._init(St.Side.TOP);
@@ -199,6 +211,7 @@ class IbusCandidatePopup extends BoxPointer.BoxPointer {
             panelService.connect('set-cursor-location-relative', (ps, x, y, w, h) => {
                 if (!global.display.focus_window)
                     return;
+
                 let window = global.display.focus_window.get_compositor_private();
                 this._setDummyCursorGeometry(window.x + x, window.y + y, w, h);
             });

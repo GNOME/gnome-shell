@@ -1,21 +1,28 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported ShellMountOperation, GnomeShellMountOpHandler */
 
-const { Clutter, Gio, GLib, GObject, Pango, Shell, St } = imports.gi;
+import Clutter from 'gi://Clutter';
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
+import Pango from 'gi://Pango';
+import Shell from 'gi://Shell';
+import St from 'gi://St';
 
-const Animation = imports.ui.animation;
-const CheckBox = imports.ui.checkBox;
-const Dialog = imports.ui.dialog;
-const Main = imports.ui.main;
-const MessageTray = imports.ui.messageTray;
-const ModalDialog = imports.ui.modalDialog;
-const ShellEntry = imports.ui.shellEntry;
 
-const { loadInterfaceXML } = imports.misc.fileUtils;
-const Util = imports.misc.util;
+import * as Animation from './animation.js';
+import * as CheckBox from './checkBox.js';
+import * as Dialog from './dialog.js';
+import Main from './main.js';
+import * as MessageTray from './messageTray.js';
+import * as ModalDialog from './modalDialog.js';
+import * as ShellEntry from './shellEntry.js';
 
-var LIST_ITEM_ICON_SIZE = 48;
-var WORK_SPINNER_ICON_SIZE = 16;
+import { loadInterfaceXML } from '../misc/fileUtilsModule.js';
+import * as Util from '../misc/util.js';
+
+export let LIST_ITEM_ICON_SIZE = 48;
+export let WORK_SPINNER_ICON_SIZE = 16;
 
 const REMEMBER_MOUNT_PASSWORD_KEY = 'remember-mount-password';
 
@@ -48,7 +55,7 @@ function _setLabelsForMessage(content, message) {
 
 /* -------------------------------------------------------- */
 
-var ShellMountOperation = class {
+export class ShellMountOperation {
     constructor(source, params = {}) {
         const { existingDialog = null } = params;
 
@@ -186,7 +193,7 @@ var ShellMountOperation = class {
     }
 };
 
-var ShellUnmountNotifier = GObject.registerClass(
+export const ShellUnmountNotifier = GObject.registerClass(
 class ShellUnmountNotifier extends MessageTray.Source {
     _init() {
         super._init('', 'media-removable');
@@ -224,7 +231,7 @@ class ShellUnmountNotifier extends MessageTray.Source {
     }
 });
 
-var ShellMountQuestionDialog = GObject.registerClass({
+export const ShellMountQuestionDialog = GObject.registerClass({
     Signals: { 'response': { param_types: [GObject.TYPE_INT] } },
 }, class ShellMountQuestionDialog extends ModalDialog.ModalDialog {
     _init() {
@@ -252,7 +259,7 @@ var ShellMountQuestionDialog = GObject.registerClass({
     }
 });
 
-var ShellMountPasswordDialog = GObject.registerClass({
+export const ShellMountPasswordDialog = GObject.registerClass({
     Signals: { 'response': { param_types: [GObject.TYPE_INT,
                                            GObject.TYPE_STRING,
                                            GObject.TYPE_BOOLEAN,
@@ -415,9 +422,10 @@ var ShellMountPasswordDialog = GObject.registerClass({
     _onEntryActivate() {
         let pim = 0;
         if (this._pimEntry !== null) {
-            pim = this._pimEntry.get_text();
+            // FIXME
+            let pim_text = this._pimEntry.get_text();
 
-            if (isNaN(pim)) {
+            if (Number.isNaN(Number.parseInt(pim_text))) {
                 this._pimEntry.set_text('');
                 this._errorMessageLabel.text = _('The PIM must be a number or empty.');
                 this._errorMessageLabel.opacity = 255;
@@ -439,7 +447,7 @@ var ShellMountPasswordDialog = GObject.registerClass({
             this._hiddenVolume.checked,
             this._systemVolume &&
             this._systemVolume.checked,
-            parseInt(pim));
+            Number.parseInt(pim.toFixed(0)));
     }
 
     _onKeyfilesCheckboxClicked() {
@@ -469,7 +477,7 @@ var ShellMountPasswordDialog = GObject.registerClass({
     }
 });
 
-var ShellProcessesDialog = GObject.registerClass({
+export const ShellProcessesDialog = GObject.registerClass({
     Signals: { 'response': { param_types: [GObject.TYPE_INT] } },
 }, class ShellProcessesDialog extends ModalDialog.ModalDialog {
     _init() {
@@ -526,14 +534,15 @@ var ShellProcessesDialog = GObject.registerClass({
 
 const GnomeShellMountOpIface = loadInterfaceXML('org.Gtk.MountOperationHandler');
 
-var ShellMountOperationType = {
+/** @enum {number} */
+export const ShellMountOperationType = {
     NONE: 0,
     ASK_PASSWORD: 1,
     ASK_QUESTION: 2,
     SHOW_PROCESSES: 3,
 };
 
-var GnomeShellMountOpHandler = class {
+export class GnomeShellMountOpHandler {
     constructor() {
         this._dbusImpl = Gio.DBusExportedObject.wrapJSObject(GnomeShellMountOpIface, this);
         this._dbusImpl.export(Gio.DBus.session, '/org/gtk/MountOperationHandler');
@@ -613,7 +622,7 @@ var GnomeShellMountOpHandler = class {
     AskPasswordAsync(params, invocation) {
         let [id, message, iconName_, defaultUser_, defaultDomain_, flags] = params;
 
-        if (this._setCurrentRequest(invocation, id, ShellMountOperationType.ASK_PASSWORD)) {
+        if (this._setCurrentRequest(invocation, id, ShellMountOperationType.ASK_PASSWORD) && this._dialog instanceof ShellMountPasswordDialog) {
             this._dialog.reaskPassword();
             return;
         }
@@ -663,14 +672,15 @@ var GnomeShellMountOpHandler = class {
     AskQuestionAsync(params, invocation) {
         let [id, message, iconName_, choices] = params;
 
-        if (this._setCurrentRequest(invocation, id, ShellMountOperationType.ASK_QUESTION)) {
+        if (this._setCurrentRequest(invocation, id, ShellMountOperationType.ASK_QUESTION) && this._dialog instanceof ShellMountQuestionDialog) {
             this._dialog.update(message, choices);
             return;
         }
 
         this._closeDialog();
 
-        this._dialog = new ShellMountQuestionDialog(message);
+        // FIXME
+        this._dialog = new ShellMountQuestionDialog();
         this._dialog.connect('response', (object, choice) => {
             let response;
             let details = {};
@@ -710,7 +720,7 @@ var GnomeShellMountOpHandler = class {
     ShowProcessesAsync(params, invocation) {
         let [id, message, iconName_, applicationPids, choices] = params;
 
-        if (this._setCurrentRequest(invocation, id, ShellMountOperationType.SHOW_PROCESSES)) {
+        if (this._setCurrentRequest(invocation, id, ShellMountOperationType.SHOW_PROCESSES) && this._dialog instanceof ShellProcessesDialog) {
             this._dialog.update(message, applicationPids, choices);
             return;
         }

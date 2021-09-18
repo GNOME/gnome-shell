@@ -1,9 +1,17 @@
 /* exported getDefault */
-const { AccountsService, Clutter, Gdm, Gio, GLib, GObject, Meta } = imports.gi;
+import AccountsService from 'gi://AccountsService';
+import Clutter from 'gi://Clutter';
+import Gdm from 'gi://Gdm';
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
+import Meta from 'gi://Meta';
 
-const GnomeSession = imports.misc.gnomeSession;
-const LoginManager = imports.misc.loginManager;
-const Main = imports.ui.main;
+
+import * as GnomeSession from "./gnomeSession.js";
+import * as LoginManager from "./loginManager.js";
+
+import Main from "../ui/main.js";
 
 const LOCKDOWN_SCHEMA = 'org.gnome.desktop.lockdown';
 const LOGIN_SCREEN_SCHEMA = 'org.gnome.login-screen';
@@ -23,7 +31,7 @@ const LOCK_ORIENTATION_ACTION_ID = 'lock-orientation';
 
 let _singleton = null;
 
-function getDefault() {
+export function getDefault() {
     if (_singleton == null)
         _singleton = new SystemActions();
 
@@ -137,7 +145,8 @@ const SystemActions = GObject.registerClass({
         this._lockdownSettings = new Gio.Settings({ schema_id: LOCKDOWN_SCHEMA });
         this._orientationSettings = new Gio.Settings({ schema_id: 'org.gnome.settings-daemon.peripherals.touchscreen' });
 
-        this._session = new GnomeSession.SessionManager();
+        // FIXME
+        this._session = GnomeSession.SessionManager();
         this._loginManager = LoginManager.getLoginManager();
         this._monitorManager = Meta.MonitorManager.get();
 

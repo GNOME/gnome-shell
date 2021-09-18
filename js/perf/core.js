@@ -5,17 +5,17 @@
             clutter_stagePaintDone */
 /* eslint camelcase: ["error", { properties: "never", allow: ["^script_", "^malloc", "^glx", "^clutter"] }] */
 
-const System = imports.system;
+import System from 'system';
 
-const Main = imports.ui.main;
-const Scripting = imports.ui.scripting;
+import Main from "../ui/main.js";
+import * as Scripting from "../ui/scripting.js";
 
 // This performance script measure the most important (core) performance
 // metrics for the shell. By looking at the output metrics of this script
 // someone should be able to get an idea of how well the shell is performing
 // on a particular system.
 
-var METRICS = {
+export const METRICS = {
     overviewLatencyFirst:
     { description: "Time to first frame after triggering overview, first time",
       units: "us" },

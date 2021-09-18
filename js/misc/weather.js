@@ -1,12 +1,16 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported WeatherClient */
 
-const { Geoclue, Gio, GLib, GWeather, Shell } = imports.gi;
-const Signals = imports.misc.signals;
+import Geoclue from 'gi://Geoclue';
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
+import GWeather from 'gi://GWeather';
+import Shell from 'gi://Shell';
+import * as Signals from './signals.js';
 
-const PermissionStore = imports.misc.permissionStore;
+import * as PermissionStore from "./permissionStore.js";
 
-const { loadInterfaceXML } = imports.misc.fileUtils;
+import { loadInterfaceXML } from "./fileUtilsModule.js";
 
 Gio._promisify(Geoclue.Simple, 'new', 'new_finish');
 
@@ -18,10 +22,11 @@ const WEATHER_INTEGRATION_IFACE = 'org.gnome.Shell.WeatherIntegration';
 
 const WEATHER_APP_ID = 'org.gnome.Weather.desktop';
 
-// Minimum time between updates to show loading indication
-var UPDATE_THRESHOLD = 10 * GLib.TIME_SPAN_MINUTE;
+export let UPDATE_THRESHOLD = 10 * GLib.TIME_SPAN_MINUTE;
 
-var WeatherClient = class extends Signals.EventEmitter {
+// Minimum time between updates to show loading indication
+
+export class WeatherClient extends Signals.EventEmitter {
     constructor() {
         super();
 
@@ -293,7 +298,7 @@ var WeatherClient = class extends Signals.EventEmitter {
     }
 
     _onLocationsChanged() {
-        let locations = this._settings.get_value('locations').deep_unpack();
+        let locations = /** @type {GLib.Variant<'av'>} */ (this._settings.get_value('locations')).deep_unpack();
         let serialized = locations.shift();
         let mostRecentLocation = null;
 

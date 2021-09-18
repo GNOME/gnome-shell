@@ -1,26 +1,31 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported Workspace */
 
-const { Clutter, GLib, GObject, Graphene, Meta, St } = imports.gi;
+import Clutter from 'gi://Clutter';
+import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
+import St from 'gi://St';
+import Graphene from 'gi://Graphene';
 
-const Background = imports.ui.background;
-const DND = imports.ui.dnd;
-const Main = imports.ui.main;
-const OverviewControls = imports.ui.overviewControls;
-const Util = imports.misc.util;
-const { WindowPreview } = imports.ui.windowPreview;
+import * as Background from './background.js';
+import * as DND from './dnd.js';
+import Main from './main.js';
+import Meta from 'gi://Meta';
+import * as OverviewControls from './overviewControls.js';
+import * as Util from '../misc/util.js';
+import { WindowPreview } from './windowPreview.js';
 
-var WINDOW_PREVIEW_MAXIMUM_SCALE = 0.95;
+export let WINDOW_PREVIEW_MAXIMUM_SCALE = 0.95;
 
-var WINDOW_REPOSITIONING_DELAY = 750;
+export let WINDOW_REPOSITIONING_DELAY = 750;
 
 // When calculating a layout, we calculate the scale of windows and the percent
 // of the available area the new layout uses. If the values for the new layout,
 // when weighted with the values as below, are worse than the previous layout's,
 // we stop looking for a new layout and use the previous layout.
 // Otherwise, we keep looking for a new layout.
-var LAYOUT_SCALE_WEIGHT = 1;
-var LAYOUT_SPACE_WEIGHT = 0.1;
+export let LAYOUT_SCALE_WEIGHT = 1;
+export let LAYOUT_SPACE_WEIGHT = 0.1;
 
 const BACKGROUND_CORNER_RADIUS_PIXELS = 30;
 const BACKGROUND_MARGIN = 12;
@@ -95,7 +100,7 @@ const BACKGROUND_MARGIN = 12;
 // each window's "cell" area to be the same, but we shrink the thumbnail
 // and center it horizontally, and align it to the bottom vertically.
 
-var LayoutStrategy = class {
+export class LayoutStrategy {
     constructor(params = {}) {
         const {
             monitor = null,
@@ -388,7 +393,7 @@ function animateAllocation(actor, box) {
     return actor.get_transition('allocation');
 }
 
-var WorkspaceLayout = GObject.registerClass({
+export const WorkspaceLayout = GObject.registerClass({
     Properties: {
         'spacing': GObject.ParamSpec.double(
             'spacing', 'Spacing', 'Spacing',
@@ -572,8 +577,9 @@ var WorkspaceLayout = GObject.registerClass({
 
     _syncWorkareaTracking() {
         if (this._container) {
-            if (this._workAreaChangedId)
-                return;
+            // FIXME
+            // if (this._workAreaChangedId)
+            //     return;
             this._workarea = Main.layoutManager.getWorkAreaForMonitor(this._monitorIndex);
             this._workareasChangedId =
                 global.display.connect('workareas-changed', () => {
@@ -592,6 +598,9 @@ var WorkspaceLayout = GObject.registerClass({
         this._stateAdjustment.actor = container;
     }
 
+    /**
+     * @returns {[number, number]}
+     */
     vfunc_get_preferred_width(container, forHeight) {
         const workarea = this._getAdjustedWorkarea(container);
         if (forHeight === -1)
@@ -603,6 +612,9 @@ var WorkspaceLayout = GObject.registerClass({
         return [0, widthPreservingAspectRatio];
     }
 
+    /**
+     * @returns {[number, number]}
+     */
     vfunc_get_preferred_height(container, forWidth) {
         const workarea = this._getAdjustedWorkarea(container);
         if (forWidth === -1)
@@ -765,7 +777,7 @@ var WorkspaceLayout = GObject.registerClass({
 
     /**
      * addWindow:
-     * @param {WindowPreview} window: the window to add
+     * @param {WindowPreview["prototype"]} window: the window to add
      * @param {Meta.Window} metaWindow: the MetaWindow of the window
      *
      * Adds @window to the workspace, it will be shown immediately if
@@ -806,7 +818,7 @@ var WorkspaceLayout = GObject.registerClass({
 
     /**
      * removeWindow:
-     * @param {WindowPreview} window: the window to remove
+     * @param {WindowPreview["prototype"]} window: the window to remove
      *
      * Removes @window from the workspace if @window is a part of the
      * workspace. If the layout-frozen property is set to true, the
@@ -1055,7 +1067,8 @@ class WorkspaceBackground extends St.Widget {
 /**
  * @metaWorkspace: a #Meta.Workspace, or null
  */
-var Workspace = GObject.registerClass(
+export const Workspace = GObject.registerClass(
+/** @extends {St.Widget<typeof WorkspaceLayout["prototype"]>} */
 class Workspace extends St.Widget {
     _init(metaWorkspace, monitorIndex, overviewAdjustment) {
         super._init({
@@ -1077,6 +1090,7 @@ class Workspace extends St.Widget {
             reactive: true,
             x_expand: true,
             y_expand: true,
+            layout_manager: /** @type {WorkspaceLayout["prototype"]} */ (null),
         });
         this._container.layout_manager = layoutManager;
         this.add_child(this._container);
@@ -1216,6 +1230,9 @@ class Workspace extends St.Widget {
             '[gnome-shell] this._layoutFrozenId');
     }
 
+    /**
+     * @param {Meta.Window} metaWin 
+     */
     _doAddWindow(metaWin) {
         let win = metaWin.get_compositor_private();
 

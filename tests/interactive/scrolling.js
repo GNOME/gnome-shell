@@ -2,7 +2,10 @@
 
 const UI = imports.testcommon.ui;
 
-const { Clutter, Gtk, St } = imports.gi;
+import Clutter from 'gi://Clutter';
+import Gtk from 'gi://Gtk';
+import St from 'gi://St';
+
 
 function test() {
     let stage = new Clutter.Stage();

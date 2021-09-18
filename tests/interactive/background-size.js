@@ -2,7 +2,11 @@
 
 const UI = imports.testcommon.ui;
 
-const { Cogl, Clutter, Meta, St } = imports.gi;
+import Cogl from 'gi://Cogl';
+import Clutter from 'gi://Clutter';
+import Meta from 'gi://Meta';
+import St from 'gi://St';
+
 
 
 function test() {

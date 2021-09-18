@@ -45,10 +45,10 @@
  */
 /* exported ConcurrentBatch, ConsecutiveBatch */
 
-const { GObject } = imports.gi;
-const Signals = imports.misc.signals;
+import GObject from 'gi://GObject';
+import * as Signals from '../misc/signals.js';
 
-var Task = class extends Signals.EventEmitter {
+export class Task extends Signals.EventEmitter {
     constructor(scope, handler) {
         super();
 
@@ -68,7 +68,7 @@ var Task = class extends Signals.EventEmitter {
     }
 };
 
-var Hold = class extends Task {
+export class Hold extends Task {
     constructor() {
         super(null, () => this);
 
@@ -104,7 +104,7 @@ var Hold = class extends Task {
     }
 };
 
-var Batch = class extends Task {
+export class Batch extends Task {
     constructor(scope, tasks) {
         super();
 
@@ -173,7 +173,7 @@ var Batch = class extends Task {
     }
 };
 
-var ConcurrentBatch = class extends Batch {
+export class ConcurrentBatch extends Batch {
     process() {
         let hold = this.runTask();
 
@@ -187,7 +187,7 @@ var ConcurrentBatch = class extends Batch {
     }
 };
 
-var ConsecutiveBatch = class extends Batch {
+export class ConsecutiveBatch extends Batch {
     process() {
         let hold = this.runTask();
 

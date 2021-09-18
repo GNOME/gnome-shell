@@ -1,25 +1,26 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported Component */
 
-const { Gio, GLib } = imports.gi;
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
 
-const GnomeSession = imports.misc.gnomeSession;
-const Main = imports.ui.main;
-const ShellMountOperation = imports.ui.shellMountOperation;
+import * as GnomeSession from '../../misc/gnomeSession.js';
+import Main from './../main.js';
+import * as ShellMountOperation from './../shellMountOperation.js';
 
-var GNOME_SESSION_AUTOMOUNT_INHIBIT = 16;
+export let GNOME_SESSION_AUTOMOUNT_INHIBIT = 16;
 
 // GSettings keys
 const SETTINGS_SCHEMA = 'org.gnome.desktop.media-handling';
 const SETTING_ENABLE_AUTOMOUNT = 'automount';
 
-var AUTORUN_EXPIRE_TIMEOUT_SECS = 10;
+export let AUTORUN_EXPIRE_TIMEOUT_SECS = 10;
 
-var AutomountManager = class {
+export class AutomountManager {
     constructor() {
         this._settings = new Gio.Settings({ schema_id: SETTINGS_SCHEMA });
         this._activeOperations = new Map();
-        this._session = new GnomeSession.SessionManager();
+        this._session = GnomeSession.SessionManager();
         this._session.connectSignal('InhibitorAdded',
                                     this._InhibitorsChanged.bind(this));
         this._session.connectSignal('InhibitorRemoved',
@@ -130,6 +131,18 @@ var AutomountManager = class {
         this._checkAndMountVolume(volume);
     }
 
+    /** 
+     * @typedef {object} VolumeMountProps: An object with the properties:
+     * @property {boolean} [checkSession]
+     * @property {boolean} [useMountOp]
+     * @property {boolean} [allowAutorun]
+     */    
+
+    /**
+     * _checkAndMountVolume:
+     * @param {Gio.Volume} volume
+     * @param {Partial<VolumeMountProps>} [params]
+     */
     _checkAndMountVolume(volume, params = {}) {
         const {
             checkSession = true,
@@ -253,4 +266,4 @@ var AutomountManager = class {
         GLib.Source.set_name_by_id(id, '[gnome-shell] volume.allowAutorun');
     }
 };
-var Component = AutomountManager;
+export let Component = AutomountManager;
