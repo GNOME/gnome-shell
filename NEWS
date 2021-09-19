@@ -1,3 +1,11 @@
+41.0
+====
+
+Translators:
+  Goran Vidović [hr], Jordi Mas [ca], Aman Alam [pa], Balázs Úr [hu],
+  Piotr Drąg [pl], Nathan Follens [nl], Quentin PAGÈS [oc], Jiri Grönroos [fi],
+  Alexander Shopov [bg], Alan Mortensen [da], Efstathios Iosifidis [el]
+
 41.rc.1
 =======
 * Make tests optional [Florian; !1975]
