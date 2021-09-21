@@ -22,29 +22,6 @@ struct _ShellGLSLEffectPrivate
 
 G_DEFINE_TYPE_WITH_PRIVATE (ShellGLSLEffect, shell_glsl_effect, CLUTTER_TYPE_OFFSCREEN_EFFECT);
 
-static gboolean
-shell_glsl_effect_pre_paint (ClutterEffect       *effect,
-                             ClutterPaintNode    *node,
-                             ClutterPaintContext *paint_context)
-{
-  ClutterEffectClass *parent_class;
-
-  if (!clutter_feature_available (CLUTTER_FEATURE_SHADERS_GLSL))
-    {
-      /* if we don't have support for GLSL shaders then we
-       * forcibly disable the ActorMeta
-       */
-      g_warning ("Unable to use the ShaderEffect: the graphics hardware "
-                 "or the current GL driver does not implement support "
-                 "for the GLSL shading language.");
-      clutter_actor_meta_set_enabled (CLUTTER_ACTOR_META (effect), FALSE);
-      return FALSE;
-    }
-
-  parent_class = CLUTTER_EFFECT_CLASS (shell_glsl_effect_parent_class);
-  return parent_class->pre_paint (effect, node, paint_context);
-}
-
 static CoglPipeline *
 shell_glsl_effect_create_pipeline (ClutterOffscreenEffect *effect,
                                    CoglTexture            *texture)
@@ -156,14 +133,11 @@ shell_glsl_effect_constructed (GObject *object)
 static void
 shell_glsl_effect_class_init (ShellGLSLEffectClass *klass)
 {
-  ClutterEffectClass *effect_class = CLUTTER_EFFECT_CLASS (klass);
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   ClutterOffscreenEffectClass *offscreen_class;
 
   offscreen_class = CLUTTER_OFFSCREEN_EFFECT_CLASS (klass);
   offscreen_class->create_pipeline = shell_glsl_effect_create_pipeline;
-
-  effect_class->pre_paint = shell_glsl_effect_pre_paint;
 
   gobject_class->constructed = shell_glsl_effect_constructed;
   gobject_class->dispose = shell_glsl_effect_dispose;

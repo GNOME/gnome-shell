@@ -72,32 +72,6 @@ G_DEFINE_TYPE (ShellInvertLightnessEffect,
                shell_invert_lightness_effect,
                CLUTTER_TYPE_OFFSCREEN_EFFECT);
 
-static gboolean
-shell_invert_lightness_effect_pre_paint (ClutterEffect       *effect,
-                                         ClutterPaintNode    *node,
-                                         ClutterPaintContext *paint_context)
-{
-  ShellInvertLightnessEffect *self = SHELL_INVERT_LIGHTNESS_EFFECT (effect);
-  ClutterEffectClass *parent_class;
-
-  if (!clutter_feature_available (CLUTTER_FEATURE_SHADERS_GLSL))
-    {
-      /* if we don't have support for GLSL shaders then we
-       * forcibly disable the ActorMeta
-       */
-      g_warning ("Unable to use the ShellInvertLightnessEffect: the "
-                 "graphics hardware or the current GL driver does not "
-                 "implement support for the GLSL shading language.");
-      clutter_actor_meta_set_enabled (CLUTTER_ACTOR_META (self), FALSE);
-      return FALSE;
-    }
-
-  parent_class =
-    CLUTTER_EFFECT_CLASS (shell_invert_lightness_effect_parent_class);
-
-  return parent_class->pre_paint (effect, node, paint_context);
-}
-
 static CoglPipeline *
 shell_glsl_effect_create_pipeline (ClutterOffscreenEffect *effect,
                                    CoglTexture            *texture)
@@ -126,14 +100,11 @@ shell_invert_lightness_effect_dispose (GObject *gobject)
 static void
 shell_invert_lightness_effect_class_init (ShellInvertLightnessEffectClass *klass)
 {
-  ClutterEffectClass *effect_class = CLUTTER_EFFECT_CLASS (klass);
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   ClutterOffscreenEffectClass *offscreen_class;
 
   offscreen_class = CLUTTER_OFFSCREEN_EFFECT_CLASS (klass);
   offscreen_class->create_pipeline = shell_glsl_effect_create_pipeline;
-
-  effect_class->pre_paint = shell_invert_lightness_effect_pre_paint;
 
   gobject_class->dispose = shell_invert_lightness_effect_dispose;
 }

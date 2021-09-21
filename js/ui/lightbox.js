@@ -129,7 +129,7 @@ var Lightbox = GObject.registerClass({
         this._container = container;
         this._children = container.get_children();
         this._fadeFactor = params.fadeFactor;
-        this._radialEffect = Clutter.feature_available(Clutter.FeatureFlags.SHADERS_GLSL) && params.radialEffect;
+        this._radialEffect = params.radialEffect;
 
         if (this._radialEffect)
             this.add_effect(new RadialShaderEffect({ name: 'radial' }));
