@@ -1,3 +1,21 @@
+40.5
+====
+* Optimize rendering of fullscreen zoom [Daniel; !1899]
+* Fix glitchy launch animations when leaving overview [Daniel; !1440]
+* Fix wrong separator position in dash [Raghuveer; !1804]
+* Fix OSK not registering button presses on X11 [Sebastian; !1955]
+* Fix work area getting messed up by hidden panels [Florian; #4569]
+* Fix IM candidate popover position [Florian; #4593]
+* Misc. bug fixes and cleanups [Florian, Ivan, Sebastian;
+  !1956, !1961, !1964, !1957]
+
+Contributors:
+  Raghuveer Kasaraneni, Sebastian Keller, Ivan Molodetskikh, Florian Müllner,
+  Daniel van Vugt
+
+Translators:
+  Jordi Mas [ca]
+
 40.4
 ====
 * Don't include hidden search results in keynav [Florian; #4470]
