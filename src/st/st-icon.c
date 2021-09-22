@@ -59,6 +59,7 @@ struct _StIconPrivate
   gint             theme_icon_size; /* icon size from theme node */
   gint             icon_size;       /* icon size we are using */
   GIcon           *fallback_gicon;
+  gboolean         needs_update;
 
   StIconColors     *colors;
 
@@ -253,7 +254,7 @@ st_icon_style_changed (StWidget *widget)
 
   should_update |= st_icon_update_icon_size (self);
 
-  if (should_update)
+  if (priv->needs_update || should_update)
     st_icon_update (self);
 
   ST_WIDGET_CLASS (st_icon_parent_class)->style_changed (widget);
@@ -487,6 +488,8 @@ st_icon_update (StIcon *icon)
       return;
     }
 
+  priv->needs_update = TRUE;
+
   theme_node = st_widget_peek_theme_node (ST_WIDGET (icon));
   if (theme_node == NULL)
     return;
@@ -525,6 +528,7 @@ st_icon_update (StIcon *icon)
                                                          priv->icon_size / paint_scale,
                                                          paint_scale,
                                                          resource_scale);
+  priv->needs_update = FALSE;
 
   if (priv->pending_texture)
     {
