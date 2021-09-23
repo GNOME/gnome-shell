@@ -1,0 +1,22 @@
+<!DOCTYPE node PUBLIC
+'-//freedesktop//DTD D-BUS Object Introspection 1.0//EN'
+'http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd'>
+<node>
+
+  <!--
+      org.gnome.Shell.ScreenTransition:
+      @short_description: Screen transition interface
+
+      The interface used to initiate screen transition after changing the system-wide color scheme.
+  -->
+  <interface name="org.gnome.Shell.ScreenTransition">
+
+    <!--
+        Transition:
+
+        Initiate the screen transition.
+    -->
+    <method name="Transition"/>
+
+  </interface>
+</node>

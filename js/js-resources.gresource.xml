@@ -94,6 +94,7 @@
     <file>ui/runDialog.js</file>
     <file>ui/screenShield.js</file>
     <file>ui/screenshot.js</file>
+    <file>ui/screenTransition.js</file>
     <file>ui/scripting.js</file>
     <file>ui/search.js</file>
     <file>ui/searchController.js</file>

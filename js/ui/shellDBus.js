@@ -8,6 +8,7 @@ const ExtensionDownloader = imports.ui.extensionDownloader;
 const ExtensionUtils = imports.misc.extensionUtils;
 const Main = imports.ui.main;
 const Screenshot = imports.ui.screenshot;
+const ScreenTransition = imports.ui.screenTransition;
 
 const { loadInterfaceXML } = imports.misc.fileUtils;
 const { DBusSenderChecker } = imports.misc.util;
@@ -28,6 +29,7 @@ var GnomeShell = class {
 
         this._extensionsService = new GnomeShellExtensions();
         this._screenshotService = new Screenshot.ScreenshotService();
+        this._screenTransitionService = new ScreenTransition.ScreenTransitionService();
 
         this._grabbedAccelerators = new Map();
         this._grabbers = new Map();
