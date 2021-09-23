@@ -251,6 +251,19 @@ var GnomeShell = class {
         invocation.return_value(GLib.Variant.new('(b)', [ungrabSucceeded]));
     }
 
+    ScreenTransitionAsync(params, invocation) {
+        try {
+            this._senderChecker.checkInvocation(invocation);
+        } catch (e) {
+            invocation.return_gerror(e);
+            return;
+        }
+
+        Main.layoutManager.screenTransition.run();
+
+        invocation.return_value(null);
+    }
+
     _emitAcceleratorActivated(action, device, timestamp) {
         let destination = this._grabbedAccelerators.get(action);
         if (!destination)

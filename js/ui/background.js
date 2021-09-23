@@ -733,6 +733,11 @@ var BackgroundManager = class BackgroundManager {
         this._newBackgroundActor = null;
         this.emit('changed');
 
+        if (Main.layoutManager.screenTransition.visible) {
+            oldBackgroundActor.destroy();
+            return;
+        }
+
         oldBackgroundActor.ease({
             opacity: 0,
             duration: FADE_ANIMATION_TIME,

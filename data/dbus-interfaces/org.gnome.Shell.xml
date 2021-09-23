@@ -35,6 +35,7 @@
       <arg type="au" direction="in" name="action"/>
       <arg type="b" direction="out" name="success"/>
     </method>
+    <method name="ScreenTransition"/>
     <signal name="AcceleratorActivated">
       <arg name="action" type="u"/>
       <arg name="parameters" type="a{sv}"/>

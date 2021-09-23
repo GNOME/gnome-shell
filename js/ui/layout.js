@@ -18,6 +18,9 @@ var BACKGROUND_FADE_ANIMATION_TIME = 1000;
 var HOT_CORNER_PRESSURE_THRESHOLD = 100; // pixels
 var HOT_CORNER_PRESSURE_TIMEOUT = 1000; // ms
 
+const SCREEN_TRANSITION_DELAY = 250; // ms
+const SCREEN_TRANSITION_DURATION = 500; // ms
+
 function isPopupMetaWindow(actor) {
     switch (actor.meta_window.get_window_type()) {
     case Meta.WindowType.DROPDOWN_MENU:
@@ -298,6 +301,13 @@ var LayoutManager = GObject.registerClass({
         monitorManager.connect('monitors-changed',
                                this._monitorsChanged.bind(this));
         this._monitorsChanged();
+
+        this.screenTransition = new ScreenTransition();
+        this.uiGroup.add_child(this.screenTransition);
+        this.screenTransition.add_constraint(new Clutter.BindConstraint({
+            source: this.uiGroup,
+            coordinate: Clutter.BindCoordinate.ALL,
+        }));
     }
 
     // This is called by Main after everything else is constructed
@@ -309,6 +319,7 @@ var LayoutManager = GObject.registerClass({
 
     showOverview() {
         this.overviewGroup.show();
+        this.screenTransition.hide();
 
         this._inOverview = true;
         this._updateVisibility();
@@ -316,6 +327,7 @@ var LayoutManager = GObject.registerClass({
 
     hideOverview() {
         this.overviewGroup.hide();
+        this.screenTransition.hide();
 
         this._inOverview = false;
         this._updateVisibility();
@@ -1369,3 +1381,42 @@ var PressureBarrier = class PressureBarrier {
     }
 };
 Signals.addSignalMethods(PressureBarrier.prototype);
+
+var ScreenTransition = GObject.registerClass(
+class ScreenTransition extends Clutter.Actor {
+    _init() {
+        super._init({ visible: false });
+    }
+
+    vfunc_hide() {
+        this.content = null;
+        super.vfunc_hide();
+    }
+
+    run() {
+        if (this.visible)
+            return;
+
+        Main.uiGroup.set_child_above_sibling(this, null);
+
+        const rect = new imports.gi.cairo.RectangleInt({
+            x: 0,
+            y: 0,
+            width: global.screen_width,
+            height: global.screen_height,
+        });
+        const [, , , scale] = global.stage.get_capture_final_size(rect);
+        this.content = global.stage.paint_to_content(rect, scale, Clutter.PaintFlag.NO_CURSORS);
+
+        this.opacity = 255;
+        this.show();
+
+        this.ease({
+            opacity: 0,
+            duration: SCREEN_TRANSITION_DURATION,
+            delay: SCREEN_TRANSITION_DELAY,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            onStopped: () => this.hide(),
+        });
+    }
+});
