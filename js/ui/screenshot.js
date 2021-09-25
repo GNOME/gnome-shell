@@ -37,7 +37,7 @@ var ScreenshotService = class {
         Gio.DBus.session.own_name('org.gnome.Shell.Screenshot', Gio.BusNameOwnerFlags.REPLACE, null, null);
     }
 
-    _createScreenshot(invocation, needsDisk = true) {
+    _createScreenshot(invocation, needsDisk = true, restrictCallers = true) {
         let lockedDown = false;
         if (needsDisk)
             lockedDown = this._lockdownSettings.get_boolean('disable-save-to-disk');
@@ -53,7 +53,7 @@ var ScreenshotService = class {
                 Gio.IOErrorEnum, Gio.IOErrorEnum.PERMISSION_DENIED,
                 'Saving to disk is disabled');
             return null;
-        } else {
+        } else if (restrictCallers) {
             try {
                 this._senderChecker.checkInvocation(invocation);
             } catch (e) {
@@ -311,7 +311,7 @@ var ScreenshotService = class {
     }
 
     async PickColorAsync(params, invocation) {
-        const screenshot = this._createScreenshot(invocation, false);
+        const screenshot = this._createScreenshot(invocation, false, false);
         if (!screenshot)
             return;
 
