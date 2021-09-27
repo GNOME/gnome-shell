@@ -229,11 +229,16 @@ var FdoNotificationDaemon = class FdoNotificationDaemon {
         if (!gicon)
             gicon = this._fallbackIconForNotificationData(hints);
 
-        notification.update(summary, body, { gicon,
-                                             bannerMarkup: true,
-                                             clear: true,
-                                             soundFile: hints['sound-file'],
-                                             soundName: hints['sound-name'] });
+        const soundFile = 'sound-file' in hints
+            ? Gio.File.new_for_path(hints['sound-file']) : null;
+
+        notification.update(summary, body, {
+            gicon,
+            bannerMarkup: true,
+            clear: true,
+            soundFile,
+            soundName: hints['sound-name'],
+        });
 
         let hasDefaultAction = false;
 
