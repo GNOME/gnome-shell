@@ -936,7 +936,7 @@ var WindowManager = class {
 
         let appSwitchAction = new AppSwitchAction();
         appSwitchAction.connect('activated', this._switchApp.bind(this));
-        global.stage.add_action(appSwitchAction);
+        global.stage.add_action_full('app-switch', Clutter.EventPhase.CAPTURE, appSwitchAction);
 
         let mode = Shell.ActionMode.ALL & ~Shell.ActionMode.LOCK_SCREEN;
         let topDragAction = new EdgeDragAction.EdgeDragAction(St.Side.TOP, mode);
@@ -954,7 +954,7 @@ var WindowManager = class {
         global.display.connect('notify::focus-window', updateUnfullscreenGesture);
         global.display.connect('in-fullscreen-changed', updateUnfullscreenGesture);
 
-        global.stage.add_action(topDragAction);
+        global.stage.add_action_full('unfullscreen', Clutter.EventPhase.CAPTURE, topDragAction);
 
         this._workspaceAnimation =
             new WorkspaceAnimation.WorkspaceAnimationController();
