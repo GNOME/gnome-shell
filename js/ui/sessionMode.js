@@ -20,7 +20,6 @@ const _modes = {
         showCalendarEvents: false,
         showWelcomeDialog: false,
         allowSettings: false,
-        allowExtensions: false,
         allowScreencast: false,
         enabledExtensions: [],
         hasRunDialog: false,
@@ -42,7 +41,6 @@ const _modes = {
     },
 
     'gdm': {
-        allowExtensions: true,
         hasNotifications: true,
         isGreeter: true,
         isPrimary: true,
@@ -59,7 +57,6 @@ const _modes = {
     },
 
     'unlock-dialog': {
-        allowExtensions: true,
         isLocked: true,
         unlockDialog: undefined,
         components: ['polkitAgent', 'telepathyClient'],
@@ -76,7 +73,6 @@ const _modes = {
         showCalendarEvents: true,
         showWelcomeDialog: true,
         allowSettings: true,
-        allowExtensions: true,
         allowScreencast: true,
         hasRunDialog: true,
         hasWorkspaces: true,

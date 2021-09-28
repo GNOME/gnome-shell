@@ -88,16 +88,6 @@ var ExtensionManager = class {
         return false;
     }
 
-    _sessionModeCanUseExtension(uuid) {
-        if (!Main.sessionMode.allowExtensions)
-            return false;
-
-        if (!this._extensionSupportsSessionMode(uuid))
-            return false;
-
-        return true;
-    }
-
     _callExtensionDisable(uuid) {
         let extension = this.lookup(uuid);
         if (!extension)
@@ -157,7 +147,7 @@ var ExtensionManager = class {
     }
 
     _callExtensionEnable(uuid) {
-        if (!this._sessionModeCanUseExtension(uuid))
+        if (!this._extensionSupportsSessionMode(uuid))
             return;
 
         let extension = this.lookup(uuid);
@@ -424,7 +414,7 @@ var ExtensionManager = class {
     }
 
     _callExtensionInit(uuid) {
-        if (!this._sessionModeCanUseExtension(uuid))
+        if (!this._extensionSupportsSessionMode(uuid))
             return false;
 
         let extension = this.lookup(uuid);
@@ -635,17 +625,9 @@ var ExtensionManager = class {
     }
 
     _sessionUpdated() {
-        // For now sessionMode.allowExtensions controls extensions from both the
-        // 'enabled-extensions' preference and the sessionMode.enabledExtensions
-        // property; it might make sense to make enabledExtensions independent
-        // from allowExtensions in the future
-        if (Main.sessionMode.allowExtensions) {
-            // Take care of added or removed sessionMode extensions
-            this._onEnabledExtensionsChanged();
-            this._enableAllExtensions();
-        } else {
-            this._disableAllExtensions();
-        }
+        // Take care of added or removed sessionMode extensions
+        this._onEnabledExtensionsChanged();
+        this._enableAllExtensions();
     }
 };
 Signals.addSignalMethods(ExtensionManager.prototype);
