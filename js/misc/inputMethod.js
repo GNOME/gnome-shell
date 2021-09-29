@@ -179,15 +179,15 @@ class InputMethod extends Clutter.InputMethod {
     }
 
     vfunc_reset() {
+        if (this._context) {
+            this._context.reset();
+            this._emitRequestSurrounding();
+        }
+
         if (this._preeditStr !== null) {
             // Unset any preedit text
             this.set_preedit_text(null, 0, Clutter.PreeditResetMode.CLEAR);
             this._preeditStr = null;
-        }
-
-        if (this._context) {
-            this._context.reset();
-            this._emitRequestSurrounding();
         }
     }
 
