@@ -8,6 +8,7 @@ const System = imports.system;
 
 const History = imports.misc.history;
 const ExtensionUtils = imports.misc.extensionUtils;
+const PopupMenu = imports.ui.popupMenu;
 const ShellEntry = imports.ui.shellEntry;
 const Main = imports.ui.main;
 const JsParse = imports.misc.jsParse;
@@ -34,6 +35,15 @@ var AUTO_COMPLETE_SHOW_COMPLETION_ANIMATION_DURATION = 200;
 var AUTO_COMPLETE_GLOBAL_KEYWORDS = _getAutoCompleteGlobalKeywords();
 
 const LG_ANIMATION_TIME = 500;
+
+const CLUTTER_DEBUG_FLAG_CATEGORIES = new Map([
+    // Paint debugging can easily result in a non-responsive session
+    ['DebugFlag', { argPos: 0, exclude: ['PAINT'] }],
+    ['DrawDebugFlag', { argPos: 1, exclude: [] }],
+    // Exluded due to the only current option likely to result in shooting ones
+    // foot
+    // ['PickDebugFlag', { argPos: 2, exclude: [] }],
+]);
 
 function _getAutoCompleteGlobalKeywords() {
     const keywords = ['true', 'false', 'null', 'new'];
@@ -1003,6 +1013,218 @@ class ActorTreeViewer extends St.BoxLayout {
     }
 });
 
+var DebugFlag = GObject.registerClass({
+    GTypeFlags: GObject.TypeFlags.ABSTRACT,
+}, class DebugFlag extends St.Button {
+    _init(label) {
+        const box = new St.BoxLayout();
+
+        const flagLabel = new St.Label({
+            text: label,
+            x_expand: true,
+            x_align: Clutter.ActorAlign.START,
+            y_align: Clutter.ActorAlign.CENTER,
+        });
+        box.add_child(flagLabel);
+
+        this._flagSwitch = new PopupMenu.Switch(false);
+        this._stateHandler = this._flagSwitch.connect('notify::state', () => {
+            if (this._flagSwitch.state)
+                this._enable();
+            else
+                this._disable();
+        });
+
+        // Update state whenever the switch is mapped, because most debug flags
+        // don't have a way of notifying us of changes.
+        this._flagSwitch.connect('notify::mapped', () => {
+            if (!this._flagSwitch.is_mapped())
+                return;
+
+            const state = this._isEnabled();
+            if (state === this._flagSwitch.state)
+                return;
+
+            this._flagSwitch.block_signal_handler(this._stateHandler);
+            this._flagSwitch.state = state;
+            this._flagSwitch.unblock_signal_handler(this._stateHandler);
+        });
+
+        box.add_child(this._flagSwitch);
+
+        super._init({
+            style_class: 'lg-debug-flag-button',
+            can_focus: true,
+            toggleMode: true,
+            child: box,
+            label_actor: flagLabel,
+            y_align: Clutter.ActorAlign.CENTER,
+        });
+
+        this.connect('clicked', () => this._flagSwitch.toggle());
+    }
+
+    _isEnabled() {
+        throw new Error('Method not implemented');
+    }
+
+    _enable() {
+        throw new Error('Method not implemented');
+    }
+
+    _disable() {
+        throw new Error('Method not implemented');
+    }
+});
+
+
+var ClutterDebugFlag = GObject.registerClass(
+class ClutterDebugFlag extends DebugFlag {
+    _init(categoryName, flagName) {
+        super._init(flagName);
+
+        this._argPos = CLUTTER_DEBUG_FLAG_CATEGORIES.get(categoryName).argPos;
+        this._enumValue = Clutter[categoryName][flagName];
+    }
+
+    _isEnabled() {
+        const enabledFlags = Meta.get_clutter_debug_flags();
+        return !!(enabledFlags[this._argPos] & this._enumValue);
+    }
+
+    _getArgs() {
+        const args = [0, 0, 0];
+        args[this._argPos] = this._enumValue;
+        return args;
+    }
+
+    _enable() {
+        Meta.add_clutter_debug_flags(...this._getArgs());
+    }
+
+    _disable() {
+        Meta.remove_clutter_debug_flags(...this._getArgs());
+    }
+});
+
+var MutterPaintDebugFlag = GObject.registerClass(
+class MutterPaintDebugFlag extends DebugFlag {
+    _init(flagName) {
+        super._init(flagName);
+
+        this._enumValue = Meta.DebugPaintFlag[flagName];
+    }
+
+    _isEnabled() {
+        return !!(Meta.get_debug_paint_flags() & this._enumValue);
+    }
+
+    _enable() {
+        Meta.add_debug_paint_flag(this._enumValue);
+    }
+
+    _disable() {
+        Meta.remove_debug_paint_flag(this._enumValue);
+    }
+});
+
+var MutterTopicDebugFlag = GObject.registerClass(
+class MutterTopicDebugFlag extends DebugFlag {
+    _init(flagName) {
+        super._init(flagName);
+
+        this._enumValue = Meta.DebugTopic[flagName];
+    }
+
+    _isEnabled() {
+        return Meta.is_topic_enabled(this._enumValue);
+    }
+
+    _enable() {
+        Meta.add_verbose_topic(this._enumValue);
+    }
+
+    _disable() {
+        Meta.remove_verbose_topic(this._enumValue);
+    }
+});
+
+var UnsafeModeDebugFlag = GObject.registerClass(
+class UnsafeModeDebugFlag extends DebugFlag {
+    _init() {
+        super._init('unsafe-mode');
+    }
+
+    _isEnabled() {
+        return global.context.unsafe_mode;
+    }
+
+    _enable() {
+        global.context.unsafe_mode = true;
+    }
+
+    _disable() {
+        global.context.unsafe_mode = false;
+    }
+});
+
+var DebugFlags = GObject.registerClass(
+class DebugFlags extends St.BoxLayout {
+    _init() {
+        super._init({
+            name: 'lookingGlassDebugFlags',
+            vertical: true,
+            x_align: Clutter.ActorAlign.CENTER,
+        });
+
+        // Clutter debug flags
+        for (const [categoryName, props] of CLUTTER_DEBUG_FLAG_CATEGORIES.entries()) {
+            this._addHeader('Clutter%s'.format(categoryName));
+            for (const flagName of this._getFlagNames(Clutter[categoryName])) {
+                if (props.exclude.includes(flagName))
+                    continue;
+                this.add_child(new ClutterDebugFlag(categoryName, flagName));
+            }
+        }
+
+        // Meta paint flags
+        this._addHeader('MetaDebugPaintFlag');
+        for (const flagName of this._getFlagNames(Meta.DebugPaintFlag))
+            this.add_child(new MutterPaintDebugFlag(flagName));
+
+        // Meta debug topics
+        this._addHeader('MetaDebugTopic');
+        for (const flagName of this._getFlagNames(Meta.DebugTopic))
+            this.add_child(new MutterTopicDebugFlag(flagName));
+
+        // MetaContext::unsafe-mode
+        this._addHeader('MetaContext');
+        this.add_child(new UnsafeModeDebugFlag());
+    }
+
+    _addHeader(title) {
+        const header = new St.Label({
+            text: title,
+            style_class: 'lg-debug-flags-header',
+            x_align: Clutter.ActorAlign.START,
+        });
+        this.add_child(header);
+    }
+
+    *_getFlagNames(enumObject) {
+        for (const flagName of Object.getOwnPropertyNames(enumObject)) {
+            if (typeof enumObject[flagName] !== 'number')
+                continue;
+
+            if (enumObject[flagName] <= 0)
+                continue;
+
+            yield flagName;
+        }
+    }
+});
+
+
 var LookingGlass = GObject.registerClass(
 class LookingGlass extends St.BoxLayout {
     _init() {
@@ -1123,6 +1345,9 @@ class LookingGlass extends St.BoxLayout {
 
         this._actorTreeViewer = new ActorTreeViewer(this);
         notebook.appendPage('Actors', this._actorTreeViewer);
+
+        this._debugFlags = new DebugFlags();
+        notebook.appendPage('Flags', this._debugFlags);
 
         this._entry.clutter_text.connect('activate', (o, _e) => {
             // Hide any completions we are currently showing
