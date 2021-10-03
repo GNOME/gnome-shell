@@ -1435,6 +1435,70 @@ var NMDeviceWireless = class {
 };
 Signals.addSignalMethods(NMDeviceWireless.prototype);
 
+var NMWireguardItem = class extends NMConnectionItem {
+    _buildUI() {
+        this.labelItem = new PopupMenu.PopupMenuItem('');
+        this.labelItem.connect('activate', this._activate.bind(this));
+
+        this.radioItem = new PopupMenu.PopupSwitchMenuItem(this._connection.get_id(), false);
+        this.radioItem.connect('toggled', this._toggle.bind(this));
+    }
+
+    _sync() {
+        let isActive = this.isActive();
+        this.labelItem.label.text = isActive ? _('Turn Off') : this._section.getConnectLabel();
+        this.radioItem.setToggleState(isActive);
+        this.radioItem.setStatus(this._getStatus());
+        this.emit('icon-changed');
+    }
+
+    _getStatus() {
+        if (this._activeConnection === null)
+            return null;
+
+        switch (this._activeConnection.state) {
+        case NM.ActiveConnectionState.UNKNOWN:
+            return _('unknown');
+        case NM.ActiveConnectionState.ACTIVATING:
+            return _('activating…');
+        case NM.ActiveConnectionState.ACTIVATED:
+            return null;
+        case NM.ActiveConnectionState.DEACTIVATING:
+            return _('deactivating…');
+        case NM.ActiveConnectionState.DEACTIVATED:
+            return _('deactivated');
+        default:
+            return 'invalid';
+        }
+    }
+
+    _connectionStateChanged(ac, newstate, reason) {
+        if (newstate === NM.ActiveConnectionState.DEACTIVATED &&
+            reason !== NM.ActiveConnectionStateReason.NO_SECRETS) {
+            // FIXME: if we ever want to show something based on reason,
+            // we need to convert from NM.ActiveConnectionStateReason
+            // to NM.DeviceStateReason
+            this.emit('activation-failed', reason);
+        }
+
+        this.emit('icon-changed');
+        super._connectionStateChanged();
+    }
+
+    getIndicatorIcon() {
+        if (this._activeConnection) {
+            if (this._activeConnection.state === NM.ActiveConnectionState.UNKNOWN)
+                return '';
+            else if (this._activeConnection.state < NM.ActiveConnectionState.ACTIVATED)
+                return 'network-vpn-acquiring-symbolic';
+            else
+                return 'network-vpn-symbolic';
+        } else {
+            return '';
+        }
+    }
+};
+
 var NMVpnConnectionItem = class extends NMConnectionItem {
     isActive() {
         if (this._activeConnection == null)
@@ -1577,6 +1641,9 @@ var NMVpnSection = class extends NMConnectionSection {
     }
 
     _makeConnectionItem(connection) {
+        if (connection.get_connection_type() === 'wireguard')
+            return new NMWireguardItem(this, connection);
+
         return new NMVpnConnectionItem(this, connection);
     }
 
@@ -1676,6 +1743,7 @@ class Indicator extends PanelMenu.SystemIndicator {
         this._ctypes[NM.SETTING_CDMA_SETTING_NAME] = NMConnectionCategory.WWAN;
         this._ctypes[NM.SETTING_GSM_SETTING_NAME] = NMConnectionCategory.WWAN;
         this._ctypes[NM.SETTING_VPN_SETTING_NAME] = NMConnectionCategory.VPN;
+        this._ctypes[NM.SETTING_WIREGUARD_SETTING_NAME] = NMConnectionCategory.VPN;
 
         this._getClient();
     }
@@ -1913,7 +1981,7 @@ class Indicator extends PanelMenu.SystemIndicator {
     _syncVpnConnections() {
         let activeConnections = this._client.get_active_connections() || [];
         let vpnConnections = activeConnections.filter(
-            a => a instanceof NM.VpnConnection);
+            a => a instanceof NM.VpnConnection || a.get_connection_type() === 'wireguard');
         vpnConnections.forEach(a => {
             ensureActiveConnectionProps(a);
         });
