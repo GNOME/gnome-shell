@@ -4,7 +4,7 @@ imports.gi.versions.Gtk = '4.0';
 
 const Gettext = imports.gettext;
 const Package = imports.package;
-const { Gdk, GLib, Gio, GObject, Gtk, Shew } = imports.gi;
+const { Adw, Gdk, GLib, Gio, GObject, Gtk, Shew } = imports.gi;
 
 Package.initFormat();
 
@@ -38,7 +38,7 @@ function toggleState(action) {
 }
 
 var Application = GObject.registerClass(
-class Application extends Gtk.Application {
+class Application extends Adw.Application {
     _init() {
         GLib.set_prgname('gnome-extensions-app');
         super._init({ application_id: Package.name });
