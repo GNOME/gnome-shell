@@ -155,10 +155,9 @@
                             <child>
                               <object class="GtkListBox" id="userList">
                                 <property name="selection-mode">none</property>
-                                <property name="show-separators">True</property>
                                 <property name="margin-bottom">24</property>
                                 <style>
-                                  <class name="frame"/>
+                                  <class name="content"/>
                                 </style>
                               </object>
                             </child>
@@ -179,9 +178,8 @@
                             <child>
                               <object class="GtkListBox" id="systemList">
                                 <property name="selection-mode">none</property>
-                                <property name="show-separators">True</property>
                                 <style>
-                                  <class name="frame"/>
+                                  <class name="content"/>
                                 </style>
                               </object>
                             </child>
