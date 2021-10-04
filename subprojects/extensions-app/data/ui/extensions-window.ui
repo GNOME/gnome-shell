@@ -33,9 +33,9 @@
             <property name="label" translatable="yes">Warning</property>
             <property name="xalign">0</property>
             <property name="margin-top">6</property>
-            <attributes>
-              <attribute name="weight" value="bold"/>
-            </attributes>
+            <style>
+              <class name="heading"/>
+            </style>
           </object>
         </child>
         <child>
@@ -147,9 +147,9 @@
                                 <property name="halign">start</property>
                                 <property name="hexpand">True</property>
                                 <property name="label" translatable="yes">Manually Installed</property>
-                                <attributes>
-                                  <attribute name="weight" value="bold"/>
-                                </attributes>
+                                <style>
+                                  <class name="heading"/>
+                                </style>
                               </object>
                             </child>
                             <child>
@@ -171,9 +171,9 @@
                                 <property name="halign">start</property>
                                 <property name="hexpand">True</property>
                                 <property name="label" translatable="yes">Built-In</property>
-                                <attributes>
-                                  <attribute name="weight" value="bold"/>
-                                </attributes>
+                                <style>
+                                  <class name="heading"/>
+                                </style>
                               </object>
                             </child>
                             <child>
@@ -285,9 +285,9 @@
                   <object class="GtkLabel">
                     <property name="halign">start</property>
                     <property name="label" translatable="yes">Extension Updates Ready</property>
-                    <attributes>
-                      <attribute name="weight" value="bold"/>
-                    </attributes>
+                    <style>
+                      <class name="heading"/>
+                    </style>
                   </object>
                 </child>
                 <child>
