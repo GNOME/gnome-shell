@@ -195,29 +195,9 @@
               <object class="GtkStackPage">
                 <property name="name">placeholder</property>
                 <property name="child">
-                  <object class="GtkBox">
-                    <property name="orientation">vertical</property>
-                    <property name="margin-start">32</property>
-                    <property name="margin-end">32</property>
-                    <property name="margin-top">32</property>
-                    <property name="margin-bottom">32</property>
-                    <property name="spacing">6</property>
-                    <property name="valign">center</property>
-                    <child>
-                      <object class="GtkImage">
-                        <property name="pixel-size">96</property>
-                        <property name="icon-name">org.gnome.Extensions-symbolic</property>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkLabel">
-                        <property name="label" translatable="yes">No Installed Extensions</property>
-                        <attributes>
-                          <attribute name="weight" value="bold"/>
-                          <attribute name="scale" value="1.44"/>
-                        </attributes>
-                      </object>
-                    </child>
+                  <object class="AdwStatusPage">
+                    <property name="icon-name">org.gnome.Extensions-symbolic</property>
+                    <property name="title" translatable="yes">No Installed Extensions</property>
                   </object>
                 </property>
               </object>
@@ -226,34 +206,9 @@
               <object class="GtkStackPage">
                 <property name="name">noshell</property>
                 <property name="child">
-                  <object class="GtkBox">
-                    <property name="margin-start">100</property>
-                    <property name="margin-end">100</property>
-                    <property name="margin-top">100</property>
-                    <property name="margin-bottom">60</property>
-                    <property name="orientation">vertical</property>
-                    <property name="spacing">12</property>
-                    <child>
-                      <object class="GtkLabel">
-                        <property name="label" translatable="yes">Something’s gone wrong</property>
-                        <attributes>
-                          <attribute name="scale" value="1.44"/>
-                        </attributes>
-                        <style>
-                          <class name="dim-label"/>
-                        </style>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkLabel">
-                        <property name="label" translatable="yes">We’re very sorry, but it was not possible to get the list of installed extensions. Make sure you are logged into GNOME and try again.</property>
-                        <property name="justify">center</property>
-                        <property name="wrap">True</property>
-                        <style>
-                          <class name="dim-label"/>
-                        </style>
-                      </object>
-                    </child>
+                  <object class="AdwStatusPage">
+                    <property name="title" translatable="yes">Something’s gone wrong</property>
+                    <property name="description" translatable="yes">We’re very sorry, but it was not possible to get the list of installed extensions. Make sure you are logged into GNOME and try again.</property>
                   </object>
                 </property>
               </object>
