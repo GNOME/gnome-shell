@@ -33,7 +33,7 @@ class WelcomeDialog extends ModalDialog.ModalDialog {
 
     _buildLayout() {
         const [majorVersion] = Config.PACKAGE_VERSION.split('.');
-        const title = _('Welcome to GNOME %s'.format(majorVersion));
+        const title = _('Welcome to GNOME %s').format(majorVersion);
         const description = _('If you want to learn your way around, check out the tour.');
         const content = new Dialog.MessageDialogContent({ title, description });
 
