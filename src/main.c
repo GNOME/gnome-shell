@@ -589,9 +589,11 @@ main (int argc, char **argv)
 
   shell_profiler_shutdown ();
 
+#if 0
   g_debug ("Doing final cleanup");
   _shell_global_destroy_gjs_context (shell_global_get ());
   g_object_unref (shell_global_get ());
+#endif
 
   return ecode;
 }
