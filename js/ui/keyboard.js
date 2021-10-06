@@ -1565,13 +1565,13 @@ var Keyboard = GObject.registerClass({
                 }
             });
             extraButton.connect('released', () => {
-                if (keyval != null)
+                if (keyval)
                     this._keyboardController.keyvalRelease(keyval);
-                else if (action == 'hide')
+                else if (action === 'hide')
                     this.close();
-                else if (action == 'languageMenu')
+                else if (action === 'languageMenu')
                     this._popupLanguageMenu(actor);
-                else if (action == 'emoji')
+                else if (action === 'emoji')
                     this._toggleEmoji();
             });
 
