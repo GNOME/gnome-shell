@@ -1400,8 +1400,7 @@ var Keyboard = GObject.registerClass({
 
         this._keypad = new Keypad();
         this._connectSignal(this._keypad, 'keyval', (_keypad, keyval) => {
-            this._keyboardController.keyvalPress(keyval);
-            this._keyboardController.keyvalRelease(keyval);
+            this._keyboardController.keyvalPressAndRelease(keyval);
         });
         this._aspectContainer.add_child(this._keypad);
         this._keypad.hide();
@@ -1501,20 +1500,11 @@ var Keyboard = GObject.registerClass({
 
             button.connect('pressed', (actor, keyval, str) => {
                 if (!Main.inputMethod.currentFocus ||
-                    !this._keyboardController.commitString(str, true)) {
-                    if (keyval != 0) {
-                        this._keyboardController.keyvalPress(keyval);
-                        button._keyvalPress = true;
-                    }
-                }
+                    !this._keyboardController.commitString(str, true) &&
+                    keyval !== 0)
+                    this._keyboardController.keyvalPressAndRelease(keyval);
             });
-            button.connect('released', (actor, keyval, _str) => {
-                if (keyval != 0) {
-                    if (button._keyvalPress)
-                        this._keyboardController.keyvalRelease(keyval);
-                    button._keyvalPress = false;
-                }
-
+            button.connect('released', () => {
                 if (!this._latched)
                     this._setActiveLayer(0);
             });
@@ -1561,13 +1551,11 @@ var Keyboard = GObject.registerClass({
                     // Shift only gets latched on long press
                     this._latched = switchToLevel != 1;
                 } else if (keyval != null) {
-                    this._keyboardController.keyvalPress(keyval);
+                    this._keyboardController.keyvalPressAndRelease(keyval);
                 }
             });
             extraButton.connect('released', () => {
-                if (keyval)
-                    this._keyboardController.keyvalRelease(keyval);
-                else if (action === 'hide')
+                if (action === 'hide')
                     this.close();
                 else if (action === 'languageMenu')
                     this._popupLanguageMenu(actor);
@@ -2124,12 +2112,9 @@ var KeyboardController = class {
         return true;
     }
 
-    keyvalPress(keyval) {
+    keyvalPressAndRelease(keyval) {
         this._virtualDevice.notify_keyval(Clutter.get_current_event_time() * 1000,
                                           keyval, Clutter.KeyState.PRESSED);
-    }
-
-    keyvalRelease(keyval) {
         this._virtualDevice.notify_keyval(Clutter.get_current_event_time() * 1000,
                                           keyval, Clutter.KeyState.RELEASED);
     }
