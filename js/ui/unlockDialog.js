@@ -872,7 +872,11 @@ var UnlockDialog = GObject.registerClass({
     }
 
     finish(onComplete) {
-        this._ensureAuthPrompt();
+        if (!this._authPrompt) {
+            onComplete();
+            return;
+        }
+
         this._authPrompt.finish(onComplete);
     }
 
