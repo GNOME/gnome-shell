@@ -2223,7 +2223,7 @@ msgstr "%d %%"
 #: js/ui/status/powerProfiles.js:19
 msgctxt "Power profile"
 msgid "Performance"
-msgstr "Výkon"
+msgstr "Vysoký výkon"
 
 #: js/ui/status/powerProfiles.js:20
 msgctxt "Power profile"
