@@ -962,7 +962,7 @@ class ScreenshotUI extends St.Widget {
         });
         this._panel.add_child(this._typeButtonContainer);
 
-        this._selectionButton = new IconLabelButton('input-mouse-symbolic', _('Selection'), {
+        this._selectionButton = new IconLabelButton('screenshot-ui-area-symbolic', _('Selection'), {
             style_class: 'screenshot-ui-type-button',
             checked: true,
             x_expand: true,
@@ -971,7 +971,7 @@ class ScreenshotUI extends St.Widget {
             this._onSelectionButtonToggled.bind(this));
         this._typeButtonContainer.add_child(this._selectionButton);
 
-        this._screenButton = new IconLabelButton('video-display-symbolic', _('Screen'), {
+        this._screenButton = new IconLabelButton('screenshot-ui-display-symbolic', _('Screen'), {
             style_class: 'screenshot-ui-type-button',
             toggle_mode: true,
             x_expand: true,
@@ -980,7 +980,7 @@ class ScreenshotUI extends St.Widget {
             this._onScreenButtonToggled.bind(this));
         this._typeButtonContainer.add_child(this._screenButton);
 
-        this._windowButton = new IconLabelButton('focus-windows-symbolic', _('Window'), {
+        this._windowButton = new IconLabelButton('screenshot-ui-window-symbolic', _('Window'), {
             style_class: 'screenshot-ui-type-button',
             toggle_mode: true,
             x_expand: true,

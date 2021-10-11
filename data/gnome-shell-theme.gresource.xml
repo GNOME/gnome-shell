@@ -41,5 +41,8 @@
     <file>toggle-on-hc.svg</file>
     <file>toggle-on-light.svg</file>
     <file>workspace-placeholder.svg</file>
+    <file alias="icons/scalable/status/screenshot-ui-area-symbolic.svg">screenshot-ui-area-symbolic.svg</file>
+    <file alias="icons/scalable/status/screenshot-ui-display-symbolic.svg">screenshot-ui-display-symbolic.svg</file>
+    <file alias="icons/scalable/status/screenshot-ui-window-symbolic.svg">screenshot-ui-window-symbolic.svg</file>
   </gresource>
 </gresources>
