@@ -27,6 +27,9 @@ const { DBusSenderChecker } = imports.misc.util;
 
 const ScreenshotIface = loadInterfaceXML('org.gnome.Shell.Screenshot');
 
+const ScreencastIface = loadInterfaceXML('org.gnome.Shell.Screencast');
+const ScreencastProxy = Gio.DBusProxy.makeProxyWrapper(ScreencastIface);
+
 var IconLabelButton = GObject.registerClass(
 class IconLabelButton extends St.Button {
     _init(iconName, label, params) {
@@ -1326,6 +1329,9 @@ class ScreenshotUI extends St.Widget {
         if (this._openingCoroutineInProgress)
             return;
 
+        if (this._screencastInProgress)
+            return;
+
         if (!this.visible) {
             // Screenshot UI is opening from completely closed state
             // (rather than opening back from in process of closing).
@@ -1595,7 +1601,7 @@ class ScreenshotUI extends St.Widget {
         }
     }
 
-    _getSelectedGeometry() {
+    _getSelectedGeometry(rescale) {
         let x, y, w, h;
 
         if (this._selectionButton.checked) {
@@ -1611,21 +1617,24 @@ class ScreenshotUI extends St.Widget {
             h = monitor.height;
         }
 
-        x *= this._scale;
-        y *= this._scale;
-        w *= this._scale;
-        h *= this._scale;
+        if (rescale) {
+            x *= this._scale;
+            y *= this._scale;
+            w *= this._scale;
+            h *= this._scale;
+        }
 
         return [x, y, w, h];
     }
 
     _onCaptureButtonClicked() {
-        if (this._shotButton.checked)
+        if (this._shotButton.checked) {
             this._saveScreenshot();
-
-        // TODO: screencasting.
-
-        this.close();
+            this.close();
+        } else {
+            // Screencast closes the UI on its own.
+            this._startScreencast();
+        }
     }
 
     _storeScreenshot(bytes, pixbuf) {
@@ -1767,7 +1776,7 @@ class ScreenshotUI extends St.Widget {
             const texture = content.get_texture();
             const stream = Gio.MemoryOutputStream.new_resizable();
 
-            const [x, y, w, h] = this._getSelectedGeometry();
+            const [x, y, w, h] = this._getSelectedGeometry(true);
 
             let cursorTexture = this._cursor.content?.get_texture();
             if (!this._cursor.visible)
@@ -1824,6 +1833,71 @@ class ScreenshotUI extends St.Widget {
         }
     }
 
+    _startScreencast() {
+        if (this._windowButton.checked)
+            return; // TODO
+
+        const [x, y, w, h] = this._getSelectedGeometry(false);
+        const drawCursor = this._cursor.visible;
+
+        // Close instantly so the fade-out doesn't get recorded.
+        this.close(true);
+
+        // This is a bit awkward because creating a proxy synchronously hangs Shell.
+        const doStartScreencast = () => {
+            let method =
+                this._screencastProxy.ScreencastRemote.bind(this._screencastProxy);
+            if (w !== -1) {
+                method = this._screencastProxy.ScreencastAreaRemote.bind(
+                    this._screencastProxy, x, y, w, h);
+            }
+
+            method(
+                /* Translators: this is a filename used for screencast
+                 * recording, where "%d" and "%t" date and time, e.g.
+                 * "Screencast from 07-17-2013 10:00:46 PM.webm" */
+                /* xgettext:no-c-format */
+                _('Screencast from %d %t.webm'),
+                { 'draw-cursor': new GLib.Variant('b', drawCursor) },
+                ([success, _filename], error) => {
+                    if (error !== null) {
+                        this._screencastInProgress = false;
+                        log('Error starting screencast: %s'.format(error.message));
+                        return;
+                    }
+
+                    if (!success) {
+                        this._screencastInProgress = false;
+                        log('Error starting screencast');
+                    }
+                }
+            );
+        };
+
+        // Set this before calling the method as the screen recording indicator
+        // will check it before the success callback fires.
+        this._screencastInProgress = true;
+
+        if (this._screencastProxy) {
+            doStartScreencast();
+        } else {
+            new ScreencastProxy(
+                Gio.DBus.session,
+                'org.gnome.Shell.Screencast',
+                '/org/gnome/Shell/Screencast',
+                (object, error) => {
+                    if (error !== null) {
+                        log('Error connecting to the screencast service');
+                        return;
+                    }
+
+                    this._screencastProxy = object;
+                    doStartScreencast();
+                }
+            );
+        }
+    }
+
     stopScreencast() {
         if (!this._screencastInProgress)
             return;
@@ -1831,6 +1905,16 @@ class ScreenshotUI extends St.Widget {
         // Set this before calling the method as the screen recording indicator
         // will check it before the success callback fires.
         this._screencastInProgress = false;
+
+        this._screencastProxy.StopScreencastRemote((success, error) => {
+            if (error !== null) {
+                log('Error stopping screencast: %s'.format(error.message));
+                return;
+            }
+
+            if (!success)
+                log('Error stopping screencast');
+        });
     }
 
     get screencastInProgress() {
