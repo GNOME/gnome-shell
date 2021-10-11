@@ -1,7 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported ScreenshotService, ScreenshotUI, showScreenshotUI */
 
-const { Clutter, Gio, GObject, GLib, Meta, Shell, St } = imports.gi;
+const { Clutter, Gio, GObject, GLib, Gtk, Meta, Shell, St } = imports.gi;
 
 const GrabHelper = imports.ui.grabHelper;
 const Layout = imports.ui.layout;
@@ -1585,6 +1585,9 @@ class ScreenshotUI extends St.Widget {
                     throw e;
             }
         }
+
+        // Add it to recent files.
+        Gtk.RecentManager.get_default().add_item(file.get_uri());
 
         // Show a notification.
         const source = new MessageTray.Source(
