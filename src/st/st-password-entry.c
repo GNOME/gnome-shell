@@ -37,6 +37,7 @@ struct _StPasswordEntry
 struct _StPasswordEntryPrivate
 {
   ClutterActor *peek_password_icon;
+
   gboolean      password_visible;
   gboolean      show_peek_icon;
 };
@@ -229,10 +230,11 @@ st_password_entry_init (StPasswordEntry *entry)
 
   st_password_entry_set_show_peek_icon (entry, TRUE);
 
-  g_signal_connect (st_settings_get (),
-                    "notify::disable-show-password",
-                    G_CALLBACK (on_disable_show_password_changed),
-                    entry);
+  g_signal_connect_object (st_settings_get (),
+                           "notify::disable-show-password",
+                           G_CALLBACK (on_disable_show_password_changed),
+                           entry,
+                           0);
 
   clutter_text = st_entry_get_clutter_text (ST_ENTRY (entry));
   clutter_text_set_password_char (CLUTTER_TEXT (clutter_text), BLACK_CIRCLE);
