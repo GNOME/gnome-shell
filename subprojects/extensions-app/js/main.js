@@ -74,10 +74,11 @@ var ExtensionsWindow = GObject.registerClass({
     GTypeName: 'ExtensionsWindow',
     Template: 'resource:///org/gnome/Extensions/ui/extensions-window.ui',
     InternalChildren: [
+        'userGroup',
         'userList',
+        'systemGroup',
         'systemList',
         'mainStack',
-        'scrolledWindow',
         'searchBar',
         'searchButton',
         'searchEntry',
@@ -316,10 +317,10 @@ var ExtensionsWindow = GObject.registerClass({
     }
 
     _syncListVisibility() {
-        this._userList.visible = [...this._userList].length > 1;
-        this._systemList.visible = [...this._systemList].length > 1;
+        this._userGroup.visible = [...this._userList].length > 1;
+        this._systemGroup.visible = [...this._systemList].length > 1;
 
-        if (this._userList.visible || this._systemList.visible)
+        if (this._userGroup.visible || this._systemGroup.visible)
             this._mainStack.visible_child_name = 'main';
         else
             this._mainStack.visible_child_name = 'placeholder';
