@@ -201,20 +201,23 @@ function _easeActor(actor, params) {
         actor.set(params);
     actor.restore_easing_state();
 
-    let transition = animatedProps.map(p => actor.get_transition(p))
-        .find(t => t !== null);
+    const transitions = animatedProps
+        .map(p => actor.get_transition(p))
+        .filter(t => t !== null);
+
+    transitions.forEach(t => t.set({ repeatCount, autoReverse }));
+
+    const [transition] = transitions;
 
     if (transition && transition.delay)
         transition.connect('started', () => prepare());
     else
         prepare();
 
-    if (transition) {
-        transition.set({ repeatCount, autoReverse });
+    if (transition)
         transition.connect('stopped', (t, finished) => callback(finished));
-    } else {
+    else
         callback(true);
-    }
 }
 
 function _easeActorProperty(actor, propName, target, params) {
