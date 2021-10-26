@@ -116,30 +116,37 @@ var ExtensionsService = class extends ServiceImplementation {
             if (this._handleError(invocation, error))
                 return;
 
+            if (this._prefsDialog) {
+                this._handleError(invocation,
+                    new Error('Already showing a prefs dialog'));
+                return;
+            }
+
             const [serialized] = res;
             const extension = ExtensionUtils.deserializeExtension(serialized);
 
-            const window = new ExtensionPrefsDialog(extension);
-            window.connect('realize', () => {
+            this._prefsDialog = new ExtensionPrefsDialog(extension);
+            this._prefsDialog.connect('realize', () => {
                 let externalWindow = null;
 
                 if (parentWindow)
                     externalWindow = Shew.ExternalWindow.new_from_handle(parentWindow);
 
                 if (externalWindow)
-                    externalWindow.set_parent_of(window.get_surface());
+                    externalWindow.set_parent_of(this._prefsDialog.get_surface());
             });
 
             if (options.modal)
-                window.modal = options.modal.get_boolean();
+                this._prefsDialog.modal = options.modal.get_boolean();
 
-            window.connect('close-request', () => {
+            this._prefsDialog.connect('close-request', () => {
+                delete this._prefsDialog;
                 this.release();
                 return false;
             });
             this.hold();
 
-            window.show();
+            this._prefsDialog.show();
 
             invocation.return_value(null);
         });
