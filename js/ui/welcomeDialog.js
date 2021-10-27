@@ -1,6 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
 import Clutter from 'gi://Clutter';
+import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
 import Shell from 'gi://Shell';
 import St from 'gi://St';
@@ -34,9 +35,22 @@ class WelcomeDialog extends ModalDialog.ModalDialog {
         return super.open();
     }
 
-    _buildLayout() {
+    _getOSName() {
+        const prettyName = GLib.get_os_info('PRETTY_NAME');
+        if (prettyName)
+            return prettyName;
+
+        const name = GLib.get_os_info('NAME');
+        const version = GLib.get_os_info('VERSION');
+        if (name)
+            return version ? `${name} ${version}` : name;
+
         const [majorVersion] = Config.PACKAGE_VERSION.split('.');
-        const title = _('Welcome to GNOME %s').format(majorVersion);
+        return _('GNOME %s').format(majorVersion);
+    }
+
+    _buildLayout() {
+        const title = _('Welcome to %s').format(this._getOSName());
         const description = _('If you want to learn your way around, check out the tour.');
         const content = new Dialog.MessageDialogContent({title, description});
 
