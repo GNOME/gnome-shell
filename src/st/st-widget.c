@@ -1732,19 +1732,7 @@ st_widget_recompute_style (StWidget    *widget,
 
   if (!paint_equal)
     {
-      static gboolean invalidate_paint_volume_valid = FALSE;
-      static void (* invalidate_paint_volume) (ClutterActor *) = NULL;
-
-      if (!invalidate_paint_volume_valid)
-        {
-          g_module_symbol (g_module_open (NULL, G_MODULE_BIND_LAZY),
-                           "clutter_actor_invalidate_paint_volume",
-                           (gpointer *)&invalidate_paint_volume);
-          invalidate_paint_volume_valid = TRUE;
-        }
-
-      if (invalidate_paint_volume)
-        invalidate_paint_volume (CLUTTER_ACTOR (widget));
+      clutter_actor_invalidate_paint_volume (CLUTTER_ACTOR (widget));
 
       next_paint_state (widget);
 

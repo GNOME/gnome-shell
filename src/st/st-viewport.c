@@ -80,22 +80,8 @@ adjustment_value_notify_cb (StAdjustment *adjustment,
                             GParamSpec   *pspec,
                             StViewport   *viewport)
 {
-  static gboolean invalidate_paint_volume_valid = FALSE;
-  static void (* invalidate_paint_volume) (ClutterActor *) = NULL;
-
   clutter_actor_invalidate_transform (CLUTTER_ACTOR (viewport));
-
-  if (!invalidate_paint_volume_valid)
-    {
-      g_module_symbol (g_module_open (NULL, G_MODULE_BIND_LAZY),
-                       "clutter_actor_invalidate_paint_volume",
-                       (gpointer *)&invalidate_paint_volume);
-      invalidate_paint_volume_valid = TRUE;
-    }
-
-  if (invalidate_paint_volume)
-    invalidate_paint_volume (CLUTTER_ACTOR (viewport));
-
+  clutter_actor_invalidate_paint_volume (CLUTTER_ACTOR (viewport));
   clutter_actor_queue_relayout (CLUTTER_ACTOR (viewport));
 }
 
