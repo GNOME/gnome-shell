@@ -56,6 +56,14 @@ launch_extension_prefs (const char *uuid)
                           NULL,
                           &error);
 
+  if (error)
+    {
+      g_dbus_error_strip_remote_error (error);
+      g_printerr (_("Failed to open prefs for extension “%s”: %s\n"),
+                  uuid, error->message);
+      return FALSE;
+    }
+
   return TRUE;
 }
 
