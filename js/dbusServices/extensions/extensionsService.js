@@ -133,7 +133,10 @@ var ExtensionsService = class extends ServiceImplementation {
             if (options.modal)
                 window.modal = options.modal.get_boolean();
 
-            window.connect('destroy', () => this.release());
+            window.connect('close-request', () => {
+                this.release();
+                return false;
+            });
             this.hold();
 
             window.show();
