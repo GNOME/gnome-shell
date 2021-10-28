@@ -143,7 +143,7 @@ get_extension_property (GDBusProxy *proxy,
                                      &error);
   if (response == NULL)
     {
-      g_printerr (_("Failed to connect to GNOME Shell"));
+      g_printerr (_("Failed to connect to GNOME Shell\n"));
       return NULL;
     }
 
