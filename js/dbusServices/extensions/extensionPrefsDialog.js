@@ -11,8 +11,6 @@ var ExtensionPrefsDialog = GObject.registerClass({
     _init(extension) {
         super._init({
             title: extension.metadata.name,
-            default_width: 600,
-            default_height: 400,
             search_enabled: false,
         });
 
