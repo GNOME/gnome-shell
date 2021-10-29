@@ -167,7 +167,7 @@ class InputMethod extends Clutter.InputMethod {
         if (this._context)
             this._context.focus_out();
 
-        if (this._preeditStr) {
+        if (this._preeditStr && this._preeditVisible) {
             // Unset any preedit text
             this.set_preedit_text(null, 0, this._preeditCommitMode);
             this._preeditStr = null;
