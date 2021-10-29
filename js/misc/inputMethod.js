@@ -111,6 +111,8 @@ class InputMethod extends Clutter.InputMethod {
             return;
 
         let preedit = text.get_text();
+        if (preedit === '')
+            preedit = null;
 
         if (visible)
             this.set_preedit_text(preedit, pos, mode);
