@@ -602,7 +602,7 @@ var LoginDialog = GObject.registerClass({
         let bannerAllocation = null;
         let bannerHeight = 0;
         if (this._bannerView.visible) {
-            bannerAllocation = this._getBannerAllocation(dialogBox, this._bannerView);
+            bannerAllocation = this._getBannerAllocation(dialogBox);
             bannerHeight = bannerAllocation.y2 - bannerAllocation.y1;
         }
 
