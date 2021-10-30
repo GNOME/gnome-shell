@@ -250,7 +250,7 @@ export class Magnifier extends Signals.EventEmitter {
      * @returns {boolean} whether the magnifier is currently tracking the mouse
      */
     isTrackingMouse() {
-        return !!this._mouseTrackingId;
+        return !!this._pointerWatch;
     }
 
     /**
