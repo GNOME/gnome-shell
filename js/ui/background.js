@@ -177,7 +177,7 @@ var BackgroundCache = class BackgroundCache {
 
         animation = new Animation({ file: params.file });
 
-        animation.load(() => {
+        animation.load_async(null, () => {
             this._animations[params.settingsSchema] = animation;
 
             if (params.onLoaded) {
@@ -634,11 +634,12 @@ class Animation extends GnomeDesktop.BGSlideShow {
         this.loaded = false;
     }
 
-    load(callback) {
-        this.load_async(null, () => {
+    // eslint-disable-next-line camelcase
+    load_async(cancellable, callback) {
+        super.load_async(cancellable, () => {
             this.loaded = true;
-            if (callback)
-                callback();
+
+            callback?.();
         });
     }
 
