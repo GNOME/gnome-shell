@@ -1126,7 +1126,7 @@ _shell_app_add_window (ShellApp        *app,
     app->running_state->interesting_windows++;
   shell_app_sync_running_state (app);
 
-  if (app->started_on_workspace >= 0)
+  if (app->started_on_workspace >= 0 && !meta_window_is_on_all_workspaces (window))
     meta_window_change_workspace_by_index (window, app->started_on_workspace, FALSE);
   app->started_on_workspace = -1;
 
