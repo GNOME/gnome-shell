@@ -76,10 +76,12 @@ class AccessDialog extends ModalDialog.ModalDialog {
     }
 
     open() {
-        super.open();
+        if (!super.open())
+            return false;
 
         let connection = this._invocation.get_connection();
         this._requestExported = this._request.export(connection, this._handle);
+        return true;
     }
 
     CloseAsync(invocation, _params) {

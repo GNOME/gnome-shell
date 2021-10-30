@@ -26,9 +26,9 @@ class WelcomeDialog extends ModalDialog.ModalDialog {
 
     open() {
         if (!this._tourAppInfo)
-            return;
+            return false;
 
-        super.open();
+        return super.open();
     }
 
     _buildLayout() {

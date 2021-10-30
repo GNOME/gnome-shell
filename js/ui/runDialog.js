@@ -249,8 +249,8 @@ class RunDialog extends ModalDialog.ModalDialog {
         this._commandError = false;
 
         if (this._lockdownSettings.get_boolean(DISABLE_COMMAND_LINE_KEY))
-            return;
+            return false;
 
-        super.open();
+        return super.open();
     }
 });
