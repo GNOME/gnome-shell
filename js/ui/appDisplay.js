@@ -919,43 +919,6 @@ var BaseAppView = GObject.registerClass({
         }
     }
 
-    animate(animationDirection, onComplete) {
-        if (onComplete) {
-            let animationDoneId = this._grid.connect('animation-done', () => {
-                this._grid.disconnect(animationDoneId);
-                onComplete();
-            });
-        }
-
-        this._clearAnimateLater();
-        this._grid.opacity = 255;
-
-        if (animationDirection == IconGrid.AnimationDirection.IN) {
-            const doSpringAnimationLater = laterType => {
-                this._animateLaterId = Meta.later_add(laterType,
-                    () => {
-                        this._animateLaterId = 0;
-                        this._doSpringAnimation(animationDirection);
-                        return GLib.SOURCE_REMOVE;
-                    });
-            };
-
-            if (this._viewIsReady) {
-                this._grid.opacity = 0;
-                doSpringAnimationLater(Meta.LaterType.IDLE);
-            } else {
-                this._viewLoadedHandlerId = this.connect('view-loaded',
-                    () => {
-                        this._clearAnimateLater();
-                        this._grid.opacity = 255;
-                        doSpringAnimationLater(Meta.LaterType.BEFORE_REDRAW);
-                    });
-            }
-        } else {
-            this._doSpringAnimation(animationDirection);
-        }
-    }
-
     _getDropTarget(x, y, source) {
         const { currentPage } = this._grid;
 
@@ -1656,24 +1619,6 @@ class AppDisplay extends BaseAppView {
         return appIcons;
     }
 
-    // Overridden from BaseAppView
-    animate(animationDirection, onComplete) {
-        this._scrollView.reactive = false;
-        this._swipeTracker.enabled = false;
-        let completionFunc = () => {
-            this._scrollView.reactive = true;
-            this._swipeTracker.enabled = this.mapped;
-            if (onComplete)
-                onComplete();
-        };
-
-        if (animationDirection == IconGrid.AnimationDirection.OUT &&
-            this._displayingDialog && this._currentDialog)
-            this._currentDialog.popdown();
-        else
-            super.animate(animationDirection, completionFunc);
-    }
-
     animateSwitch(animationDirection) {
         super.animateSwitch(animationDirection);
 
@@ -2275,11 +2220,6 @@ class FolderView extends BaseAppView {
             return -1;
 
         return aPosition - bPosition;
-    }
-
-    // Overridden from BaseAppView
-    animate(animationDirection) {
-        this._grid.animatePulse(animationDirection);
     }
 
     createFolderIcon(size) {
