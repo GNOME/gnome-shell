@@ -408,21 +408,6 @@ export class Magnifier extends Signals.EventEmitter {
     }
 
     /**
-     * getCrosshairsColor:
-     * Get the color of the crosshairs.
-     *
-     * @returns {string} The color as a string, e.g. '#0000ffff' or 'blue'.
-     */
-    getCrosshairsColor() {
-        if (this._crossHairs) {
-            let clutterColor = this._crossHairs.getColor();
-            return clutterColor.to_string();
-        } else {
-            return '#00000000';
-        }
-    }
-
-    /**
      * setCrosshairsThickness:
      *
      * Set the crosshairs thickness for all ZoomRegions.
@@ -1926,16 +1911,6 @@ class Crosshairs extends Clutter.Actor {
         this._horizRightHair.background_color = clutterColor;
         this._vertTopHair.background_color = clutterColor;
         this._vertBottomHair.background_color = clutterColor;
-    }
-
-    /**
-     * getColor:
-     * Get the color of the crosshairs.
-     *
-     * @returns {ClutterColor} the crosshairs color
-     */
-    getColor() {
-        return this._horizLeftHair.get_color();
     }
 
     /**
