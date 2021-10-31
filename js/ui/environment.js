@@ -6,6 +6,7 @@ const Config = imports.misc.config;
 imports.gi.versions.Clutter = Config.LIBMUTTER_API_VERSION;
 imports.gi.versions.Gio = '2.0';
 imports.gi.versions.GdkPixbuf = '2.0';
+imports.gi.versions.GnomeBluetooth = '1.0';
 imports.gi.versions.Gtk = '3.0';
 imports.gi.versions.Soup = '3.0';
 imports.gi.versions.TelepathyGLib = '0.12';
