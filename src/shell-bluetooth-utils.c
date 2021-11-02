@@ -395,36 +395,3 @@ shell_bluetooth_uuid_to_string (const char *uuid)
 		return uuid16_to_string (uuid16, uuid);
 	return uuid16_custom_to_string (uuid16, uuid);
 }
-
-/**
- * shell_bluetooth_send_to_address:
- * @address: Remote device to use
- * @alias: Remote device's name
- *
- * Start a GUI application for transfering files over ShellBluetooth.
- **/
-void
-shell_bluetooth_send_to_address (const char *address,
-			   const char *alias)
-{
-	GPtrArray *a;
-	GError *err = NULL;
-
-	a = g_ptr_array_new_with_free_func ((GDestroyNotify) g_free);
-
-	g_ptr_array_add (a, g_strdup ("bluetooth-sendto"));
-	if (address != NULL)
-		g_ptr_array_add (a, g_strdup_printf ("--device=%s", address));
-	if (address != NULL && alias != NULL)
-		g_ptr_array_add (a, g_strdup_printf ("--name=%s", alias));
-	g_ptr_array_add (a, NULL);
-
-	if (g_spawn_async(NULL, (char **) a->pdata, NULL,
-			  G_SPAWN_SEARCH_PATH, NULL, NULL, NULL, &err) == FALSE) {
-		g_printerr("Couldn't execute command: %s\n", err->message);
-		g_error_free (err);
-	}
-
-	g_ptr_array_free (a, TRUE);
-}
-
