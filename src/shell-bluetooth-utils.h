@@ -60,6 +60,4 @@
 ShellBluetoothType  shell_bluetooth_class_to_type         (guint32 class);
 ShellBluetoothType  shell_bluetooth_appearance_to_type    (guint16 appearance);
 const gchar   *shell_bluetooth_type_to_string        (guint type);
-const gchar   *shell_bluetooth_type_to_filter_string (guint type);
-gboolean       shell_bluetooth_verify_address        (const char *bdaddr);
 const char    *shell_bluetooth_uuid_to_string        (const char *uuid);

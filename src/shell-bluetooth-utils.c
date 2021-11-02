@@ -98,60 +98,6 @@ shell_bluetooth_type_to_string (ShellBluetoothType type)
 }
 
 /**
- * shell_bluetooth_type_to_filter_string:
- * @type: a #ShellBluetoothType
- *
- * Returns a human-readable string representation of @type usable for display to users,
- * when type filters are displayed. Do not free the return value.
- * The returned string is already translated with gettext().
- *
- * Return value: a string.
- **/
-const gchar *
-shell_bluetooth_type_to_filter_string (ShellBluetoothType type)
-{
-	switch (type) {
-	case SHELL_BLUETOOTH_TYPE_ANY:
-		return _("All types");
-	default:
-		return shell_bluetooth_type_to_string (type);
-	}
-
-	g_assert_not_reached ();
-}
-
-/**
- * shell_bluetooth_verify_address:
- * @bdaddr: a string representing a ShellBluetooth address
- *
- * Returns whether the string is a valid ShellBluetooth address. This does not contact the device in any way.
- *
- * Return value: %TRUE if the address is valid, %FALSE if not.
- **/
-gboolean
-shell_bluetooth_verify_address (const char *bdaddr)
-{
-	guint i;
-
-	g_return_val_if_fail (bdaddr != NULL, FALSE);
-
-	if (strlen (bdaddr) != 17)
-		return FALSE;
-
-	for (i = 0; i < 17; i++) {
-		if (((i + 1) % 3) == 0) {
-			if (bdaddr[i] != ':')
-				return FALSE;
-			continue;
-		}
-		if (g_ascii_isxdigit (bdaddr[i]) == FALSE)
-			return FALSE;
-	}
-
-	return TRUE;
-}
-
-/**
  * shell_bluetooth_class_to_type:
  * @class: a ShellBluetooth device class
  *
