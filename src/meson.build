@@ -48,6 +48,7 @@ gnome_shell_cflags = [
 
 install_rpath = ':'.join([mutter_typelibdir, pkglibdir])
 
+libudev_dep = dependency('libudev')
 gnome_shell_deps = [
   gio_unix_dep,
   libxml_dep,
@@ -61,7 +62,8 @@ gnome_shell_deps = [
   gi_dep,
   polkit_dep,
   gcr_dep,
-  libsystemd_dep
+  libsystemd_dep,
+  libudev_dep
 ]
 
 gnome_shell_deps += nm_deps
@@ -95,6 +97,8 @@ libshell_public_headers = [
   'shell-app.h',
   'shell-app-system.h',
   'shell-app-usage.h',
+  'shell-bluetooth-client.h',
+  'shell-bluetooth-enums.h',
   'shell-blur-effect.h',
   'shell-embedded-window.h',
   'shell-glsl-effect.h',
@@ -134,6 +138,9 @@ libshell_sources = [
   'shell-app.c',
   'shell-app-system.c',
   'shell-app-usage.c',
+  'shell-bluetooth-client.c',
+  'shell-bluetooth-utils.c',
+  'shell-bluetooth-pin.c',
   'shell-blur-effect.c',
   'shell-embedded-window.c',
   'shell-embedded-window-private.h',
@@ -193,6 +200,11 @@ dbus_generated = gnome.gdbus_codegen('org-gtk-application',
 dbus_generated += gnome.gdbus_codegen('switcheroo-control',
   '../data/dbus-interfaces/net.hadess.SwitcherooControl.xml',
   namespace: 'Shell'
+)
+
+dbus_generated += gnome.gdbus_codegen('shell-bluetooth-client-glue',
+  'shell-bluetooth-client.xml',
+  interface_prefix: 'org.bluez',
 )
 
 libshell_no_gir_sources += dbus_generated
