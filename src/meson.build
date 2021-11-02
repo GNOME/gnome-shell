@@ -48,7 +48,6 @@ gnome_shell_cflags = [
 
 install_rpath = ':'.join([mutter_typelibdir, pkglibdir])
 
-libudev_dep = dependency('libudev')
 gnome_shell_deps = [
   gio_unix_dep,
   libxml_dep,
@@ -62,8 +61,7 @@ gnome_shell_deps = [
   gi_dep,
   polkit_dep,
   gcr_dep,
-  libsystemd_dep,
-  libudev_dep
+  libsystemd_dep
 ]
 
 gnome_shell_deps += nm_deps
@@ -140,7 +138,6 @@ libshell_sources = [
   'shell-app-usage.c',
   'shell-bluetooth-client.c',
   'shell-bluetooth-utils.c',
-  'shell-bluetooth-pin.c',
   'shell-blur-effect.c',
   'shell-embedded-window.c',
   'shell-embedded-window-private.h',

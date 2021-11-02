@@ -44,7 +44,6 @@
 #include "shell-bluetooth-client-glue.h"
 #include "shell-bluetooth-utils.h"
 #include "shell-enum-types.h"
-#include "shell-bluetooth-pin.h"
 
 #define BLUEZ_SERVICE			"org.bluez"
 #define BLUEZ_MANAGER_PATH		"/"
@@ -241,27 +240,6 @@ shell_bluetooth_client_get_connectable(const char **uuids)
 }
 
 static const char *
-phone_oui_to_icon_name (const char *bdaddr)
-{
-	char *vendor;
-	const char *ret = NULL;
-
-	vendor = oui_to_vendor (bdaddr);
-	if (vendor == NULL)
-		return NULL;
-
-	if (strstr (vendor, "Apple") != NULL)
-		ret = "phone-apple-iphone";
-	else if (strstr (vendor, "Samsung") != NULL)
-		ret = "phone-samsung-galaxy-s";
-	else if (strstr (vendor, "Google") != NULL)
-		ret = "phone-google-nexus-one";
-	g_free (vendor);
-
-	return ret;
-}
-
-static const char *
 icon_override (const char    *bdaddr,
 	       ShellBluetoothType  type)
 {
@@ -273,8 +251,6 @@ icon_override (const char    *bdaddr,
 		return "audio-headphones";
 	case SHELL_BLUETOOTH_TYPE_OTHER_AUDIO:
 		return "audio-speakers";
-	case SHELL_BLUETOOTH_TYPE_PHONE:
-		return phone_oui_to_icon_name (bdaddr);
 	case SHELL_BLUETOOTH_TYPE_DISPLAY:
 		return "video-display";
 	case SHELL_BLUETOOTH_TYPE_SCANNER:
