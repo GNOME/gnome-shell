@@ -35,26 +35,6 @@
  **/
 
 /**
- * ShellBluetoothCategory:
- * @SHELL_BLUETOOTH_CATEGORY_ALL: all devices
- * @SHELL_BLUETOOTH_CATEGORY_PAIRED: paired devices
- * @SHELL_BLUETOOTH_CATEGORY_TRUSTED: trusted devices
- * @SHELL_BLUETOOTH_CATEGORY_NOT_PAIRED_OR_TRUSTED: neither paired, nor trusted devices
- * @SHELL_BLUETOOTH_CATEGORY_PAIRED_OR_TRUSTED: paired and/or trusted devices
- *
- * The category of a ShellBluetooth devices.
- **/
-typedef enum {
-	SHELL_BLUETOOTH_CATEGORY_ALL,
-	SHELL_BLUETOOTH_CATEGORY_PAIRED,
-	SHELL_BLUETOOTH_CATEGORY_TRUSTED,
-	SHELL_BLUETOOTH_CATEGORY_NOT_PAIRED_OR_TRUSTED,
-	SHELL_BLUETOOTH_CATEGORY_PAIRED_OR_TRUSTED,
-	/* < private > */
-	SHELL_BLUETOOTH_CATEGORY_NUM_CATEGORIES /*< skip >*/
-} ShellBluetoothCategory;
-
-/**
  * ShellBluetoothType:
  * @SHELL_BLUETOOTH_TYPE_ANY: any device, or a device of an unknown type
  * @SHELL_BLUETOOTH_TYPE_PHONE: a telephone (usually a cell/mobile phone)
