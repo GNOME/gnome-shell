@@ -40,7 +40,6 @@
 #include <gtk/gtk.h>
 
 #include "shell-bluetooth-client.h"
-#include "shell-bluetooth-client-private.h"
 #include "shell-bluetooth-client-glue.h"
 #include "shell-bluetooth-utils.h"
 #include "shell-enum-types.h"
@@ -79,18 +78,6 @@ enum {
 };
 
 static guint signals[LAST_SIGNAL] = { 0 };
-
-static const char *connectable_uuids[] = {
-	"HSP",
-	"AudioSource",
-	"AudioSink",
-	"A/V_RemoteControlTarget",
-	"A/V_RemoteControl",
-	"Headset_-_AG",
-	"Handsfree",
-	"HandsfreeAudioGateway",
-	"HumanInterfaceDeviceService",
-};
 
 G_DEFINE_TYPE_WITH_PRIVATE(ShellBluetoothClient, shell_bluetooth_client, G_TYPE_OBJECT)
 
@@ -222,21 +209,6 @@ device_list_uuids (const gchar * const *uuids)
 	g_ptr_array_add (ret, NULL);
 
 	return (char **) g_ptr_array_free (ret, FALSE);
-}
-
-gboolean
-shell_bluetooth_client_get_connectable(const char **uuids)
-{
-	int i, j;
-
-	for (i = 0; uuids && uuids[i] != NULL; i++) {
-		for (j = 0; j < G_N_ELEMENTS (connectable_uuids); j++) {
-			if (g_str_equal (connectable_uuids[j], uuids[i]))
-				return TRUE;
-		}
-	}
-
-	return FALSE;
 }
 
 static const char *
@@ -873,7 +845,7 @@ static void shell_bluetooth_client_init(ShellBluetoothClient *client)
 						  object_manager_new_callback, client);
 }
 
-GDBusProxy *
+static GDBusProxy *
 _shell_bluetooth_client_get_default_adapter(ShellBluetoothClient *client)
 {
 	ShellBluetoothClientPrivate *priv = SHELL_BLUETOOTH_CLIENT_GET_PRIVATE(client);
@@ -1288,259 +1260,6 @@ GtkTreeModel *shell_bluetooth_client_get_device_model (ShellBluetoothClient *cli
 	return model;
 }
 
-typedef struct {
-	ShellBluetoothClientSetupFunc func;
-	ShellBluetoothClient *client;
-} CreateDeviceData;
-
-static void
-device_pair_callback (GDBusProxy   *proxy,
-		      GAsyncResult *res,
-		      GTask        *task)
-{
-	GError *error = NULL;
-
-	if (device1_call_pair_finish (DEVICE1(proxy), res, &error) == FALSE) {
-		g_debug ("Pair() failed for %s: %s",
-			 g_dbus_proxy_get_object_path (proxy),
-			 error->message);
-		g_task_return_error (task, error);
-	} else {
-		g_task_return_boolean (task, TRUE);
-	}
-	g_object_unref (task);
-}
-
-/**
- * shell_bluetooth_client_setup_device_finish:
- * @client:
- * @res:
- * @path: (out):
- * @error:
- */
-gboolean
-shell_bluetooth_client_setup_device_finish (ShellBluetoothClient  *client,
-				      GAsyncResult     *res,
-				      char            **path,
-				      GError          **error)
-{
-	GTask *task;
-	char *object_path;
-	gboolean ret;
-
-	g_return_val_if_fail (path != NULL, FALSE);
-
-	task = G_TASK (res);
-
-	g_warn_if_fail (g_task_get_source_tag (task) == shell_bluetooth_client_setup_device);
-
-	ret = g_task_propagate_boolean (task, error);
-	object_path = g_strdup (g_task_get_task_data (task));
-	*path = object_path;
-	g_debug ("shell_bluetooth_client_setup_device_finish() %s (path: %s)",
-		 ret ? "success" : "failure", object_path);
-	return ret;
-}
-
-void
-shell_bluetooth_client_setup_device (ShellBluetoothClient          *client,
-			       const char               *path,
-			       gboolean                  pair,
-			       GCancellable             *cancellable,
-			       GAsyncReadyCallback       callback,
-			       gpointer                  user_data)
-{
-	ShellBluetoothClientPrivate *priv = SHELL_BLUETOOTH_CLIENT_GET_PRIVATE(client);
-	GTask *task;
-	g_autoptr(GDBusProxy) device = NULL;
-	GtkTreeIter iter, adapter_iter;
-	gboolean paired;
-
-	g_return_if_fail (SHELL_BLUETOOTH_IS_CLIENT (client));
-	g_return_if_fail (path != NULL);
-
-	task = g_task_new (G_OBJECT (client),
-			   cancellable,
-			   callback,
-			   user_data);
-	g_task_set_source_tag (task, shell_bluetooth_client_setup_device);
-	g_task_set_task_data (task, g_strdup (path), (GDestroyNotify) g_free);
-
-	if (get_iter_from_path (priv->store, &iter, path) == FALSE) {
-		g_task_return_new_error (task, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT,
-					 "Device with object path %s does not exist",
-					 path);
-		g_object_unref (task);
-		return;
-	}
-
-	gtk_tree_model_get (GTK_TREE_MODEL(priv->store), &iter,
-			    SHELL_BLUETOOTH_COLUMN_PROXY, &device,
-			    SHELL_BLUETOOTH_COLUMN_PAIRED, &paired, -1);
-
-	if (paired != FALSE &&
-	    gtk_tree_model_iter_parent (GTK_TREE_MODEL(priv->store), &adapter_iter, &iter)) {
-		GDBusProxy *adapter;
-		g_autoptr(GError) err = NULL;
-
-		gtk_tree_model_get (GTK_TREE_MODEL(priv->store), &adapter_iter,
-				    SHELL_BLUETOOTH_COLUMN_PROXY, &adapter,
-				    -1);
-		adapter1_call_remove_device_sync (ADAPTER1 (adapter),
-						  path,
-						  NULL, &err);
-		if (err != NULL)
-			g_warning ("Failed to remove device: %s", err->message);
-		g_object_unref (adapter);
-	}
-
-	if (pair == TRUE) {
-		device1_call_pair (DEVICE1(device),
-				   cancellable,
-				   (GAsyncReadyCallback) device_pair_callback,
-				   task);
-	} else {
-		g_task_return_boolean (task, TRUE);
-		g_object_unref (task);
-	}
-}
-
-/**
- * shell_bluetooth_client_cancel_setup_device_finish:
- * @client:
- * @res:
- * @path: (out):
- * @error:
- */
-gboolean
-shell_bluetooth_client_cancel_setup_device_finish (ShellBluetoothClient  *client,
-					     GAsyncResult     *res,
-					     char            **path,
-					     GError          **error)
-{
-	GTask *task;
-	char *object_path;
-	gboolean ret;
-
-	g_return_val_if_fail (path != NULL, FALSE);
-
-	task = G_TASK (res);
-
-	g_warn_if_fail (g_task_get_source_tag (task) == shell_bluetooth_client_cancel_setup_device);
-
-	ret = g_task_propagate_boolean (task, error);
-	object_path = g_strdup (g_task_get_task_data (task));
-	*path = object_path;
-	g_debug ("shell_bluetooth_client_cancel_setup_device_finish() %s (path: %s)",
-		 ret ? "success" : "failure", object_path);
-	return ret;
-}
-
-static void
-device_cancel_pairing_callback (GDBusProxy   *proxy,
-				GAsyncResult *res,
-				GTask        *task)
-{
-	GError *error = NULL;
-
-	if (device1_call_cancel_pairing_finish (DEVICE1(proxy), res, &error) == FALSE) {
-		g_debug ("CancelPairing() failed for %s: %s",
-			 g_dbus_proxy_get_object_path (proxy),
-			 error->message);
-		g_task_return_error (task, error);
-	} else {
-		g_task_return_boolean (task, TRUE);
-	}
-	g_object_unref (task);
-}
-
-void
-shell_bluetooth_client_cancel_setup_device (ShellBluetoothClient          *client,
-				      const char               *path,
-				      GCancellable             *cancellable,
-				      GAsyncReadyCallback       callback,
-				      gpointer                  user_data)
-{
-	ShellBluetoothClientPrivate *priv = SHELL_BLUETOOTH_CLIENT_GET_PRIVATE(client);
-	GTask *task;
-	g_autoptr(GDBusProxy) device = NULL;
-	GtkTreeIter iter;
-
-	g_return_if_fail (SHELL_BLUETOOTH_IS_CLIENT (client));
-	g_return_if_fail (path != NULL);
-
-	task = g_task_new (G_OBJECT (client),
-			   cancellable,
-			   callback,
-			   user_data);
-	g_task_set_source_tag (task, shell_bluetooth_client_cancel_setup_device);
-	g_task_set_task_data (task, g_strdup (path), (GDestroyNotify) g_free);
-
-	if (get_iter_from_path (priv->store, &iter, path) == FALSE) {
-		g_task_return_new_error (task, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT,
-					 "Device with object path %s does not exist",
-					 path);
-		g_object_unref (task);
-		return;
-	}
-
-	gtk_tree_model_get (GTK_TREE_MODEL(priv->store), &iter,
-			    SHELL_BLUETOOTH_COLUMN_PROXY, &device,
-			    -1);
-
-	device1_call_cancel_pairing (DEVICE1(device),
-				     cancellable,
-				     (GAsyncReadyCallback) device_cancel_pairing_callback,
-				     task);
-}
-
-gboolean
-shell_bluetooth_client_set_trusted (ShellBluetoothClient *client,
-			      const char      *device_path,
-			      gboolean         trusted)
-{
-	ShellBluetoothClientPrivate *priv = SHELL_BLUETOOTH_CLIENT_GET_PRIVATE(client);
-	GObject *device;
-	GtkTreeIter iter;
-
-	g_return_val_if_fail (SHELL_BLUETOOTH_IS_CLIENT (client), FALSE);
-	g_return_val_if_fail (device_path != NULL, FALSE);
-
-	if (get_iter_from_path (priv->store, &iter, device_path) == FALSE) {
-		g_debug ("Couldn't find device '%s' in tree to mark it as trusted", device_path);
-		return FALSE;
-	}
-
-	gtk_tree_model_get (GTK_TREE_MODEL (priv->store), &iter,
-			    SHELL_BLUETOOTH_COLUMN_PROXY, &device, -1);
-
-	if (device == NULL)
-		return FALSE;
-
-	g_object_set (device, "trusted", trusted, NULL);
-	g_object_unref (device);
-
-	return TRUE;
-}
-
-GDBusProxy *
-shell_bluetooth_client_get_device (ShellBluetoothClient *client,
-			     const char       *path)
-{
-	ShellBluetoothClientPrivate *priv = SHELL_BLUETOOTH_CLIENT_GET_PRIVATE(client);
-	GtkTreeIter iter;
-	GDBusProxy *proxy;
-
-	if (get_iter_from_path (priv->store, &iter, path) == FALSE) {
-		return NULL;
-	}
-
-	gtk_tree_model_get (GTK_TREE_MODEL(priv->store), &iter,
-			                SHELL_BLUETOOTH_COLUMN_PROXY, &proxy,
-			                -1);
-	return proxy;
-}
-
 static void
 connect_callback (GDBusProxy   *proxy,
 		  GAsyncResult *res,
@@ -1669,73 +1388,3 @@ shell_bluetooth_client_connect_service_finish (ShellBluetoothClient *client,
 
 	return g_task_propagate_boolean (task, error);
 }
-
-#define BOOL_STR(x) (x ? "True" : "False")
-
-void
-shell_bluetooth_client_dump_device (GtkTreeModel *model,
-			      GtkTreeIter *iter)
-{
-	GDBusProxy *proxy;
-	char *address, *alias, *icon, **uuids;
-	gboolean is_default, paired, trusted, connected, discoverable, discovering, powered, is_adapter;
-	GtkTreeIter parent;
-	ShellBluetoothType type;
-
-	gtk_tree_model_get (model, iter,
-			    SHELL_BLUETOOTH_COLUMN_ADDRESS, &address,
-			    SHELL_BLUETOOTH_COLUMN_ALIAS, &alias,
-			    SHELL_BLUETOOTH_COLUMN_TYPE, &type,
-			    SHELL_BLUETOOTH_COLUMN_ICON, &icon,
-			    SHELL_BLUETOOTH_COLUMN_DEFAULT, &is_default,
-			    SHELL_BLUETOOTH_COLUMN_PAIRED, &paired,
-			    SHELL_BLUETOOTH_COLUMN_TRUSTED, &trusted,
-			    SHELL_BLUETOOTH_COLUMN_CONNECTED, &connected,
-			    SHELL_BLUETOOTH_COLUMN_DISCOVERABLE, &discoverable,
-			    SHELL_BLUETOOTH_COLUMN_DISCOVERING, &discovering,
-			    SHELL_BLUETOOTH_COLUMN_POWERED, &powered,
-			    SHELL_BLUETOOTH_COLUMN_UUIDS, &uuids,
-			    SHELL_BLUETOOTH_COLUMN_PROXY, &proxy,
-			    -1);
-	if (proxy) {
-		char *basename;
-		basename = g_path_get_basename(g_dbus_proxy_get_object_path(proxy));
-		is_adapter = !g_str_has_prefix (basename, "dev_");
-		g_free (basename);
-	} else {
-		is_adapter = !gtk_tree_model_iter_parent (model, &parent, iter);
-	}
-
-	if (is_adapter != FALSE) {
-		/* Adapter */
-		g_print ("Adapter: %s (%s)\n", alias, address);
-		if (is_default)
-			g_print ("\tDefault adapter\n");
-		g_print ("\tD-Bus Path: %s\n", proxy ? g_dbus_proxy_get_object_path (proxy) : "(none)");
-		g_print ("\tDiscoverable: %s\n", BOOL_STR (discoverable));
-		if (discovering)
-			g_print ("\tDiscovery in progress\n");
-		g_print ("\t%s\n", powered ? "Is powered" : "Is not powered");
-	} else {
-		/* Device */
-		g_print ("Device: %s (%s)\n", alias, address);
-		g_print ("\tD-Bus Path: %s\n", proxy ? g_dbus_proxy_get_object_path (proxy) : "(none)");
-		g_print ("\tType: %s Icon: %s\n", shell_bluetooth_type_to_string (type), icon);
-		g_print ("\tPaired: %s Trusted: %s Connected: %s\n", BOOL_STR(paired), BOOL_STR(trusted), BOOL_STR(connected));
-		if (uuids != NULL) {
-			guint i;
-			g_print ("\tUUIDs: ");
-			for (i = 0; uuids[i] != NULL; i++)
-				g_print ("%s ", uuids[i]);
-			g_print ("\n");
-		}
-	}
-	g_print ("\n");
-
-	g_free (alias);
-	g_free (address);
-	g_free (icon);
-	g_clear_object (&proxy);
-	g_strfreev (uuids);
-}
-
