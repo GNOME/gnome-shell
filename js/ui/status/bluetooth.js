@@ -1,7 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported Indicator */
 
-const { Gio, GLib, GnomeBluetooth, GObject } = imports.gi;
+const { Gio, GLib, Shell, GObject } = imports.gi;
 
 const Main = imports.ui.main;
 const PanelMenu = imports.ui.panelMenu;
@@ -52,7 +52,7 @@ class Indicator extends PanelMenu.SystemIndicator {
         this._syncId = 0;
         this._adapter = null;
 
-        this._client = new GnomeBluetooth.Client();
+        this._client = new Shell.BluetoothClient();
         this._model = this._client.get_model();
         this._model.connect('row-deleted', this._queueSync.bind(this));
         this._model.connect('row-changed', this._queueSync.bind(this));

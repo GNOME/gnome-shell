@@ -567,11 +567,7 @@ class AggregateMenu extends PanelMenu.Button {
         else
             this._network = null;
 
-        if (Config.HAVE_BLUETOOTH)
-            this._bluetooth = new imports.ui.status.bluetooth.Indicator();
-        else
-            this._bluetooth = null;
-
+        this._bluetooth = new imports.ui.status.bluetooth.Indicator();
         this._remoteAccess = new imports.ui.status.remoteAccess.RemoteAccessApplet();
         this._power = new imports.ui.status.power.Indicator();
         this._powerProfiles = new imports.ui.status.powerProfiles.Indicator();

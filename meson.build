@@ -32,7 +32,6 @@ startup_req = '>= 0.11'
 ibus_req = '>= 1.5.19'
 gnome_desktop_req = '>= 3.35.90'
 
-bt_req = '>= 3.9.0'
 gst_req = '>= 0.11.92'
 nm_req = '>= 1.10.4'
 secret_req = '>= 0.18'
@@ -93,7 +92,6 @@ x11_dep = dependency('x11')
 schemas_dep = dependency('gsettings-desktop-schemas', version: schemas_req)
 gnome_desktop_dep = dependency('gnome-desktop-3.0', version: gnome_desktop_req)
 
-bt_dep = dependency('gnome-bluetooth-1.0', version: bt_req, required: false)
 gst_dep = dependency('gstreamer-1.0', version: gst_req, required: false)
 gst_base_dep = dependency('gstreamer-base-1.0', required: false)
 pipewire_dep = dependency('libpipewire-0.3', required: false)
