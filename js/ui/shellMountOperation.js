@@ -542,7 +542,6 @@ var GnomeShellMountOpHandler = class {
                                        Gio.BusNameOwnerFlags.REPLACE, null, null);
 
         this._dialog = null;
-        this._volumeMonitor = Gio.VolumeMonitor.get();
 
         this._ensureEmptyRequest();
     }
