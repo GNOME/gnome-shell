@@ -1,3 +1,27 @@
+41.1
+====
+* Fix icon updates while hidden [Marco; !1983]
+* Fix erratic scrolling in GTK apps [Christian, Carlos; !1993, #4647]
+* Fix GTK color picker support [Florian; !1990]
+* Fix sound-file support in notifications [Florian; !1991]
+* Fix high-contrast switches [Florian; !2000]
+* Only allow one extension prefs dialog at a time [Florian; #4564]
+* Fixed crashes [Ray, Sebastian; !2004, !2014]
+* Misc. bug fixes and cleanups [Jonas, Florian, Jakub, Carlos; !1985, !1998,
+  !1996, !1979, !2007, !2010]
+
+Contributors:
+  Marco Trevisan (Treviño), Carlos Garnacho, Christian Hergert,
+  Sebastian Keller, Florian Müllner, Jakub Steiner, Ray Strode, Jonas Ådahl
+
+Translators:
+  Марко Костић [sr], Ngọc Quân Trần [vi], Emin Tufan Çetin [tr],
+  Yaron Shahrabani [he], Sveinn í Felli [is], Goran Vidović [hr],
+  Marek Černocký [cs], Selyan Slimane AMIRI [kab], Rūdolfs Mazurs [lv],
+  eshagh shahidani [fa], Yuri Chornoivan [uk], Matej Urbančič [sl],
+  Anders Jonsson [sv], Rafael Fontenelle [pt_BR], Kukuh Syafaat [id],
+  Hugo Carvalho [pt], Aleksandr Melman [ru], Christian Kirbach [de]
+
 41.0
 ====
 
