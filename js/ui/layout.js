@@ -974,9 +974,6 @@ var LayoutManager = GObject.registerClass({
 
         for (i = 0; i < this._trackedActors.length; i++) {
             let actorData = this._trackedActors[i];
-            if (!actorData.actor.get_paint_visibility())
-                continue;
-
             if (!(actorData.affectsInputRegion && wantsInputRegion) && !actorData.affectsStruts)
                 continue;
 
@@ -987,7 +984,7 @@ var LayoutManager = GObject.registerClass({
             w = Math.round(w);
             h = Math.round(h);
 
-            if (actorData.affectsInputRegion && wantsInputRegion)
+            if (actorData.affectsInputRegion && wantsInputRegion && actorData.actor.get_paint_visibility())
                 rects.push(new Meta.Rectangle({ x, y, width: w, height: h }));
 
             let monitor = null;
