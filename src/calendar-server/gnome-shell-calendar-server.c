@@ -112,22 +112,23 @@ typedef struct
   time_t  end_time;
 } CalendarAppointment;
 
-static time_t
+static gboolean
 get_time_from_property (ECalClient            *cal,
                         ICalComponent         *icomp,
                         ICalPropertyKind       prop_kind,
                         ICalTime * (* get_prop_func) (ICalProperty *prop),
-                        ICalTimezone          *default_zone)
+                        ICalTimezone          *default_zone,
+                        ICalTime              **out_itt,
+                        ICalTimezone          **out_timezone)
 {
   ICalProperty  *prop;
   ICalTime      *itt;
   ICalParameter *param;
   ICalTimezone  *timezone = NULL;
-  time_t         retval;
 
   prop = i_cal_component_get_first_property (icomp, prop_kind);
   if (!prop)
-    return 0;
+    return FALSE;
 
   itt = get_prop_func (prop);
 
@@ -141,13 +142,13 @@ get_time_from_property (ECalClient            *cal,
 
   i_cal_time_set_timezone (itt, timezone);
 
-  retval = i_cal_time_as_timet_with_zone (itt, timezone);
-
   g_clear_object (&param);
   g_clear_object (&prop);
-  g_clear_object (&itt);
 
-  return retval;
+  *out_itt = itt;
+  *out_timezone = timezone;
+
+  return TRUE;
 }
 
 static inline time_t
@@ -155,11 +156,26 @@ get_ical_start_time (ECalClient    *cal,
                      ICalComponent *icomp,
                      ICalTimezone  *default_zone)
 {
-  return get_time_from_property (cal,
-                                 icomp,
-                                 I_CAL_DTSTART_PROPERTY,
-                                 i_cal_property_get_dtstart,
-                                 default_zone);
+  ICalTime     *itt;
+  ICalTimezone *timezone;
+  time_t        retval;
+
+  if (!get_time_from_property (cal,
+                               icomp,
+                               I_CAL_DTSTART_PROPERTY,
+                               i_cal_property_get_dtstart,
+                               default_zone,
+                               &itt,
+                               &timezone))
+    {
+      return 0;
+    }
+
+  retval = i_cal_time_as_timet_with_zone (itt, timezone);
+
+  g_clear_object (&itt);
+
+  return retval;
 }
 
 static inline time_t
@@ -167,11 +183,38 @@ get_ical_end_time (ECalClient    *cal,
                    ICalComponent *icomp,
                    ICalTimezone  *default_zone)
 {
-  return get_time_from_property (cal,
-                                 icomp,
-                                 I_CAL_DTEND_PROPERTY,
-                                 i_cal_property_get_dtend,
-                                 default_zone);
+  ICalTime     *itt;
+  ICalTimezone *timezone;
+  time_t        retval;
+
+  if (!get_time_from_property (cal,
+                               icomp,
+                               I_CAL_DTEND_PROPERTY,
+                               i_cal_property_get_dtend,
+                               default_zone,
+                               &itt,
+                               &timezone))
+    {
+      if (!get_time_from_property (cal,
+                                   icomp,
+                                   I_CAL_DTSTART_PROPERTY,
+                                   i_cal_property_get_dtstart,
+                                   default_zone,
+                                   &itt,
+                                   &timezone))
+        {
+          return 0;
+        }
+
+      if (i_cal_time_is_date (itt))
+        i_cal_time_adjust (itt, 1, 0, 0, 0);
+    }
+
+  retval = i_cal_time_as_timet_with_zone (itt, timezone);
+
+  g_clear_object (&itt);
+
+  return retval;
 }
 
 static CalendarAppointment *
