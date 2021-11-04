@@ -12,7 +12,6 @@ const Util = imports.misc.util;
 
 const { loadInterfaceXML } = imports.misc.fileUtils;
 
-var MSECS_IN_DAY = 24 * 60 * 60 * 1000;
 var SHOW_WEEKDATE_KEY = 'show-weekdate';
 
 var MESSAGE_ICON_SIZE = -1; // pick up from CSS
@@ -498,7 +497,7 @@ var Calendar = GObject.registerClass({
             else
                 col = offsetCols + (7 + iter.getDay() - this._weekStart) % 7;
             layout.attach(label, col, 1, 1, 1);
-            iter.setTime(iter.getTime() + MSECS_IN_DAY);
+            iter.setDate(iter.getDate() + 1);
         }
 
         // All the children after this are days, and get removed when we update the calendar
@@ -599,10 +598,8 @@ var Calendar = GObject.registerClass({
         // Actually computing the number of weeks is complex, but we know that the
         // problematic categories (2 and 4) always start on week start, and that
         // all months at the end have 6 weeks.
-        let beginDate = new Date(this._selectedDate);
-        beginDate.setDate(1);
-        beginDate.setSeconds(0);
-        beginDate.setHours(12);
+        let beginDate = new Date(
+            this._selectedDate.getFullYear(), this._selectedDate.getMonth(), 1);
 
         this._calendarBegin = new Date(beginDate);
         this._markedAsToday = now;
@@ -611,7 +608,7 @@ var Calendar = GObject.registerClass({
         let startsOnWeekStart = daysToWeekStart == 0;
         let weekPadding = startsOnWeekStart ? 7 : 0;
 
-        beginDate.setTime(beginDate.getTime() - (weekPadding + daysToWeekStart) * MSECS_IN_DAY);
+        beginDate.setDate(beginDate.getDate() - (weekPadding + daysToWeekStart));
 
         let layout = this.layout_manager;
         let iter = new Date(beginDate);
@@ -682,7 +679,7 @@ var Calendar = GObject.registerClass({
                 layout.attach(label, rtl ? 7 : 0, row, 1, 1);
             }
 
-            iter.setTime(iter.getTime() + MSECS_IN_DAY);
+            iter.setDate(iter.getDate() + 1);
 
             if (iter.getDay() == this._weekStart)
                 row++;
