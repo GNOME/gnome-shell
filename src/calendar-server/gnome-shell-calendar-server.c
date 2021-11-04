@@ -52,7 +52,7 @@ static const gchar introspection_xml[] =
   "      <arg type='b' name='force_reload' direction='in'/>"
   "    </method>"
   "    <signal name='EventsAddedOrUpdated'>"
-  "      <arg type='a(ssbxxa{sv})' name='events' direction='out'/>"
+  "      <arg type='a(ssxxa{sv})' name='events' direction='out'/>"
   "    </signal>"
   "    <signal name='EventsRemoved'>"
   "      <arg type='as' name='ids' direction='out'/>"
@@ -110,7 +110,6 @@ typedef struct
   gchar  *summary;
   time_t  start_time;
   time_t  end_time;
-  guint   is_all_day : 1;
 } CalendarAppointment;
 
 static time_t
@@ -175,51 +174,6 @@ get_ical_end_time (ECalClient    *cal,
                                  default_zone);
 }
 
-static gboolean
-get_ical_is_all_day (ECalClient    *cal,
-                     ICalComponent *icomp,
-                     time_t         start_time,
-                     ICalTimezone  *default_zone)
-{
-  ICalProperty *prop;
-  ICalDuration *duration;
-  ICalTime     *dtstart;
-  struct tm    *start_tm;
-  time_t        end_time;
-  gboolean      retval;
-
-  dtstart = i_cal_component_get_dtstart (icomp);
-  if (dtstart && i_cal_time_is_date (dtstart))
-    {
-      g_clear_object (&dtstart);
-      return TRUE;
-    }
-
-  g_clear_object (&dtstart);
-
-  start_tm = gmtime (&start_time);
-  if (start_tm->tm_sec  != 0 ||
-      start_tm->tm_min  != 0 ||
-      start_tm->tm_hour != 0)
-    return FALSE;
-
-  if ((end_time = get_ical_end_time (cal, icomp, default_zone)))
-    return (end_time - start_time) % 86400 == 0;
-
-  prop = i_cal_component_get_first_property (icomp, I_CAL_DURATION_PROPERTY);
-  if (!prop)
-    return FALSE;
-
-  duration = i_cal_property_get_duration (prop);
-
-  retval = duration && (i_cal_duration_as_int (duration) % 86400) == 0;
-
-  g_clear_object (&duration);
-  g_clear_object (&prop);
-
-  return retval;
-}
-
 static CalendarAppointment *
 calendar_appointment_new (ECalClient    *cal,
                           ECalComponent *comp)
@@ -241,10 +195,6 @@ calendar_appointment_new (ECalClient    *cal,
   appt->summary     = g_strdup (i_cal_component_get_summary (ical));
   appt->start_time  = get_ical_start_time (cal, ical, default_zone);
   appt->end_time    = get_ical_end_time (cal, ical, default_zone);
-  appt->is_all_day  = get_ical_is_all_day (cal,
-                                           ical,
-                                           appt->start_time,
-                                           default_zone);
 
   e_cal_component_id_free (id);
 
@@ -361,7 +311,7 @@ app_notify_events_added (App *app)
   /* The a{sv} is used as an escape hatch in case we want to provide more
    * information in the future without breaking ABI
    */
-  g_variant_builder_init (&builder, G_VARIANT_TYPE ("a(ssbxxa{sv})"));
+  g_variant_builder_init (&builder, G_VARIANT_TYPE ("a(ssxxa{sv})"));
   for (link = events; link; link = g_slist_next (link))
     {
       CalendarAppointment *appt = link->data;
@@ -375,10 +325,9 @@ app_notify_events_added (App *app)
         {
           g_variant_builder_init (&extras_builder, G_VARIANT_TYPE ("a{sv}"));
           g_variant_builder_add (&builder,
-                                 "(ssbxxa{sv})",
+                                 "(ssxxa{sv})",
                                  appt->id,
                                  appt->summary != NULL ? appt->summary : "",
-                                 (gboolean) appt->is_all_day,
                                  (gint64) start_time,
                                  (gint64) end_time,
                                  &extras_builder);
@@ -390,7 +339,7 @@ app_notify_events_added (App *app)
                                  "/org/gnome/Shell/CalendarServer",
                                  "org.gnome.Shell.CalendarServer",
                                  "EventsAddedOrUpdated",
-                                 g_variant_new ("(a(ssbxxa{sv}))", &builder),
+                                 g_variant_new ("(a(ssxxa{sv}))", &builder),
                                  NULL);
 
   g_variant_builder_clear (&builder);
