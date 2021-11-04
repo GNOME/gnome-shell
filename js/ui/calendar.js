@@ -78,12 +78,11 @@ function _getCalendarDayAbbreviation(dayNumber) {
 // Abstraction for an appointment/event in a calendar
 
 var CalendarEvent = class CalendarEvent {
-    constructor(id, date, end, summary, allDay) {
+    constructor(id, date, end, summary) {
         this.id = id;
         this.date = date;
         this.end = end;
         this.summary = summary;
-        this.allDay = allDay;
     }
 };
 
@@ -288,10 +287,10 @@ class DBusEventSource extends EventSourceBase {
         let changed = false;
 
         for (let n = 0; n < appointments.length; n++) {
-            const [id, summary, allDay, startTime, endTime] = appointments[n];
+            const [id, summary, startTime, endTime] = appointments[n];
             const date = new Date(startTime * 1000);
             const end = new Date(endTime * 1000);
-            let event = new CalendarEvent(id, date, end, summary, allDay);
+            let event = new CalendarEvent(id, date, end, summary);
             this._events.set(event.id, event);
 
             changed = true;
