@@ -1,3 +1,19 @@
+40.6
+====
+* Fix sound-file support in notifications [Florian; !1991]
+* Fix high-contrast switches [Florian; !2000]
+* Only allow one extension prefs dialog at a time [Florian; #4564]
+* Fixed crash [Sebastian; !2014]
+* Misc. bug fixes and cleanups [Florian; !1998, !2007]
+
+Contributors:
+  Sebastian Keller, Florian Müllner
+
+Translators:
+  Yuri Chornoivan [uk], Matej Urbančič [sl], Anders Jonsson [sv],
+  Rafael Fontenelle [pt_BR], Kukuh Syafaat [id], Hugo Carvalho [pt],
+  Christian Kirbach [de]
+
 40.5
 ====
 * Optimize rendering of fullscreen zoom [Daniel; !1899]
