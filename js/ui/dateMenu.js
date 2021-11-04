@@ -170,8 +170,8 @@ class EventsSection extends St.Button {
     }
 
     _formatEventTime(event) {
-        const allDay = event.allDay ||
-            (event.date <= this._startDate && event.end >= this._endDate);
+        const allDay =
+            event.date <= this._startDate && event.end >= this._endDate;
 
         let title;
         if (allDay) {
@@ -185,13 +185,13 @@ class EventsSection extends St.Button {
         }
 
         const rtl = Clutter.get_default_text_direction() === Clutter.TextDirection.RTL;
-        if (event.date < this._startDate && !event.allDay) {
+        if (event.date < this._startDate) {
             if (rtl)
                 title = '%s%s'.format(title, ELLIPSIS_CHAR);
             else
                 title = '%s%s'.format(ELLIPSIS_CHAR, title);
         }
-        if (event.end > this._endDate && !event.allDay) {
+        if (event.end > this._endDate) {
             if (rtl)
                 title = '%s%s'.format(ELLIPSIS_CHAR, title);
             else
