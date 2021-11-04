@@ -171,13 +171,26 @@ function _datesEqual(a, b) {
     return true;
 }
 
-function _dateIntervalsOverlap(a0, a1, b0, b1) {
-    if (a1 <= b0)
-        return false;
-    else if (b1 <= a0)
-        return false;
-    else
+/**
+ * Checks whether an event overlaps a given interval
+ *
+ * @param {Date} e0 Beginning of the event
+ * @param {Date} e1 End of the event
+ * @param {Date} i0 Beginning of the interval
+ * @param {Date} i1 End of the interval
+ * @returns {boolean} Whether there was an overlap
+ */
+function _eventOverlapsInterval(e0, e1, i0, i1) {
+    // This also ensures zero-length events are included
+    if (e0 >= i0 && e1 < i1)
         return true;
+
+    if (e1 <= i0)
+        return false;
+    if (i1 <= e0)
+        return false;
+
+    return true;
 }
 
 // an implementation that reads data from a session bus service
@@ -343,7 +356,7 @@ class DBusEventSource extends EventSourceBase {
 
     *_getFilteredEvents(begin, end) {
         for (const event of this._events.values()) {
-            if (_dateIntervalsOverlap(event.date, event.end, begin, end))
+            if (_eventOverlapsInterval(event.date, event.end, begin, end))
                 yield event;
         }
     }
