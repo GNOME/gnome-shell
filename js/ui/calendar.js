@@ -47,11 +47,8 @@ function _getBeginningOfDay(date) {
 }
 
 function _getEndOfDay(date) {
-    let ret = new Date(date.getTime());
-    ret.setHours(23);
-    ret.setMinutes(59);
-    ret.setSeconds(59);
-    ret.setMilliseconds(999);
+    const ret = _getBeginningOfDay(date);
+    ret.setDate(ret.getDate() + 1);
     return ret;
 }
 
