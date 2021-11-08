@@ -1898,6 +1898,7 @@ var MagShaderEffects = class MagShaderEffects {
         this._colorDesaturation = new Clutter.DesaturateEffect();
         this._inverse.set_enabled(false);
         this._brightnessContrast.set_enabled(false);
+        this._colorDesaturation.set_enabled(false);
 
         this._magView = uiGroupClone;
         this._magView.add_effect(this._inverse);
@@ -1930,6 +1931,7 @@ var MagShaderEffects = class MagShaderEffects {
 
     setColorSaturation(factor) {
         this._colorDesaturation.set_factor(1.0 - factor);
+        this._colorDesaturation.set_enabled(factor !== 1.0);
     }
 
     /**
