@@ -553,14 +553,7 @@ shell_window_tracker_on_window_added (MetaWorkspace   *workspace,
                                       MetaWindow      *window,
                                       gpointer         user_data)
 {
-  ShellWindowTracker *self = SHELL_WINDOW_TRACKER (user_data);
-  MetaWindowType window_type = meta_window_get_window_type (window);
-
-  if (window_type == META_WINDOW_NORMAL ||
-      window_type == META_WINDOW_DIALOG ||
-      window_type == META_WINDOW_UTILITY ||
-      window_type == META_WINDOW_MODAL_DIALOG)
-    track_window (self, window);
+  track_window (SHELL_WINDOW_TRACKER (user_data), window);
 }
 
 static void
