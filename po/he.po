@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2021-09-23 14:20+0000\n"
-"PO-Revision-Date: 2021-09-27 11:13+0300\n"
+"POT-Creation-Date: 2021-11-06 13:28+0000\n"
+"PO-Revision-Date: 2021-11-12 00:26+0200\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: Hebrew <yoseforb@gmail.com>\n"
 "Language: he\n"
@@ -1387,11 +1387,11 @@ msgstr "התקנת הרחבות"
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "הורדה והתקנה של „%s” מ־extensions.gnome.org?"
 
-#: js/ui/extensionSystem.js:252
+#: js/ui/extensionSystem.js:266
 msgid "Extension Updates Available"
 msgstr "עדכוני הרחבות זמינים"
 
-#: js/ui/extensionSystem.js:253
+#: js/ui/extensionSystem.js:267
 msgid "Extension updates are ready to be installed."
 msgstr "עדכוני הרחבות מוכנים להתקנה."
 
@@ -2747,6 +2747,7 @@ msgstr "UUID, name and description are required"
 #: subprojects/extensions-tool/src/command-enable.c:46
 #: subprojects/extensions-tool/src/command-info.c:50
 #: subprojects/extensions-tool/src/command-list.c:64
+#: subprojects/extensions-tool/src/main.c:146
 msgid "Failed to connect to GNOME Shell\n"
 msgstr "Failed to connect to GNOME Shell\n"
 
@@ -2763,7 +2764,7 @@ msgstr "Disable an extension"
 #: subprojects/extensions-tool/src/command-disable.c:119
 #: subprojects/extensions-tool/src/command-enable.c:119
 #: subprojects/extensions-tool/src/command-info.c:103
-#: subprojects/extensions-tool/src/command-prefs.c:97
+#: subprojects/extensions-tool/src/command-prefs.c:105
 #: subprojects/extensions-tool/src/command-reset.c:76
 #: subprojects/extensions-tool/src/command-uninstall.c:104
 msgid "No UUID given"
@@ -2772,7 +2773,7 @@ msgstr "No UUID given"
 #: subprojects/extensions-tool/src/command-disable.c:124
 #: subprojects/extensions-tool/src/command-enable.c:124
 #: subprojects/extensions-tool/src/command-info.c:108
-#: subprojects/extensions-tool/src/command-prefs.c:102
+#: subprojects/extensions-tool/src/command-prefs.c:110
 #: subprojects/extensions-tool/src/command-reset.c:81
 #: subprojects/extensions-tool/src/command-uninstall.c:109
 msgid "More than one UUID given"
@@ -2842,7 +2843,7 @@ msgstr "Print extension details"
 
 #: subprojects/extensions-tool/src/command-list.c:154
 msgid "List installed extensions"
-msgstr "List installed extensions"
+msgstr "הצגת ההרחבות המותקנות"
 
 #: subprojects/extensions-tool/src/command-pack.c:450
 msgid "FILE"
@@ -2895,14 +2896,19 @@ msgstr "Create an extension bundle"
 
 #: subprojects/extensions-tool/src/command-pack.c:501
 msgid "More than one source directory specified"
-msgstr "More than one source directory specified"
+msgstr "צוינה יותר מתיקיית מקור אחת"
 
 #: subprojects/extensions-tool/src/command-prefs.c:47
 #, c-format
 msgid "Extension “%s” doesn't have preferences\n"
-msgstr "Extension “%s” doesn't have preferences\n"
+msgstr "להרחבה „%s” אין העדפות\n"
 
-#: subprojects/extensions-tool/src/command-prefs.c:79
+#: subprojects/extensions-tool/src/command-prefs.c:62
+#, c-format
+msgid "Failed to open prefs for extension “%s”: %s\n"
+msgstr "פתיחת ההעדפות של ההרחבה „%s” נכשלה: %s\n"
+
+#: subprojects/extensions-tool/src/command-prefs.c:87
 msgid "Opens extension preferences"
 msgstr "Opens extension preferences"
 
@@ -2926,10 +2932,6 @@ msgstr "Uninstall an extension"
 #: subprojects/extensions-tool/src/main.c:72
 msgid "Do not print error messages"
 msgstr "Do not print error messages"
-
-#: subprojects/extensions-tool/src/main.c:146
-msgid "Failed to connect to GNOME Shell"
-msgstr "Failed to connect to GNOME Shell"
 
 #: subprojects/extensions-tool/src/main.c:244
 msgid "Path"
@@ -3064,6 +3066,9 @@ msgstr[3] "‏‫%u ערוצי קלט"
 #: subprojects/gvc/gvc-mixer-control.c:2867
 msgid "System Sounds"
 msgstr "צלילי מערכת"
+
+#~ msgid "Failed to connect to GNOME Shell"
+#~ msgstr "Failed to connect to GNOME Shell"
 
 #~ msgid "Enable introspection API"
 #~ msgstr "Enable introspection API"
