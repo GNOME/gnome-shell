@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2021-09-23 14:20+0000\n"
-"PO-Revision-Date: 2021-10-06 19:07+0200\n"
+"POT-Creation-Date: 2021-11-06 13:27+0000\n"
+"PO-Revision-Date: 2021-11-11 10:44+0100\n"
 "Last-Translator: gogo <trebelnik2@gmail.com>\n"
 "Language-Team: Croatian <hr@li.org>\n"
 "Language: hr\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Poedit 3.0\n"
+"X-Generator: Poedit 2.3\n"
 
 #: data/50-gnome-shell-launchers.xml:6
 msgid "Launchers"
@@ -2768,6 +2768,7 @@ msgstr "UUID, naziv i opis su potrebni"
 #: subprojects/extensions-tool/src/command-enable.c:46
 #: subprojects/extensions-tool/src/command-info.c:50
 #: subprojects/extensions-tool/src/command-list.c:64
+#: subprojects/extensions-tool/src/main.c:146
 msgid "Failed to connect to GNOME Shell\n"
 msgstr "Neuspjelo povezivanje s GNOME ljuskom\n"
 
@@ -2784,7 +2785,7 @@ msgstr "Onemogući proširenje"
 #: subprojects/extensions-tool/src/command-disable.c:119
 #: subprojects/extensions-tool/src/command-enable.c:119
 #: subprojects/extensions-tool/src/command-info.c:103
-#: subprojects/extensions-tool/src/command-prefs.c:97
+#: subprojects/extensions-tool/src/command-prefs.c:105
 #: subprojects/extensions-tool/src/command-reset.c:76
 #: subprojects/extensions-tool/src/command-uninstall.c:104
 msgid "No UUID given"
@@ -2793,7 +2794,7 @@ msgstr "UUID nije naveden"
 #: subprojects/extensions-tool/src/command-disable.c:124
 #: subprojects/extensions-tool/src/command-enable.c:124
 #: subprojects/extensions-tool/src/command-info.c:108
-#: subprojects/extensions-tool/src/command-prefs.c:102
+#: subprojects/extensions-tool/src/command-prefs.c:110
 #: subprojects/extensions-tool/src/command-reset.c:81
 #: subprojects/extensions-tool/src/command-uninstall.c:109
 msgid "More than one UUID given"
@@ -2923,7 +2924,12 @@ msgstr "Određeno je više od jedne izvorne mape"
 msgid "Extension “%s” doesn't have preferences\n"
 msgstr "Proširenje “%s” ne sadrži osobitosti\n"
 
-#: subprojects/extensions-tool/src/command-prefs.c:79
+#: subprojects/extensions-tool/src/command-prefs.c:62
+#, c-format
+msgid "Failed to open prefs for extension “%s”: %s\n"
+msgstr "Neuspjelo otvaranje osobitosti za proširenje “%s”: %s\n"
+
+#: subprojects/extensions-tool/src/command-prefs.c:87
 msgid "Opens extension preferences"
 msgstr "Otvara osobitosti proširenja"
 
@@ -2947,10 +2953,6 @@ msgstr "Ukloni proširenje"
 #: subprojects/extensions-tool/src/main.c:72
 msgid "Do not print error messages"
 msgstr "Ne ispisuj poruke greške"
-
-#: subprojects/extensions-tool/src/main.c:146
-msgid "Failed to connect to GNOME Shell"
-msgstr "Neuspjelo povezivanje s GNOME ljuskom"
 
 #: subprojects/extensions-tool/src/main.c:244
 msgid "Path"
@@ -3083,6 +3085,9 @@ msgstr[2] "%u ulaza"
 #: subprojects/gvc/gvc-mixer-control.c:2867
 msgid "System Sounds"
 msgstr "Zvukovi sustava"
+
+#~ msgid "Failed to connect to GNOME Shell"
+#~ msgstr "Neuspjelo povezivanje s GNOME ljuskom"
 
 #~ msgid "Enable introspection API"
 #~ msgstr "Omogući API samoispitivanja"
