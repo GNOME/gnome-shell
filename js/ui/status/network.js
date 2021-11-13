@@ -2085,7 +2085,7 @@ class Indicator extends PanelMenu.SystemIndicator {
         if (result == PortalHelperResult.CANCELLED) {
             // Keep the connection in the queue, so the user is not
             // spammed with more logins until we next flush the queue,
-            // which will happen once he chooses a better connection
+            // which will happen once they choose a better connection
             // or we get to full connectivity through other means
         } else if (result == PortalHelperResult.COMPLETED) {
             this._closeConnectivityCheck(path);

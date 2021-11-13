@@ -257,7 +257,7 @@ var ScreenShield = class {
             // We could not become modal, so we can't activate the
             // screenshield. The user is probably very upset at this
             // point, but any application using global grabs is broken
-            // Just tell him to stop using this app
+            // Just tell them to stop using this app
             //
             // XXX: another option is to kick the user into the gdm login
             // screen, where we're not affected by grabs
