@@ -10,6 +10,8 @@ const ParentalControlsManager = imports.misc.parentalControlsManager;
 const RemoteSearch = imports.ui.remoteSearch;
 const Util = imports.misc.util;
 
+const { Highlighter } = imports.misc.util;
+
 const SEARCH_PROVIDERS_SCHEMA = 'org.gnome.desktop.search-providers';
 
 var MAX_LIST_SEARCH_RESULTS_ROWS = 5;
@@ -596,7 +598,7 @@ var SearchResultsView = GObject.registerClass({
 
         this._providers = [];
 
-        this._highlightRegex = null;
+        this._highlighter = new Highlighter();
 
         this._searchSettings = new Gio.Settings({ schema_id: SEARCH_PROVIDERS_SCHEMA });
         this._searchSettings.connect('changed::disabled', this._reloadRemoteProviders.bind(this));
@@ -739,8 +741,7 @@ var SearchResultsView = GObject.registerClass({
         if (this._searchTimeoutId == 0)
             this._searchTimeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, 150, this._onSearchTimeout.bind(this));
 
-        let escapedTerms = this._terms.map(term => Shell.util_regex_escape(term));
-        this._highlightRegex = new RegExp('(%s)'.format(escapedTerms.join('|')), 'gi');
+        this._highlighter = new Highlighter(this._terms);
 
         this.emit('terms-changed');
     }
@@ -894,10 +895,7 @@ var SearchResultsView = GObject.registerClass({
         if (!description)
             return '';
 
-        if (!this._highlightRegex)
-            return description;
-
-        return description.replace(this._highlightRegex, '<b>$1</b>');
+        return this._highlighter.highlight(description);
     }
 });
 

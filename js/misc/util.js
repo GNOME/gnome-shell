@@ -2,7 +2,7 @@
 /* exported findUrls, spawn, spawnCommandLine, spawnApp, trySpawnCommandLine,
             formatTime, formatTimeSpan, createTimeLabel, insertSorted,
             ensureActorVisibleInScrollView, wiggle, lerp, GNOMEversionCompare,
-            DBusSenderChecker */
+            DBusSenderChecker, Highlighter */
 
 const { Clutter, Gio, GLib, Shell, St, GnomeDesktop } = imports.gi;
 const Gettext = imports.gettext;
@@ -553,5 +553,40 @@ var DBusSenderChecker = class {
         for (const id in this._watchList)
             Gio.DBus.unwatch_name(id);
         this._watchList = [];
+    }
+};
+
+/* @class Highlighter Highlight given terms in text using markup. */
+var Highlighter = class {
+    /**
+     * @param {?string[]} terms - list of terms to highlight
+     */
+    constructor(terms) {
+        if (!terms)
+            return;
+
+        const escapedTerms = terms
+            .map(term => Shell.util_regex_escape(term))
+            .filter(term => term.length > 0);
+
+        if (escapedTerms.length === 0)
+            return;
+
+        this._highlightRegex = new RegExp('(%s)'.format(
+            escapedTerms.join('|')), 'gi');
+    }
+
+    /**
+     * Highlight all occurences of the terms defined for this
+     * highlighter in the provided text using markup.
+     *
+     * @param {string} text - text to highlight the defined terms in
+     * @returns {string}
+     */
+    highlight(text) {
+        if (!this._highlightRegex)
+            return text;
+
+        return text.replace(this._highlightRegex, '<b>$1</b>');
     }
 };
