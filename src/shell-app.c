@@ -943,13 +943,6 @@ shell_app_state_transition (ShellApp      *app,
 }
 
 static void
-shell_app_on_unmanaged (MetaWindow      *window,
-                        ShellApp *app)
-{
-  _shell_app_remove_window (app, window);
-}
-
-static void
 shell_app_on_user_time_changed (MetaWindow *window,
                                 GParamSpec *pspec,
                                 ShellApp   *app)
@@ -1115,7 +1108,6 @@ _shell_app_add_window (ShellApp        *app,
 
   app->running_state->window_sort_stale = TRUE;
   app->running_state->windows = g_slist_prepend (app->running_state->windows, g_object_ref (window));
-  g_signal_connect_object (window, "unmanaged", G_CALLBACK(shell_app_on_unmanaged), app, 0);
   g_signal_connect_object (window, "notify::user-time", G_CALLBACK(shell_app_on_user_time_changed), app, 0);
   g_signal_connect_object (window, "notify::skip-taskbar", G_CALLBACK(shell_app_on_skip_taskbar_changed), app, 0);
 
@@ -1144,7 +1136,6 @@ _shell_app_remove_window (ShellApp   *app,
   if (!g_slist_find (app->running_state->windows, window))
     return;
 
-  g_signal_handlers_disconnect_by_func (window, G_CALLBACK(shell_app_on_unmanaged), app);
   g_signal_handlers_disconnect_by_func (window, G_CALLBACK(shell_app_on_user_time_changed), app);
   g_signal_handlers_disconnect_by_func (window, G_CALLBACK(shell_app_on_skip_taskbar_changed), app);
   app->running_state->windows = g_slist_remove (app->running_state->windows, window);
