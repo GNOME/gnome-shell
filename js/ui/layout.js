@@ -934,13 +934,6 @@ var LayoutManager = GObject.registerClass({
         }
     }
 
-    _getWindowActorsForWorkspace(workspace) {
-        return global.get_window_actors().filter(actor => {
-            let win = actor.meta_window;
-            return win.located_on_workspace(workspace);
-        });
-    }
-
     _updateFullscreen() {
         this._updateVisibility();
         this._queueUpdateRegions();
