@@ -46,6 +46,7 @@ var BoxPointer = GObject.registerClass({
         this.add_actor(this._border);
         this.set_child_above_sibling(this.bin, this._border);
         this._sourceAlignment = 0.5;
+        this._muteKeys = true;
         this._muteInput = true;
 
         this.connect('notify::visible', () => {
@@ -58,8 +59,16 @@ var BoxPointer = GObject.registerClass({
         this.connect('destroy', this._onDestroy.bind(this));
     }
 
-    vfunc_captured_event() {
-        if (this._muteInput)
+    vfunc_captured_event(event) {
+        if (event.type() === Clutter.EventType.ENTER ||
+            event.type() === Clutter.EventType.LEAVE)
+            return Clutter.EVENT_PROPAGATE;
+
+        let mute = event.type() === Clutter.EventType.KEY_PRESS ||
+            event.type() === Clutter.EventType.KEY_RELEASE
+            ? this._muteKeys : this._muteInput;
+
+        if (mute)
             return Clutter.EVENT_STOP;
 
         return Clutter.EVENT_PROPAGATE;
@@ -86,6 +95,7 @@ var BoxPointer = GObject.registerClass({
         else
             this.opacity = 255;
 
+        this._muteKeys = false;
         this.show();
 
         if (animate & PopupAnimation.SLIDE) {
@@ -148,6 +158,7 @@ var BoxPointer = GObject.registerClass({
         }
 
         this._muteInput = true;
+        this._muteKeys = true;
 
         this.remove_all_transitions();
         this.ease({
