@@ -6,31 +6,6 @@ const { Clutter, St } = imports.gi;
 const Main = imports.ui.main;
 const Params = imports.misc.params;
 
-let _capturedEventId = 0;
-let _grabHelperStack = [];
-function _onCapturedEvent(actor, event) {
-    let grabHelper = _grabHelperStack[_grabHelperStack.length - 1];
-    return grabHelper.onCapturedEvent(event);
-}
-
-function _pushGrabHelper(grabHelper) {
-    _grabHelperStack.push(grabHelper);
-
-    if (_capturedEventId == 0)
-        _capturedEventId = global.stage.connect('captured-event', _onCapturedEvent);
-}
-
-function _popGrabHelper(grabHelper) {
-    let poppedHelper = _grabHelperStack.pop();
-    if (poppedHelper != grabHelper)
-        throw new Error("incorrect grab helper pop");
-
-    if (_grabHelperStack.length == 0) {
-        global.stage.disconnect(_capturedEventId);
-        _capturedEventId = 0;
-    }
-}
-
 // GrabHelper:
 // @owner: the actor that owns the GrabHelper
 // @params: optional parameters to pass to Main.pushModal()
@@ -209,7 +184,10 @@ var GrabHelper = class GrabHelper {
             if (!Main.pushModal(this._owner, this._modalParams))
                 return false;
 
-            _pushGrabHelper(this);
+            this._capturedEventId = this._owner.connect('captured-event',
+                (actor, event) => {
+                    return this.onCapturedEvent(event);
+                });
         }
 
         this._modalCount++;
@@ -221,8 +199,7 @@ var GrabHelper = class GrabHelper {
         if (this._modalCount > 0)
             return;
 
-        _popGrabHelper(this);
-
+        this._owner.disconnect(this._capturedEventId);
         this._ignoreUntilRelease = false;
 
         Main.popModal(this._owner);
