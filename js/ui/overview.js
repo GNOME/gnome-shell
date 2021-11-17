@@ -488,7 +488,7 @@ var Overview = class {
             let shouldBeModal = !this._inXdndDrag;
             if (shouldBeModal && !this._modal) {
                 let actionMode = Shell.ActionMode.OVERVIEW;
-                if (Main.pushModal(this._overview, { actionMode })) {
+                if (Main.pushModal(global.stage, { actionMode })) {
                     this._modal = true;
                 } else {
                     this.hide();
@@ -498,7 +498,7 @@ var Overview = class {
         } else {
             // eslint-disable-next-line no-lonely-if
             if (this._modal) {
-                Main.popModal(this._overview);
+                Main.popModal(global.stage);
                 this._modal = false;
             }
         }
