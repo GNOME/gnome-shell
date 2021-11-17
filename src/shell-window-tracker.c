@@ -591,26 +591,14 @@ disassociate_window (ShellWindowTracker   *self,
 static void
 load_initial_windows (ShellWindowTracker *tracker)
 {
-  MetaDisplay *display = shell_global_get_display (shell_global_get ());
-  MetaWorkspaceManager *workspace_manager =
-    meta_display_get_workspace_manager (display);
-  GList *workspaces;
+  g_autoptr (GList) window_actors = NULL;
   GList *l;
 
-  workspaces = meta_workspace_manager_get_workspaces (workspace_manager);
-  for (l = workspaces; l; l = l->next)
+  window_actors = shell_global_get_window_actors (shell_global_get ());
+  for (l = window_actors; l; l = l->next)
     {
-      MetaWorkspace *workspace = l->data;
-      GList *windows = meta_workspace_list_windows (workspace);
-      GList *window_iter;
-
-      for (window_iter = windows; window_iter; window_iter = window_iter->next)
-        {
-          MetaWindow *window = window_iter->data;
-          track_window (tracker, window);
-        }
-
-      g_list_free (windows);
+      MetaWindowActor *actor = l->data;
+      track_window (tracker, meta_window_actor_get_meta_window (actor));
     }
 }
 
