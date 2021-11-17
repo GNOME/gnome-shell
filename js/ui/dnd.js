@@ -165,11 +165,7 @@ var _Draggable = class _Draggable {
     }
 
     _grabDevice(actor, pointer, touchSequence) {
-        if (touchSequence)
-            pointer.sequence_grab(touchSequence, actor);
-        else if (pointer)
-            pointer.grab(actor);
-
+        this._grab = global.stage.grab(actor);
         this._grabbedDevice = pointer;
         this._touchSequence = touchSequence;
 
@@ -188,11 +184,10 @@ var _Draggable = class _Draggable {
             this._capturedEventId = 0;
         }
 
-        if (this._touchSequence)
-            this._grabbedDevice.sequence_ungrab(this._touchSequence);
-        else
-            this._grabbedDevice.ungrab();
-
+        if (this._grab) {
+            this._grab.dismiss();
+            this._grab = null;
+        }
         this._touchSequence = null;
         this._grabbedDevice = null;
     }
