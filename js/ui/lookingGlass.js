@@ -1560,7 +1560,7 @@ class LookingGlass extends St.BoxLayout {
         if (this._open)
             return;
 
-        if (!Main.pushModal(this._entry, { actionMode: Shell.ActionMode.LOOKING_GLASS }))
+        if (!Main.pushModal(this, { actionMode: Shell.ActionMode.LOOKING_GLASS }))
             return;
 
         this._notebook.selectIndex(0);
@@ -1580,6 +1580,7 @@ class LookingGlass extends St.BoxLayout {
         });
 
         this._windowList.update();
+        this._entry.grab_key_focus();
     }
 
     close() {
@@ -1601,7 +1602,7 @@ class LookingGlass extends St.BoxLayout {
             duration,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
             onComplete: () => {
-                Main.popModal(this._entry);
+                Main.popModal(this);
                 this.hide();
             },
         });
