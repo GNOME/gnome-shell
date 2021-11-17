@@ -32,9 +32,11 @@ var ModalDialog = GObject.registerClass({
 }, class ModalDialog extends St.Widget {
     _init(params) {
         super._init({ visible: false,
-                      x: 0,
-                      y: 0,
-                      accessible_role: Atk.Role.DIALOG });
+            reactive: true,
+            x: 0,
+            y: 0,
+            accessible_role: Atk.Role.DIALOG,
+        });
 
         params = Params.parse(params, { shellReactive: false,
                                         styleClass: null,
