@@ -1933,7 +1933,7 @@ class AppViewItem extends St.Button {
             label.disconnect(id);
         });
 
-        const expand = this.hover || this.has_key_focus();
+        const expand = this._forcedHighlight || this.hover || this.has_key_focus();
         label.save_easing_state();
         label.set_easing_duration(expand
             ? APP_ICON_TITLE_EXPAND_TIME
@@ -2080,6 +2080,14 @@ class AppViewItem extends St.Button {
 
     get name() {
         return this._name;
+    }
+
+    setForcedHighlight(highlighted) {
+        this._forcedHighlight = highlighted;
+        this.set({
+            track_hover: !highlighted,
+            hover: highlighted,
+        });
     }
 });
 
@@ -3143,6 +3151,7 @@ var AppIcon = GObject.registerClass({
     }
 
     popupMenu(side = St.Side.LEFT) {
+        this.setForcedHighlight(true);
         this._removeMenuTimeout();
         this.fake_release();
 
@@ -3163,16 +3172,12 @@ var AppIcon = GObject.registerClass({
                 Main.overview.disconnect(id);
             });
 
-            // We want to keep the item hovered while the menu is up
-            this._menu.blockSourceEvents = true;
-
             Main.uiGroup.add_actor(this._menu.actor);
             this._menuManager.addMenu(this._menu);
         }
 
         this.emit('menu-state-changed', true);
 
-        this.set_hover(true);
         this._menu.open(BoxPointer.PopupAnimation.FULL);
         this._menuManager.ignoreRelease();
         this.emit('sync-tooltip');
@@ -3181,7 +3186,7 @@ var AppIcon = GObject.registerClass({
     }
 
     _onMenuPoppedDown() {
-        this.sync_hover();
+        this.setForcedHighlight(false);
         this.emit('menu-state-changed', false);
     }
 
