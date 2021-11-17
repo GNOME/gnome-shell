@@ -544,13 +544,10 @@ function pushModal(actor, params) {
                                     options: 0,
                                     actionMode: Shell.ActionMode.NONE });
 
-    if (modalCount == 0) {
-        if (!global.begin_modal(params.timestamp, params.options)) {
-            log('pushModal: invocation of begin_modal failed');
-            return false;
-        }
+    let grab = global.stage.grab(actor);
+
+    if (modalCount === 0)
         Meta.disable_unredirect_for_display(global.display);
-    }
 
     modalCount += 1;
     let actorDestroyId = actor.connect('destroy', () => {
@@ -571,10 +568,12 @@ function pushModal(actor, params) {
         });
     }
     modalActorFocusStack.push({ actor,
-                                destroyId: actorDestroyId,
-                                prevFocus,
-                                prevFocusDestroyId,
-                                actionMode });
+        grab,
+        destroyId: actorDestroyId,
+        prevFocus,
+        prevFocusDestroyId,
+        actionMode,
+    });
 
     actionMode = params.actionMode;
     global.stage.set_key_focus(actor);
@@ -602,7 +601,6 @@ function popModal(actor, timestamp) {
     let focusIndex = _findModal(actor);
     if (focusIndex < 0) {
         global.stage.set_key_focus(null);
-        global.end_modal(timestamp);
         actionMode = Shell.ActionMode.NORMAL;
 
         throw new Error('incorrect pop');
@@ -612,6 +610,9 @@ function popModal(actor, timestamp) {
 
     let record = modalActorFocusStack[focusIndex];
     record.actor.disconnect(record.destroyId);
+
+    let grab = record.grab;
+    grab.dismiss();
 
     if (focusIndex == modalActorFocusStack.length - 1) {
         if (record.prevFocus)
@@ -650,7 +651,6 @@ function popModal(actor, timestamp) {
         return;
 
     layoutManager.modalEnded();
-    global.end_modal(timestamp);
     Meta.enable_unredirect_for_display(global.display);
     actionMode = Shell.ActionMode.NORMAL;
 }
