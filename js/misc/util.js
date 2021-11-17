@@ -585,8 +585,25 @@ var Highlighter = class {
      */
     highlight(text) {
         if (!this._highlightRegex)
-            return text;
+            return GLib.markup_escape_text(text, -1);
 
-        return text.replace(this._highlightRegex, '<b>$1</b>');
+        let escaped = [];
+        let lastMatchEnd = 0;
+        let match;
+        while ((match = this._highlightRegex.exec(text))) {
+            if (match.index > lastMatchEnd) {
+                let unmatched = GLib.markup_escape_text(
+                    text.slice(lastMatchEnd, match.index), -1);
+                escaped.push(unmatched);
+            }
+            let matched = GLib.markup_escape_text(match[0], -1);
+            escaped.push('<b>%s</b>'.format(matched));
+            lastMatchEnd = match.index + match[0].length;
+        }
+        let unmatched = GLib.markup_escape_text(
+            text.slice(lastMatchEnd), -1);
+        escaped.push(unmatched);
+
+        return escaped.join('');
     }
 };
