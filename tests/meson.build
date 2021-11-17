@@ -10,7 +10,17 @@ run_test = configure_file(
 testenv = environment()
 testenv.set('GSETTINGS_SCHEMA_DIR', join_paths(meson.build_root(), 'data'))
 
-foreach test : ['insertSorted', 'jsParse', 'markup', 'params', 'url', 'versionCompare']
+tests = [
+    'highlighter',
+    'insertSorted',
+    'jsParse',
+    'markup',
+    'params',
+    'url',
+    'versionCompare',
+]
+
+foreach test : tests
   test(test, run_test,
     args: 'unit/@0@.js'.format(test),
     env: testenv,
