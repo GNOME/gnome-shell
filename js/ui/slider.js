@@ -73,10 +73,7 @@ var Slider = GObject.registerClass({
         let device = event.get_device();
         let sequence = event.get_event_sequence();
 
-        if (sequence != null)
-            device.sequence_grab(sequence, this);
-        else
-            device.grab(this);
+        this._grab = global.stage.grab(this);
 
         this._grabbedDevice = device;
         this._grabbedSequence = sequence;
@@ -98,10 +95,10 @@ var Slider = GObject.registerClass({
                 this._releaseId = 0;
             }
 
-            if (this._grabbedSequence != null)
-                this._grabbedDevice.sequence_ungrab(this._grabbedSequence);
-            else
-                this._grabbedDevice.ungrab();
+            if (this._grab) {
+                this._grab.dismiss();
+                this._grab = null;
+            }
 
             this._grabbedSequence = null;
             this._grabbedDevice = null;
@@ -121,14 +118,14 @@ var Slider = GObject.registerClass({
 
     vfunc_touch_event() {
         let event = Clutter.get_current_event();
-        let device = event.get_device();
         let sequence = event.get_event_sequence();
 
         if (!this._dragging &&
             event.type() == Clutter.EventType.TOUCH_BEGIN) {
             this.startDragging(event);
             return Clutter.EVENT_STOP;
-        } else if (device.sequence_get_grabbed_actor(sequence) == this) {
+        } else if (this._grabbedSequence &&
+                   sequence.get_slot() === this._grabbedSequence.get_slot()) {
             if (event.type() == Clutter.EventType.TOUCH_UPDATE)
                 return this._motionEvent(this, event);
             else if (event.type() == Clutter.EventType.TOUCH_END)
