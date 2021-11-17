@@ -592,26 +592,12 @@ static void
 load_initial_windows (ShellWindowTracker *tracker)
 {
   MetaDisplay *display = shell_global_get_display (shell_global_get ());
-  MetaWorkspaceManager *workspace_manager =
-    meta_display_get_workspace_manager (display);
-  GList *workspaces;
+  g_autoptr (GList) windows = NULL;
   GList *l;
 
-  workspaces = meta_workspace_manager_get_workspaces (workspace_manager);
-  for (l = workspaces; l; l = l->next)
-    {
-      MetaWorkspace *workspace = l->data;
-      GList *windows = meta_workspace_list_windows (workspace);
-      GList *window_iter;
-
-      for (window_iter = windows; window_iter; window_iter = window_iter->next)
-        {
-          MetaWindow *window = window_iter->data;
-          track_window (tracker, window);
-        }
-
-      g_list_free (windows);
-    }
+  windows = meta_display_list_all_windows (display);
+  for (l = windows; l; l = l->next)
+    track_window (tracker, l->data);
 }
 
 static void
