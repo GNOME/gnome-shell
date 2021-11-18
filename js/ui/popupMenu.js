@@ -493,10 +493,6 @@ var PopupMenuBase = class {
 
         this.isOpen = false;
 
-        // If set, we don't send events (including crossing events) to the source actor
-        // for the menu which causes its prelight state to freeze
-        this.blockSourceEvents = false;
-
         this._activeMenuItem = null;
         this._settingsActions = { };
 
@@ -1323,8 +1319,7 @@ var PopupMenuManager = class {
 
         let source = menu.sourceActor;
         if (source) {
-            if (!menu.blockSourceEvents)
-                this._grabHelper.addActor(source);
+            this._grabHelper.addActor(source);
             menudata.enterId = source.connect('enter-event',
                 () => this._onMenuSourceEnter(menu));
             menudata.focusInId = source.connect('key-focus-in', () => {
