@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master oc\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2021-11-06 13:28+0000\n"
+"POT-Creation-Date: 2021-11-13 20:24+0000\n"
 "PO-Revision-Date: 2021-11-07 20:30+0100\n"
 "Last-Translator: Quentin PAGÈS\n"
 "Language-Team: Tot En Òc\n"
@@ -191,14 +191,14 @@ msgstr "Istoric de la bóstia de dialòg d'inspeccion"
 
 #: data/org.gnome.shell.gschema.xml.in:71
 msgid "Always show the “Log out” menu item in the user menu."
-msgstr "Totjorn afichar l’element « Se desconnectar » dins lo menú utilizaire."
+msgstr "Totjorn afichar l’element « Se desconnectar » dins lo menú utilizaire."
 
 #: data/org.gnome.shell.gschema.xml.in:72
 msgid ""
 "This key overrides the automatic hiding of the “Log out” menu item in single-"
 "user, single-session situations."
 msgstr ""
-"Aquesta clau aficha l’element « Se desconnectar » del menú utilizaire "
+"Aquesta clau aficha l’element « Se desconnectar » del menú utilizaire "
 "normalament amagat automaticament dins lo cas d’una session o d’un "
 "utilizaire unic."
 
@@ -218,7 +218,7 @@ msgid ""
 msgstr ""
 "Lo shell demandarà un senhal al montatge d’un periferic chifrat o d’un "
 "sistèma de fichièrs distant. Se lo senhal pòt èsser enregistrat per una "
-"utilizacion ulteriora, una casa de marcar « Se remembrar del senhal » serà "
+"utilizacion ulteriora, una casa de marcar « Se remembrar del senhal » serà "
 "presenta. Aquesta clau determina l’estat per defaut d'aquesta casa de marcar."
 
 #: data/org.gnome.shell.gschema.xml.in:89
@@ -241,7 +241,7 @@ msgstr ""
 #: data/org.gnome.shell.gschema.xml.in:99
 msgid "The last version the “Welcome to GNOME” dialog was shown for"
 msgstr ""
-"La darrièra version de la fenèstra de « Benvenguda a GNOME » èra mostrada per"
+"La darrièra version de la fenèstra de « Benvenguda a GNOME » èra mostrada per"
 
 #: data/org.gnome.shell.gschema.xml.in:100
 msgid ""
@@ -250,7 +250,7 @@ msgid ""
 "number will represent versions that do not exist yet. This huge number can "
 "be used to effectively disable the dialog."
 msgstr ""
-"Aquesta clau determina la version de la fenèstra « la Benvenguda de GNOME » "
+"Aquesta clau determina la version de la fenèstra « Benvenguda de GNOME » "
 "darrièrament afichada. Una cadena de tèxt voida indica la version mai "
 "anciana possibla, e un grand nombre representa una version qu'existís pas "
 "encara. Un grand nombre pòt servir a desactivar d’un biais efectiu la "
@@ -301,13 +301,13 @@ msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:170
 msgid "Keybinding to open the “Show Applications” view"
-msgstr "Combinason de tòcas per dobrir la vista « Afichar las aplicacions »"
+msgstr "Combinason de tòcas per dobrir la vista « Afichar las aplicacions »"
 
 #: data/org.gnome.shell.gschema.xml.in:171
 msgid ""
 "Keybinding to open the “Show Applications” view of the Activities Overview."
 msgstr ""
-"Combinason de tòcas per dobrir la vista « Afichar las aplicacions » de la "
+"Combinason de tòcas per dobrir la vista « Afichar las aplicacions » de la "
 "vista d’ensemble de las activitats."
 
 #: data/org.gnome.shell.gschema.xml.in:178
@@ -399,9 +399,9 @@ msgid ""
 "only” (shows only the application icon) or “both”."
 msgstr ""
 "Configura lo biais que las fenèstras son afichadas dins lo selector. Las "
-"causidas possiblas son « thumbnail-only » (aficha una miniatura de la "
-"fenèstra), « app-icon-only » (aficha unicament l’icòna de l’aplicacion), o « "
-"both » (aficha los dos)."
+"causidas possiblas son « thumbnail-only » (aficha una miniatura de la "
+"fenèstra), « app-icon-only » (aficha unicament l’icòna de l’aplicacion), o « "
+"both » (aficha los dos)."
 
 #: data/org.gnome.shell.gschema.xml.in:268
 msgid ""
@@ -522,7 +522,7 @@ msgstr "Causir una session"
 
 #: js/gdm/loginDialog.js:456
 msgid "Not listed?"
-msgstr "Absent de la lista ?"
+msgstr "Absent de la lista ?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
@@ -653,7 +653,7 @@ msgstr "Impossible d'analisar la comanda :"
 #: js/misc/util.js:165
 #, javascript-format
 msgid "Execution of “%s” failed:"
-msgstr "Execucion de « %s » impossibla :"
+msgstr "Execucion de « %s » impossibla :"
 
 #: js/misc/util.js:182
 msgid "Just now"
@@ -989,7 +989,7 @@ msgstr "Escafar"
 #: js/ui/closeDialog.js:42
 #, javascript-format
 msgid "“%s” is not responding."
-msgstr "« %s » respond pas."
+msgstr "« %s » respond pas."
 
 #: js/ui/closeDialog.js:43
 msgid ""
@@ -1064,7 +1064,7 @@ msgid ""
 "Passwords or encryption keys are required to access the wireless network "
 "“%s”."
 msgstr ""
-"Cal un senhal o una clau de chiframent per accedir a la ret sens fial « %s »."
+"Cal un senhal o una clau de chiframent per accedir a la ret sens fial « %s »."
 
 #: js/ui/components/networkAgent.js:322 js/ui/components/networkAgent.js:684
 msgid "Wired 802.1X authentication"
@@ -1095,7 +1095,7 @@ msgstr "PIN"
 #: js/ui/components/networkAgent.js:705
 #, javascript-format
 msgid "A password is required to connect to “%s”."
-msgstr "Un senhal es requesit per se connectar a « %s »."
+msgstr "Un senhal es requesit per se connectar a « %s »."
 
 #: js/ui/components/networkAgent.js:668 js/ui/status/network.js:1789
 msgid "Network Manager"
@@ -1433,7 +1433,7 @@ msgstr "Installar l’extension"
 #: js/ui/extensionDownloader.js:239
 #, javascript-format
 msgid "Download and install “%s” from extensions.gnome.org?"
-msgstr "Telecargar e installar « %s » a partir de extensions.gnome.org ?"
+msgstr "Telecargar e installar « %s » a partir de extensions.gnome.org ?"
 
 #: js/ui/extensionSystem.js:266
 msgid "Extension Updates Available"
@@ -2404,7 +2404,7 @@ msgstr "Far la visita"
 #: js/ui/windowAttentionHandler.js:20
 #, javascript-format
 msgid "“%s” is ready"
-msgstr "« %s » es prèst"
+msgstr "« %s » es prèst"
 
 #. Translators: This string should be shorter than 30 characters
 #: js/ui/windowManager.js:63
@@ -2518,7 +2518,7 @@ msgstr "Mòde utilizat per GDM per l'ecran de connexion"
 
 #: src/main.c:431
 msgid "Use a specific mode, e.g. “gdm” for login screen"
-msgstr "Utilizar un mòde particular, per ex. « gdm » per l’ecran de connexion"
+msgstr "Utilizar un mòde particular, per ex. « gdm » per l’ecran de connexion"
 
 #: src/main.c:437
 msgid "List possible modes"
@@ -2532,7 +2532,7 @@ msgstr "Desconegut"
 #: src/shell-app.c:549
 #, c-format
 msgid "Failed to launch “%s”"
-msgstr "Impossible d'aviar « %s »"
+msgstr "Impossible d'aviar « %s »"
 
 #: src/shell-keyring-prompt.c:731
 msgid "Passwords do not match."
@@ -2583,7 +2583,7 @@ msgstr "Cap de correspondéncia pas trobada"
 #: subprojects/extensions-app/js/main.js:179
 #, javascript-format
 msgid "Remove “%s”?"
-msgstr "Suprimir « %s » ?"
+msgstr "Suprimir « %s » ?"
 
 #: subprojects/extensions-app/js/main.js:180
 msgid ""
@@ -2953,7 +2953,7 @@ msgstr "L’extension « %s » a pas de preferéncias\n"
 #: subprojects/extensions-tool/src/command-prefs.c:62
 #, c-format
 msgid "Failed to open prefs for extension “%s”: %s\n"
-msgstr "Dobertura impossibla de la preferéncias per l'extension « %s » : %s\n"
+msgstr "Dobertura impossibla de las preferéncias per l'extension « %s » : %s\n"
 
 #: subprojects/extensions-tool/src/command-prefs.c:87
 msgid "Opens extension preferences"
@@ -2998,7 +2998,7 @@ msgstr "Estat"
 
 #: subprojects/extensions-tool/src/main.c:290
 msgid "“version” takes no arguments"
-msgstr "« version » accèpta pas cap de paramètre"
+msgstr "« version » accèpta pas cap de paramètre"
 
 #: subprojects/extensions-tool/src/main.c:292
 #: subprojects/extensions-tool/src/main.c:312
@@ -3020,7 +3020,7 @@ msgstr "[PARAMS...]"
 
 #: subprojects/extensions-tool/src/main.c:315
 msgid "Commands:"
-msgstr "Comandas :"
+msgstr "Comandas :"
 
 #: subprojects/extensions-tool/src/main.c:316
 msgid "Print help"
