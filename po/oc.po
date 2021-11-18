@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master oc\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2021-09-09 03:40+0000\n"
-"PO-Revision-Date: 2021-08-18 11:11+0200\n"
+"POT-Creation-Date: 2021-11-13 17:10+0000\n"
+"PO-Revision-Date: 2021-11-18 21:07+0100\n"
 "Last-Translator: Quentin PAGÈS\n"
 "Language-Team: Tot En Òc\n"
 "Language: oc\n"
@@ -2599,7 +2599,9 @@ msgstr "Levar"
 
 #: subprojects/extensions-app/js/main.js:216
 msgid "translator-credits"
-msgstr "Cédric Valmary (totenoc.eu) <cvalmary@yahoo.fr>"
+msgstr ""
+"Cédric Valmary (totenoc.eu) <cvalmary@yahoo.fr>\n"
+"Quentin PAGÈS"
 
 #: subprojects/extensions-app/js/main.js:344
 #, javascript-format
@@ -2794,6 +2796,7 @@ msgstr "Los camps UUIS, nom e descripcion son obligatòris"
 #: subprojects/extensions-tool/src/command-enable.c:46
 #: subprojects/extensions-tool/src/command-info.c:50
 #: subprojects/extensions-tool/src/command-list.c:64
+#: subprojects/extensions-tool/src/main.c:146
 msgid "Failed to connect to GNOME Shell\n"
 msgstr "Error en se connectant a Shell de GNOME\n"
 
@@ -2810,7 +2813,7 @@ msgstr "Desactivar una extension"
 #: subprojects/extensions-tool/src/command-disable.c:119
 #: subprojects/extensions-tool/src/command-enable.c:119
 #: subprojects/extensions-tool/src/command-info.c:103
-#: subprojects/extensions-tool/src/command-prefs.c:97
+#: subprojects/extensions-tool/src/command-prefs.c:105
 #: subprojects/extensions-tool/src/command-reset.c:76
 #: subprojects/extensions-tool/src/command-uninstall.c:104
 msgid "No UUID given"
@@ -2819,7 +2822,7 @@ msgstr "Cap d’UUID pas indicat"
 #: subprojects/extensions-tool/src/command-disable.c:124
 #: subprojects/extensions-tool/src/command-enable.c:124
 #: subprojects/extensions-tool/src/command-info.c:108
-#: subprojects/extensions-tool/src/command-prefs.c:102
+#: subprojects/extensions-tool/src/command-prefs.c:110
 #: subprojects/extensions-tool/src/command-reset.c:81
 #: subprojects/extensions-tool/src/command-uninstall.c:109
 msgid "More than one UUID given"
@@ -2949,7 +2952,12 @@ msgstr "Mai d’un repertòri font indicat"
 msgid "Extension “%s” doesn't have preferences\n"
 msgstr "L’extension « %s » a pas de preferéncias\n"
 
-#: subprojects/extensions-tool/src/command-prefs.c:79
+#: subprojects/extensions-tool/src/command-prefs.c:62
+#, c-format
+msgid "Failed to open prefs for extension “%s”: %s\n"
+msgstr "Dobertura impossibla de las preferéncias per l'extension « %s » : %s\n"
+
+#: subprojects/extensions-tool/src/command-prefs.c:87
 msgid "Opens extension preferences"
 msgstr "Dobrís las preferéncias de las extensions"
 
@@ -2973,10 +2981,6 @@ msgstr "Desinstallar una extension"
 #: subprojects/extensions-tool/src/main.c:72
 msgid "Do not print error messages"
 msgstr "Afichar pas los messatges d'error"
-
-#: subprojects/extensions-tool/src/main.c:146
-msgid "Failed to connect to GNOME Shell"
-msgstr "Error en se connectant a Shell de GNOME"
 
 #: subprojects/extensions-tool/src/main.c:244
 msgid "Path"
@@ -3107,6 +3111,9 @@ msgstr[1] "%u entradas"
 #: subprojects/gvc/gvc-mixer-control.c:2867
 msgid "System Sounds"
 msgstr "Sons sistèma"
+
+#~ msgid "Failed to connect to GNOME Shell"
+#~ msgstr "Error en se connectant a Shell de GNOME"
 
 #~ msgid "Enable introspection API"
 #~ msgstr "Activar l’API d’introspeccion"
