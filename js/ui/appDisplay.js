@@ -2573,7 +2573,6 @@ var AppFolderDialog = GObject.registerClass({
         this._grabHelper = new GrabHelper.GrabHelper(this, {
             actionMode: Shell.ActionMode.POPUP,
         });
-        this._grabHelper.addActor(Main.layoutManager.overviewGroup);
         this.connect('destroy', this._onDestroy.bind(this));
 
         this._dragMonitor = null;
