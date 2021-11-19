@@ -27,44 +27,14 @@ var GrabHelper = class GrabHelper {
 
         this._grabStack = [];
 
-        this._actors = [];
         this._ignoreUntilRelease = false;
 
         this._modalCount = 0;
     }
 
-    // addActor:
-    // @actor: an actor
-    //
-    // Adds @actor to the set of actors that are allowed to process events
-    // during a grab.
-    addActor(actor) {
-        actor.__grabHelperDestroyId = actor.connect('destroy', () => {
-            this.removeActor(actor);
-        });
-        this._actors.push(actor);
-    }
-
-    // removeActor:
-    // @actor: an actor
-    //
-    // Removes @actor from the set of actors that are allowed to
-    // process events during a grab.
-    removeActor(actor) {
-        let index = this._actors.indexOf(actor);
-        if (index != -1)
-            this._actors.splice(index, 1);
-        if (actor.__grabHelperDestroyId) {
-            actor.disconnect(actor.__grabHelperDestroyId);
-            delete actor.__grabHelperDestroyId;
-        }
-    }
-
     _isWithinGrabbedActor(actor) {
         let currentActor = this.currentGrab.actor;
         while (actor) {
-            if (this._actors.includes(actor))
-                return true;
             if (actor == currentActor)
                 return true;
             actor = actor.get_parent();
@@ -290,9 +260,6 @@ var GrabHelper = class GrabHelper {
                 this._ignoreUntilRelease = false;
             return Clutter.EVENT_PROPAGATE;
         }
-
-        if (this._isWithinGrabbedActor(event.get_source()))
-            return Clutter.EVENT_PROPAGATE;
 
         if (Main.keyboard.shouldTakeEvent(event))
             return Clutter.EVENT_PROPAGATE;
