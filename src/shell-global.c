@@ -80,7 +80,6 @@ struct _ShellGlobal {
 
   GHashTable *save_ops;
 
-  gboolean has_modal;
   gboolean frame_timestamps;
   gboolean frame_finish_timestamp;
 
@@ -707,9 +706,6 @@ focus_window_changed (MetaDisplay *display,
 {
   ShellGlobal *global = user_data;
 
-  if (global->has_modal)
-    return;
-
   /* If the stage window became unfocused, drop the key focus
    * on Clutter's side. */
   if (!meta_stage_is_focused (global->meta_display))
@@ -735,9 +731,6 @@ static void
 sync_stage_window_focus (ShellGlobal *global)
 {
   ClutterActor *actor;
-
-  if (global->has_modal)
-    return;
 
   actor = get_key_focused_actor (global);
 
@@ -767,10 +760,7 @@ sync_input_region (ShellGlobal *global)
   MetaDisplay *display = global->meta_display;
   MetaX11Display *x11_display = meta_display_get_x11_display (display);
 
-  if (global->has_modal)
-    meta_x11_display_set_stage_input_region (x11_display, None);
-  else
-    meta_x11_display_set_stage_input_region (x11_display, global->input_region);
+  meta_x11_display_set_stage_input_region (x11_display, global->input_region);
 }
 
 /**
@@ -1074,74 +1064,6 @@ GjsContext *
 _shell_global_get_gjs_context (ShellGlobal *global)
 {
   return global->js_context;
-}
-
-/**
- * shell_global_begin_modal:
- * @global: a #ShellGlobal
- *
- * Grabs the keyboard and mouse to the stage window. The stage will
- * receive all keyboard and mouse events until shell_global_end_modal()
- * is called. This is used to implement "modes" for the shell, such as the
- * overview mode or the "looking glass" debug overlay, that block
- * application and normal key shortcuts.
- *
- * Returns: %TRUE if we successfully entered the mode. %FALSE if we couldn't
- *  enter the mode. Failure may occur because an application has the pointer
- *  or keyboard grabbed, because Mutter is in a mode itself like moving a
- *  window or alt-Tab window selection, or because shell_global_begin_modal()
- *  was previously called.
- */
-gboolean
-shell_global_begin_modal (ShellGlobal       *global,
-                          guint32           timestamp,
-                          MetaModalOptions  options)
-{
-  if (!meta_display_get_compositor (global->meta_display))
-    return FALSE;
-
-  /* Make it an error to call begin_modal while we already
-   * have a modal active. */
-  if (global->has_modal)
-    return FALSE;
-
-  global->has_modal = meta_plugin_begin_modal (global->plugin, options, timestamp);
-  if (!meta_is_wayland_compositor ())
-    sync_input_region (global);
-  return global->has_modal;
-}
-
-/**
- * shell_global_end_modal:
- * @global: a #ShellGlobal
- *
- * Undoes the effect of shell_global_begin_modal().
- */
-void
-shell_global_end_modal (ShellGlobal *global,
-                        guint32      timestamp)
-{
-  if (!meta_display_get_compositor (global->meta_display))
-    return;
-
-  if (!global->has_modal)
-    return;
-
-  meta_plugin_end_modal (global->plugin, timestamp);
-  global->has_modal = FALSE;
-
-  /* If the stage window is unfocused, ensure that there's no
-   * actor focused on Clutter's side. */
-  if (!meta_stage_is_focused (global->meta_display))
-    clutter_stage_set_key_focus (global->stage, NULL);
-
-  /* An actor dropped key focus. Focus the default window. */
-  else if (get_key_focused_actor (global) && meta_stage_is_focused (global->meta_display))
-    meta_display_focus_default_window (global->meta_display,
-                                       get_current_time_maybe_roundtrip (global));
-
-  if (!meta_is_wayland_compositor ())
-    sync_input_region (global);
 }
 
 /* Code to close all file descriptors before we exec; copied from gspawn.c in GLib.
