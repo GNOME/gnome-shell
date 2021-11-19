@@ -29,6 +29,7 @@ var ExtensionManager = class {
         this._unloadedExtensions = new Map();
         this._enabledExtensions = [];
         this._extensionOrder = [];
+        this._checkVersion = false;
 
         Main.sessionMode.connect('updated', this._sessionUpdated.bind(this));
     }
@@ -333,9 +334,7 @@ var ExtensionManager = class {
         // Default to error, we set success as the last step
         extension.state = ExtensionState.ERROR;
 
-        let checkVersion = !global.settings.get_boolean(EXTENSION_DISABLE_VERSION_CHECK_KEY);
-
-        if (checkVersion && ExtensionUtils.isOutOfDate(extension)) {
+        if (this._checkVersion && ExtensionUtils.isOutOfDate(extension)) {
             extension.state = ExtensionState.OUT_OF_DATE;
         } else if (!this._canLoad(extension)) {
             this.logExtensionError(extension.uuid, new Error(
@@ -508,6 +507,12 @@ var ExtensionManager = class {
     }
 
     _onVersionValidationChanged() {
+        const checkVersion = !global.settings.get_boolean(EXTENSION_DISABLE_VERSION_CHECK_KEY);
+        if (checkVersion === this._checkVersion)
+            return;
+
+        this._checkVersion = checkVersion;
+
         // Disabling extensions modifies the order array, so use a copy
         let extensionOrder = this._extensionOrder.slice();
 
@@ -559,6 +564,8 @@ var ExtensionManager = class {
             this._onSettingsWritableChanged.bind(this));
         global.settings.connect('writable-changed::%s'.format(DISABLED_EXTENSIONS_KEY),
             this._onSettingsWritableChanged.bind(this));
+
+        this._onVersionValidationChanged();
 
         this._enabledExtensions = this._getEnabledExtensions();
 
