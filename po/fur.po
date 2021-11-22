@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: video-subtitles master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2021-11-06 13:28+0000\n"
-"PO-Revision-Date: 2021-11-07 17:49+0100\n"
+"POT-Creation-Date: 2021-11-21 20:52+0000\n"
+"PO-Revision-Date: 2021-11-22 12:06+0100\n"
 "Last-Translator: Fabio Tomat <f.t.public@gmail.com>\n"
 "Language-Team: Friulian <fur@li.org>\n"
 "Language: fur\n"
@@ -211,9 +211,9 @@ msgid ""
 "state of the checkbox."
 msgstr ""
 "La shell e domandarà une password cuant che un dispositîf cifrât o un "
-"filesystem lontan al ven montât. Se le password e pues jessi salvade par un "
-"ûs futûr, une casele di selezion “Visasi Password” e sarà presinte. Cheste "
-"clâf e stabilìs il valôr predefinît di cheste casele di selezion."
+"filesystem lontan al vignarà montât. Se tu desideris salvâ la password par "
+"un ûs futûr, e sarà presinte une casele di selezion “Visasi Password”. "
+"Cheste clâf e stabilìs il valôr predefinît di cheste casele di selezion."
 
 #: data/org.gnome.shell.gschema.xml.in:89
 msgid ""
@@ -792,7 +792,7 @@ msgstr "Dinee acès"
 msgid "Grant Access"
 msgstr "Garantìs l'acès"
 
-#: js/ui/appDisplay.js:1846
+#: js/ui/appDisplay.js:1791
 msgid "Unnamed Folder"
 msgstr "Cartele cence non"
 
@@ -1929,8 +1929,8 @@ msgstr "La aplicazion %s e vûl acedi ae to posizion"
 #: js/ui/status/location.js:410
 msgid "Location access can be changed at any time from the privacy settings."
 msgstr ""
-"L'acès ae posizion al pues jessi cambiât cuant che tu vuelis su impostazions "
-"privacy."
+"Al è pussibil cambiâ l'acès ae posizion cuant che tu vuelis su lis "
+"impostazions de riservatece."
 
 #: js/ui/status/network.js:72
 msgid "<unknown>"
