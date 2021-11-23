@@ -486,20 +486,42 @@ var DBusSenderChecker = class {
     constructor(allowList) {
         this._allowlistMap = new Map();
 
+        this._uninitializedNames = new Set(allowList);
+        this._initializedPromise = new Promise(resolve => {
+            this._resolveInitialized = resolve;
+        });
+
         this._watchList = allowList.map(name => {
             return Gio.DBus.watch_name(Gio.BusType.SESSION,
                 name,
                 Gio.BusNameWatcherFlags.NONE,
-                (conn_, name_, owner) => this._allowlistMap.set(name, owner),
-                () => this._allowlistMap.delete(name));
+                (conn_, name_, owner) => {
+                    this._allowlistMap.set(name, owner);
+                    this._checkAndResolveInitialized(name);
+                },
+                () => {
+                    this._allowlistMap.delete(name);
+                    this._checkAndResolveInitialized(name);
+                });
         });
     }
 
     /**
+     * @param {string} name - bus name for which the watcher got initialized
+     */
+    _checkAndResolveInitialized(name) {
+        if (this._uninitializedNames.delete(name) &&
+            this._uninitializedNames.size === 0)
+            this._resolveInitialized();
+    }
+
+    /**
+     * @async
      * @param {string} sender - the bus name that invoked the checked method
      * @returns {bool}
      */
-    _isSenderAllowed(sender) {
+    async _isSenderAllowed(sender) {
+        await this._initializedPromise;
         return [...this._allowlistMap.values()].includes(sender);
     }
 
@@ -507,15 +529,16 @@ var DBusSenderChecker = class {
      * Check whether the bus name that invoked @invocation maps
      * to an entry in the allow list.
      *
+     * @async
      * @throws
      * @param {Gio.DBusMethodInvocation} invocation - the invocation
      * @returns {void}
      */
-    checkInvocation(invocation) {
+    async checkInvocation(invocation) {
         if (global.context.unsafe_mode)
             return;
 
-        if (this._isSenderAllowed(invocation.get_sender()))
+        if (await this._isSenderAllowed(invocation.get_sender()))
             return;
 
         throw new GLib.Error(Gio.DBusError,

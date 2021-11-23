@@ -117,9 +117,9 @@ var IntrospectService = class {
                 type == Meta.WindowType.UTILITY;
     }
 
-    GetRunningApplicationsAsync(params, invocation) {
+    async GetRunningApplicationsAsync(params, invocation) {
         try {
-            this._senderChecker.checkInvocation(invocation);
+            await this._senderChecker.checkInvocation(invocation);
         } catch (e) {
             invocation.return_gerror(e);
             return;
@@ -128,13 +128,13 @@ var IntrospectService = class {
         invocation.return_value(new GLib.Variant('(a{sa{sv}})', [this._runningApplications]));
     }
 
-    GetWindowsAsync(params, invocation) {
+    async GetWindowsAsync(params, invocation) {
         let focusWindow = global.display.get_focus_window();
         let apps = this._appSystem.get_running();
         let windowsList = {};
 
         try {
-            this._senderChecker.checkInvocation(invocation);
+            await this._senderChecker.checkInvocation(invocation);
         } catch (e) {
             invocation.return_gerror(e);
             return;

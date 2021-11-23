@@ -81,13 +81,14 @@ var GnomeShell = class {
     /**
      * Focus the overview's search entry
      *
+     * @async
      * @param {...any} params - method parameters
      * @param {Gio.DBusMethodInvocation} invocation - the invocation
      * @returns {void}
      */
-    FocusSearchAsync(params, invocation) {
+    async FocusSearchAsync(params, invocation) {
         try {
-            this._senderChecker.checkInvocation(invocation);
+            await this._senderChecker.checkInvocation(invocation);
         } catch (e) {
             invocation.return_gerror(e);
             return;
@@ -100,13 +101,14 @@ var GnomeShell = class {
     /**
      * Show OSD with the specified parameters
      *
+     * @async
      * @param {...any} params - method parameters
      * @param {Gio.DBusMethodInvocation} invocation - the invocation
      * @returns {void}
      */
-    ShowOSDAsync([params], invocation) {
+    async ShowOSDAsync([params], invocation) {
         try {
-            this._senderChecker.checkInvocation(invocation);
+            await this._senderChecker.checkInvocation(invocation);
         } catch (e) {
             invocation.return_gerror(e);
             return;
@@ -138,13 +140,14 @@ var GnomeShell = class {
     /**
      * Focus specified app in the overview's app grid
      *
+     * @async
      * @param {string} id - an application ID
      * @param {Gio.DBusMethodInvocation} invocation - the invocation
      * @returns {void}
      */
-    FocusAppAsync([id], invocation) {
+    async FocusAppAsync([id], invocation) {
         try {
-            this._senderChecker.checkInvocation(invocation);
+            await this._senderChecker.checkInvocation(invocation);
         } catch (e) {
             invocation.return_gerror(e);
             return;
@@ -157,13 +160,14 @@ var GnomeShell = class {
     /**
      * Show the overview's app grid
      *
+     * @async
      * @param {...any} params - method parameters
      * @param {Gio.DBusMethodInvocation} invocation - the invocation
      * @returns {void}
      */
-    ShowApplicationsAsync(params, invocation) {
+    async ShowApplicationsAsync(params, invocation) {
         try {
-            this._senderChecker.checkInvocation(invocation);
+            await this._senderChecker.checkInvocation(invocation);
         } catch (e) {
             invocation.return_gerror(e);
             return;
@@ -173,9 +177,9 @@ var GnomeShell = class {
         invocation.return_value(null);
     }
 
-    GrabAcceleratorAsync(params, invocation) {
+    async GrabAcceleratorAsync(params, invocation) {
         try {
-            this._senderChecker.checkInvocation(invocation);
+            await this._senderChecker.checkInvocation(invocation);
         } catch (e) {
             invocation.return_gerror(e);
             return;
@@ -187,9 +191,9 @@ var GnomeShell = class {
         invocation.return_value(GLib.Variant.new('(u)', [bindingAction]));
     }
 
-    GrabAcceleratorsAsync(params, invocation) {
+    async GrabAcceleratorsAsync(params, invocation) {
         try {
-            this._senderChecker.checkInvocation(invocation);
+            await this._senderChecker.checkInvocation(invocation);
         } catch (e) {
             invocation.return_gerror(e);
             return;
@@ -205,9 +209,9 @@ var GnomeShell = class {
         invocation.return_value(GLib.Variant.new('(au)', [bindingActions]));
     }
 
-    UngrabAcceleratorAsync(params, invocation) {
+    async UngrabAcceleratorAsync(params, invocation) {
         try {
-            this._senderChecker.checkInvocation(invocation);
+            await this._senderChecker.checkInvocation(invocation);
         } catch (e) {
             invocation.return_gerror(e);
             return;
@@ -220,9 +224,9 @@ var GnomeShell = class {
         invocation.return_value(GLib.Variant.new('(b)', [ungrabSucceeded]));
     }
 
-    UngrabAcceleratorsAsync(params, invocation) {
+    async UngrabAcceleratorsAsync(params, invocation) {
         try {
-            this._senderChecker.checkInvocation(invocation);
+            await this._senderChecker.checkInvocation(invocation);
         } catch (e) {
             invocation.return_gerror(e);
             return;
@@ -307,9 +311,9 @@ var GnomeShell = class {
         this._grabbers.delete(name);
     }
 
-    ShowMonitorLabelsAsync(params, invocation) {
+    async ShowMonitorLabelsAsync(params, invocation) {
         try {
-            this._senderChecker.checkInvocation(invocation);
+            await this._senderChecker.checkInvocation(invocation);
         } catch (e) {
             invocation.return_gerror(e);
             return;
@@ -321,9 +325,9 @@ var GnomeShell = class {
         invocation.return_value(null);
     }
 
-    HideMonitorLabelsAsync(params, invocation) {
+    async HideMonitorLabelsAsync(params, invocation) {
         try {
-            this._senderChecker.checkInvocation(invocation);
+            await this._senderChecker.checkInvocation(invocation);
         } catch (e) {
             invocation.return_gerror(e);
             return;

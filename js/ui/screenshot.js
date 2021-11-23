@@ -37,7 +37,7 @@ var ScreenshotService = class {
         Gio.DBus.session.own_name('org.gnome.Shell.Screenshot', Gio.BusNameOwnerFlags.REPLACE, null, null);
     }
 
-    _createScreenshot(invocation, needsDisk = true, restrictCallers = true) {
+    async _createScreenshot(invocation, needsDisk = true, restrictCallers = true) {
         let lockedDown = false;
         if (needsDisk)
             lockedDown = this._lockdownSettings.get_boolean('disable-save-to-disk');
@@ -55,7 +55,7 @@ var ScreenshotService = class {
             return null;
         } else if (restrictCallers) {
             try {
-                this._senderChecker.checkInvocation(invocation);
+                await this._senderChecker.checkInvocation(invocation);
             } catch (e) {
                 invocation.return_gerror(e);
                 return null;
@@ -200,7 +200,7 @@ var ScreenshotService = class {
                                             "Invalid params");
             return;
         }
-        let screenshot = this._createScreenshot(invocation);
+        let screenshot = await this._createScreenshot(invocation);
         if (!screenshot)
             return;
 
@@ -223,7 +223,7 @@ var ScreenshotService = class {
 
     async ScreenshotWindowAsync(params, invocation) {
         let [includeFrame, includeCursor, flash, filename] = params;
-        let screenshot = this._createScreenshot(invocation);
+        let screenshot = await this._createScreenshot(invocation);
         if (!screenshot)
             return;
 
@@ -246,7 +246,7 @@ var ScreenshotService = class {
 
     async ScreenshotAsync(params, invocation) {
         let [includeCursor, flash, filename] = params;
-        let screenshot = this._createScreenshot(invocation);
+        let screenshot = await this._createScreenshot(invocation);
         if (!screenshot)
             return;
 
@@ -269,7 +269,7 @@ var ScreenshotService = class {
 
     async SelectAreaAsync(params, invocation) {
         try {
-            this._senderChecker.checkInvocation(invocation);
+            await this._senderChecker.checkInvocation(invocation);
         } catch (e) {
             invocation.return_gerror(e);
             return;
@@ -289,9 +289,9 @@ var ScreenshotService = class {
         }
     }
 
-    FlashAreaAsync(params, invocation) {
+    async FlashAreaAsync(params, invocation) {
         try {
-            this._senderChecker.checkInvocation(invocation);
+            await this._senderChecker.checkInvocation(invocation);
         } catch (e) {
             invocation.return_gerror(e);
             return;
@@ -311,7 +311,7 @@ var ScreenshotService = class {
     }
 
     async PickColorAsync(params, invocation) {
-        const screenshot = this._createScreenshot(invocation, false, false);
+        const screenshot = await this._createScreenshot(invocation, false, false);
         if (!screenshot)
             return;
 
