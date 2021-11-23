@@ -247,6 +247,23 @@ function _initializeUI() {
 
     global.display.connect('gl-video-memory-purged', loadTheme);
 
+    global.context.connect('notify::unsafe-mode', () => {
+        if (!global.context.unsafe_mode)
+            return; // we're safe
+        if (lookingGlass?.isOpen)
+            return; // assume user action
+
+        const source = new MessageTray.SystemNotificationSource();
+        messageTray.add(source);
+        const notification = new MessageTray.Notification(source,
+            _('System was put in unsafe mode'),
+            _('Applications now have unrestricted access'));
+        notification.addAction(_('Undo'),
+            () => (global.context.unsafe_mode = false));
+        notification.setTransient(true);
+        source.showNotification(notification);
+    });
+
     // Provide the bus object for gnome-session to
     // initiate logouts.
     EndSessionDialog.init();
