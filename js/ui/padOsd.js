@@ -638,7 +638,6 @@ var PadOsd = GObject.registerClass({
         this._settings = settings;
         this._imagePath = imagePath;
         this._editionMode = editionMode;
-        this._capturedEventId = global.stage.connect('captured-event', this._onCapturedEvent.bind(this));
         this._padChooser = null;
 
         let seat = Clutter.get_default_backend().get_default_seat();
@@ -762,7 +761,7 @@ var PadOsd = GObject.registerClass({
         this._padDiagram.updateLabels(this._getActionText.bind(this));
     }
 
-    _onCapturedEvent(actor, event) {
+    vfunc_captured_event(event) {
         let isModeSwitch =
             (event.type() == Clutter.EventType.PAD_BUTTON_PRESS ||
              event.type() == Clutter.EventType.PAD_BUTTON_RELEASE) &&
@@ -931,11 +930,6 @@ var PadOsd = GObject.registerClass({
         if (this._deviceAddedId != 0) {
             seat.disconnect(this._deviceAddedId);
             this._deviceAddedId = 0;
-        }
-
-        if (this._capturedEventId != 0) {
-            global.stage.disconnect(this._capturedEventId);
-            this._capturedEventId = 0;
         }
 
         this.emit('closed');
