@@ -181,9 +181,13 @@ var GrabHelper = class GrabHelper {
     _takeModalGrab() {
         let firstGrab = this._modalCount == 0;
         if (firstGrab) {
-            if (!Main.pushModal(this._owner, this._modalParams))
+            let grab = Main.pushModal(this._owner, this._modalParams);
+            if (grab.get_seat_state() === Clutter.GrabState.NONE) {
+                Main.popModal(grab);
                 return false;
+            }
 
+            this._grab = grab;
             this._capturedEventId = this._owner.connect('captured-event',
                 (actor, event) => {
                     return this.onCapturedEvent(event);
@@ -202,7 +206,8 @@ var GrabHelper = class GrabHelper {
         this._owner.disconnect(this._capturedEventId);
         this._ignoreUntilRelease = false;
 
-        Main.popModal(this._owner);
+        Main.popModal(this._grab);
+        this._grab = null;
     }
 
     // ignoreRelease:

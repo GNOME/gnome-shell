@@ -117,7 +117,6 @@ var _Draggable = class _Draggable {
         this._animationInProgress = false; // The drag is over and the item is in the process of animating to its original position (snapping back or reverting).
         this._dragCancellable = true;
 
-        this._eventsGrabbed = false;
         this._capturedEventId = 0;
     }
 
@@ -208,18 +207,22 @@ var _Draggable = class _Draggable {
     }
 
     _grabEvents(device, touchSequence) {
-        if (!this._eventsGrabbed) {
-            this._eventsGrabbed = Main.pushModal(_getEventHandlerActor());
-            if (this._eventsGrabbed)
+        if (!this._eventsGrab) {
+            let grab = Main.pushModal(_getEventHandlerActor());
+            if ((grab.get_seat_state() & Clutter.GrabState.POINTER) !== 0) {
                 this._grabDevice(_getEventHandlerActor(), device, touchSequence);
+                this._eventsGrab = grab;
+            } else {
+                Main.popModal(grab);
+            }
         }
     }
 
     _ungrabEvents() {
-        if (this._eventsGrabbed) {
+        if (this._eventsGrab) {
             this._ungrabDevice();
-            Main.popModal(_getEventHandlerActor());
-            this._eventsGrabbed = false;
+            Main.popModal(this._eventsGrab);
+            this._eventsGrab = null;
         }
     }
 

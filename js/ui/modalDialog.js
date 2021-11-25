@@ -204,7 +204,8 @@ var ModalDialog = GObject.registerClass({
             this._savedKeyFocus = focus;
         else
             this._savedKeyFocus = null;
-        Main.popModal(this, timestamp);
+        Main.popModal(this._grab, timestamp);
+        this._grab = null;
         this._hasModal = false;
 
         if (!this._shellReactive)
@@ -218,9 +219,13 @@ var ModalDialog = GObject.registerClass({
         let params = { actionMode: this._actionMode };
         if (timestamp)
             params['timestamp'] = timestamp;
-        if (!Main.pushModal(this, params))
+        let grab = Main.pushModal(this, params);
+        if (grab.get_seat_state() === Clutter.GrabState.NONE) {
+            Main.popModal(grab);
             return false;
+        }
 
+        this._grab = grab;
         Main.layoutManager.emit('system-modal-opened');
 
         this._hasModal = true;

@@ -192,14 +192,15 @@ var ScreenShield = class {
         if (this._isModal)
             return true;
 
-        this._isModal = Main.pushModal(this.actor, { actionMode: Shell.ActionMode.LOCK_SCREEN });
-        if (this._isModal)
-            return true;
+        let grab = Main.pushModal(this.actor, { actionMode: Shell.ActionMode.LOCK_SCREEN });
 
-        // We failed to get a pointer grab, it means that
-        // something else has it. Try with a keyboard grab only
-        this._isModal = Main.pushModal(this.actor, { options: Meta.ModalOptions.POINTER_ALREADY_GRABBED,
-                                                     actionMode: Shell.ActionMode.LOCK_SCREEN });
+        // We expect at least a keyboard grab here
+        this._isModal = (grab.get_seat_state() & Clutter.GrabState.KEYBOARD) !== 0;
+        if (this._isModal)
+            this._grab = grab;
+        else
+            Main.popModal(grab);
+
         return this._isModal;
     }
 
@@ -550,7 +551,8 @@ var ScreenShield = class {
             this._dialog.popModal();
 
         if (this._isModal) {
-            Main.popModal(this.actor);
+            Main.popModal(this._grab);
+            this._grab = null;
             this._isModal = false;
         }
 

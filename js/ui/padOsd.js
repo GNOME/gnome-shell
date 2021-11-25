@@ -723,7 +723,7 @@ var PadOsd = GObject.registerClass({
         buttonBox.add_actor(this._editButton);
 
         this._syncEditionMode();
-        Main.pushModal(this);
+        this._grab = Main.pushModal(this);
     }
 
     _updatePadChooser() {
@@ -919,7 +919,8 @@ var PadOsd = GObject.registerClass({
     }
 
     _onDestroy() {
-        Main.popModal(this);
+        Main.popModal(this._grab);
+        this._grab = null;
         this._actionEditor.close();
 
         let seat = Clutter.get_default_backend().get_default_seat();

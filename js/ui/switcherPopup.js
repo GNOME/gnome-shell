@@ -1,7 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported SwitcherPopup, SwitcherList */
 
-const { Clutter, GLib, GObject, Meta, St } = imports.gi;
+const { Clutter, GLib, GObject, St } = imports.gi;
 
 const Main = imports.ui.main;
 
@@ -100,11 +100,13 @@ var SwitcherPopup = GObject.registerClass({
         if (this._items.length == 0)
             return false;
 
-        if (!Main.pushModal(this)) {
-            // Probably someone else has a pointer grab, try again with keyboard only
-            if (!Main.pushModal(this, { options: Meta.ModalOptions.POINTER_ALREADY_GRABBED }))
-                return false;
+        let grab = Main.pushModal(this);
+        // We expect at least a keyboard grab here
+        if ((grab.get_seat_state() & Clutter.GrabState.KEYBOARD) === 0) {
+            Main.popModal(grab);
+            return false;
         }
+        this._grab = grab;
         this._haveModal = true;
         this._modifierMask = primaryModifier(mask);
 
@@ -306,7 +308,8 @@ var SwitcherPopup = GObject.registerClass({
 
     _popModal() {
         if (this._haveModal) {
-            Main.popModal(this);
+            Main.popModal(this._grab);
+            this._grab = null;
             this._haveModal = false;
         }
     }

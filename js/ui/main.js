@@ -503,9 +503,9 @@ function notifyError(msg, details) {
     notify(msg, details);
 }
 
-function _findModal(actor) {
+function _findModal(grab) {
     for (let i = 0; i < modalActorFocusStack.length; i++) {
-        if (modalActorFocusStack[i].actor == actor)
+        if (modalActorFocusStack[i].grab === grab)
             return i;
     }
     return -1;
@@ -537,7 +537,7 @@ function _findModal(actor) {
  *                global keybindings; the default of NONE will filter
  *                out all keybindings
  *
- * @returns {bool}: true iff we successfully acquired a grab or already had one
+ * @returns {Clutter.Grab}: the grab handle created
  */
 function pushModal(actor, params) {
     params = Params.parse(params, { timestamp: global.get_current_time(),
@@ -551,9 +551,9 @@ function pushModal(actor, params) {
 
     modalCount += 1;
     let actorDestroyId = actor.connect('destroy', () => {
-        let index = _findModal(actor);
+        let index = _findModal(grab);
         if (index >= 0)
-            popModal(actor);
+            popModal(grab);
     });
 
     let prevFocus = global.stage.get_key_focus();
@@ -577,14 +577,13 @@ function pushModal(actor, params) {
 
     actionMode = params.actionMode;
     global.stage.set_key_focus(actor);
-    return true;
+    return grab;
 }
 
 /**
  * popModal:
- * @param {Clutter.Actor} actor: the actor passed to original invocation
- *     of pushModal()
- * @param {number=} timestamp: optional timestamp
+ * @param {Clutter.Grab} grab - the grab given by pushModal()
+ * @param {number=} timestamp - optional timestamp
  *
  * Reverse the effect of pushModal(). If this invocation is undoing
  * the topmost invocation, then the focus will be restored to the
@@ -594,11 +593,11 @@ function pushModal(actor, params) {
  * initiated event. If not provided then the value of
  * global.get_current_time() is assumed.
  */
-function popModal(actor, timestamp) {
+function popModal(grab, timestamp) {
     if (timestamp == undefined)
         timestamp = global.get_current_time();
 
-    let focusIndex = _findModal(actor);
+    let focusIndex = _findModal(grab);
     if (focusIndex < 0) {
         global.stage.set_key_focus(null);
         actionMode = Shell.ActionMode.NORMAL;
@@ -611,8 +610,7 @@ function popModal(actor, timestamp) {
     let record = modalActorFocusStack[focusIndex];
     record.actor.disconnect(record.destroyId);
 
-    let grab = record.grab;
-    grab.dismiss();
+    record.grab.dismiss();
 
     if (focusIndex == modalActorFocusStack.length - 1) {
         if (record.prevFocus)

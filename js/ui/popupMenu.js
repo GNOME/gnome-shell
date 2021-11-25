@@ -1329,8 +1329,10 @@ var PopupMenuManager = class {
     }
 
     removeMenu(menu) {
-        if (menu == this.activeMenu)
-            Main.popModal(menu.actor);
+        if (menu === this.activeMenu) {
+            Main.popModal(this._grab);
+            this._grab = null;
+        }
 
         let position = this._findMenu(menu);
         if (position == -1) // not a menu we manage
@@ -1353,12 +1355,13 @@ var PopupMenuManager = class {
         if (open) {
             if (this.activeMenu)
                 this.activeMenu.close(BoxPointer.PopupAnimation.FADE);
-            Main.pushModal(menu.actor, this._grabParams);
+            this._grab = Main.pushModal(menu.actor, this._grabParams);
             this.activeMenu = menu;
         } else {
             if (this.activeMenu === menu)
                 this.activeMenu = null;
-            Main.popModal(menu.actor);
+            Main.popModal(this._grab);
+            this._grab = null;
         }
     }
 

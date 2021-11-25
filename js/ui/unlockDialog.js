@@ -904,9 +904,13 @@ var UnlockDialog = GObject.registerClass({
             timestamp,
             actionMode: Shell.ActionMode.UNLOCK_SCREEN,
         };
-        if (!Main.pushModal(this, modalParams))
+        let grab = Main.pushModal(this, modalParams);
+        if (grab.get_seat_state() !== Clutter.GrabState.ALL) {
+            Main.popModal(grab);
             return false;
+        }
 
+        this._grab = grab;
         this._isModal = true;
 
         return true;
@@ -918,7 +922,8 @@ var UnlockDialog = GObject.registerClass({
 
     popModal(timestamp) {
         if (this._isModal) {
-            Main.popModal(this, timestamp);
+            Main.popModal(this._grab, timestamp);
+            this._grab = null;
             this._isModal = false;
         }
     }

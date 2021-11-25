@@ -492,9 +492,12 @@ var Overview = class {
             let shouldBeModal = !this._inXdndDrag;
             if (shouldBeModal && !this._modal) {
                 let actionMode = Shell.ActionMode.OVERVIEW;
-                if (Main.pushModal(global.stage, { actionMode })) {
+                let grab = Main.pushModal(global.stage, { actionMode });
+                if (grab.get_seat_state() !== Clutter.GrabState.NONE) {
+                    this._grab = grab;
                     this._modal = true;
                 } else {
+                    Main.popModal(grab);
                     this.hide();
                     return false;
                 }
@@ -502,7 +505,8 @@ var Overview = class {
         } else {
             // eslint-disable-next-line no-lonely-if
             if (this._modal) {
-                Main.popModal(global.stage);
+                Main.popModal(this._grab);
+                this._grab = false;
                 this._modal = false;
             }
         }
