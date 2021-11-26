@@ -1400,6 +1400,48 @@ class ScreenshotUI extends St.Widget {
             return Clutter.EVENT_STOP;
         }
 
+        if (symbol === Clutter.KEY_s || symbol === Clutter.KEY_S) {
+            this._selectionButton.checked = true;
+            return Clutter.EVENT_STOP;
+        }
+
+        if (symbol === Clutter.KEY_c || symbol === Clutter.KEY_C) {
+            this._screenButton.checked = true;
+            return Clutter.EVENT_STOP;
+        }
+
+        if (this._windowButton.reactive &&
+            (symbol === Clutter.KEY_w || symbol === Clutter.KEY_W)) {
+            this._windowButton.checked = true;
+            return Clutter.EVENT_STOP;
+        }
+
+        if (symbol === Clutter.KEY_Left || symbol === Clutter.KEY_Right ||
+            symbol === Clutter.KEY_Up || symbol === Clutter.KEY_Down) {
+            let direction;
+            if (symbol === Clutter.KEY_Left)
+                direction = St.DirectionType.LEFT;
+            else if (symbol === Clutter.KEY_Right)
+                direction = St.DirectionType.RIGHT;
+            else if (symbol === Clutter.KEY_Up)
+                direction = St.DirectionType.UP;
+            else if (symbol === Clutter.KEY_Down)
+                direction = St.DirectionType.DOWN;
+
+            if (this._windowButton.checked) {
+                const window =
+                    this._windowSelectors.flatMap(selector => selector.windows())
+                        .find(win => win.checked) ?? null;
+                this.navigate_focus(window, direction, false);
+            } else if (this._screenButton.checked) {
+                const screen =
+                    this._screenSelectors.find(selector => selector.checked) ?? null;
+                this.navigate_focus(screen, direction, false);
+            }
+
+            return Clutter.EVENT_STOP;
+        }
+
         return super.vfunc_key_press_event(event);
     }
 });
