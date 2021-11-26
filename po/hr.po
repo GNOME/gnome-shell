@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2021-11-06 13:27+0000\n"
-"PO-Revision-Date: 2021-11-11 10:44+0100\n"
+"POT-Creation-Date: 2021-11-26 16:19+0000\n"
+"PO-Revision-Date: 2021-11-26 19:03+0100\n"
 "Last-Translator: gogo <trebelnik2@gmail.com>\n"
 "Language-Team: Croatian <hr@li.org>\n"
 "Language: hr\n"
@@ -794,7 +794,7 @@ msgstr "Zabrani pristup"
 msgid "Grant Access"
 msgstr "Dopusti pristup"
 
-#: js/ui/appDisplay.js:1846
+#: js/ui/appDisplay.js:1791
 msgid "Unnamed Folder"
 msgstr "Neimenovana mapa"
 
@@ -1398,11 +1398,11 @@ msgstr "Instaliraj proširenje"
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "Preuzmi i instaliraj “%s” sa extensions.gnome.org?"
 
-#: js/ui/extensionSystem.js:252
+#: js/ui/extensionSystem.js:266
 msgid "Extension Updates Available"
 msgstr "Nadopuna proširenja je dostupna"
 
-#: js/ui/extensionSystem.js:253
+#: js/ui/extensionSystem.js:267
 msgid "Extension updates are ready to be installed."
 msgstr "Nadopune proširenja su spremne za instalaciju."
 
@@ -1550,11 +1550,23 @@ msgstr "Pogledaj izvor"
 msgid "Web Page"
 msgstr "Web stranica"
 
-#: js/ui/main.js:290
+#: js/ui/main.js:259
+msgid "System was put in unsafe mode"
+msgstr "Sustav je stavljen u nesiguran način rada"
+
+#: js/ui/main.js:260
+msgid "Applications now have unrestricted access"
+msgstr "Aplikacije sada imaju neograničen pristup"
+
+#: js/ui/main.js:261 js/ui/overview.js:58
+msgid "Undo"
+msgstr "Poništi"
+
+#: js/ui/main.js:307
 msgid "Logged in as a privileged user"
 msgstr "Prijavljeni ste kao administratorski korisnik"
 
-#: js/ui/main.js:291
+#: js/ui/main.js:308
 msgid ""
 "Running a session as a privileged user should be avoided for security "
 "reasons. If possible, you should log in as a normal user."
@@ -1563,11 +1575,11 @@ msgstr ""
 "izbjegavati iz sigurnosnih razloga. Ako je moguće, trebate se prijaviti kao "
 "normalan korisnik."
 
-#: js/ui/main.js:340
+#: js/ui/main.js:357
 msgid "Screen Lock disabled"
 msgstr "Zaključavanje zaslona je onemogućeno"
 
-#: js/ui/main.js:341
+#: js/ui/main.js:358
 msgid "Screen Locking requires the GNOME display manager."
 msgstr "Zaključavanje zaslona zahtijeva GNOME upravitelja zaslona."
 
@@ -1594,10 +1606,6 @@ msgstr "Upiši za pretragu"
 #: js/ui/overviewControls.js:392
 msgid "Applications"
 msgstr "Aplikacije"
-
-#: js/ui/overview.js:58
-msgid "Undo"
-msgstr "Poništi"
 
 #. Translators: This is the main view to select
 #. activities. See also note for "Activities" string.
