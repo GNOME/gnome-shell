@@ -1,7 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported ScreenshotService, ScreenshotUI, showScreenshotUI */
 
-const { Clutter, Gio, GObject, GLib, Gtk, Meta, Shell, St } = imports.gi;
+const { Clutter, Cogl, Gio, GObject, GLib, Gtk, Meta, Shell, St } = imports.gi;
 
 const GrabHelper = imports.ui.grabHelper;
 const Layout = imports.ui.layout;
@@ -1531,7 +1531,7 @@ class ScreenshotUI extends St.Widget {
         this.close();
     }
 
-    _storeScreenshot(bytes) {
+    _storeScreenshot(bytes, pixbuf) {
         // Store to the clipboard first in case storing to file fails.
         const clipboard = St.Clipboard.get_default();
         clipboard.set_content(St.ClipboardType.CLIPBOARD, 'image/png', bytes);
@@ -1589,6 +1589,20 @@ class ScreenshotUI extends St.Widget {
         // Add it to recent files.
         Gtk.RecentManager.get_default().add_item(file.get_uri());
 
+        // Create a St.ImageContent icon for the notification. We want
+        // St.ImageContent specifically because it preserves the aspect ratio when
+        // shown in a notification.
+        const pixels = pixbuf.read_pixel_bytes();
+        const content =
+            St.ImageContent.new_with_preferred_size(pixbuf.width, pixbuf.height);
+        content.set_bytes(
+            pixels,
+            Cogl.PixelFormat.RGBA_8888,
+            pixbuf.width,
+            pixbuf.height,
+            pixbuf.rowstride
+        );
+
         // Show a notification.
         const source = new MessageTray.Source(
             // Translators: notification source name.
@@ -1601,10 +1615,7 @@ class ScreenshotUI extends St.Widget {
             _('Screenshot captured'),
             // Translators: notification body when a screenshot was captured.
             _('You can paste the image from the clipboard.'),
-            {
-                datetime: time,
-                gicon: Gio.BytesIcon.new(bytes),
-            }
+            { datetime: time, gicon: content }
         );
         // Translators: button on the screenshot notification.
         notification.addAction(_('Show in Files'), () => {
@@ -1660,9 +1671,9 @@ class ScreenshotUI extends St.Widget {
                 this._cursor.y * this._scale,
                 this._cursorScale,
                 stream
-            ).then(() => {
+            ).then(pixbuf => {
                 stream.close(null);
-                this._storeScreenshot(stream.steal_as_bytes());
+                this._storeScreenshot(stream.steal_as_bytes(), pixbuf);
             }).catch(err => {
                 logError(err, 'Error capturing screenshot');
             });
@@ -1693,9 +1704,9 @@ class ScreenshotUI extends St.Widget {
                 window.cursorPoint.y * window.bufferScale,
                 this._cursorScale,
                 stream
-            ).then(() => {
+            ).then(pixbuf => {
                 stream.close(null);
-                this._storeScreenshot(stream.steal_as_bytes());
+                this._storeScreenshot(stream.steal_as_bytes(), pixbuf);
             }).catch(err => {
                 logError(err, 'Error capturing screenshot');
             });

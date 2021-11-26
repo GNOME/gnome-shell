@@ -84,7 +84,7 @@ void shell_screenshot_composite_to_stream (CoglTexture         *texture,
                                            GOutputStream       *stream,
                                            GAsyncReadyCallback  callback,
                                            gpointer             user_data);
-gboolean shell_screenshot_composite_to_stream_finish (GAsyncResult  *result,
-                                                      GError       **error);
+GdkPixbuf *shell_screenshot_composite_to_stream_finish (GAsyncResult  *result,
+                                                        GError       **error);
 
 #endif /* ___SHELL_SCREENSHOT_H__ */

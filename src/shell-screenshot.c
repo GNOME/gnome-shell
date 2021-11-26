@@ -1049,7 +1049,7 @@ shell_screenshot_pick_color_finish (ShellScreenshot  *screenshot,
 #undef INDEX_B
 
 static void
-composite_to_stream_on_png_saved (GObject      *source,
+composite_to_stream_on_png_saved (GObject      *pixbuf,
                                   GAsyncResult *result,
                                   gpointer      user_data)
 {
@@ -1059,7 +1059,7 @@ composite_to_stream_on_png_saved (GObject      *source,
   if (!gdk_pixbuf_save_to_stream_finish (result, &error))
     g_task_return_error (task, error);
   else
-    g_task_return_boolean (task, TRUE);
+    g_task_return_pointer (task, g_object_ref (pixbuf), g_object_unref);
 
   g_object_unref (task);
 }
@@ -1193,10 +1193,11 @@ shell_screenshot_composite_to_stream (CoglTexture         *texture,
  * Finish the asynchronous operation started by
  * shell_screenshot_composite_to_stream () and obtain its result.
  *
- * Returns: whether the operation was successful
+ * Returns: (transfer full) (nullable): a GdkPixbuf with the final image if the
+ * operation was successful, or NULL on error.
  *
  */
-gboolean
+GdkPixbuf *
 shell_screenshot_composite_to_stream_finish (GAsyncResult  *result,
                                              GError       **error)
 {
@@ -1205,7 +1206,7 @@ shell_screenshot_composite_to_stream_finish (GAsyncResult  *result,
                                                   shell_screenshot_composite_to_stream),
                         FALSE);
 
-  return g_task_propagate_boolean (G_TASK (result), error);
+  return g_task_propagate_pointer (G_TASK (result), error);
 }
 
 ShellScreenshot *
