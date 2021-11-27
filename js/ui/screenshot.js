@@ -1237,6 +1237,8 @@ class ScreenshotUI extends St.Widget {
         this._windowSelectors = [];
         this._rebuildMonitorBins();
 
+        this._screencastInProgress = false;
+
         Main.layoutManager.connect('monitors-changed', () => {
             // Nope, not dealing with monitor changes.
             this.close(true);
@@ -1820,6 +1822,19 @@ class ScreenshotUI extends St.Widget {
                 logError(err, 'Error capturing screenshot');
             });
         }
+    }
+
+    stopScreencast() {
+        if (!this._screencastInProgress)
+            return;
+
+        // Set this before calling the method as the screen recording indicator
+        // will check it before the success callback fires.
+        this._screencastInProgress = false;
+    }
+
+    get screencastInProgress() {
+        return this._screencastInProgress;
     }
 
     vfunc_key_press_event(event) {
