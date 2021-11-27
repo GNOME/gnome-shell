@@ -995,8 +995,16 @@ class UIWindowSelector extends St.Widget {
     }
 });
 
-var ScreenshotUI = GObject.registerClass(
-class ScreenshotUI extends St.Widget {
+var ScreenshotUI = GObject.registerClass({
+    Properties: {
+        'screencast-in-progress': GObject.ParamSpec.boolean(
+            'screencast-in-progress',
+            'screencast-in-progress',
+            'screencast-in-progress',
+            GObject.ParamFlags.READABLE,
+            false),
+    },
+}, class ScreenshotUI extends St.Widget {
     _init() {
         super._init({
             name: 'screenshot-ui',
@@ -1009,6 +1017,8 @@ class ScreenshotUI extends St.Widget {
             visible: false,
             reactive: true,
         });
+
+        this._screencastInProgress = false;
 
         this._lockdownSettings = new Gio.Settings({ schema_id: 'org.gnome.desktop.lockdown' });
 
@@ -1818,6 +1828,30 @@ class ScreenshotUI extends St.Widget {
                 logError(err, 'Error capturing screenshot');
             });
         }
+    }
+
+    stopScreencast() {
+        if (!this._screencastInProgress)
+            return;
+
+        // Set this before calling the method as the screen recording indicator
+        // will check it before the success callback fires.
+        this._setScreencastInProgress(false);
+    }
+
+    get screencast_in_progress() {
+        if (!('_screencastInProgress' in this))
+            return false;
+
+        return this._screencastInProgress;
+    }
+
+    _setScreencastInProgress(inProgress) {
+        if (this._screencastInProgress === inProgress)
+            return;
+
+        this._screencastInProgress = inProgress;
+        this.notify('screencast-in-progress');
     }
 
     vfunc_key_press_event(event) {
