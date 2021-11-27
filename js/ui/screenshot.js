@@ -1035,6 +1035,22 @@ var ScreenshotUI = GObject.registerClass({
         Main.layoutManager.screenshotUIGroup.add_child(
             this._stageScreenshotContainer);
 
+        this._screencastAreaIndicator = new UIAreaIndicator({
+            style_class: 'screenshot-ui-screencast-area-indicator',
+            visible: false,
+        });
+        this._screencastAreaIndicator.add_constraint(new Clutter.BindConstraint({
+            source: global.stage,
+            coordinate: Clutter.BindCoordinate.ALL,
+        }));
+        this.bind_property(
+            'screencast-in-progress',
+            this._screencastAreaIndicator,
+            'visible',
+            GObject.BindingFlags.DEFAULT);
+        // Add it directly to the stage so that it's above popup menus.
+        global.stage.add_child(this._screencastAreaIndicator);
+
         Main.layoutManager.screenshotUIGroup.add_child(this);
 
         this._stageScreenshot = new St.Widget({ style_class: 'screenshot-ui-screen-screenshot' });
@@ -1845,6 +1861,19 @@ var ScreenshotUI = GObject.registerClass({
 
         const [x, y, w, h] = this._getSelectedGeometry(false);
         const drawCursor = this._cursor.visible;
+
+        // Set up the screencast indicator rect.
+        if (this._selectionButton.checked) {
+            this._screencastAreaIndicator.setSelectionRect(
+                ...this._areaSelector.getGeometry());
+        } else if (this._screenButton.checked) {
+            const index =
+                this._screenSelectors.findIndex(screen => screen.checked);
+            const monitor = Main.layoutManager.monitors[index];
+
+            this._screencastAreaIndicator.setSelectionRect(
+                monitor.x, monitor.y, monitor.width, monitor.height);
+        }
 
         // Close instantly so the fade-out doesn't get recorded.
         this.close(true);
