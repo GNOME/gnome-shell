@@ -1027,6 +1027,17 @@ class ScreenshotUI extends St.Widget {
         Main.layoutManager.screenshotUIGroup.add_child(
             this._stageScreenshotContainer);
 
+        this._screencastAreaIndicator = new UIAreaIndicator({
+            style_class: 'screenshot-ui-screencast-area-indicator',
+            visible: false,
+        });
+        this._screencastAreaIndicator.add_constraint(new Clutter.BindConstraint({
+            source: global.stage,
+            coordinate: Clutter.BindCoordinate.ALL,
+        }));
+        // Add it directly to the stage so that it's above popup menus.
+        global.stage.add_child(this._screencastAreaIndicator);
+
         Main.layoutManager.screenshotUIGroup.add_child(this);
 
         this._stageScreenshot = new St.Widget({ style_class: 'screenshot-ui-screen-screenshot' });
@@ -1840,8 +1851,23 @@ class ScreenshotUI extends St.Widget {
         const [x, y, w, h] = this._getSelectedGeometry(false);
         const drawCursor = this._cursor.visible;
 
+        // Set up the screencast indicator rect.
+        if (this._selectionButton.checked) {
+            this._screencastAreaIndicator.setSelectionRect(
+                ...this._areaSelector.getGeometry());
+        } else if (this._screenButton.checked) {
+            const index =
+                this._screenSelectors.findIndex(screen => screen.checked);
+            const monitor = Main.layoutManager.monitors[index];
+
+            this._screencastAreaIndicator.setSelectionRect(
+                monitor.x, monitor.y, monitor.width, monitor.height);
+        }
+
         // Close instantly so the fade-out doesn't get recorded.
         this.close(true);
+
+        this._screencastAreaIndicator.show();
 
         // This is a bit awkward because creating a proxy synchronously hangs Shell.
         const doStartScreencast = () => {
@@ -1861,12 +1887,14 @@ class ScreenshotUI extends St.Widget {
                 { 'draw-cursor': new GLib.Variant('b', drawCursor) },
                 ([success, _filename], error) => {
                     if (error !== null) {
+                        this._screencastAreaIndicator.hide();
                         this._screencastInProgress = false;
                         log('Error starting screencast: %s'.format(error.message));
                         return;
                     }
 
                     if (!success) {
+                        this._screencastAreaIndicator.hide();
                         this._screencastInProgress = false;
                         log('Error starting screencast');
                     }
@@ -1901,6 +1929,8 @@ class ScreenshotUI extends St.Widget {
     stopScreencast() {
         if (!this._screencastInProgress)
             return;
+
+        this._screencastAreaIndicator.hide();
 
         // Set this before calling the method as the screen recording indicator
         // will check it before the success callback fires.
