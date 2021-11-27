@@ -111,6 +111,10 @@ const SECONDARY_COLOR_KEY = 'secondary-color';
 const COLOR_SHADING_TYPE_KEY = 'color-shading-type';
 const BACKGROUND_STYLE_KEY = 'picture-options';
 const PICTURE_URI_KEY = 'picture-uri';
+const PICTURE_URI_DARK_KEY = 'picture-uri-dark';
+
+const INTERFACE_SCHEMA = 'org.gnome.desktop.interface';
+const COLOR_SCHEME_KEY = 'color-scheme';
 
 var FADE_ANIMATION_TIME = 1000;
 
@@ -227,11 +231,13 @@ var Background = GObject.registerClass({
     Signals: { 'loaded': {}, 'bg-changed': {} },
 }, class Background extends Meta.Background {
     _init(params) {
-        params = Params.parse(params, { monitorIndex: 0,
-                                        layoutManager: Main.layoutManager,
-                                        settings: null,
-                                        file: null,
-                                        style: null });
+        params = Params.parse(params, {
+            monitorIndex: 0,
+            layoutManager: Main.layoutManager,
+            settings: null,
+            file: null,
+            style: null,
+        });
 
         super._init({ meta_display: global.display });
 
@@ -243,6 +249,8 @@ var Background = GObject.registerClass({
         this._fileWatches = {};
         this._cancellable = new Gio.Cancellable();
         this.isLoaded = false;
+
+        this._interfaceSettings = new Gio.Settings({ schema_id: INTERFACE_SCHEMA });
 
         this._clock = new GnomeDesktop.WallClock();
         this._timezoneChangedId = this._clock.connect('notify::timezone',
@@ -261,6 +269,10 @@ var Background = GObject.registerClass({
 
         this._settingsChangedSignalId =
             this._settings.connect('changed', this._emitChangedSignal.bind(this));
+
+        this._colorSchemeChangedSignalId =
+            this._interfaceSettings.connect('changed::%s'.format(COLOR_SCHEME_KEY),
+                this._emitChangedSignal.bind(this));
 
         this._load();
     }
@@ -289,6 +301,10 @@ var Background = GObject.registerClass({
         if (this._settingsChangedSignalId != 0)
             this._settings.disconnect(this._settingsChangedSignalId);
         this._settingsChangedSignalId = 0;
+
+        if (this._colorSchemeChangedSignalId !== 0)
+            this._interfaceSettings.disconnect(this._colorSchemeChangedSignalId);
+        this._colorSchemeChangedSignalId = 0;
 
         if (this._changedIdleId) {
             GLib.source_remove(this._changedIdleId);
@@ -546,6 +562,8 @@ var BackgroundSource = class BackgroundSource {
         this._monitorsChangedId =
             monitorManager.connect('monitors-changed',
                                    this._onMonitorsChanged.bind(this));
+
+        this._interfaceSettings = new Gio.Settings({ schema_id: INTERFACE_SCHEMA });
     }
 
     _onMonitorsChanged() {
@@ -576,7 +594,12 @@ var BackgroundSource = class BackgroundSource {
         } else {
             style = this._settings.get_enum(BACKGROUND_STYLE_KEY);
             if (style != GDesktopEnums.BackgroundStyle.NONE) {
-                let uri = this._settings.get_string(PICTURE_URI_KEY);
+                const colorScheme = this._interfaceSettings.get_enum('color-scheme');
+                const uri = this._settings.get_string(
+                    colorScheme === GDesktopEnums.ColorScheme.PREFER_DARK
+                        ? PICTURE_URI_DARK_KEY
+                        : PICTURE_URI_KEY);
+
                 file = Gio.File.new_for_commandline_arg(uri);
             }
         }
