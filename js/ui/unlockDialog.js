@@ -46,6 +46,10 @@ var NotificationsBox = GObject.registerClass({
 
         this.add_child(this._scrollView);
 
+        this._settings = new Gio.Settings({
+            schema_id: 'org.gnome.desktop.notifications',
+        });
+
         this._sources = new Map();
         Main.messageTray.getSources().forEach(source => {
             this._sourceAdded(Main.messageTray, source, true);
@@ -176,6 +180,14 @@ var NotificationsBox = GObject.registerClass({
         this._updateSourceBoxStyle(source, obj, box);
     }
 
+    _wakeUpScreenForSource(source) {
+        if (!this._settings.get_boolean('show-banners'))
+            return;
+        const obj = this._sources.get(source);
+        if (obj?.sourceBox.visible)
+            this.emit('wake-up-screen');
+    }
+
     _sourceAdded(tray, source, initial) {
         let obj = {
             visible: source.policy.showInLockScreen,
@@ -235,8 +247,7 @@ var NotificationsBox = GObject.registerClass({
             });
 
             this._updateVisibility();
-            if (obj.sourceBox.visible)
-                this.emit('wake-up-screen');
+            this._wakeUpScreenForSource(source);
         }
     }
 
@@ -268,8 +279,7 @@ var NotificationsBox = GObject.registerClass({
         obj.sourceBox.visible = obj.visible && (source.unseenCount > 0);
 
         this._updateVisibility();
-        if (obj.sourceBox.visible)
-            this.emit('wake-up-screen');
+        this._wakeUpScreenForSource(source);
     }
 
     _visibleChanged(source, obj) {
@@ -280,8 +290,7 @@ var NotificationsBox = GObject.registerClass({
         obj.sourceBox.visible = obj.visible && source.unseenCount > 0;
 
         this._updateVisibility();
-        if (obj.sourceBox.visible)
-            this.emit('wake-up-screen');
+        this._wakeUpScreenForSource(source);
     }
 
     _detailedChanged(source, obj) {
