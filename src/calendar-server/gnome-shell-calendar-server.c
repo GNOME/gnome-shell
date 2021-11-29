@@ -40,6 +40,7 @@ G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 G_GNUC_END_IGNORE_DEPRECATIONS
 
 #include "calendar-sources.h"
+#include "reminder-watcher.h"
 
 #define BUS_NAME "org.gnome.Shell.CalendarServer"
 
@@ -317,6 +318,8 @@ struct _App
   gulong client_appeared_signal_id;
   gulong client_disappeared_signal_id;
 
+  EReminderWatcher *reminder_watcher;
+
   gchar *timezone_location;
 
   GSList *notify_appointments; /* CalendarAppointment *, for EventsAdded */
@@ -340,6 +343,7 @@ app_update_timezone (App *app)
       g_free (app->timezone_location);
       app->timezone_location = g_steal_pointer (&location);
       print_debug ("Using timezone %s", app->timezone_location);
+      e_reminder_watcher_set_default_zone (app->reminder_watcher, app->zone);
     }
 }
 
@@ -828,6 +832,7 @@ app_new (GApplication *application,
   app = g_new0 (App, 1);
   app->connection = g_object_ref (connection);
   app->sources = calendar_sources_get ();
+  app->reminder_watcher = reminder_watcher_new (application, calendar_sources_get_registry (app->sources));
   app->client_appeared_signal_id = g_signal_connect (app->sources,
                                                      "client-appeared",
                                                      G_CALLBACK (on_client_appeared_cb),
@@ -866,6 +871,7 @@ app_free (App *app)
   g_slist_free_full (app->notify_ids, g_free);
 
   g_object_unref (app->connection);
+  g_object_unref (app->reminder_watcher);
   g_object_unref (app->sources);
 
   g_free (app);
