@@ -43,7 +43,15 @@ ESourceRegistry *calendar_sources_get_registry       (CalendarSources *sources);
 GSList          *calendar_sources_ref_clients        (CalendarSources *sources);
 gboolean         calendar_sources_has_clients        (CalendarSources *sources);
 
+EClient         *calendar_sources_connect_client_sync(CalendarSources *sources,
+                                                      gboolean is_for_events,
+                                                      ESource *source,
+                                                      ECalClientSourceType source_type,
+                                                      guint32 wait_for_connected_seconds,
+                                                      GCancellable *cancellable,
+                                                      GError **error);
 void             calendar_sources_connect_client     (CalendarSources *sources,
+                                                      gboolean is_for_events,
                                                       ESource *source,
                                                       ECalClientSourceType source_type,
                                                       guint32 wait_for_connected_seconds,
