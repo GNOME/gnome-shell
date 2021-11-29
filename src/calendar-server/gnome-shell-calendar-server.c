@@ -67,15 +67,11 @@ static const gchar introspection_xml[] =
   "</node>";
 static GDBusNodeInfo *introspection_data = NULL;
 
-struct _App;
-typedef struct _App App;
-
 static gboolean      opt_replace = FALSE;
 static GOptionEntry  opt_entries[] = {
   {"replace", 0, 0, G_OPTION_ARG_NONE, &opt_replace, "Replace existing daemon", NULL},
   {NULL }
 };
-static App *_global_app = NULL;
 
 /* ---------------------------------------------------------------------------------------------------- */
 
@@ -304,9 +300,15 @@ generate_instances_cb (ICalComponent *icomp,
 
 /* ---------------------------------------------------------------------------------------------------- */
 
-struct _App
+#define CALENDAR_SERVER_TYPE_APP calendar_server_app_get_type ()
+G_DECLARE_FINAL_TYPE (CalendarServerApp, calendar_server_app, CALENDAR_SERVER, APP, GApplication)
+
+struct _CalendarServerApp
 {
+  GApplication parent;
+
   GDBusConnection *connection;
+  guint name_owner_id;
 
   time_t since;
   time_t until;
@@ -325,8 +327,10 @@ struct _App
   GSList *live_views;
 };
 
+G_DEFINE_FINAL_TYPE (CalendarServerApp, calendar_server_app, G_TYPE_APPLICATION)
+
 static void
-app_update_timezone (App *app)
+app_update_timezone (CalendarServerApp *app)
 {
   g_autofree char *location = NULL;
 
@@ -344,7 +348,7 @@ app_update_timezone (App *app)
 }
 
 static void
-app_notify_events_added (App *app)
+app_notify_events_added (CalendarServerApp *app)
 {
   GVariantBuilder builder, extras_builder;
   GSList *events, *link;
@@ -397,7 +401,7 @@ app_notify_events_added (App *app)
 }
 
 static void
-app_notify_events_removed (App *app)
+app_notify_events_removed (CalendarServerApp *app)
 {
   GVariantBuilder builder;
   GSList *ids, *link;
@@ -433,7 +437,7 @@ app_notify_events_removed (App *app)
 }
 
 static void
-app_process_added_modified_objects (App *app,
+app_process_added_modified_objects (CalendarServerApp *app,
                                     ECalClientView *view,
                                     GSList *objects) /* ICalComponent * */
 {
@@ -526,7 +530,7 @@ on_objects_added (ECalClientView *view,
                   GSList         *objects,
                   gpointer        user_data)
 {
-  App *app = user_data;
+  CalendarServerApp *app = user_data;
   ECalClient *client;
 
   client = e_cal_client_view_ref_client (view);
@@ -541,7 +545,7 @@ on_objects_modified (ECalClientView *view,
                      GSList         *objects,
                      gpointer        user_data)
 {
-  App *app = user_data;
+  CalendarServerApp *app = user_data;
   ECalClient *client;
 
   client = e_cal_client_view_ref_client (view);
@@ -556,7 +560,7 @@ on_objects_removed (ECalClientView *view,
                     GSList         *uids,
                     gpointer        user_data)
 {
-  App *app = user_data;
+  CalendarServerApp *app = user_data;
   ECalClient *client;
   GSList *link;
   const gchar *source_uid;
@@ -586,13 +590,13 @@ on_objects_removed (ECalClientView *view,
 }
 
 static gboolean
-app_has_calendars (App *app)
+app_has_calendars (CalendarServerApp *app)
 {
   return app->live_views != NULL;
 }
 
 static ECalClientView *
-app_start_view (App *app,
+app_start_view (CalendarServerApp *app,
                 ECalClient *cal_client)
 {
   g_autofree char *since_iso8601 = NULL;
@@ -657,7 +661,7 @@ app_start_view (App *app,
 }
 
 static void
-app_stop_view (App *app,
+app_stop_view (CalendarServerApp *app,
                ECalClientView *view)
 {
       e_cal_client_view_stop (view, NULL);
@@ -668,7 +672,7 @@ app_stop_view (App *app,
 }
 
 static void
-app_notify_has_calendars (App *app)
+app_notify_has_calendars (CalendarServerApp *app)
 {
   GVariantBuilder dict_builder;
 
@@ -690,7 +694,7 @@ app_notify_has_calendars (App *app)
 }
 
 static void
-app_update_views (App *app)
+app_update_views (CalendarServerApp *app)
 {
   GSList *link, *clients;
   gboolean had_views, has_views;
@@ -733,7 +737,7 @@ on_client_appeared_cb (CalendarSources *sources,
                        ECalClient *client,
                        gpointer user_data)
 {
-  App *app = user_data;
+  CalendarServerApp *app = user_data;
   ECalClientView *view;
   GSList *link;
   const gchar *source_uid;
@@ -777,7 +781,7 @@ on_client_disappeared_cb (CalendarSources *sources,
                           const gchar *source_uid,
                           gpointer user_data)
 {
-  App *app = user_data;
+  CalendarServerApp *app = user_data;
   GSList *link;
 
   print_debug ("Client disappeared '%s'", source_uid);
@@ -819,31 +823,10 @@ on_client_disappeared_cb (CalendarSources *sources,
     }
 }
 
-static App *
-app_new (GDBusConnection *connection)
-{
-  App *app;
-
-  app = g_new0 (App, 1);
-  app->connection = g_object_ref (connection);
-  app->sources = calendar_sources_get ();
-  app->client_appeared_signal_id = g_signal_connect (app->sources,
-                                                     "client-appeared",
-                                                     G_CALLBACK (on_client_appeared_cb),
-                                                     app);
-  app->client_disappeared_signal_id = g_signal_connect (app->sources,
-                                                        "client-disappeared",
-                                                        G_CALLBACK (on_client_disappeared_cb),
-                                                        app);
-
-  app_update_timezone (app);
-
-  return app;
-}
-
 static void
-app_free (App *app)
+calendar_server_app_dispose (GObject *object)
 {
+  CalendarServerApp *app = CALENDAR_SERVER_APP (object);
   GSList *ll;
 
   for (ll = app->live_views; ll != NULL; ll = g_slist_next (ll))
@@ -864,10 +847,47 @@ app_free (App *app)
   g_slist_free_full (app->notify_appointments, calendar_appointment_free);
   g_slist_free_full (app->notify_ids, g_free);
 
-  g_object_unref (app->connection);
-  g_object_unref (app->sources);
+  g_clear_object (&app->connection);
+  g_clear_object (&app->sources);
 
-  g_free (app);
+  if (app->name_owner_id != 0)
+   {
+     g_bus_unown_name (app->name_owner_id);
+     app->name_owner_id = 0;
+   }
+
+  G_OBJECT_CLASS (calendar_server_app_parent_class)->dispose (object);
+}
+
+static void calendar_server_app_startup (GApplication *application);
+
+static void
+calendar_server_app_class_init (CalendarServerAppClass *klass)
+{
+  GObjectClass *object_class;
+  GApplicationClass *application_class;
+
+  object_class = G_OBJECT_CLASS (klass);
+  object_class->dispose = calendar_server_app_dispose;
+
+  application_class = G_APPLICATION_CLASS (klass);
+  application_class->startup = calendar_server_app_startup;
+}
+
+static void
+calendar_server_app_init (CalendarServerApp *app)
+{
+  app->sources = calendar_sources_get ();
+  app->client_appeared_signal_id = g_signal_connect (app->sources,
+                                                     "client-appeared",
+                                                     G_CALLBACK (on_client_appeared_cb),
+                                                     app);
+  app->client_disappeared_signal_id = g_signal_connect (app->sources,
+                                                        "client-disappeared",
+                                                        G_CALLBACK (on_client_disappeared_cb),
+                                                        app);
+
+  app_update_timezone (app);
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
@@ -882,7 +902,7 @@ handle_method_call (GDBusConnection       *connection,
                     GDBusMethodInvocation *invocation,
                     gpointer               user_data)
 {
-  App *app = user_data;
+  CalendarServerApp *app = user_data;
 
   if (g_strcmp0 (method_name, "SetTimeRange") == 0)
     {
@@ -963,7 +983,7 @@ handle_get_property (GDBusConnection *connection,
                      GError         **error,
                      gpointer         user_data)
 {
-  App *app = user_data;
+  CalendarServerApp *app = user_data;
   GVariant *ret;
 
   ret = NULL;
@@ -998,17 +1018,15 @@ on_bus_acquired (GDBusConnection *connection,
                  const gchar     *name,
                  gpointer         user_data)
 {
-  GMainLoop *main_loop = user_data;
+  GApplication *application = user_data;
   guint registration_id;
   g_autoptr (GError) error = NULL;
-
-  _global_app = app_new (connection);
 
   registration_id = g_dbus_connection_register_object (connection,
                                                        "/org/gnome/Shell/CalendarServer",
                                                        introspection_data->interfaces[0],
                                                        &interface_vtable,
-                                                       _global_app,
+                                                       application,
                                                        NULL,  /* user_data_free_func */
                                                        &error);
   if (registration_id == 0)
@@ -1017,7 +1035,7 @@ on_bus_acquired (GDBusConnection *connection,
                   error->message,
                   g_quark_to_string (error->domain),
                   error->code);
-      g_main_loop_quit (main_loop);
+      g_application_quit (application);
       return;
     }
 
@@ -1029,11 +1047,11 @@ on_name_lost (GDBusConnection *connection,
               const gchar     *name,
               gpointer         user_data)
 {
-  GMainLoop *main_loop = user_data;
+  GApplication *application = user_data;
 
   g_print ("gnome-shell-calendar-server[%d]: Lost (or failed to acquire) the name " BUS_NAME " - exiting\n",
            (gint) getpid ());
-  g_main_loop_quit (main_loop);
+  g_application_quit (application);
 }
 
 static void
@@ -1049,13 +1067,13 @@ stdin_channel_io_func (GIOChannel *source,
                        GIOCondition condition,
                        gpointer data)
 {
-  GMainLoop *main_loop = data;
+  GApplication *application = data;
 
   if (condition & G_IO_HUP)
     {
       g_debug ("gnome-shell-calendar-server[%d]: Got HUP on stdin - exiting\n",
                (gint) getpid ());
-      g_main_loop_quit (main_loop);
+      g_application_quit (application);
     }
   else
     {
@@ -1064,20 +1082,36 @@ stdin_channel_io_func (GIOChannel *source,
   return FALSE; /* remove source */
 }
 
+static void
+calendar_server_app_startup (GApplication *application)
+{
+  CalendarServerApp *app = CALENDAR_SERVER_APP (application);
+
+  G_APPLICATION_CLASS (calendar_server_app_parent_class)->startup (application);
+
+  app->name_owner_id = g_bus_own_name (G_BUS_TYPE_SESSION,
+                                       BUS_NAME,
+                                       G_BUS_NAME_OWNER_FLAGS_ALLOW_REPLACEMENT |
+                                       (opt_replace ? G_BUS_NAME_OWNER_FLAGS_REPLACE : 0),
+                                       on_bus_acquired,
+                                       on_name_acquired,
+                                       on_name_lost,
+                                       app,
+                                       (GDestroyNotify) NULL);
+}
+
 int
 main (int    argc,
       char **argv)
 {
+  g_autoptr (GApplication) application = NULL;
   g_autoptr (GError) error = NULL;
   GOptionContext *opt_context;
-  GMainLoop *main_loop;
   gint ret;
-  guint name_owner_id;
   GIOChannel *stdin_channel;
 
   ret = 1;
   opt_context = NULL;
-  name_owner_id = 0;
   stdin_channel = NULL;
 
   introspection_data = g_dbus_node_info_new_for_xml (introspection_xml, NULL);
@@ -1091,39 +1125,30 @@ main (int    argc,
       goto out;
     }
 
-  main_loop = g_main_loop_new (NULL, FALSE);
+  application = g_object_new (CALENDAR_SERVER_TYPE_APP,
+                              "application-id", BUS_NAME,
+                              "flags", G_APPLICATION_NON_UNIQUE,
+                              NULL);
+  g_signal_connect (application, "activate",
+                    G_CALLBACK (g_application_hold), NULL);
 
   stdin_channel = g_io_channel_unix_new (STDIN_FILENO);
   g_io_add_watch_full (stdin_channel,
                        G_PRIORITY_DEFAULT,
                        G_IO_HUP,
                        stdin_channel_io_func,
-                       g_main_loop_ref (main_loop),
-                       (GDestroyNotify) g_main_loop_unref);
+                       application,
+                       (GDestroyNotify) NULL);
 
-  name_owner_id = g_bus_own_name (G_BUS_TYPE_SESSION,
-                                  BUS_NAME,
-                                  G_BUS_NAME_OWNER_FLAGS_ALLOW_REPLACEMENT |
-                                   (opt_replace ? G_BUS_NAME_OWNER_FLAGS_REPLACE : 0),
-                                  on_bus_acquired,
-                                  on_name_acquired,
-                                  on_name_lost,
-                                  g_main_loop_ref (main_loop),
-                                  (GDestroyNotify) g_main_loop_unref);
+  print_debug ("Run application");
 
-  g_main_loop_run (main_loop);
+  ret = g_application_run (application, argc, argv);
 
-  g_main_loop_unref (main_loop);
-
-  ret = 0;
+  print_debug ("Quit application");
 
  out:
   if (stdin_channel != NULL)
     g_io_channel_unref (stdin_channel);
-  if (_global_app != NULL)
-    app_free (_global_app);
-  if (name_owner_id != 0)
-    g_bus_unown_name (name_owner_id);
   if (opt_context != NULL)
     g_option_context_free (opt_context);
 
