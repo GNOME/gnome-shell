@@ -122,6 +122,8 @@ reminder_watcher_notify_display (ReminderWatcher *rw,
   g_notification_set_body (notification, description);
   g_notification_set_icon (notification, icon);
 
+  g_notification_add_button_with_target (notification, _("Dismiss"), "app.dismiss-reminder", "s", notif_id);
+
   g_application_send_notification (g_application_get_default (), notif_id, notification);
 
   print_debug ("ReminderWatcher::Notify Display for '%s'", reminder_watcher_get_rd_summary (rd));
@@ -393,9 +395,10 @@ reminders_triggered_cb (EReminderWatcher *watcher,
   if (rw->dismiss && !rw->dismiss_thread)
     {
        rw->dismiss_thread = g_thread_new (NULL, reminders_dismiss_thread, g_object_ref (rw));
-       g_warn_if_fail (rw->dismiss_thread != NULL);
-       if (rw->dismiss_thread)
-          g_thread_unref (rw->dismiss_thread);
+       /* do not set the 'dismiss_thread' to NULL, it's used as a guard
+	  of "the thread is starting", where it's still time to add new
+	  reminders to be dismissed */
+       g_thread_unref (rw->dismiss_thread);
     }
 
   g_mutex_unlock (&rw->dismiss_lock);
@@ -491,4 +494,78 @@ reminder_watcher_new (ESourceRegistry *registry)
                      NULL);
 
   return E_REMINDER_WATCHER (rw);
+}
+
+static void
+reminder_watcher_dismiss_done_cb (GObject *source_object,
+                                  GAsyncResult *result,
+                                  gpointer user_data)
+{
+  GError *error = NULL;
+
+  if (!e_reminder_watcher_dismiss_finish (E_REMINDER_WATCHER (source_object), result, &error))
+    {
+      if (!g_error_matches (error, E_CLIENT_ERROR, E_CLIENT_ERROR_NOT_SUPPORTED))
+        print_debug ("Dismiss: Failed with error: %s", error ? error->message : "Unknown error");
+
+      g_clear_error (&error);
+    }
+}
+
+static EReminderData *
+reminder_watcher_find_by_id (EReminderWatcher *reminder_watcher,
+			     const gchar *id)
+{
+  EReminderData *res = NULL;
+  GSList *past, *link;
+
+  past = e_reminder_watcher_dup_past (reminder_watcher);
+
+  for (link = past; link; link = g_slist_next (link))
+    {
+      EReminderData *rd = link->data;
+      gchar *rd_id;
+
+      rd_id = reminder_watcher_build_notif_id (rd);
+
+      if (g_strcmp0 (rd_id, id) == 0)
+        {
+          res = g_steal_pointer (&link->data);
+          g_free (rd_id);
+          break;
+        }
+
+      g_free (rd_id);
+    }
+
+  g_slist_free_full (past, e_reminder_data_free);
+
+  return res;
+}
+
+void
+reminder_watcher_dismiss_by_id (EReminderWatcher *reminder_watcher,
+                                const char *id)
+{
+  EReminderData *rd;
+
+  g_return_if_fail (REMINDER_IS_WATCHER (reminder_watcher));
+  g_return_if_fail (id && *id);
+
+  rd = reminder_watcher_find_by_id (reminder_watcher, id);
+
+  if (rd != NULL)
+    {
+      print_debug ("Dismiss: Going to dismiss '%s'", reminder_watcher_get_rd_summary (rd));
+
+      g_application_withdraw_notification (g_application_get_default (), id);
+
+      e_reminder_watcher_dismiss (reminder_watcher, rd, NULL,
+                                  reminder_watcher_dismiss_done_cb, NULL);
+      e_reminder_data_free (rd);
+    }
+   else
+    {
+      print_debug ("Dismiss: Cannot find reminder '%s'", id);
+    }
 }
