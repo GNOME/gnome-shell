@@ -59,6 +59,8 @@ struct _ReminderWatcherClass {
 GType             reminder_watcher_get_type     (void) G_GNUC_CONST;
 EReminderWatcher *reminder_watcher_new          (GApplication *application,
                                                  ESourceRegistry *registry);
+void              reminder_watcher_dismiss_by_id(EReminderWatcher *reminder_watcher,
+                                                 const gchar *id);
 
 G_END_DECLS
 

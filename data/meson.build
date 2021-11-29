@@ -2,6 +2,7 @@ data_builddir = meson.current_build_dir()
 
 desktop_files = [
   'org.gnome.Shell.desktop',
+  'org.gnome.Shell.CalendarServer.desktop',
   'org.gnome.Shell.Extensions.desktop',
 ]
 service_files = []
@@ -15,6 +16,7 @@ desktopconf = configuration_data()
 # We substitute in bindir so it works as an autostart
 # file when built in a non-system prefix
 desktopconf.set('bindir', bindir)
+desktopconf.set('libexecdir', libexecdir)
 desktopconf.set('systemd_hidden', have_systemd ? 'true' : 'false')
 
 foreach desktop_file : desktop_files
