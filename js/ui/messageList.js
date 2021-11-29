@@ -663,11 +663,23 @@ var MessageListSection = GObject.registerClass({
     }
 
     removeMessage(message, animate) {
-        if (!this._messages.includes(message))
+        const messages = this._messages;
+
+        if (!messages.includes(message))
             throw new Error(`Impossible to remove untracked message`);
 
         let listItem = message.get_parent();
         listItem._connectionsIds.forEach(id => message.disconnect(id));
+
+        let nextMessage = null;
+
+        if (message.has_key_focus()) {
+            const index = messages.indexOf(message);
+            nextMessage =
+                messages[index + 1] ||
+                messages[index - 1] ||
+                this._list;
+        }
 
         if (animate) {
             listItem.ease({
@@ -677,10 +689,12 @@ var MessageListSection = GObject.registerClass({
                 mode: Clutter.AnimationMode.EASE_OUT_QUAD,
                 onComplete: () => {
                     listItem.destroy();
+                    nextMessage?.grab_key_focus();
                 },
             });
         } else {
             listItem.destroy();
+            nextMessage?.grab_key_focus();
         }
     }
 
