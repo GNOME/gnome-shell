@@ -43,6 +43,7 @@ struct _ClientData
 {
   ECalClient *client;
   gulong backend_died_id;
+  gboolean is_for_events; /* Because this can hold other clients too (for EReminderWatcher) */
 };
 
 typedef struct _CalendarSourcesPrivate CalendarSourcesPrivate;
@@ -123,7 +124,7 @@ registry_watcher_source_appeared_cb (ESourceRegistryWatcher *watcher,
   else
     g_return_if_reached ();
 
-  calendar_sources_connect_client (sources, source, source_type, 30, NULL, calendar_sources_client_connected_cb, g_object_ref (source));
+  calendar_sources_connect_client (sources, TRUE, source, source_type, 30, NULL, calendar_sources_client_connected_cb, g_object_ref (source));
 }
 
 static void
@@ -288,7 +289,7 @@ gather_event_clients_cb (gpointer key,
   GSList **plist = user_data;
   ClientData *cd = value;
 
-  if (cd)
+  if (cd && cd->is_for_events)
     *plist = g_slist_prepend (*plist, g_object_ref (cd->client));
 }
 
@@ -322,7 +323,7 @@ calendar_sources_has_clients (CalendarSources *sources)
    {
      ClientData *cd = value;
 
-     has = cd != NULL;
+     has = cd != NULL && cd->is_for_events;
    }
 
   g_mutex_unlock (&sources->clients_lock);
@@ -345,8 +346,9 @@ backend_died_cb (EClient *client,
   g_mutex_unlock (&sources->clients_lock);
 }
 
-static EClient *
+EClient *
 calendar_sources_connect_client_sync (CalendarSources *sources,
+                                      gboolean is_for_events,
                                       ESource *source,
                                       ECalClientSourceType source_type,
                                       guint32 wait_for_connected_seconds,
@@ -359,7 +361,11 @@ calendar_sources_connect_client_sync (CalendarSources *sources,
   g_mutex_lock (&sources->clients_lock);
   client_data = g_hash_table_lookup (sources->clients, source);
   if (client_data)
-     client = E_CLIENT (g_object_ref (client_data->client));
+    {
+      if (is_for_events)
+         client_data->is_for_events = TRUE;
+      client = E_CLIENT (g_object_ref (client_data->client));
+    }
   g_mutex_unlock (&sources->clients_lock);
 
   if (client)
@@ -375,11 +381,14 @@ calendar_sources_connect_client_sync (CalendarSources *sources,
     {
       g_clear_object (&client);
       client = E_CLIENT (g_object_ref (client_data->client));
+      if (is_for_events)
+         client_data->is_for_events = TRUE;
     }
    else
     {
       client_data = g_new0 (ClientData, 1);
       client_data->client = E_CAL_CLIENT (g_object_ref (client));
+      client_data->is_for_events = is_for_events;
       client_data->backend_died_id = g_signal_connect (client,
                                                        "backend-died",
                                                        G_CALLBACK (backend_died_cb),
@@ -393,6 +402,7 @@ calendar_sources_connect_client_sync (CalendarSources *sources,
 }
 
 typedef struct _AsyncContext {
+  gboolean is_for_events;
   ESource *source;
   ECalClientSourceType source_type;
   guint32 wait_for_connected_seconds;
@@ -421,7 +431,7 @@ calendar_sources_connect_client_thread (GTask *task,
   EClient *client;
   GError *local_error = NULL;
 
-  client = calendar_sources_connect_client_sync (sources, ctx->source, ctx->source_type,
+  client = calendar_sources_connect_client_sync (sources, ctx->is_for_events, ctx->source, ctx->source_type,
                                                  ctx->wait_for_connected_seconds, cancellable, &local_error);
   if (!client)
     {
@@ -436,6 +446,7 @@ calendar_sources_connect_client_thread (GTask *task,
 
 void
 calendar_sources_connect_client (CalendarSources *sources,
+                                 gboolean is_for_events,
                                  ESource *source,
                                  ECalClientSourceType source_type,
                                  guint32 wait_for_connected_seconds,
@@ -447,6 +458,7 @@ calendar_sources_connect_client (CalendarSources *sources,
   g_autoptr (GTask) task = NULL;
 
   ctx = g_new0 (AsyncContext, 1);
+  ctx->is_for_events = is_for_events;
   ctx->source = g_object_ref (source);
   ctx->source_type = source_type;
   ctx->wait_for_connected_seconds = wait_for_connected_seconds;
