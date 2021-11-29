@@ -820,7 +820,8 @@ on_client_disappeared_cb (CalendarSources *sources,
 }
 
 static App *
-app_new (GDBusConnection *connection)
+app_new (GApplication *application,
+         GDBusConnection *connection)
 {
   App *app;
 
@@ -998,11 +999,11 @@ on_bus_acquired (GDBusConnection *connection,
                  const gchar     *name,
                  gpointer         user_data)
 {
-  GMainLoop *main_loop = user_data;
+  GApplication *application = user_data;
   guint registration_id;
   g_autoptr (GError) error = NULL;
 
-  _global_app = app_new (connection);
+  _global_app = app_new (application, connection);
 
   registration_id = g_dbus_connection_register_object (connection,
                                                        "/org/gnome/Shell/CalendarServer",
@@ -1017,7 +1018,7 @@ on_bus_acquired (GDBusConnection *connection,
                   error->message,
                   g_quark_to_string (error->domain),
                   error->code);
-      g_main_loop_quit (main_loop);
+      g_application_quit (application);
       return;
     }
 
@@ -1029,11 +1030,11 @@ on_name_lost (GDBusConnection *connection,
               const gchar     *name,
               gpointer         user_data)
 {
-  GMainLoop *main_loop = user_data;
+  GApplication *application = user_data;
 
   g_print ("gnome-shell-calendar-server[%d]: Lost (or failed to acquire) the name " BUS_NAME " - exiting\n",
            (gint) getpid ());
-  g_main_loop_quit (main_loop);
+  g_application_quit (application);
 }
 
 static void
@@ -1049,13 +1050,13 @@ stdin_channel_io_func (GIOChannel *source,
                        GIOCondition condition,
                        gpointer data)
 {
-  GMainLoop *main_loop = data;
+  GApplication *application = data;
 
   if (condition & G_IO_HUP)
     {
       g_debug ("gnome-shell-calendar-server[%d]: Got HUP on stdin - exiting\n",
                (gint) getpid ());
-      g_main_loop_quit (main_loop);
+      g_application_quit (application);
     }
   else
     {
@@ -1068,9 +1069,9 @@ int
 main (int    argc,
       char **argv)
 {
+  g_autoptr (GApplication) application = NULL;
   g_autoptr (GError) error = NULL;
   GOptionContext *opt_context;
-  GMainLoop *main_loop;
   gint ret;
   guint name_owner_id;
   GIOChannel *stdin_channel;
@@ -1091,15 +1092,17 @@ main (int    argc,
       goto out;
     }
 
-  main_loop = g_main_loop_new (NULL, FALSE);
+  application = g_application_new (BUS_NAME, G_APPLICATION_NON_UNIQUE);
+  g_signal_connect (application, "activate",
+                    G_CALLBACK (g_application_hold), NULL);
 
   stdin_channel = g_io_channel_unix_new (STDIN_FILENO);
   g_io_add_watch_full (stdin_channel,
                        G_PRIORITY_DEFAULT,
                        G_IO_HUP,
                        stdin_channel_io_func,
-                       g_main_loop_ref (main_loop),
-                       (GDestroyNotify) g_main_loop_unref);
+                       application,
+                       (GDestroyNotify) NULL);
 
   name_owner_id = g_bus_own_name (G_BUS_TYPE_SESSION,
                                   BUS_NAME,
@@ -1108,14 +1111,22 @@ main (int    argc,
                                   on_bus_acquired,
                                   on_name_acquired,
                                   on_name_lost,
-                                  g_main_loop_ref (main_loop),
-                                  (GDestroyNotify) g_main_loop_unref);
+                                  application,
+                                  (GDestroyNotify) NULL);
 
-  g_main_loop_run (main_loop);
+  if (g_application_register (application, NULL, &error))
+    {
+      print_debug ("Registered application");
 
-  g_main_loop_unref (main_loop);
+      ret = g_application_run (application, argc, argv);
 
-  ret = 0;
+      print_debug ("Quit application");
+    }
+   else
+    {
+       g_printerr ("Failed to register application: %s\n", error->message);
+       g_clear_error (&error);
+    }
 
  out:
   if (stdin_channel != NULL)
