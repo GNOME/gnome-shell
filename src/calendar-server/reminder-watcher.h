@@ -31,6 +31,8 @@ G_DEFINE_AUTOPTR_CLEANUP_FUNC (EReminderWatcher, g_object_unref)
 G_DECLARE_FINAL_TYPE (ReminderWatcher, reminder_watcher, REMINDER, WATCHER, EReminderWatcher)
 
 EReminderWatcher *reminder_watcher_new          (ESourceRegistry *registry);
+void              reminder_watcher_dismiss_by_id(EReminderWatcher *reminder_watcher,
+                                                 const char *id);
 
 G_END_DECLS
 
