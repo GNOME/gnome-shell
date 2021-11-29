@@ -1106,10 +1106,25 @@ calendar_server_app_startup (GApplication *application)
                                        (GDestroyNotify) NULL);
 }
 
+static void
+app_dismiss_reminder_cb (GSimpleAction *action,
+                         GVariant *parameter,
+                         gpointer user_data)
+{
+  CalendarServerApp *app = user_data;
+
+  g_return_if_fail (CALENDAR_SERVER_IS_APP (app));
+
+  reminder_watcher_dismiss_by_id (app->reminder_watcher, g_variant_get_string (parameter, NULL));
+}
+
 int
 main (int    argc,
       char **argv)
 {
+  const GActionEntry action_entries[] = {
+    { "dismiss-reminder", app_dismiss_reminder_cb, "s" }
+  };
   g_autoptr (GApplication) application = NULL;
   g_autoptr (GError) error = NULL;
   GOptionContext *opt_context;
@@ -1135,6 +1150,8 @@ main (int    argc,
                               "application-id", BUS_NAME,
                               "flags", G_APPLICATION_NON_UNIQUE,
                               NULL);
+  g_action_map_add_action_entries (G_ACTION_MAP (application), action_entries, G_N_ELEMENTS (action_entries), application);
+
   g_signal_connect (application, "activate",
                     G_CALLBACK (g_application_hold), NULL);
 
