@@ -835,6 +835,18 @@ on_client_disappeared_cb (CalendarSources *sources,
 }
 
 static void
+app_dismiss_reminder_cb (GSimpleAction *action,
+                         GVariant *parameter,
+                         gpointer user_data)
+{
+  CalendarServerApp *app = user_data;
+
+  g_return_if_fail (CALENDAR_SERVER_IS_APP (app));
+
+  reminder_watcher_dismiss_by_id (app->reminder_watcher, g_variant_get_string (parameter, NULL));
+}
+
+static void
 calendar_server_app_dispose (GObject *object)
 {
   CalendarServerApp *app = CALENDAR_SERVER_APP (object);
@@ -864,6 +876,18 @@ calendar_server_app_dispose (GObject *object)
   G_OBJECT_CLASS (calendar_server_app_parent_class)->dispose (object);
 }
 
+static void
+calendar_server_app_startup (GApplication *application)
+{
+  const GActionEntry action_entries[] = {
+    { "dismiss-reminder", app_dismiss_reminder_cb, "s" }
+  };
+
+  g_action_map_add_action_entries (G_ACTION_MAP (application), action_entries, G_N_ELEMENTS (action_entries), application);
+
+  G_APPLICATION_CLASS (calendar_server_app_parent_class)->startup (application);
+}
+
 static gboolean
 calendar_server_app_dbus_register (GApplication     *application,
                                    GDBusConnection  *connection,
@@ -891,6 +915,7 @@ calendar_server_app_class_init (CalendarServerAppClass *klass)
   object_class->dispose = calendar_server_app_dispose;
 
   application_class = G_APPLICATION_CLASS (klass);
+  application_class->startup = calendar_server_app_startup;
   application_class->dbus_register = calendar_server_app_dbus_register;
   application_class->dbus_unregister = calendar_server_app_dbus_unregister;
 }
