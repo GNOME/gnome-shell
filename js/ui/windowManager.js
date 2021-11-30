@@ -1397,22 +1397,8 @@ var WindowManager = class {
         }
     }
 
-    _hasAttachedDialogs(window, ignoreWindow) {
-        var count = 0;
-        window.foreach_transient(win => {
-            if (win != ignoreWindow &&
-                win.is_attached_dialog() &&
-                win.get_transient_for() == window) {
-                count++;
-                return false;
-            }
-            return true;
-        });
-        return count != 0;
-    }
-
-    _checkDimming(window, ignoreWindow) {
-        let shouldDim = this._hasAttachedDialogs(window, ignoreWindow);
+    _checkDimming(window) {
+        const shouldDim = window.has_attached_dialogs();
 
         if (shouldDim && !window._dimmed) {
             window._dimmed = true;
@@ -1558,7 +1544,7 @@ var WindowManager = class {
         }
 
         if (window.is_attached_dialog())
-            this._checkDimming(window.get_transient_for(), window);
+            this._checkDimming(window.get_transient_for());
 
         let types = [Meta.WindowType.NORMAL,
                      Meta.WindowType.DIALOG,
