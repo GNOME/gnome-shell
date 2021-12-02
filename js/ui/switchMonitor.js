@@ -10,26 +10,44 @@ var APP_ICON_SIZE = 96;
 var SwitchMonitorPopup = GObject.registerClass(
 class SwitchMonitorPopup extends SwitcherPopup.SwitcherPopup {
     _init() {
-        let items = [{ icon: 'view-mirror-symbolic',
-                       /* Translators: this is for display mirroring i.e. cloning.
-                        * Try to keep it under around 15 characters.
-                        */
-                       label: _('Mirror') },
-                     { icon: 'video-joined-displays-symbolic',
-                       /* Translators: this is for the desktop spanning displays.
-                        * Try to keep it under around 15 characters.
-                        */
-                       label: _('Join Displays') },
-                     { icon: 'video-single-display-symbolic',
-                       /* Translators: this is for using only an external display.
-                        * Try to keep it under around 15 characters.
-                        */
-                       label: _('External Only') },
-                     { icon: 'computer-symbolic',
-                       /* Translators: this is for using only the laptop display.
-                        * Try to keep it under around 15 characters.
-                        */
-                       label: _('Built-in Only') }];
+        let items = [];
+
+        items.push({
+            icon: 'view-mirror-symbolic',
+            /* Translators: this is for display mirroring i.e. cloning.
+             * Try to keep it under around 15 characters.
+             */
+            label: _('Mirror'),
+            switchMode: Meta.MonitorSwitchConfigType.ALL_MIRROR,
+        });
+
+        items.push({
+            icon: 'video-joined-displays-symbolic',
+            /* Translators: this is for the desktop spanning displays.
+             * Try to keep it under around 15 characters.
+             */
+            label: _('Join Displays'),
+            switchMode: Meta.MonitorSwitchConfigType.ALL_LINEAR,
+        });
+
+        if (global.backend.get_monitor_manager().has_builtin_panel) {
+            items.push({
+                icon: 'video-single-display-symbolic',
+                /* Translators: this is for using only an external display.
+                 * Try to keep it under around 15 characters.
+                 */
+                label: _('External Only'),
+                switchMode: Meta.MonitorSwitchConfigType.EXTERNAL,
+            });
+            items.push({
+                icon: 'computer-symbolic',
+                /* Translators: this is for using only the laptop display.
+                 * Try to keep it under around 15 characters.
+                 */
+                label: _('Built-in Only'),
+                switchMode: Meta.MonitorSwitchConfigType.BUILTIN,
+            });
+        }
 
         super._init(items);
 
@@ -65,7 +83,10 @@ class SwitchMonitorPopup extends SwitcherPopup.SwitcherPopup {
     _finish() {
         super._finish();
 
-        Meta.MonitorManager.get().switch_config(this._selectedIndex);
+        const monitorManager = global.backend.get_monitor_manager();
+        const item = this._items[this._selectedIndex];
+
+        monitorManager.switch_config(item.switchType);
     }
 });
 
