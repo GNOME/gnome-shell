@@ -93,7 +93,7 @@ x11_dep = dependency('x11')
 schemas_dep = dependency('gsettings-desktop-schemas', version: schemas_req)
 gnome_desktop_dep = dependency('gnome-desktop-3.0', version: gnome_desktop_req)
 
-bt_dep = dependency('gnome-bluetooth-1.0', version: bt_req, required: false)
+bt_dep = dependency('gnome-bluetooth-3.0', version: bt_req, required: false)
 gst_dep = dependency('gstreamer-1.0', version: gst_req, required: false)
 gst_base_dep = dependency('gstreamer-base-1.0', required: false)
 pipewire_dep = dependency('libpipewire-0.3', required: false)
