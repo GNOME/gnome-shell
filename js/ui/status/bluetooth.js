@@ -55,10 +55,14 @@ class Indicator extends PanelMenu.SystemIndicator {
         this._syncId = 0;
         this._adapter = null;
 
-        this._store = this._client.get_devices();
-        this._deviceNotifyConnected = [];
+        this._deviceNotifyConnected = new Set();
+
+        const deviceStore = this._client.get_devices();
+        for (let i = 0; i < deviceStore.get_n_items(); i++)
+            this._connectDeviceNotify(deviceStore.get_item(i));
+
         this._client.connect('device-removed', (c, path) => {
-            this._deviceNotifyConnected[path] = false;
+            this._deviceNotifyConnected.delete(path);
             this._queueSync.bind(this);
         });
         this._client.connect('device-added', (c, device) => {
@@ -79,21 +83,25 @@ class Indicator extends PanelMenu.SystemIndicator {
     }
 
     _connectDeviceNotify(device) {
-        if (this._deviceNotifyConnected[device.get_object_path()] !== true)
+        const path = device.get_object_path();
+
+        if (this._deviceNotifyConnected.has(path))
             return;
+
         device.connect('notify::alias', this._queueSync.bind(this));
         device.connect('notify::paired', this._queueSync.bind(this));
         device.connect('notify::trusted', this._queueSync.bind(this));
         device.connect('notify::connected', this._queueSync.bind(this));
-        this._deviceNotifyConnected.push([device.get_object_path(), true]);
+
+        this._deviceNotifyConnected.add(path);
     }
 
     _getDeviceInfos() {
+        const deviceStore = this._client.get_devices();
         let deviceInfos = [];
-        const numDevices = this._store.get_n_items();
 
-        for (let i = 0; i < numDevices; i++) {
-            const device = this._store.get_item(i);
+        for (let i = 0; i < deviceStore.get_n_items(); i++) {
+            const device = deviceStore.get_item(i);
 
             if (device.paired || device.trusted) {
                 deviceInfos.push({
@@ -101,7 +109,6 @@ class Indicator extends PanelMenu.SystemIndicator {
                     name: device.alias,
                 });
             }
-            this._connectDeviceNotify(device);
         }
 
         return deviceInfos;
