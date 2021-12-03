@@ -126,7 +126,7 @@ function _sessionUpdated() {
     }
 
     let remoteAccessController = global.backend.get_remote_access_controller();
-    if (remoteAccessController) {
+    if (remoteAccessController && !global.backend.is_headless()) {
         if (sessionMode.allowScreencast && _remoteAccessInhibited) {
             remoteAccessController.uninhibit_remote_access();
             _remoteAccessInhibited = false;
