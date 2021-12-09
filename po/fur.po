@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: video-subtitles master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2021-11-21 20:52+0000\n"
-"PO-Revision-Date: 2021-11-22 12:06+0100\n"
+"POT-Creation-Date: 2021-11-26 16:19+0000\n"
+"PO-Revision-Date: 2021-12-10 00:41+0100\n"
 "Last-Translator: Fabio Tomat <f.t.public@gmail.com>\n"
 "Language-Team: Friulian <fur@li.org>\n"
 "Language: fur\n"
@@ -861,7 +861,7 @@ msgstr "Microfon"
 
 #: js/ui/backgroundMenu.js:14
 msgid "Change Background…"
-msgstr "Cambie sfont…"
+msgstr "Cambie fonts…"
 
 #: js/ui/backgroundMenu.js:16 js/ui/status/nightLight.js:45
 msgid "Display Settings"
@@ -1543,11 +1543,23 @@ msgstr "Viôt sorzint"
 msgid "Web Page"
 msgstr "Pagjine Web"
 
-#: js/ui/main.js:290
+#: js/ui/main.js:259
+msgid "System was put in unsafe mode"
+msgstr "Il sisteme al è stât metût in modalitât no sigure"
+
+#: js/ui/main.js:260
+msgid "Applications now have unrestricted access"
+msgstr "Cumò lis aplicazions a àn acès ilimitât"
+
+#: js/ui/main.js:261 js/ui/overview.js:58
+msgid "Undo"
+msgstr "Anule"
+
+#: js/ui/main.js:307
 msgid "Logged in as a privileged user"
 msgstr "Jentre come utent privilegjât"
 
-#: js/ui/main.js:291
+#: js/ui/main.js:308
 msgid ""
 "Running a session as a privileged user should be avoided for security "
 "reasons. If possible, you should log in as a normal user."
@@ -1555,11 +1567,11 @@ msgstr ""
 "Si varès di evitâ di eseguî une session come utent privilegjât par resons di "
 "sigurece. Se pussibil, tu varessis di jentrâ come utent normâl."
 
-#: js/ui/main.js:340
+#: js/ui/main.js:357
 msgid "Screen Lock disabled"
 msgstr "Bloc dal schermi disabilitât"
 
-#: js/ui/main.js:341
+#: js/ui/main.js:358
 msgid "Screen Locking requires the GNOME display manager."
 msgstr "Il bloc dal schermi al à bisugne dal gjestôr dai visôrs di GNOME."
 
@@ -1586,10 +1598,6 @@ msgstr "Scrîf par cirî"
 #: js/ui/overviewControls.js:392
 msgid "Applications"
 msgstr "Aplicazions"
-
-#: js/ui/overview.js:58
-msgid "Undo"
-msgstr "Anule"
 
 #. Translators: This is the main view to select
 #. activities. See also note for "Activities" string.
