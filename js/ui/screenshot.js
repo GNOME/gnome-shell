@@ -1852,6 +1852,15 @@ class ScreenshotUI extends St.Widget {
             return Clutter.EVENT_STOP;
         }
 
+        if (symbol === Clutter.KEY_v || symbol === Clutter.KEY_V) {
+            if (this._shotButton.checked)
+                this._castButton.checked = true;
+            else
+                this._shotButton.checked = true;
+
+            return Clutter.EVENT_STOP;
+        }
+
         if (symbol === Clutter.KEY_Left || symbol === Clutter.KEY_Right ||
             symbol === Clutter.KEY_Up || symbol === Clutter.KEY_Down) {
             let direction;
