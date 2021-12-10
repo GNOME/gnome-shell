@@ -164,3 +164,12 @@
     border: 2px white;
   }
 }
+
+.screenshot-ui-tooltip {
+  color: $osd_fg_color;
+  background-color: $osd_bg_color;
+  border-radius: 99px;
+  padding: $base_padding $base_padding * 2;
+  text-align: center;
+  -y-offset: 24px;
+}

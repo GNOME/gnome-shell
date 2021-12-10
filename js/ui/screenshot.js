@@ -45,6 +45,74 @@ class IconLabelButton extends St.Button {
     }
 });
 
+var Tooltip = GObject.registerClass(
+class Tooltip extends St.Label {
+    _init(widget, params) {
+        super._init(params);
+
+        this._widget = widget;
+        this._timeoutId = null;
+
+        this._widget.connect('notify::hover', () => {
+            if (this._widget.hover)
+                this.open();
+            else
+                this.close();
+        });
+    }
+
+    open() {
+        if (this._timeoutId)
+            return;
+
+        this._timeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, 300, () => {
+            this.opacity = 0;
+            this.show();
+
+            const extents = this._widget.get_transformed_extents();
+
+            const xOffset = Math.floor((extents.get_width() - this.width) / 2);
+            const x =
+                Math.clamp(extents.get_x() + xOffset, 0, global.stage.width - this.width);
+
+            const node = this.get_theme_node();
+            const yOffset = node.get_length('-y-offset');
+
+            const y = extents.get_y() - this.height - yOffset;
+
+            this.set_position(x, y);
+            this.ease({
+                opacity: 255,
+                duration: 150,
+                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            });
+
+            this._timeoutId = null;
+            return GLib.SOURCE_REMOVE;
+        });
+        GLib.Source.set_name_by_id(this._timeoutId, '[gnome-shell] tooltip.open');
+    }
+
+    close() {
+        if (this._timeoutId) {
+            GLib.source_remove(this._timeoutId);
+            this._timeoutId = null;
+            return;
+        }
+
+        if (!this.visible)
+            return;
+
+        this.remove_all_transitions();
+        this.ease({
+            opacity: 0,
+            duration: 100,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            onComplete: () => this.hide(),
+        });
+    }
+});
+
 var UIAreaIndicator = GObject.registerClass(
 class UIAreaIndicator extends St.Widget {
     _init(params) {
@@ -1045,6 +1113,12 @@ class ScreenshotUI extends St.Widget {
             this._onSelectionButtonToggled.bind(this));
         this._typeButtonContainer.add_child(this._selectionButton);
 
+        this.add_child(new Tooltip(this._selectionButton, {
+            text: _('Area Selection'),
+            style_class: 'screenshot-ui-tooltip',
+            visible: false,
+        }));
+
         this._screenButton = new IconLabelButton('screenshot-ui-display-symbolic', _('Screen'), {
             style_class: 'screenshot-ui-type-button',
             toggle_mode: true,
@@ -1054,6 +1128,12 @@ class ScreenshotUI extends St.Widget {
             this._onScreenButtonToggled.bind(this));
         this._typeButtonContainer.add_child(this._screenButton);
 
+        this.add_child(new Tooltip(this._screenButton, {
+            text: _('Screen Selection'),
+            style_class: 'screenshot-ui-tooltip',
+            visible: false,
+        }));
+
         this._windowButton = new IconLabelButton('screenshot-ui-window-symbolic', _('Window'), {
             style_class: 'screenshot-ui-type-button',
             toggle_mode: true,
@@ -1062,6 +1142,12 @@ class ScreenshotUI extends St.Widget {
         this._windowButton.connect('notify::checked',
             this._onWindowButtonToggled.bind(this));
         this._typeButtonContainer.add_child(this._windowButton);
+
+        this.add_child(new Tooltip(this._windowButton, {
+            text: _('Window Selection'),
+            style_class: 'screenshot-ui-tooltip',
+            visible: false,
+        }));
 
         this._bottomRowContainer = new St.Widget({ layout_manager: new Clutter.BinLayout() });
         this._panel.add_child(this._bottomRowContainer);
@@ -1086,6 +1172,12 @@ class ScreenshotUI extends St.Widget {
         });
         this._showPointerButton.set_child(new St.Icon({ icon_name: 'select-mode-symbolic' }));
         this._showPointerButtonContainer.add_child(this._showPointerButton);
+
+        this.add_child(new Tooltip(this._showPointerButton, {
+            text: _('Show Pointer'),
+            style_class: 'screenshot-ui-tooltip',
+            visible: false,
+        }));
 
         this._showPointerButton.connect('notify::checked', () => {
             const state = this._showPointerButton.checked;
