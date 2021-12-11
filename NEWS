@@ -1,3 +1,19 @@
+41.2
+====
+* Fix wrongly rejected D-Bus calls after gnome-shell restarts [Sebastian; !2048]
+* magnifier: Avoid offscreen rendering if possible [Sebastian; !2026]
+* Improve handling of all-day/zero-length events in calendar [Sebastian; !2023]
+* Keep keyboard focus in notification list after deleting message [Dylan; !2053]
+* Misc. bug fixes and cleanups [Evan; !2036]
+
+Contributors:
+  Sebastian Keller, Dylan McCall, Evan Welsh
+
+Translators:
+  Piotr Drąg [pl], Dušan Kazik [sk], Charles Monzat [fr], Milo Casagrande [it],
+  Goran Vidović [hr], Daniel Șerbănescu [ro], Quentin PAGÈS [oc],
+  Aurimas Černius [lt]
+
 41.1
 ====
 * Fix icon updates while hidden [Marco; !1983]
