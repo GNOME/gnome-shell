@@ -27,6 +27,9 @@ const KEY_GTK_THEME                 = 'gtk-theme';
 const KEY_ICON_THEME                = 'icon-theme';
 const KEY_TEXT_SCALING_FACTOR       = 'text-scaling-factor';
 
+const A11Y_INTERFACE_SCHEMA         = 'org.gnome.desktop.a11y.interface';
+const KEY_HIGH_CONTRAST             = 'high-contrast';
+
 const HIGH_CONTRAST_THEME           = 'HighContrast';
 
 var ATIndicator = GObject.registerClass(
@@ -127,43 +130,31 @@ class ATIndicator extends PanelMenu.Button {
 
     _buildHCItem() {
         let interfaceSettings = new Gio.Settings({ schema_id: DESKTOP_INTERFACE_SCHEMA });
-        let gtkTheme = interfaceSettings.get_string(KEY_GTK_THEME);
-        let iconTheme = interfaceSettings.get_string(KEY_ICON_THEME);
-        let hasHC = gtkTheme == HIGH_CONTRAST_THEME;
+        let a11ySettings = new Gio.Settings({ schema_id: A11Y_INTERFACE_SCHEMA });
+        let hc = a11ySettings.get_boolean(KEY_HIGH_CONTRAST);
         let highContrast = this._buildItemExtended(
             _("High Contrast"),
-            hasHC,
+            hc,
+            a11ySettings.is_writable(KEY_HIGH_CONTRAST) &&
             interfaceSettings.is_writable(KEY_GTK_THEME) &&
             interfaceSettings.is_writable(KEY_ICON_THEME),
             enabled => {
                 if (enabled) {
+                    a11ySettings.set_boolean(KEY_HIGH_CONTRAST, enabled);
                     interfaceSettings.set_string(KEY_ICON_THEME, HIGH_CONTRAST_THEME);
                     interfaceSettings.set_string(KEY_GTK_THEME, HIGH_CONTRAST_THEME);
-                } else if (!hasHC) {
-                    interfaceSettings.set_string(KEY_ICON_THEME, iconTheme);
-                    interfaceSettings.set_string(KEY_GTK_THEME, gtkTheme);
                 } else {
+                    a11ySettings.reset(KEY_HIGH_CONTRAST);
                     interfaceSettings.reset(KEY_ICON_THEME);
                     interfaceSettings.reset(KEY_GTK_THEME);
                 }
             });
 
-        interfaceSettings.connect('changed::%s'.format(KEY_GTK_THEME), () => {
-            let value = interfaceSettings.get_string(KEY_GTK_THEME);
-            if (value == HIGH_CONTRAST_THEME) {
-                highContrast.setToggleState(true);
-            } else {
-                highContrast.setToggleState(false);
-                gtkTheme = value;
-            }
+        a11ySettings.connect('changed::%s'.format(KEY_HIGH_CONTRAST), () => {
+            hc = a11ySettings.get_boolean(KEY_HIGH_CONTRAST);
+            highContrast.setToggleState(hc);
 
             this._queueSyncMenuVisibility();
-        });
-
-        interfaceSettings.connect('changed::%s'.format(KEY_ICON_THEME), () => {
-            let value = interfaceSettings.get_string(KEY_ICON_THEME);
-            if (value != HIGH_CONTRAST_THEME)
-                iconTheme = value;
         });
 
         return highContrast;

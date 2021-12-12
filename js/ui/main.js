@@ -154,7 +154,7 @@ function start() {
     sessionMode = new SessionMode.SessionMode();
     sessionMode.connect('updated', _sessionUpdated);
 
-    St.Settings.get().connect('notify::gtk-theme', _loadDefaultStylesheet);
+    St.Settings.get().connect('notify::high-contrast', _loadDefaultStylesheet);
 
     // Initialize ParentalControlsManager before the UI
     ParentalControlsManager.getDefault();
@@ -385,9 +385,8 @@ function _getDefaultStylesheet() {
     let stylesheet = null;
     let name = sessionMode.stylesheetName;
 
-    // Look for a high-contrast variant first when using GTK+'s HighContrast
-    // theme
-    if (St.Settings.get().gtk_theme == 'HighContrast')
+    // Look for a high-contrast variant first
+    if (St.Settings.get().high_contrast)
         stylesheet = _getStylesheet(name.replace('.css', '-high-contrast.css'));
 
     if (stylesheet == null)
