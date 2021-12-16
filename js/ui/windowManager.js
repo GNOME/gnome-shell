@@ -1240,7 +1240,7 @@ var WindowManager = class {
                 actor.set_scale(0, 0);
             }
 
-            let rect = actor.meta_window.get_frame_rect();
+            let rect = actor.meta_window.get_buffer_rect();
             let [xDest, yDest] = [rect.x, rect.y];
 
             actor.show();
