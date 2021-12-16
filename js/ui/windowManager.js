@@ -21,7 +21,8 @@ const WorkspaceAnimation = imports.ui.workspaceAnimation;
 const { loadInterfaceXML } = imports.misc.fileUtils;
 
 var SHELL_KEYBINDINGS_SCHEMA = 'org.gnome.shell.keybindings';
-var MINIMIZE_WINDOW_ANIMATION_TIME = 200;
+var MINIMIZE_WINDOW_ANIMATION_TIME = 400;
+var MINIMIZE_WINDOW_ANIMATION_MODE = Clutter.AnimationMode.EASE_OUT_EXPO;
 var SHOW_WINDOW_ANIMATION_TIME = 150;
 var DIALOG_SHOW_WINDOW_ANIMATION_TIME = 100;
 var DESTROY_WINDOW_ANIMATION_TIME = 150;
@@ -1153,7 +1154,7 @@ var WindowManager = class {
             actor.ease({
                 opacity: 0,
                 duration: MINIMIZE_WINDOW_ANIMATION_TIME,
-                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+                mode: MINIMIZE_WINDOW_ANIMATION_MODE,
                 onStopped: () => this._minimizeWindowDone(shellwm, actor),
             });
         } else {
@@ -1184,7 +1185,7 @@ var WindowManager = class {
                 x: xDest,
                 y: yDest,
                 duration: MINIMIZE_WINDOW_ANIMATION_TIME,
-                mode: Clutter.AnimationMode.EASE_IN_EXPO,
+                mode: MINIMIZE_WINDOW_ANIMATION_MODE,
                 onStopped: () => this._minimizeWindowDone(shellwm, actor),
             });
         }
@@ -1218,7 +1219,7 @@ var WindowManager = class {
             actor.ease({
                 opacity: 255,
                 duration: MINIMIZE_WINDOW_ANIMATION_TIME,
-                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+                mode: MINIMIZE_WINDOW_ANIMATION_MODE,
                 onStopped: () => this._unminimizeWindowDone(shellwm, actor),
             });
         } else {
@@ -1250,7 +1251,7 @@ var WindowManager = class {
                 x: xDest,
                 y: yDest,
                 duration: MINIMIZE_WINDOW_ANIMATION_TIME,
-                mode: Clutter.AnimationMode.EASE_IN_EXPO,
+                mode: MINIMIZE_WINDOW_ANIMATION_MODE,
                 onStopped: () => this._unminimizeWindowDone(shellwm, actor),
             });
         }
