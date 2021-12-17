@@ -1883,7 +1883,7 @@ class ScreenshotUI extends St.Widget {
                  * recording, where "%d" and "%t" date and time, e.g.
                  * "Screencast from 07-17-2013 10:00:46 PM.webm" */
                 /* xgettext:no-c-format */
-                _('Screencast from %d %t.webm'),
+                _('Screencasts/Screencast from %d %t.webm'),
                 { 'draw-cursor': new GLib.Variant('b', drawCursor) },
                 ([success, path], error) => {
                     if (error !== null) {
