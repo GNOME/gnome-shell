@@ -1888,11 +1888,16 @@ var ScreenshotUI = GObject.registerClass({
             }
 
             method(
-                /* Translators: this is a filename used for screencast
-                 * recording, where "%d" and "%t" date and time, e.g.
-                 * "Screencast from 07-17-2013 10:00:46 PM.webm" */
-                /* xgettext:no-c-format */
-                _('Screencast from %d %t.webm'),
+                GLib.build_filenamev([
+                    /* Translators: this is the folder where recorded
+                       screencasts are stored. */
+                    _('Screencasts'),
+                    /* Translators: this is a filename used for screencast
+                     * recording, where "%d" and "%t" date and time, e.g.
+                     * "Screencast from 07-17-2013 10:00:46 PM.webm" */
+                    /* xgettext:no-c-format */
+                    _('Screencast from %d %t.webm'),
+                ]),
                 { 'draw-cursor': new GLib.Variant('b', drawCursor) },
                 ([success, path], error) => {
                     if (error !== null) {
