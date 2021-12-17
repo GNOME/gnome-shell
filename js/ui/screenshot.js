@@ -1894,7 +1894,7 @@ var ScreenshotUI = GObject.registerClass({
                 /* xgettext:no-c-format */
                 _('Screencast from %d %t.webm'),
                 { 'draw-cursor': new GLib.Variant('b', drawCursor) },
-                ([success, _filename], error) => {
+                ([success, path], error) => {
                     if (error !== null) {
                         this._setScreencastInProgress(false);
                         log('Error starting screencast: %s'.format(error.message));
@@ -1904,7 +1904,10 @@ var ScreenshotUI = GObject.registerClass({
                     if (!success) {
                         this._setScreencastInProgress(false);
                         log('Error starting screencast');
+                        return;
                     }
+
+                    this._screencastPath = path;
                 }
             );
         };
@@ -1947,8 +1950,51 @@ var ScreenshotUI = GObject.registerClass({
                 return;
             }
 
-            if (!success)
+            if (!success) {
                 log('Error stopping screencast');
+                return;
+            }
+
+            // Show a notification.
+            const file = Gio.file_new_for_path(this._screencastPath);
+
+            const source = new MessageTray.Source(
+                // Translators: notification source name.
+                _('Screenshot'),
+                'applets-screenshooter'
+            );
+            const notification = new MessageTray.Notification(
+                source,
+                // Translators: notification title.
+                _('Screencast recorded'),
+                // Translators: notification body when a screencast was recorded.
+                _('Click here to view the video.')
+            );
+            // Translators: button on the screencast notification.
+            notification.addAction(_('Show in Files'), () => {
+                const app =
+                    Gio.app_info_get_default_for_type('inode/directory', false);
+
+                if (app === null) {
+                    // It may be null e.g. in a toolbox without nautilus.
+                    log('Error showing in files: no default app set for inode/directory');
+                    return;
+                }
+
+                app.launch([file], global.create_app_launch_context(0, -1));
+            });
+            notification.connect('activated', () => {
+                try {
+                    Gio.app_info_launch_default_for_uri(
+                        file.get_uri(), global.create_app_launch_context(0, -1));
+                } catch (err) {
+                    logError(err, 'Error opening screencast');
+                }
+            });
+            notification.setTransient(true);
+
+            Main.messageTray.add(source);
+            source.showNotification(notification);
         });
     }
 
