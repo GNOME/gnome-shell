@@ -17,17 +17,22 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2021-09-23 14:20+0000\n"
-"PO-Revision-Date: 2021-08-28 00:00+0300\n"
+"POT-Creation-Date: 2021-12-12 19:45+0000\n"
+"PO-Revision-Date: 2021-12-17 17:47+0300\n"
 "Last-Translator: Emin Tufan Çetin <etcetin@gmail.com>\n"
-"Language-Team: Türkçe <gnome-turk@gnome.org>\n"
+"Language-Team: Turkish <gnome-turk@gnome.org>\n"
 "Language: tr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 2.4.3\n"
+"Plural-Forms: nplurals=1; plural=0\n"
+"X-Generator: Gtranslator 41.0\n"
 "X-Project-Style: gnome\n"
+"X-DL-Team: tr\n"
+"X-DL-Module: gnome-shell\n"
+"X-DL-Branch: gnome-41\n"
+"X-DL-Domain: po\n"
+"X-DL-State: Translating\n"
 
 #: data/50-gnome-shell-launchers.xml:6
 msgid "Launchers"
@@ -669,7 +674,7 @@ msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "%d saat önce"
 
-#: js/misc/util.js:192 js/ui/dateMenu.js:162
+#: js/misc/util.js:192 js/ui/dateMenu.js:163
 msgid "Yesterday"
 msgstr "Dün"
 
@@ -873,7 +878,7 @@ msgid "Settings"
 msgstr "Ayarlar"
 
 #. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday).
-#: js/ui/calendar.js:36
+#: js/ui/calendar.js:35
 msgctxt "calendar-no-work"
 msgid "06"
 msgstr "06"
@@ -883,43 +888,43 @@ msgstr "06"
 #. * NOTE: These grid abbreviations are always shown together
 #. * and in order, e.g. "S M T W T F S".
 #.
-#: js/ui/calendar.js:65
+#: js/ui/calendar.js:61
 msgctxt "grid sunday"
 msgid "S"
 msgstr "P"
 
 #. Translators: Calendar grid abbreviation for Monday
-#: js/ui/calendar.js:67
+#: js/ui/calendar.js:63
 msgctxt "grid monday"
 msgid "M"
 msgstr "P"
 
 #. Translators: Calendar grid abbreviation for Tuesday
-#: js/ui/calendar.js:69
+#: js/ui/calendar.js:65
 msgctxt "grid tuesday"
 msgid "T"
 msgstr "S"
 
 #. Translators: Calendar grid abbreviation for Wednesday
-#: js/ui/calendar.js:71
+#: js/ui/calendar.js:67
 msgctxt "grid wednesday"
 msgid "W"
 msgstr "Ç"
 
 #. Translators: Calendar grid abbreviation for Thursday
-#: js/ui/calendar.js:73
+#: js/ui/calendar.js:69
 msgctxt "grid thursday"
 msgid "T"
 msgstr "P"
 
 #. Translators: Calendar grid abbreviation for Friday
-#: js/ui/calendar.js:75
+#: js/ui/calendar.js:71
 msgctxt "grid friday"
 msgid "F"
 msgstr "C"
 
 #. Translators: Calendar grid abbreviation for Saturday
-#: js/ui/calendar.js:77
+#: js/ui/calendar.js:73
 msgctxt "grid saturday"
 msgid "S"
 msgstr "C"
@@ -930,7 +935,7 @@ msgstr "C"
 #. * "%OB" is the new format specifier introduced in glibc 2.27,
 #. * in most cases you should not change it.
 #.
-#: js/ui/calendar.js:392
+#: js/ui/calendar.js:400
 msgid "%OB"
 msgstr "%OB"
 
@@ -943,37 +948,37 @@ msgstr "%OB"
 #. * in most cases you should not use the old "%B" here unless you
 #. * absolutely know what you are doing.
 #.
-#: js/ui/calendar.js:402
+#: js/ui/calendar.js:410
 msgid "%OB %Y"
 msgstr "%OB %Y"
 
-#: js/ui/calendar.js:461
+#: js/ui/calendar.js:469
 msgid "Previous month"
 msgstr "Önceki ay"
 
-#: js/ui/calendar.js:476
+#: js/ui/calendar.js:484
 msgid "Next month"
 msgstr "Gelecek ay"
 
-#: js/ui/calendar.js:626
+#: js/ui/calendar.js:632
 #, no-javascript-format
 msgctxt "date day number format"
 msgid "%d"
 msgstr "%d"
 
-#: js/ui/calendar.js:682
+#: js/ui/calendar.js:688
 msgid "Week %V"
 msgstr "%V. Hafta"
 
-#: js/ui/calendar.js:896
+#: js/ui/calendar.js:902
 msgid "No Notifications"
 msgstr "Bildirim Yok"
 
-#: js/ui/calendar.js:950
+#: js/ui/calendar.js:956
 msgid "Do Not Disturb"
 msgstr "Rahatsız Etme"
 
-#: js/ui/calendar.js:971
+#: js/ui/calendar.js:977
 msgid "Clear"
 msgstr "Temizle"
 
@@ -1159,62 +1164,62 @@ msgid "%A %B %e %Y"
 msgstr "%e %B %Y %A"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year
-#: js/ui/dateMenu.js:151
+#: js/ui/dateMenu.js:152
 msgctxt "calendar heading"
 msgid "%B %-d"
 msgstr "%-d %B"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year
-#: js/ui/dateMenu.js:154
+#: js/ui/dateMenu.js:155
 msgctxt "calendar heading"
 msgid "%B %-d %Y"
 msgstr "%-d %B %Y"
 
-#: js/ui/dateMenu.js:160
+#: js/ui/dateMenu.js:161
 msgid "Today"
 msgstr "Bugün"
 
-#: js/ui/dateMenu.js:164
+#: js/ui/dateMenu.js:165
 msgid "Tomorrow"
 msgstr "Yarın"
 
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
 #.
-#: js/ui/dateMenu.js:180
+#: js/ui/dateMenu.js:181
 msgctxt "event list time"
 msgid "All Day"
 msgstr "Tüm Gün"
 
-#: js/ui/dateMenu.js:231
+#: js/ui/dateMenu.js:232
 msgid "No Events"
 msgstr "Olay Yok"
 
-#: js/ui/dateMenu.js:348
+#: js/ui/dateMenu.js:349
 msgid "Add world clocks…"
 msgstr "Dünya saatlerini ekle…"
 
-#: js/ui/dateMenu.js:349
+#: js/ui/dateMenu.js:350
 msgid "World Clocks"
 msgstr "Dünya Saatleri"
 
-#: js/ui/dateMenu.js:629
+#: js/ui/dateMenu.js:630
 msgid "Loading…"
 msgstr "Yükleniyor…"
 
-#: js/ui/dateMenu.js:639
+#: js/ui/dateMenu.js:640
 msgid "Go online for weather information"
 msgstr "Hava durumu bilgisi için çevrim içi olun"
 
-#: js/ui/dateMenu.js:641
+#: js/ui/dateMenu.js:642
 msgid "Weather information is currently unavailable"
 msgstr "Hava durumu bilgisi şu anda kullanılabilir değil"
 
-#: js/ui/dateMenu.js:651
+#: js/ui/dateMenu.js:652
 msgid "Weather"
 msgstr "Hava Durumu"
 
-#: js/ui/dateMenu.js:653
+#: js/ui/dateMenu.js:654
 msgid "Select weather location…"
 msgstr "Hava durumu konumu seç…"
 
@@ -2727,6 +2732,7 @@ msgstr "UUID, ad ve açıklama gereklidir"
 #: subprojects/extensions-tool/src/command-enable.c:46
 #: subprojects/extensions-tool/src/command-info.c:50
 #: subprojects/extensions-tool/src/command-list.c:64
+#: subprojects/extensions-tool/src/main.c:146
 msgid "Failed to connect to GNOME Shell\n"
 msgstr "GNOME Kabuğu’na bağlanılamadı\n"
 
@@ -2743,7 +2749,7 @@ msgstr "Uzantı devre dışı bırak"
 #: subprojects/extensions-tool/src/command-disable.c:119
 #: subprojects/extensions-tool/src/command-enable.c:119
 #: subprojects/extensions-tool/src/command-info.c:103
-#: subprojects/extensions-tool/src/command-prefs.c:97
+#: subprojects/extensions-tool/src/command-prefs.c:105
 #: subprojects/extensions-tool/src/command-reset.c:76
 #: subprojects/extensions-tool/src/command-uninstall.c:104
 msgid "No UUID given"
@@ -2752,7 +2758,7 @@ msgstr "Verilen UUID yok"
 #: subprojects/extensions-tool/src/command-disable.c:124
 #: subprojects/extensions-tool/src/command-enable.c:124
 #: subprojects/extensions-tool/src/command-info.c:108
-#: subprojects/extensions-tool/src/command-prefs.c:102
+#: subprojects/extensions-tool/src/command-prefs.c:110
 #: subprojects/extensions-tool/src/command-reset.c:81
 #: subprojects/extensions-tool/src/command-uninstall.c:109
 msgid "More than one UUID given"
@@ -2882,7 +2888,12 @@ msgstr "Birden çok kaynak dizin belirtildi"
 msgid "Extension “%s” doesn't have preferences\n"
 msgstr "“%s” uzantısının tercihleri yok\n"
 
-#: subprojects/extensions-tool/src/command-prefs.c:79
+#: subprojects/extensions-tool/src/command-prefs.c:62
+#, c-format
+msgid "Failed to open prefs for extension “%s”: %s\n"
+msgstr "“%s” eklentisi için seçenekler açılamadı: %s\n"
+
+#: subprojects/extensions-tool/src/command-prefs.c:87
 msgid "Opens extension preferences"
 msgstr "GNOME Kabuğu Uzantı Tercihleri"
 
@@ -2906,10 +2917,6 @@ msgstr "Uzantı kaldır"
 #: subprojects/extensions-tool/src/main.c:72
 msgid "Do not print error messages"
 msgstr "Hata iletilerini yazdırma"
-
-#: subprojects/extensions-tool/src/main.c:146
-msgid "Failed to connect to GNOME Shell"
-msgstr "GNOME Kabuğu’na bağlanılamadı"
 
 #: subprojects/extensions-tool/src/main.c:244
 msgid "Path"
@@ -3038,6 +3045,9 @@ msgstr[0] "%u Girdi"
 #: subprojects/gvc/gvc-mixer-control.c:2867
 msgid "System Sounds"
 msgstr "Sistem Sesleri"
+
+#~ msgid "Failed to connect to GNOME Shell"
+#~ msgstr "GNOME Kabuğu’na bağlanılamadı"
 
 #~ msgid "Enable introspection API"
 #~ msgstr "İçgözlem APIʼsını etkinleştir"
