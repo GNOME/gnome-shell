@@ -58,6 +58,14 @@ var Recorder = class {
         this._height = height;
         this._filePath = filePath;
 
+        try {
+            const dir = Gio.File.new_for_path(filePath).get_parent();
+            dir.make_directory_with_parents(null);
+        } catch (e) {
+            if (!e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.EXISTS))
+                throw e;
+        }
+
         this._pipelineString = DEFAULT_PIPELINE;
         this._framerate = DEFAULT_FRAMERATE;
         this._drawCursor = DEFAULT_DRAW_CURSOR;
@@ -287,9 +295,6 @@ var ScreencastService = class extends ServiceImplementation {
             return filename;
 
         let videoDir = GLib.get_user_special_dir(GLib.UserDirectory.DIRECTORY_VIDEOS);
-        if (!GLib.file_test(videoDir, GLib.FileTest.EXISTS))
-            videoDir = GLib.get_home_dir();
-
         return GLib.build_filenamev([videoDir, filename]);
     }
 
