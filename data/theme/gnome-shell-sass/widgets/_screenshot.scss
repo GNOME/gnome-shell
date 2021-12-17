@@ -113,6 +113,14 @@
   border: 6px transparent;
 }
 
+.screenshot-ui-window-selector-check {
+  transition-duration: 200ms;
+  color: transparent;
+  border-radius: 99px;
+  border-width: 12px;
+  icon-size: 24px;
+}
+
 .screenshot-ui-window-selector-window {
   &:hover {
     .screenshot-ui-window-selector-window-border {
@@ -123,6 +131,11 @@
     .screenshot-ui-window-selector-window-border {
       border-color: $selected_bg_color;
       background-color: transparentize($selected_bg_color, 0.8);
+    }
+
+    .screenshot-ui-window-selector-check {
+      color: white;
+      background-color: $selected_bg_color;
     }
   }
 }

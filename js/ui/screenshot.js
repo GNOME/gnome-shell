@@ -719,6 +719,13 @@ class UIWindowSelectorWindow extends St.Button {
         });
         this.add_child(this._border);
 
+        this._border.child = new St.Icon({
+            icon_name: 'object-select-symbolic',
+            style_class: 'screenshot-ui-window-selector-check',
+            x_align: Clutter.ActorAlign.CENTER,
+            y_align: Clutter.ActorAlign.CENTER,
+        });
+
         this.connect('destroy', this._onDestroy.bind(this));
     }
 
