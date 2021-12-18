@@ -1,5 +1,5 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported WorkspaceAnimationController */
+/* exported WorkspaceAnimationController, WorkspaceGroup */
 
 const { Clutter, GObject, Meta, Shell, St } = imports.gi;
 
@@ -11,7 +11,7 @@ const SwipeTracker = imports.ui.swipeTracker;
 const WINDOW_ANIMATION_TIME = 250;
 const WORKSPACE_SPACING = 100;
 
-const WorkspaceGroup = GObject.registerClass(
+var WorkspaceGroup = GObject.registerClass(
 class WorkspaceGroup extends Clutter.Actor {
     _init(workspace, monitor, movingWindow) {
         super._init();
