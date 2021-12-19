@@ -23,11 +23,10 @@ const WM_SCHEMA                     = 'org.gnome.desktop.wm.preferences';
 const KEY_VISUAL_BELL               = 'visual-bell';
 
 const DESKTOP_INTERFACE_SCHEMA      = 'org.gnome.desktop.interface';
-const KEY_GTK_THEME                 = 'gtk-theme';
-const KEY_ICON_THEME                = 'icon-theme';
 const KEY_TEXT_SCALING_FACTOR       = 'text-scaling-factor';
 
-const HIGH_CONTRAST_THEME           = 'HighContrast';
+const A11Y_INTERFACE_SCHEMA         = 'org.gnome.desktop.a11y.interface';
+const KEY_HIGH_CONTRAST             = 'high-contrast';
 
 var ATIndicator = GObject.registerClass(
 class ATIndicator extends PanelMenu.Button {
@@ -42,7 +41,7 @@ class ATIndicator extends PanelMenu.Button {
         this._a11ySettings = new Gio.Settings({ schema_id: A11Y_SCHEMA });
         this._a11ySettings.connect('changed::%s'.format(KEY_ALWAYS_SHOW), this._queueSyncMenuVisibility.bind(this));
 
-        let highContrast = this._buildHCItem();
+        let highContrast = this._buildItem(_('High Contrast'), A11Y_INTERFACE_SCHEMA, KEY_HIGH_CONTRAST);
         this.menu.addMenuItem(highContrast);
 
         let magnifier = this._buildItem(_("Zoom"), APPLICATIONS_SCHEMA,
@@ -123,50 +122,6 @@ class ATIndicator extends PanelMenu.Button {
         });
 
         return widget;
-    }
-
-    _buildHCItem() {
-        let interfaceSettings = new Gio.Settings({ schema_id: DESKTOP_INTERFACE_SCHEMA });
-        let gtkTheme = interfaceSettings.get_string(KEY_GTK_THEME);
-        let iconTheme = interfaceSettings.get_string(KEY_ICON_THEME);
-        let hasHC = gtkTheme == HIGH_CONTRAST_THEME;
-        let highContrast = this._buildItemExtended(
-            _("High Contrast"),
-            hasHC,
-            interfaceSettings.is_writable(KEY_GTK_THEME) &&
-            interfaceSettings.is_writable(KEY_ICON_THEME),
-            enabled => {
-                if (enabled) {
-                    interfaceSettings.set_string(KEY_ICON_THEME, HIGH_CONTRAST_THEME);
-                    interfaceSettings.set_string(KEY_GTK_THEME, HIGH_CONTRAST_THEME);
-                } else if (!hasHC) {
-                    interfaceSettings.set_string(KEY_ICON_THEME, iconTheme);
-                    interfaceSettings.set_string(KEY_GTK_THEME, gtkTheme);
-                } else {
-                    interfaceSettings.reset(KEY_ICON_THEME);
-                    interfaceSettings.reset(KEY_GTK_THEME);
-                }
-            });
-
-        interfaceSettings.connect('changed::%s'.format(KEY_GTK_THEME), () => {
-            let value = interfaceSettings.get_string(KEY_GTK_THEME);
-            if (value == HIGH_CONTRAST_THEME) {
-                highContrast.setToggleState(true);
-            } else {
-                highContrast.setToggleState(false);
-                gtkTheme = value;
-            }
-
-            this._queueSyncMenuVisibility();
-        });
-
-        interfaceSettings.connect('changed::%s'.format(KEY_ICON_THEME), () => {
-            let value = interfaceSettings.get_string(KEY_ICON_THEME);
-            if (value != HIGH_CONTRAST_THEME)
-                iconTheme = value;
-        });
-
-        return highContrast;
     }
 
     _buildFontItem() {
