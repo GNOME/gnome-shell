@@ -44,29 +44,25 @@ void main ()
     if (x > fade_area_topleft[0] && x < fade_area_bottomright[0] &&
         y > fade_area_topleft[1] && y < fade_area_bottomright[1])
     {
-        float fade_top_start = fade_area_topleft[1] + fade_offset_top;
-        float fade_left_start = fade_area_topleft[0] + fade_offset_left;
-        float fade_bottom_start = fade_area_bottomright[1] - fade_offset_bottom;
-        float fade_right_start = fade_area_bottomright[0] - fade_offset_right;
-        bool fade_top = y < fade_top_start && fade_edges_top;
-        bool fade_bottom = y > fade_bottom_start && fade_edges_bottom;
-        bool fade_left = x < fade_left_start && fade_edges_left;
-        bool fade_right = x > fade_right_start && fade_edges_right;
+        float after_left = x - fade_area_topleft[0];
+        float before_right = fade_area_bottomright[0] - x;
+        float after_top = y - fade_area_topleft[1];
+        float before_bottom = fade_area_bottomright[1] - y;
 
-        if (fade_top) {
-            ratio *= (fade_area_topleft[1] - y) / (fade_area_topleft[1] - fade_top_start);
+        if (after_top < fade_offset_top && fade_edges_top) {
+            ratio *= after_top / fade_offset_top;
         }
 
-        if (fade_bottom) {
-            ratio *= (fade_area_bottomright[1] - y) / (fade_area_bottomright[1] - fade_bottom_start);
+        if (before_bottom < fade_offset_bottom && fade_edges_bottom) {
+            ratio *= before_bottom / fade_offset_bottom;
         }
 
-        if (fade_left) {
-            ratio *= (fade_area_topleft[0] - x) / (fade_area_topleft[0] - fade_left_start);
+        if (after_left < fade_offset_left && fade_edges_left) {
+            ratio *= after_left / fade_offset_left;
         }
 
-        if (fade_right) {
-            ratio *= (fade_area_bottomright[0] - x) / (fade_area_bottomright[0] - fade_right_start);
+        if (before_right < fade_offset_right && fade_edges_right) {
+            ratio *= before_right / fade_offset_right;
         }
     } else if (extend_fade_area) {
         if (x <= fade_area_topleft[0] && fade_edges_left ||
