@@ -4,7 +4,7 @@ Name=Extensions
 # Translators: Do NOT translate or transliterate this text (this is an icon file name)!
 Icon=@app_id@
 Comment=Configure GNOME Shell Extensions
-Exec=@bindir@/@prgname@
+Exec=@bindir@/@prgname@ --gapplication-service
 DBusActivatable=true
 Categories=GNOME;GTK;Utility;
 OnlyShowIn=GNOME;
