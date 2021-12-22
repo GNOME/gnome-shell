@@ -295,7 +295,11 @@ if get_option('gtk_doc')
   subdir('docs/reference')
 endif
 
-meson.add_install_script('meson/postinstall.py')
+gnome.post_install(
+  glib_compile_schemas: true,
+  gtk_update_icon_cache: true
+)
+
 meson.add_dist_script('meson/generate-manpages.py')
 meson.add_dist_script('meson/generate-stylesheets.py')
 meson.add_dist_script('meson/check-version.py', meson.project_version(), 'NEWS')
