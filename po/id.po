@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2021-11-03 01:20+0000\n"
-"PO-Revision-Date: 2021-11-03 17:00+0700\n"
+"POT-Creation-Date: 2021-12-18 22:42+0000\n"
+"PO-Revision-Date: 2021-12-23 11:07+0700\n"
 "Last-Translator: Kukuh Syafaat <kukuhsyafaat@gnome.org>\n"
 "Language-Team: Indonesian <gnome-l10n-id@googlegroups.com>\n"
 "Language: id\n"
@@ -666,7 +666,7 @@ msgid_plural "%d hours ago"
 msgstr[0] "%d jam yang lalu"
 msgstr[1] "%d jam yang lalu"
 
-#: js/misc/util.js:192 js/ui/dateMenu.js:162
+#: js/misc/util.js:192 js/ui/dateMenu.js:163
 msgid "Yesterday"
 msgstr "Kemarin"
 
@@ -794,7 +794,7 @@ msgstr "Tolak Akses"
 msgid "Grant Access"
 msgstr "Beri Akses"
 
-#: js/ui/appDisplay.js:1846
+#: js/ui/appDisplay.js:1791
 msgid "Unnamed Folder"
 msgstr "Folder Tanpa Nama"
 
@@ -874,7 +874,7 @@ msgid "Settings"
 msgstr "Pengaturan"
 
 #. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday).
-#: js/ui/calendar.js:36
+#: js/ui/calendar.js:35
 msgctxt "calendar-no-work"
 msgid "06"
 msgstr "06"
@@ -884,43 +884,43 @@ msgstr "06"
 #. * NOTE: These grid abbreviations are always shown together
 #. * and in order, e.g. "S M T W T F S".
 #.
-#: js/ui/calendar.js:65
+#: js/ui/calendar.js:61
 msgctxt "grid sunday"
 msgid "S"
 msgstr "M"
 
 #. Translators: Calendar grid abbreviation for Monday
-#: js/ui/calendar.js:67
+#: js/ui/calendar.js:63
 msgctxt "grid monday"
 msgid "M"
 msgstr "S"
 
 #. Translators: Calendar grid abbreviation for Tuesday
-#: js/ui/calendar.js:69
+#: js/ui/calendar.js:65
 msgctxt "grid tuesday"
 msgid "T"
 msgstr "S"
 
 #. Translators: Calendar grid abbreviation for Wednesday
-#: js/ui/calendar.js:71
+#: js/ui/calendar.js:67
 msgctxt "grid wednesday"
 msgid "W"
 msgstr "R"
 
 #. Translators: Calendar grid abbreviation for Thursday
-#: js/ui/calendar.js:73
+#: js/ui/calendar.js:69
 msgctxt "grid thursday"
 msgid "T"
 msgstr "K"
 
 #. Translators: Calendar grid abbreviation for Friday
-#: js/ui/calendar.js:75
+#: js/ui/calendar.js:71
 msgctxt "grid friday"
 msgid "F"
 msgstr "J"
 
 #. Translators: Calendar grid abbreviation for Saturday
-#: js/ui/calendar.js:77
+#: js/ui/calendar.js:73
 msgctxt "grid saturday"
 msgid "S"
 msgstr "S"
@@ -931,7 +931,7 @@ msgstr "S"
 #. * "%OB" is the new format specifier introduced in glibc 2.27,
 #. * in most cases you should not change it.
 #.
-#: js/ui/calendar.js:392
+#: js/ui/calendar.js:400
 msgid "%OB"
 msgstr "%OB"
 
@@ -944,37 +944,37 @@ msgstr "%OB"
 #. * in most cases you should not use the old "%B" here unless you
 #. * absolutely know what you are doing.
 #.
-#: js/ui/calendar.js:402
+#: js/ui/calendar.js:410
 msgid "%OB %Y"
 msgstr "%OB %Y"
 
-#: js/ui/calendar.js:461
+#: js/ui/calendar.js:469
 msgid "Previous month"
 msgstr "Bulan sebelumnya"
 
-#: js/ui/calendar.js:476
+#: js/ui/calendar.js:484
 msgid "Next month"
 msgstr "Bulan selanjutnya"
 
-#: js/ui/calendar.js:626
+#: js/ui/calendar.js:632
 #, no-javascript-format
 msgctxt "date day number format"
 msgid "%d"
 msgstr "%d"
 
-#: js/ui/calendar.js:682
+#: js/ui/calendar.js:688
 msgid "Week %V"
 msgstr "Minggu %V"
 
-#: js/ui/calendar.js:896
+#: js/ui/calendar.js:902
 msgid "No Notifications"
 msgstr "Tak Ada Pemberitahuan"
 
-#: js/ui/calendar.js:950
+#: js/ui/calendar.js:956
 msgid "Do Not Disturb"
 msgstr "Jangan Ganggu"
 
-#: js/ui/calendar.js:971
+#: js/ui/calendar.js:977
 msgid "Clear"
 msgstr "Bersihkan"
 
@@ -1161,62 +1161,62 @@ msgid "%A %B %e %Y"
 msgstr "%A %e %B %Y"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year
-#: js/ui/dateMenu.js:151
+#: js/ui/dateMenu.js:152
 msgctxt "calendar heading"
 msgid "%B %-d"
 msgstr "%e %B"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year
-#: js/ui/dateMenu.js:154
+#: js/ui/dateMenu.js:155
 msgctxt "calendar heading"
 msgid "%B %-d %Y"
 msgstr "%e %B"
 
-#: js/ui/dateMenu.js:160
+#: js/ui/dateMenu.js:161
 msgid "Today"
 msgstr "Hari Ini"
 
-#: js/ui/dateMenu.js:164
+#: js/ui/dateMenu.js:165
 msgid "Tomorrow"
 msgstr "Besok"
 
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
 #.
-#: js/ui/dateMenu.js:180
+#: js/ui/dateMenu.js:181
 msgctxt "event list time"
 msgid "All Day"
 msgstr "Sepanjang Hari"
 
-#: js/ui/dateMenu.js:231
+#: js/ui/dateMenu.js:232
 msgid "No Events"
 msgstr "Tak Ada Acara"
 
-#: js/ui/dateMenu.js:348
+#: js/ui/dateMenu.js:349
 msgid "Add world clocks…"
 msgstr "Tambah jam dunia…"
 
-#: js/ui/dateMenu.js:349
+#: js/ui/dateMenu.js:350
 msgid "World Clocks"
 msgstr "Jam Dunia"
 
-#: js/ui/dateMenu.js:629
+#: js/ui/dateMenu.js:630
 msgid "Loading…"
 msgstr "Memuat…"
 
-#: js/ui/dateMenu.js:639
+#: js/ui/dateMenu.js:640
 msgid "Go online for weather information"
 msgstr "Pergi daring untuk informasi cuaca"
 
-#: js/ui/dateMenu.js:641
+#: js/ui/dateMenu.js:642
 msgid "Weather information is currently unavailable"
 msgstr "Informasi cuaca saat ini tidak tersedia"
 
-#: js/ui/dateMenu.js:651
+#: js/ui/dateMenu.js:652
 msgid "Weather"
 msgstr "Cuaca"
 
-#: js/ui/dateMenu.js:653
+#: js/ui/dateMenu.js:654
 msgid "Select weather location…"
 msgstr "Pilih lokasi cuaca…"
 
@@ -1391,11 +1391,11 @@ msgstr "Pasang Ekstensi"
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "Unduh dan pasang \"%s\" dari extensions.gnome.org?"
 
-#: js/ui/extensionSystem.js:252
+#: js/ui/extensionSystem.js:266
 msgid "Extension Updates Available"
 msgstr "Pemutakhiran Ekstensi Tersedia"
 
-#: js/ui/extensionSystem.js:253
+#: js/ui/extensionSystem.js:267
 msgid "Extension updates are ready to be installed."
 msgstr "Pemutakhiran ekstensi siap dipasang."
 
@@ -1543,11 +1543,23 @@ msgstr "Tilik Sumber"
 msgid "Web Page"
 msgstr "Halaman Web"
 
-#: js/ui/main.js:290
+#: js/ui/main.js:259
+msgid "System was put in unsafe mode"
+msgstr "Sistem dimasukkan ke dalam mode yang tidak aman"
+
+#: js/ui/main.js:260
+msgid "Applications now have unrestricted access"
+msgstr "Aplikasi sekarang memiliki akses tak terbatas"
+
+#: js/ui/main.js:261 js/ui/overview.js:58
+msgid "Undo"
+msgstr "Batal"
+
+#: js/ui/main.js:307
 msgid "Logged in as a privileged user"
 msgstr "Masuk sebagai pengguna istimewa"
 
-#: js/ui/main.js:291
+#: js/ui/main.js:308
 msgid ""
 "Running a session as a privileged user should be avoided for security "
 "reasons. If possible, you should log in as a normal user."
@@ -1555,11 +1567,11 @@ msgstr ""
 "Menjalankan sesi sebagai pengguna istimewa harus dihindari untuk alasan "
 "keamanan. Jika memungkinkan, Anda harus masuk sebagai pengguna biasa."
 
-#: js/ui/main.js:340
+#: js/ui/main.js:357
 msgid "Screen Lock disabled"
 msgstr "Kunci Layar dinonaktifkan"
 
-#: js/ui/main.js:341
+#: js/ui/main.js:358
 msgid "Screen Locking requires the GNOME display manager."
 msgstr "Penguncian Layar memerlukan manajer tampilan GNOME."
 
@@ -1586,10 +1598,6 @@ msgstr "Ketik untuk mencari"
 #: js/ui/overviewControls.js:392
 msgid "Applications"
 msgstr "Aplikasi"
-
-#: js/ui/overview.js:58
-msgid "Undo"
-msgstr "Batal"
 
 #. Translators: This is the main view to select
 #. activities. See also note for "Activities" string.
@@ -2288,28 +2296,28 @@ msgstr "Volume"
 #. Translators: this is for display mirroring i.e. cloning.
 #. * Try to keep it under around 15 characters.
 #.
-#: js/ui/switchMonitor.js:17
+#: js/ui/switchMonitor.js:20
 msgid "Mirror"
 msgstr "Kembar"
 
 #. Translators: this is for the desktop spanning displays.
 #. * Try to keep it under around 15 characters.
 #.
-#: js/ui/switchMonitor.js:22
+#: js/ui/switchMonitor.js:29
 msgid "Join Displays"
 msgstr "Gabung Layar"
 
 #. Translators: this is for using only an external display.
 #. * Try to keep it under around 15 characters.
 #.
-#: js/ui/switchMonitor.js:27
+#: js/ui/switchMonitor.js:39
 msgid "External Only"
 msgstr "Hanya Eksternal"
 
 #. Translators: this is for using only the laptop display.
 #. * Try to keep it under around 15 characters.
 #.
-#: js/ui/switchMonitor.js:32
+#: js/ui/switchMonitor.js:47
 msgid "Built-in Only"
 msgstr "Hanya Bawaan"
 
