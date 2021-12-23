@@ -14,7 +14,7 @@ desktopconf.set('bindir', bindir)
 desktopconf.set('app_id', app_id)
 desktopconf.set('prgname', prgname)
 
-i18n.merge_file('desktop',
+i18n.merge_file(
   input: configure_file(
     input: base_id + '.desktop.in.in',
     output: desktop_file + '.in',
