@@ -13,7 +13,7 @@ script_data.set('libdir', libdir)
 script_data.set('libexecdir', libexecdir)
 script_data.set('pkgdatadir', pkgdatadir)
 script_data.set('pkglibdir', pkglibdir)
-script_data.set('PYTHON', python.path())
+script_data.set('PYTHON', python.full_path())
 script_data.set('VERSION', meson.project_version())
 
 script_tools = ['gnome-shell-perf-tool']

@@ -9,7 +9,7 @@ endif
 launcherconf.set('prefix', prefix)
 launcherconf.set('libdir', libdir)
 launcherconf.set('pkgdatadir', pkgdatadir)
-launcherconf.set('gjs', gjs.path())
+launcherconf.set('gjs', gjs.full_path())
 
 configure_file(
   input: prgname + '.in',

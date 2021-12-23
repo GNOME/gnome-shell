@@ -1,6 +1,6 @@
 project('gnome-shell', 'c',
   version: '41.0',
-  meson_version: '>= 0.53.0',
+  meson_version: '>= 0.58.0',
   license: 'GPLv2+'
 )
 
@@ -65,7 +65,7 @@ servicedir = join_paths(datadir, 'dbus-1', 'services')
 
 keybindings_dep = dependency('gnome-keybindings', required: false)
 if keybindings_dep.found()
-  keysdir = keybindings_dep.get_pkgconfig_variable('keysdir', define_variable: ['datadir', datadir])
+  keysdir = keybindings_dep.get_variable('keysdir', pkgconfig_define: ['datadir', datadir])
 else
   keysdir = join_paths(datadir, 'gnome-control-center', 'keybindings')
 endif
@@ -117,8 +117,8 @@ endif
 if get_option('systemd')
   libsystemd_dep = dependency('libsystemd')
   systemd_dep = dependency('systemd')
-  systemduserunitdir = systemd_dep.get_pkgconfig_variable('systemduserunitdir',
-                                                          define_variable: ['prefix', prefix])
+  systemduserunitdir = systemd_dep.get_variable('systemduserunitdir',
+    pkgconfig_define: ['prefix', prefix])
   have_systemd = true
 else
   libsystemd_dep = []
@@ -136,7 +136,7 @@ if get_option('man')
   endif
 endif
 
-mutter_typelibdir = mutter_dep.get_pkgconfig_variable('typelibdir')
+mutter_typelibdir = mutter_dep.get_variable('typelibdir')
 python = find_program('python3')
 gjs = find_program('gjs')
 

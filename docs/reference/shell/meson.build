@@ -41,8 +41,8 @@ configure_file(
 gnome.gtkdoc('shell',
   main_sgml: 'shell-docs.sgml',
   src_dir: [
-    join_paths(meson.source_root(), 'src'),
-    join_paths(meson.build_root(), 'src')
+    join_paths(meson.project_source_root(), 'src'),
+    join_paths(meson.project_build_root(), 'src')
   ],
   scan_args: [
     '--ignore-headers=' + ' '.join(private_headers + exclude_directories)

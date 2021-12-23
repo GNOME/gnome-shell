@@ -153,7 +153,7 @@ st_enums = gnome.mkenums_simple('st-enum-types',
 
 st_gir_sources = st_sources + st_headers + st_enums
 
-data_to_c = find_program(meson.source_root() + '/src/data-to-c.pl')
+data_to_c = find_program(meson.project_source_root() + '/src/data-to-c.pl')
 
 glsl_sources = custom_target('scroll-view-fade-glsl',
   input: ['st-scroll-view-fade.glsl'],
@@ -165,8 +165,8 @@ glsl_sources = custom_target('scroll-view-fade-glsl',
 st_nogir_sources = [glsl_sources]
 
 st_cflags = [
-  '-I@0@/src'.format(meson.source_root()),
-  '-I@0@'.format(meson.build_root()),
+  '-I@0@/src'.format(meson.project_source_root()),
+  '-I@0@'.format(meson.project_build_root()),
   '-DPREFIX="@0@"'.format(prefix),
   '-DLIBDIR="@0@"'.format(libdir),
   '-DG_LOG_DOMAIN="St"',

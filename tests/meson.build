@@ -8,7 +8,7 @@ run_test = configure_file(
 )
 
 testenv = environment()
-testenv.set('GSETTINGS_SCHEMA_DIR', join_paths(meson.build_root(), 'data'))
+testenv.set('GSETTINGS_SCHEMA_DIR', join_paths(meson.project_build_root(), 'data'))
 
 tests = [
     'highlighter',

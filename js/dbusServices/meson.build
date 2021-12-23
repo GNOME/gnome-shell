@@ -27,7 +27,7 @@ foreach service, dir : dbus_services
 
   serviceconf = configuration_data()
   serviceconf.set('service', service)
-  serviceconf.set('gjs', gjs.path())
+  serviceconf.set('gjs', gjs.full_path())
   serviceconf.set('pkgdatadir', pkgdatadir)
 
   configure_file(
