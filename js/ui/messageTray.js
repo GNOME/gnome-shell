@@ -1204,7 +1204,8 @@ var MessageTray = GObject.registerClass({
                 if (showNextNotification)
                     this._showNotification();
             }
-        } else if (this._notificationState == State.SHOWN) {
+        } else if (this._notificationState === State.SHOWING ||
+                   this._notificationState === State.SHOWN) {
             let expired = (this._userActiveWhileNotificationShown &&
                            this._notificationTimeoutId == 0 &&
                            this._notification.urgency != Urgency.CRITICAL &&
@@ -1215,10 +1216,12 @@ var MessageTray = GObject.registerClass({
             if (mustClose) {
                 let animate = hasNotifications && !this._notificationRemoved;
                 this._hideNotification(animate);
-            } else if (this._pointerInNotification && !this._banner.expanded) {
-                this._expandBanner(false);
-            } else if (this._pointerInNotification) {
-                this._ensureBannerFocused();
+            } else if (this._notificationState === State.SHOWN &&
+                       this._pointerInNotification) {
+                if (!this._banner.expanded)
+                    this._expandBanner(false);
+                else
+                    this._ensureBannerFocused();
             }
         }
 
