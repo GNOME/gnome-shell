@@ -8,18 +8,7 @@ const Main = imports.ui.main;
 
 var ICON_SIZE = 96;
 
-var ANIMATION_TIME_IN = 350;
-var ANIMATION_TIME_OUT = 1 / 2 * ANIMATION_TIME_IN;
-var ANIMATION_MAX_DELAY_FOR_ITEM = 2 / 3 * ANIMATION_TIME_IN;
-var ANIMATION_MAX_DELAY_OUT_FOR_ITEM = 2 / 3 * ANIMATION_TIME_OUT;
-var ANIMATION_FADE_IN_TIME_FOR_ITEM = 1 / 4 * ANIMATION_TIME_IN;
-
 var PAGE_SWITCH_TIME = 300;
-
-var AnimationDirection = {
-    IN: 0,
-    OUT: 1,
-};
 
 var IconSize = {
     LARGE: 96,
@@ -365,9 +354,6 @@ var IconGridLayout = GObject.registerClass({
         this._containerDestroyedId = 0;
         this._updateIconSizesLaterId = 0;
 
-        this._resolveOnIdleId = 0;
-        this._iconSizeUpdateResolveCbs = [];
-
         this._childrenMaxSize = -1;
     }
 
@@ -696,27 +682,10 @@ var IconGridLayout = GObject.registerClass({
         return isRtl ? rowAlign * -1 : rowAlign;
     }
 
-    _runPostAllocation() {
-        if (this._iconSizeUpdateResolveCbs.length > 0 &&
-            this._resolveOnIdleId === 0) {
-            this._resolveOnIdleId = GLib.idle_add(GLib.PRIORITY_DEFAULT, () => {
-                this._iconSizeUpdateResolveCbs.forEach(cb => cb());
-                this._iconSizeUpdateResolveCbs = [];
-                this._resolveOnIdleId = 0;
-                return GLib.SOURCE_REMOVE;
-            });
-        }
-    }
-
     _onDestroy() {
         if (this._updateIconSizesLaterId >= 0) {
             Meta.later_remove(this._updateIconSizesLaterId);
             this._updateIconSizesLaterId = 0;
-        }
-
-        if (this._resolveOnIdleId > 0) {
-            GLib.source_remove(this._resolveOnIdleId);
-            delete this._resolveOnIdleId;
         }
     }
 
@@ -834,8 +803,6 @@ var IconGridLayout = GObject.registerClass({
 
         this._pageSizeChanged = false;
         this._shouldEaseItems = false;
-
-        this._runPostAllocation();
     }
 
     /**
@@ -1158,7 +1125,6 @@ var IconGridLayout = GObject.registerClass({
 var IconGrid = GObject.registerClass({
     Signals: {
         'pages-changed': {},
-        'animation-done': {},
     },
 }, class IconGrid extends St.Viewport {
     _init(layoutParams = {}) {
@@ -1188,45 +1154,15 @@ var IconGrid = GObject.registerClass({
         this._gridModes = defaultGridModes;
         this._currentPage = 0;
         this._currentMode = -1;
-        this._clonesAnimating = [];
 
         this.connect('actor-added', this._childAdded.bind(this));
         this.connect('actor-removed', this._childRemoved.bind(this));
         this.connect('destroy', () => layoutManager.disconnect(pagesChangedId));
     }
 
-    _getChildrenToAnimate() {
-        const layoutManager = this.layout_manager;
-        const children = layoutManager.getItemsAtPage(this._currentPage);
-
-        return children.filter(c => c.visible);
-    }
-
-    _resetAnimationActors() {
-        this._clonesAnimating.forEach(clone => {
-            clone.source.reactive = true;
-            clone.source.opacity = 255;
-            clone.destroy();
-        });
-        this._clonesAnimating = [];
-    }
-
-    _animationDone() {
-        this._resetAnimationActors();
-        this.emit('animation-done');
-    }
-
     _childAdded(grid, child) {
         child._iconGridKeyFocusInId = child.connect('key-focus-in', () => {
             this._ensureItemIsVisible(child);
-        });
-
-        child._paintVisible = child.opacity > 0;
-        child._opacityChangedId = child.connect('notify::opacity', () => {
-            let paintVisible = child._paintVisible;
-            child._paintVisible = child.opacity > 0;
-            if (paintVisible !== child._paintVisible)
-                this.queue_relayout();
         });
     }
 
@@ -1277,17 +1213,6 @@ var IconGrid = GObject.registerClass({
     _childRemoved(grid, child) {
         child.disconnect(child._iconGridKeyFocusInId);
         delete child._iconGridKeyFocusInId;
-
-        child.disconnect(child._opacityChangedId);
-        delete child._opacityChangedId;
-        delete child._paintVisible;
-    }
-
-    vfunc_unmap() {
-        // Cancel animations when hiding the overview, to avoid icons
-        // swarming into the void ...
-        this._resetAnimationActors();
-        super.vfunc_unmap();
     }
 
     vfunc_style_changed() {
@@ -1476,125 +1401,6 @@ var IconGrid = GObject.registerClass({
 
     adaptToSize(width, height) {
         this.layout_manager.adaptToSize(width, height);
-    }
-
-    async animateSpring(animationDirection, sourceActor) {
-        this._resetAnimationActors();
-
-        let actors = this._getChildrenToAnimate();
-        if (actors.length === 0) {
-            this._animationDone();
-            return;
-        }
-
-        await this.layout_manager.ensureIconSizeUpdated();
-
-        let [sourceX, sourceY] = sourceActor.get_transformed_position();
-        let [sourceWidth, sourceHeight] = sourceActor.get_size();
-        // Get the center
-        let [sourceCenterX, sourceCenterY] = [sourceX + sourceWidth / 2, sourceY + sourceHeight / 2];
-        // Design decision, 1/2 of the source actor size.
-        let [sourceScaledWidth, sourceScaledHeight] = [sourceWidth / 2, sourceHeight / 2];
-
-        actors.forEach(actor => {
-            let [actorX, actorY] = actor._transformedPosition = actor.get_transformed_position();
-            let [x, y] = [actorX - sourceX, actorY - sourceY];
-            actor._distance = Math.sqrt(x * x + y * y);
-        });
-        let maxDist = actors.reduce((prev, cur) => {
-            return Math.max(prev, cur._distance);
-        }, 0);
-        let minDist = actors.reduce((prev, cur) => {
-            return Math.min(prev, cur._distance);
-        }, Infinity);
-        let normalization = maxDist - minDist;
-
-        actors.forEach(actor => {
-            let clone = new Clutter.Clone({ source: actor });
-            this._clonesAnimating.push(clone);
-            Main.uiGroup.add_actor(clone);
-        });
-
-        /*
-         * ^
-         * | These need to be separate loops because Main.uiGroup.add_actor
-         * | is excessively slow if done inside the below loop and we want the
-         * | below loop to complete within one frame interval (#2065, !1002).
-         * v
-         */
-
-        this._clonesAnimating.forEach(actorClone => {
-            const actor = actorClone.source;
-            actor.opacity = 0;
-            actor.reactive = false;
-
-            let [width, height] = actor.get_size();
-            actorClone.set_size(width, height);
-            let scaleX = sourceScaledWidth / width;
-            let scaleY = sourceScaledHeight / height;
-            let [adjustedSourcePositionX, adjustedSourcePositionY] = [sourceCenterX - sourceScaledWidth / 2, sourceCenterY - sourceScaledHeight / 2];
-
-            let movementParams, fadeParams;
-            if (animationDirection === AnimationDirection.IN) {
-                const isLastItem = actor._distance === minDist;
-
-                actorClone.opacity = 0;
-                actorClone.set_scale(scaleX, scaleY);
-                actorClone.set_translation(
-                    adjustedSourcePositionX, adjustedSourcePositionY, 0);
-
-                let delay = (1 - (actor._distance - minDist) / normalization) * ANIMATION_MAX_DELAY_FOR_ITEM;
-                let [finalX, finalY]  = actor._transformedPosition;
-                movementParams = {
-                    translation_x: finalX,
-                    translation_y: finalY,
-                    scale_x: 1,
-                    scale_y: 1,
-                    duration: ANIMATION_TIME_IN,
-                    mode: Clutter.AnimationMode.EASE_IN_OUT_QUAD,
-                    delay,
-                };
-
-                if (isLastItem)
-                    movementParams.onComplete = this._animationDone.bind(this);
-
-                fadeParams = {
-                    opacity: 255,
-                    duration: ANIMATION_FADE_IN_TIME_FOR_ITEM,
-                    mode: Clutter.AnimationMode.EASE_IN_OUT_QUAD,
-                    delay,
-                };
-            } else {
-                const isLastItem = actor._distance === maxDist;
-
-                let [startX, startY]  = actor._transformedPosition;
-                actorClone.set_translation(startX, startY, 0);
-
-                let delay = (actor._distance - minDist) / normalization * ANIMATION_MAX_DELAY_OUT_FOR_ITEM;
-                movementParams = {
-                    translation_x: adjustedSourcePositionX,
-                    translation_y: adjustedSourcePositionY,
-                    scale_x: scaleX,
-                    scale_y: scaleY,
-                    duration: ANIMATION_TIME_OUT,
-                    mode: Clutter.AnimationMode.EASE_IN_OUT_QUAD,
-                    delay,
-                };
-
-                if (isLastItem)
-                    movementParams.onComplete = this._animationDone.bind(this);
-
-                fadeParams = {
-                    opacity: 0,
-                    duration: ANIMATION_FADE_IN_TIME_FOR_ITEM,
-                    mode: Clutter.AnimationMode.EASE_IN_OUT_QUAD,
-                    delay: ANIMATION_TIME_OUT + delay - ANIMATION_FADE_IN_TIME_FOR_ITEM,
-                };
-            }
-
-            actorClone.ease(movementParams);
-            actorClone.ease(fadeParams);
-        });
     }
 
     setGridModes(modes) {
