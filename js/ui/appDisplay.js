@@ -1,8 +1,9 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported AppDisplay, AppSearchProvider */
 
-const { Clutter, Gio, GLib, GObject, Graphene, Meta,
-    Pango, Shell, St } = imports.gi;
+const {
+    Clutter, Gio, GLib, GObject, Graphene, Pango, Shell, St,
+} = imports.gi;
 
 const AppFavorites = imports.ui.appFavorites;
 const { AppMenu } = imports.ui.appMenu;
@@ -297,10 +298,6 @@ var BaseAppView = GObject.registerClass({
 
         this._items = new Map();
         this._orderedItems = [];
-
-        this._animateLaterId = 0;
-        this._viewLoadedHandlerId = 0;
-        this._viewIsReady = false;
 
         // Filter the apps through the user’s parental controls.
         this._parentalControlsManager = ParentalControlsManager.getDefault();
@@ -858,7 +855,6 @@ var BaseAppView = GObject.registerClass({
                 this._moveItem(icon, page, position);
         });
 
-        this._viewIsReady = true;
         this.emit('view-loaded');
     }
 
@@ -898,24 +894,6 @@ var BaseAppView = GObject.registerClass({
                 this.disconnect(signalId);
                 this.selectApp(id);
             });
-        }
-    }
-
-    _doSpringAnimation(animationDirection) {
-        this._grid.opacity = 255;
-        this._grid.animateSpring(
-            animationDirection,
-            Main.overview.dash.showAppsButton);
-    }
-
-    _clearAnimateLater() {
-        if (this._animateLaterId) {
-            Meta.later_remove(this._animateLaterId);
-            this._animateLaterId = 0;
-        }
-        if (this._viewLoadedHandlerId) {
-            this.disconnect(this._viewLoadedHandlerId);
-            this._viewLoadedHandlerId = 0;
         }
     }
 
@@ -1003,7 +981,6 @@ var BaseAppView = GObject.registerClass({
 
     vfunc_unmap() {
         this._swipeTracker.enabled = false;
-        this._clearAnimateLater();
         this._disconnectDnD();
         super.vfunc_unmap();
     }
@@ -1406,12 +1383,10 @@ class AppDisplay extends BaseAppView {
         this._redisplayWorkId = Main.initializeDeferredWork(this, this._redisplay.bind(this));
 
         Shell.AppSystem.get_default().connect('installed-changed', () => {
-            this._viewIsReady = false;
             Main.queueDeferredWork(this._redisplayWorkId);
         });
         this._folderSettings = new Gio.Settings({ schema_id: 'org.gnome.desktop.app-folders' });
         this._folderSettings.connect('changed::folder-children', () => {
-            this._viewIsReady = false;
             Main.queueDeferredWork(this._redisplayWorkId);
         });
     }
