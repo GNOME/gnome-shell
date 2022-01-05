@@ -339,9 +339,13 @@ class WorldClocksSection extends St.Button {
                 this._locations.push({ location: l });
         }
 
+        const unixtime = GLib.DateTime.new_now_local().to_unix();
         this._locations.sort((a, b) => {
-            return a.location.get_timezone().get_offset() -
-                   b.location.get_timezone().get_offset();
+            const tzA = a.location.get_timezone();
+            const tzB = b.location.get_timezone();
+            const intA = tzA.find_interval(GLib.TimeType.STANDARD, unixtime);
+            const intB = tzA.find_interval(GLib.TimeType.STANDARD, unixtime);
+            return tzA.get_offset(intA) - tzB.get_offset(intB);
         });
 
         let layout = this._grid.layout_manager;
@@ -412,8 +416,9 @@ class WorldClocksSection extends St.Button {
     }
 
     _getTimezoneOffsetAtLocation(location) {
+        const tz = location.get_timezone();
         const localOffset = GLib.DateTime.new_now_local().get_utc_offset();
-        const utcOffset = this._getTimeAtLocation(location).get_utc_offset();
+        const utcOffset = GLib.DateTime.new_now(tz).get_utc_offset();
         const offsetCurrentTz = utcOffset - localOffset;
         const offsetHours = Math.abs(offsetCurrentTz) / GLib.TIME_SPAN_HOUR;
         const offsetMinutes =
@@ -427,15 +432,10 @@ class WorldClocksSection extends St.Button {
         return text;
     }
 
-    _getTimeAtLocation(location) {
-        let tz = GLib.TimeZone.new(location.get_timezone().get_tzid());
-        return GLib.DateTime.new_now(tz);
-    }
-
     _updateTimeLabels() {
         for (let i = 0; i < this._locations.length; i++) {
             let l = this._locations[i];
-            let now = this._getTimeAtLocation(l.location);
+            const now = GLib.DateTime.new_now(l.location.get_timezone());
             l.timeLabel.text = Util.formatTime(now, { timeOnly: true });
         }
     }
