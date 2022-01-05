@@ -661,7 +661,16 @@ shell_app_can_open_new_window (ShellApp *app)
 
   desktop_info = G_DESKTOP_APP_INFO (app->info);
 
-  /* If the app is explicitly telling us, then we know for sure */
+  /* If the app is explicitly telling us via its desktop file, then we know
+   * for sure
+  */
+  if (g_desktop_app_info_has_key (desktop_info, "SingleMainWindow"))
+      return !g_desktop_app_info_get_boolean (desktop_info,
+                                              "SingleMainWindow");
+
+  /* GNOME-specific key, for backwards compatibility with apps that haven't
+   * started using the XDG "SingleMainWindow" key yet
+  */
   if (g_desktop_app_info_has_key (desktop_info, "X-GNOME-SingleWindow"))
     return !g_desktop_app_info_get_boolean (desktop_info,
                                             "X-GNOME-SingleWindow");
