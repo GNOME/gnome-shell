@@ -1,6 +1,10 @@
 gnome.compile_resources(
   app_id + '.data',
-  base_id + '.data.gresource.xml',
+  configure_file(
+    input: base_id + '.data.gresource.xml.in',
+    output: app_id + '.data.gresource.xml',
+    configuration: {'profile': '/'.join(profile.split('.')) },
+  ),
   gresource_bundle: true,
   install: true,
   install_dir: pkgdatadir

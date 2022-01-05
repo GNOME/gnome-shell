@@ -1,10 +1,9 @@
 /* exported main */
-imports.gi.versions.Gdk = '4.0';
 imports.gi.versions.Gtk = '4.0';
 
 const Gettext = imports.gettext;
 const Package = imports.package;
-const { Adw, Gdk, GLib, Gio, GObject, Gtk, Shew } = imports.gi;
+const { Adw, GLib, Gio, GObject, Gtk, Shew } = imports.gi;
 
 Package.initFormat();
 
@@ -57,17 +56,6 @@ class Application extends Adw.Application {
 
     vfunc_startup() {
         super.vfunc_startup();
-
-        let provider = new Gtk.CssProvider();
-        let uri = 'resource:///org/gnome/Extensions/css/application.css';
-        try {
-            provider.load_from_file(Gio.File.new_for_uri(uri));
-        } catch (e) {
-            logError(e, 'Failed to add application style');
-        }
-        Gtk.StyleContext.add_provider_for_display(Gdk.Display.get_default(),
-            provider,
-            Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
 
         const action = new Gio.SimpleAction({ name: 'quit' });
         action.connect('activate', () => this._window.close());
