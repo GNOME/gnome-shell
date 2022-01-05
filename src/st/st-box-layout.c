@@ -89,8 +89,7 @@ st_box_layout_get_property (GObject    *object,
       break;
 
     case PROP_PACK_START:
-      layout = clutter_actor_get_layout_manager (CLUTTER_ACTOR (object));
-      g_value_set_boolean (value, clutter_box_layout_get_pack_start (CLUTTER_BOX_LAYOUT (layout)));
+      g_value_set_boolean (value, FALSE);
       break;
 
     default:
@@ -113,7 +112,6 @@ st_box_layout_set_property (GObject      *object,
       break;
 
     case PROP_PACK_START:
-      st_box_layout_set_pack_start (box, g_value_get_boolean (value));
       break;
 
     default:
@@ -202,7 +200,7 @@ st_box_layout_class_init (StBoxLayoutClass *klass)
                                 "Pack Start",
                                 "Whether to pack items at the start of the box",
                                 FALSE,
-                                ST_PARAM_READWRITE);
+                                ST_PARAM_READWRITE | G_PARAM_DEPRECATED);
   g_object_class_install_property (object_class, PROP_PACK_START, pspec);
 }
 
@@ -282,37 +280,23 @@ st_box_layout_get_vertical (StBoxLayout *box)
  * @box: A #StBoxLayout
  * @pack_start: %TRUE if the layout should use pack-start
  *
- * Set the value of the #StBoxLayout:pack-start property.
+ * Deprecated: No longer has any effect
  */
 void
 st_box_layout_set_pack_start (StBoxLayout *box,
                               gboolean     pack_start)
 {
-  ClutterBoxLayout *layout;
-
-  g_return_if_fail (ST_IS_BOX_LAYOUT (box));
-
-  layout = CLUTTER_BOX_LAYOUT (clutter_actor_get_layout_manager (CLUTTER_ACTOR (box)));
-
-  if (clutter_box_layout_get_pack_start (layout) != pack_start)
-    {
-      clutter_box_layout_set_pack_start (layout, pack_start);
-      g_object_notify (G_OBJECT (box), "pack-start");
-    }
 }
 
 /**
  * st_box_layout_get_pack_start:
  * @box: A #StBoxLayout
  *
- * Get the value of the #StBoxLayout:pack-start property.
- *
- * Returns: %TRUE if pack-start is enabled
+ * Returns: the value of the #StBoxLayout:pack-start property,
+ *   always %FALSE
  */
 gboolean
 st_box_layout_get_pack_start (StBoxLayout *box)
 {
-  g_return_val_if_fail (ST_IS_BOX_LAYOUT (box), FALSE);
-
-  return clutter_box_layout_get_pack_start (CLUTTER_BOX_LAYOUT (clutter_actor_get_layout_manager (CLUTTER_ACTOR (box))));
+  return FALSE;
 }
