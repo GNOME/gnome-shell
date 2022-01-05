@@ -183,7 +183,10 @@ st_settings_get_property (GObject    *object,
       g_value_set_boolean (value, settings->high_contrast);
       break;
     case PROP_GTK_ICON_THEME:
-      g_value_set_string (value, settings->gtk_icon_theme);
+      if (settings->high_contrast)
+        g_value_set_string (value, "HighContrast");
+      else
+        g_value_set_string (value, settings->gtk_icon_theme);
       break;
     case PROP_MAGNIFIER_ACTIVE:
       g_value_set_boolean (value, settings->magnifier_active);
@@ -374,6 +377,8 @@ on_a11y_interface_settings_changed (GSettings   *g_settings,
     {
       settings->high_contrast = g_settings_get_boolean (g_settings, key);
       g_object_notify_by_pspec (G_OBJECT (settings), props[PROP_HIGH_CONTRAST]);
+
+      g_object_notify_by_pspec (G_OBJECT (settings), props[PROP_GTK_ICON_THEME]);
     }
 }
 
