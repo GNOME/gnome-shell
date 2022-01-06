@@ -954,6 +954,7 @@ var WindowManager = class {
 
         global.display.connect('notify::focus-window', updateUnfullscreenGesture);
         global.display.connect('in-fullscreen-changed', updateUnfullscreenGesture);
+        updateUnfullscreenGesture();
 
         global.stage.add_action_full('unfullscreen', Clutter.EventPhase.CAPTURE, topDragAction);
 
