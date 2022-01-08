@@ -87,6 +87,7 @@ function nodesToWalk(node) {
         return node.body;
     case 'CallExpression':
     case 'NewExpression':
+    case 'OptionalCallExpression':
     case 'TaggedTemplate':
         return [node.callee, ...node.arguments];
     case 'CatchClause':
