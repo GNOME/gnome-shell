@@ -669,8 +669,8 @@ class ControlsManager extends St.Widget {
     }
 
     vfunc_unmap() {
-        this._workspacesDisplay.hide();
         super.vfunc_unmap();
+        this._workspacesDisplay.hide();
     }
 
     animateToOverview(state, callback) {
