@@ -1,3 +1,55 @@
+42.alpha
+========
+* Fix icon updates while hidden [Marco; !1983]
+* Fix erratic scrolling in GTK apps [Christian, Carlos; !1993, !2011]
+* Fix GTK color picker support [Florian; !1990]
+* Fix sound-file support in notifications [Florian; !1991]
+* Fix high-contrast switches [Florian; !2000]
+* Allow extensions to opt-in to running on lock/login screen [Ray; !1967]
+* magnifier: Avoid offscreen rendering if possible [Sebastian; !2026]
+* Warn when unsafe-mode is toggled [Florian; !2050]
+* Improve handling of all-day/zero-length events in calendar [Sebastian; !2023]
+* Keep keyboard focus in notification list after deleting message [Dylan; !2053]
+* switchMonitor: Don't include builtin/external modes on desktops [Jonas; !2056]
+* Fix wrongly rejected D-Bus calls after gnome-shell restarts [Sebastian; !2048]
+* Improve window tracking [Florian; [Florian; !2029]
+* Simplify scroll fade shader to work with old hardware [Sebastian; !2072]
+* Tweak (un)minimize animations [Daniel; !2066]
+* Properly handle markup when highlighting search terms [Sebastian; !2033]
+* Don't wake up screen in DND mode [kyte; !2051]
+* Port to GWeather 4.0 [Florian; !2083]
+* extensions-app: Use libadwaita [Romain, Florian; !1997]
+* Fix immediately withdrawn notifications getting stuck [Sebastian; !2079]
+* Honor XDG SingleMainWindow key in .desktop files [Nate; !2084]
+* Opt-in to unique GType names in extension prefs [Florian; !2024]
+* Don't terminate remote sessions in headless mode [Joan; !2057]
+* Fixed crashes [Ray, Sebastian, Benjamin, Florian; !2004, !2014, !2025,
+  !2065, !2073]
+* Misc. bug fixes and cleanups [Jonas, Florian, Jakub, Ray, Carlos, Sebastian,
+  Georges, Evan, Sergio, Emily, Robert; !1985, !1998, !1996, !1999, !1979,
+  !2007, !2010, !2013, !2021, !2027, !2015, !2030, !2039, !2036, !2038, !2041,
+  !2034, !1992, !2059, !2054, !2068, !2076, !2077, !2078, !2081, !2082, !2031,
+  !2042, !2086, !2087, !2085, !2088]
+
+Contributors:
+  Marco Trevisan (Treviño), Benjamin Berg, Sergio Costas, Carlos Garnacho,
+  Emily Gonyer, Nate Graham, Christian Hergert, Sebastian Keller, Robert Mader,
+  Dylan McCall, Florian Müllner, Georges Basile Stavracas Neto, Jakub Steiner,
+  Ray Strode, Joan Torres, Romain Vigier, Daniel van Vugt, Evan Welsh, kyte,
+  Jonas Ådahl
+
+Translators:
+  Марко Костић [sr], Ngọc Quân Trần [vi], Emin Tufan Çetin [tr],
+  Yaron Shahrabani [he], Sveinn í Felli [is], Goran Vidović [hr],
+  Marek Černocký [cs], Selyan Slimane AMIRI [kab], Rūdolfs Mazurs [lv],
+  eshagh shahidani [fa], Yuri Chornoivan [uk], Anders Jonsson [sv],
+  Rafael Fontenelle [pt_BR], Kukuh Syafaat [id], Christian Kirbach [de],
+  Piotr Drąg [pl], Dušan Kazik [sk], Charles Monzat [fr], Fabio Tomat [fur],
+  Quentin PAGÈS [oc], Hugo Carvalho [pt], Milo Casagrande [it],
+  Daniel Mustieles [es], MohammadSaleh Kamyab [fa], Aurimas Černius [lt],
+  Aleksandr Melman [ru], Fran Dieguez [gl], Мирослав Николић [sr],
+  Danial Behzadi [fa]
+
 41.0
 ====
 

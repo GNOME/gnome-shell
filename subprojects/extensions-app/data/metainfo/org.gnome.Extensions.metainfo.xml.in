@@ -39,7 +39,11 @@
   </description>
 
   <releases>
-    <release version="41.0" date="2021-09-19"/>
+    <release version="42.alpha" type="development" date="2022-01-10">
+      <description>
+        <p>Use libadwaita for platform integration and consistency.</p>
+      </description>
+    </release>
   </releases>
 
   <screenshots>
