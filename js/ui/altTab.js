@@ -794,9 +794,9 @@ class AppSwitcher extends SwitcherPopup.SwitcherList {
         }
     }
 
-    // We override SwitcherList's _onItemEnter method to delay
+    // We override SwitcherList's _onItemMotion method to delay
     // activation when the thumbnail list is open
-    _onItemEnter(item) {
+    _onItemMotion(item) {
         const index = this._items.indexOf(item);
 
         if (this._mouseTimeOutId != 0)

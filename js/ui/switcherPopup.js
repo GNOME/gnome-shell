@@ -428,7 +428,7 @@ var SwitcherList = GObject.registerClass({
         this._list.add_actor(bbox);
 
         bbox.connect('clicked', () => this._onItemClicked(bbox));
-        bbox.connect('motion-event', () => this._onItemEnter(bbox));
+        bbox.connect('motion-event', () => this._onItemMotion(bbox));
 
         bbox.label_actor = label;
 
@@ -455,7 +455,7 @@ var SwitcherList = GObject.registerClass({
         this._itemActivated(this._items.indexOf(item));
     }
 
-    _onItemEnter(item) {
+    _onItemMotion(item) {
         // Avoid reentrancy
         if (item !== this._items[this._highlighted])
             this._itemEntered(this._items.indexOf(item));
