@@ -162,7 +162,11 @@ var Overview = class {
         this._coverPane = new Clutter.Actor({ opacity: 0,
                                               reactive: true });
         Main.layoutManager.overviewGroup.add_child(this._coverPane);
-        this._coverPane.connect('event', () => Clutter.EVENT_STOP);
+        this._coverPane.connect('event', (_actor, event) => {
+            return event.type() === Clutter.EventType.ENTER ||
+                event.type() === Clutter.EventType.LEAVE
+                ? Clutter.EVENT_PROPAGATE : Clutter.EVENT_STOP;
+        });
         this._coverPane.hide();
 
         // XDND
