@@ -101,10 +101,6 @@ class Indicator extends PanelMenu.SystemIndicator {
                 : PopupMenu.Ornament.NONE);
         }
 
-        const perfItem = this._profileItems.get('performance');
-        if (perfItem)
-            perfItem.sensitive = this._proxy.PerformanceInhibited === '';
-
         this._item.label.text = PROFILE_LABELS[this._proxy.ActiveProfile];
         this._item.icon.icon_name = PROFILE_ICONS[this._proxy.ActiveProfile];
     }
