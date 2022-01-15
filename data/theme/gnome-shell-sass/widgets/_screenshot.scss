@@ -32,3 +32,52 @@
     icon-size: $base_icon_size * 2;
   }
 }
+
+.screenshot-ui-type-button {
+  padding: $base_padding * 2 $base_padding * 3;
+  border-radius: 12px + 21px - 18px;
+  font-weight: bold;
+  &:hover, &:focus { background-color: $hover_bg_color; }
+  &:active { background-color: $active_bg_color; }
+  &:checked { background-color: $hover_bg_color; }
+  &:insensitive { color: $insensitive_fg_color; }
+}
+
+.screenshot-ui-capture-button {
+  width: 36px;
+  height: 36px;
+  border-radius: 99px;
+  border: 4px white;
+  padding: 4px;
+
+  .screenshot-ui-capture-button-circle {
+    background-color: white;
+    transition-duration: 200ms;
+    &:hover, &:focus { background-color: $hover_bg_color; }
+    border-radius: 99px;
+  }
+
+  &:hover, &:focus {
+    .screenshot-ui-capture-button-circle {
+      background-color: darken(white, 15%);
+    }
+  }
+
+  &:active {
+    .screenshot-ui-capture-button-circle {
+      background-color: darken(white, 50%);
+    }
+  }
+}
+
+.screenshot-ui-screen-selector {
+  transition-duration: 200ms;
+  background-color: rgba(0, 0, 0, .5);
+
+  &:hover { background-color: rgba(0, 0, 0, .3); }
+  &:active { background-color: rgba(0, 0, 0, .7); }
+  &:checked {
+    background-color: transparent;
+    border: 2px white;
+  }
+}

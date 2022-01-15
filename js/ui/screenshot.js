@@ -14,6 +14,11 @@ Gio._promisify(Shell.Screenshot.prototype,
     'screenshot_window', 'screenshot_window_finish');
 Gio._promisify(Shell.Screenshot.prototype,
     'screenshot_area', 'screenshot_area_finish');
+Gio._promisify(Shell.Screenshot.prototype,
+    'screenshot_stage_to_content', 'screenshot_stage_to_content_finish');
+Gio._promisify(
+    Shell.Screenshot,
+    'composite_to_stream', 'composite_to_stream_finish');
 
 const { loadInterfaceXML } = imports.misc.fileUtils;
 const { DBusSenderChecker } = imports.misc.util;
@@ -53,8 +58,26 @@ class ScreenshotUI extends St.Widget {
             visible: false,
         });
 
+        // The full-screen screenshot has a separate container so that we can
+        // show it without the screenshot UI fade-in for a nicer animation.
+        this._stageScreenshotContainer = new St.Widget({ visible: false });
+        this._stageScreenshotContainer.add_constraint(new Clutter.BindConstraint({
+            source: global.stage,
+            coordinate: Clutter.BindCoordinate.ALL,
+        }));
+        Main.layoutManager.screenshotUIGroup.add_child(
+            this._stageScreenshotContainer);
+
         Main.layoutManager.screenshotUIGroup.add_child(this);
 
+        this._stageScreenshot = new St.Widget({ style_class: 'screenshot-ui-screen-screenshot' });
+        this._stageScreenshot.add_constraint(new Clutter.BindConstraint({
+            source: global.stage,
+            coordinate: Clutter.BindCoordinate.ALL,
+        }));
+        this._stageScreenshotContainer.add_child(this._stageScreenshot);
+
+        this._openingCoroutineInProgress = false;
         this._grabHelper = new GrabHelper.GrabHelper(this, {
             actionMode: Shell.ActionMode.POPUP,
         });
@@ -83,9 +106,42 @@ class ScreenshotUI extends St.Widget {
         this._closeButton.connect('clicked', () => this.close());
         this._primaryMonitorBin.add_child(this._closeButton);
 
+        this._typeButtonContainer = new St.Widget({
+            style_class: 'screenshot-ui-type-button-container',
+            layout_manager: new Clutter.BoxLayout({
+                spacing: 12,
+                homogeneous: true,
+            }),
+        });
+        this._panel.add_child(this._typeButtonContainer);
+
+        this._screenButton = new IconLabelButton('video-display-symbolic', _('Screen'), {
+            style_class: 'screenshot-ui-type-button',
+            checked: true,
+            x_expand: true,
+        });
+        this._screenButton.connect('notify::checked',
+            this._onScreenButtonToggled.bind(this));
+        this._typeButtonContainer.add_child(this._screenButton);
+
+        this._bottomRowContainer = new St.Widget({ layout_manager: new Clutter.BinLayout() });
+        this._panel.add_child(this._bottomRowContainer);
+
+        this._captureButton = new St.Button({ style_class: 'screenshot-ui-capture-button' });
+        this._captureButton.set_child(new St.Widget({
+            style_class: 'screenshot-ui-capture-button-circle',
+        }));
+        this._captureButton.connect('clicked',
+            this._onCaptureButtonClicked.bind(this));
+        this._bottomRowContainer.add_child(this._captureButton);
+
+        this._monitorBins = [];
+        this._rebuildMonitorBins();
+
         Main.layoutManager.connect('monitors-changed', () => {
             // Nope, not dealing with monitor changes.
             this.close(true);
+            this._rebuildMonitorBins();
         });
 
         Main.wm.addKeybinding(
@@ -101,7 +157,80 @@ class ScreenshotUI extends St.Widget {
         );
     }
 
-    open() {
+    _rebuildMonitorBins() {
+        for (const bin of this._monitorBins)
+            bin.destroy();
+
+        this._monitorBins = [];
+        this._screenSelectors = [];
+
+        for (let i = 0; i < Main.layoutManager.monitors.length; i++) {
+            const bin = new St.Widget({
+                layout_manager: new Clutter.BinLayout(),
+            });
+            bin.add_constraint(new Layout.MonitorConstraint({ 'index': i }));
+            this.insert_child_below(bin, this._primaryMonitorBin);
+            this._monitorBins.push(bin);
+
+            const screenSelector = new St.Button({
+                style_class: 'screenshot-ui-screen-selector',
+                x_expand: true,
+                y_expand: true,
+                visible: this._screenButton.checked,
+                reactive: true,
+                can_focus: true,
+                toggle_mode: true,
+            });
+            screenSelector.connect('key-focus-in', () => {
+                this.grab_key_focus();
+                screenSelector.checked = true;
+            });
+            bin.add_child(screenSelector);
+            this._screenSelectors.push(screenSelector);
+
+            screenSelector.connect('notify::checked', () => {
+                if (!screenSelector.checked)
+                    return;
+
+                screenSelector.toggle_mode = false;
+
+                for (const otherSelector of this._screenSelectors) {
+                    if (screenSelector === otherSelector)
+                        continue;
+
+                    otherSelector.toggle_mode = true;
+                    otherSelector.checked = false;
+                }
+            });
+        }
+
+        if (Main.layoutManager.primaryIndex !== -1)
+            this._screenSelectors[Main.layoutManager.primaryIndex].checked = true;
+    }
+
+    async open() {
+        if (this._openingCoroutineInProgress)
+            return;
+
+        if (!this.visible) {
+            // Screenshot UI is opening from completely closed state
+            // (rather than opening back from in process of closing).
+            this._shooter = new Shell.Screenshot();
+
+            this._openingCoroutineInProgress = true;
+            try {
+                const [content, scale] =
+                    await this._shooter.screenshot_stage_to_content();
+                this._stageScreenshot.set_content(content);
+                this._scale = scale;
+
+                this._stageScreenshotContainer.show();
+            } catch (e) {
+                log('Error capturing screenshot: %s'.format(e.message));
+            }
+            this._openingCoroutineInProgress = false;
+        }
+
         // Get rid of any popup menus.
         // We already have them captured on the screenshot anyway.
         //
@@ -122,11 +251,26 @@ class ScreenshotUI extends St.Widget {
             opacity: 255,
             duration: 200,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            onComplete: () => {
+                this._stageScreenshotContainer.get_parent().remove_child(
+                    this._stageScreenshotContainer);
+                this.insert_child_at_index(this._stageScreenshotContainer, 0);
+            },
         });
     }
 
     _finishClosing() {
         this.hide();
+
+        this._shooter = null;
+
+        this._stageScreenshotContainer.get_parent().remove_child(
+            this._stageScreenshotContainer);
+        Main.layoutManager.screenshotUIGroup.insert_child_at_index(
+            this._stageScreenshotContainer, 0);
+        this._stageScreenshotContainer.hide();
+
+        this._stageScreenshot.set_content(null);
     }
 
     close(instantly = false) {
@@ -145,13 +289,88 @@ class ScreenshotUI extends St.Widget {
             onComplete: this._finishClosing.bind(this),
         });
     }
+
+    _onScreenButtonToggled() {
+        if (this._screenButton.checked) {
+            this._screenButton.toggle_mode = false;
+
+            for (const selector of this._screenSelectors) {
+                selector.show();
+                selector.remove_all_transitions();
+                selector.ease({
+                    opacity: 255,
+                    duration: 200,
+                    mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+                });
+            }
+        } else {
+            this._screenButton.toggle_mode = true;
+
+            for (const selector of this._screenSelectors) {
+                selector.remove_all_transitions();
+                selector.ease({
+                    opacity: 0,
+                    duration: 200,
+                    mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+                    onComplete: () => selector.hide(),
+                });
+            }
+        }
+    }
+
+    _onCaptureButtonClicked() {
+        global.display.get_sound_player().play_from_theme(
+            'screen-capture', _('Screenshot taken'), null);
+
+        if (this._screenButton.checked) {
+            const content = this._stageScreenshot.get_content();
+            if (!content) {
+                // Failed to capture the screenshot for some reason.
+                this.close();
+                return;
+            }
+
+            const texture = content.get_texture();
+            const stream = Gio.MemoryOutputStream.new_resizable();
+
+            const index =
+                this._screenSelectors.findIndex(screen => screen.checked);
+            const monitor = Main.layoutManager.monitors[index];
+
+            const x = monitor.x * this._scale;
+            const y = monitor.y * this._scale;
+            const w = monitor.width * this._scale;
+            const h = monitor.height * this._scale;
+
+            Shell.Screenshot.composite_to_stream(
+                texture,
+                x, y, w, h,
+                stream
+            ).then(() => {
+                stream.close(null);
+
+                const clipboard = St.Clipboard.get_default();
+                clipboard.set_content(
+                    St.ClipboardType.CLIPBOARD,
+                    'image/png',
+                    stream.steal_as_bytes()
+                );
+            }).catch(err => {
+                logError(err, 'Error capturing screenshot');
+            });
+        }
+
+        this.close();
+    }
 });
 
 /**
  * Shows the screenshot UI.
  */
 function showScreenshotUI() {
-    Main.screenshotUI.open();
+    Main.screenshotUI.open().catch(err => {
+        logError(err, 'Error opening the screenshot UI');
+    });
 }
 
 var ScreenshotService = class {
