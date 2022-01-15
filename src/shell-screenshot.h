@@ -60,4 +60,15 @@ gboolean shell_screenshot_pick_color_finish (ShellScreenshot      *screenshot,
                                              ClutterColor         *color,
                                              GError              **error);
 
+void shell_screenshot_composite_to_stream (CoglTexture         *texture,
+                                           int                  x,
+                                           int                  y,
+                                           int                  width,
+                                           int                  height,
+                                           GOutputStream       *stream,
+                                           GAsyncReadyCallback  callback,
+                                           gpointer             user_data);
+gboolean shell_screenshot_composite_to_stream_finish (GAsyncResult  *result,
+                                                      GError       **error);
+
 #endif /* ___SHELL_SCREENSHOT_H__ */

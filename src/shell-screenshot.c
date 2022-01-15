@@ -804,6 +804,124 @@ shell_screenshot_pick_color_finish (ShellScreenshot  *screenshot,
 #undef INDEX_G
 #undef INDEX_B
 
+static void
+composite_to_stream_on_png_saved (GObject      *source,
+                                  GAsyncResult *result,
+                                  gpointer      user_data)
+{
+  GTask *task = G_TASK (user_data);
+  GError *error = NULL;
+
+  if (!gdk_pixbuf_save_to_stream_finish (result, &error))
+    g_task_return_error (task, error);
+  else
+    g_task_return_boolean (task, TRUE);
+
+  g_object_unref (task);
+}
+
+/**
+ * shell_screenshot_composite_to_stream:
+ * @texture: the source texture
+ * @x: x coordinate of the rectangle
+ * @y: y coordinate of the rectangle
+ * @width: width of the rectangle, or -1 to use the full texture
+ * @height: height of the rectangle, or -1 to use the full texture
+ * @stream: the stream to write the PNG image into
+ * @callback: (scope async): function to call returning success or failure
+ * @user_data: the data to pass to callback function
+ *
+ * Composite a rectangle defined by x, y, width, height from the texture to a
+ * pixbuf and write it as a PNG image into the stream.
+ *
+ */
+void
+shell_screenshot_composite_to_stream (CoglTexture         *texture,
+                                      int                  x,
+                                      int                  y,
+                                      int                  width,
+                                      int                  height,
+                                      GOutputStream       *stream,
+                                      GAsyncReadyCallback  callback,
+                                      gpointer             user_data)
+{
+  CoglContext *ctx;
+  CoglTexture *sub_texture;
+  cairo_surface_t *surface;
+  g_autoptr (GTask) task = NULL;
+  g_autoptr (GdkPixbuf) pixbuf = NULL;
+  g_autofree char *creation_time = NULL;
+  g_autoptr (GDateTime) date_time = NULL;
+
+  task = g_task_new (NULL, NULL, callback, user_data);
+  g_task_set_source_tag (task, shell_screenshot_composite_to_stream);
+
+  if (width == -1 || height == -1)
+    {
+      x = 0;
+      y = 0;
+      width = cogl_texture_get_width (texture);
+      height = cogl_texture_get_height (texture);
+    }
+
+  ctx = clutter_backend_get_cogl_context (clutter_get_default_backend ());
+  sub_texture = cogl_sub_texture_new (ctx, texture, x, y, width, height);
+
+  surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32,
+                                        cogl_texture_get_width (sub_texture),
+                                        cogl_texture_get_height (sub_texture));
+
+  cogl_texture_get_data (sub_texture, CLUTTER_CAIRO_FORMAT_ARGB32,
+                         cairo_image_surface_get_stride (surface),
+                         cairo_image_surface_get_data (surface));
+  cairo_surface_mark_dirty (surface);
+
+  cogl_object_unref (sub_texture);
+
+  // Save to an image.
+  pixbuf = gdk_pixbuf_get_from_surface (surface,
+                                        0, 0,
+                                        cairo_image_surface_get_width (surface),
+                                        cairo_image_surface_get_height (surface));
+  cairo_surface_destroy (surface);
+
+  date_time = g_date_time_new_now_local ();
+  creation_time = g_date_time_format (date_time, "%c");
+
+  if (!creation_time)
+    creation_time = g_date_time_format (date_time, "%FT%T%z");
+
+  gdk_pixbuf_save_to_stream_async (pixbuf, stream, "png", NULL,
+                                   composite_to_stream_on_png_saved,
+                                   g_steal_pointer (&task),
+                                   "tEXt::Software", "gnome-screenshot",
+                                   "tEXt::Creation Time", creation_time,
+                                   NULL);
+}
+
+/**
+ * shell_screenshot_composite_to_stream_finish:
+ * @result: the #GAsyncResult that was provided to the callback
+ * @error: #GError for error reporting
+ *
+ * Finish the asynchronous operation started by
+ * shell_screenshot_composite_to_stream () and obtain its result.
+ *
+ * Returns: whether the operation was successful
+ *
+ */
+gboolean
+shell_screenshot_composite_to_stream_finish (GAsyncResult  *result,
+                                             GError       **error)
+{
+  g_return_val_if_fail (G_IS_TASK (result), FALSE);
+  g_return_val_if_fail (g_async_result_is_tagged (result,
+                                                  shell_screenshot_composite_to_stream),
+                        FALSE);
+
+  return g_task_propagate_boolean (G_TASK (result), error);
+}
+
 ShellScreenshot *
 shell_screenshot_new (void)
 {
