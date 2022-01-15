@@ -234,6 +234,14 @@
       <default>["Print"]</default>
       <summary>Show screenshot UI</summary>
     </key>
+    <key name="screenshot-window" type="as">
+      <default>["&lt;Alt&gt;Print"]</default>
+      <summary>Take a screenshot of a window</summary>
+    </key>
+    <key name="screenshot" type="as">
+      <default>["&lt;Shift&gt;Print"]</default>
+      <summary>Take a screenshot</summary>
+    </key>
   </schema>
 
   <schema id="org.gnome.shell.app-switcher"

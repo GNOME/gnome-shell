@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<KeyListEntries schema="org.gnome.shell.keybindings"
+                group="system"
+                name="Screenshots"
+                wm_name="GNOME Shell"
+                package="gnome-shell">
+
+    <KeyListEntry name="show-screenshot-ui"
+                  description="Show the screenshot UI"/>
+
+    <KeyListEntry name="screenshot"
+                  description="Take a screenshot"/>
+
+    <KeyListEntry name="screenshot-window"
+                  description="Take a screenshot of a window"/>
+
+</KeyListEntries>

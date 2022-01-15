@@ -75,6 +75,7 @@ configure_file(
 
 keybinding_files = [
   '50-gnome-shell-launchers.xml',
+  '50-gnome-shell-screenshots.xml',
   '50-gnome-shell-system.xml',
 ]
 

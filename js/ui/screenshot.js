@@ -1270,6 +1270,30 @@ class ScreenshotUI extends St.Widget {
             Shell.ActionMode.POPUP,
             showScreenshotUI
         );
+
+        Main.wm.addKeybinding(
+            'screenshot-window',
+            new Gio.Settings({ schema_id: 'org.gnome.shell.keybindings' }),
+            Meta.KeyBindingFlags.IGNORE_AUTOREPEAT | Meta.KeyBindingFlags.PER_WINDOW,
+            Shell.ActionMode.NORMAL |
+            Shell.ActionMode.OVERVIEW |
+            Shell.ActionMode.SYSTEM_MODAL |
+            Shell.ActionMode.LOOKING_GLASS |
+            Shell.ActionMode.POPUP,
+            _screenshotWindow
+        );
+
+        Main.wm.addKeybinding(
+            'screenshot',
+            new Gio.Settings({ schema_id: 'org.gnome.shell.keybindings' }),
+            Meta.KeyBindingFlags.IGNORE_AUTOREPEAT,
+            Shell.ActionMode.NORMAL |
+            Shell.ActionMode.OVERVIEW |
+            Shell.ActionMode.SYSTEM_MODAL |
+            Shell.ActionMode.LOOKING_GLASS |
+            Shell.ActionMode.POPUP,
+            _screenshot
+        );
     }
 
     _rebuildMonitorBins() {
@@ -2073,6 +2097,46 @@ function showScreenshotUI() {
     Main.screenshotUI.open().catch(err => {
         logError(err, 'Error opening the screenshot UI');
     });
+}
+
+/**
+ * Takes a screenshot of the currently focused window.
+ *
+ * @param {Meta.Display} [_display] - The display.
+ * @param {Meta.Window} window - The window.
+ * @param {Meta.KeyBinding} [_binding] - The key binding.
+ * @private
+ */
+function _screenshotWindow(_display, window, _binding) {
+    try {
+        const actor = window.get_compositor_private();
+        const content = actor.paint_to_content(null);
+        const texture = content.get_texture();
+
+        captureScreenshot(texture, null, 1, null);
+    } catch (e) {
+        log('Error capturing screenshot: %s'.format(e.message));
+    }
+}
+
+/**
+ * Takes a screenshot of the entire stage.
+ *
+ * @param {Meta.Display} [_display] - The display.
+ * @param {Meta.Window} [_window] - The window.
+ * @param {Meta.KeyBinding} [_binding] - The key binding.
+ * @private
+ */
+async function _screenshot(_display, _window, _binding) {
+    try {
+        const shooter = new Shell.Screenshot();
+        const [content] = await shooter.to_content();
+        const texture = content.get_texture();
+
+        captureScreenshot(texture, null, 1, null);
+    } catch (e) {
+        log('Error capturing screenshot: %s'.format(e.message));
+    }
 }
 
 var ScreenshotService = class {
