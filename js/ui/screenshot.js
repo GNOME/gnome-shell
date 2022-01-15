@@ -1288,6 +1288,42 @@ var ScreenshotUI = GObject.registerClass({
             uiModes,
             showScreenshotUI
         );
+
+        Main.wm.addKeybinding(
+            'screenshot-window',
+            new Gio.Settings({ schema_id: 'org.gnome.shell.keybindings' }),
+            Meta.KeyBindingFlags.IGNORE_AUTOREPEAT | Meta.KeyBindingFlags.PER_WINDOW,
+            uiModes,
+            async (_display, window, _binding) => {
+                try {
+                    const actor = window.get_compositor_private();
+                    const content = actor.paint_to_content(null);
+                    const texture = content.get_texture();
+
+                    await captureScreenshot(texture, null, 1, null);
+                } catch (e) {
+                    logError(e, 'Error capturing screenshot');
+                }
+            }
+        );
+
+        Main.wm.addKeybinding(
+            'screenshot',
+            new Gio.Settings({ schema_id: 'org.gnome.shell.keybindings' }),
+            Meta.KeyBindingFlags.IGNORE_AUTOREPEAT,
+            uiModes,
+            async () => {
+                try {
+                    const shooter = new Shell.Screenshot();
+                    const [content] = await shooter.to_content();
+                    const texture = content.get_texture();
+
+                    await captureScreenshot(texture, null, 1, null);
+                } catch (e) {
+                    logError(e, 'Error capturing screenshot');
+                }
+            }
+        );
     }
 
     _refreshButtonLayout() {
