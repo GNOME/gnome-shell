@@ -57,6 +57,8 @@ struct _ShellScreenshotPrivate
   cairo_rectangle_int_t screenshot_area;
 
   gboolean include_frame;
+
+  float scale;
 };
 
 G_DEFINE_TYPE_WITH_PRIVATE (ShellScreenshot, shell_screenshot, G_TYPE_OBJECT);
@@ -290,6 +292,51 @@ grab_screenshot (ShellScreenshot     *screenshot,
 }
 
 static void
+grab_screenshot_content (ShellScreenshot *screenshot,
+                         GTask           *result)
+{
+  ShellScreenshotPrivate *priv = screenshot->priv;
+  MetaDisplay *display;
+  int width, height;
+  cairo_rectangle_int_t screenshot_rect;
+  ClutterStage *stage;
+  int image_width;
+  int image_height;
+  float scale;
+  g_autoptr (GError) error = NULL;
+  g_autoptr (ClutterContent) content = NULL;
+
+  display = shell_global_get_display (priv->global);
+  meta_display_get_size (display, &width, &height);
+  screenshot_rect = (cairo_rectangle_int_t) {
+      .x = 0,
+      .y = 0,
+      .width = width,
+      .height = height,
+  };
+
+  stage = shell_global_get_stage (priv->global);
+
+  clutter_stage_get_capture_final_size (stage, &screenshot_rect,
+                                        &image_width,
+                                        &image_height,
+                                        &scale);
+
+  priv->scale = scale;
+
+  content = clutter_stage_paint_to_content (stage, &screenshot_rect, scale,
+                                            CLUTTER_PAINT_FLAG_NO_CURSORS,
+                                            &error);
+  if (!content)
+    {
+      g_task_return_error (result, g_steal_pointer (&error));
+      return;
+    }
+
+  g_task_return_pointer (result, g_steal_pointer (&content), g_object_unref);
+}
+
+static void
 grab_window_screenshot (ShellScreenshot     *screenshot,
                         ShellScreenshotFlag  flags,
                         GTask               *result)
@@ -495,6 +542,105 @@ shell_screenshot_screenshot_finish (ShellScreenshot        *screenshot,
                                                   shell_screenshot_screenshot),
                         FALSE);
   return finish_screenshot (screenshot, result, area, error);
+}
+
+static void
+screenshot_stage_to_content_on_after_paint (ClutterStage     *stage,
+                                            ClutterStageView *view,
+                                            GTask            *result)
+{
+  ShellScreenshot *screenshot = g_task_get_task_data (result);
+  ShellScreenshotPrivate *priv = screenshot->priv;
+  MetaDisplay *display = shell_global_get_display (priv->global);
+
+  g_signal_handlers_disconnect_by_func (stage,
+                                        screenshot_stage_to_content_on_after_paint,
+                                        result);
+
+  meta_enable_unredirect_for_display (display);
+
+  grab_screenshot_content (screenshot, result);
+}
+
+/**
+ * shell_screenshot_screenshot_stage_to_content:
+ * @screenshot: the #ShellScreenshot
+ * @callback: (scope async): function to call returning success or failure
+ * of the async grabbing
+ * @user_data: the data to pass to callback function
+ *
+ * Takes a screenshot of the whole screen as #ClutterContent.
+ *
+ */
+void
+shell_screenshot_screenshot_stage_to_content (ShellScreenshot     *screenshot,
+                                              GAsyncReadyCallback  callback,
+                                              gpointer             user_data)
+{
+  ShellScreenshotPrivate *priv;
+  GTask *result;
+
+  g_return_if_fail (SHELL_IS_SCREENSHOT (screenshot));
+
+  result = g_task_new (screenshot, NULL, callback, user_data);
+  g_task_set_source_tag (result, shell_screenshot_screenshot_stage_to_content);
+  g_task_set_task_data (result, screenshot, NULL);
+
+  if (meta_is_wayland_compositor ())
+    {
+      grab_screenshot_content (screenshot, result);
+    }
+  else
+    {
+      priv = screenshot->priv;
+
+      MetaDisplay *display = shell_global_get_display (priv->global);
+      ClutterStage *stage = shell_global_get_stage (priv->global);
+
+      meta_disable_unredirect_for_display (display);
+      clutter_actor_queue_redraw (CLUTTER_ACTOR (stage));
+      g_signal_connect (stage, "after-paint",
+                        G_CALLBACK (screenshot_stage_to_content_on_after_paint),
+                        result);
+    }
+}
+
+/**
+ * shell_screenshot_screenshot_stage_to_content_finish:
+ * @screenshot: the #ShellScreenshot
+ * @result: the #GAsyncResult that was provided to the callback
+ * @scale: (out) (optional): location to store the content scale
+ * @error: #GError for error reporting
+ *
+ * Finish the asynchronous operation started by
+ * shell_screenshot_screenshot_stage_to_content() and obtain its result.
+ *
+ * Returns: (transfer full): the #ClutterContent, or NULL
+ *
+ */
+ClutterContent *
+shell_screenshot_screenshot_stage_to_content_finish (ShellScreenshot  *screenshot,
+                                                     GAsyncResult     *result,
+                                                     float            *scale,
+                                                     GError          **error)
+{
+  ShellScreenshotPrivate *priv = screenshot->priv;
+  ClutterContent *content;
+
+  g_return_val_if_fail (SHELL_IS_SCREENSHOT (screenshot), FALSE);
+  g_return_val_if_fail (G_IS_TASK (result), FALSE);
+  g_return_val_if_fail (g_async_result_is_tagged (result,
+                                                  shell_screenshot_screenshot_stage_to_content),
+                        FALSE);
+
+  content = g_task_propagate_pointer (G_TASK (result), error);
+  if (!content)
+    return NULL;
+
+  if (scale)
+    *scale = priv->scale;
+
+  return content;
 }
 
 /**
