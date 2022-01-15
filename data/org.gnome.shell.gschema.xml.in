@@ -234,6 +234,10 @@
       <default>["Print"]</default>
       <summary>Take a screenshot interactively</summary>
     </key>
+    <key name="show-screen-recording-ui" type="as">
+      <default>["&lt;Ctrl&gt;&lt;Shift&gt;&lt;Alt&gt;R"]</default>
+      <summary>Record a screencast interactively</summary>
+    </key>
     <key name="screenshot-window" type="as">
       <default>["&lt;Alt&gt;Print"]</default>
       <summary>Take a screenshot of a window</summary>

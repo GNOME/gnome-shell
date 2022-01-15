@@ -1298,6 +1298,14 @@ var ScreenshotUI = GObject.registerClass({
         );
 
         Main.wm.addKeybinding(
+            'show-screen-recording-ui',
+            new Gio.Settings({ schema_id: 'org.gnome.shell.keybindings' }),
+            Meta.KeyBindingFlags.IGNORE_AUTOREPEAT,
+            uiModes,
+            showScreenRecordingUI
+        );
+
+        Main.wm.addKeybinding(
             'screenshot-window',
             new Gio.Settings({ schema_id: 'org.gnome.shell.keybindings' }),
             Meta.KeyBindingFlags.IGNORE_AUTOREPEAT | Meta.KeyBindingFlags.PER_WINDOW,
@@ -2183,6 +2191,15 @@ async function captureScreenshot(texture, geometry, scale, cursor) {
  */
 function showScreenshotUI() {
     Main.screenshotUI.open().catch(err => {
+        logError(err, 'Error opening the screenshot UI');
+    });
+}
+
+/**
+ * Shows the screen recording UI.
+ */
+function showScreenRecordingUI() {
+    Main.screenshotUI.open(UIMode.SCREENCAST).catch(err => {
         logError(err, 'Error opening the screenshot UI');
     });
 }

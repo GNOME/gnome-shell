@@ -14,4 +14,7 @@
     <KeyListEntry name="screenshot-window"
                   description="Take a screenshot of a window"/>
 
+    <KeyListEntry name="show-screen-recording-ui"
+                  description="Record a screencast interactively"/>
+
 </KeyListEntries>
