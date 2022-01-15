@@ -1272,6 +1272,18 @@ class ScreenshotUI extends St.Widget {
         );
 
         Main.wm.addKeybinding(
+            'show-screen-recording-ui',
+            new Gio.Settings({ schema_id: 'org.gnome.shell.keybindings' }),
+            Meta.KeyBindingFlags.IGNORE_AUTOREPEAT,
+            Shell.ActionMode.NORMAL |
+            Shell.ActionMode.OVERVIEW |
+            Shell.ActionMode.SYSTEM_MODAL |
+            Shell.ActionMode.LOOKING_GLASS |
+            Shell.ActionMode.POPUP,
+            showScreenRecordingUI
+        );
+
+        Main.wm.addKeybinding(
             'screenshot-window',
             new Gio.Settings({ schema_id: 'org.gnome.shell.keybindings' }),
             Meta.KeyBindingFlags.IGNORE_AUTOREPEAT | Meta.KeyBindingFlags.PER_WINDOW,
@@ -2094,6 +2106,16 @@ class ScreenshotUI extends St.Widget {
  * Shows the screenshot UI.
  */
 function showScreenshotUI() {
+    Main.screenshotUI.open().catch(err => {
+        logError(err, 'Error opening the screenshot UI');
+    });
+}
+
+/**
+ * Shows the screen recording UI.
+ */
+function showScreenRecordingUI() {
+    Main.screenshotUI._castButton.checked = true;
     Main.screenshotUI.open().catch(err => {
         logError(err, 'Error opening the screenshot UI');
     });
