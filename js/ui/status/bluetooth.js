@@ -25,6 +25,7 @@ class Indicator extends PanelMenu.SystemIndicator {
         this._indicator = this._addIndicator();
         this._indicator.icon_name = 'bluetooth-active-symbolic';
         this._hadSetupDevices = global.settings.get_boolean(HAD_BLUETOOTH_DEVICES_SETUP);
+        this._client = new GnomeBluetooth.Client();
 
         this._proxy = new RfkillManagerProxy(Gio.DBus.session, BUS_NAME, OBJECT_PATH,
                                              (proxy, error) => {
@@ -43,6 +44,8 @@ class Indicator extends PanelMenu.SystemIndicator {
         this._toggleItem = new PopupMenu.PopupMenuItem('');
         this._toggleItem.connect('activate', () => {
             this._proxy.BluetoothAirplaneMode = !this._proxy.BluetoothAirplaneMode;
+            if (!this._proxy.BluetoothAirplaneMode)
+                this._client.default_adapter_powered = true;
         });
         this._item.menu.addMenuItem(this._toggleItem);
 
@@ -52,7 +55,6 @@ class Indicator extends PanelMenu.SystemIndicator {
         this._syncId = 0;
         this._adapter = null;
 
-        this._client = new GnomeBluetooth.Client();
         this._store = this._client.get_devices();
         this._deviceNotifyConnected = [];
         this._client.connect('device-removed', (c, path) => {
@@ -146,6 +148,6 @@ class Indicator extends PanelMenu.SystemIndicator {
         else
             this._item.label.text = _('Bluetooth On');
 
-        this._toggleItem.label.text = this._proxy.BluetoothAirplaneMode ? _('Turn On') : _('Turn Off');
+        this._toggleItem.label.text = this._client.default_adapter_powered ? _('Turn Off') : _('Turn On');
     }
 });
