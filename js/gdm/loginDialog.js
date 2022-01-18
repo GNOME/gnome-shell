@@ -1054,9 +1054,10 @@ var LoginDialog = GObject.registerClass({
         let tasks = [
             () => {
                 if (this._disableUserList)
-                    return;
+                    return null;
 
                 this._timedLoginUserListHold = this._waitForItemForUser(userName);
+                return this._timedLoginUserListHold;
             },
 
             () => {
