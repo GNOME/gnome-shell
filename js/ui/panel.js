@@ -959,7 +959,7 @@ class Panel extends St.Widget {
         if (!(indicator instanceof PanelMenu.Button))
             throw new TypeError('Status indicator must be an instance of PanelMenu.Button');
 
-        position = position || 0;
+        position ??= 0;
         let boxes = {
             left: this._leftBox,
             center: this._centerBox,

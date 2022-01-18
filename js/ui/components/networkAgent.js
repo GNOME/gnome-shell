@@ -119,7 +119,7 @@ class NetworkSecretDialog extends ModalDialog.ModalDialog {
         let valid = true;
         for (let i = 0; i < this._content.secrets.length; i++) {
             let secret = this._content.secrets[i];
-            valid = valid && secret.valid;
+            valid &&= secret.valid;
         }
 
         this._okButton.button.reactive = valid;
@@ -130,7 +130,7 @@ class NetworkSecretDialog extends ModalDialog.ModalDialog {
         let valid = true;
         for (let i = 0; i < this._content.secrets.length; i++) {
             let secret = this._content.secrets[i];
-            valid = valid && secret.valid;
+            valid &&= secret.valid;
             if (secret.key !== null) {
                 if (this._settingName === 'vpn')
                     this._agent.add_vpn_secret(this._requestId, secret.key, secret.value);

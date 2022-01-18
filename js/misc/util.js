@@ -329,7 +329,7 @@ function createTimeLabel(date, params) {
 
 function lowerBound(array, val, cmp) {
     let min, max, mid, v;
-    cmp = cmp || ((a, b) => a - b);
+    cmp ||= (a, b) => a - b;
 
     if (array.length == 0)
         return 0;

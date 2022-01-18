@@ -28,7 +28,7 @@ function _setButtonsForChoices(dialog, oldChoices, choices) {
     for (let idx = 0; idx < choices.length; idx++) {
         let button = idx;
 
-        buttonsChanged = buttonsChanged || oldChoices[idx] !== choices[idx];
+        buttonsChanged ||= oldChoices[idx] !== choices[idx];
 
         buttons.unshift({
             label: choices[idx],

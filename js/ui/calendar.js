@@ -305,7 +305,7 @@ class DBusEventSource extends EventSourceBase {
 
         let changed = false;
         for (const id of ids)
-            changed = changed || this._events.delete(id);
+            changed ||= this._events.delete(id);
 
         if (changed)
             this.emit('changed');
@@ -318,7 +318,7 @@ class DBusEventSource extends EventSourceBase {
         let changed = false;
         for (const id of this._events.keys()) {
             if (id.startsWith(sourceUid))
-                changed = changed || this._events.delete(id);
+                changed ||= this._events.delete(id);
         }
 
         if (changed)

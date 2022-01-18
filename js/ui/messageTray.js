@@ -1187,7 +1187,7 @@ var MessageTray = GObject.registerClass({
         // Filter out acknowledged notifications.
         let changed = false;
         this._notificationQueue = this._notificationQueue.filter(n => {
-            changed = changed || n.acknowledged;
+            changed ||= n.acknowledged;
             return !n.acknowledged;
         });
 

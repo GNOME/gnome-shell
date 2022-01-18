@@ -104,7 +104,7 @@ function initTranslations(domain) {
     if (!extension)
         throw new Error('initTranslations() can only be called from extensions');
 
-    domain = domain || extension.metadata['gettext-domain'];
+    domain ||= extension.metadata['gettext-domain'];
 
     // Expect USER extensions to have a locale/ subfolder, otherwise assume a
     // SYSTEM extension that has been installed in the same prefix as the shell
@@ -188,7 +188,7 @@ function getSettings(schema) {
     if (!extension)
         throw new Error('getSettings() can only be called from extensions');
 
-    schema = schema || extension.metadata['settings-schema'];
+    schema ||= extension.metadata['settings-schema'];
 
     const GioSSS = Gio.SettingsSchemaSource;
 
