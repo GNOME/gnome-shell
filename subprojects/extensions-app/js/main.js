@@ -349,13 +349,11 @@ var ExtensionRow = GObject.registerClass({
         'nameLabel',
         'descriptionLabel',
         'versionLabel',
-        'authorLabel',
         'errorLabel',
         'errorIcon',
         'updatesIcon',
         'switch',
-        'revealButton',
-        'revealer',
+        'actionsBox',
     ],
 }, class ExtensionRow extends Gtk.ListBoxRow {
     _init(extension) {
@@ -413,16 +411,6 @@ var ExtensionRow = GObject.registerClass({
         const desc = this._extension.metadata.description.split('\n')[0];
         this._descriptionLabel.label = desc;
         this._descriptionLabel.tooltip_text = desc;
-
-        this._revealButton.connect('clicked', () => {
-            this._revealer.reveal_child = !this._revealer.reveal_child;
-        });
-        this._revealer.connect('notify::reveal-child', () => {
-            if (this._revealer.reveal_child)
-                this._revealButton.get_style_context().add_class('expanded');
-            else
-                this._revealButton.get_style_context().remove_class('expanded');
-        });
 
         this.connect('destroy', this._onDestroy.bind(this));
 
@@ -503,14 +491,13 @@ var ExtensionRow = GObject.registerClass({
         this._updatesIcon.visible = this.hasUpdate;
         this._errorIcon.visible = this.hasError;
 
+        this._descriptionLabel.visible = !this.hasError;
+
         this._errorLabel.label = this.error;
         this._errorLabel.visible = this.error !== '';
 
         this._versionLabel.label = this.version.toString();
         this._versionLabel.visible = this.version !== '';
-
-        this._authorLabel.label = this.creator.toString();
-        this._authorLabel.visible = this.creator !== '';
     }
 
     _onDestroy() {

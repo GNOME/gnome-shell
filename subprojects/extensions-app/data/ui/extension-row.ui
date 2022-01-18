@@ -1,221 +1,141 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <template class="ExtensionRow" parent="GtkListBoxRow">
-    <property name="activatable">False</property>
+    <property name="activatable">false</property>
+    <style>
+      <class name="extension"/>
+    </style>
     <child>
-      <object class="GtkGrid">
-        <property name="margin-start">12</property>
-        <property name="margin-end">12</property>
-        <property name="margin-top">12</property>
-        <property name="margin-bottom">12</property>
-        <property name="column-spacing">12</property>
+      <object class="GtkBox">
+        <property name="orientation">vertical</property>
         <child>
-          <object class="GtkLabel" id="nameLabel"/>
-        </child>
-        <child>
-          <object class="GtkImage" id="errorIcon">
-            <property name="visible">False</property>
-            <property name="icon-name">dialog-error-symbolic</property>
-            <style>
-              <class name="error"/>
-            </style>
-          </object>
-        </child>
-        <child>
-          <object class="GtkImage" id="updatesIcon">
-            <property name="visible">False</property>
-            <property name="icon-name">software-update-available-symbolic</property>
-            <style>
-              <class name="warning"/>
-            </style>
-          </object>
-        </child>
-        <child>
-          <object class="GtkLabel">
-            <property name="hexpand">True</property>
-          </object>
-        </child>
-        <child>
-          <object class="GtkButton" id="prefsButton">
-            <property name="visible"
-                      bind-source="prefsButton"
-                      bind-property="sensitive"
-                      bind-flags="sync-create"/>
-            <property name="icon-name">emblem-system-symbolic</property>
-            <property name="receives-default">True</property>
-            <property name="valign">center</property>
-            <property name="action-name">row.show-prefs</property>
-            <style>
-              <class name="circular"/>
-            </style>
-          </object>
-        </child>
-        <child>
-          <object class="GtkSwitch" id="switch">
-            <property name="valign">center</property>
-            <property name="action-name">row.enabled</property>
-          </object>
-        </child>
-        <child>
-          <object class="GtkSeparator"/>
-        </child>
-        <child>
-          <object class="GtkButton" id="revealButton">
-            <property name="receives-default">True</property>
-            <property name="valign">center</property>
-            <property name="has-frame">False</property>
-            <property name="icon-name">pan-end-symbolic</property>
-            <style>
-              <class name="details-button"/>
-            </style>
-          </object>
-        </child>
-        <child>
-          <object class="GtkRevealer" id="revealer">
+          <object class="GtkBox">
             <child>
-              <object class="GtkGrid">
-                <property name="margin-top">12</property>
-                <property name="row-spacing">6</property>
-                <property name="column-spacing">12</property>
+              <object class="GtkBox">
+                <property name="orientation">vertical</property>
+                <property name="hexpand">true</property>
+                <style>
+                  <class name="information"/>
+                </style>
                 <child>
-                  <object class="GtkLabel">
-                    <property name="label" translatable="yes">Description</property>
-                    <property name="xalign">0</property>
+                  <object class="GtkBox">
                     <style>
-                      <class name="dim-label"/>
+                      <class name="header"/>
                     </style>
+                    <child>
+                      <object class="GtkLabel" id="nameLabel">
+                        <property name="xalign">0</property>
+                        <style>
+                          <class name="title"/>
+                        </style>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="versionLabel">
+                        <property name="visible">false</property>
+                        <property name="xalign">0</property>
+                        <property name="yalign">1</property>
+                        <style>
+                          <class name="caption"/>
+                          <class name="dim-label"/>
+                        </style>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkBox">
+                        <style>
+                          <class name="status"/>
+                        </style>
+                        <child>
+                          <object class="GtkImage" id="errorIcon">
+                            <property name="visible">false</property>
+                            <property name="icon-name">dialog-error-symbolic</property>
+                            <property name="tooltip-text" translatable="yes">The extension had an error</property>
+                            <style>
+                              <class name="error"/>
+                            </style>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkImage" id="updatesIcon">
+                            <property name="visible">false</property>
+                            <property name="icon-name">software-update-available-symbolic</property>
+                            <property name="tooltip-text" translatable="yes">The extension can be updated</property>
+                            <style>
+                              <class name="warning"/>
+                            </style>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
                   </object>
                 </child>
                 <child>
                   <object class="GtkLabel" id="descriptionLabel">
+                    <property name="xalign">0</property>
                     <property name="ellipsize">end</property>
-                    <property name="xalign">0</property>
-                    <property name="yalign">0</property>
-                  </object>
-                </child>
-                <child>
-                  <object class="GtkLabel">
-                    <property name="visible"
-                              bind-source="versionLabel"
-                              bind-property="visible"
-                              bind-flags="sync-create"/>
-                    <property name="label" translatable="yes">Version</property>
-                    <property name="xalign">0</property>
                     <style>
-                      <class name="dim-label"/>
+                      <class name="subtitle"/>
                     </style>
-                    <layout>
-                      <property name="column">0</property>
-                      <property name="row">1</property>
-                    </layout>
-                  </object>
-                </child>
-                <child>
-                  <object class="GtkLabel" id="versionLabel">
-                    <property name="visible">False</property>
-                    <property name="xalign">0</property>
-                    <layout>
-                      <property name="column">1</property>
-                      <property name="row">1</property>
-                    </layout>
-                  </object>
-                </child>
-                <child>
-                  <object class="GtkLabel">
-                    <property name="visible"
-                              bind-source="authorLabel"
-                              bind-property="visible"
-                              bind-flags="sync-create"/>
-                    <property name="label" translatable="yes">Author</property>
-                    <property name="xalign">0</property>
-                    <style>
-                      <class name="dim-label"/>
-                    </style>
-                    <layout>
-                      <property name="column">0</property>
-                      <property name="row">2</property>
-                    </layout>
-                  </object>
-                </child>
-                <child>
-                  <object class="GtkLabel" id="authorLabel">
-                    <property name="visible">False</property>
-                    <property name="xalign">0</property>
-                    <layout>
-                      <property name="column">1</property>
-                      <property name="row">2</property>
-                    </layout>
-                  </object>
-                </child>
-                <child>
-                  <object class="GtkLabel">
-                    <property name="visible"
-                              bind-source="errorLabel"
-                              bind-property="visible"
-                              bind-flags="sync-create"/>
-                    <property name="label" translatable="yes">Error</property>
-                    <property name="xalign">0</property>
-                    <property name="yalign">0</property>
-                    <style>
-                      <class name="dim-label"/>
-                    </style>
-                    <layout>
-                      <property name="column">0</property>
-                      <property name="row">3</property>
-                    </layout>
                   </object>
                 </child>
                 <child>
                   <object class="GtkLabel" id="errorLabel">
-                    <property name="visible">False</property>
-                    <property name="selectable">True</property>
+                    <property name="visible">false</property>
+                    <property name="selectable">true</property>
                     <property name="wrap">True</property>
                     <property name="xalign">0</property>
-                    <layout>
-                      <property name="column">1</property>
-                      <property name="row">3</property>
-                    </layout>
-                  </object>
-                </child>
-                <child>
-                  <object class="GtkButton">
-                    <property name="label" translatable="yes">Website</property>
-                    <property name="action-name">row.show-url</property>
-                    <property name="valign">end</property>
-                    <property name="margin-top">12</property>
-                    <layout>
-                      <property name="column">0</property>
-                      <property name="row">4</property>
-                    </layout>
-                  </object>
-                </child>
-                <child>
-                  <object class="GtkButton" id="removeButton">
-                    <property name="visible"
-                              bind-source="removeButton"
-                              bind-property="sensitive"
-                              bind-flags="sync-create"/>
-                    <property name="label" translatable="yes">Remove…</property>
-                    <property name="action-name">row.uninstall</property>
-                    <property name="hexpand">True</property>
-                    <property name="halign">end</property>
-                    <property name="valign">end</property>
                     <style>
-                      <class name="destructive-action"/>
+                      <class name="caption"/>
+                      <class name="error"/>
                     </style>
-                    <layout>
-                      <property name="column">1</property>
-                      <property name="row">4</property>
-                    </layout>
                   </object>
                 </child>
               </object>
             </child>
-            <layout>
-              <property name="column">0</property>
-              <property name="row">1</property>
-              <property name="column-span">8</property>
-            </layout>
+            <child>
+              <object class="GtkSwitch" id="switch">
+                <property name="valign">center</property>
+                <property name="action-name">row.enabled</property>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="GtkCenterBox" id="actionsBox">
+            <style>
+              <class name="actions"/>
+            </style>
+            <child type="start">
+              <object class="GtkBox">
+                <child>
+                  <object class="GtkButton" id="websiteButton">
+                    <property name="label" translatable="yes">Website</property>
+                    <property name="action-name">row.show-url</property>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkButton" id="prefsButton">
+                    <property name="visible"
+                              bind-source="prefsButton"
+                              bind-property="sensitive"
+                              bind-flags="sync-create"/>
+                    <property name="label" translatable="yes">Settings</property>
+                    <property name="action-name">row.show-prefs</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child type="end">
+              <object class="GtkButton" id="removeButton">
+                <property name="visible"
+                          bind-source="removeButton"
+                          bind-property="sensitive"
+                          bind-flags="sync-create"/>
+                <property name="label" translatable="yes">Remove…</property>
+                <property name="action-name">row.uninstall</property>
+              </object>
+            </child>
           </object>
         </child>
       </object>
