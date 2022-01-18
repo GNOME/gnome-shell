@@ -101,7 +101,7 @@
                           <object class="GtkListBox" id="userList">
                             <property name="selection-mode">none</property>
                             <style>
-                              <class name="content"/>
+                              <class name="boxed-list"/>
                             </style>
                           </object>
                         </child>
@@ -114,7 +114,7 @@
                           <object class="GtkListBox" id="systemList">
                             <property name="selection-mode">none</property>
                             <style>
-                              <class name="content"/>
+                              <class name="boxed-list"/>
                             </style>
                           </object>
                         </child>
