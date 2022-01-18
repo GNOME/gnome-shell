@@ -2,8 +2,7 @@
 # SPDX-License-Identifier: MIT OR LGPL-2.0-or-later
 # SPDX-FileCopyrightText: 2018 Claudio André <claudioandre.br@gmail.com>
 env:
-  es6: true
-  es2020: true
+  es2021: true
 extends: 'eslint:recommended'
 plugins:
   - jsdoc
@@ -86,7 +85,10 @@ rules:
   linebreak-style:
     - error
     - unix
-  lines-between-class-members: error
+  lines-between-class-members:
+    - error
+    - always
+    - exceptAfterSingleLine: true
   max-nested-callbacks: error
   max-statements-per-line: error
   new-parens: error
@@ -253,5 +255,10 @@ globals:
   window: readonly
   TextEncoder: readonly
   TextDecoder: readonly
+  console: readonly
+  setTimeout: readonly
+  setInterval: readonly
+  clearTimeout: readonly
+  clearInterval: readonly
 parserOptions:
-  ecmaVersion: 2020
+  ecmaVersion: 2022
