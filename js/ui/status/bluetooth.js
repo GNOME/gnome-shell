@@ -25,7 +25,9 @@ class Indicator extends PanelMenu.SystemIndicator {
         this._indicator = this._addIndicator();
         this._indicator.icon_name = 'bluetooth-active-symbolic';
         this._hadSetupDevices = global.settings.get_boolean(HAD_BLUETOOTH_DEVICES_SETUP);
+
         this._client = new GnomeBluetooth.Client();
+        this._client.connect('notify::default-adapter-powered', this._sync.bind(this));
 
         this._proxy = new RfkillManagerProxy(Gio.DBus.session, BUS_NAME, OBJECT_PATH,
                                              (proxy, error) => {
@@ -43,9 +45,12 @@ class Indicator extends PanelMenu.SystemIndicator {
 
         this._toggleItem = new PopupMenu.PopupMenuItem('');
         this._toggleItem.connect('activate', () => {
-            this._proxy.BluetoothAirplaneMode = !this._proxy.BluetoothAirplaneMode;
-            if (!this._proxy.BluetoothAirplaneMode)
+            if (!this._client.default_adapter_powered) {
+                this._proxy.BluetoothAirplaneMode = false;
                 this._client.default_adapter_powered = true;
+            } else {
+                this._proxy.BluetoothAirplaneMode = true;
+            }
         });
         this._item.menu.addMenuItem(this._toggleItem);
 
@@ -138,23 +143,25 @@ class Indicator extends PanelMenu.SystemIndicator {
         this.menu.setSensitive(sensitive);
         this._indicator.visible = nConnectedDevices > 0;
 
+        const adapterPowered = this._client.default_adapter_powered;
+
         // Remember if there were setup devices and show the menu
         // if we've seen setup devices and we're not hard blocked
         if (this._hadSetupDevices)
             this._item.visible = !this._proxy.BluetoothHardwareAirplaneMode;
         else
-            this._item.visible = this._proxy.BluetoothHasAirplaneMode && !this._proxy.BluetoothAirplaneMode;
+            this._item.visible = adapterPowered;
 
         if (nConnectedDevices > 1)
             /* Translators: this is the number of connected bluetooth devices */
             this._item.label.text = ngettext('%d Connected', '%d Connected', nConnectedDevices).format(nConnectedDevices);
         else if (nConnectedDevices === 1)
             this._item.label.text = connectedDevices[0].name;
-        else if (this._adapter === null)
-            this._item.label.text = _('Bluetooth Off');
-        else
+        else if (adapterPowered)
             this._item.label.text = _('Bluetooth On');
+        else
+            this._item.label.text = _('Bluetooth Off');
 
-        this._toggleItem.label.text = this._client.default_adapter_powered ? _('Turn Off') : _('Turn On');
+        this._toggleItem.label.text = adapterPowered ? _('Turn Off') : _('Turn On');
     }
 });
