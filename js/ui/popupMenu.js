@@ -272,7 +272,11 @@ class PopupMenuItem extends PopupBaseMenuItem {
     _init(text, params) {
         super._init(params);
 
-        this.label = new St.Label({ text });
+        this.label = new St.Label({
+            text,
+            y_expand: true,
+            y_align: Clutter.ActorAlign.CENTER,
+        });
         this.add_child(this.label);
         this.label_actor = this.label;
     }
@@ -356,7 +360,11 @@ var PopupSwitchMenuItem = GObject.registerClass({
     _init(text, active, params) {
         super._init(params);
 
-        this.label = new St.Label({ text });
+        this.label = new St.Label({
+            text,
+            y_expand: true,
+            y_align: Clutter.ActorAlign.CENTER,
+        });
         this._switch = new Switch(active);
 
         this.accessible_role = Atk.Role.CHECK_MENU_ITEM;
@@ -374,6 +382,8 @@ var PopupSwitchMenuItem = GObject.registerClass({
         this._statusLabel = new St.Label({
             text: '',
             style_class: 'popup-status-menu-item',
+            y_expand: true,
+            y_align: Clutter.ActorAlign.CENTER,
         });
         this._statusBin.child = this._switch;
     }
@@ -442,7 +452,11 @@ class PopupImageMenuItem extends PopupBaseMenuItem {
         this._icon = new St.Icon({ style_class: 'popup-menu-icon',
                                    x_align: Clutter.ActorAlign.END });
         this.add_child(this._icon);
-        this.label = new St.Label({ text });
+        this.label = new St.Label({
+            text,
+            y_expand: true,
+            y_align: Clutter.ActorAlign.CENTER,
+        });
         this.add_child(this.label);
         this.label_actor = this.label;
 
