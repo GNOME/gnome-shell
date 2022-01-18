@@ -134,6 +134,7 @@ var ExtensionsWindow = GObject.registerClass({
             margin_top: 12,
             margin_bottom: 12,
         }));
+        this._userList.connect('row-activated', (_list, row) => row.activate());
 
         this._systemList.set_sort_func(this._sortList.bind(this));
         this._systemList.set_filter_func(this._filterList.bind(this));
@@ -144,6 +145,7 @@ var ExtensionsWindow = GObject.registerClass({
             margin_top: 12,
             margin_bottom: 12,
         }));
+        this._systemList.connect('row-activated', (_list, row) => row.activate());
 
         this._shellProxy.connectSignal('ExtensionStateChanged',
             this._onExtensionStateChanged.bind(this));
@@ -423,6 +425,10 @@ var ExtensionRow = GObject.registerClass({
                 this._updateState();
             });
         this._updateState();
+    }
+
+    vfunc_activate() {
+        this._switch.mnemonic_activate(false);
     }
 
     get uuid() {

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <template class="ExtensionRow" parent="GtkListBoxRow">
-    <property name="activatable">false</property>
     <style>
       <class name="extension"/>
     </style>
