@@ -1,7 +1,7 @@
 include:
   - remote: 'https://gitlab.gnome.org/GNOME/citemplates/raw/HEAD/flatpak/flatpak_ci_initiative.yml'
-  - remote: 'https://gitlab.freedesktop.org/freedesktop/ci-templates/-/raw/bbe5232986c9b98eb1efe62484e07216f7d1a4df/templates/fedora.yml'
-  - remote: 'https://gitlab.freedesktop.org/freedesktop/ci-templates/-/raw/bbe5232986c9b98eb1efe62484e07216f7d1a4df/templates/ci-fairy.yml'
+  - remote: 'https://gitlab.freedesktop.org/freedesktop/ci-templates/-/raw/34f4ade99434043f88e164933f570301fd18b125/templates/fedora.yml'
+  - remote: 'https://gitlab.freedesktop.org/freedesktop/ci-templates/-/raw/34f4ade99434043f88e164933f570301fd18b125/templates/ci-fairy.yml'
 
 stages:
   - pre_review
@@ -47,14 +47,20 @@ workflow:
     - if: '$CI_COMMIT_BRANCH =~ /^gnome-[0-9-]+$/'
     - when: 'manual'
 
-.gnome-shell.fedora:34:
+.gnome-shell.fedora:35:
   variables:
-    FDO_DISTRIBUTION_VERSION: 34
-    FDO_DISTRIBUTION_TAG: '2021-08-12.0'
-    FDO_DISTRIBUTION_PACKAGES: >
-      findutils mozjs78-devel nodejs npm meson
-      pkgconfig(gio-2.0) pkgconfig(gio-unix-2.0)
-      pkgconfig(gnome-autoar-0) pkgconfig(json-glib-1.0)
+    FDO_DISTRIBUTION_VERSION: 35
+    FDO_DISTRIBUTION_TAG: '2022-01-18.0'
+    FDO_DISTRIBUTION_PACKAGES:
+      findutils
+      mozjs91-devel
+      nodejs
+      npm
+      meson
+      pkgconfig(gio-2.0)
+      pkgconfig(gio-unix-2.0)
+      pkgconfig(gnome-autoar-0)
+      pkgconfig(json-glib-1.0)
     FDO_DISTRIBUTION_EXEC: |
       # For static analysis with eslint
       npm install -g eslint eslint-plugin-jsdoc &&
@@ -65,7 +71,7 @@ workflow:
       ./.gitlab-ci/install-meson-project.sh \
         -Dman=false \
         https://gitlab.gnome.org/GNOME/gnome-shell.git \
-        3.38.0 \
+        main \
         subprojects/extensions-tool/ \
         ./generate-translations.sh &&
 
@@ -114,16 +120,16 @@ check-merge-request:
 build-fedora-container:
   extends:
     - .fdo.container-build@fedora@x86_64
-    - .gnome-shell.fedora:34
+    - .gnome-shell.fedora:35
   stage: prep
 
 js_check:
   extends:
       - .fdo.distribution-image@fedora
-      - .gnome-shell.fedora:34
+      - .gnome-shell.fedora:35
   stage: review
   script:
-      - find js -name '*.js' $(printf "! -wholename %s " $(cat .jscheckignore)) -exec js78 -c '{}' ';' 2>&1 | tee $JS_LOG
+      - find js -name '*.js' $(printf "! -wholename %s " $(cat .jscheckignore)) -exec js91 -c '{}' ';' 2>&1 | tee $JS_LOG
       - (! grep -q . $JS_LOG)
   artifacts:
       paths:
@@ -133,7 +139,7 @@ js_check:
 eslint:
   extends:
     - .fdo.distribution-image@fedora
-    - .gnome-shell.fedora:34
+    - .gnome-shell.fedora:35
   stage: review
   script:
     - export NODE_PATH=$(npm root -g)
@@ -146,7 +152,7 @@ eslint:
 eslint_mr:
   extends:
     - .fdo.distribution-image@fedora
-    - .gnome-shell.fedora:34
+    - .gnome-shell.fedora:35
   stage: review
   script:
     - export NODE_PATH=$(npm root -g)
@@ -163,7 +169,7 @@ eslint_mr:
 potfile_c_check:
   extends:
     - .fdo.distribution-image@fedora
-    - .gnome-shell.fedora:34
+    - .gnome-shell.fedora:35
   stage: review
   script:
     - ./.gitlab-ci/check-potfiles.sh
@@ -171,15 +177,15 @@ potfile_c_check:
 potfile_js_check:
   extends:
     - .fdo.distribution-image@fedora
-    - .gnome-shell.fedora:34
+    - .gnome-shell.fedora:35
   stage: review
   script:
-    - js78 -m .gitlab-ci/check-potfiles.js
+    - js91 -m .gitlab-ci/check-potfiles.js
 
 no_template_check:
   extends:
     - .fdo.distribution-image@fedora
-    - .gnome-shell.fedora:34
+    - .gnome-shell.fedora:35
   stage: review
   script:
     - ./.gitlab-ci/check-template-strings.sh
