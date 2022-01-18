@@ -203,6 +203,7 @@ var ExtensionsWindow = GObject.registerClass({
                 'Florian Müllner <fmuellner@gnome.org>',
                 'Jasper St. Pierre <jstpierre@mecheye.net>',
                 'Didier Roche <didrocks@ubuntu.com>',
+                'Romain Vigier <contact@romainvigier.fr>',
             ],
             translator_credits: _('translator-credits'),
             program_name: _('Extensions'),
