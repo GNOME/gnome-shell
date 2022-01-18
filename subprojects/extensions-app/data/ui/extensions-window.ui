@@ -12,55 +12,12 @@
       </item>
     </section>
   </menu>
-  <object class="GtkPopover" id="infoPopover">
-    <child>
-      <object class="GtkBox">
-        <property name="orientation">vertical</property>
-        <property name="margin-start">12</property>
-        <property name="margin-end">12</property>
-        <property name="margin-top">12</property>
-        <property name="margin-bottom">12</property>
-        <property name="spacing">6</property>
-        <child>
-          <object class="GtkLabel">
-            <property name="label" translatable="yes">To find and add extensions, visit &lt;a href="https://extensions.gnome.org"&gt;extensions.gnome.org&lt;/a&gt;.</property>
-            <property name="use-markup">True</property>
-            <property name="xalign">0</property>
-          </object>
-        </child>
-        <child>
-          <object class="GtkLabel">
-            <property name="label" translatable="yes">Warning</property>
-            <property name="xalign">0</property>
-            <property name="margin-top">6</property>
-            <style>
-              <class name="heading"/>
-            </style>
-          </object>
-        </child>
-        <child>
-          <object class="GtkLabel">
-            <property name="label" translatable="yes">Extensions can cause system issues, including performance problems. If you encounter problems with your system, it is recommended to disable all extensions.</property>
-            <property name="wrap">True</property>
-            <property name="max-width-chars">40</property>
-            <property name="xalign">0</property>
-          </object>
-        </child>
-      </object>
-    </child>
-  </object>
   <template class="ExtensionsWindow" parent="GtkApplicationWindow">
     <property name="default-width">800</property>
     <property name="default-height">500</property>
     <property name="title" translatable="yes">Extensions</property>
     <child type="titlebar">
       <object class="GtkHeaderBar">
-        <child>
-          <object class="GtkMenuButton">
-            <property name="popover">infoPopover</property>
-            <property name="icon-name">dialog-information-symbolic</property>
-          </object>
-        </child>
         <child type="end">
           <object class="GtkMenuButton" id="menuButton">
             <property name="receives-default">True</property>
@@ -89,12 +46,6 @@
                 </child>
               </object>
             </child>
-          </object>
-        </child>
-        <child type="end">
-          <object class="GtkSwitch">
-            <property name="action-name">win.user-extensions-enabled</property>
-            <property name="valign">center</property>
           </object>
         </child>
       </object>
@@ -126,8 +77,26 @@
                 <property name="child">
                   <object class="AdwPreferencesPage">
                     <child>
+                      <object class="AdwPreferencesGroup">
+                        <child>
+                          <object class="AdwActionRow">
+                            <property name="title" translatable="yes">Extensions</property>
+                            <property name="subtitle" translatable="yes">Extensions can cause performance and stability issues. Disable extensions if you encounter problems with your system.</property>
+                            <property name="activatable-widget">enabledSwitch</property>
+                            <child>
+                              <object class="GtkSwitch" id="enabledSwitch">
+                                <property name="action-name">win.user-extensions-enabled</property>
+                                <property name="valign">center</property>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                    <child>
                       <object class="AdwPreferencesGroup" id="userGroup">
                         <property name="title" translatable="yes">Manually Installed</property>
+                        <property name="description" translatable="yes">To find and add extensions, visit &lt;a href="https://extensions.gnome.org"&gt;extensions.gnome.org&lt;/a&gt;.</property>
                         <child>
                           <object class="GtkListBox" id="userList">
                             <property name="selection-mode">none</property>
@@ -162,6 +131,7 @@
                   <object class="AdwStatusPage">
                     <property name="icon-name">org.gnome.Extensions-symbolic</property>
                     <property name="title" translatable="yes">No Installed Extensions</property>
+                    <property name="description" translatable="yes">To find and add extensions, visit &lt;a href="https://extensions.gnome.org"&gt;extensions.gnome.org&lt;/a&gt;.</property>
                   </object>
                 </property>
               </object>
