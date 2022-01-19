@@ -389,11 +389,17 @@ var VPNRequestHandler = class {
 
         try {
             let [success_, pid, stdin, stdout, stderr] =
-                GLib.spawn_async_with_pipes(null, /* pwd */
-                                            argv,
-                                            null, /* envp */
-                                            GLib.SpawnFlags.DO_NOT_REAP_CHILD,
-                                            null /* child_setup */);
+                GLib.spawn_async_with_pipes(
+                    null, /* pwd */
+                    argv,
+                    null, /* envp */
+                    GLib.SpawnFlags.DO_NOT_REAP_CHILD,
+                    () => {
+                        try {
+                            global.context.restore_rlimit_nofile();
+                        } catch (err) {
+                        }
+                    });
 
             this._childPid = pid;
             this._stdin = new Gio.UnixOutputStream({ fd: stdin, close_fd: true });
