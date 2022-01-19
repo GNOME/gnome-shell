@@ -1166,6 +1166,7 @@ shell_global_reexec_self (ShellGlobal *global)
 {
   GPtrArray *arr;
   gsize len;
+  MetaContext *meta_context;
 
 #if defined __linux__ || defined __sun
   char *buf;
@@ -1241,6 +1242,9 @@ shell_global_reexec_self (ShellGlobal *global)
    * objects.
    */
   pre_exec_close_fds ();
+
+  g_object_get (global, "context", &meta_context, NULL);
+  meta_context_restore_rlimit_nofile (meta_context, NULL);
 
   meta_display_close (shell_global_get_display (global),
                       shell_global_get_current_time (global));
