@@ -554,6 +554,9 @@ main (int argc, char **argv)
 
   shell_profiler_init ();
 
+  if (meta_context_get_compositor_type (context) == META_COMPOSITOR_TYPE_WAYLAND)
+    meta_context_raise_rlimit_nofile (context, NULL);
+
   if (!meta_context_start (context, &error))
     {
       g_printerr ("GNOME Shell failed to start: %s", error->message);
