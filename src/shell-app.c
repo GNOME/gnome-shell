@@ -7,6 +7,7 @@
 #include <glib/gi18n-lib.h>
 
 #include <meta/display.h>
+#include <meta/meta-context.h>
 #include <meta/meta-workspace-manager.h>
 #include <meta/meta-x11-display.h>
 
@@ -1292,6 +1293,16 @@ shell_app_request_quit (ShellApp   *app)
   return TRUE;
 }
 
+static void
+child_context_setup (gpointer user_data)
+{
+  ShellGlobal *shell_global = user_data;
+  MetaContext *meta_context;
+
+  g_object_get (shell_global, "context", &meta_context, NULL);
+  meta_context_restore_rlimit_nofile (meta_context, NULL);
+}
+
 #if !defined(HAVE_GIO_DESKTOP_LAUNCH_URIS_WITH_FDS) && defined(HAVE_SYSTEMD)
 /* This sets up the launched application to log to the journal
  * using its own identifier, instead of just "gnome-session".
@@ -1302,6 +1313,8 @@ app_child_setup (gpointer user_data)
   const char *appid = user_data;
   int res;
   int journalfd = sd_journal_stream_fd (appid, LOG_INFO, FALSE);
+  ShellGlobal *shell_global = shell_global_get ();
+
   if (journalfd >= 0)
     {
       do
@@ -1312,6 +1325,8 @@ app_child_setup (gpointer user_data)
       while (G_UNLIKELY (res == -1 && errno == EINTR));
       (void) close (journalfd);
     }
+
+  child_context_setup (shell_global);
 }
 #endif
 
@@ -1396,6 +1411,7 @@ shell_app_launch (ShellApp           *app,
   gboolean ret;
   GSpawnFlags flags;
   gboolean discrete_gpu = FALSE;
+  ShellGlobal *shell_global = shell_global_get ();
 
   if (app->info == NULL)
     {
@@ -1439,7 +1455,7 @@ shell_app_launch (ShellApp           *app,
     ret = g_desktop_app_info_launch_uris_as_manager_with_fds (app->info, NULL,
                                                               context,
                                                               flags,
-                                                              NULL, NULL,
+                                                              child_context_setup, shell_global,
                                                               wait_pid, NULL,
                                                               -1,
                                                               journalfd,
@@ -1456,7 +1472,7 @@ shell_app_launch (ShellApp           *app,
 #ifdef HAVE_SYSTEMD
                                                    app_child_setup, (gpointer)shell_app_get_id (app),
 #else
-                                                   NULL, NULL,
+                                                   child_context_setup, shell_global,
 #endif
                                                    wait_pid, NULL,
                                                    error);
