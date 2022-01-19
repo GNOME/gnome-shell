@@ -111,9 +111,16 @@ function spawnApp(argv) {
 function trySpawn(argv) {
     var success_, pid;
     try {
-        [success_, pid] = GLib.spawn_async(null, argv, null,
-                                           GLib.SpawnFlags.SEARCH_PATH | GLib.SpawnFlags.DO_NOT_REAP_CHILD,
-                                           null);
+        [success_, pid] = GLib.spawn_async(
+            null, argv, null,
+            GLib.SpawnFlags.SEARCH_PATH | GLib.SpawnFlags.DO_NOT_REAP_CHILD,
+            () => {
+                try {
+                    global.context.restore_rlimit_nofile();
+                } catch (err) {
+                }
+            }
+        );
     } catch (err) {
         /* Rewrite the error in case of ENOENT */
         if (err.matches(GLib.SpawnError, GLib.SpawnError.NOENT)) {
