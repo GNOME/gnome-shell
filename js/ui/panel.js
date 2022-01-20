@@ -492,7 +492,8 @@ class PanelCorner extends St.DrawingArea {
         let cornerRadius = node.get_length("-panel-corner-radius");
         let borderWidth = node.get_length('-panel-corner-border-width');
 
-        const transitionDuration = node.get_transition_duration();
+        const transitionDuration =
+            node.get_transition_duration() / St.Settings.get().slow_down_factor;
         const opacity = node.get_double('-panel-corner-opacity');
 
         this.set_size(cornerRadius, borderWidth + cornerRadius);
