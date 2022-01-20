@@ -561,6 +561,17 @@ on_window_created (MetaDisplay *display,
                    MetaWindow  *window,
                    gpointer     user_data)
 {
+  ShellWindowTracker *self = user_data;
+
+  if (!g_hash_table_contains (self->window_to_app, window))
+    track_window (self, window);
+}
+
+static void
+shell_window_tracker_on_window_added (MetaWorkspace   *workspace,
+                                      MetaWindow      *window,
+                                      gpointer         user_data)
+{
   track_window (SHELL_WINDOW_TRACKER (user_data), window);
 }
 
@@ -603,14 +614,47 @@ load_initial_windows (ShellWindowTracker *tracker)
 }
 
 static void
+shell_window_tracker_on_n_workspaces_changed (MetaWorkspaceManager *workspace_manager,
+                                              GParamSpec           *pspec,
+                                              gpointer              user_data)
+{
+  ShellWindowTracker *self = SHELL_WINDOW_TRACKER (user_data);
+  GList *workspaces;
+  GList *l;
+
+  workspaces = meta_workspace_manager_get_workspaces (workspace_manager);
+  for (l = workspaces; l; l = l->next)
+    {
+      MetaWorkspace *workspace = l->data;
+
+      /* This pair of disconnect/connect is idempotent if we were
+       * already connected, while ensuring we get connected for
+       * new workspaces.
+       */
+      g_signal_handlers_disconnect_by_func (workspace,
+                                            shell_window_tracker_on_window_added,
+                                            self);
+
+      g_signal_connect (workspace, "window-added",
+                        G_CALLBACK (shell_window_tracker_on_window_added), self);
+    }
+}
+
+static void
 init_window_tracking (ShellWindowTracker *self)
 {
   MetaDisplay *display = shell_global_get_display (shell_global_get ());
+  MetaWorkspaceManager *workspace_manager =
+    meta_display_get_workspace_manager (display);
 
+  g_signal_connect (workspace_manager, "notify::n-workspaces",
+                    G_CALLBACK (shell_window_tracker_on_n_workspaces_changed), self);
   g_signal_connect (display, "notify::focus-window",
                     G_CALLBACK (on_focus_window_changed), self);
   g_signal_connect(display, "window-created",
                    G_CALLBACK (on_window_created), self);
+
+  shell_window_tracker_on_n_workspaces_changed (workspace_manager, NULL, self);
 }
 
 static void
