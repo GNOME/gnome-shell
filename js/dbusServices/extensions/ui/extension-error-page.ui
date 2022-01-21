@@ -13,11 +13,8 @@
             <child>
               <object class="GtkLabel">
                 <property name="label" translatable="yes">Something’s gone wrong</property>
-                <attributes>
-                  <attribute name="scale" value="1.44"/> <!-- x-large -->
-                </attributes>
                 <style>
-                  <class name="dim-label"/>
+                  <class name="title-1"/>
                 </style>
               </object>
             </child>
