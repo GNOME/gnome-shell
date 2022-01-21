@@ -939,7 +939,7 @@ class WorkspaceBackground extends St.Widget {
         this._workarea = Main.layoutManager.getWorkAreaForMonitor(monitorIndex);
 
         this._stateAdjustment = stateAdjustment;
-        stateAdjustment.connect('notify::value', () => {
+        this._adjustmentId = stateAdjustment.connect('notify::value', () => {
             this._updateBorderRadius();
             this.queue_relayout();
         });
@@ -1053,6 +1053,11 @@ class WorkspaceBackground extends St.Widget {
         if (this._workareasChangedId) {
             global.display.disconnect(this._workareasChangedId);
             delete this._workareasChangedId;
+        }
+
+        if (this._adjustmentId) {
+            this._stateAdjustment.disconnect(this._adjustmentId);
+            delete this._adjustmentId;
         }
     }
 });
