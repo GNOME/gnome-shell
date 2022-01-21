@@ -140,7 +140,7 @@ function loadRemoteSearchProviders(searchSettings, callback) {
     let sortOrder = searchSettings.get_strv('sort-order');
 
     // Special case gnome-control-center to be always active and always first
-    sortOrder.unshift('gnome-control-center.desktop');
+    sortOrder.unshift('org.gnome.Settings.desktop');
 
     const disabled = searchSettings.get_strv('disabled');
     const enabled = searchSettings.get_strv('enabled');

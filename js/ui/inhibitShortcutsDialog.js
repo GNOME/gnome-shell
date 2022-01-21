@@ -7,7 +7,7 @@ const PermissionStore = imports.misc.permissionStore;
 
 const WAYLAND_KEYBINDINGS_SCHEMA = 'org.gnome.mutter.wayland.keybindings';
 
-const APP_ALLOWLIST = ['gnome-control-center.desktop'];
+const APP_ALLOWLIST = ['org.gnome.Settings.desktop'];
 const APP_PERMISSIONS_TABLE = 'gnome';
 const APP_PERMISSIONS_ID = 'shortcuts-inhibitor';
 const GRANTED = 'GRANTED';
