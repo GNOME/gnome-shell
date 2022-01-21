@@ -263,7 +263,11 @@ file_delete_recursively (GFile   *file,
   g_autoptr (GFileEnumerator) file_enum = NULL;
   GFile *child;
 
-  file_enum = g_file_enumerate_children (file, NULL, 0, NULL, NULL);
+  file_enum = g_file_enumerate_children (file,
+                                         G_FILE_ATTRIBUTE_STANDARD_NAME,
+                                         G_FILE_QUERY_INFO_NONE,
+                                         NULL,
+                                         NULL);
   if (file_enum)
     while (TRUE)
       {
