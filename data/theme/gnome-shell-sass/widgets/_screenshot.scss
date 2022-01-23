@@ -7,3 +7,19 @@
   margin-bottom: $base_margin * 8;
   spacing: $base_padding * 2;
 }
+
+.screenshot-ui-close-button {
+  background-color: $osd_bg_color;
+  border-radius: 99px;
+  width: 64px;
+  height: 64px;
+  margin: 64px;
+
+  &:hover, &:focus { background-color: $hover_bg_color; }
+  &:active { background-color: $active_bg_color; }
+  &:checked { background-color: darken($osd_bg_color, 5%); }
+
+  StIcon {
+    icon-size: $base_icon_size * 2;
+  }
+}

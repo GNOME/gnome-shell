@@ -53,6 +53,17 @@ class ScreenshotUI extends St.Widget {
         });
         this._primaryMonitorBin.add_child(this._panel);
 
+        this._closeButton = new St.Button({
+            style_class: 'screenshot-ui-close-button',
+            x_align: Clutter.ActorAlign.END,
+            y_align: Clutter.ActorAlign.START,
+            x_expand: true,
+            y_expand: true,
+        });
+        this._closeButton.set_child(new St.Icon({ icon_name: 'window-close-symbolic' }));
+        this._closeButton.connect('clicked', () => this.close());
+        this._primaryMonitorBin.add_child(this._closeButton);
+
         Main.layoutManager.connect('monitors-changed', () => {
             // Nope, not dealing with monitor changes.
             this.close(true);
