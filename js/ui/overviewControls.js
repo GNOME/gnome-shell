@@ -435,6 +435,41 @@ class ControlsManager extends St.Widget {
                 Main.overview.toggle();
         });
 
+        // connect_after to give search controller first dibs on the event
+        global.stage.connect_after('key-press-event', (actor, event) => {
+            if (this._searchController.searchActive)
+                return Clutter.EVENT_PROPAGATE;
+
+            if (global.stage.key_focus &&
+                !this.contains(global.stage.key_focus))
+                return Clutter.EVENT_PROPAGATE;
+
+            const { finalState } =
+                this._stateAdjustment.getStateTransitionParams();
+            let keynavDisplay;
+
+            if (finalState === ControlsState.WINDOW_PICKER)
+                keynavDisplay = this._workspacesDisplay;
+            else if (finalState === ControlsState.APP_GRID)
+                keynavDisplay = this._appDisplay;
+
+            if (!keynavDisplay)
+                return Clutter.EVENT_PROPAGATE;
+
+            const symbol = event.get_key_symbol();
+            if (symbol === Clutter.KEY_Tab || symbol === Clutter.KEY_Down) {
+                keynavDisplay.navigate_focus(
+                    null, St.DirectionType.TAB_FORWARD, false);
+                return Clutter.EVENT_STOP;
+            } else if (symbol === Clutter.KEY_ISO_Left_Tab) {
+                keynavDisplay.navigate_focus(
+                    null, St.DirectionType.TAB_BACKWARD, false);
+                return Clutter.EVENT_STOP;
+            }
+
+            return Clutter.EVENT_PROPAGATE;
+        });
+
         Main.wm.addKeybinding(
             'toggle-application-view',
             new Gio.Settings({ schema_id: WindowManager.SHELL_KEYBINDINGS_SCHEMA }),
