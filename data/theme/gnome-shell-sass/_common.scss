@@ -77,7 +77,7 @@ stage {
   color: $osd_fg_color;
   background-color: $osd_bg_color;
   border: 1px solid $osd_outer_borders_color;
-  border-radius: $modal_radius;
+  border-radius: 999px;
   padding: $base_padding*2;
 }
 
