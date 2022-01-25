@@ -42,7 +42,7 @@ class OsdWindowConstraint extends Clutter.Constraint {
 });
 
 var OsdWindow = GObject.registerClass(
-class OsdWindow extends St.Widget {
+class OsdWindow extends Clutter.Actor {
     _init(monitorIndex) {
         super._init({
             x_expand: true,
