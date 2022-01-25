@@ -55,6 +55,7 @@ var AuthPrompt = GObject.registerClass({
             vertical: true,
             x_expand: true,
             x_align: Clutter.ActorAlign.CENTER,
+            reactive: true,
         });
 
         this.verificationStatus = AuthPromptStatus.NOT_VERIFYING;
