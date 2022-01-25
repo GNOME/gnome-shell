@@ -20,7 +20,7 @@ vec2 position = cogl_tex_coord_in[0].xy - 0.5;\n\
 float t = length(2.0 * position);\n\
 t = clamp(t, 0.0, 1.0);\n\
 float pixel_brightness = mix(1.0, 1.0 - vignette_sharpness, t);\n\
-cogl_color_out.a = cogl_color_out.a * (1 - pixel_brightness * brightness);';
+cogl_color_out.a = cogl_color_out.a * (1.0 - pixel_brightness * brightness);';
 
 var RadialShaderEffect = GObject.registerClass({
     Properties: {
