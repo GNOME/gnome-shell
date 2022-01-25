@@ -1165,6 +1165,8 @@ var PopupMenuSection = class extends PopupMenuBase {
         this.actor = this.box;
         this.actor._delegate = this;
         this.isOpen = true;
+
+        this.actor.add_style_class_name('popup-menu-section');
     }
 
     // deliberately ignore any attempt to open() or close(), but emit the
