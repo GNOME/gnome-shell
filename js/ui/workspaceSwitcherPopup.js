@@ -175,15 +175,6 @@ class WorkspaceSwitcherPopup extends St.Widget {
         this._container.y = workArea.y + Math.floor((workArea.height - containerNatHeight) / 2);
     }
 
-    _show() {
-        this._container.ease({
-            opacity: 255,
-            duration: ANIMATION_TIME,
-            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-        });
-        this.show();
-    }
-
     display(activeWorkspaceIndex) {
         this._activeWorkspaceIndex = activeWorkspaceIndex;
 
@@ -192,7 +183,15 @@ class WorkspaceSwitcherPopup extends St.Widget {
             GLib.source_remove(this._timeoutId);
         this._timeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, DISPLAY_TIMEOUT, this._onTimeout.bind(this));
         GLib.Source.set_name_by_id(this._timeoutId, '[gnome-shell] this._onTimeout');
-        this._show();
+
+        const duration = this.visible ? 0 : ANIMATION_TIME;
+        this.show();
+        this._container.opacity = 0;
+        this._container.ease({
+            opacity: 255,
+            duration,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+        });
     }
 
     _onTimeout() {
