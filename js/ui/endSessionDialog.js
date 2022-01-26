@@ -159,6 +159,9 @@ const LogindSession = Gio.DBusProxy.makeProxyWrapper(LogindSessionIface);
 const PkOfflineIface = loadInterfaceXML('org.freedesktop.PackageKit.Offline');
 const PkOfflineProxy = Gio.DBusProxy.makeProxyWrapper(PkOfflineIface);
 
+const EosUpdaterIface = loadInterfaceXML('com.endlessm.Updater');
+const EosUpdaterProxy = Gio.DBusProxy.makeProxyWrapper(EosUpdaterIface);
+
 const UPowerIface = loadInterfaceXML('org.freedesktop.UPower.Device');
 const UPowerProxy = Gio.DBusProxy.makeProxyWrapper(UPowerIface);
 
@@ -244,6 +247,11 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
                                                   '/org/freedesktop/PackageKit',
                                                   this._onPkOfflineProxyCreated.bind(this));
 
+        this._eosUpdaterProxy = new EosUpdaterProxy(Gio.DBus.system,
+                                                    'com.endlessm.Updater',
+                                                    '/com/endlessm/Updater',
+                                                    this._onEosUpdaterProxyCreated.bind(this));
+
         this._powerProxy = new UPowerProxy(Gio.DBus.system,
                                            'org.freedesktop.UPower',
                                            '/org/freedesktop/UPower/devices/DisplayDevice',
@@ -326,6 +334,21 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
         }
     }
 
+    _onEosUpdaterProxyCreated(proxy, error) {
+        if (error) {
+            log(error.message);
+            return;
+        }
+
+        // Creating a D-Bus proxy won't propagate SERVICE_UNKNOWN or NAME_HAS_NO_OWNER
+        // errors if eos-updater is not available, but the GIO implementation will make
+        // sure in that case that the proxy's g-name-owner is set to null, so check that.
+        if (this._eosUpdaterProxy.g_name_owner === null) {
+            this._eosUpdaterProxy = null;
+            return;
+        }
+    }
+
     _onDestroy() {
         this._user.disconnect(this._userLoadedId);
         this._user.disconnect(this._userChangedId);
@@ -398,6 +421,7 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
         }
 
         // Fall back to regular description
+        // TODO: dialogContent.description is not a function
         if (!description)
             description = dialogContent.description(displayTime);
 
@@ -747,6 +771,16 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
                 this._type = DialogType.UPDATE_RESTART;
             else if (this._updateInfo.UpgradeTriggered)
                 this._type = DialogType.UPGRADE_RESTART;
+        } else if (this._eosUpdaterProxy && this._type == DialogType.RESTART) {
+            var x = this._eosUpdaterProxy.get_cached_property("State");
+            if (x != null && x.get_uint32() === 8) {
+                this._type = DialogType.UPGRADE_RESTART;
+                this._updateInfo.PreparedUpgrade = {
+                    // TODO: GNOME OS?
+                    name: "Endless OS",
+                    version: this._eosUpdaterProxy.get_cached_property("Version").get_string(),
+                };
+            }
         }
 
         this._applications = [];

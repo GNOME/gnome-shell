@@ -1,0 +1,292 @@
+<!DOCTYPE node PUBLIC
+'-//freedesktop//DTD D-BUS Object Introspection 1.0//EN'
+'http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd'>
+<node>
+  <!--
+    com.endlessm.Updater:
+    @short_description: Endless OS updater control interface
+
+    Interface to query the state of the OS updater, and to control it: checking
+    for, downloading and applying updates.
+
+    The updater moves through a series of states (see the `State` property and
+    `StateChanged` signal), with state transitions triggered by the appropriate
+    method call, or by an error in an operation. It will return a
+    `com.endlessm.Updater.Error.WrongState` error if you attempt to perform an
+    invalid state transition.
+  -->
+  <interface name="com.endlessm.Updater">
+    <!--
+      Poll:
+
+      Check for updates. This may be performed from the `Ready`,
+      `UpdateAvailable`, `UpdateReady` or `Error` states. It will immediately
+      transition to the `Polling` state. If an update is then successfully
+      found, it will transition to the `UpdateAvailable` state. If no update is
+      available, it will transition to the `Ready` state. If there is an error
+      checking for an update, it will transition to the `Error` state.
+
+      If an update is found, its details will be reported through the updater’s
+      properties once the updater reaches the `UpdateAvailable` state. In
+      particular, through the `UpdateID`, `UpdateRefspec`, `UpdateLabel` and
+      `UpdateMessage` properties.
+    -->
+    <method name="Poll"></method>
+
+    <!--
+      PollVolume:
+      @path: Absolute path to the root directory of a volume to check.
+
+      Like `Poll`, except this polls a specific removable volume (such as a USB
+      stick), rather than the internet.
+
+      If a `.ostree/repo` directory is available beneath @path, and it contains
+      a valid OSTree repository, that repository will be checked for updates.
+      If no such directory exists, the updater will transition to state `Ready`
+      as no update is available.
+    -->
+    <method name="PollVolume">
+      <arg name="path" type="s" direction="in"/>
+    </method>
+
+    <!--
+      Fetch:
+
+      Download an update. This may be performed from the `UpdateAvailable` state
+      only. It will immediately transition to the `Fetching` state. If the
+      update is successfully downloaded, it will transition to the `UpdateReady`
+      state; if there was an error it will transition to `Error`.
+
+      Download progress will be reported through the updater’s properties; in
+      particular, `DownloadedBytes`.
+    -->
+    <method name="Fetch"></method>
+
+    <!--
+      FetchFull:
+      @options: Potentially empty dictionary of options.
+
+      Like `Fetch`, except options may be provided to affect its behaviour.
+      Currently, the following options are supported (unsupported options are
+      ignored):
+
+        * `force` (type: `b`): If true, force the download without scheduling
+          it through the system’s metered data scheduler. Typically, this would
+          be true in response to an explicit user action, and false otherwise.
+        * `scheduling-timeout-seconds` (type: `u`): Number of seconds to wait
+          for permission to download from the system’s metered data scheduler,
+          before returning a `com.endlessm.Updater.Error.MeteredConnection`
+          error and cancelling the download. Pass zero to disable the timeout.
+    -->
+    <method name="FetchFull">
+      <arg name="options" type="a{sv}" direction="in"/>
+    </method>
+
+    <!--
+      Apply:
+
+      Apply a downloaded update so that it’s available to boot into on the next
+      boot. This may be performed from the `UpdateReady` state only. It will
+      immediately transition to the `Applying` state. If the update is
+      successfully applied, it will transition to the `UpdateApplied` state; if
+      there was an error it will transition to `Error`.
+    -->
+    <method name="Apply"></method>
+
+    <!--
+      Cancel:
+
+      Cancel the ongoing poll, fetch or apply operation. This may be performed
+      from the `Polling`, `Fetching` or `ApplyingUpdate` states. It will cancel
+      the operation then transition to the `Error` state, with the error
+      `com.endlessm.Updater.Error.Cancelled`.
+    -->
+    <method name="Cancel"></method>
+
+    <!--
+      State:
+
+      Current state of the updater. This will be one of the following:
+
+        * `0` (`None`): No state.
+        * `1` (`Ready`): Ready to perform an action.
+        * `2` (`Error`): An error occurred. See the `ErrorName` and
+          `ErrorMessage` properties for details.
+        * `3` (`Polling`): Checking for updates.
+        * `4` (`UpdateAvailable`): An update is available. See the `UpdateID`,
+          `UpdateRefspec`, `UpdateLabel` and `UpdateMessage` properties for
+          details.
+        * `5` (`Fetching`): Downloading an update. See the `DownloadedBytes`
+          property for progress updates.
+        * `6` (`UpdateReady`): Update downloaded and ready to apply.
+        * `7` (`ApplyingUpdate`): Applying an update.
+        * `8` (`UpdateApplied`): Update applied and ready to reboot into.
+
+      State changes are notified using the `StateChanged` signal.
+    -->
+    <property name="State" type="u" access="read"/>
+
+    <!--
+      UpdateID:
+
+      Checksum of the OSTree commit available as an update, or the empty string
+      if no update is available.
+    -->
+    <property name="UpdateID" type="s" access="read"/>
+
+    <!--
+      UpdateRefspec:
+
+      Refspec (remote name and branch name) of the OSTree commit available as an
+      update, or the empty string if no update is available.
+    -->
+    <property name="UpdateRefspec" type="s" access="read"/>
+
+    <!--
+      OriginalRefspec:
+
+      Refspec (remote name and branch name) of the currently booted OSTree
+      commit.
+    -->
+    <property name="OriginalRefspec" type="s" access="read"/>
+
+    <!--
+      CurrentID:
+
+      Checksum of the currently booted OSTree commit.
+    -->
+    <property name="CurrentID" type="s" access="read"/>
+
+    <!--
+      UpdateLabel:
+
+      Subject of the OSTree commit available as an update, or the empty string
+      if it’s not set or if no update is available. This is the title of the
+      update.
+    -->
+    <property name="UpdateLabel" type="s" access="read"/>
+
+    <!--
+      UpdateMessage:
+
+      Description body of the OSTree commit available as an update, or the empty
+      string if it’s not set or if no update is available. This is the
+      description of the update.
+    -->
+    <property name="UpdateMessage" type="s" access="read"/>
+
+    <!--
+      Version:
+
+      Version number of the OSTree commit available as an update, or the empty
+      string if it’s not set or if no update is available.
+    -->
+    <property name="Version" type="s" access="read"/>
+
+    <!--
+      DownloadSize:
+
+      Size (in bytes) of the update when downloaded, or `-1` if an update is
+      available but its download size is unknown. `0` if no update is available.
+    -->
+    <property name="DownloadSize" type="x" access="read"/>
+
+    <!--
+      DownloadedBytes:
+
+      Number of bytes of the update which have already been downloaded. This
+      will be `0` before a download starts, and could be `-1` if the
+      `DownloadSize` is unknown.
+    -->
+    <property name="DownloadedBytes" type="x" access="read"/>
+
+    <!--
+      UnpackedSize:
+
+      Size (in bytes) of the update when unpacked, or `-1` if an update is
+      available but its unpacked size is unknown. `0` if no update is available.
+    -->
+    <property name="UnpackedSize" type="x" access="read"/>
+
+    <!--
+      FullDownloadSize:
+
+      Version of `DownloadSize` which also includes the sizes of parts of the
+      update which are already present locally (and hence which don’t need to
+      be downloaded again).
+    -->
+    <property name="FullDownloadSize" type="x" access="read"/>
+
+    <!--
+      FullUnpackedSize:
+
+      Version of `UnpackedSize` which also includes the sizes of parts of the
+      update which are already unpacked locally (and hence which won’t occupy
+      further disk space once the update is applied).
+    -->
+    <property name="FullUnpackedSize" type="x" access="read"/>
+
+    <!--
+      ErrorCode:
+
+      Error code of the current error, or `0` if no error has been reported.
+      This is in an unspecified error domain, and hence is useless.
+
+      Deprecated: Use `ErrorName` instead.
+    -->
+    <property name="ErrorCode" type="u" access="read">
+      <annotation name="org.freedesktop.DBus.Deprecated" value="true"/>
+    </property>
+
+    <!--
+      ErrorName:
+
+      A fully-qualified D-Bus error name, as might be returned from a D-Bus
+      method.
+
+      This is the empty string if no error has been reported.
+
+      Known errors include:
+
+       * `com.endlessm.Updater.Error.WrongState`: Method was called in a state
+         which doesn’t support that method.
+       * `com.endlessm.Updater.Error.LiveBoot`: The updater cannot be used
+         because the current system is a live boot.
+       * `com.endlessm.Updater.Error.WrongConfiguration`: A configuration file
+         contains an error.
+       * `com.endlessm.Updater.Error.NotOstreeSystem`: The updater cannot be
+         used because the current system is not booted from an OSTree commit.
+       * `com.endlessm.Updater.Error.Fetching`: Error when downloading an
+         update.
+       * `com.endlessm.Updater.Error.MalformedAutoinstallSpec`: An autoinstall
+         specification in the pending update contains an error.
+       * `com.endlessm.Updater.Error.UnknownEntryInAutoinstallSpec`: An
+         autoinstall specification in the pending update contains an unknown
+         entry.
+       * `com.endlessm.Updater.Error.FlatpakRemoteConflict`: An autoinstall
+         specification in the pending update contains a remote name which
+         doesn’t match the system’s configuration.
+       * `com.endlessm.Updater.Error.MeteredConnection`: A fetch operation timed
+         out while waiting for permission to download.
+    -->
+    <property name="ErrorName" type="s" access="read"/>
+
+    <!--
+      ErrorMessage:
+
+      A human-readable (but unlocalised) error message, or the empty string if
+      no error has been reported.
+    -->
+    <property name="ErrorMessage" type="s" access="read"/>
+
+    <!--
+      StateChanged:
+      @state: The new state.
+
+      Signal notifying of a change in the `State` property.
+    -->
+    <signal name="StateChanged">
+      <arg type="u" name="state"/>
+    </signal>
+  </interface>
+</node>
