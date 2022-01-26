@@ -1820,7 +1820,7 @@ var WindowManager = class {
                     this._isWorkspacePrepended = false;
                 });
             }
-            this._workspaceSwitcherPopup.display(direction, newWs.index());
+            this._workspaceSwitcherPopup.display(newWs.index());
         }
     }
 

@@ -1,7 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported WorkspaceSwitcherPopup */
 
-const { Clutter, GLib, GObject, Meta, St } = imports.gi;
+const { Clutter, GLib, GObject, St } = imports.gi;
 
 const Main = imports.ui.main;
 
@@ -158,18 +158,12 @@ class WorkspaceSwitcherPopup extends St.Widget {
         this._list.destroy_all_children();
 
         for (let i = 0; i < workspaceManager.n_workspaces; i++) {
-            let indicator = null;
+            const indicator = new St.Bin({
+                style_class: 'ws-switcher-indicator',
+            });
 
-            if (i == this._activeWorkspaceIndex && this._direction == Meta.MotionDirection.UP)
-                indicator = new St.Bin({ style_class: 'ws-switcher-active-up' });
-            else if (i == this._activeWorkspaceIndex && this._direction == Meta.MotionDirection.DOWN)
-                indicator = new St.Bin({ style_class: 'ws-switcher-active-down' });
-            else if (i == this._activeWorkspaceIndex && this._direction == Meta.MotionDirection.LEFT)
-                indicator = new St.Bin({ style_class: 'ws-switcher-active-left' });
-            else if (i == this._activeWorkspaceIndex && this._direction == Meta.MotionDirection.RIGHT)
-                indicator = new St.Bin({ style_class: 'ws-switcher-active-right' });
-            else
-                indicator = new St.Bin({ style_class: 'ws-switcher-box' });
+            if (i === this._activeWorkspaceIndex)
+                indicator.add_style_pseudo_class('active');
 
             this._list.add_actor(indicator);
         }
@@ -190,8 +184,7 @@ class WorkspaceSwitcherPopup extends St.Widget {
         this.show();
     }
 
-    display(direction, activeWorkspaceIndex) {
-        this._direction = direction;
+    display(activeWorkspaceIndex) {
         this._activeWorkspaceIndex = activeWorkspaceIndex;
 
         this._redisplay();
