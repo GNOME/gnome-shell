@@ -7,6 +7,9 @@ const Main = imports.ui.main;
 const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
 
+// Minimum amount of time the shared indicator is visible (in micro seconds)
+const MIN_SHARED_INDICATOR_VISIBLE_TIME_US = 5 * GLib.TIME_SPAN_SECOND;
+
 var RemoteAccessApplet = GObject.registerClass(
 class RemoteAccessApplet extends PanelMenu.SystemIndicator {
     _init() {
@@ -32,6 +35,7 @@ class RemoteAccessApplet extends PanelMenu.SystemIndicator {
             return;
 
         this._sharedIndicator = this._addIndicator();
+        this._sharedIndicator.visible = false;
         this._sharedIndicator.icon_name = 'screen-shared-symbolic';
         this._sharedIndicator.add_style_class_name('remote-access-indicator');
 
@@ -69,12 +73,41 @@ class RemoteAccessApplet extends PanelMenu.SystemIndicator {
         return recordingHandles.length > 0;
     }
 
+    _hideSharedIndicator() {
+        this._sharedIndicator.visible = false;
+        delete this._hideSharedIndicatorId;
+        return GLib.SOURCE_REMOVE;
+    }
+
     _sync() {
+        if (this._hideSharedIndicatorId) {
+            GLib.source_remove(this._hideSharedIndicatorId);
+            delete this._hideSharedIndicatorId;
+        }
+
         if (this._isScreenShared()) {
+            if (!this._sharedIndicator.visible)
+                this._visibleTimeUs = GLib.get_monotonic_time();
             this._sharedIndicator.visible = true;
             this._sharedItem.visible = true;
         } else {
-            this._sharedIndicator.visible = false;
+            if (this._sharedIndicator.visible) {
+                const currentTimeUs = GLib.get_monotonic_time();
+                const timeSinceVisibleUs = currentTimeUs - this._visibleTimeUs;
+
+                if (timeSinceVisibleUs >= MIN_SHARED_INDICATOR_VISIBLE_TIME_US) {
+                    this._hideSharedIndicator();
+                } else {
+                    const timeUntilHideUs =
+                        MIN_SHARED_INDICATOR_VISIBLE_TIME_US - timeSinceVisibleUs;
+                    this._hideSharedIndicatorId =
+                        GLib.timeout_add(
+                            GLib.PRIORITY_DEFAULT,
+                            timeUntilHideUs / GLib.TIME_SPAN_MILLISECOND,
+                            this._hideSharedIndicator.bind(this));
+                }
+            }
+
             this._sharedItem.visible = false;
         }
 
