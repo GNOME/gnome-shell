@@ -1012,6 +1012,8 @@ class ScreenshotUI extends St.Widget {
             visible: false,
         });
 
+        this._lockdownSettings = new Gio.Settings({ schema_id: 'org.gnome.desktop.lockdown' });
+
         // The full-screen screenshot has a separate container so that we can
         // show it without the screenshot UI fade-in for a nicer animation.
         this._stageScreenshotContainer = new St.Widget({ visible: false });
@@ -1536,58 +1538,69 @@ class ScreenshotUI extends St.Widget {
         const clipboard = St.Clipboard.get_default();
         clipboard.set_content(St.ClipboardType.CLIPBOARD, 'image/png', bytes);
 
-        const dir = Gio.File.new_for_path(GLib.build_filenamev([
-            GLib.get_user_special_dir(GLib.UserDirectory.DIRECTORY_PICTURES),
-            // Translators: name of the folder under ~/Pictures for screenshots.
-            _('Screenshots'),
-        ]));
-
-        try {
-            dir.make_directory_with_parents(null);
-        } catch (e) {
-            if (!e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.EXISTS))
-                throw e;
-        }
-
         const time = GLib.DateTime.new_now_local();
-        const timestamp = time.format('%Y-%m-%d %H-%M-%S');
-        // Translators: this is the name of the file that the screenshot is
-        // saved to. The placeholder is a timestamp, e.g. "2017-05-21 12-24-03".
-        const name = _('Screenshot from %s').format(timestamp);
 
-        // If the target file already exists, try appending a suffix with an
-        // increasing number to it.
+        // This will be set in the first save to disk branch and then accessed
+        // in the second save to disk branch, so we need to declare it outside.
+        let file;
+
+        // The function is declared here rather than inside the condition to
+        // satisfy eslint.
 
         /**
          * Returns a filename suffix with an increasingly large index.
          *
          * @returns {Generator<string|*, void, *>} suffix string
          */
-        function *suffixes() {
+        function* suffixes() {
             yield '';
 
             for (let i = 1; ; i++)
                 yield '-%s'.format(i);
         }
 
-        let file;
-        for (const suffix of suffixes()) {
-            file = Gio.File.new_for_path(GLib.build_filenamev([
-                dir.get_path(), '%s%s.png'.format(name, suffix),
+        const disableSaveToDisk =
+            this._lockdownSettings.get_boolean('disable-save-to-disk');
+
+        if (!disableSaveToDisk) {
+            const dir = Gio.File.new_for_path(GLib.build_filenamev([
+                GLib.get_user_special_dir(GLib.UserDirectory.DIRECTORY_PICTURES),
+                // Translators: name of the folder under ~/Pictures for screenshots.
+                _('Screenshots'),
             ]));
 
             try {
-                const stream = file.create(Gio.FileCreateFlags.NONE, null);
-                stream.write_bytes(bytes, null);
-                break;
+                dir.make_directory_with_parents(null);
             } catch (e) {
                 if (!e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.EXISTS))
                     throw e;
             }
-        }
 
-        // Add it to recent files.
-        Gtk.RecentManager.get_default().add_item(file.get_uri());
+            const timestamp = time.format('%Y-%m-%d %H-%M-%S');
+            // Translators: this is the name of the file that the screenshot is
+            // saved to. The placeholder is a timestamp, e.g. "2017-05-21 12-24-03".
+            const name = _('Screenshot from %s').format(timestamp);
+
+            // If the target file already exists, try appending a suffix with an
+            // increasing number to it.
+            for (const suffix of suffixes()) {
+                file = Gio.File.new_for_path(GLib.build_filenamev([
+                    dir.get_path(), '%s%s.png'.format(name, suffix),
+                ]));
+
+                try {
+                    const stream = file.create(Gio.FileCreateFlags.NONE, null);
+                    stream.write_bytes(bytes, null);
+                    break;
+                } catch (e) {
+                    if (!e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.EXISTS))
+                        throw e;
+                }
+            }
+
+            // Add it to recent files.
+            Gtk.RecentManager.get_default().add_item(file.get_uri());
+        }
 
         // Create a St.ImageContent icon for the notification. We want
         // St.ImageContent specifically because it preserves the aspect ratio when
@@ -1617,29 +1630,32 @@ class ScreenshotUI extends St.Widget {
             _('You can paste the image from the clipboard.'),
             { datetime: time, gicon: content }
         );
-        // Translators: button on the screenshot notification.
-        notification.addAction(_('Show in Files'), () => {
-            const app =
-                Gio.app_info_get_default_for_type('inode/directory', false);
 
-            if (app === null) {
-                // It may be null e.g. in a toolbox without nautilus.
-                log('Error showing in files: no default app set for inode/directory');
-                return;
-            }
+        if (!disableSaveToDisk) {
+            // Translators: button on the screenshot notification.
+            notification.addAction(_('Show in Files'), () => {
+                const app =
+                    Gio.app_info_get_default_for_type('inode/directory', false);
 
-            app.launch([file], global.create_app_launch_context(0, -1));
-        });
-        notification.connect('activated', () => {
-            try {
-                Gio.app_info_launch_default_for_uri(
-                    file.get_uri(), global.create_app_launch_context(0, -1));
-            } catch (err) {
-                logError(err, 'Error opening screenshot');
-            }
-        });
+                if (app === null) {
+                    // It may be null e.g. in a toolbox without nautilus.
+                    log('Error showing in files: no default app set for inode/directory');
+                    return;
+                }
+
+                app.launch([file], global.create_app_launch_context(0, -1));
+            });
+            notification.connect('activated', () => {
+                try {
+                    Gio.app_info_launch_default_for_uri(
+                        file.get_uri(), global.create_app_launch_context(0, -1));
+                } catch (err) {
+                    logError(err, 'Error opening screenshot');
+                }
+            });
+        }
+
         notification.setTransient(true);
-
         Main.messageTray.add(source);
         source.showNotification(notification);
     }
