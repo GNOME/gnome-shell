@@ -29,16 +29,16 @@ const DEFAULT_FRAMERATE = 30;
 const DEFAULT_DRAW_CURSOR = true;
 
 const PipelineState = {
-    INIT: 0,
-    PLAYING: 1,
-    FLUSHING: 2,
-    STOPPED: 3,
+    INIT: 'INIT',
+    PLAYING: 'PLAYING',
+    FLUSHING: 'FLUSHING',
+    STOPPED: 'STOPPED',
 };
 
 const SessionState = {
-    INIT: 0,
-    ACTIVE: 1,
-    STOPPED: 2,
+    INIT: 'INIT',
+    ACTIVE: 'ACTIVE',
+    STOPPED: 'STOPPED',
 };
 
 var Recorder = class {
