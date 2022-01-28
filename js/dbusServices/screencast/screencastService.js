@@ -69,9 +69,13 @@ var Recorder = class {
         this._framerate = DEFAULT_FRAMERATE;
         this._drawCursor = DEFAULT_DRAW_CURSOR;
 
+        this._pipelineState = PipelineState.INIT;
+        this._pipeline = null;
+
         this._applyOptions(options);
         this._watchSender(invocation.get_sender());
 
+        this._sessionState = SessionState.INIT;
         this._initSession(sessionPath);
     }
 
@@ -107,32 +111,62 @@ var Recorder = class {
         }
     }
 
-    _senderVanished() {
-        this._unwatchSender();
+    _teardownPipeline() {
+        if (!this._pipeline)
+            return;
 
-        this.stopRecording(null);
+        if (this._pipeline.set_state(Gst.State.NULL) !== Gst.StateChangeReturn.SUCCESS)
+            log('Failed to set pipeline state to NULL');
+
+        this._pipelineState = PipelineState.STOPPED;
+        this._pipeline = null;
     }
 
-    _notifyStopped() {
+    _stopSession() {
+        if (this._sessionState === SessionState.ACTIVE) {
+            this._sessionState = SessionState.STOPPED;
+            this._sessionProxy.StopSync();
+        }
+    }
+
+    _bailOutOnError(error) {
+        this._teardownPipeline();
         this._unwatchSender();
-        if (this._startRequest)
-            this._startRequest.reject(new Error());
-        else if (this._stopRequest)
-            this._stopRequest.resolve();
-        else
+        this._stopSession();
+
+        log(`Recorder error: ${error.message}`);
+
+        if (this._onErrorCallback) {
             this._onErrorCallback();
+            delete this._onErrorCallback;
+        }
+
+        if (this._startRequest) {
+            this._startRequest.reject(error);
+            delete this._startRequest;
+        }
+
+        if (this._stopRequest) {
+            this._stopRequest.reject(error);
+            delete this._stopRequest;
+        }
+    }
+
+    _handleFatalPipelineError(message) {
+        this._pipelineState = PipelineState.ERROR;
+        this._bailOutOnError(new Error(`Fatal pipeline error: ${message}`));
+    }
+
+    _senderVanished() {
+        this._bailOutOnError(new Error('Sender has vanished'));
     }
 
     _onSessionClosed() {
-        switch (this._pipelineState) {
-        case PipelineState.STOPPED:
-            break;
-        default:
-            this._pipeline.set_state(Gst.State.NULL);
-            log(`Unexpected pipeline state: ${this._pipelineState}`);
-            break;
-        }
-        this._notifyStopped();
+        if (this._sessionState === SessionState.STOPPED)
+            return; // We closed the session ourselves
+
+        this._sessionState = SessionState.STOPPED;
+        this._bailOutOnError(new Error('Session closed unexpectedly'));
     }
 
     _initSession(sessionPath) {
@@ -194,31 +228,20 @@ var Recorder = class {
         });
     }
 
-    _stopSession() {
-        this._sessionProxy.StopSync();
-        this._sessionState = SessionState.STOPPED;
-    }
-
     _onBusMessage(bus, message, _) {
         switch (message.type) {
         case Gst.MessageType.EOS:
-            this._pipeline.set_state(Gst.State.NULL);
-            this._addRecentItem();
+            this._teardownPipeline();
 
             switch (this._pipelineState) {
             case PipelineState.FLUSHING:
-                this._pipelineState = PipelineState.STOPPED;
-                break;
-            default:
-                break;
-            }
+                this._addRecentItem();
 
-            switch (this._sessionState) {
-            case SessionState.ACTIVE:
+                this._unwatchSender();
                 this._stopSession();
-                break;
-            case SessionState.STOPPED:
-                this._notifyStopped();
+
+                this._stopRequest.resolve();
+                delete this._stopRequest;
                 break;
             default:
                 break;
@@ -258,9 +281,8 @@ var Recorder = class {
             this._pipeline = Gst.parse_launch_full(fullPipeline,
                 null,
                 Gst.ParseFlags.FATAL_ERRORS);
-        }  catch (e) {
-            log(`Failed to create pipeline: ${e}`);
-            this._notifyStopped();
+        } catch (e) {
+            this._handleFatalPipelineError(`Failed to create pipeline: ${e.message}`);
         }
         return !!this._pipeline;
     }
@@ -309,7 +331,9 @@ var ScreencastService = class extends ServiceImplementation {
     }
 
     _removeRecorder(sender) {
-        this._recorders.delete(sender);
+        if (!this._recorders.delete(sender))
+            return;
+
         if (this._recorders.size === 0)
             this.release();
     }
