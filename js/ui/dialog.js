@@ -13,7 +13,10 @@ function _setLabel(label, value) {
 var Dialog = GObject.registerClass(
 class Dialog extends St.Widget {
     _init(parentActor, styleClass) {
-        super._init({ layout_manager: new Clutter.BinLayout() });
+        super._init({
+            layout_manager: new Clutter.BinLayout(),
+            reactive: true,
+        });
         this.connect('destroy', this._onDestroy.bind(this));
 
         this._initialKeyFocus = null;
@@ -27,7 +30,6 @@ class Dialog extends St.Widget {
             this._dialog.add_style_class_name(styleClass);
 
         this._parentActor = parentActor;
-        this._eventId = this._parentActor.connect('event', this._modalEventHandler.bind(this));
         this._parentActor.add_child(this);
     }
 
@@ -70,7 +72,7 @@ class Dialog extends St.Widget {
         this.makeInactive();
     }
 
-    _modalEventHandler(actor, event) {
+    vfunc_event(event) {
         if (event.type() == Clutter.EventType.KEY_PRESS) {
             this._pressedKey = event.get_key_symbol();
         } else if (event.type() == Clutter.EventType.KEY_RELEASE) {
