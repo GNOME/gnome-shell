@@ -5,13 +5,13 @@
 # Maxim V. Dziumanenko <dziumanenko@gmail.com>, 2010.
 # Daniel Korostil <ted.korostiled@gmail.com>, 2013, 2014, 2015, 2016, 2017.
 # Danylo Korostil <ted.korostiled@gmail.com>, 2020.
-# Yuri Chornoivan <yurchor@ukr.net>, 2020, 2021.
+# Yuri Chornoivan <yurchor@ukr.net>, 2020, 2021, 2022.
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2021-11-26 16:19+0000\n"
-"PO-Revision-Date: 2021-11-26 23:35+0200\n"
+"POT-Creation-Date: 2022-01-27 22:31+0000\n"
+"PO-Revision-Date: 2022-01-28 08:47+0200\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <kde-i18n-uk@kde.org>\n"
 "Language: uk\n"
@@ -364,12 +364,17 @@ msgstr "Перемкнутися на програму 8"
 msgid "Switch to application 9"
 msgstr "Перемкнутися на програму 9"
 
-#: data/org.gnome.shell.gschema.xml.in:240
-#: data/org.gnome.shell.gschema.xml.in:267
+#: data/org.gnome.shell.gschema.xml.in:235
+#| msgid "Show on-screen help"
+msgid "Show screenshot UI"
+msgstr "Показати інтерфейс знімків екрана"
+
+#: data/org.gnome.shell.gschema.xml.in:244
+#: data/org.gnome.shell.gschema.xml.in:271
 msgid "Limit switcher to current workspace."
 msgstr "Обмежити перемикач на поточний робочий простір."
 
-#: data/org.gnome.shell.gschema.xml.in:241
+#: data/org.gnome.shell.gschema.xml.in:245
 msgid ""
 "If true, only applications that have windows on the current workspace are "
 "shown in the switcher. Otherwise, all applications are included."
@@ -377,11 +382,11 @@ msgstr ""
 "Якщо це вказано, то тільки програми з поточного робочого простору будуть "
 "показані в перемикачі. Інакше — програми з усіх просторів."
 
-#: data/org.gnome.shell.gschema.xml.in:258
+#: data/org.gnome.shell.gschema.xml.in:262
 msgid "The application icon mode."
 msgstr "Режим піктограм для програм."
 
-#: data/org.gnome.shell.gschema.xml.in:259
+#: data/org.gnome.shell.gschema.xml.in:263
 msgid ""
 "Configures how the windows are shown in the switcher. Valid possibilities "
 "are “thumbnail-only” (shows a thumbnail of the window), “app-icon-"
@@ -391,7 +396,7 @@ msgstr ""
 "«thumbnail-only» (показує мініатюру вікна), «app-icon-only» (показує тільки "
 "піктограми програм) або «both» (обидва)."
 
-#: data/org.gnome.shell.gschema.xml.in:268
+#: data/org.gnome.shell.gschema.xml.in:272
 msgid ""
 "If true, only windows from the current workspace are shown in the switcher. "
 "Otherwise, all windows are included."
@@ -399,57 +404,57 @@ msgstr ""
 "Якщо це вказано, то тільки вікна з поточного робочого простору будуть "
 "показані в перемикачі. Інакше — вікна з усіх просторів."
 
-#: data/org.gnome.shell.gschema.xml.in:278
+#: data/org.gnome.shell.gschema.xml.in:282
 msgid "Locations"
 msgstr "Місцевості"
 
-#: data/org.gnome.shell.gschema.xml.in:279
+#: data/org.gnome.shell.gschema.xml.in:283
 msgid "The locations to show in world clocks"
 msgstr "Місцевість для світового годинника"
 
-#: data/org.gnome.shell.gschema.xml.in:289
+#: data/org.gnome.shell.gschema.xml.in:293
 msgid "Automatic location"
 msgstr "Автоматичне визначення місцевості"
 
-#: data/org.gnome.shell.gschema.xml.in:290
+#: data/org.gnome.shell.gschema.xml.in:294
 msgid "Whether to fetch the current location or not"
 msgstr "Чи одержувати поточну локацію"
 
-#: data/org.gnome.shell.gschema.xml.in:297
+#: data/org.gnome.shell.gschema.xml.in:301
 msgid "Location"
 msgstr "Місцевість"
 
-#: data/org.gnome.shell.gschema.xml.in:298
+#: data/org.gnome.shell.gschema.xml.in:302
 msgid "The location for which to show a forecast"
 msgstr "Місцевість для прогнозу погоди"
 
-#: data/org.gnome.shell.gschema.xml.in:310
+#: data/org.gnome.shell.gschema.xml.in:314
 msgid "Attach modal dialog to the parent window"
 msgstr "Приєднати модальне вікно до батьківського вікна"
 
-#: data/org.gnome.shell.gschema.xml.in:311
-#: data/org.gnome.shell.gschema.xml.in:320
-#: data/org.gnome.shell.gschema.xml.in:328
-#: data/org.gnome.shell.gschema.xml.in:336
-#: data/org.gnome.shell.gschema.xml.in:344
+#: data/org.gnome.shell.gschema.xml.in:315
+#: data/org.gnome.shell.gschema.xml.in:324
+#: data/org.gnome.shell.gschema.xml.in:332
+#: data/org.gnome.shell.gschema.xml.in:340
+#: data/org.gnome.shell.gschema.xml.in:348
 msgid ""
 "This key overrides the key in org.gnome.mutter when running GNOME Shell."
 msgstr ""
 "Цей ключ перевизначає ключ у org.gnome.mutter, коли запущено GNOME Shell."
 
-#: data/org.gnome.shell.gschema.xml.in:319
+#: data/org.gnome.shell.gschema.xml.in:323
 msgid "Enable edge tiling when dropping windows on screen edges"
 msgstr "Увімкнути розбиття країв, коли кладуться вікна на краї екрана"
 
-#: data/org.gnome.shell.gschema.xml.in:327
+#: data/org.gnome.shell.gschema.xml.in:331
 msgid "Workspaces are managed dynamically"
 msgstr "Робочі простори організовуються динамічно"
 
-#: data/org.gnome.shell.gschema.xml.in:335
+#: data/org.gnome.shell.gschema.xml.in:339
 msgid "Workspaces only on primary monitor"
 msgstr "Робочий простір лише на основному моніторі"
 
-#: data/org.gnome.shell.gschema.xml.in:343
+#: data/org.gnome.shell.gschema.xml.in:347
 msgid "Delay focus changes in mouse mode until the pointer stops moving"
 msgstr "Затримувати зміни фокусу миші, поки вказівник не перестане рухатись"
 
@@ -458,7 +463,7 @@ msgid "Network Login"
 msgstr "Мережевий вхід"
 
 #: js/dbusServices/extensions/ui/extension-prefs-dialog.ui:28
-#: subprojects/extensions-app/data/ui/extensions-window.ui:241
+#: subprojects/extensions-app/data/ui/extensions-window.ui:174
 msgid "Something’s gone wrong"
 msgstr "Трапилась халепа"
 
@@ -483,16 +488,16 @@ msgstr "Сторінка"
 msgid "Visit extension homepage"
 msgstr "Відвідати сторінку розширення"
 
-#: js/gdm/authPrompt.js:141 js/ui/audioDeviceSelection.js:61
+#: js/gdm/authPrompt.js:143 js/ui/audioDeviceSelection.js:61
 #: js/ui/components/networkAgent.js:110 js/ui/components/polkitAgent.js:138
 #: js/ui/endSessionDialog.js:438 js/ui/extensionDownloader.js:228
 #: js/ui/shellMountOperation.js:376 js/ui/shellMountOperation.js:386
-#: js/ui/status/network.js:978 subprojects/extensions-app/js/main.js:183
+#: js/ui/status/network.js:978 subprojects/extensions-app/js/main.js:172
 msgid "Cancel"
 msgstr "Скасувати"
 
 #. Cisco LEAP
-#: js/gdm/authPrompt.js:285 js/ui/components/networkAgent.js:209
+#: js/gdm/authPrompt.js:306 js/ui/components/networkAgent.js:209
 #: js/ui/components/networkAgent.js:225 js/ui/components/networkAgent.js:249
 #: js/ui/components/networkAgent.js:270 js/ui/components/networkAgent.js:290
 #: js/ui/components/networkAgent.js:300 js/ui/components/polkitAgent.js:275
@@ -504,13 +509,13 @@ msgstr "Пароль"
 msgid "Choose Session"
 msgstr "Виберіть сеанс"
 
-#: js/gdm/loginDialog.js:456
+#: js/gdm/loginDialog.js:461
 msgid "Not listed?"
 msgstr "Немає в переліку?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: js/gdm/loginDialog.js:921
+#: js/gdm/loginDialog.js:926
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(наприклад, користувач або %s)"
@@ -518,28 +523,28 @@ msgstr "(наприклад, користувач або %s)"
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: js/gdm/loginDialog.js:926 js/ui/components/networkAgent.js:245
+#: js/gdm/loginDialog.js:931 js/ui/components/networkAgent.js:245
 #: js/ui/components/networkAgent.js:268 js/ui/components/networkAgent.js:286
 msgid "Username"
 msgstr "Користувач"
 
-#: js/gdm/loginDialog.js:1279
+#: js/gdm/loginDialog.js:1285
 msgid "Login Window"
 msgstr "Вікно входу"
 
-#: js/gdm/util.js:430
+#: js/gdm/util.js:438
 msgid "Authentication error"
 msgstr "Помилка розпізнавання"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger on the fingerprint reader
-#: js/gdm/util.js:589
+#: js/gdm/util.js:617
 msgid "(or swipe finger across reader)"
 msgstr "(або проведіть пальцем на зчитувачі)"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can place their finger on the fingerprint reader instead
-#: js/gdm/util.js:594
+#: js/gdm/util.js:622
 msgid "(or place finger on reader)"
 msgstr "(або розташуйте палець на зчитувачі)"
 
@@ -663,7 +668,7 @@ msgstr[1] "%d години тому"
 msgstr[2] "%d годин тому"
 msgstr[3] "%d година тому"
 
-#: js/misc/util.js:192 js/ui/dateMenu.js:162
+#: js/misc/util.js:192 js/ui/dateMenu.js:163
 msgid "Yesterday"
 msgstr "Учора"
 
@@ -798,7 +803,7 @@ msgstr "Заборонити доступ"
 msgid "Grant Access"
 msgstr "Надати доступ"
 
-#: js/ui/appDisplay.js:1791
+#: js/ui/appDisplay.js:1766
 msgid "Unnamed Folder"
 msgstr "Неназвана тека"
 
@@ -878,7 +883,7 @@ msgid "Settings"
 msgstr "Параметри"
 
 #. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday).
-#: js/ui/calendar.js:36
+#: js/ui/calendar.js:35
 msgctxt "calendar-no-work"
 msgid "06"
 msgstr "06"
@@ -888,43 +893,43 @@ msgstr "06"
 #. * NOTE: These grid abbreviations are always shown together
 #. * and in order, e.g. "S M T W T F S".
 #.
-#: js/ui/calendar.js:65
+#: js/ui/calendar.js:61
 msgctxt "grid sunday"
 msgid "S"
 msgstr "Н"
 
 #. Translators: Calendar grid abbreviation for Monday
-#: js/ui/calendar.js:67
+#: js/ui/calendar.js:63
 msgctxt "grid monday"
 msgid "M"
 msgstr "П"
 
 #. Translators: Calendar grid abbreviation for Tuesday
-#: js/ui/calendar.js:69
+#: js/ui/calendar.js:65
 msgctxt "grid tuesday"
 msgid "T"
 msgstr "В"
 
 #. Translators: Calendar grid abbreviation for Wednesday
-#: js/ui/calendar.js:71
+#: js/ui/calendar.js:67
 msgctxt "grid wednesday"
 msgid "W"
 msgstr "С"
 
 #. Translators: Calendar grid abbreviation for Thursday
-#: js/ui/calendar.js:73
+#: js/ui/calendar.js:69
 msgctxt "grid thursday"
 msgid "T"
 msgstr "Ч"
 
 #. Translators: Calendar grid abbreviation for Friday
-#: js/ui/calendar.js:75
+#: js/ui/calendar.js:71
 msgctxt "grid friday"
 msgid "F"
 msgstr "П"
 
 #. Translators: Calendar grid abbreviation for Saturday
-#: js/ui/calendar.js:77
+#: js/ui/calendar.js:73
 msgctxt "grid saturday"
 msgid "S"
 msgstr "С"
@@ -935,7 +940,7 @@ msgstr "С"
 #. * "%OB" is the new format specifier introduced in glibc 2.27,
 #. * in most cases you should not change it.
 #.
-#: js/ui/calendar.js:392
+#: js/ui/calendar.js:400
 msgid "%OB"
 msgstr "%OB"
 
@@ -948,37 +953,37 @@ msgstr "%OB"
 #. * in most cases you should not use the old "%B" here unless you
 #. * absolutely know what you are doing.
 #.
-#: js/ui/calendar.js:402
+#: js/ui/calendar.js:410
 msgid "%OB %Y"
 msgstr "%OB %Y"
 
-#: js/ui/calendar.js:461
+#: js/ui/calendar.js:469
 msgid "Previous month"
 msgstr "Попередній місяць"
 
-#: js/ui/calendar.js:476
+#: js/ui/calendar.js:484
 msgid "Next month"
 msgstr "Наступний місяць"
 
-#: js/ui/calendar.js:626
+#: js/ui/calendar.js:632
 #, no-javascript-format
 msgctxt "date day number format"
 msgid "%d"
 msgstr "%d"
 
-#: js/ui/calendar.js:682
+#: js/ui/calendar.js:688
 msgid "Week %V"
 msgstr "Тиждень %V"
 
-#: js/ui/calendar.js:896
+#: js/ui/calendar.js:902
 msgid "No Notifications"
 msgstr "Немає сповіщень"
 
-#: js/ui/calendar.js:950
+#: js/ui/calendar.js:956
 msgid "Do Not Disturb"
 msgstr "Не турбувати"
 
-#: js/ui/calendar.js:971
+#: js/ui/calendar.js:977
 msgid "Clear"
 msgstr "Очистити"
 
@@ -1161,62 +1166,62 @@ msgid "%A %B %e %Y"
 msgstr "%A %-d %B %Y"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year
-#: js/ui/dateMenu.js:151
+#: js/ui/dateMenu.js:152
 msgctxt "calendar heading"
 msgid "%B %-d"
 msgstr "%-d %B"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year
-#: js/ui/dateMenu.js:154
+#: js/ui/dateMenu.js:155
 msgctxt "calendar heading"
 msgid "%B %-d %Y"
 msgstr "%-d %B %Y"
 
-#: js/ui/dateMenu.js:160
+#: js/ui/dateMenu.js:161
 msgid "Today"
 msgstr "Сьогодні"
 
-#: js/ui/dateMenu.js:164
+#: js/ui/dateMenu.js:165
 msgid "Tomorrow"
 msgstr "Завтра"
 
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
 #.
-#: js/ui/dateMenu.js:180
+#: js/ui/dateMenu.js:181
 msgctxt "event list time"
 msgid "All Day"
 msgstr "Увесь день"
 
-#: js/ui/dateMenu.js:231
+#: js/ui/dateMenu.js:232
 msgid "No Events"
 msgstr "Немає подій"
 
-#: js/ui/dateMenu.js:348
+#: js/ui/dateMenu.js:353
 msgid "Add world clocks…"
 msgstr "Додати світові годинники…"
 
-#: js/ui/dateMenu.js:349
+#: js/ui/dateMenu.js:354
 msgid "World Clocks"
 msgstr "Світові годинники"
 
-#: js/ui/dateMenu.js:629
+#: js/ui/dateMenu.js:630
 msgid "Loading…"
 msgstr "Завантаження…"
 
-#: js/ui/dateMenu.js:639
+#: js/ui/dateMenu.js:640
 msgid "Go online for weather information"
 msgstr "Увійти в мережу за прогнозом погоди"
 
-#: js/ui/dateMenu.js:641
+#: js/ui/dateMenu.js:642
 msgid "Weather information is currently unavailable"
 msgstr "Наразі інформації про погоду недоступна"
 
-#: js/ui/dateMenu.js:651
+#: js/ui/dateMenu.js:652
 msgid "Weather"
 msgstr "Погода"
 
-#: js/ui/dateMenu.js:653
+#: js/ui/dateMenu.js:654
 msgid "Select weather location…"
 msgstr "Виберіть місцевість для погоди…"
 
@@ -1402,11 +1407,11 @@ msgstr "Встановити розширення"
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "Звантажити і встановити «%s» з extensions.gnome.org?"
 
-#: js/ui/extensionSystem.js:266
+#: js/ui/extensionSystem.js:267
 msgid "Extension Updates Available"
 msgstr "Випущено оновлення розширень"
 
-#: js/ui/extensionSystem.js:267
+#: js/ui/extensionSystem.js:268
 msgid "Extension updates are ready to be installed."
 msgstr "Приготовано до встановлення оновлення розширень."
 
@@ -1504,74 +1509,72 @@ msgstr "Покинути"
 msgid "Region & Language Settings"
 msgstr "Параметри регіону та мови"
 
-#: js/ui/lookingGlass.js:676
+#: js/ui/lookingGlass.js:686
 msgid "No extensions installed"
 msgstr "Не встановлено розширення"
 
 #. Translators: argument is an extension UUID.
-#: js/ui/lookingGlass.js:734
+#: js/ui/lookingGlass.js:744
 #, javascript-format
 msgid "%s has not emitted any errors."
 msgstr "%s не випустила жодної помилки. "
 
-#: js/ui/lookingGlass.js:740
+#: js/ui/lookingGlass.js:750
 msgid "Hide Errors"
 msgstr "Сховати помилки"
 
-#: js/ui/lookingGlass.js:744 js/ui/lookingGlass.js:810
+#: js/ui/lookingGlass.js:754 js/ui/lookingGlass.js:820
 msgid "Show Errors"
 msgstr "Показати помилки"
 
-#: js/ui/lookingGlass.js:753
+#: js/ui/lookingGlass.js:763
 msgid "Enabled"
 msgstr "Увімкнено"
 
 #. translators:
 #. * The device has been disabled
-#: js/ui/lookingGlass.js:756 subprojects/gvc/gvc-mixer-control.c:1900
+#: js/ui/lookingGlass.js:766 subprojects/gvc/gvc-mixer-control.c:1900
 msgid "Disabled"
 msgstr "Вимкнено"
 
-#: js/ui/lookingGlass.js:758
-#: subprojects/extensions-app/data/ui/extension-row.ui:158
+#: js/ui/lookingGlass.js:768
+#: subprojects/extensions-app/data/ui/extension-row.ui:156
 msgid "Error"
 msgstr "Помилка"
 
-#: js/ui/lookingGlass.js:760
+#: js/ui/lookingGlass.js:770
 msgid "Out of date"
 msgstr "Застаріло"
 
-#: js/ui/lookingGlass.js:762
+#: js/ui/lookingGlass.js:772
 msgid "Downloading"
 msgstr "Звантаження"
 
-#: js/ui/lookingGlass.js:792
+#: js/ui/lookingGlass.js:802
 msgid "View Source"
 msgstr "Переглянути джерело"
 
-#: js/ui/lookingGlass.js:801
+#: js/ui/lookingGlass.js:811
 msgid "Web Page"
 msgstr "Веб-сторінка"
 
-#: js/ui/main.js:259
+#: js/ui/main.js:263
 msgid "System was put in unsafe mode"
-msgstr ""
-"Систему переведено у небезпечний режим"
+msgstr "Систему переведено у небезпечний режим"
 
-#: js/ui/main.js:260
+#: js/ui/main.js:264
 msgid "Applications now have unrestricted access"
-msgstr ""
-"Тепер програми мають необмежений доступ до даних"
+msgstr "Тепер програми мають необмежений доступ до даних"
 
-#: js/ui/main.js:261 js/ui/overview.js:58
+#: js/ui/main.js:265 js/ui/overview.js:58
 msgid "Undo"
 msgstr "Повернути"
 
-#: js/ui/main.js:307
+#: js/ui/main.js:311
 msgid "Logged in as a privileged user"
 msgstr "Увійшов як наділений користувач"
 
-#: js/ui/main.js:308
+#: js/ui/main.js:312
 msgid ""
 "Running a session as a privileged user should be avoided for security "
 "reasons. If possible, you should log in as a normal user."
@@ -1579,15 +1582,15 @@ msgstr ""
 "З міркувань безпеки слід уникати сеансів з наділеними правами. Користуйтесь "
 "звичайним сеансом."
 
-#: js/ui/main.js:357
+#: js/ui/main.js:361
 msgid "Screen Lock disabled"
 msgstr "Блокування екрана вимкнено"
 
-#: js/ui/main.js:358
+#: js/ui/main.js:362
 msgid "Screen Locking requires the GNOME display manager."
 msgstr "Блокування екрана потребує керування входом GNOME."
 
-#: js/ui/messageTray.js:1443
+#: js/ui/messageTray.js:1446
 msgid "System Information"
 msgstr "Інформація про систему"
 
@@ -1667,12 +1670,12 @@ msgstr "Натисніть будь-яку клавішу, щоб вийти"
 msgid "Activities"
 msgstr "Діяльність"
 
-#: js/ui/panel.js:556
+#: js/ui/panel.js:557
 msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "Система"
 
-#: js/ui/panel.js:674
+#: js/ui/panel.js:675
 msgid "Top Bar"
 msgstr "Верхня панель"
 
@@ -1699,7 +1702,7 @@ msgstr "GNOME потребує заблокувати екран"
 #. We could not become modal, so we can't activate the
 #. screenshield. The user is probably very upset at this
 #. point, but any application using global grabs is broken
-#. Just tell him to stop using this app
+#. Just tell them to stop using this app
 #.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
@@ -1711,19 +1714,93 @@ msgstr "Неможливо заблокувати"
 msgid "Lock was blocked by an application"
 msgstr "Блокування заборонено програмою"
 
-#: js/ui/screenshot.js:155
+#: js/ui/screenshot.js:1110
+#| msgid "Select Network"
+msgid "Selection"
+msgstr "Вибір"
+
+#: js/ui/screenshot.js:1120
+msgid "Area Selection"
+msgstr ""
+"Вибір ділянки"
+
+#: js/ui/screenshot.js:1125
+#| msgctxt "search-result"
+#| msgid "Lock Screen"
+msgid "Screen"
+msgstr "Екран"
+
+#: js/ui/screenshot.js:1135
+#| msgid "Screen Reader"
+msgid "Screen Selection"
+msgstr "Вибір екрана"
+
+#: js/ui/screenshot.js:1140
+#| msgid "Windows"
+msgid "Window"
+msgstr "Вікно"
+
+#: js/ui/screenshot.js:1150
+msgid "Window Selection"
+msgstr ""
+"Вибір вікна"
+
+#: js/ui/screenshot.js:1180
+#| msgid "Show Errors"
+msgid "Show Pointer"
+msgstr "Показувати вказівник"
+
+#. Translators: name of the folder under ~/Pictures for screenshots.
+#: js/ui/screenshot.js:1569
+#| msgid "Screenshot taken"
+msgid "Screenshots"
+msgstr "Знімки екрана"
+
+#. Translators: this is the name of the file that the screenshot is
+#. saved to. The placeholder is a timestamp, e.g. "2017-05-21 12-24-03".
+#: js/ui/screenshot.js:1582
+#, javascript-format
+#| msgid "Screenshot taken"
+msgid "Screenshot from %s"
+msgstr "Знімок екрана з %s"
+
+#. Translators: notification source name.
+#: js/ui/screenshot.js:1622
+#| msgid "Screenshot taken"
+msgid "Screenshot"
+msgstr "Знімок екрана"
+
+#. Translators: notification title.
+#: js/ui/screenshot.js:1628
+#| msgid "Screenshot taken"
+msgid "Screenshot captured"
+msgstr "Знімок зроблено"
+
+#. Translators: notification body when a screenshot was captured.
+#: js/ui/screenshot.js:1630
+msgid "You can paste the image from the clipboard."
+msgstr ""
+"Ви можете вставити зображення з буфера обміну даними."
+
+#. Translators: button on the screenshot notification.
+#: js/ui/screenshot.js:1636
+#| msgid "Show Details"
+msgid "Show in Files"
+msgstr "Показувати у «Файлах»"
+
+#: js/ui/screenshot.js:1665 js/ui/screenshot.js:1934
 msgid "Screenshot taken"
 msgstr "Знімок зроблено"
 
-#: js/ui/search.js:825
+#: js/ui/search.js:826
 msgid "Searching…"
 msgstr "Пошуки…"
 
-#: js/ui/search.js:827
+#: js/ui/search.js:828
 msgid "No results."
 msgstr "Безрезультатно."
 
-#: js/ui/search.js:953
+#: js/ui/search.js:951
 #, javascript-format
 msgid "%d more"
 msgid_plural "%d more"
@@ -2317,50 +2394,50 @@ msgstr "Гучність"
 #. Translators: this is for display mirroring i.e. cloning.
 #. * Try to keep it under around 15 characters.
 #.
-#: js/ui/switchMonitor.js:17
+#: js/ui/switchMonitor.js:20
 msgid "Mirror"
 msgstr "Віддзеркалення"
 
 #. Translators: this is for the desktop spanning displays.
 #. * Try to keep it under around 15 characters.
 #.
-#: js/ui/switchMonitor.js:22
+#: js/ui/switchMonitor.js:29
 msgid "Join Displays"
 msgstr "Приєднання екранів"
 
 #. Translators: this is for using only an external display.
 #. * Try to keep it under around 15 characters.
 #.
-#: js/ui/switchMonitor.js:27
+#: js/ui/switchMonitor.js:39
 msgid "External Only"
 msgstr "Тільки зовнішній"
 
 #. Translators: this is for using only the laptop display.
 #. * Try to keep it under around 15 characters.
 #.
-#: js/ui/switchMonitor.js:32
+#: js/ui/switchMonitor.js:47
 msgid "Built-in Only"
 msgstr "Тільки вбудований"
 
 #. Translators: This is a time format for a date in
 #. long format
-#: js/ui/unlockDialog.js:371
+#: js/ui/unlockDialog.js:380
 msgid "%A %B %-d"
 msgstr "%A, %-d %B"
 
-#: js/ui/unlockDialog.js:377
+#: js/ui/unlockDialog.js:386
 msgid "Swipe up to unlock"
 msgstr "Проведіть вгору для розблокування"
 
-#: js/ui/unlockDialog.js:378
+#: js/ui/unlockDialog.js:387
 msgid "Click or press a key to unlock"
 msgstr "Клацніть або натисніть клавішу для розблокування"
 
-#: js/ui/unlockDialog.js:556
+#: js/ui/unlockDialog.js:572
 msgid "Unlock Window"
 msgstr "Розблокувати вікно"
 
-#: js/ui/unlockDialog.js:565
+#: js/ui/unlockDialog.js:581
 msgid "Log in as another user"
 msgstr "Увійти як інший користувач"
 
@@ -2388,22 +2465,22 @@ msgid "“%s” is ready"
 msgstr "«%s» готовий"
 
 #. Translators: This string should be shorter than 30 characters
-#: js/ui/windowManager.js:63
+#: js/ui/windowManager.js:64
 msgid "Keep these display settings?"
 msgstr "Зберегти ці параметри екрана?"
 
 #. Translators: this and the following message should be limited in length,
 #. to avoid ellipsizing the labels.
 #.
-#: js/ui/windowManager.js:72
+#: js/ui/windowManager.js:73
 msgid "Revert Settings"
 msgstr "Повернути параметри"
 
-#: js/ui/windowManager.js:75
+#: js/ui/windowManager.js:76
 msgid "Keep Changes"
 msgstr "Зберегти зміни"
 
-#: js/ui/windowManager.js:94
+#: js/ui/windowManager.js:95
 #, javascript-format
 msgid "Settings changes will revert in %d second"
 msgid_plural "Settings changes will revert in %d seconds"
@@ -2414,7 +2491,7 @@ msgstr[3] "Зміни параметрів буде повернуто чере�
 
 #. Translators: This represents the size of a window. The first number is
 #. * the width of the window and the second is the height.
-#: js/ui/windowManager.js:550
+#: js/ui/windowManager.js:551
 #, javascript-format
 msgid "%d × %d"
 msgstr "%d × %d"
@@ -2491,7 +2568,7 @@ msgstr "Закрити"
 msgid "Evolution Calendar"
 msgstr "Календар Evolution"
 
-#: src/main.c:419 subprojects/extensions-tool/src/main.c:317
+#: src/main.c:419 subprojects/extensions-tool/src/main.c:321
 msgid "Print version"
 msgstr "Показати версію"
 
@@ -2507,12 +2584,12 @@ msgstr "Використовувати вказаний режим, прикла
 msgid "List possible modes"
 msgstr "Перелік можливих режимів"
 
-#: src/shell-app.c:298
+#: src/shell-app.c:300
 msgctxt "program"
 msgid "Unknown"
 msgstr "Невідомо"
 
-#: src/shell-app.c:549
+#: src/shell-app.c:564
 #, c-format
 msgid "Failed to launch “%s”"
 msgstr "Не вдалося запустити «%s»"
@@ -2531,13 +2608,13 @@ msgstr "Вікно авторизації відхилено користува�
 
 #: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:5
 #: subprojects/extensions-app/data/org.gnome.Extensions.desktop.in.in:4
-#: subprojects/extensions-app/js/main.js:217
-#: subprojects/extensions-app/data/ui/extensions-window.ui:56
+#: subprojects/extensions-app/js/main.js:206
+#: subprojects/extensions-app/data/ui/extensions-window.ui:55
 msgid "Extensions"
 msgstr "Розширення"
 
 #: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:6
-#: subprojects/extensions-app/js/main.js:218
+#: subprojects/extensions-app/js/main.js:207
 msgid "Manage your GNOME Extensions"
 msgstr "Керуйте вашими розширеннями GNOME"
 
@@ -2557,17 +2634,17 @@ msgstr ""
 msgid "Configure GNOME Shell Extensions"
 msgstr "Налаштувати розширення GNOME Shell"
 
-#: subprojects/extensions-app/js/main.js:142
-#: subprojects/extensions-app/js/main.js:152
+#: subprojects/extensions-app/js/main.js:131
+#: subprojects/extensions-app/js/main.js:141
 msgid "No Matches"
 msgstr "Немає відповідників"
 
-#: subprojects/extensions-app/js/main.js:179
+#: subprojects/extensions-app/js/main.js:168
 #, javascript-format
 msgid "Remove “%s”?"
 msgstr "Вилучити «%s»?"
 
-#: subprojects/extensions-app/js/main.js:180
+#: subprojects/extensions-app/js/main.js:169
 msgid ""
 "If you remove the extension, you need to return to download it if you want "
 "to enable it again"
@@ -2575,18 +2652,18 @@ msgstr ""
 "Якщо ви вилучите розширення, вам доведеться отримати його код знову, якщо ви "
 "захочете його знову увімкнути"
 
-#: subprojects/extensions-app/js/main.js:184
+#: subprojects/extensions-app/js/main.js:173
 msgid "Remove"
 msgstr "Вилучити"
 
-#: subprojects/extensions-app/js/main.js:216
+#: subprojects/extensions-app/js/main.js:205
 msgid "translator-credits"
 msgstr ""
 "Максим Дзюманенко <dziumanenko@gmail.com>\n"
 "Данило Коростіль <ted.korostiled@gmail.com>\n"
 "Юрій Чорноіван <yurchor@ukr.net>"
 
-#: subprojects/extensions-app/js/main.js:344
+#: subprojects/extensions-app/js/main.js:333
 #, javascript-format
 msgid "%d extension will be updated on next login."
 msgid_plural "%d extensions will be updated on next login."
@@ -2595,46 +2672,46 @@ msgstr[1] "Під час наступного входу до системи б�
 msgstr[2] "Під час наступного входу до системи буде оновлено %d розширень."
 msgstr[3] "Під час наступного входу до системи буде оновлено одне розширення."
 
-#: subprojects/extensions-app/js/main.js:494
+#: subprojects/extensions-app/js/main.js:483
 msgid "The extension is incompatible with the current GNOME version"
 msgstr "Розширення є несумісним із поточною версією GNOME"
 
-#: subprojects/extensions-app/js/main.js:497
+#: subprojects/extensions-app/js/main.js:486
 msgid "The extension had an error"
 msgstr "У розширенні сталася помилка"
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:83
+#: subprojects/extensions-app/data/ui/extension-row.ui:82
 #: subprojects/extensions-tool/src/command-create.c:322
 #: subprojects/extensions-tool/src/main.c:241
 msgid "Description"
 msgstr "Опис"
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:104
+#: subprojects/extensions-app/data/ui/extension-row.ui:102
 #: subprojects/extensions-tool/src/main.c:253
 msgid "Version"
 msgstr "Версія"
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:131
+#: subprojects/extensions-app/data/ui/extension-row.ui:129
 msgid "Author"
 msgstr "Автор"
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:185
+#: subprojects/extensions-app/data/ui/extension-row.ui:182
 msgid "Website"
 msgstr "Сайт"
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:201
+#: subprojects/extensions-app/data/ui/extension-row.ui:198
 msgid "Remove…"
 msgstr "Вилучити…"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:7
+#: subprojects/extensions-app/data/ui/extensions-window.ui:6
 msgid "Help"
 msgstr "Довідка"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:11
+#: subprojects/extensions-app/data/ui/extensions-window.ui:10
 msgid "About Extensions"
 msgstr "Про розширення"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:27
+#: subprojects/extensions-app/data/ui/extensions-window.ui:26
 msgid ""
 "To find and add extensions, visit <a href=\"https://extensions.gnome.org"
 "\">extensions.gnome.org</a>."
@@ -2642,11 +2719,11 @@ msgstr ""
 "Щоб знайти і додати потрібні вам розширення, відвідайте <a href=\"https://"
 "extensions.gnome.org\">extensions.gnome.org</a>."
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:34
+#: subprojects/extensions-app/data/ui/extensions-window.ui:33
 msgid "Warning"
 msgstr "Попередження"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:44
+#: subprojects/extensions-app/data/ui/extensions-window.ui:43
 msgid ""
 "Extensions can cause system issues, including performance problems. If you "
 "encounter problems with your system, it is recommended to disable all "
@@ -2656,19 +2733,19 @@ msgstr ""
 "швидкодією. Якщо ви зіткнулися із проблемами у системі, рекомендуємо "
 "вимкнути усі розширення."
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:150
+#: subprojects/extensions-app/data/ui/extensions-window.ui:130
 msgid "Manually Installed"
 msgstr "Встановлені вручну"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:174
+#: subprojects/extensions-app/data/ui/extensions-window.ui:143
 msgid "Built-In"
 msgstr "Вбудовані"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:217
+#: subprojects/extensions-app/data/ui/extensions-window.ui:164
 msgid "No Installed Extensions"
 msgstr "Розширення, які не встановлено"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:252
+#: subprojects/extensions-app/data/ui/extensions-window.ui:175
 msgid ""
 "We’re very sorry, but it was not possible to get the list of installed "
 "extensions. Make sure you are logged into GNOME and try again."
@@ -2676,11 +2753,11 @@ msgstr ""
 "На жаль, неможливо одержати перелік установлених розширень. Переконайтесь, "
 "що ви увійшли в GNOME і спробуйте ще раз."
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:288
+#: subprojects/extensions-app/data/ui/extensions-window.ui:205
 msgid "Extension Updates Ready"
 msgstr "Готові оновлення розширень"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:303
+#: subprojects/extensions-app/data/ui/extensions-window.ui:220
 msgid "Log Out…"
 msgstr "Вийти…"
 
@@ -2982,78 +3059,78 @@ msgstr "Засновник"
 msgid "State"
 msgstr "Стан"
 
-#: subprojects/extensions-tool/src/main.c:290
+#: subprojects/extensions-tool/src/main.c:294
 msgid "“version” takes no arguments"
 msgstr "«version» не потребує параметрів"
 
-#: subprojects/extensions-tool/src/main.c:292
-#: subprojects/extensions-tool/src/main.c:312
+#: subprojects/extensions-tool/src/main.c:296
+#: subprojects/extensions-tool/src/main.c:316
 msgid "Usage:"
 msgstr "Використання:"
 
-#: subprojects/extensions-tool/src/main.c:295
+#: subprojects/extensions-tool/src/main.c:299
 msgid "Print version information and exit."
 msgstr "Вивести версію та вийти."
 
-#: subprojects/extensions-tool/src/main.c:310
-#: subprojects/extensions-tool/src/main.c:313
+#: subprojects/extensions-tool/src/main.c:314
+#: subprojects/extensions-tool/src/main.c:317
 msgid "COMMAND"
 msgstr "Команда"
 
-#: subprojects/extensions-tool/src/main.c:313
+#: subprojects/extensions-tool/src/main.c:317
 msgid "[ARGS…]"
 msgstr "[ПАРАМЕТРИ…]"
 
-#: subprojects/extensions-tool/src/main.c:315
+#: subprojects/extensions-tool/src/main.c:319
 msgid "Commands:"
 msgstr "Команди:"
 
-#: subprojects/extensions-tool/src/main.c:316
+#: subprojects/extensions-tool/src/main.c:320
 msgid "Print help"
 msgstr "Вивести версію"
 
-#: subprojects/extensions-tool/src/main.c:318
+#: subprojects/extensions-tool/src/main.c:322
 msgid "Enable extension"
 msgstr "Увімкнути розширення"
 
-#: subprojects/extensions-tool/src/main.c:319
+#: subprojects/extensions-tool/src/main.c:323
 msgid "Disable extension"
 msgstr "Вимкнути розширення"
 
-#: subprojects/extensions-tool/src/main.c:320
+#: subprojects/extensions-tool/src/main.c:324
 msgid "Reset extension"
 msgstr "Перезапустити розширення"
 
-#: subprojects/extensions-tool/src/main.c:321
+#: subprojects/extensions-tool/src/main.c:325
 msgid "Uninstall extension"
 msgstr "Вилучити розширення"
 
-#: subprojects/extensions-tool/src/main.c:322
+#: subprojects/extensions-tool/src/main.c:326
 msgid "List extensions"
 msgstr "Перелічити розширення"
 
-#: subprojects/extensions-tool/src/main.c:323
-#: subprojects/extensions-tool/src/main.c:324
+#: subprojects/extensions-tool/src/main.c:327
+#: subprojects/extensions-tool/src/main.c:328
 msgid "Show extension info"
 msgstr "Показати відомості про розширення"
 
-#: subprojects/extensions-tool/src/main.c:325
+#: subprojects/extensions-tool/src/main.c:329
 msgid "Open extension preferences"
 msgstr "Відкрити параметри розширення"
 
-#: subprojects/extensions-tool/src/main.c:326
+#: subprojects/extensions-tool/src/main.c:330
 msgid "Create extension"
 msgstr "Створити розширення"
 
-#: subprojects/extensions-tool/src/main.c:327
+#: subprojects/extensions-tool/src/main.c:331
 msgid "Package extension"
 msgstr "Запакувати розширення"
 
-#: subprojects/extensions-tool/src/main.c:328
+#: subprojects/extensions-tool/src/main.c:332
 msgid "Install extension bundle"
 msgstr "Встановити комплект розширень"
 
-#: subprojects/extensions-tool/src/main.c:330
+#: subprojects/extensions-tool/src/main.c:334
 #, c-format
 msgid "Use “%s” to get detailed help.\n"
 msgstr "Натисніть «%s», щоб показати докладну довідку.\n"
