@@ -375,10 +375,10 @@ var UIAreaSelector = GObject.registerClass({
         if (!this._dragButton)
             return;
 
-        if (this._dragSequence)
-            this._dragDevice.sequence_ungrab(this._dragSequence);
-        else
-            this._dragDevice.ungrab();
+        if (this._dragGrab) {
+            this._dragGrab.dismiss();
+            this._dragGrab = null;
+        }
 
         this._dragButton = 0;
         this._dragDevice = null;
@@ -495,11 +495,8 @@ var UIAreaSelector = GObject.registerClass({
 
         if (this._dragButton) {
             const device = event.device;
-            if (sequence)
-                device.sequence_grab(sequence, this);
-            else
-                device.grab(this);
 
+            this._dragGrab = global.stage.grab(this);
             this._dragDevice = device;
             this._dragSequence = sequence;
 
@@ -1010,6 +1007,7 @@ class ScreenshotUI extends St.Widget {
             layout_manager: new Clutter.BinLayout(),
             opacity: 0,
             visible: false,
+            reactive: true,
         });
 
         this._lockdownSettings = new Gio.Settings({ schema_id: 'org.gnome.desktop.lockdown' });
