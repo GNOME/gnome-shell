@@ -24,12 +24,24 @@ const ScreenCastProxy = Gio.DBusProxy.makeProxyWrapper(ScreenCastIface);
 const ScreenCastSessionProxy = Gio.DBusProxy.makeProxyWrapper(ScreenCastSessionIface);
 const ScreenCastStreamProxy = Gio.DBusProxy.makeProxyWrapper(ScreenCastStreamIface);
 
-const DEFAULT_PIPELINE = 'videoconvert chroma-mode=GST_VIDEO_CHROMA_MODE_NONE dither=GST_VIDEO_DITHER_NONE matrix-mode=GST_VIDEO_MATRIX_MODE_OUTPUT_ONLY n-threads=%T ! queue ! vp8enc cpu-used=16 max-quantizer=17 deadline=1 keyframe-mode=disabled threads=%T static-threshold=1000 buffer-size=20000 ! queue ! webmmux';
 const DEFAULT_FRAMERATE = 30;
 const DEFAULT_DRAW_CURSOR = true;
 
+const PIPELINES = [
+    {
+        pipelineString:
+            'capsfilter caps=video/x-raw,max-framerate=%F/1 ! \
+             videoconvert chroma-mode=none dither=none matrix-mode=output-only n-threads=%T ! \
+             queue ! \
+             vp8enc cpu-used=16 max-quantizer=17 deadline=1 keyframe-mode=disabled threads=%T static-threshold=1000 buffer-size=20000 ! \
+             queue ! \
+             webmmux',
+    },
+];
+
 const PipelineState = {
     INIT: 'INIT',
+    STARTING: 'STARTING',
     PLAYING: 'PLAYING',
     FLUSHING: 'FLUSHING',
     STOPPED: 'STOPPED',
@@ -65,7 +77,6 @@ var Recorder = class {
                 throw e;
         }
 
-        this._pipelineString = DEFAULT_PIPELINE;
         this._framerate = DEFAULT_FRAMERATE;
         this._drawCursor = DEFAULT_DRAW_CURSOR;
 
@@ -176,9 +187,26 @@ var Recorder = class {
         this._sessionProxy.connectSignal('Closed', this._onSessionClosed.bind(this));
     }
 
-    _startPipeline(nodeId) {
-        if (!this._ensurePipeline(nodeId))
+    _tryNextPipeline() {
+        const {done, value: pipelineConfig} = this._pipelineConfigs.next();
+        if (done) {
+            this._teardownPipeline();
+            this._handleFatalPipelineError('All pipelines failed to start');
             return;
+        }
+
+        try {
+            this._pipeline = this._createPipeline(this._nodeId, pipelineConfig,
+                this._framerate);
+        } catch (error) {
+            this._tryNextPipeline();
+            return;
+        }
+
+        if (!this._pipeline) {
+            this._tryNextPipeline();
+            return;
+        }
 
         const bus = this._pipeline.get_bus();
         bus.add_watch(bus, this._onBusMessage.bind(this));
@@ -189,7 +217,8 @@ var Recorder = class {
             retval === Gst.StateChangeReturn.ASYNC) {
             // We'll wait for the state change message to PLAYING on the bus
         } else {
-            this._handleFatalPipelineError('Failed to start pipeline');
+            this._teardownPipeline();
+            this._tryNextPipeline();
         }
     }
 
@@ -212,7 +241,11 @@ var Recorder = class {
             this._streamProxy.connectSignal('PipeWireStreamAdded',
                 (_proxy, _sender, params) => {
                     const [nodeId] = params;
-                    this._startPipeline(nodeId);
+                    this._nodeId = nodeId;
+
+                    this._pipelineState = PipelineState.STARTING;
+                    this._pipelineConfigs = PIPELINES.values();
+                    this._tryNextPipeline();
                 });
             this._sessionProxy.StartSync();
             this._sessionState = SessionState.ACTIVE;
@@ -236,7 +269,7 @@ var Recorder = class {
         case Gst.MessageType.STATE_CHANGED: {
             const [, newState] = message.parse_state_changed();
 
-            if (this._pipelineState === PipelineState.INIT &&
+            if (this._pipelineState === PipelineState.STARTING &&
                 message.src === this._pipeline &&
                 newState === Gst.State.PLAYING) {
                 this._pipelineState = PipelineState.PLAYING;
@@ -250,19 +283,20 @@ var Recorder = class {
 
         case Gst.MessageType.EOS:
             switch (this._pipelineState) {
+            case PipelineState.INIT:
             case PipelineState.STOPPED:
             case PipelineState.ERROR:
                 // In these cases there should be no pipeline, so should never happen
                 break;
 
+            case PipelineState.STARTING:
+                // This is something we can handle, try to switch to the next pipeline
+                this._tryNextPipeline();
+                break;
+
             case PipelineState.PLAYING:
                 this._addRecentItem();
                 this._handleFatalPipelineError('Unexpected EOS message');
-                break;
-
-            case PipelineState.INIT:
-                this._handleFatalPipelineError(
-                    'Unexpected EOS message while in state INIT');
                 break;
 
             case PipelineState.FLUSHING:
@@ -283,12 +317,17 @@ var Recorder = class {
 
         case Gst.MessageType.ERROR:
             switch (this._pipelineState) {
+            case PipelineState.INIT:
             case PipelineState.STOPPED:
             case PipelineState.ERROR:
                 // In these cases there should be no pipeline, so should never happen
                 break;
 
-            case PipelineState.INIT:
+            case PipelineState.STARTING:
+                // This is something we can handle, try to switch to the next pipeline
+                this._tryNextPipeline();
+                break;
+
             case PipelineState.PLAYING:
             case PipelineState.FLUSHING:
                 // Everything else we can't handle, so error out
@@ -308,45 +347,53 @@ var Recorder = class {
         return true;
     }
 
-    _substituteThreadCount(pipelineDescr) {
+    _substituteVariables(pipelineDescr, framerate) {
         const numProcessors = GLib.get_num_processors();
         const numThreads = Math.min(Math.max(1, numProcessors), 64);
-        return pipelineDescr.replaceAll('%T', numThreads);
+        return pipelineDescr.replaceAll('%T', numThreads).replaceAll('%F', framerate);
     }
 
-    _ensurePipeline(nodeId) {
-        const framerate = this._framerate;
+    _createPipeline(nodeId, pipelineConfig, framerate) {
+        const {pipelineString} = pipelineConfig;
+        const finalPipelineString = this._substituteVariables(pipelineString, framerate);
 
-        let fullPipeline = `
+        const fullPipeline = `
             pipewiresrc path=${nodeId}
                         do-timestamp=true
                         keepalive-time=1000
                         resend-last=true !
-            video/x-raw,max-framerate=${framerate}/1 !
-            ${this._pipelineString} !
+            ${finalPipelineString} !
             filesink location="${this._filePath}"`;
-        fullPipeline = this._substituteThreadCount(fullPipeline);
 
-        try {
-            this._pipeline = Gst.parse_launch_full(fullPipeline,
-                null,
-                Gst.ParseFlags.FATAL_ERRORS);
-        } catch (e) {
-            this._handleFatalPipelineError(`Failed to create pipeline: ${e.message}`);
-        }
-        return !!this._pipeline;
+        return Gst.parse_launch_full(fullPipeline, null,
+            Gst.ParseFlags.FATAL_ERRORS);
     }
 };
 
 var ScreencastService = class extends ServiceImplementation {
     static canScreencast() {
-        const elements = [
+        if (!Gst.init_check(null))
+            return false;
+
+        let elements = [
             'pipewiresrc',
             'filesink',
-            ...DEFAULT_PIPELINE.split('!').map(e => e.trim().split(' ').at(0)),
         ];
-        return Gst.init_check(null) &&
-            elements.every(e => Gst.ElementFactory.find(e) != null);
+
+        if (elements.some(e => Gst.ElementFactory.find(e) === null))
+            return false;
+
+        // The fallback pipeline must be available, the other ones are not
+        // guaranteed to work because they depend on hw encoders.
+        const fallbackPipeline = PIPELINES.at(-1);
+
+        elements = fallbackPipeline.pipelineString.split('!').map(
+            e => e.trim().split(' ').at(0));
+
+        if (elements.every(e => Gst.ElementFactory.find(e) !== null))
+            return true;
+
+        return false;
     }
 
     constructor() {
