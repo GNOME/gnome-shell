@@ -231,12 +231,26 @@ var Recorder = class {
     _onBusMessage(bus, message, _) {
         switch (message.type) {
         case Gst.MessageType.EOS:
-            this._teardownPipeline();
-
             switch (this._pipelineState) {
+            case PipelineState.STOPPED:
+            case PipelineState.ERROR:
+                // In these cases there should be no pipeline, so should never happen
+                break;
+
+            case PipelineState.PLAYING:
+                this._addRecentItem();
+                this._handleFatalPipelineError('Unexpected EOS message');
+                break;
+
+            case PipelineState.INIT:
+                this._handleFatalPipelineError(
+                    'Unexpected EOS message while in state INIT');
+                break;
+
             case PipelineState.FLUSHING:
                 this._addRecentItem();
 
+                this._teardownPipeline();
                 this._unwatchSender();
                 this._stopSession();
 
@@ -248,6 +262,28 @@ var Recorder = class {
             }
 
             break;
+
+        case Gst.MessageType.ERROR:
+            switch (this._pipelineState) {
+            case PipelineState.STOPPED:
+            case PipelineState.ERROR:
+                // In these cases there should be no pipeline, so should never happen
+                break;
+
+            case PipelineState.INIT:
+            case PipelineState.PLAYING:
+            case PipelineState.FLUSHING:
+                // Everything else we can't handle, so error out
+                this._handleFatalPipelineError(
+                    `GStreamer error while in state ${this._pipelineState}: ${message.parse_error()[0].message}`);
+                break;
+
+            default:
+                break;
+            }
+
+            break;
+
         default:
             break;
         }
