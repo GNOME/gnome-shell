@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell.master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2022-01-02 19:16+0000\n"
-"PO-Revision-Date: 2022-01-04 14:29+0100\n"
+"POT-Creation-Date: 2022-01-27 22:31+0000\n"
+"PO-Revision-Date: 2022-01-28 10:15+0100\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Spanish - Spain <gnome-es-list@gnome.org>\n"
 "Language: es_ES\n"
@@ -374,12 +374,17 @@ msgstr "Cambiar a la aplicación 8"
 msgid "Switch to application 9"
 msgstr "Cambiar a la aplicación 9"
 
-#: data/org.gnome.shell.gschema.xml.in:240
-#: data/org.gnome.shell.gschema.xml.in:267
+#: data/org.gnome.shell.gschema.xml.in:235
+#| msgid "Show on-screen help"
+msgid "Show screenshot UI"
+msgstr "Mostrar IU de captura de pantalla"
+
+#: data/org.gnome.shell.gschema.xml.in:244
+#: data/org.gnome.shell.gschema.xml.in:271
 msgid "Limit switcher to current workspace."
 msgstr "Limitar el intercambiador al área de trabajo actual."
 
-#: data/org.gnome.shell.gschema.xml.in:241
+#: data/org.gnome.shell.gschema.xml.in:245
 msgid ""
 "If true, only applications that have windows on the current workspace are "
 "shown in the switcher. Otherwise, all applications are included."
@@ -388,11 +393,11 @@ msgstr ""
 "trabajo actual se muestran en el selector. Si no, se incluyen todas las "
 "aplicaciones."
 
-#: data/org.gnome.shell.gschema.xml.in:258
+#: data/org.gnome.shell.gschema.xml.in:262
 msgid "The application icon mode."
 msgstr "El modo de icono de la aplicación."
 
-#: data/org.gnome.shell.gschema.xml.in:259
+#: data/org.gnome.shell.gschema.xml.in:263
 msgid ""
 "Configures how the windows are shown in the switcher. Valid possibilities "
 "are “thumbnail-only” (shows a thumbnail of the window), “app-icon-"
@@ -402,7 +407,7 @@ msgstr ""
 "son «thumbnail-only» (muestra una miniatura de la ventana), «app-icon-"
 "only» (sólo muestra el icono de la aplicación) «both»."
 
-#: data/org.gnome.shell.gschema.xml.in:268
+#: data/org.gnome.shell.gschema.xml.in:272
 msgid ""
 "If true, only windows from the current workspace are shown in the switcher. "
 "Otherwise, all windows are included."
@@ -410,59 +415,59 @@ msgstr ""
 "Si es cierto, sólo se muestran en el selector las ventanas del área de "
 "trabajo actual. Si no, se incluyen todas las ventanas."
 
-#: data/org.gnome.shell.gschema.xml.in:278
+#: data/org.gnome.shell.gschema.xml.in:282
 msgid "Locations"
 msgstr "Ubicaciones"
 
-#: data/org.gnome.shell.gschema.xml.in:279
+#: data/org.gnome.shell.gschema.xml.in:283
 msgid "The locations to show in world clocks"
 msgstr "Las ubicaciones que mostrar en los relojes del mundo"
 
-#: data/org.gnome.shell.gschema.xml.in:289
+#: data/org.gnome.shell.gschema.xml.in:293
 msgid "Automatic location"
 msgstr "Ubicación automática"
 
-#: data/org.gnome.shell.gschema.xml.in:290
+#: data/org.gnome.shell.gschema.xml.in:294
 msgid "Whether to fetch the current location or not"
 msgstr "Indica si se debe o no obtener la ubicación actual"
 
-#: data/org.gnome.shell.gschema.xml.in:297
+#: data/org.gnome.shell.gschema.xml.in:301
 msgid "Location"
 msgstr "Ubicación"
 
-#: data/org.gnome.shell.gschema.xml.in:298
+#: data/org.gnome.shell.gschema.xml.in:302
 msgid "The location for which to show a forecast"
 msgstr "La ubicación para la que mostrar la predicción"
 
-#: data/org.gnome.shell.gschema.xml.in:310
+#: data/org.gnome.shell.gschema.xml.in:314
 msgid "Attach modal dialog to the parent window"
 msgstr "Acoplar un diálogo modal a la ventana padre"
 
-#: data/org.gnome.shell.gschema.xml.in:311
-#: data/org.gnome.shell.gschema.xml.in:320
-#: data/org.gnome.shell.gschema.xml.in:328
-#: data/org.gnome.shell.gschema.xml.in:336
-#: data/org.gnome.shell.gschema.xml.in:344
+#: data/org.gnome.shell.gschema.xml.in:315
+#: data/org.gnome.shell.gschema.xml.in:324
+#: data/org.gnome.shell.gschema.xml.in:332
+#: data/org.gnome.shell.gschema.xml.in:340
+#: data/org.gnome.shell.gschema.xml.in:348
 msgid ""
 "This key overrides the key in org.gnome.mutter when running GNOME Shell."
 msgstr ""
 "Esta clave sobrescribe la clave en org.gnome.mutter al ejecutar GNOME Shell."
 
-#: data/org.gnome.shell.gschema.xml.in:319
+#: data/org.gnome.shell.gschema.xml.in:323
 msgid "Enable edge tiling when dropping windows on screen edges"
 msgstr ""
 "Activar el mosaico en los bordes al arrastrar ventanas a los bordes de la "
 "ventana"
 
-#: data/org.gnome.shell.gschema.xml.in:327
+#: data/org.gnome.shell.gschema.xml.in:331
 msgid "Workspaces are managed dynamically"
 msgstr "Las áreas de trabajo se gestionan dinámicamente"
 
-#: data/org.gnome.shell.gschema.xml.in:335
+#: data/org.gnome.shell.gschema.xml.in:339
 msgid "Workspaces only on primary monitor"
 msgstr "Áreas de trabajo solo en la pantalla principal"
 
-#: data/org.gnome.shell.gschema.xml.in:343
+#: data/org.gnome.shell.gschema.xml.in:347
 msgid "Delay focus changes in mouse mode until the pointer stops moving"
 msgstr ""
 "Retardo al cambiar el foco del ratón hasta que el puntero deja de moverse"
@@ -472,7 +477,7 @@ msgid "Network Login"
 msgstr "Inicio de sesión de la red"
 
 #: js/dbusServices/extensions/ui/extension-prefs-dialog.ui:28
-#: subprojects/extensions-app/data/ui/extensions-window.ui:241
+#: subprojects/extensions-app/data/ui/extensions-window.ui:174
 msgid "Something’s gone wrong"
 msgstr "Algo ha fallado"
 
@@ -497,16 +502,16 @@ msgstr "Página web"
 msgid "Visit extension homepage"
 msgstr "Visitar la página web de la extensión"
 
-#: js/gdm/authPrompt.js:141 js/ui/audioDeviceSelection.js:61
+#: js/gdm/authPrompt.js:143 js/ui/audioDeviceSelection.js:61
 #: js/ui/components/networkAgent.js:110 js/ui/components/polkitAgent.js:138
 #: js/ui/endSessionDialog.js:438 js/ui/extensionDownloader.js:228
 #: js/ui/shellMountOperation.js:376 js/ui/shellMountOperation.js:386
-#: js/ui/status/network.js:978 subprojects/extensions-app/js/main.js:183
+#: js/ui/status/network.js:978 subprojects/extensions-app/js/main.js:172
 msgid "Cancel"
 msgstr "Cancelar"
 
 #. Cisco LEAP
-#: js/gdm/authPrompt.js:285 js/ui/components/networkAgent.js:209
+#: js/gdm/authPrompt.js:306 js/ui/components/networkAgent.js:209
 #: js/ui/components/networkAgent.js:225 js/ui/components/networkAgent.js:249
 #: js/ui/components/networkAgent.js:270 js/ui/components/networkAgent.js:290
 #: js/ui/components/networkAgent.js:300 js/ui/components/polkitAgent.js:275
@@ -518,13 +523,13 @@ msgstr "Contraseña"
 msgid "Choose Session"
 msgstr "Elegir sesión"
 
-#: js/gdm/loginDialog.js:456
+#: js/gdm/loginDialog.js:461
 msgid "Not listed?"
 msgstr "¿No está en la lista?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: js/gdm/loginDialog.js:921
+#: js/gdm/loginDialog.js:926
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(ej., usuario o %s)"
@@ -532,28 +537,28 @@ msgstr "(ej., usuario o %s)"
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: js/gdm/loginDialog.js:926 js/ui/components/networkAgent.js:245
+#: js/gdm/loginDialog.js:931 js/ui/components/networkAgent.js:245
 #: js/ui/components/networkAgent.js:268 js/ui/components/networkAgent.js:286
 msgid "Username"
 msgstr "Nombre de usuario"
 
-#: js/gdm/loginDialog.js:1279
+#: js/gdm/loginDialog.js:1285
 msgid "Login Window"
 msgstr "Ventana de inicio de sesión"
 
-#: js/gdm/util.js:430
+#: js/gdm/util.js:438
 msgid "Authentication error"
 msgstr "Error de autenticación"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger on the fingerprint reader
-#: js/gdm/util.js:589
+#: js/gdm/util.js:617
 msgid "(or swipe finger across reader)"
 msgstr "(o pase el dedo por el lector)"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can place their finger on the fingerprint reader instead
-#: js/gdm/util.js:594
+#: js/gdm/util.js:622
 msgid "(or place finger on reader)"
 msgstr "(o coloque el dedo en el lector)"
 
@@ -1195,11 +1200,11 @@ msgstr "Todo el día"
 msgid "No Events"
 msgstr "No hay eventos"
 
-#: js/ui/dateMenu.js:349
+#: js/ui/dateMenu.js:353
 msgid "Add world clocks…"
 msgstr "Añadir relojes del mundo…"
 
-#: js/ui/dateMenu.js:350
+#: js/ui/dateMenu.js:354
 msgid "World Clocks"
 msgstr "Relojes del mundo"
 
@@ -1395,11 +1400,11 @@ msgstr "Instalar extensión"
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "¿Descargar e instalar «%s» desde extensions.gnome.org?"
 
-#: js/ui/extensionSystem.js:266
+#: js/ui/extensionSystem.js:267
 msgid "Extension Updates Available"
 msgstr "Actualizaciones de extensiones disponibles"
 
-#: js/ui/extensionSystem.js:267
+#: js/ui/extensionSystem.js:268
 msgid "Extension updates are ready to be installed."
 msgstr "Las actualizaciones de las extensiones están listas para instalarse."
 
@@ -1500,72 +1505,72 @@ msgstr "Dejar apagado"
 msgid "Region & Language Settings"
 msgstr "Configuración de región e idioma"
 
-#: js/ui/lookingGlass.js:676
+#: js/ui/lookingGlass.js:686
 msgid "No extensions installed"
 msgstr "No hay extensiones instaladas"
 
 #. Translators: argument is an extension UUID.
-#: js/ui/lookingGlass.js:734
+#: js/ui/lookingGlass.js:744
 #, javascript-format
 msgid "%s has not emitted any errors."
 msgstr "%s no ha generado ningún error."
 
-#: js/ui/lookingGlass.js:740
+#: js/ui/lookingGlass.js:750
 msgid "Hide Errors"
 msgstr "Ocultar errores"
 
-#: js/ui/lookingGlass.js:744 js/ui/lookingGlass.js:810
+#: js/ui/lookingGlass.js:754 js/ui/lookingGlass.js:820
 msgid "Show Errors"
 msgstr "Mostrar errores"
 
-#: js/ui/lookingGlass.js:753
+#: js/ui/lookingGlass.js:763
 msgid "Enabled"
 msgstr "Activado"
 
 #. translators:
 #. * The device has been disabled
-#: js/ui/lookingGlass.js:756 subprojects/gvc/gvc-mixer-control.c:1900
+#: js/ui/lookingGlass.js:766 subprojects/gvc/gvc-mixer-control.c:1900
 msgid "Disabled"
 msgstr "Desactivado"
 
-#: js/ui/lookingGlass.js:758
-#: subprojects/extensions-app/data/ui/extension-row.ui:158
+#: js/ui/lookingGlass.js:768
+#: subprojects/extensions-app/data/ui/extension-row.ui:156
 msgid "Error"
 msgstr "Error"
 
-#: js/ui/lookingGlass.js:760
+#: js/ui/lookingGlass.js:770
 msgid "Out of date"
 msgstr "Caducado"
 
-#: js/ui/lookingGlass.js:762
+#: js/ui/lookingGlass.js:772
 msgid "Downloading"
 msgstr "Descargando"
 
-#: js/ui/lookingGlass.js:792
+#: js/ui/lookingGlass.js:802
 msgid "View Source"
 msgstr "Ver fuente"
 
-#: js/ui/lookingGlass.js:801
+#: js/ui/lookingGlass.js:811
 msgid "Web Page"
 msgstr "Página web"
 
-#: js/ui/main.js:259
+#: js/ui/main.js:263
 msgid "System was put in unsafe mode"
 msgstr "El sistema se puso en modo no seguro"
 
-#: js/ui/main.js:260
+#: js/ui/main.js:264
 msgid "Applications now have unrestricted access"
 msgstr "Las aplicaciones tienen ahora acceso sin restricciones"
 
-#: js/ui/main.js:261 js/ui/overview.js:58
+#: js/ui/main.js:265 js/ui/overview.js:58
 msgid "Undo"
 msgstr "Deshacer"
 
-#: js/ui/main.js:307
+#: js/ui/main.js:311
 msgid "Logged in as a privileged user"
 msgstr "Sesión iniciada como usuario con privilegios"
 
-#: js/ui/main.js:308
+#: js/ui/main.js:312
 msgid ""
 "Running a session as a privileged user should be avoided for security "
 "reasons. If possible, you should log in as a normal user."
@@ -1573,15 +1578,15 @@ msgstr ""
 "Se debe evitar ejecutar una sesión como usuario con privilegios por motivos "
 "de seguridad. Si es posible, inicie sesión como un usuario normal."
 
-#: js/ui/main.js:357
+#: js/ui/main.js:361
 msgid "Screen Lock disabled"
 msgstr "Pantalla de bloqueo desactivada"
 
-#: js/ui/main.js:358
+#: js/ui/main.js:362
 msgid "Screen Locking requires the GNOME display manager."
 msgstr "La pantalla de bloqueo necesita el gestor de pantallas de GNOME."
 
-#: js/ui/messageTray.js:1443
+#: js/ui/messageTray.js:1446
 msgid "System Information"
 msgstr "Información del sistema"
 
@@ -1661,12 +1666,12 @@ msgstr "Pulse cualquier tecla para salir"
 msgid "Activities"
 msgstr "Actividades"
 
-#: js/ui/panel.js:556
+#: js/ui/panel.js:557
 msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "Sistema"
 
-#: js/ui/panel.js:674
+#: js/ui/panel.js:675
 msgid "Top Bar"
 msgstr "Barra superior"
 
@@ -1693,7 +1698,7 @@ msgstr "GNOME necesita bloquear la pantalla"
 #. We could not become modal, so we can't activate the
 #. screenshield. The user is probably very upset at this
 #. point, but any application using global grabs is broken
-#. Just tell him to stop using this app
+#. Just tell them to stop using this app
 #.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
@@ -1705,7 +1710,79 @@ msgstr "No se pudo bloquear"
 msgid "Lock was blocked by an application"
 msgstr "Una aplicación impidió el bloqueo"
 
-#: js/ui/screenshot.js:155
+#: js/ui/screenshot.js:1110
+#| msgid "evolution"
+msgid "Selection"
+msgstr "Selección"
+
+#: js/ui/screenshot.js:1120
+#| msgid "Clear section"
+msgid "Area Selection"
+msgstr "Selección de área"
+
+#: js/ui/screenshot.js:1125
+#| msgctxt "search-result"
+#| msgid "Lock Screen"
+msgid "Screen"
+msgstr "Pantalla"
+
+#: js/ui/screenshot.js:1135
+#| msgid "Screen Reader"
+msgid "Screen Selection"
+msgstr "Selección de pantalla"
+
+#: js/ui/screenshot.js:1140
+#| msgid "Windows"
+msgid "Window"
+msgstr "Ventana"
+
+#: js/ui/screenshot.js:1150
+msgid "Window Selection"
+msgstr "Selección de ventana"
+
+#: js/ui/screenshot.js:1180
+#| msgid "Show Errors"
+msgid "Show Pointer"
+msgstr "Mostrar puntero"
+
+#. Translators: name of the folder under ~/Pictures for screenshots.
+#: js/ui/screenshot.js:1569
+#| msgid "Screenshot taken"
+msgid "Screenshots"
+msgstr "Capturas de pantalla"
+
+#. Translators: this is the name of the file that the screenshot is
+#. saved to. The placeholder is a timestamp, e.g. "2017-05-21 12-24-03".
+#: js/ui/screenshot.js:1582
+#, javascript-format
+#| msgid "Screencast from %d %t"
+msgid "Screenshot from %s"
+msgstr "Captura desde %s"
+
+#. Translators: notification source name.
+#: js/ui/screenshot.js:1622
+#| msgid "Screenshot taken"
+msgid "Screenshot"
+msgstr "Captura de pantalla"
+
+#. Translators: notification title.
+#: js/ui/screenshot.js:1628
+#| msgid "Screenshot taken"
+msgid "Screenshot captured"
+msgstr "Captura de pantalla realizada"
+
+#. Translators: notification body when a screenshot was captured.
+#: js/ui/screenshot.js:1630
+msgid "You can paste the image from the clipboard."
+msgstr "Puede pegar la imagen desde el portapapeles."
+
+#. Translators: button on the screenshot notification.
+#: js/ui/screenshot.js:1636
+#| msgid "Show Details"
+msgid "Show in Files"
+msgstr "Mostrar en Archivos"
+
+#: js/ui/screenshot.js:1665 js/ui/screenshot.js:1934
 msgid "Screenshot taken"
 msgstr "Captura de pantalla realizada"
 
@@ -2343,11 +2420,11 @@ msgstr "Deslizar para desbloquear"
 msgid "Click or press a key to unlock"
 msgstr "Pulse con el ratón o una tecla para desbloquear"
 
-#: js/ui/unlockDialog.js:565
+#: js/ui/unlockDialog.js:572
 msgid "Unlock Window"
 msgstr "Desbloquear ventana"
 
-#: js/ui/unlockDialog.js:574
+#: js/ui/unlockDialog.js:581
 msgid "Log in as another user"
 msgstr "Iniciar sesión como otro usuario"
 
@@ -2475,7 +2552,7 @@ msgstr "Cerrar"
 msgid "Evolution Calendar"
 msgstr "Calendario de Evolution"
 
-#: src/main.c:419 subprojects/extensions-tool/src/main.c:317
+#: src/main.c:419 subprojects/extensions-tool/src/main.c:321
 msgid "Print version"
 msgstr "Imprimir versión"
 
@@ -2498,7 +2575,7 @@ msgctxt "program"
 msgid "Unknown"
 msgstr "Desconocido"
 
-#: src/shell-app.c:551
+#: src/shell-app.c:564
 #, c-format
 msgid "Failed to launch “%s”"
 msgstr "Falló al lanzar «%s»"
@@ -2517,13 +2594,13 @@ msgstr "El usuario rechazó el diálogo de autenticación"
 
 #: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:5
 #: subprojects/extensions-app/data/org.gnome.Extensions.desktop.in.in:4
-#: subprojects/extensions-app/js/main.js:217
-#: subprojects/extensions-app/data/ui/extensions-window.ui:56
+#: subprojects/extensions-app/js/main.js:206
+#: subprojects/extensions-app/data/ui/extensions-window.ui:55
 msgid "Extensions"
 msgstr "Extensiones"
 
 #: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:6
-#: subprojects/extensions-app/js/main.js:218
+#: subprojects/extensions-app/js/main.js:207
 msgid "Manage your GNOME Extensions"
 msgstr "Gestionar sus extensiones de GNOME Shell"
 
@@ -2543,17 +2620,17 @@ msgstr ""
 msgid "Configure GNOME Shell Extensions"
 msgstr "Configurar las extensiones de GNOME Shell"
 
-#: subprojects/extensions-app/js/main.js:142
-#: subprojects/extensions-app/js/main.js:152
+#: subprojects/extensions-app/js/main.js:131
+#: subprojects/extensions-app/js/main.js:141
 msgid "No Matches"
 msgstr "No hay coincidencias"
 
-#: subprojects/extensions-app/js/main.js:179
+#: subprojects/extensions-app/js/main.js:168
 #, javascript-format
 msgid "Remove “%s”?"
 msgstr "¿Quitar «%s»?"
 
-#: subprojects/extensions-app/js/main.js:180
+#: subprojects/extensions-app/js/main.js:169
 msgid ""
 "If you remove the extension, you need to return to download it if you want "
 "to enable it again"
@@ -2561,64 +2638,64 @@ msgstr ""
 "Si quita la extensión necesitará volver a descargarla si quiere activarla de "
 "nuevo"
 
-#: subprojects/extensions-app/js/main.js:184
+#: subprojects/extensions-app/js/main.js:173
 msgid "Remove"
 msgstr "Quitar"
 
-#: subprojects/extensions-app/js/main.js:216
+#: subprojects/extensions-app/js/main.js:205
 msgid "translator-credits"
 msgstr ""
 "Daniel Mustieles <daniel.mustieles@gmail.com>, 2010-2020\n"
 "Benjamín Valero Espinosa <benjavalero@gmail.com>, 2011\n"
 "Jorge González <jorgegonz@svn.gnome.org>, 2009, 2010, 2011"
 
-#: subprojects/extensions-app/js/main.js:344
+#: subprojects/extensions-app/js/main.js:333
 #, javascript-format
 msgid "%d extension will be updated on next login."
 msgid_plural "%d extensions will be updated on next login."
 msgstr[0] "la próxima vez que inicie sesión se actualizará %d extensión"
 msgstr[1] "la próxima vez que inicie sesión se actualizarán %d extensiones"
 
-#: subprojects/extensions-app/js/main.js:494
+#: subprojects/extensions-app/js/main.js:483
 msgid "The extension is incompatible with the current GNOME version"
 msgstr "La extensión no es compatible con la versión de GNOME actual"
 
-#: subprojects/extensions-app/js/main.js:497
+#: subprojects/extensions-app/js/main.js:486
 msgid "The extension had an error"
 msgstr "La extensión contiene un error"
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:83
+#: subprojects/extensions-app/data/ui/extension-row.ui:82
 #: subprojects/extensions-tool/src/command-create.c:322
 #: subprojects/extensions-tool/src/main.c:241
 msgid "Description"
 msgstr "Descripción"
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:104
+#: subprojects/extensions-app/data/ui/extension-row.ui:102
 #: subprojects/extensions-tool/src/main.c:253
 msgid "Version"
 msgstr "Versión"
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:131
+#: subprojects/extensions-app/data/ui/extension-row.ui:129
 msgid "Author"
 msgstr "Autor"
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:185
+#: subprojects/extensions-app/data/ui/extension-row.ui:182
 msgid "Website"
 msgstr "Página web"
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:201
+#: subprojects/extensions-app/data/ui/extension-row.ui:198
 msgid "Remove…"
 msgstr "Quitar…"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:7
+#: subprojects/extensions-app/data/ui/extensions-window.ui:6
 msgid "Help"
 msgstr "Ayuda"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:11
+#: subprojects/extensions-app/data/ui/extensions-window.ui:10
 msgid "About Extensions"
 msgstr "Acerca de extensiones"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:27
+#: subprojects/extensions-app/data/ui/extensions-window.ui:26
 msgid ""
 "To find and add extensions, visit <a href=\"https://extensions.gnome.org"
 "\">extensions.gnome.org</a>."
@@ -2626,11 +2703,11 @@ msgstr ""
 "Para buscar y añadir extensiones visite <a href=\"https://extensions.gnome."
 "org\">extensions.gnome.org</a>."
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:34
+#: subprojects/extensions-app/data/ui/extensions-window.ui:33
 msgid "Warning"
 msgstr "Advertencia"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:44
+#: subprojects/extensions-app/data/ui/extensions-window.ui:43
 msgid ""
 "Extensions can cause system issues, including performance problems. If you "
 "encounter problems with your system, it is recommended to disable all "
@@ -2640,19 +2717,19 @@ msgstr ""
 "rendimiento. Si tiene problemas con sus sistema se recomienda desactivar "
 "todas las extensiones."
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:150
+#: subprojects/extensions-app/data/ui/extensions-window.ui:130
 msgid "Manually Installed"
 msgstr "Instalada manualmente"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:174
+#: subprojects/extensions-app/data/ui/extensions-window.ui:143
 msgid "Built-In"
 msgstr "Integrada"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:217
+#: subprojects/extensions-app/data/ui/extensions-window.ui:164
 msgid "No Installed Extensions"
 msgstr "No hay extensiones instaladas"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:252
+#: subprojects/extensions-app/data/ui/extensions-window.ui:175
 msgid ""
 "We’re very sorry, but it was not possible to get the list of installed "
 "extensions. Make sure you are logged into GNOME and try again."
@@ -2660,11 +2737,11 @@ msgstr ""
 "No es posible obtener la lista de extensiones instaladas. asegúrese de que "
 "ha iniciado sesión en GNOME e inténtelo de nuevo."
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:288
+#: subprojects/extensions-app/data/ui/extensions-window.ui:205
 msgid "Extension Updates Ready"
 msgstr "Actualizaciones de extensiones disponibles"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:303
+#: subprojects/extensions-app/data/ui/extensions-window.ui:220
 msgid "Log Out…"
 msgstr "Cerrar la sesión…"
 
@@ -2966,78 +3043,78 @@ msgstr "Autor original"
 msgid "State"
 msgstr "Estado"
 
-#: subprojects/extensions-tool/src/main.c:290
+#: subprojects/extensions-tool/src/main.c:294
 msgid "“version” takes no arguments"
 msgstr "«version» no lleva argumentos"
 
-#: subprojects/extensions-tool/src/main.c:292
-#: subprojects/extensions-tool/src/main.c:312
+#: subprojects/extensions-tool/src/main.c:296
+#: subprojects/extensions-tool/src/main.c:316
 msgid "Usage:"
 msgstr "Uso:"
 
-#: subprojects/extensions-tool/src/main.c:295
+#: subprojects/extensions-tool/src/main.c:299
 msgid "Print version information and exit."
 msgstr "Mostrar información de la versión y salir."
 
-#: subprojects/extensions-tool/src/main.c:310
-#: subprojects/extensions-tool/src/main.c:313
+#: subprojects/extensions-tool/src/main.c:314
+#: subprojects/extensions-tool/src/main.c:317
 msgid "COMMAND"
 msgstr "COMANDO"
 
-#: subprojects/extensions-tool/src/main.c:313
+#: subprojects/extensions-tool/src/main.c:317
 msgid "[ARGS…]"
 msgstr "[ARGS…]"
 
-#: subprojects/extensions-tool/src/main.c:315
+#: subprojects/extensions-tool/src/main.c:319
 msgid "Commands:"
 msgstr "Comandos:"
 
-#: subprojects/extensions-tool/src/main.c:316
+#: subprojects/extensions-tool/src/main.c:320
 msgid "Print help"
 msgstr "Mostrar ayuda"
 
-#: subprojects/extensions-tool/src/main.c:318
+#: subprojects/extensions-tool/src/main.c:322
 msgid "Enable extension"
 msgstr "Activar extensión"
 
-#: subprojects/extensions-tool/src/main.c:319
+#: subprojects/extensions-tool/src/main.c:323
 msgid "Disable extension"
 msgstr "Desactivar extensión"
 
-#: subprojects/extensions-tool/src/main.c:320
+#: subprojects/extensions-tool/src/main.c:324
 msgid "Reset extension"
 msgstr "Restablecer extensión"
 
-#: subprojects/extensions-tool/src/main.c:321
+#: subprojects/extensions-tool/src/main.c:325
 msgid "Uninstall extension"
 msgstr "Desinstalar extensión"
 
-#: subprojects/extensions-tool/src/main.c:322
+#: subprojects/extensions-tool/src/main.c:326
 msgid "List extensions"
 msgstr "Listar extensiones"
 
-#: subprojects/extensions-tool/src/main.c:323
-#: subprojects/extensions-tool/src/main.c:324
+#: subprojects/extensions-tool/src/main.c:327
+#: subprojects/extensions-tool/src/main.c:328
 msgid "Show extension info"
 msgstr "Mostrar información de la extensión"
 
-#: subprojects/extensions-tool/src/main.c:325
+#: subprojects/extensions-tool/src/main.c:329
 msgid "Open extension preferences"
 msgstr "Abrir las preferencias de la extensión"
 
-#: subprojects/extensions-tool/src/main.c:326
+#: subprojects/extensions-tool/src/main.c:330
 msgid "Create extension"
 msgstr "Crear extensión"
 
-#: subprojects/extensions-tool/src/main.c:327
+#: subprojects/extensions-tool/src/main.c:331
 msgid "Package extension"
 msgstr "Extensión del paquete"
 
-#: subprojects/extensions-tool/src/main.c:328
+#: subprojects/extensions-tool/src/main.c:332
 msgid "Install extension bundle"
 msgstr "Instalar conjunto de extensiones"
 
-#: subprojects/extensions-tool/src/main.c:330
+#: subprojects/extensions-tool/src/main.c:334
 #, c-format
 msgid "Use “%s” to get detailed help.\n"
 msgstr "Use «%s» para obtener ayuda detallada.\n"
@@ -3216,9 +3293,6 @@ msgstr "Sonidos del sistema"
 #~ msgid "network-workgroup"
 #~ msgstr "network-workgroup"
 
-#~ msgid "evolution"
-#~ msgstr "evolution"
-
 #~ msgid "There was an error loading the preferences dialog for %s:"
 #~ msgstr "Hubo un error al lanzar el diálogo de preferencias para %s:"
 
@@ -3260,9 +3334,6 @@ msgstr "Sonidos del sistema"
 
 #~ msgid "Notifications"
 #~ msgstr "Notificaciones"
-
-#~ msgid "Clear section"
-#~ msgstr "Limpiar la sección"
 
 #~ msgid "Media"
 #~ msgstr "Medios"
@@ -3712,9 +3783,6 @@ msgstr "Sonidos del sistema"
 
 #~ msgid "File extension used for storing the screencast"
 #~ msgstr "Extensión de archivo que usar para almacenar los «screencast»"
-
-#~ msgid "Screencast from %d %t"
-#~ msgstr "Screencast desde %d %t"
 
 #~ msgid "Power"
 #~ msgstr "Energía"
