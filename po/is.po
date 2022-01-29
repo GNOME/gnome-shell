@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
 "POT-Creation-Date: 2022-01-21 09:28+0000\n"
-"PO-Revision-Date: 2022-01-29 17:42+0000\n"
+"PO-Revision-Date: 2022-01-29 20:18+0000\n"
 "Last-Translator: Sveinn í Felli <sv1@fellsnet.is>\n"
 "Language-Team: Icelandic <translation-team-is@lists.sourceforge.org>\n"
 "Language: is\n"
@@ -101,7 +101,7 @@ msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:16
 msgid "UUIDs of extensions to enable"
-msgstr "UUID-auðkenni viðbóta sem á að gera virkar"
+msgstr "UUID-auðkenni forritsviðauka sem á að gera virka"
 
 #: data/org.gnome.shell.gschema.xml.in:17
 msgid ""
@@ -127,7 +127,7 @@ msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:37
 msgid "Disable user extensions"
-msgstr "Gera skeljaviðbætur notanda óvirkar"
+msgstr "Gera forritsviðauka notanda óvirka"
 
 #: data/org.gnome.shell.gschema.xml.in:38
 msgid ""
@@ -436,7 +436,7 @@ msgstr "Heimasíða"
 
 #: js/dbusServices/extensions/ui/extension-prefs-dialog.ui:107
 msgid "Visit extension homepage"
-msgstr "Heimsækja vefsvæði forritsviðbótar"
+msgstr "Heimsækja vefsvæði forritsviðauka"
 
 #: js/gdm/authPrompt.js:141 js/ui/audioDeviceSelection.js:61
 #: js/ui/components/networkAgent.js:110 js/ui/components/polkitAgent.js:138
@@ -1443,7 +1443,7 @@ msgstr "Lands- & tungumálastillingar"
 
 #: js/ui/lookingGlass.js:676
 msgid "No extensions installed"
-msgstr "Engar viðbætur uppsettar"
+msgstr "Engir forritsviðaukar uppsettir"
 
 #. Translators: argument is an extension UUID.
 #: js/ui/lookingGlass.js:734
@@ -2444,12 +2444,12 @@ msgstr "Notandi hafnaði auðkenningarglugga"
 #: subprojects/extensions-app/js/main.js:217
 #: subprojects/extensions-app/data/ui/extensions-window.ui:56
 msgid "Extensions"
-msgstr "Viðbætur"
+msgstr "Forritsviðaukar"
 
 #: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:6
 #: subprojects/extensions-app/js/main.js:218
 msgid "Manage your GNOME Extensions"
-msgstr "Sýsla með GNOME Shell Extension skeljarviðbætur"
+msgstr "Sýsla með GNOME Shell Extension forritsviðauka"
 
 #: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:17
 msgid "The GNOME Project"
@@ -2463,7 +2463,7 @@ msgstr ""
 
 #: subprojects/extensions-app/data/org.gnome.Extensions.desktop.in.in:7
 msgid "Configure GNOME Shell Extensions"
-msgstr "Stilla GNOME Shell Extension skeljarviðbætur"
+msgstr "Stilla GNOME Shell Extension forritsviðauka"
 
 #: subprojects/extensions-app/js/main.js:142
 #: subprojects/extensions-app/js/main.js:152
@@ -2533,7 +2533,7 @@ msgstr "Hjálp"
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:11
 msgid "About Extensions"
-msgstr "Um viðbætur"
+msgstr "Um forritsviðauka"
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:27
 msgid ""
@@ -2722,74 +2722,65 @@ msgstr "Birta upplýsingar um forritsviðauka"
 
 #: subprojects/extensions-tool/src/command-install.c:173
 msgid "Overwrite an existing extension"
-msgstr ""
+msgstr "Skrifa yfir fyrirliggjandi forritsviðauka"
 
 #: subprojects/extensions-tool/src/command-install.c:175
 msgid "EXTENSION_BUNDLE"
-msgstr ""
+msgstr "FORRITSVIÐAUKAVÖNDULL"
 
 #: subprojects/extensions-tool/src/command-install.c:184
-#, fuzzy
 #| msgid "UUIDs of extensions to enable"
 msgid "Install an extension bundle"
-msgstr "UUID-auðkenni viðbóta sem á að gera virkar"
+msgstr "Setja inn forritsviðaukavöndul"
 
 #: subprojects/extensions-tool/src/command-install.c:202
-#, fuzzy
 #| msgid "No extensions installed"
 msgid "No extension bundle specified"
-msgstr "Engar viðbætur uppsettar"
+msgstr "Enginn forritsviðaukavöndull tilgreindur"
 
 #: subprojects/extensions-tool/src/command-install.c:208
 msgid "More than one extension bundle specified"
-msgstr ""
+msgstr "Fleiri en einn forritsviðaukavöndull tilgreindur"
 
 #: subprojects/extensions-tool/src/command-list.c:128
-#, fuzzy
 #| msgid "Shell Extensions"
 msgid "Show user-installed extensions"
-msgstr "Shell Extension skeljarviðbætur"
+msgstr "Birta forritsviðauka uppsetta af notanda"
 
 #: subprojects/extensions-tool/src/command-list.c:131
-#, fuzzy
 #| msgid "Shell Extensions"
 msgid "Show system-installed extensions"
-msgstr "Shell Extension skeljarviðbætur"
+msgstr "Birta forritsviðauka uppsetta af kerfinu"
 
 #: subprojects/extensions-tool/src/command-list.c:134
 #| msgid "Shell Extensions"
 msgid "Show enabled extensions"
-msgstr "Sýna virkjaða forritsviðauka"
+msgstr "Birta virka forritsviðauka"
 
 #: subprojects/extensions-tool/src/command-list.c:137
-#, fuzzy
 #| msgid "Disable user extensions"
 msgid "Show disabled extensions"
-msgstr "Gera skeljaviðbætur notanda óvirkar"
+msgstr "Birta óvirka forritsviðauka"
 
 #: subprojects/extensions-tool/src/command-list.c:140
-#, fuzzy
 #| msgid "GNOME Shell Extension Preferences"
 msgid "Show extensions with preferences"
-msgstr "Kjörstillingar GNOME Shell Extension skeljarviðbóta"
+msgstr "Birta forritsviðauka með kjörstillingum"
 
 #: subprojects/extensions-tool/src/command-list.c:143
-#, fuzzy
 #| msgid "No extensions installed"
 msgid "Show extensions with updates"
-msgstr "Engar viðbætur uppsettar"
+msgstr "Birta forritsviðauka með uppfærslum"
 
 #: subprojects/extensions-tool/src/command-list.c:146
-#, fuzzy
 #| msgid "Visit extension homepage"
 msgid "Print extension details"
-msgstr "Heimsækja vefsvæði forritsviðbótar"
+msgstr "Birta nánari upplýsingar um forritsviðauka"
 
 #: subprojects/extensions-tool/src/command-list.c:154
-#, fuzzy
 #| msgid "Disable user extensions"
 msgid "List installed extensions"
-msgstr "Gera skeljaviðbætur notanda óvirkar"
+msgstr "Gera lista yfir uppsetta forritsviðauka"
 
 #: subprojects/extensions-tool/src/command-pack.c:450
 msgid "FILE"
@@ -2838,7 +2829,7 @@ msgstr "UPPRUNAMAPPA"
 
 #: subprojects/extensions-tool/src/command-pack.c:481
 msgid "Create an extension bundle"
-msgstr ""
+msgstr "Búa til forritsviðaukavöndul"
 
 #: subprojects/extensions-tool/src/command-pack.c:501
 msgid "More than one source directory specified"
@@ -2847,42 +2838,38 @@ msgstr ""
 #: subprojects/extensions-tool/src/command-prefs.c:47
 #, c-format
 msgid "Extension “%s” doesn't have preferences\n"
-msgstr ""
+msgstr "Forritsviðaukinn “%s” er ekki með kjörstillingar\n"
 
 #: subprojects/extensions-tool/src/command-prefs.c:62
 #, c-format
 msgid "Failed to open prefs for extension “%s”: %s\n"
-msgstr ""
+msgstr "Gat ekki opnað kjörstillingar fyrir forritsviðaukann “%s”: %s\n"
 
 #: subprojects/extensions-tool/src/command-prefs.c:87
-#, fuzzy
 #| msgid "GNOME Shell Extension Preferences"
 msgid "Opens extension preferences"
-msgstr "Kjörstillingar GNOME Shell Extension skeljarviðbóta"
+msgstr "Opnar kjörstillingar forritsviðauka"
 
 #: subprojects/extensions-tool/src/command-reset.c:58
-#, fuzzy
 #| msgid "Disable user extensions"
 msgid "Reset an extension"
-msgstr "Gera skeljaviðbætur notanda óvirkar"
+msgstr "Frumstilla forritviðauka"
 
 #: subprojects/extensions-tool/src/command-uninstall.c:49
-#, fuzzy
 #| msgid "Disable user extensions"
 msgid "Cannot uninstall system extensions\n"
-msgstr "Gera skeljaviðbætur notanda óvirkar"
+msgstr "Get ekki fjarlægt forritsviðauka kerfisins\n"
 
 #: subprojects/extensions-tool/src/command-uninstall.c:64
-#, fuzzy, c-format
+#, c-format
 #| msgid "Failed to launch “%s”"
 msgid "Failed to uninstall “%s”\n"
-msgstr "Mistókst að ræsa \"“%s”"
+msgstr "Mistókst að fjarlægja “%s”\n"
 
 #: subprojects/extensions-tool/src/command-uninstall.c:86
-#, fuzzy
 #| msgid "Disable user extensions"
 msgid "Uninstall an extension"
-msgstr "Gera skeljaviðbætur notanda óvirkar"
+msgstr "Fjarlægja forritsviðauka"
 
 #: subprojects/extensions-tool/src/main.c:72
 msgid "Do not print error messages"
@@ -2935,22 +2922,19 @@ msgid "Print help"
 msgstr "Birta hjálp"
 
 #: subprojects/extensions-tool/src/main.c:318
-#, fuzzy
 #| msgid "Disable user extensions"
 msgid "Enable extension"
-msgstr "Enable extension"
+msgstr "Virkja forritsviðauka"
 
 #: subprojects/extensions-tool/src/main.c:319
-#, fuzzy
 #| msgid "Disable user extensions"
 msgid "Disable extension"
-msgstr "Disable extension"
+msgstr "Gera forritsviðauka óvirkan"
 
 #: subprojects/extensions-tool/src/main.c:320
-#, fuzzy
 #| msgid "Disable user extensions"
 msgid "Reset extension"
-msgstr "Gera skeljaviðbætur notanda óvirkar"
+msgstr "Frumstilla forritviðauka"
 
 #: subprojects/extensions-tool/src/main.c:321
 #| msgid "Disable user extensions"
@@ -2979,10 +2963,9 @@ msgid "Create extension"
 msgstr "Búa til forritviðauka"
 
 #: subprojects/extensions-tool/src/main.c:327
-#, fuzzy
 #| msgid "Shell Extensions"
 msgid "Package extension"
-msgstr "Shell Extension skeljarviðbætur"
+msgstr "Pakka forritsviðauka"
 
 #: subprojects/extensions-tool/src/main.c:328
 #| msgid "UUIDs of extensions to enable"
@@ -3000,7 +2983,7 @@ msgstr "Einfalt"
 
 #: subprojects/extensions-tool/src/templates/00-plain.desktop.in:5
 msgid "An empty extension"
-msgstr ""
+msgstr "Tómur forritsviðauki"
 
 #: subprojects/extensions-tool/src/templates/indicator.desktop.in:4
 msgid "Indicator"
