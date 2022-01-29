@@ -160,8 +160,8 @@ var AppMenu = class AppMenu extends PopupMenu.PopupMenu {
 
         const { id } = this._app;
         this._toggleFavoriteItem.label.text = this._appFavorites.isFavorite(id)
-            ? _('Remove from Favorites')
-            : _('Add to Favorites');
+            ? _('Unpin')
+            : _('Pin to Dash');
     }
 
     _updateGpuItem() {

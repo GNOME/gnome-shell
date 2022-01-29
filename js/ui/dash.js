@@ -242,7 +242,7 @@ class ShowAppsIcon extends DashItemContainer {
             this._iconActor.set_hover(canRemove);
 
         if (canRemove)
-            this.setLabelText(_("Remove from Favorites"));
+            this.setLabelText(_('Unpin'));
         else
             this.setLabelText(_("Show Applications"));
     }
