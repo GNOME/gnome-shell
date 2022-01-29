@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
 "POT-Creation-Date: 2022-01-21 09:28+0000\n"
-"PO-Revision-Date: 2022-01-29 20:18+0000\n"
+"PO-Revision-Date: 2022-01-29 20:25+0000\n"
 "Last-Translator: Sveinn í Felli <sv1@fellsnet.is>\n"
 "Language-Team: Icelandic <translation-team-is@lists.sourceforge.org>\n"
 "Language: is\n"
@@ -236,10 +236,9 @@ msgstr "Lyklasamsetning til að opna forritavalmyndina."
 
 #: data/org.gnome.shell.gschema.xml.in:156
 #: data/org.gnome.shell.gschema.xml.in:163
-#, fuzzy
 #| msgid "Keybinding to open the overview"
 msgid "Keybinding to shift between overview states"
-msgstr "Lyklasamsetning til að opna yfirlitið"
+msgstr "Lyklasamsetning til að skipta á milli yfirlitsstöðu"
 
 #: data/org.gnome.shell.gschema.xml.in:157
 msgid "Keybinding to shift between session, window picker and app grid"
@@ -360,7 +359,7 @@ msgstr "Staðsetningar"
 
 #: data/org.gnome.shell.gschema.xml.in:279
 msgid "The locations to show in world clocks"
-msgstr ""
+msgstr "Staðsetningar sem á að birta í heimsklukkum"
 
 #: data/org.gnome.shell.gschema.xml.in:289
 msgid "Automatic location"
@@ -368,7 +367,7 @@ msgstr "Sjálfvirk staðsetning"
 
 #: data/org.gnome.shell.gschema.xml.in:290
 msgid "Whether to fetch the current location or not"
-msgstr ""
+msgstr "Hvort eigi að sækja núverandi staðsetningu eða ekki"
 
 #: data/org.gnome.shell.gschema.xml.in:297
 msgid "Location"
@@ -376,7 +375,7 @@ msgstr "Staðsetning"
 
 #: data/org.gnome.shell.gschema.xml.in:298
 msgid "The location for which to show a forecast"
-msgstr ""
+msgstr "Staðsetningin sem á að birta veðurspá fyrir"
 
 #: data/org.gnome.shell.gschema.xml.in:310
 msgid "Attach modal dialog to the parent window"
@@ -518,7 +517,7 @@ msgstr "Endurræsa"
 #. Translators: A list of keywords that match the restart action, separated by semicolons
 #: js/misc/systemActions.js:93
 msgid "reboot;restart;"
-msgstr ""
+msgstr "endurræsa;"
 
 #. Translators: The name of the lock screen action in search
 #: js/misc/systemActions.js:98
@@ -783,10 +782,9 @@ msgid "Launch using Integrated Graphics Card"
 msgstr "Ræsa með innbyggðu skjákorti"
 
 #: js/ui/appMenu.js:182
-#, fuzzy
 #| msgid "Launch using Dedicated Graphics Card"
 msgid "Launch using Discrete Graphics Card"
-msgstr "Ræsa með tileinkuðu skjákorti"
+msgstr "Ræsa með stakstæðu skjákorti"
 
 #: js/ui/audioDeviceSelection.js:41
 msgid "Select Audio Device"
