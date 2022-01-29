@@ -503,6 +503,14 @@ function notifyError(msg, details) {
     notify(msg, details);
 }
 
+/**
+ * _findModal:
+ *
+ * @param {Clutter.Grab} grab - grab
+ *
+ * Private function.
+ *
+ */
 function _findModal(grab) {
     for (let i = 0; i < modalActorFocusStack.length; i++) {
         if (modalActorFocusStack[i].grab === grab)
