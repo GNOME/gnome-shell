@@ -19,14 +19,15 @@
 # Bruno Lopes <brunolopesdsilv@gmail.com>, 2018, 2021.
 # Enrico Nicoletto <liverig@gmail.com>, 2013-2019, 2021.
 # Rafael Fontenelle <rafaelff@gnome.org>, 2013-2022.
+# Matheus Barbosa <mdpb.matheus@gmail.com>, 2022.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2022-01-27 22:31+0000\n"
-"PO-Revision-Date: 2022-01-28 12:34-0300\n"
-"Last-Translator: Rafael Fontenelle <rafaelff@gnome.org>\n"
+"POT-Creation-Date: 2022-01-29 20:27+0000\n"
+"PO-Revision-Date: 2022-01-29 19:45-0300\n"
+"Last-Translator: Matheus Barbosa <mdpb.matheus@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <gnome-pt_br-list@gnome.org>\n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
@@ -389,7 +390,6 @@ msgid "Switch to application 9"
 msgstr "Alternar para o aplicativo 9"
 
 #: data/org.gnome.shell.gschema.xml.in:235
-#| msgid "Show on-screen help"
 msgid "Show screenshot UI"
 msgstr "Mostrar UI da captura de tela"
 
@@ -515,7 +515,7 @@ msgstr "Site"
 msgid "Visit extension homepage"
 msgstr "Visita a página web da extensão"
 
-#: js/gdm/authPrompt.js:143 js/ui/audioDeviceSelection.js:61
+#: js/gdm/authPrompt.js:144 js/ui/audioDeviceSelection.js:61
 #: js/ui/components/networkAgent.js:110 js/ui/components/polkitAgent.js:138
 #: js/ui/endSessionDialog.js:438 js/ui/extensionDownloader.js:228
 #: js/ui/shellMountOperation.js:376 js/ui/shellMountOperation.js:386
@@ -524,7 +524,7 @@ msgid "Cancel"
 msgstr "Cancelar"
 
 #. Cisco LEAP
-#: js/gdm/authPrompt.js:306 js/ui/components/networkAgent.js:209
+#: js/gdm/authPrompt.js:307 js/ui/components/networkAgent.js:209
 #: js/ui/components/networkAgent.js:225 js/ui/components/networkAgent.js:249
 #: js/ui/components/networkAgent.js:270 js/ui/components/networkAgent.js:290
 #: js/ui/components/networkAgent.js:300 js/ui/components/polkitAgent.js:275
@@ -1519,52 +1519,52 @@ msgstr "Deixar desativado"
 msgid "Region & Language Settings"
 msgstr "Configurações regionais e de idioma"
 
-#: js/ui/lookingGlass.js:686
+#: js/ui/lookingGlass.js:683
 msgid "No extensions installed"
 msgstr "Nenhuma extensão instalada"
 
 #. Translators: argument is an extension UUID.
-#: js/ui/lookingGlass.js:744
+#: js/ui/lookingGlass.js:741
 #, javascript-format
 msgid "%s has not emitted any errors."
 msgstr "%s não emitiu erros."
 
-#: js/ui/lookingGlass.js:750
+#: js/ui/lookingGlass.js:747
 msgid "Hide Errors"
 msgstr "Ocultar erros"
 
-#: js/ui/lookingGlass.js:754 js/ui/lookingGlass.js:820
+#: js/ui/lookingGlass.js:751 js/ui/lookingGlass.js:817
 msgid "Show Errors"
 msgstr "Exibir erros"
 
-#: js/ui/lookingGlass.js:763
+#: js/ui/lookingGlass.js:760
 msgid "Enabled"
 msgstr "Habilitado"
 
 #. translators:
 #. * The device has been disabled
-#: js/ui/lookingGlass.js:766 subprojects/gvc/gvc-mixer-control.c:1900
+#: js/ui/lookingGlass.js:763 subprojects/gvc/gvc-mixer-control.c:1900
 msgid "Disabled"
 msgstr "Desabilitado"
 
-#: js/ui/lookingGlass.js:768
+#: js/ui/lookingGlass.js:765
 #: subprojects/extensions-app/data/ui/extension-row.ui:156
 msgid "Error"
 msgstr "Erro"
 
-#: js/ui/lookingGlass.js:770
+#: js/ui/lookingGlass.js:767
 msgid "Out of date"
 msgstr "Expirado"
 
-#: js/ui/lookingGlass.js:772
+#: js/ui/lookingGlass.js:769
 msgid "Downloading"
 msgstr "Baixando"
 
-#: js/ui/lookingGlass.js:802
+#: js/ui/lookingGlass.js:799
 msgid "View Source"
 msgstr "Ver fonte"
 
-#: js/ui/lookingGlass.js:811
+#: js/ui/lookingGlass.js:808
 msgid "Web Page"
 msgstr "Página web"
 
@@ -1654,23 +1654,23 @@ msgstr "Atribuir atalho"
 msgid "Done"
 msgstr "Concluído"
 
-#: js/ui/padOsd.js:716
+#: js/ui/padOsd.js:715
 msgid "Edit…"
 msgstr "Editar…"
 
-#: js/ui/padOsd.js:758 js/ui/padOsd.js:875
+#: js/ui/padOsd.js:757 js/ui/padOsd.js:874
 msgid "None"
 msgstr "Nenhum"
 
-#: js/ui/padOsd.js:829
+#: js/ui/padOsd.js:828
 msgid "Press a button to configure"
 msgstr "Pressione um botão para configurar"
 
-#: js/ui/padOsd.js:830
+#: js/ui/padOsd.js:829
 msgid "Press Esc to exit"
 msgstr "Pressione Esc para sair"
 
-#: js/ui/padOsd.js:833
+#: js/ui/padOsd.js:832
 msgid "Press any key to exit"
 msgstr "Pressione qualquer tecla para sair"
 
@@ -1705,7 +1705,7 @@ msgstr "Reinício não está disponível no Wayland"
 msgid "Restarting…"
 msgstr "Reiniciando…"
 
-#: js/ui/screenShield.js:224
+#: js/ui/screenShield.js:225
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME precisa bloquear a tela"
 
@@ -1716,89 +1716,110 @@ msgstr "GNOME precisa bloquear a tela"
 #.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
-#: js/ui/screenShield.js:264 js/ui/screenShield.js:634
+#: js/ui/screenShield.js:265 js/ui/screenShield.js:636
 msgid "Unable to lock"
 msgstr "Não foi possível bloquear"
 
-#: js/ui/screenShield.js:265 js/ui/screenShield.js:635
+#: js/ui/screenShield.js:266 js/ui/screenShield.js:637
 msgid "Lock was blocked by an application"
 msgstr "O bloqueio foi impedido por um aplicativo"
 
-#: js/ui/screenshot.js:1110
-#| msgid "evolution"
+#: js/ui/screenshot.js:1137
 msgid "Selection"
 msgstr "Seleção"
 
-#: js/ui/screenshot.js:1120
-#| msgid "Clear section"
+#: js/ui/screenshot.js:1147
 msgid "Area Selection"
 msgstr "Seleção de área"
 
-#: js/ui/screenshot.js:1125
-#| msgctxt "search-result"
-#| msgid "Lock Screen"
+#: js/ui/screenshot.js:1152
 msgid "Screen"
 msgstr "Tela"
 
-#: js/ui/screenshot.js:1135
-#| msgid "Screen Reader"
+#: js/ui/screenshot.js:1162
 msgid "Screen Selection"
 msgstr "Seleção de tela"
 
-#: js/ui/screenshot.js:1140
-#| msgid "Windows"
+#: js/ui/screenshot.js:1167
 msgid "Window"
 msgstr "Janela"
 
-#: js/ui/screenshot.js:1150
+#: js/ui/screenshot.js:1177
 msgid "Window Selection"
 msgstr "Seleção de janela"
 
-#: js/ui/screenshot.js:1180
-#| msgid "Show Errors"
+#: js/ui/screenshot.js:1211
+#| msgid "Screenshot captured"
+msgid "Screenshot / Screencast"
+msgstr "Captura de tela / Gravação de tela"
+
+#: js/ui/screenshot.js:1247
 msgid "Show Pointer"
 msgstr "Mostrar cursor"
 
 #. Translators: name of the folder under ~/Pictures for screenshots.
-#: js/ui/screenshot.js:1569
-#| msgid "Screenshot taken"
+#: js/ui/screenshot.js:1695
 msgid "Screenshots"
 msgstr "Capturas de tela"
 
 #. Translators: this is the name of the file that the screenshot is
 #. saved to. The placeholder is a timestamp, e.g. "2017-05-21 12-24-03".
-#: js/ui/screenshot.js:1582
+#: js/ui/screenshot.js:1708
 #, javascript-format
-#| msgid "Screenshot taken"
 msgid "Screenshot from %s"
 msgstr "Captura de tela de %s"
 
 #. Translators: notification source name.
-#: js/ui/screenshot.js:1622
-#| msgid "Screenshot taken"
+#: js/ui/screenshot.js:1748 js/ui/screenshot.js:1968
 msgid "Screenshot"
 msgstr "Captura de tela"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:1628
-#| msgid "Screenshot taken"
+#: js/ui/screenshot.js:1754
 msgid "Screenshot captured"
 msgstr "Captura de tela obtida"
 
 #. Translators: notification body when a screenshot was captured.
-#: js/ui/screenshot.js:1630
+#: js/ui/screenshot.js:1756
 msgid "You can paste the image from the clipboard."
 msgstr "Você pode colar a imagem a partir da área de transferência"
 
 #. Translators: button on the screenshot notification.
-#: js/ui/screenshot.js:1636
-#| msgid "Show Details"
+#. Translators: button on the screencast notification.
+#: js/ui/screenshot.js:1762 js/ui/screenshot.js:1979
 msgid "Show in Files"
 msgstr "Mostrar no Arquivos"
 
-#: js/ui/screenshot.js:1665 js/ui/screenshot.js:1934
+#: js/ui/screenshot.js:1791 js/ui/screenshot.js:2232
 msgid "Screenshot taken"
 msgstr "Captura de tela obtida"
+
+#. Translators: this is the folder where recorded
+#. screencasts are stored.
+#: js/ui/screenshot.js:1894
+#| msgid "Screenshots"
+msgid "Screencasts"
+msgstr "Gravações de tela"
+
+#. Translators: this is a filename used for screencast
+#. * recording, where "%d" and "%t" date and time, e.g.
+#. * "Screencast from 07-17-2013 10:00:46 PM.webm"
+#: js/ui/screenshot.js:1899
+#, no-c-format
+#| msgid "Screenshot from %s"
+msgid "Screencast from %d %t.webm"
+msgstr "Gravação de tela de %d %t.webm"
+
+#. Translators: notification title.
+#: js/ui/screenshot.js:1974
+#| msgid "Screenshot captured"
+msgid "Screencast recorded"
+msgstr "Gravação de tela registrada"
+
+#. Translators: notification body when a screencast was recorded.
+#: js/ui/screenshot.js:1976
+msgid "Click here to view the video."
+msgstr "Clique aqui para ver o vídeo."
 
 #: js/ui/search.js:826
 msgid "Searching…"
@@ -2307,13 +2328,21 @@ msgctxt "Power profile"
 msgid "Power Saver"
 msgstr "Economia de energia"
 
-#: js/ui/status/remoteAccess.js:38
+#: js/ui/status/remoteAccess.js:39
 msgid "Screen is Being Shared"
 msgstr "A tela está sendo compartilhada"
 
-#: js/ui/status/remoteAccess.js:40
+#: js/ui/status/remoteAccess.js:41
 msgid "Turn off"
 msgstr "Desativar"
+
+#: js/ui/status/remoteAccess.js:56
+msgid "Screen Recording in Progress"
+msgstr "Gravação de tela em progresso"
+
+#: js/ui/status/remoteAccess.js:59
+msgid "Stop"
+msgstr "Parar"
 
 #. The menu only appears when airplane mode is on, so just
 #. statically build it as if it was on, rather than dynamically
