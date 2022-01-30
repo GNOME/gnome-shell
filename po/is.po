@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
 "POT-Creation-Date: 2022-01-21 09:28+0000\n"
-"PO-Revision-Date: 2022-01-29 20:25+0000\n"
+"PO-Revision-Date: 2022-01-30 15:26+0000\n"
 "Last-Translator: Sveinn í Felli <sv1@fellsnet.is>\n"
 "Language-Team: Icelandic <translation-team-is@lists.sourceforge.org>\n"
 "Language: is\n"
@@ -2265,7 +2265,7 @@ msgstr "Strjúka upp til að aflæsa"
 
 #: js/ui/unlockDialog.js:387
 msgid "Click or press a key to unlock"
-msgstr ""
+msgstr "Smelltu eða ýttu á lykil til að aflæsa"
 
 #: js/ui/unlockDialog.js:565
 msgid "Unlock Window"
@@ -2662,7 +2662,7 @@ msgstr "Óþekkt viðföng"
 
 #: subprojects/extensions-tool/src/command-create.c:501
 msgid "UUID, name and description are required"
-msgstr ""
+msgstr "UUID, nafn og lýsing eru nauðsynleg"
 
 #: subprojects/extensions-tool/src/command-disable.c:46
 #: subprojects/extensions-tool/src/command-enable.c:46
@@ -2677,7 +2677,7 @@ msgstr "Ekki tókst að tengjast GNOME Shell\n"
 #: subprojects/extensions-tool/src/command-enable.c:53
 #, c-format
 msgid "Extension “%s” does not exist\n"
-msgstr ""
+msgstr "Forritsviðaukinn “%s” er ekki til\n"
 
 #: subprojects/extensions-tool/src/command-disable.c:101
 #| msgid "Disable user extensions"
@@ -2711,7 +2711,7 @@ msgstr "Virkja forritsviðauka"
 #: subprojects/extensions-tool/src/main.c:155
 #, c-format
 msgid "Extension “%s” doesn't exist\n"
-msgstr ""
+msgstr "Forritsviðaukinn “%s” er ekki til\n"
 
 #: subprojects/extensions-tool/src/command-info.c:85
 #| msgid "No extensions installed"
@@ -2815,7 +2815,7 @@ msgstr ""
 
 #: subprojects/extensions-tool/src/command-pack.c:466
 msgid "Overwrite an existing pack"
-msgstr ""
+msgstr "Skrifa yfir fyrirliggjandi pakka"
 
 #: subprojects/extensions-tool/src/command-pack.c:470
 msgid "The directory where the pack should be created"
@@ -2831,7 +2831,7 @@ msgstr "Búa til forritsviðaukavöndul"
 
 #: subprojects/extensions-tool/src/command-pack.c:501
 msgid "More than one source directory specified"
-msgstr ""
+msgstr "Meira en ein grunnmappa skilgreind"
 
 #: subprojects/extensions-tool/src/command-prefs.c:47
 #, c-format
@@ -2891,7 +2891,7 @@ msgstr "Staða"
 
 #: subprojects/extensions-tool/src/main.c:290
 msgid "“version” takes no arguments"
-msgstr ""
+msgstr "“version” tekur engin viðföng"
 
 #: subprojects/extensions-tool/src/main.c:292
 #: subprojects/extensions-tool/src/main.c:312
@@ -2973,7 +2973,7 @@ msgstr "Setja inn forritsviðaukavöndul"
 #: subprojects/extensions-tool/src/main.c:330
 #, c-format
 msgid "Use “%s” to get detailed help.\n"
-msgstr ""
+msgstr "Notaðu “%s” til að fá ítarlega hjálp.\n"
 
 #: subprojects/extensions-tool/src/templates/00-plain.desktop.in:4
 msgid "Plain"
