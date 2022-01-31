@@ -48,16 +48,19 @@ subdir('icons')
 subdir('theme')
 
 data_resources = [
-  ['dbus-interfaces', []],
-  ['osk-layouts', []],
-  ['theme', theme_deps]
+  {'name': 'dbus-interfaces'},
+  {'name': 'osk-layouts'},
+  {'name': 'theme', 'deps': theme_deps}
 ]
 foreach resource : data_resources
+  name = resource.get('name')
+  deps = resource.get('deps', [])
+
   gnome.compile_resources(
-    'gnome-shell-' + resource[0],
-    'gnome-shell-@0@.gresource.xml'.format(resource[0]),
-    source_dir: resource[0],
-    dependencies: resource[1],
+    'gnome-shell-' + name,
+    'gnome-shell-@0@.gresource.xml'.format(name),
+    source_dir: name,
+    dependencies: deps,
     gresource_bundle: true,
     install: true,
     install_dir: pkgdatadir
