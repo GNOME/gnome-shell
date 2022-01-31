@@ -1081,6 +1081,7 @@ var ScreenshotUI = GObject.registerClass({
             y_align: Clutter.ActorAlign.END,
             y_expand: true,
             vertical: true,
+            offscreen_redirect: Clutter.OffscreenRedirect.AUTOMATIC_FOR_OPACITY,
         });
         this._primaryMonitorBin.add_child(this._panel);
 
