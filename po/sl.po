@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2022-01-26 00:22+0000\n"
-"PO-Revision-Date: 2022-01-26 21:40+0100\n"
+"POT-Creation-Date: 2022-01-31 12:43+0000\n"
+"PO-Revision-Date: 2022-01-31 22:14+0100\n"
 "Last-Translator: Matej Urbančič <mateju@src.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: sl\n"
@@ -360,12 +360,16 @@ msgstr "Preklopi na program 8"
 msgid "Switch to application 9"
 msgstr "Preklopi na program 9"
 
-#: data/org.gnome.shell.gschema.xml.in:240
-#: data/org.gnome.shell.gschema.xml.in:267
+#: data/org.gnome.shell.gschema.xml.in:235
+msgid "Show screenshot UI"
+msgstr "Pokaži vmesnik zajemalnika zaslona"
+
+#: data/org.gnome.shell.gschema.xml.in:244
+#: data/org.gnome.shell.gschema.xml.in:271
 msgid "Limit switcher to current workspace."
 msgstr "Omeji preklopnik na trenutno delovno površino."
 
-#: data/org.gnome.shell.gschema.xml.in:241
+#: data/org.gnome.shell.gschema.xml.in:245
 msgid ""
 "If true, only applications that have windows on the current workspace are "
 "shown in the switcher. Otherwise, all applications are included."
@@ -374,11 +378,11 @@ msgstr ""
 "v izbrani delovni površini v preklopniku. V nasprotnem primeru so prikazana "
 "vsa okna."
 
-#: data/org.gnome.shell.gschema.xml.in:258
+#: data/org.gnome.shell.gschema.xml.in:262
 msgid "The application icon mode."
 msgstr "Ikonski način programa."
 
-#: data/org.gnome.shell.gschema.xml.in:259
+#: data/org.gnome.shell.gschema.xml.in:263
 msgid ""
 "Configures how the windows are shown in the switcher. Valid possibilities "
 "are “thumbnail-only” (shows a thumbnail of the window), “app-icon-"
@@ -388,7 +392,7 @@ msgstr ""
 "sličice»« (pokaže le sličice oken), »le ikona« (pokaže ikono programa) in pa "
 "možnost »oboje«."
 
-#: data/org.gnome.shell.gschema.xml.in:268
+#: data/org.gnome.shell.gschema.xml.in:272
 msgid ""
 "If true, only windows from the current workspace are shown in the switcher. "
 "Otherwise, all windows are included."
@@ -396,57 +400,57 @@ msgstr ""
 "Izbrana možnost določa, da bodo v trenutnem pogledu prikazana le okna v "
 "preklopniku. V nasprotnem primeru so prikazana vsa okna."
 
-#: data/org.gnome.shell.gschema.xml.in:278
+#: data/org.gnome.shell.gschema.xml.in:282
 msgid "Locations"
 msgstr "Mesta"
 
-#: data/org.gnome.shell.gschema.xml.in:279
+#: data/org.gnome.shell.gschema.xml.in:283
 msgid "The locations to show in world clocks"
 msgstr "Mesta, za katere naj bodo prikazani svetovni časi"
 
-#: data/org.gnome.shell.gschema.xml.in:289
+#: data/org.gnome.shell.gschema.xml.in:293
 msgid "Automatic location"
 msgstr "Samodejno določanje mesta"
 
-#: data/org.gnome.shell.gschema.xml.in:290
+#: data/org.gnome.shell.gschema.xml.in:294
 msgid "Whether to fetch the current location or not"
 msgstr "Ali naj program pridobi trenutno mesto ali ne"
 
-#: data/org.gnome.shell.gschema.xml.in:297
+#: data/org.gnome.shell.gschema.xml.in:301
 msgid "Location"
 msgstr "Trenutno mesto"
 
-#: data/org.gnome.shell.gschema.xml.in:298
+#: data/org.gnome.shell.gschema.xml.in:302
 msgid "The location for which to show a forecast"
 msgstr "Mesto, za katero naj bo pokazana napoved"
 
-#: data/org.gnome.shell.gschema.xml.in:310
+#: data/org.gnome.shell.gschema.xml.in:314
 msgid "Attach modal dialog to the parent window"
 msgstr "Pripni modalno pogovorno okno na glavno okno"
 
-#: data/org.gnome.shell.gschema.xml.in:311
-#: data/org.gnome.shell.gschema.xml.in:320
-#: data/org.gnome.shell.gschema.xml.in:328
-#: data/org.gnome.shell.gschema.xml.in:336
-#: data/org.gnome.shell.gschema.xml.in:344
+#: data/org.gnome.shell.gschema.xml.in:315
+#: data/org.gnome.shell.gschema.xml.in:324
+#: data/org.gnome.shell.gschema.xml.in:332
+#: data/org.gnome.shell.gschema.xml.in:340
+#: data/org.gnome.shell.gschema.xml.in:348
 msgid ""
 "This key overrides the key in org.gnome.mutter when running GNOME Shell."
 msgstr ""
 "Ključ prepiše vrednost v org.gnome.mutter med zaganjanjem lupine GNOME."
 
-#: data/org.gnome.shell.gschema.xml.in:319
+#: data/org.gnome.shell.gschema.xml.in:323
 msgid "Enable edge tiling when dropping windows on screen edges"
 msgstr "Omogoči utripanje črte med spuščanjem okna na robove zaslona"
 
-#: data/org.gnome.shell.gschema.xml.in:327
+#: data/org.gnome.shell.gschema.xml.in:331
 msgid "Workspaces are managed dynamically"
 msgstr "Delovne površine se obravnavajo dinamično"
 
-#: data/org.gnome.shell.gschema.xml.in:335
+#: data/org.gnome.shell.gschema.xml.in:339
 msgid "Workspaces only on primary monitor"
 msgstr "Delovne površine so le na osnovnem zaslonu"
 
-#: data/org.gnome.shell.gschema.xml.in:343
+#: data/org.gnome.shell.gschema.xml.in:347
 msgid "Delay focus changes in mouse mode until the pointer stops moving"
 msgstr ""
 "Zamik žarišča se v načinu miške spreminja, dokler se kazalnik ne neha "
@@ -482,7 +486,7 @@ msgstr "Spletna stran"
 msgid "Visit extension homepage"
 msgstr "Odpri spletno stran razširitev"
 
-#: js/gdm/authPrompt.js:143 js/ui/audioDeviceSelection.js:61
+#: js/gdm/authPrompt.js:144 js/ui/audioDeviceSelection.js:61
 #: js/ui/components/networkAgent.js:110 js/ui/components/polkitAgent.js:138
 #: js/ui/endSessionDialog.js:438 js/ui/extensionDownloader.js:228
 #: js/ui/shellMountOperation.js:376 js/ui/shellMountOperation.js:386
@@ -491,7 +495,7 @@ msgid "Cancel"
 msgstr "Prekliči"
 
 #. Cisco LEAP
-#: js/gdm/authPrompt.js:306 js/ui/components/networkAgent.js:209
+#: js/gdm/authPrompt.js:307 js/ui/components/networkAgent.js:209
 #: js/ui/components/networkAgent.js:225 js/ui/components/networkAgent.js:249
 #: js/ui/components/networkAgent.js:270 js/ui/components/networkAgent.js:290
 #: js/ui/components/networkAgent.js:300 js/ui/components/polkitAgent.js:275
@@ -1507,72 +1511,72 @@ msgstr "Pusti onemogočeno"
 msgid "Region & Language Settings"
 msgstr "Nastavitve območja in jezika"
 
-#: js/ui/lookingGlass.js:686
+#: js/ui/lookingGlass.js:683
 msgid "No extensions installed"
 msgstr "Ni nameščenih razširitev"
 
 #. Translators: argument is an extension UUID.
-#: js/ui/lookingGlass.js:744
+#: js/ui/lookingGlass.js:741
 #, javascript-format
 msgid "%s has not emitted any errors."
 msgstr "%s ni javil napak."
 
-#: js/ui/lookingGlass.js:750
+#: js/ui/lookingGlass.js:747
 msgid "Hide Errors"
 msgstr "Skrij napake"
 
-#: js/ui/lookingGlass.js:754 js/ui/lookingGlass.js:820
+#: js/ui/lookingGlass.js:751 js/ui/lookingGlass.js:817
 msgid "Show Errors"
 msgstr "Pokaži napake"
 
-#: js/ui/lookingGlass.js:763
+#: js/ui/lookingGlass.js:760
 msgid "Enabled"
 msgstr "Omogočeno"
 
 #. translators:
 #. * The device has been disabled
-#: js/ui/lookingGlass.js:766 subprojects/gvc/gvc-mixer-control.c:1900
+#: js/ui/lookingGlass.js:763 subprojects/gvc/gvc-mixer-control.c:1900
 msgid "Disabled"
 msgstr "Onemogočeno"
 
-#: js/ui/lookingGlass.js:768
+#: js/ui/lookingGlass.js:765
 #: subprojects/extensions-app/data/ui/extension-row.ui:156
 msgid "Error"
 msgstr "Napaka"
 
-#: js/ui/lookingGlass.js:770
+#: js/ui/lookingGlass.js:767
 msgid "Out of date"
 msgstr "Zastarelo"
 
-#: js/ui/lookingGlass.js:772
+#: js/ui/lookingGlass.js:769
 msgid "Downloading"
 msgstr "Prejemanje"
 
-#: js/ui/lookingGlass.js:802
+#: js/ui/lookingGlass.js:799
 msgid "View Source"
 msgstr "Poglej vir"
 
-#: js/ui/lookingGlass.js:811
+#: js/ui/lookingGlass.js:808
 msgid "Web Page"
 msgstr "Spletna stran"
 
-#: js/ui/main.js:259
+#: js/ui/main.js:263
 msgid "System was put in unsafe mode"
 msgstr "Sistem je v ne-varnem načinu"
 
-#: js/ui/main.js:260
+#: js/ui/main.js:264
 msgid "Applications now have unrestricted access"
 msgstr "Programi imajo sedaj neomejen dostop"
 
-#: js/ui/main.js:261 js/ui/overview.js:58
+#: js/ui/main.js:265 js/ui/overview.js:58
 msgid "Undo"
 msgstr "Razveljavi"
 
-#: js/ui/main.js:307
+#: js/ui/main.js:311
 msgid "Logged in as a privileged user"
 msgstr "Zaznana je prijava s skrbniškimi dovoljenji"
 
-#: js/ui/main.js:308
+#: js/ui/main.js:312
 msgid ""
 "Running a session as a privileged user should be avoided for security "
 "reasons. If possible, you should log in as a normal user."
@@ -1580,11 +1584,11 @@ msgstr ""
 "Zagona seje s skrbniškim računom se je treba iz varnostnih razlogov "
 "izogibati. Priporočljivo je uporabljati običajen uporabniški račun."
 
-#: js/ui/main.js:357
+#: js/ui/main.js:361
 msgid "Screen Lock disabled"
 msgstr "Zaklep zaslona je onemogočen"
 
-#: js/ui/main.js:358
+#: js/ui/main.js:362
 msgid "Screen Locking requires the GNOME display manager."
 msgstr ""
 "Zaklepanje zaslona zahteva namestitev upravljalnika zaslona za okolje GNOME."
@@ -1643,23 +1647,23 @@ msgstr "Dodeli tipkovno bližnjico"
 msgid "Done"
 msgstr "Končano"
 
-#: js/ui/padOsd.js:716
+#: js/ui/padOsd.js:715
 msgid "Edit…"
 msgstr "Uredi …"
 
-#: js/ui/padOsd.js:758 js/ui/padOsd.js:875
+#: js/ui/padOsd.js:757 js/ui/padOsd.js:874
 msgid "None"
 msgstr "Brez"
 
-#: js/ui/padOsd.js:829
+#: js/ui/padOsd.js:828
 msgid "Press a button to configure"
 msgstr "Pritisnite gumb za nastavitev"
 
-#: js/ui/padOsd.js:830
+#: js/ui/padOsd.js:829
 msgid "Press Esc to exit"
 msgstr "Pritisnite tipko Esc za končanje"
 
-#: js/ui/padOsd.js:833
+#: js/ui/padOsd.js:832
 msgid "Press any key to exit"
 msgstr "Pritisnite katerokoli tipko za končanje"
 
@@ -1694,7 +1698,7 @@ msgstr "Na sistemu Wayland je na voljo ponovni zagon"
 msgid "Restarting…"
 msgstr "Poteka ponovno zaganjanje …"
 
-#: js/ui/screenShield.js:224
+#: js/ui/screenShield.js:225
 msgid "GNOME needs to lock the screen"
 msgstr "Zakleniti je treba zaslon"
 
@@ -1705,17 +1709,107 @@ msgstr "Zakleniti je treba zaslon"
 #.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
-#: js/ui/screenShield.js:264 js/ui/screenShield.js:634
+#: js/ui/screenShield.js:265 js/ui/screenShield.js:636
 msgid "Unable to lock"
 msgstr "Zaklep ni mogoč"
 
-#: js/ui/screenShield.js:265 js/ui/screenShield.js:635
+#: js/ui/screenShield.js:266 js/ui/screenShield.js:637
 msgid "Lock was blocked by an application"
 msgstr "Zaklep je preprečil program"
 
-#: js/ui/screenshot.js:155
+#: js/ui/screenshot.js:1133
+msgid "Selection"
+msgstr "Izbor"
+
+#: js/ui/screenshot.js:1143
+msgid "Area Selection"
+msgstr "Izbor polja"
+
+#: js/ui/screenshot.js:1148
+msgid "Screen"
+msgstr "Zaslon"
+
+#: js/ui/screenshot.js:1158
+msgid "Screen Selection"
+msgstr "Izbor zaslona"
+
+#: js/ui/screenshot.js:1163
+msgid "Window"
+msgstr "Okno"
+
+#: js/ui/screenshot.js:1173
+msgid "Window Selection"
+msgstr "Izbor okna"
+
+#: js/ui/screenshot.js:1207
+msgid "Screenshot / Screencast"
+msgstr "Zaslonski slika / posnetek"
+
+#: js/ui/screenshot.js:1243
+msgid "Show Pointer"
+msgstr "Pokaži kazalnik"
+
+#. Translators: name of the folder under ~/Pictures for screenshots.
+#: js/ui/screenshot.js:1691
+msgid "Screenshots"
+msgstr "Zaslonske slike"
+
+#. Translators: this is the name of the file that the screenshot is
+#. saved to. The placeholder is a timestamp, e.g. "2017-05-21 12-24-03".
+#: js/ui/screenshot.js:1704
+#, javascript-format
+msgid "Screenshot from %s"
+msgstr "Zaslonska slika %s"
+
+#. Translators: notification source name.
+#: js/ui/screenshot.js:1744 js/ui/screenshot.js:1964
+msgid "Screenshot"
+msgstr "Zaslonska slika"
+
+#. Translators: notification title.
+#: js/ui/screenshot.js:1750
+msgid "Screenshot captured"
+msgstr "Zaslonska slika je zajeta"
+
+#. Translators: notification body when a screenshot was captured.
+#: js/ui/screenshot.js:1752
+msgid "You can paste the image from the clipboard."
+msgstr "Prilepiti je mogoče sliko iz odložišča."
+
+#. Translators: button on the screenshot notification.
+#. Translators: button on the screencast notification.
+#: js/ui/screenshot.js:1758 js/ui/screenshot.js:1975
+msgid "Show in Files"
+msgstr "Pokaži v mapi"
+
+#: js/ui/screenshot.js:1787 js/ui/screenshot.js:2228
 msgid "Screenshot taken"
 msgstr "Zaslonska slika je zajeta"
+
+#. Translators: this is the folder where recorded
+#. screencasts are stored.
+#: js/ui/screenshot.js:1890
+msgid "Screencasts"
+msgstr "Zaslonski posnetek"
+
+#. Translators: this is a filename used for screencast
+#. * recording, where "%d" and "%t" date and time, e.g.
+#. * "Screencast from 07-17-2013 10:00:46 PM.webm"
+#: js/ui/screenshot.js:1895
+#, no-c-format
+#| msgid "Screencast from %d %t"
+msgid "Screencast from %d %t.webm"
+msgstr "Zaslonski posnetek %d %t.webm"
+
+#. Translators: notification title.
+#: js/ui/screenshot.js:1970
+msgid "Screencast recorded"
+msgstr "Zaslonski posnetek je zajet"
+
+#. Translators: notification body when a screencast was recorded.
+#: js/ui/screenshot.js:1972
+msgid "Click here to view the video."
+msgstr "Kliknite za ogled posnetka."
 
 #: js/ui/search.js:826
 msgid "Searching…"
@@ -2233,13 +2327,21 @@ msgctxt "Power profile"
 msgid "Power Saver"
 msgstr "Varčno"
 
-#: js/ui/status/remoteAccess.js:38
+#: js/ui/status/remoteAccess.js:39
 msgid "Screen is Being Shared"
 msgstr "Zaslon je v načinu souporabe"
 
-#: js/ui/status/remoteAccess.js:40
+#: js/ui/status/remoteAccess.js:41
 msgid "Turn off"
 msgstr "Izklopi"
+
+#: js/ui/status/remoteAccess.js:56
+msgid "Screen Recording in Progress"
+msgstr "V teku je zajemanje zaslona"
+
+#: js/ui/status/remoteAccess.js:59
+msgid "Stop"
+msgstr "Zaustavi"
 
 #. The menu only appears when airplane mode is on, so just
 #. statically build it as if it was on, rather than dynamically
@@ -2515,7 +2617,7 @@ msgctxt "program"
 msgid "Unknown"
 msgstr "Neznano"
 
-#: src/shell-app.c:551
+#: src/shell-app.c:564
 #, c-format
 msgid "Failed to launch “%s”"
 msgstr "Zaganjanje »%s« je spodletelo"
@@ -3218,9 +3320,6 @@ msgstr "Sistemski zvoki"
 #~ msgid "toggle-switch-us"
 #~ msgstr "toggle-switch-intl"
 
-#~ msgid "evolution"
-#~ msgstr "evolution"
-
 #~ msgid "There was an error loading the preferences dialog for %s:"
 #~ msgstr ""
 #~ "Prišlo je do napake med nalaganjem pogovornega okna z možnostmi za %s:"
@@ -3263,9 +3362,6 @@ msgstr "Sistemski zvoki"
 
 #~ msgid "Notifications"
 #~ msgstr "Obvestila"
-
-#~ msgid "Clear section"
-#~ msgstr "Počisti odsek"
 
 #~ msgid "Media"
 #~ msgstr "Nosilci"
@@ -3757,9 +3853,6 @@ msgstr "Sistemski zvoki"
 
 #~ msgid "Power"
 #~ msgstr "Napajanje"
-
-#~ msgid "Screencast from %d %t"
-#~ msgstr "Screencast z %d %t"
 
 #~ msgid "Universal Access Settings"
 #~ msgstr "Splošne nastavitve dostopa"
