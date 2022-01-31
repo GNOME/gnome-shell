@@ -70,12 +70,22 @@ var IBusManager = class {
     _spawn(extraArgs = []) {
         try {
             let cmdLine = ['ibus-daemon', '--panel', 'disable', ...extraArgs];
-            let launcher = Gio.SubprocessLauncher.new(Gio.SubprocessFlags.NONE);
             // Forward the right X11 Display for ibus-x11
             let display = GLib.getenv('GNOME_SETUP_DISPLAY');
+            let env = [];
+
             if (display)
-                launcher.setenv('DISPLAY', display, true);
-            launcher.spawnv(cmdLine);
+                env.push('DISPLAY=%s'.format(display));
+            GLib.spawn_async(
+                null, cmdLine, env,
+                GLib.SpawnFlags.SEARCH_PATH,
+                () => {
+                    try {
+                        global.context.restore_rlimit_nofile();
+                    } catch (err) {
+                    }
+                }
+            );
         } catch (e) {
             log(`Failed to launch ibus-daemon: ${e.message}`);
         }
