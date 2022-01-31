@@ -236,7 +236,6 @@ var UIAreaSelector = GObject.registerClass({
         // Clutter.BUTTON_SECONDARY or the string "touch" to identify the source
         // of the drag operation.
         this._dragButton = 0;
-        this._dragDevice = null;
         this._dragSequence = null;
 
         this._areaIndicator = new UIAreaIndicator();
@@ -384,7 +383,6 @@ var UIAreaSelector = GObject.registerClass({
         }
 
         this._dragButton = 0;
-        this._dragDevice = null;
         this._dragSequence = null;
 
         if (this._dragCursor === Meta.Cursor.CROSSHAIR &&
@@ -497,10 +495,7 @@ var UIAreaSelector = GObject.registerClass({
         }
 
         if (this._dragButton) {
-            const device = event.device;
-
             this._dragGrab = global.stage.grab(this);
-            this._dragDevice = device;
             this._dragSequence = sequence;
 
             this.emit('drag-started');
