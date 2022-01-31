@@ -261,6 +261,11 @@ var GrabHelper = class GrabHelper {
             return Clutter.EVENT_PROPAGATE;
         }
 
+        if (type === Clutter.EventType.ENTER ||
+            type === Clutter.EventType.LEAVE ||
+            this.currentGrab.actor.contains(event.get_source()))
+            return Clutter.EVENT_PROPAGATE;
+
         if (Main.keyboard.shouldTakeEvent(event))
             return Clutter.EVENT_PROPAGATE;
 
