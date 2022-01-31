@@ -422,6 +422,8 @@ var WorkspaceLayout = GObject.registerClass({
         this._windowSlots = [];
         this._layout = null;
 
+        this._needsLayout = true;
+
         this._stateAdjustment = new St.Adjustment({
             value: 0,
             lower: 0,
@@ -661,9 +663,10 @@ var WorkspaceLayout = GObject.registerClass({
         }
 
         let layoutChanged = false;
-        if (!this._layoutFrozen) {
-            if (this._layout === null) {
+        if (!this._layoutFrozen || this._needsLayout) {
+            if (this._needsLayout) {
                 this._layout = this._createBestLayout(this._workarea);
+                this._needsLayout = false;
                 layoutChanged = true;
             }
 
@@ -785,7 +788,7 @@ var WorkspaceLayout = GObject.registerClass({
         this._windows.set(window, {
             metaWindow,
             sizeChangedId: metaWindow.connect('size-changed', () => {
-                this._layout = null;
+                this._needsLayout = true;
                 this.layout_changed();
             }),
             destroyId: window.connect('destroy', () =>
@@ -805,7 +808,7 @@ var WorkspaceLayout = GObject.registerClass({
         this._syncOverlay(window);
         this._container.add_child(window);
 
-        this._layout = null;
+        this._needsLayout = true;
         this.layout_changed();
     }
 
@@ -840,7 +843,7 @@ var WorkspaceLayout = GObject.registerClass({
         if (window.get_parent() === this._container)
             this._container.remove_child(window);
 
-        this._layout = null;
+        this._needsLayout = true;
         this.layout_changed();
     }
 
@@ -859,7 +862,7 @@ var WorkspaceLayout = GObject.registerClass({
             lastWindow = window;
         }
 
-        this._layout = null;
+        this._needsLayout = true;
         this.layout_changed();
     }
 
@@ -904,7 +907,7 @@ var WorkspaceLayout = GObject.registerClass({
 
         this._spacing = s;
 
-        this._layout = null;
+        this._needsLayout = true;
         this.notify('spacing');
         this.layout_changed();
     }
