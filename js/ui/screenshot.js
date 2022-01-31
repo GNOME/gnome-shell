@@ -1250,7 +1250,7 @@ var ScreenshotUI = GObject.registerClass({
             style_class: 'screenshot-ui-show-pointer-button',
             toggle_mode: true,
         });
-        this._showPointerButton.set_child(new St.Icon({ icon_name: 'select-mode-symbolic' }));
+        this._showPointerButton.set_child(new St.Icon({ icon_name: 'screenshot-ui-show-pointer-symbolic' }));
         this._showPointerButtonContainer.add_child(this._showPointerButton);
 
         this.add_child(new Tooltip(this._showPointerButton, {

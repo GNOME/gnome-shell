@@ -49,6 +49,7 @@ subdir('theme')
 
 data_resources = [
   {'name': 'dbus-interfaces'},
+  {'name': 'icons'},
   {'name': 'osk-layouts'},
   {'name': 'theme', 'deps': theme_deps}
 ]

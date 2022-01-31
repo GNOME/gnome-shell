@@ -98,6 +98,7 @@ let _defaultCssStylesheet = null;
 let _cssStylesheet = null;
 let _themeResource = null;
 let _oskResource = null;
+let _iconResource = null;
 
 Gio._promisify(Gio._LocalFilePrototype, 'delete_async', 'delete_finish');
 Gio._promisify(Gio._LocalFilePrototype, 'touch_async', 'touch_finish');
@@ -189,6 +190,7 @@ function _initializeUI() {
     Shell.AppUsage.get_default();
 
     reloadThemeResource();
+    _loadIcons();
     _loadOskLayouts();
     _loadDefaultStylesheet();
 
@@ -438,6 +440,12 @@ function reloadThemeResource() {
     _themeResource = Gio.Resource.load('%s/%s'.format(global.datadir,
         sessionMode.themeResourceName));
     _themeResource._register();
+}
+
+/** @private */
+function _loadIcons() {
+    _iconResource = Gio.Resource.load('%s/gnome-shell-icons.gresource'.format(global.datadir));
+    _iconResource._register();
 }
 
 function _loadOskLayouts() {

@@ -238,8 +238,8 @@ var BaseAppView = GObject.registerClass({
         this._nextPageArrow = new St.Icon({
             style_class: 'page-navigation-arrow',
             icon_name: rtl
-                ? 'carousel-arrow-back-24-symbolic'
-                : 'carousel-arrow-next-24-symbolic',
+                ? 'carousel-arrow-previous-symbolic'
+                : 'carousel-arrow-next-symbolic',
             opacity: 0,
             reactive: false,
             visible: false,
@@ -249,8 +249,8 @@ var BaseAppView = GObject.registerClass({
         this._prevPageArrow = new St.Icon({
             style_class: 'page-navigation-arrow',
             icon_name: rtl
-                ? 'carousel-arrow-next-24-symbolic'
-                : 'carousel-arrow-back-24-symbolic',
+                ? 'carousel-arrow-next-symbolic'
+                : 'carousel-arrow-previous-symbolic',
             opacity: 0,
             reactive: false,
             visible: false,

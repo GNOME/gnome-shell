@@ -28,12 +28,12 @@ const defaultKeysPre = [
     [
         [],
         [],
-        [{ width: 1.5, level: 1, extraClassName: 'shift-key-lowercase', icon: 'keyboard-shift-filled-symbolic' }],
+        [{ width: 1.5, level: 1, extraClassName: 'shift-key-lowercase', icon: 'keyboard-shift-symbolic' }],
         [{ label: '?123', width: 1.5, level: 2 }],
     ], [
         [],
         [],
-        [{ width: 1.5, level: 0, extraClassName: 'shift-key-uppercase', icon: 'keyboard-shift-filled-symbolic' }],
+        [{ width: 1.5, level: 0, extraClassName: 'shift-key-uppercase', icon: 'keyboard-shift-symbolic' }],
         [{ label: '?123', width: 1.5, level: 2 }],
     ], [
         [],
@@ -52,23 +52,23 @@ const defaultKeysPost = [
     [
         [{ width: 1.5, keyval: Clutter.KEY_BackSpace, icon: 'edit-clear-symbolic' }],
         [{ width: 2, keyval: Clutter.KEY_Return, extraClassName: 'enter-key', icon: 'keyboard-enter-symbolic' }],
-        [{ width: 3, level: 1, right: true, extraClassName: 'shift-key-lowercase', icon: 'keyboard-shift-filled-symbolic' }],
-        [{ action: 'emoji', icon: 'face-smile-symbolic' }, { action: 'languageMenu', extraClassName: 'layout-key', icon: 'keyboard-layout-filled-symbolic' }, { action: 'hide', extraClassName: 'hide-key', icon: 'go-down-symbolic' }],
+        [{ width: 3, level: 1, right: true, extraClassName: 'shift-key-lowercase', icon: 'keyboard-shift-symbolic' }],
+        [{ action: 'emoji', icon: 'face-smile-symbolic' }, { action: 'languageMenu', extraClassName: 'layout-key', icon: 'keyboard-layout-symbolic' }, { action: 'hide', extraClassName: 'hide-key', icon: 'go-down-symbolic' }],
     ], [
         [{ width: 1.5, keyval: Clutter.KEY_BackSpace, icon: 'edit-clear-symbolic' }],
         [{ width: 2, keyval: Clutter.KEY_Return, extraClassName: 'enter-key', icon: 'keyboard-enter-symbolic' }],
-        [{ width: 3, level: 0, right: true, extraClassName: 'shift-key-uppercase', icon: 'keyboard-shift-filled-symbolic' }],
-        [{ action: 'emoji', icon: 'face-smile-symbolic' }, { action: 'languageMenu', extraClassName: 'layout-key', icon: 'keyboard-layout-filled-symbolic' }, { action: 'hide', extraClassName: 'hide-key', icon: 'go-down-symbolic' }],
+        [{ width: 3, level: 0, right: true, extraClassName: 'shift-key-uppercase', icon: 'keyboard-shift-symbolic' }],
+        [{ action: 'emoji', icon: 'face-smile-symbolic' }, { action: 'languageMenu', extraClassName: 'layout-key', icon: 'keyboard-layout-symbolic' }, { action: 'hide', extraClassName: 'hide-key', icon: 'go-down-symbolic' }],
     ], [
         [{ width: 1.5, keyval: Clutter.KEY_BackSpace, icon: 'edit-clear-symbolic' }],
         [{ width: 2, keyval: Clutter.KEY_Return, extraClassName: 'enter-key', icon: 'keyboard-enter-symbolic' }],
         [{ label: '=/<', width: 3, level: 3, right: true }],
-        [{ action: 'emoji', icon: 'face-smile-symbolic' }, { action: 'languageMenu', extraClassName: 'layout-key', icon: 'keyboard-layout-filled-symbolic' }, { action: 'hide', extraClassName: 'hide-key', icon: 'go-down-symbolic' }],
+        [{ action: 'emoji', icon: 'face-smile-symbolic' }, { action: 'languageMenu', extraClassName: 'layout-key', icon: 'keyboard-layout-symbolic' }, { action: 'hide', extraClassName: 'hide-key', icon: 'go-down-symbolic' }],
     ], [
         [{ width: 1.5, keyval: Clutter.KEY_BackSpace, icon: 'edit-clear-symbolic' }],
         [{ width: 2, keyval: Clutter.KEY_Return, extraClassName: 'enter-key', icon: 'keyboard-enter-symbolic' }],
         [{ label: '?123', width: 3, level: 2, right: true }],
-        [{ action: 'emoji', icon: 'face-smile-symbolic' }, { action: 'languageMenu', extraClassName: 'layout-key', icon: 'keyboard-layout-filled-symbolic' }, { action: 'hide', extraClassName: 'hide-key', icon: 'go-down-symbolic' }],
+        [{ action: 'emoji', icon: 'face-smile-symbolic' }, { action: 'languageMenu', extraClassName: 'layout-key', icon: 'keyboard-layout-symbolic' }, { action: 'hide', extraClassName: 'hide-key', icon: 'go-down-symbolic' }],
     ],
 ];
 
@@ -530,10 +530,10 @@ var Key = GObject.registerClass({
 
         if (latched) {
             this.keyButton.add_style_pseudo_class('latched');
-            this._icon.icon_name = 'keyboard-caps-lock-filled-symbolic';
+            this._icon.icon_name = 'keyboard-caps-lock-symbolic';
         } else {
             this.keyButton.remove_style_pseudo_class('latched');
-            this._icon.icon_name = 'keyboard-shift-filled-symbolic';
+            this._icon.icon_name = 'keyboard-shift-symbolic';
         }
     }
 });
