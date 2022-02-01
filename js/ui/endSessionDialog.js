@@ -467,7 +467,7 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
                     label: C_('button', 'Boot Options'),
                 });
                 this._rebootButtonAlt.visible = false;
-                this._capturedEventId = global.stage.connect('captured-event',
+                this._capturedEventId = this.connect('captured-event',
                     this._onCapturedEvent.bind(this));
             }
         }
