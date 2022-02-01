@@ -154,6 +154,9 @@ var PopupBaseMenuItem = GObject.registerClass({
     }
 
     vfunc_key_press_event(keyEvent) {
+        if (global.focus_manager.navigate_from_event(Clutter.get_current_event()))
+            return Clutter.EVENT_STOP;
+
         if (!this._activatable)
             return super.vfunc_key_press_event(keyEvent);
 
