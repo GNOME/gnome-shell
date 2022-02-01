@@ -17,7 +17,7 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
 "POT-Creation-Date: 2021-11-02 15:41+0000\n"
-"PO-Revision-Date: 2020-08-18 18:20+0900\n"
+"PO-Revision-Date: 2022-02-01 20:00+0900\n"
 "Last-Translator: sicklylife <translation@sicklylife.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
 "Language: ja\n"
@@ -28,61 +28,43 @@ msgstr ""
 
 #: data/50-gnome-shell-launchers.xml:6
 msgid "Launchers"
-msgstr ""
+msgstr "ランチャー"
 
 #: data/50-gnome-shell-launchers.xml:10
-#, fuzzy
-#| msgid "Switch to application 1"
 msgid "Activate favorite application 1"
-msgstr "アプリケーション 1 に切り替える"
+msgstr "お気に入りのアプリケーション 1 をアクティブにする"
 
 #: data/50-gnome-shell-launchers.xml:14
-#, fuzzy
-#| msgid "Switch to application 2"
 msgid "Activate favorite application 2"
-msgstr "アプリケーション 2 に切り替える"
+msgstr "お気に入りのアプリケーション 2 をアクティブにする"
 
 #: data/50-gnome-shell-launchers.xml:18
-#, fuzzy
-#| msgid "Switch to application 3"
 msgid "Activate favorite application 3"
-msgstr "アプリケーション 3 に切り替える"
+msgstr "お気に入りのアプリケーション 3 をアクティブにする"
 
 #: data/50-gnome-shell-launchers.xml:22
-#, fuzzy
-#| msgid "Switch to application 4"
 msgid "Activate favorite application 4"
-msgstr "アプリケーション 4 に切り替える"
+msgstr "お気に入りのアプリケーション 4 をアクティブにする"
 
 #: data/50-gnome-shell-launchers.xml:26
-#, fuzzy
-#| msgid "Switch to application 5"
 msgid "Activate favorite application 5"
-msgstr "アプリケーション 5 に切り替える"
+msgstr "お気に入りのアプリケーション 5 をアクティブにする"
 
 #: data/50-gnome-shell-launchers.xml:30
-#, fuzzy
-#| msgid "Switch to application 6"
 msgid "Activate favorite application 6"
-msgstr "アプリケーション 6 に切り替える"
+msgstr "お気に入りのアプリケーション 6 をアクティブにする"
 
 #: data/50-gnome-shell-launchers.xml:34
-#, fuzzy
-#| msgid "Switch to application 7"
 msgid "Activate favorite application 7"
-msgstr "アプリケーション 7 に切り替える"
+msgstr "お気に入りのアプリケーション 7 をアクティブにする"
 
 #: data/50-gnome-shell-launchers.xml:38
-#, fuzzy
-#| msgid "Switch to application 8"
 msgid "Activate favorite application 8"
-msgstr "アプリケーション 8 に切り替える"
+msgstr "お気に入りのアプリケーション 8 をアクティブにする"
 
 #: data/50-gnome-shell-launchers.xml:42
-#, fuzzy
-#| msgid "Switch to application 9"
 msgid "Activate favorite application 9"
-msgstr "アプリケーション 9 に切り替える"
+msgstr "お気に入りのアプリケーション 9 をアクティブにする"
 
 #: data/50-gnome-shell-system.xml:6
 msgid "System"
@@ -260,6 +242,7 @@ msgstr ""
 #: data/org.gnome.shell.gschema.xml.in:99
 msgid "The last version the “Welcome to GNOME” dialog was shown for"
 msgstr ""
+"“GNOME へようこそ”ダイアログが表示された最新のバージョン"
 
 #: data/org.gnome.shell.gschema.xml.in:100
 msgid ""
@@ -268,6 +251,10 @@ msgid ""
 "number will represent versions that do not exist yet. This huge number can "
 "be used to effectively disable the dialog."
 msgstr ""
+"このキーは“GNOME へようこそ”ダイアログが最後に表示されたときの GNOME のバ"
+"ージョンを指定します。空の場合は識別可能な最も古いバージョンを、大きすぎる値"
+"の場合はまだ存在しないバージョンを意味します。大きすぎる値を使用することでダ"
+"イアログを意図的に無効にすることができます。"
 
 #: data/org.gnome.shell.gschema.xml.in:133
 msgid "Layout of the app picker"
@@ -291,18 +278,16 @@ msgstr "アプリケーションメニューを開くキーバインドです。
 
 #: data/org.gnome.shell.gschema.xml.in:156
 #: data/org.gnome.shell.gschema.xml.in:163
-#, fuzzy
-#| msgid "Keybinding to open the overview"
 msgid "Keybinding to shift between overview states"
-msgstr "アクティビティ画面を開くキーバインド"
+msgstr "アクティビティ画面の状態を切り替えるキーバインド"
 
 #: data/org.gnome.shell.gschema.xml.in:157
 msgid "Keybinding to shift between session, window picker and app grid"
-msgstr ""
+msgstr "通常画面、ウィンドウ一覧、アプリ一覧の順に切り替えるキーバインドです"
 
 #: data/org.gnome.shell.gschema.xml.in:164
 msgid "Keybinding to shift between app grid, window picker and session"
-msgstr ""
+msgstr "アプリ一覧、ウィンドウ一覧、通常画面の順に切り替えるキーバインドです"
 
 #: data/org.gnome.shell.gschema.xml.in:170
 msgid "Keybinding to open the “Show Applications” view"
@@ -411,27 +396,27 @@ msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:278
 msgid "Locations"
-msgstr ""
+msgstr "場所"
 
 #: data/org.gnome.shell.gschema.xml.in:279
 msgid "The locations to show in world clocks"
-msgstr ""
+msgstr "世界時計に表示される地域です"
 
 #: data/org.gnome.shell.gschema.xml.in:289
 msgid "Automatic location"
-msgstr ""
+msgstr "自動位置検出"
 
 #: data/org.gnome.shell.gschema.xml.in:290
 msgid "Whether to fetch the current location or not"
-msgstr ""
+msgstr "現在の位置を取得するかどうか"
 
 #: data/org.gnome.shell.gschema.xml.in:297
 msgid "Location"
-msgstr ""
+msgstr "場所"
 
 #: data/org.gnome.shell.gschema.xml.in:298
 msgid "The location for which to show a forecast"
-msgstr ""
+msgstr "表示される天気予報の地域です"
 
 #: data/org.gnome.shell.gschema.xml.in:310
 msgid "Attach modal dialog to the parent window"
@@ -545,18 +530,14 @@ msgstr "認証エラー"
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger on the fingerprint reader
 #: js/gdm/util.js:589
-#, fuzzy
-#| msgid "(or swipe finger)"
 msgid "(or swipe finger across reader)"
-msgstr "(あるいは指でスワイプする)"
+msgstr "(または指紋リーダーで指をスワイプ)"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can place their finger on the fingerprint reader instead
 #: js/gdm/util.js:594
-#, fuzzy
-#| msgid "(or swipe finger)"
 msgid "(or place finger on reader)"
-msgstr "(あるいは指でスワイプする)"
+msgstr "(または指紋リーダーに指を置く)"
 
 #. Translators: The name of the power-off action in search
 #: js/misc/systemActions.js:82
@@ -1681,10 +1662,8 @@ msgid "Lock was blocked by an application"
 msgstr "アプリケーションによってロックがブロックされました"
 
 #: js/ui/screenshot.js:155
-#, fuzzy
-#| msgid "Screen Reader"
 msgid "Screenshot taken"
-msgstr "スクリーンリーダー"
+msgstr "スクリーンショットを撮影しました"
 
 #: js/ui/search.js:825
 msgid "Searching…"
@@ -2174,19 +2153,17 @@ msgstr "%d %%"
 #: js/ui/status/powerProfiles.js:19
 msgctxt "Power profile"
 msgid "Performance"
-msgstr ""
+msgstr "パフォーマンス"
 
 #: js/ui/status/powerProfiles.js:20
 msgctxt "Power profile"
 msgid "Balanced"
-msgstr ""
+msgstr "バランス"
 
 #: js/ui/status/powerProfiles.js:21
-#, fuzzy
-#| msgid "Power Settings"
 msgctxt "Power profile"
 msgid "Power Saver"
-msgstr "電源設定"
+msgstr "省電力"
 
 #: js/ui/status/remoteAccess.js:38
 msgid "Screen is Being Shared"
@@ -2326,19 +2303,19 @@ msgstr "別のユーザーでログイン"
 #: js/ui/welcomeDialog.js:36
 #, javascript-format
 msgid "Welcome to GNOME %s"
-msgstr ""
+msgstr "GNOME %s へようこそ"
 
 #: js/ui/welcomeDialog.js:37
 msgid "If you want to learn your way around, check out the tour."
-msgstr ""
+msgstr "“ツアー”アプリで詳しく知ることができます。"
 
 #: js/ui/welcomeDialog.js:45
 msgid "No Thanks"
-msgstr ""
+msgstr "いいえ結構です"
 
 #: js/ui/welcomeDialog.js:50
 msgid "Take Tour"
-msgstr ""
+msgstr "“ツアー”を始める"
 
 #: js/ui/windowAttentionHandler.js:20
 #, javascript-format
@@ -2375,17 +2352,12 @@ msgid "%d × %d"
 msgstr "%d × %d"
 
 #: js/ui/windowMenu.js:27
-#, fuzzy
-#| msgid "Hide Text"
 msgid "Hide"
-msgstr "文字を非表示"
+msgstr "隠す"
 
 #: js/ui/windowMenu.js:34
-#, fuzzy
-#| msgctxt "search-result"
-#| msgid "Restart"
 msgid "Restore"
-msgstr "再起動"
+msgstr "元に戻す"
 
 #: js/ui/windowMenu.js:38
 msgid "Maximize"
@@ -2510,6 +2482,8 @@ msgid ""
 "GNOME Extensions handles updating extensions, configuring extension "
 "preferences and removing or disabling unwanted extensions."
 msgstr ""
+"“拡張機能”は GNOME Shell 拡張機能の設定、更新、削除、不要な拡張機能の"
+"無効化を行うことができます。"
 
 #: subprojects/extensions-app/data/org.gnome.Extensions.desktop.in.in:7
 msgid "Configure GNOME Shell Extensions"
@@ -2518,7 +2492,7 @@ msgstr "GNOME Shell 拡張機能の設定を行います"
 #: subprojects/extensions-app/js/main.js:142
 #: subprojects/extensions-app/js/main.js:152
 msgid "No Matches"
-msgstr ""
+msgstr "一致なし"
 
 #: subprojects/extensions-app/js/main.js:179
 #, javascript-format
