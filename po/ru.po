@@ -20,8 +20,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2022-01-27 22:31+0000\n"
-"PO-Revision-Date: 2022-01-28 12:50+0300\n"
+"POT-Creation-Date: 2022-01-29 14:48+0000\n"
+"PO-Revision-Date: 2022-01-29 19:52+0300\n"
 "Last-Translator: Aleksandr Melman <Alexmelman88@gmail.com>\n"
 "Language-Team: Russian <gnome-cyr@gnome.org>\n"
 "Language: ru\n"
@@ -501,7 +501,7 @@ msgstr "Домашняя страница"
 msgid "Visit extension homepage"
 msgstr "Посетить домашнюю страницу расширения"
 
-#: js/gdm/authPrompt.js:143 js/ui/audioDeviceSelection.js:61
+#: js/gdm/authPrompt.js:144 js/ui/audioDeviceSelection.js:61
 #: js/ui/components/networkAgent.js:110 js/ui/components/polkitAgent.js:138
 #: js/ui/endSessionDialog.js:438 js/ui/extensionDownloader.js:228
 #: js/ui/shellMountOperation.js:376 js/ui/shellMountOperation.js:386
@@ -510,7 +510,7 @@ msgid "Cancel"
 msgstr "Отмена"
 
 #. Cisco LEAP
-#: js/gdm/authPrompt.js:306 js/ui/components/networkAgent.js:209
+#: js/gdm/authPrompt.js:307 js/ui/components/networkAgent.js:209
 #: js/ui/components/networkAgent.js:225 js/ui/components/networkAgent.js:249
 #: js/ui/components/networkAgent.js:270 js/ui/components/networkAgent.js:290
 #: js/ui/components/networkAgent.js:300 js/ui/components/polkitAgent.js:275
@@ -1519,52 +1519,52 @@ msgstr "Оставить выключенными"
 msgid "Region & Language Settings"
 msgstr "Настройки языка и региона"
 
-#: js/ui/lookingGlass.js:686
+#: js/ui/lookingGlass.js:683
 msgid "No extensions installed"
 msgstr "Расширения не установлены"
 
 #. Translators: argument is an extension UUID.
-#: js/ui/lookingGlass.js:744
+#: js/ui/lookingGlass.js:741
 #, javascript-format
 msgid "%s has not emitted any errors."
 msgstr "%s не сообщал о каких-либо ошибках."
 
-#: js/ui/lookingGlass.js:750
+#: js/ui/lookingGlass.js:747
 msgid "Hide Errors"
 msgstr "Скрыть ошибки"
 
-#: js/ui/lookingGlass.js:754 js/ui/lookingGlass.js:820
+#: js/ui/lookingGlass.js:751 js/ui/lookingGlass.js:817
 msgid "Show Errors"
 msgstr "Показать ошибки"
 
-#: js/ui/lookingGlass.js:763
+#: js/ui/lookingGlass.js:760
 msgid "Enabled"
 msgstr "Включено"
 
 #. translators:
 #. * The device has been disabled
-#: js/ui/lookingGlass.js:766 subprojects/gvc/gvc-mixer-control.c:1900
+#: js/ui/lookingGlass.js:763 subprojects/gvc/gvc-mixer-control.c:1900
 msgid "Disabled"
 msgstr "Выключено"
 
-#: js/ui/lookingGlass.js:768
+#: js/ui/lookingGlass.js:765
 #: subprojects/extensions-app/data/ui/extension-row.ui:156
 msgid "Error"
 msgstr "Ошибка"
 
-#: js/ui/lookingGlass.js:770
+#: js/ui/lookingGlass.js:767
 msgid "Out of date"
 msgstr "Устарело"
 
-#: js/ui/lookingGlass.js:772
+#: js/ui/lookingGlass.js:769
 msgid "Downloading"
 msgstr "Загрузка"
 
-#: js/ui/lookingGlass.js:802
+#: js/ui/lookingGlass.js:799
 msgid "View Source"
 msgstr "Показать код"
 
-#: js/ui/lookingGlass.js:811
+#: js/ui/lookingGlass.js:808
 msgid "Web Page"
 msgstr "Веб-страница"
 
@@ -1655,23 +1655,23 @@ msgstr "Назначение клавишь"
 msgid "Done"
 msgstr "Готово"
 
-#: js/ui/padOsd.js:716
+#: js/ui/padOsd.js:715
 msgid "Edit…"
 msgstr "Правка…"
 
-#: js/ui/padOsd.js:758 js/ui/padOsd.js:875
+#: js/ui/padOsd.js:757 js/ui/padOsd.js:874
 msgid "None"
 msgstr "Нет"
 
-#: js/ui/padOsd.js:829
+#: js/ui/padOsd.js:828
 msgid "Press a button to configure"
 msgstr "Нажмите кнопку для настройки"
 
-#: js/ui/padOsd.js:830
+#: js/ui/padOsd.js:829
 msgid "Press Esc to exit"
 msgstr "Нажмите Esc для выхода"
 
-#: js/ui/padOsd.js:833
+#: js/ui/padOsd.js:832
 msgid "Press any key to exit"
 msgstr "Нажмите любую клавишу для выхода"
 
@@ -1706,7 +1706,7 @@ msgstr "Перезапуск не доступен при использован
 msgid "Restarting…"
 msgstr "Перезапуск…"
 
-#: js/ui/screenShield.js:224
+#: js/ui/screenShield.js:225
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME необходимо заблокировать экран"
 
@@ -1717,77 +1717,106 @@ msgstr "GNOME необходимо заблокировать экран"
 #.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
-#: js/ui/screenShield.js:264 js/ui/screenShield.js:634
+#: js/ui/screenShield.js:265 js/ui/screenShield.js:636
 msgid "Unable to lock"
 msgstr "Не удалось заблокировать"
 
-#: js/ui/screenShield.js:265 js/ui/screenShield.js:635
+#: js/ui/screenShield.js:266 js/ui/screenShield.js:637
 msgid "Lock was blocked by an application"
 msgstr "Блокировке помешало приложение"
 
-#: js/ui/screenshot.js:1110
+#: js/ui/screenshot.js:1137
 msgid "Selection"
 msgstr "Выбор"
 
-#: js/ui/screenshot.js:1120
+#: js/ui/screenshot.js:1147
 msgid "Area Selection"
 msgstr "Выбор области"
 
-#: js/ui/screenshot.js:1125
+#: js/ui/screenshot.js:1152
 msgid "Screen"
 msgstr "Экран"
 
-#: js/ui/screenshot.js:1135
+#: js/ui/screenshot.js:1162
 msgid "Screen Selection"
 msgstr "Выбор экрана"
 
-#: js/ui/screenshot.js:1140
+#: js/ui/screenshot.js:1167
 msgid "Window"
 msgstr "Окно"
 
-#: js/ui/screenshot.js:1150
+#: js/ui/screenshot.js:1177
 msgid "Window Selection"
 msgstr "Выбор окна"
 
-#: js/ui/screenshot.js:1180
+#: js/ui/screenshot.js:1211
+msgid "Screenshot / Screencast"
+msgstr "Снимок экрана / Запись экрана"
+
+#: js/ui/screenshot.js:1247
 msgid "Show Pointer"
 msgstr "Показать курсор мыши"
 
 #. Translators: name of the folder under ~/Pictures for screenshots.
-#: js/ui/screenshot.js:1569
+#: js/ui/screenshot.js:1695
 msgid "Screenshots"
 msgstr "Снимки экрана"
 
 #. Translators: this is the name of the file that the screenshot is
 #. saved to. The placeholder is a timestamp, e.g. "2017-05-21 12-24-03".
-#: js/ui/screenshot.js:1582
+#: js/ui/screenshot.js:1708
 #, javascript-format
 msgid "Screenshot from %s"
 msgstr "Снимок экрана от %s"
 
 #. Translators: notification source name.
-#: js/ui/screenshot.js:1622
+#: js/ui/screenshot.js:1748 js/ui/screenshot.js:1968
 msgid "Screenshot"
 msgstr "Снимок экрана"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:1628
+#: js/ui/screenshot.js:1754
 msgid "Screenshot captured"
 msgstr "Снимок экрана сделан"
 
 #. Translators: notification body when a screenshot was captured.
-#: js/ui/screenshot.js:1630
+#: js/ui/screenshot.js:1756
 msgid "You can paste the image from the clipboard."
 msgstr "Вы можете вставить изображение из буфера обмена."
 
 #. Translators: button on the screenshot notification.
-#: js/ui/screenshot.js:1636
+#. Translators: button on the screencast notification.
+#: js/ui/screenshot.js:1762 js/ui/screenshot.js:1979
 msgid "Show in Files"
 msgstr "Показать в Файлах"
 
-#: js/ui/screenshot.js:1665 js/ui/screenshot.js:1934
+#: js/ui/screenshot.js:1791 js/ui/screenshot.js:2232
 msgid "Screenshot taken"
 msgstr "Сделан снимок экрана"
+
+#. Translators: this is the folder where recorded
+#. screencasts are stored.
+#: js/ui/screenshot.js:1894
+msgid "Screencasts"
+msgstr "Записи"
+
+#. Translators: this is a filename used for screencast
+#. * recording, where "%d" and "%t" date and time, e.g.
+#. * "Screencast from 07-17-2013 10:00:46 PM.webm"
+#: js/ui/screenshot.js:1899
+#, no-c-format
+msgid "Screencast from %d %t.webm"
+msgstr "Запись экрана от %d %t.webm"
+
+#. Translators: notification title.
+#: js/ui/screenshot.js:1974
+msgid "Screencast recorded"
+msgstr "Запись экрана сделана"
+
+#. Translators: notification body when a screencast was recorded.
+#: js/ui/screenshot.js:1976
+msgid "Click here to view the video."
+msgstr "Нажмите здесь, чтобы посмотреть видео."
 
 #: js/ui/search.js:826
 msgid "Searching…"
@@ -2340,13 +2369,21 @@ msgctxt "Power profile"
 msgid "Power Saver"
 msgstr "Энергосберегающий"
 
-#: js/ui/status/remoteAccess.js:38
+#: js/ui/status/remoteAccess.js:39
 msgid "Screen is Being Shared"
 msgstr "Экран общедоступен"
 
-#: js/ui/status/remoteAccess.js:40
+#: js/ui/status/remoteAccess.js:41
 msgid "Turn off"
 msgstr "Выключить"
+
+#: js/ui/status/remoteAccess.js:56
+msgid "Screen Recording in Progress"
+msgstr "Выполняется запись экрана"
+
+#: js/ui/status/remoteAccess.js:59
+msgid "Stop"
+msgstr "Остановить"
 
 # Нужно максимально коротко, иначе не влазит в меню gnome shell
 #. The menu only appears when airplane mode is on, so just
