@@ -21,7 +21,7 @@ $app_grid_fg_color: #fff;
 // Icon tiles in the app grid
 .app-well-app,
 %app_well_app {
-  @include overview-icon($app_grid_fg_color);
+  @include overview_icon($app_grid_fg_color);
 
   .overview-icon.overview-icon-with-label {
     padding: 10px 8px 5px 8px;
@@ -35,7 +35,7 @@ $app_grid_fg_color: #fff;
 /* App Folders */
 .app-well-app.app-folder {
   background-color: $dash_background_color;
-  border-radius: $base_border_radius * 2; // same as %icon_tile
+  border-radius: $base_border_radius * 2; // same as %tile
 }
 
 // expanded folder
@@ -60,7 +60,7 @@ $app_grid_fg_color: #fff;
     & .folder-name-label { padding: 5px 7px; color: $osd_fg_color; }
 
     & .edit-folder-button {
-      @include button(undecorated, $shadow: none);
+      @include button(undecorated);
       padding: 0;
       width: 36px;
       height: 36px;

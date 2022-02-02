@@ -36,6 +36,7 @@ $dash_border_radius: $modal_radius + 8px;
     width: 5px;
     border-radius:5px;
     background-color: $osd_fg_color;
+    margin-top: 2px;
     margin-bottom: 12px;
   }
 }
@@ -53,7 +54,6 @@ $dash_border_radius: $modal_radius + 8px;
 
   // each app item on the dash
   .app-well-app {
-    padding:0;
     margin: 2px;
   }
 
@@ -61,7 +61,6 @@ $dash_border_radius: $modal_radius + 8px;
   .show-apps {
     @include overview_icon($osd_fg_color);
     margin: 2px;
-    padding: 0;
   }
 }
 
@@ -69,7 +68,7 @@ $dash_border_radius: $modal_radius + 8px;
 .dash-separator {
   width: 1px;
   margin: 0 $base_margin*2;
-  background-color: transparentize($borders_color,0.5);
+  background-color: transparentize($borders_color,0.2);
 }
 
 // OSD Tooltip

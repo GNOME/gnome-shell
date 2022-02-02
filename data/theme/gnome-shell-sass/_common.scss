@@ -89,7 +89,7 @@ stage {
 }
 
 // icon tiles
-%icon_tile {
+%tile {
   border-radius: $base_border_radius * 2; // 16px
   padding: $base_padding;
   border: 2px solid transparent;
@@ -103,6 +103,7 @@ stage {
   border-style: solid;
   border-width: 1px;
   min-height: 22px;
+  font-weight: bold;
   padding: $base_padding * 0.5 $base_padding * 4;
 
   @include button(normal);
@@ -121,20 +122,17 @@ stage {
 }
 
 // buttons in dialogs/notifications
-// styled to have no shadow and be lighter in color
 $bubble_button_radius:$base_border_radius*1.25;
 
 %bubble_button {
   padding: $base_padding * 2;
-  border: 0 solid $bg_color !important; 
-  border-radius: 0;
-  border-right-width: 1px !important; 
+  font-weight: bold;
 
-  @include button(normal, $bubble_buttons_color, $shadow: none);
-  &:insensitive { @include button(insensitive, $shadow: none); }
-  &:focus { @include button(focus, $shadow: none); }
-  &:hover { @include button(hover, $bubble_buttons_color, $shadow: none); }
-  &:active { @include button(active, $bubble_buttons_color, $shadow: none); }
+  @include button(normal, $c:$bubble_buttons_color);
+  &:insensitive { @include button(insensitive, $c:$bubble_buttons_color);}
+  &:focus { @include button(focus, $c:$bubble_buttons_color);}
+  &:hover { @include button(hover, $c:$bubble_buttons_color);}
+  &:active { @include button(active, $c:$bubble_buttons_color);}
   
   &:first-child:ltr {
     border-radius: 0 0 0 $bubble_button_radius; 
@@ -153,30 +151,8 @@ $bubble_button_radius:$base_border_radius*1.25;
     border-radius: 0 0 0 $bubble_button_radius;
     border-left-width: 0 !important;
   }
-}
 
-// styling for elements within popovers that look like notifications
-@mixin notification_bubble($flat: false) {
-  border-width: 0px;
-  border-style: solid;
-  border-radius: $base_border_radius;
-  margin: $base_margin;
-
-  @if $flat {
-    @include button(undecorated);
-  } @else {
-    @include button(normal);
-  }
-
-  &:focus {
-    @include button(focus);
-  }
-
-  &:hover {
-    @include button(hover);
-  }
-
-  &:active {
-    @include button(active);
+  &:first-child:last-child {
+    border-radius: 0 0 $bubble_button_radius $bubble_button_radius !important;
   }
 }

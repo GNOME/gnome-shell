@@ -25,7 +25,7 @@
 }
 
 .events-section-title {
-  @include notification_bubble($flat: true);
+  @include card($flat: true);
   color: $insensitive_fg_color;
   font-weight: bold;
   padding: .4em;
@@ -33,7 +33,7 @@
 
 /* today button (the date) */
 .datemenu-today-button {
-  @include notification_bubble($flat: true);
+  @include card($flat: true);
   padding: $base_padding * 1.5;
 
   // weekday label
@@ -52,7 +52,7 @@
 
 /* Calendar */
 .calendar {
-  @include notification_bubble;
+  @include card;
   padding: $base_padding;
 
   // month
@@ -172,7 +172,7 @@
 
 /* Events */
 .events-button {
-  @include notification_bubble;
+  @include card;
   padding: $base_padding * 2;
 
   .events-box {
@@ -198,7 +198,7 @@
 
 /* World clocks */
 .world-clocks-button {
-  @include notification_bubble;
+  @include card;
   padding: $base_padding * 2;
 
   .world-clocks-grid {
@@ -240,7 +240,7 @@
 
 /* Weather */
 .weather-button {
-  @include notification_bubble;
+  @include card;
   padding: $base_padding * 2;
 
   .weather-box {

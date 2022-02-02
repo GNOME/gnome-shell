@@ -61,7 +61,7 @@
 
 // message bubbles
 .message {
-  @include notification_bubble;
+  @include card;
 
   // icon container
   .message-icon-bin {
@@ -148,7 +148,7 @@
   border-radius: $base_border_radius;
   color: $fg_color;
 
-  // colors are lightened since the media controls are in a notification_bubble
+  // colors are lightened since the media controls are in a card
   &:hover {
     background-color: lighten($hover_bg_color, 5%);
     color: $fg_color;

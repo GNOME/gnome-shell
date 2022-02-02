@@ -100,7 +100,7 @@
 
 .lg-extension {
   padding: $base_padding*2;
-  @include notification_bubble;
+  @include card;
 }
 
 .lg-extension-name {

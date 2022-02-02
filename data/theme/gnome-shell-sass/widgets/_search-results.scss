@@ -32,23 +32,9 @@
 }
 
 %search_section_content_item {
-  @extend %icon_tile;
+  @include tile($osd_fg_color);
 
-  border-radius: $base_border_radius;
-
-  color: $osd_fg_color;
-
-  &:focus,
-  &:hover,
-  &:selected {
-    background-color: transparentize($osd_fg_color, .9);
-    transition-duration: 200ms;
-  }
-
-  &:active,
-  &:checked {
-    background-color: transparentize(darken($osd_bg_color, 10%), .1);
-  }
+  border-radius: $base_border_radius !important;
 }
 
 // "no results" text

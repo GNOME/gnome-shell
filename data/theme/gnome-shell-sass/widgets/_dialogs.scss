@@ -144,8 +144,7 @@
 }
 
 .audio-selection-device {
-  border: 1px solid $bubble_borders_color;
-  border-radius: 12px;
+  border-radius: $base_border_radius*2;
   &:hover,&:focus { background-color: $hover_bg_color; }
   &:active { 
     background-color: $selected_bg_color;

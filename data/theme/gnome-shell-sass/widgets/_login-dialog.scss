@@ -13,14 +13,6 @@
 
   $_gdm_bg: $system_bg_color;
 
-  StEntry {
-    @if $variant=='dark' {
-      $_gdm_entry_bg: darken($system_bg_color, 3%);
-      background-color: $_gdm_entry_bg;
-      color: $fg_color;
-    }
-  }
-
   .modal-dialog-button-box { spacing: 3px; }
   .modal-dialog-button {
     padding: 4px 18px;
@@ -47,26 +39,7 @@
       color: transparentize($osd_fg_color, 0.3);
     }
     &:default {
-      @include button(normal, $c:$selected_bg_color, $tc:$selected_fg_color);
-      border-color: $selected_bg_color;
-      &:hover, &:focus { 
-        @include button(hover,$c:$selected_bg_color, $tc:$selected_fg_color);
-        $_def_hover_c: lighten($selected_bg_color, 5%);
-        background-color: $_def_hover_c;
-        border-color: $_def_hover_c;
-      }
-      &:active {
-        @include button(active,$c:$selected_bg_color, $tc:$selected_fg_color);
-        $_def_active_c: darken($selected_bg_color, 5%);
-        background-color: $_def_active_c;
-        border-color: $_def_active_c;
-      }
-      &:insensitive {
-        @include button(insensitive);
-        border-color: darken($selected_bg_color, 10%);
-        background-color: darken($selected_bg_color, 10%);
-        color: transparentize($selected_fg_color, 0.3);
-      }
+      @include button(default);
     }
   }
 
@@ -197,4 +170,35 @@
   color: darken($osd_fg_color, 20%);
   @include fontsize($base_font_size + 1);
   padding-top: 1em;
+}
+
+.login-dialog {
+  StEntry {
+    @if $variant=='dark' {
+      $_gdm_entry_bg: darken($system_bg_color, 3%);
+      background-color: $_gdm_entry_bg;
+      color: $fg_color;
+    }
+  }
+}
+
+// Custom styling for unlock entry
+.unlock-dialog {
+  StEntry {
+    &:focus { 
+      box-shadow:none;
+      background-color: transparentize($fg_color, 0.9);
+    }
+    &:insensitive { 
+      color: transparentize($fg_color, 0.5);
+      background-color: transparentize($fg_color, 0.95);
+    }
+  }
+
+  .cancel-button,
+  .switch-user-button,
+  .login-dialog-session-list-button {
+    border-color: transparent;
+    background-color: transparentize($fg_color, 0.9);
+  }
 }
