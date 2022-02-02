@@ -1,7 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported ScreenshotService, ScreenshotUI, showScreenshotUI */
 
-const { Clutter, Cogl, Gio, GObject, GLib, Gtk, Meta, Shell, St } = imports.gi;
+const { Clutter, Cogl, Gio, GObject, GLib, Graphene, Gtk, Meta, Shell, St } = imports.gi;
 
 const GrabHelper = imports.ui.grabHelper;
 const Layout = imports.ui.layout;
@@ -1089,12 +1089,24 @@ var ScreenshotUI = GObject.registerClass({
 
         this._closeButton = new St.Button({
             style_class: 'screenshot-ui-close-button',
-            x_align: Clutter.ActorAlign.END,
-            y_align: Clutter.ActorAlign.START,
-            x_expand: true,
-            y_expand: true,
+            child: new St.Icon({ icon_name: 'preview-close-symbolic' }),
         });
-        this._closeButton.set_child(new St.Icon({ icon_name: 'window-close-symbolic' }));
+        this._closeButton.add_constraint(new Clutter.BindConstraint({
+            source: this._panel,
+            coordinate: Clutter.BindCoordinate.POSITION,
+        }));
+        this._closeButton.add_constraint(new Clutter.AlignConstraint({
+            source: this._panel,
+            align_axis: Clutter.AlignAxis.Y_AXIS,
+            pivot_point: new Graphene.Point({ x: -1, y: 0.5 }),
+            factor: 0,
+        }));
+        this._closeButtonXAlignConstraint = new Clutter.AlignConstraint({
+            source: this._panel,
+            align_axis: Clutter.AlignAxis.X_AXIS,
+            pivot_point: new Graphene.Point({ x: 0.5, y: -1 }),
+        });
+        this._closeButton.add_constraint(this._closeButtonXAlignConstraint);
         this._closeButton.connect('clicked', () => this.close());
         this._primaryMonitorBin.add_child(this._closeButton);
 
@@ -1281,6 +1293,21 @@ var ScreenshotUI = GObject.registerClass({
         );
     }
 
+    _refreshButtonLayout() {
+        const buttonLayout = Meta.prefs_get_button_layout();
+
+        this._closeButton.remove_style_class_name('left');
+        this._closeButton.remove_style_class_name('right');
+
+        if (buttonLayout.left_buttons.includes(Meta.ButtonFunction.CLOSE)) {
+            this._closeButton.add_style_class_name('left');
+            this._closeButtonXAlignConstraint.factor = 0;
+        } else {
+            this._closeButton.add_style_class_name('right');
+            this._closeButtonXAlignConstraint.factor = 1;
+        }
+    }
+
     _rebuildMonitorBins() {
         for (const bin of this._monitorBins)
             bin.destroy();
@@ -1428,6 +1455,8 @@ var ScreenshotUI = GObject.registerClass({
         });
         if (!grabResult)
             return;
+
+        this._refreshButtonLayout();
 
         this.remove_all_transitions();
         this.visible = true;
