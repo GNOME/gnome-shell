@@ -1020,6 +1020,8 @@ var ScreenshotUI = GObject.registerClass({
 
         this._lockdownSettings = new Gio.Settings({ schema_id: 'org.gnome.desktop.lockdown' });
 
+        Main.sessionMode.connect('updated', () => this.close(true));
+
         // The full-screen screenshot has a separate container so that we can
         // show it without the screenshot UI fade-in for a nicer animation.
         this._stageScreenshotContainer = new St.Widget({ visible: false });
