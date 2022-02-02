@@ -123,7 +123,6 @@ get_time_from_property (ECalClient            *cal,
 {
   ICalProperty  *prop;
   ICalTime      *itt;
-  ICalParameter *param;
   ICalTimezone  *timezone = NULL;
 
   prop = i_cal_component_get_first_property (icomp, prop_kind);
@@ -132,17 +131,24 @@ get_time_from_property (ECalClient            *cal,
 
   itt = get_prop_func (prop);
 
-  param = i_cal_property_get_first_parameter (prop, I_CAL_TZID_PARAMETER);
-  if (param)
-    timezone = e_timezone_cache_get_timezone (E_TIMEZONE_CACHE (cal), i_cal_parameter_get_tzid (param));
-  else if (i_cal_time_is_utc (itt))
+  if (i_cal_time_is_utc (itt))
     timezone = i_cal_timezone_get_utc_timezone ();
   else
+   {
+      ICalParameter *param;
+
+      param = i_cal_property_get_first_parameter (prop, I_CAL_TZID_PARAMETER);
+      if (param && !e_cal_client_get_timezone_sync (cal, i_cal_parameter_get_tzid (param), &timezone, NULL, NULL))
+        print_debug ("Failed to get timezone '%s'\n", i_cal_parameter_get_tzid (param));
+
+      g_clear_object (&param);
+   }
+
+  if (timezone == NULL)
     timezone = default_zone;
 
   i_cal_time_set_timezone (itt, timezone);
 
-  g_clear_object (&param);
   g_clear_object (&prop);
 
   *out_itt = itt;
