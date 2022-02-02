@@ -116,8 +116,6 @@ var _Draggable = class _Draggable {
         this._buttonDown = false; // The mouse button has been pressed and has not yet been released.
         this._animationInProgress = false; // The drag is over and the item is in the process of animating to its original position (snapping back or reverting).
         this._dragCancellable = true;
-
-        this._capturedEventId = 0;
     }
 
     _onButtonPress(actor, event) {
@@ -167,22 +165,9 @@ var _Draggable = class _Draggable {
         this._grab = global.stage.grab(actor);
         this._grabbedDevice = pointer;
         this._touchSequence = touchSequence;
-
-        this._capturedEventId = global.stage.connect('captured-event', (o, event) => {
-            let device = event.get_device();
-            if (device != this._grabbedDevice &&
-                device.get_device_type() != Clutter.InputDeviceType.KEYBOARD_DEVICE)
-                return Clutter.EVENT_STOP;
-            return Clutter.EVENT_PROPAGATE;
-        });
     }
 
     _ungrabDevice() {
-        if (this._capturedEventId != 0) {
-            global.stage.disconnect(this._capturedEventId);
-            this._capturedEventId = 0;
-        }
-
         if (this._grab) {
             this._grab.dismiss();
             this._grab = null;
