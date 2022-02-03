@@ -66,6 +66,22 @@ var NotificationDaemon = class extends ServiceImplementation {
         });
     }
 
+    _checkNotificationId(invocation, id) {
+        if (id === 0)
+            return true;
+
+        if (!this._activeNotifications.has(id))
+            return true;
+
+        if (this._activeNotifications.get(id) === invocation.get_sender())
+            return true;
+
+        const error = new GLib.Error(Gio.DBusError,
+            Gio.DBusError.INVALID_ARGS, 'Invalid notification ID');
+        this._handleError(invocation, error);
+        return false;
+    }
+
     register() {
         Gio.DBus.session.own_name(
             'org.freedesktop.Notifications',
@@ -76,7 +92,11 @@ var NotificationDaemon = class extends ServiceImplementation {
     async NotifyAsync(params, invocation) {
         const sender = invocation.get_sender();
         const pid = await this._getSenderPid(sender);
+        const replaceId = params[1];
         const hints = params[6];
+
+        if (!this._checkNotificationId(invocation, replaceId))
+            return;
 
         params[6] = {
             ...hints,
@@ -94,6 +114,10 @@ var NotificationDaemon = class extends ServiceImplementation {
     }
 
     CloseNotificationAsync(params, invocation) {
+        const [id] = params;
+        if (!this._checkNotificationId(invocation, id))
+            return;
+
         this._proxy.CloseNotificationRemote(...params, (res, error) => {
             if (this._handleError(invocation, error))
                 return;
