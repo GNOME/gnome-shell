@@ -9,18 +9,18 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2022-01-21 13:51+0000\n"
-"PO-Revision-Date: 2022-01-25 22:46+0200\n"
-"Last-Translator: Yosef Or Boczko <yoseforb@gmail.com>\n"
+"POT-Creation-Date: 2022-02-01 12:10+0000\n"
+"PO-Revision-Date: 2022-02-03 17:17+0200\n"
+"Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: Hebrew <GNOME Hebrew Translation Project>\n"
 "Language: he\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=(n==1 ? 0 : n==2 ? 1 : n>10 && n%10==0 ? "
-"2 : 3)\n"
+"2 : 3);\n"
 "X-Poedit-SourceCharset: UTF-8\n"
-"X-Generator: Gtranslator 40.0\n"
+"X-Generator: Poedit 3.0.1\n"
 
 #: data/50-gnome-shell-launchers.xml:6
 msgid "Launchers"
@@ -359,12 +359,16 @@ msgstr "Switch to application 8"
 msgid "Switch to application 9"
 msgstr "Switch to application 9"
 
-#: data/org.gnome.shell.gschema.xml.in:240
-#: data/org.gnome.shell.gschema.xml.in:267
+#: data/org.gnome.shell.gschema.xml.in:235
+msgid "Show screenshot UI"
+msgstr "הצגת מנשק לכידת מסך"
+
+#: data/org.gnome.shell.gschema.xml.in:244
+#: data/org.gnome.shell.gschema.xml.in:271
 msgid "Limit switcher to current workspace."
 msgstr "Limit switcher to current workspace."
 
-#: data/org.gnome.shell.gschema.xml.in:241
+#: data/org.gnome.shell.gschema.xml.in:245
 msgid ""
 "If true, only applications that have windows on the current workspace are "
 "shown in the switcher. Otherwise, all applications are included."
@@ -372,11 +376,11 @@ msgstr ""
 "If true, only applications that have windows on the current workspace are "
 "shown in the switcher. Otherwise, all applications are included."
 
-#: data/org.gnome.shell.gschema.xml.in:258
+#: data/org.gnome.shell.gschema.xml.in:262
 msgid "The application icon mode."
 msgstr "The application icon mode."
 
-#: data/org.gnome.shell.gschema.xml.in:259
+#: data/org.gnome.shell.gschema.xml.in:263
 msgid ""
 "Configures how the windows are shown in the switcher. Valid possibilities "
 "are “thumbnail-only” (shows a thumbnail of the window), “app-icon-"
@@ -386,7 +390,7 @@ msgstr ""
 "are “thumbnail-only” (shows a thumbnail of the window), “app-icon-"
 "only” (shows only the application icon) or “both”."
 
-#: data/org.gnome.shell.gschema.xml.in:268
+#: data/org.gnome.shell.gschema.xml.in:272
 msgid ""
 "If true, only windows from the current workspace are shown in the switcher. "
 "Otherwise, all windows are included."
@@ -394,57 +398,57 @@ msgstr ""
 "If true, only windows from the current workspace are shown in the switcher. "
 "Otherwise, all windows are included."
 
-#: data/org.gnome.shell.gschema.xml.in:278
+#: data/org.gnome.shell.gschema.xml.in:282
 msgid "Locations"
 msgstr "Locations"
 
-#: data/org.gnome.shell.gschema.xml.in:279
+#: data/org.gnome.shell.gschema.xml.in:283
 msgid "The locations to show in world clocks"
 msgstr "The locations to show in world clocks"
 
-#: data/org.gnome.shell.gschema.xml.in:289
+#: data/org.gnome.shell.gschema.xml.in:293
 msgid "Automatic location"
 msgstr "Automatic location"
 
-#: data/org.gnome.shell.gschema.xml.in:290
+#: data/org.gnome.shell.gschema.xml.in:294
 msgid "Whether to fetch the current location or not"
 msgstr "Whether to fetch the current location or not"
 
-#: data/org.gnome.shell.gschema.xml.in:297
+#: data/org.gnome.shell.gschema.xml.in:301
 msgid "Location"
 msgstr "Location"
 
-#: data/org.gnome.shell.gschema.xml.in:298
+#: data/org.gnome.shell.gschema.xml.in:302
 msgid "The location for which to show a forecast"
 msgstr "The location for which to show a forecast"
 
-#: data/org.gnome.shell.gschema.xml.in:310
+#: data/org.gnome.shell.gschema.xml.in:314
 msgid "Attach modal dialog to the parent window"
 msgstr "Attach modal dialog to the parent window"
 
-#: data/org.gnome.shell.gschema.xml.in:311
-#: data/org.gnome.shell.gschema.xml.in:320
-#: data/org.gnome.shell.gschema.xml.in:328
-#: data/org.gnome.shell.gschema.xml.in:336
-#: data/org.gnome.shell.gschema.xml.in:344
+#: data/org.gnome.shell.gschema.xml.in:315
+#: data/org.gnome.shell.gschema.xml.in:324
+#: data/org.gnome.shell.gschema.xml.in:332
+#: data/org.gnome.shell.gschema.xml.in:340
+#: data/org.gnome.shell.gschema.xml.in:348
 msgid ""
 "This key overrides the key in org.gnome.mutter when running GNOME Shell."
 msgstr ""
 "This key overrides the key in org.gnome.mutter when running GNOME Shell."
 
-#: data/org.gnome.shell.gschema.xml.in:319
+#: data/org.gnome.shell.gschema.xml.in:323
 msgid "Enable edge tiling when dropping windows on screen edges"
 msgstr "Enable edge tiling when dropping windows on screen edges"
 
-#: data/org.gnome.shell.gschema.xml.in:327
+#: data/org.gnome.shell.gschema.xml.in:331
 msgid "Workspaces are managed dynamically"
 msgstr "Workspaces are managed dynamically"
 
-#: data/org.gnome.shell.gschema.xml.in:335
+#: data/org.gnome.shell.gschema.xml.in:339
 msgid "Workspaces only on primary monitor"
 msgstr "Workspaces only on primary monitor"
 
-#: data/org.gnome.shell.gschema.xml.in:343
+#: data/org.gnome.shell.gschema.xml.in:347
 msgid "Delay focus changes in mouse mode until the pointer stops moving"
 msgstr "Delay focus changes in mouse mode until the pointer stops moving"
 
@@ -478,7 +482,7 @@ msgstr "עמוד הבית"
 msgid "Visit extension homepage"
 msgstr "לבקר באתר ההרחבה"
 
-#: js/gdm/authPrompt.js:143 js/ui/audioDeviceSelection.js:61
+#: js/gdm/authPrompt.js:144 js/ui/audioDeviceSelection.js:61
 #: js/ui/components/networkAgent.js:110 js/ui/components/polkitAgent.js:138
 #: js/ui/endSessionDialog.js:438 js/ui/extensionDownloader.js:228
 #: js/ui/shellMountOperation.js:376 js/ui/shellMountOperation.js:386
@@ -487,7 +491,7 @@ msgid "Cancel"
 msgstr "ביטול"
 
 #. Cisco LEAP
-#: js/gdm/authPrompt.js:306 js/ui/components/networkAgent.js:209
+#: js/gdm/authPrompt.js:307 js/ui/components/networkAgent.js:209
 #: js/ui/components/networkAgent.js:225 js/ui/components/networkAgent.js:249
 #: js/ui/components/networkAgent.js:270 js/ui/components/networkAgent.js:290
 #: js/ui/components/networkAgent.js:300 js/ui/components/polkitAgent.js:275
@@ -1489,72 +1493,72 @@ msgstr "להשאיר כבוי"
 msgid "Region & Language Settings"
 msgstr "הגדרות אזור ושפה"
 
-#: js/ui/lookingGlass.js:686
+#: js/ui/lookingGlass.js:683
 msgid "No extensions installed"
 msgstr "לא מותקנות הרחבות"
 
 #. Translators: argument is an extension UUID.
-#: js/ui/lookingGlass.js:744
+#: js/ui/lookingGlass.js:741
 #, javascript-format
 msgid "%s has not emitted any errors."
 msgstr "‏%s לא העלה שגיאות כלשהן."
 
-#: js/ui/lookingGlass.js:750
+#: js/ui/lookingGlass.js:747
 msgid "Hide Errors"
 msgstr "הסתרת השגיאות"
 
-#: js/ui/lookingGlass.js:754 js/ui/lookingGlass.js:820
+#: js/ui/lookingGlass.js:751 js/ui/lookingGlass.js:817
 msgid "Show Errors"
 msgstr "הצגת השגיאות"
 
-#: js/ui/lookingGlass.js:763
+#: js/ui/lookingGlass.js:760
 msgid "Enabled"
 msgstr "פעיל"
 
 #. translators:
 #. * The device has been disabled
-#: js/ui/lookingGlass.js:766 subprojects/gvc/gvc-mixer-control.c:1900
+#: js/ui/lookingGlass.js:763 subprojects/gvc/gvc-mixer-control.c:1900
 msgid "Disabled"
 msgstr "מנוטרל"
 
-#: js/ui/lookingGlass.js:768
+#: js/ui/lookingGlass.js:765
 #: subprojects/extensions-app/data/ui/extension-row.ui:156
 msgid "Error"
 msgstr "שגיאה"
 
-#: js/ui/lookingGlass.js:770
+#: js/ui/lookingGlass.js:767
 msgid "Out of date"
 msgstr "לא בתוקף"
 
-#: js/ui/lookingGlass.js:772
+#: js/ui/lookingGlass.js:769
 msgid "Downloading"
 msgstr "בהורדה"
 
-#: js/ui/lookingGlass.js:802
+#: js/ui/lookingGlass.js:799
 msgid "View Source"
 msgstr "צפייה במקור"
 
-#: js/ui/lookingGlass.js:811
+#: js/ui/lookingGlass.js:808
 msgid "Web Page"
 msgstr "דף אינטרנט"
 
-#: js/ui/main.js:259
+#: js/ui/main.js:263
 msgid "System was put in unsafe mode"
 msgstr "המערכת הועברה למצב בלתי בטוח"
 
-#: js/ui/main.js:260
+#: js/ui/main.js:264
 msgid "Applications now have unrestricted access"
 msgstr "ליישומים יש עכשיו גישה בלתי מוגבלת"
 
-#: js/ui/main.js:261 js/ui/overview.js:58
+#: js/ui/main.js:265 js/ui/overview.js:58
 msgid "Undo"
 msgstr "ביטול"
 
-#: js/ui/main.js:307
+#: js/ui/main.js:311
 msgid "Logged in as a privileged user"
 msgstr "מחובר כמשתמש בעל הרשאות מיוחדות"
 
-#: js/ui/main.js:308
+#: js/ui/main.js:312
 msgid ""
 "Running a session as a privileged user should be avoided for security "
 "reasons. If possible, you should log in as a normal user."
@@ -1562,11 +1566,11 @@ msgstr ""
 "יש להימנע מהרצת הפעלה כמשתמש בעל הרשאות מיוחדות מסיבות אבטחה. אם אפשרי, יש "
 "להתחבר כמשתמש רגיל."
 
-#: js/ui/main.js:357
+#: js/ui/main.js:361
 msgid "Screen Lock disabled"
 msgstr "מסך נעילה מושבת"
 
-#: js/ui/main.js:358
+#: js/ui/main.js:362
 msgid "Screen Locking requires the GNOME display manager."
 msgstr "מסך נעיל דורש הרצת מנהל תצוגה של GNOME."
 
@@ -1624,23 +1628,23 @@ msgstr "הקצאת מקש"
 msgid "Done"
 msgstr "בוצע"
 
-#: js/ui/padOsd.js:716
+#: js/ui/padOsd.js:715
 msgid "Edit…"
 msgstr "עריכה…"
 
-#: js/ui/padOsd.js:758 js/ui/padOsd.js:875
+#: js/ui/padOsd.js:757 js/ui/padOsd.js:874
 msgid "None"
 msgstr "לא כלום"
 
-#: js/ui/padOsd.js:829
+#: js/ui/padOsd.js:828
 msgid "Press a button to configure"
 msgstr "יש ללחוץ על כפתור להגדרה"
 
-#: js/ui/padOsd.js:830
+#: js/ui/padOsd.js:829
 msgid "Press Esc to exit"
 msgstr "יש להקיש Esc ליציאה"
 
-#: js/ui/padOsd.js:833
+#: js/ui/padOsd.js:832
 msgid "Press any key to exit"
 msgstr "יש להקיש על מנת לצאת"
 
@@ -1675,7 +1679,7 @@ msgstr "הפעלה מחדש אינה זמינה תחת Wayland"
 msgid "Restarting…"
 msgstr "מופעל מחדש…"
 
-#: js/ui/screenShield.js:224
+#: js/ui/screenShield.js:225
 msgid "GNOME needs to lock the screen"
 msgstr "על GNOME לנעול את המסך"
 
@@ -1686,17 +1690,107 @@ msgstr "על GNOME לנעול את המסך"
 #.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
-#: js/ui/screenShield.js:264 js/ui/screenShield.js:634
+#: js/ui/screenShield.js:265 js/ui/screenShield.js:636
 msgid "Unable to lock"
 msgstr "לא ניתן לנעול"
 
-#: js/ui/screenShield.js:265 js/ui/screenShield.js:635
+#: js/ui/screenShield.js:266 js/ui/screenShield.js:637
 msgid "Lock was blocked by an application"
 msgstr "הנעילה נחסמה ע״י היישום"
 
-#: js/ui/screenshot.js:155
+#: js/ui/screenshot.js:1133
+msgid "Selection"
+msgstr "בחירה"
+
+#: js/ui/screenshot.js:1143
+msgid "Area Selection"
+msgstr "בחירת אזור"
+
+#: js/ui/screenshot.js:1148
+msgid "Screen"
+msgstr "מסך"
+
+#: js/ui/screenshot.js:1158
+msgid "Screen Selection"
+msgstr "בחירת מסך"
+
+#: js/ui/screenshot.js:1163
+msgid "Window"
+msgstr "חלון"
+
+#: js/ui/screenshot.js:1173
+msgid "Window Selection"
+msgstr "בחירת חלון"
+
+#: js/ui/screenshot.js:1207
+msgid "Screenshot / Screencast"
+msgstr "צילום / הקלטת מסך"
+
+#: js/ui/screenshot.js:1243
+msgid "Show Pointer"
+msgstr "הצגת הסמן"
+
+#. Translators: name of the folder under ~/Pictures for screenshots.
+#: js/ui/screenshot.js:1691
+msgid "Screenshots"
+msgstr "צילומי מסך"
+
+#. Translators: this is the name of the file that the screenshot is
+#. saved to. The placeholder is a timestamp, e.g. "2017-05-21 12-24-03".
+#: js/ui/screenshot.js:1704
+#, javascript-format
+msgid "Screenshot from %s"
+msgstr "צילום מסך מ־%s"
+
+#. Translators: notification source name.
+#: js/ui/screenshot.js:1744 js/ui/screenshot.js:1964
+msgid "Screenshot"
+msgstr "צילום מסך"
+
+#. Translators: notification title.
+#: js/ui/screenshot.js:1750
+msgid "Screenshot captured"
+msgstr "המסך צולם"
+
+#. Translators: notification body when a screenshot was captured.
+#: js/ui/screenshot.js:1752
+msgid "You can paste the image from the clipboard."
+msgstr "אפשר להדביק את התמונה מלוח הגזירים."
+
+#. Translators: button on the screenshot notification.
+#. Translators: button on the screencast notification.
+#: js/ui/screenshot.js:1758 js/ui/screenshot.js:1975
+msgid "Show in Files"
+msgstr "הצגה בקבצים"
+
+#: js/ui/screenshot.js:1787 js/ui/screenshot.js:2228
 msgid "Screenshot taken"
 msgstr "המסך צולם"
+
+#. Translators: this is the folder where recorded
+#. screencasts are stored.
+#: js/ui/screenshot.js:1890
+msgid "Screencasts"
+msgstr "הקלטות מסך"
+
+#. Translators: this is a filename used for screencast
+#. * recording, where "%d" and "%t" date and time, e.g.
+#. * "Screencast from 07-17-2013 10:00:46 PM.webm"
+#: js/ui/screenshot.js:1895
+#, no-c-format
+#| msgid "Screencast from %d %t"
+msgid "Screencast from %d %t.webm"
+msgstr "הקלטת מסך מ־%d %t.webm"
+
+#. Translators: notification title.
+#: js/ui/screenshot.js:1970
+msgid "Screencast recorded"
+msgstr "המסך הוקלט"
+
+#. Translators: notification body when a screencast was recorded.
+#: js/ui/screenshot.js:1972
+msgid "Click here to view the video."
+msgstr "לחיצה כאן מנגנת את הווידאו."
 
 #: js/ui/search.js:826
 msgid "Searching…"
@@ -2210,13 +2304,21 @@ msgctxt "Power profile"
 msgid "Power Saver"
 msgstr "חיסכון בחשמל"
 
-#: js/ui/status/remoteAccess.js:38
+#: js/ui/status/remoteAccess.js:39
 msgid "Screen is Being Shared"
 msgstr "המסך משותף"
 
-#: js/ui/status/remoteAccess.js:40
+#: js/ui/status/remoteAccess.js:41
 msgid "Turn off"
 msgstr "כיבוי"
+
+#: js/ui/status/remoteAccess.js:56
+msgid "Screen Recording in Progress"
+msgstr "המסך מוקלט"
+
+#: js/ui/status/remoteAccess.js:59
+msgid "Stop"
+msgstr "עצירה"
 
 #. The menu only appears when airplane mode is on, so just
 #. statically build it as if it was on, rather than dynamically
@@ -2472,7 +2574,7 @@ msgstr "סגירה"
 msgid "Evolution Calendar"
 msgstr "יומן אבולושן"
 
-#: src/main.c:419 subprojects/extensions-tool/src/main.c:317
+#: src/main.c:419 subprojects/extensions-tool/src/main.c:321
 msgid "Print version"
 msgstr "Print version"
 
@@ -2493,7 +2595,7 @@ msgctxt "program"
 msgid "Unknown"
 msgstr "לא ידוע"
 
-#: src/shell-app.c:551
+#: src/shell-app.c:564
 #, c-format
 msgid "Failed to launch “%s”"
 msgstr "אירע כשל בטעינת „%s”"
@@ -2957,78 +3059,78 @@ msgstr "Original author"
 msgid "State"
 msgstr "State"
 
-#: subprojects/extensions-tool/src/main.c:290
+#: subprojects/extensions-tool/src/main.c:294
 msgid "“version” takes no arguments"
 msgstr "“version” takes no arguments"
 
-#: subprojects/extensions-tool/src/main.c:292
-#: subprojects/extensions-tool/src/main.c:312
+#: subprojects/extensions-tool/src/main.c:296
+#: subprojects/extensions-tool/src/main.c:316
 msgid "Usage:"
 msgstr "Usage:"
 
-#: subprojects/extensions-tool/src/main.c:295
+#: subprojects/extensions-tool/src/main.c:299
 msgid "Print version information and exit."
 msgstr "Print version information and exit."
 
-#: subprojects/extensions-tool/src/main.c:310
-#: subprojects/extensions-tool/src/main.c:313
+#: subprojects/extensions-tool/src/main.c:314
+#: subprojects/extensions-tool/src/main.c:317
 msgid "COMMAND"
 msgstr "COMMAND"
 
-#: subprojects/extensions-tool/src/main.c:313
+#: subprojects/extensions-tool/src/main.c:317
 msgid "[ARGS…]"
 msgstr "[ARGS…]"
 
-#: subprojects/extensions-tool/src/main.c:315
+#: subprojects/extensions-tool/src/main.c:319
 msgid "Commands:"
 msgstr "Commands:"
 
-#: subprojects/extensions-tool/src/main.c:316
+#: subprojects/extensions-tool/src/main.c:320
 msgid "Print help"
 msgstr "Print help"
 
-#: subprojects/extensions-tool/src/main.c:318
+#: subprojects/extensions-tool/src/main.c:322
 msgid "Enable extension"
 msgstr "Enable extension"
 
-#: subprojects/extensions-tool/src/main.c:319
+#: subprojects/extensions-tool/src/main.c:323
 msgid "Disable extension"
 msgstr "Disable extension"
 
-#: subprojects/extensions-tool/src/main.c:320
+#: subprojects/extensions-tool/src/main.c:324
 msgid "Reset extension"
 msgstr "Reset extension"
 
-#: subprojects/extensions-tool/src/main.c:321
+#: subprojects/extensions-tool/src/main.c:325
 msgid "Uninstall extension"
 msgstr "Uninstall extension"
 
-#: subprojects/extensions-tool/src/main.c:322
+#: subprojects/extensions-tool/src/main.c:326
 msgid "List extensions"
 msgstr "List extensions"
 
-#: subprojects/extensions-tool/src/main.c:323
-#: subprojects/extensions-tool/src/main.c:324
+#: subprojects/extensions-tool/src/main.c:327
+#: subprojects/extensions-tool/src/main.c:328
 msgid "Show extension info"
 msgstr "Show extension info"
 
-#: subprojects/extensions-tool/src/main.c:325
+#: subprojects/extensions-tool/src/main.c:329
 msgid "Open extension preferences"
 msgstr "Open extension preferences"
 
-#: subprojects/extensions-tool/src/main.c:326
+#: subprojects/extensions-tool/src/main.c:330
 msgid "Create extension"
 msgstr "Create extension"
 
-#: subprojects/extensions-tool/src/main.c:327
+#: subprojects/extensions-tool/src/main.c:331
 msgid "Package extension"
 msgstr "Package extension"
 
-#: subprojects/extensions-tool/src/main.c:328
+#: subprojects/extensions-tool/src/main.c:332
 msgid "Install extension bundle"
 msgstr "Install extension bundle"
 
-#: subprojects/extensions-tool/src/main.c:330
+#: subprojects/extensions-tool/src/main.c:334
 #, c-format
 msgid "Use “%s” to get detailed help.\n"
 msgstr "Use “%s” to get detailed help.\n"
@@ -3219,9 +3321,6 @@ msgstr "צלילי מערכת"
 #~ msgid "Status Icons"
 #~ msgstr "סמלי מצב"
 
-#~ msgid "Clear section"
-#~ msgstr "ניקוי מקטע"
-
 #~ msgid "Media"
 #~ msgstr "מדיה"
 
@@ -3230,9 +3329,6 @@ msgstr "צלילי מערכת"
 
 #~ msgid "%d x %d"
 #~ msgstr "%d x %d"
-
-#~ msgid "evolution"
-#~ msgstr "evolution"
 
 #~ msgid "Show the week date in the calendar"
 #~ msgstr "Show the week date in the calendar"
@@ -3668,9 +3764,6 @@ msgstr "צלילי מערכת"
 
 #~ msgid "Power"
 #~ msgstr "צריכת חשמל"
-
-#~ msgid "Screencast from %d %t"
-#~ msgstr "צילום מסך מהקובץ %d %t"
 
 #~ msgid "Click Log Out to quit these applications and log out of the system."
 #~ msgstr "יש ללחוץ על יציאה כדי לסגור יישומים אלה ולצאת מהמערכת."
