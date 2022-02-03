@@ -988,6 +988,11 @@ class UIWindowSelector extends St.Widget {
     }
 });
 
+const UIMode = {
+    SCREENSHOT: 0,
+    SCREENCAST: 1,
+};
+
 var ScreenshotUI = GObject.registerClass({
     Properties: {
         'screencast-in-progress': GObject.ParamSpec.boolean(
@@ -1408,12 +1413,14 @@ var ScreenshotUI = GObject.registerClass({
             this._screenSelectors[Main.layoutManager.primaryIndex].checked = true;
     }
 
-    async open() {
+    async open(mode = UIMode.SCREENSHOT) {
         if (this._openingCoroutineInProgress)
             return;
 
         if (this._screencastInProgress)
             return;
+
+        this._castButton.checked = mode === UIMode.SCREENCAST;
 
         if (!this.visible) {
             // Screenshot UI is opening from completely closed state
