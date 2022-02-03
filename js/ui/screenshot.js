@@ -1275,15 +1275,17 @@ var ScreenshotUI = GObject.registerClass({
             this._rebuildMonitorBins();
         });
 
+        const uiModes =
+            Shell.ActionMode.ALL &
+            ~(Shell.ActionMode.LOCK_SCREEN |
+                Shell.ActionMode.UNLOCK_SCREEN |
+                Shell.ActionMode.LOGIN_SCREEN);
+
         Main.wm.addKeybinding(
             'show-screenshot-ui',
             new Gio.Settings({ schema_id: 'org.gnome.shell.keybindings' }),
             Meta.KeyBindingFlags.IGNORE_AUTOREPEAT,
-            Shell.ActionMode.NORMAL |
-            Shell.ActionMode.OVERVIEW |
-            Shell.ActionMode.SYSTEM_MODAL |
-            Shell.ActionMode.LOOKING_GLASS |
-            Shell.ActionMode.POPUP,
+            uiModes,
             showScreenshotUI
         );
     }
