@@ -35,7 +35,7 @@ class ATIndicator extends PanelMenu.Button {
 
         this.add_child(new St.Icon({
             style_class: 'system-status-icon',
-            icon_name: 'preferences-desktop-accessibility-symbolic',
+            icon_name: 'org.gnome.Settings-accessibility-symbolic',
         }));
 
         this._a11ySettings = new Gio.Settings({ schema_id: A11Y_SCHEMA });
