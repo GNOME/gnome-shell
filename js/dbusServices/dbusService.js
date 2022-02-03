@@ -6,6 +6,8 @@ const Signals = imports.signals;
 
 const IDLE_SHUTDOWN_TIME = 2; // s
 
+const { programArgs } = imports.system;
+
 var ServiceImplementation = class {
     constructor(info, objectPath) {
         this._objectPath = objectPath;
@@ -167,9 +169,13 @@ var DBusService = class {
 
         this._service.register();
 
+        let flags = Gio.BusNameOwnerFlags.ALLOW_REPLACEMENT;
+        if (programArgs.includes('--replace'))
+            flags |= Gio.BusNameOwnerFlags.REPLACE;
+
         Gio.DBus.own_name(Gio.BusType.SESSION,
             this._name,
-            Gio.BusNameOwnerFlags.REPLACE,
+            flags,
             () => this._service.export(),
             null,
             () => this._loop.quit());
