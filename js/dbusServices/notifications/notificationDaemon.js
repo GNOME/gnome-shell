@@ -17,6 +17,8 @@ var NotificationDaemon = class extends ServiceImplementation {
 
         this._autoShutdown = false;
 
+        this._activeNotifications = new Map();
+
         this._proxy = new NotificationsProxy(Gio.DBus.session,
             'org.gnome.Shell',
             '/org/freedesktop/Notifications',
@@ -27,14 +29,41 @@ var NotificationDaemon = class extends ServiceImplementation {
 
         this._proxy.connectSignal('ActionInvoked',
             (proxy, sender, params) => {
-                this._dbusImpl.emit_signal('ActionInvoked',
+                const [id] = params;
+                this._emitSignal(
+                    this._activeNotifications.get(id),
+                    'ActionInvoked',
                     new GLib.Variant('(us)', params));
             });
         this._proxy.connectSignal('NotificationClosed',
             (proxy, sender, params) => {
-                this._dbusImpl.emit_signal('NotificationClosed',
+                const [id] = params;
+                this._emitSignal(
+                    this._activeNotifications.get(id),
+                    'NotificationClosed',
                     new GLib.Variant('(uu)', params));
+                this._activeNotifications.delete(id);
             });
+    }
+
+    _emitSignal(sender, signalName, params) {
+        if (!sender)
+            return;
+        this._dbusImpl.get_connection()?.emit_signal(
+            sender,
+            this._dbusImpl.get_object_path(),
+            'org.freedesktop.Notifications',
+            signalName,
+            params);
+    }
+
+    _untrackSender(sender) {
+        super._untrackSender(sender);
+
+        this._activeNotifications.forEach((value, key) => {
+            if (value === sender)
+                this._activeNotifications.delete(key);
+        });
     }
 
     register() {
@@ -45,7 +74,8 @@ var NotificationDaemon = class extends ServiceImplementation {
     }
 
     async NotifyAsync(params, invocation) {
-        const pid = await this._getSenderPid(invocation.get_sender());
+        const sender = invocation.get_sender();
+        const pid = await this._getSenderPid(sender);
         const hints = params[6];
 
         params[6] = {
@@ -57,6 +87,8 @@ var NotificationDaemon = class extends ServiceImplementation {
             if (this._handleError(invocation, error))
                 return;
 
+            const [id] = res;
+            this._activeNotifications.set(id, sender);
             invocation.return_value(new GLib.Variant('(u)', res));
         });
     }
