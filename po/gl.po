@@ -6,30 +6,30 @@
 #
 #
 # Antón Méixome <meixome@certima.net>, 2009.
-# Fran Diéguez <frandieguez@gnome.org>, 2009, 2010, 2011, 2012.
 # Leandro Regueiro <leandro.regueiro@gmail.com>, 2012.
 # Fran Dieguez <fran.dieguez@gnome.org>, 2012-2022.
+# Fran Diéguez <frandieguez@gnome.org>, 2009-2022.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2022-01-30 15:28+0000\n"
-"PO-Revision-Date: 2022-02-01 00:25+0100\n"
-"Last-Translator: Fran Dieguez <fran.dieguez@gnome.org>\n"
+"POT-Creation-Date: 2022-02-04 13:08+0000\n"
+"PO-Revision-Date: 2022-02-04 15:50+0100\n"
+"Last-Translator: Fran Diéguez <frandieguez@gnome.org>\n"
 "Language-Team: Galician <proxecto@trasno.gal>\n"
 "Language: gl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"X-Generator: Gtranslator 40.0\n"
+"X-Generator: Gtranslator 41.0\n"
 "X-Project-Style: gnome\n"
 "X-DL-Team: gl\n"
 "X-DL-Module: gnome-shell\n"
 "X-DL-Branch: main\n"
 "X-DL-Domain: po\n"
-"X-DL-State: None\n"
+"X-DL-State: Translating\n"
 
 #: data/50-gnome-shell-launchers.xml:6
 msgid "Launchers"
@@ -380,7 +380,6 @@ msgid "Switch to application 9"
 msgstr "Trocar á aplicación 9"
 
 #: data/org.gnome.shell.gschema.xml.in:235
-#| msgid "Show on-screen help"
 msgid "Show screenshot UI"
 msgstr "Mostrar UI de captura de pantalla"
 
@@ -566,82 +565,94 @@ msgid "(or place finger on reader)"
 msgstr "(ou pouse o dedo sobre o lector)"
 
 #. Translators: The name of the power-off action in search
-#: js/misc/systemActions.js:82
+#: js/misc/systemActions.js:84
 msgctxt "search-result"
 msgid "Power Off"
 msgstr "Apagar"
 
 #. Translators: A list of keywords that match the power-off action, separated by semicolons
-#: js/misc/systemActions.js:85
+#: js/misc/systemActions.js:87
 msgid "power off;shutdown;halt;stop"
 msgstr "apagar;reiniciar;deter;parar"
 
 #. Translators: The name of the restart action in search
-#: js/misc/systemActions.js:90
+#: js/misc/systemActions.js:92
 msgctxt "search-result"
 msgid "Restart"
 msgstr "Reiniciar"
 
 #. Translators: A list of keywords that match the restart action, separated by semicolons
-#: js/misc/systemActions.js:93
+#: js/misc/systemActions.js:95
 msgid "reboot;restart;"
 msgstr "reiniciar;"
 
 #. Translators: The name of the lock screen action in search
-#: js/misc/systemActions.js:98
+#: js/misc/systemActions.js:100
 msgctxt "search-result"
 msgid "Lock Screen"
 msgstr "Bloquear a pantalla"
 
 #. Translators: A list of keywords that match the lock screen action, separated by semicolons
-#: js/misc/systemActions.js:101
+#: js/misc/systemActions.js:103
 msgid "lock screen"
 msgstr "bloquear pantalla;bloquear"
 
 #. Translators: The name of the logout action in search
-#: js/misc/systemActions.js:106
+#: js/misc/systemActions.js:108
 msgctxt "search-result"
 msgid "Log Out"
 msgstr "Saír da sesión"
 
 #. Translators: A list of keywords that match the logout action, separated by semicolons
-#: js/misc/systemActions.js:109
+#: js/misc/systemActions.js:111
 msgid "logout;log out;sign off"
 msgstr "pechar a sesión;desloguearse;saír da sesión"
 
 #. Translators: The name of the suspend action in search
-#: js/misc/systemActions.js:114
+#: js/misc/systemActions.js:116
 msgctxt "search-result"
 msgid "Suspend"
 msgstr "Suspender"
 
 #. Translators: A list of keywords that match the suspend action, separated by semicolons
-#: js/misc/systemActions.js:117
+#: js/misc/systemActions.js:119
 msgid "suspend;sleep"
 msgstr "suspender;durmir"
 
 #. Translators: The name of the switch user action in search
-#: js/misc/systemActions.js:122
+#: js/misc/systemActions.js:124
 msgctxt "search-result"
 msgid "Switch User"
 msgstr "Cambiar de usuario"
 
 #. Translators: A list of keywords that match the switch user action, separated by semicolons
-#: js/misc/systemActions.js:125
+#: js/misc/systemActions.js:127
 msgid "switch user"
 msgstr "cambiar de usuario"
 
 #. Translators: A list of keywords that match the lock orientation action, separated by semicolons
-#: js/misc/systemActions.js:132
+#: js/misc/systemActions.js:134
 msgid "lock orientation;unlock orientation;screen;rotation"
 msgstr "bloquear orientación;desbloquear orientación;pantalla;rotación"
 
-#: js/misc/systemActions.js:232
+#. Translators: The name of the screenshot UI action in search
+#: js/misc/systemActions.js:139
+#| msgid "Screenshot"
+msgctxt "search-result"
+msgid "Take a Screenshot"
+msgstr "Tomar unha captura"
+
+#. Translators: A list of keywords that match the screenshot UI action, separated by semicolons
+#: js/misc/systemActions.js:142
+msgid "screenshot;screencast;snip;capture;record"
+msgstr "captura;gravación de pantalla;recorte;capturar;gravar"
+
+#: js/misc/systemActions.js:242
 msgctxt "search-result"
 msgid "Unlock Screen Rotation"
 msgstr "Desbloquear a rotación de pantalla"
 
-#: js/misc/systemActions.js:233
+#: js/misc/systemActions.js:243
 msgctxt "search-result"
 msgid "Lock Screen Rotation"
 msgstr "Bloquear a rotación de pantalla"
@@ -1667,16 +1678,16 @@ msgstr "Prema calquera tecla para saír"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: js/ui/panel.js:271
+#: js/ui/panel.js:270
 msgid "Activities"
 msgstr "Actividades"
 
-#: js/ui/panel.js:557
+#: js/ui/panel.js:392
 msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "Sistema"
 
-#: js/ui/panel.js:675
+#: js/ui/panel.js:502
 msgid "Top Bar"
 msgstr "Barra superior"
 
@@ -1715,109 +1726,96 @@ msgstr "Non foi posíbel bloquear"
 msgid "Lock was blocked by an application"
 msgstr "Unha aplicación impediu o bloqueo"
 
-#: js/ui/screenshot.js:1137
-#| msgid "Select Network"
+#: js/ui/screenshot.js:1147
 msgid "Selection"
 msgstr "Selección"
 
-#: js/ui/screenshot.js:1147
+#: js/ui/screenshot.js:1157
 msgid "Area Selection"
 msgstr "Seleccionar área"
 
-#: js/ui/screenshot.js:1152
-#| msgctxt "search-result"
-#| msgid "Lock Screen"
+#: js/ui/screenshot.js:1162
 msgid "Screen"
 msgstr "Pantalla"
 
-#: js/ui/screenshot.js:1162
-#| msgid "Screen Reader"
+#: js/ui/screenshot.js:1172
 msgid "Screen Selection"
 msgstr "Seleccionar pantalla"
 
-#: js/ui/screenshot.js:1167
-#| msgid "Windows"
+#: js/ui/screenshot.js:1177
 msgid "Window"
 msgstr "Xanela"
 
-#: js/ui/screenshot.js:1177
+#: js/ui/screenshot.js:1187
 msgid "Window Selection"
 msgstr "Seleccionar xanela"
 
-#: js/ui/screenshot.js:1211
-#| msgid "Screenshot taken"
+#: js/ui/screenshot.js:1221
 msgid "Screenshot / Screencast"
 msgstr "Captura de pantalla / Captura de vídeo de pantalla"
 
-#: js/ui/screenshot.js:1247
-#| msgid "Show Errors"
+#: js/ui/screenshot.js:1257
 msgid "Show Pointer"
 msgstr "Mostrar punteiro"
 
 #. Translators: name of the folder under ~/Pictures for screenshots.
-#: js/ui/screenshot.js:1695
-#| msgid "Screenshot taken"
+#: js/ui/screenshot.js:1722
 msgid "Screenshots"
 msgstr "Capturas de pantalla"
 
 #. Translators: this is the name of the file that the screenshot is
 #. saved to. The placeholder is a timestamp, e.g. "2017-05-21 12-24-03".
-#: js/ui/screenshot.js:1708
+#: js/ui/screenshot.js:1735
 #, javascript-format
-#| msgid "Screenshot taken"
 msgid "Screenshot from %s"
 msgstr "Captura de pantalla de %s"
 
 #. Translators: notification source name.
-#: js/ui/screenshot.js:1748 js/ui/screenshot.js:1968
-#| msgid "Screenshot taken"
+#: js/ui/screenshot.js:1775 js/ui/screenshot.js:1995
 msgid "Screenshot"
 msgstr "Captura de pantalla"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:1754
-#| msgid "Screenshot taken"
+#: js/ui/screenshot.js:1781
 msgid "Screenshot captured"
 msgstr "Captura de pantalla realizada"
 
 #. Translators: notification body when a screenshot was captured.
-#: js/ui/screenshot.js:1756
+#: js/ui/screenshot.js:1783
 msgid "You can paste the image from the clipboard."
 msgstr "Pode pegar a imaxe desde o portapapeis."
 
 #. Translators: button on the screenshot notification.
 #. Translators: button on the screencast notification.
-#: js/ui/screenshot.js:1762 js/ui/screenshot.js:1979
-#| msgid "Show Details"
+#: js/ui/screenshot.js:1789 js/ui/screenshot.js:2006
 msgid "Show in Files"
 msgstr "Mostrar en Ficheiros"
 
-#: js/ui/screenshot.js:1791 js/ui/screenshot.js:2232
+#: js/ui/screenshot.js:1818 js/ui/screenshot.js:2259
 msgid "Screenshot taken"
 msgstr "Captura de pantalla realizada"
 
 #. Translators: this is the folder where recorded
 #. screencasts are stored.
-#: js/ui/screenshot.js:1894
+#: js/ui/screenshot.js:1921
 msgid "Screencasts"
 msgstr "Capturas en vídeo da pantalla"
 
 #. Translators: this is a filename used for screencast
 #. * recording, where "%d" and "%t" date and time, e.g.
 #. * "Screencast from 07-17-2013 10:00:46 PM.webm"
-#: js/ui/screenshot.js:1899
+#: js/ui/screenshot.js:1926
 #, no-c-format
 msgid "Screencast from %d %t.webm"
 msgstr "Captura en vídeo da pantalla"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:1974
-#| msgid "Screen Keyboard"
+#: js/ui/screenshot.js:2001
 msgid "Screencast recorded"
 msgstr "Captura en vídeo da pantalla realizada"
 
 #. Translators: notification body when a screencast was recorded.
-#: js/ui/screenshot.js:1976
+#: js/ui/screenshot.js:2003
 msgid "Click here to view the video."
 msgstr "Prema aquí para ver o vídeo."
 
@@ -1915,47 +1913,47 @@ msgstr "Non foi posíbel iniciar %s"
 msgid "Couldn’t find the %s application"
 msgstr "Non se puido atopar a aplicación %s"
 
-#: js/ui/status/accessibility.js:35
+#: js/ui/status/accessibility.js:34
 msgid "Accessibility"
 msgstr "Accesibilidade"
 
-#: js/ui/status/accessibility.js:48
-msgid "Zoom"
-msgstr "Ampliación"
-
-#: js/ui/status/accessibility.js:55
-msgid "Screen Reader"
-msgstr "Lector da pantalla"
-
-#: js/ui/status/accessibility.js:59
-msgid "Screen Keyboard"
-msgstr "Teclado en pantalla"
-
-#: js/ui/status/accessibility.js:63
-msgid "Visual Alerts"
-msgstr "Alertas visuais"
-
-#: js/ui/status/accessibility.js:66
-msgid "Sticky Keys"
-msgstr "Teclas persistentes"
-
-#: js/ui/status/accessibility.js:69
-msgid "Slow Keys"
-msgstr "Teclas lentas"
-
-#: js/ui/status/accessibility.js:72
-msgid "Bounce Keys"
-msgstr "Rexeite de teclas"
-
-#: js/ui/status/accessibility.js:75
-msgid "Mouse Keys"
-msgstr "Teclas do rato"
-
-#: js/ui/status/accessibility.js:134
+#: js/ui/status/accessibility.js:44
 msgid "High Contrast"
 msgstr "Contraste alto"
 
-#: js/ui/status/accessibility.js:176
+#: js/ui/status/accessibility.js:47
+msgid "Zoom"
+msgstr "Ampliación"
+
+#: js/ui/status/accessibility.js:54
+msgid "Screen Reader"
+msgstr "Lector da pantalla"
+
+#: js/ui/status/accessibility.js:58
+msgid "Screen Keyboard"
+msgstr "Teclado en pantalla"
+
+#: js/ui/status/accessibility.js:62
+msgid "Visual Alerts"
+msgstr "Alertas visuais"
+
+#: js/ui/status/accessibility.js:65
+msgid "Sticky Keys"
+msgstr "Teclas persistentes"
+
+#: js/ui/status/accessibility.js:68
+msgid "Slow Keys"
+msgstr "Teclas lentas"
+
+#: js/ui/status/accessibility.js:71
+msgid "Bounce Keys"
+msgstr "Rexeite de teclas"
+
+#: js/ui/status/accessibility.js:74
+msgid "Mouse Keys"
+msgstr "Teclas do rato"
+
+#: js/ui/status/accessibility.js:131
 msgid "Large Text"
 msgstr "Texto grande"
 
