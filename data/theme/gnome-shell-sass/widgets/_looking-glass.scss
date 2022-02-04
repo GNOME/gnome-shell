@@ -16,6 +16,14 @@
     padding: $base_padding;
     border-radius: 0;
     background-color: transparent;
+    spacing: $base_spacing;
+
+    .lg-toolbar-button {
+      padding: $base_padding $base_padding*2;
+      @extend %button;
+
+      & > StIcon { icon-size: $base_icon_size; }
+    }
   }
 
   .labels { 

@@ -1268,7 +1268,6 @@ class LookingGlass extends St.BoxLayout {
             style_class: 'lg-toolbar-button',
             child: new St.Icon({
                 icon_name: 'find-location-symbolic',
-                icon_size: 24,
             }),
         });
         toolbar.add_actor(inspectButton);
@@ -1289,7 +1288,6 @@ class LookingGlass extends St.BoxLayout {
             style_class: 'lg-toolbar-button',
             child: new St.Icon({
                 icon_name: 'user-trash-full-symbolic',
-                icon_size: 24,
             }),
         });
         toolbar.add_actor(gcButton);
