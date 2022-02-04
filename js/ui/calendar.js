@@ -894,9 +894,7 @@ class Placeholder extends St.BoxLayout {
         super._init({ style_class: 'message-list-placeholder', vertical: true });
         this._date = new Date();
 
-        const file = Gio.File.new_for_uri(
-            'resource:///org/gnome/shell/theme/no-notifications.svg');
-        this._icon = new St.Icon({ gicon: new Gio.FileIcon({ file }) });
+        this._icon = new St.Icon({ icon_name: 'no-notifications-symbolic' });
         this.add_actor(this._icon);
 
         this._label = new St.Label({ text: _('No Notifications') });

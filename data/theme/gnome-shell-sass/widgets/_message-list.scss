@@ -9,7 +9,7 @@
   .message-list-placeholder { 
     font-weight:1000; 
     font-size: 18pt;
-    color: transparentize($fg_color, 0.7);
+    color: $insensitive_fg_color;
     spacing: 12px;
 
     // icon size and color
