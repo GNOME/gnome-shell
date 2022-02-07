@@ -10,7 +10,7 @@ $panel_transition_duration: 250ms; // same as the overview transition duration
   background-color: $panel_bg_color;
   font-weight: bold;
   height: $panel_height;
-  font-feature-settings: "tnum";
+  @extend %numeric;
   transition-duration: $panel_transition_duration;
 
   // transparent panel on lock & login screens
@@ -42,7 +42,7 @@ $panel_transition_duration: 250ms; // same as the overview transition duration
       box-shadow: inset 0 0 0 100px $screenshot_ui_button_red;
 
       StBoxLayout {
-        spacing: $base_spacing;
+        spacing: $base_padding;
       }
 
       StIcon {
@@ -186,13 +186,13 @@ $panel_transition_duration: 250ms; // same as the overview transition duration
 
 // App Menu
 #appMenu {
-  spacing: $base_spacing;
+  spacing: $base_padding;
   .label-shadow { color: transparent; }
 }
 
 #appMenu .panel-status-menu-box {
   padding: 0 $base_padding;
-  spacing: $base_spacing;
+  spacing: $base_padding;
 }
 
 

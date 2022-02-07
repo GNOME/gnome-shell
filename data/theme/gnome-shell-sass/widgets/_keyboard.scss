@@ -44,8 +44,9 @@ $default_key_bg_color: if($variant=='light', darken($key_bg_color, 11%), darken(
   @include keyboard_key(normal, $key_bg_color, $osd_fg_color);
 
   &:focus { @include keyboard_key(focus);}
-  &:hover, &:checked { @include keyboard_key(hover, $key_bg_color, $osd_fg_color);}
+  &:hover { @include keyboard_key(hover, $key_bg_color, $osd_fg_color);}
   &:active { @include keyboard_key(active, $key_bg_color, $osd_fg_color); }
+  &:checked { @include keyboard_key(checked, $key_bg_color, $osd_fg_color); }
 
   &:grayed { //FIXMEy
     background-color: darken($bg_color, 3%);
@@ -56,16 +57,18 @@ $default_key_bg_color: if($variant=='light', darken($key_bg_color, 11%), darken(
   // non-character keys
   &.default-key {
     @include keyboard_key(normal, $default_key_bg_color, $osd_fg_color);
-    &:hover, &:checked {@include keyboard_key(hover, $default_key_bg_color, $osd_fg_color);}
+    &:hover {@include keyboard_key(hover, $default_key_bg_color, $osd_fg_color);}
     &:active { @include keyboard_key(active, $default_key_bg_color, $osd_fg_color);}
+    &:checked { @include keyboard_key(checked, $default_key_bg_color, $osd_fg_color);}
     border-radius: $key_border_radius;
   }
 
   // enter key is suggested-action
   &.enter-key {
     @include keyboard_key(normal, $selected_bg_color, $selected_fg_color);
-    &:hover, &:checked { @include keyboard_key(hover, lighten($selected_bg_color, 3%), $selected_fg_color);}
-    &:active {@include keyboard_key(active, darken($selected_bg_color, 2%), $selected_fg_color);}
+    &:hover { @include keyboard_key(hover, $selected_bg_color, $selected_fg_color);}
+    &:active {@include keyboard_key(active, $selected_bg_color, $selected_fg_color);}
+    &:checked {@include keyboard_key(checked, $selected_bg_color, $selected_fg_color);}
     border-radius: $key_border_radius;
     color: $osd_fg_color;
   }
@@ -94,15 +97,16 @@ $default_key_bg_color: if($variant=='light', darken($key_bg_color, 11%), darken(
   -arrow-border-color: lighten($osd_bg_color, 9%);
   -arrow-base: 20px;
   -arrow-rise: 10px;
-  -boxpointer-gap: $base_spacing;
+  -boxpointer-gap: $base_padding;
   padding: $base_padding;
 
   .keyboard-key {
     @include keyboard_key(normal, $key_bg_color, $osd_fg_color);
 
     &:focus { @include keyboard_key(focus);}
-    &:hover, &:checked { @include keyboard_key(hover, $key_bg_color, $osd_fg_color);}
+    &:hover { @include keyboard_key(hover, $key_bg_color, $osd_fg_color);}
     &:active { @include keyboard_key(active, $key_bg_color, $osd_fg_color); }
+    &:checked { @include keyboard_key(checked, $key_bg_color, $osd_fg_color); }
 
     border-radius:$key_border_radius;
   }
@@ -142,7 +146,8 @@ $default_key_bg_color: if($variant=='light', darken($key_bg_color, 11%), darken(
     @include keyboard_key(undecorated, $key_bg_color, $osd_fg_color);
 
     &:focus { @include keyboard_key(focus);}
-    &:hover, &:checked { @include keyboard_key(hover, $key_bg_color, $osd_fg_color);}
+    &:hover { @include keyboard_key(hover, $key_bg_color, $osd_fg_color);}
     &:active { @include keyboard_key(active, $key_bg_color, $osd_fg_color); }
+    &:checked { @include keyboard_key(checked, $key_bg_color, $osd_fg_color); }
   }
 }

@@ -4,20 +4,27 @@ $osd_levelbar_height:6px;
 
 .osd-window {
   @extend %osd_panel;
+  @extend %heading;
   text-align: center;
   font-weight: bold;
-  &, & > * { spacing: $base_spacing * 2; } // 12px
-  margin: 4em;
+  spacing: $base_padding * 2; // 12px
+  padding: $base_padding * 2 $base_padding * 3;
+  & > * { spacing: 8px; }
+  margin-bottom: 4em;
 
-  StIcon {
-    icon-size:$base_icon_size * 2;
-
-    &:first-child:last-child { padding: 0 $base_padding * 2; }
-  }
+  StIcon { icon-size:$large_icon_size;}
 
   .osd-monitor-label { font-size: 3em; }
   
+  StLabel {
+    &:ltr { margin-right: 6px; }
+    &:rtl { margin-left: 6px; }
+  }
+
   .level {
+    margin-bottom: 4px;
+    &:first-child { margin-bottom: 0px; }
+
     height: $osd_levelbar_height;
     min-width:$base_icon_size * 10;
     -barlevel-height: $osd_levelbar_height;
@@ -25,8 +32,8 @@ $osd_levelbar_height:6px;
     -barlevel-active-background-color: $osd_fg_color;
     -barlevel-overdrive-color: $destructive_color;
     -barlevel-overdrive-separator-width: 3px;
-    &:ltr {margin-right: 16px;}
-    &:rtl {margin-left: 16px;}
+    &:ltr { margin-right: 6px; }
+    &:rtl { margin-left: 6px; }
   }
 }
 

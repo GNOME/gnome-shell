@@ -1,19 +1,16 @@
 /* Date/Time Menu */
 
 // overall menu
-#calendarArea {}
+#calendarArea {
+  padding: $base_padding;
+}
 
 // Calendar menu side column
 .datemenu-calendar-column {
-  spacing: $base_spacing;
-  border: none;
-  border-style: solid;
-  border-color: $borders_color;
-
+  spacing: $base_padding;
   &:ltr {padding-left: $base_padding;}
   &:rtl {padding-right: $base_padding;}
-
-  .datemenu-displays-box {spacing: $base_spacing;}
+  .datemenu-displays-box {spacing: $base_padding;}
 }
 
 /* today button (the date) */
@@ -23,21 +20,19 @@
 
   // weekday label
   .day-label {
-    @include fontsize($base_font_size+1);
-    color: $insensitive_fg_color;
-    font-weight: bold;
+    @extend %heading;
   }
 
   // date label
   .date-label {
-    @include fontsize($base_font_size+7);
-    font-weight: 1000;
+    @extend %title_2;
   }
 }
 
 /* Calendar */
 .calendar {
   @include card(flat);
+  margin-top: 0;
 
   // month header
   .calendar-month-header {
@@ -50,9 +45,10 @@
 
     // month label
     .calendar-month-label {
-      font-weight: bold;
+      color: lighten($fg_color,5%);
+      @extend %heading;
+      padding: 8px 0;
     }
-
     .pager-button {
       background-color: transparent;
       height: 32px;
@@ -67,24 +63,23 @@
   $calendar_day_size: 32px;
 
   .calendar-day-base {
-    @include fontsize($base_font_size - 3);
     text-align: center;
     margin: 2px;
-    height: $calendar_day_size;
-    width: $calendar_day_size;
-    border-radius: $calendar_day_size * 0.5 + 2px;
-    font-feature-settings: "tnum";
+    padding: 0 !important;
+    height: $calendar_day_size !important;
+    width: $calendar_day_size !important;
+    border-radius: 99px;
+    @extend %numeric;
+    @extend %smaller;
     
     &:hover {background-color: $hover_bg_color;}
     &:focus {
-      font-weight: 1000;
       background-color: mix($bg_color, $selected_bg_color, 80%);
       color: $selected_fg_color;
-      box-shadow: 0 0 0 2px transparentize($selected_bg_color, 0.4);
+      box-shadow:inset 0 0 0 2px transparentize($selected_bg_color, 0.4);
     }
 
     &:active,&:selected {
-      font-weight: 1000;
       color: $active_fg_color;
       background-color: $active_bg_color;
       &:focus {
@@ -97,20 +92,14 @@
       color: $insensitive_fg_color;
       padding-top: $base_padding;
       height: 16px !important; // force heading to be smaller height
-      @include fontsize($base_font_size - 2);
+      font-weight: bold;
+      @extend %smaller;
     }
   }
 
-  .calendar-day {
-    border-width: 0; // border collapse hack - see calendar.js
-  }
-
+  .calendar-day {}
   .calendar-work-day {}
-
-  .calendar-nonwork-day {
-    color: $insensitive_fg_color;
-  }
-
+  .calendar-nonwork-day {color: $insensitive_fg_color;}
   .calendar-other-month-day {
     color: transparentize($fg_color, 0.5);
     &.calendar-nonwork-day {
@@ -118,11 +107,10 @@
     }
   }
 
-
   // Today
   .calendar-today {
     background-color: $selected_bg_color;
-    font-weight: 1000;
+    font-weight: 800;
     color: $selected_fg_color !important;
 
     &:hover,&:focus {
@@ -144,10 +132,6 @@
   .calendar-day-with-events {
     background-image: if($variant == 'light', url("resource:///org/gnome/shell/theme/calendar-today-light.svg"),url("resource:///org/gnome/shell/theme/calendar-today.svg"));
     background-size: contain;
-    &.calendar-work-day {
-      color: lighten($fg_color,10%);
-      font-weight: bold;
-    }
   }
 
   .calendar-week-number {
@@ -155,7 +139,7 @@
     font-weight: bold;
     font-feature-settings: "tnum";
     margin: 6px;
-    padding: $base_padding;
+    padding: 0 $base_padding;
     border-radius: 3px;
     background-color: darken($bg_color, 2%);
     color: $insensitive_fg_color
@@ -168,23 +152,23 @@
   padding: $base_padding * 2;
 
   .events-box {
-    spacing: $base_spacing;
+    spacing: $base_padding;
   }
 
   .events-list {
-    spacing: 2 * $base_spacing;
+    spacing: 2 * $base_padding;
   }
 
   .events-title {
+    @extend %heading;
     color: $insensitive_fg_color;
-    font-weight: bold;
     margin-bottom: $base_margin;
   }
 
   .event-time {
+    @extend %numeric;
+    @extend %caption;
     color: $insensitive_fg_color;
-    font-feature-settings: "tnum";
-    @include fontsize($base_font_size - 1);
   }
 }
 
@@ -194,29 +178,26 @@
   padding: $base_padding * 2;
 
   .world-clocks-grid {
-    spacing-rows: $base_spacing;
-    spacing-columns: $base_spacing * 2;
+    spacing-rows: $base_padding;
+    spacing-columns: $base_padding * 2;
   }
 
   // title
   .world-clocks-header {
+    @extend %heading;
     color: $insensitive_fg_color;
-    font-weight: bold;
   }
 
   // city label
   .world-clocks-city {
     color: $fg_color;
-    @include fontsize($base_font_size);
-    font-weight: normal;
   }
 
   // timezone time
   .world-clocks-time {
-    font-weight: bold;
+    @extend %heading;
+    @extend %numeric;
     color: $fg_color;
-    font-feature-settings: "tnum";
-    @include fontsize($base_font_size);
 
     &:ltr {text-align: right;}
     &:rtl {text-align: left;}
@@ -224,9 +205,9 @@
 
   // timezone offset label
   .world-clocks-timezone {
+    @extend %numeric;
+    @extend %caption;
     color: $insensitive_fg_color;
-    font-feature-settings: "tnum";
-    @include fontsize($base_font_size - 1);
   }
 }
 
@@ -236,42 +217,40 @@
   padding: $base_padding * 2;
 
   .weather-box {
-    spacing: $base_spacing + $base_margin;
+    spacing: $base_padding + $base_margin;
   }
 
   .weather-header-box {
-    spacing: $base_spacing;
+    spacing: $base_padding;
   }
 
   .weather-header {
     color: $insensitive_fg_color;
-    font-weight: bold;
+    @extend %heading;
 
     &.location {
       font-weight: normal;
-      @include fontsize($base_font_size - 1);
     }
   }
 
   .weather-grid {
-    spacing-rows: $base_spacing;
-    spacing-columns: $base_spacing * 2;
+    spacing-rows: $base_padding;
+    spacing-columns: $base_padding * 2;
   }
 
   .weather-forecast-time {
+    @extend %numeric;
+    @extend %caption;
     color: darken($fg_color,30%);
-    font-feature-settings: "tnum";
-    @include fontsize($base_font_size - 2);
-    font-weight: normal;
     padding-top: 0.2em;
     padding-bottom: 0.4em;
   }
 
   .weather-forecast-icon {
-    icon-size: $base_icon_size * 2;
+    icon-size: $large_icon_size;
   }
 
   .weather-forecast-temp {
-    font-weight: bold;
+    @extend %heading;
   }
 }

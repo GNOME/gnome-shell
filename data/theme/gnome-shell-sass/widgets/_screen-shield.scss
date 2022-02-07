@@ -11,7 +11,7 @@
 .unlock-dialog-clock-time {
   font-size: 64pt;
   padding-top: 42px;
-  font-feature-settings: "tnum";
+  @extend %numeric;
 }
 
 .unlock-dialog-clock-date {

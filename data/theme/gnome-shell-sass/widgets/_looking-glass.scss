@@ -8,7 +8,7 @@
   border: 1px solid $osd_outer_borders_color;
   color: $osd_fg_color;
   padding: $base_padding;
-  spacing: $base_spacing;
+  spacing: $base_padding;
   box-shadow: 0 2px 4px 0 rgba(0,0,0,0.1);
 
   & > #Toolbar {
@@ -16,7 +16,7 @@
     padding: $base_padding;
     border-radius: 0;
     background-color: transparent;
-    spacing: $base_spacing;
+    spacing: $base_padding;
 
     .lg-toolbar-button {
       padding: $base_padding $base_padding*2;
@@ -27,7 +27,7 @@
   }
 
   .labels { 
-    spacing: $base_spacing;
+    spacing: $base_padding;
   }
 
   .notebook-tab {
@@ -54,8 +54,8 @@
     }
   }
 
-  StBoxLayout#EvalBox { padding: 4px; spacing: $base_spacing; padding: $base_padding; }
-  StBoxLayout#ResultsArea { spacing: $base_spacing; padding: $base_padding; }
+  StBoxLayout#EvalBox { padding: 4px; spacing: $base_padding; padding: $base_padding; }
+  StBoxLayout#ResultsArea { spacing: $base_padding; padding: $base_padding; }
 }
 
 .lg-dialog {
@@ -83,12 +83,12 @@
 }
 
 .lg-completions-text {
-  font-size: .9em;
+  @extend %caption;
   font-style: italic;
 }
 
 .lg-obj-inspector-title {
-  spacing: $base_spacing;
+  spacing: $base_padding;
 }
 
 .lg-obj-inspector-button {
@@ -103,7 +103,7 @@
 
 .lg-extensions-list {
   padding: $base_padding;
-  spacing: $base_spacing;
+  spacing: $base_padding;
 }
 
 .lg-extension {
@@ -112,11 +112,11 @@
 }
 
 .lg-extension-name {
-  font-weight: bold;
+  @extend %heading;
 }
 
 .lg-extension-meta {
-  spacing: $base_spacing;
+  spacing: $base_padding;
 }
 
 // Inspector
@@ -128,7 +128,7 @@
 }
 
 .lg-debug-flag-button {
-  StLabel { padding: $base_spacing, 2 * $base_spacing; }
+  StLabel { padding: $base_padding, 2 * $base_padding; }
 
   color: $fg_color;
   &:hover { color: lighten($fg_color, 20%); }
@@ -136,8 +136,7 @@
 }
 
 .lg-debug-flags-header {
-  padding-top: 2 * $base_spacing;
-  font-size: 120%;
-  font-weight: bold;
+  padding-top: 2 * $base_padding;
   padding: $base_padding;
+  @extend %title_2;
 }

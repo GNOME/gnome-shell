@@ -28,7 +28,6 @@ $cakeisalie: "This stylesheet is generated, DO NOT EDIT";
 // padding, margin and spacing
 $base_padding: 6px;
 $base_margin: 4px;
-$base_spacing: 6px;
 
 // border radii
 $base_border_radius: 8px;
@@ -36,18 +35,17 @@ $base_border_radius: 8px;
 // radii of things that display over other things, e.g. popovers
 $modal_radius: $base_border_radius*2; // 24px
 
-// non-standard colors
-$bubble_borders_color: lighten($borders_color, if($variant=='light', 0%, 5%));
-$bubble_buttons_color: if($variant == 'light', darken($bg_color, 12%), lighten($bg_color, 4%));
-// $bubble_borders_color: if($variant == 'light', rgba(255,255,255,0.1), rgba(0,0,0,0.3));
-
 // derived hover colors
-$hover_bg_color: if($variant=='light', darken($bg_color, 3%), lighten($bg_color, 7%));
-$hover_fg_color: if($variant=='light', darken($fg_color, 5%), lighten($fg_color, 7%));
+$hover_bg_color: if($variant=='light', darken($bg_color, 3%), lighten($bg_color, 4%));
+$hover_fg_color: if($variant=='light', darken($fg_color, 5%), lighten($fg_color, 4%));
 
 // derived active colors
-$active_bg_color: darken($bg_color,if($variant=='light', 9%, 5%));
-$active_fg_color: darken($fg_color,if($variant=='light', 5%, 3%));
+$active_bg_color: if($variant=='light', darken($bg_color, 5%), lighten($bg_color, 6%));
+$active_fg_color: if($variant=='light', darken($fg_color, 5%), lighten($fg_color, 6%));
+
+// derived checked colors
+$checked_bg_color: if($variant=='light', darken($bg_color, 7%), lighten($bg_color, 9%));
+$checked_fg_color: if($variant=='light', darken($fg_color, 7%), lighten($fg_color, 9%));
 
 // fonts
 $base_font_size: 11;
@@ -55,6 +53,7 @@ $text_shadow_color: if($variant == 'light', rgba(255,255,255,0.3), rgba(0,0,0,0.
 
 // icons
 $base_icon_size: 1.09em;
+$large_icon_size: $base_icon_size*2; // 32px
 // $base_icon_size: 16px;
 
 // Stage
@@ -64,13 +63,6 @@ stage {
 }
 
 /* Common Stylings */
-
-// Text
-%status_text {
-  font-size: 2em;
-  font-weight: bold;
-  color: $osd_fg_color;
-}
 
 // osd panels
 %osd_panel {
@@ -97,22 +89,6 @@ stage {
   text-align: center;
 }
 
-// button styling
-%button {
-  border-radius: $base_border_radius - 2px; // 6px
-  border-style: solid;
-  border-width: 1px;
-  min-height: 22px;
-  font-weight: bold;
-  padding: $base_padding * 0.5 $base_padding * 4;
-
-  @include button(normal);
-  &:focus { @include button(focus);}
-  &:hover { @include button(hover);}
-  &:insensitive { @include button(insensitive);}
-  &:active, &:checked { @include button(active);}
-}
-
 // dialogs
 %bubble_panel {
   color: $fg_color;
@@ -121,18 +97,39 @@ stage {
   border: 1px solid $borders_edge;
 }
 
+// normal button styling
+%button {
+  border-radius: $base_border_radius - 2px; // 6px
+  border-style: solid;
+  border-width: 1px;
+  font-weight: bold;
+  padding: $base_padding*.5 $base_padding*4;
+
+  @include button(normal);
+  &:focus { @include button(focus);}
+  &:hover { @include button(hover);}
+  &:insensitive { @include button(insensitive);}
+  &:active { @include button(active);}
+  &:checked { @include button(checked);}
+}
+
 // buttons in dialogs/notifications
+// lighter in color and have a greater radius
+
 $bubble_button_radius:$base_border_radius*1.25;
+$bubble_buttons_color: if($variant == 'light', darken($bg_color, 12%), lighten($bg_color, 7%));
 
 %bubble_button {
   padding: $base_padding * 2;
-  font-weight: bold;
+  font-weight: bold !important;
+  margin-right: 1px;
 
   @include button(normal, $c:$bubble_buttons_color);
   &:insensitive { @include button(insensitive, $c:$bubble_buttons_color);}
   &:focus { @include button(focus, $c:$bubble_buttons_color);}
   &:hover { @include button(hover, $c:$bubble_buttons_color);}
   &:active { @include button(active, $c:$bubble_buttons_color);}
+  &:checked { @include button(checked, $c:$bubble_buttons_color);}
   
   &:first-child:ltr {
     border-radius: 0 0 0 $bubble_button_radius; 
@@ -140,7 +137,7 @@ $bubble_button_radius:$base_border_radius*1.25;
 
   &:last-child:ltr {
     border-radius: 0 0 $bubble_button_radius 0;
-    border-right-width: 0 !important;
+    margin-right: 0 !important;
   }
 
   &:first-child:rtl {
@@ -149,10 +146,72 @@ $bubble_button_radius:$base_border_radius*1.25;
 
   &:last-child:rtl {
     border-radius: 0 0 0 $bubble_button_radius;
-    border-left-width: 0 !important;
+    margin-right: 0 !important;
   }
 
   &:first-child:last-child {
     border-radius: 0 0 $bubble_button_radius $bubble_button_radius !important;
+    margin-right: 0 !important;
   }
 }
+
+// buttons on OSD elements
+// that are undecorated by default and use OSD colors
+%osd_button {
+  @include button(undecorated);
+  &:insensitive { @include button(undecorated, $c:$osd_bg_color);}
+  &:focus { @include button(focus, $c:$osd_bg_color);}
+  &:hover { @include button(hover, $c:$osd_bg_color);}
+  &:active { @include button(active, $c:$osd_bg_color);}
+  &:outlined,&:checked { @include button(checked, $c:$osd_bg_color);}
+}
+
+/* General Typography */
+
+%large_title {
+  font-weight: 300;
+  @include fontsize(24);
+}
+
+%title_1 {
+  font-weight: 800;
+  @include fontsize(20);
+}
+
+%title_2 {
+  font-weight: 800;
+  @include fontsize(15);
+}
+
+%title_3 {
+  font-weight: 700;
+  @include fontsize(15);
+}
+
+%title_4 {
+  font-weight: 700;
+  @include fontsize(13);
+}
+
+%heading {
+  font-weight: 700;
+  @include fontsize(11);
+}
+
+%caption_heading {
+  font-weight: 700;
+  @include fontsize(9);
+}
+
+%caption {
+  font-weight: 400;
+  @include fontsize(9);
+}
+
+%smaller {
+  font-weight: 400;
+  @include fontsize(8);
+}
+
+%monospace {font-family: monospace;}
+%numeric { font-feature-settings: "tnum";}
