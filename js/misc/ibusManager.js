@@ -28,7 +28,7 @@ function _checkIBusVersion(requiredMajor, requiredMinor, requiredMicro) {
         return;
 
     throw "Found IBus version %d.%d.%d but required is %d.%d.%d"
-        .format(IBus.MAJOR_VERSION, IBus.MINOR_VERSION, IBus.MINOR_VERSION,
+        .format(IBus.MAJOR_VERSION, IBus.MINOR_VERSION, IBus.MICRO_VERSION,
                 requiredMajor, requiredMinor, requiredMicro);
 }
 
