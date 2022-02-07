@@ -18,14 +18,14 @@ Gio._promisify(Gio.DBusConnection.prototype, 'call');
 Gio._promisify(Shew.WindowExporter.prototype, 'export');
 
 function loadInterfaceXML(iface) {
-    const uri = 'resource:///org/gnome/Extensions/dbus-interfaces/%s.xml'.format(iface);
+    const uri = `resource:///org/gnome/Extensions/dbus-interfaces/${iface}.xml`;
     const f = Gio.File.new_for_uri(uri);
 
     try {
         let [ok_, bytes] = f.load_contents(null);
         return new TextDecoder().decode(bytes);
     } catch (e) {
-        log('Failed to load D-Bus interface %s'.format(iface));
+        log(`Failed to load D-Bus interface ${iface}`);
     }
 
     return null;
@@ -186,7 +186,7 @@ var ExtensionsWindow = GObject.registerClass({
             try {
                 this._exportedHandle = await this._exporter.export();
             } catch (e) {
-                log('Failed to export window: %s'.format(e.message));
+                log(`Failed to export window: ${e.message}`);
             }
         }
 
@@ -278,7 +278,7 @@ var ExtensionsWindow = GObject.registerClass({
         this._shellProxy.ListExtensionsRemote(([extensionsMap], e) => {
             if (e) {
                 if (e instanceof Gio.DBusError) {
-                    log('Failed to connect to shell proxy: %s'.format(e.toString()));
+                    log(`Failed to connect to shell proxy: ${e}`);
                     this._mainStack.visible_child_name = 'noshell';
                 } else {
                     throw e;
@@ -536,7 +536,7 @@ function initEnvironment() {
         },
 
         logError(s) {
-            log('ERROR: %s'.format(s));
+            log(`ERROR: ${s}`);
         },
 
         userdatadir: GLib.build_filenamev([GLib.get_user_data_dir(), 'gnome-shell']),

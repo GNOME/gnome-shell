@@ -216,7 +216,7 @@ class NetworkSecretDialog extends ModalDialog.ModalDialog {
         case 'none': // static WEP
             secrets.push({
                 label: _('Key'),
-                key: 'wep-key%s'.format(wirelessSecuritySetting.wep_tx_keyidx),
+                key: `wep-key${wirelessSecuritySetting.wep_tx_keyidx}`,
                 value: wirelessSecuritySetting.get_wep_key(wirelessSecuritySetting.wep_tx_keyidx) || '',
                 wep_key_type: wirelessSecuritySetting.wep_key_type,
                 validate: this._validateStaticWep,
@@ -239,7 +239,7 @@ class NetworkSecretDialog extends ModalDialog.ModalDialog {
             this._get8021xSecrets(secrets);
             break;
         default:
-            log('Invalid wireless key management: %s'.format(wirelessSecuritySetting.key_mgmt));
+            log(`Invalid wireless key management: ${wirelessSecuritySetting.key_mgmt}`);
         }
     }
 
@@ -312,7 +312,7 @@ class NetworkSecretDialog extends ModalDialog.ModalDialog {
             });
             break;
         default:
-            log('Invalid EAP/IEEE802.1x method: %s'.format(ieee8021xSetting.get_eap_method(0)));
+            log(`Invalid EAP/IEEE802.1x method: ${ieee8021xSetting.get_eap_method(0)}`);
         }
     }
 
@@ -404,7 +404,7 @@ class NetworkSecretDialog extends ModalDialog.ModalDialog {
             this._getMobileSecrets(content.secrets, connectionType);
             break;
         default:
-            log('Invalid connection type: %s'.format(connectionType));
+            log(`Invalid connection type: ${connectionType}`);
         }
 
         return content;
@@ -648,12 +648,12 @@ var VPNRequestHandler = class {
 
         try {
             vpnSetting.foreach_data_item((key, value) => {
-                this._stdin.write('DATA_KEY=%s\n'.format(key), null);
-                this._stdin.write('DATA_VAL=%s\n\n'.format(value || ''), null);
+                this._stdin.write(`DATA_KEY=${key}\n`, null);
+                this._stdin.write(`DATA_VAL=${value || ''}\n\n`, null);
             });
             vpnSetting.foreach_secret((key, value) => {
-                this._stdin.write('SECRET_KEY=%s\n'.format(key), null);
-                this._stdin.write('SECRET_VAL=%s\n\n'.format(value || ''), null);
+                this._stdin.write(`SECRET_KEY=${key}\n`, null);
+                this._stdin.write(`SECRET_VAL=${value || ''}\n\n`, null);
             });
             this._stdin.write('DONE\n\n', null);
         } catch (e) {
@@ -768,7 +768,7 @@ var NetworkAgent = class {
             body = _("A password is required to connect to “%s”.").format(connectionSetting.get_id());
             break;
         default:
-            log('Invalid connection type: %s'.format(connectionType));
+            log(`Invalid connection type: ${connectionType}`);
             this._native.respond(requestId, Shell.NetworkAgentResponse.INTERNAL_ERROR);
             return;
         }
@@ -855,7 +855,7 @@ var NetworkAgent = class {
 
         const fileName = plugin.get_auth_dialog();
         if (!GLib.file_test(fileName, GLib.FileTest.IS_EXECUTABLE)) {
-            log('VPN plugin at %s is not executable'.format(fileName));
+            log(`VPN plugin at ${fileName} is not executable`);
             return null;
         }
 

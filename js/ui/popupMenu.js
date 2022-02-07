@@ -477,7 +477,7 @@ class PopupImageMenuItem extends PopupBaseMenuItem {
 var PopupMenuBase = class {
     constructor(sourceActor, styleClass) {
         if (this.constructor === PopupMenuBase)
-            throw new TypeError('Cannot instantiate abstract class %s'.format(this.constructor.name));
+            throw new TypeError(`Cannot instantiate abstract class ${this.constructor.name}`);
 
         this.sourceActor = sourceActor;
         this.focusActor = sourceActor;
@@ -557,7 +557,7 @@ var PopupMenuBase = class {
             let app = Shell.AppSystem.get_default().lookup_app(desktopFile);
 
             if (!app) {
-                log('Settings panel for desktop file %s could not be loaded!'.format(desktopFile));
+                log(`Settings panel for desktop file ${desktopFile} could not be loaded!`);
                 return;
             }
 

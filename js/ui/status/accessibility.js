@@ -39,7 +39,7 @@ class ATIndicator extends PanelMenu.Button {
         }));
 
         this._a11ySettings = new Gio.Settings({ schema_id: A11Y_SCHEMA });
-        this._a11ySettings.connect('changed::%s'.format(KEY_ALWAYS_SHOW), this._queueSyncMenuVisibility.bind(this));
+        this._a11ySettings.connect(`changed::${KEY_ALWAYS_SHOW}`, this._queueSyncMenuVisibility.bind(this));
 
         let highContrast = this._buildItem(_('High Contrast'), A11Y_INTERFACE_SCHEMA, KEY_HIGH_CONTRAST);
         this.menu.addMenuItem(highContrast);
@@ -115,7 +115,7 @@ class ATIndicator extends PanelMenu.Button {
             settings.is_writable(key),
             enabled => settings.set_boolean(key, enabled));
 
-        settings.connect('changed::%s'.format(key), () => {
+        settings.connect(`changed::${key}`, () => {
             widget.setToggleState(settings.get_boolean(key));
 
             this._queueSyncMenuVisibility();
@@ -140,7 +140,7 @@ class ATIndicator extends PanelMenu.Button {
                 }
             });
 
-        settings.connect('changed::%s'.format(KEY_TEXT_SCALING_FACTOR), () => {
+        settings.connect(`changed::${KEY_TEXT_SCALING_FACTOR}`, () => {
             factor = settings.get_double(KEY_TEXT_SCALING_FACTOR);
             let active = factor > 1.0;
             widget.setToggleState(active);

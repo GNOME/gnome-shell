@@ -252,13 +252,7 @@ function objectToString(o) {
         // special case this since the default is way, way too verbose
         return '<js function>';
     } else {
-        if (o === undefined)
-            return 'undefined';
-
-        if (o === null)
-            return 'null';
-
-        return o.toString();
+        return `${o}`;
     }
 }
 
@@ -305,7 +299,7 @@ class Result extends St.BoxLayout {
         this.add(cmdTxt);
         let box = new St.BoxLayout({});
         this.add(box);
-        let resultTxt = new St.Label({ text: 'r(%d) = '.format(index) });
+        let resultTxt = new St.Label({ text: `r(${index}) = ` });
         resultTxt.clutter_text.ellipsize = Pango.EllipsizeMode.END;
         box.add(resultTxt);
         let objLink = new ObjLink(this._lookingGlass, o);
@@ -345,7 +339,7 @@ var WindowList = GObject.registerClass({
             box.add_child(windowLink);
             let propsBox = new St.BoxLayout({ vertical: true, style: 'padding-left: 6px;' });
             box.add(propsBox);
-            propsBox.add(new St.Label({ text: 'wmclass: %s'.format(metaWindow.get_wm_class()) }));
+            propsBox.add(new St.Label({ text: `wmclass: ${metaWindow.get_wm_class()}` }));
             let app = tracker.get_window_app(metaWindow);
             if (app != null && !app.is_window_backed()) {
                 let icon = app.create_icon_texture(22);
@@ -403,7 +397,7 @@ class ObjInspector extends St.ScrollView {
         let hbox = new St.BoxLayout({ style_class: 'lg-obj-inspector-title' });
         this._container.add_actor(hbox);
         let label = new St.Label({
-            text: 'Inspecting: %s: %s'.format(typeof obj, objectToString(obj)),
+            text: `Inspecting: ${typeof obj}: ${objectToString(obj)}`,
             x_expand: true,
         });
         label.single_line_mode = true;
@@ -438,7 +432,7 @@ class ObjInspector extends St.ScrollView {
                     link = new St.Label({ text: '<error>' });
                 }
                 let box = new St.BoxLayout();
-                box.add(new St.Label({ text: '%s: '.format(propName) }));
+                box.add(new St.Label({ text: `${propName}: ` }));
                 box.add(link);
                 this._container.add_actor(box);
             }
@@ -665,9 +659,9 @@ var Inspector = GObject.registerClass({
             this._target = target;
         this._pointerTarget = target;
 
-        let position = '[inspect x: %d y: %d]'.format(stageX, stageY);
+        let position = `[inspect x: ${stageX} y: ${stageY}]`;
         this._displayText.text = '';
-        this._displayText.text = '%s %s'.format(position, this._target);
+        this._displayText.text = `${position} ${this._target}`;
 
         this._lookingGlass.setBorderPaintTarget(this._target);
     }
@@ -1176,7 +1170,7 @@ class DebugFlags extends St.BoxLayout {
 
         // Clutter debug flags
         for (const [categoryName, props] of CLUTTER_DEBUG_FLAG_CATEGORIES.entries()) {
-            this._addHeader('Clutter%s'.format(categoryName));
+            this._addHeader(`Clutter${categoryName}`);
             for (const flagName of this._getFlagNames(Clutter[categoryName])) {
                 if (props.exclude.includes(flagName))
                     continue;
@@ -1274,7 +1268,7 @@ class LookingGlass extends St.BoxLayout {
         inspectButton.connect('clicked', () => {
             let inspector = new Inspector(this);
             inspector.connect('target', (i, target, stageX, stageY) => {
-                this._pushResult('inspect(%d, %d)'.format(Math.round(stageX), Math.round(stageY)), target);
+                this._pushResult(`inspect(${Math.round(stageX)}, ${Math.round(stageY)})`, target);
             });
             inspector.connect('closed', () => {
                 this.show();
@@ -1388,8 +1382,9 @@ class LookingGlass extends St.BoxLayout {
         // monospace font to be bold/oblique/etc. Could easily be added here.
         let size = fontDesc.get_size() / 1024.;
         let unit = fontDesc.get_size_is_absolute() ? 'px' : 'pt';
-        this.style = 'font-size: %d%s; font-family: "%s";'.format(
-            size, unit, fontDesc.get_family());
+        this.style = `
+            font-size: ${size}${unit};
+            font-family: "${fontDesc.get_family()}";`;
     }
 
     setBorderPaintTarget(obj) {
@@ -1472,7 +1467,7 @@ class LookingGlass extends St.BoxLayout {
             return;
 
         let lines = command.split(';');
-        lines.push('return %s'.format(lines.pop()));
+        lines.push(`return ${lines.pop()}`);
 
         let fullCmd = commandHeader + lines.join(';');
 
@@ -1480,7 +1475,7 @@ class LookingGlass extends St.BoxLayout {
         try {
             resultObj = Function(fullCmd)();
         } catch (e) {
-            resultObj = '<exception %s>'.format(e.toString());
+            resultObj = `<exception ${e}>`;
         }
 
         this._pushResult(command, resultObj);
@@ -1499,7 +1494,7 @@ class LookingGlass extends St.BoxLayout {
         try {
             return this._resultsArea.get_child_at_index(idx - this._offset).o;
         } catch (e) {
-            throw new Error('Unknown result at index %d'.format(idx));
+            throw new Error(`Unknown result at index ${idx}`);
         }
     }
 

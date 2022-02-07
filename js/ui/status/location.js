@@ -69,9 +69,9 @@ var GeoclueAgent = GObject.registerClass({
         super._init();
 
         this._settings = new Gio.Settings({ schema_id: LOCATION_SCHEMA });
-        this._settings.connect('changed::%s'.format(ENABLED),
+        this._settings.connect(`changed::${ENABLED}`,
             () => this.notify('enabled'));
-        this._settings.connect('changed::%s'.format(MAX_ACCURACY_LEVEL),
+        this._settings.connect(`changed::${MAX_ACCURACY_LEVEL}`,
             this._onMaxAccuracyLevelChanged.bind(this));
 
         this._agent = Gio.DBusExportedObject.wrapJSObject(AgentIface, this);
@@ -287,7 +287,7 @@ var AppAuthorizer = class {
         this._onAuthDone = onAuthDone;
 
         let appSystem = Shell.AppSystem.get_default();
-        this._app = appSystem.lookup_app('%s.desktop'.format(this.desktopId));
+        this._app = appSystem.lookup_app(`${this.desktopId}.desktop`);
         if (this._app == null || this._permStoreProxy == null) {
             this._completeAuth();
 

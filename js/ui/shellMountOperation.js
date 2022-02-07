@@ -564,7 +564,7 @@ var GnomeShellMountOpHandler = class {
     _setCurrentRequest(invocation, id, type) {
         let oldId = this._currentId;
         let oldType = this._currentType;
-        let requestId = '%s@%s'.format(id, invocation.get_sender());
+        let requestId = `${id}@${invocation.get_sender()}`;
 
         this._clearCurrentRequest(Gio.MountOperationResult.UNHANDLED, {});
 

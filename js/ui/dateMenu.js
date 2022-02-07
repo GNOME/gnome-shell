@@ -13,7 +13,7 @@ const System = imports.system;
 
 const { loadInterfaceXML } = imports.misc.fileUtils;
 
-const NC_ = (context, str) => '%s\u0004%s'.format(context, str);
+const NC_ = (context, str) => `${context}\u0004${str}`;
 const T_ = Shell.util_translate_time_string;
 
 const MAX_FORECASTS = 5;
@@ -187,15 +187,15 @@ class EventsSection extends St.Button {
         const rtl = Clutter.get_default_text_direction() === Clutter.TextDirection.RTL;
         if (event.date < this._startDate) {
             if (rtl)
-                title = '%s%s'.format(title, ELLIPSIS_CHAR);
+                title = `${title}${ELLIPSIS_CHAR}`;
             else
-                title = '%s%s'.format(ELLIPSIS_CHAR, title);
+                title = `${ELLIPSIS_CHAR}${title}`;
         }
         if (event.end > this._endDate) {
             if (rtl)
-                title = '%s%s'.format(ELLIPSIS_CHAR, title);
+                title = `${ELLIPSIS_CHAR}${title}`;
             else
-                title = '%s%s'.format(title, ELLIPSIS_CHAR);
+                title = `${title}${ELLIPSIS_CHAR}`;
         }
         return title;
     }
@@ -427,8 +427,8 @@ class WorldClocksSection extends St.Button {
 
         const prefix = offsetCurrentTz >= 0 ? '+' : '-';
         const text = offsetMinutes === 0
-            ? '%s%d'.format(prefix, offsetHours)
-            : '%s%d\u2236%d'.format(prefix, offsetHours, offsetMinutes);
+            ? `${prefix}${offsetHours}`
+            : `${prefix}${offsetHours}\u2236${offsetMinutes}`;
         return text;
     }
 
@@ -449,7 +449,7 @@ class WorldClocksSection extends St.Button {
 
     _onProxyReady(proxy, error) {
         if (error) {
-            log('Failed to create GNOME Clocks proxy: %s'.format(error));
+            log(`Failed to create GNOME Clocks proxy: ${error}`);
             return;
         }
 
@@ -583,7 +583,7 @@ class WeatherSection extends St.Button {
             });
             let temp = new St.Label({
                 style_class: 'weather-forecast-temp',
-                text: '%s%d°'.format(tempPrefix, Math.round(tempValue)),
+                text: `${tempPrefix}${Math.round(tempValue)}°`,
                 x_align: Clutter.ActorAlign.CENTER,
             });
 

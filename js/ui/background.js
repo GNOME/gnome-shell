@@ -271,7 +271,7 @@ var Background = GObject.registerClass({
             this._settings.connect('changed', this._emitChangedSignal.bind(this));
 
         this._colorSchemeChangedSignalId =
-            this._interfaceSettings.connect('changed::%s'.format(COLOR_SCHEME_KEY),
+            this._interfaceSettings.connect(`changed::${COLOR_SCHEME_KEY}`,
                 this._emitChangedSignal.bind(this));
 
         this._load();

@@ -26,7 +26,7 @@ class Indicator extends PanelMenu.SystemIndicator {
             schema_id: 'org.gnome.desktop.interface',
         });
         this._desktopSettings.connect(
-            'changed::%s'.format(SHOW_BATTERY_PERCENTAGE), this._sync.bind(this));
+            `changed::${SHOW_BATTERY_PERCENTAGE}`, this._sync.bind(this));
 
         this._indicator = this._addIndicator();
         this._percentageLabel = new St.Label({
@@ -125,7 +125,7 @@ class Indicator extends PanelMenu.SystemIndicator {
             (this._proxy.State === UPower.DeviceState.CHARGING && fillLevel === 100);
         const icon = charged
             ? 'battery-level-100-charged-symbolic'
-            : 'battery-level-%d%s-symbolic'.format(fillLevel, chargingState);
+            : `battery-level-${fillLevel}${chargingState}-symbolic`;
 
         // Make sure we fall back to fallback-icon-name and not GThemedIcon's
         // default fallbacks

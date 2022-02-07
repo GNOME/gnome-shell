@@ -126,7 +126,7 @@ function loadRemoteSearchProviders(searchSettings, callback) {
             objectPaths[objectPath] = remoteProvider;
             loadedProviders.push(remoteProvider);
         } catch (e) {
-            log('Failed to add search provider %s: %s'.format(path, e.toString()));
+            log(`Failed to add search provider ${path}: ${e}`);
         }
     }
 
@@ -247,7 +247,7 @@ var RemoteSearchProvider = class {
             if (error.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
                 return;
 
-            log('Received error from D-Bus search provider %s: %s'.format(this.id, String(error)));
+            log(`Received error from D-Bus search provider ${this.id}: ${error}`);
             callback([]);
             return;
         }
@@ -274,7 +274,7 @@ var RemoteSearchProvider = class {
     _getResultMetasFinished(results, error, callback) {
         if (error) {
             if (!error.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
-                log('Received error from D-Bus search provider %s during GetResultMetas: %s'.format(this.id, String(error)));
+                log(`Received error from D-Bus search provider ${this.id} during GetResultMetas: ${error}`);
             callback([]);
             return;
         }

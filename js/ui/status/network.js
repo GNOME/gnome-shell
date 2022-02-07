@@ -88,7 +88,7 @@ function launchSettingsPanel(panel, ...args) {
         [panel, args.map(s => new GLib.Variant('s', s))]);
     const platformData = {
         'desktop-startup-id': new GLib.Variant('s',
-            '_TIME%s'.format(global.get_current_time())),
+            `_TIME${global.get_current_time()}`),
     };
     try {
         Gio.DBus.session.call(
@@ -103,7 +103,7 @@ function launchSettingsPanel(panel, ...args) {
             -1,
             null);
     } catch (e) {
-        log('Failed to launch Settings panel: %s'.format(e.message));
+        log(`Failed to launch Settings panel: ${e.message}`);
     }
 }
 
@@ -208,7 +208,7 @@ Signals.addSignalMethods(NMConnectionItem.prototype);
 var NMConnectionSection = class NMConnectionSection {
     constructor(client) {
         if (this.constructor === NMConnectionSection)
-            throw new TypeError('Cannot instantiate abstract type %s'.format(this.constructor.name));
+            throw new TypeError(`Cannot instantiate abstract type ${this.constructor.name}`);
 
         this._client = client;
 
@@ -340,7 +340,7 @@ var NMConnectionDevice = class NMConnectionDevice extends NMConnectionSection {
         super(client);
 
         if (this.constructor === NMConnectionDevice)
-            throw new TypeError('Cannot instantiate abstract type %s'.format(this.constructor.name));
+            throw new TypeError(`Cannot instantiate abstract type ${this.constructor.name}`);
 
         this._device = device;
         this._description = '';
@@ -489,7 +489,7 @@ var NMConnectionDevice = class NMConnectionDevice extends NMConnectionSection {
             /* Translators: %s is a network identifier */
             return _("%s Connection Failed").format(this._getDescription());
         default:
-            log('Device state invalid, is %d'.format(this._device.state));
+            log(`Device state invalid, is ${this._device.state}`);
             return 'invalid';
         }
     }
@@ -639,8 +639,7 @@ var NMDeviceModem = class extends NMConnectionDevice {
     }
 
     _getSignalIcon() {
-        return 'network-cellular-signal-%s-symbolic'.format(
-            signalToIcon(this._mobileDevice.signal_quality));
+        return `network-cellular-signal-${signalToIcon(this._mobileDevice.signal_quality)}-symbolic`;
     }
 };
 
@@ -743,12 +742,10 @@ var NMWirelessDialogItem = GObject.registerClass({
     }
 
     _getSignalIcon() {
-        if (this._ap.mode == NM80211Mode.ADHOC) {
+        if (this._ap.mode === NM80211Mode.ADHOC)
             return 'network-workgroup-symbolic';
-        } else {
-            return 'network-wireless-signal-%s-symbolic'.format(
-                signalToIcon(this._ap.strength));
-        }
+        else
+            return `network-wireless-signal-${signalToIcon(this._ap.strength)}-symbolic`;
     }
 });
 
@@ -1460,7 +1457,7 @@ var NMDeviceWireless = class {
         }
 
         if (this._canReachInternet())
-            return 'network-wireless-signal-%s-symbolic'.format(signalToIcon(ap.strength));
+            return `network-wireless-signal-${signalToIcon(ap.strength)}-symbolic`;
         else
             return 'network-wireless-no-route-symbolic';
     }
@@ -1768,7 +1765,7 @@ class Indicator extends PanelMenu.SystemIndicator {
             this._configPermission = await Polkit.Permission.new(
                 'org.freedesktop.NetworkManager.network-control', null, null);
         } catch (e) {
-            log('No permission to control network connections: %s'.format(e.toString()));
+            log(`No permission to control network connections: ${e}`);
             this._configPermission = null;
         }
 
@@ -1800,7 +1797,7 @@ class Indicator extends PanelMenu.SystemIndicator {
             try {
                 this._deviceAdded(this._client, devices[i], true);
             } catch (e) {
-                log('Failed to add device %s: %s'.format(devices[i], e.toString()));
+                log(`Failed to add device ${devices[i]}: ${e}`);
             }
         }
         this._syncDeviceNames();
@@ -2095,7 +2092,7 @@ class Indicator extends PanelMenu.SystemIndicator {
                     this._closeConnectivityCheck(path);
             } catch (e) { }
         } else {
-            log('Invalid result from portal helper: %s'.format(result));
+            log(`Invalid result from portal helper: ${result}`);
         }
     }
 
@@ -2132,7 +2129,7 @@ class Indicator extends PanelMenu.SystemIndicator {
                 '/org/gnome/Shell/PortalHelper',
                 (proxy, error) => {
                     if (error) {
-                        log('Error launching the portal helper: %s'.format(error));
+                        log(`Error launching the portal helper: ${error}`);
                         return;
                     }
 

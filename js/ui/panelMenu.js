@@ -181,7 +181,7 @@ var Button = GObject.registerClass({
         // measures are in logical pixels, so make sure to consider the scale
         // factor when computing max-height
         let maxHeight = Math.round((workArea.height - verticalMargins) / scaleFactor);
-        this.menu.actor.style = 'max-height: %spx;'.format(maxHeight);
+        this.menu.actor.style = `max-height: ${maxHeight}px;`;
     }
 
     _onDestroy() {

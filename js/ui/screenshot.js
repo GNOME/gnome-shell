@@ -1488,7 +1488,7 @@ var ScreenshotUI = GObject.registerClass({
 
                 this._stageScreenshotContainer.show();
             } catch (e) {
-                log('Error capturing screenshot: %s'.format(e.message));
+                log(`Error capturing screenshot: ${e.message}`);
             }
             this._openingCoroutineInProgress = false;
         }
@@ -1835,7 +1835,7 @@ var ScreenshotUI = GObject.registerClass({
                 ([success, path], error) => {
                     if (error !== null) {
                         this._setScreencastInProgress(false);
-                        log('Error starting screencast: %s'.format(error.message));
+                        log(`Error starting screencast: ${error.message}`);
                         return;
                     }
 
@@ -1884,7 +1884,7 @@ var ScreenshotUI = GObject.registerClass({
 
         this._screencastProxy.StopScreencastRemote((success, error) => {
             if (error !== null) {
-                log('Error stopping screencast: %s'.format(error.message));
+                log(`Error stopping screencast: ${error.message}`);
                 return;
             }
 
@@ -2046,7 +2046,7 @@ function _storeScreenshot(bytes, pixbuf) {
         yield '';
 
         for (let i = 1; ; i++)
-            yield '-%s'.format(i);
+            yield `-${i}`;
     }
 
     const lockdownSettings =
@@ -2077,7 +2077,7 @@ function _storeScreenshot(bytes, pixbuf) {
         // increasing number to it.
         for (const suffix of suffixes()) {
             file = Gio.File.new_for_path(GLib.build_filenamev([
-                dir.get_path(), '%s%s.png'.format(name, suffix),
+                dir.get_path(), `${name}${suffix}.png`,
             ]));
 
             try {
@@ -2289,11 +2289,11 @@ var ScreenshotService = class {
             return null;
 
         yield Gio.File.new_for_path(
-            GLib.build_filenamev([path, '%s.png'.format(filename)]));
+            GLib.build_filenamev([path, `${filename}.png`]));
 
         for (let idx = 1; ; idx++) {
             yield Gio.File.new_for_path(
-                GLib.build_filenamev([path, '%s-%s.png'.format(filename, idx)]));
+                GLib.build_filenamev([path, `${filename}-${idx}.png`]));
         }
     }
 

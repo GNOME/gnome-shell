@@ -412,10 +412,10 @@ class FdoNotificationDaemonSource extends MessageTray.Source {
             return app;
 
         if (appId)
-            app = appSys.lookup_app('%s.desktop'.format(appId));
+            app = appSys.lookup_app(`${appId}.desktop`);
 
         if (!app)
-            app = appSys.lookup_app('%s.desktop'.format(this.initialTitle));
+            app = appSys.lookup_app(`${this.initialTitle}.desktop`);
 
         return app;
     }
@@ -549,7 +549,7 @@ function objectPathFromAppId(appId) {
 }
 
 function getPlatformData() {
-    let startupId = GLib.Variant.new('s', '_TIME%s'.format(global.get_current_time()));
+    let startupId = GLib.Variant.new('s', `_TIME${global.get_current_time()}`);
     return { "desktop-startup-id": startupId };
 }
 
@@ -562,7 +562,7 @@ class GtkNotificationDaemonAppSource extends MessageTray.Source {
         if (!GLib.Variant.is_object_path(objectPath))
             throw new InvalidAppError();
 
-        let app = Shell.AppSystem.get_default().lookup_app('%s.desktop'.format(appId));
+        let app = Shell.AppSystem.get_default().lookup_app(`${appId}.desktop`);
         if (!app)
             throw new InvalidAppError();
 
@@ -738,7 +738,8 @@ var GtkNotificationDaemon = class GtkNotificationDaemon {
             source = this._ensureAppSource(appId);
         } catch (e) {
             if (e instanceof InvalidAppError) {
-                invocation.return_dbus_error('org.gtk.Notifications.InvalidApp', 'The app by ID "%s" could not be found'.format(appId));
+                invocation.return_dbus_error('org.gtk.Notifications.InvalidApp',
+                    `The app by ID "${appId}" could not be found`);
                 return;
             }
             throw e;

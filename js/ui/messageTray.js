@@ -229,7 +229,7 @@ var NotificationApplicationPolicy = GObject.registerClass({
         this._masterSettings = new Gio.Settings({ schema_id: 'org.gnome.desktop.notifications' });
         this._settings = new Gio.Settings({
             schema_id: 'org.gnome.desktop.notifications.application',
-            path: '/org/gnome/desktop/notifications/application/%s/'.format(this._canonicalId),
+            path: `/org/gnome/desktop/notifications/application/${this._canonicalId}/`,
         });
 
         this._masterSettings.connect('changed', this._changed.bind(this));
@@ -237,7 +237,7 @@ var NotificationApplicationPolicy = GObject.registerClass({
     }
 
     store() {
-        this._settings.set_string('application-id', '%s.desktop'.format(this.id));
+        this._settings.set_string('application-id', `${this.id}.desktop`);
 
         let apps = this._masterSettings.get_strv('application-children');
         if (!apps.includes(this._canonicalId)) {
@@ -966,7 +966,7 @@ var MessageTray = GObject.registerClass({
 
     add(source) {
         if (this.contains(source)) {
-            log('Trying to re-add source %s'.format(source.title));
+            log(`Trying to re-add source ${source.title}`);
             return;
         }
 

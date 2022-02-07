@@ -390,7 +390,7 @@ var Overview = class {
             this._shown = false;
             this._visibleTarget = false;
             this.emit('hiding');
-            Main.panel.style = 'transition-duration: %dms;'.format(duration);
+            Main.panel.style = `transition-duration: ${duration}ms;`;
             onComplete = () => this._hideDone();
         } else {
             onComplete = () => this._showDone();

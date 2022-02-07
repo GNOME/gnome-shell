@@ -132,8 +132,7 @@ class WindowDimmer extends Clutter.BrightnessContrastEffect {
     }
 
     _syncEnabled() {
-        let transitionName = '@effects.%s.brightness'.format(this.name);
-        let animating = this.actor.get_transition(transitionName) != null;
+        let animating = this.actor.get_transition(`@effects.${this.name}.brightness`) !== null;
         let dimmed = this.brightness.red != 127;
         this.enabled = this._enabled && (animating || dimmed);
     }
@@ -147,8 +146,7 @@ class WindowDimmer extends Clutter.BrightnessContrastEffect {
         let val = 127 * (1 + (dimmed ? 1 : 0) * DIM_BRIGHTNESS);
         let color = Clutter.Color.new(val, val, val, 255);
 
-        let transitionName = '@effects.%s.brightness'.format(this.name);
-        this.actor.ease_property(transitionName, color, {
+        this.actor.ease_property(`@effects.${this.name}.brightness`, color, {
             mode: Clutter.AnimationMode.LINEAR,
             duration: (dimmed ? DIM_TIME : UNDIM_TIME) * (animate ? 1 : 0),
             onComplete: () => this._syncEnabled(),
@@ -976,7 +974,7 @@ var WindowManager = class {
             // already.
             // Note that we do log cancellation from here.
             if (!e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.NOT_SUPPORTED)) {
-                log('Error starting X11 services: %s'.format(e.message));
+                log(`Error starting X11 services: ${e.message}`);
                 status = false;
             }
         } finally {
@@ -994,7 +992,7 @@ var WindowManager = class {
             // already.
             // Note that we do log cancellation from here.
             if (!e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.NOT_SUPPORTED))
-                log('Error stopping X11 services: %s'.format(e.message));
+                log(`Error stopping X11 services: ${e.message}`);
         }
     }
 
@@ -1292,7 +1290,7 @@ var WindowManager = class {
         actor.freeze();
 
         if (this._clearAnimationInfo(actor)) {
-            log('Old animationInfo removed from actor %s'.format(actor));
+            log(`Old animationInfo removed from actor ${actor}`);
             this._shellwm.completed_size_change(actor);
         }
 

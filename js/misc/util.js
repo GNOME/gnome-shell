@@ -22,7 +22,7 @@ const _leadingJunk = '[\\s`(\\[{\'\\"<\u00AB\u201C\u2018]';
 const _notTrailingJunk = '[^\\s`!()\\[\\]{};:\'\\".,<>?\u00AB\u00BB\u200E\u200F\u201C\u201D\u2018\u2019\u202A\u202C]';
 
 const _urlRegexp = new RegExp(
-    '(^|%s)'.format(_leadingJunk) +
+    `(^|${_leadingJunk})` +
     '(' +
         '(?:' +
             '(?:http|https|ftp)://' +             // scheme://
@@ -34,12 +34,12 @@ const _urlRegexp = new RegExp(
         '(?:' +                                   // one or more:
             '[^\\s()<>]+' +                       // run of non-space non-()
             '|' +                                 // or
-            '%s'.format(_balancedParens) +        // balanced parens
+            `${_balancedParens}` +                // balanced parens
         ')+' +
         '(?:' +                                   // end with:
-            '%s'.format(_balancedParens) +        // balanced parens
+            `${_balancedParens}` +                // balanced parens
             '|' +                                 // or
-            '%s'.format(_notTrailingJunk) +       // last non-junk char
+            `${_notTrailingJunk}` +               // last non-junk char
         ')' +
     ')', 'gi');
 
@@ -161,7 +161,7 @@ function trySpawnCommandLine(commandLine) {
     } catch (err) {
         // Replace "Error invoking GLib.shell_parse_argv: " with
         // something nicer
-        err.message = err.message.replace(/[^:]*: /, '%s\n'.format(_('Could not parse command:')));
+        err.message = err.message.replace(/[^:]*: /, `${_('Could not parse command:')}\n`);
         throw err;
     }
 
@@ -550,7 +550,7 @@ var DBusSenderChecker = class {
 
         throw new GLib.Error(Gio.DBusError,
             Gio.DBusError.ACCESS_DENIED,
-            '%s is not allowed'.format(invocation.get_method_name()));
+            `${invocation.get_method_name()} is not allowed`);
     }
 
     /**
@@ -579,8 +579,8 @@ var Highlighter = class {
         if (escapedTerms.length === 0)
             return;
 
-        this._highlightRegex = new RegExp('(%s)'.format(
-            escapedTerms.join('|')), 'gi');
+        this._highlightRegex = new RegExp(
+            `(${escapedTerms.join('|')})`, 'gi');
     }
 
     /**
@@ -604,7 +604,7 @@ var Highlighter = class {
                 escaped.push(unmatched);
             }
             let matched = GLib.markup_escape_text(match[0], -1);
-            escaped.push('<b>%s</b>'.format(matched));
+            escaped.push(`<b>${matched}</b>`);
             lastMatchEnd = match.index + match[0].length;
         }
         let unmatched = GLib.markup_escape_text(

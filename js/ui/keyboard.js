@@ -555,7 +555,8 @@ var KeyboardModel = class {
     }
 
     _loadModel(groupName) {
-        let file = Gio.File.new_for_uri('resource:///org/gnome/shell/osk-layouts/%s.json'.format(groupName));
+        const file = Gio.File.new_for_uri(
+            `resource:///org/gnome/shell/osk-layouts/${groupName}.json`);
         let [success_, contents] = file.load_contents(null);
 
         const decoder = new TextDecoder();

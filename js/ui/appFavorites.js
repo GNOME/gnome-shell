@@ -75,7 +75,7 @@ class AppFavorites {
 
         this.FAVORITE_APPS_KEY = 'favorite-apps';
         this._favorites = {};
-        global.settings.connect('changed::%s'.format(this.FAVORITE_APPS_KEY), this._onFavsChanged.bind(this));
+        global.settings.connect(`changed::${this.FAVORITE_APPS_KEY}`, this._onFavsChanged.bind(this));
         this.reload();
     }
 

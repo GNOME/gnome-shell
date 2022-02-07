@@ -100,7 +100,7 @@ var NotificationsBox = GObject.registerClass({
 
         let count = source.unseenCount;
         let countLabel = new St.Label({
-            text: count.toString(),
+            text: `${count}`,
             visible: count > 1,
             style_class: 'unlock-dialog-notification-count-text',
         });
@@ -140,7 +140,7 @@ var NotificationsBox = GObject.registerClass({
             }
 
             let label = new St.Label({ style_class: 'unlock-dialog-notification-count-text' });
-            label.clutter_text.set_markup('<b>%s</b> %s'.format(n.title, body));
+            label.clutter_text.set_markup(`<b>${n.title}</b> ${body}`);
             textBox.add(label);
 
             visible = true;
@@ -272,7 +272,7 @@ var NotificationsBox = GObject.registerClass({
             this._showSource(source, obj, obj.sourceBox);
         } else {
             let count = source.unseenCount;
-            obj.countLabel.text = count.toString();
+            obj.countLabel.text = `${count}`;
             obj.countLabel.visible = count > 1;
         }
 

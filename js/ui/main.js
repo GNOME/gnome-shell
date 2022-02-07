@@ -303,7 +303,7 @@ function _initializeUI() {
         if (sessionMode.currentMode != 'gdm' &&
             sessionMode.currentMode != 'initial-setup') {
             GLib.log_structured(LOG_DOMAIN, GLib.LogLevelFlags.LEVEL_MESSAGE, {
-                'MESSAGE': 'GNOME Shell started at %s'.format(_startDate),
+                'MESSAGE': `GNOME Shell started at ${_startDate}`,
                 'MESSAGE_ID': GNOMESHELL_STARTED_MESSAGE_ID,
             });
         }
@@ -325,7 +325,7 @@ function _initializeUI() {
         let perfModuleName = GLib.getenv("SHELL_PERF_MODULE");
         if (perfModuleName) {
             let perfOutput = GLib.getenv("SHELL_PERF_OUTPUT");
-            let module = eval('imports.perf.%s;'.format(perfModuleName));
+            let module = eval(`imports.perf.${perfModuleName};`);
             Scripting.runPerfScript(module, perfOutput);
         }
     });
@@ -340,7 +340,7 @@ function _handleShowWelcomeScreen() {
 }
 
 async function _handleLockScreenWarning() {
-    const path = '%s/lock-warning-shown'.format(global.userdatadir);
+    const path = `${global.userdatadir}/lock-warning-shown`;
     const file = Gio.File.new_for_path(path);
 
     const hasLockScreen = screenShield !== null;
@@ -368,7 +368,7 @@ async function _handleLockScreenWarning() {
 function _getStylesheet(name) {
     let stylesheet;
 
-    stylesheet = Gio.File.new_for_uri('resource:///org/gnome/shell/theme/%s'.format(name));
+    stylesheet = Gio.File.new_for_uri(`resource:///org/gnome/shell/theme/${name}`);
     if (stylesheet.query_exists(null))
         return stylesheet;
 
@@ -380,7 +380,7 @@ function _getStylesheet(name) {
             return stylesheet;
     }
 
-    stylesheet = Gio.File.new_for_path('%s/theme/%s'.format(global.datadir, name));
+    stylesheet = Gio.File.new_for_path(`${global.datadir}/theme/${name}`);
     if (stylesheet.query_exists(null))
         return stylesheet;
 
@@ -437,19 +437,19 @@ function reloadThemeResource() {
     if (_themeResource)
         _themeResource._unregister();
 
-    _themeResource = Gio.Resource.load('%s/%s'.format(global.datadir,
-        sessionMode.themeResourceName));
+    _themeResource = Gio.Resource.load(
+        `${global.datadir}/${sessionMode.themeResourceName}`);
     _themeResource._register();
 }
 
 /** @private */
 function _loadIcons() {
-    _iconResource = Gio.Resource.load('%s/gnome-shell-icons.gresource'.format(global.datadir));
+    _iconResource = Gio.Resource.load(`${global.datadir}/gnome-shell-icons.gresource`);
     _iconResource._register();
 }
 
 function _loadOskLayouts() {
-    _oskResource = Gio.Resource.load('%s/gnome-shell-osk-layouts.gresource'.format(global.datadir));
+    _oskResource = Gio.Resource.load(`${global.datadir}/gnome-shell-osk-layouts.gresource`);
     _oskResource._register();
 }
 
@@ -468,7 +468,7 @@ function loadTheme() {
     });
 
     if (theme.default_stylesheet == null)
-        throw new Error("No valid stylesheet found for '%s'".format(sessionMode.stylesheetName));
+        throw new Error(`No valid stylesheet found for '${sessionMode.stylesheetName}'`);
 
     if (previousTheme) {
         let customStylesheets = previousTheme.get_custom_stylesheets();
@@ -503,9 +503,9 @@ function notify(msg, details) {
 function notifyError(msg, details) {
     // Also print to stderr so it's logged somewhere
     if (details)
-        log('error: %s: %s'.format(msg, details));
+        log(`error: ${msg}: ${details}`);
     else
-        log('error: %s'.format(msg));
+        log(`error: ${msg}`);
 
     notify(msg, details);
 }
@@ -787,7 +787,7 @@ function _queueBeforeRedraw(workId) {
  */
 function initializeDeferredWork(actor, callback) {
     // Turn into a string so we can use as an object property
-    let workId = (++_deferredWorkSequence).toString();
+    let workId = `${++_deferredWorkSequence}`;
     _deferredWorkData[workId] = { actor,
                                   callback };
     actor.connect('notify::mapped', () => {
@@ -817,7 +817,7 @@ function initializeDeferredWork(actor, callback) {
 function queueDeferredWork(workId) {
     let data = _deferredWorkData[workId];
     if (!data) {
-        let message = 'Invalid work id %d'.format(workId);
+        let message = `Invalid work id ${workId}`;
         logError(new Error(message), message);
         return;
     }

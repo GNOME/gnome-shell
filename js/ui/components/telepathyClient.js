@@ -114,7 +114,7 @@ var TelepathyComponent = class {
         try {
             this._client.register();
         } catch (e) {
-            throw new Error('Could not register Telepathy client. Error: %s'.format(e.toString()));
+            throw new Error(`Could not register Telepathy client. Error: ${e}`);
         }
 
         if (!this._client.account_manager.is_prepared(Tp.AccountManager.get_feature_quark_core()))
@@ -282,7 +282,7 @@ class TelepathyClient extends Tp.BaseClient {
             await dispatchOp.claim_with_async(this);
             this._handlingChannels(account, conn, [channel], false);
         } catch (err) {
-            log('Failed to Claim channel: %s'.format(err.toString()));
+            log(`Failed to claim channel: ${err}`);
         }
     }
 
@@ -702,7 +702,7 @@ var ChatNotification = HAVE_TP ? GObject.registerClass({
 
         if (message.messageType == Tp.ChannelTextMessageType.ACTION) {
             let senderAlias = GLib.markup_escape_text(message.sender, -1);
-            messageBody = '<i>%s</i> %s'.format(senderAlias, messageBody);
+            messageBody = `<i>${senderAlias}</i> ${messageBody}`;
             styles.push('chat-action');
         }
 

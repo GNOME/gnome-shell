@@ -119,7 +119,7 @@ function _findBestFolderName(apps) {
     }, commonCategories);
 
     for (let category of commonCategories) {
-        const directory = '%s.directory'.format(category);
+        const directory = `${category}.directory`;
         const translated = Shell.util_get_translated_folder_name(directory);
         if (translated !== null)
             return translated;
@@ -870,7 +870,7 @@ var BaseAppView = GObject.registerClass({
         if (this._items.has(id))
             this._items.get(id).navigate_focus(null, St.DirectionType.TAB_FORWARD, false);
         else
-            log('No such application %s'.format(id));
+            log(`No such application ${id}`);
     }
 
     selectApp(id) {
@@ -1533,7 +1533,7 @@ class AppDisplay extends BaseAppView {
 
         let folders = this._folderSettings.get_strv('folder-children');
         folders.forEach(id => {
-            let path = '%sfolders/%s/'.format(this._folderSettings.path, id);
+            let path = `${this._folderSettings.path}folders/${id}/`;
             let icon = this._items.get(id);
             if (!icon) {
                 icon = new FolderIcon(id, path, this);
@@ -2213,7 +2213,7 @@ class FolderView extends BaseAppView {
         let icon = new St.Widget({
             layout_manager: layout,
             x_align: Clutter.ActorAlign.CENTER,
-            style: 'width: %dpx; height: %dpx;'.format(size, size),
+            style: `width: ${size}px; height: ${size}px;`,
         });
 
         let subSize = Math.floor(FOLDER_SUBICON_FRACTION * size);
@@ -2221,7 +2221,7 @@ class FolderView extends BaseAppView {
         let numItems = this._orderedItems.length;
         let rtl = icon.get_text_direction() == Clutter.TextDirection.RTL;
         for (let i = 0; i < 4; i++) {
-            const style = 'width: %dpx; height: %dpx;'.format(subSize, subSize);
+            const style = `width: ${subSize}px; height: ${subSize}px;`;
             let bin = new St.Bin({ style });
             if (i < numItems)
                 bin.child = this._orderedItems[i].app.create_icon_texture(subSize);
@@ -3219,7 +3219,7 @@ var AppIcon = GObject.registerClass({
 
     shellWorkspaceLaunch(params) {
         let { stack } = new Error();
-        log('shellWorkspaceLaunch is deprecated, use app.open_new_window() instead\n%s'.format(stack));
+        log(`shellWorkspaceLaunch is deprecated, use app.open_new_window() instead\n${stack}`);
 
         params = Params.parse(params, { workspace: -1,
                                         timestamp: 0 });

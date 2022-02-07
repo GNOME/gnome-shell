@@ -92,7 +92,7 @@ function checkResponse(message) {
     const { statusCode } = message;
     const phrase = Soup.Status.get_phrase(statusCode);
     if (statusCode !== Soup.Status.OK)
-        throw new Error('Unexpected response: %s'.format(phrase));
+        throw new Error(`Unexpected response: ${phrase}`);
 }
 
 /**
@@ -141,8 +141,7 @@ async function downloadExtensionUpdate(uuid) {
         await extractExtensionArchive(bytes, dir);
         Main.extensionManager.notifyExtensionUpdate(uuid);
     } catch (e) {
-        log('Error while downloading update for extension %s: %s'
-            .format(uuid, e.message));
+        log(`Error while downloading update for extension ${uuid}: (${e.message})`);
     }
 }
 
@@ -174,12 +173,12 @@ async function checkForUpdates() {
         'disable-extension-version-validation');
     const params = {
         shell_version: Config.PACKAGE_VERSION,
-        disable_version_validation: versionCheck.toString(),
+        disable_version_validation: `${versionCheck}`,
     };
     const requestBody = new GLib.Bytes(JSON.stringify(metadatas));
 
     const message = Soup.Message.new('POST',
-        '%s?%s'.format(REPOSITORY_URL_UPDATE, Soup.form_encode_hash(params)));
+        `${REPOSITORY_URL_UPDATE}?${Soup.form_encode_hash(params)}`);
     message.set_request_body_from_bytes('application/json', requestBody);
 
     let json;
@@ -191,7 +190,7 @@ async function checkForUpdates() {
         checkResponse(message);
         json = new TextDecoder().decode(bytes.get_data());
     } catch (e) {
-        log('Update check failed: %s'.format(e.message));
+        log(`Update check failed: ${e.message}`);
         return;
     }
 
@@ -207,7 +206,7 @@ async function checkForUpdates() {
         await Promise.allSettled(
             updates.map(uuid => downloadExtensionUpdate(uuid)));
     } catch (e) {
-        log('Some extension updates failed to download: %s'.format(e.message));
+        log(`Some extension updates failed to download: ${e.message}`);
     }
 }
 
@@ -267,11 +266,11 @@ class InstallExtensionDialog extends ModalDialog.ModalDialog {
                 this._uuid, dir, ExtensionUtils.ExtensionType.PER_USER);
             Main.extensionManager.loadExtension(extension);
             if (!Main.extensionManager.enableExtension(this._uuid))
-                throw new Error('Cannot enable %s'.format(this._uuid));
+                throw new Error(`Cannot enable ${this._uuid}`);
 
             this._invocation.return_value(new GLib.Variant('(s)', ['successful']));
         } catch (e) {
-            log('Error while installing %s: %s'.format(this._uuid, e.message));
+            log(`Error while installing ${this._uuid}: ${e.message}`);
             this._invocation.return_dbus_error(
                 'org.gnome.Shell.ExtensionError', e.message);
         }

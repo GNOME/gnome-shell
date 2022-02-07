@@ -572,14 +572,16 @@ var ShellUserVerifier = class {
             if (e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
                 return;
             if (!this.serviceIsForeground(serviceName)) {
-                logError(e, 'Failed to start %s for %s'.format(serviceName, this._userName));
+                logError(e,
+                    `Failed to start ${serviceName} for ${this._userName}`);
                 this._hold.release();
                 return;
             }
-            this._reportInitError(this._userName
-                ? 'Failed to start %s verification for user'.format(serviceName)
-                : 'Failed to start %s verification'.format(serviceName), e,
-            serviceName);
+            this._reportInitError(
+                this._userName
+                    ? `Failed to start ${serviceName} verification for user`
+                    : `Failed to start ${serviceName} verification`,
+                e, serviceName);
             return;
         }
         this._hold.release();
