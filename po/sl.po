@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2022-01-31 12:43+0000\n"
-"PO-Revision-Date: 2022-01-31 22:14+0100\n"
+"POT-Creation-Date: 2022-02-07 14:18+0000\n"
+"PO-Revision-Date: 2022-02-07 18:32+0100\n"
 "Last-Translator: Matej Urbančič <mateju@src.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: sl\n"
@@ -547,83 +547,96 @@ msgid "(or place finger on reader)"
 msgstr "(ali pa povlecite prst po bralniku)"
 
 #. Translators: The name of the power-off action in search
-#: js/misc/systemActions.js:82
+#: js/misc/systemActions.js:84
 msgctxt "search-result"
 msgid "Power Off"
 msgstr "Izklopi"
 
 #. Translators: A list of keywords that match the power-off action, separated by semicolons
-#: js/misc/systemActions.js:85
+#: js/misc/systemActions.js:87
 msgid "power off;shutdown;halt;stop"
 msgstr "izklop;ugasni;ponovni zagon;reboot;zaustavi;restart;stop;shutdown"
 
 #. Translators: The name of the restart action in search
-#: js/misc/systemActions.js:90
+#: js/misc/systemActions.js:92
 msgctxt "search-result"
 msgid "Restart"
 msgstr "Ponovno zaženi"
 
 #. Translators: A list of keywords that match the restart action, separated by semicolons
-#: js/misc/systemActions.js:93
+#: js/misc/systemActions.js:95
 msgid "reboot;restart;"
 msgstr "izklop;ugasni;ponovni zagon;reboot;zaustavi;restart;stop;shutdown;"
 
 #. Translators: The name of the lock screen action in search
-#: js/misc/systemActions.js:98
+#: js/misc/systemActions.js:100
 msgctxt "search-result"
 msgid "Lock Screen"
 msgstr "Zakleni zaslon"
 
 #. Translators: A list of keywords that match the lock screen action, separated by semicolons
-#: js/misc/systemActions.js:101
+#: js/misc/systemActions.js:103
 msgid "lock screen"
 msgstr "zaklep zaslona"
 
 #. Translators: The name of the logout action in search
-#: js/misc/systemActions.js:106
+#: js/misc/systemActions.js:108
 msgctxt "search-result"
 msgid "Log Out"
 msgstr "Odjava"
 
 #. Translators: A list of keywords that match the logout action, separated by semicolons
-#: js/misc/systemActions.js:109
+#: js/misc/systemActions.js:111
 msgid "logout;log out;sign off"
 msgstr "odjava;izpis;izklop;logout"
 
 #. Translators: The name of the suspend action in search
-#: js/misc/systemActions.js:114
+#: js/misc/systemActions.js:116
 msgctxt "search-result"
 msgid "Suspend"
 msgstr "V pripravljenost"
 
 #. Translators: A list of keywords that match the suspend action, separated by semicolons
-#: js/misc/systemActions.js:117
+#: js/misc/systemActions.js:119
 msgid "suspend;sleep"
 msgstr "v pripravljenost;v mirovanje"
 
 #. Translators: The name of the switch user action in search
-#: js/misc/systemActions.js:122
+#: js/misc/systemActions.js:124
 msgctxt "search-result"
 msgid "Switch User"
 msgstr "Preklop uporabnika"
 
 #. Translators: A list of keywords that match the switch user action, separated by semicolons
-#: js/misc/systemActions.js:125
+#: js/misc/systemActions.js:127
 msgid "switch user"
 msgstr "preklop uporabnika"
 
 #. Translators: A list of keywords that match the lock orientation action, separated by semicolons
-#: js/misc/systemActions.js:132
+#: js/misc/systemActions.js:134
 msgid "lock orientation;unlock orientation;screen;rotation"
 msgstr ""
 "zaklep usmerjenosti;zaslon;rotacija;obrat;obračanje;vrtenje;zavrti;rotacija"
 
-#: js/misc/systemActions.js:232
+#. Translators: The name of the screenshot UI action in search
+#: js/misc/systemActions.js:139
+msgctxt "search-result"
+msgid "Take a Screenshot"
+msgstr "Zajemi zaslonsko sliko"
+
+#. Translators: A list of keywords that match the screenshot UI action, separated by semicolons
+#: js/misc/systemActions.js:142
+msgid "screenshot;screencast;snip;capture;record"
+msgstr ""
+"zaslon;zaslonska slika;zaslonski posnetek;slika;posnetek;zajem;zapis;"
+"screenshot;screen;monitor;"
+
+#: js/misc/systemActions.js:242
 msgctxt "search-result"
 msgid "Unlock Screen Rotation"
 msgstr "Vrtenje odklepanja zaslona"
 
-#: js/misc/systemActions.js:233
+#: js/misc/systemActions.js:243
 msgctxt "search-result"
 msgid "Lock Screen Rotation"
 msgstr "Vrtenje zaklepanja zaslona"
@@ -806,12 +819,12 @@ msgstr "Neimenovana mapa"
 
 #: js/ui/appFavorites.js:164
 #, javascript-format
-msgid "%s has been added to your favorites."
-msgstr "Program »%s« je dodan med priljubljeno."
+msgid "%s has been pinned to the dash."
+msgstr "Program »%s« je dodan med priljubljene."
 
 #: js/ui/appFavorites.js:197
 #, javascript-format
-msgid "%s has been removed from your favorites."
+msgid "%s has been unpinned from the dash."
 msgstr "Program »%s« je odstranjen iz priljubljenih."
 
 #. Translators: This is the heading of a list of open windows
@@ -832,12 +845,12 @@ msgid "Quit"
 msgstr "Končaj"
 
 #: js/ui/appMenu.js:163 js/ui/dash.js:245
-msgid "Remove from Favorites"
-msgstr "Odstrani iz priljubljenih"
+msgid "Unpin"
+msgstr "Odpni"
 
 #: js/ui/appMenu.js:164
-msgid "Add to Favorites"
-msgstr "Dodaj med priljubljene"
+msgid "Pin to Dash"
+msgstr "Pripni med priljubljene "
 
 #: js/ui/appMenu.js:181
 msgid "Launch using Integrated Graphics Card"
@@ -972,15 +985,15 @@ msgstr "%d"
 msgid "Week %V"
 msgstr "Teden %V"
 
-#: js/ui/calendar.js:902
+#: js/ui/calendar.js:900
 msgid "No Notifications"
 msgstr "Ni obvestil"
 
-#: js/ui/calendar.js:956
+#: js/ui/calendar.js:954
 msgid "Do Not Disturb"
 msgstr "Ne moti"
 
-#: js/ui/calendar.js:977
+#: js/ui/calendar.js:975
 msgid "Clear"
 msgstr "Počisti"
 
@@ -1507,7 +1520,7 @@ msgstr "Onemogoči"
 msgid "Leave Off"
 msgstr "Pusti onemogočeno"
 
-#: js/ui/keyboard.js:226
+#: js/ui/keyboard.js:248
 msgid "Region & Language Settings"
 msgstr "Nastavitve območja in jezika"
 
@@ -1560,23 +1573,23 @@ msgstr "Poglej vir"
 msgid "Web Page"
 msgstr "Spletna stran"
 
-#: js/ui/main.js:263
+#: js/ui/main.js:265
 msgid "System was put in unsafe mode"
 msgstr "Sistem je v ne-varnem načinu"
 
-#: js/ui/main.js:264
+#: js/ui/main.js:266
 msgid "Applications now have unrestricted access"
 msgstr "Programi imajo sedaj neomejen dostop"
 
-#: js/ui/main.js:265 js/ui/overview.js:58
+#: js/ui/main.js:267 js/ui/overview.js:58
 msgid "Undo"
 msgstr "Razveljavi"
 
-#: js/ui/main.js:311
+#: js/ui/main.js:313
 msgid "Logged in as a privileged user"
 msgstr "Zaznana je prijava s skrbniškimi dovoljenji"
 
-#: js/ui/main.js:312
+#: js/ui/main.js:314
 msgid ""
 "Running a session as a privileged user should be avoided for security "
 "reasons. If possible, you should log in as a normal user."
@@ -1584,11 +1597,11 @@ msgstr ""
 "Zagona seje s skrbniškim računom se je treba iz varnostnih razlogov "
 "izogibati. Priporočljivo je uporabljati običajen uporabniški račun."
 
-#: js/ui/main.js:361
+#: js/ui/main.js:363
 msgid "Screen Lock disabled"
 msgstr "Zaklep zaslona je onemogočen"
 
-#: js/ui/main.js:362
+#: js/ui/main.js:364
 msgid "Screen Locking requires the GNOME display manager."
 msgstr ""
 "Zaklepanje zaslona zahteva namestitev upravljalnika zaslona za okolje GNOME."
@@ -1669,16 +1682,16 @@ msgstr "Pritisnite katerokoli tipko za končanje"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: js/ui/panel.js:271
+#: js/ui/panel.js:270
 msgid "Activities"
 msgstr "Dejavnosti"
 
-#: js/ui/panel.js:557
+#: js/ui/panel.js:392
 msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "Sistem"
 
-#: js/ui/panel.js:675
+#: js/ui/panel.js:502
 msgid "Top Bar"
 msgstr "Vrhnja vrstica"
 
@@ -1717,97 +1730,96 @@ msgstr "Zaklep ni mogoč"
 msgid "Lock was blocked by an application"
 msgstr "Zaklep je preprečil program"
 
-#: js/ui/screenshot.js:1133
+#: js/ui/screenshot.js:1147
 msgid "Selection"
 msgstr "Izbor"
 
-#: js/ui/screenshot.js:1143
+#: js/ui/screenshot.js:1157
 msgid "Area Selection"
 msgstr "Izbor polja"
 
-#: js/ui/screenshot.js:1148
+#: js/ui/screenshot.js:1162
 msgid "Screen"
 msgstr "Zaslon"
 
-#: js/ui/screenshot.js:1158
+#: js/ui/screenshot.js:1172
 msgid "Screen Selection"
 msgstr "Izbor zaslona"
 
-#: js/ui/screenshot.js:1163
+#: js/ui/screenshot.js:1177
 msgid "Window"
 msgstr "Okno"
 
-#: js/ui/screenshot.js:1173
+#: js/ui/screenshot.js:1187
 msgid "Window Selection"
 msgstr "Izbor okna"
 
-#: js/ui/screenshot.js:1207
+#: js/ui/screenshot.js:1221
 msgid "Screenshot / Screencast"
 msgstr "Zaslonski slika / posnetek"
 
-#: js/ui/screenshot.js:1243
+#: js/ui/screenshot.js:1257
 msgid "Show Pointer"
 msgstr "Pokaži kazalnik"
 
 #. Translators: name of the folder under ~/Pictures for screenshots.
-#: js/ui/screenshot.js:1691
+#: js/ui/screenshot.js:1722
 msgid "Screenshots"
 msgstr "Zaslonske slike"
 
 #. Translators: this is the name of the file that the screenshot is
 #. saved to. The placeholder is a timestamp, e.g. "2017-05-21 12-24-03".
-#: js/ui/screenshot.js:1704
+#: js/ui/screenshot.js:1735
 #, javascript-format
 msgid "Screenshot from %s"
 msgstr "Zaslonska slika %s"
 
 #. Translators: notification source name.
-#: js/ui/screenshot.js:1744 js/ui/screenshot.js:1964
+#: js/ui/screenshot.js:1775 js/ui/screenshot.js:1995
 msgid "Screenshot"
 msgstr "Zaslonska slika"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:1750
+#: js/ui/screenshot.js:1781
 msgid "Screenshot captured"
 msgstr "Zaslonska slika je zajeta"
 
 #. Translators: notification body when a screenshot was captured.
-#: js/ui/screenshot.js:1752
+#: js/ui/screenshot.js:1783
 msgid "You can paste the image from the clipboard."
 msgstr "Prilepiti je mogoče sliko iz odložišča."
 
 #. Translators: button on the screenshot notification.
 #. Translators: button on the screencast notification.
-#: js/ui/screenshot.js:1758 js/ui/screenshot.js:1975
+#: js/ui/screenshot.js:1789 js/ui/screenshot.js:2006
 msgid "Show in Files"
 msgstr "Pokaži v mapi"
 
-#: js/ui/screenshot.js:1787 js/ui/screenshot.js:2228
+#: js/ui/screenshot.js:1818 js/ui/screenshot.js:2259
 msgid "Screenshot taken"
 msgstr "Zaslonska slika je zajeta"
 
 #. Translators: this is the folder where recorded
 #. screencasts are stored.
-#: js/ui/screenshot.js:1890
+#: js/ui/screenshot.js:1921
 msgid "Screencasts"
 msgstr "Zaslonski posnetek"
 
 #. Translators: this is a filename used for screencast
 #. * recording, where "%d" and "%t" date and time, e.g.
 #. * "Screencast from 07-17-2013 10:00:46 PM.webm"
-#: js/ui/screenshot.js:1895
+#: js/ui/screenshot.js:1926
 #, no-c-format
-#| msgid "Screencast from %d %t"
 msgid "Screencast from %d %t.webm"
 msgstr "Zaslonski posnetek %d %t.webm"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:1970
+#: js/ui/screenshot.js:2001
 msgid "Screencast recorded"
 msgstr "Zaslonski posnetek je zajet"
 
 #. Translators: notification body when a screencast was recorded.
-#: js/ui/screenshot.js:1972
+#: js/ui/screenshot.js:2003
 msgid "Click here to view the video."
 msgstr "Kliknite za ogled posnetka."
 
@@ -1907,47 +1919,47 @@ msgstr "Ni mogoče začeti »%s«"
 msgid "Couldn’t find the %s application"
 msgstr "Ni mogoče najti programa %s"
 
-#: js/ui/status/accessibility.js:35
+#: js/ui/status/accessibility.js:34
 msgid "Accessibility"
 msgstr "Dostopnost"
 
-#: js/ui/status/accessibility.js:48
-msgid "Zoom"
-msgstr "Približanje"
-
-#: js/ui/status/accessibility.js:55
-msgid "Screen Reader"
-msgstr "Zaslonski bralnik"
-
-#: js/ui/status/accessibility.js:59
-msgid "Screen Keyboard"
-msgstr "Zaslonska tipkovnica"
-
-#: js/ui/status/accessibility.js:63
-msgid "Visual Alerts"
-msgstr "Vidna opozorila"
-
-#: js/ui/status/accessibility.js:66
-msgid "Sticky Keys"
-msgstr "Lepljive tipke"
-
-#: js/ui/status/accessibility.js:69
-msgid "Slow Keys"
-msgstr "Počasne tipke"
-
-#: js/ui/status/accessibility.js:72
-msgid "Bounce Keys"
-msgstr "Odskočne tipke"
-
-#: js/ui/status/accessibility.js:75
-msgid "Mouse Keys"
-msgstr "Miškine tipke"
-
-#: js/ui/status/accessibility.js:134
+#: js/ui/status/accessibility.js:44
 msgid "High Contrast"
 msgstr "Visok kontrast"
 
-#: js/ui/status/accessibility.js:176
+#: js/ui/status/accessibility.js:47
+msgid "Zoom"
+msgstr "Približanje"
+
+#: js/ui/status/accessibility.js:54
+msgid "Screen Reader"
+msgstr "Zaslonski bralnik"
+
+#: js/ui/status/accessibility.js:58
+msgid "Screen Keyboard"
+msgstr "Zaslonska tipkovnica"
+
+#: js/ui/status/accessibility.js:62
+msgid "Visual Alerts"
+msgstr "Vidna opozorila"
+
+#: js/ui/status/accessibility.js:65
+msgid "Sticky Keys"
+msgstr "Lepljive tipke"
+
+#: js/ui/status/accessibility.js:68
+msgid "Slow Keys"
+msgstr "Počasne tipke"
+
+#: js/ui/status/accessibility.js:71
+msgid "Bounce Keys"
+msgstr "Odskočne tipke"
+
+#: js/ui/status/accessibility.js:74
+msgid "Mouse Keys"
+msgstr "Miškine tipke"
+
+#: js/ui/status/accessibility.js:131
 msgid "Large Text"
 msgstr "Veliko besedilo"
 
@@ -3200,6 +3212,12 @@ msgstr[3] "%u dovodi naprave"
 #: subprojects/gvc/gvc-mixer-control.c:2867
 msgid "System Sounds"
 msgstr "Sistemski zvoki"
+
+#~ msgid "Remove from Favorites"
+#~ msgstr "Odstrani iz priljubljenih"
+
+#~ msgid "Add to Favorites"
+#~ msgstr "Dodaj med priljubljene"
 
 #~ msgid "Enable introspection API"
 #~ msgstr "Omogoči API nadzora"
