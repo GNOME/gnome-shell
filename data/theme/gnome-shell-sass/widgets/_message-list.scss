@@ -4,12 +4,19 @@
 // main list
 .message-list {
   width: 32em;
-  padding: 0;
+  border: none;
+  border-style: solid;
+  border-color: $borders_color;
+  padding: $base_padding;
+
+  // padding and margins to account for scrollbar
+  &:ltr {margin-left: 0; margin-right: $base_margin; padding-right: $base_padding; border-right-width: 1px; }
+  &:rtl {margin-right: 0; margin-left: $base_margin; padding-left: $base_padding; border-left-width: 1px; }
 
   .message-list-placeholder { 
     font-weight:1000; 
     font-size: 18pt;
-    color: $insensitive_fg_color;
+    color: transparentize($fg_color, .8);
     spacing: 12px;
 
     // icon size and color
@@ -21,15 +28,14 @@
   }
 }
 
-
 .message-list-sections {
   spacing: $base_spacing;
   margin: 0; 
   padding-bottom: $base_padding;
 
   // to account for scrollbar
-  &:ltr {margin-right: $base_margin * 4; }
-  &:rtl {margin-left: $base_margin * 4;}
+  &:ltr {margin-right: $base_margin * 3; }
+  &:rtl {margin-left: $base_margin * 3;}
 }
 
 .message-list-section,
@@ -122,18 +128,12 @@
     border-radius: 99px;
     padding: $base_padding - 1px;
     margin: 1px;
-    &:hover { 
-      background-color: transparentize($fg_color, 0.8);
-    }
-    &:active {
-      background-color: transparentize($fg_color, 0.9);
-    }
+    &:hover {background-color: transparentize($fg_color, 0.8);}
+    &:active {background-color: transparentize($fg_color, 0.9);}
   }
 
   // body
-  .message-body {
-    color: darken($fg_color, 10%);
-  }
+  .message-body {color: darken($fg_color, 10%);}
 }
 
 // URLs in messages
@@ -143,7 +143,7 @@
 
 /* Media Controls */
 .message-media-control {
-  padding: 0 $base_padding*2;
+  padding: 0 $base_padding*3;
   margin: $base_padding*2 0;
   border-radius: $base_border_radius;
   color: $fg_color;
@@ -161,7 +161,7 @@
 
   &:insensitive { color: lighten($insensitive_fg_color, 5%); }
   
-  // fix border-radius for last button
+  // fix margin for last button
   &:last-child:ltr { margin-right: $base_margin*3; }
   &:last-child:rtl { margin-left: $base_margin*3; }
 }

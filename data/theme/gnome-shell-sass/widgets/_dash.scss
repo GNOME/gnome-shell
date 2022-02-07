@@ -68,7 +68,7 @@ $dash_border_radius: $modal_radius + 8px;
 .dash-separator {
   width: 1px;
   margin: 0 $base_margin*2;
-  background-color: transparentize($borders_color,0.2);
+  background-color: $borders_color;
 }
 
 // OSD Tooltip

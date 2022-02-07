@@ -464,7 +464,7 @@ var Calendar = GObject.registerClass({
         this.destroy_all_children();
 
         // Top line of the calendar '<| September 2009 |>'
-        this._topBox = new St.BoxLayout();
+        this._topBox = new St.BoxLayout({ style_class: 'calendar-month-header' });
         layout.attach(this._topBox, 0, 0, offsetCols + 7, 1);
 
         this._backButton = new St.Button({
@@ -481,6 +481,7 @@ var Calendar = GObject.registerClass({
             can_focus: true,
             x_align: Clutter.ActorAlign.CENTER,
             x_expand: true,
+            y_align: Clutter.ActorAlign.CENTER,
         });
         this._topBox.add_child(this._monthLabel);
 
@@ -694,7 +695,7 @@ var Calendar = GObject.registerClass({
             if (this._useWeekdate && iter.getDay() == 4) {
                 const label = new St.Label({
                     text: iter.toLocaleFormat('%V'),
-                    style_class: 'calendar-day-base calendar-week-number',
+                    style_class: 'calendar-week-number',
                     can_focus: true,
                 });
                 let weekFormat = Shell.util_translate_time_string(N_("Week %V"));

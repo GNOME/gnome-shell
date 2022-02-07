@@ -46,7 +46,7 @@ $hover_bg_color: if($variant=='light', darken($bg_color, 3%), lighten($bg_color,
 $hover_fg_color: if($variant=='light', darken($fg_color, 5%), lighten($fg_color, 7%));
 
 // derived active colors
-$active_bg_color: darken($bubble_buttons_color,if($variant=='light', 9%, 2%));
+$active_bg_color: darken($bg_color,if($variant=='light', 9%, 5%));
 $active_fg_color: darken($fg_color,if($variant=='light', 5%, 3%));
 
 // fonts
