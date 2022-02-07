@@ -17,7 +17,7 @@ const NC_ = (context, str) => `${context}\u0004${str}`;
 const T_ = Shell.util_translate_time_string;
 
 const MAX_FORECASTS = 5;
-const ELLIPSIS_CHAR = '\u2026';
+const EN_CHAR = '\u2013';
 
 const ClocksIntegrationIface = loadInterfaceXML('org.gnome.Shell.ClocksIntegration');
 const ClocksProxy = Gio.DBusProxy.makeProxyWrapper(ClocksIntegrationIface);
@@ -169,9 +169,24 @@ class EventsSection extends St.Button {
             this._title.text = this._startDate.toLocaleFormat(otherYearFormat);
     }
 
+    _isAtMidnight(eventTime) {
+        return eventTime.getHours() === 0 && eventTime.getMinutes() === 0 && eventTime.getSeconds() === 0;
+    }
+
     _formatEventTime(event) {
+        const eventStart = event.date;
+        const eventEnd = event.end;
+
         const allDay =
-            event.date <= this._startDate && event.end >= this._endDate;
+            eventStart.getTime() === this._startDate.getTime() && eventEnd.getTime() === this._endDate.getTime();
+
+        const startsBeforeToday = eventStart < this._startDate;
+        const endsAfterToday = eventEnd > this._endDate;
+
+        const startTimeOnly = Util.formatTime(eventStart, { timeOnly: true });
+        const endTimeOnly = Util.formatTime(eventEnd, { timeOnly: true });
+
+        const rtl = Clutter.get_default_text_direction() === Clutter.TextDirection.RTL;
 
         let title;
         if (allDay) {
@@ -179,24 +194,44 @@ class EventsSection extends St.Button {
              * Keep it short, best if you can use less then 10 characters
              */
             title = C_('event list time', 'All Day');
+        } else if (startsBeforeToday || endsAfterToday) {
+            const now = new Date();
+            const thisYear = now.getFullYear();
+
+            const startsAtMidnight = this._isAtMidnight(eventStart);
+            const endsAtMidnight = this._isAtMidnight(eventEnd);
+
+            const startYear = eventStart.getFullYear();
+
+            if (endsAtMidnight)
+                eventEnd.setDate(eventEnd.getDate() - 1);
+
+            const endYear = eventEnd.getFullYear();
+
+            let format;
+            if (startYear === thisYear && thisYear === endYear)
+                /* Translators: Shown in calendar event list as the start/end of events
+                 * that only show day and month
+                 */
+                format = T_('%m/%d');
+            else
+                format = '%x';
+
+            const startDateOnly = eventStart.toLocaleFormat(format);
+            const endDateOnly = eventEnd.toLocaleFormat(format);
+
+            if (startsAtMidnight && endsAtMidnight)
+                title = `${rtl ? endDateOnly : startDateOnly} ${EN_CHAR} ${rtl ? startDateOnly : endDateOnly}`;
+            else if (rtl)
+                title = `${endTimeOnly} ${endDateOnly} ${EN_CHAR} ${startTimeOnly} ${startDateOnly}`;
+            else
+                title = `${startDateOnly} ${startTimeOnly} ${EN_CHAR} ${endDateOnly} ${endTimeOnly}`;
+        } else if (eventStart === eventEnd) {
+            title = startTimeOnly;
         } else {
-            let date = event.date >= this._startDate ? event.date : event.end;
-            title = Util.formatTime(date, { timeOnly: true });
+            title = `${rtl ? endTimeOnly : startTimeOnly} ${EN_CHAR} ${rtl ? startTimeOnly : endTimeOnly}`;
         }
 
-        const rtl = Clutter.get_default_text_direction() === Clutter.TextDirection.RTL;
-        if (event.date < this._startDate) {
-            if (rtl)
-                title = `${title}${ELLIPSIS_CHAR}`;
-            else
-                title = `${ELLIPSIS_CHAR}${title}`;
-        }
-        if (event.end > this._endDate) {
-            if (rtl)
-                title = `${ELLIPSIS_CHAR}${title}`;
-            else
-                title = `${title}${ELLIPSIS_CHAR}`;
-        }
         return title;
     }
 
