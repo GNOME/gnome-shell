@@ -2127,18 +2127,20 @@ class Indicator extends PanelMenu.SystemIndicator {
         if (this._portalHelperProxy) {
             this._portalHelperProxy.AuthenticateRemote(path, '', timestamp);
         } else {
-            new PortalHelperProxy(Gio.DBus.session, 'org.gnome.Shell.PortalHelper',
-                                  '/org/gnome/Shell/PortalHelper', (proxy, error) => {
-                                      if (error) {
-                                          log('Error launching the portal helper: %s'.format(error));
-                                          return;
-                                      }
+            new PortalHelperProxy(Gio.DBus.session,
+                'org.gnome.Shell.PortalHelper',
+                '/org/gnome/Shell/PortalHelper',
+                (proxy, error) => {
+                    if (error) {
+                        log('Error launching the portal helper: %s'.format(error));
+                        return;
+                    }
 
-                                      this._portalHelperProxy = proxy;
-                                      proxy.connectSignal('Done', this._portalHelperDone.bind(this));
+                    this._portalHelperProxy = proxy;
+                    proxy.connectSignal('Done', this._portalHelperDone.bind(this));
 
-                                      proxy.AuthenticateRemote(path, '', timestamp);
-                                  });
+                    proxy.AuthenticateRemote(path, '', timestamp);
+                });
         }
 
         this._connectivityQueue.push(path);

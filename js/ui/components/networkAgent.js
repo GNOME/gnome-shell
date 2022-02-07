@@ -205,9 +205,13 @@ class NetworkSecretDialog extends ModalDialog.ModalDialog {
         case 'wpa-none':
         case 'wpa-psk':
         case 'sae':
-            secrets.push({ label: _('Password'), key: 'psk',
-                           value: wirelessSecuritySetting.psk || '',
-                           validate: this._validateWpaPsk, password: true });
+            secrets.push({
+                label: _('Password'),
+                key: 'psk',
+                value: wirelessSecuritySetting.psk || '',
+                validate: this._validateWpaPsk,
+                password: true,
+            });
             break;
         case 'none': // static WEP
             secrets.push({
@@ -221,8 +225,12 @@ class NetworkSecretDialog extends ModalDialog.ModalDialog {
             break;
         case 'ieee8021x':
             if (wirelessSecuritySetting.auth_alg == 'leap') { // Cisco LEAP
-                secrets.push({ label: _('Password'), key: 'leap-password',
-                               value: wirelessSecuritySetting.leap_password || '', password: true });
+                secrets.push({
+                    label: _('Password'),
+                    key: 'leap-password',
+                    value: wirelessSecuritySetting.leap_password || '',
+                    password: true,
+                });
             } else { // Dynamic (IEEE 802.1x) WEP
                 this._get8021xSecrets(secrets);
             }
@@ -241,16 +249,28 @@ class NetworkSecretDialog extends ModalDialog.ModalDialog {
         /* If hints were given we know exactly what we need to ask */
         if (this._settingName == "802-1x" && this._hints.length) {
             if (this._hints.includes('identity')) {
-                secrets.push({ label: _('Username'), key: 'identity',
-                               value: ieee8021xSetting.identity || '', password: false });
+                secrets.push({
+                    label: _('Username'),
+                    key: 'identity',
+                    value: ieee8021xSetting.identity || '',
+                    password: false,
+                });
             }
             if (this._hints.includes('password')) {
-                secrets.push({ label: _('Password'), key: 'password',
-                               value: ieee8021xSetting.password || '', password: true });
+                secrets.push({
+                    label: _('Password'),
+                    key: 'password',
+                    value: ieee8021xSetting.password || '',
+                    password: true,
+                });
             }
             if (this._hints.includes('private-key-password')) {
-                secrets.push({ label: _('Private key password'), key: 'private-key-password',
-                               value: ieee8021xSetting.private_key_password || '', password: true });
+                secrets.push({
+                    label: _('Private key password'),
+                    key: 'private-key-password',
+                    value: ieee8021xSetting.private_key_password || '',
+                    password: true,
+                });
             }
             return;
         }
@@ -264,16 +284,32 @@ class NetworkSecretDialog extends ModalDialog.ModalDialog {
             // TTLS and PEAP are actually much more complicated, but this complication
             // is not visible here since we only care about phase2 authentication
             // (and don't even care of which one)
-            secrets.push({ label: _('Username'), key: null,
-                           value: ieee8021xSetting.identity || '', password: false });
-            secrets.push({ label: _('Password'), key: 'password',
-                           value: ieee8021xSetting.password || '', password: true });
+            secrets.push({
+                label: _('Username'),
+                key: null,
+                value: ieee8021xSetting.identity || '',
+                password: false,
+            });
+            secrets.push({
+                label: _('Password'),
+                key: 'password',
+                value: ieee8021xSetting.password || '',
+                password: true,
+            });
             break;
         case 'tls':
-            secrets.push({ label: _('Identity'), key: null,
-                           value: ieee8021xSetting.identity || '', password: false });
-            secrets.push({ label: _('Private key password'), key: 'private-key-password',
-                           value: ieee8021xSetting.private_key_password || '', password: true });
+            secrets.push({
+                label: _('Identity'),
+                key: null,
+                value: ieee8021xSetting.identity || '',
+                password: false,
+            });
+            secrets.push({
+                label: _('Private key password'),
+                key: 'private-key-password',
+                value: ieee8021xSetting.private_key_password || '',
+                password: true,
+            });
             break;
         default:
             log('Invalid EAP/IEEE802.1x method: %s'.format(ieee8021xSetting.get_eap_method(0)));
@@ -282,12 +318,22 @@ class NetworkSecretDialog extends ModalDialog.ModalDialog {
 
     _getPPPoESecrets(secrets) {
         let pppoeSetting = this._connection.get_setting_pppoe();
-        secrets.push({ label: _('Username'), key: 'username',
-                       value: pppoeSetting.username || '', password: false });
-        secrets.push({ label: _('Service'), key: 'service',
-                       value: pppoeSetting.service || '', password: false });
-        secrets.push({ label: _('Password'), key: 'password',
-                       value: pppoeSetting.password || '', password: true });
+        secrets.push({
+            label: _('Username'),
+            key: 'username',
+            value: pppoeSetting.username || '',
+            password: false,
+        });
+        secrets.push({
+            label: _('Service'), key: 'service',
+            value: pppoeSetting.service || '',
+            password: false,
+        });
+        secrets.push({
+            label: _('Password'), key: 'password',
+            value: pppoeSetting.password || '',
+            password: true,
+        });
     }
 
     _getMobileSecrets(secrets, connectionType) {
@@ -296,8 +342,12 @@ class NetworkSecretDialog extends ModalDialog.ModalDialog {
             setting = this._connection.get_setting_cdma() || this._connection.get_setting_gsm();
         else
             setting = this._connection.get_setting_by_name(connectionType);
-        secrets.push({ label: _('Password'), key: 'password',
-                       value: setting.value || '', password: true });
+        secrets.push({
+            label: _('Password'),
+            key: 'password',
+            value: setting.value || '',
+            password: true,
+        });
     }
 
     _getContent() {
@@ -320,8 +370,12 @@ class NetworkSecretDialog extends ModalDialog.ModalDialog {
         case '802-3-ethernet':
             content.title = _("Wired 802.1X authentication");
             content.message = null;
-            content.secrets.push({ label: _('Network name'), key: null,
-                                   value: connectionSetting.get_id(), password: false });
+            content.secrets.push({
+                label: _('Network name'),
+                key: null,
+                value: connectionSetting.get_id(),
+                password: false,
+            });
             this._get8021xSecrets(content.secrets);
             break;
         case 'pppoe':
@@ -334,8 +388,12 @@ class NetworkSecretDialog extends ModalDialog.ModalDialog {
                 let gsmSetting = this._connection.get_setting_gsm();
                 content.title = _("PIN code required");
                 content.message = _("PIN code is needed for the mobile broadband device");
-                content.secrets.push({ label: _('PIN'), key: 'pin',
-                                       value: gsmSetting.pin || '', password: true });
+                content.secrets.push({
+                    label: _('PIN'),
+                    key: 'pin',
+                    value: gsmSetting.pin || '',
+                    password: true,
+                });
                 break;
             }
             // fall through
