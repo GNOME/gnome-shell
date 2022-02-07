@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell.master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2022-01-27 22:31+0000\n"
-"PO-Revision-Date: 2022-01-28 10:15+0100\n"
+"POT-Creation-Date: 2022-02-04 13:08+0000\n"
+"PO-Revision-Date: 2022-02-07 13:43+0100\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Spanish - Spain <gnome-es-list@gnome.org>\n"
 "Language: es_ES\n"
@@ -375,7 +375,6 @@ msgid "Switch to application 9"
 msgstr "Cambiar a la aplicación 9"
 
 #: data/org.gnome.shell.gschema.xml.in:235
-#| msgid "Show on-screen help"
 msgid "Show screenshot UI"
 msgstr "Mostrar IU de captura de pantalla"
 
@@ -502,7 +501,7 @@ msgstr "Página web"
 msgid "Visit extension homepage"
 msgstr "Visitar la página web de la extensión"
 
-#: js/gdm/authPrompt.js:143 js/ui/audioDeviceSelection.js:61
+#: js/gdm/authPrompt.js:144 js/ui/audioDeviceSelection.js:61
 #: js/ui/components/networkAgent.js:110 js/ui/components/polkitAgent.js:138
 #: js/ui/endSessionDialog.js:438 js/ui/extensionDownloader.js:228
 #: js/ui/shellMountOperation.js:376 js/ui/shellMountOperation.js:386
@@ -511,7 +510,7 @@ msgid "Cancel"
 msgstr "Cancelar"
 
 #. Cisco LEAP
-#: js/gdm/authPrompt.js:306 js/ui/components/networkAgent.js:209
+#: js/gdm/authPrompt.js:307 js/ui/components/networkAgent.js:209
 #: js/ui/components/networkAgent.js:225 js/ui/components/networkAgent.js:249
 #: js/ui/components/networkAgent.js:270 js/ui/components/networkAgent.js:290
 #: js/ui/components/networkAgent.js:300 js/ui/components/polkitAgent.js:275
@@ -563,82 +562,94 @@ msgid "(or place finger on reader)"
 msgstr "(o coloque el dedo en el lector)"
 
 #. Translators: The name of the power-off action in search
-#: js/misc/systemActions.js:82
+#: js/misc/systemActions.js:84
 msgctxt "search-result"
 msgid "Power Off"
 msgstr "Apagar"
 
 #. Translators: A list of keywords that match the power-off action, separated by semicolons
-#: js/misc/systemActions.js:85
+#: js/misc/systemActions.js:87
 msgid "power off;shutdown;halt;stop"
 msgstr "apagar;apagado;reinicio;reiniciar;detener;parar"
 
 #. Translators: The name of the restart action in search
-#: js/misc/systemActions.js:90
+#: js/misc/systemActions.js:92
 msgctxt "search-result"
 msgid "Restart"
 msgstr "Reiniciar"
 
 #. Translators: A list of keywords that match the restart action, separated by semicolons
-#: js/misc/systemActions.js:93
+#: js/misc/systemActions.js:95
 msgid "reboot;restart;"
 msgstr "reiniciar;rebotar;"
 
 #. Translators: The name of the lock screen action in search
-#: js/misc/systemActions.js:98
+#: js/misc/systemActions.js:100
 msgctxt "search-result"
 msgid "Lock Screen"
 msgstr "Bloquear la pantalla"
 
 #. Translators: A list of keywords that match the lock screen action, separated by semicolons
-#: js/misc/systemActions.js:101
+#: js/misc/systemActions.js:103
 msgid "lock screen"
 msgstr "bloquear;pantalla"
 
 #. Translators: The name of the logout action in search
-#: js/misc/systemActions.js:106
+#: js/misc/systemActions.js:108
 msgctxt "search-result"
 msgid "Log Out"
 msgstr "Cerrar la sesión"
 
 #. Translators: A list of keywords that match the logout action, separated by semicolons
-#: js/misc/systemActions.js:109
+#: js/misc/systemActions.js:111
 msgid "logout;log out;sign off"
 msgstr "cerrar;sesión;salir"
 
 #. Translators: The name of the suspend action in search
-#: js/misc/systemActions.js:114
+#: js/misc/systemActions.js:116
 msgctxt "search-result"
 msgid "Suspend"
 msgstr "Suspender"
 
 #. Translators: A list of keywords that match the suspend action, separated by semicolons
-#: js/misc/systemActions.js:117
+#: js/misc/systemActions.js:119
 msgid "suspend;sleep"
 msgstr "suspender;dormir"
 
 #. Translators: The name of the switch user action in search
-#: js/misc/systemActions.js:122
+#: js/misc/systemActions.js:124
 msgctxt "search-result"
 msgid "Switch User"
 msgstr "Cambiar de usuario"
 
 #. Translators: A list of keywords that match the switch user action, separated by semicolons
-#: js/misc/systemActions.js:125
+#: js/misc/systemActions.js:127
 msgid "switch user"
 msgstr "cambiar;usuario"
 
 #. Translators: A list of keywords that match the lock orientation action, separated by semicolons
-#: js/misc/systemActions.js:132
+#: js/misc/systemActions.js:134
 msgid "lock orientation;unlock orientation;screen;rotation"
 msgstr "bloquear orientación;desbloquear orientación;pantalla;rotación"
 
-#: js/misc/systemActions.js:232
+#. Translators: The name of the screenshot UI action in search
+#: js/misc/systemActions.js:139
+#| msgid "Screenshot"
+msgctxt "search-result"
+msgid "Take a Screenshot"
+msgstr "Hacer una captura de pantalla"
+
+#. Translators: A list of keywords that match the screenshot UI action, separated by semicolons
+#: js/misc/systemActions.js:142
+msgid "screenshot;screencast;snip;capture;record"
+msgstr "captura;pantalla;grabación;recorte;grabación"
+
+#: js/misc/systemActions.js:242
 msgctxt "search-result"
 msgid "Unlock Screen Rotation"
 msgstr "Desbloquear la rotación de la pantalla"
 
-#: js/misc/systemActions.js:233
+#: js/misc/systemActions.js:243
 msgctxt "search-result"
 msgid "Lock Screen Rotation"
 msgstr "Bloquear la rotación de la pantalla"
@@ -1505,52 +1516,52 @@ msgstr "Dejar apagado"
 msgid "Region & Language Settings"
 msgstr "Configuración de región e idioma"
 
-#: js/ui/lookingGlass.js:686
+#: js/ui/lookingGlass.js:683
 msgid "No extensions installed"
 msgstr "No hay extensiones instaladas"
 
 #. Translators: argument is an extension UUID.
-#: js/ui/lookingGlass.js:744
+#: js/ui/lookingGlass.js:741
 #, javascript-format
 msgid "%s has not emitted any errors."
 msgstr "%s no ha generado ningún error."
 
-#: js/ui/lookingGlass.js:750
+#: js/ui/lookingGlass.js:747
 msgid "Hide Errors"
 msgstr "Ocultar errores"
 
-#: js/ui/lookingGlass.js:754 js/ui/lookingGlass.js:820
+#: js/ui/lookingGlass.js:751 js/ui/lookingGlass.js:817
 msgid "Show Errors"
 msgstr "Mostrar errores"
 
-#: js/ui/lookingGlass.js:763
+#: js/ui/lookingGlass.js:760
 msgid "Enabled"
 msgstr "Activado"
 
 #. translators:
 #. * The device has been disabled
-#: js/ui/lookingGlass.js:766 subprojects/gvc/gvc-mixer-control.c:1900
+#: js/ui/lookingGlass.js:763 subprojects/gvc/gvc-mixer-control.c:1900
 msgid "Disabled"
 msgstr "Desactivado"
 
-#: js/ui/lookingGlass.js:768
+#: js/ui/lookingGlass.js:765
 #: subprojects/extensions-app/data/ui/extension-row.ui:156
 msgid "Error"
 msgstr "Error"
 
-#: js/ui/lookingGlass.js:770
+#: js/ui/lookingGlass.js:767
 msgid "Out of date"
 msgstr "Caducado"
 
-#: js/ui/lookingGlass.js:772
+#: js/ui/lookingGlass.js:769
 msgid "Downloading"
 msgstr "Descargando"
 
-#: js/ui/lookingGlass.js:802
+#: js/ui/lookingGlass.js:799
 msgid "View Source"
 msgstr "Ver fuente"
 
-#: js/ui/lookingGlass.js:811
+#: js/ui/lookingGlass.js:808
 msgid "Web Page"
 msgstr "Página web"
 
@@ -1640,38 +1651,38 @@ msgstr "Asignar pulsación"
 msgid "Done"
 msgstr "Hecho"
 
-#: js/ui/padOsd.js:716
+#: js/ui/padOsd.js:715
 msgid "Edit…"
 msgstr "Editar…"
 
-#: js/ui/padOsd.js:758 js/ui/padOsd.js:875
+#: js/ui/padOsd.js:757 js/ui/padOsd.js:874
 msgid "None"
 msgstr "Nada"
 
-#: js/ui/padOsd.js:829
+#: js/ui/padOsd.js:828
 msgid "Press a button to configure"
 msgstr "Pulse un botón para configurar"
 
-#: js/ui/padOsd.js:830
+#: js/ui/padOsd.js:829
 msgid "Press Esc to exit"
 msgstr "Pulse Esc para salir"
 
-#: js/ui/padOsd.js:833
+#: js/ui/padOsd.js:832
 msgid "Press any key to exit"
 msgstr "Pulse cualquier tecla para salir"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: js/ui/panel.js:271
+#: js/ui/panel.js:270
 msgid "Activities"
 msgstr "Actividades"
 
-#: js/ui/panel.js:557
+#: js/ui/panel.js:392
 msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "Sistema"
 
-#: js/ui/panel.js:675
+#: js/ui/panel.js:502
 msgid "Top Bar"
 msgstr "Barra superior"
 
@@ -1691,7 +1702,7 @@ msgstr "Reiniciar no está disponible en Wayland"
 msgid "Restarting…"
 msgstr "Reiniciando…"
 
-#: js/ui/screenShield.js:224
+#: js/ui/screenShield.js:225
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME necesita bloquear la pantalla"
 
@@ -1702,89 +1713,110 @@ msgstr "GNOME necesita bloquear la pantalla"
 #.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
-#: js/ui/screenShield.js:264 js/ui/screenShield.js:634
+#: js/ui/screenShield.js:265 js/ui/screenShield.js:636
 msgid "Unable to lock"
 msgstr "No se pudo bloquear"
 
-#: js/ui/screenShield.js:265 js/ui/screenShield.js:635
+#: js/ui/screenShield.js:266 js/ui/screenShield.js:637
 msgid "Lock was blocked by an application"
 msgstr "Una aplicación impidió el bloqueo"
 
-#: js/ui/screenshot.js:1110
-#| msgid "evolution"
+#: js/ui/screenshot.js:1147
 msgid "Selection"
 msgstr "Selección"
 
-#: js/ui/screenshot.js:1120
-#| msgid "Clear section"
+#: js/ui/screenshot.js:1157
 msgid "Area Selection"
 msgstr "Selección de área"
 
-#: js/ui/screenshot.js:1125
-#| msgctxt "search-result"
-#| msgid "Lock Screen"
+#: js/ui/screenshot.js:1162
 msgid "Screen"
 msgstr "Pantalla"
 
-#: js/ui/screenshot.js:1135
-#| msgid "Screen Reader"
+#: js/ui/screenshot.js:1172
 msgid "Screen Selection"
 msgstr "Selección de pantalla"
 
-#: js/ui/screenshot.js:1140
-#| msgid "Windows"
+#: js/ui/screenshot.js:1177
 msgid "Window"
 msgstr "Ventana"
 
-#: js/ui/screenshot.js:1150
+#: js/ui/screenshot.js:1187
 msgid "Window Selection"
 msgstr "Selección de ventana"
 
-#: js/ui/screenshot.js:1180
-#| msgid "Show Errors"
+#: js/ui/screenshot.js:1221
+#| msgid "Screenshot captured"
+msgid "Screenshot / Screencast"
+msgstr "Captura/grabación de pantalla"
+
+#: js/ui/screenshot.js:1257
 msgid "Show Pointer"
 msgstr "Mostrar puntero"
 
 #. Translators: name of the folder under ~/Pictures for screenshots.
-#: js/ui/screenshot.js:1569
-#| msgid "Screenshot taken"
+#: js/ui/screenshot.js:1722
 msgid "Screenshots"
 msgstr "Capturas de pantalla"
 
 #. Translators: this is the name of the file that the screenshot is
 #. saved to. The placeholder is a timestamp, e.g. "2017-05-21 12-24-03".
-#: js/ui/screenshot.js:1582
+#: js/ui/screenshot.js:1735
 #, javascript-format
-#| msgid "Screencast from %d %t"
 msgid "Screenshot from %s"
 msgstr "Captura desde %s"
 
 #. Translators: notification source name.
-#: js/ui/screenshot.js:1622
-#| msgid "Screenshot taken"
+#: js/ui/screenshot.js:1775 js/ui/screenshot.js:1995
 msgid "Screenshot"
 msgstr "Captura de pantalla"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:1628
-#| msgid "Screenshot taken"
+#: js/ui/screenshot.js:1781
 msgid "Screenshot captured"
 msgstr "Captura de pantalla realizada"
 
 #. Translators: notification body when a screenshot was captured.
-#: js/ui/screenshot.js:1630
+#: js/ui/screenshot.js:1783
 msgid "You can paste the image from the clipboard."
 msgstr "Puede pegar la imagen desde el portapapeles."
 
 #. Translators: button on the screenshot notification.
-#: js/ui/screenshot.js:1636
-#| msgid "Show Details"
+#. Translators: button on the screencast notification.
+#: js/ui/screenshot.js:1789 js/ui/screenshot.js:2006
 msgid "Show in Files"
 msgstr "Mostrar en Archivos"
 
-#: js/ui/screenshot.js:1665 js/ui/screenshot.js:1934
+#: js/ui/screenshot.js:1818 js/ui/screenshot.js:2259
 msgid "Screenshot taken"
 msgstr "Captura de pantalla realizada"
+
+#. Translators: this is the folder where recorded
+#. screencasts are stored.
+#: js/ui/screenshot.js:1921
+#| msgid "Screenshots"
+msgid "Screencasts"
+msgstr "Grabaciones de la pantalla"
+
+#. Translators: this is a filename used for screencast
+#. * recording, where "%d" and "%t" date and time, e.g.
+#. * "Screencast from 07-17-2013 10:00:46 PM.webm"
+#: js/ui/screenshot.js:1926
+#, no-c-format
+#| msgid "Screenshot from %s"
+msgid "Screencast from %d %t.webm"
+msgstr "Grabación de pantalla desde %d %t.webm"
+
+#. Translators: notification title.
+#: js/ui/screenshot.js:2001
+#| msgid "Screenshot captured"
+msgid "Screencast recorded"
+msgstr "Grabación de pantalla realizada"
+
+#. Translators: notification body when a screencast was recorded.
+#: js/ui/screenshot.js:2003
+msgid "Click here to view the video."
+msgstr "Pulse aquí para ver el vídeo."
 
 #: js/ui/search.js:826
 msgid "Searching…"
@@ -1880,47 +1912,47 @@ msgstr "No se puede iniciar %s"
 msgid "Couldn’t find the %s application"
 msgstr "No se pudo encontrar la aplicación %s"
 
-#: js/ui/status/accessibility.js:35
+#: js/ui/status/accessibility.js:34
 msgid "Accessibility"
 msgstr "Accesibilidad"
 
-#: js/ui/status/accessibility.js:48
-msgid "Zoom"
-msgstr "Ampliación"
-
-#: js/ui/status/accessibility.js:55
-msgid "Screen Reader"
-msgstr "Lector de pantalla"
-
-#: js/ui/status/accessibility.js:59
-msgid "Screen Keyboard"
-msgstr "Teclado en pantalla"
-
-#: js/ui/status/accessibility.js:63
-msgid "Visual Alerts"
-msgstr "Alertas visuales"
-
-#: js/ui/status/accessibility.js:66
-msgid "Sticky Keys"
-msgstr "Teclas persistentes"
-
-#: js/ui/status/accessibility.js:69
-msgid "Slow Keys"
-msgstr "Teclas lentas"
-
-#: js/ui/status/accessibility.js:72
-msgid "Bounce Keys"
-msgstr "Rechazo de teclas"
-
-#: js/ui/status/accessibility.js:75
-msgid "Mouse Keys"
-msgstr "Teclas del ratón"
-
-#: js/ui/status/accessibility.js:134
+#: js/ui/status/accessibility.js:44
 msgid "High Contrast"
 msgstr "Contraste alto"
 
-#: js/ui/status/accessibility.js:176
+#: js/ui/status/accessibility.js:47
+msgid "Zoom"
+msgstr "Ampliación"
+
+#: js/ui/status/accessibility.js:54
+msgid "Screen Reader"
+msgstr "Lector de pantalla"
+
+#: js/ui/status/accessibility.js:58
+msgid "Screen Keyboard"
+msgstr "Teclado en pantalla"
+
+#: js/ui/status/accessibility.js:62
+msgid "Visual Alerts"
+msgstr "Alertas visuales"
+
+#: js/ui/status/accessibility.js:65
+msgid "Sticky Keys"
+msgstr "Teclas persistentes"
+
+#: js/ui/status/accessibility.js:68
+msgid "Slow Keys"
+msgstr "Teclas lentas"
+
+#: js/ui/status/accessibility.js:71
+msgid "Bounce Keys"
+msgstr "Rechazo de teclas"
+
+#: js/ui/status/accessibility.js:74
+msgid "Mouse Keys"
+msgstr "Teclas del ratón"
+
+#: js/ui/status/accessibility.js:131
 msgid "Large Text"
 msgstr "Texto grande"
 
@@ -2292,13 +2324,21 @@ msgctxt "Power profile"
 msgid "Power Saver"
 msgstr "Ahorro de energía"
 
-#: js/ui/status/remoteAccess.js:38
+#: js/ui/status/remoteAccess.js:39
 msgid "Screen is Being Shared"
 msgstr "Se está compartiendo la pantalla"
 
-#: js/ui/status/remoteAccess.js:40
+#: js/ui/status/remoteAccess.js:41
 msgid "Turn off"
 msgstr "Apagar"
+
+#: js/ui/status/remoteAccess.js:56
+msgid "Screen Recording in Progress"
+msgstr "Grabación de pantalla en curso"
+
+#: js/ui/status/remoteAccess.js:59
+msgid "Stop"
+msgstr "Parada"
 
 #. The menu only appears when airplane mode is on, so just
 #. statically build it as if it was on, rather than dynamically
