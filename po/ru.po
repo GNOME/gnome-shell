@@ -20,8 +20,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2022-01-29 14:48+0000\n"
-"PO-Revision-Date: 2022-01-29 19:52+0300\n"
+"POT-Creation-Date: 2022-02-07 14:18+0000\n"
+"PO-Revision-Date: 2022-02-07 17:49+0300\n"
 "Last-Translator: Aleksandr Melman <Alexmelman88@gmail.com>\n"
 "Language-Team: Russian <gnome-cyr@gnome.org>\n"
 "Language: ru\n"
@@ -562,82 +562,93 @@ msgid "(or place finger on reader)"
 msgstr "(или поместите палец на считывающее устройство)"
 
 #. Translators: The name of the power-off action in search
-#: js/misc/systemActions.js:82
+#: js/misc/systemActions.js:84
 msgctxt "search-result"
 msgid "Power Off"
 msgstr "Выключить"
 
 #. Translators: A list of keywords that match the power-off action, separated by semicolons
-#: js/misc/systemActions.js:85
+#: js/misc/systemActions.js:87
 msgid "power off;shutdown;halt;stop"
 msgstr "выключение;завершение;остановка;стоп"
 
 #. Translators: The name of the restart action in search
-#: js/misc/systemActions.js:90
+#: js/misc/systemActions.js:92
 msgctxt "search-result"
 msgid "Restart"
 msgstr "Перезапустить"
 
 #. Translators: A list of keywords that match the restart action, separated by semicolons
-#: js/misc/systemActions.js:93
+#: js/misc/systemActions.js:95
 msgid "reboot;restart;"
 msgstr "перезагрузить;перезапустить;"
 
 #. Translators: The name of the lock screen action in search
-#: js/misc/systemActions.js:98
+#: js/misc/systemActions.js:100
 msgctxt "search-result"
 msgid "Lock Screen"
 msgstr "Экран блокировки"
 
 #. Translators: A list of keywords that match the lock screen action, separated by semicolons
-#: js/misc/systemActions.js:101
+#: js/misc/systemActions.js:103
 msgid "lock screen"
 msgstr "экран блокировки"
 
 #. Translators: The name of the logout action in search
-#: js/misc/systemActions.js:106
+#: js/misc/systemActions.js:108
 msgctxt "search-result"
 msgid "Log Out"
 msgstr "Завершить сеанс"
 
 #. Translators: A list of keywords that match the logout action, separated by semicolons
-#: js/misc/systemActions.js:109
+#: js/misc/systemActions.js:111
 msgid "logout;log out;sign off"
 msgstr "завершить сеанс;выйти"
 
 #. Translators: The name of the suspend action in search
-#: js/misc/systemActions.js:114
+#: js/misc/systemActions.js:116
 msgctxt "search-result"
 msgid "Suspend"
 msgstr "Ждущий режим"
 
 #. Translators: A list of keywords that match the suspend action, separated by semicolons
-#: js/misc/systemActions.js:117
+#: js/misc/systemActions.js:119
 msgid "suspend;sleep"
 msgstr "ждущий;спящий режим"
 
 #. Translators: The name of the switch user action in search
-#: js/misc/systemActions.js:122
+#: js/misc/systemActions.js:124
 msgctxt "search-result"
 msgid "Switch User"
 msgstr "Сменить пользователя"
 
 #. Translators: A list of keywords that match the switch user action, separated by semicolons
-#: js/misc/systemActions.js:125
+#: js/misc/systemActions.js:127
 msgid "switch user"
 msgstr "переключить;сменить пользователя"
 
 #. Translators: A list of keywords that match the lock orientation action, separated by semicolons
-#: js/misc/systemActions.js:132
+#: js/misc/systemActions.js:134
 msgid "lock orientation;unlock orientation;screen;rotation"
 msgstr "заблокировать ориентацию;экран;поворот;вращение"
 
-#: js/misc/systemActions.js:232
+#. Translators: The name of the screenshot UI action in search
+#: js/misc/systemActions.js:139
+msgctxt "search-result"
+msgid "Take a Screenshot"
+msgstr "Сделать снимок экрана"
+
+#. Translators: A list of keywords that match the screenshot UI action, separated by semicolons
+#: js/misc/systemActions.js:142
+msgid "screenshot;screencast;snip;capture;record"
+msgstr "screenshot;screencast;snip;capture;record;скриншот;захват;запись"
+
+#: js/misc/systemActions.js:242
 msgctxt "search-result"
 msgid "Unlock Screen Rotation"
 msgstr "Разблокировать ориентацию экрана"
 
-#: js/misc/systemActions.js:233
+#: js/misc/systemActions.js:243
 msgctxt "search-result"
 msgid "Lock Screen Rotation"
 msgstr "Заблокировать ориентацию экрана"
@@ -816,13 +827,13 @@ msgstr "Безымянная папка"
 
 #: js/ui/appFavorites.js:164
 #, javascript-format
-msgid "%s has been added to your favorites."
-msgstr "Приложение %s добавлено в избранное."
+msgid "%s has been pinned to the dash."
+msgstr "Приложение %s было прикреплено к панели приложений."
 
 #: js/ui/appFavorites.js:197
 #, javascript-format
-msgid "%s has been removed from your favorites."
-msgstr "Приложение %s удалено из избранного."
+msgid "%s has been unpinned from the dash."
+msgstr "Приложение %s было откреплено от панели приложений."
 
 #. Translators: This is the heading of a list of open windows
 #: js/ui/appMenu.js:46
@@ -842,12 +853,12 @@ msgid "Quit"
 msgstr "Завершить"
 
 #: js/ui/appMenu.js:163 js/ui/dash.js:245
-msgid "Remove from Favorites"
-msgstr "Удалить из избранного"
+msgid "Unpin"
+msgstr "Открепить"
 
 #: js/ui/appMenu.js:164
-msgid "Add to Favorites"
-msgstr "Добавить в избранное"
+msgid "Pin to Dash"
+msgstr "Прикрепить к панели приложений"
 
 #: js/ui/appMenu.js:181
 msgid "Launch using Integrated Graphics Card"
@@ -982,15 +993,15 @@ msgstr "%d"
 msgid "Week %V"
 msgstr "%V неделя"
 
-#: js/ui/calendar.js:902
+#: js/ui/calendar.js:900
 msgid "No Notifications"
 msgstr "Уведомлений нет"
 
-#: js/ui/calendar.js:956
+#: js/ui/calendar.js:954
 msgid "Do Not Disturb"
 msgstr "Не беспокоить"
 
-#: js/ui/calendar.js:977
+#: js/ui/calendar.js:975
 msgid "Clear"
 msgstr "Очистить"
 
@@ -1515,7 +1526,7 @@ msgstr "Выключить"
 msgid "Leave Off"
 msgstr "Оставить выключенными"
 
-#: js/ui/keyboard.js:226
+#: js/ui/keyboard.js:248
 msgid "Region & Language Settings"
 msgstr "Настройки языка и региона"
 
@@ -1568,23 +1579,23 @@ msgstr "Показать код"
 msgid "Web Page"
 msgstr "Веб-страница"
 
-#: js/ui/main.js:263
+#: js/ui/main.js:265
 msgid "System was put in unsafe mode"
 msgstr "Система была переведена в небезопасный режим"
 
-#: js/ui/main.js:264
+#: js/ui/main.js:266
 msgid "Applications now have unrestricted access"
 msgstr "Приложения теперь имеют неограниченный доступ"
 
-#: js/ui/main.js:265 js/ui/overview.js:58
+#: js/ui/main.js:267 js/ui/overview.js:58
 msgid "Undo"
 msgstr "Отменить"
 
-#: js/ui/main.js:311
+#: js/ui/main.js:313
 msgid "Logged in as a privileged user"
 msgstr "Авторизован как привилегированный пользователь"
 
-#: js/ui/main.js:312
+#: js/ui/main.js:314
 msgid ""
 "Running a session as a privileged user should be avoided for security "
 "reasons. If possible, you should log in as a normal user."
@@ -1593,11 +1604,11 @@ msgstr ""
 "привилегированного пользователя. Если это возможно, вам следует войти от "
 "имени обычного пользователя."
 
-#: js/ui/main.js:361
+#: js/ui/main.js:363
 msgid "Screen Lock disabled"
 msgstr "Блокировка экрана отключена"
 
-#: js/ui/main.js:362
+#: js/ui/main.js:364
 msgid "Screen Locking requires the GNOME display manager."
 msgstr "Для блокировки экрана требуется GNOME display manager."
 
@@ -1677,16 +1688,16 @@ msgstr "Нажмите любую клавишу для выхода"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: js/ui/panel.js:271
+#: js/ui/panel.js:270
 msgid "Activities"
 msgstr "Обзор"
 
-#: js/ui/panel.js:557
+#: js/ui/panel.js:392
 msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "Система"
 
-#: js/ui/panel.js:675
+#: js/ui/panel.js:502
 msgid "Top Bar"
 msgstr "Верхняя панель"
 
@@ -1725,96 +1736,96 @@ msgstr "Не удалось заблокировать"
 msgid "Lock was blocked by an application"
 msgstr "Блокировке помешало приложение"
 
-#: js/ui/screenshot.js:1137
+#: js/ui/screenshot.js:1147
 msgid "Selection"
 msgstr "Выбор"
 
-#: js/ui/screenshot.js:1147
+#: js/ui/screenshot.js:1157
 msgid "Area Selection"
 msgstr "Выбор области"
 
-#: js/ui/screenshot.js:1152
+#: js/ui/screenshot.js:1162
 msgid "Screen"
 msgstr "Экран"
 
-#: js/ui/screenshot.js:1162
+#: js/ui/screenshot.js:1172
 msgid "Screen Selection"
 msgstr "Выбор экрана"
 
-#: js/ui/screenshot.js:1167
+#: js/ui/screenshot.js:1177
 msgid "Window"
 msgstr "Окно"
 
-#: js/ui/screenshot.js:1177
+#: js/ui/screenshot.js:1187
 msgid "Window Selection"
 msgstr "Выбор окна"
 
-#: js/ui/screenshot.js:1211
+#: js/ui/screenshot.js:1221
 msgid "Screenshot / Screencast"
 msgstr "Снимок экрана / Запись экрана"
 
-#: js/ui/screenshot.js:1247
+#: js/ui/screenshot.js:1257
 msgid "Show Pointer"
 msgstr "Показать курсор мыши"
 
 #. Translators: name of the folder under ~/Pictures for screenshots.
-#: js/ui/screenshot.js:1695
+#: js/ui/screenshot.js:1722
 msgid "Screenshots"
 msgstr "Снимки экрана"
 
 #. Translators: this is the name of the file that the screenshot is
 #. saved to. The placeholder is a timestamp, e.g. "2017-05-21 12-24-03".
-#: js/ui/screenshot.js:1708
+#: js/ui/screenshot.js:1735
 #, javascript-format
 msgid "Screenshot from %s"
 msgstr "Снимок экрана от %s"
 
 #. Translators: notification source name.
-#: js/ui/screenshot.js:1748 js/ui/screenshot.js:1968
+#: js/ui/screenshot.js:1775 js/ui/screenshot.js:1995
 msgid "Screenshot"
 msgstr "Снимок экрана"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:1754
+#: js/ui/screenshot.js:1781
 msgid "Screenshot captured"
 msgstr "Снимок экрана сделан"
 
 #. Translators: notification body when a screenshot was captured.
-#: js/ui/screenshot.js:1756
+#: js/ui/screenshot.js:1783
 msgid "You can paste the image from the clipboard."
 msgstr "Вы можете вставить изображение из буфера обмена."
 
 #. Translators: button on the screenshot notification.
 #. Translators: button on the screencast notification.
-#: js/ui/screenshot.js:1762 js/ui/screenshot.js:1979
+#: js/ui/screenshot.js:1789 js/ui/screenshot.js:2006
 msgid "Show in Files"
 msgstr "Показать в Файлах"
 
-#: js/ui/screenshot.js:1791 js/ui/screenshot.js:2232
+#: js/ui/screenshot.js:1818 js/ui/screenshot.js:2259
 msgid "Screenshot taken"
 msgstr "Сделан снимок экрана"
 
 #. Translators: this is the folder where recorded
 #. screencasts are stored.
-#: js/ui/screenshot.js:1894
+#: js/ui/screenshot.js:1921
 msgid "Screencasts"
 msgstr "Записи"
 
 #. Translators: this is a filename used for screencast
 #. * recording, where "%d" and "%t" date and time, e.g.
 #. * "Screencast from 07-17-2013 10:00:46 PM.webm"
-#: js/ui/screenshot.js:1899
+#: js/ui/screenshot.js:1926
 #, no-c-format
 msgid "Screencast from %d %t.webm"
 msgstr "Запись экрана от %d %t.webm"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:1974
+#: js/ui/screenshot.js:2001
 msgid "Screencast recorded"
 msgstr "Запись экрана сделана"
 
 #. Translators: notification body when a screencast was recorded.
-#: js/ui/screenshot.js:1976
+#: js/ui/screenshot.js:2003
 msgid "Click here to view the video."
 msgstr "Нажмите здесь, чтобы посмотреть видео."
 
@@ -1913,47 +1924,47 @@ msgstr "Не удалось запустить %s"
 msgid "Couldn’t find the %s application"
 msgstr "Не удалось найти приложение %s"
 
-#: js/ui/status/accessibility.js:35
+#: js/ui/status/accessibility.js:34
 msgid "Accessibility"
 msgstr "Доступность"
 
-#: js/ui/status/accessibility.js:48
-msgid "Zoom"
-msgstr "Масштабирование"
-
-#: js/ui/status/accessibility.js:55
-msgid "Screen Reader"
-msgstr "Экранный диктор"
-
-#: js/ui/status/accessibility.js:59
-msgid "Screen Keyboard"
-msgstr "Экранная клавиатура"
-
-#: js/ui/status/accessibility.js:63
-msgid "Visual Alerts"
-msgstr "Визуальные предупреждения"
-
-#: js/ui/status/accessibility.js:66
-msgid "Sticky Keys"
-msgstr "Залипающие клавиши"
-
-#: js/ui/status/accessibility.js:69
-msgid "Slow Keys"
-msgstr "Медленные клавиши"
-
-#: js/ui/status/accessibility.js:72
-msgid "Bounce Keys"
-msgstr "Отскакивающие клавиши"
-
-#: js/ui/status/accessibility.js:75
-msgid "Mouse Keys"
-msgstr "Клавиши мыши"
-
-#: js/ui/status/accessibility.js:134
+#: js/ui/status/accessibility.js:44
 msgid "High Contrast"
 msgstr "Высокая контрастность"
 
-#: js/ui/status/accessibility.js:176
+#: js/ui/status/accessibility.js:47
+msgid "Zoom"
+msgstr "Масштабирование"
+
+#: js/ui/status/accessibility.js:54
+msgid "Screen Reader"
+msgstr "Экранный диктор"
+
+#: js/ui/status/accessibility.js:58
+msgid "Screen Keyboard"
+msgstr "Экранная клавиатура"
+
+#: js/ui/status/accessibility.js:62
+msgid "Visual Alerts"
+msgstr "Визуальные предупреждения"
+
+#: js/ui/status/accessibility.js:65
+msgid "Sticky Keys"
+msgstr "Залипающие клавиши"
+
+#: js/ui/status/accessibility.js:68
+msgid "Slow Keys"
+msgstr "Медленные клавиши"
+
+#: js/ui/status/accessibility.js:71
+msgid "Bounce Keys"
+msgstr "Отскакивающие клавиши"
+
+#: js/ui/status/accessibility.js:74
+msgid "Mouse Keys"
+msgstr "Клавиши мыши"
+
+#: js/ui/status/accessibility.js:131
 msgid "Large Text"
 msgstr "Крупный текст"
 
