@@ -49,9 +49,6 @@ var Recorder = class {
         this._onErrorCallback = onErrorCallback;
         this._stopInvocation = null;
 
-        this._pipelineIsPlaying = false;
-        this._sessionIsActive = false;
-
         this._x = x;
         this._y = y;
         this._width = width;
