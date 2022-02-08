@@ -468,6 +468,7 @@ const PANEL_ITEM_IMPLEMENTATIONS = {
     'a11y': imports.ui.status.accessibility.ATIndicator,
     'keyboard': imports.ui.status.keyboard.InputSourceIndicator,
     'dwellClick': imports.ui.status.dwellClick.DwellClickIndicator,
+    'screenRecording': imports.ui.status.remoteAccess.ScreenRecordingIndicator,
 };
 
 var Panel = GObject.registerClass(

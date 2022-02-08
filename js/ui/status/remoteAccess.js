@@ -1,7 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported RemoteAccessApplet */
+/* exported RemoteAccessApplet, ScreenRecordingIndicator */
 
-const { GObject, Meta } = imports.gi;
+const { Atk, Clutter, GLib, GObject, Meta, St } = imports.gi;
 
 const Main = imports.ui.main;
 const PanelMenu = imports.ui.panelMenu;
@@ -104,5 +104,75 @@ class RemoteAccessApplet extends PanelMenu.SystemIndicator {
 
         this._ensureControls();
         this._sync();
+    }
+});
+
+var ScreenRecordingIndicator = GObject.registerClass({
+    Signals: { 'menu-set': {} },
+}, class ScreenRecordingIndicator extends PanelMenu.ButtonBox {
+    _init() {
+        super._init({
+            reactive: true,
+            can_focus: true,
+            track_hover: true,
+            accessible_name: _('Stop Screencast'),
+            accessible_role: Atk.Role.PUSH_BUTTON,
+        });
+        this.add_style_class_name('screen-recording-indicator');
+
+        this._box = new St.BoxLayout();
+        this.add_child(this._box);
+
+        this._label = new St.Label({
+            text: '0:00',
+            y_align: Clutter.ActorAlign.CENTER,
+        });
+        this._box.add_child(this._label);
+
+        this._icon = new St.Icon({ icon_name: 'stop-symbolic' });
+        this._box.add_child(this._icon);
+
+        this.hide();
+        Main.screenshotUI.connect(
+            'notify::screencast-in-progress',
+            this._onScreencastInProgressChanged.bind(this));
+    }
+
+    vfunc_event(event) {
+        if (event.type() === Clutter.EventType.TOUCH_BEGIN ||
+            event.type() === Clutter.EventType.BUTTON_PRESS)
+            Main.screenshotUI.stopScreencast();
+
+        return Clutter.EVENT_PROPAGATE;
+    }
+
+    _updateLabel() {
+        const minutes = this._secondsPassed / 60;
+        const seconds = this._secondsPassed % 60;
+        this._label.text = '%d:%02d'.format(minutes, seconds);
+    }
+
+    _onScreencastInProgressChanged() {
+        if (Main.screenshotUI.screencast_in_progress) {
+            this.show();
+
+            this._secondsPassed = 0;
+            this._updateLabel();
+
+            this._timeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, 1000, () => {
+                this._secondsPassed += 1;
+                this._updateLabel();
+                return GLib.SOURCE_CONTINUE;
+            });
+            GLib.Source.set_name_by_id(
+                this._timeoutId, '[gnome-shell] screen recording indicator tick');
+        } else {
+            this.hide();
+
+            GLib.source_remove(this._timeoutId);
+            delete this._timeoutId;
+
+            delete this._secondsPassed;
+        }
     }
 });
