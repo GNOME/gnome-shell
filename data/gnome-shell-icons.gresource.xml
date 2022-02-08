@@ -26,6 +26,7 @@
     <file>scalable/status/no-notifications-symbolic.svg</file>
     <file>scalable/status/screen-privacy-disabled-symbolic.svg</file>
     <file>scalable/status/screen-privacy-symbolic.svg</file>
+    <file>scalable/status/stop-symbolic.svg</file>
   </gresource>
 </gresources>
 
