@@ -179,3 +179,27 @@ shell_glsl_effect_set_uniform_float (ShellGLSLEffect *effect,
                                    n_components, total_count / n_components,
                                    value);
 }
+
+/**
+ * shell_glsl_effect_set_uniform_matrix:
+ * @effect: a #ShellGLSLEffect
+ * @uniform: the uniform location (as returned by shell_glsl_effect_get_uniform_location())
+ * @transpose: Whether to transpose the matrix
+ * @dimensions: the number of components in the uniform (eg. 3 for a vec3)
+ * @total_count: the total number of floats in @value
+ * @value: (array length=total_count): the array of floats to set @uniform
+ */
+void
+shell_glsl_effect_set_uniform_matrix (ShellGLSLEffect *effect,
+                                      int              uniform,
+                                      gboolean         transpose,
+                                      int              dimensions,
+                                      int              total_count,
+                                      const float     *value)
+{
+  ShellGLSLEffectPrivate *priv = shell_glsl_effect_get_instance_private (effect);
+  cogl_pipeline_set_uniform_matrix (priv->pipeline, uniform,
+                                    dimensions,
+                                    total_count / (dimensions * dimensions),
+                                    transpose, value);
+}

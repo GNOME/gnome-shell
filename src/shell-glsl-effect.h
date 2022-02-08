@@ -52,5 +52,11 @@ void shell_glsl_effect_set_uniform_float    (ShellGLSLEffect *effect,
                                              int              n_components,
                                              int              total_count,
                                              const float     *value);
+void shell_glsl_effect_set_uniform_matrix   (ShellGLSLEffect *effect,
+                                             int              uniform,
+                                             gboolean         transpose,
+                                             int              dimensions,
+                                             int              total_count,
+                                             const float     *value);
 
 #endif /* __SHELL_GLSL_EFFECT_H__ */
