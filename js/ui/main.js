@@ -221,14 +221,14 @@ function _initializeUI() {
     inputMethod = new InputMethod.InputMethod();
     Clutter.get_default_backend().set_input_method(inputMethod);
 
+    screenshotUI = new Screenshot.ScreenshotUI();
+
     messageTray = new MessageTray.MessageTray();
     panel = new Panel.Panel();
     keyboard = new Keyboard.KeyboardManager();
     notificationDaemon = new NotificationDaemon.NotificationDaemon();
     windowAttentionHandler = new WindowAttentionHandler.WindowAttentionHandler();
     componentManager = new Components.ComponentManager();
-
-    screenshotUI = new Screenshot.ScreenshotUI();
 
     introspectService = new Introspect.IntrospectService();
 
