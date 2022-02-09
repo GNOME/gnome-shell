@@ -16,8 +16,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 3.14\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2022-02-04 13:08+0000\n"
-"PO-Revision-Date: 2022-02-06 22:35+0000\n"
+"POT-Creation-Date: 2022-02-07 14:18+0000\n"
+"PO-Revision-Date: 2022-02-08 12:37+0000\n"
 "Last-Translator: Hugo Carvalho <hugokarvalho@hotmail.com>\n"
 "Language-Team: Português <https://l10n.gnome.org/teams/pt/>\n"
 "Language: pt\n"
@@ -820,13 +820,13 @@ msgstr "Pasta sem nome"
 
 #: js/ui/appFavorites.js:164
 #, javascript-format
-msgid "%s has been added to your favorites."
-msgstr "%s foi adicionada aos favoritos."
+msgid "%s has been pinned to the dash."
+msgstr "%s foi afixado ao Painel."
 
 #: js/ui/appFavorites.js:197
 #, javascript-format
-msgid "%s has been removed from your favorites."
-msgstr "%s foi removida dos favoritos."
+msgid "%s has been unpinned from the dash."
+msgstr "%s foi desafixado do Painel."
 
 #. Translators: This is the heading of a list of open windows
 #: js/ui/appMenu.js:46
@@ -846,12 +846,12 @@ msgid "Quit"
 msgstr "Sair"
 
 #: js/ui/appMenu.js:163 js/ui/dash.js:245
-msgid "Remove from Favorites"
-msgstr "Remover dos favoritos"
+msgid "Unpin"
+msgstr "Desafixar"
 
 #: js/ui/appMenu.js:164
-msgid "Add to Favorites"
-msgstr "Adicionar aos favoritos"
+msgid "Pin to Dash"
+msgstr "Afixar ao Painel"
 
 #: js/ui/appMenu.js:181
 msgid "Launch using Integrated Graphics Card"
@@ -986,15 +986,15 @@ msgstr "%d"
 msgid "Week %V"
 msgstr "Semana %V"
 
-#: js/ui/calendar.js:902
+#: js/ui/calendar.js:900
 msgid "No Notifications"
 msgstr "Sem notificações"
 
-#: js/ui/calendar.js:956
+#: js/ui/calendar.js:954
 msgid "Do Not Disturb"
 msgstr "Não incomodar"
 
-#: js/ui/calendar.js:977
+#: js/ui/calendar.js:975
 msgid "Clear"
 msgstr "Limpar"
 
@@ -1510,7 +1510,7 @@ msgstr "Desligar"
 msgid "Leave Off"
 msgstr "Deixar desativado"
 
-#: js/ui/keyboard.js:226
+#: js/ui/keyboard.js:248
 msgid "Region & Language Settings"
 msgstr "Definições de Região e Idioma"
 
@@ -1563,23 +1563,23 @@ msgstr "Ver fonte"
 msgid "Web Page"
 msgstr "Página Web"
 
-#: js/ui/main.js:263
+#: js/ui/main.js:265
 msgid "System was put in unsafe mode"
 msgstr "O sistema foi colocado em modo inseguro"
 
-#: js/ui/main.js:264
+#: js/ui/main.js:266
 msgid "Applications now have unrestricted access"
 msgstr "As aplicações têm agora acesso sem restrições"
 
-#: js/ui/main.js:265 js/ui/overview.js:58
+#: js/ui/main.js:267 js/ui/overview.js:58
 msgid "Undo"
 msgstr "Desfazer"
 
-#: js/ui/main.js:311
+#: js/ui/main.js:313
 msgid "Logged in as a privileged user"
 msgstr "Em sessão como utilizador privilegiado"
 
-#: js/ui/main.js:312
+#: js/ui/main.js:314
 msgid ""
 "Running a session as a privileged user should be avoided for security "
 "reasons. If possible, you should log in as a normal user."
@@ -1587,11 +1587,11 @@ msgstr ""
 "Executar uma sessão como utilizador privilegiado deve ser evitado por "
 "motivos de segurança. Se possível, aceder como utilizador normal."
 
-#: js/ui/main.js:361
+#: js/ui/main.js:363
 msgid "Screen Lock disabled"
 msgstr "Bloqueio de ecrã desligado"
 
-#: js/ui/main.js:362
+#: js/ui/main.js:364
 msgid "Screen Locking requires the GNOME display manager."
 msgstr "O bloqueio de ecrã requer o gestor de exibição do GNOME."
 
@@ -3202,6 +3202,12 @@ msgstr[1] "%u entradas"
 #: subprojects/gvc/gvc-mixer-control.c:2867
 msgid "System Sounds"
 msgstr "Sons de sistema"
+
+#~ msgid "Remove from Favorites"
+#~ msgstr "Remover dos favoritos"
+
+#~ msgid "Add to Favorites"
+#~ msgstr "Adicionar aos favoritos"
 
 #~ msgid "Enable introspection API"
 #~ msgstr "Ativar API de introspecção"
