@@ -1356,13 +1356,15 @@ var PopupMenuManager = class {
             return;
 
         if (open) {
-            if (this.activeMenu)
-                this.activeMenu.close(BoxPointer.PopupAnimation.FADE);
+            const oldMenu = this.activeMenu;
+            const oldGrab = this._grab;
             this._grab = Main.pushModal(menu.actor, this._grabParams);
             this.activeMenu = menu;
-        } else {
-            if (this.activeMenu === menu)
-                this.activeMenu = null;
+            oldMenu?.close(BoxPointer.PopupAnimation.FADE);
+            if (oldGrab)
+                Main.popModal(oldGrab);
+        } else if (this.activeMenu === menu) {
+            this.activeMenu = null;
             Main.popModal(this._grab);
             this._grab = null;
         }
