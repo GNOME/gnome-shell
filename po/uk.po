@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2022-02-04 13:08+0000\n"
-"PO-Revision-Date: 2022-02-04 22:51+0200\n"
+"POT-Creation-Date: 2022-02-07 14:18+0000\n"
+"PO-Revision-Date: 2022-02-07 20:39+0200\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <kde-i18n-uk@kde.org>\n"
 "Language: uk\n"
@@ -622,7 +622,6 @@ msgstr ""
 
 #. Translators: The name of the screenshot UI action in search
 #: js/misc/systemActions.js:139
-#| msgid "Screenshot"
 msgctxt "search-result"
 msgid "Take a Screenshot"
 msgstr "Зробити знімок екрана"
@@ -631,7 +630,8 @@ msgstr "Зробити знімок екрана"
 #: js/misc/systemActions.js:142
 msgid "screenshot;screencast;snip;capture;record"
 msgstr ""
-"screenshot;screencast;snip;capture;record;знімок;вікна;вікно;скрінкаст;запис з екрана;захоплення;запис;"
+"screenshot;screencast;snip;capture;record;знімок;вікна;вікно;скрінкаст;запис "
+"з екрана;захоплення;запис;"
 
 #: js/misc/systemActions.js:242
 msgctxt "search-result"
@@ -821,13 +821,15 @@ msgstr "Неназвана тека"
 
 #: js/ui/appFavorites.js:164
 #, javascript-format
-msgid "%s has been added to your favorites."
-msgstr "%s додано до улюбленого."
+#| msgid "%s has been added to your favorites."
+msgid "%s has been pinned to the dash."
+msgstr "%s було пришпилено до панелі приладів."
 
 #: js/ui/appFavorites.js:197
 #, javascript-format
-msgid "%s has been removed from your favorites."
-msgstr "%s вилучено з улюбленого."
+#| msgid "%s has been removed from your favorites."
+msgid "%s has been unpinned from the dash."
+msgstr "%s було відшпилено від панелі приладів."
 
 #. Translators: This is the heading of a list of open windows
 #: js/ui/appMenu.js:46
@@ -847,12 +849,14 @@ msgid "Quit"
 msgstr "Вийти"
 
 #: js/ui/appMenu.js:163 js/ui/dash.js:245
-msgid "Remove from Favorites"
-msgstr "Вилучити з улюбленого"
+msgid "Unpin"
+msgstr ""
+"Відшпилити"
 
 #: js/ui/appMenu.js:164
-msgid "Add to Favorites"
-msgstr "Додати до улюбленого"
+msgid "Pin to Dash"
+msgstr ""
+"Пришпилити до панелі приладів"
 
 #: js/ui/appMenu.js:181
 msgid "Launch using Integrated Graphics Card"
@@ -987,15 +991,15 @@ msgstr "%d"
 msgid "Week %V"
 msgstr "Тиждень %V"
 
-#: js/ui/calendar.js:902
+#: js/ui/calendar.js:900
 msgid "No Notifications"
 msgstr "Немає сповіщень"
 
-#: js/ui/calendar.js:956
+#: js/ui/calendar.js:954
 msgid "Do Not Disturb"
 msgstr "Не турбувати"
 
-#: js/ui/calendar.js:977
+#: js/ui/calendar.js:975
 msgid "Clear"
 msgstr "Очистити"
 
@@ -1158,7 +1162,7 @@ msgstr "Показати програми"
 #. the left of the overview
 #: js/ui/dash.js:394
 msgid "Dash"
-msgstr "Риска"
+msgstr "Панель приладів"
 
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the top bar (e.g.,
@@ -1517,7 +1521,7 @@ msgstr "Вимкнути"
 msgid "Leave Off"
 msgstr "Покинути"
 
-#: js/ui/keyboard.js:226
+#: js/ui/keyboard.js:248
 msgid "Region & Language Settings"
 msgstr "Параметри регіону та мови"
 
@@ -1570,23 +1574,23 @@ msgstr "Переглянути джерело"
 msgid "Web Page"
 msgstr "Веб-сторінка"
 
-#: js/ui/main.js:263
+#: js/ui/main.js:265
 msgid "System was put in unsafe mode"
 msgstr "Систему переведено у небезпечний режим"
 
-#: js/ui/main.js:264
+#: js/ui/main.js:266
 msgid "Applications now have unrestricted access"
 msgstr "Тепер програми мають необмежений доступ до даних"
 
-#: js/ui/main.js:265 js/ui/overview.js:58
+#: js/ui/main.js:267 js/ui/overview.js:58
 msgid "Undo"
 msgstr "Повернути"
 
-#: js/ui/main.js:311
+#: js/ui/main.js:313
 msgid "Logged in as a privileged user"
 msgstr "Увійшов як наділений користувач"
 
-#: js/ui/main.js:312
+#: js/ui/main.js:314
 msgid ""
 "Running a session as a privileged user should be avoided for security "
 "reasons. If possible, you should log in as a normal user."
@@ -1594,11 +1598,11 @@ msgstr ""
 "З міркувань безпеки слід уникати сеансів з наділеними правами. Користуйтесь "
 "звичайним сеансом."
 
-#: js/ui/main.js:361
+#: js/ui/main.js:363
 msgid "Screen Lock disabled"
 msgstr "Блокування екрана вимкнено"
 
-#: js/ui/main.js:362
+#: js/ui/main.js:364
 msgid "Screen Locking requires the GNOME display manager."
 msgstr "Блокування екрана потребує керування входом GNOME."
 
@@ -3211,6 +3215,12 @@ msgstr[3] "%u вхід"
 #: subprojects/gvc/gvc-mixer-control.c:2867
 msgid "System Sounds"
 msgstr "Системні звуки"
+
+#~ msgid "Remove from Favorites"
+#~ msgstr "Вилучити з улюбленого"
+
+#~ msgid "Add to Favorites"
+#~ msgstr "Додати до улюбленого"
 
 #~ msgid "Enable introspection API"
 #~ msgstr "Увімкнути API для самоаналізу"
