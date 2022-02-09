@@ -104,6 +104,27 @@ handle_button_press_event_cb (ClutterActor       *actor,
 static void stop_scrolling (StScrollBar *bar);
 
 static void
+st_scroll_bar_set_vertical (StScrollBar *bar,
+                            gboolean     vertical)
+{
+  StScrollBarPrivate *priv = ST_SCROLL_BAR_PRIVATE (bar);
+
+  if (priv->vertical == vertical)
+    return;
+
+  priv->vertical = vertical;
+
+  if (priv->vertical)
+    clutter_actor_set_name (CLUTTER_ACTOR (priv->handle),
+                        "vhandle");
+  else
+    clutter_actor_set_name (CLUTTER_ACTOR (priv->handle),
+                        "hhandle");
+  clutter_actor_queue_relayout (CLUTTER_ACTOR (bar));
+  g_object_notify_by_pspec (G_OBJECT (bar), props[PROP_VERTICAL]);
+}
+
+static void
 st_scroll_bar_get_property (GObject    *gobject,
                             guint       prop_id,
                             GValue     *value,
@@ -134,7 +155,6 @@ st_scroll_bar_set_property (GObject      *gobject,
                             GParamSpec   *pspec)
 {
   StScrollBar *bar = ST_SCROLL_BAR (gobject);
-  StScrollBarPrivate *priv = st_scroll_bar_get_instance_private (bar);
 
   switch (prop_id)
     {
@@ -143,14 +163,7 @@ st_scroll_bar_set_property (GObject      *gobject,
       break;
 
     case PROP_VERTICAL:
-      priv->vertical = g_value_get_boolean (value);
-      if (priv->vertical)
-        clutter_actor_set_name (CLUTTER_ACTOR (priv->handle),
-                                "vhandle");
-      else
-        clutter_actor_set_name (CLUTTER_ACTOR (priv->handle),
-                                "hhandle");
-      clutter_actor_queue_relayout ((ClutterActor*) gobject);
+      st_scroll_bar_set_vertical (bar, g_value_get_boolean (value));
       break;
 
     default:

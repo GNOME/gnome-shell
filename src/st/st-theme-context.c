@@ -78,6 +78,19 @@ static void st_theme_context_get_property (GObject      *object,
                                            GParamSpec   *pspec);
 
 static void
+st_theme_context_set_scale_factor (StThemeContext *context,
+                                   int             scale_factor)
+{
+  if (scale_factor == context->scale_factor)
+    return;
+
+  context->scale_factor = scale_factor;
+  g_object_notify (G_OBJECT (context), "scale-factor");
+  st_theme_context_changed (context);
+}
+
+
+static void
 st_theme_context_finalize (GObject *object)
 {
   StThemeContext *context = ST_THEME_CONTEXT (object);
@@ -179,16 +192,8 @@ st_theme_context_set_property (GObject      *object,
   switch (prop_id)
     {
     case PROP_SCALE_FACTOR:
-      {
-        int scale_factor = g_value_get_int (value);
-        if (scale_factor != context->scale_factor)
-          {
-            context->scale_factor = scale_factor;
-            st_theme_context_changed (context);
-          }
-
-        break;
-      }
+      st_theme_context_set_scale_factor (context, g_value_get_int (value));
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;

@@ -211,6 +211,23 @@ st_scroll_view_update_fade_effect (StScrollView  *scroll,
 }
 
 static void
+st_scroll_view_set_content_padding (StScrollView  *scroll,
+                                    ClutterMargin *content_padding)
+{
+  StScrollViewPrivate *priv = ST_SCROLL_VIEW (scroll)->priv;
+
+  if (priv->content_padding.left == content_padding->left &&
+      priv->content_padding.right == content_padding->right &&
+      priv->content_padding.top == content_padding->top &&
+      priv->content_padding.bottom == content_padding->bottom)
+    return;
+
+  priv->content_padding = *content_padding;
+
+  g_object_notify_by_pspec (G_OBJECT (scroll), props[PROP_CONTENT_PADDING]);
+}
+
+static void
 st_scroll_view_set_property (GObject      *object,
                              guint         property_id,
                              const GValue *value,
@@ -240,7 +257,8 @@ st_scroll_view_set_property (GObject      *object,
                                  g_value_get_enum (value));
       break;
     case PROP_CONTENT_PADDING:
-      priv->content_padding = * (ClutterMargin *) g_value_get_boxed (value);
+      st_scroll_view_set_content_padding (self,
+                                          (ClutterMargin *)g_value_get_boxed (value));
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
