@@ -58,7 +58,15 @@ class RemoteAccessApplet extends PanelMenu.SystemIndicator {
     }
 
     _isRecording() {
-        return [...this._handles].some(handle => handle.is_recording);
+        const recordingHandles =
+            [...this._handles].filter(handle => handle.is_recording);
+
+        // Screenshot UI screencasts have their own panel, so don't show this
+        // indicator if there's only a screenshot UI screencast.
+        if (Main.screenshotUI.screencast_in_progress)
+            return recordingHandles.length > 1;
+
+        return recordingHandles.length > 0;
     }
 
     _sync() {
