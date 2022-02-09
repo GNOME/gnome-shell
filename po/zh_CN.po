@@ -25,8 +25,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2022-02-04 13:08+0000\n"
-"PO-Revision-Date: 2022-02-05 17:39+0800\n"
+"POT-Creation-Date: 2022-02-07 14:18+0000\n"
+"PO-Revision-Date: 2022-02-08 18:25+0800\n"
 "Last-Translator: lumingzh <lumingzh@qq.com>\n"
 "Language-Team: Chinese - China <i18n-zh@googlegroups.com>\n"
 "Language: zh_CN\n"
@@ -609,7 +609,6 @@ msgstr "lock orientation;screen;rotation;锁定方向;屏幕;旋转"
 
 #. Translators: The name of the screenshot UI action in search
 #: js/misc/systemActions.js:139
-#| msgid "Screenshot"
 msgctxt "search-result"
 msgid "Take a Screenshot"
 msgstr "截图"
@@ -789,13 +788,15 @@ msgstr "未命名文件夹"
 
 #: js/ui/appFavorites.js:164
 #, javascript-format
-msgid "%s has been added to your favorites."
-msgstr "%s 已经添加到了您的收藏夹。"
+#| msgid "%s has been added to your favorites."
+msgid "%s has been pinned to the dash."
+msgstr "%s 已固定到快捷栏。"
 
 #: js/ui/appFavorites.js:197
 #, javascript-format
-msgid "%s has been removed from your favorites."
-msgstr "%s 已经从您的收藏夹移除。"
+#| msgid "%s has been removed from your favorites."
+msgid "%s has been unpinned from the dash."
+msgstr "%s 已从快捷栏移除。"
 
 #. Translators: This is the heading of a list of open windows
 #: js/ui/appMenu.js:46
@@ -815,12 +816,12 @@ msgid "Quit"
 msgstr "退出"
 
 #: js/ui/appMenu.js:163 js/ui/dash.js:245
-msgid "Remove from Favorites"
-msgstr "从收藏夹中移除"
+msgid "Unpin"
+msgstr "取消固定"
 
 #: js/ui/appMenu.js:164
-msgid "Add to Favorites"
-msgstr "添加到收藏夹"
+msgid "Pin to Dash"
+msgstr "固定到快捷栏"
 
 #: js/ui/appMenu.js:181
 msgid "Launch using Integrated Graphics Card"
@@ -955,15 +956,15 @@ msgstr "%d"
 msgid "Week %V"
 msgstr "第 %V 周"
 
-#: js/ui/calendar.js:902
+#: js/ui/calendar.js:900
 msgid "No Notifications"
 msgstr "无通知"
 
-#: js/ui/calendar.js:956
+#: js/ui/calendar.js:954
 msgid "Do Not Disturb"
 msgstr "请勿打扰"
 
-#: js/ui/calendar.js:977
+#: js/ui/calendar.js:975
 msgid "Clear"
 msgstr "清除"
 
@@ -1462,7 +1463,7 @@ msgstr "关闭"
 msgid "Leave Off"
 msgstr "保持关闭"
 
-#: js/ui/keyboard.js:226
+#: js/ui/keyboard.js:248
 msgid "Region & Language Settings"
 msgstr "区域与语言设置"
 
@@ -1515,23 +1516,23 @@ msgstr "查看源"
 msgid "Web Page"
 msgstr "网页"
 
-#: js/ui/main.js:263
+#: js/ui/main.js:265
 msgid "System was put in unsafe mode"
 msgstr "系统已置于不安全模式"
 
-#: js/ui/main.js:264
+#: js/ui/main.js:266
 msgid "Applications now have unrestricted access"
 msgstr "应用程序现在已不受访问限制"
 
-#: js/ui/main.js:265 js/ui/overview.js:58
+#: js/ui/main.js:267 js/ui/overview.js:58
 msgid "Undo"
 msgstr "撤消"
 
-#: js/ui/main.js:311
+#: js/ui/main.js:313
 msgid "Logged in as a privileged user"
 msgstr "以特权用户身份登录"
 
-#: js/ui/main.js:312
+#: js/ui/main.js:314
 msgid ""
 "Running a session as a privileged user should be avoided for security "
 "reasons. If possible, you should log in as a normal user."
@@ -1539,11 +1540,11 @@ msgstr ""
 "出于安全原因，应避免以特权用户身份运行会话。如有可能，你应该以正常用户身份登"
 "录。"
 
-#: js/ui/main.js:361
+#: js/ui/main.js:363
 msgid "Screen Lock disabled"
 msgstr "屏幕锁定已禁用"
 
-#: js/ui/main.js:362
+#: js/ui/main.js:364
 msgid "Screen Locking requires the GNOME display manager."
 msgstr "屏幕锁定需要 GNOME 显示管理器。"
 
@@ -3128,6 +3129,12 @@ msgstr[0] "%u 个输入"
 #: subprojects/gvc/gvc-mixer-control.c:2867
 msgid "System Sounds"
 msgstr "系统声音"
+
+#~ msgid "Remove from Favorites"
+#~ msgstr "从收藏夹中移除"
+
+#~ msgid "Add to Favorites"
+#~ msgstr "添加到收藏夹"
 
 #~ msgid "Failed to connect to GNOME Shell"
 #~ msgstr "连接 GNOME Shell 失败"
