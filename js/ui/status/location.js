@@ -232,7 +232,8 @@ class Indicator extends PanelMenu.SystemIndicator {
             GObject.BindingFlags.SYNC_CREATE);
 
         this._item.label.text = _('Location Enabled');
-        this._onOffAction = this._item.menu.addAction(_('Disable'), this._onOnOffAction.bind(this));
+        this._onOffAction = this._item.menu.addAction(_('Disable'),
+            () => (this._agent.enabled = !this._agent.enabled));
         this._item.menu.addSettingsAction(_('Privacy Settings'), 'gnome-location-panel.desktop');
 
         this.menu.addMenuItem(this._item);
@@ -251,17 +252,13 @@ class Indicator extends PanelMenu.SystemIndicator {
         this._agent.disconnect(this._maxAccuracyId);
     }
 
-    _onOnOffAction() {
-        this.enabled = !this.enabled;
-    }
-
     _onSessionUpdated() {
         let sensitive = !Main.sessionMode.isLocked && !Main.sessionMode.isGreeter;
         this.menu.setSensitive(sensitive);
     }
 
     _updateMenuLabels() {
-        if (this.enabled) {
+        if (this._agent.enabled) {
             this._item.label.text = this._indicator.visible
                 ? _('Location In Use')
                 : _('Location Enabled');
