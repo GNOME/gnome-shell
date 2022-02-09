@@ -1899,7 +1899,7 @@ var ScreenshotUI = GObject.registerClass({
             const source = new MessageTray.Source(
                 // Translators: notification source name.
                 _('Screenshot'),
-                'applets-screenshooter'
+                'screencast-recorded-symbolic'
             );
             const notification = new MessageTray.Notification(
                 source,
@@ -2112,7 +2112,7 @@ function _storeScreenshot(bytes, pixbuf) {
     const source = new MessageTray.Source(
         // Translators: notification source name.
         _('Screenshot'),
-        'applets-screenshooter'
+        'screenshot-recorded-symbolic'
     );
     const notification = new MessageTray.Notification(
         source,

@@ -137,7 +137,7 @@ const SystemActions = GObject.registerClass({
         this._actions.set(SCREENSHOT_UI_ACTION_ID, {
             // Translators: The name of the screenshot UI action in search
             name: C_('search-result', 'Take a Screenshot'),
-            iconName: 'applets-screenshooter-symbolic',
+            iconName: 'record-screen-symbolic',
             // Translators: A list of keywords that match the screenshot UI action, separated by semicolons
             keywords: tokenizeKeywords(_('screenshot;screencast;snip;capture;record')),
             available: true,

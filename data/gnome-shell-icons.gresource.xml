@@ -13,6 +13,9 @@
     <file>scalable/actions/screenshot-ui-display-symbolic.svg</file>
     <file>scalable/actions/screenshot-ui-show-pointer-symbolic.svg</file>
     <file>scalable/actions/screenshot-ui-window-symbolic.svg</file>
+    <file>scalable/actions/record-screen-symbolic.svg</file>
+    <file>scalable/actions/screencast-recorded-symbolic.svg</file>
+    <file>scalable/actions/screenshot-recorded-symbolic.svg</file>
     <file>scalable/status/keyboard-caps-lock-symbolic.svg</file>
     <file>scalable/status/keyboard-enter-symbolic.svg</file>
     <file>scalable/status/keyboard-hide-symbolic.svg</file>
