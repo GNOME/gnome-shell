@@ -65,6 +65,17 @@ struct _ShellKeyringPrompt
 
 enum {
   PROP_0,
+
+  PROP_PASSWORD_VISIBLE,
+  PROP_CONFIRM_VISIBLE,
+  PROP_WARNING_VISIBLE,
+  PROP_CHOICE_VISIBLE,
+  PROP_PASSWORD_ACTOR,
+  PROP_CONFIRM_ACTOR,
+
+  N_PROPS,
+
+  /* GcrPrompt */
   PROP_TITLE,
   PROP_MESSAGE,
   PROP_DESCRIPTION,
@@ -75,14 +86,10 @@ enum {
   PROP_PASSWORD_STRENGTH,
   PROP_CALLER_WINDOW,
   PROP_CONTINUE_LABEL,
-  PROP_CANCEL_LABEL,
-  PROP_PASSWORD_VISIBLE,
-  PROP_CONFIRM_VISIBLE,
-  PROP_WARNING_VISIBLE,
-  PROP_CHOICE_VISIBLE,
-  PROP_PASSWORD_ACTOR,
-  PROP_CONFIRM_ACTOR
+  PROP_CANCEL_LABEL
 };
+
+static GParamSpec *props[N_PROPS] = { NULL, };
 
 static void    shell_keyring_prompt_iface     (GcrPromptIface *iface);
 
@@ -163,7 +170,7 @@ shell_keyring_prompt_set_property (GObject      *obj,
     if (!self->warning)
         self->warning = g_strdup ("");
     g_object_notify (obj, "warning");
-    g_object_notify (obj, "warning-visible");
+    g_object_notify_by_pspec (obj, props[PROP_WARNING_VISIBLE]);
     break;
   case PROP_CHOICE_LABEL:
     g_free (self->choice_label);
@@ -171,7 +178,7 @@ shell_keyring_prompt_set_property (GObject      *obj,
     if (!self->choice_label)
         self->choice_label = g_strdup ("");
     g_object_notify (obj, "choice-label");
-    g_object_notify (obj, "choice-visible");
+    g_object_notify_by_pspec (obj, props[PROP_CHOICE_VISIBLE]);
     break;
   case PROP_CHOICE_CHOSEN:
     self->choice_chosen = g_value_get_boolean (value);
@@ -180,7 +187,7 @@ shell_keyring_prompt_set_property (GObject      *obj,
   case PROP_PASSWORD_NEW:
     self->password_new = g_value_get_boolean (value);
     g_object_notify (obj, "password-new");
-    g_object_notify (obj, "confirm-visible");
+    g_object_notify_by_pspec (obj, props[PROP_CONFIRM_VISIBLE]);
     break;
   case PROP_CALLER_WINDOW:
     /* ignored */
@@ -345,54 +352,74 @@ shell_keyring_prompt_class_init (ShellKeyringPromptClass *klass)
    *
    * Whether the password entry is visible or not.
    */
-  g_object_class_install_property (gobject_class, PROP_PASSWORD_VISIBLE,
-             g_param_spec_boolean ("password-visible", "Password visible", "Password field is visible",
-                                   FALSE, G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
+  props[PROP_PASSWORD_VISIBLE] =
+    g_param_spec_boolean ("password-visible",
+                          "Password visible",
+                          "Password field is visible",
+                          FALSE,
+                          G_PARAM_READABLE | G_PARAM_STATIC_STRINGS);
 
   /**
     * ShellKeyringPrompt:confirm-visible:
     *
     * Whether the password confirm entry is visible or not.
     */
-  g_object_class_install_property (gobject_class, PROP_CONFIRM_VISIBLE,
-             g_param_spec_boolean ("confirm-visible", "Confirm visible", "Confirm field is visible",
-                                   FALSE, G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
+  props[PROP_CONFIRM_VISIBLE] =
+    g_param_spec_boolean ("confirm-visible",
+                          "Confirm visible",
+                          "Confirm field is visible",
+                          FALSE,
+                          G_PARAM_READABLE | G_PARAM_STATIC_STRINGS);
 
   /**
    * ShellKeyringPrompt:warning-visible:
    *
    * Whether the warning label is visible or not.
    */
-  g_object_class_install_property (gobject_class, PROP_WARNING_VISIBLE,
-             g_param_spec_boolean ("warning-visible", "Warning visible", "Warning is visible",
-                                   FALSE, G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
+  props[PROP_WARNING_VISIBLE] =
+    g_param_spec_boolean ("warning-visible",
+                          "Warning visible",
+                          "Warning is visible",
+                          FALSE,
+                          G_PARAM_READABLE | G_PARAM_STATIC_STRINGS);
 
   /**
    * ShellKeyringPrompt:choice-visible:
    *
    * Whether the choice check box is visible or not.
    */
-  g_object_class_install_property (gobject_class, PROP_CHOICE_VISIBLE,
-             g_param_spec_boolean ("choice-visible", "Choice visible", "Choice is visible",
-                                   FALSE, G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
+  props[PROP_CHOICE_VISIBLE] =
+    g_param_spec_boolean ("choice-visible",
+                          "Choice visible",
+                          "Choice is visible",
+                          FALSE,
+                          G_PARAM_READABLE | G_PARAM_STATIC_STRINGS);
 
   /**
    * ShellKeyringPrompt:password-actor:
    *
    * Text field for password
    */
-  g_object_class_install_property (gobject_class, PROP_PASSWORD_ACTOR,
-              g_param_spec_object ("password-actor", "Password actor", "Text field for password",
-                                   CLUTTER_TYPE_TEXT, G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+  props[PROP_PASSWORD_ACTOR] =
+    g_param_spec_object ("password-actor",
+                         "Password actor",
+                         "Text field for password",
+                         CLUTTER_TYPE_TEXT,
+                         G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
 
   /**
    * ShellKeyringPrompt:confirm-actor:
    *
    * Text field for confirmation password
    */
-  g_object_class_install_property (gobject_class, PROP_CONFIRM_ACTOR,
-              g_param_spec_object ("confirm-actor", "Confirm actor", "Text field for confirming password",
-                                   CLUTTER_TYPE_TEXT, G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+  props[PROP_CONFIRM_ACTOR] =
+    g_param_spec_object ("confirm-actor",
+                         "Confirm actor",
+                         "Text field for confirming password",
+                         CLUTTER_TYPE_TEXT,
+                         G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
+
+  g_object_class_install_properties (gobject_class, N_PROPS, props);
 
   signals[SIGNAL_SHOW_PASSWORD] = g_signal_new ("show-password", G_TYPE_FROM_CLASS (klass),
                                                 0, 0, NULL, NULL,
@@ -645,6 +672,9 @@ shell_keyring_prompt_set_password_actor (ShellKeyringPrompt *self,
   g_return_if_fail (SHELL_IS_KEYRING_PROMPT (self));
   g_return_if_fail (password_actor == NULL || CLUTTER_IS_TEXT (password_actor));
 
+  if (self->password_actor == password_actor)
+    return;
+
   if (password_actor)
     {
       buffer = shell_secure_text_buffer_new ();
@@ -661,7 +691,7 @@ shell_keyring_prompt_set_password_actor (ShellKeyringPrompt *self,
     }
 
   self->password_actor = password_actor;
-  g_object_notify (G_OBJECT (self), "password-actor");
+  g_object_notify_by_pspec (G_OBJECT (self), props[PROP_PASSWORD_ACTOR]);
 }
 
 /**
@@ -680,6 +710,9 @@ shell_keyring_prompt_set_confirm_actor (ShellKeyringPrompt *self,
   g_return_if_fail (SHELL_IS_KEYRING_PROMPT (self));
   g_return_if_fail (confirm_actor == NULL || CLUTTER_IS_TEXT (confirm_actor));
 
+  if (self->confirm_actor == confirm_actor)
+    return;
+
   if (confirm_actor)
     {
       buffer = shell_secure_text_buffer_new ();
@@ -691,7 +724,7 @@ shell_keyring_prompt_set_confirm_actor (ShellKeyringPrompt *self,
   if (self->confirm_actor)
     g_object_unref (self->confirm_actor);
   self->confirm_actor = confirm_actor;
-  g_object_notify (G_OBJECT (self), "confirm-actor");
+  g_object_notify_by_pspec (G_OBJECT (self), props[PROP_CONFIRM_ACTOR]);
 }
 
 /**

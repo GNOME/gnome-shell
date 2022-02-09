@@ -48,8 +48,13 @@ G_DEFINE_TYPE (ShellWindowTracker, shell_window_tracker, G_TYPE_OBJECT);
 
 enum {
   PROP_0,
-  PROP_FOCUS_APP
+
+  PROP_FOCUS_APP,
+
+  N_PROPS
 };
+
+static GParamSpec *props[N_PROPS] = { NULL, };
 
 enum {
   STARTUP_SEQUENCE_CHANGED,
@@ -97,13 +102,14 @@ shell_window_tracker_class_init (ShellWindowTrackerClass *klass)
   gobject_class->get_property = shell_window_tracker_get_property;
   gobject_class->finalize = shell_window_tracker_finalize;
 
-  g_object_class_install_property (gobject_class,
-                                   PROP_FOCUS_APP,
-                                   g_param_spec_object ("focus-app",
-                                                        "Focus App",
-                                                        "Focused application",
-                                                        SHELL_TYPE_APP,
-                                                        G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
+  props[PROP_FOCUS_APP] =
+    g_param_spec_object ("focus-app",
+                         "Focus App",
+                         "Focused application",
+                         SHELL_TYPE_APP,
+                         G_PARAM_READABLE | G_PARAM_STATIC_STRINGS);
+
+  g_object_class_install_properties (gobject_class, N_PROPS, props);
 
   signals[STARTUP_SEQUENCE_CHANGED] = g_signal_new ("startup-sequence-changed",
                                    SHELL_TYPE_WINDOW_TRACKER,
@@ -731,7 +737,7 @@ set_focus_app (ShellWindowTracker  *tracker,
   if (tracker->focus_app != NULL)
     g_object_ref (tracker->focus_app);
 
-  g_object_notify (G_OBJECT (tracker), "focus-app");
+  g_object_notify_by_pspec (G_OBJECT (tracker), props[PROP_FOCUS_APP]);
 }
 
 static void

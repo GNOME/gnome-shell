@@ -90,13 +90,18 @@ struct _ShellApp
 
 enum {
   PROP_0,
+
   PROP_STATE,
   PROP_BUSY,
   PROP_ID,
   PROP_ACTION_GROUP,
   PROP_ICON,
-  PROP_APP_INFO
+  PROP_APP_INFO,
+
+  N_PROPS
 };
+
+static GParamSpec *props[N_PROPS] = { NULL, };
 
 enum {
   WINDOWS_CHANGED,
@@ -212,7 +217,7 @@ on_window_icon_changed (GObject          *object,
   if (!app->fallback_icon)
     app->fallback_icon = g_themed_icon_new ("application-x-executable");
 
-  g_object_notify (G_OBJECT (app), "icon");
+  g_object_notify_by_pspec (G_OBJECT (app), props[PROP_ICON]);
 }
 
 /**
@@ -511,7 +516,7 @@ shell_app_update_window_actions (ShellApp *app, MetaWindow *window)
 
       g_assert (app->running_state->muxer);
       gtk_action_muxer_insert (app->running_state->muxer, "win", actions);
-      g_object_notify (G_OBJECT (app), "action-group");
+      g_object_notify_by_pspec (G_OBJECT (app), props[PROP_ACTION_GROUP]);
     }
 }
 
@@ -963,7 +968,7 @@ shell_app_state_transition (ShellApp      *app,
 
   _shell_app_system_notify_app_state_changed (shell_app_system_get_default (), app);
 
-  g_object_notify (G_OBJECT (app), "state");
+  g_object_notify_by_pspec (G_OBJECT (app), props[PROP_STATE]);
 }
 
 static void
@@ -1053,7 +1058,7 @@ busy_changed_cb (GObject    *object,
 
   g_assert (SHELL_IS_APP (app));
 
-  g_object_notify (G_OBJECT (app), "busy");
+  g_object_notify_by_pspec (G_OBJECT (app), props[PROP_BUSY]);
 }
 
 static void
@@ -1076,7 +1081,7 @@ get_application_proxy (GObject      *source,
                         G_CALLBACK (busy_changed_cb),
                         app);
       if (shell_org_gtk_application_get_busy (proxy))
-        g_object_notify (G_OBJECT (app), "busy");
+        g_object_notify_by_pspec (G_OBJECT (app), props[PROP_BUSY]);
     }
 
   if (app->running_state != NULL &&
@@ -1178,7 +1183,7 @@ _shell_app_remove_window (ShellApp   *app,
 
       /* Select a new icon from a different window. */
       g_clear_object (&app->fallback_icon);
-      g_object_notify (G_OBJECT (app), "icon");
+      g_object_notify_by_pspec (G_OBJECT (app), props[PROP_ICON]);
     }
 
   g_object_unref (window);
@@ -1681,27 +1686,25 @@ shell_app_class_init(ShellAppClass *klass)
    * The high-level state of the application, effectively whether it's
    * running or not, or transitioning between those states.
    */
-  g_object_class_install_property (gobject_class,
-                                   PROP_STATE,
-                                   g_param_spec_enum ("state",
-                                                      "State",
-                                                      "Application state",
-                                                      SHELL_TYPE_APP_STATE,
-                                                      SHELL_APP_STATE_STOPPED,
-                                                      G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
+  props[PROP_STATE] =
+    g_param_spec_enum ("state",
+                       "State",
+                       "Application state",
+                       SHELL_TYPE_APP_STATE,
+                       SHELL_APP_STATE_STOPPED,
+                       G_PARAM_READABLE | G_PARAM_STATIC_STRINGS);
 
   /**
    * ShellApp:busy:
    *
    * Whether the application has marked itself as busy.
    */
-  g_object_class_install_property (gobject_class,
-                                   PROP_BUSY,
-                                   g_param_spec_boolean ("busy",
-                                                         "Busy",
-                                                         "Busy state",
-                                                         FALSE,
-                                                         G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
+  props[PROP_BUSY] =
+    g_param_spec_boolean ("busy",
+                          "Busy",
+                          "Busy state",
+                          FALSE,
+                          G_PARAM_READABLE | G_PARAM_STATIC_STRINGS);
 
   /**
    * ShellApp:id:
@@ -1709,26 +1712,24 @@ shell_app_class_init(ShellAppClass *klass)
    * The id of this application (a desktop filename, or a special string
    * like window:0xabcd1234)
    */
-  g_object_class_install_property (gobject_class,
-                                   PROP_ID,
-                                   g_param_spec_string ("id",
-                                                        "Application id",
-                                                        "The desktop file id of this ShellApp",
-                                                        NULL,
-                                                        G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
+  props[PROP_ID] =
+    g_param_spec_string ("id",
+                         "Application id",
+                         "The desktop file id of this ShellApp",
+                         NULL,
+                         G_PARAM_READABLE | G_PARAM_STATIC_STRINGS);
 
   /**
    * ShellApp:icon:
    *
    * The #GIcon representing this ShellApp
    */
-  g_object_class_install_property (gobject_class,
-                                   PROP_ICON,
-                                   g_param_spec_object ("icon",
-                                                        "GIcon",
-                                                        "The GIcon representing this app",
-                                                        G_TYPE_ICON,
-                                                        G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
+  props[PROP_ICON] =
+    g_param_spec_object ("icon",
+                         "GIcon",
+                         "The GIcon representing this app",
+                         G_TYPE_ICON,
+                         G_PARAM_READABLE | G_PARAM_STATIC_STRINGS);
 
   /**
    * ShellApp:action-group:
@@ -1736,24 +1737,24 @@ shell_app_class_init(ShellAppClass *klass)
    * The #GDBusActionGroup associated with this ShellApp, if any. See the
    * documentation of #GApplication and #GActionGroup for details.
    */
-  g_object_class_install_property (gobject_class,
-                                   PROP_ACTION_GROUP,
-                                   g_param_spec_object ("action-group",
-                                                        "Application Action Group",
-                                                        "The action group exported by the remote application",
-                                                        G_TYPE_ACTION_GROUP,
-                                                        G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
+  props[PROP_ACTION_GROUP] =
+    g_param_spec_object ("action-group",
+                         "Application Action Group",
+                         "The action group exported by the remote application",
+                         G_TYPE_ACTION_GROUP,
+                         G_PARAM_READABLE | G_PARAM_STATIC_STRINGS);
+
   /**
    * ShellApp:app-info:
    *
    * The #GDesktopAppInfo associated with this ShellApp, if any.
    */
-  g_object_class_install_property (gobject_class,
-                                   PROP_APP_INFO,
-                                   g_param_spec_object ("app-info",
-                                                        "DesktopAppInfo",
-                                                        "The DesktopAppInfo associated with this app",
-                                                        G_TYPE_DESKTOP_APP_INFO,
-                                                        G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_STRINGS));
+  props[PROP_APP_INFO] =
+    g_param_spec_object ("app-info",
+                         "DesktopAppInfo",
+                         "The DesktopAppInfo associated with this app",
+                         G_TYPE_DESKTOP_APP_INFO,
+                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_STRINGS);
 
+  g_object_class_install_properties (gobject_class, N_PROPS, props);
 }
