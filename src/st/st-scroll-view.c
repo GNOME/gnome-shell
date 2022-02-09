@@ -1228,6 +1228,8 @@ st_scroll_view_set_mouse_scrolling (StScrollView *scroll,
       /* make sure we can receive mouse wheel events */
       if (enabled)
         clutter_actor_set_reactive ((ClutterActor *) scroll, TRUE);
+
+      g_object_notify_by_pspec (G_OBJECT (scroll), props[PROP_MOUSE_SCROLL]);
     }
 }
 
