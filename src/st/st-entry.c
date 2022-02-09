@@ -1170,6 +1170,7 @@ st_entry_set_hint_text (StEntry     *entry,
   st_widget_add_style_class_name (label, "hint-text");
 
   st_entry_set_hint_actor (ST_ENTRY (entry), CLUTTER_ACTOR (label));
+  g_object_notify_by_pspec (G_OBJECT (entry), props[PROP_HINT_TEXT]);
 }
 
 /**
@@ -1358,6 +1359,7 @@ st_entry_set_primary_icon (StEntry      *entry,
   priv = st_entry_get_instance_private (entry);
 
   _st_entry_set_icon (entry, &priv->primary_icon, icon);
+  g_object_notify_by_pspec (G_OBJECT (entry), props[PROP_PRIMARY_ICON]);
 }
 
 /**
@@ -1397,6 +1399,7 @@ st_entry_set_secondary_icon (StEntry      *entry,
   priv = st_entry_get_instance_private (entry);
 
   _st_entry_set_icon (entry, &priv->secondary_icon, icon);
+  g_object_notify_by_pspec (G_OBJECT (entry), props[PROP_SECONDARY_ICON]);
 }
 
 /**
@@ -1448,6 +1451,7 @@ st_entry_set_hint_actor (StEntry      *entry,
     }
 
   st_entry_update_hint_visibility (entry);
+  g_object_notify_by_pspec (G_OBJECT (entry), props[PROP_HINT_ACTOR]);
 
   clutter_actor_queue_relayout (CLUTTER_ACTOR (entry));
 }
