@@ -213,10 +213,26 @@ shell_global_set_property(GObject         *object,
       global->session_mode = g_ascii_strdown (g_value_get_string (value), -1);
       break;
     case PROP_FRAME_TIMESTAMPS:
-      global->frame_timestamps = g_value_get_boolean (value);
+      {
+        gboolean enable = g_value_get_boolean (value);
+
+        if (global->frame_timestamps != enable)
+          {
+            global->frame_timestamps = enable;
+            g_object_notify_by_pspec (object, props[PROP_FRAME_TIMESTAMPS]);
+          }
+      }
       break;
     case PROP_FRAME_FINISH_TIMESTAMP:
-      global->frame_finish_timestamp = g_value_get_boolean (value);
+      {
+        gboolean enable = g_value_get_boolean (value);
+
+        if (global->frame_finish_timestamp != enable)
+          {
+            global->frame_finish_timestamp = enable;
+            g_object_notify_by_pspec (object, props[PROP_FRAME_FINISH_TIMESTAMP]);
+          }
+      }
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -609,14 +625,14 @@ shell_global_class_init (ShellGlobalClass *klass)
                           "Frame Timestamps",
                           "Whether to log frame timestamps in the performance log",
                           FALSE,
-                          G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
+                          G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS | G_PARAM_EXPLICIT_NOTIFY);
 
   props[PROP_FRAME_FINISH_TIMESTAMP] =
     g_param_spec_boolean ("frame-finish-timestamp",
                           "Frame Finish Timestamps",
                           "Whether at the end of a frame to call glFinish and log paintCompletedTimestamp",
                           FALSE,
-                          G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
+                          G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS | G_PARAM_EXPLICIT_NOTIFY);
 
   props[PROP_SWITCHEROO_CONTROL] =
     g_param_spec_object ("switcheroo-control",

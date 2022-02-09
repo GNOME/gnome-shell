@@ -405,7 +405,7 @@ shell_keyring_prompt_class_init (ShellKeyringPromptClass *klass)
                          "Password actor",
                          "Text field for password",
                          CLUTTER_TYPE_TEXT,
-                         G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
+                         G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
    * ShellKeyringPrompt:confirm-actor:
@@ -417,7 +417,7 @@ shell_keyring_prompt_class_init (ShellKeyringPromptClass *klass)
                          "Confirm actor",
                          "Text field for confirming password",
                          CLUTTER_TYPE_TEXT,
-                         G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
+                         G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS | G_PARAM_EXPLICIT_NOTIFY);
 
   g_object_class_install_properties (gobject_class, N_PROPS, props);
 

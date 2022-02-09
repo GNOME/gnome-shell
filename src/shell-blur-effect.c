@@ -776,14 +776,14 @@ shell_blur_effect_class_init (ShellBlurEffectClass *klass)
                       "Sigma",
                       "Sigma",
                       0, G_MAXINT, 0,
-                      G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
+                      G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS | G_PARAM_EXPLICIT_NOTIFY);
 
   properties[PROP_BRIGHTNESS] =
     g_param_spec_float ("brightness",
                         "Brightness",
                         "Brightness",
                         0.f, 1.f, 1.f,
-                        G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
+                        G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS | G_PARAM_EXPLICIT_NOTIFY);
 
   properties[PROP_MODE] =
     g_param_spec_enum ("mode",
@@ -791,7 +791,7 @@ shell_blur_effect_class_init (ShellBlurEffectClass *klass)
                        "Blur mode",
                        SHELL_TYPE_BLUR_MODE,
                        SHELL_BLUR_MODE_ACTOR,
-                       G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
+                       G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS | G_PARAM_EXPLICIT_NOTIFY);
 
   g_object_class_install_properties (object_class, N_PROPS, properties);
 }
