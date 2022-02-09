@@ -55,10 +55,17 @@ static void st_viewport_scrollable_interface_init (StScrollableInterface *iface)
 
 enum {
   PROP_0,
+
   PROP_CLIP_TO_VIEW,
+
+  N_PROPS,
+
+  /* StScrollable */
   PROP_HADJUST,
   PROP_VADJUST
 };
+
+static GParamSpec *props[N_PROPS] = { NULL, };
 
 typedef struct
 {
@@ -177,6 +184,7 @@ st_viewport_set_clip_to_view (StViewport *viewport,
     {
       priv->clip_to_view = clip_to_view;
       clutter_actor_queue_redraw (CLUTTER_ACTOR (viewport));
+      g_object_notify_by_pspec (G_OBJECT (viewport), props[PROP_CLIP_TO_VIEW]);
     }
 }
 
@@ -588,13 +596,12 @@ st_viewport_class_init (StViewportClass *klass)
   actor_class->get_paint_volume = st_viewport_get_paint_volume;
   actor_class->pick = st_viewport_pick;
 
-  g_object_class_install_property (object_class,
-                                   PROP_CLIP_TO_VIEW,
-                                   g_param_spec_boolean ("clip-to-view",
-                                                         "Clip to view",
-                                                         "Clip to view",
-                                                         TRUE,
-                                                         ST_PARAM_READWRITE));
+  props[PROP_CLIP_TO_VIEW] =
+    g_param_spec_boolean ("clip-to-view",
+                          "Clip to view",
+                          "Clip to view",
+                          TRUE,
+                          ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   /* StScrollable properties */
   g_object_class_override_property (object_class,
@@ -604,6 +611,8 @@ st_viewport_class_init (StViewportClass *klass)
   g_object_class_override_property (object_class,
                                     PROP_VADJUST,
                                     "vadjustment");
+
+  g_object_class_install_properties (object_class, N_PROPS, props);
 }
 
 static void

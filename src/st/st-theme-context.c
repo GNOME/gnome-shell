@@ -46,8 +46,12 @@ struct _StThemeContext {
 enum
 {
   PROP_0,
-  PROP_SCALE_FACTOR
+  PROP_SCALE_FACTOR,
+
+  N_PROPS
 };
+
+static GParamSpec *props[N_PROPS] = { NULL, };
 
 enum
 {
@@ -85,7 +89,7 @@ st_theme_context_set_scale_factor (StThemeContext *context,
     return;
 
   context->scale_factor = scale_factor;
-  g_object_notify (G_OBJECT (context), "scale-factor");
+  g_object_notify_by_pspec (G_OBJECT (context), props[PROP_SCALE_FACTOR]);
   st_theme_context_changed (context);
 }
 
@@ -133,13 +137,14 @@ st_theme_context_class_init (StThemeContextClass *klass)
    *
    * The scaling factor used for HiDPI scaling.
    */
-  g_object_class_install_property (object_class,
-                                   PROP_SCALE_FACTOR,
-                                   g_param_spec_int ("scale-factor",
-                                                     "Scale factor",
-                                                     "Integer scale factor used for HiDPI scaling",
-                                                     0, G_MAXINT, 1,
-                                                     ST_PARAM_READWRITE));
+  props[PROP_SCALE_FACTOR] =
+    g_param_spec_int ("scale-factor",
+                      "Scale factor",
+                      "Integer scale factor used for HiDPI scaling",
+                      0, G_MAXINT, 1,
+                      ST_PARAM_READWRITE);
+
+  g_object_class_install_properties (object_class, N_PROPS, props);
 
   /**
    * StThemeContext::changed:

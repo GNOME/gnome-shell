@@ -60,7 +60,11 @@ enum {
 
   PROP_VERTICAL,
   PROP_PACK_START,
+
+  N_PROPS
 };
+
+static GParamSpec *props[N_PROPS] = { NULL, };
 
 struct _StBoxLayoutPrivate
 {
@@ -169,7 +173,6 @@ st_box_layout_class_init (StBoxLayoutClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
   StWidgetClass *widget_class = ST_WIDGET_CLASS (klass);
-  GParamSpec *pspec;
 
   object_class->get_property = st_box_layout_get_property;
   object_class->set_property = st_box_layout_set_property;
@@ -182,13 +185,13 @@ st_box_layout_class_init (StBoxLayoutClass *klass)
    * A convenience property for the #ClutterBoxLayout:vertical property of the
    * internal layout for #StBoxLayout.
    */
-  pspec = g_param_spec_boolean ("vertical",
-                                "Vertical",
-                                "Whether the layout should be vertical, rather"
-                                "than horizontal",
-                                FALSE,
-                                ST_PARAM_READWRITE);
-  g_object_class_install_property (object_class, PROP_VERTICAL, pspec);
+  props[PROP_VERTICAL] =
+    g_param_spec_boolean ("vertical",
+                          "Vertical",
+                          "Whether the layout should be vertical, rather"
+                          "than horizontal",
+                          FALSE,
+                          ST_PARAM_READWRITE);
 
   /**
    * StBoxLayout:pack-start:
@@ -196,12 +199,14 @@ st_box_layout_class_init (StBoxLayoutClass *klass)
    * A convenience property for the #ClutterBoxLayout:pack-start property of the
    * internal layout for #StBoxLayout.
    */
-  pspec = g_param_spec_boolean ("pack-start",
-                                "Pack Start",
-                                "Whether to pack items at the start of the box",
-                                FALSE,
-                                ST_PARAM_READWRITE | G_PARAM_DEPRECATED);
-  g_object_class_install_property (object_class, PROP_PACK_START, pspec);
+  props[PROP_PACK_START] =
+    g_param_spec_boolean ("pack-start",
+                          "Pack Start",
+                          "Whether to pack items at the start of the box",
+                          FALSE,
+                          ST_PARAM_READWRITE | G_PARAM_DEPRECATED);
+
+  g_object_class_install_properties (object_class, N_PROPS, props);
 }
 
 static void
@@ -250,7 +255,7 @@ st_box_layout_set_vertical (StBoxLayout *box,
   if (clutter_box_layout_get_orientation (CLUTTER_BOX_LAYOUT (layout)) != orientation)
     {
       clutter_box_layout_set_orientation (CLUTTER_BOX_LAYOUT (layout), orientation);
-      g_object_notify (G_OBJECT (box), "vertical");
+      g_object_notify_by_pspec (G_OBJECT (box), props[PROP_VERTICAL]);
     }
 }
 
