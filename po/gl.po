@@ -7,23 +7,23 @@
 #
 # Antón Méixome <meixome@certima.net>, 2009.
 # Leandro Regueiro <leandro.regueiro@gmail.com>, 2012.
-# Fran Dieguez <fran.dieguez@gnome.org>, 2012-2022.
 # Fran Diéguez <frandieguez@gnome.org>, 2009-2022.
+# Fran Dieguez <fran.dieguez@gnome.org>, 2012-2022.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2022-02-04 13:08+0000\n"
-"PO-Revision-Date: 2022-02-04 15:50+0100\n"
-"Last-Translator: Fran Diéguez <frandieguez@gnome.org>\n"
+"POT-Creation-Date: 2022-02-07 14:18+0000\n"
+"PO-Revision-Date: 2022-02-08 23:00+0100\n"
+"Last-Translator: Fran Dieguez <fran.dieguez@gnome.org>\n"
 "Language-Team: Galician <proxecto@trasno.gal>\n"
 "Language: gl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"X-Generator: Gtranslator 41.0\n"
+"X-Generator: Gtranslator 40.0\n"
 "X-Project-Style: gnome\n"
 "X-DL-Team: gl\n"
 "X-DL-Module: gnome-shell\n"
@@ -637,7 +637,6 @@ msgstr "bloquear orientación;desbloquear orientación;pantalla;rotación"
 
 #. Translators: The name of the screenshot UI action in search
 #: js/misc/systemActions.js:139
-#| msgid "Screenshot"
 msgctxt "search-result"
 msgid "Take a Screenshot"
 msgstr "Tomar unha captura"
@@ -824,13 +823,15 @@ msgstr "Cartafol sen nome"
 
 #: js/ui/appFavorites.js:164
 #, javascript-format
-msgid "%s has been added to your favorites."
-msgstr "%s foi engadido aos seus favoritos."
+#| msgid "%s has been added to your favorites."
+msgid "%s has been pinned to the dash."
+msgstr "%s fixouse no taboleiro."
 
 #: js/ui/appFavorites.js:197
 #, javascript-format
-msgid "%s has been removed from your favorites."
-msgstr "%s retirouse dos seus marcadores."
+#| msgid "%s has been removed from your favorites."
+msgid "%s has been unpinned from the dash."
+msgstr "%s desfixouse do taboleiro."
 
 #. Translators: This is the heading of a list of open windows
 #: js/ui/appMenu.js:46
@@ -850,12 +851,12 @@ msgid "Quit"
 msgstr "Saír"
 
 #: js/ui/appMenu.js:163 js/ui/dash.js:245
-msgid "Remove from Favorites"
-msgstr "Retirar dos marcadores"
+msgid "Unpin"
+msgstr "Desfixar"
 
 #: js/ui/appMenu.js:164
-msgid "Add to Favorites"
-msgstr "Engadir aos favoritos"
+msgid "Pin to Dash"
+msgstr "Fixar no taboleiro"
 
 #: js/ui/appMenu.js:181
 msgid "Launch using Integrated Graphics Card"
@@ -990,15 +991,15 @@ msgstr "%d"
 msgid "Week %V"
 msgstr "Semana %V"
 
-#: js/ui/calendar.js:902
+#: js/ui/calendar.js:900
 msgid "No Notifications"
 msgstr "Non hai notificacións"
 
-#: js/ui/calendar.js:956
+#: js/ui/calendar.js:954
 msgid "Do Not Disturb"
 msgstr "Non molestar"
 
-#: js/ui/calendar.js:977
+#: js/ui/calendar.js:975
 msgid "Clear"
 msgstr "Limpar"
 
@@ -1517,7 +1518,7 @@ msgstr "Apagar"
 msgid "Leave Off"
 msgstr "Deixar desactivado"
 
-#: js/ui/keyboard.js:226
+#: js/ui/keyboard.js:248
 msgid "Region & Language Settings"
 msgstr "Preferencias de rexión e idioma"
 
@@ -1570,23 +1571,23 @@ msgstr "Ver fonte"
 msgid "Web Page"
 msgstr "Páxina web"
 
-#: js/ui/main.js:263
+#: js/ui/main.js:265
 msgid "System was put in unsafe mode"
 msgstr "O sistema púxose en modo non seguro"
 
-#: js/ui/main.js:264
+#: js/ui/main.js:266
 msgid "Applications now have unrestricted access"
 msgstr "As aplicacións agora teñen acceso sen restricións"
 
-#: js/ui/main.js:265 js/ui/overview.js:58
+#: js/ui/main.js:267 js/ui/overview.js:58
 msgid "Undo"
 msgstr "Desfacer"
 
-#: js/ui/main.js:311
+#: js/ui/main.js:313
 msgid "Logged in as a privileged user"
 msgstr "Sesión iniciada como un usuario privilexiado"
 
-#: js/ui/main.js:312
+#: js/ui/main.js:314
 msgid ""
 "Running a session as a privileged user should be avoided for security "
 "reasons. If possible, you should log in as a normal user."
@@ -1594,11 +1595,11 @@ msgstr ""
 "Por razóns de seguranza debe evitar executar unha sesión como un usuario "
 "privilexiado. Se é posíbel, debería iniciar sesión como un usuario normal."
 
-#: js/ui/main.js:361
+#: js/ui/main.js:363
 msgid "Screen Lock disabled"
 msgstr "Bloqueo de pantalla desactivado"
 
-#: js/ui/main.js:362
+#: js/ui/main.js:364
 msgid "Screen Locking requires the GNOME display manager."
 msgstr "O bloqueo de pantalla require o xestor de pantalla de GNOME."
 
@@ -3194,6 +3195,12 @@ msgstr[1] "%u entradas"
 #: subprojects/gvc/gvc-mixer-control.c:2867
 msgid "System Sounds"
 msgstr "Sons do sistema"
+
+#~ msgid "Remove from Favorites"
+#~ msgstr "Retirar dos marcadores"
+
+#~ msgid "Add to Favorites"
+#~ msgstr "Engadir aos favoritos"
 
 #~ msgid "Enable introspection API"
 #~ msgstr "Activar o API de introspección"
