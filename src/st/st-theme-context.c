@@ -142,7 +142,7 @@ st_theme_context_class_init (StThemeContextClass *klass)
                       "Scale factor",
                       "Integer scale factor used for HiDPI scaling",
                       0, G_MAXINT, 1,
-                      ST_PARAM_READWRITE);
+                      ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   g_object_class_install_properties (object_class, N_PROPS, props);
 

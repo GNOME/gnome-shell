@@ -312,7 +312,7 @@ st_bin_class_init (StBinClass *klass)
                          "Child",
                          "The child of the Bin",
                          CLUTTER_TYPE_ACTOR,
-                         ST_PARAM_READWRITE);
+                         ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   g_object_class_install_properties (gobject_class, N_PROPS, props);
 }

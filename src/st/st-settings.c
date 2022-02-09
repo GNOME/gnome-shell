@@ -298,7 +298,7 @@ st_settings_class_init (StSettingsClass *klass)
                                                       "Slow down factor",
                                                       "Factor applied to all animation durations",
                                                       EPSILON, G_MAXDOUBLE, 1.0,
-                                                      ST_PARAM_READWRITE);
+                                                      ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
    * StSettings:disable-show-password:

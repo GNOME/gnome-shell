@@ -488,7 +488,7 @@ st_button_class_init (StButtonClass *klass)
                          "Label",
                          "Label of the button",
                          NULL,
-                         ST_PARAM_READWRITE);
+                         ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
    * StButton:button-mask:
@@ -500,7 +500,7 @@ st_button_class_init (StButtonClass *klass)
                         "Button mask",
                         "Which buttons trigger the 'clicked' signal",
                         ST_TYPE_BUTTON_MASK, ST_BUTTON_ONE,
-                        ST_PARAM_READWRITE);
+                        ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
    * StButton:toggle-mode:
@@ -512,7 +512,7 @@ st_button_class_init (StButtonClass *klass)
                           "Toggle Mode",
                           "Enable or disable toggling",
                           FALSE,
-                          ST_PARAM_READWRITE);
+                          ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
    * StButton:checked:
@@ -528,7 +528,7 @@ st_button_class_init (StButtonClass *klass)
                           "Checked",
                           "Indicates if a toggle button is \"on\" or \"off\"",
                           FALSE,
-                          ST_PARAM_READWRITE);
+                          ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
    * StButton:pressed:

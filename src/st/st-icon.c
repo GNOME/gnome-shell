@@ -295,7 +295,7 @@ st_icon_class_init (StIconClass *klass)
                          "GIcon",
                          "The GIcon shown by this icon actor",
                          G_TYPE_ICON,
-                         ST_PARAM_READWRITE);
+                         ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
    * StIcon:fallback-gicon:
@@ -307,7 +307,7 @@ st_icon_class_init (StIconClass *klass)
                          "Fallback GIcon",
                          "The fallback GIcon shown if the normal icon fails to load",
                          G_TYPE_ICON,
-                         ST_PARAM_READWRITE);
+                         ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
    * StIcon:icon-name:
@@ -319,7 +319,7 @@ st_icon_class_init (StIconClass *klass)
                          "Icon name",
                          "An icon name",
                          NULL,
-                         ST_PARAM_READWRITE);
+                         ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
    * StIcon:icon-size:
@@ -332,7 +332,7 @@ st_icon_class_init (StIconClass *klass)
                       "Icon size",
                       "The size if the icon, if positive. Otherwise the size will be derived from the current style",
                       -1, G_MAXINT, -1,
-                      ST_PARAM_READWRITE);
+                      ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
    * StIcon:fallback-icon-name:
@@ -345,7 +345,7 @@ st_icon_class_init (StIconClass *klass)
                          "Fallback icon name",
                          "A fallback icon name",
                          NULL,
-                         ST_PARAM_READWRITE);
+                         ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   g_object_class_install_properties (object_class, N_PROPS, props);
 }

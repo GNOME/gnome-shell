@@ -302,7 +302,8 @@ st_adjustment_class_init (StAdjustmentClass *klass)
   props[PROP_ACTOR] =
     g_param_spec_object ("actor", "Actor", "Actor",
                          CLUTTER_TYPE_ACTOR,
-                         ST_PARAM_READWRITE);
+                         ST_PARAM_READWRITE |
+                         G_PARAM_EXPLICIT_NOTIFY);
 
   /**
    * StAdjustment:lower:

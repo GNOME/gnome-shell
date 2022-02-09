@@ -903,7 +903,7 @@ st_entry_class_init (StEntryClass *klass)
                          "Primary Icon",
                          "Primary Icon actor",
                          CLUTTER_TYPE_ACTOR,
-                         ST_PARAM_READWRITE);
+                         ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
    * StEntry:secondary-icon:
@@ -915,7 +915,7 @@ st_entry_class_init (StEntryClass *klass)
                          "Secondary Icon",
                          "Secondary Icon actor",
                          CLUTTER_TYPE_ACTOR,
-                         ST_PARAM_READWRITE);
+                         ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
    * StEntry:hint-text:
@@ -929,7 +929,7 @@ st_entry_class_init (StEntryClass *klass)
                          "Text to display when the entry is not focused "
                          "and the text property is empty",
                          NULL,
-                         ST_PARAM_READWRITE);
+                         ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
    * StEntry:hint-actor:
@@ -943,7 +943,7 @@ st_entry_class_init (StEntryClass *klass)
                          "An actor to display when the entry is not focused "
                          "and the text property is empty",
                          CLUTTER_TYPE_ACTOR,
-                         ST_PARAM_READWRITE);
+                         ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
    * StEntry:text:
@@ -955,7 +955,7 @@ st_entry_class_init (StEntryClass *klass)
                          "Text",
                          "Text of the entry",
                          NULL,
-                         ST_PARAM_READWRITE);
+                         ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
    * StEntry:input-purpose:
@@ -969,7 +969,7 @@ st_entry_class_init (StEntryClass *klass)
                        "Purpose of the text field",
                        CLUTTER_TYPE_INPUT_CONTENT_PURPOSE,
                        CLUTTER_INPUT_CONTENT_PURPOSE_NORMAL,
-                       ST_PARAM_READWRITE);
+                       ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
    * StEntry:input-hints:
@@ -984,7 +984,7 @@ st_entry_class_init (StEntryClass *klass)
                         "Hints for the text field behaviour",
                         CLUTTER_TYPE_INPUT_CONTENT_HINT_FLAGS,
                         0,
-                        ST_PARAM_READWRITE);
+                        ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   g_object_class_install_properties (gobject_class, N_PROPS, props);
 

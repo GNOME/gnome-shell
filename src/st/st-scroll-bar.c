@@ -534,7 +534,7 @@ st_scroll_bar_class_init (StScrollBarClass *klass)
   props[PROP_ADJUSTMENT] =
     g_param_spec_object ("adjustment", "Adjustment", "The adjustment",
                          ST_TYPE_ADJUSTMENT,
-                         ST_PARAM_READWRITE);
+                         ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
    * StScrollBar:vertical:
@@ -546,7 +546,7 @@ st_scroll_bar_class_init (StScrollBarClass *klass)
                           "Vertical Orientation",
                           "Vertical Orientation",
                           FALSE,
-                          ST_PARAM_READWRITE);
+                          ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   g_object_class_install_properties (object_class, N_PROPS, props);
 

@@ -415,7 +415,7 @@ st_scroll_view_fade_class_init (StScrollViewFadeClass *klass)
                         "Fade margins",
                         "The margin widths that are faded",
                         CLUTTER_TYPE_MARGIN,
-                        ST_PARAM_READWRITE);
+                        ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
    * StScrollViewFade:fade-edges:
@@ -427,7 +427,7 @@ st_scroll_view_fade_class_init (StScrollViewFadeClass *klass)
                           "Fade Edges",
                           "Whether the faded area should extend to the edges",
                           FALSE,
-                          ST_PARAM_READWRITE);
+                          ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
    * StScrollViewFade:extend-fade-area:
@@ -439,7 +439,7 @@ st_scroll_view_fade_class_init (StScrollViewFadeClass *klass)
                           "Extend Fade Area",
                           "Whether faded edges should extend beyond the faded area",
                           FALSE,
-                          ST_PARAM_READWRITE);
+                          ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   g_object_class_install_properties (gobject_class, N_PROPS, props);
 }

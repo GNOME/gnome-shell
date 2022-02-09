@@ -907,7 +907,7 @@ st_widget_class_init (StWidgetClass *klass)
                          "Pseudo Class",
                          "Pseudo class for styling",
                          "",
-                         ST_PARAM_READWRITE);
+                         ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
    * StWidget:style-class:
@@ -919,7 +919,7 @@ st_widget_class_init (StWidgetClass *klass)
                          "Style Class",
                          "Style class for styling",
                          "",
-                         ST_PARAM_READWRITE);
+                         ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
    * StWidget:style:
@@ -932,7 +932,7 @@ st_widget_class_init (StWidgetClass *klass)
                           "Style",
                           "Inline style string",
                           "",
-                          ST_PARAM_READWRITE);
+                          ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
    * StWidget:track-hover:
@@ -948,7 +948,7 @@ st_widget_class_init (StWidgetClass *klass)
                            "Track hover",
                            "Determines whether the widget tracks hover state",
                            FALSE,
-                           ST_PARAM_READWRITE);
+                           ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
    * StWidget:hover:
@@ -962,7 +962,7 @@ st_widget_class_init (StWidgetClass *klass)
                            "Hover",
                            "Whether the pointer is hovering over the widget",
                            FALSE,
-                           ST_PARAM_READWRITE);
+                           ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
    * StWidget:can-focus:
@@ -974,7 +974,7 @@ st_widget_class_init (StWidgetClass *klass)
                            "Can focus",
                            "Whether the widget can be focused via keyboard navigation",
                            FALSE,
-                           ST_PARAM_READWRITE);
+                           ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
    * StWidget:label-actor:
@@ -986,7 +986,7 @@ st_widget_class_init (StWidgetClass *klass)
                           "Label",
                           "Label that identifies this widget",
                           CLUTTER_TYPE_ACTOR,
-                          ST_PARAM_READWRITE);
+                          ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
    * StWidget:accessible-role:
@@ -999,7 +999,7 @@ st_widget_class_init (StWidgetClass *klass)
                         "The accessible role of this object",
                         ATK_TYPE_ROLE,
                         ATK_ROLE_INVALID,
-                        ST_PARAM_READWRITE);
+                        ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
    * StWidget:accessible-name:
@@ -1011,7 +1011,7 @@ st_widget_class_init (StWidgetClass *klass)
                           "Accessible name",
                           "Object instance's name for assistive technology access.",
                           NULL,
-                          ST_PARAM_READWRITE);
+                          ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   g_object_class_install_properties (gobject_class, N_PROPS, props);
 

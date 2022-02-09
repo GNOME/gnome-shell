@@ -898,7 +898,7 @@ st_scroll_view_class_init (StScrollViewClass *klass)
                        "When the vertical scrollbar is displayed",
                        ST_TYPE_POLICY_TYPE,
                        ST_POLICY_AUTOMATIC,
-                       ST_PARAM_READWRITE);
+                       ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
    * StScrollView:hscrollbar-policy:
@@ -911,7 +911,7 @@ st_scroll_view_class_init (StScrollViewClass *klass)
                        "When the horizontal scrollbar is displayed",
                        ST_TYPE_POLICY_TYPE,
                        ST_POLICY_AUTOMATIC,
-                       ST_PARAM_READWRITE);
+                       ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
    * StScrollView:hscrollbar-visible:
@@ -947,7 +947,7 @@ st_scroll_view_class_init (StScrollViewClass *klass)
                           "Enable Mouse Scrolling",
                           "Enable automatic mouse wheel scrolling",
                           TRUE,
-                          ST_PARAM_READWRITE);
+                          ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
    * StScrollView:overlay-scrollbars:
@@ -959,14 +959,14 @@ st_scroll_view_class_init (StScrollViewClass *klass)
                           "Use Overlay Scrollbars",
                           "Overlay scrollbars over the content",
                           FALSE,
-                          ST_PARAM_READWRITE);
+                          ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   props[PROP_CONTENT_PADDING] =
     g_param_spec_boxed ("content-padding",
                         "Content padding",
                         "Content padding",
                         CLUTTER_TYPE_MARGIN,
-                        ST_PARAM_READWRITE);
+                        ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   g_object_class_install_properties (object_class, N_PROPS, props);
 }

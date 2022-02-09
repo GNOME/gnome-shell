@@ -191,7 +191,7 @@ st_box_layout_class_init (StBoxLayoutClass *klass)
                           "Whether the layout should be vertical, rather"
                           "than horizontal",
                           FALSE,
-                          ST_PARAM_READWRITE);
+                          ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
    * StBoxLayout:pack-start:

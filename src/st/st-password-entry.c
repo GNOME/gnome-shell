@@ -155,7 +155,7 @@ st_password_entry_class_init (StPasswordEntryClass *klass)
                                                        "Password visible",
                                                        "Whether the text in the entry is masked or not",
                                                        FALSE,
-                                                       ST_PARAM_READWRITE);
+                                                       ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   /**
    * StPasswordEntry:show-peek-icon:
@@ -167,7 +167,7 @@ st_password_entry_class_init (StPasswordEntryClass *klass)
                                                      "Show peek icon",
                                                      "Whether to show the password peek icon",
                                                      TRUE,
-                                                     ST_PARAM_READWRITE);
+                                                     ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   g_object_class_install_properties (gobject_class, N_PROPS, props);
 }

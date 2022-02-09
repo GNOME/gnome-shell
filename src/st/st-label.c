@@ -296,7 +296,7 @@ st_label_class_init (StLabelClass *klass)
                            "Text",
                            "Text of the label",
                            NULL,
-                           ST_PARAM_READWRITE);
+                           ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   g_object_class_install_properties (gobject_class, N_PROPS, props);
 }
