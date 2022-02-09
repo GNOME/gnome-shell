@@ -238,8 +238,10 @@ class Indicator extends PanelMenu.SystemIndicator {
 
         this.menu.addMenuItem(this._item);
 
-        this._inUseId = this._agent.connect('notify::in-use', this._updateMenuLabels.bind(this));
-        this._maxAccuracyId = this._agent.connect('notify::max-accuracy-level', this._updateMenuLabels.bind(this));
+        this._agentSignals = [
+            this._agent.connect('notify::enabled', () => this._sync()),
+            this._agent.connect('notify::in-use', () => this._sync()),
+        ];
 
         this.connect('destroy', this._onDestroy.bind(this));
 
@@ -248,8 +250,8 @@ class Indicator extends PanelMenu.SystemIndicator {
     }
 
     _onDestroy() {
-        this._agent.disconnect(this._inUseId);
-        this._agent.disconnect(this._maxAccuracyId);
+        this._agentSignals.forEach(id => this._agent.disconnect(id));
+        this._agentSignals = [];
     }
 
     _onSessionUpdated() {
@@ -257,7 +259,7 @@ class Indicator extends PanelMenu.SystemIndicator {
         this.menu.setSensitive(sensitive);
     }
 
-    _updateMenuLabels() {
+    _sync() {
         if (this._agent.enabled) {
             this._item.label.text = this._indicator.visible
                 ? _('Location In Use')
