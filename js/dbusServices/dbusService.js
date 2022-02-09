@@ -90,6 +90,9 @@ var ServiceImplementation = class {
         if (!this._autoShutdown)
             return;
 
+        if (GLib.getenv('SHELL_DBUS_PERSIST'))
+            return;
+
         if (this._holdCount > 0)
             return;
 
