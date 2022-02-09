@@ -1702,7 +1702,7 @@ var ScreenshotUI = GObject.registerClass({
                     y: this._cursor.y * this._scale,
                     scale: this._cursorScale,
                 }
-            );
+            ).catch(e => logError(e, 'Error capturing screenshot'));
         } else if (this._windowButton.checked) {
             const window =
                 this._windowSelectors.flatMap(selector => selector.windows())
@@ -1730,7 +1730,7 @@ var ScreenshotUI = GObject.registerClass({
                     y: window.cursorPoint.y * window.bufferScale,
                     scale: this._cursorScale,
                 }
-            );
+            ).catch(e => logError(e, 'Error capturing screenshot'));
         }
     }
 
@@ -2115,7 +2115,7 @@ function _storeScreenshot(bytes, pixbuf) {
  * @param {number} cursor.y - The cursor y coordinate.
  * @param {number} cursor.scale - The cursor texture scale.
  */
-function captureScreenshot(texture, geometry, scale, cursor) {
+async function captureScreenshot(texture, geometry, scale, cursor) {
     const stream = Gio.MemoryOutputStream.new_resizable();
     const [x, y, w, h] = geometry ?? [0, 0, -1, -1];
     if (cursor === null)
@@ -2124,18 +2124,16 @@ function captureScreenshot(texture, geometry, scale, cursor) {
     global.display.get_sound_player().play_from_theme(
         'screen-capture', _('Screenshot taken'), null);
 
-    Shell.Screenshot.composite_to_stream(
+    const pixbuf = await Shell.Screenshot.composite_to_stream(
         texture,
         x, y, w, h,
         scale,
         cursor.texture, cursor.x, cursor.y, cursor.scale,
         stream
-    ).then(pixbuf => {
-        stream.close(null);
-        _storeScreenshot(stream.steal_as_bytes(), pixbuf);
-    }).catch(err => {
-        logError(err, 'Error capturing screenshot');
-    });
+    );
+
+    stream.close(null);
+    _storeScreenshot(stream.steal_as_bytes(), pixbuf);
 }
 
 /**
