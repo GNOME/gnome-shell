@@ -100,8 +100,8 @@ let _themeResource = null;
 let _oskResource = null;
 let _iconResource = null;
 
-Gio._promisify(Gio._LocalFilePrototype, 'delete_async', 'delete_finish');
-Gio._promisify(Gio._LocalFilePrototype, 'touch_async', 'touch_finish');
+Gio._promisify(Gio.File.prototype, 'delete_async', 'delete_finish');
+Gio._promisify(Gio.File.prototype, 'touch_async', 'touch_finish');
 
 let _remoteAccessInhibited = false;
 

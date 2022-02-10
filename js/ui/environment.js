@@ -372,10 +372,10 @@ function init() {
         },
     });
 
-    Gio._LocalFilePrototype.touch_async = function (callback) {
+    Gio.File.prototype.touch_async = function (callback) {
         Shell.util_touch_file_async(this, callback);
     };
-    Gio._LocalFilePrototype.touch_finish = function (result) {
+    Gio.File.prototype.touch_finish = function (result) {
         return Shell.util_touch_file_finish(this, result);
     };
 
