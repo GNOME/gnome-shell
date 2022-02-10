@@ -516,9 +516,15 @@ shell_util_get_uid (void)
 }
 
 #ifdef HAVE_SYSTEMD
+typedef enum {
+  SYSTEMD_CALL_FLAGS_NONE = 0,
+  SYSTEMD_CALL_FLAGS_WATCH_JOB = 1 << 0,
+} SystemdFlags;
+
 typedef struct {
   GDBusConnection *connection;
   gchar           *command;
+  SystemdFlags     flags;
 
   GCancellable *cancellable;
   gulong        cancel_id;
@@ -593,7 +599,10 @@ on_systemd_call_cb (GObject      *source,
   g_assert (data->job == NULL);
   g_variant_get (reply, "(o)", &data->job);
 
-  /* And we wait for the JobRemoved notification. */
+  /* we should either wait for the JobRemoved notification, or
+   * notify here */
+  if ((data->flags & SYSTEMD_CALL_FLAGS_WATCH_JOB) == 0)
+    g_task_return_boolean (task, TRUE);
 }
 
 static void
@@ -642,8 +651,8 @@ on_systemd_job_removed_cb (GDBusConnection *connection,
 
 static void
 shell_util_systemd_call (const char           *command,
-                         const char           *unit,
-                         const char           *mode,
+                         GVariant             *params,
+                         SystemdFlags          flags,
                          GCancellable         *cancellable,
                          GAsyncReadyCallback   callback,
                          gpointer              user_data)
@@ -690,16 +699,22 @@ shell_util_systemd_call (const char           *command,
   data = g_new0 (SystemdCall, 1);
   data->command = g_strdup (command);
   data->connection = g_object_ref (connection);
-  data->job_watch = g_dbus_connection_signal_subscribe (connection,
-                                                        "org.freedesktop.systemd1",
-                                                        "org.freedesktop.systemd1.Manager",
-                                                        "JobRemoved",
-                                                        "/org/freedesktop/systemd1",
-                                                        NULL,
-                                                        G_DBUS_SIGNAL_FLAGS_NONE,
-                                                        on_systemd_job_removed_cb,
-                                                        task,
-                                                        NULL);
+  data->flags = flags;
+
+  if ((data->flags & SYSTEMD_CALL_FLAGS_WATCH_JOB) != 0)
+    {
+      data->job_watch = g_dbus_connection_signal_subscribe (connection,
+                                                            "org.freedesktop.systemd1",
+                                                            "org.freedesktop.systemd1.Manager",
+                                                            "JobRemoved",
+                                                            "/org/freedesktop/systemd1",
+                                                            NULL,
+                                                            G_DBUS_SIGNAL_FLAGS_NONE,
+                                                            on_systemd_job_removed_cb,
+                                                            task,
+                                                            NULL);
+    }
+
   g_task_set_task_data (task,
                         data,
                         (GDestroyNotify) shell_util_systemd_call_data_free);
@@ -718,8 +733,7 @@ shell_util_systemd_call (const char           *command,
                           "/org/freedesktop/systemd1",
                           "org.freedesktop.systemd1.Manager",
                           command,
-                          g_variant_new ("(ss)",
-                                         unit, mode),
+                          params,
                           G_VARIANT_TYPE ("(o)"),
                           G_DBUS_CALL_FLAGS_NONE,
                           -1, cancellable,
@@ -740,7 +754,9 @@ shell_util_start_systemd_unit (const char           *unit,
                                GAsyncReadyCallback   callback,
                                gpointer              user_data)
 {
-  shell_util_systemd_call ("StartUnit", unit, mode,
+  shell_util_systemd_call ("StartUnit",
+                           g_variant_new ("(ss)", unit, mode),
+                           SYSTEMD_CALL_FLAGS_WATCH_JOB,
                            cancellable, callback, user_data);
 }
 
@@ -758,7 +774,9 @@ shell_util_stop_systemd_unit (const char           *unit,
                               GAsyncReadyCallback   callback,
                               gpointer              user_data)
 {
-  shell_util_systemd_call ("StopUnit", unit, mode,
+  shell_util_systemd_call ("StopUnit",
+                           g_variant_new ("(ss)", unit, mode),
+                           SYSTEMD_CALL_FLAGS_WATCH_JOB,
                            cancellable, callback, user_data);
 }
 
