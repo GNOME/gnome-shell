@@ -788,6 +788,25 @@ shell_util_stop_systemd_unit_finish (GAsyncResult  *res,
 }
 
 void
+shell_util_systemd_unit_exists (const gchar         *unit,
+                                GCancellable        *cancellable,
+                                GAsyncReadyCallback  callback,
+                                gpointer             user_data)
+{
+  shell_util_systemd_call ("GetUnit",
+                           g_variant_new ("(s)", unit),
+                           SYSTEMD_CALL_FLAGS_NONE,
+                           cancellable, callback, user_data);
+}
+
+gboolean
+shell_util_systemd_unit_exists_finish (GAsyncResult  *res,
+                                       GError       **error)
+{
+  return g_task_propagate_boolean (G_TASK (res), error);
+}
+
+void
 shell_util_sd_notify (void)
 {
   /* We only use NOTIFY_SOCKET exactly once; unset it so it doesn't remain in

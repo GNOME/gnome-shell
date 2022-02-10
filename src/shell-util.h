@@ -72,6 +72,13 @@ void  shell_util_stop_systemd_unit           (const char           *unit,
 gboolean shell_util_stop_systemd_unit_finish (GAsyncResult         *res,
                                               GError              **error);
 
+void shell_util_systemd_unit_exists (const gchar         *unit,
+                                     GCancellable        *cancellable,
+                                     GAsyncReadyCallback  callback,
+                                     gpointer             user_data);
+gboolean shell_util_systemd_unit_exists_finish (GAsyncResult  *res,
+                                                GError       **error);
+
 void shell_util_sd_notify (void);
 
 gboolean shell_util_has_x11_display_extension (MetaDisplay *display,
