@@ -155,11 +155,13 @@ const CalendarServerIface = loadInterfaceXML('org.gnome.Shell.CalendarServer');
 const CalendarServerInfo  = Gio.DBusInterfaceInfo.new_for_xml(CalendarServerIface);
 
 function CalendarServer() {
-    return new Gio.DBusProxy({ g_connection: Gio.DBus.session,
-                               g_interface_name: CalendarServerInfo.name,
-                               g_interface_info: CalendarServerInfo,
-                               g_name: 'org.gnome.Shell.CalendarServer',
-                               g_object_path: '/org/gnome/Shell/CalendarServer' });
+    return new Gio.DBusProxy({
+        g_connection: Gio.DBus.session,
+        g_interface_name: CalendarServerInfo.name,
+        g_interface_info: CalendarServerInfo,
+        g_name: 'org.gnome.Shell.CalendarServer',
+        g_object_path: '/org/gnome/Shell/CalendarServer',
+    });
 }
 
 function _datesEqual(a, b) {
@@ -465,9 +467,11 @@ var Calendar = GObject.registerClass({
         this._topBox = new St.BoxLayout();
         layout.attach(this._topBox, 0, 0, offsetCols + 7, 1);
 
-        this._backButton = new St.Button({ style_class: 'calendar-change-month-back pager-button',
-                                           accessible_name: _("Previous month"),
-                                           can_focus: true });
+        this._backButton = new St.Button({
+            style_class: 'calendar-change-month-back pager-button',
+            accessible_name: _('Previous month'),
+            can_focus: true,
+        });
         this._backButton.add_actor(new St.Icon({ icon_name: 'pan-start-symbolic' }));
         this._topBox.add(this._backButton);
         this._backButton.connect('clicked', this._onPrevMonthButtonClicked.bind(this));
@@ -480,9 +484,11 @@ var Calendar = GObject.registerClass({
         });
         this._topBox.add_child(this._monthLabel);
 
-        this._forwardButton = new St.Button({ style_class: 'calendar-change-month-forward pager-button',
-                                              accessible_name: _("Next month"),
-                                              can_focus: true });
+        this._forwardButton = new St.Button({
+            style_class: 'calendar-change-month-forward pager-button',
+            accessible_name: _('Next month'),
+            can_focus: true,
+        });
         this._forwardButton.add_actor(new St.Icon({ icon_name: 'pan-end-symbolic' }));
         this._topBox.add(this._forwardButton);
         this._forwardButton.connect('clicked', this._onNextMonthButtonClicked.bind(this));
@@ -499,9 +505,11 @@ var Calendar = GObject.registerClass({
             // Could use iter.toLocaleFormat('%a') but that normally gives three characters
             // and we want, ideally, a single character for e.g. S M T W T F S
             let customDayAbbrev = _getCalendarDayAbbreviation(iter.getDay());
-            let label = new St.Label({ style_class: 'calendar-day-base calendar-day-heading',
-                                       text: customDayAbbrev,
-                                       can_focus: true });
+            let label = new St.Label({
+                style_class: 'calendar-day-base calendar-day-heading',
+                text: customDayAbbrev,
+                can_focus: true,
+            });
             label.accessible_name = iter.toLocaleFormat('%A');
             let col;
             if (this.get_text_direction() == Clutter.TextDirection.RTL)
@@ -629,8 +637,10 @@ var Calendar = GObject.registerClass({
         let nRows = 8;
         while (row < nRows) {
             // xgettext:no-javascript-format
-            let button = new St.Button({ label: iter.toLocaleFormat(C_("date day number format", "%d")),
-                                         can_focus: true });
+            let button = new St.Button({
+                label: iter.toLocaleFormat(C_('date day number format', '%d')),
+                can_focus: true,
+            });
             let rtl = button.get_text_direction() == Clutter.TextDirection.RTL;
 
             if (this._eventSource instanceof EmptyEventSource)
@@ -682,9 +692,11 @@ var Calendar = GObject.registerClass({
             this._buttons.push(button);
 
             if (this._useWeekdate && iter.getDay() == 4) {
-                let label = new St.Label({ text: iter.toLocaleFormat('%V'),
-                                           style_class: 'calendar-day-base calendar-week-number',
-                                           can_focus: true });
+                const label = new St.Label({
+                    text: iter.toLocaleFormat('%V'),
+                    style_class: 'calendar-day-base calendar-week-number',
+                    can_focus: true,
+                });
                 let weekFormat = Shell.util_translate_time_string(N_("Week %V"));
                 label.clutter_text.y_align = Clutter.ActorAlign.CENTER;
                 label.accessible_name = iter.toLocaleFormat(weekFormat);
@@ -746,14 +758,16 @@ class NotificationMessage extends MessageList.Message {
             if (!this._closed)
                 this.close();
         });
-        this._updatedId = notification.connect('updated',
-                                               this._onUpdated.bind(this));
+        this._updatedId =
+            notification.connect('updated', this._onUpdated.bind(this));
     }
 
     _getIcon() {
         if (this.notification.gicon) {
-            return new St.Icon({ gicon: this.notification.gicon,
-                                 icon_size: MESSAGE_ICON_SIZE });
+            return new St.Icon({
+                gicon: this.notification.gicon,
+                icon_size: MESSAGE_ICON_SIZE,
+            });
         } else {
             return this.notification.source.createIcon(MESSAGE_ICON_SIZE);
         }
@@ -836,7 +850,7 @@ class NotificationSection extends MessageList.MessageListSection {
             this._onSourceDestroy(source, obj);
         });
         obj.notificationAddedId = source.connect('notification-added',
-                                                 this._onNotificationAdded.bind(this));
+            this._onNotificationAdded.bind(this));
 
         this._sources.set(source, obj);
     }
@@ -935,8 +949,11 @@ class CalendarMessageList extends St.Widget {
         this._placeholder = new Placeholder();
         this.add_actor(this._placeholder);
 
-        let box = new St.BoxLayout({ vertical: true,
-                                     x_expand: true, y_expand: true });
+        let box = new St.BoxLayout({
+            vertical: true,
+            x_expand: true,
+            y_expand: true,
+        });
         this.add_actor(box);
 
         this._scrollView = new St.ScrollView({
@@ -986,11 +1003,13 @@ class CalendarMessageList extends St.Widget {
             this._clearButton, 'visible',
             GObject.BindingFlags.INVERT_BOOLEAN);
 
-        this._sectionList = new St.BoxLayout({ style_class: 'message-list-sections',
-                                               vertical: true,
-                                               x_expand: true,
-                                               y_expand: true,
-                                               y_align: Clutter.ActorAlign.START });
+        this._sectionList = new St.BoxLayout({
+            style_class: 'message-list-sections',
+            vertical: true,
+            x_expand: true,
+            y_expand: true,
+            y_align: Clutter.ActorAlign.START,
+        });
         this._sectionList.connect('actor-added', this._sync.bind(this));
         this._sectionList.connect('actor-removed', this._sync.bind(this));
         this._scrollView.add_actor(this._sectionList);
