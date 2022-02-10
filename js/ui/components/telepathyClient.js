@@ -8,13 +8,10 @@ var Tp = null;
 try {
     ({ TelepathyGLib: Tp, TelepathyLogger: Tpl } = imports.gi);
 
-    Gio._promisify(Tp.Channel.prototype, 'close_async', 'close_finish');
-    Gio._promisify(Tp.TextChannel.prototype,
-        'send_message_async', 'send_message_finish');
-    Gio._promisify(Tp.ChannelDispatchOperation.prototype,
-        'claim_with_async', 'claim_with_finish');
-    Gio._promisify(Tpl.LogManager.prototype,
-        'get_filtered_events_async', 'get_filtered_events_finish');
+    Gio._promisify(Tp.Channel.prototype, 'close_async');
+    Gio._promisify(Tp.TextChannel.prototype, 'send_message_async');
+    Gio._promisify(Tp.ChannelDispatchOperation.prototype, 'claim_with_async');
+    Gio._promisify(Tpl.LogManager.prototype, 'get_filtered_events_async');
 } catch (e) {
     log('Telepathy is not available, chat integration will be disabled.');
 }

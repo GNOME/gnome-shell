@@ -15,10 +15,9 @@ const Util = imports.misc.util;
 
 const { loadInterfaceXML } = imports.misc.fileUtils;
 
-Gio._promisify(Gio.DBusConnection.prototype, 'call', 'call_finish');
-Gio._promisify(NM.Client, 'new_async', 'new_finish');
-Gio._promisify(NM.Client.prototype,
-    'check_connectivity_async', 'check_connectivity_finish');
+Gio._promisify(Gio.DBusConnection.prototype, 'call');
+Gio._promisify(NM.Client, 'new_async');
+Gio._promisify(NM.Client.prototype, 'check_connectivity_async');
 
 const NMConnectionCategory = {
     INVALID: 'invalid',

@@ -10,9 +10,8 @@ const MessageTray = imports.ui.messageTray;
 const ModalDialog = imports.ui.modalDialog;
 const ShellEntry = imports.ui.shellEntry;
 
-Gio._promisify(Shell.NetworkAgent.prototype, 'init_async', 'init_finish');
-Gio._promisify(Shell.NetworkAgent.prototype,
-    'search_vpn_plugin', 'search_vpn_plugin_finish');
+Gio._promisify(Shell.NetworkAgent.prototype, 'init_async');
+Gio._promisify(Shell.NetworkAgent.prototype, 'search_vpn_plugin');
 
 const VPN_UI_GROUP = 'VPN Plugin UI';
 

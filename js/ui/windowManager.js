@@ -46,10 +46,8 @@ const GsdWacomProxy = Gio.DBusProxy.makeProxyWrapper(GsdWacomIface);
 
 const WINDOW_DIMMER_EFFECT_NAME = "gnome-shell-window-dimmer";
 
-Gio._promisify(Shell,
-    'util_start_systemd_unit', 'util_start_systemd_unit_finish');
-Gio._promisify(Shell,
-    'util_stop_systemd_unit', 'util_stop_systemd_unit_finish');
+Gio._promisify(Shell, 'util_start_systemd_unit');
+Gio._promisify(Shell, 'util_stop_systemd_unit');
 
 var DisplayChangeDialog = GObject.registerClass(
 class DisplayChangeDialog extends ModalDialog.ModalDialog {

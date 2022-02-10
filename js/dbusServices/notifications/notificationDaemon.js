@@ -9,7 +9,7 @@ const { ServiceImplementation } = imports.dbusService;
 const NotificationsIface = loadInterfaceXML('org.freedesktop.Notifications');
 const NotificationsProxy = Gio.DBusProxy.makeProxyWrapper(NotificationsIface);
 
-Gio._promisify(Gio.DBusConnection.prototype, 'call', 'call_finish');
+Gio._promisify(Gio.DBusConnection.prototype, 'call');
 
 var NotificationDaemon = class extends ServiceImplementation {
     constructor() {

@@ -14,8 +14,8 @@ const { ExtensionState, ExtensionType } = ExtensionUtils;
 const GnomeShellIface = loadInterfaceXML('org.gnome.Shell.Extensions');
 const GnomeShellProxy = Gio.DBusProxy.makeProxyWrapper(GnomeShellIface);
 
-Gio._promisify(Gio.DBusConnection.prototype, 'call', 'call_finish');
-Gio._promisify(Shew.WindowExporter.prototype, 'export', 'export_finish');
+Gio._promisify(Gio.DBusConnection.prototype, 'call');
+Gio._promisify(Shew.WindowExporter.prototype, 'export');
 
 function loadInterfaceXML(iface) {
     const uri = 'resource:///org/gnome/Extensions/dbus-interfaces/%s.xml'.format(iface);

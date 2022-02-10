@@ -32,7 +32,7 @@ const HAVE_MALCONTENT = imports.package.checkSymbol(
 var Malcontent = null;
 if (HAVE_MALCONTENT) {
     Malcontent = imports.gi.Malcontent;
-    Gio._promisify(Malcontent.Manager.prototype, 'get_app_filter_async', 'get_app_filter_finish');
+    Gio._promisify(Malcontent.Manager.prototype, 'get_app_filter_async');
 }
 
 let _singleton = null;

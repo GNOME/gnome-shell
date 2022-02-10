@@ -10,17 +10,12 @@ const Main = imports.ui.main;
 const MessageTray = imports.ui.messageTray;
 const Workspace = imports.ui.workspace;
 
-Gio._promisify(Shell.Screenshot.prototype, 'pick_color', 'pick_color_finish');
-Gio._promisify(Shell.Screenshot.prototype, 'screenshot', 'screenshot_finish');
-Gio._promisify(Shell.Screenshot.prototype,
-    'screenshot_window', 'screenshot_window_finish');
-Gio._promisify(Shell.Screenshot.prototype,
-    'screenshot_area', 'screenshot_area_finish');
-Gio._promisify(Shell.Screenshot.prototype,
-    'screenshot_stage_to_content', 'screenshot_stage_to_content_finish');
-Gio._promisify(
-    Shell.Screenshot,
-    'composite_to_stream', 'composite_to_stream_finish');
+Gio._promisify(Shell.Screenshot.prototype, 'pick_color');
+Gio._promisify(Shell.Screenshot.prototype, 'screenshot');
+Gio._promisify(Shell.Screenshot.prototype, 'screenshot_window');
+Gio._promisify(Shell.Screenshot.prototype, 'screenshot_area');
+Gio._promisify(Shell.Screenshot.prototype, 'screenshot_stage_to_content');
+Gio._promisify(Shell.Screenshot, 'composite_to_stream');
 
 const { loadInterfaceXML } = imports.misc.fileUtils;
 const { DBusSenderChecker } = imports.misc.util;

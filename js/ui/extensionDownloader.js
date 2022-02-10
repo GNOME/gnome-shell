@@ -10,14 +10,10 @@ const FileUtils = imports.misc.fileUtils;
 const Main = imports.ui.main;
 const ModalDialog = imports.ui.modalDialog;
 
-Gio._promisify(Soup.Session.prototype,
-    'send_and_read_async', 'send_and_read_finish');
-Gio._promisify(Gio.OutputStream.prototype,
-    'write_bytes_async', 'write_bytes_finish');
-Gio._promisify(Gio.IOStream.prototype,
-    'close_async', 'close_finish');
-Gio._promisify(Gio.Subprocess.prototype,
-    'wait_check_async', 'wait_check_finish');
+Gio._promisify(Soup.Session.prototype, 'send_and_read_async');
+Gio._promisify(Gio.OutputStream.prototype, 'write_bytes_async');
+Gio._promisify(Gio.IOStream.prototype, 'close_async');
+Gio._promisify(Gio.Subprocess.prototype, 'wait_check_async');
 
 var REPOSITORY_URL_DOWNLOAD = 'https://extensions.gnome.org/download-extension/%s.shell-extension.zip';
 var REPOSITORY_URL_INFO     = 'https://extensions.gnome.org/extension-info/';

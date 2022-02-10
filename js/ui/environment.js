@@ -28,16 +28,14 @@ const { Clutter, Gio, GLib, GObject, Meta, Polkit, Shell, St } = imports.gi;
 const Gettext = imports.gettext;
 const System = imports.system;
 
-Gio._promisify(Gio.DataInputStream.prototype, 'fill_async', 'fill_finish');
-Gio._promisify(Gio.DataInputStream.prototype,
-    'read_line_async', 'read_line_finish');
-Gio._promisify(Gio.DBus, 'get', 'get_finish');
-Gio._promisify(Gio.DBusConnection.prototype, 'call', 'call_finish');
-Gio._promisify(Gio.DBusProxy, 'new', 'new_finish');
-Gio._promisify(Gio.DBusProxy.prototype, 'init_async', 'init_finish');
-Gio._promisify(Gio.DBusProxy.prototype,
-    'call_with_unix_fd_list', 'call_with_unix_fd_list_finish');
-Gio._promisify(Polkit.Permission, 'new', 'new_finish');
+Gio._promisify(Gio.DataInputStream.prototype, 'fill_async');
+Gio._promisify(Gio.DataInputStream.prototype, 'read_line_async');
+Gio._promisify(Gio.DBus, 'get');
+Gio._promisify(Gio.DBusConnection.prototype, 'call');
+Gio._promisify(Gio.DBusProxy, 'new');
+Gio._promisify(Gio.DBusProxy.prototype, 'init_async');
+Gio._promisify(Gio.DBusProxy.prototype, 'call_with_unix_fd_list');
+Gio._promisify(Polkit.Permission, 'new');
 
 let _localTimeZone = null;
 

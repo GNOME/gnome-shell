@@ -18,14 +18,11 @@ const FprintManagerProxy = Gio.DBusProxy.makeProxyWrapper(FprintManagerIface);
 const FprintDeviceIface = loadInterfaceXML('net.reactivated.Fprint.Device');
 const FprintDeviceProxy = Gio.DBusProxy.makeProxyWrapper(FprintDeviceIface);
 
-Gio._promisify(Gdm.Client.prototype,
-    'open_reauthentication_channel', 'open_reauthentication_channel_finish');
-Gio._promisify(Gdm.Client.prototype,
-    'get_user_verifier', 'get_user_verifier_finish');
+Gio._promisify(Gdm.Client.prototype, 'open_reauthentication_channel');
+Gio._promisify(Gdm.Client.prototype, 'get_user_verifier');
 Gio._promisify(Gdm.UserVerifierProxy.prototype,
-    'call_begin_verification_for_user', 'call_begin_verification_for_user_finish');
-Gio._promisify(Gdm.UserVerifierProxy.prototype,
-    'call_begin_verification', 'call_begin_verification_finish');
+    'call_begin_verification_for_user');
+Gio._promisify(Gdm.UserVerifierProxy.prototype, 'call_begin_verification');
 
 var PASSWORD_SERVICE_NAME = 'gdm-password';
 var FINGERPRINT_SERVICE_NAME = 'gdm-fingerprint';

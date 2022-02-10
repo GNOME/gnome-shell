@@ -7,7 +7,7 @@ const PermissionStore = imports.misc.permissionStore;
 
 const { loadInterfaceXML } = imports.misc.fileUtils;
 
-Gio._promisify(Geoclue.Simple, 'new', 'new_finish');
+Gio._promisify(Geoclue.Simple, 'new');
 
 const WeatherIntegrationIface = loadInterfaceXML('org.gnome.Shell.WeatherIntegration');
 
