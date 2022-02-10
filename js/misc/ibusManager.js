@@ -1,7 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported getIBusManager */
 
-const { Gio, GLib, IBus, Meta } = imports.gi;
+const { Gio, GLib, IBus, Meta, Shell } = imports.gi;
 const Signals = imports.signals;
 
 const IBusCandidatePopup = imports.ui.ibusCandidatePopup;
@@ -14,11 +14,13 @@ Gio._promisify(IBus.Bus.prototype,
     'get_global_engine_async', 'get_global_engine_async_finish');
 Gio._promisify(IBus.Bus.prototype,
     'set_global_engine_async', 'set_global_engine_async_finish');
+Gio._promisify(Shell, 'util_systemd_unit_exists');
 
 // Ensure runtime version matches
 _checkIBusVersion(1, 5, 2);
 
 let _ibusManager = null;
+const IBUS_SYSTEMD_SERVICE = 'org.freedesktop.IBus.session.GNOME.service';
 
 function _checkIBusVersion(requiredMajor, requiredMinor, requiredMicro) {
     if ((IBus.MAJOR_VERSION > requiredMajor) ||
@@ -64,7 +66,28 @@ var IBusManager = class {
         this._ibus.set_watch_ibus_signal(true);
         this._ibus.connect('global-engine-changed', this._engineChanged.bind(this));
 
-        this._spawn(Meta.is_wayland_compositor() ? [] : ['--xim']);
+        this._queueSpawn();
+    }
+
+    async _ibusSystemdServiceExists() {
+        if (this._ibusIsSystemdService)
+            return true;
+
+        try {
+            this._ibusIsSystemdService =
+                await Shell.util_systemd_unit_exists(
+                    IBUS_SYSTEMD_SERVICE, null);
+        } catch (e) {
+            this._ibusIsSystemdService = false;
+        }
+
+        return this._ibusIsSystemdService;
+    }
+
+    async _queueSpawn() {
+        const isSystemdService = await this._ibusSystemdServiceExists();
+        if (!isSystemdService)
+            this._spawn(Meta.is_wayland_compositor() ? [] : ['--xim']);
     }
 
     _spawn(extraArgs = []) {
@@ -91,8 +114,10 @@ var IBusManager = class {
         }
     }
 
-    restartDaemon(extraArgs = []) {
-        this._spawn(['-r', ...extraArgs]);
+    async restartDaemon(extraArgs = []) {
+        const isSystemdService = await this._ibusSystemdServiceExists();
+        if (!isSystemdService)
+            this._spawn(['-r', ...extraArgs]);
     }
 
     _clear() {
