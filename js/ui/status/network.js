@@ -92,8 +92,8 @@ function launchSettingsPanel(panel, ...args) {
     };
     try {
         Gio.DBus.session.call(
-            'org.gnome.ControlCenter',
-            '/org/gnome/ControlCenter',
+            'org.gnome.Settings',
+            '/org/gnome/Settings',
             'org.freedesktop.Application',
             'ActivateAction',
             new GLib.Variant('(sava{sv})',
