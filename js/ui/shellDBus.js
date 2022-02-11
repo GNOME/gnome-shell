@@ -22,7 +22,7 @@ var GnomeShell = class {
         this._dbusImpl.export(Gio.DBus.session, '/org/gnome/Shell');
 
         this._senderChecker = new DBusSenderChecker([
-            'org.gnome.ControlCenter',
+            'org.gnome.Settings',
             'org.gnome.SettingsDaemon.MediaKeys',
         ]);
 
