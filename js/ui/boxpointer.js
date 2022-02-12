@@ -278,8 +278,6 @@ var BoxPointer = GObject.registerClass({
         let halfBorder = borderWidth / 2;
         let halfBase = Math.floor(base / 2);
 
-        let backgroundColor = themeNode.get_color('-arrow-background-color');
-
         let [width, height] = area.get_surface_size();
         let [boxWidth, boxHeight] = [width, height];
         if (this._arrowSide == St.Side.TOP || this._arrowSide == St.Side.BOTTOM)
@@ -422,8 +420,12 @@ var BoxPointer = GObject.registerClass({
                    Math.PI, 3 * Math.PI / 2);
         }
 
-        Clutter.cairo_set_source_color(cr, backgroundColor);
-        cr.fillPreserve();
+        const [hasColor, bgColor] =
+            themeNode.lookup_color('-arrow-background-color', false);
+        if (hasColor) {
+            Clutter.cairo_set_source_color(cr, bgColor);
+            cr.fillPreserve();
+        }
 
         if (borderWidth > 0) {
             let borderColor = themeNode.get_color('-arrow-border-color');
