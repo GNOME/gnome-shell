@@ -496,11 +496,17 @@ var Background = GObject.registerClass({
     }
 
     async _loadFile(file) {
-        const info = await file.query_info_async(
-            Gio.FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE,
-            Gio.FileQueryInfoFlags.NONE,
-            0,
-            null);
+        let info;
+        try {
+            info = await file.query_info_async(
+                Gio.FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE,
+                Gio.FileQueryInfoFlags.NONE,
+                0,
+                null);
+        } catch (e) {
+            this._setLoaded();
+            return;
+        }
 
         const contentType = info.get_content_type();
         if (contentType === 'application/xml')
