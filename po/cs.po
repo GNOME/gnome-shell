@@ -993,7 +993,6 @@ msgid "Next month"
 msgstr "Následující měsíc"
 
 #: js/ui/calendar.js:642
-#, javascript-format
 msgctxt "date day number format"
 msgid "%d"
 msgstr "%-e"
