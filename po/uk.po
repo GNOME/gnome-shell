@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2022-02-07 14:18+0000\n"
-"PO-Revision-Date: 2022-02-07 20:39+0200\n"
+"POT-Creation-Date: 2022-02-12 14:58+0000\n"
+"PO-Revision-Date: 2022-02-12 18:26+0200\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <kde-i18n-uk@kde.org>\n"
 "Language: uk\n"
@@ -61,6 +61,38 @@ msgstr "Активувати улюблену програму 8"
 #: data/50-gnome-shell-launchers.xml:42
 msgid "Activate favorite application 9"
 msgstr "Активувати улюблену програму 9"
+
+#. Translators: name of the folder under ~/Pictures for screenshots.
+#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2061
+msgid "Screenshots"
+msgstr "Знімки екрана"
+
+#: data/50-gnome-shell-screenshots.xml:9
+#: data/org.gnome.shell.gschema.xml.in:235
+#| msgctxt "search-result"
+#| msgid "Take a Screenshot"
+msgid "Take a screenshot interactively"
+msgstr "Зробити знімок екрана інтерактивно"
+
+#: data/50-gnome-shell-screenshots.xml:12
+#: data/org.gnome.shell.gschema.xml.in:247
+#| msgctxt "search-result"
+#| msgid "Take a Screenshot"
+msgid "Take a screenshot"
+msgstr "Зробити знімок"
+
+#: data/50-gnome-shell-screenshots.xml:15
+#: data/org.gnome.shell.gschema.xml.in:243
+#| msgctxt "search-result"
+#| msgid "Take a Screenshot"
+msgid "Take a screenshot of a window"
+msgstr "Зробити знімок вікна"
+
+#: data/50-gnome-shell-screenshots.xml:18
+#: data/org.gnome.shell.gschema.xml.in:239
+msgid "Record a screencast interactively"
+msgstr ""
+"Записати з екрана інтерактивно"
 
 #: data/50-gnome-shell-system.xml:6
 msgid "System"
@@ -364,16 +396,12 @@ msgstr "Перемкнутися на програму 8"
 msgid "Switch to application 9"
 msgstr "Перемкнутися на програму 9"
 
-#: data/org.gnome.shell.gschema.xml.in:235
-msgid "Show screenshot UI"
-msgstr "Показати інтерфейс знімків екрана"
-
-#: data/org.gnome.shell.gschema.xml.in:244
-#: data/org.gnome.shell.gschema.xml.in:271
+#: data/org.gnome.shell.gschema.xml.in:256
+#: data/org.gnome.shell.gschema.xml.in:283
 msgid "Limit switcher to current workspace."
 msgstr "Обмежити перемикач на поточний робочий простір."
 
-#: data/org.gnome.shell.gschema.xml.in:245
+#: data/org.gnome.shell.gschema.xml.in:257
 msgid ""
 "If true, only applications that have windows on the current workspace are "
 "shown in the switcher. Otherwise, all applications are included."
@@ -381,11 +409,11 @@ msgstr ""
 "Якщо це вказано, то тільки програми з поточного робочого простору будуть "
 "показані в перемикачі. Інакше — програми з усіх просторів."
 
-#: data/org.gnome.shell.gschema.xml.in:262
+#: data/org.gnome.shell.gschema.xml.in:274
 msgid "The application icon mode."
 msgstr "Режим піктограм для програм."
 
-#: data/org.gnome.shell.gschema.xml.in:263
+#: data/org.gnome.shell.gschema.xml.in:275
 msgid ""
 "Configures how the windows are shown in the switcher. Valid possibilities "
 "are “thumbnail-only” (shows a thumbnail of the window), “app-icon-"
@@ -395,7 +423,7 @@ msgstr ""
 "«thumbnail-only» (показує мініатюру вікна), «app-icon-only» (показує тільки "
 "піктограми програм) або «both» (обидва)."
 
-#: data/org.gnome.shell.gschema.xml.in:272
+#: data/org.gnome.shell.gschema.xml.in:284
 msgid ""
 "If true, only windows from the current workspace are shown in the switcher. "
 "Otherwise, all windows are included."
@@ -403,57 +431,57 @@ msgstr ""
 "Якщо це вказано, то тільки вікна з поточного робочого простору будуть "
 "показані в перемикачі. Інакше — вікна з усіх просторів."
 
-#: data/org.gnome.shell.gschema.xml.in:282
+#: data/org.gnome.shell.gschema.xml.in:294
 msgid "Locations"
 msgstr "Місцевості"
 
-#: data/org.gnome.shell.gschema.xml.in:283
+#: data/org.gnome.shell.gschema.xml.in:295
 msgid "The locations to show in world clocks"
 msgstr "Місцевість для світового годинника"
 
-#: data/org.gnome.shell.gschema.xml.in:293
+#: data/org.gnome.shell.gschema.xml.in:305
 msgid "Automatic location"
 msgstr "Автоматичне визначення місцевості"
 
-#: data/org.gnome.shell.gschema.xml.in:294
+#: data/org.gnome.shell.gschema.xml.in:306
 msgid "Whether to fetch the current location or not"
 msgstr "Чи одержувати поточну локацію"
 
-#: data/org.gnome.shell.gschema.xml.in:301
+#: data/org.gnome.shell.gschema.xml.in:313
 msgid "Location"
 msgstr "Місцевість"
 
-#: data/org.gnome.shell.gschema.xml.in:302
+#: data/org.gnome.shell.gschema.xml.in:314
 msgid "The location for which to show a forecast"
 msgstr "Місцевість для прогнозу погоди"
 
-#: data/org.gnome.shell.gschema.xml.in:314
+#: data/org.gnome.shell.gschema.xml.in:326
 msgid "Attach modal dialog to the parent window"
 msgstr "Приєднати модальне вікно до батьківського вікна"
 
-#: data/org.gnome.shell.gschema.xml.in:315
-#: data/org.gnome.shell.gschema.xml.in:324
-#: data/org.gnome.shell.gschema.xml.in:332
-#: data/org.gnome.shell.gschema.xml.in:340
-#: data/org.gnome.shell.gschema.xml.in:348
+#: data/org.gnome.shell.gschema.xml.in:327
+#: data/org.gnome.shell.gschema.xml.in:336
+#: data/org.gnome.shell.gschema.xml.in:344
+#: data/org.gnome.shell.gschema.xml.in:352
+#: data/org.gnome.shell.gschema.xml.in:360
 msgid ""
 "This key overrides the key in org.gnome.mutter when running GNOME Shell."
 msgstr ""
 "Цей ключ перевизначає ключ у org.gnome.mutter, коли запущено GNOME Shell."
 
-#: data/org.gnome.shell.gschema.xml.in:323
+#: data/org.gnome.shell.gschema.xml.in:335
 msgid "Enable edge tiling when dropping windows on screen edges"
 msgstr "Увімкнути розбиття країв, коли кладуться вікна на краї екрана"
 
-#: data/org.gnome.shell.gschema.xml.in:331
+#: data/org.gnome.shell.gschema.xml.in:343
 msgid "Workspaces are managed dynamically"
 msgstr "Робочі простори організовуються динамічно"
 
-#: data/org.gnome.shell.gschema.xml.in:339
+#: data/org.gnome.shell.gschema.xml.in:351
 msgid "Workspaces only on primary monitor"
 msgstr "Робочий простір лише на основному моніторі"
 
-#: data/org.gnome.shell.gschema.xml.in:347
+#: data/org.gnome.shell.gschema.xml.in:359
 msgid "Delay focus changes in mouse mode until the pointer stops moving"
 msgstr "Затримувати зміни фокусу миші, поки вказівник не перестане рухатись"
 
@@ -461,12 +489,12 @@ msgstr "Затримувати зміни фокусу миші, поки вка
 msgid "Network Login"
 msgstr "Мережевий вхід"
 
-#: js/dbusServices/extensions/ui/extension-prefs-dialog.ui:28
-#: subprojects/extensions-app/data/ui/extensions-window.ui:174
+#: js/dbusServices/extensions/ui/extension-error-page.ui:15
+#: subprojects/extensions-app/data/ui/extensions-window.ui:144
 msgid "Something’s gone wrong"
 msgstr "Трапилась халепа"
 
-#: js/dbusServices/extensions/ui/extension-prefs-dialog.ui:39
+#: js/dbusServices/extensions/ui/extension-error-page.ui:23
 msgid ""
 "We’re very sorry, but there’s been a problem: the settings for this "
 "extension can’t be displayed. We recommend that you report the issue to the "
@@ -475,31 +503,30 @@ msgstr ""
 "На жаль, виникла помилка: неможливо показати параметри для розширення. "
 "Радимо, повідомити про ваду автора розширення."
 
-#: js/dbusServices/extensions/ui/extension-prefs-dialog.ui:64
+#: js/dbusServices/extensions/ui/extension-error-page.ui:48
 msgid "Technical Details"
 msgstr "Технічні подробиці"
 
-#: js/dbusServices/extensions/ui/extension-prefs-dialog.ui:106
+#: js/dbusServices/extensions/ui/extension-error-page.ui:90
 msgid "Homepage"
 msgstr "Сторінка"
 
-#: js/dbusServices/extensions/ui/extension-prefs-dialog.ui:107
+#: js/dbusServices/extensions/ui/extension-error-page.ui:91
 msgid "Visit extension homepage"
 msgstr "Відвідати сторінку розширення"
 
 #: js/gdm/authPrompt.js:144 js/ui/audioDeviceSelection.js:61
-#: js/ui/components/networkAgent.js:110 js/ui/components/polkitAgent.js:138
-#: js/ui/endSessionDialog.js:438 js/ui/extensionDownloader.js:228
+#: js/ui/components/networkAgent.js:109 js/ui/components/polkitAgent.js:138
+#: js/ui/endSessionDialog.js:438 js/ui/extensionDownloader.js:223
 #: js/ui/shellMountOperation.js:376 js/ui/shellMountOperation.js:386
-#: js/ui/status/network.js:978 subprojects/extensions-app/js/main.js:172
+#: js/ui/status/network.js:974 subprojects/extensions-app/js/main.js:174
 msgid "Cancel"
 msgstr "Скасувати"
 
-#. Cisco LEAP
 #: js/gdm/authPrompt.js:307 js/ui/components/networkAgent.js:209
-#: js/ui/components/networkAgent.js:225 js/ui/components/networkAgent.js:249
-#: js/ui/components/networkAgent.js:270 js/ui/components/networkAgent.js:290
-#: js/ui/components/networkAgent.js:300 js/ui/components/polkitAgent.js:275
+#: js/ui/components/networkAgent.js:229 js/ui/components/networkAgent.js:261
+#: js/ui/components/networkAgent.js:294 js/ui/components/networkAgent.js:333
+#: js/ui/components/networkAgent.js:346 js/ui/components/polkitAgent.js:275
 #: js/ui/shellMountOperation.js:326
 msgid "Password"
 msgstr "Пароль"
@@ -519,11 +546,8 @@ msgstr "Немає в переліку?"
 msgid "(e.g., user or %s)"
 msgstr "(наприклад, користувач або %s)"
 
-#. TTLS and PEAP are actually much more complicated, but this complication
-#. is not visible here since we only care about phase2 authentication
-#. (and don't even care of which one)
-#: js/gdm/loginDialog.js:931 js/ui/components/networkAgent.js:245
-#: js/ui/components/networkAgent.js:268 js/ui/components/networkAgent.js:286
+#: js/gdm/loginDialog.js:931 js/ui/components/networkAgent.js:253
+#: js/ui/components/networkAgent.js:288 js/ui/components/networkAgent.js:322
 msgid "Username"
 msgstr "Користувач"
 
@@ -531,19 +555,19 @@ msgstr "Користувач"
 msgid "Login Window"
 msgstr "Вікно входу"
 
-#: js/gdm/util.js:438
+#: js/gdm/util.js:435
 msgid "Authentication error"
 msgstr "Помилка розпізнавання"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger on the fingerprint reader
-#: js/gdm/util.js:617
+#: js/gdm/util.js:616
 msgid "(or swipe finger across reader)"
 msgstr "(або проведіть пальцем на зчитувачі)"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can place their finger on the fingerprint reader instead
-#: js/gdm/util.js:622
+#: js/gdm/util.js:621
 msgid "(or place finger on reader)"
 msgstr "(або розташуйте палець на зчитувачі)"
 
@@ -643,26 +667,26 @@ msgctxt "search-result"
 msgid "Lock Screen Rotation"
 msgstr "Заблокувати обертання екрана"
 
-#: js/misc/util.js:121
+#: js/misc/util.js:128
 msgid "Command not found"
 msgstr "Команди не знайдено"
 
 #. Replace "Error invoking GLib.shell_parse_argv: " with
 #. something nicer
-#: js/misc/util.js:157
+#: js/misc/util.js:164
 msgid "Could not parse command:"
 msgstr "Неможливо розібрати команду:"
 
-#: js/misc/util.js:165
+#: js/misc/util.js:172
 #, javascript-format
 msgid "Execution of “%s” failed:"
 msgstr "Не вдалось виконати «%s»:"
 
-#: js/misc/util.js:182
+#: js/misc/util.js:189
 msgid "Just now"
 msgstr "Просто зараз"
 
-#: js/misc/util.js:184
+#: js/misc/util.js:191
 #, javascript-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
@@ -671,7 +695,7 @@ msgstr[1] "%d хвилини тому"
 msgstr[2] "%d хвилин тому"
 msgstr[3] "%d хвилина тому"
 
-#: js/misc/util.js:188
+#: js/misc/util.js:195
 #, javascript-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
@@ -680,11 +704,11 @@ msgstr[1] "%d години тому"
 msgstr[2] "%d годин тому"
 msgstr[3] "%d година тому"
 
-#: js/misc/util.js:192 js/ui/dateMenu.js:163
+#: js/misc/util.js:199 js/ui/dateMenu.js:163
 msgid "Yesterday"
 msgstr "Учора"
 
-#: js/misc/util.js:194
+#: js/misc/util.js:201
 #, javascript-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
@@ -693,7 +717,7 @@ msgstr[1] "%d дні тому"
 msgstr[2] "%d днів тому"
 msgstr[3] "%d день тому"
 
-#: js/misc/util.js:198
+#: js/misc/util.js:205
 #, javascript-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
@@ -702,7 +726,7 @@ msgstr[1] "%d тижні тому"
 msgstr[2] "%d тижнів тому"
 msgstr[3] "%d тиждень тому"
 
-#: js/misc/util.js:202
+#: js/misc/util.js:209
 #, javascript-format
 msgid "%d month ago"
 msgid_plural "%d months ago"
@@ -711,7 +735,7 @@ msgstr[1] "%d місяці тому"
 msgstr[2] "%d місяців тому"
 msgstr[3] "%d місяць тому"
 
-#: js/misc/util.js:205
+#: js/misc/util.js:212
 #, javascript-format
 msgid "%d year ago"
 msgid_plural "%d years ago"
@@ -721,20 +745,20 @@ msgstr[2] "%d років тому"
 msgstr[3] "%d рік тому"
 
 #. Translators: Time in 24h format
-#: js/misc/util.js:238
+#: js/misc/util.js:245
 msgid "%H∶%M"
 msgstr "%H:%M"
 
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 24h format. i.e. "Yesterday, 14:30"
-#: js/misc/util.js:244
+#: js/misc/util.js:251
 #, no-c-format
 msgid "Yesterday, %H∶%M"
 msgstr "Учора, %H∶%M"
 
 #. Translators: this is the week day name followed by a time
 #. string in 24h format. i.e. "Monday, 14:30"
-#: js/misc/util.js:250
+#: js/misc/util.js:257
 #, no-c-format
 msgid "%A, %H∶%M"
 msgstr "%A, %H∶%M"
@@ -742,7 +766,7 @@ msgstr "%A, %H∶%M"
 #. Translators: this is the month name and day number
 #. followed by a time string in 24h format.
 #. i.e. "May 25, 14:30"
-#: js/misc/util.js:256
+#: js/misc/util.js:263
 #, no-c-format
 msgid "%B %-d, %H∶%M"
 msgstr "%-d %B, %H∶%M"
@@ -750,7 +774,7 @@ msgstr "%-d %B, %H∶%M"
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 24h format.
 #. i.e. "May 25 2012, 14:30"
-#: js/misc/util.js:262
+#: js/misc/util.js:269
 #, no-c-format
 msgid "%B %-d %Y, %H∶%M"
 msgstr "%-d %B %Y, %H∶%M"
@@ -758,20 +782,20 @@ msgstr "%-d %B %Y, %H∶%M"
 #. Show only the time if date is on today
 #. eslint-disable-line no-lonely-if
 #. Translators: Time in 12h format
-#: js/misc/util.js:267
+#: js/misc/util.js:274
 msgid "%l∶%M %p"
 msgstr "%l∶%M %p"
 
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 12h format. i.e. "Yesterday, 2:30 pm"
-#: js/misc/util.js:273
+#: js/misc/util.js:280
 #, no-c-format
 msgid "Yesterday, %l∶%M %p"
 msgstr "Учора, %l∶%M %p"
 
 #. Translators: this is the week day name followed by a time
 #. string in 12h format. i.e. "Monday, 2:30 pm"
-#: js/misc/util.js:279
+#: js/misc/util.js:286
 #, no-c-format
 msgid "%A, %l∶%M %p"
 msgstr "%A, %l∶%M %p"
@@ -779,7 +803,7 @@ msgstr "%A, %l∶%M %p"
 #. Translators: this is the month name and day number
 #. followed by a time string in 12h format.
 #. i.e. "May 25, 2:30 pm"
-#: js/misc/util.js:285
+#: js/misc/util.js:292
 #, no-c-format
 msgid "%B %-d, %l∶%M %p"
 msgstr "%-d %B, %l∶%M %p"
@@ -787,17 +811,17 @@ msgstr "%-d %B, %l∶%M %p"
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 12h format.
 #. i.e. "May 25 2012, 2:30 pm"
-#: js/misc/util.js:291
+#: js/misc/util.js:298
 #, no-c-format
 msgid "%B %-d %Y, %l∶%M %p"
 msgstr "%-d %B %Y, %l∶%M %p"
 
 #. TRANSLATORS: this is the title of the wifi captive portal login window
-#: js/portalHelper/main.js:49
+#: js/portalHelper/main.js:50
 msgid "Hotspot Login"
 msgstr "Вхід в точку"
 
-#: js/portalHelper/main.js:95
+#: js/portalHelper/main.js:96
 msgid ""
 "Your connection to this hotspot login is not secure. Passwords or other "
 "information you enter on this page can be viewed by people nearby."
@@ -807,27 +831,21 @@ msgstr ""
 
 #. No support for non-modal system dialogs, so ignore the option
 #. let modal = options['modal'] || true;
-#: js/ui/accessDialog.js:39 js/ui/status/location.js:417
+#: js/ui/accessDialog.js:39 js/ui/status/location.js:416
 msgid "Deny Access"
 msgstr "Заборонити доступ"
 
-#: js/ui/accessDialog.js:40 js/ui/status/location.js:420
+#: js/ui/accessDialog.js:40 js/ui/status/location.js:419
 msgid "Grant Access"
 msgstr "Надати доступ"
 
-#: js/ui/appDisplay.js:1766
-msgid "Unnamed Folder"
-msgstr "Неназвана тека"
-
 #: js/ui/appFavorites.js:164
 #, javascript-format
-#| msgid "%s has been added to your favorites."
 msgid "%s has been pinned to the dash."
 msgstr "%s було пришпилено до панелі приладів."
 
 #: js/ui/appFavorites.js:197
 #, javascript-format
-#| msgid "%s has been removed from your favorites."
 msgid "%s has been unpinned from the dash."
 msgstr "%s було відшпилено від панелі приладів."
 
@@ -850,13 +868,11 @@ msgstr "Вийти"
 
 #: js/ui/appMenu.js:163 js/ui/dash.js:245
 msgid "Unpin"
-msgstr ""
-"Відшпилити"
+msgstr "Відшпилити"
 
 #: js/ui/appMenu.js:164
 msgid "Pin to Dash"
-msgstr ""
-"Пришпилити до панелі приладів"
+msgstr "Пришпилити до панелі приладів"
 
 #: js/ui/appMenu.js:181
 msgid "Launch using Integrated Graphics Card"
@@ -895,6 +911,7 @@ msgid "Display Settings"
 msgstr "Параметри екрана"
 
 #: js/ui/backgroundMenu.js:17
+#: subprojects/extensions-app/data/ui/extension-row.ui:122
 msgid "Settings"
 msgstr "Параметри"
 
@@ -956,7 +973,7 @@ msgstr "С"
 #. * "%OB" is the new format specifier introduced in glibc 2.27,
 #. * in most cases you should not change it.
 #.
-#: js/ui/calendar.js:400
+#: js/ui/calendar.js:402
 msgid "%OB"
 msgstr "%OB"
 
@@ -969,37 +986,37 @@ msgstr "%OB"
 #. * in most cases you should not use the old "%B" here unless you
 #. * absolutely know what you are doing.
 #.
-#: js/ui/calendar.js:410
+#: js/ui/calendar.js:412
 msgid "%OB %Y"
 msgstr "%OB %Y"
 
-#: js/ui/calendar.js:469
+#: js/ui/calendar.js:472
 msgid "Previous month"
 msgstr "Попередній місяць"
 
-#: js/ui/calendar.js:484
+#: js/ui/calendar.js:490
 msgid "Next month"
 msgstr "Наступний місяць"
 
-#: js/ui/calendar.js:632
-#, no-javascript-format
+#: js/ui/calendar.js:642
+#, javascript-format
 msgctxt "date day number format"
 msgid "%d"
 msgstr "%d"
 
-#: js/ui/calendar.js:688
+#: js/ui/calendar.js:701
 msgid "Week %V"
 msgstr "Тиждень %V"
 
-#: js/ui/calendar.js:900
+#: js/ui/calendar.js:915
 msgid "No Notifications"
 msgstr "Немає сповіщень"
 
-#: js/ui/calendar.js:954
+#: js/ui/calendar.js:972
 msgid "Do Not Disturb"
 msgstr "Не турбувати"
 
-#: js/ui/calendar.js:975
+#: js/ui/calendar.js:993
 msgid "Clear"
 msgstr "Очистити"
 
@@ -1045,81 +1062,81 @@ msgstr "Наявна версія udisks не підтримує парамет�
 msgid "Open with %s"
 msgstr "Відкрити через %s"
 
-#: js/ui/components/networkAgent.js:92
+#: js/ui/components/networkAgent.js:91
 msgid ""
 "Alternatively you can connect by pushing the “WPS” button on your router."
 msgstr ""
 "Також можете під'єднатися, натиснувши кнопку «WPS» на вашому маршрутизаторі."
 
-#: js/ui/components/networkAgent.js:104 js/ui/status/network.js:258
-#: js/ui/status/network.js:349 js/ui/status/network.js:981
+#: js/ui/components/networkAgent.js:103 js/ui/status/network.js:257
+#: js/ui/status/network.js:348 js/ui/status/network.js:977
 msgid "Connect"
 msgstr "З'єднатись"
 
-#: js/ui/components/networkAgent.js:215
+#: js/ui/components/networkAgent.js:218
 msgid "Key"
 msgstr "Ключ"
 
-#: js/ui/components/networkAgent.js:253 js/ui/components/networkAgent.js:276
+#: js/ui/components/networkAgent.js:269 js/ui/components/networkAgent.js:308
 msgid "Private key password"
 msgstr "Пароль до закритого ключа"
 
-#: js/ui/components/networkAgent.js:274
+#: js/ui/components/networkAgent.js:302
 msgid "Identity"
 msgstr "Профіль"
 
-#: js/ui/components/networkAgent.js:288
+#: js/ui/components/networkAgent.js:328
 msgid "Service"
 msgstr "Служба"
 
-#: js/ui/components/networkAgent.js:317 js/ui/components/networkAgent.js:345
-#: js/ui/components/networkAgent.js:679 js/ui/components/networkAgent.js:700
+#: js/ui/components/networkAgent.js:366 js/ui/components/networkAgent.js:402
+#: js/ui/components/networkAgent.js:742 js/ui/components/networkAgent.js:763
 msgid "Authentication required"
 msgstr "Потрібне засвідчення"
 
-#: js/ui/components/networkAgent.js:318 js/ui/components/networkAgent.js:680
+#: js/ui/components/networkAgent.js:367 js/ui/components/networkAgent.js:743
 #, javascript-format
 msgid ""
 "Passwords or encryption keys are required to access the wireless network "
 "“%s”."
 msgstr "Потрібно паролі або зашифровані ключі для доступу до радіомережі «%s»."
 
-#: js/ui/components/networkAgent.js:322 js/ui/components/networkAgent.js:684
+#: js/ui/components/networkAgent.js:371 js/ui/components/networkAgent.js:747
 msgid "Wired 802.1X authentication"
 msgstr "Дротова аутентифікація 802.1X"
 
-#: js/ui/components/networkAgent.js:324
+#: js/ui/components/networkAgent.js:374
 msgid "Network name"
 msgstr "Назва мережі"
 
-#: js/ui/components/networkAgent.js:329 js/ui/components/networkAgent.js:688
+#: js/ui/components/networkAgent.js:382 js/ui/components/networkAgent.js:751
 msgid "DSL authentication"
 msgstr "Аутентифікація DSL"
 
-#: js/ui/components/networkAgent.js:336 js/ui/components/networkAgent.js:693
+#: js/ui/components/networkAgent.js:389 js/ui/components/networkAgent.js:756
 msgid "PIN code required"
 msgstr "Потрібен код PIN"
 
-#: js/ui/components/networkAgent.js:337 js/ui/components/networkAgent.js:694
+#: js/ui/components/networkAgent.js:390 js/ui/components/networkAgent.js:757
 msgid "PIN code is needed for the mobile broadband device"
 msgstr "Потрібен код PIN для мобільних широкосмугових пристроїв"
 
-#: js/ui/components/networkAgent.js:338
+#: js/ui/components/networkAgent.js:392
 msgid "PIN"
 msgstr "Пін-код"
 
-#: js/ui/components/networkAgent.js:346 js/ui/components/networkAgent.js:685
-#: js/ui/components/networkAgent.js:689 js/ui/components/networkAgent.js:701
-#: js/ui/components/networkAgent.js:705
+#: js/ui/components/networkAgent.js:403 js/ui/components/networkAgent.js:748
+#: js/ui/components/networkAgent.js:752 js/ui/components/networkAgent.js:764
+#: js/ui/components/networkAgent.js:768
 #, javascript-format
 msgid "A password is required to connect to “%s”."
 msgstr "Пароль потрібен для з'єднання з «%s»."
 
-#: js/ui/components/networkAgent.js:668 js/ui/status/network.js:1789
+#: js/ui/components/networkAgent.js:731 js/ui/status/network.js:1785
 msgid "Network Manager"
 msgstr "Керування мережею"
 
-#: js/ui/components/networkAgent.js:704
+#: js/ui/components/networkAgent.js:767
 msgid "VPN password"
 msgstr "Пароль VPN"
 
@@ -1145,7 +1162,7 @@ msgstr "Вибачте, це не спрацювало. Спробуйте ще.
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
-#: js/ui/components/telepathyClient.js:822
+#: js/ui/components/telepathyClient.js:819
 #, javascript-format
 msgid "%s is now known as %s"
 msgstr "%s тепер відомий як %s"
@@ -1204,40 +1221,40 @@ msgstr "Завтра"
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
 #.
-#: js/ui/dateMenu.js:181
+#: js/ui/dateMenu.js:196
 msgctxt "event list time"
 msgid "All Day"
 msgstr "Увесь день"
 
-#: js/ui/dateMenu.js:232
+#: js/ui/dateMenu.js:267
 msgid "No Events"
 msgstr "Немає подій"
 
-#: js/ui/dateMenu.js:353
+#: js/ui/dateMenu.js:388
 msgid "Add world clocks…"
 msgstr "Додати світові годинники…"
 
-#: js/ui/dateMenu.js:354
+#: js/ui/dateMenu.js:389
 msgid "World Clocks"
 msgstr "Світові годинники"
 
-#: js/ui/dateMenu.js:630
+#: js/ui/dateMenu.js:665
 msgid "Loading…"
 msgstr "Завантаження…"
 
-#: js/ui/dateMenu.js:640
+#: js/ui/dateMenu.js:675
 msgid "Go online for weather information"
 msgstr "Увійти в мережу за прогнозом погоди"
 
-#: js/ui/dateMenu.js:642
+#: js/ui/dateMenu.js:677
 msgid "Weather information is currently unavailable"
 msgstr "Наразі інформації про погоду недоступна"
 
-#: js/ui/dateMenu.js:652
+#: js/ui/dateMenu.js:687
 msgid "Weather"
 msgstr "Погода"
 
-#: js/ui/dateMenu.js:654
+#: js/ui/dateMenu.js:689
 msgid "Select weather location…"
 msgstr "Виберіть місцевість для погоди…"
 
@@ -1410,15 +1427,15 @@ msgstr "%s (віддалено)"
 msgid "%s (console)"
 msgstr "%s (консоль)"
 
-#: js/ui/extensionDownloader.js:232
+#: js/ui/extensionDownloader.js:227
 msgid "Install"
 msgstr "Встановити"
 
-#: js/ui/extensionDownloader.js:238
+#: js/ui/extensionDownloader.js:233
 msgid "Install Extension"
 msgstr "Встановити розширення"
 
-#: js/ui/extensionDownloader.js:239
+#: js/ui/extensionDownloader.js:234
 #, javascript-format
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "Звантажити і встановити «%s» з extensions.gnome.org?"
@@ -1504,14 +1521,14 @@ msgstr ""
 msgid "Leave On"
 msgstr "Залишити"
 
-#: js/ui/kbdA11yDialog.js:54 js/ui/status/bluetooth.js:156
-#: js/ui/status/network.js:1377
+#: js/ui/kbdA11yDialog.js:54 js/ui/status/bluetooth.js:151
+#: js/ui/status/network.js:1373
 msgid "Turn On"
 msgstr "Увімкнути"
 
-#: js/ui/kbdA11yDialog.js:62 js/ui/status/bluetooth.js:156
-#: js/ui/status/network.js:166 js/ui/status/network.js:350
-#: js/ui/status/network.js:1377 js/ui/status/network.js:1489
+#: js/ui/kbdA11yDialog.js:62 js/ui/status/bluetooth.js:151
+#: js/ui/status/network.js:165 js/ui/status/network.js:349
+#: js/ui/status/network.js:1373 js/ui/status/network.js:1485
 #: js/ui/status/nightLight.js:41 js/ui/status/rfkill.js:81
 #: js/ui/status/rfkill.js:110
 msgid "Turn Off"
@@ -1525,52 +1542,51 @@ msgstr "Покинути"
 msgid "Region & Language Settings"
 msgstr "Параметри регіону та мови"
 
-#: js/ui/lookingGlass.js:683
+#: js/ui/lookingGlass.js:677
 msgid "No extensions installed"
 msgstr "Не встановлено розширення"
 
 #. Translators: argument is an extension UUID.
-#: js/ui/lookingGlass.js:741
+#: js/ui/lookingGlass.js:735
 #, javascript-format
 msgid "%s has not emitted any errors."
 msgstr "%s не випустила жодної помилки. "
 
-#: js/ui/lookingGlass.js:747
+#: js/ui/lookingGlass.js:741
 msgid "Hide Errors"
 msgstr "Сховати помилки"
 
-#: js/ui/lookingGlass.js:751 js/ui/lookingGlass.js:817
+#: js/ui/lookingGlass.js:745 js/ui/lookingGlass.js:811
 msgid "Show Errors"
 msgstr "Показати помилки"
 
-#: js/ui/lookingGlass.js:760
+#: js/ui/lookingGlass.js:754
 msgid "Enabled"
 msgstr "Увімкнено"
 
 #. translators:
 #. * The device has been disabled
-#: js/ui/lookingGlass.js:763 subprojects/gvc/gvc-mixer-control.c:1900
+#: js/ui/lookingGlass.js:757 subprojects/gvc/gvc-mixer-control.c:1900
 msgid "Disabled"
 msgstr "Вимкнено"
 
-#: js/ui/lookingGlass.js:765
-#: subprojects/extensions-app/data/ui/extension-row.ui:156
+#: js/ui/lookingGlass.js:759
 msgid "Error"
 msgstr "Помилка"
 
-#: js/ui/lookingGlass.js:767
+#: js/ui/lookingGlass.js:761
 msgid "Out of date"
 msgstr "Застаріло"
 
-#: js/ui/lookingGlass.js:769
+#: js/ui/lookingGlass.js:763
 msgid "Downloading"
 msgstr "Звантаження"
 
-#: js/ui/lookingGlass.js:799
+#: js/ui/lookingGlass.js:793
 msgid "View Source"
 msgstr "Переглянути джерело"
 
-#: js/ui/lookingGlass.js:808
+#: js/ui/lookingGlass.js:802
 msgid "Web Page"
 msgstr "Веб-сторінка"
 
@@ -1597,14 +1613,6 @@ msgid ""
 msgstr ""
 "З міркувань безпеки слід уникати сеансів з наділеними правами. Користуйтесь "
 "звичайним сеансом."
-
-#: js/ui/main.js:363
-msgid "Screen Lock disabled"
-msgstr "Блокування екрана вимкнено"
-
-#: js/ui/main.js:364
-msgid "Screen Locking requires the GNOME display manager."
-msgstr "Блокування екрана потребує керування входом GNOME."
 
 #: js/ui/messageTray.js:1446
 msgid "System Information"
@@ -1691,7 +1699,7 @@ msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "Система"
 
-#: js/ui/panel.js:502
+#: js/ui/panel.js:503
 msgid "Top Bar"
 msgstr "Верхня панель"
 
@@ -1754,74 +1762,69 @@ msgstr "Вікно"
 msgid "Window Selection"
 msgstr "Вибір вікна"
 
-#: js/ui/screenshot.js:1221
+#: js/ui/screenshot.js:1224
 msgid "Screenshot / Screencast"
 msgstr "Знімок / Запис відео з екрана"
 
-#: js/ui/screenshot.js:1257
+#: js/ui/screenshot.js:1260
 msgid "Show Pointer"
 msgstr "Показувати вказівник"
 
-#. Translators: name of the folder under ~/Pictures for screenshots.
-#: js/ui/screenshot.js:1722
-msgid "Screenshots"
-msgstr "Знімки екрана"
-
-#. Translators: this is the name of the file that the screenshot is
-#. saved to. The placeholder is a timestamp, e.g. "2017-05-21 12-24-03".
-#: js/ui/screenshot.js:1735
-#, javascript-format
-msgid "Screenshot from %s"
-msgstr "Знімок екрана з %s"
-
-#. Translators: notification source name.
-#: js/ui/screenshot.js:1775 js/ui/screenshot.js:1995
-msgid "Screenshot"
-msgstr "Знімок екрана"
-
-#. Translators: notification title.
-#: js/ui/screenshot.js:1781
-msgid "Screenshot captured"
-msgstr "Знімок зроблено"
-
-#. Translators: notification body when a screenshot was captured.
-#: js/ui/screenshot.js:1783
-msgid "You can paste the image from the clipboard."
-msgstr "Ви можете вставити зображення з буфера обміну даними."
-
-#. Translators: button on the screenshot notification.
-#. Translators: button on the screencast notification.
-#: js/ui/screenshot.js:1789 js/ui/screenshot.js:2006
-msgid "Show in Files"
-msgstr "Показувати у «Файлах»"
-
-#: js/ui/screenshot.js:1818 js/ui/screenshot.js:2259
-msgid "Screenshot taken"
-msgstr "Знімок зроблено"
-
 #. Translators: this is the folder where recorded
 #. screencasts are stored.
-#: js/ui/screenshot.js:1921
+#: js/ui/screenshot.js:1827
 msgid "Screencasts"
 msgstr "Трансляції з екрана"
 
 #. Translators: this is a filename used for screencast
 #. * recording, where "%d" and "%t" date and time, e.g.
 #. * "Screencast from 07-17-2013 10:00:46 PM.webm"
-#: js/ui/screenshot.js:1926
+#: js/ui/screenshot.js:1832
 #, no-c-format
 msgid "Screencast from %d %t.webm"
 msgstr "Запис з %d %t.webm"
 
+#. Translators: notification source name.
+#: js/ui/screenshot.js:1901 js/ui/screenshot.js:2114
+msgid "Screenshot"
+msgstr "Знімок екрана"
+
 #. Translators: notification title.
-#: js/ui/screenshot.js:2001
+#: js/ui/screenshot.js:1907
 msgid "Screencast recorded"
 msgstr "Записано відео з екрана"
 
 #. Translators: notification body when a screencast was recorded.
-#: js/ui/screenshot.js:2003
+#: js/ui/screenshot.js:1909
 msgid "Click here to view the video."
 msgstr "Натисніть тут, щоб переглянути відео."
+
+#. Translators: button on the screencast notification.
+#. Translators: button on the screenshot notification.
+#: js/ui/screenshot.js:1912 js/ui/screenshot.js:2128
+msgid "Show in Files"
+msgstr "Показувати у «Файлах»"
+
+#. Translators: this is the name of the file that the screenshot is
+#. saved to. The placeholder is a timestamp, e.g. "2017-05-21 12-24-03".
+#: js/ui/screenshot.js:2074
+#, javascript-format
+msgid "Screenshot from %s"
+msgstr "Знімок екрана з %s"
+
+#. Translators: notification title.
+#: js/ui/screenshot.js:2120
+msgid "Screenshot captured"
+msgstr "Знімок зроблено"
+
+#. Translators: notification body when a screenshot was captured.
+#: js/ui/screenshot.js:2122
+msgid "You can paste the image from the clipboard."
+msgstr "Ви можете вставити зображення з буфера обміну даними."
+
+#: js/ui/screenshot.js:2175 js/ui/screenshot.js:2340
+msgid "Screenshot taken"
+msgstr "Знімок зроблено"
 
 #: js/ui/search.js:826
 msgid "Searching…"
@@ -1961,16 +1964,16 @@ msgstr "Клавіші миші"
 msgid "Large Text"
 msgstr "Більший текст"
 
-#: js/ui/status/bluetooth.js:40
+#: js/ui/status/bluetooth.js:41
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: js/ui/status/bluetooth.js:49 js/ui/status/network.js:652
+#: js/ui/status/bluetooth.js:52 js/ui/status/network.js:650
 msgid "Bluetooth Settings"
 msgstr "Параметри Bluetooth"
 
 #. Translators: this is the number of connected bluetooth devices
-#: js/ui/status/bluetooth.js:148
+#: js/ui/status/bluetooth.js:143
 #, javascript-format
 msgid "%d Connected"
 msgid_plural "%d Connected"
@@ -1979,11 +1982,11 @@ msgstr[1] "%d з'єднаних"
 msgstr[2] "%d з'єднаних"
 msgstr[3] "%d з'єднаний"
 
-#: js/ui/status/bluetooth.js:152
+#: js/ui/status/bluetooth.js:147
 msgid "Bluetooth Off"
 msgstr "Bluetooth вимкнено"
 
-#: js/ui/status/bluetooth.js:154
+#: js/ui/status/bluetooth.js:149
 msgid "Bluetooth On"
 msgstr "Bluetooth увімкнено"
 
@@ -2019,58 +2022,58 @@ msgstr "Клавіатура"
 msgid "Show Keyboard Layout"
 msgstr "Показати розкладку клавіатури"
 
-#: js/ui/status/location.js:234 js/ui/status/location.js:267
+#: js/ui/status/location.js:234 js/ui/status/location.js:266
 msgid "Location Enabled"
 msgstr "Місцевість залучено"
 
-#: js/ui/status/location.js:235 js/ui/status/location.js:268
+#: js/ui/status/location.js:235 js/ui/status/location.js:267
 msgid "Disable"
 msgstr "Вимкнути"
 
-#: js/ui/status/location.js:236
+#: js/ui/status/location.js:237
 msgid "Privacy Settings"
 msgstr "Параметри конфіденційності"
 
-#: js/ui/status/location.js:266
+#: js/ui/status/location.js:265
 msgid "Location In Use"
 msgstr "Місцевість використовується"
 
-#: js/ui/status/location.js:270
+#: js/ui/status/location.js:269
 msgid "Location Disabled"
 msgstr "Місцевість вимкнено"
 
-#: js/ui/status/location.js:271
+#: js/ui/status/location.js:270
 msgid "Enable"
 msgstr "Увімкнути"
 
-#: js/ui/status/location.js:398
+#: js/ui/status/location.js:397
 msgid "Allow location access"
 msgstr "Дозволити доступ до даних перебування"
 
 #. Translators: %s is an application name
-#: js/ui/status/location.js:400
+#: js/ui/status/location.js:399
 #, javascript-format
 msgid "The app %s wants to access your location"
 msgstr "Програмі %s потрібен доступ до даних щодо місця вашого перебування"
 
-#: js/ui/status/location.js:410
+#: js/ui/status/location.js:409
 msgid "Location access can be changed at any time from the privacy settings."
 msgstr ""
 "Доступ до місця перебування можна змінити в будь-яку мить у параметрах "
 "конфіденційності."
 
-#: js/ui/status/network.js:72
+#: js/ui/status/network.js:71
 msgid "<unknown>"
 msgstr "<невідомо>"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:455 js/ui/status/network.js:1406
+#: js/ui/status/network.js:454 js/ui/status/network.js:1402
 #, javascript-format
 msgid "%s Off"
 msgstr "%s вимкнено"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:458
+#: js/ui/status/network.js:457
 #, javascript-format
 msgid "%s Connected"
 msgstr "%s під'єднано"
@@ -2078,164 +2081,164 @@ msgstr "%s під'єднано"
 #. Translators: this is for network devices that are physically present but are not
 #. under NetworkManager's control (and thus cannot be used in the menu);
 #. %s is a network identifier
-#: js/ui/status/network.js:463
+#: js/ui/status/network.js:462
 #, javascript-format
 msgid "%s Unmanaged"
 msgstr "%s нескеровано"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:466
+#: js/ui/status/network.js:465
 #, javascript-format
 msgid "%s Disconnecting"
 msgstr "%s від'єднується"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:473 js/ui/status/network.js:1398
+#: js/ui/status/network.js:472 js/ui/status/network.js:1394
 #, javascript-format
 msgid "%s Connecting"
 msgstr "%s під'єднується"
 
 #. Translators: this is for network connections that require some kind of key or password; %s is a network identifier
-#: js/ui/status/network.js:476
+#: js/ui/status/network.js:475
 #, javascript-format
 msgid "%s Requires Authentication"
 msgstr "%s вимагає засвідчення"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing; %s is a network identifier
-#: js/ui/status/network.js:484
+#: js/ui/status/network.js:483
 #, javascript-format
 msgid "Firmware Missing For %s"
 msgstr "Бракує мікропрограми для %s"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage; %s is a network identifier
-#: js/ui/status/network.js:488
+#: js/ui/status/network.js:487
 #, javascript-format
 msgid "%s Unavailable"
 msgstr "%s недоступний"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:491
+#: js/ui/status/network.js:490
 #, javascript-format
 msgid "%s Connection Failed"
 msgstr "%s під'єднано невдало"
 
-#: js/ui/status/network.js:503
+#: js/ui/status/network.js:502
 msgid "Wired Settings"
 msgstr "Параметри мережі"
 
-#: js/ui/status/network.js:550
+#: js/ui/status/network.js:549
 msgid "Mobile Broadband Settings"
 msgstr "параметри мобільної радіомережі"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:619 js/ui/status/network.js:1403
+#: js/ui/status/network.js:618 js/ui/status/network.js:1399
 #, javascript-format
 msgid "%s Hardware Disabled"
 msgstr "%s вимкнено апаратно"
 
 #. Translators: this is for a network device that cannot be activated
 #. because it's disabled by rfkill (airplane mode); %s is a network identifier
-#: js/ui/status/network.js:623
+#: js/ui/status/network.js:622
 #, javascript-format
 msgid "%s Disabled"
 msgstr "%s вимкнено"
 
-#: js/ui/status/network.js:664
+#: js/ui/status/network.js:662
 msgid "Connect to Internet"
 msgstr "Під'єднатись до інтернету"
 
-#: js/ui/status/network.js:873
+#: js/ui/status/network.js:869
 msgid "Airplane Mode is On"
 msgstr "Режим «у літаку» ввімкнено"
 
-#: js/ui/status/network.js:874
+#: js/ui/status/network.js:870
 msgid "Wi-Fi is disabled when airplane mode is on."
 msgstr "Wi-Fi вимкнено, коли режим «у літаку» ввімкнено."
 
-#: js/ui/status/network.js:875
+#: js/ui/status/network.js:871
 msgid "Turn Off Airplane Mode"
 msgstr "Вимкнути режим «у літаку»"
 
-#: js/ui/status/network.js:884
+#: js/ui/status/network.js:880
 msgid "Wi-Fi is Off"
 msgstr "Wi-Fi вимкнено"
 
-#: js/ui/status/network.js:885
+#: js/ui/status/network.js:881
 msgid "Wi-Fi needs to be turned on in order to connect to a network."
 msgstr "Wi-Fi потрібно ввімкнути, щоб з'єднатись з мережею."
 
-#: js/ui/status/network.js:886
+#: js/ui/status/network.js:882
 msgid "Turn On Wi-Fi"
 msgstr "Увімкнути Wi-Fi"
 
-#: js/ui/status/network.js:911
+#: js/ui/status/network.js:907
 msgid "Wi-Fi Networks"
 msgstr "Мережі Wi-Fi"
 
-#: js/ui/status/network.js:913
+#: js/ui/status/network.js:909
 msgid "Select a network"
 msgstr "Вибрати мережу"
 
-#: js/ui/status/network.js:945
+#: js/ui/status/network.js:941
 msgid "No Networks"
 msgstr "Немає мереж"
 
-#: js/ui/status/network.js:966 js/ui/status/rfkill.js:108
+#: js/ui/status/network.js:962 js/ui/status/rfkill.js:108
 msgid "Use hardware switch to turn off"
 msgstr "Натисніть апаратну кнопку, щоб вимкнути"
 
-#: js/ui/status/network.js:1267
+#: js/ui/status/network.js:1263
 msgid "Select Network"
 msgstr "Виберіть мережу"
 
-#: js/ui/status/network.js:1273
+#: js/ui/status/network.js:1269
 msgid "Wi-Fi Settings"
 msgstr "Параметри Wi-Fi"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1394
+#: js/ui/status/network.js:1390
 #, javascript-format
 msgid "%s Hotspot Active"
 msgstr "%s точка доступу"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1409
+#: js/ui/status/network.js:1405
 #, javascript-format
 msgid "%s Not Connected"
 msgstr "%s не під'єднано"
 
-#: js/ui/status/network.js:1506
+#: js/ui/status/network.js:1502
 msgid "connecting…"
 msgstr "З'єднання…"
 
 #. Translators: this is for network connections that require some kind of key or password
-#: js/ui/status/network.js:1509
+#: js/ui/status/network.js:1505
 msgid "authentication required"
 msgstr "Потрібна аутентифікація"
 
-#: js/ui/status/network.js:1511
+#: js/ui/status/network.js:1507
 msgid "connection failed"
 msgstr "не вдалось з'єднатись"
 
-#: js/ui/status/network.js:1562
+#: js/ui/status/network.js:1558
 msgid "VPN Settings"
 msgstr "Параметри VPN"
 
-#: js/ui/status/network.js:1579
+#: js/ui/status/network.js:1575
 msgid "VPN"
 msgstr "VPN"
 
-#: js/ui/status/network.js:1589
+#: js/ui/status/network.js:1585
 msgid "VPN Off"
 msgstr "VPN вимкнено"
 
-#: js/ui/status/network.js:1650 js/ui/status/rfkill.js:84
+#: js/ui/status/network.js:1646 js/ui/status/rfkill.js:84
 msgid "Network Settings"
 msgstr "Налаштування мережі"
 
-#: js/ui/status/network.js:1678
+#: js/ui/status/network.js:1674
 #, javascript-format
 msgid "%s Wired Connection"
 msgid_plural "%s Wired Connections"
@@ -2244,7 +2247,7 @@ msgstr[1] "%s з'єднання через дріт"
 msgstr[2] "%s з'єднань через дріт"
 msgstr[3] "%s з'єднання через дріт"
 
-#: js/ui/status/network.js:1682
+#: js/ui/status/network.js:1678
 #, javascript-format
 msgid "%s Wi-Fi Connection"
 msgid_plural "%s Wi-Fi Connections"
@@ -2253,7 +2256,7 @@ msgstr[1] "%s з'єднання через Wi-Fi"
 msgstr[2] "%s з'єднань через Wi-Fi"
 msgstr[3] "%s з'єднання через Wi-Fi"
 
-#: js/ui/status/network.js:1686
+#: js/ui/status/network.js:1682
 #, javascript-format
 msgid "%s Modem Connection"
 msgid_plural "%s Modem Connections"
@@ -2262,11 +2265,11 @@ msgstr[1] "%s з'єднання через модем"
 msgstr[2] "%s з'єднань через модем"
 msgstr[3] "%s з'єднання через модем"
 
-#: js/ui/status/network.js:1830
+#: js/ui/status/network.js:1826
 msgid "Connection failed"
 msgstr "Не вдалось з'єднатись"
 
-#: js/ui/status/network.js:1831
+#: js/ui/status/network.js:1827
 msgid "Activation of network connection failed"
 msgstr "Не вдалось увімкнути мережеве з'єднання"
 
@@ -2345,13 +2348,10 @@ msgstr "Екран у спільному доступі"
 msgid "Turn off"
 msgstr "Вимкнути"
 
-#: js/ui/status/remoteAccess.js:56
-msgid "Screen Recording in Progress"
-msgstr "Виконуємо запис з екрана"
-
-#: js/ui/status/remoteAccess.js:59
-msgid "Stop"
-msgstr "Припинити"
+#: js/ui/status/remoteAccess.js:116
+#| msgid "Screencasts"
+msgid "Stop Screencast"
+msgstr "Припинити трансляцію з екрана"
 
 #. The menu only appears when airplane mode is on, so just
 #. statically build it as if it was on, rather than dynamically
@@ -2392,11 +2392,11 @@ msgstr "Змінити користувача…"
 msgid "Thunderbolt"
 msgstr "Thunderbolt"
 
-#: js/ui/status/thunderbolt.js:324
+#: js/ui/status/thunderbolt.js:323
 msgid "Unknown Thunderbolt device"
 msgstr "Невідомий пристрій Thunderbolt"
 
-#: js/ui/status/thunderbolt.js:325
+#: js/ui/status/thunderbolt.js:324
 msgid ""
 "New device has been detected while you were away. Please disconnect and "
 "reconnect the device to start using it."
@@ -2404,20 +2404,20 @@ msgstr ""
 "Виявлено новий пристрій протягом вашої відсутності. Будь ласка, "
 "перепід'єднайте пристрій для його використання."
 
-#: js/ui/status/thunderbolt.js:328
+#: js/ui/status/thunderbolt.js:327
 msgid "Unauthorized Thunderbolt device"
 msgstr "Незавірений пристрій Thunderbolt"
 
-#: js/ui/status/thunderbolt.js:329
+#: js/ui/status/thunderbolt.js:328
 msgid ""
 "New device has been detected and needs to be authorized by an administrator."
 msgstr "Виявлено новий пристрій, який потребує схвалення від адміністратора."
 
-#: js/ui/status/thunderbolt.js:335
+#: js/ui/status/thunderbolt.js:334
 msgid "Thunderbolt authorization error"
 msgstr "Помилка завірення Thunderbolt"
 
-#: js/ui/status/thunderbolt.js:336
+#: js/ui/status/thunderbolt.js:335
 #, javascript-format
 msgid "Could not authorize the Thunderbolt device: %s"
 msgstr "Неможливо завірити пристрій Thunderbolt: %s"
@@ -2458,20 +2458,6 @@ msgstr "Тільки зовнішній"
 msgid "Built-in Only"
 msgstr "Тільки вбудований"
 
-#. Translators: This is a time format for a date in
-#. long format
-#: js/ui/unlockDialog.js:380
-msgid "%A %B %-d"
-msgstr "%A, %-d %B"
-
-#: js/ui/unlockDialog.js:386
-msgid "Swipe up to unlock"
-msgstr "Проведіть вгору для розблокування"
-
-#: js/ui/unlockDialog.js:387
-msgid "Click or press a key to unlock"
-msgstr "Клацніть або натисніть клавішу для розблокування"
-
 #: js/ui/unlockDialog.js:572
 msgid "Unlock Window"
 msgstr "Розблокувати вікно"
@@ -2504,22 +2490,22 @@ msgid "“%s” is ready"
 msgstr "«%s» готовий"
 
 #. Translators: This string should be shorter than 30 characters
-#: js/ui/windowManager.js:64
+#: js/ui/windowManager.js:62
 msgid "Keep these display settings?"
 msgstr "Зберегти ці параметри екрана?"
 
 #. Translators: this and the following message should be limited in length,
 #. to avoid ellipsizing the labels.
 #.
-#: js/ui/windowManager.js:73
+#: js/ui/windowManager.js:71
 msgid "Revert Settings"
 msgstr "Повернути параметри"
 
-#: js/ui/windowManager.js:76
+#: js/ui/windowManager.js:74
 msgid "Keep Changes"
 msgstr "Зберегти зміни"
 
-#: js/ui/windowManager.js:95
+#: js/ui/windowManager.js:93
 #, javascript-format
 msgid "Settings changes will revert in %d second"
 msgid_plural "Settings changes will revert in %d seconds"
@@ -2530,76 +2516,83 @@ msgstr[3] "Зміни параметрів буде повернуто чере�
 
 #. Translators: This represents the size of a window. The first number is
 #. * the width of the window and the second is the height.
-#: js/ui/windowManager.js:551
+#: js/ui/windowManager.js:547
 #, javascript-format
 msgid "%d × %d"
 msgstr "%d × %d"
 
-#: js/ui/windowMenu.js:27
+#. Translators: entry in the window right click menu.
+#: js/ui/windowMenu.js:29
+#| msgctxt "search-result"
+#| msgid "Take a Screenshot"
+msgid "Take Screenshot"
+msgstr "Зробити знімок"
+
+#: js/ui/windowMenu.js:41
 msgid "Hide"
 msgstr "Приховати"
 
-#: js/ui/windowMenu.js:34
+#: js/ui/windowMenu.js:48
 msgid "Restore"
 msgstr "Відновити"
 
-#: js/ui/windowMenu.js:38
+#: js/ui/windowMenu.js:52
 msgid "Maximize"
 msgstr "Розгорнути"
 
-#: js/ui/windowMenu.js:45
+#: js/ui/windowMenu.js:59
 msgid "Move"
 msgstr "Перемістити"
 
-#: js/ui/windowMenu.js:51
+#: js/ui/windowMenu.js:65
 msgid "Resize"
 msgstr "Змінити розмір"
 
-#: js/ui/windowMenu.js:58
+#: js/ui/windowMenu.js:72
 msgid "Move Titlebar Onscreen"
 msgstr "Перемістити заголовок на екран"
 
-#: js/ui/windowMenu.js:63
+#: js/ui/windowMenu.js:77
 msgid "Always on Top"
 msgstr "Завжди зверху"
 
-#: js/ui/windowMenu.js:82
+#: js/ui/windowMenu.js:96
 msgid "Always on Visible Workspace"
 msgstr "Завжди на видимому робочому просторі"
 
-#: js/ui/windowMenu.js:96
+#: js/ui/windowMenu.js:110
 msgid "Move to Workspace Left"
 msgstr "Перемістити у робочий простір ліворуч"
 
-#: js/ui/windowMenu.js:102
+#: js/ui/windowMenu.js:116
 msgid "Move to Workspace Right"
 msgstr "Перемістити у робочий простір праворуч"
 
-#: js/ui/windowMenu.js:108
+#: js/ui/windowMenu.js:122
 msgid "Move to Workspace Up"
 msgstr "Перемістити у робочий простір зверху"
 
-#: js/ui/windowMenu.js:114
+#: js/ui/windowMenu.js:128
 msgid "Move to Workspace Down"
 msgstr "Перемістити у робочу область знизу"
 
-#: js/ui/windowMenu.js:132
+#: js/ui/windowMenu.js:146
 msgid "Move to Monitor Up"
 msgstr "Перемістити до монітору зверху"
 
-#: js/ui/windowMenu.js:141
+#: js/ui/windowMenu.js:155
 msgid "Move to Monitor Down"
 msgstr "Перемістити до монітору знизу"
 
-#: js/ui/windowMenu.js:150
+#: js/ui/windowMenu.js:164
 msgid "Move to Monitor Left"
 msgstr "Перемістити до монітору ліворуч"
 
-#: js/ui/windowMenu.js:159
+#: js/ui/windowMenu.js:173
 msgid "Move to Monitor Right"
 msgstr "Перемістити до монітору праворуч"
 
-#: js/ui/windowMenu.js:167
+#: js/ui/windowMenu.js:181
 msgid "Close"
 msgstr "Закрити"
 
@@ -2623,21 +2616,21 @@ msgstr "Використовувати вказаний режим, прикла
 msgid "List possible modes"
 msgstr "Перелік можливих режимів"
 
-#: src/shell-app.c:300
+#: src/shell-app.c:305
 msgctxt "program"
 msgid "Unknown"
 msgstr "Невідомо"
 
-#: src/shell-app.c:564
+#: src/shell-app.c:569
 #, c-format
 msgid "Failed to launch “%s”"
 msgstr "Не вдалося запустити «%s»"
 
-#: src/shell-keyring-prompt.c:731
+#: src/shell-keyring-prompt.c:764
 msgid "Passwords do not match."
 msgstr "Пароль не збігається."
 
-#: src/shell-keyring-prompt.c:739
+#: src/shell-keyring-prompt.c:772
 msgid "Password cannot be blank"
 msgstr "Пароль не може бути порожнім"
 
@@ -2647,13 +2640,14 @@ msgstr "Вікно авторизації відхилено користува�
 
 #: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:5
 #: subprojects/extensions-app/data/org.gnome.Extensions.desktop.in.in:4
-#: subprojects/extensions-app/js/main.js:206
-#: subprojects/extensions-app/data/ui/extensions-window.ui:55
+#: subprojects/extensions-app/js/main.js:209
+#: subprojects/extensions-app/data/ui/extensions-window.ui:18
+#: subprojects/extensions-app/data/ui/extensions-window.ui:83
 msgid "Extensions"
 msgstr "Розширення"
 
 #: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:6
-#: subprojects/extensions-app/js/main.js:207
+#: subprojects/extensions-app/js/main.js:210
 msgid "Manage your GNOME Extensions"
 msgstr "Керуйте вашими розширеннями GNOME"
 
@@ -2674,16 +2668,16 @@ msgid "Configure GNOME Shell Extensions"
 msgstr "Налаштувати розширення GNOME Shell"
 
 #: subprojects/extensions-app/js/main.js:131
-#: subprojects/extensions-app/js/main.js:141
+#: subprojects/extensions-app/js/main.js:142
 msgid "No Matches"
 msgstr "Немає відповідників"
 
-#: subprojects/extensions-app/js/main.js:168
+#: subprojects/extensions-app/js/main.js:170
 #, javascript-format
 msgid "Remove “%s”?"
 msgstr "Вилучити «%s»?"
 
-#: subprojects/extensions-app/js/main.js:169
+#: subprojects/extensions-app/js/main.js:171
 msgid ""
 "If you remove the extension, you need to return to download it if you want "
 "to enable it again"
@@ -2691,18 +2685,18 @@ msgstr ""
 "Якщо ви вилучите розширення, вам доведеться отримати його код знову, якщо ви "
 "захочете його знову увімкнути"
 
-#: subprojects/extensions-app/js/main.js:173
+#: subprojects/extensions-app/js/main.js:175
 msgid "Remove"
 msgstr "Вилучити"
 
-#: subprojects/extensions-app/js/main.js:205
+#: subprojects/extensions-app/js/main.js:208
 msgid "translator-credits"
 msgstr ""
 "Максим Дзюманенко <dziumanenko@gmail.com>\n"
 "Данило Коростіль <ted.korostiled@gmail.com>\n"
 "Юрій Чорноіван <yurchor@ukr.net>"
 
-#: subprojects/extensions-app/js/main.js:333
+#: subprojects/extensions-app/js/main.js:336
 #, javascript-format
 msgid "%d extension will be updated on next login."
 msgid_plural "%d extensions will be updated on next login."
@@ -2711,34 +2705,25 @@ msgstr[1] "Під час наступного входу до системи б�
 msgstr[2] "Під час наступного входу до системи буде оновлено %d розширень."
 msgstr[3] "Під час наступного входу до системи буде оновлено одне розширення."
 
-#: subprojects/extensions-app/js/main.js:483
+#: subprojects/extensions-app/js/main.js:478
 msgid "The extension is incompatible with the current GNOME version"
 msgstr "Розширення є несумісним із поточною версією GNOME"
 
-#: subprojects/extensions-app/js/main.js:486
+#: subprojects/extensions-app/js/main.js:481
+#: subprojects/extensions-app/data/ui/extension-row.ui:52
 msgid "The extension had an error"
 msgstr "У розширенні сталася помилка"
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:82
-#: subprojects/extensions-tool/src/command-create.c:322
-#: subprojects/extensions-tool/src/main.c:241
-msgid "Description"
-msgstr "Опис"
+#: subprojects/extensions-app/data/ui/extension-row.ui:62
+#| msgid "Show extensions with updates"
+msgid "The extension can be updated"
+msgstr "Розширення може бути оновлено"
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:102
-#: subprojects/extensions-tool/src/main.c:253
-msgid "Version"
-msgstr "Версія"
-
-#: subprojects/extensions-app/data/ui/extension-row.ui:129
-msgid "Author"
-msgstr "Автор"
-
-#: subprojects/extensions-app/data/ui/extension-row.ui:182
+#: subprojects/extensions-app/data/ui/extension-row.ui:112
 msgid "Website"
 msgstr "Сайт"
 
-#: subprojects/extensions-app/data/ui/extension-row.ui:198
+#: subprojects/extensions-app/data/ui/extension-row.ui:134
 msgid "Remove…"
 msgstr "Вилучити…"
 
@@ -2750,7 +2735,19 @@ msgstr "Довідка"
 msgid "About Extensions"
 msgstr "Про розширення"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:26
+#: subprojects/extensions-app/data/ui/extensions-window.ui:84
+msgid ""
+"Extensions can cause performance and stability issues. Disable extensions if "
+"you encounter problems with your system."
+msgstr ""
+"Розширення можуть спричиняти проблеми зі швидкодією і стабільністю. Вимкніть розширення, якщо у вас виникнуть проблеми із роботою системи."
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:98
+msgid "Manually Installed"
+msgstr "Встановлені вручну"
+
+#: subprojects/extensions-app/data/ui/extensions-window.ui:99
+#: subprojects/extensions-app/data/ui/extensions-window.ui:134
 msgid ""
 "To find and add extensions, visit <a href=\"https://extensions.gnome.org"
 "\">extensions.gnome.org</a>."
@@ -2758,33 +2755,15 @@ msgstr ""
 "Щоб знайти і додати потрібні вам розширення, відвідайте <a href=\"https://"
 "extensions.gnome.org\">extensions.gnome.org</a>."
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:33
-msgid "Warning"
-msgstr "Попередження"
-
-#: subprojects/extensions-app/data/ui/extensions-window.ui:43
-msgid ""
-"Extensions can cause system issues, including performance problems. If you "
-"encounter problems with your system, it is recommended to disable all "
-"extensions."
-msgstr ""
-"Робота розширень може призвести до проблем у системі, зокрема проблем із "
-"швидкодією. Якщо ви зіткнулися із проблемами у системі, рекомендуємо "
-"вимкнути усі розширення."
-
-#: subprojects/extensions-app/data/ui/extensions-window.ui:130
-msgid "Manually Installed"
-msgstr "Встановлені вручну"
-
-#: subprojects/extensions-app/data/ui/extensions-window.ui:143
+#: subprojects/extensions-app/data/ui/extensions-window.ui:112
 msgid "Built-In"
 msgstr "Вбудовані"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:164
+#: subprojects/extensions-app/data/ui/extensions-window.ui:133
 msgid "No Installed Extensions"
 msgstr "Розширення, які не встановлено"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:175
+#: subprojects/extensions-app/data/ui/extensions-window.ui:145
 msgid ""
 "We’re very sorry, but it was not possible to get the list of installed "
 "extensions. Make sure you are logged into GNOME and try again."
@@ -2792,11 +2771,11 @@ msgstr ""
 "На жаль, неможливо одержати перелік установлених розширень. Переконайтесь, "
 "що ви увійшли в GNOME і спробуйте ще раз."
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:205
+#: subprojects/extensions-app/data/ui/extensions-window.ui:175
 msgid "Extension Updates Ready"
 msgstr "Готові оновлення розширень"
 
-#: subprojects/extensions-app/data/ui/extensions-window.ui:220
+#: subprojects/extensions-app/data/ui/extensions-window.ui:190
 msgid "Log Out…"
 msgstr "Вийти…"
 
@@ -2828,6 +2807,11 @@ msgid ""
 msgstr ""
 "Опис — пояснення одним реченням того, що розширення робить.\n"
 "Наприклад: %s"
+
+#: subprojects/extensions-tool/src/command-create.c:322
+#: subprojects/extensions-tool/src/main.c:241
+msgid "Description"
+msgstr "Опис"
 
 #: subprojects/extensions-tool/src/command-create.c:336
 msgid ""
@@ -3094,6 +3078,10 @@ msgstr "Посилання"
 msgid "Original author"
 msgstr "Засновник"
 
+#: subprojects/extensions-tool/src/main.c:253
+msgid "Version"
+msgstr "Версія"
+
 #: subprojects/extensions-tool/src/main.c:256
 msgid "State"
 msgstr "Стан"
@@ -3215,6 +3203,48 @@ msgstr[3] "%u вхід"
 #: subprojects/gvc/gvc-mixer-control.c:2867
 msgid "System Sounds"
 msgstr "Системні звуки"
+
+#~ msgid "Show screenshot UI"
+#~ msgstr "Показати інтерфейс знімків екрана"
+
+#~ msgid "Unnamed Folder"
+#~ msgstr "Неназвана тека"
+
+#~ msgid "Screen Lock disabled"
+#~ msgstr "Блокування екрана вимкнено"
+
+#~ msgid "Screen Locking requires the GNOME display manager."
+#~ msgstr "Блокування екрана потребує керування входом GNOME."
+
+#~ msgid "Screen Recording in Progress"
+#~ msgstr "Виконуємо запис з екрана"
+
+#~ msgid "Stop"
+#~ msgstr "Припинити"
+
+#~ msgid "%A %B %-d"
+#~ msgstr "%A, %-d %B"
+
+#~ msgid "Swipe up to unlock"
+#~ msgstr "Проведіть вгору для розблокування"
+
+#~ msgid "Click or press a key to unlock"
+#~ msgstr "Клацніть або натисніть клавішу для розблокування"
+
+#~ msgid "Author"
+#~ msgstr "Автор"
+
+#~ msgid "Warning"
+#~ msgstr "Попередження"
+
+#~ msgid ""
+#~ "Extensions can cause system issues, including performance problems. If "
+#~ "you encounter problems with your system, it is recommended to disable all "
+#~ "extensions."
+#~ msgstr ""
+#~ "Робота розширень може призвести до проблем у системі, зокрема проблем із "
+#~ "швидкодією. Якщо ви зіткнулися із проблемами у системі, рекомендуємо "
+#~ "вимкнути усі розширення."
 
 #~ msgid "Remove from Favorites"
 #~ msgstr "Вилучити з улюбленого"
