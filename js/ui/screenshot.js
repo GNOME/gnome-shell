@@ -1212,6 +1212,9 @@ var ScreenshotUI = GObject.registerClass({
             this._onCastButtonToggled.bind(this));
         this._shotCastContainer.add_child(this._castButton);
 
+        this._shotButton.bind_property('checked', this._castButton, 'checked',
+            GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.INVERT_BOOLEAN);
+
         this._shotCastTooltip = new Tooltip(this._shotCastContainer, {
             text: _('Screenshot / Screencast'),
             style_class: 'screenshot-ui-tooltip',
@@ -1638,7 +1641,6 @@ var ScreenshotUI = GObject.registerClass({
     _onShotButtonToggled() {
         if (this._shotButton.checked) {
             this._shotButton.toggle_mode = false;
-            this._castButton.checked = false;
 
             this._stageScreenshotContainer.show();
             this._stageScreenshotContainer.remove_all_transitions();
@@ -1655,7 +1657,6 @@ var ScreenshotUI = GObject.registerClass({
     _onCastButtonToggled() {
         if (this._castButton.checked) {
             this._castButton.toggle_mode = false;
-            this._shotButton.checked = false;
 
             this._captureButton.add_style_pseudo_class('cast');
 
@@ -1966,11 +1967,7 @@ var ScreenshotUI = GObject.registerClass({
         }
 
         if (symbol === Clutter.KEY_v || symbol === Clutter.KEY_V) {
-            if (this._shotButton.checked)
-                this._castButton.checked = true;
-            else
-                this._shotButton.checked = true;
-
+            this._castButton.checked = !this._castButton.checked;
             return Clutter.EVENT_STOP;
         }
 
