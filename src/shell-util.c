@@ -515,12 +515,12 @@ shell_util_get_uid (void)
   return getuid ();
 }
 
-#ifdef HAVE_SYSTEMD
 typedef enum {
   SYSTEMD_CALL_FLAGS_NONE = 0,
   SYSTEMD_CALL_FLAGS_WATCH_JOB = 1 << 0,
 } SystemdFlags;
 
+#ifdef HAVE_SYSTEMD
 typedef struct {
   GDBusConnection *connection;
   gchar           *command;
