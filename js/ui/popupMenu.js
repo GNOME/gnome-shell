@@ -994,10 +994,16 @@ var PopupDummyMenu = class {
     }
 
     open() {
+        if (this.isOpen)
+            return;
+        this.isOpen = true;
         this.emit('open-state-changed', true);
     }
 
     close() {
+        if (!this.isOpen)
+            return;
+        this.isOpen = false;
         this.emit('open-state-changed', false);
     }
 
