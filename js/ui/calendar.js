@@ -637,8 +637,8 @@ var Calendar = GObject.registerClass({
         // nRows here means 6 weeks + one header + one navbar
         let nRows = 8;
         while (row < nRows) {
-            // xgettext:no-javascript-format
             let button = new St.Button({
+                // xgettext:no-javascript-format
                 label: iter.toLocaleFormat(C_('date day number format', '%d')),
                 can_focus: true,
             });
