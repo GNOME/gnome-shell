@@ -1,3 +1,26 @@
+41.4
+====
+* Start tracking windows when expected by extensions [Florian; !2119]
+* Fix timing issue on login screen [Naïm; !2116]
+* Fix lightbox shader compatibility with older drivers [Daniel; !2125]
+* Fix activating apps with tracked OR windows [Florian; !2131]
+* Fix banding issues with the vignette lightbox shader [Jonas; !2133]
+* Fix keyboard navigation to windows/apps in overview [Florian; !2124]
+* Fix stuck transition when using super-scroll gesture [kyte; !2135]
+* Fix calendar events with custom timezone [Milan; !2145]
+* Fix out-of-sync location indicator [Florian; !2170]
+* Misc. bug fixes and cleanups [Jonas, Aleksandr, Florian, Leleat, Daniel,
+  Mohammed, Razze, Carlos; !2097, !2047, !2118, !2121, !2113, !337, !2098,
+  !2143, !2153, !2162, !1972, !2160, !2178, !1744]
+
+Contributors:
+  Milan Crha, Jonas Dreßler, Naïm Favier, Carlos Garnacho, Leleat,
+  Aleksandr Mezin, Florian Müllner, Razze, Mohammed Sadiq, Daniel van Vugt, kyte
+
+Translators:
+  Daniel Mustieles [es], Yosef Or Boczko [he], Sveinn í Felli [is],
+  sicklylife [ja], Marek Černocký [cs]
+
 41.3
 ====
 * Improve window tracking [Florian; !2071]
