@@ -175,7 +175,7 @@ class EventsSection extends St.Button {
 
     _formatEventTime(event) {
         const eventStart = event.date;
-        const eventEnd = event.end;
+        let eventEnd = event.end;
 
         const allDay =
             eventStart.getTime() === this._startDate.getTime() && eventEnd.getTime() === this._endDate.getTime();
@@ -203,8 +203,10 @@ class EventsSection extends St.Button {
 
             const startYear = eventStart.getFullYear();
 
-            if (endsAtMidnight)
+            if (endsAtMidnight) {
+                eventEnd = new Date(eventEnd);
                 eventEnd.setDate(eventEnd.getDate() - 1);
+            }
 
             const endYear = eventEnd.getFullYear();
 
