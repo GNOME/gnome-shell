@@ -636,19 +636,14 @@ st_scroll_view_allocate (ClutterActor          *actor,
       clutter_actor_allocate (priv->hscroll, &empty_box);
     }
 
-  /* In case the scrollbar policy is NEVER or EXTERNAL or scrollbars
-   * should be overlaid, we don't trim the content box allocation by
-   * the scrollbar size.
+  /* In case the scrollbar is hidden or scrollbars should be overlaid,
+   * we don't trim the content box allocation by the scrollbar size.
    * Fold this into the scrollbar sizes to simplify the rest of the
    * computations.
    */
-  if (priv->hscrollbar_policy == ST_POLICY_NEVER ||
-      priv->hscrollbar_policy == ST_POLICY_EXTERNAL ||
-      priv->overlay_scrollbars)
+  if (!hscrollbar_visible || priv->overlay_scrollbars)
     sb_height = 0;
-  if (priv->vscrollbar_policy == ST_POLICY_NEVER ||
-      priv->vscrollbar_policy == ST_POLICY_EXTERNAL ||
-      priv->overlay_scrollbars)
+  if (!vscrollbar_visible || priv->overlay_scrollbars)
     sb_width = 0;
 
   /* Child */
