@@ -842,7 +842,7 @@ class ControlsManager extends St.Widget {
 
         // The Dash rises from the bottom. This is the last animation to finish,
         // so run the callback there.
-        this.dash.translation_y = this.dash.height;
+        this.dash.translation_y = this.dash.height + this.dash.margin_bottom;
         this.dash.ease({
             translation_y: 0,
             delay: STARTUP_ANIMATION_TIME,
