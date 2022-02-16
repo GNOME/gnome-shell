@@ -11,7 +11,7 @@ msgid ""
 msgstr "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
 "POT-Creation-Date: 2022-02-12 21:13+0000\n"
-"PO-Revision-Date: 2022-02-13 12:15+0100\n"
+"PO-Revision-Date: 2022-02-16 12:15+0100\n"
 "Last-Translator: Asier Sarasua Garmendia <asiersarasua@ni.eus>\n"
 "Language-Team: Basque <librezale@librezale.eus>\n"
 "Language: eu\n"
@@ -953,11 +953,11 @@ msgstr "Pixka bat itxoitearen edo aplikazioa irtetera derrigortzearen artean auk
 
 #: js/ui/closeDialog.js:70
 msgid "Force Quit"
-msgstr "Behartu irtetea"
+msgstr "Behartu irtetera"
 
 #: js/ui/closeDialog.js:73
 msgid "Wait"
-msgstr "Itxoin"
+msgstr "Itxaron"
 
 #: js/ui/components/automountManager.js:85
 msgid "External drive connected"
