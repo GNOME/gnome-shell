@@ -610,6 +610,7 @@ var Dash = GObject.registerClass({
                        (iconChildren.length - 1) * spacing;
 
         let availHeight = this._maxHeight;
+        availHeight -= this.margin_top + this.margin_bottom;
         availHeight -= this._background.get_theme_node().get_vertical_padding();
         availHeight -= themeNode.get_vertical_padding();
         availHeight -= buttonHeight - iconHeight;
