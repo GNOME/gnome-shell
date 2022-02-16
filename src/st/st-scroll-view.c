@@ -206,8 +206,6 @@ st_scroll_view_update_fade_effect (StScrollView  *scroll,
           priv->fade_effect = NULL;
         }
     }
-
-  clutter_actor_queue_redraw (CLUTTER_ACTOR (scroll));
 }
 
 static void
