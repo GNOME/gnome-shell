@@ -27,7 +27,6 @@ default:
 variables:
   FDO_UPSTREAM_REPO: GNOME/gnome-shell
   BUNDLE: "extensions-git.flatpak"
-  JS_LOG: "js-report.txt"
   LINT_LOG: "eslint-report.xml"
   LINT_MR_LOG: "eslint-mr-report.xml"
 
@@ -50,13 +49,14 @@ workflow:
 .gnome-shell.fedora:35:
   variables:
     FDO_DISTRIBUTION_VERSION: 35
-    FDO_DISTRIBUTION_TAG: '2022-01-18.0'
+    FDO_DISTRIBUTION_TAG: '2022-02-18.0'
     FDO_DISTRIBUTION_PACKAGES:
-      findutils
+      mozjs91
       mozjs91-devel
       nodejs
       npm
       meson
+      pkgconfig(gobject-introspection-1.0)
       pkgconfig(gio-2.0)
       pkgconfig(gio-unix-2.0)
       pkgconfig(gnome-autoar-0)
@@ -69,11 +69,22 @@ workflow:
                  'C Development Tools and Libraries' &&
 
       ./.gitlab-ci/install-meson-project.sh \
+        -Dskip_dbus_tests=true \
+        https://gitlab.gnome.org/GNOME/gjs.git \
+        master .  &&
+
+      ./.gitlab-ci/install-meson-project.sh \
+        https://gitlab.gnome.org/fmuellner/gjs-ci-tools.git \
+        main . &&
+
+      ./.gitlab-ci/install-meson-project.sh \
         -Dman=false \
         https://gitlab.gnome.org/GNOME/gnome-shell.git \
         main \
         subprojects/extensions-tool/ \
         ./generate-translations.sh &&
+
+      dnf remove -y mozjs91-devel
 
 check_commit_log:
   extends:
@@ -127,12 +138,7 @@ js_check:
       - .gnome-shell.fedora:35
   stage: review
   script:
-      - find js -name '*.js' $(printf "! -wholename %s " $(cat .jscheckignore)) -exec js91 -c '{}' ';' 2>&1 | tee $JS_LOG
-      - (! grep -q . $JS_LOG)
-  artifacts:
-      paths:
-          - ${JS_LOG}
-      when: on_failure
+      - gjs-check-syntax
 
 eslint:
   extends:
@@ -178,7 +184,7 @@ potfile_js_check:
     - .gnome-shell.fedora:35
   stage: review
   script:
-    - js91 -m .gitlab-ci/check-potfiles.js
+    - gjs-check-potfiles
 
 build:
   stage: build
