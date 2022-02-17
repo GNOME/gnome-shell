@@ -75,8 +75,6 @@ workflow:
         subprojects/extensions-tool/ \
         ./generate-translations.sh &&
 
-      dnf clean all
-
 check_commit_log:
   extends:
     - .fdo.ci-fairy
