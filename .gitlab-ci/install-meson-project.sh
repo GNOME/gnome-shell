@@ -2,7 +2,7 @@
 
 set -e
 
-if [[ $# -lt 4 ]]; then
+if [[ $# -lt 3 ]]; then
   echo Usage: $0 [options] [repo-url] [commit] [subdir]
   echo  Options:
   echo    -Dkey=val
@@ -26,7 +26,7 @@ REPO_DIR="$(basename ${REPO_URL%.git})"
 git clone --depth 1 "$REPO_URL" -b "$COMMIT"
 pushd "$REPO_DIR"
 pushd "$SUBDIR"
-sh -c "$PREPARE"
+[ "$PREPARE" ] && sh -c "$PREPARE"
 meson --prefix=/usr _build "${MESON_OPTIONS[@]}"
 meson install -C _build
 popd
