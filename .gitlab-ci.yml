@@ -72,9 +72,7 @@ workflow:
         --prepare ./generate-translations.sh \
         -Dman=false \
         https://gitlab.gnome.org/GNOME/gnome-shell.git \
-        main &&
-
-      dnf clean all
+        main
 
 check_commit_log:
   extends:
