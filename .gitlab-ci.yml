@@ -28,7 +28,6 @@ default:
 variables:
   FDO_UPSTREAM_REPO: GNOME/gnome-shell
   BUNDLE: "extensions-git.flatpak"
-  JS_LOG: "js-report.txt"
   LINT_LOG: "eslint-report.xml"
   LINT_MR_LOG: "eslint-mr-report.xml"
 
@@ -49,13 +48,13 @@ workflow:
 .gnome-shell.fedora:
   variables:
     FDO_DISTRIBUTION_VERSION: 38
-    FDO_DISTRIBUTION_TAG: '2023-04-20.0'
+    FDO_DISTRIBUTION_TAG: '2023-04-21.1'
     FDO_DISTRIBUTION_PACKAGES:
-      findutils
-      mozjs102-devel
+      gjs
       nodejs
       npm
       meson
+      pkgconfig(gobject-introspection-1.0)
       pkgconfig(gio-2.0)
       pkgconfig(gio-unix-2.0)
       pkgconfig(gnome-autoar-0)
@@ -66,6 +65,10 @@ workflow:
 
       dnf group install -y 'Development Tools' \
                  'C Development Tools and Libraries' &&
+
+      ./.gitlab-ci/install-meson-project.sh \
+        https://gitlab.gnome.org/fmuellner/gjs-ci-tools.git \
+        main &&
 
       ./.gitlab-ci/install-meson-project.sh \
         --subdir subprojects/extensions-tool/ \
@@ -126,12 +129,10 @@ js_check:
       - .gnome-shell.fedora
   stage: review
   script:
-      - find js -name '*.js' $(printf "! -wholename %s " $(cat .jscheckignore)) -exec js102 -c '{}' ';' 2>&1 | tee $JS_LOG
-      - (! grep -q . $JS_LOG)
+      - gjs-check-syntax
   artifacts:
-      paths:
-          - ${JS_LOG}
-      when: on_failure
+    reports:
+      junit: gjs-check-syntax.junit.xml
 
 eslint:
   extends:
@@ -177,7 +178,10 @@ potfile_js_check:
     - .gnome-shell.fedora
   stage: review
   script:
-    - js102 -m .gitlab-ci/check-potfiles.js
+    - gjs-check-potfiles
+  artifacts:
+    reports:
+      junit: gjs-check-potfiles.junit.xml
 
 build:
   stage: build
