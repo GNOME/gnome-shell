@@ -1047,6 +1047,7 @@ var ScreenshotUI = GObject.registerClass({
             GObject.BindingFlags.DEFAULT);
         // Add it directly to the stage so that it's above popup menus.
         global.stage.add_child(this._screencastAreaIndicator);
+        Shell.util_set_hidden_from_pick(this._screencastAreaIndicator, true);
 
         Main.layoutManager.screenshotUIGroup.add_child(this);
 
