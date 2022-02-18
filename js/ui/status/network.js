@@ -627,6 +627,13 @@ var NMDeviceModem = class extends NMConnectionDevice {
             return super._getStatus();
     }
 
+    _getMenuIcon() {
+        if (!this._client.wwan_enabled)
+            return 'network-cellular-disabled-symbolic';
+
+        return this.getIndicatorIcon();
+    }
+
     getIndicatorIcon() {
         if (this._device.active_connection) {
             if (this._device.active_connection.state == NM.ActiveConnectionState.ACTIVATING)
