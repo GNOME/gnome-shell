@@ -1601,7 +1601,7 @@ var NMVpnSection = class extends NMConnectionSection {
     }
 
     _getMenuIcon() {
-        return this.getIndicatorIcon() || 'network-vpn-symbolic';
+        return this.getIndicatorIcon() || 'network-vpn-disabled-symbolic';
     }
 
     activateConnection(connection) {
