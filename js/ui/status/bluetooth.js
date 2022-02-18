@@ -41,7 +41,6 @@ class Indicator extends PanelMenu.SystemIndicator {
         this._proxy.connect('g-properties-changed', this._queueSync.bind(this));
 
         this._item = new PopupMenu.PopupSubMenuMenuItem(_("Bluetooth"), true);
-        this._item.icon.icon_name = 'bluetooth-active-symbolic';
 
         this._toggleItem = new PopupMenu.PopupMenuItem('');
         this._toggleItem.connect('activate', () => {
@@ -158,6 +157,9 @@ class Indicator extends PanelMenu.SystemIndicator {
             this._item.visible = !this._proxy.BluetoothHardwareAirplaneMode;
         else
             this._item.visible = adapterPowered;
+
+        this._item.icon.icon_name = adapterPowered
+            ? 'bluetooth-active-symbolic' : 'bluetooth-disabled-symbolic';
 
         if (nConnectedDevices > 1)
             /* Translators: this is the number of connected bluetooth devices */
