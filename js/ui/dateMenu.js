@@ -379,7 +379,7 @@ class WorldClocksSection extends St.Button {
             const tzA = a.location.get_timezone();
             const tzB = b.location.get_timezone();
             const intA = tzA.find_interval(GLib.TimeType.STANDARD, unixtime);
-            const intB = tzA.find_interval(GLib.TimeType.STANDARD, unixtime);
+            const intB = tzB.find_interval(GLib.TimeType.STANDARD, unixtime);
             return tzA.get_offset(intA) - tzB.get_offset(intB);
         });
 
