@@ -65,13 +65,12 @@ var ParentalControlsManager = GObject.registerClass({
 
     async _initializeManager() {
         if (!HAVE_MALCONTENT) {
-            log('Skipping parental controls support as it’s disabled');
+            console.debug('Skipping parental controls support, malcontent not found');
             this._initialized = true;
             this.emit('app-filter-changed');
             return;
         }
 
-        log(`Getting parental controls for user ${Shell.util_get_uid()}`);
         try {
             const connection = await Gio.DBus.get(Gio.BusType.SYSTEM, null);
             this._manager = new Malcontent.Manager({ connection });
@@ -81,7 +80,7 @@ var ParentalControlsManager = GObject.registerClass({
                 null);
         } catch (e) {
             if (e.matches(Malcontent.ManagerError, Malcontent.ManagerError.DISABLED)) {
-                log('Parental controls globally disabled');
+                console.debug('Parental controls globally disabled');
                 this._disabled = true;
             } else {
                 logError(e, 'Failed to get parental controls settings');
@@ -137,7 +136,7 @@ var ParentalControlsManager = GObject.registerClass({
 
         // Have we finished initialising yet?
         if (!this.initialized) {
-            log(`Warning: Hiding app because parental controls not yet initialised: ${appInfo.get_id()}`);
+            console.debug(`Hiding app because parental controls not yet initialised: ${appInfo.get_id()}`);
             return false;
         }
 
