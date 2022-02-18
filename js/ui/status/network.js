@@ -1413,6 +1413,9 @@ var NMDeviceWireless = class {
     }
 
     _getMenuIcon() {
+        if (!this._client.wireless_enabled)
+            return 'network-wireless-disabled-symbolic';
+
         if (this._device.active_connection)
             return this.getIndicatorIcon();
         else
