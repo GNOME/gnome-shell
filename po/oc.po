@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master oc\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2022-02-16 05:13+0000\n"
-"PO-Revision-Date: 2022-02-16 19:07+0100\n"
+"POT-Creation-Date: 2022-02-16 18:08+0000\n"
+"PO-Revision-Date: 2022-02-19 10:44+0100\n"
 "Last-Translator: Quentin PAGÈS\n"
 "Language-Team: Tot En Òc\n"
 "Language: oc\n"
@@ -66,10 +66,8 @@ msgstr "Capturas d'ecran"
 
 #: data/50-gnome-shell-screenshots.xml:9
 #: data/org.gnome.shell.gschema.xml.in:235
-#, fuzzy
-#| msgid "Enter extension information interactively"
 msgid "Take a screenshot interactively"
-msgstr "Picatz d’un biais interactiu las informacions de l’extension"
+msgstr "Prendre una captura d’ecran interactiu"
 
 #: data/50-gnome-shell-screenshots.xml:12
 #: data/org.gnome.shell.gschema.xml.in:247
@@ -83,10 +81,8 @@ msgstr "Prendre una captura d'ecran d'una fenèstra"
 
 #: data/50-gnome-shell-screenshots.xml:18
 #: data/org.gnome.shell.gschema.xml.in:239
-#, fuzzy
-#| msgid "Record a screencast"
 msgid "Record a screencast interactively"
-msgstr "Enregistrar una vidèo d'ecran"
+msgstr "Enregistrar una vidèo d'ecran interactiu"
 
 #: data/50-gnome-shell-system.xml:6
 msgid "System"
@@ -665,6 +661,8 @@ msgstr "Prendre una captura d'ecran"
 #: js/misc/systemActions.js:142
 msgid "screenshot;screencast;snip;capture;record"
 msgstr ""
+"captura;screenshot;difusion;vidèo;snip;screencast;enregistrar;salvar;"
+"instantanèu;"
 
 #: js/misc/systemActions.js:242
 msgctxt "search-result"
@@ -838,16 +836,14 @@ msgid "Grant Access"
 msgstr "Acordar l'accès"
 
 #: js/ui/appFavorites.js:164
-#, fuzzy, javascript-format
-#| msgid "%s has been added to your favorites."
+#, javascript-format
 msgid "%s has been pinned to the dash."
-msgstr "%s es estat apondut a vòstres favorits."
+msgstr "%s es estat apondut al dash."
 
 #: js/ui/appFavorites.js:197
-#, fuzzy, javascript-format
-#| msgid "%s has been removed from your favorites."
+#, javascript-format
 msgid "%s has been unpinned from the dash."
-msgstr "%s es estat suprimit de vòstres favorits."
+msgstr "%s es estat despenjat d’al dash."
 
 #. Translators: This is the heading of a list of open windows
 #: js/ui/appMenu.js:46
@@ -2374,10 +2370,8 @@ msgid "Turn off"
 msgstr "Atudar"
 
 #: js/ui/status/remoteAccess.js:116
-#, fuzzy
-#| msgid "Screencasts"
 msgid "Stop Screencast"
-msgstr "Capturas vidèo"
+msgstr "Arrestar la difusion"
 
 #. The menu only appears when airplane mode is on, so just
 #. statically build it as if it was on, rather than dynamically
@@ -2758,6 +2752,8 @@ msgid ""
 "Extensions can cause performance and stability issues. Disable extensions if "
 "you encounter problems with your system."
 msgstr ""
+"Las extensions pòdon causar de problèmas de performanças e d’estabilitat. "
+"Desactivatz las extensions se trobatz de problèmas ligats al sistèma."
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:98
 msgid "Manually Installed"
