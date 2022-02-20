@@ -836,6 +836,7 @@ class WorkspacesDisplay extends St.Widget {
     _init(controls, scrollAdjustment, overviewAdjustment) {
         super._init({
             layout_manager: new Clutter.BinLayout(),
+            reactive: true,
         });
 
         this._controls = controls;
@@ -1151,6 +1152,9 @@ class WorkspacesDisplay extends St.Widget {
     _onKeyPressEvent(actor, event) {
         const { ControlsState } = OverviewControls;
         if (this._overviewAdjustment.value !== ControlsState.WINDOW_PICKER)
+            return Clutter.EVENT_PROPAGATE;
+
+        if (!this.reactive)
             return Clutter.EVENT_PROPAGATE;
 
         const { workspaceManager } = global;
