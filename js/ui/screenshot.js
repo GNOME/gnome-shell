@@ -1332,7 +1332,7 @@ var ScreenshotUI = GObject.registerClass({
             async () => {
                 try {
                     const shooter = new Shell.Screenshot();
-                    const [content] = await shooter.to_content();
+                    const [content] = await shooter.screenshot_stage_to_content();
                     const texture = content.get_texture();
 
                     await captureScreenshot(texture, null, 1, null);
