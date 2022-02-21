@@ -669,6 +669,13 @@ var NMDeviceBluetooth = class extends NMConnectionDevice {
         return _("Connect to Internet");
     }
 
+    _getMenuIcon() {
+        if (!this._device.active_connection)
+            return 'network-cellular-disabled-symbolic';
+
+        return this.getIndicatorIcon();
+    }
+
     getIndicatorIcon() {
         if (this._device.active_connection) {
             let state = this._device.active_connection.state;
