@@ -1158,31 +1158,46 @@ class WorkspacesDisplay extends St.Widget {
         const vertical = workspaceManager.layout_rows === -1;
         const rtl = this.get_text_direction() === Clutter.TextDirection.RTL;
 
-        let dir;
+        let which;
         switch (event.get_key_symbol()) {
         case Clutter.KEY_Page_Up:
             if (vertical)
-                dir = Meta.MotionDirection.UP;
+                which = Meta.MotionDirection.UP;
             else if (rtl)
-                dir = Meta.MotionDirection.RIGHT;
+                which = Meta.MotionDirection.RIGHT;
             else
-                dir = Meta.MotionDirection.LEFT;
+                which = Meta.MotionDirection.LEFT;
             break;
         case Clutter.KEY_Page_Down:
             if (vertical)
-                dir = Meta.MotionDirection.DOWN;
+                which = Meta.MotionDirection.DOWN;
             else if (rtl)
-                dir = Meta.MotionDirection.LEFT;
+                which = Meta.MotionDirection.LEFT;
             else
-                dir = Meta.MotionDirection.RIGHT;
+                which = Meta.MotionDirection.RIGHT;
+            break;
+        case Clutter.KEY_Home:
+            which = 0;
+            break;
+        case Clutter.KEY_End:
+            which = workspaceManager.n_workspaces - 1;
             break;
         default:
             return Clutter.EVENT_PROPAGATE;
         }
 
-        const ws = workspaceManager.get_active_workspace().get_neighbor(dir);
+        let ws;
+        if (which < 0)
+            // Negative workspace numbers are directions
+            // with respect to the current workspace
+            ws = workspaceManager.get_active_workspace().get_neighbor(which);
+        else
+            // Otherwise it is a workspace index
+            ws = workspaceManager.get_workspace_by_index(which);
+
         if (ws)
             Main.wm.actionMoveWorkspace(ws);
+
         return Clutter.EVENT_STOP;
     }
 
