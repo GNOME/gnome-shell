@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2022-02-19 13:23+0000\n"
-"PO-Revision-Date: 2022-02-20 15:16+0330\n"
+"POT-Creation-Date: 2022-02-20 11:48+0000\n"
+"PO-Revision-Date: 2022-02-21 22:14+0330\n"
 "Last-Translator: Danial Behzadi <dani.behzi@ubuntu.com>\n"
 "Language-Team: Persian <>\n"
 "Language: fa\n"
@@ -2234,18 +2234,20 @@ msgid "Estimating…"
 msgstr "درحال برآورد…"
 
 # در این رشته از نویسه‌های ایزوله چپ‌به‌راست استفاده شده است
+# پدینگ برداشته شده. زیرا با صفر انگلیسی پر می‌شد
 #. Translators: this is <hours>:<minutes> Remaining (<percentage>)
 #: js/ui/status/power.js:91
 #, javascript-format
 msgid "%d∶%02d Remaining (%d %%)"
-msgstr "⁦%Id∶%I02d⁩ باقی‌مانده (⁦%Id٪⁩)"
+msgstr "⁦%Id∶%Id⁩ باقی‌مانده (⁦%Id٪⁩)"
 
 # در این رشته از نویسه‌های ایزوله چپ‌به‌راست استفاده شده است
+# پدینگ برداشته شده. زیرا با صفر انگلیسی پر می‌شد
 #. Translators: this is <hours>:<minutes> Until Full (<percentage>)
 #: js/ui/status/power.js:97
 #, javascript-format
 msgid "%d∶%02d Until Full (%d %%)"
-msgstr "⁦%Id∶%I02d⁩ تا شارژ کامل (⁦%Id٪⁩)"
+msgstr "⁦%Id∶%Id⁩ تا شارژ کامل (⁦%Id٪⁩)"
 
 # در این ترجمه از نویسه‌های ایزوله چپ‌به‌راست استفاده شده است
 #. The icon label
