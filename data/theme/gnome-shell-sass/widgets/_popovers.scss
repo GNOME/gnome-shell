@@ -21,8 +21,6 @@
 .popup-menu-content {
   padding: $base_padding;
   // account for margin oddities
-  padding-top: $base_padding - 2px !important;
-  padding-bottom: $base_padding - 2px !important;
   border-radius: $modal_radius - 2px;
   border: 1px solid $borders_edge;
   box-shadow: 0 2px 4px 0 rgba(0,0,0,0.1);
@@ -32,7 +30,6 @@
 // menu items
 .popup-menu-item {
   padding: $base_padding*1.5 $base_padding*2;
-  margin: 2px 0;
   border-radius: $base_border_radius;
   transition: 0.2s all ease;
   background-color: transparent;
@@ -128,7 +125,7 @@
 // separator
 .popup-separator-menu-item {
   padding:0;
-  margin: 4px 0;
+  margin: 6px 0;
 
   .popup-separator-menu-item-separator {
     height: 1px; //not really the whole box
