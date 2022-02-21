@@ -990,7 +990,7 @@ class NMWirelessDialog extends ModalDialog.ModalDialog {
                 // 802.1x-enabled APs require further configuration, so they're
                 // handled in gnome-control-center
                 launchSettingsPanel('wifi', 'connect-8021x-wifi',
-                    this._device.get_path(), accessPoints[0].get_path());
+                    this._getDeviceDBusPath(), accessPoints[0].get_path());
             } else {
                 let connection = new NM.SimpleConnection();
                 this._client.add_and_activate_connection_async(connection, this._device, accessPoints[0].get_path(), null, null);
@@ -998,6 +998,11 @@ class NMWirelessDialog extends ModalDialog.ModalDialog {
         }
 
         this.close();
+    }
+
+    _getDeviceDBusPath() {
+        // nm_object_get_path() is shadowed by nm_device_get_path()
+        return NM.Object.prototype.get_path.call(this._device);
     }
 
     _notifySsidCb(accessPoint) {
