@@ -73,11 +73,13 @@ class WorkspaceGroup extends Clutter.Actor {
             this._shouldShowWindow(w.meta_window));
 
         let lastRecord;
+        const bottomActor = this._background ?? null;
 
         for (const windowActor of windowActors) {
             const record = this._windowRecords.find(r => r.windowActor === windowActor);
 
-            this.set_child_above_sibling(record.clone, lastRecord ? lastRecord.clone : this._background);
+            this.set_child_above_sibling(record.clone,
+                lastRecord ? lastRecord.clone : bottomActor);
             lastRecord = record;
         }
     }
