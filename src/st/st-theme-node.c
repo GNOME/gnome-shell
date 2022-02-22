@@ -408,7 +408,11 @@ st_theme_node_equal (StThemeNode *node_a, StThemeNode *node_b)
 guint
 st_theme_node_hash (StThemeNode *node)
 {
-  guint hash = GPOINTER_TO_UINT (node->parent_node);
+  guint hash;
+
+  g_return_val_if_fail (ST_IS_THEME_NODE(node), 0);
+
+  hash = GPOINTER_TO_UINT (node->parent_node);
 
   hash = hash * 33 + GPOINTER_TO_UINT (node->context);
   hash = hash * 33 + GPOINTER_TO_UINT (node->theme);
@@ -671,6 +675,9 @@ st_theme_node_lookup_color (StThemeNode  *node,
 
   int i;
 
+  g_return_val_if_fail (ST_IS_THEME_NODE(node), FALSE);
+  g_return_val_if_fail (property_name != NULL, FALSE);
+
   ensure_properties (node);
 
   for (i = node->n_properties - 1; i >= 0; i--)
@@ -761,6 +768,9 @@ st_theme_node_lookup_double (StThemeNode *node,
   gboolean result = FALSE;
   int i;
 
+  g_return_val_if_fail (ST_IS_THEME_NODE(node), FALSE);
+  g_return_val_if_fail (property_name != NULL, FALSE);
+
   ensure_properties (node);
 
   for (i = node->n_properties - 1; i >= 0; i--)
@@ -813,6 +823,9 @@ st_theme_node_lookup_time (StThemeNode *node,
 {
   gboolean result = FALSE;
   int i;
+
+  g_return_val_if_fail (ST_IS_THEME_NODE(node), FALSE);
+  g_return_val_if_fail (property_name != NULL, FALSE);
 
   ensure_properties (node);
 
@@ -905,6 +918,9 @@ st_theme_node_lookup_url (StThemeNode  *node,
 {
   gboolean result = FALSE;
   int i;
+
+  g_return_val_if_fail (ST_IS_THEME_NODE(node), FALSE);
+  g_return_val_if_fail (property_name != NULL, FALSE);
 
   ensure_properties (node);
 
@@ -1200,7 +1216,13 @@ st_theme_node_lookup_length (StThemeNode *node,
                              gboolean     inherit,
                              gdouble     *length)
 {
-  GetFromTermResult result = get_length_internal (node, property_name, length);
+  GetFromTermResult result;
+
+  g_return_val_if_fail (ST_IS_THEME_NODE(node), FALSE);
+  g_return_val_if_fail (property_name != NULL, FALSE);
+
+  result = get_length_internal (node, property_name, length);
+
   if (result == VALUE_FOUND)
     return TRUE;
   else if (result == VALUE_INHERIT)
@@ -2457,6 +2479,8 @@ st_theme_node_get_icon_style (StThemeNode *node)
 {
   int i;
 
+  g_return_val_if_fail (ST_IS_THEME_NODE(node), ST_ICON_STYLE_REQUESTED);
+
   ensure_properties (node);
 
   for (i = node->n_properties - 1; i >= 0; i--)
@@ -2506,6 +2530,8 @@ StTextDecoration
 st_theme_node_get_text_decoration (StThemeNode *node)
 {
   int i;
+
+  g_return_val_if_fail (ST_IS_THEME_NODE(node), 0);
 
   ensure_properties (node);
 
@@ -2581,6 +2607,8 @@ StTextAlign
 st_theme_node_get_text_align(StThemeNode *node)
 {
   int i;
+
+  g_return_val_if_fail (ST_IS_THEME_NODE(node), ST_TEXT_ALIGN_LEFT);
 
   ensure_properties(node);
 
@@ -2927,6 +2955,8 @@ st_theme_node_get_font (StThemeNode *node)
   double size = 0.;
   gboolean size_set = FALSE;
 
+  g_return_val_if_fail (ST_IS_THEME_NODE (node), NULL);
+
   char *family = NULL;
   double parent_size;
   int i;
@@ -3119,6 +3149,8 @@ st_theme_node_get_font_features (StThemeNode *node)
 {
   int i;
 
+  g_return_val_if_fail (ST_IS_THEME_NODE (node), NULL);
+
   ensure_properties (node);
 
   for (i = node->n_properties - 1; i >= 0; i--)
@@ -3160,6 +3192,8 @@ StBorderImage *
 st_theme_node_get_border_image (StThemeNode *node)
 {
   int i;
+
+  g_return_val_if_fail (ST_IS_THEME_NODE (node), NULL);
 
   if (node->border_image_computed)
     return node->border_image;
@@ -3298,6 +3332,9 @@ double
 st_theme_node_get_horizontal_padding (StThemeNode *node)
 {
   double padding = 0.0;
+
+  g_return_val_if_fail (ST_IS_THEME_NODE (node), padding);
+
   padding += st_theme_node_get_padding (node, ST_SIDE_LEFT);
   padding += st_theme_node_get_padding (node, ST_SIDE_RIGHT);
 
@@ -3316,6 +3353,9 @@ double
 st_theme_node_get_vertical_padding (StThemeNode *node)
 {
   double padding = 0.0;
+
+  g_return_val_if_fail (ST_IS_THEME_NODE (node), padding);
+
   padding += st_theme_node_get_padding (node, ST_SIDE_TOP);
   padding += st_theme_node_get_padding (node, ST_SIDE_BOTTOM);
 
@@ -3493,6 +3533,9 @@ st_theme_node_lookup_shadow (StThemeNode  *node,
 
   int i;
 
+  g_return_val_if_fail (ST_IS_THEME_NODE (node), FALSE);
+  g_return_val_if_fail (property_name != NULL, FALSE);
+
   ensure_properties (node);
 
   for (i = node->n_properties - 1; i >= 0; i--)
@@ -3587,6 +3630,8 @@ st_theme_node_get_box_shadow (StThemeNode *node)
 {
   StShadow *shadow;
 
+  g_return_val_if_fail (ST_IS_THEME_NODE (node), NULL);
+
   if (node->box_shadow_computed)
     return node->box_shadow;
 
@@ -3619,6 +3664,8 @@ StShadow *
 st_theme_node_get_background_image_shadow (StThemeNode *node)
 {
   StShadow *shadow;
+
+  g_return_val_if_fail (ST_IS_THEME_NODE (node), NULL);
 
   if (node->background_image_shadow_computed)
     return node->background_image_shadow;
@@ -3660,6 +3707,8 @@ StShadow *
 st_theme_node_get_text_shadow (StThemeNode *node)
 {
   StShadow *result = NULL;
+
+  g_return_val_if_fail (ST_IS_THEME_NODE (node), NULL);
 
   if (node->text_shadow_computed)
     return node->text_shadow;
