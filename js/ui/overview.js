@@ -265,7 +265,7 @@ var Overview = class {
         this._lastActiveWorkspaceIndex = workspaceManager.get_active_workspace_index();
     }
 
-    _onDragEnd(time) {
+    _onDragEnd() {
         this._inXdndDrag = false;
 
         // In case the drag was canceled while in the overview
@@ -273,7 +273,8 @@ var Overview = class {
         // the overview
         if (this._shown) {
             let workspaceManager = global.workspace_manager;
-            workspaceManager.get_workspace_by_index(this._lastActiveWorkspaceIndex).activate(time);
+            workspaceManager.get_workspace_by_index(this._lastActiveWorkspaceIndex)
+                .activate(global.get_current_time());
             this.hide();
         }
         this._resetWindowSwitchTimeout();
