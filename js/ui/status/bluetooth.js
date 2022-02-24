@@ -129,20 +129,13 @@ class Indicator extends PanelMenu.SystemIndicator {
     }
 
     _sync() {
-        const adapterJustAppeared = !this._adapter && this._client.default_adapter;
-        this._adapter = this._client.default_adapter ?? null;
-        if (!this._adapter) {
-            this._item.visible = false;
-            this._indicator.visible = false;
-            return;
-        }
-
         const devices = this._getDeviceInfos();
         const connectedDevices = devices.filter(dev => dev.connected);
         const nConnectedDevices = connectedDevices.length;
 
-        if (!adapterJustAppeared)
+        if (this._client.default_adapter && this._adapter)
             this._setHadSetupDevices(devices.length > 0);
+        this._adapter = this._client.default_adapter ?? null;
 
         let sensitive = !Main.sessionMode.isLocked && !Main.sessionMode.isGreeter;
 
