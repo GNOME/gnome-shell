@@ -27,6 +27,17 @@ class Indicator extends PanelMenu.SystemIndicator {
         this._hadSetupDevices = global.settings.get_boolean(HAD_BLUETOOTH_DEVICES_SETUP);
 
         this._client = new GnomeBluetooth.Client();
+        this._client.connect('notify::default-adapter', () => {
+            const newAdapter = this._client.default_adapter ?? null;
+
+            if (newAdapter && this._adapter)
+                this._setHadSetupDevices(this._getDeviceInfos().length > 0);
+
+            this._adapter = newAdapter;
+
+            this._deviceNotifyConnected.clear();
+            this._sync();
+        });
         this._client.connect('notify::default-adapter-powered', this._sync.bind(this));
 
         this._proxy = new RfkillManagerProxy(Gio.DBus.session, BUS_NAME, OBJECT_PATH,
@@ -132,10 +143,6 @@ class Indicator extends PanelMenu.SystemIndicator {
         const devices = this._getDeviceInfos();
         const connectedDevices = devices.filter(dev => dev.connected);
         const nConnectedDevices = connectedDevices.length;
-
-        if (this._client.default_adapter && this._adapter)
-            this._setHadSetupDevices(devices.length > 0);
-        this._adapter = this._client.default_adapter ?? null;
 
         let sensitive = !Main.sessionMode.isLocked && !Main.sessionMode.isGreeter;
 
