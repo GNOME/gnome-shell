@@ -692,7 +692,13 @@ st_widget_enter (ClutterActor         *actor,
 
   if (priv->track_hover)
     {
-      if (clutter_actor_contains (actor, event->source))
+      ClutterStage *stage;
+      ClutterActor *target;
+
+      stage = clutter_event_get_stage ((ClutterEvent *) event);
+      target = clutter_stage_get_event_actor (stage, (ClutterEvent *) event);
+
+      if (clutter_actor_contains (actor, target))
         st_widget_set_hover (ST_WIDGET (actor), TRUE);
       else
         {
