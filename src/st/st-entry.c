@@ -789,7 +789,13 @@ st_entry_enter_event (ClutterActor         *actor,
                       ClutterCrossingEvent *event)
 {
   StEntryPrivate *priv = ST_ENTRY_PRIV (actor);
-  if (event->source == priv->entry && event->related != NULL)
+  ClutterStage *stage;
+  ClutterActor *target;
+
+  stage = clutter_event_get_stage ((ClutterEvent *) event);
+  target = clutter_stage_get_event_actor (stage, (ClutterEvent *) event);
+
+  if (target == priv->entry && event->related != NULL)
     st_entry_set_cursor (ST_ENTRY (actor), TRUE);
 
   return CLUTTER_ACTOR_CLASS (st_entry_parent_class)->enter_event (actor, event);
@@ -799,9 +805,7 @@ static gboolean
 st_entry_leave_event (ClutterActor         *actor,
                       ClutterCrossingEvent *event)
 {
-  StEntryPrivate *priv = ST_ENTRY_PRIV (actor);
-  if (event->source == priv->entry && event->related != NULL)
-    st_entry_set_cursor (ST_ENTRY (actor), FALSE);
+  st_entry_set_cursor (ST_ENTRY (actor), FALSE);
 
   return CLUTTER_ACTOR_CLASS (st_entry_parent_class)->leave_event (actor, event);
 }
