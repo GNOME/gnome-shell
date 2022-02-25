@@ -1396,6 +1396,8 @@ var PopupMenuManager = class {
 
     _onCapturedEvent(actor, event) {
         let menu = actor._delegate;
+        const targetActor = global.stage.get_event_actor(event);
+
         if (event.type() === Clutter.EventType.KEY_PRESS) {
             let symbol = event.get_key_symbol();
             if (symbol === Clutter.KEY_Down &&
@@ -1408,13 +1410,13 @@ var PopupMenuManager = class {
             }
         } else if (event.type() === Clutter.EventType.ENTER &&
                    (event.get_flags() & Clutter.EventFlags.GRAB_NOTIFY) === 0) {
-            let hoveredMenu = this._findMenuForSource(event.get_source());
+            let hoveredMenu = this._findMenuForSource(targetActor);
 
             if (hoveredMenu && hoveredMenu !== menu)
                 this._changeMenu(hoveredMenu);
         } else if ((event.type() === Clutter.EventType.BUTTON_PRESS ||
                     event.type() === Clutter.EventType.TOUCH_BEGIN) &&
-                   !actor.contains(event.get_source())) {
+                   !actor.contains(targetActor)) {
             menu.close(BoxPointer.PopupAnimation.FULL);
         }
 
