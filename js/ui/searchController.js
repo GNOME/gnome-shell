@@ -228,10 +228,7 @@ var SearchController = GObject.registerClass({
 
     startSearch(event) {
         global.stage.set_key_focus(this._text);
-
-        let synthEvent = event.copy();
-        synthEvent.set_source(this._text);
-        this._text.event(synthEvent, false);
+        this._text.event(event, false);
     }
 
     // the entry does not show the hint
