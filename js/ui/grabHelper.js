@@ -265,9 +265,11 @@ var GrabHelper = class GrabHelper {
             return Clutter.EVENT_PROPAGATE;
         }
 
+        const targetActor = global.stage.get_event_actor(event);
+
         if (type === Clutter.EventType.ENTER ||
             type === Clutter.EventType.LEAVE ||
-            this.currentGrab.actor.contains(event.get_source()))
+            this.currentGrab.actor.contains(targetActor))
             return Clutter.EVENT_PROPAGATE;
 
         if (Main.keyboard.shouldTakeEvent(event))
@@ -279,7 +281,7 @@ var GrabHelper = class GrabHelper {
             if (press || touchBegin)
                 this._ignoreUntilRelease = true;
 
-            let i = this._actorInGrabStack(event.get_source()) + 1;
+            let i = this._actorInGrabStack(targetActor) + 1;
             this.ungrab({ actor: this._grabStack[i].actor, isUser: true });
             return Clutter.EVENT_STOP;
         }
