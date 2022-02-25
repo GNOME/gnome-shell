@@ -219,9 +219,14 @@ st_button_button_release (ClutterActor       *actor,
 
   if (priv->button_mask & mask)
     {
+      ClutterStage *stage;
+      ClutterActor *target;
       gboolean is_click;
 
-      is_click = priv->grabbed && clutter_actor_contains (actor, event->source);
+      stage = clutter_event_get_stage ((ClutterEvent *) event);
+      target = clutter_stage_get_event_actor (stage, (ClutterEvent *) event);
+
+      is_click = priv->grabbed && clutter_actor_contains (actor, target);
       st_button_release (button, device, mask, is_click ? event->button : 0, NULL);
 
       priv->grabbed &= ~mask;
