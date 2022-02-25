@@ -259,8 +259,10 @@ var LanguageSelectionPopup = class extends PopupMenu.PopupMenu {
     }
 
     _onCapturedEvent(actor, event) {
-        if (event.get_source() == this.actor ||
-            this.actor.contains(event.get_source()))
+        const targetActor = global.stage.get_event_actor(event);
+
+        if (targetActor === this.actor ||
+            this.actor.contains(targetActor))
             return Clutter.EVENT_PROPAGATE;
 
         if (event.type() == Clutter.EventType.BUTTON_RELEASE || event.type() == Clutter.EventType.TOUCH_END)
@@ -407,9 +409,10 @@ var Key = GObject.registerClass({
         let type = event.type();
         let press = type == Clutter.EventType.BUTTON_PRESS || type == Clutter.EventType.TOUCH_BEGIN;
         let release = type == Clutter.EventType.BUTTON_RELEASE || type == Clutter.EventType.TOUCH_END;
+        const targetActor = global.stage.get_event_actor(event);
 
-        if (event.get_source() == this._boxPointer.bin ||
-            this._boxPointer.bin.contains(event.get_source()))
+        if (targetActor === this._boxPointer.bin ||
+            this._boxPointer.bin.contains(targetActor))
             return Clutter.EVENT_PROPAGATE;
 
         if (press)
@@ -1296,7 +1299,7 @@ var KeyboardManager = class KeyBoardManager {
         if (!this._keyboard)
             return false;
 
-        let actor = event.get_source();
+        const actor = global.stage.get_event_actor(event);
         return Main.layoutManager.keyboardBox.contains(actor) ||
                !!actor._extendedKeys || !!actor.extendedKey;
     }
