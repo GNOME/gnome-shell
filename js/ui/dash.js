@@ -883,10 +883,12 @@ var Dash = GObject.registerClass({
         }
 
         let pos;
-        if (!this._emptyDropTarget)
-            pos = Math.floor(x * numChildren / boxWidth);
+        if (this._emptyDropTarget)
+            pos = 0; // always insert at the start when dash is empty
+        else if (this.text_direction === Clutter.TextDirection.RTL)
+            pos = numChildren - Math.floor(x * numChildren / boxWidth);
         else
-            pos = 0; // always insert at the top when dash is empty
+            pos = Math.floor(x * numChildren / boxWidth);
 
         // Put the placeholder after the last favorite if we are not
         // in the favorites zone
