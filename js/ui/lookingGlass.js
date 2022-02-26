@@ -451,6 +451,14 @@ class ObjInspector extends St.ScrollView {
     open(sourceActor) {
         if (this._open)
             return;
+
+        const grab = Main.pushModal(this, { actionMode: Shell.ActionMode.LOOKING_GLASS });
+        if (grab.get_seat_state() === Clutter.GrabState.NONE) {
+            Main.popModal(grab);
+            return;
+        }
+
+        this._grab = grab;
         this._previousObj = null;
         this._open = true;
         this.show();
@@ -470,6 +478,8 @@ class ObjInspector extends St.ScrollView {
     close() {
         if (!this._open)
             return;
+        Main.popModal(this._grab);
+        this._grab = null;
         this._open = false;
         this.hide();
         this._previousObj = null;
