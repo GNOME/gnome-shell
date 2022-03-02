@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
 "POT-Creation-Date: 2022-02-24 11:53+0000\n"
-"PO-Revision-Date: 2022-03-02 01:48+0100\n"
+"PO-Revision-Date: 2022-03-02 01:51+0100\n"
 "Last-Translator: gogo <trebelnik2@gmail.com>\n"
 "Language-Team: Croatian <hr@li.org>\n"
 "Language: hr\n"
@@ -2695,7 +2695,7 @@ msgstr "Proširenje sadrži grešku"
 
 #: subprojects/extensions-app/data/ui/extension-row.ui:62
 msgid "The extension can be updated"
-msgstr "Proširenja se može nadopuniti"
+msgstr "Proširenje se može nadopuniti"
 
 #: subprojects/extensions-app/data/ui/extension-row.ui:112
 msgid "Website"
