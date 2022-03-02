@@ -54,6 +54,35 @@ const DELAYED_MOVE_TIMEOUT = 200;
 const DIALOG_SHADE_NORMAL = Clutter.Color.from_pixel(0x000000cc);
 const DIALOG_SHADE_HIGHLIGHT = Clutter.Color.from_pixel(0x00000055);
 
+const DEFAULT_FOLDERS = {
+    'Utilities': {
+        name: 'X-GNOME-Utilities.directory',
+        categories: ['X-GNOME-Utilities'],
+        apps: [
+            'gnome-abrt.desktop',
+            'gnome-system-log.desktop',
+            'nm-connection-editor.desktop',
+            'org.gnome.baobab.desktop',
+            'org.gnome.Connections.desktop',
+            'org.gnome.DejaDup.desktop',
+            'org.gnome.Dictionary.desktop',
+            'org.gnome.DiskUtility.desktop',
+            'org.gnome.eog.desktop',
+            'org.gnome.Evince.desktop',
+            'org.gnome.FileRoller.desktop',
+            'org.gnome.fonts.desktop',
+            'org.gnome.seahorse.Application.desktop',
+            'org.gnome.tweaks.desktop',
+            'org.gnome.Usage.desktop',
+            'vinagre.desktop',
+        ],
+    },
+    'YaST': {
+        name: 'suse-yast.directory',
+        categegories: ['X-SuSE-YaST'],
+    },
+};
+
 var SidePages = {
     NONE: 0,
     PREVIOUS: 1 << 0,
@@ -1386,6 +1415,7 @@ class AppDisplay extends BaseAppView {
             Main.queueDeferredWork(this._redisplayWorkId);
         });
         this._folderSettings = new Gio.Settings({ schema_id: 'org.gnome.desktop.app-folders' });
+        this._ensureDefaultFolders();
         this._folderSettings.connect('changed::folder-children', () => {
             Main.queueDeferredWork(this._redisplayWorkId);
         });
@@ -1448,6 +1478,28 @@ class AppDisplay extends BaseAppView {
         }
 
         this._pageManager.pages = pages;
+    }
+
+    _ensureDefaultFolders() {
+        if (this._folderSettings.get_strv('folder-children').length > 0)
+            return;
+
+        const folders = Object.keys(DEFAULT_FOLDERS);
+        this._folderSettings.set_strv('folder-children', folders);
+
+        const { path } = this._folderSettings;
+        for (const folder in folders) {
+            const { name, categories, apps } = DEFAULT_FOLDERS[folder];
+            const child = new Gio.Settings({
+                schema_id: 'org.gnome.desktop.app-folders.folder',
+                path: `${path}/folders/${folder}/`,
+            });
+            child.set_string('name', name);
+            child.set_boolean('translate', true);
+            child.set_strv('categories', categories);
+            if (apps)
+                child.set_strv('apps', apps);
+        }
     }
 
     _ensurePlaceholder(source) {
