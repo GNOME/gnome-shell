@@ -5,6 +5,7 @@ const { Clutter, Gio, GLib, GObject, Graphene, Meta, Shell, St } = imports.gi;
 
 const DND = imports.ui.dnd;
 const Main = imports.ui.main;
+const { TransientSignalHolder } = imports.misc.signalTracker;
 const Util = imports.misc.util;
 const Workspace = imports.ui.workspace;
 
@@ -949,6 +950,7 @@ var ThumbnailsBox = GObject.registerClass({
             return;
 
         const { workspaceManager } = global;
+        this._transientSignalHolder = new TransientSignalHolder(this);
         workspaceManager.connectObject(
             'notify::n-workspaces', this._workspacesChanged.bind(this),
             'active-workspace-changed', () => this._updateIndicator(),
@@ -957,9 +959,9 @@ var ThumbnailsBox = GObject.registerClass({
                     return a.metaWorkspace.index() - b.metaWorkspace.index();
                 });
                 this.queue_relayout();
-            }, this);
+            }, this._transientSignalHolder);
         Main.overview.connectObject('windows-restacked',
-            this._syncStacking.bind(this), this);
+            this._syncStacking.bind(this), this._transientSignalHolder);
 
         this._targetScale = 0;
         this._scale = 0;
@@ -979,8 +981,8 @@ var ThumbnailsBox = GObject.registerClass({
         if (this._thumbnails.length == 0)
             return;
 
-        global.workspace_manager.disconnectObject(this);
-        Main.overview.disconnectObject(this);
+        this._transientSignalHolder.destroy();
+        delete this._transientSignalHolder;
 
         for (let w = 0; w < this._thumbnails.length; w++)
             this._thumbnails[w].destroy();
