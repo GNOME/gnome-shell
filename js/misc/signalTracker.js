@@ -32,7 +32,7 @@ class SignalTracker {
      */
     constructor(owner) {
         if (this._hasDestroySignal(owner))
-            this._ownerDestroyId = owner.connect('destroy', () => this.clear());
+            this._ownerDestroyId = owner.connect_after('destroy', () => this.clear());
 
         this._owner = owner;
         this._map = new Map();
@@ -73,7 +73,7 @@ class SignalTracker {
         const signalData = this._getSignalData(obj);
         if (signalData.destroyId)
             return;
-        signalData.destroyId = obj.connect('destroy', () => this.untrack(obj));
+        signalData.destroyId = obj.connect_after('destroy', () => this.untrack(obj));
     }
 
     _disconnectSignal(obj, id) {
