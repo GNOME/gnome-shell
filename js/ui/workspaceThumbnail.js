@@ -674,10 +674,6 @@ var ThumbnailsBox = GObject.registerClass({
         });
         this.connect('destroy', () => this._onDestroy());
 
-        this._nWorkspacesNotifyId = 0;
-        this._activeWorkspaceChangedId = 0;
-        this._syncStackingId = 0;
-
         this._scrollAdjustment = scrollAdjustment;
         this._scrollAdjustment.connectObject('notify::value',
             () => this._updateIndicator(), this);
