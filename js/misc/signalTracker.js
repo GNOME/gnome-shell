@@ -1,5 +1,33 @@
-/* exported addObjectSignalMethods */
+/* exported TransientSignalHolder, addObjectSignalMethods */
 const { GObject } = imports.gi;
+
+/**
+ * @private
+ * @param {Object} obj - an object
+ * @returns {bool} - true if obj has a 'destroy' GObject signal
+ */
+function _hasDestroySignal(obj) {
+    return obj instanceof GObject.Object &&
+        GObject.signal_lookup('destroy', obj);
+}
+
+var TransientSignalHolder = GObject.registerClass(
+class TransientSignalHolder extends GObject.Object {
+    static [GObject.signals] = {
+        'destroy': {},
+    };
+
+    constructor(owner) {
+        super();
+
+        if (_hasDestroySignal(owner))
+            owner.connectObject('destroy', () => this.destroy(), this);
+    }
+
+    destroy() {
+        this.emit('destroy');
+    }
+});
 
 class SignalManager {
     /**
@@ -31,21 +59,11 @@ class SignalTracker {
      * @param {Object=} owner - object that owns the tracker
      */
     constructor(owner) {
-        if (this._hasDestroySignal(owner))
+        if (_hasDestroySignal(owner))
             this._ownerDestroyId = owner.connect_after('destroy', () => this.clear());
 
         this._owner = owner;
         this._map = new Map();
-    }
-
-    /**
-     * @private
-     * @param {Object} obj - an object
-     * @returns {bool} - true if obj has a 'destroy' GObject signal
-     */
-    _hasDestroySignal(obj) {
-        return obj instanceof GObject.Object &&
-            GObject.signal_lookup('destroy', obj);
     }
 
     /**
@@ -89,7 +107,7 @@ class SignalTracker {
      * @returns {void}
      */
     track(obj, ...handlerIds) {
-        if (this._hasDestroySignal(obj))
+        if (_hasDestroySignal(obj))
             this._trackDestroy(obj);
 
         this._getSignalData(obj).ownerSignals.push(...handlerIds);

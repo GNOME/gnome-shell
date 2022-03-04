@@ -8,6 +8,8 @@ const JsUnit = imports.jsUnit;
 const Signals = imports.signals;
 
 const Environment = imports.ui.environment;
+const { TransientSignalHolder } = imports.misc.signalTracker;
+
 Environment.init();
 
 const Destroyable = GObject.registerClass({
@@ -77,3 +79,39 @@ emitter1.emit('signal');
 emitter2.emit('signal');
 
 JsUnit.assertEquals(count, 10);
+
+emitter1.connectObject('signal', handler, tracked1);
+emitter2.connectObject('signal', handler, tracked1);
+
+transientHolder = new TransientSignalHolder(tracked1);
+
+emitter1.connectObject('signal', handler, transientHolder);
+emitter2.connectObject('signal', handler, transientHolder);
+
+emitter1.emit('signal');
+emitter2.emit('signal');
+
+JsUnit.assertEquals(count, 14);
+
+transientHolder.destroy();
+
+emitter1.emit('signal');
+emitter2.emit('signal');
+
+JsUnit.assertEquals(count, 16);
+
+transientHolder = new TransientSignalHolder(tracked1);
+
+emitter1.connectObject('signal', handler, transientHolder);
+emitter2.connectObject('signal', handler, transientHolder);
+
+emitter1.emit('signal');
+emitter2.emit('signal');
+
+JsUnit.assertEquals(count, 20);
+
+tracked1.emit('destroy');
+emitter1.emit('signal');
+emitter2.emit('signal');
+
+JsUnit.assertEquals(count, 20);
