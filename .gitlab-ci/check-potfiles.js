@@ -85,6 +85,10 @@ function nodesToWalk(node) {
     case 'BlockStatement':
     case 'Program':
         return node.body;
+    case 'StaticClassBlock':
+        return [node.body];
+    case 'ClassField':
+        return [node.name, node.init];
     case 'CallExpression':
     case 'NewExpression':
     case 'OptionalCallExpression':
