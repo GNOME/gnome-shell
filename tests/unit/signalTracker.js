@@ -8,13 +8,14 @@ const JsUnit = imports.jsUnit;
 const Signals = imports.signals;
 
 const Environment = imports.ui.environment;
-const { TransientSignalHolder } = imports.misc.signalTracker;
+const { TransientSignalHolder, registerDestroyableType } = imports.misc.signalTracker;
 
 Environment.init();
 
 const Destroyable = GObject.registerClass({
     Signals: { 'destroy': {} },
 }, class Destroyable extends GObject.Object {});
+registerDestroyableType(Destroyable);
 
 class PlainEmitter {}
 Signals.addSignalMethods(PlainEmitter.prototype);

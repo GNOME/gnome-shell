@@ -1,14 +1,15 @@
 /* exported TransientSignalHolder, addObjectSignalMethods */
 const { GObject } = imports.gi;
 
+const destroyableTypes = [];
+
 /**
  * @private
  * @param {Object} obj - an object
  * @returns {bool} - true if obj has a 'destroy' GObject signal
  */
 function _hasDestroySignal(obj) {
-    return obj instanceof GObject.Object &&
-        GObject.signal_lookup('destroy', obj);
+    return destroyableTypes.some(type => obj instanceof type);
 }
 
 var TransientSignalHolder = GObject.registerClass(
@@ -28,6 +29,7 @@ class TransientSignalHolder extends GObject.Object {
         this.emit('destroy');
     }
 });
+registerDestroyableType(TransientSignalHolder);
 
 class SignalManager {
     /**
@@ -229,4 +231,20 @@ function addObjectSignalMethods(proto) {
         disconnectObject(this, obj);
     };
     proto['disconnect_object'] = proto['disconnectObject'];
+}
+
+/**
+ * Register a GObject type as having a 'destroy' signal
+ * that should disconnect all handlers
+ *
+ * @param {GObject.Type} gtype - a GObject type
+ */
+function registerDestroyableType(gtype) {
+    if (!GObject.type_is_a(gtype, GObject.Object))
+        throw new Error(`${gtype} is not a GObject subclass`);
+
+    if (!GObject.signal_lookup('destroy', gtype))
+        throw new Error(`${gtype} does not have a destroy signal`);
+
+    destroyableTypes.push(gtype);
 }

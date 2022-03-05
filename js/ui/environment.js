@@ -345,6 +345,8 @@ function init() {
         SignalTracker.addObjectSignalMethods(prototype);
     };
 
+    SignalTracker.registerDestroyableType(Clutter.Actor);
+
     // Miscellaneous monkeypatching
     _patchContainerClass(St.BoxLayout);
 

@@ -10,6 +10,7 @@ const GnomeSession = imports.misc.gnomeSession;
 const Layout = imports.ui.layout;
 const Main = imports.ui.main;
 const Params = imports.misc.params;
+const SignalTracker = imports.misc.signalTracker;
 
 const SHELL_KEYBINDINGS_SCHEMA = 'org.gnome.shell.keybindings';
 
@@ -493,6 +494,7 @@ var Notification = GObject.registerClass({
         this.run_dispose();
     }
 });
+SignalTracker.registerDestroyableType(Notification);
 
 var NotificationBanner = GObject.registerClass({
     Signals: {
@@ -795,6 +797,7 @@ var Source = GObject.registerClass({
         }
     }
 });
+SignalTracker.registerDestroyableType(Source);
 
 var MessageTray = GObject.registerClass({
     Signals: {
