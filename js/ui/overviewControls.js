@@ -47,9 +47,8 @@ class ControlsManagerLayout extends Clutter.BoxLayout {
         stateAdjustment.connect('notify::value', () => this.layout_changed());
     }
 
-    _computeWorkspacesBoxForState(state, workAreaBox, searchHeight, dashHeight, thumbnailsHeight) {
-        const workspaceBox = workAreaBox.copy();
-        const [startX, startY] = workAreaBox.get_origin();
+    _computeWorkspacesBoxForState(state, box, startY, searchHeight, dashHeight, thumbnailsHeight) {
+        const workspaceBox = box.copy();
         const [width, height] = workspaceBox.get_size();
         const { spacing } = this;
         const { expandFraction } = this._workspacesThumbnails;
@@ -58,7 +57,7 @@ class ControlsManagerLayout extends Clutter.BoxLayout {
         case ControlsState.HIDDEN:
             break;
         case ControlsState.WINDOW_PICKER:
-            workspaceBox.set_origin(startX,
+            workspaceBox.set_origin(0,
                 startY + searchHeight + spacing +
                 thumbnailsHeight + spacing * expandFraction);
             workspaceBox.set_size(width,
@@ -68,7 +67,7 @@ class ControlsManagerLayout extends Clutter.BoxLayout {
                 thumbnailsHeight - spacing * expandFraction);
             break;
         case ControlsState.APP_GRID:
-            workspaceBox.set_origin(startX, startY + searchHeight + spacing);
+            workspaceBox.set_origin(0, startY + searchHeight + spacing);
             workspaceBox.set_size(
                 width,
                 Math.round(height * SMALL_WORKSPACE_RATIO));
@@ -78,19 +77,18 @@ class ControlsManagerLayout extends Clutter.BoxLayout {
         return workspaceBox;
     }
 
-    _getAppDisplayBoxForState(state, workAreaBox, searchHeight, dashHeight, appGridBox) {
-        const [startX, startY] = workAreaBox.get_origin();
-        const [width, height] = workAreaBox.get_size();
+    _getAppDisplayBoxForState(state, box, startY, searchHeight, dashHeight, appGridBox) {
+        const [width, height] = box.get_size();
         const appDisplayBox = new Clutter.ActorBox();
         const { spacing } = this;
 
         switch (state) {
         case ControlsState.HIDDEN:
         case ControlsState.WINDOW_PICKER:
-            appDisplayBox.set_origin(startX, workAreaBox.y2);
+            appDisplayBox.set_origin(0, box.y2);
             break;
         case ControlsState.APP_GRID:
-            appDisplayBox.set_origin(startX,
+            appDisplayBox.set_origin(0,
                 startY + searchHeight + spacing + appGridBox.get_height());
             break;
         }
@@ -128,37 +126,33 @@ class ControlsManagerLayout extends Clutter.BoxLayout {
         return [0, 0];
     }
 
-    vfunc_allocate(_container, _box) {
+    vfunc_allocate(container, box) {
         const childBox = new Clutter.ActorBox();
 
         const { spacing } = this;
 
         const monitor = Main.layoutManager.findMonitorForActor(this._container);
         const workArea = Main.layoutManager.getWorkAreaForMonitor(monitor.index);
-        const startX = workArea.x - monitor.x;
         const startY = workArea.y - monitor.y;
-        const workAreaBox = new Clutter.ActorBox();
-        workAreaBox.set_origin(startX, startY);
-        workAreaBox.set_size(workArea.width, workArea.height);
-        const [width, height] = workAreaBox.get_size();
+        box.y1 += startY;
+        const [width, height] = box.get_size();
         let availableHeight = height;
-        const availableWidth = width;
 
         // Search entry
         let [searchHeight] = this._searchEntry.get_preferred_height(width);
-        childBox.set_origin(startX, startY);
+        childBox.set_origin(0, startY);
         childBox.set_size(width, searchHeight);
         this._searchEntry.allocate(childBox);
 
         availableHeight -= searchHeight + spacing;
 
         // Dash
-        const maxDashHeight = Math.round(workAreaBox.get_height() * DASH_MAX_HEIGHT_RATIO);
+        const maxDashHeight = Math.round(box.get_height() * DASH_MAX_HEIGHT_RATIO);
         this._dash.setMaxSize(width, maxDashHeight);
 
         let [, dashHeight] = this._dash.get_preferred_height(width);
         dashHeight = Math.min(dashHeight, maxDashHeight);
-        childBox.set_origin(startX, startY + height - dashHeight);
+        childBox.set_origin(0, startY + height - dashHeight);
         childBox.set_size(width, dashHeight);
         this._dash.allocate(childBox);
 
@@ -173,13 +167,13 @@ class ControlsManagerLayout extends Clutter.BoxLayout {
             thumbnailsHeight = Math.min(
                 thumbnailsHeight * expandFraction,
                 height * WorkspaceThumbnail.MAX_THUMBNAIL_SCALE);
-            childBox.set_origin(startX, startY + searchHeight + spacing);
+            childBox.set_origin(0, startY + searchHeight + spacing);
             childBox.set_size(width, thumbnailsHeight);
             this._workspacesThumbnails.allocate(childBox);
         }
 
         // Workspaces
-        let params = [workAreaBox, searchHeight, dashHeight, thumbnailsHeight];
+        let params = [box, startY, searchHeight, dashHeight, thumbnailsHeight];
         const transitionParams = this._stateAdjustment.getStateTransitionParams();
 
         // Update cached boxes
@@ -204,7 +198,7 @@ class ControlsManagerLayout extends Clutter.BoxLayout {
             const workspaceAppGridBox =
                 this._cachedWorkspaceBoxes.get(ControlsState.APP_GRID);
 
-            params = [workAreaBox, searchHeight, dashHeight, workspaceAppGridBox];
+            params = [box, startY, searchHeight, dashHeight, workspaceAppGridBox];
             let appDisplayBox;
             if (!transitionParams.transitioning) {
                 appDisplayBox =
@@ -222,8 +216,8 @@ class ControlsManagerLayout extends Clutter.BoxLayout {
         }
 
         // Search
-        childBox.set_origin(startX, startY + searchHeight + spacing);
-        childBox.set_size(availableWidth, availableHeight);
+        childBox.set_origin(0, startY + searchHeight + spacing);
+        childBox.set_size(width, availableHeight);
 
         this._searchController.allocate(childBox);
 
