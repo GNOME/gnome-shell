@@ -466,6 +466,9 @@ class Panel extends St.Widget {
         this._rightBox = new St.BoxLayout({ name: 'panelRight' });
         this.add_child(this._rightBox);
 
+        this.connect('button-press-event', this._onButtonPress.bind(this));
+        this.connect('touch-event', this._onTouchEvent.bind(this));
+
         Main.overview.connect('showing', () => {
             this.add_style_pseudo_class('overview');
         });
@@ -556,38 +559,42 @@ class Panel extends St.Widget {
         if (Main.modalCount > 0)
             return Clutter.EVENT_PROPAGATE;
 
-        if (event.source != this)
+        const targetActor = global.stage.get_event_actor(event);
+        if (targetActor !== this)
             return Clutter.EVENT_PROPAGATE;
 
-        let { x, y } = event;
+        const [x, y] = event.get_coords();
         let dragWindow = this._getDraggableWindowForPosition(x);
 
         if (!dragWindow)
             return Clutter.EVENT_PROPAGATE;
+
+        const button = event.type() === Clutter.EventType.BUTTON_PRESS
+            ? event.get_button() : -1;
 
         return global.display.begin_grab_op(
             dragWindow,
             Meta.GrabOp.MOVING,
             false, /* pointer grab */
             true, /* frame action */
-            event.button || -1,
-            event.modifier_state,
-            event.time,
+            button,
+            event.get_state(),
+            event.get_time(),
             x, y) ? Clutter.EVENT_STOP : Clutter.EVENT_PROPAGATE;
     }
 
-    vfunc_button_press_event(buttonEvent) {
-        if (buttonEvent.button != 1)
+    _onButtonPress(actor, event) {
+        if (event.get_button() !== Clutter.BUTTON_PRIMARY)
             return Clutter.EVENT_PROPAGATE;
 
-        return this._tryDragWindow(buttonEvent);
+        return this._tryDragWindow(event);
     }
 
-    vfunc_touch_event(touchEvent) {
-        if (touchEvent.type != Clutter.EventType.TOUCH_BEGIN)
+    _onTouchEvent(actor, event) {
+        if (event.type() !== Clutter.EventType.TOUCH_BEGIN)
             return Clutter.EVENT_PROPAGATE;
 
-        return this._tryDragWindow(touchEvent);
+        return this._tryDragWindow(event);
     }
 
     vfunc_key_press_event(keyEvent) {
