@@ -2060,7 +2060,7 @@ class Indicator extends SystemIndicator {
             }
         }
 
-        this._portalHelperProxy?.AuthenticateAsync(path, '', timestamp).catch(logError);
+        this._portalHelperProxy?.AuthenticateAsync(path, this._client.connectivity_check_uri, timestamp).catch(logError);
 
         this._connectivityQueue.add(path);
     }
