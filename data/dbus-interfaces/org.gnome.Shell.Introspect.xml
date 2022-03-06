@@ -19,6 +19,12 @@
     <signal name="RunningApplicationsChanged" />
 
     <!--
+        WindowsChanged:
+        @short_description: Notifies when any window opens or closes
+    -->
+    <signal name="WindowsChanged" />
+
+    <!--
         GetRunningApplications:
         @short_description: Retrieves the description of all running applications
 

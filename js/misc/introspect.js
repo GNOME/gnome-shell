@@ -42,6 +42,9 @@ var IntrospectService = class {
                             this._syncRunningApplications();
                         });
 
+        tracker.connect('tracked-windows-changed',
+            () => this._dbusImpl.emit_signal('WindowsChanged', null));
+
         this._syncRunningApplications();
 
         this._senderChecker = new DBusSenderChecker(APP_ALLOWLIST);
