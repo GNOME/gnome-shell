@@ -939,7 +939,7 @@ var WindowManager = class {
         appSwitchAction.connect('activated', this._switchApp.bind(this));
         global.stage.add_action(appSwitchAction);
 
-        let mode = Shell.ActionMode.ALL & ~Shell.ActionMode.LOCK_SCREEN;
+        let mode = Shell.ActionMode.NORMAL;
         let topDragAction = new EdgeDragAction.EdgeDragAction(St.Side.TOP, mode);
         topDragAction.connect('activated',  () => {
             let currentWindow = global.display.focus_window;
