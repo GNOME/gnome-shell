@@ -453,6 +453,7 @@ var WorkspaceAnimationController = class {
         switchData.gestureActivated = true;
 
         const newWs = switchData.baseMonitorGroup.findClosestWorkspace(endProgress);
+        const endTime = Clutter.get_current_event_time();
 
         for (const monitorGroup of this._switchData.monitors) {
             const progress = monitorGroup.getWorkspaceProgress(newWs);
@@ -465,7 +466,7 @@ var WorkspaceAnimationController = class {
             if (monitorGroup.index === Main.layoutManager.primaryIndex) {
                 params.onComplete = () => {
                     if (!newWs.active)
-                        newWs.activate(global.get_current_time());
+                        newWs.activate(endTime);
                     this._finishWorkspaceSwitch(switchData);
                 };
             }
