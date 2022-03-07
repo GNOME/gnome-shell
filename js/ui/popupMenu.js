@@ -1374,7 +1374,7 @@ var PopupMenuManager = class {
                 return Clutter.EVENT_STOP;
             }
         } else if (event.type() === Clutter.EventType.ENTER &&
-                   (event.get_flags() & Clutter.EventFlags.GRAB_NOTIFY) === 0) {
+                   (event.get_flags() & Clutter.EventFlags.FLAG_GRAB_NOTIFY) === 0) {
             let hoveredMenu = this._findMenuForSource(targetActor);
 
             if (hoveredMenu && hoveredMenu !== menu)
