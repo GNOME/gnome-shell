@@ -1,3 +1,38 @@
+42.rc
+=====
+* Fix programatically set scrollview fade [Jonas D.; !2189]
+* Fix overview DND during screencasts [Ivan; !2192]
+* Fix taking screenshots with shift+PrntScrn [Ivan; !2202]
+* Disable workspace switching while in search [Sebastian; !2204]
+* Fix opening device settings for enterprise WPA networks [Xiaoguang; !2194]
+* Switch workspaces with Home and End keys in overview [kyte; !2201]
+* Fix regressions from style refresh [Sam; !2206, !2185, !2212]
+* Show disabled icons in system menu when devices are disabled [Jonas D.; !2198]
+* Fix inserting items from object inspector in looking glass [Florian; !2218]
+* Fix drag placeholder position in dash in RTL locales [Florian; !2219]
+* Simplify signal handling with (dis)connectObject() convenience methods
+  [Florian; !1953, !2221, !2226]
+* Ensure remote access indicator is shown for a minimum time [Jonas Å.; !2132]
+* Improve CSS shadow appearance [Daniel; !1918]
+* Ignore work area in overview layout [Florian; !2223]
+* Fix glitches in overview transition [Jonas D., Sebastian; !2203, !1980]
+* Fixed crash [Florian; !2207]
+* Misc. bug fixes and cleanups [Jonas D., Björn, Florian, Carlos, Jonas Å.;
+  !2191, !2188, !2195, !2196, !2184, !2183, !2200, !2209, !2211, !2214, !2216,
+  !2110, !2222, !2220, !2225]
+
+Contributors:
+  Björn Daase, Jonas Dreßler, Carlos Garnacho, Sam Hewitt, Sebastian Keller,
+  Ivan Molodetskikh, Florian Müllner, Daniel van Vugt, Xiaoguang Wang, kyte,
+  Jonas Ådahl
+
+Translators:
+  Jordi Mas [ca], Quentin PAGÈS [oc], Asier Sarasua Garmendia [eu],
+  Kukuh Syafaat [id], Emin Tufan Çetin [tr], Changwoo Ryu [ko],
+  Danial Behzadi [fa], Aurimas Černius [lt], Daniel Mustieles [es],
+  Dušan Kazik [sk], Alan Mortensen [da], Goran Vidović [hr], Jiri Grönroos [fi],
+  Luna Jernberg [sv], Piotr Drąg [pl]
+
 42.beta
 =======
 * Add Swiss French and Swiss German OSK layouts [Jürg; !2096]
