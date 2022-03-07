@@ -553,6 +553,10 @@ var WindowPreview = GObject.registerClass({
     }
 
     vfunc_leave_event(crossingEvent) {
+        if ((crossingEvent.flags & Clutter.EventFlags.FLAG_GRAB_NOTIFY) !== 0 &&
+            global.stage.get_grab_actor() === this._closeButton)
+            return super.vfunc_leave_event(crossingEvent);
+
         if (this._idleHideOverlayId > 0)
             GLib.source_remove(this._idleHideOverlayId);
 
@@ -582,7 +586,9 @@ var WindowPreview = GObject.registerClass({
 
     vfunc_key_focus_out() {
         super.vfunc_key_focus_out();
-        this.hideOverlay(true);
+
+        if (global.stage.get_grab_actor() !== this._closeButton)
+            this.hideOverlay(true);
     }
 
     vfunc_key_press_event(keyEvent) {
