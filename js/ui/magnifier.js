@@ -215,6 +215,8 @@ var Magnifier = class Magnifier {
         if (!this._pointerWatch) {
             let interval = 1000 / 60;
             this._pointerWatch = PointerWatcher.getPointerWatcher().addWatch(interval, this.scrollToMousePos.bind(this));
+
+            this.scrollToMousePos();
         }
     }
 
