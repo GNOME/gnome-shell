@@ -126,7 +126,13 @@ var Magnifier = class Magnifier {
 
         if (seat.is_unfocus_inhibited())
             seat.uninhibit_unfocus();
-        this._cursorTracker.set_pointer_visible(true);
+
+        if (this._cursorVisibilityChangedId) {
+            this._cursorTracker.disconnect(this._cursorVisibilityChangedId);
+            delete this._cursorVisibilityChangedId;
+
+            this._cursorTracker.set_pointer_visible(true);
+        }
     }
 
     /**
@@ -138,7 +144,14 @@ var Magnifier = class Magnifier {
 
         if (!seat.is_unfocus_inhibited())
             seat.inhibit_unfocus();
-        this._cursorTracker.set_pointer_visible(false);
+
+        if (!this._cursorVisibilityChangedId) {
+            this._cursorTracker.set_pointer_visible(false);
+            this._cursorVisibilityChangedId = this._cursorTracker.connect('visibility-changed', () => {
+                if (this._cursorTracker.get_pointer_visible())
+                    this._cursorTracker.set_pointer_visible(false);
+            });
+        }
     }
 
     /**
