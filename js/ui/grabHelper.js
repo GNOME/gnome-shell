@@ -272,7 +272,7 @@ var GrabHelper = class GrabHelper {
             this.currentGrab.actor.contains(targetActor))
             return Clutter.EVENT_PROPAGATE;
 
-        if (Main.keyboard.shouldTakeEvent(event))
+        if (Main.keyboard.maybeHandleEvent(event))
             return Clutter.EVENT_PROPAGATE;
 
         if (button || touchBegin) {

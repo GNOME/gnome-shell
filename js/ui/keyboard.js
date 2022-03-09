@@ -1263,13 +1263,19 @@ var KeyboardManager = class KeyBoardManager {
             this._keyboard.resetSuggestions();
     }
 
-    shouldTakeEvent(event) {
+    maybeHandleEvent(event) {
         if (!this._keyboard)
             return false;
 
         const actor = global.stage.get_event_actor(event);
-        return Main.layoutManager.keyboardBox.contains(actor) ||
-               !!actor._extendedKeys || !!actor.extendedKey;
+
+        if (Main.layoutManager.keyboardBox.contains(actor) ||
+            !!actor._extendedKeys || !!actor.extendedKey) {
+            actor.event(event);
+            return true;
+        }
+
+        return false;
     }
 };
 
