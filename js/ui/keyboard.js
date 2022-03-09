@@ -449,11 +449,13 @@ var Key = GObject.registerClass({
         button.keyWidth = 1;
         button.connect('button-press-event', () => {
             this._press(key);
-            return Clutter.EVENT_PROPAGATE;
+            button.add_style_pseudo_class('active');
+            return Clutter.EVENT_STOP;
         });
         button.connect('button-release-event', () => {
             this._release(key);
-            return Clutter.EVENT_PROPAGATE;
+            button.remove_style_pseudo_class('active');
+            return Clutter.EVENT_STOP;
         });
         button.connect('touch-event', (actor, event) => {
             // We only handle touch events here on wayland. On X11
@@ -472,15 +474,18 @@ var Key = GObject.registerClass({
                 event.type() == Clutter.EventType.TOUCH_BEGIN) {
                 this._touchPressSlot = slot;
                 this._press(key);
+                button.add_style_pseudo_class('active');
             } else if (event.type() === Clutter.EventType.TOUCH_END) {
                 if (!this._touchPressSlot ||
-                    this._touchPressSlot === slot)
+                    this._touchPressSlot === slot) {
                     this._release(key);
+                    button.remove_style_pseudo_class('active');
+                }
 
                 if (this._touchPressSlot === slot)
                     this._touchPressSlot = null;
             }
-            return Clutter.EVENT_PROPAGATE;
+            return Clutter.EVENT_STOP;
         });
 
         return button;
