@@ -79,7 +79,7 @@ const DEFAULT_FOLDERS = {
     },
     'YaST': {
         name: 'suse-yast.directory',
-        categegories: ['X-SuSE-YaST'],
+        categories: ['X-SuSE-YaST'],
     },
 };
 
