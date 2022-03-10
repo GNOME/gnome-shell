@@ -1467,7 +1467,7 @@ class AppDisplay extends BaseAppView {
         this._folderSettings.set_strv('folder-children', folders);
 
         const { path } = this._folderSettings;
-        for (const folder in folders) {
+        for (const folder of folders) {
             const { name, categories, apps } = DEFAULT_FOLDERS[folder];
             const child = new Gio.Settings({
                 schema_id: 'org.gnome.desktop.app-folders.folder',
