@@ -351,7 +351,10 @@ class WorldClocksSection extends St.Button {
         let header = new St.Label({ style_class: 'world-clocks-header',
                                     x_align: Clutter.ActorAlign.START,
                                     text: title });
-        layout.attach(header, 0, 0, 2, 1);
+        if (this._grid.text_direction === Clutter.TextDirection.RTL)
+            layout.attach(header, 2, 0, 1, 1);
+        else
+            layout.attach(header, 0, 0, 2, 1);
         this.label_actor = header;
 
         for (let i = 0; i < this._locations.length; i++) {
