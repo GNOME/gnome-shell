@@ -18,8 +18,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
 "POT-Creation-Date: 2022-03-12 09:44+0000\n"
-"PO-Revision-Date: 2022-03-10 18:06+0900\n"
-"Last-Translator: 小山田 純 <oyamadajun@outlook.jp>\n"
+"PO-Revision-Date: 2022-03-12 19:00+0900\n"
+"Last-Translator: sicklylife <translation@sicklylife.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
 "Language: ja\n"
 "MIME-Version: 1.0\n"
@@ -74,10 +74,8 @@ msgstr "スクリーンショット"
 
 #: data/50-gnome-shell-screenshots.xml:9
 #: data/org.gnome.shell.gschema.xml.in:235
-#, fuzzy
-#| msgid "Take a screenshot"
 msgid "Take a screenshot interactively"
-msgstr "スクリーンショットを撮る"
+msgstr "インタラクティブにスクリーンショットを撮る"
 
 #: data/50-gnome-shell-screenshots.xml:12
 #: data/org.gnome.shell.gschema.xml.in:247
@@ -92,7 +90,7 @@ msgstr "ウィンドウのスクリーンショットを撮る"
 #: data/50-gnome-shell-screenshots.xml:18
 #: data/org.gnome.shell.gschema.xml.in:239
 msgid "Record a screencast interactively"
-msgstr ""
+msgstr "インタラクティブにスクリーンキャストを撮る"
 
 #: data/50-gnome-shell-system.xml:6
 msgid "System"
@@ -635,8 +633,6 @@ msgstr ""
 
 #. Translators: The name of the screenshot UI action in search
 #: js/misc/systemActions.js:139
-#, fuzzy
-#| msgid "Take a screenshot"
 msgctxt "search-result"
 msgid "Take a Screenshot"
 msgstr "スクリーンショットを撮る"
@@ -645,6 +641,8 @@ msgstr "スクリーンショットを撮る"
 #: js/misc/systemActions.js:142
 msgid "screenshot;screencast;snip;capture;record"
 msgstr ""
+"screenshot;screencast;snip;capture;record;スクリーンショット;スクリーンキャスト;"
+"スニップ;キャプチャー;レコーディング;撮影;録画;画面;記録;"
 
 #: js/misc/systemActions.js:242
 msgctxt "search-result"
@@ -810,16 +808,14 @@ msgid "Grant Access"
 msgstr "許可"
 
 #: js/ui/appFavorites.js:164
-#, fuzzy, javascript-format
-#| msgid "%s has been added to your favorites."
+#, javascript-format
 msgid "%s has been pinned to the dash."
-msgstr "%s をお気に入りに追加しました。"
+msgstr "%s をダッシュボードにピン留めしました。"
 
 #: js/ui/appFavorites.js:197
-#, fuzzy, javascript-format
-#| msgid "%s has been removed from your favorites."
+#, javascript-format
 msgid "%s has been unpinned from the dash."
-msgstr "%s をお気に入りから削除しました。"
+msgstr "%s のピン留めを外しました。"
 
 #. Translators: This is the heading of a list of open windows
 #: js/ui/appMenu.js:46
@@ -840,11 +836,11 @@ msgstr "終了"
 
 #: js/ui/appMenu.js:156 js/ui/dash.js:249
 msgid "Unpin"
-msgstr ""
+msgstr "ピン留めを外す"
 
 #: js/ui/appMenu.js:157
 msgid "Pin to Dash"
-msgstr ""
+msgstr "ダッシュボードにピン留め"
 
 #: js/ui/appMenu.js:174
 msgid "Launch using Integrated Graphics Card"
@@ -1691,109 +1687,90 @@ msgid "Lock was blocked by an application"
 msgstr "アプリケーションによってロックがブロックされました"
 
 #: js/ui/screenshot.js:1148
-#, fuzzy
-#| msgid "Select Network"
 msgid "Selection"
-msgstr "ネットワークを選択"
+msgstr "選択範囲"
 
 #: js/ui/screenshot.js:1158
 msgid "Area Selection"
-msgstr ""
+msgstr "領域選択"
 
 #: js/ui/screenshot.js:1163
 msgid "Screen"
 msgstr "画面"
 
 #: js/ui/screenshot.js:1173
-#, fuzzy
-#| msgid "Screen Reader"
 msgid "Screen Selection"
-msgstr "スクリーンリーダー"
+msgstr "画面選択"
 
 #: js/ui/screenshot.js:1178
-#, fuzzy
-#| msgid "Windows"
 msgid "Window"
 msgstr "ウィンドウ"
 
 #: js/ui/screenshot.js:1188
 msgid "Window Selection"
-msgstr ""
+msgstr "ウィンドウ選択"
 
 #: js/ui/screenshot.js:1225
-#, fuzzy
-#| msgid "Screenshot taken"
 msgid "Screenshot / Screencast"
-msgstr "スクリーンショットを撮影しました"
+msgstr "スクリーンショット / スクリーンキャスト"
 
 #: js/ui/screenshot.js:1261
-#, fuzzy
-#| msgid "Show Errors"
 msgid "Show Pointer"
-msgstr "エラーを表示"
+msgstr "ポインターを表示"
 
 #. Translators: this is the folder where recorded
 #. screencasts are stored.
 #: js/ui/screenshot.js:1828
-#, fuzzy
-#| msgid "Screenshots"
 msgid "Screencasts"
-msgstr "スクリーンショット"
+msgstr "スクリーンキャスト"
 
+# ここは英語のままの方がいいようなので翻訳しません (sicklylife)
 #. Translators: this is a filename used for screencast
 #. * recording, where "%d" and "%t" date and time, e.g.
 #. * "Screencast from 07-17-2013 10:00:46 PM.webm"
 #: js/ui/screenshot.js:1833
 #, no-c-format
 msgid "Screencast from %d %t.webm"
-msgstr ""
+msgstr "Screencast from %d %t.webm"
 
 #. Translators: notification source name.
 #: js/ui/screenshot.js:1902 js/ui/screenshot.js:2115
-#, fuzzy
-#| msgid "Screenshots"
 msgid "Screenshot"
 msgstr "スクリーンショット"
 
 #. Translators: notification title.
 #: js/ui/screenshot.js:1908
-#, fuzzy
-#| msgid "Screen Keyboard"
 msgid "Screencast recorded"
-msgstr "スクリーンキーボード"
+msgstr "スクリーンキャストを撮影しました"
 
 #. Translators: notification body when a screencast was recorded.
 #: js/ui/screenshot.js:1910
 msgid "Click here to view the video."
-msgstr ""
+msgstr "ここをクリックすると動画を再生します。"
 
 #. Translators: button on the screencast notification.
 #. Translators: button on the screenshot notification.
 #: js/ui/screenshot.js:1913 js/ui/screenshot.js:2129
-#, fuzzy
-#| msgid "Show Details"
 msgid "Show in Files"
-msgstr "詳細を表示"
+msgstr "“ファイル”で表示"
 
+# ここは英語のままの方がいいようなので翻訳しません (sicklylife)
 #. Translators: this is the name of the file that the screenshot is
 #. saved to. The placeholder is a timestamp, e.g. "2017-05-21 12-24-03".
 #: js/ui/screenshot.js:2075
-#, fuzzy, javascript-format
-#| msgid "Screenshots"
+#, javascript-format
 msgid "Screenshot from %s"
-msgstr "スクリーンショット"
+msgstr "Screenshot from %s"
 
 #. Translators: notification title.
 #: js/ui/screenshot.js:2121
-#, fuzzy
-#| msgid "Screenshot taken"
 msgid "Screenshot captured"
 msgstr "スクリーンショットを撮影しました"
 
 #. Translators: notification body when a screenshot was captured.
 #: js/ui/screenshot.js:2123
 msgid "You can paste the image from the clipboard."
-msgstr ""
+msgstr "クリップボードから画像を貼り付けることができます。"
 
 #: js/ui/screenshot.js:2176 js/ui/screenshot.js:2341
 msgid "Screenshot taken"
@@ -2308,10 +2285,8 @@ msgid "Turn off"
 msgstr "オフにする"
 
 #: js/ui/status/remoteAccess.js:149
-#, fuzzy
-#| msgid "Screenshots"
 msgid "Stop Screencast"
-msgstr "スクリーンショット"
+msgstr "スクリーンキャストを停止"
 
 #. The menu only appears when airplane mode is on, so just
 #. statically build it as if it was on, rather than dynamically
