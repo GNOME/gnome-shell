@@ -1,5 +1,5 @@
 # Japanese translation of gnome-shell package.
-# Copyright (C) 2010-2017, 2019-2020 the gnome-shell copyright holder.
+# Copyright (C) 2010-2017, 2019-2020, 2022 the gnome-shell copyright holder.
 # This file is distributed under the same license as the gnome-shell package.
 # Nishio Futoshi <fut_nis@d3.dion.ne.jp>, 2010.
 # Kiyotaka NISHIBORI <ml.nishibori.kiyotaka@gmail.com>, 2011.
@@ -10,21 +10,26 @@
 # Yoji TOYODA <bsyamato@sea.plala.or.jp>, 2013.
 # Ikuya Awashiro <ikuya@fruitsbasket.info>, 2014.
 # IWAI, Masaharu <iwaim.sub@gmail.com>, 2015.
-# sicklylife <translation@sicklylife.jp>, 2019-2020.
+# sicklylife <translation@sicklylife.jp>, 2019-2020, 2022.
+# 小山田 純 <oyamadajun@outlook.jp>, 2022.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
 "POT-Creation-Date: 2021-11-02 15:41+0000\n"
-"PO-Revision-Date: 2022-02-01 20:00+0900\n"
-"Last-Translator: sicklylife <translation@sicklylife.jp>\n"
+"PO-Revision-Date: 2022-03-10 18:06+0900\n"
+"Last-Translator: 小山田 純 <oyamadajun@outlook.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
 "Language: ja\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+
+#: js/ui/screenshot.js:1163
+msgid "Screen"
+msgstr "画面"
 
 #: data/50-gnome-shell-launchers.xml:6
 msgid "Launchers"
@@ -65,6 +70,21 @@ msgstr "お気に入りのアプリケーション 8 をアクティブにする
 #: data/50-gnome-shell-launchers.xml:42
 msgid "Activate favorite application 9"
 msgstr "お気に入りのアプリケーション 9 をアクティブにする"
+
+#. Translators: name of the folder under ~/Pictures for screenshots.
+#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2062
+msgid "Screenshots"
+msgstr "スクリーンショット"
+
+#: data/50-gnome-shell-screenshots.xml:12
+#: data/org.gnome.shell.gschema.xml.in:247
+msgid "Take a screenshot"
+msgstr "スクリーンショットを撮る"
+
+#: data/50-gnome-shell-screenshots.xml:15
+#: data/org.gnome.shell.gschema.xml.in:243
+msgid "Take a screenshot of a window"
+msgstr "ウィンドウのスクリーンショットを撮る"
 
 #: data/50-gnome-shell-system.xml:6
 msgid "System"
@@ -2351,6 +2371,11 @@ msgstr[0] "%d 秒後に元の設定に戻ります"
 msgid "%d × %d"
 msgstr "%d × %d"
 
+#. Translators: entry in the window right click menu.
+#: js/ui/windowMenu.js:29
+msgid "Take Screenshot"
+msgstr "スクリーンショットを撮る"
+
 #: js/ui/windowMenu.js:27
 msgid "Hide"
 msgstr "隠す"
@@ -2513,6 +2538,7 @@ msgstr "削除"
 #: subprojects/extensions-app/js/main.js:216
 msgid "translator-credits"
 msgstr ""
+"小山田 純 <oyamadajun@outlook.jp>\n"
 "Hideki Yamane <henrich@debian.org>\n"
 "Ikuya Awashiro <ikuya@fruitsbasket.info>\n"
 "IWAI, Masaharu <iwaim.sub@gmail.com>\n"
@@ -2537,6 +2563,10 @@ msgstr "現在の GNOME のバージョンと互換性のない拡張機能で�
 #: subprojects/extensions-app/js/main.js:497
 msgid "The extension had an error"
 msgstr "拡張機能にエラーがありました"
+
+#: subprojects/extensions-app/data/ui/extension-row.ui:62
+msgid "The extension can be updated"
+msgstr "拡張機能をアップデートできます"
 
 #: subprojects/extensions-app/data/ui/extension-row.ui:83
 #: subprojects/extensions-tool/src/command-create.c:322
