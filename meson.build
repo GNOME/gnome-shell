@@ -1,5 +1,5 @@
 project('gnome-shell', 'c',
-  version: '42.rc',
+  version: '42.0',
   meson_version: '>= 0.58.0',
   license: 'GPLv2+'
 )
@@ -25,7 +25,7 @@ gio_req = '>= 2.56.0'
 gi_req = '>= 1.49.1'
 gjs_req = '>= 1.71.1'
 gtk_req = '>= 3.15.0'
-mutter_req = '>= 42.rc'
+mutter_req = '>= 42.0'
 polkit_req = '>= 0.100'
 schemas_req = '>= 42.beta'
 startup_req = '>= 0.11'

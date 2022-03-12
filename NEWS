@@ -1,3 +1,17 @@
+42.0
+====
+* introspect: Add WindowsChanged signal [Cenk; !2229]
+* Fix on-screen keyboard during grabs [Carlos; !2237]
+* Fixed crash [Adam; !2238]
+
+Contributors:
+  Carlos Garnacho, Cenk Uluisik, Adam Williamson
+
+Translators:
+  Fabio Tomat [fur], Tim Sabsch [de], Ivan Molodetskikh [ru],
+  Yosef Or Boczko [he], Марко Костић [sr], Baurzhan Muftakhidinov [kk],
+  純 小山田 [ja], sicklylife [ja]
+
 42.rc
 =====
 * Fix programatically set scrollview fade [Jonas D.; !2189]
