@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
 "POT-Creation-Date: 2022-02-24 11:53+0000\n"
-"PO-Revision-Date: 2022-03-02 01:51+0100\n"
+"PO-Revision-Date: 2022-03-13 16:33+0100\n"
 "Last-Translator: gogo <trebelnik2@gmail.com>\n"
 "Language-Team: Croatian <hr@li.org>\n"
 "Language: hr\n"
@@ -838,7 +838,7 @@ msgstr "%s je uklonjen iz ploče."
 #. Translators: This is the heading of a list of open windows
 #: js/ui/appMenu.js:46
 msgid "Open Windows"
-msgstr "Otvaranje prozora"
+msgstr "Otvoreni prozori"
 
 #: js/ui/appMenu.js:54
 msgid "New Window"
