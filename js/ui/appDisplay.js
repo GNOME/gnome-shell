@@ -1669,6 +1669,12 @@ class AppDisplay extends BaseAppView {
         } else if (event.get_key_symbol() === Clutter.KEY_Page_Down) {
             this.goToPage(this._grid.currentPage + 1);
             return Clutter.EVENT_STOP;
+        } else if (event.get_key_symbol() === Clutter.KEY_Home) {
+            this.goToPage(0);
+            return Clutter.EVENT_STOP;
+        } else if (event.get_key_symbol() === Clutter.KEY_End) {
+            this.goToPage(this._grid.nPages - 1);
+            return Clutter.EVENT_STOP;
         }
 
         return Clutter.EVENT_PROPAGATE;
