@@ -1471,7 +1471,7 @@ class AppDisplay extends BaseAppView {
             const { name, categories, apps } = DEFAULT_FOLDERS[folder];
             const child = new Gio.Settings({
                 schema_id: 'org.gnome.desktop.app-folders.folder',
-                path: `${path}/folders/${folder}/`,
+                path: `${path}folders/${folder}/`,
             });
             child.set_string('name', name);
             child.set_boolean('translate', true);
