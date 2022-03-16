@@ -111,6 +111,34 @@ class OverviewActor extends St.BoxLayout {
     }
 });
 
+const OverviewShownState = {
+    HIDDEN: 'HIDDEN',
+    HIDING: 'HIDING',
+    SHOWING: 'SHOWING',
+    SHOWN: 'SHOWN',
+};
+
+const OVERVIEW_SHOWN_TRANSITIONS = {
+    [OverviewShownState.HIDDEN]: {
+        signal: 'hidden',
+        allowedTransitions: [OverviewShownState.SHOWING],
+    },
+    [OverviewShownState.HIDING]: {
+        signal: 'hiding',
+        allowedTransitions:
+            [OverviewShownState.HIDDEN, OverviewShownState.SHOWING],
+    },
+    [OverviewShownState.SHOWING]: {
+        signal: 'showing',
+        allowedTransitions:
+            [OverviewShownState.SHOWN, OverviewShownState.HIDING],
+    },
+    [OverviewShownState.SHOWN]: {
+        signal: 'shown',
+        allowedTransitions: [OverviewShownState.HIDING],
+    },
+};
+
 var Overview = class extends Signals.EventEmitter {
     constructor() {
         super();
@@ -162,6 +190,7 @@ var Overview = class extends Signals.EventEmitter {
         this._modal = false;            // have a modal grab
         this._animationInProgress = false;
         this._visibleTarget = false;
+        this._shownState = OverviewShownState.HIDDEN;
 
         // During transitions, we raise this to the top to avoid having the overview
         // area be reactive; it causes too many issues such as double clicks on
@@ -256,6 +285,19 @@ var Overview = class extends Signals.EventEmitter {
             return;
 
         this._shellInfo.setMessage(text, options);
+    }
+
+    _changeShownState(state) {
+        const {allowedTransitions} =
+            OVERVIEW_SHOWN_TRANSITIONS[this._shownState];
+
+        if (!allowedTransitions.includes(state)) {
+            throw new Error('Invalid overview shown transition from ' +
+                `${this._shownState} to ${state}`);
+        }
+
+        this._shownState = state;
+        this.emit(OVERVIEW_SHOWN_TRANSITIONS[state].signal);
     }
 
     _onDragBegin() {
@@ -370,7 +412,7 @@ var Overview = class extends Signals.EventEmitter {
             Main.layoutManager.overviewGroup.set_child_above_sibling(
                 this._coverPane, null);
             this._coverPane.show();
-            this.emit('showing');
+            this._changeShownState(OverviewShownState.SHOWING);
 
             Main.layoutManager.showOverview();
             this._syncGrab();
@@ -384,7 +426,7 @@ var Overview = class extends Signals.EventEmitter {
         if (endProgress === 0) {
             this._shown = false;
             this._visibleTarget = false;
-            this.emit('hiding');
+            this._changeShownState(OverviewShownState.HIDING);
             Main.panel.style = `transition-duration: ${duration}ms;`;
             onComplete = () => this._hideDone();
         } else {
@@ -523,7 +565,7 @@ var Overview = class extends Signals.EventEmitter {
         this._coverPane.show();
 
         this._overview.prepareToEnterOverview();
-        this.emit('showing');
+        this._changeShownState(OverviewShownState.SHOWING);
         this._overview.animateToOverview(state, () => this._showDone());
     }
 
@@ -531,7 +573,7 @@ var Overview = class extends Signals.EventEmitter {
         this._animationInProgress = false;
         this._coverPane.hide();
 
-        this.emit('shown');
+        this._changeShownState(OverviewShownState.SHOWN);
         // Handle any calls to hide* while we were showing
         if (!this._shown)
             this._animateNotVisible();
@@ -577,7 +619,7 @@ var Overview = class extends Signals.EventEmitter {
         this._coverPane.show();
 
         this._overview.prepareToLeaveOverview();
-        this.emit('hiding');
+        this._changeShownState(OverviewShownState.HIDING);
         this._overview.animateFromOverview(() => this._hideDone());
     }
 
@@ -592,11 +634,11 @@ var Overview = class extends Signals.EventEmitter {
 
         // Handle any calls to show* while we were hiding
         if (this._shown) {
-            this.emit('hidden');
+            this._changeShownState(OverviewShownState.HIDDEN);
             this._animateVisible(OverviewControls.ControlsState.WINDOW_PICKER);
         } else {
             Main.layoutManager.hideOverview();
-            this.emit('hidden');
+            this._changeShownState(OverviewShownState.HIDDEN);
         }
 
         Main.panel.style = null;
@@ -636,7 +678,7 @@ var Overview = class extends Signals.EventEmitter {
 
         Meta.disable_unredirect_for_display(global.display);
 
-        this.emit('showing');
+        this._changeShownState(OverviewShownState.SHOWING);
 
         this._overview.runStartupAnimation(() => {
             if (!this._syncGrab()) {
@@ -645,7 +687,7 @@ var Overview = class extends Signals.EventEmitter {
             }
 
             Main.panel.style = null;
-            this.emit('shown');
+            this._changeShownState(OverviewShownState.SHOWN);
             callback();
         });
     }
