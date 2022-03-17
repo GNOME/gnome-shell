@@ -115,7 +115,6 @@ var _Draggable = class _Draggable extends Signals.EventEmitter {
         this._dragActorOpacity = params.dragActorOpacity;
         this._dragTimeoutThreshold = params.timeoutThreshold;
 
-        this._buttonDown = false; // The mouse button has been pressed and has not yet been released.
         this._animationInProgress = false; // The drag is over and the item is in the process of animating to its original position (snapping back or reverting).
         this._dragCancellable = true;
     }
@@ -124,7 +123,6 @@ var _Draggable = class _Draggable extends Signals.EventEmitter {
         if (event.get_button() != 1)
             return Clutter.EVENT_PROPAGATE;
 
-        this._buttonDown = true;
         this._grabActor(event.get_device());
 
         let [stageX, stageY] = event.get_coords();
@@ -151,7 +149,6 @@ var _Draggable = class _Draggable extends Signals.EventEmitter {
             !global.display.is_pointer_emulating_sequence(event.get_event_sequence()))
             return Clutter.EVENT_PROPAGATE;
 
-        this._buttonDown = true;
         this._grabActor(event.get_device(), event.get_event_sequence());
         this._dragStartTime = event.get_time();
         this._dragThresholdIgnored = false;
@@ -243,7 +240,6 @@ var _Draggable = class _Draggable extends Signals.EventEmitter {
         // to complete the drag and ensure that whatever happens to be under the pointer does
         // not get triggered if the drag was cancelled with Esc.
         if (this._eventIsRelease(event)) {
-            this._buttonDown = false;
             if (this._dragState == DragState.DRAGGING) {
                 return this._dragActorDropped(event);
             } else if ((this._dragActor != null || this._dragState == DragState.CANCELLED) &&
@@ -288,7 +284,6 @@ var _Draggable = class _Draggable extends Signals.EventEmitter {
      * PopupMenu.ignoreRelease())
      */
     fakeRelease() {
-        this._buttonDown = false;
         this._ungrabActor();
     }
 
@@ -703,8 +698,7 @@ var _Draggable = class _Draggable extends Signals.EventEmitter {
 
         if (this._actorDestroyed || wasCancelled) {
             global.display.set_cursor(Meta.Cursor.DEFAULT);
-            if (!this._buttonDown)
-                this._dragComplete();
+            this._dragComplete();
             this.emit('drag-end', eventTime, false);
             if (!this._dragOrigParent && this._dragActor)
                 this._dragActor.destroy();
@@ -755,8 +749,7 @@ var _Draggable = class _Draggable extends Signals.EventEmitter {
             return;
 
         this._animationInProgress = false;
-        if (!this._buttonDown)
-            this._dragComplete();
+        this._dragComplete();
 
         global.display.set_cursor(Meta.Cursor.DEFAULT);
     }
