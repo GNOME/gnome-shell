@@ -26,7 +26,6 @@ import * as Main from './main.js';
 
 import * as Config from '../misc/config.js';
 
-const MENU_POPUP_TIMEOUT = 600;
 const POPDOWN_DIALOG_TIMEOUT = 500;
 
 const FOLDER_SUBICON_FRACTION = .4;
@@ -2986,10 +2985,20 @@ export const AppIcon = GObject.registerClass({
         this._menu = null;
         this._menuManager = new PopupMenu.PopupMenuManager(this);
 
-        this._menuTimeoutId = 0;
         this.app.connectObject('notify::state',
             () => this._updateRunningStyle(), this);
         this._updateRunningStyle();
+
+        const longPressGesture = new Clutter.LongPressGesture();
+        longPressGesture.connect('recognize', () => this.popupMenu());
+        this.add_action(longPressGesture);
+
+        const rightClickGesture = new Clutter.ClickGesture({
+            required_button: Clutter.BUTTON_SECONDARY,
+            recognize_on_press: true,
+        });
+        rightClickGesture.connect('recognize', () => this.popupMenu());
+        this.add_action(rightClickGesture);
     }
 
     _onDestroy() {
@@ -2999,26 +3008,16 @@ export const AppIcon = GObject.registerClass({
             GLib.source_remove(this._folderPreviewId);
             this._folderPreviewId = 0;
         }
-
-        this._removeMenuTimeout();
     }
 
     _onDragBegin() {
         if (this._menu)
             this._menu.close(true);
-        this._removeMenuTimeout();
         super._onDragBegin();
     }
 
     _createIcon(iconSize) {
         return this.app.create_icon_texture(iconSize);
-    }
-
-    _removeMenuTimeout() {
-        if (this._menuTimeoutId > 0) {
-            GLib.source_remove(this._menuTimeoutId);
-            this._menuTimeoutId = 0;
-        }
     }
 
     _updateDotStyle() {
@@ -3033,46 +3032,14 @@ export const AppIcon = GObject.registerClass({
             this._dot.hide();
     }
 
-    _setPopupTimeout() {
-        this._removeMenuTimeout();
-        this._menuTimeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, MENU_POPUP_TIMEOUT, () => {
-            this._menuTimeoutId = 0;
-            this.popupMenu();
-            return GLib.SOURCE_REMOVE;
-        });
-        GLib.Source.set_name_by_id(this._menuTimeoutId, '[gnome-shell] this.popupMenu');
-    }
-
     vfunc_leave_event(event) {
         const ret = super.vfunc_leave_event(event);
 
         this.fake_release();
-        this._removeMenuTimeout();
-        return ret;
-    }
-
-    vfunc_button_press_event(event) {
-        const ret = super.vfunc_button_press_event(event);
-        const button = event.get_button();
-        if (button === 1) {
-            this._setPopupTimeout();
-        } else if (button === 3) {
-            this.popupMenu();
-            return Clutter.EVENT_STOP;
-        }
-        return ret;
-    }
-
-    vfunc_touch_event(event) {
-        const ret = super.vfunc_touch_event(event);
-        if (event.type() === Clutter.EventType.TOUCH_BEGIN)
-            this._setPopupTimeout();
-
         return ret;
     }
 
     vfunc_clicked(button) {
-        this._removeMenuTimeout();
         this.activate(button);
     }
 
@@ -3087,7 +3054,6 @@ export const AppIcon = GObject.registerClass({
 
     popupMenu() {
         this.setForcedHighlight(true);
-        this._removeMenuTimeout();
         this.fake_release();
 
         if (!this._menu) {
@@ -3228,7 +3194,6 @@ export const AppIcon = GObject.registerClass({
     cancelActions() {
         if (this._menu)
             this._menu.close(true);
-        this._removeMenuTimeout();
         super.cancelActions();
     }
 });
