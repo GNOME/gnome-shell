@@ -183,10 +183,7 @@ st_settings_get_property (GObject    *object,
       g_value_set_boolean (value, settings->high_contrast);
       break;
     case PROP_GTK_ICON_THEME:
-      if (settings->high_contrast)
-        g_value_set_string (value, "HighContrast");
-      else
-        g_value_set_string (value, settings->gtk_icon_theme);
+      g_value_set_string (value, settings->gtk_icon_theme);
       break;
     case PROP_MAGNIFIER_ACTIVE:
       g_value_set_boolean (value, settings->magnifier_active);
