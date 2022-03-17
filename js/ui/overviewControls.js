@@ -708,8 +708,6 @@ class ControlsManager extends St.Widget {
 
         this._searchController.prepareToEnterOverview();
         this._workspacesDisplay.prepareToEnterOverview();
-        if (!this._workspacesDisplay.activeWorkspaceHasMaximizedWindows())
-            Main.overview.fadeOutDesktop();
 
         this._stateAdjustment.value = ControlsState.HIDDEN;
         this._stateAdjustment.ease(state, {
@@ -731,8 +729,6 @@ class ControlsManager extends St.Widget {
         this._ignoreShowAppsButtonToggle = true;
 
         this._workspacesDisplay.prepareToLeaveOverview();
-        if (!this._workspacesDisplay.activeWorkspaceHasMaximizedWindows())
-            Main.overview.fadeInDesktop();
 
         this._stateAdjustment.ease(ControlsState.HIDDEN, {
             duration: Overview.ANIMATION_TIME,

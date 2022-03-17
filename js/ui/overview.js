@@ -1,5 +1,5 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported Overview */
+/* exported Overview, ANIMATION_TIME */
 
 const { Clutter, Gio, GLib, GObject, Meta, Shell, St } = imports.gi;
 const Signals = imports.signals;
@@ -144,9 +144,6 @@ var Overview = class {
 
         if (this.isDummy)
             return;
-
-        this._desktopFade = new St.Widget();
-        Main.layoutManager.overviewGroup.add_child(this._desktopFade);
 
         this._activationTime = 0;
 
@@ -325,24 +322,6 @@ var Overview = class {
         return Clutter.EVENT_PROPAGATE;
     }
 
-    _getDesktopClone() {
-        let windows = global.get_window_actors().filter(
-            w => w.meta_window.get_window_type() === Meta.WindowType.DESKTOP);
-        if (windows.length == 0)
-            return null;
-
-        let window = windows[0];
-        const clone = new Clutter.Clone({
-            source: window,
-            x: window.x,
-            y: window.y,
-        });
-        clone.source.connect('destroy', () => {
-            clone.destroy();
-        });
-        return clone;
-    }
-
     _relayout() {
         // To avoid updating the position and size of the workspaces
         // we just hide the overview. The positions will be updated
@@ -442,34 +421,6 @@ var Overview = class {
         this._overview.searchEntry.grab_key_focus();
     }
 
-    fadeInDesktop() {
-        this._desktopFade.opacity = 0;
-        this._desktopFade.show();
-        this._desktopFade.ease({
-            opacity: 255,
-            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            duration: ANIMATION_TIME,
-        });
-    }
-
-    fadeOutDesktop() {
-        if (!this._desktopFade.get_n_children()) {
-            let clone = this._getDesktopClone();
-            if (!clone)
-                return;
-
-            this._desktopFade.add_child(clone);
-        }
-
-        this._desktopFade.opacity = 255;
-        this._desktopFade.show();
-        this._desktopFade.ease({
-            opacity: 0,
-            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            duration: ANIMATION_TIME,
-        });
-    }
-
     // Checks if the Activities button is currently sensitive to
     // clicks. The first call to this function within the
     // OVERVIEW_ACTIVATION_TIMEOUT time of the hot corner being
@@ -561,7 +512,6 @@ var Overview = class {
 
     _showDone() {
         this._animationInProgress = false;
-        this._desktopFade.hide();
         this._coverPane.hide();
 
         this.emit('shown');
@@ -617,7 +567,6 @@ var Overview = class {
         // Re-enable unredirection
         Meta.enable_unredirect_for_display(global.display);
 
-        this._desktopFade.hide();
         this._coverPane.hide();
 
         this._visible = false;
