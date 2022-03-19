@@ -219,7 +219,7 @@ class EventsSection extends St.Button {
                 /* Translators: Shown in calendar event list as the start/end of events
                  * that only show day and month
                  */
-                format = T_('%m/%d');
+                format = T_(N_('%m/%d'));
             else
                 format = '%x';
 
