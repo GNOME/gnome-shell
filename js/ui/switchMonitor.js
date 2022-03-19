@@ -18,7 +18,7 @@ class SwitchMonitorPopup extends SwitcherPopup.SwitcherPopup {
              * Try to keep it under around 15 characters.
              */
             label: _('Mirror'),
-            switchMode: Meta.MonitorSwitchConfigType.ALL_MIRROR,
+            configType: Meta.MonitorSwitchConfigType.ALL_MIRROR,
         });
 
         items.push({
@@ -27,7 +27,7 @@ class SwitchMonitorPopup extends SwitcherPopup.SwitcherPopup {
              * Try to keep it under around 15 characters.
              */
             label: _('Join Displays'),
-            switchMode: Meta.MonitorSwitchConfigType.ALL_LINEAR,
+            configType: Meta.MonitorSwitchConfigType.ALL_LINEAR,
         });
 
         if (global.backend.get_monitor_manager().has_builtin_panel) {
@@ -37,7 +37,7 @@ class SwitchMonitorPopup extends SwitcherPopup.SwitcherPopup {
                  * Try to keep it under around 15 characters.
                  */
                 label: _('External Only'),
-                switchMode: Meta.MonitorSwitchConfigType.EXTERNAL,
+                configType: Meta.MonitorSwitchConfigType.EXTERNAL,
             });
             items.push({
                 icon: 'computer-symbolic',
@@ -45,7 +45,7 @@ class SwitchMonitorPopup extends SwitcherPopup.SwitcherPopup {
                  * Try to keep it under around 15 characters.
                  */
                 label: _('Built-in Only'),
-                switchMode: Meta.MonitorSwitchConfigType.BUILTIN,
+                configType: Meta.MonitorSwitchConfigType.BUILTIN,
             });
         }
 
@@ -86,7 +86,7 @@ class SwitchMonitorPopup extends SwitcherPopup.SwitcherPopup {
         const monitorManager = global.backend.get_monitor_manager();
         const item = this._items[this._selectedIndex];
 
-        monitorManager.switch_config(item.switchType);
+        monitorManager.switch_config(item.configType);
     }
 });
 
