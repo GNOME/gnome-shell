@@ -417,7 +417,7 @@ shell_app_activate_window (ShellApp     *app,
                            MetaWindow   *window,
                            guint32       timestamp)
 {
-  GSList *windows;
+  g_autoptr (GSList) windows = NULL;
 
   if (shell_app_get_state (app) != SHELL_APP_STATE_RUNNING)
     return;
@@ -777,11 +777,14 @@ shell_app_compare_windows (gconstpointer   a,
  * active workspace, then by whether they're visible, and finally
  * by the time the user last interacted with them.
  *
- * Returns: (transfer none) (element-type MetaWindow): List of windows
+ * Returns: (transfer container) (element-type MetaWindow): List of windows
  */
 GSList *
 shell_app_get_windows (ShellApp *app)
 {
+  GSList *windows = NULL;
+  GSList *l;
+
   if (app->running_state == NULL)
     return NULL;
 
@@ -794,7 +797,11 @@ shell_app_get_windows (ShellApp *app)
       app->running_state->window_sort_stale = FALSE;
     }
 
-  return app->running_state->windows;
+  for (l = app->running_state->windows; l; l = l->next)
+    if (!meta_window_is_override_redirect (META_WINDOW (l->data)))
+      windows = g_slist_prepend (windows, l->data);
+
+  return g_slist_reverse (windows);
 }
 
 guint
@@ -1196,7 +1203,7 @@ GSList *
 shell_app_get_pids (ShellApp *app)
 {
   GSList *result;
-  GSList *iter;
+  g_autoptr (GSList) iter = NULL;
 
   result = NULL;
   for (iter = shell_app_get_windows (app); iter; iter = iter->next)
