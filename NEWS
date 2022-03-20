@@ -1,3 +1,22 @@
+40.10
+=====
+* Fix programatically set scrollview fade [Jonas; !2189]
+* Disable workspace switching while in search [Sebastian; !2204]
+* Fix opening device settings for enterprise WPA networks [Xiaoguang; !2194]
+* Fix drag placeholder position in dash in RTL locales [Florian; !2219]
+* Improve CSS shadow appearance [Daniel; !1918]
+* Fix glitches in overview transition [Jonas, Sebastian; !2203, !1980, !2236]
+* Fix unresponsive top bar in overview when in fullscreen [Ivan; !2227]
+* Fixed crash [Florian; !2207]
+* Misc. bug fixes and cleanups [Jonas, Florian; !2191, !2209, !2211, !2233]
+
+Contributors:
+  Jonas Dreßler, Sebastian Keller, Ivan Molodetskikh, Florian Müllner,
+  Daniel van Vugt, Xiaoguang Wang
+
+Translators:
+  Jordi Mas [ca], Daniel Mustieles [es], Balázs Úr [hu]
+
 40.9
 ====
 * Start tracking windows when expected by extensions [Florian; !2120]
