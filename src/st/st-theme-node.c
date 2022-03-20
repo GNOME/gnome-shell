@@ -2649,6 +2649,9 @@ st_theme_node_get_text_align(StThemeNode *node)
     }
   if(node->parent_node)
     return st_theme_node_get_text_align(node->parent_node);
+
+  if (clutter_get_default_text_direction () == CLUTTER_TEXT_DIRECTION_RTL)
+    return ST_TEXT_ALIGN_RIGHT;
   return ST_TEXT_ALIGN_LEFT;
 }
 
