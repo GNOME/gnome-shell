@@ -428,19 +428,8 @@ shell_app_activate_window (ShellApp     *app,
     return;
 
   windows = shell_app_get_windows (app);
-  if (window == NULL)
-    {
-      for (GSList *l = windows; l; l = l->next)
-        {
-          MetaWindow *current_window = l->data;
-
-          if (!meta_window_is_override_redirect (current_window))
-            {
-              window = current_window;
-              break;
-            }
-        }
-    }
+  if (window == NULL && windows)
+    window = windows->data;
 
   if (!g_slist_find (windows, window))
     return;
@@ -469,9 +458,7 @@ shell_app_activate_window (ShellApp     *app,
         {
           MetaWindow *other_window = iter->data;
 
-          if (other_window != window &&
-              !meta_window_is_override_redirect (other_window) &&
-              meta_window_get_workspace (other_window) == workspace)
+          if (other_window != window && meta_window_get_workspace (other_window) == workspace)
             meta_window_raise (other_window);
         }
       g_slist_free (windows_reversed);
