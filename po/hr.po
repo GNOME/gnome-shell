@@ -7,17 +7,17 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2022-03-13 15:39+0000\n"
-"PO-Revision-Date: 2022-03-14 13:35+0100\n"
+"POT-Creation-Date: 2022-03-20 22:19+0000\n"
+"PO-Revision-Date: 2022-03-21 12:51+0100\n"
 "Last-Translator: gogo <trebelnik2@gmail.com>\n"
 "Language-Team: Croatian <hr@li.org>\n"
 "Language: hr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
-"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Poedit 3.0.1\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Generator: Poedit 2.3\n"
 
 #: data/50-gnome-shell-launchers.xml:6
 msgid "Launchers"
@@ -1211,6 +1211,13 @@ msgstr "Sutra"
 msgctxt "event list time"
 msgid "All Day"
 msgstr "Cijeli dan"
+
+#. Translators: Shown in calendar event list as the start/end of events
+#. * that only show day and month
+#.
+#: js/ui/dateMenu.js:222
+msgid "%m/%d"
+msgstr "%m/%d"
 
 #: js/ui/dateMenu.js:273
 msgid "No Events"
@@ -2728,8 +2735,8 @@ msgstr "Ručno instalirana"
 #: subprojects/extensions-app/data/ui/extensions-window.ui:99
 #: subprojects/extensions-app/data/ui/extensions-window.ui:134
 msgid ""
-"To find and add extensions, visit <a href=\"https://extensions.gnome."
-"org\">extensions.gnome.org</a>."
+"To find and add extensions, visit <a href=\"https://extensions.gnome.org"
+"\">extensions.gnome.org</a>."
 msgstr ""
 "Kako bi pronašli i dodali proširenja, posjetite <a href=\"https://extensions."
 "gnome.org\">extensions.gnome.org</a>."
