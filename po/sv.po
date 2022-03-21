@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2022-03-04 22:15+0000\n"
-"PO-Revision-Date: 2022-03-05 21:12+0100\n"
+"POT-Creation-Date: 2022-03-20 22:19+0000\n"
+"PO-Revision-Date: 2022-03-21 19:47+0100\n"
 "Last-Translator: Anders Jonsson <anders.jonsson@norsjovallen.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "Language: sv\n"
@@ -1146,7 +1146,7 @@ msgstr "Tyvärr, det fungerade inte. Försök igen."
 msgid "%s is now known as %s"
 msgstr "%s är nu känd som %s"
 
-#: js/ui/ctrlAltTab.js:22 js/ui/overviewControls.js:403
+#: js/ui/ctrlAltTab.js:22 js/ui/overviewControls.js:405
 msgid "Windows"
 msgstr "Fönster"
 
@@ -1204,6 +1204,13 @@ msgstr "I morgon"
 msgctxt "event list time"
 msgid "All Day"
 msgstr "Hela dagen"
+
+#. Translators: Shown in calendar event list as the start/end of events
+#. * that only show day and month
+#.
+#: js/ui/dateMenu.js:222
+msgid "%m/%d"
+msgstr "%-d/%-m"
 
 #: js/ui/dateMenu.js:273
 msgid "No Events"
@@ -1585,7 +1592,7 @@ msgstr ""
 "Att köra en session som en privilegierad användare bör undvikas av "
 "säkerhetsskäl. Om möjligt bör du logga in som en normal användare."
 
-#: js/ui/messageTray.js:1415
+#: js/ui/messageTray.js:1418
 msgid "System Information"
 msgstr "Systeminformation"
 
@@ -1601,11 +1608,11 @@ msgstr "Okänd titel"
 #. in the search entry when no search is
 #. active; it should not exceed ~30
 #. characters.
-#: js/ui/overviewControls.js:313
+#: js/ui/overviewControls.js:315
 msgid "Type to search"
 msgstr "Skriv för att söka"
 
-#: js/ui/overviewControls.js:391
+#: js/ui/overviewControls.js:393
 msgid "Applications"
 msgstr "Program"
 
@@ -1668,7 +1675,7 @@ msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "System"
 
-#: js/ui/panel.js:477
+#: js/ui/panel.js:480
 msgid "Top Bar"
 msgstr "Systemrad"
 
