@@ -293,13 +293,27 @@ shell_window_preview_layout_dispose (GObject *gobject)
 }
 
 static void
+shell_window_preview_layout_finalize (GObject *gobject)
+{
+  ShellWindowPreviewLayout *self = SHELL_WINDOW_PREVIEW_LAYOUT (gobject);
+  ShellWindowPreviewLayoutPrivate *priv;
+
+  priv = shell_window_preview_layout_get_instance_private (self);
+
+  g_hash_table_destroy (priv->windows);
+
+  G_OBJECT_CLASS (shell_window_preview_layout_parent_class)->finalize (gobject);
+}
+
+static void
 shell_window_preview_layout_init (ShellWindowPreviewLayout *self)
 {
   ShellWindowPreviewLayoutPrivate *priv;
 
   priv = shell_window_preview_layout_get_instance_private (self);
 
-  priv->windows = g_hash_table_new (NULL, NULL);
+  priv->windows = g_hash_table_new_full (NULL, NULL, NULL,
+                                         (GDestroyNotify) g_free);
 }
 
 static void
@@ -314,6 +328,7 @@ shell_window_preview_layout_class_init (ShellWindowPreviewLayoutClass *klass)
   layout_class->set_container = shell_window_preview_layout_set_container;
 
   gobject_class->dispose = shell_window_preview_layout_dispose;
+  gobject_class->finalize = shell_window_preview_layout_finalize;
   gobject_class->get_property = shell_window_preview_layout_get_property;
 
   /**
