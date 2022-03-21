@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2022-03-13 00:05+0000\n"
-"PO-Revision-Date: 2022-03-14 10:03+0100\n"
+"POT-Creation-Date: 2022-03-20 22:19+0000\n"
+"PO-Revision-Date: 2022-03-21 09:30+0100\n"
 "Last-Translator: Milo Casagrande <milo@milo.name>\n"
 "Language-Team: Italiano <gnome-it-list@gnome.org>\n"
 "Language: it\n"
@@ -1227,6 +1227,13 @@ msgstr "Domani"
 msgctxt "event list time"
 msgid "All Day"
 msgstr "Giornata"
+
+#. Translators: Shown in calendar event list as the start/end of events
+#. * that only show day and month
+#.
+#: js/ui/dateMenu.js:222
+msgid "%m/%d"
+msgstr "%m/%d"
 
 #: js/ui/dateMenu.js:273
 msgid "No Events"
