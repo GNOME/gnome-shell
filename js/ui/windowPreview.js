@@ -188,7 +188,7 @@ var WindowPreview = GObject.registerClass({
         this._closeButton = new St.Button({
             visible: false,
             style_class: 'window-close',
-            child: new St.Icon({ icon_name: 'preview-close-symbolic' }),
+            icon_name: 'preview-close-symbolic',
         });
         this._closeButton.add_constraint(new Clutter.BindConstraint({
             source: windowContainer,

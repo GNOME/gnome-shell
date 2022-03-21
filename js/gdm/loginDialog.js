@@ -308,9 +308,9 @@ var SessionMenuButton = GObject.registerClass({
     Signals: { 'session-activated': { param_types: [GObject.TYPE_STRING] } },
 }, class SessionMenuButton extends St.Bin {
     _init() {
-        let gearIcon = new St.Icon({ icon_name: 'emblem-system-symbolic' });
         let button = new St.Button({
             style_class: 'modal-dialog-button button login-dialog-session-list-button',
+            icon_name: 'emblem-system-symbolic',
             reactive: true,
             track_hover: true,
             can_focus: true,
@@ -318,7 +318,6 @@ var SessionMenuButton = GObject.registerClass({
             accessible_role: Atk.Role.MENU,
             x_align: Clutter.ActorAlign.CENTER,
             y_align: Clutter.ActorAlign.CENTER,
-            child: gearIcon,
         });
 
         super._init({ child: button });

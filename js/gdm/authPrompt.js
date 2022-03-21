@@ -147,7 +147,7 @@ var AuthPrompt = GObject.registerClass({
             can_focus: this._hasCancelButton,
             x_align: Clutter.ActorAlign.START,
             y_align: Clutter.ActorAlign.CENTER,
-            child: new St.Icon({ icon_name: 'go-previous-symbolic' }),
+            icon_name: 'go-previous-symbolic',
         });
         if (this._hasCancelButton)
             this.cancelButton.connect('clicked', () => this.cancel());

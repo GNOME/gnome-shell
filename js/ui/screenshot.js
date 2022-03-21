@@ -1091,7 +1091,7 @@ var ScreenshotUI = GObject.registerClass({
 
         this._closeButton = new St.Button({
             style_class: 'screenshot-ui-close-button',
-            child: new St.Icon({ icon_name: 'preview-close-symbolic' }),
+            icon_name: 'preview-close-symbolic',
         });
         this._closeButton.add_constraint(new Clutter.BindConstraint({
             source: this._panel,
@@ -1203,19 +1203,19 @@ var ScreenshotUI = GObject.registerClass({
 
         this._shotButton = new St.Button({
             style_class: 'screenshot-ui-shot-cast-button',
+            icon_name: 'camera-photo-symbolic',
             checked: true,
         });
-        this._shotButton.set_child(new St.Icon({ icon_name: 'camera-photo-symbolic' }));
         this._shotButton.connect('notify::checked',
             this._onShotButtonToggled.bind(this));
         this._shotCastContainer.add_child(this._shotButton);
 
         this._castButton = new St.Button({
             style_class: 'screenshot-ui-shot-cast-button',
+            icon_name: 'camera-web-symbolic',
             toggle_mode: true,
             visible: Config.HAVE_RECORDER,
         });
-        this._castButton.set_child(new St.Icon({ icon_name: 'camera-web-symbolic' }));
         this._castButton.connect('notify::checked',
             this._onCastButtonToggled.bind(this));
         this._shotCastContainer.add_child(this._castButton);
@@ -1254,9 +1254,9 @@ var ScreenshotUI = GObject.registerClass({
 
         this._showPointerButton = new St.Button({
             style_class: 'screenshot-ui-show-pointer-button',
+            icon_name: 'screenshot-ui-show-pointer-symbolic',
             toggle_mode: true,
         });
-        this._showPointerButton.set_child(new St.Icon({ icon_name: 'screenshot-ui-show-pointer-symbolic' }));
         this._showPointerButtonContainer.add_child(this._showPointerButton);
 
         this.add_child(new Tooltip(this._showPointerButton, {

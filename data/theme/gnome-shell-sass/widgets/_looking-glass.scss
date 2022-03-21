@@ -79,6 +79,8 @@
     color: $insensitive_fg_color;
     &:hover { color: lighten($insensitive_fg_color, 20%); }
     &:active { color: darken($insensitive_fg_color, 20%); }
+
+    & StIcon { icon-size: 12px; }
    }
 }
 

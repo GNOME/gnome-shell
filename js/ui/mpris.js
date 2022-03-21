@@ -37,7 +37,7 @@ class MediaMessage extends MessageList.Message {
                 this._player.previous();
             });
 
-        this._playPauseButton = this.addMediaControl(null,
+        this._playPauseButton = this.addMediaControl('',
             () => {
                 this._player.playPause();
             });

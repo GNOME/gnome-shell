@@ -469,10 +469,10 @@ var Calendar = GObject.registerClass({
 
         this._backButton = new St.Button({
             style_class: 'calendar-change-month-back pager-button',
+            icon_name: 'pan-start-symbolic',
             accessible_name: _('Previous month'),
             can_focus: true,
         });
-        this._backButton.add_actor(new St.Icon({ icon_name: 'pan-start-symbolic' }));
         this._topBox.add(this._backButton);
         this._backButton.connect('clicked', this._onPrevMonthButtonClicked.bind(this));
 
@@ -487,10 +487,10 @@ var Calendar = GObject.registerClass({
 
         this._forwardButton = new St.Button({
             style_class: 'calendar-change-month-forward pager-button',
+            icon_name: 'pan-end-symbolic',
             accessible_name: _('Next month'),
             can_focus: true,
         });
-        this._forwardButton.add_actor(new St.Icon({ icon_name: 'pan-end-symbolic' }));
         this._topBox.add(this._forwardButton);
         this._forwardButton.connect('clicked', this._onNextMonthButtonClicked.bind(this));
 

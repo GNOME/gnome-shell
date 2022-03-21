@@ -2665,10 +2665,7 @@ var AppFolderDialog = GObject.registerClass({
             can_focus: true,
             x_align: Clutter.ActorAlign.END,
             y_align: Clutter.ActorAlign.CENTER,
-            child: new St.Icon({
-                icon_name: 'document-edit-symbolic',
-                icon_size: 16,
-            }),
+            icon_name: 'document-edit-symbolic',
         });
 
         this._editButton.connect('notify::checked', () => {

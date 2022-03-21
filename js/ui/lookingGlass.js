@@ -421,8 +421,10 @@ class ObjInspector extends St.ScrollView {
             hbox.add(button);
         }
 
-        button = new St.Button({ style_class: 'window-close' });
-        button.add_actor(new St.Icon({ icon_name: 'window-close-symbolic' }));
+        button = new St.Button({
+            style_class: 'window-close',
+            icon_name: 'window-close-symbolic',
+        });
         button.connect('clicked', this.close.bind(this));
         hbox.add(button);
         if (typeof obj == typeof {}) {
@@ -884,11 +886,7 @@ var ActorLink = GObject.registerClass({
         });
 
         const inspectButton = new St.Button({
-            child: new St.Icon({
-                icon_name: 'insert-object-symbolic',
-                icon_size: 12,
-                y_align: Clutter.ActorAlign.CENTER,
-            }),
+            icon_name: 'insert-object-symbolic',
             reactive: true,
             x_expand: true,
             x_align: Clutter.ActorAlign.START,
@@ -1304,9 +1302,7 @@ class LookingGlass extends St.BoxLayout {
         this.add_actor(toolbar);
         const inspectButton = new St.Button({
             style_class: 'lg-toolbar-button',
-            child: new St.Icon({
-                icon_name: 'find-location-symbolic',
-            }),
+            icon_name: 'find-location-symbolic',
         });
         toolbar.add_actor(inspectButton);
         inspectButton.connect('clicked', () => {
@@ -1324,9 +1320,7 @@ class LookingGlass extends St.BoxLayout {
 
         const gcButton = new St.Button({
             style_class: 'lg-toolbar-button',
-            child: new St.Icon({
-                icon_name: 'user-trash-full-symbolic',
-            }),
+            icon_name: 'user-trash-full-symbolic',
         });
         toolbar.add_actor(gcButton);
         gcButton.connect('clicked', () => {

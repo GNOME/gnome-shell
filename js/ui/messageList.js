@@ -362,14 +362,11 @@ var Message = GObject.registerClass({
         });
         titleBox.add_actor(this._secondaryBin);
 
-        const closeIcon = new St.Icon({
-            icon_name: 'window-close-symbolic',
-            icon_size: 16,
-        });
         this._closeButton = new St.Button({
             style_class: 'message-close-button',
-            child: closeIcon, opacity: 0,
+            icon_name: 'window-close-symbolic',
             y_align: Clutter.ActorAlign.CENTER,
+            opacity: 0,
         });
         titleBox.add_actor(this._closeButton);
 
@@ -438,10 +435,9 @@ var Message = GObject.registerClass({
     }
 
     addMediaControl(iconName, callback) {
-        let icon = new St.Icon({ icon_name: iconName, icon_size: 16 });
         const button = new St.Button({
             style_class: 'message-media-control',
-            child: icon,
+            iconName,
         });
         button.connect('clicked', callback);
         this._mediaControls.add_actor(button);

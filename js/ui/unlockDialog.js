@@ -566,7 +566,7 @@ var UnlockDialog = GObject.registerClass({
             opacity: 0,
             x_align: Clutter.ActorAlign.END,
             y_align: Clutter.ActorAlign.END,
-            child: new St.Icon({ icon_name: 'system-users-symbolic' }),
+            icon_name: 'system-users-symbolic',
         });
         this._otherUserButton.set_pivot_point(0.5, 0.5);
         this._otherUserButton.connect('clicked', this._otherUserClicked.bind(this));
