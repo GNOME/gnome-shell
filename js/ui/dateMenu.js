@@ -467,7 +467,8 @@ class WorldClocksSection extends St.Button {
         const localOffset = GLib.DateTime.new_now_local().get_utc_offset();
         const utcOffset = GLib.DateTime.new_now(tz).get_utc_offset();
         const offsetCurrentTz = utcOffset - localOffset;
-        const offsetHours = Math.abs(offsetCurrentTz) / GLib.TIME_SPAN_HOUR;
+        const offsetHours =
+            Math.floor(Math.abs(offsetCurrentTz) / GLib.TIME_SPAN_HOUR);
         const offsetMinutes =
             (Math.abs(offsetCurrentTz) % GLib.TIME_SPAN_HOUR) /
             GLib.TIME_SPAN_MINUTE;
