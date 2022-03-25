@@ -369,6 +369,7 @@ var Message = GObject.registerClass({
         this._closeButton = new St.Button({
             style_class: 'message-close-button',
             child: closeIcon, opacity: 0,
+            y_align: Clutter.ActorAlign.CENTER,
         });
         titleBox.add_actor(this._closeButton);
 
