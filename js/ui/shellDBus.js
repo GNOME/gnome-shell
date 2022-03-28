@@ -253,9 +253,9 @@ var GnomeShell = class {
         invocation.return_value(GLib.Variant.new('(b)', [ungrabSucceeded]));
     }
 
-    ScreenTransitionAsync(params, invocation) {
+    async ScreenTransitionAsync(params, invocation) {
         try {
-            this._senderChecker.checkInvocation(invocation);
+            await this._senderChecker.checkInvocation(invocation);
         } catch (e) {
             invocation.return_gerror(e);
             return;
