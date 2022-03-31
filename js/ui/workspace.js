@@ -1467,13 +1467,8 @@ class Workspace extends St.Widget {
             if (this._isMyWindow(window))
                 return false;
 
-            // We need to move the window before changing the workspace, because
-            // the move itself could cause a workspace change if the window enters
-            // the primary monitor
-            if (window.get_monitor() != this.monitorIndex)
-                window.move_to_monitor(this.monitorIndex);
-
-            window.change_workspace_by_index(workspaceIndex, false);
+            Main.moveWindowToMonitorAndWorkspace(window,
+                this.monitorIndex, workspaceIndex);
             return true;
         } else if (source.app && source.app.can_open_new_window()) {
             if (source.animateLaunchAtPos)
