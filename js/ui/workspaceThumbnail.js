@@ -552,14 +552,8 @@ var WorkspaceThumbnail = GObject.registerClass({
                 return false;
 
             let metaWindow = win.get_meta_window();
-
-            // We need to move the window before changing the workspace, because
-            // the move itself could cause a workspace change if the window enters
-            // the primary monitor
-            if (metaWindow.get_monitor() != this.monitorIndex)
-                metaWindow.move_to_monitor(this.monitorIndex);
-
-            metaWindow.change_workspace_by_index(this.metaWorkspace.index(), false);
+            Main.moveWindowToMonitorAndWorkspace(metaWindow,
+                this.monitorIndex, this.metaWorkspace.index());
             return true;
         } else if (source.app && source.app.can_open_new_window()) {
             if (source.animateLaunchAtPos)
@@ -903,9 +897,8 @@ var ThumbnailsBox = GObject.registerClass({
             if (isWindow) {
                 // Move the window to our monitor first if necessary.
                 let thumbMonitor = this._thumbnails[newWorkspaceIndex].monitorIndex;
-                if (source.metaWindow.get_monitor() != thumbMonitor)
-                    source.metaWindow.move_to_monitor(thumbMonitor);
-                source.metaWindow.change_workspace_by_index(newWorkspaceIndex, true);
+                Main.moveWindowToMonitorAndWorkspace(source.metaWindow,
+                    thumbMonitor, newWorkspaceIndex, true);
             } else if (source.app && source.app.can_open_new_window()) {
                 if (source.animateLaunchAtPos)
                     source.animateLaunchAtPos(actor.x, actor.y);
