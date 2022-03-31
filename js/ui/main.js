@@ -5,7 +5,8 @@
             shellAccessDialogDBusService, shellAudioSelectionDBusService,
             screenSaverDBus, uiGroup, magnifier, xdndHandler, keyboard,
             kbdA11yDialog, introspectService, start, pushModal, popModal,
-            activateWindow, createLookingGlass, initializeDeferredWork,
+            activateWindow, moveWindowToMonitorAndWorkspace,
+            createLookingGlass, initializeDeferredWork,
             getThemeStylesheet, setThemeStylesheet, screenshotUI */
 
 const { Clutter, Gio, GLib, GObject, Meta, Shell, St } = imports.gi;
@@ -718,6 +719,33 @@ function activateWindow(window, time, workspaceNum) {
 
     overview.hide();
     panel.closeCalendar();
+}
+
+/**
+ * Move @window to the specified monitor and workspace.
+ *
+ * @param {Meta.Window} window - the window to move
+ * @param {number} monitorIndex - the requested monitor
+ * @param {number} workspaceIndex - the requested workspace
+ * @param {bool} append - create workspace if it doesn't exist
+ */
+function moveWindowToMonitorAndWorkspace(window, monitorIndex, workspaceIndex, append = false) {
+    // We need to move the window before changing the workspace, because
+    // the move itself could cause a workspace change if the window enters
+    // the primary monitor
+    if (window.get_monitor() !== monitorIndex) {
+        // Wait for the monitor change to take effect
+        const id = global.display.connect('window-entered-monitor',
+            (dsp, num, w) => {
+                if (w !== window)
+                    return;
+                window.change_workspace_by_index(workspaceIndex, append);
+                global.display.disconnect(id);
+            });
+        window.move_to_monitor(monitorIndex);
+    } else {
+        window.change_workspace_by_index(workspaceIndex, append);
+    }
 }
 
 // TODO - replace this timeout with some system to guess when the user might
