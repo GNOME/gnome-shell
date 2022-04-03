@@ -6,6 +6,9 @@
 # Gil Forcada <gilforcada@guifi.net>, 2010, 2011, 2013, 2014, 2016, 2018.
 # Jordi Mas i Hernàndez <jmas@softcatala.org>, 2017-2021
 #
+# La terminologia que usem està documentada a la traducció del gnome-control-center
+#
+
 msgid ""
 msgstr ""
 "Project-Id-Version: HEAD\n"
@@ -27,39 +30,39 @@ msgstr "Llançadors"
 
 #: data/50-gnome-shell-launchers.xml:10
 msgid "Activate favorite application 1"
-msgstr "Commuta a l'aplicació preferida 1"
+msgstr "Activa l'aplicació preferida 1"
 
 #: data/50-gnome-shell-launchers.xml:14
 msgid "Activate favorite application 2"
-msgstr "Commuta a l'aplicació preferida 2"
+msgstr "Activa l'aplicació preferida 2"
 
 #: data/50-gnome-shell-launchers.xml:18
 msgid "Activate favorite application 3"
-msgstr "Commuta a l'aplicació preferida 3"
+msgstr "Activa l'aplicació preferida 3"
 
 #: data/50-gnome-shell-launchers.xml:22
 msgid "Activate favorite application 4"
-msgstr "Commuta a l'aplicació preferida 4"
+msgstr "Activa l'aplicació preferida 4"
 
 #: data/50-gnome-shell-launchers.xml:26
 msgid "Activate favorite application 5"
-msgstr "Commuta a l'aplicació preferida 5"
+msgstr "Activa l'aplicació preferida 5"
 
 #: data/50-gnome-shell-launchers.xml:30
 msgid "Activate favorite application 6"
-msgstr "Commuta a l'aplicació preferida 6"
+msgstr "Activa l'aplicació preferida 6"
 
 #: data/50-gnome-shell-launchers.xml:34
 msgid "Activate favorite application 7"
-msgstr "Commuta a l'aplicació preferida 7"
+msgstr "Activa l'aplicació preferida 7"
 
 #: data/50-gnome-shell-launchers.xml:38
 msgid "Activate favorite application 8"
-msgstr "Commuta a l'aplicació preferida 8"
+msgstr "Activa l'aplicació preferida 8"
 
 #: data/50-gnome-shell-launchers.xml:42
 msgid "Activate favorite application 9"
-msgstr "Commuta a l'aplicació preferida 9"
+msgstr "Activa l'aplicació preferida 9"
 
 #. Translators: name of the folder under ~/Pictures for screenshots.
 #: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2062
