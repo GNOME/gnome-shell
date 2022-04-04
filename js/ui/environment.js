@@ -3,16 +3,35 @@
 
 const Config = imports.misc.config;
 
+imports.gi.versions.AccountsService = '1.0';
+imports.gi.versions.Atk = '1.0';
+imports.gi.versions.Atspi = '2.0';
 imports.gi.versions.Clutter = Config.LIBMUTTER_API_VERSION;
+imports.gi.versions.Cogl = Config.LIBMUTTER_API_VERSION;
+imports.gi.versions.Gcr = '3';
+imports.gi.versions.Gdk = '3.0';
+imports.gi.versions.Gdm = '1.0';
+imports.gi.versions.Geoclue = '2.0';
 imports.gi.versions.Gio = '2.0';
+imports.gi.versions.GDesktopEnums = '3.0';
 imports.gi.versions.GdkPixbuf = '2.0';
 imports.gi.versions.GnomeBluetooth = '3.0';
 imports.gi.versions.GnomeDesktop = '3.0';
+imports.gi.versions.Graphene = '1.0';
 imports.gi.versions.Gtk = '3.0';
 imports.gi.versions.GWeather = '4.0';
+imports.gi.versions.IBus = '1.0';
+imports.gi.versions.Malcontent = '0';
+imports.gi.versions.NM = '1.0';
+imports.gi.versions.NMA = '1.0';
+imports.gi.versions.Pango = '1.0';
+imports.gi.versions.Polkit = '1.0';
+imports.gi.versions.PolkitAgent = '1.0';
+imports.gi.versions.Rsvg = '2.0';
 imports.gi.versions.Soup = '3.0';
 imports.gi.versions.TelepathyGLib = '0.12';
 imports.gi.versions.TelepathyLogger = '0.2';
+imports.gi.versions.UPowerGlib = '1.0';
 
 try {
     if (Config.HAVE_SOUP2)

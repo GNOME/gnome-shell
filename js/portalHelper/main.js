@@ -1,5 +1,7 @@
 /* exported main */
+imports.gi.versions.Pango = '1.0';
 imports.gi.versions.Gtk = '3.0';
+imports.gi.versions.WebKit2 = '4.0';
 
 const Format = imports.format;
 const Gettext = imports.gettext;

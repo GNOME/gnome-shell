@@ -1,6 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported ScreencastService */
 
+imports.gi.versions.Gst = '1.0';
 imports.gi.versions.Gtk = '4.0';
 
 const { Gio, GLib, Gst, Gtk } = imports.gi;

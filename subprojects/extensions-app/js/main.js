@@ -1,4 +1,5 @@
 /* exported main */
+imports.gi.versions.Adw = '1';
 imports.gi.versions.Gtk = '4.0';
 
 const Gettext = imports.gettext;
