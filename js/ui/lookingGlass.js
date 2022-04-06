@@ -1421,6 +1421,13 @@ class LookingGlass extends St.BoxLayout {
         this._resize();
     }
 
+    vfunc_captured_event(event) {
+        if (Main.keyboard.maybeHandleEvent(event))
+            return Clutter.EVENT_STOP;
+
+        return Clutter.EVENT_PROPAGATE;
+    }
+
     _updateFont() {
         let fontName = this._interfaceSettings.get_string('monospace-font-name');
         let fontDesc = Pango.FontDescription.from_string(fontName);

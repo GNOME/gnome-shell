@@ -114,6 +114,13 @@ var ModalDialog = GObject.registerClass({
         return Clutter.EVENT_PROPAGATE;
     }
 
+    vfunc_captured_event(event) {
+        if (Main.keyboard.maybeHandleEvent(event))
+            return Clutter.EVENT_STOP;
+
+        return Clutter.EVENT_PROPAGATE;
+    }
+
     clearButtons() {
         this.dialogLayout.clearButtons();
     }
