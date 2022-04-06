@@ -1276,7 +1276,8 @@ var KeyboardManager = class KeyBoardManager {
 
         if (Main.layoutManager.keyboardBox.contains(actor) ||
             !!actor._extendedKeys || !!actor.extendedKey) {
-            actor.event(event);
+            actor.event(event, true);
+            actor.event(event, false);
             return true;
         }
 
