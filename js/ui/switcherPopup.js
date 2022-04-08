@@ -133,7 +133,7 @@ var SwitcherPopup = GObject.registerClass({
         if (this._modifierMask) {
             let [x_, y_, mods] = global.get_pointer();
             if (!(mods & this._modifierMask)) {
-                this._finish(global.get_current_time());
+                this._finish(global.display.get_current_time_roundtrip());
                 return true;
             }
         } else {
