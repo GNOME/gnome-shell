@@ -582,9 +582,9 @@ export const SearchResultsView = GObject.registerClass({
             child: this._content,
         });
 
-        let action = new Clutter.PanAction({interpolate: true});
-        action.connect('pan', this._onPan.bind(this));
-        this._scrollView.add_action(action);
+        const panGesture = new Clutter.PanGesture();
+        panGesture.connect('pan-update', this._onPanUpdate.bind(this));
+        this._scrollView.add_action(panGesture);
 
         this.add_child(this._scrollView);
 
@@ -761,11 +761,11 @@ export const SearchResultsView = GObject.registerClass({
         this.emit('terms-changed');
     }
 
-    _onPan(action) {
-        let [dist_, dx_, dy] = action.get_motion_delta(0);
-        let adjustment = this._scrollView.vadjustment;
-        adjustment.value -= (dy / this.height) * adjustment.page_size;
-        return false;
+    _onPanUpdate(gesture) {
+        const adjustment = this._scrollView.vadjustment;
+        const delta = gesture.get_delta();
+
+        adjustment.value -= (delta.get_y() / this.height) * adjustment.page_size;
     }
 
     _focusChildChanged(provider) {
