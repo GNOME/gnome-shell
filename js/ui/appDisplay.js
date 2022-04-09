@@ -509,7 +509,7 @@ var BaseAppView = GObject.registerClass({
         const progress = adjustment.value / adjustment.page_size;
         const points = Array.from({ length: this._grid.nPages }, (v, i) => i);
         const size = tracker.orientation === Clutter.Orientation.VERTICAL
-            ? this._scrollView.height : this._scrollView.width;
+            ? this._grid.allocation.get_height() : this._grid.allocation.get_width();
 
         tracker.confirmSwipe(size, points, progress, Math.round(progress));
     }
