@@ -2132,10 +2132,6 @@ class FolderView extends BaseAppView {
 
         this.add_child(this._box);
 
-        let action = new Clutter.PanAction({ interpolate: true });
-        action.connect('pan', this._onPan.bind(this));
-        this._scrollView.add_action(action);
-
         this._deletingFolder = false;
         this._apps = [];
         this._redisplay();
@@ -2193,13 +2189,6 @@ class FolderView extends BaseAppView {
         }
 
         return icon;
-    }
-
-    _onPan(action) {
-        let [dist_, dx_, dy] = action.get_motion_delta(0);
-        let adjustment = this._scrollView.vscroll.adjustment;
-        adjustment.value -= (dy / this._scrollView.height) * adjustment.page_size;
-        return false;
     }
 
     _loadApps() {
