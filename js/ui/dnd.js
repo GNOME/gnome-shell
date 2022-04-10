@@ -134,16 +134,6 @@ class _Draggable extends Signals.EventEmitter {
         this._grabbedEventSequence = null;
     }
 
-    /**
-     * Fake a release event.
-     * Must be called if you want to intercept release events on draggable
-     * actors for other purposes (for example if you're using
-     * PopupMenu.ignoreRelease())
-     */
-    fakeRelease() {
-        this._dndGesture.set_state(Clutter.GestureState.CANCELLED);
-    }
-
     _gestureRecognized() {
         const pointBeginEvent = this._dndGesture.get_point_begin_event();
         [this._dragStartX, this._dragStartY] = pointBeginEvent.get_coords();

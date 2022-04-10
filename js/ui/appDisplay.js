@@ -705,11 +705,6 @@ var BaseAppView = GObject.registerClass({
         if (monitor !== Main.layoutManager.primaryIndex)
             return;
 
-        if (this._dragFocus) {
-            this._dragFocus.cancelActions();
-            this._dragFocus = null;
-        }
-
         const adjustment = this._adjustment;
         adjustment.remove_transition('value');
 
@@ -932,8 +927,6 @@ var BaseAppView = GObject.registerClass({
         };
         DND.addDragMonitor(this._dragMonitor);
         this._appGridLayout.showPageIndicators();
-        this._dragFocus = null;
-        this._swipeTracker.enabled = false;
     }
 
     _onDragMotion(dragEvent) {
@@ -981,7 +974,6 @@ var BaseAppView = GObject.registerClass({
         this._resetDragPageSwitch();
 
         this._appGridLayout.hidePageIndicators();
-        this._swipeTracker.enabled = true;
     }
 
     _onDragCancelled() {
@@ -989,7 +981,6 @@ var BaseAppView = GObject.registerClass({
         // will move all items to their original positions
         this._redisplay();
         this._appGridLayout.hidePageIndicators();
-        this._swipeTracker.enabled = true;
     }
 
     _canAccept(source) {
@@ -1259,10 +1250,6 @@ var BaseAppView = GObject.registerClass({
         this._appGridLayout.goToPage(pageNumber, animate);
         this._grid.goToPage(pageNumber, animate);
     }
-
-    updateDragFocus(dragFocus) {
-        this._dragFocus = dragFocus;
-    }
 });
 
 const PageManager = GObject.registerClass({
@@ -1454,10 +1441,6 @@ class AppDisplay extends BaseAppView {
             global.settings.is_writable('app-picker-layout');
 
         this._placeholder = new AppIcon(app, {isDraggable});
-        this._placeholder.connect('notify::pressed', icon => {
-            if (icon.pressed)
-                this.updateDragFocus(icon);
-        });
         this._placeholder.scaleAndFade();
         this._redisplay();
     }
@@ -1533,10 +1516,6 @@ class AppDisplay extends BaseAppView {
                     this._redisplay();
                     this._savePages();
                 });
-                icon.connect('notify::pressed', () => {
-                    if (icon.pressed)
-                        this.updateDragFocus(icon);
-                });
             }
 
             // Don't try to display empty folders
@@ -1570,10 +1549,6 @@ class AppDisplay extends BaseAppView {
                 let app = appSys.lookup_app(appId);
 
                 icon = new AppIcon(app, {isDraggable});
-                icon.connect('notify::pressed', () => {
-                    if (icon.pressed)
-                        this.updateDragFocus(icon);
-                });
             }
 
             appIcons.push(icon);
@@ -2061,12 +2036,6 @@ class AppViewItem extends St.Button {
             return false;
 
         return true;
-    }
-
-    cancelActions() {
-        if (this._draggable)
-            this._draggable.fakeRelease();
-        this.fake_release();
     }
 
     get id() {
@@ -3007,12 +2976,6 @@ export const AppIcon = GObject.registerClass({
         }
     }
 
-    _onDragBegin() {
-        if (this._menu)
-            this._menu.close(true);
-        super._onDragBegin();
-    }
-
     _createIcon(iconSize) {
         return this.app.create_icon_texture(iconSize);
     }
@@ -3044,7 +3007,6 @@ export const AppIcon = GObject.registerClass({
 
     popupMenu() {
         this.setForcedHighlight(true);
-        this.fake_release();
 
         if (!this._menu) {
             this._menu = new AppMenu(this, this._popupMenuSide, {
@@ -3179,12 +3141,6 @@ export const AppIcon = GObject.registerClass({
         let apps = [this.id, source.id];
 
         return view?.createFolder(apps);
-    }
-
-    cancelActions() {
-        if (this._menu)
-            this._menu.close(true);
-        super.cancelActions();
     }
 });
 
