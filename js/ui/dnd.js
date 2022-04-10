@@ -367,6 +367,10 @@ var _Draggable = class _Draggable extends Signals.EventEmitter {
                     y = stageY - this._dragActor.height / 2;
                 }
                 this._dragActor.set_position(x, y);
+
+                this._dragActorSourceDestroyId = this._dragActorSource.connect('destroy', () => {
+                    this._dragActorSource = null;
+                });
             } else {
                 this._dragActorSource = this.actor;
             }
@@ -797,6 +801,11 @@ var _Draggable = class _Draggable extends Signals.EventEmitter {
         if (this._dragOrigParent) {
             this._dragOrigParent.disconnect(this._dragOrigParentDestroyId);
             this._dragOrigParent = null;
+        }
+
+        if (this._dragActorSource) {
+            this._dragActorSource.disconnect(this._dragActorSourceDestroyId);
+            this._dragActorSource = null;
         }
 
         this._dragState = DragState.INIT;
