@@ -410,8 +410,8 @@ export class ShellUserVerifier extends Signals.EventEmitter {
         const args = cancellable ? [cancellable] : [];
         const [devicePath] = await fprintManager.GetDefaultDeviceAsync(...args);
         const fprintDeviceProxy = new FprintDeviceProxy(Gio.DBus.system,
-            'net.reactivated.Fprint',
-            devicePath);
+            'net.reactivated.Fprint', devicePath, null, cancellable,
+            Gio.DBusProxyFlags.NOT_CONNECT_SIGNALS);
         this._setFingerprintReaderType(fprintDeviceProxy['scan-type']);
         this._updateDefaultService();
 
