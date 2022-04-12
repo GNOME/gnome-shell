@@ -366,6 +366,13 @@ export class ShellUserVerifier extends Signals.EventEmitter {
             ? FingerprintReaderType.SWIPE
             : FingerprintReaderType.PRESS;
         this._updateDefaultService();
+
+        if (this._userVerifier &&
+            !this._activeServices.has(FINGERPRINT_SERVICE_NAME)) {
+            if (!this._hold?.isAcquired())
+                this._hold = new Batch.Hold();
+            await this._maybeStartFingerprintVerification();
+        }
     }
 
     _onCredentialManagerAuthenticated(credentialManager, _token) {
@@ -617,11 +624,14 @@ export class ShellUserVerifier extends Signals.EventEmitter {
 
     _beginVerification() {
         this._startService(this._getForegroundService());
+        this._maybeStartFingerprintVerification().catch(logError);
+    }
 
+    async _maybeStartFingerprintVerification() {
         if (this._userName &&
             this._fingerprintReaderType !== FingerprintReaderType.NONE &&
             !this.serviceIsForeground(FINGERPRINT_SERVICE_NAME))
-            this._startService(FINGERPRINT_SERVICE_NAME);
+            await this._startService(FINGERPRINT_SERVICE_NAME);
     }
 
     _onChoiceListQuery(client, serviceName, promptMessage, list) {
