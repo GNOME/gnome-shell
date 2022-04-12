@@ -43,6 +43,7 @@ export const DISABLE_USER_LIST_KEY = 'disable-user-list';
 
 // Give user 48ms to read each character of a PAM message
 const USER_READ_TIME = 48;
+const FINGERPRINT_SERVICE_PROXY_TIMEOUT = 5000;
 const FINGERPRINT_ERROR_TIMEOUT_WAIT = 15;
 
 /**
@@ -358,6 +359,10 @@ export class ShellUserVerifier extends Signals.EventEmitter {
                 // option, so go ahead a synchronously look for a fingerprint device
                 // during startup or default service update.
                 fprintManager.init(null);
+                // Do not wait too much for fprintd to reply, as in case it hangs
+                // we should fail early without having the shell to misbehave
+                fprintManager.set_default_timeout(FINGERPRINT_SERVICE_PROXY_TIMEOUT);
+
                 const [devicePath] = fprintManager.GetDefaultDeviceSync();
                 this._fprintManager = fprintManager;
 
