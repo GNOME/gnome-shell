@@ -704,14 +704,14 @@ var LayoutManager = GObject.registerClass({
             translation_y: 0,
             duration: STARTUP_ANIMATION_TIME,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            onComplete: () => this._startupAnimationComplete(),
+            onStopped: () => this._startupAnimationComplete(),
         });
     }
 
     _startupAnimationSession() {
-        const onComplete = () => this._startupAnimationComplete();
+        const onStopped = () => this._startupAnimationComplete();
         if (Main.sessionMode.hasOverview) {
-            Main.overview.runStartupAnimation(onComplete);
+            Main.overview.runStartupAnimation(onStopped);
         } else {
             this.uiGroup.ease({
                 scale_x: 1,
@@ -719,7 +719,7 @@ var LayoutManager = GObject.registerClass({
                 opacity: 255,
                 duration: STARTUP_ANIMATION_TIME,
                 mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-                onComplete,
+                onStopped,
             });
         }
     }
