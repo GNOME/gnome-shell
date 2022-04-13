@@ -1511,7 +1511,8 @@ var Keyboard = GObject.registerClass({
     _addRowKeys(keys, layout) {
         for (let i = 0; i < keys.length; ++i) {
             let key = keys[i];
-            let button = new Key(key.shift(), key);
+            const {strings} = key;
+            let button = new Key(strings.shift(), strings);
 
             /* Space key gets special width, dependent on the number of surrounding keys */
             if (button.key == ' ')
