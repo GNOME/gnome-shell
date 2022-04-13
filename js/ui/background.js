@@ -333,6 +333,8 @@ var Background = GObject.registerClass({
             return;
 
         this.isLoaded = true;
+        if (this._cancellable?.is_cancelled())
+            return;
 
         let id = GLib.idle_add(GLib.PRIORITY_DEFAULT, () => {
             this.emit('loaded');
