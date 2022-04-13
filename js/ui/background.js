@@ -492,7 +492,7 @@ var Background = GObject.registerClass({
                 Gio.FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE,
                 Gio.FileQueryInfoFlags.NONE,
                 0,
-                null);
+                this._cancellable);
         } catch (e) {
             this._setLoaded();
             return;
