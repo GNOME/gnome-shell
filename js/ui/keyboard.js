@@ -1514,9 +1514,8 @@ var Keyboard = GObject.registerClass({
             const {strings} = key;
             let button = new Key(strings.shift(), strings);
 
-            /* Space key gets special width, dependent on the number of surrounding keys */
-            if (button.key == ' ')
-                button.setWidth(keys.length <= 3 ? 5 : 3);
+            if (key.width !== null)
+                button.setWidth(key.width);
 
             button.connect('pressed', (actor, keyval, str) => {
                 if (!Main.inputMethod.currentFocus ||
