@@ -353,6 +353,15 @@ gnome_shell_plugin_locate_pointer (MetaPlugin *plugin)
 }
 
 static void
+gnome_shell_plugin_play_sound (MetaPlugin *plugin,
+                               const char *name,
+                               const char *description)
+{ 
+  GnomeShellPlugin *shell_plugin = GNOME_SHELL_PLUGIN (plugin);
+  _shell_global_play_sound (shell_plugin->global, name, description);
+}
+
+static void
 gnome_shell_plugin_class_init (GnomeShellPluginClass *klass)
 {
   MetaPluginClass *plugin_class  = META_PLUGIN_CLASS (klass);
@@ -384,6 +393,8 @@ gnome_shell_plugin_class_init (GnomeShellPluginClass *klass)
 
   plugin_class->create_close_dialog = gnome_shell_plugin_create_close_dialog;
   plugin_class->create_inhibit_shortcuts_dialog = gnome_shell_plugin_create_inhibit_shortcuts_dialog;
+
+  plugin_class->play_sound = gnome_shell_plugin_play_sound;
 
   plugin_class->locate_pointer = gnome_shell_plugin_locate_pointer;
 }

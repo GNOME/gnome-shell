@@ -61,7 +61,8 @@ gnome_shell_deps = [
   gi_dep,
   polkit_dep,
   gcr_dep,
-  libsystemd_dep
+  libsystemd_dep,
+  libcanberra_dep,
 ]
 
 gnome_shell_deps += nm_deps
@@ -151,6 +152,8 @@ libshell_sources = [
   'shell-secure-text-buffer.c',
   'shell-secure-text-buffer.h',
   'shell-square-bin.c',
+  'shell-sound-player.c',
+  'shell-sound-player.h',
   'shell-stack.c',
   'shell-tray-icon.c',
   'shell-tray-manager.c',

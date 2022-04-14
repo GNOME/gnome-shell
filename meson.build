@@ -31,6 +31,7 @@ schemas_req = '>= 42.beta'
 startup_req = '>= 0.11'
 ibus_req = '>= 1.5.19'
 gnome_desktop_req = '>= 3.35.90'
+libcanberra_req = '>= 0.26'
 
 bt_req = '>= 3.9.0'
 gst_req = '>= 0.11.92'
@@ -97,6 +98,7 @@ bt_dep = dependency('gnome-bluetooth-3.0', version: bt_req, required: false)
 gst_dep = dependency('gstreamer-1.0', version: gst_req, required: false)
 gst_base_dep = dependency('gstreamer-base-1.0', required: false)
 pipewire_dep = dependency('libpipewire-0.3', required: false)
+libcanberra_dep = dependency('libcanberra', version: libcanberra_req)
 
 recorder_deps = []
 enable_recorder = gst_dep.found() and gst_base_dep.found() and pipewire_dep.found()

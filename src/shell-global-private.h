@@ -20,4 +20,8 @@ gboolean _shell_global_check_xdnd_event (ShellGlobal  *global,
 
 void _shell_global_locate_pointer (ShellGlobal  *global);
 
+void _shell_global_play_sound (ShellGlobal *global,
+                               const char  *name,
+                               const char  *description);
+
 #endif /* __SHELL_GLOBAL_PRIVATE_H__ */

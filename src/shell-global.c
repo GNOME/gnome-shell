@@ -39,6 +39,7 @@
 #include "shell-enum-types.h"
 #include "shell-global-private.h"
 #include "shell-perf-log.h"
+#include "shell-sound-player.h"
 #include "shell-window-tracker.h"
 #include "shell-wm.h"
 #include "shell-util.h"
@@ -82,6 +83,8 @@ struct _ShellGlobal {
 
   gboolean frame_timestamps;
   gboolean frame_finish_timestamp;
+
+  ShellSoundPlayer *sound_player;
 
   GDBusProxy *switcheroo_control;
   GCancellable *switcheroo_cancellable;
@@ -390,6 +393,8 @@ shell_global_init (ShellGlobal *global)
   byteorder_string = "BE";
 #endif
 
+  global->sound_player = g_object_new (SHELL_TYPE_SOUND_PLAYER, NULL);
+
   /* And the runtime state */
   path = g_strdup_printf ("%s/gnome-shell/runtime-state-%s.%s",
                           g_get_user_runtime_dir (),
@@ -472,6 +477,8 @@ shell_global_finalize (GObject *object)
 
   g_clear_object (&global->userdatadir_path);
   g_clear_object (&global->runtime_state_path);
+
+  g_clear_object (&global->sound_player);
 
   g_free (global->session_mode);
   g_free (global->imagedir);
@@ -1841,4 +1848,16 @@ void
 _shell_global_locate_pointer (ShellGlobal *global)
 {
   g_signal_emit (global, shell_global_signals[LOCATE_POINTER], 0);
+}
+
+
+void 
+_shell_global_play_sound (ShellGlobal *global,
+                          const char  *name,
+                          const char  *description)
+{
+  shell_sound_player_play_from_theme (global->sound_player,
+                                      name,
+                                      description,
+                                      NULL);
 }
