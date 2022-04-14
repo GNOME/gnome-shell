@@ -1548,12 +1548,44 @@ var Keyboard = GObject.registerClass({
                 if (!this._latched)
                     this._setActiveLayer(0);
             });
+            if (key.action !== null) {
+                button.connect('pressed', () => {
+                    if (key.action === 'levelSwitch') {
+                        this._setActiveLayer(key.level);
+                        this._setLatched (
+                            key.level === 1 &&
+                                key.iconName === 'keyboard-caps-lock-symbolic');
+                    }
+                });
+                button.connect('released', () => {
+                    if (key.action === 'hide')
+                        this.close();
+                    else if (key.action === 'languageMenu')
+                        this._popupLanguageMenu(button);
+                    else if (key.action === 'emoji')
+                        this._toggleEmoji();
+                });
+            }
+
+            if (key.action === 'levelSwitch' &&
+                key.iconName === 'keyboard-shift-symbolic') {
+                layout.shiftKeys.push(button);
+                if (key.level === 1) {
+                    button.connect('long-press',
+                        () => this._setLatched(true));
+                }
+            }
 
             if (key.action || key.keyval)
                 button.keyButton.add_style_class_name('default-key');
 
             layout.appendKey(button, button.keyButton.keyWidth);
         }
+    }
+
+    _setLatched(latched) {
+        this._latched = latched;
+        this._setCurrentLevelLatched(this._currentPage, this._latched);
     }
 
     _popupLanguageMenu(keyActor) {
