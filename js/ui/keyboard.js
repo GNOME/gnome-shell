@@ -299,8 +299,9 @@ var Key = GObject.registerClass({
     Signals: {
         'activated': {},
         'long-press': {},
-        'pressed': { param_types: [GObject.TYPE_UINT, GObject.TYPE_STRING] },
-        'released': { param_types: [GObject.TYPE_UINT, GObject.TYPE_STRING] },
+        'pressed': {},
+        'released': {},
+        'commit': {param_types: [GObject.TYPE_UINT, GObject.TYPE_STRING]},
     },
 }, class Key extends St.BoxLayout {
     _init(params, extendedKeys = []) {
@@ -354,13 +355,10 @@ var Key = GObject.registerClass({
         return Clutter.unicode_to_keysym(unicode);
     }
 
-    _press(button, commitString) {
+    _press(button) {
         this.emit('activated');
 
-        let keyval;
-
         if (button === this.keyButton) {
-            keyval = this._keyval;
             this._pressTimeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT,
                 KEY_LONG_PRESS_TIME,
                 () => {
@@ -380,11 +378,8 @@ var Key = GObject.registerClass({
                 });
         }
 
-        if (!keyval)
-            keyval = this._getKeyvalFromString(commitString);
-
-        if (this._extendedKeys.length === 0)
-            this.emit('pressed', keyval, commitString);
+        this.emit('pressed');
+        this._pressed = true;
     }
 
     _release(button, commitString) {
@@ -400,11 +395,12 @@ var Key = GObject.registerClass({
             keyval = this._getKeyvalFromString(commitString);
         console.assert(keyval !== undefined, 'Need keyval or commitString');
 
-        if (this._extendedKeys.length > 0)
-            this.emit('pressed', keyval, commitString);
+        if (this._pressed && (commitString || keyval))
+            this.emit('commit', keyval, commitString || '');
 
-        this.emit('released', keyval, commitString);
+        this.emit('released');
         this._hideSubkeys();
+        this._pressed = false;
     }
 
     cancel() {
@@ -917,7 +913,7 @@ var EmojiPager = GObject.registerClass({
             key.connect('long-press', () => {
                 this._panAction.cancel();
             });
-            key.connect('released', (actor, keyval, str) => {
+            key.connect('commit', (actor, keyval, str) => {
                 if (this._currentKey != key)
                     return;
                 this._currentKey = null;
@@ -1543,20 +1539,13 @@ var Keyboard = GObject.registerClass({
             if (key.width !== null)
                 button.setWidth(key.width);
 
-            button.connect('pressed', (actor, keyval, str) => {
-                if (!Main.inputMethod.currentFocus ||
+            button.connect('commit', (actor, keyval, str) => {
+                if (str === '' || !Main.inputMethod.currentFocus ||
                     !this._keyboardController.commitString(str, true)) {
                     if (keyval != 0) {
                         this._keyboardController.keyvalPress(keyval);
-                        button._keyvalPress = true;
-                    }
-                }
-            });
-            button.connect('released', (actor, keyval, _str) => {
-                if (keyval != 0) {
-                    if (button._keyvalPress)
                         this._keyboardController.keyvalRelease(keyval);
-                    button._keyvalPress = false;
+                    }
                 }
 
                 if (!this._latched)
