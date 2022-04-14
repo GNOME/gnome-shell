@@ -303,11 +303,12 @@ var Key = GObject.registerClass({
         'released': { param_types: [GObject.TYPE_UINT, GObject.TYPE_STRING] },
     },
 }, class Key extends St.BoxLayout {
-    _init(key, extendedKeys, icon = null) {
+    _init(params, extendedKeys = []) {
+        const {label, iconName, commitString, keyval} = {keyval: 0, ...params};
         super._init({ style_class: 'key-container' });
 
-        this.key = key || "";
-        this.keyButton = this._makeKey(this.key, icon);
+        this._keyval = parseInt(keyval, 16);
+        this.keyButton = this._makeKey(commitString, label, iconName);
 
         /* Add the key in a container, so keys can be padded without losing
          * logical proportions between those.
@@ -348,18 +349,18 @@ var Key = GObject.registerClass({
         this.keyButton._extendedKeys = this._extendedKeyboard;
     }
 
-    _getKeyval(key) {
-        let unicode = key.length ? key.charCodeAt(0) : undefined;
+    _getKeyvalFromString(string) {
+        let unicode = string?.length ? string.charCodeAt(0) : undefined;
         return Clutter.unicode_to_keysym(unicode);
     }
 
-    _press(key) {
+    _press(button, commitString) {
         this.emit('activated');
 
-        if (this._extendedKeys.length === 0)
-            this.emit('pressed', this._getKeyval(key), key);
+        let keyval;
 
-        if (key == this.key) {
+        if (button === this.keyButton) {
+            keyval = this._keyval;
             this._pressTimeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT,
                 KEY_LONG_PRESS_TIME,
                 () => {
@@ -378,18 +379,31 @@ var Key = GObject.registerClass({
                     return GLib.SOURCE_REMOVE;
                 });
         }
+
+        if (!keyval)
+            keyval = this._getKeyvalFromString(commitString);
+
+        if (this._extendedKeys.length === 0)
+            this.emit('pressed', keyval, commitString);
     }
 
-    _release(key) {
+    _release(button, commitString) {
         if (this._pressTimeoutId != 0) {
             GLib.source_remove(this._pressTimeoutId);
             this._pressTimeoutId = 0;
         }
 
-        if (this._extendedKeys.length > 0)
-            this.emit('pressed', this._getKeyval(key), key);
+        let keyval;
+        if (button === this.keyButton)
+            keyval = this._keyval;
+        if (!keyval && commitString)
+            keyval = this._getKeyvalFromString(commitString);
+        console.assert(keyval !== undefined, 'Need keyval or commitString');
 
-        this.emit('released', this._getKeyval(key), key);
+        if (this._extendedKeys.length > 0)
+            this.emit('pressed', keyval, commitString);
+
+        this.emit('released', keyval, commitString);
         this._hideSubkeys();
     }
 
@@ -439,29 +453,31 @@ var Key = GObject.registerClass({
         this._capturedPress = false;
     }
 
-    _makeKey(key, icon) {
+    _makeKey(commitString, label, icon) {
         let button = new St.Button({
             style_class: 'keyboard-key',
             x_expand: true,
         });
 
         if (icon) {
-            let child = new St.Icon({ icon_name: icon });
+            const child = new St.Icon({icon_name: icon});
             button.set_child(child);
             this._icon = child;
-        } else {
-            let label = GLib.markup_escape_text(key, -1);
+        } else if (label) {
             button.set_label(label);
+        } else if (commitString) {
+            const str = GLib.markup_escape_text(commitString, -1);
+            button.set_label(str);
         }
 
         button.keyWidth = 1;
         button.connect('button-press-event', () => {
-            this._press(key);
+            this._press(button, commitString);
             button.add_style_pseudo_class('active');
             return Clutter.EVENT_STOP;
         });
         button.connect('button-release-event', () => {
-            this._release(key);
+            this._release(button, commitString);
             button.remove_style_pseudo_class('active');
             return Clutter.EVENT_STOP;
         });
@@ -481,12 +497,12 @@ var Key = GObject.registerClass({
             if (!this._touchPressSlot &&
                 event.type() == Clutter.EventType.TOUCH_BEGIN) {
                 this._touchPressSlot = slot;
-                this._press(key);
+                this._press(button, commitString);
                 button.add_style_pseudo_class('active');
             } else if (event.type() === Clutter.EventType.TOUCH_END) {
                 if (!this._touchPressSlot ||
                     this._touchPressSlot === slot) {
-                    this._release(key);
+                    this._release(button, commitString);
                     button.remove_style_pseudo_class('active');
                 }
 
@@ -891,7 +907,7 @@ var EmojiPager = GObject.registerClass({
 
         for (let i = 0; i < page.pageKeys.length; i++) {
             let modelKey = page.pageKeys[i];
-            let key = new Key(modelKey.label, modelKey.variants);
+            let key = new Key({commitString: modelKey.label}, modelKey.variants);
 
             key.keyButton.set_button_mask(0);
 
@@ -1086,7 +1102,7 @@ var EmojiSelection = GObject.registerClass({
 
         row.appendRow();
 
-        key = new Key('ABC', []);
+        key = new Key({label: 'ABC'}, []);
         key.keyButton.add_style_class_name('default-key');
         key.connect('released', () => this.emit('toggle'));
         row.appendKey(key, 1.5);
@@ -1094,14 +1110,14 @@ var EmojiSelection = GObject.registerClass({
         for (let i = 0; i < this._sections.length; i++) {
             let section = this._sections[i];
 
-            key = new Key(section.label, []);
+            key = new Key({label: section.label}, []);
             key.connect('released', () => this._emojiPager.setCurrentSection(section, 0));
             row.appendKey(key);
 
             section.button = key;
         }
 
-        key = new Key(null, [], 'go-down-symbolic');
+        key = new Key({iconName: 'go-down-symbolic'});
         key.keyButton.add_style_class_name('default-key');
         key.keyButton.add_style_class_name('hide-key');
         key.connect('released', () => {
@@ -1163,7 +1179,10 @@ var Keypad = GObject.registerClass({
 
         for (let i = 0; i < keys.length; i++) {
             let cur = keys[i];
-            let key = new Key(cur.label || "", [], cur.icon);
+            let key = new Key({
+                label: cur.label,
+                iconName: cur.icon,
+            });
 
             if (keys[i].extraClassName)
                 key.keyButton.add_style_class_name(cur.extraClassName);
@@ -1510,9 +1529,16 @@ var Keyboard = GObject.registerClass({
 
     _addRowKeys(keys, layout) {
         for (let i = 0; i < keys.length; ++i) {
-            let key = keys[i];
+            const key = keys[i];
             const {strings} = key;
-            let button = new Key(strings.shift(), strings);
+            const commitString = strings?.shift();
+
+            let button = new Key({
+                commitString,
+                label: key.label,
+                iconName: key.iconName,
+                keyval: key.keyval,
+            }, strings);
 
             if (key.width !== null)
                 button.setWidth(key.width);
@@ -1536,6 +1562,9 @@ var Keyboard = GObject.registerClass({
                 if (!this._latched)
                     this._setActiveLayer(0);
             });
+
+            if (key.action || key.keyval)
+                button.keyButton.add_style_class_name('default-key');
 
             layout.appendKey(button, button.keyButton.keyWidth);
         }
@@ -1563,7 +1592,10 @@ var Keyboard = GObject.registerClass({
             if (!this._emojiKeyVisible && action == 'emoji')
                 continue;
 
-            extraButton = new Key(key.label || '', [], icon);
+            extraButton = new Key({
+                label: key.label,
+                iconName: icon,
+            });
 
             extraButton.keyButton.add_style_class_name('default-key');
             if (key.extraClassName != null)
