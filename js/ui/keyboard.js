@@ -24,54 +24,6 @@ const SHOW_KEYBOARD = 'screen-keyboard-enabled';
 /* KeyContainer puts keys in a grid where a 1:1 key takes this size */
 const KEY_SIZE = 2;
 
-const defaultKeysPre = [
-    [
-        [],
-        [],
-        [{ width: 1.5, level: 1, extraClassName: 'shift-key-lowercase', icon: 'keyboard-shift-symbolic' }],
-        [{ label: '?123', width: 1.5, level: 2 }],
-    ], [
-        [],
-        [],
-        [{ width: 1.5, level: 0, extraClassName: 'shift-key-uppercase', icon: 'keyboard-shift-symbolic' }],
-        [{ label: '?123', width: 1.5, level: 2 }],
-    ], [
-        [],
-        [],
-        [{ label: '=/<', width: 1.5, level: 3 }],
-        [{ label: 'ABC', width: 1.5, level: 0 }],
-    ], [
-        [],
-        [],
-        [{ label: '?123', width: 1.5, level: 2 }],
-        [{ label: 'ABC', width: 1.5, level: 0 }],
-    ],
-];
-
-const defaultKeysPost = [
-    [
-        [{ width: 1.5, keyval: Clutter.KEY_BackSpace, icon: 'edit-clear-symbolic' }],
-        [{ width: 2, keyval: Clutter.KEY_Return, extraClassName: 'enter-key', icon: 'keyboard-enter-symbolic' }],
-        [{ width: 3, level: 1, right: true, extraClassName: 'shift-key-lowercase', icon: 'keyboard-shift-symbolic' }],
-        [{ action: 'emoji', icon: 'face-smile-symbolic' }, { action: 'languageMenu', extraClassName: 'layout-key', icon: 'keyboard-layout-symbolic' }, { action: 'hide', extraClassName: 'hide-key', icon: 'go-down-symbolic' }],
-    ], [
-        [{ width: 1.5, keyval: Clutter.KEY_BackSpace, icon: 'edit-clear-symbolic' }],
-        [{ width: 2, keyval: Clutter.KEY_Return, extraClassName: 'enter-key', icon: 'keyboard-enter-symbolic' }],
-        [{ width: 3, level: 0, right: true, extraClassName: 'shift-key-uppercase', icon: 'keyboard-shift-symbolic' }],
-        [{ action: 'emoji', icon: 'face-smile-symbolic' }, { action: 'languageMenu', extraClassName: 'layout-key', icon: 'keyboard-layout-symbolic' }, { action: 'hide', extraClassName: 'hide-key', icon: 'go-down-symbolic' }],
-    ], [
-        [{ width: 1.5, keyval: Clutter.KEY_BackSpace, icon: 'edit-clear-symbolic' }],
-        [{ width: 2, keyval: Clutter.KEY_Return, extraClassName: 'enter-key', icon: 'keyboard-enter-symbolic' }],
-        [{ label: '=/<', width: 3, level: 3, right: true }],
-        [{ action: 'emoji', icon: 'face-smile-symbolic' }, { action: 'languageMenu', extraClassName: 'layout-key', icon: 'keyboard-layout-symbolic' }, { action: 'hide', extraClassName: 'hide-key', icon: 'go-down-symbolic' }],
-    ], [
-        [{ width: 1.5, keyval: Clutter.KEY_BackSpace, icon: 'edit-clear-symbolic' }],
-        [{ width: 2, keyval: Clutter.KEY_Return, extraClassName: 'enter-key', icon: 'keyboard-enter-symbolic' }],
-        [{ label: '?123', width: 3, level: 2, right: true }],
-        [{ action: 'emoji', icon: 'face-smile-symbolic' }, { action: 'languageMenu', extraClassName: 'layout-key', icon: 'keyboard-layout-symbolic' }, { action: 'hide', extraClassName: 'hide-key', icon: 'go-down-symbolic' }],
-    ],
-];
-
 var AspectContainer = GObject.registerClass(
 class AspectContainer extends St.Widget {
     _init(params) {
@@ -1597,83 +1549,6 @@ var Keyboard = GObject.registerClass({
         this._languagePopup.open(true);
     }
 
-    _loadDefaultKeys(keys, layout, numLevels, numKeys) {
-        let extraButton;
-        for (let i = 0; i < keys.length; i++) {
-            let key = keys[i];
-            let keyval = key.keyval;
-            let switchToLevel = key.level;
-            let action = key.action;
-            let icon = key.icon;
-
-            /* Skip emoji button if necessary */
-            if (!this._emojiKeyVisible && action == 'emoji')
-                continue;
-
-            extraButton = new Key({
-                label: key.label,
-                iconName: icon,
-            });
-
-            extraButton.keyButton.add_style_class_name('default-key');
-            if (key.extraClassName != null)
-                extraButton.keyButton.add_style_class_name(key.extraClassName);
-            if (key.width != null)
-                extraButton.setWidth(key.width);
-
-            let actor = extraButton.keyButton;
-
-            extraButton.connect('pressed', () => {
-                if (switchToLevel != null) {
-                    this._setActiveLayer(switchToLevel);
-                    // Shift only gets latched on long press
-                    this._latched = switchToLevel != 1;
-                } else if (keyval != null) {
-                    this._keyboardController.keyvalPress(keyval);
-                }
-            });
-            extraButton.connect('released', () => {
-                if (keyval != null)
-                    this._keyboardController.keyvalRelease(keyval);
-                else if (action == 'hide')
-                    this.close();
-                else if (action == 'languageMenu')
-                    this._popupLanguageMenu(actor);
-                else if (action == 'emoji')
-                    this._toggleEmoji();
-            });
-
-            if (switchToLevel == 0) {
-                layout.shiftKeys.push(extraButton);
-            } else if (switchToLevel == 1) {
-                extraButton.connect('long-press', () => {
-                    this._latched = true;
-                    this._setCurrentLevelLatched(this._currentPage, this._latched);
-                });
-            }
-
-            /* Fixup default keys based on the number of levels/keys */
-            if (switchToLevel == 1 && numLevels == 3) {
-                // Hide shift key if the keymap has no uppercase level
-                if (key.right) {
-                    /* Only hide the key actor, so the container still takes space */
-                    extraButton.keyButton.hide();
-                } else {
-                    extraButton.hide();
-                }
-                extraButton.setWidth(1.5);
-            } else if (key.right && numKeys > 8) {
-                extraButton.setWidth(2);
-            } else if (keyval == Clutter.KEY_Return && numKeys > 9) {
-                extraButton.setWidth(1.5);
-            } else if (!this._emojiKeyVisible && (action == 'hide' || action == 'languageMenu')) {
-                extraButton.setWidth(1.5);
-            }
-
-            layout.appendKey(extraButton, extraButton.keyButton.keyWidth);
-        }
-    }
-
     _updateCurrentPageVisible() {
         if (this._currentPage)
             this._currentPage.visible = !this._emojiActive && !this._keypadVisible;
@@ -1696,38 +1571,11 @@ var Keyboard = GObject.registerClass({
         }
     }
 
-    _getDefaultKeysForRow(row, numRows, level) {
-        /* The first 2 rows in defaultKeysPre/Post belong together with
-         * the first 2 rows on each keymap. On keymaps that have more than
-         * 4 rows, the last 2 default key rows must be respectively
-         * assigned to the 2 last keymap ones.
-         */
-        if (row < 2) {
-            return [defaultKeysPre[level][row], defaultKeysPost[level][row]];
-        } else if (row >= numRows - 2) {
-            let defaultRow = row - (numRows - 2) + 2;
-            return [defaultKeysPre[level][defaultRow], defaultKeysPost[level][defaultRow]];
-        } else {
-            return [null, null];
-        }
-    }
-
-    _mergeRowKeys(layout, pre, row, post, numLevels) {
-        if (pre != null)
-            this._loadDefaultKeys(pre, layout, numLevels, row.length);
-
-        this._addRowKeys(row, layout);
-
-        if (post != null)
-            this._loadDefaultKeys(post, layout, numLevels, row.length);
-    }
-
     _loadRows(model, level, numLevels, layout) {
         let rows = model.rows;
         for (let i = 0; i < rows.length; ++i) {
             layout.appendRow();
-            let [pre, post] = this._getDefaultKeysForRow(i, rows.length, level);
-            this._mergeRowKeys(layout, pre, rows[i], post, numLevels);
+            this._addRowKeys(rows[i], layout);
         }
     }
 
