@@ -22,8 +22,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2022-02-26 15:59+0000\n"
-"PO-Revision-Date: 2022-03-03 00:13+0900\n"
+"POT-Creation-Date: 2022-04-07 11:58+0000\n"
+"PO-Revision-Date: 2022-04-16 04:26+0900\n"
 "Last-Translator: Changwoo Ryu <cwryu@debian.org>\n"
 "Language-Team: GNOME Korea <gnome-kr@googlegroups.com>\n"
 "Language: ko\n"
@@ -504,9 +504,9 @@ msgstr "확장 홈페이지 보기"
 
 #: js/gdm/authPrompt.js:144 js/ui/audioDeviceSelection.js:61
 #: js/ui/components/networkAgent.js:109 js/ui/components/polkitAgent.js:141
-#: js/ui/endSessionDialog.js:443 js/ui/extensionDownloader.js:223
-#: js/ui/shellMountOperation.js:382 js/ui/shellMountOperation.js:392
-#: js/ui/status/network.js:1007 subprojects/extensions-app/js/main.js:174
+#: js/ui/endSessionDialog.js:437 js/ui/extensionDownloader.js:223
+#: js/ui/shellMountOperation.js:377 js/ui/shellMountOperation.js:387
+#: js/ui/status/network.js:956 subprojects/extensions-app/js/main.js:175
 msgid "Cancel"
 msgstr "취소"
 
@@ -514,47 +514,47 @@ msgstr "취소"
 #: js/ui/components/networkAgent.js:229 js/ui/components/networkAgent.js:261
 #: js/ui/components/networkAgent.js:294 js/ui/components/networkAgent.js:333
 #: js/ui/components/networkAgent.js:346 js/ui/components/polkitAgent.js:283
-#: js/ui/shellMountOperation.js:332
+#: js/ui/shellMountOperation.js:327
 msgid "Password"
 msgstr "암호"
 
-#: js/gdm/loginDialog.js:323
+#: js/gdm/loginDialog.js:317
 msgid "Choose Session"
 msgstr "세션 선택"
 
-#: js/gdm/loginDialog.js:469
+#: js/gdm/loginDialog.js:463
 msgid "Not listed?"
 msgstr "목록에 없습니까?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: js/gdm/loginDialog.js:940
+#: js/gdm/loginDialog.js:931
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(예를 들어, 사용자 또는 %s)"
 
-#: js/gdm/loginDialog.js:945 js/ui/components/networkAgent.js:253
+#: js/gdm/loginDialog.js:936 js/ui/components/networkAgent.js:253
 #: js/ui/components/networkAgent.js:288 js/ui/components/networkAgent.js:322
 msgid "Username"
 msgstr "사용자 이름"
 
-#: js/gdm/loginDialog.js:1301
+#: js/gdm/loginDialog.js:1257
 msgid "Login Window"
 msgstr "로그인 창"
 
-#: js/gdm/util.js:437
+#: js/gdm/util.js:434
 msgid "Authentication error"
 msgstr "인증 오류"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger on the fingerprint reader
-#: js/gdm/util.js:618
+#: js/gdm/util.js:606
 msgid "(or swipe finger across reader)"
 msgstr "(또는 지문을 센서에 문지르십시오)"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can place their finger on the fingerprint reader instead
-#: js/gdm/util.js:623
+#: js/gdm/util.js:611
 msgid "(or place finger on reader)"
 msgstr "(또는 손가락을 센서에 대십시오)"
 
@@ -787,11 +787,11 @@ msgstr "%B %-d일, %p %l∶%M"
 msgid "%B %-d %Y, %l∶%M %p"
 msgstr "%Y년 %B %-d일, %p %l∶%M"
 
-#: js/portalHelper/main.js:53
+#: js/portalHelper/main.js:55
 msgid "Hotspot Login"
 msgstr "핫스팟 로그인"
 
-#: js/portalHelper/main.js:106
+#: js/portalHelper/main.js:108
 msgid ""
 "Your connection to this hotspot login is not secure. Passwords or other "
 "information you enter on this page can be viewed by people nearby."
@@ -801,11 +801,11 @@ msgstr ""
 
 #. No support for non-modal system dialogs, so ignore the option
 #. let modal = options['modal'] || true;
-#: js/ui/accessDialog.js:39 js/ui/status/location.js:417
+#: js/ui/accessDialog.js:39 js/ui/status/location.js:406
 msgid "Deny Access"
 msgstr "접근 거부"
 
-#: js/ui/accessDialog.js:40 js/ui/status/location.js:422
+#: js/ui/accessDialog.js:40 js/ui/status/location.js:411
 msgid "Grant Access"
 msgstr "접근 허용"
 
@@ -837,19 +837,19 @@ msgstr "자세히 보기"
 msgid "Quit"
 msgstr "끝내기"
 
-#: js/ui/appMenu.js:163 js/ui/dash.js:249
+#: js/ui/appMenu.js:156 js/ui/dash.js:249
 msgid "Unpin"
 msgstr "고정 해제"
 
-#: js/ui/appMenu.js:164
+#: js/ui/appMenu.js:157
 msgid "Pin to Dash"
 msgstr "대시보드에 고정"
 
-#: js/ui/appMenu.js:181
+#: js/ui/appMenu.js:174
 msgid "Launch using Integrated Graphics Card"
 msgstr "내장 그래픽 카드를 사용해 시작"
 
-#: js/ui/appMenu.js:182
+#: js/ui/appMenu.js:175
 msgid "Launch using Discrete Graphics Card"
 msgstr "외장 그래픽 카드를 사용해 시작"
 
@@ -869,7 +869,7 @@ msgstr "헤드폰"
 msgid "Headset"
 msgstr "헤드셋"
 
-#: js/ui/audioDeviceSelection.js:73 js/ui/status/volume.js:277
+#: js/ui/audioDeviceSelection.js:73 js/ui/status/volume.js:270
 msgid "Microphone"
 msgstr "마이크"
 
@@ -979,52 +979,52 @@ msgstr "%d"
 msgid "Week %V"
 msgstr "주 %V"
 
-#: js/ui/calendar.js:915
+#: js/ui/calendar.js:880
 msgid "No Notifications"
 msgstr "알림 없음"
 
-#: js/ui/calendar.js:972
+#: js/ui/calendar.js:937
 msgid "Do Not Disturb"
 msgstr "방해 금지"
 
-#: js/ui/calendar.js:993
+#: js/ui/calendar.js:958
 msgid "Clear"
 msgstr "지우기"
 
 #. Translators: %s is an application name
-#: js/ui/closeDialog.js:42
+#: js/ui/closeDialog.js:40
 #, javascript-format
 msgid "“%s” is not responding."
 msgstr "“%s” 프로그램이 응답하지 않습니다."
 
-#: js/ui/closeDialog.js:43
+#: js/ui/closeDialog.js:41
 msgid ""
 "You may choose to wait a short while for it to continue or force the "
 "application to quit entirely."
 msgstr ""
 "좀 더 기다려서 계속 할 수도 있고, 강제로 프로그램을 끝낼 수도 있습니다."
 
-#: js/ui/closeDialog.js:71
+#: js/ui/closeDialog.js:69
 msgid "Force Quit"
 msgstr "강제로 끝내기"
 
-#: js/ui/closeDialog.js:76
+#: js/ui/closeDialog.js:74
 msgid "Wait"
 msgstr "기다리기"
 
-#: js/ui/components/automountManager.js:87
+#: js/ui/components/automountManager.js:84
 msgid "External drive connected"
 msgstr "외부 드라이브 연결"
 
-#: js/ui/components/automountManager.js:99
+#: js/ui/components/automountManager.js:96
 msgid "External drive disconnected"
 msgstr "외부 드라이브 연결 끊김"
 
-#: js/ui/components/automountManager.js:210
+#: js/ui/components/automountManager.js:207
 msgid "Unable to unlock volume"
 msgstr "볼륨을 잠글 수 없습니다"
 
-#: js/ui/components/automountManager.js:211
+#: js/ui/components/automountManager.js:208
 msgid "The installed udisks version does not support the PIM setting"
 msgstr "설치한 버전의 udisks는 PIM 설정을 지원하지 않습니다"
 
@@ -1038,8 +1038,8 @@ msgid ""
 "Alternatively you can connect by pushing the “WPS” button on your router."
 msgstr "다른 방법으로 라우터의 “WPS” 단추를 눌러서 연결할 수 있습니다."
 
-#: js/ui/components/networkAgent.js:103 js/ui/status/network.js:257
-#: js/ui/status/network.js:348 js/ui/status/network.js:1012
+#: js/ui/components/networkAgent.js:103 js/ui/status/network.js:244
+#: js/ui/status/network.js:335 js/ui/status/network.js:961
 msgid "Connect"
 msgstr "연결"
 
@@ -1102,7 +1102,7 @@ msgstr "PIN"
 msgid "A password is required to connect to “%s”."
 msgstr "“%s”에 연결하려면 암호가 필요합니다."
 
-#: js/ui/components/networkAgent.js:735 js/ui/status/network.js:1831
+#: js/ui/components/networkAgent.js:735 js/ui/status/network.js:1751
 msgid "Network Manager"
 msgstr "네트워크 관리"
 
@@ -1126,16 +1126,16 @@ msgstr "인증"
 #. * requested authentication was not gained; this can happen
 #. * because of an authentication error (like invalid password),
 #. * for instance.
-#: js/ui/components/polkitAgent.js:260 js/ui/shellMountOperation.js:408
+#: js/ui/components/polkitAgent.js:260 js/ui/shellMountOperation.js:403
 msgid "Sorry, that didn’t work. Please try again."
 msgstr "죄송합니다. 동작하지 않았습니다. 다시 시도하십시오."
 
-#: js/ui/components/telepathyClient.js:835
+#: js/ui/components/telepathyClient.js:828
 #, javascript-format
 msgid "%s is now known as %s"
 msgstr "%s의 대화명이 이제 %s입니다"
 
-#: js/ui/ctrlAltTab.js:22 js/ui/overviewControls.js:404
+#: js/ui/ctrlAltTab.js:22 js/ui/overviewControls.js:405
 msgid "Windows"
 msgstr "창"
 
@@ -1194,6 +1194,13 @@ msgctxt "event list time"
 msgid "All Day"
 msgstr "종일"
 
+#. Translators: Shown in calendar event list as the start/end of events
+#. * that only show day and month
+#.
+#: js/ui/dateMenu.js:222
+msgid "%m/%d"
+msgstr "%m/%d"
+
 #: js/ui/dateMenu.js:273
 msgid "No Events"
 msgstr "행사 없음"
@@ -1206,23 +1213,23 @@ msgstr "세계 시계 추가…"
 msgid "World Clocks"
 msgstr "세계 시계"
 
-#: js/ui/dateMenu.js:677
+#: js/ui/dateMenu.js:681
 msgid "Loading…"
 msgstr "읽어들이는 중…"
 
-#: js/ui/dateMenu.js:687
+#: js/ui/dateMenu.js:691
 msgid "Go online for weather information"
 msgstr "날씨 정보를 온라인으로 가져옵니다"
 
-#: js/ui/dateMenu.js:689
+#: js/ui/dateMenu.js:693
 msgid "Weather information is currently unavailable"
 msgstr "날씨 정보를 현재 사용할 수 없습니다"
 
-#: js/ui/dateMenu.js:699
+#: js/ui/dateMenu.js:703
 msgid "Weather"
 msgstr "날씨"
 
-#: js/ui/dateMenu.js:701
+#: js/ui/dateMenu.js:705
 msgid "Select weather location…"
 msgstr "날씨 위치를 선택하십시오…"
 
@@ -1345,31 +1352,31 @@ msgstr ""
 "다시 시작한 뒤에 %s %s 버전을 설치합니다. 업그레이드 설치가 오래 걸릴 수도 있"
 "습니다: 백업을 하고 컴퓨터에 전원을 연결하십시오."
 
-#: js/ui/endSessionDialog.js:288
+#: js/ui/endSessionDialog.js:287
 msgid "Low battery power: please plug in before installing updates."
 msgstr "배터리가 부족합니다: 업데이트를 설치하려면 전원을 연결하십시오."
 
-#: js/ui/endSessionDialog.js:297
+#: js/ui/endSessionDialog.js:296
 msgid "Some applications are busy or have unsaved work"
 msgstr "일부 프로그램이 동작 중이거나 저장하지 않은 작업이 남아 있습니다"
 
-#: js/ui/endSessionDialog.js:302
+#: js/ui/endSessionDialog.js:301
 msgid "Other users are logged in"
 msgstr "다른 사용자가 로그인 중입니다"
 
-#: js/ui/endSessionDialog.js:473
+#: js/ui/endSessionDialog.js:467
 msgctxt "button"
 msgid "Boot Options"
 msgstr "부팅 옵션"
 
 #. Translators: Remote here refers to a remote session, like a ssh login
-#: js/ui/endSessionDialog.js:694
+#: js/ui/endSessionDialog.js:688
 #, javascript-format
 msgid "%s (remote)"
 msgstr "%s (원격)"
 
 #. Translators: Console here refers to a tty like a VT console
-#: js/ui/endSessionDialog.js:697
+#: js/ui/endSessionDialog.js:691
 #, javascript-format
 msgid "%s (console)"
 msgstr "%s (콘솔)"
@@ -1470,13 +1477,13 @@ msgid "Leave On"
 msgstr "계속 유지"
 
 #: js/ui/kbdA11yDialog.js:55 js/ui/status/bluetooth.js:174
-#: js/ui/status/network.js:1414
+#: js/ui/status/network.js:1341
 msgid "Turn On"
 msgstr "켜기"
 
 #: js/ui/kbdA11yDialog.js:65 js/ui/status/bluetooth.js:174
-#: js/ui/status/network.js:165 js/ui/status/network.js:349
-#: js/ui/status/network.js:1414 js/ui/status/network.js:1529
+#: js/ui/status/network.js:160 js/ui/status/network.js:336
+#: js/ui/status/network.js:1341 js/ui/status/network.js:1456
 #: js/ui/status/nightLight.js:41 js/ui/status/rfkill.js:81
 #: js/ui/status/rfkill.js:110
 msgid "Turn Off"
@@ -1490,71 +1497,71 @@ msgstr "그만두고 끄기"
 msgid "Region & Language Settings"
 msgstr "지역 및 언어 설정"
 
-#: js/ui/lookingGlass.js:691
+#: js/ui/lookingGlass.js:701
 msgid "No extensions installed"
 msgstr "확장을 설치하지 않았습니다"
 
 #. Translators: argument is an extension UUID.
-#: js/ui/lookingGlass.js:752
+#: js/ui/lookingGlass.js:762
 #, javascript-format
 msgid "%s has not emitted any errors."
 msgstr "%s에서 발생한 에러가 없습니다."
 
-#: js/ui/lookingGlass.js:758
+#: js/ui/lookingGlass.js:768
 msgid "Hide Errors"
 msgstr "오류 숨기기"
 
-#: js/ui/lookingGlass.js:762 js/ui/lookingGlass.js:835
+#: js/ui/lookingGlass.js:772 js/ui/lookingGlass.js:845
 msgid "Show Errors"
 msgstr "오류 보이기"
 
-#: js/ui/lookingGlass.js:771
+#: js/ui/lookingGlass.js:781
 msgid "Enabled"
 msgstr "사용"
 
 #. translators:
 #. * The device has been disabled
-#: js/ui/lookingGlass.js:774 subprojects/gvc/gvc-mixer-control.c:1900
+#: js/ui/lookingGlass.js:784 subprojects/gvc/gvc-mixer-control.c:1900
 msgid "Disabled"
 msgstr "사용 않음"
 
-#: js/ui/lookingGlass.js:776
+#: js/ui/lookingGlass.js:786
 msgid "Error"
 msgstr "오류"
 
-#: js/ui/lookingGlass.js:778
+#: js/ui/lookingGlass.js:788
 msgid "Out of date"
 msgstr "오래 된 버전"
 
-#: js/ui/lookingGlass.js:780
+#: js/ui/lookingGlass.js:790
 msgid "Downloading"
 msgstr "다운로드 중"
 
-#: js/ui/lookingGlass.js:813
+#: js/ui/lookingGlass.js:823
 msgid "View Source"
 msgstr "소스 보기"
 
-#: js/ui/lookingGlass.js:824
+#: js/ui/lookingGlass.js:834
 msgid "Web Page"
 msgstr "웹페이지"
 
-#: js/ui/main.js:265
+#: js/ui/main.js:266
 msgid "System was put in unsafe mode"
 msgstr "시스템이 위험 모드에 들어가 있습니다"
 
-#: js/ui/main.js:266
+#: js/ui/main.js:267
 msgid "Applications now have unrestricted access"
 msgstr "현재 프로그램에서 제한적인 접근만 할 수 있습니다"
 
-#: js/ui/main.js:267 js/ui/overview.js:58
+#: js/ui/main.js:268 js/ui/overview.js:58
 msgid "Undo"
 msgstr "실행 취소"
 
-#: js/ui/main.js:313
+#: js/ui/main.js:314
 msgid "Logged in as a privileged user"
 msgstr "관리자 권한으로 로그인"
 
-#: js/ui/main.js:314
+#: js/ui/main.js:315
 msgid ""
 "Running a session as a privileged user should be avoided for security "
 "reasons. If possible, you should log in as a normal user."
@@ -1562,15 +1569,15 @@ msgstr ""
 "관리자 권한으로 세션을 시작하는 일은 보안 이유로 피해야 합니다. 할 수 있으면 "
 "일반 유저로 로그인해야 합니다."
 
-#: js/ui/messageTray.js:1460
+#: js/ui/messageTray.js:1418
 msgid "System Information"
 msgstr "시스템 정보"
 
-#: js/ui/mpris.js:207
+#: js/ui/mpris.js:200
 msgid "Unknown artist"
 msgstr "알 수 없는 음악가"
 
-#: js/ui/mpris.js:217
+#: js/ui/mpris.js:210
 msgid "Unknown title"
 msgstr "알 수 없는 제목"
 
@@ -1578,11 +1585,11 @@ msgstr "알 수 없는 제목"
 #. in the search entry when no search is
 #. active; it should not exceed ~30
 #. characters.
-#: js/ui/overviewControls.js:313
+#: js/ui/overviewControls.js:315
 msgid "Type to search"
 msgstr "검색하려면 입력하십시오"
 
-#: js/ui/overviewControls.js:392
+#: js/ui/overviewControls.js:393
 msgid "Applications"
 msgstr "프로그램"
 
@@ -1616,36 +1623,36 @@ msgstr "키 누르기 지정"
 msgid "Done"
 msgstr "마침"
 
-#: js/ui/padOsd.js:736
+#: js/ui/padOsd.js:737
 msgid "Edit…"
 msgstr "편집…"
 
-#: js/ui/padOsd.js:778 js/ui/padOsd.js:895
+#: js/ui/padOsd.js:779 js/ui/padOsd.js:896
 msgid "None"
 msgstr "없음"
 
-#: js/ui/padOsd.js:849
+#: js/ui/padOsd.js:850
 msgid "Press a button to configure"
 msgstr "설정하려면 단추를 누르십시오"
 
-#: js/ui/padOsd.js:850
+#: js/ui/padOsd.js:851
 msgid "Press Esc to exit"
 msgstr "나가려면 Esc를 누르십시오"
 
-#: js/ui/padOsd.js:853
+#: js/ui/padOsd.js:854
 msgid "Press any key to exit"
 msgstr "나가려면 아무 키나 누르십시오"
 
-#: js/ui/panel.js:273
+#: js/ui/panel.js:241
 msgid "Activities"
 msgstr "현재 활동"
 
-#: js/ui/panel.js:396
+#: js/ui/panel.js:364
 msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "시스템"
 
-#: js/ui/panel.js:509
+#: js/ui/panel.js:480
 msgid "Top Bar"
 msgstr "맨 위 표시줄"
 
@@ -1775,15 +1782,15 @@ msgstr "클립보드에서 이미지를 붙여넣을 수 있습니다."
 msgid "Screenshot taken"
 msgstr "찍은 스크린샷"
 
-#: js/ui/search.js:826
+#: js/ui/search.js:815
 msgid "Searching…"
 msgstr "검색하는 중…"
 
-#: js/ui/search.js:828
+#: js/ui/search.js:817
 msgid "No results."
 msgstr "결과가 없습니다."
 
-#: js/ui/search.js:959
+#: js/ui/search.js:948
 #, javascript-format
 msgid "%d more"
 msgid_plural "%d more"
@@ -1814,20 +1821,20 @@ msgid "Caps lock is on."
 msgstr "Caps lock이 켜져 있습니다."
 
 # 오디오 볼륨
-#: js/ui/shellMountOperation.js:291
+#: js/ui/shellMountOperation.js:286
 msgid "Hidden Volume"
 msgstr "숨겨진 볼륨"
 
-#: js/ui/shellMountOperation.js:294
+#: js/ui/shellMountOperation.js:289
 msgid "Windows System Volume"
 msgstr "윈도우 시스템 볼륨"
 
-#: js/ui/shellMountOperation.js:297
+#: js/ui/shellMountOperation.js:292
 msgid "Uses Keyfiles"
 msgstr "keyfiles 사용"
 
 #. Translators: %s is the Disks application
-#: js/ui/shellMountOperation.js:304
+#: js/ui/shellMountOperation.js:299
 #, javascript-format
 msgid ""
 "To unlock a volume that uses keyfiles, use the <i>%s</i> utility instead."
@@ -1835,36 +1842,36 @@ msgstr ""
 "keyfiles를 사용하는 볼륨의 잠금을 해제하려면, 대신 <i>%s</i> 유틸리티를 사용"
 "하십시오."
 
-#: js/ui/shellMountOperation.js:312
+#: js/ui/shellMountOperation.js:307
 msgid "PIM Number"
 msgstr "PIM 번호"
 
-#: js/ui/shellMountOperation.js:371
+#: js/ui/shellMountOperation.js:366
 msgid "Remember Password"
 msgstr "암호 저장"
 
-#: js/ui/shellMountOperation.js:386
+#: js/ui/shellMountOperation.js:381
 msgid "Unlock"
 msgstr "잠금 풀기"
 
 #. Translators: %s is the Disks application
-#: js/ui/shellMountOperation.js:397
+#: js/ui/shellMountOperation.js:392
 #, javascript-format
 msgid "Open %s"
 msgstr "%s 프로그램 열기"
 
-#: js/ui/shellMountOperation.js:429
+#: js/ui/shellMountOperation.js:424
 msgid "The PIM must be a number or empty."
 msgstr "PIM은 숫자거나 비어 있어야 합니다."
 
 #. Translators: %s is the Disks application
-#: js/ui/shellMountOperation.js:471
+#: js/ui/shellMountOperation.js:466
 #, javascript-format
 msgid "Unable to start %s"
 msgstr "%s 프로그램을 시작할 수 없습니다"
 
 #. Translators: %s is the Disks application
-#: js/ui/shellMountOperation.js:473
+#: js/ui/shellMountOperation.js:468
 #, javascript-format
 msgid "Couldn’t find the %s application"
 msgstr "%s 프로그램을 찾을 수 없습니다"
@@ -1917,7 +1924,7 @@ msgstr "큰 글자"
 msgid "Bluetooth"
 msgstr "블루투스"
 
-#: js/ui/status/bluetooth.js:67 js/ui/status/network.js:657
+#: js/ui/status/bluetooth.js:67 js/ui/status/network.js:626
 msgid "Bluetooth Settings"
 msgstr "블루투스 설정"
 
@@ -1962,49 +1969,49 @@ msgstr "보조 누르기"
 msgid "Dwell Click"
 msgstr "머무르면 누르기"
 
-#: js/ui/status/keyboard.js:833
+#: js/ui/status/keyboard.js:827
 msgid "Keyboard"
 msgstr "키보드"
 
-#: js/ui/status/keyboard.js:850
+#: js/ui/status/keyboard.js:844
 msgid "Show Keyboard Layout"
 msgstr "키보드 배치 표시"
 
-#: js/ui/status/location.js:234 js/ui/status/location.js:266
+#: js/ui/status/location.js:231 js/ui/status/location.js:255
 msgid "Location Enabled"
 msgstr "위치 사용"
 
-#: js/ui/status/location.js:235 js/ui/status/location.js:267
+#: js/ui/status/location.js:232 js/ui/status/location.js:256
 msgid "Disable"
 msgstr "사용 않기"
 
-#: js/ui/status/location.js:237
+#: js/ui/status/location.js:234
 msgid "Privacy Settings"
 msgstr "사생활 보호 설정"
 
-#: js/ui/status/location.js:265
+#: js/ui/status/location.js:254
 msgid "Location In Use"
 msgstr "위치 사용 중"
 
-#: js/ui/status/location.js:269
+#: js/ui/status/location.js:258
 msgid "Location Disabled"
 msgstr "위치 사용 않음"
 
-#: js/ui/status/location.js:270
+#: js/ui/status/location.js:259
 msgid "Enable"
 msgstr "사용"
 
-#: js/ui/status/location.js:397
+#: js/ui/status/location.js:386
 msgid "Allow location access"
 msgstr "위치 접근 허용"
 
 #. Translators: %s is an application name
-#: js/ui/status/location.js:399
+#: js/ui/status/location.js:388
 #, javascript-format
 msgid "The app %s wants to access your location"
 msgstr "%s 앱이 현재 위치에 접근하려고 합니다"
 
-#: js/ui/status/location.js:409
+#: js/ui/status/location.js:398
 msgid "Location access can be changed at any time from the privacy settings."
 msgstr "위치 정보 접근은 언제든지 사생활 보호 설정에서 바꿀 수 있습니다."
 
@@ -2013,13 +2020,13 @@ msgid "<unknown>"
 msgstr "<알 수 없음>"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:454 js/ui/status/network.js:1443
+#: js/ui/status/network.js:436 js/ui/status/network.js:1370
 #, javascript-format
 msgid "%s Off"
 msgstr "%s 꺼짐"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:457
+#: js/ui/status/network.js:439
 #, javascript-format
 msgid "%s Connected"
 msgstr "%s 연결됨"
@@ -2027,186 +2034,186 @@ msgstr "%s 연결됨"
 #. Translators: this is for network devices that are physically present but are not
 #. under NetworkManager's control (and thus cannot be used in the menu);
 #. %s is a network identifier
-#: js/ui/status/network.js:462
+#: js/ui/status/network.js:444
 #, javascript-format
 msgid "%s Unmanaged"
 msgstr "%s 관리되지 않음"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:465
+#: js/ui/status/network.js:447
 #, javascript-format
 msgid "%s Disconnecting"
 msgstr "%s 연결 끊는 중"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:472 js/ui/status/network.js:1435
+#: js/ui/status/network.js:454 js/ui/status/network.js:1362
 #, javascript-format
 msgid "%s Connecting"
 msgstr "%s 연결하는 중"
 
 #. Translators: this is for network connections that require some kind of key or password; %s is a network identifier
-#: js/ui/status/network.js:475
+#: js/ui/status/network.js:457
 #, javascript-format
 msgid "%s Requires Authentication"
 msgstr "%s 인증 필요"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing; %s is a network identifier
-#: js/ui/status/network.js:483
+#: js/ui/status/network.js:465
 #, javascript-format
 msgid "Firmware Missing For %s"
 msgstr "%s에 필요한 펌웨어 없음"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage; %s is a network identifier
-#: js/ui/status/network.js:487
+#: js/ui/status/network.js:469
 #, javascript-format
 msgid "%s Unavailable"
 msgstr "%s 사용 불가"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:490
+#: js/ui/status/network.js:472
 #, javascript-format
 msgid "%s Connection Failed"
 msgstr "%s 연결이 실패했습니다"
 
-#: js/ui/status/network.js:502
+#: js/ui/status/network.js:484
 msgid "Wired Settings"
 msgstr "유선 네트워크 설정"
 
-#: js/ui/status/network.js:549
+#: js/ui/status/network.js:531
 msgid "Mobile Broadband Settings"
 msgstr "휴대전화 네트워크 설정"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:618 js/ui/status/network.js:1440
+#: js/ui/status/network.js:587 js/ui/status/network.js:1367
 #, javascript-format
 msgid "%s Hardware Disabled"
 msgstr "%s 하드웨어 사용 않음"
 
 #. Translators: this is for a network device that cannot be activated
 #. because it's disabled by rfkill (airplane mode); %s is a network identifier
-#: js/ui/status/network.js:622
+#: js/ui/status/network.js:591
 #, javascript-format
 msgid "%s Disabled"
 msgstr "%s 사용 않음"
 
-#: js/ui/status/network.js:669
+#: js/ui/status/network.js:638
 msgid "Connect to Internet"
 msgstr "인터넷에 연결"
 
-#: js/ui/status/network.js:887
+#: js/ui/status/network.js:836
 msgid "Airplane Mode is On"
 msgstr "비행기 모드 켜짐"
 
-#: js/ui/status/network.js:888
+#: js/ui/status/network.js:837
 msgid "Wi-Fi is disabled when airplane mode is on."
 msgstr "비행기 모드에서는 와이파이를 사용하지 않습니다."
 
-#: js/ui/status/network.js:889
+#: js/ui/status/network.js:838
 msgid "Turn Off Airplane Mode"
 msgstr "비행기 모드 끄기"
 
-#: js/ui/status/network.js:898
+#: js/ui/status/network.js:847
 msgid "Wi-Fi is Off"
 msgstr "와이파이 꺼짐"
 
-#: js/ui/status/network.js:899
+#: js/ui/status/network.js:848
 msgid "Wi-Fi needs to be turned on in order to connect to a network."
 msgstr "네트워크에 연결하려면 와이파이를 켜야 합니다."
 
-#: js/ui/status/network.js:900
+#: js/ui/status/network.js:849
 msgid "Turn On Wi-Fi"
 msgstr "와이파이 켜기"
 
-#: js/ui/status/network.js:928
+#: js/ui/status/network.js:877
 msgid "Wi-Fi Networks"
 msgstr "와이파이 네트워크"
 
-#: js/ui/status/network.js:932
+#: js/ui/status/network.js:881
 msgid "Select a network"
 msgstr "네트워크를 선택하십시오"
 
-#: js/ui/status/network.js:968
+#: js/ui/status/network.js:917
 msgid "No Networks"
 msgstr "네트워크 없음"
 
-#: js/ui/status/network.js:993 js/ui/status/rfkill.js:108
+#: js/ui/status/network.js:942 js/ui/status/rfkill.js:108
 msgid "Use hardware switch to turn off"
 msgstr "끄려면 하드웨어 스위치를 사용하십시오"
 
-#: js/ui/status/network.js:1304
+#: js/ui/status/network.js:1253
 msgid "Select Network"
 msgstr "네트워크 선택"
 
-#: js/ui/status/network.js:1310
+#: js/ui/status/network.js:1259
 msgid "Wi-Fi Settings"
 msgstr "와이파이 설정"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1431
+#: js/ui/status/network.js:1358
 #, javascript-format
 msgid "%s Hotspot Active"
 msgstr "%s 핫스팟 사용 중"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1446
+#: js/ui/status/network.js:1373
 #, javascript-format
 msgid "%s Not Connected"
 msgstr "%s 연결되지 않음"
 
-#: js/ui/status/network.js:1546
+#: js/ui/status/network.js:1473
 msgid "connecting…"
 msgstr "연결하는 중…"
 
 #. Translators: this is for network connections that require some kind of key or password
-#: js/ui/status/network.js:1549
+#: js/ui/status/network.js:1476
 msgid "authentication required"
 msgstr "인증 필요"
 
-#: js/ui/status/network.js:1551
+#: js/ui/status/network.js:1478
 msgid "connection failed"
 msgstr "연결 실패"
 
-#: js/ui/status/network.js:1602
+#: js/ui/status/network.js:1524
 msgid "VPN Settings"
 msgstr "가상사설망 설정"
 
-#: js/ui/status/network.js:1619
+#: js/ui/status/network.js:1541
 msgid "VPN"
 msgstr "가상사설망"
 
-#: js/ui/status/network.js:1629
+#: js/ui/status/network.js:1551
 msgid "VPN Off"
 msgstr "가상사설망 꺼짐"
 
-#: js/ui/status/network.js:1690 js/ui/status/rfkill.js:84
+#: js/ui/status/network.js:1612 js/ui/status/rfkill.js:84
 msgid "Network Settings"
 msgstr "네트워크 설정"
 
-#: js/ui/status/network.js:1718
+#: js/ui/status/network.js:1640
 #, javascript-format
 msgid "%s Wired Connection"
 msgid_plural "%s Wired Connections"
 msgstr[0] "%s 유선 연결"
 
-#: js/ui/status/network.js:1722
+#: js/ui/status/network.js:1644
 #, javascript-format
 msgid "%s Wi-Fi Connection"
 msgid_plural "%s Wi-Fi Connections"
 msgstr[0] "%s 와이파이 연결"
 
-#: js/ui/status/network.js:1726
+#: js/ui/status/network.js:1648
 #, javascript-format
 msgid "%s Modem Connection"
 msgid_plural "%s Modem Connections"
 msgstr[0] "%s 모뎀 연결"
 
-#: js/ui/status/network.js:1872
+#: js/ui/status/network.js:1792
 msgid "Connection failed"
 msgstr "연결이 실패했습니다"
 
-#: js/ui/status/network.js:1873
+#: js/ui/status/network.js:1793
 msgid "Activation of network connection failed"
 msgstr "네트워크 연결이 실패했습니다"
 
@@ -2277,15 +2284,15 @@ msgctxt "Power profile"
 msgid "Power Saver"
 msgstr "전기 절약"
 
-#: js/ui/status/remoteAccess.js:39
+#: js/ui/status/remoteAccess.js:43
 msgid "Screen is Being Shared"
 msgstr "화면을 공유하는 중입니다"
 
-#: js/ui/status/remoteAccess.js:41
+#: js/ui/status/remoteAccess.js:45
 msgid "Turn off"
 msgstr "끄기"
 
-#: js/ui/status/remoteAccess.js:116
+#: js/ui/status/remoteAccess.js:149
 msgid "Stop Screencast"
 msgstr "스크린캐스트 중지"
 
@@ -2324,15 +2331,15 @@ msgstr "로그아웃"
 msgid "Switch User…"
 msgstr "사용자 바꾸기…"
 
-#: js/ui/status/thunderbolt.js:262
+#: js/ui/status/thunderbolt.js:263
 msgid "Thunderbolt"
 msgstr "썬더볼트"
 
-#: js/ui/status/thunderbolt.js:323
+#: js/ui/status/thunderbolt.js:324
 msgid "Unknown Thunderbolt device"
 msgstr "알 수 없는 썬더볼트 장치"
 
-#: js/ui/status/thunderbolt.js:324
+#: js/ui/status/thunderbolt.js:325
 msgid ""
 "New device has been detected while you were away. Please disconnect and "
 "reconnect the device to start using it."
@@ -2340,31 +2347,31 @@ msgstr ""
 "자리에 없는 동안 새 장치를 검색했습니다. 이 장치를 사용하려면 장치 연결을 끊"
 "었다가 다시 연결하십시오."
 
-#: js/ui/status/thunderbolt.js:327
+#: js/ui/status/thunderbolt.js:328
 msgid "Unauthorized Thunderbolt device"
 msgstr "권한 없는 썬더볼트 장치"
 
-#: js/ui/status/thunderbolt.js:328
+#: js/ui/status/thunderbolt.js:329
 msgid ""
 "New device has been detected and needs to be authorized by an administrator."
 msgstr "새 장치가 발견되었고 관리자가 허가해야 합니다."
 
-#: js/ui/status/thunderbolt.js:334
+#: js/ui/status/thunderbolt.js:335
 msgid "Thunderbolt authorization error"
 msgstr "썬더볼트 권한 오류"
 
-#: js/ui/status/thunderbolt.js:335
+#: js/ui/status/thunderbolt.js:336
 #, javascript-format
 msgid "Could not authorize the Thunderbolt device: %s"
 msgstr "썬더볼트 장치에 권한을 부여할 수 없습니다: %s"
 
 # 오디오 볼륨
-#: js/ui/status/volume.js:160
+#: js/ui/status/volume.js:158
 msgid "Volume changed"
 msgstr "볼륨 바꿈"
 
 # 오디오 볼륨
-#: js/ui/status/volume.js:222
+#: js/ui/status/volume.js:220
 msgid "Volume"
 msgstr "볼륨"
 
@@ -2396,11 +2403,11 @@ msgstr "외부만 사용"
 msgid "Built-in Only"
 msgstr "내장만 사용"
 
-#: js/ui/unlockDialog.js:574
+#: js/ui/unlockDialog.js:554
 msgid "Unlock Window"
 msgstr "창 잠금 풀기"
 
-#: js/ui/unlockDialog.js:583
+#: js/ui/unlockDialog.js:563
 msgid "Log in as another user"
 msgstr "다른 사용자로 로그인"
 
@@ -2447,7 +2454,7 @@ msgstr[0] "바뀐 설정을 %d초 후에 되돌립니다"
 
 #. Translators: This represents the size of a window. The first number is
 #. * the width of the window and the second is the height.
-#: js/ui/windowManager.js:556
+#: js/ui/windowManager.js:553
 #, javascript-format
 msgid "%d × %d"
 msgstr "%d × %d"
@@ -2551,7 +2558,7 @@ msgctxt "program"
 msgid "Unknown"
 msgstr "알 수 없음"
 
-#: src/shell-app.c:569
+#: src/shell-app.c:556
 #, c-format
 msgid "Failed to launch “%s”"
 msgstr "“%s” 실행에 실패했습니다"
@@ -2570,14 +2577,14 @@ msgstr "인증 대화 창을 사용자가 닫았습니다"
 
 #: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:5
 #: subprojects/extensions-app/data/org.gnome.Extensions.desktop.in.in:4
-#: subprojects/extensions-app/js/main.js:209
+#: subprojects/extensions-app/js/main.js:210
 #: subprojects/extensions-app/data/ui/extensions-window.ui:18
 #: subprojects/extensions-app/data/ui/extensions-window.ui:83
 msgid "Extensions"
 msgstr "확장"
 
 #: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:6
-#: subprojects/extensions-app/js/main.js:210
+#: subprojects/extensions-app/js/main.js:211
 msgid "Manage your GNOME Extensions"
 msgstr "그놈 확장을 관리합니다"
 
@@ -2597,44 +2604,44 @@ msgstr ""
 msgid "Configure GNOME Shell Extensions"
 msgstr "그놈 셸 확장을 설정합니다"
 
-#: subprojects/extensions-app/js/main.js:131
-#: subprojects/extensions-app/js/main.js:142
+#: subprojects/extensions-app/js/main.js:132
+#: subprojects/extensions-app/js/main.js:143
 msgid "No Matches"
 msgstr "일치 항목이 없습니다"
 
-#: subprojects/extensions-app/js/main.js:170
+#: subprojects/extensions-app/js/main.js:171
 #, javascript-format
 msgid "Remove “%s”?"
 msgstr "“%s” 확장을 제거하시겠습니까?"
 
-#: subprojects/extensions-app/js/main.js:171
+#: subprojects/extensions-app/js/main.js:172
 msgid ""
 "If you remove the extension, you need to return to download it if you want "
 "to enable it again"
 msgstr "확장을 제거한 다음 다시 사용하려면 다시 다운로드해야 합니다"
 
-#: subprojects/extensions-app/js/main.js:175
+#: subprojects/extensions-app/js/main.js:176
 msgid "Remove"
 msgstr "제거"
 
-#: subprojects/extensions-app/js/main.js:208
+#: subprojects/extensions-app/js/main.js:209
 msgid "translator-credits"
 msgstr ""
 "차영호 <ganadist@gmail.com>\n"
 "조성호 <darkcircle.0426@gmail.com>\n"
 "류창우 <cwryu@debian.org>"
 
-#: subprojects/extensions-app/js/main.js:336
+#: subprojects/extensions-app/js/main.js:337
 #, javascript-format
 msgid "%d extension will be updated on next login."
 msgid_plural "%d extensions will be updated on next login."
 msgstr[0] "다음 로그인에 확장 %d개를 업데이트할 예정입니다."
 
-#: subprojects/extensions-app/js/main.js:478
+#: subprojects/extensions-app/js/main.js:479
 msgid "The extension is incompatible with the current GNOME version"
 msgstr "이 확장 기능은 현재 그놈 버전과 호환되지 않습니다"
 
-#: subprojects/extensions-app/js/main.js:481
+#: subprojects/extensions-app/js/main.js:482
 #: subprojects/extensions-app/data/ui/extension-row.ui:52
 msgid "The extension had an error"
 msgstr "확장 기능에 오류가 있습니다"
@@ -2674,8 +2681,8 @@ msgstr "수동 설치"
 #: subprojects/extensions-app/data/ui/extensions-window.ui:99
 #: subprojects/extensions-app/data/ui/extensions-window.ui:134
 msgid ""
-"To find and add extensions, visit <a href=\"https://extensions.gnome."
-"org\">extensions.gnome.org</a>."
+"To find and add extensions, visit <a href=\"https://extensions.gnome.org"
+"\">extensions.gnome.org</a>."
 msgstr ""
 "확장을 찾고 추가하려면, <a href=\"https://extensions.gnome.org\">extensions."
 "gnome.org</a> 사이트를 방문하십시오."
