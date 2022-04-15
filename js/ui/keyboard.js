@@ -1501,21 +1501,21 @@ var Keyboard = GObject.registerClass({
                     this._setActiveLayer(0);
             });
             if (key.action !== null) {
-                button.connect('pressed', () => {
-                    if (key.action === 'levelSwitch') {
+                button.connect('released', () => {
+                    if (key.action === 'hide') {
+                        this.close();
+                    } else if (key.action === 'languageMenu') {
+                        this._popupLanguageMenu(button);
+                    } else if (key.action === 'emoji') {
+                        this._toggleEmoji();
+                    } else if (!this._longPressed && key.action === 'levelSwitch') {
                         this._setActiveLayer(key.level);
-                        this._setLatched (
+                        this._setLatched(
                             key.level === 1 &&
                                 key.iconName === 'keyboard-caps-lock-symbolic');
                     }
-                });
-                button.connect('released', () => {
-                    if (key.action === 'hide')
-                        this.close();
-                    else if (key.action === 'languageMenu')
-                        this._popupLanguageMenu(button);
-                    else if (key.action === 'emoji')
-                        this._toggleEmoji();
+
+                    this._longPressed = false;
                 });
             }
 
@@ -1523,8 +1523,11 @@ var Keyboard = GObject.registerClass({
                 key.iconName === 'keyboard-shift-symbolic') {
                 layout.shiftKeys.push(button);
                 if (key.level === 1) {
-                    button.connect('long-press',
-                        () => this._setLatched(true));
+                    button.connect('long-press', () => {
+                        this._setActiveLayer(key.level);
+                        this._setLatched(true);
+                        this._longPressed = true;
+                    });
                 }
             }
 
