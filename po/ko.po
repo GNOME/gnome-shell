@@ -22,8 +22,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2022-04-07 11:58+0000\n"
-"PO-Revision-Date: 2022-04-16 04:26+0900\n"
+"POT-Creation-Date: 2022-04-15 19:27+0000\n"
+"PO-Revision-Date: 2022-04-16 04:55+0900\n"
 "Last-Translator: Changwoo Ryu <cwryu@debian.org>\n"
 "Language-Team: GNOME Korea <gnome-kr@googlegroups.com>\n"
 "Language: ko\n"
@@ -2403,9 +2403,21 @@ msgstr "외부만 사용"
 msgid "Built-in Only"
 msgstr "내장만 사용"
 
+#: js/ui/unlockDialog.js:364
+msgid "%A %B %-d"
+msgstr "%B %-d %A"
+
+#: js/ui/unlockDialog.js:370
+msgid "Swipe up to unlock"
+msgstr "위로 밀어 잠금 해제"
+
+#: js/ui/unlockDialog.js:371
+msgid "Click or press a key to unlock"
+msgstr "잠금을 해제하려면 마우스 단추 또는 키를 누르십시오"
+
 #: js/ui/unlockDialog.js:554
 msgid "Unlock Window"
-msgstr "창 잠금 풀기"
+msgstr "창 잠금 해제"
 
 #: js/ui/unlockDialog.js:563
 msgid "Log in as another user"
