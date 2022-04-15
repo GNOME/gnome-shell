@@ -250,7 +250,7 @@
           },
           {
             "action": "hide",
-            "iconName": "go-down-symbolic"
+            "iconName": "keyboard-hide-symbolic"
           }
         ]
       ]
@@ -505,7 +505,7 @@
           },
           {
             "action": "hide",
-            "iconName": "go-down-symbolic"
+            "iconName": "keyboard-hide-symbolic"
           }
         ]
       ]
@@ -761,7 +761,7 @@
           },
           {
             "action": "hide",
-            "iconName": "go-down-symbolic"
+            "iconName": "keyboard-hide-symbolic"
           }
         ]
       ]
@@ -995,7 +995,7 @@
           },
           {
             "action": "hide",
-            "iconName": "go-down-symbolic"
+            "iconName": "keyboard-hide-symbolic"
           }
         ]
       ]
