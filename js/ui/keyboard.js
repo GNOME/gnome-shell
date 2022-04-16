@@ -24,6 +24,8 @@ const SHOW_KEYBOARD = 'screen-keyboard-enabled';
 /* KeyContainer puts keys in a grid where a 1:1 key takes this size */
 const KEY_SIZE = 2;
 
+const KEY_RELEASE_TIMEOUT = 50;
+
 var AspectContainer = GObject.registerClass(
 class AspectContainer extends St.Widget {
     _init(params) {
@@ -274,6 +276,14 @@ var Key = GObject.registerClass({
         this._capturedPress = false;
     }
 
+    get iconName() {
+        return this._icon.icon_name;
+    }
+
+    set iconName(value) {
+        this._icon.icon_name = value;
+    }
+
     _onDestroy() {
         if (this._boxPointer) {
             this._boxPointer.destroy();
@@ -488,16 +498,10 @@ var Key = GObject.registerClass({
     }
 
     setLatched(latched) {
-        if (!this._icon)
-            return;
-
-        if (latched) {
+        if (latched)
             this.keyButton.add_style_pseudo_class('latched');
-            this._icon.icon_name = 'keyboard-caps-lock-symbolic';
-        } else {
+        else
             this.keyButton.remove_style_pseudo_class('latched');
-            this._icon.icon_name = 'keyboard-shift-symbolic';
-        }
     }
 });
 
@@ -1280,6 +1284,8 @@ var Keyboard = GObject.registerClass({
         this._focusWindowStartY = null;
 
         this._latched = false; // current level is latched
+        this._modifiers = new Set();
+        this._modifierKeys = new Map();
 
         this._suggestions = null;
         this._emojiKeyVisible = Meta.is_wayland_compositor();
@@ -1488,18 +1494,28 @@ var Keyboard = GObject.registerClass({
             if (key.width !== null)
                 button.setWidth(key.width);
 
-            button.connect('commit', (actor, keyval, str) => {
-                if (str === '' || !Main.inputMethod.currentFocus ||
-                    !this._keyboardController.commitString(str, true)) {
-                    if (keyval != 0) {
-                        this._keyboardController.keyvalPress(keyval);
-                        this._keyboardController.keyvalRelease(keyval);
+            if (key.action !== 'modifier') {
+                button.connect('commit', (actor, keyval, str) => {
+                    if (str === '' || !Main.inputMethod.currentFocus ||
+                        this._modifiers.size > 0 ||
+                        !this._keyboardController.commitString(str, true)) {
+                        if (keyval !== 0) {
+                            this._forwardModifiers(this._modifiers, Clutter.EventType.KEY_PRESS);
+                            this._keyboardController.keyvalPress(keyval);
+                            GLib.timeout_add(GLib.PRIORITY_DEFAULT, KEY_RELEASE_TIMEOUT, () => {
+                                this._keyboardController.keyvalRelease(keyval);
+                                this._forwardModifiers(this._modifiers, Clutter.EventType.KEY_RELEASE);
+                                this._disableAllModifiers();
+                                return GLib.SOURCE_REMOVE;
+                            });
+                        }
                     }
-                }
 
-                if (!this._latched)
-                    this._setActiveLayer(0);
-            });
+                    if (!this._latched)
+                        this._setActiveLayer(0);
+                });
+            }
+
             if (key.action !== null) {
                 button.connect('released', () => {
                     if (key.action === 'hide') {
@@ -1508,6 +1524,8 @@ var Keyboard = GObject.registerClass({
                         this._popupLanguageMenu(button);
                     } else if (key.action === 'emoji') {
                         this._toggleEmoji();
+                    } else if (key.action === 'modifier') {
+                        this._toggleModifier(key.keyval);
                     } else if (!this._longPressed && key.action === 'levelSwitch') {
                         this._setActiveLayer(key.level);
                         this._setLatched(
@@ -1531,6 +1549,12 @@ var Keyboard = GObject.registerClass({
                 }
             }
 
+            if (key.action === 'modifier') {
+                let modifierKeys = this._modifierKeys[key.keyval] || [];
+                modifierKeys.push(button);
+                this._modifierKeys[key.keyval] = modifierKeys;
+            }
+
             if (key.action || key.keyval)
                 button.keyButton.add_style_class_name('default-key');
 
@@ -1541,6 +1565,35 @@ var Keyboard = GObject.registerClass({
     _setLatched(latched) {
         this._latched = latched;
         this._setCurrentLevelLatched(this._currentPage, this._latched);
+    }
+
+    _setModifierEnabled(keyval, enabled) {
+        if (enabled)
+            this._modifiers.add(keyval);
+        else
+            this._modifiers.delete(keyval);
+
+        for (const key of this._modifierKeys[keyval])
+            key.setLatched(enabled);
+    }
+
+    _toggleModifier(keyval) {
+        const isActive = this._modifiers.has(keyval);
+        this._setModifierEnabled(keyval, !isActive);
+    }
+
+    _forwardModifiers(modifiers, type) {
+        for (const keyval of modifiers) {
+            if (type === Clutter.EventType.KEY_PRESS)
+                this._keyboardController.keyvalPress(keyval);
+            else if (type === Clutter.EventType.KEY_RELEASE)
+                this._keyboardController.keyvalRelease(keyval);
+        }
+    }
+
+    _disableAllModifiers() {
+        for (const keyval of this._modifiers)
+            this._setModifierEnabled(keyval, false);
     }
 
     _popupLanguageMenu(keyActor) {
@@ -1571,6 +1624,8 @@ var Keyboard = GObject.registerClass({
         for (let i = 0; i < layout.shiftKeys.length; i++) {
             let key = layout.shiftKeys[i];
             key.setLatched(latched);
+            key.iconName = latched
+                ? 'keyboard-caps-lock-symbolic' : 'keyboard-shift-symbolic';
         }
     }
 
@@ -1688,6 +1743,7 @@ var Keyboard = GObject.registerClass({
             delete this._currentPage._destroyID;
         }
 
+        this._disableAllModifiers();
         this._currentPage = currentPage;
         this._currentPage._destroyID = this._currentPage.connect('destroy', () => {
             this._currentPage = null;
@@ -1768,6 +1824,7 @@ var Keyboard = GObject.registerClass({
 
         this._animateHide();
         this.setCursorLocation(null);
+        this._disableAllModifiers();
     }
 
     _animateShow() {
