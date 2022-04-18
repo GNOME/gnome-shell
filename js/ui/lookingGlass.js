@@ -486,6 +486,15 @@ class ObjInspector extends St.ScrollView {
         this._obj = null;
     }
 
+    vfunc_key_press_event(keyPressEvent) {
+        const symbol = keyPressEvent.keyval;
+        if (symbol === Clutter.KEY_Escape) {
+            this.close();
+            return Clutter.EVENT_STOP;
+        }
+        return super.vfunc_key_press_event(keyPressEvent);
+    }
+
     _onInsert() {
         let obj = this._obj;
         this.close();
@@ -1578,10 +1587,7 @@ class LookingGlass extends St.BoxLayout {
     vfunc_key_press_event(keyPressEvent) {
         let symbol = keyPressEvent.keyval;
         if (symbol == Clutter.KEY_Escape) {
-            if (this._objInspector.visible)
-                this._objInspector.close();
-            else
-                this.close();
+            this.close();
             return Clutter.EVENT_STOP;
         }
         // Ctrl+PgUp and Ctrl+PgDown switches tabs in the notebook view
