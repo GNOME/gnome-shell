@@ -13,7 +13,6 @@ class OsdMonitorLabel extends St.Widget {
         this._monitor = monitor;
 
         this._box = new St.BoxLayout({
-            style_class: 'osd-window',
             vertical: true,
         });
         this.add_actor(this._box);
