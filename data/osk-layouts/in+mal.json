@@ -66,8 +66,8 @@
             ]
           },
           {
+            "action": "delete",
             "iconName": "edit-clear-symbolic",
-            "keyval": "0xff08",
             "width": 1.5
           }
         ],
@@ -301,8 +301,8 @@
             ]
           },
           {
+            "action": "delete",
             "iconName": "edit-clear-symbolic",
-            "keyval": "0xff08",
             "width": 1.5
           }
         ],
@@ -554,8 +554,8 @@
             ]
           },
           {
+            "action": "delete",
             "iconName": "edit-clear-symbolic",
-            "keyval": "0xff08",
             "width": 1.5
           }
         ],
@@ -803,8 +803,8 @@
             ]
           },
           {
+            "action": "delete",
             "iconName": "edit-clear-symbolic",
-            "keyval": "0xff08",
             "width": 1.5
           }
         ],
