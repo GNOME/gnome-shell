@@ -10,8 +10,11 @@ Gio._promisify(IBus.Bus.prototype,
 
 var HIDE_PANEL_TIME = 50;
 
-var InputMethod = GObject.registerClass(
-class InputMethod extends Clutter.InputMethod {
+var InputMethod = GObject.registerClass({
+    Signals: {
+        'surrounding-text-set': {},
+    },
+}, class InputMethod extends Clutter.InputMethod {
     _init() {
         super._init();
         this._hints = 0;
@@ -202,6 +205,8 @@ class InputMethod extends Clutter.InputMethod {
             this._emitRequestSurrounding();
         }
 
+        this._surroundingText = null;
+        this._surroundingTextCursor = null;
         this._preeditStr = null;
     }
 
@@ -214,6 +219,10 @@ class InputMethod extends Clutter.InputMethod {
     }
 
     vfunc_set_surrounding(text, cursor, anchor) {
+        this._surroundingText = text;
+        this._surroundingTextCursor = cursor;
+        this.emit('surrounding-text-set');
+
         if (!this._context || !text)
             return;
 
@@ -297,5 +306,9 @@ class InputMethod extends Clutter.InputMethod {
                 }
             });
         return true;
+    }
+
+    getSurroundingText() {
+        return [this._surroundingText, this._surroundingTextCursor];
     }
 });
