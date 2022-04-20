@@ -7,9 +7,10 @@
     <file>bg.json</file>
     <file>by.json</file>
     <file>ca.json</file>
+    <file>ch.json</file>
+    <file>ch+fr.json</file>
     <file>cz.json</file>
     <file>de.json</file>
-    <file>de+ch.json</file>
     <file>dk.json</file>
     <file>ee.json</file>
     <file>epo.json</file>
@@ -17,7 +18,6 @@
     <file>es.json</file>
     <file>fi.json</file>
     <file>fr.json</file>
-    <file>fr+ch.json</file>
     <file>ge.json</file>
     <file>gr.json</file>
     <file>hr.json</file>
