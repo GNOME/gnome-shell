@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
 "POT-Creation-Date: 2022-04-07 11:58+0000\n"
-"PO-Revision-Date: 2022-04-20 11:52+0000\n"
+"PO-Revision-Date: 2022-04-20 17:31+0000\n"
 "Last-Translator: Sveinn í Felli <sv1@fellsnet.is>\n"
 "Language-Team: Icelandic\n"
 "Language: is\n"
@@ -1424,6 +1424,8 @@ msgid ""
 "You just held down the Shift key for 8 seconds. This is the shortcut for the "
 "Slow Keys feature, which affects the way your keyboard works."
 msgstr ""
+"Þú hefur haldið niðri Shift-lyklinum í 8 sekúndur. Þetta er flýtileiðin fyrir"
+" hæga lykla, sem hefur áhrif á hvernig lyklaborðið þitt virkar."
 
 #: js/ui/kbdA11yDialog.js:40
 msgid "Sticky Keys Turned On"
@@ -1438,6 +1440,8 @@ msgid ""
 "You just pressed the Shift key 5 times in a row. This is the shortcut for "
 "the Sticky Keys feature, which affects the way your keyboard works."
 msgstr ""
+"Þú hefur ýtt á Shift-lykilinn 5 sinnum í röð. Þetta er flýtileiðin fyrir"
+" klístraða lykla, sem hefur áhrif á hvernig lyklaborðið þitt virkar."
 
 #: js/ui/kbdA11yDialog.js:45
 msgid ""
@@ -1445,6 +1449,9 @@ msgid ""
 "row. This turns off the Sticky Keys feature, which affects the way your "
 "keyboard works."
 msgstr ""
+"Þú hefur ýtt á tvo lykla í einu eða á Shift-lykilinn 5 sinnum í röð. Þetta"
+" slekkur á klístruðum lyklum, sem hefur áhrif á hvernig lyklaborðið þitt"
+" virkar."
 
 #: js/ui/kbdA11yDialog.js:55
 msgid "Leave On"
@@ -1521,11 +1528,11 @@ msgstr "Vefsíða"
 
 #: js/ui/main.js:266
 msgid "System was put in unsafe mode"
-msgstr ""
+msgstr "Kerfið var sett í óöruggan ham"
 
 #: js/ui/main.js:267
 msgid "Applications now have unrestricted access"
-msgstr ""
+msgstr "Forrit hafa núna óheftan aðgang"
 
 #: js/ui/main.js:268 js/ui/overview.js:58
 msgid "Undo"
@@ -1540,6 +1547,8 @@ msgid ""
 "Running a session as a privileged user should be avoided for security "
 "reasons. If possible, you should log in as a normal user."
 msgstr ""
+"Forðast ætti af öryggisástæðum að keyra setu með auknum notandaheimildum."
+" Skráðu þig inn sem venjulegan notanda, ef mögulegt er."
 
 #: js/ui/messageTray.js:1418
 msgid "System Information"
@@ -1732,7 +1741,7 @@ msgstr "Skjámyndskeið tekið upp"
 #. Translators: notification body when a screencast was recorded.
 #: js/ui/screenshot.js:1910
 msgid "Click here to view the video."
-msgstr ""
+msgstr "Smelltu hér til að skoða myndskeiðið."
 
 #. Translators: button on the screencast notification.
 #. Translators: button on the screenshot notification.
@@ -1758,7 +1767,7 @@ msgstr "Skjámynd tekin"
 #. Translators: notification body when a screenshot was captured.
 #: js/ui/screenshot.js:2123
 msgid "You can paste the image from the clipboard."
-msgstr ""
+msgstr "Þú getur límt myndina af klippispjaldinu."
 
 #: js/ui/screenshot.js:2176 js/ui/screenshot.js:2341
 msgid "Screenshot taken"
@@ -1821,6 +1830,8 @@ msgstr "Notar lyklaskrár"
 msgid ""
 "To unlock a volume that uses keyfiles, use the <i>%s</i> utility instead."
 msgstr ""
+"Til að aflæsa gagnageymslu sem notar lyklaskrár skaltu nota <i>%s</i>"
+" nytjatólið í staðinn."
 
 #: js/ui/shellMountOperation.js:307
 msgid "PIM Number"
@@ -1842,7 +1853,7 @@ msgstr "Opna %s"
 
 #: js/ui/shellMountOperation.js:424
 msgid "The PIM must be a number or empty."
-msgstr ""
+msgstr "PIM-númerið verður að vera tala eða tómt."
 
 #. Translators: %s is the Disks application
 #: js/ui/shellMountOperation.js:466
@@ -2330,6 +2341,8 @@ msgid ""
 "New device has been detected while you were away. Please disconnect and "
 "reconnect the device to start using it."
 msgstr ""
+"Nýtt tæki fannst á meðan þú varst í burtu. Aftengdu og tengdu svo tækið aftur"
+" til að byrja að nota það."
 
 #: js/ui/status/thunderbolt.js:328
 msgid "Unauthorized Thunderbolt device"
@@ -2338,7 +2351,7 @@ msgstr "Óauðkennt Thunderbolt-tæki"
 #: js/ui/status/thunderbolt.js:329
 msgid ""
 "New device has been detected and needs to be authorized by an administrator."
-msgstr ""
+msgstr "Nýtt tæki hefur fundist og þarf það að fá heimild frá kerfisstjóra."
 
 #: js/ui/status/thunderbolt.js:335
 msgid "Thunderbolt authorization error"
