@@ -310,11 +310,29 @@ var ExtensionManager = class {
             throw new Error(`Failed to parse metadata.json: ${e}`);
         }
 
-        let requiredProperties = ['uuid', 'name', 'description', 'shell-version'];
+        const requiredProperties = [{
+            prop: 'uuid',
+            typeName: 'string',
+        }, {
+            prop: 'name',
+            typeName: 'string',
+        }, {
+            prop: 'description',
+            typeName: 'string',
+        }, {
+            prop: 'shell-version',
+            typeName: 'string array',
+            typeCheck: v => Array.isArray(v) && v.length > 0 && v.every(e => typeof e === 'string'),
+        }];
         for (let i = 0; i < requiredProperties.length; i++) {
-            let prop = requiredProperties[i];
+            const {
+                prop, typeName, typeCheck = v => typeof v === typeName,
+            } = requiredProperties[i];
+
             if (!meta[prop])
                 throw new Error(`missing "${prop}" property in metadata.json`);
+            if (!typeCheck(meta[prop]))
+                throw new Error(`property "${prop}" is not of type ${typeName}`);
         }
 
         if (uuid != meta.uuid)
