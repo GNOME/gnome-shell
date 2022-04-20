@@ -25,6 +25,7 @@ const SHOW_KEYBOARD = 'screen-keyboard-enabled';
 const KEY_SIZE = 2;
 
 const KEY_RELEASE_TIMEOUT = 50;
+const BACKSPACE_WORD_DELETE_THRESHOLD = 50;
 
 var AspectContainer = GObject.registerClass(
 class AspectContainer extends St.Widget {
@@ -1526,6 +1527,9 @@ var Keyboard = GObject.registerClass({
                         this._toggleEmoji();
                     } else if (key.action === 'modifier') {
                         this._toggleModifier(key.keyval);
+                    } else if (key.action === 'delete') {
+                        this._toggleDelete(true);
+                        this._toggleDelete(false);
                     } else if (!this._longPressed && key.action === 'levelSwitch') {
                         this._setActiveLayer(key.level);
                         this._setLatched(
@@ -1549,6 +1553,11 @@ var Keyboard = GObject.registerClass({
                 }
             }
 
+            if (key.action === 'delete') {
+                button.connect('long-press',
+                    () => this._toggleDelete(true));
+            }
+
             if (key.action === 'modifier') {
                 let modifierKeys = this._modifierKeys[key.keyval] || [];
                 modifierKeys.push(button);
@@ -1559,6 +1568,95 @@ var Keyboard = GObject.registerClass({
                 button.keyButton.add_style_class_name('default-key');
 
             layout.appendKey(button, button.keyButton.keyWidth);
+        }
+    }
+
+    _previousWordPosition(text, cursor) {
+        /* Skip word prior to cursor */
+        let pos = Math.max(0, text.slice(0, cursor).search(/\s+\S+\s*$/));
+        if (pos < 0)
+            return 0;
+
+        /* Skip contiguous spaces */
+        for (; pos >= 0; pos--) {
+            if (text.charAt(pos) !== ' ')
+                return GLib.utf8_strlen(text.slice(0, pos + 1), -1);
+        }
+
+        return 0;
+    }
+
+    _toggleDelete(enabled) {
+        if (this._deleteEnabled === enabled)
+            return;
+
+        this._deleteEnabled = enabled;
+        this._timesDeleted = 0;
+
+        if (!Main.inputMethod.currentFocus || Main.inputMethod.hasPreedit()) {
+            /* If there is no IM focus or are in the middle of preedit,
+             * fallback to keypresses */
+            if (enabled)
+                this._keyboardController.keyvalPress(Clutter.KEY_BackSpace);
+            else
+                this._keyboardController.keyvalRelease(Clutter.KEY_BackSpace);
+            return;
+        }
+
+        if (enabled) {
+            let func = (text, cursor) => {
+                if (cursor === 0)
+                    return;
+
+                let encoder = new TextEncoder();
+                let decoder = new TextDecoder();
+
+                /* Find cursor/anchor position in characters */
+                const cursorIdx = GLib.utf8_strlen(decoder.decode(encoder.encode(
+                    text).slice(0, cursor)), -1);
+                const anchorIdx = this._timesDeleted < BACKSPACE_WORD_DELETE_THRESHOLD
+                    ? cursorIdx - 1
+                    : this._previousWordPosition(text, cursor);
+                /* Now get offset from cursor */
+                const offset = anchorIdx - cursorIdx;
+
+                this._timesDeleted++;
+                Main.inputMethod.delete_surrounding(offset, Math.abs(offset));
+            };
+
+            this._surroundingUpdateId = Main.inputMethod.connect(
+                'surrounding-text-set', () => {
+                    let [text, cursor] = Main.inputMethod.getSurroundingText();
+                    if (this._timesDeleted === 0) {
+                        func(text, cursor);
+                    } else {
+                        if (this._surroundingUpdateTimeoutId > 0) {
+                            GLib.source_remove(this._surroundingUpdateTimeoutId);
+                            this._surroundingUpdateTimeoutId = 0;
+                        }
+                        this._surroundingUpdateTimeoutId =
+                            GLib.timeout_add(GLib.PRIORITY_DEFAULT, KEY_RELEASE_TIMEOUT, () => {
+                                func(text, cursor);
+                                this._surroundingUpdateTimeoutId = 0;
+                                return GLib.SOURCE_REMOVE;
+                            });
+                    }
+                });
+
+            let [text, cursor] = Main.inputMethod.getSurroundingText();
+            if (text)
+                func(text, cursor);
+            else
+                Main.inputMethod.request_surrounding();
+        } else {
+            if (this._surroundingUpdateId > 0) {
+                Main.inputMethod.disconnect(this._surroundingUpdateId);
+                this._surroundingUpdateId = 0;
+            }
+            if (this._surroundingUpdateTimeoutId > 0) {
+                GLib.source_remove(this._surroundingUpdateTimeoutId);
+                this._surroundingUpdateTimeoutId = 0;
+            }
         }
     }
 
