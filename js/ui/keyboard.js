@@ -1497,7 +1497,14 @@ var Keyboard = GObject.registerClass({
 
             if (key.action !== 'modifier') {
                 button.connect('commit', (actor, keyval, str) => {
+                    if (this._modifiers.length === 0 && str !== '' &&
+                        keyval && this._oskCompletionEnabled) {
+                        Main.inputMethod.handleVirtualKey(keyval);
+                        return;
+                    }
+
                     if (str === '' || !Main.inputMethod.currentFocus ||
+                        (keyval && this._oskCompletionEnabled) ||
                         this._modifiers.size > 0 ||
                         !this._keyboardController.commitString(str, true)) {
                         if (keyval !== 0) {
@@ -1865,6 +1872,8 @@ var Keyboard = GObject.registerClass({
             return;
         }
 
+        this._oskCompletionEnabled =
+            IBusManager.getIBusManager().setCompletionEnabled(true);
         this._clearKeyboardRestTimer();
 
         if (immediate) {
@@ -1899,6 +1908,8 @@ var Keyboard = GObject.registerClass({
         if (!this._keyboardVisible)
             return;
 
+        IBusManager.getIBusManager().setCompletionEnabled(false);
+        this._oskCompletionEnabled = false;
         this._clearKeyboardRestTimer();
 
         if (immediate) {

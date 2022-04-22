@@ -22,6 +22,13 @@ _checkIBusVersion(1, 5, 2);
 let _ibusManager = null;
 const IBUS_SYSTEMD_SERVICE = 'org.freedesktop.IBus.session.GNOME.service';
 
+const TYPING_BOOSTER_ENGINE = 'typing-booster';
+const IBUS_TYPING_BOOSTER_SCHEMA = 'org.freedesktop.ibus.engine.typing-booster';
+const KEY_EMOJIPREDICTIONS = 'emojipredictions';
+const KEY_DICTIONARY = 'dictionary';
+const KEY_INLINECOMPLETION = 'inlinecompletion';
+const KEY_INPUTMETHOD = 'inputmethod';
+
 function _checkIBusVersion(requiredMajor, requiredMinor, requiredMicro) {
     if ((IBus.MAJOR_VERSION > requiredMajor) ||
         (IBus.MAJOR_VERSION == requiredMajor && IBus.MINOR_VERSION > requiredMinor) ||
@@ -304,8 +311,11 @@ var IBusManager = class extends Signals.EventEmitter {
     }
 
     preloadEngines(ids) {
-        if (!this._ibus || ids.length == 0)
+        if (!this._ibus || !this._ready)
             return;
+
+        if (!ids.includes(TYPING_BOOSTER_ENGINE))
+            ids.push(TYPING_BOOSTER_ENGINE);
 
         if (this._preloadEnginesId != 0) {
             GLib.source_remove(this._preloadEnginesId);
@@ -325,5 +335,55 @@ var IBusManager = class extends Signals.EventEmitter {
                     this._preloadEnginesId = 0;
                     return GLib.SOURCE_REMOVE;
                 });
+    }
+
+    setCompletionEnabled(enabled) {
+        /* Needs typing-booster available */
+        if (!this._engines.has(TYPING_BOOSTER_ENGINE))
+            return false;
+        /* Can do only on xkb engines */
+        if (enabled && !this._currentEngineName.startsWith('xkb:'))
+            return false;
+
+        if (this._oskCompletion === enabled)
+            return true;
+
+        this._oskCompletion = enabled;
+        let settings =
+            new Gio.Settings({schema_id: IBUS_TYPING_BOOSTER_SCHEMA});
+
+        if (enabled) {
+            this._preOskState = {
+                'engine': this._currentEngineName,
+                'emoji': settings.get_value(KEY_EMOJIPREDICTIONS),
+                'langs': settings.get_value(KEY_DICTIONARY),
+                'completion': settings.get_value(KEY_INLINECOMPLETION),
+                'inputMethod': settings.get_value(KEY_INPUTMETHOD),
+            };
+            settings.reset(KEY_EMOJIPREDICTIONS);
+
+            const removeEncoding = l => l.replace(/\..*/, '');
+            const removeDups = (l, pos, arr) => {
+                return !pos || arr[pos - 1] !== l;
+            };
+            settings.set_string(
+                KEY_DICTIONARY,
+                GLib.get_language_names().map(removeEncoding)
+                    .sort().filter(removeDups).join(','));
+
+            settings.reset(KEY_INLINECOMPLETION);
+            settings.set_string(KEY_INPUTMETHOD, 'NoIME');
+            this.setEngine(TYPING_BOOSTER_ENGINE);
+        } else if (this._preOskState) {
+            const {engine, emoji, langs, completion, inputMethod} =
+                  this._preOskState;
+            this._preOskState = null;
+            this.setEngine(engine);
+            settings.set_value(KEY_EMOJIPREDICTIONS, emoji);
+            settings.set_value(KEY_DICTIONARY, langs);
+            settings.set_value(KEY_INLINECOMPLETION, completion);
+            settings.set_value(KEY_INPUTMETHOD, inputMethod);
+        }
+        return true;
     }
 };
