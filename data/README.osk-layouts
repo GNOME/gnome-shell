@@ -1,33 +1,75 @@
 Gnome-shell OSK layouts are extracted from CLDR layout definitions:
 https://www.unicode.org/cldr/charts/latest/keyboards/layouts/index.html
 
-Updating these involves several steps:
-
-1) Downloading and unzipping the tarball found at:
-   http://www.unicode.org/Public/cldr/latest/keyboards.zip
-
-   This file contains XML files describing the keyboard layouts.
-
-2) Cloning the cldr2json script at:
-   git://repo.or.cz/cldr2json.git
-
-   It will be used to convert the XML files into JSON that can be
-   directly consumed by gnome-shell.
-
-3) Running the script to produce the files:
-   ./cldr2json <input-directory> <output-directory>
-
-   We shall usually use the "android" folder, since that's most
-   complete, and similar to our UI and target sizes. And the target
-   directory must be data/osk-layouts in this repository.
-
-4) Modify gnome-shell-osk-layouts.gresource.xml to include the files
-
-5) Do git add on the updated/new files, and git commit.
-
-
-Or alternatively:
+To add new layouts from CLDR:
 
 1) Run update-osk-layouts.sh
 
+2) Modify JSON files to add extra keys, tweak appearance...
+
 2) Do git add and git commit
+
+JSON file format
+================
+
+Each JSON file describes a keymap for a certain language and layout,
+it has the following structure:
+
+- Root (Object)
+
+  Root object of a layout, has the following properties:
+
+  - levels (Array of Level): Levels in the keymap
+  - locale (String): Locale name for this keymap
+  - name (String): Human readable name for this keymap
+
+- Level (Object)
+
+  A level defines the keys available on a keyboard level,
+  these are the key panels visible at a time. E.g. to type
+  uppercase levels or symbols.
+
+  Levels have the following properties:
+
+  - level (String): Name of the level, common names are
+    "", "shift", "opt" and "opt+shift".
+  - mode (String): Mode for this level, common modes are
+    "default", "latched" and "locked".
+  - rows (Array of Row): Array of rows of keys.
+
+- Row (Array)
+
+  A row is an Array of Key.
+
+- Key (Object)
+
+  A keyboard key. Keys have the following properties:
+
+  - iconName (String): Icon name to show on the key.
+    Keys with an icon name do not have a label.
+  - label (String): Label to show on the key.
+  - strings (Array of String): Strings to commit. If
+    label property does not exist, the first element
+    will be also the label. Extra elements are shown
+    in the extra keys popover.
+  - keyval (String): Hexadecimal keyval to emit as
+    emulated key presses. Committed strings are
+    preferred.
+  - width (Double): Relative width of the key in the
+    row. 1 is for a square key. Multiples of 0.5 are
+    accepted.
+  - level (Integer): Level that the key switches to.
+    See the levelSwitch action.
+  - action (string): Action performed by the key,
+    accepted actions are:
+
+    - hide: Hides the OSK
+    - languageMenu: Pops up the language selection
+      menu
+    - emoji: Switches to the emoji selection panel
+    - modifier: Handles the keyval as a modifier
+      key. This handles e.g. Ctrl+A as a sequence
+      of Ctrl press, A press, A release, Ctrl
+      release.
+    - delete: Deletes text backwards
+    - levelSwitch: Switches OSK to a different level
