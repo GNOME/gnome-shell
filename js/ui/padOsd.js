@@ -67,6 +67,9 @@ var PadChooser = GObject.registerClass({
         this._padChooserMenu.actor.hide();
         Main.uiGroup.add_actor(this._padChooserMenu.actor);
 
+        this._menuManager = new PopupMenu.PopupMenuManager(this);
+        this._menuManager.addMenu(this._padChooserMenu);
+
         for (let i = 0; i < devices.length; i++) {
             let device = devices[i];
             if (device == this.currentDevice)
