@@ -144,6 +144,9 @@ var ActionComboBox = GObject.registerClass({
         this._editMenu.actor.hide();
         Main.uiGroup.add_actor(this._editMenu.actor);
 
+        this._editMenuManager = new PopupMenu.PopupMenuManager(this);
+        this._editMenuManager.addMenu(this._editMenu);
+
         this._actionLabels = new Map();
         this._actionLabels.set(GDesktopEnums.PadButtonAction.NONE, _("Application defined"));
         this._actionLabels.set(GDesktopEnums.PadButtonAction.HELP, _("Show on-screen help"));
