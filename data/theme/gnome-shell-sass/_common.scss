@@ -35,18 +35,6 @@ $base_border_radius: 8px;
 // radii of things that display over other things, e.g. popovers
 $modal_radius: $base_border_radius*2; // 24px
 
-// derived hover colors
-$hover_bg_color: if($variant=='light', darken($bg_color, 3%), lighten($bg_color, 4%));
-$hover_fg_color: if($variant=='light', darken($fg_color, 5%), lighten($fg_color, 4%));
-
-// derived active colors
-$active_bg_color: if($variant=='light', darken($bg_color, 5%), lighten($bg_color, 6%));
-$active_fg_color: if($variant=='light', darken($fg_color, 5%), lighten($fg_color, 6%));
-
-// derived checked colors
-$checked_bg_color: if($variant=='light', darken($bg_color, 7%), lighten($bg_color, 9%));
-$checked_fg_color: if($variant=='light', darken($fg_color, 7%), lighten($fg_color, 9%));
-
 // fonts
 $base_font_size: 11;
 $text_shadow_color: if($variant == 'light', rgba(255,255,255,0.3), rgba(0,0,0,0.2));
@@ -118,7 +106,6 @@ stage {
 // lighter in color and have a greater radius
 
 $bubble_button_radius:$base_border_radius*1.25;
-$bubble_buttons_color: if($variant == 'light', darken($bg_color, 12%), lighten($bg_color, 7%));
 
 %bubble_button {
   padding: $base_padding * 2;
