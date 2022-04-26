@@ -448,8 +448,14 @@ var Overview = class {
         if (this._shown) {
             let shouldBeModal = !this._inXdndDrag;
             if (shouldBeModal && !this._modal) {
-                let actionMode = Shell.ActionMode.OVERVIEW;
-                let grab = Main.pushModal(global.stage, { actionMode });
+                if (global.display.get_grab_op() !== Meta.GrabOp.NONE) {
+                    this.hide();
+                    return false;
+                }
+
+                const grab = Main.pushModal(global.stage, {
+                    actionMode: Shell.ActionMode.OVERVIEW,
+                });
                 if (grab.get_seat_state() !== Clutter.GrabState.NONE) {
                     this._grab = grab;
                     this._modal = true;
