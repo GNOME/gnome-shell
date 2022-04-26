@@ -129,7 +129,6 @@
   }
 }
 
-
 // buttons
 // since buttons are all flat an borderless now the mixin is simpler
 
@@ -289,24 +288,24 @@ $button_bg_color: mix($tc, $c, 5%);
 @mixin card($flat: false) {
   border-radius: $base_border_radius;
   margin: $base_margin;
-  box-shadow: 0 1px 1px 0 rgba(0,0,0,.1);
+  box-shadow: 0 1px 1px 0 $shadow_color;
 
   @if $flat {
     @include button(undecorated);
     box-shadow: none !important;
   } @else {
-    @include button(normal);
+    @include button(normal, $c:$card_bg_color);
   }
 
   &:focus {
-    @include button(focus);
+    @include button(focus, $c:$card_bg_color);
   }
 
   &:hover {
-    @include button(hover);
+    @include button(hover, $c:$card_bg_color);
   }
 
   &:active {
-    @include button(active);
+    @include button(active, $c:$card_bg_color);
   }
 }
