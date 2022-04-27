@@ -10,6 +10,8 @@ var HAVE_BLUETOOTH = @HAVE_BLUETOOTH@;
 var HAVE_NETWORKMANAGER = @HAVE_NETWORKMANAGER@;
 /* 1 if soup2 should be used instead of soup3, 0 otherwise */
 var HAVE_SOUP2 = @HAVE_SOUP2@;
+/* 1 if recorder is enabled, 0 otherwise */
+var HAVE_RECORDER = @HAVE_RECORDER@;
 /* gettext package */
 var GETTEXT_PACKAGE = '@GETTEXT_PACKAGE@';
 /* locale dir */

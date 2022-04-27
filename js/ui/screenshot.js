@@ -3,6 +3,7 @@
 
 const { Clutter, Cogl, Gio, GObject, GLib, Graphene, Gtk, Meta, Shell, St } = imports.gi;
 
+const Config = imports.misc.config;
 const GrabHelper = imports.ui.grabHelper;
 const Layout = imports.ui.layout;
 const Lightbox = imports.ui.lightbox;
@@ -1212,6 +1213,7 @@ var ScreenshotUI = GObject.registerClass({
         this._castButton = new St.Button({
             style_class: 'screenshot-ui-shot-cast-button',
             toggle_mode: true,
+            visible: Config.HAVE_RECORDER,
         });
         this._castButton.set_child(new St.Icon({ icon_name: 'camera-web-symbolic' }));
         this._castButton.connect('notify::checked',
@@ -1427,6 +1429,9 @@ var ScreenshotUI = GObject.registerClass({
             return;
 
         if (this._screencastInProgress)
+            return;
+
+        if (mode === UIMode.SCREENCAST && !Config.HAVE_RECORDER)
             return;
 
         this._castButton.checked = mode === UIMode.SCREENCAST;

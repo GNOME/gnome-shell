@@ -6,6 +6,7 @@ jsconf.set('LIBMUTTER_API_VERSION', mutter_api_version)
 jsconf.set10('HAVE_BLUETOOTH', bt_dep.found())
 jsconf.set10('HAVE_NETWORKMANAGER', have_networkmanager)
 jsconf.set10('HAVE_SOUP2', have_soup2)
+jsconf.set10('HAVE_RECORDER', enable_recorder)
 jsconf.set('datadir', datadir)
 jsconf.set('libexecdir', libexecdir)
 
