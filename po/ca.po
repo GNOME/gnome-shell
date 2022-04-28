@@ -8,13 +8,12 @@
 #
 # La terminologia que usem està documentada a la traducció del gnome-control-center
 #
-
 msgid ""
 msgstr ""
 "Project-Id-Version: HEAD\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2022-03-20 22:19+0000\n"
-"PO-Revision-Date: 2022-02-12 11:33+0100\n"
+"POT-Creation-Date: 2022-04-28 15:28+0000\n"
+"PO-Revision-Date: 2022-04-28 15:28+0000\n"
 "Last-Translator: maite guix <maite.guix@me.com>\n"
 "Language-Team: \n"
 "Language: ca\n"
@@ -132,8 +131,8 @@ msgid ""
 "Allows access to internal debugging and monitoring tools using the Alt-F2 "
 "dialog."
 msgstr ""
-"Permet l'accés a les eines de depuració i de seguiment internes a través del"
-" diàleg de l'Alt+F2."
+"Permet l'accés a les eines de depuració i de seguiment internes a través del "
+"diàleg de l'Alt+F2."
 
 #: data/org.gnome.shell.gschema.xml.in:16
 msgid "UUIDs of extensions to enable"
@@ -142,9 +141,9 @@ msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:17
 msgid ""
-"GNOME Shell extensions have a UUID property; this key lists extensions which"
-" should be loaded. Any extension that wants to be loaded needs to be in this"
-" list. You can also manipulate this list with the EnableExtension and "
+"GNOME Shell extensions have a UUID property; this key lists extensions which "
+"should be loaded. Any extension that wants to be loaded needs to be in this "
+"list. You can also manipulate this list with the EnableExtension and "
 "DisableExtension D-Bus methods on org.gnome.Shell."
 msgstr ""
 "Les extensions del GNOME Shell tenen un identificador universal. Aquesta "
@@ -160,19 +159,18 @@ msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:27
 msgid ""
-"GNOME Shell extensions have a UUID property; this key lists extensions which"
-" should be disabled, even if loaded as part of the current mode. You can "
-"also manipulate this list with the EnableExtension and DisableExtension "
-"D-Bus methods on org.gnome.Shell. This key takes precedence over the "
-"“enabled-extensions” setting."
+"GNOME Shell extensions have a UUID property; this key lists extensions which "
+"should be disabled, even if loaded as part of the current mode. You can also "
+"manipulate this list with the EnableExtension and DisableExtension D-Bus "
+"methods on org.gnome.Shell. This key takes precedence over the “enabled-"
+"extensions” setting."
 msgstr ""
 "Les extensions del GNOME Shell tenen un identificador universal. Aquesta "
 "clau conté una llista de les extensions que s'han de carregar. Qualsevol "
 "extensió que s'hagi de carregar ha de ser a la llista. Podeu modificar "
 "aquesta llista amb els mètodes de D-Bus «EnableExtension» (activa una "
-"extensió) i «DisableExtension» (desactiva una extensió) a "
-"org.gnome.Shell.Aquesta clau té preferència sobre el paràmetre «enabled-"
-"extensions»."
+"extensió) i «DisableExtension» (desactiva una extensió) a org.gnome.Shell."
+"Aquesta clau té preferència sobre el paràmetre «enabled-extensions»."
 
 #: data/org.gnome.shell.gschema.xml.in:37
 msgid "Disable user extensions"
@@ -196,21 +194,20 @@ msgid ""
 "running version. Enabling this option will disable this check and try to "
 "load all extensions regardless of the versions they claim to support."
 msgstr ""
-"El GNOME Shell només carregarà extensions que afirmin ser compatibles amb la"
-" versió en execució. Si s'activa aquesta opció, es desactivarà la "
-"comprovació i es provarà de carregar totes les extensions sense tenir en "
-"compte les versions amb què afirmin ser compatibles."
+"El GNOME Shell només carregarà extensions que afirmin ser compatibles amb la "
+"versió en execució. Si s'activa aquesta opció, es desactivarà la comprovació "
+"i es provarà de carregar totes les extensions sense tenir en compte les "
+"versions amb què afirmin ser compatibles."
 
 #: data/org.gnome.shell.gschema.xml.in:54
 msgid "List of desktop file IDs for favorite applications"
 msgstr ""
-"Llista d'identificadors de fitxers d'escriptori de les aplicacions "
-"preferides"
+"Llista d'identificadors de fitxers d'escriptori de les aplicacions preferides"
 
 #: data/org.gnome.shell.gschema.xml.in:55
 msgid ""
-"The applications corresponding to these identifiers will be displayed in the"
-" favorites area."
+"The applications corresponding to these identifiers will be displayed in the "
+"favorites area."
 msgstr ""
 "Es mostraran, a l'àrea de preferits, les aplicacions que corresponguin a "
 "aquests identificadors."
@@ -219,8 +216,7 @@ msgstr ""
 msgid "History for command (Alt-F2) dialog"
 msgstr "Historial de les ordres utilitzades en el diàleg de l'Alt+F2"
 
-#. Translators: looking glass is a debugger and inspector tool, see
-#. https://wiki.gnome.org/Projects/GnomeShell/LookingGlass
+#. Translators: looking glass is a debugger and inspector tool, see https://wiki.gnome.org/Projects/GnomeShell/LookingGlass
 #: data/org.gnome.shell.gschema.xml.in:67
 msgid "History for the looking glass dialog"
 msgstr "Historial del depurador del GNOME Shell"
@@ -231,8 +227,8 @@ msgstr "Mostra sempre l'element de menú «Surt» al menú d'usuari."
 
 #: data/org.gnome.shell.gschema.xml.in:72
 msgid ""
-"This key overrides the automatic hiding of the “Log out” menu item in "
-"single-user, single-session situations."
+"This key overrides the automatic hiding of the “Log out” menu item in single-"
+"user, single-session situations."
 msgstr ""
 "Aquesta clau sobreescriu l'ocultació automàtica de l'element de menú «Surt» "
 "quan només hi ha un usuari i un sol tipus de sessió."
@@ -251,8 +247,8 @@ msgid ""
 "“Remember Password” checkbox will be present. This key sets the default "
 "state of the checkbox."
 msgstr ""
-"El GNOME Shell us demanarà la contrasenya quan es munti un dispositiu xifrat"
-" o un sistema de fitxers remot. Si es pot desar la contrasenya per a "
+"El GNOME Shell us demanarà la contrasenya quan es munti un dispositiu xifrat "
+"o un sistema de fitxers remot. Si es pot desar la contrasenya per a "
 "utilitzar-la en el futur, es mostrarà la casella de selecció «Recorda la "
 "contrasenya». Aquesta clau estableix el valor per defecte d'aquesta casella "
 "de selecció."
@@ -283,16 +279,16 @@ msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:100
 msgid ""
-"This key determines for which version the “Welcome to GNOME” dialog was last"
-" shown. An empty string represents the oldest possible version, and a huge "
+"This key determines for which version the “Welcome to GNOME” dialog was last "
+"shown. An empty string represents the oldest possible version, and a huge "
 "number will represent versions that do not exist yet. This huge number can "
 "be used to effectively disable the dialog."
 msgstr ""
 "Aquesta clau determina per a quina versió es va mostrar per última vegada "
-"del diàleg «Us donem la benvinguda al GNOME». Una cadena buida representa la"
-" versió més antiga possible, i un nombre enorme representarà versions que "
-"encara no existeixen. Aquest nombre enorme es pot utilitzar per a desactivar"
-" el diàleg."
+"del diàleg «Us donem la benvinguda al GNOME». Una cadena buida representa la "
+"versió més antiga possible, i un nombre enorme representarà versions que "
+"encara no existeixen. Aquest nombre enorme es pot utilitzar per a desactivar "
+"el diàleg."
 
 #: data/org.gnome.shell.gschema.xml.in:133
 msgid "Layout of the app picker"
@@ -308,7 +304,7 @@ msgstr ""
 "Disposició del selector d'aplicacions. Cada entrada de la matriu és una "
 "pàgina. Les pàgines s'emmagatzemen en l'ordre en què apareixen al GNOME "
 "Shell. Cada pàgina conté un «id de l'aplicació» → parell de «dades». "
-"Actualment els valors següents s'emmagatzemen com a «dades»: • «posició» la "
+"Actualment, els valors següents s'emmagatzemen com a «dades»: • «posició» la "
 "posició de la icona de l'aplicació a la pàgina"
 
 #: data/org.gnome.shell.gschema.xml.in:149
@@ -430,8 +426,8 @@ msgstr "El mode d'icona de les aplicacions."
 #: data/org.gnome.shell.gschema.xml.in:275
 msgid ""
 "Configures how the windows are shown in the switcher. Valid possibilities "
-"are “thumbnail-only” (shows a thumbnail of the window), “app-icon-only” "
-"(shows only the application icon) or “both”."
+"are “thumbnail-only” (shows a thumbnail of the window), “app-icon-"
+"only” (shows only the application icon) or “both”."
 msgstr ""
 "Configureu com es mostren les finestres en l'intercanviador. Els valors "
 "possibles són: «thumbnail-only» (mostra una miniatura de la finestra), «app-"
@@ -481,8 +477,8 @@ msgstr "Adjunta el diàleg modal a la finestra pare"
 msgid ""
 "This key overrides the key in org.gnome.mutter when running GNOME Shell."
 msgstr ""
-"Si s'executa el GNOME Shell, aquesta clau sobreescriu la clau "
-"«org.gnome.mutter»."
+"Si s'executa el GNOME Shell, aquesta clau sobreescriu la clau «org.gnome."
+"mutter»."
 
 #: data/org.gnome.shell.gschema.xml.in:335
 msgid "Enable edge tiling when dropping windows on screen edges"
@@ -538,7 +534,7 @@ msgstr "Visiteu la pàgina d'inici de l'extensió"
 #: js/ui/components/networkAgent.js:109 js/ui/components/polkitAgent.js:141
 #: js/ui/endSessionDialog.js:437 js/ui/extensionDownloader.js:223
 #: js/ui/shellMountOperation.js:377 js/ui/shellMountOperation.js:387
-#: js/ui/status/network.js:956 subprojects/extensions-app/js/main.js:174
+#: js/ui/status/network.js:956 subprojects/extensions-app/js/main.js:175
 msgid "Cancel"
 msgstr "Cancel·la"
 
@@ -585,8 +581,7 @@ msgid "(or swipe finger across reader)"
 msgstr "(o llisca el dit a través del lector)"
 
 #. Translators: this message is shown below the password entry field
-#. to indicate the user can place their finger on the fingerprint reader
-#. instead
+#. to indicate the user can place their finger on the fingerprint reader instead
 #: js/gdm/util.js:611
 msgid "(or place finger on reader)"
 msgstr "(o posa el dit al lector)"
@@ -597,8 +592,7 @@ msgctxt "search-result"
 msgid "Power Off"
 msgstr "Apaga"
 
-#. Translators: A list of keywords that match the power-off action, separated
-#. by semicolons
+#. Translators: A list of keywords that match the power-off action, separated by semicolons
 #: js/misc/systemActions.js:87
 msgid "power off;shutdown;halt;stop"
 msgstr "apaga;atura;reinicia"
@@ -609,8 +603,7 @@ msgctxt "search-result"
 msgid "Restart"
 msgstr "Reinicia"
 
-#. Translators: A list of keywords that match the restart action, separated by
-#. semicolons
+#. Translators: A list of keywords that match the restart action, separated by semicolons
 #: js/misc/systemActions.js:95
 msgid "reboot;restart;"
 msgstr "reinicia;reinici;"
@@ -621,8 +614,7 @@ msgctxt "search-result"
 msgid "Lock Screen"
 msgstr "Bloqueja la pantalla"
 
-#. Translators: A list of keywords that match the lock screen action,
-#. separated by semicolons
+#. Translators: A list of keywords that match the lock screen action, separated by semicolons
 #: js/misc/systemActions.js:103
 msgid "lock screen"
 msgstr "bloca la pantalla"
@@ -633,8 +625,7 @@ msgctxt "search-result"
 msgid "Log Out"
 msgstr "Surt"
 
-#. Translators: A list of keywords that match the logout action, separated by
-#. semicolons
+#. Translators: A list of keywords that match the logout action, separated by semicolons
 #: js/misc/systemActions.js:111
 msgid "logout;log out;sign off"
 msgstr "desconnecta;sortida;surt"
@@ -645,8 +636,7 @@ msgctxt "search-result"
 msgid "Suspend"
 msgstr "Atura temporalment"
 
-#. Translators: A list of keywords that match the suspend action, separated by
-#. semicolons
+#. Translators: A list of keywords that match the suspend action, separated by semicolons
 #: js/misc/systemActions.js:119
 msgid "suspend;sleep"
 msgstr "atura temporalment;dorm"
@@ -657,14 +647,12 @@ msgctxt "search-result"
 msgid "Switch User"
 msgstr "Canvia d'usuari"
 
-#. Translators: A list of keywords that match the switch user action,
-#. separated by semicolons
+#. Translators: A list of keywords that match the switch user action, separated by semicolons
 #: js/misc/systemActions.js:127
 msgid "switch user"
 msgstr "canvia d'usuari"
 
-#. Translators: A list of keywords that match the lock orientation action,
-#. separated by semicolons
+#. Translators: A list of keywords that match the lock orientation action, separated by semicolons
 #: js/misc/systemActions.js:134
 msgid "lock orientation;unlock orientation;screen;rotation"
 msgstr "bloqueja l'orientació;desbloqueja l'orientació;pantalla;rotació"
@@ -675,8 +663,7 @@ msgctxt "search-result"
 msgid "Take a Screenshot"
 msgstr "Feu una captura de pantalla"
 
-#. Translators: A list of keywords that match the screenshot UI action,
-#. separated by semicolons
+#. Translators: A list of keywords that match the screenshot UI action, separated by semicolons
 #: js/misc/systemActions.js:142
 msgid "screenshot;screencast;snip;capture;record"
 msgstr "captura de pantalla;enregistrament de pantalla;tall;captura;registre"
@@ -828,11 +815,11 @@ msgstr "%-d %B, a les %l∶%M %p"
 msgid "%B %-d %Y, %l∶%M %p"
 msgstr "%-d %B de %Y, a les %l∶%M %p"
 
-#: js/portalHelper/main.js:53
+#: js/portalHelper/main.js:55
 msgid "Hotspot Login"
 msgstr "Inici de sessió al punt d'accés Wi-Fi"
 
-#: js/portalHelper/main.js:106
+#: js/portalHelper/main.js:108
 msgid ""
 "Your connection to this hotspot login is not secure. Passwords or other "
 "information you enter on this page can be viewed by people nearby."
@@ -927,8 +914,7 @@ msgstr "Paràmetres de la pantalla"
 msgid "Settings"
 msgstr "Paràmetres"
 
-#. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0"
-#. (Sunday) "6" (Saturday) "06" (Sunday and Saturday).
+#. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday).
 #: js/ui/calendar.js:35
 msgctxt "calendar-no-work"
 msgid "06"
@@ -938,6 +924,7 @@ msgstr "06"
 #. *
 #. * NOTE: These grid abbreviations are always shown together
 #. * and in order, e.g. "S M T W T F S".
+#.
 #: js/ui/calendar.js:61
 msgctxt "grid sunday"
 msgid "S"
@@ -984,6 +971,7 @@ msgstr "Ds"
 #. * standalone, when this is a month of the current year.
 #. * "%OB" is the new format specifier introduced in glibc 2.27,
 #. * in most cases you should not change it.
+#.
 #: js/ui/calendar.js:402
 msgid "%OB"
 msgstr "%OB"
@@ -996,6 +984,7 @@ msgstr "%OB"
 #. * "%OB" is the new format specifier introduced in glibc 2.27,
 #. * in most cases you should not use the old "%B" here unless you
 #. * absolutely know what you are doing.
+#.
 #: js/ui/calendar.js:412
 msgid "%OB %Y"
 msgstr "%OB de %Y"
@@ -1077,8 +1066,7 @@ msgstr "Obre amb %s"
 #: js/ui/components/networkAgent.js:91
 msgid ""
 "Alternatively you can connect by pushing the “WPS” button on your router."
-msgstr ""
-"També us podeu connectar prement el botó «WPS» del vostre encaminador."
+msgstr "També us podeu connectar prement el botó «WPS» del vostre encaminador."
 
 #: js/ui/components/networkAgent.js:103 js/ui/status/network.js:244
 #: js/ui/status/network.js:335 js/ui/status/network.js:961
@@ -1197,6 +1185,7 @@ msgstr "Quadre d'aplicacions"
 #. * shown - it is shown just below the time in the top bar (e.g.,
 #. * "Tue 9:29 AM").  The string itself should become a full date, e.g.,
 #. * "February 17 2015".
+#.
 #: js/ui/dateMenu.js:83
 msgid "%B %-d %Y"
 msgstr "%-d %B de %Y"
@@ -1204,19 +1193,18 @@ msgstr "%-d %B de %Y"
 #. Translators: This is the accessible name of the date button shown
 #. * below the time in the shell; it should combine the weekday and the
 #. * date, e.g. "Tuesday February 17 2015".
+#.
 #: js/ui/dateMenu.js:90
 msgid "%A %B %e %Y"
 msgstr "%A, %-e %B de %Y"
 
-#. Translators: Shown on calendar heading when selected day occurs on current
-#. year
+#. Translators: Shown on calendar heading when selected day occurs on current year
 #: js/ui/dateMenu.js:156
 msgctxt "calendar heading"
 msgid "%B %-d"
 msgstr "%-d %B"
 
-#. Translators: Shown on calendar heading when selected day occurs on
-#. different year
+#. Translators: Shown on calendar heading when selected day occurs on different year
 #: js/ui/dateMenu.js:159
 msgctxt "calendar heading"
 msgid "%B %-d %Y"
@@ -1232,6 +1220,7 @@ msgstr "Demà"
 
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
+#.
 #: js/ui/dateMenu.js:200
 msgctxt "event list time"
 msgid "All Day"
@@ -1239,6 +1228,7 @@ msgstr "Tot el dia"
 
 #. Translators: Shown in calendar event list as the start/end of events
 #. * that only show day and month
+#.
 #: js/ui/dateMenu.js:222
 msgid "%m/%d"
 msgstr "%d/%m"
@@ -1255,23 +1245,23 @@ msgstr "Afegeix rellotges del món…"
 msgid "World Clocks"
 msgstr "Rellotges del món"
 
-#: js/ui/dateMenu.js:677
+#: js/ui/dateMenu.js:681
 msgid "Loading…"
 msgstr "S'està carregant…"
 
-#: js/ui/dateMenu.js:687
+#: js/ui/dateMenu.js:691
 msgid "Go online for weather information"
 msgstr "Ves en línia per a informació sobre el temps"
 
-#: js/ui/dateMenu.js:689
+#: js/ui/dateMenu.js:693
 msgid "Weather information is currently unavailable"
 msgstr "La informació sobre el temps no està disponible"
 
-#: js/ui/dateMenu.js:699
+#: js/ui/dateMenu.js:703
 msgid "Weather"
 msgstr "El temps"
 
-#: js/ui/dateMenu.js:701
+#: js/ui/dateMenu.js:705
 msgid "Select weather location…"
 msgstr "Trieu una ubicació pel temps…"
 
@@ -1361,8 +1351,7 @@ msgstr "Reinicia i instal·la les actualitzacions"
 
 #: js/ui/endSessionDialog.js:106
 #, javascript-format
-msgid ""
-"The system will automatically restart and install updates in %d second."
+msgid "The system will automatically restart and install updates in %d second."
 msgid_plural ""
 "The system will automatically restart and install updates in %d seconds."
 msgstr[0] ""
@@ -1499,8 +1488,8 @@ msgstr "Tecles lentes inactives"
 
 #: js/ui/kbdA11yDialog.js:34
 msgid ""
-"You just held down the Shift key for 8 seconds. This is the shortcut for the"
-" Slow Keys feature, which affects the way your keyboard works."
+"You just held down the Shift key for 8 seconds. This is the shortcut for the "
+"Slow Keys feature, which affects the way your keyboard works."
 msgstr ""
 "Heu mantingut premuda la tecla de majúscules durant 8 segons. Aquesta és la "
 "drecera per a la funcionalitat «tecles lentes», que afecta la forma de "
@@ -1519,8 +1508,8 @@ msgid ""
 "You just pressed the Shift key 5 times in a row. This is the shortcut for "
 "the Sticky Keys feature, which affects the way your keyboard works."
 msgstr ""
-"Heu premut la tecla de majúscules 5 cops seguides. Aquesta és la drecera per"
-" la funcionalitat de les tecles enganxoses, que afecta la manera en què "
+"Heu premut la tecla de majúscules 5 cops seguides. Aquesta és la drecera per "
+"la funcionalitat de les tecles enganxoses, que afecta la manera en què "
 "funciona el teclat."
 
 #: js/ui/kbdA11yDialog.js:45
@@ -1558,77 +1547,85 @@ msgstr "Deixa-ho desactivat"
 msgid "Region & Language Settings"
 msgstr "Configuració de regió i idioma"
 
-#: js/ui/lookingGlass.js:701
+#: js/ui/lookingGlass.js:710
 msgid "No extensions installed"
 msgstr "No hi ha cap extensió instal·lada"
 
 #. Translators: argument is an extension UUID.
-#: js/ui/lookingGlass.js:762
+#: js/ui/lookingGlass.js:771
 #, javascript-format
 msgid "%s has not emitted any errors."
 msgstr "%s no ha emès cap error."
 
-#: js/ui/lookingGlass.js:768
+#: js/ui/lookingGlass.js:777
 msgid "Hide Errors"
 msgstr "Amaga els errors"
 
-#: js/ui/lookingGlass.js:772 js/ui/lookingGlass.js:845
+#: js/ui/lookingGlass.js:781 js/ui/lookingGlass.js:854
 msgid "Show Errors"
 msgstr "Mostra els errors"
 
-#: js/ui/lookingGlass.js:781
+#: js/ui/lookingGlass.js:790
 msgid "Enabled"
 msgstr "Habilitat"
 
 #. translators:
 #. * The device has been disabled
-#: js/ui/lookingGlass.js:784 subprojects/gvc/gvc-mixer-control.c:1900
+#: js/ui/lookingGlass.js:793 subprojects/gvc/gvc-mixer-control.c:1900
 msgid "Disabled"
 msgstr "Inhabilitat"
 
-#: js/ui/lookingGlass.js:786
+#: js/ui/lookingGlass.js:795
 msgid "Error"
 msgstr "Error"
 
-#: js/ui/lookingGlass.js:788
+#: js/ui/lookingGlass.js:797
 msgid "Out of date"
 msgstr "Fora d'hora"
 
-#: js/ui/lookingGlass.js:790
+#: js/ui/lookingGlass.js:799
 msgid "Downloading"
 msgstr "S'està baixant"
 
-#: js/ui/lookingGlass.js:823
+#: js/ui/lookingGlass.js:832
 msgid "View Source"
 msgstr "Mostra el codi font"
 
-#: js/ui/lookingGlass.js:834
+#: js/ui/lookingGlass.js:843
 msgid "Web Page"
 msgstr "Pàgina web"
 
-#: js/ui/main.js:265
+#: js/ui/main.js:266
 msgid "System was put in unsafe mode"
 msgstr "El sistema s'ha posat en mode insegur"
 
-#: js/ui/main.js:266
+#: js/ui/main.js:267
 msgid "Applications now have unrestricted access"
 msgstr "Ara les aplicacions tenen accés sense restriccions"
 
-#: js/ui/main.js:267 js/ui/overview.js:58
+#: js/ui/main.js:268 js/ui/overview.js:58
 msgid "Undo"
 msgstr "Desfés"
 
-#: js/ui/main.js:313
+#: js/ui/main.js:314
 msgid "Logged in as a privileged user"
 msgstr "Sessió iniciada com a usuari privilegiat"
 
-#: js/ui/main.js:314
+#: js/ui/main.js:315
 msgid ""
 "Running a session as a privileged user should be avoided for security "
 "reasons. If possible, you should log in as a normal user."
 msgstr ""
-"Cal evitar iniciar sessions com a usuari privilegiat per raons de seguretat."
-" Si és possible, entreu com a un usuari normal."
+"Cal evitar iniciar sessions com a usuari privilegiat per raons de seguretat. "
+"Si és possible, entreu com a un usuari normal."
+
+#: js/ui/main.js:364
+msgid "Screen Lock disabled"
+msgstr "La pantalla de bloqueig està inhabilitada"
+
+#: js/ui/main.js:365
+msgid "Screen Locking requires the GNOME display manager."
+msgstr "El bloqueig de pantalla requereix el gestor de pantalla del GNOME."
 
 #: js/ui/messageTray.js:1418
 msgid "System Information"
@@ -1660,47 +1657,47 @@ msgstr "Aplicacions"
 msgid "Overview"
 msgstr "Vista general"
 
-#: js/ui/padOsd.js:97
+#: js/ui/padOsd.js:100
 msgid "New shortcut…"
 msgstr "Drecera de teclat nova…"
 
-#: js/ui/padOsd.js:148
+#: js/ui/padOsd.js:154
 msgid "Application defined"
 msgstr "Definit per l'aplicació"
 
-#: js/ui/padOsd.js:149
+#: js/ui/padOsd.js:155
 msgid "Show on-screen help"
 msgstr "Mostra l'ajuda en pantalla"
 
-#: js/ui/padOsd.js:150
+#: js/ui/padOsd.js:156
 msgid "Switch monitor"
 msgstr "Commuta el monitor"
 
-#: js/ui/padOsd.js:151
+#: js/ui/padOsd.js:157
 msgid "Assign keystroke"
 msgstr "Assigna la pulsació de tecla"
 
-#: js/ui/padOsd.js:220
+#: js/ui/padOsd.js:226
 msgid "Done"
 msgstr "Fet"
 
-#: js/ui/padOsd.js:737
+#: js/ui/padOsd.js:743
 msgid "Edit…"
 msgstr "Edita…"
 
-#: js/ui/padOsd.js:779 js/ui/padOsd.js:896
+#: js/ui/padOsd.js:785 js/ui/padOsd.js:902
 msgid "None"
 msgstr "Cap"
 
-#: js/ui/padOsd.js:850
+#: js/ui/padOsd.js:856
 msgid "Press a button to configure"
 msgstr "Premeu un botó per a configurar"
 
-#: js/ui/padOsd.js:851
+#: js/ui/padOsd.js:857
 msgid "Press Esc to exit"
 msgstr "Premeu Esc per a sortir"
 
-#: js/ui/padOsd.js:854
+#: js/ui/padOsd.js:860
 msgid "Press any key to exit"
 msgstr "Premeu qualsevol tecla per a sortir"
 
@@ -1741,6 +1738,7 @@ msgstr "El GNOME necessita bloquejar la pantalla"
 #. screenshield. The user is probably very upset at this
 #. point, but any application using global grabs is broken
 #. Just tell them to stop using this app
+#.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
 #: js/ui/screenShield.js:269 js/ui/screenShield.js:644
@@ -2082,15 +2080,14 @@ msgstr "<desconegut>"
 msgid "%s Off"
 msgstr "%s apagat"
 
-#. Translators: %s is a network identifier
 # N.T.: p. ex. Connectat amb fil
+#. Translators: %s is a network identifier
 #: js/ui/status/network.js:439
 #, javascript-format
 msgid "%s Connected"
 msgstr "Connectat %s"
 
-#. Translators: this is for network devices that are physically present but
-#. are not
+#. Translators: this is for network devices that are physically present but are not
 #. under NetworkManager's control (and thus cannot be used in the menu);
 #. %s is a network identifier
 #: js/ui/status/network.js:444
@@ -2110,23 +2107,20 @@ msgstr "%s s'està desconnectant"
 msgid "%s Connecting"
 msgstr "%s s'està connectant"
 
-#. Translators: this is for network connections that require some kind of key
-#. or password; %s is a network identifier
+#. Translators: this is for network connections that require some kind of key or password; %s is a network identifier
 #: js/ui/status/network.js:457
 #, javascript-format
 msgid "%s Requires Authentication"
 msgstr "%s requereix autenticació"
 
-#. Translators: this is for devices that require some kind of firmware or
-#. kernel
+#. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing; %s is a network identifier
 #: js/ui/status/network.js:465
 #, javascript-format
 msgid "Firmware Missing For %s"
 msgstr "Manca el microprogramari per %s"
 
-#. Translators: this is for a network device that cannot be activated (for
-#. example it
+#. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage; %s is a network identifier
 #: js/ui/status/network.js:469
 #, javascript-format
@@ -2228,8 +2222,7 @@ msgstr "%s no està connectat"
 msgid "connecting…"
 msgstr "s'està connectant..."
 
-#. Translators: this is for network connections that require some kind of key
-#. or password
+#. Translators: this is for network connections that require some kind of key or password
 #: js/ui/status/network.js:1476
 msgid "authentication required"
 msgstr "cal autenticació"
@@ -2443,27 +2436,45 @@ msgstr "Volum"
 
 #. Translators: this is for display mirroring i.e. cloning.
 #. * Try to keep it under around 15 characters.
+#.
 #: js/ui/switchMonitor.js:20
 msgid "Mirror"
 msgstr "Mirall"
 
 #. Translators: this is for the desktop spanning displays.
 #. * Try to keep it under around 15 characters.
+#.
 #: js/ui/switchMonitor.js:29
 msgid "Join Displays"
 msgstr "Uneix pantalles"
 
 #. Translators: this is for using only an external display.
 #. * Try to keep it under around 15 characters.
+#.
 #: js/ui/switchMonitor.js:39
 msgid "External Only"
 msgstr "Només extern"
 
 #. Translators: this is for using only the laptop display.
 #. * Try to keep it under around 15 characters.
+#.
 #: js/ui/switchMonitor.js:47
 msgid "Built-in Only"
 msgstr "Només l'integrat"
+
+#. Translators: This is a time format for a date in
+#. long format
+#: js/ui/unlockDialog.js:364
+msgid "%A %B %-d"
+msgstr "%A %-d %B"
+
+#: js/ui/unlockDialog.js:370
+msgid "Swipe up to unlock"
+msgstr "Llisqueu amunt per a desbloquejar"
+
+#: js/ui/unlockDialog.js:371
+msgid "Click or press a key to unlock"
+msgstr "Feu clic o premeu una tecla per a desbloquejar"
 
 #: js/ui/unlockDialog.js:554
 msgid "Unlock Window"
@@ -2620,7 +2631,7 @@ msgctxt "program"
 msgid "Unknown"
 msgstr "Desconegut"
 
-#: src/shell-app.c:569
+#: src/shell-app.c:556
 #, c-format
 msgid "Failed to launch “%s”"
 msgstr "No s'ha pogut iniciar «%s»"
@@ -2639,14 +2650,14 @@ msgstr "L'usuari ha descartat el diàleg d'autenticació"
 
 #: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:5
 #: subprojects/extensions-app/data/org.gnome.Extensions.desktop.in.in:4
-#: subprojects/extensions-app/js/main.js:209
+#: subprojects/extensions-app/js/main.js:210
 #: subprojects/extensions-app/data/ui/extensions-window.ui:18
 #: subprojects/extensions-app/data/ui/extensions-window.ui:83
 msgid "Extensions"
 msgstr "Extensions"
 
 #: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:6
-#: subprojects/extensions-app/js/main.js:210
+#: subprojects/extensions-app/js/main.js:211
 msgid "Manage your GNOME Extensions"
 msgstr "Gestioneu les extensions del GNOME Shell"
 
@@ -2667,29 +2678,29 @@ msgstr ""
 msgid "Configure GNOME Shell Extensions"
 msgstr "Configureu les extensions del GNOME Shell"
 
-#: subprojects/extensions-app/js/main.js:131
-#: subprojects/extensions-app/js/main.js:142
+#: subprojects/extensions-app/js/main.js:132
+#: subprojects/extensions-app/js/main.js:143
 msgid "No Matches"
 msgstr "Sense coincidències"
 
-#: subprojects/extensions-app/js/main.js:170
+#: subprojects/extensions-app/js/main.js:171
 #, javascript-format
 msgid "Remove “%s”?"
 msgstr "Voleu suprimir «%s»?"
 
-#: subprojects/extensions-app/js/main.js:171
+#: subprojects/extensions-app/js/main.js:172
 msgid ""
 "If you remove the extension, you need to return to download it if you want "
 "to enable it again"
 msgstr ""
-"Si suprimiu una extensió, us cal tornar-la a baixar si voleu habilitar-la de"
-" nou"
+"Si suprimiu una extensió, us cal tornar-la a baixar si voleu habilitar-la de "
+"nou"
 
-#: subprojects/extensions-app/js/main.js:175
+#: subprojects/extensions-app/js/main.js:176
 msgid "Remove"
 msgstr "Suprimeix"
 
-#: subprojects/extensions-app/js/main.js:208
+#: subprojects/extensions-app/js/main.js:209
 msgid "translator-credits"
 msgstr ""
 "Siegfried-Angel Gevatter Pujals <rainct@ubuntu.com>\n"
@@ -2698,18 +2709,18 @@ msgstr ""
 "Jordi Mas i Hernàndez <jmas@softcatala.org>\n"
 "Miquel-Àngel Burgos i Fradeja <miquel.angel.burgos@gmail.com>"
 
-#: subprojects/extensions-app/js/main.js:336
+#: subprojects/extensions-app/js/main.js:337
 #, javascript-format
 msgid "%d extension will be updated on next login."
 msgid_plural "%d extensions will be updated on next login."
 msgstr[0] "%d extensió serà actualitzada la següent vegada que entreu."
 msgstr[1] "%d extensions seran actualitzades la següent vegada que entreu."
 
-#: subprojects/extensions-app/js/main.js:478
+#: subprojects/extensions-app/js/main.js:479
 msgid "The extension is incompatible with the current GNOME version"
 msgstr "L'extensió és incompatible amb la versió actual del GNOME"
 
-#: subprojects/extensions-app/js/main.js:481
+#: subprojects/extensions-app/js/main.js:482
 #: subprojects/extensions-app/data/ui/extension-row.ui:52
 msgid "The extension had an error"
 msgstr "L'extensió ha tingut un error"
@@ -2736,8 +2747,8 @@ msgstr "Quant a les extensions"
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:84
 msgid ""
-"Extensions can cause performance and stability issues. Disable extensions if"
-" you encounter problems with your system."
+"Extensions can cause performance and stability issues. Disable extensions if "
+"you encounter problems with your system."
 msgstr ""
 "Les extensions poden causar problemes de rendiment i estabilitat. "
 "Inhabiliteu les extensions si teniu problemes amb el vostre sistema."
@@ -2749,11 +2760,11 @@ msgstr "Instal·lada manualment"
 #: subprojects/extensions-app/data/ui/extensions-window.ui:99
 #: subprojects/extensions-app/data/ui/extensions-window.ui:134
 msgid ""
-"To find and add extensions, visit <a "
-"href=\"https://extensions.gnome.org\">extensions.gnome.org</a>."
+"To find and add extensions, visit <a href=\"https://extensions.gnome.org"
+"\">extensions.gnome.org</a>."
 msgstr ""
-"Per a visitar i afegir extensions, visiteu <a "
-"href=\"https://extensions.gnome.org\">extensions.gnome.org</a>."
+"Per a visitar i afegir extensions, visiteu <a href=\"https://extensions."
+"gnome.org\">extensions.gnome.org</a>."
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:112
 msgid "Built-In"
@@ -2768,8 +2779,8 @@ msgid ""
 "We’re very sorry, but it was not possible to get the list of installed "
 "extensions. Make sure you are logged into GNOME and try again."
 msgstr ""
-"No s'ha pogut obtenir la llista d'extensions instal·lades. Assegureu-vos que"
-" heu entrat al GNOME i torneu a provar-ho."
+"No s'ha pogut obtenir la llista d'extensions instal·lades. Assegureu-vos que "
+"heu entrat al GNOME i torneu a provar-ho."
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:175
 msgid "Extension Updates Ready"
@@ -2816,7 +2827,8 @@ msgstr "Descripció"
 #: subprojects/extensions-tool/src/command-create.c:336
 msgid ""
 "UUID is a globally-unique identifier for your extension.\n"
-"This should be in the format of an email address (clicktofocus@janedoe.example.com)\n"
+"This should be in the format of an email address (clicktofocus@janedoe."
+"example.com)\n"
 msgstr ""
 "L'UUID és un identificador únic global per l'extensió\n"
 "Ha de tenir el format d'una adreça de correu (exemple@softcatala.org)\n"
@@ -3198,63 +3210,3 @@ msgstr[1] "%u entrades"
 msgid "System Sounds"
 msgstr "Sons del sistema"
 
-#~ msgid "Show screenshot UI"
-#~ msgstr "Mostra la interfície d'usuari de la captura de pantalla"
-
-#~ msgid "Unnamed Folder"
-#~ msgstr "Carpeta sense nom"
-
-#~ msgid "Screen Lock disabled"
-#~ msgstr "La pantalla de bloqueig està inhabilitada"
-
-#~ msgid "Screen Locking requires the GNOME display manager."
-#~ msgstr "El bloqueig de pantalla requereix el gestor de pantalla del GNOME."
-
-#~ msgid "Screen Recording in Progress"
-#~ msgstr "Enregistrament de pantalla en curs"
-
-#~ msgid "Stop"
-#~ msgstr "Atura"
-
-#~ msgid "%A %B %-d"
-#~ msgstr "%A %-d %B"
-
-#~ msgid "Swipe up to unlock"
-#~ msgstr "Llisqueu amunt per a desbloquejar"
-
-#~ msgid "Click or press a key to unlock"
-#~ msgstr "Feu clic o premeu una tecla per a desbloquejar"
-
-#~ msgid "Author"
-#~ msgstr "Autoria"
-
-#~ msgid "Warning"
-#~ msgstr "Avís"
-
-#~ msgid ""
-#~ "Extensions can cause system issues, including performance problems. If you "
-#~ "encounter problems with your system, it is recommended to disable all "
-#~ "extensions."
-#~ msgstr ""
-#~ "Les extensions poden causar problemes de sistema, incloent-hi problemes de "
-#~ "rendiment. Si us trobeu amb problemes amb el sistema, us recomanem "
-#~ "inhabilitar totes les extensions."
-
-#~ msgid "Enable introspection API"
-#~ msgstr "Habilita l'API d'introspecció"
-
-#~ msgid ""
-#~ "Enables a D-Bus API that allows to introspect the application state of the "
-#~ "shell."
-#~ msgstr ""
-#~ "Habilita una API D-BUS que permet la introspecció de l'estat de l'aplicació "
-#~ "del Shell."
-
-#~ msgid "Remove from Favorites"
-#~ msgstr "Suprimeix dels preferits"
-
-#~ msgid "Add to Favorites"
-#~ msgstr "Afegeix als preferits"
-
-#~ msgid "Failed to connect to GNOME Shell"
-#~ msgstr "Ha fallat la connexió amb el GNOME Shell"
