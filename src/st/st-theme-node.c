@@ -456,7 +456,7 @@ ensure_properties (StThemeNode *node)
       if (node->theme)
         properties = _st_theme_get_matched_properties (node->theme, node);
 
-      if (node->inline_style)
+      if (node->inline_style && *node->inline_style != '\0')
         {
           CRDeclaration *cur_decl;
 
