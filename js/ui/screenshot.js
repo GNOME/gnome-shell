@@ -1510,8 +1510,10 @@ var ScreenshotUI = GObject.registerClass({
             actor: this,
             onUngrab: () => this.close(),
         });
-        if (!grabResult)
+        if (!grabResult) {
+            this.close(true);
             return;
+        }
 
         this._refreshButtonLayout();
 
