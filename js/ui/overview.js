@@ -456,14 +456,14 @@ var Overview = class {
                 const grab = Main.pushModal(global.stage, {
                     actionMode: Shell.ActionMode.OVERVIEW,
                 });
-                if (grab.get_seat_state() !== Clutter.GrabState.NONE) {
-                    this._grab = grab;
-                    this._modal = true;
-                } else {
+                if (grab.get_seat_state() !== Clutter.GrabState.ALL) {
                     Main.popModal(grab);
                     this.hide();
                     return false;
                 }
+
+                this._grab = grab;
+                this._modal = true;
             }
         } else {
             // eslint-disable-next-line no-lonely-if

@@ -154,7 +154,7 @@ var GrabHelper = class GrabHelper {
         let firstGrab = this._modalCount == 0;
         if (firstGrab) {
             let grab = Main.pushModal(this._owner, this._modalParams);
-            if (grab.get_seat_state() === Clutter.GrabState.NONE) {
+            if (grab.get_seat_state() !== Clutter.GrabState.ALL) {
                 Main.popModal(grab);
                 return false;
             }

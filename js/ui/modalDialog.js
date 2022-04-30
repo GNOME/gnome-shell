@@ -237,7 +237,7 @@ var ModalDialog = GObject.registerClass({
         if (timestamp)
             params['timestamp'] = timestamp;
         let grab = Main.pushModal(this, params);
-        if (grab.get_seat_state() === Clutter.GrabState.NONE) {
+        if (grab.get_seat_state() !== Clutter.GrabState.ALL) {
             Main.popModal(grab);
             return false;
         }

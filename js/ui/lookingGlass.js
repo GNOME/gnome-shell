@@ -453,7 +453,7 @@ class ObjInspector extends St.ScrollView {
             return;
 
         const grab = Main.pushModal(this, { actionMode: Shell.ActionMode.LOOKING_GLASS });
-        if (grab.get_seat_state() === Clutter.GrabState.NONE) {
+        if (grab.get_seat_state() !== Clutter.GrabState.ALL) {
             Main.popModal(grab);
             return;
         }
@@ -1612,7 +1612,7 @@ class LookingGlass extends St.BoxLayout {
             return;
 
         let grab = Main.pushModal(this, { actionMode: Shell.ActionMode.LOOKING_GLASS });
-        if (grab.get_seat_state() === Clutter.GrabState.NONE) {
+        if (grab.get_seat_state() !== Clutter.GrabState.ALL) {
             Main.popModal(grab);
             return;
         }
