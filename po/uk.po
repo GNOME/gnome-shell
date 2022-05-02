@@ -6,22 +6,29 @@
 # Daniel Korostil <ted.korostiled@gmail.com>, 2013, 2014, 2015, 2016, 2017.
 # Danylo Korostil <ted.korostiled@gmail.com>, 2020.
 # Yuri Chornoivan <yurchor@ukr.net>, 2020, 2021, 2022.
+# Olexander Movchan <olexander-movchan@ukr.net>, 2022.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2022-03-20 22:19+0000\n"
-"PO-Revision-Date: 2022-03-21 08:30+0200\n"
-"Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
-"Language-Team: Ukrainian <kde-i18n-uk@kde.org>\n"
+"POT-Creation-Date: 2022-04-28 15:28+0000\n"
+"PO-Revision-Date: 2022-04-30 05:55+0300\n"
+"Last-Translator: Olexander Movchan <olexander-movchan@ukr.net>\n"
+"Language-Team: Ukrainian <none>\n"
 "Language: uk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=n==1 ? 3 : n%10==1 && n%100!=11 ? 0 : n"
-"%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2\n"
-"X-Generator: Lokalize 20.12.0\n"
+"Plural-Forms: nplurals=4; plural=n==1 ? 3 : n%10==1 && n%100!=11 ? 0 : "
+"n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2\n"
+"X-Generator: Gtranslator 40.0\n"
 "X-Project-Style: gnome\n"
+"X-DL-Team: uk\n"
+"X-DL-Module: gnome-shell\n"
+"X-DL-Branch: main\n"
+"X-DL-Domain: po\n"
+"X-DL-State: None\n"
 
 #: data/50-gnome-shell-launchers.xml:6
 msgid "Launchers"
@@ -513,7 +520,7 @@ msgstr "Відвідати сторінку розширення"
 #: js/ui/components/networkAgent.js:109 js/ui/components/polkitAgent.js:141
 #: js/ui/endSessionDialog.js:437 js/ui/extensionDownloader.js:223
 #: js/ui/shellMountOperation.js:377 js/ui/shellMountOperation.js:387
-#: js/ui/status/network.js:956 subprojects/extensions-app/js/main.js:174
+#: js/ui/status/network.js:956 subprojects/extensions-app/js/main.js:175
 msgid "Cancel"
 msgstr "Скасувати"
 
@@ -551,7 +558,7 @@ msgstr "Вікно входу"
 
 #: js/gdm/util.js:434
 msgid "Authentication error"
-msgstr "Помилка розпізнавання"
+msgstr "Помилка автентифікації"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger on the fingerprint reader
@@ -810,11 +817,11 @@ msgstr "%-d %B, %l∶%M %p"
 msgid "%B %-d %Y, %l∶%M %p"
 msgstr "%-d %B %Y, %l∶%M %p"
 
-#: js/portalHelper/main.js:53
+#: js/portalHelper/main.js:55
 msgid "Hotspot Login"
 msgstr "Вхід в точку"
 
-#: js/portalHelper/main.js:106
+#: js/portalHelper/main.js:108
 msgid ""
 "Your connection to this hotspot login is not secure. Passwords or other "
 "information you enter on this page can be viewed by people nearby."
@@ -1085,7 +1092,7 @@ msgstr "Служба"
 #: js/ui/components/networkAgent.js:366 js/ui/components/networkAgent.js:402
 #: js/ui/components/networkAgent.js:746 js/ui/components/networkAgent.js:767
 msgid "Authentication required"
-msgstr "Потрібне засвідчення"
+msgstr "Необхідна автентифікація"
 
 #: js/ui/components/networkAgent.js:367 js/ui/components/networkAgent.js:747
 #, javascript-format
@@ -1096,7 +1103,7 @@ msgstr "Потрібно паролі або зашифровані ключі �
 
 #: js/ui/components/networkAgent.js:371 js/ui/components/networkAgent.js:751
 msgid "Wired 802.1X authentication"
-msgstr "Дротова аутентифікація 802.1X"
+msgstr "Дротова автентифікація 802.1X"
 
 #: js/ui/components/networkAgent.js:374
 msgid "Network name"
@@ -1104,7 +1111,7 @@ msgstr "Назва мережі"
 
 #: js/ui/components/networkAgent.js:382 js/ui/components/networkAgent.js:755
 msgid "DSL authentication"
-msgstr "Аутентифікація DSL"
+msgstr "Автентифікація DSL"
 
 #: js/ui/components/networkAgent.js:389 js/ui/components/networkAgent.js:760
 msgid "PIN code required"
@@ -1135,7 +1142,7 @@ msgstr "Пароль VPN"
 
 #: js/ui/components/polkitAgent.js:41
 msgid "Authentication Required"
-msgstr "Потрібна автентифікація"
+msgstr "Необхідна автентифікація"
 
 #: js/ui/components/polkitAgent.js:81
 msgid "Administrator"
@@ -1143,7 +1150,7 @@ msgstr "Адміністратор"
 
 #: js/ui/components/polkitAgent.js:146
 msgid "Authenticate"
-msgstr "Аутентифікація"
+msgstr "Автентифікувати"
 
 #. Translators: "that didn't work" refers to the fact that the
 #. * requested authentication was not gained; this can happen
@@ -1236,23 +1243,23 @@ msgstr "Додати світові годинники…"
 msgid "World Clocks"
 msgstr "Світові годинники"
 
-#: js/ui/dateMenu.js:677
+#: js/ui/dateMenu.js:681
 msgid "Loading…"
 msgstr "Завантаження…"
 
-#: js/ui/dateMenu.js:687
+#: js/ui/dateMenu.js:691
 msgid "Go online for weather information"
 msgstr "Увійти в мережу за прогнозом погоди"
 
-#: js/ui/dateMenu.js:689
+#: js/ui/dateMenu.js:693
 msgid "Weather information is currently unavailable"
 msgstr "Наразі інформації про погоду недоступна"
 
-#: js/ui/dateMenu.js:699
+#: js/ui/dateMenu.js:703
 msgid "Weather"
 msgstr "Погода"
 
-#: js/ui/dateMenu.js:701
+#: js/ui/dateMenu.js:705
 msgid "Select weather location…"
 msgstr "Виберіть місцевість для погоди…"
 
@@ -1541,77 +1548,85 @@ msgstr "Покинути"
 msgid "Region & Language Settings"
 msgstr "Параметри регіону та мови"
 
-#: js/ui/lookingGlass.js:701
+#: js/ui/lookingGlass.js:710
 msgid "No extensions installed"
 msgstr "Не встановлено розширення"
 
 #. Translators: argument is an extension UUID.
-#: js/ui/lookingGlass.js:762
+#: js/ui/lookingGlass.js:771
 #, javascript-format
 msgid "%s has not emitted any errors."
 msgstr "%s не випустила жодної помилки. "
 
-#: js/ui/lookingGlass.js:768
+#: js/ui/lookingGlass.js:777
 msgid "Hide Errors"
 msgstr "Сховати помилки"
 
-#: js/ui/lookingGlass.js:772 js/ui/lookingGlass.js:845
+#: js/ui/lookingGlass.js:781 js/ui/lookingGlass.js:854
 msgid "Show Errors"
 msgstr "Показати помилки"
 
-#: js/ui/lookingGlass.js:781
+#: js/ui/lookingGlass.js:790
 msgid "Enabled"
 msgstr "Увімкнено"
 
 #. translators:
 #. * The device has been disabled
-#: js/ui/lookingGlass.js:784 subprojects/gvc/gvc-mixer-control.c:1900
+#: js/ui/lookingGlass.js:793 subprojects/gvc/gvc-mixer-control.c:1900
 msgid "Disabled"
 msgstr "Вимкнено"
 
-#: js/ui/lookingGlass.js:786
+#: js/ui/lookingGlass.js:795
 msgid "Error"
 msgstr "Помилка"
 
-#: js/ui/lookingGlass.js:788
+#: js/ui/lookingGlass.js:797
 msgid "Out of date"
 msgstr "Застаріло"
 
-#: js/ui/lookingGlass.js:790
+#: js/ui/lookingGlass.js:799
 msgid "Downloading"
 msgstr "Звантаження"
 
-#: js/ui/lookingGlass.js:823
+#: js/ui/lookingGlass.js:832
 msgid "View Source"
 msgstr "Переглянути джерело"
 
-#: js/ui/lookingGlass.js:834
+#: js/ui/lookingGlass.js:843
 msgid "Web Page"
 msgstr "Веб-сторінка"
 
-#: js/ui/main.js:265
+#: js/ui/main.js:266
 msgid "System was put in unsafe mode"
 msgstr "Систему переведено у небезпечний режим"
 
-#: js/ui/main.js:266
+#: js/ui/main.js:267
 msgid "Applications now have unrestricted access"
 msgstr "Тепер програми мають необмежений доступ до даних"
 
-#: js/ui/main.js:267 js/ui/overview.js:58
+#: js/ui/main.js:268 js/ui/overview.js:58
 msgid "Undo"
 msgstr "Повернути"
 
-#: js/ui/main.js:313
+#: js/ui/main.js:314
 msgid "Logged in as a privileged user"
 msgstr "Увійшов як наділений користувач"
 
-#: js/ui/main.js:314
+#: js/ui/main.js:315
 msgid ""
 "Running a session as a privileged user should be avoided for security "
 "reasons. If possible, you should log in as a normal user."
 msgstr ""
 "З міркувань безпеки слід уникати сеансів з наділеними правами. Користуйтесь "
 "звичайним сеансом."
+
+#: js/ui/main.js:364
+msgid "Screen Lock disabled"
+msgstr "Блокування екрана вимкнено"
+
+#: js/ui/main.js:365
+msgid "Screen Locking requires the GNOME display manager."
+msgstr "Блокування екрана потребує керування входом GNOME."
 
 #: js/ui/messageTray.js:1418
 msgid "System Information"
@@ -1643,47 +1658,47 @@ msgstr "Програми"
 msgid "Overview"
 msgstr "Огляд"
 
-#: js/ui/padOsd.js:97
+#: js/ui/padOsd.js:100
 msgid "New shortcut…"
 msgstr "Нове скорочення…"
 
-#: js/ui/padOsd.js:148
+#: js/ui/padOsd.js:154
 msgid "Application defined"
 msgstr "Програму визначено"
 
-#: js/ui/padOsd.js:149
+#: js/ui/padOsd.js:155
 msgid "Show on-screen help"
 msgstr "Показати екранну довідку"
 
-#: js/ui/padOsd.js:150
+#: js/ui/padOsd.js:156
 msgid "Switch monitor"
 msgstr "Перемкнути монітор"
 
-#: js/ui/padOsd.js:151
+#: js/ui/padOsd.js:157
 msgid "Assign keystroke"
 msgstr "Призначити клавішу"
 
-#: js/ui/padOsd.js:220
+#: js/ui/padOsd.js:226
 msgid "Done"
 msgstr "Зроблено"
 
-#: js/ui/padOsd.js:737
+#: js/ui/padOsd.js:743
 msgid "Edit…"
 msgstr "Редагувати…"
 
-#: js/ui/padOsd.js:779 js/ui/padOsd.js:896
+#: js/ui/padOsd.js:785 js/ui/padOsd.js:902
 msgid "None"
 msgstr "Немає"
 
-#: js/ui/padOsd.js:850
+#: js/ui/padOsd.js:856
 msgid "Press a button to configure"
 msgstr "Натисніть кнопку, щоб налаштувати"
 
-#: js/ui/padOsd.js:851
+#: js/ui/padOsd.js:857
 msgid "Press Esc to exit"
 msgstr "Натисніть клавішу «Esc», щоб вийти"
 
-#: js/ui/padOsd.js:854
+#: js/ui/padOsd.js:860
 msgid "Press any key to exit"
 msgstr "Натисніть будь-яку клавішу, щоб вийти"
 
@@ -2099,7 +2114,7 @@ msgstr "%s під'єднується"
 #: js/ui/status/network.js:457
 #, javascript-format
 msgid "%s Requires Authentication"
-msgstr "%s вимагає засвідчення"
+msgstr "%s вимагає автентифікації"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing; %s is a network identifier
@@ -2208,12 +2223,12 @@ msgstr "%s не під'єднано"
 
 #: js/ui/status/network.js:1473
 msgid "connecting…"
-msgstr "З'єднання…"
+msgstr "з'єднання…"
 
 #. Translators: this is for network connections that require some kind of key or password
 #: js/ui/status/network.js:1476
 msgid "authentication required"
-msgstr "Потрібна аутентифікація"
+msgstr "необхідна автентифікація"
 
 #: js/ui/status/network.js:1478
 msgid "connection failed"
@@ -2454,6 +2469,20 @@ msgstr "Тільки зовнішній"
 msgid "Built-in Only"
 msgstr "Тільки вбудований"
 
+#. Translators: This is a time format for a date in
+#. long format
+#: js/ui/unlockDialog.js:364
+msgid "%A %B %-d"
+msgstr "%A, %-d %B"
+
+#: js/ui/unlockDialog.js:370
+msgid "Swipe up to unlock"
+msgstr "Проведіть вгору для розблокування"
+
+#: js/ui/unlockDialog.js:371
+msgid "Click or press a key to unlock"
+msgstr "Клацніть або натисніть клавішу для розблокування"
+
 #: js/ui/unlockDialog.js:554
 msgid "Unlock Window"
 msgstr "Розблокувати вікно"
@@ -2612,7 +2641,7 @@ msgctxt "program"
 msgid "Unknown"
 msgstr "Невідомо"
 
-#: src/shell-app.c:569
+#: src/shell-app.c:556
 #, c-format
 msgid "Failed to launch “%s”"
 msgstr "Не вдалося запустити «%s»"
@@ -2627,18 +2656,18 @@ msgstr "Пароль не може бути порожнім"
 
 #: src/shell-polkit-authentication-agent.c:344
 msgid "Authentication dialog was dismissed by the user"
-msgstr "Вікно авторизації відхилено користувачем"
+msgstr "Вікно автентифікації відхилено користувачем"
 
 #: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:5
 #: subprojects/extensions-app/data/org.gnome.Extensions.desktop.in.in:4
-#: subprojects/extensions-app/js/main.js:209
+#: subprojects/extensions-app/js/main.js:210
 #: subprojects/extensions-app/data/ui/extensions-window.ui:18
 #: subprojects/extensions-app/data/ui/extensions-window.ui:83
 msgid "Extensions"
 msgstr "Розширення"
 
 #: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:6
-#: subprojects/extensions-app/js/main.js:210
+#: subprojects/extensions-app/js/main.js:211
 msgid "Manage your GNOME Extensions"
 msgstr "Керуйте вашими розширеннями GNOME"
 
@@ -2658,17 +2687,17 @@ msgstr ""
 msgid "Configure GNOME Shell Extensions"
 msgstr "Налаштувати розширення GNOME Shell"
 
-#: subprojects/extensions-app/js/main.js:131
-#: subprojects/extensions-app/js/main.js:142
+#: subprojects/extensions-app/js/main.js:132
+#: subprojects/extensions-app/js/main.js:143
 msgid "No Matches"
 msgstr "Немає відповідників"
 
-#: subprojects/extensions-app/js/main.js:170
+#: subprojects/extensions-app/js/main.js:171
 #, javascript-format
 msgid "Remove “%s”?"
 msgstr "Вилучити «%s»?"
 
-#: subprojects/extensions-app/js/main.js:171
+#: subprojects/extensions-app/js/main.js:172
 msgid ""
 "If you remove the extension, you need to return to download it if you want "
 "to enable it again"
@@ -2676,18 +2705,18 @@ msgstr ""
 "Якщо ви вилучите розширення, вам доведеться отримати його код знову, якщо ви "
 "захочете його знову увімкнути"
 
-#: subprojects/extensions-app/js/main.js:175
+#: subprojects/extensions-app/js/main.js:176
 msgid "Remove"
 msgstr "Вилучити"
 
-#: subprojects/extensions-app/js/main.js:208
+#: subprojects/extensions-app/js/main.js:209
 msgid "translator-credits"
 msgstr ""
 "Максим Дзюманенко <dziumanenko@gmail.com>\n"
 "Данило Коростіль <ted.korostiled@gmail.com>\n"
 "Юрій Чорноіван <yurchor@ukr.net>"
 
-#: subprojects/extensions-app/js/main.js:336
+#: subprojects/extensions-app/js/main.js:337
 #, javascript-format
 msgid "%d extension will be updated on next login."
 msgid_plural "%d extensions will be updated on next login."
@@ -2696,11 +2725,11 @@ msgstr[1] "Під час наступного входу до системи б�
 msgstr[2] "Під час наступного входу до системи буде оновлено %d розширень."
 msgstr[3] "Під час наступного входу до системи буде оновлено одне розширення."
 
-#: subprojects/extensions-app/js/main.js:478
+#: subprojects/extensions-app/js/main.js:479
 msgid "The extension is incompatible with the current GNOME version"
 msgstr "Розширення є несумісним із поточною версією GNOME"
 
-#: subprojects/extensions-app/js/main.js:481
+#: subprojects/extensions-app/js/main.js:482
 #: subprojects/extensions-app/data/ui/extension-row.ui:52
 msgid "The extension had an error"
 msgstr "У розширенні сталася помилка"
@@ -2740,8 +2769,8 @@ msgstr "Встановлені вручну"
 #: subprojects/extensions-app/data/ui/extensions-window.ui:99
 #: subprojects/extensions-app/data/ui/extensions-window.ui:134
 msgid ""
-"To find and add extensions, visit <a href=\"https://extensions.gnome.org"
-"\">extensions.gnome.org</a>."
+"To find and add extensions, visit <a href=\"https://extensions.gnome."
+"org\">extensions.gnome.org</a>."
 msgstr ""
 "Щоб знайти і додати потрібні вам розширення, відвідайте <a href=\"https://"
 "extensions.gnome.org\">extensions.gnome.org</a>."
@@ -3201,26 +3230,11 @@ msgstr "Системні звуки"
 #~ msgid "Unnamed Folder"
 #~ msgstr "Неназвана тека"
 
-#~ msgid "Screen Lock disabled"
-#~ msgstr "Блокування екрана вимкнено"
-
-#~ msgid "Screen Locking requires the GNOME display manager."
-#~ msgstr "Блокування екрана потребує керування входом GNOME."
-
 #~ msgid "Screen Recording in Progress"
 #~ msgstr "Виконуємо запис з екрана"
 
 #~ msgid "Stop"
 #~ msgstr "Припинити"
-
-#~ msgid "%A %B %-d"
-#~ msgstr "%A, %-d %B"
-
-#~ msgid "Swipe up to unlock"
-#~ msgstr "Проведіть вгору для розблокування"
-
-#~ msgid "Click or press a key to unlock"
-#~ msgstr "Клацніть або натисніть клавішу для розблокування"
 
 #~ msgid "Author"
 #~ msgstr "Автор"
