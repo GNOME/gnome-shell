@@ -13,7 +13,9 @@ var PAGE_SWITCH_TIME = 300;
 var IconSize = {
     LARGE: 96,
     MEDIUM: 64,
+    MEDIUM_SMALL: 48,
     SMALL: 32,
+    SMALLER: 24,
     TINY: 16,
 };
 
