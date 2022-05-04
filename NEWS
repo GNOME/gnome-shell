@@ -1,3 +1,53 @@
+42.1
+====
+* Limit unfullscreen gesture to not interfere with overview [Ivan; !2227]
+* Properly hide the second (real) cursor when magnified [Jonas; !2234]
+* Fix various style glitches [Sam; !2215, !2277]
+* Fix creating default application folders [Adam; !2242]
+* Fix switching monitor configuration [Florian; !2245]
+* Add Home/End keynav in app grid [Anupam; !2241]
+* Handle monitor changes during startup animation [13r0ck; !2144]
+* Fix fractional timezone offsets in world clock [Raghuveer; !2255]
+* Default to right text-align in RTL locales [Florian; !2247]
+* calendar: Fix alignment of world clocks header in RTL [Yosef; !2240]
+* Rely on symbolic icons instead of 'HighContrast' icon theme [Jakub; !2243]
+* Fix moving windows from secondary monitor to non-active workspace
+  [Florian; !2259]
+* Make sure startup animation completes [Florian; !2269]
+* Fix Swiss on-screen keyboard layouts [Florian; !2273]
+* Add Austrian-German on-screen keyboard layout [Florian; !2274]
+* Fix on-screen keyboard in modal dialogs and lock screen [Jonas; !2263]
+* Fix menus in pad OSD [Carlos; !2279]
+* Sync default colors with libadwaita [Jakub; !2280]
+* Fix grab regressions when entering overview [Carlos, Sebastian; !2281, !2287]
+* Scale calendar with text size [Jonas; !2282]
+* Allow more intermediate icon sizes in app grid [Sebastian; !2289]
+* Fixed crash [Jonas; !2231]
+* Plugged memory leak [Sebastian; !2256]
+* Misc. bug fixes and cleanups [Jonas, Florian, Sebastian, Daniel, Marco, Simon;
+  !2283, !2285, !2286, !2233, !2236, !2244, !2246, !2258, !2257, !2252, !2261,
+  !2268, !2272, !2271, !2275]
+
+Contributors:
+  Marco Trevisan (Treviño), 13r0ck, Yosef Or Boczko, Jonas Dreßler,
+  Carlos Garnacho, Sam Hewitt, Zurab Kargareteli, Raghuveer Kasaraneni,
+  Sebastian Keller, Anupam Kumar, Simon McVittie, Ivan Molodetskikh,
+  Florian Müllner, Jakub Steiner, Daniel van Vugt, Adam Williamson
+
+Translators:
+  Balázs Úr [hu], Goran Vidović [hr], Charles Monzat [fr], Jiri Grönroos [fi],
+  Milo Casagrande [it], Jordi Mas [ca], Yuri Chornoivan [uk], Fran Dieguez [gl],
+  Marek Černocký [cs], Emin Tufan Çetin [tr], Alexander Shopov [bg],
+  Hugo Carvalho [pt], Piotr Drąg [pl], Anders Jonsson [sv], Matej Urbančič [sl],
+  Aurimas Černius [lt], Dušan Kazik [sk], Matheus Barbosa [pt_BR],
+  Bruce Cowan [en_GB], Rūdolfs Mazurs [lv], Nathan Follens [nl],
+  Марко Костић [sr], Aleksandr Melman [ru], Quentin PAGÈS [oc],
+  Andika Triwidada [id], Danial Behzadi [fa], Ngọc Quân Trần [vi],
+  Yaron Shahrabani [he], Daniel Mustieles [es], Gun Chleoc [gd],
+  Changwoo Ryu [ko], Fabio Tomat [fur], Ask Hjorth Larsen [da],
+  Yosef Or Boczko [he], Sveinn í Felli [is], Zurab Kargareteli [ka],
+  Olexander [uk]
+
 42.0
 ====
 * introspect: Add WindowsChanged signal [Cenk; !2229]
