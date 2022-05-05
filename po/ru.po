@@ -20,8 +20,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2022-04-07 11:58+0000\n"
-"PO-Revision-Date: 2022-03-21 13:16+0300\n"
+"POT-Creation-Date: 2022-04-30 10:33+0000\n"
+"PO-Revision-Date: 2022-05-03 22:39+0300\n"
 "Last-Translator: Aleksandr Melman <Alexmelman88@gmail.com>\n"
 "Language-Team: Russian <gnome-cyr@gnome.org>\n"
 "Language: ru\n"
@@ -1553,51 +1553,51 @@ msgstr "Оставить выключенными"
 msgid "Region & Language Settings"
 msgstr "Настройки языка и региона"
 
-#: js/ui/lookingGlass.js:701
+#: js/ui/lookingGlass.js:710
 msgid "No extensions installed"
 msgstr "Расширения не установлены"
 
 #. Translators: argument is an extension UUID.
-#: js/ui/lookingGlass.js:762
+#: js/ui/lookingGlass.js:771
 #, javascript-format
 msgid "%s has not emitted any errors."
 msgstr "%s не сообщал о каких-либо ошибках."
 
-#: js/ui/lookingGlass.js:768
+#: js/ui/lookingGlass.js:777
 msgid "Hide Errors"
 msgstr "Скрыть ошибки"
 
-#: js/ui/lookingGlass.js:772 js/ui/lookingGlass.js:845
+#: js/ui/lookingGlass.js:781 js/ui/lookingGlass.js:854
 msgid "Show Errors"
 msgstr "Показать ошибки"
 
-#: js/ui/lookingGlass.js:781
+#: js/ui/lookingGlass.js:790
 msgid "Enabled"
 msgstr "Включено"
 
 #. translators:
 #. * The device has been disabled
-#: js/ui/lookingGlass.js:784 subprojects/gvc/gvc-mixer-control.c:1900
+#: js/ui/lookingGlass.js:793 subprojects/gvc/gvc-mixer-control.c:1900
 msgid "Disabled"
 msgstr "Выключено"
 
-#: js/ui/lookingGlass.js:786
+#: js/ui/lookingGlass.js:795
 msgid "Error"
 msgstr "Ошибка"
 
-#: js/ui/lookingGlass.js:788
+#: js/ui/lookingGlass.js:797
 msgid "Out of date"
 msgstr "Устарело"
 
-#: js/ui/lookingGlass.js:790
+#: js/ui/lookingGlass.js:799
 msgid "Downloading"
 msgstr "Загрузка"
 
-#: js/ui/lookingGlass.js:823
+#: js/ui/lookingGlass.js:832
 msgid "View Source"
 msgstr "Показать код"
 
-#: js/ui/lookingGlass.js:834
+#: js/ui/lookingGlass.js:843
 msgid "Web Page"
 msgstr "Веб-страница"
 
@@ -1625,6 +1625,14 @@ msgstr ""
 "В целях соблюдения безопасности, не следует запускать сессию от имени "
 "привилегированного пользователя. Если это возможно, вам следует войти от "
 "имени обычного пользователя."
+
+#: js/ui/main.js:364
+msgid "Screen Lock disabled"
+msgstr "Блокировка экрана отключена"
+
+#: js/ui/main.js:365
+msgid "Screen Locking requires the GNOME display manager."
+msgstr "Для блокировки экрана требуется менеджер дисплеев GNOME."
 
 #: js/ui/messageTray.js:1418
 msgid "System Information"
@@ -1656,47 +1664,47 @@ msgstr "Приложения"
 msgid "Overview"
 msgstr "Обзор"
 
-#: js/ui/padOsd.js:97
+#: js/ui/padOsd.js:100
 msgid "New shortcut…"
 msgstr "Создать комбинацию клавиш…"
 
-#: js/ui/padOsd.js:148
+#: js/ui/padOsd.js:154
 msgid "Application defined"
 msgstr "Определено приложением"
 
-#: js/ui/padOsd.js:149
+#: js/ui/padOsd.js:155
 msgid "Show on-screen help"
 msgstr "Показывать экранную справку"
 
-#: js/ui/padOsd.js:150
+#: js/ui/padOsd.js:156
 msgid "Switch monitor"
 msgstr "Переключить монитор"
 
-#: js/ui/padOsd.js:151
+#: js/ui/padOsd.js:157
 msgid "Assign keystroke"
 msgstr "Назначение клавишь"
 
-#: js/ui/padOsd.js:220
+#: js/ui/padOsd.js:226
 msgid "Done"
 msgstr "Готово"
 
-#: js/ui/padOsd.js:737
+#: js/ui/padOsd.js:743
 msgid "Edit…"
 msgstr "Правка…"
 
-#: js/ui/padOsd.js:779 js/ui/padOsd.js:896
+#: js/ui/padOsd.js:785 js/ui/padOsd.js:902
 msgid "None"
 msgstr "Нет"
 
-#: js/ui/padOsd.js:850
+#: js/ui/padOsd.js:856
 msgid "Press a button to configure"
 msgstr "Нажмите кнопку для настройки"
 
-#: js/ui/padOsd.js:851
+#: js/ui/padOsd.js:857
 msgid "Press Esc to exit"
 msgstr "Нажмите Esc для выхода"
 
-#: js/ui/padOsd.js:854
+#: js/ui/padOsd.js:860
 msgid "Press any key to exit"
 msgstr "Нажмите любую клавишу для выхода"
 
@@ -2622,7 +2630,7 @@ msgstr "Всегда на видимом рабочем месте"
 
 #: js/ui/windowMenu.js:110
 msgid "Move to Workspace Left"
-msgstr "Переместить на рабочее влево"
+msgstr "Переместить на рабочее место влево"
 
 #: js/ui/windowMenu.js:116
 msgid "Move to Workspace Right"
