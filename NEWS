@@ -1,3 +1,20 @@
+41.6
+====
+* Handle monitor changes during startup animation [13r0ck; !2144]
+* Fix fractional timezone offsets in world clock [Raghuveer; !2255]
+* calendar: Fix alignment of world clocks header in RTL [Yosef; !2240]
+* Make sure startup animation completes [Florian; !2269]
+* Allow more intermediate icon sizes in app grid [Sebastian; !2289]
+* Plugged memory leak [Sebastian; !2256]
+* Misc. bug fixes and cleanups [Georges, Florian, Simon, Jonas, Sebastian;
+  !2262, !2257, !2252, !2272, !2275, !2285, !2286]
+
+Contributors:
+  13r0ck, Yosef Or Boczko, Jonas Dreßler, Raghuveer Kasaraneni,
+  Sebastian Keller, Simon McVittie, Florian Müllner,
+  Georges Basile Stavracas Neto
+
+
 41.5
 ====
 * Fix programatically set scrollview fade [Jonas; !2189]
