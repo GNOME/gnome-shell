@@ -47,9 +47,23 @@ if [ -z "$mutter_target" ]; then
     mutter_target=FETCH_HEAD
   else
     echo \ not found
-    mutter_target=HEAD
-    echo Using $mutter_target instead
   fi
+fi
+
+fallback_branch=${CI_COMMIT_TAG:+gnome-}${CI_COMMIT_TAG%%.*}
+if [ -z "$mutter_target" -a "$fallback_branch" ]; then
+  echo -n Looking for $fallback_branch instead ...
+  if fetch origin $fallback_branch; then
+    echo \ found
+    mutter_target=FETCH_HEAD
+  else
+    echo \ not found
+  fi
+fi
+
+if [ -z "$mutter_target" ]; then
+  mutter_target=HEAD
+  echo Using $mutter_target instead
 fi
 
 git checkout -q $mutter_target
