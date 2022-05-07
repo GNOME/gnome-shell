@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: HEAD\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
 "POT-Creation-Date: 2022-04-28 15:28+0000\n"
-"PO-Revision-Date: 2022-04-28 15:28+0000\n"
+"PO-Revision-Date: 2022-05-07 19:05+0000\n"
 "Last-Translator: maite guix <maite.guix@me.com>\n"
 "Language-Team: \n"
 "Language: ca\n"
@@ -1826,7 +1826,7 @@ msgstr "Captura de pantalla de %s"
 #. Translators: notification title.
 #: js/ui/screenshot.js:2121
 msgid "Screenshot captured"
-msgstr "Captura de pantalla capturada"
+msgstr "Captura de pantalla realitzada"
 
 #. Translators: notification body when a screenshot was captured.
 #: js/ui/screenshot.js:2123
