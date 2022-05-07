@@ -418,7 +418,10 @@ class WorldClocksSection extends St.Button {
                 x_expand: true,
             });
 
-            let time = new St.Label({ style_class: 'world-clocks-time' });
+            let time = new St.Label({
+                style_class: 'world-clocks-time',
+                x_align: Clutter.ActorAlign.END,
+            });
 
             const tz = new St.Label({
                 style_class: 'world-clocks-timezone',
@@ -484,10 +487,25 @@ class WorldClocksSection extends St.Button {
     }
 
     _updateTimeLabels() {
+        let differentLength = false;
+        let lastLength;
         for (let i = 0; i < this._locations.length; i++) {
             let l = this._locations[i];
             const now = GLib.DateTime.new_now(l.location.get_timezone());
-            l.timeLabel.text = Util.formatTime(now, { timeOnly: true });
+            const text = Util.formatTime(now, { timeOnly: true });
+            l.timeLabel.text = text;
+
+            if (differentLength)
+                continue;
+            if (lastLength === undefined)
+                lastLength = text.length;
+            differentLength = lastLength !== text.length;
+        }
+
+        for (let i = 0; i < this._locations.length; i++) {
+            this._locations[i].timeLabel.x_align = differentLength
+                ? Clutter.ActorAlign.START
+                : Clutter.ActorAlign.END;
         }
     }
 
