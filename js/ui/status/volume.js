@@ -34,6 +34,7 @@ var StreamSlider = class {
         this._control = control;
 
         this.item = new PopupMenu.PopupBaseMenuItem({ activate: false });
+        this.item.hide();
 
         this._inDrag = false;
         this._notifyVolumeChangeId = 0;
