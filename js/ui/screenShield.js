@@ -196,7 +196,7 @@ var ScreenShield = class {
         if (this._isModal)
             return true;
 
-        let grab = Main.pushModal(this.actor, { actionMode: Shell.ActionMode.LOCK_SCREEN });
+        let grab = Main.pushModal(Main.uiGroup, { actionMode: Shell.ActionMode.LOCK_SCREEN });
 
         // We expect at least a keyboard grab here
         this._isModal = (grab.get_seat_state() & Clutter.GrabState.KEYBOARD) !== 0;
