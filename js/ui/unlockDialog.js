@@ -873,7 +873,7 @@ var UnlockDialog = GObject.registerClass({
             timestamp,
             actionMode: Shell.ActionMode.UNLOCK_SCREEN,
         };
-        let grab = Main.pushModal(this, modalParams);
+        let grab = Main.pushModal(Main.uiGroup, modalParams);
         if (grab.get_seat_state() !== Clutter.GrabState.ALL) {
             Main.popModal(grab);
             return false;
