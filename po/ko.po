@@ -22,8 +22,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2022-04-15 19:27+0000\n"
-"PO-Revision-Date: 2022-04-16 04:55+0900\n"
+"POT-Creation-Date: 2022-05-07 17:06+0000\n"
+"PO-Revision-Date: 2022-05-16 21:01+0900\n"
 "Last-Translator: Changwoo Ryu <cwryu@debian.org>\n"
 "Language-Team: GNOME Korea <gnome-kr@googlegroups.com>\n"
 "Language: ko\n"
@@ -73,7 +73,7 @@ msgid "Activate favorite application 9"
 msgstr "즐겨 찾는 프로그램 9 활성화"
 
 #. Translators: name of the folder under ~/Pictures for screenshots.
-#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2062
+#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2069
 msgid "Screenshots"
 msgstr "스크린샷"
 
@@ -1497,51 +1497,51 @@ msgstr "그만두고 끄기"
 msgid "Region & Language Settings"
 msgstr "지역 및 언어 설정"
 
-#: js/ui/lookingGlass.js:701
+#: js/ui/lookingGlass.js:710
 msgid "No extensions installed"
 msgstr "확장을 설치하지 않았습니다"
 
 #. Translators: argument is an extension UUID.
-#: js/ui/lookingGlass.js:762
+#: js/ui/lookingGlass.js:771
 #, javascript-format
 msgid "%s has not emitted any errors."
 msgstr "%s에서 발생한 에러가 없습니다."
 
-#: js/ui/lookingGlass.js:768
+#: js/ui/lookingGlass.js:777
 msgid "Hide Errors"
 msgstr "오류 숨기기"
 
-#: js/ui/lookingGlass.js:772 js/ui/lookingGlass.js:845
+#: js/ui/lookingGlass.js:781 js/ui/lookingGlass.js:854
 msgid "Show Errors"
 msgstr "오류 보이기"
 
-#: js/ui/lookingGlass.js:781
+#: js/ui/lookingGlass.js:790
 msgid "Enabled"
 msgstr "사용"
 
 #. translators:
 #. * The device has been disabled
-#: js/ui/lookingGlass.js:784 subprojects/gvc/gvc-mixer-control.c:1900
+#: js/ui/lookingGlass.js:793 subprojects/gvc/gvc-mixer-control.c:1900
 msgid "Disabled"
 msgstr "사용 않음"
 
-#: js/ui/lookingGlass.js:786
+#: js/ui/lookingGlass.js:795
 msgid "Error"
 msgstr "오류"
 
-#: js/ui/lookingGlass.js:788
+#: js/ui/lookingGlass.js:797
 msgid "Out of date"
 msgstr "오래 된 버전"
 
-#: js/ui/lookingGlass.js:790
+#: js/ui/lookingGlass.js:799
 msgid "Downloading"
 msgstr "다운로드 중"
 
-#: js/ui/lookingGlass.js:823
+#: js/ui/lookingGlass.js:832
 msgid "View Source"
 msgstr "소스 보기"
 
-#: js/ui/lookingGlass.js:834
+#: js/ui/lookingGlass.js:843
 msgid "Web Page"
 msgstr "웹페이지"
 
@@ -1568,6 +1568,14 @@ msgid ""
 msgstr ""
 "관리자 권한으로 세션을 시작하는 일은 보안 이유로 피해야 합니다. 할 수 있으면 "
 "일반 유저로 로그인해야 합니다."
+
+#: js/ui/main.js:364
+msgid "Screen Lock disabled"
+msgstr "화면 잠금 사용하지 않음"
+
+#: js/ui/main.js:365
+msgid "Screen Locking requires the GNOME display manager."
+msgstr "화면 잠금은 그놈 디스플레이 관리자가 필요합니다."
 
 #: js/ui/messageTray.js:1418
 msgid "System Information"
@@ -1599,47 +1607,47 @@ msgstr "프로그램"
 msgid "Overview"
 msgstr "개요"
 
-#: js/ui/padOsd.js:97
+#: js/ui/padOsd.js:100
 msgid "New shortcut…"
 msgstr "새 바로 가기…"
 
-#: js/ui/padOsd.js:148
+#: js/ui/padOsd.js:154
 msgid "Application defined"
 msgstr "정의한 프로그램"
 
-#: js/ui/padOsd.js:149
+#: js/ui/padOsd.js:155
 msgid "Show on-screen help"
 msgstr "화면 도움말 표시"
 
-#: js/ui/padOsd.js:150
+#: js/ui/padOsd.js:156
 msgid "Switch monitor"
 msgstr "모니터 바꾸기"
 
-#: js/ui/padOsd.js:151
+#: js/ui/padOsd.js:157
 msgid "Assign keystroke"
 msgstr "키 누르기 지정"
 
-#: js/ui/padOsd.js:220
+#: js/ui/padOsd.js:226
 msgid "Done"
 msgstr "마침"
 
-#: js/ui/padOsd.js:737
+#: js/ui/padOsd.js:743
 msgid "Edit…"
 msgstr "편집…"
 
-#: js/ui/padOsd.js:779 js/ui/padOsd.js:896
+#: js/ui/padOsd.js:785 js/ui/padOsd.js:902
 msgid "None"
 msgstr "없음"
 
-#: js/ui/padOsd.js:850
+#: js/ui/padOsd.js:856
 msgid "Press a button to configure"
 msgstr "설정하려면 단추를 누르십시오"
 
-#: js/ui/padOsd.js:851
+#: js/ui/padOsd.js:857
 msgid "Press Esc to exit"
 msgstr "나가려면 Esc를 누르십시오"
 
-#: js/ui/padOsd.js:854
+#: js/ui/padOsd.js:860
 msgid "Press any key to exit"
 msgstr "나가려면 아무 키나 누르십시오"
 
@@ -1691,41 +1699,41 @@ msgstr "잠글 수 없습니다"
 msgid "Lock was blocked by an application"
 msgstr "프로그램이 잠금을 막았습니다"
 
-#: js/ui/screenshot.js:1148
+#: js/ui/screenshot.js:1149
 msgid "Selection"
 msgstr "선택"
 
-#: js/ui/screenshot.js:1158
+#: js/ui/screenshot.js:1159
 msgid "Area Selection"
 msgstr "영역 선택"
 
-#: js/ui/screenshot.js:1163
+#: js/ui/screenshot.js:1164
 msgid "Screen"
 msgstr "화면"
 
-#: js/ui/screenshot.js:1173
+#: js/ui/screenshot.js:1174
 msgid "Screen Selection"
 msgstr "화면 선택"
 
-#: js/ui/screenshot.js:1178
+#: js/ui/screenshot.js:1179
 msgid "Window"
 msgstr "창"
 
-#: js/ui/screenshot.js:1188
+#: js/ui/screenshot.js:1189
 msgid "Window Selection"
 msgstr "창 선택"
 
-#: js/ui/screenshot.js:1225
+#: js/ui/screenshot.js:1227
 msgid "Screenshot / Screencast"
 msgstr "스크린샷 / 스크린캐스트"
 
-#: js/ui/screenshot.js:1261
+#: js/ui/screenshot.js:1263
 msgid "Show Pointer"
 msgstr "포인터 보이기"
 
 #. Translators: this is the folder where recorded
 #. screencasts are stored.
-#: js/ui/screenshot.js:1828
+#: js/ui/screenshot.js:1835
 msgid "Screencasts"
 msgstr "스크린캐스트"
 
@@ -1733,52 +1741,52 @@ msgstr "스크린캐스트"
 #. Translators: this is a filename used for screencast
 #. * recording, where "%d" and "%t" date and time, e.g.
 #. * "Screencast from 07-17-2013 10:00:46 PM.webm"
-#: js/ui/screenshot.js:1833
+#: js/ui/screenshot.js:1840
 #, no-c-format
 msgid "Screencast from %d %t.webm"
-msgstr "스크린캐스트, %s.webm"
+msgstr "스크린캐스트 %d %t.webm"
 
 #. Translators: notification source name.
-#: js/ui/screenshot.js:1902 js/ui/screenshot.js:2115
+#: js/ui/screenshot.js:1909 js/ui/screenshot.js:2122
 msgid "Screenshot"
 msgstr "스크린샷"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:1908
+#: js/ui/screenshot.js:1915
 msgid "Screencast recorded"
 msgstr "스크린캐스트 녹화함"
 
 #. Translators: notification body when a screencast was recorded.
-#: js/ui/screenshot.js:1910
+#: js/ui/screenshot.js:1917
 msgid "Click here to view the video."
 msgstr "여기를 눌러 비디오를 보십시오."
 
 # 주의: "Show ..." 형태지만 보이기로 번역하지 않는다
 #. Translators: button on the screencast notification.
 #. Translators: button on the screenshot notification.
-#: js/ui/screenshot.js:1913 js/ui/screenshot.js:2129
+#: js/ui/screenshot.js:1920 js/ui/screenshot.js:2136
 msgid "Show in Files"
 msgstr "파일에서 보기"
 
 # 주의: 파일 이름
 #. Translators: this is the name of the file that the screenshot is
 #. saved to. The placeholder is a timestamp, e.g. "2017-05-21 12-24-03".
-#: js/ui/screenshot.js:2075
+#: js/ui/screenshot.js:2082
 #, javascript-format
 msgid "Screenshot from %s"
-msgstr "스크린샷, %s"
+msgstr "스크린샷 %s"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2121
+#: js/ui/screenshot.js:2128
 msgid "Screenshot captured"
 msgstr "스크린샷 찍음"
 
 #. Translators: notification body when a screenshot was captured.
-#: js/ui/screenshot.js:2123
+#: js/ui/screenshot.js:2130
 msgid "You can paste the image from the clipboard."
 msgstr "클립보드에서 이미지를 붙여넣을 수 있습니다."
 
-#: js/ui/screenshot.js:2176 js/ui/screenshot.js:2341
+#: js/ui/screenshot.js:2183 js/ui/screenshot.js:2348
 msgid "Screenshot taken"
 msgstr "찍은 스크린샷"
 
@@ -2403,6 +2411,8 @@ msgstr "외부만 사용"
 msgid "Built-in Only"
 msgstr "내장만 사용"
 
+#. Translators: This is a time format for a date in
+#. long format
 #: js/ui/unlockDialog.js:364
 msgid "%A %B %-d"
 msgstr "%B %-d %A"
