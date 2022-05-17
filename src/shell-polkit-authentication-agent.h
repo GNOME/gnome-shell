@@ -14,8 +14,10 @@
 
 G_BEGIN_DECLS
 
+#ifndef HAVE_POLKIT_AUTOCLEANUP
 /* Polkit doesn't have g_autoptr support, thus we have to manually set the autoptr function here */
 G_DEFINE_AUTOPTR_CLEANUP_FUNC (PolkitAgentListener, g_object_unref)
+#endif
 
 #define SHELL_TYPE_POLKIT_AUTHENTICATION_AGENT (shell_polkit_authentication_agent_get_type())
 

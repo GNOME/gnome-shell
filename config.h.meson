@@ -33,3 +33,6 @@
 
 /* Define if fdwalk is available in libc */
 #mesondefine HAVE_FDWALK
+
+/* Define if polkit defines autocleanup functions */
+#mesondefine HAVE_POLKIT_AUTOCLEANUP
