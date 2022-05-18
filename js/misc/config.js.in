@@ -1,17 +1,14 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
+const pkg = imports.package;
 
 /* The name of this package (not localized) */
 var PACKAGE_NAME = '@PACKAGE_NAME@';
 /* The version of this package */
 var PACKAGE_VERSION = '@PACKAGE_VERSION@';
-/* 1 if gnome-bluetooth is available, 0 otherwise */
-var HAVE_BLUETOOTH = @HAVE_BLUETOOTH@;
 /* 1 if networkmanager is available, 0 otherwise */
 var HAVE_NETWORKMANAGER = @HAVE_NETWORKMANAGER@;
 /* 1 if soup2 should be used instead of soup3, 0 otherwise */
 var HAVE_SOUP2 = @HAVE_SOUP2@;
-/* 1 if recorder is enabled, 0 otherwise */
-var HAVE_RECORDER = @HAVE_RECORDER@;
 /* gettext package */
 var GETTEXT_PACKAGE = '@GETTEXT_PACKAGE@';
 /* locale dir */
@@ -21,3 +18,10 @@ var LIBEXECDIR = '@libexecdir@';
 var PKGDATADIR = '@datadir@/@PACKAGE_NAME@';
 /* g-i package versions */
 var LIBMUTTER_API_VERSION = '@LIBMUTTER_API_VERSION@'
+
+var HAVE_BLUETOOTH = pkg.checkSymbol('GnomeBluetooth', '3.0');
+var HAVE_RECORDER =
+    pkg.checkSymbol('Gst', '1.0') &&
+    imports.gi.Gst.init_check(null) &&
+    imports.gi.Gst.ElementFactory.find('pipewiresrc') &&
+    imports.gi.Gst.ElementFactory.find('filesrc');
