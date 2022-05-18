@@ -65,7 +65,6 @@ gnome_shell_deps = [
 ]
 
 gnome_shell_deps += nm_deps
-gnome_shell_deps += recorder_deps
 
 tools_cflags = '-DLOCALEDIR="@0@"'.format(localedir)
 tools_deps = [gio_dep, gjs_dep]
