@@ -308,19 +308,17 @@ var ScreencastService = class extends ServiceImplementation {
                     break;
                 case 'd': {
                     const datetime = GLib.DateTime.new_now_local();
-                    const datestr = datetime.format('%0x');
-                    const datestrEscaped = datestr.replace(/\//g, '-');
+                    const datestr = datetime.format('%Y-%m-%d');
 
-                    filename += datestrEscaped;
+                    filename += datestr;
                     break;
                 }
 
                 case 't': {
                     const datetime = GLib.DateTime.new_now_local();
-                    const datestr = datetime.format('%0X');
-                    const datestrEscaped = datestr.replace(/\//g, ':');
+                    const datestr = datetime.format('%H-%M-%S');
 
-                    filename += datestrEscaped;
+                    filename += datestr;
                     break;
                 }
 
