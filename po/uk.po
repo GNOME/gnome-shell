@@ -2,27 +2,27 @@
 # Copyright (C) 2010 Free Software Foundation
 # This file is distributed under the same license as the gnome-shell package.
 #
+#
 # Maxim V. Dziumanenko <dziumanenko@gmail.com>, 2010.
 # Daniel Korostil <ted.korostiled@gmail.com>, 2013, 2014, 2015, 2016, 2017.
 # Danylo Korostil <ted.korostiled@gmail.com>, 2020.
 # Yuri Chornoivan <yurchor@ukr.net>, 2020, 2021, 2022.
 # Olexander Movchan <olexander-movchan@ukr.net>, 2022.
-#
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2022-04-28 15:28+0000\n"
-"PO-Revision-Date: 2022-04-30 05:55+0300\n"
-"Last-Translator: Olexander Movchan <olexander-movchan@ukr.net>\n"
+"POT-Creation-Date: 2022-05-23 18:04+0000\n"
+"PO-Revision-Date: 2022-05-23 22:50+0300\n"
+"Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <none>\n"
 "Language: uk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=n==1 ? 3 : n%10==1 && n%100!=11 ? 0 : "
-"n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2\n"
-"X-Generator: Gtranslator 40.0\n"
+"Plural-Forms: nplurals=4; plural=n==1 ? 3 : n%10==1 && n%100!=11 ? 0 : n"
+"%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2\n"
+"X-Generator: Lokalize 20.12.0\n"
 "X-Project-Style: gnome\n"
 "X-DL-Team: uk\n"
 "X-DL-Module: gnome-shell\n"
@@ -71,7 +71,7 @@ msgid "Activate favorite application 9"
 msgstr "Активувати улюблену програму 9"
 
 #. Translators: name of the folder under ~/Pictures for screenshots.
-#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2062
+#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2069
 msgid "Screenshots"
 msgstr "Знімки екрана"
 
@@ -536,23 +536,23 @@ msgstr "Пароль"
 msgid "Choose Session"
 msgstr "Виберіть сеанс"
 
-#: js/gdm/loginDialog.js:463
+#: js/gdm/loginDialog.js:462
 msgid "Not listed?"
 msgstr "Немає в переліку?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: js/gdm/loginDialog.js:931
+#: js/gdm/loginDialog.js:930
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(наприклад, користувач або %s)"
 
-#: js/gdm/loginDialog.js:936 js/ui/components/networkAgent.js:253
+#: js/gdm/loginDialog.js:935 js/ui/components/networkAgent.js:253
 #: js/ui/components/networkAgent.js:288 js/ui/components/networkAgent.js:322
 msgid "Username"
 msgstr "Користувач"
 
-#: js/gdm/loginDialog.js:1257
+#: js/gdm/loginDialog.js:1256
 msgid "Login Window"
 msgstr "Вікно входу"
 
@@ -898,7 +898,7 @@ msgstr "Навушники"
 msgid "Headset"
 msgstr "Гарнітура"
 
-#: js/ui/audioDeviceSelection.js:73 js/ui/status/volume.js:270
+#: js/ui/audioDeviceSelection.js:73 js/ui/status/volume.js:271
 msgid "Microphone"
 msgstr "Мікрофон"
 
@@ -990,11 +990,11 @@ msgstr "%OB"
 msgid "%OB %Y"
 msgstr "%OB %Y"
 
-#: js/ui/calendar.js:472
+#: js/ui/calendar.js:473
 msgid "Previous month"
 msgstr "Попередній місяць"
 
-#: js/ui/calendar.js:490
+#: js/ui/calendar.js:491
 msgid "Next month"
 msgstr "Наступний місяць"
 
@@ -1132,7 +1132,7 @@ msgstr "Пін-код"
 msgid "A password is required to connect to “%s”."
 msgstr "Пароль потрібен для з'єднання з «%s»."
 
-#: js/ui/components/networkAgent.js:735 js/ui/status/network.js:1751
+#: js/ui/components/networkAgent.js:735 js/ui/status/network.js:1819
 msgid "Network Manager"
 msgstr "Керування мережею"
 
@@ -1243,23 +1243,23 @@ msgstr "Додати світові годинники…"
 msgid "World Clocks"
 msgstr "Світові годинники"
 
-#: js/ui/dateMenu.js:681
+#: js/ui/dateMenu.js:699
 msgid "Loading…"
 msgstr "Завантаження…"
 
-#: js/ui/dateMenu.js:691
+#: js/ui/dateMenu.js:709
 msgid "Go online for weather information"
 msgstr "Увійти в мережу за прогнозом погоди"
 
-#: js/ui/dateMenu.js:693
+#: js/ui/dateMenu.js:711
 msgid "Weather information is currently unavailable"
 msgstr "Наразі інформації про погоду недоступна"
 
-#: js/ui/dateMenu.js:703
+#: js/ui/dateMenu.js:721
 msgid "Weather"
 msgstr "Погода"
 
-#: js/ui/dateMenu.js:705
+#: js/ui/dateMenu.js:723
 msgid "Select weather location…"
 msgstr "Виберіть місцевість для погоди…"
 
@@ -1534,9 +1534,9 @@ msgstr "Увімкнути"
 
 #: js/ui/kbdA11yDialog.js:65 js/ui/status/bluetooth.js:174
 #: js/ui/status/network.js:160 js/ui/status/network.js:336
-#: js/ui/status/network.js:1341 js/ui/status/network.js:1456
-#: js/ui/status/nightLight.js:41 js/ui/status/rfkill.js:81
-#: js/ui/status/rfkill.js:110
+#: js/ui/status/network.js:1341 js/ui/status/network.js:1449
+#: js/ui/status/network.js:1520 js/ui/status/nightLight.js:41
+#: js/ui/status/rfkill.js:81 js/ui/status/rfkill.js:110
 msgid "Turn Off"
 msgstr "Вимкнути"
 
@@ -1548,51 +1548,51 @@ msgstr "Покинути"
 msgid "Region & Language Settings"
 msgstr "Параметри регіону та мови"
 
-#: js/ui/lookingGlass.js:710
+#: js/ui/lookingGlass.js:712
 msgid "No extensions installed"
 msgstr "Не встановлено розширення"
 
 #. Translators: argument is an extension UUID.
-#: js/ui/lookingGlass.js:771
+#: js/ui/lookingGlass.js:773
 #, javascript-format
 msgid "%s has not emitted any errors."
 msgstr "%s не випустила жодної помилки. "
 
-#: js/ui/lookingGlass.js:777
+#: js/ui/lookingGlass.js:779
 msgid "Hide Errors"
 msgstr "Сховати помилки"
 
-#: js/ui/lookingGlass.js:781 js/ui/lookingGlass.js:854
+#: js/ui/lookingGlass.js:783 js/ui/lookingGlass.js:856
 msgid "Show Errors"
 msgstr "Показати помилки"
 
-#: js/ui/lookingGlass.js:790
+#: js/ui/lookingGlass.js:792
 msgid "Enabled"
 msgstr "Увімкнено"
 
 #. translators:
 #. * The device has been disabled
-#: js/ui/lookingGlass.js:793 subprojects/gvc/gvc-mixer-control.c:1900
+#: js/ui/lookingGlass.js:795 subprojects/gvc/gvc-mixer-control.c:1900
 msgid "Disabled"
 msgstr "Вимкнено"
 
-#: js/ui/lookingGlass.js:795
+#: js/ui/lookingGlass.js:797
 msgid "Error"
 msgstr "Помилка"
 
-#: js/ui/lookingGlass.js:797
+#: js/ui/lookingGlass.js:799
 msgid "Out of date"
 msgstr "Застаріло"
 
-#: js/ui/lookingGlass.js:799
+#: js/ui/lookingGlass.js:801
 msgid "Downloading"
 msgstr "Звантаження"
 
-#: js/ui/lookingGlass.js:832
+#: js/ui/lookingGlass.js:834
 msgid "View Source"
 msgstr "Переглянути джерело"
 
-#: js/ui/lookingGlass.js:843
+#: js/ui/lookingGlass.js:845
 msgid "Web Page"
 msgstr "Веб-сторінка"
 
@@ -1750,91 +1750,91 @@ msgstr "Неможливо заблокувати"
 msgid "Lock was blocked by an application"
 msgstr "Блокування заборонено програмою"
 
-#: js/ui/screenshot.js:1148
+#: js/ui/screenshot.js:1149
 msgid "Selection"
 msgstr "Вибір"
 
-#: js/ui/screenshot.js:1158
+#: js/ui/screenshot.js:1159
 msgid "Area Selection"
 msgstr "Вибір ділянки"
 
-#: js/ui/screenshot.js:1163
+#: js/ui/screenshot.js:1164
 msgid "Screen"
 msgstr "Екран"
 
-#: js/ui/screenshot.js:1173
+#: js/ui/screenshot.js:1174
 msgid "Screen Selection"
 msgstr "Вибір екрана"
 
-#: js/ui/screenshot.js:1178
+#: js/ui/screenshot.js:1179
 msgid "Window"
 msgstr "Вікно"
 
-#: js/ui/screenshot.js:1188
+#: js/ui/screenshot.js:1189
 msgid "Window Selection"
 msgstr "Вибір вікна"
 
-#: js/ui/screenshot.js:1225
+#: js/ui/screenshot.js:1227
 msgid "Screenshot / Screencast"
 msgstr "Знімок / Запис відео з екрана"
 
-#: js/ui/screenshot.js:1261
+#: js/ui/screenshot.js:1263
 msgid "Show Pointer"
 msgstr "Показувати вказівник"
 
 #. Translators: this is the folder where recorded
 #. screencasts are stored.
-#: js/ui/screenshot.js:1828
+#: js/ui/screenshot.js:1835
 msgid "Screencasts"
 msgstr "Трансляції з екрана"
 
 #. Translators: this is a filename used for screencast
 #. * recording, where "%d" and "%t" date and time, e.g.
 #. * "Screencast from 07-17-2013 10:00:46 PM.webm"
-#: js/ui/screenshot.js:1833
+#: js/ui/screenshot.js:1840
 #, no-c-format
 msgid "Screencast from %d %t.webm"
 msgstr "Запис з %d %t.webm"
 
 #. Translators: notification source name.
-#: js/ui/screenshot.js:1902 js/ui/screenshot.js:2115
+#: js/ui/screenshot.js:1909 js/ui/screenshot.js:2122
 msgid "Screenshot"
 msgstr "Знімок екрана"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:1908
+#: js/ui/screenshot.js:1915
 msgid "Screencast recorded"
 msgstr "Записано відео з екрана"
 
 #. Translators: notification body when a screencast was recorded.
-#: js/ui/screenshot.js:1910
+#: js/ui/screenshot.js:1917
 msgid "Click here to view the video."
 msgstr "Натисніть тут, щоб переглянути відео."
 
 #. Translators: button on the screencast notification.
 #. Translators: button on the screenshot notification.
-#: js/ui/screenshot.js:1913 js/ui/screenshot.js:2129
+#: js/ui/screenshot.js:1920 js/ui/screenshot.js:2136
 msgid "Show in Files"
 msgstr "Показувати у «Файлах»"
 
 #. Translators: this is the name of the file that the screenshot is
 #. saved to. The placeholder is a timestamp, e.g. "2017-05-21 12-24-03".
-#: js/ui/screenshot.js:2075
+#: js/ui/screenshot.js:2082
 #, javascript-format
 msgid "Screenshot from %s"
 msgstr "Знімок екрана з %s"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2121
+#: js/ui/screenshot.js:2128
 msgid "Screenshot captured"
 msgstr "Знімок зроблено"
 
 #. Translators: notification body when a screenshot was captured.
-#: js/ui/screenshot.js:2123
+#: js/ui/screenshot.js:2130
 msgid "You can paste the image from the clipboard."
 msgstr "Ви можете вставити зображення з буфера обміну даними."
 
-#: js/ui/screenshot.js:2176 js/ui/screenshot.js:2341
+#: js/ui/screenshot.js:2183 js/ui/screenshot.js:2348
 msgid "Screenshot taken"
 msgstr "Знімок зроблено"
 
@@ -2221,36 +2221,55 @@ msgstr "%s точка доступу"
 msgid "%s Not Connected"
 msgstr "%s не під'єднано"
 
-#: js/ui/status/network.js:1473
+#: js/ui/status/network.js:1461
+#| msgid "<unknown>"
+msgid "unknown"
+msgstr "невідомий"
+
+#: js/ui/status/network.js:1463
+#| msgid "Estimating…"
+msgid "activating…"
+msgstr "вмикаємо…"
+
+#: js/ui/status/network.js:1467
+#| msgid "Estimating…"
+msgid "deactivating…"
+msgstr "вимикаємо…"
+
+#: js/ui/status/network.js:1469
+msgid "deactivated"
+msgstr "вимкнено"
+
+#: js/ui/status/network.js:1537
 msgid "connecting…"
 msgstr "з'єднання…"
 
 #. Translators: this is for network connections that require some kind of key or password
-#: js/ui/status/network.js:1476
+#: js/ui/status/network.js:1540
 msgid "authentication required"
 msgstr "необхідна автентифікація"
 
-#: js/ui/status/network.js:1478
+#: js/ui/status/network.js:1542
 msgid "connection failed"
 msgstr "не вдалось з'єднатись"
 
-#: js/ui/status/network.js:1524
+#: js/ui/status/network.js:1588
 msgid "VPN Settings"
 msgstr "Параметри VPN"
 
-#: js/ui/status/network.js:1541
+#: js/ui/status/network.js:1605
 msgid "VPN"
 msgstr "VPN"
 
-#: js/ui/status/network.js:1551
+#: js/ui/status/network.js:1615
 msgid "VPN Off"
 msgstr "VPN вимкнено"
 
-#: js/ui/status/network.js:1612 js/ui/status/rfkill.js:84
+#: js/ui/status/network.js:1679 js/ui/status/rfkill.js:84
 msgid "Network Settings"
 msgstr "Налаштування мережі"
 
-#: js/ui/status/network.js:1640
+#: js/ui/status/network.js:1707
 #, javascript-format
 msgid "%s Wired Connection"
 msgid_plural "%s Wired Connections"
@@ -2259,7 +2278,7 @@ msgstr[1] "%s з'єднання через дріт"
 msgstr[2] "%s з'єднань через дріт"
 msgstr[3] "%s з'єднання через дріт"
 
-#: js/ui/status/network.js:1644
+#: js/ui/status/network.js:1711
 #, javascript-format
 msgid "%s Wi-Fi Connection"
 msgid_plural "%s Wi-Fi Connections"
@@ -2268,7 +2287,7 @@ msgstr[1] "%s з'єднання через Wi-Fi"
 msgstr[2] "%s з'єднань через Wi-Fi"
 msgstr[3] "%s з'єднання через Wi-Fi"
 
-#: js/ui/status/network.js:1648
+#: js/ui/status/network.js:1715
 #, javascript-format
 msgid "%s Modem Connection"
 msgid_plural "%s Modem Connections"
@@ -2277,11 +2296,11 @@ msgstr[1] "%s з'єднання через модем"
 msgstr[2] "%s з'єднань через модем"
 msgstr[3] "%s з'єднання через модем"
 
-#: js/ui/status/network.js:1792
+#: js/ui/status/network.js:1860
 msgid "Connection failed"
 msgstr "Не вдалось з'єднатись"
 
-#: js/ui/status/network.js:1793
+#: js/ui/status/network.js:1861
 msgid "Activation of network connection failed"
 msgstr "Не вдалось увімкнути мережеве з'єднання"
 
@@ -2433,11 +2452,11 @@ msgstr "Помилка завірення Thunderbolt"
 msgid "Could not authorize the Thunderbolt device: %s"
 msgstr "Неможливо завірити пристрій Thunderbolt: %s"
 
-#: js/ui/status/volume.js:158
+#: js/ui/status/volume.js:159
 msgid "Volume changed"
 msgstr "Гучність змінено"
 
-#: js/ui/status/volume.js:220
+#: js/ui/status/volume.js:221
 msgid "Volume"
 msgstr "Гучність"
 
@@ -2769,8 +2788,8 @@ msgstr "Встановлені вручну"
 #: subprojects/extensions-app/data/ui/extensions-window.ui:99
 #: subprojects/extensions-app/data/ui/extensions-window.ui:134
 msgid ""
-"To find and add extensions, visit <a href=\"https://extensions.gnome."
-"org\">extensions.gnome.org</a>."
+"To find and add extensions, visit <a href=\"https://extensions.gnome.org"
+"\">extensions.gnome.org</a>."
 msgstr ""
 "Щоб знайти і додати потрібні вам розширення, відвідайте <a href=\"https://"
 "extensions.gnome.org\">extensions.gnome.org</a>."
