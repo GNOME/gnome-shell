@@ -20,16 +20,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2022-04-30 10:33+0000\n"
-"PO-Revision-Date: 2022-05-03 22:39+0300\n"
+"POT-Creation-Date: 2022-05-07 17:06+0000\n"
+"PO-Revision-Date: 2022-05-18 15:52+0300\n"
 "Last-Translator: Aleksandr Melman <Alexmelman88@gmail.com>\n"
 "Language-Team: Russian <gnome-cyr@gnome.org>\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "X-Generator: Poedit 3.0.1\n"
 "X-DL-Team: ru\n"
 "X-DL-Module: gnome-shell\n"
@@ -79,7 +79,7 @@ msgid "Activate favorite application 9"
 msgstr "Переключиться на избранное приложение 9"
 
 #. Translators: name of the folder under ~/Pictures for screenshots.
-#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2062
+#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2069
 msgid "Screenshots"
 msgstr "Снимки экрана"
 
@@ -307,8 +307,8 @@ msgstr ""
 "Макет меню выбора приложений. Каждая запись в массиве представляет собой "
 "страницу. Страницы хранятся в том порядке, в котором они отображаются в "
 "оболочке GNOME. Каждая страница содержит пару “application id” → \"data\". В "
-"настоящее время в качестве “data” хранятся следующие значения: • \"position"
-"\" - положение значка приложения на странице"
+"настоящее время в качестве “data” хранятся следующие значения: • "
+"\"position\" - положение значка приложения на странице"
 
 #: data/org.gnome.shell.gschema.xml.in:149
 msgid "Keybinding to open the application menu"
@@ -547,23 +547,23 @@ msgstr "Пароль"
 msgid "Choose Session"
 msgstr "Выбрать сеанс"
 
-#: js/gdm/loginDialog.js:463
+#: js/gdm/loginDialog.js:462
 msgid "Not listed?"
 msgstr "Нет в списке?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: js/gdm/loginDialog.js:931
+#: js/gdm/loginDialog.js:930
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(например, пользователь или %s)"
 
-#: js/gdm/loginDialog.js:936 js/ui/components/networkAgent.js:253
+#: js/gdm/loginDialog.js:935 js/ui/components/networkAgent.js:253
 #: js/ui/components/networkAgent.js:288 js/ui/components/networkAgent.js:322
 msgid "Username"
 msgstr "Имя пользователя"
 
-#: js/gdm/loginDialog.js:1257
+#: js/gdm/loginDialog.js:1256
 msgid "Login Window"
 msgstr "Окно входа в систему"
 
@@ -993,11 +993,11 @@ msgstr "%OB"
 msgid "%OB %Y"
 msgstr "%OB %Y"
 
-#: js/ui/calendar.js:472
+#: js/ui/calendar.js:473
 msgid "Previous month"
 msgstr "Предыдущий месяц"
 
-#: js/ui/calendar.js:490
+#: js/ui/calendar.js:491
 msgid "Next month"
 msgstr "Следующий месяц"
 
@@ -1553,51 +1553,51 @@ msgstr "Оставить выключенными"
 msgid "Region & Language Settings"
 msgstr "Настройки языка и региона"
 
-#: js/ui/lookingGlass.js:710
+#: js/ui/lookingGlass.js:712
 msgid "No extensions installed"
 msgstr "Расширения не установлены"
 
 #. Translators: argument is an extension UUID.
-#: js/ui/lookingGlass.js:771
+#: js/ui/lookingGlass.js:773
 #, javascript-format
 msgid "%s has not emitted any errors."
 msgstr "%s не сообщал о каких-либо ошибках."
 
-#: js/ui/lookingGlass.js:777
+#: js/ui/lookingGlass.js:779
 msgid "Hide Errors"
 msgstr "Скрыть ошибки"
 
-#: js/ui/lookingGlass.js:781 js/ui/lookingGlass.js:854
+#: js/ui/lookingGlass.js:783 js/ui/lookingGlass.js:856
 msgid "Show Errors"
 msgstr "Показать ошибки"
 
-#: js/ui/lookingGlass.js:790
+#: js/ui/lookingGlass.js:792
 msgid "Enabled"
 msgstr "Включено"
 
 #. translators:
 #. * The device has been disabled
-#: js/ui/lookingGlass.js:793 subprojects/gvc/gvc-mixer-control.c:1900
+#: js/ui/lookingGlass.js:795 subprojects/gvc/gvc-mixer-control.c:1900
 msgid "Disabled"
 msgstr "Выключено"
 
-#: js/ui/lookingGlass.js:795
+#: js/ui/lookingGlass.js:797
 msgid "Error"
 msgstr "Ошибка"
 
-#: js/ui/lookingGlass.js:797
+#: js/ui/lookingGlass.js:799
 msgid "Out of date"
 msgstr "Устарело"
 
-#: js/ui/lookingGlass.js:799
+#: js/ui/lookingGlass.js:801
 msgid "Downloading"
 msgstr "Загрузка"
 
-#: js/ui/lookingGlass.js:832
+#: js/ui/lookingGlass.js:834
 msgid "View Source"
 msgstr "Показать код"
 
-#: js/ui/lookingGlass.js:843
+#: js/ui/lookingGlass.js:845
 msgid "Web Page"
 msgstr "Веб-страница"
 
@@ -1756,91 +1756,91 @@ msgstr "Не удалось заблокировать"
 msgid "Lock was blocked by an application"
 msgstr "Блокировке помешало приложение"
 
-#: js/ui/screenshot.js:1148
+#: js/ui/screenshot.js:1149
 msgid "Selection"
 msgstr "Область"
 
-#: js/ui/screenshot.js:1158
+#: js/ui/screenshot.js:1159
 msgid "Area Selection"
 msgstr "Выбор области"
 
-#: js/ui/screenshot.js:1163
+#: js/ui/screenshot.js:1164
 msgid "Screen"
 msgstr "Экран"
 
-#: js/ui/screenshot.js:1173
+#: js/ui/screenshot.js:1174
 msgid "Screen Selection"
 msgstr "Выбор экрана"
 
-#: js/ui/screenshot.js:1178
+#: js/ui/screenshot.js:1179
 msgid "Window"
 msgstr "Окно"
 
-#: js/ui/screenshot.js:1188
+#: js/ui/screenshot.js:1189
 msgid "Window Selection"
 msgstr "Выбор окна"
 
-#: js/ui/screenshot.js:1225
+#: js/ui/screenshot.js:1227
 msgid "Screenshot / Screencast"
 msgstr "Снимок экрана / Запись экрана"
 
-#: js/ui/screenshot.js:1261
+#: js/ui/screenshot.js:1263
 msgid "Show Pointer"
 msgstr "Показать курсор мыши"
 
 #. Translators: this is the folder where recorded
 #. screencasts are stored.
-#: js/ui/screenshot.js:1828
+#: js/ui/screenshot.js:1835
 msgid "Screencasts"
 msgstr "Записи экрана"
 
 #. Translators: this is a filename used for screencast
 #. * recording, where "%d" and "%t" date and time, e.g.
 #. * "Screencast from 07-17-2013 10:00:46 PM.webm"
-#: js/ui/screenshot.js:1833
+#: js/ui/screenshot.js:1840
 #, no-c-format
 msgid "Screencast from %d %t.webm"
 msgstr "Запись экрана от %d %t.webm"
 
 #. Translators: notification source name.
-#: js/ui/screenshot.js:1902 js/ui/screenshot.js:2115
+#: js/ui/screenshot.js:1909 js/ui/screenshot.js:2122
 msgid "Screenshot"
 msgstr "Снимок экрана"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:1908
+#: js/ui/screenshot.js:1915
 msgid "Screencast recorded"
 msgstr "Запись экрана сделана"
 
 #. Translators: notification body when a screencast was recorded.
-#: js/ui/screenshot.js:1910
+#: js/ui/screenshot.js:1917
 msgid "Click here to view the video."
 msgstr "Нажмите здесь, чтобы посмотреть видео."
 
 #. Translators: button on the screencast notification.
 #. Translators: button on the screenshot notification.
-#: js/ui/screenshot.js:1913 js/ui/screenshot.js:2129
+#: js/ui/screenshot.js:1920 js/ui/screenshot.js:2136
 msgid "Show in Files"
 msgstr "Показать в Файлах"
 
 #. Translators: this is the name of the file that the screenshot is
 #. saved to. The placeholder is a timestamp, e.g. "2017-05-21 12-24-03".
-#: js/ui/screenshot.js:2075
+#: js/ui/screenshot.js:2082
 #, javascript-format
 msgid "Screenshot from %s"
 msgstr "Снимок экрана от %s"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2121
+#: js/ui/screenshot.js:2128
 msgid "Screenshot captured"
 msgstr "Снимок экрана сделан"
 
 #. Translators: notification body when a screenshot was captured.
-#: js/ui/screenshot.js:2123
+#: js/ui/screenshot.js:2130
 msgid "You can paste the image from the clipboard."
 msgstr "Вы можете вставить изображение из буфера обмена."
 
-#: js/ui/screenshot.js:2176 js/ui/screenshot.js:2341
+#: js/ui/screenshot.js:2183 js/ui/screenshot.js:2348
 msgid "Screenshot taken"
 msgstr "Сделан снимок экрана"
 
@@ -2325,14 +2325,14 @@ msgstr "Не удалось активировать сетевое подклю
 #: js/ui/status/nightLight.js:63
 msgid "Night Light Disabled"
 msgstr ""
-"Ночная подсветка\n"
-"отключена"
+"Ночной свет\n"
+"отключен"
 
 #: js/ui/status/nightLight.js:64
 msgid "Night Light On"
 msgstr ""
-"Ночная подсветка\n"
-"включена"
+"Ночной свет\n"
+"включен"
 
 #: js/ui/status/nightLight.js:66
 msgid "Resume"
@@ -2818,8 +2818,8 @@ msgstr "Установлены вручную"
 #: subprojects/extensions-app/data/ui/extensions-window.ui:99
 #: subprojects/extensions-app/data/ui/extensions-window.ui:134
 msgid ""
-"To find and add extensions, visit <a href=\"https://extensions.gnome.org"
-"\">extensions.gnome.org</a>."
+"To find and add extensions, visit <a href=\"https://extensions.gnome."
+"org\">extensions.gnome.org</a>."
 msgstr ""
 "Чтобы найти и добавить расширения, посетите <a href=\"https://extensions."
 "gnome.org\">extensions.gnome.org</a>."
