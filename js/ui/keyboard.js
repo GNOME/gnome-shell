@@ -706,7 +706,7 @@ var EmojiPager = GObject.registerClass({
         panAction.connect('gesture-cancel', this._onPanCancel.bind(this));
         panAction.connect('gesture-end', this._onPanEnd.bind(this));
         this._panAction = panAction;
-        this.add_action(panAction);
+        this.add_action_full('pan', Clutter.EventPhase.CAPTURE, panAction);
     }
 
     get delta() {
