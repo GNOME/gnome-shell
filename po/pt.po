@@ -16,8 +16,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 3.14\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2022-05-23 18:04+0000\n"
-"PO-Revision-Date: 2022-05-24 15:43+0100\n"
+"POT-Creation-Date: 2022-05-24 14:44+0000\n"
+"PO-Revision-Date: 2022-05-24 19:33+0100\n"
 "Last-Translator: Hugo Carvalho <hugokarvalho@hotmail.com>\n"
 "Language-Team: Português <https://l10n.gnome.org/teams/pt/>\n"
 "Language: pt\n"
@@ -318,7 +318,7 @@ msgstr "Tecla de atalho para abrir o menu de aplicações."
 #: data/org.gnome.shell.gschema.xml.in:156
 #: data/org.gnome.shell.gschema.xml.in:163
 msgid "Keybinding to shift between overview states"
-msgstr "Tecla de atalho para mudar de estado de visão geral"
+msgstr "Tecla de atalho para mudar de estado de vista geral"
 
 #: data/org.gnome.shell.gschema.xml.in:157
 msgid "Keybinding to shift between session, window picker and app grid"
@@ -425,9 +425,9 @@ msgid ""
 "are “thumbnail-only” (shows a thumbnail of the window), “app-icon-"
 "only” (shows only the application icon) or “both”."
 msgstr ""
-"Configura a exibição das janelas. As opções válidas são \"apenas-"
-"miniatura\" (mostra uma miniatura da janela), \"apenas-ícone-"
-"aplicação\" (mostra só o ícone da aplicação) ou \"ambas\"."
+"Configura a exibição das janelas. As opções válidas são \"apenas-miniatura"
+"\" (mostra uma miniatura da janela), \"apenas-ícone-aplicação\" (mostra só o "
+"ícone da aplicação) ou \"ambas\"."
 
 #: data/org.gnome.shell.gschema.xml.in:284
 msgid ""
@@ -1640,7 +1640,7 @@ msgstr "Aplicações"
 #. activities. See also note for "Activities" string.
 #: js/ui/overview.js:71
 msgid "Overview"
-msgstr "Visão geral"
+msgstr "Vista geral"
 
 #: js/ui/padOsd.js:100
 msgid "New shortcut…"
@@ -2766,8 +2766,8 @@ msgstr "Instalada manualmente"
 #: subprojects/extensions-app/data/ui/extensions-window.ui:99
 #: subprojects/extensions-app/data/ui/extensions-window.ui:134
 msgid ""
-"To find and add extensions, visit <a href=\"https://extensions.gnome."
-"org\">extensions.gnome.org</a>."
+"To find and add extensions, visit <a href=\"https://extensions.gnome.org"
+"\">extensions.gnome.org</a>."
 msgstr ""
 "Para encontrar e adicionar extensões, visite <a href=\"https://extensions."
 "gnome.org\">extensions.gnome.org</a>."
