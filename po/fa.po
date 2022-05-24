@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2022-03-20 22:19+0000\n"
-"PO-Revision-Date: 2022-04-03 11:32+0430\n"
+"POT-Creation-Date: 2022-05-23 18:04+0000\n"
+"PO-Revision-Date: 2022-05-24 16:40+0430\n"
 "Last-Translator: Danial Behzadi <dani.behzi@ubuntu.com>\n"
 "Language-Team: Persian <>\n"
 "Language: fa\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
 "X-Poedit-SourceCharset: utf-8\n"
-"X-Generator: Poedit 3.0\n"
+"X-Generator: Poedit 3.0.1\n"
 
 #: data/50-gnome-shell-launchers.xml:6
 msgid "Launchers"
@@ -62,7 +62,7 @@ msgid "Activate favorite application 9"
 msgstr "فعّال‌سازی برنامهٔ مورد علاقهٔ ۹"
 
 #. Translators: name of the folder under ~/Pictures for screenshots.
-#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2062
+#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2069
 msgid "Screenshots"
 msgstr "نماگرفت‌ها"
 
@@ -478,7 +478,7 @@ msgstr "مشاهدهٔ صفحهٔ خانگی افزونه"
 #: js/ui/components/networkAgent.js:109 js/ui/components/polkitAgent.js:141
 #: js/ui/endSessionDialog.js:437 js/ui/extensionDownloader.js:223
 #: js/ui/shellMountOperation.js:377 js/ui/shellMountOperation.js:387
-#: js/ui/status/network.js:956 subprojects/extensions-app/js/main.js:174
+#: js/ui/status/network.js:956 subprojects/extensions-app/js/main.js:175
 msgid "Cancel"
 msgstr "لغو"
 
@@ -494,23 +494,23 @@ msgstr "گذرواژه"
 msgid "Choose Session"
 msgstr "گزینش نشست"
 
-#: js/gdm/loginDialog.js:463
+#: js/gdm/loginDialog.js:462
 msgid "Not listed?"
 msgstr "فهرست نشده؟"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: js/gdm/loginDialog.js:931
+#: js/gdm/loginDialog.js:930
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(برای مثال، کاربر یا %s)"
 
-#: js/gdm/loginDialog.js:936 js/ui/components/networkAgent.js:253
+#: js/gdm/loginDialog.js:935 js/ui/components/networkAgent.js:253
 #: js/ui/components/networkAgent.js:288 js/ui/components/networkAgent.js:322
 msgid "Username"
 msgstr "نام‌کاربری"
 
-#: js/gdm/loginDialog.js:1257
+#: js/gdm/loginDialog.js:1256
 msgid "Login Window"
 msgstr "پنجرهٔ ورود به سامانه"
 
@@ -770,11 +770,11 @@ msgstr "%-Od %OB، ⁦%Ol∶%OM⁩ %Op"
 msgid "%B %-d %Y, %l∶%M %p"
 msgstr "%-Od %OB %OY، ⁦%Ol∶%OM⁩ %Op"
 
-#: js/portalHelper/main.js:53
+#: js/portalHelper/main.js:55
 msgid "Hotspot Login"
 msgstr "ورود به نقطهٔ داغ"
 
-#: js/portalHelper/main.js:106
+#: js/portalHelper/main.js:108
 msgid ""
 "Your connection to this hotspot login is not secure. Passwords or other information "
 "you enter on this page can be viewed by people nearby."
@@ -851,7 +851,7 @@ msgstr "هدفون‌ها"
 msgid "Headset"
 msgstr "هدست"
 
-#: js/ui/audioDeviceSelection.js:73 js/ui/status/volume.js:270
+#: js/ui/audioDeviceSelection.js:73 js/ui/status/volume.js:271
 msgid "Microphone"
 msgstr "میکروفون"
 
@@ -942,11 +942,11 @@ msgstr "%OB"
 msgid "%OB %Y"
 msgstr "%OB %OY"
 
-#: js/ui/calendar.js:472
+#: js/ui/calendar.js:473
 msgid "Previous month"
 msgstr "ماه پیش"
 
-#: js/ui/calendar.js:490
+#: js/ui/calendar.js:491
 msgid "Next month"
 msgstr "ماه بعد"
 
@@ -1081,7 +1081,7 @@ msgstr "پین"
 msgid "A password is required to connect to “%s”."
 msgstr "برای اتّصال به «%s» گذرواژه لازم است."
 
-#: js/ui/components/networkAgent.js:735 js/ui/status/network.js:1751
+#: js/ui/components/networkAgent.js:735 js/ui/status/network.js:1819
 msgid "Network Manager"
 msgstr "مدیر شبکه"
 
@@ -1193,23 +1193,23 @@ msgstr "افزودن ساعت‌های جهانی…"
 msgid "World Clocks"
 msgstr "ساعت‌های جهانی"
 
-#: js/ui/dateMenu.js:677
+#: js/ui/dateMenu.js:699
 msgid "Loading…"
 msgstr "درحال بار کردن…"
 
-#: js/ui/dateMenu.js:687
+#: js/ui/dateMenu.js:709
 msgid "Go online for weather information"
 msgstr "برای اطّلاعات آب‌وهوا برخط شوید"
 
-#: js/ui/dateMenu.js:689
+#: js/ui/dateMenu.js:711
 msgid "Weather information is currently unavailable"
 msgstr "اطّلاعات آب‌وهو درحال حاضر موجود نیست"
 
-#: js/ui/dateMenu.js:699
+#: js/ui/dateMenu.js:721
 msgid "Weather"
 msgstr "آب‌وهوا"
 
-#: js/ui/dateMenu.js:701
+#: js/ui/dateMenu.js:723
 msgid "Select weather location…"
 msgstr "گزینش مکان آب‌وهوا…"
 
@@ -1470,8 +1470,8 @@ msgstr "روشن کردن"
 
 #: js/ui/kbdA11yDialog.js:65 js/ui/status/bluetooth.js:174 js/ui/status/network.js:160
 #: js/ui/status/network.js:336 js/ui/status/network.js:1341
-#: js/ui/status/network.js:1456 js/ui/status/nightLight.js:41
-#: js/ui/status/rfkill.js:81 js/ui/status/rfkill.js:110
+#: js/ui/status/network.js:1449 js/ui/status/network.js:1520
+#: js/ui/status/nightLight.js:41 js/ui/status/rfkill.js:81 js/ui/status/rfkill.js:110
 msgid "Turn Off"
 msgstr "خاموش کردن"
 
@@ -1483,77 +1483,85 @@ msgstr "خاموش گذاشتن"
 msgid "Region & Language Settings"
 msgstr "تنظیمات ناحیه و زبان"
 
-#: js/ui/lookingGlass.js:701
+#: js/ui/lookingGlass.js:712
 msgid "No extensions installed"
 msgstr "هیچ افزونه‌ای نصب نشده است"
 
 #. Translators: argument is an extension UUID.
-#: js/ui/lookingGlass.js:762
+#: js/ui/lookingGlass.js:773
 #, javascript-format
 msgid "%s has not emitted any errors."
 msgstr "افزونه %s هیچ خطایی منتشر نکرده است."
 
-#: js/ui/lookingGlass.js:768
+#: js/ui/lookingGlass.js:779
 msgid "Hide Errors"
 msgstr "نهفتن خطاها"
 
-#: js/ui/lookingGlass.js:772 js/ui/lookingGlass.js:845
+#: js/ui/lookingGlass.js:783 js/ui/lookingGlass.js:856
 msgid "Show Errors"
 msgstr "نمایش خطاها"
 
-#: js/ui/lookingGlass.js:781
+#: js/ui/lookingGlass.js:792
 msgid "Enabled"
 msgstr "به کار افتاده"
 
 #. translators:
 #. * The device has been disabled
-#: js/ui/lookingGlass.js:784 subprojects/gvc/gvc-mixer-control.c:1900
+#: js/ui/lookingGlass.js:795 subprojects/gvc/gvc-mixer-control.c:1900
 msgid "Disabled"
 msgstr "از کار افتاده"
 
-#: js/ui/lookingGlass.js:786
+#: js/ui/lookingGlass.js:797
 msgid "Error"
 msgstr "خطا"
 
-#: js/ui/lookingGlass.js:788
+#: js/ui/lookingGlass.js:799
 msgid "Out of date"
 msgstr "قدیمی"
 
-#: js/ui/lookingGlass.js:790
+#: js/ui/lookingGlass.js:801
 msgid "Downloading"
 msgstr "درحال بارگیری"
 
-#: js/ui/lookingGlass.js:823
+#: js/ui/lookingGlass.js:834
 msgid "View Source"
 msgstr "نمایش منبع"
 
-#: js/ui/lookingGlass.js:834
+#: js/ui/lookingGlass.js:845
 msgid "Web Page"
 msgstr "صفحهٔ وب"
 
-#: js/ui/main.js:265
+#: js/ui/main.js:266
 msgid "System was put in unsafe mode"
 msgstr "سامانه در حالت ناامن گذاشته شده بود"
 
-#: js/ui/main.js:266
+#: js/ui/main.js:267
 msgid "Applications now have unrestricted access"
 msgstr "برنامه اکنون دسترسی نامحدود دارد"
 
-#: js/ui/main.js:267 js/ui/overview.js:58
+#: js/ui/main.js:268 js/ui/overview.js:58
 msgid "Undo"
 msgstr "برگردان"
 
-#: js/ui/main.js:313
+#: js/ui/main.js:314
 msgid "Logged in as a privileged user"
 msgstr "واردشده به عنوان کاربری ممتاز"
 
-#: js/ui/main.js:314
+#: js/ui/main.js:315
 msgid ""
 "Running a session as a privileged user should be avoided for security reasons. If "
 "possible, you should log in as a normal user."
 msgstr ""
 "به دلایل امنیتی باید از اجرای یک نشست به عنوان کاربری ممتاز خودداری کرد. در صورت "
 "امکان، با کاربری عادی وارد شوید."
+
+#: js/ui/main.js:364
+msgid "Screen Lock disabled"
+msgstr "قفل صفحه از کار افتاده"
+
+#: js/ui/main.js:365
+msgid "Screen Locking requires the GNOME display manager."
+msgstr "قفل صفحه نیاز به مدیر نمایش گنوم دارد."
 
 #: js/ui/messageTray.js:1418
 msgid "System Information"
@@ -1585,47 +1593,47 @@ msgstr "برنامه‌ها"
 msgid "Overview"
 msgstr "نمای کلّی"
 
-#: js/ui/padOsd.js:97
+#: js/ui/padOsd.js:100
 msgid "New shortcut…"
 msgstr "میان‌بر جدید…"
 
-#: js/ui/padOsd.js:148
+#: js/ui/padOsd.js:154
 msgid "Application defined"
 msgstr "تعریف شده در برنامه"
 
-#: js/ui/padOsd.js:149
+#: js/ui/padOsd.js:155
 msgid "Show on-screen help"
 msgstr "نمایش راهنمای روی صفحه"
 
-#: js/ui/padOsd.js:150
+#: js/ui/padOsd.js:156
 msgid "Switch monitor"
 msgstr "تعویض نمایشگر"
 
-#: js/ui/padOsd.js:151
+#: js/ui/padOsd.js:157
 msgid "Assign keystroke"
 msgstr "تخصیص دنبالهٔ کلید"
 
-#: js/ui/padOsd.js:220
+#: js/ui/padOsd.js:226
 msgid "Done"
 msgstr "انجام شد"
 
-#: js/ui/padOsd.js:737
+#: js/ui/padOsd.js:743
 msgid "Edit…"
 msgstr "ویرایش…"
 
-#: js/ui/padOsd.js:779 js/ui/padOsd.js:896
+#: js/ui/padOsd.js:785 js/ui/padOsd.js:902
 msgid "None"
 msgstr "هیچ‌کدام"
 
-#: js/ui/padOsd.js:850
+#: js/ui/padOsd.js:856
 msgid "Press a button to configure"
 msgstr "برای پیکربندی، کلیدی را بزنید"
 
-#: js/ui/padOsd.js:851
+#: js/ui/padOsd.js:857
 msgid "Press Esc to exit"
 msgstr "برای خروج، گریز را بزنید"
 
-#: js/ui/padOsd.js:854
+#: js/ui/padOsd.js:860
 msgid "Press any key to exit"
 msgstr "برای خروج، هر کلیدی را بزنید"
 
@@ -1677,91 +1685,91 @@ msgstr "نمی‌توان قفل کرد"
 msgid "Lock was blocked by an application"
 msgstr "قفل توسط یک برنامه مسدود شده بود"
 
-#: js/ui/screenshot.js:1148
+#: js/ui/screenshot.js:1149
 msgid "Selection"
 msgstr "گزینش"
 
-#: js/ui/screenshot.js:1158
+#: js/ui/screenshot.js:1159
 msgid "Area Selection"
 msgstr "گزینش ناحیه"
 
-#: js/ui/screenshot.js:1163
+#: js/ui/screenshot.js:1164
 msgid "Screen"
 msgstr "صفحه"
 
-#: js/ui/screenshot.js:1173
+#: js/ui/screenshot.js:1174
 msgid "Screen Selection"
 msgstr "گزینش صفحه"
 
-#: js/ui/screenshot.js:1178
+#: js/ui/screenshot.js:1179
 msgid "Window"
 msgstr "پنجره‌"
 
-#: js/ui/screenshot.js:1188
+#: js/ui/screenshot.js:1189
 msgid "Window Selection"
 msgstr "گزینش پنجره"
 
-#: js/ui/screenshot.js:1225
+#: js/ui/screenshot.js:1227
 msgid "Screenshot / Screencast"
 msgstr "نماگرفت / ضبط صفحه"
 
-#: js/ui/screenshot.js:1261
+#: js/ui/screenshot.js:1263
 msgid "Show Pointer"
 msgstr "نمایش اشاره‌گر"
 
 #. Translators: this is the folder where recorded
 #. screencasts are stored.
-#: js/ui/screenshot.js:1828
+#: js/ui/screenshot.js:1835
 msgid "Screencasts"
 msgstr "ضبط‌های صفحه"
 
 #. Translators: this is a filename used for screencast
 #. * recording, where "%d" and "%t" date and time, e.g.
 #. * "Screencast from 07-17-2013 10:00:46 PM.webm"
-#: js/ui/screenshot.js:1833
+#: js/ui/screenshot.js:1840
 #, no-c-format
 msgid "Screencast from %d %t.webm"
 msgstr "ضبط صفحه از %t %d.webm"
 
 #. Translators: notification source name.
-#: js/ui/screenshot.js:1902 js/ui/screenshot.js:2115
+#: js/ui/screenshot.js:1909 js/ui/screenshot.js:2122
 msgid "Screenshot"
 msgstr "نماگرفت"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:1908
+#: js/ui/screenshot.js:1915
 msgid "Screencast recorded"
 msgstr "صفحه ضبط شد"
 
 #. Translators: notification body when a screencast was recorded.
-#: js/ui/screenshot.js:1910
+#: js/ui/screenshot.js:1917
 msgid "Click here to view the video."
 msgstr "برای دیدن ویدیو این‌جا بزنید."
 
 #. Translators: button on the screencast notification.
 #. Translators: button on the screenshot notification.
-#: js/ui/screenshot.js:1913 js/ui/screenshot.js:2129
+#: js/ui/screenshot.js:1920 js/ui/screenshot.js:2136
 msgid "Show in Files"
 msgstr "نمایش در پرونده‌ها"
 
 #. Translators: this is the name of the file that the screenshot is
 #. saved to. The placeholder is a timestamp, e.g. "2017-05-21 12-24-03".
-#: js/ui/screenshot.js:2075
+#: js/ui/screenshot.js:2082
 #, javascript-format
 msgid "Screenshot from %s"
 msgstr "نماگرفت از %s"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2121
+#: js/ui/screenshot.js:2128
 msgid "Screenshot captured"
 msgstr "نماگرفت ضبط شد"
 
 #. Translators: notification body when a screenshot was captured.
-#: js/ui/screenshot.js:2123
+#: js/ui/screenshot.js:2130
 msgid "You can paste the image from the clipboard."
 msgstr "می‌توانید تصویر را از تخته‌گیره بچسبانید."
 
-#: js/ui/screenshot.js:2176 js/ui/screenshot.js:2341
+#: js/ui/screenshot.js:2183 js/ui/screenshot.js:2348
 msgid "Screenshot taken"
 msgstr "نماگرفت انجام شد"
 
@@ -2143,61 +2151,77 @@ msgstr "%s نقطهٔ داغ فعّال"
 msgid "%s Not Connected"
 msgstr "%s متّصل نشد"
 
-#: js/ui/status/network.js:1473
+#: js/ui/status/network.js:1461
+msgid "unknown"
+msgstr "ناشناخته"
+
+#: js/ui/status/network.js:1463
+msgid "activating…"
+msgstr "فعّال کردن…"
+
+#: js/ui/status/network.js:1467
+msgid "deactivating…"
+msgstr "غیرفعّال کردن…"
+
+#: js/ui/status/network.js:1469
+msgid "deactivated"
+msgstr "غیرفعّال شده"
+
+#: js/ui/status/network.js:1537
 msgid "connecting…"
 msgstr "درحال اتّصال…"
 
 #. Translators: this is for network connections that require some kind of key or password
-#: js/ui/status/network.js:1476
+#: js/ui/status/network.js:1540
 msgid "authentication required"
 msgstr "تأیید هویت لازم است"
 
-#: js/ui/status/network.js:1478
+#: js/ui/status/network.js:1542
 msgid "connection failed"
 msgstr "اتّصال شکست خورد"
 
-#: js/ui/status/network.js:1524
+#: js/ui/status/network.js:1588
 msgid "VPN Settings"
 msgstr "تنظیمات وی‌پی‌ان"
 
-#: js/ui/status/network.js:1541
+#: js/ui/status/network.js:1605
 msgid "VPN"
 msgstr "وی‌پی‌ان"
 
-#: js/ui/status/network.js:1551
+#: js/ui/status/network.js:1615
 msgid "VPN Off"
 msgstr "وی‌پی‌ان خاموش است"
 
-#: js/ui/status/network.js:1612 js/ui/status/rfkill.js:84
+#: js/ui/status/network.js:1679 js/ui/status/rfkill.js:84
 msgid "Network Settings"
 msgstr "تنظیمات شبکه"
 
-#: js/ui/status/network.js:1640
+#: js/ui/status/network.js:1707
 #, javascript-format
 msgid "%s Wired Connection"
 msgid_plural "%s Wired Connections"
 msgstr[0] "اتّصال سیمی %s"
 msgstr[1] "اتّصال سیمی %s"
 
-#: js/ui/status/network.js:1644
+#: js/ui/status/network.js:1711
 #, javascript-format
 msgid "%s Wi-Fi Connection"
 msgid_plural "%s Wi-Fi Connections"
 msgstr[0] "اتّصال وای‌فای %s"
 msgstr[1] "اتّصال وای‌فای %s"
 
-#: js/ui/status/network.js:1648
+#: js/ui/status/network.js:1715
 #, javascript-format
 msgid "%s Modem Connection"
 msgid_plural "%s Modem Connections"
 msgstr[0] "اتّصال مودم %s"
 msgstr[1] "اتّصال مودم %s"
 
-#: js/ui/status/network.js:1792
+#: js/ui/status/network.js:1860
 msgid "Connection failed"
 msgstr "اتّصال شکست خورد"
 
-#: js/ui/status/network.js:1793
+#: js/ui/status/network.js:1861
 msgid "Activation of network connection failed"
 msgstr "فعّال‌سازی اتّصال شبکه شکست خورد"
 
@@ -2353,11 +2377,11 @@ msgstr "خطای تأیید هویت تاندربولت"
 msgid "Could not authorize the Thunderbolt device: %s"
 msgstr "نمی‌توان افزارهٔ تاندربولت را تأیید هویت کرد: %s"
 
-#: js/ui/status/volume.js:158
+#: js/ui/status/volume.js:159
 msgid "Volume changed"
 msgstr "حجم صدا تغییر کرد"
 
-#: js/ui/status/volume.js:220
+#: js/ui/status/volume.js:221
 msgid "Volume"
 msgstr "حجم صدا"
 
@@ -2388,6 +2412,20 @@ msgstr "فقط خارجی"
 #: js/ui/switchMonitor.js:47
 msgid "Built-in Only"
 msgstr "فقط داخلی"
+
+#. Translators: This is a time format for a date in
+#. long format
+#: js/ui/unlockDialog.js:364
+msgid "%A %B %-d"
+msgstr "%A %-Od %OB"
+
+#: js/ui/unlockDialog.js:370
+msgid "Swipe up to unlock"
+msgstr "برای قفل‌گشایی، بالا بکشید"
+
+#: js/ui/unlockDialog.js:371
+msgid "Click or press a key to unlock"
+msgstr "برای قفل‌گشایی، کلیک کرده یا دکمه‌ای را بزنید"
 
 #: js/ui/unlockDialog.js:554
 msgid "Unlock Window"
@@ -2544,7 +2582,7 @@ msgctxt "program"
 msgid "Unknown"
 msgstr "ناشناس"
 
-#: src/shell-app.c:569
+#: src/shell-app.c:556
 #, c-format
 msgid "Failed to launch “%s”"
 msgstr "راه‌اندازی «%s» شکست خورد"
@@ -2563,14 +2601,14 @@ msgstr "محاوره تأیید هویت از طرف کاربر رد شد"
 
 #: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:5
 #: subprojects/extensions-app/data/org.gnome.Extensions.desktop.in.in:4
-#: subprojects/extensions-app/js/main.js:209
+#: subprojects/extensions-app/js/main.js:210
 #: subprojects/extensions-app/data/ui/extensions-window.ui:18
 #: subprojects/extensions-app/data/ui/extensions-window.ui:83
 msgid "Extensions"
 msgstr "افزونه‌ها"
 
 #: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:6
-#: subprojects/extensions-app/js/main.js:210
+#: subprojects/extensions-app/js/main.js:211
 msgid "Manage your GNOME Extensions"
 msgstr "مدیریت افزونه‌های پوستهٔ گنوم"
 
@@ -2590,43 +2628,43 @@ msgstr ""
 msgid "Configure GNOME Shell Extensions"
 msgstr "پیکربندی افزونه‌های پوستهٔ گنوم"
 
-#: subprojects/extensions-app/js/main.js:131 subprojects/extensions-app/js/main.js:142
+#: subprojects/extensions-app/js/main.js:132 subprojects/extensions-app/js/main.js:143
 msgid "No Matches"
 msgstr "بدون مطابقت"
 
-#: subprojects/extensions-app/js/main.js:170
+#: subprojects/extensions-app/js/main.js:171
 #, javascript-format
 msgid "Remove “%s”?"
 msgstr "برداشتن «%s»؟"
 
-#: subprojects/extensions-app/js/main.js:171
+#: subprojects/extensions-app/js/main.js:172
 msgid ""
 "If you remove the extension, you need to return to download it if you want to "
 "enable it again"
 msgstr "اگر افزونه را بردارید، باید برای به کار انداختن دوباره‌اش، بارگیریش کنید"
 
-#: subprojects/extensions-app/js/main.js:175
+#: subprojects/extensions-app/js/main.js:176
 msgid "Remove"
 msgstr "برداشتن"
 
-#: subprojects/extensions-app/js/main.js:208
+#: subprojects/extensions-app/js/main.js:209
 msgid "translator-credits"
 msgstr ""
 "دانیال بهزادی <dani.behzi@ubuntu.com>\n"
 "سید اسحاق مقیم شهیدانی <eshagh094@gmail.com>"
 
-#: subprojects/extensions-app/js/main.js:336
+#: subprojects/extensions-app/js/main.js:337
 #, javascript-format
 msgid "%d extension will be updated on next login."
 msgid_plural "%d extensions will be updated on next login."
 msgstr[0] "تعداد %Id افزونه در ورود بعدی به‌روز خواهد شد."
 msgstr[1] "تعداد %Id افزونه در ورود بعدی به‌روز خواهند شد."
 
-#: subprojects/extensions-app/js/main.js:478
+#: subprojects/extensions-app/js/main.js:479
 msgid "The extension is incompatible with the current GNOME version"
 msgstr "افزونه با نگارش جاری گنوم ناسازگار است"
 
-#: subprojects/extensions-app/js/main.js:481
+#: subprojects/extensions-app/js/main.js:482
 #: subprojects/extensions-app/data/ui/extension-row.ui:52
 msgid "The extension had an error"
 msgstr "افزونه خطایی داشت"
@@ -2666,8 +2704,8 @@ msgstr "نصب‌شده به صورت دستی"
 #: subprojects/extensions-app/data/ui/extensions-window.ui:99
 #: subprojects/extensions-app/data/ui/extensions-window.ui:134
 msgid ""
-"To find and add extensions, visit <a href=\"https://extensions.gnome.org"
-"\">extensions.gnome.org</a>."
+"To find and add extensions, visit <a href=\"https://extensions.gnome."
+"org\">extensions.gnome.org</a>."
 msgstr ""
 "برای یافتن و افزودن افزونه‌ها، <a href=\"https://extensions.gnome.org\">پایگاه "
 "افزونه‌های گنوم</a> را ببینید."
@@ -3124,21 +3162,6 @@ msgstr "صداهای سامانه"
 
 #~ msgid "Add to Favorites"
 #~ msgstr "افزودن به مورد علاقه‌ها"
-
-#~ msgid "Screen Lock disabled"
-#~ msgstr "قفل صفحه از کار افتاده"
-
-#~ msgid "Screen Locking requires the GNOME display manager."
-#~ msgstr "قفل صفحه نیاز به مدیر نمایش گنوم دارد."
-
-#~ msgid "%A %B %-d"
-#~ msgstr "%A %-Od %OB"
-
-#~ msgid "Swipe up to unlock"
-#~ msgstr "برای قفل‌گشایی، بالا بکشید"
-
-#~ msgid "Click or press a key to unlock"
-#~ msgstr "برای قفل‌گشایی، کلیک کرده یا دکمه‌ای را بزنید"
 
 #~ msgid "Author"
 #~ msgstr "نگارنده"
