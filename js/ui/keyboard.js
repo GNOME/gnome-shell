@@ -1203,7 +1203,7 @@ var KeyboardManager = class KeyBoardManager {
             if (this._keyboard)
                 this._keyboard.gestureCancel();
         });
-        global.stage.add_action(bottomDragAction);
+        global.stage.add_action_full('osk', Clutter.EventPhase.CAPTURE, bottomDragAction);
         this._bottomDragAction = bottomDragAction;
 
         this._syncEnabled();
