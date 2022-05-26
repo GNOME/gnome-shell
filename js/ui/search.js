@@ -289,7 +289,10 @@ class ListSearchResults extends SearchResultsBase {
     _init(provider, resultsView) {
         super._init(provider, resultsView);
 
-        this._container = new St.BoxLayout({ style_class: 'search-section-content' });
+        this._container = new St.BoxLayout({
+            style_class: 'search-section-content',
+            vertical: true,
+        });
         this.providerInfo = new ProviderInfo(provider);
         this.providerInfo.connect('key-focus-in', this._keyFocusIn.bind(this));
         this.providerInfo.connect('clicked', () => {
@@ -893,17 +896,18 @@ class ProviderInfo extends St.Button {
     _init(provider) {
         this.provider = provider;
         super._init({
-            style_class: 'search-provider-icon',
+            style_class: 'search-provider-info',
             reactive: true,
             can_focus: true,
             accessible_name: provider.appInfo.get_name(),
             track_hover: true,
+            x_expand: true,
             y_align: Clutter.ActorAlign.START,
         });
 
         this._content = new St.BoxLayout({
-            vertical: false,
             style_class: 'list-search-provider-content',
+            x_expand: true,
         });
         this.set_child(this._content);
 
@@ -912,29 +916,21 @@ class ProviderInfo extends St.Button {
             gicon: provider.appInfo.get_icon(),
         });
 
-        const detailsBox = new St.BoxLayout({
-            style_class: 'list-search-provider-details',
-            vertical: true,
-            x_expand: true,
-        });
-
         const nameLabel = new St.Label({
             text: provider.appInfo.get_name(),
+            style_class: 'list-search-provider-title',
             x_align: Clutter.ActorAlign.START,
         });
 
-        this._moreLabel = new St.Label({ x_align: Clutter.ActorAlign.START });
-
-        detailsBox.add_actor(nameLabel);
-        detailsBox.add_actor(this._moreLabel);
-
+        this._moreLabel = new St.Label({ x_align: Clutter.ActorAlign.END });
 
         this._content.add_actor(icon);
-        this._content.add_actor(detailsBox);
+        this._content.add_actor(nameLabel);
+        this._content.add_actor(this._moreLabel);
     }
 
     get PROVIDER_ICON_SIZE() {
-        return 32;
+        return 16;
     }
 
     animateLaunch() {
@@ -945,7 +941,7 @@ class ProviderInfo extends St.Button {
     }
 
     setMoreCount(count) {
-        this._moreLabel.text = ngettext("%d more", "%d more", count).format(count);
+        this._moreLabel.text = ngettext("+ %d more", "+ %d more", count).format(count);
         this._moreLabel.visible = count > 0;
     }
 });

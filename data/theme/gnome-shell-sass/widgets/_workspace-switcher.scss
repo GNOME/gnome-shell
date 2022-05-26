@@ -6,6 +6,7 @@ $ws_dot_inactive: $ws_indicator_height / 6;
 
 .workspace-switcher {
   @extend %osd_panel;
+  border-radius: 999px;
   margin-bottom: 4em;
   spacing: $base_padding * 2;
   padding: $base_padding * 2 $base_padding * 3;
