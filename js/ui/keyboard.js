@@ -1695,6 +1695,7 @@ var Keyboard = GObject.registerClass({
              * we allow the OSK being smaller than 1/3rd of the monitor height
              * there.
              */
+            this.height = -1;
             const forWidth = this.get_theme_node().adjust_for_width(monitor.width);
             const [, natHeight] = this.get_preferred_height(forWidth);
             this.height = Math.min(maxHeight, natHeight);
