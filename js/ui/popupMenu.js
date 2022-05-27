@@ -48,7 +48,7 @@ function arrowIcon(side) {
     }
 
     const arrow = new St.Icon({
-        style_class: 'popup-menu-arrow',
+        style_class: 'popup-menu-icon',
         icon_name: iconName,
         accessible_role: Atk.Role.ARROW,
         y_expand: true,
@@ -89,8 +89,8 @@ var PopupBaseMenuItem = GObject.registerClass({
         this._delegate = this;
 
         this._ornament = Ornament.NONE;
-        this._ornamentLabel = new St.Label({ style_class: 'popup-menu-ornament' });
-        this.add(this._ornamentLabel);
+        this._ornamentIcon = new St.Icon({ style_class: 'popup-menu-ornament' });
+        this.add(this._ornamentIcon);
 
         this._parent = null;
         this._active = false;
@@ -258,18 +258,15 @@ var PopupBaseMenuItem = GObject.registerClass({
 
         this._ornament = ornament;
 
-        if (ornament == Ornament.DOT) {
-            this._ornamentLabel.text = '\u2022';
-            this.add_accessible_state(Atk.StateType.CHECKED);
-        } else if (ornament == Ornament.CHECK) {
-            this._ornamentLabel.text = '\u2713';
+        if (ornament == Ornament.DOT || ornament == Ornament.CHECK) {
+            this._ornamentIcon.icon_name = 'ornament-check-symbolic';
             this.add_accessible_state(Atk.StateType.CHECKED);
         } else if (ornament == Ornament.NONE || ornament == Ornament.HIDDEN) {
-            this._ornamentLabel.text = '';
+            this._ornamentIcon.icon_name = '';
             this.remove_accessible_state(Atk.StateType.CHECKED);
         }
 
-        this._ornamentLabel.visible = ornament != Ornament.HIDDEN;
+        this._ornamentIcon.visible = ornament != Ornament.HIDDEN;
     }
 });
 

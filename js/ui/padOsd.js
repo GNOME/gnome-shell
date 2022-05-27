@@ -36,7 +36,7 @@ var PadChooser = GObject.registerClass({
         this._padChooserMenu = null;
 
         let arrow = new St.Icon({
-            style_class: 'popup-menu-arrow',
+            style_class: 'popup-menu-icon',
             icon_name: 'pan-down-symbolic',
             accessible_role: Atk.Role.ARROW,
             x_align: Clutter.ActorAlign.CENTER,
@@ -132,7 +132,7 @@ var ActionComboBox = GObject.registerClass({
         box.add_child(this._label);
 
         const arrow = new St.Icon({
-            style_class: 'popup-menu-arrow',
+            style_class: 'popup-menu-icon',
             icon_name: 'pan-down-symbolic',
             accessible_role: Atk.Role.ARROW,
             y_expand: true,

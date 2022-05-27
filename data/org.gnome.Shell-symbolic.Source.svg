@@ -7,7 +7,7 @@
    viewBox="0 0 64 64"
    id="svg2"
    version="1.1"
-   inkscape:version="1.1.1 (3bf5ae0d25, 2021-09-20)"
+   inkscape:version="1.2 (dc2aedaf03, 2022-05-15)"
    sodipodi:docname="org.gnome.Shell-symbolic.Source.svg"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
@@ -22,9 +22,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="1"
      inkscape:pageshadow="2"
-     inkscape:zoom="1"
-     inkscape:cx="51.5"
-     inkscape:cy="258"
+     inkscape:zoom="4"
+     inkscape:cx="34.75"
+     inkscape:cy="369.25"
      inkscape:document-units="px"
      inkscape:current-layer="layer2"
      showgrid="false"
@@ -32,7 +32,7 @@
      inkscape:window-width="1920"
      inkscape:window-height="1011"
      inkscape:window-x="0"
-     inkscape:window-y="32"
+     inkscape:window-y="0"
      inkscape:window-maximized="1"
      inkscape:snap-bbox="true"
      inkscape:bbox-paths="true"
@@ -47,7 +47,10 @@
      inkscape:pagecheckerboard="false"
      showborder="false"
      inkscape:snap-nodes="true"
-     inkscape:snap-others="false">
+     inkscape:snap-others="false"
+     inkscape:showpageshadow="2"
+     inkscape:deskcolor="#d1d1d1"
+     showguides="false">
     <inkscape:grid
        type="xygrid"
        id="grid4514"
@@ -274,6 +277,42 @@
      inkscape:groupmode="layer"
      id="layer2"
      inkscape:label="actions">
+    <g
+       id="g398"
+       inkscape:label="menu list ornament selected dot">
+      <title
+         id="title3016">ornament-dot</title>
+      <rect
+         transform="scale(-1,1)"
+         y="360"
+         x="-16"
+         height="16"
+         width="16"
+         id="rect384"
+         style="fill:none" />
+      <path
+         d="M 11,368 A 3,3 0 0 1 8.0000002,370.99999 3,3 0 0 1 5.0000001,368 3,3 0 0 1 8.0000002,365.00001 3,3 0 0 1 11,368 Z"
+         id="path386"
+         style="fill:#241f31;fill-opacity:1;stroke-width:3.77953" />
+    </g>
+    <g
+       inkscape:label="menu list ornament selected checked"
+       id="g1662"
+       transform="rotate(90,17.06949,213.93368)">
+      <title
+         id="title1652">ornament-check</title>
+      <path
+         style="fill:#241f31;fill-opacity:1"
+         d="m 167.79479,197.25019 a 1,1 0 0 0 -1.41211,0.0937 1,1 0 0 0 0.0937,1.41211 l 7.19532,6.29687 -2.24415,2.24414 a 1,1 0 0 0 0,1.41407 1,1 0 0 0 1.41602,0 l 3,-3 a 1.0001,1.0001 0 0 0 -0.0488,-1.46094 z"
+         id="path8923-6-6-3" />
+      <rect
+         y="195.00317"
+         x="163.1358"
+         height="16"
+         width="16"
+         id="rect1660"
+         style="fill:none;fill-opacity:1" />
+    </g>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:16px;line-height:1.25;font-family:sans-serif;fill:#241f31;fill-opacity:1;stroke:none"
