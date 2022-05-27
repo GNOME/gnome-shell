@@ -15,6 +15,10 @@
 .nm-dialog-header-icon { icon-size: $large_icon_size;}
 .nm-dialog-header-hbox { spacing: 10px; }
 
+.nm-dialog-network-selected {
+  margin: 0 $base_margin*2;
+}
+
 .nm-dialog-scroll-view {
   padding:$base_padding;
   border-radius: $base_border_radius;
