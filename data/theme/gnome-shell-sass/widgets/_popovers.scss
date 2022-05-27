@@ -30,16 +30,16 @@
   padding: $base_padding*1.5 $base_padding*2;
   border-radius: $base_border_radius;
   spacing: $base_padding;
-  transition: 0.2s all ease;
+  transition-duration: 100ms;
   background-color: transparent;
 
   &:ltr {padding-left: $base_padding;}
   &:rtl {padding-right: $base_padding;}
 
   &:focus, &:hover {
-   background-color: $hover_bg_color !important;
-   &:active { background-color: $active_bg_color !important;}
- }
+    background-color: $hover_bg_color !important;
+    &:active { background-color: $active_bg_color !important;}
+  }
 
   &:checked {background-color: $checked_bg_color !important;}
 
