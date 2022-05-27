@@ -129,12 +129,6 @@
   }
 }
 
-// buttons
-// since buttons are all flat an borderless now the mixin is simpler
-
-@mixin button($t, $tc:$fg_color, $c:$bg_color) {
-
-$button_bg_color: mix($tc, $c, 5%);
 //
 // Button drawing function
 //
@@ -147,6 +141,12 @@ $button_bg_color: mix($tc, $c, 5%);
 // backdrop, backdrop-active, backdrop-insensitive, backdrop-insensitive-active,
 // osd, osd-hover, osd-active, osd-insensitive, osd-backdrop, undecorated
 //
+// since buttons are all flat an borderless now the mixin is simpler
+
+@mixin button($t, $tc:$fg_color, $c:$bg_color) {
+
+  $button_bg_color: mix($tc, $c, 5%);
+  transition-duration: 100ms;
 
   // normal button
   @if $t==normal {
@@ -257,6 +257,7 @@ $button_bg_color: mix($tc, $c, 5%);
 
 // overview icon, dash, app grid
 @mixin overview_icon($color, $flat: true) {
+  transition-duration: 400ms;
   .overview-icon { @extend %tile; }
   @if $flat {
     .overview-icon { background-color: transparent;}

@@ -102,6 +102,7 @@ $app_icon_size: 96px;
 // App Grid pagination indicators
 .page-indicator {
   padding: $base_padding $base_padding * 2 0;
+  transition-duration:400ms;
 
   .page-indicator-icon {
     width: 10px;
