@@ -1,3 +1,20 @@
+42.2
+====
+* Align space-padded times in world clocks [Maksym; !2294]
+* Fix top bar menus on lock screen [Florian; !2298]
+* Fix on-screen keyboard gestures [Carlos; !2304]
+* Fix focus tracking in magnifier on wayland [Sebastian; !2301]
+* Misc. bug fixes [Florian, Jonas; !2295, !2296, !2306]
+
+Contributors:
+  Jonas Dreßler, Carlos Garnacho, Maksym Hazevych, Sebastian Keller,
+  Florian Müllner
+
+Translators:
+  Jordi Mas [ca], Kukuh Syafaat [id], Cheng-Chia Tseng [zh_TW],
+  Charles Monzat [fr], Changwoo Ryu [ko], Daniel Rusek [cs],
+  Christian Kirbach [de], Luming Zh [zh_CN]
+
 42.1
 ====
 * Limit unfullscreen gesture to not interfere with overview [Ivan; !2227]
