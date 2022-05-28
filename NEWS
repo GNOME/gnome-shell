@@ -1,3 +1,11 @@
+41.7
+====
+* Misc. bug fixes [Florian, Jonas; !2295, !2296, !2306]
+* Fix focus tracking in magnifier on wayland [Sebastian; !2301]
+
+Contributors:
+  Jonas Dreßler, Sebastian Keller, Florian Müllner
+
 41.6
 ====
 * Handle monitor changes during startup animation [13r0ck; !2144]
