@@ -20,8 +20,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2022-05-07 17:06+0000\n"
-"PO-Revision-Date: 2022-05-18 15:52+0300\n"
+"POT-Creation-Date: 2022-05-23 18:04+0000\n"
+"PO-Revision-Date: 2022-05-24 12:31+0300\n"
 "Last-Translator: Aleksandr Melman <Alexmelman88@gmail.com>\n"
 "Language-Team: Russian <gnome-cyr@gnome.org>\n"
 "Language: ru\n"
@@ -901,7 +901,7 @@ msgstr "Наушники"
 msgid "Headset"
 msgstr "Гарнитура"
 
-#: js/ui/audioDeviceSelection.js:73 js/ui/status/volume.js:270
+#: js/ui/audioDeviceSelection.js:73 js/ui/status/volume.js:271
 msgid "Microphone"
 msgstr "Микрофон"
 
@@ -1138,7 +1138,7 @@ msgstr "PIN"
 msgid "A password is required to connect to “%s”."
 msgstr "Для подключения к «%s» требуется пароль."
 
-#: js/ui/components/networkAgent.js:735 js/ui/status/network.js:1751
+#: js/ui/components/networkAgent.js:735 js/ui/status/network.js:1819
 msgid "Network Manager"
 msgstr "Диспетчер сети"
 
@@ -1249,23 +1249,23 @@ msgstr "Добавить мировые часы…"
 msgid "World Clocks"
 msgstr "Мировые часы"
 
-#: js/ui/dateMenu.js:681
+#: js/ui/dateMenu.js:699
 msgid "Loading…"
 msgstr "Загрузка…"
 
-#: js/ui/dateMenu.js:691
+#: js/ui/dateMenu.js:709
 msgid "Go online for weather information"
 msgstr "Подключите интернет для получения информации о погоде"
 
-#: js/ui/dateMenu.js:693
+#: js/ui/dateMenu.js:711
 msgid "Weather information is currently unavailable"
 msgstr "Информация о погоде сейчас недоступна"
 
-#: js/ui/dateMenu.js:703
+#: js/ui/dateMenu.js:721
 msgid "Weather"
 msgstr "Погода"
 
-#: js/ui/dateMenu.js:705
+#: js/ui/dateMenu.js:723
 msgid "Select weather location…"
 msgstr "Выберите ваше местоположение…"
 
@@ -1539,9 +1539,9 @@ msgstr "Включить"
 
 #: js/ui/kbdA11yDialog.js:65 js/ui/status/bluetooth.js:174
 #: js/ui/status/network.js:160 js/ui/status/network.js:336
-#: js/ui/status/network.js:1341 js/ui/status/network.js:1456
-#: js/ui/status/nightLight.js:41 js/ui/status/rfkill.js:81
-#: js/ui/status/rfkill.js:110
+#: js/ui/status/network.js:1341 js/ui/status/network.js:1449
+#: js/ui/status/network.js:1520 js/ui/status/nightLight.js:41
+#: js/ui/status/rfkill.js:81 js/ui/status/rfkill.js:110
 msgid "Turn Off"
 msgstr "Выключить"
 
@@ -2259,38 +2259,54 @@ msgstr ""
 "%s сеть\n"
 "не подключена"
 
-#: js/ui/status/network.js:1473
+#: js/ui/status/network.js:1461
+msgid "unknown"
+msgstr "неизвестно"
+
+#: js/ui/status/network.js:1463
+msgid "activating…"
+msgstr "активация…"
+
+#: js/ui/status/network.js:1467
+msgid "deactivating…"
+msgstr "деактивация…"
+
+#: js/ui/status/network.js:1469
+msgid "deactivated"
+msgstr "деактивировано"
+
+#: js/ui/status/network.js:1537
 msgid "connecting…"
 msgstr "подключение…"
 
 #. Translators: this is for network connections that require some kind of key or password
-#: js/ui/status/network.js:1476
+#: js/ui/status/network.js:1540
 msgid "authentication required"
 msgstr "требуется аутентификация"
 
-#: js/ui/status/network.js:1478
+#: js/ui/status/network.js:1542
 msgid "connection failed"
 msgstr "сбой подключения"
 
-#: js/ui/status/network.js:1524
+#: js/ui/status/network.js:1588
 msgid "VPN Settings"
 msgstr "Параметры VPN"
 
-#: js/ui/status/network.js:1541
+#: js/ui/status/network.js:1605
 msgid "VPN"
 msgstr "VPN"
 
-#: js/ui/status/network.js:1551
+#: js/ui/status/network.js:1615
 msgid "VPN Off"
 msgstr ""
 "Соединение VPN\n"
 "выключено"
 
-#: js/ui/status/network.js:1612 js/ui/status/rfkill.js:84
+#: js/ui/status/network.js:1679 js/ui/status/rfkill.js:84
 msgid "Network Settings"
 msgstr "Параметры сети"
 
-#: js/ui/status/network.js:1640
+#: js/ui/status/network.js:1707
 #, javascript-format
 msgid "%s Wired Connection"
 msgid_plural "%s Wired Connections"
@@ -2298,7 +2314,7 @@ msgstr[0] "%s проводное соединение"
 msgstr[1] "%s проводных соединения"
 msgstr[2] "%s проводных соединений"
 
-#: js/ui/status/network.js:1644
+#: js/ui/status/network.js:1711
 #, javascript-format
 msgid "%s Wi-Fi Connection"
 msgid_plural "%s Wi-Fi Connections"
@@ -2306,7 +2322,7 @@ msgstr[0] "%s соединение Wi-Fi"
 msgstr[1] "%s соединения Wi-Fi"
 msgstr[2] "%s соединений Wi-Fi"
 
-#: js/ui/status/network.js:1648
+#: js/ui/status/network.js:1715
 #, javascript-format
 msgid "%s Modem Connection"
 msgid_plural "%s Modem Connections"
@@ -2314,11 +2330,11 @@ msgstr[0] "%s модемное соединение"
 msgstr[1] "%s модемных соединения"
 msgstr[2] "%s модемных соединений"
 
-#: js/ui/status/network.js:1792
+#: js/ui/status/network.js:1860
 msgid "Connection failed"
 msgstr "Сбой подключения"
 
-#: js/ui/status/network.js:1793
+#: js/ui/status/network.js:1861
 msgid "Activation of network connection failed"
 msgstr "Не удалось активировать сетевое подключение"
 
@@ -2483,11 +2499,11 @@ msgstr "Ошибка авторизации Thunderbolt"
 msgid "Could not authorize the Thunderbolt device: %s"
 msgstr "Не удалось авторизовать устройство Thunderbolt: %s"
 
-#: js/ui/status/volume.js:158
+#: js/ui/status/volume.js:159
 msgid "Volume changed"
 msgstr "Громкость изменена"
 
-#: js/ui/status/volume.js:220
+#: js/ui/status/volume.js:221
 msgid "Volume"
 msgstr "Громкость"
 
