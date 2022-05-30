@@ -129,7 +129,7 @@ class KeyContainer extends St.Widget {
         this._maxCols = Math.max(this._currentCol, this._maxCols);
     }
 
-    layoutButtons(container) {
+    layoutButtons() {
         let nCol = 0, nRow = 0;
 
         for (let i = 0; i < this._rows.length; i++) {
@@ -156,9 +156,10 @@ class KeyContainer extends St.Widget {
             nRow += KEY_SIZE;
             nCol = 0;
         }
+    }
 
-        if (container)
-            container.setRatio(this._maxCols, this._rows.length);
+    getRatio() {
+        return [this._maxCols, this._rows.length];
     }
 });
 
@@ -1479,7 +1480,7 @@ var Keyboard = GObject.registerClass({
             this._loadRows(currentLevel, level, levels.length, layout);
             layers[level] = layout;
             this._aspectContainer.add_child(layout);
-            layout.layoutButtons(this._aspectContainer);
+            layout.layoutButtons();
 
             layout.hide();
         }
@@ -1877,6 +1878,7 @@ var Keyboard = GObject.registerClass({
             this._currentPage = null;
         });
         this._updateCurrentPageVisible();
+        this._aspectContainer.setRatio(...this._currentPage.getRatio());
     }
 
     _clearKeyboardRestTimer() {
