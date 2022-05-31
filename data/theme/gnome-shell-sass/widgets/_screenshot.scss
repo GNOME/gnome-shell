@@ -26,8 +26,10 @@ $screenshot_ui_button_red: $error_color;
 .screenshot-ui-close-button {
   @extend .window-close; // copy window close button
   padding: $base_padding !important; // but with more padding
-  &.left { margin-left: 8px;}
-  &.right { margin-right: 8px;}
+  margin-top: 12px;
+  box-shadow: 0 2px 4px 0 $shadow_color;
+  &.left { margin-left: 12px;}
+  &.right { margin-right: 12px;}
 }
 
 .screenshot-ui-type-button {
