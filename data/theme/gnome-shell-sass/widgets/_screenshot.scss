@@ -81,7 +81,7 @@ $screenshot_ui_button_red: $error_color;
 }
 
 .screenshot-ui-shot-cast-container {
-  background-color: $hover_bg_color;
+  background-color: lighten($osd_bg_color,5%);
   border-radius: $modal_radius;
   padding: $screenshot_ui_shot_cast_spacing;
   spacing: $screenshot_ui_shot_cast_spacing;
@@ -93,7 +93,7 @@ $screenshot_ui_button_red: $error_color;
 .screenshot-ui-shot-cast-button {
   padding: $base_padding $base_padding*2;
   background-color: transparent;
-  &:hover, &:focus { background-color: lighten($hover_bg_color, 5%);}
+  &:hover, &:focus { background-color: lighten($osd_bg_color, 10%);}
   &:active { background-color: lighten($active_bg_color,5%);}
   &:checked { background-color: white;color: black;}
 
