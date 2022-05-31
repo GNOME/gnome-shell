@@ -322,7 +322,9 @@ var Message = GObject.registerClass({
         });
         this.set_child(vbox);
 
-        let hbox = new St.BoxLayout();
+        let hbox = new St.BoxLayout({
+            style_class: 'message-box',
+        });
         vbox.add_actor(hbox);
 
         this._actionBin = new St.Widget({
@@ -333,42 +335,54 @@ var Message = GObject.registerClass({
 
         this._iconBin = new St.Bin({
             style_class: 'message-icon-bin',
+            y_align: Clutter.ActorAlign.CENTER,
             y_expand: true,
-            y_align: Clutter.ActorAlign.START,
             visible: false,
         });
         hbox.add_actor(this._iconBin);
 
         const contentBox = new St.BoxLayout({
             style_class: 'message-content',
-            vertical: true,
             x_expand: true,
+            vertical: true,
         });
         hbox.add_actor(contentBox);
 
-        this._mediaControls = new St.BoxLayout();
+        this._mediaControls = new St.BoxLayout({
+            style_class: 'message-media-controls',
+            y_align: Clutter.ActorAlign.CENTER,
+            x_align: Clutter.ActorAlign.CENTER,
+        });
         hbox.add_actor(this._mediaControls);
 
-        let titleBox = new St.BoxLayout();
+        let titleBox = new St.BoxLayout({
+            style_class: 'message-titlebox',
+            x_expand: true,
+        });
         contentBox.add_actor(titleBox);
 
-        this.titleLabel = new St.Label({ style_class: 'message-title' });
+        this.titleLabel = new St.Label({
+            style_class: 'message-title',
+            y_align: Clutter.ActorAlign.END,
+        });
         this.setTitle(title);
         titleBox.add_actor(this.titleLabel);
 
         this._secondaryBin = new St.Bin({
             style_class: 'message-secondary-bin',
-            x_expand: true, y_expand: true,
+            x_expand: true,
+            y_align: Clutter.ActorAlign.END,
         });
         titleBox.add_actor(this._secondaryBin);
 
         this._closeButton = new St.Button({
             style_class: 'message-close-button',
             icon_name: 'window-close-symbolic',
-            y_align: Clutter.ActorAlign.CENTER,
+            y_align: Clutter.ActorAlign.START,
+            x_align: Clutter.ActorAlign.END,
             opacity: 0,
         });
-        titleBox.add_actor(this._closeButton);
+        hbox.add_actor(this._closeButton);
 
         this._bodyStack = new St.Widget({ x_expand: true });
         this._bodyStack.layout_manager = new LabelExpanderLayout();

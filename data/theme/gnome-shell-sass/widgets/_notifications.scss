@@ -1,39 +1,21 @@
 /* Notifications & Message Tray */
 
-$notification_banner_height: 64px;
-$notification_banner_width: 34em;
-$notification_banner_radius: $base_border_radius*1.5;
+// container for popup notifications
+#notification-container {
+  width: 34em;
+  padding: $base_margin;
+}
 
 // Banner notifications
 .notification-banner {
-  min-height: $notification_banner_height;
-  width: $notification_banner_width;
   box-shadow: 0 2px 4px 2px $shadow_color;
-  border-radius: $notification_banner_radius;
-  margin: $base_margin;
+  border-radius: $base_border_radius*1.5;
 
-  .notification-actions {
-    spacing: 0;
-  }
+  .notification-actions {}
 
   .notification-button {
     @extend %bubble_button;
   }
-}
-
-// counter
-.summary-source-counter {
-  font-size: $base_font_size - 1pt;
-  font-weight: bold;
-  height: 1.6em;
-  width: 1.6em;
-  -shell-counter-overlap-x: 3px;
-  -shell-counter-overlap-y: 3px;
-  background-color: $selected_bg_color;
-  color: $selected_fg_color;
-  border: 2px solid $fg_color;
-  box-shadow: 0 2px 2px rgba(0,0,0,0.5);
-  border-radius: 0.9em; // should be 0.8 but whatever; wish I could do 50%;
 }
 
 // chat bubbles

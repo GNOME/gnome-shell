@@ -23,6 +23,8 @@ class MediaMessage extends MessageList.Message {
     _init(player) {
         super._init('', '');
 
+        this.add_style_class_name('media-message-player');
+
         this._player = player;
 
         this._icon = new St.Icon({ style_class: 'media-message-cover-icon' });
