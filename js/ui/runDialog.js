@@ -240,7 +240,7 @@ class RunDialog extends ModalDialog.ModalDialog {
         }
         this._shouldFadeOut = false;
         this.close();
-        Meta.restart(_("Restarting…"));
+        Meta.restart(_('Restarting…'), global.context);
     }
 
     open() {
