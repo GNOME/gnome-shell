@@ -845,14 +845,18 @@ var ZoomRegion = class ZoomRegion {
             throw new Error(`Failed to validate parent window: ${e}`);
         }
 
-        const focusWindowRect = global.display.focus_window?.get_frame_rect();
-        if (!focusWindowRect)
+        const { focusWindow } = global.display;
+        if (!focusWindow)
             return null;
+
+        let windowRect = focusWindow.get_frame_rect();
+        if (!focusWindow.is_client_decorated())
+            windowRect = focusWindow.frame_rect_to_client_rect(windowRect);
 
         const scaleFactor = St.ThemeContext.get_for_stage(global.stage).scale_factor;
         const screenSpaceExtents = new Atspi.Rect({
-            x: focusWindowRect.x + (scaleFactor * extents.x),
-            y: focusWindowRect.y + (scaleFactor * extents.y),
+            x: windowRect.x + (scaleFactor * extents.x),
+            y: windowRect.y + (scaleFactor * extents.y),
             width: scaleFactor * extents.width,
             height: scaleFactor * extents.height,
         });
