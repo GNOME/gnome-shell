@@ -68,10 +68,6 @@ class AspectContainer extends St.Widget {
 
                 box.x1 += Math.floor(diff / 2);
                 box.x2 -= Math.ceil(diff / 2);
-            } else {
-                /* Restrict vertically, align to bottom */
-                let height = box.get_width() / this._ratio;
-                box.y1 = box.y2 - Math.floor(height);
             }
         }
 
@@ -1779,22 +1775,12 @@ var Keyboard = GObject.registerClass({
         if (!monitor)
             return;
 
-        let maxHeight = monitor.height / 3;
         this.width = monitor.width;
 
-        if (monitor.width > monitor.height) {
-            this.height = maxHeight;
-        } else {
-            /* In portrait mode, lack of horizontal space means we won't be
-             * able to make the OSK that big while keeping size ratio, so
-             * we allow the OSK being smaller than 1/3rd of the monitor height
-             * there.
-             */
-            this.height = -1;
-            const forWidth = this.get_theme_node().adjust_for_width(monitor.width);
-            const [, natHeight] = this.get_preferred_height(forWidth);
-            this.height = Math.min(maxHeight, natHeight);
-        }
+        if (monitor.width > monitor.height)
+            this.height = monitor.height / 3;
+        else
+            this.height = monitor.height / 4;
     }
 
     _updateKeys() {
