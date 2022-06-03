@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: video-subtitles master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2022-04-07 11:58+0000\n"
-"PO-Revision-Date: 2022-04-17 10:33+0000\n"
+"POT-Creation-Date: 2022-05-30 16:25+0000\n"
+"PO-Revision-Date: 2022-06-03 10:21+0200\n"
 "Last-Translator: Fabio Tomat <f.t.public@gmail.com>\n"
 "Language-Team: Friulian <f.t.public@gmail.com>\n"
 "Language: fur\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Editor: HaiPO 1.2 b1\n"
-"X-Generator: Poedit 3.0\n"
+"X-Generator: Poedit 3.0.1\n"
 
 #: data/50-gnome-shell-launchers.xml:6
 msgid "Launchers"
@@ -60,7 +60,7 @@ msgid "Activate favorite application 9"
 msgstr "Ative aplicazion preferide 9"
 
 #. Translators: name of the folder under ~/Pictures for screenshots.
-#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2062
+#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2069
 msgid "Screenshots"
 msgstr "Videadis"
 
@@ -135,9 +135,9 @@ msgstr "UUID des estensions di abilitâ"
 
 #: data/org.gnome.shell.gschema.xml.in:17
 msgid ""
-"GNOME Shell extensions have a UUID property; this key lists extensions which"
-" should be loaded. Any extension that wants to be loaded needs to be in this"
-" list. You can also manipulate this list with the EnableExtension and "
+"GNOME Shell extensions have a UUID property; this key lists extensions which "
+"should be loaded. Any extension that wants to be loaded needs to be in this "
+"list. You can also manipulate this list with the EnableExtension and "
 "DisableExtension D-Bus methods on org.gnome.Shell."
 msgstr ""
 "Lis estensions par GNOME Shell a àn une proprietât UUID: cheste clâf a met "
@@ -151,14 +151,14 @@ msgstr "UUID des estensions di sfuarçâ ae disabilitazion"
 
 #: data/org.gnome.shell.gschema.xml.in:27
 msgid ""
-"GNOME Shell extensions have a UUID property; this key lists extensions which"
-" should be disabled, even if loaded as part of the current mode. You can "
-"also manipulate this list with the EnableExtension and DisableExtension "
-"D-Bus methods on org.gnome.Shell. This key takes precedence over the "
-"“enabled-extensions” setting."
+"GNOME Shell extensions have a UUID property; this key lists extensions which "
+"should be disabled, even if loaded as part of the current mode. You can also "
+"manipulate this list with the EnableExtension and DisableExtension D-Bus "
+"methods on org.gnome.Shell. This key takes precedence over the “enabled-"
+"extensions” setting."
 msgstr ""
-"Lis estensions par GNOME Shell a àn une proprietât UUID: cheste clâf e liste"
-" lis estensions che si à di disabilitâ, ancje se cjariadis come part di une "
+"Lis estensions par GNOME Shell a àn une proprietât UUID: cheste clâf e liste "
+"lis estensions che si à di disabilitâ, ancje se cjariadis come part di une "
 "modalitât atuâl. Al è pussibil ancje modificâ cheste liste cun la modalitât "
 "DBus EnableExtension e DisableExtension su org.gnome.Shell. Cheste clâf e à "
 "precedence su la impostazion “enabled-extensions”."
@@ -185,10 +185,10 @@ msgid ""
 "running version. Enabling this option will disable this check and try to "
 "load all extensions regardless of the versions they claim to support."
 msgstr ""
-"GNOME Shell al cjarie nome lis estensions che a disin di supuartâ la version"
-" di GNOME Shell atualmentri in esecuzion. Abilitant cheste opzion il control"
-" nol vignarà plui fat e al cirarà di cjariâ dutis lis estensions ignorant la"
-" version che a disin di supuartâ."
+"GNOME Shell al cjarie nome lis estensions che a disin di supuartâ la version "
+"di GNOME Shell atualmentri in esecuzion. Abilitant cheste opzion il control "
+"nol vignarà plui fat e al cirarà di cjariâ dutis lis estensions ignorant la "
+"version che a disin di supuartâ."
 
 #: data/org.gnome.shell.gschema.xml.in:54
 msgid "List of desktop file IDs for favorite applications"
@@ -196,8 +196,8 @@ msgstr "Liste di ID di file dal scritori par lis aplicazions preferidis"
 
 #: data/org.gnome.shell.gschema.xml.in:55
 msgid ""
-"The applications corresponding to these identifiers will be displayed in the"
-" favorites area."
+"The applications corresponding to these identifiers will be displayed in the "
+"favorites area."
 msgstr ""
 "Lis aplicazions che a corispuindin a chescj identificadôrs a vignaran "
 "mostrâts te aree dai preferîts."
@@ -206,8 +206,7 @@ msgstr ""
 msgid "History for command (Alt-F2) dialog"
 msgstr "Storic comants pal dialic dai comants (Alt-F2)"
 
-#. Translators: looking glass is a debugger and inspector tool, see
-#. https://wiki.gnome.org/Projects/GnomeShell/LookingGlass
+#. Translators: looking glass is a debugger and inspector tool, see https://wiki.gnome.org/Projects/GnomeShell/LookingGlass
 #: data/org.gnome.shell.gschema.xml.in:67
 msgid "History for the looking glass dialog"
 msgstr "Storic pal dialic looking glass"
@@ -218,8 +217,8 @@ msgstr "Mostre simpri l'element “Jes” tal menu dal utent."
 
 #: data/org.gnome.shell.gschema.xml.in:72
 msgid ""
-"This key overrides the automatic hiding of the “Log out” menu item in "
-"single-user, single-session situations."
+"This key overrides the automatic hiding of the “Log out” menu item in single-"
+"user, single-session situations."
 msgstr ""
 "Cheste clâf e anule il platâ automatic de vôs di menù “Jes” cuant che si è "
 "te modalitât singul-utent, singule-session."
@@ -267,8 +266,8 @@ msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:100
 msgid ""
-"This key determines for which version the “Welcome to GNOME” dialog was last"
-" shown. An empty string represents the oldest possible version, and a huge "
+"This key determines for which version the “Welcome to GNOME” dialog was last "
+"shown. An empty string represents the oldest possible version, and a huge "
 "number will represent versions that do not exist yet. This huge number can "
 "be used to effectively disable the dialog."
 msgstr ""
@@ -317,8 +316,8 @@ msgstr ""
 #: data/org.gnome.shell.gschema.xml.in:164
 msgid "Keybinding to shift between app grid, window picker and session"
 msgstr ""
-"La associazion di tascj par passâ tra la gridele des aplicazions, il seletôr"
-" dai barcons e lis sessions"
+"La associazion di tascj par passâ tra la gridele des aplicazions, il seletôr "
+"dai barcons e lis sessions"
 
 #: data/org.gnome.shell.gschema.xml.in:170
 msgid "Keybinding to open the “Show Applications” view"
@@ -411,13 +410,13 @@ msgstr "La modalitât de icone de aplicazion."
 #: data/org.gnome.shell.gschema.xml.in:275
 msgid ""
 "Configures how the windows are shown in the switcher. Valid possibilities "
-"are “thumbnail-only” (shows a thumbnail of the window), “app-icon-only” "
-"(shows only the application icon) or “both”."
+"are “thumbnail-only” (shows a thumbnail of the window), “app-icon-"
+"only” (shows only the application icon) or “both”."
 msgstr ""
 "Configure cemût che i barcons a saran viodûts intal scambiadôr. Lis "
 "pussibilitâts validis a son “thumbnail-only” (al mostre une anteprime dal "
-"barcon), “app-icon-only” (al mostre nome la icone de aplicazion) o “both” "
-"(al mostre ducj e doi)."
+"barcon), “app-icon-only” (al mostre nome la icone de aplicazion) o "
+"“both” (al mostre ducj e doi)."
 
 #: data/org.gnome.shell.gschema.xml.in:284
 msgid ""
@@ -501,8 +500,8 @@ msgid ""
 "extension can’t be displayed. We recommend that you report the issue to the "
 "extension authors."
 msgstr ""
-"Si scusin, ma si à vût un probleme: lis impostazions par cheste estension no"
-" puedin jessi mostradis. Si consee di segnalâ il probleme ai autôrs de "
+"Si scusin, ma si à vût un probleme: lis impostazions par cheste estension no "
+"puedin jessi mostradis. Si consee di segnalâ il probleme ai autôrs de "
 "estension."
 
 #: js/dbusServices/extensions/ui/extension-error-page.ui:48
@@ -537,23 +536,23 @@ msgstr "Password"
 msgid "Choose Session"
 msgstr "Selezione Session"
 
-#: js/gdm/loginDialog.js:463
+#: js/gdm/loginDialog.js:462
 msgid "Not listed?"
 msgstr "No in liste?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: js/gdm/loginDialog.js:931
+#: js/gdm/loginDialog.js:930
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(p.e., utent o %s)"
 
-#: js/gdm/loginDialog.js:936 js/ui/components/networkAgent.js:253
+#: js/gdm/loginDialog.js:935 js/ui/components/networkAgent.js:253
 #: js/ui/components/networkAgent.js:288 js/ui/components/networkAgent.js:322
 msgid "Username"
 msgstr "Non utent"
 
-#: js/gdm/loginDialog.js:1257
+#: js/gdm/loginDialog.js:1256
 msgid "Login Window"
 msgstr "Barcon di acès"
 
@@ -568,8 +567,7 @@ msgid "(or swipe finger across reader)"
 msgstr "(o passe cul dêt sul letôr)"
 
 #. Translators: this message is shown below the password entry field
-#. to indicate the user can place their finger on the fingerprint reader
-#. instead
+#. to indicate the user can place their finger on the fingerprint reader instead
 #: js/gdm/util.js:611
 msgid "(or place finger on reader)"
 msgstr "(o place il dêt sul letôr)"
@@ -580,8 +578,7 @@ msgctxt "search-result"
 msgid "Power Off"
 msgstr "Distudâ"
 
-#. Translators: A list of keywords that match the power-off action, separated
-#. by semicolons
+#. Translators: A list of keywords that match the power-off action, separated by semicolons
 #: js/misc/systemActions.js:87
 msgid "power off;shutdown;halt;stop"
 msgstr "distudâ;studâ;fermâ"
@@ -592,8 +589,7 @@ msgctxt "search-result"
 msgid "Restart"
 msgstr "Torne invie"
 
-#. Translators: A list of keywords that match the restart action, separated by
-#. semicolons
+#. Translators: A list of keywords that match the restart action, separated by semicolons
 #: js/misc/systemActions.js:95
 msgid "reboot;restart;"
 msgstr "torne invie;torne fâs partî;"
@@ -604,8 +600,7 @@ msgctxt "search-result"
 msgid "Lock Screen"
 msgstr "Bloc schermi"
 
-#. Translators: A list of keywords that match the lock screen action,
-#. separated by semicolons
+#. Translators: A list of keywords that match the lock screen action, separated by semicolons
 #: js/misc/systemActions.js:103
 msgid "lock screen"
 msgstr "bloc schermi"
@@ -616,8 +611,7 @@ msgctxt "search-result"
 msgid "Log Out"
 msgstr "Jessî"
 
-#. Translators: A list of keywords that match the logout action, separated by
-#. semicolons
+#. Translators: A list of keywords that match the logout action, separated by semicolons
 #: js/misc/systemActions.js:111
 msgid "logout;log out;sign off"
 msgstr "jessî;sierâ session;disconeti"
@@ -628,8 +622,7 @@ msgctxt "search-result"
 msgid "Suspend"
 msgstr "Sospindi"
 
-#. Translators: A list of keywords that match the suspend action, separated by
-#. semicolons
+#. Translators: A list of keywords that match the suspend action, separated by semicolons
 #: js/misc/systemActions.js:119
 msgid "suspend;sleep"
 msgstr "sospindi;polse"
@@ -640,14 +633,12 @@ msgctxt "search-result"
 msgid "Switch User"
 msgstr "Cambi Utent"
 
-#. Translators: A list of keywords that match the switch user action,
-#. separated by semicolons
+#. Translators: A list of keywords that match the switch user action, separated by semicolons
 #: js/misc/systemActions.js:127
 msgid "switch user"
 msgstr "cambiâ utent"
 
-#. Translators: A list of keywords that match the lock orientation action,
-#. separated by semicolons
+#. Translators: A list of keywords that match the lock orientation action, separated by semicolons
 #: js/misc/systemActions.js:134
 msgid "lock orientation;unlock orientation;screen;rotation"
 msgstr "bloc orientament;sbloc orientament;schermi;rotazion"
@@ -658,8 +649,7 @@ msgctxt "search-result"
 msgid "Take a Screenshot"
 msgstr "Cature une videade"
 
-#. Translators: A list of keywords that match the screenshot UI action,
-#. separated by semicolons
+#. Translators: A list of keywords that match the screenshot UI action, separated by semicolons
 #: js/misc/systemActions.js:142
 msgid "screenshot;screencast;snip;capture;record"
 msgstr "videade;screenshot;filmât;screencast;taie;cature;regjistre"
@@ -821,8 +811,8 @@ msgid ""
 "information you enter on this page can be viewed by people nearby."
 msgstr ""
 "La tô conession a chest acès hotspot no je sigure. Lis password o altris "
-"informazions che tu inserirâs su cheste pagjine e podaran jessi viodudis des"
-" personis chi ator."
+"informazions che tu inserirâs su cheste pagjine e podaran jessi viodudis des "
+"personis chi ator."
 
 #. No support for non-modal system dialogs, so ignore the option
 #. let modal = options['modal'] || true;
@@ -893,7 +883,7 @@ msgstr "Cufis"
 msgid "Headset"
 msgstr "Cufis cun microfon"
 
-#: js/ui/audioDeviceSelection.js:73 js/ui/status/volume.js:270
+#: js/ui/audioDeviceSelection.js:73 js/ui/status/volume.js:271
 msgid "Microphone"
 msgstr "Microfon"
 
@@ -910,8 +900,7 @@ msgstr "Impostazions visôr"
 msgid "Settings"
 msgstr "Impostazions"
 
-#. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0"
-#. (Sunday) "6" (Saturday) "06" (Sunday and Saturday).
+#. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday).
 #: js/ui/calendar.js:35
 msgctxt "calendar-no-work"
 msgid "06"
@@ -921,6 +910,7 @@ msgstr "06"
 #. *
 #. * NOTE: These grid abbreviations are always shown together
 #. * and in order, e.g. "S M T W T F S".
+#.
 #: js/ui/calendar.js:61
 msgctxt "grid sunday"
 msgid "S"
@@ -967,6 +957,7 @@ msgstr "S"
 #. * standalone, when this is a month of the current year.
 #. * "%OB" is the new format specifier introduced in glibc 2.27,
 #. * in most cases you should not change it.
+#.
 #: js/ui/calendar.js:402
 msgid "%OB"
 msgstr "%OB"
@@ -979,15 +970,16 @@ msgstr "%OB"
 #. * "%OB" is the new format specifier introduced in glibc 2.27,
 #. * in most cases you should not use the old "%B" here unless you
 #. * absolutely know what you are doing.
+#.
 #: js/ui/calendar.js:412
 msgid "%OB %Y"
 msgstr "%OB dal %Y"
 
-#: js/ui/calendar.js:472
+#: js/ui/calendar.js:473
 msgid "Previous month"
 msgstr "Mês indaûr"
 
-#: js/ui/calendar.js:490
+#: js/ui/calendar.js:491
 msgid "Next month"
 msgstr "Prossim mês"
 
@@ -1128,7 +1120,7 @@ msgstr "PIN"
 msgid "A password is required to connect to “%s”."
 msgstr "E covente une password par tacâsi a '%s'."
 
-#: js/ui/components/networkAgent.js:735 js/ui/status/network.js:1751
+#: js/ui/components/networkAgent.js:735 js/ui/status/network.js:1819
 msgid "Network Manager"
 msgstr "Ministradôr di rêt"
 
@@ -1179,6 +1171,7 @@ msgstr "Slanç"
 #. * shown - it is shown just below the time in the top bar (e.g.,
 #. * "Tue 9:29 AM").  The string itself should become a full date, e.g.,
 #. * "February 17 2015".
+#.
 #: js/ui/dateMenu.js:83
 msgid "%B %-d %Y"
 msgstr "%-d di %B dal %Y"
@@ -1186,19 +1179,18 @@ msgstr "%-d di %B dal %Y"
 #. Translators: This is the accessible name of the date button shown
 #. * below the time in the shell; it should combine the weekday and the
 #. * date, e.g. "Tuesday February 17 2015".
+#.
 #: js/ui/dateMenu.js:90
 msgid "%A %B %e %Y"
 msgstr "%A %e di %B dal %Y"
 
-#. Translators: Shown on calendar heading when selected day occurs on current
-#. year
+#. Translators: Shown on calendar heading when selected day occurs on current year
 #: js/ui/dateMenu.js:156
 msgctxt "calendar heading"
 msgid "%B %-d"
 msgstr "%-d di %B"
 
-#. Translators: Shown on calendar heading when selected day occurs on
-#. different year
+#. Translators: Shown on calendar heading when selected day occurs on different year
 #: js/ui/dateMenu.js:159
 msgctxt "calendar heading"
 msgid "%B %-d %Y"
@@ -1214,6 +1206,7 @@ msgstr "Doman"
 
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
+#.
 #: js/ui/dateMenu.js:200
 msgctxt "event list time"
 msgid "All Day"
@@ -1221,6 +1214,7 @@ msgstr "Dut il dì"
 
 #. Translators: Shown in calendar event list as the start/end of events
 #. * that only show day and month
+#.
 #: js/ui/dateMenu.js:222
 msgid "%m/%d"
 msgstr "%d/%m"
@@ -1237,23 +1231,23 @@ msgstr "Zonte orlois mondiâi…"
 msgid "World Clocks"
 msgstr "Orlois mondiâi"
 
-#: js/ui/dateMenu.js:681
+#: js/ui/dateMenu.js:699
 msgid "Loading…"
 msgstr "Daûr a cjariâ…"
 
-#: js/ui/dateMenu.js:691
+#: js/ui/dateMenu.js:709
 msgid "Go online for weather information"
 msgstr "Va in rêt pes informazions sul timp"
 
-#: js/ui/dateMenu.js:693
+#: js/ui/dateMenu.js:711
 msgid "Weather information is currently unavailable"
 msgstr "Lis informazions sul timp al moment no son disponibilis"
 
-#: js/ui/dateMenu.js:703
+#: js/ui/dateMenu.js:721
 msgid "Weather"
 msgstr "Timp"
 
-#: js/ui/dateMenu.js:705
+#: js/ui/dateMenu.js:723
 msgid "Select weather location…"
 msgstr "Selezione posizion meteo…"
 
@@ -1343,16 +1337,15 @@ msgstr "Torne a inviâ e instale inzornaments"
 
 #: js/ui/endSessionDialog.js:106
 #, javascript-format
-msgid ""
-"The system will automatically restart and install updates in %d second."
+msgid "The system will automatically restart and install updates in %d second."
 msgid_plural ""
 "The system will automatically restart and install updates in %d seconds."
 msgstr[0] ""
-"Il sisteme al tornarà a inviâsi in automatic instalant i inzornaments chi di"
-" %d secont."
+"Il sisteme al tornarà a inviâsi in automatic instalant i inzornaments chi di "
+"%d secont."
 msgstr[1] ""
-"Il sisteme al tornarà a inviâsi in automatic instalant i inzornaments chi di"
-" %d seconts."
+"Il sisteme al tornarà a inviâsi in automatic instalant i inzornaments chi di "
+"%d seconts."
 
 #: js/ui/endSessionDialog.js:113 js/ui/endSessionDialog.js:134
 msgctxt "button"
@@ -1383,9 +1376,9 @@ msgid ""
 "%s %s will be installed after restart. Upgrade installation can take a long "
 "time: ensure that you have backed up and that the computer is plugged in."
 msgstr ""
-"%s %s al vignarà instalât dopo vê tornât a inviâ il computer. La instalazion"
-" dal avanzament e pues tirâ a dilunc: siguriti di vê fat i backup e che il "
-"to computer al sedi tacât."
+"%s %s al vignarà instalât dopo vê tornât a inviâ il computer. La instalazion "
+"dal avanzament e pues tirâ a dilunc: siguriti di vê fat i backup e che il to "
+"computer al sedi tacât."
 
 #: js/ui/endSessionDialog.js:287
 msgid "Low battery power: please plug in before installing updates."
@@ -1477,11 +1470,11 @@ msgstr "Tascj lents disativâts"
 
 #: js/ui/kbdA11yDialog.js:34
 msgid ""
-"You just held down the Shift key for 8 seconds. This is the shortcut for the"
-" Slow Keys feature, which affects the way your keyboard works."
+"You just held down the Shift key for 8 seconds. This is the shortcut for the "
+"Slow Keys feature, which affects the way your keyboard works."
 msgstr ""
-"Si à apene tignût fracât par 8 seconts il tast Maiusc. Chê e je la scurte pe"
-" funzion tascj lents, che e determine il mût di lavorâ de tastiere."
+"Si à apene tignût fracât par 8 seconts il tast Maiusc. Chê e je la scurte pe "
+"funzion tascj lents, che e determine il mût di lavorâ de tastiere."
 
 #: js/ui/kbdA11yDialog.js:40
 msgid "Sticky Keys Turned On"
@@ -1496,8 +1489,8 @@ msgid ""
 "You just pressed the Shift key 5 times in a row. This is the shortcut for "
 "the Sticky Keys feature, which affects the way your keyboard works."
 msgstr ""
-"Si à apene fracât par 5 voltis, une daûr di chê altre, il tast Maiusc. Chê e"
-" je la scurte pe funzion Tascj singui/tacadiçs, che e determine il mût di "
+"Si à apene fracât par 5 voltis, une daûr di chê altre, il tast Maiusc. Chê e "
+"je la scurte pe funzion Tascj singui/tacadiçs, che e determine il mût di "
 "lavorâ de tastiere."
 
 #: js/ui/kbdA11yDialog.js:45
@@ -1521,9 +1514,9 @@ msgstr "Impie"
 
 #: js/ui/kbdA11yDialog.js:65 js/ui/status/bluetooth.js:174
 #: js/ui/status/network.js:160 js/ui/status/network.js:336
-#: js/ui/status/network.js:1341 js/ui/status/network.js:1456
-#: js/ui/status/nightLight.js:41 js/ui/status/rfkill.js:81
-#: js/ui/status/rfkill.js:110
+#: js/ui/status/network.js:1341 js/ui/status/network.js:1449
+#: js/ui/status/network.js:1520 js/ui/status/nightLight.js:41
+#: js/ui/status/rfkill.js:81 js/ui/status/rfkill.js:110
 msgid "Turn Off"
 msgstr "Distude"
 
@@ -1535,51 +1528,51 @@ msgstr "Lasse disativât"
 msgid "Region & Language Settings"
 msgstr "Impostazions regjon e lenghe"
 
-#: js/ui/lookingGlass.js:701
+#: js/ui/lookingGlass.js:712
 msgid "No extensions installed"
 msgstr "Nissune estension instalade"
 
 #. Translators: argument is an extension UUID.
-#: js/ui/lookingGlass.js:762
+#: js/ui/lookingGlass.js:773
 #, javascript-format
 msgid "%s has not emitted any errors."
 msgstr "%s nol a dât fûr nissun erôr."
 
-#: js/ui/lookingGlass.js:768
+#: js/ui/lookingGlass.js:779
 msgid "Hide Errors"
 msgstr "Tapone Erôrs"
 
-#: js/ui/lookingGlass.js:772 js/ui/lookingGlass.js:845
+#: js/ui/lookingGlass.js:783 js/ui/lookingGlass.js:856
 msgid "Show Errors"
 msgstr "Mostre Erôrs"
 
-#: js/ui/lookingGlass.js:781
+#: js/ui/lookingGlass.js:792
 msgid "Enabled"
 msgstr "Abilitât"
 
 #. translators:
 #. * The device has been disabled
-#: js/ui/lookingGlass.js:784 subprojects/gvc/gvc-mixer-control.c:1900
+#: js/ui/lookingGlass.js:795 subprojects/gvc/gvc-mixer-control.c:1900
 msgid "Disabled"
 msgstr "Disabilitât"
 
-#: js/ui/lookingGlass.js:786
+#: js/ui/lookingGlass.js:797
 msgid "Error"
 msgstr "Erôr"
 
-#: js/ui/lookingGlass.js:788
+#: js/ui/lookingGlass.js:799
 msgid "Out of date"
 msgstr "No inzornât"
 
-#: js/ui/lookingGlass.js:790
+#: js/ui/lookingGlass.js:801
 msgid "Downloading"
 msgstr "Daur a scjamâ"
 
-#: js/ui/lookingGlass.js:823
+#: js/ui/lookingGlass.js:834
 msgid "View Source"
 msgstr "Viôt sorzint"
 
-#: js/ui/lookingGlass.js:834
+#: js/ui/lookingGlass.js:845
 msgid "Web Page"
 msgstr "Pagjine Web"
 
@@ -1604,8 +1597,16 @@ msgid ""
 "Running a session as a privileged user should be avoided for security "
 "reasons. If possible, you should log in as a normal user."
 msgstr ""
-"Si varès di evitâ di eseguî une session come utent privilegjât par resons di"
-" sigurece. Se pussibil, tu varessis di jentrâ come utent normâl."
+"Si varès di evitâ di eseguî une session come utent privilegjât par resons di "
+"sigurece. Se pussibil, tu varessis di jentrâ come utent normâl."
+
+#: js/ui/main.js:364
+msgid "Screen Lock disabled"
+msgstr "Bloc dal schermi disabilitât"
+
+#: js/ui/main.js:365
+msgid "Screen Locking requires the GNOME display manager."
+msgstr "Il bloc dal schermi al à bisugne dal gjestôr dai visôrs di GNOME."
 
 #: js/ui/messageTray.js:1418
 msgid "System Information"
@@ -1637,48 +1638,48 @@ msgstr "Aplicazions"
 msgid "Overview"
 msgstr "Panoramiche"
 
-#: js/ui/padOsd.js:97
+#: js/ui/padOsd.js:100
 msgid "New shortcut…"
 msgstr "Gnove scurte…"
 
-#: js/ui/padOsd.js:148
+#: js/ui/padOsd.js:154
 msgid "Application defined"
 msgstr "Aplicazion definide"
 
-#: js/ui/padOsd.js:149
+#: js/ui/padOsd.js:155
 msgid "Show on-screen help"
 msgstr "Mostre jutori a schermi"
 
-#: js/ui/padOsd.js:150
+#: js/ui/padOsd.js:156
 msgid "Switch monitor"
 msgstr "Cambie visôr"
 
-#: js/ui/padOsd.js:151
+#: js/ui/padOsd.js:157
 msgid "Assign keystroke"
 msgstr "Assegne batidure"
 
-#: js/ui/padOsd.js:220
+#: js/ui/padOsd.js:226
 msgid "Done"
 msgstr "Fat"
 
-#: js/ui/padOsd.js:737
+#: js/ui/padOsd.js:743
 msgid "Edit…"
 msgstr "Modifiche…"
 
 # masculin o feminin
-#: js/ui/padOsd.js:779 js/ui/padOsd.js:896
+#: js/ui/padOsd.js:785 js/ui/padOsd.js:902
 msgid "None"
 msgstr "Nissune"
 
-#: js/ui/padOsd.js:850
+#: js/ui/padOsd.js:856
 msgid "Press a button to configure"
 msgstr "Frache un boton par configurâ"
 
-#: js/ui/padOsd.js:851
+#: js/ui/padOsd.js:857
 msgid "Press Esc to exit"
 msgstr "Frache Esc par jessî"
 
-#: js/ui/padOsd.js:854
+#: js/ui/padOsd.js:860
 msgid "Press any key to exit"
 msgstr "Frache un tast par jessî"
 
@@ -1720,6 +1721,7 @@ msgstr "GNOME al à di blocâ il visôr"
 #. screenshield. The user is probably very upset at this
 #. point, but any application using global grabs is broken
 #. Just tell them to stop using this app
+#.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
 #: js/ui/screenShield.js:269 js/ui/screenShield.js:644
@@ -1730,91 +1732,91 @@ msgstr "Impussibil blocâ"
 msgid "Lock was blocked by an application"
 msgstr "Il bloc al è stât dineât di une aplicazion"
 
-#: js/ui/screenshot.js:1148
+#: js/ui/screenshot.js:1149
 msgid "Selection"
 msgstr "Selezion"
 
-#: js/ui/screenshot.js:1158
+#: js/ui/screenshot.js:1159
 msgid "Area Selection"
 msgstr "Selezion de aree"
 
-#: js/ui/screenshot.js:1163
+#: js/ui/screenshot.js:1164
 msgid "Screen"
 msgstr "Schermi"
 
-#: js/ui/screenshot.js:1173
+#: js/ui/screenshot.js:1174
 msgid "Screen Selection"
 msgstr "Selezion dal schermi"
 
-#: js/ui/screenshot.js:1178
+#: js/ui/screenshot.js:1179
 msgid "Window"
 msgstr "Barcon"
 
-#: js/ui/screenshot.js:1188
+#: js/ui/screenshot.js:1189
 msgid "Window Selection"
 msgstr "Selezion dal barcon"
 
-#: js/ui/screenshot.js:1225
+#: js/ui/screenshot.js:1227
 msgid "Screenshot / Screencast"
 msgstr "Videade / Filmât"
 
-#: js/ui/screenshot.js:1261
+#: js/ui/screenshot.js:1263
 msgid "Show Pointer"
 msgstr "Mostre pontadôr"
 
 #. Translators: this is the folder where recorded
 #. screencasts are stored.
-#: js/ui/screenshot.js:1828
+#: js/ui/screenshot.js:1835
 msgid "Screencasts"
 msgstr "Filmâts di schermi"
 
 #. Translators: this is a filename used for screencast
 #. * recording, where "%d" and "%t" date and time, e.g.
 #. * "Screencast from 07-17-2013 10:00:46 PM.webm"
-#: js/ui/screenshot.js:1833
+#: js/ui/screenshot.js:1840
 #, no-c-format
 msgid "Screencast from %d %t.webm"
 msgstr "Filmât di %d %t.webm"
 
 #. Translators: notification source name.
-#: js/ui/screenshot.js:1902 js/ui/screenshot.js:2115
+#: js/ui/screenshot.js:1909 js/ui/screenshot.js:2122
 msgid "Screenshot"
 msgstr "Videade"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:1908
+#: js/ui/screenshot.js:1915
 msgid "Screencast recorded"
 msgstr "Filmât dal schermi regjistrât"
 
 #. Translators: notification body when a screencast was recorded.
-#: js/ui/screenshot.js:1910
+#: js/ui/screenshot.js:1917
 msgid "Click here to view the video."
 msgstr "Fâs clic achì par viodi il video."
 
 #. Translators: button on the screencast notification.
 #. Translators: button on the screenshot notification.
-#: js/ui/screenshot.js:1913 js/ui/screenshot.js:2129
+#: js/ui/screenshot.js:1920 js/ui/screenshot.js:2136
 msgid "Show in Files"
 msgstr "Mostre in Files"
 
 #. Translators: this is the name of the file that the screenshot is
 #. saved to. The placeholder is a timestamp, e.g. "2017-05-21 12-24-03".
-#: js/ui/screenshot.js:2075
+#: js/ui/screenshot.js:2082
 #, javascript-format
 msgid "Screenshot from %s"
 msgstr "Videade di %s"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2121
+#: js/ui/screenshot.js:2128
 msgid "Screenshot captured"
 msgstr "Videade caturade"
 
 #. Translators: notification body when a screenshot was captured.
-#: js/ui/screenshot.js:2123
+#: js/ui/screenshot.js:2130
 msgid "You can paste the image from the clipboard."
 msgstr "Tu puedis tacâ la imagjin da lis notis."
 
-#: js/ui/screenshot.js:2176 js/ui/screenshot.js:2341
+#: js/ui/screenshot.js:2183 js/ui/screenshot.js:2348
 msgid "Screenshot taken"
 msgstr "Videade caturade"
 
@@ -2069,8 +2071,7 @@ msgstr "%s distudât"
 msgid "%s Connected"
 msgstr "%s tacât"
 
-#. Translators: this is for network devices that are physically present but
-#. are not
+#. Translators: this is for network devices that are physically present but are not
 #. under NetworkManager's control (and thus cannot be used in the menu);
 #. %s is a network identifier
 #: js/ui/status/network.js:444
@@ -2090,23 +2091,20 @@ msgstr "%s daûr a disconeti"
 msgid "%s Connecting"
 msgstr "%s in conession"
 
-#. Translators: this is for network connections that require some kind of key
-#. or password; %s is a network identifier
+#. Translators: this is for network connections that require some kind of key or password; %s is a network identifier
 #: js/ui/status/network.js:457
 #, javascript-format
 msgid "%s Requires Authentication"
 msgstr "%s al à dibisugne di autenticazion"
 
-#. Translators: this is for devices that require some kind of firmware or
-#. kernel
+#. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing; %s is a network identifier
 #: js/ui/status/network.js:465
 #, javascript-format
 msgid "Firmware Missing For %s"
 msgstr "Al mancje il firmware par %s"
 
-#. Translators: this is for a network device that cannot be activated (for
-#. example it
+#. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage; %s is a network identifier
 #: js/ui/status/network.js:469
 #, javascript-format
@@ -2204,62 +2202,77 @@ msgstr "Hotspot %s atîf"
 msgid "%s Not Connected"
 msgstr "%s distacât"
 
-#: js/ui/status/network.js:1473
+#: js/ui/status/network.js:1461
+msgid "unknown"
+msgstr "no cognossût"
+
+#: js/ui/status/network.js:1463
+msgid "activating…"
+msgstr "in ativazion…"
+
+#: js/ui/status/network.js:1467
+msgid "deactivating…"
+msgstr "disativazion…"
+
+#: js/ui/status/network.js:1469
+msgid "deactivated"
+msgstr "disativât"
+
+#: js/ui/status/network.js:1537
 msgid "connecting…"
 msgstr "daûr a coneti…"
 
-#. Translators: this is for network connections that require some kind of key
-#. or password
-#: js/ui/status/network.js:1476
+#. Translators: this is for network connections that require some kind of key or password
+#: js/ui/status/network.js:1540
 msgid "authentication required"
 msgstr "autenticazion necessarie"
 
-#: js/ui/status/network.js:1478
+#: js/ui/status/network.js:1542
 msgid "connection failed"
 msgstr "conession falide"
 
-#: js/ui/status/network.js:1524
+#: js/ui/status/network.js:1588
 msgid "VPN Settings"
 msgstr "Impostazions VPN"
 
-#: js/ui/status/network.js:1541
+#: js/ui/status/network.js:1605
 msgid "VPN"
 msgstr "VPN"
 
-#: js/ui/status/network.js:1551
+#: js/ui/status/network.js:1615
 msgid "VPN Off"
 msgstr "VPN distudât"
 
-#: js/ui/status/network.js:1612 js/ui/status/rfkill.js:84
+#: js/ui/status/network.js:1679 js/ui/status/rfkill.js:84
 msgid "Network Settings"
 msgstr "Impostazions rêt"
 
-#: js/ui/status/network.js:1640
+#: js/ui/status/network.js:1707
 #, javascript-format
 msgid "%s Wired Connection"
 msgid_plural "%s Wired Connections"
 msgstr[0] "%s conession cablade"
 msgstr[1] "%s conessions cabladis"
 
-#: js/ui/status/network.js:1644
+#: js/ui/status/network.js:1711
 #, javascript-format
 msgid "%s Wi-Fi Connection"
 msgid_plural "%s Wi-Fi Connections"
 msgstr[0] "%s conession cence fîi"
 msgstr[1] "%s conessions cence fîi"
 
-#: js/ui/status/network.js:1648
+#: js/ui/status/network.js:1715
 #, javascript-format
 msgid "%s Modem Connection"
 msgid_plural "%s Modem Connections"
 msgstr[0] "%s conession modem"
 msgstr[1] "%s conessions modem"
 
-#: js/ui/status/network.js:1792
+#: js/ui/status/network.js:1860
 msgid "Connection failed"
 msgstr "Conession falide"
 
-#: js/ui/status/network.js:1793
+#: js/ui/status/network.js:1861
 msgid "Activation of network connection failed"
 msgstr "Ativazion de conession di rêt falide"
 
@@ -2413,37 +2426,55 @@ msgstr "Erôr di autorizazion di Thunderbolt"
 msgid "Could not authorize the Thunderbolt device: %s"
 msgstr "Impussibil autorizâ il dispositîf Thunderbolt: %s"
 
-#: js/ui/status/volume.js:158
+#: js/ui/status/volume.js:159
 msgid "Volume changed"
 msgstr "Volum modificât"
 
-#: js/ui/status/volume.js:220
+#: js/ui/status/volume.js:221
 msgid "Volume"
 msgstr "Volum"
 
 #. Translators: this is for display mirroring i.e. cloning.
 #. * Try to keep it under around 15 characters.
+#.
 #: js/ui/switchMonitor.js:20
 msgid "Mirror"
 msgstr "Sdopleâ"
 
 #. Translators: this is for the desktop spanning displays.
 #. * Try to keep it under around 15 characters.
+#.
 #: js/ui/switchMonitor.js:29
 msgid "Join Displays"
 msgstr "Unìs schermis"
 
 #. Translators: this is for using only an external display.
 #. * Try to keep it under around 15 characters.
+#.
 #: js/ui/switchMonitor.js:39
 msgid "External Only"
 msgstr "Dome esterni"
 
 #. Translators: this is for using only the laptop display.
 #. * Try to keep it under around 15 characters.
+#.
 #: js/ui/switchMonitor.js:47
 msgid "Built-in Only"
 msgstr "Dome incorporât"
+
+#. Translators: This is a time format for a date in
+#. long format
+#: js/ui/unlockDialog.js:364
+msgid "%A %B %-d"
+msgstr "%A %-d di %B"
+
+#: js/ui/unlockDialog.js:370
+msgid "Swipe up to unlock"
+msgstr "Scor in sù par sblocâ"
+
+#: js/ui/unlockDialog.js:371
+msgid "Click or press a key to unlock"
+msgstr "Fâs clic o frache un tast par sblocâ"
 
 #: js/ui/unlockDialog.js:554
 msgid "Unlock Window"
@@ -2673,7 +2704,7 @@ msgstr "Gjave"
 
 #: subprojects/extensions-app/js/main.js:209
 msgid "translator-credits"
-msgstr "Fabio Tomat <f.t.public@gmail.com>, 2021"
+msgstr "Fabio Tomat <f.t.public@gmail.com>, 2022"
 
 #: subprojects/extensions-app/js/main.js:337
 #, javascript-format
@@ -2713,8 +2744,8 @@ msgstr "Informazions su Estensions"
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:84
 msgid ""
-"Extensions can cause performance and stability issues. Disable extensions if"
-" you encounter problems with your system."
+"Extensions can cause performance and stability issues. Disable extensions if "
+"you encounter problems with your system."
 msgstr ""
 "Estensions al pues causâ problemis di prestazions e stabilitât. Disabilite "
 "estensions se ti capitin problemis cul sisteme."
@@ -2726,11 +2757,11 @@ msgstr "Instalât a man"
 #: subprojects/extensions-app/data/ui/extensions-window.ui:99
 #: subprojects/extensions-app/data/ui/extensions-window.ui:134
 msgid ""
-"To find and add extensions, visit <a "
-"href=\"https://extensions.gnome.org\">extensions.gnome.org</a>."
+"To find and add extensions, visit <a href=\"https://extensions.gnome.org"
+"\">extensions.gnome.org</a>."
 msgstr ""
-"Par cirî e zontâ estensions, visite <a "
-"href=\"https://extensions.gnome.org\">extensions.gnome.org</a>."
+"Par cirî e zontâ estensions, visite <a href=\"https://extensions.gnome.org"
+"\">extensions.gnome.org</a>."
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:112
 msgid "Built-In"
@@ -2782,7 +2813,8 @@ msgid ""
 "Description is a single-sentence explanation of what your extension does.\n"
 "Examples are: %s"
 msgstr ""
-"La descrizion e je une spiegazion fate di une frase singule su ce che la estension e fâs.\n"
+"La descrizion e je une spiegazion fate di une frase singule su ce che la "
+"estension e fâs.\n"
 "Esemplis a son: %s"
 
 #: subprojects/extensions-tool/src/command-create.c:322
@@ -2793,10 +2825,12 @@ msgstr "Descrizion"
 #: subprojects/extensions-tool/src/command-create.c:336
 msgid ""
 "UUID is a globally-unique identifier for your extension.\n"
-"This should be in the format of an email address (clicktofocus@janedoe.example.com)\n"
+"This should be in the format of an email address (clicktofocus@janedoe."
+"example.com)\n"
 msgstr ""
 "Il UUID al è un identificadôr unic e globâl pe tô estension.\n"
-"Chest al à di jessi tal formât di une direzion e-mail (clicparfocalizâ@titedalfari.esempli.com)\n"
+"Chest al à di jessi tal formât di une direzion e-mail "
+"(clicparfocalizâ@titedalfari.esempli.com)\n"
 
 #: subprojects/extensions-tool/src/command-create.c:363
 msgid "Choose one of the available templates:\n"
@@ -3184,21 +3218,6 @@ msgstr "Suns di sisteme"
 #~ msgid "Add to Favorites"
 #~ msgstr "Zonte tai preferîts"
 
-#~ msgid "Screen Lock disabled"
-#~ msgstr "Bloc dal schermi disabilitât"
-
-#~ msgid "Screen Locking requires the GNOME display manager."
-#~ msgstr "Il bloc dal schermi al à bisugne dal gjestôr dai visôrs di GNOME."
-
-#~ msgid "%A %B %-d"
-#~ msgstr "%A %-d di %B"
-
-#~ msgid "Swipe up to unlock"
-#~ msgstr "Scor in sù par sblocâ"
-
-#~ msgid "Click or press a key to unlock"
-#~ msgstr "Fâs clic o frache un tast par sblocâ"
-
 #~ msgid "Author"
 #~ msgstr "Autôr"
 
@@ -3206,20 +3225,20 @@ msgstr "Suns di sisteme"
 #~ msgstr "Avertiment"
 
 #~ msgid ""
-#~ "Extensions can cause system issues, including performance problems. If you "
-#~ "encounter problems with your system, it is recommended to disable all "
+#~ "Extensions can cause system issues, including performance problems. If "
+#~ "you encounter problems with your system, it is recommended to disable all "
 #~ "extensions."
 #~ msgstr ""
-#~ "Lis estensions a puedin causâ problemis al sisteme, includûts problemis di "
-#~ "prestazion. Se si verifichin problemis cul vuestri sisteme, si consee di "
-#~ "disabilitâ dutis lis estensions."
+#~ "Lis estensions a puedin causâ problemis al sisteme, includûts problemis "
+#~ "di prestazion. Se si verifichin problemis cul vuestri sisteme, si consee "
+#~ "di disabilitâ dutis lis estensions."
 
 #~ msgid "Enable introspection API"
 #~ msgstr "Abilite la API di introspezion"
 
 #~ msgid ""
-#~ "Enables a D-Bus API that allows to introspect the application state of the "
-#~ "shell."
+#~ "Enables a D-Bus API that allows to introspect the application state of "
+#~ "the shell."
 #~ msgstr ""
 #~ "Al abilite une API di D-Bus che e permet la introspezion dal stât de "
 #~ "aplicazion de shell."
@@ -3349,8 +3368,8 @@ msgstr "Suns di sisteme"
 
 #~ msgid "There was an error loading the preferences dialog for %s:"
 #~ msgstr ""
-#~ "Al è vignût fûr un erôr cuant che si cjamave il dialic des preferencis par "
-#~ "%s:"
+#~ "Al è vignût fûr un erôr cuant che si cjamave il dialic des preferencis "
+#~ "par %s:"
 
 #~ msgctxt "search-result"
 #~ msgid "Power off"
@@ -3414,7 +3433,8 @@ msgstr "Suns di sisteme"
 
 #~ msgid "GNOME Help lets you explore them easily through its interface."
 #~ msgstr ""
-#~ "Il Jutori di GNOME ti permet di esplorâju in mût facil cun la sô interface."
+#~ "Il Jutori di GNOME ti permet di esplorâju in mût facil cun la sô "
+#~ "interface."
 
 #~ msgid "Want to know what documents have to offer?"
 #~ msgstr "Vûstu cognossi ce che documents al à di ufrî?"
@@ -3487,7 +3507,8 @@ msgstr "Suns di sisteme"
 
 #~ msgid "Together, Help, Developer Center and the Sysadmin Guide.."
 #~ msgstr ""
-#~ "Adun, Jutori, Centri dal Svilupadôr e la Guide dal Aministradôr di sisteme.."
+#~ "Adun, Jutori, Centri dal Svilupadôr e la Guide dal Aministradôr di "
+#~ "sisteme.."
 
 #~ msgid "..makes up GNOMEs documentation."
 #~ msgstr "..a fasin la documentazion di GNOME."
