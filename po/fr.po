@@ -18,14 +18,15 @@
 # Thibault Martin <mail@thibaultmart.in>, 2020.
 # Guillaume Bernard <associations@guillaume-bernard.fr>, 2021.
 # Charles Monzat <charles.monzat@free.fr>, 2016-2022.
+# Irénée THIRION <irenee.thirion@e.email>, 2022.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master fr\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2022-05-07 17:06+0000\n"
-"PO-Revision-Date: 2022-05-16 10:32+0200\n"
-"Last-Translator: Charles Monzat <charles.monzat@free.fr>\n"
+"POT-Creation-Date: 2022-05-28 10:53+0000\n"
+"PO-Revision-Date: 2022-06-03 16:01+0200\n"
+"Last-Translator: Irénée THIRION <irenee.thirion@e.email>\n"
 "Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
@@ -563,23 +564,23 @@ msgstr "Mot de passe"
 msgid "Choose Session"
 msgstr "Choisir une session"
 
-#: js/gdm/loginDialog.js:463
+#: js/gdm/loginDialog.js:462
 msgid "Not listed?"
 msgstr "Absent de la liste ?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: js/gdm/loginDialog.js:931
+#: js/gdm/loginDialog.js:930
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(par ex. utilisateur ou %s)"
 
-#: js/gdm/loginDialog.js:936 js/ui/components/networkAgent.js:253
+#: js/gdm/loginDialog.js:935 js/ui/components/networkAgent.js:253
 #: js/ui/components/networkAgent.js:288 js/ui/components/networkAgent.js:322
 msgid "Username"
 msgstr "Nom d’utilisateur"
 
-#: js/gdm/loginDialog.js:1257
+#: js/gdm/loginDialog.js:1256
 msgid "Login Window"
 msgstr "Fenêtre de connexion"
 
@@ -910,7 +911,7 @@ msgstr "Casque audio"
 msgid "Headset"
 msgstr "Micro-casque"
 
-#: js/ui/audioDeviceSelection.js:73 js/ui/status/volume.js:270
+#: js/ui/audioDeviceSelection.js:73 js/ui/status/volume.js:271
 msgid "Microphone"
 msgstr "Microphone"
 
@@ -1002,11 +1003,11 @@ msgstr "%OB"
 msgid "%OB %Y"
 msgstr "%OB %Y"
 
-#: js/ui/calendar.js:472
+#: js/ui/calendar.js:473
 msgid "Previous month"
 msgstr "Mois précédent"
 
-#: js/ui/calendar.js:490
+#: js/ui/calendar.js:491
 msgid "Next month"
 msgstr "Mois suivant"
 
@@ -1148,7 +1149,7 @@ msgstr "PIN"
 msgid "A password is required to connect to “%s”."
 msgstr "Un mot de passe est requis pour se connecter à « %s »."
 
-#: js/ui/components/networkAgent.js:735 js/ui/status/network.js:1751
+#: js/ui/components/networkAgent.js:735 js/ui/status/network.js:1819
 msgid "Network Manager"
 msgstr "Gestionnaire de réseau"
 
@@ -1298,23 +1299,23 @@ msgstr "Ajouter des horloges mondiales…"
 msgid "World Clocks"
 msgstr "Horloges mondiales"
 
-#: js/ui/dateMenu.js:681
+#: js/ui/dateMenu.js:699
 msgid "Loading…"
 msgstr "Chargement…"
 
-#: js/ui/dateMenu.js:691
+#: js/ui/dateMenu.js:709
 msgid "Go online for weather information"
 msgstr "Chercher les informations météorologiques en ligne"
 
-#: js/ui/dateMenu.js:693
+#: js/ui/dateMenu.js:711
 msgid "Weather information is currently unavailable"
 msgstr "Les informations météorologiques ne sont pas disponibles actuellement"
 
-#: js/ui/dateMenu.js:703
+#: js/ui/dateMenu.js:721
 msgid "Weather"
 msgstr "Météo"
 
-#: js/ui/dateMenu.js:705
+#: js/ui/dateMenu.js:723
 msgid "Select weather location…"
 msgstr "Choisir un emplacement pour la météo…"
 
@@ -1578,9 +1579,9 @@ msgstr "Activer"
 
 #: js/ui/kbdA11yDialog.js:65 js/ui/status/bluetooth.js:174
 #: js/ui/status/network.js:160 js/ui/status/network.js:336
-#: js/ui/status/network.js:1341 js/ui/status/network.js:1456
-#: js/ui/status/nightLight.js:41 js/ui/status/rfkill.js:81
-#: js/ui/status/rfkill.js:110
+#: js/ui/status/network.js:1341 js/ui/status/network.js:1449
+#: js/ui/status/network.js:1520 js/ui/status/nightLight.js:41
+#: js/ui/status/rfkill.js:81 js/ui/status/rfkill.js:110
 msgid "Turn Off"
 msgstr "Éteindre"
 
@@ -1592,51 +1593,51 @@ msgstr "Laisser éteint"
 msgid "Region & Language Settings"
 msgstr "Paramètres de langue et région"
 
-#: js/ui/lookingGlass.js:710
+#: js/ui/lookingGlass.js:712
 msgid "No extensions installed"
 msgstr "Aucune extension installée"
 
 #. Translators: argument is an extension UUID.
-#: js/ui/lookingGlass.js:771
+#: js/ui/lookingGlass.js:773
 #, javascript-format
 msgid "%s has not emitted any errors."
 msgstr "%s n’a émis aucune erreur."
 
-#: js/ui/lookingGlass.js:777
+#: js/ui/lookingGlass.js:779
 msgid "Hide Errors"
 msgstr "Masquer les erreurs"
 
-#: js/ui/lookingGlass.js:781 js/ui/lookingGlass.js:854
+#: js/ui/lookingGlass.js:783 js/ui/lookingGlass.js:856
 msgid "Show Errors"
 msgstr "Afficher les erreurs"
 
-#: js/ui/lookingGlass.js:790
+#: js/ui/lookingGlass.js:792
 msgid "Enabled"
 msgstr "Activé"
 
 #. translators:
 #. * The device has been disabled
-#: js/ui/lookingGlass.js:793 subprojects/gvc/gvc-mixer-control.c:1900
+#: js/ui/lookingGlass.js:795 subprojects/gvc/gvc-mixer-control.c:1900
 msgid "Disabled"
 msgstr "Désactivé"
 
-#: js/ui/lookingGlass.js:795
+#: js/ui/lookingGlass.js:797
 msgid "Error"
 msgstr "Erreur"
 
-#: js/ui/lookingGlass.js:797
+#: js/ui/lookingGlass.js:799
 msgid "Out of date"
 msgstr "Périmé"
 
-#: js/ui/lookingGlass.js:799
+#: js/ui/lookingGlass.js:801
 msgid "Downloading"
 msgstr "Téléchargement"
 
-#: js/ui/lookingGlass.js:832
+#: js/ui/lookingGlass.js:834
 msgid "View Source"
 msgstr "Afficher la source"
 
-#: js/ui/lookingGlass.js:843
+#: js/ui/lookingGlass.js:845
 msgid "Web Page"
 msgstr "Page web"
 
@@ -2265,61 +2266,77 @@ msgstr "Point d’accès %s actif"
 msgid "%s Not Connected"
 msgstr "%s non connecté"
 
-#: js/ui/status/network.js:1473
+#: js/ui/status/network.js:1461
+msgid "unknown"
+msgstr "inconnu"
+
+#: js/ui/status/network.js:1463
+msgid "activating…"
+msgstr "activation…"
+
+#: js/ui/status/network.js:1467
+msgid "deactivating…"
+msgstr "désactivation…"
+
+#: js/ui/status/network.js:1469
+msgid "deactivated"
+msgstr "désactivé"
+
+#: js/ui/status/network.js:1537
 msgid "connecting…"
 msgstr "connexion…"
 
 #. Translators: this is for network connections that require some kind of key or password
-#: js/ui/status/network.js:1476
+#: js/ui/status/network.js:1540
 msgid "authentication required"
 msgstr "authentification nécessaire"
 
-#: js/ui/status/network.js:1478
+#: js/ui/status/network.js:1542
 msgid "connection failed"
 msgstr "échec de connexion"
 
-#: js/ui/status/network.js:1524
+#: js/ui/status/network.js:1588
 msgid "VPN Settings"
 msgstr "Paramètres VPN"
 
-#: js/ui/status/network.js:1541
+#: js/ui/status/network.js:1605
 msgid "VPN"
 msgstr "VPN"
 
-#: js/ui/status/network.js:1551
+#: js/ui/status/network.js:1615
 msgid "VPN Off"
 msgstr "VPN désactivé"
 
-#: js/ui/status/network.js:1612 js/ui/status/rfkill.js:84
+#: js/ui/status/network.js:1679 js/ui/status/rfkill.js:84
 msgid "Network Settings"
 msgstr "Paramètres du réseau"
 
-#: js/ui/status/network.js:1640
+#: js/ui/status/network.js:1707
 #, javascript-format
 msgid "%s Wired Connection"
 msgid_plural "%s Wired Connections"
 msgstr[0] "%s connexion filaire."
 msgstr[1] "%s connexions filaires."
 
-#: js/ui/status/network.js:1644
+#: js/ui/status/network.js:1711
 #, javascript-format
 msgid "%s Wi-Fi Connection"
 msgid_plural "%s Wi-Fi Connections"
 msgstr[0] "%s connexion Wi-Fi."
 msgstr[1] "%s connexions Wi-Fi."
 
-#: js/ui/status/network.js:1648
+#: js/ui/status/network.js:1715
 #, javascript-format
 msgid "%s Modem Connection"
 msgid_plural "%s Modem Connections"
 msgstr[0] "%s connexion à un modem."
 msgstr[1] "%s connexions à des modems."
 
-#: js/ui/status/network.js:1792
+#: js/ui/status/network.js:1860
 msgid "Connection failed"
 msgstr "Échec de connexion"
 
-#: js/ui/status/network.js:1793
+#: js/ui/status/network.js:1861
 msgid "Activation of network connection failed"
 msgstr "L’activation de la connexion réseau a échoué"
 
@@ -2473,11 +2490,11 @@ msgstr "Erreur d’autorisation Thunderbolt"
 msgid "Could not authorize the Thunderbolt device: %s"
 msgstr "Impossible d’autoriser le périphérique Thunderbolt : %s"
 
-#: js/ui/status/volume.js:158
+#: js/ui/status/volume.js:159
 msgid "Volume changed"
 msgstr "Volume modifié"
 
-#: js/ui/status/volume.js:220
+#: js/ui/status/volume.js:221
 msgid "Volume"
 msgstr "Volume"
 
