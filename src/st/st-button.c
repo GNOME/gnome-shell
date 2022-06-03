@@ -662,6 +662,9 @@ st_button_set_label (StButton    *button,
 
   priv = st_button_get_instance_private (button);
 
+  if (g_strcmp0 (priv->text, text) == 0)
+    return;
+
   g_free (priv->text);
 
   if (text)
@@ -739,6 +742,9 @@ st_button_set_icon_name (StButton   *button,
 
   if (ST_IS_ICON (icon))
     {
+      if (g_strcmp0 (st_icon_get_icon_name (ST_ICON (icon)), icon_name) == 0)
+        return;
+
       st_icon_set_icon_name (ST_ICON (icon), icon_name);
     }
   else
@@ -788,6 +794,10 @@ st_button_set_button_mask (StButton     *button,
   g_return_if_fail (ST_IS_BUTTON (button));
 
   priv = st_button_get_instance_private (button);
+
+  if (priv->button_mask == mask)
+    return;
+
   priv->button_mask = mask;
 
   g_object_notify_by_pspec (G_OBJECT (button), props[PROP_BUTTON_MASK]);
@@ -826,6 +836,10 @@ st_button_set_toggle_mode (StButton *button,
   g_return_if_fail (ST_IS_BUTTON (button));
 
   priv = st_button_get_instance_private (button);
+
+  if (priv->is_toggle == toggle)
+    return;
+
   priv->is_toggle = toggle;
 
   g_object_notify_by_pspec (G_OBJECT (button), props[PROP_TOGGLE_MODE]);
@@ -864,15 +878,15 @@ st_button_set_checked (StButton *button,
   g_return_if_fail (ST_IS_BUTTON (button));
 
   priv = st_button_get_instance_private (button);
-  if (priv->is_checked != checked)
-    {
-      priv->is_checked = checked;
+  if (priv->is_checked == checked)
+    return;
 
-      if (checked)
-        st_widget_add_style_pseudo_class (ST_WIDGET (button), "checked");
-      else
-        st_widget_remove_style_pseudo_class (ST_WIDGET (button), "checked");
-    }
+  priv->is_checked = checked;
+
+  if (checked)
+    st_widget_add_style_pseudo_class (ST_WIDGET (button), "checked");
+  else
+    st_widget_remove_style_pseudo_class (ST_WIDGET (button), "checked");
 
   g_object_notify_by_pspec (G_OBJECT (button), props[PROP_CHECKED]);
 }

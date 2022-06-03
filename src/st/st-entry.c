@@ -1400,6 +1400,9 @@ st_entry_set_primary_icon (StEntry      *entry,
 
   priv = st_entry_get_instance_private (entry);
 
+  if (priv->primary_icon == icon)
+    return;
+
   _st_entry_set_icon (entry, &priv->primary_icon, icon);
   g_object_notify_by_pspec (G_OBJECT (entry), props[PROP_PRIMARY_ICON]);
 }
@@ -1440,6 +1443,9 @@ st_entry_set_secondary_icon (StEntry      *entry,
 
   priv = st_entry_get_instance_private (entry);
 
+  if (priv->secondary_icon == icon)
+    return;
+
   _st_entry_set_icon (entry, &priv->secondary_icon, icon);
   g_object_notify_by_pspec (G_OBJECT (entry), props[PROP_SECONDARY_ICON]);
 }
@@ -1479,6 +1485,9 @@ st_entry_set_hint_actor (StEntry      *entry,
   g_return_if_fail (ST_IS_ENTRY (entry));
 
   priv = ST_ENTRY_PRIV (entry);
+
+  if (priv->hint_actor == hint_actor)
+    return;
 
   if (priv->hint_actor != NULL)
     {

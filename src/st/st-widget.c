@@ -2434,6 +2434,9 @@ st_widget_set_accessible_name (StWidget    *widget,
 
   priv = st_widget_get_instance_private (widget);
 
+  if (g_strcmp0 (name, priv->accessible_name) == 0)
+    return;
+
   if (priv->accessible_name != NULL)
     g_free (priv->accessible_name);
 
@@ -2490,6 +2493,10 @@ st_widget_set_accessible_role (StWidget *widget,
   g_return_if_fail (ST_IS_WIDGET (widget));
 
   priv = st_widget_get_instance_private (widget);
+
+  if (priv->accessible_role == role)
+    return;
+
   priv->accessible_role = role;
 
   g_object_notify_by_pspec (G_OBJECT (widget), props[PROP_ACCESSIBLE_ROLE]);

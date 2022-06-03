@@ -638,6 +638,9 @@ st_icon_set_icon_name (StIcon      *icon,
 
   g_return_if_fail (ST_IS_ICON (icon));
 
+  if (g_strcmp0 (icon_name, st_icon_get_icon_name (icon)) == 0)
+    return;
+
   if (icon_name && *icon_name)
     gicon = g_themed_icon_new_with_default_fallbacks (icon_name);
 
@@ -814,6 +817,9 @@ st_icon_set_fallback_icon_name (StIcon      *icon,
   g_autoptr(GIcon) gicon = NULL;
 
   g_return_if_fail (ST_IS_ICON (icon));
+
+  if (g_strcmp0 (fallback_icon_name, st_icon_get_fallback_icon_name (icon)) == 0)
+    return;
 
   if (fallback_icon_name && *fallback_icon_name)
     gicon = g_themed_icon_new_with_default_fallbacks (fallback_icon_name);
