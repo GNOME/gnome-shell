@@ -535,8 +535,10 @@ var Message = GObject.registerClass({
 
         if (keysym == Clutter.KEY_Delete ||
             keysym == Clutter.KEY_KP_Delete) {
-            this.close();
-            return Clutter.EVENT_STOP;
+            if (this.canClose()) {
+                this.close();
+                return Clutter.EVENT_STOP;
+            }
         }
         return super.vfunc_key_press_event(keyEvent);
     }
