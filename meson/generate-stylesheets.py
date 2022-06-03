@@ -6,7 +6,8 @@ import subprocess
 
 stylesheets = [
     'data/theme/gnome-shell-high-contrast.css',
-    'data/theme/gnome-shell.css'
+    'data/theme/gnome-shell-dark.css',
+    'data/theme/gnome-shell-light.css'
 ]
 
 sourceroot = os.environ.get('MESON_SOURCE_ROOT')

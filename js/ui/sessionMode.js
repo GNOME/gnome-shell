@@ -22,7 +22,7 @@ if (Config.HAVE_NETWORKMANAGER)
 const _modes = {
     'restrictive': {
         parentMode: null,
-        stylesheetName: 'gnome-shell.css',
+        stylesheetName: 'gnome-shell-dark.css',
         themeResourceName: 'gnome-shell-theme.gresource',
         hasOverview: false,
         showCalendarEvents: false,
