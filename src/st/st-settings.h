@@ -25,8 +25,15 @@
 #define __ST_SETTINGS_H__
 
 #include <glib-object.h>
+#include <gdesktop-enums.h>
 
 G_BEGIN_DECLS
+
+typedef enum {
+  ST_SYSTEM_COLOR_SCHEME_DEFAULT = G_DESKTOP_COLOR_SCHEME_DEFAULT,
+  ST_SYSTEM_COLOR_SCHEME_PREFER_DARK = G_DESKTOP_COLOR_SCHEME_PREFER_DARK,
+  ST_SYSTEM_COLOR_SCHEME_PREFER_LIGHT = G_DESKTOP_COLOR_SCHEME_PREFER_LIGHT,
+} StSystemColorScheme;
 
 #define ST_TYPE_SETTINGS (st_settings_get_type ())
 G_DECLARE_FINAL_TYPE (StSettings, st_settings, ST, SETTINGS, GObject)
