@@ -369,7 +369,8 @@ st_theme_node_transition_paint (StThemeNodeTransition *transition,
       priv->last_allocation = *allocation;
 
       calculate_offscreen_box (transition, allocation);
-      priv->needs_setup = !setup_framebuffers (transition, allocation,
+      priv->needs_setup = clutter_actor_box_get_area (&priv->offscreen_box) == 0 ||
+                          !setup_framebuffers (transition, allocation,
                                                resource_scale);
 
       if (priv->needs_setup) /* setting up framebuffers failed */
