@@ -18,14 +18,15 @@
 # Tim Sabsch <tim@sabsch.com>, 2018-2020, 2022.
 # Christian Kirbach <christian.kirbach@gmail.com>, 2009-2021.
 # Philipp Kiemle <philipp.kiemle@gmail.com>, 2020, 2021.
+# Jürgen Benvenuti <gastornis@posteo.org>, 2022.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2022-05-07 17:06+0000\n"
-"PO-Revision-Date: 2022-05-20 22:49+0200\n"
-"Last-Translator: Christian Kirbach <christian.kirbach@gmail.com>\n"
+"POT-Creation-Date: 2022-05-23 19:15+0000\n"
+"PO-Revision-Date: 2022-05-30 11:23+0200\n"
+"Last-Translator: Jürgen Benvenuti <gastornis@posteo.org>\n"
 "Language-Team: Deutsch <gnome-de@gnome.org>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
@@ -162,7 +163,9 @@ msgstr ""
 msgid "UUIDs of extensions to force disabling"
 msgstr "UUIDs der sofort zu deaktivierenden Erweiterungen"
 
+# Das ist gemeint mit "Sie", oder?
 #: data/org.gnome.shell.gschema.xml.in:27
+#, fuzzy
 msgid ""
 "GNOME Shell extensions have a UUID property; this key lists extensions which "
 "should be disabled, even if loaded as part of the current mode. You can also "
@@ -172,9 +175,9 @@ msgid ""
 msgstr ""
 "Die Erweiterungen der GNOME-Shell besitzen eine UUID-Eigenschaft. Dieser "
 "Schlüssel listet Erweiterungen auf, welche deaktiviert werden sollten, "
-"selbst Sie als Teil des aktuellen Modus geladen sind. Sie können diese Liste "
-"auch mit den D-Bus-Methoden EnableExtension und DisableExtension in org."
-"gnome.Shell bearbeiten. Dieser Schlüssel hat Vorrang vor der Einstellung "
+"selbst wenn sie als Teil des aktuellen Modus geladen sind. Sie können diese "
+"Liste auch mit den D-Bus-Methoden EnableExtension und DisableExtension in "
+"org.gnome.Shell bearbeiten. Dieser Schlüssel hat Vorrang vor der Einstellung "
 "»enabled-extensions«."
 
 #: data/org.gnome.shell.gschema.xml.in:37
@@ -554,23 +557,23 @@ msgstr "Passwort"
 msgid "Choose Session"
 msgstr "Sitzung wählen"
 
-#: js/gdm/loginDialog.js:463
+#: js/gdm/loginDialog.js:462
 msgid "Not listed?"
 msgstr "Nicht aufgeführt?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: js/gdm/loginDialog.js:931
+#: js/gdm/loginDialog.js:930
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(z.B. Benutzer oder %s)"
 
-#: js/gdm/loginDialog.js:936 js/ui/components/networkAgent.js:253
+#: js/gdm/loginDialog.js:935 js/ui/components/networkAgent.js:253
 #: js/ui/components/networkAgent.js:288 js/ui/components/networkAgent.js:322
 msgid "Username"
 msgstr "Benutzername"
 
-#: js/gdm/loginDialog.js:1257
+#: js/gdm/loginDialog.js:1256
 msgid "Login Window"
 msgstr "Anmeldefenster"
 
@@ -906,7 +909,7 @@ msgstr "Kopfhörer"
 msgid "Headset"
 msgstr "Headset"
 
-#: js/ui/audioDeviceSelection.js:73 js/ui/status/volume.js:270
+#: js/ui/audioDeviceSelection.js:73 js/ui/status/volume.js:271
 msgid "Microphone"
 msgstr "Mikrofon"
 
@@ -998,11 +1001,11 @@ msgstr "%OB"
 msgid "%OB %Y"
 msgstr "%OB %Y"
 
-#: js/ui/calendar.js:472
+#: js/ui/calendar.js:473
 msgid "Previous month"
 msgstr "Vorheriger Monat"
 
-#: js/ui/calendar.js:490
+#: js/ui/calendar.js:491
 msgid "Next month"
 msgstr "Nächster Monat"
 
@@ -1146,7 +1149,7 @@ msgstr "PIN"
 msgid "A password is required to connect to “%s”."
 msgstr "Es wird ein Passwort benötigt, um sich mit »%s« zu verbinden."
 
-#: js/ui/components/networkAgent.js:735 js/ui/status/network.js:1751
+#: js/ui/components/networkAgent.js:735 js/ui/status/network.js:1819
 msgid "Network Manager"
 msgstr "Netzwerk-Verwaltung"
 
@@ -1259,23 +1262,23 @@ msgstr "Weltuhren hinzufügen …"
 msgid "World Clocks"
 msgstr "Weltuhren"
 
-#: js/ui/dateMenu.js:681
+#: js/ui/dateMenu.js:699
 msgid "Loading…"
 msgstr "Wird geladen …"
 
-#: js/ui/dateMenu.js:691
+#: js/ui/dateMenu.js:709
 msgid "Go online for weather information"
 msgstr "Gehen Sie Online, um Wetterinformationen beziehen zu können"
 
-#: js/ui/dateMenu.js:693
+#: js/ui/dateMenu.js:711
 msgid "Weather information is currently unavailable"
 msgstr "Wetterinformationen sind momentan nicht verfügbar"
 
-#: js/ui/dateMenu.js:703
+#: js/ui/dateMenu.js:721
 msgid "Weather"
 msgstr "Wetter"
 
-#: js/ui/dateMenu.js:705
+#: js/ui/dateMenu.js:723
 msgid "Select weather location…"
 msgstr "Wetterstandort auswählen …"
 
@@ -1541,9 +1544,9 @@ msgstr "Einschalten"
 
 #: js/ui/kbdA11yDialog.js:65 js/ui/status/bluetooth.js:174
 #: js/ui/status/network.js:160 js/ui/status/network.js:336
-#: js/ui/status/network.js:1341 js/ui/status/network.js:1456
-#: js/ui/status/nightLight.js:41 js/ui/status/rfkill.js:81
-#: js/ui/status/rfkill.js:110
+#: js/ui/status/network.js:1341 js/ui/status/network.js:1449
+#: js/ui/status/network.js:1520 js/ui/status/nightLight.js:41
+#: js/ui/status/rfkill.js:81 js/ui/status/rfkill.js:110
 msgid "Turn Off"
 msgstr "Ausschalten"
 
@@ -1555,51 +1558,51 @@ msgstr "Ausgeschaltet lassen"
 msgid "Region & Language Settings"
 msgstr "Regions- und Spracheinstellungen"
 
-#: js/ui/lookingGlass.js:710
+#: js/ui/lookingGlass.js:712
 msgid "No extensions installed"
 msgstr "Keine Erweiterungen installiert"
 
 #. Translators: argument is an extension UUID.
-#: js/ui/lookingGlass.js:771
+#: js/ui/lookingGlass.js:773
 #, javascript-format
 msgid "%s has not emitted any errors."
 msgstr "%s hat keine Fehler ausgegeben."
 
-#: js/ui/lookingGlass.js:777
+#: js/ui/lookingGlass.js:779
 msgid "Hide Errors"
 msgstr "Fehler verbergen"
 
-#: js/ui/lookingGlass.js:781 js/ui/lookingGlass.js:854
+#: js/ui/lookingGlass.js:783 js/ui/lookingGlass.js:856
 msgid "Show Errors"
 msgstr "Fehler anzeigen"
 
-#: js/ui/lookingGlass.js:790
+#: js/ui/lookingGlass.js:792
 msgid "Enabled"
 msgstr "Eingeschaltet"
 
 #. translators:
 #. * The device has been disabled
-#: js/ui/lookingGlass.js:793 subprojects/gvc/gvc-mixer-control.c:1900
+#: js/ui/lookingGlass.js:795 subprojects/gvc/gvc-mixer-control.c:1900
 msgid "Disabled"
 msgstr "Ausgeschaltet"
 
-#: js/ui/lookingGlass.js:795
+#: js/ui/lookingGlass.js:797
 msgid "Error"
 msgstr "Fehler"
 
-#: js/ui/lookingGlass.js:797
+#: js/ui/lookingGlass.js:799
 msgid "Out of date"
 msgstr "Veraltet"
 
-#: js/ui/lookingGlass.js:799
+#: js/ui/lookingGlass.js:801
 msgid "Downloading"
 msgstr "Herunterladen"
 
-#: js/ui/lookingGlass.js:832
+#: js/ui/lookingGlass.js:834
 msgid "View Source"
 msgstr "Quelle zeigen"
 
-#: js/ui/lookingGlass.js:843
+#: js/ui/lookingGlass.js:845
 msgid "Web Page"
 msgstr "Webseite"
 
@@ -2240,61 +2243,77 @@ msgstr "Hotspot %s eingeschaltet"
 msgid "%s Not Connected"
 msgstr "%s nicht verbunden"
 
-#: js/ui/status/network.js:1473
+#: js/ui/status/network.js:1461
+msgid "unknown"
+msgstr "unbekannt"
+
+#: js/ui/status/network.js:1463
+msgid "activating…"
+msgstr "wird aktiviert …"
+
+#: js/ui/status/network.js:1467
+msgid "deactivating…"
+msgstr "wird deaktiviert …"
+
+#: js/ui/status/network.js:1469
+msgid "deactivated"
+msgstr "deaktiviert"
+
+#: js/ui/status/network.js:1537
 msgid "connecting…"
 msgstr "Verbindungsaufbau …"
 
 #. Translators: this is for network connections that require some kind of key or password
-#: js/ui/status/network.js:1476
+#: js/ui/status/network.js:1540
 msgid "authentication required"
 msgstr "Anmeldung erforderlich"
 
-#: js/ui/status/network.js:1478
+#: js/ui/status/network.js:1542
 msgid "connection failed"
 msgstr "Verbindung gescheitert"
 
-#: js/ui/status/network.js:1524
+#: js/ui/status/network.js:1588
 msgid "VPN Settings"
 msgstr "VPN-Einstellungen"
 
-#: js/ui/status/network.js:1541
+#: js/ui/status/network.js:1605
 msgid "VPN"
 msgstr "VPN"
 
-#: js/ui/status/network.js:1551
+#: js/ui/status/network.js:1615
 msgid "VPN Off"
 msgstr "VPN ausgeschaltet"
 
-#: js/ui/status/network.js:1612 js/ui/status/rfkill.js:84
+#: js/ui/status/network.js:1679 js/ui/status/rfkill.js:84
 msgid "Network Settings"
 msgstr "Netzwerkeinstellungen"
 
-#: js/ui/status/network.js:1640
+#: js/ui/status/network.js:1707
 #, javascript-format
 msgid "%s Wired Connection"
 msgid_plural "%s Wired Connections"
 msgstr[0] "%s Kabelverbindung"
 msgstr[1] "%s Kabelverbindungen"
 
-#: js/ui/status/network.js:1644
+#: js/ui/status/network.js:1711
 #, javascript-format
 msgid "%s Wi-Fi Connection"
 msgid_plural "%s Wi-Fi Connections"
 msgstr[0] "%s Funknetzwerkverbindung"
 msgstr[1] "%s Funknetzwerkverbindungen"
 
-#: js/ui/status/network.js:1648
+#: js/ui/status/network.js:1715
 #, javascript-format
 msgid "%s Modem Connection"
 msgid_plural "%s Modem Connections"
 msgstr[0] "%s Modem-Verbindung"
 msgstr[1] "%s Modem-Verbindungen"
 
-#: js/ui/status/network.js:1792
+#: js/ui/status/network.js:1860
 msgid "Connection failed"
 msgstr "Verbindung gescheitert"
 
-#: js/ui/status/network.js:1793
+#: js/ui/status/network.js:1861
 msgid "Activation of network connection failed"
 msgstr "Aktivierung der Netzwerkverbindung ist gescheitert"
 
@@ -2448,11 +2467,11 @@ msgstr "Thunderbolt-Legitimierungsfehler"
 msgid "Could not authorize the Thunderbolt device: %s"
 msgstr "Das Thunderbolt-Gerät %s konnte nicht legitimiert werden"
 
-#: js/ui/status/volume.js:158
+#: js/ui/status/volume.js:159
 msgid "Volume changed"
 msgstr "Lautstärke geändert"
 
-#: js/ui/status/volume.js:220
+#: js/ui/status/volume.js:221
 msgid "Volume"
 msgstr "Lautstärke"
 
@@ -2730,7 +2749,8 @@ msgid "translator-credits"
 msgstr ""
 "Tim Sabsch <tim@sabsch.com>, 2020, 2022\n"
 "Christian Kirbach <christian.kirbach@gmail.com>, 2020,2021.2022\n"
-"Philipp Kiemle <philipp.kiemle@gmail.com>, 2021"
+"Philipp Kiemle <philipp.kiemle@gmail.com>, 2021\n"
+"Jürgen Benvenuti <gastornis@posteo.org>, 2022"
 
 #: subprojects/extensions-app/js/main.js:337
 #, javascript-format
