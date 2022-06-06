@@ -273,6 +273,15 @@ class DBusEventSource extends EventSourceBase {
         this._lastRequestEnd = null;
     }
 
+    _removeMatching(uidPrefix) {
+        let changed = false;
+        for (const id of this._events.keys()) {
+            if (id.startsWith(uidPrefix))
+                changed = this._events.delete(id) || changed;
+        }
+        return changed;
+    }
+
     _onNameAppeared() {
         this._initialized = true;
         this._resetCache();
@@ -287,12 +296,21 @@ class DBusEventSource extends EventSourceBase {
     _onEventsAddedOrUpdated(dbusProxy, nameOwner, argArray) {
         const [appointments = []] = argArray;
         let changed = false;
+        const handledRemovals = new Set();
 
         for (let n = 0; n < appointments.length; n++) {
             const [id, summary, startTime, endTime] = appointments[n];
             const date = new Date(startTime * 1000);
             const end = new Date(endTime * 1000);
             let event = new CalendarEvent(id, date, end, summary);
+            /* It's a recurring event */
+            if (!id.endsWith('\n')) {
+                const parentId = id.substr(0, id.lastIndexOf('\n') + 1);
+                if (!handledRemovals.has(parentId)) {
+                    handledRemovals.add(parentId);
+                    this._removeMatching(parentId);
+                }
+            }
             this._events.set(event.id, event);
 
             changed = true;
@@ -307,7 +325,7 @@ class DBusEventSource extends EventSourceBase {
 
         let changed = false;
         for (const id of ids)
-            changed ||= this._events.delete(id);
+            changed = this._removeMatching(id) || changed;
 
         if (changed)
             this.emit('changed');
@@ -317,13 +335,7 @@ class DBusEventSource extends EventSourceBase {
         let [sourceUid = ''] = argArray;
         sourceUid += '\n';
 
-        let changed = false;
-        for (const id of this._events.keys()) {
-            if (id.startsWith(sourceUid))
-                changed ||= this._events.delete(id);
-        }
-
-        if (changed)
+        if (this._removeMatching(sourceUid))
             this.emit('changed');
     }
 
