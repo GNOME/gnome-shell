@@ -438,19 +438,29 @@ app_process_added_modified_objects (App *app,
                                     GSList *objects) /* ICalComponent * */
 {
   ECalClient *cal_client;
+  g_autoptr(GHashTable) covered_uids = NULL;
   GSList *link;
   gboolean expand_recurrences;
 
   cal_client = e_cal_client_view_ref_client (view);
+  covered_uids = g_hash_table_new (g_str_hash, g_str_equal);
   expand_recurrences = e_cal_client_get_source_type (cal_client) == E_CAL_CLIENT_SOURCE_TYPE_EVENTS;
 
   for (link = objects; link; link = g_slist_next (link))
     {
       ECalComponent *comp;
       ICalComponent *icomp = link->data;
+      const gchar *uid;
+      gboolean fallback = FALSE;
 
-      if (!icomp || !i_cal_component_get_uid (icomp))
+      if (!icomp)
         continue;
+
+      uid = i_cal_component_get_uid (icomp);
+      if (!uid || g_hash_table_contains (covered_uids, uid))
+        continue;
+
+      g_hash_table_add (covered_uids, (gpointer) uid);
 
       if (expand_recurrences &&
           !e_cal_util_component_is_instance (icomp) &&
@@ -464,7 +474,36 @@ app_process_added_modified_objects (App *app,
           e_cal_client_generate_instances_for_object_sync (cal_client, icomp, app->since, app->until, NULL,
                                                            generate_instances_cb, &data);
         }
+      else if (expand_recurrences &&
+               e_cal_util_component_is_instance (icomp))
+        {
+          ICalComponent *main_comp = NULL;
+
+          /* Always pass whole series of the recurring events, because
+           * the calendar removes events with the same UID first. */
+          if (e_cal_client_get_object_sync (cal_client, uid, NULL, &main_comp, NULL, NULL))
+            {
+              CollectAppointmentsData data;
+
+              data.client = cal_client;
+              data.pappointments = &app->notify_appointments;
+
+              e_cal_client_generate_instances_for_object_sync (cal_client, main_comp, app->since, app->until, NULL,
+                                                               generate_instances_cb, &data);
+
+              g_clear_object (&main_comp);
+            }
+          else
+            {
+               fallback = TRUE;
+            }
+        }
       else
+        {
+	  fallback = TRUE;
+        }
+
+      if (fallback)
         {
           comp = e_cal_component_new_from_icalcomponent (i_cal_component_clone (icomp));
           if (!comp)
