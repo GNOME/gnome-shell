@@ -88,6 +88,7 @@ var AppMenu = class AppMenu extends PopupMenu.PopupMenu {
                 'org.gtk.Actions', 'Activate',
                 new GLib.Variant('(sava{sv})', ['details', [args], null]),
                 null, 0, -1, null);
+            Main.overview.hide();
         });
 
         this.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
