@@ -1336,13 +1336,7 @@ class AppDisplay extends BaseAppView {
         this._pageManager = new PageManager();
         this._pageManager.connect('layout-changed', () => this._redisplay());
 
-        this._stack = new St.Widget({
-            layout_manager: new Clutter.BinLayout(),
-            x_expand: true,
-            y_expand: true,
-        });
-        this.add_actor(this._stack);
-        this._stack.add_child(this._box);
+        this.add_child(this._box);
 
         this._folderIcons = [];
 
