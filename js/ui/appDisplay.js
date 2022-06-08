@@ -41,7 +41,6 @@ const FOLDER_DIALOG_ANIMATION_TIME = 200;
 
 const PAGE_PREVIEW_ANIMATION_TIME = 150;
 const PAGE_PREVIEW_ANIMATION_START_OFFSET = 100;
-const PAGE_PREVIEW_FADE_EFFECT_MAX_OFFSET = 300;
 const PAGE_PREVIEW_MAX_ARROW_OFFSET = 80;
 const PAGE_INDICATOR_FADE_TIME = 200;
 
@@ -319,8 +318,6 @@ var BaseAppView = GObject.registerClass({
         this._swipeTracker.connect('update', this._swipeUpdate.bind(this));
         this._swipeTracker.connect('end', this._swipeEnd.bind(this));
 
-        this._availWidth = 0;
-        this._availHeight = 0;
         this._orientation = Clutter.Orientation.HORIZONTAL;
 
         this._items = new Map();
@@ -358,30 +355,6 @@ var BaseAppView = GObject.registerClass({
 
         this._removeDelayedMove();
         this._disconnectDnD();
-    }
-
-    _updateFadeForNavigation() {
-        const fadeMargin = new Clutter.Margin();
-        const rtl = this.get_text_direction() === Clutter.TextDirection.RTL;
-        const showingNextPage = this._pagesShown & SidePages.NEXT;
-        const showingPrevPage = this._pagesShown & SidePages.PREVIOUS;
-
-        if ((showingNextPage && !rtl) || (showingPrevPage && rtl)) {
-            fadeMargin.right = Math.max(
-                -PAGE_PREVIEW_FADE_EFFECT_MAX_OFFSET,
-                -(this._availWidth - this._grid.layout_manager.pageWidth) / 2);
-        }
-
-        if ((showingPrevPage && !rtl) || (showingNextPage && rtl)) {
-            fadeMargin.left = Math.max(
-                -PAGE_PREVIEW_FADE_EFFECT_MAX_OFFSET,
-                -(this._availWidth - this._grid.layout_manager.pageWidth) / 2);
-        }
-
-        this._scrollView.update_fade_effect(fadeMargin);
-        const effect = this._scrollView.get_effect('fade');
-        if (effect)
-            effect.extend_fade_area = true;
     }
 
     _createGrid() {
@@ -1054,10 +1027,6 @@ var BaseAppView = GObject.registerClass({
 
         const leftPadding = Math.floor(
             (availWidth - this._grid.layout_manager.pageWidth) / 2);
-
-        this._availWidth = availWidth;
-        this._availHeight = availHeight;
-
         this._pageIndicatorOffset = leftPadding;
         this._pageArrowOffset = Math.max(
             leftPadding - PAGE_PREVIEW_MAX_ARROW_OFFSET, 0);
@@ -1174,7 +1143,6 @@ var BaseAppView = GObject.registerClass({
                 duration: PAGE_PREVIEW_ANIMATION_TIME,
                 mode: Clutter.AnimationMode.EASE_OUT_QUAD,
             });
-            this._updateFadeForNavigation();
         } else if (adjustment) {
             adjustment.ease(0, {
                 duration: PAGE_PREVIEW_ANIMATION_TIME,
@@ -1184,7 +1152,6 @@ var BaseAppView = GObject.registerClass({
                     this._syncClip();
                     this._nextPageArrow.visible = false;
                     this._nextPageIndicator.visible = false;
-                    this._updateFadeForNavigation();
                 },
             });
         }
@@ -1197,7 +1164,6 @@ var BaseAppView = GObject.registerClass({
                 duration: PAGE_PREVIEW_ANIMATION_TIME,
                 mode: Clutter.AnimationMode.EASE_OUT_QUAD,
             });
-            this._updateFadeForNavigation();
         } else if (adjustment) {
             adjustment.ease(0, {
                 duration: PAGE_PREVIEW_ANIMATION_TIME,
@@ -1207,7 +1173,6 @@ var BaseAppView = GObject.registerClass({
                     this._syncClip();
                     this._prevPageArrow.visible = false;
                     this._prevPageIndicator.visible = false;
-                    this._updateFadeForNavigation();
                 },
             });
         }
