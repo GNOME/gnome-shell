@@ -44,7 +44,6 @@ const PAGE_PREVIEW_ANIMATION_START_OFFSET = 100;
 const PAGE_PREVIEW_FADE_EFFECT_MAX_OFFSET = 300;
 const PAGE_PREVIEW_MAX_ARROW_OFFSET = 80;
 const PAGE_INDICATOR_FADE_TIME = 200;
-const MAX_PAGE_PADDING = 200;
 
 const OVERSHOOT_THRESHOLD = 20;
 const OVERSHOOT_TIMEOUT = 1000;
@@ -1051,54 +1050,10 @@ var BaseAppView = GObject.registerClass({
         const availWidth = box.get_width();
         const availHeight = box.get_height();
 
-        const gridRatio = this._grid.layout_manager.columnsPerPage /
-            this._grid.layout_manager.rowsPerPage;
-        const spaceRatio = availWidth / availHeight;
-        let pageWidth, pageHeight;
-
-        if (spaceRatio > gridRatio * 1.1) {
-            // Enough room for some preview
-            pageHeight = availHeight;
-            pageWidth = Math.ceil(availHeight * gridRatio);
-
-            if (spaceRatio > gridRatio * 1.5) {
-                // Ultra-wide layout, give some extra space for
-                // the page area, but up to an extent.
-                const extraPageSpace = Math.min(
-                    Math.floor((availWidth - pageWidth) / 2), MAX_PAGE_PADDING);
-                pageWidth += extraPageSpace;
-                this._grid.layout_manager.pagePadding.left =
-                    Math.floor(extraPageSpace / 2);
-                this._grid.layout_manager.pagePadding.right =
-                    Math.ceil(extraPageSpace / 2);
-            }
-        } else {
-            // Not enough room, needs to shrink horizontally
-            pageWidth = Math.ceil(availWidth * 0.8);
-            pageHeight = availHeight;
-            this._grid.layout_manager.pagePadding.left =
-                Math.floor(availWidth * 0.02);
-            this._grid.layout_manager.pagePadding.right =
-                Math.ceil(availWidth * 0.02);
-        }
-
-        this._grid.adaptToSize(pageWidth, pageHeight);
+        this._grid.adaptToSize(availWidth, availHeight);
 
         const leftPadding = Math.floor(
             (availWidth - this._grid.layout_manager.pageWidth) / 2);
-        const rightPadding = Math.ceil(
-            (availWidth - this._grid.layout_manager.pageWidth) / 2);
-        const topPadding = Math.floor(
-            (availHeight - this._grid.layout_manager.pageHeight) / 2);
-        const bottomPadding = Math.ceil(
-            (availHeight - this._grid.layout_manager.pageHeight) / 2);
-
-        this._scrollView.content_padding = new Clutter.Margin({
-            left: leftPadding,
-            right: rightPadding,
-            top: topPadding,
-            bottom: bottomPadding,
-        });
 
         this._availWidth = availWidth;
         this._availHeight = availHeight;
