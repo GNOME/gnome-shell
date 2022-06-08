@@ -1207,6 +1207,11 @@ var IconGrid = GObject.registerClass({
         delete child._iconGridKeyFocusInId;
     }
 
+    vfunc_allocate(box) {
+        this.layout_manager.adaptToSize(...box.get_size());
+        super.vfunc_allocate(box);
+    }
+
     vfunc_style_changed() {
         super.vfunc_style_changed();
 
@@ -1389,10 +1394,6 @@ var IconGrid = GObject.registerClass({
 
     get nPages() {
         return this.layout_manager.nPages;
-    }
-
-    adaptToSize(width, height) {
-        this.layout_manager.adaptToSize(width, height);
     }
 
     setGridModes(modes) {

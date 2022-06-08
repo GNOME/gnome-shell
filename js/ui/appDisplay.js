@@ -918,15 +918,6 @@ var BaseAppView = GObject.registerClass({
         this._grid.moveItem(item, newPage, newPosition);
     }
 
-    vfunc_allocate(box) {
-        const width = box.get_width();
-        const height = box.get_height();
-
-        this.adaptToSize(width, height);
-
-        super.vfunc_allocate(box);
-    }
-
     vfunc_map() {
         this._swipeTracker.enabled = true;
         this._connectDnD();
@@ -1009,27 +1000,6 @@ var BaseAppView = GObject.registerClass({
 
         this._syncPageHints(pageNumber, animate);
         this._grid.goToPage(pageNumber, animate);
-    }
-
-    adaptToSize(width, height) {
-        let box = new Clutter.ActorBox({
-            x2: width,
-            y2: height,
-        });
-        box = this.get_theme_node().get_content_box(box);
-        box = this._scrollView.get_theme_node().get_content_box(box);
-        box = this._grid.get_theme_node().get_content_box(box);
-
-        const availWidth = box.get_width();
-        const availHeight = box.get_height();
-
-        this._grid.adaptToSize(availWidth, availHeight);
-
-        const leftPadding = Math.floor(
-            (availWidth - this._grid.layout_manager.pageWidth) / 2);
-        this._pageIndicatorOffset = leftPadding;
-        this._pageArrowOffset = Math.max(
-            leftPadding - PAGE_PREVIEW_MAX_ARROW_OFFSET, 0);
     }
 
     _getIndicatorOffset(page, progress, baseOffset) {
@@ -1309,14 +1279,6 @@ class AppDisplay extends BaseAppView {
         });
 
         super._redisplay();
-    }
-
-    adaptToSize(width, height) {
-        const [, indicatorHeight] = this._pageIndicators.get_preferred_height(-1);
-        height -= indicatorHeight;
-
-        this._grid.findBestModeForSize(width, height);
-        super.adaptToSize(width, height);
     }
 
     _savePages() {
@@ -2013,10 +1975,6 @@ class FolderGrid extends IconGrid.IconGrid {
             page_valign: Clutter.ActorAlign.CENTER,
         });
     }
-
-    adaptToSize(width, height) {
-        this.layout_manager.adaptToSize(width, height);
-    }
 });
 
 var FolderView = GObject.registerClass(
@@ -2147,13 +2105,6 @@ class FolderView extends BaseAppView {
         let adjustment = this._scrollView.vscroll.adjustment;
         adjustment.value -= (dy / this._scrollView.height) * adjustment.page_size;
         return false;
-    }
-
-    adaptToSize(width, height) {
-        const [, indicatorHeight] = this._pageIndicators.get_preferred_height(-1);
-        height -= indicatorHeight;
-
-        super.adaptToSize(width, height);
     }
 
     _loadApps() {
