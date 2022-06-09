@@ -1974,6 +1974,13 @@ class FolderGrid extends IconGrid.IconGrid {
             page_halign: Clutter.ActorAlign.CENTER,
             page_valign: Clutter.ActorAlign.CENTER,
         });
+
+        this.setGridModes([
+            {
+                rows: 3,
+                columns: 3,
+            },
+        ]);
     }
 });
 
