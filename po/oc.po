@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master oc\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2022-05-30 16:25+0000\n"
-"PO-Revision-Date: 2022-05-30 18:53+0200\n"
+"POT-Creation-Date: 2022-05-30 16:54+0000\n"
+"PO-Revision-Date: 2022-06-09 22:05+0200\n"
 "Last-Translator: Quentin PAGÈS\n"
 "Language-Team: Tot En Òc\n"
 "Language: oc\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 3.0.1\n"
+"X-Generator: Poedit 3.1\n"
 "X-Project-Style: gnome\n"
 
 #: data/50-gnome-shell-launchers.xml:6
@@ -2260,7 +2260,7 @@ msgstr "desactivacion…"
 
 #: js/ui/status/network.js:1469
 msgid "deactivated"
-msgstr ""
+msgstr "desactivada"
 
 #: js/ui/status/network.js:1537
 msgid "connecting…"
