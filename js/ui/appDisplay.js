@@ -155,6 +155,54 @@ function _findBestFolderName(apps) {
     return null;
 }
 
+const AppGrid = GObject.registerClass({
+    Properties: {
+        'indicators-padding': GObject.ParamSpec.boxed('indicators-padding',
+            'Indicators padding', 'Indicators padding',
+            GObject.ParamFlags.READWRITE,
+            Clutter.Margin.$gtype),
+    },
+}, class AppGrid extends IconGrid.IconGrid {
+    _init(layoutParams) {
+        super._init(layoutParams);
+
+        this._indicatorsPadding = new Clutter.Margin();
+    }
+
+    _updatePadding() {
+        const node = this.get_theme_node();
+        const {rowSpacing, columnSpacing} = this.layoutManager;
+
+        const padding = this._indicatorsPadding.copy();
+        padding.left += rowSpacing;
+        padding.right += rowSpacing;
+        padding.top += columnSpacing;
+        padding.bottom += columnSpacing;
+        ['top', 'right', 'bottom', 'left'].forEach(side => {
+            padding[side] += node.get_length(`page-padding-${side}`);
+        });
+
+        this.layoutManager.pagePadding = padding;
+    }
+
+    vfunc_style_changed() {
+        super.vfunc_style_changed();
+        this._updatePadding();
+    }
+
+    get indicatorsPadding() {
+        return this._indicatorsPadding;
+    }
+
+    set indicatorsPadding(v) {
+        if (this._indicatorsPadding === v)
+            return;
+
+        this._indicatorsPadding = v ? v : new Clutter.Margin();
+        this._updatePadding();
+    }
+});
+
 var BaseAppView = GObject.registerClass({
     GTypeFlags: GObject.TypeFlags.ABSTRACT,
     Properties: {
@@ -358,7 +406,7 @@ var BaseAppView = GObject.registerClass({
     }
 
     _createGrid() {
-        return new IconGrid.IconGrid({ allow_incomplete_pages: true });
+        return new AppGrid({allow_incomplete_pages: true});
     }
 
     _onScroll(actor, event) {
@@ -1965,7 +2013,7 @@ class AppViewItem extends St.Button {
 });
 
 var FolderGrid = GObject.registerClass(
-class FolderGrid extends IconGrid.IconGrid {
+class FolderGrid extends AppGrid {
     _init() {
         super._init({
             allow_incomplete_pages: false,
