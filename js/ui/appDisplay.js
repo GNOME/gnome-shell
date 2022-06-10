@@ -40,9 +40,8 @@ var APP_ICON_TITLE_COLLAPSE_TIME = 100;
 const FOLDER_DIALOG_ANIMATION_TIME = 200;
 
 const PAGE_PREVIEW_ANIMATION_TIME = 150;
-const PAGE_PREVIEW_ANIMATION_START_OFFSET = 100;
-const PAGE_PREVIEW_MAX_ARROW_OFFSET = 80;
 const PAGE_INDICATOR_FADE_TIME = 200;
+const PAGE_PREVIEW_RATIO = 0.20;
 
 const OVERSHOOT_THRESHOLD = 20;
 const OVERSHOOT_TIMEOUT = 1000;
@@ -203,6 +202,194 @@ const AppGrid = GObject.registerClass({
     }
 });
 
+const BaseAppViewGridLayout = GObject.registerClass(
+class BaseAppViewGridLayout extends Clutter.BinLayout {
+    _init(grid, scrollView, nextPageIndicator, nextPageArrow,
+        previousPageIndicator, previousPageArrow) {
+        if (!(grid instanceof AppGrid))
+            throw new Error('Grid must be an AppGrid subclass');
+
+        super._init();
+
+        this._grid = grid;
+        this._scrollView = scrollView;
+        this._previousPageIndicator = previousPageIndicator;
+        this._previousPageArrow = previousPageArrow;
+        this._nextPageIndicator = nextPageIndicator;
+        this._nextPageArrow = nextPageArrow;
+
+        grid.connect('pages-changed', () => this._syncPageIndicatorsVisibility());
+
+        this._pageIndicatorsAdjustment = new St.Adjustment({
+            lower: 0,
+            upper: 1,
+        });
+        this._pageIndicatorsAdjustment.connect(
+            'notify::value', () => this._syncPageIndicators());
+
+        this._showIndicators = false;
+        this._currentPage = 0;
+    }
+
+    _getIndicatorsWidth(box) {
+        const [width, height] = box.get_size();
+        const arrows = [
+            this._nextPageArrow,
+            this._previousPageArrow,
+        ];
+
+        const minArrowsWidth = arrows.reduce(
+            (previousWidth, accessory) => {
+                const [min] = accessory.get_preferred_width(height);
+                return Math.max(previousWidth, min);
+            }, 0);
+
+        const idealIndicatorWidth = (width * PAGE_PREVIEW_RATIO) / 2;
+
+        return Math.max(idealIndicatorWidth, minArrowsWidth);
+    }
+
+    _syncPageIndicatorsVisibility(animate = true) {
+        const previousIndicatorsVisible =
+            this._currentPage > 0 && this._showIndicators;
+
+        if (previousIndicatorsVisible) {
+            this._previousPageIndicator.show();
+            this._previousPageArrow.show();
+        }
+        this._previousPageIndicator.ease({
+            opacity: previousIndicatorsVisible ? 255 : 0,
+            duration: animate ? PAGE_INDICATOR_FADE_TIME : 0,
+            onComplete: () => {
+                if (!previousIndicatorsVisible) {
+                    this._previousPageIndicator.hide();
+                    this._previousPageArrow.hide();
+                }
+            },
+        });
+        this._previousPageArrow.ease({
+            opacity: previousIndicatorsVisible ? 255 : 0,
+            duration: animate ? PAGE_INDICATOR_FADE_TIME : 0,
+        });
+
+        // Always show the next page indicator to allow dropping
+        // icons into new pages
+        const {allowIncompletePages, nPages} = this._grid.layoutManager;
+        const nextIndicatorsVisible = this._showIndicators &&
+            (allowIncompletePages ? true : this._currentPage < nPages - 1);
+        if (nextIndicatorsVisible) {
+            this._nextPageIndicator.show();
+            this._nextPageArrow.show();
+        }
+        this._nextPageIndicator.ease({
+            opacity: nextIndicatorsVisible ? 255 : 0,
+            duration: animate ? PAGE_INDICATOR_FADE_TIME : 0,
+            onComplete: () => {
+                if (!nextIndicatorsVisible) {
+                    this._nextPageIndicator.hide();
+                    this._nextPageArrow.hide();
+                }
+            },
+        });
+        this._nextPageArrow.ease({
+            opacity: nextIndicatorsVisible ? 255 : 0,
+            duration: animate ? PAGE_INDICATOR_FADE_TIME : 0,
+        });
+    }
+
+    _syncPageIndicators() {
+        if (!this._container)
+            return;
+
+        const {value} = this._pageIndicatorsAdjustment;
+
+        const ltr = this._container.get_text_direction() !== Clutter.TextDirection.RTL;
+        const {left, right} = this._grid.indicatorsPadding;
+        const leftOffset = -left * (1 - value);
+        const rightOffset = right * (1 - value);
+
+        const leftArrowOffset = -left * value;
+        const rightArrowOffset = right * value;
+
+        this._previousPageArrow.translationX =
+            ltr ? leftArrowOffset : rightArrowOffset;
+        this._nextPageArrow.translationX =
+            ltr ? rightArrowOffset : leftArrowOffset;
+        this._previousPageIndicator.translationX = ltr ? leftOffset : rightOffset;
+        this._previousPageArrow.translationX = ltr ? leftOffset : rightOffset;
+        this._nextPageIndicator.translationX = ltr ? rightOffset : leftOffset;
+        this._nextPageArrow.translationX = ltr ? rightOffset : leftOffset;
+    }
+
+    vfunc_set_container(container) {
+        this._container = container;
+        this._pageIndicatorsAdjustment.actor = container;
+        this._syncPageIndicators();
+    }
+
+    vfunc_allocate(container, box) {
+        const ltr = container.get_text_direction() !== Clutter.TextDirection.RTL;
+        const indicatorsWidth = this._getIndicatorsWidth(box);
+
+        this._grid.indicatorsPadding = new Clutter.Margin({
+            left: indicatorsWidth,
+            right: indicatorsWidth,
+        });
+
+        this._scrollView.allocate(box);
+
+        const leftBox = box.copy();
+        leftBox.x2 = leftBox.x1 + indicatorsWidth;
+
+        const rightBox = box.copy();
+        rightBox.x1 = rightBox.x2 - indicatorsWidth;
+
+        this._previousPageIndicator.allocate(ltr ? leftBox : rightBox);
+        this._previousPageArrow.allocate(ltr ? leftBox : rightBox);
+        this._nextPageIndicator.allocate(ltr ? rightBox : leftBox);
+        this._nextPageArrow.allocate(ltr ? rightBox : leftBox);
+    }
+
+    goToPage(page, animate = true) {
+        if (this._currentPage === page)
+            return;
+
+        this._currentPage = page;
+        this._syncPageIndicatorsVisibility(animate);
+        this._syncPageIndicators();
+    }
+
+    showPageIndicators() {
+        if (this._showIndicators)
+            return;
+
+        this._pageIndicatorsAdjustment.ease(1, {
+            duration: PAGE_PREVIEW_ANIMATION_TIME,
+            mode: Clutter.AnimationMode.EASE_OUT_CUBIC,
+        });
+
+        this._grid.clipToView = false;
+        this._showIndicators = true;
+        this._syncPageIndicatorsVisibility();
+    }
+
+    hidePageIndicators() {
+        if (!this._showIndicators)
+            return;
+
+        this._pageIndicatorsAdjustment.ease(0, {
+            duration: PAGE_PREVIEW_ANIMATION_TIME,
+            mode: Clutter.AnimationMode.EASE_OUT_CUBIC,
+            onComplete: () => {
+                this._grid.clipToView = true;
+            },
+        });
+
+        this._showIndicators = false;
+        this._syncPageIndicatorsVisibility();
+    }
+});
+
 var BaseAppView = GObject.registerClass({
     GTypeFlags: GObject.TypeFlags.ABSTRACT,
     Properties: {
@@ -238,14 +425,10 @@ var BaseAppView = GObject.registerClass({
             enable_mouse_scrolling: false,
         });
         this._scrollView.set_policy(St.PolicyType.EXTERNAL, St.PolicyType.NEVER);
-        this._scrollView._delegate = this;
 
         this._canScroll = true; // limiting scrolling speed
         this._scrollTimeoutId = 0;
         this._scrollView.connect('scroll-event', this._onScroll.bind(this));
-        this._scrollView.connect('motion-event', this._onMotion.bind(this));
-        this._scrollView.connect('enter-event', this._onMotion.bind(this));
-        this._scrollView.connect('leave-event', this._onLeave.bind(this));
         this._scrollView.connect('button-press-event', this._onButtonPress.bind(this));
 
         this._scrollView.add_actor(this._grid);
@@ -255,20 +438,6 @@ var BaseAppView = GObject.registerClass({
         this._adjustment.connect('notify::value', adj => {
             const value = adj.value / adj.page_size;
             this._pageIndicators.setCurrentPosition(value);
-
-            const distanceToPage = Math.abs(Math.round(value) - value);
-            if (distanceToPage < 0.001) {
-                this._hintContainer.opacity = 255;
-                this._hintContainer.translationX = 0;
-            } else {
-                this._hintContainer.remove_transition('opacity');
-                let opacity = Math.clamp(
-                    255 * (1 - (distanceToPage * 2)),
-                    0, 255);
-
-                this._hintContainer.translationX = (Math.round(value) - value) * adj.page_size;
-                this._hintContainer.opacity = opacity;
-            }
         });
 
         // Page Indicators
@@ -332,23 +501,24 @@ var BaseAppView = GObject.registerClass({
             x_align: Clutter.ActorAlign.START,
         });
 
-        this._hintContainer = new St.Widget({
-            layout_manager: new Clutter.BinLayout(),
-            x_expand: true,
-            y_expand: true,
-        });
-        this._hintContainer.add_child(this._prevPageIndicator);
-        this._hintContainer.add_child(this._nextPageIndicator);
-
         const scrollContainer = new St.Widget({
-            layout_manager: new Clutter.BinLayout(),
             clip_to_allocation: true,
             y_expand: true,
         });
-        scrollContainer.add_child(this._hintContainer);
         scrollContainer.add_child(this._scrollView);
+        scrollContainer.add_child(this._prevPageIndicator);
+        scrollContainer.add_child(this._nextPageIndicator);
         scrollContainer.add_child(this._nextPageArrow);
         scrollContainer.add_child(this._prevPageArrow);
+        scrollContainer.layoutManager = new BaseAppViewGridLayout(
+            this._grid,
+            this._scrollView,
+            this._nextPageIndicator,
+            this._nextPageArrow,
+            this._prevPageIndicator,
+            this._prevPageArrow);
+        this._appGridLayout = scrollContainer.layoutManager;
+        scrollContainer._delegate = this;
 
         this._box = new St.BoxLayout({
             vertical: true,
@@ -460,25 +630,18 @@ var BaseAppView = GObject.registerClass({
 
     _pageForCoords(x, y) {
         const rtl = this.get_text_direction() === Clutter.TextDirection.RTL;
-        const { allocation } = this._grid;
+        const {pagePadding} = this._grid.layoutManager;
 
         const [success, pointerX] = this._scrollView.transform_stage_point(x, y);
         if (!success)
             return SidePages.NONE;
 
-        if (pointerX < allocation.x1)
+        if (pointerX < pagePadding.left)
             return rtl ? SidePages.NEXT : SidePages.PREVIOUS;
-        else if (pointerX > allocation.x2)
+        else if (pointerX > this._scrollView.width - pagePadding.right)
             return rtl ? SidePages.PREVIOUS : SidePages.NEXT;
 
         return SidePages.NONE;
-    }
-
-    _onMotion(actor, event) {
-        const page = this._pageForCoords(...event.get_coords());
-        this._slideSidePages(page);
-
-        return Clutter.EVENT_PROPAGATE;
     }
 
     _onButtonPress(actor, event) {
@@ -487,10 +650,6 @@ var BaseAppView = GObject.registerClass({
             this.goToPage(this._grid.currentPage + 1);
         else if (page === SidePages.PREVIOUS)
             this.goToPage(this._grid.currentPage - 1);
-    }
-
-    _onLeave() {
-        this._slideSidePages(SidePages.NONE);
     }
 
     _swipeBegin(tracker, monitor) {
@@ -521,8 +680,6 @@ var BaseAppView = GObject.registerClass({
     _swipeEnd(tracker, duration, endProgress) {
         const adjustment = this._adjustment;
         const value = endProgress * adjustment.page_size;
-
-        this._syncPageHints(endProgress);
 
         adjustment.ease(value, {
             mode: Clutter.AnimationMode.EASE_OUT_CUBIC,
@@ -683,7 +840,7 @@ var BaseAppView = GObject.registerClass({
             dragMotion: this._onDragMotion.bind(this),
         };
         DND.addDragMonitor(this._dragMonitor);
-        this._slideSidePages(SidePages.PREVIOUS | SidePages.NEXT | SidePages.DND);
+        this._appGridLayout.showPageIndicators();
         this._dragFocus = null;
         this._swipeTracker.enabled = false;
     }
@@ -693,14 +850,6 @@ var BaseAppView = GObject.registerClass({
             return DND.DragMotionResult.CONTINUE;
 
         const appIcon = dragEvent.source;
-
-        this._dropPage = this._pageForCoords(dragEvent.x, dragEvent.y);
-        if (this._dropPage &&
-            this._dropPage === SidePages.PREVIOUS &&
-            this._grid.currentPage === 0) {
-            delete this._dropPage;
-            return DND.DragMotionResult.NO_DROP;
-        }
 
         // Handle the drag overshoot. When dragging to above the
         // icon grid, move to the page above; when dragging below,
@@ -720,8 +869,7 @@ var BaseAppView = GObject.registerClass({
         }
 
         this._resetOvershoot();
-        this._slideSidePages(SidePages.NONE);
-        delete this._dropPage;
+        this._appGridLayout.hidePageIndicators();
         this._swipeTracker.enabled = true;
     }
 
@@ -729,7 +877,7 @@ var BaseAppView = GObject.registerClass({
         // At this point, the positions aren't stored yet, thus _redisplay()
         // will move all items to their original positions
         this._redisplay();
-        this._slideSidePages(SidePages.NONE);
+        this._appGridLayout.hidePageIndicators();
         this._swipeTracker.enabled = true;
     }
 
@@ -999,201 +1147,14 @@ var BaseAppView = GObject.registerClass({
         this._grid.ease(params);
     }
 
-    _syncPageHints(pageNumber, animate = true) {
-        const showingNextPage = this._pagesShown & SidePages.NEXT;
-        const showingPrevPage = this._pagesShown & SidePages.PREVIOUS;
-        const dnd = this._pagesShown & SidePages.DND;
-        const duration = animate ? PAGE_INDICATOR_FADE_TIME : 0;
-
-        if (showingPrevPage) {
-            const opacity = pageNumber === 0 ? 0 : 255;
-            this._prevPageIndicator.visible = true;
-            this._prevPageIndicator.ease({
-                opacity,
-                duration,
-            });
-
-            if (!dnd) {
-                this._prevPageArrow.visible = true;
-                this._prevPageArrow.ease({
-                    opacity,
-                    duration,
-                });
-            }
-        }
-
-        if (showingNextPage) {
-            const opacity = pageNumber === this._grid.nPages - 1 ? 0 : 255;
-            this._nextPageIndicator.visible = true;
-            this._nextPageIndicator.ease({
-                opacity,
-                duration,
-            });
-
-            if (!dnd) {
-                this._nextPageArrow.visible = true;
-                this._nextPageArrow.ease({
-                    opacity,
-                    duration,
-                });
-            }
-        }
-    }
-
     goToPage(pageNumber, animate = true) {
         pageNumber = Math.clamp(pageNumber, 0, this._grid.nPages - 1);
 
         if (this._grid.currentPage === pageNumber)
             return;
 
-        this._syncPageHints(pageNumber, animate);
+        this._appGridLayout.goToPage(pageNumber, animate);
         this._grid.goToPage(pageNumber, animate);
-    }
-
-    _getIndicatorOffset(page, progress, baseOffset) {
-        const rtl = this.get_text_direction() === Clutter.TextDirection.RTL;
-        const translationX =
-            (1 - progress) * PAGE_PREVIEW_ANIMATION_START_OFFSET;
-
-        page = rtl ? -page : page;
-
-        return (translationX - baseOffset) * page;
-    }
-
-    _syncClip() {
-        const nextPageAdjustment = this._previewedPages.get(1);
-        const prevPageAdjustment = this._previewedPages.get(-1);
-        this._grid.clip_to_view =
-            (!prevPageAdjustment || prevPageAdjustment.value === 0) &&
-            (!nextPageAdjustment || nextPageAdjustment.value === 0);
-    }
-
-    _setupPagePreview(page, state) {
-        if (this._previewedPages.has(page))
-            return this._previewedPages.get(page);
-
-        const adjustment = new St.Adjustment({
-            actor: this,
-            lower: 0,
-            upper: 1,
-        });
-
-        const indicator = page > 0
-            ? this._nextPageIndicator : this._prevPageIndicator;
-
-        adjustment.connectObject('notify::value', () => {
-            const nextPage = this._grid.currentPage + page;
-            const hasFollowingPage = nextPage >= 0 &&
-                nextPage < this._grid.nPages;
-
-            if (hasFollowingPage) {
-                const items = this._grid.getItemsAtPage(nextPage);
-                items.forEach(item => {
-                    item.translation_x =
-                        this._getIndicatorOffset(page, adjustment.value, 0);
-                });
-
-                if (!(state & SidePages.DND)) {
-                    const pageArrow = page > 0
-                        ? this._nextPageArrow
-                        : this._prevPageArrow;
-                    pageArrow.set({
-                        visible: true,
-                        opacity: adjustment.value * 255,
-                        translation_x: this._getIndicatorOffset(
-                            page, adjustment.value,
-                            this._pageArrowOffset),
-                    });
-                }
-            }
-            if (hasFollowingPage ||
-                (page > 0 &&
-                 this._grid.layout_manager.allow_incomplete_pages &&
-                 (state & SidePages.DND) !== 0)) {
-                indicator.set({
-                    visible: true,
-                    opacity: adjustment.value * 255,
-                    translation_x: this._getIndicatorOffset(
-                        page, adjustment.value,
-                        this._pageIndicatorOffset - indicator.width),
-                });
-            }
-            this._syncClip();
-        }, this);
-
-        this._previewedPages.set(page, adjustment);
-
-        return adjustment;
-    }
-
-    _teardownPagePreview(page) {
-        const adjustment = this._previewedPages.get(page);
-        if (!adjustment)
-            return;
-
-        adjustment.value = 1;
-        adjustment.disconnectObject(this);
-        this._previewedPages.delete(page);
-    }
-
-    _slideSidePages(state) {
-        if (this._pagesShown === state)
-            return;
-        this._pagesShown = state;
-        const showingNextPage = state & SidePages.NEXT;
-        const showingPrevPage = state & SidePages.PREVIOUS;
-        const dnd = state & SidePages.DND;
-        let adjustment;
-
-        if (dnd) {
-            this._nextPageIndicator.add_style_class_name('dnd');
-            this._prevPageIndicator.add_style_class_name('dnd');
-        } else {
-            this._nextPageIndicator.remove_style_class_name('dnd');
-            this._prevPageIndicator.remove_style_class_name('dnd');
-        }
-
-        adjustment = this._previewedPages.get(1);
-        if (showingNextPage) {
-            adjustment = this._setupPagePreview(1, state);
-
-            adjustment.ease(1, {
-                duration: PAGE_PREVIEW_ANIMATION_TIME,
-                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            });
-        } else if (adjustment) {
-            adjustment.ease(0, {
-                duration: PAGE_PREVIEW_ANIMATION_TIME,
-                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-                onComplete: () => {
-                    this._teardownPagePreview(1);
-                    this._syncClip();
-                    this._nextPageArrow.visible = false;
-                    this._nextPageIndicator.visible = false;
-                },
-            });
-        }
-
-        adjustment = this._previewedPages.get(-1);
-        if (showingPrevPage) {
-            adjustment = this._setupPagePreview(-1, state);
-
-            adjustment.ease(1, {
-                duration: PAGE_PREVIEW_ANIMATION_TIME,
-                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            });
-        } else if (adjustment) {
-            adjustment.ease(0, {
-                duration: PAGE_PREVIEW_ANIMATION_TIME,
-                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-                onComplete: () => {
-                    this._teardownPagePreview(-1);
-                    this._syncClip();
-                    this._prevPageArrow.visible = false;
-                    this._prevPageIndicator.visible = false;
-                },
-            });
-        }
     }
 
     updateDragFocus(dragFocus) {
