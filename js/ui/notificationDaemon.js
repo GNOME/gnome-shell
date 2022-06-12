@@ -34,11 +34,6 @@ var FdoNotificationDaemon = class FdoNotificationDaemon {
         this._notifications = {};
 
         this._nextNotificationId = 1;
-
-        Shell.WindowTracker.get_default().connect('notify::focus-app',
-            this._onFocusAppChanged.bind(this));
-        Main.overview.connect('hidden',
-            this._onFocusAppChanged.bind(this));
     }
 
     _imageForNotificationData(hints) {
@@ -324,20 +319,6 @@ var FdoNotificationDaemon = class FdoNotificationDaemon {
             Config.PACKAGE_VERSION,
             '1.2',
         ];
-    }
-
-    _onFocusAppChanged() {
-        let tracker = Shell.WindowTracker.get_default();
-        if (!tracker.focus_app)
-            return;
-
-        for (let i = 0; i < this._sources.length; i++) {
-            let source = this._sources[i];
-            if (source.app == tracker.focus_app) {
-                source.destroyNonResidentNotifications();
-                return;
-            }
-        }
     }
 
     _emitNotificationClosed(id, reason) {
