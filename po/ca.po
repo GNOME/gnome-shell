@@ -661,7 +661,7 @@ msgstr "bloqueja l'orientació;desbloqueja l'orientació;pantalla;rotació"
 #: js/misc/systemActions.js:139
 msgctxt "search-result"
 msgid "Take a Screenshot"
-msgstr "Feu una captura de pantalla"
+msgstr "Fes una captura de pantalla"
 
 #. Translators: A list of keywords that match the screenshot UI action, separated by semicolons
 #: js/misc/systemActions.js:142
@@ -1775,7 +1775,7 @@ msgstr "Selecció de finestra"
 
 #: js/ui/screenshot.js:1225
 msgid "Screenshot / Screencast"
-msgstr "Captura de pantalla / Enregistrament de pantalla"
+msgstr "Captura o enregistrament de pantalla"
 
 #: js/ui/screenshot.js:1261
 msgid "Show Pointer"
@@ -2536,7 +2536,7 @@ msgstr "%d × %d"
 #. Translators: entry in the window right click menu.
 #: js/ui/windowMenu.js:29
 msgid "Take Screenshot"
-msgstr "Feu una captura de pantalla"
+msgstr "Fes una captura de pantalla"
 
 #: js/ui/windowMenu.js:41
 msgid "Hide"
