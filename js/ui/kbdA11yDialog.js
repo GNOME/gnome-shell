@@ -1,5 +1,5 @@
 /* exported KbdA11yDialog */
-const { Clutter, Gio, GObject } = imports.gi;
+const { Clutter, Gio, GObject, Meta } = imports.gi;
 
 const Dialog = imports.ui.dialog;
 const ModalDialog = imports.ui.modalDialog;
@@ -25,17 +25,17 @@ class KbdA11yDialog extends GObject.Object {
         let title, description;
         let key, enabled;
 
-        if (whatChanged & Clutter.KeyboardA11yFlags.SLOW_KEYS_ENABLED) {
+        if (whatChanged & Meta.KeyboardA11yFlags.SLOW_KEYS_ENABLED) {
             key = KEY_SLOW_KEYS_ENABLED;
-            enabled = (newFlags & Clutter.KeyboardA11yFlags.SLOW_KEYS_ENABLED) > 0;
+            enabled = (newFlags & Meta.KeyboardA11yFlags.SLOW_KEYS_ENABLED) > 0;
             title = enabled
                 ? _("Slow Keys Turned On")
                 : _("Slow Keys Turned Off");
             description = _('You just held down the Shift key for 8 seconds. This is the shortcut ' +
                             'for the Slow Keys feature, which affects the way your keyboard works.');
-        } else if (whatChanged & Clutter.KeyboardA11yFlags.STICKY_KEYS_ENABLED) {
+        } else if (whatChanged & Meta.KeyboardA11yFlags.STICKY_KEYS_ENABLED) {
             key = KEY_STICKY_KEYS_ENABLED;
-            enabled = (newFlags & Clutter.KeyboardA11yFlags.STICKY_KEYS_ENABLED) > 0;
+            enabled = (newFlags & Meta.KeyboardA11yFlags.STICKY_KEYS_ENABLED) > 0;
             title = enabled
                 ? _("Sticky Keys Turned On")
                 : _("Sticky Keys Turned Off");
