@@ -253,23 +253,31 @@ class BaseAppViewGridLayout extends Clutter.BinLayout {
         const previousIndicatorsVisible =
             this._currentPage > 0 && this._showIndicators;
 
-        if (previousIndicatorsVisible) {
+        if (previousIndicatorsVisible)
             this._previousPageIndicator.show();
-            this._previousPageArrow.show();
-        }
+
         this._previousPageIndicator.ease({
             opacity: previousIndicatorsVisible ? 255 : 0,
             duration: animate ? PAGE_INDICATOR_FADE_TIME : 0,
             onComplete: () => {
-                if (!previousIndicatorsVisible) {
+                if (!previousIndicatorsVisible)
                     this._previousPageIndicator.hide();
-                    this._previousPageArrow.hide();
-                }
             },
         });
+
+        const previousArrowVisible =
+            this._currentPage > 0 && !previousIndicatorsVisible;
+
+        if (previousArrowVisible)
+            this._previousPageArrow.show();
+
         this._previousPageArrow.ease({
-            opacity: previousIndicatorsVisible ? 255 : 0,
+            opacity: previousArrowVisible ? 255 : 0,
             duration: animate ? PAGE_INDICATOR_FADE_TIME : 0,
+            onComplete: () => {
+                if (!previousArrowVisible)
+                    this._previousPageArrow.hide();
+            },
         });
 
         // Always show the next page indicator to allow dropping
@@ -277,23 +285,33 @@ class BaseAppViewGridLayout extends Clutter.BinLayout {
         const {allowIncompletePages, nPages} = this._grid.layoutManager;
         const nextIndicatorsVisible = this._showIndicators &&
             (allowIncompletePages ? true : this._currentPage < nPages - 1);
-        if (nextIndicatorsVisible) {
+
+        if (nextIndicatorsVisible)
             this._nextPageIndicator.show();
-            this._nextPageArrow.show();
-        }
+
         this._nextPageIndicator.ease({
             opacity: nextIndicatorsVisible ? 255 : 0,
             duration: animate ? PAGE_INDICATOR_FADE_TIME : 0,
             onComplete: () => {
-                if (!nextIndicatorsVisible) {
+                if (!nextIndicatorsVisible)
                     this._nextPageIndicator.hide();
-                    this._nextPageArrow.hide();
-                }
             },
         });
+
+        const nextArrowVisible =
+            this._currentPage < nPages - 1 &&
+            !nextIndicatorsVisible;
+
+        if (nextArrowVisible)
+            this._nextPageArrow.show();
+
         this._nextPageArrow.ease({
-            opacity: nextIndicatorsVisible ? 255 : 0,
+            opacity: nextArrowVisible ? 255 : 0,
             duration: animate ? PAGE_INDICATOR_FADE_TIME : 0,
+            onComplete: () => {
+                if (!nextArrowVisible)
+                    this._nextPageArrow.hide();
+            },
         });
     }
 
@@ -305,8 +323,13 @@ class BaseAppViewGridLayout extends Clutter.BinLayout {
 
         const ltr = this._container.get_text_direction() !== Clutter.TextDirection.RTL;
         const {left, right} = this._grid.indicatorsPadding;
-        const leftOffset = -left * (1 - value);
-        const rightOffset = right * (1 - value);
+        const leftIndicatorOffset = -left * (1 - value);
+        const rightIndicatorOffset = right * (1 - value);
+
+        this._previousPageIndicator.translationX =
+            ltr ? leftIndicatorOffset : rightIndicatorOffset;
+        this._nextPageIndicator.translationX =
+            ltr ? rightIndicatorOffset : leftIndicatorOffset;
 
         const leftArrowOffset = -left * value;
         const rightArrowOffset = right * value;
@@ -315,10 +338,6 @@ class BaseAppViewGridLayout extends Clutter.BinLayout {
             ltr ? leftArrowOffset : rightArrowOffset;
         this._nextPageArrow.translationX =
             ltr ? rightArrowOffset : leftArrowOffset;
-        this._previousPageIndicator.translationX = ltr ? leftOffset : rightOffset;
-        this._previousPageArrow.translationX = ltr ? leftOffset : rightOffset;
-        this._nextPageIndicator.translationX = ltr ? rightOffset : leftOffset;
-        this._nextPageArrow.translationX = ltr ? rightOffset : leftOffset;
     }
 
     vfunc_set_container(container) {
@@ -483,11 +502,9 @@ var BaseAppView = GObject.registerClass({
             icon_name: rtl
                 ? 'carousel-arrow-previous-symbolic'
                 : 'carousel-arrow-next-symbolic',
-            opacity: 0,
             reactive: false,
-            visible: false,
             x_expand: true,
-            x_align: Clutter.ActorAlign.END,
+            x_align: Clutter.ActorAlign.CENTER,
         });
         this._prevPageArrow = new St.Icon({
             style_class: 'page-navigation-arrow',
@@ -498,7 +515,7 @@ var BaseAppView = GObject.registerClass({
             reactive: false,
             visible: false,
             x_expand: true,
-            x_align: Clutter.ActorAlign.START,
+            x_align: Clutter.ActorAlign.CENTER,
         });
 
         const scrollContainer = new St.Widget({
