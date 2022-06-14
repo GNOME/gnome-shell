@@ -461,7 +461,7 @@ var BaseAppView = GObject.registerClass({
             reactive: false,
             x_expand: true,
             y_expand: true,
-            x_align: Clutter.ActorAlign.END,
+            x_align: Clutter.ActorAlign.FILL,
             y_align: Clutter.ActorAlign.FILL,
         });
 
@@ -472,7 +472,7 @@ var BaseAppView = GObject.registerClass({
             reactive: false,
             x_expand: true,
             y_expand: true,
-            x_align: Clutter.ActorAlign.START,
+            x_align: Clutter.ActorAlign.FILL,
             y_align: Clutter.ActorAlign.FILL,
         });
 
