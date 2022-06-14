@@ -161,8 +161,7 @@
           {
             "action": "levelSwitch",
             "iconName": "keyboard-shift-symbolic",
-            "level": 1,
-            "width": 1.5
+            "level": 1
           },
           {
             "strings": [
@@ -205,29 +204,9 @@
             ]
           },
           {
-            "action": "levelSwitch",
-            "iconName": "keyboard-shift-symbolic",
-            "level": 1,
-            "width": 3
-          }
-        ],
-        [
-          {
-            "action": "levelSwitch",
-            "label": "?123",
-            "level": 2,
-            "width": 1.5
-          },
-          {
             "strings": [
               ","
             ]
-          },
-          {
-            "strings": [
-              " "
-            ],
-            "width": 5
           },
           {
             "strings": [
@@ -242,16 +221,39 @@
             ]
           },
           {
+            "action": "levelSwitch",
+            "iconName": "keyboard-shift-symbolic",
+            "level": 1,
+            "width": 1.5
+          }
+        ],
+        [
+          {
+            "action": "levelSwitch",
+            "label": "?123",
+            "level": 2,
+            "width": 1.5
+          },
+          {
             "action": "emoji",
-            "iconName": "face-smile-symbolic"
+            "iconName": "face-smile-symbolic",
+            "width": 1.5
+          },
+          {
+            "strings": [
+              " "
+            ],
+            "width": 5
           },
           {
             "action": "languageMenu",
-            "iconName": "keyboard-layout-symbolic"
+            "iconName": "keyboard-layout-symbolic",
+            "width": 1.5
           },
           {
             "action": "hide",
-            "iconName": "keyboard-hide-symbolic"
+            "iconName": "keyboard-hide-symbolic",
+            "width": 2
           }
         ]
       ]
@@ -417,8 +419,7 @@
           {
             "action": "levelSwitch",
             "iconName": "keyboard-shift-symbolic",
-            "level": 0,
-            "width": 1.5
+            "level": 0
           },
           {
             "strings": [
@@ -461,29 +462,9 @@
             ]
           },
           {
-            "action": "levelSwitch",
-            "iconName": "keyboard-shift-symbolic",
-            "level": 0,
-            "width": 3
-          }
-        ],
-        [
-          {
-            "action": "levelSwitch",
-            "label": "?123",
-            "level": 2,
-            "width": 1.5
-          },
-          {
             "strings": [
               ","
             ]
-          },
-          {
-            "strings": [
-              " "
-            ],
-            "width": 5
           },
           {
             "strings": [
@@ -498,16 +479,39 @@
             ]
           },
           {
+            "action": "levelSwitch",
+            "iconName": "keyboard-shift-symbolic",
+            "level": 0,
+            "width": 1.5
+          }
+        ],
+        [
+          {
+            "action": "levelSwitch",
+            "label": "?123",
+            "level": 2,
+            "width": 1.5
+          },
+          {
             "action": "emoji",
-            "iconName": "face-smile-symbolic"
+            "iconName": "face-smile-symbolic",
+            "width": 1.5
+          },
+          {
+            "strings": [
+              " "
+            ],
+            "width": 5
           },
           {
             "action": "languageMenu",
-            "iconName": "keyboard-layout-symbolic"
+            "iconName": "keyboard-layout-symbolic",
+            "width": 1.5
           },
           {
             "action": "hide",
-            "iconName": "keyboard-hide-symbolic"
+            "iconName": "keyboard-hide-symbolic",
+            "width": 2
           }
         ]
       ]
