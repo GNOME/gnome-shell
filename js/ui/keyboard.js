@@ -1,7 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported KeyboardManager */
 
-const { Clutter, Gio, GLib, GObject, Graphene, Meta, Shell, St } = imports.gi;
+const {Clutter, Gio, GLib, GObject, Graphene, IBus, Meta, Shell, St} = imports.gi;
 const Signals = imports.misc.signals;
 
 const EdgeDragAction = imports.ui.edgeDragAction;
@@ -2209,6 +2209,20 @@ var KeyboardController = class extends Signals.EventEmitter {
     getCurrentGroup() {
         if (Main.inputMethod.terminalMode)
             return 'us-extended';
+
+        // Special case for Korean, if Hangul mode is disabled, use the 'us' keymap
+        if (this._currentSource.id === 'hangul') {
+            const inputSourceManager = InputSourceManager.getInputSourceManager();
+            const currentSource = inputSourceManager.currentSource;
+            let prop;
+            for (let i = 0; (prop = currentSource.properties.get(i)) !== null; ++i) {
+                if (prop.get_key() === 'InputMode' &&
+                    prop.get_prop_type() === IBus.PropType.TOGGLE &&
+                    prop.get_state() !== IBus.PropState.CHECKED)
+                    return 'us';
+            }
+        }
+
         return this._currentSource.xkbId;
     }
 
