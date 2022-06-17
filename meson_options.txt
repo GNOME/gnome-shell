@@ -42,6 +42,6 @@ option('systemd',
 
 option('soup2',
   type: 'boolean',
-  value: true,
+  value: false,
   description: 'Use Soup 2.4 instead of Soup 3. Must be in sync with libgweather'
 )
