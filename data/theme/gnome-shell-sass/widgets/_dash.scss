@@ -11,8 +11,6 @@ $dash_spacing: $base_margin * 0.5;
 
 // container for the dash
 #dash {
-  margin-top: $dash_edge_offset;
-
   // background behind item container
   .dash-background {
     background-color: $dash_background_color;
