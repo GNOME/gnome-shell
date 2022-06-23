@@ -615,9 +615,8 @@ var SearchResultsView = GObject.registerClass({
             this._unregisterProvider(provider);
         });
 
-        RemoteSearch.loadRemoteSearchProviders(this._searchSettings, providers => {
-            providers.forEach(this._registerProvider.bind(this));
-        });
+        const providers = RemoteSearch.loadRemoteSearchProviders(this._searchSettings);
+        providers.forEach(this._registerProvider.bind(this));
     }
 
     _registerProvider(provider) {

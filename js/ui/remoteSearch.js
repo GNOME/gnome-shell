@@ -60,7 +60,13 @@ const SearchProvider2Iface = `
 var SearchProviderProxyInfo = Gio.DBusInterfaceInfo.new_for_xml(SearchProviderIface);
 var SearchProvider2ProxyInfo = Gio.DBusInterfaceInfo.new_for_xml(SearchProvider2Iface);
 
-function loadRemoteSearchProviders(searchSettings, callback) {
+/**
+ * loadRemoteSearchProviders:
+ *
+ * @param {Gio.Settings} searchSettings - search settings
+ * @returns {RemoteSearchProvider[]} - the list of remote providers
+ */
+function loadRemoteSearchProviders(searchSettings) {
     let objectPaths = {};
     let loadedProviders = [];
 
@@ -130,10 +136,8 @@ function loadRemoteSearchProviders(searchSettings, callback) {
         }
     }
 
-    if (searchSettings.get_boolean('disable-external')) {
-        callback([]);
-        return;
-    }
+    if (searchSettings.get_boolean('disable-external'))
+        return [];
 
     FileUtils.collectFromDatadirs('search-providers', false, loadRemoteSearchProvider);
 
@@ -184,7 +188,7 @@ function loadRemoteSearchProviders(searchSettings, callback) {
         return idxA - idxB;
     });
 
-    callback(loadedProviders);
+    return loadedProviders;
 }
 
 var RemoteSearchProvider = class {
