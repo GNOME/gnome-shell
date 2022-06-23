@@ -229,6 +229,7 @@ class BaseAppViewGridLayout extends Clutter.BinLayout {
 
         this._showIndicators = false;
         this._currentPage = 0;
+        this._pageWidth = 0;
     }
 
     _getIndicatorsWidth(box) {
@@ -315,6 +316,65 @@ class BaseAppViewGridLayout extends Clutter.BinLayout {
         });
     }
 
+    _getEndIcon(icons) {
+        const {columnsPerPage} = this._grid.layoutManager;
+        const index = Math.min(icons.length, columnsPerPage);
+        return icons[Math.max(index - 1, 0)];
+    }
+
+    _translatePreviousPageIcons(value, ltr) {
+        if (this._currentPage === 0)
+            return;
+
+        const previousPage = this._currentPage - 1;
+        const icons = this._grid.getItemsAtPage(previousPage).filter(i => i.visible);
+        if (icons.length === 0)
+            return;
+
+        const {left, right} = this._grid.indicatorsPadding;
+        const {columnSpacing} = this._grid.layoutManager;
+        const endIcon = this._getEndIcon(icons);
+        let iconOffset;
+
+        if (ltr) {
+            const currentPageOffset = this._pageWidth * this._currentPage;
+            iconOffset = currentPageOffset - endIcon.allocation.x2 + left - columnSpacing;
+        } else {
+            const rtlPage = this._grid.nPages - previousPage - 1;
+            const pageOffset = this._pageWidth * rtlPage;
+            iconOffset = pageOffset - endIcon.allocation.x1 - right + columnSpacing;
+        }
+
+        for (const icon of icons)
+            icon.translationX = iconOffset * value;
+    }
+
+    _translateNextPageIcons(value, ltr) {
+        if (this._currentPage >= this._grid.nPages - 1)
+            return;
+
+        const nextPage = this._currentPage + 1;
+        const icons = this._grid.getItemsAtPage(nextPage).filter(i => i.visible);
+        if (icons.length === 0)
+            return;
+
+        const {left, right} = this._grid.indicatorsPadding;
+        const {columnSpacing} = this._grid.layoutManager;
+        let iconOffset;
+
+        if (ltr) {
+            const pageOffset = this._pageWidth * nextPage;
+            iconOffset = pageOffset - icons[0].allocation.x1 - right + columnSpacing;
+        } else {
+            const rtlPage = this._grid.nPages - this._currentPage - 1;
+            const currentPageOffset = this._pageWidth * rtlPage;
+            iconOffset = currentPageOffset - icons[0].allocation.x2 + left - columnSpacing;
+        }
+
+        for (const icon of icons)
+            icon.translationX = iconOffset * value;
+    }
+
     _syncPageIndicators() {
         if (!this._container)
             return;
@@ -338,6 +398,16 @@ class BaseAppViewGridLayout extends Clutter.BinLayout {
             ltr ? leftArrowOffset : rightArrowOffset;
         this._nextPageArrow.translationX =
             ltr ? rightArrowOffset : leftArrowOffset;
+
+        // Page icons
+        this._translatePreviousPageIcons(value, ltr);
+        this._translateNextPageIcons(value, ltr);
+
+        if (this._grid.nPages > 0) {
+            this._grid.getItemsAtPage(this._currentPage).forEach(icon => {
+                icon.translationX = 0;
+            });
+        }
     }
 
     vfunc_set_container(container) {
@@ -367,6 +437,8 @@ class BaseAppViewGridLayout extends Clutter.BinLayout {
         this._previousPageArrow.allocate(ltr ? leftBox : rightBox);
         this._nextPageIndicator.allocate(ltr ? rightBox : leftBox);
         this._nextPageArrow.allocate(ltr ? rightBox : leftBox);
+
+        this._pageWidth = box.get_width();
     }
 
     goToPage(page, animate = true) {
