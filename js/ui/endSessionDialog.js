@@ -234,10 +234,8 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
         });
 
         this._loginManager = LoginManager.getLoginManager();
-        this._loginManager.canRebootToBootLoaderMenu(
-            (canRebootToBootLoaderMenu, unusedNeedsAuth) => {
-                this._canRebootToBootLoaderMenu = canRebootToBootLoaderMenu;
-            });
+        this._canRebootToBootLoaderMenu = false;
+        this._getCanRebootToBootLoaderMenu();
 
         this._userManager = AccountsService.UserManager.get_default();
         this._user = this._userManager.get_user(GLib.get_user_name());
@@ -304,6 +302,11 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
 
         this._dbusImpl = Gio.DBusExportedObject.wrapJSObject(EndSessionDialogIface, this);
         this._dbusImpl.export(Gio.DBus.session, '/org/gnome/SessionManager/EndSessionDialog');
+    }
+
+    async _getCanRebootToBootLoaderMenu() {
+        const [canRebootToBootLoaderMenu] = await this._loginManager.canRebootToBootLoaderMenu();
+        this._canRebootToBootLoaderMenu = canRebootToBootLoaderMenu;
     }
 
     async _onPkOfflineProxyCreated(proxy, error) {
@@ -645,65 +648,65 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
         this._sync();
     }
 
-    _loadSessions() {
-        this._loginManager.listSessions(result => {
-            for (let i = 0; i < result.length; i++) {
-                let [id_, uid_, userName, seat_, sessionPath] = result[i];
-                let proxy = new LogindSession(Gio.DBus.system, 'org.freedesktop.login1', sessionPath);
+    async _loadSessions() {
+        let sessionId = GLib.getenv('XDG_SESSION_ID');
+        if (!sessionId) {
+            const currentSessionProxy = await this._loginManager.getCurrentSessionProxy();
+            sessionId = currentSessionProxy.Id;
+            log(`endSessionDialog: No XDG_SESSION_ID, fetched from logind: ${sessionId}`);
+        }
 
-                if (proxy.Class != 'user')
-                    continue;
+        const sessions = await this._loginManager.listSessions();
+        for (const [id_, uid_, userName, seat_, sessionPath] of sessions) {
+            let proxy = new LogindSession(Gio.DBus.system, 'org.freedesktop.login1', sessionPath);
 
-                if (proxy.State == 'closing')
-                    continue;
+            if (proxy.Class !== 'user')
+                continue;
 
-                let sessionId = GLib.getenv('XDG_SESSION_ID');
-                if (!sessionId) {
-                    this._loginManager.getCurrentSessionProxy(currentSessionProxy => {
-                        sessionId = currentSessionProxy.Id;
-                        log(`endSessionDialog: No XDG_SESSION_ID, fetched from logind: ${sessionId}`);
-                    });
-                }
+            if (proxy.State === 'closing')
+                continue;
 
-                if (proxy.Id == sessionId)
-                    continue;
+            if (proxy.Id === sessionId)
+                continue;
 
-                const session = {
-                    user: this._userManager.get_user(userName),
-                    username: userName,
-                    type: proxy.Type,
-                    remote: proxy.Remote,
-                };
-                const nSessions = this._sessions.push(session);
+            const session = {
+                user: this._userManager.get_user(userName),
+                username: userName,
+                type: proxy.Type,
+                remote: proxy.Remote,
+            };
+            const nSessions = this._sessions.push(session);
 
-                let userAvatar = new UserWidget.Avatar(session.user, { iconSize: _ITEM_ICON_SIZE });
-                userAvatar.update();
+            let userAvatar = new UserWidget.Avatar(session.user, {
+                iconSize: _ITEM_ICON_SIZE,
+            });
+            userAvatar.update();
 
-                userName = session.user.get_real_name() ?? session.username;
+            const displayUserName =
+                session.user.get_real_name() ?? session.username;
 
-                let userLabelText;
-                if (session.remote)
-                    /* Translators: Remote here refers to a remote session, like a ssh login */
-                    userLabelText = _('%s (remote)').format(userName);
-                else if (session.type === 'tty')
-                    /* Translators: Console here refers to a tty like a VT console */
-                    userLabelText = _('%s (console)').format(userName);
-                else
-                    userLabelText = userName;
+            let userLabelText;
+            if (session.remote)
+                /* Translators: Remote here refers to a remote session, like a ssh login */
+                userLabelText = _('%s (remote)').format(displayUserName);
+            else if (session.type === 'tty')
+                /* Translators: Console here refers to a tty like a VT console */
+                userLabelText = _('%s (console)').format(displayUserName);
+            else
+                userLabelText = userName;
 
-                let listItem = new Dialog.ListSectionItem({
-                    icon_actor: userAvatar,
-                    title: userLabelText,
-                });
-                this._sessionSection.list.add_child(listItem);
+            let listItem = new Dialog.ListSectionItem({
+                icon_actor: userAvatar,
+                title: userLabelText,
+            });
+            this._sessionSection.list.add_child(listItem);
 
-                // limit the number of entries
-                if (nSessions === MAX_USERS_IN_SESSION_DIALOG)
-                    break;
-            }
+            // limit the number of entries
+            if (nSessions === MAX_USERS_IN_SESSION_DIALOG)
+                break;
+        }
 
-            this._sync();
-        });
+        this._sync();
     }
 
     async _getUpdateInfo() {

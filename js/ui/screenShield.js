@@ -106,15 +106,7 @@ var ScreenShield = class extends Signals.EventEmitter {
                                    this._prepareForSleep.bind(this));
 
         this._loginSession = null;
-        this._loginManager.getCurrentSessionProxy(sessionProxy => {
-            this._loginSession = sessionProxy;
-            this._loginSession.connectSignal('Lock',
-                                             () => this.lock(false));
-            this._loginSession.connectSignal('Unlock',
-                                             () => this.deactivate(false));
-            this._loginSession.connect('g-properties-changed', this._syncInhibitor.bind(this));
-            this._syncInhibitor();
-        });
+        this._getLoginSession();
 
         this._settings = new Gio.Settings({ schema_id: SCREENSAVER_SCHEMA });
         this._settings.connect(`changed::${LOCK_ENABLED_KEY}`, this._syncInhibitor.bind(this));
@@ -149,6 +141,17 @@ var ScreenShield = class extends Signals.EventEmitter {
         this.idleMonitor = global.backend.get_core_idle_monitor();
         this._cursorTracker = Meta.CursorTracker.get_for_display(global.display);
 
+        this._syncInhibitor();
+    }
+
+    async _getLoginSession() {
+        this._loginSession = await this._loginManager.getCurrentSessionProxy();
+        this._loginSession.connectSignal('Lock',
+            () => this.lock(false));
+        this._loginSession.connectSignal('Unlock',
+            () => this.deactivate(false));
+        this._loginSession.connect('g-properties-changed',
+            () => this._syncInhibitor());
         this._syncInhibitor();
     }
 

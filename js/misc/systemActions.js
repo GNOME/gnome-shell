@@ -347,13 +347,11 @@ const SystemActions = GObject.registerClass({
         this.notify('can-restart');
     }
 
-    _updateHaveSuspend() {
-        this._loginManager.canSuspend(
-            (canSuspend, needsAuth) => {
-                this._canHaveSuspend = canSuspend;
-                this._suspendNeedsAuth = needsAuth;
-                this._updateSuspend();
-            });
+    async _updateHaveSuspend() {
+        const [canSuspend, needsAuth] = await this._loginManager.canSuspend();
+        this._canHaveSuspend = canSuspend;
+        this._suspendNeedsAuth = needsAuth;
+        this._updateSuspend();
     }
 
     _updateSuspend() {

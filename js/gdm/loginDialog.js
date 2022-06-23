@@ -529,7 +529,7 @@ var LoginDialog = GObject.registerClass({
         this._realmManager.connectObject('login-format-changed',
             this._showRealmLoginHint.bind(this), this);
 
-        LoginManager.getLoginManager().getCurrentSessionProxy(this._gotGreeterSessionProxy.bind(this));
+        this._getGreeterSessionProxy();
 
         // If the user list is enabled, it should take key focus; make sure the
         // screen shield is initialized first to prevent it from stealing the
@@ -982,10 +982,11 @@ var LoginDialog = GObject.registerClass({
         });
     }
 
-    _gotGreeterSessionProxy(proxy) {
-        this._greeterSessionProxy = proxy;
-        proxy.connectObject('g-properties-changed', () => {
-            if (proxy.Active)
+    async _getGreeterSessionProxy() {
+        const loginManager = LoginManager.getLoginManager();
+        this._greeterSessionProxy = await loginManager.getCurrentSessionProxy();
+        this._greeterSessionProxy?.connectObject('g-properties-changed', () => {
+            if (this._greeterSessionProxy.Active)
                 this._loginScreenSessionActivated();
         }, this);
     }

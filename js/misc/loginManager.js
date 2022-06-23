@@ -101,11 +101,9 @@ var LoginManagerSystemd = class extends Signals.EventEmitter {
                                   this._prepareForSleep.bind(this));
     }
 
-    getCurrentSessionProxy(callback) {
-        if (this._currentSession) {
-            callback(this._currentSession);
-            return;
-        }
+    async getCurrentSessionProxy() {
+        if (this._currentSession)
+            return this._currentSession;
 
         let sessionId = GLib.getenv('XDG_SESSION_ID');
         if (!sessionId) {
@@ -131,63 +129,60 @@ var LoginManagerSystemd = class extends Signals.EventEmitter {
 
                 if (!sessionId) {
                     log('No, failed to get session from logind.');
-                    return;
+                    return null;
                 }
             }
         }
 
-        this._proxy.GetSessionRemote(sessionId, (result, error) => {
-            if (error) {
-                logError(error, 'Could not get a proxy for the current session');
-            } else {
-                this._currentSession = new SystemdLoginSession(Gio.DBus.system,
-                                                               'org.freedesktop.login1',
-                                                               result[0]);
-                callback(this._currentSession);
-            }
-        });
+        try {
+            const [objectPath] = await this._proxy.GetSessionAsync(sessionId);
+            this._currentSession = new SystemdLoginSession(Gio.DBus.system,
+                'org.freedesktop.login1', objectPath);
+            return this._currentSession;
+        } catch (error) {
+            logError(error, 'Could not get a proxy for the current session');
+            return null;
+        }
     }
 
-    canSuspend(asyncCallback) {
-        this._proxy.CanSuspendRemote((result, error) => {
-            if (error) {
-                asyncCallback(false, false);
-            } else {
-                let needsAuth = result[0] == 'challenge';
-                let canSuspend = needsAuth || result[0] == 'yes';
-                asyncCallback(canSuspend, needsAuth);
-            }
-        });
+    async canSuspend() {
+        try {
+            const [result] = await this._proxy.CanSuspendAsync();
+            const needsAuth = result === 'challenge';
+            const canSuspend = needsAuth || result === 'yes';
+            return [canSuspend, needsAuth];
+        } catch (error) {
+            return [false, false];
+        }
     }
 
-    canRebootToBootLoaderMenu(asyncCallback) {
-        this._proxy.CanRebootToBootLoaderMenuRemote((result, error) => {
-            if (error) {
-                asyncCallback(false, false);
-            } else {
-                const needsAuth = result[0] === 'challenge';
-                const canRebootToBootLoaderMenu = needsAuth || result[0] === 'yes';
-                asyncCallback(canRebootToBootLoaderMenu, needsAuth);
-            }
-        });
+    async canRebootToBootLoaderMenu() {
+        try {
+            const [result] = await this._proxy.CanRebootToBootLoaderMenuAsync();
+            const needsAuth = result[0] === 'challenge';
+            const canRebootToBootLoaderMenu = needsAuth || result[0] === 'yes';
+            return [canRebootToBootLoaderMenu, needsAuth];
+        } catch (error) {
+            return [false, false];
+        }
     }
 
     setRebootToBootLoaderMenu() {
         /* Parameter is timeout in usec, show to menu for 60 seconds */
-        this._proxy.SetRebootToBootLoaderMenuRemote(60000000);
+        this._proxy.SetRebootToBootLoaderMenuAsync(60000000);
     }
 
-    listSessions(asyncCallback) {
-        this._proxy.ListSessionsRemote((result, error) => {
-            if (error)
-                asyncCallback([]);
-            else
-                asyncCallback(result[0]);
-        });
+    async listSessions() {
+        try {
+            const [sessions] = await this._proxy.ListSessionsAsync();
+            return sessions;
+        } catch (e) {
+            return [];
+        }
     }
 
     suspend() {
-        this._proxy.SuspendRemote(true);
+        this._proxy.SuspendAsync(true);
     }
 
     async inhibit(reason, cancellable) {
@@ -206,25 +201,26 @@ var LoginManagerSystemd = class extends Signals.EventEmitter {
 };
 
 var LoginManagerDummy = class extends Signals.EventEmitter  {
-    getCurrentSessionProxy(_callback) {
+    getCurrentSessionProxy() {
         // we could return a DummySession object that fakes whatever callers
         // expect (at the time of writing: connect() and connectSignal()
-        // methods), but just never calling the callback should be safer
+        // methods), but just never settling the promise should be safer
+        return new Promise(() => {});
     }
 
-    canSuspend(asyncCallback) {
-        asyncCallback(false, false);
+    canSuspend() {
+        return new Promise(resolve => resolve([false, false]));
     }
 
-    canRebootToBootLoaderMenu(asyncCallback) {
-        asyncCallback(false, false);
+    canRebootToBootLoaderMenu() {
+        return new Promise(resolve => resolve([false, false]));
     }
 
     setRebootToBootLoaderMenu() {
     }
 
-    listSessions(asyncCallback) {
-        asyncCallback([]);
+    listSessions() {
+        return new Promise(resolve => resolve([]));
     }
 
     suspend() {
