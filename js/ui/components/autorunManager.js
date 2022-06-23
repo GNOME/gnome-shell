@@ -7,6 +7,8 @@ const GnomeSession = imports.misc.gnomeSession;
 const Main = imports.ui.main;
 const MessageTray = imports.ui.messageTray;
 
+Gio._promisify(Gio.Mount.prototype, 'guess_content_type');
+
 const { loadInterfaceXML } = imports.misc.fileUtils;
 
 // GSettings keys
@@ -81,64 +83,45 @@ function HotplugSniffer() {
 }
 
 var ContentTypeDiscoverer = class {
-    constructor(callback) {
-        this._callback = callback;
+    constructor() {
         this._settings = new Gio.Settings({ schema_id: SETTINGS_SCHEMA });
     }
 
-    guessContentTypes(mount) {
+    async guessContentTypes(mount) {
         let autorunEnabled = !this._settings.get_boolean(SETTING_DISABLE_AUTORUN);
         let shouldScan = autorunEnabled && !isMountNonLocal(mount);
 
-        if (shouldScan) {
-            // guess mount's content types using GIO
-            mount.guess_content_type(false, null,
-                                     this._onContentTypeGuessed.bind(this));
-        } else {
-            this._emitCallback(mount, []);
-        }
-    }
-
-    _onContentTypeGuessed(mount, res) {
         let contentTypes = [];
+        if (shouldScan) {
+            try {
+                contentTypes = await mount.guess_content_type(false, null);
+            } catch (e) {
+                log(`Unable to guess content types on added mount ${mount.get_name()}: ${e}`);
+            }
 
-        try {
-            contentTypes = mount.guess_content_type_finish(res);
-        } catch (e) {
-            log(`Unable to guess content types on added mount ${mount.get_name()}: ${e}`);
+            if (contentTypes.length === 0) {
+                const root = mount.get_root();
+                const hotplugSniffer = new HotplugSniffer();
+                [contentTypes] = hotplugSniffer.SniffURIAsync(root.get_uri());
+            }
         }
 
-        if (contentTypes.length) {
-            this._emitCallback(mount, contentTypes);
-        } else {
-            let root = mount.get_root();
-
-            let hotplugSniffer = new HotplugSniffer();
-            hotplugSniffer.SniffURIRemote(root.get_uri(),
-                result => {
-                    [contentTypes] = result;
-                    this._emitCallback(mount, contentTypes);
-                });
-        }
-    }
-
-    _emitCallback(mount, contentTypes = []) {
         // we're not interested in win32 software content types here
         contentTypes = contentTypes.filter(
             type => type !== 'x-content/win32-software');
 
-        let apps = [];
+        const apps = [];
         contentTypes.forEach(type => {
-            let app = Gio.app_info_get_default_for_type(type, false);
+            const app = Gio.app_info_get_default_for_type(type, false);
 
             if (app)
                 apps.push(app);
         });
 
-        if (apps.length == 0)
+        if (apps.length === 0)
             apps.push(Gio.app_info_get_default_for_type('inode/directory', false));
 
-        this._callback(mount, apps, contentTypes);
+        return [apps, contentTypes];
     }
 };
 
@@ -160,16 +143,15 @@ var AutorunManager = class {
         this._volumeMonitor.disconnectObject(this);
     }
 
-    _onMountAdded(monitor, mount) {
+    async _onMountAdded(monitor, mount) {
         // don't do anything if our session is not the currently
         // active one
         if (!this._session.SessionIsActive)
             return;
 
-        let discoverer = new ContentTypeDiscoverer((m, apps, contentTypes) => {
-            this._dispatcher.addMount(mount, apps, contentTypes);
-        });
-        discoverer.guessContentTypes(mount);
+        const discoverer = new ContentTypeDiscoverer();
+        const [apps, contentTypes] = await discoverer.guessContentTypes(mount);
+        this._dispatcher.addMount(mount, apps, contentTypes);
     }
 
     _onMountRemoved(monitor, mount) {
