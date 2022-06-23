@@ -208,47 +208,40 @@ var SearchResultsBase = GObject.registerClass({
     _setMoreCount(_count) {
     }
 
-    _ensureResultActors(results, callback) {
+    async _ensureResultActors(results) {
         let metasNeeded = results.filter(
             resultId => this._resultDisplays[resultId] === undefined);
 
-        if (metasNeeded.length === 0) {
-            callback(true);
-        } else {
-            this._cancellable.cancel();
-            this._cancellable.reset();
+        if (metasNeeded.length === 0)
+            return;
 
-            this.provider.getResultMetas(metasNeeded, metas => {
-                if (this._cancellable.is_cancelled()) {
-                    if (metas.length > 0)
-                        log(`Search provider ${this.provider.id} returned results after the request was canceled`);
-                    callback(false);
-                    return;
-                }
-                if (metas.length != metasNeeded.length) {
-                    log(`Wrong number of result metas returned by search provider ${this.provider.id}: ` +
-                        `expected ${metasNeeded.length} but got ${metas.length}`);
-                    callback(false);
-                    return;
-                }
-                if (metas.some(meta => !meta.name || !meta.id)) {
-                    log(`Invalid result meta returned from search provider ${this.provider.id}`);
-                    callback(false);
-                    return;
-                }
+        this._cancellable.cancel();
+        this._cancellable.reset();
 
-                metasNeeded.forEach((resultId, i) => {
-                    let meta = metas[i];
-                    let display = this._createResultDisplay(meta);
-                    display.connect('key-focus-in', this._keyFocusIn.bind(this));
-                    this._resultDisplays[resultId] = display;
-                });
-                callback(true);
-            }, this._cancellable);
+        const metas = await this.provider.getResultMetas(metasNeeded, this._cancellable);
+
+        if (this._cancellable.is_cancelled()) {
+            if (metas.length > 0)
+                throw new Error(`Search provider ${this.provider.id} returned results after the request was canceled`);
         }
+
+        if (metas.length !== metasNeeded.length) {
+            throw new Error(`Wrong number of result metas returned by search provider ${this.provider.id}: ` +
+                `expected ${metasNeeded.length} but got ${metas.length}`);
+        }
+
+        if (metas.some(meta => !meta.name || !meta.id))
+            throw new Error(`Invalid result meta returned from search provider ${this.provider.id}`);
+
+        metasNeeded.forEach((resultId, i) => {
+            let meta = metas[i];
+            let display = this._createResultDisplay(meta);
+            display.connect('key-focus-in', this._keyFocusIn.bind(this));
+            this._resultDisplays[resultId] = display;
+        });
     }
 
-    updateSearch(providerResults, terms, callback) {
+    async updateSearch(providerResults, terms, callback) {
         this._terms = terms;
         if (providerResults.length == 0) {
             this._clearResultDisplay();
@@ -261,25 +254,23 @@ var SearchResultsBase = GObject.registerClass({
                 : providerResults;
             let moreCount = Math.max(providerResults.length - results.length, 0);
 
-            this._ensureResultActors(results, successful => {
-                if (!successful) {
-                    this._clearResultDisplay();
-                    callback();
-                    return;
-                }
+            try {
+                await this._ensureResultActors(results);
 
                 // To avoid CSS transitions causing flickering when
                 // the first search result stays the same, we hide the
                 // content while filling in the results.
                 this.hide();
                 this._clearResultDisplay();
-                results.forEach(resultId => {
-                    this._addItem(this._resultDisplays[resultId]);
-                });
+                results.forEach(
+                    resultId => this._addItem(this._resultDisplays[resultId]));
                 this._setMoreCount(this.provider.canLaunchSearch ? moreCount : 0);
                 this.show();
                 callback();
-            });
+            } catch (e) {
+                this._clearResultDisplay();
+                callback();
+            }
         }
     }
 });
@@ -638,11 +629,6 @@ var SearchResultsView = GObject.registerClass({
             provider.display.destroy();
     }
 
-    _gotResults(results, provider) {
-        this._results[provider.id] = results;
-        this._updateResults(provider, results);
-    }
-
     _clearSearchTimeout() {
         if (this._searchTimeoutId > 0) {
             GLib.source_remove(this._searchTimeoutId);
@@ -661,6 +647,25 @@ var SearchResultsView = GObject.registerClass({
         this._updateSearchProgress();
     }
 
+    async _doProviderSearch(provider, previousResults) {
+        provider.searchInProgress = true;
+
+        let results;
+        if (this._isSubSearch && previousResults) {
+            results = await provider.getSubsearchResultSet(
+                previousResults,
+                this._terms,
+                this._cancellable);
+        } else {
+            results = await provider.getInitialResultSet(
+                this._terms,
+                this._cancellable);
+        }
+
+        this._results[provider.id] = results;
+        this._updateResults(provider, results);
+    }
+
     _doSearch() {
         this._startingSearch = false;
 
@@ -668,23 +673,8 @@ var SearchResultsView = GObject.registerClass({
         this._results = {};
 
         this._providers.forEach(provider => {
-            provider.searchInProgress = true;
-
             let previousProviderResults = previousResults[provider.id];
-            if (this._isSubSearch && previousProviderResults) {
-                provider.getSubsearchResultSet(previousProviderResults,
-                                               this._terms,
-                                               results => {
-                                                   this._gotResults(results, provider);
-                                               },
-                                               this._cancellable);
-            } else {
-                provider.getInitialResultSet(this._terms,
-                                             results => {
-                                                 this._gotResults(results, provider);
-                                             },
-                                             this._cancellable);
-            }
+            this._doProviderSearch(provider, previousProviderResults);
         });
 
         this._updateSearchProgress();

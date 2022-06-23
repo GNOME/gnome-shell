@@ -1825,7 +1825,7 @@ var AppSearchProvider = class AppSearchProvider {
         this._parentalControlsManager = ParentalControlsManager.getDefault();
     }
 
-    getResultMetas(apps, callback) {
+    getResultMetas(apps) {
         const { scaleFactor } = St.ThemeContext.get_for_stage(global.stage);
         let metas = [];
         for (let id of apps) {
@@ -1852,24 +1852,25 @@ var AppSearchProvider = class AppSearchProvider {
             }
         }
 
-        callback(metas);
+        return new Promise(resolve => resolve(metas));
     }
 
     filterResults(results, maxNumber) {
         return results.slice(0, maxNumber);
     }
 
-    getInitialResultSet(terms, callback, _cancellable) {
+    getInitialResultSet(terms, cancellable) {
         // Defer until the parental controls manager is initialised, so the
         // results can be filtered correctly.
         if (!this._parentalControlsManager.initialized) {
-            let initializedId = this._parentalControlsManager.connect('app-filter-changed', () => {
-                if (this._parentalControlsManager.initialized) {
-                    this._parentalControlsManager.disconnect(initializedId);
-                    this.getInitialResultSet(terms, callback, _cancellable);
-                }
+            return new Promise(resolve => {
+                let initializedId = this._parentalControlsManager.connect('app-filter-changed', async () => {
+                    if (this._parentalControlsManager.initialized) {
+                        this._parentalControlsManager.disconnect(initializedId);
+                        resolve(await this.getInitialResultSet(terms, cancellable));
+                    }
+                });
             });
-            return;
         }
 
         let query = terms.join(' ');
@@ -1887,12 +1888,11 @@ var AppSearchProvider = class AppSearchProvider {
         });
 
         results = results.concat(this._systemActions.getMatchingActions(terms));
-
-        callback(results);
+        return new Promise(resolve => resolve(results));
     }
 
-    getSubsearchResultSet(previousResults, terms, callback, cancellable) {
-        this.getInitialResultSet(terms, callback, cancellable);
+    getSubsearchResultSet(previousResults, terms, cancellable) {
+        return this.getInitialResultSet(terms, cancellable);
     }
 
     createResultObject(resultMeta) {

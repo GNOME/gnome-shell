@@ -250,48 +250,43 @@ var RemoteSearchProvider = class {
         return regularResults.slice(0, maxNumber).concat(specialResults.slice(0, maxNumber));
     }
 
-    _getResultsFinished(results, error, callback) {
-        if (error) {
-            if (error.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
-                return;
-
-            log(`Received error from D-Bus search provider ${this.id}: ${error}`);
-            callback([]);
-            return;
+    async getInitialResultSet(terms, cancellable) {
+        try {
+            const [results] = await this.proxy.GetInitialResultSetAsync(terms, cancellable);
+            return results;
+        } catch (error) {
+            if (!error.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
+                log(`Received error from D-Bus search provider ${this.id}: ${error}`);
+            return [];
         }
-
-        callback(results[0]);
     }
 
-    getInitialResultSet(terms, callback, cancellable) {
-        this.proxy.GetInitialResultSetRemote(terms,
-                                             (results, error) => {
-                                                 this._getResultsFinished(results, error, callback);
-                                             },
-                                             cancellable);
+    async getSubsearchResultSet(previousResults, newTerms, cancellable) {
+        try {
+            const [results] = await this.proxy.GetSubsearchResultSetAsync(previousResults, newTerms, cancellable);
+            return results;
+        } catch (error) {
+            if (!error.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
+                log(`Received error from D-Bus search provider ${this.id}: ${error}`);
+            return [];
+        }
     }
 
-    getSubsearchResultSet(previousResults, newTerms, callback, cancellable) {
-        this.proxy.GetSubsearchResultSetRemote(previousResults, newTerms,
-                                               (results, error) => {
-                                                   this._getResultsFinished(results, error, callback);
-                                               },
-                                               cancellable);
-    }
-
-    _getResultMetasFinished(results, error, callback) {
-        if (error) {
+    async getResultMetas(ids, cancellable) {
+        let metas;
+        try {
+            [metas] = await this.proxy.GetResultMetasAsync(ids, cancellable);
+        } catch (error) {
             if (!error.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
                 log(`Received error from D-Bus search provider ${this.id} during GetResultMetas: ${error}`);
-            callback([]);
-            return;
+            return [];
         }
-        let metas = results[0];
+
         let resultMetas = [];
         for (let i = 0; i < metas.length; i++) {
             for (let prop in metas[i]) {
                 // we can use the serialized icon variant directly
-                if (prop != 'icon')
+                if (prop !== 'icon')
                     metas[i][prop] = metas[i][prop].deep_unpack();
             }
 
@@ -303,15 +298,7 @@ var RemoteSearchProvider = class {
                 clipboardText: metas[i]['clipboardText'],
             });
         }
-        callback(resultMetas);
-    }
-
-    getResultMetas(ids, callback, cancellable) {
-        this.proxy.GetResultMetasRemote(ids,
-                                        (results, error) => {
-                                            this._getResultMetasFinished(results, error, callback);
-                                        },
-                                        cancellable);
+        return resultMetas;
     }
 
     activateResult(id) {
