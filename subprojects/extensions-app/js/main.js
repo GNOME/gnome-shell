@@ -51,7 +51,7 @@ class Application extends Adw.Application {
     }
 
     vfunc_activate() {
-        this._shellProxy.CheckForUpdatesRemote();
+        this._shellProxy.CheckForUpdatesAsync().catch(logError);
         this._window.present();
     }
 
@@ -176,7 +176,7 @@ var ExtensionsWindow = GObject.registerClass({
 
         dialog.connect('response', (dlg, response) => {
             if (response === Gtk.ResponseType.ACCEPT)
-                this._shellProxy.UninstallExtensionRemote(uuid);
+                this._shellProxy.UninstallExtensionAsync(uuid).catch(logError);
             dialog.destroy();
         });
         dialog.present();
@@ -191,9 +191,9 @@ var ExtensionsWindow = GObject.registerClass({
             }
         }
 
-        this._shellProxy.OpenExtensionPrefsRemote(uuid,
+        this._shellProxy.OpenExtensionPrefsAsync(uuid,
             this._exportedHandle,
-            { modal: new GLib.Variant('b', true) });
+            {modal: new GLib.Variant('b', true)}).catch(logError);
     }
 
     _showAbout() {
@@ -281,24 +281,23 @@ var ExtensionsWindow = GObject.registerClass({
         this._syncListVisibility();
     }
 
-    _scanExtensions() {
-        this._shellProxy.ListExtensionsRemote(([extensionsMap], e) => {
-            if (e) {
-                if (e instanceof Gio.DBusError) {
-                    log(`Failed to connect to shell proxy: ${e}`);
-                    this._mainStack.visible_child_name = 'noshell';
-                } else {
-                    throw e;
-                }
-                return;
-            }
+    async _scanExtensions() {
+        try {
+            const [extensionsMap] = await this._shellProxy.ListExtensionsAsync();
 
             for (let uuid in extensionsMap) {
                 let extension = ExtensionUtils.deserializeExtension(extensionsMap[uuid]);
                 this._addExtensionRow(extension);
             }
             this._extensionsLoaded();
-        });
+        } catch (e) {
+            if (e instanceof Gio.DBusError) {
+                log(`Failed to connect to shell proxy: ${e}`);
+                this._mainStack.visible_child_name = 'noshell';
+            } else {
+                throw e;
+            }
+        }
     }
 
     _addExtensionRow(extension) {
@@ -407,9 +406,9 @@ var ExtensionRow = GObject.registerClass({
         action.connect('activate', toggleState);
         action.connect('change-state', (a, state) => {
             if (state.get_boolean())
-                this._app.shellProxy.EnableExtensionRemote(this.uuid);
+                this._app.shellProxy.EnableExtensionAsync(this.uuid).catch(logError);
             else
-                this._app.shellProxy.DisableExtensionRemote(this.uuid);
+                this._app.shellProxy.DisableExtensionAsync(this.uuid).catch(logError);
         });
         this._actionGroup.add_action(action);
 

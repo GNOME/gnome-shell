@@ -53,7 +53,7 @@ var InhibitShortcutsDialog = GObject.registerClass({
         return this._app && !this._app.is_window_backed();
     }
 
-    _saveToPermissionStore(grant) {
+    async _saveToPermissionStore(grant) {
         if (!this._shouldUsePermStore() || this._permStore == null)
             return;
 
@@ -61,15 +61,15 @@ var InhibitShortcutsDialog = GObject.registerClass({
         permissions[this._app.get_id()] = [grant];
         let data = GLib.Variant.new('av', {});
 
-        this._permStore.SetRemote(APP_PERMISSIONS_TABLE,
-                                  true,
-                                  APP_PERMISSIONS_ID,
-                                  permissions,
-                                  data,
-            (result, error) => {
-                if (error != null)
-                    log(error.message);
-            });
+        try {
+            await this._permStore.SetAsync(APP_PERMISSIONS_TABLE,
+                true,
+                APP_PERMISSIONS_ID,
+                permissions,
+                data);
+        } catch (error) {
+            log(error.message);
+        }
     }
 
     _buildLayout() {
@@ -134,30 +134,27 @@ var InhibitShortcutsDialog = GObject.registerClass({
 
         /* Check with the permission store */
         let appId = this._app.get_id();
-        this._permStore = new PermissionStore.PermissionStore((proxy, error) => {
+        this._permStore = new PermissionStore.PermissionStore(async (proxy, error) => {
             if (error) {
                 log(error.message);
                 this._dialog.open();
                 return;
             }
 
-            this._permStore.LookupRemote(APP_PERMISSIONS_TABLE,
-                                         APP_PERMISSIONS_ID,
-                (res, err) => {
-                    if (err) {
-                        this._dialog.open();
-                        log(err.message);
-                        return;
-                    }
+            try {
+                const [permissions] = await this._permStore.LookupAsync(
+                    APP_PERMISSIONS_TABLE, APP_PERMISSIONS_ID);
 
-                    let [permissions] = res;
-                    if (permissions[appId] === undefined) // Not found
-                        this._dialog.open();
-                    else if (permissions[appId] == GRANTED)
-                        this._emitResponse(DialogResponse.ALLOW);
-                    else
-                        this._emitResponse(DialogResponse.DENY);
-                });
+                if (permissions[appId] === undefined) // Not found
+                    this._dialog.open();
+                else if (permissions[appId] === GRANTED)
+                    this._emitResponse(DialogResponse.ALLOW);
+                else
+                    this._emitResponse(DialogResponse.DENY);
+            } catch (err) {
+                this._dialog.open();
+                log(err.message);
+            }
         });
     }
 

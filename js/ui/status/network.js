@@ -50,7 +50,7 @@ var PortalHelperResult = {
 };
 
 const PortalHelperIface = loadInterfaceXML('org.gnome.Shell.PortalHelper');
-const PortalHelperProxy = Gio.DBusProxy.makeProxyWrapper(PortalHelperIface);
+const PortalHelperInfo = Gio.DBusInterfaceInfo.new_for_xml(PortalHelperIface);
 
 function signalToIcon(value) {
     if (value < 20)
@@ -2090,7 +2090,7 @@ class Indicator extends PanelMenu.SystemIndicator {
     _flushConnectivityQueue() {
         if (this._portalHelperProxy) {
             for (let item of this._connectivityQueue)
-                this._portalHelperProxy.CloseRemote(item);
+                this._portalHelperProxy.CloseAsync(item).catch(logError);
         }
 
         this._connectivityQueue = [];
@@ -2101,7 +2101,7 @@ class Indicator extends PanelMenu.SystemIndicator {
 
         if (index >= 0) {
             if (this._portalHelperProxy)
-                this._portalHelperProxy.CloseRemote(path);
+                this._portalHelperProxy.CloseAsync(path).catch(logError);
 
             this._connectivityQueue.splice(index, 1);
         }
@@ -2128,7 +2128,7 @@ class Indicator extends PanelMenu.SystemIndicator {
         }
     }
 
-    _syncConnectivity() {
+    async _syncConnectivity() {
         if (this._mainConnection == null ||
             this._mainConnection.state != NM.ActiveConnectionState.ACTIVATED) {
             this._flushConnectivityQueue();
@@ -2153,24 +2153,26 @@ class Indicator extends PanelMenu.SystemIndicator {
         }
 
         let timestamp = global.get_current_time();
-        if (this._portalHelperProxy) {
-            this._portalHelperProxy.AuthenticateRemote(path, '', timestamp);
-        } else {
-            new PortalHelperProxy(Gio.DBus.session,
-                'org.gnome.Shell.PortalHelper',
-                '/org/gnome/Shell/PortalHelper',
-                (proxy, error) => {
-                    if (error) {
-                        log(`Error launching the portal helper: ${error}`);
-                        return;
-                    }
+        if (!this._portalHelperProxy) {
+            this._portalHelperProxy = new Gio.DBusProxy({
+                g_connection: Gio.DBus.session,
+                g_name: 'org.gnome.Shell.PortalHelper',
+                g_object_path: '/org/gnome/Shell/PortalHelper',
+                g_interface_name: PortalHelperInfo.name,
+                g_interface_info: PortalHelperInfo,
+            });
+            this._portalHelperProxy.connectSignal('Done',
+                () => this._portalHelperDone().catch(logError));
 
-                    this._portalHelperProxy = proxy;
-                    proxy.connectSignal('Done', this._portalHelperDone.bind(this));
-
-                    proxy.AuthenticateRemote(path, '', timestamp);
-                });
+            try {
+                await this._portalHelperProxy.init_async(
+                    GLib.PRIORITY_DEFAULT, null);
+            } catch (e) {
+                console.error(`Error launching the portal helper: ${e.message}`);
+            }
         }
+
+        this._portalHelperProxy?.AuthenticateAsync(path, '', timestamp).catch(logError);
 
         this._connectivityQueue.push(path);
     }

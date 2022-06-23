@@ -51,12 +51,12 @@ var AutomountManager = class {
         }
     }
 
-    _InhibitorsChanged(_object, _senderName, [_inhibitor]) {
-        this._session.IsInhibitedRemote(GNOME_SESSION_AUTOMOUNT_INHIBIT,
-            (result, error) => {
-                if (!error)
-                    this._inhibited = result[0];
-            });
+    async _InhibitorsChanged(_object, _senderName, [_inhibitor]) {
+        try {
+            const [inhibited] =
+                await this._session.IsInhibitedAsync(GNOME_SESSION_AUTOMOUNT_INHIBIT);
+            this._inhibited = inhibited;
+        } catch (e) {}
     }
 
     _startupMountAll() {

@@ -1824,42 +1824,38 @@ var ScreenshotUI = GObject.registerClass({
         this.close(true);
 
         // This is a bit awkward because creating a proxy synchronously hangs Shell.
-        const doStartScreencast = () => {
+        const doStartScreencast = async () => {
             let method =
-                this._screencastProxy.ScreencastRemote.bind(this._screencastProxy);
+                this._screencastProxy.ScreencastAsync.bind(this._screencastProxy);
             if (w !== -1) {
-                method = this._screencastProxy.ScreencastAreaRemote.bind(
+                method = this._screencastProxy.ScreencastAreaAsync.bind(
                     this._screencastProxy, x, y, w, h);
             }
 
-            method(
-                GLib.build_filenamev([
-                    /* Translators: this is the folder where recorded
-                       screencasts are stored. */
-                    _('Screencasts'),
-                    /* Translators: this is a filename used for screencast
-                     * recording, where "%d" and "%t" date and time, e.g.
-                     * "Screencast from 07-17-2013 10:00:46 PM.webm" */
-                    /* xgettext:no-c-format */
-                    _('Screencast from %d %t.webm'),
-                ]),
-                { 'draw-cursor': new GLib.Variant('b', drawCursor) },
-                ([success, path], error) => {
-                    if (error !== null) {
-                        this._setScreencastInProgress(false);
-                        log(`Error starting screencast: ${error.message}`);
-                        return;
-                    }
-
-                    if (!success) {
-                        this._setScreencastInProgress(false);
-                        log('Error starting screencast');
-                        return;
-                    }
-
-                    this._screencastPath = path;
-                }
-            );
+            try {
+                const [success, path] = await method(
+                    GLib.build_filenamev([
+                        /* Translators: this is the folder where recorded
+                           screencasts are stored. */
+                        _('Screencasts'),
+                        /* Translators: this is a filename used for screencast
+                         * recording, where "%d" and "%t" date and time, e.g.
+                         * "Screencast from 07-17-2013 10:00:46 PM.webm" */
+                        /* xgettext:no-c-format */
+                        _('Screencast from %d %t.webm'),
+                    ]),
+                    {'draw-cursor': new GLib.Variant('b', drawCursor)});
+                if (!success)
+                    throw new Error();
+                this._screencastPath = path;
+            } catch (error) {
+                this._setScreencastInProgress(false);
+                const {message} = error;
+                if (message)
+                    log(`Error starting screencast: ${message}`);
+                else
+                    log('Error starting screencast');
+            }
         };
 
         // Set this before calling the method as the screen recording indicator
@@ -1886,7 +1882,7 @@ var ScreenshotUI = GObject.registerClass({
         }
     }
 
-    stopScreencast() {
+    async stopScreencast() {
         if (!this._screencastInProgress)
             return;
 
@@ -1894,58 +1890,59 @@ var ScreenshotUI = GObject.registerClass({
         // will check it before the success callback fires.
         this._setScreencastInProgress(false);
 
-        this._screencastProxy.StopScreencastRemote((success, error) => {
-            if (error !== null) {
-                log(`Error stopping screencast: ${error.message}`);
-                return;
-            }
-
-            if (!success) {
+        try {
+            const [success] = await this._screencastProxy.StopScreencastAsync();
+            if (!success)
+                throw new Error();
+        } catch (error) {
+            const {message} = error;
+            if (message)
+                log(`Error stopping screencast: ${message}`);
+            else
                 log('Error stopping screencast');
+            return;
+        }
+
+        // Show a notification.
+        const file = Gio.file_new_for_path(this._screencastPath);
+
+        const source = new MessageTray.Source(
+            // Translators: notification source name.
+            _('Screenshot'),
+            'screencast-recorded-symbolic'
+        );
+        const notification = new MessageTray.Notification(
+            source,
+            // Translators: notification title.
+            _('Screencast recorded'),
+            // Translators: notification body when a screencast was recorded.
+            _('Click here to view the video.')
+        );
+        // Translators: button on the screencast notification.
+        notification.addAction(_('Show in Files'), () => {
+            const app =
+                Gio.app_info_get_default_for_type('inode/directory', false);
+
+            if (app === null) {
+                // It may be null e.g. in a toolbox without nautilus.
+                log('Error showing in files: no default app set for inode/directory');
                 return;
             }
 
-            // Show a notification.
-            const file = Gio.file_new_for_path(this._screencastPath);
-
-            const source = new MessageTray.Source(
-                // Translators: notification source name.
-                _('Screenshot'),
-                'screencast-recorded-symbolic'
-            );
-            const notification = new MessageTray.Notification(
-                source,
-                // Translators: notification title.
-                _('Screencast recorded'),
-                // Translators: notification body when a screencast was recorded.
-                _('Click here to view the video.')
-            );
-            // Translators: button on the screencast notification.
-            notification.addAction(_('Show in Files'), () => {
-                const app =
-                    Gio.app_info_get_default_for_type('inode/directory', false);
-
-                if (app === null) {
-                    // It may be null e.g. in a toolbox without nautilus.
-                    log('Error showing in files: no default app set for inode/directory');
-                    return;
-                }
-
-                app.launch([file], global.create_app_launch_context(0, -1));
-            });
-            notification.connect('activated', () => {
-                try {
-                    Gio.app_info_launch_default_for_uri(
-                        file.get_uri(), global.create_app_launch_context(0, -1));
-                } catch (err) {
-                    logError(err, 'Error opening screencast');
-                }
-            });
-            notification.setTransient(true);
-
-            Main.messageTray.add(source);
-            source.showNotification(notification);
+            app.launch([file], global.create_app_launch_context(0, -1));
         });
+        notification.connect('activated', () => {
+            try {
+                Gio.app_info_launch_default_for_uri(
+                    file.get_uri(), global.create_app_launch_context(0, -1));
+            } catch (err) {
+                logError(err, 'Error opening screencast');
+            }
+        });
+        notification.setTransient(true);
+
+        Main.messageTray.add(source);
+        source.showNotification(notification);
     }
 
     get screencast_in_progress() {

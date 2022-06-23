@@ -43,87 +43,82 @@ var ExtensionsService = class extends ServiceImplementation {
         this._proxy.UserExtensionsEnabled = enable;
     }
 
-    ListExtensionsAsync(params, invocation) {
-        this._proxy.ListExtensionsRemote(...params, (res, error) => {
-            if (this._handleError(invocation, error))
-                return;
-
+    async ListExtensionsAsync(params, invocation) {
+        try {
+            const res = await this._proxy.ListExtensionsAsync(...params);
             invocation.return_value(new GLib.Variant('(a{sa{sv}})', res));
-        });
+        } catch (error) {
+            this._handleError(invocation, error);
+        }
     }
 
-    GetExtensionInfoAsync(params, invocation) {
-        this._proxy.GetExtensionInfoRemote(...params, (res, error) => {
-            if (this._handleError(invocation, error))
-                return;
-
+    async GetExtensionInfoAsync(params, invocation) {
+        try {
+            const res = await this._proxy.GetExtensionInfoAsync(...params);
             invocation.return_value(new GLib.Variant('(a{sv})', res));
-        });
+        } catch (error) {
+            this._handleError(invocation, error);
+        }
     }
 
-    GetExtensionErrorsAsync(params, invocation) {
-        this._proxy.GetExtensionErrorsRemote(...params, (res, error) => {
-            if (this._handleError(invocation, error))
-                return;
-
+    async GetExtensionErrorsAsync(params, invocation) {
+        try {
+            const res = await this._proxy.GetExtensionErrorsAsync(...params);
             invocation.return_value(new GLib.Variant('(as)', res));
-        });
+        } catch (error) {
+            this._handleError(invocation, error);
+        }
     }
 
-    InstallRemoteExtensionAsync(params, invocation) {
-        this._proxy.InstallRemoteExtensionRemote(...params, (res, error) => {
-            if (this._handleError(invocation, error))
-                return;
-
+    async InstallRemoteExtensionAsync(params, invocation) {
+        try {
+            const res = await this._proxy.InstallRemoteExtensionAsync(...params);
             invocation.return_value(new GLib.Variant('(s)', res));
-        });
+        } catch (error) {
+            this._handleError(invocation, error);
+        }
     }
 
-    UninstallExtensionAsync(params, invocation) {
-        this._proxy.UninstallExtensionRemote(...params, (res, error) => {
-            if (this._handleError(invocation, error))
-                return;
-
+    async UninstallExtensionAsync(params, invocation) {
+        try {
+            const res = await this._proxy.UninstallExtensionAsync(...params);
             invocation.return_value(new GLib.Variant('(b)', res));
-        });
+        } catch (error) {
+            this._handleError(invocation, error);
+        }
     }
 
-    EnableExtensionAsync(params, invocation) {
-        this._proxy.EnableExtensionRemote(...params, (res, error) => {
-            if (this._handleError(invocation, error))
-                return;
-
+    async EnableExtensionAsync(params, invocation) {
+        try {
+            const res = await this._proxy.EnableExtensionAsync(...params);
             invocation.return_value(new GLib.Variant('(b)', res));
-        });
+        } catch (error) {
+            this._handleError(invocation, error);
+        }
     }
 
-    DisableExtensionAsync(params, invocation) {
-        this._proxy.DisableExtensionRemote(...params, (res, error) => {
-            if (this._handleError(invocation, error))
-                return;
-
+    async DisableExtensionAsync(params, invocation) {
+        try {
+            const res = await this._proxy.DisableExtensionAsync(...params);
             invocation.return_value(new GLib.Variant('(b)', res));
-        });
+        } catch (error) {
+            this._handleError(invocation, error);
+        }
     }
 
     LaunchExtensionPrefsAsync([uuid], invocation) {
         this.OpenExtensionPrefsAsync([uuid, '', {}], invocation);
     }
 
-    OpenExtensionPrefsAsync(params, invocation) {
+    async OpenExtensionPrefsAsync(params, invocation) {
         const [uuid, parentWindow, options] = params;
 
-        this._proxy.GetExtensionInfoRemote(uuid, (res, error) => {
-            if (this._handleError(invocation, error))
-                return;
+        try {
+            const [serialized] = await this._proxy.GetExtensionInfoAsync(uuid);
 
-            if (this._prefsDialog) {
-                this._handleError(invocation,
-                    new Error('Already showing a prefs dialog'));
-                return;
-            }
+            if (this._prefsDialog)
+                throw new Error('Already showing a prefs dialog');
 
-            const [serialized] = res;
             const extension = ExtensionUtils.deserializeExtension(serialized);
 
             this._prefsDialog = new ExtensionPrefsDialog(extension);
@@ -150,15 +145,17 @@ var ExtensionsService = class extends ServiceImplementation {
             this._prefsDialog.show();
 
             invocation.return_value(null);
-        });
+        } catch (error) {
+            this._handleError(invocation, error);
+        }
     }
 
-    CheckForUpdatesAsync(params, invocation) {
-        this._proxy.CheckForUpdatesRemote(...params, (res, error) => {
-            if (this._handleError(invocation, error))
-                return;
-
+    async CheckForUpdatesAsync(params, invocation) {
+        try {
+            await this._proxy.CheckForUpdatesAsync(...params);
             invocation.return_value(null);
-        });
+        } catch (error) {
+            this._handleError(invocation, error);
+        }
     }
 };

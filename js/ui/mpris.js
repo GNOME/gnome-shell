@@ -121,7 +121,7 @@ var MprisPlayer = class MprisPlayer extends Signals.EventEmitter {
     }
 
     playPause() {
-        this._playerProxy.PlayPauseRemote();
+        this._playerProxy.PlayPauseAsync().catch(logError);
     }
 
     get canGoNext() {
@@ -129,7 +129,7 @@ var MprisPlayer = class MprisPlayer extends Signals.EventEmitter {
     }
 
     next() {
-        this._playerProxy.NextRemote();
+        this._playerProxy.NextAsync().catch(logError);
     }
 
     get canGoPrevious() {
@@ -137,7 +137,7 @@ var MprisPlayer = class MprisPlayer extends Signals.EventEmitter {
     }
 
     previous() {
-        this._playerProxy.PreviousRemote();
+        this._playerProxy.PreviousAsync().catch(logError);
     }
 
     raise() {
@@ -152,7 +152,7 @@ var MprisPlayer = class MprisPlayer extends Signals.EventEmitter {
         if (app)
             app.activate();
         else if (this._mprisProxy.CanRaise)
-            this._mprisProxy.RaiseRemote();
+            this._mprisProxy.RaiseAsync().catch(logError);
     }
 
     _close() {
@@ -275,14 +275,13 @@ class MediaSection extends MessageList.MessageListSection {
         this._players.set(busName, player);
     }
 
-    _onProxyReady() {
-        this._proxy.ListNamesRemote(([names]) => {
-            names.forEach(name => {
-                if (!name.startsWith(MPRIS_PLAYER_PREFIX))
-                    return;
+    async _onProxyReady() {
+        const [names] = await this._proxy.ListNamesAsync();
+        names.forEach(name => {
+            if (!name.startsWith(MPRIS_PLAYER_PREFIX))
+                return;
 
-                this._addPlayer(name);
-            });
+            this._addPlayer(name);
         });
         this._proxy.connectSignal('NameOwnerChanged',
                                   this._onNameOwnerChanged.bind(this));

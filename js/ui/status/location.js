@@ -137,7 +137,7 @@ var GeoclueAgent = GObject.registerClass({
         return true;
     }
 
-    _onManagerProxyReady(proxy, error) {
+    async _onManagerProxyReady(proxy, error) {
         if (error != null) {
             log(error.message);
             this._connecting = false;
@@ -150,15 +150,13 @@ var GeoclueAgent = GObject.registerClass({
 
         this.notify('in-use');
 
-        this._managerProxy.AddAgentRemote('gnome-shell', this._onAgentRegistered.bind(this));
-    }
-
-    _onAgentRegistered(result, error) {
-        this._connecting = false;
-        this._notifyMaxAccuracyLevel();
-
-        if (error != null)
-            log(error.message);
+        try {
+            await this._managerProxy.AddAgentAsync('gnome-shell');
+            this._connecting = false;
+            this._notifyMaxAccuracyLevel();
+        } catch (e) {
+            log(e.message);
+        }
     }
 
     _onGeoclueVanished() {
@@ -298,7 +296,7 @@ var AppAuthorizer = class {
         return this._accuracyLevel;
     }
 
-    _saveToPermissionStore() {
+    async _saveToPermissionStore() {
         if (this._permStoreProxy == null)
             return;
 
@@ -308,15 +306,16 @@ var AppAuthorizer = class {
 
         let data = GLib.Variant.new('av', {});
 
-        this._permStoreProxy.SetRemote(APP_PERMISSIONS_TABLE,
-                                       true,
-                                       APP_PERMISSIONS_ID,
-                                       this._permissions,
-                                       data,
-            (result, error) => {
-                if (error != null)
-                    log(error.message);
-            });
+        try {
+            await this._permStoreProxy.SetAsync(
+                APP_PERMISSIONS_TABLE,
+                true,
+                APP_PERMISSIONS_ID,
+                this._permissions,
+                data);
+        } catch (error) {
+            log(error.message);
+        }
     }
 };
 

@@ -39,7 +39,7 @@ var WeatherClient = class extends Signals.EventEmitter {
 
         this._needsAuth = true;
         this._weatherAuthorized = false;
-        this._permStore = new PermissionStore.PermissionStore((proxy, error) => {
+        this._permStore = new PermissionStore.PermissionStore(async (proxy, error) => {
             if (error) {
                 log(`Failed to connect to permissionStore: ${error.message}`);
                 return;
@@ -53,14 +53,15 @@ var WeatherClient = class extends Signals.EventEmitter {
                 return;
             }
 
-            this._permStore.LookupRemote('gnome', 'geolocation', (res, err) => {
-                if (err)
-                    log(`Error looking up permission: ${err.message}`);
+            let [perms, data] = [{}, null];
+            try {
+                [perms, data] = await this._permStore.LookupAsync('gnome', 'geolocation');
+            } catch (err) {
+                log(`Error looking up permission: ${err.message}`);
+            }
 
-                let [perms, data] = err ? [{}, null] : res;
-                let  params = ['gnome', 'geolocation', false, data, perms];
-                this._onPermStoreChanged(this._permStore, '', params);
-            });
+            const params = ['gnome', 'geolocation', false, data, perms];
+            this._onPermStoreChanged(this._permStore, '', params);
         });
         this._permStore.connectSignal('Changed',
                                       this._onPermStoreChanged.bind(this));

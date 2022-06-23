@@ -329,11 +329,14 @@ const SystemActions = GObject.registerClass({
         this.notify('can-lock-screen');
     }
 
-    _updateHaveShutdown() {
-        this._session.CanShutdownRemote((result, error) => {
-            this._canHavePowerOff = error ? false : result[0];
-            this._updatePowerOff();
-        });
+    async _updateHaveShutdown() {
+        try {
+            const [canShutdown] = await this._session.CanShutdownAsync();
+            this._canHavePowerOff = canShutdown;
+        } catch (e) {
+            this._canHavePowerOff = false;
+        }
+        this._updatePowerOff();
     }
 
     _updatePowerOff() {
@@ -431,21 +434,21 @@ const SystemActions = GObject.registerClass({
             throw new Error('The logout action is not available!');
 
         Main.overview.hide();
-        this._session.LogoutRemote(0);
+        this._session.LogoutAsync(0).catch(logError);
     }
 
     activatePowerOff() {
         if (!this._actions.get(POWER_OFF_ACTION_ID).available)
             throw new Error('The power-off action is not available!');
 
-        this._session.ShutdownRemote(0);
+        this._session.ShutdownAsync(0).catch(logError);
     }
 
     activateRestart() {
         if (!this._actions.get(RESTART_ACTION_ID).available)
             throw new Error('The restart action is not available!');
 
-        this._session.RebootRemote();
+        this._session.RebootAsync().catch(logError);
     }
 
     activateSuspend() {

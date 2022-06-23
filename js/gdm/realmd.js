@@ -100,9 +100,9 @@ var Manager = class extends Signals.EventEmitter {
 
     release() {
         Service(Gio.DBus.system,
-                'org.freedesktop.realmd',
-                '/org/freedesktop/realmd',
-                service => service.ReleaseRemote());
+            'org.freedesktop.realmd',
+            '/org/freedesktop/realmd',
+            service => service.ReleaseAsync().catch(logError));
         this._aggregateProvider.disconnectObject(this);
         this._realms = { };
         this._updateLoginFormat();

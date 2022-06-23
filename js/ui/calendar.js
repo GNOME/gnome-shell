@@ -337,11 +337,11 @@ class DBusEventSource extends EventSourceBase {
                 this._events.clear();
                 this.emit('changed');
             }
-            this._dbusProxy.SetTimeRangeRemote(
+            this._dbusProxy.SetTimeRangeAsync(
                 this._curRequestBegin.getTime() / 1000,
                 this._curRequestEnd.getTime() / 1000,
                 forceReload,
-                Gio.DBusCallFlags.NONE);
+                Gio.DBusCallFlags.NONE).catch(logError);
         }
     }
 

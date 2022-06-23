@@ -153,24 +153,24 @@ class ModemGsm extends ModemBase {
         this._proxy.connectSignal('RegistrationInfo', (proxy, sender, [_status, code, name]) => {
             this._setOperatorName(_findProviderForMccMnc(name, code));
         });
-        this._proxy.GetRegistrationInfoRemote(([result], err) => {
-            if (err) {
-                log(err);
-                return;
-            }
+        this._getInitialState();
+    }
 
-            let [status_, code, name] = result;
+    async _getInitialState() {
+        try {
+            const [
+                [status_, code, name],
+                [quality],
+            ] = await Promise.all([
+                this._proxy.GetRegistrationInfoAsync(),
+                this._proxy.GetSignalQualityAsync(),
+            ]);
             this._setOperatorName(_findProviderForMccMnc(name, code));
-        });
-        this._proxy.GetSignalQualityRemote((result, err) => {
-            if (err) {
-                // it will return an error if the device is not connected
-                this._setSignalQuality(0);
-            } else {
-                let [quality] = result;
-                this._setSignalQuality(quality);
-            }
-        });
+            this._setSignalQuality(quality);
+        } catch (err) {
+            // it will return an error if the device is not connected
+            this._setSignalQuality(0);
+        }
     }
 });
 
@@ -188,27 +188,28 @@ class ModemCdma extends ModemBase {
             if (this.operator_name == null)
                 this._refreshServingSystem();
         });
-        this._proxy.GetSignalQualityRemote((result, err) => {
-            if (err) {
-                // it will return an error if the device is not connected
-                this._setSignalQuality(0);
-            } else {
-                let [quality] = result;
-                this._setSignalQuality(quality);
-            }
-        });
+        this._getSignalQuality();
     }
 
-    _refreshServingSystem() {
-        this._proxy.GetServingSystemRemote(([result], err) => {
-            if (err) {
-                // it will return an error if the device is not connected
-                this._setOperatorName(null);
-            } else {
-                let [bandClass_, band_, sid] = result;
-                this._setOperatorName(_findProviderForSid(sid));
-            }
-        });
+    async _getSignalQuality() {
+        try {
+            const [quality] = await this._proxy.GetSignalQualityAsync();
+            this._setSignalQuality(quality);
+        } catch (err) {
+            // it will return an error if the device is not connected
+            this._setSignalQuality(0);
+        }
+    }
+
+    async _refreshServingSystem() {
+        try {
+            const [bandClass_, band_, sid] =
+                await this._proxy.GetServingSystemAsync();
+            this._setOperatorName(_findProviderForSid(sid));
+        } catch (err) {
+            // it will return an error if the device is not connected
+            this._setOperatorName(null);
+        }
     }
 });
 

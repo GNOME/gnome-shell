@@ -302,7 +302,7 @@ var RemoteSearchProvider = class {
     }
 
     activateResult(id) {
-        this.proxy.ActivateResultRemote(id);
+        this.proxy.ActivateResultAsync(id).catch(logError);
     }
 
     launchSearch(_terms) {
@@ -321,10 +321,12 @@ var RemoteSearchProvider2 = class extends RemoteSearchProvider {
     }
 
     activateResult(id, terms) {
-        this.proxy.ActivateResultRemote(id, terms, global.get_current_time());
+        this.proxy.ActivateResultAsync(
+            id, terms, global.get_current_time()).catch(logError);
     }
 
     launchSearch(terms) {
-        this.proxy.LaunchSearchRemote(terms, global.get_current_time());
+        this.proxy.LaunchSearchAsync(
+            terms, global.get_current_time()).catch(logError);
     }
 };

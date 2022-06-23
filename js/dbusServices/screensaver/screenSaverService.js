@@ -32,39 +32,39 @@ var ScreenSaverService = class extends ServiceImplementation {
             () => this._dbusImpl.emit_signal('WakeUpScreen', null));
     }
 
-    LockAsync(params, invocation) {
-        this._proxy.LockRemote(...params, (res, error) => {
-            if (this._handleError(invocation, error))
-                return;
-
+    async LockAsync(params, invocation) {
+        try {
+            await this._proxy.LockAsync(...params);
             invocation.return_value(null);
-        });
+        } catch (error) {
+            this._handleError(invocation, error);
+        }
     }
 
-    GetActiveAsync(params, invocation) {
-        this._proxy.GetActiveRemote(...params, (res, error) => {
-            if (this._handleError(invocation, error))
-                return;
-
+    async GetActiveAsync(params, invocation) {
+        try {
+            const res = await this._proxy.GetActiveAsync(...params);
             invocation.return_value(new GLib.Variant('(b)', res));
-        });
+        } catch (error) {
+            this._handleError(invocation, error);
+        }
     }
 
-    SetActiveAsync(params, invocation) {
-        this._proxy.SetActiveRemote(...params, (res, error) => {
-            if (this._handleError(invocation, error))
-                return;
-
+    async SetActiveAsync(params, invocation) {
+        try {
+            await this._proxy.SetActiveAsync(...params);
             invocation.return_value(null);
-        });
+        } catch (error) {
+            this._handleError(invocation, error);
+        }
     }
 
-    GetActiveTimeAsync(params, invocation) {
-        this._proxy.GetActiveTimeRemote(...params, (res, error) => {
-            if (this._handleError(invocation, error))
-                return;
-
+    async GetActiveTimeAsync(params, invocation) {
+        try {
+            const res = await this._proxy.GetActiveTimeAsync(...params);
             invocation.return_value(new GLib.Variant('(u)', res));
-        });
+        } catch (error) {
+            this._handleError(invocation, error);
+        }
     }
 };

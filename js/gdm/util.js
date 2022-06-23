@@ -376,7 +376,7 @@ var ShellUserVerifier = class extends Signals.EventEmitter {
         this.emit('show-message', null, null, MessageType.NONE);
     }
 
-    _checkForFingerprintReader() {
+    async _checkForFingerprintReader() {
         this._fingerprintReaderType = FingerprintReaderType.NONE;
 
         if (!this._settings.get_boolean(FINGERPRINT_AUTHENTICATION_KEY) ||
@@ -385,21 +385,19 @@ var ShellUserVerifier = class extends Signals.EventEmitter {
             return;
         }
 
-        this._fprintManager.GetDefaultDeviceRemote(Gio.DBusCallFlags.NONE, this._cancellable,
-            (params, error) => {
-                if (!error && params) {
-                    const [device] = params;
-                    const fprintDeviceProxy = new FprintDeviceProxy(Gio.DBus.system,
-                        'net.reactivated.Fprint',
-                        device);
-                    const fprintDeviceType = fprintDeviceProxy['scan-type'];
+        try {
+            const [device] = await this._fprintManager.GetDefaultDeviceAsync(
+                Gio.DBusCallFlags.NONE, this._cancellable);
+            const fprintDeviceProxy = new FprintDeviceProxy(Gio.DBus.system,
+                'net.reactivated.Fprint',
+                device);
+            const fprintDeviceType = fprintDeviceProxy['scan-type'];
 
-                    this._fingerprintReaderType = fprintDeviceType === 'swipe'
-                        ? FingerprintReaderType.SWIPE
-                        : FingerprintReaderType.PRESS;
-                    this._updateDefaultService();
-                }
-            });
+            this._fingerprintReaderType = fprintDeviceType === 'swipe'
+                ? FingerprintReaderType.SWIPE
+                : FingerprintReaderType.PRESS;
+            this._updateDefaultService();
+        } catch (e) {}
     }
 
     _onCredentialManagerAuthenticated(credentialManager, _token) {

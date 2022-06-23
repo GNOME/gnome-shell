@@ -504,89 +504,73 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
         this._confirm('ConfirmedReboot');
     }
 
-    _confirm(signal) {
-        let callback = () => {
-            this._fadeOutDialog();
-            this._stopTimer();
-            this._stopAltCapture();
-            this._dbusImpl.emit_signal(signal, null);
-        };
-
-        // Offline update not available; just emit the signal
-        if (!this._checkBox.visible) {
-            callback();
-            return;
-        }
-
-        // Trigger the offline update as requested
-        if (this._checkBox.checked) {
-            switch (signal) {
-            case "ConfirmedReboot":
-                this._triggerOfflineUpdateReboot(callback);
-                break;
-            case "ConfirmedShutdown":
-                // To actually trigger the offline update, we need to
-                // reboot to do the upgrade. When the upgrade is complete,
-                // the computer will shut down automatically.
-                signal = "ConfirmedReboot";
-                this._triggerOfflineUpdateShutdown(callback);
-                break;
-            default:
-                callback();
-                break;
+    async _confirm(signal) {
+        if (this._checkBox.visible) {
+            // Trigger the offline update as requested
+            if (this._checkBox.checked) {
+                switch (signal) {
+                case 'ConfirmedReboot':
+                    await this._triggerOfflineUpdateReboot();
+                    break;
+                case 'ConfirmedShutdown':
+                    // To actually trigger the offline update, we need to
+                    // reboot to do the upgrade. When the upgrade is complete,
+                    // the computer will shut down automatically.
+                    signal = 'ConfirmedReboot';
+                    await this._triggerOfflineUpdateShutdown();
+                    break;
+                default:
+                    break;
+                }
+            } else {
+                await this._triggerOfflineUpdateCancel();
             }
-        } else {
-            this._triggerOfflineUpdateCancel(callback);
         }
+
+        this._fadeOutDialog();
+        this._stopTimer();
+        this._stopAltCapture();
+        this._dbusImpl.emit_signal(signal, null);
     }
 
     _onOpened() {
         this._sync();
     }
 
-    _triggerOfflineUpdateReboot(callback) {
+    async _triggerOfflineUpdateReboot() {
         // Handle this gracefully if PackageKit is not available.
-        if (!this._pkOfflineProxy) {
-            callback();
+        if (!this._pkOfflineProxy)
             return;
+
+        try {
+            await this._pkOfflineProxy.TriggerAsync('reboot');
+        } catch (error) {
+            log(error.message);
         }
-
-        this._pkOfflineProxy.TriggerRemote('reboot', (result, error) => {
-            if (error)
-                log(error.message);
-
-            callback();
-        });
     }
 
-    _triggerOfflineUpdateShutdown(callback) {
+    async _triggerOfflineUpdateShutdown() {
         // Handle this gracefully if PackageKit is not available.
-        if (!this._pkOfflineProxy) {
-            callback();
+        if (!this._pkOfflineProxy)
             return;
+
+        try {
+            await this._pkOfflineProxy.TriggerAsync('power-off');
+        } catch (error) {
+            log(error.message);
         }
-
-        this._pkOfflineProxy.TriggerRemote('power-off', (result, error) => {
-            if (error)
-                log(error.message);
-
-            callback();
-        });
     }
 
-    _triggerOfflineUpdateCancel(callback) {
+    async _triggerOfflineUpdateCancel() {
         // Handle this gracefully if PackageKit is not available.
-        if (!this._pkOfflineProxy) {
-            callback();
+        if (!this._pkOfflineProxy)
             return;
+
+        try {
+            await this._pkOfflineProxy.CancelAsync();
+        } catch (error) {
+            log(error.message);
         }
-
-        this._pkOfflineProxy.CancelRemote((result, error) => {
-            if (error)
-                log(error.message);
-
-            callback();
-        });
     }
 
     _startTimer() {

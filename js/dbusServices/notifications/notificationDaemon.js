@@ -103,45 +103,44 @@ var NotificationDaemon = class extends ServiceImplementation {
             'sender-pid': new GLib.Variant('u', pid),
         };
 
-        this._proxy.NotifyRemote(...params, (res, error) => {
-            if (this._handleError(invocation, error))
-                return;
-
-            const [id] = res;
+        try {
+            const [id] = await this._proxy.NotifyAsync(...params);
             this._activeNotifications.set(id, sender);
-            invocation.return_value(new GLib.Variant('(u)', res));
-        });
+            invocation.return_value(new GLib.Variant('(u)', [id]));
+        } catch (error) {
+            this._handleError(invocation, error);
+        }
     }
 
-    CloseNotificationAsync(params, invocation) {
+    async CloseNotificationAsync(params, invocation) {
         const [id] = params;
         if (!this._checkNotificationId(invocation, id))
             return;
 
-        this._proxy.CloseNotificationRemote(...params, (res, error) => {
-            if (this._handleError(invocation, error))
-                return;
-
+        try {
+            await this._proxy.CloseNotificationAsync(...params);
             invocation.return_value(null);
-        });
+        } catch (error) {
+            this._handleError(invocation, error);
+        }
     }
 
-    GetCapabilitiesAsync(params, invocation) {
-        this._proxy.GetCapabilitiesRemote(...params, (res, error) => {
-            if (this._handleError(invocation, error))
-                return;
-
+    async GetCapabilitiesAsync(params, invocation) {
+        try {
+            const res = await this._proxy.GetCapabilitiesAsync(...params);
             invocation.return_value(new GLib.Variant('(as)', res));
-        });
+        } catch (error) {
+            this._handleError(invocation, error);
+        }
     }
 
-    GetServerInformationAsync(params, invocation) {
-        this._proxy.GetServerInformationRemote(...params, (res, error) => {
-            if (this._handleError(invocation, error))
-                return;
-
+    async GetServerInformationAsync(params, invocation) {
+        try {
+            const res = await this._proxy.GetServerInformationAsync(...params);
             invocation.return_value(new GLib.Variant('(ssss)', res));
-        });
+        } catch (error) {
+            this._handleError(invocation, error);
+        }
     }
 
     async _getSenderPid(sender) {

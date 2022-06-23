@@ -894,8 +894,8 @@ var WindowManager = class {
                 labels.push(str ?? '');
             }
 
-            if (this._gsdWacomProxy)
-                this._gsdWacomProxy.SetOLEDLabelsRemote(pad.get_device_node(), labels);
+            this._gsdWacomProxy?.SetOLEDLabelsAsync(
+                pad.get_device_node(), labels).catch(logError);
         });
 
         global.display.connect('init-xserver', (display, task) => {

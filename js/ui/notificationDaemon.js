@@ -575,32 +575,41 @@ class GtkNotificationDaemonAppSource extends MessageTray.Source {
         return new MessageTray.NotificationApplicationPolicy(this._appId);
     }
 
-    _createApp(callback) {
-        return new FdoApplicationProxy(Gio.DBus.session, this._appId, this._objectPath, callback);
+    _createApp() {
+        return new Promise((resolve, reject) => {
+            new FdoApplicationProxy(Gio.DBus.session,
+                this._appId, this._objectPath, (proxy, err) => {
+                    if (err)
+                        reject(err);
+                    else
+                        resolve(proxy);
+                });
+        });
     }
 
     _createNotification(params) {
         return new GtkNotificationDaemonNotification(this, params);
     }
 
-    activateAction(actionId, target) {
-        this._createApp((app, error) => {
-            if (error == null)
-                app.ActivateActionRemote(actionId, target ? [target] : [], getPlatformData());
-            else
-                logError(error, 'Failed to activate application proxy');
-        });
+    async activateAction(actionId, target) {
+        try {
+            const app = await this._createApp();
+            const params = target ? [target] : [];
+            app.ActivateActionAsync(actionId, params, getPlatformData());
+        } catch (error) {
+            logError(error, 'Failed to activate application proxy');
+        }
         Main.overview.hide();
         Main.panel.closeCalendar();
     }
 
-    open() {
-        this._createApp((app, error) => {
-            if (error == null)
-                app.ActivateRemote(getPlatformData());
-            else
-                logError(error, 'Failed to open application proxy');
-        });
+    async open() {
+        try {
+            const app = await this._createApp();
+            app.ActivateAsync(getPlatformData());
+        } catch (error) {
+            logError(error, 'Failed to open application proxy');
+        }
         Main.overview.hide();
         Main.panel.closeCalendar();
     }

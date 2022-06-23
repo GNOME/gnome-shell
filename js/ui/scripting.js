@@ -82,19 +82,6 @@ function _spawnPerfHelper() {
     Util.trySpawnCommandLine(command);
 }
 
-function _callRemote(obj, method, ...args) {
-    return new Promise((resolve, reject) => {
-        args.push((result, excp) => {
-            if (excp)
-                reject(excp);
-            else
-                resolve();
-        });
-
-        method.apply(obj, args);
-    });
-}
-
 /**
  * createTestWindow:
  * @param {Object} params: options for window creation.
@@ -121,9 +108,9 @@ function createTestWindow(params) {
     });
 
     let perfHelper = _getPerfHelper();
-    return _callRemote(perfHelper, perfHelper.CreateWindowRemote,
-                       params.width, params.height,
-                       params.alpha, params.maximized, params.redraws);
+    perfHelper.CreateWindowAsync(
+        params.width, params.height,
+        params.alpha, params.maximized, params.redraws).catch(logError);
 }
 
 /**
@@ -135,7 +122,7 @@ function createTestWindow(params) {
  */
 function waitTestWindows() {
     let perfHelper = _getPerfHelper();
-    return _callRemote(perfHelper, perfHelper.WaitWindowsRemote);
+    perfHelper.WaitWindowsAsync().catch(logError);
 }
 
 /**
@@ -150,7 +137,7 @@ function waitTestWindows() {
  */
 function destroyTestWindows() {
     let perfHelper = _getPerfHelper();
-    return _callRemote(perfHelper, perfHelper.DestroyWindowsRemote);
+    perfHelper.DestroyWindowsAsync().catch(logError);
 }
 
 /**

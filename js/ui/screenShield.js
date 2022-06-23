@@ -173,7 +173,7 @@ var ScreenShield = class extends Signals.EventEmitter {
             this.emit('locked-changed');
 
         if (this._loginSession)
-            this._loginSession.SetLockedHintRemote(locked);
+            this._loginSession.SetLockedHintAsync(locked).catch(logError);
     }
 
     _activateDialog() {
