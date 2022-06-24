@@ -851,7 +851,9 @@ var BaseAppView = GObject.registerClass({
         const [gridWidth, gridHeight] = this.get_transformed_size();
 
         const vertical = this._orientation === Clutter.Orientation.VERTICAL;
-        const gridStart = vertical ? gridY : gridX;
+        const gridStart = vertical ?
+            ? gridY + DRAG_OVERSHOOT_THRESHOLD
+            : gridX + DRAG_OVERSHOOT_THRESHOLD;
         const gridEnd = vertical
             ? gridY + gridHeight - OVERSHOOT_THRESHOLD
             : gridX + gridWidth - OVERSHOOT_THRESHOLD;
