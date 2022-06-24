@@ -2137,7 +2137,7 @@ class FolderView extends BaseAppView {
         this._scrollView.add_action(action);
 
         this._deletingFolder = false;
-        this._appIds = [];
+        this._apps = [];
         this._redisplay();
     }
 
@@ -2145,48 +2145,8 @@ class FolderView extends BaseAppView {
         return new FolderGrid();
     }
 
-    _getFolderApps() {
-        const appIds = [];
-        const excludedApps = this._folder.get_strv('excluded-apps');
-        const appSys = Shell.AppSystem.get_default();
-        const addAppId = appId => {
-            if (excludedApps.includes(appId))
-                return;
-
-            if (this._appFavorites.isFavorite(appId))
-                return;
-
-            const app = appSys.lookup_app(appId);
-            if (!app)
-                return;
-
-            if (!this._parentalControlsManager.shouldShowApp(app.get_app_info()))
-                return;
-
-            if (appIds.indexOf(appId) !== -1)
-                return;
-
-            appIds.push(appId);
-        };
-
-        const folderApps = this._folder.get_strv('apps');
-        folderApps.forEach(addAppId);
-
-        const folderCategories = this._folder.get_strv('categories');
-        const appInfos = this._parentView.getAppInfos();
-        appInfos.forEach(appInfo => {
-            let appCategories = _getCategories(appInfo);
-            if (!_listsIntersect(folderCategories, appCategories))
-                return;
-
-            addAppId(appInfo.get_id());
-        });
-
-        return appIds;
-    }
-
     _getItemPosition(item) {
-        const appIndex = this._appIds.indexOf(item.id);
+        const appIndex = this._apps.indexOf(item.app);
 
         if (appIndex === -1)
             return [-1, -1];
@@ -2196,8 +2156,8 @@ class FolderView extends BaseAppView {
     }
 
     _compareItems(a, b) {
-        const aPosition = this._appIds.indexOf(a.id);
-        const bPosition = this._appIds.indexOf(b.id);
+        const aPosition = this._apps.indexOf(a.app);
+        const bPosition = this._apps.indexOf(b.app);
 
         if (aPosition === -1 && bPosition === -1)
             return a.name.localeCompare(b.name);
@@ -2243,27 +2203,52 @@ class FolderView extends BaseAppView {
     }
 
     _loadApps() {
-        let apps = [];
-        let appSys = Shell.AppSystem.get_default();
+        this._apps = [];
+        const excludedApps = this._folder.get_strv('excluded-apps');
+        const appSys = Shell.AppSystem.get_default();
+        const addAppId = appId => {
+            if (excludedApps.includes(appId))
+                return;
 
-        this._appIds.forEach(appId => {
+            if (this._appFavorites.isFavorite(appId))
+                return;
+
             const app = appSys.lookup_app(appId);
+            if (!app)
+                return;
 
-            let icon = this._items.get(appId);
+            if (!this._parentalControlsManager.shouldShowApp(app.get_app_info()))
+                return;
+
+            if (this._apps.indexOf(app) !== -1)
+                return;
+
+            this._apps.push(app);
+        };
+
+        const folderApps = this._folder.get_strv('apps');
+        folderApps.forEach(addAppId);
+
+        const folderCategories = this._folder.get_strv('categories');
+        const appInfos = this._parentView.getAppInfos();
+        appInfos.forEach(appInfo => {
+            let appCategories = _getCategories(appInfo);
+            if (!_listsIntersect(folderCategories, appCategories))
+                return;
+
+            addAppId(appInfo.get_id());
+        });
+
+        let items = [];
+        this._apps.forEach(app => {
+            let icon = this._items.get(app.get_id());
             if (!icon)
                 icon = new AppIcon(app);
 
-            apps.push(icon);
+            items.push(icon);
         });
 
-        return apps;
-    }
-
-    _redisplay() {
-        // Keep the app ids list cached
-        this._appIds = this._getFolderApps();
-
-        super._redisplay();
+        return items;
     }
 
     acceptDrop(source) {
