@@ -1021,9 +1021,6 @@ var IconGridLayout = GObject.registerClass({
         else
             adjY %= this._pageHeight;
 
-        if (adjX < leftEmptySpace || adjY < topEmptySpace)
-            return [0, 0, DragLocation.INVALID];
-
         const gridWidth =
             childSize * this.columnsPerPage +
             hSpacing * (this.columnsPerPage - 1);
@@ -1031,7 +1028,12 @@ var IconGridLayout = GObject.registerClass({
             childSize * this.rowsPerPage +
             vSpacing * (this.rowsPerPage - 1);
 
-        if (adjX > leftEmptySpace + gridWidth || adjY > topEmptySpace + gridHeight)
+        const inTopEmptySpace = adjY < topEmptySpace;
+        const inLeftEmptySpace = adjX < leftEmptySpace;
+        const inRightEmptySpace = adjX > leftEmptySpace + gridWidth;
+        const inBottomEmptySpace = adjY > topEmptySpace + gridHeight;
+
+        if (inTopEmptySpace || inBottomEmptySpace)
             return [0, 0, DragLocation.INVALID];
 
         const halfHSpacing = hSpacing / 2;
@@ -1042,12 +1044,23 @@ var IconGridLayout = GObject.registerClass({
             const item = visibleItems[i];
             const childBox = item.allocation;
 
-            // Outside the icon boundaries
-            if (x < childBox.x1 - halfHSpacing ||
-                x > childBox.x2 + halfHSpacing ||
-                y < childBox.y1 - halfVSpacing ||
-                y > childBox.y2 + halfVSpacing)
-                continue;
+            const firstInRow = i % this.columnsPerPage === 0;
+            const lastInRow = i % this.columnsPerPage === this.columnsPerPage - 1;
+
+            // Check icon boundaries
+            if ((inLeftEmptySpace && firstInRow) ||
+                (inRightEmptySpace && lastInRow)) {
+                if (y < childBox.y1 - halfVSpacing ||
+                    y > childBox.y2 + halfVSpacing)
+                    continue;
+            } else {
+                // eslint-disable-next-line no-lonely-if
+                if (x < childBox.x1 - halfHSpacing ||
+                    x > childBox.x2 + halfHSpacing ||
+                    y < childBox.y1 - halfVSpacing ||
+                    y > childBox.y2 + halfVSpacing)
+                    continue;
+            }
 
             let dragLocation;
 
