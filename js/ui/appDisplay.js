@@ -1172,14 +1172,8 @@ var BaseAppView = GObject.registerClass({
     }
 
     _getDropTarget(x, y, source) {
-        const { currentPage } = this._grid;
-
-        let [item, dragLocation] = this._grid.getDropTarget(x, y);
-
         const [sourcePage, sourcePosition] = this._grid.getItemPosition(source);
-        const targetPage = currentPage;
-        let targetPosition = item
-            ? this._grid.getItemPosition(item)[1] : -1;
+        let [targetPage, targetPosition, dragLocation] = this._grid.getDropTarget(x, y);
 
         // In case we're hovering over the edge of an item but the
         // reflow will happen in the opposite direction (the drag
@@ -1210,14 +1204,6 @@ var BaseAppView = GObject.registerClass({
                 targetPosition += 1;
                 dragLocation = IconGrid.DragLocation.START_EDGE;
             }
-        }
-
-        // Append to the page if dragging over empty area
-        if (dragLocation === IconGrid.DragLocation.EMPTY_SPACE) {
-            const pageItems =
-                this._grid.getItemsAtPage(currentPage).filter(c => c.visible);
-
-            targetPosition = pageItems.length;
         }
 
         return [targetPage, targetPosition, dragLocation];
