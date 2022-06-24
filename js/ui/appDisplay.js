@@ -1054,20 +1054,18 @@ var BaseAppView = GObject.registerClass({
         return -1;
     }
 
-    _getLinearPosition(page, position) {
+    _getLinearPosition(item) {
+        const [page, position] = this._grid.getItemPosition(item);
+        if (page === -1 || position === -1)
+            throw new Error('Item not found in grid');
+
         let itemIndex = 0;
 
         if (this._grid.nPages > 0) {
-            const realPage = page === -1 ? this._grid.nPages - 1 : page;
+            for (let i = 0; i < page; i++)
+                itemIndex += this._grid.getItemsAtPage(i).filter(c => c.visible).length;
 
-            itemIndex = position === -1
-                ? this._grid.getItemsAtPage(realPage).filter(c => c.visible).length - 1
-                : position;
-
-            for (let i = 0; i < realPage; i++) {
-                const pageItems = this._grid.getItemsAtPage(i).filter(c => c.visible);
-                itemIndex += pageItems.length;
-            }
+            itemIndex += position;
         }
 
         return itemIndex;
@@ -1079,11 +1077,10 @@ var BaseAppView = GObject.registerClass({
         if (this._grid.nPages > 1 && page === -1 && position === -1)
             page = this._findBestPageToAppend();
 
-        const itemIndex = this._getLinearPosition(page, position);
-
-        this._orderedItems.splice(itemIndex, 0, item);
         this._items.set(item.id, item);
         this._grid.addItem(item, page, position);
+
+        this._orderedItems.splice(this._getLinearPosition(item), 0, item);
     }
 
     _removeItem(item) {
@@ -1227,18 +1224,11 @@ var BaseAppView = GObject.registerClass({
     }
 
     _moveItem(item, newPage, newPosition) {
-        const [page, position] = this._grid.getItemPosition(item);
-        if (page === newPage && position === newPosition)
-            return;
+        this._grid.moveItem(item, newPage, newPosition);
 
         // Update the _orderedItems array
-        let index = this._orderedItems.indexOf(item);
-        this._orderedItems.splice(index, 1);
-
-        index = this._getLinearPosition(newPage, newPosition);
-        this._orderedItems.splice(index, 0, item);
-
-        this._grid.moveItem(item, newPage, newPosition);
+        this._orderedItems.splice(this._orderedItems.indexOf(item), 1);
+        this._orderedItems.splice(this._getLinearPosition(item), 0, item);
     }
 
     vfunc_map() {
