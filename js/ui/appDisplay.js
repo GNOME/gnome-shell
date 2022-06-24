@@ -798,6 +798,7 @@ var BaseAppView = GObject.registerClass({
 
         // Dragging over invalid parts of the grid cancels the timeout
         if (item === source ||
+            this._adjustment.get_transition('value') !== null ||
             page !== this._grid.currentPage ||
             dragLocation === IconGrid.DragLocation.INVALID ||
             dragLocation === IconGrid.DragLocation.ON_ICON) {
