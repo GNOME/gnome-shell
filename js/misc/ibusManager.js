@@ -109,15 +109,22 @@ var IBusManager = class {
             this._tryAppendEnv(env, 'COMPOSE_FILE');
             this._tryAppendEnv(env, 'DISPLAY');
 
-            GLib.spawn_async(
+            // Use DO_NOT_REAP_CHILD to avoid adouble-fork internally
+            // since ibus-daemon refuses to start with init as its parent.
+            const [success_, pid] = GLib.spawn_async(
                 null, cmdLine, env,
-                GLib.SpawnFlags.SEARCH_PATH,
+                GLib.SpawnFlags.SEARCH_PATH | GLib.SpawnFlags.DO_NOT_REAP_CHILD,
                 () => {
                     try {
                         global.context.restore_rlimit_nofile();
                     } catch (err) {
                     }
                 }
+            );
+            GLib.child_watch_add(
+                GLib.PRIORITY_DEFAULT,
+                pid,
+                () => GLib.spawn_close_pid(pid)
             );
         } catch (e) {
             log(`Failed to launch ibus-daemon: ${e.message}`);
