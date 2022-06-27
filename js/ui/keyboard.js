@@ -244,6 +244,9 @@ var LanguageSelectionPopup = class extends PopupMenu.PopupMenu {
                 inputSourceManager.activateInputSource(is, true);
             });
             item.can_focus = false;
+            item.setOrnament(is === inputSourceManager.currentSource
+                ? PopupMenu.Ornament.DOT
+                : PopupMenu.Ornament.NONE);
         }
 
         this.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
