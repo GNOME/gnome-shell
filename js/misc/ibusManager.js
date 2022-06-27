@@ -90,10 +90,24 @@ var IBusManager = class {
             this._spawn(Meta.is_wayland_compositor() ? [] : ['--xim']);
     }
 
+    _tryAppendEnv(env, varname) {
+        const value = GLib.getenv(varname);
+        if (value)
+            env.push(`${varname}=${value}`);
+    }
+
     _spawn(extraArgs = []) {
         try {
             let cmdLine = ['ibus-daemon', '--panel', 'disable', ...extraArgs];
             let env = [];
+
+            this._tryAppendEnv(env, 'DBUS_SESSION_BUS_ADDRESS');
+            this._tryAppendEnv(env, 'WAYLAND_DISPLAY');
+            this._tryAppendEnv(env, 'HOME');
+            this._tryAppendEnv(env, 'LANG');
+            this._tryAppendEnv(env, 'LC_CTYPE');
+            this._tryAppendEnv(env, 'COMPOSE_FILE');
+            this._tryAppendEnv(env, 'DISPLAY');
 
             GLib.spawn_async(
                 null, cmdLine, env,
