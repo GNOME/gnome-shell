@@ -146,8 +146,16 @@ $app_icon_size: 96px;
   }
 }
 
-.page-navigation-arrow > StIcon {
-  margin: 6px;
-  width: 24px;
-  height: 24px;
+.page-navigation-arrow {
+  &  > StIcon {
+    margin: 6px;
+    padding: 18px;
+    width: 24px;
+    height: 24px;
+    border-radius: 99px;
+  }
+
+  &:insensitive > StIcon { @include button(undecorated, $osd_fg_color, transparentize($osd_bg_color, 0.5));}
+  &:hover > StIcon { @include button(hover, $osd_fg_color, transparentize($osd_bg_color, 0.5));}
+  &:active > StIcon { @include button(active, $osd_fg_color, transparentize($osd_bg_color, 0.5));}
 }
