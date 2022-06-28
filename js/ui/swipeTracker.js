@@ -503,7 +503,7 @@ var SwipeTracker = GObject.registerClass({
             this.bind_property('orientation', this._dragGesture, 'orientation',
                 GObject.BindingFlags.SYNC_CREATE);
             this.bind_property('distance', this._dragGesture, 'distance', 0);
-            actor.add_action(this._dragGesture);
+            actor.add_action_full('drag', Clutter.EventPhase.CAPTURE, this._dragGesture);
         } else {
             this._dragGesture = null;
         }
