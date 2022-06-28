@@ -11,12 +11,11 @@ const BoxPointer = imports.ui.boxpointer;
 const Main = imports.ui.main;
 const PageIndicators = imports.ui.pageIndicators;
 const PopupMenu = imports.ui.popupMenu;
+const SwipeTracker = imports.ui.swipeTracker;
 
 var KEYBOARD_ANIMATION_TIME = 150;
 var KEYBOARD_REST_TIME = KEYBOARD_ANIMATION_TIME * 2;
 var KEY_LONG_PRESS_TIME = 250;
-var PANEL_SWITCH_ANIMATION_TIME = 500;
-var PANEL_SWITCH_RELATIVE_DISTANCE = 1 / 3; /* A third of the actor width */
 
 const A11Y_APPLICATIONS_SCHEMA = 'org.gnome.desktop.a11y.applications';
 const SHOW_KEYBOARD = 'screen-keyboard-enabled';
@@ -677,13 +676,14 @@ var EmojiPager = GObject.registerClass({
         this._delta = 0;
         this._width = null;
 
-        let panAction = new Clutter.PanAction({ interpolate: false });
-        panAction.connect('pan', this._onPan.bind(this));
-        panAction.connect('gesture-begin', this._onPanBegin.bind(this));
-        panAction.connect('gesture-cancel', this._onPanCancel.bind(this));
-        panAction.connect('gesture-end', this._onPanEnd.bind(this));
-        this._panAction = panAction;
-        this.add_action_full('pan', Clutter.EventPhase.CAPTURE, panAction);
+        const swipeTracker = new SwipeTracker.SwipeTracker(this,
+            Clutter.Orientation.HORIZONTAL,
+            Shell.ActionMode.NORMAL | Shell.ActionMode.OVERVIEW,
+            {allowDrag: true, allowScroll: true});
+        swipeTracker.connect('begin', this._onSwipeBegin.bind(this));
+        swipeTracker.connect('update', this._onSwipeUpdate.bind(this));
+        swipeTracker.connect('end', this._onSwipeEnd.bind(this));
+        this._swipeTracker = swipeTracker;
     }
 
     get delta() {
@@ -701,9 +701,6 @@ var EmojiPager = GObject.registerClass({
 
         this._delta = value;
         this.notify('delta');
-
-        if (value == 0)
-            return;
 
         let relValue = Math.abs(value / this._width);
         let followingPage = this.getFollowingPage();
@@ -753,9 +750,8 @@ var EmojiPager = GObject.registerClass({
             return this._prevPage(this._curPage);
     }
 
-    _onPan(action) {
-        let [dist_, dx, dy_] = action.get_motion_delta(0);
-        this.delta += dx;
+    _onSwipeUpdate(tracker, progress) {
+        this.delta = -progress * this._width;
 
         if (this._currentKey != null) {
             this._currentKey.cancel();
@@ -765,42 +761,25 @@ var EmojiPager = GObject.registerClass({
         return false;
     }
 
-    _onPanBegin() {
+    _onSwipeBegin(tracker) {
         this._width = this.width;
-        return true;
+        const points = [-1, 0, 1];
+        tracker.confirmSwipe(this._width, points, 0, 0);
     }
 
-    _onPanEnd() {
-        if (Math.abs(this._delta) < this.width * PANEL_SWITCH_RELATIVE_DISTANCE) {
-            this._onPanCancel();
+    _onSwipeEnd(tracker, duration, endProgress) {
+        this.remove_all_transitions();
+        if (endProgress === 0) {
+            this.ease_property('delta', 0, {duration});
         } else {
-            let value;
-            if (this._delta > 0)
-                value = this._width;
-            else if (this._delta < 0)
-                value = -this._width;
-
-            let relDelta = Math.abs(this._delta - value) / this._width;
-            let time = PANEL_SWITCH_ANIMATION_TIME * Math.abs(relDelta);
-
-            this.remove_all_transitions();
+            const value = endProgress < 0 ? this._width : -this._width;
             this.ease_property('delta', value, {
-                duration: time,
+                duration,
                 onComplete: () => {
                     this.setCurrentPage(this.getFollowingPage());
                 },
             });
         }
-    }
-
-    _onPanCancel() {
-        let relDelta = Math.abs(this._delta) / this.width;
-        let time = PANEL_SWITCH_ANIMATION_TIME * Math.abs(relDelta);
-
-        this.remove_all_transitions();
-        this.ease_property('delta', 0, {
-            duration: time,
-        });
     }
 
     _initPagingInfo() {
@@ -867,9 +846,6 @@ var EmojiPager = GObject.registerClass({
 
             key.connect('pressed', () => {
                 this._currentKey = key;
-            });
-            key.connect('long-press', () => {
-                this._panAction.cancel();
             });
             key.connect('commit', (actor, keyval, str) => {
                 if (this._currentKey != key)
