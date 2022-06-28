@@ -520,7 +520,6 @@ var BaseAppView = GObject.registerClass({
         this._canScroll = true; // limiting scrolling speed
         this._scrollTimeoutId = 0;
         this._scrollView.connect('scroll-event', this._onScroll.bind(this));
-        this._scrollView.connect('button-press-event', this._onButtonPress.bind(this));
 
         this._scrollView.add_actor(this._grid);
 
@@ -569,26 +568,27 @@ var BaseAppView = GObject.registerClass({
 
         // Next/prev page arrows
         const rtl = this.get_text_direction() === Clutter.TextDirection.RTL;
-        this._nextPageArrow = new St.Icon({
+        this._nextPageArrow = new St.Button({
             style_class: 'page-navigation-arrow',
             icon_name: rtl
                 ? 'carousel-arrow-previous-symbolic'
                 : 'carousel-arrow-next-symbolic',
-            reactive: false,
             x_expand: true,
-            x_align: Clutter.ActorAlign.CENTER,
         });
-        this._prevPageArrow = new St.Icon({
+        this._nextPageArrow.connect('clicked',
+            () => this.goToPage(this._grid.currentPage + 1));
+
+        this._prevPageArrow = new St.Button({
             style_class: 'page-navigation-arrow',
             icon_name: rtl
                 ? 'carousel-arrow-next-symbolic'
                 : 'carousel-arrow-previous-symbolic',
             opacity: 0,
-            reactive: false,
             visible: false,
             x_expand: true,
-            x_align: Clutter.ActorAlign.CENTER,
         });
+        this._prevPageArrow.connect('clicked',
+            () => this.goToPage(this._grid.currentPage - 1));
 
         const scrollContainer = new St.Widget({
             clip_to_allocation: true,
@@ -715,30 +715,6 @@ var BaseAppView = GObject.registerClass({
             });
 
         return Clutter.EVENT_STOP;
-    }
-
-    _pageForCoords(x, y) {
-        const rtl = this.get_text_direction() === Clutter.TextDirection.RTL;
-        const {pagePadding} = this._grid.layoutManager;
-
-        const [success, pointerX] = this._scrollView.transform_stage_point(x, y);
-        if (!success)
-            return SidePages.NONE;
-
-        if (pointerX < pagePadding.left)
-            return rtl ? SidePages.NEXT : SidePages.PREVIOUS;
-        else if (pointerX > this._scrollView.width - pagePadding.right)
-            return rtl ? SidePages.PREVIOUS : SidePages.NEXT;
-
-        return SidePages.NONE;
-    }
-
-    _onButtonPress(actor, event) {
-        const page = this._pageForCoords(...event.get_coords());
-        if (page === SidePages.NEXT)
-            this.goToPage(this._grid.currentPage + 1);
-        else if (page === SidePages.PREVIOUS)
-            this.goToPage(this._grid.currentPage - 1);
     }
 
     _swipeBegin(tracker, monitor) {
