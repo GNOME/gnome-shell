@@ -157,9 +157,11 @@ cdata.set('HAVE_FDWALK',
 )
 
 polkit_has_autocleanup = cc.compiles(
-  '#define POLKIT_AGENT_I_KNOW_API_IS_SUBJECT_TO_CHANGE
+'''
+  #define POLKIT_AGENT_I_KNOW_API_IS_SUBJECT_TO_CHANGE
   #include <polkitagent/polkitagent.h>
-  void main(void) { g_autoptr(PolkitAgentListener) agent = NULL; }',
+  void main(void) { g_autoptr(PolkitAgentListener) agent = NULL; }
+''',
   dependencies: polkit_dep)
 cdata.set('HAVE_POLKIT_AUTOCLEANUP', polkit_has_autocleanup)
 
