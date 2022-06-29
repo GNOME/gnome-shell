@@ -227,6 +227,11 @@ class Suggestions extends St.BoxLayout {
     clear() {
         this.remove_all_children();
     }
+
+    setVisible(visible) {
+        for (const child of this)
+            child.visible = visible;
+    }
 });
 
 var LanguageSelectionPopup = class extends PopupMenu.PopupMenu {
@@ -1935,6 +1940,10 @@ var Keyboard = GObject.registerClass({
     resetSuggestions() {
         if (this._suggestions)
             this._suggestions.clear();
+    }
+
+    setSuggestionsVisible(visible) {
+        this._suggestions?.setVisible(visible);
     }
 
     addSuggestion(text, callback) {
