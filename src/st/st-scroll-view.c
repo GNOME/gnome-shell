@@ -84,8 +84,6 @@ struct _StScrollViewPrivate
   StAdjustment *vadjustment;
   ClutterActor *vscroll;
 
-  ClutterMargin content_padding;
-
   StPolicyType hscrollbar_policy;
   StPolicyType vscrollbar_policy;
 
@@ -118,7 +116,6 @@ enum {
   PROP_VSCROLLBAR_VISIBLE,
   PROP_MOUSE_SCROLL,
   PROP_OVERLAY_SCROLLBARS,
-  PROP_CONTENT_PADDING,
 
   N_PROPS
 };
@@ -158,9 +155,6 @@ st_scroll_view_get_property (GObject    *object,
       break;
     case PROP_OVERLAY_SCROLLBARS:
       g_value_set_boolean (value, priv->overlay_scrollbars);
-      break;
-    case PROP_CONTENT_PADDING:
-      g_value_set_boxed (value, &priv->content_padding);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -209,23 +203,6 @@ st_scroll_view_update_fade_effect (StScrollView  *scroll,
 }
 
 static void
-st_scroll_view_set_content_padding (StScrollView  *scroll,
-                                    ClutterMargin *content_padding)
-{
-  StScrollViewPrivate *priv = ST_SCROLL_VIEW (scroll)->priv;
-
-  if (priv->content_padding.left == content_padding->left &&
-      priv->content_padding.right == content_padding->right &&
-      priv->content_padding.top == content_padding->top &&
-      priv->content_padding.bottom == content_padding->bottom)
-    return;
-
-  priv->content_padding = *content_padding;
-
-  g_object_notify_by_pspec (G_OBJECT (scroll), props[PROP_CONTENT_PADDING]);
-}
-
-static void
 st_scroll_view_set_property (GObject      *object,
                              guint         property_id,
                              const GValue *value,
@@ -253,10 +230,6 @@ st_scroll_view_set_property (GObject      *object,
       st_scroll_view_set_policy (self,
                                  priv->hscrollbar_policy,
                                  g_value_get_enum (value));
-      break;
-    case PROP_CONTENT_PADDING:
-      st_scroll_view_set_content_padding (self,
-                                          (ClutterMargin *)g_value_get_boxed (value));
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -569,11 +542,6 @@ st_scroll_view_allocate (ClutterActor          *actor,
   clutter_actor_set_allocation (actor, box);
 
   st_theme_node_get_content_box (theme_node, box, &content_box);
-
-  content_box.x1 += priv->content_padding.left;
-  content_box.x2 -= priv->content_padding.right;
-  content_box.y1 += priv->content_padding.top;
-  content_box.y2 += priv->content_padding.bottom;
 
   avail_width = content_box.x2 - content_box.x1;
   avail_height = content_box.y2 - content_box.y1;
@@ -965,13 +933,6 @@ st_scroll_view_class_init (StScrollViewClass *klass)
                           "Overlay scrollbars over the content",
                           FALSE,
                           ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
-
-  props[PROP_CONTENT_PADDING] =
-    g_param_spec_boxed ("content-padding",
-                        "Content padding",
-                        "Content padding",
-                        CLUTTER_TYPE_MARGIN,
-                        ST_PARAM_READWRITE | G_PARAM_EXPLICIT_NOTIFY);
 
   g_object_class_install_properties (object_class, N_PROPS, props);
 }

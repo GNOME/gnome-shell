@@ -99,7 +99,6 @@ st_scroll_view_fade_paint_target (ClutterOffscreenEffect *effect,
   gboolean h_scroll_visible, v_scroll_visible, rtl;
 
   ClutterActorBox allocation, content_box, paint_box;
-  ClutterMargin *content_padding;
 
   float fade_area_topleft[2];
   float fade_area_bottomright[2];
@@ -111,13 +110,6 @@ st_scroll_view_fade_paint_target (ClutterOffscreenEffect *effect,
   clutter_actor_get_allocation_box (self->actor, &allocation);
   st_theme_node_get_content_box (st_widget_get_theme_node (ST_WIDGET (self->actor)),
                                 (const ClutterActorBox *)&allocation, &content_box);
-  g_object_get (self->actor, "content-padding", &content_padding, NULL);
-
-  content_box.x1 += content_padding->left;
-  content_box.x2 -= content_padding->right;
-  content_box.y1 += content_padding->top;
-  content_box.y2 -= content_padding->bottom;
-  clutter_margin_free (content_padding);
 
   /*
    * The FBO is based on the paint_volume's size which can be larger then the actual
