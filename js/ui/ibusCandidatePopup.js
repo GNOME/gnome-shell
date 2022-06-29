@@ -260,6 +260,7 @@ class IbusCandidatePopup extends BoxPointer.BoxPointer {
                 indexes.push(indexLabel.get_text());
 
             Main.keyboard.resetSuggestions();
+            Main.keyboard.setSuggestionsVisible(visible);
 
             let candidates = [];
             for (let i = startIndex; i < endIndex; ++i) {
@@ -279,10 +280,12 @@ class IbusCandidatePopup extends BoxPointer.BoxPointer {
             this._candidateArea.updateButtons(lookupTable.is_round(), page, nPages);
         });
         panelService.connect('show-lookup-table', () => {
+            Main.keyboard.setSuggestionsVisible(true);
             this._candidateArea.show();
             this._updateVisibility();
         });
         panelService.connect('hide-lookup-table', () => {
+            Main.keyboard.setSuggestionsVisible(false);
             this._candidateArea.hide();
             this._updateVisibility();
         });
