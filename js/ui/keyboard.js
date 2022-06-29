@@ -19,6 +19,7 @@ var KEY_LONG_PRESS_TIME = 250;
 
 const A11Y_APPLICATIONS_SCHEMA = 'org.gnome.desktop.a11y.applications';
 const SHOW_KEYBOARD = 'screen-keyboard-enabled';
+const EMOJI_PAGE_SEPARATION = 32;
 
 /* KeyContainer puts keys in a grid where a 1:1 key takes this size */
 const KEY_SIZE = 2;
@@ -691,18 +692,12 @@ var EmojiPager = GObject.registerClass({
     }
 
     set delta(value) {
-        if (value > this._width)
-            value = this._width;
-        else if (value < -this._width)
-            value = -this._width;
-
         if (this._delta == value)
             return;
 
         this._delta = value;
         this.notify('delta');
 
-        let relValue = Math.abs(value / this._width);
         let followingPage = this.getFollowingPage();
 
         if (this._followingPage != followingPage) {
@@ -713,21 +708,23 @@ var EmojiPager = GObject.registerClass({
 
             if (followingPage != null) {
                 this._followingPanel = this._generatePanel(followingPage);
-                this._followingPanel.set_pivot_point(0.5, 0.5);
                 this.add_child(this._followingPanel);
-                this.set_child_below_sibling(this._followingPanel, this._panel);
             }
 
             this._followingPage = followingPage;
         }
 
-        this._panel.translation_x = value;
-        this._panel.opacity = 255 * (1 - Math.pow(relValue, 3));
+        const multiplier = this.text_direction === Clutter.TextDirection.RTL
+            ? -1 : 1;
 
+        this._panel.translation_x = value * multiplier;
         if (this._followingPanel) {
-            this._followingPanel.scale_x = 0.8 + (0.2 * relValue);
-            this._followingPanel.scale_y = 0.8 + (0.2 * relValue);
-            this._followingPanel.opacity = 255 * relValue;
+            const translation = value < 0
+                ? this._width + EMOJI_PAGE_SEPARATION
+                : -this._width - EMOJI_PAGE_SEPARATION;
+
+            this._followingPanel.translation_x =
+                (value * multiplier) + (translation * multiplier);
         }
     }
 
@@ -743,8 +740,7 @@ var EmojiPager = GObject.registerClass({
         if (this.delta == 0)
             return null;
 
-        if ((this.delta < 0 && global.stage.text_direction == Clutter.TextDirection.LTR) ||
-            (this.delta > 0 && global.stage.text_direction == Clutter.TextDirection.RTL))
+        if (this.delta < 0)
             return this._nextPage(this._curPage);
         else
             return this._prevPage(this._curPage);
@@ -772,7 +768,9 @@ var EmojiPager = GObject.registerClass({
         if (endProgress === 0) {
             this.ease_property('delta', 0, {duration});
         } else {
-            const value = endProgress < 0 ? this._width : -this._width;
+            const value = endProgress < 0
+                ? this._width + EMOJI_PAGE_SEPARATION
+                : -this._width - EMOJI_PAGE_SEPARATION;
             this.ease_property('delta', value, {
                 duration,
                 onComplete: () => {
@@ -935,6 +933,7 @@ var EmojiSelection = GObject.registerClass({
             style_class: 'emoji-panel',
             x_expand: true,
             y_expand: true,
+            text_direction: global.stage.text_direction,
         });
 
         this._sections = [
