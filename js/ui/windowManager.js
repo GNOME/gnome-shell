@@ -1141,10 +1141,6 @@ var WindowManager = class {
     }
 
     _minimizeWindow(shellwm, actor) {
-        const window = actor.meta_window;
-        if (window.is_attached_dialog())
-            this._checkDimming(window.get_transient_for());
-
         const types = [
             Meta.WindowType.NORMAL,
             Meta.WindowType.MODAL_DIALOG,
