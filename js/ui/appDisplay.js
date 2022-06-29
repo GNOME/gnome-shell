@@ -79,13 +79,6 @@ const DEFAULT_FOLDERS = {
     },
 };
 
-var SidePages = {
-    NONE: 0,
-    PREVIOUS: 1 << 0,
-    NEXT: 1 << 1,
-    DND: 1 << 2,
-};
-
 function _getCategories(info) {
     let categoriesStr = info.get_categories();
     if (!categoriesStr)
@@ -884,6 +877,7 @@ var BaseAppView = GObject.registerClass({
     _onDragBegin() {
         this._dragMonitor = {
             dragMotion: this._onDragMotion.bind(this),
+            dragDrop: this._onDragDrop.bind(this),
         };
         DND.addDragMonitor(this._dragMonitor);
         this._appGridLayout.showPageIndicators();
@@ -905,6 +899,13 @@ var BaseAppView = GObject.registerClass({
 
         this._maybeMoveItem(dragEvent);
 
+        return DND.DragMotionResult.CONTINUE;
+    }
+
+    _onDragDrop(dropEvent) {
+        // Because acceptDrop() does not receive the target actor, store it
+        // here and use this value in the acceptDrop() implementation below.
+        this._dropTarget = dropEvent.targetActor;
         return DND.DragMotionResult.CONTINUE;
     }
 
@@ -939,11 +940,15 @@ var BaseAppView = GObject.registerClass({
     }
 
     acceptDrop(source) {
+        const dropTarget = this._dropTarget;
+        delete this._dropTarget;
+
         if (!this._canAccept(source))
             return false;
 
-        if (this._dropPage) {
-            const increment = this._dropPage === SidePages.NEXT ? 1 : -1;
+        if (dropTarget === this._prevPageIndicator ||
+            dropTarget === this._nextPageIndicator) {
+            const increment = dropTarget === this._prevPageIndicator ? -1 : 1;
             const { currentPage, nPages } = this._grid;
             const page = Math.min(currentPage + increment, nPages);
             const position = page < nPages ? -1 : 0;
