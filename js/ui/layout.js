@@ -226,9 +226,15 @@ var LayoutManager = GObject.registerClass({
         global.stage.remove_actor(global.top_window_group);
         this.uiGroup.add_actor(global.top_window_group);
 
-        this.overviewGroup = new St.Widget({ name: 'overviewGroup',
-                                             visible: false,
-                                             reactive: true });
+        this.overviewGroup = new St.Widget({
+            name: 'overviewGroup',
+            visible: false,
+            reactive: true,
+            constraints: new Clutter.BindConstraint({
+                source: this.uiGroup,
+                coordinate: Clutter.BindCoordinate.ALL,
+            }),
+        });
         this.addChrome(this.overviewGroup);
 
         this.screenShieldGroup = new St.Widget({
