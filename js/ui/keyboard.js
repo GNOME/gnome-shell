@@ -1285,7 +1285,15 @@ var Keyboard = GObject.registerClass({
     },
 }, class Keyboard extends St.BoxLayout {
     _init() {
-        super._init({ name: 'keyboard', reactive: true, vertical: true });
+        super._init({
+            name: 'keyboard',
+            reactive: true,
+            // Keyboard models are defined in LTR, we must override
+            // the locale setting in order to avoid flipping the
+            // keyboard on RTL locales.
+            text_direction: Clutter.TextDirection.LTR,
+            vertical: true,
+        });
         this._focusInExtendedKeys = false;
         this._emojiActive = false;
 
@@ -1409,11 +1417,6 @@ var Keyboard = GObject.registerClass({
 
         this._ensureKeysForGroup(this._keyboardController.getCurrentGroup());
         this._setActiveLayer(0);
-
-        // Keyboard models are defined in LTR, we must override
-        // the locale setting in order to avoid flipping the
-        // keyboard on RTL locales.
-        this.text_direction = Clutter.TextDirection.LTR;
 
         Main.inputMethod.connect(
             'terminal-mode-changed', this._onTerminalModeChanged.bind(this));
