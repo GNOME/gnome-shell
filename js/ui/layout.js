@@ -233,6 +233,10 @@ var LayoutManager = GObject.registerClass({
             name: 'overviewGroup',
             visible: false,
             reactive: true,
+            constraints: new Clutter.BindConstraint({
+                source: this.uiGroup,
+                coordinate: Clutter.BindCoordinate.ALL,
+            }),
         });
         this.addChrome(this.overviewGroup);
 
