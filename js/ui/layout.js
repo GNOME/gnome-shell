@@ -241,6 +241,10 @@ var LayoutManager = GObject.registerClass({
             visible: false,
             clip_to_allocation: true,
             layout_manager: new Clutter.BinLayout(),
+            constraints: new Clutter.BindConstraint({
+                source: this.uiGroup,
+                coordinate: Clutter.BindCoordinate.ALL,
+            }),
         });
         this.addChrome(this.screenShieldGroup);
 
@@ -521,9 +525,6 @@ var LayoutManager = GObject.registerClass({
     }
 
     _updateBoxes() {
-        this.screenShieldGroup.set_position(0, 0);
-        this.screenShieldGroup.set_size(global.screen_width, global.screen_height);
-
         if (!this.primaryMonitor)
             return;
 
