@@ -93,12 +93,8 @@ var IBusManager = class {
     _spawn(extraArgs = []) {
         try {
             let cmdLine = ['ibus-daemon', '--panel', 'disable', ...extraArgs];
-            // Forward the right X11 Display for ibus-x11
-            let display = GLib.getenv('GNOME_SETUP_DISPLAY');
             let env = [];
 
-            if (display)
-                env.push('DISPLAY=%s'.format(display));
             GLib.spawn_async(
                 null, cmdLine, env,
                 GLib.SpawnFlags.SEARCH_PATH,
