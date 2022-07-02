@@ -1,3 +1,18 @@
+41.8
+====
+* Fix feedback when turning on a11y features by keyboard [Olivier; !2334]
+* Only close messages via delete key if they can be closed [PhilProg; !2323]
+* Do not create systemd scope for D-Bus activated apps [msizanoen1; !2305]
+* Hide overview after 'Show Details' from app context menu [PhilProg; !2329]
+* Respect IM hint for candidates list in on-screen keyboard [Carlos; !2347]
+* Fix edge case where windows stay dimmed after a modal is closed [Jonas; !2349]
+* Improve Belgian on-screen keyboard layout [Evert; !2336]
+* Misc. bug fixes and cleanups [Florian, Sebastian; !2078, !2319, !2355]
+
+Contributors:
+  Jonas Dreßler, Olivier Fourdan, Carlos Garnacho, Sebastian Keller,
+  Florian Müllner, PhilProg, Evert Provoost, msizanoen1
+
 41.7
 ====
 * Misc. bug fixes [Florian, Jonas; !2295, !2296, !2306]
