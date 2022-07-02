@@ -1,3 +1,27 @@
+42.3
+====
+* Fix feedback when turning on a11y features by keyboard [Olivier; !2334]
+* Fix OSD colors with light stylesheet [Jakub; !2315]
+* Only close messages via delete key if they can be closed [PhilProg; !2323]
+* Fix screenshots when XDG directories are disabled [Sam; !2327]
+* Do not create systemd scope for D-Bus activated apps [msizanoen1; !2305]
+* Improve high-contrast stylesheet [Sam; !2284]
+* Hide overview after 'Show Details' from app context menu [PhilProg; !2329]
+* Fix stylesheet papercuts [Sam; !2309]
+* Respect IM hint for candidates list in on-screen keyboard [Carlos; !2347]
+* Fix edge case where windows stay dimmed after a modal is closed [Jonas; !2349]
+* Improve Belgian on-screen keyboard layout [Evert; !2336]
+* Fix fallback ibus-daemon launching [oreo639; !2345]
+* Misc. bug fixes [Sebastian, Florian; !2319, !2355]
+
+Contributors:
+  Jonas Dreßler, Olivier Fourdan, Carlos Garnacho, Sam Hewitt, Sebastian Keller,
+  Florian Müllner, PhilProg, Evert Provoost, Jakub Steiner, Sam Uong,
+  msizanoen1, oreo639
+
+Translators:
+  Milo Casagrande [it], Jordi Mas [ca]
+
 42.2
 ====
 * Align space-padded times in world clocks [Maksym; !2294]
