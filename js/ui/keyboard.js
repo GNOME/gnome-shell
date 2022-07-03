@@ -1276,6 +1276,10 @@ var KeyboardManager = class KeyBoardManager {
             this._keyboard.resetSuggestions();
     }
 
+    setSuggestionsVisible(visible) {
+        this._keyboard?.setSuggestionsVisible(visible);
+    }
+
     maybeHandleEvent(event) {
         if (!this._keyboard)
             return false;
