@@ -20,8 +20,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2022-06-21 22:17+0000\n"
-"PO-Revision-Date: 2022-06-22 12:06+0300\n"
+"POT-Creation-Date: 2022-06-25 18:32+0000\n"
+"PO-Revision-Date: 2022-07-03 12:00+0300\n"
 "Last-Translator: Aleksandr Melman <Alexmelman88@gmail.com>\n"
 "Language-Team: Russian <gnome-cyr@gnome.org>\n"
 "Language: ru\n"
@@ -231,14 +231,14 @@ msgstr "История просмотра прозрачного диалого�
 
 #: data/org.gnome.shell.gschema.xml.in:71
 msgid "Always show the “Log out” menu item in the user menu."
-msgstr "Всегда показывать в пользовательском меню пункт «Завершить сеанс»."
+msgstr "Всегда показывать в пользовательском меню пункт «Выйти»."
 
 #: data/org.gnome.shell.gschema.xml.in:72
 msgid ""
 "This key overrides the automatic hiding of the “Log out” menu item in single-"
 "user, single-session situations."
 msgstr ""
-"Этот ключ переопределяет автоматическое скрытие пункта «Завершить сеанс» при "
+"Этот ключ переопределяет автоматическое скрытие пункта «Выйти» при "
 "использовании системы с одной учётной записью пользователя."
 
 #: data/org.gnome.shell.gschema.xml.in:79
@@ -610,29 +610,29 @@ msgstr "перезагрузить;перезапустить;"
 #: js/misc/systemActions.js:100
 msgctxt "search-result"
 msgid "Lock Screen"
-msgstr "Экран блокировки"
+msgstr "Заблокировать экран"
 
 #. Translators: A list of keywords that match the lock screen action, separated by semicolons
 #: js/misc/systemActions.js:103
 msgid "lock screen"
-msgstr "экран блокировки"
+msgstr "заблокировать экран"
 
 #. Translators: The name of the logout action in search
 #: js/misc/systemActions.js:108
 msgctxt "search-result"
 msgid "Log Out"
-msgstr "Завершить сеанс"
+msgstr "Выйти"
 
 #. Translators: A list of keywords that match the logout action, separated by semicolons
 #: js/misc/systemActions.js:111
 msgid "logout;log out;sign off"
-msgstr "завершить сеанс;выйти"
+msgstr "logout;log out;sign off;выйти"
 
 #. Translators: The name of the suspend action in search
 #: js/misc/systemActions.js:116
 msgctxt "search-result"
 msgid "Suspend"
-msgstr "Ждущий режим"
+msgstr "Режим ожидания"
 
 #. Translators: A list of keywords that match the suspend action, separated by semicolons
 #: js/misc/systemActions.js:119
@@ -1274,35 +1274,33 @@ msgstr "Выберите ваше местоположение…"
 #, javascript-format
 msgctxt "title"
 msgid "Log Out %s"
-msgstr "Завершение сеанса пользователя %s"
+msgstr "Выход пользователя %s"
 
 #: js/ui/endSessionDialog.js:42
 msgctxt "title"
 msgid "Log Out"
-msgstr "Завершение сеанса"
+msgstr "Выйти из системы"
 
 #: js/ui/endSessionDialog.js:45
 #, javascript-format
 msgid "%s will be logged out automatically in %d second."
 msgid_plural "%s will be logged out automatically in %d seconds."
-msgstr[0] ""
-"Сеанс пользователя %s будет автоматически завершён через %d секунду."
-msgstr[1] ""
-"Сеанс пользователя %s будет автоматически завершён через %d секунды."
-msgstr[2] "Сеанс пользователя %s будет автоматически завершён через %d секунд."
+msgstr[0] "%s выйдет из системы автоматически через %d секунду."
+msgstr[1] "%s выйдет из системы автоматически через %d секунды."
+msgstr[2] "%s выйдет из системы автоматически через %d секунд."
 
 #: js/ui/endSessionDialog.js:51
 #, javascript-format
 msgid "You will be logged out automatically in %d second."
 msgid_plural "You will be logged out automatically in %d seconds."
-msgstr[0] "Сеанс будет автоматически завершён через %d секунду."
-msgstr[1] "Сеанс будет автоматически завершён через %d секунды."
-msgstr[2] "Сеанс будет автоматически завершён через %d секунд."
+msgstr[0] "Вы автоматически выйдете из системы через %d секунду."
+msgstr[1] "Вы автоматически выйдете из системы через %d секунды."
+msgstr[2] "Вы автоматически выйдете из системы через %d секунд."
 
 #: js/ui/endSessionDialog.js:58
 msgctxt "button"
 msgid "Log Out"
-msgstr "Завершить сеанс"
+msgstr "Выйти"
 
 #: js/ui/endSessionDialog.js:64
 msgctxt "title"
@@ -2438,11 +2436,11 @@ msgstr "Заблокировать"
 
 #: js/ui/status/system.js:116
 msgid "Power Off / Log Out"
-msgstr "Выключить / Завершить сеанс"
+msgstr "Выключить / Выйти"
 
 #: js/ui/status/system.js:119
 msgid "Suspend"
-msgstr "Ждущий режим"
+msgstr "Режим ожидания"
 
 #: js/ui/status/system.js:130
 msgid "Restart…"
@@ -2454,7 +2452,7 @@ msgstr "Выключение…"
 
 #: js/ui/status/system.js:154
 msgid "Log Out"
-msgstr "Завершить сеанс"
+msgstr "Выйти"
 
 #: js/ui/status/system.js:165
 msgid "Switch User…"
@@ -2783,9 +2781,9 @@ msgstr ""
 #, javascript-format
 msgid "%d extension will be updated on next login."
 msgid_plural "%d extensions will be updated on next login."
-msgstr[0] "%d расширение будет обновлено при следующей авторизации сеанса."
-msgstr[1] "%d расширения будет обновлено при следующей авторизации сеанса."
-msgstr[2] "%d расширений будет обновлено при следующей авторизации сеанса."
+msgstr[0] "%d расширение будет обновлено при следующем входе в систему."
+msgstr[1] "%d расширения будет обновлено при следующем входе в систему."
+msgstr[2] "%d расширений будет обновлено при следующем входе в систему."
 
 #: subprojects/extensions-app/js/main.js:479
 msgid "The extension is incompatible with the current GNOME version"
@@ -2859,7 +2857,7 @@ msgstr "Доступны обновления расширений"
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:190
 msgid "Log Out…"
-msgstr "Завершить сеанс…"
+msgstr "Выйти…"
 
 #. Translators: a file path to an extension directory
 #: subprojects/extensions-tool/src/command-create.c:222
