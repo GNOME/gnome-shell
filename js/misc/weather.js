@@ -1,7 +1,8 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
+/* exported WeatherClient */
 
 const { Geoclue, Gio, GLib, GWeather, Shell } = imports.gi;
-const Signals = imports.signals;
+const Signals = imports.misc.signals;
 
 const PermissionStore = imports.misc.permissionStore;
 
@@ -20,8 +21,10 @@ const WEATHER_APP_ID = 'org.gnome.Weather.desktop';
 // Minimum time between updates to show loading indication
 var UPDATE_THRESHOLD = 10 * GLib.TIME_SPAN_MINUTE;
 
-var WeatherClient = class {
+var WeatherClient = class extends Signals.EventEmitter {
     constructor() {
+        super();
+
         this._loading = false;
         this._locationValid = false;
         this._lastUpdate = GLib.DateTime.new_from_unix_local(0);
@@ -319,4 +322,3 @@ var WeatherClient = class {
         this._updateAutoLocation();
     }
 };
-Signals.addSignalMethods(WeatherClient.prototype);

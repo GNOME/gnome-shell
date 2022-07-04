@@ -1,8 +1,12 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported CredentialManager */
 
-var CredentialManager = class CredentialManager {
+const Signals = imports.misc.signals;
+
+var CredentialManager = class CredentialManager extends Signals.EventEmitter {
     constructor(service) {
+        super();
+
         this._token = null;
         this._service = service;
         this._authenticatedSignalId = null;

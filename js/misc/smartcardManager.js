@@ -2,7 +2,7 @@
 /* exported getSmartcardManager */
 
 const Gio = imports.gi.Gio;
-const Signals = imports.signals;
+const Signals = imports.misc.signals;
 
 const ObjectManager = imports.misc.objectManager;
 
@@ -25,8 +25,10 @@ function getSmartcardManager() {
     return _smartcardManager;
 }
 
-var SmartcardManager = class {
+var SmartcardManager = class extends Signals.EventEmitter {
     constructor() {
+        super();
+
         this._objectManager = new ObjectManager.ObjectManager({
             connection: Gio.DBus.session,
             name: 'org.gnome.SettingsDaemon.Smartcard',
@@ -114,4 +116,3 @@ var SmartcardManager = class {
         return true;
     }
 };
-Signals.addSignalMethods(SmartcardManager.prototype);

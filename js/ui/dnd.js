@@ -2,7 +2,7 @@
 /* exported addDragMonitor, removeDragMonitor, makeDraggable */
 
 const { Clutter, GLib, Meta, Shell, St } = imports.gi;
-const Signals = imports.signals;
+const Signals = imports.misc.signals;
 
 const Main = imports.ui.main;
 const Params = imports.misc.params;
@@ -78,8 +78,10 @@ function removeDragMonitor(monitor) {
     }
 }
 
-var _Draggable = class _Draggable {
+var _Draggable = class _Draggable extends Signals.EventEmitter {
     constructor(actor, params) {
+        super();
+
         params = Params.parse(params, {
             manualMode: false,
             timeoutThreshold: 0,
@@ -801,7 +803,6 @@ var _Draggable = class _Draggable {
         currentDraggable = null;
     }
 };
-Signals.addSignalMethods(_Draggable.prototype);
 
 /**
  * makeDraggable:

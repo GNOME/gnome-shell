@@ -45,7 +45,6 @@ try {
 
 const { Clutter, Gio, GLib, GObject, Meta, Polkit, Shell, St } = imports.gi;
 const Gettext = imports.gettext;
-const Signals = imports.signals;
 const System = imports.system;
 const SignalTracker = imports.misc.signalTracker;
 
@@ -356,12 +355,6 @@ function init() {
     };
     GObject.Object.prototype.disconnect_object = function (...args) {
         SignalTracker.disconnectObject(this, ...args);
-    };
-
-    const _addSignalMethods = Signals.addSignalMethods;
-    Signals.addSignalMethods = function (prototype) {
-        _addSignalMethods(prototype);
-        SignalTracker.addObjectSignalMethods(prototype);
     };
 
     SignalTracker.registerDestroyableType(Clutter.Actor);

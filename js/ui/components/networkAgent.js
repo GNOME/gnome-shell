@@ -2,7 +2,7 @@
 /* exported Component */
 
 const { Clutter, Gio, GLib, GObject, NM, Pango, Shell, St } = imports.gi;
-const Signals = imports.signals;
+const Signals = imports.misc.signals;
 
 const Dialog = imports.ui.dialog;
 const Main = imports.ui.main;
@@ -411,8 +411,10 @@ class NetworkSecretDialog extends ModalDialog.ModalDialog {
     }
 });
 
-var VPNRequestHandler = class {
+var VPNRequestHandler = class extends Signals.EventEmitter {
     constructor(agent, requestId, authHelper, serviceType, connection, hints, flags) {
+        super();
+
         this._agent = agent;
         this._requestId = requestId;
         this._connection = connection;
@@ -668,7 +670,6 @@ var VPNRequestHandler = class {
         }
     }
 };
-Signals.addSignalMethods(VPNRequestHandler.prototype);
 
 var NetworkAgent = class {
     constructor() {

@@ -1,9 +1,10 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported BANNER_MESSAGE_KEY, BANNER_MESSAGE_TEXT_KEY, LOGO_KEY,
-            DISABLE_USER_LIST_KEY, fadeInActor, fadeOutActor, cloneAndFadeOutActor */
+            DISABLE_USER_LIST_KEY, fadeInActor, fadeOutActor, cloneAndFadeOutActor,
+            ShellUserVerifier */
 
 const { Clutter, Gdm, Gio, GLib } = imports.gi;
-const Signals = imports.signals;
+const Signals = imports.misc.signals;
 
 const Batch = imports.gdm.batch;
 const OVirt = imports.gdm.oVirt;
@@ -135,8 +136,9 @@ function cloneAndFadeOutActor(actor) {
     return hold;
 }
 
-var ShellUserVerifier = class {
+var ShellUserVerifier = class extends Signals.EventEmitter {
     constructor(client, params) {
+        super();
         params = Params.parse(params, { reauthenticationOnly: false });
         this._reauthOnly = params.reauthenticationOnly;
 
@@ -783,4 +785,3 @@ var ShellUserVerifier = class {
         this._verificationFailed(serviceName, true);
     }
 };
-Signals.addSignalMethods(ShellUserVerifier.prototype);

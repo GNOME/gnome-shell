@@ -2,7 +2,7 @@
 /* exported getIBusManager */
 
 const { Gio, GLib, IBus, Meta, Shell } = imports.gi;
-const Signals = imports.signals;
+const Signals = imports.misc.signals;
 
 const IBusCandidatePopup = imports.ui.ibusCandidatePopup;
 
@@ -40,8 +40,10 @@ function getIBusManager() {
     return _ibusManager;
 }
 
-var IBusManager = class {
+var IBusManager = class extends Signals.EventEmitter {
     constructor() {
+        super();
+
         IBus.init();
 
         // This is the longest we'll keep the keyboard frozen until an input
@@ -325,4 +327,3 @@ var IBusManager = class {
                 });
     }
 };
-Signals.addSignalMethods(IBusManager.prototype);

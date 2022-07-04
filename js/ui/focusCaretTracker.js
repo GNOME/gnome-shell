@@ -20,15 +20,18 @@
  * Contributor:
  *   Magdalen Berns <m.berns@sms.ed.ac.uk>
  */
+/* exported FocusCaretTracker */
 
 const Atspi = imports.gi.Atspi;
-const Signals = imports.signals;
+const Signals = imports.misc.signals;
 
 const CARETMOVED        = 'object:text-caret-moved';
 const STATECHANGED      = 'object:state-changed';
 
-var FocusCaretTracker = class FocusCaretTracker {
+var FocusCaretTracker = class FocusCaretTracker extends Signals.EventEmitter {
     constructor() {
+        super();
+
         this._atspiListener = Atspi.EventListener.new(this._onChanged.bind(this));
 
         this._atspiInited = false;
@@ -86,4 +89,3 @@ var FocusCaretTracker = class FocusCaretTracker {
         this._caretListenerRegistered = false;
     }
 };
-Signals.addSignalMethods(FocusCaretTracker.prototype);

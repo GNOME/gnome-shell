@@ -2,7 +2,7 @@
 /* exported MonitorConstraint, LayoutManager */
 
 const { Clutter, Gio, GLib, GObject, Meta, Shell, St } = imports.gi;
-const Signals = imports.signals;
+const Signals = imports.misc.signals;
 
 const Background = imports.ui.background;
 const BackgroundMenu = imports.ui.backgroundMenu;
@@ -1268,8 +1268,10 @@ class HotCorner extends Clutter.Actor {
     }
 });
 
-var PressureBarrier = class PressureBarrier {
+var PressureBarrier = class PressureBarrier extends Signals.EventEmitter {
     constructor(threshold, timeout, actionMode) {
+        super();
+
         this._threshold = threshold;
         this._timeout = timeout;
         this._actionMode = actionMode;
@@ -1409,7 +1411,6 @@ var PressureBarrier = class PressureBarrier {
             this._trigger();
     }
 };
-Signals.addSignalMethods(PressureBarrier.prototype);
 
 var ScreenTransition = GObject.registerClass(
 class ScreenTransition extends Clutter.Actor {

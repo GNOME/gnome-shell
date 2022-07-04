@@ -1,13 +1,16 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
+/* exported HistoryManager */
 
-const Signals = imports.signals;
+const Signals = imports.misc.signals;
 const Clutter = imports.gi.Clutter;
 const Params = imports.misc.params;
 
 var DEFAULT_LIMIT = 512;
 
-var HistoryManager = class {
+var HistoryManager = class extends Signals.EventEmitter {
     constructor(params) {
+        super();
+
         params = Params.parse(params, {
             gsettingsKey: null,
             limit: DEFAULT_LIMIT,
@@ -109,4 +112,3 @@ var HistoryManager = class {
             global.settings.set_strv(this._key, this._history);
     }
 };
-Signals.addSignalMethods(HistoryManager.prototype);

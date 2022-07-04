@@ -1,4 +1,4 @@
-/* exported TransientSignalHolder, addObjectSignalMethods */
+/* exported TransientSignalHolder, connectObject, disconnectObject */
 const { GObject } = imports.gi;
 
 const destroyableTypes = [];
@@ -212,25 +212,6 @@ function connectObject(thisObj, ...args) {
  */
 function disconnectObject(thisObj, obj) {
     SignalManager.getDefault().getSignalTracker(thisObj).untrack(obj);
-}
-
-/**
- * Add connectObject()/disconnectObject() methods
- * to prototype. The prototype must have the connect()
- * and disconnect() signal methods.
- *
- * @param {prototype} proto - a prototype
- */
-function addObjectSignalMethods(proto) {
-    proto['connectObject'] = function (...args) {
-        connectObject(this, ...args);
-    };
-    proto['connect_object'] = proto['connectObject'];
-
-    proto['disconnectObject'] = function (obj) {
-        disconnectObject(this, obj);
-    };
-    proto['disconnect_object'] = proto['disconnectObject'];
 }
 
 /**

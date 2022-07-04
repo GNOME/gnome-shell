@@ -2,7 +2,7 @@
 /* exported Overview, ANIMATION_TIME */
 
 const { Clutter, Gio, GLib, GObject, Meta, Shell, St } = imports.gi;
-const Signals = imports.signals;
+const Signals = imports.misc.signals;
 
 // Time for initial animation going into Overview mode;
 // this is defined here to make it available in imports.
@@ -103,8 +103,10 @@ class OverviewActor extends St.BoxLayout {
     }
 });
 
-var Overview = class {
+var Overview = class extends Signals.EventEmitter {
     constructor() {
+        super();
+
         this._initCalled = false;
         this._visible = false;
 
@@ -649,4 +651,3 @@ var Overview = class {
         return this._overview.searchEntry;
     }
 };
-Signals.addSignalMethods(Overview.prototype);

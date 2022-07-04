@@ -3,7 +3,7 @@
 
 const { Clutter, Gio, GLib, GObject, IBus, Meta, Shell, St } = imports.gi;
 const Gettext = imports.gettext;
-const Signals = imports.signals;
+const Signals = imports.misc.signals;
 
 const IBusManager = imports.misc.ibusManager;
 const KeyboardManager = imports.misc.keyboardManager;
@@ -32,8 +32,10 @@ class LayoutMenuItem extends PopupMenu.PopupBaseMenuItem {
     }
 });
 
-var InputSource = class {
+var InputSource = class extends Signals.EventEmitter {
     constructor(type, id, displayName, shortName, index) {
+        super();
+
         this.type = type;
         this.id = id;
         this.displayName = displayName;
@@ -69,7 +71,6 @@ var InputSource = class {
             return engineDesc.layout;
     }
 };
-Signals.addSignalMethods(InputSource.prototype);
 
 var InputSourcePopup = GObject.registerClass(
 class InputSourcePopup extends SwitcherPopup.SwitcherPopup {
@@ -135,8 +136,10 @@ class InputSourceSwitcher extends SwitcherPopup.SwitcherList {
     }
 });
 
-var InputSourceSettings = class {
+var InputSourceSettings = class extends Signals.EventEmitter {
     constructor() {
+        super();
+
         if (this.constructor === InputSourceSettings)
             throw new TypeError(`Cannot instantiate abstract class ${this.constructor.name}`);
     }
@@ -173,7 +176,6 @@ var InputSourceSettings = class {
         return false;
     }
 };
-Signals.addSignalMethods(InputSourceSettings.prototype);
 
 var InputSourceSystemSettings = class extends InputSourceSettings {
     constructor() {
@@ -300,8 +302,10 @@ var InputSourceSessionSettings = class extends InputSourceSettings {
     }
 };
 
-var InputSourceManager = class {
+var InputSourceManager = class extends Signals.EventEmitter {
     constructor() {
+        super();
+
         // All valid input sources currently in the gsettings
         // KEY_INPUT_SOURCES list indexed by their index there
         this._inputSources = {};
@@ -771,7 +775,6 @@ var InputSourceManager = class {
         return this._keyboardManager;
     }
 };
-Signals.addSignalMethods(InputSourceManager.prototype);
 
 let _inputSourceManager = null;
 

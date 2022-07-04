@@ -1,7 +1,8 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
+/* exported Manager */
 
 const Gio = imports.gi.Gio;
-const Signals = imports.signals;
+const Signals = imports.misc.signals;
 
 const { loadInterfaceXML } = imports.misc.fileUtils;
 
@@ -14,8 +15,10 @@ const Service = Gio.DBusProxy.makeProxyWrapper(ServiceIface);
 const RealmIface = loadInterfaceXML("org.freedesktop.realmd.Realm");
 const Realm = Gio.DBusProxy.makeProxyWrapper(RealmIface);
 
-var Manager = class {
+var Manager = class extends Signals.EventEmitter {
     constructor() {
+        super();
+
         this._aggregateProvider = Provider(Gio.DBus.system,
                                            'org.freedesktop.realmd',
                                            '/org/freedesktop/realmd',
@@ -105,4 +108,3 @@ var Manager = class {
         this._updateLoginFormat();
     }
 };
-Signals.addSignalMethods(Manager.prototype);

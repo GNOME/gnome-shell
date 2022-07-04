@@ -1,10 +1,11 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
+/* exported ScreenShield */
 
 const {
     AccountsService, Clutter, Gio,
     GLib, Graphene, Meta, Shell, St,
 } = imports.gi;
-const Signals = imports.signals;
+const Signals = imports.misc.signals;
 
 const GnomeSession = imports.misc.gnomeSession;
 const OVirt = imports.gdm.oVirt;
@@ -44,8 +45,10 @@ var CURTAIN_SLIDE_TIME = 300;
  * This will ensure that the screen blanks at the right time when it fades out.
  * https://bugzilla.gnome.org/show_bug.cgi?id=668703 explains the dependency.
  */
-var ScreenShield = class {
+var ScreenShield = class extends Signals.EventEmitter {
     constructor() {
+        super();
+
         this.actor = Main.layoutManager.screenShieldGroup;
 
         this._lockScreenState = MessageTray.State.HIDDEN;
@@ -676,4 +679,3 @@ var ScreenShield = class {
         });
     }
 };
-Signals.addSignalMethods(ScreenShield.prototype);

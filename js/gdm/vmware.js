@@ -2,7 +2,6 @@
 /* exported getVmwareCredentialsManager */
 
 const Gio = imports.gi.Gio;
-const Signals = imports.signals;
 const Credential = imports.gdm.credentialManager;
 
 const dbusPath = '/org/vmware/viewagent/Credentials';
@@ -46,7 +45,6 @@ var VmwareCredentialsManager = class VmwareCredentialsManager extends Credential
             });
     }
 };
-Signals.addSignalMethods(VmwareCredentialsManager.prototype);
 
 function getVmwareCredentialsManager() {
     if (!_vmwareCredentialsManager)

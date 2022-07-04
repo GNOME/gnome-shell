@@ -43,12 +43,15 @@
  * are not used elsewhere. These APIs may ultimately get dropped entirely and
  * replaced by something else.
  */
+/* exported ConcurrentBatch, ConsecutiveBatch */
 
 const { GObject } = imports.gi;
-const Signals = imports.signals;
+const Signals = imports.misc.signals;
 
-var Task = class {
+var Task = class extends Signals.EventEmitter {
     constructor(scope, handler) {
+        super();
+
         if (scope)
             this.scope = scope;
         else
@@ -64,7 +67,6 @@ var Task = class {
         return null;
     }
 };
-Signals.addSignalMethods(Task.prototype);
 
 var Hold = class extends Task {
     constructor() {
@@ -101,7 +103,6 @@ var Hold = class extends Task {
         return this._acquisitions > 0;
     }
 };
-Signals.addSignalMethods(Hold.prototype);
 
 var Batch = class extends Task {
     constructor(scope, tasks) {
@@ -171,7 +172,6 @@ var Batch = class extends Task {
         this.tasks = this.tasks.splice(0, this._currentTaskIndex + 1);
     }
 };
-Signals.addSignalMethods(Batch.prototype);
 
 var ConcurrentBatch = class extends Batch {
     process() {
@@ -186,7 +186,6 @@ var ConcurrentBatch = class extends Batch {
         this.nextTask();
     }
 };
-Signals.addSignalMethods(ConcurrentBatch.prototype);
 
 var ConsecutiveBatch = class extends Batch {
     process() {
@@ -205,4 +204,3 @@ var ConsecutiveBatch = class extends Batch {
         }
     }
 };
-Signals.addSignalMethods(ConsecutiveBatch.prototype);

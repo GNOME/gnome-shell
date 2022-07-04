@@ -2,7 +2,7 @@
 /* exported canLock, getLoginManager, registerSessionWithGDM */
 
 const { GLib, Gio } = imports.gi;
-const Signals = imports.signals;
+const Signals = imports.misc.signals;
 
 const { loadInterfaceXML } = imports.misc.fileUtils;
 
@@ -87,8 +87,10 @@ function getLoginManager() {
     return _loginManager;
 }
 
-var LoginManagerSystemd = class {
+var LoginManagerSystemd = class extends Signals.EventEmitter {
     constructor() {
+        super();
+
         this._proxy = new SystemdLoginManager(Gio.DBus.system,
                                               'org.freedesktop.login1',
                                               '/org/freedesktop/login1');
@@ -202,9 +204,8 @@ var LoginManagerSystemd = class {
         this.emit('prepare-for-sleep', aboutToSuspend);
     }
 };
-Signals.addSignalMethods(LoginManagerSystemd.prototype);
 
-var LoginManagerDummy = class {
+var LoginManagerDummy = class extends Signals.EventEmitter  {
     getCurrentSessionProxy(_callback) {
         // we could return a DummySession object that fakes whatever callers
         // expect (at the time of writing: connect() and connectSignal()
@@ -236,4 +237,3 @@ var LoginManagerDummy = class {
         return null;
     }
 };
-Signals.addSignalMethods(LoginManagerDummy.prototype);

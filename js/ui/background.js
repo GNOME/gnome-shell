@@ -1,5 +1,5 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported SystemBackground */
+/* exported SystemBackground, BackgroundManager */
 
 // READ THIS FIRST
 // Background handling is a maze of objects, both objects in this file, and
@@ -95,7 +95,7 @@
 //     MetaBackgroundImage         MetaBackgroundImage
 
 const { Clutter, GDesktopEnums, Gio, GLib, GObject, GnomeDesktop, Meta } = imports.gi;
-const Signals = imports.signals;
+const Signals = imports.misc.signals;
 
 const LoginManager = imports.misc.loginManager;
 const Main = imports.ui.main;
@@ -137,8 +137,10 @@ function _fileEqual0(file1, file2) {
     return file1.equal(file2);
 }
 
-var BackgroundCache = class BackgroundCache {
+var BackgroundCache = class BackgroundCache extends Signals.EventEmitter {
     constructor() {
+        super();
+
         this._fileMonitors = {};
         this._backgroundSources = {};
         this._animations = {};
@@ -221,7 +223,6 @@ var BackgroundCache = class BackgroundCache {
         }
     }
 };
-Signals.addSignalMethods(BackgroundCache.prototype);
 
 function getBackgroundCache() {
     if (!_backgroundCache)
@@ -682,8 +683,9 @@ class Animation extends GnomeDesktop.BGSlideShow {
     }
 });
 
-var BackgroundManager = class BackgroundManager {
+var BackgroundManager = class BackgroundManager extends Signals.EventEmitter {
     constructor(params) {
+        super();
         params = Params.parse(params, {
             container: null,
             layoutManager: Main.layoutManager,
@@ -838,4 +840,3 @@ var BackgroundManager = class BackgroundManager {
         return backgroundActor;
     }
 };
-Signals.addSignalMethods(BackgroundManager.prototype);

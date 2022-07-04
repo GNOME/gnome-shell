@@ -5,7 +5,7 @@
 const { GObject } = imports.gi;
 
 const JsUnit = imports.jsUnit;
-const Signals = imports.signals;
+const Signals = imports.misc.signals;
 
 const Environment = imports.ui.environment;
 const { TransientSignalHolder, registerDestroyableType } = imports.misc.signalTracker;
@@ -17,14 +17,11 @@ const Destroyable = GObject.registerClass({
 }, class Destroyable extends GObject.Object {});
 registerDestroyableType(Destroyable);
 
-class PlainEmitter {}
-Signals.addSignalMethods(PlainEmitter.prototype);
-
 const GObjectEmitter = GObject.registerClass({
     Signals: { 'signal': {} },
 }, class GObjectEmitter extends Destroyable {});
 
-const emitter1 = new PlainEmitter();
+const emitter1 = new Signals.EventEmitter();
 const emitter2 = new GObjectEmitter();
 
 const tracked1 = new Destroyable();
