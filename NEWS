@@ -1,3 +1,15 @@
+42.3.1
+======
+* Fix regression in ibus support [Florian; !2359]
+* Make sure screenshot UI opens above dialogs [Alynx; !2331]
+* Misc. bug fixes and cleanups [Florian; !2293]
+
+Contributors:
+  Florian Müllner, Alynx Zhou
+
+Translators:
+  Vojtěch Perník [cs]
+
 42.3
 ====
 * Fix feedback when turning on a11y features by keyboard [Olivier; !2334]
