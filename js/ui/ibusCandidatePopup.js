@@ -155,7 +155,7 @@ class IbusCandidatePopup extends BoxPointer.BoxPointer {
         this._dummyCursor = new Clutter.Actor({ opacity: 0 });
         Main.layoutManager.uiGroup.add_actor(this._dummyCursor);
 
-        Main.layoutManager.addChrome(this);
+        Main.layoutManager.addTopChrome(this);
 
         const box = new St.BoxLayout({
             style_class: 'candidate-popup-content',
