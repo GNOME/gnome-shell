@@ -324,7 +324,12 @@ class IbusCandidatePopup extends BoxPointer.BoxPointer {
         if (isVisible) {
             this.setPosition(this._dummyCursor, 0);
             this.open(BoxPointer.PopupAnimation.NONE);
-            this.get_parent().set_child_above_sibling(this, null);
+            // We shouldn't be above some components like the screenshot UI,
+            // so don't raise to the top.
+            // The on-screen keyboard is expected to be above any entries,
+            // so just above the keyboard gets us to the right layer.
+            const { keyboardBox } = Main.layoutManager;
+            this.get_parent().set_child_above_sibling(this, keyboardBox);
         } else {
             this.close(BoxPointer.PopupAnimation.NONE);
         }
