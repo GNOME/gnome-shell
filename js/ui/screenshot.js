@@ -1506,6 +1506,10 @@ var ScreenshotUI = GObject.registerClass({
         // pop their grabs.
         Main.layoutManager.emit('system-modal-opened');
 
+        const { screenshotUIGroup } = Main.layoutManager;
+        screenshotUIGroup.get_parent().set_child_above_sibling(
+            screenshotUIGroup, null);
+
         const grabResult = this._grabHelper.grab({
             actor: this,
             onUngrab: () => this.close(),
