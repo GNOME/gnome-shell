@@ -6,22 +6,28 @@
 # Petr Kovar <pknbe@volny.cz>, 2009, 2010, 2011, 2012, 2014, 2015, 2020.
 # Adam Matoušek <adamatousek@gmail.com>, 2012, 2013.
 # Marek Černocký <marek@manet.cz>, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022.
+# Vojtěch Perník <translations@pervoj.cz>, 2022.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2022-05-07 17:06+0000\n"
-"PO-Revision-Date: 2022-05-16 17:14+0200\n"
-"Last-Translator: Daniel Rusek <mail@asciiwolf.com>\n"
-"Language-Team: čeština <gnome-cs-list@gnome.org>\n"
+"POT-Creation-Date: 2022-05-28 12:08+0000\n"
+"PO-Revision-Date: 2022-05-31 15:31+0200\n"
+"Last-Translator: Vojtěch Perník <translations@pervoj.cz>\n"
+"Language-Team: Czech <gnome-cs-list@gnome.org>\n"
 "Language: cs\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Poedit 3.0.1\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2\n"
+"X-Generator: Gtranslator 42.0\n"
 "X-Project-Style: gnome\n"
+"X-DL-Team: cs\n"
+"X-DL-Module: gnome-shell\n"
+"X-DL-Branch: gnome-42\n"
+"X-DL-Domain: po\n"
+"X-DL-State: Translating\n"
 
 #: data/50-gnome-shell-launchers.xml:6
 msgid "Launchers"
@@ -891,7 +897,7 @@ msgstr "Sluchátka"
 msgid "Headset"
 msgstr "Sluchátka s mikrofonem"
 
-#: js/ui/audioDeviceSelection.js:73 js/ui/status/volume.js:270
+#: js/ui/audioDeviceSelection.js:73 js/ui/status/volume.js:271
 msgid "Microphone"
 msgstr "Mikrofon"
 
@@ -1242,23 +1248,23 @@ msgstr "Přidat světový čas…"
 msgid "World Clocks"
 msgstr "Světové hodiny"
 
-#: js/ui/dateMenu.js:681
+#: js/ui/dateMenu.js:699
 msgid "Loading…"
 msgstr "Načítá se…"
 
-#: js/ui/dateMenu.js:691
+#: js/ui/dateMenu.js:709
 msgid "Go online for weather information"
 msgstr "Připojit se kvůli informacím o počasí"
 
-#: js/ui/dateMenu.js:693
+#: js/ui/dateMenu.js:711
 msgid "Weather information is currently unavailable"
 msgstr "Informace o počasí nejsou nyní dostupné"
 
-#: js/ui/dateMenu.js:703
+#: js/ui/dateMenu.js:721
 msgid "Weather"
 msgstr "Počasí"
 
-#: js/ui/dateMenu.js:705
+#: js/ui/dateMenu.js:723
 msgid "Select weather location…"
 msgstr "Vybrat místo pro počasí…"
 
@@ -1620,11 +1626,11 @@ msgstr ""
 
 #: js/ui/main.js:364
 msgid "Screen Lock disabled"
-msgstr ""
+msgstr "Zamykání obrazovky je vypnuto"
 
 #: js/ui/main.js:365
 msgid "Screen Locking requires the GNOME display manager."
-msgstr ""
+msgstr "Zamykání obrazovky vyžaduje správce displeje GNOME."
 
 #: js/ui/messageTray.js:1418
 msgid "System Information"
@@ -2428,11 +2434,11 @@ msgstr "Chyba ověření Thunderbolt"
 msgid "Could not authorize the Thunderbolt device: %s"
 msgstr "Nezdařilo se provést ověření zařízení Thunderbolt: %s"
 
-#: js/ui/status/volume.js:158
+#: js/ui/status/volume.js:159
 msgid "Volume changed"
 msgstr "Hlasitost změněna"
 
-#: js/ui/status/volume.js:220
+#: js/ui/status/volume.js:221
 msgid "Volume"
 msgstr "Hlasitost"
 
@@ -2468,19 +2474,16 @@ msgstr "Jen vestavěné"
 #. Translators: This is a time format for a date in
 #. long format
 #: js/ui/unlockDialog.js:364
-#, fuzzy
-#| msgctxt "calendar heading"
-#| msgid "%B %-d"
 msgid "%A %B %-d"
-msgstr "%-e. %B"
+msgstr "%A, %-e. %B"
 
 #: js/ui/unlockDialog.js:370
 msgid "Swipe up to unlock"
-msgstr ""
+msgstr "Pro odemčení přejeďte prstem nahoru"
 
 #: js/ui/unlockDialog.js:371
 msgid "Click or press a key to unlock"
-msgstr ""
+msgstr "Pro odemčení klikněte nebo stiskněte klávesu"
 
 #: js/ui/unlockDialog.js:554
 msgid "Unlock Window"
@@ -2762,11 +2765,11 @@ msgstr "Ručně nainstalované"
 #: subprojects/extensions-app/data/ui/extensions-window.ui:99
 #: subprojects/extensions-app/data/ui/extensions-window.ui:134
 msgid ""
-"To find and add extensions, visit <a href=\"https://extensions.gnome."
-"org\">extensions.gnome.org</a>."
+"To find and add extensions, visit <a href=\"https://extensions.gnome.org"
+"\">extensions.gnome.org</a>."
 msgstr ""
-"Jestli chcete vyhledat a nainstalovat rozšíření, navštivte stránku <a "
-"href=\"https://extensions.gnome.org\">extensions.gnome.org</a>."
+"Jestli chcete vyhledat a nainstalovat rozšíření, navštivte stránku <a href="
+"\"https://extensions.gnome.org\">extensions.gnome.org</a>."
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:112
 msgid "Built-In"
