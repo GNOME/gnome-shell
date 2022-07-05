@@ -3,7 +3,8 @@
             recursivelyMoveDir, loadInterfaceXML, loadSubInterfaceXML */
 
 const { Gio, GLib } = imports.gi;
-const Config = imports.misc.config;
+
+var { loadInterfaceXML } = imports.misc.dbusUtils;
 
 function collectFromDatadirs(subdir, includeUserDir, processFile) {
     let dataDirs = GLib.get_system_data_dirs();
@@ -64,54 +65,4 @@ function recursivelyMoveDir(srcDir, destDir) {
         else if (type == Gio.FileType.DIRECTORY)
             recursivelyMoveDir(srcChild, destChild);
     }
-}
-
-let _ifaceResource = null;
-function ensureIfaceResource() {
-    if (_ifaceResource)
-        return;
-
-    // don't use global.datadir so the method is usable from tests/tools
-    let dir = GLib.getenv('GNOME_SHELL_DATADIR') || Config.PKGDATADIR;
-    let path = `${dir}/gnome-shell-dbus-interfaces.gresource`;
-    _ifaceResource = Gio.Resource.load(path);
-    _ifaceResource._register();
-}
-
-function loadInterfaceXML(iface) {
-    ensureIfaceResource();
-
-    let uri = `resource:///org/gnome/shell/dbus-interfaces/${iface}.xml`;
-    let f = Gio.File.new_for_uri(uri);
-
-    try {
-        let [ok_, bytes] = f.load_contents(null);
-        return new TextDecoder().decode(bytes);
-    } catch (e) {
-        log(`Failed to load D-Bus interface ${iface}`);
-    }
-
-    return null;
-}
-
-function loadSubInterfaceXML(iface, ifaceFile) {
-    let xml = loadInterfaceXML(ifaceFile);
-    if (!xml)
-        return null;
-
-    let ifaceStartTag = `<interface name="${iface}">`;
-    let ifaceStopTag = '</interface>';
-    let ifaceStartIndex = xml.indexOf(ifaceStartTag);
-    let ifaceEndIndex = xml.indexOf(ifaceStopTag, ifaceStartIndex + 1) + ifaceStopTag.length;
-
-    let xmlHeader = '<!DOCTYPE node PUBLIC\n' +
-        '\'-//freedesktop//DTD D-BUS Object Introspection 1.0//EN\'\n' +
-        '\'http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd\'>\n' +
-        '<node>\n';
-    let xmlFooter = '</node>';
-
-    return (
-        xmlHeader +
-        xml.substr(ifaceStartIndex, ifaceEndIndex - ifaceStartIndex) +
-        xmlFooter);
 }

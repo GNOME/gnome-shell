@@ -5,7 +5,7 @@ const { Gio, GLib, Shew } = imports.gi;
 
 const ExtensionUtils = imports.misc.extensionUtils;
 
-const { loadInterfaceXML } = imports.misc.fileUtils;
+const { loadInterfaceXML } = imports.misc.dbusUtils;
 const { ExtensionPrefsDialog } = imports.extensionPrefsDialog;
 const { ServiceImplementation } = imports.dbusService;
 

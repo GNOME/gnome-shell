@@ -4,6 +4,6 @@
     <file>portalHelper/main.js</file>
 
     <file>misc/config.js</file>
-    <file>misc/fileUtils.js</file>
+    <file>misc/dbusUtils.js</file>
   </gresource>
 </gresources>

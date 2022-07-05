@@ -3,7 +3,7 @@
 
 const { Gio, GLib } = imports.gi;
 
-const { loadInterfaceXML } = imports.misc.fileUtils;
+const { loadInterfaceXML } = imports.misc.dbusUtils;
 const { ServiceImplementation } = imports.dbusService;
 
 const NotificationsIface = loadInterfaceXML('org.freedesktop.Notifications');

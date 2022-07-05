@@ -6,7 +6,7 @@ imports.gi.versions.Gtk = '4.0';
 
 const { Gio, GLib, Gst, Gtk } = imports.gi;
 
-const { loadInterfaceXML, loadSubInterfaceXML } = imports.misc.fileUtils;
+const { loadInterfaceXML, loadSubInterfaceXML } = imports.misc.dbusUtils;
 const { ServiceImplementation } = imports.dbusService;
 
 const ScreencastIface = loadInterfaceXML('org.gnome.Shell.Screencast');
