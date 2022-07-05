@@ -18,7 +18,7 @@ var ExtensionPrefsDialog = GObject.registerClass({
             ExtensionUtils.installImporter(extension);
 
             // give extension prefs access to their own extension object
-            ExtensionUtils.getCurrentExtension = () => extension;
+            ExtensionUtils.setCurrentExtension(extension);
 
             const prefsModule = extension.imports.prefs;
             prefsModule.init(extension.metadata);

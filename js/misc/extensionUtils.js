@@ -2,7 +2,7 @@
 /* exported ExtensionState, ExtensionType, getCurrentExtension,
    getSettings, initTranslations, gettext, ngettext, pgettext,
    openPrefs, isOutOfDate, installImporter, serializeExtension,
-   deserializeExtension */
+   deserializeExtension, setCurrentExtension */
 
 // Common utils for the extension system and the extension
 // preferences tool
@@ -12,6 +12,19 @@ const { Gio, GLib } = imports.gi;
 const Gettext = imports.gettext;
 
 const Config = imports.misc.config;
+
+let Main = null;
+
+try {
+    Main = imports.ui.main;
+} catch (error) {
+    // Only log the error if it is not due to the
+    // missing import.
+    if (error?.name !== 'ImportError')
+        console.error(error);
+}
+
+let _extension = null;
 
 var ExtensionType = {
     SYSTEM: 1,
@@ -42,12 +55,25 @@ const SERIALIZED_PROPERTIES = [
 ];
 
 /**
+ * @param {object} extension the extension object to use in utilities like `initTranslations()`
+ */
+function setCurrentExtension(extension) {
+    if (Main)
+        throw new Error('setCurrentExtension() can only be called from outside the shell');
+
+    _extension = extension;
+}
+
+/**
  * getCurrentExtension:
  *
  * @returns {?object} - The current extension, or null if not called from
  * an extension.
  */
 function getCurrentExtension() {
+    if (_extension)
+        return _extension;
+
     let stack = new Error().stack.split('\n');
     let extensionStackLine;
 
