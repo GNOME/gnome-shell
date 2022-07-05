@@ -141,7 +141,27 @@ function _sessionUpdated() {
     }
 }
 
+/**
+ * @param {any...} args a list of values to log
+ */
+function _loggingFunc(...args) {
+    let fields = { 'MESSAGE': args.join(', ') };
+    let domain = 'GNOME Shell';
+
+    // If the caller is an extension, add it as metadata
+    let extension = imports.misc.extensionUtils.getCurrentExtension();
+    if (extension != null) {
+        domain = extension.metadata.name;
+        fields['GNOME_SHELL_EXTENSION_UUID'] = extension.uuid;
+        fields['GNOME_SHELL_EXTENSION_NAME'] = extension.metadata.name;
+    }
+
+    GLib.log_structured(domain, GLib.LogLevelFlags.LEVEL_MESSAGE, fields);
+}
+
 function start() {
+    globalThis.log = _loggingFunc;
+
     // These are here so we don't break compatibility.
     global.logError = globalThis.log;
     global.log = globalThis.log;

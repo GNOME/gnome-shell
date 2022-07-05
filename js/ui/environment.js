@@ -316,26 +316,9 @@ function _easeActorProperty(actor, propName, target, params) {
     transition.connect('stopped', (t, finished) => callback(finished));
 }
 
-function _loggingFunc(...args) {
-    let fields = { 'MESSAGE': args.join(', ') };
-    let domain = "GNOME Shell";
-
-    // If the caller is an extension, add it as metadata
-    let extension = imports.misc.extensionUtils.getCurrentExtension();
-    if (extension != null) {
-        domain = extension.metadata.name;
-        fields['GNOME_SHELL_EXTENSION_UUID'] = extension.uuid;
-        fields['GNOME_SHELL_EXTENSION_NAME'] = extension.metadata.name;
-    }
-
-    GLib.log_structured(domain, GLib.LogLevelFlags.LEVEL_MESSAGE, fields);
-}
-
 function init() {
     // Add some bindings to the global JS namespace
     globalThis.global = Shell.Global.get();
-
-    globalThis.log = _loggingFunc;
 
     globalThis._ = Gettext.gettext;
     globalThis.C_ = Gettext.pgettext;
