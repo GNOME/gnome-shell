@@ -4,6 +4,9 @@ rules:
     - properties: never
       allow: [^vfunc_, ^on_]
   consistent-return: error
+  eqeqeq:
+    - error
+    - smart
   key-spacing:
     - error
     - mode: minimum
