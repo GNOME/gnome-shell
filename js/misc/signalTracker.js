@@ -138,7 +138,7 @@ class SignalTracker {
      * @returns {void}
      */
     clear() {
-        [...this._map.keys()].forEach(obj => this.untrack(obj));
+        this._map.forEach((_, obj) => this.untrack(obj));
     }
 
     /**
