@@ -1195,10 +1195,12 @@ GSList *
 shell_app_get_pids (ShellApp *app)
 {
   GSList *result;
-  g_autoptr (GSList) iter = NULL;
+  g_autoptr (GSList) windows = NULL;
+  GSList *iter;
 
   result = NULL;
-  for (iter = shell_app_get_windows (app); iter; iter = iter->next)
+  windows = shell_app_get_windows (app);
+  for (iter = windows; iter; iter = iter->next)
     {
       MetaWindow *window = iter->data;
       pid_t pid = meta_window_get_pid (window);
