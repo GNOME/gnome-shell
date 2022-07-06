@@ -50,9 +50,12 @@ class SignalManager {
      * @returns {SignalTracker} - the signal tracker for object
      */
     getSignalTracker(obj) {
-        if (!this._signalTrackers.has(obj))
-            this._signalTrackers.set(obj, new SignalTracker(obj));
-        return this._signalTrackers.get(obj);
+        let signalTracker = this._signalTrackers.get(obj);
+        if (signalTracker === undefined) {
+            signalTracker = new SignalTracker(obj);
+            this._signalTrackers.set(obj, signalTracker);
+        }
+        return signalTracker;
     }
 }
 
@@ -80,9 +83,12 @@ class SignalTracker {
      * @returns {SignalData} - signal data for object
      */
     _getSignalData(obj) {
-        if (!this._map.has(obj))
-            this._map.set(obj, { ownerSignals: [], destroyId: 0 });
-        return this._map.get(obj);
+        let data = this._map.get(obj);
+        if (data === undefined) {
+            data = { ownerSignals: [], destroyId: 0 };
+            this._map.set(obj, data);
+        }
+        return data;
     }
 
     /**
