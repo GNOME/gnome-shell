@@ -211,10 +211,7 @@ function connectObject(thisObj, ...args) {
         args = rest;
     }
 
-    let [obj] = args;
-    if (!obj)
-        obj = globalThis;
-
+    const obj = args.at(0) ?? globalThis;
     const tracker = SignalManager.getDefault().getSignalTracker(thisObj);
     tracker.track(obj, ...signalIds);
 }
