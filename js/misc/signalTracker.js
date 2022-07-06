@@ -102,11 +102,18 @@ class SignalTracker {
         signalData.destroyId = obj.connect_after('destroy', () => this.untrack(obj));
     }
 
-    _disconnectSignal(obj, id) {
-        const proto = obj instanceof GObject.Object
+    _disconnectSignalForProto(proto, obj, id) {
+        proto['disconnect'].call(obj, id);
+    }
+
+    _getObjectProto(obj) {
+        return obj instanceof GObject.Object
             ? GObject.Object.prototype
             : Object.getPrototypeOf(obj);
-        proto['disconnect'].call(obj, id);
+    }
+
+    _disconnectSignal(obj, id) {
+        this._disconnectSignalForProto(this._getObjectProto(obj), obj, id);
     }
 
     /**
@@ -129,7 +136,9 @@ class SignalTracker {
         const { ownerSignals, destroyId } = this._getSignalData(obj);
         this._map.delete(obj);
 
-        ownerSignals.forEach(id => this._disconnectSignal(this._owner, id));
+        const ownerProto = this._getObjectProto(this._owner);
+        ownerSignals.forEach(id =>
+            this._disconnectSignalForProto(ownerProto, this._owner, id));
         if (destroyId)
             this._disconnectSignal(obj, destroyId);
     }
