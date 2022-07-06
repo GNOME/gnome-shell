@@ -58,9 +58,11 @@ class Application extends Adw.Application {
     vfunc_startup() {
         super.vfunc_startup();
 
-        const action = new Gio.SimpleAction({ name: 'quit' });
-        action.connect('activate', () => this._window.close());
-        this.add_action(action);
+        this.add_action_entries(
+            [{
+                name: 'quit',
+                activate: () => this._window.close(),
+            }]);
 
         this.set_accels_for_action('app.quit', ['<Primary>q']);
 
@@ -95,24 +97,20 @@ var ExtensionsWindow = GObject.registerClass({
         this._exporter = new Shew.WindowExporter({ window: this });
         this._exportedHandle = '';
 
-        let action;
-        action = new Gio.SimpleAction({ name: 'show-about' });
-        action.connect('activate', this._showAbout.bind(this));
-        this.add_action(action);
-
-        action = new Gio.SimpleAction({ name: 'logout' });
-        action.connect('activate', this._logout.bind(this));
-        this.add_action(action);
-
-        action = new Gio.SimpleAction({
-            name: 'user-extensions-enabled',
-            state: new GLib.Variant('b', false),
-        });
-        action.connect('activate', toggleState);
-        action.connect('change-state', (a, state) => {
-            this._shellProxy.UserExtensionsEnabled = state.get_boolean();
-        });
-        this.add_action(action);
+        this.add_action_entries(
+            [{
+                name: 'show-about',
+                activate: () => this._showAbout(),
+            }, {
+                name: 'logout',
+                activate: () => this._logout(),
+            }, {
+                name: 'user-extensions-enabled',
+                state: 'false',
+                change_state: (a, state) => {
+                    this._shellProxy.UserExtensionsEnabled = state.get_boolean();
+                },
+            }]);
 
         this._searchTerms = [];
         this._searchEntry.connect('search-changed', () => {
