@@ -879,7 +879,7 @@ msgstr "Inicia usant una targeta gràfica integrada"
 
 #: js/ui/appMenu.js:175
 msgid "Launch using Discrete Graphics Card"
-msgstr "Inicia usant una targeta gràfica discreta"
+msgstr "Inicia usant una targeta gràfica externa"
 
 #: js/ui/audioDeviceSelection.js:41
 msgid "Select Audio Device"
