@@ -110,17 +110,15 @@ var GeoclueAgent = GObject.registerClass({
         }
     }
 
-    AuthorizeAppAsync(params, invocation) {
+    async AuthorizeAppAsync(params, invocation) {
         let [desktopId, reqAccuracyLevel] = params;
 
         let authorizer = new AppAuthorizer(desktopId,
             reqAccuracyLevel, this._permStoreProxy, this.maxAccuracyLevel);
 
-        authorizer.authorize(accuracyLevel => {
-            let ret = accuracyLevel != GeoclueAccuracyLevel.NONE;
-            invocation.return_value(GLib.Variant.new('(bu)',
-                                                     [ret, accuracyLevel]));
-        });
+        const accuracyLevel = await authorizer.authorize();
+        const ret = accuracyLevel !== GeoclueAccuracyLevel.NONE;
+        invocation.return_value(GLib.Variant.new('(bu)', [ret, accuracyLevel]));
     }
 
     get MaxAccuracyLevel() {
@@ -232,29 +230,22 @@ var AppAuthorizer = class {
         this._accuracyLevel = GeoclueAccuracyLevel.NONE;
     }
 
-    authorize(onAuthDone) {
-        this._onAuthDone = onAuthDone;
-
+    async authorize() {
         let appSystem = Shell.AppSystem.get_default();
         this._app = appSystem.lookup_app(`${this.desktopId}.desktop`);
-        if (this._app == null || this._permStoreProxy == null) {
-            this._completeAuth();
+        if (this._app == null || this._permStoreProxy == null)
+            return this._completeAuth();
 
-            return;
-        }
-
-        this._permStoreProxy.LookupRemote(APP_PERMISSIONS_TABLE,
-                                          APP_PERMISSIONS_ID,
-                                          this._onPermLookupDone.bind(this));
-    }
-
-    _onPermLookupDone(result, error) {
-        if (error != null) {
-            if (error.domain == Gio.DBusError) {
+        try {
+            [this._permissions] = await this._permStoreProxy.LookupAsync(
+                APP_PERMISSIONS_TABLE,
+                APP_PERMISSIONS_ID);
+        } catch (error) {
+            if (error.domain === Gio.DBusError) {
                 // Likely no xdg-app installed, just authorize the app
                 this._accuracyLevel = this.reqAccuracyLevel;
                 this._permStoreProxy = null;
-                this._completeAuth();
+                return this._completeAuth();
             } else {
                 // Currently xdg-app throws an error if we lookup for
                 // unknown ID (which would be the case first time this code
@@ -262,23 +253,20 @@ var AppAuthorizer = class {
                 // and ID is added to the store if user says "yes".
                 log(error.message);
                 this._permissions = {};
-                this._userAuthorizeApp();
             }
-
-            return;
         }
 
-        [this._permissions] = result;
         let permission = this._permissions[this.desktopId];
 
         if (permission == null) {
-            this._userAuthorizeApp();
+            await this._userAuthorizeApp();
         } else {
             let [levelStr] = permission || ['NONE'];
             this._accuracyLevel = GeoclueAccuracyLevel[levelStr] ||
                                   GeoclueAccuracyLevel.NONE;
-            this._completeAuth();
         }
+
+        return this._completeAuth();
     }
 
     _userAuthorizeApp() {
@@ -286,21 +274,18 @@ var AppAuthorizer = class {
         let appInfo = this._app.get_app_info();
         let reason = appInfo.get_locale_string("X-Geoclue-Reason");
 
-        this._showAppAuthDialog(name, reason);
-    }
+        this._dialog =
+            new GeolocationDialog(name, reason, this.reqAccuracyLevel);
 
-    _showAppAuthDialog(name, reason) {
-        this._dialog = new GeolocationDialog(name,
-                                             reason,
-                                             this.reqAccuracyLevel);
-
-        let responseId = this._dialog.connect('response', (dialog, level) => {
-            this._dialog.disconnect(responseId);
-            this._accuracyLevel = level;
-            this._completeAuth();
+        return new Promise(resolve => {
+            const responseId = this._dialog.connect('response',
+                (dialog, level) => {
+                    this._dialog.disconnect(responseId);
+                    this._accuracyLevel = level;
+                    resolve();
+                });
+            this._dialog.open();
         });
-
-        this._dialog.open();
     }
 
     _completeAuth() {
@@ -310,7 +295,7 @@ var AppAuthorizer = class {
         }
         this._saveToPermissionStore();
 
-        this._onAuthDone(this._accuracyLevel);
+        return this._accuracyLevel;
     }
 
     _saveToPermissionStore() {
