@@ -68,11 +68,11 @@ var ObjectManager = class extends Signals.EventEmitter {
     }
 
     _tryToCompleteLoad() {
-        if (this._numLoadInhibitors == 0)
+        if (this._numLoadInhibitors === 0)
             return;
 
         this._numLoadInhibitors--;
-        if (this._numLoadInhibitors == 0) {
+        if (this._numLoadInhibitors === 0) {
             if (this._onLoaded)
                 this._onLoaded();
         }
@@ -142,7 +142,7 @@ var ObjectManager = class extends Signals.EventEmitter {
             if (index >= 0)
                 this._interfaces[interfaceName].splice(index, 1);
 
-            if (this._interfaces[interfaceName].length == 0)
+            if (this._interfaces[interfaceName].length === 0)
                 delete this._interfaces[interfaceName];
         }
 
@@ -150,7 +150,7 @@ var ObjectManager = class extends Signals.EventEmitter {
 
         this._objects[objectPath][interfaceName] = null;
 
-        if (Object.keys(this._objects[objectPath]).length == 0) {
+        if (Object.keys(this._objects[objectPath]).length === 0) {
             delete this._objects[objectPath];
             this.emit('object-removed', objectPath);
         }
@@ -168,18 +168,18 @@ var ObjectManager = class extends Signals.EventEmitter {
         }
 
         this._managerProxy.connectSignal('InterfacesAdded',
-                                         (objectManager, sender, [objectPath, interfaces]) => {
-                                             let interfaceNames = Object.keys(interfaces);
-                                             for (let i = 0; i < interfaceNames.length; i++)
-                                                 this._addInterface(objectPath, interfaceNames[i]);
-                                         });
+            (objectManager, sender, [objectPath, interfaces]) => {
+                let interfaceNames = Object.keys(interfaces);
+                for (let i = 0; i < interfaceNames.length; i++)
+                    this._addInterface(objectPath, interfaceNames[i]);
+            });
         this._managerProxy.connectSignal('InterfacesRemoved',
-                                         (objectManager, sender, [objectPath, interfaceNames]) => {
-                                             for (let i = 0; i < interfaceNames.length; i++)
-                                                 this._removeInterface(objectPath, interfaceNames[i]);
-                                         });
+            (objectManager, sender, [objectPath, interfaceNames]) => {
+                for (let i = 0; i < interfaceNames.length; i++)
+                    this._removeInterface(objectPath, interfaceNames[i]);
+            });
 
-        if (Object.keys(this._interfaceInfos).length == 0) {
+        if (Object.keys(this._interfaceInfos).length === 0) {
             this._tryToCompleteLoad();
             return;
         }
@@ -223,9 +223,8 @@ var ObjectManager = class extends Signals.EventEmitter {
 
                     // Prevent load from completing until the interface is loaded
                     this._numLoadInhibitors++;
-                    this._addInterface(objectPath,
-                                       interfaceName,
-                                       this._tryToCompleteLoad.bind(this));
+                    this._addInterface(objectPath, interfaceName,
+                        this._tryToCompleteLoad.bind(this));
                 }
             }
             this._tryToCompleteLoad();
