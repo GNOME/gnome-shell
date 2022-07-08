@@ -146,25 +146,31 @@ var LoginManagerSystemd = class extends Signals.EventEmitter {
     }
 
     async canSuspend() {
+        let canSuspend, needsAuth;
+
         try {
             const [result] = await this._proxy.CanSuspendAsync();
-            const needsAuth = result === 'challenge';
-            const canSuspend = needsAuth || result === 'yes';
-            return [canSuspend, needsAuth];
+            needsAuth = result === 'challenge';
+            canSuspend = needsAuth || result === 'yes';
         } catch (error) {
-            return [false, false];
+            canSuspend = false;
+            needsAuth = false;
         }
+        return {canSuspend, needsAuth};
     }
 
     async canRebootToBootLoaderMenu() {
+        let canRebootToBootLoaderMenu, needsAuth;
+
         try {
             const [result] = await this._proxy.CanRebootToBootLoaderMenuAsync();
-            const needsAuth = result[0] === 'challenge';
-            const canRebootToBootLoaderMenu = needsAuth || result[0] === 'yes';
-            return [canRebootToBootLoaderMenu, needsAuth];
+            needsAuth = result[0] === 'challenge';
+            canRebootToBootLoaderMenu = needsAuth || result[0] === 'yes';
         } catch (error) {
-            return [false, false];
+            canRebootToBootLoaderMenu = false;
+            needsAuth = false;
         }
+        return {canRebootToBootLoaderMenu, needsAuth};
     }
 
     setRebootToBootLoaderMenu() {
@@ -209,11 +215,17 @@ var LoginManagerDummy = class extends Signals.EventEmitter  {
     }
 
     canSuspend() {
-        return new Promise(resolve => resolve([false, false]));
+        return new Promise(resolve => resolve({
+            canSuspend: false,
+            needsAuth: false,
+        }));
     }
 
     canRebootToBootLoaderMenu() {
-        return new Promise(resolve => resolve([false, false]));
+        return new Promise(resolve => resolve({
+            canRebootToBootLoaderMenu: false,
+            needsAuth: false,
+        }));
     }
 
     setRebootToBootLoaderMenu() {

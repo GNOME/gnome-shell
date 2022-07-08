@@ -305,7 +305,7 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
     }
 
     async _getCanRebootToBootLoaderMenu() {
-        const [canRebootToBootLoaderMenu] = await this._loginManager.canRebootToBootLoaderMenu();
+        const {canRebootToBootLoaderMenu} = await this._loginManager.canRebootToBootLoaderMenu();
         this._canRebootToBootLoaderMenu = canRebootToBootLoaderMenu;
     }
 

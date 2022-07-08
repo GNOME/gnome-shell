@@ -351,7 +351,7 @@ const SystemActions = GObject.registerClass({
     }
 
     async _updateHaveSuspend() {
-        const [canSuspend, needsAuth] = await this._loginManager.canSuspend();
+        const {canSuspend, needsAuth} = await this._loginManager.canSuspend();
         this._canHaveSuspend = canSuspend;
         this._suspendNeedsAuth = needsAuth;
         this._updateSuspend();
