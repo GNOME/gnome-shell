@@ -61,31 +61,19 @@ var ObjectManager = class extends Signals.EventEmitter {
         if (params.knownInterfaces)
             this._registerInterfaces(params.knownInterfaces);
 
-        // Start out inhibiting load until at least the proxy
-        // manager is loaded and the remote objects are fetched
-        this._numLoadInhibitors = 1;
         this._initManagerProxy();
     }
 
-    _tryToCompleteLoad() {
-        if (this._numLoadInhibitors === 0)
-            return;
-
-        this._numLoadInhibitors--;
-        if (this._numLoadInhibitors === 0) {
-            if (this._onLoaded)
-                this._onLoaded();
-        }
+    _completeLoad() {
+        if (this._onLoaded)
+            this._onLoaded();
     }
 
-    async _addInterface(objectPath, interfaceName, onFinished) {
+    async _addInterface(objectPath, interfaceName) {
         let info = this._interfaceInfos[interfaceName];
 
-        if (!info) {
-            if (onFinished)
-                onFinished();
+        if (!info)
             return;
-        }
 
         const proxy = new Gio.DBusProxy({
             g_connection: this._connection,
@@ -100,9 +88,6 @@ var ObjectManager = class extends Signals.EventEmitter {
             await proxy.init_async(GLib.PRIORITY_DEFAULT, this._cancellable);
         } catch (e) {
             logError(e, `could not initialize proxy for interface ${interfaceName}`);
-
-            if (onFinished)
-                onFinished();
             return;
         }
 
@@ -125,9 +110,6 @@ var ObjectManager = class extends Signals.EventEmitter {
             this.emit('object-added', objectPath);
 
         this.emit('interface-added', interfaceName, proxy);
-
-        if (onFinished)
-            onFinished();
     }
 
     _removeInterface(objectPath, interfaceName) {
@@ -163,7 +145,7 @@ var ObjectManager = class extends Signals.EventEmitter {
         } catch (e) {
             logError(e, `could not initialize object manager for object ${this._serviceName}`);
 
-            this._tryToCompleteLoad();
+            this._completeLoad();
             return;
         }
 
@@ -180,7 +162,7 @@ var ObjectManager = class extends Signals.EventEmitter {
             });
 
         if (Object.keys(this._interfaceInfos).length === 0) {
-            this._tryToCompleteLoad();
+            this._completeLoad();
             return;
         }
 
@@ -195,40 +177,27 @@ var ObjectManager = class extends Signals.EventEmitter {
             this._onNameAppeared();
     }
 
-    _onNameAppeared() {
-        this._managerProxy.GetManagedObjectsRemote((result, error) => {
-            if (!result) {
-                if (error)
-                    logError(error, `could not get remote objects for service ${this._serviceName} path ${this._managerPath}`);
-
-                this._tryToCompleteLoad();
-                return;
-            }
-
-            let [objects] = result;
+    async _onNameAppeared() {
+        try {
+            const [objects] = await this._managerProxy.GetManagedObjectsAsync();
 
             if (!objects) {
-                this._tryToCompleteLoad();
+                this._completeLoad();
                 return;
             }
 
-            let objectPaths = Object.keys(objects);
-            for (let i = 0; i < objectPaths.length; i++) {
-                let objectPath = objectPaths[i];
-                let object = objects[objectPath];
-
-                let interfaceNames = Object.getOwnPropertyNames(object);
-                for (let j = 0; j < interfaceNames.length; j++) {
-                    let interfaceName = interfaceNames[j];
-
-                    // Prevent load from completing until the interface is loaded
-                    this._numLoadInhibitors++;
-                    this._addInterface(objectPath, interfaceName,
-                        this._tryToCompleteLoad.bind(this));
-                }
-            }
-            this._tryToCompleteLoad();
-        });
+            const objectPaths = Object.keys(objects);
+            await Promise.allSettled(objectPaths.flatMap(objectPath => {
+                const object = objects[objectPath];
+                const interfaceNames = Object.getOwnPropertyNames(object);
+                return interfaceNames.map(
+                    ifaceName => this._addInterface(objectPath, ifaceName));
+            }));
+        } catch (error) {
+            logError(error, `could not get remote objects for service ${this._serviceName} path ${this._managerPath}`);
+        } finally {
+            this._completeLoad();
+        }
     }
 
     _onNameVanished() {
