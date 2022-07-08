@@ -647,7 +647,6 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
 
     _loadSessions() {
         this._loginManager.listSessions(result => {
-            let n = 0;
             for (let i = 0; i < result.length; i++) {
                 let [id_, uid_, userName, seat_, sessionPath] = result[i];
                 let proxy = new LogindSession(Gio.DBus.system, 'org.freedesktop.login1', sessionPath);
@@ -675,7 +674,7 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
                     type: proxy.Type,
                     remote: proxy.Remote,
                 };
-                this._sessions.push(session);
+                const nSessions = this._sessions.push(session);
 
                 let userAvatar = new UserWidget.Avatar(session.user, { iconSize: _ITEM_ICON_SIZE });
                 userAvatar.update();
@@ -699,8 +698,7 @@ class EndSessionDialog extends ModalDialog.ModalDialog {
                 this._sessionSection.list.add_child(listItem);
 
                 // limit the number of entries
-                n++;
-                if (n == MAX_USERS_IN_SESSION_DIALOG)
+                if (nSessions === MAX_USERS_IN_SESSION_DIALOG)
                     break;
             }
 
