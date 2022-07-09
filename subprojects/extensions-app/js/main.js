@@ -199,24 +199,29 @@ var ExtensionsWindow = GObject.registerClass({
     }
 
     _showAbout() {
-        let aboutDialog = new Gtk.AboutDialog({
-            authors: [
+        let aboutWindow = new Adw.AboutWindow({
+            developers: [
                 'Florian Müllner <fmuellner@gnome.org>',
                 'Jasper St. Pierre <jstpierre@mecheye.net>',
                 'Didier Roche <didrocks@ubuntu.com>',
                 'Romain Vigier <contact@romainvigier.fr>',
             ],
+            designers: [
+                'Allan Day <allanpday@gmail.com>',
+                'Tobias Bernard <tbernard@gnome.org>',
+            ],
             translator_credits: _('translator-credits'),
-            program_name: _('Extensions'),
-            comments: _('Manage your GNOME Extensions'),
+            application_name: _('Extensions'),
             license_type: Gtk.License.GPL_2_0,
-            logo_icon_name: Package.name,
+            application_icon: Package.name,
             version: Package.version,
+            developer_name: _('The GNOME Project'),
+            website: 'https://gitlab.gnome.org/GNOME/gnome-shell/-/tree/HEAD/subprojects/extensions-app',
+            issue_url: 'https://gitlab.gnome.org/GNOME/gnome-shell/issues/new',
 
             transient_for: this,
-            modal: true,
         });
-        aboutDialog.present();
+        aboutWindow.present();
     }
 
     _logout() {
