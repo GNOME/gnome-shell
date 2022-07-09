@@ -331,10 +331,7 @@ const SystemActions = GObject.registerClass({
 
     _updateHaveShutdown() {
         this._session.CanShutdownRemote((result, error) => {
-            if (error)
-                return;
-
-            this._canHavePowerOff = result[0];
+            this._canHavePowerOff = error ? false : result[0];
             this._updatePowerOff();
         });
     }
