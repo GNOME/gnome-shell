@@ -255,8 +255,6 @@ flatpak:
 
 nightly:
   extends: '.publish_nightly'
-  variables:
-    BUNDLES: '$BUNDLE'
 
 dist:
   variables:
