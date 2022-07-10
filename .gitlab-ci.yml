@@ -13,6 +13,7 @@ stages:
   - deploy
 
 default:
+  image: registry.gitlab.gnome.org/gnome/mutter/fedora/35:x86_64-2022-07-11.0
   # Cancel jobs if newer commits are pushed to the branch
   interruptible: true
   # Auto-retry jobs in case of infra failures
@@ -30,8 +31,6 @@ variables:
   JS_LOG: "js-report.txt"
   LINT_LOG: "eslint-report.xml"
   LINT_MR_LOG: "eslint-mr-report.xml"
-
-image: registry.gitlab.gnome.org/gnome/mutter/fedora/35:x86_64-2022-07-11.0
 
 workflow:
   rules:
