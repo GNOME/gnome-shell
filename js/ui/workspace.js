@@ -1,7 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported Workspace */
 
-const { Clutter, GLib, GObject, Graphene, Meta, St } = imports.gi;
+const {Clutter, GLib, GObject, Graphene, Meta, Shell, St} = imports.gi;
 
 const Background = imports.ui.background;
 const DND = imports.ui.dnd;
@@ -24,7 +24,6 @@ var LAYOUT_SCALE_WEIGHT = 1;
 var LAYOUT_SPACE_WEIGHT = 0.1;
 
 const BACKGROUND_CORNER_RADIUS_PIXELS = 30;
-const BACKGROUND_MARGIN = 12;
 
 // Window Thumbnail Layout Algorithm
 // =================================
@@ -940,13 +939,13 @@ var WorkspaceLayout = GObject.registerClass({
 });
 
 var WorkspaceBackground = GObject.registerClass(
-class WorkspaceBackground extends St.Widget {
+class WorkspaceBackground extends Shell.WorkspaceBackground {
     _init(monitorIndex, stateAdjustment) {
         super._init({
             style_class: 'workspace-background',
-            layout_manager: new Clutter.BinLayout(),
             x_expand: true,
             y_expand: true,
+            monitor_index: monitorIndex,
         });
 
         this._monitorIndex = monitorIndex;
@@ -957,6 +956,10 @@ class WorkspaceBackground extends St.Widget {
             this._updateBorderRadius();
             this.queue_relayout();
         }, this);
+        this._stateAdjustment.bind_property(
+            'value', this, 'state-adjustment-value',
+            GObject.BindingFlags.SYNC_CREATE
+        );
 
         this._bin = new Clutter.Actor({
             layout_manager: new Clutter.BinLayout(),
@@ -1009,52 +1012,6 @@ class WorkspaceBackground extends St.Widget {
         rect.size.height = this._workarea.height;
 
         this._bgManager.backgroundActor.content.set_rounded_clip_bounds(rect);
-    }
-
-    vfunc_allocate(box) {
-        const [width, height] = box.get_size();
-        const { scaleFactor } = St.ThemeContext.get_for_stage(global.stage);
-        const scaledHeight = height - (BACKGROUND_MARGIN * 2 * scaleFactor);
-        const scaledWidth = (scaledHeight / height) * width;
-
-        const scaledBox = box.copy();
-        scaledBox.set_origin(
-            box.x1 + (width - scaledWidth) / 2,
-            box.y1 + (height - scaledHeight) / 2);
-        scaledBox.set_size(scaledWidth, scaledHeight);
-
-        const progress = this._stateAdjustment.value;
-
-        if (progress === 1)
-            box = scaledBox;
-        else if (progress !== 0)
-            box = box.interpolate(scaledBox, progress);
-
-        this.set_allocation(box);
-
-        const themeNode = this.get_theme_node();
-        const contentBox = themeNode.get_content_box(box);
-
-        this._bin.allocate(contentBox);
-
-        const [contentWidth, contentHeight] = contentBox.get_size();
-        const monitor = Main.layoutManager.monitors[this._monitorIndex];
-        const [mX1, mX2] = [monitor.x, monitor.x + monitor.width];
-        const [mY1, mY2] = [monitor.y, monitor.y + monitor.height];
-        const [wX1, wX2] = [this._workarea.x, this._workarea.x + this._workarea.width];
-        const [wY1, wY2] = [this._workarea.y, this._workarea.y + this._workarea.height];
-        const xScale = contentWidth / this._workarea.width;
-        const yScale = contentHeight / this._workarea.height;
-        const leftOffset = wX1 - mX1;
-        const topOffset = wY1 - mY1;
-        const rightOffset = mX2 - wX2;
-        const bottomOffset = mY2 - wY2;
-
-        contentBox.set_origin(-leftOffset * xScale, -topOffset * yScale);
-        contentBox.set_size(
-            contentWidth + (leftOffset + rightOffset) * xScale,
-            contentHeight + (topOffset + bottomOffset) * yScale);
-        this._backgroundGroup.allocate(contentBox);
     }
 
     _onDestroy() {
