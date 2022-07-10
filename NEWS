@@ -1,3 +1,49 @@
+43.alpha
+========
+* Add convenience property for icon-only buttons [Florian; !2254]
+* Align space-padded times in world clocks [Maksym; !2294, !2340]
+* Fix top bar menus on lock screen [Florian; !2298]
+* Show wireguard connects in VPN list [Christian; !1995]
+* Fix on-screen keyboard gestures [Carlos; !2304]
+* Fix focus tracking in magnifier on wayland [Sebastian; !2301]
+* Fix OSD colors with light stylesheet [Jakub; !2315]
+* Only close messages via delete key if they can be closed [PhilProg; !2323]
+* Fix screenshots when XDG directories are disabled [Sam U.; !2327]
+* Do not create systemd scope for D-Bus activated apps [msizanoen1; !2305]
+* Improve high-contrast stylesheet [Sam H.; !2284]
+* Hide overview after 'Show Details' from app context menu [PhilProg; !2329]
+* Fix feedback when turning on a11y features by keyboard [Olivier; !2334]
+* Fix stylesheet papercuts [Sam H.; !2309]
+* Use libsoup 3.0 by default [Florian; !2338]
+* Indicate selected language in on-screen keyboard menu [Carlos; !2346]
+* Respect IM hint for candidates list in on-screen keyboard
+  [Carlos, Florian; !2347, !2359]
+* Fix edge case where windows stay dimmed after a modal is closed
+  [Jonas D.; !2349]
+* Improve Belgian on-screen keyboard layout [Evert; !2336]
+* Fix fallback ibus-daemon launching [oreo639; !2345]
+* Make sure screenshot UI opens above dialogs [Alynx; !2331]
+* Use EventEmitter class instead of injecting Signal methods [Evan; !2043]
+* Plugged leak [Sebastian; !2367]
+* Misc. bug fixes and cleanups [Florian, Jonas D., Jonas Å., Sebastian, Evan,
+  Marco; !2295, !2296, !2297, !2306, !2317, !2316, !2319, !2325, !2337, !2355,
+  !2351, !2293, !2365, !2366, !697, !2363, !2362, !2372]
+
+Contributors:
+  Marco Trevisan (Treviño), Jonas Dreßler, Olivier Fourdan, Carlos Garnacho,
+  Christian Glombek, Maksym Hazevych, Sam Hewitt, Sebastian Keller,
+  Florian Müllner, PhilProg, Evert Provoost, Jakub Steiner, Sam Uong,
+  Evan Welsh, Alynx Zhou, msizanoen1, oreo639, Jonas Ådahl
+
+Translators:
+  Jordi Mas [ca], Cheng-Chia Tseng [zh_TW], Charles Monzat [fr],
+  Changwoo Ryu [ko], Daniel Rusek [cs], Aleksandr Melman [ru],
+  Christian Kirbach [de], Yuri Chornoivan [uk], Emin Tufan Çetin [tr],
+  Danial Behzadi [fa], Hugo Carvalho [pt], Luming Zh [zh_CN],
+  Quentin PAGÈS [oc], Yosef Or Boczko [he], Fabio Tomat [fur],
+  Irénée THIRION [fr], Jürgen Benvenuti [de], Milo Casagrande [it],
+  Aurimas Černius [lt], Daniel Mustieles [es], Vojtěch Perník [cs]
+
 42.1
 ====
 * Limit unfullscreen gesture to not interfere with overview [Ivan; !2227]
@@ -22,7 +68,7 @@
 * Fix grab regressions when entering overview [Carlos, Sebastian; !2281, !2287]
 * Scale calendar with text size [Jonas; !2282]
 * Allow more intermediate icon sizes in app grid [Sebastian; !2289]
-* Fixed crash [Jonas; !2231]
+* Fixed crash [Jonas D.; !2231]
 * Plugged memory leak [Sebastian; !2256]
 * Misc. bug fixes and cleanups [Jonas, Florian, Sebastian, Daniel, Marco, Simon;
   !2283, !2285, !2286, !2233, !2236, !2244, !2246, !2258, !2257, !2252, !2261,
