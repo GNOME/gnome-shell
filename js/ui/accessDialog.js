@@ -1,5 +1,5 @@
 /* exported AccessDialogDBus */
-const { Clutter, Gio, GLib, GObject, Shell, St } = imports.gi;
+const { Clutter, Gio, GLib, GObject, Pango, Shell, St } = imports.gi;
 
 const CheckBox = imports.ui.checkBox;
 const Dialog = imports.ui.dialog;
@@ -62,6 +62,8 @@ class AccessDialog extends ModalDialog.ModalDialog {
             text: body,
             x_align: Clutter.ActorAlign.CENTER,
         });
+        bodyLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
+        bodyLabel.clutter_text.line_wrap = true;
         content.add_child(bodyLabel);
 
         this.addButton({
