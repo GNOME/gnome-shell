@@ -216,7 +216,7 @@ var ExtensionsWindow = GObject.registerClass({
             application_icon: Package.name,
             version: Package.version,
             developer_name: _('The GNOME Project'),
-            website: 'https://gitlab.gnome.org/GNOME/gnome-shell/-/tree/HEAD/subprojects/extensions-app',
+            website: 'https://apps.gnome.org/app/org.gnome.Extensions/',
             issue_url: 'https://gitlab.gnome.org/GNOME/gnome-shell/issues/new',
 
             transient_for: this,
