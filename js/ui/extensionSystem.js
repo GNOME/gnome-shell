@@ -374,7 +374,8 @@ var ExtensionManager = class {
             this.logExtensionError(extension.uuid, new Error(
                 'A different version was loaded previously. You need to log out for changes to take effect.'));
         } else {
-            let enabled = this._enabledExtensions.includes(extension.uuid);
+            let enabled = this._enabledExtensions.includes(extension.uuid) &&
+                          this._extensionSupportsSessionMode(extension.uuid);
             if (enabled) {
                 if (!this._callExtensionInit(extension.uuid))
                     return;
