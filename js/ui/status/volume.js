@@ -38,8 +38,18 @@ var StreamSlider = class extends Signals.EventEmitter {
 
         this._control = control;
 
-        this.item = new PopupMenu.PopupBaseMenuItem({ activate: false });
-        this.item.hide();
+        this.item = new PopupMenu.PopupMenuSection();
+
+        const sliderItem = new PopupMenu.PopupBaseMenuItem({activate: false});
+        this.item.addMenuItem(sliderItem);
+
+        const submenuItem = new PopupMenu.PopupSubMenuMenuItem('');
+        this.item.addMenuItem(submenuItem);
+
+        // HACK: Hide the submenu item, its menu is controlled from sliderItem
+        submenuItem.hide();
+
+        this.menu = submenuItem.menu;
 
         this._inDrag = false;
         this._notifyVolumeChangeId = 0;
@@ -62,18 +72,47 @@ var StreamSlider = class extends Signals.EventEmitter {
         });
 
         this._icon = new St.Icon({ style_class: 'popup-menu-icon' });
-        this.item.add(this._icon);
-        this.item.add_child(this._slider);
-        this.item.connect('button-press-event',
+        sliderItem.add(this._icon);
+        sliderItem.add_child(this._slider);
+        sliderItem.connect('button-press-event',
             (actor, event) => this._slider.startDragging(event));
-        this.item.connect('key-press-event',
+        sliderItem.connect('key-press-event',
             (actor, event) => this._slider.emit('key-press-event', event));
-        this.item.connect('scroll-event',
+        sliderItem.connect('scroll-event',
             (actor, event) => this._slider.emit('scroll-event', event));
+
+        this._menuButton = new St.Button({
+            child: new St.Icon({
+                iconName: 'pan-end-symbolic',
+                style_class: 'popup-menu-arrow',
+            }),
+            y_expand: true,
+        });
+        sliderItem.add_child(this._menuButton);
+
+        this._menuButton.connect('clicked', () => this.menu.toggle());
+
+        // In order to keep sliders aligned, do not hide
+        // the menu button, but make it fully transparent
+        this._menuButton.bind_property_full('reactive',
+            this._menuButton, 'opacity',
+            GObject.BindingFlags.DEFAULT,
+            (bind, source) => [true, source ? 255 : 0],
+            null);
+
+        this._deviceItems = new Map();
+
+        this._deviceSection = new PopupMenu.PopupMenuSection();
+        this.menu.addMenuItem(this._deviceSection);
+
+        this.menu.addSettingsAction(_('Sound Settings'),
+            'gnome-sound-panel.desktop');
 
         this._stream = null;
         this._volumeCancellable = null;
         this._icons = [];
+
+        this._sync();
     }
 
     get stream() {
@@ -92,7 +131,7 @@ var StreamSlider = class extends Signals.EventEmitter {
             this.emit('stream-updated');
         }
 
-        this._updateVisibility();
+        this._sync();
     }
 
     _connectStream(stream) {
@@ -101,13 +140,55 @@ var StreamSlider = class extends Signals.EventEmitter {
             'notify::volume', this._updateVolume.bind(this), this);
     }
 
+    _lookupDevice(_id) {
+        throw new GObject.NotImplementedError(
+            `_lookupDevice in ${this.constructor.name}`);
+    }
+
+    _activateDevice(_device) {
+        throw new GObject.NotImplementedError(
+            `_activateDevice in ${this.constructor.name}`);
+    }
+
+    _addDevice(id) {
+        if (this._deviceItems.has(id))
+            return;
+
+        const device = this._lookupDevice(id);
+        if (!device)
+            return;
+
+        const item = new PopupMenu.PopupImageMenuItem(
+            device.get_description(), device.get_gicon());
+        item.connect('activate', () => this._activateDevice(device));
+
+        this._deviceSection.addMenuItem(item);
+        this._deviceItems.set(id, item);
+
+        this._sync();
+    }
+
+    _removeDevice(id) {
+        this._deviceItems.get(id)?.destroy();
+        if (this._deviceItems.delete(id))
+            this._sync();
+    }
+
+    _setActiveDevice(activeId) {
+        for (const [id, item] of this._deviceItems) {
+            item.setOrnament(id === activeId
+                ? PopupMenu.Ornament.CHECK
+                : PopupMenu.Ornament.NONE);
+        }
+    }
+
     _shouldBeVisible() {
         return this._stream != null;
     }
 
-    _updateVisibility() {
-        let visible = this._shouldBeVisible();
-        this.item.visible = visible;
+    _sync() {
+        this.item.actor.visible = this._shouldBeVisible();
+        this._menuButton.reactive = this._deviceItems.size > 1;
     }
 
     scroll(event) {
@@ -216,7 +297,15 @@ var StreamSlider = class extends Signals.EventEmitter {
 var OutputStreamSlider = class extends StreamSlider {
     constructor(control) {
         super(control);
-        this._slider.accessible_name = _("Volume");
+
+        this._slider.accessible_name = _('Volume');
+
+        this._control.connectObject(
+            'output-added', (c, id) => this._addDevice(id),
+            'output-removed', (c, id) => this._removeDevice(id),
+            'active-output-update', (c, id) => this._setActiveDevice(id),
+            this);
+
         this._icons = [
             'audio-volume-muted-symbolic',
             'audio-volume-low-symbolic',
@@ -231,6 +320,14 @@ var OutputStreamSlider = class extends StreamSlider {
         stream.connectObject('notify::port',
             this._portChanged.bind(this), this);
         this._portChanged();
+    }
+
+    _lookupDevice(id) {
+        return this._control.lookup_output_id(id);
+    }
+
+    _activateDevice(device) {
+        this._control.change_output(device);
     }
 
     _findHeadphones(sink) {
@@ -263,9 +360,13 @@ var OutputStreamSlider = class extends StreamSlider {
 var InputStreamSlider = class extends StreamSlider {
     constructor(control) {
         super(control);
-        this._slider.accessible_name = _("Microphone");
+
+        this._slider.accessible_name = _('Microphone');
 
         this._control.connectObject(
+            'input-added', (c, id) => this._addDevice(id),
+            'input-removed', (c, id) => this._removeDevice(id),
+            'active-input-update', (c, id) => this._setActiveDevice(id),
             'stream-added', () => this._maybeShowInput(),
             'stream-removed', () => this._maybeShowInput(),
             this);
@@ -284,6 +385,14 @@ var InputStreamSlider = class extends StreamSlider {
         this._maybeShowInput();
     }
 
+    _lookupDevice(id) {
+        return this._control.lookup_input_id(id);
+    }
+
+    _activateDevice(device) {
+        this._control.change_input(device);
+    }
+
     _maybeShowInput() {
         // only show input widgets if any application is recording audio
         let showInput = false;
@@ -300,7 +409,7 @@ var InputStreamSlider = class extends StreamSlider {
         }
 
         this._showInput = showInput;
-        this._updateVisibility();
+        this._sync();
     }
 
     _shouldBeVisible() {
