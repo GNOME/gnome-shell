@@ -254,18 +254,15 @@ var OutputStreamSlider = class extends StreamSlider {
         return false;
     }
 
-    _updateSliderIcon() {
+    _portChanged() {
+        const hasHeadphones = this._findHeadphones(this._stream);
+        if (hasHeadphones === this._hasHeadphones)
+            return;
+
+        this._hasHeadphones = hasHeadphones;
         this._icon.icon_name = this._hasHeadphones
             ? 'audio-headphones-symbolic'
             : 'audio-speakers-symbolic';
-    }
-
-    _portChanged() {
-        let hasHeadphones = this._findHeadphones(this._stream);
-        if (hasHeadphones != this._hasHeadphones) {
-            this._hasHeadphones = hasHeadphones;
-            this._updateSliderIcon();
-        }
     }
 };
 
