@@ -46,12 +46,15 @@ var StreamSlider = class extends Signals.EventEmitter {
 
         this._slider = new Slider.Slider(0);
 
-        this._soundSettings = new Gio.Settings({ schema_id: 'org.gnome.desktop.sound' });
-        this._soundSettings.connect(`changed::${ALLOW_AMPLIFIED_VOLUME_KEY}`, this._amplifySettingsChanged.bind(this));
+        this._soundSettings = new Gio.Settings({
+            schema_id: 'org.gnome.desktop.sound',
+        });
+        this._soundSettings.connect(`changed::${ALLOW_AMPLIFIED_VOLUME_KEY}`,
+            () => this._amplifySettingsChanged());
         this._amplifySettingsChanged();
 
         this._sliderChangedId = this._slider.connect('notify::value',
-                                                     this._sliderChanged.bind(this));
+            () => this._sliderChanged());
         this._slider.connect('drag-begin', () => (this._inDrag = true));
         this._slider.connect('drag-end', () => {
             this._inDrag = false;
@@ -61,15 +64,12 @@ var StreamSlider = class extends Signals.EventEmitter {
         this._icon = new St.Icon({ style_class: 'popup-menu-icon' });
         this.item.add(this._icon);
         this.item.add_child(this._slider);
-        this.item.connect('button-press-event', (actor, event) => {
-            return this._slider.startDragging(event);
-        });
-        this.item.connect('key-press-event', (actor, event) => {
-            return this._slider.emit('key-press-event', event);
-        });
-        this.item.connect('scroll-event', (actor, event) => {
-            return this._slider.emit('scroll-event', event);
-        });
+        this.item.connect('button-press-event',
+            (actor, event) => this._slider.startDragging(event));
+        this.item.connect('key-press-event',
+            (actor, event) => this._slider.emit('key-press-event', event));
+        this.item.connect('scroll-event',
+            (actor, event) => this._slider.emit('scroll-event', event));
 
         this._stream = null;
         this._volumeCancellable = null;
@@ -161,8 +161,7 @@ var StreamSlider = class extends Signals.EventEmitter {
         this._volumeCancellable = new Gio.Cancellable();
         let player = global.display.get_sound_player();
         player.play_from_theme('audio-volume-change',
-                               _("Volume changed"),
-                               this._volumeCancellable);
+            _('Volume changed'), this._volumeCancellable);
     }
 
     _changeSlider(value) {
@@ -297,9 +296,8 @@ var InputStreamSlider = class extends StreamSlider {
                 'org.PulseAudio.pavucontrol',
             ];
 
-            showInput = this._control.get_source_outputs().some(output => {
-                return !skippedApps.includes(output.get_application_id());
-            });
+            showInput = this._control.get_source_outputs().some(
+                output => !skippedApps.includes(output.get_application_id()));
         }
 
         this._showInput = showInput;
@@ -323,18 +321,15 @@ var VolumeMenu = class extends PopupMenu.PopupMenuSection {
         this._control.connect('default-source-changed', this._readInput.bind(this));
 
         this._output = new OutputStreamSlider(this._control);
-        this._output.connect('stream-updated', () => {
-            this.emit('output-icon-changed');
-        });
+        this._output.connect('stream-updated',
+            () => this.emit('output-icon-changed'));
         this.addMenuItem(this._output.item);
 
         this._input = new InputStreamSlider(this._control);
-        this._input.item.connect('notify::visible', () => {
-            this.emit('input-visible-changed');
-        });
-        this._input.connect('stream-updated', () => {
-            this.emit('input-icon-changed');
-        });
+        this._input.item.connect('notify::visible',
+            () => this.emit('input-visible-changed'));
+        this._input.connect('stream-updated',
+            () => this.emit('input-icon-changed'));
         this.addMenuItem(this._input.item);
 
         this.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
