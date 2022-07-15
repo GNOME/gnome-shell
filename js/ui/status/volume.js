@@ -81,8 +81,7 @@ var StreamSlider = class extends Signals.EventEmitter {
     }
 
     set stream(stream) {
-        if (this._stream)
-            this._disconnectStream(this._stream);
+        this._stream?.disconnectObject(this);
 
         this._stream = stream;
 
@@ -94,10 +93,6 @@ var StreamSlider = class extends Signals.EventEmitter {
         }
 
         this._updateVisibility();
-    }
-
-    _disconnectStream(stream) {
-        stream.disconnectObject(this);
     }
 
     _connectStream(stream) {
@@ -269,8 +264,12 @@ var InputStreamSlider = class extends StreamSlider {
     constructor(control) {
         super(control);
         this._slider.accessible_name = _("Microphone");
-        this._control.connect('stream-added', this._maybeShowInput.bind(this));
-        this._control.connect('stream-removed', this._maybeShowInput.bind(this));
+
+        this._control.connectObject(
+            'stream-added', () => this._maybeShowInput(),
+            'stream-removed', () => this._maybeShowInput(),
+            this);
+
         this._icon.icon_name = 'audio-input-microphone-symbolic';
         this._icons = [
             'microphone-sensitivity-muted-symbolic',
@@ -316,9 +315,11 @@ var VolumeMenu = class extends PopupMenu.PopupMenuSection {
         this.hasHeadphones = false;
 
         this._control = control;
-        this._control.connect('state-changed', this._onControlStateChanged.bind(this));
-        this._control.connect('default-sink-changed', this._readOutput.bind(this));
-        this._control.connect('default-source-changed', this._readInput.bind(this));
+        this._control.connectObject(
+            'state-changed', () => this._onControlStateChanged(),
+            'default-sink-changed', () => this._readOutput(),
+            'default-source-changed', () => this._readInput(),
+            this);
 
         this._output = new OutputStreamSlider(this._control);
         this._output.connect('stream-updated',
