@@ -19,6 +19,9 @@ const VolumeType = {
 // Each Gvc.MixerControl is a connection to PulseAudio,
 // so it's better to make it a singleton
 let _mixerControl;
+/**
+ * @returns {Gvc.MixerControl} - the mixer control singleton
+ */
 function getMixerControl() {
     if (_mixerControl)
         return _mixerControl;
