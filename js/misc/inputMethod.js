@@ -18,6 +18,7 @@ class InputMethod extends Clutter.InputMethod {
         this._currentFocus = null;
         this._preeditStr = '';
         this._preeditPos = 0;
+        this._preeditAnchor = 0;
         this._preeditVisible = false;
         this._hidePanelId = 0;
         this._ibus = IBus.Bus.new_async();
@@ -85,6 +86,7 @@ class InputMethod extends Clutter.InputMethod {
         this._purpose = 0;
         this._preeditStr = '';
         this._preeditPos = 0;
+        this._preeditAnchor = 0;
         this._preeditVisible = false;
     }
 
@@ -114,24 +116,30 @@ class InputMethod extends Clutter.InputMethod {
         if (preedit === '')
             preedit = null;
 
+        const anchor = pos;
         if (visible)
-            this.set_preedit_text(preedit, pos, mode);
+            this.set_preedit_text(preedit, pos, anchor, mode);
         else if (this._preeditVisible)
-            this.set_preedit_text(null, pos, mode);
+            this.set_preedit_text(null, pos, anchor, mode);
 
         this._preeditStr = preedit;
         this._preeditPos = pos;
+        this._preeditAnchor = anchor;
         this._preeditVisible = visible;
         this._preeditCommitMode = mode;
     }
 
     _onShowPreeditText() {
         this._preeditVisible = true;
-        this.set_preedit_text(this._preeditStr, this._preeditPos, this._preeditCommitMode);
+        this.set_preedit_text(
+            this._preeditStr, this._preeditPos, this._preeditAnchor,
+            this._preeditCommitMode);
     }
 
     _onHidePreeditText() {
-        this.set_preedit_text(null, this._preeditPos, this._preeditCommitMode);
+        this.set_preedit_text(
+            null, this._preeditPos, this._preeditAnchor,
+            this._preeditCommitMode);
         this._preeditVisible = false;
     }
 
@@ -169,7 +177,7 @@ class InputMethod extends Clutter.InputMethod {
 
         if (this._preeditStr && this._preeditVisible) {
             // Unset any preedit text
-            this.set_preedit_text(null, 0, this._preeditCommitMode);
+            this.set_preedit_text(null, 0, 0, this._preeditCommitMode);
             this._preeditStr = null;
         }
 
