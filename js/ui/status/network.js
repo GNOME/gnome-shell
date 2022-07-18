@@ -750,8 +750,10 @@ class NMWirelessDialog extends ModalDialog.ModalDialog {
             this._syncView.bind(this), this);
 
         this._rfkill = Rfkill.getRfkillManager();
-        this._rfkill.connectObject('airplane-mode-changed',
-            this._syncView.bind(this), this);
+        this._rfkill.connectObject(
+            'notify::airplane-mode', () => this._syncView(),
+            'notify::hw-airplane-mode', () => this._syncView(),
+            this);
 
         this._networks = [];
         this._buildLayout();

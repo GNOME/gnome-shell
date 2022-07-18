@@ -2,7 +2,6 @@
 /* exported Indicator */
 
 const {Gio, GLib, GObject} = imports.gi;
-const Signals = imports.misc.signals;
 
 const Main = imports.ui.main;
 const PanelMenu = imports.ui.panelMenu;
@@ -16,7 +15,22 @@ const OBJECT_PATH = '/org/gnome/SettingsDaemon/Rfkill';
 const RfkillManagerInterface = loadInterfaceXML('org.gnome.SettingsDaemon.Rfkill');
 const rfkillManagerInfo = Gio.DBusInterfaceInfo.new_for_xml(RfkillManagerInterface);
 
-var RfkillManager = class extends Signals.EventEmitter {
+const RfkillManager = GObject.registerClass({
+    Properties: {
+        'airplane-mode': GObject.ParamSpec.boolean(
+            'airplane-mode', '', '',
+            GObject.ParamFlags.READWRITE,
+            false),
+        'hw-airplane-mode': GObject.ParamSpec.boolean(
+            'hw-airplane-mode', '', '',
+            GObject.ParamFlags.READABLE,
+            false),
+        'show-airplane-mode': GObject.ParamSpec.boolean(
+            'show-airplane-mode', '', '',
+            GObject.ParamFlags.READABLE,
+            false),
+    },
+}, class RfkillManager extends GObject.Object {
     constructor() {
         super();
 
@@ -32,26 +46,40 @@ var RfkillManager = class extends Signals.EventEmitter {
             .catch(e => console.error(e.message));
     }
 
-    get airplaneMode() {
+    /* eslint-disable camelcase */
+    get airplane_mode() {
         return this._proxy.AirplaneMode;
     }
 
-    set airplaneMode(v) {
+    set airplane_mode(v) {
         this._proxy.AirplaneMode = v;
     }
 
-    get hwAirplaneMode() {
+    get hw_airplane_mode() {
         return this._proxy.HardwareAirplaneMode;
     }
 
-    get shouldShowAirplaneMode() {
+    get show_airplane_mode() {
         return this._proxy.ShouldShowAirplaneMode;
     }
+    /* eslint-enable camelcase */
 
-    _changed() {
-        this.emit('airplane-mode-changed');
+    _changed(proxy, properties) {
+        for (const prop in properties.deep_unpack()) {
+            switch (prop) {
+            case 'AirplaneMode':
+                this.notify('airplane-mode');
+                break;
+            case 'HardwareAirplaneMode':
+                this.notify('hw-airplane-mode');
+                break;
+            case 'ShouldShowAirplaneMode':
+                this.notify('show-airplane-mode');
+                break;
+            }
+        }
     }
-};
+});
 
 var _manager;
 function getRfkillManager() {
@@ -68,7 +96,7 @@ class Indicator extends PanelMenu.SystemIndicator {
         super._init();
 
         this._manager = getRfkillManager();
-        this._manager.connect('airplane-mode-changed', this._sync.bind(this));
+        this._manager.connect('notify', () => this._sync());
 
         this._indicator = this._addIndicator();
         this._indicator.icon_name = 'airplane-mode-symbolic';
@@ -97,9 +125,7 @@ class Indicator extends PanelMenu.SystemIndicator {
     }
 
     _sync() {
-        let airplaneMode = this._manager.airplaneMode;
-        let hwAirplaneMode = this._manager.hwAirplaneMode;
-        let showAirplaneMode = this._manager.shouldShowAirplaneMode;
+        const {airplaneMode, hwAirplaneMode, showAirplaneMode} = this._manager;
 
         this._indicator.visible = airplaneMode && showAirplaneMode;
         this._item.visible = airplaneMode && showAirplaneMode;
