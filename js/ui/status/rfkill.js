@@ -60,7 +60,7 @@ const RfkillManager = GObject.registerClass({
     }
 
     get show_airplane_mode() {
-        return this._proxy.ShouldShowAirplaneMode;
+        return this._proxy.HasAirplaneMode && this._proxy.ShouldShowAirplaneMode;
     }
     /* eslint-enable camelcase */
 
@@ -73,6 +73,7 @@ const RfkillManager = GObject.registerClass({
             case 'HardwareAirplaneMode':
                 this.notify('hw-airplane-mode');
                 break;
+            case 'HasAirplaneMode':
             case 'ShouldShowAirplaneMode':
                 this.notify('show-airplane-mode');
                 break;
