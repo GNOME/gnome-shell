@@ -1,35 +1,35 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported Indicator */
 
-const { Gio, GObject } = imports.gi;
+const {Gio, GLib, GObject} = imports.gi;
 const Signals = imports.misc.signals;
 
 const Main = imports.ui.main;
 const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
 
-const { loadInterfaceXML } = imports.misc.fileUtils;
+const {loadInterfaceXML} = imports.misc.fileUtils;
 
 const BUS_NAME = 'org.gnome.SettingsDaemon.Rfkill';
 const OBJECT_PATH = '/org/gnome/SettingsDaemon/Rfkill';
 
 const RfkillManagerInterface = loadInterfaceXML('org.gnome.SettingsDaemon.Rfkill');
-const RfkillManagerProxy = Gio.DBusProxy.makeProxyWrapper(RfkillManagerInterface);
+const rfkillManagerInfo = Gio.DBusInterfaceInfo.new_for_xml(RfkillManagerInterface);
 
 var RfkillManager = class extends Signals.EventEmitter {
     constructor() {
         super();
 
-        this._proxy = new RfkillManagerProxy(Gio.DBus.session, BUS_NAME, OBJECT_PATH,
-            (proxy, error) => {
-                if (error) {
-                    log(error.message);
-                    return;
-                }
-                this._proxy.connect('g-properties-changed',
-                    this._changed.bind(this));
-                this._changed();
-            });
+        this._proxy = new Gio.DBusProxy({
+            g_connection: Gio.DBus.session,
+            g_name: BUS_NAME,
+            g_object_path: OBJECT_PATH,
+            g_interface_name: rfkillManagerInfo.name,
+            g_interface_info: rfkillManagerInfo,
+        });
+        this._proxy.connect('g-properties-changed', this._changed.bind(this));
+        this._proxy.init_async(GLib.PRIORITY_DEFAULT, null)
+            .catch(e => console.error(e.message));
     }
 
     get airplaneMode() {
