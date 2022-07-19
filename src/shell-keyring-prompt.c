@@ -26,7 +26,7 @@
 #include "shell-secure-text-buffer.h"
 
 #define GCR_API_SUBJECT_TO_CHANGE
-#include <gcr/gcr-base.h>
+#include <gcr/gcr.h>
 
 #include <glib/gi18n.h>
 
@@ -91,7 +91,7 @@ enum {
 
 static GParamSpec *props[N_PROPS] = { NULL, };
 
-static void    shell_keyring_prompt_iface     (GcrPromptIface *iface);
+static void    shell_keyring_prompt_iface     (GcrPromptInterface *iface);
 
 G_DEFINE_TYPE_WITH_CODE (ShellKeyringPrompt, shell_keyring_prompt, G_TYPE_OBJECT,
                          G_IMPLEMENT_INTERFACE (GCR_TYPE_PROMPT, shell_keyring_prompt_iface);
@@ -531,7 +531,7 @@ shell_keyring_prompt_close (GcrPrompt *prompt)
 }
 
 static void
-shell_keyring_prompt_iface (GcrPromptIface *iface)
+shell_keyring_prompt_iface (GcrPromptInterface *iface)
 {
   iface->prompt_password_async = shell_keyring_prompt_password_async;
   iface->prompt_password_finish = shell_keyring_prompt_password_finish;

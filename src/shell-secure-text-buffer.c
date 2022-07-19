@@ -26,7 +26,7 @@
 #include "shell-secure-text-buffer.h"
 
 #define GCR_API_SUBJECT_TO_CHANGE
-#include <gcr/gcr-base.h>
+#include <gcr/gcr.h>
 
 #include <string.h>
 
