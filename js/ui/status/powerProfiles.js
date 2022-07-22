@@ -32,7 +32,6 @@ class Indicator extends PanelMenu.SystemIndicator {
         super._init();
 
         this._profileItems = new Map();
-        this._updateProfiles = true;
 
         this._proxy = new PowerProfilesProxy(Gio.DBus.system, BUS_NAME, OBJECT_PATH,
             (proxy, error) => {
@@ -42,9 +41,11 @@ class Indicator extends PanelMenu.SystemIndicator {
                     this._proxy.connect('g-properties-changed',
                         (p, properties) => {
                             const propertyNames = properties.deep_unpack();
-                            this._updateProfiles = 'Profiles' in propertyNames;
+                            if ('Profiles' in propertyNames)
+                                this._syncProfiles();
                             this._sync();
                         });
+                    this._syncProfiles();
                 }
                 this._sync();
             });
@@ -68,32 +69,31 @@ class Indicator extends PanelMenu.SystemIndicator {
         this.menu.setSensitive(sensitive);
     }
 
+    _syncProfiles() {
+        this._profileSection.removeAll();
+        this._profileItems.clear();
+
+        const profiles = this._proxy.Profiles
+            .map(p => p.Profile.unpack())
+            .reverse();
+        for (const profile of profiles) {
+            const label = PROFILE_LABELS[profile];
+            if (!label)
+                continue;
+
+            const item = new PopupMenu.PopupMenuItem(label);
+            item.connect('activate',
+                () => (this._proxy.ActiveProfile = profile));
+            this._profileItems.set(profile, item);
+            this._profileSection.addMenuItem(item);
+        }
+    }
+
     _sync() {
         this._item.visible = this._proxy.g_name_owner !== null;
 
         if (!this._item.visible)
             return;
-
-        if (this._updateProfiles) {
-            this._profileSection.removeAll();
-            this._profileItems.clear();
-
-            const profiles = this._proxy.Profiles
-                .map(p => p.Profile.unpack())
-                .reverse();
-            for (const profile of profiles) {
-                const label = PROFILE_LABELS[profile];
-                if (!label)
-                    continue;
-
-                const item = new PopupMenu.PopupMenuItem(label);
-                item.connect('activate',
-                    () => (this._proxy.ActiveProfile = profile));
-                this._profileItems.set(profile, item);
-                this._profileSection.addMenuItem(item);
-            }
-            this._updateProfiles = false;
-        }
 
         for (const [profile, item] of this._profileItems) {
             item.setOrnament(profile === this._proxy.ActiveProfile
