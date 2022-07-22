@@ -100,12 +100,12 @@
       border-radius: 0 0 $base_border_radius $base_border_radius;
     }
 
-    &:focus,&:hover { background-color: lighten($hover_bg_color, 10%) !important;}
+    &:focus,&:hover { background-color: $hover_bg_color !important;}
     &:checked {
-      background-color: lighten($checked_bg_color, 10%) !important;
+      background-color: $checked_bg_color !important;
       &:focus,&:hover { background-color: lighten($checked_bg_color, 8%) !important;}
     }
-    &:active { background-color: lighten($active_bg_color, 10%) !important;}
+    &:active { background-color: $active_bg_color !important;}
   }
 
   .popup-menu-section {

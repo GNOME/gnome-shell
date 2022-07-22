@@ -52,6 +52,10 @@ $backdrop_insensitive_color: lighten($backdrop_bg_color,15%);
 $backdrop_borders_color: mix($borders_color, $bg_color, 90%);
 $backdrop_dark_fill: mix($backdrop_borders_color,$backdrop_bg_color, 35%);
 
+// derived checked colors
+$checked_bg_color: if($variant=='light', darken($bg_color, 12%), lighten($bg_color, 18%));
+$checked_fg_color: if($variant=='light', darken($fg_color, 12%), lighten($fg_color, 18%));
+
 // derived hover colors
 $hover_bg_color: if($variant=='light', darken($bg_color, 8%), lighten($bg_color, 20%));
 $hover_fg_color: if($variant=='light', darken($fg_color, 10%), lighten($fg_color, 20%));
@@ -59,7 +63,3 @@ $hover_fg_color: if($variant=='light', darken($fg_color, 10%), lighten($fg_color
 // derived active colors
 $active_bg_color: if($variant=='light', darken($bg_color, 10%), lighten($bg_color, 22%));
 $active_fg_color: if($variant=='light', darken($fg_color, 10%), lighten($fg_color, 22%));
-
-// derived checked colors
-$checked_bg_color: if($variant=='light', darken($bg_color, 12%), lighten($bg_color, 25%));
-$checked_fg_color: if($variant=='light', darken($fg_color, 12%), lighten($fg_color, 25%));
