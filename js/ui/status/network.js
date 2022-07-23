@@ -40,8 +40,6 @@ var MAX_DEVICE_ITEMS = 4;
 
 // small optimization, to avoid using [] all the time
 const NM80211Mode = NM['80211Mode'];
-const NM80211ApFlags = NM['80211ApFlags'];
-const NM80211ApSecurityFlags = NM['80211ApSecurityFlags'];
 
 var PortalHelperResult = {
     CANCELLED: 0,
@@ -742,6 +740,9 @@ var NMWirelessDialogItem = GObject.registerClass({
 
 var NMWirelessDialog = GObject.registerClass(
 class NMWirelessDialog extends ModalDialog.ModalDialog {
+    static _securityTypes =
+        Object.values(NM.UtilsSecurityType).sort((a, b) => b - a);
+
     _init(client, device) {
         super._init({ styleClass: 'nm-dialog' });
 
@@ -1007,32 +1008,16 @@ class NMWirelessDialog extends ModalDialog.ModalDialog {
         if (accessPoint._secType)
             return accessPoint._secType;
 
-        let flags = accessPoint.flags;
-        let wpaFlags = accessPoint.wpa_flags;
-        let rsnFlags = accessPoint.rsn_flags;
-        let type;
-        if (rsnFlags != NM80211ApSecurityFlags.NONE) {
-            /* RSN check first so that WPA+WPA2 APs are treated as RSN/WPA2 */
-            if (rsnFlags & NM80211ApSecurityFlags.KEY_MGMT_802_1X)
-                type = NMAccessPointSecurity.WPA2_ENT;
-            else if (rsnFlags & NM80211ApSecurityFlags.KEY_MGMT_PSK)
-                type = NMAccessPointSecurity.WPA2_PSK;
-        } else if (wpaFlags != NM80211ApSecurityFlags.NONE) {
-            if (wpaFlags & NM80211ApSecurityFlags.KEY_MGMT_802_1X)
-                type = NMAccessPointSecurity.WPA_ENT;
-            else if (wpaFlags & NM80211ApSecurityFlags.KEY_MGMT_PSK)
-                type = NMAccessPointSecurity.WPA_PSK;
-        } else {
-            // eslint-disable-next-line no-lonely-if
-            if (flags & NM80211ApFlags.PRIVACY)
-                type = NMAccessPointSecurity.WEP;
-            else
-                type = NMAccessPointSecurity.NONE;
-        }
+        const {wirelessCapabilities: caps} = this._device;
+        const {flags, wpaFlags, rsnFlags} = accessPoint;
+        const haveAp = true;
+        const adHoc = accessPoint.mode === NM80211Mode.ADHOC;
+        const bestType = NMWirelessDialog._securityTypes
+            .find(t => NM.utils_security_valid(t, caps, haveAp, adHoc, flags, wpaFlags, rsnFlags));
 
         // cache the found value to avoid checking flags all the time
-        accessPoint._secType = type;
-        return type;
+        accessPoint._secType = bestType ?? NM.UtilsSecurityType.INVALID;
+        return accessPoint._secType;
     }
 
     _networkSortFunction(one, two) {
