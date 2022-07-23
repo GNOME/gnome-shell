@@ -13,7 +13,8 @@ const ModemManager = imports.misc.modemManager;
 const Rfkill = imports.ui.status.rfkill;
 const Util = imports.misc.util;
 
-const { loadInterfaceXML } = imports.misc.fileUtils;
+const {loadInterfaceXML} = imports.misc.fileUtils;
+const {registerDestroyableType} = imports.misc.signalTracker;
 
 Gio._promisify(Gio.DBusConnection.prototype, 'call');
 Gio._promisify(NM.Client, 'new_async');
@@ -25,15 +26,6 @@ const NMConnectionCategory = {
     WIRELESS: 'wireless',
     WWAN: 'wwan',
     VPN: 'vpn',
-};
-
-const NMAccessPointSecurity = {
-    NONE: 1,
-    WEP: 2,
-    WPA_PSK: 3,
-    WPA2_PSK: 4,
-    WPA_ENT: 5,
-    WPA2_ENT: 6,
 };
 
 var MAX_DEVICE_ITEMS = 4;
@@ -662,6 +654,241 @@ var NMDeviceBluetooth = class extends NMConnectionDevice {
     }
 };
 
+const WirelessNetwork = GObject.registerClass({
+    Properties: {
+        'name': GObject.ParamSpec.string(
+            'name', '', '',
+            GObject.ParamFlags.READABLE,
+            ''),
+        'icon-name': GObject.ParamSpec.string(
+            'icon-name', '', '',
+            GObject.ParamFlags.READABLE,
+            ''),
+        'secure': GObject.ParamSpec.boolean(
+            'secure', '', '',
+            GObject.ParamFlags.READABLE,
+            false),
+        'is-active': GObject.ParamSpec.boolean(
+            'is-active', '', '',
+            GObject.ParamFlags.READABLE,
+            false),
+    },
+    Signals: {
+        'destroy': {},
+    },
+}, class WirelessNetwork extends GObject.Object {
+    static _securityTypes =
+        Object.values(NM.UtilsSecurityType).sort((a, b) => b - a);
+
+    _init(device) {
+        super._init();
+
+        this._device = device;
+
+        this._device.connectObject(
+            'notify::active-access-point', () => this.notify('is-active'),
+            this);
+
+        this._accessPoints = new Set();
+        this._connections = [];
+        this._name = '';
+        this._ssid = null;
+        this._bestAp = null;
+        this._mode = 0;
+        this._securityType = NM.UtilsSecurityType.NONE;
+    }
+
+    get _strength() {
+        return this._bestAp?.strength ?? 0;
+    }
+
+    get name() {
+        return this._name;
+    }
+
+    get icon_name() {
+        if (this._mode === NM80211Mode.ADHOC)
+            return 'network-workgroup-symbolic';
+
+        if (!this._bestAp)
+            return '';
+
+        return `network-wireless-signal-${signalToIcon(this._bestAp.strength)}-symbolic`;
+    }
+
+    get secure() {
+        return this._securityType !== NM.UtilsSecurityType.NONE;
+    }
+
+    get is_active() {
+        return this._accessPoints.has(this._device.activeAccessPoint);
+    }
+
+    hasAccessPoint(ap) {
+        return this._accessPoints.has(ap);
+    }
+
+    hasAccessPoints() {
+        return this._accessPoints.size > 0;
+    }
+
+    checkAccessPoint(ap) {
+        if (!ap.get_ssid())
+            return false;
+
+        const secType = this._getApSecurityType(ap);
+        if (secType === NM.UtilsSecurityType.INVALID)
+            return false;
+
+        if (this._accessPoints.size === 0)
+            return true;
+
+        return this._ssid.equal(ap.ssid) &&
+            this._mode === ap.mode &&
+            this._securityType === secType;
+    }
+
+    /**
+     * @param {NM.AccessPoint} ap - an access point
+     * @returns {bool} - whether the access point was added
+     */
+    addAccessPoint(ap) {
+        if (!this.checkAccessPoint(ap))
+            return false;
+
+        if (this._accessPoints.size === 0) {
+            this._ssid = ap.get_ssid();
+            this._mode = ap.mode;
+            this._securityType = this._getApSecurityType(ap);
+            this._name = NM.utils_ssid_to_utf8(this._ssid.get_data()) || '<unknown>';
+
+            this.notify('name');
+            this.notify('secure');
+        }
+
+        const wasActive = this.is_active;
+        this._accessPoints.add(ap);
+
+        ap.connectObject(
+            'notify::strength', () => this._updateBestAp(),
+            this);
+        this._updateBestAp();
+
+        if (wasActive !== this.is_active)
+            this.notify('is-active');
+
+        return true;
+    }
+
+    /**
+     * @param {NM.AccessPoint} ap - an access point
+     * @returns {bool} - whether the access point was removed
+     */
+    removeAccessPoint(ap) {
+        const wasActive = this.is_active;
+        if (!this._accessPoints.delete(ap))
+            return false;
+
+        this._updateBestAp();
+
+        if (wasActive !== this.is_active)
+            this.notify('is-active');
+
+        return true;
+    }
+
+    /**
+     * @param {WirelessNetwork} other - network to compare with
+     * @returns {number} - the sort order
+     */
+    compare(other) {
+        // place known connections first
+        const cmpConnections = other.hasConnections() - this.hasConnections();
+        if (cmpConnections !== 0)
+            return cmpConnections;
+
+        const cmpAps = other.hasAccessPoints() - this.hasAccessPoints();
+        if (cmpAps !== 0)
+            return cmpAps;
+
+        // place stronger connections first
+        const cmpStrength = other._strength - this._strength;
+        if (cmpStrength !== 0)
+            return cmpStrength;
+
+        // place secure connections first
+        const cmpSec = other.secure - this.secure;
+        if (cmpSec !== 0)
+            return cmpSec;
+
+        // sort alphabetically
+        return GLib.utf8_collate(this._name, other._name);
+    }
+
+    hasConnections() {
+        return this._connections.length > 0;
+    }
+
+    checkConnections(connections) {
+        const aps = [...this._accessPoints];
+        this._connections = connections.filter(
+            c => aps.some(ap => ap.connection_valid(c)));
+    }
+
+    canAutoconnect() {
+        const canAutoconnect =
+            this._securityTypes !== NM.UtilsSecurityType.WPA_ENTERPRISE &&
+            this._securityTypes !== NM.UtilsSecurityType.WPA2_ENTERPRISE;
+        return canAutoconnect;
+    }
+
+    activate() {
+        const [ap] = this._accessPoints;
+        let [conn] = this._connections;
+        if (conn) {
+            this._device.client.activate_connection_async(conn, this._device, null, null, null);
+        } else if (!this.canAutoconnect()) {
+            launchSettingsPanel('wifi', 'connect-8021x-wifi',
+                this._getDeviceDBusPath(), ap.get_path());
+        } else {
+            conn = new NM.SimpleConnection();
+            this._device.client.add_and_activate_connection_async(
+                conn, this._device, ap.get_path(), null, null);
+        }
+    }
+
+    destroy() {
+        this.emit('destroy');
+    }
+
+    _getDeviceDBusPath() {
+        // nm_object_get_path() is shadowed by nm_device_get_path()
+        return NM.Object.prototype.get_path.call(this._device);
+    }
+
+    _getApSecurityType(ap) {
+        const {wirelessCapabilities: caps} = this._device;
+        const {flags, wpaFlags, rsnFlags} = ap;
+        const haveAp = true;
+        const adHoc = ap.mode === NM80211Mode.ADHOC;
+        const bestType = WirelessNetwork._securityTypes
+            .find(t => NM.utils_security_valid(t, caps, haveAp, adHoc, flags, wpaFlags, rsnFlags));
+        return bestType ?? NM.UtilsSecurityType.INVALID;
+    }
+
+    _updateBestAp() {
+        const [bestAp] =
+            [...this._accessPoints].sort((a, b) => b.strength - a.strength);
+
+        if (this._bestAp === bestAp)
+            return;
+
+        this._bestAp = bestAp;
+        this.notify('icon-name');
+    }
+});
+registerDestroyableType(WirelessNetwork);
+
 var NMWirelessDialogItem = GObject.registerClass({
     Signals: {
         'selected': {},
@@ -669,7 +896,6 @@ var NMWirelessDialogItem = GObject.registerClass({
 }, class NMWirelessDialogItem extends St.BoxLayout {
     _init(network) {
         this._network = network;
-        this._ap = network.accessPoints[0];
 
         super._init({
             style_class: 'nm-dialog-item',
@@ -681,9 +907,7 @@ var NMWirelessDialogItem = GObject.registerClass({
         action.connect('clicked', () => this.grab_key_focus());
         this.add_action(action);
 
-        let title = ssidToLabel(this._ap.get_ssid());
         this._label = new St.Label({
-            text: title,
             x_expand: true,
         });
 
@@ -702,47 +926,43 @@ var NMWirelessDialogItem = GObject.registerClass({
         });
         this.add_child(this._icons);
 
-        this._secureIcon = new St.Icon({ style_class: 'nm-dialog-icon' });
-        if (this._ap._secType != NMAccessPointSecurity.NONE)
-            this._secureIcon.icon_name = 'network-wireless-encrypted-symbolic';
+        this._secureIcon = new St.Icon({
+            style_class: 'nm-dialog-icon',
+        });
         this._icons.add_actor(this._secureIcon);
 
-        this._signalIcon = new St.Icon({ style_class: 'nm-dialog-icon' });
+        this._signalIcon = new St.Icon({
+            style_class: 'nm-dialog-icon',
+        });
         this._icons.add_actor(this._signalIcon);
 
-        this._sync();
+        this._network.bind_property('icon-name',
+            this._signalIcon, 'icon-name',
+            GObject.BindingFlags.SYNC_CREATE);
+        this._network.bind_property('name',
+            this._label, 'text',
+            GObject.BindingFlags.SYNC_CREATE);
+        this._network.bind_property('is-active',
+            this._selectedIcon, 'visible',
+            GObject.BindingFlags.SYNC_CREATE);
+        this._network.bind_property_full('secure',
+            this._secureIcon, 'icon-name',
+            GObject.BindingFlags.SYNC_CREATE,
+            (bind, source) => [true, source ? 'network-wireless-encrypted-symbolic' : ''],
+            null);
+    }
+
+    get network() {
+        return this._network;
     }
 
     vfunc_key_focus_in() {
         this.emit('selected');
     }
-
-    _sync() {
-        this._signalIcon.icon_name = this._getSignalIcon();
-    }
-
-    updateBestAP(ap) {
-        this._ap = ap;
-        this._sync();
-    }
-
-    setActive(isActive) {
-        this._selectedIcon.opacity = isActive ? 255 : 0;
-    }
-
-    _getSignalIcon() {
-        if (this._ap.mode === NM80211Mode.ADHOC)
-            return 'network-workgroup-symbolic';
-        else
-            return `network-wireless-signal-${signalToIcon(this._ap.strength)}-symbolic`;
-    }
 });
 
 var NMWirelessDialog = GObject.registerClass(
 class NMWirelessDialog extends ModalDialog.ModalDialog {
-    static _securityTypes =
-        Object.values(NM.UtilsSecurityType).sort((a, b) => b - a);
-
     _init(client, device) {
         super._init({ styleClass: 'nm-dialog' });
 
@@ -758,7 +978,7 @@ class NMWirelessDialog extends ModalDialog.ModalDialog {
             'notify::hw-airplane-mode', () => this._syncView(),
             this);
 
-        this._networks = [];
+        this._networkItems = new Map();
         this._buildLayout();
 
         let connections = client.get_connections();
@@ -766,18 +986,25 @@ class NMWirelessDialog extends ModalDialog.ModalDialog {
             connection => device.connection_valid(connection));
 
         device.connectObject(
-            'access-point-added', this._accessPointAdded.bind(this),
-            'access-point-removed', this._accessPointRemoved.bind(this),
-            'notify::active-access-point', this._activeApChanged.bind(this), this);
+            'notify::active-access-point', () => this._updateSensitivity(),
+            'notify::available-connections', () => this._availableConnectionsChanged(),
+            'access-point-added', (d, ap) => {
+                this._addAccessPoint(ap);
+                this._syncNetworksList();
+                this._syncView();
+            },
+            'access-point-removed', (d, ap) => {
+                this._removeAccessPoint(ap);
+                this._syncNetworksList();
+                this._syncView();
+            },
+            this);
 
-        // accessPointAdded will also create dialog items
-        let accessPoints = device.get_access_points() || [];
-        accessPoints.forEach(ap => {
-            this._accessPointAdded(this._device, ap);
-        });
+        for (const ap of this._device.get_access_points())
+            this._addAccessPoint(ap);
 
         this._selectedNetwork = null;
-        this._activeApChanged();
+        this._availableConnectionsChanged();
         this._updateSensitivity();
         this._syncView();
 
@@ -813,24 +1040,16 @@ class NMWirelessDialog extends ModalDialog.ModalDialog {
         return GLib.SOURCE_CONTINUE;
     }
 
-    _activeApChanged() {
-        if (this._activeNetwork)
-            this._activeNetwork.item.setActive(false);
-
-        this._activeNetwork = null;
-        if (this._device.active_access_point) {
-            let idx = this._findNetwork(this._device.active_access_point);
-            if (idx >= 0)
-                this._activeNetwork = this._networks[idx];
-        }
-
-        if (this._activeNetwork)
-            this._activeNetwork.item.setActive(true);
-        this._updateSensitivity();
+    _availableConnectionsChanged() {
+        const connections = this._device.get_available_connections();
+        for (const net of this._networkItems.keys())
+            net.checkConnections(connections);
+        this._syncNetworksList();
     }
 
     _updateSensitivity() {
-        let connectSensitive = this._client.wireless_enabled && this._selectedNetwork && (this._selectedNetwork != this._activeNetwork);
+        const connectSensitive =
+            this._client.wireless_enabled && this._selectedNetwork && !this._selectedNetwork.isActive;
         this._connectButton.reactive = connectSensitive;
         this._connectButton.can_focus = connectSensitive;
     }
@@ -861,7 +1080,7 @@ class NMWirelessDialog extends ModalDialog.ModalDialog {
         } else {
             this._airplaneBox.hide();
 
-            this._noNetworksBox.visible = this._networks.length == 0;
+            this._noNetworksBox.visible = this._networkItems.size === 0;
         }
 
         if (this._noNetworksBox.visible)
@@ -971,265 +1190,85 @@ class NMWirelessDialog extends ModalDialog.ModalDialog {
     }
 
     _connect() {
-        let network = this._selectedNetwork;
-        if (network.connections.length > 0) {
-            let connection = network.connections[0];
-            this._client.activate_connection_async(connection, this._device, null, null, null);
-        } else {
-            let accessPoints = network.accessPoints;
-            if ((accessPoints[0]._secType == NMAccessPointSecurity.WPA2_ENT) ||
-                (accessPoints[0]._secType == NMAccessPointSecurity.WPA_ENT)) {
-                // 802.1x-enabled APs require further configuration, so they're
-                // handled in gnome-control-center
-                launchSettingsPanel('wifi', 'connect-8021x-wifi',
-                    this._getDeviceDBusPath(), accessPoints[0].get_path());
-            } else {
-                let connection = new NM.SimpleConnection();
-                this._client.add_and_activate_connection_async(connection, this._device, accessPoints[0].get_path(), null, null);
-            }
-        }
-
+        this._selectedNetwork?.activate();
         this.close();
     }
 
-    _getDeviceDBusPath() {
-        // nm_object_get_path() is shadowed by nm_device_get_path()
-        return NM.Object.prototype.get_path.call(this._device);
-    }
-
-    _notifySsidCb(accessPoint) {
-        if (accessPoint.get_ssid() != null) {
-            accessPoint.disconnectObject(this);
-            this._accessPointAdded(this._device, accessPoint);
-        }
-    }
-
-    _getApSecurityType(accessPoint) {
-        if (accessPoint._secType)
-            return accessPoint._secType;
-
-        const {wirelessCapabilities: caps} = this._device;
-        const {flags, wpaFlags, rsnFlags} = accessPoint;
-        const haveAp = true;
-        const adHoc = accessPoint.mode === NM80211Mode.ADHOC;
-        const bestType = NMWirelessDialog._securityTypes
-            .find(t => NM.utils_security_valid(t, caps, haveAp, adHoc, flags, wpaFlags, rsnFlags));
-
-        // cache the found value to avoid checking flags all the time
-        accessPoint._secType = bestType ?? NM.UtilsSecurityType.INVALID;
-        return accessPoint._secType;
-    }
-
-    _networkSortFunction(one, two) {
-        let oneHasConnection = one.connections.length != 0;
-        let twoHasConnection = two.connections.length != 0;
-
-        // place known connections first
-        // (-1 = good order, 1 = wrong order)
-        if (oneHasConnection && !twoHasConnection)
-            return -1;
-        else if (!oneHasConnection && twoHasConnection)
-            return 1;
-
-        let oneAp = one.accessPoints[0] || null;
-        let twoAp = two.accessPoints[0] || null;
-
-        if (oneAp != null && twoAp == null)
-            return -1;
-        else if (oneAp == null && twoAp != null)
-            return 1;
-
-        let oneStrength = oneAp.strength;
-        let twoStrength = twoAp.strength;
-
-        // place stronger connections first
-        if (oneStrength != twoStrength)
-            return oneStrength < twoStrength ? 1 : -1;
-
-        let oneHasSecurity = one.security != NMAccessPointSecurity.NONE;
-        let twoHasSecurity = two.security != NMAccessPointSecurity.NONE;
-
-        // place secure connections first
-        // (we treat WEP/WPA/WPA2 the same as there is no way to
-        // take them apart from the UI)
-        if (oneHasSecurity && !twoHasSecurity)
-            return -1;
-        else if (!oneHasSecurity && twoHasSecurity)
-            return 1;
-
-        // sort alphabetically
-        return GLib.utf8_collate(one.ssidText, two.ssidText);
-    }
-
-    _networkCompare(network, accessPoint) {
-        if (!network.ssid.equal(accessPoint.get_ssid()))
-            return false;
-        if (network.mode != accessPoint.mode)
-            return false;
-        if (network.security != this._getApSecurityType(accessPoint))
-            return false;
-
-        return true;
-    }
-
-    _findExistingNetwork(accessPoint) {
-        for (let i = 0; i < this._networks.length; i++) {
-            let network = this._networks[i];
-            for (let j = 0; j < network.accessPoints.length; j++) {
-                if (network.accessPoints[j] == accessPoint)
-                    return { network: i, ap: j };
-            }
-        }
-
-        return null;
-    }
-
-    _findNetwork(accessPoint) {
-        if (accessPoint.get_ssid() == null)
-            return -1;
-
-        for (let i = 0; i < this._networks.length; i++) {
-            if (this._networkCompare(this._networks[i], accessPoint))
-                return i;
-        }
-        return -1;
-    }
-
-    _checkConnections(network, accessPoint) {
-        this._connections.forEach(connection => {
-            if (accessPoint.connection_valid(connection) &&
-                !network.connections.includes(connection))
-                network.connections.push(connection);
-        });
-    }
-
-    _accessPointAdded(device, accessPoint) {
-        if (accessPoint.get_ssid() == null) {
+    _addAccessPoint(ap) {
+        if (ap.get_ssid() == null) {
             // This access point is not visible yet
             // Wait for it to get a ssid
-            accessPoint.connectObject('notify::ssid',
-                this._notifySsidCb.bind(this), this);
+            ap.connectObject('notify::ssid', () => {
+                if (!ap.ssid)
+                    return;
+                ap.disconnectObject(this);
+                this._addAccessPoint(ap);
+            }, this);
             return;
         }
 
-        let pos = this._findNetwork(accessPoint);
-        let network;
+        let network = [...this._networkItems.keys()]
+            .find(n => n.checkAccessPoint(ap));
 
-        if (pos != -1) {
-            network = this._networks[pos];
-            if (network.accessPoints.includes(accessPoint)) {
-                log('Access point was already seen, not adding again');
-                return;
-            }
-
-            Util.insertSorted(network.accessPoints, accessPoint, (one, two) => {
-                return two.strength - one.strength;
-            });
-            network.item.updateBestAP(network.accessPoints[0]);
-            this._checkConnections(network, accessPoint);
-
-            this._resortItems();
-        } else {
-            network = {
-                ssid: accessPoint.get_ssid(),
-                mode: accessPoint.mode,
-                security: this._getApSecurityType(accessPoint),
-                connections: [],
-                item: null,
-                accessPoints: [accessPoint],
-            };
-            network.ssidText = ssidToLabel(network.ssid);
-            this._checkConnections(network, accessPoint);
-
-            let newPos = Util.insertSorted(this._networks, network, this._networkSortFunction);
-            this._createNetworkItem(network);
-            this._itemBox.insert_child_at_index(network.item, newPos);
+        if (!network) {
+            network = new WirelessNetwork(this._device);
+            network.connectObject(
+                'notify::icon-name', () => this._syncNetworksList(),
+                'notify::is-active', () => this._syncNetworksList(),
+                this);
+            const item = this._createNetworkItem(network);
+            this._itemBox.add_child(item);
+            this._networkItems.set(network, item);
         }
 
-        this._queueSyncItemVisibility();
-        this._syncView();
+        network.addAccessPoint(ap);
     }
 
-    _queueSyncItemVisibility() {
-        if (this._syncVisibilityId)
+    _removeAccessPoint(ap) {
+        const network = [...this._networkItems.keys()]
+            .find(n => n.removeAccessPoint(ap));
+
+        if (!network || network.hasAccessPoints())
             return;
 
-        this._syncVisibilityId = Meta.later_add(
-            Meta.LaterType.BEFORE_REDRAW,
-            () => {
-                const { hasWindows } = Main.sessionMode;
-                const { WPA2_ENT, WPA_ENT } = NMAccessPointSecurity;
-
-                for (const network of this._networks) {
-                    const [firstAp] = network.accessPoints;
-                    network.item.visible =
-                        hasWindows ||
-                        network.connections.length > 0 ||
-                        (firstAp._secType !== WPA2_ENT && firstAp._secType !== WPA_ENT);
-                }
-                this._syncVisibilityId = 0;
-                return GLib.SOURCE_REMOVE;
-            });
+        this._networkItems.get(network)?.destroy();
+        this._networkItems.delete(network);
+        network.destroy();
     }
 
-    _accessPointRemoved(device, accessPoint) {
-        let res = this._findExistingNetwork(accessPoint);
+    _syncNetworksList() {
+        const {hasWindows} = Main.sessionMode;
+        const sortedItems = [...this._networkItems.values()]
+            .sort((one, two) => one.network.compare(two.network));
 
-        if (res == null) {
-            log('Removing an access point that was never added');
-            return;
+        for (const [index, item] of sortedItems.entries())
+            this._itemBox.set_child_at_index(item, index);
+
+        for (const [net, item] of this._networkItems) {
+            item.visible =
+                hasWindows || net.hasConnections() || net.canAutoconnect();
         }
-
-        let network = this._networks[res.network];
-        network.accessPoints.splice(res.ap, 1);
-
-        if (network.accessPoints.length == 0) {
-            network.item.destroy();
-            this._networks.splice(res.network, 1);
-        } else {
-            network.item.updateBestAP(network.accessPoints[0]);
-            this._resortItems();
-        }
-
-        this._syncView();
-    }
-
-    _resortItems() {
-        let adjustment = this._scrollView.vscroll.adjustment;
-        let scrollValue = adjustment.value;
-
-        this._itemBox.remove_all_children();
-        this._networks.forEach(network => {
-            this._itemBox.add_child(network.item);
-        });
-
-        adjustment.value = scrollValue;
     }
 
     _selectNetwork(network) {
-        if (this._selectedNetwork)
-            this._selectedNetwork.item.remove_style_pseudo_class('selected');
-
+        this._networkItems.get(this._selectedNetwork)?.remove_style_pseudo_class('selected');
         this._selectedNetwork = network;
         this._updateSensitivity();
-
-        if (this._selectedNetwork)
-            this._selectedNetwork.item.add_style_pseudo_class('selected');
+        this._networkItems.get(this._selectedNetwork)?.add_style_pseudo_class('selected');
     }
 
     _createNetworkItem(network) {
-        network.item = new NMWirelessDialogItem(network);
-        network.item.setActive(network == this._selectedNetwork);
-        network.item.hide();
-        network.item.connect('selected', () => {
-            Util.ensureActorVisibleInScrollView(this._scrollView, network.item);
+        const item = new NMWirelessDialogItem(network);
+        item.connect('selected', () => {
+            Util.ensureActorVisibleInScrollView(this._scrollView, item);
             this._selectNetwork(network);
         });
-        network.item.connect('destroy', () => {
+        item.connect('destroy', () => {
             let keyFocus = global.stage.key_focus;
-            if (keyFocus && keyFocus.contains(network.item))
+            if (keyFocus && keyFocus.contains(item))
                 this._itemBox.grab_key_focus();
         });
+        return item;
     }
 });
 
