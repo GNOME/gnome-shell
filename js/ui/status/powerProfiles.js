@@ -15,15 +15,21 @@ const OBJECT_PATH = '/net/hadess/PowerProfiles';
 const PowerProfilesIface = loadInterfaceXML('net.hadess.PowerProfiles');
 const PowerProfilesProxy = Gio.DBusProxy.makeProxyWrapper(PowerProfilesIface);
 
-const PROFILE_LABELS = {
-    'performance': C_('Power profile', 'Performance'),
-    'balanced': C_('Power profile', 'Balanced'),
-    'power-saver': C_('Power profile', 'Power Saver'),
-};
-const PROFILE_ICONS = {
-    'performance': 'power-profile-performance-symbolic',
-    'balanced': 'power-profile-balanced-symbolic',
-    'power-saver': 'power-profile-power-saver-symbolic',
+const PROFILE_PARAMS = {
+    'performance': {
+        label: C_('Power profile', 'Performance'),
+        iconName: 'power-profile-performance-symbolic',
+    },
+
+    'balanced': {
+        label: C_('Power profile', 'Balanced'),
+        iconName: 'power-profile-balanced-symbolic',
+    },
+
+    'power-saver': {
+        label: C_('Power profile', 'Power Saver'),
+        iconName: 'power-profile-power-saver-symbolic',
+    },
 };
 
 var Indicator = GObject.registerClass(
@@ -77,11 +83,11 @@ class Indicator extends PanelMenu.SystemIndicator {
             .map(p => p.Profile.unpack())
             .reverse();
         for (const profile of profiles) {
-            const label = PROFILE_LABELS[profile];
+            const {label, iconName} = PROFILE_PARAMS[profile];
             if (!label)
                 continue;
 
-            const item = new PopupMenu.PopupMenuItem(label);
+            const item = new PopupMenu.PopupImageMenuItem(label, iconName);
             item.connect('activate',
                 () => (this._proxy.ActiveProfile = profile));
             this._profileItems.set(profile, item);
@@ -101,7 +107,8 @@ class Indicator extends PanelMenu.SystemIndicator {
                 : PopupMenu.Ornament.NONE);
         }
 
-        this._item.label.text = PROFILE_LABELS[this._proxy.ActiveProfile];
-        this._item.icon.icon_name = PROFILE_ICONS[this._proxy.ActiveProfile];
+        const {label, iconName} = PROFILE_PARAMS[this._proxy.ActiveProfile];
+        this._item.label.text = label;
+        this._item.icon.icon_name = iconName;
     }
 });
