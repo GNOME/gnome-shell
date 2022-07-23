@@ -468,6 +468,8 @@ class PopupImageMenuItem extends PopupBaseMenuItem {
         this.add_child(this.label);
         this.label_actor = this.label;
 
+        this.set_child_above_sibling(this._ornamentLabel, this.label);
+
         this.setIcon(icon);
     }
 
