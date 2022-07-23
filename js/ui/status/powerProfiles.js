@@ -103,7 +103,7 @@ class Indicator extends PanelMenu.SystemIndicator {
 
         for (const [profile, item] of this._profileItems) {
             item.setOrnament(profile === this._proxy.ActiveProfile
-                ? PopupMenu.Ornament.DOT
+                ? PopupMenu.Ornament.CHECK
                 : PopupMenu.Ornament.NONE);
         }
 
