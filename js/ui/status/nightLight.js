@@ -1,7 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported Indicator */
 
-const { Gio, GObject } = imports.gi;
+const {Gio, GLib, GObject} = imports.gi;
 
 const Main = imports.ui.main;
 const PanelMenu = imports.ui.panelMenu;
@@ -13,7 +13,7 @@ const BUS_NAME = 'org.gnome.SettingsDaemon.Color';
 const OBJECT_PATH = '/org/gnome/SettingsDaemon/Color';
 
 const ColorInterface = loadInterfaceXML('org.gnome.SettingsDaemon.Color');
-const ColorProxy = Gio.DBusProxy.makeProxyWrapper(ColorInterface);
+const colorInfo = Gio.DBusInterfaceInfo.new_for_xml(ColorInterface);
 
 var Indicator = GObject.registerClass(
 class Indicator extends PanelMenu.SystemIndicator {
@@ -22,16 +22,17 @@ class Indicator extends PanelMenu.SystemIndicator {
 
         this._indicator = this._addIndicator();
         this._indicator.icon_name = 'night-light-symbolic';
-        this._proxy = new ColorProxy(Gio.DBus.session, BUS_NAME, OBJECT_PATH,
-                                     (proxy, error) => {
-                                         if (error) {
-                                             log(error.message);
-                                             return;
-                                         }
-                                         this._proxy.connect('g-properties-changed',
-                                                             this._sync.bind(this));
-                                         this._sync();
-                                     });
+
+        this._proxy = new Gio.DBusProxy({
+            g_connection: Gio.DBus.session,
+            g_name: BUS_NAME,
+            g_object_path: OBJECT_PATH,
+            g_interface_name: colorInfo.name,
+            g_interface_info: colorInfo,
+        });
+        this._proxy.connect('g-properties-changed', () => this._sync());
+        this._proxy.init_async(GLib.PRIORITY_DEFAULT, null)
+            .catch(e => console.error(e.message));
 
         this._item = new PopupMenu.PopupSubMenuMenuItem("", true);
         this._item.icon.icon_name = 'night-light-symbolic';
