@@ -3,9 +3,7 @@
 
 const {Gio, GLib, GObject} = imports.gi;
 
-const Main = imports.ui.main;
-const PanelMenu = imports.ui.panelMenu;
-const PopupMenu = imports.ui.popupMenu;
+const {QuickToggle, SystemIndicator} = imports.ui.quickSettings;
 
 const {loadInterfaceXML} = imports.misc.fileUtils;
 
@@ -91,50 +89,48 @@ function getRfkillManager() {
     return _manager;
 }
 
+const RfkillToggle = GObject.registerClass(
+class RfkillToggle extends QuickToggle {
+    _init() {
+        super._init({
+            label: _('Airplane Mode'),
+            iconName: 'airplane-mode-symbolic',
+        });
+
+        this._manager = getRfkillManager();
+        this._manager.bind_property('show-airplane-mode',
+            this, 'visible',
+            GObject.BindingFlags.SYNC_CREATE);
+        this._manager.bind_property('airplane-mode',
+            this, 'checked',
+            GObject.BindingFlags.SYNC_CREATE);
+
+        this.connect('clicked',
+            () => (this._manager.airplaneMode = !this._manager.airplaneMode));
+    }
+});
+
 var Indicator = GObject.registerClass(
-class Indicator extends PanelMenu.SystemIndicator {
+class Indicator extends SystemIndicator {
     _init() {
         super._init();
 
-        this._manager = getRfkillManager();
-        this._manager.connect('notify', () => this._sync());
-
         this._indicator = this._addIndicator();
         this._indicator.icon_name = 'airplane-mode-symbolic';
-        this._indicator.hide();
 
-        // The menu only appears when airplane mode is on, so just
-        // statically build it as if it was on, rather than dynamically
-        // changing the menu contents.
-        this._item = new PopupMenu.PopupSubMenuMenuItem(_("Airplane Mode On"), true);
-        this._item.icon.icon_name = 'airplane-mode-symbolic';
-        this._offItem = this._item.menu.addAction(_("Turn Off"), () => {
-            this._manager.airplaneMode = false;
-        });
-        this._item.menu.addSettingsAction(_("Network Settings"), 'gnome-network-panel.desktop');
-        this.menu.addMenuItem(this._item);
-
-        Main.sessionMode.connect('updated', this._sessionUpdated.bind(this));
-        this._sessionUpdated();
+        this._rfkillToggle = new RfkillToggle();
+        this._rfkillToggle.connectObject(
+            'notify::visible', () => this._sync(),
+            'notify::checked', () => this._sync(),
+            this);
+        this.quickSettingsItems.push(this._rfkillToggle);
 
         this._sync();
     }
 
-    _sessionUpdated() {
-        let sensitive = !Main.sessionMode.isLocked && !Main.sessionMode.isGreeter;
-        this.menu.setSensitive(sensitive);
-    }
-
     _sync() {
-        const {airplaneMode, hwAirplaneMode, showAirplaneMode} = this._manager;
-
-        this._indicator.visible = airplaneMode && showAirplaneMode;
-        this._item.visible = airplaneMode && showAirplaneMode;
-        this._offItem.setSensitive(!hwAirplaneMode);
-
-        if (hwAirplaneMode)
-            this._offItem.label.text = _("Use hardware switch to turn off");
-        else
-            this._offItem.label.text = _("Turn Off");
+        // Only show indicator when airplane mode is on
+        const {visible, checked} = this._rfkillToggle;
+        this._indicator.visible = visible && checked;
     }
 });

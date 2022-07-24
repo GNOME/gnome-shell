@@ -385,7 +385,6 @@ class AggregateMenu extends PanelMenu.Button {
 
         this._power = new imports.ui.status.power.Indicator();
         this._powerProfiles = new imports.ui.status.powerProfiles.Indicator();
-        this._rfkill = new imports.ui.status.rfkill.Indicator();
         this._volume = new imports.ui.status.volume.Indicator();
         this._brightness = new imports.ui.status.brightness.Indicator();
         this._system = new imports.ui.status.system.Indicator();
@@ -394,7 +393,6 @@ class AggregateMenu extends PanelMenu.Button {
             this._indicators.add_child(this._network);
         if (this._bluetooth)
             this._indicators.add_child(this._bluetooth);
-        this._indicators.add_child(this._rfkill);
         this._indicators.add_child(this._volume);
         this._indicators.add_child(this._power);
         this._indicators.add_child(this._powerProfiles);
@@ -408,13 +406,11 @@ class AggregateMenu extends PanelMenu.Button {
         if (this._bluetooth)
             this.menu.addMenuItem(this._bluetooth.menu);
 
-        this.menu.addMenuItem(this._rfkill.menu);
         this.menu.addMenuItem(this._power.menu);
         this.menu.addMenuItem(this._powerProfiles.menu);
         this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
         this.menu.addMenuItem(this._system.menu);
 
-        menuLayout.addSizeChild(this._rfkill.menu.actor);
         menuLayout.addSizeChild(this._power.menu.actor);
         menuLayout.addSizeChild(this._powerProfiles.menu.actor);
         menuLayout.addSizeChild(this._system.menu.actor);
@@ -437,18 +433,21 @@ class QuickSettings extends PanelMenu.Button {
         this._location = new imports.ui.status.location.Indicator();
         this._thunderbolt = new imports.ui.status.thunderbolt.Indicator();
         this._nightLight = new imports.ui.status.nightLight.Indicator();
+        this._rfkill = new imports.ui.status.rfkill.Indicator();
         this._unsafeMode = new UnsafeModeIndicator();
 
         this._indicators.add_child(this._remoteAccess);
         this._indicators.add_child(this._thunderbolt);
         this._indicators.add_child(this._location);
         this._indicators.add_child(this._nightLight);
+        this._indicators.add_child(this._rfkill);
         this._indicators.add_child(this._unsafeMode);
 
         this._addItems(this._remoteAccess.quickSettingsItems);
         this._addItems(this._thunderbolt.quickSettingsItems);
         this._addItems(this._location.quickSettingsItems);
         this._addItems(this._nightLight.quickSettingsItems);
+        this._addItems(this._rfkill.quickSettingsItems);
         this._addItems(this._unsafeMode.quickSettingsItems);
     }
 
