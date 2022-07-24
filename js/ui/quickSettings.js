@@ -1,4 +1,4 @@
-/* exported QuickToggle, QuickSettingsMenu */
+/* exported QuickToggle, QuickSettingsMenu, SystemIndicator */
 const {Atk, Clutter, Gio, GLib, GObject, Pango, St} = imports.gi;
 
 const Main = imports.ui.main;
@@ -268,3 +268,28 @@ var QuickSettingsMenu = class extends PopupMenu.PopupMenu {
             this._grid, item, 'column-span', colSpan);
     }
 };
+
+var SystemIndicator = GObject.registerClass(
+class SystemIndicator extends St.BoxLayout {
+    _init() {
+        super._init({
+            style_class: 'panel-status-indicators-box',
+            reactive: true,
+            visible: false,
+        });
+
+        this.quickSettingsItems = [];
+    }
+
+    _syncIndicatorsVisible() {
+        this.visible = this.get_children().some(a => a.visible);
+    }
+
+    _addIndicator() {
+        const icon = new St.Icon({style_class: 'system-status-icon'});
+        this.add_actor(icon);
+        icon.connect('notify::visible', () => this._syncIndicatorsVisible());
+        this._syncIndicatorsVisible();
+        return icon;
+    }
+});
