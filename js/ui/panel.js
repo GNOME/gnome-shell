@@ -389,9 +389,7 @@ class AggregateMenu extends PanelMenu.Button {
         this._volume = new imports.ui.status.volume.Indicator();
         this._brightness = new imports.ui.status.brightness.Indicator();
         this._system = new imports.ui.status.system.Indicator();
-        this._nightLight = new imports.ui.status.nightLight.Indicator();
 
-        this._indicators.add_child(this._nightLight);
         if (this._network)
             this._indicators.add_child(this._network);
         if (this._bluetooth)
@@ -413,7 +411,6 @@ class AggregateMenu extends PanelMenu.Button {
         this.menu.addMenuItem(this._rfkill.menu);
         this.menu.addMenuItem(this._power.menu);
         this.menu.addMenuItem(this._powerProfiles.menu);
-        this.menu.addMenuItem(this._nightLight.menu);
         this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
         this.menu.addMenuItem(this._system.menu);
 
@@ -439,16 +436,19 @@ class QuickSettings extends PanelMenu.Button {
         this._remoteAccess = new imports.ui.status.remoteAccess.RemoteAccessApplet();
         this._location = new imports.ui.status.location.Indicator();
         this._thunderbolt = new imports.ui.status.thunderbolt.Indicator();
+        this._nightLight = new imports.ui.status.nightLight.Indicator();
         this._unsafeMode = new UnsafeModeIndicator();
 
         this._indicators.add_child(this._remoteAccess);
         this._indicators.add_child(this._thunderbolt);
         this._indicators.add_child(this._location);
+        this._indicators.add_child(this._nightLight);
         this._indicators.add_child(this._unsafeMode);
 
         this._addItems(this._remoteAccess.quickSettingsItems);
         this._addItems(this._thunderbolt.quickSettingsItems);
         this._addItems(this._location.quickSettingsItems);
+        this._addItems(this._nightLight.quickSettingsItems);
         this._addItems(this._unsafeMode.quickSettingsItems);
     }
 
