@@ -6,3 +6,17 @@
   spacing-rows: 3 * $base_padding;
   spacing-columns: 2 * $base_padding;
 }
+
+.quick-toggle {
+  border-radius: 99px;
+  min-width: 11.5em;
+  max-width: 11.5em;
+  min-height: 48px;
+
+  &:checked { @include button(default); }
+
+  & > StBoxLayout { spacing: $base_padding; }
+
+  .quick-toggle-label { font-weight: bold; }
+  .quick-toggle-icon { icon-size: $base_icon_size; }
+}

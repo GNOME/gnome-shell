@@ -1,8 +1,71 @@
-/* exported QuickSettingsMenu */
-const {Clutter, GLib, GObject, St} = imports.gi;
+/* exported QuickToggle, QuickSettingsMenu */
+const {Atk, Clutter, Gio, GLib, GObject, Pango, St} = imports.gi;
 
 const Main = imports.ui.main;
 const PopupMenu = imports.ui.popupMenu;
+
+var QuickToggle = GObject.registerClass({
+    Properties: {
+        'icon-name': GObject.ParamSpec.override('icon-name', St.Button),
+        'gicon': GObject.ParamSpec.object('gicon', '', '',
+            GObject.ParamFlags.READWRITE,
+            Gio.Icon),
+        'label': GObject.ParamSpec.string('label', '', '',
+            GObject.ParamFlags.READWRITE,
+            ''),
+    },
+}, class QuickToggle extends St.Button {
+    _init(params) {
+        super._init({
+            style_class: 'quick-toggle button',
+            accessible_role: Atk.Role.TOGGLE_BUTTON,
+            can_focus: true,
+            ...params,
+        });
+
+        this._box = new St.BoxLayout();
+        this.set_child(this._box);
+
+        const iconProps = {};
+        if (this.gicon)
+            iconProps['gicon'] = this.gicon;
+        if (this.iconName)
+            iconProps['icon-name'] = this.iconName;
+
+        this._icon = new St.Icon({
+            style_class: 'quick-toggle-icon',
+            x_expand: false,
+            ...iconProps,
+        });
+        this._box.add_child(this._icon);
+
+        // bindings are in the "wrong" direction, so we
+        // pick up StIcon's linking of the two properties
+        this._icon.bind_property('icon-name',
+            this, 'icon-name',
+            GObject.BindingFlags.SYNC_CREATE |
+            GObject.BindingFlags.BIDIRECTIONAL);
+        this._icon.bind_property('gicon',
+            this, 'gicon',
+            GObject.BindingFlags.SYNC_CREATE |
+            GObject.BindingFlags.BIDIRECTIONAL);
+
+        this._label = new St.Label({
+            style_class: 'quick-toggle-label',
+            y_align: Clutter.ActorAlign.CENTER,
+            x_align: Clutter.ActorAlign.START,
+            x_expand: true,
+        });
+        this.label_actor = this._label;
+        this._box.add_child(this._label);
+
+        this._label.clutter_text.ellipsize = Pango.EllipsizeMode.END;
+
+        this.bind_property('label',
+            this._label, 'text',
+            GObject.BindingFlags.SYNC_CREATE);
+    }
+});
 
 const QuickSettingsLayoutMeta = GObject.registerClass({
     Properties: {
