@@ -11,12 +11,15 @@ const DND = imports.ui.dnd;
 const Overview = imports.ui.overview;
 const PopupMenu = imports.ui.popupMenu;
 const PanelMenu = imports.ui.panelMenu;
+const {QuickSettingsMenu} = imports.ui.quickSettings;
 const Main = imports.ui.main;
 
 var PANEL_ICON_SIZE = 16;
 var APP_MENU_ICON_MARGIN = 0;
 
 var BUTTON_DND_ACTIVATION_TIMEOUT = 250;
+
+const N_QUICK_SETTINGS_COLUMNS = 2;
 
 /**
  * AppMenuButton:
@@ -432,10 +435,29 @@ class AggregateMenu extends PanelMenu.Button {
     }
 });
 
+var QuickSettings = GObject.registerClass(
+class QuickSettings extends PanelMenu.Button {
+    _init() {
+        super._init(0.0, C_('System menu in the top bar', 'System'), true);
+
+        this._indicators = new St.BoxLayout({
+            style_class: 'panel-status-indicators-box',
+        });
+        this.add_child(this._indicators);
+
+        this.setMenu(new QuickSettingsMenu(this, N_QUICK_SETTINGS_COLUMNS));
+    }
+
+    _addItems(items, colSpan = 1) {
+        items.forEach(item => this.menu.addItem(item, colSpan));
+    }
+});
+
 const PANEL_ITEM_IMPLEMENTATIONS = {
     'activities': ActivitiesButton,
     'aggregateMenu': AggregateMenu,
     'appMenu': AppMenuButton,
+    'quickSettings': QuickSettings,
     'dateMenu': imports.ui.dateMenu.DateMenuButton,
     'a11y': imports.ui.status.accessibility.ATIndicator,
     'keyboard': imports.ui.status.keyboard.InputSourceIndicator,
