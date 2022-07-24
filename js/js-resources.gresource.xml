@@ -93,6 +93,7 @@
     <file>ui/pointerA11yTimeout.js</file>
     <file>ui/pointerWatcher.js</file>
     <file>ui/popupMenu.js</file>
+    <file>ui/quickSettings.js</file>
     <file>ui/remoteSearch.js</file>
     <file>ui/ripples.js</file>
     <file>ui/runDialog.js</file>

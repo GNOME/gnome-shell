@@ -29,6 +29,7 @@ theme_sources = files([
   'gnome-shell-sass/widgets/_overview.scss',
   'gnome-shell-sass/widgets/_panel.scss',
   'gnome-shell-sass/widgets/_popovers.scss',
+  'gnome-shell-sass/widgets/_quick-settings.scss',
   'gnome-shell-sass/widgets/_screen-shield.scss',
   'gnome-shell-sass/widgets/_screenshot.scss',
   'gnome-shell-sass/widgets/_scrollbars.scss',
