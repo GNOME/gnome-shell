@@ -617,7 +617,7 @@ msgstr "Bloqueja la pantalla"
 #. Translators: A list of keywords that match the lock screen action, separated by semicolons
 #: js/misc/systemActions.js:103
 msgid "lock screen"
-msgstr "bloca la pantalla"
+msgstr "bloqueja;pantalla;bloca"
 
 #. Translators: The name of the logout action in search
 #: js/misc/systemActions.js:108
@@ -1051,7 +1051,7 @@ msgstr "S'ha desconnectat un dispositiu extern"
 
 #: js/ui/components/automountManager.js:207
 msgid "Unable to unlock volume"
-msgstr "No es pot desblocar el volum"
+msgstr "No es pot desbloquejar el volum"
 
 #: js/ui/components/automountManager.js:208
 msgid "The installed udisks version does not support the PIM setting"
@@ -1743,7 +1743,7 @@ msgstr "El GNOME necessita bloquejar la pantalla"
 #. screen, where we're not affected by grabs
 #: js/ui/screenShield.js:272 js/ui/screenShield.js:647
 msgid "Unable to lock"
-msgstr "No es pot blocar"
+msgstr "No es pot bloquejar"
 
 #: js/ui/screenShield.js:273 js/ui/screenShield.js:648
 msgid "Lock was blocked by an application"
