@@ -100,6 +100,9 @@ var ExtensionManager = class extends Signals.EventEmitter {
         if (extension.state != ExtensionState.ENABLED)
             return;
 
+        extension.state = ExtensionState.DISABLING;
+        this.emit('extension-state-changed', extension);
+
         // "Rebase" the extension order by disabling and then enabling extensions
         // in order to help prevent conflicts.
 
@@ -163,6 +166,9 @@ var ExtensionManager = class extends Signals.EventEmitter {
 
         if (extension.state != ExtensionState.DISABLED)
             return;
+
+        extension.state = ExtensionState.ENABLING;
+        this.emit('extension-state-changed', extension);
 
         let stylesheetNames = [`${global.session_mode}.css`, 'stylesheet.css'];
         let theme = St.ThemeContext.get_for_stage(global.stage).get_theme();

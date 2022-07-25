@@ -38,6 +38,8 @@ var ExtensionState = {
     OUT_OF_DATE: 4,
     DOWNLOADING: 5,
     INITIALIZED: 6,
+    DISABLING: 7,
+    ENABLING: 8,
 
     // Used as an error state for operations on unknown extensions,
     // should never be in a real extensionMeta object.

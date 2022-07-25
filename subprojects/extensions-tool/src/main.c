@@ -43,6 +43,10 @@ extension_state_to_string (ExtensionState state)
       return "DOWNLOADING";
     case STATE_INITIALIZED:
       return "INITIALIZED";
+    case STATE_DISABLING:
+      return "DISABLING";
+    case STATE_ENABLING:
+      return "ENABLING";
     case STATE_UNINSTALLED:
       return "UNINSTALLED";
     }

@@ -77,6 +77,8 @@
                 <member>4: OUT_OF_DATE</member>
                 <member>5: DOWNLOADING</member>
                 <member>6: INITIALIZED</member>
+                <member>7: DISABLING</member>
+                <member>8: ENABLING</member>
                 <member>99: UNINSTALLED</member>
               </simplelist>
             </para></listitem>
