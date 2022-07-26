@@ -378,11 +378,6 @@ class AggregateMenu extends PanelMenu.Button {
         else
             this._network = null;
 
-        if (Config.HAVE_BLUETOOTH)
-            this._bluetooth = new imports.ui.status.bluetooth.Indicator();
-        else
-            this._bluetooth = null;
-
         this._power = new imports.ui.status.power.Indicator();
         this._powerProfiles = new imports.ui.status.powerProfiles.Indicator();
         this._volume = new imports.ui.status.volume.Indicator();
@@ -391,8 +386,6 @@ class AggregateMenu extends PanelMenu.Button {
 
         if (this._network)
             this._indicators.add_child(this._network);
-        if (this._bluetooth)
-            this._indicators.add_child(this._bluetooth);
         this._indicators.add_child(this._volume);
         this._indicators.add_child(this._power);
         this._indicators.add_child(this._powerProfiles);
@@ -402,9 +395,6 @@ class AggregateMenu extends PanelMenu.Button {
         this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
         if (this._network)
             this.menu.addMenuItem(this._network.menu);
-
-        if (this._bluetooth)
-            this.menu.addMenuItem(this._bluetooth.menu);
 
         this.menu.addMenuItem(this._power.menu);
         this.menu.addMenuItem(this._powerProfiles.menu);
@@ -429,6 +419,11 @@ class QuickSettings extends PanelMenu.Button {
 
         this.setMenu(new QuickSettingsMenu(this, N_QUICK_SETTINGS_COLUMNS));
 
+        if (Config.HAVE_BLUETOOTH)
+            this._bluetooth = new imports.ui.status.bluetooth.Indicator();
+        else
+            this._bluetooth = null;
+
         this._remoteAccess = new imports.ui.status.remoteAccess.RemoteAccessApplet();
         this._location = new imports.ui.status.location.Indicator();
         this._thunderbolt = new imports.ui.status.thunderbolt.Indicator();
@@ -440,12 +435,16 @@ class QuickSettings extends PanelMenu.Button {
         this._indicators.add_child(this._thunderbolt);
         this._indicators.add_child(this._location);
         this._indicators.add_child(this._nightLight);
+        if (this._bluetooth)
+            this._indicators.add_child(this._bluetooth);
         this._indicators.add_child(this._rfkill);
         this._indicators.add_child(this._unsafeMode);
 
         this._addItems(this._remoteAccess.quickSettingsItems);
         this._addItems(this._thunderbolt.quickSettingsItems);
         this._addItems(this._location.quickSettingsItems);
+        if (this._bluetooth)
+            this._addItems(this._bluetooth.quickSettingsItems);
         this._addItems(this._nightLight.quickSettingsItems);
         this._addItems(this._rfkill.quickSettingsItems);
         this._addItems(this._unsafeMode.quickSettingsItems);

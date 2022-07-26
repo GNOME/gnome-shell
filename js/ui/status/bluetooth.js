@@ -1,13 +1,11 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported Indicator */
 
-const { Gio, GLib, GnomeBluetooth, GObject } = imports.gi;
+const {Gio, GLib, GnomeBluetooth, GObject} = imports.gi;
 
-const Main = imports.ui.main;
-const PanelMenu = imports.ui.panelMenu;
-const PopupMenu = imports.ui.popupMenu;
+const {QuickToggle, SystemIndicator} = imports.ui.quickSettings;
 
-const { loadInterfaceXML } = imports.misc.fileUtils;
+const {loadInterfaceXML} = imports.misc.fileUtils;
 
 const BUS_NAME = 'org.gnome.SettingsDaemon.Rfkill';
 const OBJECT_PATH = '/org/gnome/SettingsDaemon/Rfkill';
@@ -149,32 +147,42 @@ const BtClient = GObject.registerClass({
     }
 });
 
+const BluetoothToggle = GObject.registerClass(
+class BluetoothToggle extends QuickToggle {
+    _init(client) {
+        super._init({label: _('Bluetooth')});
+
+        this._client = client;
+
+        this._client.bind_property('available',
+            this, 'visible',
+            GObject.BindingFlags.SYNC_CREATE);
+        this._client.bind_property('active',
+            this, 'checked',
+            GObject.BindingFlags.SYNC_CREATE);
+        this._client.bind_property_full('active',
+            this, 'icon-name',
+            GObject.BindingFlags.SYNC_CREATE,
+            (bind, source) => [true, source ? 'bluetooth-active-symbolic' : 'bluetooth-disabled-symbolic'],
+            null);
+
+        this.connect('clicked', () => this._client.toggleActive());
+    }
+});
+
 var Indicator = GObject.registerClass(
-class Indicator extends PanelMenu.SystemIndicator {
+class Indicator extends SystemIndicator {
     _init() {
         super._init();
+
+        this._client = new BtClient();
+        this._client.connect('devices-changed', () => this._sync());
 
         this._indicator = this._addIndicator();
         this._indicator.icon_name = 'bluetooth-active-symbolic';
 
-        this._client = new BtClient();
-        this._client.connectObject(
-            'notify::active', () => this._sync(),
-            'devices-changed', () => this._sync(), this);
+        this.quickSettingsItems.push(new BluetoothToggle(this._client));
 
-        this._item = new PopupMenu.PopupSubMenuMenuItem(_('Bluetooth'), true);
-        this._client.bind_property('available',
-            this._item, 'visible',
-            GObject.BindingFlags.SYNC_CREATE);
-
-        this._toggleItem = new PopupMenu.PopupMenuItem('');
-        this._toggleItem.connect('activate', () => this._client.toggleActive());
-        this._item.menu.addMenuItem(this._toggleItem);
-
-        this._item.menu.addSettingsAction(_('Bluetooth Settings'), 'gnome-bluetooth-panel.desktop');
-        this.menu.addMenuItem(this._item);
-
-        Main.sessionMode.connect('updated', this._sync.bind(this));
         this._sync();
     }
 
@@ -183,24 +191,6 @@ class Indicator extends PanelMenu.SystemIndicator {
         const connectedDevices = devices.filter(dev => dev.connected);
         const nConnectedDevices = connectedDevices.length;
 
-        let sensitive = !Main.sessionMode.isLocked && !Main.sessionMode.isGreeter;
-
-        this.menu.setSensitive(sensitive);
         this._indicator.visible = nConnectedDevices > 0;
-
-        this._item.icon.icon_name = this._client.active
-            ? 'bluetooth-active-symbolic' : 'bluetooth-disabled-symbolic';
-
-        if (nConnectedDevices > 1)
-            /* Translators: this is the number of connected bluetooth devices */
-            this._item.label.text = ngettext('%d Connected', '%d Connected', nConnectedDevices).format(nConnectedDevices);
-        else if (nConnectedDevices === 1)
-            this._item.label.text = connectedDevices[0].alias;
-        else if (this._client.active)
-            this._item.label.text = _('Bluetooth On');
-        else
-            this._item.label.text = _('Bluetooth Off');
-
-        this._toggleItem.label.text = this._client.active ? _('Turn Off') : _('Turn On');
     }
 });
