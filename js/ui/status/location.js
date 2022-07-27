@@ -4,9 +4,9 @@
 const { Clutter, Gio, GLib, GObject, Shell, St } = imports.gi;
 
 const Dialog = imports.ui.dialog;
-const PanelMenu = imports.ui.panelMenu;
 const ModalDialog = imports.ui.modalDialog;
 const PermissionStore = imports.misc.permissionStore;
+const {SystemIndicator} = imports.ui.quickSettings;
 
 const { loadInterfaceXML } = imports.misc.fileUtils;
 
@@ -202,7 +202,7 @@ var GeoclueAgent = GObject.registerClass({
 });
 
 var Indicator = GObject.registerClass(
-class Indicator extends PanelMenu.SystemIndicator {
+class Indicator extends SystemIndicator {
     _init() {
         super._init();
 
