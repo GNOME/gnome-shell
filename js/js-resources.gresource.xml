@@ -133,6 +133,7 @@
     <file>ui/components/keyring.js</file>
 
     <file>ui/status/accessibility.js</file>
+    <file>ui/status/autoRotate.js</file>
     <file>ui/status/brightness.js</file>
     <file>ui/status/dwellClick.js</file>
     <file>ui/status/location.js</file>

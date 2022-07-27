@@ -62,27 +62,6 @@ class Indicator extends PanelMenu.SystemIndicator {
         let bindFlags = GObject.BindingFlags.DEFAULT | GObject.BindingFlags.SYNC_CREATE;
         let item;
 
-        item = new PopupMenu.PopupImageMenuItem(
-            this._systemActions.getName('lock-orientation'),
-            this._systemActions.orientation_lock_icon);
-
-        item.connect('activate', () => {
-            this.menu.itemActivated(BoxPointer.PopupAnimation.NONE);
-            this._systemActions.activateLockOrientation();
-        });
-        this.menu.addMenuItem(item);
-        this._orientationLockItem = item;
-        this._systemActions.bind_property('can-lock-orientation',
-            this._orientationLockItem, 'visible',
-            bindFlags);
-        this._systemActions.connect('notify::orientation-lock-icon', () => {
-            let iconName = this._systemActions.orientation_lock_icon;
-            let labelText = this._systemActions.getName("lock-orientation");
-
-            this._orientationLockItem.setIcon(iconName);
-            this._orientationLockItem.label.text = labelText;
-        });
-
         let app = this._settingsApp = Shell.AppSystem.get_default().lookup_app(
             'org.gnome.Settings.desktop');
         if (app) {
