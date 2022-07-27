@@ -11,7 +11,7 @@ const DND = imports.ui.dnd;
 const Overview = imports.ui.overview;
 const PopupMenu = imports.ui.popupMenu;
 const PanelMenu = imports.ui.panelMenu;
-const {QuickSettingsMenu} = imports.ui.quickSettings;
+const {QuickSettingsMenu, SystemIndicator} = imports.ui.quickSettings;
 const Main = imports.ui.main;
 
 var PANEL_ICON_SIZE = 16;
@@ -319,7 +319,7 @@ class ActivitiesButton extends PanelMenu.Button {
 });
 
 const UnsafeModeIndicator = GObject.registerClass(
-class UnsafeModeIndicator extends PanelMenu.SystemIndicator {
+class UnsafeModeIndicator extends SystemIndicator {
     _init() {
         super._init();
 
@@ -393,7 +393,6 @@ class AggregateMenu extends PanelMenu.Button {
         this._location = new imports.ui.status.location.Indicator();
         this._nightLight = new imports.ui.status.nightLight.Indicator();
         this._thunderbolt = new imports.ui.status.thunderbolt.Indicator();
-        this._unsafeMode = new UnsafeModeIndicator();
 
         this._indicators.add_child(this._remoteAccess);
         this._indicators.add_child(this._thunderbolt);
@@ -405,7 +404,6 @@ class AggregateMenu extends PanelMenu.Button {
             this._indicators.add_child(this._bluetooth);
         this._indicators.add_child(this._rfkill);
         this._indicators.add_child(this._volume);
-        this._indicators.add_child(this._unsafeMode);
         this._indicators.add_child(this._power);
         this._indicators.add_child(this._powerProfiles);
 
@@ -446,6 +444,12 @@ class QuickSettings extends PanelMenu.Button {
         this.add_child(this._indicators);
 
         this.setMenu(new QuickSettingsMenu(this, N_QUICK_SETTINGS_COLUMNS));
+
+        this._unsafeMode = new UnsafeModeIndicator();
+
+        this._indicators.add_child(this._unsafeMode);
+
+        this._addItems(this._unsafeMode.quickSettingsItems);
     }
 
     _addItems(items, colSpan = 1) {
