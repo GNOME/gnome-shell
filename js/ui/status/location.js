@@ -4,9 +4,7 @@
 const { Clutter, Gio, GLib, GObject, Shell, St } = imports.gi;
 
 const Dialog = imports.ui.dialog;
-const Main = imports.ui.main;
 const PanelMenu = imports.ui.panelMenu;
-const PopupMenu = imports.ui.popupMenu;
 const ModalDialog = imports.ui.modalDialog;
 const PermissionStore = imports.misc.permissionStore;
 
@@ -220,44 +218,6 @@ class Indicator extends PanelMenu.SystemIndicator {
             this._indicator,
             'visible',
             GObject.BindingFlags.SYNC_CREATE);
-
-        this._item = new PopupMenu.PopupSubMenuMenuItem('', true);
-        this._item.icon.icon_name = 'find-location-symbolic';
-        this._agent.bind_property('in-use',
-            this._item,
-            'visible',
-            GObject.BindingFlags.SYNC_CREATE);
-
-        this._item.label.text = _('Location Enabled');
-        this._onOffAction = this._item.menu.addAction(_('Disable'),
-            () => (this._agent.enabled = !this._agent.enabled));
-        this._item.menu.addSettingsAction(_('Privacy Settings'), 'gnome-location-panel.desktop');
-
-        this.menu.addMenuItem(this._item);
-
-        this._agent.connectObject(
-            'notify::enabled', () => this._sync(),
-            'notify::in-use', () => this._sync(), this);
-
-        Main.sessionMode.connect('updated', this._onSessionUpdated.bind(this));
-        this._onSessionUpdated();
-    }
-
-    _onSessionUpdated() {
-        let sensitive = !Main.sessionMode.isLocked && !Main.sessionMode.isGreeter;
-        this.menu.setSensitive(sensitive);
-    }
-
-    _sync() {
-        if (this._agent.enabled) {
-            this._item.label.text = this._indicator.visible
-                ? _('Location In Use')
-                : _('Location Enabled');
-            this._onOffAction.label.text = _('Disable');
-        } else {
-            this._item.label.text = _('Location Disabled');
-            this._onOffAction.label.text = _('Enable');
-        }
     }
 });
 
