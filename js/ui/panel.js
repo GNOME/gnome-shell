@@ -391,10 +391,8 @@ class AggregateMenu extends PanelMenu.Button {
         this._brightness = new imports.ui.status.brightness.Indicator();
         this._system = new imports.ui.status.system.Indicator();
         this._nightLight = new imports.ui.status.nightLight.Indicator();
-        this._thunderbolt = new imports.ui.status.thunderbolt.Indicator();
 
         this._indicators.add_child(this._remoteAccess);
-        this._indicators.add_child(this._thunderbolt);
         this._indicators.add_child(this._nightLight);
         if (this._network)
             this._indicators.add_child(this._network);
@@ -442,11 +440,14 @@ class QuickSettings extends PanelMenu.Button {
         this.setMenu(new QuickSettingsMenu(this, N_QUICK_SETTINGS_COLUMNS));
 
         this._location = new imports.ui.status.location.Indicator();
+        this._thunderbolt = new imports.ui.status.thunderbolt.Indicator();
         this._unsafeMode = new UnsafeModeIndicator();
 
+        this._indicators.add_child(this._thunderbolt);
         this._indicators.add_child(this._location);
         this._indicators.add_child(this._unsafeMode);
 
+        this._addItems(this._thunderbolt.quickSettingsItems);
         this._addItems(this._location.quickSettingsItems);
         this._addItems(this._unsafeMode.quickSettingsItems);
     }

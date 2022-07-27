@@ -8,7 +8,7 @@ const Signals = imports.misc.signals;
 
 const Main = imports.ui.main;
 const MessageTray = imports.ui.messageTray;
-const PanelMenu = imports.ui.panelMenu;
+const {SystemIndicator} = imports.ui.quickSettings;
 
 const { loadInterfaceXML } = imports.misc.fileUtils;
 
@@ -216,7 +216,7 @@ var AuthRobot = class extends Signals.EventEmitter {
 /* eof client.js  */
 
 var Indicator = GObject.registerClass(
-class Indicator extends PanelMenu.SystemIndicator {
+class Indicator extends SystemIndicator {
     _init() {
         super._init();
 
