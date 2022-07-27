@@ -94,7 +94,7 @@ const _modes = {
         panel: {
             left: ['activities', 'appMenu'],
             center: ['dateMenu'],
-            right: ['screenRecording', 'dwellClick', 'a11y', 'keyboard', 'aggregateMenu'],
+            right: ['screenRecording', 'screenSharing', 'dwellClick', 'a11y', 'keyboard', 'aggregateMenu'],
         },
     },
 };

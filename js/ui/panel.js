@@ -441,6 +441,7 @@ const PANEL_ITEM_IMPLEMENTATIONS = {
     'keyboard': imports.ui.status.keyboard.InputSourceIndicator,
     'dwellClick': imports.ui.status.dwellClick.DwellClickIndicator,
     'screenRecording': imports.ui.status.remoteAccess.ScreenRecordingIndicator,
+    'screenSharing': imports.ui.status.remoteAccess.ScreenSharingIndicator,
 };
 
 var Panel = GObject.registerClass(
