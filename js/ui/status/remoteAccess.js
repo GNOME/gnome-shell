@@ -5,12 +5,13 @@ const { Atk, Clutter, GLib, GObject, Meta, St } = imports.gi;
 
 const Main = imports.ui.main;
 const PanelMenu = imports.ui.panelMenu;
+const {SystemIndicator} = imports.ui.quickSettings;
 
 // Minimum amount of time the shared indicator is visible (in micro seconds)
 const MIN_SHARED_INDICATOR_VISIBLE_TIME_US = 5 * GLib.TIME_SPAN_SECOND;
 
 var RemoteAccessApplet = GObject.registerClass(
-class RemoteAccessApplet extends PanelMenu.SystemIndicator {
+class RemoteAccessApplet extends SystemIndicator {
     _init() {
         super._init();
 
