@@ -424,6 +424,7 @@ class QuickSettings extends PanelMenu.Button {
         this._location = new imports.ui.status.location.Indicator();
         this._thunderbolt = new imports.ui.status.thunderbolt.Indicator();
         this._nightLight = new imports.ui.status.nightLight.Indicator();
+        this._darkMode = new imports.ui.status.darkMode.Indicator();
         this._rfkill = new imports.ui.status.rfkill.Indicator();
         this._autoRotate = new imports.ui.status.autoRotate.Indicator();
         this._unsafeMode = new UnsafeModeIndicator();
@@ -433,6 +434,7 @@ class QuickSettings extends PanelMenu.Button {
         this._indicators.add_child(this._thunderbolt);
         this._indicators.add_child(this._location);
         this._indicators.add_child(this._nightLight);
+        this._indicators.add_child(this._darkMode);
         if (this._bluetooth)
             this._indicators.add_child(this._bluetooth);
         this._indicators.add_child(this._rfkill);
@@ -446,6 +448,7 @@ class QuickSettings extends PanelMenu.Button {
         if (this._bluetooth)
             this._addItems(this._bluetooth.quickSettingsItems);
         this._addItems(this._nightLight.quickSettingsItems);
+        this._addItems(this._darkMode.quickSettingsItems);
         this._addItems(this._rfkill.quickSettingsItems);
         this._addItems(this._autoRotate.quickSettingsItems);
         this._addItems(this._unsafeMode.quickSettingsItems);
