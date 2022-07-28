@@ -1,16 +1,9 @@
-# Copyright (C) 2022 The Abkhazian language development fund named after Bagrat Shinkuba
-# This file is distributed under the same license as the gnome-shell package.
-# Нанба Наала <naala-nanba@rambler.ru>, 2022.
-#
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
 "POT-Creation-Date: 2022-07-19 13:32+0000\n"
-"PO-Revision-Date: 2022-07-22 16:00+0000\n"
 "Last-Translator: Нанба Наала <naala-nanba@rambler.ru>\n"
-"Language-Team: Abkhazian <LL@li.org>\n"
+"Language-Team: Abkhazian <ab@li.org>\n"
 "Language: ab\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -370,7 +363,7 @@ msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:294
 msgid "Locations"
-msgstr ""
+msgstr "Аҭыӡҭыԥқәа"
 
 #: data/org.gnome.shell.gschema.xml.in:295
 msgid "The locations to show in world clocks"
@@ -386,7 +379,7 @@ msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:313
 msgid "Location"
-msgstr ""
+msgstr "Аҭыӡҭыԥ"
 
 #: data/org.gnome.shell.gschema.xml.in:314
 msgid "The location for which to show a forecast"
@@ -664,6 +657,7 @@ msgid_plural "%d years ago"
 msgstr[0] ""
 msgstr[1] ""
 
+#. Translators: Time in 24h format
 #: js/misc/util.js:247
 msgid "%H∶%M"
 msgstr "%H∶%M"
@@ -675,21 +669,35 @@ msgstr "%H∶%M"
 msgid "Yesterday, %H∶%M"
 msgstr ""
 
+#. Translators: this is the week day name followed by a time
+#. string in 24h format. i.e. "Monday, 14:30"
 #: js/misc/util.js:259
+#, no-c-format
 msgid "%A, %H∶%M"
 msgstr "%A, %H∶%M"
 
+#. Translators: this is the month name and day number
+#. followed by a time string in 24h format.
+#. i.e. "May 25, 14:30"
 #: js/misc/util.js:265
+#, no-c-format
 msgid "%B %-d, %H∶%M"
 msgstr "%-d %B, %H∶%M"
 
+#. Translators: this is the month name, day number, year
+#. number followed by a time string in 24h format.
+#. i.e. "May 25 2012, 14:30"
 #: js/misc/util.js:271
+#, no-c-format
 msgid "%B %-d %Y, %H∶%M"
 msgstr "%-d %B %Y, %H∶%M"
 
+#. Show only the time if date is on today
+#. eslint-disable-line no-lonely-if
+#. Translators: Time in 12h format
 #: js/misc/util.js:276
 msgid "%l∶%M %p"
-msgstr "%-l∶%M %p"
+msgstr "%l∶%M %p"
 
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 12h format. i.e. "Yesterday, 2:30 pm"
@@ -698,15 +706,26 @@ msgstr "%-l∶%M %p"
 msgid "Yesterday, %l∶%M %p"
 msgstr ""
 
+#. Translators: this is the week day name followed by a time
+#. string in 12h format. i.e. "Monday, 2:30 pm"
 #: js/misc/util.js:288
+#, no-c-format
 msgid "%A, %l∶%M %p"
 msgstr "%A, %-l∶%M %p"
 
+#. Translators: this is the month name and day number
+#. followed by a time string in 12h format.
+#. i.e. "May 25, 2:30 pm"
 #: js/misc/util.js:294
+#, no-c-format
 msgid "%B %-d, %l∶%M %p"
 msgstr "%-d %B, %l∶%M %p"
 
+#. Translators: this is the month name, day number, year
+#. number followed by a time string in 12h format.
+#. i.e. "May 25 2012, 2:30 pm"
 #: js/misc/util.js:300
+#, no-c-format
 msgid "%B %-d %Y, %l∶%M %p"
 msgstr "%-d %B %Y, %l∶%M %p"
 
@@ -858,10 +877,25 @@ msgctxt "grid saturday"
 msgid "S"
 msgstr ""
 
+#. *
+#. * Translators: The header displaying just the month name
+#. * standalone, when this is a month of the current year.
+#. * "%OB" is the new format specifier introduced in glibc 2.27,
+#. * in most cases you should not change it.
+#.
 #: js/ui/calendar.js:402
 msgid "%OB"
 msgstr "%OB"
 
+#. *
+#. * Translators: The header displaying the month name and the year
+#. * number, when this is a month of a different year.  You can
+#. * reorder the format specifiers or add other modifications
+#. * according to the requirements of your language.
+#. * "%OB" is the new format specifier introduced in glibc 2.27,
+#. * in most cases you should not use the old "%B" here unless you
+#. * absolutely know what you are doing.
+#.
 #: js/ui/calendar.js:412
 msgid "%OB %Y"
 msgstr "%OB %Y"
@@ -1041,7 +1075,7 @@ msgstr ""
 
 #: js/ui/ctrlAltTab.js:22 js/ui/overviewControls.js:405
 msgid "Windows"
-msgstr ""
+msgstr "Windows"
 
 #: js/ui/dash.js:205 js/ui/dash.js:251
 msgid "Show Applications"
@@ -1455,9 +1489,9 @@ msgstr ""
 
 #: js/ui/main.js:288 js/ui/overview.js:58
 msgid "Undo"
-msgstr ""
+msgstr "Архынҳәра"
 
-#: js/ui/main.js:314
+#: js/ui/main.js:334
 msgid "Logged in as a privileged user"
 msgstr "Ахаҭара шьақәыргылоуп аԥыжәара змоу хархәаҩҵас "
 
@@ -1787,7 +1821,7 @@ msgstr ""
 
 #: js/ui/status/accessibility.js:47
 msgid "Zoom"
-msgstr ""
+msgstr "Zoom"
 
 #: js/ui/status/accessibility.js:54
 msgid "Screen Reader"
@@ -2004,7 +2038,7 @@ msgstr ""
 
 #: js/ui/status/network.js:840
 msgid "Airplane Mode is On"
-msgstr ""
+msgstr "Авиарежим аҿакуп"
 
 #: js/ui/status/network.js:841
 msgid "Wi-Fi is disabled when airplane mode is on."
@@ -2022,7 +2056,7 @@ msgstr ""
 msgid "Wi-Fi needs to be turned on in order to connect to a network."
 msgstr ""
 
-#: js/ui/status/network.js:851
+#: js/ui/status/network.js:853
 msgid "Turn On Wi-Fi"
 msgstr " Wi-Fi аҿакра"
 
@@ -2066,7 +2100,7 @@ msgstr ""
 msgid "unknown"
 msgstr ""
 
-#: js/ui/status/network.js:1466
+#: js/ui/status/network.js:1468
 msgid "activating…"
 msgstr "Активациа..."
 
@@ -2095,7 +2129,7 @@ msgstr ""
 msgid "VPN Settings"
 msgstr ""
 
-#: js/ui/status/network.js:1608
+#: js/ui/status/network.js:1610
 msgid "VPN"
 msgstr "VPN"
 
@@ -2182,7 +2216,9 @@ msgstr ""
 msgid "%d∶%02d Until Full (%d %%)"
 msgstr ""
 
+#. The icon label
 #: js/ui/status/power.js:145
+#, javascript-format
 msgid "%d %%"
 msgstr "%d %%"
 
@@ -2380,7 +2416,10 @@ msgid_plural "Settings changes will revert in %d seconds"
 msgstr[0] ""
 msgstr[1] ""
 
+#. Translators: This represents the size of a window. The first number is
+#. * the width of the window and the second is the height.
 #: js/ui/windowManager.js:544
+#, javascript-format
 msgid "%d × %d"
 msgstr "%d × %d"
 
@@ -2514,7 +2553,7 @@ msgstr ""
 #: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:17
 #: subprojects/extensions-app/js/main.js:218
 msgid "The GNOME Project"
-msgstr ""
+msgstr "The GNOME Project"
 
 #: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:36
 msgid ""
@@ -2546,7 +2585,7 @@ msgstr ""
 msgid "Remove"
 msgstr ""
 
-#: subprojects/extensions-app/js/main.js:209
+#: subprojects/extensions-app/js/main.js:213
 msgid "translator-credits"
 msgstr "Нанба Наала <naala-nanba@rambler.ru>, 2022"
 
@@ -2599,8 +2638,8 @@ msgstr ""
 #: subprojects/extensions-app/data/ui/extensions-window.ui:99
 #: subprojects/extensions-app/data/ui/extensions-window.ui:134
 msgid ""
-"To find and add extensions, visit <a href=\"https://extensions.gnome.org"
-"\">extensions.gnome.org</a>."
+"To find and add extensions, visit <a href=\"https://extensions.gnome."
+"org\">extensions.gnome.org</a>."
 msgstr ""
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:112
@@ -2929,7 +2968,8 @@ msgstr ""
 msgid "“version” takes no arguments"
 msgstr ""
 
-#: subprojects/extensions-tool/src/main.c:296+subprojects/extensions-tool/src/main.c:316
+#: subprojects/extensions-tool/src/main.c:296
+#: subprojects/extensions-tool/src/main.c:316
 msgid "Usage:"
 msgstr "Ахархәара:"
 
@@ -3037,11 +3077,3 @@ msgstr[1] ""
 #: subprojects/gvc/gvc-mixer-control.c:2867
 msgid "System Sounds"
 msgstr ""
-
-#: js/ui/calendar.js:35
-msgid "6"
-msgstr "6"
-
-#: js/ui/calendar.js:642
-msgid "%d"
-msgstr "%d"
