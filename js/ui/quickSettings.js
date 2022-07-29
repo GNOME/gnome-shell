@@ -4,8 +4,32 @@ const {Atk, Clutter, Gio, GLib, GObject, Graphene, Pango, St} = imports.gi;
 const Main = imports.ui.main;
 const PopupMenu = imports.ui.popupMenu;
 
-const {POPUP_ANIMATION_TIME} = imports.ui.boxpointer;
+const {PopupAnimation} = imports.ui.boxpointer;
+
 const DIM_BRIGHTNESS = -0.4;
+const POPUP_ANIMATION_TIME = 400;
+
+var QuickSettingsItem = GObject.registerClass({
+    Properties: {
+        'has-menu': GObject.ParamSpec.boolean(
+            'has-menu', 'has-menu', 'has-menu',
+            GObject.ParamFlags.READWRITE |
+            GObject.ParamFlags.CONSTRUCT_ONLY,
+            false),
+    },
+}, class QuickSettingsItem extends St.Button {
+    _init(params) {
+        super._init(params);
+
+        if (this.hasMenu) {
+            this.menu = new QuickToggleMenu(this);
+            this.menu.actor.hide();
+
+            this._menuManager = new PopupMenu.PopupMenuManager(this);
+            this._menuManager.addMenu(this.menu);
+        }
+    }
+});
 
 var QuickToggle = GObject.registerClass({
     Properties: {
@@ -17,7 +41,7 @@ var QuickToggle = GObject.registerClass({
             GObject.ParamFlags.READWRITE,
             ''),
     },
-}, class QuickToggle extends St.Button {
+}, class QuickToggle extends QuickSettingsItem {
     _init(params) {
         super._init({
             style_class: 'quick-toggle button',
@@ -69,6 +93,96 @@ var QuickToggle = GObject.registerClass({
             GObject.BindingFlags.SYNC_CREATE);
     }
 });
+
+class QuickToggleMenu extends PopupMenu.PopupMenuBase {
+    constructor(sourceActor) {
+        super(sourceActor, 'quick-toggle-menu');
+
+        const constraints = new Clutter.BindConstraint({
+            coordinate: Clutter.BindCoordinate.Y,
+            source: sourceActor,
+        });
+        sourceActor.bind_property('height',
+            constraints, 'offset',
+            GObject.BindingFlags.DEFAULT);
+
+        this.actor = new St.Widget({
+            layout_manager: new Clutter.BinLayout(),
+            style_class: 'quick-toggle-menu-container',
+            reactive: true,
+            x_expand: true,
+            y_expand: false,
+            constraints,
+        });
+        this.actor._delegate = this;
+        this.actor.add_child(this.box);
+
+        global.focus_manager.add_group(this.actor);
+    }
+
+    open(animate) {
+        if (this.isOpen)
+            return;
+
+        this.actor.show();
+        this.isOpen = true;
+
+        this.actor.height = -1;
+        const [targetHeight] = this.actor.get_preferred_height(-1);
+
+        const duration = animate !== PopupAnimation.NONE
+            ? POPUP_ANIMATION_TIME / 2
+            : 0;
+
+        this.actor.height = 0;
+        this.box.opacity = 0;
+        this.actor.ease({
+            duration,
+            height: targetHeight,
+            onComplete: () => {
+                this.box.ease({
+                    duration,
+                    opacity: 255,
+                });
+                this.actor.height = -1;
+            },
+        });
+        this.emit('open-state-changed', true);
+    }
+
+    close(animate) {
+        if (!this.isOpen)
+            return;
+
+        const duration = animate !== PopupAnimation.NONE
+            ? POPUP_ANIMATION_TIME / 2
+            : 0;
+
+        this.box.ease({
+            duration,
+            opacity: 0,
+            onComplete: () => {
+                this.actor.ease({
+                    duration,
+                    height: 0,
+                    onComplete: () => {
+                        this.actor.hide();
+                        this.emit('menu-closed');
+                    },
+                });
+            },
+        });
+
+        this.isOpen = false;
+        this.emit('open-state-changed', false);
+    }
+
+    // expected on toplevel menus
+    _setOpenedSubMenu(submenu) {
+        this._openedSubMenu?.close(true);
+        this._openedSubMenu = submenu;
+    }
+}
 
 const QuickSettingsLayoutMeta = GObject.registerClass({
     Properties: {

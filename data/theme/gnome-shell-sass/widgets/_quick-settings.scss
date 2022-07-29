@@ -20,3 +20,12 @@
   .quick-toggle-label { font-weight: bold; }
   .quick-toggle-icon { icon-size: $base_icon_size; }
 }
+
+.quick-toggle-menu {
+  @include card();
+  padding: 1.5 * $base_padding;
+}
+
+.quick-toggle-menu-container {
+  padding: 2 * $base_padding $base_padding 0;
+ }
