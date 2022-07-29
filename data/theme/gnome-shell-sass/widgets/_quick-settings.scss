@@ -39,6 +39,19 @@
   }
 }
 
+.quick-slider {
+  padding: $base_padding;
+
+  .slider-bin {
+    &:focus {@include button(focus);}
+    min-height: 16px; // slider size
+    padding: $base_padding;
+    border-radius: 99px;
+  }
+  .quick-toggle-icon { icon-size: $base_icon_size; }
+  .icon-button { background-color: transparent; }
+}
+
 .quick-toggle-menu {
   @include card();
   padding: 1.5 * $base_padding;
