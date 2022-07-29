@@ -378,7 +378,6 @@ class AggregateMenu extends PanelMenu.Button {
         else
             this._network = null;
 
-        this._powerProfiles = new imports.ui.status.powerProfiles.Indicator();
         this._volume = new imports.ui.status.volume.Indicator();
         this._brightness = new imports.ui.status.brightness.Indicator();
         this._system = new imports.ui.status.system.Indicator();
@@ -386,7 +385,6 @@ class AggregateMenu extends PanelMenu.Button {
         if (this._network)
             this._indicators.add_child(this._network);
         this._indicators.add_child(this._volume);
-        this._indicators.add_child(this._powerProfiles);
 
         this.menu.addMenuItem(this._volume.menu);
         this.menu.addMenuItem(this._brightness.menu);
@@ -394,11 +392,9 @@ class AggregateMenu extends PanelMenu.Button {
         if (this._network)
             this.menu.addMenuItem(this._network.menu);
 
-        this.menu.addMenuItem(this._powerProfiles.menu);
         this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
         this.menu.addMenuItem(this._system.menu);
 
-        menuLayout.addSizeChild(this._powerProfiles.menu.actor);
         menuLayout.addSizeChild(this._system.menu.actor);
     }
 });
@@ -425,6 +421,7 @@ class QuickSettings extends PanelMenu.Button {
         this._thunderbolt = new imports.ui.status.thunderbolt.Indicator();
         this._nightLight = new imports.ui.status.nightLight.Indicator();
         this._darkMode = new imports.ui.status.darkMode.Indicator();
+        this._powerProfiles = new imports.ui.status.powerProfiles.Indicator();
         this._rfkill = new imports.ui.status.rfkill.Indicator();
         this._autoRotate = new imports.ui.status.autoRotate.Indicator();
         this._unsafeMode = new UnsafeModeIndicator();
@@ -435,6 +432,7 @@ class QuickSettings extends PanelMenu.Button {
         this._indicators.add_child(this._location);
         this._indicators.add_child(this._nightLight);
         this._indicators.add_child(this._darkMode);
+        this._indicators.add_child(this._powerProfiles);
         if (this._bluetooth)
             this._indicators.add_child(this._bluetooth);
         this._indicators.add_child(this._rfkill);
@@ -447,6 +445,7 @@ class QuickSettings extends PanelMenu.Button {
         this._addItems(this._location.quickSettingsItems);
         if (this._bluetooth)
             this._addItems(this._bluetooth.quickSettingsItems);
+        this._addItems(this._powerProfiles.quickSettingsItems);
         this._addItems(this._nightLight.quickSettingsItems);
         this._addItems(this._darkMode.quickSettingsItems);
         this._addItems(this._rfkill.quickSettingsItems);

@@ -1,13 +1,13 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported Indicator */
 
-const { Gio, GObject } = imports.gi;
+const {Gio, GObject} = imports.gi;
 
-const Main = imports.ui.main;
-const PanelMenu = imports.ui.panelMenu;
+const {QuickMenuToggle, SystemIndicator} = imports.ui.quickSettings;
+
 const PopupMenu = imports.ui.popupMenu;
 
-const { loadInterfaceXML } = imports.misc.fileUtils;
+const {loadInterfaceXML} = imports.misc.fileUtils;
 
 const BUS_NAME = 'net.hadess.PowerProfiles';
 const OBJECT_PATH = '/net/hadess/PowerProfiles';
@@ -34,12 +34,18 @@ const PROFILE_PARAMS = {
 
 const LAST_PROFILE_KEY = 'last-selected-power-profile';
 
-var Indicator = GObject.registerClass(
-class Indicator extends PanelMenu.SystemIndicator {
+const PowerProfilesToggle = GObject.registerClass(
+class PowerProfilesToggle extends QuickMenuToggle {
     _init() {
         super._init();
 
         this._profileItems = new Map();
+
+        this.connect('clicked', () => {
+            this._proxy.ActiveProfile = this.checked
+                ? 'balanced'
+                : global.settings.get_string(LAST_PROFILE_KEY);
+        });
 
         this._proxy = new PowerProfilesProxy(Gio.DBus.system, BUS_NAME, OBJECT_PATH,
             (proxy, error) => {
@@ -58,23 +64,11 @@ class Indicator extends PanelMenu.SystemIndicator {
                 this._sync();
             });
 
-        this._item = new PopupMenu.PopupSubMenuMenuItem('', true);
-
         this._profileSection = new PopupMenu.PopupMenuSection();
-        this._item.menu.addMenuItem(this._profileSection);
-        this._item.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
-        this._item.menu.addSettingsAction(_('Power Settings'),
-            'gnome-power-panel.desktop');
-        this.menu.addMenuItem(this._item);
+        this.menu.addMenuItem(this._profileSection);
+        this.menu.setHeader('power-profile-balanced-symbolic', _('Power Profiles'));
 
-        Main.sessionMode.connect('updated', this._sessionUpdated.bind(this));
-        this._sessionUpdated();
         this._sync();
-    }
-
-    _sessionUpdated() {
-        const sensitive = !Main.sessionMode.isLocked && !Main.sessionMode.isGreeter;
-        this.menu.setSensitive(sensitive);
     }
 
     _syncProfiles() {
@@ -95,12 +89,14 @@ class Indicator extends PanelMenu.SystemIndicator {
             this._profileItems.set(profile, item);
             this._profileSection.addMenuItem(item);
         }
+
+        this.menuEnabled = this._profileItems.size > 2;
     }
 
     _sync() {
-        this._item.visible = this._proxy.g_name_owner !== null;
+        this.visible = this._proxy.g_name_owner !== null;
 
-        if (!this._item.visible)
+        if (!this.visible)
             return;
 
         const {ActiveProfile: activeProfile} = this._proxy;
@@ -111,11 +107,19 @@ class Indicator extends PanelMenu.SystemIndicator {
                 : PopupMenu.Ornament.NONE);
         }
 
-        const {label, iconName} = PROFILE_PARAMS[activeProfile];
-        this._item.label.text = label;
-        this._item.icon.icon_name = iconName;
+        this.set(PROFILE_PARAMS[activeProfile]);
+        this.checked = activeProfile !== 'balanced';
 
-        if (activeProfile !== 'balanced')
+        if (this.checked)
             global.settings.set_string(LAST_PROFILE_KEY, activeProfile);
+    }
+});
+
+var Indicator = GObject.registerClass(
+class Indicator extends SystemIndicator {
+    _init() {
+        super._init();
+
+        this.quickSettingsItems.push(new PowerProfilesToggle());
     }
 });
