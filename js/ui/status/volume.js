@@ -1,13 +1,12 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported Indicator */
 
-const { Clutter, Gio, GLib, GObject, Gvc, St } = imports.gi;
-const Signals = imports.misc.signals;
+const {Clutter, Gio, GLib, GObject, Gvc} = imports.gi;
 
 const Main = imports.ui.main;
-const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
-const Slider = imports.ui.slider;
+
+const {QuickSlider, SystemIndicator} = imports.ui.quickSettings;
 
 const ALLOW_AMPLIFIED_VOLUME_KEY = 'allow-volume-above-100-percent';
 
@@ -27,29 +26,18 @@ function getMixerControl() {
     return _mixerControl;
 }
 
-var StreamSlider = class extends Signals.EventEmitter {
-    constructor(control) {
-        super();
+const StreamSlider = GObject.registerClass({
+    Signals: {
+        'stream-updated': {},
+    },
+}, class StreamSlider extends QuickSlider {
+    _init(control) {
+        super._init();
 
         this._control = control;
 
-        this.item = new PopupMenu.PopupMenuSection();
-
-        const sliderItem = new PopupMenu.PopupBaseMenuItem({activate: false});
-        this.item.addMenuItem(sliderItem);
-
-        const submenuItem = new PopupMenu.PopupSubMenuMenuItem('');
-        this.item.addMenuItem(submenuItem);
-
-        // HACK: Hide the submenu item, its menu is controlled from sliderItem
-        submenuItem.hide();
-
-        this.menu = submenuItem.menu;
-
         this._inDrag = false;
         this._notifyVolumeChangeId = 0;
-
-        this._slider = new Slider.Slider(0);
 
         this._soundSettings = new Gio.Settings({
             schema_id: 'org.gnome.desktop.sound',
@@ -58,48 +46,20 @@ var StreamSlider = class extends Signals.EventEmitter {
             () => this._amplifySettingsChanged());
         this._amplifySettingsChanged();
 
-        this._sliderChangedId = this._slider.connect('notify::value',
+        this._sliderChangedId = this.slider.connect('notify::value',
             () => this._sliderChanged());
-        this._slider.connect('drag-begin', () => (this._inDrag = true));
-        this._slider.connect('drag-end', () => {
+        this.slider.connect('drag-begin', () => (this._inDrag = true));
+        this.slider.connect('drag-end', () => {
             this._inDrag = false;
             this._notifyVolumeChange();
         });
-
-        this._icon = new St.Icon({ style_class: 'popup-menu-icon' });
-        sliderItem.add(this._icon);
-        sliderItem.add_child(this._slider);
-        sliderItem.connect('button-press-event',
-            (actor, event) => this._slider.startDragging(event));
-        sliderItem.connect('key-press-event',
-            (actor, event) => this._slider.emit('key-press-event', event));
-        sliderItem.connect('scroll-event',
-            (actor, event) => this._slider.emit('scroll-event', event));
-
-        this._menuButton = new St.Button({
-            child: new St.Icon({
-                iconName: 'pan-end-symbolic',
-                style_class: 'popup-menu-arrow',
-            }),
-            y_expand: true,
-        });
-        sliderItem.add_child(this._menuButton);
-
-        this._menuButton.connect('clicked', () => this.menu.toggle());
-
-        // In order to keep sliders aligned, do not hide
-        // the menu button, but make it fully transparent
-        this._menuButton.bind_property_full('reactive',
-            this._menuButton, 'opacity',
-            GObject.BindingFlags.DEFAULT,
-            (bind, source) => [true, source ? 255 : 0],
-            null);
 
         this._deviceItems = new Map();
 
         this._deviceSection = new PopupMenu.PopupMenuSection();
         this.menu.addMenuItem(this._deviceSection);
 
+        this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
         this.menu.addSettingsAction(_('Sound Settings'),
             'gnome-sound-panel.desktop');
 
@@ -182,19 +142,15 @@ var StreamSlider = class extends Signals.EventEmitter {
     }
 
     _sync() {
-        this.item.actor.visible = this._shouldBeVisible();
-        this._menuButton.reactive = this._deviceItems.size > 1;
-    }
-
-    scroll(event) {
-        return this._slider.scroll(event);
+        this.visible = this._shouldBeVisible();
+        this.menuEnabled = this._deviceItems.size > 1;
     }
 
     _sliderChanged() {
         if (!this._stream)
             return;
 
-        let value = this._slider.value;
+        let value = this.slider.value;
         let volume = value * this._control.get_vol_max_norm();
         let prevMuted = this._stream.is_muted;
         let prevVolume = this._stream.volume;
@@ -236,9 +192,9 @@ var StreamSlider = class extends Signals.EventEmitter {
     }
 
     _changeSlider(value) {
-        this._slider.block_signal_handler(this._sliderChangedId);
-        this._slider.value = value;
-        this._slider.unblock_signal_handler(this._sliderChangedId);
+        this.slider.block_signal_handler(this._sliderChangedId);
+        this.slider.value = value;
+        this.slider.unblock_signal_handler(this._sliderChangedId);
     }
 
     _updateVolume() {
@@ -251,7 +207,7 @@ var StreamSlider = class extends Signals.EventEmitter {
     _amplifySettingsChanged() {
         this._allowAmplified = this._soundSettings.get_boolean(ALLOW_AMPLIFIED_VOLUME_KEY);
 
-        this._slider.maximum_value = this._allowAmplified
+        this.slider.maximum_value = this._allowAmplified
             ? this.getMaxLevel() : 1;
 
         if (this._stream)
@@ -287,13 +243,14 @@ var StreamSlider = class extends Signals.EventEmitter {
 
         return maxVolume / this._control.get_vol_max_norm();
     }
-};
+});
 
-var OutputStreamSlider = class extends StreamSlider {
-    constructor(control) {
-        super(control);
+const OutputStreamSlider = GObject.registerClass(
+class OutputStreamSlider extends StreamSlider {
+    _init(control) {
+        super._init(control);
 
-        this._slider.accessible_name = _('Volume');
+        this.slider.accessible_name = _('Volume');
 
         this._control.connectObject(
             'output-added', (c, id) => this._addDevice(id),
@@ -308,6 +265,8 @@ var OutputStreamSlider = class extends StreamSlider {
             'audio-volume-high-symbolic',
             'audio-volume-overamplified-symbolic',
         ];
+
+        this.menu.setHeader('audio-headphones-symbolic', _('Sound Output'));
     }
 
     _connectStream(stream) {
@@ -346,17 +305,18 @@ var OutputStreamSlider = class extends StreamSlider {
             return;
 
         this._hasHeadphones = hasHeadphones;
-        this._icon.icon_name = this._hasHeadphones
+        this.iconName = this._hasHeadphones
             ? 'audio-headphones-symbolic'
             : 'audio-speakers-symbolic';
     }
-};
+});
 
-var InputStreamSlider = class extends StreamSlider {
-    constructor(control) {
-        super(control);
+const InputStreamSlider = GObject.registerClass(
+class InputStreamSlider extends StreamSlider {
+    _init(control) {
+        super._init(control);
 
-        this._slider.accessible_name = _('Microphone');
+        this.slider.accessible_name = _('Microphone');
 
         this._control.connectObject(
             'input-added', (c, id) => this._addDevice(id),
@@ -366,13 +326,15 @@ var InputStreamSlider = class extends StreamSlider {
             'stream-removed', () => this._maybeShowInput(),
             this);
 
-        this._icon.icon_name = 'audio-input-microphone-symbolic';
+        this.iconName = 'audio-input-microphone-symbolic';
         this._icons = [
             'microphone-sensitivity-muted-symbolic',
             'microphone-sensitivity-low-symbolic',
             'microphone-sensitivity-medium-symbolic',
             'microphone-sensitivity-high-symbolic',
         ];
+
+        this.menu.setHeader('audio-input-microphone-symbolic', _('Sound Input'));
     }
 
     _connectStream(stream) {
@@ -410,10 +372,10 @@ var InputStreamSlider = class extends StreamSlider {
     _shouldBeVisible() {
         return super._shouldBeVisible() && this._showInput;
     }
-};
+});
 
 var Indicator = GObject.registerClass(
-class Indicator extends PanelMenu.SystemIndicator {
+class Indicator extends SystemIndicator {
     _init() {
         super._init();
 
@@ -427,8 +389,6 @@ class Indicator extends PanelMenu.SystemIndicator {
             (actor, event) => this._handleScrollEvent(this._output, event));
         this._inputIndicator.connect('scroll-event',
             (actor, event) => this._handleScrollEvent(this._input, event));
-
-        const volumeMenu = new PopupMenu.PopupMenuSection();
 
         this._control = getMixerControl();
         this._control.connectObject(
@@ -445,7 +405,6 @@ class Indicator extends PanelMenu.SystemIndicator {
                 this._primaryIndicator.icon_name = icon;
             this._primaryIndicator.visible = icon !== null;
         });
-        volumeMenu.addMenuItem(this._output.item);
 
         this._input = new InputStreamSlider(this._control);
         this._input.connect('stream-updated', () => {
@@ -454,13 +413,13 @@ class Indicator extends PanelMenu.SystemIndicator {
             if (icon)
                 this._inputIndicator.icon_name = icon;
         });
-        volumeMenu.addMenuItem(this._input.item);
 
-        this._input.item.actor.bind_property('visible',
+        this._input.bind_property('visible',
             this._inputIndicator, 'visible',
             GObject.BindingFlags.SYNC_CREATE);
 
-        this.menu.addMenuItem(volumeMenu);
+        this.quickSettingsItems.push(this._output);
+        this.quickSettingsItems.push(this._input);
 
         this._onControlStateChanged();
     }
@@ -483,8 +442,8 @@ class Indicator extends PanelMenu.SystemIndicator {
     }
 
     _handleScrollEvent(item, event) {
-        const result = item.scroll(event);
-        if (result === Clutter.EVENT_PROPAGATE || this.menu.actor.mapped)
+        const result = item.slider.scroll(event);
+        if (result === Clutter.EVENT_PROPAGATE || item.mapped)
             return result;
 
         const gicon = new Gio.ThemedIcon({name: item.getIcon()});
