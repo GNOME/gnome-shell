@@ -94,6 +94,15 @@
         adapter is ever seen not to have devices associated to it.
       </description>
     </key>
+    <key name="last-selected-power-profile" type="s">
+      <default>"power-saver"</default>
+      <summary>The last selected non-default power profile</summary>
+      <description>
+        Some systems support more than two power profiles. In order to still support
+        toggling between two profiles, this key records the last selected non-default
+        profile.
+      </description>
+    </key>
     <key name="welcome-dialog-last-shown-version" type="s">
       <default>''</default>
       <summary>The last version the “Welcome to GNOME” dialog was shown for</summary>

@@ -32,6 +32,8 @@ const PROFILE_PARAMS = {
     },
 };
 
+const LAST_PROFILE_KEY = 'last-selected-power-profile';
+
 var Indicator = GObject.registerClass(
 class Indicator extends PanelMenu.SystemIndicator {
     _init() {
@@ -101,14 +103,19 @@ class Indicator extends PanelMenu.SystemIndicator {
         if (!this._item.visible)
             return;
 
+        const {ActiveProfile: activeProfile} = this._proxy;
+
         for (const [profile, item] of this._profileItems) {
-            item.setOrnament(profile === this._proxy.ActiveProfile
+            item.setOrnament(profile === activeProfile
                 ? PopupMenu.Ornament.CHECK
                 : PopupMenu.Ornament.NONE);
         }
 
-        const {label, iconName} = PROFILE_PARAMS[this._proxy.ActiveProfile];
+        const {label, iconName} = PROFILE_PARAMS[activeProfile];
         this._item.label.text = label;
         this._item.icon.icon_name = iconName;
+
+        if (activeProfile !== 'balanced')
+            global.settings.set_string(LAST_PROFILE_KEY, activeProfile);
     }
 });
