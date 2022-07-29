@@ -154,6 +154,10 @@ class QuickToggleMenu extends PopupMenu.PopupMenuBase {
             this._headerTitle, side, 1, 1);
         headerLayout.attach_next_to(this._headerSubtitle,
             this._headerTitle, Clutter.GridPosition.BOTTOM, 1, 1);
+
+        sourceActor.connect('notify::checked',
+            () => this._syncChecked());
+        this._syncChecked();
     }
 
     setHeader(icon, title, subtitle = '') {
@@ -236,6 +240,13 @@ class QuickToggleMenu extends PopupMenu.PopupMenuBase {
 
         this.isOpen = false;
         this.emit('open-state-changed', false);
+    }
+
+    _syncChecked() {
+        if (this.sourceActor.checked)
+            this._headerIcon.add_style_class_name('active');
+        else
+            this._headerIcon.remove_style_class_name('active');
     }
 
     // expected on toplevel menus

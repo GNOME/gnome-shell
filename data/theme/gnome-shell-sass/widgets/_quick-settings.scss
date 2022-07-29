@@ -35,6 +35,8 @@
       border-radius: 999px;
       padding: 1.5 * $base_padding;
       background-color: lighten($bg_color, 10%);
+
+      &.active { background-color: $selected_bg_color; }
     }
 
     & .title {
