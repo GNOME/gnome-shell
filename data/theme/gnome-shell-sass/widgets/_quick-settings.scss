@@ -24,6 +24,27 @@
 .quick-toggle-menu {
   @include card();
   padding: 1.5 * $base_padding;
+
+  & .header {
+    spacing-rows: 0.5 * $base_padding;
+    spacing-columns: $base_padding;
+    padding-bottom: 2 * $base_padding;
+
+    & .icon {
+      icon-size: $large_icon_size;
+      border-radius: 999px;
+      padding: 1.5 * $base_padding;
+      background-color: lighten($bg_color, 10%);
+    }
+
+    & .title {
+      @extend %title_3;
+    }
+
+    & .subtitle {
+      @extend %caption_heading;
+    }
+  }
 }
 
 .quick-toggle-menu-container {

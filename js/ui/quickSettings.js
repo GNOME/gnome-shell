@@ -118,6 +118,67 @@ class QuickToggleMenu extends PopupMenu.PopupMenuBase {
         this.actor.add_child(this.box);
 
         global.focus_manager.add_group(this.actor);
+
+        const headerLayout = new Clutter.GridLayout();
+        this._header = new St.Widget({
+            style_class: 'header',
+            layout_manager: headerLayout,
+            visible: false,
+        });
+        headerLayout.hookup_style(this._header);
+        this.box.add_child(this._header);
+
+        this._headerIcon = new St.Icon({
+            style_class: 'icon',
+            y_align: Clutter.ActorAlign.CENTER,
+        });
+        this._headerTitle = new St.Label({
+            style_class: 'title',
+            y_align: Clutter.ActorAlign.CENTER,
+            y_expand: true,
+        });
+        this._headerSubtitle = new St.Label({
+            style_class: 'subtitle',
+            y_align: Clutter.ActorAlign.CENTER,
+        });
+        this._headerSpacer = new Clutter.Actor({x_expand: true});
+
+        const side = this.actor.text_direction === Clutter.TextDirection.RTL
+            ? Clutter.GridPosition.LEFT
+            : Clutter.GridPosition.RIGHT;
+
+        headerLayout.attach(this._headerIcon, 0, 0, 1, 2);
+        headerLayout.attach_next_to(this._headerTitle,
+            this._headerIcon, side, 1, 1);
+        headerLayout.attach_next_to(this._headerSpacer,
+            this._headerTitle, side, 1, 1);
+        headerLayout.attach_next_to(this._headerSubtitle,
+            this._headerTitle, Clutter.GridPosition.BOTTOM, 1, 1);
+    }
+
+    setHeader(icon, title, subtitle = '') {
+        if (icon instanceof Gio.Icon)
+            this._headerIcon.gicon = icon;
+        else
+            this._headerIcon.icon_name = icon;
+
+        this._headerTitle.text = title;
+        this._headerSubtitle.set({
+            text: subtitle,
+            visible: !!subtitle,
+        });
+
+        this._header.show();
+    }
+
+    addHeaderSuffix(actor) {
+        const {layoutManager: headerLayout} = this._header;
+        const side = this.actor.text_direction === Clutter.TextDirection.RTL
+            ? Clutter.GridPosition.LEFT
+            : Clutter.GridPosition.RIGHT;
+        this._header.remove_child(this._headerSpacer);
+        headerLayout.attach_next_to(actor, this._headerTitle, side, 1, 1);
+        headerLayout.attach_next_to(this._headerSpacer, actor, side, 1, 1);
     }
 
     open(animate) {
