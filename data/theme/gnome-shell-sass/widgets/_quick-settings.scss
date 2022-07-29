@@ -17,8 +17,26 @@
 
   & > StBoxLayout { spacing: $base_padding; }
 
+  /* Move padding into the box; this is to allow menu arrows
+     to extend to the border */
+  &.button { padding: 0; }
+  & > StBoxLayout { padding: 0 2 * $base_padding; }
+
   .quick-toggle-label { font-weight: bold; }
-  .quick-toggle-icon { icon-size: $base_icon_size; }
+  .quick-toggle-icon, .quick-toggle-arrow { icon-size: $base_icon_size; }
+}
+
+.quick-menu-toggle {
+  &:ltr > StBoxLayout { padding-right: 0; }
+  &:rtl > StBoxLayout { padding-left: 0; }
+
+  & .quick-toggle-arrow {
+    background-color: transparentize($fg_color, 0.9);
+    padding: 8px;
+
+    &:ltr { border-radius: 0 99px 99px 0; }
+    &:rtl { border-radius: 99px 0 0 99px; }
+  }
 }
 
 .quick-toggle-menu {

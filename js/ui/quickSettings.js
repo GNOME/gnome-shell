@@ -1,4 +1,4 @@
-/* exported QuickToggle, QuickSettingsMenu, SystemIndicator */
+/* exported QuickToggle, QuickMenuToggle, QuickSettingsMenu, SystemIndicator */
 const {Atk, Clutter, Gio, GLib, GObject, Graphene, Pango, St} = imports.gi;
 
 const Main = imports.ui.main;
@@ -91,6 +91,43 @@ var QuickToggle = GObject.registerClass({
         this.bind_property('label',
             this._label, 'text',
             GObject.BindingFlags.SYNC_CREATE);
+    }
+});
+
+var QuickMenuToggle = GObject.registerClass({
+    Properties: {
+        'menu-enabled': GObject.ParamSpec.boolean(
+            'menu-enabled', '', '',
+            GObject.ParamFlags.READWRITE,
+            true),
+    },
+}, class QuickMenuToggle extends QuickToggle {
+    _init(params) {
+        super._init({
+            ...params,
+            hasMenu: true,
+        });
+
+        this.add_style_class_name('quick-menu-toggle');
+
+        this._menuButton = new St.Button({
+            child: new St.Icon({
+                style_class: 'quick-toggle-arrow',
+                icon_name: 'go-next-symbolic',
+            }),
+            x_expand: false,
+            y_expand: true,
+        });
+        this._box.add_child(this._menuButton);
+
+        this.bind_property('menu-enabled',
+            this._menuButton, 'visible',
+            GObject.BindingFlags.DEFAULT);
+        this._menuButton.connect('clicked', () => this.menu.open());
+        this.connect('popup-menu', () => {
+            if (this.menuEnabled)
+                this.menu.open();
+        });
     }
 });
 
