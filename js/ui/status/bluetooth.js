@@ -13,7 +13,7 @@ const BUS_NAME = 'org.gnome.SettingsDaemon.Rfkill';
 const OBJECT_PATH = '/org/gnome/SettingsDaemon/Rfkill';
 
 const RfkillManagerInterface = loadInterfaceXML('org.gnome.SettingsDaemon.Rfkill');
-const RfkillManagerProxy = Gio.DBusProxy.makeProxyWrapper(RfkillManagerInterface);
+const rfkillManagerInfo = Gio.DBusInterfaceInfo.new_for_xml(RfkillManagerInterface);
 
 const HAD_BLUETOOTH_DEVICES_SETUP = 'had-bluetooth-devices-setup';
 
@@ -40,16 +40,19 @@ class Indicator extends PanelMenu.SystemIndicator {
         });
         this._client.connect('notify::default-adapter-powered', this._sync.bind(this));
 
-        this._proxy = new RfkillManagerProxy(Gio.DBus.session, BUS_NAME, OBJECT_PATH,
-                                             (proxy, error) => {
-                                                 if (error) {
-                                                     log(error.message);
-                                                     return;
-                                                 }
-
-                                                 this._sync();
-                                             });
-        this._proxy.connect('g-properties-changed', this._queueSync.bind(this));
+        this._proxy = new Gio.DBusProxy({
+            g_connection: Gio.DBus.session,
+            g_name: BUS_NAME,
+            g_object_path: OBJECT_PATH,
+            g_interface_name: rfkillManagerInfo.name,
+            g_interface_info: rfkillManagerInfo,
+        });
+        this._proxy.connect('g-properties-changed', (p, properties) => {
+            if ('BluetoothHardwareAirplaneMode' in properties.unpack())
+                this._sync();
+        });
+        this._proxy.init_async(GLib.PRIORITY_DEFAULT, null)
+            .catch(e => console.error(e.message));
 
         this._item = new PopupMenu.PopupSubMenuMenuItem(_("Bluetooth"), true);
 
