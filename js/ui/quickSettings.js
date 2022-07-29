@@ -1,8 +1,11 @@
 /* exported QuickToggle, QuickSettingsMenu, SystemIndicator */
-const {Atk, Clutter, Gio, GLib, GObject, Pango, St} = imports.gi;
+const {Atk, Clutter, Gio, GLib, GObject, Graphene, Pango, St} = imports.gi;
 
 const Main = imports.ui.main;
 const PopupMenu = imports.ui.popupMenu;
+
+const {POPUP_ANIMATION_TIME} = imports.ui.boxpointer;
+const DIM_BRIGHTNESS = -0.4;
 
 var QuickToggle = GObject.registerClass({
     Properties: {
@@ -92,6 +95,12 @@ const QuickSettingsLayout = GObject.registerClass({
             1, GLib.MAXINT32, 1),
     },
 }, class QuickSettingsLayout extends Clutter.LayoutManager {
+    _init(overlay, params) {
+        super._init(params);
+
+        this._overlay = overlay;
+    }
+
     _containerStyleChanged() {
         const node = this._container.get_theme_node();
 
@@ -120,6 +129,9 @@ const QuickSettingsLayout = GObject.registerClass({
         let [minWidth, natWidth] = [0, 0];
 
         for (const child of container) {
+            if (child === this._overlay)
+                continue;
+
             const [childMin, childNat] = child.get_preferred_width(-1);
             const colSpan = this._getColSpan(container, child);
             minWidth = Math.max(minWidth, childMin / colSpan);
@@ -143,6 +155,9 @@ const QuickSettingsLayout = GObject.registerClass({
 
         for (const child of container) {
             if (!child.visible)
+                continue;
+
+            if (child === this._overlay)
                 continue;
 
             if (lineIndex === 0)
@@ -195,7 +210,9 @@ const QuickSettingsLayout = GObject.registerClass({
     vfunc_get_preferred_height(container, _forWidth) {
         const rows = this._getRows(container);
 
-        let [minHeight, natHeight] = [0, 0];
+        let [minHeight, natHeight] = this._overlay
+            ? this._overlay.get_preferred_height(-1)
+            : [0, 0];
 
         const spacing = (rows.length - 1) * this.row_spacing;
         minHeight += spacing;
@@ -213,8 +230,14 @@ const QuickSettingsLayout = GObject.registerClass({
     vfunc_allocate(container, box) {
         const rows = this._getRows(container);
 
+        const [, overlayHeight] = this._overlay
+            ? this._overlay.get_preferred_height(-1)
+            : [0, 0];
+
         const availWidth = box.get_width() - (this.nColumns - 1) * this.row_spacing;
         const childWidth = availWidth / this.nColumns;
+
+        this._overlay?.allocate_available_size(0, 0, box.get_width(), box.get_height());
 
         const isRtl = container.text_direction === Clutter.TextDirection.RTL;
 
@@ -240,6 +263,9 @@ const QuickSettingsLayout = GObject.registerClass({
             });
 
             y += rowNat + this.row_spacing;
+
+            if (row.some(c => c.menu?.actor.visible))
+                y += overlayHeight;
         });
     }
 });
@@ -248,24 +274,106 @@ var QuickSettingsMenu = class extends PopupMenu.PopupMenu {
     constructor(sourceActor, nColumns = 1) {
         super(sourceActor, 0, St.Side.TOP);
 
+        this.actor = new St.Widget({reactive: true});
+        this.actor.add_child(this._boxPointer);
+        this.actor._delegate = this;
+
+        this.connect('menu-closed', () => this.actor.hide());
+
         Main.layoutManager.connectObject('system-modal-opened',
             () => this.close(), this);
 
+        this._dimEffect = new Clutter.BrightnessContrastEffect({
+            enabled: false,
+        });
+        this._boxPointer.add_effect_with_name('dim', this._dimEffect);
         this.box.add_style_class_name('quick-settings');
+
+        // Overlay layer for menus
+        this._overlay = new Clutter.Actor({
+            layout_manager: new Clutter.BinLayout(),
+        });
+
+        // "clone"
+        const placeholder = new Clutter.Actor({
+            constraints: new Clutter.BindConstraint({
+                coordinate: Clutter.BindCoordinate.HEIGHT,
+                source: this._overlay,
+            }),
+        });
 
         this._grid = new St.Widget({
             style_class: 'quick-settings-grid',
-            layout_manager: new QuickSettingsLayout({
+            layout_manager: new QuickSettingsLayout(placeholder, {
                 nColumns,
             }),
         });
         this.box.add_child(this._grid);
+        this._grid.add_child(placeholder);
+
+        const yConstraint = new Clutter.BindConstraint({
+            coordinate: Clutter.BindCoordinate.Y,
+            source: this._boxPointer,
+        });
+
+        // Pick up additional spacing from any intermediate actors
+        const updateOffset = () => {
+            const offset = this._grid.apply_relative_transform_to_point(
+                this._boxPointer, new Graphene.Point3D());
+            yConstraint.offset = offset.y;
+        };
+        this._grid.connect('notify::y', updateOffset);
+        this.box.connect('notify::y', updateOffset);
+        this._boxPointer.bin.connect('notify::y', updateOffset);
+
+        this._overlay.add_constraint(yConstraint);
+        this._overlay.add_constraint(new Clutter.BindConstraint({
+            coordinate: Clutter.BindCoordinate.X,
+            source: this._boxPointer,
+        }));
+        this._overlay.add_constraint(new Clutter.BindConstraint({
+            coordinate: Clutter.BindCoordinate.WIDTH,
+            source: this._boxPointer,
+        }));
+
+        this.actor.add_child(this._overlay);
     }
 
     addItem(item, colSpan = 1) {
         this._grid.add_child(item);
         this._grid.layout_manager.child_set_property(
             this._grid, item, 'column-span', colSpan);
+
+        if (item.menu) {
+            this._overlay.add_child(item.menu.actor);
+
+            item.menu.connect('open-state-changed', (m, isOpen) => {
+                this._setDimmed(isOpen);
+                this._activeMenu = isOpen ? item.menu : null;
+            });
+        }
+    }
+
+    open(animate) {
+        this.actor.show();
+        super.open(animate);
+    }
+
+    close(animate) {
+        this._activeMenu?.close(animate);
+        super.close(animate);
+    }
+
+    _setDimmed(dim) {
+        const val = 127 * (1 + (dim ? 1 : 0) * DIM_BRIGHTNESS);
+        const color = Clutter.Color.new(val, val, val, 255);
+
+        this._boxPointer.ease_property('@effects.dim.brightness', color, {
+            mode: Clutter.AnimationMode.LINEAR,
+            duration: POPUP_ANIMATION_TIME,
+            onStopped: () => (this._dimEffect.enabled = dim),
+        });
+        this._dimEffect.enabled = true;
     }
 };
 
