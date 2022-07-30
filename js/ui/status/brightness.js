@@ -20,15 +20,13 @@ class Indicator extends PanelMenu.SystemIndicator {
     _init() {
         super._init();
         this._proxy = new BrightnessProxy(Gio.DBus.session, BUS_NAME, OBJECT_PATH,
-                                          (proxy, error) => {
-                                              if (error) {
-                                                  log(error.message);
-                                                  return;
-                                              }
-
-                                              this._proxy.connect('g-properties-changed', this._sync.bind(this));
-                                              this._sync();
-                                          });
+            (proxy, error) => {
+                if (error)
+                    console.error(error.message);
+                else
+                    this._proxy.connect('g-properties-changed', () => this._sync());
+                this._sync();
+            });
 
         this._item = new PopupMenu.PopupBaseMenuItem({ activate: false });
         this.menu.addMenuItem(this._item);
