@@ -1,13 +1,12 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported Indicator */
 
-const { Clutter, Gio, GObject, St, UPowerGlib: UPower } = imports.gi;
+const {Atk, Clutter, Gio, GObject, Shell, St, UPowerGlib: UPower} = imports.gi;
 
 const Main = imports.ui.main;
-const PanelMenu = imports.ui.panelMenu;
-const PopupMenu = imports.ui.popupMenu;
+const {QuickToggle, SystemIndicator} = imports.ui.quickSettings;
 
-const { loadInterfaceXML } = imports.misc.fileUtils;
+const {loadInterfaceXML} = imports.misc.fileUtils;
 
 const BUS_NAME = 'org.freedesktop.UPower';
 const OBJECT_PATH = '/org/freedesktop/UPower/devices/DisplayDevice';
@@ -15,106 +14,54 @@ const OBJECT_PATH = '/org/freedesktop/UPower/devices/DisplayDevice';
 const DisplayDeviceInterface = loadInterfaceXML('org.freedesktop.UPower.Device');
 const PowerManagerProxy = Gio.DBusProxy.makeProxyWrapper(DisplayDeviceInterface);
 
-const SHOW_BATTERY_PERCENTAGE       = 'show-battery-percentage';
+const SHOW_BATTERY_PERCENTAGE = 'show-battery-percentage';
 
-var Indicator = GObject.registerClass(
-class Indicator extends PanelMenu.SystemIndicator {
+const PowerToggle = GObject.registerClass({
+    Properties: {
+        'fallback-icon-name': GObject.ParamSpec.string('fallback-icon-name', '', '',
+            GObject.ParamFlags.READWRITE,
+            ''),
+    },
+}, class PowerToggle extends QuickToggle {
     _init() {
-        super._init();
-
-        this._desktopSettings = new Gio.Settings({
-            schema_id: 'org.gnome.desktop.interface',
+        super._init({
+            accessible_role: Atk.Role.PUSH_BUTTON,
         });
-        this._desktopSettings.connect(
-            `changed::${SHOW_BATTERY_PERCENTAGE}`, this._sync.bind(this));
-
-        this._indicator = this._addIndicator();
-        this._percentageLabel = new St.Label({
-            y_expand: true,
-            y_align: Clutter.ActorAlign.CENTER,
-        });
-        this.add_child(this._percentageLabel);
-        this.add_style_class_name('power-status');
 
         this._proxy = new PowerManagerProxy(Gio.DBus.system, BUS_NAME, OBJECT_PATH,
             (proxy, error) => {
-                if (error) {
-                    log(error.message);
-                } else {
-                    this._proxy.connect('g-properties-changed',
-                        this._sync.bind(this));
-                }
+                if (error)
+                    console.error(error.message);
+                else
+                    this._proxy.connect('g-properties-changed', () => this._sync());
                 this._sync();
             });
 
-        this._item = new PopupMenu.PopupSubMenuMenuItem('', true);
-        this._item.menu.addSettingsAction(_('Power Settings'),
-            'gnome-power-panel.desktop');
-        this.menu.addMenuItem(this._item);
+        this.bind_property('fallback-icon-name',
+            this._icon, 'fallback-icon-name',
+            GObject.BindingFlags.SYNC_CREATE);
 
-        Main.sessionMode.connect('updated', this._sessionUpdated.bind(this));
+        this.connect('clicked', () => {
+            const app = Shell.AppSystem.get_default().lookup_app('gnome-power-panel.desktop');
+            Main.overview.hide();
+            Main.panel.closeQuickSettings();
+            app.activate();
+        });
+
+        Main.sessionMode.connect('updated', () => this._sessionUpdated());
         this._sessionUpdated();
+        this._sync();
     }
 
     _sessionUpdated() {
-        let sensitive = !Main.sessionMode.isLocked && !Main.sessionMode.isGreeter;
-        this.menu.setSensitive(sensitive);
-    }
-
-    _getStatus() {
-        let seconds = 0;
-
-        if (this._proxy.State === UPower.DeviceState.FULLY_CHARGED)
-            return _('Fully Charged');
-        else if (this._proxy.State === UPower.DeviceState.CHARGING)
-            seconds = this._proxy.TimeToFull;
-        else if (this._proxy.State === UPower.DeviceState.DISCHARGING)
-            seconds = this._proxy.TimeToEmpty;
-        else if (this._proxy.State === UPower.DeviceState.PENDING_CHARGE)
-            return _('Not Charging');
-        // state is PENDING_DISCHARGE
-        else
-            return _('Estimating…');
-
-        let time = Math.round(seconds / 60);
-        if (time === 0) {
-            // 0 is reported when UPower does not have enough data
-            // to estimate battery life
-            return _('Estimating…');
-        }
-
-        let minutes = time % 60;
-        let hours = Math.floor(time / 60);
-
-        if (this._proxy.State === UPower.DeviceState.DISCHARGING) {
-            // Translators: this is <hours>:<minutes> Remaining (<percentage>)
-            return _('%d\u2236%02d Remaining (%d\u2009%%)').format(
-                hours, minutes, this._proxy.Percentage);
-        }
-
-        if (this._proxy.State === UPower.DeviceState.CHARGING) {
-            // Translators: this is <hours>:<minutes> Until Full (<percentage>)
-            return _('%d\u2236%02d Until Full (%d\u2009%%)').format(
-                hours, minutes, this._proxy.Percentage);
-        }
-
-        return null;
+        this.reactive = Main.sessionMode.allowSettings;
     }
 
     _sync() {
         // Do we have batteries or a UPS?
-        let visible = this._proxy.IsPresent;
-        if (visible) {
-            this._item.show();
-            this._percentageLabel.visible =
-                this._desktopSettings.get_boolean(SHOW_BATTERY_PERCENTAGE);
-        } else {
-            // If there's no battery, then we use the power icon.
-            this._item.hide();
-            this._indicator.icon_name = 'system-shutdown-symbolic';
-            this._percentageLabel.hide();
+        this.visible = this._proxy.IsPresent;
+        if (!this.visible)
             return;
-        }
 
         // The icons
         let chargingState = this._proxy.State === UPower.DeviceState.CHARGING
@@ -129,23 +76,67 @@ class Indicator extends PanelMenu.SystemIndicator {
 
         // Make sure we fall back to fallback-icon-name and not GThemedIcon's
         // default fallbacks
-        let gicon = new Gio.ThemedIcon({
+        const gicon = new Gio.ThemedIcon({
             name: icon,
             use_default_fallbacks: false,
         });
 
-        this._indicator.gicon = gicon;
-        this._item.icon.gicon = gicon;
+        this.set({
+            label: _('%d\u2009%%').format(this._proxy.Percentage),
+            fallback_icon_name: this._proxy.IconName,
+            gicon,
+        });
+    }
+});
 
-        let fallbackIcon = this._proxy.IconName;
-        this._indicator.fallback_icon_name = fallbackIcon;
-        this._item.icon.fallback_icon_name = fallbackIcon;
+var Indicator = GObject.registerClass(
+class Indicator extends SystemIndicator {
+    _init() {
+        super._init();
 
-        // The icon label
-        const label = _('%d\u2009%%').format(this._proxy.Percentage);
-        this._percentageLabel.text = label;
+        this._desktopSettings = new Gio.Settings({
+            schema_id: 'org.gnome.desktop.interface',
+        });
+        this._desktopSettings.connect(
+            `changed::${SHOW_BATTERY_PERCENTAGE}`, () => this._sync());
 
-        // The status label
-        this._item.label.text = this._getStatus();
+        this._indicator = this._addIndicator();
+        this._percentageLabel = new St.Label({
+            y_expand: true,
+            y_align: Clutter.ActorAlign.CENTER,
+        });
+        this.add_child(this._percentageLabel);
+        this.add_style_class_name('power-status');
+
+        this._powerToggle = new PowerToggle();
+
+        this._powerToggle.bind_property('label',
+            this._percentageLabel, 'text',
+            GObject.BindingFlags.SYNC_CREATE);
+
+        this._powerToggle.connectObject(
+            'notify::visible', () => this._sync(),
+            'notify::gicon', () => this._sync(),
+            'notify::fallback-icon-name', () => this._sync(),
+            this);
+
+        this.quickSettingsItems.push(this._powerToggle);
+
+        this._sync();
+    }
+
+    _sync() {
+        if (this._powerToggle.visible) {
+            this._indicator.set({
+                gicon: this._powerToggle.gicon,
+                fallback_icon_name: this._powerToggle.fallback_icon_name,
+            });
+            this._percentageLabel.visible =
+                this._desktopSettings.get_boolean(SHOW_BATTERY_PERCENTAGE);
+        } else {
+            // If there's no battery, then we use the power icon.
+            this._indicator.icon_name = 'system-shutdown-symbolic';
+            this._percentageLabel.hide();
+        }
     }
 });
