@@ -83,3 +83,7 @@
 .quick-toggle-menu-container {
   padding: 2 * $base_padding $base_padding 0;
  }
+
+.quick-settings-system-item {
+  & > StBoxLayout { spacing: 2 * $base_padding; }
+}

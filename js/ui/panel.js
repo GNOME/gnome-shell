@@ -378,18 +378,11 @@ class AggregateMenu extends PanelMenu.Button {
         else
             this._network = null;
 
-        this._system = new imports.ui.status.system.Indicator();
-
         if (this._network)
             this._indicators.add_child(this._network);
 
         if (this._network)
             this.menu.addMenuItem(this._network.menu);
-
-        this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
-        this.menu.addMenuItem(this._system.menu);
-
-        menuLayout.addSizeChild(this._system.menu.actor);
     }
 });
 
@@ -410,6 +403,7 @@ class QuickSettings extends PanelMenu.Button {
         else
             this._bluetooth = null;
 
+        this._system = new imports.ui.status.system.Indicator();
         this._volume = new imports.ui.status.volume.Indicator();
         this._brightness = new imports.ui.status.brightness.Indicator();
         this._remoteAccess = new imports.ui.status.remoteAccess.RemoteAccessApplet();
@@ -437,7 +431,9 @@ class QuickSettings extends PanelMenu.Button {
         this._indicators.add_child(this._volume);
         this._indicators.add_child(this._unsafeMode);
         this._indicators.add_child(this._power);
+        this._indicators.add_child(this._system);
 
+        this._addItems(this._system.quickSettingsItems, N_QUICK_SETTINGS_COLUMNS);
         this._addItems(this._volume.quickSettingsItems, N_QUICK_SETTINGS_COLUMNS);
         this._addItems(this._brightness.quickSettingsItems, N_QUICK_SETTINGS_COLUMNS);
 
