@@ -572,6 +572,7 @@ var PopupMenuBase = class extends Signals.EventEmitter {
             }
 
             Main.overview.hide();
+            Main.panel.closeQuickSettings();
             app.activate();
         });
 
