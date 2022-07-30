@@ -11,11 +11,6 @@ const Slider = imports.ui.slider;
 
 const ALLOW_AMPLIFIED_VOLUME_KEY = 'allow-volume-above-100-percent';
 
-const VolumeType = {
-    OUTPUT: 0,
-    INPUT: 1,
-};
-
 // Each Gvc.MixerControl is a connection to PulseAudio,
 // so it's better to make it a singleton
 let _mixerControl;
@@ -417,82 +412,6 @@ var InputStreamSlider = class extends StreamSlider {
     }
 };
 
-var VolumeMenu = class extends PopupMenu.PopupMenuSection {
-    constructor(control) {
-        super();
-
-        this.hasHeadphones = false;
-
-        this._control = control;
-        this._control.connectObject(
-            'state-changed', () => this._onControlStateChanged(),
-            'default-sink-changed', () => this._readOutput(),
-            'default-source-changed', () => this._readInput(),
-            this);
-
-        this._output = new OutputStreamSlider(this._control);
-        this._output.connect('stream-updated',
-            () => this.emit('output-icon-changed'));
-        this.addMenuItem(this._output.item);
-
-        this._input = new InputStreamSlider(this._control);
-        this._input.item.connect('notify::visible',
-            () => this.emit('input-visible-changed'));
-        this._input.connect('stream-updated',
-            () => this.emit('input-icon-changed'));
-        this.addMenuItem(this._input.item);
-
-        this.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
-
-        this._onControlStateChanged();
-    }
-
-    scroll(type, event) {
-        return type === VolumeType.INPUT
-            ? this._input.scroll(event)
-            : this._output.scroll(event);
-    }
-
-    _onControlStateChanged() {
-        if (this._control.get_state() == Gvc.MixerControlState.READY) {
-            this._readInput();
-            this._readOutput();
-        } else {
-            this.emit('output-icon-changed');
-        }
-    }
-
-    _readOutput() {
-        this._output.stream = this._control.get_default_sink();
-    }
-
-    _readInput() {
-        this._input.stream = this._control.get_default_source();
-    }
-
-    getIcon(type) {
-        return type === VolumeType.INPUT
-            ? this._input.getIcon()
-            : this._output.getIcon();
-    }
-
-    getLevel(type) {
-        return type === VolumeType.INPUT
-            ? this._input.getLevel()
-            : this._output.getLevel();
-    }
-
-    getMaxLevel(type) {
-        return type === VolumeType.INPUT
-            ? this._input.getMaxLevel()
-            : this._output.getMaxLevel();
-    }
-
-    getInputVisible() {
-        return this._input.item.visible;
-    }
-};
-
 var Indicator = GObject.registerClass(
 class Indicator extends PanelMenu.SystemIndicator {
     _init() {
@@ -505,42 +424,72 @@ class Indicator extends PanelMenu.SystemIndicator {
         this._inputIndicator.reactive = true;
 
         this._primaryIndicator.connect('scroll-event',
-            (actor, event) => this._handleScrollEvent(VolumeType.OUTPUT, event));
+            (actor, event) => this._handleScrollEvent(this._output, event));
         this._inputIndicator.connect('scroll-event',
-            (actor, event) => this._handleScrollEvent(VolumeType.INPUT, event));
+            (actor, event) => this._handleScrollEvent(this._input, event));
+
+        const volumeMenu = new PopupMenu.PopupMenuSection();
 
         this._control = getMixerControl();
-        this._volumeMenu = new VolumeMenu(this._control);
-        this._volumeMenu.connect('output-icon-changed', () => {
-            let icon = this._volumeMenu.getIcon(VolumeType.OUTPUT);
+        this._control.connectObject(
+            'state-changed', () => this._onControlStateChanged(),
+            'default-sink-changed', () => this._readOutput(),
+            'default-source-changed', () => this._readInput(),
+            this);
 
-            if (icon != null)
+        this._output = new OutputStreamSlider(this._control);
+        this._output.connect('stream-updated', () => {
+            const icon = this._output.getIcon();
+
+            if (icon)
                 this._primaryIndicator.icon_name = icon;
             this._primaryIndicator.visible = icon !== null;
         });
+        volumeMenu.addMenuItem(this._output.item);
 
-        this._inputIndicator.visible = this._volumeMenu.getInputVisible();
-        this._volumeMenu.connect('input-visible-changed', () => {
-            this._inputIndicator.visible = this._volumeMenu.getInputVisible();
-        });
-        this._volumeMenu.connect('input-icon-changed', () => {
-            let icon = this._volumeMenu.getIcon(VolumeType.INPUT);
+        this._input = new InputStreamSlider(this._control);
+        this._input.connect('stream-updated', () => {
+            const icon = this._input.getIcon();
 
-            if (icon !== null)
+            if (icon)
                 this._inputIndicator.icon_name = icon;
         });
+        volumeMenu.addMenuItem(this._input.item);
 
-        this.menu.addMenuItem(this._volumeMenu);
+        this._input.item.actor.bind_property('visible',
+            this._inputIndicator, 'visible',
+            GObject.BindingFlags.SYNC_CREATE);
+
+        this.menu.addMenuItem(volumeMenu);
+
+        this._onControlStateChanged();
     }
 
-    _handleScrollEvent(type, event) {
-        const result = this._volumeMenu.scroll(type, event);
-        if (result == Clutter.EVENT_PROPAGATE || this.menu.actor.mapped)
+    _onControlStateChanged() {
+        if (this._control.get_state() === Gvc.MixerControlState.READY) {
+            this._readInput();
+            this._readOutput();
+        } else {
+            this._primaryIndicator.hide();
+        }
+    }
+
+    _readOutput() {
+        this._output.stream = this._control.get_default_sink();
+    }
+
+    _readInput() {
+        this._input.stream = this._control.get_default_source();
+    }
+
+    _handleScrollEvent(item, event) {
+        const result = item.scroll(event);
+        if (result === Clutter.EVENT_PROPAGATE || this.menu.actor.mapped)
             return result;
 
-        const gicon = new Gio.ThemedIcon({ name: this._volumeMenu.getIcon(type) });
-        const level = this._volumeMenu.getLevel(type);
-        const maxLevel = this._volumeMenu.getMaxLevel(type);
+        const gicon = new Gio.ThemedIcon({name: item.getIcon()});
+        const level = item.getLevel();
+        const maxLevel = item.getMaxLevel();
         Main.osdWindowManager.show(-1, gicon, null, level, maxLevel);
         return result;
     }
