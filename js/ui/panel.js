@@ -643,6 +643,16 @@ class Panel extends St.Widget {
             menu.actor.navigate_focus(null, St.DirectionType.TAB_FORWARD, false);
     }
 
+    _closeMenu(indicator) {
+        if (!indicator || !indicator.mapped)
+            return; // menu not supported by current session mode
+
+        if (!indicator.reactive)
+            return;
+
+        indicator.menu.close();
+    }
+
     toggleAppMenu() {
         this._toggleMenu(this.statusArea.appMenu);
     }
@@ -652,15 +662,11 @@ class Panel extends St.Widget {
     }
 
     closeCalendar() {
-        let indicator = this.statusArea.dateMenu;
-        if (!indicator) // calendar not supported by current session mode
-            return;
+        this._closeMenu(this.statusArea.dateMenu);
+    }
 
-        let menu = indicator.menu;
-        if (!indicator.reactive)
-            return;
-
-        menu.close();
+    closeQuickSettings() {
+        this._closeMenu(this.statusArea.quickSettings);
     }
 
     set boxOpacity(value) {
