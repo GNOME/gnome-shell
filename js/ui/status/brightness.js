@@ -67,7 +67,8 @@ class Indicator extends PanelMenu.SystemIndicator {
     }
 
     _sync() {
-        let visible = this._proxy.Brightness >= 0;
+        const brightness = this._proxy.Brightness;
+        const visible = Number.isInteger(brightness) && brightness >= 0;
         this._item.visible = visible;
         if (visible)
             this._changeSlider(this._proxy.Brightness / 100.0);
