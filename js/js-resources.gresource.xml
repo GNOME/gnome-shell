@@ -141,7 +141,6 @@
     <file>ui/status/keyboard.js</file>
     <file>ui/status/nightLight.js</file>
     <file>ui/status/network.js</file>
-    <file>ui/status/power.js</file>
     <file>ui/status/powerProfiles.js</file>
     <file>ui/status/rfkill.js</file>
     <file>ui/status/volume.js</file>

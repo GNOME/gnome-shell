@@ -415,7 +415,6 @@ class QuickSettings extends PanelMenu.Button {
         this._rfkill = new imports.ui.status.rfkill.Indicator();
         this._autoRotate = new imports.ui.status.autoRotate.Indicator();
         this._unsafeMode = new UnsafeModeIndicator();
-        this._power = new imports.ui.status.power.Indicator();
 
         this._indicators.add_child(this._brightness);
         this._indicators.add_child(this._remoteAccess);
@@ -430,7 +429,6 @@ class QuickSettings extends PanelMenu.Button {
         this._indicators.add_child(this._autoRotate);
         this._indicators.add_child(this._volume);
         this._indicators.add_child(this._unsafeMode);
-        this._indicators.add_child(this._power);
         this._indicators.add_child(this._system);
 
         this._addItems(this._system.quickSettingsItems, N_QUICK_SETTINGS_COLUMNS);
@@ -448,7 +446,6 @@ class QuickSettings extends PanelMenu.Button {
         this._addItems(this._rfkill.quickSettingsItems);
         this._addItems(this._autoRotate.quickSettingsItems);
         this._addItems(this._unsafeMode.quickSettingsItems);
-        this._addItems(this._power.quickSettingsItems);
     }
 
     _addItems(items, colSpan = 1) {

@@ -86,4 +86,14 @@
 
 .quick-settings-system-item {
   & > StBoxLayout { spacing: 2 * $base_padding; }
+
+  & .power-item {
+    min-height: 0;
+    min-width: 0;
+
+    &:insensitive {
+      @include button(normal);
+      background-color: transparent;
+    }
+  }
 }
