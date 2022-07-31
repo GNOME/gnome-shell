@@ -1759,7 +1759,7 @@ class Indicator extends PanelMenu.SystemIndicator {
 
         this._activeConnections = [];
         this._connections = [];
-        this._connectivityQueue = [];
+        this._connectivityQueue = new Set();
 
         this._mainConnection = null;
 
@@ -2090,23 +2090,14 @@ class Indicator extends PanelMenu.SystemIndicator {
     }
 
     _flushConnectivityQueue() {
-        if (this._portalHelperProxy) {
-            for (let item of this._connectivityQueue)
-                this._portalHelperProxy.CloseAsync(item).catch(logError);
-        }
-
-        this._connectivityQueue = [];
+        for (let item of this._connectivityQueue)
+            this._portalHelperProxy?.CloseAsync(item);
+        this._connectivityQueue.clear();
     }
 
     _closeConnectivityCheck(path) {
-        let index = this._connectivityQueue.indexOf(path);
-
-        if (index >= 0) {
-            if (this._portalHelperProxy)
-                this._portalHelperProxy.CloseAsync(path).catch(logError);
-
-            this._connectivityQueue.splice(index, 1);
-        }
+        if (this._connectivityQueue.delete(path))
+            this._portalHelperProxy?.CloseAsync(path);
     }
 
     async _portalHelperDone(proxy, emitter, parameters) {
@@ -2149,10 +2140,8 @@ class Indicator extends PanelMenu.SystemIndicator {
             return;
 
         let path = this._mainConnection.get_path();
-        for (let item of this._connectivityQueue) {
-            if (item == path)
-                return;
-        }
+        if (this._connectivityQueue.has(path))
+            return;
 
         let timestamp = global.get_current_time();
         if (!this._portalHelperProxy) {
@@ -2176,7 +2165,7 @@ class Indicator extends PanelMenu.SystemIndicator {
 
         this._portalHelperProxy?.AuthenticateAsync(path, '', timestamp).catch(logError);
 
-        this._connectivityQueue.push(path);
+        this._connectivityQueue.add(path);
     }
 
     _updateIcon() {
