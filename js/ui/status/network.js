@@ -1814,17 +1814,6 @@ class Indicator extends PanelMenu.SystemIndicator {
         this.menu.setSensitive(sensitive);
     }
 
-    _ensureSource() {
-        if (!this._source) {
-            this._source = new MessageTray.Source(_("Network Manager"),
-                                                  'network-transmit-receive');
-            this._source.policy = new MessageTray.NotificationApplicationPolicy('gnome-network-panel');
-
-            this._source.connect('destroy', () => (this._source = null));
-            Main.messageTray.add(this._source);
-        }
-    }
-
     _readDevices() {
         let devices = this._client.get_devices() || [];
         for (let i = 0; i < devices.length; ++i) {
@@ -1837,29 +1826,24 @@ class Indicator extends PanelMenu.SystemIndicator {
         this._syncDeviceNames();
     }
 
-    _notify(iconName, title, text, urgency) {
-        if (this._notification)
-            this._notification.destroy();
-
-        this._ensureSource();
-
-        let gicon = new Gio.ThemedIcon({ name: iconName });
-        this._notification = new MessageTray.Notification(this._source, title, text, { gicon });
-        this._notification.setUrgency(urgency);
-        this._notification.setTransient(true);
-        this._notification.connect('destroy', () => {
-            this._notification = null;
-        });
-        this._source.showNotification(this._notification);
-    }
-
     _onActivationFailed() {
-        // XXX: nm-applet has no special text depending on reason
-        // but I'm not sure of this generic message
-        this._notify('network-error-symbolic',
-                     _("Connection failed"),
-                     _("Activation of network connection failed"),
-                     MessageTray.Urgency.HIGH);
+        this._notification?.destroy();
+
+        const source = new MessageTray.Source(
+            _('Network Manager'), 'network-error-symbolic');
+        source.policy =
+            new MessageTray.NotificationApplicationPolicy('gnome-network-panel');
+
+        this._notification = new MessageTray.Notification(source,
+            _('Connection failed'),
+            _('Activation of network connection failed'));
+        this._notification.setUrgency(MessageTray.Urgency.HIGH);
+        this._notification.setTransient(true);
+        this._notification.connect('destroy',
+            () => (this._notification = null));
+
+        Main.messageTray.add(source);
+        source.showNotification(this._notification);
     }
 
     _syncDeviceNames() {
