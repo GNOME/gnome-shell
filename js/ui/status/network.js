@@ -1783,17 +1783,19 @@ class Indicator extends PanelMenu.SystemIndicator {
         this._syncMainConnection();
         this._syncVpnConnections();
 
-        this._client.connect('notify::nm-running', this._syncNMState.bind(this));
-        this._client.connect('notify::networking-enabled', this._syncNMState.bind(this));
-        this._client.connect('notify::state', this._syncNMState.bind(this));
-        this._client.connect('notify::primary-connection', this._syncMainConnection.bind(this));
-        this._client.connect('notify::activating-connection', this._syncMainConnection.bind(this));
-        this._client.connect('notify::active-connections', this._syncVpnConnections.bind(this));
-        this._client.connect('notify::connectivity', this._syncConnectivity.bind(this));
-        this._client.connect('device-added', this._deviceAdded.bind(this));
-        this._client.connect('device-removed', this._deviceRemoved.bind(this));
-        this._client.connect('connection-added', this._connectionAdded.bind(this));
-        this._client.connect('connection-removed', this._connectionRemoved.bind(this));
+        this._client.connectObject(
+            'notify::nm-running', () => this._syncNMState(),
+            'notify::networking-enabled', () => this._syncNMState(),
+            'notify::state', () => this._syncNMState(),
+            'notify::primary-connection', () => this._syncMainConnection(),
+            'notify::activating-connection', () => this._syncMainConnection(),
+            'notify::active-connections', () => this._syncVpnConnections(),
+            'notify::connectivity', () => this._syncConnectivity(),
+            'device-added', this._deviceAdded.bind(this),
+            'device-removed', this._deviceRemoved.bind(this),
+            'connection-added', this._connectionAdded.bind(this),
+            'connection-removed', this._connectionRemoved.bind(this),
+            this);
 
         try {
             this._configPermission = await Polkit.Permission.new(
