@@ -1779,14 +1779,18 @@ class Indicator extends PanelMenu.SystemIndicator {
 
         this._readConnections();
         this._readDevices();
-        this._syncNMState();
         this._syncMainConnection();
         this._syncVpnConnections();
 
+        this._client.bind_property('nm-running',
+            this, 'visible',
+            GObject.BindingFlags.SYNC_CREATE);
+        this._client.bind_property('networking-enabled',
+            this.menu.actor, 'visible',
+            GObject.BindingFlags.SYNC_CREATE);
+
         this._client.connectObject(
-            'notify::nm-running', () => this._syncNMState(),
-            'notify::networking-enabled', () => this._syncNMState(),
-            'notify::state', () => this._syncNMState(),
+            'notify::state', () => this._updateIcon(),
             'notify::primary-connection', () => this._syncMainConnection(),
             'notify::activating-connection', () => this._syncMainConnection(),
             'notify::active-connections', () => this._syncVpnConnections(),
@@ -2059,14 +2063,6 @@ class Indicator extends PanelMenu.SystemIndicator {
                     wrapper.checkConnection(connection);
             });
         }
-    }
-
-    _syncNMState() {
-        this.visible = this._client.nm_running;
-        this.menu.actor.visible = this._client.networking_enabled;
-
-        this._updateIcon();
-        this._syncConnectivity();
     }
 
     _flushConnectivityQueue() {
