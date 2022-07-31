@@ -296,9 +296,7 @@ var NMConnectionSection = class NMConnectionSection extends Signals.EventEmitter
             return;
 
         item.connect('icon-changed', () => this._iconChanged());
-        item.connect('activation-failed', (o, reason) => {
-            this.emit('activation-failed', reason);
-        });
+        item.connect('activation-failed', () => this.emit('activation-failed'));
         item.connect('name-changed', this._sync.bind(this));
 
         let pos = Util.insertSorted(this._connections, connection, this._connectionSortFunction.bind(this));
@@ -386,7 +384,7 @@ var NMConnectionDevice = class NMConnectionDevice extends NMConnectionSection {
            cancelled the agent dialog */
         if (newstate == NM.DeviceState.FAILED &&
             reason != NM.DeviceStateReason.NO_SECRETS)
-            this.emit('activation-failed', reason);
+            this.emit('activation-failed');
 
         this._sync();
     }
@@ -1316,7 +1314,7 @@ var NMDeviceWireless = class extends Signals.EventEmitter {
            cancelled the agent dialog */
         if (newstate == NM.DeviceState.FAILED &&
             reason != NM.DeviceStateReason.NO_SECRETS)
-            this.emit('activation-failed', reason);
+            this.emit('activation-failed');
 
         this._sync();
     }
@@ -1481,12 +1479,8 @@ var NMWireguardItem = class extends NMConnectionItem {
 
     _connectionStateChanged(ac, newstate, reason) {
         if (newstate === NM.ActiveConnectionState.DEACTIVATED &&
-            reason !== NM.ActiveConnectionStateReason.NO_SECRETS) {
-            // FIXME: if we ever want to show something based on reason,
-            // we need to convert from NM.ActiveConnectionStateReason
-            // to NM.DeviceStateReason
-            this.emit('activation-failed', reason);
-        }
+            reason !== NM.ActiveConnectionStateReason.NO_SECRETS)
+            this.emit('activation-failed');
 
         this.emit('icon-changed');
         super._connectionStateChanged();
@@ -1553,13 +1547,9 @@ var NMVpnConnectionItem = class extends NMConnectionItem {
     }
 
     _connectionStateChanged(ac, newstate, reason) {
-        if (newstate == NM.VpnConnectionState.FAILED &&
-            reason != NM.VpnConnectionStateReason.NO_SECRETS) {
-            // FIXME: if we ever want to show something based on reason,
-            // we need to convert from NM.VpnConnectionStateReason
-            // to NM.DeviceStateReason
-            this.emit('activation-failed', reason);
-        }
+        if (newstate === NM.VpnConnectionState.FAILED &&
+            reason !== NM.VpnConnectionStateReason.NO_SECRETS)
+            this.emit('activation-failed');
 
         this.emit('icon-changed');
         super._connectionStateChanged();
@@ -1859,7 +1849,7 @@ class Indicator extends PanelMenu.SystemIndicator {
         this._source.showNotification(this._notification);
     }
 
-    _onActivationFailed(_device, _reason) {
+    _onActivationFailed() {
         // XXX: nm-applet has no special text depending on reason
         // but I'm not sure of this generic message
         this._notify('network-error-symbolic',
