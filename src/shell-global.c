@@ -844,6 +844,17 @@ shell_global_get_display (ShellGlobal  *global)
 }
 
 /**
+ * shell_global_get_workspace_manager:
+ *
+ * Return value: (transfer none): The default #MetaWorkspaceManager
+ */
+MetaWorkspaceManager *
+shell_global_get_workspace_manager (ShellGlobal  *global)
+{
+  return global->workspace_manager;
+}
+
+/**
  * shell_global_get_window_actors:
  *
  * Gets the list of #MetaWindowActor for the plugin's screen
