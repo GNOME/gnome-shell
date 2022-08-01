@@ -169,10 +169,6 @@ function _loggingFunc(...args) {
 async function start() {
     globalThis.log = _loggingFunc;
 
-    // These are here so we don't break compatibility.
-    global.logError = globalThis.log;
-    global.log = globalThis.log;
-
     // Chain up async errors reported from C
     global.connect('notify-error', (global, msg, detail) => {
         notifyError(msg, detail);
