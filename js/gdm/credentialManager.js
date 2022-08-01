@@ -5,7 +5,6 @@ var CredentialManager = class CredentialManager {
     constructor(service) {
         this._token = null;
         this._service = service;
-        this._authenticatedSignalId = null;
     }
 
     get token() {
