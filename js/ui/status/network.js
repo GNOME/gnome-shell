@@ -1232,18 +1232,17 @@ const NMVpnConnectionItem = GObject.registerClass({
     }
 });
 
-var NMVpnSection = class extends PopupMenu.PopupMenuSection {
+class NMSection extends PopupMenu.PopupMenuSection {
     constructor() {
         super();
 
         this._items = new Map();
         this._itemSorter = new ItemSorter();
 
-        this._section = new PopupMenu.PopupMenuSection();
-        this.addMenuItem(this._section);
+        this._itemsSection = new PopupMenu.PopupMenuSection();
+        this.addMenuItem(this._itemsSection);
 
-        this.addSettingsAction(_('VPN Settings'),
-            'gnome-network-panel.desktop');
+        this.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
     }
 
     setClient(client) {
@@ -1252,17 +1251,76 @@ var NMVpnSection = class extends PopupMenu.PopupMenuSection {
 
         this._client?.disconnectObject(this);
         this._client = client;
-        this._client?.connectObject(
-            'connection-added', (c, conn) => this._addConnection(conn),
-            'connection-removed', (c, conn) => this._removeConnection(conn),
-            'notify::active-connections', () => this._syncActiveConnections(),
-            this);
 
         this._items.forEach(item => item.destroy());
         this._items.clear();
 
         if (this._client)
             this._loadInitialItems();
+        this._sync();
+    }
+
+    set visible(visible) {
+        this.actor.visible = visible;
+    }
+
+    _loadInitialItems() {
+        throw new GObject.NotImplementedError();
+    }
+
+    _resortItem(item) {
+        const pos = this._itemSorter.upsert(item);
+        this._itemsSection.moveMenuItem(item, pos);
+    }
+
+    _addItem(key, item) {
+        console.assert(!this._items.has(key),
+            `${this} already has an item for ${key}`);
+
+        item.connectObject(
+            'notify::name', () => this._resortItem(item),
+            'destroy', () => this._removeItem(key),
+            this);
+
+        this._items.set(key, item);
+        const pos = this._itemSorter.upsert(item);
+        this._itemsSection.addMenuItem(item, pos);
+        this._sync();
+    }
+
+    _removeItem(key) {
+        const item = this._items.get(key);
+        if (!item)
+            return;
+
+        this._itemSorter.delete(item);
+        this._items.delete(key);
+
+        item.destroy();
+        this._sync();
+    }
+
+    _sync() {
+        this.visible = this._items.size > 0;
+    }
+}
+
+class NMVpnSection extends NMSection {
+    constructor() {
+        super();
+
+        this.addSettingsAction(_('VPN Settings'),
+            'gnome-network-panel.desktop');
+    }
+
+    setClient(client) {
+        super.setClient(client);
+
+        this._client?.connectObject(
+            'connection-added', (c, conn) => this._addConnection(conn),
+            'connection-removed', (c, conn) => this._removeConnection(conn),
+            'notify::active-connections', () => this._syncActiveConnections(),
+            this);
     }
 
     _loadInitialItems() {
@@ -1306,11 +1364,6 @@ var NMVpnSection = class extends PopupMenu.PopupMenuSection {
         item.updateForConnection(connection);
     }
 
-    _resortItem(item) {
-        const pos = this._itemSorter.upsert(item);
-        this._section.moveMenuItem(item, pos);
-    }
-
     _addConnection(connection) {
         if (this._items.has(connection))
             return;
@@ -1325,24 +1378,12 @@ var NMVpnSection = class extends PopupMenu.PopupMenuSection {
         const item = new NMVpnConnectionItem(this, connection);
         item.connectObject(
             'activation-failed', () => this.emit('activation-failed'),
-            'notify::name', () => this._resortItem(item),
-            'destroy', () => this._removeConnection(connection),
             this);
-
-        this._items.set(connection, item);
-        const pos = this._itemSorter.upsert(item);
-        this._section.addMenuItem(item, pos);
+        this._addItem(connection, item);
     }
 
     _removeConnection(connection) {
-        const item = this._items.get(connection);
-        if (!item)
-            return;
-
-        this._itemSorter.delete(item);
-        this._items.delete(connection);
-
-        item.destroy();
+        this._removeItem(connection);
     }
 
     activateConnection(connection) {
@@ -1360,19 +1401,14 @@ var NMVpnSection = class extends PopupMenu.PopupMenuSection {
         }
         return '';
     }
-};
+}
 
-var NMDeviceSection = class extends PopupMenu.PopupMenuSection {
+class NMDeviceSection extends NMSection {
     constructor(deviceType) {
         super();
 
-        this._items = new Map();
-
         this._deviceType = deviceType;
         this._nmDevices = new Set();
-
-        this._devicesSection = new PopupMenu.PopupMenuSection();
-        this.addMenuItem(this._devicesSection);
 
         this._summaryItem = new PopupMenu.PopupSubMenuMenuItem('', true);
         this._summaryItem.icon.icon_name = this._getSummaryIcon();
@@ -1384,13 +1420,10 @@ var NMDeviceSection = class extends PopupMenu.PopupMenuSection {
     }
 
     setClient(client) {
-        if (this._client === client)
-            return;
-
         this._nmDevices.clear();
 
-        this._client?.disconnectObject(this);
-        this._client = client;
+        super.setClient(client);
+
         this._client?.connectObject(
             'device-added', (c, dev) => {
                 this._addDevice(dev);
@@ -1400,13 +1433,6 @@ var NMDeviceSection = class extends PopupMenu.PopupMenuSection {
                 this._removeDevice(dev);
                 this._syncDeviceNames();
             }, this);
-
-        this._items.forEach(item => item.destroy());
-        this._items.clear();
-
-        if (this._client)
-            this._loadInitialItems();
-        this._sync();
     }
 
     _loadInitialItems() {
@@ -1473,16 +1499,11 @@ var NMDeviceSection = class extends PopupMenu.PopupMenuSection {
             return;
 
         const item = this._createDeviceMenuItem(device);
-        this._items.set(device, item);
-        this._devicesSection.addMenuItem(item);
-
-        this._sync();
+        this._addItem(device, item);
     }
 
     _removeDeviceItem(device) {
-        this._items.get(device)?.destroy();
-        if (this._items.delete(device))
-            this._sync();
+        this._removeItem(device);
     }
 
     _addDevice(device) {
@@ -1511,12 +1532,14 @@ var NMDeviceSection = class extends PopupMenu.PopupMenuSection {
     }
 
     _sync() {
-        let nDevices = this._devicesSection.box.get_children().reduce(
+        super._sync();
+
+        let nDevices = this._itemsSection.box.get_children().reduce(
             (prev, child) => prev + (child.visible ? 1 : 0), 0);
         this._summaryItem.label.text = this._getSummaryLabel(nDevices);
         let shouldSummarize = nDevices > MAX_DEVICE_ITEMS;
         this._summaryItem.visible = shouldSummarize;
-        this._devicesSection.actor.visible = !shouldSummarize;
+        this._itemsSection.actor.visible = !shouldSummarize;
     }
 
     _getSummaryIcon() {
@@ -1526,7 +1549,7 @@ var NMDeviceSection = class extends PopupMenu.PopupMenuSection {
     _getSummaryLabel() {
         throw new GObject.NotImplementedError();
     }
-};
+}
 
 class NMWirelessSection extends NMDeviceSection {
     constructor() {
