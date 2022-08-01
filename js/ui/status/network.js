@@ -16,15 +16,6 @@ Gio._promisify(Gio.DBusConnection.prototype, 'call');
 Gio._promisify(NM.Client, 'new_async');
 Gio._promisify(NM.Client.prototype, 'check_connectivity_async');
 
-const NMConnectionCategory = {
-    INVALID: 'invalid',
-    WIRED: 'wired',
-    WIRELESS: 'wireless',
-    BLUETOOTH: 'bluetooth',
-    WWAN: 'wwan',
-    VPN: 'vpn',
-};
-
 const MAX_VISIBLE_NETWORKS = 8;
 var MAX_DEVICE_ITEMS = 4;
 
@@ -1641,10 +1632,10 @@ class Indicator extends PanelMenu.SystemIndicator {
         this._btSection = new NMBluetoothSection();
 
         this._deviceSections = new Map([
-            [NMConnectionCategory.WIRED, this._wiredSection],
-            [NMConnectionCategory.WIRELESS, this._wirelessSection],
-            [NMConnectionCategory.WWAN, this._modemSection],
-            [NMConnectionCategory.BLUETOOTH, this._btSection],
+            [NM.DeviceType.ETHERNET, this._wiredSection],
+            [NM.DeviceType.WIFI, this._wirelessSection],
+            [NM.DeviceType.MODEM, this._modemSection],
+            [NM.DeviceType.BT, this._btSection],
         ]);
         for (const section of this._deviceSections.values()) {
             section.connectObject(
