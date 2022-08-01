@@ -9,7 +9,6 @@ var CredentialManager = class CredentialManager extends Signals.EventEmitter {
 
         this._token = null;
         this._service = service;
-        this._authenticatedSignalId = null;
     }
 
     get token() {
