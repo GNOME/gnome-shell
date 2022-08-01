@@ -1565,9 +1565,67 @@ var NMVpnSection = class extends NMConnectionSection {
     constructor(client) {
         super(client);
 
-        this.item.menu.addSettingsAction(_("VPN Settings"), 'gnome-network-panel.desktop');
+        this._client.connectObject(
+            'connection-added', (c, conn) => this.checkConnection(conn),
+            'connection-removed', (c, conn) => this.removeConnection(conn),
+            'notify::active-connections', () => this._syncActiveConnections(),
+            this);
+
+        this.item.menu.addSettingsAction(_('VPN Settings'),
+            'gnome-network-panel.desktop');
+
+        this._loadInitialItems();
+        this._sync();
+    }
+
+    _loadInitialItems() {
+        const connections = this._client.get_connections();
+        for (const conn of connections)
+            this.checkConnection(conn);
+
+        this._syncActiveConnections();
+    }
+
+    _syncActiveConnections() {
+        const activeConnections =
+            this._client.get_active_connections().filter(
+                c => this._shouldHandleConnection(c.connection));
+
+        for (const item of this._connectionItems.values())
+            item.setActiveConnection(null);
+
+        for (const a of activeConnections)
+            this._connectionItems.get(a.connection.get_uuid())?.setActiveConnection(a);
 
         this._sync();
+    }
+
+    _shouldHandleConnection(connection) {
+        const setting = connection.get_setting_connection();
+        if (!setting)
+            return false;
+
+        // Ignore slave connection
+        if (setting.get_master())
+            return false;
+
+        const handledTypes = [
+            NM.SETTING_VPN_SETTING_NAME,
+            NM.SETTING_WIREGUARD_SETTING_NAME,
+        ];
+        return handledTypes.includes(setting.type);
+    }
+
+    _addConnection(connection) {
+        super._addConnection(connection);
+
+        connection.connectObject(
+            'changed', () => this.checkConnection(connection),
+            this);
+    }
+
+    _connectionValid(connection) {
+        return this._shouldHandleConnection(connection);
     }
 
     _sync() {
@@ -1605,19 +1663,6 @@ var NMVpnSection = class extends NMConnectionSection {
 
     deactivateConnection(activeConnection) {
         this._client.deactivate_connection(activeConnection, null);
-    }
-
-    setActiveConnections(vpnConnections) {
-        let connections = this._connectionItems.values();
-        for (let item of connections)
-            item.setActiveConnection(null);
-
-        vpnConnections.forEach(a => {
-            if (a.connection) {
-                let item = this._connectionItems.get(a.connection.get_uuid());
-                item.setActiveConnection(a);
-            }
-        });
     }
 
     _makeConnectionItem(connection) {
@@ -1764,8 +1809,6 @@ class Indicator extends PanelMenu.SystemIndicator {
         this._ctypes[NM.SETTING_BLUETOOTH_SETTING_NAME] = NMConnectionCategory.BLUETOOTH;
         this._ctypes[NM.SETTING_CDMA_SETTING_NAME] = NMConnectionCategory.WWAN;
         this._ctypes[NM.SETTING_GSM_SETTING_NAME] = NMConnectionCategory.WWAN;
-        this._ctypes[NM.SETTING_VPN_SETTING_NAME] = NMConnectionCategory.VPN;
-        this._ctypes[NM.SETTING_WIREGUARD_SETTING_NAME] = NMConnectionCategory.VPN;
 
         this._getClient().catch(logError);
     }
@@ -1773,7 +1816,6 @@ class Indicator extends PanelMenu.SystemIndicator {
     async _getClient() {
         this._client = await NM.Client.new_async(null);
 
-        this._activeConnections = [];
         this._connections = [];
         this._connectivityQueue = new Set();
 
@@ -1805,7 +1847,6 @@ class Indicator extends PanelMenu.SystemIndicator {
         this._readConnections();
         this._readDevices();
         this._syncMainConnection();
-        this._syncVpnConnections();
 
         this._client.bind_property('nm-running',
             this, 'visible',
@@ -1818,7 +1859,6 @@ class Indicator extends PanelMenu.SystemIndicator {
             'notify::state', () => this._updateIcon(),
             'notify::primary-connection', () => this._syncMainConnection(),
             'notify::activating-connection', () => this._syncMainConnection(),
-            'notify::active-connections', () => this._syncVpnConnections(),
             'notify::connectivity', () => this._syncConnectivity(),
             'device-added', this._deviceAdded.bind(this),
             'device-removed', this._deviceRemoved.bind(this),
@@ -1993,18 +2033,6 @@ class Indicator extends PanelMenu.SystemIndicator {
         this._syncConnectivity();
     }
 
-    _syncVpnConnections() {
-        let activeConnections = this._client.get_active_connections() || [];
-        let vpnConnections = activeConnections.filter(
-            a => a instanceof NM.VpnConnection || a.get_connection_type() === 'wireguard');
-        vpnConnections.forEach(a => {
-            ensureActiveConnectionProps(a);
-        });
-        this._vpnSection.setActiveConnections(vpnConnections);
-
-        this._updateIcon();
-    }
-
     _mainConnectionStateChanged() {
         if (this._mainConnection.state === NM.ActiveConnectionState.ACTIVATED)
             this._notification?.destroy();
@@ -2079,15 +2107,11 @@ class Indicator extends PanelMenu.SystemIndicator {
         if (section == NMConnectionCategory.INVALID)
             return;
 
-        if (section == NMConnectionCategory.VPN) {
-            this._vpnSection.checkConnection(connection);
-        } else {
-            const {devices} = this._deviceSections.get(section);
-            devices.forEach(wrapper => {
-                if (wrapper instanceof NMConnectionSection)
-                    wrapper.checkConnection(connection);
-            });
-        }
+        const {devices} = this._deviceSections.get(section);
+        devices.forEach(wrapper => {
+            if (wrapper instanceof NMConnectionSection)
+                wrapper.checkConnection(connection);
+        });
     }
 
     _flushConnectivityQueue() {
