@@ -388,11 +388,8 @@ const NMDeviceConnectionItem = GObject.registerClass({
     }
 });
 
-const NMDeviceItem = GObject.registerClass({
-    Signals: {
-        'activation-failed': {},
-    },
-}, class NMDeviceItem extends NMSectionItem {
+const NMDeviceItem = GObject.registerClass(
+class NMDeviceItem extends NMSectionItem {
     constructor(client, device) {
         super();
 
@@ -429,7 +426,6 @@ const NMDeviceItem = GObject.registerClass({
         this._device.connectObject(
             'notify::available-connections', () => this._syncConnections(),
             'notify::active-connection', () => this._activeConnectionChanged(),
-            'state-changed', this._deviceStateChanged.bind(this),
             this);
 
         this._syncConnections();
@@ -458,22 +454,6 @@ const NMDeviceItem = GObject.registerClass({
         const newItem = this._connectionItems.get(
             this._activeConnection?.connection);
         newItem?.setActiveConnection(this._activeConnection);
-    }
-
-    _deviceStateChanged(device, newstate, oldstate, reason) {
-        if (newstate === oldstate) {
-            log('device emitted state-changed without actually changing state');
-            return;
-        }
-
-        /* Emit a notification if activation fails, but don't do it
-           if the reason is no secrets, as that indicates the user
-           cancelled the agent dialog */
-        if (newstate === NM.DeviceState.FAILED &&
-            reason !== NM.DeviceStateReason.NO_SECRETS)
-            this.emit('activation-failed');
-
-        this._sync();
     }
 
     _syncConnections() {
@@ -569,10 +549,6 @@ class NMWiredDeviceItem extends NMDeviceItem {
             'gnome-network-panel.desktop');
     }
 
-    get category() {
-        return NMConnectionCategory.WIRED;
-    }
-
     get icon_name() {
         switch (this.state) {
         case NM.ActiveConnectionState.ACTIVATING:
@@ -635,10 +611,6 @@ class NMModemDeviceItem extends NMDeviceItem {
         this._sessionUpdated();
     }
 
-    get category() {
-        return NMConnectionCategory.WWAN;
-    }
-
     get icon_name() {
         switch (this.state) {
         case NM.ActiveConnectionState.ACTIVATING:
@@ -689,10 +661,6 @@ class NMBluetoothDeviceItem extends NMDeviceItem {
 
         this.section.addSettingsAction(_('Bluetooth Settings'),
             'gnome-network-panel.desktop');
-    }
-
-    get category() {
-        return NMConnectionCategory.BLUETOOTH;
     }
 
     get icon_name() {
@@ -1000,11 +968,8 @@ class NMWirelessNetworkItem extends PopupMenu.PopupBaseMenuItem {
     }
 });
 
-const NMWirelessDeviceItem = GObject.registerClass({
-    Signals: {
-        'activation-failed': {},
-    },
-}, class NMWirelessDeviceItem extends NMSectionItem {
+const NMWirelessDeviceItem = GObject.registerClass(
+class NMWirelessDeviceItem extends NMSectionItem {
     constructor(client, device) {
         super();
 
@@ -1030,7 +995,6 @@ const NMWirelessDeviceItem = GObject.registerClass({
         this._device.connectObject(
             'notify::active-access-point', this._activeApChanged.bind(this),
             'notify::active-connection', () => this._activeConnectionChanged(),
-            'state-changed', this._deviceStateChanged.bind(this),
             'notify::available-connections', () => this._availableConnectionsChanged(),
             'access-point-added', (d, ap) => {
                 this._addAccessPoint(ap);
@@ -1052,10 +1016,6 @@ const NMWirelessDeviceItem = GObject.registerClass({
         this._activeConnectionChanged();
         this._availableConnectionsChanged();
         this._updateItemsVisibility();
-    }
-
-    get category() {
-        return NMConnectionCategory.WIRELESS;
     }
 
     get icon_name() {
@@ -1098,22 +1058,6 @@ const NMWirelessDeviceItem = GObject.registerClass({
             return ssidToLabel(ssid);
 
         return this._deviceName;
-    }
-
-    _deviceStateChanged(device, newstate, oldstate, reason) {
-        if (newstate == oldstate) {
-            log('device emitted state-changed without actually changing state');
-            return;
-        }
-
-        /* Emit a notification if activation fails, but don't do it
-           if the reason is no secrets, as that indicates the user
-           cancelled the agent dialog */
-        if (newstate == NM.DeviceState.FAILED &&
-            reason != NM.DeviceStateReason.NO_SECRETS)
-            this.emit('activation-failed');
-
-        this._sync();
     }
 
     _activeApChanged() {
@@ -1410,10 +1354,6 @@ var NMVpnSection = class extends PopupMenu.PopupMenuSection {
         item.destroy();
     }
 
-    get category() {
-        return NMConnectionCategory.VPN;
-    }
-
     activateConnection(connection) {
         this._client.activate_connection_async(connection, null, null, null, null);
     }
@@ -1435,14 +1375,13 @@ var NMDeviceSection = class extends PopupMenu.PopupMenuSection {
     constructor(deviceType) {
         super();
 
+        this._items = new Map();
+
         this._deviceType = deviceType;
+        this._nmDevices = new Set();
 
-        this.devices = [];
-
-        this.section = new PopupMenu.PopupMenuSection();
-        this.section.box.connect('actor-added', this._sync.bind(this));
-        this.section.box.connect('actor-removed', this._sync.bind(this));
-        this.addMenuItem(this.section);
+        this._devicesSection = new PopupMenu.PopupMenuSection();
+        this.addMenuItem(this._devicesSection);
 
         this._summaryItem = new PopupMenu.PopupSubMenuMenuItem('', true);
         this._summaryItem.icon.icon_name = this._getSummaryIcon();
@@ -1453,13 +1392,140 @@ var NMDeviceSection = class extends PopupMenu.PopupMenuSection {
         this._summaryItem.hide();
     }
 
+    setClient(client) {
+        if (this._client === client)
+            return;
+
+        this._nmDevices.clear();
+
+        this._client?.disconnectObject(this);
+        this._client = client;
+        this._client?.connectObject(
+            'device-added', (c, dev) => {
+                this._addDevice(dev);
+                this._syncDeviceNames();
+            },
+            'device-removed', (c, dev) => {
+                this._removeDevice(dev);
+                this._syncDeviceNames();
+            }, this);
+
+        this._items.forEach(item => item.destroy());
+        this._items.clear();
+
+        if (this._client)
+            this._loadInitialItems();
+        this._sync();
+    }
+
+    _loadInitialItems() {
+        const devices = this._client.get_devices();
+        for (const  dev of devices)
+            this._addDevice(dev);
+        this._syncDeviceNames();
+    }
+
+    _shouldShowDevice(device) {
+        switch (device.state) {
+        case NM.DeviceState.DISCONNECTED:
+        case NM.DeviceState.ACTIVATED:
+        case NM.DeviceState.DEACTIVATING:
+        case NM.DeviceState.PREPARE:
+        case NM.DeviceState.CONFIG:
+        case NM.DeviceState.IP_CONFIG:
+        case NM.DeviceState.IP_CHECK:
+        case NM.DeviceState.SECONDARIES:
+        case NM.DeviceState.NEED_AUTH:
+        case NM.DeviceState.FAILED:
+            return true;
+        case NM.DeviceState.UNMANAGED:
+        case NM.DeviceState.UNAVAILABLE:
+        default:
+            return false;
+        }
+    }
+
+    _syncDeviceNames() {
+        const devices = [...this._nmDevices];
+        const names = NM.Device.disambiguate_names(devices);
+        devices.forEach(
+            (dev, i) => this._items.get(dev)?.setDeviceName(names[i]));
+    }
+
+    _syncDeviceItem(device) {
+        if (this._shouldShowDevice(device))
+            this._ensureDeviceItem(device);
+        else
+            this._removeDeviceItem(device);
+    }
+
+    _deviceStateChanged(device, newState, oldState, reason) {
+        if (newState === oldState) {
+            console.info(`${device} emitted state-changed without actually changing state`);
+            return;
+        }
+
+        /* Emit a notification if activation fails, but don't do it
+           if the reason is no secrets, as that indicates the user
+           cancelled the agent dialog */
+        if (newState === NM.DeviceState.FAILED &&
+            reason !== NM.DeviceStateReason.NO_SECRETS)
+            this.emit('activation-failed');
+    }
+
+    _createDeviceMenuItem(_device) {
+        throw new GObject.NotImplementedError();
+    }
+
+    _ensureDeviceItem(device) {
+        if (this._items.has(device))
+            return;
+
+        const item = this._createDeviceMenuItem(device);
+        this._items.set(device, item);
+        this._devicesSection.addMenuItem(item);
+
+        this._sync();
+    }
+
+    _removeDeviceItem(device) {
+        this._items.get(device)?.destroy();
+        if (this._items.delete(device))
+            this._sync();
+    }
+
+    _addDevice(device) {
+        if (this._nmDevices.has(device))
+            return;
+
+        if (device.get_device_type() !== this._deviceType)
+            return;
+
+        device.connectObject(
+            'state-changed', this._deviceStateChanged.bind(this),
+            'notify::interface', () => this._syncDeviceNames(),
+            'notify::state', () => this._syncDeviceItem(device),
+            this);
+
+        this._nmDevices.add(device);
+        this._syncDeviceItem(device);
+    }
+
+    _removeDevice(device) {
+        if (!this._nmDevices.delete(device))
+            return;
+
+        device.disconnectObject(this);
+        this._removeDeviceItem(device);
+    }
+
     _sync() {
-        let nDevices = this.section.box.get_children().reduce(
+        let nDevices = this._devicesSection.box.get_children().reduce(
             (prev, child) => prev + (child.visible ? 1 : 0), 0);
         this._summaryItem.label.text = this._getSummaryLabel(nDevices);
         let shouldSummarize = nDevices > MAX_DEVICE_ITEMS;
         this._summaryItem.visible = shouldSummarize;
-        this.section.actor.visible = !shouldSummarize;
+        this._devicesSection.actor.visible = !shouldSummarize;
     }
 
     _getSummaryIcon() {
@@ -1474,6 +1540,10 @@ var NMDeviceSection = class extends PopupMenu.PopupMenuSection {
 class NMWirelessSection extends NMDeviceSection {
     constructor() {
         super(NM.DeviceType.WIFI);
+    }
+
+    _createDeviceMenuItem(device) {
+        return new NMWirelessDeviceItem(this._client, device);
     }
 
     _getSummaryIcon() {
@@ -1493,6 +1563,10 @@ class NMWiredSection extends NMDeviceSection {
         super(NM.DeviceType.ETHERNET);
     }
 
+    _createDeviceMenuItem(device) {
+        return new NMWiredDeviceItem(this._client, device);
+    }
+
     _getSummaryIcon() {
         return 'network-wired-symbolic';
     }
@@ -1510,6 +1584,10 @@ class NMBluetoothSection extends NMDeviceSection {
         super(NM.DeviceType.BT);
     }
 
+    _createDeviceMenuItem(device) {
+        return new NMBluetoothDeviceItem(this._client, device);
+    }
+
     _getSummaryIcon() {
         return 'network-wireless-symbolic';
     }
@@ -1525,6 +1603,10 @@ class NMBluetoothSection extends NMDeviceSection {
 class NMModemSection extends NMDeviceSection {
     constructor() {
         super(NM.DeviceType.MODEM);
+    }
+
+    _createDeviceMenuItem(device) {
+        return new NMModemDeviceItem(this._client, device);
     }
 
     _getSummaryIcon() {
@@ -1547,21 +1629,11 @@ class Indicator extends PanelMenu.SystemIndicator {
         this._primaryIndicator = this._addIndicator();
         this._vpnIndicator = this._addIndicator();
 
-        this._connections = [];
         this._connectivityQueue = new Set();
 
         this._mainConnection = null;
 
         this._notification = null;
-
-        this._nmDevices = [];
-
-        // Device types
-        this._dtypes = { };
-        this._dtypes[NM.DeviceType.ETHERNET] = NMWiredDeviceItem;
-        this._dtypes[NM.DeviceType.WIFI] = NMWirelessDeviceItem;
-        this._dtypes[NM.DeviceType.MODEM] = NMModemDeviceItem;
-        this._dtypes[NM.DeviceType.BT] = NMBluetoothDeviceItem;
 
         this._wiredSection = new NMWiredSection();
         this._wirelessSection = new NMWirelessSection();
@@ -1576,6 +1648,7 @@ class Indicator extends PanelMenu.SystemIndicator {
         ]);
         for (const section of this._deviceSections.values()) {
             section.connectObject(
+                'activation-failed', () => this._onActivationFailed(),
                 'icon-changed', () => this._updateIcon(),
                 this);
             this.menu.addMenuItem(section);
@@ -1592,10 +1665,9 @@ class Indicator extends PanelMenu.SystemIndicator {
     async _getClient() {
         this._client = await NM.Client.new_async(null);
 
+        this._deviceSections.forEach(
+            section => section.setClient(this._client));
         this._vpnSection.setClient(this._client);
-
-        this._readDevices();
-        this._syncMainConnection();
 
         this._client.bind_property('nm-running',
             this, 'visible',
@@ -1609,9 +1681,8 @@ class Indicator extends PanelMenu.SystemIndicator {
             'notify::primary-connection', () => this._syncMainConnection(),
             'notify::activating-connection', () => this._syncMainConnection(),
             'notify::connectivity', () => this._syncConnectivity(),
-            'device-added', this._deviceAdded.bind(this),
-            'device-removed', this._deviceRemoved.bind(this),
             this);
+        this._syncMainConnection();
 
         try {
             this._configPermission = await Polkit.Permission.new(
@@ -1632,18 +1703,6 @@ class Indicator extends PanelMenu.SystemIndicator {
         this.menu.setSensitive(sensitive);
     }
 
-    _readDevices() {
-        let devices = this._client.get_devices() || [];
-        for (let i = 0; i < devices.length; ++i) {
-            try {
-                this._deviceAdded(this._client, devices[i], true);
-            } catch (e) {
-                log(`Failed to add device ${devices[i]}: ${e}`);
-            }
-        }
-        this._syncDeviceNames();
-    }
-
     _onActivationFailed() {
         this._notification?.destroy();
 
@@ -1662,86 +1721,6 @@ class Indicator extends PanelMenu.SystemIndicator {
 
         Main.messageTray.add(source);
         source.showNotification(this._notification);
-    }
-
-    _syncDeviceNames() {
-        let names = NM.Device.disambiguate_names(this._nmDevices);
-        for (let i = 0; i < this._nmDevices.length; i++) {
-            let device = this._nmDevices[i];
-            let name = names[i];
-            if (device._delegate)
-                device._delegate.setDeviceName(name);
-        }
-    }
-
-    _deviceAdded(client, device, skipSyncDeviceNames) {
-        if (device._delegate) {
-            // already seen, not adding again
-            return;
-        }
-
-        let wrapperClass = this._dtypes[device.get_device_type()];
-        if (wrapperClass) {
-            let wrapper = new wrapperClass(this._client, device);
-            device._delegate = wrapper;
-            this._addDeviceWrapper(wrapper);
-
-            this._nmDevices.push(device);
-            this._deviceChanged(device, skipSyncDeviceNames);
-
-            device.connect('notify::interface', () => {
-                this._deviceChanged(device, false);
-            });
-        }
-    }
-
-    _deviceChanged(device, skipSyncDeviceNames) {
-        let wrapper = device._delegate;
-
-        if (!skipSyncDeviceNames)
-            this._syncDeviceNames();
-
-        if (wrapper instanceof NMDeviceItem) {
-            this._connections.forEach(connection => {
-                wrapper.checkConnection(connection);
-            });
-        }
-    }
-
-    _addDeviceWrapper(wrapper) {
-        wrapper.connectObject('activation-failed',
-            this._onActivationFailed.bind(this), this);
-
-        const {section} = this._deviceSections.get(wrapper.category);
-        section.addMenuItem(wrapper);
-
-        const {devices} = this._deviceSections.get(wrapper.category);
-        devices.push(wrapper);
-    }
-
-    _deviceRemoved(client, device) {
-        let pos = this._nmDevices.indexOf(device);
-        if (pos != -1) {
-            this._nmDevices.splice(pos, 1);
-            this._syncDeviceNames();
-        }
-
-        let wrapper = device._delegate;
-        if (!wrapper) {
-            log('Removing a network device that was not added');
-            return;
-        }
-
-        this._removeDeviceWrapper(wrapper);
-    }
-
-    _removeDeviceWrapper(wrapper) {
-        wrapper.disconnectObject(this);
-        wrapper.destroy();
-
-        const {devices} = this._deviceSections.get(wrapper.category);
-        let pos = devices.indexOf(wrapper);
-        devices.splice(pos, 1);
     }
 
     _getMainConnection() {
