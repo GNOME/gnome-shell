@@ -20,22 +20,17 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2022-04-30 10:33+0000\n"
-"PO-Revision-Date: 2022-05-03 22:39+0300\n"
+"POT-Creation-Date: 2022-07-18 10:09+0000\n"
+"PO-Revision-Date: 2022-07-30 23:08+0300\n"
 "Last-Translator: Aleksandr Melman <Alexmelman88@gmail.com>\n"
 "Language-Team: Russian <gnome-cyr@gnome.org>\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Poedit 3.0.1\n"
-"X-DL-Team: ru\n"
-"X-DL-Module: gnome-shell\n"
-"X-DL-Branch: main\n"
-"X-DL-Domain: po\n"
-"X-DL-State: None\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Generator: Poedit 3.1\n"
 
 # Запуск приложений, как другой вариант
 #: data/50-gnome-shell-launchers.xml:6
@@ -79,7 +74,7 @@ msgid "Activate favorite application 9"
 msgstr "Переключиться на избранное приложение 9"
 
 #. Translators: name of the folder under ~/Pictures for screenshots.
-#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2062
+#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2073
 msgid "Screenshots"
 msgstr "Снимки экрана"
 
@@ -178,7 +173,8 @@ msgstr ""
 "У расширений GNOME Shell есть свойство UUID; в этом ключе перечислены "
 "расширения, которые должны быть отключены, если загружены как часть текущего "
 "режима. Этим списком также можно управлять через методы DBus EnableExtension "
-"и DisableExtension сервиса org.gnome.Shell."
+"и DisableExtension сервиса org.gnome.Shell. Этот ключ имеет приоритет над "
+"настройкой “enabled-extensions”."
 
 #: data/org.gnome.shell.gschema.xml.in:37
 msgid "Disable user extensions"
@@ -190,7 +186,7 @@ msgid ""
 "extension” setting."
 msgstr ""
 "Отключите все расширения, которые пользователь активировал, не затрагивая "
-"параметр «enabled-extension»."
+"настройку «enabled-extension»."
 
 #: data/org.gnome.shell.gschema.xml.in:45
 msgid "Disables the validation of extension version compatibility"
@@ -230,14 +226,14 @@ msgstr "История просмотра прозрачного диалого�
 
 #: data/org.gnome.shell.gschema.xml.in:71
 msgid "Always show the “Log out” menu item in the user menu."
-msgstr "Всегда показывать в пользовательском меню пункт «Завершить сеанс»."
+msgstr "Всегда показывать в пользовательском меню пункт «Выйти»."
 
 #: data/org.gnome.shell.gschema.xml.in:72
 msgid ""
 "This key overrides the automatic hiding of the “Log out” menu item in single-"
 "user, single-session situations."
 msgstr ""
-"Этот ключ переопределяет автоматическое скрытие пункта «Завершить сеанс» при "
+"Этот ключ переопределяет автоматическое скрытие пункта «Выйти» при "
 "использовании системы с одной учётной записью пользователя."
 
 #: data/org.gnome.shell.gschema.xml.in:79
@@ -307,8 +303,8 @@ msgstr ""
 "Макет меню выбора приложений. Каждая запись в массиве представляет собой "
 "страницу. Страницы хранятся в том порядке, в котором они отображаются в "
 "оболочке GNOME. Каждая страница содержит пару “application id” → \"data\". В "
-"настоящее время в качестве “data” хранятся следующие значения: • \"position"
-"\" - положение значка приложения на странице"
+"настоящее время в качестве “data” хранятся следующие значения: • "
+"\"position\" - положение значка приложения на странице"
 
 #: data/org.gnome.shell.gschema.xml.in:149
 msgid "Keybinding to open the application menu"
@@ -408,7 +404,7 @@ msgstr "Переключиться на приложение 9"
 #: data/org.gnome.shell.gschema.xml.in:256
 #: data/org.gnome.shell.gschema.xml.in:283
 msgid "Limit switcher to current workspace."
-msgstr "Ограничить переключатель текущим рабочим местом."
+msgstr "Ограничить переключатель текущим рабочим столом."
 
 #: data/org.gnome.shell.gschema.xml.in:257
 msgid ""
@@ -416,7 +412,7 @@ msgid ""
 "shown in the switcher. Otherwise, all applications are included."
 msgstr ""
 "Если выбрано, то в переключателе будут показываться только те приложения, "
-"чьи окна находятся на текущем рабочем месте. Иначе все приложения будут "
+"чьи окна находятся на текущем рабочем столе. Иначе все приложения будут "
 "включены."
 
 #: data/org.gnome.shell.gschema.xml.in:274
@@ -439,7 +435,7 @@ msgid ""
 "Otherwise, all windows are included."
 msgstr ""
 "Если выбрано, то в переключателе будут показываться только окна из текущего "
-"рабочего места. Иначе все окна будут включены."
+"рабочего стола. Иначе все окна будут включены."
 
 #: data/org.gnome.shell.gschema.xml.in:294
 msgid "Locations"
@@ -487,11 +483,11 @@ msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:343
 msgid "Workspaces are managed dynamically"
-msgstr "Рабочие места управляются динамически"
+msgstr "Рабочие столы управляются динамически"
 
 #: data/org.gnome.shell.gschema.xml.in:351
 msgid "Workspaces only on primary monitor"
-msgstr "Рабочие места только на основном мониторе"
+msgstr "Рабочие столы только на основном мониторе"
 
 #: data/org.gnome.shell.gschema.xml.in:359
 msgid "Delay focus changes in mouse mode until the pointer stops moving"
@@ -609,29 +605,29 @@ msgstr "перезагрузить;перезапустить;"
 #: js/misc/systemActions.js:100
 msgctxt "search-result"
 msgid "Lock Screen"
-msgstr "Экран блокировки"
+msgstr "Заблокировать экран"
 
 #. Translators: A list of keywords that match the lock screen action, separated by semicolons
 #: js/misc/systemActions.js:103
 msgid "lock screen"
-msgstr "экран блокировки"
+msgstr "заблокировать экран"
 
 #. Translators: The name of the logout action in search
 #: js/misc/systemActions.js:108
 msgctxt "search-result"
 msgid "Log Out"
-msgstr "Завершить сеанс"
+msgstr "Выйти"
 
 #. Translators: A list of keywords that match the logout action, separated by semicolons
 #: js/misc/systemActions.js:111
 msgid "logout;log out;sign off"
-msgstr "завершить сеанс;выйти"
+msgstr "logout;log out;sign off;выйти"
 
 #. Translators: The name of the suspend action in search
 #: js/misc/systemActions.js:116
 msgctxt "search-result"
 msgid "Suspend"
-msgstr "Ждущий режим"
+msgstr "Режим ожидания"
 
 #. Translators: A list of keywords that match the suspend action, separated by semicolons
 #: js/misc/systemActions.js:119
@@ -865,23 +861,23 @@ msgstr "Новое окно"
 msgid "Show Details"
 msgstr "Показать подробности"
 
-#: js/ui/appMenu.js:96
+#: js/ui/appMenu.js:97
 msgid "Quit"
 msgstr "Завершить"
 
-#: js/ui/appMenu.js:156 js/ui/dash.js:249
+#: js/ui/appMenu.js:157 js/ui/dash.js:249
 msgid "Unpin"
 msgstr "Открепить"
 
-#: js/ui/appMenu.js:157
+#: js/ui/appMenu.js:158
 msgid "Pin to Dash"
 msgstr "Прикрепить к панели приложений"
 
-#: js/ui/appMenu.js:174
+#: js/ui/appMenu.js:175
 msgid "Launch using Integrated Graphics Card"
 msgstr "Запустить, используя встроенную видеокарту"
 
-#: js/ui/appMenu.js:175
+#: js/ui/appMenu.js:176
 msgid "Launch using Discrete Graphics Card"
 msgstr "Запустить, используя дискретную видеокарту"
 
@@ -891,7 +887,7 @@ msgstr "Выберите аудиоустройство"
 
 #: js/ui/audioDeviceSelection.js:56
 msgid "Sound Settings"
-msgstr "Параметры звука"
+msgstr "Настройки звука"
 
 #: js/ui/audioDeviceSelection.js:69
 msgid "Headphones"
@@ -901,7 +897,7 @@ msgstr "Наушники"
 msgid "Headset"
 msgstr "Гарнитура"
 
-#: js/ui/audioDeviceSelection.js:73 js/ui/status/volume.js:270
+#: js/ui/audioDeviceSelection.js:73 js/ui/status/volume.js:271
 msgid "Microphone"
 msgstr "Микрофон"
 
@@ -911,12 +907,12 @@ msgstr "Изменить фон…"
 
 #: js/ui/backgroundMenu.js:16 js/ui/status/nightLight.js:45
 msgid "Display Settings"
-msgstr "Параметры дисплея"
+msgstr "Настройки дисплея"
 
 #: js/ui/backgroundMenu.js:17
 #: subprojects/extensions-app/data/ui/extension-row.ui:122
 msgid "Settings"
-msgstr "Параметры"
+msgstr "Настройки"
 
 #. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday).
 #: js/ui/calendar.js:35
@@ -1249,23 +1245,23 @@ msgstr "Добавить мировые часы…"
 msgid "World Clocks"
 msgstr "Мировые часы"
 
-#: js/ui/dateMenu.js:681
+#: js/ui/dateMenu.js:699
 msgid "Loading…"
 msgstr "Загрузка…"
 
-#: js/ui/dateMenu.js:691
+#: js/ui/dateMenu.js:709
 msgid "Go online for weather information"
 msgstr "Подключите интернет для получения информации о погоде"
 
-#: js/ui/dateMenu.js:693
+#: js/ui/dateMenu.js:711
 msgid "Weather information is currently unavailable"
 msgstr "Информация о погоде сейчас недоступна"
 
-#: js/ui/dateMenu.js:703
+#: js/ui/dateMenu.js:721
 msgid "Weather"
 msgstr "Погода"
 
-#: js/ui/dateMenu.js:705
+#: js/ui/dateMenu.js:723
 msgid "Select weather location…"
 msgstr "Выберите ваше местоположение…"
 
@@ -1273,35 +1269,33 @@ msgstr "Выберите ваше местоположение…"
 #, javascript-format
 msgctxt "title"
 msgid "Log Out %s"
-msgstr "Завершение сеанса пользователя %s"
+msgstr "Выход пользователя %s"
 
 #: js/ui/endSessionDialog.js:42
 msgctxt "title"
 msgid "Log Out"
-msgstr "Завершение сеанса"
+msgstr "Выйти из системы"
 
 #: js/ui/endSessionDialog.js:45
 #, javascript-format
 msgid "%s will be logged out automatically in %d second."
 msgid_plural "%s will be logged out automatically in %d seconds."
-msgstr[0] ""
-"Сеанс пользователя %s будет автоматически завершён через %d секунду."
-msgstr[1] ""
-"Сеанс пользователя %s будет автоматически завершён через %d секунды."
-msgstr[2] "Сеанс пользователя %s будет автоматически завершён через %d секунд."
+msgstr[0] "%s выйдет из системы автоматически через %d секунду."
+msgstr[1] "%s выйдет из системы автоматически через %d секунды."
+msgstr[2] "%s выйдет из системы автоматически через %d секунд."
 
 #: js/ui/endSessionDialog.js:51
 #, javascript-format
 msgid "You will be logged out automatically in %d second."
 msgid_plural "You will be logged out automatically in %d seconds."
-msgstr[0] "Сеанс будет автоматически завершён через %d секунду."
-msgstr[1] "Сеанс будет автоматически завершён через %d секунды."
-msgstr[2] "Сеанс будет автоматически завершён через %d секунд."
+msgstr[0] "Вы автоматически выйдете из системы через %d секунду."
+msgstr[1] "Вы автоматически выйдете из системы через %d секунды."
+msgstr[2] "Вы автоматически выйдете из системы через %d секунд."
 
 #: js/ui/endSessionDialog.js:58
 msgctxt "button"
 msgid "Log Out"
-msgstr "Завершить сеанс"
+msgstr "Выйти"
 
 #: js/ui/endSessionDialog.js:64
 msgctxt "title"
@@ -1448,11 +1442,11 @@ msgstr "Установить расширение"
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "Загрузить и установить расширение «%s» из extensions.gnome.org?"
 
-#: js/ui/extensionSystem.js:267
+#: js/ui/extensionSystem.js:268
 msgid "Extension Updates Available"
 msgstr "Доступны обновления расширений"
 
-#: js/ui/extensionSystem.js:268
+#: js/ui/extensionSystem.js:269
 msgid "Extension updates are ready to be installed."
 msgstr "Обновления расширений готовы к установке."
 
@@ -1549,7 +1543,7 @@ msgstr "Выключить"
 msgid "Leave Off"
 msgstr "Оставить выключенными"
 
-#: js/ui/keyboard.js:250
+#: js/ui/keyboard.js:258
 msgid "Region & Language Settings"
 msgstr "Настройки языка и региона"
 
@@ -1756,91 +1750,91 @@ msgstr "Не удалось заблокировать"
 msgid "Lock was blocked by an application"
 msgstr "Блокировке помешало приложение"
 
-#: js/ui/screenshot.js:1148
+#: js/ui/screenshot.js:1149
 msgid "Selection"
 msgstr "Область"
 
-#: js/ui/screenshot.js:1158
+#: js/ui/screenshot.js:1159
 msgid "Area Selection"
 msgstr "Выбор области"
 
-#: js/ui/screenshot.js:1163
+#: js/ui/screenshot.js:1164
 msgid "Screen"
 msgstr "Экран"
 
-#: js/ui/screenshot.js:1173
+#: js/ui/screenshot.js:1174
 msgid "Screen Selection"
 msgstr "Выбор экрана"
 
-#: js/ui/screenshot.js:1178
+#: js/ui/screenshot.js:1179
 msgid "Window"
 msgstr "Окно"
 
-#: js/ui/screenshot.js:1188
+#: js/ui/screenshot.js:1189
 msgid "Window Selection"
 msgstr "Выбор окна"
 
-#: js/ui/screenshot.js:1225
+#: js/ui/screenshot.js:1227
 msgid "Screenshot / Screencast"
 msgstr "Снимок экрана / Запись экрана"
 
-#: js/ui/screenshot.js:1261
+#: js/ui/screenshot.js:1263
 msgid "Show Pointer"
 msgstr "Показать курсор мыши"
 
 #. Translators: this is the folder where recorded
 #. screencasts are stored.
-#: js/ui/screenshot.js:1828
+#: js/ui/screenshot.js:1839
 msgid "Screencasts"
 msgstr "Записи экрана"
 
 #. Translators: this is a filename used for screencast
 #. * recording, where "%d" and "%t" date and time, e.g.
 #. * "Screencast from 07-17-2013 10:00:46 PM.webm"
-#: js/ui/screenshot.js:1833
+#: js/ui/screenshot.js:1844
 #, no-c-format
 msgid "Screencast from %d %t.webm"
 msgstr "Запись экрана от %d %t.webm"
 
 #. Translators: notification source name.
-#: js/ui/screenshot.js:1902 js/ui/screenshot.js:2115
+#: js/ui/screenshot.js:1913 js/ui/screenshot.js:2126
 msgid "Screenshot"
 msgstr "Снимок экрана"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:1908
+#: js/ui/screenshot.js:1919
 msgid "Screencast recorded"
 msgstr "Запись экрана сделана"
 
 #. Translators: notification body when a screencast was recorded.
-#: js/ui/screenshot.js:1910
+#: js/ui/screenshot.js:1921
 msgid "Click here to view the video."
 msgstr "Нажмите здесь, чтобы посмотреть видео."
 
 #. Translators: button on the screencast notification.
 #. Translators: button on the screenshot notification.
-#: js/ui/screenshot.js:1913 js/ui/screenshot.js:2129
+#: js/ui/screenshot.js:1924 js/ui/screenshot.js:2140
 msgid "Show in Files"
 msgstr "Показать в Файлах"
 
 #. Translators: this is the name of the file that the screenshot is
 #. saved to. The placeholder is a timestamp, e.g. "2017-05-21 12-24-03".
-#: js/ui/screenshot.js:2075
+#: js/ui/screenshot.js:2086
 #, javascript-format
 msgid "Screenshot from %s"
 msgstr "Снимок экрана от %s"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2121
+#: js/ui/screenshot.js:2132
 msgid "Screenshot captured"
 msgstr "Снимок экрана сделан"
 
 #. Translators: notification body when a screenshot was captured.
-#: js/ui/screenshot.js:2123
+#: js/ui/screenshot.js:2134
 msgid "You can paste the image from the clipboard."
 msgstr "Вы можете вставить изображение из буфера обмена."
 
-#: js/ui/screenshot.js:2176 js/ui/screenshot.js:2341
+#: js/ui/screenshot.js:2187 js/ui/screenshot.js:2352
 msgid "Screenshot taken"
 msgstr "Сделан снимок экрана"
 
@@ -1989,7 +1983,7 @@ msgstr "Bluetooth"
 
 #: js/ui/status/bluetooth.js:67 js/ui/status/network.js:626
 msgid "Bluetooth Settings"
-msgstr "Настроить Bluetooth"
+msgstr "Настройки Bluetooth"
 
 #. Translators: this is the number of connected bluetooth devices
 #: js/ui/status/bluetooth.js:166
@@ -2050,7 +2044,7 @@ msgstr "Выключить"
 
 #: js/ui/status/location.js:234
 msgid "Privacy Settings"
-msgstr "Параметры конфиденциальности"
+msgstr "Настройки конфиденциальности"
 
 #: js/ui/status/location.js:254
 msgid "Location In Use"
@@ -2078,8 +2072,8 @@ msgstr "Приложение %s запрашивает доступ к ваше�
 #: js/ui/status/location.js:398
 msgid "Location access can be changed at any time from the privacy settings."
 msgstr ""
-"Параметры доступа к данным местоположения можно изменить в любое время в "
-"настройках конфиденциальности."
+"Доступ к местоположению можно изменить в любое время в настройках "
+"конфиденциальности."
 
 #: js/ui/status/network.js:71
 msgid "<unknown>"
@@ -2163,11 +2157,11 @@ msgstr ""
 
 #: js/ui/status/network.js:484
 msgid "Wired Settings"
-msgstr "Параметры соединения"
+msgstr "Настройки соединения"
 
 #: js/ui/status/network.js:531
 msgid "Mobile Broadband Settings"
-msgstr "Параметры мобильной связи"
+msgstr "Настройки мобильной связи"
 
 # заменил "оборудование" потому что не влазит в панель
 #. Translators: %s is a network identifier
@@ -2240,7 +2234,7 @@ msgstr "Выбрать сеть"
 
 #: js/ui/status/network.js:1259
 msgid "Wi-Fi Settings"
-msgstr "Параметры Wi-Fi"
+msgstr "Настройки Wi-Fi"
 
 # перенос иначе не влазит в панель
 #. Translators: %s is a network identifier
@@ -2274,7 +2268,7 @@ msgstr "сбой подключения"
 
 #: js/ui/status/network.js:1524
 msgid "VPN Settings"
-msgstr "Параметры VPN"
+msgstr "Настройки VPN"
 
 #: js/ui/status/network.js:1541
 msgid "VPN"
@@ -2288,7 +2282,7 @@ msgstr ""
 
 #: js/ui/status/network.js:1612 js/ui/status/rfkill.js:84
 msgid "Network Settings"
-msgstr "Параметры сети"
+msgstr "Настройки сети"
 
 #: js/ui/status/network.js:1640
 #, javascript-format
@@ -2324,15 +2318,11 @@ msgstr "Не удалось активировать сетевое подклю
 
 #: js/ui/status/nightLight.js:63
 msgid "Night Light Disabled"
-msgstr ""
-"Ночная подсветка\n"
-"отключена"
+msgstr "Ночной свет отключен"
 
 #: js/ui/status/nightLight.js:64
 msgid "Night Light On"
-msgstr ""
-"Ночная подсветка\n"
-"включена"
+msgstr "Ночной свет включен"
 
 #: js/ui/status/nightLight.js:66
 msgid "Resume"
@@ -2344,7 +2334,7 @@ msgstr "Отключить до завтра"
 
 #: js/ui/status/power.js:51 js/ui/status/powerProfiles.js:57
 msgid "Power Settings"
-msgstr "Параметры питания"
+msgstr "Настройки питания"
 
 #: js/ui/status/power.js:68
 msgid "Fully Charged"
@@ -2425,11 +2415,11 @@ msgstr "Заблокировать"
 
 #: js/ui/status/system.js:116
 msgid "Power Off / Log Out"
-msgstr "Выключить / Завершить сеанс"
+msgstr "Выключить / Выйти"
 
 #: js/ui/status/system.js:119
 msgid "Suspend"
-msgstr "Ждущий режим"
+msgstr "Режим ожидания"
 
 #: js/ui/status/system.js:130
 msgid "Restart…"
@@ -2441,7 +2431,7 @@ msgstr "Выключение…"
 
 #: js/ui/status/system.js:154
 msgid "Log Out"
-msgstr "Завершить сеанс"
+msgstr "Выйти"
 
 #: js/ui/status/system.js:165
 msgid "Switch User…"
@@ -2483,11 +2473,11 @@ msgstr "Ошибка авторизации Thunderbolt"
 msgid "Could not authorize the Thunderbolt device: %s"
 msgstr "Не удалось авторизовать устройство Thunderbolt: %s"
 
-#: js/ui/status/volume.js:158
+#: js/ui/status/volume.js:159
 msgid "Volume changed"
 msgstr "Громкость изменена"
 
-#: js/ui/status/volume.js:220
+#: js/ui/status/volume.js:221
 msgid "Volume"
 msgstr "Громкость"
 
@@ -2566,11 +2556,11 @@ msgstr "Окно «%s» ожидает"
 #. Translators: This string should be shorter than 30 characters
 #: js/ui/windowManager.js:62
 msgid "Keep these display settings?"
-msgstr "Сохранить эти параметры дисплея?"
+msgstr "Сохранить эти настройки дисплея?"
 
 #: js/ui/windowManager.js:72
 msgid "Revert Settings"
-msgstr "Вернуть параметры"
+msgstr "Вернуть настройки"
 
 #: js/ui/windowManager.js:77
 msgid "Keep Changes"
@@ -2580,13 +2570,13 @@ msgstr "Сохранить изменения"
 #, javascript-format
 msgid "Settings changes will revert in %d second"
 msgid_plural "Settings changes will revert in %d seconds"
-msgstr[0] "Изменения параметров будут отменены через %d секунду"
-msgstr[1] "Изменения параметров будут отменены через %d секунды"
-msgstr[2] "Изменения параметров будут отменены через %d секунд"
+msgstr[0] "Изменения настроек будут отменены через %d секунду"
+msgstr[1] "Изменения настроек будут отменены через %d секунды"
+msgstr[2] "Изменения настроек будут отменены через %d секунд"
 
 #. Translators: This represents the size of a window. The first number is
 #. * the width of the window and the second is the height.
-#: js/ui/windowManager.js:553
+#: js/ui/windowManager.js:544
 #, javascript-format
 msgid "%d × %d"
 msgstr "%d × %d"
@@ -2626,23 +2616,23 @@ msgstr "Всегда сверху"
 
 #: js/ui/windowMenu.js:96
 msgid "Always on Visible Workspace"
-msgstr "Всегда на видимом рабочем месте"
+msgstr "Всегда на видимом рабочем столе"
 
 #: js/ui/windowMenu.js:110
 msgid "Move to Workspace Left"
-msgstr "Переместить на рабочее место влево"
+msgstr "Переместить на рабочий стол влево"
 
 #: js/ui/windowMenu.js:116
 msgid "Move to Workspace Right"
-msgstr "Переместить на рабочее место вправо"
+msgstr "Переместить на рабочий стол вправо"
 
 #: js/ui/windowMenu.js:122
 msgid "Move to Workspace Up"
-msgstr "Переместить на рабочее место вверх"
+msgstr "Переместить на рабочий стол вверх"
 
 #: js/ui/windowMenu.js:128
 msgid "Move to Workspace Down"
-msgstr "Переместить на рабочее место вниз"
+msgstr "Переместить на рабочий стол вниз"
 
 #: js/ui/windowMenu.js:146
 msgid "Move to Monitor Up"
@@ -2770,9 +2760,9 @@ msgstr ""
 #, javascript-format
 msgid "%d extension will be updated on next login."
 msgid_plural "%d extensions will be updated on next login."
-msgstr[0] "%d расширение будет обновлено при следующей авторизации сеанса."
-msgstr[1] "%d расширения будет обновлено при следующей авторизации сеанса."
-msgstr[2] "%d расширений будет обновлено при следующей авторизации сеанса."
+msgstr[0] "%d расширение будет обновлено при следующем входе в систему."
+msgstr[1] "%d расширения будет обновлено при следующем входе в систему."
+msgstr[2] "%d расширений будет обновлено при следующем входе в систему."
 
 #: subprojects/extensions-app/js/main.js:479
 msgid "The extension is incompatible with the current GNOME version"
@@ -2818,8 +2808,8 @@ msgstr "Установлены вручную"
 #: subprojects/extensions-app/data/ui/extensions-window.ui:99
 #: subprojects/extensions-app/data/ui/extensions-window.ui:134
 msgid ""
-"To find and add extensions, visit <a href=\"https://extensions.gnome.org"
-"\">extensions.gnome.org</a>."
+"To find and add extensions, visit <a href=\"https://extensions.gnome."
+"org\">extensions.gnome.org</a>."
 msgstr ""
 "Чтобы найти и добавить расширения, посетите <a href=\"https://extensions."
 "gnome.org\">extensions.gnome.org</a>."
@@ -2846,7 +2836,7 @@ msgstr "Доступны обновления расширений"
 
 #: subprojects/extensions-app/data/ui/extensions-window.ui:190
 msgid "Log Out…"
-msgstr "Завершить сеанс…"
+msgstr "Выйти…"
 
 #. Translators: a file path to an extension directory
 #: subprojects/extensions-tool/src/command-create.c:222
