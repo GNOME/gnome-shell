@@ -427,10 +427,12 @@ const NMDeviceItem = GObject.registerClass({
             this);
 
         this._device.connectObject(
+            'notify::available-connections', () => this._syncConnections(),
             'notify::active-connection', () => this._activeConnectionChanged(),
             'state-changed', this._deviceStateChanged.bind(this),
             this);
 
+        this._syncConnections();
         this._activeConnectionChanged();
     }
 
@@ -448,13 +450,13 @@ const NMDeviceItem = GObject.registerClass({
 
     _activeConnectionChanged() {
         const oldItem = this._connectionItems.get(
-            this._activeConnection?.get_uuid());
+            this._activeConnection?.connection);
         oldItem?.setActiveConnection(null);
 
         this._setActiveConnection(this._device.active_connection);
 
         const newItem = this._connectionItems.get(
-            this._activeConnection?.get_uuid());
+            this._activeConnection?.connection);
         newItem?.setActiveConnection(this._activeConnection);
     }
 
@@ -474,8 +476,16 @@ const NMDeviceItem = GObject.registerClass({
         this._sync();
     }
 
-    _connectionValid(connection) {
-        return this._device.connection_valid(connection);
+    _syncConnections() {
+        const available = this._device.get_available_connections();
+        const removed = [...this._connectionItems.keys()]
+            .filter(conn => !available.includes(conn));
+
+        for (const conn of removed)
+            this._removeConnection(conn);
+
+        for (const conn of available)
+            this._addConnection(conn);
     }
 
     activateConnection(connection) {
@@ -486,37 +496,25 @@ const NMDeviceItem = GObject.registerClass({
         this._device.disconnect(null);
     }
 
-    checkConnection(connection) {
-        if (!this._connectionValid(connection))
-            return;
-
-        // This function is called every time the connection is added or updated.
-        // In the usual case, we already added this connection and UUID
-        // didn't change. So we need to check if we already have an item,
-        // and update it for properties in the connection that changed
-        // (the only one we care about is the name)
-        // But it's also possible we didn't know about this connection
-        // (eg, during coldplug, or because it was updated and suddenly
-        // it's valid for this device), in which case we add a new item.
-
-        let item = this._connectionItems.get(connection.get_uuid());
-        if (item)
-            this._updateForConnection(item, connection);
-        else
-            this._addConnection(connection);
+    _onConnectionChanged(connection) {
+        const item = this._connectionItems.get(connection);
+        item.updateForConnection(connection);
     }
 
-    _updateForConnection(item, connection) {
-        item.updateForConnection(connection);
-
+    _resortItem(item) {
         const pos = this._itemSorter.upsert(item);
         this.section.moveMenuItem(item, pos);
     }
 
     _addConnection(connection) {
-        const item = new NMDeviceConnectionItem(this, connection);
-        if (!item)
+        if (this._connectionItems.has(connection))
             return;
+
+        connection.connectObject(
+            'changed', this._onConnectionChanged.bind(this),
+            this);
+
+        const item = new NMDeviceConnectionItem(this, connection);
 
         this.bind_property('radio-mode',
             item, 'radio-mode',
@@ -527,21 +525,23 @@ const NMDeviceItem = GObject.registerClass({
         this.bind_property('icon-name',
             item, 'icon-name',
             GObject.BindingFlags.SYNC_CREATE);
+        item.connectObject(
+            'notify::name', () => this._resortItem(item),
+            this);
 
         const pos = this._itemSorter.upsert(item);
         this.section.addMenuItem(item, pos);
-        this._connectionItems.set(connection.get_uuid(), item);
+        this._connectionItems.set(connection, item);
         this._sync();
     }
 
-    removeConnection(connection) {
-        let uuid = connection.get_uuid();
-        let item = this._connectionItems.get(uuid);
-        if (item == undefined)
+    _removeConnection(connection) {
+        const item = this._connectionItems.get(connection);
+        if (!item)
             return;
 
         this._itemSorter.delete(item);
-        this._connectionItems.delete(uuid);
+        this._connectionItems.delete(connection);
         item.destroy();
 
         this._sync();
@@ -1563,14 +1563,6 @@ class Indicator extends PanelMenu.SystemIndicator {
         this._dtypes[NM.DeviceType.MODEM] = NMModemDeviceItem;
         this._dtypes[NM.DeviceType.BT] = NMBluetoothDeviceItem;
 
-        // Connection types
-        this._ctypes = { };
-        this._ctypes[NM.SETTING_WIRED_SETTING_NAME] = NMConnectionCategory.WIRED;
-        this._ctypes[NM.SETTING_WIRELESS_SETTING_NAME] = NMConnectionCategory.WIRELESS;
-        this._ctypes[NM.SETTING_BLUETOOTH_SETTING_NAME] = NMConnectionCategory.BLUETOOTH;
-        this._ctypes[NM.SETTING_CDMA_SETTING_NAME] = NMConnectionCategory.WWAN;
-        this._ctypes[NM.SETTING_GSM_SETTING_NAME] = NMConnectionCategory.WWAN;
-
         this._wiredSection = new NMWiredSection();
         this._wirelessSection = new NMWirelessSection();
         this._modemSection = new NMModemSection();
@@ -1582,8 +1574,12 @@ class Indicator extends PanelMenu.SystemIndicator {
             [NMConnectionCategory.WWAN, this._modemSection],
             [NMConnectionCategory.BLUETOOTH, this._btSection],
         ]);
-        for (const section of this._deviceSections.values())
+        for (const section of this._deviceSections.values()) {
+            section.connectObject(
+                'icon-changed', () => this._updateIcon(),
+                this);
             this.menu.addMenuItem(section);
+        }
 
         this._vpnSection = new NMVpnSection();
         this._vpnSection.connect('activation-failed', this._onActivationFailed.bind(this));
@@ -1598,7 +1594,6 @@ class Indicator extends PanelMenu.SystemIndicator {
 
         this._vpnSection.setClient(this._client);
 
-        this._readConnections();
         this._readDevices();
         this._syncMainConnection();
 
@@ -1616,8 +1611,6 @@ class Indicator extends PanelMenu.SystemIndicator {
             'notify::connectivity', () => this._syncConnectivity(),
             'device-added', this._deviceAdded.bind(this),
             'device-removed', this._deviceRemoved.bind(this),
-            'connection-added', this._connectionAdded.bind(this),
-            'connection-removed', this._connectionRemoved.bind(this),
             this);
 
         try {
@@ -1790,82 +1783,6 @@ class Indicator extends PanelMenu.SystemIndicator {
     _mainConnectionStateChanged() {
         if (this._mainConnection.state === NM.ActiveConnectionState.ACTIVATED)
             this._notification?.destroy();
-    }
-
-    _ignoreConnection(connection) {
-        let setting = connection.get_setting_connection();
-        if (!setting)
-            return true;
-
-        // Ignore slave connections
-        if (setting.get_master())
-            return true;
-
-        return false;
-    }
-
-    _addConnection(connection) {
-        if (this._ignoreConnection(connection))
-            return;
-        if (this._connections.includes(connection)) {
-            // connection was already seen
-            return;
-        }
-
-        connection.connectObject('changed',
-            this._updateConnection.bind(this), this);
-
-        this._updateConnection(connection);
-        this._connections.push(connection);
-    }
-
-    _readConnections() {
-        let connections = this._client.get_connections();
-        connections.forEach(this._addConnection.bind(this));
-    }
-
-    _connectionAdded(client, connection) {
-        this._addConnection(connection);
-    }
-
-    _connectionRemoved(client, connection) {
-        let pos = this._connections.indexOf(connection);
-        if (pos != -1)
-            this._connections.splice(pos, 1);
-
-        let section = connection._section;
-
-        if (section == NMConnectionCategory.INVALID)
-            return;
-
-        if (section == NMConnectionCategory.VPN) {
-            this._vpnSection.removeConnection(connection);
-        } else {
-            const {devices} = this._deviceSections.get(section);
-            for (let i = 0; i < devices.length; i++) {
-                if (devices[i] instanceof NMDeviceItem)
-                    devices[i].removeConnection(connection);
-            }
-        }
-
-        connection.disconnectObject(this);
-    }
-
-    _updateConnection(connection) {
-        let connectionSettings = connection.get_setting_by_name(NM.SETTING_CONNECTION_SETTING_NAME);
-        connection._type = connectionSettings.type;
-        connection._section = this._ctypes[connection._type] || NMConnectionCategory.INVALID;
-
-        let section = connection._section;
-
-        if (section == NMConnectionCategory.INVALID)
-            return;
-
-        const {devices} = this._deviceSections.get(section);
-        devices.forEach(wrapper => {
-            if (wrapper instanceof NMDeviceItem)
-                wrapper.checkConnection(connection);
-        });
     }
 
     _flushConnectivityQueue() {
