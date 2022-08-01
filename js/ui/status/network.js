@@ -1509,11 +1509,11 @@ var NMVpnSection = class extends NMConnectionSection {
     }
 };
 
-var DeviceCategory = class extends PopupMenu.PopupMenuSection {
-    constructor(category) {
+var NMDeviceSection = class extends PopupMenu.PopupMenuSection {
+    constructor(deviceType) {
         super();
 
-        this._category = category;
+        this._deviceType = deviceType;
 
         this.devices = [];
 
@@ -1541,33 +1541,33 @@ var DeviceCategory = class extends PopupMenu.PopupMenuSection {
     }
 
     _getSummaryIcon() {
-        switch (this._category) {
-        case NMConnectionCategory.WIRED:
+        switch (this._deviceType) {
+        case NM.DeviceType.ETHERNET:
             return 'network-wired-symbolic';
-        case NMConnectionCategory.WIRELESS:
-        case NMConnectionCategory.BLUETOOTH:
-        case NMConnectionCategory.WWAN:
+        case NM.DeviceType.WIFI:
+        case NM.DeviceType.BT:
+        case NM.DeviceType.MODEM:
             return 'network-wireless-symbolic';
         }
         return '';
     }
 
     _getSummaryLabel(nDevices) {
-        switch (this._category) {
-        case NMConnectionCategory.WIRED:
+        switch (this._deviceType) {
+        case NM.DeviceType.ETHERNET:
             return ngettext("%s Wired Connection",
                             "%s Wired Connections",
                             nDevices).format(nDevices);
-        case NMConnectionCategory.WIRELESS:
+        case NM.DeviceType.WIFI:
             return ngettext("%s Wi-Fi Connection",
                             "%s Wi-Fi Connections",
                             nDevices).format(nDevices);
-        case NMConnectionCategory.BLUETOOTH:
+        case NM.DeviceType.BT:
             return ngettext(
                 '%s Bluetooth Connection',
                 '%s Bluetooth Connections',
                 nDevices).format(nDevices);
-        case NMConnectionCategory.WWAN:
+        case NM.DeviceType.MODEM:
             return ngettext("%s Modem Connection",
                             "%s Modem Connections",
                             nDevices).format(nDevices);
@@ -1618,14 +1618,14 @@ class Indicator extends PanelMenu.SystemIndicator {
         this._nmDevices = [];
         this._deviceSections = new Map();
 
-        const categories = [
-            NMConnectionCategory.WIRED,
-            NMConnectionCategory.WIRELESS,
-            NMConnectionCategory.BLUETOOTH,
-            NMConnectionCategory.WWAN,
+        const sections = [
+            [NMConnectionCategory.WIRED, NM.DeviceType.ETHERNET],
+            [NMConnectionCategory.WIRELESS, NM.DeviceType.WIFI],
+            [NMConnectionCategory.BLUETOOTH, NM.DeviceType.BT],
+            [NMConnectionCategory.WWAN, NM.DeviceType.MODEM],
         ];
-        for (let category of categories) {
-            this._deviceSections.set(category, new DeviceCategory(category));
+        for (const [category, deviceType] of sections) {
+            this._deviceSections.set(category, new NMDeviceSection(deviceType));
             this.menu.addMenuItem(this._deviceSections.get(category));
         }
 
