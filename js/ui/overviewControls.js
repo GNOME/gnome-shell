@@ -66,8 +66,8 @@ class ControlsManagerLayout extends Clutter.BoxLayout {
         const workspaceBox = box.copy();
         const [width, height] = workspaceBox.get_size();
         const {y1: startY} = this._workAreaBox;
-        const { spacing } = this;
-        const { expandFraction } = this._workspacesThumbnails;
+        const {spacing} = this;
+        const {expandFraction} = this._workspacesThumbnails;
 
         switch (state) {
         case ControlsState.HIDDEN:
@@ -99,7 +99,7 @@ class ControlsManagerLayout extends Clutter.BoxLayout {
         const [width, height] = box.get_size();
         const {y1: startY} = this._workAreaBox;
         const appDisplayBox = new Clutter.ActorBox();
-        const { spacing } = this;
+        const {spacing} = this;
 
         switch (state) {
         case ControlsState.HIDDEN:
