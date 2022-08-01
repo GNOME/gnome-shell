@@ -1749,7 +1749,7 @@ class Indicator extends PanelMenu.SystemIndicator {
         this._ctypes[NM.SETTING_VPN_SETTING_NAME] = NMConnectionCategory.VPN;
         this._ctypes[NM.SETTING_WIREGUARD_SETTING_NAME] = NMConnectionCategory.VPN;
 
-        this._getClient();
+        this._getClient().catch(logError);
     }
 
     async _getClient() {
