@@ -1581,7 +1581,7 @@ msgstr "Error"
 
 #: js/ui/lookingGlass.js:800
 msgid "Out of date"
-msgstr "Fora d'hora"
+msgstr "Obsolet"
 
 #: js/ui/lookingGlass.js:802
 msgid "Downloading"
