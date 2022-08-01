@@ -24,6 +24,7 @@ const NMConnectionCategory = {
     INVALID: 'invalid',
     WIRED: 'wired',
     WIRELESS: 'wireless',
+    BLUETOOTH: 'bluetooth',
     WWAN: 'wwan',
     VPN: 'vpn',
 };
@@ -564,7 +565,7 @@ var NMBluetoothDeviceItem = class extends NMDeviceItem {
     }
 
     get category() {
-        return NMConnectionCategory.WWAN;
+        return NMConnectionCategory.BLUETOOTH;
     }
 
     _getDescription() {
@@ -1544,6 +1545,7 @@ var DeviceCategory = class extends PopupMenu.PopupMenuSection {
         case NMConnectionCategory.WIRED:
             return 'network-wired-symbolic';
         case NMConnectionCategory.WIRELESS:
+        case NMConnectionCategory.BLUETOOTH:
         case NMConnectionCategory.WWAN:
             return 'network-wireless-symbolic';
         }
@@ -1560,6 +1562,11 @@ var DeviceCategory = class extends PopupMenu.PopupMenuSection {
             return ngettext("%s Wi-Fi Connection",
                             "%s Wi-Fi Connections",
                             nDevices).format(nDevices);
+        case NMConnectionCategory.BLUETOOTH:
+            return ngettext(
+                '%s Bluetooth Connection',
+                '%s Bluetooth Connections',
+                nDevices).format(nDevices);
         case NMConnectionCategory.WWAN:
             return ngettext("%s Modem Connection",
                             "%s Modem Connections",
@@ -1588,7 +1595,7 @@ class Indicator extends PanelMenu.SystemIndicator {
         this._ctypes = { };
         this._ctypes[NM.SETTING_WIRED_SETTING_NAME] = NMConnectionCategory.WIRED;
         this._ctypes[NM.SETTING_WIRELESS_SETTING_NAME] = NMConnectionCategory.WIRELESS;
-        this._ctypes[NM.SETTING_BLUETOOTH_SETTING_NAME] = NMConnectionCategory.WWAN;
+        this._ctypes[NM.SETTING_BLUETOOTH_SETTING_NAME] = NMConnectionCategory.BLUETOOTH;
         this._ctypes[NM.SETTING_CDMA_SETTING_NAME] = NMConnectionCategory.WWAN;
         this._ctypes[NM.SETTING_GSM_SETTING_NAME] = NMConnectionCategory.WWAN;
         this._ctypes[NM.SETTING_VPN_SETTING_NAME] = NMConnectionCategory.VPN;
@@ -1614,6 +1621,7 @@ class Indicator extends PanelMenu.SystemIndicator {
         const categories = [
             NMConnectionCategory.WIRED,
             NMConnectionCategory.WIRELESS,
+            NMConnectionCategory.BLUETOOTH,
             NMConnectionCategory.WWAN,
         ];
         for (let category of categories) {
