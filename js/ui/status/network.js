@@ -1298,10 +1298,8 @@ const NMVpnConnectionItem = GObject.registerClass({
 });
 
 var NMVpnSection = class extends PopupMenu.PopupMenuSection {
-    constructor(client) {
+    constructor() {
         super();
-
-        this._client = client;
 
         this._items = new Map();
         this._itemSorter = new ItemSorter();
@@ -1311,14 +1309,25 @@ var NMVpnSection = class extends PopupMenu.PopupMenuSection {
 
         this.addSettingsAction(_('VPN Settings'),
             'gnome-network-panel.desktop');
+    }
 
-        this._client.connectObject(
+    setClient(client) {
+        if (this._client === client)
+            return;
+
+        this._client?.disconnectObject(this);
+        this._client = client;
+        this._client?.connectObject(
             'connection-added', (c, conn) => this._addConnection(conn),
             'connection-removed', (c, conn) => this._removeConnection(conn),
             'notify::active-connections', () => this._syncActiveConnections(),
             this);
 
-        this._loadInitialItems();
+        this._items.forEach(item => item.destroy());
+        this._items.clear();
+
+        if (this._client)
+            this._loadInitialItems();
     }
 
     _loadInitialItems() {
@@ -1538,6 +1547,15 @@ class Indicator extends PanelMenu.SystemIndicator {
         this._primaryIndicator = this._addIndicator();
         this._vpnIndicator = this._addIndicator();
 
+        this._connections = [];
+        this._connectivityQueue = new Set();
+
+        this._mainConnection = null;
+
+        this._notification = null;
+
+        this._nmDevices = [];
+
         // Device types
         this._dtypes = { };
         this._dtypes[NM.DeviceType.ETHERNET] = NMWiredDeviceItem;
@@ -1553,21 +1571,6 @@ class Indicator extends PanelMenu.SystemIndicator {
         this._ctypes[NM.SETTING_CDMA_SETTING_NAME] = NMConnectionCategory.WWAN;
         this._ctypes[NM.SETTING_GSM_SETTING_NAME] = NMConnectionCategory.WWAN;
 
-        this._getClient().catch(logError);
-    }
-
-    async _getClient() {
-        this._client = await NM.Client.new_async(null);
-
-        this._connections = [];
-        this._connectivityQueue = new Set();
-
-        this._mainConnection = null;
-
-        this._notification = null;
-
-        this._nmDevices = [];
-
         this._wiredSection = new NMWiredSection();
         this._wirelessSection = new NMWirelessSection();
         this._modemSection = new NMModemSection();
@@ -1582,10 +1585,18 @@ class Indicator extends PanelMenu.SystemIndicator {
         for (const section of this._deviceSections.values())
             this.menu.addMenuItem(section);
 
-        this._vpnSection = new NMVpnSection(this._client);
+        this._vpnSection = new NMVpnSection();
         this._vpnSection.connect('activation-failed', this._onActivationFailed.bind(this));
         this._vpnSection.connect('icon-changed', this._updateIcon.bind(this));
         this.menu.addMenuItem(this._vpnSection);
+
+        this._getClient().catch(logError);
+    }
+
+    async _getClient() {
+        this._client = await NM.Client.new_async(null);
+
+        this._vpnSection.setClient(this._client);
 
         this._readConnections();
         this._readDevices();
