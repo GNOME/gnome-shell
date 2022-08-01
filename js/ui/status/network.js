@@ -163,9 +163,6 @@ const NMConnectionItem = GObject.registerClass({
             GObject.ParamFlags.READWRITE,
             ''),
     },
-    Signals: {
-        'activation-failed': {},
-    },
 }, class NMConnectionItem extends PopupMenu.PopupBaseMenuItem {
     constructor(section, connection) {
         super();
@@ -393,7 +390,6 @@ var NMConnectionSection = class NMConnectionSection extends Signals.EventEmitter
             return;
 
         item.connect('notify::icon-name', () => this._iconChanged());
-        item.connect('activation-failed', () => this.emit('activation-failed'));
         item.connect('notify::name', this._sync.bind(this));
 
         const pos = this._itemSorter.upsert(item);
@@ -1502,8 +1498,11 @@ var NMWirelessDeviceItem = class extends Signals.EventEmitter {
     }
 };
 
-const NMVpnConnectionItem = GObject.registerClass(
-class NMVpnConnectionItem extends NMConnectionItem {
+const NMVpnConnectionItem = GObject.registerClass({
+    Signals: {
+        'activation-failed': {},
+    },
+}, class NMVpnConnectionItem extends NMConnectionItem {
     constructor(section, connection) {
         super(section, connection);
 
@@ -1561,18 +1560,26 @@ class NMVpnConnectionItem extends NMConnectionItem {
     }
 });
 
-var NMVpnSection = class extends NMConnectionSection {
+var NMVpnSection = class extends PopupMenu.PopupMenuSection {
     constructor(client) {
-        super(client);
+        super();
+
+        this._client = client;
+
+        this._items = new Map();
+        this._itemSorter = new ItemSorter();
+
+        this._section = new PopupMenu.PopupMenuSection();
+        this.addMenuItem(this._section);
+
+        this.addSettingsAction(_('VPN Settings'),
+            'gnome-network-panel.desktop');
 
         this._client.connectObject(
-            'connection-added', (c, conn) => this.checkConnection(conn),
-            'connection-removed', (c, conn) => this.removeConnection(conn),
+            'connection-added', (c, conn) => this._addConnection(conn),
+            'connection-removed', (c, conn) => this._removeConnection(conn),
             'notify::active-connections', () => this._syncActiveConnections(),
             this);
-
-        this.item.menu.addSettingsAction(_('VPN Settings'),
-            'gnome-network-panel.desktop');
 
         this._loadInitialItems();
         this._sync();
@@ -1581,7 +1588,7 @@ var NMVpnSection = class extends NMConnectionSection {
     _loadInitialItems() {
         const connections = this._client.get_connections();
         for (const conn of connections)
-            this.checkConnection(conn);
+            this._addConnection(conn);
 
         this._syncActiveConnections();
     }
@@ -1591,11 +1598,11 @@ var NMVpnSection = class extends NMConnectionSection {
             this._client.get_active_connections().filter(
                 c => this._shouldHandleConnection(c.connection));
 
-        for (const item of this._connectionItems.values())
+        for (const item of this._items.values())
             item.setActiveConnection(null);
 
         for (const a of activeConnections)
-            this._connectionItems.get(a.connection.get_uuid())?.setActiveConnection(a);
+            this._items.get(a.connection)?.setActiveConnection(a);
 
         this._sync();
     }
@@ -1616,45 +1623,61 @@ var NMVpnSection = class extends NMConnectionSection {
         return handledTypes.includes(setting.type);
     }
 
-    _addConnection(connection) {
-        super._addConnection(connection);
-
-        connection.connectObject(
-            'changed', () => this.checkConnection(connection),
-            this);
+    _onConnectionChanged(connection) {
+        const item = this._items.get(connection);
+        item.updateForConnection(connection);
     }
 
-    _connectionValid(connection) {
-        return this._shouldHandleConnection(connection);
+    _resortItem(item) {
+        const pos = this._itemSorter.upsert(item);
+        this._section.moveMenuItem(item, pos);
+    }
+
+    _addConnection(connection) {
+        if (this._items.has(connection))
+            return;
+
+        if (!this._shouldHandleConnection(connection))
+            return;
+
+        connection.connectObject(
+            'changed', this._onConnectionChanged.bind(this),
+            this);
+
+        const item = new NMVpnConnectionItem(this, connection);
+        item.connectObject(
+            'activation-failed', () => this.emit('activation-failed'),
+            'notify::name', () => this._resortItem(item),
+            'destroy', () => this._removeConnection(connection),
+            this);
+
+        this._items.set(connection, item);
+        const pos = this._itemSorter.upsert(item);
+        this._section.addMenuItem(item, pos);
+
+        this._sync();
+    }
+
+    _removeConnection(connection) {
+        const item = this._items.get(connection);
+        if (!item)
+            return;
+
+        this._itemSorter.delete(item);
+        this._items.delete(connection);
+
+        item.destroy();
+        this._sync();
     }
 
     _sync() {
-        let nItems = this._connectionItems.size;
-        this.item.visible = nItems > 0;
-
-        super._sync();
+        const nItems = this._items.size;
+        for (const item of this._items.values())
+            item.radio_mode = nItems > 1;
     }
 
     get category() {
         return NMConnectionCategory.VPN;
-    }
-
-    _getDescription() {
-        return _("VPN");
-    }
-
-    _getStatus() {
-        let values = this._connectionItems.values();
-        for (let item of values) {
-            if (item.is_active)
-                return item.name;
-        }
-
-        return _("VPN Off");
-    }
-
-    _getMenuIcon() {
-        return this.getIndicatorIcon() || 'network-vpn-disabled-symbolic';
     }
 
     activateConnection(connection) {
@@ -1665,13 +1688,8 @@ var NMVpnSection = class extends NMConnectionSection {
         this._client.deactivate_connection(activeConnection, null);
     }
 
-    _makeConnectionItem(connection) {
-        return new NMVpnConnectionItem(this, connection);
-    }
-
     getIndicatorIcon() {
-        let items = this._connectionItems.values();
-        for (let item of items) {
+        for (const item of this._items.values()) {
             if (item.is_active)
                 return item.icon_name;
         }
@@ -1842,7 +1860,7 @@ class Indicator extends PanelMenu.SystemIndicator {
         this._vpnSection = new NMVpnSection(this._client);
         this._vpnSection.connect('activation-failed', this._onActivationFailed.bind(this));
         this._vpnSection.connect('icon-changed', this._updateIcon.bind(this));
-        this.menu.addMenuItem(this._vpnSection.item);
+        this.menu.addMenuItem(this._vpnSection);
 
         this._readConnections();
         this._readDevices();
