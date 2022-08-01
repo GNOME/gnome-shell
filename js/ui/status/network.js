@@ -1626,10 +1626,13 @@ class Indicator extends PanelMenu.SystemIndicator {
 
         this._notification = null;
 
+        this._allSections = [];
+
         this._wiredSection = new NMWiredSection();
         this._wirelessSection = new NMWirelessSection();
         this._modemSection = new NMModemSection();
         this._btSection = new NMBluetoothSection();
+        this._vpnSection = new NMVpnSection();
 
         this._deviceSections = new Map([
             [NM.DeviceType.ETHERNET, this._wiredSection],
@@ -1637,18 +1640,16 @@ class Indicator extends PanelMenu.SystemIndicator {
             [NM.DeviceType.MODEM, this._modemSection],
             [NM.DeviceType.BT, this._btSection],
         ]);
-        for (const section of this._deviceSections.values()) {
+        this._allSections.push(...this._deviceSections.values());
+        this._allSections.push(this._vpnSection);
+
+        this._allSections.forEach(section => {
             section.connectObject(
                 'activation-failed', () => this._onActivationFailed(),
                 'icon-changed', () => this._updateIcon(),
                 this);
             this.menu.addMenuItem(section);
-        }
-
-        this._vpnSection = new NMVpnSection();
-        this._vpnSection.connect('activation-failed', this._onActivationFailed.bind(this));
-        this._vpnSection.connect('icon-changed', this._updateIcon.bind(this));
-        this.menu.addMenuItem(this._vpnSection);
+        });
 
         this._getClient().catch(logError);
     }
@@ -1656,9 +1657,8 @@ class Indicator extends PanelMenu.SystemIndicator {
     async _getClient() {
         this._client = await NM.Client.new_async(null);
 
-        this._deviceSections.forEach(
+        this._allSections.forEach(
             section => section.setClient(this._client));
-        this._vpnSection.setClient(this._client);
 
         this._client.bind_property('nm-running',
             this, 'visible',
