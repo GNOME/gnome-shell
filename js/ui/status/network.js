@@ -320,7 +320,7 @@ var NMDeviceItem = class NMDeviceItem extends NMConnectionSection {
             throw new TypeError(`Cannot instantiate abstract type ${this.constructor.name}`);
 
         this._device = device;
-        this._description = '';
+        this._deviceName = '';
 
         this._autoConnectItem = this.item.menu.addAction(_("Connect"), this._autoConnect.bind(this));
         this._deactivateItem = this._radioSection.addAction(_("Turn Off"), this.deactivateConnection.bind(this));
@@ -391,13 +391,13 @@ var NMDeviceItem = class NMDeviceItem extends NMConnectionSection {
         this._device.disconnect(null);
     }
 
-    setDeviceDescription(desc) {
-        this._description = desc;
+    setDeviceName(name) {
+        this._deviceName = name;
         this._sync();
     }
 
     _getDescription() {
-        return this._description;
+        return this._deviceName;
     }
 
     _sync() {
@@ -1279,7 +1279,7 @@ var NMWirelessDeviceItem = class extends Signals.EventEmitter {
         this._client = client;
         this._device = device;
 
-        this._description = '';
+        this._deviceName = '';
 
         this.item = new PopupMenu.PopupSubMenuMenuItem('', true);
         this.item.menu.addAction(_("Select Network"), this._showDialog.bind(this));
@@ -1375,8 +1375,8 @@ var NMWirelessDeviceItem = class extends Signals.EventEmitter {
         this.item.label.text = this._getStatus();
     }
 
-    setDeviceDescription(desc) {
-        this._description = desc;
+    setDeviceName(name) {
+        this._deviceName = name;
         this._sync();
     }
 
@@ -1385,22 +1385,22 @@ var NMWirelessDeviceItem = class extends Signals.EventEmitter {
 
         if (this._isHotSpotMaster())
             /* Translators: %s is a network identifier */
-            return _("%s Hotspot Active").format(this._description);
+            return _('%s Hotspot Active').format(this._deviceName);
         else if (this._device.state >= NM.DeviceState.PREPARE &&
                  this._device.state < NM.DeviceState.ACTIVATED)
             /* Translators: %s is a network identifier */
-            return _("%s Connecting").format(this._description);
+            return _('%s Connecting').format(this._deviceName);
         else if (ap)
             return ssidToLabel(ap.get_ssid());
         else if (!this._client.wireless_hardware_enabled)
             /* Translators: %s is a network identifier */
-            return _("%s Hardware Disabled").format(this._description);
+            return _('%s Hardware Disabled').format(this._deviceName);
         else if (!this._client.wireless_enabled)
             /* Translators: %s is a network identifier */
-            return _("%s Off").format(this._description);
+            return _('%s Off').format(this._deviceName);
         else if (this._device.state == NM.DeviceState.DISCONNECTED)
             /* Translators: %s is a network identifier */
-            return _("%s Not Connected").format(this._description);
+            return _('%s Not Connected').format(this._deviceName);
         else
             return '';
     }
@@ -1880,9 +1880,9 @@ class Indicator extends PanelMenu.SystemIndicator {
         let names = NM.Device.disambiguate_names(this._nmDevices);
         for (let i = 0; i < this._nmDevices.length; i++) {
             let device = this._nmDevices[i];
-            let description = names[i];
+            let name = names[i];
             if (device._delegate)
-                device._delegate.setDeviceDescription(description);
+                device._delegate.setDeviceName(name);
         }
     }
 
