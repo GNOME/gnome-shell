@@ -1406,28 +1406,7 @@ var NMWireguardItem = class extends NMConnectionItem {
         let isActive = this.isActive();
         this.labelItem.label.text = isActive ? _('Turn Off') : this._section.getConnectLabel();
         this.radioItem.setToggleState(isActive);
-        this.radioItem.setStatus(this._getStatus());
         this.emit('icon-changed');
-    }
-
-    _getStatus() {
-        if (this._activeConnection === null)
-            return null;
-
-        switch (this._activeConnection.state) {
-        case NM.ActiveConnectionState.UNKNOWN:
-            return _('unknown');
-        case NM.ActiveConnectionState.ACTIVATING:
-            return _('activating…');
-        case NM.ActiveConnectionState.ACTIVATED:
-            return null;
-        case NM.ActiveConnectionState.DEACTIVATING:
-            return _('deactivating…');
-        case NM.ActiveConnectionState.DEACTIVATED:
-            return _('deactivated');
-        default:
-            return 'invalid';
-        }
     }
 
     _connectionStateChanged() {
@@ -1477,30 +1456,7 @@ var NMVpnConnectionItem = class extends NMConnectionItem {
         let isActive = this.isActive();
         this.labelItem.label.text = isActive ? _("Turn Off") : this._section.getConnectLabel();
         this.radioItem.setToggleState(isActive);
-        this.radioItem.setStatus(this._getStatus());
         this.emit('icon-changed');
-    }
-
-    _getStatus() {
-        if (this._activeConnection == null)
-            return null;
-
-        switch (this._activeConnection.vpn_state) {
-        case NM.VpnConnectionState.DISCONNECTED:
-        case NM.VpnConnectionState.ACTIVATED:
-            return null;
-        case NM.VpnConnectionState.PREPARE:
-        case NM.VpnConnectionState.CONNECT:
-        case NM.VpnConnectionState.IP_CONFIG_GET:
-            return _("connecting…");
-        case NM.VpnConnectionState.NEED_AUTH:
-            /* Translators: this is for network connections that require some kind of key or password */
-            return _("authentication required");
-        case NM.VpnConnectionState.FAILED:
-            return _("connection failed");
-        default:
-            return 'invalid';
-        }
     }
 
     _connectionStateChanged(ac, newstate, reason) {
