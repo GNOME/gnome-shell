@@ -200,6 +200,78 @@ const NMMenuItem = GObject.registerClass({
     }
 });
 
+/**
+ * Item that contains a section, and can be collapsed
+ * into a submenu
+ */
+const NMSectionItem = GObject.registerClass({
+    Properties: {
+        'use-submenu': GObject.ParamSpec.boolean('use-submenu', '', '',
+            GObject.ParamFlags.READWRITE,
+            false),
+    },
+}, class NMSectionItem extends NMMenuItem {
+    constructor() {
+        super({
+            activate: false,
+            can_focus: false,
+        });
+
+        this._useSubmenu = false;
+
+        // Turn into an empty container with no padding
+        this.styleClass = '';
+        this.setOrnament(PopupMenu.Ornament.HIDDEN);
+
+        // Add intermediate section; we need this for submenu support
+        this._mainSection = new PopupMenu.PopupMenuSection();
+        this.add_child(this._mainSection.actor);
+
+        this._submenuItem = new PopupMenu.PopupSubMenuMenuItem('', true);
+        this._mainSection.addMenuItem(this._submenuItem);
+        this._submenuItem.hide();
+
+        this.section = new PopupMenu.PopupMenuSection();
+        this._mainSection.addMenuItem(this.section);
+
+        // Represents the item as a whole when shown
+        this.bind_property('name',
+            this._submenuItem.label, 'text',
+            GObject.BindingFlags.DEFAULT);
+        this.bind_property('icon-name',
+            this._submenuItem.icon, 'icon-name',
+            GObject.BindingFlags.DEFAULT);
+    }
+
+    _setParent(parent) {
+        super._setParent(parent);
+        this._mainSection._setParent(parent);
+
+        parent?.connect('menu-closed',
+            () => this._mainSection.emit('menu-closed'));
+    }
+
+    get use_submenu() {
+        return this._useSubmenu;
+    }
+
+    set use_submenu(useSubmenu) {
+        if (this._useSubmenu === useSubmenu)
+            return;
+
+        this._useSubmenu = useSubmenu;
+        this._submenuItem.visible = useSubmenu;
+
+        if (useSubmenu) {
+            this._mainSection.box.remove_child(this.section.actor);
+            this._submenuItem.menu.box.add_child(this.section.actor);
+        } else {
+            this._submenuItem.menu.box.remove_child(this.section.actor);
+            this._mainSection.box.add_child(this.section.actor);
+        }
+    }
+});
+
 const NMConnectionItem = GObject.registerClass(
 class NMConnectionItem extends NMMenuItem {
     constructor(section, connection) {
