@@ -124,6 +124,13 @@ const NMConnectionItem = GObject.registerClass({
         this._connection = connection;
         this._activeConnection = null;
 
+        this._icon = new St.Icon({
+            style_class: 'popup-menu-icon',
+            x_align: Clutter.ActorAlign.END,
+            visible: !this.radio_mode,
+        });
+        this.add_child(this._icon);
+
         this._label = new St.Label({
             y_expand: true,
             y_align: Clutter.ActorAlign.CENTER,
@@ -131,8 +138,16 @@ const NMConnectionItem = GObject.registerClass({
         this.add_child(this._label);
         this.label_actor = this._label;
 
+        this.bind_property('icon-name',
+            this._icon, 'icon-name',
+            GObject.BindingFlags.DEFAULT);
+        this.bind_property('radio-mode',
+            this._icon, 'visible',
+            GObject.BindingFlags.INVERT_BOOLEAN);
+
         this.connectObject(
             'notify::radio-mode', () => this._sync(),
+            'notify::name', () => this._sync(),
             this);
         this._sync();
     }
@@ -167,13 +182,20 @@ const NMConnectionItem = GObject.registerClass({
             ? PopupMenu.Ornament.DOT : PopupMenu.Ornament.NONE);
     }
 
+    _getRegularLabel() {
+        return this.is_active
+            // Translators: %s is a device name like "MyPhone"
+            ? _('Disconnect %s').format(this.name)
+            // Translators: %s is a device name like "MyPhone"
+            : _('Connect to %s').format(this.name);
+    }
+
     _sync() {
         if (this.radioMode) {
             this._label.text = this._connection.get_id();
             this.accessible_role = Atk.Role.CHECK_MENU_ITEM;
         } else {
-            this._label.text = this.is_active
-                ? _('Turn Off') : this._section.getConnectLabel();
+            this._label.text = this._getRegularLabel();
             this.accessible_role = Atk.Role.MENU_ITEM;
         }
         this._updateOrnament();
@@ -253,10 +275,6 @@ var NMConnectionSection = class NMConnectionSection extends Signals.EventEmitter
 
     _getMenuIcon() {
         return this.getIndicatorIcon();
-    }
-
-    getConnectLabel() {
-        return _("Connect");
     }
 
     _connectionValid(_connection) {
@@ -590,10 +608,6 @@ var NMBluetoothDeviceItem = class extends NMDeviceItem {
 
     _getDescription() {
         return this._device.name;
-    }
-
-    getConnectLabel() {
-        return _("Connect to Internet");
     }
 
     _getMenuIcon() {
