@@ -1,6 +1,6 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported NMApplet */
-const { Clutter, Gio, GLib, GObject, Meta, NM, Polkit, St } = imports.gi;
+const {Atk, Clutter, Gio, GLib, GObject, Meta, NM, Polkit, St} = imports.gi;
 const Signals = imports.misc.signals;
 
 const Animation = imports.ui.animation;
@@ -98,7 +98,25 @@ function launchSettingsPanel(panel, ...args) {
     }
 }
 
-var NMConnectionItem = class extends Signals.EventEmitter {
+const NMConnectionItem = GObject.registerClass({
+    Properties: {
+        'radio-mode': GObject.ParamSpec.boolean('radio-mode', '', '',
+            GObject.ParamFlags.READWRITE,
+            false),
+        'is-active': GObject.ParamSpec.boolean('is-active', '', '',
+            GObject.ParamFlags.READABLE,
+            false),
+        'name': GObject.ParamSpec.string('name', '', '',
+            GObject.ParamFlags.READWRITE,
+            ''),
+        'icon-name': GObject.ParamSpec.string('icon-name', '', '',
+            GObject.ParamFlags.READWRITE,
+            ''),
+    },
+    Signals: {
+        'activation-failed': {},
+    },
+}, class NMConnectionItem extends PopupMenu.PopupBaseMenuItem {
     constructor(section, connection) {
         super();
 
@@ -106,22 +124,30 @@ var NMConnectionItem = class extends Signals.EventEmitter {
         this._connection = connection;
         this._activeConnection = null;
 
-        this._buildUI();
+        this._label = new St.Label({
+            y_expand: true,
+            y_align: Clutter.ActorAlign.CENTER,
+        });
+        this.add_child(this._label);
+        this.label_actor = this._label;
+
+        this.connectObject(
+            'notify::radio-mode', () => this._sync(),
+            this);
         this._sync();
     }
 
-    _buildUI() {
-        this.labelItem = new PopupMenu.PopupMenuItem('');
-        this.labelItem.connect('activate', this._toggle.bind(this));
-
-        this.radioItem = new PopupMenu.PopupMenuItem(this._connection.get_id(), false);
-        this.radioItem.connect('activate', this._activate.bind(this));
+    get name() {
+        return this._connection.get_id();
     }
 
-    destroy() {
-        this._activeConnection?.disconnectObject(this);
-        this.labelItem.destroy();
-        this.radioItem.destroy();
+    get state() {
+        return this._activeConnection?.state ??
+            NM.ActiveConnectionState.DEACTIVATED;
+    }
+
+    get is_active() {
+        return this.state <= NM.ActiveConnectionState.ACTIVATED;
     }
 
     updateForConnection(connection) {
@@ -132,30 +158,33 @@ var NMConnectionItem = class extends Signals.EventEmitter {
         // Just to be safe, we set it here again
 
         this._connection = connection;
-        this.radioItem.label.text = connection.get_id();
+        this.notify('name');
         this._sync();
-        this.emit('name-changed');
     }
 
-    getName() {
-        return this._connection.get_id();
-    }
-
-    isActive() {
-        if (this._activeConnection == null)
-            return false;
-
-        return this._activeConnection.state <= NM.ActiveConnectionState.ACTIVATED;
+    _updateOrnament() {
+        this.setOrnament(this.radio_mode && this.is_active
+            ? PopupMenu.Ornament.DOT : PopupMenu.Ornament.NONE);
     }
 
     _sync() {
-        let isActive = this.isActive();
-        this.labelItem.label.text = isActive ? _("Turn Off") : this._section.getConnectLabel();
-        this.radioItem.setOrnament(isActive ? PopupMenu.Ornament.DOT : PopupMenu.Ornament.NONE);
-        this.emit('icon-changed');
+        if (this.radioMode) {
+            this._label.text = this._connection.get_id();
+            this.accessible_role = Atk.Role.CHECK_MENU_ITEM;
+        } else {
+            this._label.text = this.is_active
+                ? _('Turn Off') : this._section.getConnectLabel();
+            this.accessible_role = Atk.Role.MENU_ITEM;
+        }
+        this._updateOrnament();
     }
 
-    _toggle() {
+    activate() {
+        super.activate(Clutter.get_current_event());
+
+        if (this.radio_mode && this._activeConnection != null)
+            return; // only activate in radio mode
+
         if (this._activeConnection == null)
             this._section.activateConnection(this._connection);
         else
@@ -164,14 +193,8 @@ var NMConnectionItem = class extends Signals.EventEmitter {
         this._sync();
     }
 
-    _activate() {
-        if (this._activeConnection == null)
-            this._section.activateConnection(this._connection);
-
-        this._sync();
-    }
-
     _connectionStateChanged(_ac, _newstate, _reason) {
+        this.notify('is-active');
         this._sync();
     }
 
@@ -185,7 +208,7 @@ var NMConnectionItem = class extends Signals.EventEmitter {
 
         this._sync();
     }
-};
+});
 
 var NMConnectionSection = class NMConnectionSection extends Signals.EventEmitter {
     constructor(client) {
@@ -199,12 +222,10 @@ var NMConnectionSection = class NMConnectionSection extends Signals.EventEmitter
         this._connectionItems = new Map();
         this._connections = [];
 
-        this._labelSection = new PopupMenu.PopupMenuSection();
-        this._radioSection = new PopupMenu.PopupMenuSection();
+        this._section = new PopupMenu.PopupMenuSection();
 
         this.item = new PopupMenu.PopupSubMenuMenuItem('', true);
-        this.item.menu.addMenuItem(this._labelSection);
-        this.item.menu.addMenuItem(this._radioSection);
+        this.item.menu.addMenuItem(this._section);
 
         this._client.connectObject('notify::connectivity',
             this._iconChanged.bind(this), this);
@@ -223,8 +244,8 @@ var NMConnectionSection = class NMConnectionSection extends Signals.EventEmitter
     _sync() {
         let nItems = this._connectionItems.size;
 
-        this._radioSection.actor.visible = nItems > 1;
-        this._labelSection.actor.visible = nItems == 1;
+        for (const item of this._connectionItems.values())
+            item.radio_mode = nItems > 1;
 
         this.item.label.text = this._getStatus();
         this.item.icon.icon_name = this._getMenuIcon();
@@ -275,8 +296,7 @@ var NMConnectionSection = class NMConnectionSection extends Signals.EventEmitter
 
         this._connections.splice(pos, 1);
         pos = Util.insertSorted(this._connections, connection, this._connectionSortFunction.bind(this));
-        this._labelSection.moveMenuItem(item.labelItem, pos);
-        this._radioSection.moveMenuItem(item.radioItem, pos);
+        this._section.moveMenuItem(item, pos);
 
         item.updateForConnection(connection);
     }
@@ -286,13 +306,12 @@ var NMConnectionSection = class NMConnectionSection extends Signals.EventEmitter
         if (!item)
             return;
 
-        item.connect('icon-changed', () => this._iconChanged());
+        item.connect('notify::icon-name', () => this._iconChanged());
         item.connect('activation-failed', () => this.emit('activation-failed'));
-        item.connect('name-changed', this._sync.bind(this));
+        item.connect('notify::name', this._sync.bind(this));
 
         let pos = Util.insertSorted(this._connections, connection, this._connectionSortFunction.bind(this));
-        this._labelSection.addMenuItem(item.labelItem, pos);
-        this._radioSection.addMenuItem(item.radioItem, pos);
+        this._section.addMenuItem(item, pos);
         this._connectionItems.set(connection.get_uuid(), item);
         this._sync();
     }
@@ -324,7 +343,8 @@ var NMDeviceItem = class NMDeviceItem extends NMConnectionSection {
         this._deviceName = '';
 
         this._autoConnectItem = this.item.menu.addAction(_("Connect"), this._autoConnect.bind(this));
-        this._deactivateItem = this._radioSection.addAction(_("Turn Off"), this.deactivateConnection.bind(this));
+        this._deactivateItem = this.item.menu.addAction(_('Turn Off'),
+            () => this.deactivateConnection());
 
         this._client.connectObject(
             'notify::primary-connection', () => this._iconChanged(),
@@ -404,7 +424,7 @@ var NMDeviceItem = class NMDeviceItem extends NMConnectionSection {
     _sync() {
         let nItems = this._connectionItems.size;
         this._autoConnectItem.visible = nItems === 0;
-        this._deactivateItem.visible = this._device.state > NM.DeviceState.DISCONNECTED;
+        this._deactivateItem.visible = this.radioMode && this.isActive;
 
         if (this._activeConnection == null) {
             let activeConnection = this._device.active_connection;
@@ -1396,20 +1416,39 @@ var NMWirelessDeviceItem = class extends Signals.EventEmitter {
     }
 };
 
-var NMVpnConnectionItem = class extends NMConnectionItem {
-    _buildUI() {
-        this.labelItem = new PopupMenu.PopupMenuItem('');
-        this.labelItem.connect('activate', this._toggle.bind(this));
+const NMVpnConnectionItem = GObject.registerClass(
+class NMVpnConnectionItem extends NMConnectionItem {
+    constructor(section, connection) {
+        super(section, connection);
 
-        this.radioItem = new PopupMenu.PopupSwitchMenuItem(this._connection.get_id(), false);
-        this.radioItem.connect('toggled', this._toggle.bind(this));
+        this._label.x_expand = true;
+
+        this._switch = new PopupMenu.Switch(this.is_active);
+        this.add_child(this._switch);
+
+        this.bind_property('radio-mode',
+            this._switch, 'visible',
+            GObject.BindingFlags.SYNC_CREATE);
+        this.bind_property('is-active',
+            this._switch, 'state',
+            GObject.BindingFlags.SYNC_CREATE);
+    }
+
+    get name() {
+        return this._connection?.get_id() ?? '';
+    }
+
+    _updateOrnament() {
+        this.setOrnament(PopupMenu.Ornament.NONE);
     }
 
     _sync() {
-        let isActive = this.isActive();
-        this.labelItem.label.text = isActive ? _("Turn Off") : this._section.getConnectLabel();
-        this.radioItem.setToggleState(isActive);
-        this.emit('icon-changed');
+        super._sync();
+
+        if (this.radio_mode && this.is_active)
+            this.add_accessible_state(Atk.StateType.CHECKED);
+        else
+            this.remove_accessible_state(Atk.StateType.CHECKED);
     }
 
     _connectionStateChanged() {
@@ -1421,21 +1460,21 @@ var NMVpnConnectionItem = class extends NMConnectionItem {
             reason !== NM.ActiveConnectionStateReason.USER_DISCONNECTED)
             this.emit('activation-failed');
 
-        this.emit('icon-changed');
+        this.notify('icon-name');
         super._connectionStateChanged();
     }
 
-    getIndicatorIcon() {
-        if (this._activeConnection) {
-            if (this._activeConnection.state < NM.ActiveConnectionState.ACTIVATED)
-                return 'network-vpn-acquiring-symbolic';
-            else
-                return 'network-vpn-symbolic';
-        } else {
-            return '';
+    get icon_name() {
+        switch (this.state) {
+        case NM.ActiveConnectionState.ACTIVATING:
+            return 'network-vpn-acquiring-symbolic';
+        case NM.ActiveConnectionState.ACTIVATED:
+            return 'network-vpn-symbolic';
+        default:
+            return 'network-vpn-disabled-symbolic';
         }
     }
-};
+});
 
 var NMVpnSection = class extends NMConnectionSection {
     constructor(client) {
@@ -1464,8 +1503,8 @@ var NMVpnSection = class extends NMConnectionSection {
     _getStatus() {
         let values = this._connectionItems.values();
         for (let item of values) {
-            if (item.isActive())
-                return item.getName();
+            if (item.is_active)
+                return item.name;
         }
 
         return _("VPN Off");
@@ -1503,9 +1542,8 @@ var NMVpnSection = class extends NMConnectionSection {
     getIndicatorIcon() {
         let items = this._connectionItems.values();
         for (let item of items) {
-            let icon = item.getIndicatorIcon();
-            if (icon)
-                return icon;
+            if (item.is_active)
+                return item.icon_name;
         }
         return '';
     }
