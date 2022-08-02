@@ -302,14 +302,16 @@ const NMDeviceConnectionItem = GObject.registerClass({
     }
 });
 
-var NMConnectionSection = class NMConnectionSection extends Signals.EventEmitter {
-    constructor(client) {
+var NMDeviceItem = class NMDeviceItem extends Signals.EventEmitter {
+    constructor(client, device) {
         super();
 
-        if (this.constructor === NMConnectionSection)
+        if (this.constructor === NMDeviceItem)
             throw new TypeError(`Cannot instantiate abstract type ${this.constructor.name}`);
 
         this._client = client;
+        this._device = device;
+        this._deviceName = '';
 
         this._connectionItems = new Map();
         this._itemSorter = new ItemSorter();
@@ -319,13 +321,63 @@ var NMConnectionSection = class NMConnectionSection extends Signals.EventEmitter
         this.item = new PopupMenu.PopupSubMenuMenuItem('', true);
         this.item.menu.addMenuItem(this._section);
 
-        this._client.connectObject('notify::connectivity',
-            this._iconChanged.bind(this), this);
+        this._autoConnectItem = this.item.menu.addAction(_('Connect'), this._autoConnect.bind(this));
+        this._deactivateItem = this.item.menu.addAction(_('Turn Off'),
+            () => this.deactivateConnection());
+
+        this._client.connectObject(
+            'notify::connectivity', () => this._iconChanged(),
+            'notify::primary-connection', () => this._iconChanged(),
+            this);
+
+        this._device.connectObject(
+            'notify::active-connection', () => this._activeConnectionChanged(),
+            'state-changed', this._deviceStateChanged.bind(this),
+            this);
     }
 
     destroy() {
         this._client.disconnectObject(this);
+        this._device.disconnectObject(this);
         this.item.destroy();
+    }
+
+    _canReachInternet() {
+        if (this._client.primary_connection !== this._device.active_connection)
+            return true;
+
+        return this._client.connectivity === NM.ConnectivityState.FULL;
+    }
+
+    _autoConnect() {
+        let connection = new NM.SimpleConnection();
+        this._client.add_and_activate_connection_async(connection, this._device, null, null, null);
+    }
+
+    _activeConnectionChanged() {
+        if (this._activeConnection) {
+            let item = this._connectionItems.get(this._activeConnection.connection.get_uuid());
+            item.setActiveConnection(null);
+            this._activeConnection = null;
+        }
+
+        this._sync();
+    }
+
+    _deviceStateChanged(device, newstate, oldstate, reason) {
+        if (newstate === oldstate) {
+            log('device emitted state-changed without actually changing state');
+            return;
+        }
+
+        /* Emit a notification if activation fails, but don't do it
+           if the reason is no secrets, as that indicates the user
+           cancelled the agent dialog */
+        if (newstate === NM.DeviceState.FAILED &&
+            reason !== NM.DeviceStateReason.NO_SECRETS)
+            this.emit('activation-failed');
+
+        this._sync();
     }
 
     _iconChanged() {
@@ -335,26 +387,20 @@ var NMConnectionSection = class NMConnectionSection extends Signals.EventEmitter
         this.emit('icon-changed');
     }
 
-    _sync() {
-        let nItems = this._connectionItems.size;
-
-        for (const item of this._connectionItems.values())
-            item.radio_mode = nItems > 1;
-
-        this.item.label.text = this._getStatus();
-        this.item.icon.icon_name = this._getMenuIcon();
-    }
-
     _getMenuIcon() {
         return this.getIndicatorIcon();
     }
 
-    _connectionValid(_connection) {
-        return true;
+    _connectionValid(connection) {
+        return this._device.connection_valid(connection);
     }
 
-    _makeConnectionItem(connection) {
-        return new NMConnectionItem(this, connection);
+    activateConnection(connection) {
+        this._client.activate_connection_async(connection, this._device, null, null, null);
+    }
+
+    deactivateConnection(_activeConnection) {
+        this._device.disconnect(null);
     }
 
     checkConnection(connection) {
@@ -385,7 +431,7 @@ var NMConnectionSection = class NMConnectionSection extends Signals.EventEmitter
     }
 
     _addConnection(connection) {
-        let item = this._makeConnectionItem(connection);
+        const item = new NMDeviceConnectionItem(this, connection);
         if (!item)
             return;
 
@@ -410,91 +456,6 @@ var NMConnectionSection = class NMConnectionSection extends Signals.EventEmitter
 
         this._sync();
     }
-};
-
-var NMDeviceItem = class NMDeviceItem extends NMConnectionSection {
-    constructor(client, device) {
-        super(client);
-
-        if (this.constructor === NMDeviceItem)
-            throw new TypeError(`Cannot instantiate abstract type ${this.constructor.name}`);
-
-        this._device = device;
-        this._deviceName = '';
-
-        this._autoConnectItem = this.item.menu.addAction(_("Connect"), this._autoConnect.bind(this));
-        this._deactivateItem = this.item.menu.addAction(_('Turn Off'),
-            () => this.deactivateConnection());
-
-        this._client.connectObject(
-            'notify::primary-connection', () => this._iconChanged(),
-            this);
-
-        this._device.connectObject(
-            'state-changed', this._deviceStateChanged.bind(this),
-            'notify::active-connection', this._activeConnectionChanged.bind(this),
-            this);
-    }
-
-    _canReachInternet() {
-        if (this._client.primary_connection != this._device.active_connection)
-            return true;
-
-        return this._client.connectivity == NM.ConnectivityState.FULL;
-    }
-
-    _autoConnect() {
-        let connection = new NM.SimpleConnection();
-        this._client.add_and_activate_connection_async(connection, this._device, null, null, null);
-    }
-
-    destroy() {
-        this._device.disconnectObject(this);
-
-        super.destroy();
-    }
-
-    _activeConnectionChanged() {
-        if (this._activeConnection) {
-            let item = this._connectionItems.get(this._activeConnection.connection.get_uuid());
-            item.setActiveConnection(null);
-            this._activeConnection = null;
-        }
-
-        this._sync();
-    }
-
-    _deviceStateChanged(device, newstate, oldstate, reason) {
-        if (newstate == oldstate) {
-            log('device emitted state-changed without actually changing state');
-            return;
-        }
-
-        /* Emit a notification if activation fails, but don't do it
-           if the reason is no secrets, as that indicates the user
-           cancelled the agent dialog */
-        if (newstate == NM.DeviceState.FAILED &&
-            reason != NM.DeviceStateReason.NO_SECRETS)
-            this.emit('activation-failed');
-
-        this._sync();
-    }
-
-    _connectionValid(connection) {
-        return this._device.connection_valid(connection);
-    }
-
-    _makeConnectionItem(connection) {
-        return new NMDeviceConnectionItem(this, connection);
-    }
-
-    activateConnection(connection) {
-        this._client.activate_connection_async(connection, this._device, null, null, null);
-    }
-
-    deactivateConnection(_activeConnection) {
-        this._device.disconnect(null);
-    }
 
     setDeviceName(name) {
         this._deviceName = name;
@@ -505,6 +466,10 @@ var NMDeviceItem = class NMDeviceItem extends NMConnectionSection {
 
     _getDescription() {
         return this._deviceName;
+    }
+
+    _getStatus() {
+        return this._getDescription();
     }
 
     _sync() {
@@ -524,11 +489,11 @@ var NMDeviceItem = class NMDeviceItem extends NMConnectionSection {
             }
         }
 
-        super._sync();
-    }
+        for (const item of this._connectionItems.values())
+            item.radio_mode = nItems > 1;
 
-    _getStatus() {
-        return this._getDescription();
+        this.item.label.text = this._getStatus();
+        this.item.icon.icon_name = this._getMenuIcon();
     }
 };
 
@@ -1972,7 +1937,7 @@ class Indicator extends PanelMenu.SystemIndicator {
         if (!skipSyncDeviceNames)
             this._syncDeviceNames();
 
-        if (wrapper instanceof NMConnectionSection) {
+        if (wrapper instanceof NMDeviceItem) {
             this._connections.forEach(connection => {
                 wrapper.checkConnection(connection);
             });
@@ -2107,7 +2072,7 @@ class Indicator extends PanelMenu.SystemIndicator {
         } else {
             const {devices} = this._deviceSections.get(section);
             for (let i = 0; i < devices.length; i++) {
-                if (devices[i] instanceof NMConnectionSection)
+                if (devices[i] instanceof NMDeviceItem)
                     devices[i].removeConnection(connection);
             }
         }
@@ -2127,7 +2092,7 @@ class Indicator extends PanelMenu.SystemIndicator {
 
         const {devices} = this._deviceSections.get(section);
         devices.forEach(wrapper => {
-            if (wrapper instanceof NMConnectionSection)
+            if (wrapper instanceof NMDeviceItem)
                 wrapper.checkConnection(connection);
         });
     }
