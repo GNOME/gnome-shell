@@ -102,6 +102,24 @@ stage {
   &:checked { @include button(checked);}
 }
 
+// normal icon-only button
+%icon_button {
+  border-radius: 99px;
+  border-style: solid;
+  border-width: 1px;
+  font-weight: bold;
+  padding: $base_padding*2;
+
+  @include button(normal);
+  &:focus { @include button(focus);}
+  &:hover { @include button(hover);}
+  &:insensitive { @include button(insensitive);}
+  &:active { @include button(active);}
+  &:checked { @include button(checked);}
+
+  & > StIcon { icon-size: $base_icon_size; }
+}
+
 // buttons in dialogs/notifications
 // lighter in color and have a greater radius
 
