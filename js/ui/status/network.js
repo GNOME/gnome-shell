@@ -312,11 +312,11 @@ var NMConnectionSection = class NMConnectionSection extends Signals.EventEmitter
     }
 };
 
-var NMConnectionDevice = class NMConnectionDevice extends NMConnectionSection {
+var NMDeviceItem = class NMDeviceItem extends NMConnectionSection {
     constructor(client, device) {
         super(client);
 
-        if (this.constructor === NMConnectionDevice)
+        if (this.constructor === NMDeviceItem)
             throw new TypeError(`Cannot instantiate abstract type ${this.constructor.name}`);
 
         this._device = device;
@@ -471,7 +471,7 @@ var NMConnectionDevice = class NMConnectionDevice extends NMConnectionSection {
     }
 };
 
-var NMDeviceWired = class extends NMConnectionDevice {
+var NMWiredDeviceItem = class extends NMDeviceItem {
     constructor(client, device) {
         super(client, device);
 
@@ -514,7 +514,7 @@ var NMDeviceWired = class extends NMConnectionDevice {
     }
 };
 
-var NMDeviceModem = class extends NMConnectionDevice {
+var NMModemDeviceItem = class extends NMDeviceItem {
     constructor(client, device) {
         super(client, device);
 
@@ -613,7 +613,7 @@ var NMDeviceModem = class extends NMConnectionDevice {
     }
 };
 
-var NMDeviceBluetooth = class extends NMConnectionDevice {
+var NMBluetoothDeviceItem = class extends NMDeviceItem {
     constructor(client, device) {
         super(client, device);
 
@@ -1272,7 +1272,7 @@ class NMWirelessDialog extends ModalDialog.ModalDialog {
     }
 });
 
-var NMDeviceWireless = class extends Signals.EventEmitter {
+var NMWirelessDeviceItem = class extends Signals.EventEmitter {
     constructor(client, device) {
         super();
 
@@ -1754,10 +1754,10 @@ class Indicator extends PanelMenu.SystemIndicator {
 
         // Device types
         this._dtypes = { };
-        this._dtypes[NM.DeviceType.ETHERNET] = NMDeviceWired;
-        this._dtypes[NM.DeviceType.WIFI] = NMDeviceWireless;
-        this._dtypes[NM.DeviceType.MODEM] = NMDeviceModem;
-        this._dtypes[NM.DeviceType.BT] = NMDeviceBluetooth;
+        this._dtypes[NM.DeviceType.ETHERNET] = NMWiredDeviceItem;
+        this._dtypes[NM.DeviceType.WIFI] = NMWirelessDeviceItem;
+        this._dtypes[NM.DeviceType.MODEM] = NMModemDeviceItem;
+        this._dtypes[NM.DeviceType.BT] = NMBluetoothDeviceItem;
 
         // Connection types
         this._ctypes = { };
