@@ -379,8 +379,13 @@ const NMDeviceConnectionItem = GObject.registerClass({
     }
 });
 
-const NMDeviceItem = GObject.registerClass(
-class NMDeviceItem extends NMSectionItem {
+const NMDeviceItem = GObject.registerClass({
+    Properties: {
+        'single-device-mode': GObject.ParamSpec.boolean('single-device-mode', '', '',
+            GObject.ParamFlags.READWRITE,
+            false),
+    },
+}, class NMDeviceItem extends NMSectionItem {
     constructor(client, device) {
         super();
 
@@ -418,6 +423,8 @@ class NMDeviceItem extends NMSectionItem {
             'notify::available-connections', () => this._syncConnections(),
             'notify::active-connection', () => this._activeConnectionChanged(),
             this);
+
+        this.connect('notify::single-device-mode', () => this._sync());
 
         this._syncConnections();
         this._activeConnectionChanged();
@@ -526,6 +533,7 @@ class NMDeviceItem extends NMSectionItem {
     _sync() {
         const nItems = this._connectionItems.size;
         this.radio_mode = nItems > 1;
+        this.useSubmenu = this.radioMode && !this.singleDeviceMode;
         this._autoConnectItem.visible = nItems === 0;
         this._deactivateItem.visible = this.radioMode && this.isActive;
     }
@@ -959,8 +967,13 @@ class NMWirelessNetworkItem extends PopupMenu.PopupBaseMenuItem {
     }
 });
 
-const NMWirelessDeviceItem = GObject.registerClass(
-class NMWirelessDeviceItem extends NMSectionItem {
+const NMWirelessDeviceItem = GObject.registerClass({
+    Properties: {
+        'single-device-mode': GObject.ParamSpec.boolean('single-device-mode', '', '',
+            GObject.ParamFlags.READWRITE,
+            false),
+    },
+}, class NMWirelessDeviceItem extends NMSectionItem {
     constructor(client, device) {
         super();
 
@@ -995,6 +1008,10 @@ class NMWirelessDeviceItem extends NMSectionItem {
                 this._removeAccessPoint(ap);
                 this._updateItemsVisibility();
             }, this);
+
+        this.bind_property('single-device-mode',
+            this, 'use-submenu',
+            GObject.BindingFlags.INVERT_BOOLEAN);
 
         Main.sessionMode.connectObject('updated',
             () => this._updateItemsVisibility(),
@@ -1533,6 +1550,9 @@ class NMDeviceSection extends NMSection {
 
     _sync() {
         super._sync();
+
+        const nItems = this._items.size;
+        this._items.forEach(item => (item.singleDeviceMode = nItems === 1));
 
         let nDevices = this._itemsSection.box.get_children().reduce(
             (prev, child) => prev + (child.visible ? 1 : 0), 0);
