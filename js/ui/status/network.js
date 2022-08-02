@@ -1437,13 +1437,6 @@ var NMWireguardItem = class extends NMConnectionItem {
 };
 
 var NMVpnConnectionItem = class extends NMConnectionItem {
-    isActive() {
-        if (this._activeConnection == null)
-            return false;
-
-        return this._activeConnection.vpn_state != NM.VpnConnectionState.DISCONNECTED;
-    }
-
     _buildUI() {
         this.labelItem = new PopupMenu.PopupMenuItem('');
         this.labelItem.connect('activate', this._toggle.bind(this));
@@ -1459,29 +1452,22 @@ var NMVpnConnectionItem = class extends NMConnectionItem {
         this.emit('icon-changed');
     }
 
-    _connectionStateChanged(ac, newstate, reason) {
-        if (newstate === NM.VpnConnectionState.FAILED &&
-            reason !== NM.VpnConnectionStateReason.NO_SECRETS)
+    _connectionStateChanged() {
+        const state = this._activeConnection?.get_state();
+        const reason = this._activeConnection?.get_state_reason();
+
+        if (state === NM.ActiveConnectionState.DEACTIVATED &&
+            reason !== NM.ActiveConnectionStateReason.NO_SECRETS &&
+            reason !== NM.ActiveConnectionStateReason.USER_DISCONNECTED)
             this.emit('activation-failed');
 
         this.emit('icon-changed');
         super._connectionStateChanged();
     }
 
-    setActiveConnection(activeConnection) {
-        this._activeConnection?.disconnectObject(this);
-
-        this._activeConnection = activeConnection;
-
-        this._activeConnection?.connectObject('vpn-state-changed',
-            this._connectionStateChanged.bind(this), this);
-
-        this._sync();
-    }
-
     getIndicatorIcon() {
         if (this._activeConnection) {
-            if (this._activeConnection.vpn_state < NM.VpnConnectionState.ACTIVATED)
+            if (this._activeConnection.state < NM.ActiveConnectionState.ACTIVATED)
                 return 'network-vpn-acquiring-symbolic';
             else
                 return 'network-vpn-symbolic';
