@@ -1393,49 +1393,6 @@ var NMWirelessDeviceItem = class extends Signals.EventEmitter {
     }
 };
 
-var NMWireguardItem = class extends NMConnectionItem {
-    _buildUI() {
-        this.labelItem = new PopupMenu.PopupMenuItem('');
-        this.labelItem.connect('activate', this._activate.bind(this));
-
-        this.radioItem = new PopupMenu.PopupSwitchMenuItem(this._connection.get_id(), false);
-        this.radioItem.connect('toggled', this._toggle.bind(this));
-    }
-
-    _sync() {
-        let isActive = this.isActive();
-        this.labelItem.label.text = isActive ? _('Turn Off') : this._section.getConnectLabel();
-        this.radioItem.setToggleState(isActive);
-        this.emit('icon-changed');
-    }
-
-    _connectionStateChanged() {
-        const state = this._activeConnection?.get_state();
-        const reason = this._activeConnection?.get_state_reason();
-
-        if (state === NM.ActiveConnectionState.DEACTIVATED &&
-            reason !== NM.ActiveConnectionStateReason.NO_SECRETS &&
-            reason !== NM.ActiveConnectionStateReason.USER_DISCONNECTED)
-            this.emit('activation-failed');
-
-        this.emit('icon-changed');
-        super._connectionStateChanged();
-    }
-
-    getIndicatorIcon() {
-        if (this._activeConnection) {
-            if (this._activeConnection.state === NM.ActiveConnectionState.UNKNOWN)
-                return '';
-            else if (this._activeConnection.state < NM.ActiveConnectionState.ACTIVATED)
-                return 'network-vpn-acquiring-symbolic';
-            else
-                return 'network-vpn-symbolic';
-        } else {
-            return '';
-        }
-    }
-};
-
 var NMVpnConnectionItem = class extends NMConnectionItem {
     _buildUI() {
         this.labelItem = new PopupMenu.PopupMenuItem('');
@@ -1537,9 +1494,6 @@ var NMVpnSection = class extends NMConnectionSection {
     }
 
     _makeConnectionItem(connection) {
-        if (connection.get_connection_type() === 'wireguard')
-            return new NMWireguardItem(this, connection);
-
         return new NMVpnConnectionItem(this, connection);
     }
 
