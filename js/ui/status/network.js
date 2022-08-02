@@ -148,7 +148,7 @@ class ItemSorter {
     }
 }
 
-const NMConnectionItem = GObject.registerClass({
+const NMMenuItem = GObject.registerClass({
     Properties: {
         'radio-mode': GObject.ParamSpec.boolean('radio-mode', '', '',
             GObject.ParamFlags.READWRITE,
@@ -163,7 +163,45 @@ const NMConnectionItem = GObject.registerClass({
             GObject.ParamFlags.READWRITE,
             ''),
     },
-}, class NMConnectionItem extends PopupMenu.PopupBaseMenuItem {
+}, class NMMenuItem extends PopupMenu.PopupBaseMenuItem {
+    get state() {
+        return this._activeConnection?.state ??
+            NM.ActiveConnectionState.DEACTIVATED;
+    }
+
+    get is_active() {
+        return this.state <= NM.ActiveConnectionState.ACTIVATED;
+    }
+
+    activate() {
+        super.activate(Clutter.get_current_event());
+    }
+
+    _activeConnectionStateChanged() {
+        this.notify('is-active');
+        this.notify('icon-name');
+
+        this._sync();
+    }
+
+    _setActiveConnection(activeConnection) {
+        this._activeConnection?.disconnectObject(this);
+
+        this._activeConnection = activeConnection;
+
+        this._activeConnection?.connectObject(
+            'notify::state', () => this._activeConnectionStateChanged(),
+            this);
+        this._activeConnectionStateChanged();
+    }
+
+    _sync() {
+        // Overridden by subclasses
+    }
+});
+
+const NMConnectionItem = GObject.registerClass(
+class NMConnectionItem extends NMMenuItem {
     constructor(section, connection) {
         super();
 
@@ -203,15 +241,6 @@ const NMConnectionItem = GObject.registerClass({
         return this._connection.get_id();
     }
 
-    get state() {
-        return this._activeConnection?.state ??
-            NM.ActiveConnectionState.DEACTIVATED;
-    }
-
-    get is_active() {
-        return this.state <= NM.ActiveConnectionState.ACTIVATED;
-    }
-
     updateForConnection(connection) {
         // connection should always be the same object
         // (and object path) as this._connection, but
@@ -249,7 +278,7 @@ const NMConnectionItem = GObject.registerClass({
     }
 
     activate() {
-        super.activate(Clutter.get_current_event());
+        super.activate();
 
         if (this.radio_mode && this._activeConnection != null)
             return; // only activate in radio mode
@@ -262,20 +291,8 @@ const NMConnectionItem = GObject.registerClass({
         this._sync();
     }
 
-    _connectionStateChanged(_ac, _newstate, _reason) {
-        this.notify('is-active');
-        this._sync();
-    }
-
-    setActiveConnection(activeConnection) {
-        this._activeConnection?.disconnectObject(this);
-
-        this._activeConnection = activeConnection;
-
-        this._activeConnection?.connectObject('notify::state',
-            this._connectionStateChanged.bind(this), this);
-
-        this._sync();
+    setActiveConnection(connection) {
+        this._setActiveConnection(connection);
     }
 });
 
@@ -1498,7 +1515,7 @@ const NMVpnConnectionItem = GObject.registerClass({
             this.remove_accessible_state(Atk.StateType.CHECKED);
     }
 
-    _connectionStateChanged() {
+    _activeConnectionStateChanged() {
         const state = this._activeConnection?.get_state();
         const reason = this._activeConnection?.get_state_reason();
 
@@ -1507,8 +1524,7 @@ const NMVpnConnectionItem = GObject.registerClass({
             reason !== NM.ActiveConnectionStateReason.USER_DISCONNECTED)
             this.emit('activation-failed');
 
-        this.notify('icon-name');
-        super._connectionStateChanged();
+        super._activeConnectionStateChanged();
     }
 
     get icon_name() {
