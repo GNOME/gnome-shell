@@ -179,18 +179,32 @@ var ShellUserVerifier = class extends Signals.EventEmitter {
         this._unavailableServices = new Set();
 
         this._credentialManagers = {};
-        this._credentialManagers[OVirt.SERVICE_NAME] = OVirt.getOVirtCredentialsManager();
-        this._credentialManagers[Vmware.SERVICE_NAME] = Vmware.getVmwareCredentialsManager();
 
-        for (let service in this._credentialManagers) {
-            if (this._credentialManagers[service].token) {
-                this._onCredentialManagerAuthenticated(this._credentialManagers[service],
-                    this._credentialManagers[service].token);
-            }
+        this.addCredentialManager(OVirt.SERVICE_NAME, OVirt.getOVirtCredentialsManager());
+        this.addCredentialManager(Vmware.SERVICE_NAME, Vmware.getVmwareCredentialsManager());
+    }
 
-            this._credentialManagers[service].connectObject('user-authenticated',
-                this._onCredentialManagerAuthenticated.bind(this), this);
+    addCredentialManager(serviceName, credentialManager) {
+        if (this._credentialManagers[serviceName])
+            return;
+
+        this._credentialManagers[serviceName] = credentialManager;
+        if (credentialManager.token) {
+            this._onCredentialManagerAuthenticated(credentialManager,
+                credentialManager.token);
         }
+
+        credentialManager.connectObject('user-authenticated',
+            this._onCredentialManagerAuthenticated.bind(this), this);
+    }
+
+    removeCredentialManager(serviceName) {
+        let credentialManager = this._credentialManagers[serviceName];
+        if (!credentialManager)
+            return;
+
+        credentialManager.disconnectObject(this);
+        delete this._credentialManagers[serviceName];
     }
 
     get hasPendingMessages() {
@@ -262,11 +276,8 @@ var ShellUserVerifier = class extends Signals.EventEmitter {
         this._smartcardManager.disconnectObject(this);
         this._smartcardManager = null;
 
-        for (let service in this._credentialManagers) {
-            let credentialManager = this._credentialManagers[service];
-            credentialManager.disconnectObject(this);
-            credentialManager = null;
-        }
+        for (let service in this._credentialManagers)
+            this.removeCredentialManager(service);
     }
 
     selectChoice(serviceName, key) {
