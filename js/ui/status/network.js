@@ -1280,7 +1280,7 @@ class NMSection extends PopupMenu.PopupMenuSection {
         super();
 
         this._items = new Map();
-        this._itemSorter = new ItemSorter();
+        this._itemSorter = new ItemSorter({trackMru: true});
 
         this._itemsSection = new PopupMenu.PopupMenuSection();
         this.addMenuItem(this._itemsSection);
@@ -1309,6 +1309,11 @@ class NMSection extends PopupMenu.PopupMenuSection {
 
     _loadInitialItems() {
         throw new GObject.NotImplementedError();
+    }
+
+    _updateItemsVisibility() {
+        [...this._itemSorter.itemsByMru()].forEach(
+            (item, i) => (item.visible = i < MAX_VISIBLE_NETWORKS));
     }
 
     _resortItem(item) {
@@ -1345,6 +1350,7 @@ class NMSection extends PopupMenu.PopupMenuSection {
 
     _sync() {
         this.visible = this._items.size > 0;
+        this._updateItemsVisibility();
     }
 }
 
