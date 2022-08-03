@@ -1274,17 +1274,24 @@ const NMVpnConnectionItem = GObject.registerClass({
     }
 });
 
-class NMSection extends PopupMenu.PopupMenuSection {
+const NMSection = GObject.registerClass({
+    Signals: {
+        'activation-failed': {},
+        'icon-changed': {},
+    },
+}, class NMSection extends GObject.Object {
     constructor() {
         super();
+
+        this.menu = new PopupMenu.PopupMenuSection();
 
         this._items = new Map();
         this._itemSorter = new ItemSorter({trackMru: true});
 
         this._itemsSection = new PopupMenu.PopupMenuSection();
-        this.addMenuItem(this._itemsSection);
+        this.menu.addMenuItem(this._itemsSection);
 
-        this.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
+        this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
     }
 
     setClient(client) {
@@ -1303,7 +1310,7 @@ class NMSection extends PopupMenu.PopupMenuSection {
     }
 
     set visible(visible) {
-        this.actor.visible = visible;
+        this.menu.actor.visible = visible;
     }
 
     _loadInitialItems() {
@@ -1351,13 +1358,14 @@ class NMSection extends PopupMenu.PopupMenuSection {
         this.visible = this._items.size > 0;
         this._updateItemsVisibility();
     }
-}
+});
 
+const NMVpnSection = GObject.registerClass(
 class NMVpnSection extends NMSection {
     constructor() {
         super();
 
-        this.addSettingsAction(_('VPN Settings'),
+        this.menu.addSettingsAction(_('VPN Settings'),
             'gnome-network-panel.desktop');
     }
 
@@ -1449,8 +1457,9 @@ class NMVpnSection extends NMSection {
         }
         return '';
     }
-}
+});
 
+const NMDeviceSection = GObject.registerClass(
 class NMDeviceSection extends NMSection {
     constructor(deviceType) {
         super();
@@ -1577,55 +1586,59 @@ class NMDeviceSection extends NMSection {
         const nItems = this._items.size;
         this._items.forEach(item => (item.singleDeviceMode = nItems === 1));
     }
-}
+});
 
+const NMWirelessSection = GObject.registerClass(
 class NMWirelessSection extends NMDeviceSection {
     constructor() {
         super(NM.DeviceType.WIFI);
 
-        this.addSettingsAction(_('All Networks'),
+        this.menu.addSettingsAction(_('All Networks'),
             'gnome-wifi-panel.desktop');
     }
 
     _createDeviceMenuItem(device) {
         return new NMWirelessDeviceItem(this._client, device);
     }
-}
+});
 
+const NMWiredSection = GObject.registerClass(
 class NMWiredSection extends NMDeviceSection {
     constructor() {
         super(NM.DeviceType.ETHERNET);
 
-        this.addSettingsAction(_('Wired Settings'),
+        this.menu.addSettingsAction(_('Wired Settings'),
             'gnome-network-panel.desktop');
     }
 
     _createDeviceMenuItem(device) {
         return new NMWiredDeviceItem(this._client, device);
     }
-}
+});
 
+const NMBluetoothSection = GObject.registerClass(
 class NMBluetoothSection extends NMDeviceSection {
     constructor() {
         super(NM.DeviceType.BT);
 
-        this.addSettingsAction(_('Bluetooth Settings'),
+        this.menu.addSettingsAction(_('Bluetooth Settings'),
             'gnome-network-panel.desktop');
     }
 
     _createDeviceMenuItem(device) {
         return new NMBluetoothDeviceItem(this._client, device);
     }
-}
+});
 
+const NMModemSection = GObject.registerClass(
 class NMModemSection extends NMDeviceSection {
     constructor() {
         super(NM.DeviceType.MODEM);
 
         const settingsLabel = _('Mobile Broadband Settings');
-        this._wwanSettings = this.addSettingsAction(settingsLabel,
+        this._wwanSettings = this.menu.addSettingsAction(settingsLabel,
             'gnome-wwan-panel.desktop');
-        this._legacySettings = this.addSettingsAction(settingsLabel,
+        this._legacySettings = this.menu.addSettingsAction(settingsLabel,
             'gnome-network-panel.desktop');
     }
 
@@ -1641,7 +1654,7 @@ class NMModemSection extends NMDeviceSection {
         this._wwanSettings.visible = useWwanPanel;
         this._legacySettings.visible = !useWwanPanel;
     }
-}
+});
 
 var NMApplet = GObject.registerClass(
 class Indicator extends PanelMenu.SystemIndicator {
@@ -1679,7 +1692,7 @@ class Indicator extends PanelMenu.SystemIndicator {
                 'activation-failed', () => this._onActivationFailed(),
                 'icon-changed', () => this._updateIcon(),
                 this);
-            this.menu.addMenuItem(section);
+            this.menu.addMenuItem(section.menu);
         });
 
         this._getClient().catch(logError);
