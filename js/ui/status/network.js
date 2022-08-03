@@ -93,26 +93,56 @@ class ItemSorter {
      * Maintains a list of sorted items. By default, items are
      * assumed to be objects with a name property.
      *
+     * Optionally items can have a secondary sort order by
+     * recency. If used, items must by objects with a timestamp
+     * property that can be used in substraction, and "bigger"
+     * must mean "more recent". Number and Date both qualify.
+     *
      * @param {object=} options - property object with options
      * @param {Function} options.sortFunc - a custom sort function
+     * @param {bool} options.trackMru - whether to track MRU order as well
      **/
     constructor(options = {}) {
-        const {sortFunc} = {
+        const {sortFunc, trackMru} = {
             sortFunc: this._sortByName.bind(this),
+            trackMru: false,
             ...options,
         };
 
+        this._trackMru = trackMru;
         this._sortFunc = sortFunc;
+        this._sortFuncMru = this._sortByMru.bind(this);
 
         this._itemsOrder = [];
+        this._itemsMruOrder = [];
     }
 
     *items() {
         yield* this._itemsOrder;
     }
 
+    *itemsByMru() {
+        console.assert(this._trackMru, 'itemsByMru: MRU tracking is disabled');
+        yield* this._itemsMruOrder;
+    }
+
     _sortByName(one, two) {
         return GLib.utf8_collate(one.name, two.name);
+    }
+
+    _sortByMru(one, two) {
+        return two.timestamp - one.timestamp;
+    }
+
+    _upsert(array, item, sortFunc) {
+        this._delete(array, item);
+        return Util.insertSorted(array, item, sortFunc);
+    }
+
+    _delete(array, item) {
+        const pos = array.indexOf(item);
+        if (pos >= 0)
+            array.splice(pos, 1);
     }
 
     /**
@@ -122,17 +152,19 @@ class ItemSorter {
      * @returns {number} - the sorted position of item
      */
     upsert(item) {
-        this.delete(item);
-        return Util.insertSorted(this._itemsOrder, item, this._sortFunc);
+        if (this._trackMru)
+            this._upsert(this._itemsMruOrder, item, this._sortFuncMru);
+
+        return this._upsert(this._itemsOrder, item, this._sortFunc);
     }
 
     /**
      * @param {any} item - item to remove
      */
     delete(item) {
-        const pos = this._itemsOrder.indexOf(item);
-        if (pos >= 0)
-            this._itemsOrder.splice(pos, 1);
+        if (this._trackMru)
+            this._delete(this._itemsMruOrder, item);
+        this._delete(this._itemsOrder, item);
     }
 }
 
