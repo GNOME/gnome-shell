@@ -50,17 +50,6 @@ function ssidToLabel(ssid) {
     return label;
 }
 
-function ensureActiveConnectionProps(active) {
-    if (!active._primaryDevice) {
-        let devices = active.get_devices();
-        if (devices.length > 0) {
-            // This list is guaranteed to have at most one device in it.
-            let device = devices[0]._delegate;
-            active._primaryDevice = device;
-        }
-    }
-}
-
 function launchSettingsPanel(panel, ...args) {
     const param = new GLib.Variant('(sav)',
         [panel, args.map(s => new GLib.Variant('s', s))]);
@@ -1764,13 +1753,17 @@ class Indicator extends PanelMenu.SystemIndicator {
         this._allSections.forEach(section => {
             section.connectObject(
                 'activation-failed', () => this._onActivationFailed(),
-                'notify::icon-name', () => this._updateIcon(),
                 this);
             this.menu.addMenuItem(section.menu);
         });
 
         this._primaryIndicator = this._addIndicator();
         this._vpnIndicator = this._addIndicator();
+
+        this._primaryIndicatorBinding = new GObject.BindingGroup();
+        this._primaryIndicatorBinding.bind('icon-name',
+            this._primaryIndicator, 'icon-name',
+            GObject.BindingFlags.DEFAULT);
 
         this._vpnSection.bind_property('checked',
             this._vpnIndicator, 'visible',
@@ -1796,7 +1789,6 @@ class Indicator extends PanelMenu.SystemIndicator {
             GObject.BindingFlags.SYNC_CREATE);
 
         this._client.connectObject(
-            'notify::state', () => this._updateIcon(),
             'notify::primary-connection', () => this._syncMainConnection(),
             'notify::activating-connection', () => this._syncMainConnection(),
             'notify::connectivity', () => this._syncConnectivity(),
@@ -1842,33 +1834,14 @@ class Indicator extends PanelMenu.SystemIndicator {
         source.showNotification(this._notification);
     }
 
-    _getMainConnection() {
-        let connection;
-
-        connection = this._client.get_primary_connection();
-        if (connection) {
-            ensureActiveConnectionProps(connection);
-            return connection;
-        }
-
-        connection = this._client.get_activating_connection();
-        if (connection) {
-            ensureActiveConnectionProps(connection);
-            return connection;
-        }
-
-        return null;
-    }
-
     _syncMainConnection() {
-        this._mainConnection?._primaryDevice?.disconnectObject(this);
         this._mainConnection?.disconnectObject(this);
 
-        this._mainConnection = this._getMainConnection();
+        this._mainConnection =
+            this._client.get_primary_connection() ||
+            this._client.get_activating_connection();
 
         if (this._mainConnection) {
-            this._mainConnection._primaryDevice?.connectObject('notify::icon-name',
-                this._updateIcon.bind(this), this);
             this._mainConnection.connectObject('notify::state',
                 this._mainConnectionStateChanged.bind(this), this);
             this._mainConnectionStateChanged();
@@ -1963,24 +1936,19 @@ class Indicator extends PanelMenu.SystemIndicator {
     }
 
     _updateIcon() {
-        if (!this._client.networking_enabled) {
-            this._primaryIndicator.visible = false;
-        } else {
-            let dev = null;
-            if (this._mainConnection)
-                dev = this._mainConnection._primaryDevice;
+        const [dev] = this._mainConnection?.get_devices() ?? [];
+        const primarySection = this._deviceSections.get(dev?.device_type) ?? null;
+        this._primaryIndicatorBinding.source = primarySection;
 
-            let state = this._client.get_state();
-            let connected = state == NM.State.CONNECTED_GLOBAL;
-            this._primaryIndicator.visible = (dev != null) || connected;
-            if (dev) {
-                this._primaryIndicator.icon_name = dev.icon_name;
-            } else if (connected) {
-                if (this._client.connectivity == NM.ConnectivityState.FULL)
-                    this._primaryIndicator.icon_name = 'network-wired-symbolic';
-                else
-                    this._primaryIndicator.icon_name = 'network-wired-no-route-symbolic';
-            }
+        if (!primarySection) {
+            if (this._client.connectivity === NM.ConnectivityState.FULL)
+                this._primaryIndicator.icon_name = 'network-wired-symbolic';
+            else
+                this._primaryIndicator.icon_name = 'network-wired-no-route-symbolic';
         }
+
+        const state = this._client.get_state();
+        const connected = state === NM.State.CONNECTED_GLOBAL;
+        this._primaryIndicator.visible = (primarySection != null) || connected;
     }
 });
