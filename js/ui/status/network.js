@@ -1275,6 +1275,11 @@ const NMVpnConnectionItem = GObject.registerClass({
 });
 
 const NMSection = GObject.registerClass({
+    Properties: {
+        'checked': GObject.ParamSpec.boolean('checked', '', '',
+            GObject.ParamFlags.READWRITE,
+            false),
+    },
     Signals: {
         'activation-failed': {},
         'icon-changed': {},
@@ -1322,6 +1327,11 @@ const NMSection = GObject.registerClass({
             (item, i) => (item.visible = i < MAX_VISIBLE_NETWORKS));
     }
 
+    _updateChecked() {
+        const [firstActive] = this._getActiveItems();
+        this.checked = !!firstActive;
+    }
+
     _resortItem(item) {
         const pos = this._itemSorter.upsert(item);
         this._itemsSection.moveMenuItem(item, pos);
@@ -1332,6 +1342,7 @@ const NMSection = GObject.registerClass({
             `${this} already has an item for ${key}`);
 
         item.connectObject(
+            'notify::is-active', () => this._updateChecked(),
             'notify::name', () => this._resortItem(item),
             'destroy', () => this._removeItem(key),
             this);
@@ -1357,6 +1368,7 @@ const NMSection = GObject.registerClass({
     _sync() {
         this.visible = this._items.size > 0;
         this._updateItemsVisibility();
+        this._updateChecked();
     }
 });
 
