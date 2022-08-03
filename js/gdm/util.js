@@ -522,6 +522,15 @@ var ShellUserVerifier = class extends Signals.EventEmitter {
         return serviceName == this._getForegroundService();
     }
 
+    foregroundServiceDeterminesUsername() {
+        for (let serviceName in this._credentialManagers) {
+            if (this.serviceIsForeground(serviceName))
+                return true;
+        }
+
+        return this.serviceIsForeground(SMARTCARD_SERVICE_NAME);
+    }
+
     serviceIsDefault(serviceName) {
         return serviceName == this._defaultService;
     }
