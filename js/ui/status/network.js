@@ -1699,8 +1699,31 @@ class NMWirelessSection extends NMDeviceSection {
             'gnome-wifi-panel.desktop');
     }
 
+    setClient(client) {
+        super.setClient(client);
+
+        this._client?.bind_property('wireless-enabled',
+            this, 'checked',
+            GObject.BindingFlags.SYNC_CREATE);
+    }
+
+    activate() {
+        this._client.wireless_enabled = !this._client.wireless_enabled;
+    }
+
     _createDeviceMenuItem(device) {
         return new NMWirelessDeviceItem(this._client, device);
+    }
+
+    _updateChecked() {
+        // handled via a property binding
+    }
+
+    _shouldShowDevice(device) {
+        // don't disappear if wireless-enabled is false
+        if (device.state === NM.DeviceState.UNAVAILABLE)
+            return true;
+        return super._shouldShowDevice(device);
     }
 });
 
