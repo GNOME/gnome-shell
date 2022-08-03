@@ -164,28 +164,6 @@
   -arrow-rise: 0px; // hide the beak on the menu
 }
 
-// system status menu
-.aggregate-menu {
-  min-width: 22em;
-
-  // this is unneeded at the top-level in this menu, hide it
-  .popup-menu-ornament { width: 0 !important; }
-
-  // lock screen, shutdown, etc. buttons
-  .popup-menu-icon {
-    -st-icon-style: symbolic;
-    &:ltr {margin-right: $base_margin*2;}
-    &:rtl {margin-left: $base_margin*2;}
-  }
-
-  // account for ornaments in submenus with padding
-  .popup-sub-menu .popup-menu-item > :first-child {
-    // this value is hardcoded for visual effect
-    &:ltr { margin-left: 1em;}
-    &:rtl { margin-right: 1em;}
-  }
-}
-
 // right-click (and panel) app menu
 .app-menu {
   max-width: 27.25em;

@@ -59,7 +59,7 @@ const _modes = {
         panel: {
             left: [],
             center: ['dateMenu'],
-            right: ['dwellClick', 'a11y', 'keyboard', 'quickSettings', 'aggregateMenu'],
+            right: ['dwellClick', 'a11y', 'keyboard', 'quickSettings'],
         },
         panelStyle: 'login-screen',
     },
@@ -71,7 +71,7 @@ const _modes = {
         panel: {
             left: [],
             center: [],
-            right: ['dwellClick', 'a11y', 'keyboard', 'quickSettings', 'aggregateMenu'],
+            right: ['dwellClick', 'a11y', 'keyboard', 'quickSettings'],
         },
         panelStyle: 'unlock-screen',
     },
@@ -94,7 +94,7 @@ const _modes = {
         panel: {
             left: ['activities', 'appMenu'],
             center: ['dateMenu'],
-            right: ['screenRecording', 'screenSharing', 'dwellClick', 'a11y', 'keyboard', 'quickSettings', 'aggregateMenu'],
+            right: ['screenRecording', 'screenSharing', 'dwellClick', 'a11y', 'keyboard', 'quickSettings'],
         },
     },
 };

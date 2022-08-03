@@ -332,49 +332,6 @@ class UnsafeModeIndicator extends SystemIndicator {
     }
 });
 
-var AggregateLayout = GObject.registerClass(
-class AggregateLayout extends Clutter.BoxLayout {
-    _init(params = {}) {
-        params['orientation'] = Clutter.Orientation.VERTICAL;
-        super._init(params);
-
-        this._sizeChildren = [];
-    }
-
-    addSizeChild(actor) {
-        this._sizeChildren.push(actor);
-        this.layout_changed();
-    }
-
-    vfunc_get_preferred_width(container, forHeight) {
-        let themeNode = container.get_theme_node();
-        let minWidth = themeNode.get_min_width();
-        let natWidth = minWidth;
-
-        for (let i = 0; i < this._sizeChildren.length; i++) {
-            let child = this._sizeChildren[i];
-            let [childMin, childNat] = child.get_preferred_width(forHeight);
-            minWidth = Math.max(minWidth, childMin);
-            natWidth = Math.max(natWidth, childNat);
-        }
-        return [minWidth, natWidth];
-    }
-});
-
-var AggregateMenu = GObject.registerClass(
-class AggregateMenu extends PanelMenu.Button {
-    _init() {
-        super._init(0.0, C_("System menu in the top bar", "System"), false);
-        this.menu.actor.add_style_class_name('aggregate-menu');
-
-        let menuLayout = new AggregateLayout();
-        this.menu.box.set_layout_manager(menuLayout);
-
-        this._indicators = new St.BoxLayout({ style_class: 'panel-status-indicators-box' });
-        this.add_child(this._indicators);
-    }
-});
-
 var QuickSettings = GObject.registerClass(
 class QuickSettings extends PanelMenu.Button {
     _init() {
@@ -453,7 +410,6 @@ class QuickSettings extends PanelMenu.Button {
 
 const PANEL_ITEM_IMPLEMENTATIONS = {
     'activities': ActivitiesButton,
-    'aggregateMenu': AggregateMenu,
     'appMenu': AppMenuButton,
     'quickSettings': QuickSettings,
     'dateMenu': imports.ui.dateMenu.DateMenuButton,
