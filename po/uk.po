@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2022-08-01 15:16+0000\n"
-"PO-Revision-Date: 2022-08-02 14:38+0300\n"
+"POT-Creation-Date: 2022-08-02 16:09+0000\n"
+"PO-Revision-Date: 2022-08-03 09:09+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <none>\n"
 "Language: uk\n"
@@ -71,7 +71,7 @@ msgid "Activate favorite application 9"
 msgstr "Активувати улюблену програму 9"
 
 #. Translators: name of the folder under ~/Pictures for screenshots.
-#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2073
+#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2070
 msgid "Screenshots"
 msgstr "Знімки екрана"
 
@@ -280,9 +280,9 @@ msgid ""
 "toggling between two profiles, this key records the last selected non-"
 "default profile."
 msgstr ""
-"У деяких системах передбачено понад два профілі живлення. Для уможливлення"
-" перемикання між двома профілями у цьому ключі записано останній нетиповий"
-" профіль."
+"У деяких системах передбачено понад два профілі живлення. Для уможливлення "
+"перемикання між двома профілями у цьому ключі записано останній нетиповий "
+"профіль."
 
 #: data/org.gnome.shell.gschema.xml.in:108
 msgid "The last version the “Welcome to GNOME” dialog was shown for"
@@ -532,7 +532,7 @@ msgstr "Відвідати сторінку розширення"
 
 #: js/gdm/authPrompt.js:144 js/ui/audioDeviceSelection.js:61
 #: js/ui/components/networkAgent.js:109 js/ui/components/polkitAgent.js:141
-#: js/ui/endSessionDialog.js:437 js/ui/extensionDownloader.js:223
+#: js/ui/endSessionDialog.js:440 js/ui/extensionDownloader.js:223
 #: js/ui/shellMountOperation.js:377 js/ui/shellMountOperation.js:387
 #: js/ui/status/network.js:960 subprojects/extensions-app/js/main.js:173
 msgid "Cancel"
@@ -566,23 +566,23 @@ msgstr "(наприклад, користувач або %s)"
 msgid "Username"
 msgstr "Користувач"
 
-#: js/gdm/loginDialog.js:1256
+#: js/gdm/loginDialog.js:1257
 msgid "Login Window"
 msgstr "Вікно входу"
 
-#: js/gdm/util.js:436
+#: js/gdm/util.js:434
 msgid "Authentication error"
 msgstr "Помилка автентифікації"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger on the fingerprint reader
-#: js/gdm/util.js:608
+#: js/gdm/util.js:606
 msgid "(or swipe finger across reader)"
 msgstr "(або проведіть пальцем на зчитувачі)"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can place their finger on the fingerprint reader instead
-#: js/gdm/util.js:613
+#: js/gdm/util.js:611
 msgid "(or place finger on reader)"
 msgstr "(або розташуйте палець на зчитувачі)"
 
@@ -845,11 +845,11 @@ msgstr ""
 
 #. No support for non-modal system dialogs, so ignore the option
 #. let modal = options['modal'] || true;
-#: js/ui/accessDialog.js:39 js/ui/status/location.js:366
+#: js/ui/accessDialog.js:39 js/ui/status/location.js:350
 msgid "Deny Access"
 msgstr "Заборонити доступ"
 
-#: js/ui/accessDialog.js:40 js/ui/status/location.js:371
+#: js/ui/accessDialog.js:40 js/ui/status/location.js:355
 msgid "Grant Access"
 msgstr "Надати доступ"
 
@@ -920,7 +920,7 @@ msgstr "Мікрофон"
 msgid "Change Background…"
 msgstr "Змінити тло…"
 
-#: js/ui/backgroundMenu.js:16 js/ui/status/nightLight.js:46
+#: js/ui/backgroundMenu.js:16
 msgid "Display Settings"
 msgstr "Параметри екрана"
 
@@ -1071,7 +1071,7 @@ msgstr "Неможливо розблокувати том"
 msgid "The installed udisks version does not support the PIM setting"
 msgstr "Наявна версія udisks не підтримує параметри PIM"
 
-#: js/ui/components/autorunManager.js:334
+#: js/ui/components/autorunManager.js:316
 #, javascript-format
 msgid "Open with %s"
 msgstr "Відкрити через %s"
@@ -1418,33 +1418,33 @@ msgstr ""
 "переконайтесь, що ви зробили резервні копії та комп'ютер під'єднано до "
 "живлення."
 
-#: js/ui/endSessionDialog.js:287
+#: js/ui/endSessionDialog.js:285
 msgid "Low battery power: please plug in before installing updates."
 msgstr ""
 "Низький рівень заряду батареї: під'єднайте до живлення перед установленням "
 "оновлень."
 
-#: js/ui/endSessionDialog.js:296
+#: js/ui/endSessionDialog.js:294
 msgid "Some applications are busy or have unsaved work"
 msgstr "Деякі програми зайняті або мають незбережені дані"
 
-#: js/ui/endSessionDialog.js:301
+#: js/ui/endSessionDialog.js:299
 msgid "Other users are logged in"
 msgstr "Є інші користувачі з активним сеансом"
 
-#: js/ui/endSessionDialog.js:467
+#: js/ui/endSessionDialog.js:470
 msgctxt "button"
 msgid "Boot Options"
 msgstr "Параметри завантаження"
 
 #. Translators: Remote here refers to a remote session, like a ssh login
-#: js/ui/endSessionDialog.js:687
+#: js/ui/endSessionDialog.js:675
 #, javascript-format
 msgid "%s (remote)"
 msgstr "%s (віддалено)"
 
 #. Translators: Console here refers to a tty like a VT console
-#: js/ui/endSessionDialog.js:690
+#: js/ui/endSessionDialog.js:678
 #, javascript-format
 msgid "%s (console)"
 msgstr "%s (консоль)"
@@ -1543,16 +1543,13 @@ msgstr ""
 msgid "Leave On"
 msgstr "Залишити"
 
-#: js/ui/kbdA11yDialog.js:55 js/ui/status/bluetooth.js:204
-#: js/ui/status/network.js:1347
+#: js/ui/kbdA11yDialog.js:55 js/ui/status/network.js:1347
 msgid "Turn On"
 msgstr "Увімкнути"
 
-#: js/ui/kbdA11yDialog.js:65 js/ui/status/bluetooth.js:204
-#: js/ui/status/network.js:162 js/ui/status/network.js:338
-#: js/ui/status/network.js:1347 js/ui/status/network.js:1454
-#: js/ui/status/network.js:1525 js/ui/status/nightLight.js:42
-#: js/ui/status/rfkill.js:111 js/ui/status/rfkill.js:138
+#: js/ui/kbdA11yDialog.js:65 js/ui/status/network.js:162
+#: js/ui/status/network.js:338 js/ui/status/network.js:1347
+#: js/ui/status/network.js:1454 js/ui/status/network.js:1525
 msgid "Turn Off"
 msgstr "Вимкнути"
 
@@ -1718,16 +1715,16 @@ msgstr "Натисніть клавішу «Esc», щоб вийти"
 msgid "Press any key to exit"
 msgstr "Натисніть будь-яку клавішу, щоб вийти"
 
-#: js/ui/panel.js:241
+#: js/ui/panel.js:244
 msgid "Activities"
 msgstr "Діяльність"
 
-#: js/ui/panel.js:364
+#: js/ui/panel.js:367 js/ui/panel.js:409
 msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "Система"
 
-#: js/ui/panel.js:481
+#: js/ui/panel.js:510
 msgid "Top Bar"
 msgstr "Верхня панель"
 
@@ -1747,7 +1744,7 @@ msgstr "Перезапускання недоступне в сеансі Waylan
 msgid "Restarting…"
 msgstr "Перезапускання…"
 
-#: js/ui/screenShield.js:232
+#: js/ui/screenShield.js:235
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME потребує заблокувати екран"
 
@@ -1758,11 +1755,11 @@ msgstr "GNOME потребує заблокувати екран"
 #.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
-#: js/ui/screenShield.js:272 js/ui/screenShield.js:647
+#: js/ui/screenShield.js:275 js/ui/screenShield.js:650
 msgid "Unable to lock"
 msgstr "Неможливо заблокувати"
 
-#: js/ui/screenShield.js:273 js/ui/screenShield.js:648
+#: js/ui/screenShield.js:276 js/ui/screenShield.js:651
 msgid "Lock was blocked by an application"
 msgstr "Блокування заборонено програмою"
 
@@ -1800,69 +1797,69 @@ msgstr "Показувати вказівник"
 
 #. Translators: this is the folder where recorded
 #. screencasts are stored.
-#: js/ui/screenshot.js:1839
+#: js/ui/screenshot.js:1840
 msgid "Screencasts"
 msgstr "Трансляції з екрана"
 
 #. Translators: this is a filename used for screencast
 #. * recording, where "%d" and "%t" date and time, e.g.
 #. * "Screencast from 07-17-2013 10:00:46 PM.webm"
-#: js/ui/screenshot.js:1844
+#: js/ui/screenshot.js:1845
 #, no-c-format
 msgid "Screencast from %d %t.webm"
 msgstr "Запис з %d %t.webm"
 
 #. Translators: notification source name.
-#: js/ui/screenshot.js:1913 js/ui/screenshot.js:2126
+#: js/ui/screenshot.js:1911 js/ui/screenshot.js:2123
 msgid "Screenshot"
 msgstr "Знімок екрана"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:1919
+#: js/ui/screenshot.js:1917
 msgid "Screencast recorded"
 msgstr "Записано відео з екрана"
 
 #. Translators: notification body when a screencast was recorded.
-#: js/ui/screenshot.js:1921
+#: js/ui/screenshot.js:1919
 msgid "Click here to view the video."
 msgstr "Натисніть тут, щоб переглянути відео."
 
 #. Translators: button on the screencast notification.
 #. Translators: button on the screenshot notification.
-#: js/ui/screenshot.js:1924 js/ui/screenshot.js:2140
+#: js/ui/screenshot.js:1922 js/ui/screenshot.js:2137
 msgid "Show in Files"
 msgstr "Показувати у «Файлах»"
 
 #. Translators: this is the name of the file that the screenshot is
 #. saved to. The placeholder is a timestamp, e.g. "2017-05-21 12-24-03".
-#: js/ui/screenshot.js:2086
+#: js/ui/screenshot.js:2083
 #, javascript-format
 msgid "Screenshot from %s"
 msgstr "Знімок екрана з %s"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2132
+#: js/ui/screenshot.js:2129
 msgid "Screenshot captured"
 msgstr "Знімок зроблено"
 
 #. Translators: notification body when a screenshot was captured.
-#: js/ui/screenshot.js:2134
+#: js/ui/screenshot.js:2131
 msgid "You can paste the image from the clipboard."
 msgstr "Ви можете вставити зображення з буфера обміну даними."
 
-#: js/ui/screenshot.js:2187 js/ui/screenshot.js:2352
+#: js/ui/screenshot.js:2184 js/ui/screenshot.js:2349
 msgid "Screenshot taken"
 msgstr "Знімок зроблено"
 
-#: js/ui/search.js:815
+#: js/ui/search.js:804
 msgid "Searching…"
 msgstr "Пошуки…"
 
-#: js/ui/search.js:817
+#: js/ui/search.js:806
 msgid "No results."
 msgstr "Безрезультатно."
 
-#: js/ui/search.js:948
+#: js/ui/search.js:937
 #, javascript-format
 msgid "%d more"
 msgid_plural "%d more"
@@ -1992,35 +1989,21 @@ msgstr "Клавіші миші"
 msgid "Large Text"
 msgstr "Більший текст"
 
-#: js/ui/status/bluetooth.js:165
+#: js/ui/status/autoRotate.js:14
+msgid "Auto Rotate"
+msgstr "Автоматичне обертання"
+
+#: js/ui/status/bluetooth.js:153
 msgid "Bluetooth"
 msgstr "Bluetooth"
-
-#: js/ui/status/bluetooth.js:174 js/ui/status/network.js:628
-msgid "Bluetooth Settings"
-msgstr "Параметри Bluetooth"
-
-#. Translators: this is the number of connected bluetooth devices
-#: js/ui/status/bluetooth.js:196
-#, javascript-format
-msgid "%d Connected"
-msgid_plural "%d Connected"
-msgstr[0] "%d з'єднаний"
-msgstr[1] "%d з'єднаних"
-msgstr[2] "%d з'єднаних"
-msgstr[3] "%d з'єднаний"
-
-#: js/ui/status/bluetooth.js:200
-msgid "Bluetooth On"
-msgstr "Bluetooth увімкнено"
-
-#: js/ui/status/bluetooth.js:202
-msgid "Bluetooth Off"
-msgstr "Bluetooth вимкнено"
 
 #: js/ui/status/brightness.js:37
 msgid "Brightness"
 msgstr "Яскравість"
+
+#: js/ui/status/darkMode.js:11
+msgid "Dark Mode"
+msgstr "Темний режим"
 
 #: js/ui/status/dwellClick.js:12
 msgid "Single Click"
@@ -2050,17 +2033,17 @@ msgstr "Клавіатура"
 msgid "Show Keyboard Layout"
 msgstr "Показати розкладку клавіатури"
 
-#: js/ui/status/location.js:346
+#: js/ui/status/location.js:330
 msgid "Allow location access"
 msgstr "Дозволити доступ до даних перебування"
 
 #. Translators: %s is an application name
-#: js/ui/status/location.js:348
+#: js/ui/status/location.js:332
 #, javascript-format
 msgid "The app %s wants to access your location"
 msgstr "Програмі %s потрібен доступ до даних щодо місця вашого перебування"
 
-#: js/ui/status/location.js:358
+#: js/ui/status/location.js:342
 msgid "Location access can be changed at any time from the privacy settings."
 msgstr ""
 "Доступ до місця перебування можна змінити в будь-яку мить у параметрах "
@@ -2149,6 +2132,10 @@ msgstr "%s вимкнено апаратно"
 msgid "%s Disabled"
 msgstr "%s вимкнено"
 
+#: js/ui/status/network.js:628
+msgid "Bluetooth Settings"
+msgstr "Параметри Bluetooth"
+
 #: js/ui/status/network.js:640
 msgid "Connect to Internet"
 msgstr "Під'єднатись до інтернету"
@@ -2189,7 +2176,7 @@ msgstr "Вибрати мережу"
 msgid "No Networks"
 msgstr "Немає мереж"
 
-#: js/ui/status/network.js:946 js/ui/status/rfkill.js:136
+#: js/ui/status/network.js:946
 msgid "Use hardware switch to turn off"
 msgstr "Натисніть апаратну кнопку, щоб вимкнути"
 
@@ -2254,7 +2241,7 @@ msgstr "VPN"
 msgid "VPN Off"
 msgstr "VPN вимкнено"
 
-#: js/ui/status/network.js:1683 js/ui/status/rfkill.js:114
+#: js/ui/status/network.js:1683
 msgid "Network Settings"
 msgstr "Налаштування мережі"
 
@@ -2293,54 +2280,12 @@ msgstr "Не вдалось з'єднатись"
 msgid "Activation of network connection failed"
 msgstr "Не вдалось увімкнути мережеве з'єднання"
 
-#: js/ui/status/nightLight.js:64
-msgid "Night Light Disabled"
-msgstr "Нічне світло вимкнено"
+#: js/ui/status/nightLight.js:20
+#| msgid "Night Light On"
+msgid "Night Light"
+msgstr "Нічне світло"
 
-#: js/ui/status/nightLight.js:65
-msgid "Night Light On"
-msgstr "Нічне світло ввімкнено"
-
-#: js/ui/status/nightLight.js:67
-msgid "Resume"
-msgstr "Повторити"
-
-#: js/ui/status/nightLight.js:68
-msgid "Disable Until Tomorrow"
-msgstr "Вимкнути до завтра"
-
-#: js/ui/status/power.js:51 js/ui/status/powerProfiles.js:66
-msgid "Power Settings"
-msgstr "Енергетичні параметри"
-
-#: js/ui/status/power.js:68
-msgid "Fully Charged"
-msgstr "Повністю заряджено"
-
-#: js/ui/status/power.js:74
-msgid "Not Charging"
-msgstr "Не заряджається"
-
-#. 0 is reported when UPower does not have enough data
-#. to estimate battery life
-#: js/ui/status/power.js:77 js/ui/status/power.js:83
-msgid "Estimating…"
-msgstr "Оцінювання…"
-
-#. Translators: this is <hours>:<minutes> Remaining (<percentage>)
-#: js/ui/status/power.js:91
-#, javascript-format
-msgid "%d∶%02d Remaining (%d %%)"
-msgstr "Залишилось %d∶%02d (%d %%)"
-
-#. Translators: this is <hours>:<minutes> Until Full (<percentage>)
-#: js/ui/status/power.js:97
-#, javascript-format
-msgid "%d∶%02d Until Full (%d %%)"
-msgstr "Зарядиться через %d∶%02d (%d %%)"
-
-#. The icon label
-#: js/ui/status/power.js:145
+#: js/ui/status/power.js:85
 #, javascript-format
 msgid "%d %%"
 msgstr "%d %%"
@@ -2360,59 +2305,60 @@ msgctxt "Power profile"
 msgid "Power Saver"
 msgstr "Заощадження"
 
-#: js/ui/status/remoteAccess.js:73
+#: js/ui/status/powerProfiles.js:66
+msgid "Power Settings"
+msgstr "Енергетичні параметри"
+
+#: js/ui/status/remoteAccess.js:74
 msgid "Stop Screencast"
 msgstr "Припинити трансляцію з екрана"
 
-#: js/ui/status/remoteAccess.js:143
-#| msgid "Stop Screencast"
+#: js/ui/status/remoteAccess.js:144
 msgid "Stop Screen Sharing"
 msgstr "Припинити спільне використання екрана"
 
-#. The menu only appears when airplane mode is on, so just
-#. statically build it as if it was on, rather than dynamically
-#. changing the menu contents.
-#: js/ui/status/rfkill.js:109
-msgid "Airplane Mode On"
-msgstr "Режим «у літаку» ввімкнено"
+#: js/ui/status/rfkill.js:96
+#| msgid "Airplane Mode On"
+msgid "Airplane Mode"
+msgstr "Режим польоту"
 
-#: js/ui/status/system.js:104
+#: js/ui/status/system.js:83
 msgid "Lock"
 msgstr "Заблокувати"
 
-#: js/ui/status/system.js:116
+#: js/ui/status/system.js:95
 msgid "Power Off / Log Out"
 msgstr "Вимкнути / Вийти"
 
-#: js/ui/status/system.js:119
+#: js/ui/status/system.js:98
 msgid "Suspend"
 msgstr "Призупинити"
 
-#: js/ui/status/system.js:130
+#: js/ui/status/system.js:109
 msgid "Restart…"
 msgstr "Перезапуск…"
 
-#: js/ui/status/system.js:141
+#: js/ui/status/system.js:120
 msgid "Power Off…"
 msgstr "Вимкнути…"
 
-#: js/ui/status/system.js:154
+#: js/ui/status/system.js:133
 msgid "Log Out"
 msgstr "Вийти"
 
-#: js/ui/status/system.js:165
+#: js/ui/status/system.js:144
 msgid "Switch User…"
 msgstr "Змінити користувача…"
 
-#: js/ui/status/thunderbolt.js:265
+#: js/ui/status/thunderbolt.js:257
 msgid "Thunderbolt"
 msgstr "Thunderbolt"
 
-#: js/ui/status/thunderbolt.js:326
+#: js/ui/status/thunderbolt.js:318
 msgid "Unknown Thunderbolt device"
 msgstr "Невідомий пристрій Thunderbolt"
 
-#: js/ui/status/thunderbolt.js:327
+#: js/ui/status/thunderbolt.js:319
 msgid ""
 "New device has been detected while you were away. Please disconnect and "
 "reconnect the device to start using it."
@@ -2420,20 +2366,20 @@ msgstr ""
 "Виявлено новий пристрій протягом вашої відсутності. Будь ласка, "
 "перепід'єднайте пристрій для його використання."
 
-#: js/ui/status/thunderbolt.js:330
+#: js/ui/status/thunderbolt.js:322
 msgid "Unauthorized Thunderbolt device"
 msgstr "Незавірений пристрій Thunderbolt"
 
-#: js/ui/status/thunderbolt.js:331
+#: js/ui/status/thunderbolt.js:323
 msgid ""
 "New device has been detected and needs to be authorized by an administrator."
 msgstr "Виявлено новий пристрій, який потребує схвалення від адміністратора."
 
-#: js/ui/status/thunderbolt.js:337
+#: js/ui/status/thunderbolt.js:329
 msgid "Thunderbolt authorization error"
 msgstr "Помилка завірення Thunderbolt"
 
-#: js/ui/status/thunderbolt.js:338
+#: js/ui/status/thunderbolt.js:330
 #, javascript-format
 msgid "Could not authorize the Thunderbolt device: %s"
 msgstr "Неможливо завірити пристрій Thunderbolt: %s"
@@ -2721,7 +2667,7 @@ msgstr ""
 "Данило Коростіль <ted.korostiled@gmail.com>\n"
 "Юрій Чорноіван <yurchor@ukr.net>"
 
-#: subprojects/extensions-app/js/main.js:340
+#: subprojects/extensions-app/js/main.js:339
 #, javascript-format
 msgid "%d extension will be updated on next login."
 msgid_plural "%d extensions will be updated on next login."
@@ -2730,11 +2676,11 @@ msgstr[1] "Під час наступного входу до системи б�
 msgstr[2] "Під час наступного входу до системи буде оновлено %d розширень."
 msgstr[3] "Під час наступного входу до системи буде оновлено одне розширення."
 
-#: subprojects/extensions-app/js/main.js:482
+#: subprojects/extensions-app/js/main.js:481
 msgid "The extension is incompatible with the current GNOME version"
 msgstr "Розширення є несумісним із поточною версією GNOME"
 
-#: subprojects/extensions-app/js/main.js:485
+#: subprojects/extensions-app/js/main.js:484
 #: subprojects/extensions-app/data/ui/extension-row.ui:52
 msgid "The extension had an error"
 msgstr "У розширенні сталася помилка"
@@ -3228,6 +3174,46 @@ msgstr[3] "%u вхід"
 #: subprojects/gvc/gvc-mixer-control.c:2867
 msgid "System Sounds"
 msgstr "Системні звуки"
+
+#, javascript-format
+#~ msgid "%d Connected"
+#~ msgid_plural "%d Connected"
+#~ msgstr[0] "%d з'єднаний"
+#~ msgstr[1] "%d з'єднаних"
+#~ msgstr[2] "%d з'єднаних"
+#~ msgstr[3] "%d з'єднаний"
+
+#~ msgid "Bluetooth On"
+#~ msgstr "Bluetooth увімкнено"
+
+#~ msgid "Bluetooth Off"
+#~ msgstr "Bluetooth вимкнено"
+
+#~ msgid "Night Light Disabled"
+#~ msgstr "Нічне світло вимкнено"
+
+#~ msgid "Resume"
+#~ msgstr "Повторити"
+
+#~ msgid "Disable Until Tomorrow"
+#~ msgstr "Вимкнути до завтра"
+
+#~ msgid "Fully Charged"
+#~ msgstr "Повністю заряджено"
+
+#~ msgid "Not Charging"
+#~ msgstr "Не заряджається"
+
+#~ msgid "Estimating…"
+#~ msgstr "Оцінювання…"
+
+#, javascript-format
+#~ msgid "%d∶%02d Remaining (%d %%)"
+#~ msgstr "Залишилось %d∶%02d (%d %%)"
+
+#, javascript-format
+#~ msgid "%d∶%02d Until Full (%d %%)"
+#~ msgstr "Зарядиться через %d∶%02d (%d %%)"
 
 #~ msgid "Location Enabled"
 #~ msgstr "Місцевість залучено"
