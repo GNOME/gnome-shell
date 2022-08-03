@@ -499,6 +499,29 @@ const NMDeviceItem = GObject.registerClass({
             this._addConnection(conn);
     }
 
+    _getActivatableItem() {
+        const [lastUsed] = this._itemSorter.itemsByMru();
+        if (lastUsed?.timestamp > 0)
+            return lastUsed;
+
+        const [firstItem] = this._itemSorter;
+        if (firstItem)
+            return firstItem;
+
+        console.assert(this._autoConnectItem.visible,
+            `${this}'s autoConnect item should be visible when otherwise empty`);
+        return this._autoConnectItem;
+    }
+
+    activate() {
+        super.activate();
+
+        if (this._activeConnection)
+            this.deactivateConnection();
+        else
+            this._getActivatableItem()?.activate();
+    }
+
     activateConnection(connection) {
         this._client.activate_connection_async(connection, this._device, null, null, null);
     }
