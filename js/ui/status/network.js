@@ -17,7 +17,6 @@ Gio._promisify(NM.Client, 'new_async');
 Gio._promisify(NM.Client.prototype, 'check_connectivity_async');
 
 const MAX_VISIBLE_NETWORKS = 8;
-var MAX_DEVICE_ITEMS = 4;
 
 // small optimization, to avoid using [] all the time
 const NM80211Mode = NM['80211Mode'];
@@ -1458,14 +1457,6 @@ class NMDeviceSection extends NMSection {
 
         this._deviceType = deviceType;
         this._nmDevices = new Set();
-
-        this._summaryItem = new PopupMenu.PopupSubMenuMenuItem('', true);
-        this._summaryItem.icon.icon_name = this._getSummaryIcon();
-        this.addMenuItem(this._summaryItem);
-
-        this._summaryItem.menu.addSettingsAction(_('Network Settings'),
-                                                 'gnome-network-panel.desktop');
-        this._summaryItem.hide();
     }
 
     setClient(client) {
@@ -1585,21 +1576,6 @@ class NMDeviceSection extends NMSection {
 
         const nItems = this._items.size;
         this._items.forEach(item => (item.singleDeviceMode = nItems === 1));
-
-        let nDevices = this._itemsSection.box.get_children().reduce(
-            (prev, child) => prev + (child.visible ? 1 : 0), 0);
-        this._summaryItem.label.text = this._getSummaryLabel(nDevices);
-        let shouldSummarize = nDevices > MAX_DEVICE_ITEMS;
-        this._summaryItem.visible = shouldSummarize;
-        this._itemsSection.actor.visible = !shouldSummarize;
-    }
-
-    _getSummaryIcon() {
-        throw new GObject.NotImplementedError();
-    }
-
-    _getSummaryLabel() {
-        throw new GObject.NotImplementedError();
     }
 }
 
@@ -1614,17 +1590,6 @@ class NMWirelessSection extends NMDeviceSection {
     _createDeviceMenuItem(device) {
         return new NMWirelessDeviceItem(this._client, device);
     }
-
-    _getSummaryIcon() {
-        return 'network-wireless-symbolic';
-    }
-
-    _getSummaryLabel(nDevices) {
-        return ngettext(
-            '%s Wi-Fi Connection',
-            '%s Wi-Fi Connections',
-            nDevices).format(nDevices);
-    }
 }
 
 class NMWiredSection extends NMDeviceSection {
@@ -1638,17 +1603,6 @@ class NMWiredSection extends NMDeviceSection {
     _createDeviceMenuItem(device) {
         return new NMWiredDeviceItem(this._client, device);
     }
-
-    _getSummaryIcon() {
-        return 'network-wired-symbolic';
-    }
-
-    _getSummaryLabel(nDevices) {
-        return ngettext(
-            '%s Wired Connection',
-            '%s Wired Connections',
-            nDevices).format(nDevices);
-    }
 }
 
 class NMBluetoothSection extends NMDeviceSection {
@@ -1661,17 +1615,6 @@ class NMBluetoothSection extends NMDeviceSection {
 
     _createDeviceMenuItem(device) {
         return new NMBluetoothDeviceItem(this._client, device);
-    }
-
-    _getSummaryIcon() {
-        return 'network-wireless-symbolic';
-    }
-
-    _getSummaryLabel(nDevices) {
-        return ngettext(
-            '%s Bluetooth Connection',
-            '%s Bluetooth Connections',
-            nDevices).format(nDevices);
     }
 }
 
@@ -1688,17 +1631,6 @@ class NMModemSection extends NMDeviceSection {
 
     _createDeviceMenuItem(device) {
         return new NMModemDeviceItem(this._client, device);
-    }
-
-    _getSummaryIcon() {
-        return 'network-wireless-symbolic';
-    }
-
-    _getSummaryLabel(nDevices) {
-        return ngettext(
-            '%s Modem Connection',
-            '%s Modem Connections',
-            nDevices).format(nDevices);
     }
 
     _sync() {
