@@ -541,13 +541,6 @@ const NMDeviceItem = GObject.registerClass({
 
 const NMWiredDeviceItem = GObject.registerClass(
 class NMWiredDeviceItem extends NMDeviceItem {
-    constructor(client, device) {
-        super(client, device);
-
-        this.section.addSettingsAction(_('Wired Settings'),
-            'gnome-network-panel.desktop');
-    }
-
     get icon_name() {
         switch (this.state) {
         case NM.ActiveConnectionState.ACTIVATING:
@@ -582,12 +575,6 @@ const NMModemDeviceItem = GObject.registerClass(
 class NMModemDeviceItem extends NMDeviceItem {
     constructor(client, device) {
         super(client, device);
-
-        const settingsPanel = this._useWwanPanel()
-            ? 'gnome-wwan-panel.desktop'
-            : 'gnome-network-panel.desktop';
-
-        this.section.addSettingsAction(_('Mobile Broadband Settings'), settingsPanel);
 
         this._mobileDevice = null;
 
@@ -629,7 +616,7 @@ class NMModemDeviceItem extends NMDeviceItem {
         return this._mobileDevice?.operator_name || this._deviceName;
     }
 
-    _useWwanPanel() {
+    get wwanPanelSupported() {
         // Currently, wwan panel doesn't support CDMA_EVDO modems
         const supportedCaps =
             NM.DeviceModemCapabilities.GSM_UMTS |
@@ -638,7 +625,7 @@ class NMModemDeviceItem extends NMDeviceItem {
     }
 
     _autoConnect() {
-        if (this._useWwanPanel())
+        if (this.wwanPanelSupported)
             launchSettingsPanel('wwan', 'show-device', this._device.udi);
         else
             launchSettingsPanel('network', 'connect-3g', this._device.get_path());
@@ -657,9 +644,6 @@ class NMBluetoothDeviceItem extends NMDeviceItem {
         this._device.bind_property('name',
             this, 'name',
             GObject.BindingFlags.SYNC_CREATE);
-
-        this.section.addSettingsAction(_('Bluetooth Settings'),
-            'gnome-network-panel.desktop');
     }
 
     get icon_name() {
@@ -986,9 +970,6 @@ const NMWirelessDeviceItem = GObject.registerClass({
         this._itemSorter = new ItemSorter({
             sortFunc: (one, two) => one.network.compare(two.network),
         });
-
-        this.section.addSettingsAction(_('Wi-Fi Settings'),
-            'gnome-wifi-panel.desktop');
 
         this._client.connectObject(
             'notify::wireless-enabled', () => this.notify('icon-name'),
@@ -1574,6 +1555,9 @@ class NMDeviceSection extends NMSection {
 class NMWirelessSection extends NMDeviceSection {
     constructor() {
         super(NM.DeviceType.WIFI);
+
+        this.addSettingsAction(_('All Networks'),
+            'gnome-wifi-panel.desktop');
     }
 
     _createDeviceMenuItem(device) {
@@ -1595,6 +1579,9 @@ class NMWirelessSection extends NMDeviceSection {
 class NMWiredSection extends NMDeviceSection {
     constructor() {
         super(NM.DeviceType.ETHERNET);
+
+        this.addSettingsAction(_('Wired Settings'),
+            'gnome-network-panel.desktop');
     }
 
     _createDeviceMenuItem(device) {
@@ -1616,6 +1603,9 @@ class NMWiredSection extends NMDeviceSection {
 class NMBluetoothSection extends NMDeviceSection {
     constructor() {
         super(NM.DeviceType.BT);
+
+        this.addSettingsAction(_('Bluetooth Settings'),
+            'gnome-network-panel.desktop');
     }
 
     _createDeviceMenuItem(device) {
@@ -1637,6 +1627,12 @@ class NMBluetoothSection extends NMDeviceSection {
 class NMModemSection extends NMDeviceSection {
     constructor() {
         super(NM.DeviceType.MODEM);
+
+        const settingsLabel = _('Mobile Broadband Settings');
+        this._wwanSettings = this.addSettingsAction(settingsLabel,
+            'gnome-wwan-panel.desktop');
+        this._legacySettings = this.addSettingsAction(settingsLabel,
+            'gnome-network-panel.desktop');
     }
 
     _createDeviceMenuItem(device) {
@@ -1652,6 +1648,15 @@ class NMModemSection extends NMDeviceSection {
             '%s Modem Connection',
             '%s Modem Connections',
             nDevices).format(nDevices);
+    }
+
+    _sync() {
+        super._sync();
+
+        const useWwanPanel =
+            [...this._items.values()].some(i => i.wwanPanelSupported);
+        this._wwanSettings.visible = useWwanPanel;
+        this._legacySettings.visible = !useWwanPanel;
     }
 }
 
