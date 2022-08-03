@@ -161,6 +161,10 @@ const NMMenuItem = GObject.registerClass({
         return this.state <= NM.ActiveConnectionState.ACTIVATED;
     }
 
+    get timestamp() {
+        return 0;
+    }
+
     activate() {
         super.activate(Clutter.get_current_event());
     }
@@ -299,6 +303,10 @@ class NMConnectionItem extends NMMenuItem {
 
     get name() {
         return this._connection.get_id();
+    }
+
+    get timestamp() {
+        return this._connection.get_setting_connection()?.get_timestamp() ?? 0;
     }
 
     updateForConnection(connection) {
