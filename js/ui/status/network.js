@@ -1279,10 +1279,12 @@ const NMSection = GObject.registerClass({
         'checked': GObject.ParamSpec.boolean('checked', '', '',
             GObject.ParamFlags.READWRITE,
             false),
+        'icon-name': GObject.ParamSpec.string('icon-name', '', '',
+            GObject.ParamFlags.READWRITE,
+            ''),
     },
     Signals: {
         'activation-failed': {},
-        'icon-changed': {},
     },
 }, class NMSection extends GObject.Object {
     constructor() {
@@ -1297,6 +1299,10 @@ const NMSection = GObject.registerClass({
         this.menu.addMenuItem(this._itemsSection);
 
         this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
+
+        this._itemBinding = new GObject.BindingGroup();
+        this._itemBinding.bind('icon-name',
+            this, 'icon-name', GObject.BindingFlags.DEFAULT);
     }
 
     setClient(client) {
@@ -1342,7 +1348,7 @@ const NMSection = GObject.registerClass({
             `${this} already has an item for ${key}`);
 
         item.connectObject(
-            'notify::is-active', () => this._updateChecked(),
+            'notify::is-active', () => this._sync(),
             'notify::name', () => this._resortItem(item),
             'destroy', () => this._removeItem(key),
             this);
@@ -1365,10 +1371,41 @@ const NMSection = GObject.registerClass({
         this._sync();
     }
 
+    *_getActiveItems() {
+        for (const item of this._itemSorter) {
+            if (item.is_active)
+                yield item;
+        }
+    }
+
+    _getPrimaryItem() {
+        // prefer active items
+        const [firstActive] = this._getActiveItems();
+        if (firstActive)
+            return firstActive;
+
+        // otherwise prefer the most-recently used
+        const [lastUsed] = this._itemSorter.itemsByMru();
+        if (lastUsed?.timestamp > 0)
+            return lastUsed;
+
+        // as a last resort, return the top-most visible item
+        for (const item of this._itemSorter) {
+            if (item.visible)
+                return item;
+        }
+
+        console.assert(!this.visible,
+            `${this} should not be visible when empty`);
+
+        return null;
+    }
+
     _sync() {
         this.visible = this._items.size > 0;
         this._updateItemsVisibility();
         this._updateChecked();
+        this._itemBinding.source = this._getPrimaryItem();
     }
 });
 
@@ -1702,7 +1739,7 @@ class Indicator extends PanelMenu.SystemIndicator {
         this._allSections.forEach(section => {
             section.connectObject(
                 'activation-failed', () => this._onActivationFailed(),
-                'icon-changed', () => this._updateIcon(),
+                'notify::icon-name', () => this._updateIcon(),
                 this);
             this.menu.addMenuItem(section.menu);
         });
