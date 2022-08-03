@@ -1282,6 +1282,9 @@ const NMSection = GObject.registerClass({
         'icon-name': GObject.ParamSpec.string('icon-name', '', '',
             GObject.ParamFlags.READWRITE,
             ''),
+        'label': GObject.ParamSpec.string('label', '', '',
+            GObject.ParamFlags.READWRITE,
+            ''),
     },
     Signals: {
         'activation-failed': {},
@@ -1303,6 +1306,10 @@ const NMSection = GObject.registerClass({
         this._itemBinding = new GObject.BindingGroup();
         this._itemBinding.bind('icon-name',
             this, 'icon-name', GObject.BindingFlags.DEFAULT);
+        this._itemBinding.bind_full('name',
+            this, 'label', GObject.BindingFlags.DEFAULT,
+            (bind, source) => [true, this._transformLabel(source)],
+            null);
     }
 
     setClient(client) {
@@ -1328,9 +1335,28 @@ const NMSection = GObject.registerClass({
         throw new GObject.NotImplementedError();
     }
 
+    // transform function for property binding:
+    // Ignore the provided label if there are multiple active
+    // items, and replace it with something like "VPN (2)"
+    _transformLabel(source) {
+        const nActive = this.checked
+            ? [...this._getActiveItems()].length
+            : 0;
+        if (nActive > 1)
+            return `${this._getDefaultName()} (${nActive})`;
+        return source;
+    }
+
     _updateItemsVisibility() {
         [...this._itemSorter.itemsByMru()].forEach(
             (item, i) => (item.visible = i < MAX_VISIBLE_NETWORKS));
+    }
+
+    _itemActiveChanged() {
+        // force an update in case we changed
+        // from or to multiple active items
+        this._itemBinding.source?.notify('name');
+        this._sync();
     }
 
     _updateChecked() {
@@ -1348,7 +1374,7 @@ const NMSection = GObject.registerClass({
             `${this} already has an item for ${key}`);
 
         item.connectObject(
-            'notify::is-active', () => this._sync(),
+            'notify::is-active', () => this._itemActiveChanged(),
             'notify::name', () => this._resortItem(item),
             'destroy', () => this._removeItem(key),
             this);
@@ -1426,6 +1452,10 @@ class NMVpnSection extends NMSection {
             'connection-removed', (c, conn) => this._removeConnection(conn),
             'notify::active-connections', () => this._syncActiveConnections(),
             this);
+    }
+
+    _getDefaultName() {
+        return _('VPN');
     }
 
     _loadInitialItems() {
@@ -1531,6 +1561,12 @@ class NMDeviceSection extends NMSection {
                 this._removeDevice(dev);
                 this._syncDeviceNames();
             }, this);
+    }
+
+    _getDefaultName() {
+        const [dev] = this._nmDevices;
+        const [name] = NM.Device.disambiguate_names([dev]);
+        return name;
     }
 
     _loadInitialItems() {
