@@ -1528,14 +1528,6 @@ class NMVpnSection extends NMSection {
     deactivateConnection(activeConnection) {
         this._client.deactivate_connection(activeConnection, null);
     }
-
-    getIndicatorIcon() {
-        for (const item of this._items.values()) {
-            if (item.is_active)
-                return item.icon_name;
-        }
-        return '';
-    }
 });
 
 const NMDeviceSection = GObject.registerClass(
@@ -1746,9 +1738,6 @@ class Indicator extends PanelMenu.SystemIndicator {
     _init() {
         super._init();
 
-        this._primaryIndicator = this._addIndicator();
-        this._vpnIndicator = this._addIndicator();
-
         this._connectivityQueue = new Set();
 
         this._mainConnection = null;
@@ -1779,6 +1768,16 @@ class Indicator extends PanelMenu.SystemIndicator {
                 this);
             this.menu.addMenuItem(section.menu);
         });
+
+        this._primaryIndicator = this._addIndicator();
+        this._vpnIndicator = this._addIndicator();
+
+        this._vpnSection.bind_property('checked',
+            this._vpnIndicator, 'visible',
+            GObject.BindingFlags.SYNC_CREATE);
+        this._vpnSection.bind_property('icon-name',
+            this._vpnIndicator, 'icon-name',
+            GObject.BindingFlags.SYNC_CREATE);
 
         this._getClient().catch(logError);
     }
@@ -1983,8 +1982,5 @@ class Indicator extends PanelMenu.SystemIndicator {
                     this._primaryIndicator.icon_name = 'network-wired-no-route-symbolic';
             }
         }
-
-        this._vpnIndicator.icon_name = this._vpnSection.getIndicatorIcon();
-        this._vpnIndicator.visible = this._vpnIndicator.icon_name !== null;
     }
 });
