@@ -1705,6 +1705,9 @@ class NMWirelessSection extends NMDeviceSection {
         this._client?.bind_property('wireless-enabled',
             this, 'checked',
             GObject.BindingFlags.SYNC_CREATE);
+        this._client?.bind_property('wireless-hardware-enabled',
+            this, 'reactive',
+            GObject.BindingFlags.SYNC_CREATE);
     }
 
     activate() {
