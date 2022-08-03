@@ -372,17 +372,6 @@ class AggregateMenu extends PanelMenu.Button {
 
         this._indicators = new St.BoxLayout({ style_class: 'panel-status-indicators-box' });
         this.add_child(this._indicators);
-
-        if (Config.HAVE_NETWORKMANAGER)
-            this._network = new imports.ui.status.network.NMApplet();
-        else
-            this._network = null;
-
-        if (this._network)
-            this._indicators.add_child(this._network);
-
-        if (this._network)
-            this.menu.addMenuItem(this._network.menu);
     }
 });
 
@@ -397,6 +386,11 @@ class QuickSettings extends PanelMenu.Button {
         this.add_child(this._indicators);
 
         this.setMenu(new QuickSettingsMenu(this, N_QUICK_SETTINGS_COLUMNS));
+
+        if (Config.HAVE_NETWORKMANAGER)
+            this._network = new imports.ui.status.network.Indicator();
+        else
+            this._network = null;
 
         if (Config.HAVE_BLUETOOTH)
             this._bluetooth = new imports.ui.status.bluetooth.Indicator();
@@ -421,6 +415,8 @@ class QuickSettings extends PanelMenu.Button {
         this._indicators.add_child(this._thunderbolt);
         this._indicators.add_child(this._location);
         this._indicators.add_child(this._nightLight);
+        if (this._network)
+            this._indicators.add_child(this._network);
         this._indicators.add_child(this._darkMode);
         this._indicators.add_child(this._powerProfiles);
         if (this._bluetooth)
@@ -438,6 +434,8 @@ class QuickSettings extends PanelMenu.Button {
         this._addItems(this._remoteAccess.quickSettingsItems);
         this._addItems(this._thunderbolt.quickSettingsItems);
         this._addItems(this._location.quickSettingsItems);
+        if (this._network)
+            this._addItems(this._network.quickSettingsItems);
         if (this._bluetooth)
             this._addItems(this._bluetooth.quickSettingsItems);
         this._addItems(this._powerProfiles.quickSettingsItems);

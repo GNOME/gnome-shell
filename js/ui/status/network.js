@@ -1,13 +1,14 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported NMApplet */
+/* exported Indicator */
 const {Atk, Clutter, Gio, GLib, GObject, NM, Polkit, St} = imports.gi;
 
 const Main = imports.ui.main;
-const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
 const MessageTray = imports.ui.messageTray;
 const ModemManager = imports.misc.modemManager;
 const Util = imports.misc.util;
+
+const {QuickMenuToggle, SystemIndicator} = imports.ui.quickSettings;
 
 const {loadInterfaceXML} = imports.misc.fileUtils;
 const {registerDestroyableType} = imports.misc.signalTracker;
@@ -1298,26 +1299,13 @@ const NMVpnConnectionItem = GObject.registerClass({
     }
 });
 
-const NMSection = GObject.registerClass({
-    Properties: {
-        'checked': GObject.ParamSpec.boolean('checked', '', '',
-            GObject.ParamFlags.READWRITE,
-            false),
-        'icon-name': GObject.ParamSpec.string('icon-name', '', '',
-            GObject.ParamFlags.READWRITE,
-            ''),
-        'label': GObject.ParamSpec.string('label', '', '',
-            GObject.ParamFlags.READWRITE,
-            ''),
-    },
+const NMToggle = GObject.registerClass({
     Signals: {
         'activation-failed': {},
     },
-}, class NMSection extends GObject.Object {
+}, class NMToggle extends QuickMenuToggle {
     constructor() {
         super();
-
-        this.menu = new PopupMenu.PopupMenuSection();
 
         this._items = new Map();
         this._itemSorter = new ItemSorter({trackMru: true});
@@ -1334,6 +1322,8 @@ const NMSection = GObject.registerClass({
             this, 'label', GObject.BindingFlags.DEFAULT,
             (bind, source) => [true, this._transformLabel(source)],
             null);
+
+        this.connect('clicked', () => this.activate());
     }
 
     setClient(client) {
@@ -1352,10 +1342,6 @@ const NMSection = GObject.registerClass({
         if (this._client)
             this._loadInitialItems();
         this._sync();
-    }
-
-    set visible(visible) {
-        this.menu.actor.visible = visible;
     }
 
     activate() {
@@ -1472,11 +1458,12 @@ const NMSection = GObject.registerClass({
     }
 });
 
-const NMVpnSection = GObject.registerClass(
-class NMVpnSection extends NMSection {
+const NMVpnToggle = GObject.registerClass(
+class NMVpnToggle extends NMToggle {
     constructor() {
         super();
 
+        this.menu.setHeader('network-vpn-symbolic', _('VPN'));
         this.menu.addSettingsAction(_('VPN Settings'),
             'gnome-network-panel.desktop');
     }
@@ -1567,8 +1554,8 @@ class NMVpnSection extends NMSection {
     }
 });
 
-const NMDeviceSection = GObject.registerClass(
-class NMDeviceSection extends NMSection {
+const NMDeviceToggle = GObject.registerClass(
+class NMDeviceToggle extends NMToggle {
     constructor(deviceType) {
         super();
 
@@ -1702,13 +1689,8 @@ class NMDeviceSection extends NMSection {
     }
 });
 
-const NMWirelessSection = GObject.registerClass({
-    Properties: {
-        'menu-enabled': GObject.ParamSpec.boolean('menu-enabled', '', '',
-            GObject.ParamFlags.READWRITE,
-            false),
-    },
-}, class NMWirelessSection extends NMDeviceSection {
+const NMWirelessToggle = GObject.registerClass(
+class NMWirelessToggle extends NMDeviceToggle {
     constructor() {
         super(NM.DeviceType.WIFI);
 
@@ -1716,6 +1698,7 @@ const NMWirelessSection = GObject.registerClass({
             this, 'menu-enabled',
             GObject.BindingFlags.INVERT_BOOLEAN);
 
+        this.menu.setHeader('network-wireless-symbolic', _('Wi–Fi'));
         this.menu.addSettingsAction(_('All Networks'),
             'gnome-wifi-panel.desktop');
     }
@@ -1763,11 +1746,12 @@ const NMWirelessSection = GObject.registerClass({
     }
 });
 
-const NMWiredSection = GObject.registerClass(
-class NMWiredSection extends NMDeviceSection {
+const NMWiredToggle = GObject.registerClass(
+class NMWiredToggle extends NMDeviceToggle {
     constructor() {
         super(NM.DeviceType.ETHERNET);
 
+        this.menu.setHeader('network-wired-symbolic', _('Wired Connections'));
         this.menu.addSettingsAction(_('Wired Settings'),
             'gnome-network-panel.desktop');
     }
@@ -1777,11 +1761,12 @@ class NMWiredSection extends NMDeviceSection {
     }
 });
 
-const NMBluetoothSection = GObject.registerClass(
-class NMBluetoothSection extends NMDeviceSection {
+const NMBluetoothToggle = GObject.registerClass(
+class NMBluetoothToggle extends NMDeviceToggle {
     constructor() {
         super(NM.DeviceType.BT);
 
+        this.menu.setHeader('network-cellular-symbolic', _('Bluetooth Tethers'));
         this.menu.addSettingsAction(_('Bluetooth Settings'),
             'gnome-network-panel.desktop');
     }
@@ -1791,10 +1776,12 @@ class NMBluetoothSection extends NMDeviceSection {
     }
 });
 
-const NMModemSection = GObject.registerClass(
-class NMModemSection extends NMDeviceSection {
+const NMModemToggle = GObject.registerClass(
+class NMModemToggle extends NMDeviceToggle {
     constructor() {
         super(NM.DeviceType.MODEM);
+
+        this.menu.setHeader('network-cellular-symbolic', _('Mobile Connections'));
 
         const settingsLabel = _('Mobile Broadband Settings');
         this._wwanSettings = this.menu.addSettingsAction(settingsLabel,
@@ -1817,8 +1804,8 @@ class NMModemSection extends NMDeviceSection {
     }
 });
 
-var NMApplet = GObject.registerClass(
-class Indicator extends PanelMenu.SystemIndicator {
+var Indicator = GObject.registerClass(
+class Indicator extends SystemIndicator {
     _init() {
         super._init();
 
@@ -1828,28 +1815,25 @@ class Indicator extends PanelMenu.SystemIndicator {
 
         this._notification = null;
 
-        this._allSections = [];
+        this._wiredToggle = new NMWiredToggle();
+        this._wirelessToggle = new NMWirelessToggle();
+        this._modemToggle = new NMModemToggle();
+        this._btToggle = new NMBluetoothToggle();
+        this._vpnToggle = new NMVpnToggle();
 
-        this._wiredSection = new NMWiredSection();
-        this._wirelessSection = new NMWirelessSection();
-        this._modemSection = new NMModemSection();
-        this._btSection = new NMBluetoothSection();
-        this._vpnSection = new NMVpnSection();
-
-        this._deviceSections = new Map([
-            [NM.DeviceType.ETHERNET, this._wiredSection],
-            [NM.DeviceType.WIFI, this._wirelessSection],
-            [NM.DeviceType.MODEM, this._modemSection],
-            [NM.DeviceType.BT, this._btSection],
+        this._deviceToggles = new Map([
+            [NM.DeviceType.ETHERNET, this._wiredToggle],
+            [NM.DeviceType.WIFI, this._wirelessToggle],
+            [NM.DeviceType.MODEM, this._modemToggle],
+            [NM.DeviceType.BT, this._btToggle],
         ]);
-        this._allSections.push(...this._deviceSections.values());
-        this._allSections.push(this._vpnSection);
+        this.quickSettingsItems.push(...this._deviceToggles.values());
+        this.quickSettingsItems.push(this._vpnToggle);
 
-        this._allSections.forEach(section => {
-            section.connectObject(
+        this.quickSettingsItems.forEach(toggle => {
+            toggle.connectObject(
                 'activation-failed', () => this._onActivationFailed(),
                 this);
-            this.menu.addMenuItem(section.menu);
         });
 
         this._primaryIndicator = this._addIndicator();
@@ -1860,10 +1844,10 @@ class Indicator extends PanelMenu.SystemIndicator {
             this._primaryIndicator, 'icon-name',
             GObject.BindingFlags.DEFAULT);
 
-        this._vpnSection.bind_property('checked',
+        this._vpnToggle.bind_property('checked',
             this._vpnIndicator, 'visible',
             GObject.BindingFlags.SYNC_CREATE);
-        this._vpnSection.bind_property('icon-name',
+        this._vpnToggle.bind_property('icon-name',
             this._vpnIndicator, 'icon-name',
             GObject.BindingFlags.SYNC_CREATE);
 
@@ -1873,8 +1857,8 @@ class Indicator extends PanelMenu.SystemIndicator {
     async _getClient() {
         this._client = await NM.Client.new_async(null);
 
-        this._allSections.forEach(
-            section => section.setClient(this._client));
+        this.quickSettingsItems.forEach(
+            toggle => toggle.setClient(this._client));
 
         this._client.bind_property('nm-running',
             this, 'visible',
@@ -1891,9 +1875,9 @@ class Indicator extends PanelMenu.SystemIndicator {
             this._configPermission = await Polkit.Permission.new(
                 'org.freedesktop.NetworkManager.network-control', null, null);
 
-            this._allSections.forEach(section => {
+            this.quickSettingsItems.forEach(toggle => {
                 this._configPermission.bind_property('allowed',
-                    section, 'reactive',
+                    toggle, 'reactive',
                     GObject.BindingFlags.SYNC_CREATE);
             });
         } catch (e) {
@@ -2025,10 +2009,10 @@ class Indicator extends PanelMenu.SystemIndicator {
 
     _updateIcon() {
         const [dev] = this._mainConnection?.get_devices() ?? [];
-        const primarySection = this._deviceSections.get(dev?.device_type) ?? null;
-        this._primaryIndicatorBinding.source = primarySection;
+        const primaryToggle = this._deviceToggles.get(dev?.device_type) ?? null;
+        this._primaryIndicatorBinding.source = primaryToggle;
 
-        if (!primarySection) {
+        if (!primaryToggle) {
             if (this._client.connectivity === NM.ConnectivityState.FULL)
                 this._primaryIndicator.icon_name = 'network-wired-symbolic';
             else
@@ -2037,6 +2021,6 @@ class Indicator extends PanelMenu.SystemIndicator {
 
         const state = this._client.get_state();
         const connected = state === NM.State.CONNECTED_GLOBAL;
-        this._primaryIndicator.visible = (primarySection != null) || connected;
+        this._primaryIndicator.visible = (primaryToggle != null) || connected;
     }
 });
