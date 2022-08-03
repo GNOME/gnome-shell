@@ -1541,40 +1541,81 @@ var NMDeviceSection = class extends PopupMenu.PopupMenuSection {
     }
 
     _getSummaryIcon() {
-        switch (this._deviceType) {
-        case NM.DeviceType.ETHERNET:
-            return 'network-wired-symbolic';
-        case NM.DeviceType.WIFI:
-        case NM.DeviceType.BT:
-        case NM.DeviceType.MODEM:
-            return 'network-wireless-symbolic';
-        }
-        return '';
+        throw new GObject.NotImplementedError();
+    }
+
+    _getSummaryLabel() {
+        throw new GObject.NotImplementedError();
+    }
+};
+
+class NMWirelessSection extends NMDeviceSection {
+    constructor() {
+        super(NM.DeviceType.WIFI);
+    }
+
+    _getSummaryIcon() {
+        return 'network-wireless-symbolic';
     }
 
     _getSummaryLabel(nDevices) {
-        switch (this._deviceType) {
-        case NM.DeviceType.ETHERNET:
-            return ngettext("%s Wired Connection",
-                            "%s Wired Connections",
-                            nDevices).format(nDevices);
-        case NM.DeviceType.WIFI:
-            return ngettext("%s Wi-Fi Connection",
-                            "%s Wi-Fi Connections",
-                            nDevices).format(nDevices);
-        case NM.DeviceType.BT:
-            return ngettext(
-                '%s Bluetooth Connection',
-                '%s Bluetooth Connections',
-                nDevices).format(nDevices);
-        case NM.DeviceType.MODEM:
-            return ngettext("%s Modem Connection",
-                            "%s Modem Connections",
-                            nDevices).format(nDevices);
-        }
-        return '';
+        return ngettext(
+            '%s Wi-Fi Connection',
+            '%s Wi-Fi Connections',
+            nDevices).format(nDevices);
     }
-};
+}
+
+class NMWiredSection extends NMDeviceSection {
+    constructor() {
+        super(NM.DeviceType.ETHERNET);
+    }
+
+    _getSummaryIcon() {
+        return 'network-wired-symbolic';
+    }
+
+    _getSummaryLabel(nDevices) {
+        return ngettext(
+            '%s Wired Connection',
+            '%s Wired Connections',
+            nDevices).format(nDevices);
+    }
+}
+
+class NMBluetoothSection extends NMDeviceSection {
+    constructor() {
+        super(NM.DeviceType.BT);
+    }
+
+    _getSummaryIcon() {
+        return 'network-wireless-symbolic';
+    }
+
+    _getSummaryLabel(nDevices) {
+        return ngettext(
+            '%s Bluetooth Connection',
+            '%s Bluetooth Connections',
+            nDevices).format(nDevices);
+    }
+}
+
+class NMModemSection extends NMDeviceSection {
+    constructor() {
+        super(NM.DeviceType.MODEM);
+    }
+
+    _getSummaryIcon() {
+        return 'network-wireless-symbolic';
+    }
+
+    _getSummaryLabel(nDevices) {
+        return ngettext(
+            '%s Modem Connection',
+            '%s Modem Connections',
+            nDevices).format(nDevices);
+    }
+}
 
 var NMApplet = GObject.registerClass(
 class Indicator extends PanelMenu.SystemIndicator {
@@ -1616,18 +1657,20 @@ class Indicator extends PanelMenu.SystemIndicator {
         this._notification = null;
 
         this._nmDevices = [];
-        this._deviceSections = new Map();
 
-        const sections = [
-            [NMConnectionCategory.WIRED, NM.DeviceType.ETHERNET],
-            [NMConnectionCategory.WIRELESS, NM.DeviceType.WIFI],
-            [NMConnectionCategory.BLUETOOTH, NM.DeviceType.BT],
-            [NMConnectionCategory.WWAN, NM.DeviceType.MODEM],
-        ];
-        for (const [category, deviceType] of sections) {
-            this._deviceSections.set(category, new NMDeviceSection(deviceType));
-            this.menu.addMenuItem(this._deviceSections.get(category));
-        }
+        this._wiredSection = new NMWiredSection();
+        this._wirelessSection = new NMWirelessSection();
+        this._modemSection = new NMModemSection();
+        this._btSection = new NMBluetoothSection();
+
+        this._deviceSections = new Map([
+            [NMConnectionCategory.WIRED, this._wiredSection],
+            [NMConnectionCategory.WIRELESS, this._wirelessSection],
+            [NMConnectionCategory.WWAN, this._modemSection],
+            [NMConnectionCategory.BLUETOOTH, this._btSection],
+        ]);
+        for (const section of this._deviceSections.values())
+            this.menu.addMenuItem(section);
 
         this._vpnSection = new NMVpnSection(this._client);
         this._vpnSection.connect('activation-failed', this._onActivationFailed.bind(this));
