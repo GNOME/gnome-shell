@@ -94,12 +94,8 @@ var ScreenShield = class extends Signals.EventEmitter {
                                                this._activateDialog();
                                        });
 
-        this._oVirtCredentialsManager = OVirt.getOVirtCredentialsManager();
-        this._oVirtCredentialsManager.connect('user-authenticated',
-                                              () => {
-                                                  if (this._isLocked)
-                                                      this._activateDialog();
-                                              });
+        this._credentialManagers = {};
+        this.addCredentialManager(OVirt.SERVICE_NAME, OVirt.getOVirtCredentialsManager());
 
         this._loginManager = LoginManager.getLoginManager();
         this._loginManager.connect('prepare-for-sleep',
@@ -639,6 +635,26 @@ var ScreenShield = class extends Signals.EventEmitter {
         // blank during the animation.
         // This is not a problem for the idle fade case, because we
         // activate without animation in that case.
+    }
+
+    addCredentialManager(serviceName, credentialManager) {
+        if (this._credentialManagers[serviceName])
+            return;
+
+        this._credentialManagers[serviceName] = credentialManager;
+        credentialManager.connectObject('user-authenticated', () => {
+            if (this._isLocked)
+                this._activateDialog();
+        }, this);
+    }
+
+    removeCredentialManager(serviceName) {
+        let credentialManager = this._credentialManagers[serviceName];
+        if (!credentialManager)
+            return;
+
+        credentialManager.disconnectObject(this);
+        delete this._credentialManagers[serviceName];
     }
 
     lock(animate) {
