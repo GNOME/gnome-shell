@@ -1343,6 +1343,15 @@ const NMSection = GObject.registerClass({
         this.menu.actor.visible = visible;
     }
 
+    activate() {
+        const activeItems = [...this._getActiveItems()];
+
+        if (activeItems.length > 0)
+            activeItems.forEach(i => i.activate());
+        else
+            this._itemBinding.source?.activate();
+    }
+
     _loadInitialItems() {
         throw new GObject.NotImplementedError();
     }
