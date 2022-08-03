@@ -123,6 +123,8 @@ export const WindowPreview = GObject.registerClass({
         longPressGesture.connect('recognize', () => this.showOverlay(true));
         this.add_action(longPressGesture);
 
+        longPressGesture.can_not_cancel(this._draggable.startGesture);
+
         this._overlayEnabled = true;
         this._overlayShown = false;
         this._closeRequested = false;
