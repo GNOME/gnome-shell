@@ -437,7 +437,7 @@ const NMDeviceItem = GObject.registerClass({
         this._deviceName = '';
 
         this._connectionItems = new Map();
-        this._itemSorter = new ItemSorter();
+        this._itemSorter = new ItemSorter({trackMru: true});
 
         // Item shown in the 0-connections case
         this._autoConnectItem =
@@ -468,6 +468,11 @@ const NMDeviceItem = GObject.registerClass({
 
         this._syncConnections();
         this._activeConnectionChanged();
+    }
+
+    get timestamp() {
+        const [item] = this._itemSorter.itemsByMru();
+        return item?.timestamp ?? 0;
     }
 
     _canReachInternet() {
