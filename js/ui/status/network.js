@@ -98,6 +98,56 @@ function launchSettingsPanel(panel, ...args) {
     }
 }
 
+class ItemSorter {
+    [Symbol.iterator] = this.items;
+
+    /**
+     * Maintains a list of sorted items. By default, items are
+     * assumed to be objects with a name property.
+     *
+     * @param {object=} options - property object with options
+     * @param {Function} options.sortFunc - a custom sort function
+     **/
+    constructor(options = {}) {
+        const {sortFunc} = {
+            sortFunc: this._sortByName.bind(this),
+            ...options,
+        };
+
+        this._sortFunc = sortFunc;
+
+        this._itemsOrder = [];
+    }
+
+    *items() {
+        yield* this._itemsOrder;
+    }
+
+    _sortByName(one, two) {
+        return GLib.utf8_collate(one.name, two.name);
+    }
+
+    /**
+     * Insert or update item.
+     *
+     * @param {any} item - the item to upsert
+     * @returns {number} - the sorted position of item
+     */
+    upsert(item) {
+        this.delete(item);
+        return Util.insertSorted(this._itemsOrder, item, this._sortFunc);
+    }
+
+    /**
+     * @param {any} item - item to remove
+     */
+    delete(item) {
+        const pos = this._itemsOrder.indexOf(item);
+        if (pos >= 0)
+            this._itemsOrder.splice(pos, 1);
+    }
+}
+
 const NMConnectionItem = GObject.registerClass({
     Properties: {
         'radio-mode': GObject.ParamSpec.boolean('radio-mode', '', '',
@@ -265,7 +315,7 @@ var NMConnectionSection = class NMConnectionSection extends Signals.EventEmitter
         this._client = client;
 
         this._connectionItems = new Map();
-        this._itemsOrder = [];
+        this._itemSorter = new ItemSorter();
 
         this._section = new PopupMenu.PopupMenuSection();
 
@@ -306,10 +356,6 @@ var NMConnectionSection = class NMConnectionSection extends Signals.EventEmitter
         return true;
     }
 
-    _itemSortFunction(one, two) {
-        return GLib.utf8_collate(one.name, two.name);
-    }
-
     _makeConnectionItem(connection) {
         return new NMConnectionItem(this, connection);
     }
@@ -337,10 +383,7 @@ var NMConnectionSection = class NMConnectionSection extends Signals.EventEmitter
     _updateForConnection(item, connection) {
         item.updateForConnection(connection);
 
-        let pos = this._itemsOrder.indexOf(item);
-
-        this._itemsOrder.splice(pos, 1);
-        pos = Util.insertSorted(this._itemsOrder, item, this._itemSortFunction.bind(this));
+        const pos = this._itemSorter.upsert(item);
         this._section.moveMenuItem(item, pos);
     }
 
@@ -353,7 +396,7 @@ var NMConnectionSection = class NMConnectionSection extends Signals.EventEmitter
         item.connect('activation-failed', () => this.emit('activation-failed'));
         item.connect('notify::name', this._sync.bind(this));
 
-        let pos = Util.insertSorted(this._itemsOrder, item, this._itemSortFunction.bind(this));
+        const pos = this._itemSorter.upsert(item);
         this._section.addMenuItem(item, pos);
         this._connectionItems.set(connection.get_uuid(), item);
         this._sync();
@@ -365,11 +408,9 @@ var NMConnectionSection = class NMConnectionSection extends Signals.EventEmitter
         if (item == undefined)
             return;
 
-        const pos = this._itemsOrder.indexOf(item);
-        this._itemsOrder.splice(pos, 1);
-
-        item.destroy();
+        this._itemSorter.delete(item);
         this._connectionItems.delete(uuid);
+        item.destroy();
 
         this._sync();
     }
