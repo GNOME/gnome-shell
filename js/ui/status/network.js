@@ -421,53 +421,7 @@ var NMDeviceItem = class NMDeviceItem extends NMConnectionSection {
     }
 
     _getStatus() {
-        if (!this._device)
-            return '';
-
-        switch (this._device.state) {
-        case NM.DeviceState.DISCONNECTED:
-            /* Translators: %s is a network identifier */
-            return _("%s Off").format(this._getDescription());
-        case NM.DeviceState.ACTIVATED:
-            /* Translators: %s is a network identifier */
-            return _("%s Connected").format(this._getDescription());
-        case NM.DeviceState.UNMANAGED:
-            /* Translators: this is for network devices that are physically present but are not
-               under NetworkManager's control (and thus cannot be used in the menu);
-               %s is a network identifier */
-            return _("%s Unmanaged").format(this._getDescription());
-        case NM.DeviceState.DEACTIVATING:
-            /* Translators: %s is a network identifier */
-            return _("%s Disconnecting").format(this._getDescription());
-        case NM.DeviceState.PREPARE:
-        case NM.DeviceState.CONFIG:
-        case NM.DeviceState.IP_CONFIG:
-        case NM.DeviceState.IP_CHECK:
-        case NM.DeviceState.SECONDARIES:
-            /* Translators: %s is a network identifier */
-            return _("%s Connecting").format(this._getDescription());
-        case NM.DeviceState.NEED_AUTH:
-            /* Translators: this is for network connections that require some kind of key or password; %s is a network identifier */
-            return _("%s Requires Authentication").format(this._getDescription());
-        case NM.DeviceState.UNAVAILABLE:
-            // This state is actually a compound of various states (generically unavailable,
-            // firmware missing), that are exposed by different properties (whose state may
-            // or may not updated when we receive state-changed).
-            if (this._device.firmware_missing) {
-                /* Translators: this is for devices that require some kind of firmware or kernel
-                   module, which is missing; %s is a network identifier */
-                return _("Firmware Missing For %s").format(this._getDescription());
-            }
-            /* Translators: this is for a network device that cannot be activated (for example it
-               is disabled by rfkill, or it has no coverage; %s is a network identifier */
-            return _("%s Unavailable").format(this._getDescription());
-        case NM.DeviceState.FAILED:
-            /* Translators: %s is a network identifier */
-            return _("%s Connection Failed").format(this._getDescription());
-        default:
-            log(`Device state invalid, is ${this._device.state}`);
-            return 'invalid';
-        }
+        return this._getDescription();
     }
 };
 
@@ -576,18 +530,7 @@ var NMModemDeviceItem = class extends NMDeviceItem {
     }
 
     _getStatus() {
-        if (!this._client.wwan_hardware_enabled)
-            /* Translators: %s is a network identifier */
-            return _("%s Hardware Disabled").format(this._getDescription());
-        else if (!this._client.wwan_enabled)
-            /* Translators: this is for a network device that cannot be activated
-               because it's disabled by rfkill (airplane mode); %s is a network identifier */
-            return _("%s Disabled").format(this._getDescription());
-        else if (this._device.state == NM.DeviceState.ACTIVATED &&
-                 this._mobileDevice && this._mobileDevice.operator_name)
-            return this._mobileDevice.operator_name;
-        else
-            return super._getStatus();
+        return this._mobileDevice?.operator_name || this._getDescription();
     }
 
     _getMenuIcon() {
@@ -1381,28 +1324,14 @@ var NMWirelessDeviceItem = class extends Signals.EventEmitter {
     }
 
     _getStatus() {
-        let ap = this._device.active_access_point;
-
         if (this._isHotSpotMaster())
             /* Translators: %s is a network identifier */
-            return _('%s Hotspot Active').format(this._deviceName);
-        else if (this._device.state >= NM.DeviceState.PREPARE &&
-                 this._device.state < NM.DeviceState.ACTIVATED)
-            /* Translators: %s is a network identifier */
-            return _('%s Connecting').format(this._deviceName);
-        else if (ap)
-            return ssidToLabel(ap.get_ssid());
-        else if (!this._client.wireless_hardware_enabled)
-            /* Translators: %s is a network identifier */
-            return _('%s Hardware Disabled').format(this._deviceName);
-        else if (!this._client.wireless_enabled)
-            /* Translators: %s is a network identifier */
-            return _('%s Off').format(this._deviceName);
-        else if (this._device.state == NM.DeviceState.DISCONNECTED)
-            /* Translators: %s is a network identifier */
-            return _('%s Not Connected').format(this._deviceName);
-        else
-            return '';
+            return _('%s Hotspot').format(this._deviceName);
+
+        if (this._activeAccessPoint)
+            return ssidToLabel(this._activeAccessPoint.get_ssid());
+
+        return this._deviceName;
     }
 
     _getMenuIcon() {
