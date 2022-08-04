@@ -399,7 +399,7 @@ st_settings_init (StSettings *settings)
                     G_CALLBACK (on_interface_settings_changed), settings);
 
   settings->mouse_settings = g_settings_new ("org.gnome.desktop.peripherals.mouse");
-  g_signal_connect (settings->interface_settings, "changed",
+  g_signal_connect (settings->mouse_settings, "changed",
                     G_CALLBACK (on_mouse_settings_changed), settings);
 
   settings->a11y_applications_settings = g_settings_new ("org.gnome.desktop.a11y.applications");
