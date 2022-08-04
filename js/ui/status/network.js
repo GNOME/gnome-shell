@@ -1273,6 +1273,7 @@ var NMDeviceWireless = class extends Signals.EventEmitter {
             'notify::active-access-point', this._activeApChanged.bind(this),
             'state-changed', this._deviceStateChanged.bind(this), this);
 
+        this._activeApChanged();
         this._sync();
     }
 
