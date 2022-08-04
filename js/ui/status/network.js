@@ -1329,19 +1329,14 @@ var NMDeviceWireless = class extends Signals.EventEmitter {
         this._dialog = null;
     }
 
-    _strengthChanged() {
-        this._iconChanged();
-    }
-
     _activeApChanged() {
         this._activeAccessPoint?.disconnectObject(this);
-
         this._activeAccessPoint = this._device.active_access_point;
+        this._activeAccessPoint?.connectObject(
+            'notify::strength', () => this._iconChanged(),
+            this);
 
-        this._activeAccessPoint?.connectObject('notify::strength',
-            this._strengthChanged.bind(this), this);
-
-        this._sync();
+        this._iconChanged();
     }
 
     _sync() {
