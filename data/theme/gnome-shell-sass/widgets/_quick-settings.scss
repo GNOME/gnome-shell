@@ -11,7 +11,7 @@
   border-radius: 99px;
   min-width: 11.5em;
   max-width: 11.5em;
-  min-height: 48px;
+  min-height: 44px;
 
   &:checked { @include button(default); }
 
@@ -40,7 +40,9 @@
 }
 
 .quick-slider {
-  padding: $base_padding;
+  padding: 0 $base_padding;
+
+  & > StBoxLayout { spacing: $base_padding; }
 
   .slider-bin {
     &:focus {@include button(focus);}
@@ -53,16 +55,18 @@
 }
 
 .quick-toggle-menu {
-  @include card();
-  padding: 1.5 * $base_padding;
+  background-color: $card_bg_color;
+  border-radius: $base_border_radius*2.75;
+  padding: $base_padding*2.75;
+  margin: 0 $base_padding*2.75;
 
   & .header {
     spacing-rows: 0.5 * $base_padding;
-    spacing-columns: $base_padding;
+    spacing-columns: $base_padding*2;
     padding-bottom: 2 * $base_padding;
 
     & .icon {
-      icon-size: $large_icon_size;
+      icon-size: $base_icon_size*1.5; // a non-standard symbolic size but ok
       border-radius: 999px;
       padding: 1.5 * $base_padding;
       background-color: lighten($bg_color, 10%);

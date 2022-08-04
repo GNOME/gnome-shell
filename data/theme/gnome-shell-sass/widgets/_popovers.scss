@@ -19,7 +19,7 @@
 // popover content
 .popup-menu-content {
   padding: $base_padding;
-  border-radius: $modal_radius - 2px;
+  border-radius: $modal_radius*1.25;
   border: 1px solid $borders_edge;
   box-shadow: 0 2px 4px 0 $shadow_color;
   background-color: $bg_color;
@@ -28,7 +28,7 @@
 // menu items
 .popup-menu-item {
   padding: $base_padding*1.5 $base_padding*2;
-  border-radius: $base_border_radius;
+  border-radius: $base_border_radius*1.5;
   spacing: $base_padding;
   transition-duration: 100ms;
   background-color: transparent;
