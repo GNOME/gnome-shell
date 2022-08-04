@@ -1784,7 +1784,7 @@ class Indicator extends PanelMenu.SystemIndicator {
         this._notification = null;
 
         this._nmDevices = [];
-        this._devices = { };
+        this._deviceSections = new Map();
 
         const categories = [
             NMConnectionCategory.WIRED,
@@ -1792,8 +1792,8 @@ class Indicator extends PanelMenu.SystemIndicator {
             NMConnectionCategory.WWAN,
         ];
         for (let category of categories) {
-            this._devices[category] = new DeviceCategory(category);
-            this.menu.addMenuItem(this._devices[category]);
+            this._deviceSections.set(category, new DeviceCategory(category));
+            this.menu.addMenuItem(this._deviceSections.get(category));
         }
 
         this._vpnSection = new NMVpnSection(this._client);
@@ -1924,10 +1924,10 @@ class Indicator extends PanelMenu.SystemIndicator {
         wrapper.connectObject('activation-failed',
             this._onActivationFailed.bind(this), this);
 
-        let section = this._devices[wrapper.category].section;
+        const {section} = this._deviceSections.get(wrapper.category);
         section.addMenuItem(wrapper.item);
 
-        let devices = this._devices[wrapper.category].devices;
+        const {devices} = this._deviceSections.get(wrapper.category);
         devices.push(wrapper);
     }
 
@@ -1951,7 +1951,7 @@ class Indicator extends PanelMenu.SystemIndicator {
         wrapper.disconnectObject(this);
         wrapper.destroy();
 
-        let devices = this._devices[wrapper.category].devices;
+        const {devices} = this._deviceSections.get(wrapper.category);
         let pos = devices.indexOf(wrapper);
         devices.splice(pos, 1);
     }
@@ -2058,7 +2058,7 @@ class Indicator extends PanelMenu.SystemIndicator {
         if (section == NMConnectionCategory.VPN) {
             this._vpnSection.removeConnection(connection);
         } else {
-            let devices = this._devices[section].devices;
+            const {devices} = this._deviceSections.get(section);
             for (let i = 0; i < devices.length; i++) {
                 if (devices[i] instanceof NMConnectionSection)
                     devices[i].removeConnection(connection);
@@ -2081,7 +2081,7 @@ class Indicator extends PanelMenu.SystemIndicator {
         if (section == NMConnectionCategory.VPN) {
             this._vpnSection.checkConnection(connection);
         } else {
-            let devices = this._devices[section].devices;
+            const {devices} = this._deviceSections.get(section);
             devices.forEach(wrapper => {
                 if (wrapper instanceof NMConnectionSection)
                     wrapper.checkConnection(connection);
