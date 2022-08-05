@@ -337,6 +337,10 @@ var NMConnectionDevice = class NMConnectionDevice extends NMConnectionSection {
         this._autoConnectItem = this.item.menu.addAction(_("Connect"), this._autoConnect.bind(this));
         this._deactivateItem = this._radioSection.addAction(_("Turn Off"), this.deactivateConnection.bind(this));
 
+        this._client.connectObject(
+            'notify::primary-connection', () => this._iconChanged(),
+            this);
+
         this._device.connectObject(
             'state-changed', this._deviceStateChanged.bind(this),
             'notify::active-connection', this._activeConnectionChanged.bind(this),
@@ -1267,7 +1271,9 @@ var NMDeviceWireless = class extends Signals.EventEmitter {
         this._client.connectObject(
             'notify::wireless-enabled', this._sync.bind(this),
             'notify::wireless-hardware-enabled', this._sync.bind(this),
-            'notify::connectivity', this._iconChanged.bind(this), this);
+            'notify::connectivity', () => this._iconChanged(),
+            'notify::primary-connection', () => this._iconChanged(),
+            this);
 
         this._device.connectObject(
             'notify::active-access-point', this._activeApChanged.bind(this),
