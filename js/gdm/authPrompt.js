@@ -351,7 +351,20 @@ var AuthPrompt = GObject.registerClass({
     }
 
     _onShowMessage(_userVerifier, serviceName, message, type) {
-        this.setMessage(serviceName, message, type);
+        let wiggleParameters = { duration: 0 };
+
+        if (type === GdmUtil.MessageType.ERROR &&
+            this._userVerifier.serviceIsFingerprint(serviceName)) {
+            // TODO: Use Await for wiggle to be over before unfreezing the user verifier queue
+            wiggleParameters = {
+                duration: 65,
+                wiggleCount: 3,
+            };
+            this._userVerifier.increaseCurrentMessageTimeout(
+                wiggleParameters.duration * (wiggleParameters.wiggleCount + 2));
+        }
+
+        this.setMessage(message, type, wiggleParameters);
         this.emit('prompted');
     }
 
@@ -525,7 +538,7 @@ var AuthPrompt = GObject.registerClass({
         });
     }
 
-    setMessage(serviceName, message, type) {
+    setMessage(message, type, wiggleParameters = { duration: 0 }) {
         if (type == GdmUtil.MessageType.ERROR)
             this._message.add_style_class_name('login-dialog-message-warning');
         else
@@ -545,17 +558,7 @@ var AuthPrompt = GObject.registerClass({
             this._message.opacity = 0;
         }
 
-        if (type === GdmUtil.MessageType.ERROR &&
-            this._userVerifier.serviceIsFingerprint(serviceName)) {
-            // TODO: Use Await for wiggle to be over before unfreezing the user verifier queue
-            const wiggleParameters = {
-                duration: 65,
-                wiggleCount: 3,
-            };
-            this._userVerifier.increaseCurrentMessageTimeout(
-                wiggleParameters.duration * (wiggleParameters.wiggleCount + 2));
-            Util.wiggle(this._message, wiggleParameters);
-        }
+        Util.wiggle(this._message, wiggleParameters);
     }
 
     updateSensitivity(sensitive) {
