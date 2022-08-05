@@ -1009,6 +1009,9 @@ class NMWirelessNetworkItem extends PopupMenu.PopupBaseMenuItem {
 
 const NMWirelessDeviceItem = GObject.registerClass({
     Properties: {
+        'is-hotspot': GObject.ParamSpec.boolean('is-hotspot', '', '',
+            GObject.ParamFlags.READABLE,
+            false),
         'single-device-mode': GObject.ParamSpec.boolean('single-device-mode', '', '',
             GObject.ParamFlags.READWRITE,
             false),
@@ -1037,6 +1040,7 @@ const NMWirelessDeviceItem = GObject.registerClass({
             'notify::active-access-point', this._activeApChanged.bind(this),
             'notify::active-connection', () => this._activeConnectionChanged(),
             'notify::available-connections', () => this._availableConnectionsChanged(),
+            'state-changed', () => this.notify('is-hotspot'),
             'access-point-added', (d, ap) => {
                 this._addAccessPoint(ap);
                 this._updateItemsVisibility();
@@ -1072,7 +1076,7 @@ const NMWirelessDeviceItem = GObject.registerClass({
             return 'network-wireless-acquiring-symbolic';
 
         case NM.ActiveConnectionState.ACTIVATED: {
-            if (this._isHotSpotMaster())
+            if (this.is_hotspot)
                 return 'network-wireless-hotspot-symbolic';
 
             if (!this._canReachInternet())
@@ -1094,7 +1098,7 @@ const NMWirelessDeviceItem = GObject.registerClass({
     }
 
     get name() {
-        if (this._isHotSpotMaster())
+        if (this.is_hotspot)
             /* Translators: %s is a network identifier */
             return _('%s Hotspot').format(this._deviceName);
 
@@ -1103,6 +1107,21 @@ const NMWirelessDeviceItem = GObject.registerClass({
             return ssidToLabel(ssid);
 
         return this._deviceName;
+    }
+
+    get is_hotspot() {
+        if (!this._device.active_connection)
+            return false;
+
+        const {connection} = this._device.active_connection;
+        if (!connection)
+            return false;
+
+        let ip4config = connection.get_setting_ip4_config();
+        if (!ip4config)
+            return false;
+
+        return ip4config.get_method() === NM.SETTING_IP4_CONFIG_METHOD_SHARED;
     }
 
     _activeApChanged() {
@@ -1206,21 +1225,6 @@ const NMWirelessDeviceItem = GObject.registerClass({
             return true;
 
         return this._client.connectivity === NM.ConnectivityState.FULL;
-    }
-
-    _isHotSpotMaster() {
-        if (!this._device.active_connection)
-            return false;
-
-        let connection = this._device.active_connection.connection;
-        if (!connection)
-            return false;
-
-        let ip4config = connection.get_setting_ip4_config();
-        if (!ip4config)
-            return false;
-
-        return ip4config.get_method() === NM.SETTING_IP4_CONFIG_METHOD_SHARED;
     }
 });
 
