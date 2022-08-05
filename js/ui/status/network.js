@@ -1477,9 +1477,13 @@ var NMWireguardItem = class extends NMConnectionItem {
         }
     }
 
-    _connectionStateChanged(ac, newstate, reason) {
-        if (newstate === NM.ActiveConnectionState.DEACTIVATED &&
-            reason !== NM.ActiveConnectionStateReason.NO_SECRETS)
+    _connectionStateChanged() {
+        const state = this._activeConnection?.get_state();
+        const reason = this._activeConnection?.get_state_reason();
+
+        if (state === NM.ActiveConnectionState.DEACTIVATED &&
+            reason !== NM.ActiveConnectionStateReason.NO_SECRETS &&
+            reason !== NM.ActiveConnectionStateReason.USER_DISCONNECTED)
             this.emit('activation-failed');
 
         this.emit('icon-changed');
