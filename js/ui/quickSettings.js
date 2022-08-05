@@ -123,7 +123,10 @@ var QuickMenuToggle = GObject.registerClass({
 
         this.bind_property('menu-enabled',
             this._menuButton, 'visible',
-            GObject.BindingFlags.DEFAULT);
+            GObject.BindingFlags.SYNC_CREATE);
+        this.bind_property('reactive',
+            this._menuButton, 'reactive',
+            GObject.BindingFlags.SYNC_CREATE);
         this._menuButton.connect('clicked', () => this.menu.open());
         this.connect('popup-menu', () => {
             if (this.menuEnabled)
