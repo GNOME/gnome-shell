@@ -1124,6 +1124,14 @@ const NMWirelessDeviceItem = GObject.registerClass({
         return ip4config.get_method() === NM.SETTING_IP4_CONFIG_METHOD_SHARED;
     }
 
+    activate() {
+        if (!this.is_hotspot)
+            return;
+
+        const {activeConnection} = this._device;
+        this._client.deactivate_connection_async(activeConnection, null, null);
+    }
+
     _activeApChanged() {
         this._activeAccessPoint?.disconnectObject(this);
         this._activeAccessPoint = this._device.active_access_point;
@@ -1690,10 +1698,19 @@ class NMDeviceSection extends NMSection {
     }
 });
 
-const NMWirelessSection = GObject.registerClass(
-class NMWirelessSection extends NMDeviceSection {
+const NMWirelessSection = GObject.registerClass({
+    Properties: {
+        'menu-enabled': GObject.ParamSpec.boolean('menu-enabled', '', '',
+            GObject.ParamFlags.READWRITE,
+            false),
+    },
+}, class NMWirelessSection extends NMDeviceSection {
     constructor() {
         super(NM.DeviceType.WIFI);
+
+        this._itemBinding.bind('is-hotspot',
+            this, 'menu-enabled',
+            GObject.BindingFlags.INVERT_BOOLEAN);
 
         this.menu.addSettingsAction(_('All Networks'),
             'gnome-wifi-panel.desktop');
@@ -1711,7 +1728,11 @@ class NMWirelessSection extends NMDeviceSection {
     }
 
     activate() {
-        this._client.wireless_enabled = !this._client.wireless_enabled;
+        const primaryItem = this._itemBinding.source;
+        if (primaryItem?.is_hotspot)
+            primaryItem.activate();
+        else
+            this._client.wireless_enabled = !this._client.wireless_enabled;
     }
 
     _createDeviceMenuItem(device) {
@@ -1720,6 +1741,14 @@ class NMWirelessSection extends NMDeviceSection {
 
     _updateChecked() {
         // handled via a property binding
+    }
+
+    _getPrimaryItem() {
+        const hotspot = [...this._items.values()].find(i => i.is_hotspot);
+        if (hotspot)
+            return hotspot;
+
+        return super._getPrimaryItem();
     }
 
     _shouldShowDevice(device) {
