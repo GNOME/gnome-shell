@@ -265,7 +265,7 @@ var NMConnectionSection = class NMConnectionSection extends Signals.EventEmitter
         this._client = client;
 
         this._connectionItems = new Map();
-        this._connections = [];
+        this._itemsOrder = [];
 
         this._section = new PopupMenu.PopupMenuSection();
 
@@ -306,8 +306,8 @@ var NMConnectionSection = class NMConnectionSection extends Signals.EventEmitter
         return true;
     }
 
-    _connectionSortFunction(one, two) {
-        return GLib.utf8_collate(one.get_id(), two.get_id());
+    _itemSortFunction(one, two) {
+        return GLib.utf8_collate(one.name, two.name);
     }
 
     _makeConnectionItem(connection) {
@@ -335,13 +335,13 @@ var NMConnectionSection = class NMConnectionSection extends Signals.EventEmitter
     }
 
     _updateForConnection(item, connection) {
-        let pos = this._connections.indexOf(connection);
-
-        this._connections.splice(pos, 1);
-        pos = Util.insertSorted(this._connections, connection, this._connectionSortFunction.bind(this));
-        this._section.moveMenuItem(item, pos);
-
         item.updateForConnection(connection);
+
+        let pos = this._itemsOrder.indexOf(item);
+
+        this._itemsOrder.splice(pos, 1);
+        pos = Util.insertSorted(this._itemsOrder, item, this._itemSortFunction.bind(this));
+        this._section.moveMenuItem(item, pos);
     }
 
     _addConnection(connection) {
@@ -353,7 +353,7 @@ var NMConnectionSection = class NMConnectionSection extends Signals.EventEmitter
         item.connect('activation-failed', () => this.emit('activation-failed'));
         item.connect('notify::name', this._sync.bind(this));
 
-        let pos = Util.insertSorted(this._connections, connection, this._connectionSortFunction.bind(this));
+        let pos = Util.insertSorted(this._itemsOrder, item, this._itemSortFunction.bind(this));
         this._section.addMenuItem(item, pos);
         this._connectionItems.set(connection.get_uuid(), item);
         this._sync();
@@ -365,11 +365,11 @@ var NMConnectionSection = class NMConnectionSection extends Signals.EventEmitter
         if (item == undefined)
             return;
 
+        const pos = this._itemsOrder.indexOf(item);
+        this._itemsOrder.splice(pos, 1);
+
         item.destroy();
         this._connectionItems.delete(uuid);
-
-        let pos = this._connections.indexOf(connection);
-        this._connections.splice(pos, 1);
 
         this._sync();
     }
