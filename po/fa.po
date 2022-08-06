@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2022-08-03 06:09+0000\n"
-"PO-Revision-Date: 2022-08-07 03:21+0430\n"
+"POT-Creation-Date: 2022-08-03 12:39+0000\n"
+"PO-Revision-Date: 2022-08-07 04:10+0430\n"
 "Last-Translator: Danial Behzadi <dani.behzi@ubuntu.com>\n"
 "Language-Team: Persian <>\n"
 "Language: fa\n"
@@ -240,6 +240,19 @@ msgid ""
 msgstr ""
 "پوسته تنها زمانی فهرست بلوتوث را نمایش می‌دهد که آداپتور بلوتوث روشن باشد، یا "
 "دستگاه‌هایی به گونه‌ای تنظیم شده باشند که به آداپتور پیش‌گزیده متّصل شوند."
+
+#: data/org.gnome.shell.gschema.xml.in:99
+msgid "The last selected non-default power profile"
+msgstr "آخرین نمایهٔ نیروی گزیدهٔ غیر پیش فرض"
+
+#: data/org.gnome.shell.gschema.xml.in:100
+msgid ""
+"Some systems support more than two power profiles. In order to still support "
+"toggling between two profiles, this key records the last selected non-default "
+"profile."
+msgstr ""
+"برخی سامانه‌ها بیش از دو نمایهٔ نیرو را پشتیبانی می‌کنند. به منظور ادامهٔ پشتیبانی از "
+"تغییر وضعیت بین دو نمایه، این ملید آخرین نمایهٔ نیروی گزیدهٔ غیر پیش‌فرض را ضبط می‌کند."
 
 #: data/org.gnome.shell.gschema.xml.in:108
 msgid "The last version the “Welcome to GNOME” dialog was shown for"
