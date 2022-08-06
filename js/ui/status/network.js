@@ -8,6 +8,7 @@ const MessageTray = imports.ui.messageTray;
 const ModemManager = imports.misc.modemManager;
 const Util = imports.misc.util;
 
+const {Spinner} = imports.ui.animation;
 const {QuickMenuToggle, SystemIndicator} = imports.ui.quickSettings;
 
 const {loadInterfaceXML} = imports.misc.fileUtils;
@@ -16,7 +17,9 @@ const {registerDestroyableType} = imports.misc.signalTracker;
 Gio._promisify(Gio.DBusConnection.prototype, 'call');
 Gio._promisify(NM.Client, 'new_async');
 Gio._promisify(NM.Client.prototype, 'check_connectivity_async');
+Gio._promisify(NM.DeviceWifi.prototype, 'request_scan_async');
 
+const WIFI_SCAN_FREQUENCY = 15;
 const MAX_VISIBLE_NETWORKS = 8;
 
 // small optimization, to avoid using [] all the time
@@ -1698,7 +1701,17 @@ class NMWirelessToggle extends NMDeviceToggle {
             this, 'menu-enabled',
             GObject.BindingFlags.INVERT_BOOLEAN);
 
+        this._scanningSpinner = new Spinner(16);
+
+        this.menu.connectObject('open-state-changed', (m, isOpen) => {
+            if (isOpen)
+                this._startScanning();
+            else
+                this._stopScanning();
+        });
+
         this.menu.setHeader('network-wireless-symbolic', _('Wi–Fi'));
+        this.menu.addHeaderSuffix(this._scanningSpinner);
         this.menu.addSettingsAction(_('All Networks'),
             'gnome-wifi-panel.desktop');
     }
@@ -1720,6 +1733,51 @@ class NMWirelessToggle extends NMDeviceToggle {
             primaryItem.activate();
         else
             this._client.wireless_enabled = !this._client.wireless_enabled;
+    }
+
+    async _scanDevice(device) {
+        const {lastScan} = device;
+        await device.request_scan_async(null);
+
+        // Wait for the lastScan property to update, which
+        // indicates the end of the scan
+        return new Promise(resolve => {
+            GLib.timeout_add(GLib.PRIORITY_DEFAULT, 1500, () => {
+                if (device.lastScan === lastScan)
+                    return GLib.SOURCE_CONTINUE;
+
+                resolve();
+                return GLib.SOURCE_REMOVE;
+            });
+        });
+    }
+
+    async _scanDevices() {
+        if (!this._client.wireless_enabled)
+            return;
+
+        this._scanningSpinner.play();
+
+        const devices = [...this._items.keys()];
+        await Promise.all(
+            devices.map(d => this._scanDevice(d)));
+
+        this._scanningSpinner.stop();
+    }
+
+    _startScanning() {
+        this._scanTimeoutId = GLib.timeout_add_seconds(
+            GLib.PRIORITY_DEFAULT, WIFI_SCAN_FREQUENCY, () => {
+                this._scanDevices().catch(logError);
+                return GLib.SOURCE_CONTINUE;
+            });
+        this._scanDevices().catch(logError);
+    }
+
+    _stopScanning() {
+        if (this._scanTimeoutId)
+            GLib.source_remove(this._scanTimeoutId);
+        delete this._scanTimeoutId;
     }
 
     _createDeviceMenuItem(device) {
