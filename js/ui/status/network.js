@@ -1342,6 +1342,9 @@ const NMSection = GObject.registerClass({
 
         this._client?.disconnectObject(this);
         this._client = client;
+        this._client?.connectObject(
+            'notify::networking-enabled', () => this._sync(),
+            this);
 
         this._items.forEach(item => item.destroy());
         this._items.clear();
@@ -1461,7 +1464,8 @@ const NMSection = GObject.registerClass({
     }
 
     _sync() {
-        this.visible = this._items.size > 0;
+        this.visible =
+            this._client?.networking_enabled && this._items.size > 0;
         this._updateItemsVisibility();
         this._updateChecked();
         this._itemBinding.source = this._getPrimaryItem();
@@ -1874,9 +1878,6 @@ class Indicator extends PanelMenu.SystemIndicator {
 
         this._client.bind_property('nm-running',
             this, 'visible',
-            GObject.BindingFlags.SYNC_CREATE);
-        this._client.bind_property('networking-enabled',
-            this.menu.actor, 'visible',
             GObject.BindingFlags.SYNC_CREATE);
 
         this._client.connectObject(
