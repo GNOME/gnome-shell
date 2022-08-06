@@ -1,15 +1,12 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported NMApplet */
-const {Atk, Clutter, Gio, GLib, GObject, Meta, NM, Polkit, St} = imports.gi;
+const {Atk, Clutter, Gio, GLib, GObject, NM, Polkit, St} = imports.gi;
 
-const Animation = imports.ui.animation;
 const Main = imports.ui.main;
 const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
 const MessageTray = imports.ui.messageTray;
-const ModalDialog = imports.ui.modalDialog;
 const ModemManager = imports.misc.modemManager;
-const Rfkill = imports.ui.status.rfkill;
 const Util = imports.misc.util;
 
 const {loadInterfaceXML} = imports.misc.fileUtils;
@@ -28,6 +25,7 @@ const NMConnectionCategory = {
     VPN: 'vpn',
 };
 
+const MAX_VISIBLE_NETWORKS = 8;
 var MAX_DEVICE_ITEMS = 4;
 
 // small optimization, to avoid using [] all the time
@@ -952,52 +950,34 @@ const WirelessNetwork = GObject.registerClass({
 });
 registerDestroyableType(WirelessNetwork);
 
-var NMWirelessDialogItem = GObject.registerClass({
-    Signals: {
-        'selected': {},
-    },
-}, class NMWirelessDialogItem extends St.BoxLayout {
+const NMWirelessNetworkItem = GObject.registerClass(
+class NMWirelessNetworkItem extends PopupMenu.PopupBaseMenuItem {
     _init(network) {
+        super._init({style_class: 'nm-network-item'});
+
         this._network = network;
 
-        super._init({
-            style_class: 'nm-dialog-item',
-            can_focus: true,
-            reactive: true,
+        const icons = new St.BoxLayout();
+        this.add_child(icons);
+
+        this._signalIcon = new St.Icon({style_class: 'popup-menu-icon'});
+        icons.add_child(this._signalIcon);
+
+        this._secureIcon = new St.Icon({
+            style_class: 'wireless-secure-icon',
+            y_align: Clutter.ActorAlign.END,
         });
+        icons.add_actor(this._secureIcon);
 
-        let action = new Clutter.ClickAction();
-        action.connect('clicked', () => this.grab_key_focus());
-        this.add_action(action);
-
-        this._label = new St.Label({
-            x_expand: true,
-        });
-
+        this._label = new St.Label();
         this.label_actor = this._label;
         this.add_child(this._label);
 
         this._selectedIcon = new St.Icon({
-            style_class: 'nm-dialog-icon nm-dialog-network-selected',
+            style_class: 'popup-menu-icon',
             icon_name: 'object-select-symbolic',
         });
         this.add(this._selectedIcon);
-
-        this._icons = new St.BoxLayout({
-            style_class: 'nm-dialog-icons',
-            x_align: Clutter.ActorAlign.END,
-        });
-        this.add_child(this._icons);
-
-        this._secureIcon = new St.Icon({
-            style_class: 'nm-dialog-icon',
-        });
-        this._icons.add_actor(this._secureIcon);
-
-        this._signalIcon = new St.Icon({
-            style_class: 'nm-dialog-icon',
-        });
-        this._icons.add_actor(this._signalIcon);
 
         this._network.bind_property('icon-name',
             this._signalIcon, 'icon-name',
@@ -1018,321 +998,6 @@ var NMWirelessDialogItem = GObject.registerClass({
     get network() {
         return this._network;
     }
-
-    vfunc_key_focus_in() {
-        this.emit('selected');
-    }
-});
-
-var NMWirelessDialog = GObject.registerClass(
-class NMWirelessDialog extends ModalDialog.ModalDialog {
-    _init(client, device) {
-        super._init({ styleClass: 'nm-dialog' });
-
-        this._client = client;
-        this._device = device;
-
-        this._client.connectObject('notify::wireless-enabled',
-            this._syncView.bind(this), this);
-
-        this._rfkill = Rfkill.getRfkillManager();
-        this._rfkill.connectObject(
-            'notify::airplane-mode', () => this._syncView(),
-            'notify::hw-airplane-mode', () => this._syncView(),
-            this);
-
-        this._networkItems = new Map();
-        this._buildLayout();
-
-        let connections = client.get_connections();
-        this._connections = connections.filter(
-            connection => device.connection_valid(connection));
-
-        device.connectObject(
-            'notify::active-access-point', () => this._updateSensitivity(),
-            'notify::available-connections', () => this._availableConnectionsChanged(),
-            'access-point-added', (d, ap) => {
-                this._addAccessPoint(ap);
-                this._syncNetworksList();
-                this._syncView();
-            },
-            'access-point-removed', (d, ap) => {
-                this._removeAccessPoint(ap);
-                this._syncNetworksList();
-                this._syncView();
-            },
-            this);
-
-        for (const ap of this._device.get_access_points())
-            this._addAccessPoint(ap);
-
-        this._selectedNetwork = null;
-        this._availableConnectionsChanged();
-        this._updateSensitivity();
-        this._syncView();
-
-        this._scanTimeoutId = GLib.timeout_add_seconds(GLib.PRIORITY_DEFAULT, 15, this._onScanTimeout.bind(this));
-        GLib.Source.set_name_by_id(this._scanTimeoutId, '[gnome-shell] this._onScanTimeout');
-        this._onScanTimeout();
-
-        let id = Main.sessionMode.connect('updated', () => {
-            if (Main.sessionMode.allowSettings)
-                return;
-
-            Main.sessionMode.disconnect(id);
-            this.close();
-        });
-
-        this.connect('destroy', this._onDestroy.bind(this));
-    }
-
-    _onDestroy() {
-        if (this._scanTimeoutId) {
-            GLib.source_remove(this._scanTimeoutId);
-            this._scanTimeoutId = 0;
-        }
-
-        if (this._syncVisibilityId) {
-            Meta.later_remove(this._syncVisibilityId);
-            this._syncVisibilityId = 0;
-        }
-    }
-
-    _onScanTimeout() {
-        this._device.request_scan_async(null, null);
-        return GLib.SOURCE_CONTINUE;
-    }
-
-    _availableConnectionsChanged() {
-        const connections = this._device.get_available_connections();
-        for (const net of this._networkItems.keys())
-            net.checkConnections(connections);
-        this._syncNetworksList();
-    }
-
-    _updateSensitivity() {
-        const connectSensitive =
-            this._client.wireless_enabled && this._selectedNetwork && !this._selectedNetwork.isActive;
-        this._connectButton.reactive = connectSensitive;
-        this._connectButton.can_focus = connectSensitive;
-    }
-
-    _syncView() {
-        if (this._rfkill.airplaneMode) {
-            this._airplaneBox.show();
-
-            this._airplaneIcon.icon_name = 'airplane-mode-symbolic';
-            this._airplaneHeadline.text = _("Airplane Mode is On");
-            this._airplaneText.text = _("Wi-Fi is disabled when airplane mode is on.");
-            this._airplaneButton.label = _("Turn Off Airplane Mode");
-
-            this._airplaneButton.visible = !this._rfkill.hwAirplaneMode;
-            this._airplaneInactive.visible = this._rfkill.hwAirplaneMode;
-            this._noNetworksBox.hide();
-        } else if (!this._client.wireless_enabled) {
-            this._airplaneBox.show();
-
-            this._airplaneIcon.icon_name = 'dialog-information-symbolic';
-            this._airplaneHeadline.text = _("Wi-Fi is Off");
-            this._airplaneText.text = _("Wi-Fi needs to be turned on in order to connect to a network.");
-            this._airplaneButton.label = _("Turn On Wi-Fi");
-
-            this._airplaneButton.show();
-            this._airplaneInactive.hide();
-            this._noNetworksBox.hide();
-        } else {
-            this._airplaneBox.hide();
-
-            this._noNetworksBox.visible = this._networkItems.size === 0;
-        }
-
-        if (this._noNetworksBox.visible)
-            this._noNetworksSpinner.play();
-        else
-            this._noNetworksSpinner.stop();
-    }
-
-    _buildLayout() {
-        let headline = new St.BoxLayout({ style_class: 'nm-dialog-header-hbox' });
-
-        const icon = new St.Icon({
-            style_class: 'nm-dialog-header-icon',
-            icon_name: 'network-wireless-symbolic',
-        });
-
-        let titleBox = new St.BoxLayout({ vertical: true });
-        const title = new St.Label({
-            style_class: 'nm-dialog-header',
-            text: _('Wi-Fi Networks'),
-        });
-        const subtitle = new St.Label({
-            style_class: 'nm-dialog-subheader',
-            text: _('Select a network'),
-        });
-        titleBox.add(title);
-        titleBox.add(subtitle);
-
-        headline.add(icon);
-        headline.add(titleBox);
-
-        this.contentLayout.style_class = 'nm-dialog-content';
-        this.contentLayout.add(headline);
-
-        this._stack = new St.Widget({
-            layout_manager: new Clutter.BinLayout(),
-            y_expand: true,
-        });
-
-        this._itemBox = new St.BoxLayout({ vertical: true });
-        this._scrollView = new St.ScrollView({ style_class: 'nm-dialog-scroll-view' });
-        this._scrollView.set_x_expand(true);
-        this._scrollView.set_y_expand(true);
-        this._scrollView.set_policy(St.PolicyType.NEVER,
-                                    St.PolicyType.AUTOMATIC);
-        this._scrollView.add_actor(this._itemBox);
-        this._stack.add_child(this._scrollView);
-
-        this._noNetworksBox = new St.BoxLayout({
-            vertical: true,
-            style_class: 'no-networks-box',
-            x_align: Clutter.ActorAlign.CENTER,
-            y_align: Clutter.ActorAlign.CENTER,
-        });
-
-        this._noNetworksSpinner = new Animation.Spinner(16);
-        this._noNetworksBox.add_actor(this._noNetworksSpinner);
-        this._noNetworksBox.add_actor(new St.Label({
-            style_class: 'no-networks-label',
-            text: _('No Networks'),
-        }));
-        this._stack.add_child(this._noNetworksBox);
-
-        this._airplaneBox = new St.BoxLayout({
-            vertical: true,
-            style_class: 'nm-dialog-airplane-box',
-            x_align: Clutter.ActorAlign.CENTER,
-            y_align: Clutter.ActorAlign.CENTER,
-        });
-        this._airplaneIcon = new St.Icon({ icon_size: 48 });
-        this._airplaneHeadline = new St.Label({ style_class: 'nm-dialog-airplane-headline headline' });
-        this._airplaneText = new St.Label({ style_class: 'nm-dialog-airplane-text' });
-
-        let airplaneSubStack = new St.Widget({ layout_manager: new Clutter.BinLayout() });
-        this._airplaneButton = new St.Button({ style_class: 'modal-dialog-button button' });
-        this._airplaneButton.connect('clicked', () => {
-            if (this._rfkill.airplaneMode)
-                this._rfkill.airplaneMode = false;
-            else
-                this._client.wireless_enabled = true;
-        });
-        airplaneSubStack.add_actor(this._airplaneButton);
-        this._airplaneInactive = new St.Label({
-            style_class: 'nm-dialog-airplane-text',
-            text: _('Use hardware switch to turn off'),
-        });
-        airplaneSubStack.add_actor(this._airplaneInactive);
-
-        this._airplaneBox.add_child(this._airplaneIcon);
-        this._airplaneBox.add_child(this._airplaneHeadline);
-        this._airplaneBox.add_child(this._airplaneText);
-        this._airplaneBox.add_child(airplaneSubStack);
-        this._stack.add_child(this._airplaneBox);
-
-        this.contentLayout.add_child(this._stack);
-
-        this._disconnectButton = this.addButton({
-            action: () => this.close(),
-            label: _('Cancel'),
-            key: Clutter.KEY_Escape,
-        });
-        this._connectButton = this.addButton({
-            action: this._connect.bind(this),
-            label: _('Connect'),
-            key: Clutter.KEY_Return,
-        });
-    }
-
-    _connect() {
-        this._selectedNetwork?.activate();
-        this.close();
-    }
-
-    _addAccessPoint(ap) {
-        if (ap.get_ssid() == null) {
-            // This access point is not visible yet
-            // Wait for it to get a ssid
-            ap.connectObject('notify::ssid', () => {
-                if (!ap.ssid)
-                    return;
-                ap.disconnectObject(this);
-                this._addAccessPoint(ap);
-            }, this);
-            return;
-        }
-
-        let network = [...this._networkItems.keys()]
-            .find(n => n.checkAccessPoint(ap));
-
-        if (!network) {
-            network = new WirelessNetwork(this._device);
-            network.connectObject(
-                'notify::icon-name', () => this._syncNetworksList(),
-                'notify::is-active', () => this._syncNetworksList(),
-                this);
-            const item = this._createNetworkItem(network);
-            this._itemBox.add_child(item);
-            this._networkItems.set(network, item);
-        }
-
-        network.addAccessPoint(ap);
-    }
-
-    _removeAccessPoint(ap) {
-        const network = [...this._networkItems.keys()]
-            .find(n => n.removeAccessPoint(ap));
-
-        if (!network || network.hasAccessPoints())
-            return;
-
-        this._networkItems.get(network)?.destroy();
-        this._networkItems.delete(network);
-        network.destroy();
-    }
-
-    _syncNetworksList() {
-        const {hasWindows} = Main.sessionMode;
-        const sortedItems = [...this._networkItems.values()]
-            .sort((one, two) => one.network.compare(two.network));
-
-        for (const [index, item] of sortedItems.entries())
-            this._itemBox.set_child_at_index(item, index);
-
-        for (const [net, item] of this._networkItems) {
-            item.visible =
-                hasWindows || net.hasConnections() || net.canAutoconnect();
-        }
-    }
-
-    _selectNetwork(network) {
-        this._networkItems.get(this._selectedNetwork)?.remove_style_pseudo_class('selected');
-        this._selectedNetwork = network;
-        this._updateSensitivity();
-        this._networkItems.get(this._selectedNetwork)?.add_style_pseudo_class('selected');
-    }
-
-    _createNetworkItem(network) {
-        const item = new NMWirelessDialogItem(network);
-        item.connect('selected', () => {
-            Util.ensureActorVisibleInScrollView(this._scrollView, item);
-            this._selectNetwork(network);
-        });
-        item.connect('destroy', () => {
-            let keyFocus = global.stage.key_focus;
-            if (keyFocus && keyFocus.contains(item))
-                this._itemBox.grab_key_focus();
-        });
-        return item;
-    }
 });
 
 const NMWirelessDeviceItem = GObject.registerClass({
@@ -1347,23 +1012,17 @@ const NMWirelessDeviceItem = GObject.registerClass({
         this._device = device;
 
         this._deviceName = '';
-        this.useSubmenu = true;
 
-        this.section.addAction(_('Select Network'), this._showDialog.bind(this));
-
-        this._toggleItem = new PopupMenu.PopupMenuItem('');
-        this._toggleItem.connect('activate', this._toggleWifi.bind(this));
-        this.section.addMenuItem(this._toggleItem);
+        this._networkItems = new Map();
+        this._itemSorter = new ItemSorter({
+            sortFunc: (one, two) => one.network.compare(two.network),
+        });
 
         this.section.addSettingsAction(_('Wi-Fi Settings'),
             'gnome-wifi-panel.desktop');
 
         this._client.connectObject(
-            'notify::wireless-enabled', () => {
-                this.notify('icon-name');
-                this._sync();
-            },
-            'notify::wireless-hardware-enabled', this._sync.bind(this),
+            'notify::wireless-enabled', () => this.notify('icon-name'),
             'notify::connectivity', () => this.notify('icon-name'),
             'notify::primary-connection', () => this.notify('icon-name'),
             this);
@@ -1371,16 +1030,28 @@ const NMWirelessDeviceItem = GObject.registerClass({
         this._device.connectObject(
             'notify::active-access-point', this._activeApChanged.bind(this),
             'notify::active-connection', () => this._activeConnectionChanged(),
-            'state-changed', this._deviceStateChanged.bind(this), this);
+            'state-changed', this._deviceStateChanged.bind(this),
+            'notify::available-connections', () => this._availableConnectionsChanged(),
+            'access-point-added', (d, ap) => {
+                this._addAccessPoint(ap);
+                this._updateItemsVisibility();
+            },
+            'access-point-removed', (d, ap) => {
+                this._removeAccessPoint(ap);
+                this._updateItemsVisibility();
+            }, this);
 
-        this.connect('destroy', () => {
-            this._dialog?.destroy();
-            this._dialog = null;
-        });
+        Main.sessionMode.connectObject('updated',
+            () => this._updateItemsVisibility(),
+            this);
+
+        for (const ap of this._device.get_access_points())
+            this._addAccessPoint(ap);
 
         this._activeApChanged();
         this._activeConnectionChanged();
-        this._sync();
+        this._availableConnectionsChanged();
+        this._updateItemsVisibility();
     }
 
     get category() {
@@ -1445,20 +1116,6 @@ const NMWirelessDeviceItem = GObject.registerClass({
         this._sync();
     }
 
-    _toggleWifi() {
-        this._client.wireless_enabled = !this._client.wireless_enabled;
-    }
-
-    _showDialog() {
-        this._dialog = new NMWirelessDialog(this._client, this._device);
-        this._dialog.connect('closed', this._dialogClosed.bind(this));
-        this._dialog.open();
-    }
-
-    _dialogClosed() {
-        this._dialog = null;
-    }
-
     _activeApChanged() {
         this._activeAccessPoint?.disconnectObject(this);
         this._activeAccessPoint = this._device.active_access_point;
@@ -1475,9 +1132,79 @@ const NMWirelessDeviceItem = GObject.registerClass({
         this._setActiveConnection(this._device.active_connection);
     }
 
-    _sync() {
-        this._toggleItem.label.text = this._client.wireless_enabled ? _("Turn Off") : _("Turn On");
-        this._toggleItem.visible = this._client.wireless_hardware_enabled;
+    _availableConnectionsChanged() {
+        const connections = this._device.get_available_connections();
+        for (const net of this._networkItems.keys())
+            net.checkConnections(connections);
+    }
+
+    _addAccessPoint(ap) {
+        if (ap.get_ssid() == null) {
+            // This access point is not visible yet
+            // Wait for it to get a ssid
+            ap.connectObject('notify::ssid', () => {
+                if (!ap.ssid)
+                    return;
+                ap.disconnectObject(this);
+                this._addAccessPoint(ap);
+            }, this);
+            return;
+        }
+
+        let network = [...this._networkItems.keys()]
+            .find(n => n.checkAccessPoint(ap));
+
+        if (!network) {
+            network = new WirelessNetwork(this._device);
+
+            const item = new NMWirelessNetworkItem(network);
+            item.connect('activate', () => network.activate());
+
+            network.connectObject(
+                'notify::icon-name', () => this._resortItem(item),
+                'notify::is-active', () => this._resortItem(item),
+                this);
+
+            const pos = this._itemSorter.upsert(item);
+            this.section.addMenuItem(item, pos);
+            this._networkItems.set(network, item);
+        }
+
+        network.addAccessPoint(ap);
+    }
+
+    _removeAccessPoint(ap) {
+        const network = [...this._networkItems.keys()]
+            .find(n => n.removeAccessPoint(ap));
+
+        if (!network || network.hasAccessPoints())
+            return;
+
+        const item = this._networkItems.get(network);
+        this._itemSorter.delete(item);
+        this._networkItems.delete(network);
+
+        item?.destroy();
+        network.destroy();
+    }
+
+    _resortItem(item) {
+        const pos = this._itemSorter.upsert(item);
+        this.section.moveMenuItem(item, pos);
+
+        this._updateItemsVisibility();
+    }
+
+    _updateItemsVisibility() {
+        const {hasWindows} = Main.sessionMode;
+
+        let nVisible = 0;
+        for (const item of this._itemSorter) {
+            const {network: net} = item;
+            item.visible =
+                (hasWindows || net.hasConnections() || net.canAutoconnect()) &&
+                nVisible++ < MAX_VISIBLE_NETWORKS;
+        }
     }
 
     setDeviceName(name) {

@@ -23,7 +23,6 @@ theme_sources = files([
   'gnome-shell-sass/widgets/_looking-glass.scss',
   'gnome-shell-sass/widgets/_message-list.scss',
   'gnome-shell-sass/widgets/_misc.scss',
-  'gnome-shell-sass/widgets/_network-dialog.scss',
   'gnome-shell-sass/widgets/_notifications.scss',
   'gnome-shell-sass/widgets/_osd.scss',
   'gnome-shell-sass/widgets/_overview.scss',

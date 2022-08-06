@@ -101,3 +101,7 @@
     }
   }
 }
+
+.nm-network-item {
+  .wireless-secure-icon { icon-size: 0.5 * $base_icon_size; }
+}
