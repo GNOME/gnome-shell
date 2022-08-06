@@ -192,7 +192,7 @@ const NMConnectionItem = GObject.registerClass({
 
     _sync() {
         if (this.radioMode) {
-            this._label.text = this._connection.get_id();
+            this._label.text = this.name;
             this.accessible_role = Atk.Role.CHECK_MENU_ITEM;
         } else {
             this._label.text = this._getRegularLabel();
@@ -232,6 +232,29 @@ const NMConnectionItem = GObject.registerClass({
     }
 });
 
+const NMDeviceConnectionItem = GObject.registerClass({
+    Properties: {
+        'device-name': GObject.ParamSpec.string('device-name', '', '',
+            GObject.ParamFlags.READWRITE,
+            ''),
+    },
+}, class NMDeviceConnectionItem extends NMConnectionItem {
+    constructor(section, connection) {
+        super(section, connection);
+
+        this.connectObject(
+            'notify::radio-mode', () => this.notify('name'),
+            'notify::device-name', () => this.notify('name'),
+            this);
+    }
+
+    get name() {
+        return this.radioMode
+            ?  this._connection.get_id()
+            : this.deviceName;
+    }
+});
+
 var NMConnectionSection = class NMConnectionSection extends Signals.EventEmitter {
     constructor(client) {
         super();
@@ -259,6 +282,8 @@ var NMConnectionSection = class NMConnectionSection extends Signals.EventEmitter
     }
 
     _iconChanged() {
+        this._connectionItems.forEach(
+            item => (item.icon_name = this.getIndicatorIcon()));
         this._sync();
         this.emit('icon-changed');
     }
@@ -422,6 +447,10 @@ var NMDeviceItem = class NMDeviceItem extends NMConnectionSection {
         return this._device.connection_valid(connection);
     }
 
+    _makeConnectionItem(connection) {
+        return new NMDeviceConnectionItem(this, connection);
+    }
+
     activateConnection(connection) {
         this._client.activate_connection_async(connection, this._device, null, null, null);
     }
@@ -432,6 +461,8 @@ var NMDeviceItem = class NMDeviceItem extends NMConnectionSection {
 
     setDeviceName(name) {
         this._deviceName = name;
+        this._connectionItems.forEach(
+            item => (item.deviceName = this._getDescription()));
         this._sync();
     }
 
@@ -1448,10 +1479,6 @@ class NMVpnConnectionItem extends NMConnectionItem {
             GObject.BindingFlags.SYNC_CREATE);
     }
 
-    get name() {
-        return this._connection?.get_id() ?? '';
-    }
-
     _updateOrnament() {
         this.setOrnament(PopupMenu.Ornament.NONE);
     }
@@ -1487,6 +1514,9 @@ class NMVpnConnectionItem extends NMConnectionItem {
         default:
             return 'network-vpn-disabled-symbolic';
         }
+    }
+
+    set icon_name(_ignored) {
     }
 });
 
