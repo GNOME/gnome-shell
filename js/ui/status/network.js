@@ -410,7 +410,7 @@ var NMConnectionDevice = class NMConnectionDevice extends NMConnectionSection {
 
     _sync() {
         let nItems = this._connectionItems.size;
-        this._autoConnectItem.visible = nItems == 0;
+        this._autoConnectItem.visible = nItems === 0;
         this._deactivateItem.visible = this._device.state > NM.DeviceState.DISCONNECTED;
 
         if (this._activeConnection == null) {
@@ -1392,10 +1392,10 @@ var NMDeviceWireless = class extends Signals.EventEmitter {
     }
 
     _canReachInternet() {
-        if (this._client.primary_connection != this._device.active_connection)
+        if (this._client.primary_connection !== this._device.active_connection)
             return true;
 
-        return this._client.connectivity == NM.ConnectivityState.FULL;
+        return this._client.connectivity === NM.ConnectivityState.FULL;
     }
 
     _isHotSpotMaster() {
@@ -1410,7 +1410,7 @@ var NMDeviceWireless = class extends Signals.EventEmitter {
         if (!ip4config)
             return false;
 
-        return ip4config.get_method() == NM.SETTING_IP4_CONFIG_METHOD_SHARED;
+        return ip4config.get_method() === NM.SETTING_IP4_CONFIG_METHOD_SHARED;
     }
 
     getIndicatorIcon() {
@@ -1995,8 +1995,8 @@ class Indicator extends PanelMenu.SystemIndicator {
     }
 
     _mainConnectionStateChanged() {
-        if (this._mainConnection.state == NM.ActiveConnectionState.ACTIVATED && this._notification)
-            this._notification.destroy();
+        if (this._mainConnection.state === NM.ActiveConnectionState.ACTIVATED)
+            this._notification?.destroy();
     }
 
     _ignoreConnection(connection) {
