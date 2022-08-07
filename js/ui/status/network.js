@@ -1890,20 +1890,16 @@ class Indicator extends PanelMenu.SystemIndicator {
         try {
             this._configPermission = await Polkit.Permission.new(
                 'org.freedesktop.NetworkManager.network-control', null, null);
+
+            this._allSections.forEach(section => {
+                this._configPermission.bind_property('allowed',
+                    section, 'reactive',
+                    GObject.BindingFlags.SYNC_CREATE);
+            });
         } catch (e) {
             log(`No permission to control network connections: ${e}`);
             this._configPermission = null;
         }
-
-        Main.sessionMode.connect('updated', this._sessionUpdated.bind(this));
-        this._sessionUpdated();
-    }
-
-    _sessionUpdated() {
-        const sensitive =
-            !Main.sessionMode.isLocked &&
-            this._configPermission && this._configPermission.allowed;
-        this.menu.setSensitive(sensitive);
     }
 
     _onActivationFailed() {
