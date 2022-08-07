@@ -1472,6 +1472,7 @@ const NMVpnConnectionItem = GObject.registerClass({
         super(section, connection);
 
         this._label.x_expand = true;
+        this.radioMode = true;
 
         this._switch = new PopupMenu.Switch(this.is_active);
         this.add_child(this._switch);
@@ -1547,7 +1548,6 @@ var NMVpnSection = class extends PopupMenu.PopupMenuSection {
             this);
 
         this._loadInitialItems();
-        this._sync();
     }
 
     _loadInitialItems() {
@@ -1568,8 +1568,6 @@ var NMVpnSection = class extends PopupMenu.PopupMenuSection {
 
         for (const a of activeConnections)
             this._items.get(a.connection)?.setActiveConnection(a);
-
-        this._sync();
     }
 
     _shouldHandleConnection(connection) {
@@ -1619,8 +1617,6 @@ var NMVpnSection = class extends PopupMenu.PopupMenuSection {
         this._items.set(connection, item);
         const pos = this._itemSorter.upsert(item);
         this._section.addMenuItem(item, pos);
-
-        this._sync();
     }
 
     _removeConnection(connection) {
@@ -1632,13 +1628,6 @@ var NMVpnSection = class extends PopupMenu.PopupMenuSection {
         this._items.delete(connection);
 
         item.destroy();
-        this._sync();
-    }
-
-    _sync() {
-        const nItems = this._items.size;
-        for (const item of this._items.values())
-            item.radio_mode = nItems > 1;
     }
 
     get category() {
