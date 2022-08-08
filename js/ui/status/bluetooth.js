@@ -29,10 +29,6 @@ class Indicator extends PanelMenu.SystemIndicator {
         this._client = new GnomeBluetooth.Client();
         this._client.connect('notify::default-adapter', () => {
             const newAdapter = this._client.default_adapter ?? null;
-
-            if (newAdapter && this._adapter)
-                this._setHadSetupDevices(this._getDeviceInfos().length > 0);
-
             this._adapter = newAdapter;
 
             this._deviceNotifyConnected.clear();
@@ -88,11 +84,17 @@ class Indicator extends PanelMenu.SystemIndicator {
         this._sync();
     }
 
-    _setHadSetupDevices(value) {
-        if (this._hadSetupDevices === value)
+    _syncHadSetupDevices() {
+        const { defaultAdapter } = this._client;
+        if (!defaultAdapter || !this._adapter)
+            return; // ignore changes while powering up/down
+
+        const hadSetupDevices = this._getDeviceInfos().length > 0;
+
+        if (this._hadSetupDevices === hadSetupDevices)
             return;
 
-        this._hadSetupDevices = value;
+        this._hadSetupDevices = hadSetupDevices;
         global.settings.set_boolean(
             HAD_BLUETOOTH_DEVICES_SETUP, this._hadSetupDevices);
     }
@@ -150,6 +152,7 @@ class Indicator extends PanelMenu.SystemIndicator {
         this._indicator.visible = nConnectedDevices > 0;
 
         const adapterPowered = this._client.default_adapter_powered;
+        this._syncHadSetupDevices();
 
         // Remember if there were setup devices and show the menu
         // if we've seen setup devices and we're not hard blocked
