@@ -267,16 +267,13 @@ var ShellUserVerifier = class {
         }
     }
 
-    answerQuery(serviceName, answer) {
-        if (!this.hasPendingMessages) {
+    async answerQuery(serviceName, answer) {
+        try {
+            await this._handlePendingMessages();
             this._userVerifier.call_answer_query(serviceName, answer, this._cancellable, null);
-        } else {
-            const cancellable = this._cancellable;
-            let signalId = this.connect('no-more-messages', () => {
-                this.disconnect(signalId);
-                if (!cancellable.is_cancelled())
-                    this._userVerifier.call_answer_query(serviceName, answer, cancellable, null);
-            });
+        } catch (e) {
+            if (!e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
+                logError(e);
         }
     }
 
@@ -685,7 +682,7 @@ var ShellUserVerifier = class {
             (this._reauthOnly || this._failCounter < this.allowedFailures);
     }
 
-    _verificationFailed(serviceName, shouldRetry) {
+    async _verificationFailed(serviceName, shouldRetry) {
         if (serviceName === FINGERPRINT_SERVICE_NAME) {
             if (this._fingerprintFailedId)
                 GLib.source_remove(this._fingerprintFailedId);
@@ -699,34 +696,36 @@ var ShellUserVerifier = class {
 
         const doneTrying = !shouldRetry || !this._canRetry();
 
-        if (doneTrying) {
-            this._disconnectSignals();
-
-            // eslint-disable-next-line no-lonely-if
-            if (!this.hasPendingMessages) {
-                this._cancelAndReset();
-            } else {
-                const cancellable = this._cancellable;
-                let signalId = this.connect('no-more-messages', () => {
-                    this.disconnect(signalId);
-                    if (!cancellable.is_cancelled())
-                        this._cancelAndReset();
-                });
-            }
-        }
-
         this.emit('verification-failed', serviceName, !doneTrying);
+        try {
+            if (doneTrying) {
+                this._disconnectSignals();
+                await this._handlePendingMessages();
+                this._cancelAndReset();
+            }
 
-        if (!this.hasPendingMessages) {
+            await this._handlePendingMessages();
             this._retry(serviceName);
-        } else {
-            const cancellable = this._cancellable;
+        } catch (e) {
+            if (!e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
+                logError(e);
+        }
+    }
+
+    _handlePendingMessages() {
+        if (!this.hasPendingMessage)
+            return Promise.resolve();
+
+        const cancellable = this._cancellable;
+        return new Promise((resolve, reject) => {
             let signalId = this.connect('no-more-messages', () => {
                 this.disconnect(signalId);
-                if (!cancellable.is_cancelled())
-                    this._retry(serviceName);
+                if (cancellable.is_cancelled())
+                    reject(new GLib.Error(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED, 'Operation was cancelled'));
+                else
+                    resolve();
             });
-        }
+        });
     }
 
     _onServiceUnavailable(_client, serviceName, errorMessage) {
