@@ -42,7 +42,7 @@ const BtClient = GObject.registerClass({
             const newAdapter = this._client.default_adapter ?? null;
 
             if (newAdapter && this._adapter)
-                this._setHadSetupDevices([...this._getDevices()].length > 0);
+                this._setHadSetupDevices([...this.getDevices()].length > 0);
 
             this._adapter = newAdapter;
             this._deviceNotifyConnected.clear();
