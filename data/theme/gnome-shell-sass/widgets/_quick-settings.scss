@@ -137,4 +137,15 @@
   .wireless-secure-icon { icon-size: 0.5 * $base_icon_size; }
 }
 
+.bt-device-item {
+  .popup-menu-icon { -st-icon-style: symbolic; }
+}
+
+.bt-menu-placeholder {
+  @extend %title_4;
+  text-align: center;
+
+  padding: 2em 4em;
+}
+
 .device-subtitle { color: transparentize($fg_color, 0.5); }

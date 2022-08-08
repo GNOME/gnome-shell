@@ -1,9 +1,11 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported Indicator */
 
-const {Gio, GLib, GnomeBluetooth, GObject} = imports.gi;
+const {Gio, GLib, GnomeBluetooth, GObject, Pango, St} = imports.gi;
 
-const {QuickToggle, SystemIndicator} = imports.ui.quickSettings;
+const {Spinner} = imports.ui.animation;
+const PopupMenu = imports.ui.popupMenu;
+const {QuickMenuToggle, SystemIndicator} = imports.ui.quickSettings;
 
 const {loadInterfaceXML} = imports.misc.fileUtils;
 
@@ -14,6 +16,8 @@ const OBJECT_PATH = '/org/gnome/SettingsDaemon/Rfkill';
 
 const RfkillManagerInterface = loadInterfaceXML('org.gnome.SettingsDaemon.Rfkill');
 const rfkillManagerInfo = Gio.DBusInterfaceInfo.new_for_xml(RfkillManagerInterface);
+
+Gio._promisify(GnomeBluetooth.Client.prototype, 'connect_service');
 
 const BtClient = GObject.registerClass({
     Properties: {
@@ -29,6 +33,7 @@ const BtClient = GObject.registerClass({
     },
     Signals: {
         'devices-changed': {},
+        'device-removed': {param_types: [GObject.TYPE_STRING]},
     },
 }, class BtClient extends GObject.Object {
     _init() {
@@ -79,6 +84,7 @@ const BtClient = GObject.registerClass({
 
         this._client.connect('device-removed', (c, path) => {
             this._deviceNotifyConnected.delete(path);
+            this.emit('device-removed', path);
             this.emit('devices-changed');
         });
         this._client.connect('device-added', (c, device) => {
@@ -107,6 +113,24 @@ const BtClient = GObject.registerClass({
         this._proxy.BluetoothAirplaneMode = this.active;
         if (!this._client.default_adapter_powered)
             this._client.default_adapter_powered = true;
+    }
+
+    async toggleDevice(device) {
+        const connect = !device.connected;
+        console.debug(`${connect
+            ? 'Connect' : 'Disconnect'} device "${device.name}"`);
+
+        try {
+            await this._client.connect_service(
+                device.get_object_path(),
+                connect,
+                null);
+            console.debug(`Device "${device.name}" ${
+                connect ? 'connected' : 'disconnected'}`);
+        } catch (e) {
+            console.error(`Failed to ${connect
+                ? 'connect' : 'disconnect'} device "${device.name}": ${e.message}`);
+        }
     }
 
     *getDevices() {
@@ -145,10 +169,95 @@ const BtClient = GObject.registerClass({
     }
 });
 
+const BluetoothDeviceItem = GObject.registerClass(
+class BluetoothDeviceItem extends PopupMenu.PopupBaseMenuItem {
+    constructor(device, client) {
+        super({
+            style_class: 'bt-device-item',
+        });
+
+        this._device = device;
+        this._client = client;
+
+        this._icon = new St.Icon({
+            style_class: 'popup-menu-icon',
+        });
+        this.add_child(this._icon);
+
+        this._label = new St.Label({
+            x_expand: true,
+        });
+        this.add_child(this._label);
+
+        this._subtitle = new St.Label({
+            style_class: 'device-subtitle',
+        });
+        this.add_child(this._subtitle);
+
+        this._spinner = new Spinner(16, {hideOnStop: true});
+        this.add_child(this._spinner);
+
+        this._spinner.bind_property('visible',
+            this._subtitle, 'visible',
+            GObject.BindingFlags.SYNC_CREATE |
+            GObject.BindingFlags.INVERT_BOOLEAN);
+
+        this._device.bind_property('connectable',
+            this, 'visible',
+            GObject.BindingFlags.SYNC_CREATE);
+        this._device.bind_property('icon',
+            this._icon, 'icon-name',
+            GObject.BindingFlags.SYNC_CREATE);
+        this._device.bind_property('name',
+            this._label, 'text',
+            GObject.BindingFlags.SYNC_CREATE);
+        this._device.bind_property_full('connected',
+            this._subtitle, 'text',
+            GObject.BindingFlags.SYNC_CREATE,
+            (bind, source) => [true, source ? _('Disconnect') : _('Connect')],
+            null);
+
+        this.connect('destroy', () => (this._spinner = null));
+        this.connect('activate', () => this._toggleConnected().catch(logError));
+    }
+
+    async _toggleConnected() {
+        this._spinner.play();
+        await this._client.toggleDevice(this._device);
+        this._spinner?.stop();
+    }
+});
+
 const BluetoothToggle = GObject.registerClass(
-class BluetoothToggle extends QuickToggle {
+class BluetoothToggle extends QuickMenuToggle {
     _init(client) {
         super._init({title: _('Bluetooth')});
+
+        this.menu.setHeader('bluetooth-active-symbolic', _('Bluetooth'));
+
+        this._deviceItems = new Map();
+        this._deviceSection = new PopupMenu.PopupMenuSection();
+        this.menu.addMenuItem(this._deviceSection);
+
+        this._placeholderItem = new PopupMenu.PopupMenuItem('', {
+            style_class: 'bt-menu-placeholder',
+            reactive: false,
+            can_focus: false,
+        });
+        this._placeholderItem.label.clutter_text.set({
+            ellipsize: Pango.EllipsizeMode.NONE,
+            line_wrap: true,
+        });
+        this.menu.addMenuItem(this._placeholderItem);
+
+        this._deviceSection.actor.bind_property('visible',
+            this._placeholderItem, 'visible',
+            GObject.BindingFlags.SYNC_CREATE |
+            GObject.BindingFlags.INVERT_BOOLEAN);
+
+        this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
+        this.menu.addSettingsAction(_('Bluetooth Settings'),
+            'gnome-bluetooth-panel.desktop');
 
         this._client = client;
 
@@ -165,17 +274,86 @@ class BluetoothToggle extends QuickToggle {
             null);
 
         this._client.connectObject(
+            'notify::active', () => this._onActiveChanged(),
             'devices-changed', () => this._sync(),
+            'device-removed', (c, path) => this._removeDevice(path),
             this);
 
+        this.menu.connect('open-state-changed', isOpen => {
+            // We don't reorder the list while the menu is open,
+            // so do it now to start with the proper order
+            if (isOpen)
+                this._reorderDeviceItems();
+        });
+
         this.connect('clicked', () => this._client.toggleActive());
+
+        this._updatePlaceholder();
+        this._sync();
+    }
+
+    _onActiveChanged() {
+        this._updatePlaceholder();
+
+        this._deviceItems.forEach(item => item.destroy());
+        this._deviceItems.clear();
 
         this._sync();
     }
 
+    _updatePlaceholder() {
+        this._placeholderItem.label.text = this._client.active
+            ? _('No available or connected devices')
+            : _('Turn on Bluetooth to connect to devices');
+    }
+
+    _updateDeviceVisibility() {
+        this._deviceSection.actor.visible =
+            [...this._deviceItems.values()].some(item => item.visible);
+    }
+
+    _getSortedDevices() {
+        return [...this._client.getDevices()].sort((dev1, dev2) => {
+            if (dev1.connected !== dev2.connected)
+                return dev2.connected - dev1.connected;
+            return dev1.alias.localeCompare(dev2.alias);
+        });
+    }
+
+    _removeDevice(path) {
+        this._deviceItems.get(path)?.destroy();
+        this._deviceItems.delete(path);
+
+        this._updateDeviceVisibility();
+    }
+
+    _reorderDeviceItems() {
+        const devices = this._getSortedDevices();
+        for (const [i, dev] of devices.entries()) {
+            const item = this._deviceItems.get(dev.get_object_path());
+            if (!item)
+                continue;
+
+            this._deviceSection.moveMenuItem(item, i);
+        }
+    }
+
     _sync() {
-        const connectedDevices = [...this._client.getDevices()]
-            .filter(dev => dev.connected);
+        const devices = this._getSortedDevices();
+
+        for (const dev of devices) {
+            const path = dev.get_object_path();
+            if (this._deviceItems.has(path))
+                continue;
+
+            const item = new BluetoothDeviceItem(dev, this._client);
+            item.connect('notify::visible', () => this._updateDeviceVisibility());
+
+            this._deviceSection.addMenuItem(item);
+            this._deviceItems.set(path, item);
+        }
+
+        const connectedDevices = devices.filter(dev => dev.connected);
         const nConnected = connectedDevices.length;
 
         if (nConnected > 1)
@@ -185,6 +363,8 @@ class BluetoothToggle extends QuickToggle {
             this.subtitle = connectedDevices[0].alias;
         else
             this.subtitle = null;
+
+        this._updateDeviceVisibility();
     }
 
     _getIconNameFromState(state) {
