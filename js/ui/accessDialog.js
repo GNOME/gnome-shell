@@ -131,6 +131,31 @@ var AccessDialogDBus = class {
         Gio.DBus.session.own_name('org.gnome.Shell.Portal', Gio.BusNameOwnerFlags.REPLACE, null, null);
     }
 
+    _isFocusWindow(appId, options) {
+        const IGNORE_FOCUS_CHECK_ALLOWLIST = [
+            {
+                table: 'screenshot',
+                id: 'screenshot',
+            },
+        ];
+
+        if (!appId)
+            return true;
+
+        if (options['permission']) {
+            const [table, id] = options['permission'].deep_unpack();
+            const skipFocusCheck = IGNORE_FOCUS_CHECK_ALLOWLIST.some(
+                permission => permission.table === table && permission.id === id);
+
+            if (skipFocusCheck)
+                return true;
+        }
+
+        // We probably want to use parentWindow and global.display.focus_window
+        // for this check in the future
+        return `${appId}.desktop` === this._windowTracker.focusApp.id;
+    }
+
     AccessDialogAsync(params, invocation) {
         if (this._accessDialog) {
             invocation.return_error_literal(Gio.DBusError,
@@ -140,9 +165,8 @@ var AccessDialogDBus = class {
         }
 
         let [handle, appId, parentWindow_, title, description, body, options] = params;
-        // We probably want to use parentWindow and global.display.focus_window
-        // for this check in the future
-        if (appId && `${appId}.desktop` !== this._windowTracker.focus_app.id) {
+
+        if (!this._isFocusWindow(appId, options)) {
             invocation.return_error_literal(Gio.DBusError,
                                             Gio.DBusError.ACCESS_DENIED,
                                             'Only the focused app is allowed to show a system access dialog');
