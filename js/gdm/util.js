@@ -719,10 +719,10 @@ var ShellUserVerifier = class {
                 this._disconnectSignals();
                 await this._handlePendingMessages();
                 this._cancelAndReset();
+            } else {
+                await this._handlePendingMessages();
+                this._retry(serviceName);
             }
-
-            await this._handlePendingMessages();
-            this._retry(serviceName);
         } catch (e) {
             if (!e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
                 logError(e);
