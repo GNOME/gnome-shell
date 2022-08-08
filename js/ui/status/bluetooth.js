@@ -41,9 +41,6 @@ const BtClient = GObject.registerClass({
         this._client.connect('notify::default-adapter', () => {
             const newAdapter = this._client.default_adapter ?? null;
 
-            if (newAdapter && this._adapter)
-                this._setHadSetupDevices([...this.getDevices()].length > 0);
-
             this._adapter = newAdapter;
             this._deviceNotifyConnected.clear();
             this.emit('devices-changed');
@@ -75,10 +72,12 @@ const BtClient = GObject.registerClass({
             this._connectDeviceNotify(deviceStore.get_item(i));
 
         this._client.connect('device-removed', (c, path) => {
+            this._syncHadSetupDevices();
             this._deviceNotifyConnected.delete(path);
             this.emit('devices-changed');
         });
         this._client.connect('device-added', (c, device) => {
+            this._syncHadSetupDevices();
             this._connectDeviceNotify(device);
             this.emit('devices-changed');
         });
@@ -117,17 +116,25 @@ const BtClient = GObject.registerClass({
         if (this._devicesChangedId)
             return;
         this._devicesChangedId = GLib.idle_add(GLib.PRIORITY_DEFAULT, () => {
+            this._syncHadSetupDevices();
             delete this._devicesChangedId;
             this.emit('devices-changed');
             return GLib.SOURCE_REMOVE;
         });
     }
 
-    _setHadSetupDevices(value) {
-        if (this._hadSetupDevices === value)
+    _syncHadSetupDevices() {
+        const {defaultAdapter} = this._client;
+        if (!defaultAdapter || !this._adapter)
+            return; // ignore changes while powering up/down
+
+        const [firstDevice] = this.getDevices();
+        const hadSetupDevices = !!firstDevice;
+
+        if (this._hadSetupDevices === hadSetupDevices)
             return;
 
-        this._hadSetupDevices = value;
+        this._hadSetupDevices = hadSetupDevices;
         global.settings.set_boolean(
             HAD_BLUETOOTH_DEVICES_SETUP, this._hadSetupDevices);
     }
