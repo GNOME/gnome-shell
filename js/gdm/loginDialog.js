@@ -985,8 +985,9 @@ var LoginDialog = GObject.registerClass({
     async _getGreeterSessionProxy() {
         const loginManager = LoginManager.getLoginManager();
         this._greeterSessionProxy = await loginManager.getCurrentSessionProxy();
-        this._greeterSessionProxy?.connectObject('g-properties-changed', () => {
-            if (this._greeterSessionProxy.Active)
+        this._greeterSessionProxy?.connectObject('g-properties-changed', (proxy, properties) => {
+            const activeChanged = !!properties.lookup_value('Active', null);
+            if (activeChanged && proxy.Active)
                 this._loginScreenSessionActivated();
         }, this);
     }
