@@ -158,6 +158,7 @@ var SessionMode = class extends Signals.EventEmitter {
     }
 
     pushMode(mode) {
+        console.debug(`sessionMode: Pushing mode ${mode}`);
         this._modeStack.push(mode);
         this._sync();
     }
@@ -165,6 +166,8 @@ var SessionMode = class extends Signals.EventEmitter {
     popMode(mode) {
         if (this.currentMode != mode || this._modeStack.length === 1)
             throw new Error("Invalid SessionMode.popMode");
+
+        console.debug(`sessionMode: Popping mode ${mode}`);
         this._modeStack.pop();
         this._sync();
     }
