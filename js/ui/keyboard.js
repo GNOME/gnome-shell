@@ -1180,8 +1180,10 @@ var Keypad = GObject.registerClass({
     }
 });
 
-var KeyboardManager = class KeyBoardManager {
+var KeyboardManager = class extends Signals.EventEmitter {
     constructor() {
+        super();
+
         this._keyboard = null;
         this._a11yApplicationsSettings = new Gio.Settings({ schema_id: A11Y_APPLICATIONS_SCHEMA });
         this._a11yApplicationsSettings.connect('changed', this._syncEnabled.bind(this));
@@ -1237,6 +1239,7 @@ var KeyboardManager = class KeyBoardManager {
         if (enabled && !this._keyboard) {
             this._keyboard = new Keyboard();
             this._keyboard.connect('visibility-changed', () => {
+                this.emit('visibility-changed');
                 this._bottomDragAction.enabled = !this._keyboard.visible;
             });
         } else if (!enabled && this._keyboard) {

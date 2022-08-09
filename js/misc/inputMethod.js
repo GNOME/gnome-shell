@@ -3,6 +3,7 @@
 const { Clutter, GLib, Gio, GObject, IBus } = imports.gi;
 
 const Keyboard = imports.ui.status.keyboard;
+const Main = imports.ui.main;
 
 Gio._promisify(IBus.Bus.prototype,
     'create_input_context_async', 'create_input_context_async_finish');
@@ -42,6 +43,9 @@ class InputMethod extends Clutter.InputMethod {
     _updateCapabilities() {
         let caps = IBus.Capabilite.PREEDIT_TEXT | IBus.Capabilite.FOCUS | IBus.Capabilite.SURROUNDING_TEXT;
 
+        if (Main.keyboard.visible)
+            caps |= IBus.Capabilite.OSK;
+
         if (this._context)
             this._context.set_capabilities(caps);
     }
@@ -72,10 +76,14 @@ class InputMethod extends Clutter.InputMethod {
         this._context.connect('forward-key-event', this._onForwardKeyEvent.bind(this));
         this._context.connect('destroy', this._clear.bind(this));
 
+        Main.keyboard.connectObject('visibility-changed', () => this._updateCapabilities());
+
         this._updateCapabilities();
     }
 
     _clear() {
+        Main.keyboard.disconnectObject(this);
+
         if (this._cancellable) {
             this._cancellable.cancel();
             this._cancellable = null;
