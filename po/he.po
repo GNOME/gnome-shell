@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2022-08-03 06:09+0000\n"
-"PO-Revision-Date: 2022-08-05 09:46+0300\n"
+"POT-Creation-Date: 2022-08-09 14:45+0000\n"
+"PO-Revision-Date: 2022-08-09 20:35+0300\n"
 "Last-Translator: Yosef Or Boczko <yoseforb@gmail.com>\n"
 "Language-Team: Hebrew <>\n"
 "Language: he\n"
@@ -521,7 +521,7 @@ msgstr "לבקר באתר ההרחבה"
 #: js/ui/components/networkAgent.js:109 js/ui/components/polkitAgent.js:141
 #: js/ui/endSessionDialog.js:440 js/ui/extensionDownloader.js:223
 #: js/ui/shellMountOperation.js:377 js/ui/shellMountOperation.js:387
-#: js/ui/status/network.js:960 subprojects/extensions-app/js/main.js:173
+#: js/ui/status/network.js:1128 subprojects/extensions-app/js/main.js:173
 msgid "Cancel"
 msgstr "ביטול"
 
@@ -883,7 +883,7 @@ msgstr "הפעלה בשימוש כרטיס מסך נפרד"
 msgid "Select Audio Device"
 msgstr "בחירת התקן שמע"
 
-#: js/ui/audioDeviceSelection.js:56 js/ui/status/volume.js:103
+#: js/ui/audioDeviceSelection.js:56 js/ui/status/volume.js:63
 msgid "Sound Settings"
 msgstr "הגדרות שמע"
 
@@ -895,7 +895,7 @@ msgstr "אזניות"
 msgid "Headset"
 msgstr "אזניות עם מיקרופון"
 
-#: js/ui/audioDeviceSelection.js:73 js/ui/status/volume.js:359
+#: js/ui/audioDeviceSelection.js:73 js/ui/status/volume.js:319
 msgid "Microphone"
 msgstr "מיקרופון"
 
@@ -1063,8 +1063,8 @@ msgid ""
 "Alternatively you can connect by pushing the “WPS” button on your router."
 msgstr "לחלופין ניתן להתחבר על ידי לחיצה על כפתור ה־„WPS” בנתב שלך."
 
-#: js/ui/components/networkAgent.js:103 js/ui/status/network.js:247
-#: js/ui/status/network.js:337 js/ui/status/network.js:965
+#: js/ui/components/networkAgent.js:103 js/ui/status/network.js:238
+#: js/ui/status/network.js:326 js/ui/status/network.js:1133
 msgid "Connect"
 msgstr "התחברות"
 
@@ -1127,7 +1127,7 @@ msgstr "PIN"
 msgid "A password is required to connect to “%s”."
 msgstr "נדרשת ססמה כדי להתחבר אל „%s”."
 
-#: js/ui/components/networkAgent.js:736 js/ui/status/network.js:1823
+#: js/ui/components/networkAgent.js:736 js/ui/status/network.js:1741
 msgid "Network Manager"
 msgstr "מנהל הרשתות"
 
@@ -1515,13 +1515,13 @@ msgstr ""
 msgid "Leave On"
 msgstr "להשאיר פועל"
 
-#: js/ui/kbdA11yDialog.js:55 js/ui/status/network.js:1347
+#: js/ui/kbdA11yDialog.js:55 js/ui/status/network.js:1317
 msgid "Turn On"
 msgstr "הפעלה"
 
-#: js/ui/kbdA11yDialog.js:65 js/ui/status/network.js:162
-#: js/ui/status/network.js:338 js/ui/status/network.js:1347
-#: js/ui/status/network.js:1454 js/ui/status/network.js:1525
+#: js/ui/kbdA11yDialog.js:65 js/ui/status/network.js:153
+#: js/ui/status/network.js:327 js/ui/status/network.js:1317
+#: js/ui/status/network.js:1410
 msgid "Turn Off"
 msgstr "כיבוי"
 
@@ -1691,12 +1691,12 @@ msgstr "יש להקיש על מנת לצאת"
 msgid "Activities"
 msgstr "פעילויות"
 
-#: js/ui/panel.js:367 js/ui/panel.js:409
+#: js/ui/panel.js:367 js/ui/panel.js:392
 msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "מערכת"
 
-#: js/ui/panel.js:510
+#: js/ui/panel.js:503
 msgid "Top Bar"
 msgstr "הסרגל העליון"
 
@@ -1969,7 +1969,7 @@ msgstr "סיבוב אוטומטי"
 msgid "Bluetooth"
 msgstr "בלוטות'"
 
-#: js/ui/status/brightness.js:37
+#: js/ui/status/brightness.js:34
 msgid "Brightness"
 msgstr "בהירות"
 
@@ -2019,212 +2019,98 @@ msgstr "היישום %s רוצה גישה למיקום שלך"
 msgid "Location access can be changed at any time from the privacy settings."
 msgstr "ניתן לשנות בכל עת את הרשאות הגישה למיקום שלך מהגדרות הפרטיות."
 
-#: js/ui/status/network.js:71
+#: js/ui/status/network.js:62
 msgid "<unknown>"
 msgstr "<לא ידוע>"
 
-#. Translators: %s is a network identifier
-#: js/ui/status/network.js:438 js/ui/status/network.js:1376
-#, javascript-format
-msgid "%s Off"
-msgstr "‏%s כבוי"
-
-#. Translators: %s is a network identifier
-#: js/ui/status/network.js:441
-#, javascript-format
-msgid "%s Connected"
-msgstr "‏%s מחובר"
-
-#. Translators: this is for network devices that are physically present but are not
-#. under NetworkManager's control (and thus cannot be used in the menu);
-#. %s is a network identifier
-#: js/ui/status/network.js:446
-#, javascript-format
-msgid "%s Unmanaged"
-msgstr "‏%s לא מנוהל"
-
-#. Translators: %s is a network identifier
-#: js/ui/status/network.js:449
-#, javascript-format
-msgid "%s Disconnecting"
-msgstr "‏%s בהליכי ניתוק"
-
-#. Translators: %s is a network identifier
-#: js/ui/status/network.js:456 js/ui/status/network.js:1368
-#, javascript-format
-msgid "%s Connecting"
-msgstr "‏%s בהתחברות"
-
-#. Translators: this is for network connections that require some kind of key or password; %s is a network identifier
-#: js/ui/status/network.js:459
-#, javascript-format
-msgid "%s Requires Authentication"
-msgstr "‏%s דורש אימות"
-
-#. Translators: this is for devices that require some kind of firmware or kernel
-#. module, which is missing; %s is a network identifier
-#: js/ui/status/network.js:467
-#, javascript-format
-msgid "Firmware Missing For %s"
-msgstr "חסרה קושחה עבור %s"
-
-#. Translators: this is for a network device that cannot be activated (for example it
-#. is disabled by rfkill, or it has no coverage; %s is a network identifier
-#: js/ui/status/network.js:471
-#, javascript-format
-msgid "%s Unavailable"
-msgstr "‏%s לא זמין"
-
-#. Translators: %s is a network identifier
-#: js/ui/status/network.js:474
-#, javascript-format
-msgid "%s Connection Failed"
-msgstr "נכשלה ההתחברות אל %s"
-
-#: js/ui/status/network.js:486
+#: js/ui/status/network.js:433
 msgid "Wired Settings"
 msgstr "הגדרות רשת קווית"
 
-#: js/ui/status/network.js:533
+#: js/ui/status/network.js:480
 msgid "Mobile Broadband Settings"
 msgstr "הגדרות פס־רחב נייד"
 
-#. Translators: %s is a network identifier
-#: js/ui/status/network.js:589 js/ui/status/network.js:1373
-#, javascript-format
-msgid "%s Hardware Disabled"
-msgstr "‏%s מושבת חומרתית"
-
-#. Translators: this is for a network device that cannot be activated
-#. because it's disabled by rfkill (airplane mode); %s is a network identifier
-#: js/ui/status/network.js:593
-#, javascript-format
-msgid "%s Disabled"
-msgstr "‏%s מושבת"
-
-#: js/ui/status/network.js:628
+#: js/ui/status/network.js:564
 msgid "Bluetooth Settings"
 msgstr "הגדרות בלוטות'"
 
-#: js/ui/status/network.js:640
+#: js/ui/status/network.js:576
 msgid "Connect to Internet"
 msgstr "התחברות לאינטרנט"
 
-#: js/ui/status/network.js:840
+#: js/ui/status/network.js:1008
 msgid "Airplane Mode is On"
 msgstr "מצב טיסה מופעל"
 
-#: js/ui/status/network.js:841
+#: js/ui/status/network.js:1009
 msgid "Wi-Fi is disabled when airplane mode is on."
 msgstr "רשת אלחוטית מושבתת כאשר מצב טיסה מופעל."
 
-#: js/ui/status/network.js:842
+#: js/ui/status/network.js:1010
 msgid "Turn Off Airplane Mode"
 msgstr "כיבוי מצב טיסה"
 
-#: js/ui/status/network.js:851
+#: js/ui/status/network.js:1019
 msgid "Wi-Fi is Off"
 msgstr "רשת אלחוטית כבויה"
 
-#: js/ui/status/network.js:852
+#: js/ui/status/network.js:1020
 msgid "Wi-Fi needs to be turned on in order to connect to a network."
 msgstr "רשת אלחוטית צריכה להיות מופעלת על מנת להתחבר לרשת."
 
-#: js/ui/status/network.js:853
+#: js/ui/status/network.js:1021
 msgid "Turn On Wi-Fi"
 msgstr "הפעלת רשת אלחוטית"
 
-#: js/ui/status/network.js:881
+#: js/ui/status/network.js:1049
 msgid "Wi-Fi Networks"
 msgstr "רשתות אלחוטיות"
 
-#: js/ui/status/network.js:885
+#: js/ui/status/network.js:1053
 msgid "Select a network"
 msgstr "בחירת רשת"
 
-#: js/ui/status/network.js:921
+#: js/ui/status/network.js:1089
 msgid "No Networks"
 msgstr "אין רשתות"
 
-#: js/ui/status/network.js:946
+#: js/ui/status/network.js:1114
 msgid "Use hardware switch to turn off"
 msgstr "שימוש במתג של החומרה לכיבוי"
 
-#: js/ui/status/network.js:1259
+#: js/ui/status/network.js:1231
 msgid "Select Network"
 msgstr "בחירת רשת"
 
-#: js/ui/status/network.js:1265
+#: js/ui/status/network.js:1237
 msgid "Wi-Fi Settings"
 msgstr "הגדרות רשת אלחוטית"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1364
+#: js/ui/status/network.js:1332
 #, javascript-format
-msgid "%s Hotspot Active"
-msgstr "נקודה חמה %s פעילה"
+#| msgid "%s Hotspot Active"
+msgid "%s Hotspot"
+msgstr "נקודה חמה %s"
 
-#. Translators: %s is a network identifier
-#: js/ui/status/network.js:1379
-#, javascript-format
-msgid "%s Not Connected"
-msgstr "%s לא מחובר"
-
-#: js/ui/status/network.js:1466
-msgid "unknown"
-msgstr "לא ידוע"
-
-#: js/ui/status/network.js:1468
-msgid "activating…"
-msgstr "מפעיל…"
-
-#: js/ui/status/network.js:1472
-msgid "deactivating…"
-msgstr "משבית…"
-
-#: js/ui/status/network.js:1474
-msgid "deactivated"
-msgstr "מושבת"
-
-#: js/ui/status/network.js:1542
-msgid "connecting…"
-msgstr "בהתחברות…"
-
-#. Translators: this is for network connections that require some kind of key or password
-#: js/ui/status/network.js:1545
-msgid "authentication required"
-msgstr "נדרש אימות"
-
-#: js/ui/status/network.js:1547
-msgid "connection failed"
-msgstr "ההתחברות נכשלה"
-
-#: js/ui/status/network.js:1593
+#: js/ui/status/network.js:1444
 msgid "VPN Settings"
 msgstr "הגדרות VPN"
 
-#: js/ui/status/network.js:1610
+#: js/ui/status/network.js:1461
 msgid "VPN"
 msgstr "VPN"
 
-#: js/ui/status/network.js:1620
+#: js/ui/status/network.js:1471
 msgid "VPN Off"
 msgstr "VPN כבוי"
 
-#: js/ui/status/network.js:1683
+#: js/ui/status/network.js:1531
 msgid "Network Settings"
 msgstr "הגדרות הרשת"
 
-#: js/ui/status/network.js:1711
-#, javascript-format
-msgid "%s Wired Connection"
-msgid_plural "%s Wired Connections"
-msgstr[0] "התחברות קווית %s"
-msgstr[1] "התחברויות קוויות %s"
-msgstr[2] "התחברויות קוויות %s"
-msgstr[3] "התחברויות קויות %s"
-
-#: js/ui/status/network.js:1715
+#: js/ui/status/network.js:1565
 #, javascript-format
 msgid "%s Wi-Fi Connection"
 msgid_plural "%s Wi-Fi Connections"
@@ -2233,7 +2119,27 @@ msgstr[1] "שתי התחברויות אלחוטיות"
 msgstr[2] "‏%s התחברויות אלחוטיות"
 msgstr[3] "‫‏%s התחברויות אלחוטיות"
 
-#: js/ui/status/network.js:1719
+#: js/ui/status/network.js:1582
+#, javascript-format
+msgid "%s Wired Connection"
+msgid_plural "%s Wired Connections"
+msgstr[0] "התחברות קווית %s"
+msgstr[1] "התחברויות קוויות %s"
+msgstr[2] "התחברויות קוויות %s"
+msgstr[3] "התחברויות קויות %s"
+
+#: js/ui/status/network.js:1599
+#, javascript-format
+#| msgid "%s Wired Connection"
+#| msgid_plural "%s Wired Connections"
+msgid "%s Bluetooth Connection"
+msgid_plural "%s Bluetooth Connections"
+msgstr[0] "התחברות קווית %s"
+msgstr[1] "התחברויות קוויות %s"
+msgstr[2] "התחברויות קוויות %s"
+msgstr[3] "התחברויות קוויות %s"
+
+#: js/ui/status/network.js:1616
 #, javascript-format
 msgid "%s Modem Connection"
 msgid_plural "%s Modem Connections"
@@ -2242,23 +2148,17 @@ msgstr[1] "התחברויות מודם %s"
 msgstr[2] "‫התחברויות מודם %s"
 msgstr[3] "‫התחברויות מודם %s"
 
-#: js/ui/status/network.js:1864
+#: js/ui/status/network.js:1746
 msgid "Connection failed"
 msgstr "ההתחברות נכשלה"
 
-#: js/ui/status/network.js:1865
+#: js/ui/status/network.js:1747
 msgid "Activation of network connection failed"
 msgstr "הפעלת חיבור הרשת נכשלה"
 
 #: js/ui/status/nightLight.js:20
-#| msgid "Night Light On"
 msgid "Night Light"
 msgstr "תאורת לילה"
-
-#: js/ui/status/power.js:85
-#, javascript-format
-msgid "%d %%"
-msgstr "%d %%"
 
 #: js/ui/status/powerProfiles.js:20
 msgctxt "Power profile"
@@ -2275,51 +2175,60 @@ msgctxt "Power profile"
 msgid "Power Saver"
 msgstr "חיסכון בחשמל"
 
-#: js/ui/status/powerProfiles.js:66
-msgid "Power Settings"
-msgstr "הגדרות צריכת החשמל"
+#: js/ui/status/powerProfiles.js:69
+#| msgctxt "search-result"
+#| msgid "Power Off"
+msgid "Power Profiles"
+msgstr "פרופילי חשמל"
 
 #: js/ui/status/remoteAccess.js:74
 msgid "Stop Screencast"
 msgstr "עצירת הקלטת המסך"
 
 #: js/ui/status/remoteAccess.js:144
-#| msgid "Stop Screencast"
 msgid "Stop Screen Sharing"
 msgstr "עצירת שיתוף מסך"
 
 #: js/ui/status/rfkill.js:96
-#| msgid "Airplane Mode On"
 msgid "Airplane Mode"
 msgstr "מצב טיסה"
 
-#: js/ui/status/system.js:83
-msgid "Lock"
-msgstr "נעילה"
+#: js/ui/status/system.js:89
+#, javascript-format
+msgid "%d %%"
+msgstr "%d %%"
 
-#: js/ui/status/system.js:95
-msgid "Power Off / Log Out"
-msgstr "כיבוי / יציאה"
+#: js/ui/status/system.js:140
+#| msgctxt "search-result"
+#| msgid "Power Off"
+msgid "Power Off Menu"
+msgstr "תפריט כיבוי"
 
-#: js/ui/status/system.js:98
+#: js/ui/status/system.js:148
 msgid "Suspend"
 msgstr "השהיה"
 
-#: js/ui/status/system.js:109
+#: js/ui/status/system.js:153
 msgid "Restart…"
 msgstr "הפעלה מחדש…"
 
-#: js/ui/status/system.js:120
+#: js/ui/status/system.js:158
 msgid "Power Off…"
 msgstr "כיבוי…"
 
-#: js/ui/status/system.js:133
+#: js/ui/status/system.js:165
 msgid "Log Out"
 msgstr "יציאה"
 
-#: js/ui/status/system.js:144
+#: js/ui/status/system.js:170
 msgid "Switch User…"
 msgstr "החלפת משתמש…"
+
+#: js/ui/status/system.js:216
+#| msgctxt "search-result"
+#| msgid "Lock Screen"
+msgid "Lock Screen"
+msgstr "מסך נעילה"
 
 #: js/ui/status/thunderbolt.js:257
 msgid "Thunderbolt"
@@ -2355,13 +2264,25 @@ msgstr "שיגאת אימות Thunderbolt"
 msgid "Could not authorize the Thunderbolt device: %s"
 msgstr "לא ניתן לאמת את התקן ה־Thunderbolt: ‏%s"
 
-#: js/ui/status/volume.js:235
+#: js/ui/status/volume.js:191
 msgid "Volume changed"
 msgstr "עצמת השמע השתנתה"
 
-#: js/ui/status/volume.js:296
+#: js/ui/status/volume.js:253
 msgid "Volume"
 msgstr "עצמה"
+
+#: js/ui/status/volume.js:269
+#| msgid "%u Output"
+#| msgid_plural "%u Outputs"
+msgid "Sound Output"
+msgstr "פלט שמע"
+
+#: js/ui/status/volume.js:337
+#| msgid "%u Input"
+#| msgid_plural "%u Inputs"
+msgid "Sound Input"
+msgstr "קלט שמע"
 
 #. Translators: this is for display mirroring i.e. cloning.
 #. * Try to keep it under around 15 characters.
@@ -3140,6 +3061,84 @@ msgstr[3] "‏‫%u ערוצי קלט"
 #: subprojects/gvc/gvc-mixer-control.c:2867
 msgid "System Sounds"
 msgstr "צלילי מערכת"
+
+#, javascript-format
+#~ msgid "%s Off"
+#~ msgstr "‏%s כבוי"
+
+#, javascript-format
+#~ msgid "%s Connected"
+#~ msgstr "‏%s מחובר"
+
+#, javascript-format
+#~ msgid "%s Unmanaged"
+#~ msgstr "‏%s לא מנוהל"
+
+#, javascript-format
+#~ msgid "%s Disconnecting"
+#~ msgstr "‏%s בהליכי ניתוק"
+
+#, javascript-format
+#~ msgid "%s Connecting"
+#~ msgstr "‏%s בהתחברות"
+
+#, javascript-format
+#~ msgid "%s Requires Authentication"
+#~ msgstr "‏%s דורש אימות"
+
+#, javascript-format
+#~ msgid "Firmware Missing For %s"
+#~ msgstr "חסרה קושחה עבור %s"
+
+#, javascript-format
+#~ msgid "%s Unavailable"
+#~ msgstr "‏%s לא זמין"
+
+#, javascript-format
+#~ msgid "%s Connection Failed"
+#~ msgstr "נכשלה ההתחברות אל %s"
+
+#, javascript-format
+#~ msgid "%s Hardware Disabled"
+#~ msgstr "‏%s מושבת חומרתית"
+
+#, javascript-format
+#~ msgid "%s Disabled"
+#~ msgstr "‏%s מושבת"
+
+#, javascript-format
+#~ msgid "%s Not Connected"
+#~ msgstr "%s לא מחובר"
+
+#~ msgid "unknown"
+#~ msgstr "לא ידוע"
+
+#~ msgid "activating…"
+#~ msgstr "מפעיל…"
+
+#~ msgid "deactivating…"
+#~ msgstr "משבית…"
+
+#~ msgid "deactivated"
+#~ msgstr "מושבת"
+
+#~ msgid "connecting…"
+#~ msgstr "בהתחברות…"
+
+#~ msgid "authentication required"
+#~ msgstr "נדרש אימות"
+
+#~ msgid "connection failed"
+#~ msgstr "ההתחברות נכשלה"
+
+#~ msgid "Power Settings"
+#~ msgstr "הגדרות צריכת החשמל"
+
+#~ msgid "Lock"
+#~ msgstr "נעילה"
+
+#~ msgid "Power Off / Log Out"
+#~ msgstr "כיבוי / יציאה"
 
 #, javascript-format
 #~ msgid "%d Connected"
