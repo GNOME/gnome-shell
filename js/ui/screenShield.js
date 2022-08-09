@@ -515,6 +515,8 @@ var ScreenShield = class extends Signals.EventEmitter {
     }
 
     _wakeUpScreen() {
+        if (!this.active)
+            return; // already woken up, or not yet asleep
         this._onUserBecameActive();
         this.emit('wake-up-screen');
     }
