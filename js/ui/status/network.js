@@ -714,8 +714,10 @@ const WirelessNetwork = GObject.registerClass({
         this._accessPoints.add(ap);
 
         ap.connectObject(
-            'notify::strength', () => this._updateBestAp(),
-            this);
+            'notify::strength', () => {
+                this.notify('icon-name');
+                this._updateBestAp();
+            }, this);
         this._updateBestAp();
 
         if (wasActive !== this.is_active)
