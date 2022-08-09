@@ -426,9 +426,11 @@ class BaseAppViewGridLayout extends Clutter.BinLayout {
         rightBox.x1 = rightBox.x2 - indicatorsWidth;
 
         this._previousPageIndicator.allocate(ltr ? leftBox : rightBox);
-        this._previousPageArrow.allocate(ltr ? leftBox : rightBox);
+        this._previousPageArrow.allocate_align_fill(ltr ? leftBox : rightBox,
+            0.5, 0.5, false, false);
         this._nextPageIndicator.allocate(ltr ? rightBox : leftBox);
-        this._nextPageArrow.allocate(ltr ? rightBox : leftBox);
+        this._nextPageArrow.allocate_align_fill(ltr ? rightBox : leftBox,
+            0.5, 0.5, false, false);
 
         this._pageWidth = box.get_width();
     }
@@ -565,7 +567,8 @@ var BaseAppView = GObject.registerClass({
             icon_name: rtl
                 ? 'carousel-arrow-previous-symbolic'
                 : 'carousel-arrow-next-symbolic',
-            x_expand: true,
+            x_align: Clutter.ActorAlign.CENTER,
+            y_align: Clutter.ActorAlign.CENTER,
         });
         this._nextPageArrow.connect('clicked',
             () => this.goToPage(this._grid.currentPage + 1));
@@ -577,7 +580,8 @@ var BaseAppView = GObject.registerClass({
                 : 'carousel-arrow-previous-symbolic',
             opacity: 0,
             visible: false,
-            x_expand: true,
+            x_align: Clutter.ActorAlign.CENTER,
+            y_align: Clutter.ActorAlign.CENTER,
         });
         this._prevPageArrow.connect('clicked',
             () => this.goToPage(this._grid.currentPage - 1));
