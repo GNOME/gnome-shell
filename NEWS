@@ -1,3 +1,44 @@
+43.beta
+=======
+* Allow extension updates with only Extension Manager installed [Matthew; !2358]
+* Use new About window in Extensions app [Christopher; !2373]
+* Stop auto-dismissing notifications on focus changes [Florian; !2332]
+* Tweak access portal dialog [Georges; !2377]
+* Add device switcher to volume sliders [Florian; !2380]
+* Replace combined system menu with quick settings [Florian; !2385, !2389,
+  !2391, !2392, !2393, !2406, !2407, !2408]
+* Use the same format in screencast and screenshot file names [Emmanuele; !2300]
+* Only load extensions that support the current session mode [Alessandro; !2378]
+* Improve overview animation performance [Ivan; !2395, !2394]
+* Port to gcr4 [Milan; !2386]
+* Fix logging in with realmd [Alessandro; !2404]
+* Optimize workspace background shadow [Daniel; !1915]
+* Improve app grid navigation [Georges; !2335]
+* Improve on-screen keyboard
+  - delete multiple characters and words when holding backspace
+  - provide word suggestions when using plan keyboard layouts
+  - use extended layout when TERMINAL hint is set
+  [Carlos; !2278]
+* Fix remembering set up bluetooth devices [Florian; !2409]
+* Misc. bug fixes and cleanups [Florian, Carlos, Sam, Sebastian, Alessandro,
+  Robert; !2374, !2369, !2350, !2381, !2375, !2384, !2388, !2371, !2344, !2370,
+  !2396, !2397, !2403, !2402, !2326, !2405, !2401, !2398, !2414, !2412, !2411,
+  !2415, !2416, !2419, !2413]
+
+Contributors:
+  Robert Ancell, Emmanuele Bassi, Alessandro Bono, Milan Crha,
+  Christopher Davis, Carlos Garnacho, Sam Hewitt, Matthew Jakeman,
+  Sebastian Keller, Andre Klapper, Ivan Molodetskikh, Florian Müllner,
+  Georges Basile Stavracas Neto, Nart Tlisha, Daniel van Vugt
+
+Translators:
+  Kukuh Syafaat [id], Emin Tufan Çetin [tr], Jordi Mas [ca],
+  Zurab Kargareteli [ka], Nart Tlisha [ab], Asier Sarasua Garmendia [eu],
+  Fran Dieguez [gl], Aleksandr Melman [ru], Hugo Carvalho [pt],
+  Yuri Chornoivan [uk], Alexander Shopov [bg], Yosef Or Boczko [he],
+  Quentin PAGÈS [oc], Danial Behzadi [fa], Daniel Mustieles [es],
+  Luming Zh [zh_CN], Jiri Grönroos [fi]
+
 43.alpha
 ========
 * Add convenience property for icon-only buttons [Florian; !2254]

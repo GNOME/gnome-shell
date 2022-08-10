@@ -39,6 +39,9 @@
   </description>
 
   <releases>
+    <release version="43.beta" type="development" date="2022-08-10">
+      <p>Modernize About window</p>
+    </release>
     <release version="43.alpha" type="development" date="2022-07-10"/>
   </releases>
 
