@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2022-08-09 14:45+0000\n"
-"PO-Revision-Date: 2022-08-10 01:43+0430\n"
+"POT-Creation-Date: 2022-08-10 15:28+0000\n"
+"PO-Revision-Date: 2022-08-11 00:20+0430\n"
 "Last-Translator: Danial Behzadi <dani.behzi@ubuntu.com>\n"
 "Language-Team: Persian <>\n"
 "Language: fa\n"
@@ -492,7 +492,7 @@ msgstr "مشاهدهٔ صفحهٔ خانگی افزونه"
 #: js/ui/components/networkAgent.js:109 js/ui/components/polkitAgent.js:141
 #: js/ui/endSessionDialog.js:440 js/ui/extensionDownloader.js:223
 #: js/ui/shellMountOperation.js:377 js/ui/shellMountOperation.js:387
-#: js/ui/status/network.js:1128 subprojects/extensions-app/js/main.js:173
+#: subprojects/extensions-app/js/main.js:173
 msgid "Cancel"
 msgstr "لغو"
 
@@ -524,23 +524,23 @@ msgstr "(برای مثال، کاربر یا %s)"
 msgid "Username"
 msgstr "نام‌کاربری"
 
-#: js/gdm/loginDialog.js:1257
+#: js/gdm/loginDialog.js:1258
 msgid "Login Window"
 msgstr "پنجرهٔ ورود به سامانه"
 
-#: js/gdm/util.js:434
+#: js/gdm/util.js:431
 msgid "Authentication error"
 msgstr "خطا تأیید هویت"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger on the fingerprint reader
-#: js/gdm/util.js:606
+#: js/gdm/util.js:603
 msgid "(or swipe finger across reader)"
 msgstr "(یا انگشتتان را روی خواننده بکشید)"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can place their finger on the fingerprint reader instead
-#: js/gdm/util.js:611
+#: js/gdm/util.js:608
 msgid "(or place finger on reader)"
 msgstr "(یا انگشتتان را روی خواننده بگذارید)"
 
@@ -806,6 +806,10 @@ msgstr "رد دسترسی"
 msgid "Grant Access"
 msgstr "پذیرفتن دسترسی"
 
+#: js/ui/appDisplay.js:1728
+msgid "Unnamed Folder"
+msgstr "پوشهٔ بی‌نام"
+
 #: js/ui/appFavorites.js:166
 #, javascript-format
 msgid "%s has been pinned to the dash."
@@ -1033,8 +1037,7 @@ msgstr "گشودن با %s"
 msgid "Alternatively you can connect by pushing the “WPS” button on your router."
 msgstr "به عنوان جایگزین می‌توانید با فشردن دکمهٔ WPS روی مسیریابتان، وصل شوید."
 
-#: js/ui/components/networkAgent.js:103 js/ui/status/network.js:238
-#: js/ui/status/network.js:326 js/ui/status/network.js:1133
+#: js/ui/components/networkAgent.js:103 js/ui/status/network.js:443
 msgid "Connect"
 msgstr "اتّصال"
 
@@ -1095,7 +1098,7 @@ msgstr "پین"
 msgid "A password is required to connect to “%s”."
 msgstr "برای اتّصال به «%s» گذرواژه لازم است."
 
-#: js/ui/components/networkAgent.js:736 js/ui/status/network.js:1741
+#: js/ui/components/networkAgent.js:736
 msgid "Network Manager"
 msgstr "مدیر شبکه"
 
@@ -1477,12 +1480,11 @@ msgstr ""
 msgid "Leave On"
 msgstr "روشن گذاشتن"
 
-#: js/ui/kbdA11yDialog.js:55 js/ui/status/network.js:1317
+#: js/ui/kbdA11yDialog.js:55
 msgid "Turn On"
 msgstr "روشن کردن"
 
-#: js/ui/kbdA11yDialog.js:65 js/ui/status/network.js:153 js/ui/status/network.js:327
-#: js/ui/status/network.js:1317 js/ui/status/network.js:1410
+#: js/ui/kbdA11yDialog.js:65 js/ui/status/network.js:454
 msgid "Turn Off"
 msgstr "خاموش کردن"
 
@@ -1979,131 +1981,27 @@ msgstr "برنامهٔ %s می‌خواهد به مکانتان دسترسی د�
 msgid "Location access can be changed at any time from the privacy settings."
 msgstr "دسترسی به مکان در هر زمانی می‌تواند از طریق تنظیمات حریم‌خصوصی تغییر کند."
 
-#: js/ui/status/network.js:62
+#: js/ui/status/network.js:49
 msgid "<unknown>"
 msgstr "<ناشناخته>"
 
-#: js/ui/status/network.js:433
-msgid "Wired Settings"
-msgstr "تنظیمات اتّصال سیمی"
+#. Translators: %s is a device name like "MyPhone"
+#: js/ui/status/network.js:363
+#, javascript-format
+msgid "Disconnect %s"
+msgstr "قطع شدن از %s"
 
-#: js/ui/status/network.js:480
-msgid "Mobile Broadband Settings"
-msgstr "تنظیمات پهن‌باند همراه"
-
-#: js/ui/status/network.js:564
-msgid "Bluetooth Settings"
-msgstr "تنظیمات بلوتوث"
-
-#: js/ui/status/network.js:576
-msgid "Connect to Internet"
-msgstr "وصل شدن به اینترنت"
-
-#: js/ui/status/network.js:1008
-msgid "Airplane Mode is On"
-msgstr "حالت هواپیمایی روشن است"
-
-#: js/ui/status/network.js:1009
-msgid "Wi-Fi is disabled when airplane mode is on."
-msgstr "در زمان روشن بودن حالت هواپیمایی، وای‌فای از کار می‌افتد."
-
-#: js/ui/status/network.js:1010
-msgid "Turn Off Airplane Mode"
-msgstr "خاموش کردن حالت هواپیمایی"
-
-#: js/ui/status/network.js:1019
-msgid "Wi-Fi is Off"
-msgstr "وای‌فای خاموش است"
-
-#: js/ui/status/network.js:1020
-msgid "Wi-Fi needs to be turned on in order to connect to a network."
-msgstr "برای وصل شدن به شبکه باید وای‌فای روشن شود."
-
-#: js/ui/status/network.js:1021
-msgid "Turn On Wi-Fi"
-msgstr "روشن کردن وای‌فای"
-
-#: js/ui/status/network.js:1049
-msgid "Wi-Fi Networks"
-msgstr "شبکه‌های وای‌فای"
-
-#: js/ui/status/network.js:1053
-msgid "Select a network"
-msgstr "شبکه‌ای برگزینید"
-
-#: js/ui/status/network.js:1089
-msgid "No Networks"
-msgstr "هیچ شبکه‌ای نیست"
-
-#: js/ui/status/network.js:1114
-msgid "Use hardware switch to turn off"
-msgstr "برای خاموش کردن از کلید سخت‌افزاری استفاده کنید"
-
-#: js/ui/status/network.js:1231
-msgid "Select Network"
-msgstr "گزینش شبکه"
-
-#: js/ui/status/network.js:1237
-msgid "Wi-Fi Settings"
-msgstr "تنظیمات وای‌فای"
+#. Translators: %s is a device name like "MyPhone"
+#: js/ui/status/network.js:365
+#, javascript-format
+msgid "Connect to %s"
+msgstr "وصل شدن به %s"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1332
+#: js/ui/status/network.js:1087
 #, javascript-format
 msgid "%s Hotspot"
 msgstr "نقطهٔ داغ %s"
-
-#: js/ui/status/network.js:1444
-msgid "VPN Settings"
-msgstr "تنظیمات وی‌پی‌ان"
-
-#: js/ui/status/network.js:1461
-msgid "VPN"
-msgstr "وی‌پی‌ان"
-
-#: js/ui/status/network.js:1471
-msgid "VPN Off"
-msgstr "وی‌پی‌ان خاموش است"
-
-#: js/ui/status/network.js:1531
-msgid "Network Settings"
-msgstr "تنظیمات شبکه"
-
-#: js/ui/status/network.js:1565
-#, javascript-format
-msgid "%s Wi-Fi Connection"
-msgid_plural "%s Wi-Fi Connections"
-msgstr[0] "اتّصال وای‌فای %s"
-msgstr[1] "اتّصال وای‌فای %s"
-
-#: js/ui/status/network.js:1582
-#, javascript-format
-msgid "%s Wired Connection"
-msgid_plural "%s Wired Connections"
-msgstr[0] "اتّصال سیمی %s"
-msgstr[1] "اتّصال سیمی %s"
-
-#: js/ui/status/network.js:1599
-#, javascript-format
-msgid "%s Bluetooth Connection"
-msgid_plural "%s Bluetooth Connections"
-msgstr[0] "اتّصال بلوتوثی %s"
-msgstr[1] "اتّصال‌های بلوتوثی %s"
-
-#: js/ui/status/network.js:1616
-#, javascript-format
-msgid "%s Modem Connection"
-msgid_plural "%s Modem Connections"
-msgstr[0] "اتّصال مودم %s"
-msgstr[1] "اتّصال مودم %s"
-
-#: js/ui/status/network.js:1746
-msgid "Connection failed"
-msgstr "اتّصال شکست خورد"
-
-#: js/ui/status/network.js:1747
-msgid "Activation of network connection failed"
-msgstr "فعّال‌سازی اتّصال شبکه شکست خورد"
 
 #: js/ui/status/nightLight.js:20
 msgid "Night Light"
@@ -2124,7 +2022,7 @@ msgctxt "Power profile"
 msgid "Power Saver"
 msgstr "ذخیرهٔ نیرو"
 
-#: js/ui/status/powerProfiles.js:69
+#: js/ui/status/powerProfiles.js:68
 msgid "Power Profiles"
 msgstr "نمایه‌های نیرو"
 
@@ -2174,15 +2072,15 @@ msgstr "تعویض کاربر…"
 msgid "Lock Screen"
 msgstr "صفحهٔ قفل"
 
-#: js/ui/status/thunderbolt.js:257
+#: js/ui/status/thunderbolt.js:256
 msgid "Thunderbolt"
 msgstr "تاندربولت"
 
-#: js/ui/status/thunderbolt.js:318
+#: js/ui/status/thunderbolt.js:317
 msgid "Unknown Thunderbolt device"
 msgstr "افزارهٔ تاندربولت ناشناخته"
 
-#: js/ui/status/thunderbolt.js:319
+#: js/ui/status/thunderbolt.js:318
 msgid ""
 "New device has been detected while you were away. Please disconnect and reconnect "
 "the device to start using it."
@@ -2190,19 +2088,19 @@ msgstr ""
 "هنگام نبودنتان، افزارهٔ جدید شناسایی شد. لطفاً برای شروع به استفاده از آن، قطعش کرده "
 "و دوباره وصل کنید."
 
-#: js/ui/status/thunderbolt.js:322
+#: js/ui/status/thunderbolt.js:321
 msgid "Unauthorized Thunderbolt device"
 msgstr "افزارهٔ تاندربولت تأییدنشده"
 
-#: js/ui/status/thunderbolt.js:323
+#: js/ui/status/thunderbolt.js:322
 msgid "New device has been detected and needs to be authorized by an administrator."
 msgstr "افزارهٔ جدیدی شناسایی شده و نیازه به تأیید هویت توسّط یک مدیر دارد."
 
-#: js/ui/status/thunderbolt.js:329
+#: js/ui/status/thunderbolt.js:328
 msgid "Thunderbolt authorization error"
 msgstr "خطای تأیید هویت تاندربولت"
 
-#: js/ui/status/thunderbolt.js:330
+#: js/ui/status/thunderbolt.js:329
 #, javascript-format
 msgid "Could not authorize the Thunderbolt device: %s"
 msgstr "نمی‌توان افزارهٔ تاندربولت را تأیید هویت کرد: %s"
@@ -2992,6 +2890,96 @@ msgstr[1] "%Iu ورودی"
 msgid "System Sounds"
 msgstr "صداهای سامانه"
 
+#~ msgid "Wired Settings"
+#~ msgstr "تنظیمات اتّصال سیمی"
+
+#~ msgid "Mobile Broadband Settings"
+#~ msgstr "تنظیمات پهن‌باند همراه"
+
+#~ msgid "Bluetooth Settings"
+#~ msgstr "تنظیمات بلوتوث"
+
+#~ msgid "Connect to Internet"
+#~ msgstr "وصل شدن به اینترنت"
+
+#~ msgid "Airplane Mode is On"
+#~ msgstr "حالت هواپیمایی روشن است"
+
+#~ msgid "Wi-Fi is disabled when airplane mode is on."
+#~ msgstr "در زمان روشن بودن حالت هواپیمایی، وای‌فای از کار می‌افتد."
+
+#~ msgid "Turn Off Airplane Mode"
+#~ msgstr "خاموش کردن حالت هواپیمایی"
+
+#~ msgid "Wi-Fi is Off"
+#~ msgstr "وای‌فای خاموش است"
+
+#~ msgid "Wi-Fi needs to be turned on in order to connect to a network."
+#~ msgstr "برای وصل شدن به شبکه باید وای‌فای روشن شود."
+
+#~ msgid "Turn On Wi-Fi"
+#~ msgstr "روشن کردن وای‌فای"
+
+#~ msgid "Wi-Fi Networks"
+#~ msgstr "شبکه‌های وای‌فای"
+
+#~ msgid "Select a network"
+#~ msgstr "شبکه‌ای برگزینید"
+
+#~ msgid "No Networks"
+#~ msgstr "هیچ شبکه‌ای نیست"
+
+#~ msgid "Use hardware switch to turn off"
+#~ msgstr "برای خاموش کردن از کلید سخت‌افزاری استفاده کنید"
+
+#~ msgid "Select Network"
+#~ msgstr "گزینش شبکه"
+
+#~ msgid "Wi-Fi Settings"
+#~ msgstr "تنظیمات وای‌فای"
+
+#~ msgid "VPN Settings"
+#~ msgstr "تنظیمات وی‌پی‌ان"
+
+#~ msgid "VPN"
+#~ msgstr "وی‌پی‌ان"
+
+#~ msgid "VPN Off"
+#~ msgstr "وی‌پی‌ان خاموش است"
+
+#~ msgid "Network Settings"
+#~ msgstr "تنظیمات شبکه"
+
+#, javascript-format
+#~ msgid "%s Wi-Fi Connection"
+#~ msgid_plural "%s Wi-Fi Connections"
+#~ msgstr[0] "اتّصال وای‌فای %s"
+#~ msgstr[1] "اتّصال وای‌فای %s"
+
+#, javascript-format
+#~ msgid "%s Wired Connection"
+#~ msgid_plural "%s Wired Connections"
+#~ msgstr[0] "اتّصال سیمی %s"
+#~ msgstr[1] "اتّصال سیمی %s"
+
+#, javascript-format
+#~ msgid "%s Bluetooth Connection"
+#~ msgid_plural "%s Bluetooth Connections"
+#~ msgstr[0] "اتّصال بلوتوثی %s"
+#~ msgstr[1] "اتّصال‌های بلوتوثی %s"
+
+#, javascript-format
+#~ msgid "%s Modem Connection"
+#~ msgid_plural "%s Modem Connections"
+#~ msgstr[0] "اتّصال مودم %s"
+#~ msgstr[1] "اتّصال مودم %s"
+
+#~ msgid "Connection failed"
+#~ msgstr "اتّصال شکست خورد"
+
+#~ msgid "Activation of network connection failed"
+#~ msgstr "فعّال‌سازی اتّصال شبکه شکست خورد"
+
 #, javascript-format
 #~ msgid "%s Off"
 #~ msgstr "%s خاموش است"
@@ -3003,10 +2991,6 @@ msgstr "صداهای سامانه"
 #, javascript-format
 #~ msgid "%s Unmanaged"
 #~ msgstr "%s مدیریت نشده"
-
-#, javascript-format
-#~ msgid "%s Disconnecting"
-#~ msgstr "درحال قطع اتّصال %s"
 
 #, javascript-format
 #~ msgid "%s Connecting"
@@ -3135,9 +3119,6 @@ msgstr "صداهای سامانه"
 
 #~ msgid "Turn off"
 #~ msgstr "خاموش کردن"
-
-#~ msgid "Unnamed Folder"
-#~ msgstr "پوشهٔ بی‌نام"
 
 #~ msgid "Remove from Favorites"
 #~ msgstr "برداشتن از مورد علاقه‌ها"
@@ -3959,9 +3940,6 @@ msgstr "صداهای سامانه"
 
 #~ msgid "%1$s: %2$s"
 #~ msgstr "%1$s: %2$s"
-
-#~ msgid "Connect to..."
-#~ msgstr "اتصال به..."
 
 #~ msgid "Passphrase"
 #~ msgstr "عبارت‌عبور"
