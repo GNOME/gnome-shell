@@ -83,12 +83,11 @@ var Client = class extends Signals.EventEmitter {
     }
 
     _onPropertiesChanged(proxy, properties) {
-        let unpacked = properties.deep_unpack();
-        if (!('Probing' in unpacked))
-            return;
-
-        this.probing = this._proxy.Probing;
-        this.emit('probing-changed', this.probing);
+        const probingChanged = !!properties.lookup_value('Probing', null);
+        if (probingChanged) {
+            this.probing = this._proxy.Probing;
+            this.emit('probing-changed', this.probing);
+        }
     }
 
     _onDeviceAdded(proxy, emitter, params) {

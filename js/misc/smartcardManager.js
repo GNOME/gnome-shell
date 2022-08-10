@@ -73,7 +73,8 @@ var SmartcardManager = class extends Signals.EventEmitter {
         this._updateToken(token);
 
         token.connect('g-properties-changed', (proxy, properties) => {
-            if ('IsInserted' in properties.deep_unpack()) {
+            const isInsertedChanged = !!properties.lookup_value('IsInserted', null);
+            if (isInsertedChanged) {
                 this._updateToken(token);
 
                 if (token.IsInserted)

@@ -181,8 +181,8 @@ var GeoclueAgent = GObject.registerClass({
     }
 
     _onGeocluePropsChanged(proxy, properties) {
-        let unpacked = properties.deep_unpack();
-        if ("InUse" in unpacked)
+        const inUseChanged = !!properties.lookup_value('InUse', null);
+        if (inUseChanged)
             this.notify('in-use');
     }
 

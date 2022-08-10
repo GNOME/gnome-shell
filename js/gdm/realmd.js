@@ -28,7 +28,8 @@ var Manager = class extends Signals.EventEmitter {
 
         this._aggregateProvider.connectObject('g-properties-changed',
             (proxy, properties) => {
-                if ('Realms' in properties.deep_unpack())
+                const realmsChanged = !!properties.lookup_value('Realms', null);
+                if (realmsChanged)
                     this._reloadRealms();
             }, this);
     }
@@ -67,7 +68,8 @@ var Manager = class extends Signals.EventEmitter {
         this._reloadRealm(realm);
 
         realm.connect('g-properties-changed', (proxy, properties) => {
-            if ('Configured' in properties.deep_unpack())
+            const configuredChanged = !!properties.lookup_value('Configured', null);
+            if (configuredChanged)
                 this._reloadRealm(realm);
         });
     }

@@ -49,7 +49,8 @@ class Indicator extends SystemIndicator {
             g_interface_info: colorInfo,
         });
         this._proxy.connect('g-properties-changed', (p, properties) => {
-            if ('NightLightActive' in properties.deep_unpack())
+            const nightLightActiveChanged = !!properties.lookup_value('NightLightActive', null);
+            if (nightLightActiveChanged)
                 this._sync();
         });
         this._proxy.init_async(GLib.PRIORITY_DEFAULT, null)

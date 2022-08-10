@@ -243,7 +243,8 @@ var BroadbandModem = GObject.registerClass({
         this._proxy_cdma = new BroadbandModemCdmaProxy(Gio.DBus.system, 'org.freedesktop.ModemManager1', path);
 
         this._proxy.connect('g-properties-changed', (proxy, properties) => {
-            if ('SignalQuality' in properties.deep_unpack())
+            const signalQualityChanged = !!properties.lookup_value('SignalQuality', null);
+            if (signalQualityChanged)
                 this._reloadSignalQuality();
         });
         this._reloadSignalQuality();
