@@ -28,7 +28,7 @@ class AccessDialog extends ModalDialog.ModalDialog {
         this._request = Gio.DBusExportedObject.wrapJSObject(RequestIface, this);
 
         for (let option in options)
-            options[option] = options[option].deep_unpack();
+            options[option] = options[option].deepUnpack();
 
         this._buildLayout(title, description, body, options);
     }

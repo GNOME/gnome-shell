@@ -587,7 +587,7 @@ var ShellUserVerifier = class extends Signals.EventEmitter {
         if (!this.serviceIsForeground(serviceName))
             return;
 
-        this.emit('show-choice-list', serviceName, promptMessage, list.deep_unpack());
+        this.emit('show-choice-list', serviceName, promptMessage, list.deepUnpack());
     }
 
     _onInfo(client, serviceName, info) {

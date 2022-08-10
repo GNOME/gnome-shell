@@ -76,7 +76,7 @@ var Recorder = class {
 
     _applyOptions(options) {
         for (const option in options)
-            options[option] = options[option].deep_unpack();
+            options[option] = options[option].deepUnpack();
 
         if (options['pipeline'] !== undefined)
             this._pipelineString = options['pipeline'];

@@ -250,14 +250,14 @@ var BroadbandModem = GObject.registerClass({
         this._reloadSignalQuality();
 
         this._proxy_3gpp.connect('g-properties-changed', (proxy, properties) => {
-            let unpacked = properties.deep_unpack();
+            let unpacked = properties.deepUnpack();
             if ('OperatorName' in unpacked || 'OperatorCode' in unpacked)
                 this._reload3gppOperatorName();
         });
         this._reload3gppOperatorName();
 
         this._proxy_cdma.connect('g-properties-changed', (proxy, properties) => {
-            let unpacked = properties.deep_unpack();
+            let unpacked = properties.deepUnpack();
             if ('Nid' in unpacked || 'Sid' in unpacked)
                 this._reloadCdmaOperatorName();
         });

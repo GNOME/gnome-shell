@@ -187,7 +187,7 @@ var MprisPlayer = class MprisPlayer extends Signals.EventEmitter {
     _updateState() {
         let metadata = {};
         for (let prop in this._playerProxy.Metadata)
-            metadata[prop] = this._playerProxy.Metadata[prop].deep_unpack();
+            metadata[prop] = this._playerProxy.Metadata[prop].deepUnpack();
 
         // Validate according to the spec; some clients send buggy metadata:
         // https://www.freedesktop.org/wiki/Specifications/mpris-spec/metadata

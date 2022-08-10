@@ -13,7 +13,7 @@ function do_action_param(action, parameter) {
 }
 
 function do_action_toggle(action) {
-    action.set_state(GLib.Variant.new('b', !action.state.deep_unpack()));
+    action.set_state(GLib.Variant.new('b', !action.state.deepUnpack()));
     print ("Toggled");
 }
 

@@ -294,7 +294,7 @@ var WeatherClient = class extends Signals.EventEmitter {
     }
 
     _onLocationsChanged() {
-        let locations = this._settings.get_value('locations').deep_unpack();
+        let locations = this._settings.get_value('locations').deepUnpack();
         let serialized = locations.shift();
         let mostRecentLocation = null;
 

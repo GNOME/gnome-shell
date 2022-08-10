@@ -63,7 +63,7 @@ const RfkillManager = GObject.registerClass({
     /* eslint-enable camelcase */
 
     _changed(proxy, properties) {
-        for (const prop in properties.deep_unpack()) {
+        for (const prop in properties.deepUnpack()) {
             switch (prop) {
             case 'AirplaneMode':
                 this.notify('airplane-mode');

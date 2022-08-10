@@ -99,7 +99,7 @@ var OsdMonitorLabeler = class {
             let monitor = this._monitorManager.get_monitor_for_connector(connector);
             if (monitor == -1)
                 continue;
-            this._monitorLabels.get(monitor).push(params[connector].deep_unpack());
+            this._monitorLabels.get(monitor).push(params[connector].deepUnpack());
         }
 
         for (let [monitor, labels] of this._monitorLabels.entries()) {

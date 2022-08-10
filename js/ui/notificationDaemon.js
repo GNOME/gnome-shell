@@ -130,7 +130,7 @@ var FdoNotificationDaemon = class FdoNotificationDaemon {
 
         for (let hint in hints) {
             // unpack the variants
-            hints[hint] = hints[hint].deep_unpack();
+            hints[hint] = hints[hint].deepUnpack();
         }
 
         hints = Params.parse(hints, { urgency: Urgency.NORMAL }, true);
@@ -488,7 +488,7 @@ class GtkNotificationDaemonNotification extends MessageTray.Notification {
         }
 
         if (buttons) {
-            buttons.deep_unpack().forEach(button => {
+            buttons.deepUnpack().forEach(button => {
                 this.addAction(button.label.unpack(), () => {
                     this._onButtonClicked(button);
                 });
@@ -691,7 +691,7 @@ var GtkNotificationDaemon = class GtkNotificationDaemon {
         try {
             let value = global.get_persistent_state('a(sa(sv))', 'notifications');
             if (value) {
-                let sources = value.deep_unpack();
+                let sources = value.deepUnpack();
                 sources.forEach(([appId, notifications]) => {
                     if (notifications.length == 0)
                         return;
@@ -706,7 +706,7 @@ var GtkNotificationDaemon = class GtkNotificationDaemon {
                     }
 
                     notifications.forEach(([notificationId, notification]) => {
-                        source.addNotification(notificationId, notification.deep_unpack(), false);
+                        source.addNotification(notificationId, notification.deepUnpack(), false);
                     });
                 });
             }

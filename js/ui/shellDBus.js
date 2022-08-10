@@ -115,7 +115,7 @@ var GnomeShell = class {
         }
 
         for (let param in params)
-            params[param] = params[param].deep_unpack();
+            params[param] = params[param].deepUnpack();
 
         const {
             connector,

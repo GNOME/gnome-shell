@@ -42,7 +42,7 @@ function canLock() {
                                                Gio.DBusCallFlags.NONE,
                                                -1, null);
 
-        let version = result.deep_unpack()[0].deep_unpack();
+        let version = result.deepUnpack()[0].deepUnpack();
         return haveSystemd() && versionCompare('3.5.91', version);
     } catch (e) {
         return false;

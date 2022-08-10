@@ -375,7 +375,7 @@ class WorldClocksSection extends St.Button {
         this._locations = [];
 
         let world = GWeather.Location.get_world();
-        let clocks = this._settings.get_value('locations').deep_unpack();
+        let clocks = this._settings.get_value('locations').deepUnpack();
         for (let i = 0; i < clocks.length; i++) {
             let l = world.deserialize(clocks[i]);
             if (l && l.get_timezone() != null)

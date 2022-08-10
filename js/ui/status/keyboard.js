@@ -211,7 +211,7 @@ var InputSourceSystemSettings = class extends InputSourceSettings {
                 'GetAll',
                 new GLib.Variant('(s)', [this._BUS_IFACE]),
                 null, Gio.DBusCallFlags.NONE, -1, null);
-            [props] = result.deep_unpack();
+            [props] = result.deepUnpack();
         } catch (e) {
             log(`Could not get properties from ${this._BUS_NAME}`);
             return;
@@ -274,7 +274,7 @@ var InputSourceSessionSettings = class extends InputSourceSettings {
         let nSources = sources.n_children();
 
         for (let i = 0; i < nSources; i++) {
-            let [type, id] = sources.get_child_value(i).deep_unpack();
+            let [type, id] = sources.get_child_value(i).deepUnpack();
             sourcesList.push({ type, id });
         }
         return sourcesList;

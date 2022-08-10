@@ -287,7 +287,7 @@ var RemoteSearchProvider = class {
             for (let prop in metas[i]) {
                 // we can use the serialized icon variant directly
                 if (prop !== 'icon')
-                    metas[i][prop] = metas[i][prop].deep_unpack();
+                    metas[i][prop] = metas[i][prop].deepUnpack();
             }
 
             resultMetas.push({
