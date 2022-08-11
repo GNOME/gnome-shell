@@ -1,3 +1,14 @@
+41.9
+====
+* Fix logging in with realmd [Alessandro; !2404]
+* Allow extension updates with only Extension Manager installed [Matthew; !2358]
+* Plugged leak [Sebastian; !2367]
+* Misc. bug fixes and cleanups [Alessandro, Florian; !2402, !2412, !2411,
+  !2351, !2372, !2350, !2326, !2413]
+
+Contributors:
+  Alessandro Bono, Matthew Jakeman, Sebastian Keller, Florian Müllner
+
 41.8.1
 ======
 * Fix regression in ibus support [Florian; !2359]
