@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell main\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2022-08-03 06:09+0000\n"
-"PO-Revision-Date: 2022-08-08 11:15+0700\n"
+"POT-Creation-Date: 2022-08-10 15:28+0000\n"
+"PO-Revision-Date: 2022-08-11 10:49+0700\n"
 "Last-Translator: Kukuh Syafaat <kukuhsyafaat@gnome.org>\n"
 "Language-Team: Indonesian <gnome-l10n-id@googlegroups.com>\n"
 "Language: id\n"
@@ -535,7 +535,7 @@ msgstr "Kunjungi halaman web ekstensi"
 #: js/ui/components/networkAgent.js:109 js/ui/components/polkitAgent.js:141
 #: js/ui/endSessionDialog.js:440 js/ui/extensionDownloader.js:223
 #: js/ui/shellMountOperation.js:377 js/ui/shellMountOperation.js:387
-#: js/ui/status/network.js:960 subprojects/extensions-app/js/main.js:173
+#: subprojects/extensions-app/js/main.js:173
 msgid "Cancel"
 msgstr "Batal"
 
@@ -567,23 +567,23 @@ msgstr "(cth., pengguna dari %s)"
 msgid "Username"
 msgstr "Nama pengguna"
 
-#: js/gdm/loginDialog.js:1257
+#: js/gdm/loginDialog.js:1258
 msgid "Login Window"
 msgstr "Jendela Log Masuk"
 
-#: js/gdm/util.js:434
+#: js/gdm/util.js:431
 msgid "Authentication error"
 msgstr "Galat autentikasi"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger on the fingerprint reader
-#: js/gdm/util.js:606
+#: js/gdm/util.js:603
 msgid "(or swipe finger across reader)"
 msgstr "(atau usap jari melintasi pembaca)"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can place their finger on the fingerprint reader instead
-#: js/gdm/util.js:611
+#: js/gdm/util.js:608
 msgid "(or place finger on reader)"
 msgstr "(atau letakkan jari pada pembaca)"
 
@@ -833,6 +833,10 @@ msgstr "Tolak Akses"
 msgid "Grant Access"
 msgstr "Beri Akses"
 
+#: js/ui/appDisplay.js:1728
+msgid "Unnamed Folder"
+msgstr "Folder Tanpa Nama"
+
 #: js/ui/appFavorites.js:166
 #, javascript-format
 msgid "%s has been pinned to the dash."
@@ -880,7 +884,7 @@ msgstr "Luncurkan menggunakan Kartu Grafis Diskrit"
 msgid "Select Audio Device"
 msgstr "Pilih Perangkat Audio"
 
-#: js/ui/audioDeviceSelection.js:56 js/ui/status/volume.js:103
+#: js/ui/audioDeviceSelection.js:56 js/ui/status/volume.js:63
 msgid "Sound Settings"
 msgstr "Pengaturan Suara"
 
@@ -892,7 +896,7 @@ msgstr "Headphone"
 msgid "Headset"
 msgstr "Headset"
 
-#: js/ui/audioDeviceSelection.js:73 js/ui/status/volume.js:359
+#: js/ui/audioDeviceSelection.js:73 js/ui/status/volume.js:319
 msgid "Microphone"
 msgstr "Mikrofon"
 
@@ -1064,8 +1068,7 @@ msgstr ""
 "Sebagai alternatif Anda dapat terhubung dengan menekan tombol \"WPS\" pada "
 "router Anda."
 
-#: js/ui/components/networkAgent.js:103 js/ui/status/network.js:247
-#: js/ui/status/network.js:337 js/ui/status/network.js:965
+#: js/ui/components/networkAgent.js:103 js/ui/status/network.js:443
 msgid "Connect"
 msgstr "Sambung"
 
@@ -1130,7 +1133,7 @@ msgstr "PIN"
 msgid "A password is required to connect to “%s”."
 msgstr "Perlu suatu kata sandi untuk menyambung ke \"%s\"."
 
-#: js/ui/components/networkAgent.js:736 js/ui/status/network.js:1823
+#: js/ui/components/networkAgent.js:736
 msgid "Network Manager"
 msgstr "Manajer Jaringan"
 
@@ -1507,13 +1510,11 @@ msgstr ""
 msgid "Leave On"
 msgstr "Biarkan Menyala"
 
-#: js/ui/kbdA11yDialog.js:55 js/ui/status/network.js:1347
+#: js/ui/kbdA11yDialog.js:55
 msgid "Turn On"
 msgstr "Nyalakan"
 
-#: js/ui/kbdA11yDialog.js:65 js/ui/status/network.js:162
-#: js/ui/status/network.js:338 js/ui/status/network.js:1347
-#: js/ui/status/network.js:1454 js/ui/status/network.js:1525
+#: js/ui/kbdA11yDialog.js:65 js/ui/status/network.js:454
 msgid "Turn Off"
 msgstr "Matikan"
 
@@ -1683,12 +1684,12 @@ msgstr "Tekan tombol apa saja untuk keluar"
 msgid "Activities"
 msgstr "Aktivitas"
 
-#: js/ui/panel.js:367 js/ui/panel.js:409
+#: js/ui/panel.js:367 js/ui/panel.js:392
 msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "Sistem"
 
-#: js/ui/panel.js:510
+#: js/ui/panel.js:503
 msgid "Top Bar"
 msgstr "Bar Atas"
 
@@ -1960,7 +1961,7 @@ msgstr "Putar Otomatis"
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: js/ui/status/brightness.js:37
+#: js/ui/status/brightness.js:34
 msgid "Brightness"
 msgstr "Kecerahan"
 
@@ -2010,236 +2011,31 @@ msgstr "Aplikasi %s ingin mengakses lokasi Anda"
 msgid "Location access can be changed at any time from the privacy settings."
 msgstr "Akses lokasi dapat diubah setiap saat dari pengaturan privasi."
 
-#: js/ui/status/network.js:71
+#: js/ui/status/network.js:49
 msgid "<unknown>"
 msgstr "<tak dikenal>"
 
-#. Translators: %s is a network identifier
-#: js/ui/status/network.js:438 js/ui/status/network.js:1376
+#. Translators: %s is a device name like "MyPhone"
+#: js/ui/status/network.js:363
 #, javascript-format
-msgid "%s Off"
-msgstr "%s Mati"
+msgid "Disconnect %s"
+msgstr "Memutus %s"
 
-#. Translators: %s is a network identifier
-#: js/ui/status/network.js:441
+#. Translators: %s is a device name like "MyPhone"
+#: js/ui/status/network.js:365
 #, javascript-format
-msgid "%s Connected"
-msgstr "%s Tersambung"
-
-#. Translators: this is for network devices that are physically present but are not
-#. under NetworkManager's control (and thus cannot be used in the menu);
-#. %s is a network identifier
-#: js/ui/status/network.js:446
-#, javascript-format
-msgid "%s Unmanaged"
-msgstr "%s Tak Dikelola"
+msgid "Connect to %s"
+msgstr "Sambung ke %s"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:449
+#: js/ui/status/network.js:1087
 #, javascript-format
-msgid "%s Disconnecting"
-msgstr "%s Memutus"
-
-#. Translators: %s is a network identifier
-#: js/ui/status/network.js:456 js/ui/status/network.js:1368
-#, javascript-format
-msgid "%s Connecting"
-msgstr "%s Menyambung"
-
-#. Translators: this is for network connections that require some kind of key or password; %s is a network identifier
-#: js/ui/status/network.js:459
-#, javascript-format
-msgid "%s Requires Authentication"
-msgstr "%s Memerlukan Autentikasi"
-
-#. Translators: this is for devices that require some kind of firmware or kernel
-#. module, which is missing; %s is a network identifier
-#: js/ui/status/network.js:467
-#, javascript-format
-msgid "Firmware Missing For %s"
-msgstr "Firmware Hilang Untuk %s"
-
-#. Translators: this is for a network device that cannot be activated (for example it
-#. is disabled by rfkill, or it has no coverage; %s is a network identifier
-#: js/ui/status/network.js:471
-#, javascript-format
-msgid "%s Unavailable"
-msgstr "%s Tak tersedia"
-
-#. Translators: %s is a network identifier
-#: js/ui/status/network.js:474
-#, javascript-format
-msgid "%s Connection Failed"
-msgstr "Koneksi %s Gagal"
-
-#: js/ui/status/network.js:486
-msgid "Wired Settings"
-msgstr "Pengaturan Kabel"
-
-#: js/ui/status/network.js:533
-msgid "Mobile Broadband Settings"
-msgstr "Pengaturan Data Seluler"
-
-#. Translators: %s is a network identifier
-#: js/ui/status/network.js:589 js/ui/status/network.js:1373
-#, javascript-format
-msgid "%s Hardware Disabled"
-msgstr "%s Perangkat Keras Dinonaktifkan"
-
-#. Translators: this is for a network device that cannot be activated
-#. because it's disabled by rfkill (airplane mode); %s is a network identifier
-#: js/ui/status/network.js:593
-#, javascript-format
-msgid "%s Disabled"
-msgstr "%s Dinonaktifkan"
-
-#: js/ui/status/network.js:628
-msgid "Bluetooth Settings"
-msgstr "Pengaturan Bluetooth"
-
-#: js/ui/status/network.js:640
-msgid "Connect to Internet"
-msgstr "Sambungkan ke Internet"
-
-#: js/ui/status/network.js:840
-msgid "Airplane Mode is On"
-msgstr "Mode Pesawat Terbang Menyala"
-
-#: js/ui/status/network.js:841
-msgid "Wi-Fi is disabled when airplane mode is on."
-msgstr "Wi-Fi dinonaktifkan ketika mode pesawat terbang menyala."
-
-#: js/ui/status/network.js:842
-msgid "Turn Off Airplane Mode"
-msgstr "Matikan Mode Pesawat Terbang"
-
-#: js/ui/status/network.js:851
-msgid "Wi-Fi is Off"
-msgstr "Wi-Fi Mati"
-
-#: js/ui/status/network.js:852
-msgid "Wi-Fi needs to be turned on in order to connect to a network."
-msgstr "Wi-Fi perlu dinyalakan untuk menyambung ke suatu jaringan."
-
-#: js/ui/status/network.js:853
-msgid "Turn On Wi-Fi"
-msgstr "Nyalakan Wi-Fi"
-
-#: js/ui/status/network.js:881
-msgid "Wi-Fi Networks"
-msgstr "Jaringan Wi-Fi"
-
-#: js/ui/status/network.js:885
-msgid "Select a network"
-msgstr "Pilih jaringan"
-
-#: js/ui/status/network.js:921
-msgid "No Networks"
-msgstr "Tiada Jaringan"
-
-#: js/ui/status/network.js:946
-msgid "Use hardware switch to turn off"
-msgstr "Pakai saklar perangkat keras untuk mematikan"
-
-#: js/ui/status/network.js:1259
-msgid "Select Network"
-msgstr "Pilih Jaringan"
-
-#: js/ui/status/network.js:1265
-msgid "Wi-Fi Settings"
-msgstr "Pengaturan Wi-Fi"
-
-#. Translators: %s is a network identifier
-#: js/ui/status/network.js:1364
-#, javascript-format
-msgid "%s Hotspot Active"
-msgstr "%s Hotspot Aktif"
-
-#. Translators: %s is a network identifier
-#: js/ui/status/network.js:1379
-#, javascript-format
-msgid "%s Not Connected"
-msgstr "%s Tak Tersambung"
-
-#: js/ui/status/network.js:1466
-msgid "unknown"
-msgstr "tidak dikenal"
-
-#: js/ui/status/network.js:1468
-msgid "activating…"
-msgstr "mengaktifkan…"
-
-#: js/ui/status/network.js:1472
-msgid "deactivating…"
-msgstr "menonaktifkan…"
-
-#: js/ui/status/network.js:1474
-msgid "deactivated"
-msgstr "dinonaktifkan"
-
-#: js/ui/status/network.js:1542
-msgid "connecting…"
-msgstr "menyambung…"
-
-#. Translators: this is for network connections that require some kind of key or password
-#: js/ui/status/network.js:1545
-msgid "authentication required"
-msgstr "diperlukan autentikasi"
-
-#: js/ui/status/network.js:1547
-msgid "connection failed"
-msgstr "koneksi gagal"
-
-#: js/ui/status/network.js:1593
-msgid "VPN Settings"
-msgstr "Pengaturan VPN"
-
-#: js/ui/status/network.js:1610
-msgid "VPN"
-msgstr "VPN"
-
-#: js/ui/status/network.js:1620
-msgid "VPN Off"
-msgstr "VPN Mati"
-
-#: js/ui/status/network.js:1683
-msgid "Network Settings"
-msgstr "Pengaturan Jaringan"
-
-#: js/ui/status/network.js:1711
-#, javascript-format
-msgid "%s Wired Connection"
-msgid_plural "%s Wired Connections"
-msgstr[0] "%s Koneksi Kabel"
-
-#: js/ui/status/network.js:1715
-#, javascript-format
-msgid "%s Wi-Fi Connection"
-msgid_plural "%s Wi-Fi Connections"
-msgstr[0] "%s Koneksi Wi-Fi"
-
-#: js/ui/status/network.js:1719
-#, javascript-format
-msgid "%s Modem Connection"
-msgid_plural "%s Modem Connections"
-msgstr[0] "%s Koneksi Modem"
-
-#: js/ui/status/network.js:1864
-msgid "Connection failed"
-msgstr "Koneksi gagal"
-
-#: js/ui/status/network.js:1865
-msgid "Activation of network connection failed"
-msgstr "Aktivasi koneksi jaringan gagal"
+msgid "%s Hotspot"
+msgstr "%s Hotspot"
 
 #: js/ui/status/nightLight.js:20
 msgid "Night Light"
 msgstr "Cahaya Malam"
-
-#: js/ui/status/power.js:85
-#, javascript-format
-msgid "%d %%"
-msgstr "%d %%"
 
 #: js/ui/status/powerProfiles.js:20
 msgctxt "Power profile"
@@ -2256,9 +2052,9 @@ msgctxt "Power profile"
 msgid "Power Saver"
 msgstr "Penghemat Daya"
 
-#: js/ui/status/powerProfiles.js:66
-msgid "Power Settings"
-msgstr "Pengaturan Daya"
+#: js/ui/status/powerProfiles.js:68
+msgid "Power Profiles"
+msgstr "Profil Daya"
 
 #: js/ui/status/remoteAccess.js:74
 msgid "Stop Screencast"
@@ -2272,43 +2068,48 @@ msgstr "Hentikan Berbagi Layar"
 msgid "Airplane Mode"
 msgstr "Mode Pesawat Terbang"
 
-#: js/ui/status/system.js:83
-msgid "Lock"
-msgstr "Kunci"
+#: js/ui/status/system.js:89
+#, javascript-format
+msgid "%d %%"
+msgstr "%d %%"
 
-#: js/ui/status/system.js:95
-msgid "Power Off / Log Out"
-msgstr "Matikan / Log Keluar"
+#: js/ui/status/system.js:140
+msgid "Power Off Menu"
+msgstr "Menu Matikan"
 
-#: js/ui/status/system.js:98
+#: js/ui/status/system.js:148
 msgid "Suspend"
 msgstr "Suspensi"
 
-#: js/ui/status/system.js:109
+#: js/ui/status/system.js:153
 msgid "Restart…"
 msgstr "Mulai ulang…"
 
-#: js/ui/status/system.js:120
+#: js/ui/status/system.js:158
 msgid "Power Off…"
 msgstr "Matikan…"
 
-#: js/ui/status/system.js:133
+#: js/ui/status/system.js:165
 msgid "Log Out"
 msgstr "Keluar"
 
-#: js/ui/status/system.js:144
+#: js/ui/status/system.js:170
 msgid "Switch User…"
 msgstr "Beralih Pengguna…"
 
-#: js/ui/status/thunderbolt.js:257
+#: js/ui/status/system.js:216
+msgid "Lock Screen"
+msgstr "Kunci Layar"
+
+#: js/ui/status/thunderbolt.js:256
 msgid "Thunderbolt"
 msgstr "Thunderbolt"
 
-#: js/ui/status/thunderbolt.js:318
+#: js/ui/status/thunderbolt.js:317
 msgid "Unknown Thunderbolt device"
 msgstr "Perangkat Thunderbolt tak dikenal"
 
-#: js/ui/status/thunderbolt.js:319
+#: js/ui/status/thunderbolt.js:318
 msgid ""
 "New device has been detected while you were away. Please disconnect and "
 "reconnect the device to start using it."
@@ -2316,32 +2117,40 @@ msgstr ""
 "Perangkat baru telah terdeteksi saat Anda pergi. Harap lepaskan dan "
 "sambungkan kembali perangkat untuk mulai menggunakannya."
 
-#: js/ui/status/thunderbolt.js:322
+#: js/ui/status/thunderbolt.js:321
 msgid "Unauthorized Thunderbolt device"
 msgstr "Perangkat Thunderbolt tak dikenal"
 
-#: js/ui/status/thunderbolt.js:323
+#: js/ui/status/thunderbolt.js:322
 msgid ""
 "New device has been detected and needs to be authorized by an administrator."
 msgstr ""
 "Perangkat baru telah terdeteksi dan perlu diautorisasi oleh administrator."
 
-#: js/ui/status/thunderbolt.js:329
+#: js/ui/status/thunderbolt.js:328
 msgid "Thunderbolt authorization error"
 msgstr "Autorisasi Thunderbolt galat"
 
-#: js/ui/status/thunderbolt.js:330
+#: js/ui/status/thunderbolt.js:329
 #, javascript-format
 msgid "Could not authorize the Thunderbolt device: %s"
 msgstr "Tidak dapat mengautorisasi perangkat Thunderbolt: %s"
 
-#: js/ui/status/volume.js:235
+#: js/ui/status/volume.js:191
 msgid "Volume changed"
 msgstr "Volume diubah"
 
-#: js/ui/status/volume.js:296
+#: js/ui/status/volume.js:253
 msgid "Volume"
 msgstr "Volume"
+
+#: js/ui/status/volume.js:269
+msgid "Sound Output"
+msgstr "Keluaran Suara"
+
+#: js/ui/status/volume.js:337
+msgid "Sound Input"
+msgstr "Masukan Suara"
 
 #. Translators: this is for display mirroring i.e. cloning.
 #. * Try to keep it under around 15 characters.
@@ -3114,6 +2923,147 @@ msgstr[0] "%u Masukan"
 #: subprojects/gvc/gvc-mixer-control.c:2867
 msgid "System Sounds"
 msgstr "Suara Sistem"
+
+#~ msgid "%s Off"
+#~ msgstr "%s Mati"
+
+#~ msgid "%s Connected"
+#~ msgstr "%s Tersambung"
+
+#~ msgid "%s Unmanaged"
+#~ msgstr "%s Tak Dikelola"
+
+#~ msgid "%s Connecting"
+#~ msgstr "%s Menyambung"
+
+#~ msgid "%s Requires Authentication"
+#~ msgstr "%s Memerlukan Autentikasi"
+
+#~ msgid "Firmware Missing For %s"
+#~ msgstr "Firmware Hilang Untuk %s"
+
+#~ msgid "%s Unavailable"
+#~ msgstr "%s Tak tersedia"
+
+#~ msgid "%s Connection Failed"
+#~ msgstr "Koneksi %s Gagal"
+
+#~ msgid "Wired Settings"
+#~ msgstr "Pengaturan Kabel"
+
+#~ msgid "Mobile Broadband Settings"
+#~ msgstr "Pengaturan Data Seluler"
+
+#~ msgid "%s Hardware Disabled"
+#~ msgstr "%s Perangkat Keras Dinonaktifkan"
+
+#~ msgid "%s Disabled"
+#~ msgstr "%s Dinonaktifkan"
+
+#~ msgid "Bluetooth Settings"
+#~ msgstr "Pengaturan Bluetooth"
+
+#~ msgid "Connect to Internet"
+#~ msgstr "Sambungkan ke Internet"
+
+#~ msgid "Airplane Mode is On"
+#~ msgstr "Mode Pesawat Terbang Menyala"
+
+#~ msgid "Wi-Fi is disabled when airplane mode is on."
+#~ msgstr "Wi-Fi dinonaktifkan ketika mode pesawat terbang menyala."
+
+#~ msgid "Turn Off Airplane Mode"
+#~ msgstr "Matikan Mode Pesawat Terbang"
+
+#~ msgid "Wi-Fi is Off"
+#~ msgstr "Wi-Fi Mati"
+
+#~ msgid "Wi-Fi needs to be turned on in order to connect to a network."
+#~ msgstr "Wi-Fi perlu dinyalakan untuk menyambung ke suatu jaringan."
+
+#~ msgid "Turn On Wi-Fi"
+#~ msgstr "Nyalakan Wi-Fi"
+
+#~ msgid "Wi-Fi Networks"
+#~ msgstr "Jaringan Wi-Fi"
+
+#~ msgid "Select a network"
+#~ msgstr "Pilih jaringan"
+
+#~ msgid "No Networks"
+#~ msgstr "Tiada Jaringan"
+
+#~ msgid "Use hardware switch to turn off"
+#~ msgstr "Pakai saklar perangkat keras untuk mematikan"
+
+#~ msgid "Select Network"
+#~ msgstr "Pilih Jaringan"
+
+#~ msgid "Wi-Fi Settings"
+#~ msgstr "Pengaturan Wi-Fi"
+
+#~ msgid "%s Not Connected"
+#~ msgstr "%s Tak Tersambung"
+
+#~ msgid "unknown"
+#~ msgstr "tidak dikenal"
+
+#~ msgid "activating…"
+#~ msgstr "mengaktifkan…"
+
+#~ msgid "deactivating…"
+#~ msgstr "menonaktifkan…"
+
+#~ msgid "deactivated"
+#~ msgstr "dinonaktifkan"
+
+#~ msgid "connecting…"
+#~ msgstr "menyambung…"
+
+#~ msgid "authentication required"
+#~ msgstr "diperlukan autentikasi"
+
+#~ msgid "connection failed"
+#~ msgstr "koneksi gagal"
+
+#~ msgid "VPN Settings"
+#~ msgstr "Pengaturan VPN"
+
+#~ msgid "VPN"
+#~ msgstr "VPN"
+
+#~ msgid "VPN Off"
+#~ msgstr "VPN Mati"
+
+#~ msgid "Network Settings"
+#~ msgstr "Pengaturan Jaringan"
+
+#~ msgid "%s Wired Connection"
+#~ msgid_plural "%s Wired Connections"
+#~ msgstr[0] "%s Koneksi Kabel"
+
+#~ msgid "%s Wi-Fi Connection"
+#~ msgid_plural "%s Wi-Fi Connections"
+#~ msgstr[0] "%s Koneksi Wi-Fi"
+
+#~ msgid "%s Modem Connection"
+#~ msgid_plural "%s Modem Connections"
+#~ msgstr[0] "%s Koneksi Modem"
+
+#~ msgid "Connection failed"
+#~ msgstr "Koneksi gagal"
+
+#~ msgid "Activation of network connection failed"
+#~ msgstr "Aktivasi koneksi jaringan gagal"
+
+#~ msgid "Power Settings"
+#~ msgstr "Pengaturan Daya"
+
+#~ msgid "Lock"
+#~ msgstr "Kunci"
+
+#~ msgid "Power Off / Log Out"
+#~ msgstr "Matikan / Log Keluar"
 
 #~ msgid "%d Connected"
 #~ msgid_plural "%d Connected"
