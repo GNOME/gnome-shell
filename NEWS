@@ -1,3 +1,24 @@
+42.4
+====
+* Fix adding suggestions from on-screen keyboard [Carlos, Florian; !2368, !2421]
+* Allow extension updates with only Extension Manager installed [Matthew; !2358]
+* Only load extensions that support the current session mode [Alessandro; !2378]
+* Fix logging in with realmd [Alessandro; !2404]
+* Tweak access portal dialog [Georges; !2377]
+* Improve overview animation performance [Ivan; !2395]
+* Fix remembering set up bluetooth devices [Florian; !2409]
+* Plugged leak [Sebastian; !2367]
+* Misc. bug fixes and cleanups [Alessandro, Florian, Marco, Sam; !2402, !2412,
+  !2411, !2351, !2366, !2372, !2350, !2388, !2326, !2413]
+
+Contributors:
+  Marco Trevisan (Treviño), Alessandro Bono, Carlos Garnacho, Sam Hewitt,
+  Matthew Jakeman, Sebastian Keller, Ivan Molodetskikh, Florian Müllner,
+  Georges Basile Stavracas Neto
+
+Translators:
+  Jordi Mas [ca], Nathan Follens [nl], Aleksandr Melman [ru]
+
 42.3.1
 ======
 * Fix regression in ibus support [Florian; !2359]
