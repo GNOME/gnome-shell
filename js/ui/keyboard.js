@@ -224,6 +224,13 @@ class Suggestions extends St.BoxLayout {
             callback();
             return Clutter.EVENT_STOP;
         });
+        button.connect('touch-event', (actor, event) => {
+            if (event.type() !== Clutter.EventType.TOUCH_BEGIN)
+                return Clutter.EVENT_PROPAGATE;
+
+            callback();
+            return Clutter.EVENT_STOP;
+        });
         this.add_child(button);
     }
 
