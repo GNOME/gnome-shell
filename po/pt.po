@@ -16,8 +16,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 3.14\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2022-08-03 06:09+0000\n"
-"PO-Revision-Date: 2022-08-03 10:46+0100\n"
+"POT-Creation-Date: 2022-08-12 03:40+0000\n"
+"PO-Revision-Date: 2022-08-12 12:46+0100\n"
 "Last-Translator: Hugo Carvalho <hugokarvalho@hotmail.com>\n"
 "Language-Team: Português <https://l10n.gnome.org/teams/pt/>\n"
 "Language: pt\n"
@@ -541,7 +541,7 @@ msgstr "Visitar o sítio web da extensão"
 #: js/ui/components/networkAgent.js:109 js/ui/components/polkitAgent.js:141
 #: js/ui/endSessionDialog.js:440 js/ui/extensionDownloader.js:223
 #: js/ui/shellMountOperation.js:377 js/ui/shellMountOperation.js:387
-#: js/ui/status/network.js:960 subprojects/extensions-app/js/main.js:173
+#: subprojects/extensions-app/js/main.js:173
 msgid "Cancel"
 msgstr "Cancelar"
 
@@ -573,23 +573,23 @@ msgstr "(por ex., utilizador ou %s)"
 msgid "Username"
 msgstr "Utilizador"
 
-#: js/gdm/loginDialog.js:1257
+#: js/gdm/loginDialog.js:1258
 msgid "Login Window"
 msgstr "Janela de acesso"
 
-#: js/gdm/util.js:434
+#: js/gdm/util.js:431
 msgid "Authentication error"
 msgstr "Erro de autenticação"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger on the fingerprint reader
-#: js/gdm/util.js:606
+#: js/gdm/util.js:603
 msgid "(or swipe finger across reader)"
 msgstr "(ou passe o dedo pelo leitor)"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can place their finger on the fingerprint reader instead
-#: js/gdm/util.js:611
+#: js/gdm/util.js:608
 msgid "(or place finger on reader)"
 msgstr "(ou coloque o dedo no leitor)"
 
@@ -844,6 +844,10 @@ msgstr "Negar acesso"
 msgid "Grant Access"
 msgstr "Conceder acesso"
 
+#: js/ui/appDisplay.js:1728
+msgid "Unnamed Folder"
+msgstr "Pasta sem nome"
+
 #: js/ui/appFavorites.js:166
 #, javascript-format
 msgid "%s has been pinned to the dash."
@@ -891,7 +895,7 @@ msgstr "Iniciar usando a placa de vídeo dedicada"
 msgid "Select Audio Device"
 msgstr "Selecione o dispositivo de áudio"
 
-#: js/ui/audioDeviceSelection.js:56 js/ui/status/volume.js:103
+#: js/ui/audioDeviceSelection.js:56 js/ui/status/volume.js:63
 msgid "Sound Settings"
 msgstr "Definições de som"
 
@@ -903,7 +907,7 @@ msgstr "Auscultadores"
 msgid "Headset"
 msgstr "Auscultadores com microfone"
 
-#: js/ui/audioDeviceSelection.js:73 js/ui/status/volume.js:359
+#: js/ui/audioDeviceSelection.js:73 js/ui/status/volume.js:319
 msgid "Microphone"
 msgstr "Microfone"
 
@@ -1074,8 +1078,7 @@ msgid ""
 msgstr ""
 "Alternativamente, pode ligar premindo o botão “WPS” no encaminhador (router)."
 
-#: js/ui/components/networkAgent.js:103 js/ui/status/network.js:247
-#: js/ui/status/network.js:337 js/ui/status/network.js:965
+#: js/ui/components/networkAgent.js:103 js/ui/status/network.js:436
 msgid "Connect"
 msgstr "Ligar"
 
@@ -1140,7 +1143,7 @@ msgstr "PIN"
 msgid "A password is required to connect to “%s”."
 msgstr "É necessária uma palavra-passe para se ligar a “%s”."
 
-#: js/ui/components/networkAgent.js:736 js/ui/status/network.js:1823
+#: js/ui/components/networkAgent.js:736
 msgid "Network Manager"
 msgstr "Gestor de rede"
 
@@ -1525,13 +1528,11 @@ msgstr ""
 msgid "Leave On"
 msgstr "Deixar ativado"
 
-#: js/ui/kbdA11yDialog.js:55 js/ui/status/network.js:1347
+#: js/ui/kbdA11yDialog.js:55
 msgid "Turn On"
 msgstr "Ligar"
 
-#: js/ui/kbdA11yDialog.js:65 js/ui/status/network.js:162
-#: js/ui/status/network.js:338 js/ui/status/network.js:1347
-#: js/ui/status/network.js:1454 js/ui/status/network.js:1525
+#: js/ui/kbdA11yDialog.js:65 js/ui/status/network.js:447
 msgid "Turn Off"
 msgstr "Desligar"
 
@@ -1539,7 +1540,7 @@ msgstr "Desligar"
 msgid "Leave Off"
 msgstr "Deixar desativado"
 
-#: js/ui/keyboard.js:258
+#: js/ui/keyboard.js:219
 msgid "Region & Language Settings"
 msgstr "Definições de Região e Idioma"
 
@@ -1701,12 +1702,12 @@ msgstr "Premir qualquer tecla para sair"
 msgid "Activities"
 msgstr "Atividades"
 
-#: js/ui/panel.js:367 js/ui/panel.js:409
+#: js/ui/panel.js:338
 msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "Sistema"
 
-#: js/ui/panel.js:510
+#: js/ui/panel.js:457
 msgid "Top Bar"
 msgstr "Barra superior"
 
@@ -1737,11 +1738,11 @@ msgstr "O GNOME precisa de bloquear o ecrã"
 #.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
-#: js/ui/screenShield.js:275 js/ui/screenShield.js:650
+#: js/ui/screenShield.js:275 js/ui/screenShield.js:652
 msgid "Unable to lock"
 msgstr "Impossível bloquear"
 
-#: js/ui/screenShield.js:276 js/ui/screenShield.js:651
+#: js/ui/screenShield.js:276 js/ui/screenShield.js:653
 msgid "Lock was blocked by an application"
 msgstr "Uma aplicação impediu o bloqueio"
 
@@ -1975,11 +1976,11 @@ msgstr "Texto grande"
 msgid "Auto Rotate"
 msgstr "Rotação automática"
 
-#: js/ui/status/bluetooth.js:153
+#: js/ui/status/bluetooth.js:160
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: js/ui/status/brightness.js:37
+#: js/ui/status/brightness.js:34
 msgid "Brightness"
 msgstr "Brilho"
 
@@ -2031,239 +2032,31 @@ msgstr ""
 "O acesso à localização pode ser alterado a qualquer altura a partir das "
 "definições de privacidade."
 
-#: js/ui/status/network.js:71
+#: js/ui/status/network.js:53
 msgid "<unknown>"
 msgstr "<desconhecido>"
 
-#. Translators: %s is a network identifier
-#: js/ui/status/network.js:438 js/ui/status/network.js:1376
+#. Translators: %s is a device name like "MyPhone"
+#: js/ui/status/network.js:356
 #, javascript-format
-msgid "%s Off"
-msgstr "%s desligado"
+msgid "Disconnect %s"
+msgstr "Desligar %s"
 
-#. Translators: %s is a network identifier
-#: js/ui/status/network.js:441
+#. Translators: %s is a device name like "MyPhone"
+#: js/ui/status/network.js:358
 #, javascript-format
-msgid "%s Connected"
-msgstr "%s ligado"
-
-#. Translators: this is for network devices that are physically present but are not
-#. under NetworkManager's control (and thus cannot be used in the menu);
-#. %s is a network identifier
-#: js/ui/status/network.js:446
-#, javascript-format
-msgid "%s Unmanaged"
-msgstr "%s não geridos"
+msgid "Connect to %s"
+msgstr "Ligar a %s"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:449
+#: js/ui/status/network.js:1107
 #, javascript-format
-msgid "%s Disconnecting"
-msgstr "%s a desligar"
-
-#. Translators: %s is a network identifier
-#: js/ui/status/network.js:456 js/ui/status/network.js:1368
-#, javascript-format
-msgid "%s Connecting"
-msgstr "%s a ligar"
-
-#. Translators: this is for network connections that require some kind of key or password; %s is a network identifier
-#: js/ui/status/network.js:459
-#, javascript-format
-msgid "%s Requires Authentication"
-msgstr "%s requer autenticação"
-
-#. Translators: this is for devices that require some kind of firmware or kernel
-#. module, which is missing; %s is a network identifier
-#: js/ui/status/network.js:467
-#, javascript-format
-msgid "Firmware Missing For %s"
-msgstr "Firmware em falta para %s"
-
-#. Translators: this is for a network device that cannot be activated (for example it
-#. is disabled by rfkill, or it has no coverage; %s is a network identifier
-#: js/ui/status/network.js:471
-#, javascript-format
-msgid "%s Unavailable"
-msgstr "%s indisponível"
-
-#. Translators: %s is a network identifier
-#: js/ui/status/network.js:474
-#, javascript-format
-msgid "%s Connection Failed"
-msgstr "Falha na ligação %s"
-
-#: js/ui/status/network.js:486
-msgid "Wired Settings"
-msgstr "Definições de ligação por cabo"
-
-#: js/ui/status/network.js:533
-msgid "Mobile Broadband Settings"
-msgstr "Definições da banda larga móvel"
-
-#. Translators: %s is a network identifier
-#: js/ui/status/network.js:589 js/ui/status/network.js:1373
-#, javascript-format
-msgid "%s Hardware Disabled"
-msgstr "Equipamento %s desativado"
-
-#. Translators: this is for a network device that cannot be activated
-#. because it's disabled by rfkill (airplane mode); %s is a network identifier
-#: js/ui/status/network.js:593
-#, javascript-format
-msgid "%s Disabled"
-msgstr "%s desativado"
-
-#: js/ui/status/network.js:628
-msgid "Bluetooth Settings"
-msgstr "Definições do Bluetooth"
-
-#: js/ui/status/network.js:640
-msgid "Connect to Internet"
-msgstr "Ligar à Internet"
-
-#: js/ui/status/network.js:840
-msgid "Airplane Mode is On"
-msgstr "Modo avião está ligado"
-
-#: js/ui/status/network.js:841
-msgid "Wi-Fi is disabled when airplane mode is on."
-msgstr "O Wi-Fi é desativado quando o modo de avião é ligado."
-
-#: js/ui/status/network.js:842
-msgid "Turn Off Airplane Mode"
-msgstr "Desligar modo avião"
-
-#: js/ui/status/network.js:851
-msgid "Wi-Fi is Off"
-msgstr "Wi-Fi está desligado"
-
-#: js/ui/status/network.js:852
-msgid "Wi-Fi needs to be turned on in order to connect to a network."
-msgstr "O Wi-Fi tem de ser ligado para se poder ligar a uma rede."
-
-#: js/ui/status/network.js:853
-msgid "Turn On Wi-Fi"
-msgstr "Ligar o Wi-Fi"
-
-#: js/ui/status/network.js:881
-msgid "Wi-Fi Networks"
-msgstr "Redes Wi-Fi"
-
-#: js/ui/status/network.js:885
-msgid "Select a network"
-msgstr "Selecionar uma rede"
-
-#: js/ui/status/network.js:921
-msgid "No Networks"
-msgstr "Nenhuma rede"
-
-#: js/ui/status/network.js:946
-msgid "Use hardware switch to turn off"
-msgstr "Usar o interruptor físico para desligar"
-
-#: js/ui/status/network.js:1259
-msgid "Select Network"
-msgstr "Selecionar rede"
-
-#: js/ui/status/network.js:1265
-msgid "Wi-Fi Settings"
-msgstr "Definições de Wi-Fi"
-
-#. Translators: %s is a network identifier
-#: js/ui/status/network.js:1364
-#, javascript-format
-msgid "%s Hotspot Active"
-msgstr "Ponto de acesso %s ativo"
-
-#. Translators: %s is a network identifier
-#: js/ui/status/network.js:1379
-#, javascript-format
-msgid "%s Not Connected"
-msgstr "%s não ligado"
-
-#: js/ui/status/network.js:1466
-msgid "unknown"
-msgstr "desconhecido"
-
-#: js/ui/status/network.js:1468
-msgid "activating…"
-msgstr "a ativar…"
-
-#: js/ui/status/network.js:1472
-msgid "deactivating…"
-msgstr "a desativar…"
-
-#: js/ui/status/network.js:1474
-msgid "deactivated"
-msgstr "desativado"
-
-#: js/ui/status/network.js:1542
-msgid "connecting…"
-msgstr "a ligar…"
-
-#. Translators: this is for network connections that require some kind of key or password
-#: js/ui/status/network.js:1545
-msgid "authentication required"
-msgstr "autenticação necessária"
-
-#: js/ui/status/network.js:1547
-msgid "connection failed"
-msgstr "falha ao ligar"
-
-#: js/ui/status/network.js:1593
-msgid "VPN Settings"
-msgstr "Definições de VPN"
-
-#: js/ui/status/network.js:1610
-msgid "VPN"
-msgstr "VPN"
-
-#: js/ui/status/network.js:1620
-msgid "VPN Off"
-msgstr "VPN desligada"
-
-#: js/ui/status/network.js:1683
-msgid "Network Settings"
-msgstr "Definições de rede"
-
-#: js/ui/status/network.js:1711
-#, javascript-format
-msgid "%s Wired Connection"
-msgid_plural "%s Wired Connections"
-msgstr[0] "%s ligação por cabo"
-msgstr[1] "%s ligações por cabo"
-
-#: js/ui/status/network.js:1715
-#, javascript-format
-msgid "%s Wi-Fi Connection"
-msgid_plural "%s Wi-Fi Connections"
-msgstr[0] "%s ligação Wi-Fi"
-msgstr[1] "%s ligações Wi-Fi"
-
-#: js/ui/status/network.js:1719
-#, javascript-format
-msgid "%s Modem Connection"
-msgid_plural "%s Modem Connections"
-msgstr[0] "%s ligação por modem"
-msgstr[1] "%s ligações por modem"
-
-#: js/ui/status/network.js:1864
-msgid "Connection failed"
-msgstr "Falha na ligação"
-
-#: js/ui/status/network.js:1865
-msgid "Activation of network connection failed"
-msgstr "Falha na ativação da ligação à rede"
+msgid "%s Hotspot"
+msgstr "Ponto de acesso %s"
 
 #: js/ui/status/nightLight.js:20
 msgid "Night Light"
 msgstr "Luz noturna"
-
-#: js/ui/status/power.js:85
-#, javascript-format
-msgid "%d %%"
-msgstr "%d%%"
 
 #: js/ui/status/powerProfiles.js:20
 msgctxt "Power profile"
@@ -2280,13 +2073,13 @@ msgctxt "Power profile"
 msgid "Power Saver"
 msgstr "Poupança de energia"
 
-#: js/ui/status/powerProfiles.js:66
-msgid "Power Settings"
-msgstr "Definições de energia"
+#: js/ui/status/powerProfiles.js:68
+msgid "Power Profiles"
+msgstr "Perfis de energia"
 
 #: js/ui/status/remoteAccess.js:74
 msgid "Stop Screencast"
-msgstr "Parar gravação de ecrã"
+msgstr "Parar a gravação de ecrã"
 
 #: js/ui/status/remoteAccess.js:144
 msgid "Stop Screen Sharing"
@@ -2296,43 +2089,48 @@ msgstr "Parar a partilha de ecrã"
 msgid "Airplane Mode"
 msgstr "Modo de avião"
 
-#: js/ui/status/system.js:83
-msgid "Lock"
-msgstr "Bloquear"
+#: js/ui/status/system.js:89
+#, javascript-format
+msgid "%d %%"
+msgstr "%d%%"
 
-#: js/ui/status/system.js:95
-msgid "Power Off / Log Out"
-msgstr "Desligar / Sair"
+#: js/ui/status/system.js:140
+msgid "Power Off Menu"
+msgstr "Menu de Desligar"
 
-#: js/ui/status/system.js:98
+#: js/ui/status/system.js:148
 msgid "Suspend"
 msgstr "Suspender"
 
-#: js/ui/status/system.js:109
+#: js/ui/status/system.js:153
 msgid "Restart…"
 msgstr "Reiniciar…"
 
-#: js/ui/status/system.js:120
+#: js/ui/status/system.js:158
 msgid "Power Off…"
 msgstr "Desligar…"
 
-#: js/ui/status/system.js:133
+#: js/ui/status/system.js:165
 msgid "Log Out"
 msgstr "Sair"
 
-#: js/ui/status/system.js:144
+#: js/ui/status/system.js:170
 msgid "Switch User…"
 msgstr "Mudar de utilizador…"
 
-#: js/ui/status/thunderbolt.js:257
+#: js/ui/status/system.js:216
+msgid "Lock Screen"
+msgstr "Bloquear ecrã"
+
+#: js/ui/status/thunderbolt.js:256
 msgid "Thunderbolt"
 msgstr "Thunderbolt"
 
-#: js/ui/status/thunderbolt.js:318
+#: js/ui/status/thunderbolt.js:317
 msgid "Unknown Thunderbolt device"
 msgstr "Dispositivo Thunderbolt desconhecido"
 
-#: js/ui/status/thunderbolt.js:319
+#: js/ui/status/thunderbolt.js:318
 msgid ""
 "New device has been detected while you were away. Please disconnect and "
 "reconnect the device to start using it."
@@ -2340,33 +2138,41 @@ msgstr ""
 "Um novo dispositivo foi detetado enquanto estava ausente. Desligue e volte a "
 "ligar o dispositivo para começar a usá-lo."
 
-#: js/ui/status/thunderbolt.js:322
+#: js/ui/status/thunderbolt.js:321
 msgid "Unauthorized Thunderbolt device"
 msgstr "Dispositivo Thunderbolt não autorizado"
 
-#: js/ui/status/thunderbolt.js:323
+#: js/ui/status/thunderbolt.js:322
 msgid ""
 "New device has been detected and needs to be authorized by an administrator."
 msgstr ""
 "Um novo dispositivo foi detetado e precisa ser autorizado por um "
 "administrador."
 
-#: js/ui/status/thunderbolt.js:329
+#: js/ui/status/thunderbolt.js:328
 msgid "Thunderbolt authorization error"
 msgstr "Erro de autorização do Thunderbolt"
 
-#: js/ui/status/thunderbolt.js:330
+#: js/ui/status/thunderbolt.js:329
 #, javascript-format
 msgid "Could not authorize the Thunderbolt device: %s"
 msgstr "Não foi possível autorizar o dispositivo Thunderbolt: %s"
 
-#: js/ui/status/volume.js:235
+#: js/ui/status/volume.js:191
 msgid "Volume changed"
 msgstr "Volume alterado"
 
-#: js/ui/status/volume.js:296
+#: js/ui/status/volume.js:253
 msgid "Volume"
 msgstr "Volume"
+
+#: js/ui/status/volume.js:269
+msgid "Sound Output"
+msgstr "Saída de som"
+
+#: js/ui/status/volume.js:337
+msgid "Sound Input"
+msgstr "Entrada de som"
 
 #. Translators: this is for display mirroring i.e. cloning.
 #. * Try to keep it under around 15 characters.
@@ -3154,6 +2960,164 @@ msgid "System Sounds"
 msgstr "Sons de sistema"
 
 #, javascript-format
+#~ msgid "%s Off"
+#~ msgstr "%s desligado"
+
+#, javascript-format
+#~ msgid "%s Connected"
+#~ msgstr "%s ligado"
+
+#, javascript-format
+#~ msgid "%s Unmanaged"
+#~ msgstr "%s não geridos"
+
+#, javascript-format
+#~ msgid "%s Connecting"
+#~ msgstr "%s a ligar"
+
+#, javascript-format
+#~ msgid "%s Requires Authentication"
+#~ msgstr "%s requer autenticação"
+
+#, javascript-format
+#~ msgid "Firmware Missing For %s"
+#~ msgstr "Firmware em falta para %s"
+
+#, javascript-format
+#~ msgid "%s Unavailable"
+#~ msgstr "%s indisponível"
+
+#, javascript-format
+#~ msgid "%s Connection Failed"
+#~ msgstr "Falha na ligação %s"
+
+#~ msgid "Wired Settings"
+#~ msgstr "Definições de ligação por cabo"
+
+#~ msgid "Mobile Broadband Settings"
+#~ msgstr "Definições da banda larga móvel"
+
+#, javascript-format
+#~ msgid "%s Hardware Disabled"
+#~ msgstr "Equipamento %s desativado"
+
+#, javascript-format
+#~ msgid "%s Disabled"
+#~ msgstr "%s desativado"
+
+#~ msgid "Bluetooth Settings"
+#~ msgstr "Definições do Bluetooth"
+
+#~ msgid "Connect to Internet"
+#~ msgstr "Ligar à Internet"
+
+#~ msgid "Airplane Mode is On"
+#~ msgstr "Modo avião está ligado"
+
+#~ msgid "Wi-Fi is disabled when airplane mode is on."
+#~ msgstr "O Wi-Fi é desativado quando o modo de avião é ligado."
+
+#~ msgid "Turn Off Airplane Mode"
+#~ msgstr "Desligar modo avião"
+
+#~ msgid "Wi-Fi is Off"
+#~ msgstr "Wi-Fi está desligado"
+
+#~ msgid "Wi-Fi needs to be turned on in order to connect to a network."
+#~ msgstr "O Wi-Fi tem de ser ligado para se poder ligar a uma rede."
+
+#~ msgid "Turn On Wi-Fi"
+#~ msgstr "Ligar o Wi-Fi"
+
+#~ msgid "Wi-Fi Networks"
+#~ msgstr "Redes Wi-Fi"
+
+#~ msgid "Select a network"
+#~ msgstr "Selecionar uma rede"
+
+#~ msgid "No Networks"
+#~ msgstr "Nenhuma rede"
+
+#~ msgid "Use hardware switch to turn off"
+#~ msgstr "Usar o interruptor físico para desligar"
+
+#~ msgid "Select Network"
+#~ msgstr "Selecionar rede"
+
+#~ msgid "Wi-Fi Settings"
+#~ msgstr "Definições de Wi-Fi"
+
+#, javascript-format
+#~ msgid "%s Not Connected"
+#~ msgstr "%s não ligado"
+
+#~ msgid "unknown"
+#~ msgstr "desconhecido"
+
+#~ msgid "activating…"
+#~ msgstr "a ativar…"
+
+#~ msgid "deactivating…"
+#~ msgstr "a desativar…"
+
+#~ msgid "deactivated"
+#~ msgstr "desativado"
+
+#~ msgid "connecting…"
+#~ msgstr "a ligar…"
+
+#~ msgid "authentication required"
+#~ msgstr "autenticação necessária"
+
+#~ msgid "connection failed"
+#~ msgstr "falha ao ligar"
+
+#~ msgid "VPN Settings"
+#~ msgstr "Definições de VPN"
+
+#~ msgid "VPN"
+#~ msgstr "VPN"
+
+#~ msgid "VPN Off"
+#~ msgstr "VPN desligada"
+
+#~ msgid "Network Settings"
+#~ msgstr "Definições de rede"
+
+#, javascript-format
+#~ msgid "%s Wired Connection"
+#~ msgid_plural "%s Wired Connections"
+#~ msgstr[0] "%s ligação por cabo"
+#~ msgstr[1] "%s ligações por cabo"
+
+#, javascript-format
+#~ msgid "%s Wi-Fi Connection"
+#~ msgid_plural "%s Wi-Fi Connections"
+#~ msgstr[0] "%s ligação Wi-Fi"
+#~ msgstr[1] "%s ligações Wi-Fi"
+
+#, javascript-format
+#~ msgid "%s Modem Connection"
+#~ msgid_plural "%s Modem Connections"
+#~ msgstr[0] "%s ligação por modem"
+#~ msgstr[1] "%s ligações por modem"
+
+#~ msgid "Connection failed"
+#~ msgstr "Falha na ligação"
+
+#~ msgid "Activation of network connection failed"
+#~ msgstr "Falha na ativação da ligação à rede"
+
+#~ msgid "Power Settings"
+#~ msgstr "Definições de energia"
+
+#~ msgid "Lock"
+#~ msgstr "Bloquear"
+
+#~ msgid "Power Off / Log Out"
+#~ msgstr "Desligar / Sair"
+
+#, javascript-format
 #~ msgid "%d Connected"
 #~ msgid_plural "%d Connected"
 #~ msgstr[0] "%d ligado"
@@ -3217,9 +3181,6 @@ msgstr "Sons de sistema"
 
 #~ msgid "Show screenshot UI"
 #~ msgstr "Mostrar a interface da captura de ecrã"
-
-#~ msgid "Unnamed Folder"
-#~ msgstr "Pasta sem nome"
 
 #~ msgid "Screen Recording in Progress"
 #~ msgstr "Gravação de ecrã em curso"
