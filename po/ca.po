@@ -2403,7 +2403,7 @@ msgid ""
 "New device has been detected while you were away. Please disconnect and "
 "reconnect the device to start using it."
 msgstr ""
-"El nou dispositiu s'ha detectat mentre estàveu absents. Desconnecteu i "
+"Un nou dispositiu s'ha detectat mentre estàveu absents. Desconnecteu i "
 "torneu a connectar el dispositiu per a començar a utilitzar-lo."
 
 #: js/ui/status/thunderbolt.js:328
@@ -3094,7 +3094,7 @@ msgstr "Versió"
 
 #: subprojects/extensions-tool/src/main.c:256
 msgid "State"
-msgstr "Comarca"
+msgstr "Estat"
 
 #: subprojects/extensions-tool/src/main.c:294
 msgid "“version” takes no arguments"
