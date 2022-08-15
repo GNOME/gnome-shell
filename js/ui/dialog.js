@@ -60,8 +60,6 @@ class Dialog extends St.Widget {
     }
 
     makeInactive() {
-        this._parentActor.disconnectObject(this);
-
         this.buttonLayout.get_children().forEach(c => c.set_reactive(false));
     }
 
