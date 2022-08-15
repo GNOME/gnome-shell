@@ -1249,27 +1249,22 @@ const NMVpnConnectionItem = GObject.registerClass({
         super(section, connection);
 
         this._label.x_expand = true;
-        this.radioMode = true;
+        this.accessible_role = Atk.Role.CHECK_MENU_ITEM;
+        this._icon.hide();
 
         this._switch = new PopupMenu.Switch(this.is_active);
         this.add_child(this._switch);
 
-        this.bind_property('radio-mode',
-            this._switch, 'visible',
-            GObject.BindingFlags.SYNC_CREATE);
         this.bind_property('is-active',
             this._switch, 'state',
             GObject.BindingFlags.SYNC_CREATE);
-    }
-
-    _updateOrnament() {
-        this.setOrnament(PopupMenu.Ornament.NONE);
+        this.bind_property('name',
+            this._label, 'text',
+            GObject.BindingFlags.SYNC_CREATE);
     }
 
     _sync() {
-        super._sync();
-
-        if (this.radio_mode && this.is_active)
+        if (this.is_active)
             this.add_accessible_state(Atk.StateType.CHECKED);
         else
             this.remove_accessible_state(Atk.StateType.CHECKED);
