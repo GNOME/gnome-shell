@@ -22,6 +22,11 @@ class NightLightToggle extends QuickToggle {
             toggleMode: true,
         });
 
+        const monitorManager = global.backend.get_monitor_manager();
+        monitorManager.bind_property('night-light-supported',
+            this, 'visible',
+            GObject.BindingFlags.SYNC_CREATE);
+
         this._settings = new Gio.Settings({
             schema_id: 'org.gnome.settings-daemon.plugins.color',
         });
