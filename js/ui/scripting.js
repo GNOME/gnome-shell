@@ -293,7 +293,7 @@ async function _runPerfScript(scriptModule, outputFile) {
         Meta.exit(Meta.ExitCode.ERROR);
     }
 
-    Meta.exit(Meta.ExitCode.SUCCESS);
+    global.context.terminate();
 }
 
 /**
