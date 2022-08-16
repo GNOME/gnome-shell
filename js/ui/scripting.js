@@ -284,6 +284,15 @@ async function _runPerfScript(scriptModule, outputFile) {
         log(`Script failed: ${err}\n${err.stack}`);
         Meta.exit(Meta.ExitCode.ERROR);
     }
+
+    try {
+        const perfHelper = _getPerfHelper();
+        perfHelper.ExitSync();
+    } catch (err) {
+        log(`Failed to exit helper: ${err}\n${err.stack}`);
+        Meta.exit(Meta.ExitCode.ERROR);
+    }
+
     Meta.exit(Meta.ExitCode.SUCCESS);
 }
 
