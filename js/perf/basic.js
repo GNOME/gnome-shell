@@ -35,7 +35,7 @@ async function run() {
 
     // navigate through top bar
     Scripting.scriptEvent('topBarNavStart');
-    Main.panel.statusArea.aggregateMenu.menu.open();
+    Main.panel.statusArea.quickSettings.menu.open();
     await Scripting.sleep(400);
 
     const { menuManager } = Main.panel;
