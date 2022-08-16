@@ -10,8 +10,8 @@
 msgid ""
 msgstr "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2022-08-03 06:09+0000\n"
-"PO-Revision-Date: 2022-08-07 12:15+0100\n"
+"POT-Creation-Date: 2022-08-15 11:56+0000\n"
+"PO-Revision-Date: 2022-08-16 12:15+0100\n"
 "Last-Translator: Asier Sarasua Garmendia <asiersarasua@ni.eus>\n"
 "Language-Team: Basque <librezale@librezale.eus>\n"
 "Language: eu\n"
@@ -467,7 +467,7 @@ msgstr "Bisitatu hedapenaren webgunea"
 #: js/ui/components/networkAgent.js:109 js/ui/components/polkitAgent.js:141
 #: js/ui/endSessionDialog.js:440 js/ui/extensionDownloader.js:223
 #: js/ui/shellMountOperation.js:377 js/ui/shellMountOperation.js:387
-#: js/ui/status/network.js:960 subprojects/extensions-app/js/main.js:173
+#: subprojects/extensions-app/js/main.js:173
 msgid "Cancel"
 msgstr "Utzi"
 
@@ -499,23 +499,23 @@ msgstr "(adib., erabiltzailea edo %s)"
 msgid "Username"
 msgstr "Erabiltzaile-izena"
 
-#: js/gdm/loginDialog.js:1257
+#: js/gdm/loginDialog.js:1258
 msgid "Login Window"
 msgstr "Saio-hasierako leihoa"
 
-#: js/gdm/util.js:434
+#: js/gdm/util.js:431
 msgid "Authentication error"
 msgstr "Autentifikazio-errorea"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger on the fingerprint reader
-#: js/gdm/util.js:606
+#: js/gdm/util.js:603
 msgid "(or swipe finger across reader)"
 msgstr "(edo lerratu hatza irakurlean zehar)"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can place their finger on the fingerprint reader instead
-#: js/gdm/util.js:611
+#: js/gdm/util.js:608
 msgid "(or place finger on reader)"
 msgstr "(edo kokatu hatza irakurlean)"
 
@@ -768,6 +768,10 @@ msgstr "Ukatu sarbidea"
 msgid "Grant Access"
 msgstr "Baimendu sarbidea"
 
+#: js/ui/appDisplay.js:1728
+msgid "Unnamed Folder"
+msgstr "Izenik gabeko karpeta"
+
 #: js/ui/appFavorites.js:166
 #, javascript-format
 msgid "%s has been pinned to the dash."
@@ -815,7 +819,7 @@ msgstr "Abiarazi txartel grafiko diskretua erabiliz"
 msgid "Select Audio Device"
 msgstr "Hautatu audioaren gailua"
 
-#: js/ui/audioDeviceSelection.js:56 js/ui/status/volume.js:103
+#: js/ui/audioDeviceSelection.js:56 js/ui/status/volume.js:63
 msgid "Sound Settings"
 msgstr "Soinu-ezarpenak"
 
@@ -827,7 +831,7 @@ msgstr "Entzungailua"
 msgid "Headset"
 msgstr "Entzungailua+mikrofonoa"
 
-#: js/ui/audioDeviceSelection.js:73 js/ui/status/volume.js:359
+#: js/ui/audioDeviceSelection.js:73 js/ui/status/volume.js:319
 msgid "Microphone"
 msgstr "Mikrofonoa"
 
@@ -995,8 +999,7 @@ msgid ""
 "Alternatively you can connect by pushing the “WPS” button on your router."
 msgstr "Bestela, zure routerreko \"WPS\" botoia sakatuta konektatu zaitezke."
 
-#: js/ui/components/networkAgent.js:103 js/ui/status/network.js:247
-#: js/ui/status/network.js:337 js/ui/status/network.js:965
+#: js/ui/components/networkAgent.js:103 js/ui/status/network.js:436
 msgid "Connect"
 msgstr "Konektatu"
 
@@ -1059,7 +1062,7 @@ msgstr "PINa"
 msgid "A password is required to connect to “%s”."
 msgstr "Pasahitza behar da '%s'(e)ra konektatzeko."
 
-#: js/ui/components/networkAgent.js:736 js/ui/status/network.js:1823
+#: js/ui/components/networkAgent.js:736
 msgid "Network Manager"
 msgstr "Sarearen kudeatzailea"
 
@@ -1429,13 +1432,11 @@ msgstr "Bi tekla aldi berean sakatu dituzu, edo Shift teklari 5 aldiz jarraian s
 msgid "Leave On"
 msgstr "Utzi piztuta"
 
-#: js/ui/kbdA11yDialog.js:55 js/ui/status/network.js:1347
+#: js/ui/kbdA11yDialog.js:55
 msgid "Turn On"
 msgstr "Piztu"
 
-#: js/ui/kbdA11yDialog.js:65 js/ui/status/network.js:162
-#: js/ui/status/network.js:338 js/ui/status/network.js:1347
-#: js/ui/status/network.js:1454 js/ui/status/network.js:1525
+#: js/ui/kbdA11yDialog.js:65 js/ui/status/network.js:447
 msgid "Turn Off"
 msgstr "Itzali"
 
@@ -1443,7 +1444,7 @@ msgstr "Itzali"
 msgid "Leave Off"
 msgstr "Utzi itzalita"
 
-#: js/ui/keyboard.js:258
+#: js/ui/keyboard.js:219
 msgid "Region & Language Settings"
 msgstr "Eskualdearen eta hizkuntzaren ezarpenak"
 
@@ -1603,12 +1604,12 @@ msgstr "Sakatu edozer tekla irteteko"
 msgid "Activities"
 msgstr "Jarduerak"
 
-#: js/ui/panel.js:367 js/ui/panel.js:409
+#: js/ui/panel.js:338
 msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "Sistema"
 
-#: js/ui/panel.js:510
+#: js/ui/panel.js:457
 msgid "Top Bar"
 msgstr "Goiko barra"
 
@@ -1639,11 +1640,11 @@ msgstr "GNOMEk pantaila blokeatzea behar du"
 #.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
-#: js/ui/screenShield.js:275 js/ui/screenShield.js:650
+#: js/ui/screenShield.js:275 js/ui/screenShield.js:652
 msgid "Unable to lock"
 msgstr "Ezin da blokeatu"
 
-#: js/ui/screenShield.js:276 js/ui/screenShield.js:651
+#: js/ui/screenShield.js:276 js/ui/screenShield.js:653
 msgid "Lock was blocked by an application"
 msgstr "Beste aplikazio batek blokeatu du"
 
@@ -1875,11 +1876,11 @@ msgstr "Testu handia"
 msgid "Auto Rotate"
 msgstr "Automatikoki biratu"
 
-#: js/ui/status/bluetooth.js:153
+#: js/ui/status/bluetooth.js:160
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: js/ui/status/brightness.js:37
+#: js/ui/status/brightness.js:34
 msgid "Brightness"
 msgstr "Distira"
 
@@ -1929,239 +1930,31 @@ msgstr "%s aplikazioak zure kokalekua atzitu nahi du"
 msgid "Location access can be changed at any time from the privacy settings."
 msgstr "Kokalekuaren sarbidea edozer unetan alda daiteke pribatutasunen ezarpenetatik."
 
-#: js/ui/status/network.js:71
+#: js/ui/status/network.js:53
 msgid "<unknown>"
 msgstr "<ezezaguna>"
 
-#. Translators: %s is a network identifier
-#: js/ui/status/network.js:438 js/ui/status/network.js:1376
+#. Translators: %s is a device name like "MyPhone"
+#: js/ui/status/network.js:356
 #, javascript-format
-msgid "%s Off"
-msgstr "'%s' itzalita"
+msgid "Disconnect %s"
+msgstr "Deskonektatu %s"
 
-#. Translators: %s is a network identifier
-#: js/ui/status/network.js:441
+#. Translators: %s is a device name like "MyPhone"
+#: js/ui/status/network.js:358
 #, javascript-format
-msgid "%s Connected"
-msgstr "'%s' konektatuta"
-
-#. Translators: this is for network devices that are physically present but are not
-#. under NetworkManager's control (and thus cannot be used in the menu);
-#. %s is a network identifier
-#: js/ui/status/network.js:446
-#, javascript-format
-msgid "%s Unmanaged"
-msgstr "'%s' kudeatu gabea"
+msgid "Connect to %s"
+msgstr "Konektatu honekin: %s"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:449
+#: js/ui/status/network.js:1107
 #, javascript-format
-msgid "%s Disconnecting"
-msgstr "'%s' deskonektatzen"
-
-#. Translators: %s is a network identifier
-#: js/ui/status/network.js:456 js/ui/status/network.js:1368
-#, javascript-format
-msgid "%s Connecting"
-msgstr "'%s' konektatzen"
-
-#. Translators: this is for network connections that require some kind of key or password; %s is a network identifier
-#: js/ui/status/network.js:459
-#, javascript-format
-msgid "%s Requires Authentication"
-msgstr "'%s'(e)k autentifikazioa eskatzen du"
-
-#. Translators: this is for devices that require some kind of firmware or kernel
-#. module, which is missing; %s is a network identifier
-#: js/ui/status/network.js:467
-#, javascript-format
-msgid "Firmware Missing For %s"
-msgstr "'%s'(r)en firmwarea falta da"
-
-#. Translators: this is for a network device that cannot be activated (for example it
-#. is disabled by rfkill, or it has no coverage; %s is a network identifier
-#: js/ui/status/network.js:471
-#, javascript-format
-msgid "%s Unavailable"
-msgstr "'%s' ez dago erabilgarri"
-
-#. Translators: %s is a network identifier
-#: js/ui/status/network.js:474
-#, javascript-format
-msgid "%s Connection Failed"
-msgstr "'%s'(r)en konexioak huts egin du"
-
-#: js/ui/status/network.js:486
-msgid "Wired Settings"
-msgstr "Haridunaren ezarpenak"
-
-#: js/ui/status/network.js:533
-msgid "Mobile Broadband Settings"
-msgstr "Banda zabal mugikorraren ezarpenak"
-
-#. Translators: %s is a network identifier
-#: js/ui/status/network.js:589 js/ui/status/network.js:1373
-#, javascript-format
-msgid "%s Hardware Disabled"
-msgstr "'%s' hardwarea desgaituta"
-
-#. Translators: this is for a network device that cannot be activated
-#. because it's disabled by rfkill (airplane mode); %s is a network identifier
-#: js/ui/status/network.js:593
-#, javascript-format
-msgid "%s Disabled"
-msgstr "'%s' desgaituta"
-
-#: js/ui/status/network.js:628
-msgid "Bluetooth Settings"
-msgstr "Bluetooth ezarpenak"
-
-#: js/ui/status/network.js:640
-msgid "Connect to Internet"
-msgstr "Konektatu Internetera"
-
-#: js/ui/status/network.js:840
-msgid "Airplane Mode is On"
-msgstr "Hegazkin modua piztuta"
-
-#: js/ui/status/network.js:841
-msgid "Wi-Fi is disabled when airplane mode is on."
-msgstr "Haririk gabekoa desgaitu egiten da hegazkin modua piztean."
-
-#: js/ui/status/network.js:842
-msgid "Turn Off Airplane Mode"
-msgstr "Itzali hegazkin modua"
-
-#: js/ui/status/network.js:851
-msgid "Wi-Fi is Off"
-msgstr "Haririk gabekoa itzalita"
-
-#: js/ui/status/network.js:852
-msgid "Wi-Fi needs to be turned on in order to connect to a network."
-msgstr "Haririk gabekoa piztu egin behar da sare batera konektatzeko."
-
-#: js/ui/status/network.js:853
-msgid "Turn On Wi-Fi"
-msgstr "Piztu haririk gabekoa"
-
-#: js/ui/status/network.js:881
-msgid "Wi-Fi Networks"
-msgstr "Wifi sareak"
-
-#: js/ui/status/network.js:885
-msgid "Select a network"
-msgstr "Hautatu sare bat"
-
-#: js/ui/status/network.js:921
-msgid "No Networks"
-msgstr "Sarerik ez"
-
-#: js/ui/status/network.js:946
-msgid "Use hardware switch to turn off"
-msgstr "Erabili hardwarearen aldatzailea itzaltzeko"
-
-#: js/ui/status/network.js:1259
-msgid "Select Network"
-msgstr "Hautatu sarea"
-
-#: js/ui/status/network.js:1265
-msgid "Wi-Fi Settings"
-msgstr "Haririk gabekoaren ezarpenak"
-
-#. Translators: %s is a network identifier
-#: js/ui/status/network.js:1364
-#, javascript-format
-msgid "%s Hotspot Active"
-msgstr "'%s' wifigunea aktibo"
-
-#. Translators: %s is a network identifier
-#: js/ui/status/network.js:1379
-#, javascript-format
-msgid "%s Not Connected"
-msgstr "'%s' konektatu gabe"
-
-#: js/ui/status/network.js:1466
-msgid "unknown"
-msgstr "ezezaguna"
-
-#: js/ui/status/network.js:1468
-msgid "activating…"
-msgstr "aktibatzen…"
-
-#: js/ui/status/network.js:1472
-msgid "deactivating…"
-msgstr "desaktibatzen…"
-
-#: js/ui/status/network.js:1474
-msgid "deactivated"
-msgstr "desaktibatuta"
-
-#: js/ui/status/network.js:1542
-msgid "connecting…"
-msgstr "konektatzen…"
-
-#. Translators: this is for network connections that require some kind of key or password
-#: js/ui/status/network.js:1545
-msgid "authentication required"
-msgstr "autentifikazioa behar da"
-
-#: js/ui/status/network.js:1547
-msgid "connection failed"
-msgstr "konexioak huts egin du"
-
-#: js/ui/status/network.js:1593
-msgid "VPN Settings"
-msgstr "VPNaren ezarpenak"
-
-#: js/ui/status/network.js:1610
-msgid "VPN"
-msgstr "VPNa"
-
-#: js/ui/status/network.js:1620
-msgid "VPN Off"
-msgstr "VPNa itzalita"
-
-#: js/ui/status/network.js:1683
-msgid "Network Settings"
-msgstr "Sarearen ezarpenak"
-
-#: js/ui/status/network.js:1711
-#, javascript-format
-msgid "%s Wired Connection"
-msgid_plural "%s Wired Connections"
-msgstr[0] "%s haridun konexioa"
-msgstr[1] "%s haridun konexioak"
-
-#: js/ui/status/network.js:1715
-#, javascript-format
-msgid "%s Wi-Fi Connection"
-msgid_plural "%s Wi-Fi Connections"
-msgstr[0] "%s haririk gabeko konexioa"
-msgstr[1] "%s haririk gabeko konexioak"
-
-#: js/ui/status/network.js:1719
-#, javascript-format
-msgid "%s Modem Connection"
-msgid_plural "%s Modem Connections"
-msgstr[0] "%s modem konexioa"
-msgstr[1] "%s modem konexioak"
-
-#: js/ui/status/network.js:1864
-msgid "Connection failed"
-msgstr "Konexioak huts egin du"
-
-#: js/ui/status/network.js:1865
-msgid "Activation of network connection failed"
-msgstr "Sareko konexioa aktibatzeak huts egin du"
+msgid "%s Hotspot"
+msgstr "%s wifigunea"
 
 #: js/ui/status/nightLight.js:20
 msgid "Night Light"
 msgstr "Gaueko argia"
-
-#: js/ui/status/power.js:85
-#, javascript-format
-msgid "%d %%"
-msgstr "%% %d"
 
 #: js/ui/status/powerProfiles.js:20
 msgctxt "Power profile"
@@ -2178,9 +1971,9 @@ msgctxt "Power profile"
 msgid "Power Saver"
 msgstr "Energiaren aurrezpena"
 
-#: js/ui/status/powerProfiles.js:66
-msgid "Power Settings"
-msgstr "Energiaren ezarpenak"
+#: js/ui/status/powerProfiles.js:68
+msgid "Power Profiles"
+msgstr "Energia-profilak"
 
 #: js/ui/status/remoteAccess.js:74
 msgid "Stop Screencast"
@@ -2194,73 +1987,86 @@ msgstr "Gelditu pantaila partekatzea"
 msgid "Airplane Mode"
 msgstr "Hegazkin modua"
 
-#: js/ui/status/system.js:83
-msgid "Lock"
-msgstr "Blokeatu"
+#: js/ui/status/system.js:89
+#, javascript-format
+msgid "%d %%"
+msgstr "%% %d"
 
-#: js/ui/status/system.js:95
-msgid "Power Off / Log Out"
-msgstr "Itzaltzea / saioa amaitzea"
+#: js/ui/status/system.js:140
+msgid "Power Off Menu"
+msgstr "Itzali menua"
 
-#: js/ui/status/system.js:98
+#: js/ui/status/system.js:148
 msgid "Suspend"
 msgstr "Eseki"
 
-#: js/ui/status/system.js:109
+#: js/ui/status/system.js:153
 msgid "Restart…"
 msgstr "Berrabiarazi…"
 
-#: js/ui/status/system.js:120
+#: js/ui/status/system.js:158
 msgid "Power Off…"
 msgstr "Itzali…"
 
-#: js/ui/status/system.js:133
+#: js/ui/status/system.js:165
 msgid "Log Out"
 msgstr "Amaitu saioa"
 
-#: js/ui/status/system.js:144
+#: js/ui/status/system.js:170
 msgid "Switch User…"
 msgstr "Aldatu erabiltzailea…"
 
-#: js/ui/status/thunderbolt.js:257
+#: js/ui/status/system.js:216
+msgid "Lock Screen"
+msgstr "Blokeatu pantaila"
+
+#: js/ui/status/thunderbolt.js:256
 msgid "Thunderbolt"
 msgstr "Thunderbolt"
 
-#: js/ui/status/thunderbolt.js:318
+#: js/ui/status/thunderbolt.js:317
 msgid "Unknown Thunderbolt device"
 msgstr "Thunderbolt gailu ezezaguna"
 
-#: js/ui/status/thunderbolt.js:319
+#: js/ui/status/thunderbolt.js:318
 msgid ""
 "New device has been detected while you were away. Please disconnect and "
 "reconnect the device to start using it."
 msgstr "Gailu berria detektatu da ez zeunden bitartean. Deskonektatu eta berriro konektatu gailua hura erabiltzen hasi ahal izateko."
 
-#: js/ui/status/thunderbolt.js:322
+#: js/ui/status/thunderbolt.js:321
 msgid "Unauthorized Thunderbolt device"
 msgstr "Baimenik gabeko Thunderbolt gailua"
 
-#: js/ui/status/thunderbolt.js:323
+#: js/ui/status/thunderbolt.js:322
 msgid ""
 "New device has been detected and needs to be authorized by an administrator."
 msgstr "Gailu berria detektatu da eta administratzaile batek baimena eman behar dio."
 
-#: js/ui/status/thunderbolt.js:329
+#: js/ui/status/thunderbolt.js:328
 msgid "Thunderbolt authorization error"
 msgstr "Thunderbolt baimen-errorea"
 
-#: js/ui/status/thunderbolt.js:330
+#: js/ui/status/thunderbolt.js:329
 #, javascript-format
 msgid "Could not authorize the Thunderbolt device: %s"
 msgstr "Ezin izan da Thunderbolt gailua baimendu: %s"
 
-#: js/ui/status/volume.js:235
+#: js/ui/status/volume.js:191
 msgid "Volume changed"
 msgstr "Bolumena aldatuta"
 
-#: js/ui/status/volume.js:296
+#: js/ui/status/volume.js:253
 msgid "Volume"
 msgstr "Bolumena"
+
+#: js/ui/status/volume.js:269
+msgid "Sound Output"
+msgstr "Soinu-irteera"
+
+#: js/ui/status/volume.js:337
+msgid "Sound Input"
+msgstr "Soinu-sarrera"
 
 #. Translators: this is for display mirroring i.e. cloning.
 #. * Try to keep it under around 15 characters.
@@ -3020,6 +2826,164 @@ msgid "System Sounds"
 msgstr "Sistemaren soinuak"
 
 #, javascript-format
+#~ msgid "%s Off"
+#~ msgstr "'%s' itzalita"
+
+#, javascript-format
+#~ msgid "%s Connected"
+#~ msgstr "'%s' konektatuta"
+
+#, javascript-format
+#~ msgid "%s Unmanaged"
+#~ msgstr "'%s' kudeatu gabea"
+
+#, javascript-format
+#~ msgid "%s Connecting"
+#~ msgstr "'%s' konektatzen"
+
+#, javascript-format
+#~ msgid "%s Requires Authentication"
+#~ msgstr "'%s'(e)k autentifikazioa eskatzen du"
+
+#, javascript-format
+#~ msgid "Firmware Missing For %s"
+#~ msgstr "'%s'(r)en firmwarea falta da"
+
+#, javascript-format
+#~ msgid "%s Unavailable"
+#~ msgstr "'%s' ez dago erabilgarri"
+
+#, javascript-format
+#~ msgid "%s Connection Failed"
+#~ msgstr "'%s'(r)en konexioak huts egin du"
+
+#~ msgid "Wired Settings"
+#~ msgstr "Haridunaren ezarpenak"
+
+#~ msgid "Mobile Broadband Settings"
+#~ msgstr "Banda zabal mugikorraren ezarpenak"
+
+#, javascript-format
+#~ msgid "%s Hardware Disabled"
+#~ msgstr "'%s' hardwarea desgaituta"
+
+#, javascript-format
+#~ msgid "%s Disabled"
+#~ msgstr "'%s' desgaituta"
+
+#~ msgid "Bluetooth Settings"
+#~ msgstr "Bluetooth ezarpenak"
+
+#~ msgid "Connect to Internet"
+#~ msgstr "Konektatu Internetera"
+
+#~ msgid "Airplane Mode is On"
+#~ msgstr "Hegazkin modua piztuta"
+
+#~ msgid "Wi-Fi is disabled when airplane mode is on."
+#~ msgstr "Haririk gabekoa desgaitu egiten da hegazkin modua piztean."
+
+#~ msgid "Turn Off Airplane Mode"
+#~ msgstr "Itzali hegazkin modua"
+
+#~ msgid "Wi-Fi is Off"
+#~ msgstr "Haririk gabekoa itzalita"
+
+#~ msgid "Wi-Fi needs to be turned on in order to connect to a network."
+#~ msgstr "Haririk gabekoa piztu egin behar da sare batera konektatzeko."
+
+#~ msgid "Turn On Wi-Fi"
+#~ msgstr "Piztu haririk gabekoa"
+
+#~ msgid "Wi-Fi Networks"
+#~ msgstr "Wifi sareak"
+
+#~ msgid "Select a network"
+#~ msgstr "Hautatu sare bat"
+
+#~ msgid "No Networks"
+#~ msgstr "Sarerik ez"
+
+#~ msgid "Use hardware switch to turn off"
+#~ msgstr "Erabili hardwarearen aldatzailea itzaltzeko"
+
+#~ msgid "Select Network"
+#~ msgstr "Hautatu sarea"
+
+#~ msgid "Wi-Fi Settings"
+#~ msgstr "Haririk gabekoaren ezarpenak"
+
+#, javascript-format
+#~ msgid "%s Not Connected"
+#~ msgstr "'%s' konektatu gabe"
+
+#~ msgid "unknown"
+#~ msgstr "ezezaguna"
+
+#~ msgid "activating…"
+#~ msgstr "aktibatzen…"
+
+#~ msgid "deactivating…"
+#~ msgstr "desaktibatzen…"
+
+#~ msgid "deactivated"
+#~ msgstr "desaktibatuta"
+
+#~ msgid "connecting…"
+#~ msgstr "konektatzen…"
+
+#~ msgid "authentication required"
+#~ msgstr "autentifikazioa behar da"
+
+#~ msgid "connection failed"
+#~ msgstr "konexioak huts egin du"
+
+#~ msgid "VPN Settings"
+#~ msgstr "VPNaren ezarpenak"
+
+#~ msgid "VPN"
+#~ msgstr "VPNa"
+
+#~ msgid "VPN Off"
+#~ msgstr "VPNa itzalita"
+
+#~ msgid "Network Settings"
+#~ msgstr "Sarearen ezarpenak"
+
+#, javascript-format
+#~ msgid "%s Wired Connection"
+#~ msgid_plural "%s Wired Connections"
+#~ msgstr[0] "%s haridun konexioa"
+#~ msgstr[1] "%s haridun konexioak"
+
+#, javascript-format
+#~ msgid "%s Wi-Fi Connection"
+#~ msgid_plural "%s Wi-Fi Connections"
+#~ msgstr[0] "%s haririk gabeko konexioa"
+#~ msgstr[1] "%s haririk gabeko konexioak"
+
+#, javascript-format
+#~ msgid "%s Modem Connection"
+#~ msgid_plural "%s Modem Connections"
+#~ msgstr[0] "%s modem konexioa"
+#~ msgstr[1] "%s modem konexioak"
+
+#~ msgid "Connection failed"
+#~ msgstr "Konexioak huts egin du"
+
+#~ msgid "Activation of network connection failed"
+#~ msgstr "Sareko konexioa aktibatzeak huts egin du"
+
+#~ msgid "Power Settings"
+#~ msgstr "Energiaren ezarpenak"
+
+#~ msgid "Lock"
+#~ msgstr "Blokeatu"
+
+#~ msgid "Power Off / Log Out"
+#~ msgstr "Itzaltzea / saioa amaitzea"
+
+#, javascript-format
 #~ msgid "%d Connected"
 #~ msgid_plural "%d Connected"
 #~ msgstr[0] "%d konektatuta"
@@ -3083,9 +3047,6 @@ msgstr "Sistemaren soinuak"
 
 #~ msgid "Show screenshot UI"
 #~ msgstr "Erakutsi pantaila-argazkiaren interfazea"
-
-#~ msgid "Unnamed Folder"
-#~ msgstr "Izenik gabeko karpeta"
 
 #~ msgid "Remove from Favorites"
 #~ msgstr "Kendu gogokoetatik"
