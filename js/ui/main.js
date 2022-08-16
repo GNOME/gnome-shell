@@ -354,10 +354,9 @@ function _initializeUI() {
 
 function _handleShowWelcomeScreen() {
     const lastShownVersion = global.settings.get_string(WELCOME_DIALOG_LAST_SHOWN_VERSION);
-    if (Util.GNOMEversionCompare(WELCOME_DIALOG_LAST_TOUR_CHANGE, lastShownVersion) > 0) {
-        openWelcomeDialog();
+    if (Util.GNOMEversionCompare(WELCOME_DIALOG_LAST_TOUR_CHANGE, lastShownVersion) > 0 &&
+        openWelcomeDialog())
         global.settings.set_string(WELCOME_DIALOG_LAST_SHOWN_VERSION, Config.PACKAGE_VERSION);
-    }
 }
 
 async function _handleLockScreenWarning() {
@@ -710,7 +709,7 @@ function openWelcomeDialog() {
     if (welcomeDialog === null)
         welcomeDialog = new WelcomeDialog.WelcomeDialog();
 
-    welcomeDialog.open();
+    return welcomeDialog.open();
 }
 
 /**
