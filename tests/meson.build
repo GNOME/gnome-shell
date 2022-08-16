@@ -7,6 +7,17 @@ run_test = configure_file(
   configuration: testconf
 )
 
+mutter_tests_datadir = mutter_test_dep.get_variable('tests_datadir')
+dbusrunnerconf = configuration_data()
+dbusrunnerconf.set('MUTTER_TEST_PKGDATADIR', mutter_tests_datadir)
+dbusrunnerconf.set('SRCDIR', meson.current_source_dir())
+
+dbus_runner = configure_file(
+  input: 'gnome-shell-dbus-runner.py.in',
+  output: 'gnome-shell-dbus-runner.py',
+  configuration: dbusrunnerconf,
+)
+
 testenv = environment()
 testenv.set('GSETTINGS_SCHEMA_DIR', join_paths(meson.project_build_root(), 'data'))
 

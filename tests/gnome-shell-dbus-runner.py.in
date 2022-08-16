@@ -1,0 +1,13 @@
+#!/usr/bin/env python3
+
+import sys
+
+sys.path.insert(1, '@MUTTER_TEST_PKGDATADIR@')
+sys.path.insert(2, '@SRCDIR@')
+
+from mutter_dbusrunner import meta_run
+from gnomeshell_dbusrunner import GnomeShellDBusRunner
+
+if __name__ == '__main__':
+    result = meta_run(GnomeShellDBusRunner)
+    sys.exit(result)
