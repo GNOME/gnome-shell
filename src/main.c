@@ -587,14 +587,14 @@ main (int argc, char **argv)
 
   g_message ("Shutting down GNOME Shell");
   _shell_global_notify_shutdown (shell_global_get ());
-
-  meta_context_destroy (g_steal_pointer (&context));
-
   shell_profiler_shutdown ();
 
-  g_debug ("Doing final cleanup");
+  g_debug ("Tearing down the gjs context");
   _shell_global_destroy_gjs_context (shell_global_get ());
   g_object_unref (shell_global_get ());
+
+  g_debug ("Tearing down the mutter context");
+  meta_context_destroy (g_steal_pointer (&context));
 
   return ecode;
 }
