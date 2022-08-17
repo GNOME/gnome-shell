@@ -1022,6 +1022,7 @@ void
 _shell_global_set_plugin (ShellGlobal *global,
                           MetaPlugin  *plugin)
 {
+  MetaContext *context;
   MetaDisplay *display;
   MetaBackend *backend;
   MetaSettings *settings;
@@ -1029,13 +1030,15 @@ _shell_global_set_plugin (ShellGlobal *global,
   g_return_if_fail (SHELL_IS_GLOBAL (global));
   g_return_if_fail (global->plugin == NULL);
 
-  global->backend = meta_get_backend ();
+  display = meta_plugin_get_display (plugin);
+  context = meta_display_get_context (display);
+  backend = meta_context_get_backend (context);
   global->plugin = plugin;
   global->wm = shell_wm_new (plugin);
 
-  display = meta_plugin_get_display (plugin);
   global->meta_display = display;
   global->meta_context = meta_display_get_context (display);
+  global->backend = meta_context_get_backend (context);
   global->workspace_manager = meta_display_get_workspace_manager (display);
 
   global->stage = CLUTTER_STAGE (meta_get_stage_for_display (display));
@@ -1087,7 +1090,7 @@ _shell_global_set_plugin (ShellGlobal *global,
     g_signal_connect_object (global->meta_display, "x11-display-closing",
                              G_CALLBACK (on_x11_display_closed), global, 0);
 
-  backend = meta_get_backend ();
+  backend = meta_context_get_backend (shell_global_get_context (global));
   settings = meta_backend_get_settings (backend);
   g_signal_connect (settings, "ui-scaling-factor-changed",
                     G_CALLBACK (ui_scaling_factor_changed), global);
