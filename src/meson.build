@@ -1,3 +1,5 @@
+src_builddir = meson.current_build_dir()
+
 service_data = configuration_data()
 service_data.set('libexecdir', libexecdir)
 
@@ -16,20 +18,21 @@ script_data.set('pkglibdir', pkglibdir)
 script_data.set('PYTHON', python.full_path())
 script_data.set('VERSION', meson.project_version())
 
-script_tools = ['gnome-shell-perf-tool']
+perf_tool = configure_file(
+  input: 'gnome-shell-perf-tool.in',
+  output: 'gnome-shell-perf-tool',
+  configuration: script_data,
+  install_dir: bindir
+)
 
 if get_option('extensions_tool')
-  script_tools += 'gnome-shell-extension-tool'
-endif
-
-foreach tool : script_tools
   configure_file(
-    input: tool + '.in',
-    output: tool,
+    input: 'gnome-shell-extension-tool.in',
+    output: 'gnome-shell-extension-tool',
     configuration: script_data,
     install_dir: bindir
   )
-endforeach
+endif
 
 install_data('gnome-shell-extension-prefs',
   install_dir: bindir

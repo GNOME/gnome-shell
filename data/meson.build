@@ -1,3 +1,5 @@
+data_builddir = meson.current_build_dir()
+
 desktop_files = [
   'org.gnome.Shell.desktop',
   'org.gnome.Shell.Extensions.desktop',
@@ -134,5 +136,5 @@ endif
 custom_target('compile-schemas',
   input: schema,
   output: 'gschemas.compiled',
-  command: [find_program('glib-compile-schemas'), meson.current_build_dir()],
+  command: [find_program('glib-compile-schemas'), data_builddir],
   build_by_default: true)

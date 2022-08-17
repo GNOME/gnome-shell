@@ -77,7 +77,7 @@ function _getPerfHelper() {
 }
 
 function _spawnPerfHelper() {
-    let path = Config.LIBEXECDIR;
+    let path = GLib.getenv('GNOME_SHELL_BUILDDIR') || Config.LIBEXECDIR;
     let command = `${path}/gnome-shell-perf-helper`;
     Util.trySpawnCommandLine(command);
 }

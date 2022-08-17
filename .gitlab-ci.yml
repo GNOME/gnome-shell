@@ -209,6 +209,7 @@ test:
     NO_AT_BRIDGE: "1"
   before_script:
     - meson install -C mutter/build
+    - mkdir -m 700 $XDG_RUNTIME_DIR
   script:
     - dbus-run-session -- xvfb-run meson test -C build --no-rebuild
   artifacts:
