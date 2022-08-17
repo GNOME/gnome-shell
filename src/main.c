@@ -585,6 +585,9 @@ main (int argc, char **argv)
       ecode = EXIT_FAILURE;
     }
 
+  g_message ("Shutting down GNOME Shell");
+  _shell_global_notify_shutdown (shell_global_get ());
+
   meta_context_destroy (g_steal_pointer (&context));
 
   shell_profiler_shutdown ();

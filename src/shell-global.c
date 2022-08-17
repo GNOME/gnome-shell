@@ -120,6 +120,7 @@ enum
 {
  NOTIFY_ERROR,
  LOCATE_POINTER,
+ SHUTDOWN,
  LAST_SIGNAL
 };
 
@@ -502,6 +503,13 @@ shell_global_class_init (ShellGlobalClass *klass)
                     G_TYPE_STRING);
   shell_global_signals[LOCATE_POINTER] =
       g_signal_new ("locate-pointer",
+                    G_TYPE_FROM_CLASS (klass),
+                    G_SIGNAL_RUN_LAST,
+                    0,
+                    NULL, NULL, NULL,
+                    G_TYPE_NONE, 0);
+  shell_global_signals[SHUTDOWN] =
+      g_signal_new ("shutdown",
                     G_TYPE_FROM_CLASS (klass),
                     G_SIGNAL_RUN_LAST,
                     0,
@@ -1871,4 +1879,10 @@ void
 _shell_global_locate_pointer (ShellGlobal *global)
 {
   g_signal_emit (global, shell_global_signals[LOCATE_POINTER], 0);
+}
+
+void
+_shell_global_notify_shutdown (ShellGlobal *global)
+{
+  g_signal_emit (global, shell_global_signals[SHUTDOWN], 0);
 }
