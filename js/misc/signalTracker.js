@@ -43,6 +43,12 @@ class SignalManager {
 
     constructor() {
         this._signalTrackers = new Map();
+
+        global.connect_after('shutdown', () => {
+            [...this._signalTrackers.values()].forEach(
+                tracker => tracker.destroy());
+            this._signalTrackers.clear();
+        });
     }
 
     /**
