@@ -822,6 +822,17 @@ shell_global_set_stage_input_region (ShellGlobal *global,
 }
 
 /**
+ * shell_global_get_context:
+ *
+ * Return value: (transfer none): The #MetaContext
+ */
+MetaContext *
+shell_global_get_context (ShellGlobal *global)
+{
+  return global->meta_context;
+}
+
+/**
  * shell_global_get_stage:
  *
  * Return value: (transfer none): The default #ClutterStage
@@ -1269,7 +1280,7 @@ shell_global_reexec_self (ShellGlobal *global)
    */
   pre_exec_close_fds ();
 
-  g_object_get (global, "context", &meta_context, NULL);
+  meta_context = shell_global_get_context (global);
   meta_context_restore_rlimit_nofile (meta_context, NULL);
 
   meta_display_close (shell_global_get_display (global),
