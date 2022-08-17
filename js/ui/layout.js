@@ -221,6 +221,20 @@ var LayoutManager = GObject.registerClass({
 
         global.stage.remove_actor(global.window_group);
         this.uiGroup.add_actor(global.window_group);
+        global.connect('shutdown', () => {
+            const adoptedUiGroupActors = [
+                global.window_group,
+                global.top_window_group,
+                Meta.get_feedback_group_for_display(global.display),
+            ];
+
+            for (let adoptedActor of adoptedUiGroupActors) {
+                this.uiGroup.remove_actor(adoptedActor);
+                global.stage.add_actor(adoptedActor);
+            }
+
+            this.uiGroup.destroy();
+        });
 
         // Using addChrome() to add actors to uiGroup will position actors
         // underneath the top_window_group.
