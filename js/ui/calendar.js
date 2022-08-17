@@ -976,8 +976,10 @@ class CalendarMessageList extends St.Widget {
             y_expand: true,
             y_align: Clutter.ActorAlign.START,
         });
-        this._sectionList.connect('actor-added', this._sync.bind(this));
-        this._sectionList.connect('actor-removed', this._sync.bind(this));
+        this._sectionList.connectObject(
+            'actor-added', this._sync.bind(this),
+            'actor-removed', this._sync.bind(this),
+            this);
         this._scrollView.add_actor(this._sectionList);
 
         this._mediaSection = new Mpris.MediaSection();
