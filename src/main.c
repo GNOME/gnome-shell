@@ -18,6 +18,11 @@
 #include <meta/meta-plugin.h>
 #include <meta/prefs.h>
 #include <atk-bridge.h>
+#include <link.h>
+
+#ifdef HAVE_EXE_INTROSPECTION
+#include <elf.h>
+#endif
 
 #include "shell-global.h"
 #include "shell-global-private.h"
@@ -123,6 +128,74 @@ shell_dbus_init (gboolean replace)
   g_object_unref (session);
 }
 
+#ifdef HAVE_EXE_INTROSPECTION
+static void
+maybe_add_rpath_introspection_paths (void)
+{
+  ElfW (Dyn) *dyn;
+  ElfW (Dyn) *rpath = NULL;
+  ElfW (Dyn) *runpath = NULL;
+  const char *strtab = NULL;
+  g_auto (GStrv) paths = NULL;
+  g_autofree char *exe_dir = NULL;
+  GStrv str;
+
+  for (dyn = _DYNAMIC; dyn->d_tag != DT_NULL; dyn++)
+    {
+      if (dyn->d_tag == DT_RPATH)
+        rpath = dyn;
+      else if (dyn->d_tag == DT_RUNPATH)
+        runpath = dyn;
+      else if (dyn->d_tag == DT_STRTAB)
+        strtab = (const char *) dyn->d_un.d_val;
+    }
+
+  if ((!rpath && !runpath) || !strtab)
+    return;
+
+  if (rpath)
+    paths = g_strsplit (strtab + rpath->d_un.d_val, ":", -1);
+  else
+    paths = g_strsplit (strtab + runpath->d_un.d_val, ":", -1);
+
+  if (!paths)
+    return;
+
+  for (str = paths; *str; str++)
+    {
+      g_autoptr (GError) error = NULL;
+      g_autoptr (GString) rpath_dir = NULL;
+
+      if (!strstr (*str, "$ORIGIN"))
+        continue;
+
+      if (!exe_dir)
+        {
+          g_autofree char *exe_path = NULL;
+
+          exe_path = g_file_read_link ("/proc/self/exe", &error);
+          if (!exe_path)
+            {
+              g_warning ("Failed to find directory of executable: %s",
+                         error->message);
+              return;
+            }
+
+          exe_dir = g_path_get_dirname (exe_path);
+        }
+
+      rpath_dir = g_string_new (*str);
+      g_string_replace (rpath_dir, "$ORIGIN", exe_dir, 0);
+
+      g_debug ("Prepending RPATH directory '%s' "
+               "to introsepciton library search path",
+               rpath_dir->str);
+      g_irepository_prepend_search_path (rpath_dir->str);
+      g_irepository_prepend_library_path (rpath_dir->str);
+    }
+}
+#endif /* HAVE_EXE_INTROSPECTION */
+
 static void
 shell_introspection_init (void)
 {
@@ -137,6 +210,10 @@ shell_introspection_init (void)
    */
   g_irepository_prepend_library_path (MUTTER_TYPELIB_DIR);
   g_irepository_prepend_library_path (GNOME_SHELL_PKGLIBDIR);
+
+#ifdef HAVE_EXE_INTROSPECTION
+  maybe_add_rpath_introspection_paths ();
+#endif
 }
 
 static void

@@ -36,3 +36,6 @@
 
 /* Define if polkit defines autocleanup functions */
 #mesondefine HAVE_POLKIT_AUTOCLEANUP
+
+/* Define to 1 if the <elf.h> and <link.h> header file exist. */
+#mesondefine HAVE_EXE_INTROSPECTION
