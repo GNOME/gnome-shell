@@ -908,7 +908,7 @@ class DoNotDisturbSwitch extends PopupMenu.Switch {
             Gio.SettingsBindFlags.INVERT_BOOLEAN);
 
         this.connect('destroy', () => {
-            this._settings.run_dispose();
+            Gio.Settings.unbind(this, 'state');
             this._settings = null;
         });
     }
