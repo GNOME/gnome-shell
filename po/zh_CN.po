@@ -25,8 +25,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2022-08-09 14:45+0000\n"
-"PO-Revision-Date: 2022-08-10 19:50+0800\n"
+"POT-Creation-Date: 2022-08-13 11:29+0000\n"
+"PO-Revision-Date: 2022-08-16 18:59+0800\n"
 "Last-Translator: lumingzh <lumingzh@qq.com>\n"
 "Language-Team: Chinese - China <i18n-zh@googlegroups.com>\n"
 "Language: zh_CN\n"
@@ -514,7 +514,7 @@ msgstr "访问扩展主页"
 #: js/ui/components/networkAgent.js:109 js/ui/components/polkitAgent.js:141
 #: js/ui/endSessionDialog.js:440 js/ui/extensionDownloader.js:223
 #: js/ui/shellMountOperation.js:377 js/ui/shellMountOperation.js:387
-#: js/ui/status/network.js:1128 subprojects/extensions-app/js/main.js:173
+#: subprojects/extensions-app/js/main.js:173
 msgid "Cancel"
 msgstr "取消"
 
@@ -546,23 +546,23 @@ msgstr "（如 user 或 %s）"
 msgid "Username"
 msgstr "用户名"
 
-#: js/gdm/loginDialog.js:1257
+#: js/gdm/loginDialog.js:1258
 msgid "Login Window"
 msgstr "登录窗口"
 
-#: js/gdm/util.js:434
+#: js/gdm/util.js:431
 msgid "Authentication error"
 msgstr "认证出错"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger on the fingerprint reader
-#: js/gdm/util.js:606
+#: js/gdm/util.js:603
 msgid "(or swipe finger across reader)"
 msgstr "（或将手指划过指纹读取器）"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can place their finger on the fingerprint reader instead
-#: js/gdm/util.js:611
+#: js/gdm/util.js:608
 msgid "(or place finger on reader)"
 msgstr "（或将手指置于指纹读取器上）"
 
@@ -811,6 +811,10 @@ msgstr "拒绝访问"
 msgid "Grant Access"
 msgstr "允许访问"
 
+#: js/ui/appDisplay.js:1728
+msgid "Unnamed Folder"
+msgstr "未命名文件夹"
+
 #: js/ui/appFavorites.js:166
 #, javascript-format
 msgid "%s has been pinned to the dash."
@@ -1038,8 +1042,7 @@ msgid ""
 "Alternatively you can connect by pushing the “WPS” button on your router."
 msgstr "此外，您也可以通过按下您路由器的“WPS”按钮来连接。"
 
-#: js/ui/components/networkAgent.js:103 js/ui/status/network.js:238
-#: js/ui/status/network.js:326 js/ui/status/network.js:1133
+#: js/ui/components/networkAgent.js:103 js/ui/status/network.js:436
 msgid "Connect"
 msgstr "连接"
 
@@ -1102,7 +1105,7 @@ msgstr "PIN"
 msgid "A password is required to connect to “%s”."
 msgstr "连接到“%s”需要密码。"
 
-#: js/ui/components/networkAgent.js:736 js/ui/status/network.js:1741
+#: js/ui/components/networkAgent.js:736
 msgid "Network Manager"
 msgstr "网络管理器"
 
@@ -1475,13 +1478,11 @@ msgstr ""
 msgid "Leave On"
 msgstr "保持开启"
 
-#: js/ui/kbdA11yDialog.js:55 js/ui/status/network.js:1317
+#: js/ui/kbdA11yDialog.js:55
 msgid "Turn On"
 msgstr "开启"
 
-#: js/ui/kbdA11yDialog.js:65 js/ui/status/network.js:153
-#: js/ui/status/network.js:327 js/ui/status/network.js:1317
-#: js/ui/status/network.js:1410
+#: js/ui/kbdA11yDialog.js:65 js/ui/status/network.js:447
 msgid "Turn Off"
 msgstr "关闭"
 
@@ -1489,7 +1490,7 @@ msgstr "关闭"
 msgid "Leave Off"
 msgstr "保持关闭"
 
-#: js/ui/keyboard.js:258
+#: js/ui/keyboard.js:219
 msgid "Region & Language Settings"
 msgstr "区域与语言设置"
 
@@ -1651,12 +1652,12 @@ msgstr "按任意键退出"
 msgid "Activities"
 msgstr "活动"
 
-#: js/ui/panel.js:367 js/ui/panel.js:392
+#: js/ui/panel.js:338
 msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "系统"
 
-#: js/ui/panel.js:503
+#: js/ui/panel.js:457
 msgid "Top Bar"
 msgstr "顶栏"
 
@@ -1687,11 +1688,11 @@ msgstr "GNOME 需要锁定屏幕"
 #.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
-#: js/ui/screenShield.js:275 js/ui/screenShield.js:650
+#: js/ui/screenShield.js:275 js/ui/screenShield.js:652
 msgid "Unable to lock"
 msgstr "无法锁定"
 
-#: js/ui/screenShield.js:276 js/ui/screenShield.js:651
+#: js/ui/screenShield.js:276 js/ui/screenShield.js:653
 msgid "Lock was blocked by an application"
 msgstr "一个应用程序阻止了锁定"
 
@@ -1923,7 +1924,7 @@ msgstr "大号文本"
 msgid "Auto Rotate"
 msgstr "自动旋转"
 
-#: js/ui/status/bluetooth.js:153
+#: js/ui/status/bluetooth.js:160
 msgid "Bluetooth"
 msgstr "蓝牙"
 
@@ -1977,127 +1978,27 @@ msgstr "应用 %s 想要获取您的位置信息"
 msgid "Location access can be changed at any time from the privacy settings."
 msgstr "位置访问权限可以随时在隐私设置里更改。"
 
-#: js/ui/status/network.js:62
+#: js/ui/status/network.js:53
 msgid "<unknown>"
 msgstr "<未知>"
 
-#: js/ui/status/network.js:433
-msgid "Wired Settings"
-msgstr "有线设置"
+#. Translators: %s is a device name like "MyPhone"
+#: js/ui/status/network.js:356
+#, javascript-format
+msgid "Disconnect %s"
+msgstr "断开与 %s 的连接"
 
-#: js/ui/status/network.js:480
-msgid "Mobile Broadband Settings"
-msgstr "移动宽带设置"
-
-#: js/ui/status/network.js:564
-msgid "Bluetooth Settings"
-msgstr "蓝牙设置"
-
-#: js/ui/status/network.js:576
-msgid "Connect to Internet"
-msgstr "连接到互联网"
-
-#: js/ui/status/network.js:1008
-msgid "Airplane Mode is On"
-msgstr "飞行模式已开启"
-
-#: js/ui/status/network.js:1009
-msgid "Wi-Fi is disabled when airplane mode is on."
-msgstr "启用飞行模式时 Wi-Fi 会关闭。"
-
-#: js/ui/status/network.js:1010
-msgid "Turn Off Airplane Mode"
-msgstr "关闭飞行模式"
-
-#: js/ui/status/network.js:1019
-msgid "Wi-Fi is Off"
-msgstr "Wi-Fi 已关闭"
-
-#: js/ui/status/network.js:1020
-msgid "Wi-Fi needs to be turned on in order to connect to a network."
-msgstr "连接网络需要开启 Wi-Fi。"
-
-#: js/ui/status/network.js:1021
-msgid "Turn On Wi-Fi"
-msgstr "开启 Wi-Fi"
-
-#: js/ui/status/network.js:1049
-msgid "Wi-Fi Networks"
-msgstr "Wi-Fi 网络"
-
-#: js/ui/status/network.js:1053
-msgid "Select a network"
-msgstr "选择网络"
-
-#: js/ui/status/network.js:1089
-msgid "No Networks"
-msgstr "无网络"
-
-#: js/ui/status/network.js:1114
-msgid "Use hardware switch to turn off"
-msgstr "使用硬件开关关闭"
-
-#: js/ui/status/network.js:1231
-msgid "Select Network"
-msgstr "选择网络"
-
-#: js/ui/status/network.js:1237
-msgid "Wi-Fi Settings"
-msgstr "Wi-Fi 设置"
+#. Translators: %s is a device name like "MyPhone"
+#: js/ui/status/network.js:358
+#, javascript-format
+msgid "Connect to %s"
+msgstr "连接至 %s"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1332
+#: js/ui/status/network.js:1107
 #, javascript-format
 msgid "%s Hotspot"
 msgstr "%s 热点"
-
-#: js/ui/status/network.js:1444
-msgid "VPN Settings"
-msgstr "VPN 设置"
-
-#: js/ui/status/network.js:1461
-msgid "VPN"
-msgstr "VPN"
-
-#: js/ui/status/network.js:1471
-msgid "VPN Off"
-msgstr "VPN 已关闭"
-
-#: js/ui/status/network.js:1531
-msgid "Network Settings"
-msgstr "网络设置"
-
-#: js/ui/status/network.js:1565
-#, javascript-format
-msgid "%s Wi-Fi Connection"
-msgid_plural "%s Wi-Fi Connections"
-msgstr[0] "%s 个 Wi-Fi 连接"
-
-#: js/ui/status/network.js:1582
-#, javascript-format
-msgid "%s Wired Connection"
-msgid_plural "%s Wired Connections"
-msgstr[0] "%s 个有线连接"
-
-#: js/ui/status/network.js:1599
-#, javascript-format
-msgid "%s Bluetooth Connection"
-msgid_plural "%s Bluetooth Connections"
-msgstr[0] "%s 个蓝牙连接"
-
-#: js/ui/status/network.js:1616
-#, javascript-format
-msgid "%s Modem Connection"
-msgid_plural "%s Modem Connections"
-msgstr[0] "%s 个调制解调器连接"
-
-#: js/ui/status/network.js:1746
-msgid "Connection failed"
-msgstr "连接失败"
-
-#: js/ui/status/network.js:1747
-msgid "Activation of network connection failed"
-msgstr "网络连接激活失败"
 
 #: js/ui/status/nightLight.js:20
 msgid "Night Light"
@@ -2118,7 +2019,7 @@ msgctxt "Power profile"
 msgid "Power Saver"
 msgstr "节电"
 
-#: js/ui/status/powerProfiles.js:69
+#: js/ui/status/powerProfiles.js:68
 msgid "Power Profiles"
 msgstr "性能配置文件"
 
@@ -2168,34 +2069,34 @@ msgid "Lock Screen"
 msgstr "锁屏"
 
 # 这是英特尔的注册商标名，暂无官方译名。
-#: js/ui/status/thunderbolt.js:257
+#: js/ui/status/thunderbolt.js:256
 msgid "Thunderbolt"
 msgstr "雷电接口"
 
-#: js/ui/status/thunderbolt.js:318
+#: js/ui/status/thunderbolt.js:317
 msgid "Unknown Thunderbolt device"
 msgstr "未知的雷电接口设备"
 
-#: js/ui/status/thunderbolt.js:319
+#: js/ui/status/thunderbolt.js:318
 msgid ""
 "New device has been detected while you were away. Please disconnect and "
 "reconnect the device to start using it."
 msgstr "您不在的时候检测到了新设备。请断开设备连接后重连来开始使用它。"
 
-#: js/ui/status/thunderbolt.js:322
+#: js/ui/status/thunderbolt.js:321
 msgid "Unauthorized Thunderbolt device"
 msgstr "未授权的雷电接口设备"
 
-#: js/ui/status/thunderbolt.js:323
+#: js/ui/status/thunderbolt.js:322
 msgid ""
 "New device has been detected and needs to be authorized by an administrator."
 msgstr "检测到新设备，需要管理员授权。"
 
-#: js/ui/status/thunderbolt.js:329
+#: js/ui/status/thunderbolt.js:328
 msgid "Thunderbolt authorization error"
 msgstr "雷电接口授权错误"
 
-#: js/ui/status/thunderbolt.js:330
+#: js/ui/status/thunderbolt.js:329
 #, javascript-format
 msgid "Could not authorize the Thunderbolt device: %s"
 msgstr "无法授权雷电接口设备：%s"
@@ -2989,6 +2890,92 @@ msgstr[0] "%u 个输入"
 msgid "System Sounds"
 msgstr "系统声音"
 
+#~ msgid "Wired Settings"
+#~ msgstr "有线设置"
+
+#~ msgid "Mobile Broadband Settings"
+#~ msgstr "移动宽带设置"
+
+#~ msgid "Bluetooth Settings"
+#~ msgstr "蓝牙设置"
+
+#~ msgid "Connect to Internet"
+#~ msgstr "连接到互联网"
+
+#~ msgid "Airplane Mode is On"
+#~ msgstr "飞行模式已开启"
+
+#~ msgid "Wi-Fi is disabled when airplane mode is on."
+#~ msgstr "启用飞行模式时 Wi-Fi 会关闭。"
+
+#~ msgid "Turn Off Airplane Mode"
+#~ msgstr "关闭飞行模式"
+
+#~ msgid "Wi-Fi is Off"
+#~ msgstr "Wi-Fi 已关闭"
+
+#~ msgid "Wi-Fi needs to be turned on in order to connect to a network."
+#~ msgstr "连接网络需要开启 Wi-Fi。"
+
+#~ msgid "Turn On Wi-Fi"
+#~ msgstr "开启 Wi-Fi"
+
+#~ msgid "Wi-Fi Networks"
+#~ msgstr "Wi-Fi 网络"
+
+#~ msgid "Select a network"
+#~ msgstr "选择网络"
+
+#~ msgid "No Networks"
+#~ msgstr "无网络"
+
+#~ msgid "Use hardware switch to turn off"
+#~ msgstr "使用硬件开关关闭"
+
+#~ msgid "Select Network"
+#~ msgstr "选择网络"
+
+#~ msgid "Wi-Fi Settings"
+#~ msgstr "Wi-Fi 设置"
+
+#~ msgid "VPN Settings"
+#~ msgstr "VPN 设置"
+
+#~ msgid "VPN"
+#~ msgstr "VPN"
+
+#~ msgid "VPN Off"
+#~ msgstr "VPN 已关闭"
+
+#~ msgid "Network Settings"
+#~ msgstr "网络设置"
+
+#, javascript-format
+#~ msgid "%s Wi-Fi Connection"
+#~ msgid_plural "%s Wi-Fi Connections"
+#~ msgstr[0] "%s 个 Wi-Fi 连接"
+
+#, javascript-format
+#~ msgid "%s Wired Connection"
+#~ msgid_plural "%s Wired Connections"
+#~ msgstr[0] "%s 个有线连接"
+
+#, javascript-format
+#~ msgid "%s Bluetooth Connection"
+#~ msgid_plural "%s Bluetooth Connections"
+#~ msgstr[0] "%s 个蓝牙连接"
+
+#, javascript-format
+#~ msgid "%s Modem Connection"
+#~ msgid_plural "%s Modem Connections"
+#~ msgstr[0] "%s 个调制解调器连接"
+
+#~ msgid "Connection failed"
+#~ msgstr "连接失败"
+
+#~ msgid "Activation of network connection failed"
+#~ msgstr "网络连接激活失败"
+
 #, javascript-format
 #~ msgid "%d Connected"
 #~ msgid_plural "%d Connected"
@@ -3029,10 +3016,6 @@ msgstr "系统声音"
 #, javascript-format
 #~ msgid "%s Unmanaged"
 #~ msgstr "%s 未托管"
-
-#, javascript-format
-#~ msgid "%s Disconnecting"
-#~ msgstr "%s 正在断开"
 
 #, javascript-format
 #~ msgid "%s Connecting"
@@ -3133,9 +3116,6 @@ msgstr "系统声音"
 
 #~ msgid "Show screenshot UI"
 #~ msgstr "显示截图界面"
-
-#~ msgid "Unnamed Folder"
-#~ msgstr "未命名文件夹"
 
 #~ msgid "Screen Recording in Progress"
 #~ msgstr "正在进行屏幕录制"
