@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: HEAD\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2022-08-09 14:45+0000\n"
-"PO-Revision-Date: 2022-08-09 19:05+0000\n"
+"POT-Creation-Date: 2022-08-15 11:56+0000\n"
+"PO-Revision-Date: 2022-08-18 19:05+0000\n"
 "Last-Translator: Jordi Mas i Hernàndez <jmas@softcatala.org>\n"
 "Language-Team: \n"
 "Language: ca\n"
@@ -276,12 +276,10 @@ msgstr ""
 "té dispositius associats."
 
 #: data/org.gnome.shell.gschema.xml.in:99
-#, fuzzy
 msgid "The last selected non-default power profile"
 msgstr "El darrer perfil d'energia no predeterminat seleccionat"
 
 #: data/org.gnome.shell.gschema.xml.in:100
-#, fuzzy
 msgid ""
 "Some systems support more than two power profiles. In order to still support"
 " toggling between two profiles, this key records the last selected non-"
@@ -553,7 +551,7 @@ msgstr "Visiteu la pàgina d'inici de l'extensió"
 #: js/ui/components/networkAgent.js:109 js/ui/components/polkitAgent.js:141
 #: js/ui/endSessionDialog.js:440 js/ui/extensionDownloader.js:223
 #: js/ui/shellMountOperation.js:377 js/ui/shellMountOperation.js:387
-#: js/ui/status/network.js:1128 subprojects/extensions-app/js/main.js:173
+#: subprojects/extensions-app/js/main.js:173
 msgid "Cancel"
 msgstr "Cancel·la"
 
@@ -585,24 +583,24 @@ msgstr "(p. ex. l'usuari o %s)"
 msgid "Username"
 msgstr "Nom d'usuari"
 
-#: js/gdm/loginDialog.js:1257
+#: js/gdm/loginDialog.js:1258
 msgid "Login Window"
 msgstr "Finestra d'entrada"
 
-#: js/gdm/util.js:434
+#: js/gdm/util.js:431
 msgid "Authentication error"
 msgstr "Error d'autenticació"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger on the fingerprint reader
-#: js/gdm/util.js:606
+#: js/gdm/util.js:603
 msgid "(or swipe finger across reader)"
 msgstr "(o llisca el dit a través del lector)"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can place their finger on the fingerprint reader
 #. instead
-#: js/gdm/util.js:611
+#: js/gdm/util.js:608
 msgid "(or place finger on reader)"
 msgstr "(o posa el dit al lector)"
 
@@ -866,6 +864,10 @@ msgstr "Denega l'accés"
 msgid "Grant Access"
 msgstr "Permet l'accés"
 
+#: js/ui/appDisplay.js:1728
+msgid "Unnamed Folder"
+msgstr "Carpeta sense nom"
+
 #: js/ui/appFavorites.js:166
 #, javascript-format
 msgid "%s has been pinned to the dash."
@@ -1095,8 +1097,7 @@ msgid ""
 msgstr ""
 "També us podeu connectar prement el botó «WPS» del vostre encaminador."
 
-#: js/ui/components/networkAgent.js:103 js/ui/status/network.js:238
-#: js/ui/status/network.js:326 js/ui/status/network.js:1133
+#: js/ui/components/networkAgent.js:103 js/ui/status/network.js:436
 msgid "Connect"
 msgstr "Connecta"
 
@@ -1161,7 +1162,7 @@ msgstr "PIN"
 msgid "A password is required to connect to “%s”."
 msgstr "Cal introduir una contrasenya per a connectar-vos a «%s»."
 
-#: js/ui/components/networkAgent.js:736 js/ui/status/network.js:1741
+#: js/ui/components/networkAgent.js:736
 msgid "Network Manager"
 msgstr "Gestor de connexions de xarxa"
 
@@ -1552,13 +1553,11 @@ msgstr ""
 msgid "Leave On"
 msgstr "Deixa-ho actiu"
 
-#: js/ui/kbdA11yDialog.js:55 js/ui/status/network.js:1317
+#: js/ui/kbdA11yDialog.js:55
 msgid "Turn On"
 msgstr "Activa"
 
-#: js/ui/kbdA11yDialog.js:65 js/ui/status/network.js:153
-#: js/ui/status/network.js:327 js/ui/status/network.js:1317
-#: js/ui/status/network.js:1410
+#: js/ui/kbdA11yDialog.js:65 js/ui/status/network.js:447
 msgid "Turn Off"
 msgstr "Desactiva"
 
@@ -1566,7 +1565,7 @@ msgstr "Desactiva"
 msgid "Leave Off"
 msgstr "Deixa-ho desactivat"
 
-#: js/ui/keyboard.js:258
+#: js/ui/keyboard.js:219
 msgid "Region & Language Settings"
 msgstr "Configuració de regió i idioma"
 
@@ -1728,12 +1727,12 @@ msgstr "Premeu qualsevol tecla per a sortir"
 msgid "Activities"
 msgstr "Activitats"
 
-#: js/ui/panel.js:367 js/ui/panel.js:392
+#: js/ui/panel.js:338
 msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "Sistema"
 
-#: js/ui/panel.js:503
+#: js/ui/panel.js:457
 msgid "Top Bar"
 msgstr "Barra superior"
 
@@ -1763,11 +1762,11 @@ msgstr "El GNOME necessita bloquejar la pantalla"
 #. Just tell them to stop using this app
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
-#: js/ui/screenShield.js:275 js/ui/screenShield.js:650
+#: js/ui/screenShield.js:275 js/ui/screenShield.js:652
 msgid "Unable to lock"
 msgstr "No es pot bloquejar"
 
-#: js/ui/screenShield.js:276 js/ui/screenShield.js:651
+#: js/ui/screenShield.js:276 js/ui/screenShield.js:653
 msgid "Lock was blocked by an application"
 msgstr "Una aplicació està bloquejant el bloqueig"
 
@@ -2000,7 +1999,7 @@ msgstr "Text gran"
 msgid "Auto Rotate"
 msgstr "Gira automàticament"
 
-#: js/ui/status/bluetooth.js:153
+#: js/ui/status/bluetooth.js:160
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
@@ -2056,131 +2055,27 @@ msgstr ""
 "Podeu canviar la configuració de l'accés a la ubicació sempre que vulgueu "
 "des de la configuració de la privacitat."
 
-#: js/ui/status/network.js:62
+#: js/ui/status/network.js:53
 msgid "<unknown>"
 msgstr "<desconegut>"
 
-#: js/ui/status/network.js:433
-msgid "Wired Settings"
-msgstr "Paràmetres de la xarxa amb fil"
+#. Translators: %s is a device name like "MyPhone"
+#: js/ui/status/network.js:356
+#, javascript-format
+msgid "Disconnect %s"
+msgstr "Desconnecta  %s"
 
-#: js/ui/status/network.js:480
-msgid "Mobile Broadband Settings"
-msgstr "Configuració de la xarxa de banda ampla mòbil"
-
-#: js/ui/status/network.js:564
-msgid "Bluetooth Settings"
-msgstr "Paràmetres del Bluetooth"
-
-#: js/ui/status/network.js:576
-msgid "Connect to Internet"
-msgstr "Connecta a Internet"
-
-#: js/ui/status/network.js:1008
-msgid "Airplane Mode is On"
-msgstr "El mode d'avió és actiu"
-
-#: js/ui/status/network.js:1009
-msgid "Wi-Fi is disabled when airplane mode is on."
-msgstr "Quan el mode d'avió és actiu es desactiva la xarxa sense fil."
-
-#: js/ui/status/network.js:1010
-msgid "Turn Off Airplane Mode"
-msgstr "Desactiva el mode d'avió"
-
-#: js/ui/status/network.js:1019
-msgid "Wi-Fi is Off"
-msgstr "La xarxa sense fil està desactivada"
-
-#: js/ui/status/network.js:1020
-msgid "Wi-Fi needs to be turned on in order to connect to a network."
-msgstr "Cal activar la xarxa sense fil per a poder-se connectar a una xarxa."
-
-#: js/ui/status/network.js:1021
-msgid "Turn On Wi-Fi"
-msgstr "Activa la xarxa sense fil"
-
-#: js/ui/status/network.js:1049
-msgid "Wi-Fi Networks"
-msgstr "Xarxes sense fil"
-
-#: js/ui/status/network.js:1053
-msgid "Select a network"
-msgstr "Trieu una xarxa"
-
-#: js/ui/status/network.js:1089
-msgid "No Networks"
-msgstr "Cap xarxa"
-
-#: js/ui/status/network.js:1114
-msgid "Use hardware switch to turn off"
-msgstr "Utilitza l'interruptor de maquinari per a desactivar-la"
-
-#: js/ui/status/network.js:1231
-msgid "Select Network"
-msgstr "Trieu una xarxa"
-
-#: js/ui/status/network.js:1237
-msgid "Wi-Fi Settings"
-msgstr "Paràmetres de la xarxa sense fil"
+#. Translators: %s is a device name like "MyPhone"
+#: js/ui/status/network.js:358
+#, javascript-format
+msgid "Connect to %s"
+msgstr "Connecta a %s"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1332
+#: js/ui/status/network.js:1107
 #, javascript-format
 msgid "%s Hotspot"
 msgstr "Punt d'accés %s"
-
-#: js/ui/status/network.js:1444
-msgid "VPN Settings"
-msgstr "Paràmetres de la VPN"
-
-#: js/ui/status/network.js:1461
-msgid "VPN"
-msgstr "VPN"
-
-#: js/ui/status/network.js:1471
-msgid "VPN Off"
-msgstr "VPN apagada"
-
-#: js/ui/status/network.js:1531
-msgid "Network Settings"
-msgstr "Paràmetres de xarxa"
-
-#: js/ui/status/network.js:1565
-#, javascript-format
-msgid "%s Wi-Fi Connection"
-msgid_plural "%s Wi-Fi Connections"
-msgstr[0] "%s connexió Wifi"
-msgstr[1] "%s connexions Wifi"
-
-#: js/ui/status/network.js:1582
-#, javascript-format
-msgid "%s Wired Connection"
-msgid_plural "%s Wired Connections"
-msgstr[0] "%s connexió amb fil"
-msgstr[1] "%s connexions amb fil"
-
-#: js/ui/status/network.js:1599
-#, javascript-format
-msgid "%s Bluetooth Connection"
-msgid_plural "%s Bluetooth Connections"
-msgstr[0] "Connexió Bluetooth %s"
-msgstr[1] "Connexions Bluetooth %s"
-
-#: js/ui/status/network.js:1616
-#, javascript-format
-msgid "%s Modem Connection"
-msgid_plural "%s Modem Connections"
-msgstr[0] "%s connexió mòdem"
-msgstr[1] "%s connexions mòdem"
-
-#: js/ui/status/network.js:1746
-msgid "Connection failed"
-msgstr "Ha fallat la connexió"
-
-#: js/ui/status/network.js:1747
-msgid "Activation of network connection failed"
-msgstr "Ha fallat l'activació de la connexió de xarxa"
 
 #: js/ui/status/nightLight.js:20
 msgid "Night Light"
@@ -2201,7 +2096,7 @@ msgctxt "Power profile"
 msgid "Power Saver"
 msgstr "Estalvi d'energia"
 
-#: js/ui/status/powerProfiles.js:69
+#: js/ui/status/powerProfiles.js:68
 msgid "Power Profiles"
 msgstr "Perfils d'energia"
 
@@ -2250,15 +2145,15 @@ msgstr "Canvia d'usuari…"
 msgid "Lock Screen"
 msgstr "Bloqueja la pantalla"
 
-#: js/ui/status/thunderbolt.js:257
+#: js/ui/status/thunderbolt.js:256
 msgid "Thunderbolt"
 msgstr "Thunderbolt"
 
-#: js/ui/status/thunderbolt.js:318
+#: js/ui/status/thunderbolt.js:317
 msgid "Unknown Thunderbolt device"
 msgstr "Dispositiu Thunderbolt desconegut"
 
-#: js/ui/status/thunderbolt.js:319
+#: js/ui/status/thunderbolt.js:318
 msgid ""
 "New device has been detected while you were away. Please disconnect and "
 "reconnect the device to start using it."
@@ -2266,22 +2161,22 @@ msgstr ""
 "Un nou dispositiu s'ha detectat mentre estàveu absents. Desconnecteu i "
 "torneu a connectar el dispositiu per a començar a utilitzar-lo."
 
-#: js/ui/status/thunderbolt.js:322
+#: js/ui/status/thunderbolt.js:321
 msgid "Unauthorized Thunderbolt device"
 msgstr "Dispositiu Thunderbolt no autoritzat"
 
-#: js/ui/status/thunderbolt.js:323
+#: js/ui/status/thunderbolt.js:322
 msgid ""
 "New device has been detected and needs to be authorized by an administrator."
 msgstr ""
 "S'ha detectat un dispositiu nou i cal que sigui autoritzat per "
 "l'administrador."
 
-#: js/ui/status/thunderbolt.js:329
+#: js/ui/status/thunderbolt.js:328
 msgid "Thunderbolt authorization error"
 msgstr "S'ha produït un error d'autorització a Thunderbolt"
 
-#: js/ui/status/thunderbolt.js:330
+#: js/ui/status/thunderbolt.js:329
 #, javascript-format
 msgid "Could not authorize the Thunderbolt device: %s"
 msgstr "No s'ha pogut autoritzar el dispositiu Thunderbolt: %s"
@@ -3072,144 +2967,3 @@ msgstr[1] "%u entrades"
 #: subprojects/gvc/gvc-mixer-control.c:2867
 msgid "System Sounds"
 msgstr "Sons del sistema"
-
-#, javascript-format
-#~ msgid "%d Connected"
-#~ msgid_plural "%d Connected"
-#~ msgstr[0] "%d connectat"
-#~ msgstr[1] "%d Connectats"
-
-#~ msgid "Bluetooth On"
-#~ msgstr "Bluetooth encès"
-
-#~ msgid "Bluetooth Off"
-#~ msgstr "Bluetooth apagat"
-
-#~ msgid "Location Enabled"
-#~ msgstr "Ubicació habilitada"
-
-#~ msgid "Disable"
-#~ msgstr "Inhabilita"
-
-#~ msgid "Privacy Settings"
-#~ msgstr "Paràmetres de privacitat"
-
-#~ msgid "Location In Use"
-#~ msgstr "Ubicació en ús"
-
-#~ msgid "Location Disabled"
-#~ msgstr "Ubicació inhabilitada"
-
-#~ msgid "Enable"
-#~ msgstr "Habilita"
-
-#, javascript-format
-#~ msgid "%s Off"
-#~ msgstr "%s apagat"
-
-# N.T.: p. ex. Connectat amb fil
-#, javascript-format
-#~ msgid "%s Connected"
-#~ msgstr "Connectat %s"
-
-#, javascript-format
-#~ msgid "%s Unmanaged"
-#~ msgstr "%s no gestionat"
-
-#, javascript-format
-#~ msgid "%s Disconnecting"
-#~ msgstr "%s s'està desconnectant"
-
-#, javascript-format
-#~ msgid "%s Connecting"
-#~ msgstr "%s s'està connectant"
-
-#, javascript-format
-#~ msgid "%s Requires Authentication"
-#~ msgstr "%s requereix autenticació"
-
-#, javascript-format
-#~ msgid "Firmware Missing For %s"
-#~ msgstr "Manca el microprogramari per %s"
-
-#, javascript-format
-#~ msgid "%s Unavailable"
-#~ msgstr "%s no disponible"
-
-#, javascript-format
-#~ msgid "%s Connection Failed"
-#~ msgstr "%s ha fallat la connexió"
-
-#, javascript-format
-#~ msgid "%s Hardware Disabled"
-#~ msgstr "%s maquinari inhabilitat"
-
-#, javascript-format
-#~ msgid "%s Disabled"
-#~ msgstr "%s Inhabilitat"
-
-#, javascript-format
-#~ msgid "%s Not Connected"
-#~ msgstr "%s no està connectat"
-
-#~ msgid "unknown"
-#~ msgstr "desconegut"
-
-#~ msgid "activating…"
-#~ msgstr "S'està activant…"
-
-#~ msgid "deactivating…"
-#~ msgstr "S'està desactivant…"
-
-#~ msgid "deactivated"
-#~ msgstr "desactivat"
-
-#~ msgid "connecting…"
-#~ msgstr "s'està connectant..."
-
-#~ msgid "authentication required"
-#~ msgstr "cal autenticació"
-
-#~ msgid "connection failed"
-#~ msgstr "ha fallat la connexió"
-
-#~ msgid "Night Light Disabled"
-#~ msgstr "Llum nocturna inhabilitada"
-
-#~ msgid "Resume"
-#~ msgstr "Reprèn"
-
-#~ msgid "Disable Until Tomorrow"
-#~ msgstr "Inhabilita fins demà"
-
-#~ msgid "Power Settings"
-#~ msgstr "Paràmetres d'energia"
-
-#~ msgid "Fully Charged"
-#~ msgstr "Totalment carregada"
-
-#~ msgid "Not Charging"
-#~ msgstr "No s'està carregant"
-
-#~ msgid "Estimating…"
-#~ msgstr "S'està estimant la durada…"
-
-#, javascript-format
-#~ msgid "%d∶%02d Remaining (%d %%)"
-#~ msgstr "Queden %d∶%02d (%d %%)"
-
-#, javascript-format
-#~ msgid "%d∶%02d Until Full (%d %%)"
-#~ msgstr "%d∶%02d per a completar la càrrega (%d %%)"
-
-#~ msgid "Screen is Being Shared"
-#~ msgstr "Es comparteix la pantalla"
-
-#~ msgid "Turn off"
-#~ msgstr "Desactiva"
-
-#~ msgid "Lock"
-#~ msgstr "Bloqueja"
-
-#~ msgid "Power Off / Log Out"
-#~ msgstr "Apaga / Surt"
