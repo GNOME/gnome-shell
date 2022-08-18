@@ -1065,7 +1065,7 @@ var BaseAppView = GObject.registerClass({
     }
 
     goToPage(pageNumber, animate = true) {
-        pageNumber = Math.clamp(pageNumber, 0, this._grid.nPages - 1);
+        pageNumber = Math.clamp(pageNumber, 0, Math.max(this._grid.nPages - 1, 0));
 
         if (this._grid.currentPage === pageNumber)
             return;
@@ -1643,7 +1643,7 @@ class AppDisplay extends BaseAppView {
     }
 
     goToPage(pageNumber, animate = true) {
-        pageNumber = Math.clamp(pageNumber, 0, this._grid.nPages - 1);
+        pageNumber = Math.clamp(pageNumber, 0, Math.max(this._grid.nPages - 1, 0));
 
         if (this._grid.currentPage === pageNumber &&
             this._displayingDialog &&
