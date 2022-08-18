@@ -209,7 +209,7 @@ class Indicator extends SystemIndicator {
         this._agent = _getGeoclueAgent();
 
         this._indicator = this._addIndicator();
-        this._indicator.icon_name = 'find-location-symbolic';
+        this._indicator.icon_name = 'location-services-active-symbolic';
         this._agent.bind_property('in-use',
             this._indicator,
             'visible',
