@@ -13,7 +13,7 @@ stages:
   - deploy
 
 default:
-  image: registry.gitlab.gnome.org/gnome/mutter/fedora/35:x86_64-2022-08-02.0
+  image: registry.gitlab.gnome.org/gnome/mutter/fedora/36:x86_64-2022-08-18.0
   # Cancel jobs if newer commits are pushed to the branch
   interruptible: true
   # Auto-retry jobs in case of infra failures
