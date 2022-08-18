@@ -195,6 +195,7 @@ var QuickSlider = GObject.registerClass({
         });
         box.add_child(sliderBin);
 
+        sliderBin.set_accessible(this.slider.get_accessible());
         sliderBin.connect('event', (bin, event) => this.slider.event(event, false));
 
         this._menuButton = new St.Button({
