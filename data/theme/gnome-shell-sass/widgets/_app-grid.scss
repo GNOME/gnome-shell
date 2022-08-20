@@ -124,6 +124,28 @@ $app_icon_size: 96px;
   icon-size: $app_icon_size * 0.5;
 }
 
+.page-navigation-hint {
+  &.dnd {
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  &.next:ltr,
+  &.previous:rtl {
+    background-gradient-start: rgba(255, 255, 255, 0.05);
+    background-gradient-end: transparent;
+    background-gradient-direction: horizontal;
+    border-radius: $modal_radius*1.5 0px 0px $modal_radius*1.5;
+  }
+
+  &.previous:ltr,
+  &.next:rtl {
+    background-gradient-start: transparent;
+    background-gradient-end: rgba(255, 255, 255, 0.05);
+    background-gradient-direction: horizontal;
+    border-radius: 0px $modal_radius*1.5 $modal_radius*1.5 0px;
+  }
+}
+
 .page-navigation-arrow {
   &  > StIcon {
     margin: 6px;
