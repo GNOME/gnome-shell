@@ -533,8 +533,9 @@ var Message = GObject.registerClass({
     vfunc_key_press_event(keyEvent) {
         let keysym = keyEvent.keyval;
 
-        if (keysym == Clutter.KEY_Delete ||
-            keysym == Clutter.KEY_KP_Delete) {
+        if (keysym === Clutter.KEY_Delete ||
+            keysym === Clutter.KEY_KP_Delete ||
+            keysym === Clutter.KEY_BackSpace) {
             if (this.canClose()) {
                 this.close();
                 return Clutter.EVENT_STOP;
