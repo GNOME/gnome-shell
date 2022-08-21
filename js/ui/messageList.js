@@ -543,7 +543,8 @@ export const Message = GObject.registerClass({
         let keysym = event.get_key_symbol();
 
         if (keysym === Clutter.KEY_Delete ||
-            keysym === Clutter.KEY_KP_Delete) {
+            keysym === Clutter.KEY_KP_Delete ||
+            keysym === Clutter.KEY_BackSpace) {
             if (this.canClose()) {
                 this.close();
                 return Clutter.EVENT_STOP;
