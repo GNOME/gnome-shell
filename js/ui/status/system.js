@@ -236,11 +236,21 @@ class SystemItem extends QuickSettingsItem {
         this._powerToggle = new PowerToggle();
         this.child.add_child(this._powerToggle);
 
-        // spacer
-        this.child.add_child(new Clutter.Actor({x_expand: true}));
+        this._laptopSpacer = new Clutter.Actor({x_expand: true});
+        this._powerToggle.bind_property('visible',
+            this._laptopSpacer, 'visible',
+            GObject.BindingFlags.SYNC_CREATE);
+        this.child.add_child(this._laptopSpacer);
 
         const settingsItem = new SettingsItem();
         this.child.add_child(settingsItem);
+
+        this._desktopSpacer = new Clutter.Actor({x_expand: true});
+        this._powerToggle.bind_property('visible',
+            this._desktopSpacer, 'visible',
+            GObject.BindingFlags.INVERT_BOOLEAN |
+            GObject.BindingFlags.SYNC_CREATE);
+        this.child.add_child(this._desktopSpacer);
 
         const lockItem = new LockItem();
         this.child.add_child(lockItem);
