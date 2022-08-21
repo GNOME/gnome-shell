@@ -134,9 +134,7 @@ class ShutdownItem extends QuickSettingsItem {
             style_class: 'icon-button',
             hasMenu: true,
             canFocus: true,
-            child: new St.Icon({
-                icon_name: 'system-shutdown-symbolic',
-            }),
+            icon_name: 'system-shutdown-symbolic',
             accessible_name: _('Power Off Menu'),
         });
 
@@ -210,9 +208,7 @@ class LockItem extends QuickSettingsItem {
         super._init({
             style_class: 'icon-button',
             can_focus: true,
-            child: new St.Icon({
-                icon_name: 'system-lock-screen-symbolic',
-            }),
+            icon_name: 'system-lock-screen-symbolic',
             accessible_name: _('Lock Screen'),
         });
 
