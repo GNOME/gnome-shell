@@ -1469,7 +1469,9 @@ var ScreenshotUI = GObject.registerClass({
             }
 
             this._windowButton.reactive =
-                windows.length > 0 && !this._castButton.checked;
+                Main.sessionMode.hasWindows &&
+                windows.length > 0 &&
+                !this._castButton.checked;
             if (!this._windowButton.reactive)
                 this._selectionButton.checked = true;
 
