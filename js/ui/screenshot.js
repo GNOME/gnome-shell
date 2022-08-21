@@ -1285,10 +1285,10 @@ var ScreenshotUI = GObject.registerClass({
         });
 
         const uiModes =
-            Shell.ActionMode.ALL &
-            ~(Shell.ActionMode.LOCK_SCREEN |
-                Shell.ActionMode.UNLOCK_SCREEN |
-                Shell.ActionMode.LOGIN_SCREEN);
+            Shell.ActionMode.ALL & ~Shell.ActionMode.LOGIN_SCREEN;
+        const restrictedModes =
+            uiModes &
+            ~(Shell.ActionMode.LOCK_SCREEN | Shell.ActionMode.UNLOCK_SCREEN);
 
         Main.wm.addKeybinding(
             'show-screenshot-ui',
@@ -1302,7 +1302,7 @@ var ScreenshotUI = GObject.registerClass({
             'show-screen-recording-ui',
             new Gio.Settings({ schema_id: 'org.gnome.shell.keybindings' }),
             Meta.KeyBindingFlags.IGNORE_AUTOREPEAT,
-            uiModes,
+            restrictedModes,
             showScreenRecordingUI
         );
 
@@ -1310,7 +1310,7 @@ var ScreenshotUI = GObject.registerClass({
             'screenshot-window',
             new Gio.Settings({ schema_id: 'org.gnome.shell.keybindings' }),
             Meta.KeyBindingFlags.IGNORE_AUTOREPEAT | Meta.KeyBindingFlags.PER_WINDOW,
-            uiModes,
+            restrictedModes,
             async (_display, window, _binding) => {
                 try {
                     const actor = window.get_compositor_private();
