@@ -34,13 +34,11 @@ var QuickSettingsItem = GObject.registerClass({
 
 var QuickToggle = GObject.registerClass({
     Properties: {
+        'label': GObject.ParamSpec.override('label', St.Button),
         'icon-name': GObject.ParamSpec.override('icon-name', St.Button),
         'gicon': GObject.ParamSpec.object('gicon', '', '',
             GObject.ParamFlags.READWRITE,
             Gio.Icon),
-        'label': GObject.ParamSpec.string('label', '', '',
-            GObject.ParamFlags.READWRITE,
-            ''),
     },
 }, class QuickToggle extends QuickSettingsItem {
     _init(params) {
