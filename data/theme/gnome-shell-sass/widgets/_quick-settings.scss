@@ -34,7 +34,7 @@
   &:ltr > StBoxLayout { padding-right: 0; }
   &:rtl > StBoxLayout { padding-left: 0; }
 
-  & .quick-toggle-arrow {
+  & .quick-toggle-arrow-button {
     background-color: transparentize($fg_color, 0.9);
     padding: $base_padding $base_padding*1.75;
 

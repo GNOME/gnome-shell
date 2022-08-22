@@ -116,6 +116,7 @@ var QuickMenuToggle = GObject.registerClass({
                 style_class: 'quick-toggle-arrow',
                 icon_name: 'go-next-symbolic',
             }),
+            style_class: 'quick-toggle-arrow-button',
             x_expand: false,
             y_expand: true,
         });
