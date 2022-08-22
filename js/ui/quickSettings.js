@@ -115,6 +115,7 @@ var QuickMenuToggle = GObject.registerClass({
             child: new St.Icon({
                 style_class: 'quick-toggle-arrow',
                 icon_name: 'go-next-symbolic',
+                pivot_point: new Graphene.Point({x: 0.5, y: 0.5}),
             }),
             style_class: 'quick-toggle-arrow-button',
             x_expand: false,
@@ -132,6 +133,16 @@ var QuickMenuToggle = GObject.registerClass({
         this.connect('popup-menu', () => {
             if (this.menuEnabled)
                 this.menu.open();
+        });
+
+        this.menu.connect('open-state-changed', (popup, isOpen) => {
+            const ltr = this.text_direction !== Clutter.TextDirection.RTL;
+            const angle = ltr ? 90 : -90;
+            this._menuButton.child.ease({
+                rotationAngleZ: isOpen ? angle : 0,
+                delay: isOpen ? 0 : POPUP_ANIMATION_TIME / 2,
+                duration: POPUP_ANIMATION_TIME / 2,
+            });
         });
     }
 });
@@ -200,7 +211,10 @@ var QuickSlider = GObject.registerClass({
         sliderBin.connect('event', (bin, event) => this.slider.event(event, false));
 
         this._menuButton = new St.Button({
-            child: new St.Icon({icon_name: 'go-next-symbolic'}),
+            child: new St.Icon({
+                icon_name: 'go-next-symbolic',
+                pivot_point: new Graphene.Point({x: 0.5, y: 0.5}),
+            }),
             style_class: 'icon-button',
             can_focus: true,
             x_expand: false,
@@ -215,6 +229,16 @@ var QuickSlider = GObject.registerClass({
         this.slider.connect('popup-menu', () => {
             if (this.menuEnabled)
                 this.menu.open();
+        });
+
+        this.menu.connect('open-state-changed', (popup, isOpen) => {
+            const ltr = this.text_direction !== Clutter.TextDirection.RTL;
+            const angle = ltr ? 90 : -90;
+            this._menuButton.child.ease({
+                rotationAngleZ: isOpen ? angle : 0,
+                delay: isOpen ? 0 : POPUP_ANIMATION_TIME / 2,
+                duration: POPUP_ANIMATION_TIME / 2,
+            });
         });
     }
 });
