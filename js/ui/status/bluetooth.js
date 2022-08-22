@@ -178,13 +178,30 @@ class BluetoothToggle extends QuickToggle {
         this._client.bind_property('active',
             this, 'checked',
             GObject.BindingFlags.SYNC_CREATE);
-        this._client.bind_property_full('active',
+        this._client.bind_property_full('adapter-state',
             this, 'icon-name',
             GObject.BindingFlags.SYNC_CREATE,
-            (bind, source) => [true, source ? 'bluetooth-active-symbolic' : 'bluetooth-disabled-symbolic'],
+            (bind, source) => [true, this._getIconNameFromState(source)],
             null);
 
         this.connect('clicked', () => this._client.toggleActive());
+    }
+
+    _getIconNameFromState(state) {
+        switch (state) {
+        case AdapterState.ON:
+            return 'bluetooth-active-symbolic';
+        case AdapterState.OFF:
+        case AdapterState.ABSENT:
+            return 'bluetooth-disabled-symbolic';
+        case AdapterState.TURNING_ON:
+        case AdapterState.TURNING_OFF:
+            return 'bluetooth-acquiring-symbolic';
+        default:
+            console.warn(`Unexpected state ${
+                GObject.enum_to_string(AdapterState, state)}`);
+            return '';
+        }
     }
 });
 
