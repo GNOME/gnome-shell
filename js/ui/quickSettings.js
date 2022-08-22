@@ -10,6 +10,8 @@ const {PopupAnimation} = imports.ui.boxpointer;
 const DIM_BRIGHTNESS = -0.4;
 const POPUP_ANIMATION_TIME = 400;
 
+const MENU_BUTTON_BRIGHTNESS = 0.1;
+
 var QuickSettingsItem = GObject.registerClass({
     Properties: {
         'has-menu': GObject.ParamSpec.boolean(
@@ -130,12 +132,22 @@ var QuickToggle = GObject.registerClass({
 
 var QuickMenuToggle = GObject.registerClass({
     Properties: {
+        'title': GObject.ParamSpec.string('title', '', '',
+            GObject.ParamFlags.READWRITE,
+            null),
+        'subtitle': GObject.ParamSpec.string('subtitle', '', '',
+            GObject.ParamFlags.READWRITE,
+            null),
+        'icon-name': GObject.ParamSpec.override('icon-name', St.Button),
+        'gicon': GObject.ParamSpec.object('gicon', '', '',
+            GObject.ParamFlags.READWRITE,
+            Gio.Icon),
         'menu-enabled': GObject.ParamSpec.boolean(
             'menu-enabled', '', '',
             GObject.ParamFlags.READWRITE,
             true),
     },
-}, class QuickMenuToggle extends QuickToggle {
+}, class QuickMenuToggle extends QuickSettingsItem {
     _init(params) {
         super._init({
             ...params,
@@ -144,15 +156,46 @@ var QuickMenuToggle = GObject.registerClass({
 
         this.add_style_class_name('quick-menu-toggle');
 
+        this._box = new St.BoxLayout();
+        this.set_child(this._box);
+
+        const contents = new QuickToggle({
+            x_expand: true,
+        });
+        this._box.add_child(contents);
+
+        // Use an effect to lighten the menu button a bit, so we don't
+        // have to define two full sets of button styles (normal/default)
+        // with slightly different colors
+        const menuHighlight = new Clutter.BrightnessContrastEffect();
+        menuHighlight.set_brightness(MENU_BUTTON_BRIGHTNESS);
+
         this._menuButton = new St.Button({
-            child: new St.Icon({
-                style_class: 'quick-toggle-arrow',
-                icon_name: 'go-next-symbolic',
-            }),
+            style_class: 'quick-toggle-arrow icon-button',
+            child: new St.Icon({icon_name: 'go-next-symbolic'}),
+            accessible_name: _('Open menu'),
+            effect: menuHighlight,
+            can_focus: true,
             x_expand: false,
             y_expand: true,
         });
         this._box.add_child(this._menuButton);
+
+        this.bind_property('checked',
+            contents, 'checked',
+            GObject.BindingFlags.SYNC_CREATE);
+        this.bind_property('title',
+            contents, 'title',
+            GObject.BindingFlags.SYNC_CREATE);
+        this.bind_property('subtitle',
+            contents, 'subtitle',
+            GObject.BindingFlags.SYNC_CREATE);
+        this.bind_property('icon-name',
+            contents, 'icon-name',
+            GObject.BindingFlags.SYNC_CREATE);
+        this.bind_property('gicon',
+            contents, 'gicon',
+            GObject.BindingFlags.SYNC_CREATE);
 
         this.bind_property('menu-enabled',
             this._menuButton, 'visible',
@@ -160,7 +203,12 @@ var QuickMenuToggle = GObject.registerClass({
         this.bind_property('reactive',
             this._menuButton, 'reactive',
             GObject.BindingFlags.SYNC_CREATE);
+        this.bind_property('checked',
+            this._menuButton, 'checked',
+            GObject.BindingFlags.SYNC_CREATE);
         this._menuButton.connect('clicked', () => this.menu.open());
+        this._menuButton.connect('popup-menu', () => this.emit('popup-menu'));
+        contents.connect('popup-menu', () => this.emit('popup-menu'));
         this.connect('popup-menu', () => {
             if (this.menuEnabled)
                 this.menu.open();

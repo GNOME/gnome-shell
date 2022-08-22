@@ -48,6 +48,7 @@ js/ui/overview.js
 js/ui/padOsd.js
 js/ui/panel.js
 js/ui/popupMenu.js
+js/ui/quickSettings.js
 js/ui/runDialog.js
 js/ui/screenShield.js
 js/ui/screenshot.js
