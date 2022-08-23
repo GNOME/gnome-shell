@@ -1511,7 +1511,7 @@ var Keyboard = GObject.registerClass({
 
             if (key.action !== 'modifier') {
                 button.connect('commit', (actor, keyval, str) => {
-                    if (this._modifiers.length === 0 && str !== '' &&
+                    if (this._modifiers.size === 0 && str !== '' &&
                         keyval && this._oskCompletionEnabled) {
                         Main.inputMethod.handleVirtualKey(keyval);
                         return;
