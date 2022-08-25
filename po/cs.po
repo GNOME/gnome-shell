@@ -2099,7 +2099,7 @@ msgstr "Zastavit záznam obrazovky"
 
 #: js/ui/status/remoteAccess.js:144
 msgid "Stop Screen Sharing"
-msgstr "Zastavit zdílení obrazovky"
+msgstr "Zastavit sdílení obrazovky"
 
 #: js/ui/status/rfkill.js:96
 msgid "Airplane Mode"
