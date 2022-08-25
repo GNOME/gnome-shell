@@ -3,7 +3,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
 "POT-Creation-Date: 2022-07-19 13:32+0000\n"
 "Last-Translator: Нанба Наала <naala-nanba@rambler.ru>\n"
-"Language-Team: Abkhazian <ab@li.org>\n"
+"Language-Team: Abkhazian <daniel.abzakh@gmail.com>\n"
 "Language: ab\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -120,7 +120,7 @@ msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:16
 msgid "UUIDs of extensions to enable"
-msgstr ""
+msgstr "UUID иаҿаку ахкырбагақәа"
 
 #: data/org.gnome.shell.gschema.xml.in:17
 msgid ""
@@ -627,7 +627,7 @@ msgstr[1] ""
 
 #: js/misc/util.js:201 js/ui/dateMenu.js:167
 msgid "Yesterday"
-msgstr ""
+msgstr "Иацы"
 
 #: js/misc/util.js:203
 #, javascript-format
@@ -667,7 +667,7 @@ msgstr "%H∶%M"
 #: js/misc/util.js:253
 #, no-c-format
 msgid "Yesterday, %H∶%M"
-msgstr ""
+msgstr "Иацы, %H∶%M"
 
 #. Translators: this is the week day name followed by a time
 #. string in 24h format. i.e. "Monday, 14:30"
@@ -704,7 +704,7 @@ msgstr "%l∶%M %p"
 #: js/misc/util.js:282
 #, no-c-format
 msgid "Yesterday, %l∶%M %p"
-msgstr ""
+msgstr "Иацы, %-l∶%M %p"
 
 #. Translators: this is the week day name followed by a time
 #. string in 12h format. i.e. "Monday, 2:30 pm"
@@ -774,7 +774,7 @@ msgstr ""
 
 #: js/ui/appMenu.js:97
 msgid "Quit"
-msgstr ""
+msgstr "Аҭыҵра"
 
 #: js/ui/appMenu.js:157 js/ui/dash.js:249
 msgid "Unpin"
@@ -1011,7 +1011,7 @@ msgstr ""
 
 #: js/ui/components/networkAgent.js:371 js/ui/components/networkAgent.js:752
 msgid "Wired 802.1X authentication"
-msgstr ""
+msgstr "Ахаҭареилкаара Wired 802.1X"
 
 #: js/ui/components/networkAgent.js:374
 msgid "Network name"
@@ -1019,7 +1019,7 @@ msgstr ""
 
 #: js/ui/components/networkAgent.js:382 js/ui/components/networkAgent.js:756
 msgid "DSL authentication"
-msgstr ""
+msgstr "Ахаҭареилкаара DSL"
 
 #: js/ui/components/networkAgent.js:389 js/ui/components/networkAgent.js:761
 msgid "PIN code required"
@@ -1094,7 +1094,7 @@ msgstr ""
 #.
 #: js/ui/dateMenu.js:83
 msgid "%B %-d %Y"
-msgstr ""
+msgstr "%-d %B %Y"
 
 #. Translators: This is the accessible name of the date button shown
 #. * below the time in the shell; it should combine the weekday and the
@@ -1102,7 +1102,7 @@ msgstr ""
 #.
 #: js/ui/dateMenu.js:90
 msgid "%A %B %e %Y"
-msgstr ""
+msgstr "%A, %-d %B %Y"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year
 #: js/ui/dateMenu.js:156
@@ -1137,7 +1137,7 @@ msgstr ""
 #.
 #: js/ui/dateMenu.js:222
 msgid "%m/%d"
-msgstr ""
+msgstr "%d/%m"
 
 #: js/ui/dateMenu.js:273
 msgid "No Events"
@@ -1451,7 +1451,7 @@ msgstr ""
 
 #: js/ui/lookingGlass.js:793
 msgid "Enabled"
-msgstr ""
+msgstr "Иаҿакуп"
 
 #. translators:
 #. * The device has been disabled
@@ -1477,7 +1477,7 @@ msgstr ""
 
 #: js/ui/lookingGlass.js:846
 msgid "Web Page"
-msgstr ""
+msgstr "Веб-адаҟьа"
 
 #: js/ui/main.js:286
 msgid "System was put in unsafe mode"
@@ -1594,7 +1594,7 @@ msgstr ""
 
 #: js/ui/panel.js:480
 msgid "Top Bar"
-msgstr ""
+msgstr "Хыхьтәи апанель"
 
 #: js/ui/runDialog.js:58
 msgid "Run a Command"
@@ -1756,7 +1756,7 @@ msgstr ""
 
 #: js/ui/shellEntry.js:166
 msgid "Caps lock is on."
-msgstr ""
+msgstr "Caps Lock аҿакуп."
 
 #: js/ui/shellMountOperation.js:286
 msgid "Hidden Volume"
@@ -1873,7 +1873,7 @@ msgstr[1] ""
 
 #: js/ui/status/bluetooth.js:170
 msgid "Bluetooth On"
-msgstr ""
+msgstr "Bluetooth аҿакуп"
 
 #: js/ui/status/bluetooth.js:172
 msgid "Bluetooth Off"
@@ -2088,7 +2088,7 @@ msgstr ""
 #: js/ui/status/network.js:1364
 #, javascript-format
 msgid "%s Hotspot Active"
-msgstr ""
+msgstr "Анеирҭа аҭыԥ %s аҿакуп"
 
 #. Translators: %s is a network identifier
 #: js/ui/status/network.js:1379
@@ -2254,7 +2254,7 @@ msgstr ""
 #. changing the menu contents.
 #: js/ui/status/rfkill.js:109
 msgid "Airplane Mode On"
-msgstr ""
+msgstr "Авиарежим аҿакуп"
 
 #: js/ui/status/system.js:104
 msgid "Lock"
@@ -2356,7 +2356,7 @@ msgstr ""
 #. long format
 #: js/ui/unlockDialog.js:364
 msgid "%A %B %-d"
-msgstr ""
+msgstr "%A, %-d %B"
 
 #: js/ui/unlockDialog.js:370
 msgid "Swipe up to unlock"
@@ -2536,7 +2536,7 @@ msgstr ""
 
 #: src/shell-polkit-authentication-agent.c:344
 msgid "Authentication dialog was dismissed by the user"
-msgstr ""
+msgstr "Ахаҭареилкаара ахархәаҩ ила мап ацәкын"
 
 #: subprojects/extensions-app/data/metainfo/org.gnome.Extensions.metainfo.xml.in:5
 #: subprojects/extensions-app/data/org.gnome.Extensions.desktop.in.in:4
@@ -2611,7 +2611,7 @@ msgstr ""
 
 #: subprojects/extensions-app/data/ui/extension-row.ui:112
 msgid "Website"
-msgstr ""
+msgstr "Веб-асаит"
 
 #: subprojects/extensions-app/data/ui/extension-row.ui:134
 msgid "Remove…"
@@ -2958,7 +2958,7 @@ msgstr ""
 
 #: subprojects/extensions-tool/src/main.c:253
 msgid "Version"
-msgstr ""
+msgstr "Аверсиа"
 
 #: subprojects/extensions-tool/src/main.c:256
 msgid "State"
@@ -2984,7 +2984,7 @@ msgstr ""
 
 #: subprojects/extensions-tool/src/main.c:317
 msgid "[ARGS…]"
-msgstr ""
+msgstr "[АҴАҴӶӘҚӘА…]"
 
 #: subprojects/extensions-tool/src/main.c:319
 msgid "Commands:"
@@ -3062,8 +3062,8 @@ msgstr ""
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%u ҭыҵрак"
+msgstr[1] "%u ҭыҵрак"
 
 #. translators:
 #. * The number of sound inputs on a particular device
@@ -3071,8 +3071,8 @@ msgstr[1] ""
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%u аҭалара"
+msgstr[1] "%u аҭаларақәа"
 
 #: subprojects/gvc/gvc-mixer-control.c:2867
 msgid "System Sounds"
