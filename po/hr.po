@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2022-08-18 15:25+0000\n"
-"PO-Revision-Date: 2022-08-20 23:54+0200\n"
+"POT-Creation-Date: 2022-08-20 21:55+0000\n"
+"PO-Revision-Date: 2022-08-28 00:04+0200\n"
 "Last-Translator: gogo <trebelnik2@gmail.com>\n"
 "Language-Team: Croatian <hr@li.org>\n"
 "Language: hr\n"
@@ -2286,7 +2286,7 @@ msgstr "Sakrij"
 
 #: js/ui/windowMenu.js:48
 msgid "Restore"
-msgstr "Obnovi"
+msgstr "Prikaži u prozoru"
 
 #: js/ui/windowMenu.js:52
 msgid "Maximize"
