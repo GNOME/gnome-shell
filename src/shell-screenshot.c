@@ -1061,6 +1061,7 @@ composite_to_stream_on_png_saved (GObject      *pixbuf,
   else
     g_task_return_pointer (task, g_object_ref (pixbuf), g_object_unref);
 
+  g_object_unref (pixbuf);
   g_object_unref (task);
 }
 
