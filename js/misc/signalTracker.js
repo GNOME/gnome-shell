@@ -57,6 +57,14 @@ class SignalManager {
         }
         return signalTracker;
     }
+
+    /**
+     * @param {Object} obj - object to get signal tracker for
+     * @returns {?SignalTracker} - the signal tracker for object if it exists
+     */
+    maybeGetSignalTracker(obj) {
+        return this._signalTrackers.get(obj) ?? null;
+    }
 }
 
 class SignalTracker {
@@ -225,7 +233,7 @@ function connectObject(thisObj, ...args) {
  * @returns {void}
  */
 function disconnectObject(thisObj, obj) {
-    SignalManager.getDefault().getSignalTracker(thisObj).untrack(obj);
+    SignalManager.getDefault().maybeGetSignalTracker(thisObj)?.untrack(obj);
 }
 
 /**
