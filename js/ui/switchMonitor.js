@@ -63,7 +63,7 @@ class SwitchMonitorPopup extends SwitcherPopup.SwitcherPopup {
 
     _initialSelection() {
         let currentConfig = Meta.MonitorManager.get().get_switch_config();
-        let selectConfig = (currentConfig + 1) % Meta.MonitorSwitchConfigType.UNKNOWN;
+        let selectConfig = (currentConfig + 1) % this._items.length;
         this._select(selectConfig);
     }
 
