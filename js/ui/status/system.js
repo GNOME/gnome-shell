@@ -102,6 +102,7 @@ class ScreenshotItem extends QuickSettingsItem {
             can_focus: true,
             icon_name: 'camera-photo-symbolic',
             visible: !Main.sessionMode.isGreeter,
+            accessible_name: _('Take Screenshot'),
         });
 
         this.connect('clicked', () => {
