@@ -308,6 +308,7 @@ grab_screenshot_content (ShellScreenshot *screenshot,
   float scale;
   g_autoptr (GError) error = NULL;
   g_autoptr (ClutterContent) content = NULL;
+  g_autoptr (GTask) task = result;
   MetaCursorTracker *tracker;
   CoglTexture *cursor_texture;
   int cursor_hot_x, cursor_hot_y;
