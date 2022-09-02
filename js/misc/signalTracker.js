@@ -42,7 +42,7 @@ class SignalManager {
     }
 
     constructor() {
-        this._signalTrackers = new WeakMap();
+        this._signalTrackers = new Map();
     }
 
     /**
