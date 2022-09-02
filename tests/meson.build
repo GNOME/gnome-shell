@@ -46,11 +46,14 @@ perf_tests = [
 gvc_typelib_path = fs.parent(libgvc.get_variable('libgvc_gir')[1].full_path())
 libgvc_path = fs.parent(libgvc.get_variable('libgvc').full_path())
 
+background_file = files(join_paths('data', 'background.png'))
+
 perf_testenv = testenv
 perf_testenv.set('G_DEBUG', 'fatal-criticals')
 perf_testenv.set('G_MESSAGES_DEBUG', 'GNOME Shell')
 perf_testenv.set('GNOME_SHELL_DATADIR', data_builddir)
 perf_testenv.set('GNOME_SHELL_BUILDDIR', src_builddir)
+perf_testenv.set('SHELL_BACKGROUND_IMAGE', '@0@'.format(background_file))
 perf_testenv.append('GI_TYPELIB_PATH', gvc_typelib_path, separator: ':')
 perf_testenv.append('LD_LIBRARY_PATH', libgvc_path, separator: ':')
 
