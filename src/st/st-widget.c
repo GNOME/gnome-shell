@@ -494,6 +494,8 @@ st_widget_unmap (ClutterActor *actor)
 
   CLUTTER_ACTOR_CLASS (st_widget_parent_class)->unmap (actor);
 
+  st_widget_remove_transition (self);
+
   if (priv->track_hover && priv->hover)
     st_widget_set_hover (self, FALSE);
 }
