@@ -24,7 +24,7 @@ def show_version(option, opt_str, value, parser):
     print("GNOME Shell Performance Test @VERSION@")
     sys.exit()
 
-def start_shell(perf_output=None):
+def start_shell(wrap=None, perf_output=None):
     # Set up environment
     env = dict(os.environ)
     env['SHELL_PERF_MODULE'] = options.perf
@@ -41,6 +41,8 @@ def start_shell(perf_output=None):
 
     self_dir = os.path.dirname(os.path.abspath(sys.argv[0]))
     args = []
+    if wrap:
+        args += wrap.split(' ')
     args.append(os.path.join(self_dir, 'gnome-shell'))
 
     if options.replace:
@@ -61,15 +63,16 @@ def start_shell(perf_output=None):
     elif options.x11:
         args.append('--x11')
 
+    print("args: {}".format(args))
     return subprocess.Popen(args, env=env)
 
-def run_shell(perf_output=None):
+def run_shell(wrap=None, perf_output=None):
     # we do no additional supervision of gnome-shell,
     # beyond that of wait
     # in particular, we don't kill the shell upon
     # receiving a KeyboardInterrupt, as we expect to be
     # in the same process group
-    shell = start_shell(perf_output=perf_output)
+    shell = start_shell(wrap=wrap, perf_output=perf_output)
     shell.wait()
     return shell.returncode == 0
 
@@ -166,7 +169,7 @@ def gnome_hwtest_log(*args):
     command.extend(args)
     subprocess.check_call(command)
 
-def run_performance_test():
+def run_performance_test(wrap=None):
     iters = options.perf_iters
     if options.perf_warmup:
         iters += 1
@@ -183,7 +186,7 @@ def run_performance_test():
         # Run the performance test and collect the output as JSON
         normal_exit = False
         try:
-            normal_exit = run_shell(perf_output=output_file)
+            normal_exit = run_shell(wrap=wrap, perf_output=output_file)
         except:
             raise
         finally:
@@ -298,6 +301,8 @@ parser.add_argument("--hwtest", action="store_true",
 parser.add_argument("--version", action="version",
                     version="GNOME Shell Performance Test @VERSION@")
 
+parser.add_argument("--wrap")
+
 parser.add_argument("-r", "--replace", action="store_true",
                     help="Replace the running window manager")
 parser.add_argument("-w", "--wayland", action="store_true",
@@ -323,7 +328,7 @@ if options.extra_filter is None:
 if options.perf == 'hwtest':
     options.extra_filter.append('Gedit')
 
-normal_exit = run_performance_test()
+normal_exit = run_performance_test(wrap=options.wrap)
 if normal_exit:
     if not options.hwtest and options.replace:
         restore_shell()
