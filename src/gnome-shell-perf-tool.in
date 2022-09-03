@@ -7,7 +7,7 @@ try:
     import json
 except ImportError:
     import simplejson as json
-import optparse
+import argparse
 import os
 import re
 import subprocess
@@ -279,37 +279,37 @@ def run_performance_test():
 
 # Main program
 
-parser = optparse.OptionParser()
-parser.add_option("", "--perf", metavar="PERF_MODULE",
-		  help="Specify the name of a performance module to run")
-parser.add_option("", "--perf-iters", type="int", metavar="ITERS",
-		  help="Numbers of iterations of performance module to run",
-                  default=1)
-parser.add_option("", "--perf-warmup", action="store_true",
-		  help="Run a dry run before performance tests")
-parser.add_option("", "--perf-output", metavar="OUTPUT_FILE",
-		  help="Output file to write performance report")
-parser.add_option("", "--perf-upload", action="store_true",
-		  help="Upload performance report to server")
-parser.add_option("", "--extra-filter", action="append",
-                  help="add an extra window class that should be allowed")
-parser.add_option("", "--hwtest", action="store_true",
-		  help="Log results appropriately for GNOME Hardware Testing")
-parser.add_option("", "--version", action="callback", callback=show_version,
-                  help="Display version and exit")
+parser = argparse.ArgumentParser()
+parser.add_argument("--perf",
+                    help="Specify the name of a performance module to run")
+parser.add_argument("--perf-iters", type=int, metavar="ITERS",
+                    help="Numbers of iterations of performance module to run",
+                    default=1)
+parser.add_argument("--perf-warmup", action="store_true",
+                    help="Run a dry run before performance tests")
+parser.add_argument("--perf-output", metavar="OUTPUT_FILE",
+                    help="Output file to write performance report")
+parser.add_argument("--perf-upload", action="store_true",
+                    help="Upload performance report to server")
+parser.add_argument("--extra-filter", action="append",
+                    help="add an extra window class that should be allowed")
+parser.add_argument("--hwtest", action="store_true",
+                    help="Log results appropriately for GNOME Hardware Testing")
+parser.add_argument("--version", action="version",
+                    version="GNOME Shell Performance Test @VERSION@")
 
-parser.add_option("-r", "--replace", action="store_true",
-                  help="Replace the running window manager")
-parser.add_option("-w", "--wayland", action="store_true",
-                  help="Run as a Wayland compositor")
-parser.add_option("-n", "--nested", action="store_true",
-                  help="Run as a Wayland nested compositor")
-parser.add_option("-x", "--x11", action="store_true",
-                  help="Run as an X11 compositor")
-parser.add_option("", "--headless", action="store_true",
-                  help="Run as a headless Wayland compositor")
+parser.add_argument("-r", "--replace", action="store_true",
+                    help="Replace the running window manager")
+parser.add_argument("-w", "--wayland", action="store_true",
+                    help="Run as a Wayland compositor")
+parser.add_argument("-n", "--nested", action="store_true",
+                    help="Run as a Wayland nested compositor")
+parser.add_argument("-x", "--x11", action="store_true",
+                    help="Run as an X11 compositor")
+parser.add_argument("--headless", action="store_true",
+                    help="Run as a headless Wayland compositor")
 
-options, args = parser.parse_args()
+options = parser.parse_args()
 
 if options.perf == None:
     if options.hwtest:
@@ -322,10 +322,6 @@ if options.extra_filter is None:
 
 if options.perf == 'hwtest':
     options.extra_filter.append('Gedit')
-
-if args:
-    parser.print_usage()
-    sys.exit(1)
 
 normal_exit = run_performance_test()
 if normal_exit:
