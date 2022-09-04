@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master oc\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2022-08-03 06:09+0000\n"
-"PO-Revision-Date: 2022-08-06 19:13+0200\n"
+"POT-Creation-Date: 2022-09-01 00:08+0000\n"
+"PO-Revision-Date: 2022-09-04 20:51+0200\n"
 "Last-Translator: Quentin PAGÈS\n"
 "Language-Team: Tot En Òc\n"
 "Language: oc\n"
@@ -60,7 +60,7 @@ msgid "Activate favorite application 9"
 msgstr "Activar l’aplicacion favorita 10"
 
 #. Translators: name of the folder under ~/Pictures for screenshots.
-#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2070
+#: data/50-gnome-shell-screenshots.xml:6 js/ui/screenshot.js:2079
 msgid "Screenshots"
 msgstr "Capturas d'ecran"
 
@@ -542,7 +542,7 @@ msgstr "Consultar la pagina de las extensions"
 #: js/ui/components/networkAgent.js:109 js/ui/components/polkitAgent.js:141
 #: js/ui/endSessionDialog.js:440 js/ui/extensionDownloader.js:223
 #: js/ui/shellMountOperation.js:377 js/ui/shellMountOperation.js:387
-#: js/ui/status/network.js:960 subprojects/extensions-app/js/main.js:173
+#: subprojects/extensions-app/js/main.js:173
 msgid "Cancel"
 msgstr "Anullar"
 
@@ -574,23 +574,23 @@ msgstr "(per ex. utilizaire o %s)"
 msgid "Username"
 msgstr "Nom d'utilizaire"
 
-#: js/gdm/loginDialog.js:1257
+#: js/gdm/loginDialog.js:1258
 msgid "Login Window"
 msgstr "Fenèstra de connexion"
 
-#: js/gdm/util.js:434
+#: js/gdm/util.js:431
 msgid "Authentication error"
 msgstr "Error d'autentificacion"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger on the fingerprint reader
-#: js/gdm/util.js:606
+#: js/gdm/util.js:603
 msgid "(or swipe finger across reader)"
 msgstr "(o fasètz lisar lo det pel lector)"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can place their finger on the fingerprint reader instead
-#: js/gdm/util.js:611
+#: js/gdm/util.js:608
 msgid "(or place finger on reader)"
 msgstr "(o pausatz lo det sul lector)"
 
@@ -848,6 +848,10 @@ msgstr "Refusar l'accès"
 msgid "Grant Access"
 msgstr "Acordar l'accès"
 
+#: js/ui/appDisplay.js:1728
+msgid "Unnamed Folder"
+msgstr "Dossièr sens nom"
+
 #: js/ui/appFavorites.js:166
 #, javascript-format
 msgid "%s has been pinned to the dash."
@@ -895,7 +899,7 @@ msgstr "Aviar en utilizant la carta grafica dedicada"
 msgid "Select Audio Device"
 msgstr "Seleccionar lo perfieric àudio"
 
-#: js/ui/audioDeviceSelection.js:56 js/ui/status/volume.js:103
+#: js/ui/audioDeviceSelection.js:56 js/ui/status/volume.js:63
 msgid "Sound Settings"
 msgstr "Paramètres del son"
 
@@ -907,7 +911,7 @@ msgstr "Casc àudio"
 msgid "Headset"
 msgstr "Microcasc"
 
-#: js/ui/audioDeviceSelection.js:73 js/ui/status/volume.js:359
+#: js/ui/audioDeviceSelection.js:73 js/ui/status/volume.js:319
 msgid "Microphone"
 msgstr "Microfòn"
 
@@ -982,7 +986,7 @@ msgstr "S"
 #. * "%OB" is the new format specifier introduced in glibc 2.27,
 #. * in most cases you should not change it.
 #.
-#: js/ui/calendar.js:402
+#: js/ui/calendar.js:414
 msgid "%OB"
 msgstr "%OB"
 
@@ -995,37 +999,37 @@ msgstr "%OB"
 #. * in most cases you should not use the old "%B" here unless you
 #. * absolutely know what you are doing.
 #.
-#: js/ui/calendar.js:412
+#: js/ui/calendar.js:424
 msgid "%OB %Y"
 msgstr "%OB de %Y"
 
-#: js/ui/calendar.js:473
+#: js/ui/calendar.js:485
 msgid "Previous month"
 msgstr "Mes precedent"
 
-#: js/ui/calendar.js:491
+#: js/ui/calendar.js:503
 msgid "Next month"
 msgstr "Mes seguent"
 
-#: js/ui/calendar.js:642
+#: js/ui/calendar.js:654
 #, no-javascript-format
 msgctxt "date day number format"
 msgid "%d"
 msgstr "%d"
 
-#: js/ui/calendar.js:701
+#: js/ui/calendar.js:713
 msgid "Week %V"
 msgstr "Setmana %V"
 
-#: js/ui/calendar.js:880
+#: js/ui/calendar.js:892
 msgid "No Notifications"
 msgstr "Pas cap de notificacion"
 
-#: js/ui/calendar.js:937
+#: js/ui/calendar.js:949
 msgid "Do Not Disturb"
 msgstr "Destorbar pas"
 
-#: js/ui/calendar.js:958
+#: js/ui/calendar.js:970
 msgid "Clear"
 msgstr "Escafar"
 
@@ -1076,8 +1080,7 @@ msgid ""
 "Alternatively you can connect by pushing the “WPS” button on your router."
 msgstr "Autrament podètz quichatz lo boton « WPS » sul router."
 
-#: js/ui/components/networkAgent.js:103 js/ui/status/network.js:247
-#: js/ui/status/network.js:337 js/ui/status/network.js:965
+#: js/ui/components/networkAgent.js:103 js/ui/status/network.js:436
 msgid "Connect"
 msgstr "Se connectar"
 
@@ -1141,7 +1144,7 @@ msgstr "PIN"
 msgid "A password is required to connect to “%s”."
 msgstr "Un senhal es requesit per se connectar a « %s »."
 
-#: js/ui/components/networkAgent.js:736 js/ui/status/network.js:1823
+#: js/ui/components/networkAgent.js:736
 msgid "Network Manager"
 msgstr "Gestionari de ret"
 
@@ -1567,13 +1570,11 @@ msgstr ""
 msgid "Leave On"
 msgstr "Daissar activat"
 
-#: js/ui/kbdA11yDialog.js:55 js/ui/status/network.js:1347
+#: js/ui/kbdA11yDialog.js:55
 msgid "Turn On"
 msgstr "Activar"
 
-#: js/ui/kbdA11yDialog.js:65 js/ui/status/network.js:162
-#: js/ui/status/network.js:338 js/ui/status/network.js:1347
-#: js/ui/status/network.js:1454 js/ui/status/network.js:1525
+#: js/ui/kbdA11yDialog.js:65 js/ui/status/network.js:447
 msgid "Turn Off"
 msgstr "Atudar"
 
@@ -1581,7 +1582,7 @@ msgstr "Atudar"
 msgid "Leave Off"
 msgstr "Daissar atudat"
 
-#: js/ui/keyboard.js:258
+#: js/ui/keyboard.js:219
 msgid "Region & Language Settings"
 msgstr "Paramètres de region e de lenga"
 
@@ -1744,12 +1745,12 @@ msgstr "Quichatz sus una tòca per quitar"
 msgid "Activities"
 msgstr "Activitats"
 
-#: js/ui/panel.js:367 js/ui/panel.js:409
+#: js/ui/panel.js:338
 msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "Sistèma"
 
-#: js/ui/panel.js:510
+#: js/ui/panel.js:457
 msgid "Top Bar"
 msgstr "Barra superiora"
 
@@ -1780,99 +1781,99 @@ msgstr "GNOME a besonh de verrolhar l'ecran"
 #.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
-#: js/ui/screenShield.js:275 js/ui/screenShield.js:650
+#: js/ui/screenShield.js:275 js/ui/screenShield.js:652
 msgid "Unable to lock"
 msgstr "Impossible de verrolhar"
 
-#: js/ui/screenShield.js:276 js/ui/screenShield.js:651
+#: js/ui/screenShield.js:276 js/ui/screenShield.js:653
 msgid "Lock was blocked by an application"
 msgstr "Lo verrolhatge es estat blocat per una aplicacion"
 
-#: js/ui/screenshot.js:1149
+#: js/ui/screenshot.js:1147
 msgid "Selection"
 msgstr "Seleccion"
 
-#: js/ui/screenshot.js:1159
+#: js/ui/screenshot.js:1157
 msgid "Area Selection"
 msgstr "Seleccion de la zòna"
 
-#: js/ui/screenshot.js:1164
+#: js/ui/screenshot.js:1162
 msgid "Screen"
 msgstr "Ecran"
 
-#: js/ui/screenshot.js:1174
+#: js/ui/screenshot.js:1172
 msgid "Screen Selection"
 msgstr "Seleccion de l’ecran"
 
-#: js/ui/screenshot.js:1179
+#: js/ui/screenshot.js:1177
 msgid "Window"
 msgstr "Fenèstra"
 
-#: js/ui/screenshot.js:1189
+#: js/ui/screenshot.js:1187
 msgid "Window Selection"
 msgstr "Seleccion de fenèstra"
 
-#: js/ui/screenshot.js:1227
+#: js/ui/screenshot.js:1225
 msgid "Screenshot / Screencast"
 msgstr "Captura d'ecran / vidèo"
 
-#: js/ui/screenshot.js:1263
+#: js/ui/screenshot.js:1261
 msgid "Show Pointer"
 msgstr "Inclure lo puntador"
 
 #. Translators: this is the folder where recorded
 #. screencasts are stored.
-#: js/ui/screenshot.js:1840
+#: js/ui/screenshot.js:1849
 msgid "Screencasts"
 msgstr "Capturas vidèo"
 
 #. Translators: this is a filename used for screencast
 #. * recording, where "%d" and "%t" date and time, e.g.
 #. * "Screencast from 07-17-2013 10:00:46 PM.webm"
-#: js/ui/screenshot.js:1845
+#: js/ui/screenshot.js:1854
 #, no-c-format
 msgid "Screencast from %d %t.webm"
 msgstr "Captura vidèo del %d a %t.webm"
 
 #. Translators: notification source name.
-#: js/ui/screenshot.js:1911 js/ui/screenshot.js:2123
+#: js/ui/screenshot.js:1920 js/ui/screenshot.js:2132
 msgid "Screenshot"
 msgstr "Captura d'ecran"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:1917
+#: js/ui/screenshot.js:1926
 msgid "Screencast recorded"
 msgstr "Captura vidèo salvada"
 
 #. Translators: notification body when a screencast was recorded.
-#: js/ui/screenshot.js:1919
+#: js/ui/screenshot.js:1928
 msgid "Click here to view the video."
 msgstr "Clicatz aicí per veire la vidèo."
 
 #. Translators: button on the screencast notification.
 #. Translators: button on the screenshot notification.
-#: js/ui/screenshot.js:1922 js/ui/screenshot.js:2137
+#: js/ui/screenshot.js:1931 js/ui/screenshot.js:2146
 msgid "Show in Files"
 msgstr "Mostrar dins Fichièrs"
 
 #. Translators: this is the name of the file that the screenshot is
 #. saved to. The placeholder is a timestamp, e.g. "2017-05-21 12-24-03".
-#: js/ui/screenshot.js:2083
+#: js/ui/screenshot.js:2092
 #, javascript-format
 msgid "Screenshot from %s"
 msgstr "Captura d'ecran de %s"
 
 #. Translators: notification title.
-#: js/ui/screenshot.js:2129
+#: js/ui/screenshot.js:2138
 msgid "Screenshot captured"
 msgstr "Captura d'ecran efectuada"
 
 #. Translators: notification body when a screenshot was captured.
-#: js/ui/screenshot.js:2131
+#: js/ui/screenshot.js:2140
 msgid "You can paste the image from the clipboard."
 msgstr "Podètz pegar l’imatge del quichapapièrs estant."
 
-#: js/ui/screenshot.js:2184 js/ui/screenshot.js:2349
+#: js/ui/screenshot.js:2193 js/ui/screenshot.js:2358
 msgid "Screenshot taken"
 msgstr "Captura d'ecran efectuada"
 
@@ -2018,11 +2019,11 @@ msgstr "Grand tèxte"
 msgid "Auto Rotate"
 msgstr "Rotacion auto"
 
-#: js/ui/status/bluetooth.js:153
+#: js/ui/status/bluetooth.js:160
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: js/ui/status/brightness.js:37
+#: js/ui/status/brightness.js:34
 msgid "Brightness"
 msgstr "Luminositat"
 
@@ -2074,239 +2075,31 @@ msgstr ""
 "Las règlas d’accès a la localizacion pòdon a tot moment èsser modificadas "
 "dins los paramètres de confidencialitat."
 
-#: js/ui/status/network.js:71
+#: js/ui/status/network.js:53
 msgid "<unknown>"
 msgstr "<desconegut>"
 
-#. Translators: %s is a network identifier
-#: js/ui/status/network.js:438 js/ui/status/network.js:1376
+#. Translators: %s is a device name like "MyPhone"
+#: js/ui/status/network.js:356
 #, javascript-format
-msgid "%s Off"
-msgstr "%s atudat"
+msgid "Disconnect %s"
+msgstr "Desconnectar %s"
 
-#. Translators: %s is a network identifier
-#: js/ui/status/network.js:441
+#. Translators: %s is a device name like "MyPhone"
+#: js/ui/status/network.js:358
 #, javascript-format
-msgid "%s Connected"
-msgstr "%s connectat"
-
-#. Translators: this is for network devices that are physically present but are not
-#. under NetworkManager's control (and thus cannot be used in the menu);
-#. %s is a network identifier
-#: js/ui/status/network.js:446
-#, javascript-format
-msgid "%s Unmanaged"
-msgstr "%s pas gerit"
+msgid "Connect to %s"
+msgstr "Se connectar a %s"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:449
+#: js/ui/status/network.js:1107
 #, javascript-format
-msgid "%s Disconnecting"
-msgstr "Desconnexion de %s en cors"
-
-#. Translators: %s is a network identifier
-#: js/ui/status/network.js:456 js/ui/status/network.js:1368
-#, javascript-format
-msgid "%s Connecting"
-msgstr "Connexion de %s en cors"
-
-#. Translators: this is for network connections that require some kind of key or password; %s is a network identifier
-#: js/ui/status/network.js:459
-#, javascript-format
-msgid "%s Requires Authentication"
-msgstr "Autentificacion necessària per %s"
-
-#. Translators: this is for devices that require some kind of firmware or kernel
-#. module, which is missing; %s is a network identifier
-#: js/ui/status/network.js:467
-#, javascript-format
-msgid "Firmware Missing For %s"
-msgstr "Micrologicial mancant per %s"
-
-#. Translators: this is for a network device that cannot be activated (for example it
-#. is disabled by rfkill, or it has no coverage; %s is a network identifier
-#: js/ui/status/network.js:471
-#, javascript-format
-msgid "%s Unavailable"
-msgstr "%s pas disponible"
-
-#. Translators: %s is a network identifier
-#: js/ui/status/network.js:474
-#, javascript-format
-msgid "%s Connection Failed"
-msgstr "Fracàs de connexion a %s"
-
-#: js/ui/status/network.js:486
-msgid "Wired Settings"
-msgstr "Paramètres de la connexion filara"
-
-#: js/ui/status/network.js:533
-msgid "Mobile Broadband Settings"
-msgstr "Paramètres del telefòn mobil de benda larga"
-
-#. Translators: %s is a network identifier
-#: js/ui/status/network.js:589 js/ui/status/network.js:1373
-#, javascript-format
-msgid "%s Hardware Disabled"
-msgstr "Equipament %s desactivat"
-
-#. Translators: this is for a network device that cannot be activated
-#. because it's disabled by rfkill (airplane mode); %s is a network identifier
-#: js/ui/status/network.js:593
-#, javascript-format
-msgid "%s Disabled"
-msgstr "%s desactivat"
-
-#: js/ui/status/network.js:628
-msgid "Bluetooth Settings"
-msgstr "Paramètres Bluetooth"
-
-#: js/ui/status/network.js:640
-msgid "Connect to Internet"
-msgstr "Se connectar a Internet"
-
-#: js/ui/status/network.js:840
-msgid "Airplane Mode is On"
-msgstr "Lo mòde avion es activat"
-
-#: js/ui/status/network.js:841
-msgid "Wi-Fi is disabled when airplane mode is on."
-msgstr "Lo Wi-Fi es desactivat quand lo mòde avion es activat."
-
-#: js/ui/status/network.js:842
-msgid "Turn Off Airplane Mode"
-msgstr "Desactivar lo mòde avion"
-
-#: js/ui/status/network.js:851
-msgid "Wi-Fi is Off"
-msgstr "Lo Wi-fi es desactivat"
-
-#: js/ui/status/network.js:852
-msgid "Wi-Fi needs to be turned on in order to connect to a network."
-msgstr "Lo Wi-Fi a besonh d'èsser activat per se connectar a una ret."
-
-#: js/ui/status/network.js:853
-msgid "Turn On Wi-Fi"
-msgstr "Activar lo Wi-Fi"
-
-#: js/ui/status/network.js:881
-msgid "Wi-Fi Networks"
-msgstr "Rets Wi-Fi"
-
-#: js/ui/status/network.js:885
-msgid "Select a network"
-msgstr "Causir una ret"
-
-#: js/ui/status/network.js:921
-msgid "No Networks"
-msgstr "Cap de ret pas disponibla"
-
-#: js/ui/status/network.js:946
-msgid "Use hardware switch to turn off"
-msgstr "Utilizar l'interruptor material per atudar"
-
-#: js/ui/status/network.js:1259
-msgid "Select Network"
-msgstr "Seleccionar una ret"
-
-#: js/ui/status/network.js:1265
-msgid "Wi-Fi Settings"
-msgstr "Paramètres del Wifi"
-
-#. Translators: %s is a network identifier
-#: js/ui/status/network.js:1364
-#, javascript-format
-msgid "%s Hotspot Active"
-msgstr "Hotspot %s activat"
-
-#. Translators: %s is a network identifier
-#: js/ui/status/network.js:1379
-#, javascript-format
-msgid "%s Not Connected"
-msgstr "%s desconnectat"
-
-#: js/ui/status/network.js:1466
-msgid "unknown"
-msgstr "desconegut"
-
-#: js/ui/status/network.js:1468
-msgid "activating…"
-msgstr "activacion…"
-
-#: js/ui/status/network.js:1472
-msgid "deactivating…"
-msgstr "desactivacion…"
-
-#: js/ui/status/network.js:1474
-msgid "deactivated"
-msgstr "desactivada"
-
-#: js/ui/status/network.js:1542
-msgid "connecting…"
-msgstr "connexion…"
-
-#. Translators: this is for network connections that require some kind of key or password
-#: js/ui/status/network.js:1545
-msgid "authentication required"
-msgstr "autentificacion necessària"
-
-#: js/ui/status/network.js:1547
-msgid "connection failed"
-msgstr "fracàs de connexion"
-
-#: js/ui/status/network.js:1593
-msgid "VPN Settings"
-msgstr "Paramètres VPN"
-
-#: js/ui/status/network.js:1610
-msgid "VPN"
-msgstr "VPN"
-
-#: js/ui/status/network.js:1620
-msgid "VPN Off"
-msgstr "VPN atudat"
-
-#: js/ui/status/network.js:1683
-msgid "Network Settings"
-msgstr "Paramètres de la ret"
-
-#: js/ui/status/network.js:1711
-#, javascript-format
-msgid "%s Wired Connection"
-msgid_plural "%s Wired Connections"
-msgstr[0] "%s connexion filària"
-msgstr[1] "%s connexions filàrias"
-
-#: js/ui/status/network.js:1715
-#, javascript-format
-msgid "%s Wi-Fi Connection"
-msgid_plural "%s Wi-Fi Connections"
-msgstr[0] "%s connexion Wi-Fi"
-msgstr[1] "%s connexions Wi-Fi"
-
-#: js/ui/status/network.js:1719
-#, javascript-format
-msgid "%s Modem Connection"
-msgid_plural "%s Modem Connections"
-msgstr[0] "%s connexion a un modèm"
-msgstr[1] "%s connexions a de modèm"
-
-#: js/ui/status/network.js:1864
-msgid "Connection failed"
-msgstr "Fracàs de connexion"
-
-#: js/ui/status/network.js:1865
-msgid "Activation of network connection failed"
-msgstr "L'activacion de la connexion a la ret a fracassat"
+msgid "%s Hotspot"
+msgstr "Punt d’accès %s"
 
 #: js/ui/status/nightLight.js:20
 msgid "Night Light"
 msgstr "Lum nuechenc"
-
-#: js/ui/status/power.js:85
-#, javascript-format
-msgid "%d %%"
-msgstr "%d %%"
 
 #: js/ui/status/powerProfiles.js:20
 msgctxt "Power profile"
@@ -2323,9 +2116,9 @@ msgctxt "Power profile"
 msgid "Power Saver"
 msgstr "Estalvi d'energia"
 
-#: js/ui/status/powerProfiles.js:66
-msgid "Power Settings"
-msgstr "Paramètres de gestion de l'energia"
+#: js/ui/status/powerProfiles.js:68
+msgid "Power Profiles"
+msgstr "Perfils energetics"
 
 #: js/ui/status/remoteAccess.js:74
 msgid "Stop Screencast"
@@ -2339,43 +2132,53 @@ msgstr "Arrestar lo partiment d’ecran"
 msgid "Airplane Mode"
 msgstr "Mòde avion"
 
-#: js/ui/status/system.js:83
-msgid "Lock"
-msgstr "Verrolhar"
+#: js/ui/status/system.js:90
+#, javascript-format
+msgid "%d %%"
+msgstr "%d %%"
 
-#: js/ui/status/system.js:95
-msgid "Power Off / Log Out"
-msgstr "Atudar / Se desconnectar"
+#. Translators: entry in the window right click menu.
+#: js/ui/status/system.js:105 js/ui/windowMenu.js:29
+msgid "Take Screenshot"
+msgstr "Prendre captura d'ecran"
 
-#: js/ui/status/system.js:98
+#: js/ui/status/system.js:161
+msgid "Power Off Menu"
+msgstr "Menú d’extincion"
+
+#: js/ui/status/system.js:169
 msgid "Suspend"
 msgstr "Metre en velha"
 
-#: js/ui/status/system.js:109
+#: js/ui/status/system.js:174
 msgid "Restart…"
 msgstr "Reaviar…"
 
-#: js/ui/status/system.js:120
+#: js/ui/status/system.js:179
 msgid "Power Off…"
 msgstr "Atudar…"
 
-#: js/ui/status/system.js:133
+#: js/ui/status/system.js:186
 msgid "Log Out"
 msgstr "Tampar la session"
 
-#: js/ui/status/system.js:144
+#: js/ui/status/system.js:191
 msgid "Switch User…"
 msgstr "Cambiar d’utilizaire…"
 
-#: js/ui/status/thunderbolt.js:257
+#: js/ui/status/system.js:235
+msgid "Lock Screen"
+msgstr "Verrolhatge de l’ecran"
+
+#: js/ui/status/thunderbolt.js:256
 msgid "Thunderbolt"
 msgstr "Interfàcia Thunderbolt"
 
-#: js/ui/status/thunderbolt.js:318
+#: js/ui/status/thunderbolt.js:317
 msgid "Unknown Thunderbolt device"
 msgstr "Periferic Thunderbolt desconegut"
 
-#: js/ui/status/thunderbolt.js:319
+#: js/ui/status/thunderbolt.js:318
 msgid ""
 "New device has been detected while you were away. Please disconnect and "
 "reconnect the device to start using it."
@@ -2383,33 +2186,41 @@ msgstr ""
 "Un novèl periferic es estat detectat pendent vòstra abséncia. Desbrancatz-lo "
 "e rebrancatz-lo abans de començar de l’utilizar."
 
-#: js/ui/status/thunderbolt.js:322
+#: js/ui/status/thunderbolt.js:321
 msgid "Unauthorized Thunderbolt device"
 msgstr "Periferic Thunderbolt pas autorizat"
 
-#: js/ui/status/thunderbolt.js:323
+#: js/ui/status/thunderbolt.js:322
 msgid ""
 "New device has been detected and needs to be authorized by an administrator."
 msgstr ""
 "Un aparelh novèl es estat detectat e li fa mestièr d’èsser autorizat per un "
 "administrator."
 
-#: js/ui/status/thunderbolt.js:329
+#: js/ui/status/thunderbolt.js:328
 msgid "Thunderbolt authorization error"
 msgstr "Error d’autorizacion Thunderbolt"
 
-#: js/ui/status/thunderbolt.js:330
+#: js/ui/status/thunderbolt.js:329
 #, javascript-format
 msgid "Could not authorize the Thunderbolt device: %s"
 msgstr "Impossible d’autorizar lo periferic Thunderbolt : %s"
 
-#: js/ui/status/volume.js:235
+#: js/ui/status/volume.js:191
 msgid "Volume changed"
 msgstr "Volum modificat"
 
-#: js/ui/status/volume.js:296
+#: js/ui/status/volume.js:253
 msgid "Volume"
 msgstr "Volum"
+
+#: js/ui/status/volume.js:269
+msgid "Sound Output"
+msgstr "Sortida son"
+
+#: js/ui/status/volume.js:337
+msgid "Sound Input"
+msgstr "Entrada son"
 
 #. Translators: this is for display mirroring i.e. cloning.
 #. * Try to keep it under around 15 characters.
@@ -2509,11 +2320,6 @@ msgstr[1] "Los paramètres seràn restablits dins %d segondas"
 #, javascript-format
 msgid "%d × %d"
 msgstr "%d × %d"
-
-#. Translators: entry in the window right click menu.
-#: js/ui/windowMenu.js:29
-msgid "Take Screenshot"
-msgstr "Prendre captura d'ecran"
 
 #: js/ui/windowMenu.js:41
 msgid "Hide"
@@ -3186,6 +2992,150 @@ msgstr[1] "%u entradas"
 msgid "System Sounds"
 msgstr "Sons sistèma"
 
+#~ msgid "%s Off"
+#~ msgstr "%s atudat"
+
+#~ msgid "%s Connected"
+#~ msgstr "%s connectat"
+
+#~ msgid "%s Unmanaged"
+#~ msgstr "%s pas gerit"
+
+#~ msgid "%s Connecting"
+#~ msgstr "Connexion de %s en cors"
+
+#~ msgid "%s Requires Authentication"
+#~ msgstr "Autentificacion necessària per %s"
+
+#~ msgid "Firmware Missing For %s"
+#~ msgstr "Micrologicial mancant per %s"
+
+#~ msgid "%s Unavailable"
+#~ msgstr "%s pas disponible"
+
+#~ msgid "%s Connection Failed"
+#~ msgstr "Fracàs de connexion a %s"
+
+#~ msgid "Wired Settings"
+#~ msgstr "Paramètres de la connexion filara"
+
+#~ msgid "Mobile Broadband Settings"
+#~ msgstr "Paramètres del telefòn mobil de benda larga"
+
+#~ msgid "%s Hardware Disabled"
+#~ msgstr "Equipament %s desactivat"
+
+#~ msgid "%s Disabled"
+#~ msgstr "%s desactivat"
+
+#~ msgid "Bluetooth Settings"
+#~ msgstr "Paramètres Bluetooth"
+
+#~ msgid "Connect to Internet"
+#~ msgstr "Se connectar a Internet"
+
+#~ msgid "Airplane Mode is On"
+#~ msgstr "Lo mòde avion es activat"
+
+#~ msgid "Wi-Fi is disabled when airplane mode is on."
+#~ msgstr "Lo Wi-Fi es desactivat quand lo mòde avion es activat."
+
+#~ msgid "Turn Off Airplane Mode"
+#~ msgstr "Desactivar lo mòde avion"
+
+#~ msgid "Wi-Fi is Off"
+#~ msgstr "Lo Wi-fi es desactivat"
+
+#~ msgid "Wi-Fi needs to be turned on in order to connect to a network."
+#~ msgstr "Lo Wi-Fi a besonh d'èsser activat per se connectar a una ret."
+
+#~ msgid "Turn On Wi-Fi"
+#~ msgstr "Activar lo Wi-Fi"
+
+#~ msgid "Wi-Fi Networks"
+#~ msgstr "Rets Wi-Fi"
+
+#~ msgid "Select a network"
+#~ msgstr "Causir una ret"
+
+#~ msgid "No Networks"
+#~ msgstr "Cap de ret pas disponibla"
+
+#~ msgid "Use hardware switch to turn off"
+#~ msgstr "Utilizar l'interruptor material per atudar"
+
+#~ msgid "Select Network"
+#~ msgstr "Seleccionar una ret"
+
+#~ msgid "Wi-Fi Settings"
+#~ msgstr "Paramètres del Wifi"
+
+#~ msgid "%s Not Connected"
+#~ msgstr "%s desconnectat"
+
+#~ msgid "unknown"
+#~ msgstr "desconegut"
+
+#~ msgid "activating…"
+#~ msgstr "activacion…"
+
+#~ msgid "deactivating…"
+#~ msgstr "desactivacion…"
+
+#~ msgid "deactivated"
+#~ msgstr "desactivada"
+
+#~ msgid "connecting…"
+#~ msgstr "connexion…"
+
+#~ msgid "authentication required"
+#~ msgstr "autentificacion necessària"
+
+#~ msgid "connection failed"
+#~ msgstr "fracàs de connexion"
+
+#~ msgid "VPN Settings"
+#~ msgstr "Paramètres VPN"
+
+#~ msgid "VPN"
+#~ msgstr "VPN"
+
+#~ msgid "VPN Off"
+#~ msgstr "VPN atudat"
+
+#~ msgid "Network Settings"
+#~ msgstr "Paramètres de la ret"
+
+#~ msgid "%s Wired Connection"
+#~ msgid_plural "%s Wired Connections"
+#~ msgstr[0] "%s connexion filària"
+#~ msgstr[1] "%s connexions filàrias"
+
+#~ msgid "%s Wi-Fi Connection"
+#~ msgid_plural "%s Wi-Fi Connections"
+#~ msgstr[0] "%s connexion Wi-Fi"
+#~ msgstr[1] "%s connexions Wi-Fi"
+
+#~ msgid "%s Modem Connection"
+#~ msgid_plural "%s Modem Connections"
+#~ msgstr[0] "%s connexion a un modèm"
+#~ msgstr[1] "%s connexions a de modèm"
+
+#~ msgid "Connection failed"
+#~ msgstr "Fracàs de connexion"
+
+#~ msgid "Activation of network connection failed"
+#~ msgstr "L'activacion de la connexion a la ret a fracassat"
+
+#~ msgid "Power Settings"
+#~ msgstr "Paramètres de gestion de l'energia"
+
+#~ msgid "Lock"
+#~ msgstr "Verrolhar"
+
+#~ msgid "Power Off / Log Out"
+#~ msgstr "Atudar / Se desconnectar"
+
 #~ msgid "%d Connected"
 #~ msgid_plural "%d Connected"
 #~ msgstr[0] "%d connectat"
@@ -3250,9 +3200,6 @@ msgstr "Sons sistèma"
 
 #~ msgid "Show screenshot UI"
 #~ msgstr "Aficha l'interfàcia de captura d’ecran"
-
-#~ msgid "Unnamed Folder"
-#~ msgstr "Dossièr sens nom"
 
 #~ msgid "Remove from Favorites"
 #~ msgstr "Levar dels favorits"
@@ -4119,9 +4066,6 @@ msgstr "Sons sistèma"
 #~ msgid "Sent on <b>%A</b>, <b>%B %d</b>, %Y"
 #~ msgstr "Mandat lo <b>%A %-d %B %Y</b>"
 
-#~ msgid "Connection to %s failed"
-#~ msgstr "La connexion a %s a fracassat"
-
 #~ msgid "Reconnect"
 #~ msgstr "Se reconnectar"
 
@@ -4186,10 +4130,6 @@ msgstr "Sons sistèma"
 #~ "determinar l'emplaçament de l'utilizaire d'ela-meteissa en utilizant las "
 #~ "ressorsas ret (amb al pus melhor un nivèl de precision limitat a la "
 #~ "carrièra)."
-
-#~ msgctxt "search-result"
-#~ msgid "Power off"
-#~ msgstr "Atudar"
 
 #~ msgctxt "search-result"
 #~ msgid "Log out"
