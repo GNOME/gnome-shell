@@ -1,3 +1,38 @@
+43.rc
+=====
+* Tweak quick settings appearance [Sam; !2427, !2441, !2463]
+* Use NM connectivity check URI for portal helper [Clerie; !2228]
+* Only show "Night Light" toggle when supported [Florian; !2425]
+* Fix accessibility of quick settings sliders [Florian; !2431]
+* Use more unambiguous icons in on-screen keyboard [Carlos; !2433]
+* Add screenshot item to quick settings [Florian; !2439]
+* Fix entering extended characters from on-screen keyboard [Carlos; !2445]
+* Prevent SignalTracker from leaking objects [Sebastian; !2450, !2466]
+* Fix turning off VPN in quick settings [Florian; !2426]
+* Fix initial selection in switch-monitor popup on desktop [Yao; !2451]
+* Improve handling of recurring events [Milan; !2328]
+* Indicate transitional states in bluetooth quick toggle [Florian; !2444]
+* Work around pipewire regression for screencasts [Sebastian; !2436]
+* Plugged memory leak [Florian; !2461]
+* Misc. bug fixes and cleanups [Daniel, Jonas Å., Florian, Georges, Carlos;
+  !2429, !2434, !2430, !2442, !2455, !2462, !2456, !2464, !2465, !2288]
+
+Contributors:
+  Yao Wei (魏銘廷), Milan Crha, Carlos Garnacho, Sam Hewitt, Sebastian Keller,
+  Florian Müllner, Dmitrii Naidolinskii, Georges Basile Stavracas Neto,
+  Clerie Riese, Daniel van Vugt, msizanoen1, Jonas Ådahl
+
+Translators:
+  Danial Behzadi [fa], Kukuh Syafaat [id], Марко Костић [sr],
+  Zurab Kargareteli [ka], Hugo Carvalho [pt], Goran Vidović [hr],
+  Aleksandr Melman [ru], Jordi Mas [ca], Piotr Drąg [pl],
+  Asier Sarasua Garmendia [eu], Luming Zh [zh_CN], Yosef Or Boczko [he],
+  Fran Dieguez [gl], Emin Tufan Çetin [tr], Daniel Mustieles [es],
+  Nart Tlisha [ab], Marek Černocký [cs], Leônidas Araújo [pt_BR],
+  Matej Urbančič [sl], Balázs Úr [hu], Nathan Follens [nl],
+  Baurzhan Muftakhidinov [kk], Rūdolfs Mazurs [lv], Alan Mortensen [da],
+  Changwoo Ryu [ko]
+
 43.beta
 =======
 * Allow extension updates with only Extension Manager installed [Matthew; !2358]
