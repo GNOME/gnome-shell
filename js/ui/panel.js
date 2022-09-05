@@ -724,8 +724,6 @@ class Panel extends St.Widget {
 
 
         box.insert_child_at_index(container, position);
-        if (indicator.menu)
-            this.menuManager.addMenu(indicator.menu);
         this.statusArea[role] = indicator;
         let destroyId = indicator.connect('destroy', emitter => {
             delete this.statusArea[role];
@@ -757,6 +755,8 @@ class Panel extends St.Widget {
     _onMenuSet(indicator) {
         if (!indicator.menu || indicator.menu._openChangedId)
             return;
+
+        this.menuManager.addMenu(indicator.menu);
 
         indicator.menu._openChangedId = indicator.menu.connect('open-state-changed',
             (menu, isOpen) => {
