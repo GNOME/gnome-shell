@@ -170,7 +170,6 @@ class CapsLockWarning extends St.Label {
 
         let seat = Clutter.get_default_backend().get_default_seat();
         this._keymap = seat.get_keymap();
-        this._stateChangedId = 0;
 
         this.connect('notify::mapped', () => {
             if (this.is_mapped()) {
