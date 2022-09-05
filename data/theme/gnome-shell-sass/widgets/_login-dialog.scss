@@ -169,26 +169,20 @@
   padding-top: 1em;
 }
 
-.login-dialog {
+// Custom styling for login/unlock entry
+.unlock-dialog, .login-dialog {
   StEntry {
-    @if $variant=='dark' {
-      $_gdm_entry_bg: darken($system_bg_color, 3%);
-      background-color: $_gdm_entry_bg;
-      color: $fg_color;
-    }
-  }
-}
-
-// Custom styling for unlock entry
-.unlock-dialog {
-  StEntry {
+   $_gdm_entry_fg: $system_fg_color; 
+   $_gdm_entry_bg: transparentize($system_fg_color, 0.9);
+   
     border:none !important;
     &:focus { 
-      background-color: transparentize($fg_color, 0.9);
+      color: $_gdm_entry_fg;
+      background-color: $_gdm_entry_bg;
     }
     &:insensitive { 
-      color: transparentize($fg_color, 0.5);
-      background-color: transparentize($fg_color, 0.95);
+      color: transparentize($_gdm_entry_fg, 0.5);
+      background-color: transparentize($_gdm_entry_bg, 0.95);
     }
   }
 

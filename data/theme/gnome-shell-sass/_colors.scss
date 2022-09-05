@@ -6,6 +6,7 @@
 $is_highcontrast: "false";
 
 $_dark_base_color: darken(desaturate(#241f31, 100%), 2%);
+$_dark_fg_color: white;
 
 $base_color: if($variant == 'light', #fff, $_dark_base_color);
 $bg_color: if($variant == 'light', #f6f5f4, lighten($base_color, 5%));
@@ -45,7 +46,8 @@ $card_bg_color: if($variant == 'light', darken($bg_color, 5%), lighten($bg_color
 $bubble_buttons_color: if($variant == 'light', darken($bg_color, 12%), lighten($bg_color, 10%));
 
 // overview background color
-$system_bg_color: $base_color;
+$system_bg_color: $_dark_base_color;
+$system_fg_color: $_dark_fg_color;
 
 //insensitive state derived colors
 $insensitive_fg_color: mix($fg_color, $bg_color, 50%);
