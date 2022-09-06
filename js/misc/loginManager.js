@@ -164,8 +164,8 @@ var LoginManagerSystemd = class extends Signals.EventEmitter {
 
         try {
             const [result] = await this._proxy.CanRebootToBootLoaderMenuAsync();
-            needsAuth = result[0] === 'challenge';
-            canRebootToBootLoaderMenu = needsAuth || result[0] === 'yes';
+            needsAuth = result === 'challenge';
+            canRebootToBootLoaderMenu = needsAuth || result === 'yes';
         } catch (error) {
             canRebootToBootLoaderMenu = false;
             needsAuth = false;
