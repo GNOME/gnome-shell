@@ -8,7 +8,7 @@ const { Cogl, Clutter, Meta, St } = imports.gi;
 function test() {
     Meta.init();
 
-    let stage = Meta.get_backend().get_stage();
+    let stage = global.backend.get_stage();
     UI.init(stage);
 
     let vbox = new St.BoxLayout({ style: 'background: #ffee88;' });
