@@ -1,5 +1,5 @@
 /* exported QuickToggle, QuickMenuToggle, QuickSlider, QuickSettingsMenu, SystemIndicator */
-const {Atk, Clutter, Gio, GLib, GObject, Graphene, Pango, St} = imports.gi;
+const {Atk, Clutter, Gio, GLib, GObject, Graphene, Meta, Pango, St} = imports.gi;
 
 const Main = imports.ui.main;
 const PopupMenu = imports.ui.popupMenu;
@@ -626,9 +626,12 @@ var QuickSettingsMenu = class extends PopupMenu.PopupMenu {
 
         // Pick up additional spacing from any intermediate actors
         const updateOffset = () => {
-            const offset = this._grid.apply_relative_transform_to_point(
-                this._boxPointer, new Graphene.Point3D());
-            yConstraint.offset = offset.y;
+            Meta.later_add(Meta.LaterType.BEFORE_REDRAW, () => {
+                const offset = this._grid.apply_relative_transform_to_point(
+                    this._boxPointer, new Graphene.Point3D());
+                yConstraint.offset = offset.y;
+                return GLib.SOURCE_REMOVE;
+            });
         };
         this._grid.connect('notify::y', updateOffset);
         this.box.connect('notify::y', updateOffset);
