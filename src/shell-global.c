@@ -55,6 +55,7 @@ struct _ShellGlobal {
   MetaBackend *backend;
   MetaContext *meta_context;
   MetaDisplay *meta_display;
+  MetaCompositor *compositor;
   MetaWorkspaceManager *workspace_manager;
   Display *xdisplay;
 
@@ -96,6 +97,7 @@ enum {
   PROP_BACKEND,
   PROP_CONTEXT,
   PROP_DISPLAY,
+  PROP_COMPOSITOR,
   PROP_WORKSPACE_MANAGER,
   PROP_SCREEN_WIDTH,
   PROP_SCREEN_HEIGHT,
@@ -268,6 +270,9 @@ shell_global_get_property(GObject         *object,
       break;
     case PROP_DISPLAY:
       g_value_set_object (value, global->meta_display);
+      break;
+    case PROP_COMPOSITOR:
+      g_value_set_object (value, global->compositor);
       break;
     case PROP_WORKSPACE_MANAGER:
       g_value_set_object (value, global->workspace_manager);
@@ -565,6 +570,13 @@ shell_global_class_init (ShellGlobalClass *klass)
                          "Display",
                          "Metacity display object for the shell",
                          META_TYPE_DISPLAY,
+                         G_PARAM_READABLE | G_PARAM_STATIC_STRINGS);
+
+  props[PROP_COMPOSITOR] =
+    g_param_spec_object ("compositor",
+                         "Compositor",
+                         "MetaCompositor object",
+                         META_TYPE_COMPOSITOR,
                          G_PARAM_READABLE | G_PARAM_STATIC_STRINGS);
 
   props[PROP_WORKSPACE_MANAGER] =
@@ -1061,6 +1073,7 @@ _shell_global_set_plugin (ShellGlobal *global,
   global->wm = shell_wm_new (plugin);
 
   global->meta_display = display;
+  global->compositor = meta_display_get_compositor (display);
   global->meta_context = meta_display_get_context (display);
   global->backend = meta_context_get_backend (context);
   global->workspace_manager = meta_display_get_workspace_manager (display);
